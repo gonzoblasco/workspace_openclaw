@@ -1,0 +1,37 @@
+# Workspace .gitignore
+
+# macOS
+.DS_Store
+
+# OpenClaw state (machine-specific)
+openclaw-workspace-state.json
+
+# Node (belt and suspenders — projects have their own .gitignore too)
+node_modules/
+.next/
+dist/
+build/
+.turbo/
+
+# Databases (local dev)
+*.db
+*.db-journal
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Test artifacts
+coverage/
+playwright-report/
+test-results/
+.vitest-cache/
+
+# Proyectos — cada uno tiene su propio repo, se sincronizan por separado
+projects/
+
+# Editor
+.idea/
+*.swp
+*.swo
