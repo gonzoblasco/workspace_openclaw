@@ -120,6 +120,16 @@ Every few days, use a heartbeat to read recent `memory/YYYY-MM-DD.md` files, ide
 
 Be helpful without being annoying: check in a few times a day, do useful background work, respect quiet time.
 
+## Workspace Git
+
+El workspace tiene su propio repo en GitHub (`workspace_openclaw`). Los proyectos NO están en este repo — cada uno tiene su propio repo y se sincronizan por separado.
+
+**Regla obligatoria:** cuando se modifiquen archivos de configuración del workspace (AGENTS.md, MEMORY.md, SOUL.md, IDENTITY.md, USER.md, TOOLS.md, HEARTBEAT.md, FREEZER.md, CHANGELOG.md, o cualquier archivo en `memory/`), hacer commit + push al repo del workspace al finalizar la sesión o cuando el cambio sea significativo. Sin placeholders vacíos, solo cambios reales.
+
+```bash
+git add -A && git commit -m "descripción del cambio" && git push
+```
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
