@@ -1,5 +1,14 @@
 # CHANGELOG.md
 
+## [2026-07-14]
+
+### Nueva estructura del workspace
+- Creado `FREEZER.md` — ideas congeladas (marketplace de servicios domésticos como primera entrada)
+- `MEMORY.md` actualizado: definición ampliada de KanamAI (pre/post/durante/marketplace), referencia a FREEZER.md
+- `.gitignore` del workspace creado (excluye `projects/`, `.DS_Store`, `node_modules/`, etc.)
+- Commit inicial del repo del workspace (1fb87f4) — solo configuración, sin proyectos
+- Diario `memory/2026-07-14.md` creado
+
 ## [2026-07-13]
 
 ### Onboarding inicial
