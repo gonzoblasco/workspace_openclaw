@@ -100,4 +100,5 @@
 - KanamAI definición ampliada: no solo retención, sino "IA que facilita conexiones humanas" (pre, post, durante, marketplace)
 
 ## Lecciones aprendidas
+- Create Stack Next es 100% en español — release notes, docs, todo. No escribir en inglés aunque parezca lo "standard"
 - (a medida que pasen cosas)
