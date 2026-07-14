@@ -19,6 +19,12 @@
 - Marca paraguas para todos los productos de Gonzo
 - KanamAI define momentos de intervención: pre-venta (SoporteML), post-venta (SoporteML sueño mail/WA + ReActiva), copiloto/durante (UmbraWriter), marketplace (futuro)
 
+## División del trabajo entre máquinas
+- **Mini:** GLM, razonamiento medio, planificación y estrategia (el cerebro)
+- **Air:** Kimi K2.7 Code, razonamiento bajo, escritura de código (las manos)
+- Cada máquina tiene sesiones propias de OpenClaw; los MDs del workspace son la memoria compartida
+- Se puede cambiar modelo/razonamiento por sesión según la tarea
+
 ## Forma de trabajo
 - Todo se registra: MEMORY.md, memory/YYYY-MM-DD.md, projects/PROYECTOS.md, HANDOFF.md por proyecto, CHANGELOG.md
 - Al arrancar conversación limpia → leer MEMORY.md + PROYECTOS.md + HANDOFF.md del proyecto que toque
