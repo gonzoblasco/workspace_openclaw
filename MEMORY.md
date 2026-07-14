@@ -35,6 +35,9 @@
 - Cron job cada 3 días → consolidar diarios a MEMORY.md (job ID: a6b2adb8-4b77-436a-b73c-2c866ac512f3)
 - No escribir placeholders vacíos — solo escribí si hay algo real
 - Canales: por ahora webchat, después WhatsApp y Telegram
+- Sesión de OpenClaw por proyecto — cada sesión es específica, no mezclar proyectos
+- Open source contributions: ver `CONTRIBUTING.md` — playbook completo de cómo contribuir a repos externos
+- Plan de visibilidad: PRs a repos externos (create-next-stack primero) → portfolio vivo → menos entrevistas laborales
 
 ## Ecosistema Kanam — Productos principales
 
