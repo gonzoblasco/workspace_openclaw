@@ -71,8 +71,10 @@
 
 ### create-stack-next (base transversal)
 - CLI scaffolder opinado para Next.js 15, ~1000 descargas npm
-- v0.7.0, Fase 3 en progreso, 64 tests
-- **OpenSpec integrado (v0.7.0):** Spec-Driven Development embebido en el scaffold base. Select interactivo de herramientas IA, `openspec init` post-scaffold con fallback, `@fission-ai/openspec` como devDep
+- v0.7.1, 64 tests, CI verde en 4 package managers
+- **OpenSpec integrado (v0.7.0):** Spec-Driven Development embebido en el scaffold base. Select interactivo de herramientas IA (6 principales + opción "Todas"), `openspec init` post-scaffold con fallback, `@fission-ai/openspec` como devDep
+- **v0.7.1:** opción "Todas las herramientas (30+)", ROADMAP reescrito sin fases rígidas, README limpiado
+- Trick del `gitignore` (sin punto) para que npm lo incluya — rename a `.gitignore` en copy-template.ts
 - Base metodológica de todo proyecto nuevo
 - Sueño: proyectos existentes adoptan su estructura (AGENTS.md, ROADMAP, HANDOFF, CHANGELOG, ADRs)
 - Repo: github.com/gonzoblasco/create-stack-next
