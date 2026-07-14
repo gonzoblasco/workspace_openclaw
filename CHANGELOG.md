@@ -1,5 +1,37 @@
 # CHANGELOG.md
 
+## [2026-07-14] — Sesión CSN + CNS
+
+### create-next-stack (akd-io) — estrategia de colaboración
+- Gonzo encontró `create-next-stack` en npm — se pisa con nuestro CSN pero con filosofía distinta
+- Decisión: colaborar en lugar de competir. CSN queda como "fork opinado" / laboratorio
+- Repo forkeado: github.com/gonzoblasco/create-next-stack
+- Clonado en `projects/create-next-stack` (rama develop como base)
+
+### PR #280 — Bun support (#262)
+- Plugin `bun.ts` creado, adaptado al sistema de plugins de akd-io
+- 9 archivos modificados, +90/-2 líneas
+- Commits semánticos: `feat(cli)` + `test(e2e)`
+- Build, lint, unit tests (9/9) — todo verde
+- PR abierto: https://github.com/akd-io/create-next-stack/pull/280
+- CI: GitGuardian ✅, Vercel CI awaiting maintainer approval (normal para PRs externos)
+
+### Plan de próximos PRs
+- Vitest (#224) — en ~2 semanas si no hay respuesta al PR de Bun
+- Supabase (#249), Auth.js + ShadCN (#268), Architecture review (#272)
+- OpenSpec como feature propuesta después de 2-3 PRs merged
+- Website de CNS en el freezer (deuda moral)
+
+### Organización de sesiones
+- Gonzo decidió tener una sesión de OpenClaw por proyecto
+- Esta sesión = CSN + CNS exclusivamente
+
+### Archivos modificados
+- `memory/2026-07-14.md` — actualizado con sección completa de CNS
+- `MEMORY.md` — sección create-next-stack (akd-io) agregada
+- `projects/PROYECTOS.md` — sección "Colaboración externa" agregada
+- `CHANGELOG.md` — esta entrada
+
 ## [2026-07-14]
 
 ### Nueva estructura del workspace

@@ -80,6 +80,17 @@
 - Sueño: proyectos existentes adoptan su estructura (AGENTS.md, ROADMAP, HANDOFF, CHANGELOG, ADRs)
 - Repo: github.com/gonzoblasco/create-stack-next
 
+### create-next-stack (akd-io) — colaboración
+- Repo externo: github.com/akd-io/create-next-stack (570 stars, 4 contributors)
+- Filosofía: "buffet" de opciones vs nuestro CSN opinado. Complementario, no competidor
+- **PR #280 abierto:** Bun support (#262) — https://github.com/akd-io/create-next-stack/pull/280
+- Fork: github.com/gonzoblasco/create-next-stack, rama develop como base
+- Plan: 2-3 PRs (Bun, Vitest, Supabase) → credibilidad → proponer OpenSpec como feature
+- CSN queda como "fork opinado" / laboratorio — lo que funciona se manda upstream
+- Website de CNS en el freezer (deuda moral después del CLI)
+- Todo lo que vaya al repo de akd-io: en inglés
+- Sesión de OpenClaw por proyecto — esta sesión es CSN + CNS exclusivamente
+
 ## Proyectos de soporte
 - brainweb — gestor de notas PKM con graph view SVG (github.com/gonzoblasco/brainweb-your-second-mind)
 - accessibility-auditor — auditoría accesibilidad web (para entrevista)
