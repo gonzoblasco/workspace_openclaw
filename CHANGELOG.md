@@ -9,6 +9,28 @@
 - Commit inicial del repo del workspace (1fb87f4) — solo configuración, sin proyectos
 - Diario `memory/2026-07-14.md` creado
 
+## [2026-07-14]
+
+### Nuevo proyecto analizado: mucamas-online
+- Gonzo trajo un esqueleto de marketplace de servicios domésticos al workspace
+- Análisis del ecosistema: los 3 SaaS son "retención", este sería "marketplace"
+- Decisión: congelar como idea (FREEZER.md), no sumar 4to producto ahora
+- Definición ampliada de KanamAI: pre/post/durante/marketplace — "IA que facilita conexiones humanas en distintos momentos"
+
+### Sincronización del workspace entre máquinas
+- Repo creado: `git@github.com:gonzoblasco/workspace_openclaw.git`
+- `.gitignore` del workspace: proyectos excluidos (cada uno se sincroniza con su propio repo)
+- Workflow agregado a AGENTS.md: cambios en config del workspace → commit + push obligatorio
+- Push inicial realizado (2 commits)
+- Sesiones viven localmente por máquina, los MDs del workspace son la memoria compartida
+
+### Archivos creados/modificados
+- `FREEZER.md` — creado
+- `MEMORY.md` — actualizado
+- `.gitignore` — creado
+- `AGENTS.md` — actualizado (Workspace Git)
+- `memory/2026-07-14.md` — creado
+
 ## [2026-07-13]
 
 ### Onboarding inicial
