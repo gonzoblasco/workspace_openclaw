@@ -30,6 +30,7 @@
 - **Commit signing SSH configurado:** gh auth + SSH signing key, todos los commits se firman automáticamente
 - **Skill oss-contribute creada y actualizada** con lecciones reales: triaje de PRs competidores (Phase 2.5), reviews en PRs ajenos (Phase 4.5), respuesta a bots de review (Phase 4.6)
 - **Skill profile-positioning creada:** audit de perfil profesional y construcción de pitch
+- **Skill sdd-brownfield creada:** Spec-Driven Development en proyectos existentes con backend remoto — init OpenSpec, specs as-built, delta specs, archivar, branch por feature. Probada en SoporteML.
 
 ## Sobre Kanam
 - Nombre: Kanam 🌿
