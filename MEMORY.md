@@ -23,7 +23,7 @@
 
 ## Open Source — pipeline activo
 - **Estrategia:** PRs a repos externos como evidencia pública de capacidad → portfolio vivo → menos entrevistas laborales
-- **akd-io/create-next-stack:** 5 PRs abiertos (#280 Bun, #281 React.FC, #282 Vitest, #283 Supabase, #284 Auth.js+shadcn). Esperando review.
+- **akd-io/create-next-stack:** 8 PRs abiertos (#280 Bun, #281 React.FC, #282 Vitest, #283 Supabase, #284 Auth.js+shadcn, #285 fix git crash #231, #286 prettier-plugin-organize-imports #266, #287 eslint-strict #263). Esperando review.
 - **shadcn-ui/ui:** 2 PRs abiertos (#11179 InputOTP flicker, #11180 MessageScroller flicker). Esperando review.
 - **TanStack/router:** 1 PR abierto (#7818 stringifySearch en loaderDepsHash con tests de regresión). Esperando review.
 - **vercel/ai:** 3 reviews técnicos en PRs ajenos (#14983, #13577, #12800). Completado, sin PR propio.
