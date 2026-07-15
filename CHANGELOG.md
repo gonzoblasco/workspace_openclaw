@@ -1,5 +1,16 @@
 # CHANGELOG.md
 
+## [2026-07-15] — Cierre de sesión CSN + CNS
+
+### Resumen final
+- 5 PRs abiertos en akd-io/create-next-stack en una sola noche:
+  - #280 Bun (#262), #281 React.FC (#277), #282 Vitest (#224), #283 Supabase (#249), #284 Auth.js + shadcn/ui (#268)
+- Todos con build, lint, unit tests (9/9) verdes — ~500 líneas de código total
+- CONTRIBUTING.md creado como playbook de OSS
+- HANDOFF.md del repo con plan completo
+- Skill oss-contribute ya existía y cubrió todo el workflow — no se necesitó nada nuevo
+- Próximos pasos: Architecture review (#272), OpenSpec como feature propuesta
+
 ## [2026-07-14] — Actualización general del workspace
 
 ### SoporteML — análisis de arquitectura
