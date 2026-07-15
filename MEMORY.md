@@ -25,12 +25,17 @@
 - **Estrategia:** PRs a repos externos como evidencia pública de capacidad → portfolio vivo → menos entrevistas laborales
 - **akd-io/create-next-stack:** 10 PRs abiertos (#280 Bun, #281 React.FC, #282 Vitest, #283 Supabase, #284 Auth.js+shadcn, #285 fix git crash #231, #286 prettier-plugin-organize-imports #266, #287 eslint-strict #263, #288 Zustand #259, #289 Playwright #223). Esperando review.
 - **shadcn-ui/ui:** 2 PRs abiertos (#11179 InputOTP flicker, #11180 MessageScroller flicker). Esperando review.
-- **TanStack/router:** 1 PR abierto (#7818 stringifySearch en loaderDepsHash con tests de regresión). Esperando review.
-- **vercel/ai:** 3 reviews técnicos en PRs ajenos (#14983, #13577, #12800). Completado, sin PR propio.
+- **TanStack/router:** 1 PR abierto (#7818 stringifySearch en loaderDepsHash con tests de regresión). Esperando re-review de LadyBluenotes después de addressar CodSpeed.
+- **vercel/ai:** 3 reviews técnicos en PRs ajenos (#14983, #13577, #12800) + 1 PR propio (#17274 fix warnings dropeadas en finish-step). Review de Vercel addressada, esperando merge.
+- **payloadcms/payload:** 1 PR abierto (#17342 fix blocks con 2+ uploads — data loss bug en richtext-lexical). Tier 1 completado: todos los repos del tier 1 tienen al menos un PR o review.
+- **Total: 17 PRs abiertos** en 5 repos externos. Esperando review de maintainers en todos.
 - **Commit signing SSH configurado:** gh auth + SSH signing key, todos los commits se firman automáticamente
-- **Skill oss-contribute creada y actualizada** con lecciones reales: triaje de PRs competidores (Phase 2.5), reviews en PRs ajenos (Phase 4.5), respuesta a bots de review (Phase 4.6)
+- **Skill oss-contribute creada y actualizada** con lecciones reales: triaje de PRs competidores (Phase 2.5), reviews en PRs ajenos (Phase 4.5), respuesta a bots de review (Phase 4.6), community participation (Phase 4.8 — compartir aprendizajes, acknowledge tooling, cross-referencing issues)
 - **Skill profile-positioning creada:** audit de perfil profesional y construcción de pitch
 - **Skill sdd-brownfield creada:** Spec-Driven Development en proyectos existentes con backend remoto — init OpenSpec, specs as-built, delta specs, archivar, branch por feature. Probada en SoporteML.
+- **Skill product-orchestrator creada:** Product Owner/Manager end-to-end — evalúa ideas (mercado, viabilidad, fit estratégico), define MVP (scope, personas, flows, métricas), planifica roadmap, y orquesta las demás skills (web-app-builder, sdd-brownfield, agent-dispatcher, agent-review) para llevar productos de idea a deployado. 5 fases con go/no-go gates. Product files en `products/<slug>/`.
+- **Skill ux-a11y-studio creada:** Equipo de UX/UI + Accesibilidad — discovery de usuarios y requisitos WCAG 2.2, audit (automated axe-core + manual keyboard/screen reader/cognitive/visual), design system con contraste verificado, implementación de componentes accesibles (WAI-APG, 3 capas de tests), validación final antes de launch. Integrado con product-orchestrator y web-app-builder. Design files en `design/`.
+- **Skill web-app-builder actualizada:** reference vite-react-setup.md corregida con configs para Biome 2.5+ (schema cambió), TS 6+ (ignoreDeprecations), Tailwind v4 (@theme parsing), Vitest 4. Tabla de 11 pitfalls comunes.
 
 ## Sobre Kanam
 - Nombre: Kanam 🌿
@@ -62,7 +67,7 @@
 
 ## Ecosistema Kanam — Productos principales
 
-### SoporteML (PRIORIDAD #1)
+### SoporteML v1 (en Lovable)
 - CRM multi-tenant para vendedores Mercado Libre, Beta con 3 clientes
 - Stack: React+Vite+TS+Supabase+pgvector+OpenAI (en Lovable)
 - Billing con Mercado Pago: código de Edge Functions escrito (mp-create/check/cancel/webhook) pero NUNCA operativo — secrets no configurados, plan de preapproval no creado en MP. Implementación existe pero no funciona
@@ -72,10 +77,18 @@
 - Secrets en Supabase Vault / Lovable Cloud — no accesibles localmente
 - No se puede correr local (usa @lovable.dev/cloud-auth-js) — workflow: código acá, deploy en Lovable
 - Billing PENDIENTE de hacer real: hay código pero nunca estuvo operativo (mockeado sin secrets)
-- Próximo feature planificado: hilos unificados en Priority + resumen IA (plan.md en .lovable/)
-- Propuesta de trabajo sin backend: Spec-Driven Development con OpenSpec + documentar API remota
-- Meta: sacar de Lovable a futuro (sin apuro)
+- OpenSpec specs as-built escritos: inbox, ai-copilot, billing-mp, thread-summary (4 specs, 0 changes activos)
+- Meta: sacar de Lovable a futuro (sin apuro) — v2 es el primer paso
 - Repo: github.com/gonzoblasco/soporteml, rama el-upgrade
+
+### SoporteML v2 (reconstrucción desde cero) — PRIORIDAD #1
+- Reconstrucción de v1 sin Lovable, stack propio, independencia total
+- Product files en `products/soporteml-v2/`: BRIEF.md, EVALUATION.md, DEFINITION.md, ROADMAP.md, STATUS.md
+- **Ciclo de Product Owner completo:** Phase 0 (Intake) → Phase 1 (Evaluation: 8 competidores, GO) → Phase 2 (Definition: MVP con 10 features) → Phase 3 (Roadmap: 11 fases, ~30 días)
+- **Features clave agregadas por Gonzo:** auto-respuesta inteligente (IA clasifica rutinaria vs compleja, opt-in, badge "Auto IA", auditable) + auto-learn de MeLi (al conectar, fetch histórico + generar KB + fichas automáticamente)
+- **Phase 1 Foundation ejecutado:** scaffold React 19 + Vite + TS + Tailwind v4 + shadcn/ui. Deps: Biome 2.5, Vitest 4, Zod 4, React Router 7, TanStack Query 5, Supabase JS, RHF, lucide, recharts. 9 entity types, migración SQL multi-tenant + RLS + pgvector + match_kb_chunks RPC. ADR-001: React+Vite. Verification gate: lint ✅ typecheck ✅ test ✅ build ✅ (257KB / 81KB gzip). Git init: `83963a8`
+- Proyecto en `projects/soporteml-v2/`
+- **Pendiente Phase 1:** Supabase local corriendo, auth UI, shadcn/ui components, OpenSpec init
 
 ### KanamAI
 - **Identidad/motor de IA transversal** — NO es un producto de MeLi, es la definición de cómo actúa la IA en todos los productos
@@ -114,13 +127,13 @@
 ### create-next-stack (akd-io) — colaboración
 - Repo externo: github.com/akd-io/create-next-stack (570 stars, 4 contributors)
 - Filosofía: "buffet" de opciones vs nuestro CSN opinado. Complementario, no competidor
-- **5 PRs abiertos:** #280 Bun, #281 React.FC, #282 Vitest, #283 Supabase, #284 Auth.js+shadcn/ui
+- **10 PRs abiertos:** #280 Bun, #281 React.FC, #282 Vitest, #283 Supabase, #284 Auth.js+shadcn/ui, #285 fix git crash, #286 organize-imports, #287 eslint-strict, #288 Zustand, #289 Playwright
 - Fork: github.com/gonzoblasco/create-next-stack, rama develop como base
-- Plan: tras merge de 2-3 PRs → proponer OpenSpec como feature
+- Plan: tras merge de 2-3 PRs → abrir issue proponiendo OpenSpec como feature nueva
+- Features propuestas listas para presentar: (1) OpenSpec integration, (2) opinionated presets, (3) ADR scaffolding, (4) AGENTS.md generation (AI-ready projects)
 - CSN queda como "fork opinado" / laboratorio — lo que funciona se manda upstream
 - Website de CNS en el freezer (deuda moral después del CLI)
 - Todo lo que vaya al repo de akd-io: en inglés
-- Sesión de OpenClaw por proyecto — esta sesión es CSN + CNS exclusivamente
 
 ## Proyectos de soporte
 - brainweb — gestor de notas PKM con graph view SVG (github.com/gonzoblasco/brainweb-your-second-mind)
@@ -149,6 +162,17 @@
 - Create Stack Next es 100% en español — release notes, docs, todo. No escribir en inglés aunque parezca lo "standard"
 - Triaje de PRs competidores ANTES de invertir tiempo (lección más importante de OSS night)
 - Reviews técnicas en PRs ajenos = contribución de valor sin necesidad de PR propio
+- Community participation = reputación: comentar, compartir descubrimientos, acknowledge tooling (CodSpeed, Vercel bots), cross-referencing issues. No es solo abrir PRs.
 - shadcn/ui: cambiar styles vs registry — 15 archivos, no 14 (registry new-york-v4 cuenta)
 - TanStack monorepo: instalar deps desde raíz con --filter, no dentro del package
 - vercel/ai: prestar atención a breaking changes en changesets (string → object)
+- **Scaffold pitfalls (Biome 2.5+, TS 6+, Tailwind v4, Vitest 4):**
+  - TypeScript 6+ depreca `baseUrl` → agregar `"ignoreDeprecations": "6.0"` en tsconfig
+  - Biome 2.5 cambió el schema: `organizeImports` → `assist.actions.source.organizeImports`, `recommended` → `preset`, schema URL debe matchear versión exacta
+  - Tailwind v4 `@theme` no parseado por Biome → necesita `css.parser.tailwindDirectives: true`
+  - `import.meta.env` sin `vite-env.d.ts` → agregar referencia
+  - Vite scaffold genera `oxlint` no `biome` → swap manual
+  - `vitest run` sin tests falla con code 1 → agregar al menos un test placeholder
+  - Path alias `@/*` necesita `resolve.alias` en vite.config Y vitest.config
+- **OpenSpec lecciones:** "SHALL"/"MUST" requerido ("debe" no pasa), sección `## Purpose` obligatoria, formato WHEN/THEN estricto. En brownfield, verificar si el feature ya está implementado antes de escribir un delta spec.
+- **Memory search con Ollama:** configurar `memorySearch.provider: "ollama"` + `model: "nomic-embed-text"` en openclaw.json. Requiere `ollama pull nomic-embed-text`. Default del sistema es OpenAI (falla si no hay API key). CLI local requiere Node 24 (path usa Node 22).
