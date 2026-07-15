@@ -2,7 +2,7 @@
 
 ## Sobre Gonzo
 - Gonzalo, Argentina (GMT-3)
-- 9 años como Frontend React, ahora aprendiendo Fullstack
+- 9 años como Frontend React, ahora Fullstack (aprendiendo backend, ya lo hace en práctica)
 - Desempleado, usando IA para todo ("me reemplazaron por IA, ahora uso IA para todo")
 - También: fotógrafo, comunicación social, quiere escribir novelas
 - Quiere organizar actividad física y mejorar salud
@@ -11,6 +11,14 @@
 - Tiene entrevista para trabajo fullstack especializado en accesibilidad
 - Trabaja entre dos máquinas (Mac Mini y MacBook Air), workspace sincronizado por git
 - Cada máquina tiene sesiones propias de OpenClaw; los MDs del workspace son la memoria compartida
+
+## Perfil profesional / Metodología (lo que lo diferencia)
+- **Stack opinado, no por default** — no usa herramientas al azar, las cura. CSN es la prueba: scaffold opinado con OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG. Decide por criterio, no por convención heredada.
+- **IA-asistida como skill real, no como prompt** — construyó un sistema completo de trabajo con IA: sesiones por proyecto, memoria persistente (MDs + git), handoffs, cron jobs, subagentes, skill workshop. La mayoría de los devs no tienen esto. Es una metodología, no un atajo.
+- **Opinionated en el buen sentido** — AGENTS.md, ROADMAP, ADRs, CONTRIBUTING. Documenta decisiones, no solo código. Eso es senior aunque no tenga el título formal.
+- **Fullstack real con IA** — frontend React/TS, backend Supabase/Edge Functions, DB, billing, tooling, scaffolding, accesibilidad. Todo orquestado con IA como copiloto metodológico, no copia-pega.
+- **Accesibilidad como especialización activa** — la usa como ventaja competitiva, no como checkbox. Tiene accessibility-auditor, accessible-ui, y busca trabajos donde la accesibilidad sea central.
+- **Diferenciador en el mercado:** un dev que sabe usar IA como infraestructura de trabajo (no como chat), con stack opinado y docs de decisiones. Eso es escaso. La mayoría de los devs no saben orquestar sesiones, memoria, handoffs, subagentes. Gonzo sí.
 
 ## Sobre Kanam
 - Nombre: Kanam 🌿
@@ -37,7 +45,8 @@
 - Canales: por ahora webchat, después WhatsApp y Telegram
 - Sesión de OpenClaw por proyecto — cada sesión es específica, no mezclar proyectos
 - Open source contributions: ver `CONTRIBUTING.md` — playbook completo de cómo contribuir a repos externos
-- Plan de visibilidad: PRs a repos externos (create-next-stack primero) → portfolio vivo → menos entrevistas laborales
+- Plan de visibilidad: PRs a repos externos como evidencia pública de capacidad → portfolio vivo → menos entrevistas laborales → el perfil que vende es "dev que trabaja con metodología IA-asistida own + stack opinado + accesibilidad"
+- El pitch para recruiters: no "sé React" sino "construí un sistema de trabajo con IA que me hace más eficiente que un dev tradicional, y tengo PRs mergeados que lo demuestran"
 
 ## Ecosistema Kanam — Productos principales
 
