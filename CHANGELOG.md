@@ -107,3 +107,14 @@
 - Clonados de GitHub: kanamai (de kanamai-330ca8a9), reactiva, brainweb (de brainweb-your-second-mind), umbrawriter
 - PROYECTOS.md creado y actualizado con índice maestro
 - Pendiente: normalización de nombres, documentación de proyectos sin docs, .gitignore global para .DS_Store
+
+## [2026-07-15] — OpenSpec en SoporteML
+
+### Spec-Driven Development en proyecto brownfield
+- OpenSpec 1.6.0 inicializado en SoporteML con config custom (contexto, reglas en español)
+- 3 specs as-built escritos y validados:
+  - **inbox** (6 requirements): bandeja, agrupación, absorción priority, SLA, teclado, realtime
+  - **ai-copilot** (7 requirements): RAG, auth, tono, instrucciones, sugerencias CRM, errores, autopilot
+  - **billing-mp** (5 requirements): suscripciones, webhook, HMAC, estados, secrets (con nota: nunca operativo)
+- Commit en SoporteML: `b4bfba0`
+- Próximo: delta spec para hilos unificados + resumen IA
