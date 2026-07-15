@@ -74,20 +74,31 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 | Repo | Issue | PR | Estado |
 |------|-------|-----|--------|
+| shadcn-ui/ui | #11157 Input OTP layout shift | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | Esperando review |
+| shadcn-ui/ui | #11161 MessageScroller footer flicker | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | Esperando review |
+| TanStack/router | #7787 loaderDeps serializer | [#7818](https://github.com/TanStack/router/pull/7818) | Esperando review, CodeRabbit verde |
 | akd-io/create-next-stack | #262 Bun | [#280](https://github.com/akd-io/create-next-stack/pull/280) | Esperando review |
-| akd-io/create-next-stack | #224 Vitest | — | Plan, en ~2 semanas |
+| akd-io/create-next-stack | #224 Vitest | — | Plan, después de Bun |
 | akd-io/create-next-stack | #249 Supabase | — | Plan, después de Vitest |
-| akd-io/create-next-stack | #268 Auth.js + ShadCN | — | Plan |
-| akd-io/create-next-stack | #272 Architecture review | — | Plan (el golazo) |
+
+### Reviews técnicas (sin PR propio, suma visibilidad)
+
+| Repo | PR | Issue | Aporte |
+|------|-----|-------|--------|
+| TanStack/query | #11036 | #10924 | Floating promise, cleanup |
+| TanStack/query | #10994 | #10924 | Análisis comparativo |
+| vercel/ai | #14983 | #12687 | Test coverage gap |
+| vercel/ai | #13577 | #13506 | Breaking change analysis |
+| vercel/ai | #12800 | #12799 | RFC compliance, product/version separator |
 
 ### Tier 1 — Alta visibilidad, activos, alineados con el perfil (atacar primero)
 
 | Repo | ⭐ | Actividad (30d) | Por qué encaja |
 |------|-----|-----------------|----------------|
-| **shadcn-ui/ui** | 119k | 50 issues activos | Lo usa en SoporteML. 15 bugs abiertos esta semana, muchos de UI/accesibilidad — justo su especialización. "Merged in shadcn/ui" = visibilidad enorme. |
-| **TanStack/router** | 14.8k | 50 issues activos | Lo usa en kanamai, reactiva, umbrawriter. 8 enhancement issues recientes. #918 (Accessibility) y #4901 (Link external links) son factibles. |
-| **TanStack/query** | 50k | 19 issues activos | Lo usa en todos lados. #2712 (ErrorBoundary retry on mount) y #9681 (DevTools isolation) son issues reales, alcanzables. |
-| **vercel/ai** | 25.5k | 50 issues activos | AI SDK de Vercel. 1729 issues abiertos. Mucho scope. Empresa contratan mucho desde este ecosistema. |
+| **shadcn-ui/ui** | 119k | 50 issues activos | Lo usa en SoporteML. 2 PRs abiertos (#11179, #11180). Issues se cubren rápido — verificar sin PRs antes de atacar. |
+| **TanStack/router** | 14.8k | 50 issues activos | Lo usa en kanamai, reactiva, umbrawriter. PR #7818 abierto (loaderDeps serializer). 8 issues sin PRs disponibles. |
+| **TanStack/query** | 50k | 19 issues activos | Lo usa en todos lados. Reviews técnicas dejadas en PRs #11036 y #10994. Issues muy competidos (3-4 PRs por issue). |
+| **vercel/ai** | 25.5k | 50 issues activos | AI SDK de Vercel. 1729 issues abiertos. 3 reviews técnicas dejadas en PRs existentes. Mucho scope para PR propio en próxima sesión. |
 | **payloadcms/payload** | 43.5k | 50 issues activos | CMS fullstack Next.js. Stack muy parecido al suyo. Mucha superficie de bugs. |
 
 ### Tier 2 — Buenos pero más esfuerzo o menos actividad
@@ -116,27 +127,34 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 ---
 
-## Plan de ataque (próximas 2 semanas)
+## Plan de ataque — actualizado 2026-07-14
 
-### Semana 1 — shadcn-ui/ui (accesibilidad + UI)
+### Semana 1 — shadcn-ui/ui + TanStack/router ✅ HECHO
 
-Priorizar bugs de accesibilidad — es su especialización y hay 15 abiertos esta semana:
+| Issue | PR | Estado |
+|-------|-----|--------|
+| shadcn #11157 Input OTP layout shift | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | Abierto, esperando review |
+| shadcn #11161 MessageScroller footer flicker | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | Abierto, sin competencia |
+| shadcn #11104 Sidebar Cmd+B | Descartado | 4 PRs competidores, saturado |
+| TanStack/router #7787 loaderDeps serializer | [#7818](https://github.com/TanStack/router/pull/7818) | Abierto, CodeRabbit verde, sin competencia |
 
-| Issue | Descripción | Por qué |
-|-------|-------------|---------|
-| #11157 | Input OTP: keyboard navigation causes unwanted layout shift | Accesibilidad + UX. Chico, claro. |
-| #11104 | SidebarProvider registers global Cmd+B shortcut without opt-out | Accesibilidad (teclado), bug claro. |
-| #11159 | Calendar Range: third click doesn't reset start date | UX bug, componente conocido. |
+### Reviews técnicas dejadas en PRs de otros
 
-### Semana 2 — TanStack/router o TanStack/query
+| Repo | PR | Issue | Contribución |
+|------|-----|-------|-------------|
+| TanStack/query #11036 | #10924 | Floating promise, cleanup, edge cases |
+| TanStack/query #10994 | #10924 | Análisis comparativo de enfoques |
+| vercel/ai #14983 | #12687 | Falta test positivo store:true |
+| vercel/ai #13577 | #13506 | Breaking change error string→object |
+| vercel/ai #12800 | #12799 | Pérdida separador product/version |
 
-Elegir uno:
-- **TanStack/router** #918 (Accessibility) o #4901 (Link external links)
-- **TanStack/query** #2712 (ErrorBoundary retry) o #9681 (DevTools isolation)
+### Próximos pasos
 
-### En paralelo — akd-io/create-next-stack
-
-Seguir el plan existente: Vitest → Supabase → Auth.js. El PR #280 debería tener review pronto.
+1. **Esperar reviews** de los 3 PRs propios (1-2 semanas)
+2. **payloadcms/payload** — último repo Tier 1 sin tocar, próxima sesión
+3. **akd-io/create-next-stack** — seguir plan: Vitest → Supabase → Auth.js
+4. **vercel/ai** — buscar issues sin PRs para abrir PR propio (hoy solo dejamos reviews)
+5. Cuando mergee el primer PR, actualizar perfil/portfolio con evidencia real
 
 ---
 
