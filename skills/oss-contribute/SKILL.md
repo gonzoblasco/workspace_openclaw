@@ -1,6 +1,6 @@
 ---
 name: "oss-contribute"
-description: "Find, evaluate, and contribute to open source repos strategically — from pipeline building to PR submission and maintainer feedback handling."
+description: "Find, evaluate, and contribute to open source repos strategically — from pipeline building to PR submission, maintainer feedback handling, and active community participation (reviews, shared learnings, discoveries)."
 ---
 
 # OSS Contribute
@@ -187,6 +187,54 @@ When a maintainer (MEMBER/OWNER association) leaves a review comment requesting 
    - If the change was already done (e.g., via a previous rebase), say so briefly — no need to over-explain
    - Reference the specific request in your reply so the thread reads naturally
 
+## Phase 4.8 — Community participation: sharing learnings and discoveries
+
+Being an OSS contributor isn't just opening PRs — it's being an active member of the community. Sharing what you discover builds reputation, helps others, and signals expertise to maintainers and recruiters. This is not optional; it's a core part of the strategy.
+
+### What to share
+
+1. **Technical discoveries on issues/PRs:**
+   - Found a workaround while investigating an issue? Comment on the issue with what you found, even if you're not opening a PR.
+   - Discovered a root cause that isn't documented? Share it — maintainers appreciate triage work.
+   - Benchmarks/performance observations from running the code locally? Post them as context.
+
+2. **Reviews on other people's PRs:**
+   - Already covered in Phase 4.5, but worth reiterating: this is the highest-ROI activity for reputation. A well-written review on a popular repo is visible to everyone watching.
+   - Don't just say "LGTM" — provide specific technical feedback, compare approaches, test locally.
+
+3. **Acknowledge and explain CI/benchmark results on your own PRs:**
+   - When CodSpeed or similar bots report regressions, don't ignore them. Investigate, explain whether they're real or environmental noise, and acknowledge on the PR.
+   - This shows technical maturity — you understand the tooling, not just the code.
+   - Example: "The reported memory regressions appear to be from different runtime environments (flagged by CodSpeed itself). The change is 2 lines replacing JSON.stringify with the configured serializer — no new allocations. Acknowledging per CodSpeed's request."
+
+4. **Share knowledge in discussions/discord/issues:**
+   - If a repo has GitHub Discussions or a Discord, and you've solved a problem related to their ecosystem, share the solution.
+   - Answer questions on issues tagged `help` or `question` — even a partial answer helps.
+
+5. **Cross-reference related issues/PRs:**
+   - When you find that issue #A is related to PR #B, comment on both linking them. Maintainers lose track of these connections.
+   - When your PR continues work started by another PR, reference it explicitly (e.g., "This continues the work started in #4713").
+
+### How to share effectively
+
+- **Be specific and technical** — not "I found something cool" but "The loaderDepsHash in router.ts:142 uses JSON.stringify directly, bypassing the configured stringifySearch option. This breaks custom serializers that handle bigint/Set/Map."
+- **Be honest about uncertainty** — "I believe this is environmental noise but haven't confirmed" is better than confidently dismissing a regression.
+- **Be timely** — comment while the context is fresh. A discovery shared 2 weeks later is less useful.
+- **Be concise** — maintainers read a lot of notifications. Get to the point.
+- **Link to evidence** — CI logs, benchmark reports, code lines, related issues.
+
+### When to share vs. stay silent
+
+- **Share:** you found something that saves someone else time, confirms/denies a hypothesis, or connects unrelated pieces.
+- **Stay silent:** you're not sure, it's already well-documented, or your comment would just be +1 noise.
+- **Err on the side of sharing** when the information is non-obvious and technical. The community benefits from signal, not silence.
+
+### Concrete examples from our work
+
+- **vercel/ai reviews (Phase 4.5):** Left 3 technical reviews on PRs #14983, #13577, #12800 — comparing approaches, flagging missing test coverage, suggesting fixes. This is visible expertise without opening a PR.
+- **TanStack/router #7818 CodSpeed:** The benchmark reported 5 memory regressions, but CodSpeed itself flagged "different runtime environments." Acknowledging this on the PR (explaining the 2-line change can't cause 53% memory regression) shows technical maturity.
+- **TanStack/router #7818 PR body:** Referenced #4713 (the PR that started the stringifySearch work) — connecting related work for the maintainer.
+
 ## Phase 5 — Tracking and follow-up
 
 1. **Update `projects/<repo>/HANDOFF.md`:**
@@ -239,7 +287,7 @@ When a maintainer (MEMBER/OWNER association) leaves a review comment requesting 
 - **PR body with backticks:** `gh pr create --body` with backticks gets mangled by zsh. Use `--body-file /tmp/pr-body.md` instead.
 - **HANDOFF.md in projects/:** Since `projects/` is in `.gitignore`, the HANDOFF lives in the cloned repo, not the workspace. That's fine — it survives in the clone.
 
-### Session 2026-07-15 — TanStack/router #7818: maintainer feedback + workspace file leak
+### Session 2026-07-15 — TanStack/router #7818: maintainer feedback, workspace file leak, and community participation
 
 **What happened:**
 - LadyBluenotes (TanStack MEMBER) reviewed PR #7818 and asked to remove `HANDOFF.md` from the PR
@@ -247,15 +295,18 @@ When a maintainer (MEMBER/OWNER association) leaves a review comment requesting 
 - GitHub still showed it in the review context (CodeRabbit reviewed the commit that had it), but the PR HEAD no longer included it
 - Verified with `gh pr view --json files` — only the 2 intended files remained
 - Replied to the maintainer confirming the file was already removed
+- CodSpeed benchmark bot reported 5 memory regressions on the PR — but flagged "different runtime environments" itself, making the comparison unreliable
 
 **What worked:**
 - Verifying PR state before acting — avoided unnecessary commits since the file was already gone
 - Replying on the specific comment thread so the maintainer gets notified
 - Quick response time (same day as the review)
+- Referencing related PR #4713 in the PR body — connecting prior work for the maintainer
 
 **What didn't work:**
 - `HANDOFF.md` was committed to the upstream clone in the first place — it should never have been in the repo
 - No pre-commit guard caught it before pushing
+- CodSpeed regressions were not acknowledged on the PR — leaving a bot report unaddressed looks like you don't care or don't understand the tooling
 
 **Key insights:**
 - **Workspace files in upstream clones:** `HANDOFF.md`, tracking notes, and any workspace-specific files must never be committed to an upstream repo. If you create them inside the clone, immediately add them to `.git/info/exclude` (local-only ignore that doesn't modify the repo's `.gitignore`):
@@ -265,6 +316,8 @@ When a maintainer (MEMBER/OWNER association) leaves a review comment requesting 
 - **Verify before acting on maintainer requests:** Always check the current PR state (`gh pr view --json files`) before making changes. Squashes and rebases may have already resolved the issue.
 - **GitHub shows intermediate commits in reviews:** Even after a squash, review bots and maintainers may reference commits that no longer exist in the branch history. The PR file list (`gh pr view --json files`) is the source of truth, not the review timeline.
 - **Pre-commit guard:** Always run `git status` before committing and verify only repo-relevant files are staged.
+- **Community participation is not optional:** Acknowledging bot reports, sharing discoveries on issues, reviewing others' PRs, and cross-referencing related work are all part of being a valued community member — not just opening PRs. Added as Phase 4.8 in this skill.
+- **Acknowledge CI/benchmark reports:** When CodSpeed or similar bots flag regressions, investigate and respond. Explain whether they're real or environmental noise. This demonstrates technical maturity and shows you understand the project's tooling.
 
 ## Context files
 
