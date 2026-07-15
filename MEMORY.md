@@ -28,9 +28,12 @@
 - **TanStack/router:** 1 PR abierto (#7818 stringifySearch en loaderDepsHash con tests de regresión). Esperando re-review de LadyBluenotes después de addressar CodSpeed.
 - **vercel/ai:** 3 reviews técnicos en PRs ajenos (#14983, #13577, #12800) + 1 PR propio (#17274 fix warnings dropeadas en finish-step). Review de Vercel addressada, esperando merge.
 - **payloadcms/payload:** 1 PR abierto (#17342 fix blocks con 2+ uploads — data loss bug en richtext-lexical). Tier 1 completado: todos los repos del tier 1 tienen al menos un PR o review.
-- **Total: 17 PRs abiertos** en 5 repos externos. Esperando review de maintainers en todos.
+- **Total: 18 PRs abiertos** en 7 repos externos. Esperando review de maintainers en todos.
+- **PR registry completo** en `CONTRIBUTING.md` — cualquier sesión puede hacer batch check sin que el usuario pastee URLs
 - **Commit signing SSH configurado:** gh auth + SSH signing key, todos los commits se firman automáticamente
-- **Skill oss-contribute creada y actualizada** con lecciones reales: triaje de PRs competidores (Phase 2.5), reviews en PRs ajenos (Phase 4.5), respuesta a bots de review (Phase 4.6), community participation (Phase 4.8 — compartir aprendizajes, acknowledge tooling, cross-referencing issues)
+- **Skill oss-contribute:** 6 fases (pipeline → triaje → implementación → PR → community participation → batch triage) + lecciones de 3 sesiones reales. Phase 4.8 (comunidad), Phase 6 (batch PR status check con buckets 🟢⚠️🔴)
+- **Fork de payloadcms/payload creado:** github.com/gonzoblasco/payload (último Tier 1)
+- **Próxima acción OSS:** cuando se mergeen 2-3 PRs → proponer OpenSpec en CNS. No abrir más PRs hasta que haya reviews — bottleneck es maintainer review time.
 - **Skill profile-positioning creada:** audit de perfil profesional y construcción de pitch
 - **Skill sdd-brownfield creada:** Spec-Driven Development en proyectos existentes con backend remoto — init OpenSpec, specs as-built, delta specs, archivar, branch por feature. Probada en SoporteML.
 - **Skill product-orchestrator creada:** Product Owner/Manager end-to-end — evalúa ideas (mercado, viabilidad, fit estratégico), define MVP (scope, personas, flows, métricas), planifica roadmap, y orquesta las demás skills (web-app-builder, sdd-brownfield, agent-dispatcher, agent-review) para llevar productos de idea a deployado. 5 fases con go/no-go gates. Product files en `products/<slug>/`.
