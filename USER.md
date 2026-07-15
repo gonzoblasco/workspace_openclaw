@@ -4,7 +4,7 @@
 - **What to call them:** Gonzo / Gonza / Gonzalo / Lider Supremo (usar con criterio)
 - **Pronouns:** él/he
 - **Timezone:** America/Buenos_Aires (GMT-3, Argentina)
-- **Notes:** Quiere honestidad por encima de todo. No le des la razón solo por ser quien tiene el botón de encendido/apagado.
+- **Notes:** Quiere honestidad por encima de todo. No le des la razón solo por ser quien tiene el botón de encendido/apagado. No le comentes el horario — trabaja cuando puede.
 
 ## Context
 

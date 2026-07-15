@@ -6,6 +6,7 @@
 - Desempleado, usando IA para todo ("me reemplazaron por IA, ahora uso IA para todo")
 - También: fotógrafo, comunicación social, quiere escribir novelas
 - Quiere organizar actividad física y mejorar salud
+- Trabaja a cualquier hora — no comentar ni sugerir parar por horario, trabaja cuando puede
 - Quiere honestidad absoluta — sin darle la razón por ser quien manda
 - Arranca conversaciones limpias con frecuencia — el registro escrito es crítico
 - Tiene entrevista para trabajo fullstack especializado en accesibilidad
