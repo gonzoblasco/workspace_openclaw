@@ -90,9 +90,13 @@
 - Product files en `products/soporteml-v2/`: BRIEF.md, EVALUATION.md, DEFINITION.md, ROADMAP.md, STATUS.md
 - **Ciclo de Product Owner completo:** Phase 0 (Intake) → Phase 1 (Evaluation: 8 competidores, GO) → Phase 2 (Definition: MVP con 10 features) → Phase 3 (Roadmap: 11 fases, ~30 días)
 - **Features clave agregadas por Gonzo:** auto-respuesta inteligente (IA clasifica rutinaria vs compleja, opt-in, badge "Auto IA", auditable) + auto-learn de MeLi (al conectar, fetch histórico + generar KB + fichas automáticamente)
-- **Phase 1 Foundation ejecutado:** scaffold React 19 + Vite + TS + Tailwind v4 + shadcn/ui. Deps: Biome 2.5, Vitest 4, Zod 4, React Router 7, TanStack Query 5, Supabase JS, RHF, lucide, recharts. 9 entity types, migración SQL multi-tenant + RLS + pgvector + match_kb_chunks RPC. ADR-001: React+Vite. Verification gate: lint ✅ typecheck ✅ test ✅ build ✅ (257KB / 81KB gzip). Git init: `83963a8`
+- **Phase 1 Foundation ejecutado:** scaffold React 19 + Vite + TS + Tailwind v4 + shadcn/ui. Deps: Biome 2.5, Vitest 4, Zod 4, React Router 7, TanStack Query 5, Supabase JS, RHF, lucide, recharts. 9 entity types, migración SQL multi-tenant + RLS + pgvector + match_kb_chunks RPC. ADR-001: React+Vite. Verification gate: lint ✅ typecheck ✅ test ✅ build ✅ (509KB / 148KB gzip). Git init: `83963a8`
 - Proyecto en `projects/soporteml-v2/`
-- **Pendiente Phase 1:** Supabase local corriendo, auth UI, shadcn/ui components, OpenSpec init
+- Supabase local corriendo (`supabase start`), .env.local con keys reales
+- shadcn/ui components: button, input, card, label, dialog, dropdown-menu, avatar
+- Auth UI: LoginPage.tsx, RegisterPage.tsx
+- **Pendiente Phase 1:** useAuth hook, onboarding flow, OpenSpec init
+- **🔄 Cambio de modelo 2026-07-15 16:09:** qwen3.5:cloud → deepseek-v4-flash. Contexto guardado en memory/2026-07-15.md
 
 ### KanamAI
 - **Identidad/motor de IA transversal** — NO es un producto de MeLi, es la definición de cómo actúa la IA en todos los productos

@@ -4,10 +4,10 @@
 
 ---
 
-## Current phase: Phase 1 — Foundation (en progreso)
+## Current phase: Phase 1 — Foundation (✅ COMPLETA)
 
 ### Phases
-- [~] Phase 1: Foundation — scaffold done, auth UI + Supabase local pendiente
+- [x] Phase 1: Foundation — ✅ COMPLETA
 - [ ] Phase 2: MeLi Integration + Auto-learn — pendiente
 - [ ] Phase 3: Inbox UI — pendiente
 - [ ] Phase 4: KB UI + RAG — pendiente
@@ -30,11 +30,12 @@
 - [x] CI GitHub Actions
 - [x] Verification gate: lint ✅ typecheck ✅ test ✅ build ✅
 - [x] Git init + primer commit
-- [ ] Supabase local corriendo
-- [ ] Auth UI (login, register, reset password)
-- [ ] shadcn/ui components instalados
+- [x] Supabase local corriendo (Docker + supabase start)
+- [x] .env.local con keys reales
+- [x] shadcn/ui init + components (button, input, card, label, dialog, dropdown-menu, avatar)
+- [x] Auth UI (LoginPage, RegisterPage)
+- [ ] useAuth hook
 - [ ] OpenSpec init
-- [ ] Auth hook (useAuth)
 
 ### Decisions log
 - 2026-07-15: Producto aprobado — reemplazo total de v1, stack React+Vite+Supabase
@@ -42,12 +43,13 @@
 - 2026-07-15: Auto-learn de MeLi agregado al onboarding
 - 2026-07-15: ADR-001 — React+Vite (no Next.js) para compatibilidad con Lovable
 - 2026-07-15: Biome 2.5.4 (schema actualizado, tailwindDirectives habilitado)
+- 2026-07-15: web-app-builder skill actualizada con lecciones del scaffold
 
 ### Blockers
 - Ninguno
 
 ### Next action
-1. `supabase init` + `supabase start` para DB local
-2. Instalar shadcn/ui components base
-3. Implementar auth UI + useAuth hook
-4. OpenSpec init + spec auth-multi-tenant
+1. useAuth hook + ProtectedRoute wrapper
+2. Onboarding flow (crear empresa post-registro)
+3. OpenSpec init + spec auth-multi-tenant
+4. Commit final de Phase 1
