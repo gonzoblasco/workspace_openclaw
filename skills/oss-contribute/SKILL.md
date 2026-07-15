@@ -11,7 +11,7 @@ Use when contributing to open source repos as part of a visibility/job-search st
 
 - `gh` CLI authenticated
 - Git configured (username, email, SSH keys)
-- Fork remote convention: `origin` = upstream, `fork` = your fork
+- Fork remote convention: `fork` = your fork, `upstream` = original repo (NOT `origin` = upstream which is the common default but confusing)
 
 ## Phase 1 — Pipeline building (strategic discovery)
 
@@ -32,6 +32,26 @@ When asked to find new repos to contribute to:
    - Tier 3: Interesting but cold
 5. **Output a table** with: repo, stars, activity (30d), why it fits, specific issues found
 6. **Update `CONTRIBUTING.md`** pipeline section with new repos
+
+## Phase 2.5 — Triage: before investing time, check for competing PRs
+
+This is the most important lesson from real experience. Before implementing anything:
+
+1. **Search for existing PRs referencing the issue:**
+   ```bash
+   gh pr list --repo <repo> --search "<issue-number>" --state open --json number,title,additions,deletions
+   ```
+2. **Evaluate competition:**
+   - **0 PRs** → green light, proceed
+   - **1 PR** → read it, assess if yours can be better (more complete, better tests, cleaner approach). If theirs is good, consider a review comment instead of a competing PR.
+   - **2-3 PRs** → only proceed if you have a clearly superior approach. Otherwise, review the best one.
+   - **4+ PRs** → skip. The maintainer is overwhelmed with options. Your PR won't stand out.
+3. **Read competing PRs:** compare their approach, file coverage, test quality, and any maintainer comments. Look for:
+   - Missing files (e.g., a PR that fixes styles but not the registry source)
+   - Missing tests (positive AND negative coverage)
+   - Breaking changes not flagged
+   - Pre-existing flaky tests (verify by running tests on main without your change)
+4. **Decide: PR or review?** Sometimes the highest-value contribution is a technical review on someone else's PR — it demonstrates expertise without creating noise.
 
 ## Phase 2 — Issue selection and setup
 
@@ -93,6 +113,46 @@ When starting work on a specific repo/issue:
    - Notes: anything reviewers should know
 4. **Reference the issue** in PR body: `Closes #N` or `Related to #N`
 
+## Phase 4.5 — Reviewing competing PRs (high-value alternative to opening your own)
+
+When you decide not to open a PR (saturated issue, better approach exists), leave a technical review instead:
+
+1. **Fetch the PR diff:** `gh pr diff <number> --repo <repo>`
+2. **Clone the repo and check out the PR branch** to run tests locally:
+   ```bash
+   git fetch upstream pull/<number>/head:pr-<number>
+   git checkout pr-<number>
+   ```
+3. **Analyze for gaps the PR author missed:**
+   - Floating promises (Promise.race where one branch never settles)
+   - Missing cleanup (subscribers, event listeners not unsubscribed)
+   - Missing positive test coverage (tests verify the fix but not that the original behavior still works)
+   - Breaking changes not flagged in the PR body or changeset
+   - Adapter-breaking signature changes (e.g., changing a function signature in core that framework adapters don't update)
+   - Bundle size impact
+4. **Write a constructive review** — be specific, provide code examples, don't just say "good job":
+   - Acknowledge what's right about the approach
+   - List concerns with numbered points
+   - Suggest concrete fixes with code snippets
+   - Compare approaches if multiple PRs exist (maintainers appreciate this)
+5. **Post the review:** `gh pr comment <number> --repo <repo> --body-file /tmp/pr-review.md`
+
+Reviews build reputation too. A well-written technical review on a popular repo is visible to the maintainer, the PR author, and anyone watching the repo.
+
+## Phase 4.6 — Responding to automated review bots
+
+Many repos use CodeRabbit or similar AI review bots. They leave actionable comments:
+
+1. **Read each comment carefully** — bots often flag real issues (curly braces, missing types, etc.)
+2. **Apply valid suggestions immediately** — don't argue with the bot, just fix
+3. **Force-push the amended commit:**
+   ```bash
+   git add -A && git commit -S --amend --no-edit
+   git push fork <branch> --force
+   ```
+4. **The bot will re-review automatically** after the push
+5. **Skip suggestions that don't apply** — but mention why if challenged by the bot
+
 ## Phase 5 — Tracking and follow-up
 
 1. **Update `projects/<repo>/HANDOFF.md`:**
@@ -119,6 +179,30 @@ When starting work on a specific repo/issue:
 - Don't write placeholder/empty commits
 - Don't open PRs in repos with no activity in 30+ days (nobody will review)
 - Don't contribute to repos you don't use — domain knowledge is the advantage
+
+## Lessons learned (from real sessions)
+
+### Session 2026-07-14 — shadcn/ui + TanStack/router + vercel/ai
+
+**What worked:**
+- Checking competing PRs before implementing saved hours (shadcn #11104 had 4 PRs, we skipped it)
+- Opening PRs on issues with 0 competing PRs (#11161, #7787) — highest chance of merge
+- Comparing approaches across competing PRs and leaving reviews — builds reputation without noise
+- SSH commit signing configured once, benefits all future repos
+- Responding to CodeRabbit immediately (curly braces) kept the PR clean
+
+**What didn't work:**
+- Repos where every issue already has PRs (shadcn/ui is very active — bugs get covered within hours)
+- Issues that are actually upstream bugs (shadcn #10543 Select misalignment → Base UI library, not shadcn)
+- Issues that are hard to reproduce (#9399 hydration error "sometimes", #10509 headless Chromium only)
+- TanStack/query issues: very competido (3-4 PRs per issue) — better to review than compete
+
+**Key insights:**
+- **Registry vs styles:** In shadcn/ui, the `apps/v4/registry/` files are the SOURCE — `apps/v4/styles/` are DERIVED. A PR that only fixes styles is incomplete. Always fix the registry source and run `pnpm registry:build`.
+- **Pre-existing flaky tests:** Always verify a failing test fails on `main` too (git stash, run, git stash pop). Don't claim your change broke it.
+- **Monorepo install:** TanStack monorepo is huge — `pnpm install` can timeout. Use `pnpm --filter <pkg> install` to install only what you need, then `pnpm --filter <pkg> build` to build dependencies.
+- **PR body with backticks:** `gh pr create --body` with backticks gets mangled by zsh. Use `--body-file /tmp/pr-body.md` instead.
+- **HANDOFF.md in projects/:** Since `projects/` is in `.gitignore`, the HANDOFF lives in the cloned repo, not the workspace. That's fine — it survives in the clone.
 
 ## Context files
 
