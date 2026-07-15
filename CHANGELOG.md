@@ -4,7 +4,7 @@
 
 ### SoporteML — análisis de arquitectura
 - Revisión completa del código: 14 páginas, 30+ componentes, 25 Edge Functions, 54 migraciones, 24 tablas
-- EL-1 a EL-5 completos: billing MP operativo, KB con pgvector, RAG en copiloto, Analytics, Settings, hardening
+- EL-1 a EL-5 en código: billing MP escrito pero NUNCA operativo (mockeado, sin secrets configurados), KB con pgvector, RAG en copiloto, Analytics, Settings, hardening
 - Propuesta de workflow sin backend local: SDD con OpenSpec + documentar API remota + git como bridge
 - Próximo feature planificado: hilos unificados + resumen IA (plan.md existe)
 

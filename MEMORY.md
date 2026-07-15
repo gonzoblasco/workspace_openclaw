@@ -63,12 +63,13 @@
 ### SoporteML (PRIORIDAD #1)
 - CRM multi-tenant para vendedores Mercado Libre, Beta con 3 clientes
 - Stack: React+Vite+TS+Supabase+pgvector+OpenAI (en Lovable)
-- Billing con Mercado Pago Preapproval operativo (EL-1 completo)
-- EL-1 a EL-5 completos: billing MP, Knowledge Base con pgvector, RAG en copiloto, Analytics, Settings consolidado, hardening de seguridad
+- Billing con Mercado Pago: código de Edge Functions escrito (mp-create/check/cancel/webhook) pero NUNCA operativo — secrets no configurados, plan de preapproval no creado en MP. Implementación existe pero no funciona
+- EL-1 a EL-5 completos: código de billing MP escrito, Knowledge Base con pgvector, RAG en copiloto, Analytics, Settings consolidado, hardening de seguridad
 - 24 tablas, 25 Edge Functions, 54 migraciones SQL
 - Supabase URL: ropbkdqhqdeiwrenrmjt.supabase.co (Lovable Cloud)
 - Secrets en Supabase Vault / Lovable Cloud — no accesibles localmente
 - No se puede correr local (usa @lovable.dev/cloud-auth-js) — workflow: código acá, deploy en Lovable
+- Billing PENDIENTE de hacer real: hay código pero nunca estuvo operativo (mockeado sin secrets)
 - Próximo feature planificado: hilos unificados en Priority + resumen IA (plan.md en .lovable/)
 - Propuesta de trabajo sin backend: Spec-Driven Development con OpenSpec + documentar API remota
 - Meta: sacar de Lovable a futuro (sin apuro)
