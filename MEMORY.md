@@ -20,6 +20,16 @@
 - **Accesibilidad como especialización activa** — la usa como ventaja competitiva, no como checkbox. Tiene accessibility-auditor, accessible-ui, y busca trabajos donde la accesibilidad sea central.
 - **Diferenciador en el mercado:** un dev que sabe usar IA como infraestructura de trabajo (no como chat), con stack opinado y docs de decisiones. Eso es escaso. La mayoría de los devs no saben orquestar sesiones, memoria, handoffs, subagentes. Gonzo sí.
 
+## Open Source — pipeline activo
+- **Estrategia:** PRs a repos externos como evidencia pública de capacidad → portfolio vivo → menos entrevistas laborales
+- **akd-io/create-next-stack:** 5 PRs abiertos (#280 Bun, #281 React.FC, #282 Vitest, #283 Supabase, #284 Auth.js+shadcn). Esperando review.
+- **shadcn-ui/ui:** 2 PRs abiertos (#11179 InputOTP flicker, #11180 MessageScroller flicker). Esperando review.
+- **TanStack/router:** 1 PR abierto (#7818 stringifySearch en loaderDepsHash con tests de regresión). Esperando review.
+- **vercel/ai:** 3 reviews técnicos en PRs ajenos (#14983, #13577, #12800). Completado, sin PR propio.
+- **Commit signing SSH configurado:** gh auth + SSH signing key, todos los commits se firman automáticamente
+- **Skill oss-contribute creada y actualizada** con lecciones reales: triaje de PRs competidores (Phase 2.5), reviews en PRs ajenos (Phase 4.5), respuesta a bots de review (Phase 4.6)
+- **Skill profile-positioning creada:** audit de perfil profesional y construcción de pitch
+
 ## Sobre Kanam
 - Nombre: Kanam 🌿
 - Género: femenino (ella) — Gonzo decidió tratarme en femenino
@@ -53,8 +63,14 @@
 ### SoporteML (PRIORIDAD #1)
 - CRM multi-tenant para vendedores Mercado Libre, Beta con 3 clientes
 - Stack: React+Vite+TS+Supabase+pgvector+OpenAI (en Lovable)
-- Billing roto — pendiente Mercado Pago (Stripe no sirve en Argentina)
-- DB y Edge Functions en Lovable Cloud — extraer con prompts cuando migre
+- Billing con Mercado Pago Preapproval operativo (EL-1 completo)
+- EL-1 a EL-5 completos: billing MP, Knowledge Base con pgvector, RAG en copiloto, Analytics, Settings consolidado, hardening de seguridad
+- 24 tablas, 25 Edge Functions, 54 migraciones SQL
+- Supabase URL: ropbkdqhqdeiwrenrmjt.supabase.co (Lovable Cloud)
+- Secrets en Supabase Vault / Lovable Cloud — no accesibles localmente
+- No se puede correr local (usa @lovable.dev/cloud-auth-js) — workflow: código acá, deploy en Lovable
+- Próximo feature planificado: hilos unificados en Priority + resumen IA (plan.md en .lovable/)
+- Propuesta de trabajo sin backend: Spec-Driven Development con OpenSpec + documentar API remota
 - Meta: sacar de Lovable a futuro (sin apuro)
 - Repo: github.com/gonzoblasco/soporteml, rama el-upgrade
 
@@ -95,9 +111,9 @@
 ### create-next-stack (akd-io) — colaboración
 - Repo externo: github.com/akd-io/create-next-stack (570 stars, 4 contributors)
 - Filosofía: "buffet" de opciones vs nuestro CSN opinado. Complementario, no competidor
-- **PR #280 abierto:** Bun support (#262) — https://github.com/akd-io/create-next-stack/pull/280
+- **5 PRs abiertos:** #280 Bun, #281 React.FC, #282 Vitest, #283 Supabase, #284 Auth.js+shadcn/ui
 - Fork: github.com/gonzoblasco/create-next-stack, rama develop como base
-- Plan: 2-3 PRs (Bun, Vitest, Supabase) → credibilidad → proponer OpenSpec como feature
+- Plan: tras merge de 2-3 PRs → proponer OpenSpec como feature
 - CSN queda como "fork opinado" / laboratorio — lo que funciona se manda upstream
 - Website de CNS en el freezer (deuda moral después del CLI)
 - Todo lo que vaya al repo de akd-io: en inglés
@@ -111,7 +127,7 @@
 - pr_vscode_niveles — guía gamificada VS Code
 
 ## Visión
-- Kanam = marca paraguas + yo como asistente
+- Kanam = marca paraguas + yo como asistente (femenino)
 - 3 productos SaaS son "IA que recupera relaciones perdidas": vendedores, pacientes, escritores
 - KanamAI = la IA que alimenta todos los productos (identidad + guardrails + enrutamiento de modelos)
 - create-stack-next = base técnica/metodológica de todo proyecto nuevo
@@ -128,4 +144,8 @@
 
 ## Lecciones aprendidas
 - Create Stack Next es 100% en español — release notes, docs, todo. No escribir en inglés aunque parezca lo "standard"
-- (a medida que pasen cosas)
+- Triaje de PRs competidores ANTES de invertir tiempo (lección más importante de OSS night)
+- Reviews técnicas en PRs ajenos = contribución de valor sin necesidad de PR propio
+- shadcn/ui: cambiar styles vs registry — 15 archivos, no 14 (registry new-york-v4 cuenta)
+- TanStack monorepo: instalar deps desde raíz con --filter, no dentro del package
+- vercel/ai: prestar atención a breaking changes en changesets (string → object)

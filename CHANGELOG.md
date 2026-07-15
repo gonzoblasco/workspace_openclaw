@@ -1,5 +1,24 @@
 # CHANGELOG.md
 
+## [2026-07-14] — Actualización general del workspace
+
+### SoporteML — análisis de arquitectura
+- Revisión completa del código: 14 páginas, 30+ componentes, 25 Edge Functions, 54 migraciones, 24 tablas
+- EL-1 a EL-5 completos: billing MP operativo, KB con pgvector, RAG en copiloto, Analytics, Settings, hardening
+- Propuesta de workflow sin backend local: SDD con OpenSpec + documentar API remota + git como bridge
+- Próximo feature planificado: hilos unificados + resumen IA (plan.md existe)
+
+### Actualización de MDs del workspace
+- **MEMORY.md:** SoporteML actualizado (billing operativo, EL-5 completo, 24 tablas, 25 EFs, URL Supabase), sección OSS expandida (akd-io 5 PRs, shadcn 2 PRs, TanStack 1 PR, vercel/ai 3 reviews, commit signing SSH, skills creadas), lecciones aprendidas agregadas (triaje PRs, reviews ajenos, shadcn registry, TanStack monorepo, vercel/ai breaking changes)
+- **PROYECTOS.md:** CSN v0.7.1 con 64 tests, SoporteML con billing operativo y EL-5, tabla de colaboraciones externa con 4 repos y 8 PRs totales, pendientes actualizados (SoporteML hilos, SDD workflow, memory index rebuild)
+- **USER.md:** onboarding completo, perfil real (fullstack, IA-asistida, stack opinado, accesibilidad, OSS)
+- **IDENTITY.md:** género femenino (ya estaba hecho)
+- **memory/2026-07-14.md:** sección SoporteML + actualización general agregada
+
+### Género de Kanam
+- Gonzo decidió tratar a Kanam en femenino (ella)
+- IDENTITY.md, MEMORY.md y diario actualizados
+
 ## [2026-07-14] — Sesión CSN + CNS
 
 ### create-next-stack (akd-io) — estrategia de colaboración
