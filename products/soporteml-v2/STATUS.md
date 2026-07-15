@@ -4,12 +4,12 @@
 
 ---
 
-## Current phase: Phase 1 — Foundation (✅ COMPLETA)
+## Current phase: Phase 2 — MeLi Integration + Auto-learn (en progreso)
 
 ### Phases
 - [x] Phase 1: Foundation — ✅ COMPLETA
-- [ ] Phase 2: MeLi Integration + Auto-learn — pendiente
-- [ ] Phase 3: Inbox UI — pendiente
+- [~] Phase 2: MeLi Integration + Auto-learn — en progreso
+- [~] Phase 3: Inbox UI — en progreso
 - [ ] Phase 4: KB UI + RAG — pendiente
 - [ ] Phase 5: AI Copilot — pendiente
 - [ ] Phase 6: Auto-respuesta inteligente — pendiente
@@ -19,23 +19,19 @@
 - [ ] Phase 10: Analytics básico — pendiente
 - [ ] Phase 11: Hardening + Polish — pendiente
 
-### Phase 1 detail
-- [x] Scaffold React+Vite+TS
-- [x] Dependencias instaladas
-- [x] Config TS, Biome, Vitest, Tailwind v4
-- [x] Estructura de carpetas
-- [x] Entity types (9 entidades)
-- [x] Migración inicial SQL (schema + RLS + pgvector + match_kb_chunks)
-- [x] AGENTS.md, HANDOFF.md, CHANGELOG.md, ROADMAP.md, ADR-001
-- [x] CI GitHub Actions
-- [x] Verification gate: lint ✅ typecheck ✅ test ✅ build ✅
-- [x] Git init + primer commit
-- [x] Supabase local corriendo (Docker + supabase start)
-- [x] .env.local con keys reales
-- [x] shadcn/ui init + components (button, input, card, label, dialog, dropdown-menu, avatar)
-- [x] Auth UI (LoginPage, RegisterPage)
-- [ ] useAuth hook
-- [ ] OpenSpec init
+### Phase 2 detail
+- [x] Edge Function: meli-oauth-callback (exchange code → tokens, store in companies)
+- [x] Edge Function: sync-meli-questions (fetch from MeLi API, upsert products/buyers/questions)
+- [x] Edge Function: meli-webhook (receive events, trigger sync)
+- [x] Edge Function: meli-initial-fetch (fetch listings + historical questions, trigger auto-learn)
+- [x] Edge Function: auto-generate-product-ficha (AI generates CRM fields per product)
+- [x] Edge Function: auto-generate-kb (AI generates KB articles from historical Q&A)
+- [x] OpenSpec spec: meli-integration (4 requirements, 6 scenarios)
+- [x] OAuth UI (Settings → MeLi connect button + callback handler)
+- [x] Onboarding flow with progress (welcome → connect-meli → learning → done)
+- [x] Deploy Edge Functions to Supabase local (6 functions serving)
+- [ ] Cron job for periodic polling (fallback)
+- [ ] Token refresh logic
 
 ### Decisions log
 - 2026-07-15: Producto aprobado — reemplazo total de v1, stack React+Vite+Supabase
@@ -44,12 +40,15 @@
 - 2026-07-15: ADR-001 — React+Vite (no Next.js) para compatibilidad con Lovable
 - 2026-07-15: Biome 2.5.4 (schema actualizado, tailwindDirectives habilitado)
 - 2026-07-15: web-app-builder skill actualizada con lecciones del scaffold
+- 2026-07-15: Cambio de modelo qwen3.5:cloud → deepseek-v4-flash
 
 ### Blockers
-- Ninguno
+- Se necesita APP_ID y CLIENT_SECRET de MeLi Developer para probar OAuth real
+- Se necesita OPENAI_API_KEY para auto-generate functions
+- Docker debe estar corriendo para deploy local de Edge Functions
 
 ### Next action
-1. useAuth hook + ProtectedRoute wrapper
-2. Onboarding flow (crear empresa post-registro)
-3. OpenSpec init + spec auth-multi-tenant
-4. Commit final de Phase 1
+1. OAuth UI (Settings → MeLi connect)
+2. Onboarding flow with progress indicators
+3. Deploy Edge Functions to Supabase local
+4. Test OAuth flow end-to-end
