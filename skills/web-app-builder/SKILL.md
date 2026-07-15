@@ -242,3 +242,20 @@ The skill is iterative. Not all phases are required every time.
 - `references/csn-post-scaffold.md` — what CSN gives you and what to add after
 - `references/entity-template.md` — template for entity type files
 - `references/handoff-template.md` — template for HANDOFF.md output
+
+## Lessons learned
+
+### Vite + React scaffold (2026-07-15, SoporteML v2)
+
+**Versions move fast — always verify before using reference configs:**
+- TypeScript 6+ deprecates `baseUrl` → need `"ignoreDeprecations": "6.0"` in tsconfig
+- Biome 2.x renamed `organizeImports` → `assist.actions.source.organizeImports`, `recommended` → `preset`
+- Biome schema URL must match installed version exactly → check `npx biome --version`
+- Tailwind v4 `@theme` blocks require `css.parser.tailwindDirectives: true` in biome.json
+- `import.meta.env` and CSS imports fail typecheck without `src/vite-env.d.ts` with `/// <reference types="vite/client" />`
+- Vite scaffold defaults to `oxlint` → replace with `biome check src` in package.json scripts
+- `vitest run` exits code 1 with no test files → add trivial scaffold test
+- Path alias `@/*` in tsconfig is not enough → also add `resolve.alias` in both `vite.config.ts` and `vitest.config.ts`
+- `noNonNullAssertion` rule flags `getElementById('root')!` → use null check + throw pattern
+
+**Key takeaway:** the reference file (`vite-react-setup.md`) now includes a "Common pitfalls" table with all these issues and their fixes. Always check `npx <tool> --version` before writing config files, and update the reference when versions change.
