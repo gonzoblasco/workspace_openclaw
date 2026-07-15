@@ -49,6 +49,13 @@
 - Repo: github.com/gonzoblasco/workflow-kit
 - Skills integrados a OpenClaw workspace: `security-audit` y `pr-review`
 
+## AI Engineering Bootcamp
+- Producto nuevo: `products/ai-engineering-bootcamp/`
+- Bootcamp gratuito de 10 niveles para AI-assisted development con VS Code + Copilot
+- 23 proyectos prácticos, de principiante a producción
+- Traducido al inglés, README con progresión visual
+- Repo: github.com/gonzoblasco/ai-engineering-bootcamp
+
 ## Skills de OpenClaw workspace
 - **security-audit:** Auditoría de seguridad multi-tenant, auth guards, secrets, data leaks. Bloquea cierre de epics si hay hallazgos críticos.
 - **pr-review:** Linter cognitivo pre-merge. Analiza diff contra convenciones, seguridad, tests, performance.
