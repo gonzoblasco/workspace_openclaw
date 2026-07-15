@@ -34,12 +34,31 @@
 - **Commit signing SSH configurado:** gh auth + SSH signing key, todos los commits se firman automáticamente
 - **Skill oss-contribute:** 6 fases (pipeline → triaje → implementación → PR → community participation → batch triage) + lecciones de 3 sesiones reales. Phase 4.8 (comunidad), Phase 6 (batch PR status check con buckets 🟢⚠️🔴)
 - **Fork de payloadcms/payload creado:** github.com/gonzoblasco/payload (último Tier 1)
-- **Próxima acción OSS:** seguir findando issues sin PRs competidores en repos estratégicos. Bottleneck sigue siendo maintainer review time. Nuevos targets identificados: Biome #10922 (useSortedAttributes XML, Rust), shadcn #11125 (MessageScroller tail spacer, 0 competidores).
+- **Próxima acción OSS:** seguir buscando issues sin PRs competidores en repos estratégicos. Bottleneck sigue siendo maintainer review time. Nuevos targets identificados: Biome #10922 (useSortedAttributes XML, Rust), shadcn #11125 (MessageScroller tail spacer, 0 competidores).
 - **Skill profile-positioning creada:** audit de perfil profesional y construcción de pitch
 - **Skill sdd-brownfield creada:** Spec-Driven Development en proyectos existentes con backend remoto — init OpenSpec, specs as-built, delta specs, archivar, branch por feature. Probada en SoporteML.
 - **Skill product-orchestrator creada:** Product Owner/Manager end-to-end — evalúa ideas (mercado, viabilidad, fit estratégico), define MVP (scope, personas, flows, métricas), planifica roadmap, y orquesta las demás skills (web-app-builder, sdd-brownfield, agent-dispatcher, agent-review) para llevar productos de idea a deployado. 5 fases con go/no-go gates. Product files en `products/<slug>/`.
 - **Skill ux-a11y-studio creada:** Equipo de UX/UI + Accesibilidad — discovery de usuarios y requisitos WCAG 2.2, audit (automated axe-core + manual keyboard/screen reader/cognitive/visual), design system con contraste verificado, implementación de componentes accesibles (WAI-APG, 3 capas de tests), validación final antes de launch. Integrado con product-orchestrator y web-app-builder. Design files en `design/`.
 - **Skill web-app-builder actualizada:** reference vite-react-setup.md corregida con configs para Biome 2.5+ (schema cambió), TS 6+ (ignoreDeprecations), Tailwind v4 (@theme parsing), Vitest 4. Tabla de 11 pitfalls comunes.
+
+## Kanam Workflow Kit
+- Producto nuevo: `products/copilot-workflow-kit/`
+- Kit de 11 skills reutilizables para AI-assisted development (commit, PR, review, security audit, epic closure, etc.)
+- Traducido al inglés, frontmatter YAML estándar
+- CLI: `npx @kanam/workflow-kit` (pendiente de publicar en npm)
+- Repo: github.com/gonzoblasco/workflow-kit
+- Skills integrados a OpenClaw workspace: `security-audit` y `pr-review`
+
+## Skills de OpenClaw workspace
+- **security-audit:** Auditoría de seguridad multi-tenant, auth guards, secrets, data leaks. Bloquea cierre de epics si hay hallazgos críticos.
+- **pr-review:** Linter cognitivo pre-merge. Analiza diff contra convenciones, seguridad, tests, performance.
+
+## BrainWeb MVP completo
+- Producto: `products/brainweb/` — BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS
+- MVP: web app de notas con auth (Supabase), editor markdown, tags, graph view, search
+- Stack: React 19 + TanStack Start + Supabase + Tailwind v4 + shadcn/ui
+- Build verde. README + LICENSE (MIT) listos.
+- Pendiente: deploy a producción (Vercel + Supabase)
 
 ## Sobre Kanam
 - Nombre: Kanam 🌿
