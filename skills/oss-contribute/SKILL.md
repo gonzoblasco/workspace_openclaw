@@ -1,11 +1,11 @@
 ---
 name: "oss-contribute"
-description: "\"Find, evaluate, and contribute to open source repos strategically — from pipeline building to PR submission.\""
+description: "Find, evaluate, and contribute to open source repos strategically — from pipeline building to PR submission and maintainer feedback handling."
 ---
 
 # OSS Contribute
 
-Use when contributing to open source repos as part of a visibility/job-search strategy. Covers the full cycle: finding repos, evaluating issues, forking, implementing, opening PRs, and tracking.
+Use when contributing to open source repos as part of a visibility/job-search strategy. Covers the full cycle: finding repos, evaluating issues, forking, implementing, opening PRs, tracking, and responding to maintainer feedback.
 
 ## Prerequisites
 
@@ -74,6 +74,8 @@ When starting work on a specific repo/issue:
    ```
 7. **Create `projects/<repo>/HANDOFF.md`** with: issue context, repo structure notes, plan
 
+> ⚠️ **Workspace files must stay out of PRs.** `HANDOFF.md` and any other workspace-specific files (notes, tracking, memory) must NEVER be committed to the upstream repo clone. If you create them inside the clone, add them to the clone's `.git/info/exclude` (local-only ignore) immediately. See Lessons learned — Session 2026-07-15.
+
 ## Phase 3 — Implementation
 
 1. **Read the repo structure** — understand conventions, test setup, lint config
@@ -92,6 +94,7 @@ When starting work on a specific repo/issue:
    - `test(scope): description (#issue)`
    - `docs(scope): description (#issue)`
 6. **Never mix concerns** — one PR per issue. Split if needed.
+7. **Pre-commit guard:** before committing, run `git status` and verify only repo-relevant files are staged. No `HANDOFF.md`, no notes, no workspace artifacts.
 
 ## Phase 4 — PR submission
 
@@ -112,6 +115,7 @@ When starting work on a specific repo/issue:
    - Verification: build, lint, tests results
    - Notes: anything reviewers should know
 4. **Reference the issue** in PR body: `Closes #N` or `Related to #N`
+5. **Post-submission guard:** verify PR files with `gh pr view <number> --repo <repo> --json files --jq '.files[].path'`. If any workspace file (HANDOFF.md, notes, etc.) leaked in, remove it immediately and force-push.
 
 ## Phase 4.5 — Reviewing competing PRs (high-value alternative to opening your own)
 
@@ -153,6 +157,36 @@ Many repos use CodeRabbit or similar AI review bots. They leave actionable comme
 4. **The bot will re-review automatically** after the push
 5. **Skip suggestions that don't apply** — but mention why if challenged by the bot
 
+## Phase 4.7 — Responding to human maintainer requests
+
+When a maintainer (MEMBER/OWNER association) leaves a review comment requesting a change on your PR:
+
+1. **Fetch the comment context:**
+   ```bash
+   gh api repos/<repo>/pulls/<number>/comments --jq '.[] | select(.user.login == "<maintainer>") | {id, path, body, line}'
+   gh pr view <number> --repo <repo> --json reviews,comments,state
+   ```
+2. **Verify current state before acting** — the branch may already be clean:
+   - Check the PR's current files: `gh pr view <number> --repo <repo> --json files --jq '.files[].path'`
+   - Fetch the branch and inspect locally if needed
+   - If a squash/rebase already removed the offending file, the PR is already clean — skip to step 5
+3. **Implement the requested change:**
+   - Clone/fetch the branch if not already local
+   - Make the change (remove file, fix code, add test, etc.)
+   - Verify: build, lint, tests
+   - Commit and push (force-push if amending)
+4. **Verify on GitHub** that the PR now reflects the change:
+   ```bash
+   gh pr view <number> --repo <repo> --json files --jq '.files[].path'
+   ```
+5. **Reply to the maintainer** on the specific comment thread:
+   ```bash
+   gh pr comment <number> --repo <repo> --body "Hi @<maintainer> — done! <brief explanation of what was done or that it was already clean>"
+   ```
+   - Be concise and friendly
+   - If the change was already done (e.g., via a previous rebase), say so briefly — no need to over-explain
+   - Reference the specific request in your reply so the thread reads naturally
+
 ## Phase 5 — Tracking and follow-up
 
 1. **Update `projects/<repo>/HANDOFF.md`:**
@@ -179,6 +213,7 @@ Many repos use CodeRabbit or similar AI review bots. They leave actionable comme
 - Don't write placeholder/empty commits
 - Don't open PRs in repos with no activity in 30+ days (nobody will review)
 - Don't contribute to repos you don't use — domain knowledge is the advantage
+- **Don't commit workspace files (HANDOFF.md, notes, memory) to upstream repo clones** — they leak into PRs and look unprofessional
 
 ## Lessons learned (from real sessions)
 
@@ -204,9 +239,36 @@ Many repos use CodeRabbit or similar AI review bots. They leave actionable comme
 - **PR body with backticks:** `gh pr create --body` with backticks gets mangled by zsh. Use `--body-file /tmp/pr-body.md` instead.
 - **HANDOFF.md in projects/:** Since `projects/` is in `.gitignore`, the HANDOFF lives in the cloned repo, not the workspace. That's fine — it survives in the clone.
 
+### Session 2026-07-15 — TanStack/router #7818: maintainer feedback + workspace file leak
+
+**What happened:**
+- LadyBluenotes (TanStack MEMBER) reviewed PR #7818 and asked to remove `HANDOFF.md` from the PR
+- The file had been committed in an intermediate commit, then removed by a later squash/rebase
+- GitHub still showed it in the review context (CodeRabbit reviewed the commit that had it), but the PR HEAD no longer included it
+- Verified with `gh pr view --json files` — only the 2 intended files remained
+- Replied to the maintainer confirming the file was already removed
+
+**What worked:**
+- Verifying PR state before acting — avoided unnecessary commits since the file was already gone
+- Replying on the specific comment thread so the maintainer gets notified
+- Quick response time (same day as the review)
+
+**What didn't work:**
+- `HANDOFF.md` was committed to the upstream clone in the first place — it should never have been in the repo
+- No pre-commit guard caught it before pushing
+
+**Key insights:**
+- **Workspace files in upstream clones:** `HANDOFF.md`, tracking notes, and any workspace-specific files must never be committed to an upstream repo. If you create them inside the clone, immediately add them to `.git/info/exclude` (local-only ignore that doesn't modify the repo's `.gitignore`):
+  ```bash
+  echo "HANDOFF.md" >> .git/info/exclude
+  ```
+- **Verify before acting on maintainer requests:** Always check the current PR state (`gh pr view --json files`) before making changes. Squashes and rebases may have already resolved the issue.
+- **GitHub shows intermediate commits in reviews:** Even after a squash, review bots and maintainers may reference commits that no longer exist in the branch history. The PR file list (`gh pr view --json files`) is the source of truth, not the review timeline.
+- **Pre-commit guard:** Always run `git status` before committing and verify only repo-relevant files are staged.
+
 ## Context files
 
 - `CONTRIBUTING.md` (workspace) — pipeline, tiers, rules of gold
 - `MEMORY.md` (workspace) — dev profile, specialization, methodology
-- `projects/<repo>/HANDOFF.md` — per-repo state
+- `projects/<repo>/HANDOFF.md` — per-repo state (keep out of upstream commits!)
 - `memory/YYYY-MM-DD.md` — session log
