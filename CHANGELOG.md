@@ -118,3 +118,11 @@
   - **billing-mp** (5 requirements): suscripciones, webhook, HMAC, estados, secrets (con nota: nunca operativo)
 - Commit en SoporteML: `b4bfba0`
 - Próximo: delta spec para hilos unificados + resumen IA
+
+### Delta spec archivada — feature ya implementada
+- Al investigar para implementar, descubrimos que la feature completa ya existía en código
+- Delta spec ajustada: solo `thread-summary` como capability nueva (inbox sin cambios)
+- Archivada con `openspec archive` → spec as-built `thread-summary` creado (3 requirements)
+- Estado final: 4 specs as-built, 0 changes activos
+- Branch `feature/unified-threads-ai-summary` creado — primera vez usando branch por feature
+- Lección: en brownfield, verificar si el feature ya existe antes de escribir delta spec
