@@ -39,7 +39,7 @@
 - **Skill sdd-brownfield creada:** Spec-Driven Development en proyectos existentes con backend remoto — init OpenSpec, specs as-built, delta specs, archivar, branch por feature. Probada en SoporteML.
 - **Skill product-orchestrator creada:** Product Owner/Manager end-to-end — evalúa ideas (mercado, viabilidad, fit estratégico), define MVP (scope, personas, flows, métricas), planifica roadmap, y orquesta las demás skills (web-app-builder, sdd-brownfield, agent-dispatcher, agent-review) para llevar productos de idea a deployado. 5 fases con go/no-go gates. Product files en `products/<slug>/`.
 - **Skill ux-a11y-studio creada:** Equipo de UX/UI + Accesibilidad — discovery de usuarios y requisitos WCAG 2.2, audit (automated axe-core + manual keyboard/screen reader/cognitive/visual), design system con contraste verificado, implementación de componentes accesibles (WAI-APG, 3 capas de tests), validación final antes de launch. Integrado con product-orchestrator y web-app-builder. Design files en `design/`.
-- **Skill web-app-builder actualizada:** reference vite-react-setup.md corregida con configs para Biome 2.5+ (schema cambió), TS 6+ (ignoreDeprecations), Tailwind v4 (@theme parsing), Vitest 4. Tabla de 11 pitfalls comunes.
+- **Skill ux-a11y-studio creada:** Equipo de UX/UI + Accesibilidad — discovery de usuarios y requisitos WCAG 2.2, audit (automated axe-core + manual keyboard/screen reader/cognitive/visual), design system con contraste verificado, implementación de componentes accesibles (WAI-APG, 3 capas de tests), validación final antes de launch. Integrado con product-orchestrator y web-app-builder. Design files en `design/`.
 
 ## Kanam Workflow Kit
 - Producto nuevo: `products/copilot-workflow-kit/`
