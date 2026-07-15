@@ -70,16 +70,28 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 ## Pipeline de repos objetivos
 
-### En progreso
+### En progreso — Registry completo de PRs abiertos
 
-| Repo | Issue | PR | Estado |
-|------|-------|-----|--------|
-| shadcn-ui/ui | #11157 Input OTP layout shift | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | Esperando review |
-| shadcn-ui/ui | #11161 MessageScroller footer flicker | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | Esperando review |
-| TanStack/router | #7787 loaderDeps serializer | [#7818](https://github.com/TanStack/router/pull/7818) | Esperando review, CodeRabbit verde |
-| akd-io/create-next-stack | #262 Bun | [#280](https://github.com/akd-io/create-next-stack/pull/280) | Esperando review |
-| akd-io/create-next-stack | #224 Vitest | — | Plan, después de Bun |
-| akd-io/create-next-stack | #249 Supabase | — | Plan, después de Vitest |
+| Repo | PR | Título | Estado |
+|------|-----|--------|--------|
+| TanStack/router | [#7818](https://github.com/TanStack/router/pull/7818) | search serializer for loader deps | Esperando re-review de LadyBluenotes |
+| vercel/ai | [#17274](https://github.com/vercel/ai/pull/17274) | warn when reasoning tokens spent | Review de Vercel addressado, esperando |
+| shadcn-ui/ui | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | InputOTP slot transition | Esperando review |
+| shadcn-ui/ui | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | MessageScroller footer height | Esperando review |
+| shadcn-ui/ui | [#11187](https://github.com/shadcn-ui/ui/pull/11187) | remove scrollbar-none table | Esperando review |
+| akd-io/create-next-stack | [#280](https://github.com/akd-io/create-next-stack/pull/280) | Bun package manager | Esperando review |
+| akd-io/create-next-stack | [#281](https://github.com/akd-io/create-next-stack/pull/281) | remove React.FC | Esperando review |
+| akd-io/create-next-stack | [#282](https://github.com/akd-io/create-next-stack/pull/282) | Vitest | Esperando review |
+| akd-io/create-next-stack | [#283](https://github.com/akd-io/create-next-stack/pull/283) | Supabase | Esperando review |
+| akd-io/create-next-stack | [#284](https://github.com/akd-io/create-next-stack/pull/284) | Auth.js + shadcn/ui | Esperando review |
+| akd-io/create-next-stack | [#285](https://github.com/akd-io/create-next-stack/pull/285) | skip commit without git config | Esperando review |
+| akd-io/create-next-stack | [#286](https://github.com/akd-io/create-next-stack/pull/286) | prettier-plugin-organize-imports | Esperando review |
+| akd-io/create-next-stack | [#287](https://github.com/akd-io/create-next-stack/pull/287) | eslint-strict | Esperando review |
+| akd-io/create-next-stack | [#288](https://github.com/akd-io/create-next-stack/pull/288) | Zustand | Esperando review |
+| akd-io/create-next-stack | [#289](https://github.com/akd-io/create-next-stack/pull/289) | Playwright | Esperando review |
+| t3-oss/create-t3-app | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | biome ignore generated | Esperando review, CI verde |
+| shuding/nextra | [#5029](https://github.com/shuding/nextra/pull/5029) | select modal={false} | Esperando review |
+| payloadcms/payload | [#17342](https://github.com/payloadcms/payload/pull/17342) | lexical blocks stale form state | CI verde, esperando review |
 
 ### Reviews técnicas (sin PR propio, suma visibilidad)
 

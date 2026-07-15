@@ -1,6 +1,6 @@
 ---
 name: "oss-contribute"
-description: "Find, evaluate, and contribute to open source repos strategically — from pipeline building to PR submission, maintainer feedback handling, and active community participation (reviews, shared learnings, discoveries)."
+description: "Find, evaluate, and contribute to open source repos strategically — from pipeline building to PR submission, maintainer feedback handling, active community participation, and batch PR status triage."
 ---
 
 # OSS Contribute
@@ -253,6 +253,70 @@ Being an OSS contributor isn't just opening PRs — it's being an active member 
    gh pr view <number> --repo <repo> --json comments,reviews,state
    ```
 
+## Phase 6 — Batch PR status check (operational triage)
+
+When the user asks to check PR status (either one URL or a batch), follow this protocol:
+
+### Step 1: Fetch status for each PR
+
+For each PR URL, extract repo and number, then fetch:
+```bash
+gh pr view <number> --repo <repo> --json state,title,mergedAt,closedAt,reviewDecision,labels,reviews,comments,statusCheckRollup
+```
+
+For batch checks (multiple PRs), loop through all of them in a single command to avoid serial round-trips:
+```bash
+for pr in "repo:number" "repo:number" ...; do
+  repo="${pr%%:*}"
+  num="${pr##*:}"
+  # Fetch and extract key fields
+  gh pr view "$num" --repo "$repo" --json state,title,reviewDecision,reviews,comments,statusCheckRollup
+  # Also fetch inline review comments (human only, filter bots)
+  gh api "repos/$repo/pulls/$num/comments" --jq '[.[] | select(.user.login != "vercel" and ... ) | ...]'
+done
+```
+
+### Step 2: Classify each PR into one of three buckets
+
+**🟢 Waiting (no action needed):**
+- No human reviews or comments from maintainers
+- CI is green (or only cosmetic failures like labeler, Vercel deploy auth)
+- No bot reports needing acknowledgment
+- → Just wait. Do nothing.
+
+**⚠️ Action needed (our side):**
+- Maintainer (MEMBER/OWNER) left a review comment requesting changes
+- Bot (CodeRabbit, CodSpeed, etc.) flagged something that needs a response
+- CI is failing because of our code (not pre-existing/flaky)
+- → Implement the fix, push, reply on the PR thread
+
+**🔴 Blocked or rejected:**
+- Maintainer closed the PR or explicitly rejected the approach
+- CI failing for reasons we can't fix (upstream changes, env issues)
+- Competing PR was merged instead
+- → Learn from it, update CONTRIBUTING.md, move on
+
+### Step 3: Report a summary table
+
+After checking all PRs, output a single table:
+
+| Repo | PR | Title | Reviews | Bucket | Action |
+|------|-----|-------|---------|--------|--------|
+| ... | ... | ... | ... | 🟢/⚠️/🔴 | "none" / "implement X" / "closed" |
+
+Only PRs in ⚠️ need immediate work. Everything else is patience.
+
+### Step 4: For PRs needing action — follow Phase 4.7 (maintainer requests) or 4.8 (bot acknowledgments)
+
+### Key heuristics
+
+- **Filter bot noise:** Vercel deploy auth, changeset-bot, pkg-pr-new, nx-cloud, codspeed-hq, CodeRabbit are bots. Only human comments from MEMBER/OWNER/CONTRIBUTOR associations require action.
+- **Cosmetic CI failures:** `labeler` failing, `Upsert PR Comment` failing, Vercel deploy pending = ignore. Only care about Test/Build/Lint/TypeCheck failures caused by our code.
+- **REVIEW_REQUIRED:** Many repos require at least one review to merge. This is not an action item for us — it's the maintainer's job to review.
+- **1-2 week rule:** Don't ping maintainers unless 1-2 weeks have passed with no response. Opening a PR and pinging the same day looks impatient.
+- **Batch efficiency:** When checking 10+ PRs, run them in a loop in a single exec command rather than individual calls. Each `gh pr view` + `gh api` round-trip takes 2-3 seconds.
+- **Maintain a PR registry:** Keep the list of all open PRs in `CONTRIBUTING.md` pipeline table so any session can do a batch check without the user re-pasting URLs.
+
 ## Red flags
 
 - Don't open PRs without reading the repo's CONTRIBUTING.md
@@ -318,6 +382,36 @@ Being an OSS contributor isn't just opening PRs — it's being an active member 
 - **Pre-commit guard:** Always run `git status` before committing and verify only repo-relevant files are staged.
 - **Community participation is not optional:** Acknowledging bot reports, sharing discoveries on issues, reviewing others' PRs, and cross-referencing related work are all part of being a valued community member — not just opening PRs. Added as Phase 4.8 in this skill.
 - **Acknowledge CI/benchmark reports:** When CodSpeed or similar bots flag regressions, investigate and respond. Explain whether they're real or environmental noise. This demonstrates technical maturity and shows you understand the project's tooling.
+
+### Session 2026-07-15 (afternoon) — Batch PR triage + vercel/ai review + payloadcms/payload most complex PR
+
+**What happened:**
+- User pasted 17 PR URLs for status check across 6 repos (TanStack, shadcn, vercel/ai, akd-io, t3-oss, nextra)
+- Batch-checked all 17 in a loop, classified into buckets: 15 waiting (no action), 1 needing action (vercel/ai review), 1 already addressed (TanStack)
+- Implemented vercel/ai #17274 review feedback: warnings from finish-step were dropped, never reached result.warnings/StepResult.warnings/logWarnings. Fixed by merging recordedWarnings + part.warnings
+- Tackled payloadcms/payload #17232 — most complex issue in the pipeline: Lexical blocks with 2+ uploads silently losing field values on component recycle/remount. Root cause: stale initialState snapshot. Fixed with ref-based form state tracking + missing field merge from formData.
+- Opened PR #17342 on payloadcms/payload — CI green, first PR on the last Tier 1 repo
+
+**What worked:**
+- Batch checking 17 PRs in a single loop — efficient, no serial round-trips
+- Filtering bot comments from human comments — only maintainer feedback requires action
+- Classifying into 🟢/⚠️/🔴 buckets — immediately clear what needs work vs what's patience
+- Reading the full root-cause analysis in the issue before touching code — the reporter had done deep instrumentation, we used their findings
+- Surgical fix (57 lines in one file) for a complex bug touching React lifecycle + form state + Lexical
+
+**What didn't work:**
+- No PR registry — user had to paste 17 URLs manually. Should maintain a complete list in CONTRIBUTING.md so any session can batch-check without user input.
+- payloadcms/payload shallow clone: `pnpm install` worked but `tsc --noEmit` showed TS6305 errors (unbuilt dependencies). Had to verify our file had no NEW errors vs pre-existing ones by stashing and comparing.
+- No tests written for the payload fix — no existing block tests to extend, and the component is client-heavy (Lexical + drawers + form state). Accepted as limitation.
+
+**Key insights:**
+- **Batch PR triage as a skill:** Checking 17 PRs manually is not scalable. Systematized as Phase 6 — fetch all, classify into buckets, report table, only act on ⚠️. Any future session can do this from the PR registry in CONTRIBUTING.md.
+- **Bot filtering is critical:** Vercel deploy auth, changeset-bot, pkg-pr-new, nx-cloud, codspeed-hq, CodeRabbit are all bots. Only MEMBER/OWNER/CONTRIBUTOR human comments require action. Filtering bots from the status check reduces noise dramatically.
+- **Cosmetic CI failures:** labeler, Upsert PR Comment, Vercel deploy pending = ignore. Only Test/Build/Lint/TypeCheck failures from our code matter.
+- **Complex issue ≠ complex fix:** The payload bug had a 3000-word root-cause analysis, 3 findings, React lifecycle complexity — but the fix was 57 lines. Understanding the problem is 80% of the work; the fix is often surgical.
+- **Use the reporter's analysis:** When an issue has detailed instrumentation traces and a verified local fix, use that as a spec. Don't re-investigate from scratch.
+- **Fork before push:** `gh repo fork` needs to happen before `git push fork`. Added to mental checklist.
+- **Type-check on shallow clones:** Shallow monorepo clones may not build dependencies, causing TS6305 errors. Compare against `git stash` baseline to distinguish pre-existing from new errors.
 
 ## Context files
 
