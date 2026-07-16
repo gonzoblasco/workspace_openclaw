@@ -74,7 +74,7 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 | Repo | PR | Título | Estado |
 |------|-----|--------|--------|
-| TanStack/router | [#7818](https://github.com/TanStack/router/pull/7818) | search serializer for loader deps | Esperando re-review de LadyBluenotes |
+| TanStack/router | [#7834](https://github.com/TanStack/router/pull/7834) | safeStringify for loader deps | Abierto, nuevo approach post-feedback |
 | vercel/ai | [#17274](https://github.com/vercel/ai/pull/17274) | warn when reasoning tokens spent | Review de Vercel addressado, esperando |
 | shadcn-ui/ui | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | InputOTP slot transition | Esperando review |
 | shadcn-ui/ui | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | MessageScroller footer height | Esperando review |
@@ -148,7 +148,7 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 | shadcn #11157 Input OTP layout shift | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | Abierto, esperando review |
 | shadcn #11161 MessageScroller footer flicker | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | Abierto, sin competencia |
 | shadcn #11104 Sidebar Cmd+B | Descartado | 4 PRs competidores, saturado |
-| TanStack/router #7787 loaderDeps serializer | [#7818](https://github.com/TanStack/router/pull/7818) | Abierto, CodeRabbit verde, sin competencia |
+| TanStack/router #7787 loaderDeps serializer | [#7834](https://github.com/TanStack/router/pull/7834) | Abierto, safeStringify approach (reemplaza #7818 cerrado) |
 
 ### Reviews técnicas dejadas en PRs de otros
 
