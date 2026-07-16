@@ -119,28 +119,19 @@
 - **PENDIENTE #2:** Fix errores en create-stack-next (Biome 2.5, TS 6, Tailwind v4)
 - **🔄 Cambio de modelo 2026-07-15 16:09:** qwen3.5:cloud → deepseek-v4-flash. Contexto guardado en memory/2026-07-15.md
 
-### KanamAI
-- **Identidad/motor de IA transversal** — NO es un producto de MeLi, es la definición de cómo actúa la IA en todos los productos
-- Define 3 cosas: (1) identidad de Kanam, (2) guardrails, (3) enrutamiento de modelos
-- Los productos no hablan con GLM/Gemini directo — hablan con KanamAI, que decide qué modelo usar por tarea (definido en desarrollo, no automático)
-- Por ahora: documentación local. Cada producto copia `.kanam/` del repo kanamai (igual que template/ y template-api/ en create-stack-next)
-- Evolución: (1) copia manual → (2) paquete npm @kanam/ai-config → (3) servicio deployed tipo OpenRouter
-- Stack del repo: TanStack Start + React 19 + Lovable AI Gateway (Gemini)
-- Etapa 0-1 (landing + demo), 8 ADRs, roadmap 6 etapas
-- 100% independiente (ADR-008) pero evolución de SoporteML
+### KanamAI — 🧊 FREEZER
+- Identidad/motor de IA transversal. Etapa 0-1 (landing + demo IA real), 8 ADRs, roadmap 6 etapas.
+- Congelado hasta que SoporteML esté en producción real.
 - Repo: github.com/gonzoblasco/kanamai-330ca8a9 (clonado como kanamai)
-- Al escalar a otros marketplaces se renombrará (NO definir nombre aún)
 
-### UmbraWriter (PRIORIDAD #2)
-- Plataforma AI para escribir ficción (estilo Sudowrite), identidad propia
-- PoC con 9 fases en roadmap
-- Gonzo lo usará para escribir sus historias + posible SaaS para terceros
+### UmbraWriter — 🧊 FREEZER
+- Plataforma AI para escribir ficción. PoC con features reales (editor, co-writing, export DOCX, AI assistant).
+- Congelado hasta que SoporteML esté estable.
 - Repo: github.com/gonzoblasco/umbrawriter (clonado)
 
-### ReActiva (PRIORIDAD #3)
-- SaaS para clínicas — recupera pacientes inactivos con IA + WhatsApp
-- Pitch armado: 49-99 USD/mes, 15 clientes = vivís, MVP 5-7 días
-- Estado: solo landing
+### ReActiva — 🧊 FREEZER
+- SaaS para clínicas — recupera pacientes inactivos con IA + WhatsApp.
+- Solo landing. Congelado hasta que SoporteML y UmbraWriter estén maduros.
 - Repo: github.com/gonzoblasco/reactiva (clonado)
 
 ### create-stack-next (base transversal)
@@ -165,16 +156,16 @@
 - Todo lo que vaya al repo de akd-io: en inglés
 
 ## Proyectos de soporte
-- brainweb — gestor de notas PKM con graph view SVG (github.com/gonzoblasco/brainweb-your-second-mind)
-- accessibility-auditor — auditoría accesibilidad web (para entrevista)
-- accessible-ui — librería React headless accesible (para entrevista)
-- --copilot-skills — candidato a integrar con create-stack-next
-- pr_vscode_niveles — guía gamificada VS Code
+- brainweb — 🧊 FREEZER. Gestor de notas PKM con graph view SVG. MVP completo, build verde. Congelado.
+- accessibility-auditor — auditoría accesibilidad web. Portfolio vivo, muestra capacidad.
+- accessible-ui — librería React headless accesible. Portfolio vivo, muestra capacidad.
+- --copilot-skills — 🧊 FREEZER. Candidato a integrar con create-stack-next.
+- pr_vscode_niveles — 🧊 FREEZER. Guía gamificada VS Code.
 
 ## Visión
 - Kanam = marca paraguas + yo como asistente (femenino)
 - 3 productos SaaS son "IA que recupera relaciones perdidas": vendedores, pacientes, escritores
-- KanamAI = la IA que alimenta todos los productos (identidad + guardrails + enrutamiento de modelos)
+- KanamAI = la IA que alimenta todos los productos (identidad + guardrails + enrutamiento de modelos) — 🧊 FREEZER
 - create-stack-next = base técnica/metodológica de todo proyecto nuevo
 - KanamAI funciona igual que template/ y template-api/ en create-stack-next — contenedor y plantilla a copiar
 
@@ -184,7 +175,7 @@
 
 ## Ideas congeladas
 - `FREEZER.md` — productos ideados pero fuera de foco actual
-- Marketplace de servicios domésticos (ex "mucamas-online") — idea de marketplace, espera a que los 3 SaaS maduren
+- Marketplace de servicios domésticos (ex "mucamas-online") — 🧊 FREEZER. Esperar a que los 3 SaaS maduren.
 - KanamAI definición ampliada: no solo retención, sino "IA que facilita conexiones humanas" (pre, post, durante, marketplace)
 
 ## Lecciones aprendidas
