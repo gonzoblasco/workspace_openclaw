@@ -158,3 +158,15 @@ No asumir que un proyecto "FREEZER" tiene repo remoto existente. Verificar con `
 - Estado final: 4 specs as-built, 0 changes activos
 - Branch `feature/unified-threads-ai-summary` creado — primera vez usando branch por feature
 - Lección: en brownfield, verificar si el feature ya existe antes de escribir delta spec
+
+## [2026-07-16] — OpenSpec + Skills
+
+### Added
+- Skill `openspec-creator`: crear specs OpenSpec as-built y delta, guiando paso a paso
+- Skill `session-closure`: ritual de cierre de sesión automatizado
+- Spec as-built para `meli-webhook` en SoporteML v1 (182 líneas, 9 requisitos)
+- Spec as-built para `CLI interactivo` en create-stack-next (234 líneas, 9 requisitos)
+- OpenSpec inicializado en raíz de create-stack-next
+
+### Changed
+- Skill `openspec-creator` actualizada: ahora incluye flujo delta (spec primero, código después)

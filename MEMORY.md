@@ -211,3 +211,6 @@
 - En inglés siempre en repos externos
 - Bugs concretos sin competencia → PR rápido
 - RFCs → comentario técnico que posiciona, no código
+## Skills de OpenClaw workspace (2026-07-16)
+- **openspec-creator:** Crear specs OpenSpec as-built o delta para features existentes, guiando al usuario paso a paso. Dos flujos: as-built (documentar lo que existe) y delta (planificar lo que se va a construir).
+- **session-closure:** Ritual de cierre de sesión automatizado. Escanea conversación, escribe HANDOFF/memory/CHANGELOG, commitea cambios en curso y workspace, muestra resumen.
