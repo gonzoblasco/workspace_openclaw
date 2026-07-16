@@ -1,38 +1,81 @@
 # CHANGELOG.md
 
-## [2026-07-16] — Consolidación de memoria + OpenSpec + Skills + pr_vscode_niveles
+## [2026-07-16] — Consolidación de memoria (cron job)
 
-### Consolidación de memoria
-- **OSS pipeline actualizado:** shadcn-ui/ui ahora 3 PRs (#11198 agregado), facebook/astryx (2 PRs + 2 comments), ibelick/ui-skills PR #37, Nutlope/hallmark PR #32, OpenCut-app/OpenCut comment #848. Total: 25 PRs en 12 repos.
-- **gh CLI no autenticado en MacBook Air** documentado como limitación técnica.
-- **Lección agregada:** ser más natural al comentar en issues/PRs de terceros (sonar a persona real, no a documentación técnica).
-- **Astryx (facebook/astryx):** design system de Meta documentado como target OSS activo con estrategia (bugs → PR, RFCs → comentario).
-- **Trending repos sprint:** ibelick/ui-skills, Nutlope/hallmark, OpenCut-app/OpenCut documentados como oportunidades.
+### Qué se consolidó a MEMORY.md
 
-### pr_vscode_niveles — repo no existía
-- Intenté hacer push a `pr_vscode_niveles` y falló porque el repo no existía en GitHub
-- Creado repo privado: github.com/gonzoblasco/pr_vscode_niveles
-- Lección: no asumir que un proyecto FREEZER tiene repo remoto existente. Verificar con `gh repo view`.
+De los diarios del 14 al 16 de julio:
 
-### OpenSpec + Skills
-- Skill `openspec-creator`: crear specs OpenSpec as-built y delta
-- Skill `session-closure`: ritual de cierre de sesión automatizado
-- Spec as-built para `meli-webhook` en SoporteML v1 (182 líneas, 9 requisitos)
-- Spec as-built para `CLI interactivo` en create-stack-next (234 líneas, 9 requisitos)
-- OpenSpec inicializado en raíz de create-stack-next
+**Open Source pipeline actualizado:**
+- shadcn-ui/ui: +1 PR (#11198 InputOTP layout shift, approach alternativo). #11179 conflicto resuelto + commit firmado SSH.
+- TanStack/router: PR #7818 cerrado (rechazado por maintainer por automatización). PR nuevo #7834 (safeStringify).
+- vercel/ai: #17274 fix warnings dropeadas, review de Vercel addressada.
+- payloadcms/payload: #17342 (data loss bug en Lexical rich text). Fix de 57 líneas, CI verde. Lecciones: complex issue ≠ complex fix, fork before push, type-check en shallow clones.
+- facebook/astryx: 2 PRs nuevos (#4022 WCAG, #4023 keyboard) + 2 RFC comments.
+- shuding/nextra: #5029 (Select scroll lock).
+- Total: ~22 PRs abiertos en 9 repos.
+- oss-contribute: Phase 6 (batch PR check) agregada. PR registry en CONTRIBUTING.md.
 
-### Estructura del workspace (2026-07-16)
-- Separación Products/Projects: `products/<slug>/` = definición, `projects/<slug>/` = implementación
-- Estructura docs/code: `projects/<slug>/docs/` + `projects/<slug>/code/`
-- LEARNINGS.md por proyecto en `docs/`
-- Fusiones lógicas: pr_vscode_niveles → ai-engineering-bootcamp, copilot-skills → copilot-workflow-kit
-- Forks externos: HANDOFF.md en raíz, docs de sesión en `docs/` del slug
+**SoporteML v2:**
+- Phase 2 (MeLi Integration + Auto-learn): 6 EFs escritas, deployadas localmente. Onboarding flow 4 pasos.
+- Phase 3 (Inbox UI): layout dos columnas, tabs, SLA, búsqueda, keyboard nav pendiente.
+- División Mini/Air abolida (modelo deepseek-v4-flash como default).
 
-### Aprendizajes de la sesión
-- Las skills se construyen haciendo, no escribiendo
-- El viaje es el producto — Gonzo recorre el proceso para que yo aprenda a guiarlo
-- Specs as-built primero, delta después
-- El cierre de sesión también es un viaje — session-closure captura aprendizajes, no solo archivos
+**create-stack-next:**
+- v0.7.2: templates actualizados para Biome 2.5, TS 7 en proyecto (templates mantienen TS 5.x por incompatibilidad Next.js 15 + TS 7).
+- Dirección acordada: expansión con `--template node`, no reemplazo.
+
+**accessible-ui:**
+- 3 bugs fixeados, 52 tests nuevos. Scope @gonzoblasco/. Pendiente: npm publish.
+
+**Nuevas skills:**
+- product-reset: reset de producto post-lanzamiento (genérica, con ejemplo CSN).
+- openspec-creator: specs OpenSpec as-built y delta.
+- session-closure: ritual de cierre de sesión.
+
+**Lecciones nuevas:**
+- Next.js 15 + TS 7 incompatibles.
+- Complex issue ≠ complex fix (payloadcms).
+- DeepSeek v4 Flash como modelo default (costo/beneficio).
+- TanStack/router: estética del proceso importa en repos Tier 0.
+- CSN: expansión, no reemplazo.
+- accessible-ui: edge cases en componentes headless.
+- Scope @gonzoblasco/ para npm.
+
+### Limpieza
+- Sección duplicada "Lecciones aprendidas" eliminada de MEMORY.md.
+
+## [2026-07-16] — pr_vscode_niveles: repo no existía
+
+### Situación
+- Intenté hacer push a `pr_vscode_niveles` y falló
+- MEMORY.md lo marca como 🧊 FREEZER, pero asumí que el repo ya existía en GitHub
+
+### Diagnóstico
+```bash
+gh repo view gonzoblasco/pr_vscode_niveles
+# → "Could not resolve to a Repository"
+```
+
+### Acción
+- Proyecto local en `/Users/gonzoblasco/.openclaw/workspace/projects/pr_vscode_niveles`
+- Creé repo privado en GitHub:
+  ```bash
+  gh repo create gonzoblasco/pr_vscode_niveles --private --source=. --push
+  ```
+- Fix de remote (ya existía `origin`):
+  ```bash
+  git remote set-url origin git@github.com:gonzoblasco/pr_vscode_niveles.git
+  git push -u origin main
+  ```
+
+### Resultado
+- Repo creado: https://github.com/gonzoblasco/pr_vscode_niveles (privado)
+- Remote `origin` configurado
+- Push inicial de `main` realizado ✅
+
+### Lección
+No asumir que un proyecto "FREEZER" tiene repo remoto existente. Verificar con `gh repo view` antes de intentar push. Si es proyecto congelado sin repo, crearlo explícitamente.
 
 ## [2026-07-15] — Cierre de sesión CSN + CNS
 

@@ -24,23 +24,19 @@
 ## Open Source — pipeline activo
 - **Estrategia:** PRs a repos externos como evidencia pública de capacidad → portfolio vivo → menos entrevistas laborales
 - **akd-io/create-next-stack:** 10 PRs abiertos (#280 Bun, #281 React.FC, #282 Vitest, #283 Supabase, #284 Auth.js+shadcn, #285 fix git crash #231, #286 prettier-plugin-organize-imports #266, #287 eslint-strict #263, #288 Zustand #259, #289 Playwright #223). Esperando review.
-- **shadcn-ui/ui:** 3 PRs abiertos (#11179 InputOTP flicker, #11180 MessageScroller flicker, #11198 InputOTP ring fix). Esperando review.
+- **shadcn-ui/ui:** 3 PRs abiertos (#11179 InputOTP flicker, #11180 MessageScroller flicker, #11198 InputOTP layout shift — approach alternativo). #11179 tuvo conflicto de merge resuelto + commit firmado SSH. Esperando review.
 - **t3-oss/create-t3-app:** 2 PRs abiertos (#2239 fix Biome + bump versión ^2.5.3, #2240 fix Prettier .prettierignore). Ambos fixean la misma clase de bug: generated artifacts de Prisma no excluidos de las tools de formato/lint. 0 competidores en #2240, FrancoKaddour tenía branch competidor en #2239.
-- **TanStack/router:** 1 PR cerrado (#7818 stringifySearch en loaderDepsHash). A pesar de que el fix era correcto y tenía tests, fue rechazado por el maintainer debido al uso de automatización en el proceso de contribución. Lección: en repos Tier 0, la "estética" del proceso y el toque humano son críticos; evitar trazas de bots en commits y descripciones.
+- **TanStack/router:** 1 PR cerrado (#7818 stringifySearch en loaderDepsHash). A pesar de que el fix era correcto y tenía tests, fue rechazado por el maintainer debido al uso de automatización en el proceso de contribución. Lección: en repos Tier 0, la "estética" del proceso y el toque humano son críticos; evitar trazas de bots en commits y descripciones. PR nuevo abierto: #7834 (safeStringify para loader deps).
 - **vercel/ai:** 3 reviews técnicos en PRs ajenos (#14983, #13577, #12800) + 1 PR propio (#17274 fix warnings dropeadas en finish-step). Review de Vercel addressada, esperando merge.
-- **payloadcms/payload:** 1 PR abierto (#17342 fix blocks con 2+ uploads — data loss bug en richtext-lexical). Tier 1 completado: todos los repos del tier 1 tienen al menos un PR o review.
-- **facebook/astryx:** 2 PRs abiertos (#4022 WCAG 2.1 AA contrast fixes, #4023 Selector keyboard typeahead) + 2 comments en RFCs (#3349 InfoTip, #3885 Mobile tooltips). Design system de Meta, 150+ componentes accesibles, React + StyleX. CLA firmado. Estrategia: bugs concretos → PR rápido; RFCs → comentario técnico que posiciona.
-- **ibelick/ui-skills:** 1 PR abierto (#37 mejorar fixing-accessibility con WCAG 2.2). Repo chico, maintainer activo.
-- **Nutlope/hallmark:** 1 PR abierto (#32 fix Cursor install instructions). Skill de Together AI.
-- **OpenCut-app/OpenCut:** 1 comentario en issue #848 (export popover bug + accesibilidad). En rewrite, no acepta contribuciones; classic sí.
-- **shuding/nextra:** 1 PR abierto (#5029 Select scroll lock).
-- **Total: 25 PRs abiertos** en 12 repos externos. Esperando review de maintainers.
+- **payloadcms/payload:** 1 PR abierto (#17342 fix blocks con 2+ uploads — data loss bug en richtext-lexical). Bug complejo: BlockComponent se recicla al abrir drawer, form se re-inicializa desde initialState perdiendo valores. Fix de 57 líneas en archivo de 700+. CI verde. Tier 1 completado: todos los repos del tier 1 tienen al menos un PR o review.
+- **facebook/astryx:** 2 PRs abiertos (#4022 WCAG contrast fixes, #4023 Selector keyboard typeahead) + 2 RFC comments (#3349 InfoTip, #3885 Mobile tooltips). Esperando CLA processing.
+- **shuding/nextra:** 1 PR abierto (#5029 Select scroll lock — 1 línea, sin competidores).
+- **Total: ~22 PRs abiertos** en 9 repos externos. Esperando review de maintainers en el resto.
 - **PR registry completo** en `CONTRIBUTING.md` — cualquier sesión puede hacer batch check sin que el usuario pastee URLs
 - **Commit signing SSH configurado:** gh auth + SSH signing key, todos los commits se firman automáticamente
-- **gh CLI no autenticado en MacBook Air:** para batch checks de PRs, configurar `GH_TOKEN` o `gh auth login`. Sin auth, rate limit de API pública es bajo.
-- **Skill oss-contribute:** 6 fases (pipeline → triaje → implementación → PR → community participation → batch triage) + lecciones de 3 sesiones reales. Phase 4.8 (comunidad), Phase 6 (batch PR status check con buckets 🟢⚠️🔴)
+- **Skill oss-contribute:** 6 fases (pipeline → triaje → implementación → PR → community participation → batch triage) + lecciones de 3 sesiones reales. Phase 4.8 (comunidad), Phase 6 (batch PR status check con buckets 🟢⚠️🔴). Actualizada con lecciones de payloadcms (complex issue ≠ complex fix, usar análisis del reporter, fork before push, type-check en shallow clones).
 - **Fork de payloadcms/payload creado:** github.com/gonzoblasco/payload (último Tier 1)
-- **Próxima acción OSS:** seguir buscando issues sin PRs competidores en repos estratégicos. Bottleneck sigue siendo maintainer review time. Nuevos targets identificados: Biome #10922 (useSortedAttributes XML, Rust), shadcn #11125 (MessageScroller tail spacer, 0 competidores).
+- **Próxima acción OSS:** seguir buscando issues sin PRs competidores en repos estratégicos. Bottleneck sigue siendo maintainer review time.
 - **Skill profile-positioning creada:** audit de perfil profesional y construcción de pitch
 - **Skill sdd-brownfield creada:** Spec-Driven Development en proyectos existentes con backend remoto — init OpenSpec, specs as-built, delta specs, archivar, branch por feature. Probada en SoporteML.
 - **Skill product-orchestrator creada:** Product Owner/Manager end-to-end — evalúa ideas (mercado, viabilidad, fit estratégico), define MVP (scope, personas, flows, métricas), planifica roadmap, y orquesta las demás skills (web-app-builder, sdd-brownfield, agent-dispatcher, agent-review) para llevar productos de idea a deployado. 5 fases con go/no-go gates. Product files en `products/<slug>/`.
@@ -121,9 +117,12 @@
 - shadcn/ui components: button, input, card, label, dialog, dropdown-menu, avatar
 - Auth UI: LoginPage.tsx, RegisterPage.tsx
 - **MVP COMPLETO (11 fases):** MeLi Integration + Auto-learn (6 EFs), Inbox UI (teclado + realtime), KB UI + RAG, AI Copilot (DeepSeek), Auto-respuesta inteligente, Resumen IA de hilos, Billing MP (REAL), Settings consolidado (8 secciones), Analytics (charts), Hardening (ErrorBoundary + AppLayout). 7 Edge Functions, 8 OpenSpec specs.
+- **Phase 2 (MeLi Integration + Auto-learn):** 6 Edge Functions escritas (meli-oauth-callback, sync-meli-questions, meli-webhook, meli-initial-fetch, auto-generate-product-ficha, auto-generate-kb), OpenSpec spec meli-integration, Settings page conectar MeLi, MeliCallback page, Onboarding flow 4 pasos con progreso. Edge Functions deployadas localmente. Pendientes post-MVP: cron job polling fallback, token refresh logic.
+- **Phase 3 (Inbox UI):** Layout dos columnas, agrupación por hilo, tabs (Pendientes/Por vencer/Publicadas/Auto IA/Archivadas), búsqueda client-side, SLA tracking + badge urgencia, loading skeleton, empty states, detalle con badge "Auto IA". Pendientes: navegación teclado (j/k/enter/esc), Priority Inbox, absorción cross-bandeja, Supabase Realtime.
 - **PENDIENTE #1:** Configurar DEEPSEEK_API_KEY, MELI_APP_ID/CLIENT_SECRET/REDIRECT_URI, MP_ACCESS_TOKEN/PREAPPROVAL_PLAN_ID/WEBHOOK_SECRET para flujo E2E real
 - **PENDIENTE #2:** Fix errores en create-stack-next (Biome 2.5, TS 6, Tailwind v4)
 - **🔄 Cambio de modelo 2026-07-15 16:09:** qwen3.5:cloud → deepseek-v4-flash. Contexto guardado en memory/2026-07-15.md
+- **División Mini/Air ABOLIDA 2026-07-15:** Con el cambio a deepseek-v4-flash y la flexibilidad de cambiar modelo por sesión, la división fija ya no tiene sentido. Cada sesión elige modelo según la tarea.
 
 ### KanamAI — 🧊 FREEZER
 - Identidad/motor de IA transversal. Etapa 0-1 (landing + demo IA real), 8 ADRs, roadmap 6 etapas.
@@ -142,9 +141,11 @@
 
 ### create-stack-next (base transversal)
 - CLI scaffolder opinado para Next.js 15, ~1000 descargas npm
-- v0.7.1, 64 tests, CI verde en 4 package managers
+- v0.7.2, 64 tests, CI verde en 4 package managers
 - **OpenSpec integrado (v0.7.0):** Spec-Driven Development embebido en el scaffold base. Select interactivo de herramientas IA (6 principales + opción "Todas"), `openspec init` post-scaffold con fallback, `@fission-ai/openspec` como devDep
 - **v0.7.1:** opción "Todas las herramientas (30+)", ROADMAP reescrito sin fases rígidas, README limpiado
+- **v0.7.2 (2026-07-15):** Templates actualizados para Biome 2.5 (schema, assist.actions.source.organizeImports, preset, css.parser.tailwindDirectives), TypeScript 7 en proyecto CSN (templates mantienen TS 5.x por incompatibilidad Next.js 15 + TS 7), Vitest 4, + global.d.ts para módulos CSS/SVG. 64 tests verdes.
+- **Dirección acordada (2026-07-16):** Expansión con `--template node` (React+Vite+Node.js), NO reemplazo de Next.js como default. CSN sigue siendo scaffold Next.js opinado, se expande con templates alternativos.
 - Trick del `gitignore` (sin punto) para que npm lo incluya — rename a `.gitignore` en copy-template.ts
 - Base metodológica de todo proyecto nuevo
 - Sueño: proyectos existentes adoptan su estructura (AGENTS.md, ROADMAP, HANDOFF, CHANGELOG, ADRs)
@@ -165,6 +166,9 @@
 - brainweb — 🧊 FREEZER. Gestor de notas PKM con graph view SVG. MVP completo, build verde. Congelado.
 - accessibility-auditor — auditoría accesibilidad web. Portfolio vivo, muestra capacidad.
 - accessible-ui — librería React headless accesible. Portfolio vivo, muestra capacidad.
+  - **2026-07-16:** Análisis completo de Combobox, Modal, Tabs. 3 bugs reales fixeados. 52 tests nuevos de edge cases. CI, CONTRIBUTING, LICENSE, typecheck script. Package.json preparado para npm publish.
+  - **Scope:** `@gonzoblasco/accessible-ui` para npm publish.
+  - **Pendiente:** Publicar en npm (requiere resolver OTP de 2FA).
 - --copilot-skills — 🧊 FREEZER. Candidato a integrar con create-stack-next.
 - pr_vscode_niveles — 🧊 FREEZER. Guía gamificada VS Code.
 
@@ -210,16 +214,38 @@
   - **Biome ignores:** `!**/template/` no funciona sin `root: true` en el biome.json raíz. Biome sube a buscar root config y los patrones `!**/dir/` no excluyen correctamente. Solución: `root: true` + `!template/` + `!template/**` (o simplemente `!template` en Biome 2.2+).
 - **OpenSpec lecciones:** "SHALL"/"MUST" requerido ("debe" no pasa), sección `## Purpose` obligatoria, formato WHEN/THEN estricto. En brownfield, verificar si el feature ya está implementado antes de escribir un delta spec.
 - **Memory search con Ollama:** configurar `memorySearch.provider: "ollama"` + `model: "nomic-embed-text"` en openclaw.json. Requiere `ollama pull nomic-embed-text`. Default del sistema es OpenAI (falla si no hay API key). CLI local requiere Node 24 (path usa Node 22).
-- **Al comentar en issues/PRs de terceros:** ser más natural y suelto, no escribir como manual de programación. Sonar a persona real, no a documentación técnica. En inglés siempre en repos externos. Bugs concretos sin competencia → PR rápido. RFCs → comentario técnico que posiciona, no código.
-- **gh CLI no autenticado en MacBook Air:** para batch checks de PRs, configurar `GH_TOKEN` o `gh auth login`. Sin auth, rate limit de API pública es bajo.
-- **Astryx (facebook/astryx):** design system de Meta, 150+ componentes accesibles, React + StyleX. No incorporar en CSN como base. Target OSS activo. CLA de Meta firmado. Estrategia: bugs concretos → PR rápido; RFCs → comentario técnico que posiciona.
-- **Trending repos sprint:** ibelick/ui-skills (repo chico, maintainer activo, buena oportunidad para PRs de mejora de skills), Nutlope/hallmark (skill enorme de Together AI, bueno para PRs chicos de docs), OpenCut-app/OpenCut (en rewrite, no acepta contribuciones; classic sí).
-- **Estructura Products/Projects (2026-07-16):** Separar definición del producto (documentos internos) de la implementación (código pesado). `products/<slug>/` = BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS (qué y por qué, commit frecuente al workspace). `projects/<slug>/` = código, configs, src/ (cómo, repo separado). Productos con ciclo de Product Owner completo van en ambos; herramientas internas solo en `projects/`.
-- **Estructura docs/code (2026-07-16):** Reemplazo de la anterior. Ahora `projects/<slug>/docs/` + `projects/<slug>/code/`. Un proyecto = una carpeta. `docs/` = documentación interna (BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS, HANDOFF, ADRs). `code/` = implementación con su propio .git. `projects/*/code/` en .gitignore del workspace. Archivos de documentación faltantes se crean como placeholder en raíz del proyecto.
-- **LEARNINGS.md (2026-07-16):** Cada proyecto tiene `docs/LEARNINGS.md` para registrar lecciones aprendidas. El feedback de cada sesión se anota ahí + en `memory/YYYY-MM-DD.md`. Las lecciones transversales van en MEMORY.md.
-- **Fusiones lógicas (2026-07-16):** `pr_vscode_niveles` → `ai-engineering-bootcamp/code/`. `copilot-skills` (ex `--copilot-skills`) → `copilot-workflow-kit/code/`. Cuando un proyecto es la implementación de otro, se fusionan.
-- **Forks externos en projects/:** Tienen HANDOFF.md en raíz explicando qué son. Sus docs de sesión van en `docs/` del slug correspondiente, nunca en el repo del fork.
-- **Proyectos sin documentación:** Los archivos faltantes se documentan en HANDOFF.md en raíz del proyecto explicando qué falta generar.
+- **Next.js 15 + TypeScript 7 son incompatibles** (2026-07-15): bug conocido `Cannot read properties of undefined (reading 'fileExists')`. Los templates de CSN mantienen TS 5.x hasta que Next.js 16 sea target.
+- **Complex issue ≠ complex fix** (2026-07-15, payloadcms #17342): el bug más complejo del pipeline (data loss en Lexical rich text) se resolvió con 57 líneas en un archivo de 700+. La dificultad está en el root cause analysis, no en la implementación.
+- **Fork before push** (2026-07-15): al trabajar en forks de terceros, hacer fork primero, clonar el fork, y configurar upstream. Shallow clone alcanza para PRs.
+- **Type-check en shallow clones** (2026-07-15): los shallow clones no tienen tags, lo que puede romper type-check si el proyecto usa version tagging. Solución: `git fetch --tags` o `--depth=1 --no-single-branch`.
+- **División Mini/Air abolida** (2026-07-15): con deepseek-v4-flash como modelo default y flexibilidad de cambiar modelo por sesión, la división fija ya no aplica.
+- **DeepSeek v4 Flash como modelo default** (2026-07-16): mejor costo/beneficio. Rápido, barato en tokens, suficientemente capaz para seguir instrucciones estructuradas. El sistema (skills, AGENTS.md, handoffs, subagentes) hace el trabajo pesado de orquestación — el modelo es un ejecutor, no un oráculo.
+- **CSN: expansión, no reemplazo** (2026-07-16): agregar `--template node` (React+Vite+Node.js) como opción, no cambiar el default de Next.js. CSN tiene ~1000 descargas como scaffold Next.js, cambiar eso ahora es arrancar de nuevo.
+- **Product reset como skill genérica** (2026-07-16): la skill `product-reset` pasó de ser "lo que hicimos con CSN" a "cómo resetear cualquier producto". Las fases son templates, no planes fijos. El checklist de Fase 0 debe ser genérico ("usar el producto como usuario nuevo"), no específico de un CLI.
+- **accessible-ui: 3 bugs reales en componentes headless** (2026-07-16): Combobox, Modal y Tabs tenían bugs de accesibilidad/UX que no se detectaron en tests existentes. 52 tests nuevos de edge cases. Lección: los componentes headless necesitan tests de edge cases, no solo de flujo feliz.
+- **Scope @gonzoblasco/ para npm** (2026-07-16): todos los paquetes npm bajo `@gonzoblasco/`.
+- **TanStack/router: la estética del proceso importa** (2026-07-16, PR #7818 cerrado): el fix era correcto y tenía tests, pero fue rechazado por el maintainer por trazas de automatización en commits. En repos Tier 0, el toque humano es crítico.
+
+## Estilo al comentar en issues/PRs de terceros
+
+## Estilo al comentar en issues/PRs de terceros
+- Ser más natural y suelto, no escribir como manual de programación
+- Sonar a persona real, no a documentación técnica
+- En inglés siempre en repos externos
+- Bugs concretos sin competencia → PR rápido
+- RFCs → comentario técnico que posiciona, no código
+
+## Skills de OpenClaw workspace (2026-07-16)
+- **oss-contribute:** Contribución OSS estratégica — 6 fases (pipeline → triaje → implementación → PR → community participation → batch triage). Actualizada con lecciones de payloadcms, TanStack, vercel/ai.
+- **profile-positioning:** Audit de perfil profesional y construcción de pitch para job search.
+- **sdd-brownfield:** Spec-Driven Development en proyectos existentes con backend remoto — init OpenSpec, specs as-built, delta specs, archivar, branch por feature. Probada en SoporteML.
+- **product-orchestrator:** Product Owner/Manager end-to-end — evalúa ideas, define MVP, planifica roadmap, orquesta skills para llevar productos de idea a deployado. 5 fases con go/no-go gates.
+- **ux-a11y-studio:** Equipo de UX/UI + Accesibilidad — discovery, audit WCAG 2.2, design system, implementación accesible, validación pre-launch.
+- **product-reset:** Reset de producto post-lanzamiento — intake → diagnóstico → plan de 5 fases (Fundación/Visibilidad/Adopción/Comunidad/Sostenibilidad) → ejecución → cierre. Genérica, con ejemplo real de CSN.
+- **openspec-creator:** Crear specs OpenSpec as-built o delta para features existentes, guiando paso a paso. Dos flujos: as-built (documentar lo que existe) y delta (planificar lo que se va a construir).
+- **session-closure:** Ritual de cierre de sesión automatizado. Escanea conversación, escribe HANDOFF/memory/CHANGELOG, commitea cambios en curso y workspace, muestra resumen.
+
+## Aprendizajes de esta sesión (2026-07-16)
 - **Las skills se construyen haciendo, no escribiendo.** La skill openspec-creator empezó como spec as-built de meli-webhook. Al hacerla descubrimos que faltaba el flujo delta. La sesión misma fue el laboratorio que reveló lo que la skill necesitaba.
 - **El viaje es el producto.** Gonzo no quería que le explique OpenSpec teóricamente. Quería recorrer el proceso juntos para que yo aprenda a guiarlo. La skill captura el viaje, no la teoría.
 - **Specs as-built primero, delta después.** Primero documentamos lo que existe (meli-webhook, CLI interactivo). Después de entender el patrón, agregamos el flujo delta. El orden importa.
