@@ -183,6 +183,9 @@
 - **Estructura Products/Projects (2026-07-16):** Separar definición del producto (documentos internos) de la implementación (código pesado). `products/<slug>/` = BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS (qué y por qué, commit frecuente al workspace). `projects/<slug>/` = código, configs, src/ (cómo, repo separado). Productos con ciclo de Product Owner completo van en ambos; herramientas internas solo en `projects/`.
 - **Estructura docs/code (2026-07-16):** Reemplazo de la anterior. Ahora `projects/<slug>/docs/` + `projects/<slug>/code/`. Un proyecto = una carpeta. `docs/` = documentación interna (BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS, HANDOFF, ADRs). `code/` = implementación con su propio .git. `projects/*/code/` en .gitignore del workspace. Archivos de documentación faltantes se crean como placeholder en raíz del proyecto.
 - **LEARNINGS.md (2026-07-16):** Cada proyecto tiene `docs/LEARNINGS.md` para registrar lecciones aprendidas. El feedback de cada sesión se anota ahí + en `memory/YYYY-MM-DD.md`. Las lecciones transversales van en MEMORY.md.
+- **Fusiones lógicas (2026-07-16):** `pr_vscode_niveles` → `ai-engineering-bootcamp/code/`. `copilot-skills` (ex `--copilot-skills`) → `copilot-workflow-kit/code/`. Cuando un proyecto es la implementación de otro, se fusionan.
+- **Forks externos en projects/:** Tienen HANDOFF.md en raíz explicando qué son. Sus docs de sesión van en `docs/` del slug correspondiente, nunca en el repo del fork.
+- **Proyectos sin documentación:** Los archivos faltantes se documentan en HANDOFF.md en raíz del proyecto explicando qué falta generar.
 - Create Stack Next es 100% en español — release notes, docs, todo. No escribir en inglés aunque parezca lo "standard"
 - Triaje de PRs competidores ANTES de invertir tiempo (lección más importante de OSS night)
 - Reviews técnicas en PRs ajenos = contribución de valor sin necesidad de PR propio
