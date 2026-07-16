@@ -179,6 +179,7 @@
 - KanamAI definición ampliada: no solo retención, sino "IA que facilita conexiones humanas" (pre, post, durante, marketplace)
 
 ## Lecciones aprendidas
+- **HANDOFF.md NUNCA al workspace git de terceros.** Los HANDOFF.md son metadata de sesión para proyectos externos (repos donde contribuimos). No van commiteados al workspace_openclaw. En proyectos personales de Gonzo sí se usan, porque ahí es él mismo.
 - Create Stack Next es 100% en español — release notes, docs, todo. No escribir en inglés aunque parezca lo "standard"
 - Triaje de PRs competidores ANTES de invertir tiempo (lección más importante de OSS night)
 - Reviews técnicas en PRs ajenos = contribución de valor sin necesidad de PR propio
