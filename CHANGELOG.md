@@ -1,5 +1,37 @@
 # CHANGELOG.md
 
+## [2026-07-16] — pr_vscode_niveles: repo no existía
+
+### Situación
+- Intenté hacer push a `pr_vscode_niveles` y falló
+- MEMORY.md lo marca como 🧊 FREEZER, pero asumí que el repo ya existía en GitHub
+
+### Diagnóstico
+```bash
+gh repo view gonzoblasco/pr_vscode_niveles
+# → "Could not resolve to a Repository"
+```
+
+### Acción
+- Proyecto local en `/Users/gonzoblasco/.openclaw/workspace/projects/pr_vscode_niveles`
+- Creé repo privado en GitHub:
+  ```bash
+  gh repo create gonzoblasco/pr_vscode_niveles --private --source=. --push
+  ```
+- Fix de remote (ya existía `origin`):
+  ```bash
+  git remote set-url origin git@github.com:gonzoblasco/pr_vscode_niveles.git
+  git push -u origin main
+  ```
+
+### Resultado
+- Repo creado: https://github.com/gonzoblasco/pr_vscode_niveles (privado)
+- Remote `origin` configurado
+- Push inicial de `main` realizado ✅
+
+### Lección
+No asumir que un proyecto "FREEZER" tiene repo remoto existente. Verificar con `gh repo view` antes de intentar push. Si es proyecto congelado sin repo, crearlo explícitamente.
+
 ## [2026-07-15] — Cierre de sesión CSN + CNS
 
 ### Resumen final

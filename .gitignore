@@ -31,6 +31,9 @@ test-results/
 # Proyectos — cada uno tiene su propio repo, se sincronizan por separado
 projects/
 
+# Antigua estructura products/ (migrada a projects/<slug>/docs/)
+products/
+
 # Editor
 .idea/
 *.swp

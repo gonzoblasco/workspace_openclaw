@@ -142,6 +142,35 @@ El workspace tiene su propio repo en GitHub (`workspace_openclaw`). Los proyecto
 git add -A && git commit -m "descripción del cambio" && git push
 ```
 
+## Estructura de Proyectos — docs/ + code/
+
+**Filosofía:** Cada proyecto tiene su carpeta en `projects/<slug>/` con dos subcarpetas:
+
+```
+projects/<slug>/
+├── docs/       # Documentación interna: BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS, HANDOFF, ADRs, decisiones
+├── code/       # Código fuente (con su propio .git y remote)
+└── HANDOFF.md  # (opcional) Documentación en raíz si no hay docs/ completa
+```
+
+**Reglas:**
+- `docs/` = fuente de verdad del **qué** y **por qué** (producto, mercado, decisiones, roadmap)
+- `code/` = implementación del **cómo** (código, arquitectura técnica)
+- `projects/*/code/` está en `.gitignore` del workspace — cada `code/` tiene su propio repo
+- El workspace git trackea `docs/` intensivamente (memoria institucional)
+- Archivos de documentación que no existan se crean como placeholder en raíz del proyecto explicando qué falta generar
+
+**Flujo típico:**
+1. Nuevo producto → crear `projects/<slug>/docs/` con BRIEF, EVALUATION, DEFINITION
+2. Go decision → scaffold en `projects/<slug>/code/` (repo separado)
+3. Desarrollo → actualizar `docs/STATUS.md` con cada hito
+4. Commits: `docs/` al workspace, `code/` a su repo
+
+**Excepciones:**
+- Forks externos (create-next-stack, TanStack/router, etc.) → sus docs de sesión (HANDOFF) van en `docs/` del slug correspondiente
+- Skills de OpenClaw → viven en `skills/` con su propio SKILL.md
+- Proyectos sin documentación completa → los archivos faltantes se documentan en HANDOFF.md en raíz del proyecto
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
