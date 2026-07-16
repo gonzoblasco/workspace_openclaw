@@ -201,5 +201,6 @@
   - Vite scaffold genera `oxlint` no `biome` → swap manual
   - `vitest run` sin tests falla con code 1 → agregar al menos un test placeholder
   - Path alias `@/*` necesita `resolve.alias` en vite.config Y vitest.config
+  - **Biome ignores:** `!**/template/` no funciona sin `root: true` en el biome.json raíz. Biome sube a buscar root config y los patrones `!**/dir/` no excluyen correctamente. Solución: `root: true` + `!template/` + `!template/**` (o simplemente `!template` en Biome 2.2+).
 - **OpenSpec lecciones:** "SHALL"/"MUST" requerido ("debe" no pasa), sección `## Purpose` obligatoria, formato WHEN/THEN estricto. En brownfield, verificar si el feature ya está implementado antes de escribir un delta spec.
 - **Memory search con Ollama:** configurar `memorySearch.provider: "ollama"` + `model: "nomic-embed-text"` en openclaw.json. Requiere `ollama pull nomic-embed-text`. Default del sistema es OpenAI (falla si no hay API key). CLI local requiere Node 24 (path usa Node 22).

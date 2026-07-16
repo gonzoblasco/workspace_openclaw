@@ -16,6 +16,18 @@ Do not manually reread startup files unless:
 2. The provided context is missing something you need
 3. You need a deeper follow-up read beyond the provided startup context
 
+## PR Review Check (startup ritual)
+
+Al inicio de cada sesión (o cuando sea relevante al contexto), revisar los PRs abiertos de Gonzo en repos externos para detectar:
+- Comentarios nuevos de maintainers que requieran respuesta
+- Cambios solicitados (review requests, CI failures)
+- PRs mergeados (para celebrar y actualizar CONTRIBUTING.md)
+- PRs stale sin actividad (para considerar follow-up)
+
+Usar `gh pr list --author gonzoblasco --state open --json number,title,comments,updatedAt` por repo, o el batch check del CONTRIBUTING.md.
+
+No hacer si la sesión es sobre un tema no relacionado (ej: solo preguntar la hora).
+
 ## Memory
 
 You wake up fresh each session. These files are your continuity:
