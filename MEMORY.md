@@ -24,14 +24,20 @@
 ## Open Source — pipeline activo
 - **Estrategia:** PRs a repos externos como evidencia pública de capacidad → portfolio vivo → menos entrevistas laborales
 - **akd-io/create-next-stack:** 10 PRs abiertos (#280 Bun, #281 React.FC, #282 Vitest, #283 Supabase, #284 Auth.js+shadcn, #285 fix git crash #231, #286 prettier-plugin-organize-imports #266, #287 eslint-strict #263, #288 Zustand #259, #289 Playwright #223). Esperando review.
-- **shadcn-ui/ui:** 2 PRs abiertos (#11179 InputOTP flicker, #11180 MessageScroller flicker). Esperando review.
+- **shadcn-ui/ui:** 3 PRs abiertos (#11179 InputOTP flicker, #11180 MessageScroller flicker, #11198 InputOTP ring fix). Esperando review.
 - **t3-oss/create-t3-app:** 2 PRs abiertos (#2239 fix Biome + bump versión ^2.5.3, #2240 fix Prettier .prettierignore). Ambos fixean la misma clase de bug: generated artifacts de Prisma no excluidos de las tools de formato/lint. 0 competidores en #2240, FrancoKaddour tenía branch competidor en #2239.
 - **TanStack/router:** 1 PR cerrado (#7818 stringifySearch en loaderDepsHash). A pesar de que el fix era correcto y tenía tests, fue rechazado por el maintainer debido al uso de automatización en el proceso de contribución. Lección: en repos Tier 0, la "estética" del proceso y el toque humano son críticos; evitar trazas de bots en commits y descripciones.
 - **vercel/ai:** 3 reviews técnicos en PRs ajenos (#14983, #13577, #12800) + 1 PR propio (#17274 fix warnings dropeadas en finish-step). Review de Vercel addressada, esperando merge.
 - **payloadcms/payload:** 1 PR abierto (#17342 fix blocks con 2+ uploads — data loss bug en richtext-lexical). Tier 1 completado: todos los repos del tier 1 tienen al menos un PR o review.
-- **Total: 20 PRs abiertos** en 8 repos externos. Esperando review de maintainers en el resto.
+- **facebook/astryx:** 2 PRs abiertos (#4022 WCAG 2.1 AA contrast fixes, #4023 Selector keyboard typeahead) + 2 comments en RFCs (#3349 InfoTip, #3885 Mobile tooltips). Design system de Meta, 150+ componentes accesibles, React + StyleX. CLA firmado. Estrategia: bugs concretos → PR rápido; RFCs → comentario técnico que posiciona.
+- **ibelick/ui-skills:** 1 PR abierto (#37 mejorar fixing-accessibility con WCAG 2.2). Repo chico, maintainer activo.
+- **Nutlope/hallmark:** 1 PR abierto (#32 fix Cursor install instructions). Skill de Together AI.
+- **OpenCut-app/OpenCut:** 1 comentario en issue #848 (export popover bug + accesibilidad). En rewrite, no acepta contribuciones; classic sí.
+- **shuding/nextra:** 1 PR abierto (#5029 Select scroll lock).
+- **Total: 25 PRs abiertos** en 12 repos externos. Esperando review de maintainers.
 - **PR registry completo** en `CONTRIBUTING.md` — cualquier sesión puede hacer batch check sin que el usuario pastee URLs
 - **Commit signing SSH configurado:** gh auth + SSH signing key, todos los commits se firman automáticamente
+- **gh CLI no autenticado en MacBook Air:** para batch checks de PRs, configurar `GH_TOKEN` o `gh auth login`. Sin auth, rate limit de API pública es bajo.
 - **Skill oss-contribute:** 6 fases (pipeline → triaje → implementación → PR → community participation → batch triage) + lecciones de 3 sesiones reales. Phase 4.8 (comunidad), Phase 6 (batch PR status check con buckets 🟢⚠️🔴)
 - **Fork de payloadcms/payload creado:** github.com/gonzoblasco/payload (último Tier 1)
 - **Próxima acción OSS:** seguir buscando issues sin PRs competidores en repos estratégicos. Bottleneck sigue siendo maintainer review time. Nuevos targets identificados: Biome #10922 (useSortedAttributes XML, Rust), shadcn #11125 (MessageScroller tail spacer, 0 competidores).
@@ -204,52 +210,16 @@
   - **Biome ignores:** `!**/template/` no funciona sin `root: true` en el biome.json raíz. Biome sube a buscar root config y los patrones `!**/dir/` no excluyen correctamente. Solución: `root: true` + `!template/` + `!template/**` (o simplemente `!template` en Biome 2.2+).
 - **OpenSpec lecciones:** "SHALL"/"MUST" requerido ("debe" no pasa), sección `## Purpose` obligatoria, formato WHEN/THEN estricto. En brownfield, verificar si el feature ya está implementado antes de escribir un delta spec.
 - **Memory search con Ollama:** configurar `memorySearch.provider: "ollama"` + `model: "nomic-embed-text"` en openclaw.json. Requiere `ollama pull nomic-embed-text`. Default del sistema es OpenAI (falla si no hay API key). CLI local requiere Node 24 (path usa Node 22).
-
-## Estilo al comentar en issues/PRs de terceros
-- Ser más natural y suelto, no escribir como manual de programación
-- Sonar a persona real, no a documentación técnica
-- En inglés siempre en repos externos
-- Bugs concretos sin competencia → PR rápido
-- RFCs → comentario técnico que posiciona, no código
-## Lecciones aprendidas
-- **HANDOFF.md NUNCA al workspace git de terceros.** Los HANDOFF.md son metadata de sesión para proyectos externos (repos donde contribuimos). No van commiteados al workspace_openclaw. En proyectos personales de Gonzo sí se usan, porque ahí es él mismo.
+- **Al comentar en issues/PRs de terceros:** ser más natural y suelto, no escribir como manual de programación. Sonar a persona real, no a documentación técnica. En inglés siempre en repos externos. Bugs concretos sin competencia → PR rápido. RFCs → comentario técnico que posiciona, no código.
+- **gh CLI no autenticado en MacBook Air:** para batch checks de PRs, configurar `GH_TOKEN` o `gh auth login`. Sin auth, rate limit de API pública es bajo.
+- **Astryx (facebook/astryx):** design system de Meta, 150+ componentes accesibles, React + StyleX. No incorporar en CSN como base. Target OSS activo. CLA de Meta firmado. Estrategia: bugs concretos → PR rápido; RFCs → comentario técnico que posiciona.
+- **Trending repos sprint:** ibelick/ui-skills (repo chico, maintainer activo, buena oportunidad para PRs de mejora de skills), Nutlope/hallmark (skill enorme de Together AI, bueno para PRs chicos de docs), OpenCut-app/OpenCut (en rewrite, no acepta contribuciones; classic sí).
 - **Estructura Products/Projects (2026-07-16):** Separar definición del producto (documentos internos) de la implementación (código pesado). `products/<slug>/` = BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS (qué y por qué, commit frecuente al workspace). `projects/<slug>/` = código, configs, src/ (cómo, repo separado). Productos con ciclo de Product Owner completo van en ambos; herramientas internas solo en `projects/`.
 - **Estructura docs/code (2026-07-16):** Reemplazo de la anterior. Ahora `projects/<slug>/docs/` + `projects/<slug>/code/`. Un proyecto = una carpeta. `docs/` = documentación interna (BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS, HANDOFF, ADRs). `code/` = implementación con su propio .git. `projects/*/code/` en .gitignore del workspace. Archivos de documentación faltantes se crean como placeholder en raíz del proyecto.
 - **LEARNINGS.md (2026-07-16):** Cada proyecto tiene `docs/LEARNINGS.md` para registrar lecciones aprendidas. El feedback de cada sesión se anota ahí + en `memory/YYYY-MM-DD.md`. Las lecciones transversales van en MEMORY.md.
 - **Fusiones lógicas (2026-07-16):** `pr_vscode_niveles` → `ai-engineering-bootcamp/code/`. `copilot-skills` (ex `--copilot-skills`) → `copilot-workflow-kit/code/`. Cuando un proyecto es la implementación de otro, se fusionan.
 - **Forks externos en projects/:** Tienen HANDOFF.md en raíz explicando qué son. Sus docs de sesión van en `docs/` del slug correspondiente, nunca en el repo del fork.
 - **Proyectos sin documentación:** Los archivos faltantes se documentan en HANDOFF.md en raíz del proyecto explicando qué falta generar.
-- Create Stack Next es 100% en español — release notes, docs, todo. No escribir en inglés aunque parezca lo "standard"
-- Triaje de PRs competidores ANTES de invertir tiempo (lección más importante de OSS night)
-- Reviews técnicas en PRs ajenos = contribución de valor sin necesidad de PR propio
-- Community participation = reputación: comentar, compartir descubrimientos, acknowledge tooling (CodSpeed, Vercel bots), cross-referencing issues. No es solo abrir PRs.
-- shadcn/ui: cambiar styles vs registry — 15 archivos, no 14 (registry new-york-v4 cuenta)
-- TanStack monorepo: instalar deps desde raíz con --filter, no dentro del package
-- vercel/ai: prestar atención a breaking changes en changesets (string → object)
-- **Scaffold pitfalls (Biome 2.5+, TS 6+, Tailwind v4, Vitest 4):**
-  - TypeScript 6+ depreca `baseUrl` → agregar `"ignoreDeprecations": "6.0"` en tsconfig
-  - Biome 2.5 cambió el schema: `organizeImports` → `assist.actions.source.organizeImports`, `recommended` → `preset`, schema URL debe matchear versión exacta
-  - Tailwind v4 `@theme` no parseado por Biome → necesita `css.parser.tailwindDirectives: true`
-  - `import.meta.env` sin `vite-env.d.ts` → agregar referencia
-  - Vite scaffold genera `oxlint` no `biome` → swap manual
-  - `vitest run` sin tests falla con code 1 → agregar al menos un test placeholder
-  - Path alias `@/*` necesita `resolve.alias` en vite.config Y vitest.config
-  - **Biome ignores:** `!**/template/` no funciona sin `root: true` en el biome.json raíz. Biome sube a buscar root config y los patrones `!**/dir/` no excluyen correctamente. Solución: `root: true` + `!template/` + `!template/**` (o simplemente `!template` en Biome 2.2+).
-- **OpenSpec lecciones:** "SHALL"/"MUST" requerido ("debe" no pasa), sección `## Purpose` obligatoria, formato WHEN/THEN estricto. En brownfield, verificar si el feature ya está implementado antes de escribir un delta spec.
-- **Memory search con Ollama:** configurar `memorySearch.provider: "ollama"` + `model: "nomic-embed-text"` en openclaw.json. Requiere `ollama pull nomic-embed-text`. Default del sistema es OpenAI (falla si no hay API key). CLI local requiere Node 24 (path usa Node 22).
-
-## Estilo al comentar en issues/PRs de terceros
-- Ser más natural y suelto, no escribir como manual de programación
-- Sonar a persona real, no a documentación técnica
-- En inglés siempre en repos externos
-- Bugs concretos sin competencia → PR rápido
-- RFCs → comentario técnico que posiciona, no código
-
-## Skills de OpenClaw workspace (2026-07-16)
-- **openspec-creator:** Crear specs OpenSpec as-built o delta para features existentes, guiando al usuario paso a paso. Dos flujos: as-built (documentar lo que existe) y delta (planificar lo que se va a construir).
-- **session-closure:** Ritual de cierre de sesión automatizado. Escanea conversación, escribe HANDOFF/memory/CHANGELOG, commitea cambios en curso y workspace, muestra resumen.
-
-## Aprendizajes de esta sesión (2026-07-16)
 - **Las skills se construyen haciendo, no escribiendo.** La skill openspec-creator empezó como spec as-built de meli-webhook. Al hacerla descubrimos que faltaba el flujo delta. La sesión misma fue el laboratorio que reveló lo que la skill necesitaba.
 - **El viaje es el producto.** Gonzo no quería que le explique OpenSpec teóricamente. Quería recorrer el proceso juntos para que yo aprenda a guiarlo. La skill captura el viaje, no la teoría.
 - **Specs as-built primero, delta después.** Primero documentamos lo que existe (meli-webhook, CLI interactivo). Después de entender el patrón, agregamos el flujo delta. El orden importa.

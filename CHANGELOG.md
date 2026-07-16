@@ -1,36 +1,38 @@
 # CHANGELOG.md
 
-## [2026-07-16] — pr_vscode_niveles: repo no existía
+## [2026-07-16] — Consolidación de memoria + OpenSpec + Skills + pr_vscode_niveles
 
-### Situación
-- Intenté hacer push a `pr_vscode_niveles` y falló
-- MEMORY.md lo marca como 🧊 FREEZER, pero asumí que el repo ya existía en GitHub
+### Consolidación de memoria
+- **OSS pipeline actualizado:** shadcn-ui/ui ahora 3 PRs (#11198 agregado), facebook/astryx (2 PRs + 2 comments), ibelick/ui-skills PR #37, Nutlope/hallmark PR #32, OpenCut-app/OpenCut comment #848. Total: 25 PRs en 12 repos.
+- **gh CLI no autenticado en MacBook Air** documentado como limitación técnica.
+- **Lección agregada:** ser más natural al comentar en issues/PRs de terceros (sonar a persona real, no a documentación técnica).
+- **Astryx (facebook/astryx):** design system de Meta documentado como target OSS activo con estrategia (bugs → PR, RFCs → comentario).
+- **Trending repos sprint:** ibelick/ui-skills, Nutlope/hallmark, OpenCut-app/OpenCut documentados como oportunidades.
 
-### Diagnóstico
-```bash
-gh repo view gonzoblasco/pr_vscode_niveles
-# → "Could not resolve to a Repository"
-```
+### pr_vscode_niveles — repo no existía
+- Intenté hacer push a `pr_vscode_niveles` y falló porque el repo no existía en GitHub
+- Creado repo privado: github.com/gonzoblasco/pr_vscode_niveles
+- Lección: no asumir que un proyecto FREEZER tiene repo remoto existente. Verificar con `gh repo view`.
 
-### Acción
-- Proyecto local en `/Users/gonzoblasco/.openclaw/workspace/projects/pr_vscode_niveles`
-- Creé repo privado en GitHub:
-  ```bash
-  gh repo create gonzoblasco/pr_vscode_niveles --private --source=. --push
-  ```
-- Fix de remote (ya existía `origin`):
-  ```bash
-  git remote set-url origin git@github.com:gonzoblasco/pr_vscode_niveles.git
-  git push -u origin main
-  ```
+### OpenSpec + Skills
+- Skill `openspec-creator`: crear specs OpenSpec as-built y delta
+- Skill `session-closure`: ritual de cierre de sesión automatizado
+- Spec as-built para `meli-webhook` en SoporteML v1 (182 líneas, 9 requisitos)
+- Spec as-built para `CLI interactivo` en create-stack-next (234 líneas, 9 requisitos)
+- OpenSpec inicializado en raíz de create-stack-next
 
-### Resultado
-- Repo creado: https://github.com/gonzoblasco/pr_vscode_niveles (privado)
-- Remote `origin` configurado
-- Push inicial de `main` realizado ✅
+### Estructura del workspace (2026-07-16)
+- Separación Products/Projects: `products/<slug>/` = definición, `projects/<slug>/` = implementación
+- Estructura docs/code: `projects/<slug>/docs/` + `projects/<slug>/code/`
+- LEARNINGS.md por proyecto en `docs/`
+- Fusiones lógicas: pr_vscode_niveles → ai-engineering-bootcamp, copilot-skills → copilot-workflow-kit
+- Forks externos: HANDOFF.md en raíz, docs de sesión en `docs/` del slug
 
-### Lección
-No asumir que un proyecto "FREEZER" tiene repo remoto existente. Verificar con `gh repo view` antes de intentar push. Si es proyecto congelado sin repo, crearlo explícitamente.
+### Aprendizajes de la sesión
+- Las skills se construyen haciendo, no escribiendo
+- El viaje es el producto — Gonzo recorre el proceso para que yo aprenda a guiarlo
+- Specs as-built primero, delta después
+- El cierre de sesión también es un viaje — session-closure captura aprendizajes, no solo archivos
 
 ## [2026-07-15] — Cierre de sesión CSN + CNS
 
