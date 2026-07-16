@@ -9,15 +9,17 @@
 ### Phases
 - [x] Phase 1: Foundation — ✅ COMPLETA
 - [~] Phase 2: MeLi Integration + Auto-learn — en progreso
-- [~] Phase 3: Inbox UI — en progreso
-- [ ] Phase 4: KB UI + RAG — pendiente
-- [ ] Phase 5: AI Copilot — pendiente
-- [ ] Phase 6: Auto-respuesta inteligente — pendiente
-- [ ] Phase 7: Resumen IA de hilos — pendiente
-- [ ] Phase 8: Billing MP — pendiente
-- [ ] Phase 9: Settings consolidado — pendiente
-- [ ] Phase 10: Analytics básico — pendiente
-- [ ] Phase 11: Hardening + Polish — pendiente
+- [x] Phase 3: Inbox UI — ✅ COMPLETA
+- [x] Phase 4: KB UI + RAG — ✅ COMPLETA
+- [x] Phase 5: AI Copilot — ✅ COMPLETA
+- [x] Phase 6: Auto-respuesta inteligente — ✅ COMPLETA
+- [x] Phase 7: Resumen IA de hilos — ✅ COMPLETA
+- [x] Phase 8: Billing MP — ✅ COMPLETA
+- [x] Phase 9: Settings consolidado — ✅ COMPLETA
+- [x] Phase 10: Analytics básico — ✅ COMPLETA
+- [x] Phase 11: Hardening + Polish — ✅ COMPLETA
+
+### MVP — ✅ COMPLETO (11 fases)
 
 ### Phase 2 detail
 - [x] Edge Function: meli-oauth-callback (exchange code → tokens, store in companies)

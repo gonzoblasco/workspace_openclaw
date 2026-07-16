@@ -114,7 +114,9 @@
 - Supabase local corriendo (`supabase start`), .env.local con keys reales
 - shadcn/ui components: button, input, card, label, dialog, dropdown-menu, avatar
 - Auth UI: LoginPage.tsx, RegisterPage.tsx
-- **Pendiente Phase 1:** useAuth hook, onboarding flow, OpenSpec init
+- **MVP COMPLETO (11 fases):** MeLi Integration + Auto-learn (6 EFs), Inbox UI (teclado + realtime), KB UI + RAG, AI Copilot (DeepSeek), Auto-respuesta inteligente, Resumen IA de hilos, Billing MP (REAL), Settings consolidado (8 secciones), Analytics (charts), Hardening (ErrorBoundary + AppLayout). 7 Edge Functions, 8 OpenSpec specs.
+- **PENDIENTE #1:** Configurar DEEPSEEK_API_KEY, MELI_APP_ID/CLIENT_SECRET/REDIRECT_URI, MP_ACCESS_TOKEN/PREAPPROVAL_PLAN_ID/WEBHOOK_SECRET para flujo E2E real
+- **PENDIENTE #2:** Fix errores en create-stack-next (Biome 2.5, TS 6, Tailwind v4)
 - **🔄 Cambio de modelo 2026-07-15 16:09:** qwen3.5:cloud → deepseek-v4-flash. Contexto guardado en memory/2026-07-15.md
 
 ### KanamAI
