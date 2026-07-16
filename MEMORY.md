@@ -151,6 +151,18 @@
 - Sueño: proyectos existentes adoptan su estructura (AGENTS.md, ROADMAP, HANDOFF, CHANGELOG, ADRs)
 - Repo: github.com/gonzoblasco/create-stack-next
 
+### create-with-ai (nuevo, 2026-07-16)
+- **"Tu propio Lovable en tu máquina."** CLI que escucha en lenguaje natural, analiza con IA (BYOK), y scaffoldea proyectos completos.
+- **Stack generado:** React 19 + Vite + TS + Tailwind v4 + shadcn/ui + Supabase + React Router 7 + TanStack Query 5
+- **MVP recortado a Fase 0:** solo CLI + scaffold. Modo iteración oculto tras `--iterate`.
+- **Wizard interactivo sin API key:** preguntas paso a paso (tipo proyecto, auth, tablas, columnas con tipos).
+- **BYOK:** OpenAI, Anthropic, DeepSeek.
+- **6 ADRs + 1 nuevo (ADR-007: MVP recortado).**
+- **Proyecto generado verificado:** typecheck ✅ test ✅ build ✅
+- **Repositorio:** github.com/gonzoblasco/create-with-ai
+- **Pendiente:** publicar en npm como `@gonzoblasco/create-with-ai`
+- **create-stack-next → 🧊 FREEZER.** create-with-ai lo reemplaza como producto activo.
+
 ### create-next-stack (akd-io) — colaboración
 - Repo externo: github.com/akd-io/create-next-stack (570 stars, 4 contributors)
 - Filosofía: "buffet" de opciones vs nuestro CSN opinado. Complementario, no competidor
@@ -257,3 +269,8 @@
 - **El modo iteración es lo que convierte un scaffold en un compañero.** Poder modificar proyectos existentes es lo que hace que el sistema "entienda" el proyecto y no sea un generador de una sola vez.
 - **Las fases se ejecutan mejor con commits atómicos.** Cada fase de create-with-ai tuvo su propio commit con ADR. El historial es legible y el progreso medible.
 - **El momento eureka hay que capturarlo inmediatamente.** La idea de create-with-ai surgió de una conversación y se plasmó en BRIEF en minutos. Si lo dejamos para después, se pierde.
+- **Un PO externo que cuestione el scope es invaluable.** La revisión de Kanam como PO reveló que el MVP de create-with-ai era demasiado ambicioso (5 fases, ~20 días). Recortar a Fase 0 fue la decisión correcta. El producto se construye iterando, no planificando todo antes.
+- **No vendas humo.** El modo iteración estaba en el menú principal pero no aplicaba cambios. Ocultarlo tras `--iterate` hasta que funcione es más honesto.
+- **El wizard sin API key es mejor que el keyword matching.** Preguntar es más útil que adivinar. El usuario prefiere responder 5 preguntas a recibir un análisis incorrecto.
+- **El scaffold generado necesita verificación real.** El primer intento de build del proyecto generado falló (tsconfig incompleto, build script incorrecto). Hay que probar el output, no solo el CLI.
+- **Los ADRs se desactualizan rápido.** Los cambios de una sesión dejaron 3 ADRs obsoletos. Hay que actualizarlos inmediatamente cuando cambian las decisiones.
