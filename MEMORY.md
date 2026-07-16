@@ -211,6 +211,46 @@
 - En inglés siempre en repos externos
 - Bugs concretos sin competencia → PR rápido
 - RFCs → comentario técnico que posiciona, no código
+## Lecciones aprendidas
+- **HANDOFF.md NUNCA al workspace git de terceros.** Los HANDOFF.md son metadata de sesión para proyectos externos (repos donde contribuimos). No van commiteados al workspace_openclaw. En proyectos personales de Gonzo sí se usan, porque ahí es él mismo.
+- **Estructura Products/Projects (2026-07-16):** Separar definición del producto (documentos internos) de la implementación (código pesado). `products/<slug>/` = BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS (qué y por qué, commit frecuente al workspace). `projects/<slug>/` = código, configs, src/ (cómo, repo separado). Productos con ciclo de Product Owner completo van en ambos; herramientas internas solo en `projects/`.
+- **Estructura docs/code (2026-07-16):** Reemplazo de la anterior. Ahora `projects/<slug>/docs/` + `projects/<slug>/code/`. Un proyecto = una carpeta. `docs/` = documentación interna (BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS, HANDOFF, ADRs). `code/` = implementación con su propio .git. `projects/*/code/` en .gitignore del workspace. Archivos de documentación faltantes se crean como placeholder en raíz del proyecto.
+- **LEARNINGS.md (2026-07-16):** Cada proyecto tiene `docs/LEARNINGS.md` para registrar lecciones aprendidas. El feedback de cada sesión se anota ahí + en `memory/YYYY-MM-DD.md`. Las lecciones transversales van en MEMORY.md.
+- **Fusiones lógicas (2026-07-16):** `pr_vscode_niveles` → `ai-engineering-bootcamp/code/`. `copilot-skills` (ex `--copilot-skills`) → `copilot-workflow-kit/code/`. Cuando un proyecto es la implementación de otro, se fusionan.
+- **Forks externos en projects/:** Tienen HANDOFF.md en raíz explicando qué son. Sus docs de sesión van en `docs/` del slug correspondiente, nunca en el repo del fork.
+- **Proyectos sin documentación:** Los archivos faltantes se documentan en HANDOFF.md en raíz del proyecto explicando qué falta generar.
+- Create Stack Next es 100% en español — release notes, docs, todo. No escribir en inglés aunque parezca lo "standard"
+- Triaje de PRs competidores ANTES de invertir tiempo (lección más importante de OSS night)
+- Reviews técnicas en PRs ajenos = contribución de valor sin necesidad de PR propio
+- Community participation = reputación: comentar, compartir descubrimientos, acknowledge tooling (CodSpeed, Vercel bots), cross-referencing issues. No es solo abrir PRs.
+- shadcn/ui: cambiar styles vs registry — 15 archivos, no 14 (registry new-york-v4 cuenta)
+- TanStack monorepo: instalar deps desde raíz con --filter, no dentro del package
+- vercel/ai: prestar atención a breaking changes en changesets (string → object)
+- **Scaffold pitfalls (Biome 2.5+, TS 6+, Tailwind v4, Vitest 4):**
+  - TypeScript 6+ depreca `baseUrl` → agregar `"ignoreDeprecations": "6.0"` en tsconfig
+  - Biome 2.5 cambió el schema: `organizeImports` → `assist.actions.source.organizeImports`, `recommended` → `preset`, schema URL debe matchear versión exacta
+  - Tailwind v4 `@theme` no parseado por Biome → necesita `css.parser.tailwindDirectives: true`
+  - `import.meta.env` sin `vite-env.d.ts` → agregar referencia
+  - Vite scaffold genera `oxlint` no `biome` → swap manual
+  - `vitest run` sin tests falla con code 1 → agregar al menos un test placeholder
+  - Path alias `@/*` necesita `resolve.alias` en vite.config Y vitest.config
+  - **Biome ignores:** `!**/template/` no funciona sin `root: true` en el biome.json raíz. Biome sube a buscar root config y los patrones `!**/dir/` no excluyen correctamente. Solución: `root: true` + `!template/` + `!template/**` (o simplemente `!template` en Biome 2.2+).
+- **OpenSpec lecciones:** "SHALL"/"MUST" requerido ("debe" no pasa), sección `## Purpose` obligatoria, formato WHEN/THEN estricto. En brownfield, verificar si el feature ya está implementado antes de escribir un delta spec.
+- **Memory search con Ollama:** configurar `memorySearch.provider: "ollama"` + `model: "nomic-embed-text"` en openclaw.json. Requiere `ollama pull nomic-embed-text`. Default del sistema es OpenAI (falla si no hay API key). CLI local requiere Node 24 (path usa Node 22).
+
+## Estilo al comentar en issues/PRs de terceros
+- Ser más natural y suelto, no escribir como manual de programación
+- Sonar a persona real, no a documentación técnica
+- En inglés siempre en repos externos
+- Bugs concretos sin competencia → PR rápido
+- RFCs → comentario técnico que posiciona, no código
+
 ## Skills de OpenClaw workspace (2026-07-16)
 - **openspec-creator:** Crear specs OpenSpec as-built o delta para features existentes, guiando al usuario paso a paso. Dos flujos: as-built (documentar lo que existe) y delta (planificar lo que se va a construir).
 - **session-closure:** Ritual de cierre de sesión automatizado. Escanea conversación, escribe HANDOFF/memory/CHANGELOG, commitea cambios en curso y workspace, muestra resumen.
+
+## Aprendizajes de esta sesión (2026-07-16)
+- **Las skills se construyen haciendo, no escribiendo.** La skill openspec-creator empezó como spec as-built de meli-webhook. Al hacerla descubrimos que faltaba el flujo delta. La sesión misma fue el laboratorio que reveló lo que la skill necesitaba.
+- **El viaje es el producto.** Gonzo no quería que le explique OpenSpec teóricamente. Quería recorrer el proceso juntos para que yo aprenda a guiarlo. La skill captura el viaje, no la teoría.
+- **Specs as-built primero, delta después.** Primero documentamos lo que existe (meli-webhook, CLI interactivo). Después de entender el patrón, agregamos el flujo delta. El orden importa.
+- **El cierre de sesión también es un viaje.** La skill session-closure se creó después de que Gonzo señalara que el cierre anterior (de otra sesión) no había capturado los aprendizajes. El ritual de cierre no es solo commitear archivos — es asegurarse de que el aprendizaje no se pierda.
