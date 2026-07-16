@@ -250,3 +250,10 @@
 - **El viaje es el producto.** Gonzo no quería que le explique OpenSpec teóricamente. Quería recorrer el proceso juntos para que yo aprenda a guiarlo. La skill captura el viaje, no la teoría.
 - **Specs as-built primero, delta después.** Primero documentamos lo que existe (meli-webhook, CLI interactivo). Después de entender el patrón, agregamos el flujo delta. El orden importa.
 - **El cierre de sesión también es un viaje.** La skill session-closure se creó después de que Gonzo señalara que el cierre anterior (de otra sesión) no había capturado los aprendizajes. El ritual de cierre no es solo commitear archivos — es asegurarse de que el aprendizaje no se pierda.
+- **Los bugs más sutiles están en los edge cases.** ArrowUp que no wrappeaba, defaultActiveId sin validación — no son bugs del flujo feliz, son del flujo que nadie prueba. 52 tests de edge cases encontraron 3 bugs reales en accessible-ui.
+- **El nombre lo es todo.** "create-with-ai" dice exactamente lo que hace. "create-stack-next" dice el stack, no el valor. El nombre debe comunicar el beneficio, no la tecnología.
+- **BYOK (Bring Your Own Key) es la decisión correcta para un MVP de IA.** No preocuparse por infraestructura, el usuario mantiene control, y se puede agregar servicio propio después.
+- **El stack adaptativo es el diferenciador clave.** Que el sistema elija el stack según el proyecto, no al revés. Eso es lo que lo diferencia de Lovable/Bolt.
+- **El modo iteración es lo que convierte un scaffold en un compañero.** Poder modificar proyectos existentes es lo que hace que el sistema "entienda" el proyecto y no sea un generador de una sola vez.
+- **Las fases se ejecutan mejor con commits atómicos.** Cada fase de create-with-ai tuvo su propio commit con ADR. El historial es legible y el progreso medible.
+- **El momento eureka hay que capturarlo inmediatamente.** La idea de create-with-ai surgió de una conversación y se plasmó en BRIEF en minutos. Si lo dejamos para después, se pierde.
