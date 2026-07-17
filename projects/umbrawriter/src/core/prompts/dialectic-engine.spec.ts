@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { buildDialecticPrompt, parseEmotionalTone, generateDivergencePaths } from './dialectic-engine'
 
 describe('Divergence Engine', () => {
    describe('Prompt Generation', () => {
