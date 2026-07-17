@@ -218,6 +218,7 @@
 - **Scaffold pitfalls (Biome 2.5+, TS 6+, Tailwind v4, Vitest 4):**
   - TypeScript 6+ depreca `baseUrl` → agregar `"ignoreDeprecations": "6.0"` en tsconfig
   - Biome 2.5 cambió el schema: `organizeImports` → `assist.actions.source.organizeImports`, `recommended` → `preset`, schema URL debe matchear versión exacta
+  - En proyectos Vite + React, los errores de JSX suelen venir de tres capas: tipos de React (`@types/react`, `@types/react-dom`), `tsconfig.json` con `jsx: "react-jsx"`, y compatibilidad con Vitest si hay specs que importan `vitest` o `vitest/globals`.
   - Tailwind v4 `@theme` no parseado por Biome → necesita `css.parser.tailwindDirectives: true`
   - `import.meta.env` sin `vite-env.d.ts` → agregar referencia
   - Vite scaffold genera `oxlint` no `biome` → swap manual
