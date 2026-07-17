@@ -6,7 +6,6 @@
 - Chequear `projects/PROYECTOS.md` — ¿algo que necesite atención?
 - Revisar si hay HANDOFF.md pendientes de actualizar
 - Si hubo cambios en el workspace, actualizar `CHANGELOG.md`
-- Verificar estado de cron jobs
 
 ## Reglas
 

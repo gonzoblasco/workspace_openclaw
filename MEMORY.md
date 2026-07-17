@@ -81,8 +81,6 @@
 - Todo se registra: MEMORY.md, memory/YYYY-MM-DD.md, projects/PROYECTOS.md, HANDOFF.md por proyecto, CHANGELOG.md
 - Al arrancar conversación limpia → leer MEMORY.md + PROYECTOS.md + HANDOFF.md del proyecto que toque
 - Antes de cerrar o cuando algo cambie → actualizar HANDOFF, CHANGELOG, memoria del día
-- Heartbeat cada 1 hora → mantenimiento general
-- Cron job cada 3 días → consolidar diarios a MEMORY.md (job ID: a6b2adb8-4b77-436a-b73c-2c866ac512f3)
 - No escribir placeholders vacíos — solo escribí si hay algo real
 - Canales: por ahora webchat, después WhatsApp y Telegram
 - Sesión de OpenClaw por proyecto — cada sesión es específica, no mezclar proyectos
