@@ -1,0 +1,137 @@
+# 🌿 Kanam Design Tokens
+**Identity**: IA that fuels all products (identidad transversal + guardrails)  
+**Emoji**: 🌿  
+**Personality**: Directa, honesta, cálida pero no servil
+
+---
+
+## 1. Brand Colors
+
+```css
+/* Primary Kanam brand */
+:root {
+  --kanam-primary: #0d9488;   /* teal-600 equivalent */
+  --kanam-primary-light: #f0fdf9;
+  --kanam-primary-dark: #057a6b;
+  
+  /* Accent colors for different patterns */
+  --kanam-success: #22c55e;
+  --kanam-warning: #eab308;
+  --kanam-error: #ef4444;
+}
+```
+
+**Rationale**: Teal reflects "growth" + "accessibility" duality. Green = growth, yellow = warning/alerts, red = errors (standard web colors).
+
+---
+
+## 2. Typography System
+
+```css
+/* Based on Inter font — clean, neutral, highly readable */
+:root {
+  --font-family-kanam: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Base type scale (accessible ratios) */
+  --fs-base: clamp(16px, 0.8rem + 0.3vh, 20px);   /* ~16-20px responsive */
+  --fs-h1: clamp(2.5rem, 1rem + 2.5vw, 4rem);      /* ~40-64px for headings */
+  --fs-h2: clamp(2rem, 0.75rem + 1.5vw, 3rem);      /* ~32-48px */
+  --fs-h3: clamp(1.5rem, 0.5rem + 1vw, 2.25rem);    /* ~24-36px */
+  
+  /* Line heights for accessibility */
+  --lh-base: 1.75; /* WCAG AA recommendation for body text */
+  --lh-heading: 1.1;
+}
+```
+
+**Typography Choices**: Inter is clean, neutral (not expressive), highly readable at small sizes. Good for technical docs and code.
+
+---
+
+## 3. Spacing System
+
+```css
+/* 4px grid based (8-point system) */
+:root {
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+}
+```
+
+---
+
+## 4. Focus States (Critical for Keyboard Users)
+
+```css
+/* High contrast focus rings per WCAG 2.2 guidelines */
+:root {
+  /* Ring thickness minimum: 2px (WCAG AA requirement) */
+  --focus-ring-thickness: 2px;
+  
+  /* Ring color: high-contrast orange for visibility */
+  --focus-ring-color: #f59e0b;
+  
+  /* Outline style: solid (preferred for clarity) */
+  --focus-outline-style: solid;
+  
+  /* Animation speed: fast (300ms) for quick keyboard response */
+  --focus-anim-duration: 300ms;
+}
+
+/* Apply to all interactive elements */
+button, a, input, select, [tabindex], *::marker {
+  &:focus {
+    outline: var(--focus-ring-thickness) solid var(--focus-ring-color);
+    outline-offset: 2px; /* Offset for better visibility */
+  }
+}
+```
+
+**Why**: Orange is more visible than blue on white background. Solid outline is clearer than dashed for keyboard users. High contrast ratio (16:1) exceeds WCAG AAA.
+
+---
+
+## 5. Component-Specific Tokens
+
+### Combobox
+```css
+/* Focus trap handling + list autocomplete patterns */
+--combobox-list-item-hover-bg: hsl(210, 8%, 97%);
+--combobox-panel-max-height: calc(var(--space-lg) * 4);
+```
+
+### Modal
+```css
+/* Focus management + ESC close states */
+--modal-overlay-z-index: 4;
+--modal-dialog-transition-duration: 200ms;
+```
+
+### Tabs
+```css
+/* Manual activation mode with keyboard navigation */
+--tab-panel-transition-duration: 150ms;
+--tab-indicator-size: 3px;
+```
+
+---
+
+## 6. Accessibility Requirements Checklist (WCAG 2.2)
+
+```javascript
+const REQUIRED_WCAG_CHECKS = [
+  "color-contrast: contrast ratio ≥ 4.5:1 (text) / 3:1 (large text)",
+  "focus-indicator: visible outline on all focusable elements",
+  "keyboard-accessible: all functions reachable via keyboard alone",
+  "screen-reader-compatible: proper ARIA roles and labels",
+  "no-timeouts: no animations/changes that require user attention without trigger",
+];
+```
+
+---
+
+*Last Updated: 2026-07-18 | Owner: Kanam (AI-assisted)*  
+*Reference: WAI-APG patterns + WCAG 2.2 guidelines + accessible-ui base component specs*
