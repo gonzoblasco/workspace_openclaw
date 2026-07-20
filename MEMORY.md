@@ -25,10 +25,6 @@
 ### a11y-fixer
 - Fixes de accesibilidad. En curso, Fase 1 (MVP) en definición.
 
-### futbol-ps2
-- Juego Godot 3D tipo FIFA/PES PS2. 🎉 MVP completo.
-- Post-MVP: menú principal, selección de equipos, offside, faltas, córners, sonido, gamepad, 2 jugadores locales.
-
 ### create-stack-next
 - Scaffolder opinado para Next.js 15. Publicado en npm. Diferenciación real vs create-next-app.
 - **Estado:** vivo, no tocar. Necesita evolución, no reset.
@@ -66,6 +62,7 @@
 
 ## Repos archivados / eliminados
 
+- **futbol-ps2** → eliminado (MVP completo, descartado)
 - **copilot-skills** → archivado (reemplazado por workflow-kit)
 - **chatgpt-project-architect** → archivado (absorbido por AGDS)
 - **0001** → eliminar o archivar (sin propósito)
