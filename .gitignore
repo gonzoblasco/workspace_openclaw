@@ -39,7 +39,8 @@ projects/*/*
 !projects/*/.knowledge/**
 !projects/*/README.md
 # Ignorar .git internos de proyectos (evita submódulos automáticos)
-projects/*/.git
+.git
+projects/**/.git
 
 # Antigua estructura products/ (migrada a projects/<slug>/docs/)
 products/

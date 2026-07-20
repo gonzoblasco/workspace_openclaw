@@ -1,3 +1,9 @@
 [submodule "projects/antigravity-developer-stack"]
 	path = projects/antigravity-developer-stack
 	url = https://github.com/gonzoblasco/antigravity-developer-stack.git
+[submodule "projects/ai-developer-stack"]
+	path = projects/ai-developer-stack
+	url = https://github.com/gonzoblasco/ai-developer-stack.git
+[submodule "projects/create-stack"]
+	path = projects/create-stack
+	url = https://github.com/gonzoblasco/create-stack.git
