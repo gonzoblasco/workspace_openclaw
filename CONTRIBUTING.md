@@ -91,6 +91,7 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 | akd-io/create-next-stack | [#289](https://github.com/akd-io/create-next-stack/pull/289) | Playwright | Esperando review |
 | t3-oss/create-t3-app | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | biome ignore generated | Esperando review, CI verde |
 | shuding/nextra | [#5029](https://github.com/shuding/nextra/pull/5029) | select modal={false} | Esperando review |
+| payloadcms/payload | [#17413](https://github.com/payloadcms/payload/pull/17413) | fix: duplicate latest=true version rows | Abierto, esperando review |
 | payloadcms/payload | [#17342](https://github.com/payloadcms/payload/pull/17342) | lexical blocks stale form state | CI verde, esperando review |
 
 ### Reviews técnicas (sin PR propio, suma visibilidad)
