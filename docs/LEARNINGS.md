@@ -89,6 +89,18 @@ Si no se hace, el primer CI falla y perdés 10 minutos debuggeando algo que sab�
 
 **Lección:** esto debería ser parte del workflow de scaffold, no un fix post-hoc. Agregar al checklist de creación de proyecto.
 
+### 20. `biome check --unsafe` puede romper typecheck — revisar siempre después
+El unsafe fix de Biome cambió `this.browser!.newPage()` a `this.browser?.newPage()`, lo que hizo que `page` fuera `Page | undefined`. TypeScript lo atrapó en el typecheck, pero si solo corrés `biome check --write --unsafe` sin verificar, el CI pasa lint pero falla en typecheck.
+
+**El patrón correcto:** en vez de optional chaining, usar un guard explícito:
+```ts
+if (!this.browser) throw new Error('...')
+const page = await this.browser.newPage()
+```
+Esto satisface tanto a Biome (no usa non-null assertion) como a TypeScript (page no es undefined).
+
+**Lección:** después de `biome check --unsafe`, siempre correr `tsc --noEmit` para verificar que no introdujo errores de tipo. El unsafe fix confía en Biome, no en TypeScript.
+
 ---
 
 ## 2026-07-20 — Patrones de fix y humanización en OSS
