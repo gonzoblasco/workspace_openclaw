@@ -61,6 +61,36 @@ La estructura del bootcamp está completa (10 niveles, 23 proyectos), pero todo 
 
 ---
 
+## 2026-07-20 — Biome: el lint que rompe CI por culpa de nuestro propio stack
+
+### 17. Biome formatea su propio JSON de configuración — y si no lo hacés, rompe CI
+`biome.json` no es un archivo de configuración pasivo. Biome lo lee **y lo lintea** con sus propias reglas de formato. Si el JSON no está formateado según las reglas de Biome (indentStyle, indentWidth, lineWidth), `biome check .` falla.
+
+**El error concreto:** el scaffold de create-stack-next generó `biome.json` con tabs, pero la config de Biome dice `indentStyle: "space", indentWidth: 2`. Biome detecta la inconsistencia y la reporta como error.
+
+**Fix:** correr `npx biome check --write biome.json` después de crear el proyecto. Biome se autoformatea.
+
+**Lección para el workflow de scaffold:** el último paso del scaffold debe ser `npx biome check --write .` para que Biome deje todo consistente. Si no, el primer CI falla por una pavada.
+
+### 18. Los componentes de shadcn/ui generan falsos positivos de a11y en Biome
+`noLabelWithoutControl` se dispara en `label.tsx` de shadcn/ui porque el componente `Label` es un wrapper genérico que no tiene `htmlFor` — el control se asocia en el componente que lo usa. Es un falso positivo.
+
+**Fix:** ignorar `src/components/ui/*` en `biome.json` > `files.ignore`. Esos componentes vienen de shadcn/ui y no deberían pasar por nuestro lint.
+
+**Lección para el workflow de scaffold:** agregar `src/components/ui/*` a los ignores de Biome automáticamente al crear el proyecto.
+
+### 19. Biome + shadcn/ui: el combo que siempre da problemas si no se configura desde el día 1
+Cada vez que se crea un proyecto con shadcn/ui + Biome, hay que:
+1. Ignorar `src/components/ui/*` en `biome.json`
+2. Correr `npx biome check --write .` para que Biome se autoformatee
+3. Verificar que `biome check .` pase limpio antes del primer commit
+
+Si no se hace, el primer CI falla y perdés 10 minutos debuggeando algo que sabías que iba a pasar.
+
+**Lección:** esto debería ser parte del workflow de scaffold, no un fix post-hoc. Agregar al checklist de creación de proyecto.
+
+---
+
 ## 2026-07-20 — Patrones de fix y humanización en OSS
 
 ### 7. Fix de una línea + defensa en profundidad en la capa contigua

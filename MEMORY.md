@@ -119,6 +119,9 @@ Lo esencial. El detalle está en `docs/LEARNINGS.md`.
 - **No todo lo incompleto necesita reset** — distinguir entre proyectos que necesitan redefinición (reset) y proyectos que necesitan iteración (evolución).
 - **El vehículo importa tanto como el contenido** — AGDS tiene contenido valioso pero estructura wrong. A veces el problema no es la idea sino cómo se empaqueta.
 - **Proyectos de contenido ≠ proyectos de software** — ai-engineering-bootcamp no necesita código, necesita escritura. El approach es diferente.
+- **Biome se autoformatea — correr `npx biome check --write .` post-scaffold** — si no, el primer CI falla porque Biome lintea su propio `biome.json`.
+- **shadcn/ui + Biome = ignorar `src/components/ui/*`** — los componentes de shadcn generan falsos positivos de a11y. Agregar al `files.ignore` de `biome.json` desde el día 1.
+- **Setup de proyecto nuevo: git init + .knowledge/ + .gitignore + submodule** — hacer todo de una, no post-hoc.
 
 ## Estilo en issues/PRs de terceros
 
