@@ -32,12 +32,15 @@ test-results/
 # Regla: ignorar todo el contenido de projects/ EXCEPTO:
 #   - .knowledge/ (memoria de sesión)
 #   - README.md (descripción del proyecto, visible desde el workspace)
+#   - *-knowledge/ (memoria externa para proyectos con git propio)
 projects/*
 !projects/*/
 projects/*/*
 !projects/*/.knowledge/
 !projects/*/.knowledge/**
 !projects/*/README.md
+!projects/*-knowledge/
+!projects/*-knowledge/**
 # Ignorar .git internos de proyectos (evita submódulos automáticos)
 .git
 projects/**/.git
