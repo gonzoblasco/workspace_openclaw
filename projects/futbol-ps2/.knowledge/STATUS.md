@@ -17,17 +17,17 @@
 | 4 — El equipo humano | ✅ Completa | 100% |
 | 5 — IA CPU | ✅ Completa | 100% |
 | 6 — Reglas básicas | ✅ Completa | 100% |
-| 7 — UI y pulido MVP | ⏳ Pendiente | 0% |
+| 7 — UI y pulido MVP | ✅ Completa | 100% |
 
 ## MVP
 
 **Definido:** Partido 1vsCPU, 5 min, 2 equipos genéricos, controles teclado, cámara dinámica PS2
 
-**Completitud:** 0% (Fases 0-6 completas)
+**Completitud:** 100% — 🎉 MVP COMPLETO
 
 ## Próximo paso
 
-Fase 7: UI y pulido MVP — HUD (marcador, tiempo), pantalla entretiempo, pantalla final, sonidos básicos
+Post-MVP: menú principal, selección de equipos, offside, faltas, córners, sonido, gamepad, 2 jugadores locales
 
 ## Bloqueos
 
