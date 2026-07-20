@@ -1,0 +1,3 @@
+[submodule "projects/antigravity-developer-stack"]
+	path = projects/antigravity-developer-stack
+	url = https://github.com/gonzoblasco/antigravity-developer-stack.git
