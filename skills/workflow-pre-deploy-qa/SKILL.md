@@ -1,45 +1,73 @@
 ---
 name: "workflow-pre-deploy-qa"
-description: "Workflow de validación pre-deploy: build, rutas, SEO, API, performance, seguridad y cleanup. Basado en vibecode-production-qa-validator."
+description: "Workflow de validación pre-deploy: build, rutas, SEO, API, performance, seguridad y cleanup. Se relaciona con workflow-review-quality (pre-merge) y workflow-build-scaffold (post-build)."
 ---
 
-# Propuesta: workflow-pre-deploy-qa
+# Workflow: Pre-Deploy QA
 
-## Problema
+## Qué hace
+Validación sistemática antes de deployar a producción. Corre después del merge, antes del deploy.
 
-OpenClaw tiene `workflow-review-quality` para code review pre-merge, pero no un workflow de QA pre-deploy que valide build, rutas, SEO, API auth, performance, seguridad y cleanup antes de ir a producción.
+## Fases
 
-## Inspiración
+### 1. Build
+- `npm run build` sin errores
+- Verificar que no haya warnings de compilación
 
-Del AI Developer Stack (gonzoblasco/ai-developer-stack):
-- `vibecode-production-qa-validator` — 13 fases de QA para Next.js fullstack
+### 2. Rutas
+- Regression de todas las rutas públicas (200)
+- Rutas protegidas (401/403 sin auth)
+- API endpoints (health, auth, core)
+- sitemap.xml y robots.txt accesibles
 
-## Propuesta de Workflow
+### 3. SEO
+- `<title>` 30-60 chars, único por página
+- `<meta name="description">` presente
+- og:title, og:description, og:image (≥ 1200×630)
+- twitter:card = summary_large_image
+- Canonical self-referencing
+- favicon.ico responde 200
+- JSON-LD structured data si aplica
 
-### Fases
+### 4. API
+- Health check responde 200
+- Auth endpoints funcionan (login, session, logout)
+- Errores devuelven JSON consistente `{ error, message }`
+- CORS headers correctos si cross-origin
 
-1. **Build** — `npm run build` sin errores
-2. **Rutas** — regression de todas las rutas (públicas, protegidas, API)
-3. **SEO** — meta tags, OG images, favicon, sitemap, robots.txt
-4. **API** — health check, auth headers, rate limiting
-5. **Performance** — Lighthouse, lazy loading, bundle size
-6. **Seguridad** — vulnerability scan, RLS, tokens
-7. **UI/UX** — error boundaries, loading states, responsive
-8. **Database** — migrations, RLS policies, indexes
-9. **Cleanup** — console.logs, commented code, temp files
+### 5. Performance
+- Lighthouse ≥ 90 (Performance, A11y, SEO)
+- Imágenes con lazy loading y WebP/AVIF
+- Dynamic imports para componentes pesados
+- font-display: swap, sin FOIT
+- Total page weight < 1MB
 
-### Outputs
+### 6. Seguridad
+- `npm audit` sin critical/high vulnerabilities
+- Sin secrets en el diff
+- Sin eval/new Function/document.write
+- Sin stack traces en errores de API
 
-- Reporte de QA con cada fase (✅/❌)
-- Issues encontrados con prioridad
-- Go/No-Go para deploy
+### 7. UI/UX
+- Error boundaries en root + route level
+- not-found.tsx y loading.tsx existen
+- Estados loading, error y empty en client fetches
+- Botones con hover, focus-visible, active, disabled, loading
+- Sin horizontal scroll en 320-1440px
 
-### Skills que reemplazaría
+### 8. Database
+- Migraciones aplicadas y idempotentes
+- Sin hardcoded DB credentials en source
+- Sin raw SQL injection risk
+- Sin N+1 queries
 
-Ninguna — es nuevo. Se relaciona con `workflow-review-quality` (pre-merge) y `workflow-build-scaffold` (post-build).
+### 9. Cleanup
+- Sin console.log/debugger en staged code
+- Sin TODOs/FIXMEs sin resolver
+- Sin imports muertos
+- Sin archivos temporales
 
-## Próximos pasos
-
-1. Aprobar propuesta
-2. Escribir SKILL.md
-3. Probar en un proyecto real
+## Outputs
+- Reporte de QA con cada fase (✅/❌/⚠️)
+- Issues encontrados con prioridad (Critical / Major / Minor)
+- Decisión: Go / No-Go para deploy

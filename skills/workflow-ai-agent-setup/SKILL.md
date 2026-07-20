@@ -1,51 +1,42 @@
 ---
 name: "workflow-ai-agent-setup"
-description: "Workflow de construcción de agentes de IA: diseño, tools, prompts, RAG, MCP y skill authoring. Para el AI Developer Stack, no para OpenClaw."
+description: "Workflow de referencia para construcción de agentes de IA: diseño, tools, prompts, RAG, MCP y skill authoring. No operativo en OpenClaw."
 ---
 
-# Propuesta: workflow-ai-agent-setup
+# Workflow: AI Agent Setup
 
-## Contexto
+## Propósito
+Workflow de referencia. Documenta cómo se construyen agentes de IA, para entender la relación entre el humano y el agente. No es operativo en OpenClaw — las skills de construcción de agentes pertenecen al AI Developer Stack.
 
-Este workflow NO es para OpenClaw. OpenClaw es un sistema operativo para agentes, no un taller para construirlos. Las skills de construcción de agentes (loops, tools, prompts, RAG, MCP) pertenecen al AI Developer Stack.
+## Fases
 
-## Inspiración
+### 1. Arquitectura del Agente
+Diseño del loop de razonamiento (ReAct, Plan-Execute), arquitectura de memoria (corto plazo, largo plazo, episódica), orquestación multi-agente.
 
-Del AI Developer Stack (gonzoblasco/ai-developer-stack):
-- `ai-agents-architect` — loops ReAct/Plan-Execute, memoria, orquestación
-- `agent-tool-builder` — tools robustas, JSON schemas, MCP
-- `prompt-mastery` — prompting avanzado (CoT, Few-Shot)
-- `prompt-engineer` — frameworks RTF, RISEN, RODES
-- `rag-expert` — chunking semántico, reranking, hybrid search
-- `mcp-builder` — servidores MCP en Python y TypeScript
-- `meta-skill-antigravity` — TDD para crear skills
-- `writing-great-skills` — principios de Matt Pocock para skills predecibles
+### 2. Tools
+Diseño de tools robustas con JSON Schemas claros. Principio: el LLM nunca ve el código, solo ve el schema y la descripción. Una tool con documentación clara funciona; una perfectamente implementada con descripción vaga falla.
 
-## Lo que SÍ absorbe OpenClaw
+### 3. Prompting
+Prompting avanzado: Chain-of-Thought, Few-Shot, Progressive Disclosure. Los prompts son código — requieren el mismo rigor.
 
-### `writing-great-skills` → mejora de SKILL.md
+### 4. Optimización de Prompts
+Frameworks estructurados: RTF, RISEN, RODES, RACE. Transformar prompts crudos en instrucciones optimizadas.
 
-Principios clave:
-- **Predictibilidad** — la skill debe producir el mismo proceso cada vez
-- **Progressive Disclosure** — 3 niveles: metadata (~100 tokens) → SKILL.md (<500 líneas) → resources (on demand)
-- **Degrees of Freedom** — ajustar especificidad según fragilidad de la tarea
-- **Leading Words** — usar conceptos preentrenados del modelo para anclar comportamientos
+### 5. RAG
+Sistemas de Retrieval-Augmented Generation: chunking semántico, hybrid search (keywords + vectores), reranking. Principio: nunca confiar en retrieval crudo, siempre rerankear.
 
-### `meta-skill-antigravity` → metodología de creación
+### 6. MCP
+Servidores Model Context Protocol en Python (FastMCP) y TypeScript (MCP SDK). Tool discoverability, error recovery, context management.
 
-- TDD aplicado a skills: test → implement → verify
-- Iron Law: "El contexto es un bien público. No lo malgastes."
+### 7. Meta-skill
+Metodología TDD para crear skills: test → implement → verify. Progressive disclosure en 3 niveles: metadata (~100 tokens) → SKILL.md (<500 líneas) → resources (on demand).
 
-## Lo que NO absorbe (queda en AI Developer Stack)
+### 8. Autoría de Skills
+Principios de Matt Pocock para skills predecibles: predictibilidad (mismo proceso cada vez), progressive disclosure, degrees of freedom, leading words.
 
-- `ai-agents-architect` — loops de agentes
-- `agent-tool-builder` — diseño de tools
-- `prompt-mastery` / `prompt-engineer` — prompting avanzado
-- `rag-expert` — sistemas RAG
-- `mcp-builder` — servidores MCP
+## Outputs
+- Documentación de referencia para construir agentes
+- Principios de skill authoring aplicables a OpenClaw
 
-## Próximos pasos
-
-1. Aprobar propuesta
-2. Mejorar SKILL.md de OpenClaw con principios de writing-great-skills
-3. Dejar el workflow de AI Agent Setup en el AI Developer Stack como referencia
+## Nota
+Este workflow no se ejecuta. Es referencia conceptual para entender cómo funciona la relación humano-agente.
