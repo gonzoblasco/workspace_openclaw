@@ -16,18 +16,18 @@
 | 3 — El jugador | ✅ Completa | 100% |
 | 4 — El equipo humano | ✅ Completa | 100% |
 | 5 — IA CPU | ✅ Completa | 100% |
-| 6 — Reglas básicas | ⏳ Pendiente | 0% |
+| 6 — Reglas básicas | ✅ Completa | 100% |
 | 7 — UI y pulido MVP | ⏳ Pendiente | 0% |
 
 ## MVP
 
 **Definido:** Partido 1vsCPU, 5 min, 2 equipos genéricos, controles teclado, cámara dinámica PS2
 
-**Completitud:** 0% (Fases 0-5 completas)
+**Completitud:** 0% (Fases 0-6 completas)
 
 ## Próximo paso
 
-Fase 6: Reglas básicas — detección de gol, saque de centro, saque de banda, saque de meta
+Fase 7: UI y pulido MVP — HUD (marcador, tiempo), pantalla entretiempo, pantalla final, sonidos básicos
 
 ## Bloqueos
 
