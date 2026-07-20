@@ -1,6 +1,6 @@
 # STATUS — Juego de Fútbol 3D (FIFA/PES PS2-like)
 
-**Última actualización:** 2026-07-19
+**Última actualización:** 2026-07-20
 
 ## Estado general
 
@@ -29,6 +29,15 @@
 
 Post-MVP: menú principal, selección de equipos, offside, faltas, córners, sonido, gamepad, 2 jugadores locales
 
+## Pendientes inmediatos
+
+- Ajustar cámara para que el campo ocupe todo el viewport (eliminar letterboxing negro a los costados)
+- La cámara está más cerca (pos 0,12,15, rot -50°, FOV 50°) pero el campo no escala al ancho de la ventana
+
 ## Bloqueos
 
 Ninguno. Godot 4.4+ instalado.
+
+## Cambios recientes
+
+- **2026-07-20:** Ajuste de cámara: posición (0,12,15), rotación -50°, FOV 50°. Los jugadores se ven más grandes pero el campo no ocupa todo el viewport horizontal.
