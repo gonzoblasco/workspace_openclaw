@@ -29,9 +29,12 @@ test-results/
 .vitest-cache/
 
 # Proyectos — cada uno tiene su propio repo, se sincronizan por separado
-# Regla: ignorar todo el contenido de projects/ EXCEPTO la carpeta .knowledge/
+# Regla: ignorar todo el contenido de projects/ EXCEPTO:
+#   - .knowledge/ (memoria de sesión)
+#   - README.md (descripción del proyecto, visible desde el workspace)
 projects/
 !projects/**/.knowledge/
+!projects/**/README.md
 
 # Antigua estructura products/ (migrada a projects/<slug>/docs/)
 products/
