@@ -74,7 +74,7 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 | Repo | PR | Título | Estado |
 |------|-----|--------|--------|
-| TanStack/router | [#7834](https://github.com/TanStack/router/pull/7834) | safeStringify for loader deps | Abierto, nuevo approach post-feedback |
+| TanStack/router | [#7861](https://github.com/TanStack/router/pull/7861) | fix: MatchInner throw undefined on cleared loadPromise | Abierto, esperando review |
 | vercel/ai | [#17274](https://github.com/vercel/ai/pull/17274) | warn when reasoning tokens spent | Review de Vercel addressado, esperando |
 | shadcn-ui/ui | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | InputOTP slot transition | Esperando review |
 | shadcn-ui/ui | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | MessageScroller footer height | Esperando review |
@@ -139,9 +139,9 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 ---
 
-## Plan de ataque — actualizado 2026-07-14
+## Plan de ataque — actualizado 2026-07-20
 
-### Semana 1 — shadcn-ui/ui + TanStack/router ✅ HECHO
+### Semana 1-2 — shadcn-ui/ui + TanStack/router + create-next-stack ✅ HECHO
 
 | Issue | PR | Estado |
 |-------|-----|--------|
