@@ -246,6 +246,13 @@
 - Bugs concretos sin competencia → PR rápido
 - RFCs → comentario técnico que posiciona, no código
 
+## Modelo default y workflow de reasoning
+- **Default:** `deepseek-v4-flash:cloud` con **reasoning medium**
+- **Kanam filtra:** en cada tarea, evalúa si conviene subir a maximum o bajar a off, y avisa
+- **Gonzo decide:** si acepta, cambia el reasoning y repite la tarea; si dice "ignorar recomendación", se queda con el que está
+- **Si Kanam no dice nada:** medium está bien
+- **Fix aplicado:** `maxTokens` subido a 65536 para deepseek-v4-flash:cloud (antes truncaba respuestas largas)
+
 ## Skills de OpenClaw workspace (2026-07-16)
 - **oss-contribute:** Contribución OSS estratégica — 6 fases (pipeline → triaje → implementación → PR → community participation → batch triage). Actualizada con lecciones de payloadcms, TanStack, vercel/ai.
 - **profile-positioning:** Audit de perfil profesional y construcción de pitch para job search.
