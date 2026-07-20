@@ -7,3 +7,6 @@
 [submodule "projects/create-stack"]
 	path = projects/create-stack
 	url = https://github.com/gonzoblasco/create-stack.git
+[submodule "projects/a11y-fixer"]
+	path = projects/a11y-fixer
+	url = git@github.com:gonzoblasco/a11y-fixer.git
