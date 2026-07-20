@@ -38,6 +38,30 @@ Revisar la conversación actual para identificar:
 - **Pendientes** — ¿qué quedó sin terminar? ¿próximos pasos?
 - **Skills creadas/actualizadas** — ¿se tocó alguna skill?
 
+### Fase 1.5: Convertir Pendientes en Tareas (NUEVO)
+
+**Objetivo:** Transformar la lista de "Pendientes" de texto plano a tareas accionables en el sistema.
+
+1. **Extraer candidatos a tarea:**
+   - Por cada pendiente identificado, crear un objeto estructurado:
+     ```json
+     {
+       "title": "<título corto y accionable>",
+       "context": "<proyecto o área relevante>",
+       "priority": "<High|Medium|Low>"
+     }
+     ```
+   - Ejemplo: "PENDIENTE #1: Configurar DEEPSEEK_API_KEY..." → `{ "title": "Configurar API Keys", "context": "SoporteML v2", "priority": "High" }`
+
+2. **Spawn sub-agente para creación de tareas:**
+   - Usar `sessions_spawn` con `taskName="create_tasks_from_closure"`
+   - Prompt: "Crear las siguientes tareas en el sistema taskflow: <lista de candidatos JSON>"
+   - Esperar completitud con `sessions_yield`
+
+3. **Capturar IDs generadas:**
+   - El sub-agente debe devolver los IDs de tareas creadas (ej: `TASK-902`, `TASK-903`)
+   - Estos IDs se usarán en el resumen final (Fase 4) en lugar del texto plano
+
 ### Fase 2: Escribir archivos
 
 Para cada proyecto tocado:
@@ -83,11 +107,11 @@ Archivos actualizados:
 Skills creadas/actualizadas:
 - <skill 1>
 
-Pendientes:
-- <pendiente 1>
-- <pendiente 2>
+Tareas creadas:
+- TASK-<id> (<título>) — <prioridad>
+- TASK-<id> (<título>) — <prioridad>
 
-✅ Todo guardado y commiteado.
+✅ Todo guardado, commiteado y tareas generadas.
 ```
 
 ## Notas

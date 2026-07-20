@@ -142,34 +142,39 @@ El workspace tiene su propio repo en GitHub (`workspace_openclaw`). Los proyecto
 git add -A && git commit -m "descripción del cambio" && git push
 ```
 
-## Estructura de Proyectos — docs/ + code/
+## Estructura de Proyectos — Doble Git con `.knowledge/`
 
-**Filosofía:** Cada proyecto tiene su carpeta en `projects/<slug>/` con dos subcarpetas:
+**Filosofía:** Cada proyecto tiene su carpeta en `projects/<slug>/` con sincronización selectiva:
 
 ```
 projects/<slug>/
-├── docs/       # Documentación interna: BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS, HANDOFF, ADRs, decisiones
-├── code/       # Código fuente (con su propio .git y remote)
-└── HANDOFF.md  # (opcional) Documentación en raíz si no hay docs/ completa
+├── .knowledge/     # Documentación interna: BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS, HANDOFF, ADRs, decisiones
+├── src/            # Código fuente (con su propio .git y remote)
+├── package.json    # Configuración del proyecto
+└── .gitignore      # Ignora .knowledge/ (ya lo guarda el workspace) + node_modules, etc.
 ```
 
-**Reglas:**
-- `docs/` = fuente de verdad del **qué** y **por qué** (producto, mercado, decisiones, roadmap)
-- `code/` = implementación del **cómo** (código, arquitectura técnica)
-- `projects/*/code/` está en `.gitignore` del workspace — cada `code/` tiene su propio repo
-- El workspace git trackea `docs/` intensivamente (memoria institucional)
-- Archivos de documentación que no existan se crean como placeholder en raíz del proyecto explicando qué falta generar
+**Reglas de Doble Git:**
+- **Workspace git:** Trackea solo `projects/**/.knowledge/`. Ignora el resto del código (`.gitignore` raíz: `projects/` + `!projects/**/.knowledge/`).
+- **Proyecto git:** Trackea todo el código. Ignora `.knowledge/` (ya lo guarda el workspace).
+- **Memoria institucional:** El workspace git versiona intensivamente `.knowledge/` (el qué y por qué).
+- **Código:** Cada proyecto tiene su propio repo para la implementación (el cómo).
 
 **Flujo típico:**
-1. Nuevo producto → crear `projects/<slug>/docs/` con BRIEF, EVALUATION, DEFINITION
-2. Go decision → scaffold en `projects/<slug>/code/` (repo separado)
-3. Desarrollo → actualizar `docs/STATUS.md` con cada hito
-4. Commits: `docs/` al workspace, `code/` a su repo
+1. Nuevo producto → crear `projects/<slug>/.knowledge/` con BRIEF, EVALUATION, DEFINITION
+2. Go decision → scaffold en `projects/<slug>/` (repo separado, ignora `.knowledge/`)
+3. Desarrollo → actualizar `projects/<slug>/.knowledge/STATUS.md` con cada hito
+4. Commits: `.knowledge/` al workspace, código al repo del proyecto
 
 **Excepciones:**
-- Forks externos (create-next-stack, TanStack/router, etc.) → sus docs de sesión (HANDOFF) van en `docs/` del slug correspondiente
+- Forks externos (create-next-stack, TanStack/router, etc.) → sus docs de sesión (HANDOFF) van en `.knowledge/` del slug correspondiente. La carpeta `docs/` original del fork se ignora (es parte del código).
 - Skills de OpenClaw → viven en `skills/` con su propio SKILL.md
-- Proyectos sin documentación completa → los archivos faltantes se documentan en HANDOFF.md en raíz del proyecto
+- Proyectos sin documentación completa → los archivos faltantes se documentan en HANDOFF.md en `.knowledge/`
+
+**Ventajas:**
+- Cero conflictos: el workspace nunca intenta commitear `node_modules` ni código de build.
+- Portabilidad: el código viaja en su repo, la memoria institucional en el workspace.
+- Forks limpios: no colisiona con carpetas `docs/` de repos externos.
 
 ## Make It Yours
 
