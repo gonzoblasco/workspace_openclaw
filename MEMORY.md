@@ -29,6 +29,48 @@
 - Juego Godot 3D tipo FIFA/PES PS2. 🎉 MVP completo.
 - Post-MVP: menú principal, selección de equipos, offside, faltas, córners, sonido, gamepad, 2 jugadores locales.
 
+### create-stack-next
+- Scaffolder opinado para Next.js 15. Publicado en npm. Diferenciación real vs create-next-app.
+- **Estado:** vivo, no tocar. Necesita evolución, no reset.
+
+### workflow-kit
+- Portable AI agent workflow skills. Publicado en npm. Uso diario.
+- **Estado:** vivo, no tocar. Evoluciona naturalmente.
+
+### soporteml
+- CRM multi-tenant para vendedores de Mercado Libre con IA. EL-1 a EL-5 completos.
+- **Estado:** técnicamente completo. Si no tiene uso activo, reconsiderar archivado.
+
+### ai-engineering-bootcamp
+- 10 niveles, 23 proyectos hands-on de AI-assisted development.
+- **Estado:** estructura completa, contenido todo en Pending. No es reset, es proyecto de contenido por escribir.
+
+## Proyectos candidatos a reset (desde idea con workflows)
+
+### antigravity-developer-stack (prioridad #1)
+- 30+ patrones y playbooks de ingeniería con IA. Contenido valioso, estructura monolítica.
+- **Problema:** nombre críptico, mezcla demasiadas cosas, difícil de mantener coherente.
+- **Plan:** reset con product discovery + build scaffold → skill de OpenClaw o docs site.
+
+### accessible-ui
+- Headless component library (Combobox, Modal, Tabs). Espacio saturado (Radix, Ariakit, React Aria).
+- **Plan:** reset con angle único (agent-friendly o generativo) o archivar.
+
+### accessibility-auditor
+- Plataforma de auditoría WCAG con Playwright + axe-core. Competitivo, sin diferenciación fuerte.
+- **Plan:** reset como API-first o CI tool, o archivar.
+
+### create-with-ai
+- Generador de apps con IA tipo Lovable pero local. Mercado hipercompetitivo.
+- **Plan:** reset con angle más específico o archivar.
+
+## Repos archivados / eliminados
+
+- **copilot-skills** → archivado (reemplazado por workflow-kit)
+- **chatgpt-project-architect** → archivado (absorbido por AGDS)
+- **0001** → eliminar o archivar (sin propósito)
+- **prueba_minecraft_claude_code** → eliminar o archivar (experimento abandonado)
+
 ## Open Source
 
 - **Estrategia:** PRs a repos externos como portfolio vivo → menos entrevistas
@@ -76,6 +118,10 @@ Lo esencial. El detalle está en `docs/LEARNINGS.md`.
 - **El truncamiento no es del modelo, es de maxTokens sin configurar.**
 - **Reasoning maximum no es más texto, es mejor texto** — como code reviewer, no generador.
 - **Algunos workflows no se configuran en el gateway, se acuerdan en conversación y se registran.**
+- **Inventario periódico de repos** — hacer cada N meses para detectar zombies, candidatos a reset, y mantener el portfolio limpio.
+- **No todo lo incompleto necesita reset** — distinguir entre proyectos que necesitan redefinición (reset) y proyectos que necesitan iteración (evolución).
+- **El vehículo importa tanto como el contenido** — AGDS tiene contenido valioso pero estructura wrong. A veces el problema no es la idea sino cómo se empaqueta.
+- **Proyectos de contenido ≠ proyectos de software** — ai-engineering-bootcamp no necesita código, necesita escritura. El approach es diferente.
 
 ## Estilo en issues/PRs de terceros
 

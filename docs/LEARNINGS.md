@@ -32,6 +32,35 @@ MEMORY.md debe quedar para preferencias personales, datos de Gonzo, y decisiones
 
 ---
 
+## 2026-07-20 — Inventario de repos públicos y diagnóstico de proyectos
+
+### 12. El inventario de repos como diagnóstico periódico
+No sabía el estado real de todos mis repos hasta que los revisé uno por uno. Algunos estaban en estado "zombie" (con README pero sin actividad real, o sin README directamente).
+
+**Lección:** hacer un inventario completo cada N meses evita acumular ruido. Los repos sin README ni descripción (0001, prueba_minecraft_claude_code) son basura digital — archivar o eliminar.
+
+### 13. No todos los proyectos necesitan reset — algunos necesitan evolución
+El instinto de "resetear todo lo que no está terminado" es incorrecto. create-stack-next y workflow-kit están bien encaminados: tienen identidad clara, diferenciación real, y están publicados. Lo que necesitan es evolución, no reinicio.
+
+**Lección:** distinguir entre "proyecto que necesita redefinición" (reset) y "proyecto que necesita iteración" (evolución). El workflow de product discovery es para lo primero; el desarrollo incremental para lo segundo.
+
+### 14. Los forks también son parte del portfolio
+Aunque no son proyectos propios, los forks de repos Tier 0 (shadcn/ui, TanStack/router, vercel/ai) son señal de contribución OSS activa. No ignorarlos en el inventario. Son parte de la narrativa de "portfolio vivo".
+
+**Lección:** cuando hagas inventario, incluir forks. No como proyectos, pero sí como indicadores de actividad.
+
+### 15. antigravity-developer-stack: contenido valioso, estructura wrong
+AGDS tiene 30+ patrones y playbooks con contenido real, pero es un monolito con nombre de sci-fi. El contenido merece mejor formato (skill de OpenClaw, docs site, o varios skills separados).
+
+**Lección:** a veces el problema no es la idea sino el vehículo. AGDS no necesita más contenido, necesita reempaquetado.
+
+### 16. ai-engineering-bootcamp no es código por rehacer, es contenido por escribir
+La estructura del bootcamp está completa (10 niveles, 23 proyectos), pero todo está en "Pending". No hay código que refactorizar ni arquitectura que rediseñar — hay 23 proyectos de contenido por crear.
+
+**Lección:** no todo lo que parece "incompleto" es un proyecto de software. A veces es un proyecto de contenido, y el approach es diferente: escribir, no programar.
+
+---
+
 ## 2026-07-20 — Patrones de fix y humanización en OSS
 
 ### 7. Fix de una línea + defensa en profundidad en la capa contigua
