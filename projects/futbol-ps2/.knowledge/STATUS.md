@@ -4,7 +4,7 @@
 
 ## Estado general
 
-🟡 **Definición** — Producto definido, listo para empezar Fase 0
+🟢 **Setup completo** — Fase 0 terminada, proyecto Godot funcional
 
 ## Progreso por fase
 
