@@ -15,7 +15,7 @@
 | 2 — La pelota | ✅ Completa | 100% |
 | 3 — El jugador | ✅ Completa | 100% |
 | 4 — El equipo humano | ✅ Completa | 100% |
-| 5 — IA CPU | ⏳ Pendiente | 0% |
+| 5 — IA CPU | ✅ Completa | 100% |
 | 6 — Reglas básicas | ⏳ Pendiente | 0% |
 | 7 — UI y pulido MVP | ⏳ Pendiente | 0% |
 
@@ -23,11 +23,11 @@
 
 **Definido:** Partido 1vsCPU, 5 min, 2 equipos genéricos, controles teclado, cámara dinámica PS2
 
-**Completitud:** 0% (Fases 0-4 completas)
+**Completitud:** 0% (Fases 0-5 completas)
 
 ## Próximo paso
 
-Fase 5: IA del equipo CPU — state machine, persecución, pase, tiro, arquero automático
+Fase 6: Reglas básicas — detección de gol, saque de centro, saque de banda, saque de meta
 
 ## Bloqueos
 
