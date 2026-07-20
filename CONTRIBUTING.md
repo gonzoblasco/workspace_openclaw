@@ -74,6 +74,7 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 | Repo | PR | Título | Estado |
 |------|-----|--------|--------|
+| radix-ui/primitives | [#4053](https://github.com/radix-ui/primitives/pull/4053) | fix: Select inside Dialog focus freeze | Abierto, esperando review |
 | TanStack/router | [#7861](https://github.com/TanStack/router/pull/7861) | fix: MatchInner throw undefined on cleared loadPromise | Abierto, esperando review |
 | vercel/ai | [#17274](https://github.com/vercel/ai/pull/17274) | warn when reasoning tokens spent | Review de Vercel addressado, esperando |
 | shadcn-ui/ui | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | InputOTP slot transition | Esperando review |
