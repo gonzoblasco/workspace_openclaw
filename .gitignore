@@ -32,9 +32,12 @@ test-results/
 # Regla: ignorar todo el contenido de projects/ EXCEPTO:
 #   - .knowledge/ (memoria de sesión)
 #   - README.md (descripción del proyecto, visible desde el workspace)
-projects/
-!projects/**/.knowledge/
-!projects/**/README.md
+projects/*
+!projects/*/
+projects/*/*
+!projects/*/.knowledge/
+!projects/*/.knowledge/**
+!projects/*/README.md
 
 # Antigua estructura products/ (migrada a projects/<slug>/docs/)
 products/
