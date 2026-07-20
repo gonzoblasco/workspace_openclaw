@@ -13,7 +13,7 @@
 | 0 — Setup del proyecto | ✅ Completa | 100% |
 | 1 — La cancha | ✅ Completa | 100% |
 | 2 — La pelota | ✅ Completa | 100% |
-| 3 — El jugador | ⏳ Pendiente | 0% |
+| 3 — El jugador | ✅ Completa | 100% |
 | 4 — El equipo humano | ⏳ Pendiente | 0% |
 | 5 — IA CPU | ⏳ Pendiente | 0% |
 | 6 — Reglas básicas | ⏳ Pendiente | 0% |
@@ -23,11 +23,11 @@
 
 **Definido:** Partido 1vsCPU, 5 min, 2 equipos genéricos, controles teclado, cámara dinámica PS2
 
-**Completitud:** 0% (Fases 0-2 completas)
+**Completitud:** 0% (Fases 0-3 completas)
 
 ## Próximo paso
 
-Fase 3: El jugador — CharacterBody3D con animaciones, movimiento teclado, colisión con pelota
+Fase 4: El equipo humano — 11 jugadores, formación, cambio automático, pase (Z) y tiro (X)
 
 ## Bloqueos
 
