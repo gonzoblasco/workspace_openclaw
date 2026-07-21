@@ -61,6 +61,35 @@ La estructura del bootcamp está completa (10 niveles, 23 proyectos), pero todo 
 
 ---
 
+## 2026-07-20 — P09 Evaluation Lab: LLM-as-a-Judge y evaluación de prompts
+
+### 21. El patrón LLM-as-a-Judge con 3 dimensiones es más robusto que un score único
+P09 implementa un juez que evalúa respuestas en 3 dimensiones separadas: **accuracy** (precisión técnica), **completeness** (cobertura de puntos requeridos) y **tone** (adecuación del tono). El score final se recalcula server-side como promedio, no se confía en el score que devuelve el modelo.
+
+**Lección:** cuando un LLM evalúa a otro LLM, pedir criterios separados y recalcular el agregado server-side. El modelo puede ser inconsistente en el score global pero consistente en cada dimensión por separado. Además, el clamp a [0,1] server-side evita valores fuera de rango.
+
+### 22. Forzar JSON puro en el system prompt del juez, con validación estricta post-parse
+El system prompt del juez instruye: "Respondé ÚNICAMENTE con JSON válido, sin texto adicional, sin markdown, sin backticks". Pero igual hay que hacer try/catch del parse y si falla, devolver el raw response para debugging. El error tipado `PARSE_ERROR:<detail>\n<raw>` permite debuggear sin perder contexto.
+
+**Lección:** nunca confiar en que el modelo va a devolver JSON limpio. Siempre try/catch + raw response en el error. El patrón `validateAndNormalize()` con clamp + type checking es obligatorio.
+
+### 23. Batch evaluation con Promise.allSettled + after() para tolerancia a fallos
+El batch orchestrator corre N variantes × M test cases en paralelo. Usa `Promise.allSettled` (no `all`) para que un par fallido no cancele todo el batch. Si todos fallan → status='failed', si al menos uno funciona → status='completed'. Corre en `after()` de Next.js para responder 200 inmediato.
+
+**Lección:** en evaluación batch, la tolerancia a fallos es crítica. Un test case mal formado no debe impedir que el resto se evalúe. `allSettled` + estado agregado (failed si todos fallaron, completed si alguno funcionó) es el patrón correcto.
+
+### 24. Interpolación de variables en system prompts con validación de existencia
+P09 usa `{{buyer_question}}` y `{{seller_context}}` como variables en los system prompts. El evaluador busca los test cases y variantes en paralelo con `Promise.allSettled`, verifica que existan, y recién entonces interpola. Si un ID no existe → 400 inmediato, no 500.
+
+**Lección:** la interpolación de prompts debe validar que las fuentes de datos existen antes de armar el prompt. Fallar temprano con 400 es mejor que fallar en la llamada a la API con 502.
+
+### 25. Skills de evaluación como documentación del patrón, no como código ejecutable
+Los 3 skills de P09 (prompt-evaluator, llm-judge, batch-orchestrator) documentan el patrón completo: endpoint, request/response, errores, flujo de implementación, notas. Son reutilizables en cualquier proyecto que necesite evaluar prompts, sin depender del código de P09.
+
+**Lección:** documentar patrones de IA como skills markdown (no como código) los hace portables entre proyectos. El skill describe el qué y el por qué; la implementación concreta se adapta a cada stack.
+
+---
+
 ## 2026-07-20 — Biome: el lint que rompe CI por culpa de nuestro propio stack
 
 ### 17. Biome formatea su propio JSON de configuración — y si no lo hacés, rompe CI
