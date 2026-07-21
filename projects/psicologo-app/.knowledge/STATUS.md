@@ -11,9 +11,10 @@
 - [x] Supabase conectado (URL, anon key, service key)
 - [x] Schema aplicado (pacientes, sesiones, config, recordatorios con RLS)
 - [x] Auth configurado (email/password, login page, middleware)
-- [x] **Dashboard con datos reales** (stats + sesiones del día)
-- [x] **CRUD de pacientes real** (listado, detalle, alta funcional)
-- [x] **Agenda semanal con datos reales**
+- [x] Dashboard con datos reales (stats + sesiones del día)
+- [x] CRUD de pacientes real (listado, detalle, alta funcional)
+- [x] Agenda semanal con datos reales
+- [x] **RLS arreglado** (políticas separadas por operación + trigger auto psicologo_id)
 - [x] Build exitoso ✅
 
 ## Próximo paso
