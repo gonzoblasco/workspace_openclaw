@@ -106,6 +106,8 @@
 | `workflow-tech-docs` | adr-framework, adr-sync | Documentación técnica |
 | `workflow-vibe-code-cleanup` | — | Limpieza de código generado por IA/vibe coding |
 
+> **Nota:** `workflow-ai-agent-setup` se movió a `docs/reference/ai-agent-setup.md` — es referencia conceptual, no skill operativa.
+
 ## Lecciones aprendidas (resumen)
 
 Lo esencial. El detalle está en `docs/LEARNINGS.md`.
