@@ -14,12 +14,14 @@ Setup del proyecto Xcode + scaffold inicial.
 - Offline-first desde el día 1
 - Sin publicación en App Store (por ahora)
 
-## Decisiones pendientes
-- ¿Xcode project en `projects/monad/` o repo separado?
-- ¿Plan de Supabase (Free vs Pro)?
-- ¿Modelo de IA plan B si Gemma 4 no corre en 14 Pro?
+## Decisiones tomadas
+- Repo separado: `@gonzoblasco/nomad` (`.knowledge/` queda en workspace)
+- Supabase: Free plan (MVP)
+- IA local: Foundation Models framework (iOS 27+) como plan A. Gemma 4 2B via Core ML como plan C.
+- Apple LLM integration: Foundation Models framework es la respuesta. 0MB, ~3B params, guided generation, tool calling.
 
 ## Riesgos activos
-- CoreML + Gemma 4 en iPhone 14 Pro (pendiente de prueba)
+- Foundation Models requiere iOS 27+ (iPhone 14 Pro lo soporta)
+- El modelo de Apple (~3B) puede no ser suficiente para tareas específicas
 - Scope creep (MVP definido, hay que mantenerlo)
 - SwiftUI learning curve (real pero manejable)

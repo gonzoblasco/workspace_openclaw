@@ -108,11 +108,27 @@ No entra en MVP. Se agrega después.
 |---|---|---|
 | UI | SwiftUI | iOS 18+ |
 | Datos locales | SwiftData | iOS 18+ |
-| IA local | CoreML + Gemma 4 2B (Q4) | — |
-| Backend | Supabase | Plan Free/Pro |
+| IA local | Foundation Models framework (iOS 27+) | ~3B param, 0MB añadidos |
+| Backend | Supabase | Plan Free |
 | Sync | Custom Swift git client | — |
 | Edge Functions | Deno / TypeScript | — |
 | Auth | Supabase Auth (email + passkey) | — |
+
+### IA: Foundation Models > Core ML > Gemma
+
+Apple tiene **Foundation Models framework** desde iOS 27. Es el camino correcto para Monad:
+
+- **0MB** añadidos al bundle (usa el modelo que Apple ya tiene en el dispositivo)
+- **~3B parámetros**, manejado por el OS, actualizado gratis con cada release
+- **`LanguageModelSession`** con guided generation vía `@Generable` — pedís un struct y el modelo te lo devuelve tipado
+- **Tool calling** nativo para features agentivas
+- Corre en **cualquier iPhone con iOS 27** (14 Pro incluido)
+
+**Plan:**
+1. Probar Foundation Models primero (es el default, 0 esfuerzo)
+2. Si el modelo de Apple no es suficiente para una tarea específica → Core ML con modelo propio
+3. Si necesitamos fine-tuning → MLX en Mac, Core ML en dispositivo
+4. Gemma 4 2B via Core ML es plan C, no plan A
 
 ## Métricas de éxito (MVP)
 
