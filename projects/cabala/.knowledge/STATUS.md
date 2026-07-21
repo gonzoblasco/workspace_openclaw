@@ -24,11 +24,13 @@
 - [x] Timeline (vista lista)
 - [x] EntryCard component
 - [x] Hooks y queries base
-- [ ] Guardar entrada (falta integración cámara → DB)
-- [ ] Tags
-- [ ] Geolocalización
-- [ ] Nota de voz
-- [ ] Vista calendario
+- [x] Guardar entrada (cámara → compresión → DB)
+- [x] Tags (TagInput component + DB integration)
+- [x] Geolocalización (useLocation hook + auto-save)
+- [x] Nota de voz (VoiceRecorder component + grabación/reproducción)
+- [x] Detalle de entrada (foto, título, descripción, tags, audio, ubicación)
+- [x] Modo incógnito
+- [x] Vista calendario (mes con dots, navegación, miniaturas al tap)
 - [ ] Vista mapa
 - [ ] Búsqueda/filtro
 - [ ] Notificaciones
@@ -38,7 +40,6 @@
 - [ ] Export
 - [ ] Widget
 - [ ] Onboarding
-- [ ] Modo oscuro
 
 ## Próximo paso
-Integrar captura de foto → compresión → guardado en DB.
+Vista calendario con días marcados y miniaturas al tap.
