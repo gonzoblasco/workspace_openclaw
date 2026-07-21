@@ -1,10 +1,10 @@
 # STATUS — Cábala
 
 ## Estado actual
-**Fase 0: Discovery — COMPLETADA**
+**Fase 1: MVP — EN CONSTRUCCIÓN (Semana 1-2)**
 
 ## Última actualización
-2026-07-20 — Discovery completo. Listo para Fase 1 (MVP).
+2026-07-20 — Scaffold completo. Repo creado en github.com/gonzoblasco/cabala.
 
 ## Documentación generada
 - [x] BRIEF.md
@@ -15,6 +15,30 @@
 - [x] DESIGN.md
 - [x] ROADMAP.md
 - [x] STATUS.md
+- [x] HANDOFF.md
+
+## Progreso MVP
+- [x] Scaffold Expo + expo-router + SQLite
+- [x] Schema + migraciones
+- [x] Cámara (con permisos)
+- [x] Timeline (vista lista)
+- [x] EntryCard component
+- [x] Hooks y queries base
+- [ ] Guardar entrada (falta integración cámara → DB)
+- [ ] Tags
+- [ ] Geolocalización
+- [ ] Nota de voz
+- [ ] Vista calendario
+- [ ] Vista mapa
+- [ ] Búsqueda/filtro
+- [ ] Notificaciones
+- [ ] Modo Cábala
+- [ ] "Un día como hoy"
+- [ ] Compartir
+- [ ] Export
+- [ ] Widget
+- [ ] Onboarding
+- [ ] Modo oscuro
 
 ## Próximo paso
-Fase 1, Semana 1-2: Scaffold Expo + SQLite + cámara + entrada básica.
+Integrar captura de foto → compresión → guardado en DB.
