@@ -14,12 +14,16 @@
 - [x] Esquema SQL para Supabase (pacientes, sesiones, config, recordatorios)
 - [x] Sidebar de navegación
 - [x] Build exitoso ✅
+- [x] **Supabase conectado** (URL + anon key + service key)
+- [x] **Schema aplicado** en Supabase (migración inicial)
+- [x] **Auth configurado** (email/password, login page, middleware)
+- [x] **Login page** con formulario de ingreso
 
 ## Próximo paso
-- [ ] Setup de Supabase (proyecto, schema, auth)
-- [ ] Conectar datos reales (reemplazar mocks)
+- [ ] Crear primer usuario (psicólogo) en Supabase Auth
+- [ ] Conectar datos reales (reemplazar mocks con queries a Supabase)
 - [ ] Recordatorios WhatsApp
 - [ ] Testing con Martín (early adopter)
 
 ## Bloqueos
-- Sin bloqueos. Pendiente de crear proyecto Supabase y configurar variables de entorno.
+- Sin bloqueos. Pendiente de crear usuario inicial y conectar UI con backend real.
