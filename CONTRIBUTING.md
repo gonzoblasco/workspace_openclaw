@@ -80,16 +80,7 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 | shadcn-ui/ui | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | InputOTP slot transition | Esperando review |
 | shadcn-ui/ui | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | MessageScroller footer height | Esperando review |
 | shadcn-ui/ui | [#11187](https://github.com/shadcn-ui/ui/pull/11187) | remove scrollbar-none table | Esperando review |
-| akd-io/create-next-stack | [#280](https://github.com/akd-io/create-next-stack/pull/280) | Bun package manager | Esperando review |
-| akd-io/create-next-stack | [#281](https://github.com/akd-io/create-next-stack/pull/281) | remove React.FC | Esperando review |
-| akd-io/create-next-stack | [#282](https://github.com/akd-io/create-next-stack/pull/282) | Vitest | Esperando review |
-| akd-io/create-next-stack | [#283](https://github.com/akd-io/create-next-stack/pull/283) | Supabase | Esperando review |
-| akd-io/create-next-stack | [#284](https://github.com/akd-io/create-next-stack/pull/284) | Auth.js + shadcn/ui | Esperando review |
-| akd-io/create-next-stack | [#285](https://github.com/akd-io/create-next-stack/pull/285) | skip commit without git config | Esperando review |
-| akd-io/create-next-stack | [#286](https://github.com/akd-io/create-next-stack/pull/286) | prettier-plugin-organize-imports | Esperando review |
-| akd-io/create-next-stack | [#287](https://github.com/akd-io/create-next-stack/pull/287) | eslint-strict | Esperando review |
-| akd-io/create-next-stack | [#288](https://github.com/akd-io/create-next-stack/pull/288) | Zustand | Esperando review |
-| akd-io/create-next-stack | [#289](https://github.com/akd-io/create-next-stack/pull/289) | Playwright | Esperando review |
+| ~~akd-io/create-next-stack~~ | ~~#280-#289~~ | ~~10 PRs cerrados~~ | Cerrados — focusing on [`@gonzoblasco/create-stack`](https://github.com/gonzoblasco/create-stack) |
 | t3-oss/create-t3-app | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | biome ignore generated | Esperando review, CI verde |
 | shuding/nextra | [#5029](https://github.com/shuding/nextra/pull/5029) | select modal={false} | Esperando review |
 | payloadcms/payload | [#17413](https://github.com/payloadcms/payload/pull/17413) | fix: duplicate latest=true version rows | Abierto, esperando review |
