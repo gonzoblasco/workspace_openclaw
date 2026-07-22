@@ -158,6 +158,7 @@ Lo esencial. El detalle está en `docs/LEARNINGS.md`.
 - **DREAMS.md** — consolidación programada de memoria cada ~7 días.
 - **Structured Escalation** — handoff estructurado cuando estoy stuck (BLOQUEO/CAUSA/INTENTOS/NECESITO/ALTERNATIVA).
 - **Growth Loops** — 4 ciclos de mejora continua: Curiosidad, Patrones, Expansión, Resultados.
+- **Handoff estructurado entre subagentes** — qué se hizo, dónde están los artifacts, cómo verificar, issues conocidos, qué sigue.
 
 ## Estilo en issues/PRs de terceros
 

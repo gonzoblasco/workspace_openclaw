@@ -380,6 +380,21 @@ ALTERNATIVA: [si no se puede, qué haría en su lugar]
 
 **Lección:** un handoff estructurado le ahorra a Gonzo tener que adivinar qué pasó. El bloqueo se resuelve más rápido cuando está bien definido.
 
+## Handoff entre Subagentes
+
+Cuando un subagente pasa trabajo a otro (o devuelve resultados al main), el handoff debe incluir:
+
+- **Qué se hizo** — resumen de cambios/output
+- **Dónde están los artifacts** — rutas exactas de archivos
+- **Cómo verificar** — comandos de test o criterios de aceptación
+- **Issues conocidos** — todo lo que está incompleto o riesgoso
+- **Qué sigue** — próxima acción clara para el agente receptor
+
+**Mal handoff:** "Listo, revisá los archivos."
+**Buen handoff:** "Construí el módulo de auth en /shared/artifacts/auth/. Corré `npm test auth` para verificar. Issue conocido: rate limiting no implementado todavía. Siguiente: reviewer checkea edge cases de error handling."
+
+**Lección:** un handoff vago genera trabajo duplicado o errores. Ser explícito sobre qué se hizo, dónde está, y qué falta ahorra tiempo a ambos lados.
+
 ## Growth Loops — Ciclos de Mejora Continua
 
 Cuatro ciclos que mantienen el sistema evolucionando:

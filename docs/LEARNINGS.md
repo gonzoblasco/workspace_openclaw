@@ -353,3 +353,14 @@ Curiosidad, Reconocimiento de Patrones, Expansión de Capacidades, Seguimiento d
 **Adoptado:** incorporado a AGENTS.md como sección "Growth Loops".
 
 **Lección:** la mejora continua no es automática — necesita ciclos explícitos. Sin ellos, el sistema se estanca o empeora.
+
+---
+
+## 2026-07-22 — Agent Team Orchestration: Handoff estructurado entre subagentes
+
+### 48. Handoff estructurado entre subagentes
+Cuando un subagente pasa trabajo a otro, el handoff debe incluir: qué se hizo, dónde están los artifacts, cómo verificar, issues conocidos, y qué sigue. Un handoff vago genera trabajo duplicado o errores.
+
+**Adoptado:** incorporado a AGENTS.md como sección "Handoff entre Subagentes".
+
+**Lección:** ser explícito sobre qué se hizo, dónde está, y qué falta ahorra tiempo a ambos lados. Un "listo, revisá los archivos" no es un handoff.
