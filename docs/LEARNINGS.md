@@ -190,3 +190,42 @@ Los race conditions son difíciles de reproducir porque dependen de timing. En v
 En repos donde ya te etiquetaron como bot (TanStack/router), el contenido técnico puede ser el mismo pero el tono tiene que sonar a humano. PR descriptions con formato están bien, pero los comments y respuestas deben sonar a conversación, no a informe generado.
 
 **Lección:** en OSS de alto perfil, la percepción importa. Un PR técnicamente perfecto pero que suena a bot puede ser ignorado o rechazado. Un comment que suena a persona que realmente entendió el código genera más confianza.
+
+---
+
+## 2026-07-22 — Self-Improving Agent (ivangdavila): Learning Signals, Self-Reflection y Conflict Resolution
+
+### 30. Learning Signals: frases gatillo para logging automático
+No todas las interacciones merecen un log. La skill de ivangdavila propone una lista de **learning signals** — frases que el usuario dice que deberían disparar logging automático sin esperar a que el agente "se acuerde".
+
+**Adoptado:** incorporado a AGENTS.md como sección "Learning Signals — Cuándo Loggear Automáticamente".
+
+**Lección:** tener señales explícitas reduce la dependencia de que el agente "sepa" cuándo loggear. Si la frase gatillo aparece, se loggea. Sin excepción.
+
+### 31. Self-Reflection post-tarea como hábito
+Después de tareas significativas (multi-step, debugging, PRs, cambios de config), hacer una pausa de evaluación con formato CONTEXT / REFLECTION / LESSON.
+
+**Adoptado:** incorporado a AGENTS.md como sección "Self-Reflection Post-Tarea".
+
+**Lección:** la reflexión post-tarea es el momento donde el agente puede identificar mejoras que en caliente no vio. Especialmente útil después de debugging y PRs.
+
+### 32. Conflict Resolution: qué hacer cuando dos lecciones se contradicen
+Cuando dos entradas en LEARNINGS.md se contradicen, aplicar:
+1. Más específico gana (proyecto > dominio > global)
+2. Más reciente gana (mismo nivel)
+3. Si ambiguo → preguntar a Gonzo
+
+**Adoptado:** incorporado a AGENTS.md como sección "Conflict Resolution".
+
+**Lección:** las contradicciones en la base de conocimiento son inevitables. Tener reglas claras de resolución evita parálisis.
+
+### 33. Common Traps: errores típicos al aprender
+La skill lista trampas comunes que cualquier sistema de auto-mejora encuentra:
+- Aprender del silencio (inferir preferencias porque no hubo queja)
+- Promover muy rápido (una ocurrencia no es un patrón)
+- Leer todo siempre (cargar archivos innecesarios quema contexto)
+- Compactar borrando (perder historia en vez de fusionar/archivar)
+
+**Adoptado:** incorporado a AGENTS.md como sección "Common Traps".
+
+**Lección:** documentar los errores típicos del propio sistema de aprendizaje es meta-aprendizaje. Ayuda a futuros agents a no cometer los mismos errores.

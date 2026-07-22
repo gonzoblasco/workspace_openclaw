@@ -180,6 +180,64 @@ projects/<slug>/
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
 
+## Learning Signals — Cuándo Loggear Automáticamente
+
+No esperes a que Gonzo te diga "anotá esto". Estas señales disparan logging automático a `docs/LEARNINGS.md` o `memory/YYYY-MM-DD.md`:
+
+**Correcciones explícitas:**
+- "No, eso no es así..." / "En realidad debería ser..."
+- "Te equivocaste en..." / "Eso está mal"
+- "Te dije antes que..." / "Siempre hago X, no Y"
+- "Dejá de hacer X" / "Por qué seguís haciendo..."
+
+**Preferencias explícitas:**
+- "Me gusta cuando..." / "Siempre haceme X"
+- "Nunca hagas Y" / "Mi estilo es..."
+- "Para [proyecto], usá..."
+
+**Patrones recurrentes:**
+- Misma instrucción 3+ veces
+- Workflow que funciona bien repetidamente
+- Gonzo elogia un approach específico
+
+**No loggear:**
+- Instrucciones de una sola vez ("hacé X ahora")
+- Contexto específico de un archivo ("en este archivo...")
+- Hipótesis ("qué pasaría si...")
+
+## Self-Reflection Post-Tarea
+
+Después de tareas significativas (multi-step, debugging, PRs, cambios de config), hacer una pausa rápida de evaluación:
+
+```
+CONTEXT: [tipo de tarea]
+REFLECTION: [qué noté]
+LESSON: [qué haría distinto]
+```
+
+**Cuándo hacerlo:**
+- Después de completar una tarea multi-step
+- Después de recibir feedback (positivo o negativo)
+- Después de fixear un bug
+- Cuando notes que tu output podría ser mejor
+
+**Destino:** si es una lección nueva → `docs/LEARNINGS.md`. Si es un patrón que ya existe → actualizar Recurrence-Count.
+
+## Conflict Resolution — Lecciones Contradictorias
+
+Cuando dos lecciones en `docs/LEARNINGS.md` se contradicen:
+
+1. **Más específico gana** — proyecto > dominio > global
+2. **Más reciente gana** — mismo nivel de especificidad
+3. **Si ambiguo** — preguntar a Gonzo
+
+## Common Traps — Errores Típicos al Aprender
+
+- **Aprender del silencio** — no inferir preferencias porque Gonzo no dijo nada. Esperar corrección explícita o evidencia repetida.
+- **Promover muy rápido** — una ocurrencia no es un patrón. Esperar 3+ repeticiones antes de promover a SOUL/TOOLS/AGENTS.
+- **Leer todo siempre** — no cargar archivos enteros si no hacen falta. Cargar solo lo que el contexto necesita.
+- **Compactar borrando** — no borrar lecciones viejas. Fusionar, resumir o archivar, pero no perder historia.
+
 ## Related
 
 - [Default AGENTS.md](/reference/AGENTS.default)

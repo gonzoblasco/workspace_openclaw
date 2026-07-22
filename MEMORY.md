@@ -140,6 +140,10 @@ Lo esencial. El detalle está en `docs/LEARNINGS.md`.
 - **Recurrence-Count >= 3 en 30 días + 2 tareas → promover a SOUL/TOOLS/AGENTS** — si algo pasa 3 veces, no es accidente, es falta de memoria institucional.
 - **IDs LRN-YYYYMMDD-XXX para referencias cruzadas** — opcional, útil cuando LEARNINGS.md crece.
 - **No instalar skills que pisan 80%+ de lo que ya tenemos** — robar ideas, integrarlas como convención propia.
+- **Learning Signals en AGENTS.md** — frases gatillo que disparan logging automático (correcciones, preferencias, patrones).
+- **Self-Reflection post-tarea** — después de tareas significativas, evaluar con CONTEXT/REFLECTION/LESSON.
+- **Conflict Resolution** — específico > general, reciente > antiguo, ambiguo → preguntar.
+- **Common Traps** — aprender del silencio, promover rápido, leer todo, compactar borrando.
 
 ## Estilo en issues/PRs de terceros
 
