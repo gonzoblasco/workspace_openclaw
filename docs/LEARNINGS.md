@@ -328,3 +328,28 @@ Si después de una mejora el score baja más de 2 puntos en cualquier dimensión
 **Adoptado:** como safety net para modificaciones a nuestro sistema. Si un cambio empeora las cosas, revertir.
 
 **Lección:** no todas las mejoras lo son realmente. Tener un mecanismo de auto-rollback evita que "mejoras" que empeoran las cosas se queden en el sistema.
+
+---
+
+## 2026-07-22 — AI Persona OS: DREAMS.md, Structured Escalation y Growth Loops
+
+### 45. DREAMS.md: consolidación programada de memoria
+AI Persona OS propone un archivo DREAMS.md para consolidación periódica de insights desde daily logs. Nosotros ya tenemos MEMORY.md como curaduría manual, pero no un proceso programado.
+
+**Adoptado:** incorporado a AGENTS.md como sección "DREAMS.md — Consolidación Programada de Memoria". Cada ~7 días, consolidar daily logs recientes a MEMORY.md y archivar viejos.
+
+**Lección:** la memoria no se mantiene sola. Sin consolidación programada, MEMORY.md se llena de ruido o insights valiosos se pierden en daily logs olvidados.
+
+### 46. Structured Escalation: handoff cuando el agent está stuck
+Cuando no se puede resolver algo, presentar un handoff estructurado: BLOQUEO / CAUSA / INTENTOS / NECESITO / ALTERNATIVA. Nunca "no sé" sin contexto.
+
+**Adoptado:** incorporado a AGENTS.md como sección "Structured Escalation".
+
+**Lección:** un handoff estructurado le ahorra a Gonzo tener que adivinar qué pasó. El bloqueo se resuelve más rápido cuando está bien definido.
+
+### 47. Growth Loops: cuatro ciclos de mejora continua
+Curiosidad, Reconocimiento de Patrones, Expansión de Capacidades, Seguimiento de Resultados. Ciclos explícitos que mantienen el sistema evolucionando.
+
+**Adoptado:** incorporado a AGENTS.md como sección "Growth Loops".
+
+**Lección:** la mejora continua no es automática — necesita ciclos explícitos. Sin ellos, el sistema se estanca o empeora.

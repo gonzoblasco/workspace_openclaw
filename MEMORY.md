@@ -155,6 +155,9 @@ Lo esencial. El detalle está en `docs/LEARNINGS.md`.
 - **Gate dimension** — una dimensión crítica puede vetar todo (ej: seguridad).
 - **Tiered verification (L0-L3)** — nivel de verificación según alcance del cambio.
 - **Auto-rollback on regression** — si una mejora empeora las cosas, revertir.
+- **DREAMS.md** — consolidación programada de memoria cada ~7 días.
+- **Structured Escalation** — handoff estructurado cuando estoy stuck (BLOQUEO/CAUSA/INTENTOS/NECESITO/ALTERNATIVA).
+- **Growth Loops** — 4 ciclos de mejora continua: Curiosidad, Patrones, Expansión, Resultados.
 
 ## Estilo en issues/PRs de terceros
 

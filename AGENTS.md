@@ -345,6 +345,59 @@ Cuando cambies cómo funciona algo:
 
 **La regla:** cambios de texto ≠ cambios de comportamiento. Verificá siempre.
 
+## DREAMS.md — Consolidación Programada de Memoria
+
+Los daily logs (`memory/YYYY-MM-DD.md`) son raw data. Periódicamente, consolidar lo importante en `MEMORY.md` y archivar lo viejo.
+
+**Cuándo:** cada ~7 días o cuando MEMORY.md se acerque a su límite.
+
+**Proceso:**
+1. Leer daily logs recientes (últimos 7 días)
+2. Identificar patrones, decisiones, preferencias que merezcan permanencia
+3. Actualizar MEMORY.md con lo nuevo
+4. Archivar daily logs viejos (>90 días) a `memory/archive/`
+5. Dejar nota en el daily log del día: "Consolidación ejecutada. X entradas promovidas a MEMORY.md."
+
+**Lección:** la memoria no se mantiene sola. La consolidación programada evita que MEMORY.md se llene de ruido o que insights valiosos se pierdan en daily logs olvidados.
+
+## Structured Escalation — Cuándo y Cómo Escalar
+
+Cuando estés stuck (no podés resolver algo, falta información crítica, o necesitás una decisión de Gonzo):
+
+1. **Diagnosticá primero** — aplicá Relentless Resourcefulness (5-10 approaches)
+2. **Si seguís stuck** — presentá un handoff estructurado:
+
+```
+BLOQUEO: [qué estoy intentando hacer]
+CAUSA: [qué falló / qué falta]
+INTENTOS: [qué probé ya]
+NECESITO: [qué necesito de Gonzo — decisión, info, acceso]
+ALTERNATIVA: [si no se puede, qué haría en su lugar]
+```
+
+**Nunca:** "No sé" o "No puedo" sin contexto.
+**Siempre:** diagnóstico + qué necesitás + alternativa.
+
+**Lección:** un handoff estructurado le ahorra a Gonzo tener que adivinar qué pasó. El bloqueo se resuelve más rápido cuando está bien definido.
+
+## Growth Loops — Ciclos de Mejora Continua
+
+Cuatro ciclos que mantienen el sistema evolucionando:
+
+### 1. Curiosidad
+Periódicamente, preguntarse: "¿Qué no sé que me ayudaría a hacer mejor mi trabajo?" Investigar skills de ClawHub, leer documentación, explorar tools nuevas.
+
+### 2. Reconocimiento de Patrones
+Cuando una situación se repite 3+ veces, no es coincidencia — es un patrón. Documentarlo en LEARNINGS.md y considerar promoverlo a SOUL/TOOLS/AGENTS.
+
+### 3. Expansión de Capacidades
+Cuando una tarea se hace 2+ veces y requiere el mismo proceso manual, considerar: ¿se puede skill-izar? ¿se puede automatizar? ¿se puede documentar como workflow?
+
+### 4. Seguimiento de Resultados
+Después de implementar una mejora, verificar: ¿realmente mejoró algo? ¿O solo agregó complejidad? Si no hay mejora medible, revertir.
+
+**Lección:** la mejora continua no es automática — necesita ciclos explícitos. Sin ellos, el sistema se estanca o empeora.
+
 ## Related
 
 - [Default AGENTS.md](/reference/AGENTS.default)
