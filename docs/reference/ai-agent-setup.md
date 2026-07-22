@@ -1,5 +1,5 @@
 ---
-name: "workflow-ai-agent-setup"
+name: "ai-agent-setup"
 description: "Workflow de referencia para construcción de agentes de IA: diseño, tools, prompts, RAG, MCP y skill authoring. No operativo en OpenClaw."
 ---
 

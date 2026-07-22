@@ -85,28 +85,28 @@
 
 | Workflow | Reemplaza | Para qué |
 |---|---|---|
-| `workflow-accessibility-studio` | a11y-system-designer, ux-a11y-studio | Diseño y validación de accesibilidad |
-| `workflow-build-scaffold` | 5 skills de scaffold | Scaffolding y construcción de proyectos |
-| `workflow-debug-investigation` | — | Investigación sistemática de bugs hasta causa raíz |
-| `workflow-dependency-management` | — | Evaluación, actualización y gobernanza de dependencias |
-| `workflow-engineering-governance` | — | Evolución continua del AI Engineering OS |
-| `workflow-incident-response` | — | Gestión estructurada de incidentes en producción |
-| `workflow-knowledge-management` | — | Gobernanza y sincronización de la base de conocimiento |
-| `workflow-narrative-content` | story-planning, story-writing | Planificación y escritura de ficción |
-| `workflow-observability` | — | Instrumentación, métricas, tracing y análisis del sistema |
-| `workflow-oss-contribution` | oss-contribute, sdd-brownfield | Contribución estratégica a OSS |
-| `workflow-performance-optimization` | — | Análisis, profiling y optimización sistemática |
-| `workflow-pre-deploy-qa` | — | Validación pre-deploy (build, rutas, SEO, API, performance) |
-| `workflow-product-discovery` | 4 skills de producto | Idea → definición de producto |
-| `workflow-release-management` | — | Planificación, coordinación y ejecución de releases |
-| `workflow-research-spike` | — | Investigación técnica para reducir incertidumbre |
-| `workflow-review-quality` | pr-review, po-review, security-audit | Revisión pre-merge y auditoría |
-| `workflow-session-lifecycle` | 4 skills de sesión | Ciclo de vida completo de sesión |
-| `workflow-task-execution` | — | Ejecución de tareas: planificar, implementar, verificar, PR |
-| `workflow-tech-docs` | adr-framework, adr-sync | Documentación técnica |
-| `workflow-vibe-code-cleanup` | — | Limpieza de código generado por IA/vibe coding |
+| `accessibility-studio` | a11y-system-designer, ux-a11y-studio | Diseño y validación de accesibilidad |
+| `build-scaffold` | 5 skills de scaffold | Scaffolding y construcción de proyectos |
+| `debug-investigation` | — | Investigación sistemática de bugs hasta causa raíz |
+| `dependency-management` | — | Evaluación, actualización y gobernanza de dependencias |
+| `engineering-governance` | — | Evolución continua del AI Engineering OS |
+| `incident-response` | — | Gestión estructurada de incidentes en producción |
+| `knowledge-management` | — | Gobernanza y sincronización de la base de conocimiento |
+| `narrative-content` | story-planning, story-writing | Planificación y escritura de ficción |
+| `observability` | — | Instrumentación, métricas, tracing y análisis del sistema |
+| `oss-contribution` | oss-contribute, sdd-brownfield | Contribución estratégica a OSS |
+| `performance-optimization` | — | Análisis, profiling y optimización sistemática |
+| `pre-deploy-qa` | — | Validación pre-deploy (build, rutas, SEO, API, performance) |
+| `product-discovery` | 4 skills de producto | Idea → definición de producto |
+| `release-management` | — | Planificación, coordinación y ejecución de releases |
+| `research-spike` | — | Investigación técnica para reducir incertidumbre |
+| `review-quality` | pr-review, po-review, security-audit | Revisión pre-merge y auditoría |
+| `session-lifecycle` | 4 skills de sesión | Ciclo de vida completo de sesión |
+| `task-execution` | — | Ejecución de tareas: planificar, implementar, verificar, PR |
+| `tech-docs` | adr-framework, adr-sync | Documentación técnica |
+| `vibe-code-cleanup` | — | Limpieza de código generado por IA/vibe coding |
 
-> **Nota:** `workflow-ai-agent-setup` se movió a `docs/reference/ai-agent-setup.md` — es referencia conceptual, no skill operativa.
+> **Nota:** `ai-agent-setup` se movió a `docs/reference/ai-agent-setup.md` — es referencia conceptual, no skill operativa.
 
 ## Lecciones aprendidas (resumen)
 
