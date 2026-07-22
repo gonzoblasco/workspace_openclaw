@@ -144,6 +144,11 @@ Lo esencial. El detalle está en `docs/LEARNINGS.md`.
 - **Self-Reflection post-tarea** — después de tareas significativas, evaluar con CONTEXT/REFLECTION/LESSON.
 - **Conflict Resolution** — específico > general, reciente > antiguo, ambiguo → preguntar.
 - **Common Traps** — aprender del silencio, promover rápido, leer todo, compactar borrando.
+- **WAL Protocol** — escribir antes de responder. Si hay correcciones/preferencias/decisiones → STOP, WRITE, THEN respond.
+- **Working Buffer** — loggear exchanges cuando el contexto está al ~60%+.
+- **Compaction Recovery** — protocolo de recuperación post-compactación (buffer → daily notes → search).
+- **Relentless Resourcefulness** — probar 5-10 approaches antes de decir "no puedo".
+- **Verify Implementation** — no reportar "done" si solo cambiaste texto, no mecanismo.
 
 ## Estilo en issues/PRs de terceros
 

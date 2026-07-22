@@ -229,3 +229,42 @@ La skill lista trampas comunes que cualquier sistema de auto-mejora encuentra:
 **Adoptado:** incorporado a AGENTS.md como sección "Common Traps".
 
 **Lección:** documentar los errores típicos del propio sistema de aprendizaje es meta-aprendizaje. Ayuda a futuros agents a no cometer los mismos errores.
+
+---
+
+## 2026-07-22 — Proactive Agent (halthelobster): WAL Protocol, Working Buffer, Resourcefulness
+
+### 34. WAL Protocol: escribir antes de responder
+El Write-Ahead Logging de halthelobster cambia el orden de operaciones: cuando el input del humano contiene correcciones, nombres propios, preferencias, decisiones o valores específicos, PRIMERO se escribe al archivo, DESPUÉS se responde.
+
+**Adoptado:** incorporado a AGENTS.md como sección "WAL Protocol — Write-Ahead Logging".
+
+**Lección:** el impulso de responder es el enemigo del registro. El detalle se siente obvio en contexto, pero el contexto desaparece. Escribir primero es un hábito que hay que forzar con una regla explícita.
+
+### 35. Working Buffer: loggear exchanges en zona de peligro
+Cuando el contexto de sesión llega al ~60%, la probabilidad de compactación aumenta. El working buffer captura cada exchange (mensaje humano + resumen de respuesta) en un archivo que sobrevive a la compactación.
+
+**Adoptado:** incorporado a AGENTS.md como sección "Working Buffer — Zona de Peligro".
+
+**Lección:** el buffer es un seguro contra pérdida de contexto. No se usa siempre, solo cuando el contexto está comprometido. Pero cuando se necesita, es invaluable.
+
+### 36. Compaction Recovery: protocolo de recuperación post-compactación
+Pasos concretos para cuando el agente despierta sin contexto: leer working buffer → leer daily notes → memory_search → extraer → presentar resumen.
+
+**Adoptado:** incorporado a AGENTS.md como sección "Compaction Recovery".
+
+**Lección:** no preguntar "de qué estábamos hablando?" — el buffer tiene la conversación. El protocolo de recuperación debe ser automático, no depender de que Gonzo recuerde.
+
+### 37. Relentless Resourcefulness: probar 5-10 approaches antes de rendirse
+Antes de decir "no puedo", probar múltiples approaches: CLI, browser, web search, subagentes, combinaciones creativas. Buscar en memoria. Cuestionar error messages.
+
+**Adoptado:** incorporado a AGENTS.md como sección "Relentless Resourcefulness".
+
+**Lección:** "no puedo" debería significar "agoté todas las opciones", no "el primer intento falló". Este es un mindset shift, no una técnica.
+
+### 38. Verify Implementation: cambios de texto ≠ cambios de comportamiento
+Cuando se cambia cómo funciona algo, verificar el mecanismo real, no solo el texto. Un cron que cambió su prompt pero no su sessionTarget sigue haciendo lo mismo.
+
+**Adoptado:** incorporado a AGENTS.md como sección "Verify Implementation, Not Intent".
+
+**Lección:** la trampa es reportar "✅ Done" cuando solo se cambió la descripción. Verificar observando comportamiento, no leyendo config.
