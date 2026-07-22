@@ -136,6 +136,10 @@ Lo esencial. El detalle está en `docs/LEARNINGS.md`.
 - **Biome se autoformatea — correr `npx biome check --write .` post-scaffold** — si no, el primer CI falla porque Biome lintea su propio `biome.json`.
 - **shadcn/ui + Biome = ignorar `src/components/ui/*`** — los componentes de shadcn generan falsos positivos de a11y. Agregar al `files.ignore` de `biome.json` desde el día 1.
 - **Setup de proyecto nuevo: git init + .knowledge/ + .gitignore + submodule** — hacer todo de una, no post-hoc.
+- **Pattern-Keys (`area.symptom`) para deduplicar aprendizajes** — adoptado de self-improving-agent. Opcional pero recomendado para entradas recurrentes.
+- **Recurrence-Count >= 3 en 30 días + 2 tareas → promover a SOUL/TOOLS/AGENTS** — si algo pasa 3 veces, no es accidente, es falta de memoria institucional.
+- **IDs LRN-YYYYMMDD-XXX para referencias cruzadas** — opcional, útil cuando LEARNINGS.md crece.
+- **No instalar skills que pisan 80%+ de lo que ya tenemos** — robar ideas, integrarlas como convención propia.
 
 ## Estilo en issues/PRs de terceros
 

@@ -132,6 +132,38 @@ Esto satisface tanto a Biome (no usa non-null assertion) como a TypeScript (page
 
 ---
 
+## 2026-07-22 — Self-Improving Agent: Pattern-Keys, Recurrence-Count y umbral de promoción
+
+### 26. Pattern-Keys como mecanismo de deduplicación de aprendizajes
+La skill `self-improving-agent` de pskoett propone un sistema de **Pattern-Keys** con formato `area.symptom` (ej: `deps.module-not-found`, `net.connection-refused`) como identificador estable para entradas de aprendizaje. La ventaja sobre keyword search es que dos entradas redactadas distinto pero con el mismo patrón comparten key.
+
+**Decisión:** adoptamos Pattern-Keys como campo opcional en `docs/LEARNINGS.md`. No obligatorio, pero recomendado para entradas que probablemente se repitan (errores de build, problemas de red, configuraciones olvidadas).
+
+**Formato:** `area.symptom` — dos niveles, lowercase, hyphenated. Areas predefinidas: `api`, `auth`, `build`, `config`, `deps`, `fs`, `net`, `runtime`, `shell`, `vcs`, `simplify`, `harden`.
+
+### 27. Recurrence-Count + umbral de promoción para detectar patrones sistémicos
+Cuando un aprendizaje se repite 3+ veces en un período de 30 días, y aparece en al menos 2 tareas distintas, es señal de que debería promoverse a SOUL.md, TOOLS.md o AGENTS.md como regla permanente.
+
+**Regla:**
+- Recurrence-Count >= 3
+- Visto en >= 2 tareas distintas
+- Ocurrido en ventana de 30 días
+→ Promover a workspace file como regla corta y preventiva (no como write-up de incidente)
+
+**Lección:** las recurrencias no son accidentes — son patrones que el sistema debería absorber. Si algo pasa 3 veces, no es mala suerte, es falta de memoria institucional.
+
+### 28. IDs de entrada (LRN-YYYYMMDD-XXX) para referenciar aprendizajes
+Adoptamos IDs opcionales con formato `LRN-YYYYMMDD-XXX` para entradas en LEARNINGS.md. No obligatorio para entradas simples, pero útil cuando una entrada es referenciada desde otra (See Also) o desde MEMORY.md.
+
+**Lección:** tener IDs permite referencias cruzadas sin ambigüedad. Útil cuando el archivo crece.
+
+### 29. No instalar skills que pisanean lo que ya tenemos — robar ideas, no skills
+La skill `self-improving-agent` está bien diseñada pero duplica funcionalidad que ya tenemos: logging de aprendizajes en LEARNINGS.md, promoción a SOUL/TOOLS/AGENTS, cross-session communication, heartbeat maintenance. Lo que nos aporta son 3 ideas puntuales (Pattern-Keys, Recurrence-Count, IDs) que incorporamos como convención propia.
+
+**Lección:** evaluar skills externas contra lo que ya tenemos antes de instalar. Si pisa 80%+ de nuestra estructura, no la instalamos — le robamos las ideas que nos faltan y las integramos.
+
+---
+
 ## 2026-07-20 — Patrones de fix y humanización en OSS
 
 ### 7. Fix de una línea + defensa en profundidad en la capa contigua
