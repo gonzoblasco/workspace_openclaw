@@ -1,7 +1,9 @@
-# FREEZER.md — Ideas congeladas
+# FREEZER.md — Proyectos congelados
 
-> Este archivo está vacío. No hay proyectos congelados activos.
-> 
-> Si una idea se congela en el futuro, su documentación vivirá en `projects/\u003cslug\u003e/.knowledge/` y su estado se registrará en `projects/PROYECTOS.md`.
+> El índice de proyectos archivados vive en `projects/PROYECTOS.md` (sección ❄️ ARCHIVADOS).
+>
+> Este archivo se mantiene como referencia. Para cambios, actualizar PROYECTOS.md.
 
 ---
+
+*Actualizado: 2026-07-22*
