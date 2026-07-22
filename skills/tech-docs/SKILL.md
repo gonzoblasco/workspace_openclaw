@@ -1,6 +1,7 @@
 ---
 name: "tech-docs"
 description: "Workflow de Technical Documentation: ADRs, README, API docs, CHANGELOG, guías técnicas y diseño arquitectónico."
+user-invocable: false
 ---
 
 # Workflow: Technical Documentation
@@ -9,7 +10,7 @@ description: "Workflow de Technical Documentation: ADRs, README, API docs, CHANG
 - `adr-framework`
 - `adr-sync`
 
-## Qué hace
+## Propósito
 Creación y gestión de documentación técnica de proyectos: ADRs, README, API docs, CHANGELOG, guías de contribución y diseño arquitectónico.
 
 ## Fases

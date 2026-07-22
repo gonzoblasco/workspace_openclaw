@@ -1,6 +1,7 @@
 ---
 name: "dependency-management"
 description: "Workflow de Dependency Management: evaluación, actualización, gobernanza y salud del ecosistema de dependencias del proyecto."
+user-invocable: false
 ---
 
 # Workflow: Dependency Management

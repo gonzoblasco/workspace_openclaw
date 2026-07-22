@@ -1,6 +1,7 @@
 ---
 name: "session-lifecycle"
 description: "Workflow de Session Lifecycle: ciclo de sesión completo. Reemplaza 4 skills de sesión."
+user-invocable: false
 ---
 
 # Workflow: Session Lifecycle
@@ -11,8 +12,14 @@ description: "Workflow de Session Lifecycle: ciclo de sesión completo. Reemplaz
 - `context-management`
 - `agent-dispatcher`
 
-## Qué hace
+## Propósito
 Gestión del ciclo de vida completo de una sesión de trabajo con IA.
+
+## Cuándo usarlo
+- Al iniciar una sesión de trabajo con IA (cargar contexto + memoria)
+- Al cerrar una sesión (escribir HANDOFF, memory, CHANGELOG)
+- Para spawnear sub-agentes según la tarea (fork vs isolated)
+- Para convertir pendientes en tareas accionables y hacer commit del workspace
 
 ## Fases
 1. **Inicio** — cargar contexto, memoria, handoff del proyecto activo

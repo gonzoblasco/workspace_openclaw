@@ -1,12 +1,19 @@
 ---
 name: "task-execution"
 description: "Workflow de ejecución de tareas: planificar, implementar, verificar, PR y cerrar epic. Basado en patrones del AI Developer Stack."
+user-invocable: false
 ---
 
 # Workflow: Task Execution
 
-## Qué hace
+## Propósito
 Ejecución día a día de tareas: desde que se define una tarea hasta que se cierra el epic con PR, merge y CHANGELOG. Se relaciona con `build-scaffold` (post-scaffold) y `review-quality` (pre-merge).
+
+## Cuándo usarlo
+- Implementar una tarea o feature definida en un epic activo
+- Planificar y desglosar trabajo en subtareas verificables
+- Crear branch, implementar, testear y abrir PR
+- Cerrar un epic con CHANGELOG, tags y lecciones aprendidas
 
 ## Fases
 

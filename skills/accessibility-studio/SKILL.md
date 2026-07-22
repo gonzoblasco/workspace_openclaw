@@ -1,6 +1,7 @@
 ---
 name: "accessibility-studio"
 description: "Workflow de Accessibility Studio: diseño, auditoría, autofix y validación de accesibilidad. Reemplaza a11y-system-designer, ux-a11y-studio."
+user-invocable: false
 ---
 
 # Workflow: Accessibility Studio
@@ -9,8 +10,14 @@ description: "Workflow de Accessibility Studio: diseño, auditoría, autofix y v
 - `a11y-system-designer`
 - `ux-a11y-studio`
 
-## Qué hace
+## Propósito
 Diseño, auditoría, corrección y validación de accesibilidad en productos digitales. Incluye autofix loop (auditar → corregir → verificar) y checklist WCAG 2.2 granular.
+
+## Cuándo usarlo
+- Diseñar o auditar accesibilidad en un producto digital
+- Corregir issues WCAG 2.2 (contraste, teclado, screen reader, ARIA)
+- Validar accesibilidad pre-launch o post-cambios
+- Generar reporte de cumplimiento con nivel de conformidad (A, AA, AAA)
 
 ## Fases
 

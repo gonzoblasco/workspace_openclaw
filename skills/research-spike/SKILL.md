@@ -1,6 +1,7 @@
 ---
 name: "research-spike"
 description: "Workflow de Research Spike: investigación técnica para reducir incertidumbre antes de tomar decisiones o implementar soluciones."
+user-invocable: false
 ---
 
 # Workflow: Research Spike
@@ -235,25 +236,7 @@ Riesgos identificados
 
 # Plantilla
 
-## Pregunta
-
-## Contexto
-
-## Hipótesis
-
-## Alternativas
-
-## Evidencia
-
-## Experimentos
-
-## Resultados
-
-## Recomendación
-
-## Riesgos
-
-## Próximos pasos
+Ver [template de reporte](./references/template.md).
 
 ---
 

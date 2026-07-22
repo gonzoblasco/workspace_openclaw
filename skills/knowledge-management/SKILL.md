@@ -1,6 +1,7 @@
 ---
 name: "knowledge-management"
 description: "Workflow de Knowledge Management: gobernanza, sincronización y evolución de la base de conocimiento del proyecto. Mantiene una única fuente de verdad."
+user-invocable: false
 ---
 
 # Workflow: Knowledge Management

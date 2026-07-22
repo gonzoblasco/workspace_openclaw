@@ -1,6 +1,7 @@
 ---
 name: "observability"
 description: "Workflow de Engineering Observability: instrumentación, métricas, tracing y análisis del sistema y del AI Engineering OS."
+user-invocable: false
 ---
 
 # Workflow: Engineering Observability
@@ -307,63 +308,7 @@ Dashboard Checklist
 
 # Métricas mínimas
 
-## Ingeniería
-
-Deployment Frequency
-
-Lead Time
-
-MTTR
-
-Change Failure Rate
-
----
-
-## Aplicación
-
-Availability
-
-Error Rate
-
-Latency P95
-
-Latency P99
-
-CPU
-
-RAM
-
-DB Response Time
-
----
-
-## AI
-
-Costo diario
-
-Tokens
-
-Duración por workflow
-
-Workflow más ejecutado
-
-Workflow con más errores
-
-Workflow con mayor retrabajo
-
----
-
-## Calidad
-
-Cobertura
-
-Build Success Rate
-
-PR Approval Time
-
-Accessibility Score
-
-Lighthouse
+Ver [métricas mínimas](./references/metrics.md).
 
 ---
 

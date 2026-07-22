@@ -1,6 +1,7 @@
 ---
 name: "engineering-governance"
 description: "Workflow de Engineering Governance: evolución continua del AI Engineering OS. Audita workflows, consolida aprendizajes, elimina duplicaciones y propone mejoras sistémicas."
+user-invocable: false
 ---
 
 # Workflow: Engineering Governance

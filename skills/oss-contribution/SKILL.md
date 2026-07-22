@@ -1,6 +1,7 @@
 ---
 name: "oss-contribution"
 description: "Workflow de OSS Contribution: contribución estratégica a repos externos. Reemplaza oss-contribute, sdd-brownfield."
+user-invocable: false
 ---
 
 # Workflow: OSS Contribution
@@ -9,8 +10,14 @@ description: "Workflow de OSS Contribution: contribución estratégica a repos e
 - `oss-contribute`
 - `sdd-brownfield`
 
-## Qué hace
+## Propósito
 Contribución estratégica a repositorios externos con Spec-Driven Development.
+
+## Cuándo usarlo
+- Contribuir con un fix o feature a un repo open source externo
+- Hacer triaje de issues en repos objetivo para encontrar oportunidades
+- Dar seguimiento batch a PRs abiertos en repos externos
+- Preparar una contribución estratégica con Spec-Driven Development
 
 ## Fases
 1. **Pipeline** — selección de repos objetivo, tier ranking

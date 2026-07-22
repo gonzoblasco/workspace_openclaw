@@ -1,6 +1,7 @@
 ---
 name: "product-discovery"
 description: "Workflow de Product Discovery: idea a definición de producto. Incluye ideación opcional y modo detallado. Reemplaza 4 skills de producto."
+user-invocable: false
 ---
 
 # Workflow: Product Discovery
@@ -11,10 +12,17 @@ description: "Workflow de Product Discovery: idea a definición de producto. Inc
 - `openspec-creator`
 - `product-reset`
 
-## Qué hace
+## Propósito
 Guía desde la idea inicial hasta la definición del producto lista para construir.
 
 ## Fases
+
+## Cuándo usarlo
+- Explorar una idea de producto desde cero
+- Evaluar viabilidad técnica y de mercado antes de construir
+- Definir MVP, features, métricas y posicionamiento
+- Documentar una especificación formal (OpenSpec) antes de arrancar desarrollo
+- Hacer retrospectiva post-lanzamiento
 
 ### 0. Ideación (opcional)
 Si la idea es vaga o necesita exploración:

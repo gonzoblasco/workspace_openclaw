@@ -1,11 +1,12 @@
 ---
 name: "vibe-code-cleanup"
 description: "Workflow de limpieza de código generado por IA/vibe coding: diagnosticar, limpiar, refactorizar y endurecer para producción."
+user-invocable: false
 ---
 
 # Workflow: Vibe Code Cleanup
 
-## Qué hace
+## Propósito
 Tomar código generado por IA (vibe coding) y llevarlo a estado producible: sin deuda técnica, con tipos, tests y estructura sólida.
 
 ## Filosofía
@@ -15,6 +16,12 @@ Tomar código generado por IA (vibe coding) y llevarlo a estado producible: sin 
 - Validar después de cada batch
 - Nunca cambiar comportamiento observable
 - Preferir helpers compartidos sobre código duplicado
+
+## Cuándo usarlo
+- Limpiar código generado por IA antes de llevarlo a producción
+- Diagnosticar deuda técnica en una codebase generada
+- Refactorizar componentes grandes, tipar `any`, consolidar duplicación
+- Endurecer un proyecto generado con tests, types y build verde
 
 ## Fases
 

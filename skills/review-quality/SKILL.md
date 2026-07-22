@@ -1,6 +1,7 @@
 ---
 name: "review-quality"
 description: "Workflow de Review & Quality: revisión pre-merge, testing y auditoría. Reemplaza pr-review, po-review, security-audit, agent-review."
+user-invocable: false
 ---
 
 # Workflow: Review & Quality
@@ -11,8 +12,14 @@ description: "Workflow de Review & Quality: revisión pre-merge, testing y audit
 - `security-audit`
 - `agent-review`
 
-## Qué hace
+## Propósito
 Revisión de calidad antes de mergear o cerrar un ciclo. Incluye estrategia de testing, code review, auditoría de seguridad y validación pre-deploy opcional.
+
+## Cuándo usarlo
+- Revisar un PR antes de mergear (code review + testing + seguridad)
+- Auditar seguridad de un cambio (multi-tenant, auth, secrets, RLS)
+- Verificar que un cambio cumple con la spec de producto
+- Validación pre-deploy opcional post-merge
 
 ## Fases
 

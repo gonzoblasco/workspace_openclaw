@@ -1,6 +1,7 @@
 ---
 name: "build-scaffold"
 description: "Workflow de Build & Scaffold: scaffolding y construcción. Reemplaza 5 skills de scaffold."
+user-invocable: false
 ---
 
 # Workflow: Build & Scaffold
@@ -12,8 +13,14 @@ description: "Workflow de Build & Scaffold: scaffolding y construcción. Reempla
 - `ai-scaffold`
 - `ai-copilot-structure`
 
-## Qué hace
+## Propósito
 Scaffolding y construcción de proyectos desde cero o sobre existentes.
+
+## Cuándo usarlo
+- Arrancar un proyecto nuevo desde cero (scaffolding inicial)
+- Configurar stack: TypeScript, Tailwind, Biome, testing, linting
+- Agregar CI/CD a un proyecto existente
+- Iterar sobre un proyecto existente (modo --iterate)
 
 ## Fases
 1. **Análisis** — entender requerimientos, stack deseado, features. Si el proyecto ya pasó por product-discovery, leer DEFINITION.md y ROADMAP en vez de preguntar todo de nuevo

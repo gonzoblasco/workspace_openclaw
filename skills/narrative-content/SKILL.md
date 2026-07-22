@@ -1,6 +1,7 @@
 ---
 name: "narrative-content"
 description: "Workflow de Narrative Content: planificación y escritura de ficción, novelas, cuentos."
+argument-hint: "género | título | tipo de obra"
 ---
 
 # Workflow: Narrative Content
@@ -10,7 +11,7 @@ description: "Workflow de Narrative Content: planificación y escritura de ficci
 - `story-writing`
 - `umbrawriter-oss-v01-ai-copilot-structure`
 
-## Qué hace
+## Propósito
 Planificación y escritura de contenido narrativo: novelas, cuentos, worldbuilding, personajes.
 
 ## Fases

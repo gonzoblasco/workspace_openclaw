@@ -1,12 +1,19 @@
 ---
 name: "pre-deploy-qa"
 description: "Workflow de validación pre-deploy: build, rutas, SEO, API, performance, seguridad y cleanup. Se relaciona con review-quality (pre-merge) y build-scaffold (post-build)."
+user-invocable: false
 ---
 
 # Workflow: Pre-Deploy QA
 
-## Qué hace
+## Propósito
 Validación sistemática antes de deployar a producción. Corre después del merge, antes del deploy.
+
+## Cuándo usarlo
+- Antes de deployar a producción (post-merge, pre-deploy)
+- Después de cambios significativos que afectan rutas, API o SEO
+- Como gate de calidad en un pipeline de CI/CD
+- Para obtener un reporte de Go/No-Go antes de un release
 
 ## Fases
 

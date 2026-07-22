@@ -1,6 +1,7 @@
 ---
 name: "incident-response"
 description: "Workflow de Incident Response: gestión estructurada de incidentes en producción, desde la detección hasta el aprendizaje organizacional."
+user-invocable: false
 ---
 
 # Workflow: Incident Response
@@ -242,25 +243,7 @@ Backlog de mejoras
 
 # Plantilla de Postmortem
 
-## Resumen
-
-## Impacto
-
-## Timeline
-
-## Root Cause
-
-## Factores contribuyentes
-
-## Mitigación
-
-## Recuperación
-
-## Acciones correctivas
-
-## Acciones preventivas
-
-## Lecciones aprendidas
+Ver [template de postmortem](./references/postmortem-template.md).
 
 ---
 

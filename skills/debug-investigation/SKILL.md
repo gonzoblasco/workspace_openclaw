@@ -1,6 +1,7 @@
 ---
 name: "debug-investigation"
 description: "Workflow de Debug Investigation: investigación sistemática de bugs, degradaciones y comportamientos inesperados. Prioriza comprender antes de modificar código."
+user-invocable: false
 ---
 
 # Workflow: Debug Investigation
@@ -271,39 +272,7 @@ Casos de prueba sugeridos
 
 # Técnicas sugeridas
 
-## Binary Search
-
-Reducir rápidamente el espacio de búsqueda.
-
----
-
-## Git Bisect
-
-Encontrar el commit que introdujo el problema.
-
----
-
-## Rubber Duck
-
-Explicar el flujo paso a paso.
-
----
-
-## Five Whys
-
-Encontrar causas profundas.
-
----
-
-## Delta Debugging
-
-Reducir el caso mínimo reproducible.
-
----
-
-## Event Timeline
-
-Reconstruir cronológicamente lo ocurrido.
+Ver [técnicas sugeridas](./references/techniques.md).
 
 ---
 

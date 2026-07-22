@@ -1,6 +1,7 @@
 ---
 name: "release-management"
 description: "Workflow de Release Management: planificación, coordinación y ejecución de releases hacia producción. Gestiona estrategias de despliegue, versionado, comunicación y rollback."
+user-invocable: false
 ---
 
 # Workflow: Release Management
@@ -71,51 +72,7 @@ incident-response (si ocurre)
 
 # Estrategias de Release
 
-## Full Release
-
-Todos los usuarios.
-
----
-
-## Canary
-
-Pequeño porcentaje.
-
-Monitorear.
-
-Expandir gradualmente.
-
----
-
-## Feature Flags
-
-Deploy ahora.
-
-Activar después.
-
----
-
-## Blue / Green
-
-Dos ambientes.
-
-Cambio instantáneo.
-
-Rollback rápido.
-
----
-
-## Rolling
-
-Instancias graduales.
-
----
-
-## Hotfix
-
-Prioridad máxima.
-
-Proceso simplificado.
+Ver [estrategias de release](./references/strategies.md).
 
 ---
 
