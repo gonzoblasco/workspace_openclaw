@@ -364,3 +364,14 @@ Cuando un subagente pasa trabajo a otro, el handoff debe incluir: qué se hizo, 
 **Adoptado:** incorporado a AGENTS.md como sección "Handoff entre Subagentes".
 
 **Lección:** ser explícito sobre qué se hizo, dónde está, y qué falta ahorra tiempo a ambos lados. Un "listo, revisá los archivos" no es un handoff.
+
+---
+
+## 2026-07-22 — Productividad & ADHD: integrar patrones en nuestro sistema
+
+### 49. Sistema de productividad adaptado a ADHD
+Gonzo tiene ADHD. El sistema de productividad debe adaptarse a eso: una cosa a la vez, inbox capture, overload triage, rutinas de inicio/cierre, focus sobre multitasking, sin culpa por lo no hecho.
+
+**Adoptado:** incorporado a AGENTS.md como sección "Productividad & ADHD — Cómo Trabajamos". Creado `inbox.md` en el workspace para captura rápida de ideas sueltas.
+
+**Lección:** la productividad no es un sistema genérico — se adapta a la persona. Para alguien con ADHD, la clave es reducir fricción, evitar contexto switching, y tener rutinas claras de inicio y cierre.
