@@ -1,27 +1,25 @@
-# Monad — Status
+# Nomad — Status
 
-## Estado actual
-Discovery completo. GO decidido. Pendiente de inicio de Fase 0.
+## Estado actual: Archivado (22-Jul-2026)
+Build exitoso para iOS 18+. No se pudo ejecutar por bugs del simulador de iOS 27 beta 4.
 
-## Próximo paso
-Setup del proyecto Xcode + scaffold inicial.
+## Lo que se completó
+- ✅ Fase 0: Setup + scaffold
+- ✅ Fase 1: GitHub sync + Project list (SwiftData models + SyncService)
+- ✅ Fase 2: Diario + Escritura (DailyNote, WritingSession, PhotosPicker)
+- ✅ Build exitoso para iOS 18+ simulator
+- ❌ Fase 3: AI insights (placeholder solamente)
+- ❌ Fase 4: Foundation Models (no iniciado)
+
+## Próximos pasos (cuando se retome)
+1. Test on device o con simulador funcional (iOS 26 o iOS 27 beta 5+)
+2. Implementar AI insights (Fase 3)
+3. Foundation Models integration (Fase 4)
+4. Evaluar publicación en App Store
 
 ## Decisiones tomadas
-- Nombre: Monad
-- Stack: SwiftUI + SwiftData + CoreML + Supabase
-- MVP: 4 módulos (Proyectos, Diario, Escritura, IA)
-- IA local con Gemma 4 2B (Q4), plan B si no corre en 14 Pro
-- Offline-first desde el día 1
-- Sin publicación en App Store (por ahora)
-
-## Decisiones tomadas
-- Repo separado: `@gonzoblasco/nomad` (`.knowledge/` queda en workspace)
-- Supabase: Free plan (MVP)
-- IA local: Foundation Models framework (iOS 27+) como plan A. Gemma 4 2B via Core ML como plan C.
-- Apple LLM integration: Foundation Models framework es la respuesta. 0MB, ~3B params, guided generation, tool calling.
-
-## Riesgos activos
-- Foundation Models requiere iOS 27+ (iPhone 14 Pro lo soporta)
-- El modelo de Apple (~3B) puede no ser suficiente para tareas específicas
-- Scope creep (MVP definido, hay que mantenerlo)
-- SwiftUI learning curve (real pero manejable)
+- SwiftUI + SwiftData + Swift 6
+- GitHub como fuente de datos de proyectos
+- Offline-first con SwiftData local
+- Sin UIKit (reemplazado por ImageIO para fotos)
+- iOS 18+ target
