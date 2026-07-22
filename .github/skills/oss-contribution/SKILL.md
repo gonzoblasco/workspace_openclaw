@@ -28,6 +28,22 @@ Contribución estratégica a repositorios externos con Spec-Driven Development.
 6. **Community** — comentar en issues relacionados, cross-referencing. Hacerlo después del PR, no antes, para evitar ruido si el PR no prospera
 7. **Batch** — status check de PRs abiertos (🟢⚠️🔴)
 
+## Reglas de interacción en PRs/Issues de terceros
+
+### Bots vs Humanos
+
+- **Identificar al interlocutor:** antes de responder en un hilo, verificar si el autor del comment es un bot (github-actions, netlify, codecov, dependabot, etc.) o una persona.
+- **A bots no se les responde como si fuesen personas.** No saludar por nombre, no hacer conversación social, no agradecer. Si hay que responderle a un bot (ej: un check automatizado que pide algo), ser directo y dejar claro que se está respondiendo al sistema, no a una persona. Ej: "Esto es para el bot — si algún humano necesita más contexto, avise".
+- **A humanos se les habla como humanos.** Natural, sin vueltas, sin estructura de documento técnico.
+- **No meterse en hilos cerrados/muertos.** Si un PR está closed y no hay una pregunta directa hacia Gonzo, no comentar. El silencio no es una invitación.
+- **Menciones como referencia técnica ≠ llamado a la acción.** Si alguien menciona a Gonzo como referencia de un bug (ej: "como @gonzoblasco observó"), no requiere respuesta a menos que haya una pregunta explícita.
+- **PRs cerrados por detección de automatización:** evaluar caso por caso. Por defecto no intervenir — el maintainer ya tomó una decisión y el autor del PR ya habló. Pero si hay una razón para mostrar empatía (ej: Gonzo pasó por lo mismo), se puede comentar con cuidado, sabiendo que el maintainer lo va a leer. No hacerlo sin consultar a Gonzo primero.
+
+## Mirror de skills
+
+- **Todos los cambios a skills en `/workspace/skills/` deben reflejarse en `/workspace/.github/skills/`** (el mirror público). Si se modifica un SKILL.md del workspace, copiar el cambio al mirror correspondiente.
+- Esto aplica a cualquier skill que tenga mirror en `.github/skills/`. Verificar antes de dar por terminada la tarea.
+
 ## Outputs
 - PRs a repos externos
 - OpenSpec specs as-built o delta
