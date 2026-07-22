@@ -151,6 +151,10 @@ Lo esencial. El detalle está en `docs/LEARNINGS.md`.
 - **Verify Implementation** — no reportar "done" si solo cambiaste texto, no mecanismo.
 - **Confidence Tagging** — 🟢/🟡/🔴 en recomendaciones según calidad de datos.
 - **Self-Reflection con BIASES DETECTED** — identificar sesgos cognitivos en retrospectiva.
+- **Evaluación multidimensional** — framework con pesos para evaluar workflows/skills/proyectos.
+- **Gate dimension** — una dimensión crítica puede vetar todo (ej: seguridad).
+- **Tiered verification (L0-L3)** — nivel de verificación según alcance del cambio.
+- **Auto-rollback on regression** — si una mejora empeora las cosas, revertir.
 
 ## Estilo en issues/PRs de terceros
 

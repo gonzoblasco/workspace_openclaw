@@ -292,3 +292,39 @@ BIASES DETECTED: [sunk cost / anchoring / confirmation / etc. o none]
 ```
 
 **Lección:** identificar sesgos en retrospectiva ayuda a no repetir patrones de pensamiento erróneos. Especialmente útil en debugging y decisiones de arquitectura.
+
+---
+
+## 2026-07-22 — SkillCompass: evaluación multidimensional, gate dimension y auto-rollback
+
+### 41. Framework de evaluación multidimensional
+SkillCompass evalúa skills en 6 dimensiones con pesos: Structure (10%), Trigger (15%), Security — gate (20%), Functional (30%), Comparative (15%), Uniqueness (10%). El score general es weighted average.
+
+**Adoptado:** como patrón de evaluación para nuestro sistema de auto-mejora. Cuando evaluemos si un workflow, skill o proyecto vale la pena, podemos usar un framework multidimensional con pesos en vez de un juicio binario.
+
+**Lección:** evaluar en múltiples dimensiones con pesos explícitos es más robusto que un score único. Cada dimensión captura un aspecto diferente, y los pesos reflejan prioridades.
+
+### 42. Gate dimension: una dimensión que puede vetar todo
+En SkillCompass, D3 (Security) es una "gate dimension": si tiene un hallazgo Critical, el score general es FAIL sin posibilidad de override. No importa qué tan bien esté el resto.
+
+**Adoptado:** incorporado a nuestro sistema de auto-mejora. Si una lección, workflow o cambio tiene un error crítico (seguridad, integridad de datos), no se promociona ni se aplica aunque cumpla con todos los otros criterios.
+
+**Lección:** algunas cosas no son negociables. Tener una dimensión "gate" evita que un score general alto esconda un problema crítico.
+
+### 43. Tiered verification (L0-L3) post-cambio
+Después de modificar algo, verificar según el alcance del cambio:
+- L0: syntax check (siempre)
+- L1: re-evaluar la dimensión modificada
+- L2: evaluación completa
+- L3: verificar impacto cruzado (para cambios que afectan múltiples componentes)
+
+**Adoptado:** como patrón de verificación post-cambio en nuestro sistema. No todos los cambios necesitan full eval, pero siempre al menos L0.
+
+**Lección:** el nivel de verificación debe escalar con el alcance del cambio. Un cambio de typo no necesita full eval; un cambio arquitectónico sí.
+
+### 44. Auto-rollback on regression
+Si después de una mejora el score baja más de 2 puntos en cualquier dimensión, descartar los cambios automáticamente.
+
+**Adoptado:** como safety net para modificaciones a nuestro sistema. Si un cambio empeora las cosas, revertir.
+
+**Lección:** no todas las mejoras lo son realmente. Tener un mecanismo de auto-rollback evita que "mejoras" que empeoran las cosas se queden en el sistema.
