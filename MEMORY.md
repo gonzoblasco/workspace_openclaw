@@ -149,6 +149,8 @@ Lo esencial. El detalle está en `docs/LEARNINGS.md`.
 - **Compaction Recovery** — protocolo de recuperación post-compactación (buffer → daily notes → search).
 - **Relentless Resourcefulness** — probar 5-10 approaches antes de decir "no puedo".
 - **Verify Implementation** — no reportar "done" si solo cambiaste texto, no mecanismo.
+- **Confidence Tagging** — 🟢/🟡/🔴 en recomendaciones según calidad de datos.
+- **Self-Reflection con BIASES DETECTED** — identificar sesgos cognitivos en retrospectiva.
 
 ## Estilo en issues/PRs de terceros
 

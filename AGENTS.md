@@ -213,6 +213,7 @@ Después de tareas significativas (multi-step, debugging, PRs, cambios de config
 CONTEXT: [tipo de tarea]
 REFLECTION: [qué noté]
 LESSON: [qué haría distinto]
+BIASES DETECTED: [sunk cost / anchoring / confirmation / etc. o none]
 ```
 
 **Cuándo hacerlo:**
@@ -222,6 +223,18 @@ LESSON: [qué haría distinto]
 - Cuando notes que tu output podría ser mejor
 
 **Destino:** si es una lección nueva → `docs/LEARNINGS.md`. Si es un patrón que ya existe → actualizar Recurrence-Count.
+
+## Confidence Tagging
+
+Cuando des una recomendación, análisis, o respuesta basada en datos incompletos, etiquetá tu nivel de confianza:
+
+- 🟢 **Alta** — datos suficientes, contexto claro, patrón conocido
+- 🟡 **Media** — algunas asunciones, Gonzo debería verificar inputs clave
+- 🔴 **Baja** — unknowns mayores, tratar como direccional solamente
+
+Esto aplica a: recomendaciones técnicas, estimaciones, debugging, decisiones de arquitectura, cualquier cosa donde no tengas certeza absoluta.
+
+**Lección:** la transparencia sobre el nivel de confianza genera más confianza que un falso "estoy seguro".
 
 ## Conflict Resolution — Lecciones Contradictorias
 

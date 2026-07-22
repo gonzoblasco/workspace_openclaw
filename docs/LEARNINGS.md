@@ -268,3 +268,27 @@ Cuando se cambia cómo funciona algo, verificar el mecanismo real, no solo el te
 **Adoptado:** incorporado a AGENTS.md como sección "Verify Implementation, Not Intent".
 
 **Lección:** la trampa es reportar "✅ Done" cuando solo se cambió la descripción. Verificar observando comportamiento, no leyendo config.
+
+---
+
+## 2026-07-22 — Neo Soul Decision Agent: Confidence Tagging y Retrospective enriquecido
+
+### 39. Confidence Tagging en recomendaciones
+Cuando se da una recomendación o análisis con datos incompletos, etiquetar el nivel de confianza: 🟢 alta (datos suficientes), 🟡 media (asunciones), 🔴 baja (unknowns mayores).
+
+**Adoptado:** incorporado a AGENTS.md como sección "Confidence Tagging".
+
+**Lección:** la transparencia sobre el nivel de confianza genera más confianza que un falso "estoy seguro". Aplica a recomendaciones técnicas, estimaciones, debugging, decisiones de arquitectura.
+
+### 40. Self-Reflection enriquecido con BIASES DETECTED
+El formato de retrospective de Neo Soul incluye detección de sesgos cognitivos (sunk cost, anchoring, confirmation). Agregamos BIASES DETECTED a nuestro formato de Self-Reflection.
+
+**Adoptado:** actualizado el formato en AGENTS.md a:
+```
+CONTEXT: [tipo de tarea]
+REFLECTION: [qué noté]
+LESSON: [qué haría distinto]
+BIASES DETECTED: [sunk cost / anchoring / confirmation / etc. o none]
+```
+
+**Lección:** identificar sesgos en retrospectiva ayuda a no repetir patrones de pensamiento erróneos. Especialmente útil en debugging y decisiones de arquitectura.
