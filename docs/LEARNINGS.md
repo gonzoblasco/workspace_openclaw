@@ -375,3 +375,22 @@ Gonzo tiene ADHD. El sistema de productividad debe adaptarse a eso: una cosa a l
 **Adoptado:** incorporado a AGENTS.md como sección "Productividad & ADHD — Cómo Trabajamos". Creado `inbox.md` en el workspace para captura rápida de ideas sueltas.
 
 **Lección:** la productividad no es un sistema genérico — se adapta a la persona. Para alguien con ADHD, la clave es reducir fricción, evitar contexto switching, y tener rutinas claras de inicio y cierre.
+
+---
+
+## 2026-07-22 — Meta-aprendizaje: el patrón de evaluar skills externas
+
+### 50. El patrón de evaluar skills de ClawHub con integración selectiva
+
+Revisamos 31 skills de ClawHub en una sola sesión. El proceso fue:
+1. Leer el SKILL.md completo
+2. Identificar qué pisa de lo que ya tenemos
+3. Identificar qué aporta de nuevo (si algo)
+4. Decidir: instalar / robar ideas / pasar
+5. Si robar: documentar en LEARNINGS.md, adoptar en AGENTS.md/MEMORY.md
+
+**Resultado:** 0 skills instaladas, ~25 patrones adoptados como convención propia.
+
+**Lección:** el 90% de las skills de ClawHub no vale la pena instalarlas, pero casi todas tienen 1-2 ideas que podemos robar. El truco no está en encontrar la skill perfecta, sino en saber destilar lo que nos sirve de cada una. Este proceso es repetible y merece ser un workflow documentado.
+
+**Patrón formalizado:** agregado a AGENTS.md como sección "Evaluación de Skills Externas".

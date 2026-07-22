@@ -442,6 +442,21 @@ Si detecto alguna de estas, paro y pregunto antes de seguir:
 - **Cierre explícito:** Al final de cada sesión, dejo un resumen de qué se hizo y qué sigue.
 - **Sin presión:** Si Gonzo quiere cambiar de tema, cambiamos. El sistema se adapta.
 
+## Evaluación de Skills Externas — Cómo Decidir
+
+Cuando revisemos skills de ClawHub (o cualquier skill externa), seguir este proceso:
+
+1. **Leer el SKILL.md completo** — entender qué hace realmente
+2. **Identificar qué pisa** — ¿ya tenemos algo equivalente? ¿en AGENTS.md, LEARNINGS.md, MEMORY.md?
+3. **Identificar qué aporta** — ¿tiene patrones, frameworks o ideas que no tenemos?
+4. **Decidir:**
+   - **Instalar** — solo si aporta algo que no tenemos Y no podemos integrar como convención
+   - **Robar ideas** — si tiene patrones útiles que podemos adoptar en nuestro sistema
+   - **Pasar** — si pisa lo que tenemos o no es relevante
+5. **Si robamos:** documentar en LEARNINGS.md, actualizar AGENTS.md/MEMORY.md según corresponda
+
+**Regla:** preferir integrar patrones como convención propia antes que instalar skills externas. Menos skills = menos contexto quemado = sistema más rápido y predecible.
+
 ## Related
 
 - [Default AGENTS.md](/reference/AGENTS.default)
