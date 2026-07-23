@@ -70,21 +70,21 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 ## Pipeline de repos objetivos
 
-### En progreso — Registry completo de PRs abiertos
+### En progreso — Registry completo de PRs abiertos (actualizado 2026-07-23)
 
-| Repo | PR | Título | Estado |
-|------|-----|--------|--------|
-| radix-ui/primitives | [#4053](https://github.com/radix-ui/primitives/pull/4053) | fix: Select inside Dialog focus freeze | Abierto, esperando review |
-| TanStack/router | [#7861](https://github.com/TanStack/router/pull/7861) | fix: MatchInner throw undefined on cleared loadPromise | Abierto, esperando review |
-| vercel/ai | [#17274](https://github.com/vercel/ai/pull/17274) | warn when reasoning tokens spent | Review de Vercel addressado, esperando |
-| shadcn-ui/ui | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | InputOTP slot transition | Esperando review |
-| shadcn-ui/ui | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | MessageScroller footer height | Esperando review |
-| shadcn-ui/ui | [#11187](https://github.com/shadcn-ui/ui/pull/11187) | remove scrollbar-none table | Esperando review |
-| ~~akd-io/create-next-stack~~ | ~~#280-#289~~ | ~~10 PRs cerrados~~ | Cerrados — focusing on [`@gonzoblasco/create-stack`](https://github.com/gonzoblasco/create-stack) |
-| t3-oss/create-t3-app | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | biome ignore generated | Esperando review, CI verde |
-| shuding/nextra | [#5029](https://github.com/shuding/nextra/pull/5029) | select modal={false} | Esperando review |
-| payloadcms/payload | [#17413](https://github.com/payloadcms/payload/pull/17413) | fix: duplicate latest=true version rows | Abierto, esperando review |
-| payloadcms/payload | [#17342](https://github.com/payloadcms/payload/pull/17342) | lexical blocks stale form state | CI verde, esperando review |
+| Repo | PR | Título | Estado real | Acción tomada |
+|------|-----|--------|-------------|---------------|
+| radix-ui/primitives | [#4053](https://github.com/radix-ui/primitives/pull/4053) | fix: Select inside Dialog focus freeze | Sin review humano, sin CI. Changeset agregado 23 Jul | ✅ Changeset pusheado |
+| TanStack/router | [#7861](https://github.com/TanStack/router/pull/7861) | fix: MatchInner throw undefined on cleared loadPromise | Sin review humano, CI verde. CodeRabbit issues addressados 23 Jul | ✅ Fixes de CodeRabbit pusheados |
+| TanStack/router | [#7834](https://github.com/TanStack/router/pull/7834) | fix: safeStringify for loaderDeps hash | Sin review humano, CI verde, sin issues | ⏳ Esperando review |
+| vercel/ai | [#17274](https://github.com/vercel/ai/pull/17274) | warn when reasoning tokens spent | Review bot de Vercel addressado. Squash 22 Jul. Esperando review humano | ⏳ Esperando review humano |
+| shadcn-ui/ui | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | InputOTP slot transition | Sin review humano. Bloqueado por Vercel deploy (necesita autorización team shadcn-pro) | ⏳ Esperando |
+| shadcn-ui/ui | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | MessageScroller footer height | Sin review humano. Mismo bloqueo Vercel deploy | ⏳ Esperando |
+| shadcn-ui/ui | [#11187](https://github.com/shadcn-ui/ui/pull/11187) | remove scrollbar-none table | Sin review humano. Mismo bloqueo Vercel deploy | ⏳ Esperando |
+| t3-oss/create-t3-app | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | biome ignore generated | CI verde, changeset listo, Vercel ready. Sin review humano | ⏳ Esperando review |
+| shuding/nextra | [#5029](https://github.com/shuding/nextra/pull/5029) | select modal={false} | Sin review humano. UNSTABLE (falso positivo, branch actualizado) | ⏳ Esperando review |
+| payloadcms/payload | [#17413](https://github.com/payloadcms/payload/pull/17413) | fix: duplicate latest=true version rows | **Review humano de sviat-barbutsa** (21 Jul). Fix addressado. BLOCKED (falta CI de payload) | ⏳ Esperando maintainer |
+| payloadcms/payload | [#17342](https://github.com/payloadcms/payload/pull/17342) | lexical blocks stale form state | Sin review humano. Sin CI. BLOCKED | ⏳ Esperando |
 
 ### Reviews técnicas (sin PR propio, suma visibilidad)
 
@@ -132,16 +132,25 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 ---
 
-## Plan de ataque — actualizado 2026-07-20
+## Plan de ataque — actualizado 2026-07-23
 
 ### Semana 1-2 — shadcn-ui/ui + TanStack/router + create-next-stack ✅ HECHO
 
 | Issue | PR | Estado |
 |-------|-----|--------|
-| shadcn #11157 Input OTP layout shift | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | Abierto, esperando review |
-| shadcn #11161 MessageScroller footer flicker | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | Abierto, sin competencia |
+| shadcn #11157 Input OTP layout shift | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | Abierto, esperando review + Vercel deploy |
+| shadcn #11161 MessageScroller footer flicker | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | Abierto, esperando review + Vercel deploy |
 | shadcn #11104 Sidebar Cmd+B | Descartado | 4 PRs competidores, saturado |
 | TanStack/router #7787 loaderDeps serializer | [#7834](https://github.com/TanStack/router/pull/7834) | Abierto, safeStringify approach (reemplaza #7818 cerrado) |
+
+### Semana 2-3 — Payload + Radix + TanStack fixes ✅ HECHO
+
+| Acción | PR | Detalle |
+|--------|-----|--------|
+| Changeset agregado | radix-ui #4053 | .changeset/slick-emus-show.md pusheado 23 Jul |
+| CodeRabbit fixes | TanStack/router #7861 | getDerivedStateFromProps + pending-promise guards pusheados 23 Jul |
+| Rebase verificado | nextra #5029 | Branch actualizado con main, UNSTABLE es falso positivo |
+| Estado documentado | payload #17413 | Review de sviat addressado, esperando maintainer |
 
 ### Reviews técnicas dejadas en PRs de otros
 
@@ -155,11 +164,10 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 ### Próximos pasos
 
-1. **Esperar reviews** de los 3 PRs propios (1-2 semanas)
-2. **payloadcms/payload** — último repo Tier 1 sin tocar, próxima sesión
-3. **akd-io/create-next-stack** — seguir plan: Vitest → Supabase → Auth.js
-4. **vercel/ai** — buscar issues sin PRs para abrir PR propio (hoy solo dejamos reviews)
-5. Cuando mergee el primer PR, actualizar perfil/portfolio con evidencia real
+1. **Esperar reviews** de todos los PRs (1-2 semanas desde última actividad)
+2. **payloadcms/payload #17413** — el más cercano al merge. Si en 7 días no hay movimiento, considerar follow-up comment
+3. **shadcn-ui/ui ×3** — si en 14 días no hay actividad, hacer follow-up comment amigable
+4. **No abrir nuevos PRs** hasta que al menos uno de los existentes reciba review humano. El bottleneck es maintainer review, no producción de código.
 
 ---
 
