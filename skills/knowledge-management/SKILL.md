@@ -50,35 +50,7 @@ Todo conocimiento importante debe existir una sola vez y ser fácilmente descubr
 
 # Artefactos conocidos
 
-## Estratégicos
-
-- BRIEF.md
-- EVALUATION.md
-- DEFINITION.md
-- ROADMAP.md
-
-## Arquitectura
-
-- ARCHITECTURE.md
-- DATA_MODEL.md
-- DESIGN.md
-- docs/adr/
-
-## Estado
-
-- STATUS.md
-- TRACKER.md
-- HANDOFF.md
-
-## Proyecto
-
-- README.md
-- CHANGELOG.md
-- CONTRIBUTING.md
-
-## Memoria
-
-- memory/YYYY-MM-DD.md
+Ver [catálogo de artefactos](./references/artifacts.md).
 
 ---
 
@@ -149,31 +121,7 @@ Nunca duplicar.
 
 ## 3. Consistency Audit
 
-Buscar contradicciones.
-
-Ejemplos:
-
-ROADMAP dice:
-
-OAuth pendiente
-
-STATUS dice:
-
-OAuth terminado
-
-↓
-
-Inconsistencia.
-
-Otro ejemplo:
-
-ADR indica Hexagonal.
-
-README describe MVC.
-
-↓
-
-Inconsistencia.
+Buscar contradicciones. Ver [checklist de conocimiento](./references/checklist.md).
 
 Generar reporte.
 

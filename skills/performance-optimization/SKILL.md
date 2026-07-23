@@ -99,27 +99,7 @@ Construir línea base.
 
 ## 2. Profiling
 
-Encontrar cuellos de botella.
-
-Herramientas sugeridas:
-
-Frontend
-
-- Chrome Performance
-- React Profiler
-
-Backend
-
-- CPU Profiler
-- Heap Snapshots
-
-Database
-
-- EXPLAIN ANALYZE
-
-Node
-
-- flamegraphs
+Encontrar cuellos de botella. Ver [herramientas de performance](./references/tools.md).
 
 ---
 

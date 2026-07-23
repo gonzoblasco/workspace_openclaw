@@ -87,23 +87,7 @@ Detectar:
 
 ## 2. Health Assessment
 
-Evaluar salud.
-
-Responder:
-
-¿Tiene mantenimiento activo?
-
-¿Último release?
-
-¿Cantidad de contributors?
-
-¿Issues abiertos?
-
-¿Tiempo promedio de respuesta?
-
-¿Frecuencia de releases?
-
-¿Está deprecada?
+Evaluar salud. Ver [health assessment](./references/health-assessment.md).
 
 Clasificar:
 
@@ -117,14 +101,7 @@ Clasificar:
 
 ## 3. Risk Analysis
 
-Evaluar:
-
-- breaking changes
-- CVEs
-- compatibilidad
-- lock-in
-- dependencia crítica
-- riesgo de abandono
+Evaluar riesgos. Ver [risk analysis](./references/risk-analysis.md).
 
 Calcular nivel de riesgo.
 

@@ -97,16 +97,7 @@ proponer extraerlo.
 
 ## 3. Workflow Audit
 
-Auditar cada workflow.
-
-Preguntas:
-
-- ¿Tiene una única responsabilidad?
-- ¿Hace demasiado?
-- ¿Depende de otro innecesariamente?
-- ¿Hay duplicación?
-- ¿Está desactualizado?
-- ¿Respeta Engineering Principles?
+Auditar cada workflow. Ver [audit checklist](./references/audit-checklist.md).
 
 Clasificar:
 
@@ -208,16 +199,7 @@ Ejemplos:
 
 ## 8. Improvement Proposal
 
-Generar RFCs.
-
-Cada RFC debe incluir:
-
-- problema
-- evidencia
-- propuesta
-- impacto
-- riesgos
-- migración
+Generar RFCs. Ver [template de RFC](./references/rfc-template.md).
 
 Nunca aplicar cambios automáticamente.
 

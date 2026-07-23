@@ -49,39 +49,7 @@ La improvisación no.
 
 # Severidad
 
-## SEV-1
-
-Sistema caído.
-
-Pérdida de datos.
-
-Problema de seguridad.
-
-Acción inmediata.
-
----
-
-## SEV-2
-
-Parte importante del sistema degradada.
-
-Existe workaround.
-
----
-
-## SEV-3
-
-Problema localizado.
-
-Impacto moderado.
-
----
-
-## SEV-4
-
-Incidente menor.
-
-Puede esperar.
+Ver [clasificación de severidad](./references/severity.md).
 
 ---
 

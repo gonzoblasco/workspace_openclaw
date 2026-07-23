@@ -126,25 +126,7 @@ Evitar investigación infinita.
 
 ## 4. Information Gathering
 
-Recolectar evidencia.
-
-Fuentes sugeridas:
-
-Documentación oficial
-
-RFCs
-
-Repositorios
-
-Issues
-
-Discusiones técnicas
-
-Blogs de ingeniería
-
-Benchmarks
-
-Experimentos propios
+Recolectar evidencia. Ver [fuentes de investigación](./references/sources.md).
 
 Priorizar fuentes primarias.
 

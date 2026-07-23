@@ -250,47 +250,7 @@ Release Report
 
 # Checklist
 
-## Antes
-
-QA aprobado
-
-Build verde
-
-Tests
-
-Documentación
-
-Versionado
-
-Rollback definido
-
----
-
-## Durante
-
-Deploy
-
-Smoke Tests
-
-Health Checks
-
-Métricas
-
-Alertas
-
----
-
-## Después
-
-Observabilidad
-
-Feedback
-
-CHANGELOG
-
-Release Notes
-
-Lecciones aprendidas
+Ver [release checklist](./references/checklist.md).
 
 ---
 

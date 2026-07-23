@@ -220,15 +220,7 @@ Detectar cuellos de botella.
 
 ## 5. Alerting
 
-Clasificar alertas.
-
-Critical
-
-Major
-
-Minor
-
-Informational
+Clasificar alertas. Ver [referencia de alertas](./references/alerting.md).
 
 Evitar alert fatigue.
 
@@ -236,21 +228,7 @@ Evitar alert fatigue.
 
 ## 6. Dashboard Review
 
-Verificar que existan dashboards para:
-
-Producto
-
-Backend
-
-Frontend
-
-Infraestructura
-
-AI
-
-Workflows
-
-Releases
+Verificar que existan dashboards para los dominios listados en [referencia de dashboards](./references/dashboards.md).
 
 ---
 

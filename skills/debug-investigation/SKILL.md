@@ -194,21 +194,9 @@ Ordenarlas por probabilidad.
 
 ## 6. Experiment Design
 
-Diseñar experimentos mínimos.
+Diseñar experimentos mínimos. Ver [referencia de experimentos](./references/experiments.md).
 
 Cada experimento debe responder una sola pregunta.
-
-Ejemplos:
-
-Agregar logging.
-
-Mockear dependencia.
-
-Cambiar configuración.
-
-Reducir dataset.
-
-Deshabilitar feature flag.
 
 Nunca mezclar varios cambios.
 
