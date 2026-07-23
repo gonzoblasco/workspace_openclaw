@@ -1,5 +1,11 @@
 ---
 name: "performance-optimization"
+metadata:
+  category: "Workflow"
+  tags:
+    - performance
+    - optimizacion
+    - profiling
 description: "Workflow de Performance Optimization: análisis, profiling y optimización sistemática de frontend, backend, base de datos e infraestructura sin cambiar el comportamiento funcional."
 user-invocable: false
 ---
@@ -93,27 +99,7 @@ Construir línea base.
 
 ## 2. Profiling
 
-Encontrar cuellos de botella.
-
-Herramientas sugeridas:
-
-Frontend
-
-- Chrome Performance
-- React Profiler
-
-Backend
-
-- CPU Profiler
-- Heap Snapshots
-
-Database
-
-- EXPLAIN ANALYZE
-
-Node
-
-- flamegraphs
+Encontrar cuellos de botella. Ver [herramientas de performance](./references/tools.md).
 
 ---
 
@@ -318,3 +304,8 @@ Una mejora no medida es una opinión.
 La simplicidad sigue siendo un requisito de rendimiento.
 
 El mejor código es el que no necesita ejecutarse.
+
+## Related Skills
+
+- [Observability](../observability): Para medir y monitorear performance
+- [Debug Investigation](../debug-investigation): Para investigar causas de degradación

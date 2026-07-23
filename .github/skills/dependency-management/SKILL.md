@@ -1,5 +1,11 @@
 ---
 name: "dependency-management"
+metadata:
+  category: "Workflow"
+  tags:
+    - dependencias
+    - gobernanza
+    - seguridad
 description: "Workflow de Dependency Management: evaluación, actualización, gobernanza y salud del ecosistema de dependencias del proyecto."
 user-invocable: false
 ---
@@ -81,23 +87,7 @@ Detectar:
 
 ## 2. Health Assessment
 
-Evaluar salud.
-
-Responder:
-
-¿Tiene mantenimiento activo?
-
-¿Último release?
-
-¿Cantidad de contributors?
-
-¿Issues abiertos?
-
-¿Tiempo promedio de respuesta?
-
-¿Frecuencia de releases?
-
-¿Está deprecada?
+Evaluar salud. Ver [health assessment](./references/health-assessment.md).
 
 Clasificar:
 
@@ -111,14 +101,7 @@ Clasificar:
 
 ## 3. Risk Analysis
 
-Evaluar:
-
-- breaking changes
-- CVEs
-- compatibilidad
-- lock-in
-- dependencia crítica
-- riesgo de abandono
+Evaluar riesgos. Ver [risk analysis](./references/risk-analysis.md).
 
 Calcular nivel de riesgo.
 
@@ -305,3 +288,8 @@ Las vulnerabilidades críticas tienen prioridad.
 La estabilidad vale más que tener la última versión.
 
 Las decisiones sobre dependencias deben quedar documentadas.
+
+## Related Skills
+
+- [Release Management](../release-management): Para coordinar actualizaciones en releases
+- [Task Execution](../task-execution): Para implementar actualizaciones de dependencias

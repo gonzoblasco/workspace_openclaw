@@ -1,5 +1,11 @@
 ---
 name: "session-lifecycle"
+metadata:
+  category: "Workflow"
+  tags:
+    - sesion
+    - ciclo
+    - productividad
 description: "Workflow de Session Lifecycle: ciclo de sesión completo. Reemplaza 4 skills de sesión."
 user-invocable: false
 ---
@@ -36,3 +42,8 @@ Gestión del ciclo de vida completo de una sesión de trabajo con IA.
 - `memory/YYYY-MM-DD.md`
 - Tareas creadas en el sistema (cron jobs o TODO.md)
 - Workspace commiteado y pusheado
+
+## Related Skills
+
+- [Task Execution](../task-execution): Para ejecutar tareas dentro de la sesión
+- [Knowledge Management](../knowledge-management): Para registrar aprendizajes de la sesión

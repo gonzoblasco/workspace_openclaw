@@ -1,5 +1,12 @@
 ---
 name: "review-quality"
+metadata:
+  category: "Workflow"
+  tags:
+    - calidad
+    - testing
+    - seguridad
+    - code-review
 description: "Workflow de Review & Quality: revisión pre-merge, testing y auditoría. Reemplaza pr-review, po-review, security-audit, agent-review."
 user-invocable: false
 ---
@@ -63,3 +70,9 @@ Bloquea cierre si hay hallazgos críticos.
 - Reporte de revisión con hallazgos de testing, seguridad y producto
 - Decisión: approve / changes requested / blocked
 - (Opcional) Reporte de validación pre-deploy con Go/No-Go
+
+## Related Skills
+
+- [Task Execution](../task-execution): Para implementar fixes post-review
+- [Pre-Deploy QA](../pre-deploy-qa): Para validación post-merge pre-deploy
+- [Accessibility Studio](../accessibility-studio): Para revisión de accesibilidad

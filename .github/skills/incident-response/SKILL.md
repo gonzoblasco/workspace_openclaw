@@ -1,5 +1,11 @@
 ---
 name: "incident-response"
+metadata:
+  category: "Workflow"
+  tags:
+    - incidentes
+    - produccion
+    - postmortem
 description: "Workflow de Incident Response: gestión estructurada de incidentes en producción, desde la detección hasta el aprendizaje organizacional."
 user-invocable: false
 ---
@@ -43,39 +49,7 @@ La improvisación no.
 
 # Severidad
 
-## SEV-1
-
-Sistema caído.
-
-Pérdida de datos.
-
-Problema de seguridad.
-
-Acción inmediata.
-
----
-
-## SEV-2
-
-Parte importante del sistema degradada.
-
-Existe workaround.
-
----
-
-## SEV-3
-
-Problema localizado.
-
-Impacto moderado.
-
----
-
-## SEV-4
-
-Incidente menor.
-
-Puede esperar.
+Ver [clasificación de severidad](./references/severity.md).
 
 ---
 
@@ -290,3 +264,8 @@ Nunca:
 ¿El incidente mejoró el sistema?
 
 ¿Podría repetirse mañana?
+
+## Related Skills
+
+- [Debug Investigation](../debug-investigation): Para investigar causa raíz post-incidente
+- [Observability](../observability): Para mejorar detección y alertas

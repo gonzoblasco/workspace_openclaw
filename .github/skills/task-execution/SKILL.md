@@ -1,5 +1,11 @@
 ---
 name: "task-execution"
+metadata:
+  category: "Workflow"
+  tags:
+    - tareas
+    - implementacion
+    - pr
 description: "Workflow de ejecución de tareas: planificar, implementar, verificar, PR y cerrar epic. Basado en patrones del AI Developer Stack."
 user-invocable: false
 ---
@@ -58,3 +64,9 @@ Merge a main preservando historial (`--no-ff`). No eliminar la branch (referenci
 - Branch con commits atómicos
 - PR con descripción estructurada
 - Epic cerrado con CHANGELOG y tags
+
+## Related Skills
+
+- [Build & Scaffold](../build-scaffold): Para scaffolding inicial del proyecto
+- [Review & Quality](../review-quality): Para revisar antes de mergear
+- [Pre-Deploy QA](../pre-deploy-qa): Para validar post-merge pre-deploy
