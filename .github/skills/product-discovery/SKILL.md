@@ -1,6 +1,6 @@
 ---
 name: "product-discovery"
-description: "Workflow de Product Discovery: idea a definición de producto. Incluye ideación opcional y modo detallado. Reemplaza 4 skills de producto."
+description: "Workflow de Product Discovery: idea a definición de producto. Fase 0 dividida en Brainstorming (0.1) y Arquitectura (0.2) con modelos especializados. Reemplaza 4 skills de producto."
 user-invocable: false
 ---
 
@@ -17,18 +17,48 @@ Guía desde la idea inicial hasta la definición del producto lista para constru
 
 ## Fases
 
-## Cuándo usarlo
+### Cuándo usarlo
 - Explorar una idea de producto desde cero
 - Evaluar viabilidad técnica y de mercado antes de construir
 - Definir MVP, features, métricas y posicionamiento
 - Documentar una especificación formal (OpenSpec) antes de arrancar desarrollo
 - Hacer retrospectiva post-lanzamiento
 
-### 0. Ideación (opcional)
-Si la idea es vaga o necesita exploración:
+### 0.1 — Brainstorming & Producto
+**Rol:** Product Manager / Socio Fundador
+**Modelo sugerido:** GLM 5.2 (visión holística, razonamiento de propósito general)
+**Output:** `BRIEF.md`, `DEFINITION.md`
+
+Abrir opciones, cuestionar la idea, encontrar la propuesta de valor:
 - Técnicas de brainstorming (SCAMPER, inversión, primeros principios)
 - Mapa de soluciones existentes
 - Definición del problema en una frase
+- Personas, métricas de éxito, features core
+- Stack tecnológico asumido y restricciones conocidas
+
+> **Validation Gate 0.1 → 0.2:** Antes de pasar a 0.2, verificar que BRIEF.md y DEFINITION.md estén completos:
+> - [ ] Problema definido en una frase
+> - [ ] Público objetivo identificado
+> - [ ] Features core listadas
+> - [ ] Métricas de éxito definidas
+> - [ ] Stack asumido y restricciones técnicas documentadas
+> - [ ] Preguntas abiertas para el arquitecto (si las hay)
+>
+> Si falta algo, volver a 0.1 antes de continuar.
+
+### 0.2 — Arquitectura & Plan de Ataque
+**Rol:** Arquitecto / Tech Lead
+**Modelo sugerido:** Kimi K2.7 (rigor técnico, planificación agéntica)
+**Output:** `OpenSpec`, `ADRs`, `ROADMAP.md`
+
+Tomar la definición de producto de 0.1 y bajarla a tierra técnica:
+- Stack tecnológico definitivo y justificación
+- Patrones arquitectónicos (Hexagonal, DDD, etc.)
+- Esquemas de base de datos
+- Diagrama C4 (contexto, contenedores, componentes)
+- ADRs iniciales de decisiones técnicas
+- Desglose de epics y tasks en ROADMAP.md
+- Identificación de riesgos técnicos y mitigaciones
 
 ### 1. Intake
 Capturar idea, contexto, problema a resolver.
@@ -61,10 +91,10 @@ Para proyectos complejos, en lugar de 5 archivos genera 9:
 - TRACKER.md (seguimiento de progreso)
 
 ## Outputs
-- `projects/<slug>/.knowledge/BRIEF.md`
+- `projects/<slug>/.knowledge/BRIEF.md` (Fase 0.1)
 - `projects/<slug>/.knowledge/EVALUATION.md`
-- `projects/<slug>/.knowledge/DEFINITION.md`
-- `projects/<slug>/.knowledge/ROADMAP.md`
+- `projects/<slug>/.knowledge/DEFINITION.md` (Fase 0.1)
+- `projects/<slug>/.knowledge/ROADMAP.md` (Fase 0.2)
 - `projects/<slug>/.knowledge/STATUS.md`
-- ADRs en `docs/adr/`
+- ADRs en `docs/adr/` (Fase 0.2)
 - (Modo detallado: + ARCHITECTURE.md, DESIGN.md, DATA_MODEL.md, TRACKER.md)
