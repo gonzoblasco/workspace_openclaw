@@ -132,24 +132,34 @@ Plataforma web para concesionaria Sport Cars (Jeep/Ram) que reemplaza el sitio b
 
 Sport Cars no compite por ser el concesionario más grande, compite por ser el más fácil de comprar. Mientras otros tienen brochures estáticas, Sport Cars tiene un sistema que responde, agenda y conecta — 24/7.
 
-## Suposiciones que validar
+## Suposiciones validadas (respuestas de Gonzo)
 
-1. 🟡 **El concesionario está abierto a reemplazar el sitio actual** — asumimos sí porque Gonzo tiene entrada via hermana, pero no está confirmado con decisión final
-2. 🟢 **Pilot API permite lead creation desde sitios externos** — confirmado por docs de Cliengo integration y API docs encontradas
-3. 🟡 **Pilot API expone stock/inventario** — no confirmado, las docs que encontramos solo muestran lead creation
-4. 🟡 **Sport Cars publica en MeLi** — probable (Pilot + MeLi están integrados para 300+ cuentas) pero no confirmado
-5. 🟡 **Hay guidelines de Stellantis para sitios de concesionarios** — probable pero no confirmado
-6. 🟢 **El template actual es shared entre concesionarios** — confirmado (Neostar, Motorville, Guini usan el mismo)
+| # | Suposición | Estado | Nota |
+|---|---|---|---|
+| 1 | El concesionario está abierto a reemplazar el sitio actual | 🟢 Confirmado | Reemplazo total de sportcarsjeep.com.ar |
+| 2 | Pilot API permite lead creation desde sitios externos | 🟢 Confirmado técnicamente | Diferido al Post-MVP por falta de acceso admin |
+| 3 | Pilot API expone stock/inventario | 🔴 No confirmado | No relevante para MVP; inventario viene de MeLi |
+| 4 | Sport Cars publica en MeLi | 🟢 Confirmado | Publica directamente; datos viajan a Pilot automáticamente |
+| 5 | Hay guidelines de Stellantis para sitios de concesionarios | 🟡 Pendiente | A confirmar con la hermana/gerencia |
+| 6 | El template actual es shared entre concesionarios | 🟢 Confirmado | Neostar, Motorville, Guini usan el mismo template |
 
-## Preguntas abiertas para Fase 0.2 (Arquitectura)
+## Preguntas respondidas en Fase 0.1
 
-1. ¿Stack de chatbot: custom LLM+RAG vs. Cliengo vs. híbrido?
-2. ¿Pilot API: qué endpoints están disponibles más allá de lead creation?
-3. ¿MeLi: integramos via API pública o aprovechamos la integración Pilot↔MeLi existente?
-4. ¿CMS: necesitamos uno, o el contenido es suficientemente estático para hardcodear?
-5. ¿El sitio convive con el actual o lo reemplaza?
-6. ¿Supabase o backend custom para webhooks/integraciones?
-7. ¿Mobile-first o desktop también prioritario? (concesionarias suelen recibir tráfico mobile mayoritario)
+1. **¿Stack de chatbot?** → Custom con LLM + RAG
+2. **¿Pilot API endpoints?** → Lead creation vía webhook confirmado; resto desconocido sin acceso admin
+3. **¿MeLi: API pública o Pilot↔MeLi?** → API pública de MeLi; Pilot↔MeLi es interno suyo
+4. **¿CMS?** → No para MVP; hardcodear contenido inicial
+5. **¿Reemplazo o convivencia?** → Reemplazo total
+6. **¿Supabase o backend custom?** → Supabase + Next.js full-stack
+7. **¿Mobile-first?** → Sí, tráfico de concesionarias es mayoritariamente mobile
+
+## Decisiones de arquitectura derivadas
+
+- Pilot CRM se integra en **Post-MVP** (falta acceso admin)
+- Leads se capturan en **Supabase** y se notifican por email/WhatsApp
+- Inventario real proviene de **Mercado Libre API pública**
+- Chatbot propio con **Vercel AI SDK + LLM (Ollama/DeepSeek propio de Gonzo) + RAG en Supabase**
+- SaaS a **300 USD/mes todo incluido** cubre hosting, DB, dominio y soporte; el LLM lo cubre Gonzo con su infraestructura
 
 ## Go/No-Go criteria para pasar a 0.2
 
@@ -160,8 +170,10 @@ Sport Cars no compite por ser el concesionario más grande, compite por ser el m
 - [x] Stack asumido y restricciones técnicas documentadas ✅
 - [x] Preguntas abiertas para el arquitecto ✅
 
-**Listo para Fase 0.2 — falta input de Gonzo en:**
-- Modelo comercial (gratis vs. pagado vs. revenue share)
-- Confirmación de que la hermana puede conseguir credenciales Pilot
-- Preferencia sobre chatbot (custom vs. Cliengo vs. híbrido)
-- Si el sitio reemplaza o convive con el actual
+**Fase 0.2 completada.** Documentos generados:
+- ARCHITECTURE.md
+- DATA_MODEL.md
+- OPENSPEC.md
+- ROADMAP.md
+- STATUS.md
+- ADRs (5)

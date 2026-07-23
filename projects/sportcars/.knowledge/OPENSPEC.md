@@ -10,7 +10,9 @@
 
 ## 1. Resumen
 
-Reemplazo del sitio web estático `sportcarsjeep.com.ar` por una plataforma de generación de leads para concesionario oficial Jeep/Ram. El MVP incluye catálogo dinámico (alimentado por Mercado Libre), chatbot custom con RAG, captura de leads, y agendamiento de test drive. Integración con Pilot CRM se implementa en Post-MVP por restricción de acceso.
+Reemplazo del sitio web estático `sportcarsjeep.com.ar` por una plataforma de generación de leads para concesionario oficial Jeep/Ram. El sitio consume inventario de Mercado Libre vía API pública, sincroniza leads con Supabase (con notificación a vendedores), e incorpora un chatbot custom con base de conocimiento. Integración con Pilot CRM se implementa en Post-MVP por restricción de acceso.
+
+El modelo comercial es **SaaS a 300 USD/mes**, todo incluido. El LLM corre en infraestructura propia de Gonzo (Ollama/DeepSeek), reduciendo costos operativos. El sitio se muestra inicialmente como **proyecto finito**; el dominio real se conecta más adelante cuando esté listo para reemplazo.
 
 ## 2. Alcance
 
@@ -207,6 +209,33 @@ Reemplazo del sitio web estático `sportcarsjeep.com.ar` por una plataforma de g
 - Precio real
 - Atributos (año, km, color, transmisión)
 - CTA: Consultar por este auto
+
+### Chatbot
+- Widget flotante en todas las páginas
+- Saludo con sugerencias rápidas
+- Respuestas basadas en RAG
+- Captura progresiva de nombre/teléfono
+- Derivación a WhatsApp del vendedor
+
+## 5.1. Modelo comercial y pricing
+
+El sitio se ofrece a Sport Cars como servicio mensual:
+
+- **Precio:** 300 USD/mes, todo incluido
+- **Incluye:** hosting, dominio, base de datos, chatbot con IA, soporte, mantenimiento
+- **No incluye:** cambios de scope mayores (nuevas secciones complejas, integraciones adicionales)
+- **Compromiso mínimo:** a definir con el cliente (recomendado 6 meses)
+- **Ventaja para Gonzo:** como el LLM corre en Ollama/DeepSeek propio, el costo de IA queda bajo control
+
+## 5.2. Estrategia de dominio
+
+Para el proyecto finito/demo inicial:
+- Usar subdominio de preview de Vercel (ej. `sportcars-*.vercel.app`)
+- Opcional: registrar un dominio de demo tipo `sportcars.digital` o `sportcarsjeep.ar` si se quiere mostrar con dominio propio
+
+Para producción (post-aprobación):
+- Migrar `sportcarsjeep.com.ar` al nuevo sitio
+- Configurar redirects del sitio viejo a las páginas correspondientes del nuevo
 
 ## 6. Integraciones técnicas
 

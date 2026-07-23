@@ -170,9 +170,10 @@ Entidades principales:
 - Se agrega en cuanto se consigan credenciales
 
 ### LLM (chatbot)
-- Proveedor: a definir (OpenAI gpt-4o-mini, DeepSeek-chat, Anthropic claude-3-haiku)
+- Proveedor: **Ollama local / DeepSeek API** (infraestructura propia de Gonzo)
 - Vía Vercel AI SDK
-- Costo target: < 100 USD/mes con caching y modelos pequeños
+- Costo target: ~0-30 USD/mes (casi cero si Ollama local, bajo si DeepSeek API)
+- **Nota:** como Gonzo cubre el LLM con su propia infraestructura, el presupuesto de 300 USD/mes al cliente se aliviana significativamente
 
 ## Seguridad
 
@@ -190,19 +191,19 @@ Entidades principales:
 - Imágenes con Next.js Image + CDN de MeLi
 - Core Web Vitals target: LCP < 2.5s, CLS < 0.1
 
-## Presupuesto estimado mensual (400 USD)
+## Presupuesto estimado mensual (300 USD)
 
 | Ítem | Costo estimado USD/mes |
 |---|---|
 | Vercel Pro + Analytics | ~20 |
 | Supabase Pro (si escala) | ~25 |
 | Dominio + DNS | ~2 |
-| LLM API (con moderado uso) | ~50-150 |
-| WhatsApp Business API (post-MVP) | ~0-50 |
-| Reserva/Buffer | ~150-250 |
-| **Total** | **~250-400** |
+| Ollama local / DeepSeek API | ~0-30 |
+| Email/notificaciones (Resend/Postmark) | ~0-10 |
+| Buffer / reserva | ~200-240 |
+| **Total** | **~250-300** |
 
-El margen de 400 USD es ajustado pero viable si el tráfico es moderado y usamos modelos económicos.
+Si usás Ollama local en tu propia infraestructura, el costo de LLM es casi cero y el margen mejora mucho. El presupuesto de 300 USD es ajustado pero viable si el tráfico es moderado.
 
 ## Riesgos técnicos y mitigaciones
 
