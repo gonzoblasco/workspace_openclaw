@@ -1,5 +1,11 @@
 ---
 name: "knowledge-management"
+metadata:
+  category: "Governance"
+  tags:
+    - conocimiento
+    - documentacion
+    - memoria
 description: "Workflow de Knowledge Management: gobernanza, sincronización y evolución de la base de conocimiento del proyecto. Mantiene una única fuente de verdad."
 user-invocable: false
 ---
@@ -340,3 +346,8 @@ Nunca:
 ¿Hay conocimiento sin documentar?
 
 ¿El proyecto puede entenderse sin leer el historial del chat?
+
+## Related Skills
+
+- [Engineering Governance](../engineering-governance): Para auditar la calidad del conocimiento
+- [Technical Documentation](../tech-docs): Para crear y mantener documentación técnica

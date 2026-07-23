@@ -1,5 +1,11 @@
 ---
 name: "research-spike"
+metadata:
+  category: "Workflow"
+  tags:
+    - investigacion
+    - incertidumbre
+    - decision
 description: "Workflow de Research Spike: investigación técnica para reducir incertidumbre antes de tomar decisiones o implementar soluciones."
 user-invocable: false
 ---
@@ -295,3 +301,8 @@ Los prototipos son descartables.
 El conocimiento generado debe permanecer en el proyecto.
 
 No toda investigación termina en una implementación.
+
+## Related Skills
+
+- [Product Discovery](../product-discovery): Para investigar viabilidad de producto
+- [Task Execution](../task-execution): Para implementar lo aprendido en el spike

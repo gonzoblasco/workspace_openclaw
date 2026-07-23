@@ -1,5 +1,11 @@
 ---
 name: "vibe-code-cleanup"
+metadata:
+  category: "Workflow"
+  tags:
+    - limpieza
+    - refactor
+    - ia
 description: "Workflow de limpieza de código generado por IA/vibe coding: diagnosticar, limpiar, refactorizar y endurecer para producción."
 user-invocable: false
 ---
@@ -77,3 +83,8 @@ npm run lint       # sin errores
 - Commits de limpieza y refactor
 - Build + typecheck + tests verdes
 - CHANGELOG actualizado
+
+## Related Skills
+
+- [Review & Quality](../review-quality): Para revisar el código limpio antes de mergear
+- [Debug Investigation](../debug-investigation): Para diagnosticar bugs en código generado por IA

@@ -1,5 +1,11 @@
 ---
 name: "dependency-management"
+metadata:
+  category: "Workflow"
+  tags:
+    - dependencias
+    - gobernanza
+    - seguridad
 description: "Workflow de Dependency Management: evaluación, actualización, gobernanza y salud del ecosistema de dependencias del proyecto."
 user-invocable: false
 ---
@@ -305,3 +311,8 @@ Las vulnerabilidades críticas tienen prioridad.
 La estabilidad vale más que tener la última versión.
 
 Las decisiones sobre dependencias deben quedar documentadas.
+
+## Related Skills
+
+- [Release Management](../release-management): Para coordinar actualizaciones en releases
+- [Task Execution](../task-execution): Para implementar actualizaciones de dependencias

@@ -1,7 +1,14 @@
 ---
 name: "narrative-content"
+metadata:
+  category: "Content"
+  tags:
+    - ficcion
+    - escritura
+    - narrativa
 description: "Workflow de Narrative Content: planificación y escritura de ficción, novelas, cuentos."
 argument-hint: "género | título | tipo de obra"
+user-invocable: false
 ---
 
 # Workflow: Narrative Content
@@ -32,3 +39,7 @@ Planificación y escritura de contenido narrativo: novelas, cuentos, worldbuildi
 - Cuando se empieza a escribir una novela o cuento
 - Cuando se necesita estructurar una historia existente
 - Cuando se quiere exportar contenido narrativo a formato publicable
+
+## Related Skills
+
+- [Technical Documentation](../tech-docs): Para documentar estructura narrativa y decisiones creativas

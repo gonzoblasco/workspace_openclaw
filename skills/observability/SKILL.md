@@ -1,5 +1,11 @@
 ---
 name: "observability"
+metadata:
+  category: "Governance"
+  tags:
+    - observabilidad
+    - metricas
+    - tracing
 description: "Workflow de Engineering Observability: instrumentación, métricas, tracing y análisis del sistema y del AI Engineering OS."
 user-invocable: false
 ---
@@ -353,3 +359,8 @@ Nunca:
 ¿Las métricas ayudan a decidir?
 
 ¿Podemos demostrar que el sistema mejora?
+
+## Related Skills
+
+- [Performance Optimization](../performance-optimization): Para optimizar basado en métricas
+- [Incident Response](../incident-response): Para detectar y responder a incidentes

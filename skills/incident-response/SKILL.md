@@ -1,5 +1,11 @@
 ---
 name: "incident-response"
+metadata:
+  category: "Workflow"
+  tags:
+    - incidentes
+    - produccion
+    - postmortem
 description: "Workflow de Incident Response: gestión estructurada de incidentes en producción, desde la detección hasta el aprendizaje organizacional."
 user-invocable: false
 ---
@@ -290,3 +296,8 @@ Nunca:
 ¿El incidente mejoró el sistema?
 
 ¿Podría repetirse mañana?
+
+## Related Skills
+
+- [Debug Investigation](../debug-investigation): Para investigar causa raíz post-incidente
+- [Observability](../observability): Para mejorar detección y alertas

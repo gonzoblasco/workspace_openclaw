@@ -1,5 +1,11 @@
 ---
 name: "product-discovery"
+metadata:
+  category: "Product"
+  tags:
+    - producto
+    - discovery
+    - definicion
 description: "Workflow de Product Discovery: idea a definición de producto. Fase 0 dividida en Brainstorming (0.1) y Arquitectura (0.2) con modelos especializados. Reemplaza 4 skills de producto."
 user-invocable: false
 ---
@@ -98,3 +104,8 @@ Para proyectos complejos, en lugar de 5 archivos genera 9:
 - `projects/<slug>/.knowledge/STATUS.md`
 - ADRs en `docs/adr/` (Fase 0.2)
 - (Modo detallado: + ARCHITECTURE.md, DESIGN.md, DATA_MODEL.md, TRACKER.md)
+
+## Related Skills
+
+- [Build & Scaffold](../build-scaffold): Para construir el proyecto post-discovery
+- [Technical Documentation](../tech-docs): Para documentar decisiones de producto

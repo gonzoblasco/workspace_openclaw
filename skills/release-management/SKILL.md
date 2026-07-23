@@ -1,5 +1,11 @@
 ---
 name: "release-management"
+metadata:
+  category: "Workflow"
+  tags:
+    - release
+    - deploy
+    - versionado
 description: "Workflow de Release Management: planificación, coordinación y ejecución de releases hacia producción. Gestiona estrategias de despliegue, versionado, comunicación y rollback."
 user-invocable: false
 ---
@@ -351,3 +357,8 @@ La comunicación es parte de la release.
 El deploy termina cuando el sistema está estable, no cuando termina el pipeline.
 
 Cada release debe dejar evidencia suficiente para reconstruir qué cambió y por qué.
+
+## Related Skills
+
+- [Dependency Management](../dependency-management): Para gestionar dependencias en la release
+- [Task Execution](../task-execution): Para implementar features incluidas en la release

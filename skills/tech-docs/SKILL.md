@@ -1,5 +1,11 @@
 ---
 name: "tech-docs"
+metadata:
+  category: "Content"
+  tags:
+    - documentacion
+    - adr
+    - changelog
 description: "Workflow de Technical Documentation: ADRs, README, API docs, CHANGELOG, guías técnicas y diseño arquitectónico."
 user-invocable: false
 ---
@@ -59,3 +65,8 @@ Commit + push, integración con el proyecto.
 - Al cerrar un epic o milestone (actualizar CHANGELOG + ADRs)
 - Cuando se necesita documentar una decisión arquitectónica
 - Cuando un contributor necesita guías claras
+
+## Related Skills
+
+- [Knowledge Management](../knowledge-management): Para mantener la base de conocimiento
+- [Build & Scaffold](../build-scaffold): Para documentar decisiones de scaffolding

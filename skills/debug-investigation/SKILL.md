@@ -1,5 +1,11 @@
 ---
 name: "debug-investigation"
+metadata:
+  category: "Workflow"
+  tags:
+    - bug
+    - debugging
+    - investigacion
 description: "Workflow de Debug Investigation: investigación sistemática de bugs, degradaciones y comportamientos inesperados. Prioriza comprender antes de modificar código."
 user-invocable: false
 ---
@@ -331,3 +337,9 @@ Cada experimento debe responder una única pregunta.
 Un buen diagnóstico vale más que un arreglo rápido.
 
 Todo bug importante debe dejar conocimiento reutilizable.
+
+## Related Skills
+
+- [Performance Optimization](../performance-optimization): Para investigar degradaciones de rendimiento
+- [Incident Response](../incident-response): Para bugs en producción con impacto
+- [Vibe Code Cleanup](../vibe-code-cleanup): Para diagnosticar código generado por IA

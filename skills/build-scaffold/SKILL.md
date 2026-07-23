@@ -1,5 +1,11 @@
 ---
 name: "build-scaffold"
+metadata:
+  category: "Workflow"
+  tags:
+    - scaffold
+    - construccion
+    - proyecto
 description: "Workflow de Build & Scaffold: scaffolding y construcción. Reemplaza 5 skills de scaffold."
 user-invocable: false
 ---
@@ -36,3 +42,8 @@ Scaffolding y construcción de proyectos desde cero o sobre existentes.
 - `AGENTS.md`, `ROADMAP.md`, `CHANGELOG.md`
 - ADRs de decisiones técnicas
 - CI/CD pipeline configurado
+
+## Related Skills
+
+- [Task Execution](../task-execution): Para implementar features post-scaffold
+- [Technical Documentation](../tech-docs): Para documentar decisiones arquitectónicas

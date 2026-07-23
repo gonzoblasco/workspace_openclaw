@@ -1,5 +1,11 @@
 ---
 name: "engineering-governance"
+metadata:
+  category: "Governance"
+  tags:
+    - gobernanza
+    - auditoria
+    - mejora-continua
 description: "Workflow de Engineering Governance: evolución continua del AI Engineering OS. Audita workflows, consolida aprendizajes, elimina duplicaciones y propone mejoras sistémicas."
 user-invocable: false
 ---
@@ -294,3 +300,8 @@ La gobernanza existe para reducir la entropía del sistema.
 - ¿Hay nuevos patrones que merecen un workflow?
 
 - ¿El sistema es hoy mejor que hace un mes?
+
+## Related Skills
+
+- [Knowledge Management](../knowledge-management): Para mantener la base de conocimiento actualizada
+- [Observability](../observability): Para medir la salud del sistema

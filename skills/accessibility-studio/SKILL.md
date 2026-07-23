@@ -1,5 +1,11 @@
 ---
 name: "accessibility-studio"
+metadata:
+  category: "Product"
+  tags:
+    - accesibilidad
+    - auditoria
+    - wcag
 description: "Workflow de Accessibility Studio: diseño, auditoría, autofix y validación de accesibilidad. Reemplaza a11y-system-designer, ux-a11y-studio."
 user-invocable: false
 ---
@@ -80,3 +86,8 @@ Pre-launch, regresión post-cambios, reporte de cumplimiento. Si es posible, pru
 - Design system con contraste verificado
 - Componentes accesibles con tests
 - Certificación de accesibilidad pre-launch
+
+## Related Skills
+
+- [Review & Quality](../review-quality): Para revisar accesibilidad pre-merge
+- [Pre-Deploy QA](../pre-deploy-qa): Para validación pre-deploy con accesibilidad

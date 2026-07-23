@@ -1,5 +1,11 @@
 ---
 name: "oss-contribution"
+metadata:
+  category: "Contribution"
+  tags:
+    - open-source
+    - contribucion
+    - pr
 description: "Workflow de OSS Contribution: contribución estratégica a repos externos. Reemplaza oss-contribute, sdd-brownfield."
 user-invocable: false
 ---
@@ -48,3 +54,8 @@ Contribución estratégica a repositorios externos con Spec-Driven Development.
 - PRs a repos externos
 - OpenSpec specs as-built o delta
 - Reporte de estado de PRs abiertos
+
+## Related Skills
+
+- [Review & Quality](../review-quality): Para revisar PRs antes de enviar
+- [Technical Documentation](../tech-docs): Para documentar contribuciones
