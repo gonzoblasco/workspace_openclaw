@@ -202,31 +202,3 @@ Al cerrar:
 1. Actualizar `HANDOFF.md` del repo
 2. Actualizar `memory/YYYY-MM-DD.md`
 3. Commit + push del workspace
-
----
-
-## Workspace Skills Mirror
-
-El directorio `.github/skills/` en la raíz del workspace es un mirror exacto de
-`skills/`. Se sincroniza manualmente después de cambios significativos en las
-skills del workspace.
-
-### Sincronizar
-
-```bash
-rsync -a --delete --exclude='.DS_Store' skills/ .github/skills/
-```
-
-### Propósito
-
-- Permite que el repo del workspace exponga las skills como artifact
-  navegable desde GitHub (`.github/skills/` es visible en la UI de GitHub)
-- Separa el mirror del source de skills para evitar loops de git
-- El `.gitignore` raíz trackea `.github/skills/` pero no `skills/` (o viceversa
-  según la configuración actual)
-
-### Regla
-
-Si modificás skills en `skills/`, sincronizá el mirror antes de commitear.
-Si no, el mirror queda desactualizado y quien explore el repo desde GitHub
-va a ver una versión vieja.

@@ -142,6 +142,23 @@ El workspace tiene su propio repo en GitHub (`workspace_openclaw`). Los proyecto
 git add -A && git commit -m "descripción del cambio" && git push
 ```
 
+### Skills Mirror — `.github/skills/`
+
+El directorio `.github/skills/` en la raíz del workspace es un mirror exacto
+de `skills/`. Permite que las skills sean navegables desde la UI de GitHub sin
+mezclar el source con el mirror.
+
+**Regla obligatoria:** cada vez que se modifiquen skills (SKILL.md,
+references/, o se agreguen/eliminen skills), sincronizar el mirror antes de
+commitear.
+
+```bash
+rsync -a --delete --exclude='.DS_Store' skills/ .github/skills/
+```
+
+Si no se sincroniza, el mirror queda desactualizado y cualquiera que explore
+el repo desde GitHub va a ver una versión vieja.
+
 ## Estructura de Proyectos — Doble Git con `.knowledge/`
 
 **Filosofía:** Cada proyecto tiene su carpeta en `projects/<slug>/` con sincronización selectiva:
