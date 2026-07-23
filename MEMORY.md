@@ -97,7 +97,7 @@
 | `oss-contribution` | oss-contribute, sdd-brownfield | Contribución estratégica a OSS |
 | `performance-optimization` | — | Análisis, profiling y optimización sistemática |
 | `pre-deploy-qa` | — | Validación pre-deploy (build, rutas, SEO, API, performance) |
-| `product-discovery` | 4 skills de producto | Idea → definición de producto |
+| `product-discovery` | 4 skills de producto | Idea → definición de producto. Fase 0 dividida en 0.1 (Brainstorming, GLM 5.2) y 0.2 (Arquitectura, Kimi K2.7). |
 | `release-management` | — | Planificación, coordinación y ejecución de releases |
 | `research-spike` | — | Investigación técnica para reducir incertidumbre |
 | `review-quality` | pr-review, po-review, security-audit | Revisión pre-merge y auditoría |
