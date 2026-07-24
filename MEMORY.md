@@ -139,6 +139,7 @@ Lo esencial. El detalle está en `docs/LEARNINGS.md`.
 - **Setup de proyecto nuevo: git init + .knowledge/ + .gitignore + submodule** — hacer todo de una, no post-hoc.
 - **Pattern-Keys (`area.symptom`) para deduplicar aprendizajes** — adoptado de self-improving-agent. Opcional pero recomendado para entradas recurrentes.
 - **Recurrence-Count >= 3 en 30 días + 2 tareas → promover a SOUL/TOOLS/AGENTS** — si algo pasa 3 veces, no es accidente, es falta de memoria institucional.
+- **Patrón postulación: preguntar gaps antes de escribir CV** — no asumir experiencia que no está en el CV. Fit analysis → preguntar → esperar → escribir.
 - **IDs LRN-YYYYMMDD-XXX para referencias cruzadas** — opcional, útil cuando LEARNINGS.md crece.
 - **No instalar skills que pisan 80%+ de lo que ya tenemos** — robar ideas, integrarlas como convención propia.
 - **Learning Signals en AGENTS.md** — frases gatillo que disparan logging automático (correcciones, preferencias, patrones).

@@ -283,3 +283,14 @@ Analizar "¿qué aprendimos? ¿qué patrones identificamos? ¿es global o de pro
 ### 56. Clasificar aprendizajes como global vs proyecto 🔧 **OpenClaw**
 🌍 Global → aplica a cualquier proyecto. 🏗️ Proyecto → específico del AI Engineering OS. 📦 Contexto → específico de un proyecto de producto.  
 **Lección:** esta clasificación misma es un mega-patrón.
+
+### 57. Patrón de postulación: no saltar pasos 🔧 **OpenClaw**
+🌍 Global
+**Señal:** Gonzo pasa link de puesto laboral → pide CV optimizado.
+**Patrón correcto:**
+1. Fit analysis contra CV actual
+2. **Preguntar por gaps** antes de escribir (no asumir experiencia que no está en el CV)
+3. Esperar respuesta
+4. Recién ahí crear CV optimizado
+**Error:** dos veces seguidas salté del paso 1 al 4 sin preguntar. No corregí después del primer error.
+**Lección:** cuando un patrón se repite en la misma sesión, corregir en el momento — no esperar a la próxima. Si ya lo vi fallar una vez, la segunda tengo que detectarlo antes de repetirlo.
