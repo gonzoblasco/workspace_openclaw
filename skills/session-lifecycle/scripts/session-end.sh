@@ -74,6 +74,13 @@ echo "   HANDOFF: $HANDOFF_DIR/HANDOFF.md"
 echo "   Log: $SESSION_LOG"
 echo ""
 
+# Reflection prompt
+echo "🤔 Quick reflection:"
+echo "   ¿Qué aprendimos? ¿Algún patrón nuevo?"
+echo "   ¿Es global (🌍) o de proyecto (🏗️)?"
+echo "   Si hay algo, registrarlo en docs/LEARNINGS.md"
+echo ""
+
 # Check open PRs
 echo "🔍 Checking open PRs..."
 PR_SCRIPT="skills/oss-contribution/scripts/pr-status-check.sh"

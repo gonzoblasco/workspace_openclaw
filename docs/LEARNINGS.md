@@ -394,3 +394,60 @@ Revisamos 31 skills de ClawHub en una sola sesión. El proceso fue:
 **Lección:** el 90% de las skills de ClawHub no vale la pena instalarlas, pero casi todas tienen 1-2 ideas que podemos robar. El truco no está en encontrar la skill perfecta, sino en saber destilar lo que nos sirve de cada una. Este proceso es repetible y merece ser un workflow documentado.
 
 **Patrón formalizado:** agregado a AGENTS.md como sección "Evaluación de Skills Externas".
+
+---
+
+## 2026-07-23 — Skills Overhaul: el patrón "evaluar → decidir → crear" y la reflexión post-sesión
+
+### 1. El pipeline de producto funcionó exactamente como fue diseñado
+Seguimos el flujo completo sin pensarlo: 0.1 Brainstorming → 0.2 Arquitectura → Ejecución → Calidad → Cierre. El pipeline no es teoría, es cómo trabajamos.
+
+**Lección:** cuando el sistema está bien diseñado, los workflows se activan solos por contexto. No necesitamos "invocar" las skills explícitamente.
+
+### 2. El patrón "evaluar → decidir → crear" es un mega-patrón reusable
+Lo aplicamos 3 veces en la misma jornada con distintos tipos de input:
+
+| Iteración | Input | Evaluar | Decidir | Crear |
+|---|---|---|---|---|
+| 1 | 20 skills originales | Leer cada SKILL.md | Qué refs/scripts faltan | 44 refs + 49 scripts |
+| 2 | 8 skills con solapamiento | Cruzar contra lo que tenemos | Integrar o descartar | 2 skills + 6 integraciones |
+| 3 | 13 skills sin duplicación | Analizar si aportan valor | Adoptar o no | 11 skills + 33 READMEs |
+
+**Mega-patrón:** cualquier proceso de evaluación sigue este ciclo. Es aplicable a skills, herramientas, dependencias, frameworks, candidatos, etc.
+
+**Clasificación:** 🌍 **Global** — aplica a cualquier dominio, no solo skills.
+
+### 3. El validation gate entre fases es un patrón real
+Cuando evaluamos las 26 skills descargadas, hicimos un gate implícito de 3 vías:
+- **Duplicación directa** → descartar
+- **Solapamiento parcial** → evaluar profundidad
+- **Sin duplicación** → adoptar
+
+Esto es exactamente lo que hace `product-discovery` con su validation gate entre 0.1 y 0.2.
+
+**Clasificación:** 🌍 **Global** — cualquier decisión con alternativas puede usar este filtro.
+
+### 4. Las skills transversales se activaron solas por contexto
+- `engineering-governance` → cuando decidimos auditar el estado de las skills
+- `knowledge-management` → cuando actualizamos SKILLS-INDEX y pipeline
+- `session-lifecycle` → al cerrar cada batch y la jornada
+- `oss-contribution` → cuando pensamos en PR watch
+
+**Lección:** si un workflow necesita ser "invocado" explícitamente todo el tiempo, quizás no está bien integrado. El objetivo es que surjan del contexto.
+
+**Clasificación:** 🏗️ **Proyecto** — específico del AI Engineering OS.
+
+### 5. La reflexión post-sesión debe ser parte del cierre
+Este mismo análisis ("¿qué aprendimos? ¿qué patrones identificamos? ¿es global o de proyecto?") debería ocurrir al final de cada sesión significativa. No es opcional, es parte del Growth Loop.
+
+**Formalizado:** agregado a `session-lifecycle` como fase de reflexión. Ver `references/reflection-template.md`.
+
+**Clasificación:** 🌍 **Global** — toda sesión de trabajo debería incluir reflexión.
+
+### 6. Clasificar aprendizajes como global vs proyecto
+No todo lo que aprendemos aplica a todo. Algunas lecciones son específicas del proyecto actual, otras son mega-patrones que aplican siempre. Al registrarlas, clasificarlas:
+- 🌍 **Global** — aplica a cualquier proyecto, dominio o contexto
+- 🏗️ **Proyecto** — específico del AI Engineering OS o del workspace
+- 📦 **Contexto** — específico de un proyecto de producto en particular
+
+**Clasificación:** 🌍 **Global** — esta clasificación misma es un mega-patrón.
