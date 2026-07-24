@@ -138,8 +138,10 @@ El workspace tiene su propio repo en GitHub (`workspace_openclaw`). Los proyecto
 
 **Regla obligatoria:** cuando se modifiquen archivos de configuración del workspace (AGENTS.md, MEMORY.md, SOUL.md, IDENTITY.md, USER.md, TOOLS.md, HEARTBEAT.md, FREEZER.md, CHANGELOG.md, o cualquier archivo en `memory/`), hacer commit + push al repo del workspace al finalizar la sesión o cuando el cambio sea significativo. Sin placeholders vacíos, solo cambios reales.
 
+**Siempre hacer `git pull --rebase` antes del push.** Gonzo trabaja entre dos máquinas (Mac Mini y MacBook Air), el workspace se sincroniza por git. Si no se trae antes de pushear, se pisa con cambios de la otra máquina.
+
 ```bash
-git add -A && git commit -m "descripción del cambio" && git push
+git add -A && git commit -m "descripción del cambio" && git pull --rebase && git push
 ```
 
 ### Skills Mirror — `.github/skills/`
