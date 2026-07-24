@@ -59,6 +59,15 @@ Generar matriz de matching:
 - Required keyword coverage ≥ 80% = passing, ≥ 90% = excellent
 - Recomendar dónde agregar keywords faltantes
 
+### ⚠️ Checkpoint obligatorio
+
+**Después de Fase 2, PAUSAR.** Presentar al usuario:
+- Matriz de cobertura con gaps identificados
+- Preguntar: ¿tenés experiencia en [gap 1], [gap 2], [gap 3]?
+- Esperar respuesta antes de continuar a Fase 3
+
+No asumir ni inventar. El usuario decide qué gaps puede cubrir y cómo.
+
 ## 3. STAR Rewriting
 
 Reescribir cada entrada de experiencia:
@@ -75,7 +84,7 @@ Cada entry rewrite debe:
 - [ ] Cubrir ≥ 3 de 4 elementos STAR
 - [ ] Empezar con verbo de acción (led, built, optimized, drove)
 - [ ] Máximo 3 líneas (legibilidad ATS)
-- [ ] Incorporar keywords faltantes del Phase 2
+- [ ] Incorporar keywords faltantes del Phase 2, según lo confirmado por el usuario
 
 ## 4. ATS Compatibility Check
 
