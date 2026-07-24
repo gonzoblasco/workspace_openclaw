@@ -28,6 +28,10 @@ playwright-report/
 test-results/
 .vitest-cache/
 
+# Heartbeat noise (empty sessions, no real content)
+memory/2026-07-20-1750*.md
+memory/2026-07-23-1951.md
+
 # Proyectos — cada uno tiene su propio repo, se sincronizan por separado
 # Regla: ignorar todo el contenido de projects/ EXCEPTO:
 #   - .knowledge/ (memoria de sesión)
