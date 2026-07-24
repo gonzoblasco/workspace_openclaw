@@ -1,5 +1,22 @@
 # CHANGELOG.md
 
+## [2026-07-24] — cv-tailor Kraken + Git Workflow Fix
+
+### Changed
+- **cv-tailor skill:** Added mandatory checkpoint after Phase 2 (Keyword Match).
+  The pipeline now pauses to let the user confirm which gaps they can cover
+  before proceeding to STAR Rewriting. No more full-pipeline execution without
+  human feedback.
+- **AGENTS.md:** Added `git pull --rebase` before push in workspace git workflow.
+  Gonzo works between two machines (Mac Mini + MacBook Air); without the pull,
+  pushes can overwrite changes from the other machine.
+
+### Learned
+- cv-tailor is an iterative process with human checkpoints, not an automatic pipeline.
+- Always `git pull --rebase` before `git push` in workspace repos with multiple machines.
+
+---
+
 ## [2026-07-23] — Skills Workspace Overhaul: 20 → 33 Skills
 
 ### Added
