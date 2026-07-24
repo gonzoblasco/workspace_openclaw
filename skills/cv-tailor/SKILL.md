@@ -124,6 +124,42 @@ Cada entry rewrite debe:
 
 ---
 
+## STAR Examples by Role
+
+### Frontend Engineer
+
+**Before:** "Built UI components for the dashboard"
+**After:** "Designed and built 12 reusable React components for the analytics dashboard, adopted across 3 product teams, reducing UI development time by 40% and improving Lighthouse accessibility score from 72 to 94."
+
+**Before:** "Responsible for performance improvements"
+**After:** "Led frontend performance initiative for a SaaS product (MAU 200K+), implementing code splitting, lazy loading, and image optimization. Reduced LCP from 4.2s to 1.8s and improved Lighthouse Performance score from 55 to 92, directly impacting user retention."
+
+### Fullstack Engineer
+
+**Before:** "Worked on the billing system"
+**After:** "Architected and built the complete billing system from scratch (Stripe + Supabase + Edge Functions), handling subscription management, invoicing, and payment reconciliation. Processed $50K+ MRR with 99.9% uptime and zero payment failures in 6 months."
+
+**Before:** "Built APIs and frontend features"
+**After:** "Designed and implemented 15 RESTful API endpoints for the user management system (Node.js + PostgreSQL), serving 50K+ daily requests with <100ms p95 latency. Built the corresponding React admin panel, reducing manual user management time by 80%."
+
+### Product / Growth Engineer
+
+**Before:** "Worked on user growth initiatives"
+**After:** "During a user growth plateau (DAU 500K+), led activation funnel analysis, identified 3 critical drop-off points, and designed an A/B tested onboarding flow. Increased D1 retention from 32% to 45% and MAU by 18% within 3 months."
+
+**Before:** "Did A/B testing"
+**After:** "Designed and executed 20+ A/B experiments on the pricing page, analyzing statistical significance (p<0.05) and user behavior. The winning variant increased trial-to-paid conversion by 22%, adding $15K MRR."
+
+### Accessibility Specialist
+
+**Before:** "Made the app accessible"
+**After:** "Conducted a full WCAG 2.1 AA audit of a React SPA (200+ components), identifying and fixing 85 accessibility issues. Implemented automated a11y testing with axe-core in CI, achieving 100% pass rate. Reduced accessibility-related bug reports by 90%."
+
+**Before:** "Worked on accessibility"
+**After:** "Led the accessibility remediation of a legacy dashboard used by 10K+ government employees. Upgraded from WCAG 2.0 A to WCAG 2.1 AA compliance, trained 5 developers on ARIA patterns, and established a11y as a gating criterion in code review."
+
+---
+
 # Related Skills
 
 - [Mock Interview Drill](../mock-interview-drill): Para practicar entrevistas post-CV
