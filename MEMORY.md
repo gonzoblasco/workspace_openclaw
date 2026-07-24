@@ -9,6 +9,7 @@
 - Quiere organizar actividad física y mejorar salud
 - Trabaja a cualquier hora — no comentar ni sugerir parar
 - Quiere honestidad absoluta — sin darle la razón por ser quien manda
+- **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
 - Arranca conversaciones limpias con frecuencia — el registro escrito es crítico
 - Trabaja entre Mac Mini y MacBook Air, workspace sincronizado por git
 - Diferenciador: IA como infraestructura de trabajo (no como chat), stack opinado, docs de decisiones
