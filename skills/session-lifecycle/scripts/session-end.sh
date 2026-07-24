@@ -73,6 +73,14 @@ echo "✅ Session closed"
 echo "   HANDOFF: $HANDOFF_DIR/HANDOFF.md"
 echo "   Log: $SESSION_LOG"
 echo ""
+
+# Check open PRs
+echo "🔍 Checking open PRs..."
+PR_SCRIPT="skills/oss-contribution/scripts/pr-status-check.sh"
+if [[ -f "$PR_SCRIPT" ]]; then
+  bash "$PR_SCRIPT" --author gonzoblasco 2>/dev/null || echo "   (no PRs or gh not available)"
+fi
+echo ""
 echo "📋 Don't forget to:"
 echo "   1. Review HANDOFF.md"
 echo "   2. Commit workspace changes"
