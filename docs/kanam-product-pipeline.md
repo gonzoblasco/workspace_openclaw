@@ -8,7 +8,8 @@
 
 | Fase | Skill | Qué hace |
 |---|---|---|
-| 0. Discovery | `product-discovery` | Idea → BRIEF + EVALUATION + DEFINITION + ROADMAP + Go/No-Go |
+| 0.1 Brainstorming | `product-discovery` (0.1) | Idea → BRIEF + DEFINITION. Modelo: GLM 5.2 |
+| 0.2 Arquitectura | `product-discovery` (0.2) | OpenSpec + ADRs + ROADMAP. Modelo: Kimi K2.7 |
 | 0.5 Investigación | `research-spike` | Reducir incertidumbre técnica antes de decidir |
 | 1. Scaffold | `build-scaffold` | Generar proyecto, configurar stack, CI/CD |
 | 2. Docs iniciales | `tech-docs` | ADRs, diagramas C4, README, CHANGELOG |
@@ -56,10 +57,11 @@
 
 ```mermaid
 graph TD
-    A[Idea] --> B{product-discovery}
-    B -->|Incierto| C[research-spike]
-    C --> B
-    B -->|Go| D[build-scaffold]
+    A[Idea] --> B1{product-discovery 0.1}
+    B1 -->|BRIEF + DEFINITION| B2{product-discovery 0.2}
+    B2 -->|Incierto| C[research-spike]
+    C --> B2
+    B2 -->|OpenSpec + ADRs + Go| D[build-scaffold]
     D --> E[tech-docs]
     E --> F[task-execution]
     F --> G[review-quality]
@@ -87,9 +89,9 @@ graph TD
 
 ### Proyecto nuevo completo
 ```
-product-discovery → research-spike → build-scaffold → tech-docs → 
-task-execution → review-quality → pre-deploy-qa → release-management → 
-session-lifecycle
+product-discovery 0.1 → product-discovery 0.2 → research-spike (opcional) → 
+build-scaffold → tech-docs → task-execution → review-quality → 
+pre-deploy-qa → release-management → session-lifecycle
 ```
 
 ### Feature sobre proyecto existente
@@ -109,7 +111,7 @@ tech-docs → session-lifecycle
 
 ### Solo investigación
 ```
-product-discovery (modo ideación) → research-spike → session-lifecycle
+product-discovery 0.1 → product-discovery 0.2 → research-spike → session-lifecycle
 ```
 
 ---
