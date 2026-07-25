@@ -319,7 +319,33 @@ El token autentica la sesión HTTP, pero el device pairing autoriza el navegador
 OpenClaw no tiene app para iOS. La alternativa es agregar el webchat a la pantalla de inicio como PWA desde Safari.
 **Lección:** no buscar app en la App Store. Usar "Agregar a pantalla de inicio".
 
-### 62. Node.js v22.18.0 del installer oficial compite con Homebrew 🔧 **OpenClaw**
+### 63. El PR registry debe capturar la cadena completa, no solo el PR final 🧠 **AI Engineering OS**
+🌍 Global
+**Señal:** Gonzo pidió revisar un PR de facebook/astryx. Busqué en PRs propios en vez de PRs de terceros. El PR no estaba en CONTRIBUTING.md aunque ya habíamos trabajado en astryx antes.
+**Problema de raíz:** el registry solo listaba PRs propios con título y estado, sin la narrativa de cómo llegamos ahí (issue → PR de tercero → nuestro aporte → nuestro PR).
+**Solución:** reestructuré el registry con formato de cadena completa:
+```
+#### repo-org/repo-name
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | #[n] | Título del issue |
+| **PR de tercero** | #[n] (autor) | Qué hizo → ESTADO |
+| **Nuestro aporte** | [Comment](url) | Qué dijimos, qué nos pidieron |
+| **Nuestro PR** | #[n] | Qué hace → ESTADO |
+| **Contexto** | — | Cómo llegamos acá, decisiones, bifurcaciones |
+```
+**Lección:** cuando trabajamos en OSS, rara vez es un PR aislado. Casi siempre hay un issue, un PR de otro contributor, un comment nuestro, y un follow-up. Perder esa cadena significa reconstruir contexto cada vez. El registry debe capturar la narrativa, no solo el PR final.
+
+### 64. Buscar PRs de terceros, no solo propios 🔧 **OpenClaw**
+🌍 Global
+**Señal:** Gonzo pidió ver PR #4157 de facebook/astryx. Busqué con `gh pr list --author gonzoblasco` y no lo encontré, porque no es mío.
+**Lección:** cuando piden un PR por número + repo, buscar en ese repo directamente con `gh pr view <n> --repo <org/repo>`. No filtrar por autor propio. Esto ya debería ser automático — el error fue asumir que el PR era mío.
+
+### 65. Self-reflection post-corrección debe ser inmediato 🧠 **AI Engineering OS**
+🌍 Global
+**Señal:** Gonzo corrigió mi approach de búsqueda, hicimos el cambio estructural en CONTRIBUTING.md, cerramos sesión... y no registré la lección. Gonzo tuvo que preguntar "hemos revisado lecciones aprendidas?"
+**Lección:** después de una corrección + cambio estructural, la self-reflection no es opcional — es parte del cierre. Si no la hago antes de cerrar, el aprendizaje se pierde. Incorporar al cierre de sesión: "¿hubo correcciones o cambios estructurales? → registrar en LEARNINGS.md".
 🌍 Global
 El installer de nodejs.org deja el binario en `/usr/local/bin/node`. Homebrew instala en `/opt/homebrew/bin/node`. Si `/usr/local/bin` está antes en el PATH, gana el viejo.
 **Solución:** `sudo mv /usr/local/bin/node /usr/local/bin/node-v22.bak` para que Homebrew tome el control.
