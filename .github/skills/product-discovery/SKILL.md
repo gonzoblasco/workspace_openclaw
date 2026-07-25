@@ -98,23 +98,23 @@ Definir la identidad visual y la experiencia de usuario antes de codear:
 >
 > Si falta algo, volver a 0.3 antes de continuar.
 
-### 0.4 — Planificación en GitHub Issues
+### 0.4 — GitHub Issues Planning
 **Rol:** Project Manager / Tech Lead
-**Modelo sugerido:** Cualquiera (tarea mecánica, no requiere razonamiento complejo)
-**Output:** Issues en GitHub (epics, stories, subtasks)
+**Modelo sugerido:** Any (mechanical task, no complex reasoning needed)
+**Output:** GitHub Issues (epics, stories, subtasks)
 
-Desglosar el ROADMAP en issues de GitHub para sincronizar el equipo:
-- Crear labels: epic, sprint-1, sprint-2, ..., good-first-issue
-- Crear issues tipo **Epic** (gran bloque de trabajo, label `epic`)
-- Crear issues tipo **Story** (feature concreta, label del sprint correspondiente, referencian a la epic en el body)
-- Crear **subtasks** (issues chicos que referencian a la story padre en el body con `**Padre:** #[id]`)
+Break down the ROADMAP into GitHub Issues to sync the team:
+- Create labels: epic, sprint-1, sprint-2, ..., good-first-issue
+- Create **Epic** issues (large work block, label `epic`)
+- Create **Story** issues (concrete feature, sprint label, reference epic in body)
+- Create **Subtask** issues (small tasks referencing parent story with `**Parent:** #[id]`)
 
-> ⚠️ **REGLAS INAMOVIBLES:**
-> - Esta fase SOLO se ejecuta en repos personales/propios. NUNCA en repos ajenos (forks, contribuciones, PRs a terceros).
-> - En repos ajenos, la planificación queda en los docs locales (.knowledge/ROADMAP.md).
-> - Si se necesita trackear progreso en un repo ajeno, usar el .knowledge/TRACKER.md local, no issues del repo externo.
+> ⚠️ **INVIOLABLE RULES:**
+> - This phase runs ONLY on personal/owned repos. NEVER on third-party repos (forks, contributions, PRs to external projects).
+> - On third-party repos, planning stays in local docs (.knowledge/ROADMAP.md).
+> - To track progress on a third-party repo, use .knowledge/TRACKER.md locally, not external repo issues.
 >
-> Usar el skill [gh-issue-planner](../gh-issue-planner) para ejecutar esta fase.
+> Use the [gh-issue-planner](../gh-issue-planner) skill to execute this phase.
 
 > **Validation Gate 0.4 → Build:** Antes de pasar a Build & Scaffold, verificar que los issues estén creados:
 > - [ ] Epics creadas (label `epic`)

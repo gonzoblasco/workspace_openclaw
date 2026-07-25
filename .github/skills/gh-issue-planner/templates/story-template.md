@@ -1,17 +1,17 @@
-## [Nombre de la story]
+## [Story name]
 
-**Epic:** #[ID_EPIC]
+**Epic:** #[EPIC_ID]
 
-### Qué hay que hacer
-[Descripción de una línea]
+### What to do
+[One-line description]
 
 ### Subtasks
-- [#ID] [Nombre subtask]
-- [#ID] [Nombre subtask]
+- [#ID] [Subtask name]
+- [#ID] [Subtask name]
 
-### Detalle técnico
-[Comandos, snippets, config, referencias a .knowledge/]
+### Technical details
+[Commands, snippets, config, references to .knowledge/]
 
-### Criterios de éxito
-- [Criterio 1]
-- [Criterio 2]
+### Success criteria
+- [Criterion 1]
+- [Criterion 2]

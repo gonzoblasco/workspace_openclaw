@@ -1,10 +1,10 @@
-**Padre:** #[ID_PADRE]
+**Parent:** #[PARENT_ID]
 
-### Qué hay que hacer
-[Descripción de una línea]
+### What to do
+[One-line description]
 
-### Detalle técnico
-[Comandos, snippets, referencias]
+### Technical details
+[Commands, snippets, references]
 
-### Criterios de éxito
-- [Criterio 1]
+### Success criteria
+- [Criterion 1]

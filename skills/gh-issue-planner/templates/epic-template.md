@@ -1,11 +1,11 @@
-## 🏗️ Epic N: Nombre
+## 🏗️ Epic N: Name
 
-### ¿Qué se logra en este epic?
-[Descripción general]
+### What this epic achieves
+[General description]
 
-### ¿Qué incluye?
-- [Lista de features]
+### What it includes
+- [Feature list]
 
-### Criterios de éxito
-- [Criterio 1]
-- [Criterio 2]
+### Success criteria
+- [Criterion 1]
+- [Criterion 2]

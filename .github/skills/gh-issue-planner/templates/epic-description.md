@@ -1,17 +1,17 @@
-## 🏗️ Epic N: Nombre — Descripción corta
+## 🏗️ Epic N: Name — Short description
 
-### ¿Qué se logra en este epic?
-[Visión general: qué puede hacer el usuario/admin cuando este epic esté completo]
+### What this epic achieves
+[Overview: what the user/admin can do when this epic is complete]
 
-### ¿Qué incluye?
+### What it includes
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
 
-### ¿Quién puede agarrar estos issues?
-[Perfil sugerido: frontend, backend, fullstack, etc.]
+### Who can pick these up
+[Suggested profile: frontend, backend, fullstack, etc.]
 
-### Criterios de éxito
-- [Criterio 1]
-- [Criterio 2]
-- [Criterio 3]
+### Success criteria
+- [Criterion 1]
+- [Criterion 2]
+- [Criterion 3]

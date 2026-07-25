@@ -5,193 +5,193 @@ metadata:
   tags:
     - github
     - issues
-    - planificacion
+    - planning
     - project-management
-description: "Planificar y desglosar un proyecto en epics, stories y subtasks de GitHub Issues. Fase 0.4 del Product Discovery. SOLO para repos personales."
+description: "Plan and break down a project into GitHub Issues (epics → stories → subtasks). Phase 0.4 of Product Discovery. ONLY for personal repos."
 user-invocable: false
 ---
 
 # Workflow: GitHub Issue Planner
 
-## Propósito
-Desglosar el ROADMAP de un proyecto en issues de GitHub (epics → stories → subtasks) para sincronizar el equipo de desarrollo.
+## Purpose
+Break down a project ROADMAP into GitHub Issues (epics → stories → subtasks) to sync the development team.
 
-## ⚠️ REGLA INAMOVIBLE
-Este workflow SOLO se ejecuta en **repos personales/propios**. NUNCA en repos ajenos (forks, contribuciones, PRs a terceros).
+## ⚠️ INVOLABLE RULE
+This workflow runs ONLY on **personal/owned repos**. NEVER on third-party repos (forks, contributions, PRs to external projects).
 
-En repos ajenos, la planificación queda en los docs locales (`.knowledge/ROADMAP.md`) o en el HANDOFF de la sesión. Si se necesita trackear progreso, usar `.knowledge/TRACKER.md` local.
+On third-party repos, planning stays in local docs (`.knowledge/ROADMAP.md`) or the session HANDOFF. To track progress, use `.knowledge/TRACKER.md` locally.
 
-## Prerrequisitos
-- `gh` CLI autenticado con permisos de repo
-- Repo creado en GitHub
-- ROADMAP.md completado (Fase 0.2 de Product Discovery)
+## Prerequisites
+- `gh` CLI authenticated with repo permissions
+- Repo created on GitHub
+- ROADMAP.md completed (Product Discovery Phase 0.2)
 
-## Rutina
+## Routine
 
-### Paso 1: Configurar labels
+### Step 1: Configure labels
 
 ```bash
-# Labels base
-gh label create epic --color "1D76DB" --description "Epic: gran bloque de trabajo"
+# Base labels
+gh label create epic --color "B60205" --description "Epic: large work block"
 
-# Labels por sprint
+# Per-sprint labels
 gh label create sprint-1 --color "0E8A16" --description "Sprint 1"
-gh label create sprint-2 --color "0E8A16" --description "Sprint 2"
-# ... tantos sprints como haya
+gh label create sprint-2 --color "006BFF" --description "Sprint 2"
+# ... as many sprints as needed
 
-# Labels auxiliares
-gh label create good-first-issue --color "7057FF" --description "Buena para arrancar"
+# Auxiliary labels
+gh label create good-first-issue --color "7057FF" --description "Good for new contributors"
 ```
 
-### Paso 2: Crear Epics
+### Step 2: Create Epics
 
-Por cada epic del ROADMAP, crear un issue con label `epic`:
+For each epic in the ROADMAP, create an issue with the `epic` label:
 
 ```bash
-gh issue create --label epic --title "Epic N: Nombre — Descripción corta" --body "$(cat templates/epic-template.md)"
+gh issue create --label epic --title "Epic N: Name — Short description" --body "$(cat templates/epic-template.md)"
 ```
 
-**Template de Epic:** (ver `templates/epic-template.md`)
+**Epic Template:** (see `templates/epic-template.md`)
 
-### Paso 3: Crear Stories
+### Step 3: Create Stories
 
-Por cada feature del sprint, crear un issue con label del sprint correspondiente:
+For each feature in a sprint, create an issue with the corresponding sprint label:
 
 ```bash
-gh issue create --label sprint-N --title "Nombre de la story" --body "$(cat templates/story-template.md)"
+gh issue create --label sprint-N --title "Story name" --body "$(cat templates/story-template.md)"
 ```
 
-**Template de Story:** (ver `templates/story-template.md`)
+**Story Template:** (see `templates/story-template.md`)
 
-### Paso 4: Crear Subtasks
+### Step 4: Create Subtasks
 
-Por cada subtarea de una story, crear un issue que referencie a la story padre:
+For each subtask of a story, create an issue referencing the parent story:
 
 ```bash
-gh issue create --label sprint-N --title "[#ID_PADRE] Nombre de la subtask" --body "$(cat templates/subtask-template.md)"
+gh issue create --label sprint-N --title "[#PARENT_ID] Subtask name" --body "$(cat templates/subtask-template.md)"
 ```
 
-El body debe incluir `**Padre:** #[ID_PADRE]` para mantener la jerarquía.
+The body must include `**Parent:** #[PARENT_ID]` to maintain hierarchy.
 
-### Paso 5: Marcar good-first-issues
+### Step 5: Mark good-first-issues
 
-Identificar 2-3 issues ideales para nuevos contribuidores y marcar con label:
+Identify 2-3 issues ideal for new contributors and add the label:
 
 ```bash
 gh issue edit ISSUE_ID --add-label good-first-issue
 ```
 
-### Paso 6: Actualizar descripciones de Epics
+### Step 6: Update Epic descriptions
 
-Una vez creados todos los issues, actualizar las descripciones de los epics para que sean auto-contenidas:
+Once all issues are created, update epic descriptions to be self-contained:
 
 ```bash
 gh issue edit EPIC_ID --body "$(cat templates/epic-description.md)"
 ```
 
-La descripción del epic debe incluir:
-- **Qué se logra** (visión general del epic)
-- **Qué incluye** (lista de lo que se construye)
-- **Quién puede agarrar estos issues** (perfil sugerido)
-- **Criterios de éxito** (cómo saber si está terminado)
+The epic description must include:
+- **What this epic achieves** (overview)
+- **What it includes** (feature list)
+- **Who can pick these up** (suggested profile)
+- **Success criteria** (how to know it's done)
 
 ## Templates
 
 ### epic-template.md
 ```
-## 🏗️ Epic N: Nombre
+## 🏗️ Epic N: Name
 
-### ¿Qué se logra en este epic?
-[Descripción general]
+### What this epic achieves
+[General description]
 
-### ¿Qué incluye?
-- [Lista de features]
+### What it includes
+- [Feature list]
 
-### Criterios de éxito
-- [Criterio 1]
-- [Criterio 2]
+### Success criteria
+- [Criterion 1]
+- [Criterion 2]
 ```
 
 ### story-template.md
 ```
-## [Nombre de la story]
+## [Story name]
 
-**Epic:** #[ID_EPIC]
+**Epic:** #[EPIC_ID]
 
-### Qué hay que hacer
-[Descripción de una línea]
+### What to do
+[One-line description]
 
 ### Subtasks
-- [#ID] [Nombre subtask]
-- [#ID] [Nombre subtask]
+- [#ID] [Subtask name]
+- [#ID] [Subtask name]
 
-### Detalle técnico
-[Comandos, snippets, config, referencias a .knowledge/]
+### Technical details
+[Commands, snippets, config, references to .knowledge/]
 
-### Criterios de éxito
-- [Criterio 1]
-- [Criterio 2]
+### Success criteria
+- [Criterion 1]
+- [Criterion 2]
 ```
 
 ### subtask-template.md
 ```
-**Padre:** #[ID_PADRE]
+**Parent:** #[PARENT_ID]
 
-### Qué hay que hacer
-[Descripción de una línea]
+### What to do
+[One-line description]
 
-### Detalle técnico
-[Comandos, snippets, referencias]
+### Technical details
+[Commands, snippets, references]
 
-### Criterios de éxito
-- [Criterio 1]
+### Success criteria
+- [Criterion 1]
 ```
 
 ### epic-description.md
 ```
-## 🏗️ Epic N: Nombre — Descripción corta
+## 🏗️ Epic N: Name — Short description
 
-### ¿Qué se logra en este epic?
-[Visión general: qué puede hacer el usuario/admin cuando este epic esté completo]
+### What this epic achieves
+[Overview: what the user/admin can do when this epic is complete]
 
-### ¿Qué incluye?
+### What it includes
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
 
-### ¿Quién puede agarrar estos issues?
-[Perfil sugerido: frontend, backend, fullstack, etc.]
+### Who can pick these up
+[Suggested profile: frontend, backend, fullstack, etc.]
 
-### Criterios de éxito
-- [Criterio 1]
-- [Criterio 2]
-- [Criterio 3]
+### Success criteria
+- [Criterion 1]
+- [Criterion 2]
+- [Criterion 3]
 ```
 
-## Scripts de Referencia
+## Reference Scripts
 
 ### `scripts/create-sprint.sh`
-Script para crear todos los issues de un sprint de una sola vez. Recibe:
-- Número de sprint
-- Archivo CSV/JSON con las stories y subtasks
+Script to create all issues for a sprint at once. Takes:
+- Sprint number
+- CSV/JSON file with stories and subtasks
 
-(No implementado aún — pendiente para cuando el patrón se repita 3+ veces)
+(Not yet implemented — pending until the pattern repeats 3+ times)
 
-## Jerarquía de Issues
+## Issue Hierarchy
 
 ```
 Epic (label: epic)
   └── Story (label: sprint-N, body: "**Epic:** #[epic_id]")
-        └── Subtask (label: sprint-N, title: "[#story_id] nombre", body: "**Padre:** #[story_id]")
+        └── Subtask (label: sprint-N, title: "[#story_id] name", body: "**Parent:** #[story_id]")
 ```
 
-## Convenciones de Nomenclatura
+## Naming Conventions
 
-- **Epic:** `Epic N: Nombre — Descripción corta`
-- **Story:** `Nombre descriptivo de la feature`
-- **Subtask:** `[#ID_PADRE] Acción concreta a realizar`
+- **Epic:** `Epic N: Name — Short description`
+- **Story:** `Descriptive feature name`
+- **Subtask:** `[#PARENT_ID] Concrete action to perform`
 
 ## Related
 
-- [Product Discovery](../product-discovery): Fase 0.4 de la cual este skill es parte
-- [Build & Scaffold](../build-scaffold): Para construir el proyecto post-planificación
+- [Product Discovery](../product-discovery): Phase 0.4 of which this skill is part
+- [Build & Scaffold](../build-scaffold): For building the project post-planning
