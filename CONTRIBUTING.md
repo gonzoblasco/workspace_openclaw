@@ -100,6 +100,7 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 | Repo | ⭐ | Actividad (30d) | Por qué encaja |
 |------|-----|-----------------|----------------|
+| **facebook/astryx** | — | Muy activo | Design system de Meta. PR #4298 abierto (default a11y labels). Accesibilidad = especialización de Gonzo. Review de humbertovirtudes ya iniciado. |
 | **shadcn-ui/ui** | 119k | 50 issues activos | Lo usa en SoporteML. 2 PRs abiertos (#11179, #11180). Issues se cubren rápido — verificar sin PRs antes de atacar. |
 | **TanStack/router** | 14.8k | 50 issues activos | Lo usa en kanamai, reactiva, umbrawriter. PR #7818 abierto (loaderDeps serializer). 8 issues sin PRs disponibles. |
 | **TanStack/query** | 50k | 19 issues activos | Lo usa en todos lados. Reviews técnicas dejadas en PRs #11036 y #10994. Issues muy competidos (3-4 PRs por issue). |
@@ -123,6 +124,8 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 | pacocoursey/next-themes | Sin actividad en 30 días |
 | vercel/commerce | 1 issue activo en 30 días |
 | google/skills | [#196](https://github.com/google/skills/pull/196) | docs: add verify-revision-state recipe for Skill Registry | Abierto, esperando review | ✅ PR abierto 23 Jul |
+| facebook/astryx | [#4298](https://github.com/facebook/astryx/pull/4298) | feat(avatar): add default accessible labels to AvatarStatusDot per variant | Abierto, esperando review de @humbertovirtudes | ✅ PR abierto 24 Jul |
+| facebook/astryx | [#4157](https://github.com/facebook/astryx/pull/4157) | fix(avatar): pair each status-dot variant with a distinct shape | **MERGED** 24 Jul (AKnassa) | 🎉 Gonzo contribuyó con review convergence + follow-up #4298 |
 
 ### Candidatos futuros (cuando el Tier 1 avance)
 
@@ -165,9 +168,10 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 ### Próximos pasos
 
 1. **Esperar reviews** de todos los PRs (1-2 semanas desde última actividad)
-2. **payloadcms/payload #17413** — el más cercano al merge. Si en 7 días no hay movimiento, considerar follow-up comment
-3. **shadcn-ui/ui ×3** — si en 14 días no hay actividad, hacer follow-up comment amigable
-4. **No abrir nuevos PRs** hasta que al menos uno de los existentes reciba review humano. El bottleneck es maintainer review, no producción de código.
+2. **facebook/astryx #4298** — recién abierto 24 Jul, esperar review de @humbertovirtudes. Si en 7 días no hay movimiento, follow-up.
+3. **payloadcms/payload #17413** — el más cercano al merge. Si en 7 días no hay movimiento, considerar follow-up comment
+4. **shadcn-ui/ui ×3** — si en 14 días no hay actividad, hacer follow-up comment amigable
+5. **No abrir nuevos PRs** hasta que al menos uno de los existentes reciba review humano. El bottleneck es maintainer review, no producción de código.
 
 ---
 
