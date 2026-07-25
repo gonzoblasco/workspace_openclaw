@@ -229,6 +229,8 @@ Verificar referencias.
 
 Actualizar fechas.
 
+**Sincronizar CONTRIBUTING.md:** si hay cambios en PRs abiertos, repos objetivo, o cadenas de contribución, actualizar el PR registry en CONTRIBUTING.md con el formato de cadena completa (issue → PR tercero → nuestro aporte → nuestro PR → contexto).
+
 Generar reporte final.
 
 ---

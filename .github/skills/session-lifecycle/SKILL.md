@@ -34,6 +34,8 @@ Gestión del ciclo de vida completo de una sesión de trabajo con IA.
    - **isolated**: cuando es trabajo independiente (ej: buscar issues, leer docs, hacer tareas paralelas sin contexto compartido)
 3. **Ejecución** — trabajo principal, decisiones, archivos tocados
 4. **Cierre** — escanear sesión, escribir HANDOFF, memory, CHANGELOG
+   - **Self-reflection obligatoria:** si hubo correcciones de Gonzo, cambios estructurales, o aprendizajes significativos, registrar en LEARNINGS.md antes de cerrar. No esperar a que Gonzo pregunte "¿revisamos lecciones?"
+   - Si se modificó CONTRIBUTING.md, skills, o AGENTS.md, verificar que el cambio esté completo y no falten adaptaciones en skills relacionadas
 5. **Tareas** — convertir pendientes en tareas accionables. Crear cron jobs para follow-ups, o escribir en TODO.md del proyecto. No dejar pendientes en el aire
 6. **Commit** — commit + push del workspace (después de HANDOFF y memory, no antes)
 

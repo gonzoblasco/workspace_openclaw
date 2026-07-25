@@ -34,6 +34,16 @@ Contribución estratégica a repositorios externos con Spec-Driven Development.
 6. **Post-PR Watch** — monitorear el PR por 10 min: detectar comentarios de bots, cambios solicitados, merges. Usar `scripts/pr-watch.sh`
 7. **Community** — comentar en issues relacionados, cross-referencing. Hacerlo después del PR, no antes, para evitar ruido si el PR no prospera
 8. **Batch** — status check de PRs abiertos (🟢⚠️🔴). Se ejecuta automáticamente al cerrar sesión vía `session-lifecycle`
+9. **Registry** — al abrir o trackear un PR (propio o de terceros), registrar la cadena completa en CONTRIBUTING.md:
+   - Issue → PR de tercero (autor, estado) → Nuestro aporte (link al comment) → Nuestro PR (link, estado) → Contexto (cómo llegamos acá)
+   - No registrar solo el PR final. La narrativa completa es lo que permite retomar sin perder contexto
+   - Si el PR es de un tercero y solo comentamos, igual se registra — el comment es un activo
+
+## Reglas de búsqueda de PRs
+
+- Cuando Gonzo pide ver un PR por número + repo, buscar directamente en ese repo con `gh pr view <n> --repo <org/repo>`
+- **No filtrar por autor propio** a menos que Gonzo especifique "mis PRs" o "PRs míos"
+- Si el PR no se encuentra, verificar que el repo esté bien escrito (org/repo-name completo)
 
 ## Reglas de interacción en PRs/Issues de terceros
 
