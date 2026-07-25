@@ -99,6 +99,7 @@
 | `oss-contribution` | oss-contribute, sdd-brownfield | Contribución estratégica a OSS |
 | `performance-optimization` | — | Análisis, profiling y optimización sistemática |
 | `pre-deploy-qa` | — | Validación pre-deploy (build, rutas, SEO, API, performance) |
+| `gh-issue-planner` | — | Planificar proyecto en GitHub Issues: epics → stories → subtasks. Fase 0.4 de Product Discovery. ⚠️ SOLO repos personales. |
 | `product-discovery` | 4 skills de producto | Idea → definición de producto. Fase 0 dividida en 0.1 (Brainstorming), 0.2 (Arquitectura), 0.3 (Diseño UI/UX) y 0.4 (Planificación GitHub Issues). ⚠️ Fase 0.4 SOLO en repos personales. |
 | `release-management` | — | Planificación, coordinación y ejecución de releases |
 | `research-spike` | — | Investigación técnica para reducir incertidumbre |

@@ -111,8 +111,10 @@ Desglosar el ROADMAP en issues de GitHub para sincronizar el equipo:
 
 > ⚠️ **REGLAS INAMOVIBLES:**
 > - Esta fase SOLO se ejecuta en repos personales/propios. NUNCA en repos ajenos (forks, contribuciones, PRs a terceros).
-> - En repos ajenos, la planificación queda en los docs locales (.knowledge/ROADMAP.md) o en el HANDOFF de la sesión.
+> - En repos ajenos, la planificación queda en los docs locales (.knowledge/ROADMAP.md).
 > - Si se necesita trackear progreso en un repo ajeno, usar el .knowledge/TRACKER.md local, no issues del repo externo.
+>
+> Usar el skill [gh-issue-planner](../gh-issue-planner) para ejecutar esta fase.
 
 > **Validation Gate 0.4 → Build:** Antes de pasar a Build & Scaffold, verificar que los issues estén creados:
 > - [ ] Epics creadas (label `epic`)
