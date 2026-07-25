@@ -6,7 +6,7 @@ metadata:
     - producto
     - discovery
     - definicion
-description: "Workflow de Product Discovery: idea a definición de producto. Fase 0 dividida en Brainstorming (0.1) y Arquitectura (0.2) con modelos especializados. Reemplaza 4 skills de producto."
+description: "Workflow de Product Discovery: idea a definición de producto. Fase 0 dividida en Brainstorming (0.1), Arquitectura (0.2) y Diseño (0.3) con modelos especializados. Reemplaza 4 skills de producto."
 user-invocable: false
 ---
 
@@ -66,6 +66,38 @@ Tomar la definición de producto de 0.1 y bajarla a tierra técnica:
 - Desglose de epics y tasks en ROADMAP.md
 - Identificación de riesgos técnicos y mitigaciones
 
+> **Validation Gate 0.2 → 0.3:** Antes de pasar a 0.3, verificar que ARCHITECTURE.md, DATA_MODEL.md, ADRs y ROADMAP.md estén completos:
+> - [ ] Stack definitivo documentado
+> - [ ] Esquemas de DB completos
+> - [ ] ADRs de decisiones técnicas clave
+> - [ ] ROADMAP con sprints y tareas desglosadas
+> - [ ] Riesgos técnicos identificados
+>
+> Si falta algo, volver a 0.2 antes de continuar.
+
+### 0.3 — Diseño UI/UX
+**Rol:** Diseñador / Product Designer
+**Modelo sugerido:** Claude Sonnet (visión estética, consistencia visual)
+**Output:** `DESIGN.md`
+
+Definir la identidad visual y la experiencia de usuario antes de codear:
+- Paleta de colores y justificación
+- Tipografía y jerarquía visual
+- Tono y personalidad de la interfaz
+- Wireframes de pantallas clave (onboarding, feed, detalle de salida, perfil)
+- Flujo de navegación
+- Componentes visuales clave
+- Estados (loading, vacío, error)
+
+> **Validation Gate 0.3 → Build:** Antes de pasar a Build & Scaffold, verificar que DESIGN.md esté completo:
+> - [ ] Paleta de colores definida
+> - [ ] Tipografía definida
+> - [ ] Wireframes de pantallas clave
+> - [ ] Flujo de navegación documentado
+> - [ ] Tono y personalidad definidos
+>
+> Si falta algo, volver a 0.3 antes de continuar.
+
 ### 1. Intake
 Capturar idea, contexto, problema a resolver.
 
@@ -100,10 +132,13 @@ Para proyectos complejos, en lugar de 5 archivos genera 9:
 - `projects/<slug>/.knowledge/BRIEF.md` (Fase 0.1)
 - `projects/<slug>/.knowledge/EVALUATION.md`
 - `projects/<slug>/.knowledge/DEFINITION.md` (Fase 0.1)
+- `projects/<slug>/.knowledge/ARCHITECTURE.md` (Fase 0.2)
+- `projects/<slug>/.knowledge/DATA_MODEL.md` (Fase 0.2)
 - `projects/<slug>/.knowledge/ROADMAP.md` (Fase 0.2)
+- `projects/<slug>/.knowledge/DESIGN.md` (Fase 0.3)
 - `projects/<slug>/.knowledge/STATUS.md`
+- `projects/<slug>/.knowledge/TRACKER.md`
 - ADRs en `docs/adr/` (Fase 0.2)
-- (Modo detallado: + ARCHITECTURE.md, DESIGN.md, DATA_MODEL.md, TRACKER.md)
 
 ## Related Skills
 

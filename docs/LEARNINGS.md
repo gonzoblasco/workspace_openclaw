@@ -294,3 +294,33 @@ Analizar "¿qué aprendimos? ¿qué patrones identificamos? ¿es global o de pro
 4. Recién ahí crear CV optimizado
 **Error:** dos veces seguidas salté del paso 1 al 4 sin preguntar. No corregí después del primer error.
 **Lección:** cuando un patrón se repite en la misma sesión, corregir en el momento — no esperar a la próxima. Si ya lo vi fallar una vez, la segunda tengo que detectarlo antes de repetirlo.
+
+---
+
+## 2026-07-24 — Tailscale + OpenClaw webchat remoto
+
+### 58. El gateway no usa el puerto del config si el LaunchAgent pasa `--port` 🔧 **OpenClaw**
+🌍 Global
+El `openclaw.json` tenía `port: 3000`, pero el LaunchAgent arrancó el gateway en 18789. El service file (`~/Library/LaunchAgents/ai.openclaw.gateway.plist`) le pasa `--port 18789` por encima del config.
+**Lección:** cuando el gateway arranca vía LaunchAgent, el puerto real puede diferir del config. Verificar con `openclaw gateway status`.
+
+### 59. Tailscale Serve funciona como proxy inverso contra loopback 🔧 **OpenClaw**
+🌍 Global
+No hace falta cambiar `bind` a `0.0.0.0` ni abrir puertos. `tailscale serve --https=443 127.0.0.1:<port>` expone el webchat en la tailnet sin modificar la config del gateway.
+**Lección:** Tailscale Serve es la forma correcta de exponer OpenClaw. Simple, seguro, sin tocar config.
+
+### 60. Device pairing es necesario incluso con token configurado 🔧 **OpenClaw**
+🌍 Global
+El token autentica la sesión HTTP, pero el device pairing autoriza el navegador como dispositivo. La primera vez desde un navegador externo (iPhone, otra máquina) requiere `openclaw devices approve <id>`.
+**Lección:** esperar device pairing la primera vez. No es un error, es el flujo normal.
+
+### 61. No hay app nativa iOS para OpenClaw 🔧 **OpenClaw**
+🌍 Global
+OpenClaw no tiene app para iOS. La alternativa es agregar el webchat a la pantalla de inicio como PWA desde Safari.
+**Lección:** no buscar app en la App Store. Usar "Agregar a pantalla de inicio".
+
+### 62. Node.js v22.18.0 del installer oficial compite con Homebrew 🔧 **OpenClaw**
+🌍 Global
+El installer de nodejs.org deja el binario en `/usr/local/bin/node`. Homebrew instala en `/opt/homebrew/bin/node`. Si `/usr/local/bin` está antes en el PATH, gana el viejo.
+**Solución:** `sudo mv /usr/local/bin/node /usr/local/bin/node-v22.bak` para que Homebrew tome el control.
+**Lección:** antes de diagnosticar problemas raros de OpenClaw, verificar `node --version`. Si no es ≥22.22.3 o ≥24, ese es el problema.

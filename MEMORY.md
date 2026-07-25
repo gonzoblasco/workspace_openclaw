@@ -8,6 +8,7 @@
 - También: fotógrafo, comunicación social, quiere escribir novelas
 - Quiere organizar actividad física y mejorar salud
 - Trabaja a cualquier hora — no comentar ni sugerir parar
+- **Webchat remoto:** Tailscale Serve + PWA en iPhone. No hay app nativa iOS. Device pairing necesario la primera vez.
 - Quiere honestidad absoluta — sin darle la razón por ser quien manda
 - **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
 - Arranca conversaciones limpias con frecuencia — el registro escrito es crítico
@@ -98,7 +99,7 @@
 | `oss-contribution` | oss-contribute, sdd-brownfield | Contribución estratégica a OSS |
 | `performance-optimization` | — | Análisis, profiling y optimización sistemática |
 | `pre-deploy-qa` | — | Validación pre-deploy (build, rutas, SEO, API, performance) |
-| `product-discovery` | 4 skills de producto | Idea → definición de producto. Fase 0 dividida en 0.1 (Brainstorming, GLM 5.2) y 0.2 (Arquitectura, Kimi K2.7). |
+| `product-discovery` | 4 skills de producto | Idea → definición de producto. Fase 0 dividida en 0.1 (Brainstorming), 0.2 (Arquitectura) y 0.3 (Diseño UI/UX). |
 | `release-management` | — | Planificación, coordinación y ejecución de releases |
 | `research-spike` | — | Investigación técnica para reducir incertidumbre |
 | `review-quality` | pr-review, po-review, security-audit | Revisión pre-merge y auditoría |
