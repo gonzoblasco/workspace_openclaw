@@ -350,3 +350,32 @@ OpenClaw no tiene app para iOS. La alternativa es agregar el webchat a la pantal
 El installer de nodejs.org deja el binario en `/usr/local/bin/node`. Homebrew instala en `/opt/homebrew/bin/node`. Si `/usr/local/bin` está antes en el PATH, gana el viejo.
 **Solución:** `sudo mv /usr/local/bin/node /usr/local/bin/node-v22.bak` para que Homebrew tome el control.
 **Lección:** antes de diagnosticar problemas raros de OpenClaw, verificar `node --version`. Si no es ≥22.22.3 o ≥24, ese es el problema.
+
+---
+
+## 2026-07-25 — Primer OSS de Apple: swift-testing
+
+### 66. Los proyectos OSS de Apple son accesibles para newcomers si se elige el issue correcto 🧠 **AI Engineering OS**
+🌍 Global
+Apple tiene mucho OSS en Swift, pero casi nada comparte nuestro stack (TS/React/Node). Sin embargo, swift-testing tiene issues con label `good first issue` que son documentación pura — no requieren entender el core del compilador ni el runtime de testing.
+**Lección:** cuando se explora un ecosistema nuevo, buscar issues de documentación primero. Son la puerta de entrada ideal: enseñan el código sin requerir expertise profunda.
+
+### 67. Swift no es tan diferente de TypeScript para leer código 🧠 **AI Engineering OS**
+🌍 Global
+`struct` ≈ records/objects, `extension` ≈ agregar métodos a prototypes, `@Suite` ≈ decorators, `async throws` ≈ async/await + try/catch, ` ``Trait/serialized`` ` ≈ referencias cruzadas en JSDoc.
+**Lección:** la sintaxis de Swift es más verbosa pero conceptualmente familiar para alguien que viene de TS. La barrera es menor de lo que parece.
+
+### 68. DocC usa markdown con referencias a símbolos con backticks dobles 🧠 **AI Engineering OS**
+🌍 Global
+La documentación de Swift (DocC) usa archivos `.md` en carpetas `*.docc/`. Las referencias a tipos/métodos se hacen con ` ``Tipo/propiedad`` ` (doble backtick). Es como JSDoc pero con markdown plano.
+**Lección:** DocC es más simple que JSDoc/TypeDoc. No requiere decoradores ni tags especiales — solo markdown con referencias a símbolos.
+
+### 69. swift-testing requiere toolchain snapshot para main branch 🔧 **OpenClow**
+🌍 Global
+El `main` de swift-testing requiere Swift 6.3.0 (tools version). Swift 6.2.3 (CLI tools) no compila. Xcode 27 beta 4 trae Swift 6.4, suficiente.
+**Lección:** antes de forkear un proyecto OSS, verificar la versión de Swift que requiere. Si no se tiene, bajar un toolchain de swift.org o usar una release branch.
+
+### 70. El patrón de suite contenedora con `.serialized` se propaga recursivamente 🧠 **AI Engineering OS**
+📦 Contexto (swift-testing)
+`ParallelizationTrait.isRecursive` devuelve `true` cuando tiene una dependencia. `Runner.Plan._recursivelyApplyTraits()` propaga los traits a los hijos en el grafo de tests. Esto permite que `@Suite(.serialized) struct Container` serialice todas las suites anidadas, incluso en extensiones en archivos separados.
+**Lección:** la recursión de traits es un patrón de diseño del framework. Entenderlo permite usarlo correctamente y documentarlo para otros.
