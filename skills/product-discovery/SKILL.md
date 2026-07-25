@@ -6,7 +6,7 @@ metadata:
     - producto
     - discovery
     - definicion
-description: "Workflow de Product Discovery: idea a definición de producto. Fase 0 dividida en Brainstorming (0.1), Arquitectura (0.2) y Diseño (0.3) con modelos especializados. Reemplaza 4 skills de producto."
+description: "Workflow de Product Discovery: idea a definición de producto. Fase 0 dividida en Brainstorming (0.1), Arquitectura (0.2), Diseño (0.3) y Planificación (0.4) con modelos especializados. Reemplaza 4 skills de producto."
 user-invocable: false
 ---
 
@@ -89,7 +89,7 @@ Definir la identidad visual y la experiencia de usuario antes de codear:
 - Componentes visuales clave
 - Estados (loading, vacío, error)
 
-> **Validation Gate 0.3 → Build:** Antes de pasar a Build & Scaffold, verificar que DESIGN.md esté completo:
+> **Validation Gate 0.3 → 0.4:** Antes de pasar a 0.4, verificar que DESIGN.md esté completo:
 > - [ ] Paleta de colores definida
 > - [ ] Tipografía definida
 > - [ ] Wireframes de pantallas clave
@@ -97,6 +97,31 @@ Definir la identidad visual y la experiencia de usuario antes de codear:
 > - [ ] Tono y personalidad definidos
 >
 > Si falta algo, volver a 0.3 antes de continuar.
+
+### 0.4 — Planificación en GitHub Issues
+**Rol:** Project Manager / Tech Lead
+**Modelo sugerido:** Cualquiera (tarea mecánica, no requiere razonamiento complejo)
+**Output:** Issues en GitHub (epics, stories, subtasks)
+
+Desglosar el ROADMAP en issues de GitHub para sincronizar el equipo:
+- Crear labels: epic, sprint-1, sprint-2, ..., good-first-issue
+- Crear issues tipo **Epic** (gran bloque de trabajo, label `epic`)
+- Crear issues tipo **Story** (feature concreta, label del sprint correspondiente, referencian a la epic en el body)
+- Crear **subtasks** (issues chicos que referencian a la story padre en el body con `**Padre:** #[id]`)
+
+> ⚠️ **REGLAS INAMOVIBLES:**
+> - Esta fase SOLO se ejecuta en repos personales/propios. NUNCA en repos ajenos (forks, contribuciones, PRs a terceros).
+> - En repos ajenos, la planificación queda en los docs locales (.knowledge/ROADMAP.md) o en el HANDOFF de la sesión.
+> - Si se necesita trackear progreso en un repo ajeno, usar el .knowledge/TRACKER.md local, no issues del repo externo.
+
+> **Validation Gate 0.4 → Build:** Antes de pasar a Build & Scaffold, verificar que los issues estén creados:
+> - [ ] Epics creadas (label `epic`)
+> - [ ] Stories creadas por sprint (labels `sprint-N`)
+> - [ ] Subtasks creadas referenciando a su padre
+> - [ ] Labels configurados
+> - [ ] good-first-issue marcados para onboarding de nuevos devs
+>
+> Si falta algo, volver a 0.4 antes de continuar.
 
 ### 1. Intake
 Capturar idea, contexto, problema a resolver.
@@ -136,6 +161,7 @@ Para proyectos complejos, en lugar de 5 archivos genera 9:
 - `projects/<slug>/.knowledge/DATA_MODEL.md` (Fase 0.2)
 - `projects/<slug>/.knowledge/ROADMAP.md` (Fase 0.2)
 - `projects/<slug>/.knowledge/DESIGN.md` (Fase 0.3)
+- Issues en GitHub (Fase 0.4)
 - `projects/<slug>/.knowledge/STATUS.md`
 - `projects/<slug>/.knowledge/TRACKER.md`
 - ADRs en `docs/adr/` (Fase 0.2)
