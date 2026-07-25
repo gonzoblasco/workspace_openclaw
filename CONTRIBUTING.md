@@ -70,21 +70,123 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 ## Pipeline de repos objetivos
 
-### En progreso — Registry completo de PRs abiertos (actualizado 2026-07-23)
+### En progreso — Registry completo de PRs (actualizado 2026-07-25)
 
-| Repo | PR | Título | Estado real | Acción tomada |
-|------|-----|--------|-------------|---------------|
-| radix-ui/primitives | [#4053](https://github.com/radix-ui/primitives/pull/4053) | fix: Select inside Dialog focus freeze | Sin review humano, sin CI. Changeset agregado 23 Jul | ✅ Changeset pusheado |
-| TanStack/router | [#7861](https://github.com/TanStack/router/pull/7861) | fix: MatchInner throw undefined on cleared loadPromise | Sin review humano, CI verde. CodeRabbit issues addressados 23 Jul | ✅ Fixes de CodeRabbit pusheados |
-| TanStack/router | [#7834](https://github.com/TanStack/router/pull/7834) | fix: safeStringify for loaderDeps hash | Sin review humano, CI verde, sin issues | ⏳ Esperando review |
-| vercel/ai | [#17274](https://github.com/vercel/ai/pull/17274) | warn when reasoning tokens spent | Review bot de Vercel addressado. Squash 22 Jul. Esperando review humano | ⏳ Esperando review humano |
-| shadcn-ui/ui | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | InputOTP slot transition | Sin review humano. Bloqueado por Vercel deploy (necesita autorización team shadcn-pro) | ⏳ Esperando |
-| shadcn-ui/ui | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | MessageScroller footer height | Sin review humano. Mismo bloqueo Vercel deploy | ⏳ Esperando |
-| shadcn-ui/ui | [#11187](https://github.com/shadcn-ui/ui/pull/11187) | remove scrollbar-none table | Sin review humano. Mismo bloqueo Vercel deploy | ⏳ Esperando |
-| t3-oss/create-t3-app | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | biome ignore generated | CI verde, changeset listo, Vercel ready. Sin review humano | ⏳ Esperando review |
-| shuding/nextra | [#5029](https://github.com/shuding/nextra/pull/5029) | select modal={false} | Sin review humano. UNSTABLE (falso positivo, branch actualizado) | ⏳ Esperando review |
-| payloadcms/payload | [#17413](https://github.com/payloadcms/payload/pull/17413) | fix: duplicate latest=true version rows | **Review humano de sviat-barbutsa** (21 Jul). Fix addressado. BLOCKED (falta CI de payload) | ⏳ Esperando maintainer |
-| payloadcms/payload | [#17342](https://github.com/payloadcms/payload/pull/17342) | lexical blocks stale form state | Sin review humano. Sin CI. BLOCKED | ⏳ Esperando |
+**Formato estándar para cada entrada:**
+
+```
+#### repo-org/repo-name
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | #[n] | Título del issue |
+| **PR de tercero** | #[n] (autor) | Qué hizo → **ESTADO** (MERGED/OPEN/CLOSED) |
+| **Nuestro aporte** | [Comment](url) | Qué dijimos, qué nos pidieron |
+| **Nuestro PR** | #[n] | Qué hace → **ESTADO** |
+| **Contexto** | — | Cómo llegamos acá, decisiones, bifurcaciones |
+```
+
+Si no hay issue o PR de tercero, se omite ese eslabón. El contexto es obligatorio — captura la narrativa que no se ve en los links.
+
+Cada entrada registra la cadena completa: issue → PR de tercero → nuestro aporte → nuestro PR → estado.
+
+#### facebook/astryx
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#4143](https://github.com/facebook/astryx/issues/4143) | AvatarStatusDot solo usa color para transmitir estado (WCAG 1.4.1) |
+| **PR de tercero** | [#4157](https://github.com/facebook/astryx/pull/4157) (AKnassa) | Shapes por variante (filled/ring/minus) → **MERGED** 24 Jul |
+| **Nuestro aporte** | [Comment](https://github.com/facebook/astryx/pull/4157#issuecomment-5072292534) | Ofrecimos converger #4218 con #4157. @humbertovirtudes sugirió PR separado |
+| **Nuestro PR** | [#4298](https://github.com/facebook/astryx/pull/4298) | Default accessible labels ("Online"/"Away"/"Busy") → **OPEN**, esperando review de @humbertovirtudes |
+| **Contexto** | — | Gonzo abrió #4218 primero (icon+label). humbertovirtudes sugirió converger con #4157 por ser base más sólida. PR #4218 cerrado, contenido migrado a #4298. |
+
+#### radix-ui/primitives
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | Select inside Dialog focus freeze |
+| **Nuestro PR** | [#4053](https://github.com/radix-ui/primitives/pull/4053) | Sin review humano, sin CI. Changeset agregado 23 Jul |
+| **Estado** | ⏳ Esperando review | — |
+
+#### TanStack/router
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#7787](https://github.com/TanStack/router/issues/7787) | loaderDeps serializer falla con circular refs |
+| **Nuestro PR** | [#7834](https://github.com/TanStack/router/pull/7834) | safeStringify approach. CI verde, sin issues |
+| **Estado** | ⏳ Esperando review | — |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | MatchInner throw undefined on cleared loadPromise |
+| **Nuestro PR** | [#7861](https://github.com/TanStack/router/pull/7861) | CodeRabbit issues addressados 23 Jul. CI verde |
+| **Estado** | ⏳ Esperando review | — |
+
+#### vercel/ai
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | warn when reasoning tokens spent |
+| **Nuestro PR** | [#17274](https://github.com/vercel/ai/pull/17274) | Review bot de Vercel addressado. Squash 22 Jul |
+| **Estado** | ⏳ Esperando review humano | — |
+
+#### shadcn-ui/ui
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#11157](https://github.com/shadcn-ui/ui/issues/11157) | InputOTP slot transition layout shift |
+| **Nuestro PR** | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | Bloqueado por Vercel deploy (necesita autorización team shadcn-pro) |
+| **Estado** | ⏳ Esperando | — |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#11161](https://github.com/shadcn-ui/ui/issues/11161) | MessageScroller footer flicker |
+| **Nuestro PR** | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | Bloqueado por Vercel deploy |
+| **Estado** | ⏳ Esperando | — |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | remove scrollbar-none from table |
+| **Nuestro PR** | [#11187](https://github.com/shadcn-ui/ui/pull/11187) | Bloqueado por Vercel deploy |
+| **Estado** | ⏳ Esperando | — |
+
+#### t3-oss/create-t3-app
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | biome ignore generated files |
+| **Nuestro PR** | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | CI verde, changeset listo, Vercel ready |
+| **Estado** | ⏳ Esperando review | — |
+
+#### shuding/nextra
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | select modal={false} |
+| **Nuestro PR** | [#5029](https://github.com/shuding/nextra/pull/5029) | UNSTABLE es falso positivo, branch actualizado |
+| **Estado** | ⏳ Esperando review | — |
+
+#### payloadcms/payload
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | duplicate latest=true version rows |
+| **Nuestro PR** | [#17413](https://github.com/payloadcms/payload/pull/17413) | **Review humano de sviat-barbutsa** (21 Jul). Fix addressado. BLOCKED (falta CI de payload) |
+| **Estado** | ⏳ Esperando maintainer | — |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | lexical blocks stale form state |
+| **Nuestro PR** | [#17342](https://github.com/payloadcms/payload/pull/17342) | Sin review humano. Sin CI. BLOCKED |
+| **Estado** | ⏳ Esperando | — |
+
+#### google/skills
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | verify-revision-state recipe for Skill Registry |
+| **Nuestro PR** | [#196](https://github.com/google/skills/pull/196) | Abierto 23 Jul |
+| **Estado** | ⏳ Esperando review | — |
 
 ### Reviews técnicas (sin PR propio, suma visibilidad)
 
@@ -124,8 +226,6 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 | pacocoursey/next-themes | Sin actividad en 30 días |
 | vercel/commerce | 1 issue activo en 30 días |
 | google/skills | [#196](https://github.com/google/skills/pull/196) | docs: add verify-revision-state recipe for Skill Registry | Abierto, esperando review | ✅ PR abierto 23 Jul |
-| facebook/astryx | [#4298](https://github.com/facebook/astryx/pull/4298) | feat(avatar): add default accessible labels to AvatarStatusDot per variant | Abierto, esperando review de @humbertovirtudes | ✅ PR abierto 24 Jul |
-| facebook/astryx | [#4157](https://github.com/facebook/astryx/pull/4157) | fix(avatar): pair each status-dot variant with a distinct shape | **MERGED** 24 Jul (AKnassa) | 🎉 Gonzo contribuyó con review convergence + follow-up #4298 |
 
 ### Candidatos futuros (cuando el Tier 1 avance)
 
