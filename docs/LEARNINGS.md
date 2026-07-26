@@ -390,3 +390,10 @@ El `main` de swift-testing requiere Swift 6.3.0 (tools version). Swift 6.2.3 (CL
 **Causa raíz:** el memory search está caído (índice desactualizado por cambio de embedding provider). Asumí que el daily note tenía todo, pero solo mostraba la última entrada que yo mismo había escrito.
 **Solución:** cuando el memory search no funciona, leer los archivos de sesión del día directamente (`memory/YYYY-MM-DD-HHMM.md`) antes de cerrar. No confiar en el daily note resumido ni en la memoria.
 **Lección:** la documentación escrita es el único sistema de memoria confiable cuando el search está caído. Pero la documentación no sirve si no se lee. El cierre de sesión debe incluir una revisión explícita de los archivos de sesión del día.
+
+### 72. Consolidación periódica de memory/ — 1 archivo por día 🧠 **AI Engineering OS**
+🌍 Global
+**Señal:** memory/ tenía 149 archivos en 12 días. Cada sesión generaba un archivo nuevo, incluso las que duraban 2 minutos. Muchas eran sesiones cortadas por compactación que se reiniciaban, generando archivos duplicados (ej: `2026-07-24-1733.md` y `2026-07-24-1733-2.md`).
+**Solución:** archivar todo lo anterior a 7 días en `memory/archive/`. Consolidar sesiones individuales en 1 archivo por día (`YYYY-MM-DD.md`). Dejar solo: daily consolidados + template + heartbeat + archive.
+**Resultado:** 149 → 9 archivos. El directorio es navegable, no hay riesgo de datos pisados, y el contexto de startup carga mucho menos.
+**Lección:** el formato de 1 archivo por día con secciones por sesión es el correcto. Las sesiones individuales no deberían persistir después de la consolidación. Hacer esto periódicamente (cada ~7 días o cuando el directorio supere los 30 archivos).

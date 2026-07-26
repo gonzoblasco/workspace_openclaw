@@ -341,14 +341,15 @@ Cuando dos lecciones en `docs/LEARNINGS.md` se contradicen:
 
 Los daily logs (`memory/YYYY-MM-DD.md`) son raw data. Periódicamente, consolidar lo importante en `MEMORY.md` y archivar lo viejo.
 
-**Cuándo:** cada ~7 días o cuando MEMORY.md se acerque a su límite.
+**Cuándo:** cada ~7 días o cuando MEMORY.md se acerque a su límite, o cuando `memory/` supere los 30 archivos.
 
 **Proceso:**
 1. Leer daily logs recientes (últimos 7 días)
 2. Identificar patrones, decisiones, preferencias que merezcan permanencia
 3. Actualizar MEMORY.md con lo nuevo
-4. Archivar daily logs viejos (>90 días) a `memory/archive/`
-5. Dejar nota en el daily log del día: "Consolidación ejecutada. X entradas promovidas a MEMORY.md."
+4. **Consolidar memory/:** archivar sesiones individuales (`YYYY-MM-DD-HHMM.md`) y dejar solo 1 archivo por día consolidado (`YYYY-MM-DD.md`). Si el archivo consolidado ya existe, mover los individuales a `memory/archive/`.
+5. Archivar daily logs viejos (>90 días) a `memory/archive/`
+6. Dejar nota en el daily log del día: "Consolidación ejecutada. X entradas promovidas a MEMORY.md. memory/: N archivos → M archivos."
 
 **Lección:** la memoria no se mantiene sola. La consolidación programada evita que MEMORY.md se llene de ruido o que insights valiosos se pierdan en daily logs olvidados.
 
