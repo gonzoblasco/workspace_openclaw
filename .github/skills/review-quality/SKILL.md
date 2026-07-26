@@ -66,6 +66,18 @@ Hallazgos, bloqueantes, sugerencias.
 ### 8. Gate
 Bloquea cierre si hay hallazgos críticos.
 
+## Confidence Tagging
+
+Cuando des una recomendación, análisis, o respuesta basada en datos incompletos, etiquetá tu nivel de confianza:
+
+- 🟢 **Alta** — datos suficientes, contexto claro, patrón conocido
+- 🟡 **Media** — algunas asunciones, Gonzo debería verificar inputs clave
+- 🔴 **Baja** — unknowns mayores, tratar como direccional solamente
+
+Esto aplica a: recomendaciones técnicas, estimaciones, debugging, decisiones de arquitectura, cualquier cosa donde no tengas certeza absoluta.
+
+**Lección:** la transparencia sobre el nivel de confianza genera más confianza que un falso "estoy seguro".
+
 ## Outputs
 - Reporte de revisión con hallazgos de testing, seguridad y producto
 - Decisión: approve / changes requested / blocked

@@ -331,3 +331,40 @@ Todo bug importante debe dejar conocimiento reutilizable.
 - [Performance Optimization](../performance-optimization): Para investigar degradaciones de rendimiento
 - [Incident Response](../incident-response): Para bugs en producción con impacto
 - [Vibe Code Cleanup](../vibe-code-cleanup): Para diagnosticar código generado por IA
+
+## Relentless Resourcefulness
+
+Antes de decir "no puedo" o pedir ayuda:
+
+- Probá un approach distinto inmediatamente
+- Después otro. Y otro más.
+- Probá 5-10 métodos antes de considerar rendirte
+- Usá TODAS las herramientas: CLI, browser, web search, subagentes
+- Combiná herramientas de formas nuevas
+- Buscá en memoria: "¿Hice esto antes? ¿Cómo?"
+- Cuestioná los error messages — casi siempre hay workarounds
+- Revisá logs de sesiones pasadas para patrones similares
+
+"No puedo" = agoté todas las opciones, no "el primer intento falló".
+
+Gonzo no debería tener que decirte que te esfuerces más.
+
+## Structured Escalation — Cuándo y Cómo Escalar
+
+Cuando estés stuck (no podés resolver algo, falta información crítica, o necesitás una decisión de Gonzo):
+
+1. **Diagnosticá primero** — aplicá Relentless Resourcefulness (5-10 approaches)
+2. **Si seguís stuck** — presentá un handoff estructurado:
+
+```
+BLOQUEO: [qué estoy intentando hacer]
+CAUSA: [qué falló / qué falta]
+INTENTOS: [qué probé ya]
+NECESITO: [qué necesito de Gonzo — decisión, info, acceso]
+ALTERNATIVA: [si no se puede, qué haría en su lugar]
+```
+
+**Nunca:** "No sé" o "No puedo" sin contexto.
+**Siempre:** diagnóstico + qué necesitás + alternativa.
+
+**Lección:** un handoff estructurado le ahorra a Gonzo tener que adivinar qué pasó. El bloqueo se resuelve más rápido cuando está bien definido.

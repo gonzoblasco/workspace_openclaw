@@ -297,6 +297,61 @@ Nunca:
 
 ¿El proyecto puede entenderse sin leer el historial del chat?
 
+## Learning Signals — Cuándo Loggear Automáticamente
+
+No esperes a que Gonzo te diga "anotá esto". Estas señales disparan logging automático a `docs/LEARNINGS.md` o `memory/YYYY-MM-DD.md`:
+
+**Correcciones explícitas:**
+- "No, eso no es así..." / "En realidad debería ser..."
+- "Te equivocaste en..." / "Eso está mal"
+- "Te dije antes que..." / "Siempre hago X, no Y"
+- "Dejá de hacer X" / "Por qué seguís haciendo..."
+
+**Preferencias explícitas:**
+- "Me gusta cuando..." / "Siempre haceme X"
+- "Nunca hagas Y" / "Mi estilo es..."
+- "Para [proyecto], usá..."
+
+**Patrones recurrentes:**
+- Misma instrucción 3+ veces
+- Workflow que funciona bien repetidamente
+- Gonzo elogia un approach específico
+
+**No loggear:**
+- Instrucciones de una sola vez ("hacé X ahora")
+- Contexto específico de un archivo ("en este archivo...")
+- Hipótesis ("qué pasaría si...")
+
+## Conflict Resolution — Lecciones Contradictorias
+
+Cuando dos lecciones en `docs/LEARNINGS.md` se contradicen:
+
+1. **Más específico gana** — proyecto > dominio > global
+2. **Más reciente gana** — mismo nivel de especificidad
+3. **Si ambiguo** — preguntar a Gonzo
+
+## Common Traps — Errores Típicos al Aprender
+
+- **Aprender del silencio** — no inferir preferencias porque Gonzo no dijo nada. Esperar corrección explícita o evidencia repetida.
+- **Promover muy rápido** — una ocurrencia no es un patrón. Esperar 3+ repeticiones antes de promover a SOUL/TOOLS/AGENTS.
+- **Leer todo siempre** — no cargar archivos enteros si no hacen falta. Cargar solo lo que el contexto necesita.
+- **Compactar borrando** — no borrar lecciones viejas. Fusionar, resumir o archivar, pero no perder historia.
+
+## DREAMS.md — Consolidación Programada de Memoria
+
+Los daily logs (`memory/YYYY-MM-DD.md`) son raw data. Periódicamente, consolidar lo importante en `MEMORY.md` y archivar lo viejo.
+
+**Cuándo:** cada ~7 días o cuando MEMORY.md se acerque a su límite.
+
+**Proceso:**
+1. Leer daily logs recientes (últimos 7 días)
+2. Identificar patrones, decisiones, preferencias que merezcan permanencia
+3. Actualizar MEMORY.md con lo nuevo
+4. Archivar daily logs viejos (>90 días) a `memory/archive/`
+5. Dejar nota en el daily log del día: "Consolidación ejecutada. X entradas promovidas a MEMORY.md."
+
+**Lección:** la memoria no se mantiene sola. La consolidación programada evita que MEMORY.md se llene de ruido o que insights valiosos se pierdan en daily logs olvidados.
+
 ## Related Skills
 
 - [Engineering Governance](../engineering-governance): Para auditar la calidad del conocimiento

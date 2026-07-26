@@ -65,6 +65,18 @@ Merge a main preservando historial (`--no-ff`). No eliminar la branch (referenci
 - PR con descripción estructurada
 - Epic cerrado con CHANGELOG y tags
 
+## Verify Implementation, Not Intent
+
+Cuando cambies cómo funciona algo:
+
+1. Identificá los **componentes arquitectónicos**, no solo el texto
+2. Cambiá el **mecanismo real**, no solo la descripción
+3. Verificá **observando comportamiento**, no solo leyendo la config
+
+**Trampa común:** decís "✅ Listo, actualicé la config" pero solo cambiaste el texto del prompt, no el sessionTarget ni el kind del cron. El sistema sigue haciendo lo mismo, solo que con palabras distintas.
+
+**La regla:** cambios de texto ≠ cambios de comportamiento. Verificá siempre.
+
 ## Related Skills
 
 - [Build & Scaffold](../build-scaffold): Para scaffolding inicial del proyecto
