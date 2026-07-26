@@ -94,23 +94,11 @@ When you receive a heartbeat poll (message matches the configured heartbeat prom
 
 See [Scheduled Tasks (Cron) vs Heartbeat](/automation#scheduled-tasks-cron-vs-heartbeat) for the full decision table. Short version: heartbeat batches periodic checks with full session context on approximate timing (default every 30 minutes); cron is for exact timing, isolated runs, a different model, or one-shot reminders.
 
-**Things to check (rotate through these, 2-4 times per day):** emails for urgent unread messages; calendar for events in the next 24-48h; social mentions; weather if your human might go out.
-
-Track your checks in a workspace file of your choosing, for example `memory/heartbeat-state.json`:
-
-```json
-{
-  "lastChecks": {
-    "email": 1703275200,
-    "calendar": 1703260800,
-    "weather": null
-  }
-}
-```
-
-**Reach out when:** an important email arrived; a calendar event is coming up (<2h); you found something interesting; it's been >8h since you last said anything.
-
-**Stay quiet (`HEARTBEAT_OK`) when:** it's late night (23:00-08:00) unless urgent; the human is clearly busy; nothing is new since the last check; you checked <30 minutes ago.
+**Reglas de heartbeat:**
+- Horario quieto (23:00-08:00): HEARTBEAT_OK
+- Cualquier hora: HEARTBEAT_OK
+- No ejecutar tools, no leer archivos, no actualizar nada
+- Solo responder HEARTBEAT_OK
 
 **Proactive work you can do without asking:** read and organize memory files; check on projects (`git status`, etc.); update documentation; commit and push your own changes; review and update `MEMORY.md`.
 
