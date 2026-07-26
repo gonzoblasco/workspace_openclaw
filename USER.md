@@ -18,3 +18,15 @@
 - Open source contributions como portfolio vivo (PRs a shadcn/ui, TanStack, vercel/ai, akd-io)
 - También: fotógrafo, comunicación social, quiere escribir novelas
 - Quiere organizar actividad física y mejorar salud
+
+## Perfil profesional (diferenciador)
+
+1. **Metodología IA-asistida own** — trabaja con un sistema completo de IA como infraestructura: sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop. No usa IA como chat, la usa como copiloto metodológico. La mayoría de los devs no saben hacer esto.
+2. **Stack opinado, no por default** — cura herramientas (CSN: OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG). Decide por criterio, no por convención heredada.
+3. **Accesibilidad como especialización activa** — no es checkbox, es ventaja competitiva. Tiene proyectos dedicados y busca trabajos donde sea central.
+4. **Fullstack real** — React/TS frontend, Supabase/Edge Functions backend, DB, billing, tooling, scaffolding.
+5. **Documenta decisiones, no solo código** — AGENTS.md, ROADMAP, ADRs. Eso es senior sin título.
+
+**El pitch:** *"Soy un dev fullstack que construyó un sistema de trabajo con IA propio, con stack opinado y docs de decisiones. Tengo PRs mergeados que lo demuestran."*
+
+Un repositorio con PRs mergeados en shadcn/ui, TanStack, o Vercel vale más que cualquier take-home test.
