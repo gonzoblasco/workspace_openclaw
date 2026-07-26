@@ -8,7 +8,7 @@
 
 ## 1. Propósito
 
-Kanam es un PWA personal que funciona como un sistema operativo de vida digital. Comienza como un diario personal inteligente para Gonzo, y evoluciona para ser un espacio seguro donde su círculo de confianza pueda tener su propio dashboard con asistencia IA.
+Kanam es un PWA personal que funciona como un sistema operativo de vida digital. Toma el nombre de Kanam, la asistente de Gonzo en OpenClaw. Comienza como un diario personal inteligente para Gonzo, y evoluciona para ser un espacio seguro donde su círculo de confianza pueda tener su propio dashboard con asistencia IA.
 
 No es una app más. Es **la** interfaz de tu vida digital.
 
@@ -22,7 +22,7 @@ No es una app más. Es **la** interfaz de tu vida digital.
 
 | Capa | Tecnología |
 |---|---|
-| Frontend | Next.js + Tailwind + TypeScript |
+| Frontend | Next.js + Tailwind + TypeScript + shadcn/ui |
 | PWA | next-pwa o similar (service worker + manifest) |
 | Backend | Supabase (auth, DB, storage, realtime) |
 | IA | Edge Functions → Ollama Cloud (DeepSeek V4 Flash / Gemma 4) |
@@ -34,7 +34,18 @@ Sin builds nativos. Sin Xcode. Funciona en cualquier browser, instalable en iOS 
 
 Supabase Auth con magic link. En Fase 1 solo Gonzo. En Fase 2, invitaciones con código.
 
-## 5. MVP: "El Diario"
+## 5. Modelo de datos (alto nivel)
+
+| Entidad | Descripción |
+|---|---|
+| `profiles` | Datos del usuario (nombre, avatar, preferencias) |
+| `entries` | Entradas del diario (tipo, contenido, metadata, fecha) |
+| `tags` | Tags creados por el usuario (nombre, color) |
+| `summaries` | Resúmenes diarios generados por IA |
+
+Relaciones: `entries` pertenece a `profiles` (user_id). `entries` puede tener múltiples `tags` (many-to-many).
+
+## 6. MVP: "El Diario"
 
 Una sola pantalla principal con timeline cronológico inverso. Cada entrada puede ser:
 
@@ -53,7 +64,14 @@ Al final del día, la IA genera un resumen automático.
 - Chat conversacional con IA
 - Multi-tenant
 
-## 6. Principios de diseño
+## 7. Datos del usuario
+
+- **Export:** el usuario puede exportar todas sus entradas en JSON
+- **Delete:** el usuario puede eliminar su cuenta y todos sus datos
+- **Privacidad:** los datos nunca se comparten entre usuarios (RLS en Supabase)
+- **Sin tracking:** no hay analytics de terceros en el MVP
+
+## 8. Principios de diseño
 
 - **Offline-first:** La app debe funcionar sin internet (lectura de entradas cacheadas)
 - **Privacidad por defecto:** Los datos son del usuario, no nuestros
@@ -61,7 +79,7 @@ Al final del día, la IA genera un resumen automático.
 - **Paso a paso:** Cada feature se justifica antes de implementarse
 - **Sin vendor lock-in:** Stack portable, datos exportables
 
-## 7. Riesgos identificados
+## 9. Riesgos identificados
 
 - **Dependencia de Ollama Cloud:** Si el servicio cambia precios/condiciones, migrar a otro provider
 - **PWA en iOS:** Limitaciones de Safari (notificaciones, background sync, almacenamiento)
