@@ -64,7 +64,8 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 | workspace_openclaw | ✅ | El workspace |
 | quedamos | — | App PWA de matching para salidas |
 | sportcars | ✅ | — |
-| cabala | ✅ | — |
+| cabala | ✅ | Eliminado — build roto |
+| kanam | — | PWA — sistema operativo personal con IA. En discovery |
 | a11y-fixer | ✅ | Accessibility fix engine |
 | ai-developer-stack | — | Skills de ingeniería con IA |
 | create-stack | — | Scaffolder opinado Next.js |

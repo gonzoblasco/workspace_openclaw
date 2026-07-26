@@ -10,9 +10,10 @@
 |---|---|---|
 | **a11y-fixer** | Fixes de accesibilidad | En curso, Fase 1 (MVP) en definición |
 | **ai-developer-stack** | Skills de ingeniería con IA | Vivo |
-| **cabala** | — | Fase 0 completada, lista para MVP |
+| ~~**cabala**~~ | ~~App diario visual Expo~~ | ~~Eliminado~~ — build roto |
+| **kanam** | PWA — sistema operativo personal con IA | En discovery, MVP definido |
 | **create-stack** | Scaffolder opinado Next.js | Vivo, publicado en npm |
-| **quedamos** | App PWA de matching para salidas | — |
+| **quedamos** | App PWA de matching para salidas | Vivo |
 | **sportcars** | — | — |
 
 ---
