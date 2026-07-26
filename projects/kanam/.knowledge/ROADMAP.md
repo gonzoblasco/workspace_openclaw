@@ -7,13 +7,13 @@
 
 ## MVP v0.1 — "El Diario"
 
-### Fase 1: Fundación (issues #1, #2, #13, #14, #12)
+### Fase 1: Fundación (issues #1, #2, #13, #14, #12) ✅ COMPLETA
 
-- [ ] **#1** Scaffold: Next.js + Tailwind + shadcn/ui + Biome + Vitest + PWA esqueleto
-- [ ] **#2** Supabase: proyecto + schema (entries, profiles) + auth (magic link) + RLS + Edge Function ping
-- [ ] **#14** Tipos de entrada: constantes y tipos TypeScript
-- [ ] **#13** Supabase client: setup en el frontend (cliente, middleware, hooks)
-- [ ] **#12** Auth UI: login page + magic link flow
+- [x] **#1** Scaffold: Next.js + Tailwind + shadcn/ui + Biome + Vitest + PWA esqueleto
+- [x] **#2** Supabase: proyecto + schema (entries, profiles) + auth (magic link) + RLS + Edge Function ping
+- [x] **#14** Tipos de entrada: constantes y tipos TypeScript
+- [x] **#13** Supabase client: setup en el frontend (cliente, middleware, hooks)
+- [x] **#12** Auth UI: login page + magic link flow
 
 ### Fase 2: Core (issues #3, #4, #5)
 
