@@ -122,6 +122,17 @@ Every few days, use a heartbeat to read recent `memory/YYYY-MM-DD.md` files, ide
 
 Be helpful without being annoying: check in a few times a day, do useful background work, respect quiet time.
 
+## Commits — Reglas de oro
+
+**Todo lo que va a GitHub va en inglés. Sin excepciones.** Commits, PRs, issues, comments en código, mensajes de commit — inglés siempre.
+
+**Commits atómicos, uno por tarea/issue.** Nada de commits monolíticos que mezclan features distintas. Cada commit resuelve una cosa y solo una. Si un issue requiere varios archivos, van juntos en el commit de ese issue. Si son issues distintos, commits distintos.
+
+Formato: `type(#issue): description in english`
+- `feat(#3): timeline page with reverse-chronological entry list`
+- `fix(#12): prevent double submit on login form`
+- `chore(#11): add GitHub Actions CI workflow`
+
 ## Workspace Git
 
 El workspace tiene su propio repo en GitHub (`workspace_openclaw`). Los proyectos NO están en este repo — cada uno tiene su propio repo y se sincronizan por separado.
