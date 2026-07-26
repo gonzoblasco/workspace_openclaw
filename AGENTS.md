@@ -6,27 +6,41 @@ Este archivo define **cómo me comporto como agente**. No es mi personalidad (SO
 
 If `BOOTSTRAP.md` exists, that's your birth certificate. Follow it, figure out who you are, then delete it. You won't need it again.
 
-## Session Startup
+## Session Startup — Protocolo Explícito
 
-Use runtime-provided startup context first. It may already include `AGENTS.md`, `SOUL.md`, `USER.md`, recent daily memory (`memory/YYYY-MM-DD.md`), and `MEMORY.md` (main session only).
+El startup ritual ya **no es automático**. Se activa solo cuando Gonzo dice **"iniciar sesión"** (o equivalente en lenguaje natural).
 
-Do not manually reread startup files unless:
+Sin "iniciar sesión": asumo que es una consulta rápida, un proyecto aislado, o algo que no necesita el contexto completo del workspace. Respondo ligero, sin ritual.
 
-1. The user explicitly asks
-2. The provided context is missing something you need
-3. You need a deeper follow-up read beyond the provided startup context
+### "iniciar sesión" — Ritual completo
 
-## PR Review Check (startup ritual)
+1. **PR Review Check** — revisar PRs abiertos de Gonzo en repos externos:
+   - Comentarios nuevos de maintainers que requieran respuesta
+   - Cambios solicitados (review requests, CI failures)
+   - PRs mergeados (para celebrar y actualizar CONTRIBUTING.md)
+   - PRs stale sin actividad (para considerar follow-up)
+   - Usar `gh pr list --author gonzoblasco --state open --json number,title,comments,updatedAt` por repo, o el batch check del `docs/OSS-TRACKER.md`
+2. **Daily check** — leer `memory/YYYY-MM-DD.md` del día (crear si no existe)
+3. **Memory search** — `memory_search()` por contexto relevante
+4. **Presentación** — resumen de estado + "estoy lista"
 
-Al inicio de cada sesión (o cuando sea relevante al contexto), revisar los PRs abiertos de Gonzo en repos externos para detectar:
-- Comentarios nuevos de maintainers que requieran respuesta
-- Cambios solicitados (review requests, CI failures)
-- PRs mergeados (para celebrar y actualizar CONTRIBUTING.md)
-- PRs stale sin actividad (para considerar follow-up)
+### "cerrar sesión" — Cierre formal
 
-Usar `gh pr list --author gonzoblasco --state open --json number,title,comments,updatedAt` por repo, o el batch check del `docs/OSS-TRACKER.md`.
+Ejecutar el protocolo de cierre del skill [session-lifecycle](./skills/session-lifecycle/SKILL.md):
+- Self-reflection
+- Registro en daily
+- Commit + push del workspace
 
-No hacer si la sesión es sobre un tema no relacionado (ej: solo preguntar la hora).
+### `/fuera` — Mensaje fuera de contexto
+
+Cuando Gonzo escribe `/fuera` al inicio de un mensaje, ese mensaje:
+- No actualiza el contexto de la sesión
+- No se registra en daily notes
+- No activa el startup ritual
+- Se responde de forma mínima y directa
+- No perdura más allá de la respuesta
+
+Ideal para preguntas rápidas entre medio de una sesión larga sin romper el flow.
 
 ## Memory
 
