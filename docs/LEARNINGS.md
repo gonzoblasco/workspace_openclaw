@@ -379,3 +379,14 @@ El `main` de swift-testing requiere Swift 6.3.0 (tools version). Swift 6.2.3 (CL
 📦 Contexto (swift-testing)
 `ParallelizationTrait.isRecursive` devuelve `true` cuando tiene una dependencia. `Runner.Plan._recursivelyApplyTraits()` propaga los traits a los hijos en el grafo de tests. Esto permite que `@Suite(.serialized) struct Container` serialice todas las suites anidadas, incluso en extensiones en archivos separados.
 **Lección:** la recursión de traits es un patrón de diseño del framework. Entenderlo permite usarlo correctamente y documentarlo para otros.
+
+---
+
+## 2026-07-25 — Cierre fallido: no revisé sesiones anteriores del día
+
+### 71. Siempre revisar session summaries del día antes de cerrar 🧠 **AI Engineering OS**
+🌍 Global
+**Señal:** Gonzo pidió cierre de sesión. Revisé el daily note resumido, vi solo la última entrada, y dije "sesión sin actividad sustancial". En realidad hubo 4 sesiones cargadas antes (PR registry, swift-testing, skill github, limpieza de repos).
+**Causa raíz:** el memory search está caído (índice desactualizado por cambio de embedding provider). Asumí que el daily note tenía todo, pero solo mostraba la última entrada que yo mismo había escrito.
+**Solución:** cuando el memory search no funciona, leer los archivos de sesión del día directamente (`memory/YYYY-MM-DD-HHMM.md`) antes de cerrar. No confiar en el daily note resumido ni en la memoria.
+**Lección:** la documentación escrita es el único sistema de memoria confiable cuando el search está caído. Pero la documentación no sirve si no se lee. El cierre de sesión debe incluir una revisión explícita de los archivos de sesión del día.
