@@ -23,7 +23,7 @@
 
 ### Fase 3: IA (issue #7)
 
-- [ ] **#7** IA: Edge Function para resumen diario (Ollama Cloud)
+- [x] **#7** IA: Edge Function para resumen diario (Ollama Cloud)
 
 ### Fase 4: UX (issues #8, #9, #10)
 
