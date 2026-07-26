@@ -93,6 +93,23 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 - Kanam evalúa cada tarea y recomienda subir a maximum o bajar a off. Gonzo decide.
 - Si Kanam no dice nada: medium está bien.
 
+## OSS PR Status Quick Reference (al 26/07/2026)
+
+### Payload CMS #17413 — duplicate latest=true
+- **Estado:** RESUELTO. Inline comment de sviat-barbutsa sobre `id != result.id` vulnerable a interleaving. Se cambió a `id < result.id` + regression test. Sviat agradeció. Esperando maintainer.
+
+### TanStack Router #7834 — safeStringify for loader deps
+- **Estado:** FALSO POSITIVO de CodeRabbit. Warning decía que el linked issue pedía usar configured search serializer, pero @schiller-manuel dijo que loader deps no son search params. safeStringify es el approach correcto. Esperando maintainer.
+
+### Google Skills #196 — verify-revision-state recipe
+- **Estado:** CLA re-triggered, esperando validación de Google.
+
+### shadcn/ui #11198 — InputOTP layout shift
+- **Estado:** 1 approval (karishma-gidr). El más cerca de merge.
+
+### Zod #6222 — __proto__ in strict mode
+- **Estado:** CI failure pre-existing (zshy + TS latest). Comentario dejado explicándolo.
+
 ## Silent Replies
 When you have nothing to say, respond with ONLY: NO_REPLY
 ⚠️ Rules:
