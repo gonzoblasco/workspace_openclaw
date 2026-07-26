@@ -25,11 +25,11 @@
 
 - [x] **#7** IA: Edge Function para resumen diario (Ollama Cloud)
 
-### Fase 4: UX (issues #8, #9, #10)
+### Fase 4: UX (issues #8, #9, #10) ✅ COMPLETA
 
-- [ ] **#8** Tags + filtros en entradas
-- [ ] **#9** PWA: offline support + install prompt
-- [ ] **#10** Testing en iOS + fixes
+- [x] **#8** Tags + filtros en entradas
+- [x] **#9** PWA: offline support + install prompt
+- [x] **#10** Testing en iOS + fixes
 
 ### Fase 5: Deploy (issues #6, #11)
 
