@@ -46,11 +46,6 @@
 
 ## Proyectos candidatos a reset (desde idea con workflows)
 
-### antigravity-developer-stack (prioridad #1)
-- 30+ patrones y playbooks de ingeniería con IA. Contenido valioso, estructura monolítica.
-- **Problema:** nombre críptico, mezcla demasiadas cosas, difícil de mantener coherente.
-- **Plan:** reset con product discovery + build scaffold → skill de OpenClaw o docs site.
-
 ### accessible-ui
 - Headless component library (Combobox, Modal, Tabs). Espacio saturado (Radix, Ariakit, React Aria).
 - **Plan:** reset con angle único (agent-friendly o generativo) o archivar.
@@ -63,10 +58,34 @@
 - Generador de apps con IA tipo Lovable pero local. Mercado hipercompetitivo.
 - **Plan:** reset con angle más específico o archivar.
 
-## Repos archivados / eliminados
+## Repos propios (no forks)
 
+Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no se listan.
+
+| Repo | Privado | Descripción |
+|---|---|---|
+| workspace_openclaw | ✅ | El workspace |
+| quedamos | — | App PWA de matching para salidas |
+| sportcars | ✅ | — |
+| cabala | ✅ | — |
+| a11y-fixer | ✅ | Accessibility fix engine |
+| ai-developer-stack | — | Skills de ingeniería con IA |
+| create-stack | — | Scaffolder opinado Next.js |
+| workflow-kit | — | Portable AI agent workflow skills |
+| create-with-ai | — | Generador de apps con IA |
+| accessible-ui | — | Headless component library |
+| soporteml | — | CRM multi-tenant para ML sellers |
+| accessibility-auditor | — | Plataforma de auditoría WCAG |
+| ai-engineering-bootcamp | — | 10 niveles de AI-assisted dev |
+| umbrawriter | ✅ | — |
+| sudolab | ✅ | AI fiction writing assistant |
+
+## Repos eliminados
+
+- **Moderno-Access-Virtual-Plate** → eliminado
+- **antigravity-developer-stack** → eliminado (contenido migrado a ai-developer-stack)
+- **copilot-skills** → eliminado (reemplazado por workflow-kit)
 - **futbol-ps2** → eliminado (MVP completo, descartado)
-- **copilot-skills** → archivado (reemplazado por workflow-kit)
 - **chatgpt-project-architect** → archivado (absorbido por AGDS)
 - **0001** → eliminar o archivar (sin propósito)
 - **prueba_minecraft_claude_code** → eliminar o archivar (experimento abandonado)
