@@ -26,4 +26,4 @@ Timeline cronológico inverso con entradas de:
 
 ## Estado
 
-En fase de discovery. Ver [Project Board](https://github.com/users/gonzoblasco/projects/1) para el roadmap.
+En fase de discovery. 14 issues en el [Project Board](https://github.com/users/gonzoblasco/projects/1) para el MVP v0.1.

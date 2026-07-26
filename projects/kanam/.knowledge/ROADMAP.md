@@ -5,49 +5,36 @@
 
 ---
 
-## Semana 1: Fundación
+## MVP v0.1 — "El Diario"
 
-### Día 1-2: Scaffold + Supabase
-- [ ] Crear proyecto Next.js con `create-next-app`
-- [ ] Configurar Tailwind + shadcn/ui
-- [ ] Configurar PWA (manifest + service worker básico)
-- [ ] Crear proyecto Supabase
-- [ ] Configurar auth (magic link)
-- [ ] Schema inicial: `entries` table
-- [ ] Edge Function de prueba (ping)
+### Fase 1: Fundación (issues #1, #2, #13, #14, #12)
 
-### Día 3-4: Timeline + Entradas
-- [ ] Página principal con timeline cronológico inverso
-- [ ] Crear entrada (modal o página separada)
-- [ ] Soporte para: nota rápida (texto)
-- [ ] Soporte para: check-in (ánimo, energía)
-- [ ] Subida de fotos a Supabase Storage
+- [ ] **#1** Scaffold: Next.js + Tailwind + shadcn/ui + Biome + Vitest + PWA esqueleto
+- [ ] **#2** Supabase: proyecto + schema (entries, profiles) + auth (magic link) + RLS + Edge Function ping
+- [ ] **#14** Tipos de entrada: constantes y tipos TypeScript
+- [ ] **#13** Supabase client: setup en el frontend (cliente, middleware, hooks)
+- [ ] **#12** Auth UI: login page + magic link flow
 
-### Día 5: Pulir
-- [ ] Editar/eliminar entrada
-- [ ] Loading states
-- [ ] Error handling
-- [ ] Despliegue en Vercel
+### Fase 2: Core (issues #3, #4, #5)
 
-## Semana 2: IA + Calidad
+- [ ] **#3** Timeline: página principal con lista cronológica inversa
+- [ ] **#4** Crear entrada: modal con tipos (nota, check-in, foto)
+- [ ] **#5** Editar/eliminar entrada
 
-### Día 6-7: IA
-- [ ] Edge Function que consume Ollama Cloud
-- [ ] Prompt para resumen diario
-- [ ] Botón "Resumir hoy" en la app
-- [ ] Guardar resúmenes en tabla `summaries`
+### Fase 3: IA (issue #7)
 
-### Día 8-9: UX
-- [ ] Tags en entradas
-- [ ] Filtro por tipo de entrada
-- [ ] Búsqueda simple
-- [ ] Vista calendario (mini)
+- [ ] **#7** IA: Edge Function para resumen diario (Ollama Cloud)
 
-### Día 10: Polish
-- [ ] Offline support (service worker cache)
-- [ ] PWA install prompt
-- [ ] Testing en iOS (Safari + home screen)
-- [ ] Fix de bugs
+### Fase 4: UX (issues #8, #9, #10)
+
+- [ ] **#8** Tags + filtros en entradas
+- [ ] **#9** PWA: offline support + install prompt
+- [ ] **#10** Testing en iOS + fixes
+
+### Fase 5: Deploy (issues #6, #11)
+
+- [ ] **#6** Despliegue en Vercel
+- [ ] **#11** CI/CD: GitHub Actions con lint + build
 
 ## Post-MVP
 
