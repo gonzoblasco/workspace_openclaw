@@ -1,6 +1,6 @@
 # SKILLS-INDEX.md — Skills del Workspace
 
-> 33 skills organizadas por categoría. Actualizado: 2026-07-23.
+> 34 skills organizadas por categoría. Actualizado: 2026-07-25.
 
 ## 🎯 Accesibilidad y UX
 
@@ -42,17 +42,17 @@
 
 | Skill | Ref | Scripts | Descripción |
 |---|---|---|---|
-| [engineering-governance](skills/engineering-governance/) | 4 | 6 | Meta-workflow: auditar y mejorar el sistema |
+| [engineering-governance](skills/engineering-governance/) | 5 | 6 | Meta-workflow: auditar y mejorar el sistema |
 | [knowledge-management](skills/knowledge-management/) | 4 | 3 | Base de conocimiento: consistencia, frescura, grafos |
-| [session-lifecycle](skills/session-lifecycle/) | 2 | 2 | Ciclo de sesión: inicio, dispatcher, cierre, HANDOFF |
+| [session-lifecycle](skills/session-lifecycle/) | 3 | 2 | Ciclo de sesión: inicio, dispatcher, cierre, HANDOFF |
 | [incident-response](skills/incident-response/) | 4 | 3 | Gestión de incidentes: detección → postmortem |
 
 ## 💼 Carrera y Crecimiento
 
 | Skill | Ref | Scripts | Descripción |
 |---|---|---|---|
-| [cv-tailor](skills/cv-tailor/) | 2 | 0 | Optimización de CV con STAR y ATS |
-| [mock-interview-drill](skills/mock-interview-drill/) | 0 | 0 | Simulacros de entrevistas con diagnóstico |
+| [cv-tailor](skills/cv-tailor/) | 3 | 1 | Optimización de CV con STAR y ATS |
+| [mock-interview-drill](skills/mock-interview-drill/) | 4 | 1 | Simulacros de entrevistas con diagnóstico |
 | [code-mentor](skills/code-mentor/) | 0 | 0 | Tutor de programación (8 modos de enseñanza) |
 | [dev-guide-generator](skills/dev-guide-generator/) | 0 | 0 | Tutoriales técnicos completos |
 
@@ -60,7 +60,7 @@
 
 | Skill | Ref | Scripts | Descripción |
 |---|---|---|---|
-| [narrative-content](skills/narrative-content/) | 3 | 3 | Novelas, cuentos, worldbuilding, personajes |
+| [narrative-content](skills/narrative-content/) | 8 | 5 | Novelas, cuentos, worldbuilding, personajes |
 | [timeline-builder](skills/timeline-builder/) | 0 | 1 | Timelines HTML interactivos desde JSON |
 | [adhd-assistant](skills/adhd-assistant/) | 2 | 0 | Gestión ADHD-friendly de vida diaria |
 
@@ -68,9 +68,11 @@
 
 | Skill | Ref | Scripts | Descripción |
 |---|---|---|---|
-| [oss-contribution](skills/oss-contribution/) | 3 | 3 | Contribución estratégica a repos externos |
+| [oss-contribution](skills/oss-contribution/) | 3 | 4 | Contribución estratégica a repos externos |
+| [gh-issue-planner](skills/gh-issue-planner/) | 0 | 0 | Planificar proyecto en GitHub Issues |
+| [github](skills/github/) | 0 | 0 | Comandos de gh, reglas de escritura en GitHub |
 
 ---
 
-**Totales:** 33 skills · 85 referencias · 55 scripts
-**🟢 22 completas · 🟡 11 con warnings**
+**Totales:** 34 skills · 89 referencias · 57 scripts
+**🟢 22 completas · 🟡 12 con warnings**
