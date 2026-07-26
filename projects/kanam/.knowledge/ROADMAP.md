@@ -15,11 +15,11 @@
 - [x] **#13** Supabase client: setup en el frontend (cliente, middleware, hooks)
 - [x] **#12** Auth UI: login page + magic link flow
 
-### Fase 2: Core (issues #3, #4, #5)
+### Fase 2: Core (issues #3, #4, #5) ✅ COMPLETA
 
-- [ ] **#3** Timeline: página principal con lista cronológica inversa
-- [ ] **#4** Crear entrada: modal con tipos (nota, check-in, foto)
-- [ ] **#5** Editar/eliminar entrada
+- [x] **#3** Timeline: página principal con lista cronológica inversa
+- [x] **#4** Crear entrada: modal con tipos (nota, check-in, foto, writing, idea)
+- [x] **#5** Editar/eliminar entrada
 
 ### Fase 3: IA (issue #7)
 
