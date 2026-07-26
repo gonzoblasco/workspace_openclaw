@@ -24,7 +24,7 @@ Al inicio de cada sesión (o cuando sea relevante al contexto), revisar los PRs 
 - PRs mergeados (para celebrar y actualizar CONTRIBUTING.md)
 - PRs stale sin actividad (para considerar follow-up)
 
-Usar `gh pr list --author gonzoblasco --state open --json number,title,comments,updatedAt` por repo, o el batch check del CONTRIBUTING.md.
+Usar `gh pr list --author gonzoblasco --state open --json number,title,comments,updatedAt` por repo, o el batch check del `docs/OSS-TRACKER.md`.
 
 No hacer si la sesión es sobre un tema no relacionado (ej: solo preguntar la hora).
 

@@ -2,6 +2,13 @@
 
 Registro completo de contribuciones a repos externos. Cada entrada captura la cadena completa: issue → PR de tercero → nuestro aporte → nuestro PR → estado.
 
+## Estrategia
+
+- PRs a repos externos como portfolio vivo → menos entrevistas
+- PR registry completo acá abajo
+- Commit signing SSH configurado
+- **Bottleneck:** maintainer review time
+
 ---
 
 ## PR Registry — Cadena Completa

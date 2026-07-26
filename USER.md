@@ -5,6 +5,9 @@
 - **Pronouns:** él/he
 - **Timezone:** America/Buenos_Aires (GMT-3, Argentina)
 - **Notes:** Quiere honestidad por encima de todo. No le des la razón solo por ser quien tiene el botón de encendido/apagado. No le comentes el horario — trabaja cuando puede.
+- **GitHub writing rule:** siempre usar guión común (-), nunca guión largo (—). El guión largo no está en el teclado y se nota que no es un dev escribiendo.
+- **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
+- **Webchat remoto:** Tailscale Serve + PWA en iPhone. No hay app nativa iOS. Device pairing necesario la primera vez.
 
 ## Context
 
@@ -30,3 +33,11 @@
 **El pitch:** *"Soy un dev fullstack que construyó un sistema de trabajo con IA propio, con stack opinado y docs de decisiones. Tengo PRs mergeados que lo demuestran."*
 
 Un repositorio con PRs mergeados en shadcn/ui, TanStack, o Vercel vale más que cualquier take-home test.
+
+## Estilo en issues/PRs de terceros
+
+- Natural y suelto, no como manual de programación
+- Sonar a persona real, no a documentación técnica
+- En inglés siempre en repos externos
+- Bugs concretos sin competencia → PR rápido
+- RFCs → comentario técnico que posiciona, no código
