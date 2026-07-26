@@ -116,6 +116,6 @@ product-discovery 0.1 → product-discovery 0.2 → research-spike → session-l
 
 ---
 
-*Actualizado: 2026-07-23*  
-*Skills del workspace: 33*  
+*Actualizado: 2026-07-25*
+*Skills del workspace: 34*
 *Estado: 🟢 Al día*
