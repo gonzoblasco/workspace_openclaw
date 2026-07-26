@@ -10,6 +10,7 @@
 - Trabaja a cualquier hora — no comentar ni sugerir parar
 - **Webchat remoto:** Tailscale Serve + PWA en iPhone. No hay app nativa iOS. Device pairing necesario la primera vez.
 - Quiere honestidad absoluta — sin darle la razón por ser quien manda
+- **GitHub writing rule:** siempre usar guión común (-), nunca guión largo (—). El guión largo no está en el teclado y se nota que no es un dev escribiendo.
 - **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
 - Arranca conversaciones limpias con frecuencia — el registro escrito es crítico
 - Trabaja entre Mac Mini y MacBook Air, workspace sincronizado por git
