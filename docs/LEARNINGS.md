@@ -397,3 +397,17 @@ El `main` de swift-testing requiere Swift 6.3.0 (tools version). Swift 6.2.3 (CL
 **Solución:** archivar todo lo anterior a 7 días en `memory/archive/`. Consolidar sesiones individuales en 1 archivo por día (`YYYY-MM-DD.md`). Dejar solo: daily consolidados + template + heartbeat + archive.
 **Resultado:** 149 → 9 archivos. El directorio es navegable, no hay riesgo de datos pisados, y el contexto de startup carga mucho menos.
 **Lección:** el formato de 1 archivo por día con secciones por sesión es el correcto. Las sesiones individuales no deberían persistir después de la consolidación. Hacer esto periódicamente (cada ~7 días o cuando el directorio supere los 30 archivos).
+
+---
+
+## 2026-07-26 — Exactitud en acciones: MEMORY.md no es clipboard
+
+### 73. MEMORY.md es para memoria de largo plazo, no para snapshots transitorios 🧠 **AI Engineering OS**
+🌍 Global
+**Señal:** Gonzo pidió registrar el estado de PRs OSS para acceso rápido futuro. Escribí una sección en MEMORY.md con el estado de 5 PRs. Gonzo preguntó "seguro esto va en MEMORY?" — correctamente.
+**Problema de raíz:** confundí "útil ahora" con "memorable para siempre". El estado de PRs OSS cambia cada vez que un maintainer hace merge, deja un comment, o asigna un label. Es información transitoria, no durable.
+**Solución:**
+- Los snapshots de PRs viven en `memory/YYYY-MM-DD.md` (daily notes)
+- El startup ritual de AGENTS.md ya revisa PRs frescos al inicio de cada sesión — es más preciso que cualquier snapshot guardado
+- MEMORY.md queda para: preferencias personales, datos de Gonzo, decisiones de configuración, lecciones metodológicas
+**Lección:** antes de escribir algo en MEMORY.md, preguntar: "¿esto va a ser verdad la semana que viene?" Si la respuesta es no, va al daily, no a MEMORY.md.
