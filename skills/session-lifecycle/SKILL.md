@@ -29,10 +29,14 @@ Gestión del ciclo de vida completo de una sesión de trabajo con IA.
 
 ## Fases
 1. **Inicio** — cargar contexto, memoria, handoff del proyecto activo
+   - **Session Goal:** definir objetivo explícito de la sesión. ¿Qué queremos lograr? ¿Cuál es el criterio de éxito?
+   - Si el objetivo es difuso, clarificar antes de avanzar. No arrancar sin dirección.
 2. **Dispatcher** — spawnear sub-agentes según la tarea:
    - **fork**: cuando el sub-agente necesita el transcript actual (ej: continuar una investigación, analizar una conversación)
    - **isolated**: cuando es trabajo independiente (ej: buscar issues, leer docs, hacer tareas paralelas sin contexto compartido)
 3. **Ejecución** — trabajo principal, decisiones, archivos tocados
+   - **Mid-session checkpoint:** a mitad de sesión (o al cambiar de tarea), preguntar: "¿Sigo en el camino correcto hacia el objetivo? ¿Necesito ajustar algo?"
+   - Si el checkpoint revela desvío, redefinir objetivo o restricciones antes de seguir.
 4. **Cierre** — escanear sesión, escribir HANDOFF, memory, CHANGELOG
    - **Revisar sesiones anteriores del día:** antes de cerrar, leer los archivos `memory/YYYY-MM-DD-*.md` del día para asegurarse de que no hubo sesiones previas que el daily note resumido no capture. No confiar solo en el daily note ni en la memoria.
    - **Consolidar archivos sueltos del día:** si hay archivos `memory/YYYY-MM-DD-HHMM.md` (sesiones individuales), moverlos a `memory/archive/`. El daily consolidado `memory/YYYY-MM-DD.md` ya tiene toda la info.
