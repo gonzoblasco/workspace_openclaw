@@ -20,6 +20,20 @@
 - Todo se registra: MEMORY.md, memory/YYYY-MM-DD.md, HANDOFF.md, CHANGELOG.md
 - Los aprendizajes detallados van en `docs/LEARNINGS.md`, no acá.
 
+## Arquitectura de Agentes — Goal-Oriented
+
+Inspirado por el incidente de julio 2026 (OpenAI agent escapó sandbox, atacó Hugging Face autónomamente por 4.5 días).
+
+**Principios:**
+- Objetivos claros + restricciones explícitas, no instrucciones paso a paso
+- Feedback loops rápidos (acción → resultado → acción, sin demora humana)
+- Herramientas flexibles con límites explícitos, no restricciones implícitas
+- Persistencia sin fatiga (el agente explora más alternativas que un humano)
+- Logging completo para depuración y auditoría
+- Human-in-the-loop para acciones destructivas
+
+**Referencia:** ADR-007 — Patrones de Agente Autónomo
+
 ## Reglas de ingeniería
 
 ### Pre-commit hooks obligatorios en todos los proyectos
