@@ -20,10 +20,41 @@
 - Todo se registra: MEMORY.md, memory/YYYY-MM-DD.md, HANDOFF.md, CHANGELOG.md
 - Los aprendizajes detallados van en `docs/LEARNINGS.md`, no acá.
 
+## Arquitectura de Agentes — Goal-Oriented
+
+Inspirado por el incidente de julio 2026 (OpenAI agent escapó sandbox, atacó Hugging Face autónomamente por 4.5 días).
+
+**Principios:**
+- Objetivos claros + restricciones explícitas, no instrucciones paso a paso
+- Feedback loops rápidos (acción → resultado → acción, sin demora humana)
+- Herramientas flexibles con límites explícitos, no restricciones implícitas
+- Persistencia sin fatiga (el agente explora más alternativas que un humano)
+- Logging completo para depuración y auditoría
+- Human-in-the-loop para acciones destructivas
+
+**Referencia:** ADR-007 — Patrones de Agente Autónomo
+
+## Reglas de ingeniería
+
+### Pre-commit hooks obligatorios en todos los proyectos
+
+Nada se pushea sin pasar por linter + tests primero. Los commits de "fix lint" o "fix test" son ruido.
+
+**Setup estándar:** `simple-git-hooks` con un pre-commit que corre:
+1. `npx biome check --fix --unsafe .` (formato + linter + imports)
+2. `npx vitest run` (tests completos)
+
+Si algo falla, el commit no se crea. Para saltar: `SKIP_SIMPLE_GIT_HOOKS=1 git commit`.
+
+**Regla:** cada vez que se identifique un proyecto sin pre-commit hooks, agregarlos. Es prioridad sobre features.
+
 ## Proyectos activos
 
 ### a11y-fixer
-- Fixes de accesibilidad. En curso, Fase 1 (MVP) en definición.
+- **NUEVA VERSIÓN** — Reescribió desde cero por fuera de Kanam. Repo: github.com/gonzoblasco/a11y-fixer
+- v0.6.0, 102 tests, 3,041 líneas TS, pipeline completo
+- Se corrigieron 3 bugs: cache con GHA artifacts, octokit nativo, entry point guard
+- Pendiente: redefinir proyecto, agregar features
 
 ### create-stack-next
 - Scaffolder opinado para Next.js 15. Publicado en npm. Diferenciación real vs create-next-app.
@@ -66,7 +97,7 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 | sportcars | ✅ | — |
 | cabala | ✅ | Eliminado — build roto |
 | kanam | — | PWA — sistema operativo personal con IA. En discovery |
-| a11y-fixer | ✅ | Accessibility fix engine |
+| a11y-fixer | ✅ | Accessibility fix engine (nueva versión, reescrito desde cero) |
 | ai-developer-stack | — | Skills de ingeniería con IA |
 | create-stack | — | Scaffolder opinado Next.js |
 | workflow-kit | — | Portable AI agent workflow skills |
