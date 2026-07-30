@@ -11,6 +11,7 @@
 - Quiere honestidad absoluta — sin darle la razón por ser quien manda
 - Arranca conversaciones limpias con frecuencia — el registro escrito es crítico
 - Trabaja entre Mac Mini y MacBook Air, workspace sincronizado por git
+- **Regla de merge:** cuando venga algo del workspace (pull/rebase con conflictos), hacer merge, no reset. El soft reset descarta commits de la otra máquina.
 - Diferenciador: IA como infraestructura de trabajo (no como chat), stack opinado, docs de decisiones
 
 ## Metodología
