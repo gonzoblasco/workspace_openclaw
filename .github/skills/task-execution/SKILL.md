@@ -6,7 +6,7 @@ metadata:
     - tareas
     - implementacion
     - pr
-description: "Workflow de ejecución de tareas: definir objetivo, planificar, implementar, verificar con feedback loop, PR y cerrar epic. Goal-oriented architecture."
+description: "Workflow de ejecución de tareas: planificar, implementar, verificar, PR y cerrar epic. Basado en patrones del AI Developer Stack."
 user-invocable: false
 ---
 
@@ -21,24 +21,7 @@ Ejecución día a día de tareas: desde que se define una tarea hasta que se cie
 - Crear branch, implementar, testear y abrir PR
 - Cerrar un epic con CHANGELOG, tags y lecciones aprendidas
 
-## Principio: Goal-Oriented Architecture
-
-Esta skill sigue los principios de **ADR-007 — Patrones de Agente Autónomo**:
-- **Objetivos claros + restricciones explícitas**, no instrucciones paso a paso
-- **Feedback loops rápidos** (acción → resultado → acción, sin demora humana)
-- **Herramientas flexibles con límites explícitos**, no restricciones implícitas
-- **Persistencia sin fatiga**: explorar más alternativas antes de escalar
-- **Logging completo** para depuración y auditoría
-
 ## Fases
-
-### 0. Goal Definition (NUEVA)
-Antes de cualquier planificación, definir:
-- **Objetivo:** ¿Qué queremos lograr? Una frase, concreta, medible.
-- **Restricciones:** ¿Qué NO podemos hacer? (no tocar X, no modificar Y, no gastar más de Z)
-- **Criterio de éxito:** ¿Cómo sabemos que está hecho?
-
-No pasar a planificación hasta que objetivo y restricciones estén claros. Si el objetivo es difuso, pedir clarificación.
 
 ### 1. Intake
 Leer contexto del epic activo, criterios de aceptación, archivos de `.knowledge/` relevantes. No empezar a escribir código sin entender las restricciones.
@@ -55,15 +38,11 @@ git checkout -b task/E[N]-T[NN]-[descripcion-corta]
 ### 4. Implementación
 Código + tests + tipos. Commits atómicos: un cambio por commit, no acumular todo al final.
 
-### 5. Auto-Validation Loop (NUEVA — reemplaza Verificación)
-Después de cada subtarea completada, ejecutar feedback loop rápido:
-1. **Build** — `npm run build` (debe pasar)
-2. **Tests** — `npx vitest run` (debe pasar)
-3. **Auto-evaluación** — ¿Cumple el objetivo de la subtarea? ¿Violé alguna restricción?
-4. **Si falla** → corregir y repetir el loop. No avanzar a la siguiente subtarea con fallos.
-5. **Si pasa** → avanzar.
-
-Este loop se ejecuta a velocidad máquina. No esperar validación humana para cada paso.
+### 5. Verificación
+```bash
+npm run build    # debe pasar sin errores
+npm run dev      # probar flujo principal manualmente
+```
 
 ### 6. PR
 PR estructurado con:

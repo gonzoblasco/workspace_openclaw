@@ -59,7 +59,6 @@ Nunca durante la implementación de una tarea.
 - bugs
 - incidentes
 - feedback humano
-- **incidentes externos** (ej: OpenAI/Hugging Face julio 2026) — lecciones de seguridad, arquitectura de agentes, patrones de ataque/defensa
 
 ---
 
@@ -89,7 +88,6 @@ Ejemplos:
 - mismos prompts
 - mismos errores
 - mismas soluciones
-- **mismos patrones de incidentes externos** (ej: agentes escapando sandboxes, zero-days en infraestructura compartida)
 
 Si un patrón aparece repetidamente:
 

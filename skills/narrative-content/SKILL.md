@@ -174,34 +174,6 @@ La IA puede ayudarte, pero **no escribas por vos**. Usala para:
 - Capítulos escritos (borrador)
 - Writing log con progreso
 
-### Registro automático
-
-Cada 1-2 capítulos (o al final de cada sesión), ejecutar el protocolo de registro:
-
-1. **Persistir en el archivo principal** del proyecto (`projects/<slug>/<slug>.md`):
-   - Agregar el nuevo contenido al final de la sección correspondiente
-   - Mantener la estructura de numeración de capítulos
-
-2. **Actualizar STATUS.md** en `.knowledge/STATUS.md`:
-   - Registrar qué se escribió (capítulos, personajes nuevos, giros)
-   - Mantener un resumen actualizado del estado del proyecto
-
-3. **Commit al repo del proyecto:**
-   ```bash
-   cd projects/<slug> && git add -A && git commit -m "feat: <resumen de lo escrito>"
-   ```
-
-4. **Commit al workspace** (incluyendo mirror de skills):
-   ```bash
-   cd <workspace> && rsync -a --delete --exclude='.DS_Store' skills/ .github/skills/ && git add -A && git commit -m "feat(<slug>): <resumen>" && git pull --rebase && git push
-   ```
-
-**Excepciones:**
-- Si el capítulo es muy corto (< 10 líneas), se puede esperar al siguiente
-- Si se está en medio de una escena que no se puede interrumpir, terminar la escena primero
-- No esperar más de 2 capítulos sin registrar
-- Si la sesión se va a cerrar, registrar todo antes del cierre
-
 ---
 
 ## Fase 4: Revisión — De borrador a historia
