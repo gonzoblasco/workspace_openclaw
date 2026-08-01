@@ -122,6 +122,17 @@ Every few days, use a heartbeat to read recent `memory/YYYY-MM-DD.md` files, ide
 
 Be helpful without being annoying: check in a few times a day, do useful background work, respect quiet time.
 
+## Project Commits — Verify Before Push
+
+For projects with a build step (Vite, Next.js, etc.):
+
+1. **Run `npm run build` before every commit that changes source code.** Biome + tests can pass while the build fails due to runtime-only issues (duplicate imports, unresolved exports, syntax rolldown doesn't catch).
+2. **Do not chain build + commit in a single long command unless the build is the last step before the commit.** If the command was split or interrupted, re-run build separately and only then commit.
+3. **If a broken build reaches the repo, the fix commit must include the build verification too** — don't just patch the file and push; run the full pre-commit sequence again.
+4. **Prefer the pre-commit hook to enforce this.** Hook order: lint → test → build. If the hook is bypassed (`SKIP_SIMPLE_GIT_HOOKS=1`), manually run the same sequence.
+
+Rationale: a failing build in `main` blocks deployment and wastes trust.
+
 ## Commits — Reglas de oro
 
 **Todo lo que va a GitHub va en inglés. Sin excepciones.** Commits, PRs, issues, comments en código, mensajes de commit — inglés siempre.
