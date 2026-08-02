@@ -228,6 +228,34 @@ Los workflows detallados (metodología, protocolos, patrones) viven en `skills/`
 | Ciclos de mejora continua | [`engineering-governance`](./skills/engineering-governance/SKILL.md) — Growth Loops |
 | Productividad adaptada a ADHD | [`session-lifecycle`](./skills/session-lifecycle/SKILL.md) — Productividad & ADHD |
 | Evaluación de skills externas | [`engineering-governance`](./skills/engineering-governance/SKILL.md) — Evaluación de Skills Externas |
+| Background execution (exec + process, parallel, auto-notify) | [`background-execution`](./skills/background-execution/SKILL.md) — Background Execution |
+| PTY rules (interactivos vs batch) | [`background-execution`](./skills/background-execution/SKILL.md) — Reglas de PTY |
+| Temp dirs / git worktrees para aislamiento | [`background-execution`](./skills/background-execution/SKILL.md) — Aislar en Temp Dir |
+
+## Reglas Operativas — Background & Procesos
+
+### PTY: interactivos sí, batch no
+- Coding agents, REPLs, prompts, TUIs → `pty: true`
+- Build, test, lint, git → `pty: false` (default)
+- Duda → `pty: true`
+
+### Aislar antes de tocar
+- Tareas de código en repos externos → `mktemp -d` o git worktree
+- Nunca modificar el repo del proyecto directamente sin approval explícito
+- Limpiar con `trash` (no `rm -rf`)
+
+### Auto-notify obligatorio
+- Toda tarea background termina con: `cron(action: wake, text: "✅ ...", mode: "now")`
+- No esperar heartbeat ni que el usuario pregunte
+
+### Parallel: exec para batch, spawn para razonamiento
+- `exec` + `process` → build, test, scripts
+- `sessions_spawn` → reviews, análisis, tareas que requieren pensar
+
+### submit vs write
+- `submit` → texto + Enter (responder prompts)
+- `write` → texto crudo (streaming, input parcial)
+- `send-keys` → combinaciones de teclas (ctrl+c, etc.)
 
 ## Related
 
