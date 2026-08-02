@@ -41,6 +41,18 @@ Si no hay issue o PR de tercero, se omite ese eslabón. El contexto es obligator
 | **Nuestro PR** | [#4298](https://github.com/facebook/astryx/pull/4298) | Default accessible labels ("Online"/"Away"/"Busy") → **OPEN**, esperando review de @humbertovirtudes |
 | **Contexto** | — | Gonzo abrió #4218 primero (icon+label). humbertovirtudes sugirió converger con #4157 por ser base más sólida. PR #4218 cerrado, contenido migrado a #4298. |
 
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#4421](https://github.com/facebook/astryx/issues/4421) | Breadcrumb current item solo usa color para distinguirse |
+| **Nuestro PR** | [#4605](https://github.com/facebook/astryx/pull/4605) | Non-color indicator (font-weight) en current breadcrumb → **OPEN**, MERGEABLE, sin reviews |
+| **Contexto** | — | Abierto 31 Jul. WCAG 1.4.1 fix. |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#4450](https://github.com/facebook/astryx/issues/4450) | Selector trigger sin accessible name |
+| **Nuestro PR** | [#4604](https://github.com/facebook/astryx/pull/4604) | aria-labelledby en Selector trigger → **OPEN**, CONFLICTING, sin reviews |
+| **Contexto** | — | Abierto 31 Jul. Tiene conflictos con main. |
+
 ### radix-ui/primitives
 
 | Eslabón | Link | Detalle |
@@ -48,6 +60,24 @@ Si no hay issue o PR de tercero, se omite ese eslabón. El contexto es obligator
 | **Issue** | — | Select inside Dialog focus freeze |
 | **Nuestro PR** | [#4053](https://github.com/radix-ui/primitives/pull/4053) | Sin review humano, sin CI. Changeset agregado 23 Jul |
 | **Estado** | ⏳ Esperando review | — |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#3636](https://github.com/radix-ui/primitives/issues/3636) | Select: aria-activedescendant y aria-selected fixes |
+| **Nuestro PR** | [#4067](https://github.com/radix-ui/primitives/pull/4067) | aria-activedescendant + aria-selected fix → **OPEN**, sin reviews |
+| **Contexto** | — | Abierto 22 Jul. Accesibilidad. |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#3640](https://github.com/radix-ui/primitives/issues/3640) | DropdownMenu: ArrowUp debe abrir y focus último item |
+| **Nuestro PR** | [#4066](https://github.com/radix-ui/primitives/pull/4066) | ArrowUp handling en DropdownMenu → **OPEN**, sin reviews |
+| **Contexto** | — | Abierto 22 Jul. W3C APG pattern compliance. |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#3619](https://github.com/radix-ui/primitives/issues/3619) | Slider: commit value on blur después de keyboard nav |
+| **Nuestro PR** | [#4065](https://github.com/radix-ui/primitives/pull/4065) | Blur handler para commit → **OPEN**, sin reviews |
+| **Contexto** | — | Abierto 22 Jul. |
 
 ### TanStack/router
 
@@ -60,8 +90,14 @@ Si no hay issue o PR de tercero, se omite ese eslabón. El contexto es obligator
 | Eslabón | Link | Detalle |
 |---------|------|--------|
 | **Issue** | — | MatchInner throw undefined on cleared loadPromise |
-| **Nuestro PR** | [#7861](https://github.com/TanStack/router/pull/7861) | CodeRabbit issues addressados 23 Jul. CI verde |
-| **Estado** | ⏳ Esperando review | — |
+| **Nuestro PR** | [#7861](https://github.com/TanStack/router/pull/7861) | **CLOSED** (no merged). schiller-manuel dijo que #7805 lo arreglará "properly" |
+| **Estado** | ❌ Cerrado sin merge | — |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#7873](https://github.com/TanStack/router/issues/7873) | serverFnFetcher loggea AbortError en consola |
+| **Nuestro PR** | [#7878](https://github.com/TanStack/router/pull/7878) | Skip console.log para AbortError → **OPEN**, sin reviews |
+| **Contexto** | — | Abierto 22 Jul. |
 
 ### vercel/ai
 
@@ -88,23 +124,47 @@ Si no hay issue o PR de tercero, se omite ese eslabón. El contexto es obligator
 | Eslabón | Link | Detalle |
 |---------|------|--------|
 | **Issue** | — | remove scrollbar-none from table |
-| **Nuestro PR** | [#11187](https://github.com/shadcn-ui/ui/pull/11187) | Bloqueado por Vercel deploy |
+| **Nuestro PR** | [#11187](https://github.com/shadcn-ui/ui/pull/11187) | Bloqueado por Vercel deploy. barisgirismen comentó (25 Jul) que el fix es correcto y complementario a #11291 |
 | **Estado** | ⏳ Esperando | — |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#11157](https://github.com/shadcn-ui/ui/issues/11157) | InputOTP slot transition layout shift (mismo issue, approach alternativo) |
+| **Nuestro PR** | [#11198](https://github.com/shadcn-ui/ui/pull/11198) | Prevent layout shift on keyboard nav → **OPEN**, 1 review (CodeRabbit) |
+| **Contexto** | — | Abierto 16 Jul. Approach alternativo a #11179. |
 
 ### t3-oss/create-t3-app
 
 | Eslabón | Link | Detalle |
 |---------|------|--------|
 | **Issue** | — | biome ignore generated files |
-| **Nuestro PR** | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | CI verde, changeset listo, Vercel ready |
+| **Nuestro PR** | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | CI verde, changeset listo, Vercel ready. Follow-up bump 31 Jul |
 | **Estado** | ⏳ Esperando review | — |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | prettier ignore generated Prisma client |
+| **Nuestro PR** | [#2240](https://github.com/t3-oss/create-t3-app/pull/2240) | .prettierignore para generated Prisma → **OPEN**, MERGEABLE, 1 review |
+| **Contexto** | — | Abierto 15 Jul. Complementario a #2239. |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | Better Auth + Drizzle + PostgreSQL table prefix |
+| **Nuestro PR** | [#2244](https://github.com/t3-oss/create-t3-app/pull/2244) | Fix table prefix placeholder → **OPEN**, MERGEABLE, sin reviews |
+| **Contexto** | — | Abierto 30 Jul. |
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#2185](https://github.com/t3-oss/create-t3-app/issues/2185) | Clipboard copy button sin accessible label |
+| **Nuestro PR** | [#2243](https://github.com/t3-oss/create-t3-app/pull/2243) | aria-label en clipboard button → **OPEN**, MERGEABLE, sin reviews |
+| **Contexto** | — | Abierto 30 Jul. WCAG 4.1.2 fix. |
 
 ### shuding/nextra
 
 | Eslabón | Link | Detalle |
 |---------|------|--------|
 | **Issue** | — | select modal={false} |
-| **Nuestro PR** | [#5029](https://github.com/shuding/nextra/pull/5029) | UNSTABLE es falso positivo, branch actualizado |
+| **Nuestro PR** | [#5029](https://github.com/shuding/nextra/pull/5029) | UNSTABLE es falso positivo, branch actualizado. Follow-up check-in 31 Jul |
 | **Estado** | ⏳ Esperando review | — |
 
 ### payloadcms/payload
@@ -112,13 +172,13 @@ Si no hay issue o PR de tercero, se omite ese eslabón. El contexto es obligator
 | Eslabón | Link | Detalle |
 |---------|------|--------|
 | **Issue** | — | duplicate latest=true version rows |
-| **Nuestro PR** | [#17413](https://github.com/payloadcms/payload/pull/17413) | **Review humano de sviat-barbutsa** (21 Jul). Fix addressado. BLOCKED (falta CI de payload) |
+| **Nuestro PR** | [#17413](https://github.com/payloadcms/payload/pull/17413) | **Review humano de sviat-barbutsa** (21 Jul). Fix addressado. Follow-up 31 Jul |
 | **Estado** | ⏳ Esperando maintainer | — |
 
 | Eslabón | Link | Detalle |
 |---------|------|--------|
 | **Issue** | — | lexical blocks stale form state |
-| **Nuestro PR** | [#17342](https://github.com/payloadcms/payload/pull/17342) | Sin review humano. Sin CI. BLOCKED |
+| **Nuestro PR** | [#17342](https://github.com/payloadcms/payload/pull/17342) | Sin review humano. Follow-up bump 31 Jul |
 | **Estado** | ⏳ Esperando | — |
 
 ### google/skills
@@ -126,16 +186,40 @@ Si no hay issue o PR de tercero, se omite ese eslabón. El contexto es obligator
 | Eslabón | Link | Detalle |
 |---------|------|--------|
 | **Issue** | — | verify-revision-state recipe for Skill Registry |
-| **Nuestro PR** | [#196](https://github.com/google/skills/pull/196) | Abierto 23 Jul |
-| **Estado** | ⏳ Esperando review | — |
+| **Nuestro PR** | [#196](https://github.com/google/skills/pull/196) | CLA check falló (primera contribución a Google). Re-triggered 23 Jul |
+| **Estado** | ⏳ Esperando CLA + review | — |
 
 ### swiftlang/swift-testing
 
 | Eslabón | Link | Detalle |
 |---------|------|--------|
 | **Issue** | [#686](https://github.com/swiftlang/swift-testing/issues/686) | Documentar patrón de `.serialized` en suites anidadas |
-| **Nuestro PR** | [#1813](https://github.com/swiftlang/swift-testing/pull/1813) | Nueva sección "Serializing suites across multiple files" en Parallelization.md |
-| **Estado** | ⏳ Esperando review | — |
+| **Nuestro PR** | [#1813](https://github.com/swiftlang/swift-testing/pull/1813) | **CLOSED** (no merged). harlanhaskins dijo que la guía quedaría obsoleta con el proposal de serialización. Gonzo cerró y dejó seguimiento. |
+| **Estado** | ❌ Cerrado — hold hasta que avance el proposal | — |
+
+### colinhacks/zod
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#6220](https://github.com/colinhacks/zod/issues/6220) | __proto__ no reportado como unrecognized key en strict mode |
+| **Nuestro PR** | [#6222](https://github.com/colinhacks/zod/pull/6222) | Report __proto__ como unrecognized → **OPEN**, MERGEABLE, sin reviews |
+| **Contexto** | — | Abierto 22 Jul. Security fix (prototype pollution defense preservado). |
+
+### Nutlope/hallmark
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | [#22](https://github.com/Nutlope/hallmark/issues/22) | Cursor install instructions misleading |
+| **Nuestro PR** | [#32](https://github.com/Nutlope/hallmark/pull/32) | Use native skills directory → **OPEN**, MERGEABLE, sin reviews |
+| **Contexto** | — | Abierto 16 Jul. |
+
+### ibelick/ui-skills
+
+| Eslabón | Link | Detalle |
+|---------|------|--------|
+| **Issue** | — | Improve fixing-accessibility skill |
+| **Nuestro PR** | [#37](https://github.com/ibelick/ui-skills/pull/37) | WCAG 2.2 coverage → **OPEN**, sin reviews |
+| **Contexto** | — | Abierto 16 Jul. |
 
 ---
 
@@ -155,23 +239,25 @@ Si no hay issue o PR de tercero, se omite ese eslabón. El contexto es obligator
 
 ### Tier 1 — Alta visibilidad, activos, alineados con el perfil
 
-| Repo | ⭐ | Actividad (30d) | Por qué encaja |
-|------|-----|-----------------|----------------|
-| **facebook/astryx** | — | Muy activo | Design system de Meta. PR #4298 abierto (default a11y labels). Accesibilidad = especialización de Gonzo. Review de humbertovirtudes ya iniciado. |
-| **shadcn-ui/ui** | 119k | 50 issues activos | Lo usa en SoporteML. 2 PRs abiertos (#11179, #11180). Issues se cubren rápido — verificar sin PRs antes de atacar. |
-| **TanStack/router** | 14.8k | 50 issues activos | Lo usa en kanamai, reactiva, umbrawriter. PR #7818 abierto (loaderDeps serializer). 8 issues sin PRs disponibles. |
-| **TanStack/query** | 50k | 19 issues activos | Lo usa en todos lados. Reviews técnicas dejadas en PRs #11036 y #10994. Issues muy competidos (3-4 PRs por issue). |
-| **vercel/ai** | 25.5k | 50 issues activos | AI SDK de Vercel. 1729 issues abiertos. 3 reviews técnicas dejadas en PRs existentes. Mucho scope para PR propio. |
-| **payloadcms/payload** | 43.5k | 50 issues activos | CMS fullstack Next.js. Stack muy parecido. Mucha superficie de bugs. |
+| Repo | ⭐ | PRs activos | Por qué encaja |
+|------|-----|-------------|----------------|
+| **facebook/astryx** | — | 3 | Design system de Meta. 3 PRs abiertos (#4298, #4605, #4604). Accesibilidad = especialización de Gonzo. Review de humbertovirtudes ya iniciado en #4298. |
+| **radix-ui/primitives** | 16.5k | 4 | 4 PRs abiertos (#4053, #4065, #4066, #4067). Accesibilidad y UX. |
+| **shadcn-ui/ui** | 119k | 4 | 4 PRs abiertos (#11179, #11180, #11187, #11198). Todos bloqueados por Vercel deploy. |
+| **TanStack/router** | 14.8k | 2 | 2 PRs abiertos (#7834, #7878). 1 cerrado sin merge (#7861). |
+| **t3-oss/create-t3-app** | 29k | 4 | 4 PRs abiertos (#2239, #2240, #2243, #2244). 2 con follow-up bump. |
+| **payloadcms/payload** | 43.5k | 2 | 2 PRs abiertos (#17413, #17342). #17413 con review humano. Follow-ups hechos. |
+| **vercel/ai** | 25.5k | 1 | 1 PR abierto (#17274). Review bot addressado. |
 
 ### Tier 2 — Buenos pero más esfuerzo o menos actividad
 
-| Repo | ⭐ | Por qué |
-|------|-----|---------|
-| **vercel/next.js** | 79k+ | 10 good first issues. El repo emblemático. Un PR mergeado = CV por sí solo. Review largo, alta dificultad. |
-| **t3-oss/create-t3-app** | 29k | Issues recientes sobre Bun, Prisma, Biome — cosas que conoce. #2185 (clipboard copy a11y) es su intersección. Último push dic 2025, menos activo. |
-| **biomejs/biome** | 25.4k | Lo usa en CSN. Muy activo. Pero el dominio es tooling interno (parser/linter), menos fullstack. |
-| **shuding/nextra** | 13.8k | Docs framework sobre Next.js. 5 help wanted issues. Actividad moderada. |
+| Repo | ⭐ | PRs | Por qué |
+|------|-----|-----|---------|
+| **colinhacks/zod** | 38k | 1 | #6222 abierto. Security fix. |
+| **shuding/nextra** | 13.8k | 1 | #5029 abierto. Follow-up check-in hecho. |
+| **Nutlope/hallmark** | — | 1 | #32 abierto. Cursor install fix. |
+| **ibelick/ui-skills** | — | 1 | #37 abierto. WCAG 2.2 skill. |
+| **google/skills** | — | 1 | #196 abierto. CLA pendiente. |
 
 ### Tier 3 — Interesantes pero fríos ahora
 
@@ -180,40 +266,33 @@ Si no hay issue o PR de tercero, se omite ese eslabón. El contexto es obligator
 | nextjs/saas-starter | Sin actividad en 30 días |
 | pacocoursey/next-themes | Sin actividad en 30 días |
 | vercel/commerce | 1 issue activo en 30 días |
-| google/skills | [#196](https://github.com/google/skills/pull/196) abierto, esperando review |
+| swiftlang/swift-testing | #1813 cerrado, esperando proposal |
 
 ### Candidatos futuros
 
-- **supabase/supabase** — docs, examples, bugs en JS client. Lo usa diario. #6435 (good first issue: newlines in SMS OTP) disponible.
+- **supabase/supabase** — docs, examples, bugs en JS client. Lo usa diario.
 - **openai/openai-node** — SDK que usa en varios proyectos
 - **vitest-dev/vitest** — lo usa en CSN, podría contribuir docs o bugs
 
 ---
 
-## Estado actual — Plan de ataque
+## Estado actual — Dashboard
 
-### Semana 1-2 — shadcn-ui/ui + TanStack/router + create-next-stack ✅ HECHO
+### Totales
 
-| Issue | PR | Estado |
-|-------|-----|--------|
-| shadcn #11157 Input OTP layout shift | [#11179](https://github.com/shadcn-ui/ui/pull/11179) | Abierto, esperando review + Vercel deploy |
-| shadcn #11161 MessageScroller footer flicker | [#11180](https://github.com/shadcn-ui/ui/pull/11180) | Abierto, esperando review + Vercel deploy |
-| shadcn #11104 Sidebar Cmd+B | Descartado | 4 PRs competidores, saturado |
-| TanStack/router #7787 loaderDeps serializer | [#7834](https://github.com/TanStack/router/pull/7834) | Abierto, safeStringify approach (reemplaza #7818 cerrado) |
-
-### Semana 2-3 — Payload + Radix + TanStack fixes ✅ HECHO
-
-| Acción | PR | Detalle |
-|--------|-----|--------|
-| Changeset agregado | radix-ui #4053 | .changeset/slick-emus-show.md pusheado 23 Jul |
-| CodeRabbit fixes | TanStack/router #7861 | getDerivedStateFromProps + pending-promise guards pusheados 23 Jul |
-| Rebase verificado | nextra #5029 | Branch actualizado con main, UNSTABLE es falso positivo |
-| Estado documentado | payload #17413 | Review de sviat addressado, esperando maintainer |
+| Métrica | Valor |
+|---------|-------|
+| **PRs abiertos totales** | 24 |
+| **PRs con review humano** | 2 (payload #17413, t3 #2240) |
+| **PRs mergeados** | 0 |
+| **PRs cerrados sin merge** | 2 (#7861, #1813) |
+| **Repos con PRs activos** | 11 |
+| **Follow-ups enviados (31 Jul)** | 4 (t3 #2239, nextra #5029, payload #17413, payload #17342) |
 
 ### Próximos pasos
 
-1. **Esperar reviews** de todos los PRs (1-2 semanas desde última actividad)
-2. **facebook/astryx #4298** — recién abierto 24 Jul, esperar review de @humbertovirtudes. Si en 7 días no hay movimiento, follow-up.
-3. **payloadcms/payload #17413** — el más cercano al merge. Si en 7 días no hay movimiento, considerar follow-up comment
-4. **shadcn-ui/ui ×3** — si en 14 días no hay actividad, hacer follow-up comment amigable
-5. **No abrir nuevos PRs** hasta que al menos uno de los existentes reciba review humano. El bottleneck es maintainer review, no producción de código.
+1. **Esperar respuestas** a los follow-ups del 31 Jul (t3, nextra, payload ×2)
+2. **astryx #4604** — resolver conflictos con main
+3. **google/skills #196** — verificar estado del CLA
+4. **No abrir nuevos PRs** hasta que al menos uno reciba review humano. El bottleneck sigue siendo maintainer review time.
+5. **Próximo check:** 7-9 Ago si no hay movimiento antes
