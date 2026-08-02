@@ -1,6 +1,6 @@
 ---
-name: mcp-orchestrator
-description: "Discover, evaluate, install, wrap, and orchestrate MCP servers from OpenClaw."
+name: "mcp-orchestrator"
+description: "Re-propuesta del skill mcp-orchestrator (la anterior quedo stale)"
 metadata:
   version: 1.0.0
   author: Kanam
@@ -31,7 +31,13 @@ Central skill for managing MCP servers as discoverable infrastructure. Decides w
 ## Workflow: evaluate one MCP server
 
 1. Fetch README and package info. Use `web_fetch` or `web_search`.
-2. Score against checklist in `references/evaluation-criteria.md`.
+2. Score against checklist:
+   - Does OpenClaw already have native coverage? (browser, web_search, db_query, etc.)
+   - Is it open source and maintained? (last commit, issues, stars)
+   - Does the free tier actually work? (test if needed)
+   - Does it require personal credentials or paid service?
+   - Is it stable enough to rely on? (stdio/SSE/HTTP, error handling)
+   - Is it redundant with an existing skill?
 3. Decide:
    - **Install**: run the server, wrap it in `scripts/<server>-mcp.py` or `.sh`, verify `tools/list`.
    - **Absorb**: capture the useful idea in an existing or new skill proposal via `skill_workshop`.
@@ -62,10 +68,6 @@ Central skill for managing MCP servers as discoverable infrastructure. Decides w
    - Example pattern: `/tmp/godot-mcp.sh`.
 4. Test with `tools/list` and one tool call before considering it working.
 
-Use helper scripts:
-- `scripts/wrap-stdio-mcp.py <package-name> [secret-name]` to generate a stdio wrapper.
-- `scripts/wrap-http-mcp.py <url> [bearer-secret-name]` to generate an HTTP wrapper.
-
 ## Workflow: orchestrate multiple MCPs
 
 1. Define the task and the MCPs involved.
@@ -75,12 +77,12 @@ Use helper scripts:
 5. Add error handling: if an MCP call fails, stop and report.
 6. Document the orchestration recipe in the relevant project `.knowledge/` or skill `references/`.
 
-## Helper scripts
+## Helpers
 
-- `scripts/discover-mcp.py <keyword>`: Search awesome lists and MCPMarket for MCP servers matching a query.
+- `scripts/discover-mcp.py`: Search awesome lists and MCPMarket for MCP servers matching a query.
 - `scripts/evaluate-mcp.py`: Score a candidate against the checklist and return install/absorb/discard/standby.
-- `scripts/wrap-stdio-mcp.py <package-name> [secret-name]`: Generate a stdio MCP wrapper.
-- `scripts/wrap-http-mcp.py <url> [bearer-secret-name]`: Generate an HTTP MCP wrapper.
+- `scripts/wrap-stdio-mcp.py`: Generate a stdio MCP wrapper from server command and optional secret name.
+- `scripts/wrap-http-mcp.py`: Generate an HTTP MCP wrapper for SSE/Streamable endpoints.
 
 ## Safety rules
 
@@ -103,7 +105,13 @@ Use helper scripts:
 
 ## Backlog integration
 
-After evaluation, register follow-up ideas in the SQLite `backlog` table.
+After evaluation, register follow-up ideas in the SQLite `backlog` table:
+
+```sql
+INSERT INTO backlog (title, priority, status) VALUES
+('Evaluar browsermcp/mcp como complemento de browser nativo', 'low', 'pending'),
+('Crear skill docker-assistant con docker-mcp', 'low', 'pending');
+```
 
 ## References
 
