@@ -29,6 +29,10 @@ Gestión del ciclo de vida completo de una sesión de trabajo con IA.
 
 ## Fases
 1. **Inicio** — cargar contexto, memoria, handoff del proyecto activo
+   - Detectar el proyecto activo desde el directorio de trabajo actual.
+   - Si está registrado en `session-context`, ejecutar `node skills/session-context/commands/resume.mjs` y mostrar el briefing al inicio de la sesión.
+   - Si no está registrado, ejecutar `node skills/session-context/commands/list.mjs` y mostrar proyectos recientes.
+   - Detectar sesión previa no guardada: si el `session_id` actual no existe en `session-context`, avisar: "La sesión anterior no fue guardada — ¿querés guardarla antes de arrancar?".
    - **Session Goal:** definir objetivo explícito de la sesión. ¿Qué queremos lograr? ¿Cuál es el criterio de éxito?
    - Si el objetivo es difuso, clarificar antes de avanzar. No arrancar sin dirección.
 2. **Dispatcher** — spawnear sub-agentes según la tarea:
@@ -38,6 +42,8 @@ Gestión del ciclo de vida completo de una sesión de trabajo con IA.
    - **Mid-session checkpoint:** a mitad de sesión (o al cambiar de tarea), preguntar: "¿Sigo en el camino correcto hacia el objetivo? ¿Necesito ajustar algo?"
    - Si el checkpoint revela desvío, redefinir objetivo o restricciones antes de seguir.
 4. **Cierre** — escanear sesión, escribir HANDOFF, memory, CHANGELOG
+   - Ejecutar `session-context:save` con el resumen de la sesión: `summary`, `leftOff`, `nextSteps`, `decisions`, `blockers`, y `goal` solo si cambió.
+   - Mostrar borrador al usuario para confirmación o edición antes de persistir.
    - **Revisar sesiones anteriores del día:** antes de cerrar, leer los archivos `memory/YYYY-MM-DD-*.md` del día para asegurarse de que no hubo sesiones previas que el daily note resumido no capture. No confiar solo en el daily note ni en la memoria.
    - **Consolidar archivos sueltos del día:** si hay archivos `memory/YYYY-MM-DD-HHMM.md` (sesiones individuales), moverlos a `memory/archive/`. El daily consolidado `memory/YYYY-MM-DD.md` ya tiene toda la info.
    - **Self-reflection obligatoria:** si hubo correcciones de Gonzo, cambios estructurales, o aprendizajes significativos, registrar en LEARNINGS.md antes de cerrar. No esperar a que Gonzo pregunte "¿revisamos lecciones?"
@@ -174,6 +180,7 @@ Si detecto alguna de estas, paro y pregunto antes de seguir:
 - **Sin presión:** Si Gonzo quiere cambiar de tema, cambiamos. El sistema se adapta.
 
 ## Outputs
+- `.data/session-context.db` (proyectos, sesiones, decisiones)
 - `projects/<slug>/.knowledge/HANDOFF.md`
 - `memory/YYYY-MM-DD.md`
 - Tareas creadas en el sistema (cron jobs o TODO.md)
@@ -183,3 +190,4 @@ Si detecto alguna de estas, paro y pregunto antes de seguir:
 
 - [Task Execution](../task-execution): Para ejecutar tareas dentro de la sesión
 - [Knowledge Management](../knowledge-management): Para registrar aprendizajes de la sesión
+- [session-context](../session-context): Para persistencia estructurada de contexto por proyecto
