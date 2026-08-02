@@ -1,10 +1,10 @@
 ---
-name: agent-workflow
-description: "Apply disciplined software development workflows inspired by Superpowers: design gates, bite-sized plans, red-green-refactor TDD, code reviews with subagents, and systematic debugging."
+name: "agent-workflow"
+description: "Add multi-agent orchestration with specialized roles, acceptance criteria, and consolidated deliverables inspired by Agency Orchestrator."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   author: Kanam
-  tags: ["workflow", "tdd", "planning", "code-review", "subagents", "superpowers", "discipline"]
+  tags: ["workflow", "tdd", "planning", "code-review", "subagents", "superpowers", "discipline", "orchestration", "multi-agent"]
 allowed-tools:
   - exec
   - read
@@ -20,7 +20,7 @@ allowed-tools:
 
 This skill adapts proven agentic software-development discipline (inspired by Jesse's Superpowers for Claude Code) to OpenClaw's native tools, memory system, and skill workshop.
 
-It is not a drop-in replacement for your judgment. It is a guardrail system to reduce wasted work, default-looking code, and cascading bugs.
+It now also includes multi-agent orchestration patterns inspired by Agency Orchestrator: decompose a goal into specialized subagent roles, run them with acceptance criteria, and consolidate the outputs into a single deliverable.
 
 ## When to use
 
@@ -31,6 +31,7 @@ Use this skill for any non-trivial coding task:
 - UI/UX work
 - Integration work
 - Any task that touches more than one file
+- Complex decisions where multiple expert perspectives are valuable
 
 Skip only for:
 - One-line config changes
@@ -108,7 +109,39 @@ After each task and before continuing:
 3. Fix Critical issues immediately. Fix Important issues before proceeding. Note Minor issues.
 4. Re-run tests/lint/build after fixes.
 
-### Phase 5: Merge/Handoff
+### Phase 5: Multi-Agent Orchestration (Optional)
+
+For complex goals where multiple expert lenses are useful, spawn a panel of subagents with specific roles and acceptance criteria.
+
+Example roles:
+
+| Role | Responsibility | When to use |
+|---|---|---|
+| Architect | System design, tech choices, trade-offs | New subsystem, major refactor |
+| Security | Threat model, secure defaults, OWASP | Auth, payments, external input |
+| Frontend | UI/UX, components, accessibility, responsive | Any UI work |
+| Backend | API design, DB schema, edge functions | Server-side work |
+| Tester | Test plan, edge cases, coverage | Before implementation |
+| Reviewer | Final code review, plan compliance | Before merge |
+
+Workflow:
+
+1. **Define goal and deliverable** — what does success look like?
+2. **Select roles** — auto-select based on task type, or ask user.
+3. **Spawn subagents in parallel** — each role receives the same context plus its specific lens.
+4. **Collect outputs** — each subagent returns findings, risks, recommendations.
+5. **Consolidate** — synthesize conflicting views, highlight open questions, propose a unified plan.
+6. **Present to user** — get approval before implementation.
+
+Use this pattern for:
+- Architecture decisions
+- Security reviews
+- Product requirements
+- Design direction
+- Code audits
+- Research synthesis
+
+### Phase 6: Merge/Handoff
 
 When all tasks complete:
 
@@ -138,6 +171,25 @@ Instructions:
 Do not run git commands that modify history. Read-only review.
 ```
 
+## Multi-agent panel prompt
+
+```markdown
+You are {role} reviewing this goal: {goal}.
+
+Context:
+- Project: {project_name}
+- Constraints: {constraints}
+- Deliverable: {deliverable}
+
+Instructions:
+1. Analyze the goal from your role's perspective.
+2. Identify risks, open questions, and recommendations.
+3. Provide concrete acceptance criteria if applicable.
+4. Keep your output focused and actionable.
+
+Return your findings in markdown.
+```
+
 ## Systematic debugging
 
 When any bug, test failure, or unexpected behavior appears:
@@ -161,6 +213,8 @@ When any bug, test failure, or unexpected behavior appears:
 - Monolithic commits that mix tasks
 - Ignoring failing tests or lint errors
 - Writing code that future-you will hate
+- Spawning subagents without clear roles or acceptance criteria
+- Letting subagents duplicate work instead of dividing by expertise
 
 ## File locations
 
@@ -172,7 +226,7 @@ When any bug, test failure, or unexpected behavior appears:
 
 ## Tool usage
 
-- `sessions_spawn` — dispatch code reviewer, tester, or researcher subagents.
+- `sessions_spawn` — dispatch code reviewer, tester, researcher, or panel subagents.
 - `sessions_yield` — wait for subagent results.
 - `exec` — run tests, lint, build, git commands.
 - `read/write/edit` — manage docs and code.
@@ -185,10 +239,13 @@ When any bug, test failure, or unexpected behavior appears:
 - `debug-investigation` — deep debugging with structured escalation.
 - `release-management` — merge/PR/release workflows.
 - `build-discipline` — enforce pre-commit hooks and green builds.
+- `architecture-designer` — produce ADRs for architect role outputs.
+- `spec-miner` — reverse engineer code before planning changes.
 
 ## Notes
 
-- This skill is adapted from Superpowers ( obra/superpowers ), MIT licensed, and customized for OpenClaw's skill system.
+- This skill is adapted from Superpowers (obra/superpowers), MIT licensed, and customized for OpenClaw's skill system.
+- Multi-agent orchestration patterns are inspired by Agency Orchestrator (jnMetaCode/agency-orchestrator), MIT licensed.
 - It does not auto-trigger; you must invoke it explicitly for each task by loading it.
 - Pair with AGENTS.md project conventions. If AGENTS.md conflicts, AGENTS.md wins.
 - Be pragmatic. The gate exists to prevent wasted work, not to block urgent fixes. For true emergencies, document why you skipped a phase.
