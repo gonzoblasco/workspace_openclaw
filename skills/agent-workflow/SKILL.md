@@ -68,19 +68,39 @@ Before writing any code:
 After design approval:
 
 1. Map files to create/modify.
-2. Break work into bite-sized tasks (2-5 minutes each).
-3. Each task must include:
+2. Decide workspace strategy:
+   - For small changes: work in current branch.
+   - For multi-task or risky changes: create a git worktree with `git worktree add -b feature-name ../feature-name-branch main`. This isolates the work without disturbing the main checkout.
+3. Break work into bite-sized tasks (2-5 minutes each).
+4. Each task must include:
    - Exact file(s)
    - What to change
    - How to test
    - Expected outcome
-4. Save plan to `.knowledge/plans/YYYY-MM-DD-<feature>.md`.
+5. Save plan to `.knowledge/plans/YYYY-MM-DD-<feature>.md`.
 
 Use language appropriate for a skilled but context-poor engineer:
 - Exact file paths
 - Complete code snippets
 - Test commands
 - Edge cases to cover
+
+### Phase 2b: Worktree Isolation (optional)
+
+When a feature spans multiple tasks or might break the main checkout:
+
+```bash
+git worktree add -b feature/xyz ../feature-xyz main
+cd ../feature-xyz
+```
+
+Rules:
+- One worktree per feature branch.
+- Run setup/install in the worktree if needed.
+- Keep the main checkout clean for quick checks.
+- Remove the worktree when merged or discarded:
+  `cd /main/repo && git worktree remove feature-xyz && git branch -d feature/xyz`
+
 
 ### Phase 3: TDD Execution
 
@@ -147,8 +167,26 @@ When all tasks complete:
 
 1. Run full test suite, lint, build.
 2. Present options: merge, PR, keep branch, discard.
-3. Update `.knowledge/STATUS.md`, `CHANGELOG.md`, and `memory/YYYY-MM-DD.md`.
-4. Clean up temp dirs or worktrees if used.
+3. If a reusable workflow pattern emerged during the task, capture it as a skill proposal via `skill_workshop`.
+4. Update `.knowledge/STATUS.md`, `CHANGELOG.md`, and `memory/YYYY-MM-DD.md`.
+5. Clean up temp dirs or worktrees if used.
+
+## Capturing reusable patterns
+
+If you find yourself following the same sequence of steps, or a decision heuristic, capture it:
+
+1. Identify the trigger — when should this pattern activate?
+2. Write a concise SKILL.md with frontmatter, workflow, and safety rules.
+3. Move long examples to `references/`.
+4. Propose via `skill_workshop`.
+5. Apply and sync the `.github/skills/` mirror.
+
+Examples worth capturing:
+- A specific project bootstrap sequence.
+- A recurring bug category and its debug recipe.
+- A review checklist for a particular technology.
+- A deployment or release ritual.
+
 
 ## Code reviewer subagent prompt
 
