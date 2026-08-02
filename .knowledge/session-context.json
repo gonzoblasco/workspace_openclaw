@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exported_at": "2026-08-02T12:46:51.781Z",
+  "exported_at": "2026-08-02T12:50:56.482Z",
   "project_path": "/Users/gonzoblasco/.openclaw/workspace",
   "projects": [
     {
@@ -19,6 +19,19 @@
   ],
   "sessions": [
     {
+      "id": 2,
+      "project_id": 1,
+      "session_key": null,
+      "session_id": "example-001",
+      "date": "2026-08-02",
+      "summary": "Configured session-context on workspace",
+      "left_off": "Showing usage example to Gonzo",
+      "next_steps": "Try session-context in a real project like a11y-fixer\nUpdate MEMORY.md with the new workflow\nUse session-context:save at end of next session",
+      "blockers": "None",
+      "git_activity": null,
+      "created_at": "2026-08-02T12:50:56.480Z"
+    },
+    {
       "id": 1,
       "project_id": 1,
       "session_key": null,
@@ -29,19 +42,17 @@
       "next_steps": "Finish scripts\nUpdate session-lifecycle\nSync mirror and commit",
       "blockers": "None",
       "git_activity": null,
-      "created_at": "2026-08-02T12:24:48.891Z",
-      "decisions": [
-        {
-          "id": 1,
-          "session_id": 1,
-          "what": "Use node:sqlite local DB",
-          "why": "OpenClaw tools are runtime-only; local SQLite keeps scripts autonomous",
-          "date": "2026-08-02"
-        }
-      ]
+      "created_at": "2026-08-02T12:24:48.891Z"
     }
   ],
   "decisions": [
+    {
+      "id": 2,
+      "session_id": 2,
+      "what": "Adopt session-context for project memory",
+      "why": "Replaces scattered daily notes with structured per-project context",
+      "date": "2026-08-02"
+    },
     {
       "id": 1,
       "session_id": 1,

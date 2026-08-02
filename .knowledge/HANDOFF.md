@@ -2,7 +2,7 @@
 # Project: Workspace
 > Path: /Users/gonzoblasco/.openclaw/workspace
 > Repo: git@github.com:gonzoblasco/workspace_openclaw.git
-> Last Session: 2026-08-02 | Sessions: 1
+> Last Session: 2026-08-02 | Sessions: 2
 
 ## What This Is
 OpenClaw personal workspace
@@ -14,12 +14,12 @@ OpenClaw, AI-assisted dev
 Manage Gonzo's projects, memory, and daily work
 
 ## Where I Left Off
-Writing save.mjs script
+Showing usage example to Gonzo
 
 ## Next Steps
-1. Finish scripts
-2. Update session-lifecycle
-3. Sync mirror and commit
+1. Try session-context in a real project like a11y-fixer
+2. Update MEMORY.md with the new workflow
+3. Use session-context:save at end of next session
 
 ## Blockers
 - None
@@ -27,4 +27,10 @@ Writing save.mjs script
 ## Decisions Made
 | Decision | Why | Date |
 |----------|-----|------|
-| Use node:sqlite local DB | OpenClaw tools are runtime-only; local SQLite keeps scripts autonomous | 2026-08-02 |
+| Adopt session-context for project memory | Replaces scattered daily notes with structured per-project context | 2026-08-02 |
+
+## Session History
+### 2026-08-02 — Testing session-context save
+**Left off:** Writing save.mjs script
+### 2026-08-02 — Configured session-context on workspace
+**Left off:** Showing usage example to Gonzo
