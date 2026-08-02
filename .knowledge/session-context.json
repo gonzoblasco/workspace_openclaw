@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "exported_at": "2026-08-02T12:46:51.781Z",
+  "project_path": "/Users/gonzoblasco/.openclaw/workspace",
+  "projects": [
+    {
+      "id": 1,
+      "name": "workspace",
+      "display_name": "Workspace",
+      "path": "/Users/gonzoblasco/.openclaw/workspace",
+      "description": "OpenClaw personal workspace",
+      "stack": "OpenClaw, AI-assisted dev",
+      "goal": "Manage Gonzo's projects, memory, and daily work",
+      "constraints": "[\"No destructive commands without asking\",\"English only for GitHub\"]",
+      "repo": "git@github.com:gonzoblasco/workspace_openclaw.git",
+      "created_at": "2026-08-02",
+      "last_updated": "2026-08-02"
+    }
+  ],
+  "sessions": [
+    {
+      "id": 1,
+      "project_id": 1,
+      "session_key": null,
+      "session_id": "8f072267",
+      "date": "2026-08-02",
+      "summary": "Testing session-context save",
+      "left_off": "Writing save.mjs script",
+      "next_steps": "Finish scripts\nUpdate session-lifecycle\nSync mirror and commit",
+      "blockers": "None",
+      "git_activity": null,
+      "created_at": "2026-08-02T12:24:48.891Z",
+      "decisions": [
+        {
+          "id": 1,
+          "session_id": 1,
+          "what": "Use node:sqlite local DB",
+          "why": "OpenClaw tools are runtime-only; local SQLite keeps scripts autonomous",
+          "date": "2026-08-02"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": 1,
+      "session_id": 1,
+      "what": "Use node:sqlite local DB",
+      "why": "OpenClaw tools are runtime-only; local SQLite keeps scripts autonomous",
+      "date": "2026-08-02"
+    }
+  ]
+}

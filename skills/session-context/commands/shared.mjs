@@ -15,6 +15,10 @@ import { DatabaseSync } from 'node:sqlite';
 export const DATA_DIR = resolve(homedir(), '.openclaw', 'workspace', '.data');
 export const DB_FILE = resolve(DATA_DIR, 'session-context.db');
 
+export function snapshotPath(projectPath) {
+  return resolve(projectPath, '.knowledge', 'session-context.json');
+}
+
 export function getDb() {
   mkdirSync(DATA_DIR, { recursive: true });
   const db = new DatabaseSync(DB_FILE);
@@ -58,7 +62,108 @@ export function getDb() {
     CREATE INDEX IF NOT EXISTS idx_sessions_project_date ON sessions(project_id, date);
     CREATE INDEX IF NOT EXISTS idx_decisions_session ON decisions(session_id);
   `);
+
+  // Portable import: if local DB is empty but a versioned snapshot exists, import it.
+  maybeImportSnapshot(db);
+
   return db;
+}
+
+/**
+ * Import a portable snapshot if the local DB has no projects.
+ * This makes session-context portable across machines via git.
+ */
+export function maybeImportSnapshot(db) {
+  const projectCount = db.prepare('SELECT COUNT(*) as n FROM projects').get().n;
+  if (projectCount > 0) return;
+
+  const cwd = process.env.PWD || process.cwd();
+  const snap = readJson(snapshotPath(cwd));
+  if (!snap) return;
+
+  importSnapshot(db, snap, cwd);
+}
+
+export function importSnapshot(db, snap, projectPath) {
+  const insertProject = db.prepare(`
+    INSERT INTO projects (name, display_name, path, description, stack, goal, constraints, repo, created_at, last_updated)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+  const insertSession = db.prepare(`
+    INSERT INTO sessions (project_id, session_key, session_id, date, summary, left_off, next_steps, blockers, git_activity, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+  const insertDecision = db.prepare(`
+    INSERT INTO decisions (session_id, what, why, date)
+    VALUES (?, ?, ?, ?)
+  `);
+
+  const projectIdMap = new Map();
+  for (const p of snap.projects || []) {
+    const result = insertProject.run(
+      p.name,
+      p.display_name,
+      projectPath,
+      p.description,
+      p.stack,
+      p.goal,
+      p.constraints,
+      p.repo,
+      p.created_at,
+      p.last_updated
+    );
+    projectIdMap.set(p.id, result.lastInsertRowid);
+  }
+
+  const sessionIdMap = new Map();
+  for (const s of snap.sessions || []) {
+    const newProjectId = projectIdMap.get(s.project_id);
+    if (!newProjectId) continue;
+    const result = insertSession.run(
+      newProjectId,
+      s.session_key,
+      s.session_id,
+      s.date,
+      s.summary,
+      s.left_off,
+      s.next_steps,
+      s.blockers,
+      s.git_activity,
+      s.created_at
+    );
+    sessionIdMap.set(s.id, result.lastInsertRowid);
+  }
+
+  for (const d of snap.decisions || []) {
+    const newSessionId = sessionIdMap.get(d.session_id);
+    if (!newSessionId) continue;
+    insertDecision.run(newSessionId, d.what, d.why, d.date);
+  }
+}
+
+export function exportSnapshot(db, projectId) {
+  const project = getProjectById(db, projectId);
+  if (!project) return null;
+
+  const sessions = getAllSessions(db, projectId).map(s => ({
+    ...s,
+    decisions: getSessionDecisions(db, s.id),
+  }));
+
+  return {
+    version: 1,
+    exported_at: now(),
+    project_path: project.path,
+    projects: [project],
+    sessions,
+    decisions: sessions.flatMap(s => (s.decisions || []).map(d => ({ ...d, session_id: s.id }))),
+  };
+}
+
+export function writeSnapshot(db, project) {
+  const snap = exportSnapshot(db, project.id);
+  if (!snap) return;
+  writeJson(snapshotPath(project.path), snap);
 }
 
 // ─── JSON / file I/O helpers ──────────────────────────────────────────────────
@@ -236,6 +341,7 @@ export function writeHandoff(db, project) {
   const p = handoffPath(project.path);
   mkdirSync(dirname(p), { recursive: true });
   writeFileSync(p, md, 'utf8');
+  writeSnapshot(db, project);
 }
 
 // ─── Rendering ────────────────────────────────────────────────────────────────
