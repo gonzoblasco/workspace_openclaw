@@ -28,28 +28,67 @@ Gestión del ciclo de vida completo de una sesión de trabajo con IA.
 - Para convertir pendientes en tareas accionables y hacer commit del workspace
 
 ## Fases
-1. **Inicio** — cargar contexto, memoria, handoff del proyecto activo
-   - Detectar el proyecto activo desde el directorio de trabajo actual.
-   - Si está registrado en `session-context`, ejecutar `node skills/session-context/commands/resume.mjs` y mostrar el briefing al inicio de la sesión.
-   - Si no está registrado, ejecutar `node skills/session-context/commands/list.mjs` y mostrar proyectos recientes.
-   - Detectar sesión previa no guardada: si el `session_id` actual no existe en `session-context`, avisar: "La sesión anterior no fue guardada — ¿querés guardarla antes de arrancar?".
-   - **Session Goal:** definir objetivo explícito de la sesión. ¿Qué queremos lograr? ¿Cuál es el criterio de éxito?
-   - Si el objetivo es difuso, clarificar antes de avanzar. No arrancar sin dirección.
-2. **Dispatcher** — spawnear sub-agentes según la tarea:
-   - **fork**: cuando el sub-agente necesita el transcript actual (ej: continuar una investigación, analizar una conversación)
-   - **isolated**: cuando es trabajo independiente (ej: buscar issues, leer docs, hacer tareas paralelas sin contexto compartido)
-3. **Ejecución** — trabajo principal, decisiones, archivos tocados
-   - **Mid-session checkpoint:** a mitad de sesión (o al cambiar de tarea), preguntar: "¿Sigo en el camino correcto hacia el objetivo? ¿Necesito ajustar algo?"
-   - Si el checkpoint revela desvío, redefinir objetivo o restricciones antes de seguir.
-4. **Cierre** — escanear sesión, escribir HANDOFF, memory, CHANGELOG
-   - Ejecutar `session-context:save` con el resumen de la sesión: `summary`, `leftOff`, `nextSteps`, `decisions`, `blockers`, y `goal` solo si cambió.
-   - Mostrar borrador al usuario para confirmación o edición antes de persistir.
-   - **Revisar sesiones anteriores del día:** antes de cerrar, leer los archivos `memory/YYYY-MM-DD-*.md` del día para asegurarse de que no hubo sesiones previas que el daily note resumido no capture. No confiar solo en el daily note ni en la memoria.
-   - **Consolidar archivos sueltos del día:** si hay archivos `memory/YYYY-MM-DD-HHMM.md` (sesiones individuales), moverlos a `memory/archive/`. El daily consolidado `memory/YYYY-MM-DD.md` ya tiene toda la info.
-   - **Self-reflection obligatoria:** si hubo correcciones de Gonzo, cambios estructurales, o aprendizajes significativos, registrar en LEARNINGS.md antes de cerrar. No esperar a que Gonzo pregunte "¿revisamos lecciones?"
-   - Si se modificó CONTRIBUTING.md, skills, o AGENTS.md, verificar que el cambio esté completo y no falten adaptaciones en skills relacionadas
-5. **Tareas** — convertir pendientes en tareas accionables. Crear cron jobs para follow-ups, o escribir en TODO.md del proyecto. No dejar pendientes en el aire
-6. **Commit** — commit + push del workspace (después de HANDOFF y memory, no antes)
+
+### 1. Inicio — cargar contexto, memoria, handoff del proyecto activo
+
+El inicio de sesión se activa **solo cuando Gonzo lo pide explícitamente** ("iniciar sesión", "arrancar", "empezar a trabajar", etc.). No correr el ritual de inicio en consultas sueltas.
+
+**Modos de inicio:**
+
+#### A. Inicio con proyecto explícito
+
+Si Gonzo dice `"iniciar sesión en a11y-fixer"` o similar:
+
+1. Resolver el proyecto por nombre: `node skills/session-context/commands/resume.mjs <nombre>`.
+2. Si no existe, ofrecer `session-context:init`.
+3. Si existe, mostrar el briefing de `resume` verbatim.
+4. Preguntar por el **Session Goal** de hoy.
+
+#### B. Inicio con auto-detección por cwd
+
+Si Gonzo dice `"iniciar sesión"` y el `cwd` actual está registrado en `session-context`:
+
+1. Detectar el proyecto con `resume.mjs` sin argumento.
+2. Mostrar el briefing.
+3. Preguntar: `"¿Seguimos en <proyecto> o querés cambiar de proyecto?"`
+4. Si Gonzo quiere otro proyecto → ir al modo A.
+5. Si quiere brainstorming sin proyecto fijo → ir al modo C.
+
+#### C. Inicio sin proyecto definido (brainstorming / triage)
+
+Si Gonzo dice `"iniciar sesión"`, `"brainstorming"`, `"aún no sé en qué proyecto"`, etc.:
+
+1. No correr `session-context:resume` de ningún proyecto.
+2. Cargar memoria general: `MEMORY.md`, `memory/YYYY-MM-DD.md` de hoy, lista de proyectos recientes opcionalmente con `session-context:list`.
+3. Preguntar: `"¿En qué proyecto trabajamos? ¿O es una sesión general de planificación/brainstorming?"`
+4. Definir un Session Goal temporal. No requiere proyecto fijo.
+
+**En todos los modos:**
+
+- Detectar sesión previa no guardada: si el `session_id` actual no existe en `session-context`, avisar: `"La sesión anterior no fue guardada — ¿querés guardarla antes de arrancar?"`.
+- **Session Goal:** definir objetivo explícito de la sesión. ¿Qué queremos lograr? ¿Cuál es el criterio de éxito?
+- Si el objetivo es difuso, clarificar antes de avanzar. No arrancar sin dirección.
+
+### 2. Dispatcher — spawnear sub-agentes según la tarea:
+- **fork**: cuando el sub-agente necesita el transcript actual (ej: continuar una investigación, analizar una conversación)
+- **isolated**: cuando es trabajo independiente (ej: buscar issues, leer docs, hacer tareas paralelas sin contexto compartido)
+
+### 3. Ejecución — trabajo principal, decisiones, archivos tocados
+- **Mid-session checkpoint:** a mitad de sesión (o al cambiar de tarea), preguntar: "¿Sigo en el camino correcto hacia el objetivo? ¿Necesito ajustar algo?"
+- Si el checkpoint revela desvío, redefinir objetivo o restricciones antes de seguir.
+
+### 4. Cierre — escanear sesión, escribir HANDOFF, memory, CHANGELOG
+- Si la sesión tuvo un proyecto asociado, ejecutar `session-context:save` con el resumen de la sesión: `summary`, `leftOff`, `nextSteps`, `decisions`, `blockers`, y `goal` solo si cambió.
+- Si fue una sesión sin proyecto (brainstorming/triage), guardar el resumen en `memory/YYYY-MM-DD.md` y no tocar `session-context`.
+- Mostrar borrador al usuario para confirmación o edición antes de persistir.
+- **Revisar sesiones anteriores del día:** antes de cerrar, leer los archivos `memory/YYYY-MM-DD-*.md` del día para asegurarse de que no hubo sesiones previas que el daily note resumido no capture. No confiar solo en el daily note ni en la memoria.
+- **Consolidar archivos sueltos del día:** si hay archivos `memory/YYYY-MM-DD-HHMM.md` (sesiones individuales), moverlos a `memory/archive/`. El daily consolidado `memory/YYYY-MM-DD.md` ya tiene toda la info.
+- **Self-reflection obligatoria:** si hubo correcciones de Gonzo, cambios estructurales, o aprendizajes significativos, registrar en LEARNINGS.md antes de cerrar. No esperar a que Gonzo pregunte "¿revisamos lecciones?"
+- Si se modificó CONTRIBUTING.md, skills, o AGENTS.md, verificar que el cambio esté completo y no falten adaptaciones en skills relacionadas
+
+### 5. Tareas — convertir pendientes en tareas accionables. Crear cron jobs para follow-ups, o escribir en TODO.md del proyecto. No dejar pendientes en el aire
+
+### 6. Commit — commit + push del workspace (después de HANDOFF y memory, no antes)
 
 ## Self-Reflection Post-Tarea
 
