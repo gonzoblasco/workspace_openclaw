@@ -1,92 +1,100 @@
 ---
 name: "pre-deploy-qa"
+description: "Pre-deploy QA workflow with added PWA/service worker validation"
 metadata:
   category: "Workflow"
   tags:
     - deploy
     - calidad
     - validacion
-description: "Workflow de validación pre-deploy: build, rutas, SEO, API, performance, seguridad y cleanup. Se relaciona con review-quality (pre-merge) y build-scaffold (post-build)."
 user-invocable: false
 ---
 
 # Workflow: Pre-Deploy QA
 
-## Propósito
-Validación sistemática antes de deployar a producción. Corre después del merge, antes del deploy.
+## Purpose
+Systematic validation before deploying to production. Runs after merge, before deploy.
 
-## Cuándo usarlo
-- Antes de deployar a producción (post-merge, pre-deploy)
-- Después de cambios significativos que afectan rutas, API o SEO
-- Como gate de calidad en un pipeline de CI/CD
-- Para obtener un reporte de Go/No-Go antes de un release
+## When to use
+- Before deploying to production (post-merge, pre-deploy)
+- After significant changes affecting routes, API, SEO, or PWA behavior
+- As a quality gate in CI/CD
+- To get a Go/No-Go report before release
 
-## Fases
+## Phases
 
 ### 1. Build
-- `npm run build` sin errores
-- Verificar que no haya warnings de compilación
+- `npm run build` with no errors
+- No build warnings
 
-### 2. Rutas
-- Regression de todas las rutas públicas (200)
-- Rutas protegidas (401/403 sin auth)
+### 2. Routes
+- Regression of all public routes (200)
+- Protected routes (401/403 without auth)
 - API endpoints (health, auth, core)
-- sitemap.xml y robots.txt accesibles
+- `sitemap.xml` and `robots.txt` accessible
 
 ### 3. SEO
-- `<title>` 30-60 chars, único por página
-- `<meta name="description">` presente
+- `<title>` 30-60 chars, unique per page
+- `<meta name="description">` present
 - og:title, og:description, og:image (≥ 1200×630)
 - twitter:card = summary_large_image
-- Canonical self-referencing
-- favicon.ico responde 200
-- JSON-LD structured data si aplica
+- Self-referencing canonical
+- favicon.ico returns 200
+- JSON-LD structured data if applicable
 
-### 4. API
-- Health check responde 200
-- Auth endpoints funcionan (login, session, logout)
-- Errores devuelven JSON consistente `{ error, message }`
-- CORS headers correctos si cross-origin
+### 4. PWA / Service Worker
+- App has `manifest.json` with valid `start_url`, `display`, `theme_color`
+- Icons 192×192 and 512×512 exist and are referenced
+- `sw.js` is registered with a relative path and loads without errors
+- `index.html` (shell) is **not** served cache-first; use network-first or stale-while-revalidate
+- Hashed JS/CSS build assets are cached dynamically or listed in precache
+- After deploy, verify no 404 for old hashed assets in DevTools Network tab
+- Cache name/version is bumped when the service worker strategy changes
 
-### 5. Performance
-- Lighthouse ≥ 90 (Performance, A11y, SEO)
-- Imágenes con lazy loading y WebP/AVIF
-- Dynamic imports para componentes pesados
-- font-display: swap, sin FOIT
+### 5. API
+- Health check returns 200
+- Auth endpoints work (login, session, logout)
+- Errors return consistent JSON `{ error, message }`
+- CORS headers correct if cross-origin
+
+### 6. Performance
+- Lighthouse ≥ 90 (Performance, Accessibility, Best Practices, SEO)
+- Images lazy loaded and served as WebP/AVIF
+- Dynamic imports for heavy components
+- font-display: swap, no FOIT
 - Total page weight < 1MB
 
-### 6. Seguridad
-- `npm audit` sin critical/high vulnerabilities
-- Sin secrets en el diff
-- Sin eval/new Function/document.write
-- Sin stack traces en errores de API
+### 7. Security
+- `npm audit` no critical/high vulnerabilities
+- No secrets in diff
+- No eval/new Function/document.write
+- No stack traces in API errors
 
-### 7. UI/UX
-- Error boundaries en root + route level
-- not-found.tsx y loading.tsx existen
-- Estados loading, error y empty en client fetches
-- Botones con hover, focus-visible, active, disabled, loading
-- Sin horizontal scroll en 320-1440px
+### 8. UI/UX
+- Error boundaries at root + route level
+- not-found.tsx and loading.tsx exist
+- Loading, error, and empty states in client fetches
+- Buttons have hover, focus-visible, active, disabled, loading states
+- No horizontal scroll at 320-1440px
 
-### 8. Database
-- Migraciones aplicadas y idempotentes
-- Sin hardcoded DB credentials en source
-- Sin raw SQL injection risk
-- Sin N+1 queries
+### 9. Database
+- Migrations applied and idempotent
+- No hardcoded DB credentials in source
+- No SQL injection risk
+- No N+1 queries
 
-### 9. Cleanup
-- Sin console.log/debugger en staged code
-- Sin TODOs/FIXMEs sin resolver
-- Sin imports muertos
-- Sin archivos temporales
+### 10. Cleanup
+- No console.log/debugger in staged code
+- No unresolved TODOs/FIXMEs
+- No dead imports
+- No temporary files
 
 ## Outputs
-- Reporte de QA con cada fase (✅/❌/⚠️)
-- Issues encontrados con prioridad (Critical / Major / Minor)
-- Decisión: Go / No-Go para deploy
+- QA report per phase (✅/❌/⚠️)
+- Issues with priority (Critical / Major / Minor)
+- Go / No-Go decision for deploy
 
 ## Related Skills
-
-- [Review & Quality](../review-quality): Para revisión pre-merge antes del QA pre-deploy
-- [Task Execution](../task-execution): Para implementar fixes encontrados en QA
-- [Performance Optimization](../performance-optimization): Para validar performance pre-deploy
+- [Review & Quality](../review-quality): Pre-merge review before QA
+- [Task Execution](../task-execution): Implement fixes found by QA
+- [Performance Optimization](../performance-optimization): Validate performance pre-deploy
