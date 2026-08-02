@@ -26,14 +26,17 @@ Adapted from **Context Keeper (ck)** by sreedhargs89, re-built for OpenClaw:
 ## Data Layout
 
 ```
-db (session_context namespace)
+~/.openclaw/workspace/.data/session-context.db  ← local SQLite (not versioned)
+db (session_context namespace)                  ← optional OpenClaw tool namespace
 ├── projects                ← path → {name, display_name, description, stack, goal, constraints, repo}
 ├── sessions                ← one row per saved session
 └── decisions               ← decisions linked to sessions
 
 projects/<slug>/.knowledge/
-└── HANDOFF.md              ← generated view — do not hand-edit
+└── HANDOFF.md              ← generated portable view — do not hand-edit
 ```
+
+**Note on portability:** `.data/session-context.db` is ignored by git (`*.db`). The authoritative portable artifact is `HANDOFF.md` in the project's `.knowledge/`. Keep that directory versioned.
 
 ## Commands
 
