@@ -168,6 +168,17 @@ Para proyectos complejos, en lugar de 5 archivos genera 9:
 - `projects/<slug>/.knowledge/TRACKER.md`
 - ADRs en `docs/adr/` (Fase 0.2)
 
+## Helper Scripts
+
+Scripts en `skills/product-discovery/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `generate-brief.sh` | Genera el esqueleto de `BRIEF.md` a partir de una idea. Usar en Fase 0.1. |
+| `generate-openspec.sh` | Genera un OpenSpec a partir de la definición del producto. Usar en Fase 0.2 y Fase 4. |
+| `generate_story_map.py` | Genera un story map visual/textual a partir de features. Usar en Fase 0.4. |
+| `validation-gate.py` | Valida que cada gate 0.1 → 0.2 → 0.3 → 0.4 tenga los entregables completos. Usar antes de pasar de fase. |
+
 ## Related Skills
 
 - [Build & Scaffold](../build-scaffold): Para construir el proyecto post-discovery
