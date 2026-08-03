@@ -150,6 +150,22 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 - **0001** → eliminar o archivar (sin propósito)
 - **prueba_minecraft_claude_code** → eliminar o archivar (experimento abandonado)
 
+## Lecciones del 2026-08-03
+
+### Patrón por inercia vs contexto cambiado
+Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nueva), el riesgo no es equivocarse en el patrón — es aplicarlo por inercia cuando el contexto ya cambió. La señal de alerta no es "¿lo sé hacer?" sino "¿es este caso realmente igual a los que ya resolví?". Pasó en el Nivel 8 del bootcamp (convergente, no lineal — transformaba el N7, no creaba carpeta nueva). ADR: `projects/ai-engineering-bootcamp/.knowledge/ADR-001-niveles-convergentes.md`.
+
+### AI Engineering Bootcamp — COMPLETO ✅
+- **10/10 niveles completados.** N1-N4 fundamentos (generar, prompts, workflows, templates), N5-N6 calidad/seguridad (auditar, CI/CD), N7-N8 arquitectura/producción (microservicios, cloud), N9 estándares/dashboard, N10 sistema completo (capstone).
+- N8-N10 son convergentes: reusan el sistema del N7 (vive dentro de `projects/level-07-microservices/`).
+- El N10 junta todo: auth + users + orders + notifications + gateway + CI/CD + dashboard + cloud. Probado: gateway enruta, health agregado ok, register/login/orders funcionan, 401 en credenciales malas.
+
+### Reflexión del curso (meta-aprendizaje)
+- El patrón "detectores locales + validación cruzada / IA contextual" se repitió en N3, N5, N6, N8 — candidato a skill reusable `pipeline-detector`.
+- Formato nivel de bootcamp (teoría + práctica + LinkedIn + self-review) es un template de skill reusable.
+- Los proyectos resueltos son el "contrato" del curso — demuestran que el nivel es posible, no son la respuesta.
+- Falta un mecanismo de verificación automática al final de cada nivel (tests contra el proyecto del alumno).
+
 ## Modelo default
 
 - **Default:** `deepseek-v4-flash:cloud` con **reasoning medium**

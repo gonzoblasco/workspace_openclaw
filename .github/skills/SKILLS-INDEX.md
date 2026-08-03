@@ -1,6 +1,6 @@
 # SKILLS-INDEX.md — Skills del Workspace
 
-> 91 skills organizadas por categoría. Actualizado: 2026-08-03
+> 92 skills organizadas por categoría. Actualizado: 2026-08-03
 
 ## Accesibilidad y UX
 
@@ -23,6 +23,7 @@
 | [i18n-expert](skills/i18n-expert/) | 1 | 1 | Workflow de internacionalización y localización: setup, auditoría, reemplazo  |
 | [mcp-orchestrator](skills/mcp-orchestrator/) | 4 | 0 | Re-propuesta del skill mcp-orchestrator (la anterior quedo stale) |
 | [performance-optimization](skills/performance-optimization/) | 2 | 1 | Workflow de Performance Optimization: análisis, profiling y optimización siste |
+| [pipeline-detector](skills/pipeline-detector/) | 0 | 0 | Build detection pipelines combining deterministic local rules with contextual AI analysis |
 | [pre-deploy-qa](skills/pre-deploy-qa/) | 2 | 1 | Pre-deploy QA workflow with added PWA/service worker validation |
 | [release-management](skills/release-management/) | 2 | 0 | Workflow de Release Management: planificación, coordinación y ejecución de re |
 | [review-quality](skills/review-quality/) | 2 | 1 | Workflow de Review & Quality: revisión pre-merge, testing y auditoría. Reempla |
@@ -160,4 +161,4 @@
 
 ---
 
-**Totales:** 91 skills · 102 scripts · 70 skills con tooling documentado
+**Totales:** 92 skills · 102 scripts · 70 skills con tooling documentado

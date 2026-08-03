@@ -166,6 +166,12 @@ El directorio `.github/skills/` en la raíz del workspace es un mirror exacto de
 rsync -a --delete --exclude='.DS_Store' skills/ .github/skills/
 ```
 
+**⚠️ Ojo con `SKILLS-INDEX.md`:** el índice raíz NO vive dentro de `skills/`, así que el rsync con `--delete` NO lo copia — y lo borra del mirror si ya estaba. Tras el rsync, copiar el índice explícitamente:
+
+```bash
+cp SKILLS-INDEX.md .github/skills/SKILLS-INDEX.md
+```
+
 Si no se sincroniza, el mirror queda desactualizado y cualquiera que explore el repo desde GitHub va a ver una versión vieja.
 
 ## Estructura de Proyectos — Doble Git con `.knowledge/`
