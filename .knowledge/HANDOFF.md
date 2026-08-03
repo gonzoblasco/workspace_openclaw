@@ -77,3 +77,11 @@ npm test
 - Mantenimiento gradual de skills
 - Nueva skill si Gonzo la necesita
 - Evolución del tooling
+
+## Post-cierre: SKILLS-INDEX.md + .knowledge/
+
+Después del cierre inicial, Gonzo pidió:
+- **SKILLS-INDEX.md:** regenerado desde 34 → 91 skills, 13 categorías, script counts y tooling status. (`b00ca958`)
+- **.knowledge/ en el workspace:** BRIEF.md, STATUS.md, HANDOFF.md creados para darle al workspace la misma estructura institucional que cualquier proyecto. (`a45f0a10`)
+
+Ambos cambios ya están commiteados y pusheados.
