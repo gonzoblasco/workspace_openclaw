@@ -31,7 +31,8 @@ PARAGRAPHS=$(awk '
 ' "$FILE")
 
 # Sentence count (rough: split on .!?)
-SENTENCES=$(echo "$TEXT" | tr '\n' ' ' | grep -oE '[^.!?]+[.!?]' | wc -l | tr -d ' ')
+SENTENCES=$(echo "$TEXT" | tr '\n' ' ' | grep -oE '[^.!?]+[.!?]' | wc -l | tr -d ' ' || true)
+SENTENCES=${SENTENCES:-0}
 
 # Average words per sentence
 if [ "$SENTENCES" -gt 0 ]; then
