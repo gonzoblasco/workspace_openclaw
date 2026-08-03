@@ -26,7 +26,8 @@ echo ""
 # Update CHANGELOG
 if [[ -f "CHANGELOG.md" ]]; then
   DATE=$(date '+%Y-%m-%d')
-  sed -i '' "s/\[Unreleased\]/[$VERSION] - $DATE/" CHANGELOG.md 2>/dev/null || true
+  sed -i.bak "s/\[Unreleased\]/[$VERSION] - $DATE/" CHANGELOG.md 2>/dev/null || true
+  rm -f CHANGELOG.md.bak
   echo "✅ CHANGELOG updated to v$VERSION"
 fi
 

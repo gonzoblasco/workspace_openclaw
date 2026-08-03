@@ -22,12 +22,16 @@ CHARS=$(echo "$TEXT" | tr -d '[:space:]' | wc -c | tr -d ' ')
 # Character count (with spaces)
 CHARS_SPACES=$(echo "$TEXT" | wc -c | tr -d ' ')
 
+# Paragraph count: non-empty blocks separated by blank lines (or whitespace-only lines)
+PARAGRAPHS=$(awk '
+  BEGIN { p=0; in_block=0 }
+  /^[[:space:]]*$/ { in_block=0; next }
+  !in_block { p++; in_block=1 }
+  END { print p }
+' "$FILE")
+
 # Sentence count (rough: split on .!?)
 SENTENCES=$(echo "$TEXT" | tr '\n' ' ' | grep -oE '[^.!?]+[.!?]' | wc -l | tr -d ' ')
-
-# Paragraph count
-PARAGRAPHS=$(grep -cE '^[[:space:]]*$' "$FILE" || true)
-PARAGRAPHS=$((PARAGRAPHS + 1))
 
 # Average words per sentence
 if [ "$SENTENCES" -gt 0 ]; then

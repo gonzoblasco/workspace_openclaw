@@ -14,10 +14,10 @@ FAIL=0
 
 check() {
   local name="$1"
-  local cmd="$2"
-  
+  shift
+
   echo "  $name..."
-  if eval "$cmd" 2>/dev/null; then
+  if "$@" 2>/dev/null; then
     echo "    ✅ Passed"
     PASS=$((PASS + 1))
   else
@@ -26,20 +26,35 @@ check() {
   fi
 }
 
+no_secrets_in_diff() {
+  ! git diff --cached | grep -iE '(password|secret|token|api.?key|auth.?token)' | grep -v 'example\|sample\|test' | head -1
+}
+
+no_hardcoded_urls_in_diff() {
+  ! git diff --cached | grep -E '(localhost|127\.0\.0\.1|0\.0\.0\.0)' | grep -v 'example\|test' | head -1
+}
+
+run_npm_audit() {
+  npm audit --audit-level=high 2>&1 | tail -1
+}
+
+no_secrets_in_src() {
+  ! grep -rE '(password|secret|api.?key)' src/ --include='*.ts' --include='*.tsx' --include='*.env' 2>/dev/null | grep -v 'example\|sample\|test\|\.env\.example' | head -1
+}
+
+no_eval_in_src() {
+  ! grep -r 'eval(' src/ --include='*.ts' --include='*.tsx' --include='*.js' 2>/dev/null | head -1
+}
+
 # Scan staged diff for secrets
 if [[ "$SCAN_MODE" == "--diff" ]]; then
-  DIFF=$(git diff --cached)
-  
-  check "No secrets in diff" "! echo \"$DIFF\" | grep -iE '(password|secret|token|api.?key|auth.?token)' | grep -v 'example\|sample\|test' | head -1"
-  
-  check "No hardcoded URLs" "! echo \"$DIFF\" | grep -E '(localhost|127\.0\.0\.1|0\.0\.0\.0)' | grep -v 'example\|test' | head -1"
+  check "No secrets in diff" no_secrets_in_diff
+  check "No hardcoded URLs" no_hardcoded_urls_in_diff
 else
   # Full scan
-  check "npm audit" "npm audit --audit-level=high 2>&1 | tail -1"
-  
-  check "No secrets in src" "! grep -rE '(password|secret|api.?key)' src/ --include='*.ts' --include='*.tsx' --include='*.env' 2>/dev/null | grep -v 'example\|sample\|test\|\.env\.example' | head -1"
-  
-  check "No eval" "! grep -r 'eval(' src/ --include='*.ts' --include='*.tsx' --include='*.js' 2>/dev/null | head -1"
+  check "npm audit" run_npm_audit
+  check "No secrets in src" no_secrets_in_src
+  check "No eval" no_eval_in_src
 fi
 
 echo ""

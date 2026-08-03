@@ -23,31 +23,28 @@ echo "" >> "$OUTPUT_FILE"
 echo "| Heading | Found In |" >> "$OUTPUT_FILE"
 echo "|---------|----------|" >> "$OUTPUT_FILE"
 
-# Find headings that appear in multiple skills
-declare -A heading_map
+# heading_key -> original heading text
+declare -A heading_text
+# heading_key -> comma-separated skill names
+declare -A heading_skills
 
 for skill_file in "$SKILLS_DIR"/*/SKILL.md; do
   skill_name=$(basename "$(dirname "$skill_file")")
   while IFS= read -r heading; do
     key=$(echo "$heading" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]//g')
     if [[ -n "$key" ]]; then
-      heading_map["$key"]="${heading_map[$key]:-}$skill_name, "
+      heading_text["$key"]="$heading"
+      heading_skills["$key"]="${heading_skills[$key]:-}$skill_name, "
     fi
   done < <(grep -E '^## ' "$skill_file" 2>/dev/null || true)
 done
 
 # Report duplicates
-for key in "${!heading_map[@]}"; do
-  skills="${heading_map[$key]}"
+for key in "${!heading_skills[@]}"; do
+  skills="${heading_skills[$key]}"
   count=$(echo "$skills" | grep -o "," | wc -l | tr -d ' ')
   if [[ "$count" -ge 2 ]]; then
-    # Get a sample of original heading text from one of the duplicate skills
-    sample_skill=$(echo "$skills" | tr ',' '\n' | sed 's/^ *//;s/ *$//' | grep -v '^$' | head -1)
-    heading_text=$(grep -m1 "^## " "$SKILLS_DIR/$sample_skill/SKILL.md" 2>/dev/null | sed 's/^## //' | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z' || true)
-    if [[ -z "$heading_text" ]]; then
-      heading_text="$key"
-    fi
-    echo "| $heading_text | ${skills%, } |" >> "$OUTPUT_FILE"
+    echo "| ${heading_text[$key]} | ${skills%, } |" >> "$OUTPUT_FILE"
   fi
 done
 
@@ -57,7 +54,8 @@ echo "" >> "$OUTPUT_FILE"
 echo "## Shared Checklist Items" >> "$OUTPUT_FILE"
 echo "" >> "$OUTPUT_FILE"
 
-declare -A checklist_map
+declare -A item_text
+declare -A item_skills
 
 for skill_file in "$SKILLS_DIR"/*/SKILL.md; do
   skill_name=$(basename "$(dirname "$skill_file")")
@@ -66,17 +64,18 @@ for skill_file in "$SKILLS_DIR"/*/SKILL.md; do
     if [[ -n "$item" ]]; then
       key=$(echo "$item" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]//g')
       if [[ -n "$key" ]]; then
-        checklist_map["$key"]="${checklist_map[$key]:-}$skill_name, "
+        item_text["$key"]="$item"
+        item_skills["$key"]="${item_skills[$key]:-}$skill_name, "
       fi
     fi
   done < <(grep -E '^- \[ \] ' "$skill_file" 2>/dev/null || true)
 done
 
-for key in "${!checklist_map[@]}"; do
-  skills="${checklist_map[$key]}"
+for key in "${!item_skills[@]}"; do
+  skills="${item_skills[$key]}"
   count=$(echo "$skills" | grep -o "," | wc -l | tr -d ' ')
   if [[ "$count" -ge 2 ]]; then
-    echo "- \"$key\" appears in: ${skills%, }" >> "$OUTPUT_FILE"
+    echo "- \"${item_text[$key]}\" appears in: ${skills%, }" >> "$OUTPUT_FILE"
   fi
 done
 

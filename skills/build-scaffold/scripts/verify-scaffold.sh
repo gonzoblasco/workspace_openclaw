@@ -11,9 +11,9 @@ RESULTS=()
 
 check() {
   local name="$1"
-  local cmd="$2"
+  shift
   echo "🔍 $name..."
-  if eval "$cmd" 2>&1; then
+  if "$@" 2>&1; then
     echo "   ✅ Passed"
     PASS=$((PASS + 1))
     RESULTS+=("✅ $name")
@@ -30,26 +30,46 @@ echo "  Scaffold Verification"
 echo "═══════════════════════════════════════"
 echo ""
 
+run_typescript() {
+  npx tsc --noEmit
+}
+
+run_biome_check() {
+  npx biome ci .
+}
+
+run_biome_fix() {
+  npx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true .
+}
+
+run_tests() {
+  npm run test -- --run 2>/dev/null || npm run test 2>/dev/null || true
+}
+
+run_build() {
+  npm run build 2>/dev/null || npx next build 2>/dev/null || npx vite build 2>/dev/null || echo '⚠️  No build script found'
+}
+
 # 1. TypeScript type check
-check "TypeScript type check" "npx tsc --noEmit"
+check "TypeScript type check" run_typescript
 
 # 2. Biome lint + format
 if [[ "$FIX_MODE" == "--fix" ]]; then
-  check "Biome check (with fix)" "npx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true ."
+  check "Biome check (with fix)" run_biome_fix
 else
-  check "Biome check" "npx biome ci ."
+  check "Biome check" run_biome_check
 fi
 
 # 3. Tests
 if [[ -f "package.json" ]] && grep -q '"test' package.json 2>/dev/null; then
-  check "Tests" "npm run test -- --run 2>/dev/null || npm run test 2>/dev/null || true"
+  check "Tests" run_tests
 else
   echo "⏭️  No test script found, skipping"
   RESULTS+=("⏭️  Tests (skipped)")
 fi
 
 # 4. Build
-check "Build" "npm run build 2>/dev/null || npx next build 2>/dev/null || npx vite build 2>/dev/null || echo '⚠️  No build script found'"
+check "Build" run_build
 
 echo "═══════════════════════════════════════"
 echo "  Results: $PASS passed, $FAIL failed"

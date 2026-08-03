@@ -26,10 +26,10 @@ FAIL=0
 
 check() {
   local name="$1"
-  local cmd="$2"
-  
+  shift
+
   echo "  $name..."
-  if eval "$cmd" 2>/dev/null; then
+  if "$@" 2>/dev/null; then
     echo "    ✅ Passed"
     PASS=$((PASS + 1))
   else
@@ -38,12 +38,32 @@ check() {
   fi
 }
 
+has_build_output() {
+  npm run build 2>&1 | tail -1
+}
+
+has_tests_output() {
+  npm test -- --run 2>&1 | tail -3
+}
+
+has_changelog_version() {
+  grep -q "## \[$VERSION\]" CHANGELOG.md 2>/dev/null
+}
+
+tag_does_not_exist() {
+  ! git tag | grep -q "v$VERSION"
+}
+
+no_uncommitted_changes() {
+  git diff --quiet
+}
+
 # Readiness checks
-check "Build passes" "npm run build 2>&1 | tail -1"
-check "Tests pass" "npm test -- --run 2>&1 | tail -3"
-check "CHANGELOG has version" "grep -q \"## \[$VERSION\]\" CHANGELOG.md 2>/dev/null"
-check "Git tag doesn't exist" "! git tag | grep -q \"v$VERSION\"" || true
-check "No uncommitted changes" "git diff --quiet"
+check "Build passes" has_build_output
+check "Tests pass" has_tests_output
+check "CHANGELOG has version" has_changelog_version
+check "Git tag doesn't exist" tag_does_not_exist
+check "No uncommitted changes" no_uncommitted_changes
 
 echo ""
 if [[ "$FAIL" -eq 0 ]]; then

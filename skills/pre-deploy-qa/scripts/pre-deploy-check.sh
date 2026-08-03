@@ -25,10 +25,10 @@ WARN=0
 check() {
   local phase="$1"
   local name="$2"
-  local cmd="$3"
-  
+  shift 2
+
   echo "  [$phase] $name..."
-  if eval "$cmd" 2>/dev/null; then
+  if "$@" 2>/dev/null; then
     echo "    ✅ Passed"
     echo "| $phase | $name | 🟢 Pass |" >> "$OUTPUT"
     PASS=$((PASS + 1))
@@ -44,22 +44,50 @@ echo "" >> "$OUTPUT"
 echo "| Phase | Check | Result |" >> "$OUTPUT"
 echo "|-------|-------|--------|" >> "$OUTPUT"
 
+build_succeeds() {
+  npm run build 2>&1 | tail -3
+}
+
+health_endpoint_ok() {
+  curl -sf "$BASE_URL/health" > /dev/null
+}
+
+homepage_ok() {
+  curl -sf "$BASE_URL" > /dev/null
+}
+
+sitemap_ok() {
+  curl -sf "$BASE_URL/sitemap.xml" > /dev/null
+}
+
+auth_session_ok() {
+  curl -sf "$BASE_URL/api/auth/session" > /dev/null
+}
+
+npm_audit_high() {
+  npm audit --audit-level=high 2>&1 | tail -1
+}
+
+no_console_logs() {
+  ! grep -r 'console\.log' src/ --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v node_modules | head -1
+}
+
 # Build
-check "Build" "Build succeeds" "npm run build 2>&1 | tail -3"
+check "Build" "Build succeeds" build_succeeds
 
 # Routes
-check "Routes" "Health endpoint" "curl -sf $BASE_URL/health > /dev/null"
-check "Routes" "Homepage" "curl -sf $BASE_URL > /dev/null"
-check "Routes" "Sitemap" "curl -sf $BASE_URL/sitemap.xml > /dev/null"
+check "Routes" "Health endpoint" health_endpoint_ok
+check "Routes" "Homepage" homepage_ok
+check "Routes" "Sitemap" sitemap_ok
 
 # API
-check "API" "Auth session" "curl -sf $BASE_URL/api/auth/session > /dev/null"
+check "API" "Auth session" auth_session_ok
 
 # Security
-check "Security" "npm audit" "npm audit --audit-level=high 2>&1 | tail -1"
+check "Security" "npm audit" npm_audit_high
 
 # Cleanup
-check "Cleanup" "No console.log" "! grep -r 'console\.log' src/ --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v node_modules | head -1"
+check "Cleanup" "No console.log" no_console_logs
 
 echo "" >> "$OUTPUT"
 echo "## Summary" >> "$OUTPUT"

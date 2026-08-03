@@ -91,7 +91,26 @@ if [[ "$ACTION" == "status" ]]; then
   echo "==================="
   echo ""
   
-  # Count total words
+  # Date helpers that work on macOS and GNU Linux
+date_add_days() {
+  local base="$1"
+  local days="$2"
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    date -j -v"${days}"d -f "%Y-%m-%d" "$base" +%Y-%m-%d
+  else
+    date -d "$base ${days} days" +%Y-%m-%d
+  fi
+}
+
+date_yesterday() {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    date -v-1d +%Y-%m-%d
+  else
+    date -d yesterday +%Y-%m-%d
+  fi
+}
+
+# Count total words
   TOTAL_WORDS=$(grep -E '^\| [0-9]' "$LOG_FILE" 2>/dev/null | awk -F'|' 'NF>=4 {gsub(/[[:space:]]/, "", $3); sum += $3} END {print sum+0}')
   TOTAL_WORDS=${TOTAL_WORDS:-0}
 
@@ -102,7 +121,7 @@ if [[ "$ACTION" == "status" ]]; then
   # Calculate streak
   STREAK=0
   TODAY=$(date '+%Y-%m-%d')
-  YESTERDAY=$(date -v-1d '+%Y-%m-%d' 2>/dev/null || date -d 'yesterday' '+%Y-%m-%d' 2>/dev/null || echo "")
+  YESTERDAY=$(date_yesterday)
   
   # Check if wrote today
   if grep -q "^| $TODAY |" "$LOG_FILE" 2>/dev/null; then
@@ -112,7 +131,7 @@ if [[ "$ACTION" == "status" ]]; then
     while [[ -n "$CHECK_DATE" ]]; do
       if grep -q "^| $CHECK_DATE |" "$LOG_FILE" 2>/dev/null; then
         STREAK=$((STREAK + 1))
-        CHECK_DATE=$(date -v-1d -j -f "%Y-%m-%d" "$CHECK_DATE" "+%Y-%m-%d" 2>/dev/null || echo "")
+        CHECK_DATE=$(date_add_days "$CHECK_DATE" -1)
       else
         break
       fi
@@ -135,7 +154,7 @@ if [[ "$ACTION" == "status" ]]; then
   echo "   Last 7 days:"
   echo "   ─────────────"
   for i in $(seq 0 6); do
-    DAY=$(date -v-${i}d '+%Y-%m-%d' 2>/dev/null || date -d "-${i} days" '+%Y-%m-%d' 2>/dev/null || echo "")
+    DAY=$(date_add_days "$TODAY" -$i)
     if [[ -n "$DAY" ]]; then
       ENTRY=$(grep "^| $DAY |" "$LOG_FILE" 2>/dev/null || true)
       if [[ -n "$ENTRY" ]]; then
