@@ -21,6 +21,14 @@ Accede a documentación de repositorios públicos de GitHub mediante el servidor
 3. Ejecutar deepwiki con la operación y el repo
 4. Recibir respuesta basada en la documentación real del proyecto
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `oss-contribution/scripts/triage-issues.sh` | Encontrar issues en el repo consultado para aplicar lo aprendido. |
+| `oss-contribution/scripts/setup-fork.sh` | Preparar fork local si se decide contribuir. |
+| `research-spike/scripts/compare-alternatives.sh` | Comparar el framework/documentado contra alternativas. |
+
 ## Notas
 - Sin autenticación requerida
 - Respuestas basadas en documentación real, no en training data

@@ -22,6 +22,13 @@ Trackea ingesta diaria de calorías y proteína usando una base SQLite local. Ac
 4. Al final del día, loguear peso corporal
 5. Revisar historial semanal/mensual
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `sql-insight/scripts/sql_query_helper.py` | Consultar y analizar el historial SQLite de calorías/peso. |
+| `db-readonly` | Queries read-only seguras contra la SQLite local. |
+
 ## Notas
 - Todo local, sin cuenta ni suscripción
 - Estima proteína automáticamente cuando no se especifica

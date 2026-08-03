@@ -22,6 +22,15 @@ Ejecuta una auditoría de seguridad contra un deployment de OpenClaw gateway. Ev
 4. Produce reporte con severidad, evidencia y fix instructions
 5. Revisar reporte y aplicar fixes según prioridad
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `review-quality/scripts/security-scan.sh` | Escaneo de secrets y hardcoded URLs en archivos del workspace. |
+| `engineering-governance/scripts/secret-scan.sh` | Escaneo adicional de credenciales en skills y configuración. |
+| `pre-deploy-qa/scripts/pre-deploy-check.sh` | Validar seguridad del entorno antes de deployar. |
+| `arc-trust-verifier` | Evaluar confiabilidad de skills y plugins de terceros (supply chain). |
+
 ## Notas
 - Opera desde una verified allowlist estricta
 - No ejecuta código remoto no confiable

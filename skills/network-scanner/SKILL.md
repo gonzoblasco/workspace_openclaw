@@ -21,6 +21,13 @@ Escanea redes locales usando nmap para descubrir dispositivos conectados y recol
 3. Recibir lista de dispositivos: IP, MAC, vendor, hostname
 4. Revisar dispositivos conocidos vs desconocidos
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `clawdstrike` | Auditoría de seguridad del gateway y red después de descubrir dispositivos. |
+| `observability/scripts/health-check.sh` | Verificar salud de servicios en dispositivos descubiertos. |
+
 ## Notas
 - Requiere nmap instalado (brew install nmap)
 - Requiere sudo para MAC address discovery

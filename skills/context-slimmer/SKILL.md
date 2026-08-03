@@ -22,6 +22,14 @@ Audita los archivos de contexto siempre cargados del workspace y reduce su token
 4. Aplicar cambios
 5. Re-ejecutar para verificar ahorro
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `knowledge-management/scripts/knowledge-audit.sh` | Auditar archivos vacíos, duplicados o abandonados. |
+| `knowledge-management/scripts/discover.sh` | Mapear archivos de contexto y su estado. |
+| `engineering-governance/scripts/detect-duplicates.sh` | Detectar contenido duplicado entre MEMORY.md, AGENTS.md y otros docs. |
+
 ## Notas
 - Sin dependencias externas
 - Mide tokens reales, no estimaciones
