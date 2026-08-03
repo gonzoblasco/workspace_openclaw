@@ -56,6 +56,15 @@ reports/
 4. Al finalizar, todos los reportes están disponibles para @scribe
 5. @scribe usa los reportes para actualizar CHANGELOG
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `tech-docs/scripts/update-changelog.sh` | Inserta `[Unreleased]` en CHANGELOG.md. Usar al finalizar. |
+| `release-management/scripts/generate-release-notes.sh` | Genera notas de release desde los reportes versionados. |
+| `handoff-matrix` | Documentar handoffs entre etapas del pipeline. |
+| `session-lifecycle/scripts/session-end.sh` | Guardar resumen y reportes al cerrar sesión. |
+
 ## Notas
 - Sin dependencias externas
 - Markdown, fácil de leer y versionar

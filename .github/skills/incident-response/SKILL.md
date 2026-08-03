@@ -215,6 +215,18 @@ Backlog de mejoras
 
 ---
 
+## Helper Scripts
+
+Scripts en `skills/incident-response/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `incident-report.sh` | Genera la estructura inicial de INCIDENT_REPORT.md. Usar en Fase 1-2 (Detection/Classification). |
+| `timeline.sh` | Construye una timeline del incidente a partir de logs y timestamps. Usar en Fase 5 (Resolution) y Fase 7 (Postmortem). |
+| `postmortem.sh` | Genera el esqueleto de POSTMORTEM.md con RCA, action items y lecciones. Usar en Fase 7. |
+
+---
+
 # Plantilla de Postmortem
 
 Ver [template de postmortem](./references/postmortem-template.md).

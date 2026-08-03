@@ -66,6 +66,18 @@ Commit + push, integración con el proyecto.
 - Cuando se necesita documentar una decisión arquitectónica
 - Cuando un contributor necesita guías claras
 
+## Helper Scripts
+
+Scripts en `skills/tech-docs/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `generate-adr.sh "Titulo de la decision"` | Crea un ADR numerado secuencialmente en `docs/adr/`. Usar en Fase 4. |
+| `update-changelog.sh` | Inserta una entrada `[Unreleased]` en CHANGELOG.md. Usar al cerrar un epic o feature. |
+| `analyze_codebase.py` | Analiza el codebase para extraer patrones y generar contexto para docs. Usar en Fase 2 (Diseño Arquitectónico) y Fase 5. |
+
+Si se tocan estos scripts, correr `npm test` en el workspace antes de commitear.
+
 ## Related Skills
 
 - [Knowledge Management](../knowledge-management): Para mantener la base de conocimiento

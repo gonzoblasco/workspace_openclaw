@@ -20,6 +20,15 @@ Usa sessions_history para que sesiones aisladas (cron jobs, sub-agents) puedan l
 3. La sesión aislada lee el historial relevante via sessions_history
 4. Ejecuta la tarea con contexto completo
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `session-lifecycle/scripts/session-start.sh` | Cargar contexto de inicio de sesión antes de delegar. |
+| `session-lifecycle/scripts/session-end.sh` | Guardar resumen para que la sesión aislada lo recupere. |
+| `background-execution` | Patrones para ejecutar subagentes en background. |
+| `agent-workflow` | Multi-agent orchestration con handoffs explícitos. |
+
 ## Notas
 - Usa APIs nativas de OpenClaw (sessions_history)
 - No requiere dependencias externas

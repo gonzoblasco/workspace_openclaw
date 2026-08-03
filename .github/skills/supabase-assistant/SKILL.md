@@ -44,6 +44,8 @@ Manage and inspect Supabase projects using the official `@supabase/mcp-server-su
 ~/.openclaw/workspace/skills/supabase-assistant/scripts/supabase-mcp.py call generate_typescript_types '{"project_id": "<id>"}'
 ```
 
+If you modify this skill's wrapper script, run `npm test` from the workspace root before committing.
+
 ## Security rules
 
 The MCP server exposes destructive tools. Follow these rules strictly:

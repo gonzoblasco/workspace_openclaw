@@ -8,23 +8,23 @@ NAME="${1:-Campaign}"
 START_DATE="${2:-$(date +%Y-%m-%d)}"
 WEEKS="${3:-4}"
 
+add_days() {
+  local base="$1"
+  local days="$2"
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    date -j -v+"${days}"d -f "%Y-%m-%d" "$base" +%Y-%m-%d
+  else
+    date -d "$base + $days days" +%Y-%m-%d
+  fi
+}
+
 echo "week,date,channel,content,format,status,owner"
 
 for ((w=1; w<=WEEKS; w++)); do
-  # Calculate week start (macOS date compatible)
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    week_start=$(date -j -v+$(((w-1)*7))d -f "%Y-%m-%d" "$START_DATE" +%Y-%m-%d 2>/dev/null || date -d "$START_DATE + $(((w-1)*7)) days" +%Y-%m-%d)
-  else
-    week_start=$(date -d "$START_DATE + $(((w-1)*7)) days" +%Y-%m-%d)
-  fi
-
   # 3 content pieces per week (Mon/Wed/Fri)
   for day_offset in 0 2 4; do
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-      piece_date=$(date -j -v+$(((w-1)*7 + day_offset))d -f "%Y-%m-%d" "$START_DATE" +%Y-%m-%d 2>/dev/null || date -d "$START_DATE + $(((w-1)*7 + day_offset)) days" +%Y-%m-%d)
-    else
-      piece_date=$(date -d "$START_DATE + $(((w-1)*7 + day_offset)) days" +%Y-%m-%d)
-    fi
+    total_days=$(((w-1)*7 + day_offset))
+    piece_date=$(add_days "$START_DATE" "$total_days")
 
     channels=("social" "blog" "email")
     channel=${channels[$((day_offset % 3))]}

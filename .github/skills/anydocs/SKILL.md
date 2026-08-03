@@ -21,6 +21,13 @@ Indexa cualquier sitio de documentación a partir de un sitemap URL, construye u
 4. Realizar queries sobre la documentación indexada
 5. Cambiar de perfil para consultar otra documentación
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `knowledge-management/scripts/check-refs.sh` | Verificar que links a documentación indexada no estén rotos. |
+| `tech-docs/scripts/analyze_codebase.py` | Extraer contexto del codebase para enriquecer queries de documentación. |
+
 ## Notas
 - La indexación inicial puede ser lenta para docs grandes, pero es one-time
 - El cache local acelera consultas subsecuentes

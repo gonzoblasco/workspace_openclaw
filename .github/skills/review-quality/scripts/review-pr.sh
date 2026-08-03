@@ -17,18 +17,18 @@ HEADER
 echo "**Date:** $(date '+%Y-%m-%d %H:%M')" >> "$OUTPUT"
 echo "" >> "$OUTPUT"
 
-PASS=***
+PASS=0
 FAIL=0
 
 check() {
   local name="$1"
-  local cmd="$2"
-  
+  shift
+
   echo "  $name..."
-  if eval "$cmd" 2>/dev/null; then
+  if "$@" 2>/dev/null; then
     echo "    ✅ Passed"
     echo "| $name | 🟢 Pass |" >> "$OUTPUT"
-    PASS=*** + 1))
+    PASS=$((PASS + 1))
   else
     echo "    ❌ Failed"
     echo "| $name | 🔴 Fail |" >> "$OUTPUT"
@@ -41,23 +41,47 @@ echo "" >> "$OUTPUT"
 echo "| Check | Result |" >> "$OUTPUT"
 echo "|-------|--------|" >> "$OUTPUT"
 
+run_build() {
+  npm run build 2>&1 | tail -3
+}
+
+run_typescript() {
+  npx tsc --noEmit 2>&1 | tail -3
+}
+
+run_lint() {
+  npx biome ci . 2>&1 | tail -3
+}
+
+run_tests() {
+  npm test -- --run 2>&1 | tail -5
+}
+
+no_console_logs() {
+  ! grep -r 'console\.log' src/ --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v node_modules | head -1
+}
+
+no_unresolved_todos() {
+  ! grep -rE 'TODO|FIXME' src/ --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v node_modules | grep -v '// TODO' | head -1
+}
+
 # Build check
-check "Build" "npm run build 2>&1 | tail -3"
+check "Build" run_build
 
 # Type check
-check "TypeScript" "npx tsc --noEmit 2>&1 | tail -3"
+check "TypeScript" run_typescript
 
 # Lint
-check "Lint" "npx biome ci . 2>&1 | tail -3"
+check "Lint" run_lint
 
 # Tests
-check "Tests" "npm test -- --run 2>&1 | tail -5"
+check "Tests" run_tests
 
 # Console.log check
-check "No console.log" "! grep -r 'console\.log' src/ --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v node_modules | head -1"
+check "No console.log" no_console_logs
 
 # TODO check
-check "No unresolved TODOs" "! grep -r 'TODO\|FIXME' src/ --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v node_modules | grep -v '// TODO' | head -1"
+check "No unresolved TODOs" no_unresolved_todos
 
 echo "" >> "$OUTPUT"
 echo "## Summary" >> "$OUTPUT"

@@ -231,6 +231,18 @@ Recomendaciones
 
 ---
 
+## Helper Scripts
+
+Scripts en `skills/dependency-management/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `check-outdated.sh` | Lista dependencias desactualizadas con `npm outdated`. Usar en Fase 1 (Inventory) y Fase 2 (Health Assessment). |
+| `audit-compare.sh <old-lock> <new-lock>` | Compara dos lockfiles y detecta cambios de versiones significativos. Usar en Fase 7 (Migration Planning) y en reviews. |
+| `dependency-report.sh` | Genera un reporte Markdown de dependencias, versiones, y estado. Usar en Fase 1 y Fase 8 (Knowledge Capture). |
+
+---
+
 # Checklist
 
 ¿Hay dependencias sin uso?

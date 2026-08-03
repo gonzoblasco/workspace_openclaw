@@ -51,8 +51,8 @@ RESULTS=()
 for repo in "${REPOS[@]}"; do
   if [ "$MINE_ONLY" = true ]; then
     prs=$(gh pr list --repo "$repo" --author "$AUTHOR" --state open \
-      --json number,title,url,updatedAt,reviewDecision,createdAt \
-      --jq '.[] | {repo: "'"$repo"'", number, title, url, updatedAt, reviewDecision, createdAt}' 2>/dev/null || true)
+      --json number,title,url,updatedAt,reviewDecision,createdAt,author \
+      --jq '.[] | {repo: "'"$repo"'", number, title, url, updatedAt, reviewDecision, createdAt, author: (.author.login // "unknown")}' 2>/dev/null || true)
   else
     prs=$(gh pr list --repo "$repo" --state open \
       --json number,title,url,updatedAt,reviewDecision,createdAt,author \

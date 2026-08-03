@@ -24,7 +24,8 @@ fi
 ADR_DIR="docs/adr"
 mkdir -p "$ADR_DIR"
 
-LAST=$(ls "$ADR_DIR"/*.md 2>/dev/null | sort | tail -1 | grep -oP '\d+' | tail -1 || echo "0")
+# Use sed instead of grep -oP (macOS BSD grep doesn't support -P)
+LAST=$(ls "$ADR_DIR"/*.md 2>/dev/null | sort | tail -1 | sed -E 's/.*\/([0-9]+)-.*/\1/' || echo "0")
 NEXT=$((10#$LAST + 1))
 NUM=$(printf "%03d" "$NEXT")
 

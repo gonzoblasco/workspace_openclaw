@@ -25,8 +25,8 @@ if [[ ! -f "CHANGELOG.md" ]]; then
   exit 1
 fi
 
-# Capitalize type
-TYPE_CAPS=$(echo "$TYPE" | sed 's/.*/\u&/')
+# Capitalize type (macOS BSD sed does not support \u)
+TYPE_CAPS=$(echo "$TYPE" | awk '{print toupper(substr($0,1,1)) tolower(substr($0,2))}')
 
 # Insert entry under [Unreleased]
 sed -i '' "s/## \[Unreleased\]/## [Unreleased]\n\n### $TYPE_CAPS\n- $MESSAGE/" CHANGELOG.md

@@ -23,6 +23,19 @@ Maneja el ciclo completo de deploy para aplicaciones Next.js: pre-deploy validat
 5. Post-deploy health checks
 6. Si algo falla, guía de rollback
 
+## Tooling relacionado
+
+Este workflow delega la ejecución a [deploy-agent](../deploy-agent/SKILL.md):
+
+| Script | Uso |
+|---|---|
+| `deploy-agent/scripts/preflight.sh` | Verifica VERCEL_TOKEN, gh auth, proyecto configurado. Usar en Planning phase. |
+| `deploy-agent/scripts/validate.sh` | Build + tests + types + lint. Usar en Pre-deploy validation. |
+| `deploy-agent/scripts/deploy.sh` | Deploy a preview o production. Usar en paso 3. |
+| `deploy-agent/scripts/monitor.sh` | Monitorea build en Vercel hasta READY/ERROR. Usar en paso 4. |
+| `deploy-agent/scripts/health.sh` | Health checks post-deploy. Usar en paso 5. |
+| `deploy-agent/scripts/rollback.sh` | Rollback al último deploy bueno. Usar si falla. |
+
 ## Notas
 - El planning phase obligatorio atrapa errores antes de producción
 - Requiere VERCEL_TOKEN

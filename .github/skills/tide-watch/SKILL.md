@@ -21,6 +21,14 @@ Monitorea los context windows de sesiones de OpenClaw y alerta antes de que se l
 3. Cuando se alcanza un threshold, alerta y opcionalmente hace backup
 4. Si la sesión se llena, usar el backup para reanudar
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `context-anchor` | Generar briefing estructurado post-compactación o post-reset. |
+| `session-lifecycle/scripts/session-end.sh` | Guardar HANDOFF y cerrar sesión antes de que se llene. |
+| `knowledge-management/scripts/discover.sh` | Escanear archivos de memoria para recuperar contexto. |
+
 ## Notas
 - Sin dependencias externas
 - Thresholds configurables por canal

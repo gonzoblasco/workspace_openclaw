@@ -22,6 +22,13 @@ Evalúa la confiabilidad de una skill de ClawHub analizando reputación del publ
 4. Si el score es VERIFIED o TRUSTED, proceder con la instalación
 5. Si es UNTRUSTED o SUSPICIOUS, no instalar y buscar alternativa
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `engineering-governance/scripts/workflow-audit.sh` | Auditar skills internas del workspace por duplicaciones u obsolescencia. |
+| `engineering-governance/scripts/secret-scan.sh` | Escanear skills externas descargadas por credenciales hardcodeadas. |
+
 ## Notas
 - Evalúa publisher reputation, no solo código
 - Detecta permission drift entre versiones

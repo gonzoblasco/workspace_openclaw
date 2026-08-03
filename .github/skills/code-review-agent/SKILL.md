@@ -116,6 +116,16 @@ Generar reporte estructurado:
 }
 ```
 
+## Helper scripts del workflow base
+
+Este agente puede invocar los scripts de [review-quality](../review-quality/SKILL.md) y [engineering-governance](../engineering-governance/SKILL.md):
+
+| Script | Uso |
+|---|---|
+| `review-quality/scripts/review-pr.sh` | Corre build, tsc, lint, tests, y busca `console.log`/TODOs. Usar en Fase 3 (Automated Checks). |
+| `review-quality/scripts/security-scan.sh` | Escaneo de secrets, URLs hardcodeadas, eval, y `npm audit`. Usar en Fase 5 (Security Audit). |
+| `engineering-governance/scripts/secret-scan.sh` | Escaneo adicional de credenciales en el diff. Usar en Fase 5. |
+
 ### Fase 7: Gate
 - Si hay hallazgos críticos (security, data leak, auth bypass) → **blocked**
 - Si hay hallazgos mayores → **changes requested**

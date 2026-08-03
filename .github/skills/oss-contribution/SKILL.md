@@ -66,6 +66,19 @@ Contribución estratégica a repositorios externos con Spec-Driven Development.
 - OpenSpec specs as-built o delta
 - Reporte de estado de PRs abiertos
 
+## Helper Scripts
+
+Scripts en `skills/oss-contribution/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `pr-status-check.sh` | Muestra estado de PRs abiertos en un repo (checks, reviews, mergeable). Usar en Fase 6 (Post-PR Watch). |
+| `pr-watch.sh` | Monitorea PRs abiertos por 10 minutos detectando comentarios de bots, cambios solicitados y merges. Usar en Fase 6. |
+| `triage-issues.sh --repo org/repo` | Triaje de issues abiertos para encontrar oportunidades sin competencia. Usar en Fase 2 (Triaje). |
+| `setup-fork.sh --repo org/repo` | Prepara un fork local listo para contribuir. Usar en Fase 4 (Implementación). |
+
+Tambien ver [pr-batch-check.sh](../github/scripts/pr-batch-check.sh) para listar PRs propios en multiples repos.
+
 ## Related Skills
 
 - [Review & Quality](../review-quality): Para revisar PRs antes de enviar

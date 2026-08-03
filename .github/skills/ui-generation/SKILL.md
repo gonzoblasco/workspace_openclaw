@@ -98,8 +98,11 @@ Use `scripts/ui-toolkit-mcp.py` to call the stdio MCP server from OpenClaw:
 ```bash
 # List tools
 ~/.openclaw/workspace/skills/ui-generation/scripts/ui-toolkit-mcp.py list
+```
 
-# Generate a component
+If you modify either script, run `npm test` from the workspace root before committing.
+
+### Generate a component
 ~/.openclaw/workspace/skills/ui-generation/scripts/ui-toolkit-mcp.py call generate_component '{
   "description": "A responsive navbar with logo, links, and a hamburger menu",
   "framework": "react",

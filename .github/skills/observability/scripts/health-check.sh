@@ -18,7 +18,7 @@ echo "**Date:** $(date '+%Y-%m-%d %H:%M')" >> "$OUTPUT"
 echo "**Base URL:** $BASE_URL" >> "$OUTPUT"
 echo "" >> "$OUTPUT"
 
-PASS=***
+PASS=0
 FAIL=0
 
 check_endpoint() {
@@ -32,7 +32,7 @@ check_endpoint() {
   if [[ "$STATUS" == "$expected" ]]; then
     echo "   ✅ $STATUS"
     echo "| $name | 🟢 $STATUS |" >> "$OUTPUT"
-    PASS=*** + 1))
+    PASS=$((PASS + 1))
   else
     echo "   ❌ Got $STATUS, expected $expected"
     echo "| $name | 🔴 $STATUS (expected $expected) |" >> "$OUTPUT"

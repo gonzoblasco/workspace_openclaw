@@ -129,6 +129,14 @@ Reemplazar con `t('namespace.key')`.
 - Mantener traducciones concisas y consistentes
 - La clave es estable aunque el texto cambie
 
+## Helper Scripts
+
+Scripts en `skills/i18n-expert/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `i18n_audit.py --src src/ --locale path/to/en.json --locale path/to/es.json` | Detecta claves faltantes, keys huérfanas, strings hardcodeadas y problemas de pluralización. Usar en Fase 3 (Auditoría) y Fase 6 (Validación). |
+
 ---
 
 # Related Skills

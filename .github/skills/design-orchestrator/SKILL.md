@@ -62,6 +62,8 @@ Run the helper script to bootstrap it:
 ~/.openclaw/workspace/skills/design-orchestrator/scripts/init-design-workspace.sh projects/my-app
 ```
 
+If you modify any script in this skill, run `npm test` from the workspace root before committing.
+
 ## Workflows
 
 ### Design direction workflow

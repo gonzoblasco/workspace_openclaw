@@ -30,6 +30,15 @@ Esta propuesta extiende el skill existente adhd-assistant agregando:
 4. Durante el día, ajustar según energía real
 5. Al final, shutdown ritual y reflexión
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `adhd-assistant/scripts/pomodoro-timer.sh` | Timer para bloques de focus y transition buffers. |
+| `brw-plan-my-day` | Planificación basada en ritmo circadiano y GTD. |
+| `session-lifecycle/scripts/session-end.sh` | Guardar resumen del día y generar HANDOFF. |
+| `narrative-content/scripts/progress-tracker.sh` | Registrar progreso y rachas. |
+
 ## Notas
 - No reemplaza adhd-assistant, lo extiende
 - Basado en ADHD research, no en neurotypical productivity advice

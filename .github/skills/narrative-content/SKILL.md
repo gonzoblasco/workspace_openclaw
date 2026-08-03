@@ -30,18 +30,31 @@ Acá no hay culpa, no hay "debería escribir más", no hay comparación. Hay un 
 
 ¿Qué querés hacer hoy?
 
-| Opción | Para qué |
-|---|---|
-| **📝 Arrancar una historia nueva** | Tenés una idea y querés convertirla en un plan |
-| **📐 Estructurar lo que ya tenés** | Tenés escenas sueltas o un borrador desordenado |
-| **✍️ Escribir el próximo capítulo** | Ya sabés qué sigue, necesitás sentarte a escribir |
-| **🔍 Revisar lo que escribiste** | Terminaste algo y querés mejorarlo |
-| **📦 Exportar / publicar** | Querés pasar a DOCX, EPUB, o Markdown |
-| **🎯 Elegir un género** | No sabés qué género es el tuyo o querés explorar |
-| **🧊 Estoy trabado** | Writer's block, pérdida de rumbo, "esto es una mierda" |
-| **📚 Quiero aprender** | Querés mejorar tu oficio |
+| Opción | Para qué | Script recomendado |
+|---|---|---|
+| **📝 Arrancar una historia nueva** | Tenés una idea y querés convertirla en un plan | `outline-generator.sh` |
+| **📐 Estructurar lo que ya tenés** | Tenés escenas sueltas o un borrador desordenado | `outline-generator.sh` |
+| **✍️ Escribir el próximo capítulo** | Ya sabés qué sigue, necesitás sentarte a escribir | `progress-tracker.sh --add <palabras>` |
+| **🔍 Revisar lo que escribiste** | Terminaste algo y querés mejorarlo | `revision-check.sh` |
+| **📦 Exportar / publicar** | Querés pasar a DOCX, EPUB, o Markdown | `export-novel.py` |
+| **🎯 Elegir un género** | No sabés qué género es el tuyo o querés explorar | — |
+| **🧊 Estoy trabado** | Writer's block, pérdida de rumbo, "esto es una mierda" | — |
+| **📚 Quiero aprender** | Querés mejorar tu oficio | — |
 
 Elegí una opción y arrancamos.
+
+## Helper Scripts
+
+Scripts en `skills/narrative-content/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `outline-generator.sh` | Genera un outline estructurado a partir de una premisa. Usar en Fase 1-2. |
+| `progress-tracker.sh [--log file] [--add words] [--status]` | Registra palabras escritas por día y muestra racha. Usar en cada sesión de escritura. |
+| `revision-check.sh` | Verifica estructura de capítulos, arcos, consistencia. Usar en Fase 4. |
+| `export-novel.py` | Exporta la novela a Markdown, DOCX o EPUB. Usar en Fase 6. |
+| `character-sheet.sh` | Crea ficha de personaje. Usar en Fase 2-3. |
+
 
 ---
 

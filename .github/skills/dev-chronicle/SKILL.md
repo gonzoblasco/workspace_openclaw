@@ -22,6 +22,15 @@ Genera narrativas en prosa del trabajo del developer leyendo git history, sessio
 4. Revisar la narrativa generada
 5. Publicar o archivar según corresponda
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `release-management/scripts/generate-release-notes.sh` | Genera notas de release desde commits/tags. Usar para portfolio write-ups y sprints. |
+| `tech-docs/scripts/update-changelog.sh` | Inserta `[Unreleased]` en CHANGELOG.md. Usar cuando la narrativa derive en un release. |
+| `session-lifecycle/scripts/session-end.sh` | Genera cierre de sesión que alimenta las daily chronicles. |
+| `github/scripts/pr-batch-check.sh` | Lista PRs abiertos/mergeados para enriquecer el contexto. |
+
 ## Notas
 - Sintetiza git history + session transcripts + memory files
 - No requiere API keys externas

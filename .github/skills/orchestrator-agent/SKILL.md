@@ -138,3 +138,12 @@ ALTERNATIVA: [resolver directamente sin delegar]
 - Monitorear sin microgestionar
 - Si un agente se traba, evaluar antes de escalar
 - El Orchestrator no ejecuta tareas, las rutea
+
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `session-lifecycle/scripts/session-start.sh` | Cargar contexto y memoria al inicio de sesion. Usar en Fase 2. |
+| `session-lifecycle/scripts/session-end.sh` | Generar HANDOFF, self-reflection, y commit del workspace. Usar en Fase 7. |
+| `dev-workflow-orchestrator` | Pipeline estandarizado multi-agente para tareas complejas. |
+| `engineering-governance/scripts/test-skills.sh` | Validar scripts de skill si la tarea los toca. |

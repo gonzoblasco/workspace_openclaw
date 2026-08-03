@@ -175,6 +175,17 @@ gh api repos/owner/repo/pulls/55/comments -f body="Thanks, fixed!" -f in_reply_t
 - The MCP server can perform write operations (create/update/delete). For read-only safety, run with `--toolsets=default` or use `--read-only` flag on the binary if needed.
 - Prefer `gh` for destructive operations where you want explicit confirmation.
 
+## Helper Scripts
+
+Scripts en `skills/github/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `pr-batch-check.sh [--json] [--mine-only]` | Lista PRs abiertos en repos trackeados. Con `--mine-only` filtra por `gonzoblasco`. Usar para monitorear estado de contribuciones OSS. |
+| `github-mcp.py` | Wrapper del GitHub MCP server para operaciones avanzadas (security alerts, notifications, project boards). |
+
+Para triage de issues de un repo especifico, ver [oss-contribution/scripts/triage-issues.sh](../oss-contribution/scripts/triage-issues.sh).
+
 ## Related
 
 - `gh-issue-planner`: For planning projects into GitHub Issues (epics -> stories -> subtasks). ONLY for personal repos.

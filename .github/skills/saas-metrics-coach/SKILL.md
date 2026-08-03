@@ -104,6 +104,16 @@ Fix: ...
 - Máximo 3 issues prioritarios. Más de 3 paraliza.
 - Contexto cambia benchmarks. Confirmar target market antes de scorear.
 
+## Helper Scripts
+
+Scripts en `skills/saas-metrics-coach/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `metrics_calculator.py` | Calcula ARR, MRR growth, churn, CAC, LTV, LTV:CAC, payback, NRR. Usar en Fase 2 (Calculate Metrics). |
+| `quick_ratio_calculator.py` | Calcula Quick Ratio (expansion + new MRR / churned MRR). Usar para evaluar crecimiento neto. |
+| `unit_economics_simulator.py` | Simula escenarios cambiando variables clave. Usar en Fase 4 (Prioritize \& Recommend). |
+
 ---
 
 # Related Skills

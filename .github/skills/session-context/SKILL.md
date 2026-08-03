@@ -121,6 +121,14 @@ node skills/session-context/commands/resume.mjs [arg]
 Display output verbatim, then ask: `"Continue from here? Or has anything changed?"`
 If the user reports changes → run `save` immediately.
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `session-lifecycle/scripts/session-start.sh` | Ritual de inicio de sesion que carga `resume.mjs`. |
+| `session-lifecycle/scripts/session-end.sh` | Cierre de sesion que invoca `save.mjs` y genera HANDOFF.md. |
+| `knowledge-management/scripts/check-refs.sh` | Verificar links en HANDOFF.md generado. |
+
 ### `info [name|number]` — Quick Snapshot
 
 ```bash

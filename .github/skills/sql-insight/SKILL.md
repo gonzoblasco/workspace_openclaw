@@ -79,6 +79,14 @@ python3 scripts/sql_query_helper.py --db-path data.db explain "SELECT * FROM ord
 - Interpretación del plan EXPLAIN
 - Schema de base de datos en formato compacto
 
+## Helper Scripts
+
+Scripts en `skills/sql-insight/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `sql_query_helper.py` | Extrae schema, traduce NL->SQL, optimiza queries, y analiza EXPLAIN. Usar en todas las fases. |
+
 ---
 
 # Anti-Patrones Detectados

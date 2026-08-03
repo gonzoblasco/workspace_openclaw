@@ -86,6 +86,18 @@ Merge a main preservando historial (`--no-ff`). No eliminar la branch (referenci
 - PR con descripción estructurada
 - Epic cerrado con CHANGELOG y tags
 
+## Helper Scripts
+
+Scripts en `skills/task-execution/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `plan-task.sh` | Genera un plan de tarea estructurado desde un objetivo. Usar en Fase 2. |
+| `plan.sh` | Genera un plan de implementacion de epic/feature. Usar para tareas grandes. |
+| `close-epic.sh --epic E<N> --version <semver>` | Actualiza CHANGELOG, crea tag `E<N>-complete`, y actualiza STATUS.md. Usar en Fase 8. Requiere al menos un commit previo en el repo. |
+
+Si se tocan scripts de skill del workspace durante la tarea, correr `npm test` antes de commitear.
+
 ## Verify Implementation, Not Intent
 
 Cuando cambies cómo funciona algo:

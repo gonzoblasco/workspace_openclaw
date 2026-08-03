@@ -43,7 +43,8 @@ echo "|---------|----------|-------|"
 
 TOTAL=0
 for pattern in "${PATTERNS[@]}"; do
-  COUNT=$(git log "$BRANCH" --diff-filter=A --format="" -p 2>/dev/null | grep -cE "$pattern" || echo "0")
+  COUNT=$(git log "$BRANCH" --diff-filter=A --format="" -p 2>/dev/null | grep -cE "$pattern" 2>/dev/null || true)
+  COUNT=${COUNT:-0}
   if [[ "$COUNT" -gt 0 ]]; then
     echo "| \`$pattern\` | high | $COUNT |"
     TOTAL=$((TOTAL + COUNT))

@@ -5,7 +5,7 @@
 set -euo pipefail
 
 URL="${1:?Usage: $0 <url>}"
-PASS=***
+PASS=0
 FAIL=0
 
 echo "🔍 Running smoke tests on $URL"
@@ -20,7 +20,7 @@ check() {
   
   if [[ "$STATUS" == "$expected" ]]; then
     echo "  ✅ $name ($STATUS)"
-    PASS=*** + 1))
+    PASS=$((PASS + 1))
   else
     echo "  ❌ $name (got $STATUS, expected $expected)"
     FAIL=$((FAIL + 1))

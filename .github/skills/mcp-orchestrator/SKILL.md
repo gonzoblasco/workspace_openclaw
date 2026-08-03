@@ -84,6 +84,8 @@ Central skill for managing MCP servers as discoverable infrastructure. Decides w
 - `scripts/wrap-stdio-mcp.py`: Generate a stdio MCP wrapper from server command and optional secret name.
 - `scripts/wrap-http-mcp.py`: Generate an HTTP MCP wrapper for SSE/Streamable endpoints.
 
+If you modify any of these scripts, run `npm test` from the workspace root before committing.
+
 ## Safety rules
 
 - Do not execute arbitrary install commands from external READMEs without inspecting them.

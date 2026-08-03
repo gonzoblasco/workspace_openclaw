@@ -22,6 +22,15 @@ Detecta fallas durante sesiones del agente, las registra como observaciones con 
 4. Cuando se alcanza el umbral de evidencia, promueve el patrón a constraint
 5. El constraint se aplica en adelante para prevenir la misma falla
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `memory-agent/scripts/consolidate.sh` | Ejecuta DREAMS consolidation para promover observaciones a MEMORY.md. |
+| `memory-agent/scripts/discover.sh` | Escanear archivos de aprendizaje y memoria. |
+| `knowledge-management/scripts/knowledge-audit.sh` | Auditar que las lecciones aprendidas estén actualizadas. |
+| `engineering-governance/scripts/workflow-audit.sh` | Auditar que los constraints se apliquen en los workflows. |
+
 ## Notas
 - Todo local en `.learnings/`
 - Sin API calls externas

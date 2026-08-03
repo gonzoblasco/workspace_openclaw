@@ -20,6 +20,14 @@ Esta referencia se consulta durante el proceso de diseño:
 2. Durante el diseño, consultar alternativas concretas
 3. En code review, verificar que no haya caído en patrones genéricos
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `design-orchestrator/scripts/design-research.py` | Buscar referencias de diseño (colores, tipografía, patrones) que eviten defaults de IA. |
+| `design-orchestrator/scripts/visual-review.py` | Revisión visual con before/after para validar que la UI no se ve genérica. |
+| `accessibility-studio/scripts/contrast-report.py` | Validar que la paleta alternativa siga siendo accesible. |
+
 ## Anti-patrones principales
 - Tipografía: evitar Inter como default, usar font pairings con personalidad
 - Color: evitar paletas genéricas (blue/white/gray), usar paletas con intención

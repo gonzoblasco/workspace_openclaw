@@ -90,6 +90,17 @@ Si Gonzo dice `"iniciar sesión"`, `"brainstorming"`, `"aún no sé en qué proy
 
 ### 6. Commit — commit + push del workspace (después de HANDOFF y memory, no antes)
 
+## Helper Scripts
+
+Scripts en `skills/session-lifecycle/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `session-start.sh --project <name> --objective <obj>` | Carga HANDOFF previo y crea/actualiza el log diario en `memory/YYYY-MM-DD.md`. Usar al inicio de sesion con proyecto. |
+| `session-end.sh --project <name> --summary <text>` | Genera/actualiza HANDOFF, escribe cierre en el log diario, e intenta revisar PRs abiertos. Usar al cerrar sesion. |
+
+Si la sesion toca scripts de skill del workspace, correr `npm test` antes del commit final.
+
 ## Self-Reflection Post-Tarea
 
 Después de tareas significativas (multi-step, debugging, PRs, cambios de config), hacer una pausa rápida de evaluación:

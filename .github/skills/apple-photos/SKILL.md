@@ -22,6 +22,13 @@ Acceso terminal a macOS Photos.app mediante consultas directas a la base SQLite 
 4. Si se necesita exportar, especificar UUID y formato
 5. El archivo se exporta al directorio solicitado
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `sql-insight/scripts/sql_query_helper.py` | Optimizar y auditar consultas SQLite contra la DB de Photos. |
+| `db-readonly` | Ejecutar queries read-only seguras a la SQLite de Photos si se necesitan reportes. |
+
 ## Notas
 - Requiere Full Disk Access para Terminal en System Settings > Privacy & Security
 - Las consultas SQLite directas son muy rápidas (<100ms)

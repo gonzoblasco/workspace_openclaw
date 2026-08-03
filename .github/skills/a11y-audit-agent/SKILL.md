@@ -116,6 +116,16 @@ Si se solicita Fix Mode:
 - Si hay patrones recurrentes, promover a MEMORY.md
 - Actualizar knowledge base del proyecto
 
+## Helper scripts del workflow base
+
+Este agente delega la ejecución técnica a los scripts de [accessibility-studio](../accessibility-studio/SKILL.md):
+
+| Script | Uso |
+|---|---|
+| `accessibility-studio/scripts/a11y-audit.sh <path>` | Audit automático con axe-core/Lighthouse/WAVE. Usar en Fase 2. |
+| `accessibility-studio/scripts/contrast-report.py` | Reporte de contraste WCAG. Usar cuando el input sea una paleta de colores. |
+| `accessibility-studio/scripts/a11y-ci.sh` | Validación en CI. Usar si el audit es parte de un pipeline. |
+
 ## Integración con otros agentes
 
 ### Con a11y-fixer (proyecto companion)

@@ -195,6 +195,14 @@ Configurá el simulacro:
 
 - [question-generator.py](./scripts/question-generator.py) — Genera preguntas de práctica según rol, seniority y target
 
+## Helper Scripts
+
+Scripts en `skills/mock-interview-drill/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `question-generator.py` | Genera preguntas de entrevista según rol, seniority y target. Usar en "Antes de empezar" y entre simulacros para variar el banco de preguntas. |
+
 ## Related Skills
 
 - [CV Tailor](../cv-tailor): Para optimizar CV antes de las entrevistas

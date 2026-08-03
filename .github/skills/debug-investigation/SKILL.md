@@ -78,6 +78,19 @@ Pre-Deploy QA
 
 ---
 
+# Helper Scripts
+
+Scripts en `skills/debug-investigation/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `analyze_logs.py` | Analiza logs buscando patrones y genera resumen. Usar en Fase 4 (Log Analysis). |
+| `log-collector.sh` | Recolecta logs de aplicacion y system info. Usar cuando se necesita contexto del entorno. |
+| `reproduce-check.sh` | Verifica que los pasos de reproduccion sean validos y ejecutables. Usar en Fase 2. |
+| `bisect.sh <good-commit> [repro-script]` | Git bisect automatizado para encontrar el primer commit malo. Usar en Fase 5 cuando se sospecha regresion. |
+
+Para inspeccion de patrones en codigo, ver [debug-agent/scripts/inspect.sh](../debug-agent/scripts/inspect.sh).
+
 # Fases
 
 ## 1. Intake

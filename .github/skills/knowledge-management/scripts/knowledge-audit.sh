@@ -66,12 +66,14 @@ echo "## Orphan Documents" >> "$OUTPUT_FILE"
 echo "" >> "$OUTPUT_FILE"
 
 # Check for .knowledge/ dirs without active projects
-for kdir in projects/*/.knowledge 2>/dev/null; do
+shopt -s nullglob
+for kdir in projects/*/.knowledge; do
   project=$(dirname "$(dirname "$kdir")")
   if [[ ! -f "$project/STATUS.md" ]]; then
     echo "- 🔴 $project/.knowledge/ (no STATUS.md)" >> "$OUTPUT_FILE"
   fi
 done
+shopt -u nullglob
 
 echo "" >> "$OUTPUT_FILE"
 echo "✅ Audit complete: $OUTPUT_FILE"

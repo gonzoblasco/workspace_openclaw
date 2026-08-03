@@ -23,6 +23,14 @@ Convierte una descripción de tarea en criterios pass/fail explícitos, spawnéa
 5. Si falla, feedback loop con accumulated context
 6. Cuando todo pasa, entregar resultado
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `engineering-governance/scripts/test-skills.sh` | Validar scripts que el worker/judge generen para el workspace. |
+| `review-quality/scripts/review-pr.sh` | Revisión de calidad del output cuando es código. |
+| `qa-patrol` | QA automatizado adicional para verificar criterios de aceptación. |
+
 ## Notas
 - Usar modo interactivo para tareas críticas (auth, payments, data models)
 - Modo batch solo para tareas bien definidas y de bajo riesgo

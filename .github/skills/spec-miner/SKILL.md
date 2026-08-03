@@ -98,5 +98,14 @@ One-sentence description.
 ## Integration
 
 - Pair with `agent-workflow` to plan refactors from extracted specs.
+
+## Helper scripts relacionados
+
+| Skill / Script | Uso |
+|---|---|
+| `tech-docs/scripts/analyze_codebase.py` | Analiza el codebase y extrae patrones para complementar el spec. Usar en pasos 2-4. |
+| `product-discovery/scripts/generate-openspec.sh` | Genera un OpenSpec formal desde el spec extraido. Usar en el paso 8. |
+| `knowledge-management/scripts/knowledge-graph.py` | Mapea relaciones entre documentos y modulos. Usar en paso 6. |
+
 - Pair with `code-review-agent` to validate that changes match the spec.
 - Pair with `architecture-designer` for larger restructuring.

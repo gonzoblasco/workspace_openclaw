@@ -305,6 +305,15 @@ La simplicidad sigue siendo un requisito de rendimiento.
 
 El mejor código es el que no necesita ejecutarse.
 
+## Helper Scripts
+
+Scripts en `skills/performance-optimization/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `benchmark.sh` | Corre benchmarks automatizados y compara antes/después. Usar en Fase 1 (Baseline) y Fase 7 (Verify). |
+| `lighthouse-check.sh <url>` | Corre Lighthouse CI contra una URL y genera reporte. Usar en Fase 2 (Profiling) y Fase 7. |
+
 ## Related Skills
 
 - [Observability](../observability): Para medir y monitorear performance

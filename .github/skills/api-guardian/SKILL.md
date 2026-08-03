@@ -45,3 +45,12 @@ Especialista en API lifecycle y detección de breaking changes. Analiza cambios 
 - Sin dependencias externas
 - Usa grep/glob para consumer discovery
 - Clasificación automática de breaking changes
+
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `review-quality/scripts/security-scan.sh` | Escanea secrets y hardcoded URLs que puedan haber quedado expuestos en endpoints. |
+| `engineering-governance/scripts/secret-scan.sh` | Escaneo adicional de credenciales en archivos de API. |
+| `pre-deploy-qa/scripts/pre-deploy-check.sh` | Valida endpoints después de deployar cambios de API. |
+| `pre-deploy-qa/scripts/smoke-test.sh` | Smoke test de endpoints críticos. |

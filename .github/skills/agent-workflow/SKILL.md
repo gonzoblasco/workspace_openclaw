@@ -270,6 +270,16 @@ When any bug, test failure, or unexpected behavior appears:
 - `read/write/edit` — manage docs and code.
 - `skill_workshop` — if a reusable workflow pattern emerges, capture it as a skill.
 
+## Skill tooling gates
+
+When this workflow modifies or creates scripts under `skills/*/scripts/`, run the workspace test suite before committing:
+
+```bash
+npm test
+```
+
+This runs `test-skills.sh`, bats, and pytest. The pre-commit hook enforces it for local commits; CI enforces it for pushes.
+
 ## Integration with other skills
 
 - `gh-issue-planner` — create implementation plans from GitHub issues.

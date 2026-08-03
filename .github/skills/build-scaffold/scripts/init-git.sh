@@ -21,6 +21,7 @@ echo "✅ Git initialized"
 
 # .gitignore
 cat > .gitignore << 'GITIGNORE'
+.knowledge/
 node_modules/
 .next/
 dist/

@@ -84,6 +84,17 @@ npm run lint       # sin errores
 - Build + typecheck + tests verdes
 - CHANGELOG actualizado
 
+## Helper Scripts
+
+Scripts en `skills/vibe-code-cleanup/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `diagnose-codebase.sh [--dir src] [--output file]` | Scan rapido de deuda tecnica: `any`, `console.log`, TODOs, secrets, eval, funciones largas, lineas totales. Genera un reporte Markdown. Usar en la fase 1 (Diagnostico). |
+| `verify-cleanup.sh` | Corre build, tsc, tests y lint de forma tolerante. Usar en la fase 6 (Verificacion) cuando el proyecto no tiene todas las herramientas configuradas. |
+
+Si el cleanup modifica scripts de skill del workspace, correr `npm test` antes de commitear.
+
 ## Related Skills
 
 - [Review & Quality](../review-quality): Para revisar el código limpio antes de mergear

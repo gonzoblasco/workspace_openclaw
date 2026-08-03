@@ -42,6 +42,13 @@ Workshop sistemático de naming que genera 8 candidatos de nombre usando método
 - Top recommendation con justificación
 - Name quality check (cross-language safety, trademarkability, pronounceability)
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `copy-editing/scripts/word-count.sh` | Verificar longitud y legibilidad de taglines asociadas. |
+| `copy-editing/scripts/readability-check.sh` | Medir legibilidad de explicaciones de marca. |
+
 ## Related Skills
 
 - [Product Discovery](../product-discovery): Para definir producto antes de nombrarlo

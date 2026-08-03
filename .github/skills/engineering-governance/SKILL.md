@@ -223,6 +223,57 @@ Nunca aplicar cambios automáticamente.
 
 ---
 
+# Quality Gates para Skills
+
+Todo cambio a un script de skill debe pasar por los siguientes gates antes de llegar a `main`:
+
+## 1. Syntax Check
+
+`./scripts/test-skills.sh` verifica que todos los `.sh` pasen `bash -n` y todos los `.py` pasen `python3 -m py_compile`.
+
+- 75 bash scripts y 28 python scripts se chequean en segundos.
+- Corre en el pre-commit hook y en CI.
+
+## 2. Functional Tests
+
+`npm test` corre:
+
+- `test-skills.sh` (syntax)
+- `npx bats tests/bash/` — 17 tests funcionales sobre scripts criticos
+- `pytest tests/python/` — 8 tests funcionales sobre scripts Python criticos
+
+Los tests viven en `tests/bash/` y `tests/python/`. Cuando agregas o modificas un script con riesgo de regresion, agrega un test.
+
+## 3. Pre-commit Hook
+
+`.git/hooks/pre-commit` corre syntax + bats + pytest. Si falla, el commit no se crea.
+
+Instalacion:
+
+```bash
+cp scripts/pre-commit.template .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+## 4. CI en GitHub Actions
+
+`.github/workflows/skills-ci.yml` corre el mismo `npm test` en Ubuntu para cada push/PR.
+
+## Cuando exigir tests
+
+- Si el script usa `eval`, pipes con `grep -c`, `date` macOS-specific, o aritmetica con contadores.
+- Si el script toca filesystem, git, o hace parsing de archivos.
+- Si el script es usado por otra skill en su flujo normal.
+
+## Anti-patrones documentados
+
+- `eval "$cmd"` — reemplazar por funciones con nombre.
+- `grep -c ... || echo "0"` — produce `0\n0`; usar `|| true` + `${VAR:-0}`.
+- `sed 's/.*/\u&/'` — GNU-only; usar `awk` o `perl`.
+- `find A -name B -o -name C -exec ...` — aplica `-exec` solo al segundo `-name`; usar `\( ... \)`.
+- `PASS=***` o `PASS=*** + 1))` — rompe contadores; inicializar a `0` y usar `$((PASS + 1))`.
+- `sed -i ''` — macOS-only; usar `sed -i.bak` + `rm .bak`.
+
 # Decisiones
 
 Puede:
