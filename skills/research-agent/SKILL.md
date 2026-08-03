@@ -155,6 +155,15 @@ Generar:
 - El Governance Agent puede auditar la calidad de los researches
 - Detectar patrones: mismos temas investigados, mismas fuentes
 
+## Helper scripts del workflow base
+
+Este agente puede invocar los scripts de [research-spike](../research-spike/SKILL.md):
+
+| Script | Uso |
+|---|---|
+| `research-spike/scripts/compare-alternatives.sh` | Compara alternativas con scoring ponderado. Usar en Fase 6 (Analysis). |
+| `research-spike/scripts/generate-spike.sh` | Genera la estructura de un spike documentado. Usar en Fase 7 (Recommendation) o al inicio. |
+
 ## Structured Escalation
 
 ```

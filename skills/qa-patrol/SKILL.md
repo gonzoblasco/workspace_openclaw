@@ -22,6 +22,17 @@ Ejecuta tests automatizados de browser contra aplicaciones web: smoke checks, au
 4. Corregir issues encontrados
 5. Re-ejecutar para verificar fixes
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `pre-deploy-qa/scripts/pre-deploy-check.sh` | Smoke tests de endpoints, build, npm audit. Usar como gate previo al deploy. |
+| `pre-deploy-qa/scripts/smoke-test.sh <url>` | Smoke tests rapidos de endpoints criticos. Usar en el paso 2. |
+| `observability/scripts/health-check.sh` | Verifica salud basica del sistema. Usar en el paso 2. |
+| `engineering-governance/scripts/secret-scan.sh` | Escanear hardcoded API keys o secrets. Usar para static code analysis. |
+| `review-quality/scripts/security-scan.sh` | Security scan adicional del codigo. Usar para static code analysis. |
+| `accessibility-studio/scripts/a11y-audit.sh` | Validar accesibilidad en paginas testeadas. |
+
 ## Notas
 - Corre 100% local, no envía datos a externos
 - Cubre smoke, auth, payments, static analysis, data integrity

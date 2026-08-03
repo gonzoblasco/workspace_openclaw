@@ -48,6 +48,8 @@ MCP endpoint: `http://127.0.0.1:9877/mcp`
 
 Helper script: `/tmp/godot-mcp.sh` (maneja sesión MCP automáticamente).
 
+If this skill ever adds scripts under `skills/godot-mcp/scripts/`, run `npm test` from the workspace root and use `test-skills.sh` to validate them before committing.
+
 ## Cuándo usar el MCP vs el editor
 
 - **MCP**: verificación rápida, lectura de estado, validación, operaciones repetitivas.

@@ -204,6 +204,17 @@ No perder el conocimiento generado.
 
 ---
 
+## Helper Scripts
+
+Scripts en `skills/research-spike/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `compare-alternatives.sh` | Compara alternativas con scoring ponderado. Usar en Fase 6 (Analysis). |
+| `generate-spike.sh` | Genera el esqueleto de SPIKE_REPORT.md. Usar en Fase 7 (Report). |
+
+---
+
 # Outputs
 
 SPIKE_REPORT.md

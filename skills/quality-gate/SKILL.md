@@ -76,3 +76,14 @@ BOTH APPROVED     ANY BLOCKED
 - Sin dependencias externas
 - Corre en paralelo para velocidad
 - Decision matrix clara para cada combinación de resultados
+
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `review-quality/scripts/review-pr.sh` | Build, tests, lint, typecheck, y busqueda de `console.log`. Usar para @validator. |
+| `review-quality/scripts/security-scan.sh` | Security scan del diff. Usar para @validator. |
+| `accessibility-studio/scripts/a11y-audit.sh` | Auditoria WCAG. Usar para @tester. |
+| `performance-optimization/scripts/lighthouse-check.sh` | Core Web Vitals. Usar para @tester. |
+| `pre-deploy-qa/scripts/pre-deploy-check.sh` | Validacion post-merge pre-deploy. |
+| `engineering-governance/scripts/test-skills.sh` | Si el gate modifica scripts de skill del workspace. |

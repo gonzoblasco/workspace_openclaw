@@ -151,3 +151,14 @@ ALTERNATIVA: [postergar la decisión, implementar cambio menor]
 - Las decisiones deben quedar documentadas
 - La gobernanza existe para reducir la entropía del sistema
 - Todo cambio requiere aprobación humana
+
+## Helper scripts del workflow base
+
+Este agente puede invocar los scripts de [engineering-governance](../engineering-governance/SKILL.md):
+
+| Script | Uso |
+|---|---|
+| `engineering-governance/scripts/workflow-audit.sh` | Audita workflows del ecosistema. Usar en Fase 1 y Fase 2. |
+| `engineering-governance/scripts/secret-scan.sh` | Escanea credenciales hardcodeadas. Usar en Fase 4 (Knowledge Consistency). |
+| `engineering-governance/scripts/detect-duplicates.sh` | Detecta documentación duplicada. Usar en Fase 4. |
+| `engineering-governance/scripts/generate-governance-report.py` | Genera reporte de gobernanza. Usar en Fase 7 (Report). |
