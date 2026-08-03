@@ -22,6 +22,15 @@ Escanea codebases TypeScript en busca de anti-patrones de error handling: empty 
 4 Si queda trabajo pendiente, el estado persiste para la próxima sesión
 5. Generar reporte final
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `vibe-code-cleanup/scripts/diagnose-codebase.sh` | Scan general de deuda técnica antes de enfocarse en error handling. |
+| `vibe-code-cleanup/scripts/verify-cleanup.sh` | Validar que los fixes pasen build, typecheck, lint y tests. |
+| `review-quality/scripts/review-pr.sh` | Revisión automática del PR resultante. |
+| `engineering-governance/scripts/workflow-audit.sh` | Detectar otros anti-patrones a nivel de workflow. |
+
 ## Notas
 - Solo cubre TypeScript
 - El approval workflow previene cambios no deseados

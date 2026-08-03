@@ -68,6 +68,28 @@ User → @researcher → Report
 9. **CHANGELOG antes del push** — Siempre actualizar
 10. **Decisiones documentadas** — Cada trade-off debe registrarse
 
+## Tooling de calidad
+
+Cuando los agentes de este pipeline toquen scripts de skill del workspace, correr:
+
+```bash
+npm test
+```
+
+Esto ejecuta `test-skills.sh`, bats y pytest. Es el mismo gate que usan el pre-commit hook y CI.
+
+Tambien ver:
+
+| Skill / Script | Uso en este pipeline |
+|---|---|
+| `engineering-governance/scripts/test-skills.sh` | Syntax check de todos los scripts de skill. |
+| `scripts/pre-commit.template` | Template del hook que bloquea commits si fallan los tests. |
+| `.github/workflows/skills-ci.yml` | CI que corre `npm test` en Ubuntu. |
+| `engineering-governance/scripts/workflow-audit.sh` | Audita que los workflows se ejecuten según estas reglas. |
+| `build-scaffold/scripts/init-git.sh` | Inicializa nuevos proyectos con `.knowledge/` y `.gitignore` correctos. |
+| `tech-docs/scripts/update-changelog.sh` | Inserta entrada `[Unreleased]` (regla 9). |
+| `github/scripts/pr-batch-check.sh` | Verifica estado de PRs abiertos en repos trackeados. |
+
 ## Notas
 - Orquesta skills existentes, no las reemplaza
 - Handoffs explícitos eliminan ambigüedad

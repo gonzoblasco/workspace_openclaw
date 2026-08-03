@@ -101,3 +101,12 @@ For larger systems:
 - Pair with `openspec` to derive implementation specs from architecture.
 - Pair with `agent-workflow` for TDD execution.
 - Pair with `deploy-agent` to realize deployment decisions.
+
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `tech-docs/scripts/generate-adr.sh "Titulo"` | Genera un ADR numerado en `docs/adr/` con el formato estandar. Usar en el paso 5 (Document). |
+| `tech-docs/scripts/analyze_codebase.py` | Extrae informacion del codebase para informar decisiones arquitectonicas. Usar en el paso 1 (Frame the decision). |
+| `product-discovery/scripts/generate-openspec.sh` | Deriva especificacion de implementacion desde la arquitectura. Usar con `openspec`. |
+| `engineering-governance/scripts/detect-duplicates.sh` | Verifica que no existan ADRs duplicados o contradictorios. Usar antes de finalizar. |
