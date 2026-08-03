@@ -107,6 +107,16 @@ Generar KNOWLEDGE_REPORT.md con:
 - Propuestas de consolidación
 - Knowledge Graph
 
+## Helper Scripts
+
+Scripts en `skills/memory-agent/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `consolidate.sh` | Ejecuta DREAMS consolidation: lee daily logs recientes, actualiza MEMORY.md y archiva logs viejos. Usar en Fase 5. |
+| `discover.sh` | Escanea el workspace y genera un Knowledge Map con documentos existentes, faltantes y vacíos. Usar en Fase 1. |
+| `freshness.sh` | Clasifica documentos por vigencia (green/yellow/red). Usar en Fase 3. |
+
 ## Integración con otros agentes
 
 ### Desde Debug Agent

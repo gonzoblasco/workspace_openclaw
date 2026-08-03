@@ -338,6 +338,16 @@ Nunca:
 
 ¿Podemos demostrar que el sistema mejora?
 
+## Helper Scripts
+
+Scripts en `skills/observability/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `health-check.sh` | Verifica salud basica del sistema: servicios, endpoints, discos. Usar en Fase 4 (Health) y en checks periodicos. |
+| `metrics-report.sh` | Genera un reporte Markdown de metricas clave. Usar en Fase 6 (Reporting). |
+| `dashboard-check.py` | Valida que dashboards tengan queries correctas y alertas asociadas. Usar en Fase 5 (Dashboards). |
+
 ## Related Skills
 
 - [Performance Optimization](../performance-optimization): Para optimizar basado en métricas

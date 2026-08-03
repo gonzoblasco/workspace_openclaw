@@ -253,6 +253,18 @@ Knowledge Graph
 
 ---
 
+## Helper Scripts
+
+Scripts en `skills/knowledge-management/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `check-refs.sh` | Verifica que los links internos de la documentación existan y no estén rotos. Usar en Fase 1 (Discovery) y antes de mergear docs. |
+| `knowledge-audit.sh` | Audita archivos de conocimiento vacíos, duplicados, sin owner, o sin actualizaciones recientes. Genera reporte. Usar en Fase 1 y Fase 5 (Maintenance). |
+| `knowledge-graph.py` | Construye un grafo de relaciones entre documentos. Usar en Fase 1 para entender dependencias. |
+
+---
+
 # Decisiones
 
 Puede:

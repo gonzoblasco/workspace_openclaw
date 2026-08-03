@@ -66,13 +66,9 @@ Use `scripts/generate-image.sh` for one-off generations from inside `exec`:
   "A flat vector hero image for a fintech website, minimal, no text" \
   /tmp/fintech_hero.png \
   1792x1024
-
-# Generate a game sprite
-~/.openclaw/workspace/skills/image-generation/scripts/generate-image.sh openai \
-  "A 64x64 pixel art red potion bottle, transparent background, game sprite" \
-  projects/my-game/assets/generated/potion_red.png \
-  1024x1024
 ```
+
+If you modify this skill's script, run `npm test` from the workspace root before committing.
 
 ## Best practices
 
