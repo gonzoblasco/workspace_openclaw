@@ -71,6 +71,13 @@ El mirror tuxfamily.org falló por timeout. Probar GitHub releases o mirror alte
 - Se corrigieron 3 bugs: cache con GHA artifacts, octokit nativo, entry point guard
 - Pendiente: redefinir proyecto, agregar features
 
+### daily-ink (nuevo 2026-08-02)
+- PWA de prompts de escritura diarios, Vite + vanilla TS + vite-plugin-pwa
+- Sin backend, sin framework UI, todo en localStorage. 60 prompts embebidos, selección determinística por fecha
+- Folder en `projects/daily-ink/`, listo para `git init` cuando Gonzo decida
+- Stack: Vite + vite-plugin-pwa + Biome + simple-git-hooks + GH Actions deploy
+- Diferenciador: nada de accesibilidad/devtooling/IA. Personal creative tool.
+
 ### create-stack-next
 - Scaffolder opinado para Next.js 15. Publicado en npm. Diferenciación real vs create-next-app.
 - **Estado:** vivo, no tocar. Necesita evolución, no reset.
