@@ -41,8 +41,12 @@ for key in "${!heading_map[@]}"; do
   skills="${heading_map[$key]}"
   count=$(echo "$skills" | grep -o "," | wc -l | tr -d ' ')
   if [[ "$count" -ge 2 ]]; then
-    # Get original heading text
-    heading_text=$(grep -E "^## " "$SKILLS_DIR"/*/SKILL.md 2>/dev/null | grep -i "$key" | head -1 | sed 's/.*## //')
+    # Get a sample of original heading text from one of the duplicate skills
+    sample_skill=$(echo "$skills" | tr ',' '\n' | sed 's/^ *//;s/ *$//' | grep -v '^$' | head -1)
+    heading_text=$(grep -m1 "^## " "$SKILLS_DIR/$sample_skill/SKILL.md" 2>/dev/null | sed 's/^## //' | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z' || true)
+    if [[ -z "$heading_text" ]]; then
+      heading_text="$key"
+    fi
     echo "| $heading_text | ${skills%, } |" >> "$OUTPUT_FILE"
   fi
 done

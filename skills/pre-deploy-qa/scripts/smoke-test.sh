@@ -20,7 +20,7 @@ check() {
   
   if [[ "$STATUS" == "$expected" ]]; then
     echo "  ✅ $name ($STATUS)"
-    PASS=*** + 1))
+    PASS=$((PASS + 1))
   else
     echo "  ❌ $name (got $STATUS, expected $expected)"
     FAIL=$((FAIL + 1))

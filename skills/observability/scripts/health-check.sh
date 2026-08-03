@@ -32,7 +32,7 @@ check_endpoint() {
   if [[ "$STATUS" == "$expected" ]]; then
     echo "   ✅ $STATUS"
     echo "| $name | 🟢 $STATUS |" >> "$OUTPUT"
-    PASS=*** + 1))
+    PASS=$((PASS + 1))
   else
     echo "   ❌ Got $STATUS, expected $expected"
     echo "| $name | 🔴 $STATUS (expected $expected) |" >> "$OUTPUT"

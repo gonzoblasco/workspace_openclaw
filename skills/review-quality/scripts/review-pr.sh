@@ -28,7 +28,7 @@ check() {
   if eval "$cmd" 2>/dev/null; then
     echo "    ✅ Passed"
     echo "| $name | 🟢 Pass |" >> "$OUTPUT"
-    PASS=*** + 1))
+    PASS=$((PASS + 1))
   else
     echo "    ❌ Failed"
     echo "| $name | 🔴 Fail |" >> "$OUTPUT"

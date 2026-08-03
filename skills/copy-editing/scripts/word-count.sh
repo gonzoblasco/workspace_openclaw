@@ -26,7 +26,7 @@ CHARS_SPACES=$(echo "$TEXT" | wc -c | tr -d ' ')
 SENTENCES=$(echo "$TEXT" | tr '\n' ' ' | grep -oE '[^.!?]+[.!?]' | wc -l | tr -d ' ')
 
 # Paragraph count
-PARAGRAPHS=$(echo "$TEXT" | grep -cE '^[[:space:]]*$' || echo 0)
+PARAGRAPHS=$(grep -cE '^[[:space:]]*$' "$FILE" || true)
 PARAGRAPHS=$((PARAGRAPHS + 1))
 
 # Average words per sentence

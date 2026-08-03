@@ -17,7 +17,7 @@ check() {
   echo "  $name..."
   if eval "$cmd" 2>&1 | tail -3; then
     echo "    ✅ Passed"
-    PASS=*** + 1))
+    PASS=$((PASS + 1))
   else
     echo "    ❌ Failed"
     FAIL=$((FAIL + 1))

@@ -92,11 +92,12 @@ if [[ "$ACTION" == "status" ]]; then
   echo ""
   
   # Count total words
-  TOTAL_WORDS=$(grep -E '^\| [0-9]' "$LOG_FILE" 2>/dev/null | awk -F'|' '{sum += $3} END {print sum}' || echo "0")
+  TOTAL_WORDS=$(grep -E '^\| [0-9]' "$LOG_FILE" 2>/dev/null | awk -F'|' 'NF>=4 {sum += $3} END {print sum+0}')
   TOTAL_WORDS=${TOTAL_WORDS:-0}
-  
+
   # Count sessions
-  SESSIONS=$(grep -cE '^\| [0-9]' "$LOG_FILE" 2>/dev/null || echo "0")
+  SESSIONS=$(grep -cE '^\| [0-9]' "$LOG_FILE" 2>/dev/null | head -1)
+  SESSIONS=${SESSIONS:-0}
   
   # Calculate streak
   STREAK=0
