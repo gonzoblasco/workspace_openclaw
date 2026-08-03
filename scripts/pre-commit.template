@@ -1,0 +1,13 @@
+#!/bin/sh
+# pre-commit hook for workspace_openclaw
+# Runs syntax checks on skill scripts before every commit.
+#
+# Install:
+#   cp scripts/pre-commit.template .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# This hook is intentionally lightweight: it only checks syntax and imports,
+# it does not run functional tests.
+
+SCRIPT_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+"${SCRIPT_DIR}/scripts/test-skills.sh" || exit 1

@@ -92,7 +92,7 @@ if [[ "$ACTION" == "status" ]]; then
   echo ""
   
   # Count total words
-  TOTAL_WORDS=$(grep -E '^\| [0-9]' "$LOG_FILE" 2>/dev/null | awk -F'|' 'NF>=4 {sum += $3} END {print sum+0}')
+  TOTAL_WORDS=$(grep -E '^\| [0-9]' "$LOG_FILE" 2>/dev/null | awk -F'|' 'NF>=4 {gsub(/[[:space:]]/, "", $3); sum += $3} END {print sum+0}')
   TOTAL_WORDS=${TOTAL_WORDS:-0}
 
   # Count sessions
