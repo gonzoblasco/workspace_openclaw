@@ -30,10 +30,10 @@ git bisect start HEAD "$GOOD_COMMIT" 2>&1
 # Ejecutar test en cada paso
 git bisect run sh -c "$TEST_COMMAND" 2>&1 | tee /tmp/bisect_output.txt
 
-BISECT_RESULT=$(tail -5 /tmp/bisect_output.txt)
+BISECT_RESULT=$(tail -15 /tmp/bisect_output.txt)
 
 # Extraer el primer commit malo
-FIRST_BAD=$(echo "$BISECT_RESULT" | grep -oP '([a-f0-9]{7,40}) is the first bad commit' | head -1 | awk '{print $1}')
+FIRST_BAD=$(echo "$BISECT_RESULT" | sed -nE 's/([a-f0-9]{7,40}) is the first bad commit.*/\1/p' | head -1)
 
 if [ -n "$FIRST_BAD" ]; then
   AUTHOR=$(git log -1 --format="%an" "$FIRST_BAD" 2>/dev/null)

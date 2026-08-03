@@ -24,8 +24,8 @@ echo "**Source:** $SRC_DIR" >> "$OUTPUT"
 echo "" >> "$OUTPUT"
 
 # File counts
-TS_FILES=$(find "$SRC_DIR" -name "*.ts" -o -name "*.tsx" 2>/dev/null | wc -l | tr -d ' ')
-TOTAL_LINES=$(find "$SRC_DIR" -name "*.ts" -o -name "*.tsx" -exec cat {} + 2>/dev/null | wc -l | tr -d ' ')
+TS_FILES=$(find "$SRC_DIR" \( -name "*.ts" -o -name "*.tsx" \) 2>/dev/null | wc -l | tr -d ' ')
+TOTAL_LINES=$(find "$SRC_DIR" \( -name "*.ts" -o -name "*.tsx" \) -exec cat {} + 2>/dev/null | wc -l | tr -d ' ')
 
 echo "## Overview" >> "$OUTPUT"
 echo "" >> "$OUTPUT"
@@ -43,15 +43,15 @@ check_issue() {
   local name="$1"
   local pattern="$2"
   local severity="$3"
-  local count=$(grep -r "$pattern" "$SRC_DIR" --include="*.ts" --include="*.tsx" 2>/dev/null | wc -l | tr -d ' ')
+  local count=$(grep -riE "$pattern" "$SRC_DIR" --include="*.ts" --include="*.tsx" 2>/dev/null | wc -l | tr -d ' ')
   echo "| $name | $count | $severity |" >> "$OUTPUT"
   echo "$count"
 }
 
 ANY_COUNT=$(check_issue "any types" '\bany\b' "🔴 High")
 CONSOLE_COUNT=$(check_issue "console.log" 'console\.log' "🟢 Low")
-TODO_COUNT=$(check_issue "TODOs/FIXMEs" 'TODO\|FIXME' "🟡 Medium")
-SECRETS_COUNT=$(check_issue "Potential secrets" 'password\|secret\|api_key\|auth_token' "🔴 High")
+TODO_COUNT=$(check_issue "TODOs/FIXMEs" 'TODO|FIXME' "🟡 Medium")
+SECRETS_COUNT=$(check_issue "Potential secrets" 'password|secret|api_key|auth_token' "🔴 High")
 EVAL_COUNT=$(check_issue "eval() usage" '\beval\b' "🔴 High")
 
 echo "" >> "$OUTPUT"
