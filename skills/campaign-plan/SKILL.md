@@ -52,6 +52,14 @@ Generar un brief completo de campaña de marketing con objetivos, audiencia, men
 - Content assets list
 - KPI targets and tracking plan
 
+## Helper Scripts
+
+Scripts en `skills/campaign-plan/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `content-calendar-generator.sh [--output file]` | Genera un calendario de contenido Markdown a partir de prompts interactivos. Usar en Fase 2, punto 5 (Content Calendar). |
+
 ## Related Skills
 
 - [Copy Editing](../copy-editing): Para editar copy de la campaña

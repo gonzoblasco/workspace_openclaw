@@ -113,6 +113,14 @@ Cada entry rewrite debe:
 - ATS compatibility scorecard
 - CV optimizado listo para postular
 
+## Helper Scripts
+
+Scripts en `skills/cv-tailor/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `keyword-matcher.py <cv.txt> <jd.txt>` | Compara keywords del CV contra la descripción del puesto y genera matriz de cobertura. Usar en Fase 2 (Keyword Match Analysis). |
+
 ---
 
 # Principios

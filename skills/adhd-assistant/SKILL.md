@@ -105,7 +105,13 @@ Cuando el usuario está stuck:
 - Motivación basada en interés, no en importancia
 - Accountability gentil, sin presión
 
----
+## Helper Scripts
+
+Scripts en `skills/adhd-assistant/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `pomodoro-timer.sh [minutos]` | Timer Pomodoro con notificaciones. Usar en Fase 3 (Time Management) y Fase 4 (Body Doubling). Default 25 minutos. |
 
 # Related Skills
 

@@ -87,6 +87,16 @@ Pre-launch, regresión post-cambios, reporte de cumplimiento. Si es posible, pru
 - Componentes accesibles con tests
 - Certificación de accesibilidad pre-launch
 
+## Helper Scripts
+
+Scripts en `skills/accessibility-studio/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `a11y-audit.sh <path>` | Corre axe-core / Lighthouse / WAVE contra un path local o URL. Genera un reporte con issues priorizados por severidad. Usar en Fase 2 (Audit) y Fase 6 (Validación). |
+| `a11y-ci.sh` | Integra auditoría en CI. Usar en pipelines de [Pre-Deploy QA](../pre-deploy-qa) para validar accesibilidad automáticamente. |
+| `contrast-report.py <file-or-url>` | Analiza colores y genera reporte de contraste WCAG. Usar en Fase 2 y Fase 4 (Design System). |
+
 ## Related Skills
 
 - [Review & Quality](../review-quality): Para revisar accesibilidad pre-merge

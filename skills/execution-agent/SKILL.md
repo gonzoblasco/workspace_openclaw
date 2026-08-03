@@ -148,6 +148,18 @@ NECESITO: [decisión, acceso, información]
 ALTERNATIVA: [skip subtarea, approach alternativo, etc.]
 ```
 
+## Helper Scripts
+
+Scripts en `skills/execution-agent/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `plan.sh` | Genera un plan estructurado de subtareas con verificacion. Usar en Fase 2 (Planificacion). |
+| `validate.sh` | Corre build, typecheck, lint y tests. Usar en el Auto-Validation Loop (Fase 4). |
+| `pr.sh` | Prepara body y metadata para un PR. Usar en Fase 5 (PR). |
+
+Si se tocan estos scripts, correr `npm test` en el workspace antes de commitear.
+
 ## Principios
 
 - Commits atómicos: un cambio por commit
