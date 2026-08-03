@@ -8,3 +8,6 @@
 	path = projects/create-stack
 	url = https://github.com/gonzoblasco/create-stack.git
 
+[submodule "projects/ai-engineering-bootcamp"]
+	path = projects/ai-engineering-bootcamp
+	url = git@github.com:gonzoblasco/ai-engineering-bootcamp.git
