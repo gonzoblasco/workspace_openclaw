@@ -160,11 +160,12 @@ Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nue
 - N8-N10 son convergentes: reusan el sistema del N7 (vive dentro de `projects/level-07-microservices/`).
 - El N10 junta todo: auth + users + orders + notifications + gateway + CI/CD + dashboard + cloud. Probado: gateway enruta, health agregado ok, register/login/orders funcionan, 401 en credenciales malas.
 
-### Reflexión del curso (meta-aprendizaje)
-- El patrón "detectores locales + validación cruzada / IA contextual" se repitió en N3, N5, N6, N8 — candidato a skill reusable `pipeline-detector`.
+### Reflexión del curso (meta-aprendizaje) — COMPLETO ✅
+- El patrón "detectores locales + validación cruzada / IA contextual" apareció **5 veces** (N3, N5, N6, N8, N9) → **formalizado como skill `pipeline-detector`** (aplicado, con references/detector-templates.md).
 - Formato nivel de bootcamp (teoría + práctica + LinkedIn + self-review) es un template de skill reusable.
 - Los proyectos resueltos son el "contrato" del curso — demuestran que el nivel es posible, no son la respuesta.
 - Falta un mecanismo de verificación automática al final de cada nivel (tests contra el proyecto del alumno).
+- **El nivel 7 es el núcleo físico de los niveles 7-10**: N8 (cloud), N9 (estándares) y N10 (sistema completo) extienden el mismo folder `projects/level-07-microservices/` (ADR-001). El nombre del folder confunde — el README ahora lo documenta como "Niveles 7-10" con tabla de acumulación y diagrama de arquitectura.
 
 ## Modelo default
 
