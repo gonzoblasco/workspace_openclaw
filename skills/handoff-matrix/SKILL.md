@@ -44,3 +44,13 @@ Cada handoff incluye:
 - Sin dependencias externas
 - Los reportes son markdown, fáciles de leer y versionar
 - La estructura versionada permite trazabilidad completa
+
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `session-lifecycle/scripts/session-start.sh` | Cargar HANDOFF previo al inicio de una nueva etapa. |
+| `session-lifecycle/scripts/session-end.sh` | Generar/actualizar HANDOFF al cerrar una etapa. |
+| `background-execution` | Ejecutar etapas en background cuando no requieren interaccion. |
+| `agent-workflow` | Multi-agent orchestration con handoffs explicitos. |
+| `tech-docs/scripts/update-changelog.sh` | Actualizar CHANGELOG cuando @scribe entrega la version. |

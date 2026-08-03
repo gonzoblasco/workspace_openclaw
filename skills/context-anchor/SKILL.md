@@ -21,6 +21,15 @@ Script que escanea archivos de memoria y contexto locales para producir un brief
 3. Produce un briefing estructurado: proyecto actual, última tarea, decisiones recientes, open loops
 4. Usar el briefing para retomar el trabajo
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `knowledge-management/scripts/discover.sh` | Escanear archivos de conocimiento y generar Knowledge Map. |
+| `knowledge-management/scripts/freshness.sh` | Clasificar documentos por vigencia. |
+| `knowledge-management/scripts/check-refs.sh` | Verificar que links internos del briefing no estén rotos. |
+| `session-lifecycle/scripts/session-start.sh` | Cargar HANDOFF previo al inicio de sesión. |
+
 ## Notas
 - Lee archivos que sobreviven a la compactación
 - No depende de in-context memory

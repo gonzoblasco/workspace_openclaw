@@ -54,6 +54,14 @@ Referencia rápida de una página: comandos, snippets, troubleshooting.
 - Troubleshooting table
 - Advanced learning roadmap
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `tech-docs/scripts/analyze_codebase.py` | Extraer ejemplos reales del codebase para ilustrar pasos core. |
+| `tech-docs/scripts/generate-adr.sh` | Documentar decisiones técnicas del tutorial si las hay. |
+| `knowledge-management/scripts/check-refs.sh` | Verificar links internos del tutorial. |
+
 ## Related Skills
 
 - [Technical Documentation](../tech-docs): Para documentación técnica de proyectos

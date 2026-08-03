@@ -23,6 +23,14 @@ Escanea el diff de una branch y remueve ruido generado por IA: null checks defen
 5. Verificar que el build pase
 6. Abrir el PR
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `vibe-code-cleanup/scripts/diagnose-codebase.sh` | Scan general de deuda técnica y AI slop. Usar antes de deslop para priorizar. |
+| `vibe-code-cleanup/scripts/verify-cleanup.sh` | Validar build, typecheck, lint y tests después de limpiar. |
+| `review-quality/scripts/review-pr.sh` | Revisión automática final del PR. |
+
 ## Notas
 - Compara cada candidato contra el contexto local antes de borrar
 - Preserva guards legítimos en trust boundaries

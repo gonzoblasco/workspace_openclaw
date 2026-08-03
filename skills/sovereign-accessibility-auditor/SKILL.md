@@ -22,6 +22,15 @@ Audita HTML y CSS contra estándares WCAG 2.1: color contrast ratios, cobertura 
 4. Aplicar correcciones
 5. Re-auditar para verificar
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `accessibility-studio/scripts/a11y-audit.sh` | Audit automático con axe-core/Lighthouse/WAVE para HTML/CSS renderizado. |
+| `accessibility-studio/scripts/contrast-report.py` | Reporte detallado de contrast ratios. |
+| `accessibility-studio/scripts/a11y-ci.sh` | Integrar auditoría en CI. |
+| `design-orchestrator/scripts/visual-review.py` | Validación visual de cambios de accesibilidad con before/after. |
+
 ## Notas
 - Sin dependencias externas
 - Cubre contraste, ARIA, teclado, screen readers en un solo pase

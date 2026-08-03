@@ -99,6 +99,19 @@ Periódicamente (o a pedido):
 3. Si hay PRs stale sin actividad > 7 días: considerar follow-up
 4. Si hay PRs con cambios solicitados: priorizar
 
+## Helper scripts del workflow base
+
+Este agente puede invocar los scripts de [oss-contribution](../oss-contribution/SKILL.md) y [github](../github/SKILL.md):
+
+| Script | Uso |
+|---|---|
+| `oss-contribution/scripts/triage-issues.sh` | Triaje de issues abiertos por repo. Usar en Fase 2. |
+| `oss-contribution/scripts/setup-fork.sh` | Preparar fork local para implementar. Usar en Fase 4. |
+| `oss-contribution/scripts/pr-status-check.sh` | Verificar estado de PRs en repos externos. Usar en Fase 5-7. |
+| `oss-contribution/scripts/pr-watch.sh` | Monitorear PRs abiertos post-creacion. Usar en Fase 7. |
+| `github/scripts/pr-batch-check.sh [--mine-only]` | Listar PRs propios abiertos en multiples repos. Usar en Fase 8. |
+| `code-review-agent` | Revision interna del PR antes de abrirlo (Fase 5). |
+
 ## Output estructurado
 
 ```json

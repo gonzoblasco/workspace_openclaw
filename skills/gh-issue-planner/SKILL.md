@@ -95,6 +95,15 @@ The epic description must include:
 - **Who can pick these up** (suggested profile)
 - **Success criteria** (how to know it's done)
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `github/scripts/pr-batch-check.sh` | Verificar estado de PRs relacionados con las issues creadas. |
+| `task-execution/scripts/plan.sh` | Generar un plan de implementacion por epic/story. |
+| `task-execution/scripts/close-epic.sh` | Cerrar epics con CHANGELOG y tag. |
+| `session-lifecycle/scripts/session-end.sh` | Guardar HANDOFF con las issues planificadas. |
+
 ## Templates
 
 ### epic-template.md
