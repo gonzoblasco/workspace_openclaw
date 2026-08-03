@@ -63,6 +63,15 @@ La tool `editor_instantiate_scene` del Godot MCP corrompe el formato de main.tsc
 ### Export templates de Godot 4.7.1
 El mirror tuxfamily.org falló por timeout. Probar GitHub releases o mirror alternativo cuando se retome el export.
 
+### Sport Cars: validación visual obligatoria para sitios de marca
+El build pasando no garantiza que el sitio se vea profesional. Para proyectos con identidad visual, la validación con screenshots + evaluación crítica debe ser parte del cierre de cada iteración. Issues como contraste bajo, colores inconsistentes o títulos engañosos no los detecta Biome.
+
+### Feature flags portable: no hardcodear en UI
+El primer flag (`showPrices`) se implementó con provider client-side + localStorage + componente `PriceDisplay`. El panel de flags solo se renderiza en desarrollo. El siguiente paso es extraerlo a `@workflow-kit/feature-flags` para reuso.
+
+### No commitear mockups intermedios
+Los mockups y screenshots de iteración (v2, v3, etc.) son ruido en el repo del proyecto. Solo conservar la evidencia final (home/catálogo) en el commit de release; los intermedios van al daily note o a un artifact.
+
 ## Proyectos activos
 
 ### a11y-fixer
