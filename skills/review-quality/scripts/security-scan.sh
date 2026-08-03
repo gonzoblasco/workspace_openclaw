@@ -9,7 +9,7 @@ SCAN_MODE="${1:-}"
 echo "🔒 Running security scan..."
 echo ""
 
-PASS=***
+PASS=0
 FAIL=0
 
 check() {

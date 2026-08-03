@@ -5,7 +5,7 @@
 set -euo pipefail
 
 URL="${1:?Usage: $0 <url>}"
-PASS=***
+PASS=0
 FAIL=0
 
 echo "🔍 Running smoke tests on $URL"

@@ -43,13 +43,16 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   SCRIPT_COUNT=$(find "$skill_dir" -path "*/scripts/*" -type f 2>/dev/null | wc -l | tr -d ' ')
 
   # Check for description
-  HAS_DESC=$(grep -c "description:" "$skill_file" 2>/dev/null || echo "0")
+  HAS_DESC=$(grep -c "description:" "$skill_file" 2>/dev/null || true)
+  HAS_DESC=${HAS_DESC:-0}
 
   # Check for related skills
-  HAS_RELATED=$(grep -c "Related Skills" "$skill_file" 2>/dev/null || echo "0")
+  HAS_RELATED=$(grep -c "Related Skills" "$skill_file" 2>/dev/null || true)
+  HAS_RELATED=${HAS_RELATED:-0}
 
   # Check for phases
-  HAS_PHASES=$(grep -c "^## " "$skill_file" 2>/dev/null || echo "0")
+  HAS_PHASES=$(grep -c "^## " "$skill_file" 2>/dev/null || true)
+  HAS_PHASES=${HAS_PHASES:-0}
 
   echo "| Check | Status |" >> "$OUTPUT_FILE"
   echo "|-------|--------|" >> "$OUTPUT_FILE"

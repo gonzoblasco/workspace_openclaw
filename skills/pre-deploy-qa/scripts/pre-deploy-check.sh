@@ -18,7 +18,7 @@ echo "**Date:** $(date '+%Y-%m-%d %H:%M')" >> "$OUTPUT"
 echo "**URL:** $BASE_URL" >> "$OUTPUT"
 echo "" >> "$OUTPUT"
 
-PASS=***
+PASS=0
 FAIL=0
 WARN=0
 

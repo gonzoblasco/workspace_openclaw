@@ -7,7 +7,7 @@ set -euo pipefail
 echo "🔍 Verifying cleanup..."
 echo ""
 
-PASS=***
+PASS=0
 FAIL=0
 
 check() {

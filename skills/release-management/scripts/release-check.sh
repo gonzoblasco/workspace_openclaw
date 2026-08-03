@@ -21,7 +21,7 @@ fi
 echo "🔍 Checking release readiness for v$VERSION..."
 echo ""
 
-PASS=***
+PASS=0
 FAIL=0
 
 check() {
