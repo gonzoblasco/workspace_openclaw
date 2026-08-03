@@ -30,7 +30,8 @@ teardown() {
   [ -f "$TMP_DIR/docs/adr/003-third.md" ]
 }
 
-@test "generate-adr: no grep -oP remains" {
-  run grep -oP '.*' "$SCRIPT"
-  [ "$status" -ne 0 ]
+@test "generate-adr: no executable grep -oP remains" {
+  # Allow comments mentioning grep -oP, but no actual command
+  run bash -c 'grep -nE "^[^#]*grep -oP" "$1"' bash "$SCRIPT"
+  [ -z "$output" ]
 }

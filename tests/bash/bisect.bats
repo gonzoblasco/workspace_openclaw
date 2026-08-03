@@ -30,7 +30,8 @@ teardown() {
   [[ "$output" == *'"message": "commit 3"'* ]]
 }
 
-@test "bisect: no grep -oP remains" {
-  run grep -oP '.*' "$SCRIPT"
-  [ "$status" -ne 0 ]
+@test "bisect: no executable grep -oP remains" {
+  # Allow comments mentioning grep -oP, but no actual command
+  run bash -c 'grep -nE "^[^#]*grep -oP" "$1"' bash "$SCRIPT"
+  [ -z "$output" ]
 }
