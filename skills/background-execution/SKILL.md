@@ -240,6 +240,10 @@ Cuando una tarea de `task-execution` tiene pasos que son largos o paralelizables
 - Temp dirs / worktrees limpiados
 - Logs de cada proceso en `/tmp/logs/`
 
+## Tooling de calidad
+
+Cuando una tarea background modifica scripts de skill del workspace, correr `npm test` antes de considerarla completa. Esto ejecuta `test-skills.sh`, bats y pytest.
+
 ## Related Skills
 
 - [Task Execution](../task-execution): Para el workflow completo de tareas

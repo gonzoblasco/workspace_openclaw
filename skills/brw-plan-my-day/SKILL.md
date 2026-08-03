@@ -22,6 +22,14 @@ Genera un plan diario hora por hora emparejando las 3 prioridades principales co
 4. Seguir el plan durante el día
 5. Al final del día, hacer evening check-in para trackear completitud
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `session-lifecycle/scripts/session-start.sh` | Cargar contexto y memoria al iniciar el día. |
+| `session-lifecycle/scripts/session-end.sh` | Guardar resumen del día y generar HANDOFF. |
+| `adhd-assistant/scripts/pomodoro-timer.sh` | Timer para bloques de deep work. |
+
 ## Notas
 - Basado en ritmo circadiano, no en horas fijas
 - Tres modos según el tipo de día

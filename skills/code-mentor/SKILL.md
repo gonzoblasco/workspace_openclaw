@@ -46,6 +46,16 @@ Tutor integral de programación con 8 modos de enseñanza: conceptos, code revie
 - Algoritmos resueltos con análisis de complejidad
 - Guías de arquitectura de proyectos
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `debug-investigation/scripts/reproduce-check.sh` | Verificar pasos de reproducción en Debugging Detective. |
+| `debug-investigation/scripts/bisect.sh` | Encontrar primer commit malo cuando se sospecha regresión. |
+| `review-quality/scripts/review-pr.sh` | Code review automatizado de PRs reales. |
+| `mock-interview-drill/scripts/question-generator.py` | Generar problemas para Interview Prep. |
+| `sql-insight/scripts/sql_query_helper.py` | Analizar y optimizar queries en proyectos. |
+
 ## Related Skills
 
 - [Task Execution](../task-execution): Para implementar lo aprendido

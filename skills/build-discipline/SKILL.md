@@ -22,6 +22,14 @@ Trackea compromisos diarios, streaks y hábitos para construir comportamiento co
 4. Ajustar hábitos según los datos
 5. Celebrar streaks y aprender de rupturas
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `adhd-assistant/scripts/pomodoro-timer.sh` | Timer para bloques de focus y check-ins. |
+| `narrative-content/scripts/progress-tracker.sh` | Registrar progreso diario y streaks en un log simple. |
+| `session-lifecycle/scripts/session-end.sh` | Cierre de sesión con self-reflection sobre rupturas. |
+
 ## Notas
 - Todo local, sin dependencias externas
 - Habit stacking reduce dependencia de fuerza de voluntad

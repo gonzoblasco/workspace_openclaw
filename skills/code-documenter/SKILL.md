@@ -96,6 +96,15 @@ Save as `.knowledge/HANDOFF.md` or `.knowledge/handoffs/<feature>.md`.
 5. **Review** — check accuracy, tone, and completeness.
 6. **Commit** — docs go with the code.
 
+## Tooling relacionado
+
+| Skill / Script | Uso |
+|---|---|
+| `tech-docs/scripts/analyze_codebase.py` | Extrae patrones del codebase para documentar APIs y modulos. Usar en paso 2. |
+| `tech-docs/scripts/generate-adr.sh` | Genera ADRs para decisiones no obvias. Usar en paso 4. |
+| `tech-docs/scripts/update-changelog.sh` | Inserta entrada `[Unreleased]` para release docs. Usar para CHANGELOG. |
+| `knowledge-management/scripts/check-refs.sh` | Verifica links internos en READMEs y handoff notes. |
+
 ## Tools
 
 - `read` — inspect code
