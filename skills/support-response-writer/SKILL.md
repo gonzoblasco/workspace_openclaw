@@ -74,6 +74,16 @@ Generar respuestas profesionales de customer support para distintos escenarios: 
 - Estrategia de de-escalación
 - Communication tips
 
+## Helper Scripts
+
+Scripts en `skills/support-response-writer/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `sentiment-check.sh <file>` | Detecta el tono/emoción de un mensaje de soporte y sugiere nivel de de-escalación. Usar antes de redactar la respuesta. |
+
+Tambien ver [copy-editing/scripts/readability-check.sh](../copy-editing/scripts/readability-check.sh) para pulir legibilidad y [word-count.sh](../copy-editing/scripts/word-count.sh) para controlar longitud.
+
 ## Related Skills
 
 - [Copy Editing](../copy-editing): Para pulir el tono de las respuestas

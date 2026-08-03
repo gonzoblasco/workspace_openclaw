@@ -38,6 +38,14 @@ python3 scripts/generate_timeline.py --config data.json --output timeline.html
 - Diseño responsive
 - Temas de color personalizables
 
+## Helper Scripts
+
+Scripts en `skills/timeline-builder/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `generate_timeline.py --config data.json --output timeline.html` | Genera un timeline HTML interactivo desde un JSON de configuración. Usar en cualquier fase de visualización. |
+
 ## Related Skills
 
 - [Technical Documentation](../tech-docs): Para documentar roadmaps y releases
