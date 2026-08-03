@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 # Tests for skills/narrative-content/scripts/progress-tracker.sh
 
-SCRIPT="$HOME/.openclaw/workspace/skills/narrative-content/scripts/progress-tracker.sh"
+SCRIPT="$BATS_TEST_DIRNAME/../../skills/narrative-content/scripts/progress-tracker.sh"
 
 setup() {
   TMP_DIR=$(mktemp -d)

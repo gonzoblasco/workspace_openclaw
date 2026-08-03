@@ -3,7 +3,8 @@ from importlib.util import spec_from_loader, module_from_spec
 from pathlib import Path
 
 # Load the script dynamically because its filename contains a hyphen
-SCRIPT_PATH = Path.home() / ".openclaw/workspace/skills/mcp-orchestrator/scripts/discover-mcp.py"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+SCRIPT_PATH = REPO_ROOT / "skills/mcp-orchestrator/scripts/discover-mcp.py"
 loader = SourceFileLoader("discover_mcp", str(SCRIPT_PATH))
 spec = spec_from_loader("discover_mcp", loader)
 discover_mcp = module_from_spec(spec)

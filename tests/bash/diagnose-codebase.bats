@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 # Tests for skills/vibe-code-cleanup/scripts/diagnose-codebase.sh
 
-SCRIPT="$HOME/.openclaw/workspace/skills/vibe-code-cleanup/scripts/diagnose-codebase.sh"
+SCRIPT="$BATS_TEST_DIRNAME/../../skills/vibe-code-cleanup/scripts/diagnose-codebase.sh"
 
 setup() {
   TMP_DIR=$(mktemp -d)
@@ -29,7 +29,7 @@ teardown() {
 
 @test "diagnose-codebase: finds potential secrets case-insensitively" {
   mkdir -p "$TMP_DIR/src"
-  printf 'const API_KEY = "secret";\n' > "$TMP_DIR/src/app.ts"
+  printf 'const API_KEY = "***";\n' > "$TMP_DIR/src/app.ts"
 
   cd "$TMP_DIR"
   bash "$SCRIPT" --dir src >/dev/null 2>&1

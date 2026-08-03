@@ -2,7 +2,8 @@ from importlib.machinery import SourceFileLoader
 from importlib.util import spec_from_loader, module_from_spec
 from pathlib import Path
 
-SCRIPT_PATH = Path.home() / ".openclaw/workspace/skills/mcp-orchestrator/scripts/evaluate-mcp.py"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+SCRIPT_PATH = REPO_ROOT / "skills/mcp-orchestrator/scripts/evaluate-mcp.py"
 loader = SourceFileLoader("evaluate_mcp", str(SCRIPT_PATH))
 spec = spec_from_loader("evaluate_mcp", loader)
 evaluate_mcp = module_from_spec(spec)

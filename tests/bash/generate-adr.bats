@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 # Tests for skills/tech-docs/scripts/generate-adr.sh
 
-SCRIPT="$HOME/.openclaw/workspace/skills/tech-docs/scripts/generate-adr.sh"
+SCRIPT="$BATS_TEST_DIRNAME/../../skills/tech-docs/scripts/generate-adr.sh"
 
 setup() {
   TMP_DIR=$(mktemp -d)

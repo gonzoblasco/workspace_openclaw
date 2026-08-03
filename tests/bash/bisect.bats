@@ -1,13 +1,15 @@
 #!/usr/bin/env bats
 # Tests for skills/debug-agent/scripts/bisect.sh
 
-SCRIPT="$HOME/.openclaw/workspace/skills/debug-agent/scripts/bisect.sh"
+SCRIPT="$BATS_TEST_DIRNAME/../../skills/debug-agent/scripts/bisect.sh"
 
 setup() {
   TMP_DIR=$(mktemp -d)
   export TMP_DIR
   cd "$TMP_DIR"
   git init -q
+  git config user.email "test@example.com"
+  git config user.name "Test User"
   for i in 1 2 3; do
     echo "v$i" > version.txt
     git add -A
