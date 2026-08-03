@@ -83,6 +83,17 @@ Esto aplica a: recomendaciones técnicas, estimaciones, debugging, decisiones de
 - Decisión: approve / changes requested / blocked
 - (Opcional) Reporte de validación pre-deploy con Go/No-Go
 
+## Helper Scripts
+
+Scripts en `skills/review-quality/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `review-pr.sh [--pr <number>] [--output <file>]` | Corre build, tsc, lint, tests, y busca `console.log` y TODOs/FIXMEs en `src/`. Genera un reporte Markdown. Usar en la fase 2-4 para verificar calidad automatica del PR. |
+| `security-scan.sh [--diff]` | Escanea secrets, hardcoded URLs, eval, y corre `npm audit`. Con `--diff` revisa solo cambios staged. Usar en la fase 4 (Auditoria de seguridad). |
+
+Si se encuentran issues, delegar a [Task Execution](../task-execution) para fixes.
+
 ## Related Skills
 
 - [Task Execution](../task-execution): Para implementar fixes post-review

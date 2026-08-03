@@ -43,6 +43,18 @@ Scaffolding y construcción de proyectos desde cero o sobre existentes.
 - ADRs de decisiones técnicas
 - CI/CD pipeline configurado
 
+## Helper Scripts
+
+Todos los scripts viven en `skills/build-scaffold/scripts/`.
+
+| Script | Uso |
+|---|---|
+| `init-git.sh` | Inicializa repo git con `.gitignore` (incluye `.knowledge/`), `.knowledge/` y commit inicial. Usar siempre que se scaffoldea un proyecto nuevo. |
+| `setup-biome.sh [--shadcn]` | Instala y configura Biome. Con `--shadcn` ignora `src/components/ui/*`. |
+| `verify-scaffold.sh [--fix]` | Corre tsc, biome, tests y build. Usar para verificar que el scaffold esta sano. Con `--fix` aplica correcciones de Biome. |
+
+Los tres scripts son seguros en repos nuevos y no destructivos.
+
 ## Related Skills
 
 - [Task Execution](../task-execution): Para implementar features post-scaffold

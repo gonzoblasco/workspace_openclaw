@@ -105,6 +105,16 @@ Cada pasada se enfoca en una dimensión. Cada edición tiene una razón clara. S
 - Reporte por sweep con issues encontrados
 - Versión final pulida
 
+## Helper Scripts
+
+Scripts en `skills/copy-editing/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `word-count.sh <file>` | Cuenta palabras, caracteres, oraciones, párrafos, promedio de palabras por oración y tiempo de lectura. Usar para ajustar longitud de copy. |
+| `readability-check.sh <file>` | Mide legibilidad del texto. Usar en Sweep 1 (Clarity). |
+| `sentiment-check.sh <file>` | Detecta tono/emoción del texto. Usar en Sweep 2 (Voice and Tone). |
+
 ---
 
 # Principios

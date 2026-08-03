@@ -94,6 +94,15 @@ Systematic validation before deploying to production. Runs after merge, before d
 - Issues with priority (Critical / Major / Minor)
 - Go / No-Go decision for deploy
 
+## Helper Scripts
+
+Scripts en `skills/pre-deploy-qa/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `pre-deploy-check.sh [--url <base-url>] [--output <file>]` | Corre build, endpoints de health/home/sitemap, API auth, npm audit, y busqueda de `console.log` en `src/`. Genera un reporte Markdown con decision Go/No-Go. Usar en fases 1, 2, 3, 5, 7, 10. |
+| `smoke-test.sh <url>` | Smoke tests rapidos de endpoints: /health, /, /api/auth/session, /sitemap.xml, /robots.txt, /favicon.ico. Usar justo despues del deploy. |
+
 ## Related Skills
 - [Review & Quality](../review-quality): Pre-merge review before QA
 - [Task Execution](../task-execution): Implement fixes found by QA

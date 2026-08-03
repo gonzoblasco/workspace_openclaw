@@ -248,6 +248,20 @@ Release Report
 
 ---
 
+# Helper Scripts
+
+Scripts en `skills/release-management/scripts/`:
+
+| Script | Uso |
+|---|---|
+| `release-check.sh --version <semver>` | Verifica build, tests, CHANGELOG con version, tag no existente, y sin cambios sin commitear. Usar en la fase 2 (Readiness Review). |
+| `update-changelog.sh` | Inserta una entrada `[Unreleased]` en CHANGELOG.md. Usar cuando se cierra un epic o feature. |
+| `generate-release-notes.sh` | Genera notas de release desde commits/tags. Usar en la fase 5 (Communication). |
+
+Tambien ver [close-epic.sh](../task-execution/scripts/close-epic.sh) en Task Execution para cerrar epics con tag y STATUS.
+
+---
+
 # Checklist
 
 Ver [release checklist](./references/checklist.md).
