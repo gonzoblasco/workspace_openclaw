@@ -55,4 +55,11 @@ products/
 # Editor
 .idea/
 *.swp
-*.swoprojects/cabala
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+projects/cabala
