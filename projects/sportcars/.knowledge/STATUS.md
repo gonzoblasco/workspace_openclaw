@@ -1,36 +1,39 @@
 # STATUS — Sport Cars Jeep
 
 ## Estado actual
-Fase 0.2 de Product Discovery completada. Modo detallado activado. Esperando decisión de Gonzo para iniciar Fase 1 (Scaffold).
+Rediseño completo del sitio web implementado y verificado con build exitoso. El sitio fue evaluado visualmente y considerado **listo para deploy/preview**.
 
-## Documentos listos
-- BRIEF.md ✅
-- DEFINITION.md ✅
-- EVALUATION.md ✅
-- ARCHITECTURE.md ✅
-- DATA_MODEL.md ✅
-- DESIGN.md ✅
-- OPENSPEC.md ✅
-- ROADMAP.md ✅
-- TRACKER.md ✅
-- ADRs ✅ (5 iniciales)
+## Qué se hizo en este ciclo
+- Paleta visual premium dark mode ajustada: fondo `#1A1A1A`, superficies `#2A2A2A`, acento naranja `#D97706`.
+- Sistema de feature flags portable implementado (`showPrices` como primera flag) con persistencia en localStorage.
+- Home rediseñada: hero con imagen de fondo, grid de modelos Jeep con fotos reales, sección de usados, diferenciadores, sucursales, CTA final.
+- Catálogo `/vehiculos` rediseñado con filtros, búsqueda, grid de modelos (Jeep + Ram 1500) con imágenes reales y CTAs consistentes.
+- Detalle de vehículo `/vehiculos/[slug]` adaptado a la nueva paleta.
+- Páginas de usados, sucursales, contacto, test drive y cotiza-tu-usado rediseñadas.
+- Header, footer, chat widget y panel de admin adaptados.
+- Imágenes reales de vehículos descargadas desde Wikimedia Commons (CC-BY-SA) para Compass, Renegade, Commander, Gladiator, Grand Cherokee, Wrangler y Ram 1500.
+- Build exitoso: `npx next build` sin errores.
 
-## Decisiones tomadas
-1. SaaS a **300 USD/mes** todo incluido
-2. Chatbot custom con LLM + RAG, corriendo en infraestructura propia de Gonzo (Ollama/DeepSeek)
-3. Reemplazo del sitio actual (sportcarsjeep.com.ar), pero se muestra primero como **proyecto finito**
-4. Integración Pilot CRM se difiere al Post-MVP por falta de acceso admin
-5. Inventario via API pública de Mercado Libre
-6. Stack: Next.js 15 + Tailwind + shadcn + Supabase + Vercel
+## Screenshots actuales
+- `sc_home_v9.png` — home final
+- `sc_catalog_v9.png` — catálogo final
 
-## Bloqueos actuales
-Ninguno técnico. Tareas pendientes de Gonzo:
-- Obtener nickname/seller_id de Mercado Libre de Sport Cars
-- Confirmar acceso al DNS de sportcarsjeep.com.ar (para reemplazo final)
-- Confirmar guidelines de Stellantis
+## Bloqueos resueltos
+- Imágenes: se obtuvieron fotos reales de Wikimedia Commons (assets oficiales requieren acceso a Stellantis Media).
+- Contraste bajo: corregido en navegación, badges, CTAs y footer.
+- Inconsistencia de color: logo e iconos ahora usan el acento naranja consistentemente.
+
+## Tareas pendientes críticas antes del lanzamiento real
+1. Deploy a Vercel (`sportcars-pi.vercel.app` o dominio propio).
+2. Reemplazar imágenes de Wikimedia Commons por fotos oficiales de Stellantis/Jeep Argentina o fotos propias del concesionario.
+3. Configurar Supabase cloud (actualmente local).
+4. Configurar LLM del chatbot para producción.
+5. Obtener nickname/seller_id de Mercado Libre de Sport Cars para sync real de usados.
+6. Validar Lighthouse: performance, accesibilidad, SEO, best practices.
+7. Feature flags: extraer a lib portable en `workflow-kit` (`@workflow-kit/feature-flags`).
 
 ## Próximo hito
-Fase 1 — Scaffold & Setup del proyecto.
+Deploy a preview en Vercel para validación en vivo.
 
 ## Última actualización
-2026-07-23
+2026-08-02
