@@ -1,6 +1,6 @@
 # PROYECTOS.md — Índice Maestro
 
-**Última actualización:** 2026-08-02
+**Última actualización:** 2026-08-03
 
 ---
 
@@ -18,6 +18,7 @@
 | **kanam** | PWA — sistema operativo personal con IA | En discovery. Solo README.md en local. | ✅ gonzoblasco/kanam |
 | **workflow-kit** | Portable AI agent workflow skills | Publicado en npm. `.knowledge/` con AGENT_TASKS.md. | ✅ gonzoblasco/workflow-kit |
 | **health-tracker** | PWA de monitoreo de salud (offline-first) | Clonado. Sin `.knowledge/`. | ✅ gonzoblasco/health-tracker |
+| **ai-engineering-bootcamp** | Curso de 10 niveles de AI-assisted dev con proyectos resueltos | **COMPLETADO ✅ 10/10** — 2026-08-03. Versión canónica consolidada en GitHub. N7-10 convergente. Skill `pipeline-detector` extraído del curso. | ✅ gonzoblasco/ai-engineering-bootcamp |
 | **umbrawriter-v2** | AI Fiction Co-Writer. Local-first. Chat-first. BYOK. | Clonado. Sin `.knowledge/`. | ✅ gonzoblasco/umbrawriter-v2 |
 
 ## 🟡 SEMILLEROS — Documentos sueltos, sin repo propio
@@ -34,7 +35,6 @@ Proyectos que existen en GitHub, tienen clon local, pero sin actividad reciente 
 |---|---|---|
 | **accessibility-auditor** | gonzoblasco/accessibility-auditor | 2026-07-16 — reorg: docs a projects/ |
 | **accessible-ui** | gonzoblasco/accessible-ui | 2026-07-16 — chore: eliminar Chromatic |
-| **ai-engineering-bootcamp** | gonzoblasco/ai-engineering-bootcamp | 2026-07-15 — docs: agent-agnostic guide |
 | **create-with-ai** | gonzoblasco/create-with-ai | 2026-07-16 — feat: modo iteración funcional |
 | **soporteml** | gonzoblasco/soporteml | 2026-07-18 — reorg: docs a projects/ |
 | **sudolab** | gonzoblasco/sudolab | 2026-07-18 — Release 0.2.0-beta |

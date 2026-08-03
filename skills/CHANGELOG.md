@@ -4,6 +4,13 @@ Registro de cambios en skills del workspace. Cada entrada marca cuándo se creó
 
 ---
 
+## [2026-08-03] — Nuevo skill pipeline-detector
+
+### Added
+- **pipeline-detector** — Build detection pipelines combining deterministic local rules with contextual AI analysis. Extraído del patrón "detectores locales + validación cruzada / IA contextual" del AI Engineering Bootcamp (apareció 5 veces: N3, N5, N6, N8, N9). Incluye `references/detector-templates.md` con templates reutilizables (secrets, SQL injection, XSS, style, vuln versions, diff analysis, CloudFormation, report markdown).
+
+---
+
 ## [2026-07-25] — Refactor AGENTS.md: metodología movida a skills
 
 ### Modified
