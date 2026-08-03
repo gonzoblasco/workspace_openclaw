@@ -44,3 +44,25 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 **Context:** Created README, ROADMAP, DEFINITION, STATUS, CHANGELOG, HANDOFF, and `docs/` only after v1.0.0 was feature-complete.
 
 **Lesson:** Start documentation in parallel with development. Each significant decision or feature should incrementally update the relevant doc file.
+
+## 2026-08-03 — Orphaned submodule + divergent repo versions
+
+**Context:** The workspace tracked `projects/ai-engineering-bootcamp` as a submodule (mode 160000) but it had **no entry in `.gitmodules`** — an orphaned gitlink pointing at an old init commit. Meanwhile the GitHub repo had a completely different history (legacy version: 251 files, duplicated es/en docs, exercise-style projects with TASK.md).
+
+**Problem:**
+- Orphaned gitlink = workspace can't sync the submodule properly, shows as dirty (`m` flag) forever.
+- Two divergent histories for the same project = a `git merge --allow-unrelated-histories` silently produced **duplicates** (both versions side by side: `level-05-security-audit.md` + `level-05-auditoria.md`, `projects/level-07-microservices/` + `level-07-microservicios/`, etc.).
+
+**Fix (canonical = local):**
+1. `git tag backup-original-remote origin/main` — preserve legacy version before touching anything, push tag.
+2. `git merge origin/main --allow-unrelated-histories -X theirs` — bring histories together, prefer local on conflicts.
+3. Delete all legacy-only files (duplicated docs, TASK.md exercise projects, `.DS_Store`, `.github/`, `.vscode/`).
+4. `git rm --cached` all tracked `.DS_Store`.
+5. Rewrite root README as canonical.
+6. Register submodule properly: add `.gitmodules` entry + `git add` gitlink at the canonical commit.
+
+**Lesson:**
+- A submodule must always have a `.gitmodules` entry. An orphaned gitlink (mode 160000 without config) is a latent footgun.
+- Before merging unrelated histories of a repo, **inspect both trees first** (`git ls-tree -r --name-only`). If they're structurally different versions of the same thing, an automatic merge creates confusing duplicates — decide the canonical version up front, tag the other for backup, then remove its files deliberately.
+- Always push the backup tag to the remote so the legacy version survives even if local disk dies.
+- When a project's `.gitignore` needs `.knowledge/` ignored (workspace owns institutional memory), verify the ignore actually took after a merge — the merge can restore an old `.gitignore` and silently re-expose ignored files.
