@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-          python3 -m pip install pytest
+          python3 -m pip install pytest certifi
 
       - name: Syntax checks (bash + python)
         run: ./scripts/test-skills.sh
