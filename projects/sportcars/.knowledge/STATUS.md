@@ -30,7 +30,7 @@ Rediseño completo del sitio web implementado y verificado con build exitoso. El
 4. Configurar LLM del chatbot para producción.
 5. Obtener nickname/seller_id de Mercado Libre de Sport Cars para sync real de usados.
 6. Validar Lighthouse: performance, accesibilidad, SEO, best practices.
-7. Feature flags: extraer a lib portable en `workflow-kit` (`@workflow-kit/feature-flags`).
+7. Feature flags: extraer a lib portable en `workflow-kit` (`@workflow-kit/feature-flags`) ✅ — creado `@kanam/feature-flags` e integrado en Sport Cars via alias de webpack (publicar a npm para eliminar alias).
 
 ## Próximo hito
 Deploy a preview en Vercel para validación en vivo.
