@@ -4,6 +4,13 @@ Registro de cambios en skills del workspace. Cada entrada marca cuándo se creó
 
 ---
 
+## [2026-08-03] — Nuevo skill content-serializer
+
+### Added
+- **content-serializer** — Convert content (courses, blog posts, docs) into weekly multi-platform social posts for LinkedIn and X. Incluye Fase 0 (tono de marca personal de Gonzo, con modulación por ocasión: deep-dive, anuncio, thought-leadership, CTA) y Fase 4 (métricas + ajuste semanal). Creado para serializar el AI Engineering Bootcamp como posts semanales.
+
+---
+
 ## [2026-08-03] — Nuevo skill pipeline-detector
 
 ### Added

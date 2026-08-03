@@ -1,6 +1,6 @@
 # SKILLS-INDEX.md — Skills del Workspace
 
-> 92 skills organizadas por categoría. Actualizado: 2026-08-03
+> 93 skills organizadas por categoría. Actualizado: 2026-08-03
 
 ## Accesibilidad y UX
 
@@ -38,6 +38,7 @@
 | Skill | Scripts | Tooling | Descripción |
 |---|---|---|---|
 | [campaign-plan](skills/campaign-plan/) | 1 | 1 | Generar brief completo de campaña de marketing: objetivos, audiencia, mensajes, |
+| [content-serializer](skills/content-serializer/) | 0 | 0 | Convert content (courses, blog posts, docs) into weekly multi-platform social posts for LinkedIn and X |
 | [product-discovery](skills/product-discovery/) | 4 | 1 | Workflow de Product Discovery: idea a definición de producto. Fase 0 dividida e |
 | [research-spike](skills/research-spike/) | 2 | 1 | Workflow de Research Spike: investigación técnica para reducir incertidumbre a |
 | [saas-metrics-coach](skills/saas-metrics-coach/) | 3 | 1 | Asesor financiero de salud SaaS: calcular ARR, MRR, churn, LTV, CAC, NRR y bench |
