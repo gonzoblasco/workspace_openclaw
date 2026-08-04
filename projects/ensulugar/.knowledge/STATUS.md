@@ -22,24 +22,22 @@
 - Motor de rutas verificado para perfiles principiante, intermedio y avanzado.
 - No hay técnicas "fantasma" sin receta.
 
-### Fase 3 — Frontend (MVP)
+### MVP de producto (Fase 3+)
 
-- Stack: Vite 6 + React 19 + TypeScript.
-- Ubicación: `app/`, build output `dist-app/`.
-- Funcionalidad:
-  - Carga recetas desde `/api/recetas` (backend local) con fallback a `/ensulugar.json`.
-  - Selector de perfil (principiante/intermedio/avanzado) arma la ruta de aprendizaje con el motor real (`src/engine/path.ts`).
-  - **Filtro por chips de técnica** — permite seleccionar múltiples técnicas (OR).
-  - Búsqueda por título, categoría o técnica, con normalización de acentos.
-  - **Ruta de aprendizaje numerada** con nombres legibles; click en un paso filtra recetas de esa técnica.
-  - Tarjetas de receta expandibles con ingredientes y pasos (incluye notas pedagógicas).
-  - Tags de técnicas clickeables; sin tag de categoría duplicado.
-  - **Botón "Generar lección con IA"** en cada receta: llama al backend y muestra la lección generada por el LLM configurado en `.env`, renderizada como HTML desde Markdown con estilos propios.
+- Stack: Vite 6 + React 19 + TypeScript + backend Node puro.
+- Ubicación: `app/`, backend `src/server.ts`, build output `dist-app/`.
+- **Onboarding**: pantalla inicial que pregunta nombre, nivel objetivo y técnicas ya dominadas.
+- **Persistencia local**: perfil y progreso en `localStorage` (`ensulugar:perfil`).
+- **Ruta realmente adaptativa**: usa el perfil guardado (técnicas dominadas + nivel) para calcular qué falta aprender.
+- **Progreso visible**: contador de técnicas dominadas y recetas completadas en el header.
+- **Marcar receta como completada**: actualiza técnicas dominadas y recetas completadas; la ruta se recalcula.
+- **Filtros**: chips de técnica multi-selección + búsqueda normalizada (título/categoría/técnica).
+- **Lecciones con IA**: botón en cada receta, llama a `/api/leccion` con el perfil real, renderiza Markdown con estilos.
+- **Reiniciar progreso**: disponible en el header.
 - Comandos:
-  - `npm run dev:app` — servidor de desarrollo Vite (puerto 5173).
-  - `npm run build:app` — build de producción.
-  - `npm run preview:app` — preview en puerto 4173.
-  - `npm run dev:server` — backend Node con HMR (puerto 3001).
+  - `npm run dev:app` — Vite (5173).
+  - `npm run dev:server` — backend Node con HMR (3001).
+  - `npm run build:app` / `npm run preview:app` — build/preview frontend.
   - `npm run start:server` — backend compilado.
 - Validado: `npm run build:app` ✅, `npm run build` ✅, `npm run build:content` ✅, `npx tsc --noEmit` en `app/` ✅, endpoint `/api/leccion` con Ollama local ✅.
 
@@ -60,6 +58,9 @@
 
 ### Siguiente
 
+- Hacer el onboarding más ligero (quizás solo 3 preguntas clave).
+- Agregar modo offline: que la app funcione sin backend usando el JSON estático (lecciones deshabilitadas).
 - Agregar recetas para técnicas avanzadas pendientes: masa-madre, confit, sous-vide, merengue.
-- Mejorar UX: progreso del usuario, recetas completadas, favoritos.
-- PWA + deploy (GitHub Pages / Vercel + backend en Fly/Railway).
+- PWA + service worker para instalar en móvil.
+- Deploy: frontend en GitHub Pages/Vercel + backend en Fly/Railway.
+- Analytics mínimo: qué lecciones se generan, qué recetas se completan.
