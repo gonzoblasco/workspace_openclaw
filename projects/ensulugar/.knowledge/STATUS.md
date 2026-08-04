@@ -18,7 +18,7 @@
 
 ### Pipeline
 
-- `npm run build:content` genera `dist/ensulugar.db`, `dist/ensulugar.json` y copia el JSON a `app/public/ensulugar.json` para el frontend.
+- `npm run build:content` genera `dist/ensulugar.db`, `dist/ensulugar.json` y copia el JSON a `app/public/ensulugar.json` como fallback para el frontend.
 - Motor de rutas verificado para perfiles principiante, intermedio y avanzado.
 - No hay técnicas "fantasma" sin receta.
 
@@ -27,36 +27,39 @@
 - Stack: Vite 6 + React 19 + TypeScript.
 - Ubicación: `app/`, build output `dist-app/`.
 - Funcionalidad:
-  - Carga recetas desde `/ensulugar.json`.
+  - Carga recetas desde `/api/recetas` (backend local) con fallback a `/ensulugar.json`.
   - Selector de perfil (principiante/intermedio/avanzado) arma la ruta de aprendizaje con el motor real (`src/engine/path.ts`).
   - **Filtro por chips de técnica** — permite seleccionar múltiples técnicas (OR).
   - Búsqueda por título, categoría o técnica, con normalización de acentos.
   - **Ruta de aprendizaje numerada** con nombres legibles; click en un paso filtra recetas de esa técnica.
   - Tarjetas de receta expandibles con ingredientes y pasos (incluye notas pedagógicas).
   - Tags de técnicas clickeables; sin tag de categoría duplicado.
+  - **Botón "Generar lección con IA"** en cada receta: llama al backend y muestra la lección generada por el LLM configurado en `.env`.
 - Comandos:
   - `npm run dev:app` — servidor de desarrollo Vite (puerto 5173).
   - `npm run build:app` — build de producción.
   - `npm run preview:app` — preview en puerto 4173.
-- Validado: `npm run build:app` ✅, `npm run build` ✅, `npm run build:content` ✅, `npx tsc --noEmit` en `app/` ✅.
+  - `npm run dev:server` — backend Node con HMR (puerto 3001).
+  - `npm run start:server` — backend compilado.
+- Validado: `npm run build:app` ✅, `npm run build` ✅, `npm run build:content` ✅, `npx tsc --noEmit` en `app/` ✅, endpoint `/api/leccion` con Ollama local ✅.
 
 ### CLI
 
 - `npx tsx src/cli.ts --perfil principiante|intermedio|avanzado` ahora funciona correctamente.
 - Sin `--perfil` muestra rutas para los tres perfiles.
+- `npx tsx src/cli.ts --leccion` genera una lección para la siguiente técnica recomendada.
 
-### Issues resueltos en este turno
+### Backend
 
-1. Frontend: reemplazado select único de técnica por chips multi-selección.
-2. Frontend: corregida ruta de aprendizaje — ahora numerada, con nombres legibles e interactiva.
-3. Frontend: eliminada tag de categoría duplicada; las técnicas se muestran como tags clickeables.
-4. Frontend: búsqueda normalizada (ignora tildes) y busca también en técnicas.
-5. Frontend: corregidos tipos `Dificultad` y `PerfilUsuario` en `App.tsx`.
-6. CLI: `src/cli.ts` ahora respeta `--perfil` en lugar de ignorarlo.
+- `src/server.ts` expone:
+  - `GET /api/health` — estado y cantidad de recetas.
+  - `GET /api/recetas` — todas las recetas.
+  - `POST /api/leccion` — genera lección LLM para una receta y perfil.
+- CORS habilitado; en desarrollo Vite proxya `/api` a `localhost:3001`.
+- Usa la misma configuración BYOK de `.env` que la CLI.
 
 ### Siguiente
 
-- Conectar generación de lecciones al frontend (requiere endpoint backend o integración con LLM).
 - Agregar recetas para técnicas avanzadas pendientes: masa-madre, confit, sous-vide, merengue.
 - Mejorar UX: progreso del usuario, recetas completadas, favoritos.
-- PWA + deploy (GitHub Pages / Vercel).
+- PWA + deploy (GitHub Pages / Vercel + backend en Fly/Railway).
