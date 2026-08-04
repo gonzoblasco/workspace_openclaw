@@ -72,6 +72,14 @@ El primer flag (`showPrices`) se implementó con provider client-side + localSto
 ### No commitear mockups intermedios
 Los mockups y screenshots de iteración (v2, v3, etc.) son ruido en el repo del proyecto. Solo conservar la evidencia final (home/catálogo) en el commit de release; los intermedios van al daily note o a un artifact.
 
+## Lecciones del 2026-08-04
+
+### npm 404 en publish scoped ≠ problema de scope
+El 404 `PUT .../@scope%2fpackage` al publicar NO significa que el scope esté mal. Primero verificar `npm whoami` — si da 401, el fix es `npm login`, no tocar el scope. El scope `@usuario/` se resuelve solo cuando coincide con el username logueado. (Pasó con `@gonzoblasco/create-stack`.)
+
+### npm login usa browser OTP flow
+El login de npm ahora abre browser (OTP), no acepta token en consola. Los tokens que saltan 2FA se están restringiendo — para CI a futuro usar tokens con `mfa=publish` o `automation`.
+
 ## Proyectos activos
 
 ### a11y-fixer
@@ -88,8 +96,10 @@ Los mockups y screenshots de iteración (v2, v3, etc.) son ruido en el repo del 
 - Diferenciador: nada de accesibilidad/devtooling/IA. Personal creative tool.
 
 ### create-stack-next
-- Scaffolder opinado para Next.js 15. Publicado en npm. Diferenciación real vs create-next-app.
+- Scaffolder opinado para Next.js 15. Publicado en npm como `@gonzoblasco/create-stack`. Diferenciación real vs create-next-app.
 - **Estado:** vivo, no tocar. Necesita evolución, no reset.
+- Gonzo quiere mantener el scope `@gonzoblasco/` como firma (posible rename futuro de identidad a "kanam", pero el scope queda con firma gonzoblasco).
+- `npm pkg fix` ya corrió — key de bin limpia (`create-stack`).
 
 ### workflow-kit
 - Portable AI agent workflow skills. Publicado en npm. Uso diario.
