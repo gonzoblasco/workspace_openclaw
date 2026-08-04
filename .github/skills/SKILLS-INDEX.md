@@ -1,6 +1,6 @@
 # SKILLS-INDEX.md — Skills del Workspace
 
-> 93 skills organizadas por categoría. Actualizado: 2026-08-03
+> 94 skills organizadas por categoría. Actualizado: 2026-08-04
 
 ## Accesibilidad y UX
 
@@ -67,6 +67,7 @@
 | Skill | Scripts | Tooling | Descripción |
 |---|---|---|---|
 | [copy-editing](skills/copy-editing/) | 2 | 1 | Edición profesional de copy de marketing: 7 sweeps de claridad, tono, beneficio |
+| [curriculum-builder](skills/curriculum-builder/) | 0 | 0 | Scaffold para tutores adaptativos con IA. Markdown + grafo → ruta + lecciones LLM (BYOK) + frontend. Inspirado en roadmap.sh. |
 | [narrative-content](skills/narrative-content/) | 5 | 1 | Tu taller de escritura de ficción: mentoría, técnicas, y guía para escribir  |
 | [support-response-writer](skills/support-response-writer/) | 1 | 1 | Generar respuestas profesionales de customer support: pre-venta, post-venta, rec |
 
@@ -162,4 +163,4 @@
 
 ---
 
-**Totales:** 92 skills · 102 scripts · 70 skills con tooling documentado
+**Totales:** 94 skills · 102 scripts · 70 skills con tooling documentado
