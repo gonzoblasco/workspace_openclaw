@@ -34,7 +34,7 @@
   - **Ruta de aprendizaje numerada** con nombres legibles; click en un paso filtra recetas de esa técnica.
   - Tarjetas de receta expandibles con ingredientes y pasos (incluye notas pedagógicas).
   - Tags de técnicas clickeables; sin tag de categoría duplicado.
-  - **Botón "Generar lección con IA"** en cada receta: llama al backend y muestra la lección generada por el LLM configurado en `.env`.
+  - **Botón "Generar lección con IA"** en cada receta: llama al backend y muestra la lección generada por el LLM configurado en `.env`, renderizada como HTML desde Markdown con estilos propios.
 - Comandos:
   - `npm run dev:app` — servidor de desarrollo Vite (puerto 5173).
   - `npm run build:app` — build de producción.
