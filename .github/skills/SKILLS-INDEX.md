@@ -1,6 +1,6 @@
 # SKILLS-INDEX.md — Skills del Workspace
 
-> 94 skills organizadas por categoría. Actualizado: 2026-08-04
+> 93 skills organizadas por categoría. Actualizado: 2026-08-04
 
 ## Accesibilidad y UX
 
@@ -149,7 +149,6 @@
 | [adhd-daily-planner](skills/adhd-daily-planner/) | 0 | 1 | Extensión de adhd-assistant: planning diario para ADHD |
 | [anydocs](skills/anydocs/) | 0 | 1 | Indexa y busca documentación técnica localmente desde sitemaps |
 | [apple-photos](skills/apple-photos/) | 0 | 1 | Acceso terminal a Photos.app: buscar, listar y exportar fotos |
-| [blogwatcher](skills/blogwatcher/) | 0 | 0 | Monitoreo de blogs y RSS/Atom feeds desde terminal |
 | [calorie-counter](skills/calorie-counter/) | 0 | 1 | Tracking diario de calorías y proteína en SQLite local |
 | [checkmate](skills/checkmate/) | 0 | 1 | Goal-to-execution-to-verification loop con worker + judge |
 | [context-slimmer](skills/context-slimmer/) | 0 | 1 | Audita y reduce el token footprint de archivos de contexto del workspace |
@@ -163,4 +162,4 @@
 
 ---
 
-**Totales:** 94 skills · 102 scripts · 70 skills con tooling documentado
+**Totales:** 93 skills · 102 scripts · 70 skills con tooling documentado
