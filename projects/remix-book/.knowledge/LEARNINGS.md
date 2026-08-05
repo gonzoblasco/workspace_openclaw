@@ -892,6 +892,58 @@
 - El problema de doble revalidation es similar a patrones con optimistic updates + server push
 - SSE es mas simple que WebSocket para casos de one-way notification
 
+---
+
+## Capitulo 15 — Advanced Session Management
+
+### Conceptos clave
+
+1. **createCookie vs createCookieSessionStorage:**
+   - `createCookie` — simple, solo `parse()` y `serialize()`. Para datos livianos y no-sensitivos.
+   - `createCookieSessionStorage` — session completa con `getSession`, `commitSession`, `destroySession`. Para auth.
+   - Diferencia: session storage maneja ciclo de vida de session, cookie helper solo lee/escribe.
+
+2. **Visitor cookie pattern:**
+   - Cookie temporal (5 min) que guarda la URL que el usuario queria visitar
+   - `requireUserId()` escribe la cookie antes de redirect a login
+   - Action de login lee la cookie y redirige a la URL original
+   - Util para: redirect post-login a la pagina exacta donde estaba el usuario
+
+3. **Pagination con Remix:**
+   - Search parameter `?page=N` para trackear pagina actual
+   - `take: PAGE_SIZE` y `skip: (pageNumber - 1) * PAGE_SIZE` en Prisma
+   - `db.$transaction([count, findMany])` para count + data en una transaccion
+   - Form con `method="GET"` para navegacion entre paginas
+   - Hidden input para `q` (search) para persistir filtro entre paginas
+   - Resetear page a 1 cuando cambia el search filter
+
+4. **Edge cases de pagination:**
+   - Ocultar pagination si count <= PAGE_SIZE y estamos en page 1
+   - Deshabilitar Previous si page === 1
+   - Deshabilitar Next si count <= pageNumber * PAGE_SIZE
+   - Siempre mostrar pagination si no estamos en page 1 (para poder volver)
+   - Revalidation post-action actualiza count automaticamente
+
+### Citas para recordar
+
+> "Cookies can be utilized to implement complex user interfaces and features."
+> "Pagination aims to reduce load times and improve performance."
+> "Remix revalidates all loader data after every mutation."
+
+### Preguntas para explorar
+
+- Como migrar datos de visitor a user account al registrarse?
+- Pagination con cursor-based (keyset) vs offset — cual es mejor para que caso?
+- Como combinar search + pagination + sorting?
+- El visitor cookie pattern — que pasa si el usuario abre multiple tabs?
+
+### Conexiones con experiencia previa
+
+- El patron de visitor cookie es similar a `redirect` query param en muchos frameworks
+- Pagination con search params es el approach standard de REST APIs
+- `db.$transaction` es similar a transacciones SQL pero con Prisma
+- El hidden input para persistir search entre paginas es un patron HTML clasico
+
 ### Conceptos clave
 
 1. **Meta tags:**
