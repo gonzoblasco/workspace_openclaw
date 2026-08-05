@@ -15,11 +15,12 @@
 | Capitulo 8 | Completado | BeeRich (auth) | 2026-08-05 |
 | Capitulo 9 | Completado | BeeRich (assets) | 2026-08-05 |
 | Capitulo 10 | Completado | BeeRich (uploads) | 2026-08-05 |
+| Capitulo 11 | Completado | BeeRich (optimistic) | 2026-08-05 |
 
 ## Documentos generados
 
 - `LEARNINGS.md` — conceptos clave, citas, preguntas, conexiones
-- `ADR-001` a `ADR-010` — 10 ADRs cubriendo todos los patrones del libro
+- `ADR-001` a `ADR-011` — 11 ADRs cubriendo todos los patrones del libro
 
 ## Proyectos
 
@@ -27,8 +28,8 @@
 
 - **Ubicacion:** `bee-rich/`
 - **Stack:** Remix v2 + Express.js + Prisma + SQLite + Tailwind CSS + bcrypt + Google Fonts
-- **Estado:** File uploads completo (capitulo 10)
-- **Features:** Multipart form data, upload handlers compuestos (streaming), splat routes para attachments, resource routes protegidos con auth, cleanup de archivos al eliminar, Attachment component para ver/remover adjuntos
+- **Estado:** Optimistic UI completo (capitulo 11)
+- **Features:** Optimistic delete con `if (isSubmitting) return null`, optimistic attachment upload/remove con `navigation.formData`, error feedback inline con `fetcher.data`, disabled states condicionales
 
 ## Leyenda
 
@@ -39,4 +40,4 @@
 
 ## Ultima actualizacion
 
-2026-08-05 — Capitulo 10 procesado. BeeRich con file uploads completo. ADR-010 creado.
+2026-08-05 — Capitulo 11 procesado. BeeRich con optimistic UI. ADR-011 creado.
