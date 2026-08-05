@@ -10,7 +10,7 @@
 | 4 | ✅ Complete | Apollo Client 4 + React, 1 ADR created |
 | 5 | ✅ Complete | React patterns, refactoring, fragments, custom hooks |
 | 6 | ✅ Complete | JWT auth, login/signup, @auth directive, AuthLink |
-| 7 | 🔴 Pending | |
+| 7 | ✅ Complete | Image uploads with Upload scalar, cropping, local storage |
 | 8 | 🔴 Pending | |
 | 9 | 🔴 Pending | |
 | 10 | 🔴 Pending | |
@@ -22,4 +22,4 @@
 | 16 | 🔴 Pending | |
 | 17 | 🔴 Pending | |
 
-**Overall:** 🟢 Active — Chapter 6 complete
+**Overall:** 🟢 Active — Chapter 7 complete

@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import compression from 'compression';
 import JWT from 'jsonwebtoken';
+import { graphqlUploadExpress } from 'graphql-upload-ts';
 import services from './services/index.js';
 import { db, users, eq } from './database.js';
 
@@ -49,7 +50,7 @@ for (let i = 0; i < serviceNames.length; i += 1) {
   if (name === 'graphql') {
     const { server, expressMiddleware } = services[name];
     await server.start();
-    app.use('/graphql', express.json(), expressMiddleware(server, {
+    app.use('/graphql', graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }), express.json(), expressMiddleware(server, {
       context: async ({ req }) => {
         const authorization = req.headers.authorization;
         if (authorization) {

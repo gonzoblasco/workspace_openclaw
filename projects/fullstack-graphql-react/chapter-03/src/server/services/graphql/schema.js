@@ -1,6 +1,8 @@
 const typeDefinitions = `
   directive @auth on QUERY | FIELD_DEFINITION | FIELD
 
+  scalar Upload
+
   type User {
     id: Int
     avatar: String
@@ -44,6 +46,13 @@ const typeDefinitions = `
     token: String
   }
 
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+    url: String!
+  }
+
   input PostInput {
     text: String!
   }
@@ -73,6 +82,7 @@ const typeDefinitions = `
     deletePost(postId: Int!): Response @auth
     addChat(chat: ChatInput!): Chat @auth
     addMessage(message: MessageInput!): Message @auth
+    uploadAvatar(file: Upload!): File @auth
   }
 
   schema {

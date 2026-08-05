@@ -103,3 +103,20 @@ The `@auth` directive lets you add authentication to any field without modifying
 Both were replaced by the `useApolloClient` hook. This is part of Apollo's migration from HOCs to hooks. The pattern is consistent: any component that needs direct client access uses `useApolloClient()`.
 
 **Pattern:** When upgrading Apollo Client, check for removed APIs. `withApollo` (HOC) → `useApolloClient` (hook). `ApolloConsumer` (render prop) → `useApolloClient` (hook). The hook pattern is simpler and doesn't require wrapping the component.
+
+## Chapter 7
+
+### Insight: File uploads with GraphQL require multipart requests
+Standard JSON HTTP bodies can't hold file objects. GraphQL file uploads use the `Upload` scalar and multipart `FormData` requests. The `apollo-upload-client` package handles this transparently — the developer just passes a `File`/`Blob` as a variable.
+
+**Pattern:** For file uploads in GraphQL, use the `Upload` scalar on the server and `apollo-upload-client` on the client. The server receives a `createReadStream` that can be piped to any storage (local disk, S3, Cloudinary).
+
+### Insight: Client-side cropping saves bandwidth
+Cropping before upload (via `react-cropper`) means the server receives only the final image, not the full original. This reduces upload time, storage costs, and processing.
+
+**Pattern:** For image-heavy apps, do client-side preprocessing (crop, resize, compress) before upload. The server should still validate and sanitize, but the heavy lifting happens in the browser.
+
+### Insight: Storage abstraction matters — local vs S3 is a resolver change
+The entire upload flow (GraphQL schema, client code, cache update) is identical whether files go to local disk or S3. Only the resolver changes. This is good architecture: the storage backend is an implementation detail.
+
+**Pattern:** Abstract file storage behind a simple interface (save file → return URL). Start with local disk for development, swap to S3/Cloudinary for production. The rest of the code doesn't change.

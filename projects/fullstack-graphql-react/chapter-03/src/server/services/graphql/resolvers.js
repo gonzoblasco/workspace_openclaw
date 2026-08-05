@@ -1,12 +1,27 @@
 import { asc, like, or, eq } from 'drizzle-orm';
 import bcrypt from 'bcrypt';
 import JWT from 'jsonwebtoken';
+import { GraphQLUpload } from 'graphql-upload-ts';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 import logger from '../../helpers/logger.js';
 import { db, users, posts, chats, messages, userChats, desc } from '../../database.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const uploadsDir = path.join(__dirname, '../../../../uploads');
+
+// Ensure uploads directory exists
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 const { JWT_SECRET } = process.env;
 
 const resolvers = {
+  Upload: GraphQLUpload,
+
   Post: {
     user(post) {
       return db.select().from(users).where(eq(users.id, post.userId)).get();
@@ -164,6 +179,32 @@ const resolvers = {
       }).returning().get();
       logger.log({ level: 'info', message: 'Message was created' });
       return newMessage;
+    },
+    async uploadAvatar(root, { file }, context) {
+      if (!context.user) throw new Error('Not authenticated');
+      const { createReadStream, filename, mimetype, encoding } = await file;
+
+      // Save file locally
+      const uniqueName = `${Date.now()}-${filename}`;
+      const filePath = path.join(uploadsDir, uniqueName);
+      const writeStream = fs.createWriteStream(filePath);
+      await new Promise((resolve, reject) => {
+        createReadStream()
+          .pipe(writeStream)
+          .on('finish', resolve)
+          .on('error', reject);
+      });
+
+      const url = `/uploads/${uniqueName}`;
+
+      // Update user avatar
+      db.update(users)
+        .set({ avatar: url })
+        .where(eq(users.id, context.user.id))
+        .run();
+
+      logger.log({ level: 'info', message: 'Avatar uploaded for user ' + context.user.id });
+      return { filename, mimetype, encoding, url };
     },
   },
 };

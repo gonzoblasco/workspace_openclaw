@@ -1,5 +1,6 @@
-import { ApolloClient, InMemoryCache, from, HttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, from } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import UploadHttpLink from 'apollo-upload-client/UploadHttpLink.mjs';
 
 const AuthLink = (operation, next) => {
   const token = localStorage.getItem('jwt');
@@ -17,7 +18,7 @@ const AuthLink = (operation, next) => {
 
 const client = new ApolloClient({
   link: from([
-    onError(({ graphQLErrors, networkError, operation }) => {
+    onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
           if (extensions?.code === 'UNAUTHENTICATED') {
@@ -34,7 +35,7 @@ const client = new ApolloClient({
       }
     }),
     AuthLink,
-    new HttpLink({
+    new UploadHttpLink({
       uri: 'http://localhost:8000/graphql',
       credentials: 'same-origin',
     }),
