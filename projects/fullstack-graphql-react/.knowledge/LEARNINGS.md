@@ -86,3 +86,20 @@ Chapter 5 doesn't introduce new technology — it refactors existing code. The v
 Both solve the same problem (global state without prop drilling). The React Context API is general-purpose; Apollo Consumer is specific to Apollo cache. The book presents both but the real answer is: use React Context for app state (user, theme, locale) and Apollo cache for server data.
 
 **Pattern:** Don't store server data in React Context. Apollo cache already handles it. Use React Context only for client-only state (auth tokens, UI preferences, theme).
+
+## Chapter 6
+
+### Insight: JWT auth with localStorage is simple but has real security tradeoffs
+The book acknowledges the localStorage vs cookies debate and picks localStorage for simplicity. The real risk is XSS: if any third-party script runs on your page, it can steal the JWT. For production, httpOnly cookies + CSRF tokens are more secure.
+
+**Pattern:** localStorage JWT is fine for learning and prototypes. For production, use httpOnly cookies with a CSRF token, or use a BFF (Backend for Frontend) pattern where the auth token never reaches the browser.
+
+### Insight: GraphQL directives are powerful for cross-cutting concerns
+The `@auth` directive lets you add authentication to any field without modifying resolvers. This is the GraphQL-native way to handle cross-cutting concerns (auth, logging, rate limiting).
+
+**Pattern:** Before adding auth checks to individual resolvers, consider a schema directive. Directives keep resolvers clean and make auth requirements visible in the schema itself.
+
+### Insight: Apollo Client 4 removed withApollo and ApolloConsumer
+Both were replaced by the `useApolloClient` hook. This is part of Apollo's migration from HOCs to hooks. The pattern is consistent: any component that needs direct client access uses `useApolloClient()`.
+
+**Pattern:** When upgrading Apollo Client, check for removed APIs. `withApollo` (HOC) → `useApolloClient` (hook). `ApolloConsumer` (render prop) → `useApolloClient` (hook). The hook pattern is simpler and doesn't require wrapping the component.

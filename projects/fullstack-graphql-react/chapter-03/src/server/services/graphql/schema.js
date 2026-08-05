@@ -1,8 +1,11 @@
 const typeDefinitions = `
+  directive @auth on QUERY | FIELD_DEFINITION | FIELD
+
   type User {
     id: Int
     avatar: String
     username: String
+    email: String
   }
 
   type Post {
@@ -37,6 +40,10 @@ const typeDefinitions = `
     users: [User]
   }
 
+  type Auth {
+    token: String
+  }
+
   input PostInput {
     text: String!
   }
@@ -52,17 +59,20 @@ const typeDefinitions = `
 
   type RootQuery {
     posts: [Post]
-    postsFeed(page: Int, limit: Int): PostFeed
-    chats: [Chat]
-    chat(chatId: Int): Chat
-    usersSearch(page: Int, limit: Int, text: String!): UsersSearch
+    postsFeed(page: Int, limit: Int): PostFeed @auth
+    chats: [Chat] @auth
+    chat(chatId: Int): Chat @auth
+    usersSearch(page: Int, limit: Int, text: String!): UsersSearch @auth
+    currentUser: User @auth
   }
 
   type RootMutation {
-    addPost(post: PostInput!): Post
-    deletePost(postId: Int!): Response
-    addChat(chat: ChatInput!): Chat
-    addMessage(message: MessageInput!): Message
+    login(email: String!, password: String!): Auth
+    signup(username: String!, email: String!, password: String!): Auth
+    addPost(post: PostInput!): Post @auth
+    deletePost(postId: Int!): Response @auth
+    addChat(chat: ChatInput!): Chat @auth
+    addMessage(message: MessageInput!): Message @auth
   }
 
   schema {

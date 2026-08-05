@@ -1,6 +1,10 @@
-import { asc, like, or } from 'drizzle-orm';
+import { asc, like, or, eq } from 'drizzle-orm';
+import bcrypt from 'bcrypt';
+import JWT from 'jsonwebtoken';
 import logger from '../../helpers/logger.js';
-import { db, users, posts, chats, messages, userChats, eq, desc } from '../../database.js';
+import { db, users, posts, chats, messages, userChats, desc } from '../../database.js';
+
+const { JWT_SECRET } = process.env;
 
 const resolvers = {
   Post: {
@@ -55,13 +59,11 @@ const resolvers = {
         posts: query.all(),
       };
     },
-    chats() {
-      const firstUser = db.select().from(users).limit(1).all();
-      if (!firstUser.length) return [];
-
+    chats(root, args, context) {
+      if (!context.user) return [];
       return db.select().from(chats)
         .innerJoin(userChats, eq(userChats.chatId, chats.id))
-        .where(eq(userChats.userId, firstUser[0].id))
+        .where(eq(userChats.userId, context.user.id))
         .all()
         .map((row) => row.chats);
     },
@@ -82,17 +84,51 @@ const resolvers = {
         .all();
       return { users: result };
     },
+    currentUser(root, args, context) {
+      return context.user;
+    },
   },
   RootMutation: {
-    addPost(root, { post }) {
-      const firstUser = db.select().from(users).limit(1).all();
-      if (!firstUser.length) throw new Error('No users found');
-
-      const newPost = db.insert(posts).values({
-        text: post.text,
-        userId: firstUser[0].id,
+    login(root, { email, password }) {
+      const user = db.select().from(users).where(eq(users.email, email)).get();
+      if (!user) {
+        throw new Error('User not found');
+      }
+      const passwordValid = bcrypt.compareSync(password, user.password);
+      if (!passwordValid) {
+        throw new Error('Password does not match');
+      }
+      const token = JWT.sign({ email, id: user.id }, JWT_SECRET, {
+        expiresIn: '1d',
+      });
+      return { token };
+    },
+    signup(root, { email, password, username }) {
+      const existing = db.select().from(users)
+        .where(or(eq(users.email, email), eq(users.username, username)))
+        .all();
+      if (existing.length) {
+        throw new Error('User already exists');
+      }
+      const hash = bcrypt.hashSync(password, 10);
+      const newUser = db.insert(users).values({
+        email,
+        password: hash,
+        username,
+        avatar: '/uploads/avatar1.png',
       }).returning().get();
 
+      const token = JWT.sign({ email, id: newUser.id }, JWT_SECRET, {
+        expiresIn: '1d',
+      });
+      return { token };
+    },
+    addPost(root, { post }, context) {
+      if (!context.user) throw new Error('Not authenticated');
+      const newPost = db.insert(posts).values({
+        text: post.text,
+        userId: context.user.id,
+      }).returning().get();
       logger.log({ level: 'info', message: 'Post was created' });
       return newPost;
     },
@@ -104,28 +140,28 @@ const resolvers = {
       }
       return { success };
     },
-    addChat(root, { chat }) {
+    addChat(root, { chat }, context) {
+      if (!context.user) throw new Error('Not authenticated');
       const newChat = db.insert(chats).values({}).returning().get();
-
+      // Add the current user to the chat
+      db.insert(userChats).values({ userId: context.user.id, chatId: newChat.id }).run();
       if (chat.users) {
         for (const userId of chat.users) {
-          db.insert(userChats).values({ userId, chatId: newChat.id }).run();
+          if (userId !== context.user.id) {
+            db.insert(userChats).values({ userId, chatId: newChat.id }).run();
+          }
         }
       }
-
       logger.log({ level: 'info', message: 'Chat was created' });
       return newChat;
     },
-    addMessage(root, { message }) {
-      const firstUser = db.select().from(users).limit(1).all();
-      if (!firstUser.length) throw new Error('No users found');
-
+    addMessage(root, { message }, context) {
+      if (!context.user) throw new Error('Not authenticated');
       const newMessage = db.insert(messages).values({
         text: message.text,
-        userId: firstUser[0].id,
+        userId: context.user.id,
         chatId: message.chatId,
       }).returning().get();
-
       logger.log({ level: 'info', message: 'Message was created' });
       return newMessage;
     },
