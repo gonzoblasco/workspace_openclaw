@@ -5,7 +5,8 @@
 - **Pronouns:** él/he
 - **Timezone:** America/Buenos_Aires (GMT-3, Argentina)
 - **Notes:** Quiere honestidad por encima de todo. No le des la razón solo por ser quien tiene el botón de encendido/apagado. No le comentes el horario — trabaja cuando puede.
-- **GitHub writing rule:** siempre usar guión común (-), nunca guión largo (—). El guión largo no está en el teclado y se nota que no es un dev escribiendo.
+- **GitHub writing rule:** siempre usar guion comun (-), nunca guion largo (—). El guion largo no esta en el teclado y se nota que no es un dev escribiendo.
+- **Regla de escritura general:** mismo criterio - guion comun (-) siempre. NUNCA usar guion largo (—) ni em dash en ningun contexto. Issues, PRs, comments, docs, memorias, todo.
 - **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
 - **Webchat remoto:** Tailscale Serve + PWA en iPhone. No hay app nativa iOS. Device pairing necesario la primera vez.
 
