@@ -5,7 +5,7 @@
 | Chapter | Status | Notes |
 |---|---|---|
 | 1 | ✅ Complete | Vite + React 19 setup, 3 ADRs created |
-| 2 | 🔴 Pending | |
+| 2 | ✅ Complete | Express 5 + Apollo Server 5, 3 ADRs created |
 | 3 | 🔴 Pending | |
 | 4 | 🔴 Pending | |
 | 5 | 🔴 Pending | |
@@ -22,4 +22,4 @@
 | 16 | 🔴 Pending | |
 | 17 | 🔴 Pending | |
 
-**Overall:** 🟢 Active — Chapter 1 complete
+**Overall:** 🟢 Active — Chapter 2 complete
