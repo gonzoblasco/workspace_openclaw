@@ -832,6 +832,66 @@
 - El tradeoff de defer (velocidad vs pending UI) es similar a lazy loading de imagenes
 - PrismaPromise → Promise con `.then()` es un detalle importante de Prisma
 
+---
+
+## Capitulo 14 — Real Time with Remix
+
+### Conceptos clave
+
+1. **Tecnologias de tiempo real:**
+   - **Polling:** cliente pregunta al server en intervalos. Simple, pero wasteful.
+     - Short polling: intervalos fijos, muchas requests innecesarias
+     - Long polling: server responde solo cuando hay datos nuevos
+   - **SSE (Server-Sent Events):** server push one-way via HTTP. Stream con `text/event-stream`.
+     - Menos requests que polling, pero requiere HTTP streaming
+     - HTTP/1 solo permite 6 conexiones concurrentes
+   - **WebSocket:** bidireccional via TCP. Mas complejo, mas performante.
+     - Requiere long-running server, no siempre soportado
+
+2. **SSE en Remix:**
+   - Resource route que devuelve `new Response(stream, { headers: { 'Content-Type': 'text/event-stream' } })`
+   - `ReadableStream` con `TextEncoder` para enviar eventos
+   - Formato: `event: nombre\ndata: datos\n\n`
+   - `EventSource` API en el cliente para conectarse
+   - `useRevalidator().revalidate()` para refrescar loaders al recibir evento
+
+3. **EventEmitter pattern:**
+   - `EventEmitter` de Node.js para comunicacion server-side
+   - Global emitter accesible desde cualquier action
+   - `emitter.emit(userId)` en actions post-mutation
+   - `emitter.addListener(userId, handler)` en el SSE endpoint
+   - `emitter.removeListener(userId, handler)` al cerrar conexion
+
+4. **Implementacion:**
+   - `events.server.ts` — EventEmitter global + eventStream helper
+   - `/sse.tsx` — resource route con requireUserId + event listener
+   - `event-source.ts` — hook React con EventSource + useRevalidator
+   - Llamar `emitter.emit(userId)` en cada action exitosa
+   - Llamar `useEventSource()` en dashboard.tsx
+
+5. **Problema de doble revalidation:**
+   - El tab que hace la mutation revalida dos veces (built-in + SSE)
+   - Solucion: usar `shouldRevalidate` o identificador unico de conexion
+
+### Citas para recordar
+
+> "Polling can be a great compromise when working with server environments and hosting providers that do not support real-time protocols."
+> "SSE provides a one-way communication line using the HTTP protocol, while WebSocket connections use TCP and are bi-directional."
+
+### Preguntas para explorar
+
+- Como evitar la doble revalidation en el tab que muta?
+- SSE vs WebSocket — cuando usar cual en produccion?
+- Como escalar SSE con multiple instancias del server?
+- El limite de 6 conexiones HTTP/1 — como afecta a usuarios con muchos tabs?
+
+### Conexiones con experiencia previa
+
+- El patron de EventEmitter + SSE es similar a patrones con Redis Pub/Sub
+- `useRevalidator` es similar a `refetch` de React Query
+- El problema de doble revalidation es similar a patrones con optimistic updates + server push
+- SSE es mas simple que WebSocket para casos de one-way notification
+
 ### Conceptos clave
 
 1. **Meta tags:**
