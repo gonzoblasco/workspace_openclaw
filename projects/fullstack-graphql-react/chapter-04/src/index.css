@@ -543,3 +543,8 @@ form [type='submit'] {
 .goHome:hover {
   background-color: #f6f7f9;
 }
+
+/* Toast notifications */
+.Toastify__toast-container--top-left {
+  top: 4em !important;
+}

@@ -1,15 +1,15 @@
-import { StrictMode } from 'react';
-import { hydrateRoot } from 'react-dom/client';
-import { ApolloProvider } from '@apollo/client/react';
-import App from './App.jsx';
-import client from './apollo/index.js';
-import './index.css';
+import Feed from './Feed.jsx';
+import Chats from './Chats.jsx';
+import Bar from './components/bar/index.jsx';
 
-hydrateRoot(
-  document.getElementById('root'),
-  <StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </StrictMode>,
-);
+export default function Main({ changeLoginState }) {
+  return (
+    <>
+      <Bar changeLoginState={changeLoginState} />
+      <div className="container">
+        <Feed />
+      </div>
+      <Chats />
+    </>
+  );
+}

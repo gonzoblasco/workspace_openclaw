@@ -154,3 +154,20 @@ localStorage doesn't exist on the server. For SSR to know if a user is logged in
 Without it, SSR returns a loading spinner. `renderToStringWithData` waits for all in-flight GraphQL queries before returning HTML. The result is a fully rendered page on first load. The cache state (`client.extract()`) is injected into the HTML so the client doesn't re-fetch.
 
 **Pattern:** For any SSR setup with Apollo, the flow is always: render → wait for queries → extract cache → inject state → hydrate. The tools change (webpack vs Vite, ReactDOM vs createRoot) but the flow is universal.
+
+## Chapter 10
+
+### Insight: WebSockets solve the polling problem but introduce scaling challenges
+Polling is simple but wasteful (requests even when no data changed). Subscriptions are efficient (server pushes only when data changes) but require maintaining open connections. For thousands of users, WebSocket connections consume server memory and require sticky sessions or a shared PubSub backend (Redis).
+
+**Pattern:** Use subscriptions for real-time features (chat, notifications). Use polling for non-critical updates where a few seconds of delay is acceptable. Use the `split` function to route subscriptions via WebSocket and everything else via HTTP.
+
+### Insight: withFilter is the subscription equivalent of @auth
+Just as `@auth` protects queries/mutations from unauthorized access, `withFilter` protects subscription events. Without it, every connected client receives every event — a privacy leak.
+
+**Pattern:** Every subscription that sends user-specific data needs a `withFilter`. The filter checks if the current user should receive the event. For chat messages, check if the user is a member of the chat. For notifications, check if the notification is addressed to the user.
+
+### Insight: subscribeToMore is the subscription equivalent of fetchMore
+`fetchMore` loads more data (pagination). `subscribeToMore` listens for new data (real-time). Both use `updateQuery` to merge new data with existing cache. The pattern is identical — only the trigger differs.
+
+**Pattern:** For any list that needs real-time updates, use `subscribeToMore` in a `useEffect`. The `updateQuery` function merges new items into the existing list. The component re-renders automatically when the cache updates.

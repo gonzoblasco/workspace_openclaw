@@ -87,9 +87,14 @@ const typeDefinitions = `
     logout: Response @auth
   }
 
+  type RootSubscription {
+    messageAdded: Message
+  }
+
   schema {
     query: RootQuery
     mutation: RootMutation
+    subscription: RootSubscription
   }
 `;
 

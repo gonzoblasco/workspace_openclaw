@@ -13,7 +13,7 @@
 | 7 | ✅ Complete | Image uploads with Upload scalar, cropping, local storage |
 | 8 | ✅ Complete | React Router v7, profile pages, private routes |
 | 9 | ✅ Complete | SSR with Vite + Apollo renderToStringWithData + cookies |
-| 10 | 🔴 Pending | |
+| 10 | ✅ Complete | Real-time subscriptions with graphql-ws + PubSub |
 | 11 | 🔴 Pending | |
 | 12 | 🔴 Pending | |
 | 13 | 🔴 Pending | |
@@ -22,4 +22,4 @@
 | 16 | 🔴 Pending | |
 | 17 | 🔴 Pending | |
 
-**Overall:** 🟢 Active — Chapter 9 complete
+**Overall:** 🟢 Active — Chapter 10 complete

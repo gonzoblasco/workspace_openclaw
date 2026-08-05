@@ -1,12 +1,15 @@
-import { asc, like, or, eq } from 'drizzle-orm';
+import { asc, like, or, eq, and } from 'drizzle-orm';
 import bcrypt from 'bcrypt';
 import JWT from 'jsonwebtoken';
 import { GraphQLUpload } from 'graphql-upload-ts';
+import { PubSub, withFilter } from 'graphql-subscriptions';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import logger from '../../helpers/logger.js';
 import { db, users, posts, chats, messages, userChats, desc } from '../../database.js';
+
+const pubsub = new PubSub();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -214,6 +217,10 @@ const resolvers = {
         userId: context.user.id,
         chatId: message.chatId,
       }).returning().get();
+
+      // Publish to subscription channel
+      pubsub.publish('messageAdded', { messageAdded: newMessage });
+
       logger.log({ level: 'info', message: 'Message was created' });
       return newMessage;
     },
@@ -254,6 +261,27 @@ const resolvers = {
         });
       }
       return { success: true };
+    },
+  },
+  RootSubscription: {
+    messageAdded: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(['messageAdded']),
+        (payload, variables, context) => {
+          // Don't send to the message author (they already have it)
+          if (payload.messageAdded.userId === context.user?.id) {
+            return false;
+          }
+          // Check if the user is a member of the chat
+          const chatMember = db.select().from(userChats)
+            .where(and(
+              eq(userChats.chatId, payload.messageAdded.chatId),
+              eq(userChats.userId, context.user?.id),
+            ))
+            .get();
+          return !!chatMember;
+        },
+      ),
     },
   },
 };

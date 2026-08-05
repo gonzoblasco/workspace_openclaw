@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { GET_CHATS } from './apollo/queries/getChats.js';
+import { MESSAGES_SUBSCRIPTION } from './apollo/subscriptions/messageAdded.js';
+import { GET_CHAT } from './apollo/queries/getChat.js';
+import { NEW_MESSAGE } from './apollo/mutations/addMessage.js';
 import Chat from './Chat.jsx';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const usernamesToString = (users) => {
   const userList = users.slice(1);
@@ -24,7 +29,30 @@ const shorten = (text) => {
 
 function Chats() {
   const [openChats, setOpenChats] = useState([]);
-  const { loading, error, data } = useQuery(GET_CHATS);
+  const { loading, error, data, subscribeToMore } = useQuery(GET_CHATS);
+
+  // Subscribe to new messages
+  useEffect(() => {
+    subscribeToMore({
+      document: MESSAGES_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const newMessage = subscriptionData.data.messageAdded;
+        if (!prev.chats || !prev.chats.length) return prev;
+
+        const index = prev.chats.findIndex((c) => c.id === newMessage.chat.id);
+        if (index === -1) return prev;
+
+        const newChats = [...prev.chats];
+        newChats[index] = {
+          ...newChats[index],
+          lastMessage: { text: newMessage.text, __typename: 'Message' },
+        };
+
+        return { chats: newChats, __typename: 'Query' };
+      },
+    });
+  }, [subscribeToMore]);
 
   const openChat = (id) => {
     const openChatsTemp = openChats.slice();
@@ -51,6 +79,7 @@ function Chats() {
 
   return (
     <div className="wrapper">
+      <ToastContainer />
       <div className="chats">
         {chats.map((chat) => (
           <div
