@@ -1,0 +1,32 @@
+{
+  "name": "chapter-03",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "GraphQL + Express.js + Drizzle ORM backend for Graphbook",
+  "scripts": {
+    "server": "node --watch src/server/index.js",
+    "start": "node src/server/index.js",
+    "seed": "node seed.js",
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^5.5.1",
+    "@as-integrations/express5": "^1.1.2",
+    "@graphql-tools/schema": "^10.0.38",
+    "better-sqlite3": "^13.0.3",
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "drizzle-orm": "^0.45.2",
+    "express": "^5.2.1",
+    "graphql": "^16.14.2",
+    "helmet": "^8.3.0",
+    "winston": "^3.19.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.10"
+  }
+}

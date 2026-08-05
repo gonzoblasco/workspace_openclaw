@@ -19,7 +19,22 @@ A once-standard package that went unmaintained for 6+ years. The community fork 
 
 **Pattern:** API deprecations in React are well-documented and usually have codemods. When processing a book that uses deprecated APIs, check the React blog for the migration path rather than trying to make the old code work.
 
-## Chapter 2
+## Chapter 3
+
+### Insight: ORM churn is real — Sequelize → Prisma → Drizzle in 6 years
+Sequelize (2020) → Prisma (2022-2025) → Drizzle (2025+). Each generation solves problems the previous one created. Sequelize's magic (auto-loading, hooks) became Prisma's simplicity (schema-first), which became Drizzle's SQL-native approach.
+
+**Pattern:** When choosing an ORM, prefer SQL-native APIs over magic. Drizzle's `db.select().from(table).where(eq(...))` maps 1:1 to SQL. You can always drop down to raw SQL. The less magic, the less you need to unlearn when the next ORM arrives.
+
+### Insight: SQLite is underrated for development
+MySQL setup (server, phpMyAdmin, Apache, PHP) is heavy. SQLite is a single file, zero config, and supports the same SQL concepts. For a book teaching database concepts, SQLite removes all friction.
+
+**Pattern:** For development and learning, prefer the simplest database setup that teaches the same concepts. SQLite teaches foreign keys, joins, indexes, and transactions just as well as MySQL. Switch to production-grade databases only when deploying.
+
+### Insight: Many-to-many relationships are the same everywhere
+User ↔ Chat via `user_chats` join table. The concept is identical in Sequelize (`belongsToMany`), Prisma (`@relation` with `through`), and Drizzle (explicit join table). The implementation syntax changes, the database structure doesn't.
+
+**Pattern:** When learning a new ORM, start with the relationship types (one-to-one, one-to-many, many-to-many). These are universal across all ORMs. The syntax is just syntax.
 
 ### Insight: Apollo Server's integration API changed twice in 5 years
 From `apollo-server-express` (v3) with `applyMiddleware()` to `@apollo/server` (v4) with `expressMiddleware()` to `@apollo/server` (v5) with `@as-integrations/express5`. The core GraphQL server logic is unchanged — only the Express binding changed.
