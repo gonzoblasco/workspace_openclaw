@@ -207,7 +207,10 @@ projects/<slug>/
 - **Código:** Cada proyecto tiene su propio repo para la implementación (el cómo).
 
 **Flujo típico:**
-1. Nuevo producto → crear `projects/<slug>/.knowledge/` con BRIEF, EVALUATION, DEFINITION
+1. Nuevo producto → `./scripts/init-project.sh <slug> [--repo <url>]`
+   - Crea `projects/<slug>/.knowledge/` con BRIEF.md + STATUS.md
+   - Crea `.gitignore` que ignora `.knowledge/` para el repo del proyecto
+   - Si tiene `--repo`, inicializa git, pushea, y registra como submodule
 2. Go decision → scaffold en `projects/<slug>/` (repo separado, ignora `.knowledge/`)
 3. Desarrollo → actualizar `projects/<slug>/.knowledge/STATUS.md` con cada hito
 4. Commits: `.knowledge/` al workspace, código al repo del proyecto
