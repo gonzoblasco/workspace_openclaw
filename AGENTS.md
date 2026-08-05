@@ -144,6 +144,20 @@ Formato: `type(#issue): description in english`
 - `fix(#12): prevent double submit on login form`
 - `chore(#11): add GitHub Actions CI workflow`
 
+## Project Cleanup — Al Finalizar un Proyecto
+
+Cuando un proyecto de libro, curso, o tutorial se completa:
+
+1. **Commit + push final** con todo el contenido del proyecto
+2. **Extraer ADRs generales** a `docs/adr/` si corresponde
+3. **Limpiar local:** borrar ejercicios crudos (chapters/, node_modules/, configs de build), dejar solo:
+   - `.knowledge/` (BRIEF, ROADMAP, ADRs, LEARNINGS, STATUS)
+   - `README.md` (opcional, si resume el proyecto)
+4. **Commit + push de la limpieza**
+5. **Registrar en daily note** que el proyecto se completó y limpió
+
+**Motivación:** los ejercicios crudos son andamio. Los ADR + LEARNINGS son el activo permanente. El workspace no necesita 50MB de node_modules por proyecto completado.
+
 ## Workspace Git
 
 El workspace tiene su propio repo en GitHub (`workspace_openclaw`). Los proyectos NO están en este repo — cada uno tiene su propio repo y se sincronizan por separado.
