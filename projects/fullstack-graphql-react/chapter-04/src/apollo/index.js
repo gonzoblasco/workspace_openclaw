@@ -16,6 +16,9 @@ const AuthLink = (operation, next) => {
   return next(operation);
 };
 
+// Restore SSR cache if available
+const initialState = typeof window !== 'undefined' ? window.__APOLLO_STATE__ : undefined;
+
 const client = new ApolloClient({
   link: from([
     onError(({ graphQLErrors, networkError }) => {
@@ -40,7 +43,7 @@ const client = new ApolloClient({
       credentials: 'same-origin',
     }),
   ]),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache().restore(initialState),
 });
 
 export default client;

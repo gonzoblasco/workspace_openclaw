@@ -113,7 +113,7 @@ const resolvers = {
     },
   },
   RootMutation: {
-    login(root, { email, password }) {
+    login(root, { email, password }, context) {
       const user = db.select().from(users).where(eq(users.email, email)).get();
       if (!user) {
         throw new Error('User not found');
@@ -125,9 +125,23 @@ const resolvers = {
       const token = JWT.sign({ email, id: user.id }, JWT_SECRET, {
         expiresIn: '1d',
       });
+
+      // Set cookie for SSR
+      if (context.res) {
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + 1);
+        context.res.cookie('authorization', token, {
+          signed: true,
+          expires: expirationDate,
+          httpOnly: true,
+          secure: false,
+          sameSite: 'strict',
+        });
+      }
+
       return { token };
     },
-    signup(root, { email, password, username }) {
+    signup(root, { email, password, username }, context) {
       const existing = db.select().from(users)
         .where(or(eq(users.email, email), eq(users.username, username)))
         .all();
@@ -145,6 +159,20 @@ const resolvers = {
       const token = JWT.sign({ email, id: newUser.id }, JWT_SECRET, {
         expiresIn: '1d',
       });
+
+      // Set cookie for SSR
+      if (context.res) {
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + 1);
+        context.res.cookie('authorization', token, {
+          signed: true,
+          expires: expirationDate,
+          httpOnly: true,
+          secure: false,
+          sameSite: 'strict',
+        });
+      }
+
       return { token };
     },
     addPost(root, { post }, context) {
@@ -214,6 +242,18 @@ const resolvers = {
 
       logger.log({ level: 'info', message: 'Avatar uploaded for user ' + context.user.id });
       return { filename, mimetype, encoding, url };
+    },
+    logout(root, params, context) {
+      if (context.res) {
+        context.res.cookie('authorization', '', {
+          signed: true,
+          expires: new Date(),
+          httpOnly: true,
+          secure: false,
+          sameSite: 'strict',
+        });
+      }
+      return { success: true };
     },
   },
 };

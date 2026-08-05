@@ -84,6 +84,7 @@ const typeDefinitions = `
     addChat(chat: ChatInput!): Chat @auth
     addMessage(message: MessageInput!): Message @auth
     uploadAvatar(file: Upload!): File @auth
+    logout: Response @auth
   }
 
   schema {

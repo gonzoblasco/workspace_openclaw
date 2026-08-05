@@ -7,9 +7,15 @@ import Loading from './components/Loading.jsx';
 import { UserProvider } from './context/user.jsx';
 import './components/fontawesome.js';
 
-function App() {
+function App({ loggedInProp }) {
   const client = useApolloClient();
-  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('jwt'));
+
+  // On client: check localStorage. On SSR: use loggedInProp.
+  const [loggedIn, setLoggedIn] = useState(() => {
+    if (typeof loggedInProp !== 'undefined') return loggedInProp;
+    return !!localStorage.getItem('jwt');
+  });
+
   const { loading, refetch } = useCurrentUserQuery();
 
   const handleLogin = (status) => {

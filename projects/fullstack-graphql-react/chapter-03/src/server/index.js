@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import compression from 'compression';
 import JWT from 'jsonwebtoken';
+import Cookies from 'cookies';
 import { graphqlUploadExpress } from 'graphql-upload-ts';
 import services from './services/index.js';
 import { db, users, eq } from './database.js';
@@ -16,6 +17,13 @@ const root = path.join(__dirname, '../../');
 const { JWT_SECRET } = process.env;
 
 const app = express();
+
+// Cookies middleware
+app.use((req, res, next) => {
+  const options = { keys: ['graphbook-secret-key'] };
+  req.cookies = new Cookies(req, res, options);
+  next();
+});
 
 // Security headers (production only)
 if (process.env.NODE_ENV === 'production') {
@@ -51,19 +59,19 @@ for (let i = 0; i < serviceNames.length; i += 1) {
     const { server, expressMiddleware } = services[name];
     await server.start();
     app.use('/graphql', graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }), express.json(), expressMiddleware(server, {
-      context: async ({ req }) => {
+      context: async ({ req, res }) => {
         const authorization = req.headers.authorization;
+        let user = null;
         if (authorization) {
           const token = authorization.replace(/Bearer\s+/ig, '').trim();
           try {
             const result = JWT.verify(token, JWT_SECRET);
-            const user = db.select().from(users).where(eq(users.id, result.id)).get();
-            return { ...req, user };
+            user = db.select().from(users).where(eq(users.id, result.id)).get();
           } catch (err) {
-            return req;
+            // Token invalid
           }
         }
-        return req;
+        return { ...req, res, user };
       },
     }));
   } else {

@@ -20,36 +20,46 @@ function LoginRoute({ children, loggedIn }) {
   return children;
 }
 
+function RoutesConfig({ loggedIn, changeLoginState }) {
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <LoginRoute loggedIn={loggedIn}>
+            <LoginRegisterForm changeLoginState={changeLoginState} />
+          </LoginRoute>
+        }
+      />
+      <Route
+        path="/app"
+        element={
+          <PrivateRoute loggedIn={loggedIn}>
+            <Main changeLoginState={changeLoginState} />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/user/:username"
+        element={
+          <PrivateRoute loggedIn={loggedIn}>
+            <User changeLoginState={changeLoginState} />
+          </PrivateRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
+// Client-side router (BrowserRouter)
 export default function Router({ loggedIn, changeLoginState }) {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <LoginRoute loggedIn={loggedIn}>
-              <LoginRegisterForm changeLoginState={changeLoginState} />
-            </LoginRoute>
-          }
-        />
-        <Route
-          path="/app"
-          element={
-            <PrivateRoute loggedIn={loggedIn}>
-              <Main changeLoginState={changeLoginState} />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/user/:username"
-          element={
-            <PrivateRoute loggedIn={loggedIn}>
-              <User changeLoginState={changeLoginState} />
-            </PrivateRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <RoutesConfig loggedIn={loggedIn} changeLoginState={changeLoginState} />
     </BrowserRouter>
   );
 }
+
+// Server-side router (StaticRouter) — used by SSR entry
+export { RoutesConfig };

@@ -137,3 +137,20 @@ The book implements `PrivateRoute` and `LoginRoute` as wrapper components that c
 `/user/:username` captures the username from the URL, which is then passed as a GraphQL variable to `user(username)` and `postsFeed(username)`. The page is fully dynamic — no static pages, no SSR needed.
 
 **Pattern:** For dynamic pages in a GraphQL + React SPA, use route parameters as GraphQL variables. The component reads `useParams()`, passes the value to `useQuery()`, and renders the result. No additional routing config needed.
+
+## Chapter 9
+
+### Insight: SSR is a leaky abstraction
+Every part of the app needs SSR awareness: Apollo Client needs `ssrMode: true`, React Router needs `StaticRouter` vs `BrowserRouter`, auth needs cookies instead of localStorage, and the entry point needs `hydrateRoot` instead of `createRoot`. The book's approach (manual SSR) is fragile — one missing piece breaks the whole thing.
+
+**Pattern:** For production SSR, use a framework (Next.js, Remix) that handles these concerns. Manual SSR is educational but not practical for real apps. The concepts (renderToStringWithData, cache hydration, StaticRouter) are the same, but the framework manages the wiring.
+
+### Insight: Cookies are necessary for SSR auth
+localStorage doesn't exist on the server. For SSR to know if a user is logged in, the auth token must be in a cookie (sent with every request). The tradeoff is CSRF vulnerability, mitigated by httpOnly + SameSite flags.
+
+**Pattern:** Use dual auth: localStorage + Authorization header for client-side GraphQL requests, and httpOnly cookies for SSR page loads. The cookie is only read by the server, never by client JavaScript.
+
+### Insight: Apollo's renderToStringWithData is the key to SSR
+Without it, SSR returns a loading spinner. `renderToStringWithData` waits for all in-flight GraphQL queries before returning HTML. The result is a fully rendered page on first load. The cache state (`client.extract()`) is injected into the HTML so the client doesn't re-fetch.
+
+**Pattern:** For any SSR setup with Apollo, the flow is always: render → wait for queries → extract cache → inject state → hydrate. The tools change (webpack vs Vite, ReactDOM vs createRoot) but the flow is universal.
