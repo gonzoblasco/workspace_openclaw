@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApolloClient } from '@apollo/client/react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useCurrentUserQuery } from './apollo/queries/currentUserQuery.js';
-import Feed from './Feed.jsx';
-import Chats from './Chats.jsx';
-import Bar from './components/bar/index.jsx';
-import LoginRegisterForm from './components/LoginRegister.jsx';
+import Router from './router.jsx';
 import Loading from './components/Loading.jsx';
 import { UserProvider } from './context/user.jsx';
 import './components/fontawesome.js';
@@ -43,16 +40,9 @@ function App() {
         <meta name="description" content="Newsfeed of all your friends on Graphbook" />
       </Helmet>
 
-      {loggedIn && (
-        <UserProvider>
-          <Bar changeLoginState={handleLogin} />
-          <div className="container">
-            <Feed />
-          </div>
-          <Chats />
-        </UserProvider>
-      )}
-      {!loggedIn && <LoginRegisterForm changeLoginState={handleLogin} />}
+      <UserProvider>
+        <Router loggedIn={loggedIn} changeLoginState={handleLogin} />
+      </UserProvider>
     </HelmetProvider>
   );
 }

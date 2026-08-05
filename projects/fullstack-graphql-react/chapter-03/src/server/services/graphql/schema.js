@@ -68,11 +68,12 @@ const typeDefinitions = `
 
   type RootQuery {
     posts: [Post]
-    postsFeed(page: Int, limit: Int): PostFeed @auth
+    postsFeed(page: Int, limit: Int, username: String): PostFeed @auth
     chats: [Chat] @auth
     chat(chatId: Int): Chat @auth
     usersSearch(page: Int, limit: Int, text: String!): UsersSearch @auth
     currentUser: User @auth
+    user(username: String!): User @auth
   }
 
   type RootMutation {

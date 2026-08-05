@@ -67,9 +67,15 @@ const resolvers = {
     posts() {
       return db.select().from(posts).orderBy(desc(posts.createdAt)).all();
     },
-    postsFeed(root, { page, limit }) {
+    postsFeed(root, { page, limit, username }) {
       const skip = page && limit ? page * limit : 0;
-      const query = db.select().from(posts).orderBy(desc(posts.createdAt)).limit(limit).offset(skip);
+      let query = db.select().from(posts).orderBy(desc(posts.createdAt)).limit(limit).offset(skip);
+      if (username) {
+        const user = db.select().from(users).where(eq(users.username, username)).get();
+        if (user) {
+          query = db.select().from(posts).where(eq(posts.userId, user.id)).orderBy(desc(posts.createdAt)).limit(limit).offset(skip);
+        }
+      }
       return {
         posts: query.all(),
       };
@@ -101,6 +107,9 @@ const resolvers = {
     },
     currentUser(root, args, context) {
       return context.user;
+    },
+    user(root, { username }) {
+      return db.select().from(users).where(eq(users.username, username)).get();
     },
   },
   RootMutation: {

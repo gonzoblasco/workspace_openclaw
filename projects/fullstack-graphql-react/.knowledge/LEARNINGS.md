@@ -120,3 +120,20 @@ Cropping before upload (via `react-cropper`) means the server receives only the 
 The entire upload flow (GraphQL schema, client code, cache update) is identical whether files go to local disk or S3. Only the resolver changes. This is good architecture: the storage backend is an implementation detail.
 
 **Pattern:** Abstract file storage behind a simple interface (save file → return URL). Start with local disk for development, swap to S3/Cloudinary for production. The rest of the code doesn't change.
+
+## Chapter 8
+
+### Insight: React Router's API changed completely from v5 to v7
+`Switch` → `Routes`, `Redirect` → `Navigate`, `withRouter` → hooks, `component={}` → `element={}`. The concepts (parameterized routes, private routes, catch-all, programmatic navigation) are identical. Only the syntax changed.
+
+**Pattern:** When upgrading React Router, the migration is mechanical. Create a mapping table of old → new APIs and do a search-and-replace. The routing logic (which paths render which components) doesn't change.
+
+### Insight: Private routes are a pattern, not a library feature
+The book implements `PrivateRoute` and `LoginRoute` as wrapper components that check `loggedIn` state. This pattern is universal across all routers (React Router, TanStack Router, Next.js).
+
+**Pattern:** Abstract auth-gated routing into wrapper components. `PrivateRoute` checks auth and redirects to login. `LoginRoute` checks auth and redirects to app. The pattern is the same regardless of the router library.
+
+### Insight: Parameterized routes + GraphQL = dynamic pages
+`/user/:username` captures the username from the URL, which is then passed as a GraphQL variable to `user(username)` and `postsFeed(username)`. The page is fully dynamic — no static pages, no SSR needed.
+
+**Pattern:** For dynamic pages in a GraphQL + React SPA, use route parameters as GraphQL variables. The component reads `useParams()`, passes the value to `useQuery()`, and renders the result. No additional routing config needed.

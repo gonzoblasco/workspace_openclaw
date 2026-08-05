@@ -1,5 +1,6 @@
 import SearchBar from './search.jsx';
 import Logout from './logout.jsx';
+import Home from './home.jsx';
 import UserBar from './user.jsx';
 import { UserConsumer } from '../../context/user.jsx';
 
@@ -12,6 +13,7 @@ export default function Bar({ changeLoginState }) {
           <UserBar />
         </UserConsumer>
         <div className="buttons">
+          <Home />
           <Logout changeLoginState={changeLoginState} />
         </div>
       </div>

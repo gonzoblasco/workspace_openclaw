@@ -11,7 +11,7 @@
 | 5 | ✅ Complete | React patterns, refactoring, fragments, custom hooks |
 | 6 | ✅ Complete | JWT auth, login/signup, @auth directive, AuthLink |
 | 7 | ✅ Complete | Image uploads with Upload scalar, cropping, local storage |
-| 8 | 🔴 Pending | |
+| 8 | ✅ Complete | React Router v7, profile pages, private routes |
 | 9 | 🔴 Pending | |
 | 10 | 🔴 Pending | |
 | 11 | 🔴 Pending | |
@@ -22,4 +22,4 @@
 | 16 | 🔴 Pending | |
 | 17 | 🔴 Pending | |
 
-**Overall:** 🟢 Active — Chapter 7 complete
+**Overall:** 🟢 Active — Chapter 8 complete
