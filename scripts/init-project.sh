@@ -4,6 +4,10 @@
 # Usage:
 #   ./scripts/init-project.sh <slug> [--repo <url>]
 #
+# By default, creates a private repo on GitHub under gonzoblasco.
+# If --repo is provided, uses that URL instead.
+# If the repo already exists on GitHub, asks how to proceed.
+#
 # Creates:
 #   projects/<slug>/
 #   projects/<slug>/.knowledge/   (tracked by workspace git)
@@ -12,7 +16,7 @@
 #   projects/<slug>/.gitignore    (ignores .knowledge/ for project git)
 #   projects/<slug>/README.md
 #
-# If --repo is provided, also:
+# If repo is set up, also:
 #   - Initializes the project as its own git repo
 #   - Adds it as a submodule to the workspace
 #   - Pushes initial commit to the remote
@@ -156,43 +160,80 @@ echo "  ✅ Created .knowledge/STATUS.md"
 echo "  ✅ Created .gitignore"
 echo "  ✅ Created README.md"
 
-# If --repo was provided, set up as submodule
-if [[ -n "$REPO_URL" ]]; then
+# Determine repo URL
+if [[ -z "$REPO_URL" ]]; then
+  # Default: private repo on GitHub under gonzoblasco
+  REPO_URL="https://github.com/gonzoblasco/${SLUG}.git"
+fi
+
+echo ""
+echo "Checking if remote repo exists..."
+
+# Extract owner/repo from URL for gh check
+REPO_PATH=$(echo "$REPO_URL" | sed -E 's|https://github.com/||; s|git@github.com:||; s|\.git$||')
+
+if gh repo view "$REPO_PATH" --json name &>/dev/null; then
+  echo "  ⚠️  Repo already exists: ${REPO_PATH}"
   echo ""
-  echo "Setting up git repo + submodule..."
+  echo "Options:"
+  echo "  1) Use existing repo (clone/fetch into submodule)"
+  echo "  2) Use a different URL"
+  echo "  3) Skip git setup (no submodule)"
+  echo ""
+  read -p "Choose [1/2/3]: " choice
 
-  cd "${PROJECT_DIR}"
+  case "$choice" in
+    1)
+      echo "Setting up submodule from existing repo..."
+      cd "${WORKSPACE_DIR}"
+      git submodule add "${REPO_URL}" "projects/${SLUG}"
+      echo "  ✅ Submodule registered from existing repo"
+      ;;
+    2)
+      read -p "Enter repo URL: " REPO_URL
+      echo "Setting up submodule from ${REPO_URL}..."
+      cd "${WORKSPACE_DIR}"
+      git submodule add "${REPO_URL}" "projects/${SLUG}"
+      echo "  ✅ Submodule registered"
+      ;;
+    3)
+      echo "Skipping git setup. Project scaffold is ready."
+      echo ""
+      echo "To add git later:"
+      echo "  cd projects/${SLUG} && git init && git add -A && git commit -m 'initial'"
+      echo "  # then from workspace root: git submodule add <url> projects/${SLUG}"
+      exit 0
+      ;;
+    *)
+      echo "Invalid choice. Skipping git setup."
+      exit 0
+      ;;
+  esac
+else
+  echo "  Repo does not exist yet. Creating private repo on GitHub..."
 
-  git init
-  git add -A
-  git commit -m "chore: initial scaffold for ${SLUG}"
+  # Create private repo on GitHub
+  gh repo create "${REPO_PATH}" --private --source="${PROJECT_DIR}" --push --remote origin
 
-  git remote add origin "${REPO_URL}"
-  git push -u origin main
+  echo ""
+  echo "Setting up submodule..."
 
   cd "${WORKSPACE_DIR}"
 
-  # Add as submodule
+  # Remove the directory so submodule add can clone it fresh
+  rm -rf "${PROJECT_DIR}"
+
   git submodule add "${REPO_URL}" "projects/${SLUG}"
 
   echo ""
-  echo "  ✅ Git repo initialized at ${REPO_URL}"
+  echo "  ✅ Private repo created at ${REPO_URL}"
   echo "  ✅ Submodule registered in workspace"
-  echo ""
-  echo "Next steps:"
-  echo "  1. cd projects/${SLUG}"
-  echo "  2. Start coding!"
-  echo ""
-  echo "Remember: .knowledge/ is tracked by workspace git."
-  echo "Project code is tracked by its own repo at ${REPO_URL}."
-else
-  echo ""
-  echo "Next steps:"
-  echo "  1. Edit projects/${SLUG}/.knowledge/BRIEF.md"
-  echo "  2. Edit projects/${SLUG}/.knowledge/STATUS.md"
-  echo "  3. Start building!"
-  echo ""
-  echo "No git repo set up. To add one later:"
-  echo "  cd projects/${SLUG} && git init && git add -A && git commit -m 'initial'"
-  echo "  # then from workspace root: git submodule add <url> projects/${SLUG}"
 fi
+
+echo ""
+echo "Next steps:"
+echo "  1. cd projects/${SLUG}"
+echo "  2. Start coding!"
+echo ""
+echo "Remember: .knowledge/ is tracked by workspace git."
+echo "Project code is tracked by its own repo at ${REPO_URL}."
