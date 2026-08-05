@@ -39,6 +39,12 @@ Remix compila el código en dos bundles (server y client) usando tree shaking pa
 - Puede llevar a duplicación si no se diseña bien la separación de concerns
 - Depende del soporte del framework (no es portable a cualquier stack)
 
+## Migracion
+
+Migrado a ADR global: [`docs/adr/ADR-003-server-client-file-convention.md`](../../../docs/adr/ADR-003-server-client-file-convention.md)
+
+---
+
 ## Notas
 
 Este patrón es específico de Remix pero el concepto es transferible: usar naming convention como contrato explícito con el tooling, no solo como documentación.

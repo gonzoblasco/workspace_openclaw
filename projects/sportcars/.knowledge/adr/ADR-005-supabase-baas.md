@@ -31,6 +31,12 @@ Usar Supabase:
 - RLS bien configurado.
 - Monitorear uso desde el día 1.
 
+## Migracion
+
+Migrado a ADR global: [`docs/adr/ADR-005-supabase-baas.md`](../../../../docs/adr/ADR-005-supabase-baas.md)
+
+---
+
 ## Alternativas consideradas
 1. **PlanetScale (MySQL):** no tiene vector nativo. Rechazado.
 2. **MongoDB Atlas:** más flexible pero menos ideal para datos relacionales; costo vector separado. Rechazado.

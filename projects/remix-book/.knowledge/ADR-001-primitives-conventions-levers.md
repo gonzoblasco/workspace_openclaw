@@ -45,6 +45,12 @@ Son opciones que el framework te da para optimizar según tus prioridades. No ha
 - No todos los frameworks se dejan mapear limpiamente a estas tres categorías
 - Algunos features pueden caer en múltiples categorías (ambiguo)
 
+## Migracion
+
+Migrado a ADR global: [`docs/adr/ADR-002-primitives-conventions-levers.md`](../../../docs/adr/ADR-002-primitives-conventions-levers.md)
+
+---
+
 ## Notas
 
 Este ADR se aplica al evaluar cualquier tecnología futura. Es un patrón de análisis, no una regla de implementación.

@@ -31,6 +31,12 @@ Usar Next.js como plataforma full-stack:
 - No colocar lógica de negocio en componentes de UI.
 - Supabase Edge Functions como respaldo si alguna tarea excede límites de Vercel.
 
+## Migracion
+
+Migrado a ADR global: [`docs/adr/ADR-004-nextjs-fullstack-platform.md`](../../../../docs/adr/ADR-004-nextjs-fullstack-platform.md)
+
+---
+
 ## Alternativas consideradas
 1. **Next.js frontend + Express/NestJS backend:** más poderoso pero más costoso y complejo. Rechazado por MVP.
 2. **Astro + backend separado:** buen SEO pero más fricción para interacciones dinámicas. Rechazado.
