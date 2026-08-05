@@ -7,7 +7,7 @@
 | 1 | ✅ Complete | Vite + React 19 setup, 3 ADRs created |
 | 2 | ✅ Complete | Express 5 + Apollo Server 5, 3 ADRs created |
 | 3 | ✅ Complete | Drizzle ORM + SQLite, 2 ADRs created |
-| 4 | 🔴 Pending | |
+| 4 | ✅ Complete | Apollo Client 4 + React, 1 ADR created |
 | 5 | 🔴 Pending | |
 | 6 | 🔴 Pending | |
 | 7 | 🔴 Pending | |
@@ -22,4 +22,4 @@
 | 16 | 🔴 Pending | |
 | 17 | 🔴 Pending | |
 
-**Overall:** 🟢 Active — Chapter 3 complete
+**Overall:** 🟢 Active — Chapter 4 complete

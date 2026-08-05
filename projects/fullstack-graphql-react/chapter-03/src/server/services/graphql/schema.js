@@ -11,6 +11,10 @@ const typeDefinitions = `
     user: User
   }
 
+  type PostFeed {
+    posts: [Post]
+  }
+
   type Message {
     id: Int
     text: String
@@ -22,6 +26,7 @@ const typeDefinitions = `
     id: Int
     messages: [Message]
     users: [User]
+    lastMessage: Message
   }
 
   input PostInput {
@@ -39,6 +44,7 @@ const typeDefinitions = `
 
   type RootQuery {
     posts: [Post]
+    postsFeed(page: Int, limit: Int): PostFeed
     chats: [Chat]
     chat(chatId: Int): Chat
   }

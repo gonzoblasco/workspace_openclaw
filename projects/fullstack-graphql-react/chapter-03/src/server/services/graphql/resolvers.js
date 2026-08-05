@@ -1,3 +1,4 @@
+import { asc } from 'drizzle-orm';
 import logger from '../../helpers/logger.js';
 import { db, users, posts, chats, messages, userChats, eq, desc } from '../../database.js';
 
@@ -5,6 +6,11 @@ const resolvers = {
   Post: {
     user(post) {
       return db.select().from(users).where(eq(users.id, post.userId)).get();
+    },
+  },
+  PostFeed: {
+    posts(postFeed) {
+      return postFeed.posts;
     },
   },
   Message: {
@@ -17,7 +23,7 @@ const resolvers = {
   },
   Chat: {
     messages(chat) {
-      return db.select().from(messages).where(eq(messages.chatId, chat.id)).orderBy(desc(messages.id)).all();
+      return db.select().from(messages).where(eq(messages.chatId, chat.id)).orderBy(asc(messages.id)).all();
     },
     users(chat) {
       return db.select({
@@ -29,10 +35,25 @@ const resolvers = {
         .where(eq(userChats.chatId, chat.id))
         .all();
     },
+    lastMessage(chat) {
+      const msgs = db.select().from(messages)
+        .where(eq(messages.chatId, chat.id))
+        .orderBy(desc(messages.id))
+        .limit(1)
+        .all();
+      return msgs[0] || null;
+    },
   },
   RootQuery: {
     posts() {
       return db.select().from(posts).orderBy(desc(posts.createdAt)).all();
+    },
+    postsFeed(root, { page, limit }) {
+      const skip = page && limit ? page * limit : 0;
+      const query = db.select().from(posts).orderBy(desc(posts.createdAt)).limit(limit).offset(skip);
+      return {
+        posts: query.all(),
+      };
     },
     chats() {
       const firstUser = db.select().from(users).limit(1).all();
