@@ -171,3 +171,20 @@ Just as `@auth` protects queries/mutations from unauthorized access, `withFilter
 `fetchMore` loads more data (pagination). `subscribeToMore` listens for new data (real-time). Both use `updateQuery` to merge new data with existing cache. The pattern is identical — only the trigger differs.
 
 **Pattern:** For any list that needs real-time updates, use `subscribeToMore` in a `useEffect`. The `updateQuery` function merges new items into the existing list. The component re-renders automatically when the cache updates.
+
+## Chapter 11
+
+### Insight: Enzyme is dead, React Testing Library is the standard
+Enzyme hasn't been updated for React 18+. React Testing Library (RTL) is the official recommendation. RTL tests what the user sees, not component internals (state, props, lifecycle). This makes tests more resilient to refactoring.
+
+**Pattern:** Test by user-visible behavior (text content, rendered elements, accessible roles), not by component internals. `screen.getByText()` and `fireEvent.click()` are more useful than `wrapper.state()` or `wrapper.props()`.
+
+### Insight: Vitest is the natural test runner for Vite projects
+Vitest shares Vite's config, transform pipeline, and plugin system. No separate Babel config, no `@babel/register`, no `babel-hook.js`. The test environment (`jsdom`) is configured in one line.
+
+**Pattern:** For any Vite project, use Vitest. The config is minimal: `environment: 'jsdom'` for React tests, `globals: true` for `describe`/`it`/`expect` without imports (optional).
+
+### Insight: Component tests don't need a running backend
+Loading, ErrorMessage, and Dropdown are pure UI components — no GraphQL, no API calls. They can be tested in isolation with mock data. This is faster and more reliable than integration tests that require a running server.
+
+**Pattern:** Separate pure UI components from data-fetching components. Test UI components in isolation with mock props. Test data-fetching components with integration tests or mocked Apollo Client.
