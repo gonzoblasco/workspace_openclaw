@@ -694,6 +694,81 @@
 - La revalidation automatica elimina la necesidad de `invalidateQueries` manual
 - El patron de ocultar items en delete es similar a patrones con `useOptimistic` hook de React 19
 
+---
+
+## Capitulo 12 — Caching Strategies
+
+### Conceptos clave
+
+1. **Headers route module API:**
+   - `headers` export en cualquier route module
+   - Se ejecuta SOLO en el server, despues de todos los loaders
+   - Recibe: `parentsHeaders`, `errorHeaders`, `actionHeaders`, `loaderHeaders`
+   - Remix usa el headers export MAS PROFUNDO disponible
+   - Permite mergear headers de padres e hijos
+
+2. **Cache-Control directives:**
+   - `public` — puede cachearse en shared caches (CDN, proxies)
+   - `private` — solo en cache del browser (no CDN)
+   - `max-age=<seconds>` — tiempo maximo de cache
+   - `no-cache` — debe revalidar con el server antes de usar cache
+   - `no-store` — no cachear nada (ni siquiera para back/forward)
+   - `immutable` — el contenido nunca cambia (solo con hash en filename)
+   - `max-age=31536000, immutable` — 1 ano, tipico de assets con hash
+
+3. **ETags (Entity Tags):**
+   - `ETag` header con identificador unico del recurso
+   - Cliente envia `If-None-Match` con el ETag previo
+   - Server responde `304 Not Modified` si el recurso no cambio
+   - Ventaja: permite auth check en el server antes de decidir si servir cache
+   - Desventaja: igual hay roundtrip al server (solo se ahorra el body)
+
+4. **Estrategias de caching:**
+   - **Publicas (sin auth):** `public, max-age=3600` — CDN, 1 hora
+   - **Privadas (con auth):** `no-cache, private` — siempre revalidar
+   - **Assets estaticos:** `public, max-age=31536000, immutable` — Remix lo hace automatico
+   - **Archivos de usuario:** `private, max-age=31536000, immutable` + ETag
+   - **Sin cache:** `no-store` — datos sensibles o muy dinamicos
+
+5. **Remix built-in caching:**
+   - Todos los JS bundles tienen hash en filename
+   - Cache-Control: `public, max-age=31536000, immutable`
+   - Assets de links export tambien
+   - Nunca hay dos archivos con mismo nombre y diferente contenido
+
+6. **In-memory caching:**
+   - Solo viable en long-running servers (no serverless/edge)
+   - Alternativa: Redis para serverless/edge
+   - Util cuando DB queries son lentas
+   - Requiere logica de invalidacion manual
+   - En BeeRich con SQLite no es necesario (queries de ms)
+
+7. **Seguridad en caching:**
+   - NO cachear datos de usuario en shared caches
+   - ETag permite auth check antes de servir cache
+   - `private` evita que CDN cachee datos sensibles
+   - Cuidado con caches en computadoras publicas
+
+### Citas para recordar
+
+> "There are only two hard things in computer science: cache invalidation and naming things."
+> "Caching effectiveness increases the closer the cache is to the users."
+> "Remix provides a thin abstraction layer on top of the web platform and eases the usage of HTTP caching strategies."
+
+### Preguntas para explorar
+
+- Como implementar `stale-while-revalidate` en Remix?
+- ETag vs Last-Modified — cual es mejor para que caso?
+- Como integrar Redis como cache layer en Remix?
+- Como testear caching en desarrollo local?
+
+### Conexiones con experiencia previa
+
+- El patron de headers function es similar a middleware para HTTP headers
+- ETag + 304 es el mismo patron que en cualquier API REST
+- Remix built-in caching (hash + immutable) es el mismo approach que Vite
+- `no-cache` vs `no-store` es una distincion importante que muchos devs ignoran
+
 ### Conceptos clave
 
 1. **Meta tags:**
