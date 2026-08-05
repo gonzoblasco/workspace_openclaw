@@ -944,6 +944,72 @@
 - `db.$transaction` es similar a transacciones SQL pero con Prisma
 - El hidden input para persistir search entre paginas es un patron HTML clasico
 
+---
+
+## Capitulo 16 — Developing for the Edge
+
+### Conceptos clave
+
+1. **Edge computing vs cloud computing:**
+   - Cloud: computacion en datacenters centralizados
+   - Edge: computacion lo mas cerca posible del usuario
+   - Objetivo: reducir round-trip times (RTT)
+   - Edge no es nuevo (CDNs existen hace decadas), lo nuevo es hostear apps DINAMICAS en el edge
+
+2. **Edge runtimes para Remix:**
+   - Cloudflare Pages/Workers (workerd — V8 isolates)
+   - Deno Deploy
+   - Fastly Compute@Edge (Wasmtime)
+   - Netlify Edge Functions
+   - Vercel Edge Functions
+   - Fly.io (edge-like: server distribuido regionalmente)
+
+3. **Beneficios del edge:**
+   - Proximidad al usuario = menor latencia
+   - Escalabilidad (serverless)
+   - Sin cold start (V8 isolates arrancan en ms)
+   - Distribucion global con configuracion minima
+
+4. **Limitaciones del edge:**
+   - Sin filesystem (no SQLite, no archivos locales)
+   - Sin estado en memoria entre requests
+   - Sin long-running connections (no SSE, no WebSocket)
+   - No soporta Node.js std libs (workerd)
+   - npm packages deben ser compatibles con el runtime
+   - La DB debe estar cerca del edge (DB distribuida necesaria)
+
+5. **Tradeoff clave: server-DB distance:**
+   - Server cerca del usuario + DB lejos = peor performance
+   - La latencia server-DB puede anular la ganancia de edge
+   - Solucion: DB distribuida (cara y compleja)
+   - A veces es mejor tener server + DB juntos en un datacenter
+
+6. **Que cambiaria en BeeRich para edge:**
+   - SQLite → DB remota (PostgreSQL, PlanetScale, etc.)
+   - Filesystem attachments → S3/Cloudinary
+   - SSE endpoint → servicio externo o WebSocket server
+   - In-memory caching → Redis
+
+### Citas para recordar
+
+> "Edge computing is a paradigm of computer science that contrasts cloud computing."
+> "The goal of edge computing is to reduce round-trip times from the client to the server by moving the server closer to the user."
+> "Regional distribution only decreases response times if it decreases the total round-trip time behind a request."
+
+### Preguntas para explorar
+
+- Como elegir entre edge y server tradicional para un proyecto nuevo?
+- Que DB distribuida elegir para edge (PlanetScale, Neon, Cloudflare D1)?
+- Como migrar una app de server a edge sin reescribir todo?
+- Edge + streaming (defer) — es compatible?
+
+### Conexiones con experiencia previa
+
+- El tradeoff edge vs cloud es similar al tradeoff entre CDN y origin server
+- Las limitaciones de edge (sin filesystem, sin estado) son las mismas que serverless tradicional
+- V8 isolates son el mismo concepto que usan los service workers en el browser
+- Fly.io es interesante porque ofrece server distribuido SIN las limitaciones de edge puro
+
 ### Conceptos clave
 
 1. **Meta tags:**

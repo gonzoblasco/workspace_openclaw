@@ -16,11 +16,16 @@
 | Capitulo 9 | Completado | BeeRich (assets) | 2026-08-05 |
 | Capitulo 10 | Completado | BeeRich (uploads) | 2026-08-05 |
 | Capitulo 11 | Completado | BeeRich (optimistic) | 2026-08-05 |
+| Capitulo 12 | Completado | BeeRich (caching) | 2026-08-05 |
+| Capitulo 13 | Completado | BeeRich (defer) | 2026-08-05 |
+| Capitulo 14 | Completado | BeeRich (SSE) | 2026-08-05 |
+| Capitulo 15 | Completado | BeeRich (pagination) | 2026-08-05 |
+| Capitulo 16 | Completado | — (conceptual) | 2026-08-05 |
 
 ## Documentos generados
 
 - `LEARNINGS.md` — conceptos clave, citas, preguntas, conexiones
-- `ADR-001` a `ADR-011` — 11 ADRs cubriendo todos los patrones del libro
+- `ADR-001` a `ADR-016` — 16 ADRs cubriendo todos los patrones del libro
 
 ## Proyectos
 
@@ -28,8 +33,8 @@
 
 - **Ubicacion:** `bee-rich/`
 - **Stack:** Remix v2 + Express.js + Prisma + SQLite + Tailwind CSS + bcrypt + Google Fonts
-- **Estado:** Optimistic UI completo (capitulo 11)
-- **Features:** Optimistic delete con `if (isSubmitting) return null`, optimistic attachment upload/remove con `navigation.formData`, error feedback inline con `fetcher.data`, disabled states condicionales
+- **Estado:** Completo (capitulos 4-15)
+- **Features:** Routing, data fetching, mutations, auth, file uploads, optimistic UI, error boundaries, caching, defer/streaming, SSE real-time, pagination, visitor cookies
 
 ## Leyenda
 
@@ -40,4 +45,4 @@
 
 ## Ultima actualizacion
 
-2026-08-05 — Capitulo 11 procesado. BeeRich con optimistic UI. ADR-011 creado.
+2026-08-05 — Capitulo 16 procesado (conceptual). ADR-016 creado.
