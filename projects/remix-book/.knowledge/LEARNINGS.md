@@ -1010,6 +1010,57 @@
 - V8 isolates son el mismo concepto que usan los service workers en el browser
 - Fly.io es interesante porque ofrece server distribuido SIN las limitaciones de edge puro
 
+---
+
+## Capitulo 17 — Migration and Upgrade Strategies
+
+### Conceptos clave
+
+1. **Estrategias de migracion:**
+   - **Non-React app:** correr新旧 side by side en subdominio, compartir cookies, migrar incrementalmente
+   - **React app (otro framework):** copiar componentes, adaptar a primitives de Remix, migrar pagina por pagina
+   - **Client-only React (CRA/Vite):** mover app existente dentro de Remix, renderizar en index route, refactorizar incrementalmente
+   - **React Router v6:** la mas facil — mismos primitives (loader, action, Form, useFetcher), solo cambiar el runtime
+
+2. **Backend for Frontend (BFF) pattern:**
+   - Remix como web server que orquesta requests a downstream services
+   - Loader/action pueden llamar APIs externas en lugar de DB directa
+   - No necesitas migrar el backend junto con el frontend
+   - Remix puede forwardear requests a backends legacy
+
+3. **Future flags:**
+   - `remix.config.js` → `future: { v2_meta: true, v2_errorBoundary: true, v2_routeConvention: true }`
+   - Permiten usar features de la nueva major version en la version actual
+   - **Unstable flags** (`unstable_`): API en desarrollo, puede cambiar
+   - **Version flags** (`v2_`): API estable, prepara para la proxima major version
+   - Refactorizacion gradual, feature por feature
+
+4. **Semantic versioning en Remix:**
+   - Major (2.x.x): breaking changes
+   - Minor (x.1.x): nuevas features, backward compatible
+   - Patch (x.x.1): bug fixes, backward compatible
+   - Future flags evitan el "all-at-once upgrade"
+
+### Citas para recordar
+
+> "Migrations are never easy."
+> "Future flags allow the Remix team to iterate on Remix's primitives and conventions and release new features, one by one, in the current major version."
+> "Remix is truly a full stack framework for the web."
+
+### Preguntas para explorar
+
+- Como migrar una app Next.js Pages Router a Remix?
+- El BFF pattern con Remix — como manejar errores de downstream services?
+- Future flags en Remix v3 / React Router v7 — como funciona ahora?
+- Cual es el estado actual de Remix despues del upstream a React Router?
+
+### Conexiones con experiencia previa
+
+- El patron de side-by-side migration es el mismo que para cualquier framework migration
+- Future flags es similar a feature flags pero para APIs del framework
+- BFF pattern es el mismo concepto que API Gateway pero especifico para frontend
+- La migracion desde React Router v6 es la mas facil porque comparten el mismo equipo creador
+
 ### Conceptos clave
 
 1. **Meta tags:**

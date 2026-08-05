@@ -21,11 +21,12 @@
 | Capitulo 14 | Completado | BeeRich (SSE) | 2026-08-05 |
 | Capitulo 15 | Completado | BeeRich (pagination) | 2026-08-05 |
 | Capitulo 16 | Completado | — (conceptual) | 2026-08-05 |
+| Capitulo 17 | Completado | — (conceptual) | 2026-08-05 |
 
 ## Documentos generados
 
-- `LEARNINGS.md` — conceptos clave, citas, preguntas, conexiones
-- `ADR-001` a `ADR-016` — 16 ADRs cubriendo todos los patrones del libro
+- `LEARNINGS.md` — conceptos clave, citas, preguntas, conexiones (17 capitulos)
+- `ADR-001` a `ADR-017` — 17 ADRs cubriendo todos los patrones del libro
 
 ## Proyectos
 
@@ -33,16 +34,15 @@
 
 - **Ubicacion:** `bee-rich/`
 - **Stack:** Remix v2 + Express.js + Prisma + SQLite + Tailwind CSS + bcrypt + Google Fonts
-- **Estado:** Completo (capitulos 4-15)
+- **Estado:** COMPLETO (capitulos 4-15)
 - **Features:** Routing, data fetching, mutations, auth, file uploads, optimistic UI, error boundaries, caching, defer/streaming, SSE real-time, pagination, visitor cookies
 
-## Leyenda
+## Libro completado
 
-- **Pendiente** — no procesado
-- **En curso** — siendo analizado
-- **Completado** — analizado, ejercicios hechos, documentado
-- **Saltado** — no aplica / no relevante
+**Full Stack Web Development with Remix** — Andre Landgraf
+Procesado el 2026-08-05 en una sesion de ~2 horas.
+17 capitulos, 17 ADRs, 1 app demo (BeeRich) con implementacion completa.
 
 ## Ultima actualizacion
 
-2026-08-05 — Capitulo 16 procesado (conceptual). ADR-016 creado.
+2026-08-05 — LIBRO COMPLETO. Capitulo 17 procesado. ADR-017 creado.
