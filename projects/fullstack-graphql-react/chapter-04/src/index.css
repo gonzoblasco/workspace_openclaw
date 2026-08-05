@@ -26,6 +26,9 @@ p {
 
 .post .header {
   height: 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
 .post .header > *,
@@ -45,6 +48,10 @@ p {
   color: #333;
   font-size: 24px;
   margin: 0 0 0 5px;
+}
+
+.post .header > div:first-child {
+  flex: 1;
 }
 
 .post p.content {
@@ -203,4 +210,145 @@ form [type='submit'] {
     -webkit-transform: scale(1);
     transform: scale(1);
   }
+}
+
+/* Bouncer loading animation */
+.bouncer {
+  margin: 20px auto;
+  border-radius: 100%;
+  -webkit-animation: bounce 1s infinite ease-in-out;
+  animation: bounce 1s infinite ease-in-out;
+}
+
+@-webkit-keyframes bounce {
+  0% {
+    -webkit-transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* Error message */
+.message {
+  margin: 20px auto;
+  padding: 5px;
+  max-width: 400px;
+}
+
+.error.message {
+  border-radius: 5px;
+  background-color: #fff7f5;
+  border: 1px solid #ff9566;
+  width: 100%;
+}
+
+/* Dropdown */
+.dropdown {
+  display: inline-block;
+  float: right;
+  position: relative;
+}
+
+.dropdown .trigger {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.dropdown .content {
+  position: absolute;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #c3c3c3;
+  border-radius: 3px;
+  z-index: 100;
+  min-width: 100px;
+}
+
+.dropdown .content button {
+  display: block;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 8px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdown .content button:hover {
+  background-color: #f6f7f9;
+}
+
+/* Top bar */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-bottom: 1px solid #c3c3c3;
+  z-index: 1000;
+  height: 50px;
+}
+
+.topbar .inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+}
+
+/* Search */
+.search {
+  position: relative;
+}
+
+.search input {
+  border: 1px solid #c3c3c3;
+  border-radius: 3px;
+  padding: 5px 10px;
+  width: 200px;
+}
+
+.search .result {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #c3c3c3;
+  border-radius: 3px;
+  z-index: 100;
+  width: 100%;
+}
+
+.search .result .user {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.search .result .user img {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.search .result .user span {
+  font-size: 14px;
 }

@@ -1,23 +1,7 @@
 import { useState } from 'react';
-import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client/react';
+import { GET_CHATS } from './apollo/queries/getChats.js';
 import Chat from './Chat.jsx';
-
-const GET_CHATS = gql`
-  {
-    chats {
-      id
-      users {
-        id
-        avatar
-        username
-      }
-      lastMessage {
-        text
-      }
-    }
-  }
-`;
 
 const usernamesToString = (users) => {
   const userList = users.slice(1);

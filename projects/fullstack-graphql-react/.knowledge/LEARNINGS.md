@@ -69,3 +69,20 @@ The book implements optimistic UI with Apollo's `optimisticResponse` + `cache.mo
 The book adds `postsFeed(page, limit)` to the schema, a `PostFeed` wrapper type, and `fetchMore()` on the client. This is the standard Relay-style pagination pattern. The backend must support `offset`/`limit` (or cursors), and the client must merge paginated results.
 
 **Pattern:** GraphQL pagination always requires coordination between schema design and client implementation. The simplest approach (offset/limit + fetchMore) works for most apps. Cursor-based pagination (Relay connections) is for large-scale apps.
+
+## Chapter 5
+
+### Insight: Code organization is the real value of this chapter
+Chapter 5 doesn't introduce new technology — it refactors existing code. The value is in the patterns: extracting queries to separate files, creating reusable components (Loading, Error, Dropdown), using fragments, wrapping hooks with pre-configured options, and separating concerns (PostHeader, PostContent, Post).
+
+**Pattern:** After building a working prototype, invest in refactoring before adding features. The refactoring in Chapter 5 (extracting queries, mutations, components) makes the next chapters (authentication, subscriptions, SSR) much easier to implement.
+
+### Insight: Custom hooks are the unit of reuse for GraphQL operations
+`useAddPostMutation(postContent)` is cleaner than `useMutation(ADD_POST, { variables, update, optimisticResponse })` in every component. The pattern of wrapping `useQuery`/`useMutation` with pre-configured options is portable to any GraphQL + React project.
+
+**Pattern:** For every GraphQL operation, create a custom hook that encapsulates the query/mutation string, variables, cache update logic, and optimistic response. Components should only call `const [addPost] = useAddPostMutation()` — nothing else.
+
+### Insight: The Context API vs Apollo Consumer is a false dichotomy
+Both solve the same problem (global state without prop drilling). The React Context API is general-purpose; Apollo Consumer is specific to Apollo cache. The book presents both but the real answer is: use React Context for app state (user, theme, locale) and Apollo cache for server data.
+
+**Pattern:** Don't store server data in React Context. Apollo cache already handles it. Use React Context only for client-only state (auth tokens, UI preferences, theme).

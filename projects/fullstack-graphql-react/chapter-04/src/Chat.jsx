@@ -1,38 +1,7 @@
 import { useState } from 'react';
-import { gql } from '@apollo/client';
-import { useQuery, useMutation } from '@apollo/client/react';
-
-const GET_CHAT = gql`
-  query chat($chatId: Int!) {
-    chat(chatId: $chatId) {
-      id
-      users {
-        id
-        avatar
-        username
-      }
-      messages {
-        id
-        text
-        user {
-          id
-        }
-      }
-    }
-  }
-`;
-
-const ADD_MESSAGE = gql`
-  mutation addMessage($message: MessageInput!) {
-    addMessage(message: $message) {
-      id
-      text
-      user {
-        id
-      }
-    }
-  }
-`;
+import { useQuery } from '@apollo/client/react';
+import { GET_CHAT } from './apollo/queries/getChat.js';
+import { useAddMessageMutation } from './apollo/mutations/addMessage.js';
 
 function Chat({ chatId, closeChat }) {
   const [text, setText] = useState('');
@@ -40,27 +9,7 @@ function Chat({ chatId, closeChat }) {
     variables: { chatId },
   });
 
-  const [addMessage] = useMutation(ADD_MESSAGE, {
-    update(cache, { data: { addMessage } }) {
-      cache.modify({
-        id: cache.identify(data.chat),
-        fields: {
-          messages(existingMessages = []) {
-            const newMessageRef = cache.writeFragment({
-              data: addMessage,
-              fragment: gql`
-                fragment NewMessage on Chat {
-                  id
-                  type
-                }
-              `,
-            });
-            return [...existingMessages, newMessageRef];
-          },
-        },
-      });
-    },
-  });
+  const [addMessage] = useAddMessageMutation();
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter' && text.length) {

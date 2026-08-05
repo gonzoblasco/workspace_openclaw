@@ -1,35 +1,11 @@
 import { useState } from 'react';
-import { gql } from '@apollo/client';
-import { useQuery, useMutation } from '@apollo/client/react';
+import { useQuery } from '@apollo/client/react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
-const GET_POSTS = gql`
-  query postsFeed($page: Int, $limit: Int) {
-    postsFeed(page: $page, limit: $limit) {
-      posts {
-        id
-        text
-        user {
-          avatar
-          username
-        }
-      }
-    }
-  }
-`;
-
-const ADD_POST = gql`
-  mutation addPost($post: PostInput!) {
-    addPost(post: $post) {
-      id
-      text
-      user {
-        username
-        avatar
-      }
-    }
-  }
-`;
+import { GET_POSTS } from './apollo/queries/getPosts.js';
+import { useAddPostMutation } from './apollo/mutations/addPost.js';
+import Post from './components/post/index.jsx';
+import Loading from './components/Loading.jsx';
+import ErrorMessage from './components/ErrorMessage.jsx';
 
 function Feed() {
   const [postContent, setPostContent] = useState('');
@@ -41,43 +17,7 @@ function Feed() {
     variables: { page: 0, limit: 10 },
   });
 
-  const [addPost] = useMutation(ADD_POST, {
-    update(cache, { data: { addPost } }) {
-      cache.modify({
-        fields: {
-          postsFeed(existingPostsFeed) {
-            const { posts: existingPosts } = existingPostsFeed;
-            const newPostRef = cache.writeFragment({
-              data: addPost,
-              fragment: gql`
-                fragment NewPost on Post {
-                  id
-                  type
-                }
-              `,
-            });
-            return {
-              ...existingPostsFeed,
-              posts: [newPostRef, ...existingPosts],
-            };
-          },
-        },
-      });
-    },
-    optimisticResponse: {
-      __typename: 'mutation',
-      addPost: {
-        __typename: 'Post',
-        text: postContent,
-        id: -1,
-        user: {
-          __typename: 'User',
-          username: 'Loading...',
-          avatar: '/public/loading.gif',
-        },
-      },
-    },
-  });
+  const [addPost] = useAddPostMutation(postContent);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -109,8 +49,8 @@ function Feed() {
     });
   };
 
-  if (loading) return <div className="container"><p>Loading...</p></div>;
-  if (error) return <div className="container"><p>Error! {error.message}</p></div>;
+  if (loading) return <Loading />;
+  if (error) return <ErrorMessage><p>{error.message}</p></ErrorMessage>;
 
   const { postsFeed } = data;
   const { posts } = postsFeed;
@@ -136,16 +76,7 @@ function Feed() {
           loader={<div className="loader" key="loader">Loading ...</div>}
         >
           {posts.map((post) => (
-            <div
-              key={post.id}
-              className={'post' + (post.id < 0 ? ' optimistic' : '')}
-            >
-              <div className="header">
-                <img src={post.user.avatar} alt={post.user.username} />
-                <h2>{post.user.username}</h2>
-              </div>
-              <p className="content">{post.text}</p>
-            </div>
+            <Post key={post.id} post={post} />
           ))}
         </InfiniteScroll>
       </div>

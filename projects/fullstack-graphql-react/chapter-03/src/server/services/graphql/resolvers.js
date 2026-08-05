@@ -1,4 +1,4 @@
-import { asc } from 'drizzle-orm';
+import { asc, like, or } from 'drizzle-orm';
 import logger from '../../helpers/logger.js';
 import { db, users, posts, chats, messages, userChats, eq, desc } from '../../database.js';
 
@@ -68,6 +68,20 @@ const resolvers = {
     chat(root, { chatId }) {
       return db.select().from(chats).where(eq(chats.id, chatId)).get();
     },
+    usersSearch(root, { page, limit, text }) {
+      if (text.length < 3) {
+        return { users: [] };
+      }
+      const skip = page && limit ? page * limit : 0;
+      const result = db.select()
+        .from(users)
+        .where(like(users.username, `%${text}%`))
+        .orderBy(desc(users.createdAt))
+        .limit(limit)
+        .offset(skip)
+        .all();
+      return { users: result };
+    },
   },
   RootMutation: {
     addPost(root, { post }) {
@@ -81,6 +95,14 @@ const resolvers = {
 
       logger.log({ level: 'info', message: 'Post was created' });
       return newPost;
+    },
+    deletePost(root, { postId }) {
+      const result = db.delete(posts).where(eq(posts.id, postId)).run();
+      const success = result.changes === 1;
+      if (success) {
+        logger.log({ level: 'info', message: 'Post ' + postId + ' was deleted' });
+      }
+      return { success };
     },
     addChat(root, { chat }) {
       const newChat = db.insert(chats).values({}).returning().get();

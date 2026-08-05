@@ -29,6 +29,14 @@ const typeDefinitions = `
     lastMessage: Message
   }
 
+  type Response {
+    success: Boolean
+  }
+
+  type UsersSearch {
+    users: [User]
+  }
+
   input PostInput {
     text: String!
   }
@@ -47,10 +55,12 @@ const typeDefinitions = `
     postsFeed(page: Int, limit: Int): PostFeed
     chats: [Chat]
     chat(chatId: Int): Chat
+    usersSearch(page: Int, limit: Int, text: String!): UsersSearch
   }
 
   type RootMutation {
     addPost(post: PostInput!): Post
+    deletePost(postId: Int!): Response
     addChat(chat: ChatInput!): Chat
     addMessage(message: MessageInput!): Message
   }
