@@ -769,6 +769,69 @@
 - Remix built-in caching (hash + immutable) es el mismo approach que Vite
 - `no-cache` vs `no-store` es una distincion importante que muchos devs ignoran
 
+---
+
+## Capitulo 13 — Deferring Loader Data
+
+### Conceptos clave
+
+1. **Server-side data fetching vs client-side:**
+   - Server-side: 2 roundtrips (HTML + assets) para LCP
+   - Client-side SPA: 4 roundtrips (HTML + JS + fetch + assets)
+   - Remix aplane el waterfall moviendo data fetching al server
+   - Problema: un loader lento bloquea todo el render inicial
+
+2. **defer function:**
+   - `defer({ data, promise })` en lugar de `json()`
+   - Acepta Promises sin resolver
+   - Stream al cliente via HTTP streaming + React streaming
+   - Requiere `renderToPipeableStream` en entry.server.tsx
+   - No soportado en todos los runtimes (serverless tradicional no)
+
+3. **Await component + Suspense:**
+   - `<Await resolve={promise}>{(resolved) => <Component />}</Await>`
+   - `<Suspense fallback="Loading...">` alrededor de Await
+   - `errorElement` prop para errores del promise
+   - `useDeferredValue` hook alternativo para acceder datos
+
+4. **Optimizacion de orden de queries:**
+   - Iniciar la query lenta PRIMERO (sin await)
+   - Despues ejecutar queries rapidas con await
+   - La query lenta arranca antes, aunque se resuelva despues
+
+5. **Tradeoffs de defer:**
+   - Pro: initial page load mas rapido
+   - Contra: introduce loading spinners (pending UI)
+   - Contra: layout shifts cuando se resuelve
+   - Contra: crawlers pueden no ver el contenido diferido
+   - Es un LEVER, no una solucion universal
+
+6. **Requisitos tecnicos:**
+   - HTTP streaming soportado por el runtime
+   - `renderToPipeableStream` en entry.server.tsx
+   - `npx remix reveal` para generar entry.server si no existe
+   - PrismaPromise necesita `.then()` para convertirse a Promise nativa
+
+### Citas para recordar
+
+> "Remix provides levers so that we can optimize the user experience based on our app's requirements."
+> "When considering defer, it is important to remember that deferred data loading may also degrade the user experience by adding a pending UI."
+> "Remix flattens the request waterfall by moving the data fetching to the server."
+
+### Preguntas para explorar
+
+- Como afecta defer a SEO y crawlers?
+- defer vs client-side fetch — cuando usar cual?
+- Como testear streaming en desarrollo?
+- Que pasa si el promise nunca se resuelve?
+
+### Conexiones con experiencia previa
+
+- El patron de defer + Await es similar a React Query `suspense: true`
+- HTTP streaming es el mismo mecanismo que usa Next.js con streaming SSR
+- El tradeoff de defer (velocidad vs pending UI) es similar a lazy loading de imagenes
+- PrismaPromise → Promise con `.then()` es un detalle importante de Prisma
+
 ### Conceptos clave
 
 1. **Meta tags:**
