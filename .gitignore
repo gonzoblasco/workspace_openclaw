@@ -33,21 +33,54 @@ memory/2026-07-20-1750*.md
 memory/2026-07-23-1951.md
 
 # Proyectos — cada uno tiene su propio repo, se sincronizan por separado
-# Regla: ignorar todo el contenido de projects/ EXCEPTO:
-#   - .knowledge/ (memoria de sesión)
-#   - README.md (descripción del proyecto, visible desde el workspace)
-#   - *-knowledge/ (memoria externa para proyectos con git propio)
-projects/*
-!projects/*/
-projects/*/*
-!projects/*/.knowledge/
-!projects/*/.knowledge/**
-!projects/*/README.md
-!projects/*-knowledge/
-!projects/*-knowledge/**
-# Ignorar .git internos de proyectos (evita submódulos automáticos)
-.git
-projects/**/.git
+# Los submodules (declarados en .gitmodules) se trackean automaticamente.
+# Para proyectos sin submodule, solo trackeamos lo necesario.
+
+# Ignorar todo projects/ por defecto
+/projects/*
+
+# Pero NO ignorar los directorios en si (para poder trackear submodules y .knowledge)
+!/projects/*/
+
+# Ignorar contenido de proyectos NO-submodule (daily-ink, ensulugar, etc.)
+/projects/daily-ink/*
+/projects/ensulugar/*
+/projects/godot-journey/*
+/projects/kanam/*
+/projects/learning-js-ds-algos/*
+/projects/remix-book/*
+/projects/soporteml-v2/*
+/projects/sportcars/*
+/projects/testing-react-library/*
+
+# Pero trackear .knowledge/ y README.md en esos proyectos
+!/projects/daily-ink/.knowledge/
+!/projects/daily-ink/.knowledge/**
+!/projects/daily-ink/README.md
+!/projects/ensulugar/.knowledge/
+!/projects/ensulugar/.knowledge/**
+!/projects/ensulugar/README.md
+!/projects/godot-journey/.knowledge/
+!/projects/godot-journey/.knowledge/**
+!/projects/godot-journey/README.md
+!/projects/kanam/.knowledge/
+!/projects/kanam/.knowledge/**
+!/projects/kanam/README.md
+!/projects/learning-js-ds-algos/.knowledge/
+!/projects/learning-js-ds-algos/.knowledge/**
+!/projects/learning-js-ds-algos/README.md
+!/projects/remix-book/.knowledge/
+!/projects/remix-book/.knowledge/**
+!/projects/remix-book/README.md
+!/projects/soporteml-v2/.knowledge/
+!/projects/soporteml-v2/.knowledge/**
+!/projects/soporteml-v2/README.md
+!/projects/sportcars/.knowledge/
+!/projects/sportcars/.knowledge/**
+!/projects/sportcars/README.md
+!/projects/testing-react-library/.knowledge/
+!/projects/testing-react-library/.knowledge/**
+!/projects/testing-react-library/README.md
 
 # Antigua estructura products/ (migrada a projects/<slug>/docs/)
 products/

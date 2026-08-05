@@ -8,15 +8,21 @@
 
 SCRIPT_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
 
-# Syntax checks for skill scripts
-"${SCRIPT_DIR}/scripts/test-skills.sh" || exit 1
+# Only run full tests if skills/ or scripts/ changed
+CHANGED=$(git diff --cached --name-only --diff-filter=ACMR)
+SKILL_OR_SCRIPT_CHANGED=$(echo "$CHANGED" | grep -qE '^(skills/|scripts/)' && echo 1 || echo 0)
 
-# Bash functional tests (bats)
-if command -v npx >/dev/null 2>&1; then
-  npx bats "${SCRIPT_DIR}/tests/bash" || exit 1
-fi
+if [ "$SKILL_OR_SCRIPT_CHANGED" = "1" ]; then
+  # Syntax checks for skill scripts
+  "${SCRIPT_DIR}/scripts/test-skills.sh" || exit 1
 
-# Python functional tests (pytest)
-if command -v pytest >/dev/null 2>&1; then
-  pytest "${SCRIPT_DIR}/tests/python" || exit 1
+  # Bash functional tests (bats)
+  if command -v npx >/dev/null 2>&1; then
+    npx bats "${SCRIPT_DIR}/tests/bash" || exit 1
+  fi
+
+  # Python functional tests (pytest)
+  if command -v pytest >/dev/null 2>&1; then
+    pytest "${SCRIPT_DIR}/tests/python" || exit 1
+  fi
 fi
