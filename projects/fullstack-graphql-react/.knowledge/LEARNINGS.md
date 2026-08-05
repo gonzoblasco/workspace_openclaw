@@ -188,3 +188,20 @@ Vitest shares Vite's config, transform pipeline, and plugin system. No separate 
 Loading, ErrorMessage, and Dropdown are pure UI components — no GraphQL, no API calls. They can be tested in isolation with mock data. This is faster and more reliable than integration tests that require a running server.
 
 **Pattern:** Separate pure UI components from data-fetching components. Test UI components in isolation with mock props. Test data-fetching components with integration tests or mocked Apollo Client.
+
+## Chapter 12
+
+### Insight: CI/CD is the final piece of professional development
+The book ends where real engineering begins: automated testing, containerization, and deployment. Without CI/CD, every release is manual, error-prone, and stressful. With CI/CD, a git push triggers tests, builds, and deployment automatically.
+
+**Pattern:** Set up CI/CD early, not at the end. Even a simple pipeline (lint → test → build) catches errors before they reach production. Add deployment when the project is ready for users.
+
+### Insight: Docker eliminates "it works on my machine"
+Docker containers package the application with its exact runtime environment. The same image that passes tests in CI is deployed to production. No version mismatches, no missing dependencies, no OS differences.
+
+**Pattern:** Use Docker for any application that will run outside your local machine. The Dockerfile is the single source of truth for the runtime environment. Keep the production image small with multi-stage builds.
+
+### Insight: The book's stack is outdated but the concepts are timeless
+This book was written for Node 14, React 17, Apollo v3, Sequelize, webpack 4, and Mocha. We updated everything to Node 22, React 19, Apollo v5, Drizzle, Vite 8, and Vitest. The specific tools changed completely, but the architecture (GraphQL API, React frontend, Apollo Client, authentication, SSR, subscriptions, testing, deployment) is identical.
+
+**Pattern:** When learning from technical books, focus on the architecture and concepts, not the specific package versions. The tools will be outdated in 2-3 years. The patterns (component architecture, data flow, auth flow, SSR, subscriptions) will last a decade.

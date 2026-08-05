@@ -15,11 +15,6 @@
 | 9 | ✅ Complete | SSR with Vite + Apollo renderToStringWithData + cookies |
 | 10 | ✅ Complete | Real-time subscriptions with graphql-ws + PubSub |
 | 11 | ✅ Complete | Tests with Vitest + React Testing Library |
-| 12 | 🔴 Pending | |
-| 13 | 🔴 Pending | |
-| 14 | 🔴 Pending | |
-| 15 | 🔴 Pending | |
-| 16 | 🔴 Pending | |
-| 17 | 🔴 Pending | |
+| 12 | ✅ Complete | Docker, CircleCI, AWS ECS/CD pipeline |
 
-**Overall:** 🟢 Active — Chapter 11 complete
+**Overall:** 🎉 **BOOK COMPLETE** — All 12 chapters processed
