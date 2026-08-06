@@ -81,6 +81,18 @@ El 404 `PUT .../@scope%2fpackage` al publicar NO significa que el scope esté ma
 ### npm login usa browser OTP flow
 El login de npm ahora abre browser (OTP), no acepta token en consola. Los tokens que saltan 2FA se están restringiendo — para CI a futuro usar tokens con `mfa=publish` o `automation`.
 
+## Consolidación de Skills — 2026-08-06
+
+### Set de skills reducido de 96 a 60 activas (58 archivadas, nada borrado)
+Se adoptaron las 24 skills de `addyosmani/agent-skills` como base de ingeniería (ciclo Define→Plan→Build→Verify→Review→Ship). 5 de ellas absorben funcionalidades de skills propias redundantes:
+- `frontend-ui-engineering` ← accessibility-studio, ui-design, ui-generation, anti-slop-design, a11y-audit-agent, sovereign-accessibility-auditor
+- `code-review-and-quality` ← anti-pattern-czar, code-review-agent, code-mentor, review-quality
+- `debugging-and-error-recovery` ← debug-agent, debug-investigation, failure-memory
+- `spec-driven-development` ← build-scaffold, anydocs, spec-miner
+- `planning-and-task-breakdown` ← timeline-builder, gh-issue-planner, brw-plan-my-day
+
+Las 58 skills redundantes viven en `skills/archive/` (con README con mapa completo de reemplazo). Se preservaron las skills de vida/creatividad/infraestructura de Gonzo (adhd, apple-photos, supabase-assistant, sql-insight, db-readonly, etc.). Detalles en `memory/2026-08-06.md`.
+
 ## Proyectos activos
 
 ### a11y-fixer
