@@ -2,120 +2,152 @@
 
 > **Pipeline de skills para llevar una idea a producto funcionando en producción.**
 >
-> 33 skills del workspace mapeadas en secuencia y por contexto.
+> Basado en las 24 skills de ingeniería de `addyosmani/agent-skills` + core OpenClaw.
+> Reescrito 2026-08-06 tras la consolidación de skills (96 → 60 activas).
 
 ## Pipeline principal (flujo de producto)
 
+### Define — Clarificar qué construir
 | Fase | Skill | Qué hace |
 |---|---|---|
-| 0.1 Brainstorming | `product-discovery` (0.1) | Idea → BRIEF + DEFINITION. Modelo: GLM 5.2 |
-| 0.2 Arquitectura | `product-discovery` (0.2) | OpenSpec + ADRs + ROADMAP. Modelo: Kimi K2.7 |
-| 0.5 Investigación | `research-spike` | Reducir incertidumbre técnica antes de decidir |
-| 1. Scaffold | `build-scaffold` | Generar proyecto, configurar stack, CI/CD |
-| 2. Docs iniciales | `tech-docs` | ADRs, diagramas C4, README, CHANGELOG |
-| 3. Ejecución | `task-execution` | Planificar, branch, implementar, PR, mergear, cerrar epic |
-| 4. Calidad | `review-quality` | Code review, tests, seguridad OWASP, spec compliance |
-| 5. Pre-deploy | `pre-deploy-qa` | Build, rutas, SEO, API, performance, seguridad, cleanup |
-| 6. Release | `release-management` | Versionado, release notes, rollback plan, deploy |
-| 7. Sesión | `session-lifecycle` | Inicio, dispatcher, cierre, HANDOFF, memory, commit |
+| 0.1 Intención | `interview-me` | Interroga de a 1 pregunta por vez hasta 95% de claridad del requerimiento real |
+| 0.2 Idea | `idea-refine` | Pensamiento divergente/convergente para afinar ideas vagas en propuestas |
+| 0.3 Spec | `spec-driven-development` | PRD completo: objetivos, arquitectura, data model, acceptance criteria, traceability |
+
+### Plan — Descomponer el trabajo
+| Fase | Skill | Qué hace |
+|---|---|---|
+| 1. Breakdown | `planning-and-task-breakdown` | Descompone el spec en tareas atómicas verificables con dependency ordering |
+
+### Build — Escribir el código
+| Fase | Skill | Qué hace |
+|---|---|---|
+| 2. Implementación | `incremental-implementation` | Slices verticales finos: implementar, testear, verificar, commitear |
+| 2.1 Tests | `test-driven-development` | Red-Green-Refactor, test pyramid, DAMP, Beyonce Rule |
+| 2.2 UI | `frontend-ui-engineering` | UI accesible (WCAG 2.1 AA), responsive, design system |
+| 2.3 API | `api-and-interface-design` | Contract-first, Hyrum's Law, error semantics, boundary validation |
+| 2.4 Framework | `source-driven-development` | Cada decisión de framework respaldada por documentación oficial citada |
+| 2.5 Decisiones | `doubt-driven-development` | Revisión adversarial en contexto fresco antes de que una decisión no trivial quede firme |
+
+### Verify — Probar que funciona
+| Fase | Skill | Qué hace |
+|---|---|---|
+| 3. Verificación | `browser-testing-with-devtools` | Pruebas en vivo con Chrome DevTools: DOM, console, network, performance |
+| 3.1 Debug | `debugging-and-error-recovery` | Triage de 5 pasos: reproduce, localize, reduce, fix, guard |
+
+### Review — Gates de calidad pre-merge
+| Fase | Skill | Qué hace |
+|---|---|---|
+| 4. Review | `code-review-and-quality` | Review de 5 ejes, severity labels, change sizing, mentorship feedback |
+| 4.1 Simplificación | `code-simplification` | Chesterton's Fence, Rule of 500, reducir complejidad preservando comportamiento |
+| 4.2 Seguridad | `security-and-hardening` | OWASP Top 10, auth patterns, secrets management |
+| 4.3 Performance | `performance-optimization` | Measure-first, Core Web Vitals, profiling, bundle analysis |
+
+### Ship — Desplegar con confianza
+| Fase | Skill | Qué hace |
+|---|---|---|
+| 5. Git | `git-workflow-and-versioning` | Trunk-based, atomic commits, commit-as-save-point |
+| 5.1 CI/CD | `ci-cd-and-automation` | Shift Left, feature flags, quality gate pipelines |
+| 5.2 Deprecación | `deprecation-and-migration` | Code-as-liability, migraciones seguras, zombie code |
+| 5.3 Docs/ADRs | `documentation-and-adrs` | ADRs, API docs, documentar el *why* |
+| 5.4 Observabilidad | `observability-and-instrumentation` | Structured logging, RED metrics, OpenTelemetry, alerting |
+| 5.5 Launch | `shipping-and-launch` | Pre-launch checklists, staged rollouts, rollback plan |
+| 6. Sesión | `session-lifecycle` | Inicio, dispatcher, cierre, HANDOFF, memory, commit |
 
 ## Pipeline de soporte (transversales)
 
 | Contexto | Skill | Cuándo |
 |---|---|---|
-| Bug | `debug-investigation` | Cuando algo no funciona y no sabemos por qué |
-| Performance | `performance-optimization` | Cuando Lighthouse está bajo o hay latencia |
-| Código IA | `vibe-code-cleanup` | Cuando limpiás código generado por IA |
-| Dependencias | `dependency-management` | Cuando evaluás, actualizás o auditás librerías |
-| SQL | `sql-insight` | Cuando escribís o optimizás queries |
-| i18n | `i18n-expert` | Cuando agregás internacionalización |
-| Accesibilidad | `accessibility-studio` | Cuando auditás o corregís accesibilidad |
-| Observabilidad | `observability` | Cuando necesitás métricas, logs o tracing |
-| Incidente | `incident-response` | Cuando hay una caída o degradación en producción |
+| No sé qué quiero | `interview-me` | El pedido está subespecificado |
+| Contexto degradado | `context-engineering` | El agente pierde foco, ignora convenciones, alucina |
+| Qué skill aplica | `using-agent-skills` | Al empezar sesión, mapear el trabajo a la skill correcta |
+| Conocimiento | `knowledge-management` | Documentación inconsistente, learning signals |
 | Gobernanza | `engineering-governance` | Post-milestone: auditar y mejorar el sistema |
-| Conocimiento | `knowledge-management` | Cuando la documentación está inconsistente |
-| OSS | `oss-contribution` | Cuando contribuís a repos externos |
+| SQL | `sql-insight` | Escribir u optimizar queries |
+| Supabase | `supabase-assistant` | Schemas, queries, types, migrations |
+| i18n | `i18n-expert` | Agregar internacionalización |
+| Documentación | `tech-docs` | ADRs, README, API docs, CHANGELOG |
 
 ## Pipeline de carrera y contenido
 
 | Contexto | Skill | Cuándo |
 |---|---|---|
-| Búsqueda laboral | `cv-tailor` | Cuando optimizás CV para una postulación |
-| Entrevistas | `mock-interview-drill` | Cuando practicás entrevistas |
-| Aprender | `code-mentor` | Cuando estudiás programación |
-| Tutoriales | `dev-guide-generator` | Cuando escribís guías técnicas |
-| Copy | `copy-editing` | Cuando editás copy de marketing |
-| Campañas | `campaign-plan` | Cuando planeás un lanzamiento |
-| Soporte | `support-response-writer` | Cuando redactás respuestas a clientes |
-| Naming | `brand-name-forge` | Cuando nombrás un producto o empresa |
-| Narrativa | `narrative-content` | Cuando escribís ficción |
-| Timelines | `timeline-builder` | Cuando visualizás cronologías |
-| ADHD | `adhd-assistant` | Cuando necesitás estructura diaria |
-| SaaS | `saas-metrics-coach` | Cuando evaluás salud financiera |
+| Búsqueda laboral | `cv-tailor` | Optimizar CV para una postulación |
+| Entrevistas | `mock-interview-drill` | Practicar entrevistas |
+| Copy | `copy-editing` | Editar copy de marketing |
+| Campañas | `content-serializer` | Serializar contenido multi-plataforma |
+| Naming | `brand-name-forge` | Nombrar producto o empresa |
+| Narrativa | `narrative-content` | Escribir ficción |
+| ADHD | `adhd-assistant` | Estructura diaria |
+| Soporte | `support-response-writer` | Respuestas a clientes |
 
 ## Mapa del pipeline
 
 ```mermaid
 graph TD
-    A[Idea] --> B1{product-discovery 0.1}
-    B1 -->|BRIEF + DEFINITION| B2{product-discovery 0.2}
-    B2 -->|Incierto| C[research-spike]
-    C --> B2
-    B2 -->|OpenSpec + ADRs + Go| D[build-scaffold]
-    D --> E[tech-docs]
-    E --> F[task-execution]
-    F --> G[review-quality]
-    G --> H[pre-deploy-qa]
-    H --> I[release-management]
+    A[Idea] --> B1{interview-me}
+    B1 -->|95% claro| B2{idea-refine}
+    B2 -->|Propuesta| C{spec-driven-development}
+    C -->|Spec aprobado| D{planning-and-task-breakdown}
+    D --> E{incremental-implementation}
+    E --> F{test-driven-development}
+    F --> G{code-review-and-quality}
+    G -->|Gate pasa| H{ci-cd-and-automation}
+    H --> I{shipping-and-launch}
     I --> J[session-lifecycle]
     J --> K[Próxima sesión]
 
-    %% Transversales
-    L[debug-investigation] -.-> F
-    M[performance-optimization] -.-> F
-    N[vibe-code-cleanup] -.-> F
-    O[dependency-management] -.-> F
-    P[sql-insight] -.-> F
-    Q[i18n-expert] -.-> F
-    R[accessibility-studio] -.-> G
-    S[observability] -.-> H
-    T[incident-response] -.-> I
-    U[engineering-governance] -.-> A
-    V[knowledge-management] -.-> E
-    W[oss-contribution] -.-> F
+    %% Build transversal
+    L[frontend-ui-engineering] -.-> E
+    M[api-and-interface-design] -.-> E
+    N[source-driven-development] -.-> E
+    O[doubt-driven-development] -.-> E
+    P[browser-testing-with-devtools] -.-> F
+    Q[debugging-and-error-recovery] -.-> F
+    R[security-and-hardening] -.-> G
+    S[performance-optimization] -.-> G
+    T[code-simplification] -.-> G
+    U[documentation-and-adrs] -.-> I
+    V[observability-and-instrumentation] -.-> I
+    W[deprecation-and-migration] -.-> I
+    X[git-workflow-and-versioning] -.-> H
+    Y[context-engineering] -.-> A
+    Z[using-agent-skills] -.-> A
 ```
 
 ## Flujos típicos
 
 ### Proyecto nuevo completo
 ```
-product-discovery 0.1 → product-discovery 0.2 → research-spike (opcional) → 
-build-scaffold → tech-docs → task-execution → review-quality → 
-pre-deploy-qa → release-management → session-lifecycle
+interview-me → idea-refine → spec-driven-development → planning-and-task-breakdown →
+incremental-implementation (+ test-driven-development) → code-review-and-quality →
+ci-cd-and-automation → shipping-and-launch → session-lifecycle
 ```
 
 ### Feature sobre proyecto existente
 ```
-task-execution → review-quality → pre-deploy-qa → session-lifecycle
+spec-driven-development → planning-and-task-breakdown → incremental-implementation →
+code-review-and-quality → ci-cd-and-automation → session-lifecycle
 ```
 
 ### Bug
 ```
-debug-investigation → task-execution → review-quality → session-lifecycle
+debugging-and-error-recovery → incremental-implementation (con test que reproduce) →
+code-review-and-quality → session-lifecycle
 ```
 
 ### Solo documentación
 ```
-tech-docs → session-lifecycle
+documentation-and-adrs → tech-docs → session-lifecycle
 ```
 
 ### Solo investigación
 ```
-product-discovery 0.1 → product-discovery 0.2 → research-spike → session-lifecycle
+interview-me → idea-refine → source-driven-development (citar fuentes oficiales) → session-lifecycle
 ```
 
 ---
 
-*Actualizado: 2026-07-25*
-*Skills del workspace: 34*
+*Actualizado: 2026-08-06 (post-consolidación de skills)*
+*Skills del pipeline: 24 de Addy Osmani + core OpenClaw*
 *Estado: 🟢 Al día*

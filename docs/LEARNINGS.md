@@ -66,3 +66,20 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - Before merging unrelated histories of a repo, **inspect both trees first** (`git ls-tree -r --name-only`). If they're structurally different versions of the same thing, an automatic merge creates confusing duplicates — decide the canonical version up front, tag the other for backup, then remove its files deliberately.
 - Always push the backup tag to the remote so the legacy version survives even if local disk dies.
 - When a project's `.gitignore` needs `.knowledge/` ignored (workspace owns institutional memory), verify the ignore actually took after a merge — the merge can restore an old `.gitignore` and silently re-expose ignored files.
+
+## 2026-08-06 — Skill consolidation: google/addy skills patterns + prune
+
+**Context:** Adopted `addyosmani/agent-skills` (24 skills) as the engineering baseline, consolidating the workspace from 96 to 60 active skills. The old `google-skills-adoption-plan.md` and `kanam-product-pipeline.md` (referencing ~33 now-deleted skills) were removed.
+
+**Lesson — what Addy/Google skills got right (now our baseline):**
+- **Frontmatter YAML estandarizado** with `name` + `description` in the "Use when..." trigger form. Consistent triggers make skill discovery reliable.
+- **Anti-rationalization tables**: each skill lists common excuses agents use to skip steps ("I'll add tests later") with documented rebuttals. This is the strongest guard against agents cutting corners.
+- **Verification is non-negotiable**: every skill ends with evidence requirements (tests passing, build output, runtime data). "Seems right" is never sufficient.
+- **Progressive disclosure**: `SKILL.md` is the entry point; supporting `references/*.md` load only when needed, keeping token usage minimal.
+- **Process, not prose**: skills are workflows agents follow (steps + checkpoints + exit criteria), not reference docs they read.
+
+**Lesson — pruning discipline:**
+- Having 96 overlapping skills (4 UI, 3 review, 3 debug, etc.) fragments context and burns tokens. Consolidate to orthogonal skills where each covers a full capability.
+- Keep infrastructure/life skills that are unique (adhd, apple-photos, supabase-assistant, sql-insight) even when pruning dev skills — they're not duplicates of an engineering baseline.
+- Archived/pruned content is recoverable from git history — deleting is safe as long as the consolidation mapping is documented in the commit message and SKILLS-INDEX.
+- When removing a process doc, fold its durable lessons into LEARNINGS.md first so the knowledge outlives the file.
