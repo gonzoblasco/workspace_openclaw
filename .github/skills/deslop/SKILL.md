@@ -27,9 +27,9 @@ Escanea el diff de una branch y remueve ruido generado por IA: null checks defen
 
 | Skill / Script | Uso |
 |---|---|
-| `vibe-code-cleanup/scripts/diagnose-codebase.sh` | Scan general de deuda técnica y AI slop. Usar antes de deslop para priorizar. |
-| `vibe-code-cleanup/scripts/verify-cleanup.sh` | Validar build, typecheck, lint y tests después de limpiar. |
-| `review-quality/scripts/review-pr.sh` | Revisión automática final del PR. |
+| `code-review-and-quality` | Scan general de deuda técnica y AI slop (absorbio a vibe-code-cleanup). Usar antes de deslop para priorizar. |
+| `ci-cd-and-automation` | Validar build, typecheck, lint y tests despues de limpiar. |
+| `code-review-and-quality` | Revision automatica final del PR (absorbio a review-quality). |
 
 ## Notas
 - Compara cada candidato contra el contexto local antes de borrar
