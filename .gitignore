@@ -96,3 +96,7 @@ __pycache__/
 *$py.class
 
 projects/cabala
+
+# Repo embebido - tiene su propio repo, no trackear
+umbrawriter-v2
+umbrawriter-v2/

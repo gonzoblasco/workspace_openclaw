@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Solitario</title>
+    <style>
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #1a3c28;
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      #game {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      #controls {
+        position: fixed;
+        top: 8px;
+        right: 8px;
+        display: flex;
+        gap: 8px;
+        z-index: 10;
+      }
+      #controls button {
+        background: rgba(0, 0, 0, 0.4);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      #controls button:active {
+        background: rgba(0, 0, 0, 0.6);
+      }
+      #victory {
+        position: fixed;
+        inset: 0;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 20;
+        color: white;
+        text-align: center;
+      }
+      #victory.show {
+        display: flex;
+      }
+      #victory h1 {
+        font-size: 3rem;
+        margin: 0 0 1rem;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      }
+      #victory button {
+        background: #16a34a;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      #victory button:active {
+        background: #15803d;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="controls">
+      <button id="undo">Deshacer</button>
+      <button id="new-game">Nuevo</button>
+      <button id="enable-audio">🔊 Activar sonido</button>
+    </div>
+    <div id="victory">
+      <h1>¡Ganaste!</h1>
+      <p>Todas las cartas en su lugar.</p>
+      <button id="victory-new-game">Jugar de nuevo</button>
+    </div>
+
+    <canvas id="game"></canvas>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+name	state	layer	user_invocable	lines	files	scripts	references	decision_note
+agent-workflow	candidate	orchestration	unknown	300	1	0	0	Broad multi-agent discipline; compare with orchestrator/execution
+checkmate	keep	orchestration	unknown	38	1	0	0	Distinct worker+judge verification loop
+code-review-agent	candidate	orchestration	true	176	1	0	0	Agent wrapper over review workflow; likely adapter
+code-review-and-quality	keep	core-workflow	unknown	397	1	0	0	Canonical multi-axis review standard
+context-anchor	internalize	session	unknown	37	1	0	0	Post-compaction briefing capability
+context-aware-delegation	internalize	session	unknown	36	1	0	0	Context transfer capability for isolated agents/cron
+context-slimmer	candidate	session	unknown	37	1	0	0	Specialized context optimization; retain until usage evidence
+dev-workflow-orchestrator	candidate	orchestration	unknown	97	1	0	0	Pipeline router overlaps with agent-workflow
+engineering-governance	keep	governance	false	375	13	6	5	Canonical OS evolution workflow
+execution-agent	keep	orchestration	true	170	4	3	0	Autonomous implementation entry point
+governance-agent	candidate	orchestration	true	165	1	0	0	Agent wrapper over engineering-governance
+failure-memory	keep	governance	unknown	39	1	0	0	Evidence-based recurring failure learning
+handoff-matrix	internalize	session	unknown	57	1	0	0	Pipeline handoff format; should be referenced by orchestrators
+knowledge-management	keep	governance	false	371	9	3	4	Canonical project knowledge workflow
+memory-agent	keep	governance	true	162	4	3	0	Autonomous durable-memory maintenance entry point
+observability	keep	governance	false	354	10	3	5	Canonical measurement and instrumentation workflow
+orchestrator-agent	keep	orchestration	true	150	2	0	0	Single routing entry point
+pipeline-detector	internalize	governance	unknown	85	2	0	1	Reusable deterministic+contextual detection pattern
+pre-deploy-qa	keep	core-workflow	false	110	6	2	2	Deploy-specific gate with PWA checks
+qa-patrol	keep	integration	unknown	40	1	0	0	Browser/integration QA specialization
+quality-gate	candidate	core-workflow	unknown	90	1	0	0	Parallel validator+tester sync point; compare with review workflow
+review-quality	candidate	core-workflow	false	102	8	2	4	Legacy/consolidated workflow wrapper; compare with canonical review standard
+session-context	keep	session	false	185	9	0	0	0	Persistent per-project context backed by SQLite
+session-lifecycle	keep	session	false	244	7	2	3	0	Canonical session lifecycle workflow
+task-execution	candidate	core-workflow	false	118	6	2	2	Base execution workflow inherited by execution-agent
