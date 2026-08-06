@@ -53,6 +53,9 @@ memory/2026-07-23-1951.md
 /projects/sportcars/*
 /projects/testing-react-library/*
 
+# kanam-skills: repo público independiente, vive entero en GitHub
+/projects/kanam-skills
+
 # Pero trackear .knowledge/ y README.md en esos proyectos
 !/projects/daily-ink/.knowledge/
 !/projects/daily-ink/.knowledge/**

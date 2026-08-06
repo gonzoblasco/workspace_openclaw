@@ -95,6 +95,14 @@ Las 58 skills redundantes viven en `skills/archive/` (con README con mapa comple
 
 ## Proyectos activos
 
+### kanam-skills (nuevo 2026-08-06)
+- Repo público + web de agent skills. https://github.com/gonzoblasco/kanam-skills
+- 59 skills (engineering SDLC + vida/creatividad/infraestructura) en formato Agent Skills universal
+- Diferenciador: único set probado en OpenClaw. Comando: `npx skills add gonzoblasco/kanam-skills`
+- Web GitHub Pages: https://gonzoblasco.github.io/kanam-skills/ (generador estático sin deps)
+- Vive en `projects/kanam-skills/` (doble git, público, no filtra memoria personal)
+- Pendiente: dominio propio, mejorar preview de skill pages, postear en LinkedIn
+
 ### a11y-fixer
 - **NUEVA VERSIÓN** — Reescribió desde cero por fuera de Kanam. Repo: github.com/gonzoblasco/a11y-fixer
 - v0.6.0, 102 tests, 3,041 líneas TS, pipeline completo
@@ -147,6 +155,7 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 | Repo | Privado | Descripción |
 |---|---|---|
 | workspace_openclaw | ✅ | El workspace |
+| kanam-skills | — | Repo público + web de agent skills (engineering + life). https://github.com/gonzoblasco/kanam-skills |
 | quedamos | — | App PWA de matching para salidas |
 | sportcars | ✅ | — |
 | cabala | ✅ | Eliminado — build roto |
