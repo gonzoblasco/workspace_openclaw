@@ -2,7 +2,7 @@
 
 > Skills activas organizadas por categoría. Actualizado: 2026-08-06
 >
-> **Nota de consolidación:** En agosto 2026 se redujo el set de skills de 96 a 60 activas (59 + README de archive), adoptando las 24 skills de ingeniería de `addyosmani/agent-skills` como base y fusionando en ellas las funcionalidades de skills propias redundantes. Las skills archivadas viven en [skills/archive/](skills/archive/README.md) - **nada se borró**.
+> **Nota de consolidación:** En agosto 2026 se redujo el set de skills de 96 a 60 activas, adoptando las 24 skills de ingeniería de `addyosmani/agent-skills` como base y fusionando en ellas las funcionalidades de skills propias redundantes. Las skills redundantes fueron eliminadas (recuperables desde el historial de git, commit `ba12459`).
 
 ## Ingeniería de Desarrollo (Base Addy Osmani + Fusiones)
 
@@ -132,8 +132,8 @@
 
 ---
 
-## Skills Archivadas
+## Skills Eliminadas
 
-58 skills fueron movidas a [skills/archive/](skills/archive/README.md). Su funcionalidad fue absorbida por las fusiones o ya no aplica al stack activo. **Nada se borró** - todo está disponible para recuperar si se necesita.
+58 skills redundantes fueron eliminadas en la consolidación (commit `ba12459`). Su funcionalidad fue absorbida por las fusiones. **Recuperables desde el historial de git** si alguna capacidad específica llegara a faltar.
 
-**Totales activas:** 59 skills · **Archivadas:** 58 · **Total:** 117
+**Totales activas:** 60 skills
