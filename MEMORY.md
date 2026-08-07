@@ -91,13 +91,18 @@ Se adoptaron las 24 skills de `addyosmani/agent-skills` como base de ingeniería
 - `spec-driven-development` ← build-scaffold, anydocs, spec-miner
 - `planning-and-task-breakdown` ← timeline-builder, gh-issue-planner, brw-plan-my-day
 
+### Consolidación no-dev (2026-08-06, 21:40) - 60 a 59 activas
+Las 29 skills no-dev NO se solapan entre sí (independientes), así que la consolidación no es por duplicación sino por decisión de uso. Primera fusión: `adhd-daily-planner` → dentro de `adhd-assistant` (energy windows, transition buffers, dopamine sequencing, shutdown ritual, recovery protocol). Eliminada de las 3 ubicaciones (workspace, mirror .github, kanam-skills). Total activas: 59.
+
+Candidatas restantes a decidir con Gonzo: `content-serializer`, `curriculum-builder`, `brand-name-forge`, `checkmate`. El resto de las no-dev están bien como están.
+
 Las 58 skills redundantes viven en `skills/archive/` (con README con mapa completo de reemplazo). Se preservaron las skills de vida/creatividad/infraestructura de Gonzo (adhd, apple-photos, supabase-assistant, sql-insight, db-readonly, etc.). Detalles en `memory/2026-08-06.md`.
 
 ## Proyectos activos
 
 ### kanam-skills (nuevo 2026-08-06)
 - Repo público + web de agent skills. https://github.com/gonzoblasco/kanam-skills
-- 59 skills (engineering SDLC + vida/creatividad/infraestructura) en formato Agent Skills universal
+- 58 skills (engineering SDLC + vida/creatividad/infraestructura) en formato Agent Skills universal
 - Diferenciador: único set probado en OpenClaw. Comando: `npx skills add gonzoblasco/kanam-skills`
 - Web GitHub Pages: https://gonzoblasco.github.io/kanam-skills/ (generador estático sin deps)
 - Vive en `projects/kanam-skills/` (doble git, público, no filtra memoria personal)
