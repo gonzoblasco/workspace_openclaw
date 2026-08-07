@@ -58,9 +58,6 @@
 	path = projects/umbrawriter-v2
 	url = https://github.com/gonzoblasco/umbrawriter-v2.git
 
-[submodule "projects/workflow-kit"]
-	path = projects/workflow-kit
-	url = https://github.com/gonzoblasco/workflow-kit.git
 [submodule "projects/react-18-design-patterns"]
 	path = projects/react-18-design-patterns
 	url = https://github.com/gonzoblasco/react-18-design-patterns.git
