@@ -50,6 +50,7 @@ memory/2026-07-23-1951.md
 /projects/learning-js-ds-algos/*
 /projects/remix-book/*
 /projects/soporteml-v2/*
+/projects/soporteml-v3/*
 /projects/sportcars/*
 /projects/testing-react-library/*
 
@@ -78,6 +79,9 @@ memory/2026-07-23-1951.md
 !/projects/soporteml-v2/.knowledge/
 !/projects/soporteml-v2/.knowledge/**
 !/projects/soporteml-v2/README.md
+!/projects/soporteml-v3/.knowledge/
+!/projects/soporteml-v3/.knowledge/**
+!/projects/soporteml-v3/README.md
 !/projects/sportcars/.knowledge/
 !/projects/sportcars/.knowledge/**
 !/projects/sportcars/README.md

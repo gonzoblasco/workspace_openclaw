@@ -133,7 +133,11 @@ Las 58 skills redundantes viven en `skills/archive/` (con README con mapa comple
 
 ### soporteml
 - CRM multi-tenant para vendedores de Mercado Libre con IA. EL-1 a EL-5 completos.
-- **Estado:** técnicamente completo. Si no tiene uso activo, reconsiderar archivado.
+- **v1** (`soporteml`): versión de referencia. Design system estable.
+- **v2** (`soporteml-v2`): **EXPERIMENTO DESCARTADO. NO usar de referencia.**
+- **v3** (`soporteml-v3`): repo nuevo, en arranque (2026-08-07). Se construye sobre v1 con el design system aclarado desde el día uno. Objetivo: versión definitiva.
+- **Docs de v3 en `.knowledge/`:** `UI-DESIGN-SKILL.md` (estándar de implementación, específico de SoporteML), `DESIGN-GUIDE.md` (identidad desde v1), `DESIGN-GUIDE-LOVABLE.md` (guía oficial de Lovable = fuente de verdad visual), `prompts/` (guía de diseño + schemas BD).
+- **Pendiente v3:** pedir schemas de BD + edge functions a Lovable (prompt listo), reconciliar tokens nuevos de la guía de Lovable (`--primary-muted`, `--primary-strong`, `--informative`, `--surface-active`), scaffold, implementación.
 
 ### ai-engineering-bootcamp
 - 10 niveles, 23 proyectos hands-on de AI-assisted development.
