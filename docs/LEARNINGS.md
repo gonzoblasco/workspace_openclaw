@@ -83,3 +83,28 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - Keep infrastructure/life skills that are unique (adhd, apple-photos, supabase-assistant, sql-insight) even when pruning dev skills — they're not duplicates of an engineering baseline.
 - Archived/pruned content is recoverable from git history — deleting is safe as long as the consolidation mapping is documented in the commit message and SKILLS-INDEX.
 - When removing a process doc, fold its durable lessons into LEARNINGS.md first so the knowledge outlives the file.
+
+## 2026-08-06 (cierre) — Consolidación no-dev + fusión de skills + eliminación de proyecto
+
+**Context:** Segunda ola de consolidación. Tras reducir 96→60 skills (ingeniería), se evaluaron las 29 skills no-dev (vida/creatividad/infraestructura) y se decidió qué hacer.
+
+**Lesson — las skills no-dev NO se solapan como las de ingeniería:**
+- Las 24 skills de ingeniería de Addy tenían duplicación real (5 fusiones absorbieron 20+ skills). Las no-dev son **ortogonales** - ninguna referencia a otra, ninguna es referenciada por otra.
+- Por eso la consolidación no-dev NO es por duplicación, sino por **decisión de uso**. La regla "una skill pública = una decisión de workflow distinta" no aplica igual a un catálogo heterogéneo de herramientas de vida.
+- Conclusión: no fusionar por número. La única fusión obvia fue `adhd-daily-planner` (que ya se autodeclaraba "extensión de adhd-assistant"). El resto de las 4 candidatas (content-serializer, curriculum-builder, brand-name-forge, checkmate) Gonzo decidió mantenerlas como están.
+
+**Lesson — fusionar una skill = actualizar en TODAS las ubicaciones:**
+- Una skill vive en 3 lugares: `skills/`, `.github/skills/` (mirror) y `projects/kanam-skills/skills/` (repo público). Al fusionar hay que propagar a los 3 + README + `web/generate.js` del repo + regenerar la web.
+- El generador de web estático **no limpia HTML huérfanos** (solo escribe, no borra). Al eliminar una skill hay que borrar `web/public/skills/<name>.html` a mano además de regenerar.
+- La web se regenera en CI desde `skills/`, así que `web/public/` está en `.gitignore` - los cambios locales ahí no se commitean.
+
+**Lesson — eliminar un proyecto con repo remoto:**
+- `gh repo delete` requiere el scope `delete_repo` en el token. Si no lo tenés, Gonzo lo borra a mano (opción B) - es más simple que pedir permiso de scope.
+- Al eliminar un proyecto, preservar el `.knowledge/` (BRIEF + ROADMAP) moviéndolo a `projects/_archived/<slug>/` con un `ARCHIVED.md`. Git lo detecta como rename si movés los archivos, conservando el historial.
+- Usar `trash` en vez de `rm -rf` para la carpeta local - recuperable beats gone forever.
+
+**Self-reflection:**
+- CONTEXT: consolidación de skills + fusión + eliminación de proyecto (multi-step, cambios estructurales)
+- REFLECTION: el criterio correcto para consolidar no es el número sino la existencia de duplicación real o decisión de uso. En ingeniería había duplicación; en no-dev no.
+- LESSON: distinguir "muchas skills" (problema de descubribilidad, resuelve con capas/entradas) de "skills duplicadas" (problema de competencia, resuelve con fusión). No son lo mismo.
+- BIASES DETECTED: ninguno flagrante; evité el sesgo de "menos = mejor" sin evidencia de duplicación.
