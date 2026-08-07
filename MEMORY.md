@@ -100,6 +100,12 @@ Las 58 skills redundantes viven en `skills/archive/` (con README con mapa comple
 
 ## Proyectos activos
 
+### carbon-design-system/carbon (colaboración OSS - 2026-08-07)
+- Repo de IBM (Carbon Design System), contribución en a11y (ComposedModal).
+- **PR #22887** (feat: add aria-describedby prop support to ComposedModal, closes #21342): reviewer `sangeethababu9223` pidió tests. Agregué 2 tests (fallback div[role=dialog] + native dialog con feature flag enable-dialog-element). Commit `1921b24`, **MERGEABLE**, esperando re-approval.
+- **Stack del repo:** yarn 4 (Berry), lerna monorepo, jest + Babel. Tests corren contra builds de workspace packages (main apunta a lib/dist); jest mockea CSS/SCSS con identity-obj-proxy.
+- **Estrategia:** mismo patrón que astryx - un PR a la vez, feedback accionable → arreglar, decisión de dirección → cerrar con elegancia.
+
 ### facebook/astryx (colaboración OSS - 2026-08-07)
 - Repo de Facebook, contribuciones en accesibilidad (AvatarStatusDot).
 - **PR #4298** (feat: default accessible labels per variant): pasó review con feedback real de `imdreamrunner` - i18n catalog (useTranslator + keys), changeset `[feat]` con bump `patch`, tests de locale override. Commit `9f99e2209` pusheado, **MERGEABLE**, a la espera de re-review.
