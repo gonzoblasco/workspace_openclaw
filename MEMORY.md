@@ -179,6 +179,9 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 | ai-engineering-bootcamp | — | 10 niveles de AI-assisted dev |
 | umbrawriter | ✅ | — |
 | sudolab | ✅ | AI fiction writing assistant |
+| react-18-design-patterns | ✅ | Libro React 18 (Packt), actualizado a React 19 LTS |
+| react-anti-patterns-book | ✅ | Libro React Anti-Patterns (Packt) |
+| hyatt-copilot-agent | ✅ | Agente IA para staff de hoteles Hyatt |
 
 ## Repos eliminados
 
