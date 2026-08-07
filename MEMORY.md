@@ -164,7 +164,6 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 | quedamos | — | App PWA de matching para salidas |
 | sportcars | ✅ | — |
 | cabala | ✅ | Eliminado — build roto |
-| kanam | — | PWA — sistema operativo personal con IA. En discovery |
 | a11y-fixer | ✅ | Accessibility fix engine (nueva versión, reescrito desde cero) |
 | ai-developer-stack | — | Skills de ingeniería con IA |
 | create-stack | — | Scaffolder opinado Next.js |
@@ -183,6 +182,7 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 - **antigravity-developer-stack** → eliminado (contenido migrado a ai-developer-stack)
 - **copilot-skills** → eliminado (reemplazado por workflow-kit)
 - **futbol-ps2** → eliminado (MVP completo, descartado)
+- **kanam** → eliminado (PWA sistema operativo personal con IA, decisión de Gonzo 2026-08-06; BRIEF + ROADMAP archivados en `projects/_archived/kanam/`)
 - **chatgpt-project-architect** → archivado (absorbido por AGDS)
 - **0001** → eliminar o archivar (sin propósito)
 - **prueba_minecraft_claude_code** → eliminar o archivar (experimento abandonado)

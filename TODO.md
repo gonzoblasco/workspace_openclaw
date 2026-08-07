@@ -19,10 +19,8 @@
 
 ## Consolidación no-dev (29 skills)
 
-- [ ] Decidir con Gonzo las 4 candidatas restantes: `content-serializer`, `curriculum-builder`, `brand-name-forge`, `checkmate`
-- [ ] Las demás no-dev (20+) están bien como están - no fusionar por número
+- [x] ~~Decidir con Gonzo las 4 candidatas restantes: `content-serializer`, `curriculum-builder`, `brand-name-forge`, `checkmate`~~ → Gonzo decidió que quedan como están (2026-08-06). No fusionar por número.
 
 ## Proyectos
 
 - [ ] a11y-fixer: redefinir proyecto, agregar features
-- [ ] kanam (PWA): sigue en discovery
