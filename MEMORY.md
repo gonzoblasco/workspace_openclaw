@@ -100,6 +100,13 @@ Las 58 skills redundantes viven en `skills/archive/` (con README con mapa comple
 
 ## Proyectos activos
 
+### facebook/astryx (colaboración OSS - 2026-08-07)
+- Repo de Facebook, contribuciones en accesibilidad (AvatarStatusDot).
+- **PR #4298** (feat: default accessible labels per variant): pasó review con feedback real de `imdreamrunner` - i18n catalog (useTranslator + keys), changeset `[feat]` con bump `patch`, tests de locale override. Commit `9f99e2209` pusheado, **MERGEABLE**, a la espera de re-review.
+- **Issue #4777** (Avatar pierde status accessibility con composición): comenté posición técnica analizando las 3 opciones (SSR tradeoff en la 2, coupling en la 1, validación AT empírica en la 3). Me ofrecí a correr spike de la opción 3 post-merge.
+- **Estrategia:** no abrir 2 PRs del mismo tema en paralelo. Dejar mergear #4298, después atacar #4777. Un merge en astryx = hito de portfolio fuerte (repo de Facebook, a11y = especialización de Gonzo).
+- **Stack del repo:** pnpm monorepo, vitest, StyleX, i18n con catálogo en `packages/core/locales/en.json`, changesets con `[categoria]` + `@contributor`, bump `patch` salvo breaking. Pre-commit hook corre check:repo + eslint + tests. Patrón de labels i18n: `ChatMessageMetadata` (STATUS_CONFIG con i18nKey + useTranslator).
+
 ### kanam-skills (nuevo 2026-08-06)
 - Repo público + web de agent skills. https://github.com/gonzoblasco/kanam-skills
 - 58 skills (engineering SDLC + vida/creatividad/infraestructura) en formato Agent Skills universal
