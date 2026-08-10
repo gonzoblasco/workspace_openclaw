@@ -81,6 +81,20 @@ El 404 `PUT .../@scope%2fpackage` al publicar NO significa que el scope esté ma
 ### npm login usa browser OTP flow
 El login de npm ahora abre browser (OTP), no acepta token en consola. Los tokens que saltan 2FA se están restringiendo — para CI a futuro usar tokens con `mfa=publish` o `automation`.
 
+## Lecciones del 2026-08-10
+
+### Commit vacío para refrescar mergeability de PRs
+`git commit --allow-empty` re-dispara los checks de CI y fuerza a GitHub a recalcular el mergeability de un PR. Útil cuando un PR muestra CONFLICTING/DIRTY desactualizado. PERO puede revelar conflictos reales que estaban ocultos (pasó con astryx #4023 y TanStack #7834).
+
+### El main del fork puede estar desactualizado vs el upstream
+Cuando un PR de fork muestra conflicto, el main del fork puede estar viejo. Siempre fetch del upstream real (`git fetch upstream main`), no del origin (fork). En TanStack #7834, el main real avanzó 70 commits que el fork no tenía - por eso GitHub veía conflicto y yo no.
+
+### `--force-with-lease` falla con "stale info" tras rebase
+Tras un rebase que reescribe el historial, `--force-with-lease` falla porque la ref remota local no se actualizó. Usar `--force-with-lease=<branch>:<sha-esperado>` con el sha del remote verificado (fetch primero, confirmar que solo hay commits propios).
+
+### Cruce de ramas en PRs de astryx
+La rama de #4023 arrastraba el commit de #4022 (WCAG contrast) porque se creó desde esa base. Al rebasear para dropear los commits ajenos, el PR queda limpio (solo el fix del Selector). Verificar siempre que una rama de PR no contenga commits de otro PR.
+
 ## Consolidación de Skills — 2026-08-06
 
 ### Set de skills reducido de 96 a 60 activas (58 archivadas, nada borrado)
