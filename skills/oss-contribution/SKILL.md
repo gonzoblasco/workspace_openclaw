@@ -49,21 +49,21 @@ Contribución estratégica a repositorios open source externos: elegir dónde ap
 
 Además de trackear PRs, **revisar periódicamente los issues en los que ya comentamos**:
 
-- Listar issues donde el usuario comentó (autor o commenter) y que siguen abiertos
+- Listar issues donde Gonzo comentó (autor o commenter) y que siguen abiertos
 - Leer los comentarios nuevos: ¿alguien confirmó el bug? ¿otro contributor propuso un approach? ¿un maintainer pidió algo?
 - Decidir **actuar vs esperar**:
   - **Actuar** si hay una pregunta directa, un approach que podemos implementar, o una oportunidad de posicionar (mandar el PR, responder con análisis técnico)
   - **Esperar** si el issue está estancado esperando decisión de maintainers, o si ya respondimos y no hay nada nuevo accionable
 - Registrar el estado en el daily note y en CONTRIBUTING.md
 
-**Lección (robo de PR):** cuando otro contributor "quiere tomar" un issue/PR en el que ya trabajamos, la jugada ganadora no es pelear por quién manda el PR de la opción débil - es **resolver su objeción dentro de la opción fuerte**. Validar su punto técnico (le da crédito), pero mostrar que la dirección que defendemos tiene una variante que resuelve su objeción.
+**Lección (astryx #4777):** cuando otro contributor "quiere tomar" un issue/PR en el que ya trabajamos, la jugada ganadora no es pelear por quién manda el PR de la opción débil - es **resolver su objeción dentro de la opción fuerte**. Validar su punto técnico (le da crédito), pero mostrar que la dirección que defendemos tiene una variante que resuelve su objeción.
 
-**Lección (análisis antes del PR):** hacer el análisis técnico en el issue **antes** de mandar el PR (validando el approach con otro contributor) hace que el PR salga limpio y con el root cause ya consensuado. El issue es el lugar para converger; el PR es la ejecución.
+**Lección (shadcn #11125):** hacer el análisis técnico en el issue **antes** de mandar el PR (validando el approach con otro contributor) hace que el PR salga limpio y con el root cause ya consensuado. El issue es el lugar para converger; el PR es la ejecución.
 
 ## Reglas de búsqueda de PRs
 
-- Cuando el usuario pide ver un PR por número + repo, buscar directamente en ese repo con `gh pr view <n> --repo <org/repo>`
-- **No filtrar por autor propio** a menos que el usuario especifique "mis PRs" o "PRs míos"
+- Cuando Gonzo pide ver un PR por número + repo, buscar directamente en ese repo con `gh pr view <n> --repo <org/repo>`
+- **No filtrar por autor propio** a menos que Gonzo especifique "mis PRs" o "PRs míos"
 - Si el PR no se encuentra, verificar que el repo esté bien escrito (org/repo-name completo)
 
 ## Reglas de interacción en PRs/Issues de terceros
@@ -76,9 +76,9 @@ Además de trackear PRs, **revisar periódicamente los issues en los que ya come
 
 ### Hilos y menciones
 
-- **No meterse en hilos cerrados/muertos.** Si un PR está closed y no hay una pregunta directa hacia el usuario, no comentar. El silencio no es una invitación.
-- **Menciones como referencia técnica ≠ llamado a la acción.** Si alguien menciona al usuario como referencia de un bug (ej: "como @usuario observó"), no requiere respuesta a menos que haya una pregunta explícita.
-- **PRs cerrados por detección de automatización:** evaluar caso por caso. Por defecto no intervenir. Si hay una razón para mostrar empatía, comentar con cuidado y consultar al usuario primero.
+- **No meterse en hilos cerrados/muertos.** Si un PR está closed y no hay una pregunta directa hacia Gonzo, no comentar. El silencio no es una invitación.
+- **Menciones como referencia técnica ≠ llamado a la acción.** Si alguien menciona a Gonzo como referencia de un bug (ej: "como @gonzoblasco observó"), no requiere respuesta a menos que haya una pregunta explícita.
+- **PRs cerrados por detección de automatización:** evaluar caso por caso. Por defecto no intervenir. Si hay una razón para mostrar empatía, comentar con cuidado y consultar a Gonzo primero.
 
 ## Outputs
 

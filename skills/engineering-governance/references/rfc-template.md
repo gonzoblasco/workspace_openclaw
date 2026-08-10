@@ -4,7 +4,7 @@
 # RFC: [Título de la propuesta]
 
 **Fecha:** YYYY-MM-DD
-**Autor:** [Kanam / Gonzo]
+**Autor:** [Nombre del autor]
 **Estado:** Draft / Review / Approved / Rejected / Implemented
 
 ## Problema
