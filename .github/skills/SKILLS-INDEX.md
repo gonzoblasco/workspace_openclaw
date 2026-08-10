@@ -90,6 +90,7 @@
 | [support-response-writer](skills/support-response-writer/) | Respuestas profesionales de customer support |
 | [deepwiki](skills/deepwiki/) | Consulta documentación de repos GitHub via DeepWiki MCP |
 | [tech-docs](skills/tech-docs/) | Documentación técnica: ADRs, README, API docs, CHANGELOG, guías |
+| [oss-contribution](skills/oss-contribution/) | Workflow de contribución OSS: triaje, seguimiento de issues/PRs, community, registry |
 
 ## Seguridad y Red
 
@@ -137,4 +138,4 @@
 
 **Además (2026-08-06):** `adhd-daily-planner` se fusionó dentro de `adhd-assistant` (energy windows, transition buffers, dopamine sequencing, shutdown ritual, recovery protocol). Recuperable desde git si hiciera falta.
 
-**Totales activas:** 59 skills
+**Totales activas:** 60 skills
