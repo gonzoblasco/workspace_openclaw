@@ -2,8 +2,7 @@
 
 > **Pipeline de skills para llevar una idea a producto funcionando en producción.**
 >
-> Basado en las 24 skills de ingeniería de `addyosmani/agent-skills` + core OpenClaw.
-> Reescrito 2026-08-06 tras la consolidación de skills (96 → 60 activas).
+> Reescrito 2026-08-06 tras la consolidación de skills (96 → 60 activas). El set adoptó el formato y los nombres del ciclo Define→Plan→Build→Verify→Review→Ship (estilo `addyosmani/agent-skills`) como **estructura de organización**, combinado con skills propias pre-existentes del workspace y con skills 100% propias (accesibilidad, infraestructura OpenClaw, vida). No es una adopción literal del set de Addy - es nuestro set propio, organizado con ese esquema.
 
 ## Pipeline principal (flujo de producto)
 
@@ -155,6 +154,6 @@ oss-contribution (PR → post-PR watch → community → batch → registry) →
 
 ---
 
-*Actualizado: 2026-08-10 (agregada skill oss-contribution)*
-*Skills del pipeline: 24 de Addy Osmani + core OpenClaw + oss-contribution*
+*Actualizado: 2026-08-10 (agregada skill oss-contribution, corregida narrativa del origen)*
+*Skills del pipeline: set propio organizado en ciclo SDLC (estilo Addy Osmani) + core OpenClaw + skills 100% propias (accesibilidad, vida)*
 *Estado: 🟢 Al día*
