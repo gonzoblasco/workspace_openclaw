@@ -108,3 +108,32 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el criterio correcto para consolidar no es el número sino la existencia de duplicación real o decisión de uso. En ingeniería había duplicación; en no-dev no.
 - LESSON: distinguir "muchas skills" (problema de descubribilidad, resuelve con capas/entradas) de "skills duplicadas" (problema de competencia, resuelve con fusión). No son lo mismo.
 - BIASES DETECTED: ninguno flagrante; evité el sesgo de "menos = mejor" sin evidencia de duplicación.
+
+## 2026-08-10 (cierre) — Sesión OSS: conflictos, PR nuevo, reconstrucción de skill
+
+**Context:** Sesión de contribución OSS. Barrido de 27 PRs, resolución de conflictos (astryx #4023, TanStack #7834), PR nuevo en shadcn (#11465), y reconstrucción de la skill `oss-contribution` que se había perdido en la consolidación.
+
+**Lesson — el commit vacío es una herramienta de diagnóstico, no solo de refresh:**
+- `git commit --allow-empty` re-dispara CI y fuerza a GitHub a recalcular mergeability. Pensé que los CONFLICTING eran falsos positivos, pero el recálculo reveló conflictos reales ocultos (cruce de ramas en astryx #4023, main desactualizado en TanStack #7834).
+- Lección: cuando GitHub muestra CONFLICTING, NO asumir que es un artefacto. Verificar contra el upstream real antes de descartarlo.
+
+**Lesson — el main del fork puede estar desactualizado vs el upstream:**
+- En TanStack #7834, mi main local del fork estaba 70 commits atrás del main real de TanStack. Por eso GitHub veía conflicto y yo no. Siempre fetch del upstream real (`git fetch upstream main`), no del origin (fork).
+- `--force-with-lease` falla con "stale info" tras un rebase. Usar `--force-with-lease=<branch>:<sha-esperado>` con el sha del remote verificado.
+
+**Lesson — la jugada del "robo de PR" (astryx #4777):**
+- Cuando otro contributor quiere tomar un issue/PR en el que ya trabajamos, la jugada ganadora no es pelear por quién manda el PR de la opción débil - es resolver su objeción dentro de la opción fuerte. Validar su punto técnico (le da crédito), pero mostrar que la dirección que defendemos tiene una variante que resuelve su objeción.
+
+**Lesson — el valor del análisis en el issue antes del PR (shadcn #11125):**
+- Hacer el análisis técnico en el issue antes de mandar el PR (validando el approach con otro contributor) hace que el PR salga limpio y con el root cause ya consensuado. El issue es el lugar para converger; el PR es la ejecución.
+
+**Lesson — skills públicas: sin referencias personales:**
+- Una skill pública (kanam-skills) NO debe contener referencias a issues específicos de Gonzo (astryx #4777, shadcn #11125) ni menciones por nombre (Gonzo, gonzoblasco). Eso filtra contexto personal y no aporta a quien la use.
+- La enseñanza sí, la referencia concreta no. Reemplazar por términos genéricos (el usuario, el operador) y parametrizar scripts (username del gh autenticado en vez de hardcodear gonzoblasco).
+- Gonzo me corrigió dos veces en esto - es una regla que hay que internalizar: **toda skill pública se escribe como si la fuera a usar un extraño.**
+
+**Self-reflection:**
+- CONTEXT: sesión OSS multi-step (barrido de PRs, conflictos, PR nuevo, reconstrucción de skill)
+- REFLECTION: la sesión fue productiva (2 conflictos resueltos, 1 PR nuevo, 1 skill reconstruida), pero cometí el error de asumir que los CONFLICTING eran falsos positivos sin verificar contra el upstream real, y de escribir la skill pública con referencias personales.
+- LESSON: verificar contra el upstream real antes de descartar un conflicto; escribir skills públicas como si las usara un extraño.
+- BIASES DETECTED: confirmation bias (asumí que el conflicto era falso porque mi main local estaba desactualizado y confirmaba mi hipótesis).
