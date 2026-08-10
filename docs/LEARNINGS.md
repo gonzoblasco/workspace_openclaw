@@ -137,3 +137,22 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: la sesión fue productiva (2 conflictos resueltos, 1 PR nuevo, 1 skill reconstruida), pero cometí el error de asumir que los CONFLICTING eran falsos positivos sin verificar contra el upstream real, y de escribir la skill pública con referencias personales.
 - LESSON: verificar contra el upstream real antes de descartar un conflicto; escribir skills públicas como si las usara un extraño.
 - BIASES DETECTED: confirmation bias (asumí que el conflicto era falso porque mi main local estaba desactualizado y confirmaba mi hipótesis).
+
+## 2026-08-10 (cierre 2) — Narrativa del pipeline + sanitización de skills públicas
+
+**Context:** Tras reconstruir oss-contribution y sanitizar kanam-skills, Gonzo corrigió la narrativa del pipeline del workspace: no era "24 skills de Addy Osmani" sino su propio set organizado en ese esquema, combinado con skills pre-existentes y skills 100% propias (accesibilidad).
+
+**Lesson — la atribución incorrecta hiere más que el código:**
+- El pipeline decía "Skills del pipeline: 24 de Addy Osmani + core OpenClaw + oss-contribution". Eso era falso en dos sentidos: (1) el set no es de Addy, es de Gonzo organizado con ese esquema; (2) ignoraba las skills 100% propias (accesibilidad, infraestructura OpenClaw, vida).
+- Cuando se describe el origen de un sistema, la precisión de la narrativa importa tanto como la funcionalidad. "Inspirado en / organizado como X" ≠ "es X". Corregir la atribución cuando sea incorrecta, sin esperar a que el dueño la reclame.
+
+**Lesson — skills públicas vs workspace (regla establecida en AGENTS.md):**
+- El workspace (privado) mantiene las referencias personales (setup de Gonzo). kanam-skills (público) se sanitiza (sin referencias personales).
+- Dos versiones de cada skill: una con contexto (workspace), una limpia (público). Al copiar, sanitizar en el camino.
+- Excepción legítima: identidad de instalación del repo (gonzoblasco/kanam-skills en README/docs/web) y LICENSE.
+
+**Self-reflection:**
+- CONTEXT: corrección de narrativa del pipeline + regla de sanitización
+- REFLECTION: cometí el error de describir el set como "de Addy Osmani" cuando es propio organizado con ese esquema, y de no considerar las skills 100% propias. Gonzo lo notó ("solo hiere mi orgullo").
+- LESSON: la atribución y la narrativa del origen son parte del deliverable. Verificar que la descripción del origen sea precisa antes de commitearla.
+- BIASES DETECTED: anchoring (me anclé en la narrativa previa de "24 de Addy" de la consolidación sin cuestionarla).
