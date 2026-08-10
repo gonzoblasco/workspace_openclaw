@@ -63,6 +63,7 @@
 | Qué skill aplica | `using-agent-skills` | Al empezar sesión, mapear el trabajo a la skill correcta |
 | Conocimiento | `knowledge-management` | Documentación inconsistente, learning signals |
 | Gobernanza | `engineering-governance` | Post-milestone: auditar y mejorar el sistema |
+| Contribución OSS | `oss-contribution` | Contribuir a repos externos: triaje, seguimiento de issues/PRs, community |
 | SQL | `sql-insight` | Escribir u optimizar queries |
 | Supabase | `supabase-assistant` | Schemas, queries, types, migrations |
 | i18n | `i18n-expert` | Agregar internacionalización |
@@ -146,8 +147,14 @@ documentation-and-adrs → tech-docs → session-lifecycle
 interview-me → idea-refine → source-driven-development (citar fuentes oficiales) → session-lifecycle
 ```
 
+### Contribución OSS
+```
+oss-contribution (pipeline → triaje → análisis) → incremental-implementation →
+oss-contribution (PR → post-PR watch → community → batch → registry) → session-lifecycle
+```
+
 ---
 
-*Actualizado: 2026-08-06 (post-consolidación de skills)*
-*Skills del pipeline: 24 de Addy Osmani + core OpenClaw*
+*Actualizado: 2026-08-10 (agregada skill oss-contribution)*
+*Skills del pipeline: 24 de Addy Osmani + core OpenClaw + oss-contribution*
 *Estado: 🟢 Al día*
