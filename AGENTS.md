@@ -188,6 +188,26 @@ cp SKILLS-INDEX.md .github/skills/SKILLS-INDEX.md
 
 Si no se sincroniza, el mirror queda desactualizado y cualquiera que explore el repo desde GitHub va a ver una versión vieja.
 
+### Skills Públicas — Sanitización (kanam-skills)
+
+El repo `kanam-skills` (github.com/gonzoblasco/kanam-skills) es **público**. Las skills que van ahí NO deben contener referencias personales de Gonzo (nombre, handle `gonzoblasco`, repos, rutas `/Users/gonzoblasco/`, issues específicos).
+
+**Dos versiones de cada skill:**
+- **Workspace** (`skills/` + mirror `.github/skills/`): privado, **mantiene** las referencias personales - son el setup de Gonzo y el contexto es valioso.
+- **kanam-skills** (`projects/kanam-skills/skills/`): público, **sanitizado** - se escribe como si la usara un extraño.
+
+**Regla obligatoria:** al copiar una skill del workspace al repo público, sanitizar en el camino:
+- `Gonzo` / `Gonzalo` → `el usuario` (con artículos correctos: al/del usuario)
+- `@gonzoblasco` → `@usuario`
+- Author filters en scripts → `$(gh api user --jq '.login')` (username del gh autenticado)
+- Rutas `/Users/gonzoblasco/...` → relativas
+- Repos `github.com/gonzoblasco/...` → `github.com/<usuario>/...`
+- Issues específicos (ej. `astryx #4777`) → enseñanza genérica sin la referencia
+
+**Verificación:** tras copiar, `grep -rn "gonzoblasco\|Gonzalo\|Gonzo\|@gonzoblasco" skills/ | grep -v __pycache__` debe dar vacío.
+
+**Excepción legítima:** las referencias a `gonzoblasco/kanam-skills` en README, docs y web/generate.js (identidad de instalación del repo) y el LICENSE (copyright legal) se mantienen.
+
 ## Estructura de Proyectos — Doble Git con `.knowledge/`
 
 **Filosofía:** Cada proyecto tiene su carpeta en `projects/<slug>/` con sincronización selectiva:

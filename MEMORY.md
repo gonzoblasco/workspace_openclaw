@@ -139,10 +139,11 @@ Las 58 skills redundantes viven en `skills/archive/` (con README con mapa comple
 
 ### kanam-skills (nuevo 2026-08-06)
 - Repo público + web de agent skills. https://github.com/gonzoblasco/kanam-skills
-- 58 skills (engineering SDLC + vida/creatividad/infraestructura) en formato Agent Skills universal
+- 59 skills (engineering SDLC + vida/creatividad/infraestructura) en formato Agent Skills universal
 - Diferenciador: único set probado en OpenClaw. Comando: `npx skills add gonzoblasco/kanam-skills`
 - Web GitHub Pages: https://gonzoblasco.github.io/kanam-skills/ (generador estático sin deps)
 - Vive en `projects/kanam-skills/` (doble git, público, no filtra memoria personal)
+- **Sanitización obligatoria:** el repo es público - las skills NO deben tener referencias personales (Gonzo, handle, rutas, issues). El workspace mantiene las referencias; al copiar a kanam-skills, sanitizar (Gonzo→el usuario, rutas→relativas, author filters→gh autenticado). Regla en AGENTS.md.
 - Pendiente: dominio propio, mejorar preview de skill pages, postear en LinkedIn
 
 ### a11y-fixer
