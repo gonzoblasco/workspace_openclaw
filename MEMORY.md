@@ -120,6 +120,13 @@ Las 58 skills redundantes viven en `skills/archive/` (con README con mapa comple
 - **Stack del repo:** yarn 4 (Berry), lerna monorepo, jest + Babel. Tests corren contra builds de workspace packages (main apunta a lib/dist); jest mockea CSS/SCSS con identity-obj-proxy.
 - **Estrategia:** mismo patrón que astryx - un PR a la vez, feedback accionable → arreglar, decisión de dirección → cerrar con elegancia.
 
+### shadcn-ui/ui (colaboración OSS)
+- **PR #11465** (fix(react): drain released tail spacer after manual scroll during anchored stream, closes #11125): implementé el fix que validamos con sandengocka en el issue. Gate del re-arm con spacerHeight===0 + drenado del spacer en handleResize. 61 tests verdes, MERGEABLE. Creado 2026-08-10.
+- **PR #11198** (InputOTP layout shift): 1 APPROVED (karishma-gidr), falta 2do.
+- **PR #11187** (table scrollbar): sin reviews.
+- **PR #11180/#11179** (MessageScroller/InputOTP): sin reviews.
+- **Nota:** el fork `gonzoblasco/ui` puede estar atrasado vs upstream - crear ramas desde upstream/main.
+
 ### facebook/astryx (colaboración OSS - 2026-08-07)
 - Repo de Facebook, contribuciones en accesibilidad (AvatarStatusDot).
 - **PR #4298** (feat: default accessible labels per variant): pasó review con feedback real de `imdreamrunner` - i18n catalog (useTranslator + keys), changeset `[feat]` con bump `patch`, tests de locale override. Commit `9f99e2209` pusheado, **MERGEABLE**, a la espera de re-review.
