@@ -11,7 +11,7 @@
 ### Pendiente (Fase 0)
 - [ ] Resolver preguntas abiertas de PRODUCT.md (sección 7)
 - [x] ~~Decidir runtime del backend~~ → **ADR-002: Node + Hono** (2026-08-11)
-- [ ] Cruzar tokens de Lovable contra v1 → ADR design system
+- [x] ~~Cruzar tokens de Lovable contra v1~~ → **ADR-003: design system tokens** (2026-08-11)
 - [ ] Definir estructura del monorepo
 
 ## 2026-08-07 - Arranque (sesión nocturna)
