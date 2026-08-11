@@ -177,3 +177,16 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: la sesión fue productiva y el enfoque de "hablar antes de escribir" (que pidió Gonzo) funcionó — se destiló el modelo conversando sin escribir prematuremente. Bien registrar cada decisión periódicamente, no al final.
 - LESSON: en brainstorming de negocio, separar "definición de decisiones" (se documenta) de "exploración sin validar" (no se documenta como artifact). El acceso en caliente (familia) es el mayor activo para el primer cliente.
 - BIASES DETECTED: none (el flujo conversacional guiado evitó confirmación prematura; Gonzo frenó la creación de artifacts hasta tener insumo real).
+
+## 2026-08-11 — Estructura de estudio gamificada: nivel → subnivel → topic (3 capas de artifacts)
+
+**Context:** Gonzo quiere estudiar system design (para entrevista de Greenhouse) de forma teórico/práctica, con gamificación tipo bootcamp. Al diseñar el plan, pidió explícitamente dividir cada nivel en subniveles y topics, y documentar el aprendizaje en artifacts.
+
+**Patrón validado (el que vale):**
+- **Nivel → Subnivel → Topic** - cada nivel se divide en subniveles (bloques grandes) y cada subnivel en topics (piezas chicas). Cada topic es una unidad completa y verificable sola.
+- **Documentar en 3 capas de artifacts, no un documento gigante:** plan maestro (estático, se actualiza poco) + artifact por nivel (crece con el aprendizaje) + registro de progreso (se actualiza después de cada topic, cambio chiquito). Escalabilidad de edición + repaso dirigido.
+- **Gamificar:** XP por topic, badges por nivel, streak, jefe final (evaluación completa).
+
+**Self-reflection:** el patrón ya existía implícito (bootcamp de AI engineering), pero la estructura de 3 capas de artifacts fue un refinamiento explícito de Gonzo que lo hizo reusable. Se formalizó como skill `learning-tracker` para que cualquier estudio futuro (no solo este curso) use la misma documentación.
+
+**Lección pedagógica (corrección de Gonzo):** no pedir respuestas de conceptos que todavía no se enseñaron - primero explicar la teoría, después verificar. Verificar sin haber enseñado genera frustración ("clueless").
