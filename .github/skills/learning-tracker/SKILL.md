@@ -102,16 +102,24 @@ XP total: N | Badges: N | Streak: N días
 3. Actualizar el plan maestro (Capa 1) si hace falta
 4. Celebrar 🎉
 
-## Modo preparación de entrevista / JD (nuevo - validado 2026-08-11)
+## Modo preparación de entrevista / JD (validado 2026-08-11)
 
-Cuando el usuario pide **"preparame para este JD / entrevista"** (ej. un job description de consultora), el patrón base se enriquece con dos conceptos:
+Cuando el usuario pide **"preparame para esta entrevista / puesto"**, el patrón base se enriquece con dos conceptos. La entrada puede venir de **dos fuentes**:
+
+**Input A - JD formal** (job description): extraer stack, frameworks, niveles críticos y formato de evaluación del documento.
+
+**Input B - Lista de temas externa** (de otra IA, un curso, un colega, el usuario mismo): no es un JD - es una lista de temas que alguien considera relevantes para la entrevista. El trabajo es:
+- **Validar** la lista (¿cubre lo que realmente evalúa el puesto? ¿hay gaps?).
+- **Estructurarla** en niveles → subniveles → topics (la lista cruda no tiene jerarquía).
+- **Ampliarla** con el contexto del usuario (ej. "el rol usaba Pages Router → el App Router es el gap real a priorizar").
+- **Verificar** temas antes de citar detalles (precios/fechas/specs se chequean con web_fetch - regla de Gonzo).
 
 ### 1. Driver explícito condiciona todo el diseño
 
-- El **JD/entrevista es el input** del diseño del curso, no un tema genérico.
-- Del JD se extrae: qué evalúa (stack, frameworks, patrones), los **niveles críticos** (el core del objetivo), y el **formato de evaluación** (mock interview técnica, quiz, etc.).
-- El diseño del curso apunta a cubrir lo que evalúa el JD, no a ser exhaustivo en el tema.
-- Ej: JD de consultora que pide Next moderno → niveles de App Router, estado, testing; el gap real (Pages Router legacy) se prioriza.
+- El **objetivo de la entrevista/puesto es el input** del diseño del curso, no un tema genérico.
+- Del driver (JD o lista + contexto) se extrae: qué evalúa (stack, frameworks, patrones), los **niveles críticos** (el core del objetivo), y el **formato de evaluación** (mock interview técnica, quiz, etc.).
+- El diseño apunta a cubrir lo que evalúa el puesto, no a ser exhaustivo en el tema.
+- Ej: puesto de consultora que pide Next moderno → niveles de App Router, estado, testing; el gap real (Pages Router legacy del rol) se prioriza.
 
 ### 2. Dos pasadas: mapa → profundidad
 
@@ -125,16 +133,16 @@ Cuando el usuario pide **"preparame para este JD / entrevista"** (ej. un job des
 - Separa **documentar ≠ dominar**: el XP se gana al dominar, no al mapear.
 - El jefe final (mock interview completa) cierra el curso.
 
-### Workflow del modo JD/entrevista
+### Workflow del modo preparación de entrevista
 
-1. Recibir el JD → extraer stack/niveles críticos/formato de evaluación
+1. **Recibir el driver** - JD formal (extraer stack/niveles críticos) O lista de temas externa (validar + estructurar + ampliar con contexto del usuario)
 2. Armar plan maestro (Capa 1) + registro de progreso (Capa 3) vacío
 3. **Primera pasada:** documentar todos los subniveles/niveles en los artifacts de nivel (Capa 2) - panorama + vocabulario + verificación. Sin XP.
 4. **Segunda pasada:** reiniciar topic por topic en profundidad con práctica + verificación en voz alta. Sumar XP.
 5. **Jefe final:** mock interview completa estilo la evaluación real.
 6. Actualizar progreso (Capa 3) + daily note en cada hito.
 
-**Validado en:** System Design Bootcamp (primera versión) + Curso Stack React/Next para Entrevista EY (2026-08-11, donde se formalizaron las dos pasadas).
+**Validado en:** System Design Bootcamp (primera versión) + Curso Stack React/Next para Entrevista EY (2026-08-11, donde se formalizaron las dos pasadas y la entrada por lista de temas de otra IA).
 
 ## Reglas
 
