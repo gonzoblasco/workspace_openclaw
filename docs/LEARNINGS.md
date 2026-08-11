@@ -190,3 +190,26 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 **Self-reflection:** el patrón ya existía implícito (bootcamp de AI engineering), pero la estructura de 3 capas de artifacts fue un refinamiento explícito de Gonzo que lo hizo reusable. Se formalizó como skill `learning-tracker` para que cualquier estudio futuro (no solo este curso) use la misma documentación.
 
 **Lección pedagógica (corrección de Gonzo):** no pedir respuestas de conceptos que todavía no se enseñaron - primero explicar la teoría, después verificar. Verificar sin haber enseñado genera frustración ("clueless").
+
+## 2026-08-11 — OSS astryx: diagnóstico de CI + PR de fix (doble contribución)
+
+**Context:** Sesión OSS en facebook/astryx. El PR #4298 (a11y AvatarStatusDot) estaba aprobado pero bloqueado por un check de CI que fallaba con `no merge base`. Al investigar, resultó ser un bug del workflow, no del código.
+
+**Lesson — verificar el job exacto del run que falla antes de diagnosticar:**
+- Confundí el workflow "CLI Smoke Test" con el job `build-storybook` del workflow "CI". El `gh pr checks` mostraba "smoke-test" y asumí que era ese job. El `gh run view --log-failed` del run correcto (31191734656) reveló que el job real era `build-storybook`.
+- LESSON: cuando un check falla, rastrear el run exacto (`gh run list` + `gh run view --json jobs`) y el job que falló antes de escribir el diagnóstico. Un diagnóstico con el job equivocado es peor que no diagnosticar — tuve que corregir el comentario del PR.
+
+**Lesson — `fetch-depth: 50` es una ventana fija que se rompe con PRs viejos:**
+- El bug real: `analyze-pr.js` hace three-dot diff (`base...head`) que necesita merge base. Con `fetch-depth: 50`, si el PR lleva días abierto y main avanza más de 50 commits, el merge base queda fuera de la ventana y el diff falla con `no merge base`.
+- No es un checkout olvidado (ese era mi primer diagnóstico equivocado) — es un límite de diseño del workflow. El propio ci.yml documenta el patrón en dos jobs.
+- LESSON: los límites fijos (depth, timeouts, paginación) fallan silenciosamente con el tiempo. Un PR que pasa hoy puede fallar mañana sin tocar nada.
+
+**Lesson — el fallback a two-dot diff es el fix correcto:**
+- En `getChangedFiles()`, cuando el three-dot falla, caer a two-dot (`base..head`) que no necesita merge base. Nunca hard-faila. Puede sobre-reportar (incluye commits ya en base) pero nunca sub-reporta los cambios del PR.
+- Validado con simulación real: reproduje el caso exacto (clone shallow, merge base fuera de ventana) y confirmé que el three-dot falla y el two-dot funciona.
+
+**Self-reflection:**
+- CONTEXT: diagnóstico de CI + issue + PR de fix en repo de Facebook
+- REFLECTION: el flujo fue bueno (diagnóstico → issue → PR), pero el primer comentario del PR tenía el job equivocado. La corrección oportuna (antes de que el maintainer lo leyera como definitivo) evitó daño, pero el proceso correcto es verificar el job exacto ANTES de postear.
+- LESSON: en contribuciones OSS, un diagnóstico técnico incorrecto en un thread público resta credibilidad. Verificar el run/job exacto con `gh run view --log-failed` antes de afirmar la causa.
+- BIASES DETECTED: anchoring (me anclé en el nombre "smoke-test" del `gh pr checks` sin verificar el job real del run).
