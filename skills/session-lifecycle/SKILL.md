@@ -77,7 +77,7 @@ Si Gonzo dice `"iniciar sesión"`, `"brainstorming"`, `"aún no sé en qué proy
 - **Mid-session checkpoint:** a mitad de sesión (o al cambiar de tarea), preguntar: "¿Sigo en el camino correcto hacia el objetivo? ¿Necesito ajustar algo?"
 - Si el checkpoint revela desvío, redefinir objetivo o restricciones antes de seguir.
 
-### 4. Cierre — escanear sesión, escribir HANDOFF, memory, CHANGELOG
+### 4. Guardado — escanear sesión, escribir HANDOFF, memory, CHANGELOG
 - Si la sesión tuvo un proyecto asociado, ejecutar `session-context:save` con el resumen de la sesión: `summary`, `leftOff`, `nextSteps`, `decisions`, `blockers`, y `goal` solo si cambió.
 - Si fue una sesión sin proyecto (brainstorming/triage), guardar el resumen en `memory/YYYY-MM-DD.md` y no tocar `session-context`.
 - Mostrar borrador al usuario para confirmación o edición antes de persistir.
@@ -97,7 +97,7 @@ Scripts en `skills/session-lifecycle/scripts/`:
 | Script | Uso |
 |---|---|
 | `session-start.sh --project <name> --objective <obj>` | Carga HANDOFF previo y crea/actualiza el log diario en `memory/YYYY-MM-DD.md`. Usar al inicio de sesion con proyecto. |
-| `session-end.sh --project <name> --summary <text>` | Genera/actualiza HANDOFF, escribe cierre en el log diario, e intenta revisar PRs abiertos. Usar al cerrar sesion. |
+| `session-end.sh --project <name> --summary <text>` | Genera/actualiza HANDOFF, escribe el guardado en el log diario, e intenta revisar PRs abiertos. Usar al guardar sesion. |
 
 Si la sesion toca scripts de skill del workspace, correr `npm test` antes del commit final.
 
@@ -210,7 +210,7 @@ Gonzo tiene ADHD. El sistema de productividad debe adaptarse a eso, no al revés
 - **Inbox capture.** Si a Gonzo se le ocurre algo mientras trabajamos en otra cosa, lo atrapo en `inbox.md` y sigo con lo que estábamos.
 - **Overload triage.** Si hay demasiadas cosas abiertas, parar y priorizar antes de seguir. Preguntar: "¿Qué es lo más importante AHORA?"
 - **Rutinas de inicio.** Al arrancar una sesión, revisar qué quedó pendiente de la sesión anterior antes de meter cosas nuevas.
-- **Rutinas de cierre.** Al terminar una sesión, dejar claro qué sigue para la próxima. Así Gonzo no pierde 10 min retomando.
+- **Rutinas de guardado.** Al terminar una sesión, dejar claro qué sigue para la próxima. Así Gonzo no pierde 10 min retomando.
 - **Focus > multitasking.** Una sesión enfocada de 2h vale más que 4h de contexto switching.
 - **Sin culpa por lo no hecho.** Si algo quedó sin terminar, se retoma. No hay "debería haber hecho más".
 
@@ -242,7 +242,7 @@ Si detecto alguna de estas, paro y pregunto antes de seguir:
 
 - **Recordatorio suave:** "Antes de arrancar con esto, acordate que tenías X pendiente de ayer. ¿Seguimos con eso o arrancamos nuevo?"
 - **Triage rápido:** "Tenés 4 cosas abiertas. ¿Cuál es la prioritaria ahora?"
-- **Cierre explícito:** Al final de cada sesión, dejo un resumen de qué se hizo y qué sigue.
+- **Guardado explícito:** Al final de cada sesión, dejo un resumen de qué se hizo y qué sigue.
 - **Sin presión:** Si Gonzo quiere cambiar de tema, cambiamos. El sistema se adapta.
 
 ## Outputs

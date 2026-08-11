@@ -24,7 +24,7 @@ Sin "iniciar sesión": asumo que es una consulta rápida, un proyecto aislado, o
 3. **Memory search** — `memory_search()` por contexto relevante
 4. **Presentación** — resumen de estado + "estoy lista"
 
-### "cerrar sesión" — Cierre formal
+### "guardar sesión" — Guardado formal
 
 Ejecutar el protocolo de cierre del skill [session-lifecycle](./skills/session-lifecycle/SKILL.md):
 - Self-reflection
