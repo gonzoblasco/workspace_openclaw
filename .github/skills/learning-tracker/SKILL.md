@@ -114,6 +114,13 @@ Cuando el usuario pide **"preparame para esta entrevista / puesto"**, el patrón
 - **Ampliarla** con el contexto del usuario (ej. "el rol usaba Pages Router → el App Router es el gap real a priorizar").
 - **Verificar** temas antes de citar detalles (precios/fechas/specs se chequean con web_fetch - regla de Gonzo).
 
+**Variante de Input B - URL de índice de libro:** si el usuario pasa una URL (ej. Packt, O'Reilly, mirror), hacer `web_fetch` para extraer el índice real y usarlo como **fuente de verdad de qué cubrir** (los capítulos definen la jerarquía). Notas:
+- Los sitios de editoriales suelen bloquear con 403 anti-bot (Cloudflare) - si falla el fetch directo, buscar el TOC en mirrors o con web_search.
+- El índice es el mapa de contenidos; la teoría la genera el agente (puede tener huecos - verificar specs finos).
+- Agrupar los capítulos en niveles lógicos (no todos los capítulos son un nivel - agrupar por bloque temático).
+- Preguntar el **objetivo** del curso del libro (entrevista / aprender completo / complementar) porque define los niveles críticos.
+- **Validado 2026-08-11:** "Full-Stack React, TypeScript, and Node" 2nd ed (Packt) - se extrajo el TOC de 15 capítulos de un mirror y se estructuró en 8 niveles temáticos.
+
 ### 1. Driver explícito condiciona todo el diseño
 
 - El **objetivo de la entrevista/puesto es el input** del diseño del curso, no un tema genérico.
