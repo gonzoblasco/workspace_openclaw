@@ -249,6 +249,13 @@ Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nue
 - Falta un mecanismo de verificación automática al final de cada nivel (tests contra el proyecto del alumno).
 - **El nivel 7 es el núcleo físico de los niveles 7-10**: N8 (cloud), N9 (estándares) y N10 (sistema completo) extienden el mismo folder `projects/level-07-microservices/` (ADR-001). El nombre del folder confunde — el README ahora lo documenta como "Niveles 7-10" con tabla de acumulación y diagrama de arquitectura.
 
+## Modelo de agentes en OpenClaw OS (2026-08-10)
+
+- La unidad de aislamiento es el AGENTE (workspace completo), no la sesion. Un agente = una session key = un thread = una conversacion. No existe "nuevo chat" con un agente - siempre se continua la misma sesion.
+- Las sesiones dentro de un mismo agente SIEMPRE comparten todo (skills, memoria, apps, artifacts, archivos). No hay nivel intermedio de aislamiento por conversacion.
+- Agentes multiples = workspace nuevo por agente = duplicacion de skills/config/persona + no ven los apps/artifacts de los otros. Anti-patron para el sistema de Gonzo.
+- **Decision:** mantener 1 agente `main`. Conversaciones limpias con `/new` (comparten el ecosistema, historial independiente). Agentes separados solo para aislamiento duro (cliente con workspace que no cruza con el personal).
+
 ## Modelo default
 
 - **Default:** `deepseek-v4-flash:cloud` con **reasoning medium**
