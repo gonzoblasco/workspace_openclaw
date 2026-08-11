@@ -67,6 +67,3 @@
 [submodule "projects/hyatt-copilot-agent"]
 	path = projects/hyatt-copilot-agent
 	url = https://github.com/gonzoblasco/hyatt-copilot-agent.git
-[submodule "projects/soporteml-v3"]
-	path = projects/soporteml-v3
-	url = https://github.com/gonzoblasco/soporteml-v3.git
