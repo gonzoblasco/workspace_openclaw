@@ -12,7 +12,7 @@
   - `PROMPT-GUIA-DISENO.md` (ya ejecutado)
   - `PROMPT-SCHEMAS-BD.md` (pendiente de ejecutar)
 
-## 2026-08-11 - Backend aclarado
+## 2026-08-11 - Backend + design tokens aclarados
 
 ### Completado
 - **Recibida la referencia técnica del backend de Lovable** → guardada en `BACKEND-REFERENCE.md` (327 líneas).
@@ -22,9 +22,15 @@
   - Roles: agent / admin / super admin. Multi-tenant vía `memberships` + `user_belongs_to_company`.
   - Variables de entorno completas (solo nombres).
 - El prompt `prompts/PROMPT-SCHEMAS-BD.md` quedó **ejecutado**.
+- **Recibida la especificación de design tokens de Lovable** → guardada en `DESIGN-TOKENS-LOVABLE.md` (423 líneas).
+  - Tokens nuevos: `--primary-muted`, `--primary-strong`, `--informative` (+foreground/muted/strong), `--surface-active`, `--surface-raised`, `--surface-sunken`, `--overlay`, `--glass`, `--focus-ring`, `--border-strong`, `--chart-1..5`, `--success/warning/destructive/informative-*-muted/strong`, badges de categoría con muted/strong.
+  - Regla de estado global: fondo 12-15% + texto 100% con `*-strong` (no color base). Preferir tokens `*-muted` sobre `bg-<estado>/15`.
+  - Escala tipográfica fina (Display→Micro/Overline/Metric/Mono) con Inter, tabular-nums para métricas.
+  - Paleta completa v3 (base, marca, estados, badges, bordes, sidebar, gráficos, radio/sombras) + mapa token→componente + reglas WCAG AA + snippet CSS/Tailwind.
+- El prompt `prompts/PROMPT-RECONCILIACION-TOKENS.md` quedó **ejecutado**.
 
 ### Pendiente
-- [ ] Cruzar `DESIGN-GUIDE-LOVABLE.md` contra `DESIGN-GUIDE.md` y el skill. Reconciliar tokens nuevos (ver notas al final de `DESIGN-GUIDE-LOVABLE.md`): `--primary-muted`, `--primary-strong`, `--informative`, `--surface-active`, regla de estado 12-15%, escala tipográfica fina.
+- [ ] Cruzar `DESIGN-TOKENS-LOVABLE.md` contra `DESIGN-GUIDE.md` y el skill (verificar que no haya conflictos con v1).
 - [ ] Scaffold del repo v3.
 - [ ] Implementación.
 

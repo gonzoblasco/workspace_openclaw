@@ -1,7 +1,7 @@
 # Prompt: Schemas de BD + Edge Functions de SoporteML (para Lovable)
 
 > **Cuándo usar:** para pedirle a Lovable la documentación técnica del backend (schemas de Supabase + edge functions + integraciones).
-> **Estado:** PENDIENTE DE EJECUTAR (Gonzo lo pide cuando renueve créditos, ~2026-08-08).
+> **Estado:** ✅ EJECUTADO (2026-08-11). Respuesta guardada en `BACKEND-REFERENCE.md`.
 > **Nota:** el prompt pide SOLO nombres de variables de entorno, nunca valores secretos.
 
 ---
