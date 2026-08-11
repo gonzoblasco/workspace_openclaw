@@ -5,8 +5,16 @@
 node_modules/
 dist/
 build/
+.turbo/
+
+# Env
 .env
 .env.local
+.env.*.local
+
+# Database local (alpha)
+*.db
+*.db-journal
 
 # Sistema
 .DS_Store

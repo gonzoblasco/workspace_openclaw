@@ -12,7 +12,22 @@
 - [ ] Resolver preguntas abiertas de PRODUCT.md (sección 7)
 - [x] ~~Decidir runtime del backend~~ → **ADR-002: Node + Hono** (2026-08-11)
 - [x] ~~Cruzar tokens de Lovable contra v1~~ → **ADR-003: design system tokens** (2026-08-11)
-- [ ] Definir estructura del monorepo
+- [x] ~~Definir estructura del monorepo~~ → **Turborepo + pnpm** (estándar de Gonzo, ADR-029 react-18-design-patterns): `apps/web` (Vite) + `apps/api` (Hono) + `packages/db` (SQLite).
+
+## Fase 1 - Alpha local (2026-08-11)
+
+### Completado
+- Estructura del monorepo definida: Turborepo + pnpm.
+- **Scaffold monorepo creado** (apps/web + apps/api + packages/db).
+- **packages/db implementado:** schema SQLite (20+ tablas), tipos, helpers, capa de repositorios (tenancy, questions, products). 4 tests + typecheck limpio.
+
+### Pendiente
+- [ ] Crear repo git del proyecto (el código va ahí, no en workspace)
+- [ ] Backend Hono (núcleo MeLi)
+- [ ] Auth mock
+- [ ] Frontend Vite (design system tokens)
+- [ ] IA mock/real
+- [ ] Billing mock
 
 ## 2026-08-07 - Arranque (sesión nocturna)
 
