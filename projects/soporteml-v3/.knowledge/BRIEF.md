@@ -1,6 +1,6 @@
 # SoporteML v3 - BRIEF
 
-## Estado: EN ARRANQUE (2026-08-07)
+## Estado: EN DEFINICIÓN (2026-08-11)
 
 ## Qué es
 
@@ -14,24 +14,27 @@ CRM multi-tenant para vendedores de Mercado Libre, con asistencia de IA. Gestion
 
 ## Objetivo de v3
 
-Reconstruir SoporteML sobre la base sólida de v1, con el design system aclarado desde el arranque (skill de UI + guía de estilos), para que esta versión quede bien.
+Reconstruir SoporteML sobre la base sólida de v1, con el design system y el backend aclarados desde el arranque, **independizándonos de los servicios cloud** (primera alpha 100% local: SQLite + backend local). Supabase u otros servicios son opción futura solo con razones válidas.
 
 ## Documentos de referencia
 
-- `UI-DESIGN-SKILL.md` - estándar de implementación UI (tokens, espaciado, a11y, anti-patrones, workflow de revisión).
-- `DESIGN-GUIDE.md` - identidad visual de SoporteML (paleta, tipografía, utilidades, componentes, layout) documentada desde v1.
+- `PRODUCT.md` - definición completa del producto (visión, usuarios, features, límites, principios).
+- `ROADMAP.md` - roadmap vivo (Fase 0 definición → Fase 1 alpha local → Fase 2 validación → Fase 3 despliegue → Fase 4 beta).
+- `BACKEND-REFERENCE.md` - referencia técnica del backend actual (schemas, edge functions, integraciones).
+- `DESIGN-TOKENS-LOVABLE.md` - design tokens oficiales de Lovable (fuente de verdad visual).
+- `DESIGN-GUIDE.md` - identidad visual de SoporteML documentada desde v1.
+- `UI-DESIGN-SKILL.md` - estándar de implementación UI.
 
-## Stack
+## Stack (propuesto, a confirmar en ADR)
 
-- React + TypeScript + Vite
-- Tailwind CSS + shadcn/ui + Radix UI
-- Lucide Icons + Framer Motion
-- Supabase (backend + Edge Functions)
-- next-themes (claro/oscuro)
+- Frontend: React + TypeScript + Vite + Tailwind + shadcn/ui + Radix + Lucide + Framer Motion
+- Backend local: runtime a decidir (Deno vs Node+Hono) — recrear edge functions
+- DB alpha: SQLite con capa de repositorios (Postgres/Supabase como opción futura)
 
-## Pendiente
+## Pendiente (ver ROADMAP.md)
 
-- [ ] Definir estructura del repo v3 (scaffold).
-- [ ] Pedir a Lovable la guía de diseño oficial (prompt pendiente).
-- [ ] Cruzar la guía de Lovable contra `DESIGN-GUIDE.md` y ajustar tokens si hace falta.
-- [ ] Arrancar implementación.
+- [ ] Resolver preguntas abiertas de PRODUCT.md
+- [ ] Decidir runtime del backend (ADR)
+- [ ] Cruzar tokens de Lovable contra v1 (ADR design system)
+- [ ] Scaffold monorepo
+- [ ] Alpha local

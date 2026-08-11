@@ -1,5 +1,19 @@
 # SoporteML v3 - STATUS
 
+## 2026-08-11 - Definición de producto
+
+### Completado
+- **Creado `PRODUCT.md`** - definición completa del producto: visión, usuarios/roles, features core, integraciones (MeLi funcional, MP nunca probado), límites explícitos, principios de arquitectura (independencia de vendor, alpha 100% local), preguntas abiertas.
+- **Creado `ROADMAP.md`** - roadmap vivo: Fase 0 definición → Fase 1 alpha local → Fase 2 validación de integraciones → Fase 3 decisión de despliegue → Fase 4 beta.
+- **Actualizado `BRIEF.md`** - refleja la nueva dirección: independencia de vendor, alpha local, stack propuesto.
+- **Decisión de dirección (Gonzo):** primera alpha 100% local (SQLite + backend local). Supabase solo si hay razones válidas después. Recrear edge functions en runtime local (Deno/Node+Hono a decidir). Mercado Pago nunca probado → mockear en alpha.
+
+### Pendiente (Fase 0)
+- [ ] Resolver preguntas abiertas de PRODUCT.md (sección 7)
+- [ ] Decidir runtime del backend (Deno vs Node+Hono) → ADR
+- [ ] Cruzar tokens de Lovable contra v1 → ADR design system
+- [ ] Definir estructura del monorepo
+
 ## 2026-08-07 - Arranque (sesión nocturna)
 
 ### Completado
