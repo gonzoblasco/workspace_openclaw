@@ -156,3 +156,24 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: cometí el error de describir el set como "de Addy Osmani" cuando es propio organizado con ese esquema, y de no considerar las skills 100% propias. Gonzo lo notó ("solo hiere mi orgullo").
 - LESSON: la atribución y la narrativa del origen son parte del deliverable. Verificar que la descripción del origen sea precisa antes de commitearla.
 - BIASES DETECTED: anchoring (me anclé en la narrativa previa de "24 de Addy" de la consolidación sin cuestionarla).
+
+## 2026-08-10 (cierre 3) — Tormenta de ideas: convertir una idea en negocio
+
+**Context:** Sesión de brainstorming sobre "IA como Servicio" para terceros no-técnicos. Evolucionó de "vender un workspace" a "SaaS con Cloud + Local + soporte como embudo de conversión". Se identificaron las primeras cuentas reales: los hermanos de Gonzo (hermana = concesionario Jeep/RAM, hermano = motos).
+
+**Lesson — la entrevista de descubrimiento antecede al producto:**
+- No crear artifacts de proyectos hasta tener el insumo real (la charla con el cliente/contacto). Los artifacts de la idea madre y PIBÄ se crearon porque tenían decisiones tomadas. Los proyectos Cloud NO se crearon aún porque falta la entrevista con la hermana que defina el dolor real y el workflow bandera.
+- Escribir sobre humo (suposiciones sin validar) genera artifacts que después se reescriben.
+
+**Lesson — acceso en caliente > nicho teórico:**
+- El primer cliente casi nunca sale de un mercado genérico, sale de la red. Los hermanos de Gonzo son acceso en caliente (confianza familiar) = laboratorio gratuito + piloto + red de referidos.
+- Estrategia: hermana (contacto cercano) = laboratorio/prototipo; hermano (menos cercano pero con red de locales) = regalo → referidos → clientes pagos. Un acceso cubre "aprender", el otro "escalar".
+
+**Lesson — vender el Cloud, no el sistema a medida:**
+- PIBÄ: el dolor del stock (sistema de pedidos) queda corto — es ERP a medida, no escalable, posiciona mal. Se reencuadró a "IA que maneja el negocio completo". No vender un sistema a medida, vender un servicio que resuelve dolores.
+
+**Self-reflection:**
+- CONTEXT: sesión de brainstorming multi-hilo (modelo de negocio, 2 candidatos reales, estrategia de acceso)
+- REFLECTION: la sesión fue productiva y el enfoque de "hablar antes de escribir" (que pidió Gonzo) funcionó — se destiló el modelo conversando sin escribir prematuremente. Bien registrar cada decisión periódicamente, no al final.
+- LESSON: en brainstorming de negocio, separar "definición de decisiones" (se documenta) de "exploración sin validar" (no se documenta como artifact). El acceso en caliente (familia) es el mayor activo para el primer cliente.
+- BIASES DETECTED: none (el flujo conversacional guiado evitó confirmación prematura; Gonzo frenó la creación de artifacts hasta tener insumo real).
