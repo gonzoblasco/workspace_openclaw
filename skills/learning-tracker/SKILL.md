@@ -17,6 +17,7 @@ Estudia cualquier tema en **niveles gamificados**, documentando el conocimiento 
 - El usuario quiere que el aprendizaje quede documentado en artifacts reusables
 - El usuario arranca un curso/bootcamp y quiere dejar un registro de lo que aprende
 - El usuario quiere que futuras sesiones (o el mismo asistente) sepan cómo documentar su estudio
+- El usuario quiere prepararse para una **entrevista / JD** específico (ver "Modo preparación de entrevista / JD")
 
 ## Los 3 principios del patrón
 
@@ -100,6 +101,40 @@ XP total: N | Badges: N | Streak: N días
 2. Cierre del registro de progreso (Capa 3)
 3. Actualizar el plan maestro (Capa 1) si hace falta
 4. Celebrar 🎉
+
+## Modo preparación de entrevista / JD (nuevo - validado 2026-08-11)
+
+Cuando el usuario pide **"preparame para este JD / entrevista"** (ej. un job description de consultora), el patrón base se enriquece con dos conceptos:
+
+### 1. Driver explícito condiciona todo el diseño
+
+- El **JD/entrevista es el input** del diseño del curso, no un tema genérico.
+- Del JD se extrae: qué evalúa (stack, frameworks, patrones), los **niveles críticos** (el core del objetivo), y el **formato de evaluación** (mock interview técnica, quiz, etc.).
+- El diseño del curso apunta a cubrir lo que evalúa el JD, no a ser exhaustivo en el tema.
+- Ej: JD de consultora que pide Next moderno → niveles de App Router, estado, testing; el gap real (Pages Router legacy) se prioriza.
+
+### 2. Dos pasadas: mapa → profundidad
+
+**Primera pasada (mapeo):** documentar TODO el contenido en los artifacts (panorama + vocabulario + verificación por topic), creando el **mapa completo de referencia**. No suma XP - es el "qué hay".
+
+**Segunda pasada (dominio):** reiniciar topic por topic **en profundidad** - práctica real (ejercicios, migraciones, diseño), verificación en voz alta con respuesta esperada, sumando XP por cada topic. Es el "dominarlo".
+
+**Por qué dos pasadas:**
+- La primera pasada deja toda la referencia documentada y un listado general del contenido.
+- La segunda pasada profundiza cada pieza sin re-descubrir el mapa - ya está todo referenciado.
+- Separa **documentar ≠ dominar**: el XP se gana al dominar, no al mapear.
+- El jefe final (mock interview completa) cierra el curso.
+
+### Workflow del modo JD/entrevista
+
+1. Recibir el JD → extraer stack/niveles críticos/formato de evaluación
+2. Armar plan maestro (Capa 1) + registro de progreso (Capa 3) vacío
+3. **Primera pasada:** documentar todos los subniveles/niveles en los artifacts de nivel (Capa 2) - panorama + vocabulario + verificación. Sin XP.
+4. **Segunda pasada:** reiniciar topic por topic en profundidad con práctica + verificación en voz alta. Sumar XP.
+5. **Jefe final:** mock interview completa estilo la evaluación real.
+6. Actualizar progreso (Capa 3) + daily note en cada hito.
+
+**Validado en:** System Design Bootcamp (primera versión) + Curso Stack React/Next para Entrevista EY (2026-08-11, donde se formalizaron las dos pasadas).
 
 ## Reglas
 
