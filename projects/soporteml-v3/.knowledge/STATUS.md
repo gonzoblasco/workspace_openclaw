@@ -22,10 +22,10 @@
 - **packages/db implementado:** schema SQLite (20+ tablas), tipos, helpers, capa de repositorios (tenancy, questions, products). 4 tests + typecheck limpio.
 - **apps/api implementado** (Hono): cliente MeLi (OAuth PKCE, sync, publish), token service con refresh, sync service con ficha proactiva, auth mock, rutas (health, auth/dev, meli/*, questions, products). Verificado en vivo.
 - **apps/web implementado** (Vite + React + Tailwind): design system con tokens de Lovable (ADR-003), login mock, dashboard con Inbox/Productos/Ajustes, cliente API con proxy. Verificado end-to-end + build OK.
+- **IA integrada** (Ollama local, deepseek-v4-flash:cloud): categoriza preguntas + sugiere respuestas con contexto del producto. Fallback a mock si Ollama no está. Verificado en vivo.
 
 ### Pendiente
-- [ ] IA mock/real
-- [ ] Billing mock
+- [ ] Billing mock (post-MVP)
 
 ## 2026-08-07 - Arranque (sesión nocturna)
 
