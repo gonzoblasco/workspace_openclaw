@@ -21,9 +21,9 @@
 - **Scaffold monorepo creado** (apps/web + apps/api + packages/db).
 - **packages/db implementado:** schema SQLite (20+ tablas), tipos, helpers, capa de repositorios (tenancy, questions, products). 4 tests + typecheck limpio.
 - **apps/api implementado** (Hono): cliente MeLi (OAuth PKCE, sync, publish), token service con refresh, sync service con ficha proactiva, auth mock, rutas (health, auth/dev, meli/*, questions, products). Verificado en vivo.
+- **apps/web implementado** (Vite + React + Tailwind): design system con tokens de Lovable (ADR-003), login mock, dashboard con Inbox/Productos/Ajustes, cliente API con proxy. Verificado end-to-end + build OK.
 
 ### Pendiente
-- [ ] Frontend Vite (apps/web, design system tokens)
 - [ ] IA mock/real
 - [ ] Billing mock
 
