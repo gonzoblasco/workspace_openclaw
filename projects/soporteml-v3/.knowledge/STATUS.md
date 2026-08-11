@@ -23,9 +23,20 @@
 - **apps/api implementado** (Hono): cliente MeLi (OAuth PKCE, sync, publish), token service con refresh, sync service con ficha proactiva, auth mock, rutas (health, auth/dev, meli/*, questions, products). Verificado en vivo.
 - **apps/web implementado** (Vite + React + Tailwind): design system con tokens de Lovable (ADR-003), login mock, dashboard con Inbox/Productos/Ajustes, cliente API con proxy. Verificado end-to-end + build OK.
 - **IA integrada** (Ollama local, deepseek-v4-flash:cloud): categoriza preguntas + sugiere respuestas con contexto del producto. Fallback a mock si Ollama no está. Verificado en vivo.
+- **Billing mock** (post-MVP): flujo de suscripción simulado (crear/chequear/cancelar). Verificado en vivo.
 
-### Pendiente
-- [ ] Billing mock (post-MVP)
+### FASE 1 COMPLETA ✅
+
+La alpha local corre completa: DB (SQLite) + backend (Hono) + frontend (Vite) + IA (Ollama) + billing (mock).
+
+**Cómo correrla:**
+- Backend: `cd apps/api && pnpm dev` (puerto 3001)
+- Frontend: `cd apps/web && pnpm dev` (puerto 5173)
+
+### Pendiente (Fase 2 - validación de integraciones)
+- [ ] Probar Mercado Pago real en sandbox
+- [ ] Conectar API keys reales de IA si hace falta
+- [ ] Email (Resend + Lovable Email)
 
 ## 2026-08-07 - Arranque (sesión nocturna)
 

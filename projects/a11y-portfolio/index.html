@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accesibilidad como especialización — Gonzalo</title>
+<meta name="description" content="Caso de estudio de portfolio: accesibilidad como especialización activa, con contribuciones a Facebook (astryx), shadcn/ui y TanStack.">
+<style>
+  :root {
+    --bg: #0f1115;
+    --surface: #171a21;
+    --surface-2: #1e222b;
+    --border: #333a47;
+    --text: #f2f4f7;
+    --text-dim: #c3cad4;
+    --accent: #7ab0ff;
+    --accent-strong: #a8c8ff;
+    --accent-soft: rgba(122, 176, 255, 0.14);
+    --green: #4ade80;
+    --green-soft: rgba(74, 222, 128, 0.14);
+    --amber: #ffc46b;
+    --amber-soft: rgba(255, 196, 107, 0.14);
+    --red: #ff8a8a;
+    --red-soft: rgba(255, 138, 138, 0.14);
+    --radius: 12px;
+    --mono: "SF Mono", "JetBrains Mono", "Fira Code", monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+  header.hero { padding: 24px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent-strong);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h1 { font-size: 40px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
+  h1 .accent { color: var(--accent-strong); }
+  a { color: var(--accent-strong); }
+  a:focus-visible, .pr a:focus-visible {
+    outline: 2px solid var(--accent-strong);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .lede { font-size: 19px; color: var(--text-dim); max-width: 640px; }
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 48px 0 20px;
+    padding-top: 8px;
+  }
+  h2 .num { color: var(--accent); font-family: var(--mono); font-size: 18px; margin-right: 10px; }
+  p { margin-bottom: 16px; color: var(--text); }
+  .dim { color: var(--text-dim); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .card h3 { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .card h3 a { color: var(--text); text-decoration: none; border-bottom: 1px solid rgba(242,244,247,0.25); transition: border-color 0.15s, color 0.15s; }
+  .card h3 a:hover { color: var(--accent-strong); border-bottom-color: var(--accent-strong); }
+  .card .pr { font-family: var(--mono); color: var(--accent-strong); font-size: 14px; }
+  .card .pr a { color: var(--accent-strong); text-decoration: none; border-bottom: 1px solid rgba(168,200,255,0.4); }
+  .card .pr a:hover { text-decoration: underline; }
+  .card .what { color: var(--text-dim); font-size: 15px; margin-top: 6px; }
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-right: 6px;
+    margin-top: 10px;
+    font-weight: 500;
+    text-transform: none;
+  }
+  .b-ok { background: var(--green-soft); color: var(--green); border: 1px solid rgba(74,222,128,0.4); }
+  .b-ok-solid { background: var(--green); color: #08130a; border: 1px solid var(--green); font-weight: 600; }
+  .b-warn { background: var(--amber-soft); color: var(--amber); border: 1px solid rgba(255,196,107,0.4); }
+  .b-red { background: var(--red-soft); color: var(--red); border: 1px solid rgba(255,138,138,0.4); }
+  .b-neutral { background: var(--surface-2); color: var(--text-dim); border: 1px solid var(--border); }
+  .repo-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-right: 8px;
+  }
+  .callout {
+    border-left: 3px solid var(--accent-strong);
+    background: var(--accent-soft);
+    padding: 16px 20px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 24px 0;
+  }
+  .callout p { margin: 0; color: var(--text); }
+  .callout strong { color: var(--accent-strong); }
+  .steps { counter-reset: step; margin: 16px 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .step .n {
+    counter-increment: step;
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-strong);
+    color: var(--accent-strong);
+    font-family: var(--mono);
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600;
+  }
+  .step .n::before { content: counter(step); }
+  .step .body { padding-top: 4px; }
+  .step .body strong { display: block; margin-bottom: 2px; }
+  .step .body p { margin: 0; color: var(--text-dim); font-size: 15px; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+  }
+  .stat .v { font-size: 32px; font-weight: 700; color: var(--accent-strong); font-family: var(--mono); }
+  .stat .l { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+  .honest {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 32px 0;
+  }
+  .honest h3 { font-size: 18px; margin-bottom: 8px; }
+  .honest p { color: var(--text-dim); margin-bottom: 8px; }
+  .honest p:last-child { margin-bottom: 0; }
+  .contact {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-top: 40px;
+  }
+  .contact h3 { font-size: 18px; margin-bottom: 12px; }
+  .contact a { color: var(--accent-strong); text-decoration: none; }
+  .contact a:hover { text-decoration: underline; }
+  .contact .row { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 8px; }
+  .contact .row span { color: var(--text-dim); font-size: 14px; }
+  footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 13px; }
+  @media (max-width: 600px) {
+    h1 { font-size: 30px; }
+    .lede { font-size: 17px; }
+    .wrap { padding: 32px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Caso de estudio <span aria-hidden="true">·</span> Portfolio</div>
+    <h1>Accesibilidad como <span class="accent"><strong>especialización activa</strong></span></h1>
+    <p class="lede">No es un checkbox. Es la lente con la que leo cada componente: qué anuncia un screen reader, qué pasa sin color, qué pasa solo con teclado. Lo demuestro con código mergeable en los repos más exigentes del ecosistema.</p>
+  </header>
+
+  <section>
+    <h2><span class="num">01</span>La evidencia — estado real verificado</h2>
+    <p class="dim">11 de agosto de 2026. Cada PR revisado contra la API de GitHub, no de memoria.</p>
+
+    <h3 style="margin:24px 0 12px;font-size:18px;">Facebook / astryx <span class="repo-tag">design system de Meta</span></h3>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/facebook/astryx/pull/4298">#4298</a></div>
+      <h3><a href="https://github.com/facebook/astryx/pull/4298">Default accessible labels to AvatarStatusDot per variant</a></h3>
+      <div class="what">Los indicadores de estado (Online/Away/Busy) tienen label accesible por defecto por variante, resolviendo WCAG 2.1 SC 1.4.1 (use of color). Resolución: prop explícita → default por variante → none. Con i18n catalog, tests de locale override y changeset.</div>
+      <div><span class="badge b-ok-solid">Aprobado por code-owner</span><span class="badge b-ok">Mergeable</span></div>
+    </div>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/facebook/astryx/pull/4914">#4914</a></div>
+      <h3><a href="https://github.com/facebook/astryx/pull/4914">Fall back to two-dot diff in analyze-pr</a></h3>
+      <div class="what">Fix de CI: el job build-storybook fallaba con "no merge base" en PRs viejos por el fetch-depth: 50 fijo. Diagnostiqué el bug, abrí el issue #4912 y mandé el fix (fallback a two-dot diff).</div>
+      <div><span class="badge b-ok">Mergeable</span></div>
+    </div>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/facebook/astryx/pull/4022">#4022</a></div>
+      <h3><a href="https://github.com/facebook/astryx/pull/4022">WCAG 2.1 AA contrast failures in core color tokens</a></h3>
+      <div class="what">324 líneas corrigiendo contraste AA en los tokens de color del design system.</div>
+      <div><span class="badge b-red">Conflicting</span><span class="badge b-neutral">Necesita rebase</span></div>
+    </div>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/facebook/astryx/pull/4605">#4605</a></div>
+      <h3><a href="https://github.com/facebook/astryx/pull/4605">Non-color indicator to current breadcrumb item</a></h3>
+      <div class="what">WCAG 1.4.1: el breadcrumb actual no depende solo del color.</div>
+      <div><span class="badge b-ok">Mergeable</span></div>
+    </div>
+
+    <h3 style="margin:32px 0 12px;font-size:18px;">shadcn/ui <span class="repo-tag">el ecosistema React más usado</span></h3>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/shadcn-ui/ui/pull/11465">#11465</a></div>
+      <h3><a href="https://github.com/shadcn-ui/ui/pull/11465">Drain released tail spacer after manual scroll</a></h3>
+      <div class="what">Fix de scroll en streams anclados: el spacer liberado no se drenaba tras scroll manual. 225 líneas, 61 tests verdes, typecheck limpio.</div>
+      <div><span class="badge b-ok">Mergeable</span><span class="badge b-neutral">1 review</span></div>
+    </div>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/shadcn-ui/ui/pull/11198">#11198</a></div>
+      <h3><a href="https://github.com/shadcn-ui/ui/pull/11198">Prevent layout shift on keyboard navigation (InputOTP)</a></h3>
+      <div class="what">El InputOTP se movía al navegar con teclado.</div>
+      <div><span class="badge b-ok-solid">Aprobado</span><span class="badge b-ok">Mergeable</span></div>
+    </div>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/shadcn-ui/ui/pull/11179">#11179</a> · <a href="https://github.com/shadcn-ui/ui/pull/11187">#11187</a> · <a href="https://github.com/shadcn-ui/ui/pull/11180">#11180</a></div>
+      <h3><a href="https://github.com/shadcn-ui/ui/pull/11179">InputOTP transition</a> · <a href="https://github.com/shadcn-ui/ui/pull/11187">table scrollbar</a> · <a href="https://github.com/shadcn-ui/ui/pull/11180">MessageScroller footer</a></h3>
+      <div class="what">Reduce layout shift del InputOTP, restaura la scrollbar visible en tablas, estabiliza el footer del demo de Scroll State.</div>
+      <div><span class="badge b-ok">Mergeable</span><span class="badge b-ok">Mergeable</span><span class="badge b-ok">Mergeable</span></div>
+    </div>
+
+    <h3 style="margin:32px 0 12px;font-size:18px;">TanStack / router <span class="repo-tag">core de TanStack Router</span></h3>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/TanStack/router/pull/7834">#7834</a> · <a href="https://github.com/TanStack/router/pull/7878">#7878</a></div>
+      <h3><a href="https://github.com/TanStack/router/pull/7834">safeStringify loader keys</a> · <a href="https://github.com/TanStack/router/pull/7878">AbortError log skip</a></h3>
+      <div class="what">Hash keys de dependencias de loader sin colisión de serialización; logs espurios en aborts de fetch.</div>
+      <div><span class="badge b-ok">Mergeable</span><span class="badge b-ok">Mergeable</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>El sistema — cómo trabajo la accesibilidad</h2>
+    <p class="dim">No es "agregar atributos". Es un proceso con criterio técnico y validación empírica.</p>
+    <div class="steps">
+      <div class="step"><div class="n"></div><div class="body"><strong>Detectar el fallo real, no el síntoma</strong><p>En astryx #4298 el problema no era "falta un label" — era que el status perdía significado para screen readers al componerse (parent-reads-child, issue #4777).</p></div></div>
+      <div class="step"><div class="n"></div><div class="body"><strong>Entender la spec</strong><p>WCAG 2.1 SC 1.4.1 (use of color), 1.4.11 (non-text contrast), 2.1.1 (keyboard). Cada fix cita su criterio.</p></div></div>
+      <div class="step"><div class="n"></div><div class="body"><strong>Resolver con la jerarquía correcta</strong><p>Prop explícita > default por variante > none. Nunca romper la semántica del sistema (lección del PR #4703: filled ≠ selected).</p></div></div>
+      <div class="step"><div class="n"></div><div class="body"><strong>Validar empíricamente</strong><p>Tests de locale override, tests de keyboard nav, verificación con screen readers (VoiceOver/NVDA) cuando el fix lo amerita.</p></div></div>
+      <div class="step"><div class="n"></div><div class="body"><strong>Documentar el por qué</strong><p>Changesets, i18n catalog, comentarios que explican la decisión, no solo el cambio.</p></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>El resultado</h2>
+    <div class="stats">
+      <div class="stat"><div class="v">5</div><div class="l">PRs mergeables en shadcn/ui</div></div>
+      <div class="stat"><div class="v">2</div><div class="l">aprobados por reviewers</div></div>
+      <div class="stat"><div class="v">1</div><div class="l">aprobado en design system de Meta</div></div>
+      <div class="stat"><div class="v">102</div><div class="l">tests en a11y-fixer (propio)</div></div>
+    </div>
+    <div class="callout">
+      <p><strong>Código real, revisado por maintainers reales, en repos que usan millones de personas.</strong> No es un curso ni un proyecto propio — es contribución a los estándares del ecosistema.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>El estado honesto</h2>
+    <div class="honest">
+      <h3>Mergeables, no mergeados</h3>
+      <p>Estos PRs están <strong>mergeables, no mergeados</strong> — esperando review de maintainers. Y eso es exactamente el punto: el trabajo está hecho, validado técnicamente, y a un review de distancia de estar en producción.</p>
+      <p>El 11 de agosto de 2026, un PR en el design system de Facebook quedó <strong>aprobado por code-owner</strong> y otro (fix de CI) quedó mergeable — los más cerca que estuve de un merge en un repo de esa escala.</p>
+    </div>
+  </section>
+
+  <div class="contact">
+    <h3>Contacto</h3>
+    <div class="row">
+      <span>GitHub: <a href="https://github.com/gonzoblasco">github.com/gonzoblasco</a></span>
+      <span>Stack: React/TS · Supabase · Edge Functions · billing · tooling · a11y</span>
+    </div>
+    <div class="row">
+      <span>Metodología: IA como infraestructura de trabajo · stack opinado · ADRs · OpenSpec · HANDOFF</span>
+    </div>
+  </div>
+
+  <footer>
+    Caso de estudio de portfolio · Accesibilidad como especialización activa · 2026
+  </footer>
+
+</div>
+</body>
+</html>
