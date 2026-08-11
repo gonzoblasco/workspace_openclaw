@@ -1,3 +1,6 @@
+# .knowledge/ lo versiona el workspace, no el repo del proyecto
+.knowledge/
+
 # Dependencias y build
 node_modules/
 dist/
@@ -7,7 +10,3 @@ build/
 
 # Sistema
 .DS_Store
-
-# Nota: .knowledge/ NO se ignora acá. Lo versiona el workspace (doble git).
-# Cuando se cree el repo del proyecto, agregar .knowledge/.gitignore con "*"
-# para que el repo del proyecto lo ignore pero el workspace lo trackee.
