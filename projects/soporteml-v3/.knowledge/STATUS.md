@@ -12,8 +12,18 @@
   - `PROMPT-GUIA-DISENO.md` (ya ejecutado)
   - `PROMPT-SCHEMAS-BD.md` (pendiente de ejecutar)
 
+## 2026-08-11 - Backend aclarado
+
+### Completado
+- **Recibida la referencia técnica del backend de Lovable** → guardada en `BACKEND-REFERENCE.md` (327 líneas).
+  - Schemas completos de Supabase/PostgreSQL: 20+ tablas, enums, RLS por tabla, funciones SQL, triggers, jobs pg_cron.
+  - 25 Edge Functions con auth, input/output e integraciones.
+  - Integraciones: MeLi (OAuth PKCE + webhook + cron), Lovable AI Gateway (Gemini), OpenAI embeddings, Mercado Pago (preapproval), Resend, Lovable Email.
+  - Roles: agent / admin / super admin. Multi-tenant vía `memberships` + `user_belongs_to_company`.
+  - Variables de entorno completas (solo nombres).
+- El prompt `prompts/PROMPT-SCHEMAS-BD.md` quedó **ejecutado**.
+
 ### Pendiente
-- [ ] **Pedir a Lovable los schemas de BD + edge functions** (usar `prompts/PROMPT-SCHEMAS-BD.md`). Gonzo renueva créditos ~2026-08-08.
 - [ ] Cruzar `DESIGN-GUIDE-LOVABLE.md` contra `DESIGN-GUIDE.md` y el skill. Reconciliar tokens nuevos (ver notas al final de `DESIGN-GUIDE-LOVABLE.md`): `--primary-muted`, `--primary-strong`, `--informative`, `--surface-active`, regla de estado 12-15%, escala tipográfica fina.
 - [ ] Scaffold del repo v3.
 - [ ] Implementación.
