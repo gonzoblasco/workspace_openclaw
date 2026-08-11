@@ -10,7 +10,7 @@
 
 ### Pendiente (Fase 0)
 - [ ] Resolver preguntas abiertas de PRODUCT.md (sección 7)
-- [ ] Decidir runtime del backend (Deno vs Node+Hono) → ADR
+- [x] ~~Decidir runtime del backend~~ → **ADR-002: Node + Hono** (2026-08-11)
 - [ ] Cruzar tokens de Lovable contra v1 → ADR design system
 - [ ] Definir estructura del monorepo
 
