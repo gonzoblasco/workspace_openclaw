@@ -13,6 +13,7 @@
 - Trabaja entre Mac Mini y MacBook Air, workspace sincronizado por git
 - **Regla de merge:** cuando venga algo del workspace (pull/rebase con conflictos), hacer merge, no reset. El soft reset descarta commits de la otra maquina.
 - **Regla de escritura:** guion comun (-) siempre. NUNCA guion largo (—) ni em dash. Issues, PRs, comments, docs, memorias, todo. Esta en USER.md tambien.
+- **Regla de alcance (2026-08-11):** NUNCA salir de `.openclaw/` para buscar archivos. El workspace es el único lugar de trabajo. Si un archivo está fuera (Desktop, Documents, etc.), pedir a Gonzo que lo mueva o lo pegue - no ir a buscarlo. (Error: salí al Desktop a buscar el CV, bloqueado por sandbox de macOS.)
 - **Terminología de sesión:** se dice "guardar sesión", no "cerrar sesión" (2026-08-11). El framing de "guardar" = save point (guardar estado y seguir, se puede repetir), "cerrar" sugiere apagón final. Aplicado en skills/, .github/skills/, kanam-skills/, AGENTS.md.
 - Diferenciador: IA como infraestructura de trabajo (no como chat), stack opinado, docs de decisiones
 

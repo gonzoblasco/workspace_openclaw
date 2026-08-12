@@ -239,3 +239,28 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: me fui por las ramas con submodules sin verificar el sistema real de Gonzo. La corrección fue oportuna pero costó varias iteraciones de git.
 - LESSON: la organización de proyectos es una decisión estructural — verificar el sistema documentado (AGENTS.md, skills) y la práctica real de proyectos existentes ANTES de tocar nada.
 - BIASES DETECTED: anchoring (me anclé en el patrón de submodules de quedamos/kanam-solitaires sin verificar que soporteml-v3 es NO-submodule).
+
+## 2026-08-11 — Portfolio de accesibilidad + GitHub Profile (sesión larga)
+
+**Context:** Sesión de portfolio OSS. Construí un caso de estudio de accesibilidad (artifact + página estática en GitHub Pages), lo publiqué, y actualicé el GitHub Profile de Gonzo (bio + repos fijados). Varias lecciones de proceso.
+
+**Lesson — un portfolio de accesibilidad tiene que CUMPLIR accesibilidad:**
+- La v1 de la página se veía pulida pero tenía fallas que contradecían el discurso (color como único diferenciador, contraste bajo, badges en mayúsculas). Un portfolio de a11y que no cumple a11y es dañino.
+- La validación visual con screenshot + modelo de visión (Playwright + image) es OBLIGATORIA para proyectos con identidad visual — mismo patrón que Sport Cars. El build pasando no garantiza que se vea bien.
+
+**Lesson — en un portfolio de accesibilidad, solo cuentan los PRs de a11y:**
+- Metí todos los PRs OSS de Gonzo (27+ en 13 repos) sin filtrar, pero muchos no son de accesibilidad (Zod, Payload, hallmark, tooling, CI, router). Eso diluía el mensaje.
+- Filtré a solo PRs de a11y (13 en 6 repos). La matemática debe ser consistente entre secciones (detalle = resumen = estadística) — tuve una discrepancia de 3 que Gonzo detectó.
+
+**Lesson — el GitHub Profile es la primera impresión:**
+- La bio de Gonzo estaba vacía y los repos fijados eran placeholders/forks. Un recruiter no veía su especialización.
+- Actualicé la bio (necesitó scope `user` de gh) y fijé 6 repos reales. Los pinned repos SOLO se manejan por UI de GitHub, no por API.
+
+**Lesson — verificar el estado real antes de proponer:**
+- Propuse fijar workflow-kit, pero está ARCHIVADO (isArchived: true) — sus skills quedaron duplicadas por kanam-skills. No se puede fijar. Verificar `isArchived` antes de recomendar un repo.
+
+**Self-reflection:**
+- CONTEXT: construcción de portfolio + perfil de GitHub
+- REFLECTION: el flujo fue bueno (artifact → página → publicar → perfil), pero me apuré dos veces: metí todos los PRs sin filtrar por a11y, y propuse workflow-kit sin verificar que estaba archivado. Gonzo lo detectó ambas veces.
+- LESSON: en trabajo de portfolio/marca, verificar el estado real (isArchived, tema de cada PR) ANTES de proponer o publicar. La precisión importa más que la velocidad.
+- BIASES DETECTED: confirmation (asumí que todos los PRs eran de a11y porque el portfolio es de a11y, sin verificar cada uno).
