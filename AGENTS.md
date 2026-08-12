@@ -274,6 +274,8 @@ Los workflows detallados (metodología, protocolos, patrones) viven en `skills/`
 | Background execution (exec + process, parallel, auto-notify) | [`background-execution`](./skills/background-execution/SKILL.md) — Background Execution |
 | PTY rules (interactivos vs batch) | [`background-execution`](./skills/background-execution/SKILL.md) — Reglas de PTY |
 | Temp dirs / git worktrees para aislamiento | [`background-execution`](./skills/background-execution/SKILL.md) — Aislar en Temp Dir |
+| Validación AT manual obligatoria en a11y (cuándo los tests no bastan) | [`a11y-at-validation`](./skills/a11y-at-validation/SKILL.md) — Regla central |
+| Verificar si un hallazgo de a11y es intencional o bug antes de tocar el componente | [`a11y-at-validation`](./skills/a11y-at-validation/SKILL.md) — Intencional vs Bug |
 
 ## Reglas Operativas — Background & Procesos
 
