@@ -69,11 +69,12 @@
 **Fundamento:** los permisos de la app de MeLi (publicaciones, métricas, promociones) abren datos valiosos. El camino de menor riesgo y mayor valor es **enriquecer las respuestas**, no ampliar el alcance.
 
 **Entregables:**
-- [ ] **Respuestas enriquecidas con datos de la publicación:**
-  - [ ] Traer stock real, precio, variantes, envío, garantía de la publicación al responder (ya existe `getItem`, extenderlo)
-  - [ ] La IA usa esos datos en la sugerencia (ej: "Sí, queda stock", "El envío a Córdoba tarda X")
-  - [ ] Verificación: una pregunta de stock se responde con el stock real
-- [ ] **Modo mock para los datos enriquecidos** (no tocar cuenta real en dev)
+- [x] **Respuestas enriquecidas con datos de la publicación (2026-08-12):**
+  - [x] La IA usa stock real y vendidos en la sugerencia (ej: "quedan 5 unidades", "se vendieron 340")
+  - [x] En modo real: sync trae GET /items/{id} y guarda stock/vendidos/condición en `meli_cache`
+  - [x] Modo mock con datos de stock/ventas realistas por producto
+  - [x] Categorización mock mejorada (stock vs ventas, keywords técnicos)
+- [ ] Extender a variantes, envío y garantía reales de la publicación (usar `getItemDescription`)
 - [ ] Decidir si sumar KPIs ligeros del vendedor (ventas, conversión) al dashboard — **post-MVP**, evaluar en Fase 4
 
 **Criterio de salida:** la IA responde consultas con datos reales y actualizados de la publicación, verificable en mock y real.
