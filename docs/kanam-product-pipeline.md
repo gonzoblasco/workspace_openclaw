@@ -66,6 +66,7 @@
 | SQL | `sql-insight` | Escribir u optimizar queries |
 | Supabase | `supabase-assistant` | Schemas, queries, types, migrations |
 | i18n | `i18n-expert` | Agregar internacionalización |
+| Accesibilidad (a11y) | `a11y-at-validation` | Validar AT manual cuando el cambio toca el anuncio del screen reader (tests no bastan); distinguir hallazgo intencional vs bug |
 | Documentación | `tech-docs` | ADRs, README, API docs, CHANGELOG |
 
 ## Pipeline de carrera y contenido
@@ -107,6 +108,7 @@ graph TD
     R[security-and-hardening] -.-> G
     S[performance-optimization] -.-> G
     T[code-simplification] -.-> G
+    AA[a11y-at-validation] -.-> G
     U[documentation-and-adrs] -.-> I
     V[observability-and-instrumentation] -.-> I
     W[deprecation-and-migration] -.-> I
@@ -152,8 +154,15 @@ oss-contribution (pipeline → triaje → análisis) → incremental-implementat
 oss-contribution (PR → post-PR watch → community → batch → registry) → session-lifecycle
 ```
 
+### PR de accesibilidad (OSS)
+```
+oss-contribution (triaje) → incremental-implementation (fix a11y con tests) →
+a11y-at-validation (validación AT manual obligatoria: anuncio, captions, casos límite) →
+oss-contribution (documentar en PR/issue, separar hallazgos) → session-lifecycle
+```
+
 ---
 
-*Actualizado: 2026-08-10 (agregada skill oss-contribution, corregida narrativa del origen)*
+*Actualizado: 2026-08-12 (agregada skill a11y-at-validation: validación AT manual obligatoria en PRs de a11y)*
 *Skills del pipeline: set propio organizado en ciclo SDLC (estilo Addy Osmani) + core OpenClaw + skills 100% propias (accesibilidad, vida)*
 *Estado: 🟢 Al día*
