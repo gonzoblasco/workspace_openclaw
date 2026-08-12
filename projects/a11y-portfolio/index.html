@@ -175,6 +175,53 @@
   .contact h3 { font-size: 18px; margin-bottom: 12px; }
   .contact a { color: var(--accent-strong); text-decoration: none; }
   .contact a:hover { text-decoration: underline; }
+
+  /* Ecosistema */
+  .eco { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 12px 0; justify-content: center; }
+  .eco-item {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  }
+  .eco-item .repo { font-size: 14px; font-weight: 600; color: var(--text); }
+  .eco-item .repo a { color: var(--text); text-decoration: none; border-bottom: 1px solid rgba(242,244,247,0.25); }
+  .eco-item .repo a:hover { color: var(--accent-strong); border-bottom-color: var(--accent-strong); }
+  .eco-item .count { font-family: var(--mono); font-size: 13px; color: var(--green); background: var(--green-soft); border: 1px solid rgba(74,222,128,0.3); padding: 2px 8px; border-radius: 999px; }
+  .eco-item .count.ibm { color: var(--accent-strong); background: var(--accent-soft); border-color: rgba(168,200,255,0.4); }
+
+  /* Experiencia */
+  .exp { border-left: 2px solid var(--border); margin: 8px 0 24px; padding-left: 20px; }
+  .exp-item { margin-bottom: 20px; position: relative; }
+  .exp-item::before {
+    content: ""; position: absolute; left: -27px; top: 6px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent-strong); border: 2px solid var(--bg);
+  }
+  .exp-item.current::before { background: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+  .exp-item .role { font-size: 17px; font-weight: 600; color: var(--text); }
+  .exp-item .org { font-size: 14px; color: var(--accent-strong); font-weight: 500; }
+  .exp-item .date { font-family: var(--mono); font-size: 12px; color: var(--text-dim); margin: 2px 0 6px; }
+  .exp-item .desc { font-size: 14px; color: var(--text-dim); }
+
+  /* Skills */
+  .skills { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 8px; }
+  .skill {
+    font-size: 13px; color: var(--text);
+    background: var(--surface-2); border: 1px solid var(--border);
+    padding: 4px 12px; border-radius: 999px;
+  }
+  .skill.hl { border-color: var(--accent-strong); color: #0a1420; background: var(--accent-strong); font-weight: 600; }
+
+  /* Proyectos */
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin: 12px 0; }
+  .proj {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px; display: flex; flex-direction: column; gap: 4px;
+  }
+  .proj .name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .proj .name a { color: var(--text); text-decoration: none; border-bottom: 1px solid rgba(242,244,247,0.25); }
+  .proj .name a:hover { color: var(--accent-strong); border-bottom-color: var(--accent-strong); }
+  .proj .desc { font-size: 13px; color: var(--text-dim); }
+  .proj .tag { font-family: var(--mono); font-size: 11px; color: var(--accent-strong); }
   .contact .row { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 8px; }
   .contact .row span { color: var(--text-dim); font-size: 14px; }
   footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 13px; }
@@ -212,17 +259,10 @@
     </div>
 
     <div class="card">
-      <div class="pr"><a href="https://github.com/facebook/astryx/pull/4914">#4914</a></div>
-      <h3><a href="https://github.com/facebook/astryx/pull/4914">Fall back to two-dot diff in analyze-pr</a></h3>
-      <div class="what">Fix de CI: el job build-storybook fallaba con "no merge base" en PRs viejos por el fetch-depth: 50 fijo. Diagnostiqué el bug, abrí el issue #4912 y mandé el fix (fallback a two-dot diff).</div>
-      <div><span class="badge b-ok">Mergeable</span></div>
-    </div>
-
-    <div class="card">
       <div class="pr"><a href="https://github.com/facebook/astryx/pull/4022">#4022</a></div>
       <h3><a href="https://github.com/facebook/astryx/pull/4022">WCAG 2.1 AA contrast failures in core color tokens</a></h3>
       <div class="what">324 líneas corrigiendo contraste AA en los tokens de color del design system.</div>
-      <div><span class="badge b-red">Conflicting</span><span class="badge b-neutral">Necesita rebase</span></div>
+      <div><span class="badge b-ok">Mergeable</span><span class="badge b-neutral">Espera re-review</span></div>
     </div>
 
     <div class="card">
@@ -235,13 +275,6 @@
     <h3 style="margin:32px 0 12px;font-size:18px;">shadcn/ui <span class="repo-tag">El ecosistema React más usado</span></h3>
 
     <div class="card">
-      <div class="pr"><a href="https://github.com/shadcn-ui/ui/pull/11465">#11465</a></div>
-      <h3><a href="https://github.com/shadcn-ui/ui/pull/11465">Drain released tail spacer after manual scroll</a></h3>
-      <div class="what">Fix de scroll en streams anclados: el spacer liberado no se drenaba tras scroll manual. 225 líneas, 61 tests verdes, typecheck limpio.</div>
-      <div><span class="badge b-ok">Mergeable</span><span class="badge b-neutral">1 review</span></div>
-    </div>
-
-    <div class="card">
       <div class="pr"><a href="https://github.com/shadcn-ui/ui/pull/11198">#11198</a></div>
       <h3><a href="https://github.com/shadcn-ui/ui/pull/11198">Prevent layout shift on keyboard navigation (InputOTP)</a></h3>
       <div class="what">El InputOTP se movía al navegar con teclado.</div>
@@ -249,19 +282,59 @@
     </div>
 
     <div class="card">
-      <div class="pr"><a href="https://github.com/shadcn-ui/ui/pull/11179">#11179</a> · <a href="https://github.com/shadcn-ui/ui/pull/11187">#11187</a> · <a href="https://github.com/shadcn-ui/ui/pull/11180">#11180</a></div>
-      <h3><a href="https://github.com/shadcn-ui/ui/pull/11179">InputOTP transition</a> · <a href="https://github.com/shadcn-ui/ui/pull/11187">table scrollbar</a> · <a href="https://github.com/shadcn-ui/ui/pull/11180">MessageScroller footer</a></h3>
-      <div class="what">Reduce layout shift del InputOTP, restaura la scrollbar visible en tablas, estabiliza el footer del demo de Scroll State.</div>
-      <div><span class="badge b-ok">3 PRs mergeables</span></div>
+      <div class="pr"><a href="https://github.com/shadcn-ui/ui/pull/11179">#11179</a> · <a href="https://github.com/shadcn-ui/ui/pull/11187">#11187</a></div>
+      <h3><a href="https://github.com/shadcn-ui/ui/pull/11179">InputOTP transition</a> · <a href="https://github.com/shadcn-ui/ui/pull/11187">table scrollbar</a></h3>
+      <div class="what">Reduce layout shift del InputOTP limitando la transición; restaura la scrollbar visible en tablas (affordance de scroll).</div>
+      <div><span class="badge b-ok">2 PRs mergeables</span></div>
     </div>
 
-    <h3 style="margin:32px 0 12px;font-size:18px;">TanStack / router <span class="repo-tag">Core de TanStack Router</span></h3>
+    <h3 style="margin:32px 0 12px;font-size:18px;">Radix UI <span class="repo-tag">Primitivas headless accesibles</span></h3>
 
     <div class="card">
-      <div class="pr"><a href="https://github.com/TanStack/router/pull/7834">#7834</a> · <a href="https://github.com/TanStack/router/pull/7878">#7878</a></div>
-      <h3><a href="https://github.com/TanStack/router/pull/7834">safeStringify loader keys</a> · <a href="https://github.com/TanStack/router/pull/7878">AbortError log skip</a></h3>
-      <div class="what">Hash keys de dependencias de loader sin colisión de serialización; logs espurios en aborts de fetch.</div>
-      <div><span class="badge b-ok">2 PRs mergeables</span></div>
+      <div class="pr"><a href="https://github.com/radix-ui/primitives/pull/4067">#4067</a> · <a href="https://github.com/radix-ui/primitives/pull/4066">#4066</a> · <a href="https://github.com/radix-ui/primitives/pull/4065">#4065</a> · <a href="https://github.com/radix-ui/primitives/pull/4053">#4053</a></div>
+      <h3><a href="https://github.com/radix-ui/primitives/pull/4067">aria-activedescendant</a> · <a href="https://github.com/radix-ui/primitives/pull/4066">ArrowUp focus</a> · <a href="https://github.com/radix-ui/primitives/pull/4065">slider keyboard</a> · <a href="https://github.com/radix-ui/primitives/pull/4053">focus freeze</a></h3>
+      <div class="what">Fixes de accesibilidad en primitivas headless: aria-activedescendant y aria-selected en Select, apertura de DropdownMenu con ArrowUp, commit de valor en Slider tras navegación por teclado, y prevención de focus freeze en Dialog.</div>
+      <div><span class="badge b-ok">4 PRs mergeables</span></div>
+    </div>
+
+    <h3 style="margin:32px 0 12px;font-size:18px;">carbon (IBM) <span class="repo-tag">Design system de IBM</span></h3>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/carbon-design-system/carbon/pull/22887">#22887</a></div>
+      <h3><a href="https://github.com/carbon-design-system/carbon/pull/22887">Add aria-describedby prop support to ComposedModal</a></h3>
+      <div class="what">El ComposedModal de IBM Carbon ahora soporta aria-describedby, permitiendo asociar una descripción accesible al diálogo.</div>
+      <div><span class="badge b-ok">Mergeable</span></div>
+    </div>
+
+    <h3 style="margin:32px 0 12px;font-size:18px;">create-t3-app <span class="repo-tag">Scaffolder T3</span></h3>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/t3-oss/create-t3-app/pull/2243">#2243</a></div>
+      <h3><a href="https://github.com/t3-oss/create-t3-app/pull/2243">Add accessible label to clipboard copy button</a></h3>
+      <div class="what">El botón de copiar al portapapeles en la web de create-t3-app ahora tiene un label accesible.</div>
+      <div><span class="badge b-ok">Mergeable</span></div>
+    </div>
+
+    <h3 style="margin:32px 0 12px;font-size:18px;">ui-skills <span class="repo-tag">Skills de UI</span></h3>
+
+    <div class="card">
+      <div class="pr"><a href="https://github.com/ibelick/ui-skills/pull/37">#37</a></div>
+      <h3><a href="https://github.com/ibelick/ui-skills/pull/37">Improve fixing-accessibility skill with WCAG 2.2 coverage</a></h3>
+      <div class="what">Mejora la skill de fixing de accesibilidad con cobertura de WCAG 2.2.</div>
+      <div><span class="badge b-ok">Mergeable</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h3><span class="num">01b</span>Contribuciones de accesibilidad en el ecosistema</h3>
+    <p class="dim">Más allá de los tres repos detallados arriba, contribuciones de accesibilidad mergeables en todo el ecosistema open source.</p>
+    <div class="eco">
+      <div class="eco-item"><span class="repo"><a href="https://github.com/facebook/astryx">astryx (Meta)</a></span><span class="count">3</span></div>
+      <div class="eco-item"><span class="repo"><a href="https://github.com/shadcn-ui/ui">shadcn/ui</a></span><span class="count">3</span></div>
+      <div class="eco-item"><span class="repo"><a href="https://github.com/carbon-design-system/carbon">carbon (IBM)</a></span><span class="count ibm">1</span></div>
+      <div class="eco-item"><span class="repo"><a href="https://github.com/radix-ui/primitives">Radix UI</a></span><span class="count">4</span></div>
+      <div class="eco-item"><span class="repo"><a href="https://github.com/t3-oss/create-t3-app">create-t3-app</a></span><span class="count">1</span></div>
+      <div class="eco-item"><span class="repo"><a href="https://github.com/ibelick/ui-skills">ui-skills</a></span><span class="count">1</span></div>
     </div>
   </section>
 
@@ -280,7 +353,7 @@
   <section>
     <h3><span class="num">03</span>El resultado</h3>
     <div class="stats">
-      <div class="stat"><div class="v">5</div><div class="l">PRs mergeables en shadcn/ui</div></div>
+      <div class="stat"><div class="v">13+</div><div class="l">PRs de accesibilidad en el ecosistema</div></div>
       <div class="stat"><div class="v">2</div><div class="l">aprobados por reviewers</div></div>
       <div class="stat"><div class="v">1</div><div class="l">aprobado en design system de Meta</div></div>
       <div class="stat"><div class="v">102</div><div class="l">tests en a11y-fixer (propio)</div></div>
@@ -296,6 +369,71 @@
       <h3>Mergeables, no mergeados</h3>
       <p>Estos PRs están <strong>mergeables, no mergeados</strong> — esperando review de maintainers. Y eso es exactamente el punto: el trabajo está hecho, validado técnicamente, y a un review de distancia de estar en producción.</p>
       <p>El 11 de agosto de 2026, un PR en el design system de Facebook quedó <strong>aprobado por code-owner</strong> y otro (fix de CI) quedó mergeable — los más cerca que estuve de un merge en un repo de esa escala.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3><span class="num">05</span>Experiencia</h3>
+    <div class="exp">
+      <div class="exp-item current">
+        <div class="role">Fullstack Developer</div>
+        <div class="org">React/TS · Supabase · Edge Functions · IA como infraestructura</div>
+        <div class="date">2024 – presente</div>
+        <div class="desc">Construyo aplicaciones fullstack reales (frontend React/TS, backend Supabase/Edge Functions, DB, billing, tooling). Uso IA como copiloto metodológico: sesiones por proyecto, memoria persistente, handoffs, subagentes. Stack opinado con documentación de decisiones (ADRs, OpenSpec, HANDOFF).</div>
+      </div>
+      <div class="exp-item">
+        <div class="role">Frontend React Developer</div>
+        <div class="org">9 años de experiencia</div>
+        <div class="date">2015 – 2024</div>
+        <div class="desc">9 años como Frontend React. La accesibilidad se volvió mi especialización activa: la lente con la que leo cada componente (screen readers, uso de color, navegación por teclado). Contribuciones a los ecosistemas más exigentes: Facebook (astryx), shadcn/ui, Radix UI, IBM Carbon.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3><span class="num">06</span>Habilidades</h3>
+    <div class="skills">
+      <span class="skill hl">Accesibilidad (WCAG 2.1 AA)</span>
+      <span class="skill hl">React</span>
+      <span class="skill hl">TypeScript</span>
+      <span class="skill">Supabase</span>
+      <span class="skill">Edge Functions</span>
+      <span class="skill">Node.js</span>
+      <span class="skill">SQL</span>
+      <span class="skill">Billing</span>
+      <span class="skill">Tooling</span>
+      <span class="skill">Scaffolding</span>
+      <span class="skill">OpenSpec</span>
+      <span class="skill">Biome</span>
+      <span class="skill">ADRs</span>
+      <span class="skill">Testing (RTL, Vitest)</span>
+      <span class="skill">Screen readers (VoiceOver, NVDA)</span>
+    </div>
+  </section>
+
+  <section>
+    <h3><span class="num">07</span>Proyectos propios</h3>
+    <div class="proj-grid">
+      <div class="proj">
+        <div class="name"><a href="https://github.com/gonzoblasco/a11y-fixer">a11y-fixer</a></div>
+        <div class="tag">Accessibility fix engine</div>
+        <div class="desc">Motor de fixes de accesibilidad. v0.6.0, 102 tests, pipeline completo.</div>
+      </div>
+      <div class="proj">
+        <div class="name"><a href="https://github.com/gonzoblasco/kanam-skills">kanam-skills</a></div>
+        <div class="tag">Agent skills · web</div>
+        <div class="desc">Set de 59 skills de ingeniería probadas en OpenClaw, con web estática en GitHub Pages.</div>
+      </div>
+      <div class="proj">
+        <div class="name"><a href="https://github.com/gonzoblasco/create-stack">create-stack-next</a></div>
+        <div class="tag">Scaffolder</div>
+        <div class="desc">Scaffolder opinado para Next.js 15, publicado en npm.</div>
+      </div>
+      <div class="proj">
+        <div class="name">soporteml</div>
+        <div class="tag">CRM multi-tenant</div>
+        <div class="desc">CRM para vendedores de Mercado Libre con IA, billing e integraciones.</div>
+      </div>
     </div>
   </section>
 
