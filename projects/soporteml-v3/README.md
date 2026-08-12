@@ -1,85 +1,85 @@
 # SoporteML v3
 
-CRM multi-tenant para vendedores de Mercado Libre, con asistencia de IA. Gestiona consultas, productos, stock, envíos, garantías y métricas.
+Multi-tenant CRM for Mercado Libre sellers with AI assistance. Manages questions, products, stock, shipping, warranties, and metrics.
 
-**Alpha local:** corre 100% en tu máquina, sin servicios cloud (ADR-001). SQLite + backend Hono + frontend Vite + IA con Ollama.
+**Local alpha:** runs 100% on your machine with no cloud services (ADR-001). SQLite + Hono backend + Vite frontend + Ollama AI.
 
 ## Stack
 
 - **Monorepo:** Turborepo + pnpm
-- **Frontend:** Vite + React + TypeScript + Tailwind (design system de Lovable, ADR-003)
+- **Frontend:** Vite + React + TypeScript + Tailwind (Lovable design system, ADR-003)
 - **Backend:** Node + Hono (ADR-002)
-- **DB:** SQLite con capa de repositorios abstracta (`packages/db`)
-- **IA:** Ollama local (modelos cloud)
-- **Billing:** mock (Mercado Pago nunca probado, post-MVP)
+- **DB:** SQLite with an abstract repository layer (`packages/db`)
+- **AI:** local Ollama (cloud models)
+- **Billing:** mock (Mercado Pago never tested, post-MVP)
 
-## Requisitos
+## Requirements
 
 - Node.js ≥ 20
 - pnpm ≥ 10
-- Ollama corriendo en `localhost:11434` (para la IA; si no está, la app usa un fallback mock)
+- Ollama running on `localhost:11434` (for the AI; if missing, the app falls back to a mock)
 
-## Arranque
+## Getting started
 
 ```bash
-# 1. Instalar dependencias (desde la raíz)
+# 1. Install dependencies (from the root)
 pnpm install
 
-# 2. Terminal 1 - backend (puerto 3001)
+# 2. Terminal 1 - backend (port 3001)
 cd apps/api && pnpm dev
 
-# 3. Terminal 2 - frontend (puerto 5173)
+# 3. Terminal 2 - frontend (port 5173)
 cd apps/web && pnpm dev
 ```
 
-Abrí http://localhost:5173 y entrá con el botón "Entrar (modo demo)".
+Open http://localhost:5173 and log in with the "Entrar (modo demo)" button (demo mode).
 
-## Estructura
+## Structure
 
 ```
 soporteml-v3/
 ├── apps/
-│   ├── web/          # Frontend Vite + React + Tailwind
-│   └── api/          # Backend Hono (MeLi, IA, billing, auth mock)
+│   ├── web/          # Vite + React + Tailwind frontend
+│   └── api/          # Hono backend (MeLi, AI, billing, mock auth)
 ├── packages/
-│   └── db/           # Capa de datos SQLite (schema + repositorios)
-├── docs/adr/         # Decisiones de arquitectura (ADR-001..003)
-└── .knowledge/       # Memoria institucional (producto, roadmap, referencias)
+│   └── db/           # SQLite data layer (schema + repositories)
+├── docs/adr/         # Architecture decisions (ADR-001..003)
+└── .knowledge/       # Institutional memory (product, roadmap, references)
 ```
 
-## Endpoints del backend
+## Backend endpoints
 
-| Método | Ruta | Descripción |
+| Method | Route | Description |
 |---|---|---|
 | GET | `/health` | Health check |
-| POST | `/auth/dev/setup` | Crea usuario + empresa de prueba (modo demo) |
-| GET | `/questions` | Bandeja de consultas |
-| GET | `/questions/pending-sla` | Conteo de consultas pendientes de SLA |
-| GET | `/products` | Catálogo de productos |
-| POST | `/meli/sync` | Sincroniza preguntas de MeLi |
-| POST | `/meli/publish` | Publica una respuesta a MeLi |
-| GET | `/meli/status` | Estado de conexión MeLi |
-| POST | `/ai/suggest` | Sugiere respuesta con IA (copiloto) |
-| GET | `/billing/status` | Estado de suscripción |
-| POST | `/billing/subscribe` | Crea suscripción (mock) |
-| POST | `/billing/confirm` | Confirma pago (mock IPN) |
-| POST | `/billing/cancel` | Cancela suscripción |
+| POST | `/auth/dev/setup` | Creates a test user + company (demo mode) |
+| GET | `/questions` | Questions inbox |
+| GET | `/questions/pending-sla` | Count of pending-SLA questions |
+| GET | `/products` | Product catalog |
+| POST | `/meli/sync` | Syncs MeLi questions |
+| POST | `/meli/publish` | Publishes an answer to MeLi |
+| GET | `/meli/status` | MeLi connection status |
+| POST | `/ai/suggest` | Suggests an AI answer (copilot) |
+| GET | `/billing/status` | Subscription status |
+| POST | `/billing/subscribe` | Creates a subscription (mock) |
+| POST | `/billing/confirm` | Confirms payment (mock IPN) |
+| POST | `/billing/cancel` | Cancels subscription |
 
-## Configuración (env)
+## Configuration (env)
 
-| Variable | Default | Uso |
+| Variable | Default | Purpose |
 |---|---|---|
-| `PORT` | `3001` | Puerto del backend |
-| `DB_PATH` | `soporteml.db` | Ruta de la base SQLite |
-| `OLLAMA_URL` | `http://localhost:11434` | Endpoint de Ollama |
-| `OLLAMA_MODEL` | `deepseek-v4-flash:cloud` | Modelo de IA |
-| `MELI_APP_ID` | — | App ID de Mercado Libre (para conectar MeLi) |
-| `MELI_SECRET_KEY` | — | Secret de la app de MeLi |
+| `PORT` | `3001` | Backend port |
+| `DB_PATH` | `soporteml.db` | SQLite database path |
+| `OLLAMA_URL` | `http://localhost:11434` | Ollama endpoint |
+| `OLLAMA_MODEL` | `deepseek-v4-flash:cloud` | AI model |
+| `MELI_APP_ID` | — | Mercado Libre app ID (to connect MeLi) |
+| `MELI_SECRET_KEY` | — | MeLi app secret |
 
-## Estado
+## Status
 
-- **Fase 1 (alpha local):** COMPLETA ✅ — la app corre completa en local.
-- **Fase 2 (validación de integraciones):** pendiente — probar Mercado Pago en sandbox, email.
-- **Fase 3 (despliegue):** pendiente — decidir dónde corre en producción.
+- **Phase 1 (local alpha):** COMPLETE ✅ — the app runs fully on local.
+- **Phase 2 (integration validation):** Mercado Libre integration working (OAuth + sync + publish). Pending: Mercado Pago sandbox, email.
+- **Phase 3 (deployment):** pending — decide where it runs in production.
 
-Ver `ROADMAP.md` en `.knowledge/` para el detalle.
+See `ROADMAP.md` in `.knowledge/` for details.
