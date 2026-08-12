@@ -16,6 +16,7 @@
 - **Regla de escritura:** guion comun (-) siempre. NUNCA guion largo (—) ni em dash. Issues, PRs, comments, docs, memorias, todo. Esta en USER.md tambien.
 - **Regla de alcance (2026-08-11):** NUNCA salir de `.openclaw/` para buscar archivos. El workspace es el único lugar de trabajo. Si un archivo está fuera (Desktop, Documents, etc.), pedir a Gonzo que lo mueva o lo pegue - no ir a buscarlo. (Error: salí al Desktop a buscar el CV, bloqueado por sandbox de macOS.)
 - **Terminología de sesión:** se dice "guardar sesión", no "cerrar sesión" (2026-08-11). El framing de "guardar" = save point (guardar estado y seguir, se puede repetir), "cerrar" sugiere apagón final. Aplicado en skills/, .github/skills/, kanam-skills/, AGENTS.md.
+- **"adelante" a secas (2026-08-12):** cuando Gonzo dice "adelante" sin más, significa seguir con mi recomendación según el contexto de la tarea actual. No es solo "continuar", es "ejecutá tu recomendación".
 - Diferenciador: IA como infraestructura de trabajo (no como chat), stack opinado, docs de decisiones
 
 ## Metodología

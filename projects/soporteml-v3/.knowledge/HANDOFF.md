@@ -1,70 +1,72 @@
 # SoporteML v3 - HANDOFF
 
-> **Sesión:** 2026-08-11 (arranque → Fase 1 completa)
-> **Estado:** Fase 1 (alpha local) COMPLETA ✅
+> **Sesión:** 2026-08-12 (Fase 2 + port de diseño v1)
+> **Estado:** Fase 1 completa ✅ + Fase 2 (integración MeLi) avanzando + diseño de v1 portado
 
 ---
 
 ## Qué se hizo
 
 ### Fase 0 - Definición (completa)
-- `PRODUCT.md` - definición completa del producto (visión, roles, features, límites, principios).
-- `ROADMAP.md` - roadmap vivo (F0 definición → F1 alpha local → F2 validación → F3 despliegue → F4 beta).
-- `BRIEF.md` - contexto de versiones + dirección (independencia de vendor).
-- ADR-001 (independencia de vendor / alpha 100% local), ADR-002 (runtime Node + Hono), ADR-003 (design system tokens de Lovable).
-- Insumos de Lovable: `BACKEND-REFERENCE.md` (schemas + edge functions), `DESIGN-TOKENS-LOVABLE.md` (tokens).
+- `PRODUCT.md`, `ROADMAP.md`, `BRIEF.md` (independencia de vendor, alpha 100% local).
+- ADR-001 (independencia de vendor), ADR-002 (runtime Node + Hono), ADR-003 (design tokens de Lovable).
+- Insumos de Lovable: `BACKEND-REFERENCE.md`, `DESIGN-TOKENS-LOVABLE.md`, `DESIGN-GUIDE-LOVABLE.md`.
 
 ### Fase 1 - Alpha local (completa)
-- **Monorepo:** Turborepo + pnpm (`apps/web` + `apps/api` + `packages/db`).
-- **`packages/db`:** schema SQLite (20+ tablas mapeadas de Postgres), tipos, helpers, capa de repositorios (tenancy, questions, products). 4 tests + typecheck limpio.
-- **`apps/api` (Hono):** cliente MeLi (OAuth PKCE, sync, publish), token service con refresh, sync service con ficha proactiva, auth mock, IA con Ollama (categoriza + sugiere), billing mock. Verificado en vivo.
-- **`apps/web` (Vite):** design system con tokens de Lovable (ADR-003), login mock, dashboard con Inbox/Productos/Ajustes, cliente API con proxy. Build OK.
-- **Repo del proyecto:** `gonzoblasco/soporteml-v3` (privado) creado + README.
+- Monorepo Turborepo + pnpm (`apps/web` + `apps/api` + `packages/db`).
+- `packages/db`: schema SQLite (20+ tablas), repositorios (tenancy, questions, products, **oauth**).
+- `apps/api` (Hono): cliente MeLi, token service, sync service, auth mock, IA (Ollama), billing mock.
+- `apps/web` (Vite): design system Lovable, login mock, dashboard.
+
+### Fase 2 - Integración MeLi (2026-08-12) ✅
+- **OAuth MeLi real end-to-end** (PKCE S256): `/meli/connect` + `/meli/callback` + tabla `oauth_states`.
+- **Token real de producción verificado** (GONZOBLASCO / MLA). Refresh automático.
+- **Modo mock** (`MELI_MOCK=1`): sync genera 5 preguntas de ejemplo, instantáneo. Fallback a mock si no hay token.
+- **Fix multi-tenant**: `questions.meli_question_id` → `UNIQUE(company_id, meli_question_id)`.
+- Publish mock (no toca API real). UX con toasts de sonner.
+- **Túnel HTTPS (cloudflared)** como redirect URI (la app publicada no acepta localhost).
+
+### Port del diseño de v1 (2026-08-12) ✅
+- Stack de v1 instalado (Radix, CVA, framer-motion, next-themes, sonner, etc.).
+- Capa shadcn/ui copiada de v1 + alias `@/`.
+- `index.css` = tokens Lovable v3 + utilidades custom de v1 + Inter.
+- `AppSidebar` rediseñado (colapsable, tema, mobile) sin acoplamiento v1.
+- `App.tsx` al layout de v1 + logout + toasts.
+- **Playground de componentes** (`src/pages/Playground.tsx`, solo dev) — alternativa a Storybook.
 
 ## Cómo correr
 
 ```bash
-# Terminal 1 - backend (puerto 3001)
+# Terminal 1 - backend (puerto 3001) — necesita .env con credenciales MeLi + MELI_MOCK
 cd apps/api && pnpm dev
 
 # Terminal 2 - frontend (puerto 5173)
 cd apps/web && pnpm dev
 ```
 
-Abrir http://localhost:5173 → "Entrar (modo demo)".
+Abrir http://localhost:5173 → "Entrar (modo demo)" → Sincronizar → ver preguntas mock → Responder.
+
+**Para OAuth real:** levantar túnel cloudflared (`cloudflared tunnel --url http://localhost:3001`), actualizar `MELI_REDIRECT_URI` en `.env` + redirect en panel MeLi, conectar desde Ajustes. El token actual sigue en la DB mientras no expire.
 
 ## Dónde está cada cosa
 
-- Código: repo del proyecto `gonzoblasco/soporteml-v3` (independiente, NO submodule).
-- Memoria institucional: `.knowledge/` en el workspace (PRODUCT, ROADMAP, ADRs, referencias).
-- ADRs: `docs/adr/` en el repo del proyecto (ADR-001..003).
+- Código: repo `gonzoblasco/soporteml-v3` (independiente, NO submodule). Último commit: `5e237ab`.
+- Memoria institucional: `.knowledge/` en el workspace.
+- ADRs: `docs/adr/` en el repo (ADR-001..003).
 
-## Cómo verificar
+## Pendientes (Fase 2 + próximos)
 
-- `cd packages/db && pnpm test` → 4 tests pasan.
-- `cd apps/api && pnpm check-types` → limpio.
-- `cd apps/web && pnpm build` → build OK.
-- Levantar backend + frontend → login demo → Inbox vacío → (con MeLi conectado) sync + responder.
+- [ ] **Actualizar ROADMAP.md** antes de ampliar alcance (decisión acordada).
+- [ ] Explorar features extra por permisos MeLi (métricas, publicaciones, promociones).
+  - Opciones A+B recomendadas: dashboard con métricas reales + enriquecer respuestas con datos de la publicación.
+  - Definir modo mock para las features nuevas.
+- [ ] Probar Mercado Pago real en sandbox.
+- [ ] Email (Resend + Lovable Email).
+- [ ] Afinar categorización del mock (algunas preguntas caen en categoría genérica).
+- [ ] Validación visual del port de diseño (build OK, falta revisión visual fina de Gonzo).
 
-## Issues conocidos
+## Notas de decisión
 
-- **MeLi no conectado:** la app corre con auth mock y sin MeLi real (falta MELI_APP_ID/MELI_SECRET_KEY). El sync de preguntas real requiere conectar MeLi.
-- **Billing es mock:** Mercado Pago nunca se probó (ADR-003, post-MVP). El flujo de suscripción es simulado.
-- **IA usa Ollama local:** si Ollama no está corriendo, la IA usa un fallback mock determinístico.
-- **`@soporteml/db` se resuelve por build:** hay que compilar el db (`pnpm build` en packages/db) antes de que el api lo importe. En dev, `tsx` lo maneja.
-
-## Qué sigue (Fase 2 - validación de integraciones)
-
-- [ ] Probar Mercado Pago real en sandbox (crear/chequear/cancelar suscripción).
-- [ ] Conectar MeLi real (MELI_APP_ID/MELI_SECRET_KEY) y validar el sync end-to-end.
-- [ ] Email (Resend + Lovable Email) si hace falta.
-- [ ] Decidir si el billing entra en el MVP o queda post-MVP.
-
-## Decisiones clave de la sesión
-
-- **Independencia de vendor:** alpha 100% local (SQLite + backend local + Ollama). Supabase solo si hay razones válidas (ADR-001).
-- **Runtime backend:** Node + Hono (ADR-002).
-- **Design system:** tokens de Lovable como fuente de verdad (ADR-003).
-- **Ficha proactiva:** el scraping del post MeLi se dispara solo al crear la ficha (no bajo demanda), IA llena baches.
-- **Autopilot:** umbral de confianza + aprobación en categorías sensibles (garantía/técnico/reclamos).
-- **Billing:** post-MVP, mockeado en alpha.
+- "adelante" a secas = seguir con mi recomendación según el contexto de la tarea actual (regla acordada 2026-08-12).
+- Storybook NO se usa (equipo de 1 dev): se usa Playground de componentes en su lugar.
+- Modo mock por defecto en dev (`MELI_MOCK=1`) para no tocar la cuenta real de MeLi.

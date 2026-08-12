@@ -288,3 +288,23 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el flujo fue bueno. En astryx implementé los 5 findings de la review con tests reales y verificación empírica (repo sintético). En radix hice el análisis de causa raíz riguroso (verifiqué el APG, el patrón de roving focus vs activedescendant, y que radix no tiene Command). El único pendiente es la validación con VoiceOver+Chrome que solo Gonzo puede hacer.
 - LESSON: en bugs de a11y de screen readers, el análisis de causa raíz (qué patrón usa la librería, qué espera el lector) vale más que el fix a ciegas. Y verificar el estado real (PRs existentes, componente existente) antes de invertir tiempo.
 - BIASES DETECTED: none (el proceso de verificación previa evitó anclarme en issues mal dirigidos).
+
+## 2026-08-12 — soporteml-v3: modelo cloud de IA en loops + decisión Storybook
+
+**Context:** Sesión de integración MeLi + port de diseño en soporteml-v3. El sync mock llamaba a la IA real (modelo cloud) por cada pregunta, y el frontend lo veía como "paso eterno".
+
+**Lesson — un loop que llama a IA con modelo cloud puede tardar decenas de segundos sin feedback:**
+- El sync mock hacía 5 preguntas × 2 llamadas a Ollama (categorizar + sugerir) en serie. Con modelo cloud (`deepseek-v4-flash:cloud`), cada llamada ~4s → ~40s total. El frontend lo mostraba como colgado (HTTP 000, timeout).
+- **Fix:** en modo mock/dev, usar un fallback determinístico (categorización por keywords, respuestas plantilla) en vez de la IA real. La IA real queda solo para el flujo real (token conectado). El sync pasó de ~40s a ~6ms.
+- Regla generalizable: si un loop llama a IA, (1) usar fallback determinístico cuando el objetivo es dev/mock/demo, (2) considerar concurrencia o timeout por llamada, (3) medir el tiempo total antes de asumir que "funciona".
+
+**Lesson — Storybook no aporta para equipo de 1 dev:**
+- Evalué agregar Storybook para documentar el design system. Decisión: no vale la pena. Storybook brilla con varios devs + diseñador (catálogo compartido); con un solo dev que además escribe los componentes, el costo de mantenimiento (stories, providers, config) supera el beneficio.
+- **Alternativa elegida:** un "playground" de componentes (`src/pages/Playground.tsx`, solo en dev con `import.meta.env.DEV`) que lista los componentes con variantes. Cubre ~80% del valor de Storybook sin infraestructura.
+- Regla: Storybook (o catálogo visual) se agrega cuando el diseño necesita ser revisado por otro humano (diseñador, cliente) o el equipo crece. Para 1 dev, el playground es suficiente.
+
+**Self-reflection:**
+- CONTEXT: integración + diseño en proyecto propio
+- REFLECTION: el bug del sync "eterno" fue un buen catch — no asumí que era un cuelgue de red, investigué y encontré que era la IA cloud en serie. El port de diseño de v1 fue eficiente (extraer código real de v1 en vez de reimplementar desde las guías).
+- LESSON: en proyectos con IA, el fallback determinístico para dev/mock no es opcional — es la diferencia entre una app usable y una que parece colgada. Y para decisiones de infra (como Storybook), pensar en el tamaño del equipo antes de agregar.
+- BIASES DETECTED: none (el diagnóstico del sync fue sistemático, no asumí).
