@@ -35,6 +35,11 @@
   }
   .wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
   header.hero { padding: 24px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+  .identity { margin-bottom: 20px; font-size: 0; }
+  .identity .name { display: block; font-size: 34px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+  .identity .role { display: block; font-size: 16px; color: var(--text-dim); margin-top: 4px; font-weight: 500; }
+  .tagline { font-size: 26px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 16px; color: var(--text); }
+  .tagline .accent { color: var(--accent-strong); }
   .eyebrow {
     font-family: var(--mono);
     font-size: 13px;
@@ -59,7 +64,7 @@
     margin: 48px 0 20px;
     padding-top: 8px;
   }
-  h2 .num { color: var(--accent); font-family: var(--mono); font-size: 18px; margin-right: 10px; }
+  h3 .num { color: var(--accent-strong); font-family: var(--mono); font-size: 18px; margin-right: 10px; }
   p { margin-bottom: 16px; color: var(--text); }
   .dim { color: var(--text-dim); }
   .card {
@@ -185,12 +190,16 @@
 
   <header class="hero">
     <div class="eyebrow">Caso de estudio <span aria-hidden="true">·</span> Portfolio</div>
-    <h1>Accesibilidad como <span class="accent"><strong>especialización activa</strong></span></h1>
+    <h1 class="identity">
+      <span class="name">Gonzalo Blasco</span>
+      <span class="role">Fullstack React/TS · Especialista en accesibilidad</span>
+    </h1>
+    <h2 class="tagline">Accesibilidad como <span class="accent"><strong>especialización activa</strong></span></h2>
     <p class="lede">No es un checkbox. Es la lente con la que leo cada componente: qué anuncia un screen reader, qué pasa sin color, qué pasa solo con teclado. Lo demuestro con código mergeable en los repos más exigentes del ecosistema.</p>
   </header>
 
   <section>
-    <h2><span class="num">01</span>La evidencia — estado real verificado</h2>
+    <h3><span class="num">01</span>La evidencia — estado real verificado</h3>
     <p class="dim">11 de agosto de 2026. Cada PR revisado contra la API de GitHub, no de memoria.</p>
 
     <h3 style="margin:24px 0 12px;font-size:18px;">Facebook / astryx <span class="repo-tag">Design system de Meta</span></h3>
@@ -257,7 +266,7 @@
   </section>
 
   <section>
-    <h2><span class="num">02</span>El sistema — cómo trabajo la accesibilidad</h2>
+    <h3><span class="num">02</span>El sistema — cómo trabajo la accesibilidad</h3>
     <p class="dim">No es "agregar atributos". Es un proceso con criterio técnico y validación empírica.</p>
     <div class="steps">
       <div class="step"><div class="n"></div><div class="body"><strong>Detectar el fallo real, no el síntoma</strong><p>En astryx #4298 el problema no era "falta un label" — era que el status perdía significado para screen readers al componerse (parent-reads-child, issue #4777).</p></div></div>
@@ -269,7 +278,7 @@
   </section>
 
   <section>
-    <h2><span class="num">03</span>El resultado</h2>
+    <h3><span class="num">03</span>El resultado</h3>
     <div class="stats">
       <div class="stat"><div class="v">5</div><div class="l">PRs mergeables en shadcn/ui</div></div>
       <div class="stat"><div class="v">2</div><div class="l">aprobados por reviewers</div></div>
@@ -282,7 +291,7 @@
   </section>
 
   <section>
-    <h2><span class="num">04</span>El estado honesto</h2>
+    <h3><span class="num">04</span>El estado honesto</h3>
     <div class="honest">
       <h3>Mergeables, no mergeados</h3>
       <p>Estos PRs están <strong>mergeables, no mergeados</strong> — esperando review de maintainers. Y eso es exactamente el punto: el trabajo está hecho, validado técnicamente, y a un review de distancia de estar en producción.</p>
@@ -291,7 +300,8 @@
   </section>
 
   <div class="contact">
-    <h3>Contacto</h3>
+    <h3>Gonzalo Blasco</h3>
+    <p class="dim" style="margin-bottom:12px;">Fullstack React/TS · Especialista en accesibilidad · Buscando rol donde la accesibilidad sea central</p>
     <div class="row">
       <span>GitHub: <a href="https://github.com/gonzoblasco">github.com/gonzoblasco</a></span>
       <span>Stack: React/TS · Supabase · Edge Functions · billing · tooling · a11y</span>
@@ -302,7 +312,7 @@
   </div>
 
   <footer>
-    Caso de estudio de portfolio · Accesibilidad como especialización activa · 2026
+    Gonzalo Blasco · Caso de estudio de portfolio · Accesibilidad como especialización activa · 2026
   </footer>
 
 </div>
