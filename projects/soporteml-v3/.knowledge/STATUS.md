@@ -1,5 +1,29 @@
 # SoporteML v3 - STATUS
 
+## 2026-08-12 (tarde) - Port del diseño v1 + playground de componentes
+
+### Completado
+- **Port del esqueleto visual de v1 al frontend v3** (extraído del código real de v1 en `projects/soporteml`):
+  - Instalado stack de diseño de v1: Radix UI primitives, class-variance-authority, tailwind-merge, clsx, framer-motion, next-themes, sonner, tailwindcss-animate, lucide-react.
+  - Copiada capa shadcn/ui de v1 (button, card, badge, input, sidebar, sheet, skeleton, tooltip, separator, sonner).
+  - Configurado alias `@/` en Vite + TypeScript.
+  - Fusionado `index.css`: tokens Lovable v3 (ya existían) + utilidades custom de v1 (glass-panel, glow-primary, text-gradient, animaciones) + fuente Inter.
+  - Portado `AppSidebar` rediseñado (colapsable, tema claro/oscuro con next-themes, mobile drawer, footer con avatar/logout) sin acoplamiento a Supabase/router/auth de v1.
+  - Portado `EmptyState`, `SkeletonCards`, `CategoryBadge` (adaptado a tokens muted/strong).
+  - Creado `theme-provider` (next-themes).
+  - `App.tsx` adaptado al layout de v1 (flex h-screen + sidebar + main scrollable) manteniendo features (mock sync, publish, IA) + logout.
+- **Playground de componentes** (alternativa ligera a Storybook para equipo de 1 dev):
+  - `src/pages/Playground.tsx` - catálogo visual de componentes (buttons, badges, inputs, cards, skeletons, empty states, status badges, iconos).
+  - Solo visible en desarrollo (`import.meta.env.DEV`), no se incluye en build de producción.
+  - Decisión: Storybook NO aporta suficiente para equipo de 1 dev (costo de mantenimiento > beneficio); el playground cubre el 80% del valor.
+
+### Pendiente (Fase 2)
+- [ ] Probar responder una pregunta mock desde la app (`/meli/publish` en modo mock).
+- [ ] Probar Mercado Pago real en sandbox.
+- [ ] Email (Resend + Lovable Email).
+- [ ] Afinar keywords del mock de categorización.
+- [ ] La URL del túnel cloudflared es temporal - cada reinicio cambia.
+
 ## 2026-08-12 - Integración MeLi funcionando + modo mock
 
 ### Completado
