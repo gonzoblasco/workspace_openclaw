@@ -213,3 +213,29 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el flujo fue bueno (diagnóstico → issue → PR), pero el primer comentario del PR tenía el job equivocado. La corrección oportuna (antes de que el maintainer lo leyera como definitivo) evitó daño, pero el proceso correcto es verificar el job exacto ANTES de postear.
 - LESSON: en contribuciones OSS, un diagnóstico técnico incorrecto en un thread público resta credibilidad. Verificar el run/job exacto con `gh run view --log-failed` antes de afirmar la causa.
 - BIASES DETECTED: anchoring (me anclé en el nombre "smoke-test" del `gh pr checks` sin verificar el job real del run).
+
+## 2026-08-11 — SoporteML v3: estructura de doble git (leer skills antes de tocar organización)
+
+**Context:** Sesión de construcción de SoporteML v3. Al crear el repo del proyecto, me enredé con submodules y moví el `.knowledge/` al repo del proyecto, cuando Gonzo me había dicho que los ADRs van en `docs/adr/` del proyecto y que el sistema es de doble git. Gonzo me corrigió: "estuviste revisando eso pero no leíste mis skills para identificar cómo ordeno las cosas".
+
+**Lesson — leer las skills de estructura ANTES de tocar la organización de proyectos:**
+- El sistema de doble git de Gonzo (AGENTS.md §211 + práctica real):
+  - **Workspace git:** capta workspace + `.knowledge/` del proyecto + README.
+  - **Repo del proyecto:** capta todo el contenido (código + docs/adr) + README. Independiente, NO submodule.
+  - `.knowledge/` va en el workspace, NO en el repo del proyecto.
+- Me enredé con submodules (quedamos, kanam-solitaires son submodules) sin darme cuenta de que soporteml-v3 es un proyecto NO-submodule (como daily-ink, ensulugar) donde el workspace trackea `.knowledge/` directamente.
+- LESSON: antes de reorganizar la estructura de un proyecto, leer AGENTS.md §211 + la skill de git-workflow + verificar cómo lo hacen 2-3 proyectos existentes. No asumir el patrón por un solo ejemplo.
+
+**Lesson — el `.gitignore` del proyecto con `.knowledge/` pisa la negación del raíz:**
+- El `.gitignore` del proyecto tiene `.knowledge/` (para que el repo del proyecto no lo trackee). Pero las reglas de `.gitignore` de subdirectorios ganan sobre las del raíz, así que la negación `!/projects/<slug>/.knowledge/**` del raíz no funciona.
+- Solución: trackear `.knowledge/` en el workspace con `git add -f` (force). Una vez trackeados, el `.gitignore` del proyecto ya no los afecta.
+
+**Lesson — repo anidado bloquea el trackeo del workspace:**
+- Si el proyecto tiene `.git` propio (repo anidado), git lo trata como gitlink y no trackea su contenido en el workspace, ni siquiera con `git add -f`.
+- Solución: mover temporalmente el `.git` del proyecto, `git add -f` del `.knowledge/` en el workspace, y restaurar el `.git`.
+
+**Self-reflection:**
+- CONTEXT: creación de repo + estructura de doble git
+- REFLECTION: me fui por las ramas con submodules sin verificar el sistema real de Gonzo. La corrección fue oportuna pero costó varias iteraciones de git.
+- LESSON: la organización de proyectos es una decisión estructural — verificar el sistema documentado (AGENTS.md, skills) y la práctica real de proyectos existentes ANTES de tocar nada.
+- BIASES DETECTED: anchoring (me anclé en el patrón de submodules de quedamos/kanam-solitaires sin verificar que soporteml-v3 es NO-submodule).
