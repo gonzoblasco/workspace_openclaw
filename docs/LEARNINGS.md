@@ -264,3 +264,27 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el flujo fue bueno (artifact → página → publicar → perfil), pero me apuré dos veces: metí todos los PRs sin filtrar por a11y, y propuse workflow-kit sin verificar que estaba archivado. Gonzo lo detectó ambas veces.
 - LESSON: en trabajo de portfolio/marca, verificar el estado real (isArchived, tema de cada PR) ANTES de proponer o publicar. La precisión importa más que la velocidad.
 - BIASES DETECTED: confirmation (asumí que todos los PRs eran de a11y porque el portfolio es de a11y, sin verificar cada uno).
+
+## 2026-08-12 — Colaboración OSS: astryx #4914 + radix #4109 (sesión de a11y)
+
+**Context:** Sesión de colaboración en accesibilidad. Refiné el PR #4914 de astryx (fix de CI con 5 findings de review) y abrí el PR #4109 de radix (aria-posinset/setsize en Select). Varias lecciones de proceso.
+
+**Lesson — buscar issues de a11y en repos maduros: la mayoría ya tienen PRs o el maintainer no quiere cambios:**
+- Barrido por radix, ariakit, adobe, mui, vercel, react.dev, TanStack. Casi todos los issues "obvios" tenían PRs abiertos (react.dev #8552 tenía 4 PRs compitiendo), maintainer que no quiere cambiar (mui #46319), o bugs sin solución clara (adobe #10310).
+- El issue ideal: bug concreto + sin PR + alcance acotado + repo con apetito a11y. radix #3962 cumplía todo.
+- **Siempre verificar antes de atacar:** (1) si ya hay PRs que referencian el issue, (2) si el repo realmente tiene el componente (radix #4085 sobre "Command" estaba mal dirigido - radix no tiene Command, es de cmdk).
+
+**Lesson — el deepen-and-retry tiene dos trampas de git que no son obvias:**
+- El refspec del fetch necesita el nombre de rama SIN el prefijo `origin/` (el `--base` llega como `origin/main`, y `origin ${baseBranch}:...` produce `origin origin/main:...` que falla).
+- `git fetch --deepen` solo actualiza `FETCH_HEAD`, no el ref `origin/<base>`. Hay que escribir `refs/remotes/origin/<base>` explícito, o el three-dot retry (que referencia `origin/main`) sigue sin resolver.
+- Verificado con repo sintético: el deepen recupera el resultado EXACTO (modifiedComponents: ["Card"]) en vez del over-reportado del fallback. Esto valida que deepen-and-retry es mejor que degradar directo.
+
+**Lesson — el patrón de roving focus en listbox scrollable rompe el conteo de VoiceOver+Chrome:**
+- Radix Select usa foco real en cada option (roving focus) dentro de un listbox scrollable, sin aria-posinset/aria-setsize. VoiceOver+Chrome cuenta solo los options visibles en el viewport → total incorrecto. Safari/NVDA funcionan por heurística.
+- El fix: declarar aria-posinset/aria-setsize explícitamente, calculados desde el DOM (el contenedor de lista es el parentElement del option: el role="group" si hay grupo, si no el viewport). Maneja grupos correctamente (cada group cuenta independiente, patrón APG).
+
+**Self-reflection:**
+- CONTEXT: colaboración OSS en a11y (refinar PR + abrir PR nuevo)
+- REFLECTION: el flujo fue bueno. En astryx implementé los 5 findings de la review con tests reales y verificación empírica (repo sintético). En radix hice el análisis de causa raíz riguroso (verifiqué el APG, el patrón de roving focus vs activedescendant, y que radix no tiene Command). El único pendiente es la validación con VoiceOver+Chrome que solo Gonzo puede hacer.
+- LESSON: en bugs de a11y de screen readers, el análisis de causa raíz (qué patrón usa la librería, qué espera el lector) vale más que el fix a ciegas. Y verificar el estado real (PRs existentes, componente existente) antes de invertir tiempo.
+- BIASES DETECTED: none (el proceso de verificación previa evitó anclarme en issues mal dirigidos).
