@@ -1,5 +1,29 @@
 # SoporteML v3 - STATUS
 
+## 2026-08-12 - Integración MeLi funcionando + modo mock
+
+### Completado
+- **OAuth MeLi real end-to-end funcionando** (PKCE S256):
+  - `GET /meli/connect` genera URL de autorización + persiste `state`/`code_verifier` en DB (tabla `oauth_states`).
+  - `GET /meli/callback` (antes POST) verifica `state` (anti-CSRF), intercambia `code` → tokens, guarda en `meli_tokens`, redirige a página de éxito.
+  - PKCE mejorado de `plain` → `S256`.
+  - **Token real de producción obtenido y verificado** contra `api.mercadolibre.com` (`GONZOBLASCO`, id 10061615, site MLA). Refresh token guardado (refresh automático por `MeliTokenService`).
+- **Modo mock para desarrollo** (`MELI_MOCK=1` en `.env`):
+  - `MeliSyncService` genera 5 preguntas de ejemplo realistas (garantía, envío, talle, cuotas, accesorios) con productos y compradores mock.
+  - Sin token conectado → fallback automático a mock (la app es usable en dev sin cuenta real).
+  - **Fix de rendimiento:** en modo mock usa categorización determinística instantánea (no la IA real que tardaba ~40s en serie). Sync ahora responde en ~6ms.
+- **Fix bug multi-tenant:** `questions.meli_question_id` era `UNIQUE` global → ahora `UNIQUE(company_id, meli_question_id)`. Cada empresa tiene su propio set aislado (dos empresas podían colisionar con el mismo ID de pregunta mock).
+- **Frontend:** botón "Conectar Mercado Libre" en Ajustes ahora dispara el flujo OAuth real (`/meli/connect` + redirect). Link "Volver" post-OAuth apunta a la app local (`APP_URL`).
+- **Scripts del API** cargan `.env` (`--env-file` en dev/start).
+- **Túnel HTTPS (cloudflared)** como redirect URI válido para la app publicada de MeLi (la app de v1 es de producción, no acepta localhost).
+
+### Pendiente (Fase 2)
+- [ ] Probar responder una pregunta mock desde la app (`/meli/publish` en modo mock).
+- [ ] Probar Mercado Pago real en sandbox.
+- [ ] Email (Resend + Lovable Email).
+- [ ] Afinar keywords del mock de categorización (algunas preguntas caen en categoría genérica).
+- [ ] La URL del túnel cloudflared es temporal - cada reinicio cambia; hay que actualizar redirect en panel + `.env`.
+
 ## 2026-08-11 - Definición de producto
 
 ### Completado
