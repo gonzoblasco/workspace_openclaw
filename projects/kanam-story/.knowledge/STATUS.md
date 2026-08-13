@@ -4,6 +4,8 @@
 
 ## Estado: 🟢 v0.1.0 RELEASED (Slices 0-5 completos)
 
+- [x] **Cierre completo del pipeline (2026-08-13):** CI en GitHub Actions (lint+test+build, run verde), lint 0 errores 0 warnings, tag `v0.1.0` + GitHub Release creado. Todos los gates Define->Ship cerrados.
+
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
 - [x] DATA_MODEL
