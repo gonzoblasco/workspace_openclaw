@@ -1,18 +1,28 @@
-# HANDOFF — Kanam Story · v0.2.0 → Fase 2 (Slices 7-10)
+# HANDOFF — Kanam Story · Fase 2 (Slices 7-10)
 
 **Fecha:** 2026-08-13
-**Autor:** Agente B (review de Slice 6 + fixes)
-**Estado:** 🟢 v0.2.0 RELEASED (Slice 6 completo). Fase 2 planificada. Próximo: **Slice 7**.
-**Propósito:** documentar el estado actual y dejar listo el Slice 7 (Fichas de personaje ricas + generación asistida).
+**Autor:** Agente B (Slice 7)
+**Estado:** 🟢 Slice 7 COMPLETO. Próximo: **Slice 8** (Worldbuilding tipado fino).
+**Propósito:** documentar el estado actual y dejar listo el Slice 8.
 
 ---
 
 ## Estado actual
 
-- **Slices 0-6 completos:** fundación, chat con manos, outline & beats, biblia viva, brújula, pulido (export + lint + release v0.1.0), story bible editable (v0.2.0).
-- **126 tests**, build + TS pasan, lint 0 errores, **CI verde** (GitHub Actions).
+- **Slices 0-7 completos:** fundación, chat con manos, outline & beats, biblia viva, brújula, pulido (v0.1.0), story bible editable (v0.2.0), fichas de personaje ricas + generación (Slice 7).
+- **137 tests**, build + TS pasan, lint 0 errores, **CI verde** (GitHub Actions).
 - **Repo:** `gonzoblasco/kanam-story` (público), remote `origin`. `.knowledge/` solo en el workspace (doble-git).
-- **Releases:** v0.1.0 (`133bc7d`), v0.2.0 (`329a4c4`, tag `v0.2.0`).
+- **Releases:** v0.1.0 (`133bc7d`), v0.2.0 (`329a4c4`, tag `v0.2.0`). Slice 7 → v0.3.0 pendiente.
+
+## Qué se construyó en Slice 7 (Agente B)
+
+- **`Character.type` enum** (`protagonist|antagonist|supporting|minor|love_interest|custom`) + migración DB v4→v5 (`role`→`type`, default `supporting`).
+- **Campos nuevos:** `pronouns`, `groups[]`, `otherNames[]`, `traits[]`, `inContext`.
+- **`buildAgentContext`** filtra `inContext === false` + muestra tipo y campos nuevos.
+- **Generación asistida:** `buildGenerateCharacterPrompt` + `parseSuggestedCharacterList` + `store.generateCharacter`.
+- **UI (`CharactersPanel`):** type select, tag editors, toggle inContext, flujo Generar/Surprise Me/preview (Agregar/Regenerar/Descartar).
+- **Chat:** reusa `add_character` (no se duplica con `generate_character`).
+- Commit `f00cb79`. **137 tests**, build+TS pasan, lint 0 errores.
 
 ## Review de Slice 6 (Agente B) — fixes aplicados
 
@@ -35,15 +45,15 @@
 >
 > **División de trabajo:** los agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí. Kanam planifica y documenta; este ROADMAP es el spec. Cada slice: implementar → testear → build+TS → lint → **actualizar STATUS.md** → commit atómico → release usable.
 
-## Slice 7 — Fichas de personaje ricas + generación asistida (→ v0.3.0)
+## Slice 7 — Fichas de personaje ricas + generación asistida (→ v0.3.0) ✅
 
-- [ ] **Type tipado** — reemplazar `role: string` por enum (`protagonist|antagonist|supporting|minor|love_interest|custom`). Migración `role` → `type`.
-- [ ] **Campos nuevos** — `pronouns`, `groups[]`, `otherNames[]`, `traits[]` + UI + `+ Add Trait`.
-- [ ] **Toggle de contexto** — `inContext: boolean` por personaje; si es false, se excluye de `buildAgentContext`.
-- [ ] **Generación asistida** — modal `Generate Character` (selector de Type + instrucciones), `Surprise Me`, preview Agregar/Regenerar/Descartar, tool `generate_character`.
-- [ ] **Tests** — parseo de campos nuevos, filtro de contexto, flujo de generación. **DB_VERSION → 5.**
+- [x] **Type tipado** — `role` → enum `type` (`protagonist|antagonist|supporting|minor|love_interest|custom`). Migración DB v4→v5.
+- [x] **Campos nuevos** — `pronouns`, `groups[]`, `otherNames[]`, `traits[]` + UI (tag editors).
+- [x] **Toggle de contexto** — `inContext`; `buildAgentContext` filtra.
+- [x] **Generación asistida** — `buildGenerateCharacterPrompt` + `parseSuggestedCharacterList` + `store.generateCharacter`; UI Generar/Surprise Me/preview. Chat reusa `add_character`.
+- [x] **Tests** — 137 totales. Commit `f00cb79`.
 
-## Slice 8 — Worldbuilding tipado fino (→ v0.4.0)
+## Slice 8 — Worldbuilding tipado fino (→ v0.4.0) — SIGUIENTE
 
 - [ ] Kinds finos (`place|organization|lore|key_event|clue|magic_system|item|rule|other`) + migración.
 - [ ] Campos nuevos (`otherNames[]`, `traits[]`) + toggle `inContext`.

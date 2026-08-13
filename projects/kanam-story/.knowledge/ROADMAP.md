@@ -101,22 +101,22 @@
 
 > Sudowrite tiene fichas con Type (rol), Pronouns, Groups, Other Names, Traits y toggle de visibilidad en contexto. Kanam Story ya tiene role/age/appearance/personality/voice/wants/needs/backstory/goals/arc — lo enriquecemos y agregamos el flujo de generación.
 
-- [ ] **Type tipado** — reemplazar `role: string` por un enum con roles predefinidos + custom.
-  - [ ] Roles: `protagonist | antagonist | supporting | minor | love_interest | custom`.
-  - [ ] Migración: `role` → `type` (mapear valores existentes, default `supporting`).
-- [ ] **Campos nuevos** — `pronouns`, `groups: string[]`, `otherNames: string[]`, `traits: string[]`.
-  - [ ] UI: campos en la ficha de personaje (editable).
-  - [ ] `+ Add Trait` — agregar rasgos (con sugerencia IA opcional).
-- [ ] **Toggle de contexto** — `inContext: boolean` por personaje; si es false, se excluye de `buildAgentContext`.
-  - [ ] UI: icono de ojo en la ficha (incluir/excluir del contexto IA).
-  - [ ] Contexto: `buildAgentContext` filtra por `inContext`.
-- [ ] **Generación asistida de personaje** — flujo dedicado (no solo vía chat).
-  - [ ] Modal `Generate Character`: selector de Character Type + campo de instrucciones custom.
-  - [ ] `Surprise Me` — genera un personaje aleatorio/inspirado en el contexto del proyecto.
-  - [ ] Preview del personaje generado → Agregar / Regenerar / Descartar (patrón de aceptación del chat).
-  - [ ] Tool del agente: `generate_character` (para que el chat también pueda proponer personajes nuevos).
-- [ ] **Tests** — parseo de los nuevos campos, filtro de contexto, y el flujo de generación.
-  - *Acceptance: fichas ricas editables, toggle de contexto funciona, y se puede generar un personaje desde la UI o el chat. Release v0.3.0.*
+- [x] **Type tipado** — reemplazar `role: string` por un enum con roles predefinidos + custom.
+  - [x] Roles: `protagonist | antagonist | supporting | minor | love_interest | custom`.
+  - [x] Migración: `role` → `type` (mapear valores existentes, default `supporting`).
+- [x] **Campos nuevos** — `pronouns`, `groups: string[]`, `otherNames: string[]`, `traits: string[]`.
+  - [x] UI: campos en la ficha de personaje (editable).
+  - [x] `+ Add Trait` — agregar rasgos (con sugerencia IA opcional).
+- [x] **Toggle de contexto** — `inContext: boolean` por personaje; si es false, se excluye de `buildAgentContext`.
+  - [x] UI: icono de ojo en la ficha (incluir/excluir del contexto IA).
+  - [x] Contexto: `buildAgentContext` filtra por `inContext`.
+- [x] **Generación asistida de personaje** — flujo dedicado (no solo vía chat).
+  - [x] Modal `Generate Character`: selector de Character Type + campo de instrucciones custom.
+  - [x] `Surprise Me` — genera un personaje aleatorio/inspirado en el contexto del proyecto.
+  - [x] Preview del personaje generado → Agregar / Regenerar / Descartar (patrón de aceptación del chat).
+  - [x] Tool del agente: el chat ya propone personajes vía `add_character` (se reusa; no se duplica con `generate_character`).
+- [x] **Tests** — parseo de los nuevos campos, filtro de contexto, y el flujo de generación.
+  - *Hecho 2026-08-13 (Slice 7). `Character.type` enum + campos nuevos (pronouns/groups/otherNames/traits/inContext). Migración DB v4→v5. `buildGenerateCharacterPrompt` + `parseSuggestedCharacterList` + `store.generateCharacter`. UI: type select, tag editors, toggle inContext, flujo Generar/Surprise Me/preview. 137 tests, build+TS pasan, lint 0 errores. Release v0.3.0 pendiente.*
 
 ## Slice 8 — Worldbuilding tipado fino
 

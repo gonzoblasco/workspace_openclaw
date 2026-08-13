@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 v0.2.0 RELEASED (Slice 6 completo)
+## Estado: 🟢 Slice 7 COMPLETO (Fichas de personaje ricas + generación)
 
 - [x] **Slice 6 — Story Bible editable y tipado** (Braindump, Genre tags, Style selector, Synopsis editable; DB v3→v4). Release v0.2.0.
   - [x] `Project.style` migrado de `string` → `ProjectStyle` objeto (mode: featured|custom|match) con migración de datos en DB v3→v4.
@@ -99,6 +99,14 @@ Detalle completo en [ROADMAP.md](./ROADMAP.md).
   - [x] Migración DB usa la `transaction` del versionchange (antes `db.transaction()` podía tirar `InvalidStateError`)
   - [x] Modo "Match My Style" deshabilitado (no funcional hasta Slice 9)
   - [x] Commit `dc7a8ad`
+- [x] **Slice 7: Fichas de personaje ricas + generación asistida** (137 tests, build+TS pasan, lint 0 errores)
+  - [x] `Character.type` enum (`protagonist|antagonist|supporting|minor|love_interest|custom`) + migración DB v4→v5 (`role`→`type`, default `supporting`)
+  - [x] Campos nuevos: `pronouns`, `groups[]`, `otherNames[]`, `traits[]`, `inContext`
+  - [x] `buildAgentContext` filtra `inContext === false` + muestra tipo y campos nuevos
+  - [x] Generación asistida: `buildGenerateCharacterPrompt` + `parseSuggestedCharacterList` + `store.generateCharacter`
+  - [x] UI: type select, tag editors, toggle inContext, flujo Generar/Surprise Me/preview (Agregar/Regenerar/Descartar)
+  - [x] Chat: reusa `add_character` (no se duplica con `generate_character`)
+  - [x] Commit `f00cb79`
 
 ## Decisiones clave
 
@@ -118,6 +126,6 @@ Detalle completo en [ROADMAP.md](./ROADMAP.md).
 
 ## Próximo paso
 
-**Slice 7 — Fichas de personaje ricas + generación asistida** (→ v0.3.0): Type tipado (enum), campos nuevos (pronouns/groups/otherNames/traits), toggle `inContext`, generación asistida (modal + tool `generate_character`). DB_VERSION → 5.
+**Slice 8 — Worldbuilding tipado fino** (→ v0.4.0): kinds finos (`place|organization|lore|key_event|clue|magic_system|item|rule|other`) + migración, campos nuevos (`otherNames[]`, `traits[]`), toggle `inContext`. Mismo patrón que Slice 7.
 
 TODOs post-release (no bloquean): Export PDF/DOCX, tema claro, tests de componentes (jsdom), tests de `lib/db.ts` (fake-indexeddb), búsqueda entre escenas.
