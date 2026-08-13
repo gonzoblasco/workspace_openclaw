@@ -136,4 +136,4 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 
 **Fase 2 completa (Slices 0-10, v0.6.0).** El pipeline de producto está cerrado: chat con manos, outline & beats, biblia viva, brújula, export, story bible editable, fichas ricas, worldbuilding tipado, match my style, filtros + vinculación. Todos los releases v0.1.0 → v0.6.0 creados en GitHub.
 
-**Backlog (no bloquea, se atiende cuando haya espacio):** ver [ROADMAP.md](./ROADMAP.md) sección "TODOs no bloqueantes". Items: export PDF/DOCX, tema claro, tests de componentes (jsdom), tests de `lib/db.ts` (fake-indexeddb), búsqueda entre escenas, versioning/snapshots, streaming en el editor.
+**Backlog (no bloquea, se atiende cuando haya espacio):** ver [ROADMAP.md](./ROADMAP.md) sección "TODOs no bloqueantes". **Prioridad (pedidos de Gonzo 2026-08-13):** (1) área de texto refinada con barra de formato + selección contextual IA, (2) sincronización automática Biblia ↔ tabs Personajes/Mundo. Resto: export PDF/DOCX, tema claro, tests de componentes (jsdom), tests de `lib/db.ts` (fake-indexeddb), búsqueda entre escenas, versioning/snapshots, streaming en el editor.

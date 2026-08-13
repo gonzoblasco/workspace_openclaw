@@ -129,6 +129,13 @@
 
 > Sincronizado con el ROADMAP (sección "TODOs no bloqueantes"). Se atienden cuando haya espacio.
 
+### 🔴 Prioridad (pedidos de Gonzo, 2026-08-13) — atender antes del resto
+
+- **Área de texto refinada** — el editor usa TipTap/StarterKit pero no expone barra de formato en la UI. Falta: barra de formato (negrita/cursiva/subrayado/tachado/enlaces/listas/H1-H3/undo-redo) + selección contextual que conecte el texto seleccionado con las herramientas de IA (Write/Rewrite/Describe/Expand), como el círculo azul de Sudowrite. El usuario debe poder escribir/copiar/pegar/editar libremente.
+- **Sincronización Biblia ↔ tabs** — hoy el `StoryBiblePanel` tiene un bridge manual (Detectar → preview → Importar). Gonzo quiere que lo generado en la Biblia se duplique **automáticamente** en las tabs Personajes y Mundo (con marca "de biblia"), sin duplicar entradas existentes y sin pisar ediciones manuales (preservar el modelo de aceptación).
+
+### Resto del backlog
+
 - Export PDF / DOCX (hoy solo MD/TXT).
 - Tema claro (toggle light/dark).
 - Tests de componentes (jsdom + Testing Library).

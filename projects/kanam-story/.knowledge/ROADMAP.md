@@ -164,6 +164,21 @@
 
 > No bloquean el pipeline; se atienden cuando haya espacio. Están trackeados acá para no perderlos.
 
+### 🔴 Prioridad (pedidos de Gonzo, 2026-08-13) — atender antes del resto del backlog
+
+- [ ] **Área de texto refinada (barra de formato + selección contextual IA)** — el editor usa TipTap/StarterKit (soporta formato) pero **no expone barra de formato en la UI**. Falta:
+  - [ ] Barra de formato: negrita, cursiva, subrayado, tachado, enlaces, listas (viñetas/numeradas), H1/H2/H3, deshacer/rehacer.
+  - [ ] Selección contextual: al seleccionar texto, mostrar un indicador (como el círculo azul de Sudowrite) que conecte la selección con las herramientas de IA (Write/Rewrite/Describe/Expand).
+  - [ ] El usuario debe poder escribir, copiar/pegar y editar libremente (no todo generado por IA).
+  - [ ] Referencia visual: captura de Sudowrite (editor de prosa con barra de formato + selección resaltada en púrpura + contador de palabras seleccionadas).
+- [ ] **Sincronización Biblia ↔ tabs (Personajes/Mundo)** — hoy el `StoryBiblePanel` tiene un bridge **manual** (Detectar → preview → Importar todos/uno). Gonzo quiere que lo generado en la Biblia se **duplique automáticamente** en las tabs correspondientes:
+  - [ ] Al regenerar la Biblia, los personajes detectados se crean/actualizan en la tab Personajes (con marca "de biblia").
+  - [ ] Ídem para el mundo → tab Mundo (lugares, lore, reglas, etc.).
+  - [ ] Mantener sincronizado: si la Biblia se regenera, las tabs reflejan los cambios (sin duplicar entradas ya existentes).
+  - [ ] Preservar el modelo de aceptación: los cambios automáticos deben ser revisables (no pisar ediciones manuales del usuario).
+
+### Resto del backlog
+
 - [ ] **Export PDF / DOCX** — hoy solo MD/TXT (`lib/export.ts` + `ExportMenu`).
 - [ ] **Tema claro** — toggle light/dark (hoy solo dark vía `data-bs-theme`).
 - [ ] **Tests de componentes** — jsdom + `@testing-library/react` para Editor, StoryBiblePanel, etc.
