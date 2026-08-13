@@ -160,6 +160,20 @@
 
 ---
 
+## TODOs no bloqueantes (post-release, no son slices)
+
+> No bloquean el pipeline; se atienden cuando haya espacio. Están trackeados acá para no perderlos.
+
+- [ ] **Export PDF / DOCX** — hoy solo MD/TXT (`lib/export.ts` + `ExportMenu`).
+- [ ] **Tema claro** — toggle light/dark (hoy solo dark vía `data-bs-theme`).
+- [ ] **Tests de componentes** — jsdom + `@testing-library/react` para Editor, StoryBiblePanel, etc.
+- [ ] **Tests de `lib/db.ts`** — `fake-indexeddb` para cubrir migraciones y CRUD.
+- [ ] **Búsqueda entre escenas** — find/replace a lo largo del manuscrito.
+- [ ] **Versioning / snapshots** — ver versiones previas de una escena.
+- [ ] **Streaming en el editor** — el chat ya usa SSE; el editor usa `ollamaChat` no-streaming.
+
+---
+
 ## Notas de trazabilidad
 
 - Slice 1 es el MVP que se prueba con `ultimo-turno` hoy. Si Slice 1 no engancha, no seguimos — aprendemos y ajustamos antes de invertir más.
