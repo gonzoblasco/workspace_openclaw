@@ -181,5 +181,3 @@
 - **Slices 6-10 (Fase 2):** derivados de la auditoría de Sudowrite (2026-08-13). El Slice 6 es la base (Story Bible editable); los slices 7-10 lo extienden. **Fase 2 completa 2026-08-13** (releases v0.2.0 → v0.6.0). Todos los slices 0-10 cerrados.
 - **División de trabajo:** agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí. Kanam (este agente) planifica y documenta. Los agentes deben leer este ROADMAP como spec y actualizar STATUS.md al cerrar cada slice.
 - **Estado:** Fase 2 cerrada. El próximo foco es el **backlog (TODOs no bloqueantes)** de arriba — mejoras y deuda técnica, no nuevos slices de producto.
-- **Slices 6-10 (Fase 2):** derivados de la auditoría de Sudowrite (2026-08-13). El Slice 6 es la base (Story Bible editable); los slices 7-10 lo extienden. Cada slice debe actualizar STATUS.md y terminar en release usable (v0.2.0 → v0.6.0).
-- **División de trabajo:** agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí. Kanam (este agente) planifica y documenta. Los agentes deben leer este ROADMAP como spec y actualizar STATUS.md al cerrar cada slice.

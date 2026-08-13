@@ -109,11 +109,11 @@
 - [x] UI: 3er modo "Match My Style" habilitado (pegar muestra → analizar → guardar).
 - [x] Tests — 152 totales. Commit `011347d`.
 
-## Slice 10 — Filtros de outline + vinculación (→ v0.6.0) — SIGUIENTE
+## Slice 10 — Filtros de outline + vinculación (→ v0.6.0) ✅
 
-- [ ] Filtros por POV y tiempo verbal (`tense: 'past'|'present'|'future'`).
-- [ ] Detección de escenas sin beats + sugerir vincular (link/connect).
-- [ ] Tests. Release v0.6.0.
+- [x] Filtros por POV y tiempo verbal (`tense: 'past'|'present'|'future'`).
+- [x] Detección de escenas sin beats + sugerir vincular (link/connect).
+- [x] Tests — 155 totales. Commit `9b36cde` + release v0.6.0.
 
 ---
 

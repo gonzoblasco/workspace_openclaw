@@ -4,38 +4,7 @@
 
 ## Estado: 🟢 FASE 2 COMPLETA (Slices 0-10). v0.6.0 RELEASED.
 
-- [x] **Slice 6 — Story Bible editable y tipado** (Braindump, Genre tags, Style selector, Synopsis editable; DB v3→v4). Release v0.2.0.
-  - [x] `Project.style` migrado de `string` → `ProjectStyle` objeto (mode: featured|custom|match) con migración de datos en DB v3→v4.
-  - [x] `genres: string[]` (tags removibles), `braindump: string`, `synopsis: string` (override manual).
-  - [x] `StoryBibleSettingsPanel` (nuevo tab "Story Bible" en el panel derecho) — patrón draft-and-commit del CompassPanel.
-  - [x] `buildAgentContext` (chat) y `buildContext` (generación) inyectan genres/style/braindump/synopsis.
-  - [x] Helpers centralizados en `lib/labels.ts` (`styleText`, `STYLE_PRESETS`).
-  - [x] 126 tests, build+TS pasan, lint 0 errores. Commit `6aefc3e` + release `329a4c4` (tag `v0.2.0`).
-- [x] **Slice 7 — Fichas de personaje ricas + generación asistida** (Type tipado, Pronouns/Groups/OtherNames/Traits, toggle de contexto, Generate Character + Surprise Me). DB v4→v5.
-  - [x] `Character.type` enum + migración `role`→`type` (default `supporting`).
-  - [x] Campos nuevos: `pronouns`, `groups[]`, `otherNames[]`, `traits[]`, `inContext`.
-  - [x] `buildAgentContext` filtra `inContext === false`.
-  - [x] Generación asistida (`buildGenerateCharacterPrompt` + `parseSuggestedCharacterList` + `store.generateCharacter`) + UI Generar/Surprise Me/preview.
-  - [x] 137 tests. Commit `f00cb79`. Review (Agente A): validación de `type` en `update_character` + limpieza `mapRoleToType` (commit `a533634`).
-- [x] **Slice 8 — Worldbuilding tipado fino** (kinds finos, OtherNames/Traits, toggle de contexto). DB v5→v6.
-  - [x] `WorldEntity.category` → `kind` (9 valores: place|organization|lore|key_event|clue|magic_system|item|rule|other).
-  - [x] `mapCategoryToKind` + `worldKindLabel` en `lib/labels.ts`.
-  - [x] Campos nuevos: `otherNames[]`, `traits[]`, `inContext`.
-  - [x] `buildAgentContext` + `buildContext` filtran `inContext` y muestran kind.
-  - [x] `bibleExtract` amplía keywords (organización/evento/pista/magia).
-  - [x] `WorldPanel` con selector de 9 kinds + tag editors + toggle.
-  - [x] 145 tests, build+TS pasan, lint 0 errores. Commit `60434ba`.
-
-## Fase 2 COMPLETA (Slices 6-10) — Hacia el Story Bible de Sudowrite
-
-> **Fuente:** auditoría de 10 capturas de Sudowrite (2026-08-13). **División de trabajo:** los agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí; Kanam planifica y documenta.
-
-- [x] **Slice 9 — Match My Style** (clonar la voz del autor desde una muestra). Release v0.5.0.
-  - [x] `buildStyleProfilePrompt` + `parseStyleProfile` + `store.analyzeStyle`. `styleText` inyecta el perfil completo en modo match. UI: modo match habilitado. 152 tests. Commit `011347d`.
-- [x] **Slice 10 — Filtros de outline + vinculación documento↔outline** (POV/tiempo, escenas huérfanas). Release v0.6.0.
-  - [x] `Project.tense` + `TENSE_LABELS`/`tenseLabel`. Migración DB v6→v7. Selector de tense en `CompassPanel`. Filtros de POV/tense en `OutlineView`. Detección de escenas huérfanas con botón "Vincular". `buildAgentContext` + `buildContext` inyectan tense. 155 tests. Commit `9b36cde`.
-
-Detalle completo en [ROADMAP.md](./ROADMAP.md).
+Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
