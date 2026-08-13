@@ -136,14 +136,14 @@
 
 > La feature más diferenciadora de Sudowrite (PRO). Con Ollama local podemos hacerla gratis. La IA analiza una muestra del texto del autor y genera un perfil de estilo para que las sugerencias "suenen como él".
 
-- [ ] **Análisis de muestra** — el usuario pega/selecciona un extracto de su escritura.
-  - [ ] Prompt dedicado `buildStyleProfilePrompt` que pide al modelo extraer: tono, ritmo, longitud de frase, vocabulario, uso de diálogo, imágenes, subtexto.
-  - [ ] Parseo de la respuesta en un perfil de estilo estructurado (`StyleProfile`).
-- [ ] **Persistencia** — `style.mode: 'match'` + `style.profile: StyleProfile` en `Project`.
-- [ ] **Inyección** — el perfil se inyecta en todos los prompts de generación (Write/Rewrite/Describe/Expand).
-- [ ] **UI** — 3er modo en la sección Style: "Match My Style" (pegar muestra → analizar → guardar perfil).
-- [ ] **Tests** — parseo del perfil, inyección en prompts, persistencia.
-  - *Acceptance: pego un extracto, la IA extrae mi estilo, y las generaciones posteriores suenan a mí. Release v0.5.0.*
+- [x] **Análisis de muestra** — el usuario pega/selecciona un extracto de su escritura.
+  - [x] Prompt dedicado `buildStyleProfilePrompt` que pide al modelo extraer: tono, ritmo, longitud de frase, vocabulario, uso de diálogo, imágenes, subtexto.
+  - [x] Parseo de la respuesta en un perfil de estilo estructurado (`StyleProfile`).
+- [x] **Persistencia** — `style.mode: 'match'` + `style.profile: StyleProfile` en `Project`.
+- [x] **Inyección** — el perfil se inyecta en todos los prompts de generación (Write/Rewrite/Describe/Expand).
+- [x] **UI** — 3er modo en la sección Style: "Match My Style" (pegar muestra → analizar → guardar perfil).
+- [x] **Tests** — parseo del perfil, inyección en prompts, persistencia.
+  - *Hecho 2026-08-13 (Slice 9). `buildStyleProfilePrompt` + `parseStyleProfile` + `store.analyzeStyle`. `styleText` inyecta el perfil completo en modo match. UI: modo match habilitado (pegar muestra → analizar → guardar perfil). 152 tests, build+TS pasan, lint 0 errores. Release v0.5.0 pendiente.*
 
 ## Slice 10 — Filtros de outline + vinculación documento↔outline
 

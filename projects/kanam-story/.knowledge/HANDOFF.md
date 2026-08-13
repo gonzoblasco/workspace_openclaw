@@ -1,18 +1,33 @@
 # HANDOFF — Kanam Story · Fase 2 (Slices 7-10)
 
 **Fecha:** 2026-08-13
-**Autor:** Agente A (Slice 8)
-**Estado:** 🟢 Slice 8 COMPLETO. Próximo: **Slice 9** (Match My Style).
-**Propósito:** documentar el estado del Slice 8 y dejar listo el Slice 9 para revisión del Agente B.
+**Autor:** Agente B (Slice 9)
+**Estado:** 🟢 Slice 9 COMPLETO. Próximo: **Slice 10** (Filtros de outline + vinculación).
+**Propósito:** documentar el estado del Slice 9 y dejar listo el Slice 10.
 
 ---
 
 ## Estado actual
 
-- **Slices 0-8 completos:** fundación, chat con manos, outline & beats, biblia viva, brújula, pulido (v0.1.0), story bible editable (v0.2.0), fichas de personaje ricas + generación (Slice 7), worldbuilding tipado fino (Slice 8).
-- **145 tests**, build + TS pasan, lint 0 errores, **CI verde** (GitHub Actions).
+- **Slices 0-9 completos:** fundación, chat con manos, outline & beats, biblia viva, brújula, pulido (v0.1.0), story bible editable (v0.2.0), fichas de personaje ricas + generación (Slice 7), worldbuilding tipado fino (Slice 8), Match My Style (Slice 9).
+- **152 tests**, build + TS pasan, lint 0 errores, **CI verde** (GitHub Actions).
 - **Repo:** `gonzoblasco/kanam-story` (público), remote `origin`. `.knowledge/` solo en el workspace (doble-git).
-- **Releases:** v0.1.0 (`133bc7d`), v0.2.0 (`329a4c4`, tag `v0.2.0`). Slices 7 y 8 → v0.3.0 / v0.4.0 pendientes.
+- **Releases:** v0.1.0 (`133bc7d`), v0.2.0 (`329a4c4`, tag `v0.2.0`). Slices 7-9 → v0.3.0/v0.4.0/v0.5.0 pendientes.
+
+## Qué se construyó en Slice 9 (Agente B)
+
+- **`buildStyleProfilePrompt`** — extrae un perfil de estilo (tono, ritmo, frases, vocabulario, diálogo, imágenes, subtexto) de una muestra del autor.
+- **`parseStyleProfile`** — parsea la respuesta a `StyleProfile` (escaneo progresivo de llaves).
+- **`store.analyzeStyle(sample)`** — llama a Ollama y devuelve el perfil.
+- **`styleText`** — en modo `match` inyecta el perfil completo en todos los prompts de generación.
+- **UI (`StoryBibleSettingsPanel`)** — modo "Match My Style" habilitado: pegar muestra → analizar → guardar perfil.
+- Commit `011347d`. **152 tests**, build+TS pasan, lint 0 errores.
+
+## Review de Slice 8 (Agente B) — fixes aplicados
+
+1. **🟡 `inferCategory`** quedó con nombre engañoso (ahora devuelve `kind`) → renombrado a `inferKind` (+ constante `KIND_KEYWORDS`).
+2. **🟡 Keyword duplicado `'invasión'`** en `key_event` → eliminado.
+- Commit `ec75acd`.
 
 ## Qué se construyó en Slice 8 (Agente A)
 
@@ -78,14 +93,14 @@
 - [x] `buildAgentContext` + `buildContext` filtran `inContext` y muestran kind; `bibleExtract` amplía keywords.
 - [x] Tests — 145 totales. Commit `60434ba`.
 
-## Slice 9 — Match My Style (→ v0.5.0) — SIGUIENTE
+## Slice 9 — Match My Style (→ v0.5.0) ✅
 
-- [ ] `buildStyleProfilePrompt` + parseo a `StyleProfile`; `style.mode: 'match'` + `style.profile`.
-- [ ] Inyección del perfil en todos los prompts de generación.
-- [ ] UI: 3er modo "Match My Style" (habilitar la opción hoy deshabilitada).
-- [ ] Tests. Release v0.5.0.
+- [x] `buildStyleProfilePrompt` + `parseStyleProfile`; `style.mode: 'match'` + `style.profile`.
+- [x] Inyección del perfil en todos los prompts de generación (`styleText`).
+- [x] UI: 3er modo "Match My Style" habilitado (pegar muestra → analizar → guardar).
+- [x] Tests — 152 totales. Commit `011347d`.
 
-## Slice 10 — Filtros de outline + vinculación (→ v0.6.0)
+## Slice 10 — Filtros de outline + vinculación (→ v0.6.0) — SIGUIENTE
 
 - [ ] Filtros por POV y tiempo verbal (`tense: 'past'|'present'|'future'`).
 - [ ] Detección de escenas sin beats + sugerir vincular (link/connect).

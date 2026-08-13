@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 Slice 8 COMPLETO (Worldbuilding tipado fino)
+## Estado: 🟢 Slice 9 COMPLETO (Match My Style)
 
 - [x] **Slice 6 — Story Bible editable y tipado** (Braindump, Genre tags, Style selector, Synopsis editable; DB v3→v4). Release v0.2.0.
   - [x] `Project.style` migrado de `string` → `ProjectStyle` objeto (mode: featured|custom|match) con migración de datos en DB v3→v4.
@@ -119,6 +119,24 @@ Detalle completo en [ROADMAP.md](./ROADMAP.md).
   - [x] UI: type select, tag editors, toggle inContext, flujo Generar/Surprise Me/preview (Agregar/Regenerar/Descartar)
   - [x] Chat: reusa `add_character` (no se duplica con `generate_character`)
   - [x] Commit `f00cb79`
+- [x] **Review Slice 7 (Agente A) + fixes** (2026-08-13)
+  - [x] `update_character` del chat validaba `type` (antes podía escribir uno inválido)
+  - [x] Limpieza de `mapRoleToType`; prompt `add_character` con campos completos
+  - [x] Commit `a533634`
+- [x] **Slice 8: Worldbuilding tipado fino** (145 tests, build+TS pasan, lint 0 errores)
+  - [x] `WorldEntity.category` → `kind` (9 valores) + migración DB v5→v6 (`mapCategoryToKind`)
+  - [x] Campos nuevos: `otherNames[]`, `traits[]`, `inContext`
+  - [x] `buildAgentContext` + `buildContext` filtran `inContext`; `bibleExtract` amplía keywords
+  - [x] UI (`WorldPanel`): selector de kind, tag editors, toggle inContext
+  - [x] Commit `60434ba`
+- [x] **Review Slice 8 (Agente B) + fixes** (2026-08-13)
+  - [x] Renombrado `inferCategory` → `inferKind`; keyword duplicado eliminado
+  - [x] Commit `ec75acd`
+- [x] **Slice 9: Match My Style** (152 tests, build+TS pasan, lint 0 errores)
+  - [x] `buildStyleProfilePrompt` + `parseStyleProfile` + `store.analyzeStyle`
+  - [x] `styleText` inyecta el perfil completo en modo match
+  - [x] UI: modo match habilitado (pegar muestra → analizar → guardar perfil)
+  - [x] Commit `011347d`
 
 ## Decisiones clave
 
@@ -138,6 +156,6 @@ Detalle completo en [ROADMAP.md](./ROADMAP.md).
 
 ## Próximo paso
 
-**Slice 8 — Worldbuilding tipado fino** (→ v0.4.0): kinds finos (`place|organization|lore|key_event|clue|magic_system|item|rule|other`) + migración, campos nuevos (`otherNames[]`, `traits[]`), toggle `inContext`. Mismo patrón que Slice 7.
+**Slice 10 — Filtros de outline + vinculación** (→ v0.6.0): filtros por POV y tiempo verbal (`tense: 'past'|'present'|'future'`), detección de escenas sin beats + sugerir vincular (link/connect).
 
 TODOs post-release (no bloquean): Export PDF/DOCX, tema claro, tests de componentes (jsdom), tests de `lib/db.ts` (fake-indexeddb), búsqueda entre escenas.
