@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 FASE 2 COMPLETA (Slices 0-10). v0.6.0 RELEASED. Fase 3 en curso (U1 done).
+## Estado: 🟢 FASE 2 COMPLETA (Slices 0-10). v0.6.0 RELEASED. Fase 3 en curso (U1-U2 done).
 
 Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
 
@@ -10,8 +10,8 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 
 > Plan completo en [PLAN-FASE-3.md](./PLAN-FASE-3.md). Pipeline en cadena: A desarrolla unidades impares, B pares; cada uno revisa la unidad del otro antes de seguir.
 
-- [x] **U1 (A) — Barra de formato básica** — B/I/S + undo/redo en `Editor.tsx`. Subrayado: StarterKit no lo trae; `@tiptap/extension-underline` está en node_modules pero no en package.json → botón U deshabilitado, lo agrega B en U2. Commit `b5e9484`. 155 tests, build+TS pasan, lint 0 errores.
-- [ ] **U2 (B) — Listas + headings + enlaces** — completar la barra (viñetas/numeradas, H1/H2/H3, enlaces). Agregar `Link` + `Underline` extensions.
+- [x] **U1 (A) — Barra de formato básica** — B/I/S + undo/redo en `Editor.tsx`. Commit `b5e9484`. 155 tests, build+TS pasan, lint 0 errores. *(Nota: se creía que el subrayado requería `@tiptap/extension-underline`; verificado que StarterKit 3.27.1 ya lo incluye.)*
+- [x] **U2 (B) — Listas + headings + enlaces** — completar la barra (viñetas/numeradas, H1/H2/H3, enlaces). Subrayado habilitado. Commit `4c10c8f`. 155 tests, build+TS pasan, lint 0 errores.
 - [ ] **U3 (A) — Selección contextual IA** — indicador flotante sobre la selección conectado a las herramientas IA.
 - [ ] **U4 (B) — Contador de palabras seleccionadas + polish**.
 - [ ] **U5 (A) — Auto-import de personajes** desde la Biblia.
