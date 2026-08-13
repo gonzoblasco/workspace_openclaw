@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 Slice 1 COMPLETO y probado con `ultimo-turno`
+## Estado: 🟢 Slice 2 COMPLETO (Outline & Beats)
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
@@ -28,6 +28,17 @@
   - [x] Chat conversacional + streaming + rewrite_scene con sceneId real
   - [x] Aceptar aplica a IndexedDB; Deshacer revierte
   - [x] Bugs arreglados: IDs de escena en contexto, persistencia sin conversación activa, turbopack.root
+- [x] **Review Slice 1 (Agente B) + fixes** (2026-08-13)
+  - [x] HIGH: preservar conversación activa al aplicar acciones (loadProjectData/selectProject)
+  - [x] MED: stale-state en applyContentActions (leer prev de DB) + parseAgentReply robusto
+  - [x] LOW: validación isValidAction (beat/character shape, update_bible keys), prompt update_bible, append_scene projectId
+  - [x] 100 tests, build+TS pasan
+- [x] **Slice 2: Outline & Beats** (112 tests, build+TS pasan)
+  - [x] Vista en área principal (toggle Editor/Outline + botón por capítulo en el tree)
+  - [x] Edición manual inline (title/kind/status/desc/notes), reorder ↑/↓, add/delete
+  - [x] "Sugerir outline": flujo dedicado (buildSuggestBeatsPrompt + parseBeatList + store.suggestBeats) con preview Agregar/Descartar
+  - [x] Beats de la escena actual en el editor (strip)
+  - [x] `lib/outline.ts` (moveBeatInList) + tests
 
 ## Decisiones clave
 
@@ -41,6 +52,7 @@
 | Slice fino primero | Sí, para no repetir el patrón de abandono |
 | Beats | Store `beats` separado (con chapterId/sceneId), en vez de embederlos en Chapter/Scene |
 | Repo | ✅ `gonzoblasco/kanam-story` (público) — creado 2026-08-12, remote `origin`, `.knowledge/` excluido (doble-git) |
+| Vista outline | Área principal (toggle Editor/Outline), no panel derecho |
 
 ## Notas de Slice 0
 
@@ -49,4 +61,4 @@
 
 ## Próximo paso
 
-Slice 1: Chat con Manos — panel de chat persistido + buildContext del agente + streaming Ollama + herramientas (rewrite_scene, add_beat, etc.) + modelo aceptar/deshacer + tests. Probar con `ultimo-turno`.
+Slice 3: Biblia Viva — regeneración de biblia desde manuscrito + desde cambios del chat, actualización automática de personajes/mundo, overrides manuales preservados.

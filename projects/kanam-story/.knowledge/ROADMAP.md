@@ -33,11 +33,12 @@
 
 > La estructura: mapa de beats por capítulo/escena, a mano o sugerido por IA.
 
-- [ ] Vista de outline (mapa de beats) por capítulo y escena.
-- [ ] Edición manual de beats (reordenar, editar, marcar status).
-- [ ] **"Sugerir outline"**: el agente propone beats desde biblia/brújula/lo escrito (tool `suggest_beats`).
-- [ ] Conectar beats con la escritura (qué beat estoy escribiendo ahora).
-- [ ] Discutir un beat con el chat y refinarlo.
+- [x] Vista de outline (mapa de beats) por capítulo y escena.
+- [x] Edición manual de beats (reordenar, editar, marcar status).
+- [x] **"Sugerir outline"**: el agente propone beats desde biblia/brújula/lo escrito (tool `suggest_beats`).
+- [x] Conectar beats con la escritura (qué beat estoy escribiendo ahora).
+- [x] Discutir un beat con el chat y refinarlo.
+  - *Hecho 2026-08-13 (Slice 2). Vista en área principal (toggle Editor/Outline + botón por capítulo en el tree). Edición inline (title/kind/status/desc/notes), reorder ↑/↓, add/delete. Sugerir outline: flujo dedicado (buildSuggestBeatsPrompt + parseBeatList + store.suggestBeats) con preview Agregar/Descartar. Beats de la escena actual en el editor. 112 tests, build+TS pasan.*
 
 ## Slice 3 — Biblia Viva
 
