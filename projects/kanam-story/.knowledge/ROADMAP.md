@@ -72,7 +72,7 @@
 >
 > **División de trabajo:** los agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí. Este ROADMAP es el spec de planificación; los detalles de implementación los resuelven los agentes. Cada slice debe actualizar STATUS.md al cerrarse.
 
-## Slice 6 — Story Bible editable y tipado (el corazón de la coherencia)
+## Slice 6 — Story Bible editable y tipado (el corazón de la coherencia) ✅
 
 > El bloque central que Sudowrite muestra como base de todo. Hoy la biblia es una vista auto-generada (summary/themes/characters/world/rules). La convertimos en **editable y tipada**: Genre, Style, Synopsis editable, Braindump. Todo lo demás (slices 7-10) cuelga de acá.
 
@@ -97,7 +97,7 @@
 - [x] **Tests** — parseo de los nuevos campos, migración, y que el contexto incluya genre/style/synopsis/braindump.
   - *Hecho 2026-08-13 (Slice 6). `Project.style` migrado a objeto `ProjectStyle` (mode: featured|custom|match) con migración DB v3→v4. `genres`/`braindump`/`synopsis` nuevos. `StoryBibleSettingsPanel` (tab "Story Bible"). `buildAgentContext` + `buildContext` inyectan los campos. Helpers en `lib/labels.ts`. 126 tests, build+TS pasan, lint 0 errores. Release v0.2.0 (commit `6aefc3e` + `329a4c4`, tag `v0.2.0`).*
 
-## Slice 7 — Fichas de personaje ricas + generación asistida
+## Slice 7 — Fichas de personaje ricas + generación asistida ✅
 
 > Sudowrite tiene fichas con Type (rol), Pronouns, Groups, Other Names, Traits y toggle de visibilidad en contexto. Kanam Story ya tiene role/age/appearance/personality/voice/wants/needs/backstory/goals/arc — lo enriquecemos y agregamos el flujo de generación.
 
@@ -116,7 +116,7 @@
   - [x] Preview del personaje generado → Agregar / Regenerar / Descartar (patrón de aceptación del chat).
   - [x] Tool del agente: el chat ya propone personajes vía `add_character` (se reusa; no se duplica con `generate_character`).
 - [x] **Tests** — parseo de los nuevos campos, filtro de contexto, y el flujo de generación.
-  - *Hecho 2026-08-13 (Slice 7). `Character.type` enum + campos nuevos (pronouns/groups/otherNames/traits/inContext). Migración DB v4→v5. `buildGenerateCharacterPrompt` + `parseSuggestedCharacterList` + `store.generateCharacter`. UI: type select, tag editors, toggle inContext, flujo Generar/Surprise Me/preview. 137 tests, build+TS pasan, lint 0 errores. Release v0.3.0 pendiente.*
+  - *Hecho 2026-08-13 (Slice 7). `Character.type` enum + campos nuevos (pronouns/groups/otherNames/traits/inContext). Migración DB v4→v5. `buildGenerateCharacterPrompt` + `parseSuggestedCharacterList` + `store.generateCharacter`. UI: type select, tag editors, toggle inContext, flujo Generar/Surprise Me/preview. 137 tests, build+TS pasan, lint 0 errores. Commit `f00cb79`. Release v0.3.0.*
 
 ## Slice 8 — Worldbuilding tipado fino ✅
 
@@ -130,9 +130,9 @@
   - [x] `+ Add Trait`.
 - [x] **Toggle de contexto** — `inContext: boolean` por elemento (mismo patrón que personajes).
 - [x] **Tests** — migración de kinds, nuevos campos, filtro de contexto.
-  - *Hecho 2026-08-13 (Slice 8). `WorldEntity.category` → `kind` (9 valores) + `otherNames[]`/`traits[]`/`inContext`. `mapCategoryToKind` + `worldKindLabel` en `lib/labels.ts`. `buildAgentContext` + `buildContext` filtran `inContext` y muestran kind. `bibleExtract` amplía keywords (organización/evento/pista/magia). `WorldPanel` con selector de 9 kinds + tag editors + toggle. 145 tests, build+TS pasan, lint 0 errores. Commit `60434ba`.*
+  - *Hecho 2026-08-13 (Slice 8). `WorldEntity.category` → `kind` (9 valores) + `otherNames[]`/`traits[]`/`inContext`. `mapCategoryToKind` + `worldKindLabel` en `lib/labels.ts`. `buildAgentContext` + `buildContext` filtran `inContext` y muestran kind. `bibleExtract` amplía keywords (organización/evento/pista/magia). `WorldPanel` con selector de 9 kinds + tag editors + toggle. 145 tests, build+TS pasan, lint 0 errores. Commit `60434ba`. Release v0.4.0.*
 
-## Slice 9 — Match My Style (clonar la voz del autor)
+## Slice 9 — Match My Style (clonar la voz del autor) ✅
 
 > La feature más diferenciadora de Sudowrite (PRO). Con Ollama local podemos hacerla gratis. La IA analiza una muestra del texto del autor y genera un perfil de estilo para que las sugerencias "suenen como él".
 
@@ -143,7 +143,7 @@
 - [x] **Inyección** — el perfil se inyecta en todos los prompts de generación (Write/Rewrite/Describe/Expand).
 - [x] **UI** — 3er modo en la sección Style: "Match My Style" (pegar muestra → analizar → guardar perfil).
 - [x] **Tests** — parseo del perfil, inyección en prompts, persistencia.
-  - *Hecho 2026-08-13 (Slice 9). `buildStyleProfilePrompt` + `parseStyleProfile` + `store.analyzeStyle`. `styleText` inyecta el perfil completo en modo match. UI: modo match habilitado (pegar muestra → analizar → guardar perfil). 152 tests, build+TS pasan, lint 0 errores. Release v0.5.0 pendiente.*
+  - *Hecho 2026-08-13 (Slice 9). `buildStyleProfilePrompt` + `parseStyleProfile` + `store.analyzeStyle`. `styleText` inyecta el perfil completo en modo match. UI: modo match habilitado (pegar muestra → analizar → guardar perfil). 152 tests, build+TS pasan, lint 0 errores. Commit `011347d`. Release v0.5.0.*
 
 ## Slice 10 — Filtros de outline + vinculación documento↔outline ✅
 
@@ -178,5 +178,8 @@
 
 - Slice 1 es el MVP que se prueba con `ultimo-turno` hoy. Si Slice 1 no engancha, no seguimos — aprendemos y ajustamos antes de invertir más.
 - Cada slice = commit atómico + release usable. Sin acumular discovery muerto.
+- **Slices 6-10 (Fase 2):** derivados de la auditoría de Sudowrite (2026-08-13). El Slice 6 es la base (Story Bible editable); los slices 7-10 lo extienden. **Fase 2 completa 2026-08-13** (releases v0.2.0 → v0.6.0). Todos los slices 0-10 cerrados.
+- **División de trabajo:** agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí. Kanam (este agente) planifica y documenta. Los agentes deben leer este ROADMAP como spec y actualizar STATUS.md al cerrar cada slice.
+- **Estado:** Fase 2 cerrada. El próximo foco es el **backlog (TODOs no bloqueantes)** de arriba — mejoras y deuda técnica, no nuevos slices de producto.
 - **Slices 6-10 (Fase 2):** derivados de la auditoría de Sudowrite (2026-08-13). El Slice 6 es la base (Story Bible editable); los slices 7-10 lo extienden. Cada slice debe actualizar STATUS.md y terminar en release usable (v0.2.0 → v0.6.0).
 - **División de trabajo:** agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí. Kanam (este agente) planifica y documenta. Los agentes deben leer este ROADMAP como spec y actualizar STATUS.md al cerrar cada slice.

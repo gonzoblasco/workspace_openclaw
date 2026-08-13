@@ -138,7 +138,14 @@ Detalle completo en [ROADMAP.md](./ROADMAP.md).
   - [x] `buildStyleProfilePrompt` + `parseStyleProfile` + `store.analyzeStyle`
   - [x] `styleText` inyecta el perfil completo en modo match
   - [x] UI: modo match habilitado (pegar muestra → analizar → guardar perfil)
-  - [x] Commit `011347d`
+  - [x] Commit `011347d` + release v0.5.0
+- [x] **Slice 10: Filtros de outline + vinculación documento↔outline** (155 tests, build+TS pasan, lint 0 errores)
+  - [x] `Project.tense` (`past|present|future`) + migración DB v6→v7 + `TENSE_LABELS`/`tenseLabel` en `lib/labels.ts`
+  - [x] Selector de tense en `CompassPanel`
+  - [x] Filtros de POV/tense en `OutlineView`
+  - [x] Detección de escenas huérfanas (sin beats) + botón "Vincular"
+  - [x] `buildAgentContext` + `buildContext` inyectan tense
+  - [x] Commit `9b36cde` + release v0.6.0
 
 ## Decisiones clave
 
@@ -158,6 +165,6 @@ Detalle completo en [ROADMAP.md](./ROADMAP.md).
 
 ## Próximo paso
 
-**Slice 10 — Filtros de outline + vinculación** (→ v0.6.0): filtros por POV y tiempo verbal (`tense: 'past'|'present'|'future'`), detección de escenas sin beats + sugerir vincular (link/connect).
+**Fase 2 completa (Slices 0-10, v0.6.0).** El pipeline de producto está cerrado: chat con manos, outline & beats, biblia viva, brújula, export, story bible editable, fichas ricas, worldbuilding tipado, match my style, filtros + vinculación. Todos los releases v0.1.0 → v0.6.0 creados en GitHub.
 
-TODOs post-release (no bloquean): Export PDF/DOCX, tema claro, tests de componentes (jsdom), tests de `lib/db.ts` (fake-indexeddb), búsqueda entre escenas.
+**Backlog (no bloquea, se atiende cuando haya espacio):** ver [ROADMAP.md](./ROADMAP.md) sección "TODOs no bloqueantes". Items: export PDF/DOCX, tema claro, tests de componentes (jsdom), tests de `lib/db.ts` (fake-indexeddb), búsqueda entre escenas, versioning/snapshots, streaming en el editor.

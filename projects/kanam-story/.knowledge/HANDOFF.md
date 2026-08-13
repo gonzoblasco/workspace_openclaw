@@ -125,13 +125,17 @@
 - **Idioma:** UI y prompts en español; commits/PRs en inglés.
 - **Al cerrar cada slice:** actualizar STATUS.md, ROADMAP.md y este HANDOFF.
 
-## TODOs pendientes (post-release, no bloquean)
+## TODOs pendientes (backlog, no bloquean)
+
+> Sincronizado con el ROADMAP (sección "TODOs no bloqueantes"). Se atienden cuando haya espacio.
 
 - Export PDF / DOCX (hoy solo MD/TXT).
-- Tema claro (toggle).
+- Tema claro (toggle light/dark).
 - Tests de componentes (jsdom + Testing Library).
 - Tests de `lib/db.ts` (fake-indexeddb).
-- Búsqueda entre escenas.
+- Búsqueda entre escenas (find/replace).
+- Versioning / snapshots (ver versiones previas de una escena).
+- Streaming en el editor (el chat ya usa SSE; el editor usa `ollamaChat` no-streaming).
 
 ## Notas operativas
 
