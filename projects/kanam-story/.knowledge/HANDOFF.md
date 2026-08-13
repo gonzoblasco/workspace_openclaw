@@ -39,6 +39,13 @@
 - `components/Editor.tsx`, `MarkdownView.tsx`, `NewProjectModal.tsx`, `ProjectTree.tsx`, `SettingsModal.tsx` (lint).
 - `CHANGELOG.md`, `README.md` (release).
 
+## Review de Slice 5 (Agente B) — fixes aplicados (post-release)
+
+1. **`stripHtml` aplanaba los párrafos** — el manuscrito exportado perdía los saltos de párrafo (muro de texto). **Fix:** preserva límites de bloque (`</p>`, `</h1>`, `<br>`, listas).
+2. **Export TXT en realidad era Markdown** — ahora `markdownToPlainText` despoja los marcadores para un `.txt` de verdad.
+3. **Slug del filename perdía acentos** — ahora `normalize('NFD')` quita acentos antes del slug.
+- Commit: `7bc30d3`. **123 tests**, build + TS pasan, lint 0 errores.
+
 ---
 
 ## TODOs pendientes (post-release)

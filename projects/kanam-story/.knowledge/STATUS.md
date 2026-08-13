@@ -67,6 +67,10 @@
   - [x] Export MD/TXT (`lib/export.ts` + `ExportMenu`)
   - [x] Lint limpio (0 errores)
   - [x] Release v0.1.0 + registro en PROYECTOS.md
+- [x] **Review Slice 5 (Agente B) + fixes** (2026-08-13) — 123 tests
+  - [x] `stripHtml` preserva párrafos (antes aplanaba el manuscrito)
+  - [x] Export TXT real (`markdownToPlainText`); slug sin perder acentos
+  - [x] Commit `7bc30d3`
 
 ## Decisiones clave
 
