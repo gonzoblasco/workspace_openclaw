@@ -169,3 +169,80 @@ Project 1─* Chapter 1─* Scene 1─1 Content (tipTap)
 - IndexedDB vía `idb`, un store por entidad (patrón `sudolab/lib/db.ts`).
 - **Nuevo store:** `conversations`, `messages` (con `actions` embebidas o store propio).
 - Los `ContentAction` deben ser **aplicables y reversibles** (para deshacer/aceptar/rechazar una propuesta del agente antes de que quede firme).
+
+---
+
+# Evolución planificada — Fase 2 (Slices 6-10)
+
+> Cambios de esquema derivados de la auditoría de Sudowrite (2026-08-13). Los agentes A y B los implementan; este es el target del data model. Cada slice sube `DB_VERSION` con migración de datos existentes.
+
+## Slice 6 — Story Bible editable (DB v3 → v4)
+
+```ts
+interface Project {
+  // ...campos existentes...
+  braindump: string;            // volcado libre de ideas (contexto de bajo peso)
+  genres: string[];             // multi-select con tags
+  style: {
+    mode: 'featured' | 'custom' | 'match';  // 'match' llega en Slice 9
+    featured?: string;          // preset elegido
+    custom?: string;            // instrucciones libres
+    profile?: StyleProfile;     // perfil de Match My Style (Slice 9)
+  };
+  synopsis: string;             // override manual sobre la sección auto-generada
+}
+```
+
+## Slice 7 — Fichas de personaje ricas (DB v4 → v5)
+
+```ts
+type CharacterType = 'protagonist' | 'antagonist' | 'supporting' | 'minor' | 'love_interest' | 'custom';
+
+interface Character {
+  // ...campos existentes...
+  type: CharacterType;          // reemplaza `role: string` (migrar valores, default 'supporting')
+  pronouns: string;
+  groups: string[];
+  otherNames: string[];
+  traits: string[];
+  inContext: boolean;           // toggle de inclusión en buildAgentContext (default true)
+}
+```
+
+## Slice 8 — Worldbuilding tipado fino (DB v5 → v6)
+
+```ts
+type WorldKind = 'place' | 'organization' | 'lore' | 'key_event' | 'clue' | 'magic_system' | 'item' | 'rule' | 'other';
+
+interface WorldEntity {
+  // ...campos existentes...
+  kind: WorldKind;              // ampliar kinds (mapear place→place, lore→lore, rule→rule, object→item, other→other)
+  otherNames: string[];
+  traits: string[];
+  inContext: boolean;           // toggle de inclusión en buildAgentContext (default true)
+}
+```
+
+## Slice 9 — Match My Style (DB v6 → v7)
+
+```ts
+interface StyleProfile {
+  tone: string;                 // tono general
+  rhythm: string;               // ritmo / cadencia
+  sentenceLength: string;       // longitud de frase predominante
+  vocabulary: string;           // registro léxico
+  dialogue: string;             // cómo escribe diálogo
+  imagery: string;              // uso de imágenes / metáforas
+  subtext: string;              // manejo del subtexto
+}
+// Se persiste en `Project.style.profile` con `style.mode: 'match'`.
+```
+
+## Slice 10 — Filtros de outline (DB v7 → v8)
+
+```ts
+interface Project {
+  // ...campos existentes...
+  tense: 'past' | 'present' | 'future';  // tiempo verbal del narrador (para filtrar el outline)
+}
+```

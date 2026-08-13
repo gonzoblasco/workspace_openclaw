@@ -66,7 +66,103 @@
 
 ---
 
+# Fase 2 — Hacia el Story Bible de Sudowrite (Slices 6-10)
+
+> **Fuente:** auditoría de 10 capturas de Sudowrite (2026-08-13). El gap principal es el **Story Bible estructurado y editable** (Genre, Style, Synopsis, Braindump) que hace que la IA sea coherente; de ahí cuelgan las fichas de personaje ricas, el worldbuilding tipado, la generación asistida y el Match My Style. Orden por valor/esfuerzo, cada slice termina en release usable.
+>
+> **División de trabajo:** los agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí. Este ROADMAP es el spec de planificación; los detalles de implementación los resuelven los agentes. Cada slice debe actualizar STATUS.md al cerrarse.
+
+## Slice 6 — Story Bible editable y tipado (el corazón de la coherencia)
+
+> El bloque central que Sudowrite muestra como base de todo. Hoy la biblia es una vista auto-generada (summary/themes/characters/world/rules). La convertimos en **editable y tipada**: Genre, Style, Synopsis editable, Braindump. Todo lo demás (slices 7-10) cuelga de acá.
+
+- [ ] **Braindump** — campo libre de volcado de ideas que alimenta el contexto del agente.
+  - [ ] Store: `braindump: string` en `Project` (o store propio `braindump` por proyecto).
+  - [ ] UI: sección editable en el panel de biblia (textarea grande, autosave con debounce).
+  - [ ] Contexto: `buildAgentContext` incluye el braindump (como contexto de bajo peso, no como regla).
+- [ ] **Genre** — géneros del proyecto para ajustar el tono de las sugerencias.
+  - [ ] Store: `genres: string[]` en `Project` (multi-select con tags).
+  - [ ] UI: sección editable con tags removibles + input para agregar.
+  - [ ] Contexto: incluido en `buildAgentContext` y en los prompts de escritura.
+- [ ] **Style** — estilo narrativo del proyecto (3 modos, ver Slice 9 para Match My Style).
+  - [ ] Store: `style: { mode: 'featured' | 'custom'; featured?: string; custom?: string }` en `Project`.
+  - [ ] UI: sección editable con selector de modo (Featured presets / Custom libre).
+  - [ ] Presets iniciales: prosa tensa, lírica, minimalista, sensorial, literaria elevada.
+  - [ ] Contexto: el style activo se inyecta en todos los prompts de generación (Write/Rewrite/Describe/Expand).
+- [ ] **Synopsis editable** — la sinopsis deja de ser solo auto-generada; se puede editar a mano.
+  - [ ] Store: `synopsis: string` en `Project` (override manual sobre la sección auto-generada).
+  - [ ] UI: sección editable; si hay override manual, se marca y se preserva (patrón `overrides` de la biblia).
+  - [ ] Contexto: la synopsis (manual o auto) alimenta `buildAgentContext`.
+- [ ] **Migración de datos** — DB_VERSION 3 → 4 con los nuevos campos en `Project`.
+- [ ] **Tests** — parseo de los nuevos campos, migración, y que el contexto incluya genre/style/synopsis/braindump.
+  - *Acceptance: el Story Bible se edita a mano, persiste, y el agente usa genre/style/synopsis/braindump en sus respuestas. Release v0.2.0.*
+
+## Slice 7 — Fichas de personaje ricas + generación asistida
+
+> Sudowrite tiene fichas con Type (rol), Pronouns, Groups, Other Names, Traits y toggle de visibilidad en contexto. Kanam Story ya tiene role/age/appearance/personality/voice/wants/needs/backstory/goals/arc — lo enriquecemos y agregamos el flujo de generación.
+
+- [ ] **Type tipado** — reemplazar `role: string` por un enum con roles predefinidos + custom.
+  - [ ] Roles: `protagonist | antagonist | supporting | minor | love_interest | custom`.
+  - [ ] Migración: `role` → `type` (mapear valores existentes, default `supporting`).
+- [ ] **Campos nuevos** — `pronouns`, `groups: string[]`, `otherNames: string[]`, `traits: string[]`.
+  - [ ] UI: campos en la ficha de personaje (editable).
+  - [ ] `+ Add Trait` — agregar rasgos (con sugerencia IA opcional).
+- [ ] **Toggle de contexto** — `inContext: boolean` por personaje; si es false, se excluye de `buildAgentContext`.
+  - [ ] UI: icono de ojo en la ficha (incluir/excluir del contexto IA).
+  - [ ] Contexto: `buildAgentContext` filtra por `inContext`.
+- [ ] **Generación asistida de personaje** — flujo dedicado (no solo vía chat).
+  - [ ] Modal `Generate Character`: selector de Character Type + campo de instrucciones custom.
+  - [ ] `Surprise Me` — genera un personaje aleatorio/inspirado en el contexto del proyecto.
+  - [ ] Preview del personaje generado → Agregar / Regenerar / Descartar (patrón de aceptación del chat).
+  - [ ] Tool del agente: `generate_character` (para que el chat también pueda proponer personajes nuevos).
+- [ ] **Tests** — parseo de los nuevos campos, filtro de contexto, y el flujo de generación.
+  - *Acceptance: fichas ricas editables, toggle de contexto funciona, y se puede generar un personaje desde la UI o el chat. Release v0.3.0.*
+
+## Slice 8 — Worldbuilding tipado fino
+
+> Sudowrite tipa cada elemento (Setting, Organization, Lore, Key Event, Clue, Magic System, Item). Kanam Story ya tiene `kind: place|lore|rule|object|other` — lo refinamos y agregamos campos.
+
+- [ ] **Tipos finos** — ampliar `kind` de `WorldEntity`.
+  - [ ] `place | organization | lore | key_event | clue | magic_system | item | rule | other`.
+  - [ ] Migración: mapear `place→place`, `lore→lore`, `rule→rule`, `object→item`, `other→other`.
+- [ ] **Campos nuevos** — `otherNames: string[]`, `traits: string[]` (mismo patrón que personajes).
+  - [ ] UI: campos en la ficha de elemento de mundo.
+  - [ ] `+ Add Trait`.
+- [ ] **Toggle de contexto** — `inContext: boolean` por elemento (mismo patrón que personajes).
+- [ ] **Tests** — migración de kinds, nuevos campos, filtro de contexto.
+  - *Acceptance: worldbuilding tipado fino, editable, con control de contexto. Release v0.4.0.*
+
+## Slice 9 — Match My Style (clonar la voz del autor)
+
+> La feature más diferenciadora de Sudowrite (PRO). Con Ollama local podemos hacerla gratis. La IA analiza una muestra del texto del autor y genera un perfil de estilo para que las sugerencias "suenen como él".
+
+- [ ] **Análisis de muestra** — el usuario pega/selecciona un extracto de su escritura.
+  - [ ] Prompt dedicado `buildStyleProfilePrompt` que pide al modelo extraer: tono, ritmo, longitud de frase, vocabulario, uso de diálogo, imágenes, subtexto.
+  - [ ] Parseo de la respuesta en un perfil de estilo estructurado (`StyleProfile`).
+- [ ] **Persistencia** — `style.mode: 'match'` + `style.profile: StyleProfile` en `Project`.
+- [ ] **Inyección** — el perfil se inyecta en todos los prompts de generación (Write/Rewrite/Describe/Expand).
+- [ ] **UI** — 3er modo en la sección Style: "Match My Style" (pegar muestra → analizar → guardar perfil).
+- [ ] **Tests** — parseo del perfil, inyección en prompts, persistencia.
+  - *Acceptance: pego un extracto, la IA extrae mi estilo, y las generaciones posteriores suenan a mí. Release v0.5.0.*
+
+## Slice 10 — Filtros de outline + vinculación documento↔outline
+
+> Sudowrite filtra el outline por POV y tiempo verbal, y sugiere vincular documentos al outline ("Link it / Connect it / Add Scenes"). Kanam Story ya conecta beats con escenas; agregamos los filtros y el flujo de vinculación.
+
+- [ ] **Filtros de outline** — por POV y tiempo verbal.
+  - [ ] Store: `pov` y `tense` ya existen en `Project` (pov sí; agregar `tense: 'past' | 'present' | 'future'`).
+  - [ ] UI: filtros en la vista de outline (dropdowns, como Sudowrite).
+- [ ] **Vinculación documento↔outline** — detectar escenas sin beats y sugerir vincular.
+  - [ ] Prompt in-contexto: si una escena no tiene beats, mostrar "¿Está en tu outline? Vincularla".
+  - [ ] Acción: vincular la escena a un beat existente o crear un beat nuevo.
+- [ ] **Tests** — filtros, detección de escenas sin vincular, acción de vinculación.
+  - *Acceptance: filtro el outline por POV/tiempo, y las escenas huérfanas se pueden vincular al outline. Release v0.6.0.*
+
+---
+
 ## Notas de trazabilidad
 
 - Slice 1 es el MVP que se prueba con `ultimo-turno` hoy. Si Slice 1 no engancha, no seguimos — aprendemos y ajustamos antes de invertir más.
 - Cada slice = commit atómico + release usable. Sin acumular discovery muerto.
+- **Slices 6-10 (Fase 2):** derivados de la auditoría de Sudowrite (2026-08-13). El Slice 6 es la base (Story Bible editable); los slices 7-10 lo extienden. Cada slice debe actualizar STATUS.md y terminar en release usable (v0.2.0 → v0.6.0).
+- **División de trabajo:** agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí. Kanam (este agente) planifica y documenta. Los agentes deben leer este ROADMAP como spec y actualizar STATUS.md al cerrar cada slice.

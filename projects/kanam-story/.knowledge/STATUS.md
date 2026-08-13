@@ -6,6 +6,18 @@
 
 - [x] **Cierre completo del pipeline (2026-08-13):** CI en GitHub Actions (lint+test+build, run verde), lint 0 errores 0 warnings, tag `v0.1.0` + GitHub Release creado. Todos los gates Define->Ship cerrados.
 
+## Fase 2 planificada (Slices 6-10) — Hacia el Story Bible de Sudowrite
+
+> **Fuente:** auditoría de 10 capturas de Sudowrite (2026-08-13). ROADMAP ampliado con los slices 6-10 detallados. **División de trabajo:** los agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí; Kanam planifica y documenta. Cada slice actualiza este STATUS al cerrarse.
+
+- [ ] **Slice 6 — Story Bible editable y tipado** (Braindump, Genre, Style, Synopsis editable; DB v3→4). Release v0.2.0.
+- [ ] **Slice 7 — Fichas de personaje ricas + generación asistida** (Type tipado, Pronouns/Groups/OtherNames/Traits, toggle de contexto, Generate Character + Surprise Me). Release v0.3.0.
+- [ ] **Slice 8 — Worldbuilding tipado fino** (kinds finos, OtherNames/Traits, toggle de contexto). Release v0.4.0.
+- [ ] **Slice 9 — Match My Style** (clonar la voz del autor desde una muestra). Release v0.5.0.
+- [ ] **Slice 10 — Filtros de outline + vinculación documento↔outline** (POV/tiempo, escenas huérfanas). Release v0.6.0.
+
+Detalle completo en [ROADMAP.md](./ROADMAP.md).
+
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
 - [x] DATA_MODEL

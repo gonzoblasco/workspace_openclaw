@@ -18,6 +18,23 @@ No es un problema de "escribir mejor". Es: debatir ideas, estudiar casos, explor
 4. **La Brújula Narrativa (orientación).** Premisa, promesa al lector, arco del protagonista, tema. Visible al escribir y al discutir.
 5. **Editor Delgado.** Existe para escribir a mano; no es el protagonista.
 
+## Dirección Fase 2 — Hacia el Story Bible de Sudowrite (2026-08-13)
+
+> Auditoría de 10 capturas de Sudowrite. El gap principal no es el chat (ya lo tenemos y es el corazón), sino el **Story Bible estructurado y editable** que hace que la IA sea coherente. Sudowrite lo muestra como la base de todo: Genre, Style, Synopsis, Braindump, fichas de personaje ricas, worldbuilding tipado. De ahí cuelgan la generación asistida y el Match My Style.
+
+**Lo que Sudowrite tiene y nosotros no (aún):**
+
+- **Story Bible editable y tipado** — Genre, Style (3 modos), Synopsis editable, Braindump. Hoy nuestra biblia es auto-generada; la hacemos editable.
+- **Fichas de personaje ricas** — Type (rol), Pronouns, Groups, Other Names, Traits, toggle de inclusión en contexto IA.
+- **Worldbuilding tipado fino** — Setting, Organization, Lore, Key Event, Clue, Magic System, Item.
+- **Generación asistida de personajes** — modal Generate Character + Surprise Me.
+- **Match My Style** — clonar la voz del autor desde una muestra (la feature PRO de Sudowrite, gratis con Ollama local).
+- **Filtros de outline** por POV y tiempo verbal + vinculación documento↔outline.
+
+**Nuestra ventaja:** el chat con manos (que Sudowrite no tiene como corazón) + todo esto gratis y local-first. La dirección es converger: un co-writer que conversa Y tiene un Story Bible rico y editable.
+
+**Plan:** slices 6-10 en [ROADMAP.md](./ROADMAP.md), cada uno termina en release usable (v0.2.0 → v0.6.0). Implementan los agentes A (VS Code) y B (ZCode); Kanam planifica y documenta.
+
 ## Usuario
 
 Gonzo, solo. Escritor de novela activa (`ultimo-turno`), ADHD. Necesita estructura y orientación, no más distracción.
