@@ -4,10 +4,11 @@
 
 ## Fase 0 — Fundación (slab sobre sudolab)
 
-- [ ] Reusar `sudolab` como base de código (Next.js, TipTap, IndexedDB, Ollama, tests).
-- [ ] Nombrar el producto (Kanam Story) y renombrar UI/prompts.
-- [ ] Definir stores nuevos: `conversations`, `messages`, `contentActions`.
-- [ ] Modelo `Beat` + CRUD básico sobre Chapters/Scenes.
+- [x] Reusar `sudolab` como base de código (Next.js, TipTap, IndexedDB, Ollama, tests).
+- [x] Nombrar el producto (Kanam Story) y renombrar UI/prompts.
+- [x] Definir stores nuevos: `conversations`, `messages`, `contentActions`.
+- [x] Modelo `Beat` + CRUD básico sobre Chapters/Scenes.
+  - *Hecho 2026-08-12 (Slice 0). Beats en store separado con chapterId/sceneId. DB_VERSION 2→3. Build+tests+TS pasan.*
 
 ## Slice 1 — Chat con Manos (MVP usable hoy)
 

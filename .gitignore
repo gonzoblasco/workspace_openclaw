@@ -47,6 +47,7 @@ memory/2026-07-23-1951.md
 /projects/ensulugar/*
 /projects/godot-journey/*
 /projects/kanam/*
+/projects/kanam-story/*
 /projects/learning-js-ds-algos/*
 /projects/remix-book/*
 /projects/soporteml-v2/*
@@ -70,6 +71,9 @@ memory/2026-07-23-1951.md
 !/projects/kanam/.knowledge/
 !/projects/kanam/.knowledge/**
 !/projects/kanam/README.md
+!/projects/kanam-story/.knowledge/
+!/projects/kanam-story/.knowledge/**
+!/projects/kanam-story/README.md
 !/projects/learning-js-ds-algos/.knowledge/
 !/projects/learning-js-ds-algos/.knowledge/**
 !/projects/learning-js-ds-algos/README.md

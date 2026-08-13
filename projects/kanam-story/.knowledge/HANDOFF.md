@@ -1,8 +1,8 @@
 # HANDOFF — Kanam Story
 
 **Fecha:** 2026-08-12
-**Sesión:** Definición de producto (interview-me convergido + spec)
-**Estado:** 🟢 Spec lista, Slice 0 pendiente
+**Sesión:** Slice 0 completado (fundación sobre sudolab)
+**Estado:** 🟢 Fundación lista, Slice 1 (Chat con Manos) pendiente
 
 ---
 
@@ -44,9 +44,15 @@ Gonzo intentó clonar Sudowrite **3 veces** (`umbrawriter` v1, `sudolab`, `umbra
 
 ## Dónde dejamos / próximo paso
 
-- **Slice 0 (siguiente):** copiar `sudolab` como base → crear stores de chat (`conversations`, `messages`, `contentActions`) → definir modelo `Beat` + CRUD.
-- **Slice 1:** Chat con Manos (MVP con `ultimo-turno` como banco de pruebas).
+- **Slice 0 (HECHO):** base `sudolab` copiada y renombrada a Kanam Story; stores de chat (`conversations`, `messages`, `contentActions` vía `Message.actions`) + store `beats` con CRUD; DB_VERSION 2→3; cascade delete; build+tests+TS pasan (59 tests). Commit `feat: scaffold Kanam Story foundation from sudolab` en repo local (sin remote).
+- **Slice 1 (siguiente):** Chat con Manos (MVP con `ultimo-turno` como banco de pruebas) — panel de chat persistido, buildContext del agente, streaming Ollama, herramientas (rewrite_scene, add_beat, update_character, append_scene...), modelo aceptar/deshacer, tests de prompts + parseo.
 - Luego: Outline & Beats → Biblia Viva → Brújula → Pulido.
+
+## Notas operativas
+
+- **Bootstrap, no destino:** sudolab es la base funcional (editor + biblia + mundo); Kanam Story diverge hacia chat-first, el editor pasa a ser "delgado".
+- **Lint:** 8 errores pre-existentes heredados de sudolab (ProjectTree, SettingsModal, NewProjectModal) → se arreglan en Slice 5.
+- **Streaming:** hoy `/api/ollama` usa `stream:false`. Para Slice 1 hay que cambiar la ruta + `ollamaChat` (exponer AsyncIterable o SSE).
 
 ## Criterio de éxito del proyecto
 
