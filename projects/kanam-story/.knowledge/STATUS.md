@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 Slice 7 COMPLETO (Fichas de personaje ricas + generación)
+## Estado: 🟢 Slice 8 COMPLETO (Worldbuilding tipado fino)
 
 - [x] **Slice 6 — Story Bible editable y tipado** (Braindump, Genre tags, Style selector, Synopsis editable; DB v3→v4). Release v0.2.0.
   - [x] `Project.style` migrado de `string` → `ProjectStyle` objeto (mode: featured|custom|match) con migración de datos en DB v3→v4.
@@ -11,13 +11,25 @@
   - [x] `buildAgentContext` (chat) y `buildContext` (generación) inyectan genres/style/braindump/synopsis.
   - [x] Helpers centralizados en `lib/labels.ts` (`styleText`, `STYLE_PRESETS`).
   - [x] 126 tests, build+TS pasan, lint 0 errores. Commit `6aefc3e` + release `329a4c4` (tag `v0.2.0`).
+- [x] **Slice 7 — Fichas de personaje ricas + generación asistida** (Type tipado, Pronouns/Groups/OtherNames/Traits, toggle de contexto, Generate Character + Surprise Me). DB v4→v5.
+  - [x] `Character.type` enum + migración `role`→`type` (default `supporting`).
+  - [x] Campos nuevos: `pronouns`, `groups[]`, `otherNames[]`, `traits[]`, `inContext`.
+  - [x] `buildAgentContext` filtra `inContext === false`.
+  - [x] Generación asistida (`buildGenerateCharacterPrompt` + `parseSuggestedCharacterList` + `store.generateCharacter`) + UI Generar/Surprise Me/preview.
+  - [x] 137 tests. Commit `f00cb79`. Review (Agente A): validación de `type` en `update_character` + limpieza `mapRoleToType` (commit `a533634`).
+- [x] **Slice 8 — Worldbuilding tipado fino** (kinds finos, OtherNames/Traits, toggle de contexto). DB v5→v6.
+  - [x] `WorldEntity.category` → `kind` (9 valores: place|organization|lore|key_event|clue|magic_system|item|rule|other).
+  - [x] `mapCategoryToKind` + `worldKindLabel` en `lib/labels.ts`.
+  - [x] Campos nuevos: `otherNames[]`, `traits[]`, `inContext`.
+  - [x] `buildAgentContext` + `buildContext` filtran `inContext` y muestran kind.
+  - [x] `bibleExtract` amplía keywords (organización/evento/pista/magia).
+  - [x] `WorldPanel` con selector de 9 kinds + tag editors + toggle.
+  - [x] 145 tests, build+TS pasan, lint 0 errores. Commit `60434ba`.
 
-## Fase 2 planificada (Slices 7-10) — Hacia el Story Bible de Sudowrite
+## Fase 2 planificada (Slices 9-10) — Hacia el Story Bible de Sudowrite
 
 > **Fuente:** auditoría de 10 capturas de Sudowrite (2026-08-13). ROADMAP ampliado con los slices 6-10 detallados. **División de trabajo:** los agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí; Kanam planifica y documenta. Cada slice actualiza este STATUS al cerrarse.
 
-- [ ] **Slice 7 — Fichas de personaje ricas + generación asistida** (Type tipado, Pronouns/Groups/OtherNames/Traits, toggle de contexto, Generate Character + Surprise Me). Release v0.3.0.
-- [ ] **Slice 8 — Worldbuilding tipado fino** (kinds finos, OtherNames/Traits, toggle de contexto). Release v0.4.0.
 - [ ] **Slice 9 — Match My Style** (clonar la voz del autor desde una muestra). Release v0.5.0.
 - [ ] **Slice 10 — Filtros de outline + vinculación documento↔outline** (POV/tiempo, escenas huérfanas). Release v0.6.0.
 

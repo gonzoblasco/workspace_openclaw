@@ -1,18 +1,36 @@
 # HANDOFF — Kanam Story · Fase 2 (Slices 7-10)
 
 **Fecha:** 2026-08-13
-**Autor:** Agente B (Slice 7)
-**Estado:** 🟢 Slice 7 COMPLETO. Próximo: **Slice 8** (Worldbuilding tipado fino).
-**Propósito:** documentar el estado actual y dejar listo el Slice 8.
+**Autor:** Agente A (Slice 8)
+**Estado:** 🟢 Slice 8 COMPLETO. Próximo: **Slice 9** (Match My Style).
+**Propósito:** documentar el estado del Slice 8 y dejar listo el Slice 9 para revisión del Agente B.
 
 ---
 
 ## Estado actual
 
-- **Slices 0-7 completos:** fundación, chat con manos, outline & beats, biblia viva, brújula, pulido (v0.1.0), story bible editable (v0.2.0), fichas de personaje ricas + generación (Slice 7).
-- **137 tests**, build + TS pasan, lint 0 errores, **CI verde** (GitHub Actions).
+- **Slices 0-8 completos:** fundación, chat con manos, outline & beats, biblia viva, brújula, pulido (v0.1.0), story bible editable (v0.2.0), fichas de personaje ricas + generación (Slice 7), worldbuilding tipado fino (Slice 8).
+- **145 tests**, build + TS pasan, lint 0 errores, **CI verde** (GitHub Actions).
 - **Repo:** `gonzoblasco/kanam-story` (público), remote `origin`. `.knowledge/` solo en el workspace (doble-git).
-- **Releases:** v0.1.0 (`133bc7d`), v0.2.0 (`329a4c4`, tag `v0.2.0`). Slice 7 → v0.3.0 pendiente.
+- **Releases:** v0.1.0 (`133bc7d`), v0.2.0 (`329a4c4`, tag `v0.2.0`). Slices 7 y 8 → v0.3.0 / v0.4.0 pendientes.
+
+## Qué se construyó en Slice 8 (Agente A)
+
+- **`WorldEntity.category` → `kind`** con 9 valores: `place | organization | lore | key_event | clue | magic_system | item | rule | other`.
+- **Migración DB v5→v6** con `mapCategoryToKind` (mapea `location→place`, `object→item`, `regla→rule`, etc., default `other`).
+- **Campos nuevos:** `otherNames[]`, `traits[]`, `inContext` (toggle de contexto).
+- **`buildAgentContext` + `buildContext`** filtran `inContext === false` y muestran el kind + campos nuevos.
+- **`bibleExtract`** amplía keywords de inferencia (organización, evento, pista, magia) y parsea los nuevos tags.
+- **UI (`WorldPanel`):** selector de kind (9 opciones), tag editors, toggle inContext, badge de ojo excluido.
+- **`buildBibleExtractPrompt`** actualizado al schema de 9 kinds.
+- Commit `60434ba`. **145 tests**, build+TS pasan, lint 0 errores.
+
+## Review de Slice 7 (Agente A) — fixes aplicados
+
+1. **🟠 `update_character` del chat podía escribir un `type` inválido.** `isValidAction` validaba el `type` en `add_character` pero no en `update_character` (el `changes` era un objeto libre). **Fix:** si el modelo propone un cambio de `type`, se valida contra el enum; si es inválido, se descarta la acción. 3 tests nuevos.
+2. **🟡 `mapRoleToType` tenía condiciones redundantes** (`r === 'protagonist'` era inalcanzable, ya lo cubría `r.includes('protagon')`). **Fix:** limpieza sin cambio de comportamiento.
+3. **💡 Prompt `add_character` del chat** ahora lista los campos completos de la ficha rica (`age`, `appearance`, `groups`, `otherNames`) para paridad con `buildGenerateCharacterPrompt`.
+- Commit `a533634`. **140 tests**.
 
 ## Qué se construyó en Slice 7 (Agente B)
 
@@ -53,13 +71,14 @@
 - [x] **Generación asistida** — `buildGenerateCharacterPrompt` + `parseSuggestedCharacterList` + `store.generateCharacter`; UI Generar/Surprise Me/preview. Chat reusa `add_character`.
 - [x] **Tests** — 137 totales. Commit `f00cb79`.
 
-## Slice 8 — Worldbuilding tipado fino (→ v0.4.0) — SIGUIENTE
+## Slice 8 — Worldbuilding tipado fino (→ v0.4.0) ✅
 
-- [ ] Kinds finos (`place|organization|lore|key_event|clue|magic_system|item|rule|other`) + migración.
-- [ ] Campos nuevos (`otherNames[]`, `traits[]`) + toggle `inContext`.
-- [ ] Tests. Release v0.4.0.
+- [x] Kinds finos (`place|organization|lore|key_event|clue|magic_system|item|rule|other`) + migración DB v5→v6 (`mapCategoryToKind`).
+- [x] Campos nuevos (`otherNames[]`, `traits[]`) + toggle `inContext`.
+- [x] `buildAgentContext` + `buildContext` filtran `inContext` y muestran kind; `bibleExtract` amplía keywords.
+- [x] Tests — 145 totales. Commit `60434ba`.
 
-## Slice 9 — Match My Style (→ v0.5.0)
+## Slice 9 — Match My Style (→ v0.5.0) — SIGUIENTE
 
 - [ ] `buildStyleProfilePrompt` + parseo a `StyleProfile`; `style.mode: 'match'` + `style.profile`.
 - [ ] Inyección del perfil en todos los prompts de generación.

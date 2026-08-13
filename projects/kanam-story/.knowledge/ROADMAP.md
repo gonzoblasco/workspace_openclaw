@@ -118,19 +118,19 @@
 - [x] **Tests** — parseo de los nuevos campos, filtro de contexto, y el flujo de generación.
   - *Hecho 2026-08-13 (Slice 7). `Character.type` enum + campos nuevos (pronouns/groups/otherNames/traits/inContext). Migración DB v4→v5. `buildGenerateCharacterPrompt` + `parseSuggestedCharacterList` + `store.generateCharacter`. UI: type select, tag editors, toggle inContext, flujo Generar/Surprise Me/preview. 137 tests, build+TS pasan, lint 0 errores. Release v0.3.0 pendiente.*
 
-## Slice 8 — Worldbuilding tipado fino
+## Slice 8 — Worldbuilding tipado fino ✅
 
-> Sudowrite tipa cada elemento (Setting, Organization, Lore, Key Event, Clue, Magic System, Item). Kanam Story ya tiene `kind: place|lore|rule|object|other` — lo refinamos y agregamos campos.
+> Sudowrite tipa cada elemento (Setting, Organization, Lore, Key Event, Clue, Magic System, Item). Kanam Story ya tenía `category: place|lore|rule|item|other` — lo refinamos a `kind` con 9 valores y agregamos campos.
 
-- [ ] **Tipos finos** — ampliar `kind` de `WorldEntity`.
-  - [ ] `place | organization | lore | key_event | clue | magic_system | item | rule | other`.
-  - [ ] Migración: mapear `place→place`, `lore→lore`, `rule→rule`, `object→item`, `other→other`.
-- [ ] **Campos nuevos** — `otherNames: string[]`, `traits: string[]` (mismo patrón que personajes).
-  - [ ] UI: campos en la ficha de elemento de mundo.
-  - [ ] `+ Add Trait`.
-- [ ] **Toggle de contexto** — `inContext: boolean` por elemento (mismo patrón que personajes).
-- [ ] **Tests** — migración de kinds, nuevos campos, filtro de contexto.
-  - *Acceptance: worldbuilding tipado fino, editable, con control de contexto. Release v0.4.0.*
+- [x] **Tipos finos** — ampliar `kind` de `WorldEntity`.
+  - [x] `place | organization | lore | key_event | clue | magic_system | item | rule | other`.
+  - [x] Migración: `mapCategoryToKind` mapea `location→place`, `lore→lore`, `rule→rule`, `object→item`, `other→other` (DB v5→v6).
+- [x] **Campos nuevos** — `otherNames: string[]`, `traits: string[]` (mismo patrón que personajes).
+  - [x] UI: campos en la ficha de elemento de mundo (`TagEditor`).
+  - [x] `+ Add Trait`.
+- [x] **Toggle de contexto** — `inContext: boolean` por elemento (mismo patrón que personajes).
+- [x] **Tests** — migración de kinds, nuevos campos, filtro de contexto.
+  - *Hecho 2026-08-13 (Slice 8). `WorldEntity.category` → `kind` (9 valores) + `otherNames[]`/`traits[]`/`inContext`. `mapCategoryToKind` + `worldKindLabel` en `lib/labels.ts`. `buildAgentContext` + `buildContext` filtran `inContext` y muestran kind. `bibleExtract` amplía keywords (organización/evento/pista/magia). `WorldPanel` con selector de 9 kinds + tag editors + toggle. 145 tests, build+TS pasan, lint 0 errores. Commit `60434ba`.*
 
 ## Slice 9 — Match My Style (clonar la voz del autor)
 
