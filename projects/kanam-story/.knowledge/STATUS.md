@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 FASE 2 COMPLETA (Slices 0-10). v0.6.0 RELEASED. Fase 3 en curso (U1-U2 done).
+## Estado: 🟢 FASE 2 COMPLETA (Slices 0-10). v0.6.0 RELEASED. Fase 3 en curso (U1-U3 done).
 
 Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
 
@@ -12,7 +12,7 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 
 - [x] **U1 (A) — Barra de formato básica** — B/I/S + undo/redo en `Editor.tsx`. Commit `b5e9484`. 155 tests, build+TS pasan, lint 0 errores. *(Nota: se creía que el subrayado requería `@tiptap/extension-underline`; verificado que StarterKit 3.27.1 ya lo incluye.)*
 - [x] **U2 (B) — Listas + headings + enlaces** — completar la barra (viñetas/numeradas, H1/H2/H3, enlaces). Subrayado habilitado. Commit `4c10c8f`. 155 tests, build+TS pasan, lint 0 errores.
-- [ ] **U3 (A) — Selección contextual IA** — indicador flotante sobre la selección conectado a las herramientas IA.
+- [x] **U3 (A) — Selección contextual IA** — indicador flotante sobre la selección conectado a las herramientas IA. Contador de palabras + Rewrite/Describe, reusa `runAI`. Se oculta al deseleccionar o click fuera. Commits `4dbe1ba` + `7bbf398`. 155 tests, build+TS pasan, lint 0 errores.
 - [ ] **U4 (B) — Contador de palabras seleccionadas + polish**.
 - [ ] **U5 (A) — Auto-import de personajes** desde la Biblia.
 - [ ] **U6 (B) — Auto-import de mundo** desde la Biblia.
