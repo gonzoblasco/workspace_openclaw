@@ -1,9 +1,9 @@
-# HANDOFF — Kanam Story · Slice 3 (Biblia Viva)
+# HANDOFF — Kanam Story · Slice 4 (Brújula Narrativa)
 
 **Fecha:** 2026-08-13
-**Autor:** Agente A (review de Slice 2 + fixes + Slice 3)
-**Estado:** 🟢 Slices 0-3 COMPLETOS. Próximo: Slice 4 (Brújula Narrativa).
-**Propósito de este HANDOFF:** que el **Agente B** (o quien siga) tome el proyecto desde el estado actual y continúe con el Slice 4.
+**Autor:** Agente B (review de Slice 3 + fixes + Slice 4)
+**Estado:** 🟢 Slices 0-4 COMPLETOS. Próximo: Slice 5 (Pulido).
+**Propósito de este HANDOFF:** que el **Agente A** (o quien siga) tome el proyecto desde el estado actual y continúe con el Slice 5.
 
 ---
 
@@ -11,25 +11,34 @@
 
 - **Slice 0 (fundación):** base `sudolab` copiada y renombrada a Kanam Story; stores de chat + beats; DB_VERSION 3.
 - **Slice 1 (Chat con Manos):** hecho por Agente A, revisado y corregido por Agente B.
-- **Slice 2 (Outline & Beats):** hecho por Agente B, **revisado y corregido por Agente A** (ver "Review de Slice 2" abajo).
-- **Slice 3 (Biblia Viva):** hecho por Agente A (ver abajo). **115 tests, build+TS pasan.**
+- **Slice 2 (Outline & Beats):** hecho por Agente B, revisado y corregido por Agente A.
+- **Slice 3 (Biblia Viva):** hecho por Agente A, **revisado y corregido por Agente B** (ver "Review de Slice 3" abajo).
+- **Slice 4 (Brújula Narrativa):** hecho por Agente B (ver abajo). **117 tests, build+TS pasan.**
 - **Repo:** `gonzoblasco/kanam-story` (público), remote `origin`. `.knowledge/` solo en el workspace (doble-git).
 
 ---
 
-## Review de Slice 2 (Agente A) — fixes aplicados
+## Review de Slice 3 (Agente B) — fixes aplicados
 
-El Slice 2 de Agente B estaba bien estructurado, pero el review destapó baches que corregí:
+1. **Gap (punto 2 del HANDOFF):** `rewrite_scene`/`append_scene` cambiaban el manuscrito pero NO marcaban `summary`/`themes`/`rules` stale. **Fix:** ahora `applyContentActions` marca esas secciones stale en ambos casos.
+2. **Undo no revertía `staleAt` (punto 3):** al deshacer un `update_character`/`update_world`/`rewrite_scene`/`append_scene`, la sección quedaba stale. **Fix:** nuevo `clearBibleStale(keys)` en el store; el undo lo llama para limpiar `staleAt` de las secciones que la acción marcó.
+3. **Lint:** el `useEffect` de reset de preview en `OutlineView` (agregado en el review de Slice 2) disparaba `set-state-in-effect` → disable de bloque.
+- Puntos 1 y 4 del HANDOFF (regenerate preserva override + prompt claro): ✅ OK, sin cambios.
 
-1. **🔴 CRÍTICO — `add_beat` del chat creaba beats sin `chapterId`.** El `ContentAction.add_beat` pone `chapterId` a nivel de acción, pero `applyContentActions` hacía `createBeat(action.beat)` sin propagarlo. Resultado: beats aceptados vía chat quedaban sin `chapterId` y no aparecían en el outline. **Fix:** `createBeat({ ...action.beat, projectId, chapterId: action.chapterId ?? action.beat.chapterId })`.
-2. **Código muerto:** `loadBeatsByChapter`/`loadBeatsByScene` (0 usos) → eliminadas del store.
-3. **Beats huérfanos al borrar capítulo/escena:** `chaptersDB.delete` y `scenesDB.delete` no limpiaban beats → agregué cascade delete en `lib/db.ts`.
-4. **Dedupe de beats sugeridos + reset del preview:** `acceptSuggested` ahora evita duplicados por título; el preview se resetea al cambiar de capítulo.
-5. **Error silencioso en `suggestBeats`:** ahora muestra el mensaje de error real.
+## Qué se construyó en Slice 4 (Brújula Narrativa)
+
+- **Campos en `Project`:** `premise`, `promise`, `theme`, `protagonist` (opcionales; `pov` ya existía).
+- **`components/BrújulaPanel.tsx`** (tab "Brújula" en el panel derecho): edita premise/promise/theme/protagonist (select de personajes)/pov, commit en blur.
+- **Editor:** strip de promesa (`editor-compass`) visible al escribir.
+- **`buildAgentContext`:** incluye la brújula (premisa/promesa/tema/protagonista) para que el agente la respete al debatir.
+- **Tests:** +2 de brújula en `buildAgentContext` → 117 totales.
+
+### Archivos tocados (Slice 4)
+- `types/index.ts`, `lib/agentPrompts.ts` (+test), `components/BrújulaPanel.tsx` (nuevo), `components/RightPanel.tsx`, `components/Editor.tsx`, `app/globals.css`.
 
 ---
 
-## Qué se construyó en Slice 3 (Biblia Viva)
+## Qué se construyó (Slice 3 — Biblia Viva)
 
 - **Regeneración por sección:** `regenerateBibleSection(key)` + `buildBibleSectionPrompt` regeneran solo una sección (no todo), preservando overrides manuales.
 - **Stale tracking:** campo `staleAt` por sección en `StoryBibleSection`; badge "desactualizada" en el panel cuando el manuscrito cambió.
@@ -56,19 +65,20 @@ El Slice 2 de Agente B estaba bien estructurado, pero el review destapó baches 
 
 ## Estado de verificación
 
-- ✅ **115 tests** pasan (8 archivos).
+- ✅ **117 tests** pasan (8 archivos).
 - ✅ **Build** + TypeScript OK.
-- ✅ Commits en `main`: `444a7db` (Slice 2), `19404c5` (Slice 3 + fixes review).
+- ✅ Commits en `main`: `47c8ccf` (review Slice 3), `278af16` (Slice 4).
 
 ---
 
-## Próximo paso (Slice 4 — Brújula Narrativa)
+## Próximo paso (Slice 5 — Pulido)
 
-> Orientación: premisa, promesa, arco, tema. Visible al escribir y discutir.
+> Release v0.1.0 usable.
 
-- Campos de brújula en el proyecto (premise, promise, theme, protagonist, pov).
-- Panel/insight que muestra la promesa mientras escribís y al debatir.
-- El agente usa la brújula para no desviar la conversación del "qué prometiste contar".
+- A11y (WCAG 2.1 AA) y validación AT manual.
+- Export (MD / PDF / DOCX).
+- Lint limpio + cobertura de tests de componentes.
+- Release v0.1.0 y registro en PROYECTOS.md.
 
 ---
 

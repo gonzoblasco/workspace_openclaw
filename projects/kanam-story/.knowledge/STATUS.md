@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 Slice 3 COMPLETO (Biblia Viva)
+## Estado: 🟢 Slice 4 COMPLETO (Brújula Narrativa)
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
@@ -50,6 +50,15 @@
   - [x] Stale tracking (`staleAt` por sección, badge "desactualizada")
   - [x] Auto-marcado de stale cuando el agente cambia personajes/mundo vía chat
   - [x] Overrides manuales preservados
+- [x] **Review Slice 3 (Agente B) + fixes** (2026-08-13)
+  - [x] Gap: `rewrite_scene`/`append_scene` no marcaban `summary`/`themes`/`rules` stale → ahora sí
+  - [x] Undo ahora limpia `staleAt` de las secciones que la acción marcó (`clearBibleStale`)
+  - [x] Lint: fix del `useEffect` de reset de preview en OutlineView (disable de bloque)
+- [x] **Slice 4: Brújula Narrativa** (117 tests, build+TS pasan)
+  - [x] Campos opcionales en `Project` (premise/promise/theme/protagonist)
+  - [x] Tab "Brújula" en el panel derecho (editable, commit en blur)
+  - [x] Strip de promesa en el editor (insight al escribir)
+  - [x] `buildAgentContext` incluye la brújula (el agente la respeta al debatir)
 
 ## Decisiones clave
 
@@ -72,4 +81,4 @@
 
 ## Próximo paso
 
-Slice 3: Biblia Viva — regeneración de biblia desde manuscrito + desde cambios del chat, actualización automática de personajes/mundo, overrides manuales preservados.
+Slice 5: Pulido — A11y (WCAG 2.1 AA) + validación AT manual, export (MD/PDF/DOCX), lint limpio + cobertura de tests de componentes, release v0.1.0 y registro en PROYECTOS.md.

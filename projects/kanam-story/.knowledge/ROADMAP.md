@@ -51,9 +51,10 @@
 
 > Orientación: premisa, promesa, arco, tema. Visible al escribir y discutir.
 
-- [ ] Campos de brújula en el proyecto (premise, promise, theme, protagonist, pov).
-- [ ] Panel/insight que muestra la promesa mientras escribís y al debatir.
-- [ ] El agente usa la brújula para no desviar la conversación del "qué prometiste contar".
+- [x] Campos de brújula en el proyecto (premise, promise, theme, protagonist, pov).
+- [x] Panel/insight que muestra la promesa mientras escribís y al debatir.
+- [x] El agente usa la brújula para no desviar la conversación del "qué prometiste contar".
+  - *Hecho 2026-08-13 (Slice 4). Campos opcionales en `Project` (premise/promise/theme/protagonist). Tab "Brújula" en el panel derecho (editable). Strip de promesa en el editor. `buildAgentContext` incluye la brújula. 117 tests, build+TS pasan.*
 
 ## Slice 5 — Pulido
 
