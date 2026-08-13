@@ -42,9 +42,10 @@
 
 ## Slice 3 — Biblia Viva
 
-- [ ] Regeneración de biblia desde manuscrito (ya existe en sudolab) + desde cambios del chat.
-- [ ] Actualización automática de personajes/mundo cuando el agente los cambia.
-- [ ] Overrides manuales por sección preservados.
+- [x] Regeneración de biblia desde manuscrito (ya existe en sudolab) + desde cambios del chat.
+- [x] Actualización automática de personajes/mundo cuando el agente los cambia.
+- [x] Overrides manuales por sección preservados.
+  - *Hecho 2026-08-13 (Slice 3). Regeneración por sección (`regenerateBibleSection` + `buildBibleSectionPrompt`), stale tracking (`staleAt` por sección, badge "desactualizada"), auto-marcado de stale cuando el agente cambia personajes/mundo vía chat. 115 tests, build+TS pasan.*
 
 ## Slice 4 — Brújula Narrativa
 

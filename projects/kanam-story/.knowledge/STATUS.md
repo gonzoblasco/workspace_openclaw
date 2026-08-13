@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 Slice 2 COMPLETO (Outline & Beats)
+## Estado: 🟢 Slice 3 COMPLETO (Biblia Viva)
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
@@ -39,6 +39,17 @@
   - [x] "Sugerir outline": flujo dedicado (buildSuggestBeatsPrompt + parseBeatList + store.suggestBeats) con preview Agregar/Descartar
   - [x] Beats de la escena actual en el editor (strip)
   - [x] `lib/outline.ts` (moveBeatInList) + tests
+- [x] **Review Slice 2 (Agente A) + fixes** (2026-08-13)
+  - [x] Fix crítico: `add_beat` del chat creaba beats sin `chapterId` (rompía chat→outline)
+  - [x] Limpieza de código muerto (`loadBeatsByChapter`/`loadBeatsByScene`)
+  - [x] Beats huérfanos al borrar capítulo/escena (cascade en db.ts)
+  - [x] Dedupe de beats sugeridos + reset del preview al cambiar capítulo
+  - [x] Error visible en `suggestBeats` (antes silencioso)
+- [x] **Slice 3: Biblia Viva** (115 tests, build+TS pasan)
+  - [x] Regeneración por sección (`regenerateBibleSection` + `buildBibleSectionPrompt`)
+  - [x] Stale tracking (`staleAt` por sección, badge "desactualizada")
+  - [x] Auto-marcado de stale cuando el agente cambia personajes/mundo vía chat
+  - [x] Overrides manuales preservados
 
 ## Decisiones clave
 
