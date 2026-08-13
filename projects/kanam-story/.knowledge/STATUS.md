@@ -14,8 +14,9 @@
   - [x] Stores de chat: `conversations`, `messages`, `contentActions` (vía `Message.actions` inline)
   - [x] Modelo `Beat` + CRUD básico (store `beats` separado con chapterId/sceneId)
   - [x] DB_VERSION 2 → 3, cascade delete extendido
-  - [x] Build + tests + TS pasan (59 tests)
-- [ ] Slice 1: Chat con Manos (MVP con `ultimo-turno`)
+- [x] Build + tests + TS pasan (65 tests)
+- [x] **Streaming Ollama (prep Slice 1):** `ollamaChatStream` (SSE) + parser `lib/ollamaStream.ts` testeado (6 tests) + ruta `/api/ollama` con `stream: true` vía ReadableStream
+- [x] **Silenciado warning lockfile:** `turbopack.root` en `next.config.ts`
 
 ## Decisiones clave
 
@@ -28,7 +29,7 @@
 | Idioma | Español (UI y prompts) |
 | Slice fino primero | Sí, para no repetir el patrón de abandono |
 | Beats | Store `beats` separado (con chapterId/sceneId), en vez de embederlos en Chapter/Scene |
-| Repo | Local sin remote por ahora (doble-git: `.knowledge/` en workspace, código en repo propio) |
+| Repo | ✅ `gonzoblasco/kanam-story` (público) — creado 2026-08-12, remote `origin`, `.knowledge/` excluido (doble-git) |
 
 ## Notas de Slice 0
 
