@@ -129,10 +129,14 @@
 
 > Sincronizado con el ROADMAP (sección "TODOs no bloqueantes"). Se atienden cuando haya espacio.
 
-### 🔴 Prioridad (pedidos de Gonzo, 2026-08-13) — atender antes del resto
+### 🔴 FASE 3 — planificada (2026-08-13), atender antes del resto
 
-- **Área de texto refinada** — el editor usa TipTap/StarterKit pero no expone barra de formato en la UI. Falta: barra de formato (negrita/cursiva/subrayado/tachado/enlaces/listas/H1-H3/undo-redo) + selección contextual que conecte el texto seleccionado con las herramientas de IA (Write/Rewrite/Describe/Expand), como el círculo azul de Sudowrite. El usuario debe poder escribir/copiar/pegar/editar libremente.
-- **Sincronización Biblia ↔ tabs** — hoy el `StoryBiblePanel` tiene un bridge manual (Detectar → preview → Importar). Gonzo quiere que lo generado en la Biblia se duplique **automáticamente** en las tabs Personajes y Mundo (con marca "de biblia"), sin duplicar entradas existentes y sin pisar ediciones manuales (preservar el modelo de aceptación).
+**Ver [PLAN-FASE-3.md](./PLAN-FASE-3.md)** — plan detallado con pipeline de revisión cruzada A/B. Dos features:
+
+1. **Área de texto refinada** — barra de formato (negrita/cursiva/subrayado/tachado/listas/H1-H3/enlaces/undo-redo) + selección contextual IA (indicador flotante que conecta la selección con Write/Rewrite/Describe/Expand). El editor ya usa TipTap/StarterKit; solo falta exponer el formato en la UI.
+2. **Sincronización Biblia ↔ tabs** — lo generado en la Biblia se duplica automáticamente en Personajes y Mundo (con marca "de biblia"), sin duplicar existentes y sin pisar ediciones manuales. Ya existe el bridge manual (Detectar → Importar); hay que automatizarlo.
+
+**Pipeline de revisión cruzada:** Agente A desarrolla unidades impares, Agente B las pares. Cada uno revisa y corrige la unidad del otro antes de avanzar. 8 unidades atómicas + cierre (release v0.7.0).
 
 ### Resto del backlog
 

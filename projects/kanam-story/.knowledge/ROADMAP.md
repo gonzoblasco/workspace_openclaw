@@ -166,6 +166,8 @@
 
 ### 🔴 Prioridad (pedidos de Gonzo, 2026-08-13) — atender antes del resto del backlog
 
+> **Plan detallado con pipeline de revisión cruzada A/B en [PLAN-FASE-3.md](./PLAN-FASE-3.md).** Release v0.7.0.
+
 - [ ] **Área de texto refinada (barra de formato + selección contextual IA)** — el editor usa TipTap/StarterKit (soporta formato) pero **no expone barra de formato en la UI**. Falta:
   - [ ] Barra de formato: negrita, cursiva, subrayado, tachado, enlaces, listas (viñetas/numeradas), H1/H2/H3, deshacer/rehacer.
   - [ ] Selección contextual: al seleccionar texto, mostrar un indicador (como el círculo azul de Sudowrite) que conecte la selección con las herramientas de IA (Write/Rewrite/Describe/Expand).
