@@ -1,9 +1,38 @@
-# HANDOFF — Kanam Story · Slice 1 (Chat con Manos)
+# HANDOFF — Kanam Story · Slice 2 (Outline & Beats)
 
 **Fecha:** 2026-08-13
-**Autor:** Agente A (implementación del Slice 1)
-**Estado:** 🟢 Slice 1 COMPLETO y probado con `ultimo-turno`
-**Propósito de este HANDOFF:** que el **Agente B** revise el trabajo del Agente A (Slice 1) con intención crítica.
+**Autor:** Agente B (Slice 2 + review/fixes de Slice 1)
+**Estado:** 🟢 Slice 1 y Slice 2 COMPLETOS. Próximo: Slice 3 (Biblia Viva).
+**Propósito de este HANDOFF:** que el **Agente A** (o quien siga) tome el proyecto desde el estado actual y continúe con el Slice 3.
+
+---
+
+## Estado actual (resumen para retomar)
+
+- **Slice 0 (fundación):** base `sudolab` copiada y renombrada a Kanam Story; stores de chat + beats; DB_VERSION 3.
+- **Slice 1 (Chat con Manos):** hecho por Agente A, **revisado y corregido por Agente B** (ver "Review de Slice 1" abajo).
+- **Slice 2 (Outline & Beats):** hecho por Agente B (ver abajo). **112 tests, build+TS pasan.**
+- **Repo:** `gonzoblasco/kanam-story` (público), remote `origin`. `.knowledge/` solo en el workspace (doble-git).
+
+## Qué se construyó en Slice 2 (Agente B)
+
+- **Navegación:** estado `view: 'editor' | 'outline'` + `currentOutlineChapterId` en el store; toggle Editor/Outline en la topbar; botón "outline" por capítulo en `ProjectTree`.
+- **`components/OutlineView.tsx`** (área principal): selector de capítulo, mapa de beats por capítulo/escena, edición inline (title/kind/status/desc/notes, commit en blur), reorder ↑/↓, add/delete.
+- **"Sugerir outline"** (tool `suggest_beats`): `buildSuggestBeatsPrompt` + `parseBeatList` + `store.suggestBeats`; preview con Agregar/Descartar (crea beats `source:'ai'`).
+- **Editor:** strip con los beats de la escena actual.
+- **`lib/outline.ts`:** `moveBeatInList` (reorder puro, testeado).
+- **Tests:** +12 (parseBeatList, buildSuggestBeatsPrompt, moveBeatInList) → 112 totales.
+
+## Review de Slice 1 (Agente B) — fixes aplicados
+
+- **HIGH:** al aceptar un cambio se perdía la conversación de chat → moví el reset de conversación de `loadProjectData` a `selectProject`.
+- **MED:** `applyContentActions` usaba snapshot de React (stale) → ahora lee el `before` de la DB; `parseAgentReply` robusto (escaneo progresivo de llaves).
+- **LOW:** validación `isValidAction` (beat/character shape, `update_bible` keys), prompt `update_bible`, `append_scene` projectId.
+- Commit: `e1152c2`.
+
+## Commits de Slice 2
+
+- `444a7db` — `feat: outline and beats view with manual editing and AI suggestions (Slice 2)` (pusheado).
 
 ---
 
@@ -126,15 +155,18 @@ Gonzo intentó clonar Sudowrite **3 veces** (`umbrawriter` v1, `sudolab`, `umbra
 
 ## Dónde dejamos / próximo paso
 
-- **Slice 0 (HECHO):** base `sudolab` copiada y renombrada a Kanam Story; stores de chat (`conversations`, `messages`, `contentActions` vía `Message.actions`) + store `beats` con CRUD; DB_VERSION 2→3; cascade delete; build+tests+TS pasan (59 tests). Commit `feat: scaffold Kanam Story foundation from sudolab` en repo local (sin remote).
-- **Slice 1 (siguiente):** Chat con Manos (MVP con `ultimo-turno` como banco de pruebas) — panel de chat persistido, buildContext del agente, streaming Ollama, herramientas (rewrite_scene, add_beat, update_character, append_scene...), modelo aceptar/deshacer, tests de prompts + parseo.
-- Luego: Outline & Beats → Biblia Viva → Brújula → Pulido.
+- **Slice 0 (HECHO):** base `sudolab` copiada y renombrada a Kanam Story; stores de chat (`conversations`, `messages`, `contentActions` vía `Message.actions`) + store `beats` con CRUD; DB_VERSION 2→3; cascade delete; build+tests+TS pasan.
+- **Slice 1 (HECHO):** Chat con Manos — panel de chat persistido, buildContext del agente, streaming Ollama, herramientas (rewrite_scene, add_beat, update_character, append_scene...), modelo aceptar/deshacer, tests. Probado con `ultimo-turno`. Revisado y corregido por Agente B.
+- **Slice 2 (HECHO):** Outline & Beats — vista en área principal, edición manual, "sugerir outline" (suggest_beats), beats de la escena en el editor. 112 tests.
+- **Slice 3 (SIGUIENTE):** Biblia Viva — regeneración de biblia desde manuscrito + desde cambios del chat, actualización automática de personajes/mundo, overrides manuales preservados.
+- Luego: Brújula (Slice 4) → Pulido (Slice 5).
 
 ## Notas operativas
 
 - **Bootstrap, no destino:** sudolab es la base funcional (editor + biblia + mundo); Kanam Story diverge hacia chat-first, el editor pasa a ser "delgado".
 - **Lint:** 8 errores pre-existentes heredados de sudolab (ProjectTree, SettingsModal, NewProjectModal) → se arreglan en Slice 5.
-- **Streaming:** hoy `/api/ollama` usa `stream:false`. Para Slice 1 hay que cambiar la ruta + `ollamaChat` (exponer AsyncIterable o SSE).
+- **Streaming:** `/api/ollama` soporta `stream: true` (SSE) y `stream: false`. `ollamaChatStream` para streaming, `ollamaChat` para una llamada.
+- **Para levantar:** `PORT=3100 npm run dev` (evita conflicto en :3000).
 
 ## Criterio de éxito del proyecto
 
