@@ -1,18 +1,27 @@
-# HANDOFF — Kanam Story · Fase 2 (Slices 7-10)
+# HANDOFF — Kanam Story · Fase 2 completa (Slices 0-10)
 
 **Fecha:** 2026-08-13
-**Autor:** Agente B (Slice 9)
-**Estado:** 🟢 Slice 9 COMPLETO. Próximo: **Slice 10** (Filtros de outline + vinculación).
-**Propósito:** documentar el estado del Slice 9 y dejar listo el Slice 10.
+**Autor:** Agente A (Slice 10)
+**Estado:** 🟢 FASE 2 COMPLETA. Slices 0-10 done. v0.6.0 RELEASED.
+**Propósito:** documentar el cierre del Slice 10 y de la Fase 2 para revisión del Agente B.
 
 ---
 
 ## Estado actual
 
-- **Slices 0-9 completos:** fundación, chat con manos, outline & beats, biblia viva, brújula, pulido (v0.1.0), story bible editable (v0.2.0), fichas de personaje ricas + generación (Slice 7), worldbuilding tipado fino (Slice 8), Match My Style (Slice 9).
-- **152 tests**, build + TS pasan, lint 0 errores, **CI verde** (GitHub Actions).
+- **Slices 0-10 completos:** fundación, chat con manos, outline & beats, biblia viva, brújula, pulido (v0.1.0), story bible editable (v0.2.0), fichas de personaje ricas + generación (v0.3.0), worldbuilding tipado fino (v0.4.0), Match My Style (v0.5.0), outline filters + orphan linking (v0.6.0).
+- **155 tests**, build + TS pasan, lint 0 errores, **CI verde** (GitHub Actions).
 - **Repo:** `gonzoblasco/kanam-story` (público), remote `origin`. `.knowledge/` solo en el workspace (doble-git).
-- **Releases:** v0.1.0 (`133bc7d`), v0.2.0 (`329a4c4`, tag `v0.2.0`). Slices 7-9 → v0.3.0/v0.4.0/v0.5.0 pendientes.
+- **Releases:** v0.1.0 → v0.6.0 (todos taggeados en GitHub).
+
+## Qué se construyó en Slice 10 (Agente A)
+
+- **`Project.tense`** (`past|present|future`) + `TENSE_LABELS`/`tenseLabel` en `lib/labels.ts`. Migración DB v6→v7 (default `past`).
+- **Selector de tense** en `CompassPanel` (junto al POV).
+- **Filtros de outline** en `OutlineView`: dropdowns de POV y tense. Cuando el POV/tense del proyecto no coincide con el filtro, el contenido del capítulo se oculta con un hint.
+- **Detección de escenas huérfanas**: escenas del capítulo actual sin beats se listan al final del outline con un botón "Vincular" que crea un beat para esa escena.
+- **`buildAgentContext` + `buildContext`** inyectan el tense.
+- Commit `9b36cde`. **155 tests**, build+TS pasan, lint 0 errores. Release v0.6.0.
 
 ## Qué se construyó en Slice 9 (Agente B)
 

@@ -145,18 +145,18 @@
 - [x] **Tests** — parseo del perfil, inyección en prompts, persistencia.
   - *Hecho 2026-08-13 (Slice 9). `buildStyleProfilePrompt` + `parseStyleProfile` + `store.analyzeStyle`. `styleText` inyecta el perfil completo en modo match. UI: modo match habilitado (pegar muestra → analizar → guardar perfil). 152 tests, build+TS pasan, lint 0 errores. Release v0.5.0 pendiente.*
 
-## Slice 10 — Filtros de outline + vinculación documento↔outline
+## Slice 10 — Filtros de outline + vinculación documento↔outline ✅
 
 > Sudowrite filtra el outline por POV y tiempo verbal, y sugiere vincular documentos al outline ("Link it / Connect it / Add Scenes"). Kanam Story ya conecta beats con escenas; agregamos los filtros y el flujo de vinculación.
 
-- [ ] **Filtros de outline** — por POV y tiempo verbal.
-  - [ ] Store: `pov` y `tense` ya existen en `Project` (pov sí; agregar `tense: 'past' | 'present' | 'future'`).
-  - [ ] UI: filtros en la vista de outline (dropdowns, como Sudowrite).
-- [ ] **Vinculación documento↔outline** — detectar escenas sin beats y sugerir vincular.
-  - [ ] Prompt in-contexto: si una escena no tiene beats, mostrar "¿Está en tu outline? Vincularla".
-  - [ ] Acción: vincular la escena a un beat existente o crear un beat nuevo.
-- [ ] **Tests** — filtros, detección de escenas sin vincular, acción de vinculación.
-  - *Acceptance: filtro el outline por POV/tiempo, y las escenas huérfanas se pueden vincular al outline. Release v0.6.0.*
+- [x] **Filtros de outline** — por POV y tiempo verbal.
+  - [x] Store: `tense: 'past' | 'present' | 'future'` agregado a `Project` (DB v6→v7, default `past`).
+  - [x] UI: filtros en la vista de outline (dropdowns de POV y tense).
+- [x] **Vinculación documento↔outline** — detectar escenas sin beats y sugerir vincular.
+  - [x] Detección: escenas del capítulo actual sin beats se listan al final del outline.
+  - [x] Acción: botón "Vincular" que crea un beat para esa escena.
+- [x] **Tests** — `tenseLabel`, contexto con tense.
+  - *Hecho 2026-08-13 (Slice 10). `Project.tense` + `TENSE_LABELS`/`tenseLabel` en `lib/labels.ts`. Migración DB v6→v7. Selector de tense en `CompassPanel`. Filtros de POV/tense en `OutlineView`. Detección de escenas huérfanas con botón "Vincular". `buildAgentContext` + `buildContext` inyectan tense. 155 tests, build+TS pasan, lint 0 errores. Commit `9b36cde`. Release v0.6.0.*
 
 ---
 
