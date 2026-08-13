@@ -20,8 +20,6 @@ interface Project {
   updatedAt: Date;
 }
 ```
-
-### Chapter
 ```ts
 interface Chapter {
   id: string;
@@ -178,6 +176,8 @@ Project 1─* Chapter 1─* Scene 1─1 Content (tipTap)
 
 ## Slice 6 — Story Bible editable (DB v3 → v4)
 
+```ts ✅ HECHO
+
 ```ts
 interface Project {
   // ...campos existentes...
@@ -192,8 +192,7 @@ interface Project {
   synopsis: string;             // override manual sobre la sección auto-generada
 }
 ```
-
-## Slice 7 — Fichas de personaje ricas (DB v4 → v5)
+> **Implementado 2026-08-13.** `Project.style` migrado de `string` → `ProjectStyle` objeto (DB v3→v4). `genres`/`braindump`/`synopsis` nuevos. Helpers en `lib/labels.ts` (`styleText`, `STYLE_PRESETS`).Slice 7 — Fichas de personaje ricas (DB v4 → v5)
 
 ```ts
 type CharacterType = 'protagonist' | 'antagonist' | 'supporting' | 'minor' | 'love_interest' | 'custom';

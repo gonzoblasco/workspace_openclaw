@@ -2,15 +2,20 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 v0.1.0 RELEASED (Slices 0-5 completos)
+## Estado: 🟢 v0.2.0 RELEASED (Slice 6 completo)
 
-- [x] **Cierre completo del pipeline (2026-08-13):** CI en GitHub Actions (lint+test+build, run verde), lint 0 errores 0 warnings, tag `v0.1.0` + GitHub Release creado. Todos los gates Define->Ship cerrados.
+- [x] **Slice 6 — Story Bible editable y tipado** (Braindump, Genre tags, Style selector, Synopsis editable; DB v3→v4). Release v0.2.0.
+  - [x] `Project.style` migrado de `string` → `ProjectStyle` objeto (mode: featured|custom|match) con migración de datos en DB v3→v4.
+  - [x] `genres: string[]` (tags removibles), `braindump: string`, `synopsis: string` (override manual).
+  - [x] `StoryBibleSettingsPanel` (nuevo tab "Story Bible" en el panel derecho) — patrón draft-and-commit del CompassPanel.
+  - [x] `buildAgentContext` (chat) y `buildContext` (generación) inyectan genres/style/braindump/synopsis.
+  - [x] Helpers centralizados en `lib/labels.ts` (`styleText`, `STYLE_PRESETS`).
+  - [x] 126 tests, build+TS pasan, lint 0 errores. Commit `6aefc3e` + release `329a4c4` (tag `v0.2.0`).
 
-## Fase 2 planificada (Slices 6-10) — Hacia el Story Bible de Sudowrite
+## Fase 2 planificada (Slices 7-10) — Hacia el Story Bible de Sudowrite
 
 > **Fuente:** auditoría de 10 capturas de Sudowrite (2026-08-13). ROADMAP ampliado con los slices 6-10 detallados. **División de trabajo:** los agentes A (VS Code) y B (ZCode) implementan y se revisan entre sí; Kanam planifica y documenta. Cada slice actualiza este STATUS al cerrarse.
 
-- [ ] **Slice 6 — Story Bible editable y tipado** (Braindump, Genre, Style, Synopsis editable; DB v3→4). Release v0.2.0.
 - [ ] **Slice 7 — Fichas de personaje ricas + generación asistida** (Type tipado, Pronouns/Groups/OtherNames/Traits, toggle de contexto, Generate Character + Surprise Me). Release v0.3.0.
 - [ ] **Slice 8 — Worldbuilding tipado fino** (kinds finos, OtherNames/Traits, toggle de contexto). Release v0.4.0.
 - [ ] **Slice 9 — Match My Style** (clonar la voz del autor desde una muestra). Release v0.5.0.

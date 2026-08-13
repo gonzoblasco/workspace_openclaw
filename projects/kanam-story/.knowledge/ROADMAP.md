@@ -76,26 +76,26 @@
 
 > El bloque central que Sudowrite muestra como base de todo. Hoy la biblia es una vista auto-generada (summary/themes/characters/world/rules). La convertimos en **editable y tipada**: Genre, Style, Synopsis editable, Braindump. Todo lo demás (slices 7-10) cuelga de acá.
 
-- [ ] **Braindump** — campo libre de volcado de ideas que alimenta el contexto del agente.
-  - [ ] Store: `braindump: string` en `Project` (o store propio `braindump` por proyecto).
-  - [ ] UI: sección editable en el panel de biblia (textarea grande, autosave con debounce).
-  - [ ] Contexto: `buildAgentContext` incluye el braindump (como contexto de bajo peso, no como regla).
-- [ ] **Genre** — géneros del proyecto para ajustar el tono de las sugerencias.
-  - [ ] Store: `genres: string[]` en `Project` (multi-select con tags).
-  - [ ] UI: sección editable con tags removibles + input para agregar.
-  - [ ] Contexto: incluido en `buildAgentContext` y en los prompts de escritura.
-- [ ] **Style** — estilo narrativo del proyecto (3 modos, ver Slice 9 para Match My Style).
-  - [ ] Store: `style: { mode: 'featured' | 'custom'; featured?: string; custom?: string }` en `Project`.
-  - [ ] UI: sección editable con selector de modo (Featured presets / Custom libre).
-  - [ ] Presets iniciales: prosa tensa, lírica, minimalista, sensorial, literaria elevada.
-  - [ ] Contexto: el style activo se inyecta en todos los prompts de generación (Write/Rewrite/Describe/Expand).
-- [ ] **Synopsis editable** — la sinopsis deja de ser solo auto-generada; se puede editar a mano.
-  - [ ] Store: `synopsis: string` en `Project` (override manual sobre la sección auto-generada).
-  - [ ] UI: sección editable; si hay override manual, se marca y se preserva (patrón `overrides` de la biblia).
-  - [ ] Contexto: la synopsis (manual o auto) alimenta `buildAgentContext`.
-- [ ] **Migración de datos** — DB_VERSION 3 → 4 con los nuevos campos en `Project`.
-- [ ] **Tests** — parseo de los nuevos campos, migración, y que el contexto incluya genre/style/synopsis/braindump.
-  - *Acceptance: el Story Bible se edita a mano, persiste, y el agente usa genre/style/synopsis/braindump en sus respuestas. Release v0.2.0.*
+- [x] **Braindump** — campo libre de volcado de ideas que alimenta el contexto del agente.
+  - [x] Store: `braindump: string` en `Project` (o store propio `braindump` por proyecto).
+  - [x] UI: sección editable en el panel de biblia (textarea grande, autosave con debounce).
+  - [x] Contexto: `buildAgentContext` incluye el braindump (como contexto de bajo peso, no como regla).
+- [x] **Genre** — géneros del proyecto para ajustar el tono de las sugerencias.
+  - [x] Store: `genres: string[]` en `Project` (multi-select con tags).
+  - [x] UI: sección editable con tags removibles + input para agregar.
+  - [x] Contexto: incluido en `buildAgentContext` y en los prompts de escritura.
+- [x] **Style** — estilo narrativo del proyecto (3 modos, ver Slice 9 para Match My Style).
+  - [x] Store: `style: { mode: 'featured' | 'custom'; featured?: string; custom?: string }` en `Project`.
+  - [x] UI: sección editable con selector de modo (Featured presets / Custom libre).
+  - [x] Presets iniciales: prosa tensa, lírica, minimalista, sensorial, literaria elevada.
+  - [x] Contexto: el style activo se inyecta en todos los prompts de generación (Write/Rewrite/Describe/Expand).
+- [x] **Synopsis editable** — la sinopsis deja de ser solo auto-generada; se puede editar a mano.
+  - [x] Store: `synopsis: string` en `Project` (override manual sobre la sección auto-generada).
+  - [x] UI: sección editable; si hay override manual, se marca y se preserva (patrón `overrides` de la biblia).
+  - [x] Contexto: la synopsis (manual o auto) alimenta `buildAgentContext`.
+- [x] **Migración de datos** — DB_VERSION 3 → 4 con los nuevos campos en `Project`.
+- [x] **Tests** — parseo de los nuevos campos, migración, y que el contexto incluya genre/style/synopsis/braindump.
+  - *Hecho 2026-08-13 (Slice 6). `Project.style` migrado a objeto `ProjectStyle` (mode: featured|custom|match) con migración DB v3→v4. `genres`/`braindump`/`synopsis` nuevos. `StoryBibleSettingsPanel` (tab "Story Bible"). `buildAgentContext` + `buildContext` inyectan los campos. Helpers en `lib/labels.ts`. 126 tests, build+TS pasan, lint 0 errores. Release v0.2.0 (commit `6aefc3e` + `329a4c4`, tag `v0.2.0`).*
 
 ## Slice 7 — Fichas de personaje ricas + generación asistida
 
