@@ -14,16 +14,18 @@
 
 > El corazón: conversar con un agente que conoce la obra y la aplica. Objetivo: usarlo con `ultimo-turno`.
 
-- [ ] Panel de chat por proyecto, persistido en IndexedDB.
-- [ ] Contexto del agente: manuscrito + biblia + outline actual (buildContext).
-- [ ] Streaming de respuesta desde Ollama.
-- [ ] **Herramientas del agente** (el "tiene manos"):
-  - [ ] `rewrite_scene` — reescribe una escena bajo acuerdo.
-  - [ ] `add_beat` / `update_beat` — arma/ajusta el outline.
-  - [ ] `update_character` / `add_character`.
-  - [ ] `append_scene`.
-- [ ] **Modelo de aceptación:** el agente propone un cambio, el usuario ve diff/resumen, **acepta/deshace**. Nada se aplica sin OK.
-- [ ] Tests de prompts + parseo de acciones de herramienta.
+- [x] Panel de chat por proyecto, persistido en IndexedDB.
+- [x] Contexto del agente: manuscrito + biblia + outline actual (buildContext).
+- [x] Streaming de respuesta desde Ollama.
+- [x] **Herramientas del agente** (el "tiene manos"):
+  - [x] `rewrite_scene` — reescribe una escena bajo acuerdo.
+  - [x] `add_beat` / `update_beat` — arma/ajusta el outline.
+  - [x] `update_character` / `add_character`.
+  - [x] `append_scene`.
+- [x] **Modelo de aceptación:** el agente propone un cambio, el usuario ve diff/resumen, **acepta/deshace**. Nada se aplica sin OK.
+- [x] Tests de prompts + parseo de acciones de herramienta.
+  - *Hecho 2026-08-13 (Slice 1). 27 tests nuevos (agentReply, agentPrompts, actions, ollamaStream). 92 tests totales. Build+TS pasan. Undo conectado a la UI + detalle por acción.*
+- [ ] **Prueba con `ultimo-turno`** (pendiente).
 
 ## Slice 2 — Outline & Beats
 

@@ -1,8 +1,8 @@
 # STATUS — Kanam Story
 
-**Actualizado:** 2026-08-12
+**Actualizado:** 2026-08-13
 
-## Estado: 🟢 En definición (Slice 0 completado, Slice 1 siguiente)
+## Estado: 🟢 Slice 1 completo (falta prueba con `ultimo-turno`)
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
@@ -17,6 +17,14 @@
 - [x] Build + tests + TS pasan (65 tests)
 - [x] **Streaming Ollama (prep Slice 1):** `ollamaChatStream` (SSE) + parser `lib/ollamaStream.ts` testeado (6 tests) + ruta `/api/ollama` con `stream: true` vía ReadableStream
 - [x] **Silenciado warning lockfile:** `turbopack.root` en `next.config.ts`
+- [x] **Slice 1: Chat con Manos** (92 tests, build+TS pasan)
+  - [x] `ChatPanel` (conversaciones + streaming + aceptar/descartar)
+  - [x] `lib/agentReply.ts` — parseo de respuesta estructurada del agente
+  - [x] `lib/agentPrompts.ts` — contexto completo + prompt JSON
+  - [x] `lib/actions.ts` — aplicar/revertir ContentActions (puro)
+  - [x] `applyContentActions` en store — persiste + devuelve undo
+  - [x] **Undo conectado a la UI** + detalle por acción
+- [ ] **Prueba con `ultimo-turno`** (pendiente)
 
 ## Decisiones clave
 
