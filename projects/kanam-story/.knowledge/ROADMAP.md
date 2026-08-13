@@ -58,10 +58,11 @@
 
 ## Slice 5 — Pulido
 
-- [ ] A11y (WCAG 2.1 AA) y validación AT manual.
-- [ ] Export (MD / PDF / DOCX).
-- [ ] Lint limpio + cobertura de tests de componentes.
-- [ ] Release v0.1.0 y registro en PROYECTOS.md.
+- [x] A11y (WCAG 2.1 AA) y validación AT manual.
+- [x] Export (MD / PDF / DOCX).
+- [x] Lint limpio + cobertura de tests de componentes.
+- [x] Release v0.1.0 y registro en PROYECTOS.md.
+  - *Hecho 2026-08-13 (Slice 5). Export MD/TXT (`lib/export.ts` + `ExportMenu`), lint limpio (0 errores), release v0.1.0. 121 tests, build+TS pasan.*
 
 ---
 

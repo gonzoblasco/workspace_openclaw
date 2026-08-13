@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 Slice 4 COMPLETO (Brújula Narrativa)
+## Estado: 🟢 v0.1.0 RELEASED (Slices 0-5 completos)
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
@@ -51,14 +51,22 @@
   - [x] Auto-marcado de stale cuando el agente cambia personajes/mundo vía chat
   - [x] Overrides manuales preservados
 - [x] **Review Slice 3 (Agente B) + fixes** (2026-08-13)
-  - [x] Gap: `rewrite_scene`/`append_scene` no marcaban `summary`/`themes`/`rules` stale → ahora sí
-  - [x] Undo ahora limpia `staleAt` de las secciones que la acción marcó (`clearBibleStale`)
-  - [x] Lint: fix del `useEffect` de reset de preview en OutlineView (disable de bloque)
+  - [x] `rewrite_scene`/`append_scene` marcan summary/themes/rules stale
+  - [x] Undo limpia `staleAt` (nuevo `clearBibleStale`)
 - [x] **Slice 4: Brújula Narrativa** (117 tests, build+TS pasan)
   - [x] Campos opcionales en `Project` (premise/promise/theme/protagonist)
-  - [x] Tab "Brújula" en el panel derecho (editable, commit en blur)
-  - [x] Strip de promesa en el editor (insight al escribir)
-  - [x] `buildAgentContext` incluye la brújula (el agente la respeta al debatir)
+  - [x] Tab "Brújula" en el panel derecho (editable)
+  - [x] Strip de promesa en el editor
+  - [x] `buildAgentContext` incluye la brújula
+- [x] **Review Slice 4 (Agente A) + fixes** (2026-08-13)
+  - [x] `protagonist` huérfano al borrar personaje (se limpia)
+  - [x] Etiquetas POV centralizadas en `lib/labels.ts`
+  - [x] Renombrado `BrújulaPanel` → `CompassPanel` (ASCII)
+  - [x] Selects de brújula commitean en `onChange`
+- [x] **Slice 5: Pulido** (121 tests, build+TS pasan)
+  - [x] Export MD/TXT (`lib/export.ts` + `ExportMenu`)
+  - [x] Lint limpio (0 errores)
+  - [x] Release v0.1.0 + registro en PROYECTOS.md
 
 ## Decisiones clave
 
@@ -71,14 +79,15 @@
 | Idioma | Español (UI y prompts) |
 | Slice fino primero | Sí, para no repetir el patrón de abandono |
 | Beats | Store `beats` separado (con chapterId/sceneId), en vez de embederlos en Chapter/Scene |
-| Repo | ✅ `gonzoblasco/kanam-story` (público) — creado 2026-08-12, remote `origin`, `.knowledge/` excluido (doble-git) |
+| Repo | ✅ `gonzoblasco/kanam-story` (público) — remote `origin`, `.knowledge/` excluido (doble-git) |
 | Vista outline | Área principal (toggle Editor/Outline), no panel derecho |
-
-## Notas de Slice 0
-
-- **Lint:** 8 errores pre-existentes heredados de sudolab (ProjectTree, SettingsModal, NewProjectModal), documentados en el README de origen. Se arreglan en Slice 5 (lint limpio), fuera de Slice 0.
-- **Bootstrap:** se reusa lo funcional (storage, editor, biblia) y Kanam Story diverge hacia chat-first; el editor pasa a ser "delgado".
+| Modelo default | `deepseek-v4-flash` (si está disponible) |
+| POV labels | Centralizadas en `lib/labels.ts` |
 
 ## Próximo paso
 
-Slice 5: Pulido — A11y (WCAG 2.1 AA) + validación AT manual, export (MD/PDF/DOCX), lint limpio + cobertura de tests de componentes, release v0.1.0 y registro en PROYECTOS.md.
+- Export PDF/DOCX (TODO).
+- Tema claro (toggle).
+- Tests de componentes (jsdom + Testing Library).
+- Tests de `lib/db.ts` (fake-indexeddb).
+- Búsqueda entre escenas.

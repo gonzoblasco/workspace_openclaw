@@ -20,7 +20,7 @@
 | **health-tracker** | PWA de monitoreo de salud (offline-first) | Clonado. Sin `.knowledge/`. | ✅ gonzoblasco/health-tracker |
 | **ai-engineering-bootcamp** | Curso de 10 niveles de AI-assisted dev con proyectos resueltos | **COMPLETADO ✅ 10/10** — 2026-08-03. Versión canónica consolidada en GitHub. N7-10 convergente. Skill `pipeline-detector` extraído del curso. | ✅ gonzoblasco/ai-engineering-bootcamp |
 | **umbrawriter-v2** | AI Fiction Co-Writer. Local-first. Chat-first. BYOK. | Clonado. Sin `.knowledge/`. | ✅ gonzoblasco/umbrawriter-v2 |
-| **kanam-story** | Co-writer de ficción local-first. Chat con manos + biblia viva + brújula + outline/beats. | Slice 0 completo + streaming Ollama. `.knowledge/` BRIEF, DATA_MODEL, ROADMAP, STATUS, HANDOFF. | ✅ gonzoblasco/kanam-story |
+| **kanam-story** | Co-writer de ficción local-first. Chat con manos + biblia viva + brújula + outline/beats. | **v0.1.0** — 2026-08-13. Slices 0-5 completos (chat, outline, biblia, brújula, export). 121 tests. | ✅ gonzoblasco/kanam-story |
 
 ## 🟡 SEMILLEROS — Documentos sueltos, sin repo propio
 
