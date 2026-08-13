@@ -90,6 +90,15 @@ Detalle completo en [ROADMAP.md](./ROADMAP.md).
   - [x] `stripHtml` preserva párrafos (antes aplanaba el manuscrito)
   - [x] Export TXT real (`markdownToPlainText`); slug sin perder acentos
   - [x] Commit `7bc30d3`
+- [x] **Slice 6: Story Bible editable** (126 tests, build+TS pasan, CI verde)
+  - [x] `braindump`, `genres[]`, `style` → `ProjectStyle` (featured|custom|match), `synopsis` editable
+  - [x] Migración DB v3→v4 (style string → objeto) + `StoryBibleSettingsPanel` (tab "Story Bible")
+  - [x] Helpers `styleText`/`STYLE_PRESETS` en `lib/labels.ts`; contexto inyecta genres/style/braindump/synopsis
+  - [x] Release v0.2.0 (`329a4c4`) + CI (`acc190e`)
+- [x] **Review Slice 6 (Agente B) + fixes** (2026-08-13) — 126 tests
+  - [x] Migración DB usa la `transaction` del versionchange (antes `db.transaction()` podía tirar `InvalidStateError`)
+  - [x] Modo "Match My Style" deshabilitado (no funcional hasta Slice 9)
+  - [x] Commit `dc7a8ad`
 
 ## Decisiones clave
 
@@ -109,8 +118,6 @@ Detalle completo en [ROADMAP.md](./ROADMAP.md).
 
 ## Próximo paso
 
-- Export PDF/DOCX (TODO).
-- Tema claro (toggle).
-- Tests de componentes (jsdom + Testing Library).
-- Tests de `lib/db.ts` (fake-indexeddb).
-- Búsqueda entre escenas.
+**Slice 7 — Fichas de personaje ricas + generación asistida** (→ v0.3.0): Type tipado (enum), campos nuevos (pronouns/groups/otherNames/traits), toggle `inContext`, generación asistida (modal + tool `generate_character`). DB_VERSION → 5.
+
+TODOs post-release (no bloquean): Export PDF/DOCX, tema claro, tests de componentes (jsdom), tests de `lib/db.ts` (fake-indexeddb), búsqueda entre escenas.
