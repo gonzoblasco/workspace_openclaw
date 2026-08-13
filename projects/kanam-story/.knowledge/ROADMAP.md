@@ -25,7 +25,9 @@
 - [x] **Modelo de aceptación:** el agente propone un cambio, el usuario ve diff/resumen, **acepta/deshace**. Nada se aplica sin OK.
 - [x] Tests de prompts + parseo de acciones de herramienta.
   - *Hecho 2026-08-13 (Slice 1). 27 tests nuevos (agentReply, agentPrompts, actions, ollamaStream). 92 tests totales. Build+TS pasan. Undo conectado a la UI + detalle por acción.*
-- [ ] **Prueba con `ultimo-turno`** (pendiente).
+- [x] **Prueba con `ultimo-turno`** (2026-08-13).
+  - *Validado end-to-end: chat conversacional, streaming, rewrite_scene con sceneId real, aceptar aplica a IndexedDB, deshacer revierte.*
+  - *Bugs destapados y arreglados: (1) buildAgentContext no incluía IDs de escenas → rewrite nunca aplicaba; (2) tras reload la conversación no quedaba seleccionada → mensajes no persistían; (3) turbopack.root mal configurado → rutas API 404.*
 
 ## Slice 2 — Outline & Beats
 

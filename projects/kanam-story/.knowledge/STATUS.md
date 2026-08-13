@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 Slice 1 completo (falta prueba con `ultimo-turno`)
+## Estado: 🟢 Slice 1 COMPLETO y probado con `ultimo-turno`
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
@@ -24,7 +24,10 @@
   - [x] `lib/actions.ts` — aplicar/revertir ContentActions (puro)
   - [x] `applyContentActions` en store — persiste + devuelve undo
   - [x] **Undo conectado a la UI** + detalle por acción
-- [ ] **Prueba con `ultimo-turno`** (pendiente)
+- [x] **Prueba con `ultimo-turno`** (2026-08-13) — validado end-to-end
+  - [x] Chat conversacional + streaming + rewrite_scene con sceneId real
+  - [x] Aceptar aplica a IndexedDB; Deshacer revierte
+  - [x] Bugs arreglados: IDs de escena en contexto, persistencia sin conversación activa, turbopack.root
 
 ## Decisiones clave
 
