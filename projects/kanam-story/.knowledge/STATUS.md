@@ -2,9 +2,23 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 FASE 2 COMPLETA (Slices 0-10). v0.6.0 RELEASED.
+## Estado: 🟢 FASE 2 COMPLETA (Slices 0-10). v0.6.0 RELEASED. Fase 3 en curso (U1 done).
 
 Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
+
+## Fase 3 — Editor refinado + Sincronización Biblia↔tabs (en curso)
+
+> Plan completo en [PLAN-FASE-3.md](./PLAN-FASE-3.md). Pipeline en cadena: A desarrolla unidades impares, B pares; cada uno revisa la unidad del otro antes de seguir.
+
+- [x] **U1 (A) — Barra de formato básica** — B/I/S + undo/redo en `Editor.tsx`. Subrayado: StarterKit no lo trae; `@tiptap/extension-underline` está en node_modules pero no en package.json → botón U deshabilitado, lo agrega B en U2. Commit `b5e9484`. 155 tests, build+TS pasan, lint 0 errores.
+- [ ] **U2 (B) — Listas + headings + enlaces** — completar la barra (viñetas/numeradas, H1/H2/H3, enlaces). Agregar `Link` + `Underline` extensions.
+- [ ] **U3 (A) — Selección contextual IA** — indicador flotante sobre la selección conectado a las herramientas IA.
+- [ ] **U4 (B) — Contador de palabras seleccionadas + polish**.
+- [ ] **U5 (A) — Auto-import de personajes** desde la Biblia.
+- [ ] **U6 (B) — Auto-import de mundo** desde la Biblia.
+- [ ] **U7 (A) — Sincronización bidireccional + no pisar manual**.
+- [ ] **U8 (B) — Tests + integración**.
+- [ ] **Release v0.7.0** + docs.
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
