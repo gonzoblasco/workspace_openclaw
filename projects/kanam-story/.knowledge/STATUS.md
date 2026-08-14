@@ -28,6 +28,7 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 - [x] **B2 — Tests de componentes** (jsdom + testing-library). Commits `9546e82`, `f3fd795`, `13b0914`, `6a9220c`. 202 tests. Aprobado tras 2 rondas.
 - [x] **B3 — Export PDF / DOCX** — `docx` + `pdfmake` client-side. Commits `b064c36`, `a9eb65c`, `461b1bc`, `1afb734` (CI Node 22). 204 tests. Aprobado tras revisión multi-ronda.
 - [x] **B4 — Búsqueda entre escenas** — `lib/search.ts` (lógica pura) + `SearchPanel.tsx` (modal global). Busca en contenido/título/summary, agrupa por capítulo con snippet + conteo, click navega a la escena, find/replace con confirmación. Commit `d8f37ad`. 21 tests nuevos. **225 tests**, build+TS pasan, lint 0 errores. **Asignado: Agente A. Pendiente revisión del Agente B.**
+- [x] **B7 — Streaming en el editor** — `runAI` migrado a `ollamaChatStream` (SSE existente). Texto insertado en vivo mientras se genera; `streamingRef` suprime el autosave durante el stream (sin guardados parciales); ante abort/error se revierte la propuesta parcial. Commit `af3cfbf`. **225 tests**, build+TS pasan, lint 0 errores. **Asignado: Agente B. Pendiente revisión del Agente A.**
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
