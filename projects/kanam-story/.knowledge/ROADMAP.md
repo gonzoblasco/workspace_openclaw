@@ -186,10 +186,11 @@
 
 #### 🥇 Alta — deuda técnica (desbloquea calidad)
 
-- [ ] **B1 — Tests de `lib/db.ts`** (`fake-indexeddb`). La DB es el corazón (migraciones + CRUD); sin tests es frágil. Agregar `fake-indexeddb` como devDep y cubrir:
+- [x] **B1 — Tests de `lib/db.ts`** (`fake-indexeddb`). La DB es el corazón (migraciones + CRUD); sin tests es frágil. Agregar `fake-indexeddb` como devDep y cubrir:
   - Migraciones (v1 → v7): cada versión migra datos sin romper.
   - CRUD de cada store (projects, conversations, messages, scenes, beats, bible, characters, world).
   - Transacciones `versionchange` (el fix del Slice 6 review).
+  - ✅ **Hecho 2026-08-14 (commit `b5d0c17`).** Migraciones extraídas a `lib/migrations.ts` (funciones puras: `migrateProjectStyle`, `migrateCharacterRole`, `migrateWorldCategory`, `migrateProjectTense`) — fake-indexeddb cuelga en upgrades asíncronos de `idb`, así que las migraciones se testean a nivel de transform puro y el CRUD con fake-indexeddb. 20 tests nuevos (`lib/db.test.ts`): 8 migraciones puras + 11 CRUD (todos los stores) + cascade delete. **183 tests totales.**
   - **Asignado:** Agente B (par). Agente A revisa.
 - [ ] **B2 — Tests de componentes** (jsdom + `@testing-library/react`). Cubrir Editor (barra de formato, indicador de selección), StoryBiblePanel (sync + revertir), CompassPanel, OutlineView. `vitest` ya está; falta el environment jsdom + testing-library.
   - **Asignado:** Agente A (impar). Agente B revisa.
