@@ -357,3 +357,19 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el diseño híbrido (presente en markdown, pasado en SQLite) respeta el flujo de trabajo real sin romperlo. La decisión clave fue versionar la DB (excepción al .gitignore) para no romper la sincronización entre máquinas.
 - LESSON: al migrar archivos planos a DB, separar datos estructurados (migrar) de documentos narrativos (no migrar), y versionar la DB si el flujo depende de sincronización entre máquinas.
 - BIASES DETECTED: none (el diseño consideró el flujo de doble máquina y la legibilidad antes de ejecutar).
+
+## 2026-08-14 — Cross-review multi-ronda con agentes paralelos atrapa bugs reales
+
+**Context:** Desarrollo del backlog B1-B7 de kanam-story con pipeline multi-agente: orquestador (Kanam) divide en items, agentes A (VS Code) y B (ZCode) desarrollan en paralelo y se revisan mutuamente (cross-review multi-ronda).
+
+**Resultado:** el cross-review atrapo **8 bugs reales** que los autores no vieron en self-review:
+- Orden de sync (U5): sincronizaba la biblia vieja antes de regenerar.
+- vfs_fonts (B3): PDF crasheaba por asumir shape `{pdfMake:{vfs}}` cuando es mapa plano.
+- Race condition (B4): updateScene sin await + read-modify-write concurrente perdia cambios.
+- Anti-flash anulado (B5): el effect de tema corria con default 'dark' antes de cargar settings, pisando el tema persistido.
+- 2 bugs de streaming (B7): cierre de dialogo caia al final del doc; chunk con solo whitespace no reemplazaba seleccion.
+- CI: jsdom 30 + Node 20 rompia (markAsUncloneable ausente) - el CI usaba Node 20 pero el proyecto corre en Node 22.
+
+**Leccion:** el self-review del autor falla sistematicamente porque el autor asume que su codigo es correcto. Un revisor con ojos frescos detecta los supuestos rotos. El cross-review multi-ronda (cada agente revisa al otro + rondas de correccion) es mas fuerte que una sola pasada. Formalizado en la skill `agent-orchestration-pipeline`. Valor: el codigo mergeado a main pasa por 2+ rondas antes de publicarse.
+
+**Advertencia:** discrepancia de versiones dev/CI (Node 20 vs 22) es fuente clasica de "pasa local, falla en CI". Alinear con `.nvmrc` + CI.

@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-14
 
-## Estado: 🟢 FASE 3 COMPLETA (U1-U8). v0.7.0 RELEASED.
+## Estado: 🟢 FASE 3 COMPLETA (U1-U8 + Backlog B1-B7). v0.8.0 RELEASED.
 
 Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
 
@@ -19,6 +19,7 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 - [x] **U7 (A) — Sincronización bidireccional + no pisar manual** — `revertBibleImport(kind, id)` en el store: quita la marca `source: 'biblia'` → `'manual'` (no-destructivo, conserva ediciones; el próximo sync ya no toca la entidad). Botón "Revertir import" en las fichas de personaje y mundo (solo visible si `source === 'biblia'`). Commit `7b2a38f`. 155 tests, build+TS pasan, lint 0 errores. **Revisado por B (U8): correcto, sin bugs.**
 - [x] **U8 (B) — Tests + integración** — lógica pura de dedupe/merge extraída a `lib/bibleSync.ts` (`buildCharacterSyncPlan`/`buildWorldSyncPlan`, sin DB). Syncs refactorizados para usarlas. 8 tests nuevos. **163 tests**, build+TS pasan, lint 0 errores. Commit `b2a7740`.
 - [x] **Release v0.7.0** + docs — bump a v0.7.0, CHANGELOG con features de la Fase 3, tag `v0.7.0` + GitHub Release. Commit `1baa434`. **Fase 3 completa.**
+- [x] **Release v0.8.0** + docs — bump a v0.8.0, CHANGELOG con features del backlog B1-B7, tag `v0.8.0` + GitHub Release. Commit `f96075c`. **Backlog completo.**
 
 ## Backlog (B1-B7) — pipeline de revisión cruzada A/B
 
@@ -27,9 +28,9 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 - [x] **B1 — Tests de `lib/db.ts`** (fake-indexeddb). Commits `b5d0c17`, `88ac174`, `13b0914`, `6a9220c`. 202 tests. Aprobado tras 2 rondas de revisión cruzada.
 - [x] **B2 — Tests de componentes** (jsdom + testing-library). Commits `9546e82`, `f3fd795`, `13b0914`, `6a9220c`. 202 tests. Aprobado tras 2 rondas.
 - [x] **B3 — Export PDF / DOCX** — `docx` + `pdfmake` client-side. Commits `b064c36`, `a9eb65c`, `461b1bc`, `1afb734` (CI Node 22). 204 tests. Aprobado tras revisión multi-ronda.
-- [x] **B4 — Búsqueda entre escenas** — `lib/search.ts` (lógica pura) + `SearchPanel.tsx` (modal global). Busca en contenido/título/summary, agrupa por capítulo con snippet + conteo, click navega a la escena, find/replace con confirmación. Commit `d8f37ad`. 21 tests nuevos. **225 tests**, build+TS pasan, lint 0 errores. **Asignado: Agente A. Pendiente revisión del Agente B.**
-- [x] **B6 — Versioning / snapshots** — `lib/snapshots.ts` (lógica pura: dedupe de idénticos, diff por líneas, formato de timestamp) + store `sceneSnapshots` (DB v7→v8) + snapshot al guardar en `updateScene` (estado previo, dedupe) + `VersionHistoryPanel.tsx` (historial con timestamp, diff, restaurar con confirmación). Commit `f7fab09`. 19 tests nuevos. **244 tests**, build+TS pasan (solo 3 errores pre-existentes), lint 0 errores. **Asignado: Agente A. Pendiente revisión del Agente B.**
-- [x] **B7 — Streaming en el editor** — `runAI` migrado a `ollamaChatStream` (SSE existente). Texto insertado en vivo mientras se genera; `streamingRef` suprime el autosave durante el stream (sin guardados parciales); ante abort/error se revierte la propuesta parcial. Commit `af3cfbf`. **225 tests**, build+TS pasan, lint 0 errores. **Asignado: Agente B. Pendiente revisión del Agente A.**
+- [x] **B4 — Búsqueda entre escenas** — `lib/search.ts` (lógica pura) + `SearchPanel.tsx` (modal global). Busca en contenido/título/summary, agrupa por capítulo con snippet + conteo, click navega a la escena, find/replace con confirmación. Commit `d8f37ad`. 21 tests nuevos. **225 tests**, build+TS pasan, lint 0 errores. **Revisado por B: fix de race condition en `handleReplace`** (updateScene sin await + read-modify-write concurrente perdía cambios; ahora agrupa por escena + await secuencial). Commit `bbd3f4e`.
+- [x] **B6 — Versioning / snapshots** — `lib/snapshots.ts` (lógica pura: dedupe de idénticos, diff por líneas, formato de timestamp) + store `sceneSnapshots` (DB v7→v8) + snapshot al guardar en `updateScene` (estado previo, dedupe) + `VersionHistoryPanel.tsx` (historial con timestamp, diff, restaurar con confirmación). Commit `f7fab09`. 19 tests nuevos. **244 tests**, build+TS pasan (solo 3 errores pre-existentes), lint 0 errores. **Revisado por B: correcto, sin correcciones** (dedupe, LCS con líneas repetidas, snapshot del estado previo, sin race con B7, migración v8, cascade, panel). Observación menor no bloqueante: id de snapshot `${sceneId}:${createdAt}` podría colisionar en el mismo ms (imposible en práctica).
+- [x] **B7 — Streaming en el editor** — `runAI` migrado a `ollamaChatStream` (SSE existente). Texto insertado en vivo mientras se genera; `streamingRef` suprime el autosave durante el stream (sin guardados parciales); ante abort/error se revierte la propuesta parcial. Commit `af3cfbf`. **225 tests**, build+TS pasan, lint 0 errores. **Revisado por A: 2 bugs corregidos** (cierre de diálogo caía al final del doc en vez de tras el bloque; primer chunk con solo whitespace no reemplazaba la selección). Commit `28fdb1e`.
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
