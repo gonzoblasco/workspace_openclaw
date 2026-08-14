@@ -324,3 +324,19 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el instinto inicial de Gonzo fue "nos quieren robar". Mi lectura honesta lo reencuadró: no es robo, es validación de que el análisis era correcto, y la ejecución ajena fue mejor. El review honesto posiciona mejor que el reclamo.
 - LESSON: en OSS, cuando alguien implementa tu análisis, sé el reviewer con el contexto completo - no el reclamante. El gap de tests del otro PR es tu puerta de entrada.
 - BIASES DETECTED: sunk cost / territorialidad (querer defender "nuestro" reporte). Contrarrestado con honestidad y foco en el resultado.
+
+## 2026-08-14 — colinhacks/zod: el diagnóstico correcto no garantiza el merge si la implementación no respeta la arquitectura
+
+**Context:** PR #6385 de Gonzo en zod (fix exactOptional + coerce, bug #6236) fue cerrado por colinhacks sin merge. El diagnóstico de causa raíz era correcto y colinhacks lo reconoció ("The diagnosis is right", "Thanks for the investigation, it's what pinned down the JIT/jitless split"). Pero la implementación (helper `hasApplicableFallback` que enumeraba tipos de wrapper en el object loop) no era la arquitectura que el maintainer quería. colinhacks indicó la dirección (fix en `$ZodExactOptional.parse` via `optin`) y abrió su propio PR #6405 implementándola.
+
+**Lesson — en repos con maintainer fuerte y opinado, la dirección de diseño pesa tanto como la corrección:**
+- El feedback accionable (los 2 P2 del bot Codex) se arregla y se mergea. La dirección de fondo (cómo debe expresarse el fix en la arquitectura del repo) no es negociable - si no la respetás, el maintainer cierra y lo implementa él mismo.
+- El diagnóstico correcto es necesario pero no suficiente. Antes de implementar un fix en un repo con maintainer opinado, vale la pena mirar cómo el maintainer ya resolvió problemas similares (qué patrones usa, qué rechaza) para alinear la implementación con su visión desde el arranque.
+- Riesgo de reviews automatizados (Codex, etc.): dan feedback de corrección (P2 puntuales), no de diseño. Ninguno señaló el problema arquitectónico de fondo (hardcoded list de tipos). El problema real lo vio el maintainer al leer el código.
+- No fue un "robo" ni un cierre injusto: fue un maintainer que prefirió implementar él mismo con su arquitectura. El trabajo de Gonzo no se perdió - fue el trampolín que validó el diagnóstico y le dio al maintainer la dirección. Eso tiene valor de portfolio (crédito explícito del maintainer).
+
+**Self-reflection:**
+- CONTEXT: post-mortem de PR OSS cerrado (zod #6385)
+- REFLECTION: el instinto de Gonzo fue "¿hicimos algo mal?". La respuesta honesta: no fue un error de proceso grave, pero sí una lección de alineación con la arquitectura del maintainer. El diagnóstico fue el activo; la implementación fue el punto de fricción.
+- LESSON: en repos con maintainer opinado, alinear la implementación con la visión del maintainer desde el arranque (mirar cómo resolvió problemas similares) vale más que un fix funcionalmente correcto con arquitectura ajena.
+- BIASES DETECTED: confirmation bias (asumir que un fix con 3921 tests verdes y 2 P2 arreglados estaba "listo para mergear" sin considerar la dirección de diseño del maintainer).
