@@ -59,6 +59,41 @@ Cada unidad de la Fase 4 debe cumplir desde el diseño:
 
 ---
 
+## Estrategia de ejecución (decisión del orquestador, 2026-08-14)
+
+**Correr en CADENA (lineal), un agente a la vez** — NO en paralelo. Mismo pipeline que la Fase 3 (U1-U8 en cadena con cross-review).
+
+### Por qué NO en paralelo
+
+La Fase 4 tiene **dependencias fuertes** entre unidades (a diferencia de B1-B7 que eran independientes):
+- **U1 (layout) es la base** — U2-U7 no pueden empezar sin el nuevo layout de secciones apiladas montado.
+- **U2, U3** dependen de U1 (scrollspy/colapso y renombrado/estilos operan sobre el layout nuevo).
+- **U4-U7** dependen de U1 (outline, onboarding, creación y chat viven dentro del layout nuevo).
+- **U8** es el cierre (depende de todo).
+
+### Por qué en cadena
+
+1. **Dependencias fuertes** — en paralelo, el agente que espera por U1 se bloquea o asume un layout que no existe.
+2. **Cross-review integra la a11y** — en cadena, cada agente revisa la a11y de la unidad anterior antes de seguir (visión de a11y integrada).
+3. **Sin conflictos de archivos** — en paralelo, dos agentes tocando `globals.css`/`store.tsx`/layout chocarían. En cadena, uno a la vez.
+4. **La Fase 3 lo validó** — el pipeline en cadena U1-U8 funcionó y atrapó bugs reales.
+
+### Excepción considerada (no adoptada)
+
+U2 y U3 son ambas post-U1 y tocan archivos distintos (U2: scrollspy/acordeón; U3: renombrado/estilos). **Podrían ir en paralelo** después de U1 para acelerar. Pero se mantienen en cadena para preservar el cross-review limpio y evitar que el orquestador tenga que coordinar dos agentes a la vez. Si en la práctica U1 queda sólida y se quiere acelerar, se puede reconsiderar.
+
+### Flujo de ejecución
+
+```
+U1 (A) → B REVISA U1 + U2 (B) → A REVISA U2 + U3 (A) → B REVISA U3 + U4 (B) →
+A REVISA U4 + U5 (A) → B REVISA U5 + U6 (B) → A REVISA U6 + U7 (A) →
+B REVISA U7 + U8 (B) → Cierre (A y B revisan conjunto + orquestador hace release v0.9.0)
+```
+
+El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (contexto + revisar unidad anterior + desarrollar la suya + reglas a11y).
+
+---
+
 ## Desglose de tareas (unidades atómicas con a11y integrada)
 
 ### Feature 1 — Navegación por secciones apiladas

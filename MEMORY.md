@@ -27,6 +27,16 @@
 - Todo se registra: MEMORY.md, memory/YYYY-MM-DD.md, HANDOFF.md, CHANGELOG.md
 - Los aprendizajes detallados van en `docs/LEARNINGS.md`, no acá.
 
+## Proyecto en curso — Kanam Story Fase 4 (v0.9.0)
+
+- **Fase 4 = rediseño de navegación accesible**: secciones apiladas en el área central (como Sudowrite/NovelCrafter, en vez de tabs del panel derecho) + estructuras opcionales (generar escena desde outline sin pre-crear capítulos). **UI + a11y integrada desde el diseño** (WCAG), no como capa final.
+- **Alcance**: 15 items en 5 ejes (navegación, estructuras opcionales, co-writer/IA, pulido UI, calidad). 8 unidades U1-U8.
+- **Estrategia de ejecución (decisión 2026-08-14): correr en CADENA (lineal), un agente a la vez** — NO en paralelo. Las unidades tienen dependencias fuertes (U1 es la base de todo). Mismo pipeline que Fase 3: U1(A) → B revisa+U2(B) → A revisa+U3(A) → ... → U8(B) → cierre. Cada agente revisa la a11y de la unidad anterior (cross-review integra a11y).
+- **Referencia visual**: mockup aprobado en `projects/kanam-story/preview-layout-v090.html`.
+- **Plan completo**: `projects/kanam-story/.knowledge/PLAN-FASE-4.md`.
+- **Pendiente de la sesión previa**: fix del test flaky de `lib/db.test.ts` (beforeEach a medias, sin commitear) → entra en U8.
+- **Antecedente**: Fase 3 + backlog B1-B7 completos (v0.7.0 y v0.8.0), 244 tests, pipeline multi-agente validado (skill `agent-orchestration-pipeline`).
+
 ## Arquitectura de Agentes — Goal-Oriented
 
 Inspirado por el incidente de julio 2026 (OpenAI agent escapó sandbox, atacó Hugging Face autónomamente por 4.5 días).
