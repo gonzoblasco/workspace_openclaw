@@ -2,7 +2,7 @@
 
 > **Fecha:** 2026-08-14
 > **Autor:** Kanam (planificación y documentación)
-> **Estado:** U1-U3 completadas y revisadas; **U4 completada** (2026-08-14, commits `acb04d5` + `3a5adcb`). Pendiente U5.
+> **Estado:** U1-U4 completadas y revisadas; **U4 revisada y corregida** (2026-08-14, fix `896b4af`) y **U5 completada** (2026-08-14, commits `a5eeb55` + `fadea7a`). Pendiente U6.
 > **Fuente:** pedidos de Gonzo (2026-08-14) + mockup aprobado en `projects/kanam-story/preview-layout-v090.html` + patrón de Sudowrite/NovelCrafter.
 > **Visión:** NO es solo corregir bugs — es un **rediseño donde UI y a11y están integradas desde el diseño**, no como capa final.
 
@@ -109,7 +109,7 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 | Unidad | Agente | Tarea | Requisitos a11y |
 |---|---|---|---|
 | **U4** ✅ | B | **Generar escena desde outline** — botón por beat → crea escena → abre editor. Lógica pura testeable en `lib/`. | Botones con `aria-label` descriptivo; feedback de éxito/error anunciado (live region polite); foco movido al editor al generar. |
-| **U5** | A | **Onboarding por plantillas** — al crear proyecto: outline/biblia/plantilla de género/vacío. | Opciones como radio group accesible (`role="radiogroup"`) o lista navegable por teclado; `aria-checked`; instrucciones claras. |
+| **U5** ✅ | A | **Onboarding por plantillas** — al crear proyecto: outline/biblia/plantilla de género/vacío. | Opciones como radio group accesible (`role="radiogroup"`) o lista navegable por teclado; `aria-checked`; instrucciones claras. |
 | **U6** | B | **Creación en línea** — botones "＋" contextuales en cada vista. | Botones con `aria-label` (no solo "＋"), foco visible, feedback anunciado al crear. |
 
 ### Feature 3 — Co-writer y IA
@@ -214,3 +214,36 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 **Pendiente para el Agente A (U5):**
 - Revisar U4 (incluida la a11y): el flujo "generar escena desde outline" (botón por beat, creación + capítulo opcional, relink del beat, foco al editor, live region). Observación de UX a considerar: al hacer click repetido sobre un beat que ya tiene escena, se crea una escena nueva cada vez (el beat se relinkea a la última); si se prefiere "reutilizar la escena existente" en ese caso, ajustar en `planGenerateScene`/handler. Validar con AT manual (VoiceOver/NVDA) que la live region anuncia el feedback tras el cambio de vista (toque anuncio AT).
 - Desarrollar **U5 (onboarding por plantillas al crear proyecto)** — opciones como radio group accesible (`role="radiogroup"`), `aria-checked`, instrucciones claras, navegación por teclado.
+
+### Revisión de U4 por Agente A (2026-08-14) — 1 corrección aplicada (commit `896b4af`)
+
+**Revisión (flujo, función pura, a11y):**
+- **Flujo end-to-end verificado** en browser: cada beat tiene el botón "Generar escena para "<título>"" (aria-label descriptivo); al hacer click crea la escena (y el capítulo si falta), relinkea el beat, cambia a vista editor, mueve el foco al editor (`.tiptap-editor` con `ProseMirror-focused`) y la live region global anuncia el resultado.
+- **`planGenerateScene`** (función pura): correcta y testeable sin DB. Los 6 tests cubren capítulo existente, capítulo nuevo con/ sin título, fallback de resumen (descripción→notas), fallback de título y `order` por escenas del capítulo. **Se agregaron 3 tests más** (9 total) para el nuevo comportamiento de reutilización.
+- **a11y validada:**
+  - Live region global persistente (`role="status"` en `app/page.tsx` vía `announce`/`announcement` del store): **correcta**. El movimiento a nivel de página fue la decisión justa — la local de `OutlineView` se desmontaba al cambiar a editor en el mismo render, y con la global el AT la lee. Verificado en browser que el texto "Escena "Nuevo beat" generada." aparece en el `status` incluso tras el cambio de vista.
+  - `requestEditorFocus`: funciona (foco cae en el editor).
+  - No rompe el h1→h2→h3 de OutlineView ni el modelo de aceptación.
+- **Validación AT manual** (skill `a11y-at-validation`): el cambio toca anuncio de screen reader (live region), por lo que la validación manual es obligatoria. Se verificó en browser (DOM del `status` + timing) que el anuncio persiste tras el cambio de vista; queda registrado que la verificación con VoiceOver/NVDA físico es la confirmación definitiva (los tests verdes no cubren el timing del anuncio).
+
+**Corrección aplicada (UX, decisión del Agente A):** al hacer click repetido sobre un beat que ya pertenece a una escena, **ahora se reutiliza esa escena** (se selecciona y abre) en lugar de crear una duplicada. Se implementó en `planGenerateScene` (nuevo `existingSceneId` en el plan) y en el handler de `OutlineView` (si `existingSceneId`, `selectScene` + abrir sin crear). Esto evita escenas duplicadas accidentales por clicks repetidos. Commit `896b4af`.
+
+### U5 — Agente A (2026-08-14) — commits `a5eeb55` + `fadea7a`
+
+**Qué se hizo:**
+- **Onboarding por plantillas al crear proyecto** (`NewProjectModal`): al crear un proyecto se ofrecen 4 puntos de partida opcionales:
+  1. **Outline en blanco** — crea un capítulo "Capítulo 1" con un "Primer beat".
+  2. **Biblia de la historia** — crea la biblia en blanco (secciones listas para llenar).
+  3. **Plantilla de género** — estructura sugerida de capítulos + beats según thriller/romance/sci-fi.
+  4. **Proyecto vacío** — sin estructura; el usuario construye como quiera.
+- **Nunca obliga**: el usuario puede elegir "Proyecto vacío" o cualquier opción; el flujo de creación existente no se rompe.
+- **Datos puros** `lib/projectTemplates.ts` (`GENRE_TEMPLATES` + `getGenreTemplate`): capítulos/beats/kinds por género, sin DB. `createProjectWithStructure` en el store aplica la estructura tras crear el proyecto (usa `chaptersDB`/`beatsDB`/`storyBibleDB` directamente).
+- **a11y (radio group accesible)** en `components/StarterPicker.tsx`: `role="radiogroup"` con `role="radio"` y `aria-checked`, **roving tabindex** (la opción elegida es tabulable), navegación por flechas (ArrowUp/Down/Left/Right), Enter/Espacio para seleccionar, `aria-labelledby` en cada radio, instrucciones descriptivas por opción, foco visible vía el anillo global `:focus-visible`, contraste AA con las variables del tema.
+- **Fix a11y adicional** (`fadea7a`): al cerrar el modal de creación, el foco quedaba atrapado en un nodo `aria-hidden` (warning de consola "Blocked aria-hidden on an element because its descendant retained focus"). Se restaura el foco al botón que abrió el modal en `onClose` (WCAG 2.4.3).
+
+**Verificación:** 262 tests (250 + 9 U5 + 3 U4-reuse), lint 0 errores, build + TS verdes. Verificado en browser: el modal muestra las 4 opciones como radio group; al elegir "Plantilla de género" aparece el sub-radiogroup de géneros; al crear un proyecto con Thriller se arman los 5 capítulos y el beat incitante en el outline; teclado (flechas) mueve la selección; al cerrar el modal el foco vuelve al botón "Nuevo proyecto".
+
+**Pendiente para el Agente B (U6 — creación en línea contextual):**
+- Revisar U5 (incluida la a11y): el radio group de puntos de partida (4 opciones + sub-radiogroup de géneros), la creación de estructura por plantilla (`createProjectWithStructure`), el fix de foco del modal. Validar con AT manual (VoiceOver/NVDA) el radio group y el anuncio, y que la navegación por teclado (flechas + Tab + Enter) se comporta según APG radiogroup.
+- Desarrollar **U6 (creación en línea)** — botones "＋" contextuales en cada vista.
+
