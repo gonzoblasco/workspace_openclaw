@@ -2,7 +2,7 @@
 
 > **Fecha:** 2026-08-14
 > **Autor:** Kanam (planificación y documentación)
-> **Estado:** U1 completada y revisada por Agente B; **U2 completada** (2026-08-14, commit `771dabb`). Pendiente U3.
+> **Estado:** U1 y U2 completadas y revisadas; **U3 completada** (2026-08-14, commit `f3dde30`). Pendiente U4.
 > **Fuente:** pedidos de Gonzo (2026-08-14) + mockup aprobado en `projects/kanam-story/preview-layout-v090.html` + patrón de Sudowrite/NovelCrafter.
 > **Visión:** NO es solo corregir bugs — es un **rediseño donde UI y a11y están integradas desde el diseño**, no como capa final.
 
@@ -186,6 +186,17 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 
 **Verificación:** 244 tests, build + TS (3 errores pre-existentes en tests, fuera de scope), lint 0 errores. Chequeo manual en browser: scrollspy responde al subir/bajar (Brújula/Biblia/Co-writer), acordeón colapsa/expande con `aria-expanded` y body `hidden`, Space opera el toggle, jerarquía de headings intacta.
 
-**Pendiente de revisión (Agente A, U3):**
-- Renombrar/eliminar el título interno "Story Bible" dentro de la sección "Ajustes".
-- Consistencia visual de cards y espaciado; heading h1 para OutlineView.
+**Revisión por Agente A (U3):**
+- U2 **aprobada sin correcciones**. a11y verificada en browser: al clickear una sección del sidebar, el main hace `scrollIntoView` suave hasta el inicio de la sección (sin jitter/rebote con el scrollspy) y el item del sidebar recibe `aria-current="true"`. Acordeón: cada h2 tiene un `<button>` nativo con `aria-expanded`/`aria-controls="body-{key}"`; al colapsar el body queda `hidden` pero el h2 permanece visible (jerarquía h1→h2 intacta); operable por Enter/Space. El scrollspy solo cambia `aria-current` en el DOM (no anuncio AT extra, correcto para este patrón). No rompe el layout de U1 ni el editor/outline.
+
+### U3 — Agente A (2026-08-14) — commit `f3dde30`
+
+**Qué se hizo:**
+- **Renombrado "Story Bible" → "Ajustes"**: `StoryBibleSettingsPanel` dejó de pintar su heading interno "Story Bible" (duplicaba el h2 de la sección). Ahora la sección apilada "Ajustes" muestra un único título coherente.
+- **Sistema de headers consistentes**: clases `.stack-panel-header` (fila de acciones) y `.stack-panel-hint` (subtítulo) aplicadas a las 7 cards apiladas (Chat, Brainstorm, Personajes, Mundo, Biblia, Ajustes, Brújula). Se eliminaron los `<strong>` que repetían el h2 del acordeón ("Co-writer", "Personajes (n)", "Mundo (n)", "Biblia de la historia", "Brújula Narrativa"). CSS muerto `.chat-header` removido.
+- **Heading h1 para OutlineView**: se agregó `<h1>Outline</h1>` y los títulos de capítulo/escena pasaron a `<h2>`/`<h3>` → jerarquía coherente h1→h2→h3 sin saltos (consistente con la vista Historia h1→h2).
+
+**Verificación:** 244 tests, build + TS, lint 0 errores. Verificado manualmente en browser: "Story Bible" eliminado y "Ajustes" único título en su sección; cards unificadas (headers + hints consistentes); OutlineView con h1→h2→h3; acordeón de U2 intacto (aria-expanded/aria-controls correctos, Space opera el toggle); `aria-current` en el sidebar sigue actualizándose.
+
+**Pendiente para el Agente B (U4):**
+- Desarrollar **U4 (generar escena desde outline + función pura testeable en `lib/`)**. Recordar: botones con `aria-label` descriptivo, feedback de éxito/error anunciado (live region polite), foco movido al editor al generar. La a11y de U3 ya está revisada; U4 debe no romper el h1/h2/h3 de OutlineView.
