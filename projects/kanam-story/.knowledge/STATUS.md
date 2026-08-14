@@ -2,9 +2,15 @@
 
 **Actualizado:** 2026-08-14
 
-## Estado: 🟢 FASE 3 COMPLETA (U1-U8 + Backlog B1-B7). v0.8.0 RELEASED.
+## Estado: � FASE 4 EN CURSO (v0.9.0). U1 COMPLETA, resto pendiente.
 
 Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
+
+## Fase 4 — Rediseño de navegación accesible (EN CURSO, v0.9.0)
+
+> Plan completo en [PLAN-FASE-4.md](./PLAN-FASE-4.md). Pipeline en cadena: A desarrolla unidades impares, B pares; cada uno revisa la unidad del otro (incluida su a11y) antes de seguir.
+
+- [x] **U1 (A) — Refactor de layout: secciones apiladas en el main** — grid 3→2 columnas, `RightPanel` eliminado como contenedor de tabs, las 7 secciones (Co-writer, Brainstorm, Personajes, Mundo, Biblia, Ajustes, Brújula) apiladas verticalmente en el main con scroll. Store `view` extendido a `'editor' | 'outline' | 'story'` + `activeStorySection`. Sidebar navega Escritura/Outline/Historia con `aria-current`. a11y integrada: skip link, `<nav aria-label="Secciones">`, `<main id="contenido-principal">`, cada sección como `<section aria-labelledby>` con h2 bajo h1 (jerarquía sin saltos), foco visible global. Commit `3437359`. **244 tests**, build+TS pasan (solo errores pre-existentes en `bibleSync.test.ts`/`export.test.ts`), lint 0 errores. **Pendiente revisión de a11y por Agente B (U2).**
 
 ## Fase 3 — Editor refinado + Sincronización Biblia↔tabs (COMPLETA)
 

@@ -2,7 +2,7 @@
 
 > **Fecha:** 2026-08-14
 > **Autor:** Kanam (planificación y documentación)
-> **Estado:** Planificado. Pendiente de ejecución por Agentes A y B.
+> **Estado:** U1 completada (2026-08-14, commit `3437359`). Pendiente revisión de a11y por Agente B y ejecución de U2.
 > **Fuente:** pedidos de Gonzo (2026-08-14) + mockup aprobado en `projects/kanam-story/preview-layout-v090.html` + patrón de Sudowrite/NovelCrafter.
 > **Visión:** NO es solo corregir bugs — es un **rediseño donde UI y a11y están integradas desde el diseño**, no como capa final.
 
@@ -100,7 +100,7 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 
 | Unidad | Agente | Tarea | Requisitos a11y |
 |---|---|---|---|
-| **U1** | A | **Refactor de layout** — eliminar tabs del `RightPanel`, montar secciones apiladas en el main. Grid 3→2 columnas. Mover contenido de los 7 paneles a secciones apiladas. | Landmarks (`<nav>`, `<main>`, `<section aria-labelledby>`), jerarquía de headings (h1→h2→h3), skip link, foco visible, orden de tabulación lógico. |
+| **U1** ✅ | A | **Refactor de layout** — eliminar tabs del `RightPanel`, montar secciones apiladas en el main. Grid 3→2 columnas. Mover contenido de los 7 paneles a secciones apiladas. | Landmarks (`<nav>`, `<main>`, `<section aria-labelledby>`), jerarquía de headings (h1→h2→h3), skip link, foco visible, orden de tabulación lógico. |
 | **U2** | B | **Scrollspy + colapsar secciones** — sidebar resalta sección activa al scroll; acordeón para colapsar/expandir. | `aria-current="true"` en item activo; `aria-expanded`/`aria-controls` en el acordeón; operación por teclado (Enter/Espacio); foco gestionado al expandir. |
 | **U3** | A | **Renombrar "Story Bible"→"Ajustes" + consistencia visual** — unificar estilos de secciones apiladas (card, espaciado, encabezados) según mockup. | Contraste WCAG AA en el nuevo estilo; foco visible en todos los controles; labels descriptivos. |
 
@@ -150,3 +150,24 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 
 - **Fix test flaky de DB** — el `beforeEach` de `lib/db.test.ts` quedó a medias (cambié a `deleteDatabase` + reimport; falta confirmar que no cuelga y que elimina la flakiness). → entra en U8.
 - **Fix toolbar desbordado** — commit `01e523a` (nowrap + scroll) ya está; con U1 el toolbar desaparece, el fix no estorba.
+
+---
+
+## Bitácora de ejecución
+
+### U1 — Agente A (2026-08-14) — commit `3437359`
+
+**Qué se hizo:**
+- Grid pasó de `280px 1fr 360px` a `280px 1fr` (2 columnas). `RightPanel.tsx` eliminado como contenedor de tabs (borrado el componente y su CSS).
+- Store: `view` extendido de `'editor' | 'outline'` a `'editor' | 'outline' | 'story'` + estado `activeStorySection` (tipo `StorySectionKey` en `types/index.ts`).
+- `components/StorySections.tsx`: renderiza las 7 secciones apiladas verticalmente en el main. Definiciones centralizadas en `lib/storySections.ts` (`STORY_SECTIONS`).
+- Sidebar (`ProjectTree.tsx`): ahora es `<nav aria-label="Secciones">` que navega **Escritura / Outline / Historia** (7 items), con `aria-current="true"` en el item activo.
+- a11y integrada: skip link (`#contenido-principal`), `<main id="contenido-principal">`, cada sección como `<section aria-labelledby>` con h2 bajo h1 "Historia", `:focus-visible` global.
+
+**Verificación:** 244 tests, build + TS (solo 3 errores pre-existentes en `bibleSync.test.ts`/`export.test.ts`, fuera del scope de U1), lint 0 errores. Verificado manualmente en browser: 2 columnas, 7 secciones apiladas con landmarks y `aria-current`, editor/outline intactos.
+
+**Pendiente de revisión (Agente B, al iniciar U2):**
+1. **a11y del rediseño** — validar skip link (foco al tabular), jerarquía de headings, `aria-current` y landmarks con un AT/auditoría; el foco `:focus-visible` global no debe romper el focus ring de Bootstrap.
+2. **Decisión de alcance** — los paneles conservan sus títulos internos originales (p. ej. "Story Bible" dentro de la sección "Ajustes"). Renombrar el título interno queda para U3.
+3. **`rightPanelCollapsed`** — el campo sigue en `Settings`/DB por compatibilidad (eliminarlo exigiría migración); sin uso en la UI nueva. Decidir en U8 si se limpia.
+4. **Heading de OutlineView** — la vista outline no tiene h1 de página (comportamiento pre-existente); no se tocó en U1. Puede unificarse en U3.
