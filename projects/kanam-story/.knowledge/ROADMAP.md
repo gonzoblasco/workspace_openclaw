@@ -205,6 +205,13 @@
 
 - [x] **B3 — Export PDF / DOCX** — hoy solo MD/TXT (`lib/export.ts` + `ExportMenu`). Agregar export PDF y DOCX (reusar el HTML que ya genera MD/TXT, o librería server-side).
   - ✅ **Hecho 2026-08-14 (commit `b064c36`).** `docx` (v9) para .docx y `pdfmake` (v0.3) para .pdf, ambos client-side (app local-first, sin server). `exportManuscriptPdf` + `exportManuscriptDocx` en `lib/export.ts` + `markdownToPdfmakeContent` (convierte markdown a estructura pdfmake: headings, listas agrupadas en `ul`, blockquotes, párrafos). `downloadBlob` para binarios. Opciones PDF y DOCX en `ExportMenu`. Import dinámico de pdfmake para no inflar el bundle inicial. 5 tests nuevos de `markdownToPdfmakeContent`. **199 tests totales.**
+  - **Revisado 2026-08-14 (Agente A).** ✅ El import dinámico de pdfmake/docx no rompe el bundle de Next (build verde; `ExportMenu` es `'use client'` y los exports se disparan solo por click). No rompió los exports MD/TXT existentes. `markdownToPdfmakeContent` cubre headings/listas/blockquotes/párrafos.
+  - **Fix aplicado 2026-08-14 (Agente A, commit `a9eb65c`):**
+    1. **Bug crítico — PDF export crasheaba:** `vfs_fonts` en runtime es un mapa plano `{ "<font>.ttf": base64 }` (`module.exports = vfs`), NO `{ pdfMake: { vfs } }`. B3 accedía a `vfsFonts.pdfMake.vfs` → `undefined` → `addVirtualFileSystem(undefined)` lanzaba `TypeError` en su `for...in`. Corregido a `addVirtualFileSystem(vfsFonts)` (verificado en runtime con node).
+    2. **Calidad — markers inline `**`/`*` se filtraban literalmente** al PDF/DOCX: `buildManuscriptMarkdown` genera `- **Santiago**...` y `*meta*`, pero pdfmake/docx no parsean markdown. Agregué `inlineToPdfmake` (pdfmake) e `inlineToDocxRuns` (docx) que convierten `**bold**`/`*italic*` en nodos con `bold`/`italics`. Aplica a listas y párrafos.
+    3. **UX — errores silenciosos:** `ExportMenu` hacía `.catch(() => {})` (sin feedback si fallaba). Ahora muestra el error en el menú y solo cierra el dropdown si la exportación tuvo éxito.
+    4. **tsc:** B3 introdujo un error TS en `export.test.ts` (callback `.some()` con tipo incorrecto) — corregido. Quedan solo los 3 errores pre-existentes (`export.test.ts` style, `bibleSync.test.ts`).
+  - **203 tests totales** (5 originales de B3 + 1 nuevo de inline markdown). Build + lint + tsc verdes.
   - **Asignado:** Agente B. Agente A revisa.
 
 #### 🥈 Media — features de producto
