@@ -308,3 +308,19 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el bug del sync "eterno" fue un buen catch — no asumí que era un cuelgue de red, investigué y encontré que era la IA cloud en serie. El port de diseño de v1 fue eficiente (extraer código real de v1 en vez de reimplementar desde las guías).
 - LESSON: en proyectos con IA, el fallback determinístico para dev/mock no es opcional — es la diferencia entre una app usable y una que parece colgada. Y para decisiones de infra (como Storybook), pensar en el tamaño del equipo antes de agregar.
 - BIASES DETECTED: none (el diagnóstico del sync fue sistemático, no asumí).
+
+## 2026-08-14 — radix-ui: cuando alguien implementa tu análisis, sé el reviewer
+
+**Context:** Gonzo documentó en el issue #4110 de radix-ui/primitives la causa raíz de un bug de a11y (race de timing: VoiceOver lee la primera opción antes de que el re-render pinte los atributos) y 2 opciones de fix. No subió código, solo análisis. Días después, otro contributor (waterWang) abrió el PR #4112 implementando literalmente la opción A - y con un approach técnicamente superior (setAttribute directo en el DOM en useLayoutEffect, evitando el state round-trip).
+
+**Lesson — cuando alguien implementa tu análisis, el mejor move no es reclamar autoría, es convertirte en el reviewer con el contexto completo:**
+- No es robo de código (Gonzo no subió código, solo análisis) - es robo de dirección, y la ejecutó mejor. Decir "está mal" sería deshonesto y quemaría credibilidad con los maintainers.
+- El review honesto (validar el approach + señalar gaps reales) posiciona mejor que reclamar. El gap real del PR ajeno (falta de tests) es la puerta de entrada para tu propio trabajo: el #4109 de Gonzo ya tiene 3 tests que cubren exactamente ese comportamiento.
+- Cerrar el review con "happy to help if useful" deja la puerta abierta para que te pidan los tests, y quedás como co-autor de facto del fix completo.
+- Regla: en OSS, la autoría del análisis vale menos que la capacidad de demostrar que entendés el problema a fondo. El reviewer que ya tiene el contexto completo gana la posición.
+
+**Self-reflection:**
+- CONTEXT: review de PR OSS (radix-ui #4112)
+- REFLECTION: el instinto inicial de Gonzo fue "nos quieren robar". Mi lectura honesta lo reencuadró: no es robo, es validación de que el análisis era correcto, y la ejecución ajena fue mejor. El review honesto posiciona mejor que el reclamo.
+- LESSON: en OSS, cuando alguien implementa tu análisis, sé el reviewer con el contexto completo - no el reclamante. El gap de tests del otro PR es tu puerta de entrada.
+- BIASES DETECTED: sunk cost / territorialidad (querer defender "nuestro" reporte). Contrarrestado con honestidad y foco en el resultado.
