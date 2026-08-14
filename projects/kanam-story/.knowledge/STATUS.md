@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-13
 
-## Estado: 🟢 FASE 2 COMPLETA (Slices 0-10). v0.6.0 RELEASED. Fase 3 en curso (U1-U6 done).
+## Estado: 🟢 FASE 2 COMPLETA (Slices 0-10). v0.6.0 RELEASED. Fase 3 en curso (U1-U7 done).
 
 Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
 
@@ -15,8 +15,8 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 - [x] **U3 (A) — Selección contextual IA** — indicador flotante sobre la selección conectado a las herramientas IA. Contador de palabras + Rewrite/Describe, reusa `runAI`. Se oculta al deseleccionar o click fuera. Commits `4dbe1ba` + `7bbf398`. 155 tests, build+TS pasan, lint 0 errores. **Revisado por B (U4): correcto, sin bugs.**
 - [x] **U4 (B) — Contador de palabras seleccionadas + polish** — contador preciso (multilínea) + polish de estilos (`.format-bar` flex-wrap, contador del indicador). Copiar/pegar/editar verificado: no rompe autosave. Commit `58369fb`. 155 tests, build+TS pasan, lint 0 errores. **Revisado por A (U5): correcto, sin bugs.**
 - [x] **U5 (A) — Auto-import de personajes** desde la Biblia — `syncCharactersFromBible` en el store: dedupe por nombre (case-insensitive), solo toca personajes con `source === 'biblia'` (no pisa manual), rellena solo campos vacíos. Se llama tras regenerar la Biblia en `StoryBiblePanel`. Commit `82de211`. 155 tests, build+TS pasan, lint 0 errores. **Revisado por B (U6): bug de orden corregido** (sync corría antes de regenerar; ahora después + lee biblia fresca de DB).
-- [x] **U6 (B) — Auto-import de mundo** desde la Biblia — `syncWorldFromBible` en el store (mismo patrón que U5): dedupe por nombre, marca `source: 'biblia'`, solo toca entidades `source === 'biblia'`, rellena `description` vacía. Se llama tras regenerar junto a la de personajes. Commit `49501c9`. 155 tests, build+TS pasan, lint 0 errores.
-- [ ] **U7 (A) — Sincronización bidireccional + no pisar manual**.
+- [x] **U6 (B) — Auto-import de mundo** desde la Biblia — `syncWorldFromBible` en el store (mismo patrón que U5): dedupe por nombre, marca `source: 'biblia'`, solo toca entidades `source === 'biblia'`, rellena `description` vacía. Se llama tras regenerar junto a la de personajes. Commit `49501c9`. 155 tests, build+TS pasan, lint 0 errores. **Revisado por A (U7): correcto, sin bugs.**
+- [x] **U7 (A) — Sincronización bidireccional + no pisar manual** — `revertBibleImport(kind, id)` en el store: quita la marca `source: 'biblia'` → `'manual'` (no-destructivo, conserva ediciones; el próximo sync ya no toca la entidad). Botón "Revertir import" en las fichas de personaje y mundo (solo visible si `source === 'biblia'`). Commit `7b2a38f`. 155 tests, build+TS pasan, lint 0 errores.
 - [ ] **U8 (B) — Tests + integración**.
 - [ ] **Release v0.7.0** + docs.
 
