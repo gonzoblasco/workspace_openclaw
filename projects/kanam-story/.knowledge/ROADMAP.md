@@ -199,12 +199,14 @@
   - **Revisado 2026-08-14 (Agente A).** ✅ Mock de `useApp` completo (cubre todos los campos que `StoryBiblePanel` destructura de `useApp()`: currentProject, storyBible, settings, regenerate/section/ensure/update/preview/import/sync de biblia y tabs). El mock de `MarkdownView` es correcto. El orden de ejecución (regenerar → sync personajes → sync mundo) está bien verificado con un arreglo de llamadas. La config de vitest no rompe los tests de `lib/` (environment node se mantiene; jsdom solo vía directiva `@vitest-environment jsdom` por archivo).
   - **Fix/mejora aplicada 2026-08-14 (Agente A, commit `f3fd795`):** (1) `ensureStoryBible` mock devolvía `undefined` (el componente hace `.catch()` sobre él — latente si algún test quitara el guard); ahora devuelve una Promise resuelta, consistente con la firma real del store. (2) Se agregaron 3 tests de `CharactersPanel` (U7 "Revertir import"): el botón aparece al editar un personaje con `source === 'biblia'`, llama a `revertBibleImport('character', id)`, y se oculta para personajes manuales. **192 tests totales.**
   - **Asignado:** Agente A (impar). Agente B revisa.
+  - *Cadena de revisión: Agente A revisó B1/B2 (commits `88ac174`, `f3fd795`, `13b0914` — fixes de casts legacy, tests de U7 revert-import, cascade delete a beats). Pendiente ronda del Agente B.*
   - **2ª pasada de QA 2026-08-14 (Agente B, commit `13b0914`):** ✅ verificadas las correcciones de A (doble cast `88ac174` correcto; tests de revert-import + mock `ensureStoryBible` `f3fd795` correctos y sin bugs). Migraciones puras exactas, CRUD robusto, vitest config sólida. Mejora de cobertura agregada: 2 tests de cascade — `chaptersDB.delete` elimina escenas + beats (nivel capítulo y escena), y `scenesDB.delete` elimina beats de escena (estaban implementados en Slice 2 review pero sin testear). **194 tests totales.** B1 y B2 quedan aprobados con revisión múltiple.
 
-#### 🥈 Media — features de producto
-
-- [ ] **B3 — Export PDF / DOCX** — hoy solo MD/TXT (`lib/export.ts` + `ExportMenu`). Agregar export PDF y DOCX (reusar el HTML que ya genera MD/TXT, o librería server-side).
+- [x] **B3 — Export PDF / DOCX** — hoy solo MD/TXT (`lib/export.ts` + `ExportMenu`). Agregar export PDF y DOCX (reusar el HTML que ya genera MD/TXT, o librería server-side).
+  - ✅ **Hecho 2026-08-14 (commit `b064c36`).** `docx` (v9) para .docx y `pdfmake` (v0.3) para .pdf, ambos client-side (app local-first, sin server). `exportManuscriptPdf` + `exportManuscriptDocx` en `lib/export.ts` + `markdownToPdfmakeContent` (convierte markdown a estructura pdfmake: headings, listas agrupadas en `ul`, blockquotes, párrafos). `downloadBlob` para binarios. Opciones PDF y DOCX en `ExportMenu`. Import dinámico de pdfmake para no inflar el bundle inicial. 5 tests nuevos de `markdownToPdfmakeContent`. **199 tests totales.**
   - **Asignado:** Agente B. Agente A revisa.
+
+#### 🥈 Media — features de producto
 - [ ] **B4 — Búsqueda entre escenas** — find/replace a lo largo del manuscrito (todas las escenas de un proyecto). UI en el editor o vista global.
   - **Asignado:** Agente A. Agente B revisa.
 
