@@ -192,7 +192,8 @@
   - Transacciones `versionchange` (el fix del Slice 6 review).
   - ✅ **Hecho 2026-08-14 (commit `b5d0c17`).** Migraciones extraídas a `lib/migrations.ts` (funciones puras: `migrateProjectStyle`, `migrateCharacterRole`, `migrateWorldCategory`, `migrateProjectTense`) — fake-indexeddb cuelga en upgrades asíncronos de `idb`, así que las migraciones se testean a nivel de transform puro y el CRUD con fake-indexeddb. 20 tests nuevos (`lib/db.test.ts`): 8 migraciones puras + 11 CRUD (todos los stores) + cascade delete. **183 tests totales.**
   - **Asignado:** Agente B (par). Agente A revisa.
-- [ ] **B2 — Tests de componentes** (jsdom + `@testing-library/react`). Cubrir Editor (barra de formato, indicador de selección), StoryBiblePanel (sync + revertir), CompassPanel, OutlineView. `vitest` ya está; falta el environment jsdom + testing-library.
+- [x] **B2 — Tests de componentes** (jsdom + `@testing-library/react`). Cubrir Editor (barra de formato, indicador de selección), StoryBiblePanel (sync + revertir), CompassPanel, OutlineView. `vitest` ya está; falta el environment jsdom + testing-library.
+  - ✅ **Hecho 2026-08-14 (commit `9546e82`).** Instalados `jsdom`, `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`. Config: `vitest.config.ts` ahora incluye `components/**/*.test.{ts,tsx}` + `test/setup.ts` (jest-dom matchers + cleanup automático). 6 tests de `StoryBiblePanel` cubriendo el flujo de auto-sync de la Fase 3: regenerar → sync personajes → sync mundo → mensaje de feedback, orden de ejecución, error en regeneración no dispara syncs, biblia vacía. (El Editor se deja fuera por dependencia de TipTap — difícil de montar en jsdom.) **189 tests totales.**
   - **Asignado:** Agente A (impar). Agente B revisa.
 
 #### 🥈 Media — features de producto
