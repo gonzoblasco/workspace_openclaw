@@ -340,3 +340,20 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el instinto de Gonzo fue "¿hicimos algo mal?". La respuesta honesta: no fue un error de proceso grave, pero sí una lección de alineación con la arquitectura del maintainer. El diagnóstico fue el activo; la implementación fue el punto de fricción.
 - LESSON: en repos con maintainer opinado, alinear la implementación con la visión del maintainer desde el arranque (mirar cómo resolvió problemas similares) vale más que un fix funcionalmente correcto con arquitectura ajena.
 - BIASES DETECTED: confirmation bias (asumir que un fix con 3921 tests verdes y 2 P2 arreglados estaba "listo para mergear" sin considerar la dirección de diseño del maintainer).
+
+## 2026-08-14 — Refactorización del setup: archivos planos → SQLite (modo híbrido)
+
+**Context:** Gonzo preguntó si había algo del setup documentado que valiera la pena migrar de archivos planos a una base de datos por velocidad y practicidad. Implementé un sistema híbrido: `memory/memory.db` (SQLite) con 4 tablas (daily_notes, todos, inbox, contributions), migrando 83 daily notes, 5 todos, 4 ideas y 27 contribuciones OSS. El daily del día actual sigue en markdown (legible, diff de git); los viejos se archivan a SQLite y a memory/archive/.
+
+**Lesson — no todo lo que es "archivo plano" conviene migrarlo a DB; separar datos estructurados de documentos narrativos:**
+- **Documentos narrativos** (MEMORY.md, LEARNINGS.md, AGENTS.md, SOUL.md): se leen como narrativa, se curan a mano, se versionan en git. Migrarlos a SQLite es un error - se pierde legibilidad y diff. Quedan como markdown.
+- **Datos estructurados** (OSS-TRACKER, TODO, INBOX): son tablas disfrazadas de markdown. SQLite brilla acá - queries, filtros, agregación. Migrar.
+- **Log cronológico** (daily notes): caso híbrido. El presente en markdown (legible, diff), el pasado archivado a SQLite (fuera del camino, consultable). Este es el "modo híbrido".
+- **SQLite en git:** el `*.db` estaba ignorado por defecto. Para sincronizar entre las dos máquinas de Gonzo (Mac Mini + MacBook Air), la DB de memoria DEBE versionarse (excepción al .gitignore). El riesgo de conflicto de merge es bajo para datos append-only.
+- **El bottleneck real no es leer archivos planos** - es que la IA lee/escribe markdown que se versiona. SQLite agrega queries que no se necesitan para documentos de ~20KB. El valor real de SQLite aparece cuando los datos crecen y necesitás consultar/filtrar (el OSS-TRACKER ya estaba creciendo).
+
+**Self-reflection:**
+- CONTEXT: refactorización de infraestructura del setup
+- REFLECTION: el diseño híbrido (presente en markdown, pasado en SQLite) respeta el flujo de trabajo real sin romperlo. La decisión clave fue versionar la DB (excepción al .gitignore) para no romper la sincronización entre máquinas.
+- LESSON: al migrar archivos planos a DB, separar datos estructurados (migrar) de documentos narrativos (no migrar), y versionar la DB si el flujo depende de sincronización entre máquinas.
+- BIASES DETECTED: none (el diseño consideró el flujo de doble máquina y la legibilidad antes de ejecutar).
