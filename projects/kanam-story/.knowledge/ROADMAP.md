@@ -174,21 +174,43 @@
   - [x] El usuario debe poder escribir, copiar/pegar y editar libremente (no todo generado por IA). (U4)
   - [x] **Sincronización Biblia ↔ tabs** (personajes y mundo auto-importados, dedupe, no pisar manual, revertir). (U5-U8)
   - [ ] Referencia visual: captura de Sudowrite (editor de prosa con barra de formato + selección resaltada en púrpura + contador de palabras seleccionadas).
-- [ ] **Sincronización Biblia ↔ tabs (Personajes/Mundo)** — hoy el `StoryBiblePanel` tiene un bridge **manual** (Detectar → preview → Importar todos/uno). Gonzo quiere que lo generado en la Biblia se **duplique automáticamente** en las tabs correspondientes:
-  - [ ] Al regenerar la Biblia, los personajes detectados se crean/actualizan en la tab Personajes (con marca "de biblia").
-  - [ ] Ídem para el mundo → tab Mundo (lugares, lore, reglas, etc.).
-  - [ ] Mantener sincronizado: si la Biblia se regenera, las tabs reflejan los cambios (sin duplicar entradas ya existentes).
-  - [ ] Preservar el modelo de aceptación: los cambios automáticos deben ser revisables (no pisar ediciones manuales del usuario).
+  - [x] **Sincronización Biblia ↔ tabs (Personajes/Mundo)** — hoy el `StoryBiblePanel` tiene un bridge **manual** (Detectar → preview → Importar todos/uno). Gonzo quiere que lo generado en la Biblia se **duplique automáticamente** en las tabs correspondientes:
+  - [x] Al regenerar la Biblia, los personajes detectados se crean/actualizan en la tab Personajes (con marca "de biblia"). (U5)
+  - [x] Ídem para el mundo → tab Mundo (lugares, lore, reglas, etc.). (U6)
+  - [x] Mantener sincronizado: si la Biblia se regenera, las tabs reflejan los cambios (sin duplicar entradas ya existentes). (U5/U6, dedupe por nombre)
+  - [x] Preservar el modelo de aceptación: los cambios automáticos deben ser revisables (no pisar ediciones manuales del usuario). (U7, botón "Revertir import")
 
-### Resto del backlog
+### Resto del backlog (priorizado 2026-08-14)
 
-- [ ] **Export PDF / DOCX** — hoy solo MD/TXT (`lib/export.ts` + `ExportMenu`).
-- [ ] **Tema claro** — toggle light/dark (hoy solo dark vía `data-bs-theme`).
-- [ ] **Tests de componentes** — jsdom + `@testing-library/react` para Editor, StoryBiblePanel, etc.
-- [ ] **Tests de `lib/db.ts`** — `fake-indexeddb` para cubrir migraciones y CRUD.
-- [ ] **Búsqueda entre escenas** — find/replace a lo largo del manuscrito.
-- [ ] **Versioning / snapshots** — ver versiones previas de una escena.
-- [ ] **Streaming en el editor** — el chat ya usa SSE; el editor usa `ollamaChat` no-streaming.
+> **Plan del backlog con pipeline de revisión cruzada A/B.** Cada item = commit atómico + push + actualizar este ROADMAP y STATUS.md. Orden por valor: primero deuda técnica que desbloquea calidad, luego features de producto, luego polish/infra.
+
+#### 🥇 Alta — deuda técnica (desbloquea calidad)
+
+- [ ] **B1 — Tests de `lib/db.ts`** (`fake-indexeddb`). La DB es el corazón (migraciones + CRUD); sin tests es frágil. Agregar `fake-indexeddb` como devDep y cubrir:
+  - Migraciones (v1 → v7): cada versión migra datos sin romper.
+  - CRUD de cada store (projects, conversations, messages, scenes, beats, bible, characters, world).
+  - Transacciones `versionchange` (el fix del Slice 6 review).
+  - **Asignado:** Agente B (par). Agente A revisa.
+- [ ] **B2 — Tests de componentes** (jsdom + `@testing-library/react`). Cubrir Editor (barra de formato, indicador de selección), StoryBiblePanel (sync + revertir), CompassPanel, OutlineView. `vitest` ya está; falta el environment jsdom + testing-library.
+  - **Asignado:** Agente A (impar). Agente B revisa.
+
+#### 🥈 Media — features de producto
+
+- [ ] **B3 — Export PDF / DOCX** — hoy solo MD/TXT (`lib/export.ts` + `ExportMenu`). Agregar export PDF y DOCX (reusar el HTML que ya genera MD/TXT, o librería server-side).
+  - **Asignado:** Agente B. Agente A revisa.
+- [ ] **B4 — Búsqueda entre escenas** — find/replace a lo largo del manuscrito (todas las escenas de un proyecto). UI en el editor o vista global.
+  - **Asignado:** Agente A. Agente B revisa.
+
+#### 🥉 Baja — polish / infra
+
+- [ ] **B5 — Tema claro** — toggle light/dark (hoy solo dark vía `data-bs-theme`). Persistir preferencia.
+  - **Asignado:** Agente B. Agente A revisa.
+- [ ] **B6 — Versioning / snapshots** — ver versiones previas de una escena (snapshot al guardar, diff + restaurar).
+  - **Asignado:** Agente A. Agente B revisa.
+- [ ] **B7 — Streaming en el editor** — el chat ya usa SSE; el editor usa `ollamaChat` no-streaming. Migrar a streaming para feedback en vivo.
+  - **Asignado:** Agente B. Agente A revisa.
+
+> **Nota:** los items B1-B7 son independientes entre sí (no hay dependencias de orden). Cada agente toma el siguiente item de su paridad (A = impares B1/B3/B5/B7, B = pares B2/B4/B6) cuando termine el anterior. El pipeline de revisión cruzada aplica igual que en la Fase 3.
 
 ---
 
