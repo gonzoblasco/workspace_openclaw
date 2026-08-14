@@ -17,6 +17,9 @@ build/
 *.db
 *.db-journal
 
+# Excepción: la DB de memoria del workspace SÍ se versiona (sincroniza entre máquinas)
+!memory/memory.db
+
 # Env files
 .env
 .env.local

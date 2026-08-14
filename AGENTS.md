@@ -46,8 +46,9 @@ Ideal para preguntas rápidas entre medio de una sesión larga sin romper el flo
 
 You wake up fresh each session. These files are your continuity:
 
-- **Daily notes:** `memory/YYYY-MM-DD.md` (create `memory/` if needed) — raw logs of what happened
+- **Daily notes (híbrido):** el daily del día actual vive en `memory/YYYY-MM-DD.md` (markdown, legible, diff de git). Los daily notes viejos se archivan a `memory/memory.db` (SQLite, tabla `daily_notes`) y se mueven a `memory/archive/`. Para leer un daily viejo: `./scripts/memory-db.sh export-daily <fecha>`.
 - **Long-term:** `MEMORY.md` — your curated memories, like a human's long-term memory
+- **Datos estructurados (SQLite):** `memory/memory.db` guarda `todos`, `inbox`, `contributions` (OSS tracker). La DB es fuente de verdad; los markdown legibles se regeneran con `./scripts/memory-db.sh export-all`. Utilidades: `./scripts/memory-db.sh {stats|todos|inbox|contributions|add-todo|add-inbox}`.
 
 Capture what matters: decisions, context, things to remember. Skip secrets unless asked to keep them.
 
