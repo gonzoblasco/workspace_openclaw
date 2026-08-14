@@ -2,7 +2,7 @@
 
 > **Fecha:** 2026-08-14
 > **Autor:** Kanam (planificación y documentación)
-> **Estado:** U1 y U2 completadas y revisadas; **U3 completada** (2026-08-14, commit `f3dde30`). Pendiente U4.
+> **Estado:** U1-U3 completadas y revisadas; **U4 completada** (2026-08-14, commits `acb04d5` + `3a5adcb`). Pendiente U5.
 > **Fuente:** pedidos de Gonzo (2026-08-14) + mockup aprobado en `projects/kanam-story/preview-layout-v090.html` + patrón de Sudowrite/NovelCrafter.
 > **Visión:** NO es solo corregir bugs — es un **rediseño donde UI y a11y están integradas desde el diseño**, no como capa final.
 
@@ -108,7 +108,7 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 
 | Unidad | Agente | Tarea | Requisitos a11y |
 |---|---|---|---|
-| **U4** | B | **Generar escena desde outline** — botón por beat → crea escena → abre editor. Lógica pura testeable en `lib/`. | Botones con `aria-label` descriptivo; feedback de éxito/error anunciado (live region polite); foco movido al editor al generar. |
+| **U4** ✅ | B | **Generar escena desde outline** — botón por beat → crea escena → abre editor. Lógica pura testeable en `lib/`. | Botones con `aria-label` descriptivo; feedback de éxito/error anunciado (live region polite); foco movido al editor al generar. |
 | **U5** | A | **Onboarding por plantillas** — al crear proyecto: outline/biblia/plantilla de género/vacío. | Opciones como radio group accesible (`role="radiogroup"`) o lista navegable por teclado; `aria-checked`; instrucciones claras. |
 | **U6** | B | **Creación en línea** — botones "＋" contextuales en cada vista. | Botones con `aria-label` (no solo "＋"), foco visible, feedback anunciado al crear. |
 
@@ -198,5 +198,19 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 
 **Verificación:** 244 tests, build + TS, lint 0 errores. Verificado manualmente en browser: "Story Bible" eliminado y "Ajustes" único título en su sección; cards unificadas (headers + hints consistentes); OutlineView con h1→h2→h3; acordeón de U2 intacto (aria-expanded/aria-controls correctos, Space opera el toggle); `aria-current` en el sidebar sigue actualizándose.
 
-**Pendiente para el Agente B (U4):**
-- Desarrollar **U4 (generar escena desde outline + función pura testeable en `lib/`)**. Recordar: botones con `aria-label` descriptivo, feedback de éxito/error anunciado (live region polite), foco movido al editor al generar. La a11y de U3 ya está revisada; U4 debe no romper el h1/h2/h3 de OutlineView.
+**Revisión por Agente B (U4): 1 corrección aplicada.**
+- **Corrección:** `BrainstormPanel` era la única de las 7 cards que seguía usando la clase legacy `sidebar-section-title` para su conteo interno "Notas (n)", rompiendo el sistema unificado `.stack-panel-header`/`.stack-panel-count` de U3. Se migró a las clases compartidas. Commit `c490cfc`.
+- **Aprobado sin cambios:** renombrado "Story Bible"→"Ajustes" completo en la UI (los strings restantes de "Story Bible" son prompts de IA/comentarios, no títulos visibles); headers/hints consistentes en las 6 cards restantes; `<h1>Outline</h1>` + capítulo `<h2>` + escena `<h3>` (jerarquía sin saltos); acordeón de U2 intacto (`aria-expanded`/`aria-controls`); `aria-current`; foco visible; contraste AA. Sin CSS muerto adicional (`.chat-header` removido; `sidebar-section` sigue en uso legítimo en el sidebar y el grupo de Brainstorm).
+
+### U4 — Agente B (2026-08-14) — commits `acb04d5` + `3a5adcb`
+
+**Qué se hizo:**
+- **Botón "Generar escena" por beat** en `OutlineView` (dentro de cada `BeatCard`, con `aria-label` descriptivo que incluye el título del beat). Al hacer click: crea la escena (y el capítulo automáticamente si el beat no tiene ninguno — estructuras opcionales), la selecciona, relinkea el beat dentro de ella, cambia a la vista editor y mueve el foco.
+- **Función pura testeable** `lib/sceneFromBeat.ts` (`planGenerateScene`, patrón `bibleSync.ts`/`search.ts`): dado un beat y el estado, devuelve qué capítulo/escena crear y con qué contenido (título del beat, resumen de descripción→notas, `order` según escenas del capítulo), sin DB/DOM. 6 tests nuevos.
+- **a11y:** botones con `aria-label` descriptivo; feedback de éxito/error en **live region polite global persistente** (`role="status"` en `app/page.tsx`, vía `announce`/`announcement` en el store) — clave porque la live region local de `OutlineView` se desmonta al cambiar de vista en el mismo render y el AT no la leería; `requestEditorFocus` (nonce en store) que `Editor` observa para llamar `editor.commands.focus('end')`. No rompe el h1→h2→h3 de OutlineView ni el modelo de aceptación.
+
+**Verificación:** 250 tests (244 + 6 nuevos), build + TS, lint 0 errores. Chequeo manual en browser (dev server): beat con botón "Generar escena para "Nuevo beat"" (label descriptivo), al hacer click la escena "Nuevo beat" se crea bajo el capítulo, la vista cambia a editor, el foco cae en el editor (`.tiptap-editor` con `ProseMirror-focused`), y la live region global anuncia "Escena "Nuevo beat" generada." incluso tras el cambio de vista.
+
+**Pendiente para el Agente A (U5):**
+- Revisar U4 (incluida la a11y): el flujo "generar escena desde outline" (botón por beat, creación + capítulo opcional, relink del beat, foco al editor, live region). Observación de UX a considerar: al hacer click repetido sobre un beat que ya tiene escena, se crea una escena nueva cada vez (el beat se relinkea a la última); si se prefiere "reutilizar la escena existente" en ese caso, ajustar en `planGenerateScene`/handler. Validar con AT manual (VoiceOver/NVDA) que la live region anuncia el feedback tras el cambio de vista (toque anuncio AT).
+- Desarrollar **U5 (onboarding por plantillas al crear proyecto)** — opciones como radio group accesible (`role="radiogroup"`), `aria-checked`, instrucciones claras, navegación por teclado.
