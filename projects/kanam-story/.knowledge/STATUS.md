@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-08-14
 
-## Estado: � FASE 4 EN CURSO (v0.9.0). U1 COMPLETA, resto pendiente.
+## Estado: 🟡 FASE 4 EN CURSO (v0.9.0). U1 COMPLETA (revisada por B), U2 COMPLETA, pendiente U3.
 
 Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
 
@@ -10,7 +10,8 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 
 > Plan completo en [PLAN-FASE-4.md](./PLAN-FASE-4.md). Pipeline en cadena: A desarrolla unidades impares, B pares; cada uno revisa la unidad del otro (incluida su a11y) antes de seguir.
 
-- [x] **U1 (A) — Refactor de layout: secciones apiladas en el main** — grid 3→2 columnas, `RightPanel` eliminado como contenedor de tabs, las 7 secciones (Co-writer, Brainstorm, Personajes, Mundo, Biblia, Ajustes, Brújula) apiladas verticalmente en el main con scroll. Store `view` extendido a `'editor' | 'outline' | 'story'` + `activeStorySection`. Sidebar navega Escritura/Outline/Historia con `aria-current`. a11y integrada: skip link, `<nav aria-label="Secciones">`, `<main id="contenido-principal">`, cada sección como `<section aria-labelledby>` con h2 bajo h1 (jerarquía sin saltos), foco visible global. Commit `3437359`. **244 tests**, build+TS pasan (solo errores pre-existentes en `bibleSync.test.ts`/`export.test.ts`), lint 0 errores. **Pendiente revisión de a11y por Agente B (U2).**
+- [x] **U1 (A) — Refactor de layout: secciones apiladas en el main** — grid 3→2 columnas, `RightPanel` eliminado como contenedor de tabs, las 7 secciones (Co-writer, Brainstorm, Personajes, Mundo, Biblia, Ajustes, Brújula) apiladas verticalmente en el main con scroll. Store `view` extendido a `'editor' | 'outline' | 'story'` + `activeStorySection`. Sidebar navega Escritura/Outline/Historia con `aria-current`. a11y integrada: skip link, `<nav aria-label="Secciones">`, `<main id="contenido-principal">`, cada sección como `<section aria-labelledby>` con h2 bajo h1 (jerarquía sin saltos), foco visible global. Commit `3437359`. **244 tests**, build+TS pasan (solo errores pre-existentes en `bibleSync.test.ts`/`export.test.ts`), lint 0 errores. **Revisada por Agente B (U2): sin correcciones.**
+- [x] **U2 (B) — Scrollspy + acordeón de secciones apiladas** — `IntersectionObserver` sobre el `<main>` resalta la sección activa en el sidebar al hacer scroll, actualizando `aria-current="true"`. Cada sección es un acordeón accesible: toggle nativo `<button>` dentro del h2 con `aria-expanded` y `aria-controls="body-{key}"`; al colapsar, el h2 permanece presente para no romper la jerarquía. Click en una sección del sidebar desplaza suavemente el main hacia ella sin pelear con el scrollspy. Commit `771dabb`. **244 tests**, build+TS pasan, lint 0 errores. **Pendiente revisión por Agente A (U3).**
 
 ## Fase 3 — Editor refinado + Sincronización Biblia↔tabs (COMPLETA)
 

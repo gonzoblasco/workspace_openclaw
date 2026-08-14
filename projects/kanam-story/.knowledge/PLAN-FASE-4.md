@@ -2,7 +2,7 @@
 
 > **Fecha:** 2026-08-14
 > **Autor:** Kanam (planificación y documentación)
-> **Estado:** U1 completada (2026-08-14, commit `3437359`). Pendiente revisión de a11y por Agente B y ejecución de U2.
+> **Estado:** U1 completada y revisada por Agente B; **U2 completada** (2026-08-14, commit `771dabb`). Pendiente U3.
 > **Fuente:** pedidos de Gonzo (2026-08-14) + mockup aprobado en `projects/kanam-story/preview-layout-v090.html` + patrón de Sudowrite/NovelCrafter.
 > **Visión:** NO es solo corregir bugs — es un **rediseño donde UI y a11y están integradas desde el diseño**, no como capa final.
 
@@ -101,7 +101,7 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 | Unidad | Agente | Tarea | Requisitos a11y |
 |---|---|---|---|
 | **U1** ✅ | A | **Refactor de layout** — eliminar tabs del `RightPanel`, montar secciones apiladas en el main. Grid 3→2 columnas. Mover contenido de los 7 paneles a secciones apiladas. | Landmarks (`<nav>`, `<main>`, `<section aria-labelledby>`), jerarquía de headings (h1→h2→h3), skip link, foco visible, orden de tabulación lógico. |
-| **U2** | B | **Scrollspy + colapsar secciones** — sidebar resalta sección activa al scroll; acordeón para colapsar/expandir. | `aria-current="true"` en item activo; `aria-expanded`/`aria-controls` en el acordeón; operación por teclado (Enter/Espacio); foco gestionado al expandir. |
+| **U2** ✅ | B | **Scrollspy + colapsar secciones** — sidebar resalta sección activa al scroll; acordeón para colapsar/expandir. | `aria-current="true"` en item activo; `aria-expanded`/`aria-controls` en el acordeón; operación por teclado (Enter/Espacio); foco gestionado al expandir. |
 | **U3** | A | **Renombrar "Story Bible"→"Ajustes" + consistencia visual** — unificar estilos de secciones apiladas (card, espaciado, encabezados) según mockup. | Contraste WCAG AA en el nuevo estilo; foco visible en todos los controles; labels descriptivos. |
 
 ### Feature 2 — Estructuras opcionales
@@ -166,8 +166,26 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 
 **Verificación:** 244 tests, build + TS (solo 3 errores pre-existentes en `bibleSync.test.ts`/`export.test.ts`, fuera del scope de U1), lint 0 errores. Verificado manualmente en browser: 2 columnas, 7 secciones apiladas con landmarks y `aria-current`, editor/outline intactos.
 
-**Pendiente de revisión (Agente B, al iniciar U2):**
-1. **a11y del rediseño** — validar skip link (foco al tabular), jerarquía de headings, `aria-current` y landmarks con un AT/auditoría; el foco `:focus-visible` global no debe romper el focus ring de Bootstrap.
-2. **Decisión de alcance** — los paneles conservan sus títulos internos originales (p. ej. "Story Bible" dentro de la sección "Ajustes"). Renombrar el título interno queda para U3.
-3. **`rightPanelCollapsed`** — el campo sigue en `Settings`/DB por compatibilidad (eliminarlo exigiría migración); sin uso en la UI nueva. Decidir en U8 si se limpia.
-4. **Heading de OutlineView** — la vista outline no tiene h1 de página (comportamiento pre-existente); no se tocó en U1. Puede unificarse en U3.
+**Revisión por Agente B (U2):**
+- U1 **aprobada sin correcciones**. a11y validada: skip link correcto (`#contenido-principal` + visible al foco), jerarquía h1→h2 intacta, landmarks presentes, `aria-current` actualizado, y `:focus-visible` global no rompe el anillo de Bootstrap (usa `outline` distinto del `box-shadow` de Bootstrap, con offset visible sobre el fondo).
+- No se encontró código muerto extra (el único residuo, `rightPanelCollapsed`, queda intencionalmente en `Settings`/DB por compatibilidad).
+
+**Pendiente de revisión (Agente A, al iniciar U3):**
+1. **Renombrar título interno "Story Bible" → "Ajustes"** — la sección stacked se llama "Ajustes", pero `StoryBibleSettingsPanel` sigue pintando su propio heading "Story Bible" dentro del body. Unificar en U3.
+2. **Consistencia visual de secciones apiladas** — unificar cards, espaciado, encabezados y eliminar títulos duplicados entre section heading y panel interno.
+3. **Heading de OutlineView** — la vista outline no tiene h1 de página (comportamiento pre-existente); puede unificarse en U3.
+4. **a11y de U3** — contraste WCAG AA, foco visible y labels descriptivos al unificar estilos.
+
+### U2 — Agente B (2026-08-14) — commit `771dabb`
+
+**Qué se hizo:**
+- `components/StorySections.tsx`: scrollspy con `IntersectionObserver` en el `<main id="contenido-principal">`. La sección más visible en la banda superior del main actualiza `activeStorySection` del store, con lo cual el sidebar resalta el item activo y actualiza `aria-current="true"`.
+- Acordeón accesible: cada h2 de sección contiene un `<button type="button">` con `aria-expanded` y `aria-controls="body-{key}"`. El cuerpo colapsa con `hidden={!open}`; al colapsar, el h2 permanece visible, preservando la jerarquía h1→h2.
+- Integración sidebar↔scroll: al clickear una sección en el sidebar, `activeStorySection` cambia y un `useEffect` hace `scrollIntoView({ behavior: 'smooth', block: 'start' })`. Un `ref` distingue estos cambios de los generados por scrollspy para evitar bucles.
+- CSS (`app/globals.css`): estilos `.stack-section-toggle` y `.stack-chevron`; foco visible hereda el anillo global `:focus-visible`.
+
+**Verificación:** 244 tests, build + TS (3 errores pre-existentes en tests, fuera de scope), lint 0 errores. Chequeo manual en browser: scrollspy responde al subir/bajar (Brújula/Biblia/Co-writer), acordeón colapsa/expande con `aria-expanded` y body `hidden`, Space opera el toggle, jerarquía de headings intacta.
+
+**Pendiente de revisión (Agente A, U3):**
+- Renombrar/eliminar el título interno "Story Bible" dentro de la sección "Ajustes".
+- Consistencia visual de cards y espaciado; heading h1 para OutlineView.
