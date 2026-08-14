@@ -152,4 +152,4 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 
 **Fase 3 planificada (2026-08-13):** dos features prioritarias de Gonzo — (1) área de texto refinada (barra de formato + selección contextual IA), (2) sincronización automática Biblia ↔ tabs Personajes/Mundo. **Plan detallado con pipeline de revisión cruzada A/B en [PLAN-FASE-3.md](./PLAN-FASE-3.md).** Release v0.7.0.
 
-**Backlog (no bloquea, se atiende cuando haya espacio):** ver [ROADMAP.md](./ROADMAP.md) sección "TODOs no bloqueantes". Resto: export PDF/DOCX, tema claro, tests de componentes (jsdom), tests de `lib/db.ts` (fake-indexeddb), búsqueda entre escenas, versioning/snapshots, streaming en el editor.
+**Backlog (no bloquea, se atiende cuando haya espacio):** ver [ROADMAP.md](./ROADMAP.md) sección "TODOs no bloqueantes". Resto: búsqueda entre escenas (B4), versioning/snapshots (B6), streaming en el editor (B7). **Hecho:** export PDF/DOCX (B3), tema claro (B5, commit `82f2a2e`), tests de componentes (jsdom, B2), tests de `lib/db.ts` (fake-indexeddb, B1).

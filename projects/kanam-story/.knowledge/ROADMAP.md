@@ -222,7 +222,12 @@
 
 #### 🥉 Baja — polish / infra
 
-- [ ] **B5 — Tema claro** — toggle light/dark (hoy solo dark vía `data-bs-theme`). Persistir preferencia.
+- [x] **B5 — Tema claro** — toggle light/dark (hoy solo dark vía `data-bs-theme`). Persistir preferencia.
+  - ✅ **Hecho 2026-08-14 (commit `82f2a2e`).** El toggle ya existía en la topbar (scaffold sudolab) y persistía vía `settings.theme` (IndexedDB) + `data-bs-theme`; B5 lo completa y lo hace legible/consistente:
+    1. **Contraste del tema claro (bug de legibilidad):** `--sl-accent-2` en light era `#b48cff` (lavanda claro) y se usaba como fondo de `.btn-primary`, `.btn-outline-primary:hover` y burbujas de chat del usuario con texto blanco → contraste pobre. Ahora light usa `--sl-accent: #5f3dc4` (7.1:1 sobre blanco, para texto) y `--sl-accent-2: #6a4bd8` (5.8:1, para fondos con texto blanco) — ambos WCAG AA.
+    2. **Flash de tema al recargar:** el `<html data-bs-theme="dark">` estaba hardcodeado; con preferencia light había un flash oscuro. El store ahora espeja el tema a `localStorage` (`kanam-theme`) y un script inline en `layout.tsx` lo aplica antes del primer paint (IndexedDB sigue siendo la fuente de verdad).
+    3. **Componente + a11y:** toggle extraído a `components/ThemeToggle.tsx` (con `aria-label`/`title` en español) y conectado en la topbar.
+    4. **Tests:** 2 tests de componente (`ThemeToggle.test.tsx`): icono según tema + flip vía `setSettings`. **206 tests totales.** Build + lint verdes; tsc solo con los 3 errores pre-existentes (export.test.ts/bibleSync.test.ts).
   - **Asignado:** Agente B. Agente A revisa.
 - [ ] **B6 — Versioning / snapshots** — ver versiones previas de una escena (snapshot al guardar, diff + restaurar).
   - **Asignado:** Agente A. Agente B revisa.
