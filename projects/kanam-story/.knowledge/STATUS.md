@@ -1,12 +1,12 @@
 # STATUS — Kanam Story
 
-**Actualizado:** 2026-08-13
+**Actualizado:** 2026-08-14
 
-## Estado: 🟢 FASE 2 COMPLETA (Slices 0-10). v0.6.0 RELEASED. Fase 3 completa (U1-U8 done).
+## Estado: 🟢 FASE 3 COMPLETA (U1-U8). v0.7.0 RELEASED.
 
 Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
 
-## Fase 3 — Editor refinado + Sincronización Biblia↔tabs (en curso)
+## Fase 3 — Editor refinado + Sincronización Biblia↔tabs (COMPLETA)
 
 > Plan completo en [PLAN-FASE-3.md](./PLAN-FASE-3.md). Pipeline en cadena: A desarrolla unidades impares, B pares; cada uno revisa la unidad del otro antes de seguir.
 
@@ -18,7 +18,7 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 - [x] **U6 (B) — Auto-import de mundo** desde la Biblia — `syncWorldFromBible` en el store (mismo patrón que U5): dedupe por nombre, marca `source: 'biblia'`, solo toca entidades `source === 'biblia'`, rellena `description` vacía. Se llama tras regenerar junto a la de personajes. Commit `49501c9`. 155 tests, build+TS pasan, lint 0 errores. **Revisado por A (U7): correcto, sin bugs.**
 - [x] **U7 (A) — Sincronización bidireccional + no pisar manual** — `revertBibleImport(kind, id)` en el store: quita la marca `source: 'biblia'` → `'manual'` (no-destructivo, conserva ediciones; el próximo sync ya no toca la entidad). Botón "Revertir import" en las fichas de personaje y mundo (solo visible si `source === 'biblia'`). Commit `7b2a38f`. 155 tests, build+TS pasan, lint 0 errores. **Revisado por B (U8): correcto, sin bugs.**
 - [x] **U8 (B) — Tests + integración** — lógica pura de dedupe/merge extraída a `lib/bibleSync.ts` (`buildCharacterSyncPlan`/`buildWorldSyncPlan`, sin DB). Syncs refactorizados para usarlas. 8 tests nuevos. **163 tests**, build+TS pasan, lint 0 errores. Commit `b2a7740`.
-- [ ] **Release v0.7.0** + docs.
+- [x] **Release v0.7.0** + docs — bump a v0.7.0, CHANGELOG con features de la Fase 3, tag `v0.7.0` + GitHub Release. Commit `1baa434`. **Fase 3 completa.**
 
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF

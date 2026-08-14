@@ -164,14 +164,15 @@
 
 > No bloquean el pipeline; se atienden cuando haya espacio. Están trackeados acá para no perderlos.
 
-### 🔴 Prioridad (pedidos de Gonzo, 2026-08-13) — atender antes del resto del backlog
+### 🔴 Prioridad (pedidos de Gonzo, 2026-08-13) — ✅ COMPLETADO en v0.7.0 (Fase 3)
 
 > **Plan detallado con pipeline de revisión cruzada A/B en [PLAN-FASE-3.md](./PLAN-FASE-3.md).** Release v0.7.0.
 
-- [ ] **Área de texto refinada (barra de formato + selección contextual IA)** — el editor usa TipTap/StarterKit (soporta formato) pero **no expone barra de formato en la UI**. Falta:
-  - [ ] Barra de formato: negrita, cursiva, subrayado, tachado, enlaces, listas (viñetas/numeradas), H1/H2/H3, deshacer/rehacer.
-  - [ ] Selección contextual: al seleccionar texto, mostrar un indicador (como el círculo azul de Sudowrite) que conecte la selección con las herramientas de IA (Write/Rewrite/Describe/Expand).
-  - [ ] El usuario debe poder escribir, copiar/pegar y editar libremente (no todo generado por IA).
+- [x] **Área de texto refinada (barra de formato + selección contextual IA)** — el editor usa TipTap/StarterKit (soporta formato) pero **no expone barra de formato en la UI**. Falta:
+  - [x] Barra de formato: negrita, cursiva, subrayado, tachado, enlaces, listas (viñetas/numeradas), H1/H2/H3, deshacer/rehacer. (U1/U2)
+  - [x] Selección contextual: al seleccionar texto, mostrar un indicador (como el círculo azul de Sudowrite) que conecte la selección con las herramientas de IA (Write/Rewrite/Describe/Expand). (U3/U4)
+  - [x] El usuario debe poder escribir, copiar/pegar y editar libremente (no todo generado por IA). (U4)
+  - [x] **Sincronización Biblia ↔ tabs** (personajes y mundo auto-importados, dedupe, no pisar manual, revertir). (U5-U8)
   - [ ] Referencia visual: captura de Sudowrite (editor de prosa con barra de formato + selección resaltada en púrpura + contador de palabras seleccionadas).
 - [ ] **Sincronización Biblia ↔ tabs (Personajes/Mundo)** — hoy el `StoryBiblePanel` tiene un bridge **manual** (Detectar → preview → Importar todos/uno). Gonzo quiere que lo generado en la Biblia se **duplique automáticamente** en las tabs correspondientes:
   - [ ] Al regenerar la Biblia, los personajes detectados se crean/actualizan en la tab Personajes (con marca "de biblia").
