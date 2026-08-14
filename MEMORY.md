@@ -34,8 +34,10 @@
 - **Estrategia de ejecución (decisión 2026-08-14): correr en CADENA (lineal), un agente a la vez** — NO en paralelo. Las unidades tienen dependencias fuertes (U1 es la base de todo). Mismo pipeline que Fase 3: U1(A) → B revisa+U2(B) → A revisa+U3(A) → ... → U8(B) → cierre. Cada agente revisa la a11y de la unidad anterior (cross-review integra a11y).
 - **Referencia visual**: mockup aprobado en `projects/kanam-story/preview-layout-v090.html`.
 - **Plan completo**: `projects/kanam-story/.knowledge/PLAN-FASE-4.md`.
+- **Estado actual**: **U1 completada (Agente A, `3437359`) y revisada por Agente B — aprobada sin correcciones.** **U2 completada (Agente B, `771dabb`)** — scrollspy + acordeón accesible. 244 tests, build+TS OK, lint 0 errores.
+- **Próximo**: U3 (Agente A) — renombrar título interno "Story Bible" → "Ajustes" + consistencia visual de cards apiladas.
 - **Pendiente de la sesión previa**: fix del test flaky de `lib/db.test.ts` (beforeEach a medias, sin commitear) → entra en U8.
-- **Antecedente**: Fase 3 + backlog B1-B7 completos (v0.7.0 y v0.8.0), 244 tests, pipeline multi-agente validado (skill `agent-orchestration-pipeline`).
+- **Antecedente**: Fase 3 + backlog B1-B7 completos (v0.7.0 y v0.8.0), 244 tests, pipeline multi-agente validado.
 
 ## Arquitectura de Agentes — Goal-Oriented
 
