@@ -62,6 +62,7 @@
 | Qué skill aplica | `using-agent-skills` | Al empezar sesión, mapear el trabajo a la skill correcta |
 | Conocimiento | `knowledge-management` | Documentación inconsistente, learning signals |
 | Gobernanza | `engineering-governance` | Post-milestone: auditar y mejorar el sistema |
+| **Orquestación multi-agente** | `agent-orchestration-pipeline` | Trabajo grande que se divide en unidades entre 2+ agentes con cross-review multi-ronda (orquestador coordina) |
 | Contribución OSS | `oss-contribution` | Contribuir a repos externos: triaje, seguimiento de issues/PRs, community |
 | SQL | `sql-insight` | Escribir u optimizar queries |
 | Supabase | `supabase-assistant` | Schemas, queries, types, migrations |
@@ -81,6 +82,26 @@
 | Narrativa | `narrative-content` | Escribir ficción |
 | ADHD | `adhd-assistant` | Estructura diaria |
 | Soporte | `support-response-writer` | Respuestas a clientes |
+
+## Modo multi-agente (orquestación con cross-review)
+
+Cuando el trabajo es grande (una fase con varias features, un backlog, un slice complejo), el pipeline puede operar en **modo multi-agente**: el orquestador divide el spec en unidades atomicas (U1, U2, ...) y las reparte entre 2+ agentes implementadores con revision cruzada en cadena.
+
+```
+Orquestador: divide en unidades + asigna paridad (A=impares, B=pares)
+   ↓
+A desarrolla U1 → B REVISA U1 + desarrolla U2 → A REVISA U2 + desarrolla U3 → ...
+   ↓
+Cierre: A y B revisan el conjunto + orquestador hace release
+```
+
+**Reglas:** cada unidad = commit atomico + push; nadie avanza sin validar lo anterior; verificacion obligatoria (build+tests+lint); no romper invariantes; docs al dia. Para calidad maxima, el codigo puede pasar por varias rondas de revision (orquestador implementa → A revisa → B re-revisa las correcciones de A).
+
+**Skill:** [`agent-orchestration-pipeline`](./skills/agent-orchestration-pipeline/SKILL.md) — roles, reglas de oro, templates de prompt, checklist de cierre.
+
+**Validado:** kanam-story Fase 3 (U1-U8, 189 tests, release v0.7.0). El cross-review atrapo un bug real (sync corria antes de regenerar) que el orquestador no detecto en su revision.
+
+---
 
 ## Mapa del pipeline
 
@@ -163,6 +184,6 @@ oss-contribution (documentar en PR/issue, separar hallazgos) → session-lifecyc
 
 ---
 
-*Actualizado: 2026-08-12 (agregada skill a11y-at-validation: validación AT manual obligatoria en PRs de a11y)*
-*Skills del pipeline: set propio organizado en ciclo SDLC (estilo Addy Osmani) + core OpenClaw + skills 100% propias (accesibilidad, vida)*
+*Actualizado: 2026-08-14 (agregada skill agent-orchestration-pipeline: capa de orquestación multi-agente con cross-review, validada en kanam-story Fase 3)*
+*Skills del pipeline: set propio organizado en ciclo SDLC (estilo Addy Osmani) + core OpenClaw + skills 100% propias (accesibilidad, vida, orquestación multi-agente)*
 *Estado: 🟢 Al día*

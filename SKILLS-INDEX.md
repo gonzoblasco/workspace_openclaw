@@ -40,6 +40,7 @@
 ### Review
 | Skill | Descripción |
 |---|---|
+| [agent-orchestration-pipeline](skills/agent-orchestration-pipeline/) | Orquestar 2+ agentes implementadores con cross-review multi-ronda: divide en unidades, asigna paridad A/B, coordina cierre. Validado en kanam-story Fase 3 |
 | [code-review-and-quality](skills/code-review-and-quality/) ⭐ | Review de 5 ejes, severity labels, change sizing, mentorship feedback. Fusiona: anti-pattern-czar, code-review-agent, code-mentor, review-quality |
 | [code-simplification](skills/code-simplification/) | Chesterton's Fence, Rule of 500, reduce complejidad preservando comportamiento |
 | [security-and-hardening](skills/security-and-hardening/) | OWASP Top 10, auth patterns, secrets management, boundary system |
