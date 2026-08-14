@@ -213,6 +213,7 @@
     4. **tsc:** B3 introdujo un error TS en `export.test.ts` (callback `.some()` con tipo incorrecto) — corregido. Quedan solo los 3 errores pre-existentes (`export.test.ts` style, `bibleSync.test.ts`).
   - **203 tests totales** (5 originales de B3 + 1 nuevo de inline markdown). Build + lint + tsc verdes.
   - **Asignado:** Agente B. Agente A revisa.
+  - **2ª ronda de revisión 2026-08-14 (Agente B, commit `461b1bc`):** ✅ verificadas las correcciones de A (`a9eb65c`): forma de `vfs_fonts` correcta, inline `**`/`*` parseado en listas/párrafos, errores de export visibles. Import dinámico no rompe SSR (solo por click, `'use client'`), MD/TXT intactos. **Mejora residual corregida:** el blockquote (`> descripción`) no corría `inlineToPdfmake` → un `**bold**` inline en la descripción se filtraba al PDF. Ahora lo parsea (con `italics` del blockquote preservado). +1 test. **204 tests totales.** B3 aprobado tras revisión multi-ronda.
 
 #### 🥈 Media — features de producto
 - [ ] **B4 — Búsqueda entre escenas** — find/replace a lo largo del manuscrito (todas las escenas de un proyecto). UI en el editor o vista global.
