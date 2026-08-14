@@ -217,7 +217,8 @@
   - **Fix de CI 2026-08-14 (orquestador, commit `1afb734`):** el CI fallaba con `TypeError: webidl.util.markAsUncloneable is not a function` en los tests de componentes. Causa raíz: el CI usaba **Node 20**, pero `jsdom@30` → `undici@8.10` importa `markAsUncloneable` de `node:worker_threads`, API que **no existe en Node 20** (sí en Node 22, que es lo que se usa localmente). Fix: subir el CI a **Node 22** + agregar `.nvmrc` (22) para consistencia dev/CI. **CI verde** (Lint + Test + Build).
 
 #### 🥈 Media — features de producto
-- [ ] **B4 — Búsqueda entre escenas** — find/replace a lo largo del manuscrito (todas las escenas de un proyecto). UI en el editor o vista global.
+- [x] **B4 — Búsqueda entre escenas** — find/replace a lo largo del manuscrito (todas las escenas de un proyecto). UI en el editor o vista global.
+  - ✅ **Hecho 2026-08-14 (commit `d8f37ad`).** `lib/search.ts` (lógica pura, sin DB/DOM): `searchScenes` (busca en contenido/título/summary, agrupa por capítulo, snippet con contexto + conteo), `buildReplacePlan` (plan de find/replace por escena), `replaceInHtml` (reemplaza SOLO en nodos de texto, nunca dentro de etiquetas — un término como "p" no corrompe `<p>`), `htmlToText` (HTML→texto plano para snippets). `SearchPanel.tsx` (modal global): input de búsqueda, resultados agrupados por capítulo con snippet y conteo por campo, click en resultado → `selectScene` + `setView('editor')` (navega a la escena), toggle "Reemplazar" con confirmación (`window.confirm` con nº de escenas/ocurrencias) que aplica vía `updateScene`. Botón "Buscar" en la topbar (`page.tsx`). 21 tests nuevos (`lib/search.test.ts`). **225 tests totales**, build+TS pasan, lint 0 errores.
   - **Asignado:** Agente A. Agente B revisa.
 
 #### 🥉 Baja — polish / infra

@@ -20,6 +20,15 @@ Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROAD
 - [x] **U8 (B) — Tests + integración** — lógica pura de dedupe/merge extraída a `lib/bibleSync.ts` (`buildCharacterSyncPlan`/`buildWorldSyncPlan`, sin DB). Syncs refactorizados para usarlas. 8 tests nuevos. **163 tests**, build+TS pasan, lint 0 errores. Commit `b2a7740`.
 - [x] **Release v0.7.0** + docs — bump a v0.7.0, CHANGELOG con features de la Fase 3, tag `v0.7.0` + GitHub Release. Commit `1baa434`. **Fase 3 completa.**
 
+## Backlog (B1-B7) — pipeline de revisión cruzada A/B
+
+> Plan en [ROADMAP.md](./ROADMAP.md). Cada item = commit atómico + push + actualizar ROADMAP/STATUS. A desarrolla impares, B pares; se revisan mutuamente.
+
+- [x] **B1 — Tests de `lib/db.ts`** (fake-indexeddb). Commits `b5d0c17`, `88ac174`, `13b0914`, `6a9220c`. 202 tests. Aprobado tras 2 rondas de revisión cruzada.
+- [x] **B2 — Tests de componentes** (jsdom + testing-library). Commits `9546e82`, `f3fd795`, `13b0914`, `6a9220c`. 202 tests. Aprobado tras 2 rondas.
+- [x] **B3 — Export PDF / DOCX** — `docx` + `pdfmake` client-side. Commits `b064c36`, `a9eb65c`, `461b1bc`, `1afb734` (CI Node 22). 204 tests. Aprobado tras revisión multi-ronda.
+- [x] **B4 — Búsqueda entre escenas** — `lib/search.ts` (lógica pura) + `SearchPanel.tsx` (modal global). Busca en contenido/título/summary, agrupa por capítulo con snippet + conteo, click navega a la escena, find/replace con confirmación. Commit `d8f37ad`. 21 tests nuevos. **225 tests**, build+TS pasan, lint 0 errores. **Asignado: Agente A. Pendiente revisión del Agente B.**
+
 - [x] Interview-me convergido (intención confirmada)
 - [x] BRIEF
 - [x] DATA_MODEL
