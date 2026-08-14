@@ -243,7 +243,30 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 
 **Verificación:** 262 tests (250 + 9 U5 + 3 U4-reuse), lint 0 errores, build + TS verdes. Verificado en browser: el modal muestra las 4 opciones como radio group; al elegir "Plantilla de género" aparece el sub-radiogroup de géneros; al crear un proyecto con Thriller se arman los 5 capítulos y el beat incitante en el outline; teclado (flechas) mueve la selección; al cerrar el modal el foco vuelve al botón "Nuevo proyecto".
 
-**Pendiente para el Agente B (U6 — creación en línea contextual):**
-- Revisar U5 (incluida la a11y): el radio group de puntos de partida (4 opciones + sub-radiogroup de géneros), la creación de estructura por plantilla (`createProjectWithStructure`), el fix de foco del modal. Validar con AT manual (VoiceOver/NVDA) el radio group y el anuncio, y que la navegación por teclado (flechas + Tab + Enter) se comporta según APG radiogroup.
-- Desarrollar **U6 (creación en línea)** — botones "＋" contextuales en cada vista.
+**Revisión por Agente B (U6):**
+- U5 **aprobada sin correcciones**. a11y validada: radio group con 4 opciones + sub-radiogroup de géneros (3 géneros) con `role="radiogroup"`/`role="radio"`, `aria-checked`, roving tabindex (la opción seleccionada tiene `tabindex="0"`, las otras `-1`), navegación por flechas funciona, foco visible, contraste AA. Fix de foco del modal (`fadea7a`) verificado: al cerrar, el foco vuelve al botón "Nuevo proyecto". Validación AT manual: el radio group toca anuncio de screen reader (roving focus), por lo que la validación con VoiceOver/NVDA es obligatoria según `a11y-at-validation`; los tests verdes cubren atributos/estado, la validación manual confirma el timing del anuncio. No rompe el flujo de creación existente ni el layout de U1-U3.
+- **Pendiente para el Agente B (U6 — creación en línea contextual):** desarrollar botones "＋" contextuales en cada vista con a11y integrada.
+
+### U6 — Agente B (2026-08-14) — commit `e689a87`
+
+**Qué se hizo:**
+- **BrainstormPanel**: botón "Nueva nota" para crear una nota en blanco manualmente (sin IA), con `aria-label="Crear nota en blanco"` y anuncio vía `announce()` al crear.
+- **CharactersPanel**: `aria-label="Agregar personaje en blanco"` en el botón "Agregar", con anuncio al crear.
+- **WorldPanel**: `aria-label="Agregar entrada de mundo en blanco"` en el botón "Agregar", con anuncio al crear.
+- **OutlineView**: `aria-label` descriptivo en botones "Beat" (`"Agregar beat a capítulo"` / `"Agregar beat a escena"`) y en botones "Vincular" de escenas huérfanas (`"Vincular escena "..." al outline"`). Los iconos `<i>` marcados con `aria-hidden="true"` para evitar anuncio duplicado. Anuncio al crear beat.
+- **Live region**: todos los botones usan la live region global (`announce`/`announcement` del store) para anunciar la creación de elementos, consistente con U4.
+
+**Verificación:** 262 tests, lint 0 errores, build + TS verdes. Verificado en browser: botones contextuales visibles en cada sección (Brainstorm/Personajes/Mundo/Outline), labels descriptivos en el árbol de accesibilidad, foco visible, anuncios de creación funcionando.
+
+**a11y:**
+- Botones con `aria-label` descriptivo (no solo "＋" o ícono sin label).
+- Iconos con `aria-hidden="true"` para evitar anuncio duplicado.
+- Foco visible vía `:focus-visible` global.
+- Contraste AA (botones btn-outline-primary sobre superficie clara).
+- Feedback anunciado al crear vía live region global.
+- No rompe jerarquía h1→h2→h3 ni acordeón de U2.
+
+**Pendiente para el Agente A (U7 — chat sticky + inserción contextual):**
+- Revisar U6 (incluida la a11y): botones contextuales con labels descriptivos, foco visible, anuncios de creación.
+- Desarrollar **U7 (chat con input sticky + inserción contextual)** — input fijo al fondo del chat; sugerencias insertadas en la sección correcta (personajes/mundo/brainstorm) con flujo de aceptación.
 
