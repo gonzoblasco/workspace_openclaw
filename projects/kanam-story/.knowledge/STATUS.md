@@ -1,12 +1,14 @@
 # STATUS — Kanam Story
 
-**Actualizado:** 2026-08-14
+**Actualizado:** 2026-08-15
 
-## Estado: 🟢 FASE 4 COMPLETA (v0.9.0). U1-U8 completadas y revisadas. Lista para release v0.9.0 (orquestador).
+## Estado: 🟢 FASE 4 COMPLETA (v0.10.0). U1-U8 completadas y revisadas. Release v0.10.0 publicado (2026-08-15).
+
+> **Nota de versionado:** el proyecto sigue en fase 0.x (pre-producción). La siguiente versión tras v0.8.0 es **v0.10.0**, no 1.0.0 - al ser Open Source y no estar en producción, quizá nunca llegue a 1.0.0.
 
 Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
 
-## Fase 4 — Rediseño de navegación accesible (COMPLETA, v0.9.0)
+## Fase 4 — Rediseño de navegación accesible (COMPLETA, v0.10.0)
 
 > Plan completo en [PLAN-FASE-4.md](./PLAN-FASE-4.md). Pipeline en cadena: A desarrolla unidades impares, B pares; cada uno revisa la unidad del otro (incluida su a11y) antes de seguir.
 

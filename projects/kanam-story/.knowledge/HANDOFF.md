@@ -1,3 +1,37 @@
+# HANDOFF — Kanam Story · Fase 4 completa (Rediseño de navegación accesible)
+
+**Fecha:** 2026-08-15
+**Autor:** Kanam (orquestador)
+**Estado:** 🟢 FASE 4 COMPLETA. U1-U8 done. **v0.10.0 RELEASED** (2026-08-15).
+**Propósito:** documentar el cierre de la Fase 4 (rediseño de navegación accesible) y el release v0.10.0.
+
+---
+
+## Estado actual
+
+- **Fase 4 completa (v0.10.0):** rediseño de navegación accesible - secciones apiladas en el área central (U1), scrollspy + acordeón (U2), renombrado "Story Bible"→"Ajustes" + consistencia visual (U3), generar escena desde outline (U4), onboarding por plantillas (U5), creación en línea contextual (U6), chat sticky + inserción contextual (U7), cierre con tests del layout + auditoría a11y (U8).
+- **282 tests**, build + TS pasan, lint 0 errores, `tsc --noEmit` limpio.
+- **Repo:** `gonzoblasco/kanam-story` (público), remote `origin`. `.knowledge/` solo en el workspace (doble-git).
+- **Releases:** v0.1.0 → v0.10.0 (todos taggeados en GitHub).
+- **Nota de versionado:** el proyecto sigue en fase 0.x (pre-producción). La siguiente versión tras v0.8.0 es **v0.10.0**, no 1.0.0 - al ser Open Source y no estar en producción, quizá nunca llegue a 1.0.0.
+
+## Qué se construyó en la Fase 4 (pipeline en cadena A/B)
+
+- **U1 (A) — Layout de secciones apiladas.** Grid 3→2 columnas, `RightPanel` eliminado como contenedor de tabs, las 7 secciones apiladas en el main. Sidebar navega Escritura/Outline/Historia con `aria-current`. a11y integrada: skip link, landmarks, jerarquía h1→h2→h3, foco visible. Commit `3437359`.
+- **U2 (B) — Scrollspy + acordeón.** `IntersectionObserver` resalta la sección activa; cada sección es un acordeón accesible (`aria-expanded`/`aria-controls`). Commit `771dabb`.
+- **U3 (A) — Renombrado + consistencia visual.** "Story Bible"→"Ajustes", headers/hints unificados (`.stack-panel-header`/`.stack-panel-hint`), `<h1>Outline</h1>` + jerarquía h1→h2→h3. Commits `f3dde30` + `c490cfc`.
+- **U4 (B) — Generar escena desde outline.** Botón por beat → crea escena (y capítulo si falta), relinkea, abre editor con foco. Función pura `lib/sceneFromBeat.ts` (`planGenerateScene`). Reutiliza escena existente en clicks repetidos. Commits `acb04d5` + `3a5adcb` + `896b4af`.
+- **U5 (A) — Onboarding por plantillas.** 4 puntos de partida opcionales (outline/biblia/género/vacío). Radio group accesible (`role="radiogroup"`, roving tabindex, flechas). Commits `a5eeb55` + `fadea7a`.
+- **U6 (B) — Creación en línea contextual.** Botones "＋" con `aria-label` descriptivo + anuncio vía live region global. Commit `e689a87`.
+- **U7 (A) — Chat sticky + inserción contextual.** Input anclado al fondo, scroll interno de mensajes; aceptar navega a la sección destino. Función pura `lib/actionTargets.ts` (`getActionsTarget`). Commit `8f21f91`.
+- **U8 (B) — Cierre.** Fix test flaky DB, 10 tests del layout, auditoría a11y final (2 fixes de foco), fix tsc en tests. Commit `8ec5511`.
+
+## Pendiente para la próxima sesión
+
+- **Validación AT manual definitiva** con VoiceOver/NVDA de la live region `role="log"` (U7) y el radio group del onboarding (U5) - los tests verdes no cubren el timing del anuncio (skill `a11y-at-validation`).
+
+---
+
 # HANDOFF — Kanam Story · Fase 2 completa (Slices 0-10)
 
 **Fecha:** 2026-08-13
