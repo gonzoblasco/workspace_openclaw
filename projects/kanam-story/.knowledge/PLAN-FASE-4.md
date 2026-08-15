@@ -2,7 +2,7 @@
 
 > **Fecha:** 2026-08-14
 > **Autor:** Kanam (planificación y documentación)
-> **Estado:** U1-U7 completadas y revisadas; **U7 completada** (2026-08-14, commit `8f21f91`). Pendiente U8 (cierre, Agente B).
+> **Estado:** U1-U8 completadas y revisadas. **U7 revisada por Agente B** (2026-08-14) y **U8 (cierre) completada** (2026-08-14, commit `8ec5511`). Fase 4 lista para release v0.9.0 (lo coordina el orquestador).
 > **Fuente:** pedidos de Gonzo (2026-08-14) + mockup aprobado en `projects/kanam-story/preview-layout-v090.html` + patrón de Sudowrite/NovelCrafter.
 > **Visión:** NO es solo corregir bugs — es un **rediseño donde UI y a11y están integradas desde el diseño**, no como capa final.
 
@@ -128,10 +128,13 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 
 ## Cierre de la Fase 4
 
-- [ ] **Release v0.9.0** — bump de versión, CHANGELOG, tag + GitHub Release.
-- [ ] **Actualizar docs** — STATUS.md, ROADMAP.md (marcar items), HANDOFF.md.
-- [ ] **Verificación final** — tests, build + TS, lint 0 errores, CI verde.
-- [ ] **Auditoría a11y final** — revisar que todo el rediseño cumple WCAG AA (teclado, foco, landmarks, contraste, anuncio AT).
+- [x] **U1-U8 completadas y revisadas** (cross-review con a11y integrada).
+- [x] **Auditoría a11y final** — teclado, foco, landmarks, contraste, anuncio AT; hallazgos corregidos (foco tras enviar/aceptar/descartar/deshacer).
+- [x] **Tests del nuevo layout** — acordeón, scrollspy, chat sticky, radio group (282 tests).
+- [x] **Verificación final** — tests, build + TS, lint 0 errores, `tsc --noEmit` limpio.
+- [ ] **Release v0.9.0** — bump de versión, CHANGELOG, tag + GitHub Release (orquestador).
+- [ ] **Actualizar docs** — STATUS.md, ROADMAP.md (marcar items), HANDOFF.md (orquestador).
+- [ ] **Validación AT manual definitiva** con VoiceOver/NVDA (live region `role="log"` de U7 + radio group de U5).
 
 ---
 
@@ -297,4 +300,35 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 - Revisar U7 (incluida la a11y): input sticky, live region de mensajes, foco gestionado, inserción contextual.
 - **U8 (cierre):** fix test flaky restante (`beforeEach` de `lib/db.test.ts`), tests del nuevo layout (navegación de secciones, acordeón, sticky chat), auditoría a11y final del rediseño (teclado, foco, landmarks, contraste, anuncio AT), release v0.9.0.
 - **Validación AT manual:** U7 toca anuncio de screen reader (live region `role="log"` + anuncios de aceptar/descartar). Los tests verdes cubren atributos/estado; la confirmación definitiva es la validación con VoiceOver/NVDA (skill `a11y-at-validation`).
+
+### Revisión de U7 por Agente B (2026-08-14) — aprobada con 2 correcciones a11y aplicadas en U8
+
+**Revisión (chat sticky, inserción contextual, a11y, regresión):**
+- **Chat sticky:** correcto. `.chat-panel` es una card de altura fija (`height: min(58vh, 520px)`, `min-height: 320px`) con `.chat-messages` (`flex: 1; overflow-y: auto; min-height: 0`) como scroll interno y `.chat-input` (`position: sticky; bottom: 0`) anclado al fondo. Con muchas respuestas el input se mantiene fijo y los mensajes hacen scroll interno.
+- **Inserción contextual:** correcta. `lib/actionTargets.ts` (`getActionsTarget`) es una función pura bien testeada (10 tests) que resuelve el destino de un lote de acciones (único destino si todas coinciden, `null` si mezclan). `acceptActions` navega correctamente: personaje→Personajes, beat→Outline, mundo→Mundo, biblia→Biblia, escena→Editor, reusando `applyContentActions` (propuesta→diff→aceptar/deshacer). No rompe el modelo de aceptación.
+- **a11y:** input con `aria-label` descriptivo + `<label>` oculto; live region `role="log"` + `aria-live="polite"` que anuncia respuestas nuevas (se reinicia tras 6s para repetir contenido); foco devuelto al input al enviar; aceptar/descartar/deshacer anunciados vía la live region global. No rompe la jerarquía h1→h2→h3 ni el acordeón de U2.
+- **Regresión:** 272 tests verdes, build + TS, lint 0 errores.
+
+**2 correcciones a11y aplicadas (en U8, commit `8ec5511`):**
+1. **Foco tras enviar roto:** el `finally` de `send()` llamaba `inputRef.current?.focus()` mientras el textarea seguía `disabled` (busy=true), así que `focus()` era un no-op y el foco se perdía. Se difirió con `setTimeout(0)` para que corra tras el re-render que habilita el textarea.
+2. **Pérdida de foco al aceptar/descartar/deshacer:** al desmontarse el botón Aceptar/Descartar/Deshacer, el foco caía a `<body>` (WCAG 2.4.3). Se agregó `requestSectionFocus` (nonce en el store, patrón `requestEditorFocus`) que `StorySections` observa para enfocar el heading de la sección destino al aceptar; y se devuelve el foco al input al descartar/deshacer.
+
+**Validación AT manual (skill `a11y-at-validation`):** U7 toca anuncio de screen reader (live region `role="log"` + anuncios de aceptar/descartar). Verificado a nivel DOM/timing (la live region está presente, `aria-live="polite"`, se reinicia a los 6s para repetir contenido). La confirmación definitiva con VoiceOver/NVDA físico queda **registrada para el release v0.9.0** (los tests verdes no cubren el timing del anuncio).
+
+### U8 — Agente B (2026-08-14) — commit `8ec5511` (cierre de la Fase 4)
+
+**Qué se hizo:**
+- **Fix test flaky de DB verificado:** el `beforeEach` de `lib/db.test.ts` (`vi.resetModules()` + reimport + clear de stores) es estable — 5/5 corridas verdes. El `7c2432c` ya eliminó la flakiness del sort por `updatedAt` (timestamps distintos con `setTimeout(5)`). No quedan fuentes de flakiness.
+- **Tests del nuevo layout (10 nuevos):**
+  - `components/StorySections.test.tsx` (5): acordeón accesible (`aria-expanded`/`aria-controls` + body `hidden`), scrollspy (el `IntersectionObserver` marca la sección activa), y foco de sección tras navegación contextual (`requestSectionFocus`).
+  - `components/ChatPanel.test.tsx` (5): input con `aria-label`, live region `role="log"`, foco devuelto al input tras enviar, inserción contextual (aceptar navega a Personajes + `requestSectionFocus`), y descartar devuelve el foco al input.
+- **Auditoría a11y final del rediseño:** teclado (acordeón/radio group operables), foco visible (`:focus-visible` global), landmarks (`<header>`/`<nav aria-label="Secciones">`/`<main>`/`<aside>`), contraste AA (variables del tema), anuncio AT (live regions global + chat). Se corrigieron los 2 hallazgos de foco de U7 (ver arriba).
+- **Fix tsc en tests:** se corrigieron 4 errores de tipo pre-existentes en archivos de test (`StarterPicker.test.tsx`, `bibleSync.test.ts` x2, `export.test.ts`) para que `tsc --noEmit` pase limpio (exit 0).
+
+**Verificación final:** 282 tests (272 + 10 nuevos), build + TS verdes, lint 0 errores, `tsc --noEmit` limpio. Fase 4 completa y lista para release v0.9.0.
+
+**Pendiente para el orquestador (release v0.9.0):**
+- Bump de versión, CHANGELOG, tag + GitHub Release.
+- Verificación final (tests, build + TS, lint, CI verde).
+- **Validación AT manual definitiva** con VoiceOver/NVDA de la live region `role="log"` (U7) y el radio group del onboarding (U5) — los tests verdes no cubren el timing del anuncio.
 
