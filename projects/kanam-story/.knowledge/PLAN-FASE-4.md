@@ -2,7 +2,7 @@
 
 > **Fecha:** 2026-08-14
 > **Autor:** Kanam (planificación y documentación)
-> **Estado:** U1-U4 completadas y revisadas; **U4 revisada y corregida** (2026-08-14, fix `896b4af`) y **U5 completada** (2026-08-14, commits `a5eeb55` + `fadea7a`). Pendiente U6.
+> **Estado:** U1-U7 completadas y revisadas; **U7 completada** (2026-08-14, commit `8f21f91`). Pendiente U8 (cierre, Agente B).
 > **Fuente:** pedidos de Gonzo (2026-08-14) + mockup aprobado en `projects/kanam-story/preview-layout-v090.html` + patrón de Sudowrite/NovelCrafter.
 > **Visión:** NO es solo corregir bugs — es un **rediseño donde UI y a11y están integradas desde el diseño**, no como capa final.
 
@@ -269,4 +269,32 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 **Pendiente para el Agente A (U7 — chat sticky + inserción contextual):**
 - Revisar U6 (incluida la a11y): botones contextuales con labels descriptivos, foco visible, anuncios de creación.
 - Desarrollar **U7 (chat con input sticky + inserción contextual)** — input fijo al fondo del chat; sugerencias insertadas en la sección correcta (personajes/mundo/brainstorm) con flujo de aceptación.
+
+### Revisión de U6 por Agente A (2026-08-14) — aprobada sin correcciones
+
+**Revisión (flujo, a11y, regresión):**
+- **Botones contextuales:** Brainstorm ("Nueva nota"), Characters ("Agregar personaje en blanco"), World ("Agregar entrada de mundo en blanco"), Outline ("Agregar beat a capítulo/escena" + "Vincular escena ... al outline") — todos crean el elemento directamente y anuncian la creación.
+- **a11y:** todos con `aria-label` descriptivo (no solo "＋"), iconos `<i>` con `aria-hidden="true"` para evitar anuncio duplicado, feedback de creación vía live region global (`announce`), foco visible (anillo global `:focus-visible`), contraste AA.
+- **No rompe:** modelo de aceptación del chat intacto; jerarquía h1→h2→h3 de U3 y acordeón de U2 (`aria-expanded`/`aria-controls`) intactos; layout apilado de U1 sin cambios.
+- **Cobertura de "＋" sin label:** los botones "＋" de las vistas (Brainstorm/Characters/World/Outline) quedaron todos con `aria-label`. El botón "Nueva" del ChatPanel y los "＋" del sidebar (ProjectTree: agregar capítulo/escena) tienen texto/`title` visible (nombre accesible correcto), fuera del scope de U6.
+- **Verificación:** 262 tests, build + TS, lint 0 errores. Verificado en browser.
+
+### U7 — Agente A (2026-08-14) — commit `8f21f91`
+
+**Qué se hizo:**
+- **Chat con input sticky:** el panel de chat (`ChatPanel`) ahora es una card de altura fija (`height: min(58vh, 520px)`) con scroll interno de mensajes, y el input queda **anclado al fondo** (`position: sticky; bottom: 0` en `.chat-input`). El usuario escribe al co-writer sin hacer scroll hasta el final de las secciones apiladas (item 7 del plan).
+- **Inserción contextual:** al aceptar una propuesta del co-writer (`acceptActions`), el usuario navega a la sección donde el cambio se aplica: personaje → Personajes, beat → Outline, mundo → Mundo, biblia → Biblia, escena → Editor. Reusa la infraestructura existente de `contentActions` / `applyContentActions` (propuesta → diff → aceptar/descartar + deshacer). Nueva función pura `lib/actionTargets.ts` (`getActionsTarget`) que resuelve el destino de un lote de acciones (único destino si todas coinciden, `null` si mezclan). 10 tests nuevos.
+- **a11y:**
+  - Input con `aria-label` descriptivo ("Escribí tu idea, pregunta o pedido para el co-writer") + `<label>` visible oculto.
+  - Región de mensajes como **live region** (`role="log"` + `aria-live="polite"`) que anuncia las respuestas nuevas del co-writer (se reinicia tras 6s para repetir contenido).
+  - **Foco gestionado:** al terminar de enviar, el foco vuelve al input (`inputRef.current?.focus()`).
+  - **Inserción contextual anunciada:** aceptar/descartar/deshacer y la navegación de sección anunciados vía la live region global (`announce`).
+  - No rompe la jerarquía h1→h2→h3 ni el acordeón de U2.
+
+**Verificación:** 272 tests (262 + 10 U7), build + TS, lint 0 errores. Verificado en browser (dev server): el input está anclado al fondo de la card con scroll interno de mensajes; con muchas respuestas el input se mantiene fijo al fondo y los mensajes hacen scroll interno; `aria-label` presente en el árbol de accesibilidad (`textbox "Escribí tu idea..."`); live region `role="log"` presente.
+
+**Pendiente para el Agente B (U8 — cierre):**
+- Revisar U7 (incluida la a11y): input sticky, live region de mensajes, foco gestionado, inserción contextual.
+- **U8 (cierre):** fix test flaky restante (`beforeEach` de `lib/db.test.ts`), tests del nuevo layout (navegación de secciones, acordeón, sticky chat), auditoría a11y final del rediseño (teclado, foco, landmarks, contraste, anuncio AT), release v0.9.0.
+- **Validación AT manual:** U7 toca anuncio de screen reader (live region `role="log"` + anuncios de aceptar/descartar). Los tests verdes cubren atributos/estado; la confirmación definitiva es la validación con VoiceOver/NVDA (skill `a11y-at-validation`).
 
