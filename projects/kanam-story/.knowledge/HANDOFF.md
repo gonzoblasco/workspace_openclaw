@@ -2,18 +2,18 @@
 
 **Fecha:** 2026-08-15
 **Autor:** Kanam (orquestador)
-**Estado:** 🟢 FASE 4 COMPLETA. U1-U8 done. **v0.10.0 RELEASED** (2026-08-15).
-**Propósito:** documentar el cierre de la Fase 4 (rediseño de navegación accesible) y el release v0.10.0.
+**Estado:** 🟢 FASE 4 COMPLETA. U1-U8 done. **v0.9.0 RELEASED** (2026-08-15).
+**Propósito:** documentar el cierre de la Fase 4 (rediseño de navegación accesible) y el release v0.9.0.
 
 ---
 
 ## Estado actual
 
-- **Fase 4 completa (v0.10.0):** rediseño de navegación accesible - secciones apiladas en el área central (U1), scrollspy + acordeón (U2), renombrado "Story Bible"→"Ajustes" + consistencia visual (U3), generar escena desde outline (U4), onboarding por plantillas (U5), creación en línea contextual (U6), chat sticky + inserción contextual (U7), cierre con tests del layout + auditoría a11y (U8).
+- **Fase 4 completa (v0.9.0):** rediseño de navegación accesible - secciones apiladas en el área central (U1), scrollspy + acordeón (U2), renombrado "Story Bible"→"Ajustes" + consistencia visual (U3), generar escena desde outline (U4), onboarding por plantillas (U5), creación en línea contextual (U6), chat sticky + inserción contextual (U7), cierre con tests del layout + auditoría a11y (U8).
 - **282 tests**, build + TS pasan, lint 0 errores, `tsc --noEmit` limpio.
 - **Repo:** `gonzoblasco/kanam-story` (público), remote `origin`. `.knowledge/` solo en el workspace (doble-git).
-- **Releases:** v0.1.0 → v0.10.0 (todos taggeados en GitHub).
-- **Nota de versionado:** el proyecto sigue en fase 0.x (pre-producción). La siguiente versión tras v0.8.0 es **v0.10.0**, no 1.0.0 - al ser Open Source y no estar en producción, quizá nunca llegue a 1.0.0.
+- **Releases:** v0.1.0 → v0.9.0 (todos taggeados en GitHub).
+- **Nota de versionado:** el proyecto sigue en fase 0.x (pre-producción) y no va a 1.0.0 todavía - al ser Open Source y no estar en producción, quizá nunca llegue a 1.0.0. Aún queda camino por recorrer.
 
 ## Qué se construyó en la Fase 4 (pipeline en cadena A/B)
 

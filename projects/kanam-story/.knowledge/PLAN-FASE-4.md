@@ -2,8 +2,8 @@
 
 > **Fecha:** 2026-08-14
 > **Autor:** Kanam (planificación y documentación)
-> **Estado:** U1-U8 completadas y revisadas. **U7 revisada por Agente B** (2026-08-14) y **U8 (cierre) completada** (2026-08-14, commit `8ec5511`). **Release v0.10.0 publicado** (2026-08-15).
-> **Nota de versionado:** la Fase 4 se publicó como **v0.10.0** (no v0.9.0 como se planificó) - el proyecto sigue en fase 0.x (pre-producción) y no va a 1.0.0.
+> **Estado:** U1-U8 completadas y revisadas. **U7 revisada por Agente B** (2026-08-14) y **U8 (cierre) completada** (2026-08-14, commit `8ec5511`). **Release v0.9.0 publicado** (2026-08-15).
+> **Nota de versionado:** el proyecto sigue en fase 0.x (pre-producción) y no va a 1.0.0 todavía - al ser Open Source y no estar en producción, quizá nunca llegue a 1.0.0. Aún queda camino por recorrer.
 > **Fuente:** pedidos de Gonzo (2026-08-14) + mockup aprobado en `projects/kanam-story/preview-layout-v090.html` + patrón de Sudowrite/NovelCrafter.
 > **Visión:** NO es solo corregir bugs — es un **rediseño donde UI y a11y están integradas desde el diseño**, no como capa final.
 
@@ -133,7 +133,7 @@ El orquestador guía: en cada paso le pasa el prompt al agente correspondiente (
 - [x] **Auditoría a11y final** — teclado, foco, landmarks, contraste, anuncio AT; hallazgos corregidos (foco tras enviar/aceptar/descartar/deshacer).
 - [x] **Tests del nuevo layout** — acordeón, scrollspy, chat sticky, radio group (282 tests).
 - [x] **Verificación final** — tests, build + TS, lint 0 errores, `tsc --noEmit` limpio.
-- [x] **Release v0.10.0** — bump de versión, CHANGELOG, tag + GitHub Release (orquestador, 2026-08-15).
+- [x] **Release v0.9.0** — bump de versión, CHANGELOG, tag + GitHub Release (orquestador, 2026-08-15).
 - [x] **Actualizar docs** — STATUS.md, ROADMAP.md (marcar items), HANDOFF.md (orquestador).
 - [ ] **Validación AT manual definitiva** con VoiceOver/NVDA (live region `role="log"` de U7 + radio group de U5).
 
