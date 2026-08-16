@@ -1,6 +1,6 @@
 # LEARNINGS — kanam-story
 
-## 2026-08-16 — U3 chat-assisted global outline (v0.10.0 → v0.10.1)
+## 2026-08-16 — U3 chat-assisted global outline (v0.10.0 → v0.10.2)
 
 CONTEXT: Implementing a chat-assisted global outline replacement where the agent proposes a full new chapter+beat structure.
 

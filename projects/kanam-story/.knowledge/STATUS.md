@@ -21,7 +21,7 @@
 - [x] **Persistencia del estado de sesión** — último proyecto, última escena y capítulos colapsados se guardan en IndexedDB settings y se restauran al recargar. Commit `8b5b675`.
 - [x] **Code review + reestructuración** — a11y del árbol, eliminación de filtros POV/tiempo confusos, refactor de `OutlineView` en componentes más pequeños (`BeatCard`, `ChapterSection`, `SuggestedOutlinePreview`) y limpieza de mocks. Commit `4349401`.
 - [x] **U3 — Chat-assisted global outline generation** — acción `replace_outline` en `ContentAction`, validación en `agentReply`, aplicación en store con undo, preview en `ChatPanel`, tests. Completo.
-- [x] **Release v0.10.1** — publicado el 2026-08-16 (`a7bdb4d`). Incluye fix post-smoke-test: normalización de aliases de `kind` en beats (`giro` → `custom`, `ascenso` → `rising`, etc.). Tags `v0.10.0` y `v0.10.1` pusheados.
+- [x] **Release v0.10.2** — publicado el 2026-08-16 (`67e2ce0`). Fix de CI lint post-v0.10.1 (setState en effects, dependencias faltantes, variables sin uso). Tags `v0.10.0`, `v0.10.1` y `v0.10.2` pusheados.
 
 ## Fase 4 — Rediseño de navegación accesible (COMPLETA, v0.9.0)
 
