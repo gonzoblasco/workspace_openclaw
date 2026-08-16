@@ -1,12 +1,27 @@
 # STATUS — Kanam Story
 
-**Actualizado:** 2026-08-15
+**Actualizado:** 2026-08-16
 
-## Estado: 🟢 FASE 4 COMPLETA (v0.9.0). U1-U8 completadas y revisadas. Release v0.9.0 publicado (2026-08-15).
+## Estado: 🟢 FASE 4 (v0.9.0) finalizada. Trabajando en feature block post-v0.9.0: outline global, generación automática de estructura, árbol colapsable y persistencia de sesión.
 
-> **Nota de versionado:** el proyecto sigue en fase 0.x (pre-producción) y no va a 1.0.0 todavía - al ser Open Source y no estar en producción, quizá nunca llegue a 1.0.0. Aún queda camino por recorrer.
+> **Nota de versionado:** el proyecto sigue en fase 0.x (pre-producción). La versión actual del package sigue en `0.9.0`; el siguiente tag será `v0.10.0` al cerrar U3.
 
-Todas las fases y slices (0-10) están detallados abajo y en [ROADMAP.md](./ROADMAP.md).
+## Feature block post-v0.9.0 — Outline global + persistencia (en progreso)
+
+- [x] **Bug fix: generación de capítulo respetaba el beat genérico** — `generateSceneContent` ahora recibe el `Beat` explícito y construye el prompt con `title`, `description` y `notes`. Cada escena generada cubre su propio beat. Commit `d4d04be`. Tests actualizados en `lib/generateSceneContent.test.ts`.
+- [x] **U1 — Vista global del outline** — refactor de `OutlineView` con modo Capítulo/Global. En global se ven todos los capítulos con sus beats, se editan títulos, se reordenan capítulos, se mueven beats entre capítulos, se agregan capítulos y se genera capítulo entero. Se preserva el flujo por capítulo. Commit `efaadb2`.
+- [x] **Fixes de runtime post-U1**:
+  - Hydration warning del tema: `suppressHydrationWarning` en `app/layout.tsx` (`3e43c9a`).
+  - Escenas generadas en capítulo recibían todas `order = 0`: `planGenerateScene` acepta `nextOrder` y `generateChapter` asigna orden secuencial (`4127bf1`).
+  - Escena 2 re-explicaba setup porque no veía escena 1: `generateChapter` acumula escenas generadas como `previousScene` y el prompt refuerza "no repetir setup" (`6f24eed`).
+- [x] **Layout más ancho** — se eliminó `max-width: 820px` de `.main-content` (`65369f0`).
+- [x] **Menús de acciones en el árbol** — `ActionMenu.tsx` con `<details>`/`<summary>`, accesible y sin ensuciar el título de capítulo/escena. Commit `e02c1ad`.
+- [x] **U2 — Generación automática de estructura global** — `lib/outlineGeneration.ts` (prompt + parser con alias en español) + acciones `suggestGlobalOutline`/`applyGlobalOutline` en el store + UI de preview Aplicar/Descartar. Commit `4ca27bf`. 7 parser tests + test de UI.
+- [x] **Árbol de manuscrito colapsable** — click en título/caret expande/colapsa capítulos. Commit `a70a290`.
+- [x] **Persistencia del estado de sesión** — último proyecto, última escena y capítulos colapsados se guardan en IndexedDB settings y se restauran al recargar. Commit `8b5b675`.
+- [x] **Code review + reestructuración** — a11y del árbol, eliminación de filtros POV/tiempo confusos, refactor de `OutlineView` en componentes más pequeños (`BeatCard`, `ChapterSection`, `SuggestedOutlinePreview`) y limpieza de mocks. Commit `4349401`.
+- [x] **U3 — Chat-assisted global outline generation** — acción `replace_outline` en `ContentAction`, validación en `agentReply`, aplicación en store con undo, preview en `ChatPanel`, tests. Completo.
+- [x] **Release v0.10.0** — publicado el 2026-08-16 (`64ed320`). Tag `v0.10.0` pusheado.
 
 ## Fase 4 — Rediseño de navegación accesible (COMPLETA, v0.9.0)
 
