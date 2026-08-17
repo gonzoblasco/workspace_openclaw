@@ -18,18 +18,20 @@
 - [x] **Plantillas conectadas al flujo de responder** - insertar plantilla en la respuesta desde la bandeja
 - [x] **KB (RAG) - gestión de artículos** - CRUD de artículos con chunking (repo, API, UI) + tests
 - [x] **KB (RAG) - búsqueda semántica** - embeddings + similitud coseno + contexto para la IA
+- [x] **Autopilot** - responde consultas automáticamente por categoría + umbral de confianza
 - [ ] Definir el pipeline A/B para este proyecto
 
-## Slice 3: KB - búsqueda semántica (RAG) (2026-08-17)
+## Slice 4: Autopilot (2026-08-17)
 
-El corazón del RAG - la IA ahora usa la KB como contexto:
-- ✅ `AiService.embed()` - genera embeddings con Ollama (all-minilm, 384 dims)
-- ✅ `KbRepo` - guarda embeddings en chunks + `searchChunks` (similitud coseno) + `incrementChunkHit`
-- ✅ `KbService` - indexa chunks sin embedding + busca los más relevantes para una consulta
-- ✅ `/ai/suggest` usa la KB: busca los chunks relevantes y los pasa como contexto a la IA
-- ✅ Endpoint `/kb/index` para indexar embeddings
-- ✅ Verificado: "¿Cuánto tarda el envío a CABA?" encuentra el chunk de la política de envíos
-- Commit `2f872da` en soporteml-v3
+La IA responde consultas automáticamente según la configuración de la empresa:
+- ✅ `packages/db/src/repo/settings.ts` - CRUD de company_settings (autopilot, SLA, KB)
+- ✅ `AutopilotService` - decide si una pregunta se responde automáticamente (modo auto): categoría permitida + confianza >= umbral + no requiere humano
+- ✅ Integrado al sync: al llegar una pregunta, el autopilot la responde si corresponde
+- ✅ Endpoints API: GET/PUT /settings
+- ✅ UI: configuración del autopilot en Ajustes (modo, categorías, umbral de confianza)
+- ✅ 2 tests nuevos (20 total): settings CRUD + autopilot responde automáticamente
+- ✅ Verificado en browser: con modo auto + Precio/Stock + umbral 50%, 7 preguntas se autopublicaron (Pendientes 13→6)
+- Commit `d9c47da` en soporteml-v3
 
 ## UI V4 arrancada (2026-08-17)
 
