@@ -35,3 +35,13 @@ LESSON: Para que el modelo genere acciones con ids correctos, TODOS los ids refe
 BIASES DETECTED: Asumí que el contexto ya exponía los ids de beats porque exponía los de escenas. La falta de smoke test del flujo completo permitió que el bug pasara.
 
 VALUE: El smoke test con Ollama local (deepseek-v4-flash) validó que el agente extrae beats fieles al texto del autor, reestructurando sin inventar contenido.
+
+## 2026-08-16 — Sidebar de co-writer con contexto acotado (v0.13.0)
+
+CONTEXT: Gonzo pidió un sidebar expandible desde la página de escritura para chatear con la historia, personajes, lo ya escrito y la escena actual, y que actúe como agente con manos PERO sin modificar otras escenas.
+
+REFLECTION: En vez de una tercera columna fija (comprimiría el editor), hice un overlay deslizable. Para "no modifica otras escenas" no basta con limitar la UI — hay que limitar el CONTEXTO del agente: si solo ve la escena activa + biblia + personajes + mundo + outline del capítulo actual (helper puro `buildSceneContext`), no puede referenciar ni editar otras escenas. El `ChatPanel` se reutilizó con un prop `contextScope` y default 'full' (no rompe el chat existente).
+
+LESSON: "No modificar X" en un agente con manos se resuelve limitando lo que el agente ve en el contexto, no solo restringiendo la UI. Un agente no puede editar lo que no ve. Reusar componentes con un prop de scope (default preserva el comportamiento) evita duplicar el panel de chat.
+
+BIASES DETECTED: Pensé primero en una columna fija de grid; el overlay es mejor porque no comprime el área de escritura. El contexto acotado es la pieza clave que satisface el requisito real.
