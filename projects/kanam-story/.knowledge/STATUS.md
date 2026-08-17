@@ -2,9 +2,17 @@
 
 **Actualizado:** 2026-08-17
 
-## Estado: 🟢 v0.17.0 + Fase A completa (379 tests)
+## Estado: 🟢 v0.17.0 + Fase A completa + OpenSpec inicializado (379 tests)
 
-> **Fase A (cerrar el producto local) COMPLETA 2026-08-17:** release v0.17.0, smoke tests de acciones nuevas (3/3 OK), WelcomeScreen onboarding, README BYOK actualizado. El co-writer sigue habilitado en open source (feature flag diseñado pero revertido hasta que exista el SaaS backend).
+> **OpenSpec inicializado 2026-08-17:** 6 specs de casos de uso core (34 requirements) + project.md + config.yaml. Los specs documentan la intención; falta auditar el comportamiento real contra ellos (ver checklist en cada spec).
+
+## OpenSpec (2026-08-17)
+
+- [x] **Inicializado** con schema `spec-driven` (commit `1801c98`).
+- [x] **`project.md`** - visión, stack, dominio, estrategia de 3 públicos.
+- [x] **`config.yaml`** - contexto del proyecto + reglas para el CLI.
+- [x] **6 specs de casos de uso core** (34 requirements): co-writer (9), editor (6), outline-beats (6), proyecto-persistencia (5), biblia-viva (4), brújula-narrativa (4).
+- [ ] **Auditar el comportamiento real contra los specs** - pendiente. Cada spec tiene una sección "Notas de auditoría" con checklist.
 
 ## Fase A - Cerrar el producto local (2026-08-17)
 

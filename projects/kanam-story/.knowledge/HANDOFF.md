@@ -35,9 +35,18 @@ Sesión de cierre del bloque post-v0.16.1 + release v0.17.0 + smoke tests de acc
 - `npm run build`, `npx tsc --noEmit`, `npm run lint` verdes.
 
 ## Next steps
-1. **Generalizar el BYOK** a cualquier endpoint OpenAI-compatible (preparación para SaaS).
-2. **Futuro:** backend + auth + billing (Supabase), sync IndexedDB ↔ nube, activar el feature flag del co-writer.
-3. **Fase A completa:** release v0.17.0 + smoke tests de acciones + WelcomeScreen onboarding + README BYOK. 379 tests.
+1. **Auditar el comportamiento real contra los specs de OpenSpec** (los specs documentan la intención; falta verificar que el código la cumple - ver checklist de auditoría en cada spec).
+2. **Generalizar el BYOK** a cualquier endpoint OpenAI-compatible (preparación para SaaS).
+3. **Futuro:** backend + auth + billing (Supabase), sync IndexedDB ↔ nube, activar el feature flag del co-writer.
+
+## OpenSpec (inicializado 2026-08-17)
+
+- **`openspec/`** inicializado con schema `spec-driven`.
+- **`openspec/project.md`** - visión, stack, dominio, estrategia de 3 públicos.
+- **`openspec/config.yaml`** - contexto del proyecto + reglas para el CLI.
+- **6 specs de casos de uso core** (34 requirements): co-writer (9), editor (6), outline-beats (6), proyecto-persistencia (5), biblia-viva (4), brújula-narrativa (4).
+- Cada spec tiene una sección **"Notas de auditoría"** con checklist de puntos a verificar contra el comportamiento real.
+- **Próximo:** auditar el comportamiento real contra los specs (verificar que lo que la app dice que hace, lo hace de un modo lógico y con el contexto correcto).
 
 ## Open questions / caveats
 - El feature flag del co-writer está en el historial de git (`2f5130e`), revertido por `8eb6275`. Recuperar cuando exista el SaaS.
