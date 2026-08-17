@@ -240,7 +240,7 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 | workspace_openclaw | ✅ | El workspace |
 | kanam-skills | — | Repo público + web de agent skills (engineering + life). https://github.com/gonzoblasco/kanam-skills |
 | quedamos | — | App PWA de matching para salidas |
-| sportcars | ✅ | — |
+| sportcars | ✅ | Eliminado localmente 2026-08-17 (repo remoto intacto) |
 | cabala | ✅ | Eliminado — build roto |
 | a11y-fixer | ✅ | Accessibility fix engine (nueva versión, reescrito desde cero) |
 | ai-developer-stack | — | Skills de ingeniería con IA |
