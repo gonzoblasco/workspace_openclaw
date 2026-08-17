@@ -1,4 +1,4 @@
-# PR Checklist — OSS Contribution Reference
+# PR Checklist - OSS Contribution Reference
 
 Checklist para PRs a repositorios externos.
 

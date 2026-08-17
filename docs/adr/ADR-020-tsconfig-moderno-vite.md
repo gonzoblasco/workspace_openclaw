@@ -1,9 +1,9 @@
-# ADR-020 — tsconfig Moderno con Vite (2026)
+# ADR-020 - tsconfig Moderno con Vite (2026)
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 2 (TypeScript configuration file section)
-**Scope:** Global — aplica a cualquier proyecto React + Vite + TypeScript
+**Source:** React 18 Design Patterns - Chapter 2 (TypeScript configuration file section)
+**Scope:** Global - aplica a cualquier proyecto React + Vite + TypeScript
 
 ## Context
 
@@ -56,6 +56,6 @@ Usar una configuración mínima de tsconfig para proyectos React + Vite + TypeSc
 
 ## Referencias
 
-- TypeScript 5.x — `moduleResolution: "bundler"`: https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#moduleresolution-bundler
+- TypeScript 5.x - `moduleResolution: "bundler"`: https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#moduleresolution-bundler
 - Vite + TypeScript: https://vitejs.dev/guide/features.html#typescript
 - React + TypeScript: https://react.dev/learn/typescript

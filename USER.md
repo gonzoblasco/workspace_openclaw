@@ -4,7 +4,7 @@
 - **What to call them:** Gonzo / Gonza / Gonzalo / Lider Supremo (usar con criterio)
 - **Pronouns:** él/he
 - **Timezone:** America/Buenos_Aires (GMT-3, Argentina)
-- **Notes:** Quiere honestidad por encima de todo. No le des la razón solo por ser quien tiene el botón de encendido/apagado. No le comentes el horario — trabaja cuando puede.
+- **Notes:** Quiere honestidad por encima de todo. No le des la razón solo por ser quien tiene el botón de encendido/apagado. No le comentes el horario - trabaja cuando puede.
 - **GitHub writing rule:** siempre usar guion comun (-), nunca guion largo (—). El guion largo no esta en el teclado y se nota que no es un dev escribiendo.
 - **Regla de escritura general:** mismo criterio - guion comun (-) siempre. NUNCA usar guion largo (—) ni em dash en ningun contexto. Issues, PRs, comments, docs, memorias, todo.
 - **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
@@ -12,7 +12,7 @@
 
 ## Context
 
-- Desarrolla aplicaciones — Fullstack real (React/TS frontend, Supabase/Edge Functions backend, DB, billing, tooling)
+- Desarrolla aplicaciones - Fullstack real (React/TS frontend, Supabase/Edge Functions backend, DB, billing, tooling)
 - 9 años como Frontend React, ahora Fullstack con IA como copiloto metodológico
 - Quiere que maneje su vida, archivos y proyectos
 - Trabaja entre dos máquinas (Mac Mini y MacBook Air), workspace sincronizado por git
@@ -25,11 +25,11 @@
 
 ## Perfil profesional (diferenciador)
 
-1. **Metodología IA-asistida own** — trabaja con un sistema completo de IA como infraestructura: sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop. No usa IA como chat, la usa como copiloto metodológico. La mayoría de los devs no saben hacer esto.
-2. **Stack opinado, no por default** — cura herramientas (CSN: OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG). Decide por criterio, no por convención heredada.
-3. **Accesibilidad como especialización activa** — no es checkbox, es ventaja competitiva. Tiene proyectos dedicados y busca trabajos donde sea central.
-4. **Fullstack real** — React/TS frontend, Supabase/Edge Functions backend, DB, billing, tooling, scaffolding.
-5. **Documenta decisiones, no solo código** — AGENTS.md, ROADMAP, ADRs. Eso es senior sin título.
+1. **Metodología IA-asistida own** - trabaja con un sistema completo de IA como infraestructura: sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop. No usa IA como chat, la usa como copiloto metodológico. La mayoría de los devs no saben hacer esto.
+2. **Stack opinado, no por default** - cura herramientas (CSN: OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG). Decide por criterio, no por convención heredada.
+3. **Accesibilidad como especialización activa** - no es checkbox, es ventaja competitiva. Tiene proyectos dedicados y busca trabajos donde sea central.
+4. **Fullstack real** - React/TS frontend, Supabase/Edge Functions backend, DB, billing, tooling, scaffolding.
+5. **Documenta decisiones, no solo código** - AGENTS.md, ROADMAP, ADRs. Eso es senior sin título.
 
 **El pitch:** *"Soy un dev fullstack que construyó un sistema de trabajo con IA propio, con stack opinado y docs de decisiones. Tengo PRs mergeados que lo demuestran."*
 

@@ -1,13 +1,13 @@
 ---
 name: debugging-and-error-recovery
-description: Guides systematic root-cause debugging. Integrates 5-step triage (reproduce, localize, reduce, fix, guard), forensic logging, failure pattern recognition from investigation memory, and regression prevention. Use when tests fail, builds break, behavior doesn't match expectations, or any unexpected error occurs — not for guessing.
+description: Guides systematic root-cause debugging. Integrates 5-step triage (reproduce, localize, reduce, fix, guard), forensic logging, failure pattern recognition from investigation memory, and regression prevention. Use when tests fail, builds break, behavior doesn't match expectations, or any unexpected error occurs - not for guessing.
 ---
 
 # Debugging and Error Recovery: The 5-Step Triage System
 
 ## Overview
 
-Systematic debugging with structured triage. When something breaks, **stop adding features**, preserve evidence, and follow a structured process to find and fix the root cause. Guessing wastes time — the 5-step checklist works for test failures, build errors, runtime bugs, and production incidents. This skill integrates **forensic logging**, **failure pattern recognition** from investigation memory, and **regression prevention**.
+Systematic debugging with structured triage. When something breaks, **stop adding features**, preserve evidence, and follow a structured process to find and fix the root cause. Guessing wastes time - the 5-step checklist works for test failures, build errors, runtime bugs, and production incidents. This skill integrates **forensic logging**, **failure pattern recognition** from investigation memory, and **regression prevention**.
 
 ---
 
@@ -47,7 +47,7 @@ BUG_REPRODUCTION_STEPS:
 ```
 
 **Tools:**
-- `git blame` — See when this code was added and by whom
+- `git blame` - See when this code was added and by whom
 - `console.error()` with stack trace capture
 - Logs from error monitoring (Sentry, Bugsnag, etc.)
 - Screenshots/videos if it's a visual issue
@@ -74,10 +74,10 @@ fi
 ```
 
 **Tools & Techniques:**
-- **Git blame + git log** — Who last modified this? When?
-- **Stack trace analysis** — Call chain leading to failure
-- **Dependency tree inspection** — Is it a third-party library issue?
-- **Environment diff check** — What differs between working/broken environments?
+- **Git blame + git log** - Who last modified this? When?
+- **Stack trace analysis** - Call chain leading to failure
+- **Dependency tree inspection** - Is it a third-party library issue?
+- **Environment diff check** - What differs between working/broken environments?
 
 **Common Culprits:**
 ```
@@ -106,7 +106,7 @@ Explain line-by-line what the code should do. Often you'll spot the issue while 
 function MyComponent({ data }) {
   const [state, setState] = useState(null); // Without proper init
   
-  // ✗ BROKEN — State never initializes
+  // ✗ BROKEN - State never initializes
   return <div>{state}</div>;
 }
 
@@ -121,7 +121,7 @@ function MyComponent({ data }) {
   return <div>{state}</div>;
 }
 
-// ✓ FIXED — Now it initializes correctly
+// ✓ FIXED - Now it initializes correctly
 ```
 
 #### C) The "What If I..." Method
@@ -136,7 +136,7 @@ function MyComponent({ data }) {
 ### Step 4: FIX (How do I solve it?)
 **Goal:** Implement the solution with confidence.
 
-**Before Fixing — Verify:**
+**Before Fixing - Verify:**
 - [ ] Root cause clearly understood
 - [ ] Minimal fix identified (not band-aid)
 - [ ] Tests would fail without this fix (Prove it fixes something)
@@ -165,15 +165,15 @@ const increment = useCallback(async () => {
 # Problem: Module can't be found (CJS vs ESM)
 error: Cannot find module '@/utils/helpers'
 
-# Solution A — Check package.json types
+# Solution A - Check package.json types
 {
   "type": "module"  // or "commonjs"
 }
 
-# Solution B — Use proper import path
+# Solution B - Use proper import path
 import { helper } from '../../utils/helpers.js';  // Note the .js
 
-# Solution C — tsconfig paths
+# Solution C - tsconfig paths
 {
   "compilerOptions": {
     "baseUrl": ".",
@@ -213,11 +213,11 @@ interface Post {
 
 **Test Pyramid Implementation:**
 ```
-       /\  (E2E — 10% of tests, max coverage needed)
+       /\  (E2E - 10% of tests, max coverage needed)
       /  \
-     /____\  (Integration — 30%, business logic)
+     /____\  (Integration - 30%, business logic)
     /      \
-   /________\  (Unit — 60%, edge cases & helpers)
+   /________\  (Unit - 60%, edge cases & helpers)
 
 Guard Example:
 - Unit: Edge case where count is -1
@@ -392,10 +392,10 @@ jobs:
 
 #### Step 1: Triage Severity
 ```
-🔴 CRITICAL — System unusable → Emergency patch needed immediately
-🟠 HIGH — Core feature broken → Patch within 4 hours
-🟡 MEDIUM — Non-core feature affected → Fix by end of day
-🟢 LOW — Cosmetic/UX issue → Address in next release
+🔴 CRITICAL - System unusable → Emergency patch needed immediately
+🟠 HIGH - Core feature broken → Patch within 4 hours
+🟡 MEDIUM - Non-core feature affected → Fix by end of day
+🟢 LOW - Cosmetic/UX issue → Address in next release
 ```
 
 #### Step 2: Deploy Hotfix (Not Full Rollback)

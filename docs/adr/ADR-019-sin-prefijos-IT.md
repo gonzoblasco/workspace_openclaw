@@ -1,9 +1,9 @@
-# ADR-019 — Convención de Nomenclatura TypeScript: Sin Prefijos I/T
+# ADR-019 - Convención de Nomenclatura TypeScript: Sin Prefijos I/T
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 2 (Types vs Interfaces section)
-**Scope:** Global — aplica a cualquier proyecto TypeScript
+**Source:** React 18 Design Patterns - Chapter 2 (Types vs Interfaces section)
+**Scope:** Global - aplica a cualquier proyecto TypeScript
 
 ## Context
 

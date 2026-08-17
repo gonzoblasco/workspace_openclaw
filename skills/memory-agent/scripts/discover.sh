@@ -1,5 +1,5 @@
 #!/bin/bash
-# discover.sh — Escanea el workspace y construye un mapa de conocimiento
+# discover.sh - Escanea el workspace y construye un mapa de conocimiento
 # Uso: ./discover.sh <workspace-path>
 # Output: JSON con el mapa de conocimiento
 

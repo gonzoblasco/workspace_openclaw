@@ -14,13 +14,13 @@ metadata:
 user-invocable: false
 ---
 
-# Workflow: Content Serializer — Contenido técnico a serie semanal
+# Workflow: Content Serializer - Contenido técnico a serie semanal
 
 ## Propósito
 
 Convertir contenido técnico que ya existe (un curso, un blog, documentación) en una **serie de posts semanales** para **LinkedIn** y **X**, con formato adaptado por plataforma, calendario de publicación y métricas de ajuste.
 
-No es para generar contenido de cero — es para **serializar material que ya tenés** (el bootcamp, un tutorial, tus docs) en presencia pública consistente.
+No es para generar contenido de cero - es para **serializar material que ya tenés** (el bootcamp, un tutorial, tus docs) en presencia pública consistente.
 
 ## Cuándo usarlo
 
@@ -30,7 +30,7 @@ No es para generar contenido de cero — es para **serializar material que ya te
 
 ## Filosofía
 
-> Publicar no es "subir contenido" — es una conversación semanal con tu audiencia.
+> Publicar no es "subir contenido" - es una conversación semanal con tu audiencia.
 
 El objetivo no es "postear por postear": es construir una serie con **arco**, donde cada post se apoya en el anterior y engancha al siguiente. La consistencia semanal gana sobre el post viral aislado.
 
@@ -42,7 +42,7 @@ El objetivo no es "postear por postear": es construir una serie con **arco**, do
 
 ### Tu voz (Gonzo)
 
-- **Directa y honesta, sin vueltas.** Decís lo que pensás. No adornás para sonar más "profesional" — la honestidad ES tu profesionalismo.
+- **Directa y honesta, sin vueltas.** Decís lo que pensás. No adornás para sonar más "profesional" - la honestidad ES tu profesionalismo.
 - **Suena a persona, no a manual de programación.** Nada de jerga corporativa ni tono de documentación técnica. Escribís como hablás.
 - **Primera persona real.** "Construí", "encontré un bug", "me costó". No "se construye", no "uno encuentra".
 - **Suelto y natural.** Frases cortas. Sin relleno. Que se lea como un dev contando algo, no como un comunicado.
@@ -51,7 +51,7 @@ El objetivo no es "postear por postear": es construir una serie con **arco**, do
 
 ### Regla de oro del tono
 
-> **La voz es la base, pero NO es rígida — se adapta a la ocasión.**
+> **La voz es la base, pero NO es rígida - se adapta a la ocasión.**
 
 El tono de marca personal no es una camisa de fuerza. Se modula según el tipo de post:
 
@@ -63,7 +63,7 @@ El tono de marca personal no es una camisa de fuerza. Se modula según el tipo d
 | **Pedido / CTA** (¿te sirve?, seguí la serie) | Directo y genuino. Una sola pregunta clara, sin suplicar. |
 
 **Reglas duras del tono (no negociables):**
-- **Nunca guión largo (—).** Usá siempre guión común (-). El guión largo no está en el teclado y delata que no es un dev escribiendo. (USER.md)
+- **Nunca guión largo (-).** Usá siempre guión común (-). El guión largo no está en el teclado y delata que no es un dev escribiendo. (USER.md)
 - **Nada de "Great question!" ni "I'd be happy to help!".** Esa calidez falsa de chatbot te hace sonar a bot.
 - **Nada de "en este post voy a enseñarte...".** Contalo, no lo anuncies.
 - **No te des la razón solo por ser vos.** Si algo falló, decilo. La vulnerabilidad técnica (encontré un bug, me equivoqué) es tu mayor activo de credibilidad.
@@ -72,7 +72,7 @@ El tono de marca personal no es una camisa de fuerza. Se modula según el tipo d
 
 Releé el post y preguntate:
 - [ ] ¿Suena a Gonzo, o a un manual de programación?
-- [ ] ¿Hay algún guión largo (—) que deba ser guión común (-)?
+- [ ] ¿Hay algún guión largo (-) que deba ser guión común (-)?
 - [ ] ¿Está la lección/opinión, o solo el "qué hice"?
 - [ ] ¿Está adaptado a la ocasión (deep-dive vs anuncio vs opinión), o es todo igual?
 
@@ -85,14 +85,14 @@ Releé el post y preguntate:
 1. **Listá las unidades** de tu contenido. Para un curso: los niveles/módulos/capítulos. Para un blog: los artículos. Para docs: las secciones grandes.
 
 2. **Para cada unidad, extraé** (anotá en una tabla):
-   - **Tema** — de qué trata
-   - **Un insight / lección** — el "porqué" que vale la pena compartir
-   - **Una pieza de evidencia** — un ejemplo, un resultado, un bug encontrado
-   - **Un gancho posible** — por qué alguien lo leería
+   - **Tema** - de qué trata
+   - **Un insight / lección** - el "porqué" que vale la pena compartir
+   - **Una pieza de evidencia** - un ejemplo, un resultado, un bug encontrado
+   - **Un gancho posible** - por qué alguien lo leería
 
-3. **Marcá el arco narrativo** — las unidades no son independientes: forman una progresión (en el bootcamp: de generar código a probar sistemas completos). Ese arco es tu serie.
+3. **Marcá el arco narrativo** - las unidades no son independientes: forman una progresión (en el bootcamp: de generar código a probar sistemas completos). Ese arco es tu serie.
 
-> 💡 El insight no es "qué hace el nivel" — es *la lección que aprendiste*. En el bootcamp: "un validador que nunca viste fallar no te protege de nada". Eso es lo que se comparte, no el detalle técnico.
+> 💡 El insight no es "qué hace el nivel" - es *la lección que aprendiste*. En el bootcamp: "un validador que nunca viste fallar no te protege de nada". Eso es lo que se comparte, no el detalle técnico.
 
 ---
 
@@ -100,19 +100,19 @@ Releé el post y preguntate:
 
 **Cuándo:** Tenés el inventario. Cada unidad se convierte en 1+ posts, con formato distinto por plataforma.
 
-### LinkedIn — storytelling + valor
+### LinkedIn - storytelling + valor
 
 - **Largo:** 150-300 palabras. Post + línea de cierre.
 - **Estructura:**
-  1. **Hook** (1 línea) — la lección/insight, en primera persona o como afirmación provocadora
-  2. **Setup** (2-3 líneas) — contexto: qué estaba construyendo
-  3. **Desarrollo** (3-6 líneas) — el "cómo", con la evidencia concreta
-  4. **Lección** (2-3 líneas) — el aprendizaje universal, aplicable fuera del contexto
-  5. **CTA / cierre** (1 línea) — pregunta, invitación, o "próximo nivel"
+  1. **Hook** (1 línea) - la lección/insight, en primera persona o como afirmación provocadora
+  2. **Setup** (2-3 líneas) - contexto: qué estaba construyendo
+  3. **Desarrollo** (3-6 líneas) - el "cómo", con la evidencia concreta
+  4. **Lección** (2-3 líneas) - el aprendizaje universal, aplicable fuera del contexto
+  5. **CTA / cierre** (1 línea) - pregunta, invitación, o "próximo nivel"
 - **Tono:** tu voz de marca personal (Fase 0), modulada por la ocasión.
 - **Hashtags:** 3-5 al final, relevantes al tema (#AIEngineering, #NodeJS, etc.)
 
-### X — conciso + hilo
+### X - conciso + hilo
 
 - **Post individual:** máx 280 caracteres. Un solo insight, cortante.
 - **Hilo:** 4-8 posts. Gancho en el primero, detalle técnico en los del medio, lección + CTA en el último.
@@ -147,8 +147,8 @@ Releé el post y preguntate:
    ```
    | Semana | Unidad | Tema | LinkedIn | X (hilo) | Posteado |
    |--------|--------|------|----------|----------|----------|
-   | 1 | Nivel 1 | Hello World | ✅ | ✅ | — |
-   | 2 | Nivel 2 | Prompts | ✅ | ✅ | — |
+   | 1 | Nivel 1 | Hello World | ✅ | ✅ | - |
+   | 2 | Nivel 2 | Prompts | ✅ | ✅ | - |
    ```
 
 4. **Bach de preparación:** escribí 2-3 semanas de posts por adelantado (buffer). Así la semana de publicación solo es "revisar y subir", no escribir bajo presión.
@@ -162,9 +162,9 @@ Releé el post y preguntate:
 **Cuándo:** Empezás a publicar. La serie se ajusta con datos, no con opiniones.
 
 ### Antes de publicar cada post
-- **Releé en voz alta** — si no fluye, no va.
-- **Check de tono (Fase 0)** — ¿suena a Gonzo y está adaptado a la ocasión?
-- **Check de insight** — ¿está la lección, o solo el "qué hice"?
+- **Releé en voz alta** - si no fluye, no va.
+- **Check de tono (Fase 0)** - ¿suena a Gonzo y está adaptado a la ocasión?
+- **Check de insight** - ¿está la lección, o solo el "qué hice"?
 
 ### Métricas a trackear (por semana)
 - **LinkedIn:** impresiones, reacciones, comentarios. El comentario vale más que el like.

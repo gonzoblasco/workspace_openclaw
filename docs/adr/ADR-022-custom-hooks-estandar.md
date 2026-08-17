@@ -1,17 +1,17 @@
-# ADR-022 — Custom Hooks como Estándar para Compartir Lógica (Reemplazo de HOCs y Render Props)
+# ADR-022 - Custom Hooks como Estándar para Compartir Lógica (Reemplazo de HOCs y Render Props)
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 4 (HOCs, FunctionAsChild, Container/Presentational)
-**Scope:** Global — aplica a cualquier proyecto React
+**Source:** React 18 Design Patterns - Chapter 4 (HOCs, FunctionAsChild, Container/Presentational)
+**Scope:** Global - aplica a cualquier proyecto React
 
 ## Context
 
 El libro presenta tres patrones para compartir lógica entre componentes:
 
-1. **Container/Presentational** — separar lógica en un componente contenedor y UI en otro
-2. **Higher-Order Components (HOCs)** — funciones que reciben un componente y retornan uno mejorado
-3. **FunctionAsChild / Render Props** — el children es una función que recibe parámetros del padre
+1. **Container/Presentational** - separar lógica en un componente contenedor y UI en otro
+2. **Higher-Order Components (HOCs)** - funciones que reciben un componente y retornan uno mejorado
+3. **FunctionAsChild / Render Props** - el children es una función que recibe parámetros del padre
 
 Estos patrones fueron creados en la era de class components (pre-React 16.8) para resolver problemas que hoy se resuelven con hooks.
 
@@ -105,6 +105,6 @@ const MyComponent = () => {
 
 ## Referencias
 
-- React docs — Reusing Logic with Custom Hooks: https://react.dev/learn/reusing-logic-with-custom-hooks
-- React 19 — use() hook: https://react.dev/reference/react/use
-- React 19 — useOptimistic, useFormStatus: https://react.dev/blog/2024/12/05/react-19
+- React docs - Reusing Logic with Custom Hooks: https://react.dev/learn/reusing-logic-with-custom-hooks
+- React 19 - use() hook: https://react.dev/reference/react/use
+- React 19 - useOptimistic, useFormStatus: https://react.dev/blog/2024/12/05/react-19

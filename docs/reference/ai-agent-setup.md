@@ -6,7 +6,7 @@ description: "Workflow de referencia para construcción de agentes de IA: diseñ
 # Workflow: AI Agent Setup
 
 ## Propósito
-Workflow de referencia. Documenta cómo se construyen agentes de IA, para entender la relación entre el humano y el agente. No es operativo en OpenClaw — las skills de construcción de agentes pertenecen al AI Developer Stack.
+Workflow de referencia. Documenta cómo se construyen agentes de IA, para entender la relación entre el humano y el agente. No es operativo en OpenClaw - las skills de construcción de agentes pertenecen al AI Developer Stack.
 
 ## Fases
 
@@ -17,7 +17,7 @@ Diseño del loop de razonamiento (ReAct, Plan-Execute), arquitectura de memoria 
 Diseño de tools robustas con JSON Schemas claros. Principio: el LLM nunca ve el código, solo ve el schema y la descripción. Una tool con documentación clara funciona; una perfectamente implementada con descripción vaga falla.
 
 ### 3. Prompting
-Prompting avanzado: Chain-of-Thought, Few-Shot, Progressive Disclosure. Los prompts son código — requieren el mismo rigor.
+Prompting avanzado: Chain-of-Thought, Few-Shot, Progressive Disclosure. Los prompts son código - requieren el mismo rigor.
 
 ### 4. Optimización de Prompts
 Frameworks estructurados: RTF, RISEN, RODES, RACE. Transformar prompts crudos en instrucciones optimizadas.

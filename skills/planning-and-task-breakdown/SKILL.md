@@ -1,6 +1,6 @@
 ---
 name: planning-and-task-breakdown
-description: Decomposes specs into small, verifiable tasks with acceptance criteria and dependency ordering. Integrates timeline estimation from builder patterns and GitHub issue planning. Use when you have a spec or clear requirements and need to break work into implementable tasks — or when a task feels too large/vague to start.
+description: Decomposes specs into small, verifiable tasks with acceptance criteria and dependency ordering. Integrates timeline estimation from builder patterns and GitHub issue planning. Use when you have a spec or clear requirements and need to break work into implementable tasks - or when a task feels too large/vague to start.
 ---
 
 # Planning and Task Breakdown: From Spec to Actionable Units
@@ -351,8 +351,8 @@ Files to modify:
 
 ✅ BETTER BREAKDOWN:
 #42a: Design authentication flows (user stories)
-#42b: Auth API — registration & login endpoints
-#42c: Auth API — password reset & email verification
+#42b: Auth API - registration & login endpoints
+#42c: Auth API - password reset & email verification
 #42d: Shared auth utilities & types
 #42e: Login form component with validation
 #42f: Session management hook + provider
@@ -440,4 +440,4 @@ See `docs/architecture/adr-002-task-decomposition-patterns.md` for how we decomp
 | "We can break tasks as we go, no need to plan" | Unplanned breaks lead to gaps, rework, and incomplete tasks that block others. Breakdown prevents scope creep mid-sprint. |
 | "This is too detailed for a simple feature" | Every feature, no matter how simple, needs clarity on acceptance criteria. Simple features just have simpler breakdowns (maybe 2-3 tasks instead of 15). |
 | "I'll write the PR description instead" | PR descriptions should validate work against pre-agreed acceptance criteria. Breakdown defines what you're building; PR confirms you finished it correctly. |
-| "We use GitHub Projects, right? That's our plan" | GitHub Projects is where breakdown lives. Tasks in Projects are your implementation plan — vague epics without task-level breakdown lead to unpredictable sprints. |
+| "We use GitHub Projects, right? That's our plan" | GitHub Projects is where breakdown lives. Tasks in Projects are your implementation plan - vague epics without task-level breakdown lead to unpredictable sprints. |

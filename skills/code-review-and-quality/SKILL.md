@@ -7,7 +7,7 @@ description: Conducts multi-axis code review with quality gates. Integrates five
 
 ## Overview
 
-Multi-dimensional code review with quality gates. Every change gets reviewed before merge — **no exceptions**. This skill combines **five-axis review**, **anti-pattern detection**, and **mentorship feedback** to assess code quality across correctness, readability, architecture, security, and performance.
+Multi-dimensional code review with quality gates. Every change gets reviewed before merge - **no exceptions**. This skill combines **five-axis review**, **anti-pattern detection**, and **mentorship feedback** to assess code quality across correctness, readability, architecture, security, and performance.
 
 **The approval standard:** Approve a change when it definitely improves overall code health, even if it isn't perfect. The goal is continuous improvement, not perfection.
 
@@ -25,12 +25,12 @@ Multi-dimensional code review with quality gates. Every change gets reviewed bef
 
 **Common Issues:**
 ```tsx
-// ✗ WRONG — Missing null check
+// ✗ WRONG - Missing null check
 function getUser(id) {
   return users.find(u => u.id === id); // Returns undefined, not null
 }
 
-// ✓ CORRECT — Explicit handling
+// ✓ CORRECT - Explicit handling
 function getUser(id) {
   const user = users.find(u => u.id === id);
   if (!user) throw new NotFoundError('User not found');
@@ -50,12 +50,12 @@ function getUser(id) {
 
 **Common Issues:**
 ```tsx
-// ✗ BAD — Unreadable function name
+// ✗ BAD - Unreadable function name
 function processTransformOptimizeData(data, flag) {
   return data.filter(d => d.active).map(d => d.value).reduce((a,b)=>a+b);
 }
 
-// ✓ GOOD — Clear intent
+// ✓ GOOD - Clear intent
 function calculateTotalActiveValues(items) {
   return items
     .filter(item => item.isActive)
@@ -102,19 +102,19 @@ function calculateTotalActiveValues(items) {
 
 #### Pattern #1: Premature Optimization
 ```tsx
-// ✗ ANTI-PATTERN — Optimizing too early
+// ✗ ANTI-PATTERN - Optimizing too early
 const results = cache.get(key) || fetchData().then(res => res.cache.set(key, res));
 
-// ✓ CORRECT — Lazy loading with caching strategy defined later
+// ✓ CORRECT - Lazy loading with caching strategy defined later
 const results = useLazyDataFetching({ key, onCache: (val) => cache.set(key, val) });
 ```
 
 #### Pattern #2: God Component/Service
 ```tsx
-// ✗ ANTI-PATTERN — 400+ lines doing everything
+// ✗ ANTI-PATTERN - 400+ lines doing everything
 function Dashboard() { // 450 lines of logic... }
 
-// ✓ CORRECT — Decomposed
+// ✓ CORRECT - Decomposed
 function Dashboard() {
   return (
     <Layout>
@@ -131,14 +131,14 @@ function Dashboard() {
 
 #### Pattern #3: Feature Envy
 ```tsx
-// ✗ ANTI-PATTERN — Method belongs in a new class
+// ✗ ANTI-PATTERN - Method belongs in a new class
 class Order {
   applyPromoCode(code) { // This should be in PromoCodeService!
     // ...
   }
 }
 
-// ✓ CORRECT — Separated concern
+// ✓ CORRECT - Separated concern
 class Order { /* only Order logic */ }
 class PromoCodeService {
   apply(code, amount) { /* promo logic here */ }
@@ -147,14 +147,14 @@ class PromoCodeService {
 
 #### Pattern #4: Spaghetti Conditions
 ```tsx
-// ✗ ANTI-PATTERN — 50+ if conditions in one file
+// ✗ ANTI-PATTERN - 50+ if conditions in one file
 function handleAction(type) {
   if (type === 'A') return ...;
   if (type === 'B') return ...;
   // ... 45 more conditions
 }
 
-// ✓ CORRECT — Strategy pattern or map
+// ✓ CORRECT - Strategy pattern or map
 function handleAction(type) {
   const handlers = {
     A: handleTypeA,
@@ -167,12 +167,12 @@ function handleAction(type) {
 
 #### Pattern #5: Magic Numbers/Strings
 ```tsx
-// ✗ ANTI-PATTERN — Hidden constants
+// ✗ ANTI-PATTERN - Hidden constants
 const MAX_RETRIES = 5;
 const API_TIMEOUT = 3000;
 const ERROR_CODES = { INVALID_USER: 401, NOT_FOUND: 404 };
 
-// ✓ CORRECT — Named constants in config file
+// ✓ CORRECT - Named constants in config file
 // api-config.ts
 export const RETRIES = 5;
 export const TIMEOUTS = { API: 3000 };
@@ -213,9 +213,9 @@ export const ERROR_CODES = { ... };
 
 **Examples:**
 ```tsx
-// 🔴 BLOCKER — Security vulnerability
+// 🔴 BLOCKER - Security vulnerability
 const userInput = req.body.email;
-// No validation, no sanitization — potential XSS/injection!
+// No validation, no sanitization - potential XSS/injection!
 
 // Should be:
 const userInput = sanitize(req.body.email); // OWASP validator
@@ -284,9 +284,9 @@ if (!isEmail(userInput)) {
 ### Constructive Feedback Framework
 
 #### The Sandwich Method (Updated)
-1. **What worked well** — Acknowledge good parts first
-2. **What can improve** — Actionable suggestions with before/after
-3. **Why it matters** — Connect to business impact/maintenance cost
+1. **What worked well** - Acknowledge good parts first
+2. **What can improve** - Actionable suggestions with before/after
+3. **Why it matters** - Connect to business impact/maintenance cost
 
 #### Example Feedback:
 ```

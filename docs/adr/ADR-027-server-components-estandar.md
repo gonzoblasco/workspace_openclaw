@@ -1,9 +1,9 @@
-# ADR-027 — Server Components como Estandar de SSR (Next.js App Router)
+# ADR-027 - Server Components como Estandar de SSR (Next.js App Router)
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 12 (Server-Side Rendering)
-**Scope:** Global — aplica a cualquier proyecto React con SSR
+**Source:** React 18 Design Patterns - Chapter 12 (Server-Side Rendering)
+**Scope:** Global - aplica a cualquier proyecto React con SSR
 
 ## Context
 
@@ -50,7 +50,7 @@ Page.getInitialProps = async () => {
 
 **2026 (Next.js App Router):**
 ```tsx
-// app/page.tsx — Server Component
+// app/page.tsx - Server Component
 async function Page() {
   const res = await fetch('https://api.github.com/users/gaearon/gists')
   const gists = await res.json()

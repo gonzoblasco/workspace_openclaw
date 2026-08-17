@@ -77,11 +77,11 @@ Estas trabajando en <proyecto>, <fase>. Sos el Agente <X> (<entorno>). Tu rol en
 ## Estado actual del repo
 <lista de commits por unidad, con el hash>
 
-## Tu tarea — Parte 1: REVISAR la <unidad> de <agente>
+## Tu tarea - Parte 1: REVISAR la <unidad> de <agente>
 <descripcion de la unidad + checklist de verificacion (build, tests, lint, edge cases, invariantes)>
 <Si encontran bugs, corregilos (commit atomico). Si esta correcta, dejala.>
 
-## Tu tarea — Parte 2: DESARROLLAR la <unidad>
+## Tu tarea - Parte 2: DESARROLLAR la <unidad>
 <descripcion + criterios de aceptacion>
 
 ## Reglas

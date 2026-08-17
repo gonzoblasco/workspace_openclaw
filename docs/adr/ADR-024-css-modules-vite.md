@@ -1,9 +1,9 @@
-# ADR-024 — CSS Modules con Vite (Zero-Config) como Estándar de Estilos Scoped
+# ADR-024 - CSS Modules con Vite (Zero-Config) como Estándar de Estilos Scoped
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 6 (CSS Modules section)
-**Scope:** Global — aplica a cualquier proyecto React + Vite
+**Source:** React 18 Design Patterns - Chapter 6 (CSS Modules section)
+**Scope:** Global - aplica a cualquier proyecto React + Vite
 
 ## Context
 
@@ -18,7 +18,7 @@ Usar **CSS Modules con Vite** como estándar para estilos scoped por componente.
 ### Configuración
 
 ```ts
-// vite.config.ts — zero-config para CSS Modules
+// vite.config.ts - zero-config para CSS Modules
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -74,10 +74,10 @@ declare module '*.module.css' {
 
 1. **Zero-config:** Vite detecta `*.module.css` automáticamente. No requiere loaders, plugins, ni configuración extra.
 2. **Scoping automático:** los class names se transforman en hashes únicos. No hay colisiones.
-3. **CSS completo:** soporta pseudo-clases, media queries, animations, keyframes — todo lo que CSS Modules ofrece.
+3. **CSS completo:** soporta pseudo-clases, media queries, animations, keyframes - todo lo que CSS Modules ofrece.
 4. **Debugging en desarrollo:** Vite genera class names legibles (`button--hash`) sin configuración extra.
 5. **Producción optimizada:** Vite extrae CSS a archivos separados, minifica, y cachea automáticamente.
-6. **Composable con Tailwind:** CSS Modules y Tailwind se complementan — Tailwind para utility classes, CSS Modules para estilos scoped complejos.
+6. **Composable con Tailwind:** CSS Modules y Tailwind se complementan - Tailwind para utility classes, CSS Modules para estilos scoped complejos.
 
 ## Consequence
 
@@ -88,7 +88,7 @@ declare module '*.module.css' {
 
 ## Referencias
 
-- Vite — CSS Modules: https://vitejs.dev/guide/features.html#css-modules
-- Vite — PostCSS: https://vitejs.dev/guide/features.html#postcss
+- Vite - CSS Modules: https://vitejs.dev/guide/features.html#css-modules
+- Vite - PostCSS: https://vitejs.dev/guide/features.html#postcss
 - CSS Modules: https://github.com/css-modules/css-modules
 - Tailwind CSS + Vite: https://tailwindcss.com/docs/guides/vite

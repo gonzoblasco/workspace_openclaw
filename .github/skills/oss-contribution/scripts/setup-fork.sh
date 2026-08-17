@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# setup-fork.sh — Fork + clone + upstream setup for OSS contribution
+# setup-fork.sh - Fork + clone + upstream setup for OSS contribution
 # Usage: ./setup-fork.sh <owner/repo>
 
 set -euo pipefail

@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2026-08-05
 **Source:** Extracted from Full-Stack GraphQL + React book processing
-**Scope:** Global — all Node.js projects
+**Scope:** Global - all Node.js projects
 
 ## Context
 
@@ -15,7 +15,7 @@ Use `node --watch` as the default development server runner. Only fall back to `
 
 ## Rationale
 
-- Built into Node 22+ — no extra dependency
+- Built into Node 22+ - no extra dependency
 - Restarts the process on any file change in the watched path
 - Works with native ESM (`"type": "module"`) without transpilation
 - Eliminates `nodemon` dependency for pure Node.js/ESM projects

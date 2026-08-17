@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2026-08-05
 **Source:** Extracted from Full-Stack GraphQL + React book processing
-**Scope:** Global — all new React/TypeScript projects
+**Scope:** Global - all new React/TypeScript projects
 
 ## Context
 

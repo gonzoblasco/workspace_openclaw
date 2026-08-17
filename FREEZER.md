@@ -1,4 +1,4 @@
-# FREEZER.md — Proyectos congelados
+# FREEZER.md - Proyectos congelados
 
 > El índice de proyectos archivados vive en `projects/PROYECTOS.md` (sección ❄️ ARCHIVADOS).
 >

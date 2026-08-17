@@ -1,9 +1,9 @@
-# ADR-026 — Concurrent Mode como Default (React 19)
+# ADR-026 - Concurrent Mode como Default (React 19)
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 10 (Concurrent mode section)
-**Scope:** Global — aplica a cualquier proyecto React 18+
+**Source:** React 18 Design Patterns - Chapter 10 (Concurrent mode section)
+**Scope:** Global - aplica a cualquier proyecto React 18+
 
 ## Context
 
@@ -22,7 +22,7 @@ Esto generaba confusion: muchos proyectos no lo activaban y perdian las mejoras 
 En React 18.3+ y React 19, concurrent mode es el **default**. No se necesita configuracion especial.
 
 ```tsx
-// React 19 — concurrent mode activo por defecto
+// React 19 - concurrent mode activo por defecto
 import { createRoot } from 'react-dom/client'
 import App from './App'
 
@@ -57,6 +57,6 @@ createRoot(document.getElementById('root')!).render(<App />)
 
 ## Referencias
 
-- React 18 — Concurrent mode: https://react.dev/blog/2022/03/29/react-v18
-- React 19 — createRoot: https://react.dev/reference/react-dom/client/createRoot
-- React 19 — Automatic batching: https://react.dev/blog/2022/03/29/react-v18#new-feature-automatic-batching
+- React 18 - Concurrent mode: https://react.dev/blog/2022/03/29/react-v18
+- React 19 - createRoot: https://react.dev/reference/react-dom/client/createRoot
+- React 19 - Automatic batching: https://react.dev/blog/2022/03/29/react-v18#new-feature-automatic-batching

@@ -1,4 +1,4 @@
-# MEMORY.md — Long-Term Memory
+# MEMORY.md - Long-Term Memory
 
 ## Sobre Gonzo
 
@@ -7,9 +7,9 @@
 - Desempleado, usando IA para todo
 - También: fotógrafo, comunicación social, quiere escribir novelas
 - Quiere organizar actividad física y mejorar salud
-- Trabaja a cualquier hora — no comentar ni sugerir parar
-- Quiere honestidad absoluta — sin darle la razón por ser quien manda
-- Arranca conversaciones limpias con frecuencia — el registro escrito es crítico
+- Trabaja a cualquier hora - no comentar ni sugerir parar
+- Quiere honestidad absoluta - sin darle la razón por ser quien manda
+- Arranca conversaciones limpias con frecuencia - el registro escrito es crítico
 - **Ley de vida (2026-08-12):** el silencio no es vacío, es respeto al otro. Hablar solo cuando hay algo que aportar; si no hay nada que sumar, silencio. Un "ok" de vuelta no es conversación, es ruido. Aplica a todo: bots de review, grupos, chats, trabajo. No responder por responder, no confirmar lo obvio, no llenar silencio con palabras. (Nace de los reviews de bots: si el bot solo da ok, no se le responde; solo se responde si aporta información.)
 - Trabaja entre Mac Mini y MacBook Air, workspace sincronizado por git
 - **Regla de merge:** cuando venga algo del workspace (pull/rebase con conflictos), hacer merge, no reset. El soft reset descarta commits de la otra maquina.
@@ -27,18 +27,18 @@
 - Todo se registra: MEMORY.md, memory/YYYY-MM-DD.md, HANDOFF.md, CHANGELOG.md
 - Los aprendizajes detallados van en `docs/LEARNINGS.md`, no acá.
 
-## Proyecto — Kanam Story (v0.16.1)
+## Proyecto - Kanam Story (v0.16.1)
 
 - **Estado real (2026-08-17):** el proyecto está en **v0.16.1**, NO en la Fase 4. La Fase 4 (v0.9.0, rediseño de navegación accesible) se completó y publicó el 2026-08-15. Después hubo **7 releases post-Fase 4** (v0.11.0 → v0.16.0): outline global asistido por chat (`replace_outline`), panel de escenas huérfanas, `update_outline`, beats desde el manuscrito, sidebar de co-writer, enriquecer perfiles, export solo historia, notas de continuidad, gestión de proyectos. 366 tests.
 - **Stack:** Next.js 16, TipTap 3, IndexedDB, Ollama (deepseek-v4-flash:cloud). UI/prompts en español, commits en inglés.
 - **Pendientes reales (de la última sesión 2026-08-16/17):**
   1. Decidir próximo bloque de features (U5+ de co-writer, polish de export, mobile/PWA, agentes especializados: Plot Doctor, Consistency Checker).
-  2. Validación AT manual definitiva con VoiceOver/NVDA (live region `role="log"` del chat + radio group del onboarding) — los tests verdes no cubren el timing del anuncio.
+  2. Validación AT manual definitiva con VoiceOver/NVDA (live region `role="log"` del chat + radio group del onboarding) - los tests verdes no cubren el timing del anuncio.
   3. Smoke tests con Ollama para flujos nuevos si hacen falta.
 - **Hecho hoy (2026-08-17):** validación visual del sidebar de co-writer y notas de continuidad con historia real (OK); fix a11y `--sl-danger` en tema claro (2.78:1 → 5.22:1, commit `58a6706`); habilité `browser.ssrfPolicy.allowedHostnames: ["localhost", "127.0.0.1"]` para validar el dev server con browser.
 - **Historial Fase 4 (v0.9.0):** rediseño de navegación accesible (secciones apiladas, scrollspy, acordeón, onboarding por plantillas, chat sticky, inserción contextual). Plan completo en `projects/kanam-story/.knowledge/PLAN-FASE-4.md`. Pipeline en cadena U1-U8 con cross-review de a11y integrada (validado en Fase 3).
 
-## Arquitectura de Agentes — Goal-Oriented
+## Arquitectura de Agentes - Goal-Oriented
 
 Inspirado por el incidente de julio 2026 (OpenAI agent escapó sandbox, atacó Hugging Face autónomamente por 4.5 días).
 
@@ -50,7 +50,7 @@ Inspirado por el incidente de julio 2026 (OpenAI agent escapó sandbox, atacó H
 - Logging completo para depuración y auditoría
 - Human-in-the-loop para acciones destructivas
 
-**Referencia:** ADR-007 — Patrones de Agente Autónomo
+**Referencia:** ADR-007 - Patrones de Agente Autónomo
 
 ## Reglas de ingeniería
 
@@ -92,10 +92,10 @@ Los mockups y screenshots de iteración (v2, v3, etc.) son ruido en el repo del 
 ## Lecciones del 2026-08-04
 
 ### npm 404 en publish scoped ≠ problema de scope
-El 404 `PUT .../@scope%2fpackage` al publicar NO significa que el scope esté mal. Primero verificar `npm whoami` — si da 401, el fix es `npm login`, no tocar el scope. El scope `@usuario/` se resuelve solo cuando coincide con el username logueado. (Pasó con `@gonzoblasco/create-stack`.)
+El 404 `PUT .../@scope%2fpackage` al publicar NO significa que el scope esté mal. Primero verificar `npm whoami` - si da 401, el fix es `npm login`, no tocar el scope. El scope `@usuario/` se resuelve solo cuando coincide con el username logueado. (Pasó con `@gonzoblasco/create-stack`.)
 
 ### npm login usa browser OTP flow
-El login de npm ahora abre browser (OTP), no acepta token en consola. Los tokens que saltan 2FA se están restringiendo — para CI a futuro usar tokens con `mfa=publish` o `automation`.
+El login de npm ahora abre browser (OTP), no acepta token en consola. Los tokens que saltan 2FA se están restringiendo - para CI a futuro usar tokens con `mfa=publish` o `automation`.
 
 ## Lecciones del 2026-08-10
 
@@ -111,7 +111,7 @@ Tras un rebase que reescribe el historial, `--force-with-lease` falla porque la 
 ### Cruce de ramas en PRs de astryx
 La rama de #4023 arrastraba el commit de #4022 (WCAG contrast) porque se creó desde esa base. Al rebasear para dropear los commits ajenos, el PR queda limpio (solo el fix del Selector). Verificar siempre que una rama de PR no contenga commits de otro PR.
 
-## Consolidación de Skills — 2026-08-06
+## Consolidación de Skills - 2026-08-06
 
 ### Set de skills reducido de 96 a 60 activas (58 archivadas, nada borrado)
 Se adoptaron las 24 skills de `addyosmani/agent-skills` como base de ingeniería (ciclo Define→Plan→Build→Verify→Review→Ship). 5 de ellas absorben funcionalidades de skills propias redundantes:
@@ -192,7 +192,7 @@ Las 58 skills redundantes viven en `skills/archive/` (con README con mapa comple
 - Pendiente: dominio propio, mejorar preview de skill pages, postear en LinkedIn
 
 ### a11y-fixer
-- **NUEVA VERSIÓN** — Reescribió desde cero por fuera de Kanam. Repo: github.com/gonzoblasco/a11y-fixer
+- **NUEVA VERSIÓN** - Reescribió desde cero por fuera de Kanam. Repo: github.com/gonzoblasco/a11y-fixer
 - v0.6.0, 102 tests, 3,041 líneas TS, pipeline completo
 - Se corrigieron 3 bugs: cache con GHA artifacts, octokit nativo, entry point guard
 - Pendiente: redefinir proyecto, agregar features
@@ -208,7 +208,7 @@ Las 58 skills redundantes viven en `skills/archive/` (con README con mapa comple
 - Scaffolder opinado para Next.js 15. Publicado en npm como `@gonzoblasco/create-stack`. Diferenciación real vs create-next-app.
 - **Estado:** vivo, no tocar. Necesita evolución, no reset.
 - Gonzo quiere mantener el scope `@gonzoblasco/` como firma (posible rename futuro de identidad a "kanam", pero el scope queda con firma gonzoblasco).
-- `npm pkg fix` ya corrió — key de bin limpia (`create-stack`).
+- `npm pkg fix` ya corrió - key de bin limpia (`create-stack`).
 
 ### workflow-kit
 - Portable AI agent workflow skills. Publicado en npm. Uso diario.
@@ -247,20 +247,20 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 | Repo | Privado | Descripción |
 |---|---|---|
 | workspace_openclaw | ✅ | El workspace |
-| kanam-skills | — | Repo público + web de agent skills (engineering + life). https://github.com/gonzoblasco/kanam-skills |
-| quedamos | — | App PWA de matching para salidas |
+| kanam-skills | - | Repo público + web de agent skills (engineering + life). https://github.com/gonzoblasco/kanam-skills |
+| quedamos | - | App PWA de matching para salidas |
 | sportcars | ✅ | Eliminado 2026-08-17 (local + repo remoto) |
-| cabala | ✅ | Eliminado — build roto |
+| cabala | ✅ | Eliminado - build roto |
 | a11y-fixer | ✅ | Accessibility fix engine (nueva versión, reescrito desde cero) |
-| ai-developer-stack | — | Skills de ingeniería con IA |
-| create-stack | — | Scaffolder opinado Next.js |
-| workflow-kit | — | Portable AI agent workflow skills |
-| create-with-ai | — | Generador de apps con IA |
-| accessible-ui | — | Headless component library |
-| soporteml | — | CRM multi-tenant para ML sellers |
-| accessibility-auditor | — | Plataforma de auditoría WCAG |
-| ai-engineering-bootcamp | — | 10 niveles de AI-assisted dev |
-| umbrawriter | ✅ | — |
+| ai-developer-stack | - | Skills de ingeniería con IA |
+| create-stack | - | Scaffolder opinado Next.js |
+| workflow-kit | - | Portable AI agent workflow skills |
+| create-with-ai | - | Generador de apps con IA |
+| accessible-ui | - | Headless component library |
+| soporteml | - | CRM multi-tenant para ML sellers |
+| accessibility-auditor | - | Plataforma de auditoría WCAG |
+| ai-engineering-bootcamp | - | 10 niveles de AI-assisted dev |
+| umbrawriter | ✅ | - |
 | sudolab | ✅ | AI fiction writing assistant |
 | react-18-design-patterns | ✅ | Libro React 18 (Packt), actualizado a React 19 LTS |
 | react-anti-patterns-book | ✅ | Libro React Anti-Patterns (Packt) |
@@ -280,19 +280,19 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 ## Lecciones del 2026-08-03
 
 ### Patrón por inercia vs contexto cambiado
-Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nueva), el riesgo no es equivocarse en el patrón — es aplicarlo por inercia cuando el contexto ya cambió. La señal de alerta no es "¿lo sé hacer?" sino "¿es este caso realmente igual a los que ya resolví?". Pasó en el Nivel 8 del bootcamp (convergente, no lineal — transformaba el N7, no creaba carpeta nueva). ADR: `projects/ai-engineering-bootcamp/.knowledge/ADR-001-niveles-convergentes.md`.
+Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nueva), el riesgo no es equivocarse en el patrón - es aplicarlo por inercia cuando el contexto ya cambió. La señal de alerta no es "¿lo sé hacer?" sino "¿es este caso realmente igual a los que ya resolví?". Pasó en el Nivel 8 del bootcamp (convergente, no lineal - transformaba el N7, no creaba carpeta nueva). ADR: `projects/ai-engineering-bootcamp/.knowledge/ADR-001-niveles-convergentes.md`.
 
-### AI Engineering Bootcamp — COMPLETO ✅
+### AI Engineering Bootcamp - COMPLETO ✅
 - **10/10 niveles completados.** N1-N4 fundamentos (generar, prompts, workflows, templates), N5-N6 calidad/seguridad (auditar, CI/CD), N7-N8 arquitectura/producción (microservicios, cloud), N9 estándares/dashboard, N10 sistema completo (capstone).
 - N8-N10 son convergentes: reusan el sistema del N7 (vive dentro de `projects/level-07-microservices/`).
 - El N10 junta todo: auth + users + orders + notifications + gateway + CI/CD + dashboard + cloud. Probado: gateway enruta, health agregado ok, register/login/orders funcionan, 401 en credenciales malas.
 
-### Reflexión del curso (meta-aprendizaje) — COMPLETO ✅
+### Reflexión del curso (meta-aprendizaje) - COMPLETO ✅
 - El patrón "detectores locales + validación cruzada / IA contextual" apareció **5 veces** (N3, N5, N6, N8, N9) → **formalizado como skill `pipeline-detector`** (aplicado, con references/detector-templates.md).
 - Formato nivel de bootcamp (teoría + práctica + LinkedIn + self-review) es un template de skill reusable.
-- Los proyectos resueltos son el "contrato" del curso — demuestran que el nivel es posible, no son la respuesta.
+- Los proyectos resueltos son el "contrato" del curso - demuestran que el nivel es posible, no son la respuesta.
 - Falta un mecanismo de verificación automática al final de cada nivel (tests contra el proyecto del alumno).
-- **El nivel 7 es el núcleo físico de los niveles 7-10**: N8 (cloud), N9 (estándares) y N10 (sistema completo) extienden el mismo folder `projects/level-07-microservices/` (ADR-001). El nombre del folder confunde — el README ahora lo documenta como "Niveles 7-10" con tabla de acumulación y diagrama de arquitectura.
+- **El nivel 7 es el núcleo físico de los niveles 7-10**: N8 (cloud), N9 (estándares) y N10 (sistema completo) extienden el mismo folder `projects/level-07-microservices/` (ADR-001). El nombre del folder confunde - el README ahora lo documenta como "Niveles 7-10" con tabla de acumulación y diagrama de arquitectura.
 
 ## Modelo de agentes en OpenClaw OS (2026-08-10)
 
@@ -309,7 +309,7 @@ Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nue
 ## Silent Replies
 When you have nothing to say, respond with ONLY: NO_REPLY
 ⚠️ Rules:
-- It must be your ENTIRE message — nothing else
+- It must be your ENTIRE message - nothing else
 - Never append it to an actual response (never include "NO_REPLY" in real replies)
 - Never wrap it in markdown or code blocks
 ❌ Wrong: "Here's help... NO_REPLY"

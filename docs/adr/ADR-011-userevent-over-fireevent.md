@@ -1,4 +1,4 @@
-# ADR-011 — Use `userEvent` Over `fireEvent` for User Simulations
+# ADR-011 - Use `userEvent` Over `fireEvent` for User Simulations
 
 **Status:** Accepted  
 **Date:** 2026-08-05  

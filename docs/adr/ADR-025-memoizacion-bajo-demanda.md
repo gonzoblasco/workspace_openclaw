@@ -1,9 +1,9 @@
-# ADR-025 — Memoizacion Bajo Demanda (No Prematura)
+# ADR-025 - Memoizacion Bajo Demanda (No Prematura)
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 8 (memo, useMemo, useCallback section)
-**Scope:** Global — aplica a cualquier proyecto React
+**Source:** React 18 Design Patterns - Chapter 8 (memo, useMemo, useCallback section)
+**Scope:** Global - aplica a cualquier proyecto React
 
 ## Context
 
@@ -41,7 +41,7 @@ No usar `memo`, `useMemo`, o `useCallback` a menos que se cumpla AL MENOS UNA de
 - Componentes chicos con renders simples
 - Valores calculados triviales (ej: `fullName = firstName + ' ' + lastName`)
 - Funciones que no se pasan como props ni como dependencias de efectos
-- "Por las dudas" — medir primero, optimizar despues
+- "Por las dudas" - medir primero, optimizar despues
 
 ## Rationale
 
@@ -59,8 +59,8 @@ No usar `memo`, `useMemo`, o `useCallback` a menos que se cumpla AL MENOS UNA de
 
 ## Referencias
 
-- React docs — memo: https://react.dev/reference/react/memo
-- React docs — useMemo: https://react.dev/reference/react/useMemo
-- React docs — useCallback: https://react.dev/reference/react/useCallback
+- React docs - memo: https://react.dev/reference/react/memo
+- React docs - useMemo: https://react.dev/reference/react/useMemo
+- React docs - useCallback: https://react.dev/reference/react/useCallback
 - React Compiler (React Forget): https://react.dev/learn/react-compiler
-- Kent C. Dodds — When to useMemo and useCallback: https://kentcdodds.com/blog/usememo-and-usecallback
+- Kent C. Dodds - When to useMemo and useCallback: https://kentcdodds.com/blog/usememo-and-usecallback

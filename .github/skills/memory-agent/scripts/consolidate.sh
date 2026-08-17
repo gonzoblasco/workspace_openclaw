@@ -1,5 +1,5 @@
 #!/bin/bash
-# consolidate.sh — Ejecuta DREAMS consolidation parcial
+# consolidate.sh - Ejecuta DREAMS consolidation parcial
 # Uso: ./consolidate.sh <workspace-path> [days-back]
 # Output: JSON con resumen de consolidación
 

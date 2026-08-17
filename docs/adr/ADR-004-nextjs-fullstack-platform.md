@@ -1,4 +1,4 @@
-# ADR-004 — Next.js como plataforma full-stack sin backend separado
+# ADR-004 - Next.js como plataforma full-stack sin backend separado
 
 **Status:** Aceptado
 **Origen:** sportcars ADR-004

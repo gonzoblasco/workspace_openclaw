@@ -1,9 +1,9 @@
-# ADR-029 — Turborepo + pnpm como Estandar para Monorepos
+# ADR-029 - Turborepo + pnpm como Estandar para Monorepos
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 14 (MonoRepo Architecture)
-**Scope:** Global — aplica a cualquier proyecto con multiples paquetes
+**Source:** React 18 Design Patterns - Chapter 14 (MonoRepo Architecture)
+**Scope:** Global - aplica a cualquier proyecto con multiples paquetes
 
 ## Context
 
@@ -73,10 +73,10 @@ packages:
 ```
 my-monorepo/
 ├── packages/
-│   ├── api/          # @my/api — Vite + Drizzle
-│   ├── frontend/     # @my/frontend — Next.js App Router
-│   ├── ui/           # @my/ui — Tailwind + React
-│   └── utils/        # @my/utils — tsup
+│   ├── api/          # @my/api - Vite + Drizzle
+│   ├── frontend/     # @my/frontend - Next.js App Router
+│   ├── ui/           # @my/ui - Tailwind + React
+│   └── utils/        # @my/utils - tsup
 ├── turbo.json
 ├── pnpm-workspace.yaml
 ├── biome.json

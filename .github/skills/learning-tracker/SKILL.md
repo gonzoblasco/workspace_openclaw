@@ -3,7 +3,7 @@ name: "learning-tracker"
 description: "Study any topic in gamified levels (nivel → subnivel → topic), documenting in 3 artifact layers: master plan, per-level, progress tracker."
 ---
 
-# Learning Tracker — Skill de OpenClaw
+# Learning Tracker - Skill de OpenClaw
 
 ## Descripción
 

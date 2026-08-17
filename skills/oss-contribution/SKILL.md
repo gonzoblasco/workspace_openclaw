@@ -35,15 +35,15 @@ Contribución estratégica a repositorios open source externos: elegir dónde ap
 
 ## Fases
 
-1. **Pipeline** — selección de repos objetivo, tier ranking (ver `references/tier-ranking.md`)
-2. **Triaje** — buscar issues sin PRs competidores, evaluar impacto. Usar `scripts/triage-issues.sh`
-3. **Análisis** — entender el bug/feature, root cause analysis. Complex issue ≠ complex fix. Revisar si el reporter ya identificó la causa raíz
-4. **Implementación** — fork, branch, fix, tests. Usar `scripts/setup-fork.sh`
-5. **PR** — descripción clara y humana (no generada). En repos Tier 0 (shadcn/ui, TanStack, Vercel): evitar trazas de automatización en commits y descripciones
-6. **Post-PR Watch** — monitorear el PR: detectar comentarios de bots, cambios solicitados, merges. Usar `pr-watch.sh` de `github`
-7. **Community** — comentar en issues relacionados, cross-referencing. Hacerlo después del PR, no antes, para evitar ruido si el PR no prospera
-8. **Batch** — status check de PRs abiertos. Usar `pr-batch-check.sh` de `github`
-9. **Registry** — registrar la cadena completa en CONTRIBUTING.md (Issue → PR tercero → nuestro aporte → nuestro PR → contexto)
+1. **Pipeline** - selección de repos objetivo, tier ranking (ver `references/tier-ranking.md`)
+2. **Triaje** - buscar issues sin PRs competidores, evaluar impacto. Usar `scripts/triage-issues.sh`
+3. **Análisis** - entender el bug/feature, root cause analysis. Complex issue ≠ complex fix. Revisar si el reporter ya identificó la causa raíz
+4. **Implementación** - fork, branch, fix, tests. Usar `scripts/setup-fork.sh`
+5. **PR** - descripción clara y humana (no generada). En repos Tier 0 (shadcn/ui, TanStack, Vercel): evitar trazas de automatización en commits y descripciones
+6. **Post-PR Watch** - monitorear el PR: detectar comentarios de bots, cambios solicitados, merges. Usar `pr-watch.sh` de `github`
+7. **Community** - comentar en issues relacionados, cross-referencing. Hacerlo después del PR, no antes, para evitar ruido si el PR no prospera
+8. **Batch** - status check de PRs abiertos. Usar `pr-batch-check.sh` de `github`
+9. **Registry** - registrar la cadena completa en CONTRIBUTING.md (Issue → PR tercero → nuestro aporte → nuestro PR → contexto)
 
 ## Seguimiento de issues (práctica clave)
 
@@ -104,6 +104,6 @@ Scripts de `github` (referenciados, no duplicados):
 
 ## Related
 
-- `github` — el cómo: comandos gh, MCP, scripts de operación
-- `session-lifecycle` — ejecuta el batch check al guardar sesión
-- `code-review-and-quality` — review de PRs propios y ajenos
+- `github` - el cómo: comandos gh, MCP, scripts de operación
+- `session-lifecycle` - ejecuta el batch check al guardar sesión
+- `code-review-and-quality` - review de PRs propios y ajenos

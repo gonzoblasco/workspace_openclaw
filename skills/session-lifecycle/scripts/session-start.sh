@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# session-start.sh — Initialize session context
+# session-start.sh - Initialize session context
 # Usage: ./session-start.sh --project "<name>" --objective "<objective>"
 
 set -euo pipefail
@@ -43,7 +43,7 @@ SESSION_LOG="$MEMORY_DIR/$(date +%Y-%m-%d).md"
 
 if [[ ! -f "$SESSION_LOG" ]]; then
   cat > "$SESSION_LOG" << LOG
-# Session Log — $(date '+%Y-%m-%d')
+# Session Log - $(date '+%Y-%m-%d')
 
 ## $PROJECT
 **Objective:** $OBJECTIVE

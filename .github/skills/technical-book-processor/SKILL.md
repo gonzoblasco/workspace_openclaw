@@ -23,11 +23,11 @@ mkdir -p projects/<book-slug>/.knowledge
 
 Create the following files in `.knowledge/`:
 
-- **BRIEF.md** — origin, objective, stack, format
-- **DEFINITION.md** — book details, structure, criteria
-- **ROADMAP.md** — phases (reading, implementation, publication)
-- **STATUS.md** — chapter progress table
-- **LEARNINGS.md** — cumulative, one section per chapter
+- **BRIEF.md** - origin, objective, stack, format
+- **DEFINITION.md** - book details, structure, criteria
+- **ROADMAP.md** - phases (reading, implementation, publication)
+- **STATUS.md** - chapter progress table
+- **LEARNINGS.md** - cumulative, one section per chapter
 
 ### 2. Per-Chapter Processing
 
@@ -42,7 +42,7 @@ Read the chapter text and extract:
 
 #### b. Write LEARNINGS
 Append a new section to `LEARNINGS.md` with:
-- `## Capitulo N — Title`
+- `## Capitulo N - Title`
 - `### Conceptos clave`
 - `### Citas para recordar`
 - `### Preguntas para explorar`
@@ -57,7 +57,7 @@ projects/<book-slug>/.knowledge/ADR-NNN-pattern-name.md
 
 ADR template:
 ```markdown
-# ADR-NNN — Pattern Name
+# ADR-NNN - Pattern Name
 
 **Fecha:** YYYY-MM-DD
 **Contexto:** Capitulo N de "Book Title"

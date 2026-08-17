@@ -30,6 +30,9 @@ coverage/
 playwright-report/
 test-results/
 .vitest-cache/
+__pycache__/
+*.pyc
+.pytest_cache/
 
 # Heartbeat noise (empty sessions, no real content)
 memory/2026-07-20-1750*.md

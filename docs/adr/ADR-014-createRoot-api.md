@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2026-08-05
 **Source:** Extracted from Full-Stack GraphQL + React book processing
-**Scope:** Global — all new React projects
+**Scope:** Global - all new React projects
 
 ## Context
 
@@ -15,7 +15,7 @@ Always use `createRoot` from `react-dom/client` as the React entry point.
 
 ## Rationale
 
-- `ReactDOM.render` is removed in React 19 — code using it will not compile
+- `ReactDOM.render` is removed in React 19 - code using it will not compile
 - `createRoot` enables React 18+ concurrent features (automatic batching, transitions, Suspense)
 - Supports `StrictMode` for development-time side-effect detection
 - Standard pattern in all modern React projects and frameworks (Next.js, Remix, Vite templates)

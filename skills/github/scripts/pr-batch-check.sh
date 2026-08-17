@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# pr-batch-check.sh — Check open PRs across all tracked OSS repos
+# pr-batch-check.sh - Check open PRs across all tracked OSS repos
 # Usage: ./pr-batch-check.sh [--json] [--mine-only]
 #
 # --json       Output as JSON array
@@ -111,7 +111,7 @@ else
       *) status="⏳ $review" ;;
     esac
 
-    echo "  $repo#$number — $title"
+    echo "  $repo#$number - $title"
     echo "  $status | Author: $author | Updated: $updated"
     echo "  $url"
     echo ""

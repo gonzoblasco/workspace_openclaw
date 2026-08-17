@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2026-08-05
 **Source:** Extracted from Full-Stack GraphQL + React book processing
-**Scope:** Global — all React projects using Apollo Client 4+
+**Scope:** Global - all React projects using Apollo Client 4+
 
 ## Context
 

@@ -6,19 +6,19 @@
 
 ## Pipeline principal (flujo de producto)
 
-### Define — Clarificar qué construir
+### Define - Clarificar qué construir
 | Fase | Skill | Qué hace |
 |---|---|---|
 | 0.1 Intención | `interview-me` | Interroga de a 1 pregunta por vez hasta 95% de claridad del requerimiento real |
 | 0.2 Idea | `idea-refine` | Pensamiento divergente/convergente para afinar ideas vagas en propuestas |
 | 0.3 Spec | `spec-driven-development` | PRD completo: objetivos, arquitectura, data model, acceptance criteria, traceability |
 
-### Plan — Descomponer el trabajo
+### Plan - Descomponer el trabajo
 | Fase | Skill | Qué hace |
 |---|---|---|
 | 1. Breakdown | `planning-and-task-breakdown` | Descompone el spec en tareas atómicas verificables con dependency ordering |
 
-### Build — Escribir el código
+### Build - Escribir el código
 | Fase | Skill | Qué hace |
 |---|---|---|
 | 2. Implementación | `incremental-implementation` | Slices verticales finos: implementar, testear, verificar, commitear |
@@ -28,13 +28,13 @@
 | 2.4 Framework | `source-driven-development` | Cada decisión de framework respaldada por documentación oficial citada |
 | 2.5 Decisiones | `doubt-driven-development` | Revisión adversarial en contexto fresco antes de que una decisión no trivial quede firme |
 
-### Verify — Probar que funciona
+### Verify - Probar que funciona
 | Fase | Skill | Qué hace |
 |---|---|---|
 | 3. Verificación | `browser-testing-with-devtools` | Pruebas en vivo con Chrome DevTools: DOM, console, network, performance |
 | 3.1 Debug | `debugging-and-error-recovery` | Triage de 5 pasos: reproduce, localize, reduce, fix, guard |
 
-### Review — Gates de calidad pre-merge
+### Review - Gates de calidad pre-merge
 | Fase | Skill | Qué hace |
 |---|---|---|
 | 4. Review | `code-review-and-quality` | Review de 5 ejes, severity labels, change sizing, mentorship feedback |
@@ -42,7 +42,7 @@
 | 4.2 Seguridad | `security-and-hardening` | OWASP Top 10, auth patterns, secrets management |
 | 4.3 Performance | `performance-optimization` | Measure-first, Core Web Vitals, profiling, bundle analysis |
 
-### Ship — Desplegar con confianza
+### Ship - Desplegar con confianza
 | Fase | Skill | Qué hace |
 |---|---|---|
 | 5. Git | `git-workflow-and-versioning` | Trunk-based, atomic commits, commit-as-save-point |
@@ -97,7 +97,7 @@ Cierre: A y B revisan el conjunto + orquestador hace release
 
 **Reglas:** cada unidad = commit atomico + push; nadie avanza sin validar lo anterior; verificacion obligatoria (build+tests+lint); no romper invariantes; docs al dia. Para calidad maxima, el codigo puede pasar por varias rondas de revision (orquestador implementa → A revisa → B re-revisa las correcciones de A).
 
-**Skill:** [`agent-orchestration-pipeline`](./skills/agent-orchestration-pipeline/SKILL.md) — roles, reglas de oro, templates de prompt, checklist de cierre.
+**Skill:** [`agent-orchestration-pipeline`](./skills/agent-orchestration-pipeline/SKILL.md) - roles, reglas de oro, templates de prompt, checklist de cierre.
 
 **Validado:** kanam-story Fase 3 (U1-U8, 189 tests, release v0.7.0). El cross-review atrapo un bug real (sync corria antes de regenerar) que el orquestador no detecto en su revision.
 

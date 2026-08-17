@@ -1,4 +1,4 @@
-# ADR-002 — Mental model: Primitives, Conventions, Levers para evaluar tecnologias
+# ADR-002 - Mental model: Primitives, Conventions, Levers para evaluar tecnologias
 
 **Status:** Aceptado
 **Origen:** remix-book ADR-001
@@ -29,7 +29,7 @@ Son contratos entre la tecnologia y tu aplicacion: naming de archivos, estructur
 - La tecnologia documenta claramente el contrato?
 
 ### Levers
-Son opciones que la tecnologia te da para optimizar segun tus prioridades. No hay una talla unica — vos decidis que tradeoffs hacer.
+Son opciones que la tecnologia te da para optimizar segun tus prioridades. No hay una talla unica - vos decidis que tradeoffs hacer.
 
 **Que buscar:**
 - La tecnologia te deja elegir o decide por vos?

@@ -1,8 +1,8 @@
-:# LEARNINGS.md — Kanam's Solitaires
+:# LEARNINGS.md - Kanam's Solitaires
 
 Lessons learned during development. Distilled from session notes; for cross-project patterns, see `skills/`.
 
-## 2026-08-01 — Service worker cache strategy for hashed assets
+## 2026-08-01 - Service worker cache strategy for hashed assets
 
 **Context:** GitHub Pages deploy of a Vite PWA. After several deploys, users saw a blank screen and a 404 for an old hashed JS asset (`index-CqBeXR9S.js`).
 
@@ -15,7 +15,7 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 
 **Lesson:** For any PWA with hashed build assets, never serve the shell cache-first. The HTML must be fresh so it can reference the assets that actually exist on the current deployment.
 
-## 2026-08-01 — Template literals can silently become literal strings
+## 2026-08-01 - Template literals can silently become literal strings
 
 **Context:** A bad edit in `spider/renderer.js` dropped a closing backtick. Biome's unsafe autofix converted several template literals into plain strings containing `$variable` text.
 
@@ -23,7 +23,7 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 
 **Lesson:** After any edit that touches template literals, grep for isolated `$` inside string literals and visually verify interpolations. Build/tests do not catch this.
 
-## 2026-08-01 — Double-click is not double-tap
+## 2026-08-01 - Double-click is not double-tap
 
 **Context:** Added `dblclick` auto-move to Spider cards. It worked on desktop but not on mobile.
 
@@ -33,29 +33,29 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 
 **Lesson:** In PWAs/touch interfaces, `dblclick` only covers desktop. Always pair it with a tap handler for mobile.
 
-## 2026-08-01 — Build is the real quality gate
+## 2026-08-01 - Build is the real quality gate
 
 **Context:** Pre-commit hook runs Biome, tests, and build.
 
 **Lesson:** Lint + tests can pass while the build fails due to runtime-only issues (duplicate imports, unresolved exports). The build must be the last gate before pushing.
 
-## 2026-08-01 — Documentation at milestone end is expensive
+## 2026-08-01 - Documentation at milestone end is expensive
 
 **Context:** Created README, ROADMAP, DEFINITION, STATUS, CHANGELOG, HANDOFF, and `docs/` only after v1.0.0 was feature-complete.
 
 **Lesson:** Start documentation in parallel with development. Each significant decision or feature should incrementally update the relevant doc file.
 
-## 2026-08-03 — Orphaned submodule + divergent repo versions
+## 2026-08-03 - Orphaned submodule + divergent repo versions
 
-**Context:** The workspace tracked `projects/ai-engineering-bootcamp` as a submodule (mode 160000) but it had **no entry in `.gitmodules`** — an orphaned gitlink pointing at an old init commit. Meanwhile the GitHub repo had a completely different history (legacy version: 251 files, duplicated es/en docs, exercise-style projects with TASK.md).
+**Context:** The workspace tracked `projects/ai-engineering-bootcamp` as a submodule (mode 160000) but it had **no entry in `.gitmodules`** - an orphaned gitlink pointing at an old init commit. Meanwhile the GitHub repo had a completely different history (legacy version: 251 files, duplicated es/en docs, exercise-style projects with TASK.md).
 
 **Problem:**
 - Orphaned gitlink = workspace can't sync the submodule properly, shows as dirty (`m` flag) forever.
 - Two divergent histories for the same project = a `git merge --allow-unrelated-histories` silently produced **duplicates** (both versions side by side: `level-05-security-audit.md` + `level-05-auditoria.md`, `projects/level-07-microservices/` + `level-07-microservicios/`, etc.).
 
 **Fix (canonical = local):**
-1. `git tag backup-original-remote origin/main` — preserve legacy version before touching anything, push tag.
-2. `git merge origin/main --allow-unrelated-histories -X theirs` — bring histories together, prefer local on conflicts.
+1. `git tag backup-original-remote origin/main` - preserve legacy version before touching anything, push tag.
+2. `git merge origin/main --allow-unrelated-histories -X theirs` - bring histories together, prefer local on conflicts.
 3. Delete all legacy-only files (duplicated docs, TASK.md exercise projects, `.DS_Store`, `.github/`, `.vscode/`).
 4. `git rm --cached` all tracked `.DS_Store`.
 5. Rewrite root README as canonical.
@@ -63,42 +63,42 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 
 **Lesson:**
 - A submodule must always have a `.gitmodules` entry. An orphaned gitlink (mode 160000 without config) is a latent footgun.
-- Before merging unrelated histories of a repo, **inspect both trees first** (`git ls-tree -r --name-only`). If they're structurally different versions of the same thing, an automatic merge creates confusing duplicates — decide the canonical version up front, tag the other for backup, then remove its files deliberately.
+- Before merging unrelated histories of a repo, **inspect both trees first** (`git ls-tree -r --name-only`). If they're structurally different versions of the same thing, an automatic merge creates confusing duplicates - decide the canonical version up front, tag the other for backup, then remove its files deliberately.
 - Always push the backup tag to the remote so the legacy version survives even if local disk dies.
-- When a project's `.gitignore` needs `.knowledge/` ignored (workspace owns institutional memory), verify the ignore actually took after a merge — the merge can restore an old `.gitignore` and silently re-expose ignored files.
+- When a project's `.gitignore` needs `.knowledge/` ignored (workspace owns institutional memory), verify the ignore actually took after a merge - the merge can restore an old `.gitignore` and silently re-expose ignored files.
 
-## 2026-08-06 — Skill consolidation: google/addy skills patterns + prune
+## 2026-08-06 - Skill consolidation: google/addy skills patterns + prune
 
 **Context:** Adopted `addyosmani/agent-skills` (24 skills) as the engineering baseline, consolidating the workspace from 96 to 60 active skills. The old `google-skills-adoption-plan.md` and `kanam-product-pipeline.md` (referencing ~33 now-deleted skills) were removed.
 
-**Lesson — what Addy/Google skills got right (now our baseline):**
+**Lesson - what Addy/Google skills got right (now our baseline):**
 - **Frontmatter YAML estandarizado** with `name` + `description` in the "Use when..." trigger form. Consistent triggers make skill discovery reliable.
 - **Anti-rationalization tables**: each skill lists common excuses agents use to skip steps ("I'll add tests later") with documented rebuttals. This is the strongest guard against agents cutting corners.
 - **Verification is non-negotiable**: every skill ends with evidence requirements (tests passing, build output, runtime data). "Seems right" is never sufficient.
 - **Progressive disclosure**: `SKILL.md` is the entry point; supporting `references/*.md` load only when needed, keeping token usage minimal.
 - **Process, not prose**: skills are workflows agents follow (steps + checkpoints + exit criteria), not reference docs they read.
 
-**Lesson — pruning discipline:**
+**Lesson - pruning discipline:**
 - Having 96 overlapping skills (4 UI, 3 review, 3 debug, etc.) fragments context and burns tokens. Consolidate to orthogonal skills where each covers a full capability.
-- Keep infrastructure/life skills that are unique (adhd, apple-photos, supabase-assistant, sql-insight) even when pruning dev skills — they're not duplicates of an engineering baseline.
-- Archived/pruned content is recoverable from git history — deleting is safe as long as the consolidation mapping is documented in the commit message and SKILLS-INDEX.
+- Keep infrastructure/life skills that are unique (adhd, apple-photos, supabase-assistant, sql-insight) even when pruning dev skills - they're not duplicates of an engineering baseline.
+- Archived/pruned content is recoverable from git history - deleting is safe as long as the consolidation mapping is documented in the commit message and SKILLS-INDEX.
 - When removing a process doc, fold its durable lessons into LEARNINGS.md first so the knowledge outlives the file.
 
-## 2026-08-06 (cierre) — Consolidación no-dev + fusión de skills + eliminación de proyecto
+## 2026-08-06 (cierre) - Consolidación no-dev + fusión de skills + eliminación de proyecto
 
 **Context:** Segunda ola de consolidación. Tras reducir 96→60 skills (ingeniería), se evaluaron las 29 skills no-dev (vida/creatividad/infraestructura) y se decidió qué hacer.
 
-**Lesson — las skills no-dev NO se solapan como las de ingeniería:**
+**Lesson - las skills no-dev NO se solapan como las de ingeniería:**
 - Las 24 skills de ingeniería de Addy tenían duplicación real (5 fusiones absorbieron 20+ skills). Las no-dev son **ortogonales** - ninguna referencia a otra, ninguna es referenciada por otra.
 - Por eso la consolidación no-dev NO es por duplicación, sino por **decisión de uso**. La regla "una skill pública = una decisión de workflow distinta" no aplica igual a un catálogo heterogéneo de herramientas de vida.
 - Conclusión: no fusionar por número. La única fusión obvia fue `adhd-daily-planner` (que ya se autodeclaraba "extensión de adhd-assistant"). El resto de las 4 candidatas (content-serializer, curriculum-builder, brand-name-forge, checkmate) Gonzo decidió mantenerlas como están.
 
-**Lesson — fusionar una skill = actualizar en TODAS las ubicaciones:**
+**Lesson - fusionar una skill = actualizar en TODAS las ubicaciones:**
 - Una skill vive en 3 lugares: `skills/`, `.github/skills/` (mirror) y `projects/kanam-skills/skills/` (repo público). Al fusionar hay que propagar a los 3 + README + `web/generate.js` del repo + regenerar la web.
 - El generador de web estático **no limpia HTML huérfanos** (solo escribe, no borra). Al eliminar una skill hay que borrar `web/public/skills/<name>.html` a mano además de regenerar.
 - La web se regenera en CI desde `skills/`, así que `web/public/` está en `.gitignore` - los cambios locales ahí no se commitean.
 
-**Lesson — eliminar un proyecto con repo remoto:**
+**Lesson - eliminar un proyecto con repo remoto:**
 - `gh repo delete` requiere el scope `delete_repo` en el token. Si no lo tenés, Gonzo lo borra a mano (opción B) - es más simple que pedir permiso de scope.
 - Al eliminar un proyecto, preservar el `.knowledge/` (BRIEF + ROADMAP) moviéndolo a `projects/_archived/<slug>/` con un `ARCHIVED.md`. Git lo detecta como rename si movés los archivos, conservando el historial.
 - Usar `trash` en vez de `rm -rf` para la carpeta local - recuperable beats gone forever.
@@ -109,25 +109,25 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - LESSON: distinguir "muchas skills" (problema de descubribilidad, resuelve con capas/entradas) de "skills duplicadas" (problema de competencia, resuelve con fusión). No son lo mismo.
 - BIASES DETECTED: ninguno flagrante; evité el sesgo de "menos = mejor" sin evidencia de duplicación.
 
-## 2026-08-10 (cierre) — Sesión OSS: conflictos, PR nuevo, reconstrucción de skill
+## 2026-08-10 (cierre) - Sesión OSS: conflictos, PR nuevo, reconstrucción de skill
 
 **Context:** Sesión de contribución OSS. Barrido de 27 PRs, resolución de conflictos (astryx #4023, TanStack #7834), PR nuevo en shadcn (#11465), y reconstrucción de la skill `oss-contribution` que se había perdido en la consolidación.
 
-**Lesson — el commit vacío es una herramienta de diagnóstico, no solo de refresh:**
+**Lesson - el commit vacío es una herramienta de diagnóstico, no solo de refresh:**
 - `git commit --allow-empty` re-dispara CI y fuerza a GitHub a recalcular mergeability. Pensé que los CONFLICTING eran falsos positivos, pero el recálculo reveló conflictos reales ocultos (cruce de ramas en astryx #4023, main desactualizado en TanStack #7834).
 - Lección: cuando GitHub muestra CONFLICTING, NO asumir que es un artefacto. Verificar contra el upstream real antes de descartarlo.
 
-**Lesson — el main del fork puede estar desactualizado vs el upstream:**
+**Lesson - el main del fork puede estar desactualizado vs el upstream:**
 - En TanStack #7834, mi main local del fork estaba 70 commits atrás del main real de TanStack. Por eso GitHub veía conflicto y yo no. Siempre fetch del upstream real (`git fetch upstream main`), no del origin (fork).
 - `--force-with-lease` falla con "stale info" tras un rebase. Usar `--force-with-lease=<branch>:<sha-esperado>` con el sha del remote verificado.
 
-**Lesson — la jugada del "robo de PR" (astryx #4777):**
+**Lesson - la jugada del "robo de PR" (astryx #4777):**
 - Cuando otro contributor quiere tomar un issue/PR en el que ya trabajamos, la jugada ganadora no es pelear por quién manda el PR de la opción débil - es resolver su objeción dentro de la opción fuerte. Validar su punto técnico (le da crédito), pero mostrar que la dirección que defendemos tiene una variante que resuelve su objeción.
 
-**Lesson — el valor del análisis en el issue antes del PR (shadcn #11125):**
+**Lesson - el valor del análisis en el issue antes del PR (shadcn #11125):**
 - Hacer el análisis técnico en el issue antes de mandar el PR (validando el approach con otro contributor) hace que el PR salga limpio y con el root cause ya consensuado. El issue es el lugar para converger; el PR es la ejecución.
 
-**Lesson — skills públicas: sin referencias personales:**
+**Lesson - skills públicas: sin referencias personales:**
 - Una skill pública (kanam-skills) NO debe contener referencias a issues específicos de Gonzo (astryx #4777, shadcn #11125) ni menciones por nombre (Gonzo, gonzoblasco). Eso filtra contexto personal y no aporta a quien la use.
 - La enseñanza sí, la referencia concreta no. Reemplazar por términos genéricos (el usuario, el operador) y parametrizar scripts (username del gh autenticado en vez de hardcodear gonzoblasco).
 - Gonzo me corrigió dos veces en esto - es una regla que hay que internalizar: **toda skill pública se escribe como si la fuera a usar un extraño.**
@@ -138,15 +138,15 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - LESSON: verificar contra el upstream real antes de descartar un conflicto; escribir skills públicas como si las usara un extraño.
 - BIASES DETECTED: confirmation bias (asumí que el conflicto era falso porque mi main local estaba desactualizado y confirmaba mi hipótesis).
 
-## 2026-08-10 (cierre 2) — Narrativa del pipeline + sanitización de skills públicas
+## 2026-08-10 (cierre 2) - Narrativa del pipeline + sanitización de skills públicas
 
 **Context:** Tras reconstruir oss-contribution y sanitizar kanam-skills, Gonzo corrigió la narrativa del pipeline del workspace: no era "24 skills de Addy Osmani" sino su propio set organizado en ese esquema, combinado con skills pre-existentes y skills 100% propias (accesibilidad).
 
-**Lesson — la atribución incorrecta hiere más que el código:**
+**Lesson - la atribución incorrecta hiere más que el código:**
 - El pipeline decía "Skills del pipeline: 24 de Addy Osmani + core OpenClaw + oss-contribution". Eso era falso en dos sentidos: (1) el set no es de Addy, es de Gonzo organizado con ese esquema; (2) ignoraba las skills 100% propias (accesibilidad, infraestructura OpenClaw, vida).
 - Cuando se describe el origen de un sistema, la precisión de la narrativa importa tanto como la funcionalidad. "Inspirado en / organizado como X" ≠ "es X". Corregir la atribución cuando sea incorrecta, sin esperar a que el dueño la reclame.
 
-**Lesson — skills públicas vs workspace (regla establecida en AGENTS.md):**
+**Lesson - skills públicas vs workspace (regla establecida en AGENTS.md):**
 - El workspace (privado) mantiene las referencias personales (setup de Gonzo). kanam-skills (público) se sanitiza (sin referencias personales).
 - Dos versiones de cada skill: una con contexto (workspace), una limpia (público). Al copiar, sanitizar en el camino.
 - Excepción legítima: identidad de instalación del repo (gonzoblasco/kanam-skills en README/docs/web) y LICENSE.
@@ -157,28 +157,28 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - LESSON: la atribución y la narrativa del origen son parte del deliverable. Verificar que la descripción del origen sea precisa antes de commitearla.
 - BIASES DETECTED: anchoring (me anclé en la narrativa previa de "24 de Addy" de la consolidación sin cuestionarla).
 
-## 2026-08-10 (cierre 3) — Tormenta de ideas: convertir una idea en negocio
+## 2026-08-10 (cierre 3) - Tormenta de ideas: convertir una idea en negocio
 
 **Context:** Sesión de brainstorming sobre "IA como Servicio" para terceros no-técnicos. Evolucionó de "vender un workspace" a "SaaS con Cloud + Local + soporte como embudo de conversión". Se identificaron las primeras cuentas reales: los hermanos de Gonzo (hermana = concesionario Jeep/RAM, hermano = motos).
 
-**Lesson — la entrevista de descubrimiento antecede al producto:**
+**Lesson - la entrevista de descubrimiento antecede al producto:**
 - No crear artifacts de proyectos hasta tener el insumo real (la charla con el cliente/contacto). Los artifacts de la idea madre y PIBÄ se crearon porque tenían decisiones tomadas. Los proyectos Cloud NO se crearon aún porque falta la entrevista con la hermana que defina el dolor real y el workflow bandera.
 - Escribir sobre humo (suposiciones sin validar) genera artifacts que después se reescriben.
 
-**Lesson — acceso en caliente > nicho teórico:**
+**Lesson - acceso en caliente > nicho teórico:**
 - El primer cliente casi nunca sale de un mercado genérico, sale de la red. Los hermanos de Gonzo son acceso en caliente (confianza familiar) = laboratorio gratuito + piloto + red de referidos.
 - Estrategia: hermana (contacto cercano) = laboratorio/prototipo; hermano (menos cercano pero con red de locales) = regalo → referidos → clientes pagos. Un acceso cubre "aprender", el otro "escalar".
 
-**Lesson — vender el Cloud, no el sistema a medida:**
-- PIBÄ: el dolor del stock (sistema de pedidos) queda corto — es ERP a medida, no escalable, posiciona mal. Se reencuadró a "IA que maneja el negocio completo". No vender un sistema a medida, vender un servicio que resuelve dolores.
+**Lesson - vender el Cloud, no el sistema a medida:**
+- PIBÄ: el dolor del stock (sistema de pedidos) queda corto - es ERP a medida, no escalable, posiciona mal. Se reencuadró a "IA que maneja el negocio completo". No vender un sistema a medida, vender un servicio que resuelve dolores.
 
 **Self-reflection:**
 - CONTEXT: sesión de brainstorming multi-hilo (modelo de negocio, 2 candidatos reales, estrategia de acceso)
-- REFLECTION: la sesión fue productiva y el enfoque de "hablar antes de escribir" (que pidió Gonzo) funcionó — se destiló el modelo conversando sin escribir prematuremente. Bien registrar cada decisión periódicamente, no al final.
+- REFLECTION: la sesión fue productiva y el enfoque de "hablar antes de escribir" (que pidió Gonzo) funcionó - se destiló el modelo conversando sin escribir prematuremente. Bien registrar cada decisión periódicamente, no al final.
 - LESSON: en brainstorming de negocio, separar "definición de decisiones" (se documenta) de "exploración sin validar" (no se documenta como artifact). El acceso en caliente (familia) es el mayor activo para el primer cliente.
 - BIASES DETECTED: none (el flujo conversacional guiado evitó confirmación prematura; Gonzo frenó la creación de artifacts hasta tener insumo real).
 
-## 2026-08-11 — Estructura de estudio gamificada: nivel → subnivel → topic (3 capas de artifacts)
+## 2026-08-11 - Estructura de estudio gamificada: nivel → subnivel → topic (3 capas de artifacts)
 
 **Context:** Gonzo quiere estudiar system design (para entrevista de Greenhouse) de forma teórico/práctica, con gamificación tipo bootcamp. Al diseñar el plan, pidió explícitamente dividir cada nivel en subniveles y topics, y documentar el aprendizaje en artifacts.
 
@@ -191,20 +191,20 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 
 **Lección pedagógica (corrección de Gonzo):** no pedir respuestas de conceptos que todavía no se enseñaron - primero explicar la teoría, después verificar. Verificar sin haber enseñado genera frustración ("clueless").
 
-## 2026-08-11 — OSS astryx: diagnóstico de CI + PR de fix (doble contribución)
+## 2026-08-11 - OSS astryx: diagnóstico de CI + PR de fix (doble contribución)
 
 **Context:** Sesión OSS en facebook/astryx. El PR #4298 (a11y AvatarStatusDot) estaba aprobado pero bloqueado por un check de CI que fallaba con `no merge base`. Al investigar, resultó ser un bug del workflow, no del código.
 
-**Lesson — verificar el job exacto del run que falla antes de diagnosticar:**
+**Lesson - verificar el job exacto del run que falla antes de diagnosticar:**
 - Confundí el workflow "CLI Smoke Test" con el job `build-storybook` del workflow "CI". El `gh pr checks` mostraba "smoke-test" y asumí que era ese job. El `gh run view --log-failed` del run correcto (31191734656) reveló que el job real era `build-storybook`.
-- LESSON: cuando un check falla, rastrear el run exacto (`gh run list` + `gh run view --json jobs`) y el job que falló antes de escribir el diagnóstico. Un diagnóstico con el job equivocado es peor que no diagnosticar — tuve que corregir el comentario del PR.
+- LESSON: cuando un check falla, rastrear el run exacto (`gh run list` + `gh run view --json jobs`) y el job que falló antes de escribir el diagnóstico. Un diagnóstico con el job equivocado es peor que no diagnosticar - tuve que corregir el comentario del PR.
 
-**Lesson — `fetch-depth: 50` es una ventana fija que se rompe con PRs viejos:**
+**Lesson - `fetch-depth: 50` es una ventana fija que se rompe con PRs viejos:**
 - El bug real: `analyze-pr.js` hace three-dot diff (`base...head`) que necesita merge base. Con `fetch-depth: 50`, si el PR lleva días abierto y main avanza más de 50 commits, el merge base queda fuera de la ventana y el diff falla con `no merge base`.
-- No es un checkout olvidado (ese era mi primer diagnóstico equivocado) — es un límite de diseño del workflow. El propio ci.yml documenta el patrón en dos jobs.
+- No es un checkout olvidado (ese era mi primer diagnóstico equivocado) - es un límite de diseño del workflow. El propio ci.yml documenta el patrón en dos jobs.
 - LESSON: los límites fijos (depth, timeouts, paginación) fallan silenciosamente con el tiempo. Un PR que pasa hoy puede fallar mañana sin tocar nada.
 
-**Lesson — el fallback a two-dot diff es el fix correcto:**
+**Lesson - el fallback a two-dot diff es el fix correcto:**
 - En `getChangedFiles()`, cuando el three-dot falla, caer a two-dot (`base..head`) que no necesita merge base. Nunca hard-faila. Puede sobre-reportar (incluye commits ya en base) pero nunca sub-reporta los cambios del PR.
 - Validado con simulación real: reproduje el caso exacto (clone shallow, merge base fuera de ventana) y confirmé que el three-dot falla y el two-dot funciona.
 
@@ -214,11 +214,11 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - LESSON: en contribuciones OSS, un diagnóstico técnico incorrecto en un thread público resta credibilidad. Verificar el run/job exacto con `gh run view --log-failed` antes de afirmar la causa.
 - BIASES DETECTED: anchoring (me anclé en el nombre "smoke-test" del `gh pr checks` sin verificar el job real del run).
 
-## 2026-08-11 — SoporteML v3: estructura de doble git (leer skills antes de tocar organización)
+## 2026-08-11 - SoporteML v3: estructura de doble git (leer skills antes de tocar organización)
 
 **Context:** Sesión de construcción de SoporteML v3. Al crear el repo del proyecto, me enredé con submodules y moví el `.knowledge/` al repo del proyecto, cuando Gonzo me había dicho que los ADRs van en `docs/adr/` del proyecto y que el sistema es de doble git. Gonzo me corrigió: "estuviste revisando eso pero no leíste mis skills para identificar cómo ordeno las cosas".
 
-**Lesson — leer las skills de estructura ANTES de tocar la organización de proyectos:**
+**Lesson - leer las skills de estructura ANTES de tocar la organización de proyectos:**
 - El sistema de doble git de Gonzo (AGENTS.md §211 + práctica real):
   - **Workspace git:** capta workspace + `.knowledge/` del proyecto + README.
   - **Repo del proyecto:** capta todo el contenido (código + docs/adr) + README. Independiente, NO submodule.
@@ -226,38 +226,38 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - Me enredé con submodules (quedamos, kanam-solitaires son submodules) sin darme cuenta de que soporteml-v3 es un proyecto NO-submodule (como daily-ink, ensulugar) donde el workspace trackea `.knowledge/` directamente.
 - LESSON: antes de reorganizar la estructura de un proyecto, leer AGENTS.md §211 + la skill de git-workflow + verificar cómo lo hacen 2-3 proyectos existentes. No asumir el patrón por un solo ejemplo.
 
-**Lesson — el `.gitignore` del proyecto con `.knowledge/` pisa la negación del raíz:**
+**Lesson - el `.gitignore` del proyecto con `.knowledge/` pisa la negación del raíz:**
 - El `.gitignore` del proyecto tiene `.knowledge/` (para que el repo del proyecto no lo trackee). Pero las reglas de `.gitignore` de subdirectorios ganan sobre las del raíz, así que la negación `!/projects/<slug>/.knowledge/**` del raíz no funciona.
 - Solución: trackear `.knowledge/` en el workspace con `git add -f` (force). Una vez trackeados, el `.gitignore` del proyecto ya no los afecta.
 
-**Lesson — repo anidado bloquea el trackeo del workspace:**
+**Lesson - repo anidado bloquea el trackeo del workspace:**
 - Si el proyecto tiene `.git` propio (repo anidado), git lo trata como gitlink y no trackea su contenido en el workspace, ni siquiera con `git add -f`.
 - Solución: mover temporalmente el `.git` del proyecto, `git add -f` del `.knowledge/` en el workspace, y restaurar el `.git`.
 
 **Self-reflection:**
 - CONTEXT: creación de repo + estructura de doble git
 - REFLECTION: me fui por las ramas con submodules sin verificar el sistema real de Gonzo. La corrección fue oportuna pero costó varias iteraciones de git.
-- LESSON: la organización de proyectos es una decisión estructural — verificar el sistema documentado (AGENTS.md, skills) y la práctica real de proyectos existentes ANTES de tocar nada.
+- LESSON: la organización de proyectos es una decisión estructural - verificar el sistema documentado (AGENTS.md, skills) y la práctica real de proyectos existentes ANTES de tocar nada.
 - BIASES DETECTED: anchoring (me anclé en el patrón de submodules de quedamos/kanam-solitaires sin verificar que soporteml-v3 es NO-submodule).
 
-## 2026-08-11 — Portfolio de accesibilidad + GitHub Profile (sesión larga)
+## 2026-08-11 - Portfolio de accesibilidad + GitHub Profile (sesión larga)
 
 **Context:** Sesión de portfolio OSS. Construí un caso de estudio de accesibilidad (artifact + página estática en GitHub Pages), lo publiqué, y actualicé el GitHub Profile de Gonzo (bio + repos fijados). Varias lecciones de proceso.
 
-**Lesson — un portfolio de accesibilidad tiene que CUMPLIR accesibilidad:**
+**Lesson - un portfolio de accesibilidad tiene que CUMPLIR accesibilidad:**
 - La v1 de la página se veía pulida pero tenía fallas que contradecían el discurso (color como único diferenciador, contraste bajo, badges en mayúsculas). Un portfolio de a11y que no cumple a11y es dañino.
-- La validación visual con screenshot + modelo de visión (Playwright + image) es OBLIGATORIA para proyectos con identidad visual — mismo patrón que Sport Cars. El build pasando no garantiza que se vea bien.
+- La validación visual con screenshot + modelo de visión (Playwright + image) es OBLIGATORIA para proyectos con identidad visual - mismo patrón que Sport Cars. El build pasando no garantiza que se vea bien.
 
-**Lesson — en un portfolio de accesibilidad, solo cuentan los PRs de a11y:**
+**Lesson - en un portfolio de accesibilidad, solo cuentan los PRs de a11y:**
 - Metí todos los PRs OSS de Gonzo (27+ en 13 repos) sin filtrar, pero muchos no son de accesibilidad (Zod, Payload, hallmark, tooling, CI, router). Eso diluía el mensaje.
-- Filtré a solo PRs de a11y (13 en 6 repos). La matemática debe ser consistente entre secciones (detalle = resumen = estadística) — tuve una discrepancia de 3 que Gonzo detectó.
+- Filtré a solo PRs de a11y (13 en 6 repos). La matemática debe ser consistente entre secciones (detalle = resumen = estadística) - tuve una discrepancia de 3 que Gonzo detectó.
 
-**Lesson — el GitHub Profile es la primera impresión:**
+**Lesson - el GitHub Profile es la primera impresión:**
 - La bio de Gonzo estaba vacía y los repos fijados eran placeholders/forks. Un recruiter no veía su especialización.
 - Actualicé la bio (necesitó scope `user` de gh) y fijé 6 repos reales. Los pinned repos SOLO se manejan por UI de GitHub, no por API.
 
-**Lesson — verificar el estado real antes de proponer:**
-- Propuse fijar workflow-kit, pero está ARCHIVADO (isArchived: true) — sus skills quedaron duplicadas por kanam-skills. No se puede fijar. Verificar `isArchived` antes de recomendar un repo.
+**Lesson - verificar el estado real antes de proponer:**
+- Propuse fijar workflow-kit, pero está ARCHIVADO (isArchived: true) - sus skills quedaron duplicadas por kanam-skills. No se puede fijar. Verificar `isArchived` antes de recomendar un repo.
 
 **Self-reflection:**
 - CONTEXT: construcción de portfolio + perfil de GitHub
@@ -265,21 +265,21 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - LESSON: en trabajo de portfolio/marca, verificar el estado real (isArchived, tema de cada PR) ANTES de proponer o publicar. La precisión importa más que la velocidad.
 - BIASES DETECTED: confirmation (asumí que todos los PRs eran de a11y porque el portfolio es de a11y, sin verificar cada uno).
 
-## 2026-08-12 — Colaboración OSS: astryx #4914 + radix #4109 (sesión de a11y)
+## 2026-08-12 - Colaboración OSS: astryx #4914 + radix #4109 (sesión de a11y)
 
 **Context:** Sesión de colaboración en accesibilidad. Refiné el PR #4914 de astryx (fix de CI con 5 findings de review) y abrí el PR #4109 de radix (aria-posinset/setsize en Select). Varias lecciones de proceso.
 
-**Lesson — buscar issues de a11y en repos maduros: la mayoría ya tienen PRs o el maintainer no quiere cambios:**
+**Lesson - buscar issues de a11y en repos maduros: la mayoría ya tienen PRs o el maintainer no quiere cambios:**
 - Barrido por radix, ariakit, adobe, mui, vercel, react.dev, TanStack. Casi todos los issues "obvios" tenían PRs abiertos (react.dev #8552 tenía 4 PRs compitiendo), maintainer que no quiere cambiar (mui #46319), o bugs sin solución clara (adobe #10310).
 - El issue ideal: bug concreto + sin PR + alcance acotado + repo con apetito a11y. radix #3962 cumplía todo.
 - **Siempre verificar antes de atacar:** (1) si ya hay PRs que referencian el issue, (2) si el repo realmente tiene el componente (radix #4085 sobre "Command" estaba mal dirigido - radix no tiene Command, es de cmdk).
 
-**Lesson — el deepen-and-retry tiene dos trampas de git que no son obvias:**
+**Lesson - el deepen-and-retry tiene dos trampas de git que no son obvias:**
 - El refspec del fetch necesita el nombre de rama SIN el prefijo `origin/` (el `--base` llega como `origin/main`, y `origin ${baseBranch}:...` produce `origin origin/main:...` que falla).
 - `git fetch --deepen` solo actualiza `FETCH_HEAD`, no el ref `origin/<base>`. Hay que escribir `refs/remotes/origin/<base>` explícito, o el three-dot retry (que referencia `origin/main`) sigue sin resolver.
 - Verificado con repo sintético: el deepen recupera el resultado EXACTO (modifiedComponents: ["Card"]) en vez del over-reportado del fallback. Esto valida que deepen-and-retry es mejor que degradar directo.
 
-**Lesson — el patrón de roving focus en listbox scrollable rompe el conteo de VoiceOver+Chrome:**
+**Lesson - el patrón de roving focus en listbox scrollable rompe el conteo de VoiceOver+Chrome:**
 - Radix Select usa foco real en cada option (roving focus) dentro de un listbox scrollable, sin aria-posinset/aria-setsize. VoiceOver+Chrome cuenta solo los options visibles en el viewport → total incorrecto. Safari/NVDA funcionan por heurística.
 - El fix: declarar aria-posinset/aria-setsize explícitamente, calculados desde el DOM (el contenedor de lista es el parentElement del option: el role="group" si hay grupo, si no el viewport). Maneja grupos correctamente (cada group cuenta independiente, patrón APG).
 
@@ -289,31 +289,31 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - LESSON: en bugs de a11y de screen readers, el análisis de causa raíz (qué patrón usa la librería, qué espera el lector) vale más que el fix a ciegas. Y verificar el estado real (PRs existentes, componente existente) antes de invertir tiempo.
 - BIASES DETECTED: none (el proceso de verificación previa evitó anclarme en issues mal dirigidos).
 
-## 2026-08-12 — soporteml-v3: modelo cloud de IA en loops + decisión Storybook
+## 2026-08-12 - soporteml-v3: modelo cloud de IA en loops + decisión Storybook
 
 **Context:** Sesión de integración MeLi + port de diseño en soporteml-v3. El sync mock llamaba a la IA real (modelo cloud) por cada pregunta, y el frontend lo veía como "paso eterno".
 
-**Lesson — un loop que llama a IA con modelo cloud puede tardar decenas de segundos sin feedback:**
+**Lesson - un loop que llama a IA con modelo cloud puede tardar decenas de segundos sin feedback:**
 - El sync mock hacía 5 preguntas × 2 llamadas a Ollama (categorizar + sugerir) en serie. Con modelo cloud (`deepseek-v4-flash:cloud`), cada llamada ~4s → ~40s total. El frontend lo mostraba como colgado (HTTP 000, timeout).
 - **Fix:** en modo mock/dev, usar un fallback determinístico (categorización por keywords, respuestas plantilla) en vez de la IA real. La IA real queda solo para el flujo real (token conectado). El sync pasó de ~40s a ~6ms.
 - Regla generalizable: si un loop llama a IA, (1) usar fallback determinístico cuando el objetivo es dev/mock/demo, (2) considerar concurrencia o timeout por llamada, (3) medir el tiempo total antes de asumir que "funciona".
 
-**Lesson — Storybook no aporta para equipo de 1 dev:**
+**Lesson - Storybook no aporta para equipo de 1 dev:**
 - Evalué agregar Storybook para documentar el design system. Decisión: no vale la pena. Storybook brilla con varios devs + diseñador (catálogo compartido); con un solo dev que además escribe los componentes, el costo de mantenimiento (stories, providers, config) supera el beneficio.
 - **Alternativa elegida:** un "playground" de componentes (`src/pages/Playground.tsx`, solo en dev con `import.meta.env.DEV`) que lista los componentes con variantes. Cubre ~80% del valor de Storybook sin infraestructura.
 - Regla: Storybook (o catálogo visual) se agrega cuando el diseño necesita ser revisado por otro humano (diseñador, cliente) o el equipo crece. Para 1 dev, el playground es suficiente.
 
 **Self-reflection:**
 - CONTEXT: integración + diseño en proyecto propio
-- REFLECTION: el bug del sync "eterno" fue un buen catch — no asumí que era un cuelgue de red, investigué y encontré que era la IA cloud en serie. El port de diseño de v1 fue eficiente (extraer código real de v1 en vez de reimplementar desde las guías).
-- LESSON: en proyectos con IA, el fallback determinístico para dev/mock no es opcional — es la diferencia entre una app usable y una que parece colgada. Y para decisiones de infra (como Storybook), pensar en el tamaño del equipo antes de agregar.
+- REFLECTION: el bug del sync "eterno" fue un buen catch - no asumí que era un cuelgue de red, investigué y encontré que era la IA cloud en serie. El port de diseño de v1 fue eficiente (extraer código real de v1 en vez de reimplementar desde las guías).
+- LESSON: en proyectos con IA, el fallback determinístico para dev/mock no es opcional - es la diferencia entre una app usable y una que parece colgada. Y para decisiones de infra (como Storybook), pensar en el tamaño del equipo antes de agregar.
 - BIASES DETECTED: none (el diagnóstico del sync fue sistemático, no asumí).
 
-## 2026-08-14 — radix-ui: cuando alguien implementa tu análisis, sé el reviewer
+## 2026-08-14 - radix-ui: cuando alguien implementa tu análisis, sé el reviewer
 
 **Context:** Gonzo documentó en el issue #4110 de radix-ui/primitives la causa raíz de un bug de a11y (race de timing: VoiceOver lee la primera opción antes de que el re-render pinte los atributos) y 2 opciones de fix. No subió código, solo análisis. Días después, otro contributor (waterWang) abrió el PR #4112 implementando literalmente la opción A - y con un approach técnicamente superior (setAttribute directo en el DOM en useLayoutEffect, evitando el state round-trip).
 
-**Lesson — cuando alguien implementa tu análisis, el mejor move no es reclamar autoría, es convertirte en el reviewer con el contexto completo:**
+**Lesson - cuando alguien implementa tu análisis, el mejor move no es reclamar autoría, es convertirte en el reviewer con el contexto completo:**
 - No es robo de código (Gonzo no subió código, solo análisis) - es robo de dirección, y la ejecutó mejor. Decir "está mal" sería deshonesto y quemaría credibilidad con los maintainers.
 - El review honesto (validar el approach + señalar gaps reales) posiciona mejor que reclamar. El gap real del PR ajeno (falta de tests) es la puerta de entrada para tu propio trabajo: el #4109 de Gonzo ya tiene 3 tests que cubren exactamente ese comportamiento.
 - Cerrar el review con "happy to help if useful" deja la puerta abierta para que te pidan los tests, y quedás como co-autor de facto del fix completo.
@@ -325,11 +325,11 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - LESSON: en OSS, cuando alguien implementa tu análisis, sé el reviewer con el contexto completo - no el reclamante. El gap de tests del otro PR es tu puerta de entrada.
 - BIASES DETECTED: sunk cost / territorialidad (querer defender "nuestro" reporte). Contrarrestado con honestidad y foco en el resultado.
 
-## 2026-08-14 — colinhacks/zod: el diagnóstico correcto no garantiza el merge si la implementación no respeta la arquitectura
+## 2026-08-14 - colinhacks/zod: el diagnóstico correcto no garantiza el merge si la implementación no respeta la arquitectura
 
 **Context:** PR #6385 de Gonzo en zod (fix exactOptional + coerce, bug #6236) fue cerrado por colinhacks sin merge. El diagnóstico de causa raíz era correcto y colinhacks lo reconoció ("The diagnosis is right", "Thanks for the investigation, it's what pinned down the JIT/jitless split"). Pero la implementación (helper `hasApplicableFallback` que enumeraba tipos de wrapper en el object loop) no era la arquitectura que el maintainer quería. colinhacks indicó la dirección (fix en `$ZodExactOptional.parse` via `optin`) y abrió su propio PR #6405 implementándola.
 
-**Lesson — en repos con maintainer fuerte y opinado, la dirección de diseño pesa tanto como la corrección:**
+**Lesson - en repos con maintainer fuerte y opinado, la dirección de diseño pesa tanto como la corrección:**
 - El feedback accionable (los 2 P2 del bot Codex) se arregla y se mergea. La dirección de fondo (cómo debe expresarse el fix en la arquitectura del repo) no es negociable - si no la respetás, el maintainer cierra y lo implementa él mismo.
 - El diagnóstico correcto es necesario pero no suficiente. Antes de implementar un fix en un repo con maintainer opinado, vale la pena mirar cómo el maintainer ya resolvió problemas similares (qué patrones usa, qué rechaza) para alinear la implementación con su visión desde el arranque.
 - Riesgo de reviews automatizados (Codex, etc.): dan feedback de corrección (P2 puntuales), no de diseño. Ninguno señaló el problema arquitectónico de fondo (hardcoded list de tipos). El problema real lo vio el maintainer al leer el código.
@@ -341,11 +341,11 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - LESSON: en repos con maintainer opinado, alinear la implementación con la visión del maintainer desde el arranque (mirar cómo resolvió problemas similares) vale más que un fix funcionalmente correcto con arquitectura ajena.
 - BIASES DETECTED: confirmation bias (asumir que un fix con 3921 tests verdes y 2 P2 arreglados estaba "listo para mergear" sin considerar la dirección de diseño del maintainer).
 
-## 2026-08-14 — Refactorización del setup: archivos planos → SQLite (modo híbrido)
+## 2026-08-14 - Refactorización del setup: archivos planos → SQLite (modo híbrido)
 
 **Context:** Gonzo preguntó si había algo del setup documentado que valiera la pena migrar de archivos planos a una base de datos por velocidad y practicidad. Implementé un sistema híbrido: `memory/memory.db` (SQLite) con 4 tablas (daily_notes, todos, inbox, contributions), migrando 83 daily notes, 5 todos, 4 ideas y 27 contribuciones OSS. El daily del día actual sigue en markdown (legible, diff de git); los viejos se archivan a SQLite y a memory/archive/.
 
-**Lesson — no todo lo que es "archivo plano" conviene migrarlo a DB; separar datos estructurados de documentos narrativos:**
+**Lesson - no todo lo que es "archivo plano" conviene migrarlo a DB; separar datos estructurados de documentos narrativos:**
 - **Documentos narrativos** (MEMORY.md, LEARNINGS.md, AGENTS.md, SOUL.md): se leen como narrativa, se curan a mano, se versionan en git. Migrarlos a SQLite es un error - se pierde legibilidad y diff. Quedan como markdown.
 - **Datos estructurados** (OSS-TRACKER, TODO, INBOX): son tablas disfrazadas de markdown. SQLite brilla acá - queries, filtros, agregación. Migrar.
 - **Log cronológico** (daily notes): caso híbrido. El presente en markdown (legible, diff), el pasado archivado a SQLite (fuera del camino, consultable). Este es el "modo híbrido".
@@ -358,7 +358,7 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - LESSON: al migrar archivos planos a DB, separar datos estructurados (migrar) de documentos narrativos (no migrar), y versionar la DB si el flujo depende de sincronización entre máquinas.
 - BIASES DETECTED: none (el diseño consideró el flujo de doble máquina y la legibilidad antes de ejecutar).
 
-## 2026-08-14 — Cross-review multi-ronda con agentes paralelos atrapa bugs reales
+## 2026-08-14 - Cross-review multi-ronda con agentes paralelos atrapa bugs reales
 
 **Context:** Desarrollo del backlog B1-B7 de kanam-story con pipeline multi-agente: orquestador (Kanam) divide en items, agentes A (VS Code) y B (ZCode) desarrollan en paralelo y se revisan mutuamente (cross-review multi-ronda).
 
@@ -374,13 +374,13 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 
 **Advertencia:** discrepancia de versiones dev/CI (Node 20 vs 22) es fuente clasica de "pasa local, falla en CI". Alinear con `.nvmrc` + CI.
 
-## 2026-08-17 — Verificar el estado real de los PRs ANTES de proponer acciones
+## 2026-08-17 - Verificar el estado real de los PRs ANTES de proponer acciones
 
 **Context:** Durante la revisión de PRs OSS, propuse cerrar mi PR #4109 (radix Select) a favor del #4112 de waterWang. Gonzo me corrigió: ya había dejado un review en #4112 dando visto bueno al enfoque con 4 mejoras. No lo había leído.
 
 **Lesson:** al revisar un set de PRs/discusiones donde ya participé, la fuente de verdad es el estado ACTUAL de cada PR (reviews, comentarios, últimas acciones), no mi memoria de lo que hice o el resumen que armé antes. Asumí que #4112 era "un PR nuevo que criticaba el mío" sin leer que ya lo había reviewado. Verificar antes de proponer destruir/cerrar trabajo.
 
-**Proceso que evita esto:** antes de recomendar cerrar/mergear/actualizar un PR, hacer `gh pr view <n> --repo <r> --json reviews,comments` y leer el thread completo. En particular, buscar MIS reviews previos — son la señal más fuerte de lo que ya decidí.
+**Proceso que evita esto:** antes de recomendar cerrar/mergear/actualizar un PR, hacer `gh pr view <n> --repo <r> --json reviews,comments` y leer el thread completo. En particular, buscar MIS reviews previos - son la señal más fuerte de lo que ya decidí.
 
 **Self-reflection:**
 - CONTEXT: revisión de PRs OSS, propuse acción incorrecta

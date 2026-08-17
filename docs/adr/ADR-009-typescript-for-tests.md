@@ -1,4 +1,4 @@
-# ADR-009 — Use TypeScript for All Test Files
+# ADR-009 - Use TypeScript for All Test Files
 
 **Status:** Accepted  
 **Date:** 2026-08-05  

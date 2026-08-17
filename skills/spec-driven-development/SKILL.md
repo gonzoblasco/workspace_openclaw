@@ -1,13 +1,13 @@
 ---
 name: spec-driven-development
-description: Creates comprehensive specifications before any code is written. Integrates OpenSpec generation, build scaffolding from specs, documentation artifacts, and requirements traceability. Use when starting new projects/features with ambiguous/vague requirements or when no specification exists yet — NOT for single-line fixes or typo corrections.
+description: Creates comprehensive specifications before any code is written. Integrates OpenSpec generation, build scaffolding from specs, documentation artifacts, and requirements traceability. Use when starting new projects/features with ambiguous/vague requirements or when no specification exists yet - NOT for single-line fixes or typo corrections.
 ---
 
 # Spec-Driven Development: Build from Specification, Not Guessing
 
 ## Overview
 
-Write structured specifications before writing any code. The spec is the shared source of truth between you and the human engineer — it defines **what** we're building, **why**, and **how** we'll know it's done. Code without a spec is guessing.
+Write structured specifications before writing any code. The spec is the shared source of truth between you and the human engineer - it defines **what** we're building, **why**, and **how** we'll know it's done. Code without a spec is guessing.
 
 This skill integrates **OpenSpec generation**, **automated build scaffolding from specs**, **requirements traceability documentation**, and **artifact preservation** for future reference.
 
@@ -285,10 +285,10 @@ FeatureName/
 
 ## 📚 Related Documents
 
-- [Architecture Decision Record #1](../docs/adr/adr-001-state-management.md) — State management approach
-- [OpenSpec Guide](https://openspec.dev/guide) — Spec format reference
-- [API Contract](../../api/docs/openapi.json) — API specification
-- [Figma Mockups](../design/mockups/) — Visual design reference
+- [Architecture Decision Record #1](../docs/adr/adr-001-state-management.md) - State management approach
+- [OpenSpec Guide](https://openspec.dev/guide) - Spec format reference
+- [API Contract](../../api/docs/openapi.json) - API specification
+- [Figma Mockups](../design/mockups/) - Visual design reference
 
 ---
 

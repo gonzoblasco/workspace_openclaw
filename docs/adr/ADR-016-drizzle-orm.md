@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2026-08-05
 **Source:** Extracted from Full-Stack GraphQL + React book processing
-**Scope:** Global — all new Node.js projects with SQL databases
+**Scope:** Global - all new Node.js projects with SQL databases
 
 ## Context
 
@@ -15,7 +15,7 @@ Use Drizzle ORM as the default SQL ORM for new projects. Fall back to Prisma onl
 
 ## Rationale
 
-- **SQL-like API:** Drizzle's query builder maps directly to SQL — `select`, `where`, `join`, `insert`, `update`
+- **SQL-like API:** Drizzle's query builder maps directly to SQL - `select`, `where`, `join`, `insert`, `update`
 - **No CLI dependency:** Schema is plain code, migrations are optional (`drizzle-kit push` for dev, `drizzle-kit generate` for production)
 - **TypeScript-first:** Full type safety without code generation
 - **Database agnostic:** Same API for SQLite, PostgreSQL, MySQL, Turso, D1

@@ -1,9 +1,9 @@
-# ADR-021 — Biome como Toolchain Unificado (Reemplazo de ESLint + Prettier)
+# ADR-021 - Biome como Toolchain Unificado (Reemplazo de ESLint + Prettier)
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 3 (Styling code section)
-**Scope:** Global — aplica a cualquier proyecto JS/TS/React
+**Source:** React 18 Design Patterns - Chapter 3 (Styling code section)
+**Scope:** Global - aplica a cualquier proyecto JS/TS/React
 
 ## Context
 
@@ -64,12 +64,12 @@ Usar **Biome** como toolchain unificado para formateo, linting, y organización 
 
 ## Rationale
 
-1. **Un solo binario** — instalar `@biomejs/biome` y ya. No más 6+ dependencias de ESLint + Prettier.
-2. **Zero-config para React/TS** — las reglas recomendadas de Biome cubren React, TypeScript, accesibilidad, y estilo.
-3. **Rendimiento** — Biome es ~20x más rápido que ESLint + Prettier combinados (escrito en Rust).
-4. **Sin conflictos** — formateo y linting son el mismo engine, no hay reglas que se contradigan.
-5. **Organize imports** — Biome tiene `organizeImports` nativo, no necesita `eslint-plugin-import` ni `simple-import-sort`.
-6. **`--unsafe` fixes** — Biome puede aplicar fixes automáticos que van más allá de lo seguro, incluyendo agregar/eliminar paréntesis de arrow functions.
+1. **Un solo binario** - instalar `@biomejs/biome` y ya. No más 6+ dependencias de ESLint + Prettier.
+2. **Zero-config para React/TS** - las reglas recomendadas de Biome cubren React, TypeScript, accesibilidad, y estilo.
+3. **Rendimiento** - Biome es ~20x más rápido que ESLint + Prettier combinados (escrito en Rust).
+4. **Sin conflictos** - formateo y linting son el mismo engine, no hay reglas que se contradigan.
+5. **Organize imports** - Biome tiene `organizeImports` nativo, no necesita `eslint-plugin-import` ni `simple-import-sort`.
+6. **`--unsafe` fixes** - Biome puede aplicar fixes automáticos que van más allá de lo seguro, incluyendo agregar/eliminar paréntesis de arrow functions.
 
 ## Consequence
 

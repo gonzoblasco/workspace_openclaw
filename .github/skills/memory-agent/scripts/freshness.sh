@@ -1,5 +1,5 @@
 #!/bin/bash
-# freshness.sh — Clasifica documentos por antigüedad
+# freshness.sh - Clasifica documentos por antigüedad
 # Uso: ./freshness.sh <file1> [file2] ...
 # Output: JSON con clasificación 🟢🟡🔴
 

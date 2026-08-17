@@ -1,4 +1,4 @@
-# ADR-005 — Supabase como base de datos y BaaS
+# ADR-005 - Supabase como base de datos y BaaS
 
 **Status:** Aceptado
 **Origen:** sportcars ADR-005

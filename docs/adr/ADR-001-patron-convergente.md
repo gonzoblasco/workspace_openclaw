@@ -1,4 +1,4 @@
-# ADR-001 — Patron convergente: cuando un patron se repite, verificar si el contexto cambio
+# ADR-001 - Patron convergente: cuando un patron se repite, verificar si el contexto cambio
 
 **Status:** Aceptado
 **Origen:** ai-engineering-bootcamp ADR-001
@@ -20,7 +20,7 @@ Antes de aplicar un patron repetido N veces, preguntar:
 
 ## Leccion general
 
-**Cuando un patron se repite muchas veces, el riesgo no es equivocarse en el patron — es aplicarlo por inercia cuando el contexto ya cambio.**
+**Cuando un patron se repite muchas veces, el riesgo no es equivocarse en el patron - es aplicarlo por inercia cuando el contexto ya cambio.**
 
 La senial de alerta no es "lo se hacer?" sino "es este caso realmente igual a los que ya resolvi?".
 

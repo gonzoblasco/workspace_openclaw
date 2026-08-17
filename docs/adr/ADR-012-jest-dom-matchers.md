@@ -1,4 +1,4 @@
-# ADR-012 — Use jest-dom Matchers for DOM Assertions
+# ADR-012 - Use jest-dom Matchers for DOM Assertions
 
 **Status:** Accepted  
 **Date:** 2026-08-05  

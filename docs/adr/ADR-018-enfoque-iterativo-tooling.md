@@ -1,9 +1,9 @@
-# ADR-018 — Enfoque Iterativo para Adopción de Tooling
+# ADR-018 - Enfoque Iterativo para Adopción de Tooling
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 1 (JavaScript fatigue section)
-**Scope:** Global — aplica a cualquier proyecto que adopte tooling del ecosistema JS
+**Source:** React 18 Design Patterns - Chapter 1 (JavaScript fatigue section)
+**Scope:** Global - aplica a cualquier proyecto que adopte tooling del ecosistema JS
 
 ## Context
 
@@ -16,7 +16,7 @@ El error más frecuente es querer resolver todo el stack de tooling antes de esc
 Adoptar un **enfoque iterativo** para incorporar tooling:
 
 1. **Arrancar con lo mínimo** que permita escribir y ver la aplicación funcionando.
-2. **Agregar tooling solo cuando el problema lo justifique** — no por moda, no por "vamos a necesitarlo después".
+2. **Agregar tooling solo cuando el problema lo justifique** - no por moda, no por "vamos a necesitarlo después".
 3. **Cada herramienta debe resolver un problema real y actual** del proyecto, no uno hipotético.
 
 ## Consequence
@@ -35,5 +35,5 @@ Adoptar un **enfoque iterativo** para incorporar tooling:
 
 ## Referencias
 
-- React 18 Design Patterns and Best Practices (4th Ed.) — Chapter 1, "Understanding JavaScript fatigue"
-- You Aren't Gonna Need It (YAGNI) — principio de software engineering
+- React 18 Design Patterns and Best Practices (4th Ed.) - Chapter 1, "Understanding JavaScript fatigue"
+- You Aren't Gonna Need It (YAGNI) - principio de software engineering

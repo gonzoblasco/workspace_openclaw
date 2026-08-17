@@ -1,8 +1,10 @@
-# SKILLS-INDEX.md — Skills del Workspace
+# SKILLS-INDEX.md - Skills del Workspace
 
-> Skills activas organizadas por categoría. Actualizado: 2026-08-06
+> Skills activas organizadas por categoría. Actualizado: 2026-08-17
 >
 > **Nota de consolidación:** En agosto 2026 se redujo el set de skills de 96 a 60 activas, adoptando las 24 skills de ingeniería de `addyosmani/agent-skills` como base y fusionando en ellas las funcionalidades de skills propias redundantes. Las skills redundantes fueron eliminadas (recuperables desde el historial de git, commit `ba12459`).
+>
+> **Actualización 2026-08-17:** alineado con el estado real (63 skills). Se documentaron `a11y-at-validation` y `technical-book-processor` (existentes pero no listadas). Se movieron los checklists sueltos de `skills/references/` a `docs/checklists/` y se eliminaron los directorios zombies `architecture-designer` y `pre-deploy-qa` (vacíos).
 
 ## Ingeniería de Desarrollo (Base Addy Osmani + Fusiones)
 
@@ -35,6 +37,7 @@
 | Skill | Descripción |
 |---|---|
 | [browser-testing-with-devtools](skills/browser-testing-with-devtools/) | Chrome DevTools MCP: DOM, console, network, performance en vivo |
+| [a11y-at-validation](skills/a11y-at-validation/) | Cuándo la validación manual de accesibilidad es OBLIGATORIA (no opcional) en OSS, y cómo ejecutarla y documentarla. Basado en casos reales (radix-ui #4109/#4110) |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery/) ⭐ | Triage de 5 pasos: reproduce, localize, reduce, fix, guard + logging forense + failure patterns. Fusiona: debug-agent, debug-investigation, failure-memory |
 
 ### Review
@@ -119,6 +122,7 @@
 | [image-generation](skills/image-generation/) | Genera imágenes para juegos, web, mockups y proyectos creativos |
 | [curriculum-builder](skills/curriculum-builder/) | Scaffold para tutores adaptativos con IA |
 | [learning-tracker](skills/learning-tracker/) | Estudia cualquier tema en niveles gamificados (nivel → subnivel → topic), documentando en 3 capas de artifacts: plan maestro, por nivel, registro de progreso |
+| [technical-book-processor](skills/technical-book-processor/) | Procesa libros técnicos capítulo por capítulo: extrae learnings, formaliza ADRs, implementa ejercicios en un proyecto acompañante y commitea atómicamente. Deja trail público de aprendizaje (portfolio) |
 
 ## Vida Diaria y Herramientas
 
@@ -140,4 +144,4 @@
 
 **Además (2026-08-06):** `adhd-daily-planner` se fusionó dentro de `adhd-assistant` (energy windows, transition buffers, dopamine sequencing, shutdown ritual, recovery protocol). Recuperable desde git si hiciera falta.
 
-**Totales activas:** 60 skills
+**Totales activas:** 63 skills

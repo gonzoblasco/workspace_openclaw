@@ -1,4 +1,4 @@
-# CONTRIBUTING.md — Open Source Contribution Guide
+# CONTRIBUTING.md - Open Source Contribution Guide
 
 Estrategia y reglas para contribuir a proyectos open source.
 
@@ -6,7 +6,7 @@ Estrategia y reglas para contribuir a proyectos open source.
 
 ## Filosofía
 
-- No contribuir por contribuir. Buscar proyectos donde Gonzo ya usa o conoce el dominio — eso da velocidad y calidad.
+- No contribuir por contribuir. Buscar proyectos donde Gonzo ya usa o conoce el dominio - eso da velocidad y calidad.
 - PRs chicos, bien hechos, semánticos, con tests. Mejor 3 PRs sólidos que 10 PRs de typo.
 - En inglés siempre que el repo sea internacional.
 - Commits semánticos (`feat`, `fix`, `test`, `docs`, `refactor`).
@@ -31,7 +31,7 @@ Estrategia y reglas para contribuir a proyectos open source.
 > Quiero trabajar como contributor en un proyecto open source. Te paso el contexto:
 >
 > - **Repo:** github.com/[org]/[repo]
-> - **Issue:** #[n] — [título del issue]
+> - **Issue:** #[n] - [título del issue]
 > - **Fork:** github.com/gonzoblasco/[repo] (forkear si no existe)
 > - **Clonar en:** `projects/[repo]`
 >
@@ -52,21 +52,21 @@ Cada repo donde contribuimos tiene su propio `HANDOFF.md` en `projects/[repo]/HA
 
 ## Criterios para elegir nuevos repos
 
-1. **Gonzo ya usa el proyecto** — conoce el dominio, no arranca de cero
-2. **Repo activo** — maintainers que responden, issues actualizados en los últimos 30 días
-3. **Issues alcanzables** — `good first issue`, `help wanted`, o bugs/enhancement sin assignee
+1. **Gonzo ya usa el proyecto** - conoce el dominio, no arranca de cero
+2. **Repo activo** - maintainers que responden, issues actualizados en los últimos 30 días
+3. **Issues alcanzables** - `good first issue`, `help wanted`, o bugs/enhancement sin assignee
 4. **Categorías donde Gonzo es fuerte:** React, Next.js, TypeScript, Supabase, tooling/scaffolding, accesibilidad, AI SDKs
-5. **Tamaño del repo** — no contribuir a React core de entrada; proyectos medianos donde un PR se nota
-6. **Valor de visibilidad** — ¿el repo lo miran recruiters/empresas del ecosistema donde quiere trabajar?
+5. **Tamaño del repo** - no contribuir a React core de entrada; proyectos medianos donde un PR se nota
+6. **Valor de visibilidad** - ¿el repo lo miran recruiters/empresas del ecosistema donde quiere trabajar?
 
 ## Tracking
 
 El estado detallado de cada contribución (PR registry, clasificación de repos, plan de ataque) está en [`docs/OSS-TRACKER.md`](./docs/OSS-TRACKER.md).
 
 Por repo:
-- `projects/[repo]/HANDOFF.md` — estado detallado por repo
-- `memory/YYYY-MM-DD.md` — diario de cada sesión
-- `MEMORY.md` — contexto de largo plazo
+- `projects/[repo]/HANDOFF.md` - estado detallado por repo
+- `memory/YYYY-MM-DD.md` - diario de cada sesión
+- `MEMORY.md` - contexto de largo plazo
 
 ## Sesiones por proyecto
 

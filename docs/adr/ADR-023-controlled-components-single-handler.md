@@ -1,9 +1,9 @@
-# ADR-023 — Patrón de Controlled Components con Single Change Handler
+# ADR-023 - Patrón de Controlled Components con Single Change Handler
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 5 (Understanding and implementing forms)
-**Scope:** Global — aplica a cualquier proyecto React con formularios
+**Source:** React 18 Design Patterns - Chapter 5 (Understanding and implementing forms)
+**Scope:** Global - aplica a cualquier proyecto React con formularios
 
 ## Context
 
@@ -81,6 +81,6 @@ const MyForm = () => {
 
 ## Referencias
 
-- React docs — Controlled inputs: https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable
+- React docs - Controlled inputs: https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable
 - React Hook Form: https://react-hook-form.com/
 - React 18 Automatic Batching: https://react.dev/blog/2022/03/29/react-v18#new-feature-automatic-batching

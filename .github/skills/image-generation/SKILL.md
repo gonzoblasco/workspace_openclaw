@@ -33,9 +33,9 @@ Generate images for any project: game sprites, web assets, UI mockups, placehold
 
 Prefer the provider with confirmed working credentials and quota:
 
-1. **OpenAI Images API** — `gpt-image-1` / `dall-e-3`. Requires `OPENAI_API_KEY`.
-2. **Google Gemini / Imagen** — native image generation via `generateContent`. Requires `GEMINI_API_KEY` with billing/cuota.
-3. **MCP servers** — optional if user already has a compatible MCP configured (e.g. `@ideepakrajput/gemini-image-generator-mcp`).
+1. **OpenAI Images API** - `gpt-image-1` / `dall-e-3`. Requires `OPENAI_API_KEY`.
+2. **Google Gemini / Imagen** - native image generation via `generateContent`. Requires `GEMINI_API_KEY` with billing/cuota.
+3. **MCP servers** - optional if user already has a compatible MCP configured (e.g. `@ideepakrajput/gemini-image-generator-mcp`).
 
 Default to **OpenAI Images API** because it has the most reliable image generation quota and output quality.
 
@@ -50,11 +50,11 @@ Read them with `cat` inside `exec` calls; never paste keys into chat, skill code
 
 ## Workflow
 
-1. **Clarify intent** — size/aspect ratio, style, transparency, how it will be used.
-2. **Pick provider** — default OpenAI unless user asks for Gemini or an MCP.
-3. **Generate** — call the provider API and save image beside the project or in `/tmp`.
-4. **Deliver** — show the result as `MEDIA:<path>` or move it into the project assets folder.
-5. **Log** — record prompt, path, provider, and usage/cost when relevant.
+1. **Clarify intent** - size/aspect ratio, style, transparency, how it will be used.
+2. **Pick provider** - default OpenAI unless user asks for Gemini or an MCP.
+3. **Generate** - call the provider API and save image beside the project or in `/tmp`.
+4. **Deliver** - show the result as `MEDIA:<path>` or move it into the project assets folder.
+5. **Log** - record prompt, path, provider, and usage/cost when relevant.
 
 ## Helper script
 

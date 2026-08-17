@@ -11,8 +11,8 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-003 | [Server/Client file naming convention](./ADR-003-server-client-file-convention.md) | remix-book |
 | ADR-004 | [Next.js full-stack platform](./ADR-004-nextjs-fullstack-platform.md) | sportcars |
 | ADR-005 | [Supabase BaaS](./ADR-005-supabase-baas.md) | sportcars |
-| ADR-006 | [Capacidad Computacional — DeepSeek V4 Flash con Reasoning Maximum](./ADR-006.md) | kanam-workflow |
-| ADR-007 | [Patrones de Agente Autonomo — Goal-Oriented Architecture](./ADR-007.md) | kanam-workflow |
+| ADR-006 | [Capacidad Computacional - DeepSeek V4 Flash con Reasoning Maximum](./ADR-006.md) | kanam-workflow |
+| ADR-007 | [Patrones de Agente Autonomo - Goal-Oriented Architecture](./ADR-007.md) | kanam-workflow |
 | ADR-008 | [Replace Jest with Vitest](./ADR-008-vitest-over-jest.md) | testing-react-library |
 | ADR-009 | [TypeScript for test files](./ADR-009-typescript-for-tests.md) | testing-react-library |
 | ADR-010 | [Prefer screen queries over render destructuring](./ADR-010-screen-queries-over-destructuring.md) | testing-react-library |

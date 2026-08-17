@@ -1,4 +1,4 @@
-# ADR-008 — Replace Jest with Vitest
+# ADR-008 - Replace Jest with Vitest
 
 **Status:** Accepted  
 **Date:** 2026-08-05  
@@ -8,7 +8,7 @@
 - All Jest-specific imports (`@jest/globals`) replaced with Vitest globals
 - jest-dom setup works identically (`import '@testing-library/jest-dom/vitest'`)
 - Test files use `.test.tsx` extension, Vitest auto-discovers them
-- No jsdom configuration needed — Vitest handles it via `environment: 'jsdom'`
+- No jsdom configuration needed - Vitest handles it via `environment: 'jsdom'`
 - Migration path: Vitest supports Jest globals out of the box, so test code is nearly identical
 - CI pipelines benefit from faster startup (Vitest starts in ~200ms vs Jest's ~2s)
 

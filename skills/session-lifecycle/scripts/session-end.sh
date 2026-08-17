@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# session-end.sh — Generate HANDOFF and close session
+# session-end.sh - Generate HANDOFF and close session
 # Usage: ./session-end.sh --project "<name>" --summary "<summary>"
 
 set -euo pipefail
@@ -30,7 +30,7 @@ FILES=$(git diff --name-only 2>/dev/null | head -10 || echo "none")
 
 # Generate HANDOFF
 cat > "$HANDOFF_DIR/HANDOFF.md" << HANDOFF
-# HANDOFF — $PROJECT
+# HANDOFF - $PROJECT
 
 ## Session Context
 - **Date:** $DATE
@@ -62,7 +62,7 @@ SESSION_LOG="$MEMORY_DIR/$(date +%Y-%m-%d).md"
 
 cat >> "$SESSION_LOG" << LOG
 
-## Session End — $PROJECT
+## Session End - $PROJECT
 **End:** $DATE
 **Summary:** $SUMMARY
 **Branch:** $BRANCH

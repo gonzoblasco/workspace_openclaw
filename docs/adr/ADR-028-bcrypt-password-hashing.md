@@ -1,9 +1,9 @@
-# ADR-028 — bcrypt para Password Hashing (No SHA1)
+# ADR-028 - bcrypt para Password Hashing (No SHA1)
 
 **Status:** Accepted
 **Date:** 2026-08-05
-**Source:** React 18 Design Patterns — Chapter 13 (Authentication functions)
-**Scope:** Global — aplica a cualquier proyecto con autenticacion
+**Source:** React 18 Design Patterns - Chapter 13 (Authentication functions)
+**Scope:** Global - aplica a cualquier proyecto con autenticacion
 
 ## Context
 
@@ -83,7 +83,7 @@ export const users = pgTable('users', {
 
 ## Referencias
 
-- OWASP — Password Storage Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+- OWASP - Password Storage Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 - bcrypt: https://www.npmjs.com/package/bcrypt
 - bcryptjs (alternativa JS pura): https://www.npmjs.com/package/bcryptjs
 - Why you should use bcrypt: https://danboterhoven.medium.com/why-you-should-use-bcrypt-to-hash-passwords-af330100b861
