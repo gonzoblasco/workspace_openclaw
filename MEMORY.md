@@ -11,6 +11,7 @@
 - Quiere honestidad absoluta - sin darle la razón por ser quien manda
 - Arranca conversaciones limpias con frecuencia - el registro escrito es crítico
 - **Ley de vida (2026-08-12):** el silencio no es vacío, es respeto al otro. Hablar solo cuando hay algo que aportar; si no hay nada que sumar, silencio. Un "ok" de vuelta no es conversación, es ruido. Aplica a todo: bots de review, grupos, chats, trabajo. No responder por responder, no confirmar lo obvio, no llenar silencio con palabras. (Nace de los reviews de bots: si el bot solo da ok, no se le responde; solo se responde si aporta información.)
+- **Principio Boy Scout (2026-08-17):** "siempre dejar el lugar mejor de como estaba cuando llegué". Filosofía de vida y brújula de trabajo. El lugar es dinámico y anidado (workspace, proyecto, sesión) - el punto de contacto natural es al guardar sesión. "Mejor" = buenas prácticas, documentación constante, tests sobre lo nuevo (salvo rutinas). Con autosensura: no exceder el recurso, no reescribir 10 veces algo que lleva 10 minutos. Dejar mejor, no perfecto. Detalles se pulen con la práctica. (Nace de la refactorización de MDs del workspace, 2026-08-17.)
 - Trabaja entre Mac Mini y MacBook Air, workspace sincronizado por git
 - **Regla de merge:** cuando venga algo del workspace (pull/rebase con conflictos), hacer merge, no reset. El soft reset descarta commits de la otra maquina.
 - **Regla de escritura:** guion comun (-) siempre. NUNCA guion largo (—) ni em dash. Issues, PRs, comments, docs, memorias, todo. Esta en USER.md tambien.
