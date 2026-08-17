@@ -23,3 +23,15 @@ FINDINGS:
 LESSON: Nombres como "orphan" son cargados; hay que validar la condición real (`chapterId === ''` vs `beats.length === 0`) antes de renderizar UI. Un self-review inmediatamente después de mergear atrapa estos errores de modelado.
 
 BIASES DETECTED: Reutilicé el nombre "orphan" sin verificar la condición exacta, asumiendo que coincidía con el caso post-`replace_outline`.
+
+## 2026-08-16 — Beats desde manuscrito del autor + ids de beats (v0.12.1)
+
+CONTEXT: Gonzo pidió poder generar beats desde su manuscrito escrito a mano, idealmente vía chat: el co-writer lee el texto y extrae beats respetando las ideas (sin imponer orden/ritmo).
+
+REFLECTION: El chat ya tenía `add_beat`/`update_beat` y veía el manuscrito, pero truncado a 500 chars por escena, y el contexto de beats NO incluía ids de beats. El smoke test con Ollama reveló el bug: el modelo usó `beatId: "s1"` (id de la escena) porque el contexto mostraba ids de escena pero no de beats. Al exponer `(id: b1, ...)` en el contexto de beats, las acciones por beatId apuntan a beats reales.
+
+LESSON: Para que el modelo genere acciones con ids correctos, TODOS los ids referenciables (escenas, beats, personajes, capítulos) deben estar visibles en el contexto con un formato consistente. Un smoke test end-to-end con el modelo real es indispensable para detectar esto — los tests unitarios del parser no ven el output del modelo.
+
+BIASES DETECTED: Asumí que el contexto ya exponía los ids de beats porque exponía los de escenas. La falta de smoke test del flujo completo permitió que el bug pasara.
+
+VALUE: El smoke test con Ollama local (deepseek-v4-flash) validó que el agente extrae beats fieles al texto del autor, reestructurando sin inventar contenido.
