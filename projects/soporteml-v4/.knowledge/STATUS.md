@@ -10,8 +10,21 @@
 - [x] **Decidir la identidad visual de V4** - dirección híbrido oscuro + color por categoría (ADR-001)
 - [x] Mockup de identidad validado por Gonzo (`mockups/identidad-v4.html`)
 - [x] Iconografía Lucide incorporada al mockup (ADR-030, workspace)
+- [x] **Verificar que el backend de v3 funciona** - verificado de punta a punta (`BACKEND-VERIFICADO.md`)
+- [ ] **Agregar tests del API** (el backend de v3 no tiene cobertura - hallazgo de la verificación)
 - [ ] Decidir el alcance del primer slice
 - [ ] Definir el pipeline A/B para este proyecto
+
+## Backend verificado (2026-08-17)
+
+El backend de v3 (que se conserva) está sano y funciona de punta a punta:
+- ✅ Typecheck pasa (api + web)
+- ✅ Servidor arranca en `localhost:3001`
+- ✅ Endpoints probados: health, dev setup, sync (6 preguntas mock), questions, products, meli/status, ai/suggest
+- ✅ **Mocks verificados a fondo** (pregunta de Gonzo): categorización mock 6/6 correcta, multi-tenant aísla empresas, publish marca como respondida, sync idempotente (no duplica)
+- ⚠️ **Hallazgo:** el API no tiene tests (`pnpm test` → "No test files found"). Agregar tests del API es prioridad antes de construir el frontend encima.
+
+Detalle completo: `BACKEND-VERIFICADO.md`
 
 ## Identidad visual decidida (2026-08-17)
 
