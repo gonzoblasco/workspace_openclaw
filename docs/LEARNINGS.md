@@ -373,3 +373,17 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 **Leccion:** el self-review del autor falla sistematicamente porque el autor asume que su codigo es correcto. Un revisor con ojos frescos detecta los supuestos rotos. El cross-review multi-ronda (cada agente revisa al otro + rondas de correccion) es mas fuerte que una sola pasada. Formalizado en la skill `agent-orchestration-pipeline`. Valor: el codigo mergeado a main pasa por 2+ rondas antes de publicarse.
 
 **Advertencia:** discrepancia de versiones dev/CI (Node 20 vs 22) es fuente clasica de "pasa local, falla en CI". Alinear con `.nvmrc` + CI.
+
+## 2026-08-17 — Verificar el estado real de los PRs ANTES de proponer acciones
+
+**Context:** Durante la revisión de PRs OSS, propuse cerrar mi PR #4109 (radix Select) a favor del #4112 de waterWang. Gonzo me corrigió: ya había dejado un review en #4112 dando visto bueno al enfoque con 4 mejoras. No lo había leído.
+
+**Lesson:** al revisar un set de PRs/discusiones donde ya participé, la fuente de verdad es el estado ACTUAL de cada PR (reviews, comentarios, últimas acciones), no mi memoria de lo que hice o el resumen que armé antes. Asumí que #4112 era "un PR nuevo que criticaba el mío" sin leer que ya lo había reviewado. Verificar antes de proponer destruir/cerrar trabajo.
+
+**Proceso que evita esto:** antes de recomendar cerrar/mergear/actualizar un PR, hacer `gh pr view <n> --repo <r> --json reviews,comments` y leer el thread completo. En particular, buscar MIS reviews previos — son la señal más fuerte de lo que ya decidí.
+
+**Self-reflection:**
+- CONTEXT: revisión de PRs OSS, propuse acción incorrecta
+- REFLECTION: no leí mi propio review en #4112 antes de proponer cerrar #4109
+- LESSON: verificar el estado real (reviews/comentarios) de cada PR antes de proponer acciones; mis reviews previos son señal de decisiones ya tomadas
+- BIASES DETECTED: recency bias (el #4112 era "reciente" en mi lectura y lo traté como pendiente) + falta de verificación (no chequé el thread completo antes de opinar)
