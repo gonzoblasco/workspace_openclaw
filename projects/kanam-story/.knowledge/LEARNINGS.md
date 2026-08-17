@@ -76,3 +76,17 @@ REFLECTION:
 VALUE: Los smoke tests de roles con Ollama real (deepseek-v4-flash:cloud) confirmaron que cada rol dirige su enfoque: co-writer analiza premisa, plot-doctor propone 3 acciones de estructura, consistency-checker audita coherencia. Validar el comportamiento del LLM con el modelo real es la única forma de confirmar que el prompt cumple su función.
 
 BIASES DETECTED: Sunk cost en el loop del grep (seguí reintentando lo mismo); anchoring en la API de Serwist (asumí que Turbopack usa la misma API que webpack); confirmation bias al creer que Biome bastaba (CI corre ESLint).
+
+## 2026-08-17 — OpenSpec: specs + auditorías de 9 features
+
+CONTEXT: Inicialicé OpenSpec en Kanam Story, escribí 9 specs de casos de uso core (47 requirements) y audité el comportamiento real del código contra cada spec. Encontré deuda silenciosa que los 382 tests verdes no detectaban.
+
+REFLECTION:
+1. **Los specs son el contrato para auditar, no solo documentación.** Escribir el spec del co-writer ("el contexto incluye los IDs de personajes y entidades") me obligó a verificar el código real y descubrí que los IDs de personajes/mundo NO estaban en el contexto - el modelo tenía que adivinarlos. Los tests verdes no lo detectan porque usan IDs hardcodeados que el modelo "conoce". Lección: el spec es la herramienta para encontrar la brecha entre intención y realidad.
+2. **El editor tenía un contexto empobrecido vs el chat.** `buildContext` (editor) era una versión reducida de `buildAgentContext` (chat): sin IDs, sin filtro inContext para personajes, sin brújula, sin continuidad. El chat fue el foco del desarrollo (es el corazón) y el editor quedó atrás. Lección: cuando hay dos funciones que construyen contexto similar, unificarlas - la divergencia es deuda silenciosa.
+3. **El ROADMAP puede documentar features que ya no existen.** El ROADMAP decía que los filtros de POV/tense del outline estaban implementados (Slice 10), pero fueron **removidos deliberadamente** en un refactor posterior (`4349401`) porque el modelo de filtrado era defectuoso. El spec documentaba una feature fantasma. Lección: verificar el estado real del código, no confiar en el ROADMAP/STATUS como fuente de verdad.
+4. **El ciclo spec → auditoría → fix → verificación es valioso.** Destapó 4 hallazgos en el co-writer (todos aplicados), 2 menores en editor/brújula (aplicados), y 1 feature fantasma en el outline. El valor real: los specs son el contrato, la auditoría verifica el cumplimiento, y el fix cierra el ciclo.
+
+VALUE: El ciclo OpenSpec demostró su valor destapando deuda real que los tests verdes no veían. La auditoría del co-writer encontró que el editor generaba texto sin la brújula ni las notas de continuidad - el agente podía desviarse del "qué prometiste contar" justo donde más importa.
+
+BIASES DETECTED: Confirmation bias al confiar en el ROADMAP (asumí que los filtros de POV/tense existían porque el ROADMAP lo decía); anchoring en el chat (asumí que el editor tenía el mismo contexto porque el chat lo tenía).
