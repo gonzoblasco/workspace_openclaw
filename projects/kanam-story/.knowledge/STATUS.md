@@ -16,6 +16,7 @@
 - [x] **Fixes de la auditoría del co-writer aplicados** (commit `f618a38`): IDs de personajes/mundo, filtro inContext consistente, brújula en editor, continuidad en editor. 382 tests.
 - [x] **Auditorías de los 5 specs restantes** (2026-08-17): editor, outline, biblia, brújula, persistencia - ver `openspec/audits/`.
 - [x] **Fixes menores aplicados** (commit `9df57e3`): contador del editor reusa `countWords`, brújula commitea en onChange.
+- [x] **Specs + auditorías de Personajes, Mundo y Brainstorm** (2026-08-17): todos cumplidos, sin hallazgos.
 - [ ] **Filtros de outline por POV/tense** - pendiente de rediseño (removidos en `4349401`, el modelo era defectuoso).
 
 ## Fase A - Cerrar el producto local (2026-08-17)

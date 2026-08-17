@@ -65,7 +65,7 @@ Sesión de cierre del bloque post-v0.16.1 + release v0.17.0 + smoke tests de acc
 2. **Generalizar el BYOK** a cualquier endpoint OpenAI-compatible (preparación para SaaS).
 3. **Futuro:** backend + auth + billing (Supabase), sync IndexedDB ↔ nube, activar el feature flag del co-writer.
 
-## Auditorías de OpenSpec (2026-08-17) - TODAS COMPLETAS, fixes aplicados
+## Auditorías de OpenSpec (2026-08-17) - 9 specs, TODAS COMPLETAS, fixes aplicados
 
 > Cada auditoría en `openspec/audits/`. Resumen:
 
@@ -77,6 +77,11 @@ Sesión de cierre del bloque post-v0.16.1 + release v0.17.0 + smoke tests de acc
 | biblia-viva | ✅ Todos cumplidos | sin hallazgos |
 | brújula-narrativa | ✅ Todos cumplidos | 1 menor APLICADO (`9df57e3`) |
 | proyecto-persistencia | ✅ Todos cumplidos | sin hallazgos |
+| personajes | ✅ Todos cumplidos | sin hallazgos |
+| mundo | ✅ Todos cumplidos | sin hallazgos |
+| brainstorm | ✅ Todos cumplidos | sin hallazgos |
+
+**9 specs, 47 requirements.** Las features de producto core están todas auditadas.
 
 **Hallazgo principal:** los filtros de POV/tense del outline fueron removidos deliberadamente en el
 refactor `4349401` (el modelo de filtrado era defectuoso). Spec actualizado a "pendiente de rediseño".
