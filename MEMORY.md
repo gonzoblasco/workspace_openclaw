@@ -176,6 +176,12 @@ Las 58 skills redundantes viven en `skills/archive/` (con README con mapa comple
 - **Lección (conflicto por commit arrastrado):** mi branch de #6385 arrastraba el commit de #6222 (ya resuelto en upstream por #6221). Al rebasear, ese commit ajeno conflictuaba. Fix: crear rama limpia desde `upstream/main` y cherry-pick SOLO mis commits (nunca `git rebase` a ciegas si el fork main está desactualizado; siempre fetch del upstream real y dropear commits de otros PRs).
 - **Lección (#6222 vs #6385):** para fixes de seguridad acotados, el maintainer valora diff mínimo > pulido fino. Y antes de abrir PR, chequear si hay PRs competidores en el mismo issue (en #6236 no había, pero en #6220 sí había #6221).
 
+### TanStack/query (colaboración OSS - 2026-07)
+- Repo de TanStack Query (React Query). A11y/correctness en suspense + cache.
+- **PR #11036 (MERGED 2026-08-17 por TkDodo):** `fix(query-core): resolve suspense when query data is set programmatically` de AmariahAK, fix de #10924. Fui reviewer activo (3 reviews 15-16/7): señalé el floating promise en `Promise.race` (punto accionable principal), el edge case de `setQueryData(undefined)`, el leak del subscriber en unmount (acotado, aceptable para patch), y validé el fix `resolveEarly` + `.finally(() => unsubscribe())` + guard `hasListeners()` + 546/567 tests. **Mi review terminó con "This LGTM. Ready for maintainer review."** El PR se mergeó hoy. Commit `bef4bc7`. HITO: reviewer activo en PR mergeado de TanStack.
+- **PR #10994 (de TkDodo, descartado/cerrado):** enfoque estructural (updateThenable, 11 archivos) para el mismo #10924. Comparé ambos enfoques (15/7) señalando que #11036 era la vía más segura (Promise.race en fetchOptimistic, cero bundle, sin romper adapters). TkDodo confirmó el 17/8: "we're gonna go with #11036 instead" - eligieron la vía que mi análisis señaló como más segura. URL: https://github.com/TanStack/query/pull/10994
+- **Lección:** mi análisis comparativo de dos PRs competidores (trade-offs de arquitectura) posicionó la decisión del maintainer. Revisar un PR ajeno con observaciones accionables concretas (floating promise, edge case) aporta tanto o más que un PR propio. El cierre cortés (reconocer la decisión, validar el enfoque elegido) refuerza la relación con el maintainer.
+
 ### kanam-skills (nuevo 2026-08-06)
 - Repo público + web de agent skills. https://github.com/gonzoblasco/kanam-skills
 - 59 skills (engineering SDLC + vida/creatividad/infraestructura) en formato Agent Skills universal
