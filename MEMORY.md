@@ -26,6 +26,7 @@
 - Sesión de OpenClaw por proyecto. No mezclar.
 - Todo se registra: MEMORY.md, memory/YYYY-MM-DD.md, HANDOFF.md, CHANGELOG.md
 - Los aprendizajes detallados van en `docs/LEARNINGS.md`, no acá.
+- **Iconos (ADR-030, 2026-08-17):** Lucide (`lucide-react`) es la librería de iconos base en todos los proyectos. Nunca emojis como iconografía de producto. Iconos decorativos con `aria-hidden`, botones de solo icono con `aria-label`.
 
 ## Proyecto - Kanam Story (v0.16.1)
 
@@ -218,7 +219,8 @@ Las 58 skills redundantes viven en `skills/archive/` (con README con mapa comple
 - CRM multi-tenant para vendedores de Mercado Libre con IA. EL-1 a EL-5 completos.
 - **v1** (`soporteml`): versión de referencia. Design system estable.
 - **v2** (`soporteml-v2`): **EXPERIMENTO DESCARTADO. NO usar de referencia.**
-- **v3** (`soporteml-v3`): repo nuevo, en arranque (2026-08-07). Se construye sobre v1 con el design system aclarado desde el día uno. Objetivo: versión definitiva.
+- **v3** (`soporteml-v3`): repo nuevo, en arranque (2026-08-07). Se construye sobre v1 con el design system aclarado desde el día uno. Objetivo: versión definitiva. **Backend sólido (OAuth MeLi real, sync, IA, billing mock) + schema 20+ tablas + token real de producción MeLi - activo valioso que se conserva.**
+- **v4** (`soporteml-v4`, 2026-08-17): **REINICIO con estándar superior.** Gonzo criticó v3: features limitadas en la UI (solo 3 vistas genéricas) y UI/UX sosa (template shadcn básico). V4 conserva el backend de v3 y reconstruye el frontend con diseño avanzado + desbloquea features que el schema ya modela (KB, autopilot, SLA, plantillas, clientes, métricas). Identidad visual: híbrido oscuro + color por categoría (ADR-001). Mockup validado: `projects/soporteml-v4/mockups/identidad-v4.html`.
 - **Docs de v3 en `.knowledge/`:** `UI-DESIGN-SKILL.md` (estándar de implementación, específico de SoporteML), `DESIGN-GUIDE.md` (identidad desde v1), `DESIGN-GUIDE-LOVABLE.md` (guía oficial de Lovable = fuente de verdad visual), `prompts/` (guía de diseño + schemas BD).
 - **Pendiente v3:** pedir schemas de BD + edge functions a Lovable (prompt listo), reconciliar tokens nuevos de la guía de Lovable (`--primary-muted`, `--primary-strong`, `--informative`, `--surface-active`), scaffold, implementación.
 
