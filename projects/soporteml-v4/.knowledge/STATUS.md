@@ -16,18 +16,19 @@
 - [x] **Arrancar la UI** (el corazón que le da vida al cuerpo) - layout + bandeja reconstruidos con identidad V4
 - [x] **Slice 1 funcional: Plantillas de respuesta** - CRUD completo (repo, API, UI) + tests
 - [x] **Plantillas conectadas al flujo de responder** - insertar plantilla en la respuesta desde la bandeja
+- [x] **KB (RAG) - gestión de artículos** - CRUD de artículos con chunking (repo, API, UI) + tests
 - [ ] Definir el pipeline A/B para este proyecto
 
-## Slice 1 funcional: Plantillas (2026-08-17)
+## Slice 2: Knowledge Base - gestión de artículos (2026-08-17)
 
-Primera feature funcional desbloqueada (el schema ya la modelaba):
-- ✅ `packages/db/src/repo/templates.ts` - CRUD de plantillas (create, list, getById, update, delete)
-- ✅ Endpoints API: GET/POST /templates, PUT/DELETE /templates/:id (con multi-tenant)
-- ✅ UI: vista de Plantillas en el sidebar (crear, listar, editar, eliminar)
-- ✅ **Plantillas conectadas al flujo de responder**: cada card de la bandeja tiene botón "Plantilla" que inserta el contenido en el input de respuesta
-- ✅ 2 tests nuevos (16 total): CRUD completo + 404 multi-tenant
-- ✅ Verificado en browser: crear plantilla + insertarla en una respuesta de envío
-- Commits `d7ab261` (CRUD) + `3d3be36` (conexión al flujo) en soporteml-v3
+Segunda feature funcional desbloqueada (el schema ya la modelaba):
+- ✅ `packages/db/src/repo/kb.ts` - CRUD de artículos + chunking (divide el contenido en fragmentos para la futura búsqueda semántica)
+- ✅ Endpoints API: GET/POST /kb/articles, PUT/DELETE /kb/articles/:id, GET /kb/articles/:id/chunks (con multi-tenant)
+- ✅ UI: vista de Base de conocimiento en el sidebar (crear, listar, editar, eliminar artículos)
+- ✅ 2 tests nuevos (18 total): CRUD completo + 404 multi-tenant
+- ✅ Verificado en browser: crear artículo "Política de envíos" funciona, aparece con estado ready
+- **Pendiente:** búsqueda semántica (embeddings) para que la IA use la KB como contexto - siguiente paso
+- Commit `86b0834` en soporteml-v3
 
 ## UI V4 arrancada (2026-08-17)
 
