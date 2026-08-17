@@ -29,15 +29,13 @@
 - Los aprendizajes detallados van en `docs/LEARNINGS.md`, no acá.
 - **Iconos (ADR-030, 2026-08-17):** Lucide (`lucide-react`) es la librería de iconos base en todos los proyectos. Nunca emojis como iconografía de producto. Iconos decorativos con `aria-hidden`, botones de solo icono con `aria-label`.
 
-## Proyecto - Kanam Story (v0.16.1)
+## Proyecto - Kanam Story (v0.17.0)
 
-- **Estado real (2026-08-17):** el proyecto está en **v0.16.1**, NO en la Fase 4. La Fase 4 (v0.9.0, rediseño de navegación accesible) se completó y publicó el 2026-08-15. Después hubo **7 releases post-Fase 4** (v0.11.0 → v0.16.0): outline global asistido por chat (`replace_outline`), panel de escenas huérfanas, `update_outline`, beats desde el manuscrito, sidebar de co-writer, enriquecer perfiles, export solo historia, notas de continuidad, gestión de proyectos. 366 tests.
+- **Estado real (2026-08-17):** el proyecto está en **v0.17.0** (Fase A cerrada). NO será open source - se trabaja en local hasta el salto a la nube. Roadmap a la nube en `projects/kanam-story/.knowledge/ROADMAP-NUBE.md` (DB → Supabase, middleware, login, después Vercel). Planificado, no ejecutado aún.
+- **Fase A (v0.17.0, 2026-08-17):** roles especializados del co-writer (Plot Doctor, Consistency Checker), PWA (Serwist), mobile responsive (drawer sidebar + topbar compacto), modales accesibles (ConfirmDialog/PromptDialog reemplazan window.prompt/confirm), export polish (portada con POV/estilo + word count), WelcomeScreen onboarding, timeouts en Ollama. 382 tests.
+- **OpenSpec inicializado (2026-08-17):** 9 specs (47 requirements) + 9 auditorías contra el comportamiento real en `openspec/audits/`. Hallazgos aplicados: co-writer con contexto unificado (IDs personajes/mundo, brújula, continuidad), contador reusa countWords, textareas commitean en onChange. Outline: filtros POV/tense removidos deliberadamente (modelo defectuoso), spec en "pendiente de rediseño".
 - **Stack:** Next.js 16, TipTap 3, IndexedDB, Ollama (deepseek-v4-flash:cloud). UI/prompts en español, commits en inglés.
-- **Pendientes reales (de la última sesión 2026-08-16/17):**
-  1. Decidir próximo bloque de features (U5+ de co-writer, polish de export, mobile/PWA, agentes especializados: Plot Doctor, Consistency Checker).
-  2. Validación AT manual definitiva con VoiceOver/NVDA (live region `role="log"` del chat + radio group del onboarding) - los tests verdes no cubren el timing del anuncio.
-  3. Smoke tests con Ollama para flujos nuevos si hacen falta.
-- **Hecho hoy (2026-08-17):** validación visual del sidebar de co-writer y notas de continuidad con historia real (OK); fix a11y `--sl-danger` en tema claro (2.78:1 → 5.22:1, commit `58a6706`); habilité `browser.ssrfPolicy.allowedHostnames: ["localhost", "127.0.0.1"]` para validar el dev server con browser.
+- **Pendientes:** agentes especializados ya hechos; restan smoke tests de roles nuevos si hacen falta, y el salto a la nube (roadmap planificado).
 - **Historial Fase 4 (v0.9.0):** rediseño de navegación accesible (secciones apiladas, scrollspy, acordeón, onboarding por plantillas, chat sticky, inserción contextual). Plan completo en `projects/kanam-story/.knowledge/PLAN-FASE-4.md`. Pipeline en cadena U1-U8 con cross-review de a11y integrada (validado en Fase 3).
 
 ## Arquitectura de Agentes - Goal-Oriented
