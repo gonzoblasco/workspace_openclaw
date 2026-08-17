@@ -38,4 +38,4 @@
 
 ---
 
-**Último log:** 2026-08-17 — Inicio del proyecto. Decisiones A/A/único/Kanam Forge tomadas. Creando estructura.
+**Último log:** 2026-08-17 — Fase 0 completa. Proyecto creado con doble git. Fork a gonzoblasco/kanam-forge (upstream freestyle-sh/Adorable). Build OK tras fix TS en attachment.tsx. Commit proyecto ecfb84b, workspace 3400508f. Siguiente: Fase 1 (desacoplar Freestyle → Docker local).
