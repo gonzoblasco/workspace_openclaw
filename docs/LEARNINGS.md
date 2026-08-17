@@ -409,3 +409,21 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: perdí tiempo probando downgrade/upgrade del stack completo antes de verificar el lockfile del commit inicial que funcionaba
 - LESSON: ante un problema de compatibilidad, primero mirar el lockfile del estado que funcionaba (git show) para obtener las versiones exactas, en vez de probar rangos de versiones a ciegas
 - BIASES DETECTED: sunk cost (insistí en bajar a v5 cuando ya se veía que rompía la UI) + falta de verificación temprana del lockfile original
+
+## 2026-08-17 - Tailwind 4 utilities silently not generating (Next 16 + Turbopack)
+
+**Context:** al aplicar la identidad visual "Diario íntimo" a Kanam Mind (Next.js 16 + Turbopack + Tailwind 4), la página aparecía **sin estilos**: el body tenía el fondo crema y la tipografía serif, pero los componentes (botones, tarjetas) seguían con los colores default grises. El CSS compilado tenía el `@theme` con los tokens, pero **ninguna utilidad** (`bg-primary`, `flex`, etc.).
+
+**Root cause:** faltaba el plugin `@tailwindcss/postcss` + `postcss.config.mjs`. En Tailwind 4, el `@import "tailwindcss"` necesita el plugin PostCSS para procesar el CSS y generar las utilidades. Sin él, Turbopack compila el CSS crudo (variables y reglas manuales) pero **no genera las clases** de los componentes. El `tailwind.config.ts` con `theme.extend` vacío además interfería con el `@theme` del CSS.
+
+**Fix:**
+- Instalar `@tailwindcss/postcss` como devDependency.
+- Crear `postcss.config.mjs` con `plugins: { "@tailwindcss/postcss": {} }`.
+- Eliminar `tailwind.config.ts` (en Tailwind 4, el `@theme` en CSS es la fuente de verdad; el config JS es opcional y puede interferir).
+- Reiniciar el dev server con caché limpia (`rm -rf .next`).
+
+**Lesson — el síntoma de "CSS compila pero sin utilidades":**
+- Si el CSS compilado tiene las variables/`@theme` pero **no** las clases de los componentes (`bg-primary`, `flex`, etc.), el problema es que el pipeline de PostCSS no está procesando Tailwind. Verificar que `@tailwindcss/postcss` esté instalado y que exista `postcss.config.mjs`.
+- En Tailwind 4, `@theme` con valores directos (no `var()`) genera las utilidades. `@theme inline` con `var()` de referencia NO genera utilidades de color.
+- El `tailwind.config.ts` con `theme.extend` vacío puede interferir con el `@theme` del CSS en Tailwind 4 - si no se necesita, eliminarlo.
+- **Diagnóstico rápido:** `grep -o "\.bg-primary{[^}]*}" .next/**/*.css` - si no aparece, el pipeline de Tailwind no está generando utilidades.

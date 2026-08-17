@@ -120,6 +120,11 @@ Tras un rebase que reescribe el historial, `--force-with-lease` falla porque la 
 ### Cruce de ramas en PRs de astryx
 La rama de #4023 arrastraba el commit de #4022 (WCAG contrast) porque se creó desde esa base. Al rebasear para dropear los commits ajenos, el PR queda limpio (solo el fix del Selector). Verificar siempre que una rama de PR no contenga commits de otro PR.
 
+## Lecciones del 2026-08-17
+
+### Tailwind 4: utilidades que no se generan (Next 16 + Turbopack)
+Si el CSS compilado tiene las variables/`@theme` pero **no** las clases de los componentes (`bg-primary`, `flex`, etc.), el pipeline de PostCSS no está procesando Tailwind. Fix: instalar `@tailwindcss/postcss` + crear `postcss.config.mjs` con `plugins: { "@tailwindcss/postcss": {} }`. En Tailwind 4, `@theme` con valores directos genera utilidades; `@theme inline` con `var()` NO. El `tailwind.config.ts` con `theme.extend` vacío puede interferir - eliminarlo si no se necesita. Detalle en `docs/LEARNINGS.md`.
+
 ## Consolidación de Skills - 2026-08-06
 
 ### Set de skills reducido de 96 a 60 activas (58 archivadas, nada borrado)
