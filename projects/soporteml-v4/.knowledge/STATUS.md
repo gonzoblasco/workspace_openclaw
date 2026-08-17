@@ -17,18 +17,19 @@
 - [x] **Slice 1 funcional: Plantillas de respuesta** - CRUD completo (repo, API, UI) + tests
 - [x] **Plantillas conectadas al flujo de responder** - insertar plantilla en la respuesta desde la bandeja
 - [x] **KB (RAG) - gestión de artículos** - CRUD de artículos con chunking (repo, API, UI) + tests
+- [x] **KB (RAG) - búsqueda semántica** - embeddings + similitud coseno + contexto para la IA
 - [ ] Definir el pipeline A/B para este proyecto
 
-## Slice 2: Knowledge Base - gestión de artículos (2026-08-17)
+## Slice 3: KB - búsqueda semántica (RAG) (2026-08-17)
 
-Segunda feature funcional desbloqueada (el schema ya la modelaba):
-- ✅ `packages/db/src/repo/kb.ts` - CRUD de artículos + chunking (divide el contenido en fragmentos para la futura búsqueda semántica)
-- ✅ Endpoints API: GET/POST /kb/articles, PUT/DELETE /kb/articles/:id, GET /kb/articles/:id/chunks (con multi-tenant)
-- ✅ UI: vista de Base de conocimiento en el sidebar (crear, listar, editar, eliminar artículos)
-- ✅ 2 tests nuevos (18 total): CRUD completo + 404 multi-tenant
-- ✅ Verificado en browser: crear artículo "Política de envíos" funciona, aparece con estado ready
-- **Pendiente:** búsqueda semántica (embeddings) para que la IA use la KB como contexto - siguiente paso
-- Commit `86b0834` en soporteml-v3
+El corazón del RAG - la IA ahora usa la KB como contexto:
+- ✅ `AiService.embed()` - genera embeddings con Ollama (all-minilm, 384 dims)
+- ✅ `KbRepo` - guarda embeddings en chunks + `searchChunks` (similitud coseno) + `incrementChunkHit`
+- ✅ `KbService` - indexa chunks sin embedding + busca los más relevantes para una consulta
+- ✅ `/ai/suggest` usa la KB: busca los chunks relevantes y los pasa como contexto a la IA
+- ✅ Endpoint `/kb/index` para indexar embeddings
+- ✅ Verificado: "¿Cuánto tarda el envío a CABA?" encuentra el chunk de la política de envíos
+- Commit `2f872da` en soporteml-v3
 
 ## UI V4 arrancada (2026-08-17)
 
