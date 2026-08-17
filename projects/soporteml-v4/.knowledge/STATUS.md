@@ -13,8 +13,18 @@
 - [x] **Verificar que el backend de v3 funciona** - verificado de punta a punta (`BACKEND-VERIFICADO.md`)
 - [x] **Enriquecer el mock** - 13 preguntas (antes 6), 6 productos (antes 3), varias por producto, producto sin preguntas activas
 - [x] **Agregar tests del API** - 14 tests que cubren health, auth, sync, multi-tenant, publish, idempotencia, productos, IA, billing
+- [x] **Arrancar la UI** (el corazón que le da vida al cuerpo) - layout + bandeja reconstruidos con identidad V4
 - [ ] Definir el pipeline A/B para este proyecto
-- [ ] **Arrancar la UI** (el corazón que le da vida al cuerpo)
+
+## UI V4 arrancada (2026-08-17)
+
+El frontend de v3 se reconstruyó con la identidad V4 (híbrido oscuro + color por categoría):
+- ✅ `index.css` - tokens V4 (base oscura premium + acento amarillo MeLi + colores por categoría)
+- ✅ `AppSidebar` - logo con glow amarillo, navegación agrupada, item activo con barra lateral iluminada
+- ✅ `App.tsx` - stats por categoría, bandeja con barra lateral de color, cards con micro-interacciones, login premium
+- ✅ Verificado en browser: 13 preguntas con color por categoría, publicar respuesta funciona (badge cambia a Respondida, stats bajan)
+- ✅ Build de producción OK
+- Commit `a930cb9` en soporteml-v3
 
 ## Backend verificado (2026-08-17)
 
