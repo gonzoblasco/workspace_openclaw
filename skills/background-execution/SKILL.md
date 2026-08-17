@@ -169,6 +169,27 @@ process(action: kill, sessionId: "<id>")
 
 **Regla:** si un proceso lleva más del doble del tiempo esperado sin output nuevo, intervenir. No esperar a que se cuelgue definitivamente.
 
+### Anti-patrón: el bucle de polling de sesiones efímeras
+
+**Síntoma:** `process(action: poll, sessionId: "<id>")` devuelve `No session found for <id>` justo después de lanzar un `exec` en background.
+
+**Causa:** algunos `exec` en background usan sesiones efímeras que no quedan accesibles para `process poll`. El resultado real se obtiene leyendo el archivo de log del comando o esperando el completion wake, no consultando la sesión.
+
+**Anti-patrón a evitar:** cuando `process poll` dice `No session found`, NO encadenar `sleep N && ps -p <pid>` en bucle esperando que el proceso termine. Eso puede convertirse en un bucle infinito que quema contexto y tiempo real (pasó: ~25 min de polling para un build de 10s).
+
+**Correcto:**
+```
+# 1. Ejecutar con un timeout y yieldMs acotado, redirigiendo a un archivo de log
+exec(command: "npm run build > /tmp/build.log 2>&1; echo EXIT=$?; tail -6 /tmp/build.log", yieldMs: 60000)
+
+# 2. Si el tool devuelve la salida directamente, usarla. Si devuelve una sesión
+#    que luego no responde, releer el archivo de log con una sola llamada
+#    read/exec en vez de hacer poll loop.
+exec(command: "tail -20 /tmp/build.log")
+```
+
+**Regla de oro:** si `process poll` no encuentra la sesión, no insistas con sleep/ps. Relee el archivo de log del comando una sola vez. Si aún no está listo, deja que el completion wake avise y seguí con otra cosa.
+
 ### Patrón 8: Consolidación de Resultados Paralelos
 
 Después de lanzar N procesos en paralelo, consolidar resultados:
