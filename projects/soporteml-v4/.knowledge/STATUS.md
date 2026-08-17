@@ -21,7 +21,17 @@
 - [x] **Autopilot** - responde consultas automáticamente por categoría + umbral de confianza
 - [x] **Clientes (CRM)** - compradores con notas + tags + historial
 - [x] **Métricas** - dashboard de ventas/consultas (la última feature core del schema)
+- [x] **Validar el RAG con más artículos** - discrimina correctamente entre 4 categorías
 - [ ] Definir el pipeline A/B para este proyecto
+
+## Validación del RAG con más artículos (2026-08-17)
+
+Se crearon 4 artículos (envío, garantía, compatibilidad, stock) y se verificó que la búsqueda semántica discrimina correctamente:
+- ✅ "¿Cuánto tarda el envío a CABA?" → Política de envíos
+- ✅ "¿Qué cubre la garantía?" → Política de garantía
+- ✅ "¿El auricular es compatible con iPhone?" → Compatibilidad de dispositivos
+- ✅ "¿Tienen stock?" → Disponibilidad de stock
+- ⚠️ "¿Aceptan cuotas?" → devolvió garantía (no hay artículo de precios; minScore bajo 0.2 devuelve lo más cercano). Ajuste fino futuro: subir minScore o filtrar por similitud mínima.
 
 ## Slice 6: Métricas (2026-08-17)
 
