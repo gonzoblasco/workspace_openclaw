@@ -12,7 +12,9 @@
 - [x] **`project.md`** - visión, stack, dominio, estrategia de 3 públicos.
 - [x] **`config.yaml`** - contexto del proyecto + reglas para el CLI.
 - [x] **6 specs de casos de uso core** (34 requirements): co-writer (9), editor (6), outline-beats (6), proyecto-persistencia (5), biblia-viva (4), brújula-narrativa (4).
-- [ ] **Auditar el comportamiento real contra los specs** - pendiente. Cada spec tiene una sección "Notas de auditoría" con checklist.
+- [x] **Auditoría del co-writer realizada** (2026-08-17): 4 hallazgos - ver `openspec/audits/co-writer-2026-08-17.md`.
+- [ ] **Auditar los otros specs** (editor, outline, biblia, brújula, persistencia) - pendiente.
+- [ ] **Aplicar los fixes de la auditoría del co-writer** (IDs + unificar contexto) - pendiente.
 
 ## Fase A - Cerrar el producto local (2026-08-17)
 

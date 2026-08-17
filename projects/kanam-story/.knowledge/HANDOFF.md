@@ -35,9 +35,10 @@ Sesión de cierre del bloque post-v0.16.1 + release v0.17.0 + smoke tests de acc
 - `npm run build`, `npx tsc --noEmit`, `npm run lint` verdes.
 
 ## Next steps
-1. **Auditar el comportamiento real contra los specs de OpenSpec** (los specs documentan la intención; falta verificar que el código la cumple - ver checklist de auditoría en cada spec).
-2. **Generalizar el BYOK** a cualquier endpoint OpenAI-compatible (preparación para SaaS).
-3. **Futuro:** backend + auth + billing (Supabase), sync IndexedDB ↔ nube, activar el feature flag del co-writer.
+1. **Aplicar los fixes de la auditoría del co-writer** (IDs de personajes/mundo + unificar contexto).
+2. **Auditar los otros specs** (editor, outline, biblia, brújula, persistencia) contra el comportamiento real.
+3. **Generalizar el BYOK** a cualquier endpoint OpenAI-compatible (preparación para SaaS).
+4. **Futuro:** backend + auth + billing (Supabase), sync IndexedDB ↔ nube, activar el feature flag del co-writer.
 
 ## OpenSpec (inicializado 2026-08-17)
 
@@ -45,8 +46,20 @@ Sesión de cierre del bloque post-v0.16.1 + release v0.17.0 + smoke tests de acc
 - **`openspec/project.md`** - visión, stack, dominio, estrategia de 3 públicos.
 - **`openspec/config.yaml`** - contexto del proyecto + reglas para el CLI.
 - **6 specs de casos de uso core** (34 requirements): co-writer (9), editor (6), outline-beats (6), proyecto-persistencia (5), biblia-viva (4), brújula-narrativa (4).
-- Cada spec tiene una sección **"Notas de auditoría"** con checklist de puntos a verificar contra el comportamiento real.
-- **Próximo:** auditar el comportamiento real contra los specs (verificar que lo que la app dice que hace, lo hace de un modo lógico y con el contexto correcto).
+- **Auditoría del co-writer realizada** (2026-08-17): 4 hallazgos - ver `openspec/audits/co-writer-2026-08-17.md`.
+
+## Auditoría del co-writer (2026-08-17) - 4 hallazgos
+
+> Ver `openspec/audits/co-writer-2026-08-17.md`.
+
+1. 🔴 **ALTO:** el contexto del chat NO incluye IDs de personajes/mundo (solo escenas/beats). El modelo adivina IDs → acciones `update_character`/`delete_character`/`update_world`/`delete_world` pueden fallar.
+2. 🟠 **MEDIO:** el filtro `inContext` es inconsistente - personajes excluidos en el chat pero NO en el editor.
+3. 🟠 **MEDIO:** la brújula NO se incluye en el editor (solo en el chat).
+4. 🟠 **MEDIO:** las notas de continuidad NO se incluyen en el editor (solo en el chat).
+
+**Causa raíz:** `buildContext` (editor) es una versión empobrecida de `buildAgentContext` (chat).
+
+**Fix sugerido:** (1) incluir IDs de personajes/mundo en `buildAgentContext`; (2) unificar la construcción de contexto (función compartida) para que el editor tenga el mismo contexto que el chat.
 
 ## Open questions / caveats
 - El feature flag del co-writer está en el historial de git (`2f5130e`), revertido por `8eb6275`. Recuperar cuando exista el SaaS.
