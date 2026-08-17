@@ -11,18 +11,20 @@
 - [x] Mockup de identidad validado por Gonzo (`mockups/identidad-v4.html`)
 - [x] Iconografía Lucide incorporada al mockup (ADR-030, workspace)
 - [x] **Verificar que el backend de v3 funciona** - verificado de punta a punta (`BACKEND-VERIFICADO.md`)
-- [ ] **Agregar tests del API** (el backend de v3 no tiene cobertura - hallazgo de la verificación)
-- [ ] Decidir el alcance del primer slice
+- [x] **Enriquecer el mock** - 13 preguntas (antes 6), 6 productos (antes 3), varias por producto, producto sin preguntas activas
+- [x] **Agregar tests del API** - 14 tests que cubren health, auth, sync, multi-tenant, publish, idempotencia, productos, IA, billing
 - [ ] Definir el pipeline A/B para este proyecto
+- [ ] **Arrancar la UI** (el corazón que le da vida al cuerpo)
 
 ## Backend verificado (2026-08-17)
 
 El backend de v3 (que se conserva) está sano y funciona de punta a punta:
 - ✅ Typecheck pasa (api + web)
 - ✅ Servidor arranca en `localhost:3001`
-- ✅ Endpoints probados: health, dev setup, sync (6 preguntas mock), questions, products, meli/status, ai/suggest
+- ✅ Endpoints probados: health, dev setup, sync (13 preguntas mock), questions, products, meli/status, ai/suggest
 - ✅ **Mocks verificados a fondo** (pregunta de Gonzo): categorización mock 6/6 correcta, multi-tenant aísla empresas, publish marca como respondida, sync idempotente (no duplica)
-- ⚠️ **Hallazgo:** el API no tiene tests (`pnpm test` → "No test files found"). Agregar tests del API es prioridad antes de construir el frontend encima.
+- ✅ **14 tests del API** (antes 0) - automatizan las verificaciones manuales
+- ✅ **Mock enriquecido** - 13 preguntas, 6 productos, varias por producto, producto sin preguntas activas
 
 Detalle completo: `BACKEND-VERIFICADO.md`
 
