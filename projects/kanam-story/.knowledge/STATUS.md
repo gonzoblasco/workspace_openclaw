@@ -1,27 +1,34 @@
 # STATUS — Kanam Story
 
-**Actualizado:** 2026-08-16
+**Actualizado:** 2026-08-17
 
-## Estado: 🟢 FASE 4 (v0.9.0) finalizada. Trabajando en feature block post-v0.9.0: outline global, generación automática de estructura, árbol colapsable y persistencia de sesión.
+## Estado: 🟢 v0.16.1 + bloque de features post-release completado (377 tests)
 
-> **Nota de versionado:** el proyecto sigue en fase 0.x (pre-producción). La versión actual del package sigue en `0.9.0`; el siguiente tag será `v0.10.0` al cerrar U3.
+> **Nota de versionado:** el proyecto sigue en fase 0.x (pre-producción). La versión actual del package es `0.16.1`. El bloque de features de hoy (a11y, mobile, PWA, export, co-writer) no tiene bump de versión todavía — considerar un release al cerrar el ciclo.
 
-## Feature block post-v0.9.0 — Outline global + persistencia (en progreso)
+## Bloque de features 2026-08-17 (completado)
 
-- [x] **Bug fix: generación de capítulo respetaba el beat genérico** — `generateSceneContent` ahora recibe el `Beat` explícito y construye el prompt con `title`, `description` y `notes`. Cada escena generada cubre su propio beat. Commit `d4d04be`. Tests actualizados en `lib/generateSceneContent.test.ts`.
-- [x] **U1 — Vista global del outline** — refactor de `OutlineView` con modo Capítulo/Global. En global se ven todos los capítulos con sus beats, se editan títulos, se reordenan capítulos, se mueven beats entre capítulos, se agregan capítulos y se genera capítulo entero. Se preserva el flujo por capítulo. Commit `efaadb2`.
-- [x] **Fixes de runtime post-U1**:
-  - Hydration warning del tema: `suppressHydrationWarning` en `app/layout.tsx` (`3e43c9a`).
-  - Escenas generadas en capítulo recibían todas `order = 0`: `planGenerateScene` acepta `nextOrder` y `generateChapter` asigna orden secuencial (`4127bf1`).
-  - Escena 2 re-explicaba setup porque no veía escena 1: `generateChapter` acumula escenas generadas como `previousScene` y el prompt refuerza "no repetir setup" (`6f24eed`).
-- [x] **Layout más ancho** — se eliminó `max-width: 820px` de `.main-content` (`65369f0`).
-- [x] **Menús de acciones en el árbol** — `ActionMenu.tsx` con `<details>`/`<summary>`, accesible y sin ensuciar el título de capítulo/escena. Commit `e02c1ad`.
-- [x] **U2 — Generación automática de estructura global** — `lib/outlineGeneration.ts` (prompt + parser con alias en español) + acciones `suggestGlobalOutline`/`applyGlobalOutline` en el store + UI de preview Aplicar/Descartar. Commit `4ca27bf`. 7 parser tests + test de UI.
-- [x] **Árbol de manuscrito colapsable** — click en título/caret expande/colapsa capítulos. Commit `a70a290`.
-- [x] **Persistencia del estado de sesión** — último proyecto, última escena y capítulos colapsados se guardan en IndexedDB settings y se restauran al recargar. Commit `8b5b675`.
-- [x] **Code review + reestructuración** — a11y del árbol, eliminación de filtros POV/tiempo confusos, refactor de `OutlineView` en componentes más pequeños (`BeatCard`, `ChapterSection`, `SuggestedOutlinePreview`) y limpieza de mocks. Commit `4349401`.
-- [x] **U3 — Chat-assisted global outline generation** — acción `replace_outline` en `ContentAction`, validación en `agentReply`, aplicación en store con undo, preview en `ChatPanel`, tests. Completo.
-- [x] **Release v0.16.0** — publicado el 2026-08-16 (`b119220`). Sidebar de co-writer desde la escritura (contexto acotado a la escena actual + biblia + personajes + mundo + outline del capítulo). Tags `v0.10.0` → `v0.16.0` pusheados.
+- [x] **a11y:** `--sl-danger` en tema claro 2.78:1 → 5.22:1 (`58a6706`); `ConfirmDialog`+`PromptDialog` reemplazan 12 `window.prompt/confirm` nativos (`f53a7e1`); fix lint `useId()` (`e26c3d6`).
+- [x] **Mobile responsive (≤768px):** sidebar como drawer overlay con backdrop + topbar compacto (`164a406`); padding reducido + co-writer full-width (`140616f`); modales full-width + ai-bar apilado + chapter reader (`ea915cf`).
+- [x] **PWA:** Serwist (`@serwist/turbopack`) — SW compilado en build, manifest, página offline, SerwistProvider (`f3e41a7`); iconos reales con PIL (`6a01623`).
+- [x] **Export polish:** metadata narrativa (POV + estilo) en portada + word count (`3c1c012`).
+- [x] **Co-writer U5+:** `delete_character`, `delete_world`, `update_project` (`f5ee579`); roles especializados Plot Doctor + Consistency Checker (`f68aff9`); smoke test de roles con Ollama (`912db24`).
+- [x] **Validación AT manual verificada** por Gonzo con VoiceOver (live region chat + radio group onboarding).
+
+**Quality:** 377 tests (subió de 366), build + tsc + ESLint verdes.
+
+## Detalle previo: Feature block post-v0.9.0 — Outline global + persistencia (v0.10.0 → v0.16.0)
+
+- [x] **U1 — Vista global del outline** — refactor de `OutlineView` con modo Capítulo/Global. Commit `efaadb2`.
+- [x] **Fixes de runtime post-U1** — hydration warning, orden de escenas, no repetir setup. Commits `3e43c9a`, `4127bf1`, `6f24eed`.
+- [x] **Layout más ancho** — `65369f0`.
+- [x] **Menús de acciones en el árbol** — `ActionMenu.tsx` accesible. Commit `e02c1ad`.
+- [x] **U2 — Generación automática de estructura global** — `lib/outlineGeneration.ts` + preview. Commit `4ca27bf`.
+- [x] **Árbol de manuscrito colapsable** — `a70a290`.
+- [x] **Persistencia del estado de sesión** — `8b5b675`.
+- [x] **Code review + reestructuración** — `4349401`.
+- [x] **U3 — Chat-assisted global outline generation** — `replace_outline`.
+- [x] **Release v0.16.0** — publicado 2026-08-16 (`b119220`). Sidebar de co-writer desde la escritura. Tags v0.10.0 → v0.16.0.
 
 ## Fase 4 — Rediseño de navegación accesible (COMPLETA, v0.9.0)
 
@@ -190,8 +197,8 @@
 
 ## Próximo paso
 
-**Fase 2 completa (Slices 0-10, v0.6.0).** El pipeline de producto está cerrado: chat con manos, outline & beats, biblia viva, brújula, export, story bible editable, fichas ricas, worldbuilding tipado, match my style, filtros + vinculación. Todos los releases v0.1.0 → v0.6.0 creados en GitHub.
+**Bloque de features 2026-08-17 COMPLETO** (a11y, mobile, PWA, export, co-writer U5+, roles especializados). 377 tests. Validación AT manual verificada por Gonzo.
 
-**Fase 3 planificada (2026-08-13):** dos features prioritarias de Gonzo — (1) área de texto refinada (barra de formato + selección contextual IA), (2) sincronización automática Biblia ↔ tabs Personajes/Mundo. **Plan detallado con pipeline de revisión cruzada A/B en [PLAN-FASE-3.md](./PLAN-FASE-3.md).** Release v0.7.0.
+**Considerar:** bump de versión del bloque (los features post-v0.16.1 no tienen release).
 
-**Backlog (no bloquea, se atiende cuando haya espacio):** ver [ROADMAP.md](./ROADMAP.md) sección "TODOs no bloqueantes". Resto: búsqueda entre escenas (B4), versioning/snapshots (B6), streaming en el editor (B7). **Hecho:** export PDF/DOCX (B3), tema claro (B5, commit `82f2a2e`), tests de componentes (jsdom, B2), tests de `lib/db.ts` (fake-indexeddb, B1).
+**Futuro (largo plazo):** multi-usuario/sync, mocks de tests frágiles, iconos PWA más pulidos, UI de selector de rol más rica (chips/tabs).
