@@ -2,7 +2,12 @@
 
 **Sueño:** Un Lovable cloud + AI self-hosted que construya proyectos completos con el pipeline de Gonzo (stack opinado, memoria persistente, a11y integrada, multi-agente). No un generador de landings - un creador de proyectos completos estilo soporteml v1, pero con estándar superior.
 
-**MVP actual:** Local con Docker, para uso personal. Fork de Adorable (freestyle-sh/Adorable, MIT) con el sandbox Freestyle cloud reemplazado por Docker local.
+**MVP actual:** Local con Docker, para uso personal. Fork de Adorable (freestyle-sh/Adorable, MIT) con el sandbox Freestyle cloud reemplazado por Docker local + Supabase self-hosted + Ollama local.
+
+**Decisiones clave (2026-08-17):**
+- **Supabase self-hosted** (no cloud) - decisión de Gonzo. Opción A: stack central compartido, schema por app. Ya hay experiencia previa (sportcars, kanam/daily-ink).
+- **LLM = Ollama local** como router (Lovable AI analógico). Vercel AI SDK soporta Ollama. Cero costo, privacidad.
+- **Docker local** como sandbox (reemplaza Freestyle cloud).
 
 ---
 
@@ -20,33 +25,55 @@ Repositorio MIT de freestyle.sh. Es un **orquestador de app-building conversacio
 
 ## 2. El acoplamiento a Freestyle (lo que hay que reemplazar)
 
+**Mapa real (8 archivos):**
+
 | Archivo | Uso de Freestyle | Reemplazo |
 |---|---|---|
-| `lib/adorable-vm.ts` | `freestyle.vms.create()` - crea VM cloud | Docker container local |
-| `lib/create-tools.ts` | `vm.exec()`, `vm.fs.*` | Adaptador Docker que expone la MISMA interfaz |
-| `lib/repo-storage.ts` | `freestyle.git.repos` - persiste metadata/conversaciones | Repo git local en disco / volumen |
-| `app/api/chat/route.ts` | `freestyle.vms.ref()` - reconectar VM | Referencia al container Docker |
-| `lib/identity-session.ts` | auth de Freestyle (permisos git) | Eliminar (local, sin auth) |
-| Deployment/publish | `freestyle.serverless.deployments` | Descartar en MVP (local) |
+| `lib/adorable-vm.ts` | `freestyle.vms.create()` - crea VM cloud | Docker container local por proyecto |
+| `lib/create-tools.ts` | `vm.exec()`, `vm.fs.*` | Adaptador Docker con la MISMA interfaz |
+| `lib/repo-storage.ts` | `freestyle.git.repos` - persiste metadata/conversaciones | git local en disco (fs) |
+| `lib/identity-session.ts` | auth de Freestyle | Eliminar (local, sin auth) |
+| `lib/deployment-status.ts` | `freestyle.serverless.deployments` | Stub/descartar (sin serverless en MVP) |
+| `app/api/repos/route.ts` | lista/crea repos git de Freestyle | Descubrimiento de proyectos locales (fs) |
+| `app/api/chat/route.ts` | `freestyle.vms.ref()` - reconectar VM | Referencia a container Docker local |
+| `app/api/repos/[repoId]/promote/route.ts` | deploy serverless | Stub/descartar (sin deploy en MVP) |
 
-**La UI es agnóstica** - solo consume `previewUrl`, `devCommandTerminalUrl`, `additionalTerminalsUrl` como URLs. Para Docker local, apuntan a puertos del container.
+**La UI es agnóstica** - consume `previewUrl`, `devCommandTerminalUrl`, `additionalTerminalsUrl` como URLs. Para Docker local apuntan a puertos del container.
 
-## 3. Arquitectura del MVP (Docker local)
+## 2b. Modelo de proyecto local (reemplazo del wrapper repo)
+
+Cada proyecto es una carpeta en disco (`~/.kanam-forge/projects/<id>/`):
 
 ```
-┌─────────────────────────────────────────────┐
-│  App Next.js (Kanam Forge) - localhost:3000 │
-│  chat + preview iframe + terminales         │
-└──────────────┬──────────────────────────────┘
-               │ http / docker exec / docker API
-┌──────────────▼──────────────────────────────┐
-│  Docker container (por proyecto)            │
-│  Node + Next.js base + git + ttyd           │
-│  - puerto 3000 → preview                    │
-│  - puerto 3010 → dev server terminal (ttyd) │
-│  - puerto 3020 → terminales extra (ttyd)    │
-│  - volumen montado: /workspace              │
-└─────────────────────────────────────────────┘
+<id>/
+├── workspace/        # código del proyecto (git propio, donde escribe el agente)
+│   ├── package.json
+│   ├── app/...
+│   └── .git/
+├── metadata.json     # RepoMetadata (vm, conversaciones, deployments)
+└── conversations/    # historial por conversacion
+```
+
+Simplifica el modelo de Adorable (source repo + wrapper repo separados) a uno directo. Es el estilo de Gonzo.
+
+## 3. Arquitectura del MVP (Docker local + Supabase self-hosted + Ollama)
+
+```
+┌────────────────────────────────────────────────────────────┐
+│  App Next.js (Kanam Forge) - localhost:3000               │
+│  chat + preview iframe + terminales                       │
+└───────────────┬───────────────────────┬───────────────────┘
+                │ docker exec / API     │
+        ┌───────▼──────────┐   ┌────────▼───────────┐
+        │ Docker container │   │ Ollama local       │
+        │ (por proyecto)   │   │ (router LLM)       │
+        │ Node+Next+git+   │   └────────────────────┘
+        │  ttyd            │
+        │ p3000 preview    │   ┌────────────────────┐
+        │ p3010 ttyd dev   │   │ Supabase self-host │
+        │ p3020 ttyd extra │   │ (stack central)    │
+        └──────────────────┘   │ schema por app     │
+                               └────────────────────┘
 ```
 
 **Adaptador `docker-vm.ts`:** implementa la interfaz `{ exec(command), fs: { readTextFile, writeTextFile, readFile } }` usando `docker exec` + volumen montado. Las 13 tools de `create-tools.ts` NO se tocan.
@@ -67,16 +94,18 @@ Repositorio MIT de freestyle.sh. Es un **orquestador de app-building conversacio
 - [x] .env.example + ApiKeyGate de la UI
 
 ### Fase 1 - Desacoplar Freestyle → Docker local (núcleo)
+- [ ] Definir arquitectura local + actualizar PLAN (EN CURSO)
 - [ ] docker-vm.ts (interfaz exec/fs via Docker)
 - [ ] Dockerfile base (Node + Next.js + git + ttyd)
-- [ ] Reemplazar adorable-vm.ts → container local
-- [ ] Reemplazar repo-storage.ts → git local en volumen
-- [ ] Reemplazar chat/route.ts → ref a container local
-- [ ] Eliminar identity-session.ts (auth local)
-- [ ] **HITO:** loop completo funciona local - chat → código → dev server → preview → checkApp → commit
+- [ ] Reemplazar repo-storage.ts + identity-session.ts → git local en disco
+- [ ] Reemplazar adorable-vm.ts + api/repos/route.ts + api/chat/route.ts → Docker local
+- [ ] Stub deployment-status.ts + promote (sin serverless en MVP)
+- [ ] **HITO:** loop completo local (chat → código → dev server → preview → checkApp → commit)
+- [ ] Supabase central compartido + integración de backend en apps generadas
 
-### Fase 2 - Pipeline Gonzo
+### Fase 2 - Pipeline Gonzo + Ollama local
 - [ ] Sistema prompt con stack opinado (Biome, pre-commit, ADRs, a11y)
+- [ ] LLM provider Ollama local (reemplaza OpenAI/Anthropic cloud)
 - [ ] Template create-stack-next + hooks
 - [ ] Memoria de proyecto persistente (.knowledge/)
 
