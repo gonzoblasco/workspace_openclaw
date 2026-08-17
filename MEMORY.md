@@ -38,6 +38,15 @@
 - **Pendientes:** agentes especializados ya hechos; restan smoke tests de roles nuevos si hacen falta, y el salto a la nube (roadmap planificado).
 - **Historial Fase 4 (v0.9.0):** rediseño de navegación accesible (secciones apiladas, scrollspy, acordeón, onboarding por plantillas, chat sticky, inserción contextual). Plan completo en `projects/kanam-story/.knowledge/PLAN-FASE-4.md`. Pipeline en cadena U1-U8 con cross-review de a11y integrada (validado en Fase 3).
 
+## Proyecto - Kanam Mind (v0.1.0)
+
+- **Estado real (2026-08-17):** segundo cerebro local-first con IA. Retoma la visión del `kanam` original (descartado 2026-08-06) con todo lo aprendido. MVP completo: timeline cronológico inverso agrupado por día, CRUD accesible (Radix Dialog), resumen IA diario (Ollama local), PWA offline. 7 tests, build verde.
+- **Decisión de arquitectura (ADR-001):** local-first puro con IndexedDB como fuente de verdad + Ollama local. Cero cloud. La privacidad es el punto de un segundo cerebro personal. Patrón validado en kanam-story. Si después se quiere sync entre máquinas, el híbrido es evolución natural, no punto de partida.
+- **Stack:** Next.js 16, Tailwind 4 + shadcn/ui (Radix), IndexedDB via `idb`, Ollama (deepseek-v4-flash:cloud), Serwist PWA. UI/prompts en español, commits en inglés.
+- **Tipos de entrada:** nota, check-in (ánimo/energía/sueño 1-5), idea, writing (word count), foto (data URL).
+- **Pendientes post-MVP:** tags + filtros, export JSON, settings modal (config Ollama), sync entre máquinas.
+- **Lección Biome 2.5.8:** la clave del hook es `pre-commit` (con guion), no `preCommit` (camelCase) - `_validateHooks` rechaza camelCase. Y `biome migrate --write` actualiza la config de schema viejo.
+
 ## Arquitectura de Agentes - Goal-Oriented
 
 Inspirado por el incidente de julio 2026 (OpenAI agent escapó sandbox, atacó Hugging Face autónomamente por 4.5 días).

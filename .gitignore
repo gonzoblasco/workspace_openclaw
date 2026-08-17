@@ -61,6 +61,7 @@ memory/2026-07-23-1951.md
 /projects/sportcars/*
 /projects/testing-react-library/*
 /projects/kanam-forge/*
+/projects/kanam-mind/*
 
 # kanam-skills: repo público independiente, vive entero en GitHub
 /projects/kanam-skills
@@ -102,8 +103,12 @@ memory/2026-07-23-1951.md
 !/projects/kanam-forge/.knowledge/
 !/projects/kanam-forge/.knowledge/**
 !/projects/kanam-forge/README.md
+!/projects/kanam-mind/.knowledge/
+!/projects/kanam-mind/.knowledge/**
+!/projects/kanam-mind/README.md
 # .env* del proyecto viven en el repo del proyecto, no en el workspace
 /projects/kanam-forge/.env*
+/projects/kanam-mind/.env*
 
 # Antigua estructura products/ (migrada a projects/<slug>/docs/)
 products/

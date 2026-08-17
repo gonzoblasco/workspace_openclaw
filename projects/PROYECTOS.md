@@ -21,6 +21,7 @@
 | **ai-engineering-bootcamp** | Curso de 10 niveles de AI-assisted dev con proyectos resueltos | **COMPLETADO ✅ 10/10** — 2026-08-03. Versión canónica consolidada en GitHub. N7-10 convergente. Skill `pipeline-detector` extraído del curso. | ✅ gonzoblasco/ai-engineering-bootcamp |
 | **umbrawriter-v2** | AI Fiction Co-Writer. Local-first. Chat-first. BYOK. | Clonado. Sin `.knowledge/`. | ✅ gonzoblasco/umbrawriter-v2 |
 | **kanam-story** | Co-writer de ficción local-first. Chat con manos + biblia viva + brújula + outline/beats. | **v0.1.0** — 2026-08-13. Slices 0-5 completos (chat, outline, biblia, brújula, export). 121 tests. | ✅ gonzoblasco/kanam-story |
+| **kanam-mind** | Segundo cerebro local-first con IA. Timeline personal (notas, check-ins, ideas, writing, fotos) + resumen IA diario. IndexedDB + Ollama local. | **v0.1.0** — 2026-08-17. MVP completo (timeline, CRUD accesible, resumen IA, PWA offline). 7 tests. | ✅ gonzoblasco/kanam-mind |
 
 ## 🟡 SEMILLEROS — Documentos sueltos, sin repo propio
 
