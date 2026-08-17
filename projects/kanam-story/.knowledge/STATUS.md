@@ -13,8 +13,8 @@
 - [x] **`config.yaml`** - contexto del proyecto + reglas para el CLI.
 - [x] **6 specs de casos de uso core** (34 requirements): co-writer (9), editor (6), outline-beats (6), proyecto-persistencia (5), biblia-viva (4), brújula-narrativa (4).
 - [x] **Auditoría del co-writer realizada** (2026-08-17): 4 hallazgos - ver `openspec/audits/co-writer-2026-08-17.md`.
+- [x] **Fixes de la auditoría aplicados** (commit `f618a38`): IDs de personajes/mundo, filtro inContext consistente, brújula en editor, continuidad en editor. 382 tests.
 - [ ] **Auditar los otros specs** (editor, outline, biblia, brújula, persistencia) - pendiente.
-- [ ] **Aplicar los fixes de la auditoría del co-writer** (IDs + unificar contexto) - pendiente.
 
 ## Fase A - Cerrar el producto local (2026-08-17)
 
