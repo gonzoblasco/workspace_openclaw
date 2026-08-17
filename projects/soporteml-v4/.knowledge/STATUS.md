@@ -20,7 +20,19 @@
 - [x] **KB (RAG) - búsqueda semántica** - embeddings + similitud coseno + contexto para la IA
 - [x] **Autopilot** - responde consultas automáticamente por categoría + umbral de confianza
 - [x] **Clientes (CRM)** - compradores con notas + tags + historial
+- [x] **Métricas** - dashboard de ventas/consultas (la última feature core del schema)
 - [ ] Definir el pipeline A/B para este proyecto
+
+## Slice 6: Métricas (2026-08-17)
+
+Dashboard del negocio - el vendedor ve la foto completa:
+- ✅ `apps/api/src/metrics-service.ts` - calcula métricas cruzando questions + products + customers
+- ✅ Endpoint API: GET /metrics
+- ✅ UI: vista de Métricas en el sidebar (KPIs, consultas por categoría, top productos, estado, clientes)
+- ✅ 1 test nuevo (24 total)
+- ✅ Verificado en browser: 13 consultas, ventas estimadas $369M/861 unidades, top productos, 13 clientes
+- **Nota:** ventas estimadas = vendidos x precio de los productos en meli_cache (mock)
+- Commit `be4eb3b` en soporteml-v3
 
 ## Slice 5: Clientes (CRM) (2026-08-17)
 
