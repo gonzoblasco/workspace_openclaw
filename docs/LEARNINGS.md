@@ -387,3 +387,25 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: no leí mi propio review en #4112 antes de proponer cerrar #4109
 - LESSON: verificar el estado real (reviews/comentarios) de cada PR antes de proponer acciones; mis reviews previos son señal de decisiones ya tomadas
 - BIASES DETECTED: recency bias (el #4112 era "reciente" en mi lectura y lo traté como pendiente) + falta de verificación (no chequé el thread completo antes de opinar)
+
+## 2026-08-17 — Compatibilidad en cascada del stack de Adorable (Kanam Forge)
+
+**Context:** al validar el loop del agente de Kanam Forge con Ollama local, el chat fallaba con `AI_UnsupportedModelVersionError: Unsupported model version v1`. El stack de Adorable (fork) está atado a AI SDK 6, pero `ollama-ai-provider` v1 implementa spec v1, incompatible con AI SDK 6 (exige spec v2).
+
+**El pozo de compatibilidad (lo que intenté y por qué falló):**
+- **Bajar a AI SDK 5** → rompe `useAuiState`/`useMessage` (APIs de `@assistant-ui/react@0.12+`). El código de la UI depende de 0.12.x.
+- **Subir a AI SDK 7** → rompe `useMessage` (renombrado en `@assistant-ui/react@0.15.x`). El código usa APIs de 0.12.x.
+- **Solución final:** `ollama-ai-provider-v2@3.6.0` (spec v2, compatible con ai@6) + pin `@assistant-ui/react@0.12.12` con overrides de `store@0.2.1`/`core@0.1.1`/`tap@0.5.1` (evita `tapAssistantClientRef` roto en versiones nuevas de store).
+
+**Lección — los stacks de librerías de UI/IA son frágiles en cadena:**
+- Cuando un paquete (ej. `@assistant-ui/react`) tiene dependencias internas (`@assistant-ui/store`, `@assistant-ui/core`) con versiones desalineadas, npm resuelve a versiones que no son compatibles entre sí. El síntoma es un export que "no existe" (`tapAssistantClientRef`) aunque la versión cumpla el semver.
+- **Diagnóstico:** cuando un export "no existe" en un paquete que cumple el semver, sospechar de dependencias internas desalineadas, no del paquete en sí. Verificar con `grep` qué paquete importa el export faltante y de dónde viene.
+- **Fix robusto:** fijar versiones exactas (no `^`) + `overrides` en el package.json del ROOT del workspace (no en el workspace hijo) para forzar versiones internas compatibles.
+- **Provider de Ollama:** `ollama-ai-provider` v1 (spec v1) solo funciona con AI SDK 5. Para AI SDK 6 usar `ollama-ai-provider-v2@3.6.0` (spec v2). Para AI SDK 7 usar `ollama-ai-provider-v2@4.x`. El baseURL de Ollama necesita sufijo `/api`.
+- **Regla de oro:** antes de tocar versiones, verificar el lockfile del commit que funcionaba (las versiones exactas que npm resolvió en ese momento) — es la fuente de verdad de la combinación que funciona.
+
+**Self-reflection:**
+- CONTEXT: debugging de compatibilidad de dependencias
+- REFLECTION: perdí tiempo probando downgrade/upgrade del stack completo antes de verificar el lockfile del commit inicial que funcionaba
+- LESSON: ante un problema de compatibilidad, primero mirar el lockfile del estado que funcionaba (git show) para obtener las versiones exactas, en vez de probar rangos de versiones a ciegas
+- BIASES DETECTED: sunk cost (insistí en bajar a v5 cuando ya se veía que rompía la UI) + falta de verificación temprana del lockfile original
