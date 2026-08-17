@@ -20,12 +20,15 @@
 - [x] Eliminar identity-session.ts (auth local, stub sin Freestyle)
 - [x] Stub deployment-status.ts + promote (sin serverless en MVP)
 - [x] provision.ts (scaffold Next.js + npm install + dev server en container)
-- [x] LLM provider Ollama local (LLM_PROVIDER=ollama, modelo kimi-k2.7-code:cloud)
+- [x] LLM provider Ollama local (LLM_PROVIDER=ollama, modelo deepseek-v4-flash:cloud)
 - [x] **HITO PARCIAL:** crear proyecto → provisionar → npm install → dev server → preview HTTP 200 (puerto dinámico)
-- [ ] Validar loop completo del AGENTE (chat → código → preview) con Ollama - **BLOQUEADO por RAM**
+- [x] **HITO: loop completo del AGENTE validado** (chat → Ollama deepseek-v4-flash → tools → exec en container)
+- [ ] Ajustar system prompt para paths relativos (el agente usa `workspace/` como prefijo → ENOENT)
 - [ ] Supabase central compartido + integración de backend en apps generadas
 
-**Bloqueante de recursos (2026-08-17):** la MacBook Air M2 (8GB) no puede correr el stack de Supabase de sportcars (~1.8GB, 11 containers) + Docker + gateway + VSCode + dev server Kanam Forge + sandbox npm install a la vez. macOS mata procesos (SIGKILL). El build completo de Turbopack y el typecheck OOM. El runtime de dev funciona cuando hay memoria. **Decisión necesaria de Gonzo:** pausar/detener el stack de sportcars mientras se trabaja en Kanam Forge, o usar otra máquina.
+**Stack alineado (2026-08-17):** el stack de Adorable estaba atado a AI SDK 6 con `ollama-ai-provider` v1 (spec v1, incompatible). Fix: `ollama-ai-provider-v2@3.6.0` (spec v2, compatible con ai@6) + pin `@assistant-ui/react@0.12.12` con overrides de `store@0.2.1`/`core@0.1.1`/`tap@0.5.1` (evita `tapAssistantClientRef` roto). Ollama baseURL necesita sufijo `/api`. ApiKeyGate salta con Ollama (no requiere key). Commit `e72f10b`.
+
+**Bloqueante de recursos (2026-08-17):** ~~la MacBook Air M2 (8GB) no puede correr el stack de Supabase de sportcars~~ **RESUELTO** - sportcars borrado (local + repo). El loop del agente ya se validó con deepseek-v4-flash.
 
 ## Fase 2 — Pipeline Gonzo
 
@@ -45,4 +48,4 @@
 
 ---
 
-**Último log:** 2026-08-17 — Fase 1 en progreso. Desacople Freestyle → Docker local implementado y verificado en runtime (crear proyecto → preview HTTP 200). LLM Ollama local configurado. **Bloqueado por RAM:** el stack de Supabase de sportcars (1.8GB) impide build/typecheck y el loop completo del agente. Commits proyecto: ecfb84b (F0), fase-1 commit posterior. Falta: validar chat con Ollama y Supabase central.
+**Último log:** 2026-08-17 — Fase 1 casi completa. Loop completo del agente validado con Ollama (deepseek-v4-flash): chat → tools → exec en container. Stack alineado (ollama-ai-provider-v2 + pin de @assistant-ui). ApiKeyGate salta con Ollama. Pendiente: ajustar system prompt para paths relativos + Supabase central. Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack).
