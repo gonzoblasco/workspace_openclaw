@@ -45,3 +45,17 @@ REFLECTION: En vez de una tercera columna fija (comprimiría el editor), hice un
 LESSON: "No modificar X" en un agente con manos se resuelve limitando lo que el agente ve en el contexto, no solo restringiendo la UI. Un agente no puede editar lo que no ve. Reusar componentes con un prop de scope (default preserva el comportamiento) evita duplicar el panel de chat.
 
 BIASES DETECTED: Pensé primero en una columna fija de grid; el overlay es mejor porque no comprime el área de escritura. El contexto acotado es la pieza clave que satisface el requisito real.
+
+## 2026-08-17 — Sesión larga de features: chat, editor, export, continuidad (v0.13.1 → v0.16.0)
+
+CONTEXT: Sesión extensa acumulando features sobre Kanam Story: fixes de chat/editor, export, notas de continuidad. Muchos bugs llegaron de reportes de Gonzo probando la app real.
+
+REFLECTION:
+1. **Editor no se refresca al aceptar cambios.** El efecto de sync dependía de `scene.id`; un `rewrite_scene` cambia el contenido sin cambiar el id. Fix: depender también de `scene.content`. Lección: cuando una vista muestra una entidad, sync por TODAS las propiedades que pueden cambiar externamente, no solo el id.
+2. **Contenido del agente "todo de corrido".** El agente devuelve texto plano/markdown con `\n\n`, pero TipTap espera HTML. Guardarlo crudo lo muestra como un párrafo gigante. Fix: `ensureHtml` (si es HTML lo deja, si no lo convierte). Lección: el modelo y el editor tienen formatos distintos; hay que normalizar en la frontera.
+3. **Sidebar con input flotando.** `.chat-panel` tenía altura fija (`min(58vh, 520px)`) pensada para otra sección. Fix: `height: 100%` en contexto sidebar. Lección: componentes reutilizados en contextos distintos pueden necesitar overrides de layout por contexto.
+4. **Mocks de tests y firma cambiante.** Cambiar `applyContentActions` a `{undo, failed}` rompió mocks; hay que tiparlos explícitamente (`vi.fn<...>()`) o se infiere `never[]`.
+
+LESSON: Los reportes de Gonzo probando la app real son la fuente más rica de bugs reales (formato, layout, sync). Un smoke test con el modelo real y una prueba manual de UX valen más que tests unitarios para estos casos. Verificar siempre la frontera de formatos (agente → editor) y los contextos de reutilización de componentes.
+
+BIASES DETECTED: Asumí que el editor se refrescaría solo con el cambio de id; asumí que el contenido del agente ya era HTML; asumí que la altura fija del chat servía para todos los contextos. Los tres eran supuestos incorrectos sobre la frontera entre el modelo, el editor y la UI.
