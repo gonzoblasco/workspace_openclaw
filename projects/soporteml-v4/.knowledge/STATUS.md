@@ -19,19 +19,19 @@
 - [x] **KB (RAG) - gestión de artículos** - CRUD de artículos con chunking (repo, API, UI) + tests
 - [x] **KB (RAG) - búsqueda semántica** - embeddings + similitud coseno + contexto para la IA
 - [x] **Autopilot** - responde consultas automáticamente por categoría + umbral de confianza
+- [x] **Clientes (CRM)** - compradores con notas + tags + historial
 - [ ] Definir el pipeline A/B para este proyecto
 
-## Slice 4: Autopilot (2026-08-17)
+## Slice 5: Clientes (CRM) (2026-08-17)
 
-La IA responde consultas automáticamente según la configuración de la empresa:
-- ✅ `packages/db/src/repo/settings.ts` - CRUD de company_settings (autopilot, SLA, KB)
-- ✅ `AutopilotService` - decide si una pregunta se responde automáticamente (modo auto): categoría permitida + confianza >= umbral + no requiere humano
-- ✅ Integrado al sync: al llegar una pregunta, el autopilot la responde si corresponde
-- ✅ Endpoints API: GET/PUT /settings
-- ✅ UI: configuración del autopilot en Ajustes (modo, categorías, umbral de confianza)
-- ✅ 2 tests nuevos (20 total): settings CRUD + autopilot responde automáticamente
-- ✅ Verificado en browser: con modo auto + Precio/Stock + umbral 50%, 7 preguntas se autopublicaron (Pendientes 13→6)
-- Commit `d9c47da` en soporteml-v3
+CRM de compradores - el vendedor conoce a sus clientes:
+- ✅ `packages/db/src/repo/customers.ts` - CRUD de clientes + tags
+- ✅ Endpoints API: GET /customers, GET/PUT /customers/:id, GET/POST /customers/tags, DELETE /customers/tags/:id (con multi-tenant)
+- ✅ UI: vista de Clientes en el sidebar (listar, editar notas/tags, crear tags)
+- ✅ 3 tests nuevos (23 total): sync crea clientes, actualiza notas/tags, crea/lista tags
+- ✅ Verificado en browser: 13 clientes del mock, creé tag "vip", asigné tag + nota a un cliente
+- **Fix:** las rutas /customers/tags deben ir antes de /customers/:id (Hono matchea :id con "tags")
+- Commit `2f11bea` en soporteml-v3
 
 ## UI V4 arrancada (2026-08-17)
 
