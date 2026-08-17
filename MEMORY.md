@@ -27,17 +27,16 @@
 - Todo se registra: MEMORY.md, memory/YYYY-MM-DD.md, HANDOFF.md, CHANGELOG.md
 - Los aprendizajes detallados van en `docs/LEARNINGS.md`, no acá.
 
-## Proyecto en curso — Kanam Story Fase 4 (v0.9.0)
+## Proyecto — Kanam Story (v0.16.1)
 
-- **Fase 4 = rediseño de navegación accesible**: secciones apiladas en el área central (como Sudowrite/NovelCrafter, en vez de tabs del panel derecho) + estructuras opcionales (generar escena desde outline sin pre-crear capítulos). **UI + a11y integrada desde el diseño** (WCAG), no como capa final.
-- **Alcance**: 15 items en 5 ejes (navegación, estructuras opcionales, co-writer/IA, pulido UI, calidad). 8 unidades U1-U8.
-- **Estrategia de ejecución (decisión 2026-08-14): correr en CADENA (lineal), un agente a la vez** — NO en paralelo. Las unidades tienen dependencias fuertes (U1 es la base de todo). Mismo pipeline que Fase 3: U1(A) → B revisa+U2(B) → A revisa+U3(A) → ... → U8(B) → cierre. Cada agente revisa la a11y de la unidad anterior (cross-review integra a11y).
-- **Referencia visual**: mockup aprobado en `projects/kanam-story/preview-layout-v090.html`.
-- **Plan completo**: `projects/kanam-story/.knowledge/PLAN-FASE-4.md`.
-- **Estado actual**: **U1 completada (Agente A, `3437359`) y revisada por Agente B — aprobada sin correcciones.** **U2 completada (Agente B, `771dabb`)** — scrollspy + acordeón accesible. 244 tests, build+TS OK, lint 0 errores.
-- **Próximo**: U3 (Agente A) — renombrar título interno "Story Bible" → "Ajustes" + consistencia visual de cards apiladas.
-- **Pendiente de la sesión previa**: fix del test flaky de `lib/db.test.ts` (beforeEach a medias, sin commitear) → entra en U8.
-- **Antecedente**: Fase 3 + backlog B1-B7 completos (v0.7.0 y v0.8.0), 244 tests, pipeline multi-agente validado.
+- **Estado real (2026-08-17):** el proyecto está en **v0.16.1**, NO en la Fase 4. La Fase 4 (v0.9.0, rediseño de navegación accesible) se completó y publicó el 2026-08-15. Después hubo **7 releases post-Fase 4** (v0.11.0 → v0.16.0): outline global asistido por chat (`replace_outline`), panel de escenas huérfanas, `update_outline`, beats desde el manuscrito, sidebar de co-writer, enriquecer perfiles, export solo historia, notas de continuidad, gestión de proyectos. 366 tests.
+- **Stack:** Next.js 16, TipTap 3, IndexedDB, Ollama (deepseek-v4-flash:cloud). UI/prompts en español, commits en inglés.
+- **Pendientes reales (de la última sesión 2026-08-16/17):**
+  1. Decidir próximo bloque de features (U5+ de co-writer, polish de export, mobile/PWA, agentes especializados: Plot Doctor, Consistency Checker).
+  2. Validación AT manual definitiva con VoiceOver/NVDA (live region `role="log"` del chat + radio group del onboarding) — los tests verdes no cubren el timing del anuncio.
+  3. Smoke tests con Ollama para flujos nuevos si hacen falta.
+- **Hecho hoy (2026-08-17):** validación visual del sidebar de co-writer y notas de continuidad con historia real (OK); fix a11y `--sl-danger` en tema claro (2.78:1 → 5.22:1, commit `58a6706`); habilité `browser.ssrfPolicy.allowedHostnames: ["localhost", "127.0.0.1"]` para validar el dev server con browser.
+- **Historial Fase 4 (v0.9.0):** rediseño de navegación accesible (secciones apiladas, scrollspy, acordeón, onboarding por plantillas, chat sticky, inserción contextual). Plan completo en `projects/kanam-story/.knowledge/PLAN-FASE-4.md`. Pipeline en cadena U1-U8 con cross-review de a11y integrada (validado en Fase 3).
 
 ## Arquitectura de Agentes — Goal-Oriented
 
