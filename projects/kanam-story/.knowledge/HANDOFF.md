@@ -61,21 +61,21 @@ Sesión de cierre del bloque post-v0.16.1 + release v0.17.0 + smoke tests de acc
 **Tests:** 382 (subió de 379, +3 tests de los fixes). Build + tsc + lint verdes.
 
 ## Next steps
-1. **Aplicar los fixes pendientes de las auditorías** (hallazgos menores: contador del editor, commit de brújula, filtros de outline pendientes de rediseño).
+1. **Rediseñar los filtros de outline por POV/tense** (removidos en `4349401` - el modelo era defectuoso). Pendiente de diseño.
 2. **Generalizar el BYOK** a cualquier endpoint OpenAI-compatible (preparación para SaaS).
 3. **Futuro:** backend + auth + billing (Supabase), sync IndexedDB ↔ nube, activar el feature flag del co-writer.
 
-## Auditorías de OpenSpec (2026-08-17) - TODAS COMPLETAS
+## Auditorías de OpenSpec (2026-08-17) - TODAS COMPLETAS, fixes aplicados
 
 > Cada auditoría en `openspec/audits/`. Resumen:
 
 | Spec | Resultado | Hallazgos |
 |---|---|---|
 | co-writer | 4 hallazgos, **TODOS APLICADOS** (`f618a38`) | IDs, inContext, brújula, continuidad |
-| editor | ✅ Todos cumplidos | 1 menor (contador duplicado) |
+| editor | ✅ Todos cumplidos | 1 menor APLICADO (`9df57e3`) |
 | outline-beats | 5/6 cumplidos | ❌ filtros POV/tense REMOVIDOS (`4349401`) |
 | biblia-viva | ✅ Todos cumplidos | sin hallazgos |
-| brújula-narrativa | ✅ Todos cumplidos | 1 menor (commit textareas onBlur) |
+| brújula-narrativa | ✅ Todos cumplidos | 1 menor APLICADO (`9df57e3`) |
 | proyecto-persistencia | ✅ Todos cumplidos | sin hallazgos |
 
 **Hallazgo principal:** los filtros de POV/tense del outline fueron removidos deliberadamente en el
