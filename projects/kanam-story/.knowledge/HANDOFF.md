@@ -61,9 +61,19 @@ Sesión de cierre del bloque post-v0.16.1 + release v0.17.0 + smoke tests de acc
 **Tests:** 382 (subió de 379, +3 tests de los fixes). Build + tsc + lint verdes.
 
 ## Next steps
-1. **Rediseñar los filtros de outline por POV/tense** (removidos en `4349401` - el modelo era defectuoso). Pendiente de diseño.
-2. **Generalizar el BYOK** a cualquier endpoint OpenAI-compatible (preparación para SaaS).
-3. **Futuro:** backend + auth + billing (Supabase), sync IndexedDB ↔ nube, activar el feature flag del co-writer.
+1. **Seguir en local** - Kanam Story NO será open source (decisión 2026-08-17). Se trabaja en local hasta el salto a la nube.
+2. **Salto a la nube (planificado, no ejecutar aún)** - ver `ROADMAP-NUBE.md`: DB → Supabase, middleware, login, después Vercel.
+3. **Rediseñar los filtros de outline por POV/tense** (removidos en `4349401` - el modelo era defectuoso). Pendiente de diseño.
+4. **Generalizar el BYOK** a cualquier endpoint OpenAI-compatible (preparación para SaaS).
+
+## Roadmap a la nube (planificado 2026-08-17)
+
+> Referencia futura en `ROADMAP-NUBE.md`. No se ejecuta hasta que Gonzo lo indique.
+
+1. **Pasar las bases de datos a Supabase** (migrar IndexedDB → Postgres). Decisión pendiente: ¿reemplazo o convivencia con sync?
+2. **Crear el middleware** (API/Edge Functions que conectan frontend con Supabase).
+3. **Modo login** (Supabase Auth: registro, login, sesión, multi-usuario).
+4. **Después:** Vercel para deploy, monetización.
 
 ## Auditorías de OpenSpec (2026-08-17) - 9 specs, TODAS COMPLETAS, fixes aplicados
 

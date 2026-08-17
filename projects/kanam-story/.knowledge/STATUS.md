@@ -19,6 +19,11 @@
 - [x] **Specs + auditorías de Personajes, Mundo y Brainstorm** (2026-08-17): todos cumplidos, sin hallazgos.
 - [ ] **Filtros de outline por POV/tense** - pendiente de rediseño (removidos en `4349401`, el modelo era defectuoso).
 
+## Decisión: NO open source + roadmap a la nube (2026-08-17)
+
+- **Kanam Story NO será open source.** Se trabaja en local hasta el salto a la nube.
+- **Roadmap a la nube planificado** (referencia futura en `ROADMAP-NUBE.md`): DB → Supabase, middleware, login, después Vercel. No se ejecuta hasta que Gonzo lo indique.
+
 ## Fase A - Cerrar el producto local (2026-08-17)
 
 - [x] **Release v0.17.0** — bump + CHANGELOG + tag + GitHub Release. Cierra el bloque post-v0.16.1 (roles, PWA, mobile, a11y, export). Commit `cb80bdc`.
