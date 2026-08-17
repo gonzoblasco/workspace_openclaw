@@ -4,7 +4,7 @@
 - **Date:** 2026-08-16 18:25
 - **Project:** kanam-story
 - **Branch:** main
-- **Release:** v0.15.2 publicado y pusheado (sidebar de co-writer desde la escritura, contexto acotado a la escena actual).
+- **Release:** v0.16.0 publicado y pusheado (sidebar de co-writer desde la escritura, contexto acotado a la escena actual).
 
 ## Summary
 Completed U3 chat-assisted global outline generation and shipped Kanam Story v0.10.0. The post-v0.9.0 feature block (global outline view, automatic global outline generation, chat-assisted outline replacement, collapsible manuscript tree, session persistence, tree a11y, and OutlineView refactor) is now closed.
