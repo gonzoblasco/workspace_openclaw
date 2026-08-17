@@ -1,8 +1,8 @@
 # Plan U3 — Chat-assisted global outline generation
 
 **Proyecto:** Kanam Story  
-**Estado:** planificación lista para ejecutar  
-**Dependencias:** U1 (vista global de outline) y U2 (generación automática de estructura global) completadas y pusheadas.
+**Estado:** ✅ U3 completada y liberada en v0.10.0. U4 (panel de escenas huérfanas) completada y liberada en v0.11.0.  
+**Dependencias:** U1 y U2 completadas. U3 implementó `replace_outline`. U4 agregó UI para escenas huérfanas resultantes.
 
 ---
 
@@ -102,6 +102,33 @@ Renderizar una propuesta `replace_outline` como preview:
 - Deshacer (botón global o por acción) restaura el outline anterior.
 - 316+ tests, build + TS + lint verdes.
 - a11y: preview navegable por teclado, botones con labels descriptivos, anuncio de éxito/error vía live region.
+
+---
+
+## U4 — Panel de escenas huérfanas (v0.11.0)
+
+Las escenas con `chapterId: ''` tras `replace_outline` quedan huérfanas. U4 agrega un panel global "Escenas sin capítulo" en el outline que permite:
+
+- Mover la escena a un capítulo existente (`updateScene`).
+- Mover la escena y crear un beat vinculado (`updateScene` + `createBeat`).
+- Abrir la escena en el editor (`selectScene` + `setView('editor')`).
+- Eliminar la escena (`deleteScene` con confirmación).
+
+### Archivos nuevos
+- `components/OrphanScenesPanel.tsx`
+
+### Archivos modificados
+- `components/OutlineView.tsx`: renderiza `OrphanScenesPanel` en modo global.
+- `components/OutlineView.test.tsx`: tests de movimiento, vinculación, eliminación y apertura.
+
+### Tests
+- 321 tests pasan (se agregaron 5 tests nuevos).
+
+### a11y
+- Panel como `<section aria-label="Escenas sin capítulo">`.
+- Cada `<select>` y `<button>` tiene `aria-label` descriptivo.
+- Iconos decorativos con `aria-hidden="true"`.
+- Checklist de auditoría manual en artifact `Kanam Story U4 - Panel de escenas huérfanas - a11y audit checklist`.
 
 ---
 
