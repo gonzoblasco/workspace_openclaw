@@ -2,9 +2,26 @@
 
 **Actualizado:** 2026-08-17
 
-## Estado: 🟢 v0.16.1 + bloque de features post-release completado (377 tests)
+## Estado: 🟢 v0.17.0 + Fase A completa (379 tests)
 
-> **Nota de versionado:** el proyecto sigue en fase 0.x (pre-producción). La versión actual del package es `0.16.1`. El bloque de features de hoy (a11y, mobile, PWA, export, co-writer) no tiene bump de versión todavía — considerar un release al cerrar el ciclo.
+> **Fase A (cerrar el producto local) COMPLETA 2026-08-17:** release v0.17.0, smoke tests de acciones nuevas (3/3 OK), WelcomeScreen onboarding, README BYOK actualizado. El co-writer sigue habilitado en open source (feature flag diseñado pero revertido hasta que exista el SaaS backend).
+
+## Fase A - Cerrar el producto local (2026-08-17)
+
+- [x] **Release v0.17.0** — bump + CHANGELOG + tag + GitHub Release. Cierra el bloque post-v0.16.1 (roles, PWA, mobile, a11y, export). Commit `cb80bdc`.
+- [x] **Smoke tests de acciones nuevas** — `scripts/smoke-actions.ts` valida `delete_character`, `delete_world`, `update_project` con Ollama real. **3/3 OK.**
+- [x] **WelcomeScreen onboarding** — pantalla de bienvenida cuando no hay proyectos (explica co-writer, outline, biblia, brújula + botón crear primer proyecto). `components/WelcomeScreen.tsx` + 2 tests. Commit `e45448d`.
+- [x] **README BYOK** — status v0.17.0, sección BYOK (Ollama + cualquier endpoint OpenAI-compatible), 379 tests, TODO corregido. Commit `fb7381d`.
+- [x] **Feature flag del co-writer (diseñado, revertido)** — `NEXT_PUBLIC_ENABLE_COWRITER` en `lib/features.ts` (commit `2f5130e`), **revertido** por `8eb6275` por decisión de Gonzo: el co-writer sigue en open source hasta que exista el backend SaaS con usuarios.
+
+## Estrategia de monetización (definida con Gonzo)
+
+**3 públicos que conviven:**
+1. **Open source (gratis, local-first)** — producto completo, BYOK → Ollama. Embajador de marca + portfolio.
+2. **SaaS BYOK (5 USD/mes)** — mismo producto + sync en la nube + multi-dispositivo + registro. El usuario trae su LLM (OpenAI-compatible).
+3. **SaaS premium (con LLM incluido)** — DeepSeek V4 Flash server-side. Más caro.
+
+**Bonus de pago:** el co-writer (el corazón) es exclusivo de pago. El open source conserva el producto de escritura completo pero sin el chat con manos. **Se activa cuando exista el backend + auth + billing.**
 
 ## Bloque de features 2026-08-17 (completado)
 

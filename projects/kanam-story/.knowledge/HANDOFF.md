@@ -1,63 +1,45 @@
 # HANDOFF — kanam-story
 
 ## Session Context
-- **Date:** 2026-08-17 13:30
+- **Date:** 2026-08-17 16:51
 - **Project:** kanam-story
 - **Branch:** main
-- **Release:** v0.16.1 + bloque de features post-release (sin bump de versión)
+- **Release:** v0.17.0
 
 ## Summary
-Sesión larga de cierre del bloque post-v0.9.0 + avance de features. Se resolvieron los dolores pendientes del inventario y se expandió el co-writer. El proyecto quedó en **377 tests** (subió de 366). Todos los pendientes del daily previo están resueltos.
+Sesión de cierre del bloque post-v0.16.1 + release v0.17.0 + smoke tests de acciones nuevas. El proyecto quedó en **377 tests**. Se definió la estrategia de monetización (3 públicos) y se diseñó el feature flag del co-writer (revertido por ahora).
 
-## Qué se hizo en esta sesión (13 commits)
+## Qué se hizo en esta sesión
 
-### a11y
-- **`58a6706`** — `--sl-danger` en tema claro de 2.78:1 → 5.22:1 (WCAG AA).
-- **`f53a7e1`** — `ConfirmDialog` + `PromptDialog` reemplazan los 12 `window.prompt`/`confirm` nativos en 7 componentes (foco gestionado, aria-modal, Escape).
-- **`e26c3d6`** — Fix lint: `useId()` + input no controlado (10 errores ESLint → 0).
+### Release v0.17.0
+- **`cb80bdc`** — bump a v0.17.0 + CHANGELOG + tag + GitHub Release. Cierra el bloque post-v0.16.1: roles especializados (Plot Doctor, Consistency Checker), PWA, mobile responsive, diálogos accesibles (ConfirmDialog/PromptDialog), export polish.
 
-### Mobile responsive (≤768px)
-- **`164a406`** — Sidebar como drawer overlay con backdrop + topbar compacto (solo iconos).
-- **`140616f`** — Padding reducido (main-content/editor/stack-section) + co-writer full-width.
-- **`ea915cf`** — Modales full-width + ai-bar apilado + chapter reader compacto.
+### Smoke tests de acciones nuevas
+- **`scripts/smoke-actions.ts`** (nuevo) — valida con Ollama real que el modelo parsea `delete_character`, `delete_world`, `update_project`. **3/3 OK** (todas las acciones parseadas y válidas). El modelo además responde con criterio (avisa consecuencias, pregunta por referencias).
 
-### PWA
-- **`f3e41a7`** — Soporte PWA con Serwist (`@serwist/turbopack`): SW compilado en build via route handler (`/serwist/sw.js`), manifest, página offline (`/~offline`), SerwistProvider.
-- **`6a01623`** — Iconos PWA reales (gradiente morado + K blanca, generados con PIL).
+### Feature flag del co-writer (diseñado, revertido)
+- **`2f5130e`** — feature flag `NEXT_PUBLIC_ENABLE_COWRITER` en `lib/features.ts` (co-writer deshabilitado en open source).
+- **`8eb6275`** — **REVERTIDO** por decisión de Gonzo: el co-writer sigue habilitado en open source hasta que exista el backend SaaS con usuarios. El flag queda documentado en el historial de git para recuperarlo cuando toque.
 
-### Export
-- **`3c1c012`** — Portada con metadata narrativa (POV + estilo) + pie con word count. `countWords()` pura y testeada.
+## Estrategia de monetización (definida con Gonzo)
 
-### Co-writer (U5+)
-- **`f5ee579`** — Nuevas acciones: `delete_character`, `delete_world` (destructivas), `update_project` (refina metadata del proyecto).
-- **`f68aff9`** — Roles especializados: selector en el sidebar (Co-writer / Plot Doctor / Consistency Checker) que especializa el prompt via `buildAgentPrompt(role)` + `settings.agentRole`.
-- **`912db24`** — Smoke test de roles (`scripts/smoke-roles.ts`), verificado con deepseek-v4-flash:cloud.
+**3 públicos que conviven:**
+1. **Open source (gratis, local-first)** — el producto completo, BYOK → Ollama. Embajador de marca + portfolio.
+2. **SaaS BYOK (5 USD/mes)** — mismo producto + sync en la nube + multi-dispositivo + registro. El usuario trae su LLM (OpenAI-compatible).
+3. **SaaS premium (con LLM incluido)** — DeepSeek V4 Flash server-side. Más caro.
 
-### Validación AT manual
-- **Verificada por Gonzo** con VoiceOver (live region del chat + radio group del onboarding). Cierra pendiente del PLAN-FASE-4.md.
-
-## What changed (archivos clave)
-- `lib/export.ts` — metadata narrativa + word count + `countWords`.
-- `lib/actions.ts` — cases `delete_character`, `delete_world`.
-- `lib/agentReply.ts` — validación de las 3 acciones nuevas + `POV_VALUES`.
-- `lib/agentPrompts.ts` — `buildAgentPrompt(role)` + `buildRoleIntro` (roles especializados).
-- `lib/store.tsx` — handlers de las 3 acciones + deps.
-- `lib/actionTargets.ts` — navegación contextual de las acciones nuevas.
-- `components/ConfirmDialog.tsx`, `PromptDialog.tsx` (nuevos).
-- `components/CoWriterSidebar.tsx` — selector de rol.
-- `app/layout.tsx`, `next.config.ts`, `app/sw.ts`, `app/serwist/[path]/route.ts`, `app/~offline/`, `app/manifest.json`, `public/icon-*.png` — PWA.
-- `scripts/smoke-roles.ts` (nuevo) — smoke test de roles.
+**Bonus de pago:** el co-writer (el corazón) es exclusivo de pago. El open source conserva el producto de escritura completo (editor, Story Bible, outline, export, PWA) pero sin el chat con manos. **Se activa cuando exista el backend + auth + billing.**
 
 ## Quality baseline
-- **377 tests passing** (subió de 366).
-- `npm run build`, `npx tsc --noEmit`, `npm run lint` (ESLint) verdes.
+- **377 tests passing.**
+- `npm run build`, `npx tsc --noEmit`, `npm run lint` verdes.
 
 ## Next steps
-1. **Smoke tests con Ollama** de los flujos de las acciones nuevas (`delete_character`, `update_project`) si se quiere validar el parseo con el modelo real.
-2. Considerar **bump de versión** (el bloque de features post-v0.16.1 no tiene release).
-3. Futuro: multi-usuario/sync (pendiente de largo plazo), mocks de tests frágiles.
+1. **Generalizar el BYOK** a cualquier endpoint OpenAI-compatible (preparación para SaaS).
+2. **Futuro:** backend + auth + billing (Supabase), sync IndexedDB ↔ nube, activar el feature flag del co-writer.
+3. **Fase A completa:** release v0.17.0 + smoke tests de acciones + WelcomeScreen onboarding + README BYOK. 379 tests.
 
 ## Open questions / caveats
+- El feature flag del co-writer está en el historial de git (`2f5130e`), revertido por `8eb6275`. Recuperar cuando exista el SaaS.
 - Los mocks de tests usan `as MockApp` tipado; al agregar campos nuevos al store hay que actualizarlos.
 - Al cambiar la firma de `applyContentActions` (ahora devuelve `{undo, failed}`), cualquier nuevo caller debe adaptarse.
-- El selector de rol del co-writer es un `<select>` simple; si crece, evaluar UI más rica (chips/tabs).
