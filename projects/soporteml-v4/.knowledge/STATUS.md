@@ -14,7 +14,18 @@
 - [x] **Enriquecer el mock** - 13 preguntas (antes 6), 6 productos (antes 3), varias por producto, producto sin preguntas activas
 - [x] **Agregar tests del API** - 14 tests que cubren health, auth, sync, multi-tenant, publish, idempotencia, productos, IA, billing
 - [x] **Arrancar la UI** (el corazón que le da vida al cuerpo) - layout + bandeja reconstruidos con identidad V4
+- [x] **Slice 1 funcional: Plantillas de respuesta** - CRUD completo (repo, API, UI) + tests
 - [ ] Definir el pipeline A/B para este proyecto
+
+## Slice 1 funcional: Plantillas (2026-08-17)
+
+Primera feature funcional desbloqueada (el schema ya la modelaba):
+- ✅ `packages/db/src/repo/templates.ts` - CRUD de plantillas (create, list, getById, update, delete)
+- ✅ Endpoints API: GET/POST /templates, PUT/DELETE /templates/:id (con multi-tenant)
+- ✅ UI: vista de Plantillas en el sidebar (crear, listar, editar, eliminar)
+- ✅ 2 tests nuevos (16 total): CRUD completo + 404 multi-tenant
+- ✅ Verificado en browser: crear plantilla funciona, aparece en la lista
+- Commit `d7ab261` en soporteml-v3
 
 ## UI V4 arrancada (2026-08-17)
 
