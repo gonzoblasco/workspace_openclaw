@@ -61,9 +61,25 @@ Sesión de cierre del bloque post-v0.16.1 + release v0.17.0 + smoke tests de acc
 **Tests:** 382 (subió de 379, +3 tests de los fixes). Build + tsc + lint verdes.
 
 ## Next steps
-1. **Auditar los otros specs** (editor, outline, biblia, brújula, persistencia) contra el comportamiento real.
+1. **Aplicar los fixes pendientes de las auditorías** (hallazgos menores: contador del editor, commit de brújula, filtros de outline pendientes de rediseño).
 2. **Generalizar el BYOK** a cualquier endpoint OpenAI-compatible (preparación para SaaS).
 3. **Futuro:** backend + auth + billing (Supabase), sync IndexedDB ↔ nube, activar el feature flag del co-writer.
+
+## Auditorías de OpenSpec (2026-08-17) - TODAS COMPLETAS
+
+> Cada auditoría en `openspec/audits/`. Resumen:
+
+| Spec | Resultado | Hallazgos |
+|---|---|---|
+| co-writer | 4 hallazgos, **TODOS APLICADOS** (`f618a38`) | IDs, inContext, brújula, continuidad |
+| editor | ✅ Todos cumplidos | 1 menor (contador duplicado) |
+| outline-beats | 5/6 cumplidos | ❌ filtros POV/tense REMOVIDOS (`4349401`) |
+| biblia-viva | ✅ Todos cumplidos | sin hallazgos |
+| brújula-narrativa | ✅ Todos cumplidos | 1 menor (commit textareas onBlur) |
+| proyecto-persistencia | ✅ Todos cumplidos | sin hallazgos |
+
+**Hallazgo principal:** los filtros de POV/tense del outline fueron removidos deliberadamente en el
+refactor `4349401` (el modelo de filtrado era defectuoso). Spec actualizado a "pendiente de rediseño".
 
 ## Open questions / caveats
 - El feature flag del co-writer está en el historial de git (`2f5130e`), revertido por `8eb6275`. Recuperar cuando exista el SaaS.
