@@ -40,9 +40,32 @@ cd apps/web && pnpm dev
 
 Abrir http://localhost:5173 → "Entrar (modo demo)" → Sincronizar → ver 13 preguntas con color por categoría → Responder.
 
+## Estado - Sesión 2026-08-18
+
+### Las 7 features core del schema están implementadas (todas verificadas en browser)
+
+1. **Plantillas** - CRUD + conectadas al flujo de responder (insertar en el input).
+2. **KB gestión** - CRUD de artículos con chunking.
+3. **KB RAG** - búsqueda semántica con embeddings (Ollama all-minilm), discrimina bien entre 4 artículos.
+4. **Autopilot** - responde automáticamente por categoría + umbral de confianza.
+5. **Clientes (CRM)** - notas + tags.
+6. **Métricas** - dashboard de KPIs, top productos, ventas.
+7. **SLA** - detección de consultas vencidas + banner en Inbox + configuración en Ajustes.
+
+### SLA (slice 7, commits `641f94f` + `037f0f8`)
+- **`sla-service.ts`** - detección NO destructiva (`detect`) + marcado explícito (`markAlerted`).
+- **Bug crítico resuelto:** el check destructivo original rompía el banner con StrictMode (la 1ra llamada al load marcaba la pregunta, la 2da la limpiaba). La detección no destructiva resuelve el race condition.
+- **Endpoints:** `GET /sla/alerts` (detecta, no marca) + `POST /sla/mark-alerted` (marca explícito).
+- **UI:** sección SLA en Ajustes (target min, escalación, emails) + banner de alertas en Inbox.
+- **Tests:** 2 nuevos (26 total). Verificado en browser: banner "1 consulta vencida por SLA - Comprador (55 min)".
+
+### Pre-commit hooks agregados
+- **`simple-git-hooks`** con pre-commit que corre `pnpm test` (commit `037f0f8`).
+- **Nota:** el script `lint` está roto en los 3 paquetes (ESLint no está instalado como dependencia). No se incluyó en el hook. Pendiente: instalar ESLint o migrar a Biome.
+
 ## Dónde está cada cosa
 
-- **Código:** repo `gonzoblasco/soporteml-v3` (V4 se construye sobre v3, no es repo nuevo). Últimos commits: `d0b3f7f` (mock + tests + refactor), `a930cb9` (UI V4).
+- **Código:** repo `gonzoblasco/soporteml-v3` (V4 se construye sobre v3, no es repo nuevo). Últimos commits: `641f94f` (SLA), `037f0f8` (pre-commit hooks).
 - **Memoria institucional:** `projects/soporteml-v4/.knowledge/` (BRIEF, PLAN, STATUS, ADR-001, BACKEND-VERIFICADO, LEARNINGS).
 - **Mockup de identidad:** `projects/soporteml-v4/mockups/identidad-v4.html`.
 - **ADRs:** `docs/adr/ADR-030-lucide-iconos-base.md` (workspace), `projects/soporteml-v4/.knowledge/ADR-001-identidad-visual.md`.
@@ -51,11 +74,14 @@ Abrir http://localhost:5173 → "Entrar (modo demo)" → Sincronizar → ver 13 
 
 - [ ] **Validación visual de Gonzo** - que vea la app corriendo y ajuste colores/espaciado/tipografía.
 - [ ] **Definir el pipeline A/B** - la metodología de Kanam Story (agente A desarrolla unidades impares, B pares, cross-review a11y).
-- [ ] **Desbloquear features** que el schema ya modela: KB (RAG), autopilot, SLA, plantillas, clientes, métricas.
-- [ ] **Validar integraciones restantes:** Mercado Pago (nunca probado), email (Resend).
+- [ ] **Arreglar el lint** - ESLint no está instalado en los 3 paquetes (script `lint` roto).
+- [ ] **Validar integraciones restantes:** Mercado Pago (nunca probado), email (Resend), OAuth MeLi (túnel cloudflared temporal).
+- [ ] **Ajuste fino RAG:** subir minScore (0.2) o filtrar por similitud mínima para consultas sin match.
+- [ ] **Code-splitting** - warning de chunk > 500kB.
 
 ## Notas de decisión
 
 - "adelante" a secas = seguir con mi recomendación según el contexto (regla acordada).
 - El ecosistema de MDs es un sistema vivo: no fijar todas las fases con anticipación, definir la fase actual y evolucionar.
 - V4 se construye sobre el repo de v3 (no es repo nuevo) - el backend es el activo valioso.
+- **Lección SLA:** el check destructivo (marca al detectar) rompe con React StrictMode (doble mount del load). Separar detección (no destructiva) de marcado (explícito).

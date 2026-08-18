@@ -427,3 +427,22 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - En Tailwind 4, `@theme` con valores directos (no `var()`) genera las utilidades. `@theme inline` con `var()` de referencia NO genera utilidades de color.
 - El `tailwind.config.ts` con `theme.extend` vacío puede interferir con el `@theme` del CSS en Tailwind 4 - si no se necesita, eliminarlo.
 - **Diagnóstico rápido:** `grep -o "\.bg-primary{[^}]*}" .next/**/*.css` - si no aparece, el pipeline de Tailwind no está generando utilidades.
+
+## 2026-08-17 - Dockerizar un stack cloud manteniendo la interfaz (Kanam Forge Fase 1)
+
+**Context:** Kanam Forge (fork de freestyle-sh/Adorable) es un orquestador de agentes cuyo sandbox depende de la nube de Freestyle. Para hacerlo self-hosted, había que reemplazar ese sandbox cloud por Docker local sin reescribir el agente.
+
+**El hallazgo clave - el acoplamiento cloud estaba contenido en 3 archivos:**
+- `adorable-vm.ts`, `repo-storage.ts`, `chat/route.ts`. La UI (preview, terminales) es agnóstica - solo consume URLs. No había acoplamiento diseminado por el codebase.
+- Las tools del agente usan `vm.exec()` + `vm.fs.*`. Un adaptador Docker con la MISMA interfaz reemplaza el sandbox sin tocar las tools.
+
+**Lección - antes de desacoplar, medir el acoplamiento real:**
+- No asumir que un servicio cloud está enredado en todo el codebase. Buscar los puntos de contacto exactos (grep de las llamadas a la API cloud / al sandbox). Si el acoplamiento está contenido en pocos archivos, un adaptador con interfaz equivalente permite reemplazar el backend sin tocar el consumidor.
+- La interfaz de las tools (`vm.exec()`, `vm.fs.*`) es el contrato. Mientras el adaptador Docker la implemente, el agente no se entera del cambio de backend. Diseñar el adaptador contra la interfaz, no contra la implementación cloud.
+- Verificar el acoplamiento ANTES de planificar el refactor: el costo del desacople es proporcional a cuántos archivos tocan el backend cloud, no al tamaño total del proyecto.
+
+**Self-reflection:**
+- CONTEXT: desacople cloud → Docker de un stack de agentes
+- REFLECTION: el análisis de arquitectura previo (localizar los 3 archivos de acoplamiento) hizo que el desacople fuera un cambio acotado, no una reescritura.
+- LESSON: medir el acoplamiento real (archivos que tocan el backend cloud) antes de planificar la dockerización; la interfaz de las tools es el contrato que permite el reemplazo limpio.
+- BIASES DETECTED: none (el análisis de arquitectura precedió a la ejecución).
