@@ -1,10 +1,10 @@
 # SoporteML v4 - STATUS
 
-**Actualizado:** 2026-08-17
+**Actualizado:** 2026-08-18
 
-## Estado: 🟡 REINICIO - Fase 0 en curso
+## Estado: 🟢 FASE 0 COMPLETA - Fase 1 (pulido + integraciones) en curso
 
-## Fase 0 - Fundamentos del reinicio
+## Fase 0 - Fundamentos del reinicio (COMPLETA)
 
 - [x] Crear `.knowledge/` de V4 (BRIEF, PLAN, STATUS)
 - [x] **Decidir la identidad visual de V4** - dirección híbrido oscuro + color por categoría (ADR-001)
@@ -12,7 +12,7 @@
 - [x] Iconografía Lucide incorporada al mockup (ADR-030, workspace)
 - [x] **Verificar que el backend de v3 funciona** - verificado de punta a punta (`BACKEND-VERIFICADO.md`)
 - [x] **Enriquecer el mock** - 13 preguntas (antes 6), 6 productos (antes 3), varias por producto, producto sin preguntas activas
-- [x] **Agregar tests del API** - 14 tests que cubren health, auth, sync, multi-tenant, publish, idempotencia, productos, IA, billing
+- [x] **Agregar tests del API** - 26 tests que cubren health, auth, sync, multi-tenant, publish, idempotencia, productos, IA, billing, plantillas, KB, autopilot, clientes, métricas, SLA
 - [x] **Arrancar la UI** (el corazón que le da vida al cuerpo) - layout + bandeja reconstruidos con identidad V4
 - [x] **Slice 1 funcional: Plantillas de respuesta** - CRUD completo (repo, API, UI) + tests
 - [x] **Plantillas conectadas al flujo de responder** - insertar plantilla en la respuesta desde la bandeja
@@ -22,7 +22,19 @@
 - [x] **Clientes (CRM)** - compradores con notas + tags + historial
 - [x] **Métricas** - dashboard de ventas/consultas (la última feature core del schema)
 - [x] **Validar el RAG con más artículos** - discrimina correctamente entre 4 categorías
-- [ ] Definir el pipeline A/B para este proyecto
+- [x] **SLA** - detección de consultas vencidas + banner en Inbox + configuración en Ajustes
+- [x] **Lint arreglado** - ESLint flat config (TS + React), 0 errores
+- [x] **Pre-commit hooks** - simple-git-hooks con `pnpm lint && pnpm test`
+- [x] **Definir el pipeline A/B** (`PIPELINE-AB.md`)
+
+## Fase 1 - Pulido + integraciones (EN CURSO)
+
+- [ ] U1 - Ajuste fino RAG (minScore) - Agente A
+- [ ] U2 - Code-splitting (chunk > 500kB) - Agente B
+- [ ] U3 - Validación visual de Gonzo - Orquestador
+- [ ] U4 - Email (Resend) - Agente B
+- [ ] U5 - Mercado Pago (billing real) - Agente A
+- [ ] U6 - OAuth MeLi real (túnel persistente) - Agente B
 
 ## Validación del RAG con más artículos (2026-08-17)
 

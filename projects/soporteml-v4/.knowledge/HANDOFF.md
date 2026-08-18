@@ -64,6 +64,11 @@ Abrir http://localhost:5173 → "Entrar (modo demo)" → Sincronizar → ver 13 
 - **Lint arreglado:** el script `lint` estaba roto (ESLint no instalado). Agregué ESLint 10 + typescript-eslint 8 + plugins React con flat config (`eslint.config.js`). 0 errores, 4 warnings (react-refresh en componentes shadcn/ui, patrón estándar).
 - **Nota:** desactivé `react-hooks/set-state-in-effect` y `react-hooks/purity` (reglas nuevas muy estrictas que marcan patrones legítimos de shadcn/ui - media queries, dialogs).
 
+### Pipeline A/B definido (2026-08-18)
+- **`PIPELINE-AB.md`** creado - metodología adaptada de la skill `agent-orchestration-pipeline` (validada en Kanam Story Fase 3).
+- **Fase 0 completa** (7 features core + SLA + lint + hooks + pipeline). **Fase 1 en curso** (pulido + integraciones).
+- **Unidades Fase 1:** U1 RAG minScore (A), U2 code-splitting (B), U3 validación visual (orquestador), U4 email Resend (B), U5 MP billing (A), U6 OAuth MeLi (B).
+
 ## Dónde está cada cosa
 
 - **Código:** repo `gonzoblasco/soporteml-v3` (V4 se construye sobre v3, no es repo nuevo). Últimos commits: `641f94f` (SLA), `037f0f8` (pre-commit hooks).
@@ -73,11 +78,14 @@ Abrir http://localhost:5173 → "Entrar (modo demo)" → Sincronizar → ver 13 
 
 ## Pendientes (próxima sesión)
 
-- [ ] **Validación visual de Gonzo** - que vea la app corriendo y ajuste colores/espaciado/tipografía.
-- [ ] **Definir el pipeline A/B** - la metodología de Kanam Story (agente A desarrolla unidades impares, B pares, cross-review a11y).
-- [ ] **Validar integraciones restantes:** Mercado Pago (nunca probado), email (Resend), OAuth MeLi (túnel cloudflared temporal).
-- [ ] **Ajuste fino RAG:** subir minScore (0.2) o filtrar por similitud mínima para consultas sin match.
-- [ ] **Code-splitting** - warning de chunk > 500kB.
+- [ ] **U1: Ajuste fino RAG** - subir minScore (0.2) o filtrar por similitud mínima para consultas sin match.
+- [ ] **U2: Code-splitting** - resolver warning de chunk > 500kB (lazy load de vistas).
+- [ ] **U3: Validación visual de Gonzo** - que vea la app corriendo y ajuste colores/espaciado/tipografía.
+- [ ] **U4: Email (Resend)** - integrar envío de alertas SLA + notificaciones.
+- [ ] **U5: Mercado Pago** - validar flujo de billing real (nunca probado).
+- [ ] **U6: OAuth MeLi real** - validar flujo con túnel persistente.
+
+Detalle del pipeline A/B y paridad: `PIPELINE-AB.md`.
 
 ## Notas de decisión
 

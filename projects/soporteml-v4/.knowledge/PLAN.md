@@ -25,10 +25,23 @@
 - [x] Mockup de identidad validado por Gonzo (`mockups/identidad-v4.html`)
 - [x] Iconografía Lucide incorporada (ADR-030, workspace)
 - [x] **Verificar que el backend de v3 funciona** - verificado de punta a punta (`BACKEND-VERIFICADO.md`)
-- [ ] **Agregar tests del API** (el backend de v3 no tiene cobertura - hallazgo de la verificación)
-- [ ] Definir el pipeline A/B para este proyecto
+- [x] **Agregar tests del API** (el backend de v3 no tiene cobertura - hallazgo de la verificación)
+- [x] **Definir el pipeline A/B para este proyecto** (`PIPELINE-AB.md`)
 
 **Criterio de salida de Fase 0:** backend verificado + tests del API agregados + identidad visual decidida + pipeline definido. Recién entonces se define la Fase 1 (primer slice del frontend).
+
+## Fase 1 - Pulido + integraciones (EN CURSO)
+
+**Objetivo:** cerrar los pendientes de calidad (RAG, code-splitting) y validar las integraciones reales (email, MP, OAuth MeLi).
+
+### Unidades (pipeline A/B, ver `PIPELINE-AB.md`)
+
+- [ ] U1 - Ajuste fino RAG (minScore) - Agente A
+- [ ] U2 - Code-splitting (chunk > 500kB) - Agente B
+- [ ] U3 - Validación visual de Gonzo - Orquestador
+- [ ] U4 - Email (Resend) - Agente B
+- [ ] U5 - Mercado Pago (billing real) - Agente A
+- [ ] U6 - OAuth MeLi real (túnel persistente) - Agente B
 
 ---
 
