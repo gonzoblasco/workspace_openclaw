@@ -60,8 +60,9 @@ Abrir http://localhost:5173 → "Entrar (modo demo)" → Sincronizar → ver 13 
 - **Tests:** 2 nuevos (26 total). Verificado en browser: banner "1 consulta vencida por SLA - Comprador (55 min)".
 
 ### Pre-commit hooks agregados
-- **`simple-git-hooks`** con pre-commit que corre `pnpm test` (commit `037f0f8`).
-- **Nota:** el script `lint` está roto en los 3 paquetes (ESLint no está instalado como dependencia). No se incluyó en el hook. Pendiente: instalar ESLint o migrar a Biome.
+- **`simple-git-hooks`** con pre-commit que corre `pnpm lint && pnpm test` (commits `037f0f8` + `986027b`).
+- **Lint arreglado:** el script `lint` estaba roto (ESLint no instalado). Agregué ESLint 10 + typescript-eslint 8 + plugins React con flat config (`eslint.config.js`). 0 errores, 4 warnings (react-refresh en componentes shadcn/ui, patrón estándar).
+- **Nota:** desactivé `react-hooks/set-state-in-effect` y `react-hooks/purity` (reglas nuevas muy estrictas que marcan patrones legítimos de shadcn/ui - media queries, dialogs).
 
 ## Dónde está cada cosa
 
@@ -74,7 +75,6 @@ Abrir http://localhost:5173 → "Entrar (modo demo)" → Sincronizar → ver 13 
 
 - [ ] **Validación visual de Gonzo** - que vea la app corriendo y ajuste colores/espaciado/tipografía.
 - [ ] **Definir el pipeline A/B** - la metodología de Kanam Story (agente A desarrolla unidades impares, B pares, cross-review a11y).
-- [ ] **Arreglar el lint** - ESLint no está instalado en los 3 paquetes (script `lint` roto).
 - [ ] **Validar integraciones restantes:** Mercado Pago (nunca probado), email (Resend), OAuth MeLi (túnel cloudflared temporal).
 - [ ] **Ajuste fino RAG:** subir minScore (0.2) o filtrar por similitud mínima para consultas sin match.
 - [ ] **Code-splitting** - warning de chunk > 500kB.
