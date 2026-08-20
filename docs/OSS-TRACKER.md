@@ -7,10 +7,12 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 25 |
+| PRs abiertos | 26 |
 | PRs mergeados | 0 |
 | PRs cerrados sin merge | 2 |
-| Repos con PRs | 13 |
+| Repos con PRs | 15 |
+
+> Aportes 2026-08-20: PR nuevo mui/material-ui #49003 + 4 comentarios técnicos de análisis a11y (react-spectrum x3, mui x1). Repos nuevos: adobe/react-spectrum, mui/material-ui.
 
 ## PR Registry
 
@@ -160,4 +162,27 @@
 |---------|------|---------|
 | **Issue** | - | warn when reasoning tokens spent. Review bot de Vercel addressado. Squash 22 Jul. |
 | **Nuestro PR** | [#17274](https://github.com/vercel/ai/pull/17274) | **waiting_review** |
+
+### adobe/react-spectrum (NUEVO 2026-08-20)
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | [#9556](https://github.com/adobe/react-spectrum/issues/9556) | aria-posinset incorrecto en Pickers con Sections (regresión v1→S2). Comentario técnico con root cause (useOption.ts usa item.index global vs getItemCount). Oferta de PR. |
+| **Comentario** | [comentario](https://github.com/adobe/react-spectrum/issues/9556#issuecomment-5359545324) | Análisis: posinset cuenta section headers, setsize no. Propuesta semántica global. |
+
+| **Issue** | [#10326](https://github.com/adobe/react-spectrum/issues/10326) | Autocomplete: VoiceOver no anuncia opción enfocada. Comentario: portar el live announcer de ComboBox a useAutocomplete. Oferta de PR. |
+| **Comentario** | [comentario](https://github.com/adobe/react-spectrum/issues/10326#issuecomment-5359548673) | Confirmado: useAutocomplete sin live announcer, ComboBox sí. Fix = extraer helper compartido. |
+
+| **Issue** | [#10220](https://github.com/adobe/react-spectrum/issues/10220) | Combobox solo anuncia nombre con VoiceOver. Comentario: gate el announcement solo a cambios de sección (preserva secciones, no interrumpe anuncio nativo por item). Oferta de PR. |
+| **Comentario** | [comentario](https://github.com/adobe/react-spectrum/issues/10220#issuecomment-5359551331) | Solución intermedia: no descartar todo el effect, solo anunciar en isGroupChange. |
+
+### mui/material-ui (NUEVO 2026-08-20)
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | [#48990](https://github.com/mui/material-ui/issues/48990) | docs: aria-hidden contiene focusable en templates carousel (WCAG 4.1.2). PR con tabIndex condicional en slides inactivas. |
+| **Nuestro PR** | [#49003](https://github.com/mui/material-ui/pull/49003) | **open** - MERGEABLE. [docs][templates] Remove focusable links from hidden carousel slides. |
+
+| **Issue** | [#47892](https://github.com/mui/material-ui/issues/47892) | dialog: Narrator lee main page detrás del modal. Comentario técnico: Modal no aplica aria-hidden al contenido exterior (a diferencia de react-spectrum/radix). Oferta de PR. |
+| **Comentario** | [comentario](https://github.com/mui/material-ui/issues/47892#issuecomment-5359555501) | Root cause: focus trap sin aria-hidden del contenido externo. |
 
