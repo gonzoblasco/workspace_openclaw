@@ -464,3 +464,19 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: usé `gh pr list --author` (herramienta de seguimiento) para una tarea de descubrimiento (buscar oportunidades), y me confundió el resultado vacío. Gonzo aclaró: buscar en repos nuevos de terceros, no donde ya trabajamos.
 - LESSON: separar las dos operaciones - seguimiento de PRs propios (por repo, con --author) vs triaje de oportunidades (repos nuevos, sin --author, verificar competencia).
 - BIASES DETECTED: anchoring (me anclé en el workflow de seguimiento de PRs propios y lo apliqué mal a la búsqueda de oportunidades).
+
+## 2026-08-20 - Reviews de bots pueden detectar regresiones reales (no solo P2 de corrección)
+
+**Context:** PR #5551 en mui/base-ui (quitar aria-orientation inválido del rol grid). Mi primer fix eliminó `orientation` del `useListNavigation`, lo que rompía la navegación grid horizontal (flechas izq/der) porque el hook caía al default vertical. El bot Codex (automatizado) lo detectó como P1.
+
+**La lección - contradice parcialmente la nota anterior (2026-07/08) de que los bots solo dan feedback P2:**
+- Los reviews de bots SÍ pueden detectar regresiones funcionales reales, no solo correcciones cosméticas. En este caso, el bot notó que quitar una prop afectaba la navegación además del atributo.
+- El fix correcto: **separar navegación de atributo ARIA**. Mantener `orientation: 'horizontal'` para la navegación, pero suprimir solo el `aria-orientation` del DOM cuando el rol no lo soporta (`delete merged['aria-orientation']`). No eliminar la prop entera.
+
+**Regla práctica:** al tocar una prop que alimenta un hook de navegación/behavior, verificar si esa prop también genera atributos de salida. Eliminar la prop puede romper el behavior además de quitar el atributo. La solución correcta es suprimir solo el atributo de salida, no la prop de entrada.
+
+**Self-reflection:**
+- CONTEXT: fix de aria-orientation en base-ui grid
+- REFLECTION: mi primer approach (quitar orientation) era demasiado amplio - rompía la navegación. El bot lo detectó y la corrección (suprimir solo el atributo) fue la correcta.
+- LESSON: los reviews de bots merecen lectura técnica, no descarte ni aceptación ciega. Y al modificar props de hooks de navegación, separar behavior de atributos de salida.
+- BIASES DETECTED: anchoring (me anclé en "el atributo es inválido" y eliminé la fuente completa, sin considerar que también alimentaba la navegación).
