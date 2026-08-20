@@ -446,3 +446,21 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el análisis de arquitectura previo (localizar los 3 archivos de acoplamiento) hizo que el desacople fuera un cambio acotado, no una reescritura.
 - LESSON: medir el acoplamiento real (archivos que tocan el backend cloud) antes de planificar la dockerización; la interfaz de las tools es el contrato que permite el reemplazo limpio.
 - BIASES DETECTED: none (el análisis de arquitectura precedió a la ejecución).
+
+## 2026-08-20 - Buscar oportunidades OSS ≠ revisar mis PRs (repos nuevos de terceros)
+
+**Context:** Sesión de OSS. Gonzo pidió "buscar issues/PRs en los que aportar". Arranqué mal: usé `gh pr list --author gonzoblasco --state open` que devolvió `[]` y me confundió. Gonzo corrigió: la búsqueda de oportunidades NO debe usar `--author` ni mirar mis forks/repos - debe ir a repos NUEVOS de terceros.
+
+**La distinción clave (dos usos distintos de `gh`):**
+- **Revisar MIS PRs** (seguimiento): iterar repo por repo con `gh pr list --repo <org/repo> --author gonzoblasco` (los repos donde ya tengo PRs abiertos).
+- **Buscar OPORTUNIDADES** (triaje): NUNCA con `--author`. Triajear issues de repos NUEVOS de terceros con `gh issue list --repo <org/repo> --label accessibility`, y verificar que no haya PR competidor (`gh search prs --repo <org/repo> "#<issue>" --state open`) antes de invertir tiempo.
+
+**Regla de repos:** buscar en repos donde NO hemos trabajado. Ya trabajamos en: astryx, radix-ui, shadcn-ui, TanStack (router/query), vercel/ai, zod, payloadcms, nextra, google/skills, ibelick/ui-skills, hallmark, carbon-design-system, swift-testing, javascript-algorithms, supabase, ariakit, dub. Repos nuevos buenos para el perfil (React/TS + a11y): adobe/react-spectrum (GOLD: a11y es el core), mui/material-ui, mui/base-ui, elastic/eui, microsoft/fluentui.
+
+**Lección:** para encontrar oportunidades de contribución, mirar hacia afuera (repos nuevos de terceros, issues sin competencia), no hacia adentro (mis propios forks/PRs). El `gh pr list --author` sirve para seguimiento de lo que ya existe, no para descubrir qué aportar.
+
+**Self-reflection:**
+- CONTEXT: búsqueda de oportunidades OSS
+- REFLECTION: usé `gh pr list --author` (herramienta de seguimiento) para una tarea de descubrimiento (buscar oportunidades), y me confundió el resultado vacío. Gonzo aclaró: buscar en repos nuevos de terceros, no donde ya trabajamos.
+- LESSON: separar las dos operaciones - seguimiento de PRs propios (por repo, con --author) vs triaje de oportunidades (repos nuevos, sin --author, verificar competencia).
+- BIASES DETECTED: anchoring (me anclé en el workflow de seguimiento de PRs propios y lo apliqué mal a la búsqueda de oportunidades).
