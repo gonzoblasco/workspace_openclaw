@@ -7,12 +7,12 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 26 |
+| PRs abiertos | 28 |
 | PRs mergeados | 0 |
 | PRs cerrados sin merge | 2 |
-| Repos con PRs | 15 |
+| Repos con PRs | 17 |
 
-> Aportes 2026-08-20: PR nuevo mui/material-ui #49003 + 4 comentarios técnicos de análisis a11y (react-spectrum x3, mui x1). Repos nuevos: adobe/react-spectrum, mui/material-ui.
+> Aportes 2026-08-20: PRs nuevos react-spectrum #10487 (posinset sections) + base-ui #5551 (aria-orientation grid) + mui #49003 (docs carousel) + 4 comentarios técnicos a11y. Repos nuevos: adobe/react-spectrum, mui/material-ui, mui/base-ui.
 
 ## PR Registry
 
@@ -167,8 +167,8 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | [#9556](https://github.com/adobe/react-spectrum/issues/9556) | aria-posinset incorrecto en Pickers con Sections (regresión v1→S2). Comentario técnico con root cause (useOption.ts usa item.index global vs getItemCount). Oferta de PR. |
-| **Comentario** | [comentario](https://github.com/adobe/react-spectrum/issues/9556#issuecomment-5359545324) | Análisis: posinset cuenta section headers, setsize no. Propuesta semántica global. |
+| **Issue** | [#9556](https://github.com/adobe/react-spectrum/issues/9556) | aria-posinset incorrecto en Pickers con Sections (regresión v1→S2). PR: posinset global consistente con setsize. Fix en useOption + useMenuItem. |
+| **Nuestro PR** | [#10487](https://github.com/adobe/react-spectrum/pull/10487) | **open** - MERGEABLE. fix(react-aria): make aria-posinset global across sections. Helper compartido utils/posinset.ts + test. |
 
 | **Issue** | [#10326](https://github.com/adobe/react-spectrum/issues/10326) | Autocomplete: VoiceOver no anuncia opción enfocada. Comentario: portar el live announcer de ComboBox a useAutocomplete. Oferta de PR. |
 | **Comentario** | [comentario](https://github.com/adobe/react-spectrum/issues/10326#issuecomment-5359548673) | Confirmado: useAutocomplete sin live announcer, ComboBox sí. Fix = extraer helper compartido. |
@@ -185,4 +185,11 @@
 
 | **Issue** | [#47892](https://github.com/mui/material-ui/issues/47892) | dialog: Narrator lee main page detrás del modal. Comentario técnico: Modal no aplica aria-hidden al contenido exterior (a diferencia de react-spectrum/radix). Oferta de PR. |
 | **Comentario** | [comentario](https://github.com/mui/material-ui/issues/47892#issuecomment-5359555501) | Root cause: focus trap sin aria-hidden del contenido externo. |
+
+### mui/base-ui (NUEVO 2026-08-20)
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | [#5548](https://github.com/mui/base-ui/issues/5548) | grid renderiza aria-orientation inválido (rol grid no lo soporta, axe aria-allowed-attr). Fix: no pasar orientation a useListNavigation cuando grid activo. Afecta Combobox + Autocomplete (reusa AriaCombobox). |
+| **Nuestro PR** | [#5551](https://github.com/mui/base-ui/pull/5551) | **open** - MERGEABLE. [combobox] Remove invalid aria-orientation from grid role. |
 
