@@ -1,13 +1,13 @@
 ---
 name: "agent-orchestration-pipeline"
-description: "Orquestar agentes A/B en cadena con cross-review multi-ronda, usando Qwen Code via Ollama como motor, para unidades atomicas con gates de calidad."
+description: "Orquestar agentes A/B en cadena con cross-review multi-ronda, usando Qwen Code (estandar) o Claude Code (alternativo) via Ollama, con modelo dinamico."
 ---
 
 # Agent Orchestration Pipeline
 
 Orquestar multiples agentes implementadores con revision cruzada multi-ronda, coordinados por un agente orquestador, para desarrollar unidades atomicas con gates de calidad en cada etapa.
 
-> **ESTANDAR DE TRABAJO DESDE 2026-08-20:** la forma de programar de ahora en mas es este pipeline con **Qwen Code lanzado via Ollama como el motor de los agentes A/B**. Kanam (orquestador) redacta las tareas, encadena los outputs (pasa el codigo de A a B), verifica y reporta. El desarrollador no escribe prompts de agentes - solo da la meta.
+> **ESTANDAR DE TRABAJO DESDE 2026-08-20:** la forma de programar de ahora en mas es este pipeline con **Qwen Code lanzado via Ollama como el motor de los agentes A/B** (estandar). Desde 2026-08-21, **Claude Code esta disponible como agente alternativo** con el mismo modelo dinamico. Kanam (orquestador) redacta las tareas, encadena los outputs (pasa el codigo de A a B), verifica y reporta. El desarrollador no escribe prompts de agentes - solo da la meta.
 
 ## Motor: Qwen Code via Ollama (spike validado 2026-08-20)
 
@@ -31,10 +31,28 @@ Ejemplo validado: A escribio `sumar()` (bug latente: concatena strings) → B re
 - El orquestador pasa el estado (archivo/codigo) de un agente a otro como contexto en el prompt.
 - Dos instancias paralelas funcionan, PERO el flujo de trabajo estandar es EN CADENA (dependencia de orden: B necesita el output de A).
 
+### Motor alternativo: Claude Code via Ollama (desbloqueado 2026-08-21)
+
+Claude Code tambien puede ser agente implementador/revisor con el mismo modelo dinamico de Ollama. NO usar `ollama launch claude` (roto: pide `--model` para headless pero lo rechaza como "unknown option"). En su lugar, correr Claude Code directo con env vars + modelo dinamico:
+
+```bash
+ANTHROPIC_BASE_URL=http://localhost:11434 \
+ANTHROPIC_AUTH_TOKEN=<cualquier-token> \
+claude -p "<tarea>" --model <modelo>
+```
+
+**Requisitos:**
+1. **Claude Code >= 2.x** (`npm install -g @anthropic-ai/claude-code@latest`). La 0.2.18 crashea con "Expected first content item to be text, but got thinking" porque no maneja el bloque `{type:thinking}` de los modelos de razonamiento. La 2.x lo maneja.
+2. **Env vars:** `ANTHROPIC_BASE_URL=http://localhost:11434` (endpoint Anthropic-compatible de Ollama) + `ANTHROPIC_AUTH_TOKEN` (Ollama no valida el token).
+3. **Modelo dinamico:** `--model <cualquier-modelo-de-ollama>` (deepseek-v4-flash:cloud, kimi-k2.7-code:cloud, etc.).
+4. **Permisos headless:** `~/.claude/settings.json` con `permissions.allow` (Edit, Write, Bash, Read) para auto-aprobar herramientas.
+5. **Warnings cosmeticos:** Claude Code no reconoce modelos custom y emite warnings (unrecognized_model / deprecacion). Ruido, no bloquean.
+
+**Validado (spike 2026-08-21):** Agente A escribio `sumar.js` correcto (conservo comentarios, ejecuto node); Agente B cross-review encontro y corrigio el bug de concatenacion de strings con `Number(a)+Number(b)`. Modelo dinamico con `--model kimi-k2.7-code:cloud` funciono.
+
 ### Limitaciones
-- **Claude Code:** no acepta `--model` por flag CLI (usa `~/.claude/settings.json`). `ollama launch claude` dio errores de sintaxis. Para usarlo, configurar el modelo en settings, no por flag.
 - **OpenCode:** no instalado por defecto. Requiere instalacion si se quiere usar.
-- **Qwen Code es el motor preferido** por su integracion directa con Ollama via flag.
+- **Qwen Code es el motor estandar** por su integracion directa con Ollama via flag (un solo comando). Claude Code queda como alternativa para cuando Qwen se cuelgue (SIGKILL en tareas largas) o para un segundo par de ojos con distinta implementacion de edicion.
 
 ### Verificacion del orquestador
 El orquestador NO solo lanza y lee output: verifica el resultado real (leer archivos creados/editados, correr build/tests/lint) antes de pasar a la siguiente etapa.
@@ -161,7 +179,9 @@ Kanam (este agente, corriendo en OpenClaw) es el orquestador. El flujo de trabaj
 7. **Reportar a Gonzo** el resultado: que se hizo, que se reviso, que quedo pendiente.
 
 ### Pasos tecnicos en OpenClaw
-- Usar `exec` con el comando `ollama launch qwen --model <modelo> -- -p "..." -y` (background o con yieldMs para tareas largas).
+- **Qwen (estandar):** `exec` con `ollama launch qwen --model <modelo> -- -p "..." -y` (background o con yieldMs para tareas largas).
+- **Claude Code (alternativo):** `exec` (pty: true) con `ANTHROPIC_BASE_URL=http://localhost:11434 ANTHROPIC_AUTH_TOKEN=<x> claude -p "..." --model <modelo>`.
+- **Modelo dinamico en ambos:** elegir por tarea via `--model` (deepseek-v4-flash:cloud default, kimi-k2.7-code:cloud cuando se justifica).
 - La redaccion de prompts y el encadenado de outputs es responsabilidad del orquestador, no del desarrollador.
 - Verificar siempre el resultado real (archivos, build, tests) - no confiar solo en el texto de salida del agente.
-- **Nota sobre SIGKILL:** los procesos de Qwen pueden morir (SIGKILL) en tareas largas (~3 min). Para revisiones, usar prompts cortos/concisos para que terminen antes de morir. Si un agente muere a mitad, el orquestador verifica y commitea el trabajo, y relanza la revision con prompt mas corto.
+- **Nota sobre SIGKILL:** los procesos de Qwen pueden morir (SIGKILL) en tareas largas (~3 min). Para revisiones, usar prompts cortos/concisos para que terminen antes de morir. Si un agente muere a mitad, el orquestador verifica y commitea el trabajo, y relanza la revision con prompt mas corto. Claude Code (2.x) tiene mejor manejo de sesiones largas y puede usarse como recurso en estos casos.
