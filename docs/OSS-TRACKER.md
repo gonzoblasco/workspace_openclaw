@@ -7,12 +7,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 28 |
+| PRs abiertos | 26 |
 | PRs mergeados | 0 |
 | PRs cerrados sin merge | 2 |
-| Repos con PRs | 17 |
-
-> Aportes 2026-08-20: PRs nuevos react-spectrum #10487 (posinset sections) + base-ui #5551 (aria-orientation grid) + mui #49003 (docs carousel) + 4 comentarios técnicos a11y. Repos nuevos: adobe/react-spectrum, mui/material-ui, mui/base-ui.
+| Repos con PRs | 14 |
 
 ## PR Registry
 
@@ -156,40 +154,18 @@
 | **Nuestro PR** | [#2243](https://github.com/t3-oss/create-t3-app/pull/2243) | **open** |
 | **Contexto** | - | Abierto 30 Jul. WCAG 4.1.2 fix. |
 
+### trekhleb/javascript-algorithms
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | [#2057](https://github.com/trekhleb/javascript-algorithms/issues/2057) | Return ordered cycle path array instead of parent mapping in detectUndirectedCycle. APPROVED por m-coder567 (Milan Parmar) + COMMENTED positivo por daltino (Dalton Whyte). MERGEABLE, 587 tests. |
+| **Nuestro PR** | [#2198](https://github.com/trekhleb/javascript-algorithms/pull/2198) | **open** |
+| **Contexto** | - | Repo EDUCATIVO (algoritmos y estructuras de datos con explicaciones, para preparacion de entrevistas). Los PRs son contribuciones de aprendizaje, no fixes de produccion. 100+ PRs abiertos es la naturaleza del repo (popular, muchos contributors). El maintainer mergea en batches a su ritmo, sin urgencia. PR bien hecho, aprobado, mergeable. Se agradecio a los reviewers por nombre (Milan y Dalton). |
+
 ### vercel/ai
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
 | **Issue** | - | warn when reasoning tokens spent. Review bot de Vercel addressado. Squash 22 Jul. |
 | **Nuestro PR** | [#17274](https://github.com/vercel/ai/pull/17274) | **waiting_review** |
-
-### adobe/react-spectrum (NUEVO 2026-08-20)
-
-| Eslabón | Link | Detalle |
-|---------|------|---------|
-| **Issue** | [#9556](https://github.com/adobe/react-spectrum/issues/9556) | aria-posinset incorrecto en Pickers con Sections (regresión v1→S2). PR: posinset global consistente con setsize. Fix en useOption + useMenuItem. |
-| **Nuestro PR** | [#10487](https://github.com/adobe/react-spectrum/pull/10487) | **open** - MERGEABLE. fix(react-aria): make aria-posinset global across sections. Helper compartido utils/posinset.ts + test. |
-
-| **Issue** | [#10326](https://github.com/adobe/react-spectrum/issues/10326) | Autocomplete: VoiceOver no anuncia opción enfocada. Comentario: portar el live announcer de ComboBox a useAutocomplete. Oferta de PR. |
-| **Comentario** | [comentario](https://github.com/adobe/react-spectrum/issues/10326#issuecomment-5359548673) | Confirmado: useAutocomplete sin live announcer, ComboBox sí. Fix = extraer helper compartido. |
-
-| **Issue** | [#10220](https://github.com/adobe/react-spectrum/issues/10220) | Combobox solo anuncia nombre con VoiceOver. Comentario: gate el announcement solo a cambios de sección (preserva secciones, no interrumpe anuncio nativo por item). Oferta de PR. |
-| **Comentario** | [comentario](https://github.com/adobe/react-spectrum/issues/10220#issuecomment-5359551331) | Solución intermedia: no descartar todo el effect, solo anunciar en isGroupChange. |
-
-### mui/material-ui (NUEVO 2026-08-20)
-
-| Eslabón | Link | Detalle |
-|---------|------|---------|
-| **Issue** | [#48990](https://github.com/mui/material-ui/issues/48990) | docs: aria-hidden contiene focusable en templates carousel (WCAG 4.1.2). PR con tabIndex condicional en slides inactivas. |
-| **Nuestro PR** | [#49003](https://github.com/mui/material-ui/pull/49003) | **open** - MERGEABLE. [docs][templates] Remove focusable links from hidden carousel slides. |
-
-| **Issue** | [#47892](https://github.com/mui/material-ui/issues/47892) | dialog: Narrator lee main page detrás del modal. Comentario técnico: Modal no aplica aria-hidden al contenido exterior (a diferencia de react-spectrum/radix). Oferta de PR. |
-| **Comentario** | [comentario](https://github.com/mui/material-ui/issues/47892#issuecomment-5359555501) | Root cause: focus trap sin aria-hidden del contenido externo. |
-
-### mui/base-ui (NUEVO 2026-08-20)
-
-| Eslabón | Link | Detalle |
-|---------|------|---------|
-| **Issue** | [#5548](https://github.com/mui/base-ui/issues/5548) | grid renderiza aria-orientation inválido (rol grid no lo soporta, axe aria-allowed-attr). Fix: no pasar orientation a useListNavigation cuando grid activo. Afecta Combobox + Autocomplete (reusa AriaCombobox). |
-| **Nuestro PR** | [#5551](https://github.com/mui/base-ui/pull/5551) | **open** - MERGEABLE. [combobox] Remove invalid aria-orientation from grid role. |
 

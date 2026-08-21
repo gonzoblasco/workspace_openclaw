@@ -65,6 +65,46 @@ case "$1" in
     } > docs/OSS-TRACKER.md
     echo "OSS-TRACKER.md regenerado desde la DB."
     ;;
+  export-todos)
+    # Regenera memory/todos.md desde la DB (tabla todos)
+    {
+      echo "# TODO.md - Backlog de Tareas"
+      echo ""
+      echo "> Generado desde memory/memory.db (tabla todos). Fuente de verdad: la DB."
+      echo "> Regenerar con: ./scripts/memory-db.sh export-todos"
+      echo ""
+      echo "## Abiertos"
+      echo ""
+      sqlite3 "$DB" "SELECT id, priority, project, text FROM todos WHERE status='open' ORDER BY priority DESC, id;" | while IFS='|' read -r id prio proj txt; do
+        echo "- [ ] **[$proj]** ($prio) $txt"
+      done
+      echo ""
+      echo "## Completados"
+      echo ""
+      sqlite3 "$DB" "SELECT id, project, text FROM todos WHERE status='done' ORDER BY id DESC;" | while IFS='|' read -r id proj txt; do
+        echo "- [x] **[$proj]** $txt"
+      done
+      echo ""
+    } > memory/todos.md
+    echo "memory/todos.md regenerado desde la DB."
+    ;;
+  export-inbox)
+    # Regenera memory/inbox.md desde la DB (tabla inbox)
+    {
+      echo "# INBOX.md - Ideas y Referencias"
+      echo ""
+      echo "> Generado desde memory/memory.db (tabla inbox). Fuente de verdad: la DB."
+      echo "> Regenerar con: ./scripts/memory-db.sh export-inbox"
+      echo ""
+      echo "## Abiertas"
+      echo ""
+      sqlite3 "$DB" "SELECT id, idea FROM inbox WHERE status='open' ORDER BY id;" | while IFS='|' read -r id idea; do
+        echo "- **#$id** $idea"
+      done
+      echo ""
+    } > memory/inbox.md
+    echo "memory/inbox.md regenerado desde la DB."
+    ;;
   stats)
     echo "=== Daily notes ==="
     sqlite3 "$DB" "SELECT type, count(*) FROM daily_notes GROUP BY type;"
@@ -96,6 +136,6 @@ case "$1" in
     echo "Idea agregada al inbox."
     ;;
   *)
-    echo "Uso: $0 {export-daily|export-all|export-oss|stats|todos|inbox|contributions|add-todo|add-inbox}"
+    echo "Uso: $0 {export-daily|export-all|export-oss|export-todos|export-inbox|stats|todos|inbox|contributions|add-todo|add-inbox}"
     ;;
 esac
