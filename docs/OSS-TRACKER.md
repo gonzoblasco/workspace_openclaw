@@ -7,10 +7,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 26 |
+| PRs abiertos | 27 |
 | PRs mergeados | 0 |
 | PRs cerrados sin merge | 2 |
-| Repos con PRs | 14 |
+| Repos con PRs | 15 |
 
 ## PR Registry
 
@@ -74,6 +74,14 @@
 | **Issue** | - | WCAG 2.2 coverage. Sin reviews. |
 | **Nuestro PR** | [#37](https://github.com/ibelick/ui-skills/pull/37) | **open** |
 | **Contexto** | - | Abierto 16 Jul. |
+
+### openclaw/openclaw
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | [#127212](https://github.com/openclaw/openclaw/issues/127212) | expose active split pane to assistive tech (aria-current=true en pane activo). Cierra #127212. Sin cambio visual. Nace de feedback de gonzoblasco en #126714. Tests: aria-current migra tras pointerdown. |
+| **Nuestro PR** | [#127213](https://github.com/openclaw/openclaw/pull/127213) | **open** |
+| **Contexto** | - | Maintainer convirtio feedback de a11y en PR con tests. Portfolio vivo. |
 
 ### payloadcms/payload
 
