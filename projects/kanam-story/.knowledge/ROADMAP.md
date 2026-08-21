@@ -255,7 +255,19 @@
     - **Verificado como correcto:** (a) `insertContent`/`insertContentAt` mueven la selección al final del contenido insertado, así el chunk siguiente cae bien; (b) el debounce pendiente se limpia **sincrónicamente** antes de `streamingRef=true`, así ningún autosave previo se cuela con texto parcial; (c) el revert `setContent(preStreamHtml, {emitUpdate:false})` no dispara update ni rompe cursor; (d) el contenido final se persiste explícitamente al terminar; (e) la estrategia de inserción por kind es correcta. Build + lint + **244 tests** verdes.
     - **Nota para el Agente B:** revisá que el diálogo multi-parrafo (los chunks intermedios llevan `\n\n` entre turnos) no pierda el wrapper de apertura cuando el primer chunk del turno empieza con nueva línea. La extracción a función pura testeable para la estrategia de inserción se dejó de lado en esta ronda (los bugs reales eran de lógica de flujo, no de pureza de la decisión); puede hacerse luego si se agregan más kinds.
 
-> **Nota:** los items B1-B7 son independientes entre sí (no hay dependencias de orden). Cada agente toma el siguiente item de su paridad (A = impares B1/B3/B5/B7, B = pares B2/B4/B6) cuando termine el anterior. El pipeline de revisión cruzada aplica igual que en la Fase 3.
+> **Nota:** los items B1-B7 son independientes entre sí (no hay dependencias de orden). Cada agente toma el siguiente item de su paridad (los impares B1/B3/B5/B7, B = pares B2/B4/B6) cuando termine el anterior. El pipeline de revisión cruzada aplica igual que en la Fase 3.
+
+### 🔥 Nuevo backlog — Worldbuilding rico + Importación de historias (2026-08-20)
+
+> **Plan consolidado en [`PLAN-WORLDBUILDING-IMPORT.md`](./PLAN-WORLDBUILDING-IMPORT.md).** Surge de la revisión de `ultimo-turno` + comparación con umbrawriter (Lovable). Fases A-F (por dependencia):
+> - **Fase A** — Capítulo como unidad (escenas opcionales). Desbloquea todo. *(deuda de modelado)*
+> - **Fase A planificada en `PLAN-FASE-5.md`** (Opción 1: capítulo con content propio, elegida por Gonzo 2026-08-20). Unidades U1-U7. **EN PLANIFICACIÓN, pendiente de ejecución con pipeline Qwen A/B.**
+> - **Fase B** — Importación de historia externa (manuscrito → capítulos + `.knowledge/` opcional → data). Reusa `bibleExtract`.
+> - **Fase C** — Worldbuilding desde el chat: `add_world` + sugerir crear elementos. *(gap real: hoy no hay `add_world`)*
+> - **Fase D** — Decisiones de trama (canon) + preguntas abiertas.
+> - **Fase E** — Nivel Parte/Acto/Arco.
+> - **Fase F** — Artefactos ricos + reglas con excepciones.
+> - **Caso de validación:** importar `ultimo-turno` completa y continuar/cerrar la historia.
 
 ---
 

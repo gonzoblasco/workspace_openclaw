@@ -1,8 +1,10 @@
 # STATUS — Kanam Story
 
-**Actualizado:** 2026-08-17
+**Actualizado:** 2026-08-20
 
-## Estado: 🟢 v0.17.0 + Fase A completa + OpenSpec inicializado (379 tests)
+## Estado: 🟢 v0.17.0 + Fase A completa + OpenSpec inicializado (379 tests) + PLAN-WORLDBUILDING-IMPORT
+
+> **Plan de worldbuilding rico + importación (2026-08-20):** consolidado en [`PLAN-WORLDBUILDING-IMPORT.md`](./PLAN-WORLDBUILDING-IMPORT.md). Surge de la revisión de `ultimo-turno` (novela de Gonzo) + comparación con umbrawriter (Lovable). Fases A-F: capítulo como unidad, importación de historias, worldbuilding desde el chat (`add_world`), decisiones de trama/preguntas abiertas, nivel Parte, artefactos ricos. Ver el plan para detalle y orden de dependencia.
 
 > **OpenSpec inicializado 2026-08-17:** 6 specs de casos de uso core (34 requirements) + project.md + config.yaml. Los specs documentan la intención; falta auditar el comportamiento real contra ellos (ver checklist en cada spec).
 

@@ -1,11 +1,47 @@
 ---
 name: "agent-orchestration-pipeline"
-description: "Orquestar multiples agentes implementadores (A/B) con revision cruzada multi-ronda para unidades atomicas con gates de calidad."
+description: "Orquestar multiples agentes implementadores (A/B) en cadena con revision cruzada multi-ronda, usando Qwen Code via Ollama como motor, para unidades atomicas con gates de calidad."
 ---
 
 # Agent Orchestration Pipeline
 
-Orquestar multiples agentes implementadores con revision cruzada multi-ronda, coordinados por un agente orquestador, para desarrollar unidades atomicas con gates de calidad en cada paso.
+Orquestar multiples agentes implementadores con revision cruzada multi-ronda, coordinados por un agente orquestador, para desarrollar unidades atomicas con gates de calidad en cada etapa.
+
+> **ESTANDAR DE TRABAJO DESDE 2026-08-20:** la forma de programar de ahora en mas es este pipeline con **Qwen Code lanzado via Ollama como el motor de los agentes A/B**. Kanam (orquestador) redacta las tareas, encadena los outputs (pasa el codigo de A a B), verifica y reporta. El desarrollador no escribe prompts de agentes - solo da la meta.
+
+## Motor: Qwen Code via Ollama (spike validado 2026-08-20)
+
+Los agentes implementadores son instancias de **Qwen Code** lanzadas por el orquestador a traves de Ollama, usando los modelos locales/cloud de Ollama. Esto da acceso a los modelos sin APIs externas de pago.
+
+### Comando base
+```bash
+ollama launch qwen --model deepseek-v4-flash:cloud -- -p "<tarea>" -y
+```
+- `-y` = auto-approve (YOLO mode) para que ejecute tools (write, edit, shell) sin pedir aprobacion en headless.
+- Modelo: cualquiera de los disponibles en `ollama list` (deepseek-v4-flash:cloud por defecto).
+- El prompt (`-p`) lo redacta el ORQUESTADOR (Kanam), no el desarrollador.
+
+### Flujo en CADENA (no paralelo) - validado
+A escribe → [orquestador pasa el output/codigo de A como contexto a B] → B revisa y corrige → [orquestador verifica] → A revisa el fix de B → ... hasta aprobar.
+
+Ejemplo validado: A escribio `sumar()` (bug latente: concatena strings) → B reviso el codigo de A (pasado como contexto) y lo corrigio a `Number(a)+Number(b)` → orquestador verifico. Iterable indefinidamente.
+
+### Aislamiento entre agentes
+- Cada agente trabaja en su propia carpeta/directorio (no se pisan).
+- El orquestador pasa el estado (archivo/codigo) de un agente a otro como contexto en el prompt.
+- Dos instancias paralelas funcionan, PERO el flujo de trabajo estandar es EN CADENA (dependencia de orden: B necesita el output de A).
+
+### Limitaciones
+- **Claude Code:** no acepta `--model` por flag CLI (usa `~/.claude/settings.json`). `ollama launch claude` dio errores de sintaxis. Para usarlo, configurar el modelo en settings, no por flag.
+- **OpenCode:** no instalado por defecto. Requiere instalacion si se quiere usar.
+- **Qwen Code es el motor preferido** por su integracion directa con Ollama via flag.
+
+### Verificacion del orquestador
+El orquestador NO solo lanza y lee output: verifica el resultado real (leer archivos creados/editados, correr build/tests/lint) antes de pasar a la siguiente etapa.
+
+---
+
+## Cuando usar
 
 ## Cuando usar
 
@@ -18,16 +54,20 @@ Orquestar multiples agentes implementadores con revision cruzada multi-ronda, co
 
 ### Orquestador (Kanam / agente principal)
 - Planifica y divide el spec en unidades atomicas (U1, U2, ...) con criterios de aceptacion.
-- Asigna unidades a los agentes (paridad: A = impares, B = pares).
+- **Redacta los prompts/tareas** para los agentes Qwen (el desarrollador no escribe prompts de agentes - solo da la meta).
+- Asigna unidades a los agentes (paridad: A = impares, B = pares) y **encadena los outputs** (pasa el codigo de A a B como contexto).
+- **Verifica el resultado real** de cada agente (leer archivos, correr build/tests/lint) antes de avanzar.
 - Define las reglas del pipeline y el flujo de revision cruzada.
 - Coordina el cierre (release, changelog, tag).
 - Documenta el plan en un archivo dedicado (ej. `PLAN-FASE-X.md`) + STATUS + ROADMAP.
 - NO desarrolla unidades de los agentes (salvo tareas de orquestacion como tests de infra, refactors, o cuando el orquestador asume una unidad directamente).
 
 ### Agentes implementadores (A, B, C, ...)
+- **Son instancias de Qwen Code lanzadas por el orquestador via Ollama** (`ollama launch qwen --model <modelo> -- -p "<tarea>" -y`).
+- Cada uno trabaja en su propia carpeta/directorio (aislamiento).
 - Desarrollan su unidad asignada (commit atomico + push).
 - REVISAN la unidad que el agente anterior acaba de completar (cross-review), antes de empezar la suya.
-- Corrigen bugs de la unidad revisada si los encuentran.
+- Corrigen bugs de la unidad revisada si los encuentran (el orquestador les pasa el codigo como contexto).
 - Dejan mensaje claro de que hicieron y que necesita revision.
 
 ## Reglas de oro
@@ -111,3 +151,20 @@ Este skill es la capa de ORQUESTACION que coordina el pipeline existente (`kanam
 - Pipeline en cadena: A desarrolla U1 → B revisa U1 + desarrolla U2 → A revisa U2 + desarrolla U3 → ...
 - Resultado: 189 tests, release v0.7.0. El Agente B atrapo un bug real de la U5 (sync corria antes de regenerar la biblia) que el orquestador no detecto en su revision - evidencia del valor del cross-review multi-ronda.
 - Backlog B1-B7: el orquestador implemento B1/B2 (tests), luego cadena de revision A → B para asegurar calidad.
+
+## Como orquestar desde OpenClaw (Kanam)
+
+Kanam (este agente, corriendo en OpenClaw) es el orquestador. El flujo de trabajo desde aqui:
+
+1. **Recibir la meta del desarrollador** (Gonzo da el objetivo, no escribe prompts).
+2. **Planificar** la tarea en unidades atomicas con criterios de aceptacion (como en PLAN-FASE-X.md).
+3. **Lanzar el Agente A** con `exec`: `ollama launch qwen --model <modelo> -- -p "<tarea redactada por Kanam>" -y`.
+4. **Verificar el output de A** (leer archivos, correr build/tests/lint).
+5. **Lanzar el Agente B** pasando el codigo/output de A como contexto en el prompt: "revisa este codigo que escribio A...".
+6. **Iterar en cadena** hasta que el codigo pase las gates de calidad (A revisa el fix de B, etc.).
+7. **Reportar a Gonzo** el resultado: que se hizo, que se reviso, que quedo pendiente.
+
+### Pasos tecnicos en OpenClaw
+- Usar `exec` con el comando `ollama launch qwen --model <modelo> -- -p "..." -y` (background o con yieldMs para tareas largas).
+- La redaccion de prompts y el encadenado de outputs es responsabilidad del orquestador, no del desarrollador.
+- Verificar siempre el resultado real (archivos, build, tests) - no confiar solo en el texto de salida del agente.
