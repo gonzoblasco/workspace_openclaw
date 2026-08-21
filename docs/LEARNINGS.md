@@ -480,3 +480,26 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: mi primer approach (quitar orientation) era demasiado amplio - rompía la navegación. El bot lo detectó y la corrección (suprimir solo el atributo) fue la correcta.
 - LESSON: los reviews de bots merecen lectura técnica, no descarte ni aceptación ciega. Y al modificar props de hooks de navegación, separar behavior de atributos de salida.
 - BIASES DETECTED: anchoring (me anclé en "el atributo es inválido" y eliminé la fuente completa, sin considerar que también alimentaba la navegación).
+
+## 2026-08-21 - Serializers de hash: colisión de tipos es un bug real (y el humano manda sobre el bot)
+
+**Context:** PR TanStack/router #7834. Redirigí el PR a `stringifyLoaderDeps` configurable (pedido de schiller-manuel). CodeRabbit detectó un major: `safeStringify({ id: 123n })` y `safeStringify({ id: '123n' })` producían el mismo hash (`{"id":"123n"}`). Como el output alimenta `loaderDepsHash`, dos deps distintas podían colisionar y reusar datos stale.
+
+**La lección - colisión de tipos en serializers:**
+- Un serializer que convierte tipos distintos a la misma representación de string es un bug de integridad, no cosmético. `123n` vs `'123n'`, `undefined` vs `''`, `Date` vs su ISO string: todos colisionan si no se taggea el tipo.
+- Fix correcto: **prefijo tag reservado** (`\u0000`) + **escape por duplicación** para strings de usuario que empiecen con el prefijo. Así los tags nunca colisionan con datos de usuario.
+- `JSON.stringify` NO lanza con Set/Map - los serializa silenciosamente como `{}` (pérdida de datos sin error). Solo bigint lanza. Un fallback por excepción cubre bigint pero NO Set/Map; para esos hay que pasar el serializer explícito.
+
+**La lección - el humano manda sobre el bot:**
+- CodeRabbit empujaba al search serializer (la dirección que schiller-manuel rechazó en #7818). El humano pidió lo contrario: configurable opt-in. Seguí al humano, no al bot. El bot es un filtro técnico, no la autoridad de diseño.
+- PERO: los hallazgos técnicos del bot (colisión, default que revienta con bigint) eran reales y valió la pena arreglarlos. Leer el review técnicamente, no descartarlo ni aceptarlo ciego.
+
+**La lección - backticks en `gh pr comment` vía shell:**
+- zsh interpreta los backticks como command substitution. `gh pr comment --body "texto con \`code\`"` ejecuta el contenido entre backticks como comando y lo reemplaza, corrompiendo el comentario.
+- Fix: escribir el body en un archivo y pasarlo con `gh api ... -f body="$(cat archivo)"`, o escapar los backticks. Verificar el comentario publicado después (no confiar en que quedó bien).
+
+**Self-reflection:**
+- CONTEXT: redirección de PR OSS + respuesta a review de bot
+- REFLECTION: el major de CodeRabbit era un bug real de diseño del serializer que yo no había visto. Y el comentario de respuesta se corrompió por backticks en el shell.
+- LESSON: (1) al diseñar serializers para hashes, taggear tipos y escapar colisiones; (2) el humano define la dirección, el bot aporta hallazgos técnicos válidos; (3) nunca pasar backticks crudos a `gh pr comment` por shell.
+- BIASES DETECTED: confirmation (asumí que el serializer era correcto porque los tests pasaban, sin pensar en colisiones entre tipos distintos).

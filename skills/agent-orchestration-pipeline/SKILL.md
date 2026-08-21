@@ -1,6 +1,6 @@
 ---
 name: "agent-orchestration-pipeline"
-description: "Orquestar multiples agentes implementadores (A/B) en cadena con revision cruzada multi-ronda, usando Qwen Code via Ollama como motor, para unidades atomicas con gates de calidad."
+description: "Orquestar agentes A/B en cadena con cross-review multi-ronda, usando Qwen Code via Ollama como motor, para unidades atomicas con gates de calidad."
 ---
 
 # Agent Orchestration Pipeline
@@ -43,11 +43,9 @@ El orquestador NO solo lanza y lee output: verifica el resultado real (leer arch
 
 ## Cuando usar
 
-## Cuando usar
-
 - El trabajo es lo suficientemente grande para dividirse en unidades atomicas (features, slices, bugs) que puedan desarrollarse de forma paralela o secuencial.
 - Se quiere calidad alta con revision independiente (no solo self-review del autor).
-- Hay 2+ agentes implementadores disponibles (ej. VS Code, ZCode) con un orquestador que coordina.
+- Hay 2+ agentes implementadores disponibles (Qwen Code via Ollama) con un orquestador que coordina.
 - Se prioriza la correccion de bugs por ojos frescos sobre la velocidad de un solo agente.
 
 ## Roles
@@ -145,12 +143,10 @@ Estas trabajando en <proyecto>, <fase>. Sos el Agente <X> (<entorno>). Tu rol en
 
 Este skill es la capa de ORQUESTACION que coordina el pipeline existente (`kanam-product-pipeline.md`). Se aplica en las fases Build/Review del ciclo Define→Plan→Build→Verify→Review→Ship: en vez de un solo agente implementando, se dividen las unidades entre multiples agentes con cross-review. Las skills de Build/Review (`incremental-implementation`, `test-driven-development`, `code-review-and-quality`, etc.) siguen aplicando a nivel de cada unidad; este skill coordina el "quien hace que y quien revisa que".
 
-## Ejemplo real (kanam-story Fase 3)
+## Ejemplo real (kanam-story Fase 3 y Fase 5)
 
-- Orquestador: dividio en U1-U8 (editor refinado + sync biblia-tabs), asigno A=impares/B=pares.
-- Pipeline en cadena: A desarrolla U1 → B revisa U1 + desarrolla U2 → A revisa U2 + desarrolla U3 → ...
-- Resultado: 189 tests, release v0.7.0. El Agente B atrapo un bug real de la U5 (sync corria antes de regenerar la biblia) que el orquestador no detecto en su revision - evidencia del valor del cross-review multi-ronda.
-- Backlog B1-B7: el orquestador implemento B1/B2 (tests), luego cadena de revision A → B para asegurar calidad.
+- **Fase 3 (2026-08-13):** orquestador dividio en U1-U8 (editor refinado + sync biblia-tabs), A=impares/B=pares. Pipeline en cadena. Resultado: 189 tests, release v0.7.0. El Agente B atrapo un bug real de la U5 (sync corria antes de regenerar la biblia).
+- **Fase 5 (2026-08-20, con Qwen Code via Ollama):** U1-U6 completadas (capitulo como unidad de trabajo). 434 tests. El Agente B atrapo un bug real de la U3 (reorden de efectos que corrompia contenido al cambiar de target). Evidencia del valor del cross-review multi-ronda con el nuevo motor.
 
 ## Como orquestar desde OpenClaw (Kanam)
 
@@ -168,3 +164,4 @@ Kanam (este agente, corriendo en OpenClaw) es el orquestador. El flujo de trabaj
 - Usar `exec` con el comando `ollama launch qwen --model <modelo> -- -p "..." -y` (background o con yieldMs para tareas largas).
 - La redaccion de prompts y el encadenado de outputs es responsabilidad del orquestador, no del desarrollador.
 - Verificar siempre el resultado real (archivos, build, tests) - no confiar solo en el texto de salida del agente.
+- **Nota sobre SIGKILL:** los procesos de Qwen pueden morir (SIGKILL) en tareas largas (~3 min). Para revisiones, usar prompts cortos/concisos para que terminen antes de morir. Si un agente muere a mitad, el orquestador verifica y commitea el trabajo, y relanza la revision con prompt mas corto.
