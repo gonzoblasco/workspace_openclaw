@@ -516,3 +516,24 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el major de CodeRabbit era un bug real de diseño del serializer que yo no había visto. Y el comentario de respuesta se corrompió por backticks en el shell.
 - LESSON: (1) al diseñar serializers para hashes, taggear tipos y escapar colisiones; (2) el humano define la dirección, el bot aporta hallazgos técnicos válidos; (3) nunca pasar backticks crudos a `gh pr comment` por shell.
 - BIASES DETECTED: confirmation (asumí que el serializer era correcto porque los tests pasaban, sin pensar en colisiones entre tipos distintos).
+
+## 2026-08-21 - Delegar a Qwen Code SIEMPRE, incluso en demos (buenas prácticas como prácticas)
+
+**Context:** SoporteML V4. Hice yo mismo la edición de código (timeout en MeliClient, refactor del sync, etc.) en lugar de delegar a Qwen Code. Gonzo me señaló: "por qué estás editando tú en lugar de usar Qwen Code?" y luego "las buenas prácticas deben ser siempre prácticas".
+
+**La lección - la costumbre de delegar se construye delegando siempre:**
+- El patrón correcto es: Kanam (orquestador) redacta las tareas, Qwen Code es el agente implementador, y yo verifico contra la fuente real. No edito el código yo mismo.
+- **No hay atajo válido.** Aunque la tarea sea "chica" o "solo una demo", se delega. Delegar solo en tareas grandes NO construye la costumbre - la construye delegar en todas.
+- Cuando ofrecí "hacerlo yo rápido (3 líneas)", Gonzo lo corrigió: la buena práctica es práctica siempre, no solo cuando conviene.
+
+**Refinamiento del pipeline A/B con delegación real (hoy, válido):**
+- Agente A (deepseek-v4-flash): modificó `dev/setup` para reusar la empresa con token.
+- Cross-review Agente B (deepseek-v4-flash): detectó que `LIMIT 1` arbitrario devolvía la cuenta propia vacía; lo corrigió ordenando por datos sincronizados.
+- El orquestador (yo) verifiqué contra la DB real (lección U7 aplicada): el conteo de Agente B reportó 1150 productos pero el real es 23 - el resultado era correcto pero el reporte tenía un error numérico. Verificar con evidencia, no confiar en el texto del agente.
+- Luego Agente A de nuevo: fix de membership activa (el primer fix devolvía userId null y el authMiddleware rechazaba 403).
+
+**Self-reflection:**
+- CONTEXT: edición de código en SoporteML V4 + delegación a Qwen
+- REFLECTION: mi instinto de "resolver rápido yo" es fuerte, pero rompe el patrón delegado y el rol de orquestador. Gonzo tiene razón: la disciplina se mantiene siempre.
+- LESSON: delegar a Qwen Code SIEMPRE (features, demos, fixes chicos). Kanam redacta la tarea, encadena A/B, verifica contra la fuente real. Nunca editar el código directamente salvo orquestación de infra/tests.
+- BIASES DETECTED: effort-optimization (opté por hacerlo yo porque "era más rápido" - subestimé el costo de no construir la costumbre).
