@@ -374,6 +374,19 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 
 **Advertencia:** discrepancia de versiones dev/CI (Node 20 vs 22) es fuente clasica de "pasa local, falla en CI". Alinear con `.nvmrc` + CI.
 
+## 2026-08-21 - El cross-review puede INTRODUCIR bugs, no solo atraparlos
+
+**Context:** SoporteML V4 U7 (métricas de visitas de MeLi). El Agente A implementó `getItemVisits` parseando la respuesta como objeto plano `{ total_visits }` (correcto según la doc oficial). El Agente B, en su cross-review, "corrigió" el parseo asumiendo que la API devuelve un array `[{ id, total_visits }]` - sin verificar la doc real. El fix de B habría roto las visitas en producción (siempre 0).
+
+**Resultado:** el orquestador (Kanam) verificó contra la doc oficial de MeLi (objeto plano, confirmado) y revirtió el parseo de B (commit `99a010e`), conservando la mejora válida de B (try/catch aislado). Luego hizo el parseo **defensivo** (`extractVisits`) que tolera objeto, array y mapa - 11 tests unitarios.
+
+**Leccion:** el cross-review NO es infalible. Un revisor puede **introducir** una regresión basándose en una suposición falsa sobre el formato de una API externa, en vez de verificar. El orquestador debe:
+1. **Verificar contra la fuente real** (doc de la API, spec, o probar el endpoint) antes de aceptar un fix de un agente - no confiar en el veredicto del revisor.
+2. Distinguir las mejoras válidas del fix de un agente (puede mezclar lo bueno con lo roto) - conservar lo válido, revertir lo incorrecto.
+3. Cuando no se pueda validar empíricamente (sin token/datos reales), hacer el código **defensivo** para los formatos posibles y cubrirlo con tests.
+
+**Biases detectados:** anchoring del revisor (asumió el array por un patrón visto antes sin confirmar) + confirmation del autor (no defendió su parseo correcto porque el revisor "tenía razón").
+
 ## 2026-08-17 - Verificar el estado real de los PRs ANTES de proponer acciones
 
 **Context:** Durante la revisión de PRs OSS, propuse cerrar mi PR #4109 (radix Select) a favor del #4112 de waterWang. Gonzo me corrigió: ya había dejado un review en #4112 dando visto bueno al enfoque con 4 mejoras. No lo había leído.
