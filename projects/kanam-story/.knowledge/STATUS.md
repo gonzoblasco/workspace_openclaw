@@ -1,8 +1,10 @@
 # STATUS — Kanam Story
 
-**Actualizado:** 2026-08-20
+**Actualizado:** 2026-08-21
 
-## Estado: 🟢 v0.17.0 + Fase A completa + OpenSpec inicializado (379 tests) + PLAN-WORLDBUILDING-IMPORT
+## Estado: 🟢 v0.17.0 + Fase A completa + OpenSpec + **Fase 5 completa (capítulo como unidad)**
+
+> **Fase 5 COMPLETA (2026-08-21):** capítulo como unidad de trabajo (Opción 1 - content directo). 8 commits, 440 tests, build verde. Implementada con pipeline Qwen A/B (ver `PLAN-FASE-5.md`). Desbloquea las Fases B-F del `PLAN-WORLDBUILDING-IMPORT.md` (importación de historias externas, worldbuilding desde chat, decisiones de trama, nivel Parte, artefactos ricos).
 
 > **Plan de worldbuilding rico + importación (2026-08-20):** consolidado en [`PLAN-WORLDBUILDING-IMPORT.md`](./PLAN-WORLDBUILDING-IMPORT.md). Surge de la revisión de `ultimo-turno` (novela de Gonzo) + comparación con umbrawriter (Lovable). Fases A-F: capítulo como unidad, importación de historias, worldbuilding desde el chat (`add_world`), decisiones de trama/preguntas abiertas, nivel Parte, artefactos ricos. Ver el plan para detalle y orden de dependencia.
 

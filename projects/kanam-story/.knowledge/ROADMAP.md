@@ -261,7 +261,7 @@
 
 > **Plan consolidado en [`PLAN-WORLDBUILDING-IMPORT.md`](./PLAN-WORLDBUILDING-IMPORT.md).** Surge de la revisión de `ultimo-turno` + comparación con umbrawriter (Lovable). Fases A-F (por dependencia):
 > - **Fase A** — Capítulo como unidad (escenas opcionales). Desbloquea todo. *(deuda de modelado)*
-> - **Fase A planificada en `PLAN-FASE-5.md`** (Opción 1: capítulo con content propio, elegida por Gonzo 2026-08-20). Unidades U1-U7. **EN PLANIFICACIÓN, pendiente de ejecución con pipeline Qwen A/B.**
+> - **Fase A planificada en `PLAN-FASE-5.md`** (Opción 1: capítulo con content propio, elegida por Gonzo 2026-08-20). Unidades U1-U7. **✅ COMPLETA 2026-08-21** (8 commits, 440 tests, build verde). Implementada con pipeline Qwen A/B. Desbloquea Fases B-F.
 > - **Fase B** — Importación de historia externa (manuscrito → capítulos + `.knowledge/` opcional → data). Reusa `bibleExtract`.
 > - **Fase C** — Worldbuilding desde el chat: `add_world` + sugerir crear elementos. *(gap real: hoy no hay `add_world`)*
 > - **Fase D** — Decisiones de trama (canon) + preguntas abiertas.
