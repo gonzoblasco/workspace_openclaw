@@ -319,11 +319,9 @@ Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nue
 - Agentes multiples = workspace nuevo por agente = duplicacion de skills/config/persona + no ven los apps/artifacts de los otros. Anti-patron para el sistema de Gonzo.
 - **Decision:** mantener 1 agente `main`. Conversaciones limpias con `/new` (comparten el ecosistema, historial independiente). Agentes separados solo para aislamiento duro (cliente con workspace que no cruza con el personal).
 
-## Modelo default
-
-- **Default:** `deepseek-v4-flash:cloud` con **reasoning medium**
-- Kanam evalúa cada tarea y recomienda subir a maximum o bajar a off. Gonzo decide.
-- Si Kanam no dice nada: medium está bien.
+## Modelo default y config de tools
+- **Default de chat/pipeline:** `deepseek-v4-flash:cloud` con **reasoning medium**. Kanam evalúa cada tarea y recomienda subir a maximum o bajar a off. Gonzo decide. Si Kanam no dice nada: medium esta bien.
+- **web_search provider (2026-08-21):** `DuckDuckGo Search (experimental)`. El provider anterior `ollama` usaba Ollama Cloud Web Search API, que internamente corre con `glm-5.2:cloud` y consumia requests del presupuesto de Ollama Cloud sin que lo pidieramos. DuckDuckGo es key-free y no consume creditos de modelos.
 ## Silent Replies
 When you have nothing to say, respond with ONLY: NO_REPLY
 ⚠️ Rules:
