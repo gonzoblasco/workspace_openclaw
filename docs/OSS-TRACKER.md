@@ -52,9 +52,9 @@
 | **Nuestro PR** | [#4298](https://github.com/facebook/astryx/pull/4298) | **open** |
 | **Contexto** | - | Gonzo abrió #4218 primero (icon+label). humbertovirtudes sugirió converger con #4157 por ser base más sólida. PR #4218 cerrado, contenido migrado a #4298. |
 
-| **Issue** | [#4421](https://github.com/facebook/astryx/issues/4421) | Non-color indicator (font-weight) en current breadcrumb. MERGEABLE, sin reviews. |
+| **Issue** | [#4421](https://github.com/facebook/astryx/issues/4421) | Non-color indicator (font-weight) en current breadcrumb. **MERGEABLE, scope limpio, respaldado por auditoría #5332.** Sin reviews. |
 | **Nuestro PR** | [#4605](https://github.com/facebook/astryx/pull/4605) | **open** |
-| **Contexto** | - | Abierto 31 Jul. WCAG 1.4.1 fix. |
+| **Contexto** | - | Abierto 31 Jul. WCAG 1.4.1 fix. **22/08: audit #5332 (Breadcrumbs) cita este PR como la fix canónica de B8 y no lo toca para no pisarlo. Scope limpiado (se sacaron los commits de #3654 que ya viven en #4022). Rebaseado sobre upstream/main. Comment publicado pidiendo review citando el respaldo.** |
 
 | **Issue** | [#4450](https://github.com/facebook/astryx/issues/4450) | aria-labelledby en Selector trigger. CONFLICTING, sin reviews. |
 | **Nuestro PR** | [#4604](https://github.com/facebook/astryx/pull/4604) | **open** |
