@@ -56,6 +56,10 @@
 | **Nuestro PR** | [#4605](https://github.com/facebook/astryx/pull/4605) | **open** |
 | **Contexto** | - | Abierto 31 Jul. WCAG 1.4.1 fix. **22/08: audit #5332 (Breadcrumbs) cita este PR como la fix canónica de B8 y no lo toca para no pisarlo. Scope limpiado (se sacaron los commits de #3654 que ya viven en #4022). Rebaseado sobre upstream/main. Comment publicado pidiendo review citando el respaldo.** |
 
+| **Issue** | [#3654](https://github.com/facebook/astryx/issues/3654) | Contraste WCAG 2.1 AA en tokens core. **Reactivado 22/08: body actualizado (solo border-emphasized tras revert de disabled), comment con @ernestt, MERGEABLE.** |
+| **Nuestro PR** | [#4022](https://github.com/facebook/astryx/pull/4022) | **open** |
+| **Contexto** | - | Abierto 16 Jul. ernestt pidió CHANGES_REQUESTED (disabled tokens exentos bajo SC 1.4.3). Gonzalo revirtió text/icon-disabled, quedó solo border-emphasized (borde activo, SC 1.4.11). Quedó dormido 3 semanas en CHANGES_REQUESTED. 22/08: body actualizado + comment citando auditoría #5332 + @ernestt. Falta re-review humano. |
+
 | **Issue** | [#4450](https://github.com/facebook/astryx/issues/4450) | aria-labelledby en Selector trigger. CONFLICTING, sin reviews. |
 | **Nuestro PR** | [#4604](https://github.com/facebook/astryx/pull/4604) | **open** |
 | **Contexto** | - | Abierto 31 Jul. Tiene conflictos con main. |
