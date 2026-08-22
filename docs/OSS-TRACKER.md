@@ -185,3 +185,11 @@
 | **Issue** | - | warn when reasoning tokens spent. Review bot de Vercel addressado. Squash 22 Jul. |
 | **Nuestro PR** | [#17274](https://github.com/vercel/ai/pull/17274) | **waiting_review** |
 
+
+### facebook/docusaurus
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | [#11332](https://github.com/facebook/docusaurus/issues/11332) | SPA route navigations no anunciadas por screen readers (NVDA/VoiceOver). **22/08: comentario de posicionamiento a11y publicado.** |
+| **Nuestro aporte** | [comment](https://github.com/facebook/docusaurus/issues/11332#issuecomment-5382562896) | **comentario** |
+| **Contexto** | - | Comentario técnico: clarificó el criterio WCAG (2.4.2 Page Titled, no 4.1.3 Status Messages) - cambia el fix. Live region (PR #8110) es band-aid que no llega a braille displays. Recomendó focus management (patrón Slack/Next.js App Router) + document.title por página. Aria Notify (Chrome 141) prometedor pero experimental. Posicionamiento como voz de a11y en repo de Meta no-core. |
