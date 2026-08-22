@@ -170,6 +170,8 @@ Formato: `type(#issue): description in english`
 - `fix(#12): prevent double submit on login form`
 - `chore(#11): add GitHub Actions CI workflow`
 
+**Guion comun SIEMPRE - NUNCA em dash/en dash (U+2014 / U+2013).** Regla dura de Gonzo (USER.md, MEMORY.md). Aplica a TODO texto publicado a GitHub: PR body, comments, issues, commits, docs. El em dash se me escapa en textos largos en inglés (es idiomático). **MECANISMO OBLIGATORIO:** antes de publicar cualquier texto a GitHub, escanear con `python3 scripts/check_em_dash.py -` (stdin) o pasando el archivo. Si detecta guiones largos, reemplazar por guion común (-) y volver a escanear. NO publicar hasta que el scan diga "OK: sin guiones largos".
+
 ## Project Cleanup - Al Finalizar un Proyecto
 
 Cuando un proyecto de libro, curso, o tutorial se completa:
