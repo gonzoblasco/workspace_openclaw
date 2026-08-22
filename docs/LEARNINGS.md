@@ -557,3 +557,22 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: la pausa reflexiva evitó descartar los daily notes locales sin comparar - habría perdido las sesiones reales del 19 y 21 (reencuadre laboral, OpenSistemas, SoporteML V4 U8, hardware).
 - LESSON: (1) en syncs de workspace, comparar daily notes locales vs repo antes de decidir; (2) submodulos pueden estar desregistrados o apuntar a repos muertos - inspeccionar `.gitmodules` vs gitlinks; (3) backup siempre antes de resolver conflictos.
 - BIASES DETECTED: none significativo - la pausa reflexiva del skill (LEER → PROCESAR → PAUSA → RESPONDER) fue lo que evitó el error.
+
+## 2026-08-22 - Em dash se me escapa en textos largos en ingles (error recurrente)
+
+**Context:** Gonzo me marcó que usé un guion largo (em dash, U+2014) en el body del PR #5344 de astryx y lo corrigió manualmente. Escaneé todo lo publicado ese dia: meti em dashes en 2 bodies de PR (#5344 y #4605) aunque mis comments de issues quedaron limpios.
+
+**Root cause:** el em dash es idiomatico en ingles (separador natural entre clausulas), y cuando escribo bodies/comments largos en ingles se me escapa, aunque la regla "guion comun (-) SIEMPRE" este en USER.md y MEMORY.md. La regla escrita no era suficiente para prevenir el error.
+
+**Fix sistemico (no solo correctivo):**
+- Script de verificacion `scripts/check_em_dash.py`: detecta em dash (U+2014) y en dash (U+2013) con contexto de linea. Uso: `cat texto | python3 scripts/check_em_dash.py -` (stdin) o pasando un archivo/directorio. Exit 0 = limpio, 1 = encontro guiones largos.
+- Regla operativa en AGENTS.md (seccion "Commits - Reglas de oro"): antes de publicar CUALQUIER texto a GitHub (PR body, comment, issue), escanear con el script. NO publicar hasta que diga "OK: sin guiones largos".
+- MEMORY.md: entrada reforzada con el mecanismo obligatorio.
+
+**Lesson:** una regla escrita en memoria no es suficiente para prevenir un error que reaparece. Hace falta un MECANISMO de verificacion automatizado en el flujo (un guard) que se ejecute antes de la accion riesgosa, no solo una nota. Ademas, el em dash es un caso clasico de "el modelo sigue la idiomatica del idioma de salida" - el output en ingles trae patrones de puntuacion ingleses, hay que forzar el override explicito.
+
+**Self-reflection:**
+- CONTEXT: correccion de Gonzo sobre escritura en GitHub
+- REFLECTION: la regla existia pero no la aplique al escribir bodies de PR en ingles - el em dash es idiomatico en ingles y se me escapo.
+- LESSON: escribir el guard automatizado (check_em_dash.py) y correrlo SIEMPRE antes de publicar a GitHub.
+- BIASES DETECTED: ninguno relevante - fue falta de mecanismo, no sesgo cognitivo.
