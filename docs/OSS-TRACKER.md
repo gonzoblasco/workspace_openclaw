@@ -64,6 +64,10 @@
 | **Nuestro PR** | [#4604](https://github.com/facebook/astryx/pull/4604) | **open** |
 | **Contexto** | - | Abierto 31 Jul. Tiene conflictos con main. |
 
+| **Issue** | [#4994](https://github.com/facebook/astryx/issues/4994) | Divider role=separator dentro de role=listbox (crítico axe). **PR nuevo 22/08, MERGEABLE, CI corriendo.** |
+| **Nuestro PR** | [#5344](https://github.com/facebook/astryx/pull/5344) | **open** |
+| **Contexto** | - | 22/08: detectado en scan a11y recurrente. Bug crítico axe aria-required-children (WCAG 1.3.1/4.1.2). Fix: dividers dentro del listbox pasan a role=presentation; Divider acepta role override. Fix en Selector + MultiSelector + tests + changeset. **Candidato a PR propio de a11y (no competía por issues tomados).** |
+
 ### google/skills
 
 | Eslabón | Link | Detalle |
