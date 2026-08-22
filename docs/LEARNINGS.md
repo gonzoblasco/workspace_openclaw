@@ -537,3 +537,23 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: mi instinto de "resolver rápido yo" es fuerte, pero rompe el patrón delegado y el rol de orquestador. Gonzo tiene razón: la disciplina se mantiene siempre.
 - LESSON: delegar a Qwen Code SIEMPRE (features, demos, fixes chicos). Kanam redacta la tarea, encadena A/B, verifica contra la fuente real. Nunca editar el código directamente salvo orquestación de infra/tests.
 - BIASES DETECTED: effort-optimization (opté por hacerlo yo porque "era más rápido" - subestimé el costo de no construir la costumbre).
+
+## 2026-08-22 - Sync de workspace tras larga ausencia (daily notes locales vs repo, submodulos huérfanos)
+
+**Context:** Gonzo pidió actualizar el repo del workspace después de mucho tiempo sin usar esta máquina (Mac mini). Pull trajo muchos cambios de la otra máquina.
+
+**La lección - comparar antes de descartar, no asumir que el repo es la fuente:**
+- Al hacer `git pull --rebase`, chocaron daily notes (`memory/2026-08-19.md`, `2026-08-21.md`) con "untracked working tree files would be overwritten". Las versiones **locales** tenían el contenido rico real (sesiones de trabajo completas) mientras las del repo eran checks de cron de Swift Testing (parciales/viejas).
+- **Regla:** al resolver conflictos de daily notes, SIEMPRE comparar el contenido antes de descartar. El repo no es automáticamente la fuente de verdad - las notas locales de esta máquina pueden tener sesiones que la otra máquina nunca pusheó o pusheó parciales.
+- Backup primero (`cp` a /tmp), comparar con `diff`, quedarse con la versión más completa, y pushear la ganadora.
+
+**Submodulos huérfanos:**
+- `projects/soporteml-v4` estaba registrado como gitlink en el index PERO sin URL en `.gitmodules` → el `git submodule update` fallaba con "No url found". Fix: agregar la entrada al `.gitmodules` con la URL correcta del repo.
+- `projects/ultimo-turno` apunta a un repo que **no existe** en GitHub (ni HTTPS ni SSH). Submodulo muerto. No bloquea, pero el workspace queda con un submodulo no clonable.
+- Al clonar submodulos nuevos, el checkout puede dejar solo el `.git` sin archivos (estado `D` staged) - un `git submodule foreach 'git reset --hard'` los materializa.
+
+**Self-reflection:**
+- CONTEXT: sync de workspace + resolución de conflictos + submodulos
+- REFLECTION: la pausa reflexiva evitó descartar los daily notes locales sin comparar - habría perdido las sesiones reales del 19 y 21 (reencuadre laboral, OpenSistemas, SoporteML V4 U8, hardware).
+- LESSON: (1) en syncs de workspace, comparar daily notes locales vs repo antes de decidir; (2) submodulos pueden estar desregistrados o apuntar a repos muertos - inspeccionar `.gitmodules` vs gitlinks; (3) backup siempre antes de resolver conflictos.
+- BIASES DETECTED: none significativo - la pausa reflexiva del skill (LEER → PROCESAR → PAUSA → RESPONDER) fue lo que evitó el error.
