@@ -613,3 +613,21 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: cometí el error de tratar memory.db como "ajeno" - Gonzo lo corrigió señalando que era parte de su sistema. El insight es ver el ecosistema completo: memory.db (fuente de verdad) + memory-core (búsqueda) + memory-wiki (análisis) son capas complementarias, no competidoras.
 - LESSON: antes de recomendar migrar/eliminar algo de memoria, verificar QUÉ es realmente cada pieza en el ecosistema del usuario, no asumir que lo que no es del core es descartable. memory.db es la columna vertebral, memory-wiki es la capa analítica encima.
 - BIASES DETECTED: confirmation bias - quería validar la recomendación de memory-lancedb del artículo sin verificar el ecosistema completo; el usuario me reencaminó correctamente.
+
+## 2026-08-22 - Triage de PRs OSS: leer TODOS los comments (inline incluidos) y usar la Search API
+
+**Context:** Sesión de limpieza de PRs de terceros (bajamos de 33 a 19 abiertos). Dos errores de infraestructura y uno de juicio.
+
+**Error de infraestructura (gh):** `gh pr list --author gonzoblasco` SIN `--repo` devuelve `[]` vacío - el flag `--author` sin un repo concreto no itera sobre los repos del usuario. No es un mal uso conceptual (ya documentado 20/08), es un comportamiento de la CLI. **Fix:** usar la GitHub Search API (`gh api "search/issues?q=author:gonzoblasco+is:pr+is:open&per_page=100"`) o `skills/github/scripts/pr-batch-check.sh --mine-only`. Documentado en MEMORY.md y skills/github/SKILL.md.
+
+**Error de juicio (clasificación):** mi primer análisis clasificó PRs sin leer los comentarios inline de código ni las reviews:
+- **TanStack/router #7834** parecía "empujable" pero el maintainer schiller-manuel ya lo había rechazado as-is ("too niche, bundlesize impact not warranted"). Gonzalo ya estaba haciendo un rework configurable.
+- **payload #17413**: parecía "esperando reviewer" pero el inline comment de sviat-barbutsa ya estaba resuelto ("Thank you! Glad I could help").
+
+**Regla:** antes de empujar/cerrar un PR de terceros, revisar `comments` + `inline comments` (`gh api repos/OWNER/REPO/pulls/N/comments`) + `reviews` (`--json reviews`). El feedback real del maintainer vive en los inline comments y reviews, no solo en los comments generales.
+
+**Self-reflection:**
+- CONTEXT: triage masivo de PRs OSS (33 → 19)
+- REFLECTION: arranqué con `gh pr list --author` que devolvió vacío y perdí ~10 tools en debuguear el JSON vacío en vez de cambiar rápido a la Search API. Además clasifiqué PRs por estado superficial (mergeable/reviewDecision) sin leer el contenido de los comments inline, lo que me llevó a recomendar empujar un PR que el maintainer ya había rechazado.
+- LESSON: (1) para listar MIS PRs usar SIEMPRE la Search API, no `gh pr list --author` a secas; (2) el triage de PRs requiere leer TODOS los comments (inline + reviews), no solo los generales; (3) verificar contra la fuente real (main del repo) antes de force-pushear rebases de PRs viejos - el astryx#4298 parecía aprobado pero main ya lo había absorbido via #4157/#5034.
+- BIASES DETECTED: anchoring (me anclé en `gh pr list --author`), sunk cost (seguí debugueando el JSON vacío en vez de pivotar), y confirmation (quería ver el PR aprobado como empujable sin leer los comments del maintainer).
