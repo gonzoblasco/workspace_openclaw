@@ -40,7 +40,6 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/oss-tracker.js` | Tracker de contribuciones OSS |
 | `scripts/pr-dashboard.sh` | Dashboard de PRs (para el batch check del ritual de inicio de sesión) |
 | `scripts/pre-commit.template` | Template de pre-commit hooks (lint → test → build) |
-| `scripts/simple-context-extractor.js` | Extrae contexto simple |
 | `scripts/test-skills.sh` | Verifica que las skills estén bien formadas |
 
 ## Memoria (SQLite + espejos)

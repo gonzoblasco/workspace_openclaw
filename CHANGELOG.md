@@ -16,6 +16,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Eliminado script roto y referencias a products/
+
+### Removed
+- **scripts/simple-context-extractor.js:** eliminado. Estaba roto (SyntaxError: doble declaración de `workspaceDocs`), con bug de `products/` (línea 46, directorio que ya no existe), y nadie lo usaba. Reemplazado por el sistema de memoria real (memory-db, dailies).
+
+### Changed
+- **TOOLS.md:** quitada la referencia al script eliminado de la tabla de scripts. Verificado que no quedan referencias a `products/` en archivos activos (solo en skills como "products/features", que es inglés legítimo).
+
+---
+
 ## [2026-08-23] - Refactor AGENTS.md por taxonomía
 
 ### Changed
