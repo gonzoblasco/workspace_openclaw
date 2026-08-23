@@ -50,10 +50,6 @@
 	path = projects/sudolab
 	url = https://github.com/gonzoblasco/sudolab.git
 
-[submodule "projects/ultimo-turno"]
-	path = projects/ultimo-turno
-	url = https://github.com/gonzoblasco/ultimo-turno.git
-
 [submodule "projects/umbrawriter-v2"]
 	path = projects/umbrawriter-v2
 	url = https://github.com/gonzoblasco/umbrawriter-v2.git
