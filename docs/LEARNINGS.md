@@ -468,7 +468,7 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - **Revisar MIS PRs** (seguimiento): iterar repo por repo con `gh pr list --repo <org/repo> --author gonzoblasco` (los repos donde ya tengo PRs abiertos).
 - **Buscar OPORTUNIDADES** (triaje): NUNCA con `--author`. Triajear issues de repos NUEVOS de terceros con `gh issue list --repo <org/repo> --label accessibility`, y verificar que no haya PR competidor (`gh search prs --repo <org/repo> "#<issue>" --state open`) antes de invertir tiempo.
 
-**Regla de repos:** buscar en repos donde NO hemos trabajado. Ya trabajamos en: astryx, radix-ui, shadcn-ui, TanStack (router/query), vercel/ai, zod, payloadcms, nextra, google/skills, ibelick/ui-skills, hallmark, carbon-design-system, swift-testing, javascript-algorithms, supabase, ariakit, dub. Repos nuevos buenos para el perfil (React/TS + a11y): adobe/react-spectrum (GOLD: a11y es el core), mui/material-ui, mui/base-ui, elastic/eui, microsoft/fluentui.
+**Regla de repos:** buscar en repos donde NO hemos trabajado. Ya trabajamos en: astryx, radix-ui, shadcn-ui, TanStack (router/query), vercel/ai, zod, payloadcms, nextra, google/skills, ibelick/ui-skills, hallmark, carbon-design-system, swift-testing, supabase, ariakit, dub. Repos nuevos buenos para el perfil (React/TS + a11y): adobe/react-spectrum (GOLD: a11y es el core), mui/material-ui, mui/base-ui, elastic/eui, microsoft/fluentui.
 
 **Lección:** para encontrar oportunidades de contribución, mirar hacia afuera (repos nuevos de terceros, issues sin competencia), no hacia adentro (mis propios forks/PRs). El `gh pr list --author` sirve para seguimiento de lo que ya existe, no para descubrir qué aportar.
 
