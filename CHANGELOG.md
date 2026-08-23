@@ -28,6 +28,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Heartbeat reactivado como mantenimiento silencioso
+
+### Changed
+- **HEARTBEAT.md:** reescrito de "apagado total" (solo HEARTBEAT_OK) a checklist de mantenimiento silencioso proactivo: git status, archivado de dailies, sync de MD espejo con la DB, foldear aprendizajes a MEMORY.md, y anotar backlog. Con límites claros (horario quieto, costo bajo, no molestar).
+
+---
+
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed
