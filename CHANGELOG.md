@@ -6,6 +6,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Corrección de título en LEARNINGS.md
+
+### Changed
+- **docs/LEARNINGS.md:** corregido el título. Decía `# LEARNINGS.md - Kanam's Solitaires` (nombre de un proyecto de juegos, sin relación con el contenido). Ahora `# LEARNINGS.md - Lecciones aprendidas del workspace`, consistente con el patrón de otros archivos de docs.
+
+---
+
 ## [2026-08-23] - Limpieza de docs/checklists/
 
 ### Removed

@@ -1,4 +1,4 @@
-:# LEARNINGS.md - Kanam's Solitaires
+# LEARNINGS.md - Lecciones aprendidas del workspace
 
 Lessons learned during development. Distilled from session notes; for cross-project patterns, see `skills/`.
 
