@@ -6,6 +6,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Pipeline de producto actualizado, referencia eliminada
+
+### Changed
+- **docs/kanam-product-pipeline.md:** agregadas skills agent-orchestration-pipeline-model-arbitration y memory-wiki-workflow al pipeline de soporte. Fecha actualizada (2026-08-23).
+
+### Removed
+- **docs/reference/ai-agent-setup.md:** eliminado. Era referencia conceptual no operativa ("no se ejecuta"), huérfana (nadie la referenciaba) con frontmatter de skill obsoleto. Movido a trash. La carpeta docs/reference/ (vacía) también se eliminó.
+
+---
+
 ## [2026-08-23] - Refactor AGENTS.md por taxonomía
 
 ### Changed

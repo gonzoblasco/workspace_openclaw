@@ -61,8 +61,10 @@
 | Contexto degradado | `context-engineering` | El agente pierde foco, ignora convenciones, alucina |
 | Qué skill aplica | `using-agent-skills` | Al empezar sesión, mapear el trabajo a la skill correcta |
 | Conocimiento | `knowledge-management` | Documentación inconsistente, learning signals |
+| Análisis de memoria | `memory-wiki-workflow` | Usar memory-wiki como capa analítica: entities con claims, dashboards, síntesis |
 | Gobernanza | `engineering-governance` | Post-milestone: auditar y mejorar el sistema |
 | **Orquestación multi-agente** | `agent-orchestration-pipeline` | Trabajo grande que se divide en unidades entre 2+ agentes con cross-review multi-ronda (orquestador coordina) |
+| Arbitraje de modelo | `agent-orchestration-pipeline-model-arbitration` | Reducir costos del pipeline A/B priorizando Kimi K2.7 Code solo cuando se justifica |
 | Contribución OSS | `oss-contribution` | Contribuir a repos externos: triaje, seguimiento de issues/PRs, community |
 | SQL | `sql-insight` | Escribir u optimizar queries |
 | Supabase | `supabase-assistant` | Schemas, queries, types, migrations |
@@ -184,6 +186,6 @@ oss-contribution (documentar en PR/issue, separar hallazgos) → session-lifecyc
 
 ---
 
-*Actualizado: 2026-08-14 (agregada skill agent-orchestration-pipeline: capa de orquestación multi-agente con cross-review, validada en kanam-story Fase 3)*
+*Actualizado: 2026-08-23 (agregadas skills agent-orchestration-pipeline-model-arbitration y memory-wiki-workflow al pipeline de soporte)*
 *Skills del pipeline: set propio organizado en ciclo SDLC (estilo Addy Osmani) + core OpenClaw + skills 100% propias (accesibilidad, vida, orquestación multi-agente)*
 *Estado: 🟢 Al día*
