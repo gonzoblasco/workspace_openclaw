@@ -40,21 +40,6 @@
 
 ---
 
-## 🗑️ ELIMINADOS
-
-| Proyecto | Motivo |
-|---|---|
-| Moderno-Access-Virtual-Plate | Eliminado de GitHub |
-| antigravity-developer-stack | Eliminado (contenido migrado a ai-developer-stack) |
-| copilot-skills | Eliminado (reemplazado por workflow-kit) |
-| futbol-ps2 | Eliminado (MVP completo, descartado) |
-| chatgpt-project-architect | Archivado (absorbido por AGDS) |
-| 0001 | Sin propósito |
-| prueba_minecraft_claude_code | Experimento abandonado |
-| umbrawriter (v1) | Reemplazado por umbrawriter (v2) |
-
----
-
 ## 📋 Notas
 
 - **Forks adoptados como propios:** `kanam-forge` (fork de Lovable) es el único fork que Gonzo adoptó como proyecto propio. Se lista porque es parte del catálogo actual (una versión 100% nuestra vendrá después).
