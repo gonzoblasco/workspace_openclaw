@@ -7,9 +7,9 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 22 |
+| PRs abiertos | 21 |
 | PRs mergeados | 0 |
-| PRs cerrados sin merge | 14 |
+| PRs cerrados sin merge | 15 |
 | Repos con PRs | 17 |
 
 ## PR Registry
@@ -87,8 +87,8 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | - | verify-revision-state recipe for Skill Registry. CLA check falló (primera contribución a Google). Re-triggered 23 Jul. |
-| **Nuestro PR** | [#196](https://github.com/google/skills/pull/196) | **waiting_review** |
+| **Issue** | - | Cerrado 22/08 por Gonzo (decisión propia). |
+| **Nuestro PR** | [#196](https://github.com/google/skills/pull/196) | **closed** |
 
 ### ibelick/ui-skills
 
