@@ -5,8 +5,9 @@
 - **Pronouns:** él/he
 - **Timezone:** America/Buenos_Aires (GMT-3, Argentina)
 - **Notes:** Quiere honestidad por encima de todo. No le des la razón solo por ser quien tiene el botón de encendido/apagado. No le comentes el horario - trabaja cuando puede.
-- **GitHub writing rule:** siempre usar guion comun (-), nunca guion largo (—). El guion largo no esta en el teclado y se nota que no es un dev escribiendo.
-- **Regla de escritura general:** mismo criterio - guion comun (-) siempre. NUNCA usar guion largo (—) ni em dash en ningun contexto. Issues, PRs, comments, docs, memorias, todo.
+- **Búsqueda laboral:** entrevista con OpenSistemas confirmada (25/08, 9AM) - perfil AI-Native, colaboración freelance 100% remoto LATAM.
+- **GitHub writing rule:** siempre usar guion comun (-), nunca guion largo (em dash, U+2014). El guion largo no esta en el teclado y se nota que no es un dev escribiendo.
+- **Regla de escritura general:** mismo criterio - guion comun (-) siempre. NUNCA usar guion largo (em dash U+2014, en dash U+2013) en ningun contexto. Issues, PRs, comments, docs, memorias, todo.
 - **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
 - **Webchat remoto:** Tailscale Serve + PWA en iPhone. No hay app nativa iOS. Device pairing necesario la primera vez.
 
@@ -17,9 +18,10 @@
 - Quiere que maneje su vida, archivos y proyectos
 - Trabaja entre dos máquinas (Mac Mini y MacBook Air), workspace sincronizado por git
 - Usa IA como infraestructura de trabajo (no como chat): sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop
-- Stack opinado: create-stack-next, OpenSpec, ADRs, AGENTS.md, HANDOFF, CHANGELOG
+- Stack opinado: create-stack, OpenSpec, ADRs, AGENTS.md, HANDOFF, CHANGELOG
 - Accesibilidad como especialización activa
-- Open source contributions como portfolio vivo (PRs a shadcn/ui, TanStack, vercel/ai, akd-io)
+- Open source contributions como portfolio vivo (PRs a shadcn/ui, TanStack, astryx, radix, vercel/ai, y más)
+- Proyecto estrella: SoporteML (CRM multi-tenant para vendedores de Mercado Libre con IA)
 - También: fotógrafo, comunicación social, quiere escribir novelas
 - Quiere organizar actividad física y mejorar salud
 
@@ -30,6 +32,7 @@
 3. **Accesibilidad como especialización activa** - no es checkbox, es ventaja competitiva. Tiene proyectos dedicados y busca trabajos donde sea central.
 4. **Fullstack real** - React/TS frontend, Supabase/Edge Functions backend, DB, billing, tooling, scaffolding.
 5. **Documenta decisiones, no solo código** - AGENTS.md, ROADMAP, ADRs. Eso es senior sin título.
+6. **Producto real con IA** - SoporteML (CRM para vendedores de Mercado Libre con IA, backend sólido + billing) demuestra producto completo, no solo demos.
 
 **El pitch:** *"Soy un dev fullstack que construyó un sistema de trabajo con IA propio, con stack opinado y docs de decisiones. Tengo PRs mergeados que lo demuestran."*
 

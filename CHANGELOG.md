@@ -103,6 +103,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - USER.md actualizado
+
+### Changed
+- **USER.md:** agregada búsqueda laboral (entrevista OpenSistemas 25/08, perfil AI-Native). Corregida referencia OSS obsoleta (akd-io → astryx, radix, y más). Corregido nombre del repo (create-stack-next → create-stack). Agregado SoporteML como proyecto estrella (6to diferenciador). Reformuladas reglas de escritura para no incluir el carácter em dash literal.
+
+---
+
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed
