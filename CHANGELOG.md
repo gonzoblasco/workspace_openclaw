@@ -96,6 +96,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - TOOLS.md: de template a cheat sheet real del setup
+
+### Changed
+- **TOOLS.md:** reescrito del template default (inglés, genérico, solo ejemplos) a cheat sheet operativo del setup de Gonzo en español. Agrega: máquinas (Mac Mini/MacBook Air + reglas de merge), modelos Ollama (local + cloud con los disponibles), pipeline de agentes (Qwen Code + Claude Code), scripts del workspace (los 8), memoria SQLite + espejos, red/remoto (Tailscale Serve), y desarrollo (pre-commit hooks, iconos, stack, idioma).
+
+---
+
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed
