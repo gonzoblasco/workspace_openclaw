@@ -1,47 +1,56 @@
 # PROYECTOS.md — Índice Maestro
 
-**Última actualización:** 2026-08-03
+**Última actualización:** 2026-08-23
+
+> **Regla de oro:** GitHub es la fuente de la verdad. Cada proyecto vive en su propio repo (sin submódulos ni repos dentro del repo). El workspace (`~/.openclaw/workspace`) solo contiene config, memoria y skills. Los proyectos se clonan en `projects/<slug>/` cuando se necesitan.
 
 ---
 
-## 🟢 ACTIVOS — Con código y actividad
+## 🟢 ACTIVOS — Con código y actividad (en disco)
 
 | Proyecto | Descripción | Estado | Git |
 |---|---|---|---|
-| **a11y-fixer** | Fixes de accesibilidad | En curso, Fase 1 (MVP) en definición | ✅ gonzoblasco/a11y-fixer |
-| **kanam-solitaires** | 4 juegos de solitario (Klondike, Spider, FreeCell, Pyramid) — PWA | **v1.0.0** — 2026-08-01. Primer release público. | ✅ gonzoblasco/kanam-solitaires |
-| **sportcars** | Landing + CRM para concesionaria de autos | Fase 5 completada (leads API, formularios, panel admin, export CSV). | ✅ gonzoblasco/sportcars |
-| **ultimo-turno** | Novela — escritura activa | Capítulos 1-6 completos. Próximo: Capítulo 7 (Parte 2). | ✅ Repo propio |
-| **quedamos** | App PWA de matching para salidas | Discovery completo. `.knowledge/` con 11 docs. | ✅ gonzoblasco/quedamos |
-| **create-stack** | Scaffolder opinado Next.js | Publicado en npm. `.knowledge/` con BRIEF, STATUS, ADRs, specs. | ✅ gonzoblasco/create-stack |
-| **ai-developer-stack** | Skills de ingeniería con IA | Clonado. Sin `.knowledge/` en el repo. | ✅ gonzoblasco/ai-developer-stack |
-| **kanam** | PWA — sistema operativo personal con IA | En discovery. Solo README.md en local. | ✅ gonzoblasco/kanam |
-| **workflow-kit** | Portable AI agent workflow skills | Publicado en npm. `.knowledge/` con AGENT_TASKS.md. | ✅ gonzoblasco/workflow-kit |
-| **health-tracker** | PWA de monitoreo de salud (offline-first) | Clonado. Sin `.knowledge/`. | ✅ gonzoblasco/health-tracker |
-| **ai-engineering-bootcamp** | Curso de 10 niveles de AI-assisted dev con proyectos resueltos | **COMPLETADO ✅ 10/10** — 2026-08-03. Versión canónica consolidada en GitHub. N7-10 convergente. Skill `pipeline-detector` extraído del curso. | ✅ gonzoblasco/ai-engineering-bootcamp |
-| **umbrawriter-v2** | AI Fiction Co-Writer. Local-first. Chat-first. BYOK. | Clonado. Sin `.knowledge/`. | ✅ gonzoblasco/umbrawriter-v2 |
-| **kanam-story** | Co-writer de ficción local-first. Chat con manos + biblia viva + brújula + outline/beats. | **v0.1.0** — 2026-08-13. Slices 0-5 completos (chat, outline, biblia, brújula, export). 121 tests. | ✅ gonzoblasco/kanam-story |
-| **kanam-mind** | Segundo cerebro local-first con IA. Timeline personal (notas, check-ins, ideas, writing, fotos) + resumen IA diario. IndexedDB + Ollama local. | **v0.1.0** — 2026-08-17. MVP completo (timeline, CRUD accesible, resumen IA, PWA offline). 7 tests. | ✅ gonzoblasco/kanam-mind |
+| **kanam-story** | Co-writer de ficción local-first. Chat con manos + biblia viva + brújula + outline/beats. | **v0.17.0** — Fase A cerrada. 382 tests. Roadmap a la nube planificado. | ✅ gonzoblasco/kanam-story |
+| **kanam-mind** | Segundo cerebro local-first con IA. Timeline personal + resumen IA diario. IndexedDB + Ollama local. | **v0.1.0** — MVP completo. 7 tests. | ✅ gonzoblasco/kanam-mind |
+| **soporteml-v4** | CRM multi-tenant para ML sellers. | Activo. | ✅ gonzoblasco/soporteml-v4 |
+| **a11y-fixer** | Fixes de accesibilidad. | En curso. | ✅ gonzoblasco/a11y-fixer |
+| **kanam-solitaires** | 4 juegos de solitario (Klondike, Spider, FreeCell, Pyramid) — PWA. | **v1.0.0** — 2026-08-01. Primer release público. | ✅ gonzoblasco/kanam-solitaires |
+| **quedamos** | App PWA de matching para salidas. | Discovery completo. `.knowledge/` con 11 docs. | ✅ gonzoblasco/quedamos |
+| **create-stack** | Scaffolder opinado Next.js. | Publicado en npm. `.knowledge/` con BRIEF, STATUS, ADRs, specs. | ✅ gonzoblasco/create-stack |
+| **ai-developer-stack** | Skills de ingeniería con IA. | Clonado. | ✅ gonzoblasco/ai-developer-stack |
+| **kanam-skills** | Skills propios de Kanam. | Activo. | ✅ gonzoblasco/kanam-skills |
+| **kanam-forge** | Herramienta de forja de skills. | En discovery. | ✅ gonzoblasco/kanam-forge |
+| **create-with-ai** | Generador de apps con IA. | Activo. | ✅ gonzoblasco/create-with-ai |
+| **accessible-ui** | Headless component library accesible. | Activo. | ✅ gonzoblasco/accessible-ui |
+| **soporteml** | CRM multi-tenant para ML sellers (v1). | Activo. | ✅ gonzoblasco/soporteml |
 
-## 🟡 SEMILLEROS — Documentos sueltos, sin repo propio
+## ❄️ ARCHIVADOS (en GitHub, sin clon local)
 
-| Proyecto | Descripción |
-|---|---|
-| **postulaciones** | 2 archivos markdown de postulaciones laborales (mental-health-startup, ryz-labs). Sin git. |
+Proyectos que existen en GitHub pero **no se clonan** a la mini. Se descargan solo si se reactivan.
 
-## ❄️ ARCHIVADOS (en GitHub, con clon local)
-
-Proyectos que existen en GitHub, tienen clon local, pero sin actividad reciente ni `.knowledge/`. Para reactivar: crear `.knowledge/` con BRIEF + STATUS.
-
-| Proyecto | GitHub | Último commit |
+| Proyecto | GitHub | Estado |
 |---|---|---|
-| **accessibility-auditor** | gonzoblasco/accessibility-auditor | 2026-07-16 — reorg: docs a projects/ |
-| **accessible-ui** | gonzoblasco/accessible-ui | 2026-07-16 — chore: eliminar Chromatic |
-| **create-with-ai** | gonzoblasco/create-with-ai | 2026-07-16 — feat: modo iteración funcional |
-| **soporteml** | gonzoblasco/soporteml | 2026-07-18 — reorg: docs a projects/ |
-| **sudolab** | gonzoblasco/sudolab | 2026-07-18 — Release 0.2.0-beta |
+| **soporteml-v3** | gonzoblasco/soporteml-v3 | ARCHIVED |
+| **ai-engineering-bootcamp** | gonzoblasco/ai-engineering-bootcamp | ARCHIVED — curso 10/10 completado |
+| **hyatt-copilot-agent** | gonzoblasco/hyatt-copilot-agent | ARCHIVED |
+| **ensulugar** | gonzoblasco/ensulugar | ARCHIVED |
+| **cabala** | gonzoblasco/cabala | ARCHIVED |
+| **health-tracker** | gonzoblasco/health-tracker | ARCHIVED |
+| **umbrawriter** | gonzoblasco/umbrawriter | En Lovable, sin clon local |
 
-## 🗑️ ELIMINADOS
+## 🗑️ ELIMINADOS DEL DISCO (2026-08-23)
+
+Carpetas locales sin repo en GitHub que se borraron de la mini. GitHub es la fuente de la verdad, así que no se mantienen clones huérfanos.
+
+| Proyecto | Motivo |
+|---|---|
+| **brainweb** | Resto vacío (solo `supabase/`), sin repo. Borrado. |
+| **recetario** | Solo una DB local (`recetario.db`), sin repo. Borrado. |
+| **solitario** | Solo `node_modules` + `public`, sin repo. Borrado. |
+| **soporteml-v2** | Resto vacío (solo `supabase/`), sin repo. Borrado. |
+| **ultimo-turno** | Completamente vacía. Borrada y sacada de `.gitmodules`. |
+
+## 🗑️ ELIMINADOS (histórico)
 
 | Proyecto | Motivo |
 |---|---|
@@ -52,13 +61,12 @@ Proyectos que existen en GitHub, tienen clon local, pero sin actividad reciente 
 | chatgpt-project-architect | Archivado (absorbido por AGDS) |
 | 0001 | Sin propósito |
 | prueba_minecraft_claude_code | Experimento abandonado |
-| cabala | Eliminado — build roto, borrado del disco |
 | umbrawriter (v1) | En Lovable, sin clon local. Reemplazado por umbrawriter-v2 |
 
 ---
 
 ## 📋 Notas
 
-- Los forks de terceros (TanStack/router, radix-ui, etc.) no se listan acá — tienen su propio HANDOFF en `projects/<slug>/`.
+- **Forks de OSS** (create-t3-app, ui, ai, react-spectrum, material-ui, carbon, zod, etc.): NO se clonan a la mini. Se descargan solo cuando se necesitan para PRs. Viven en GitHub.
 - Para agregar un proyecto: clonar en `projects/<slug>/`, crear `.knowledge/`, y agregar a la tabla de activos.
-- Varios proyectos archivados tienen su documentación en `docs/` dentro del código (no en `.knowledge/`). Si se reactivan, migrar a `.knowledge/`.
+- Los proyectos en disco son submódulos del workspace (declarados en `.gitmodules`). Cada uno se sincroniza con su propio repo en GitHub.
