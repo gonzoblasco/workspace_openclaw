@@ -79,6 +79,14 @@ Si algo falla, el commit no se crea. Para saltar: `SKIP_SIMPLE_GIT_HOOKS=1 git c
 
 **Regla:** cada vez que se identifique un proyecto sin pre-commit hooks, agregarlos. Es prioridad sobre features.
 
+## Lecciones del 2026-08-22
+
+### `gh pr list --author` sin `--repo` devuelve vacio (lista de PRs OSS)
+Error costoso (10+ tools) al revisar PRs de terceros. `gh pr list --author gonzoblasco` SIN `--repo` devuelve `[]` vacio - el flag `--author` sin repo no itera sobre los repos del usuario. **Fix para SIEMPRE:** usar la GitHub Search API (`gh api "search/issues?q=author:gonzoblasco+is:pr+is:open&per_page=100" --jq ...`) o el script `skills/github/scripts/pr-batch-check.sh --mine-only` (que usa `--repo` + `--author`, si funciona). Documentado en skills/github/SKILL.md. Nunca repetir `gh pr list --author` a secas.
+
+### Scripts bash inline con `set -- $repo` en loops: evitar
+Mi script de un solo uso con `set -- $repo` en un loop estaba mal construido y genero un output feo de "Exec failed" con traceback. Para verificar multiples PRs, escribir un script bash con funciones bien definidas (como /tmp/check_prs.sh) en vez de loops inline rotos, o iterar con variables de loop simples.
+
 ## Lecciones del 2026-08-02
 
 ### Godot: aprender juntos, no automatizar

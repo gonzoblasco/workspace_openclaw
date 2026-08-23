@@ -7,9 +7,9 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 27 |
+| PRs abiertos | 26 |
 | PRs mergeados | 0 |
-| PRs cerrados sin merge | 2 |
+| PRs cerrados sin merge | 3 |
 | Repos con PRs | 15 |
 
 ## PR Registry
@@ -48,25 +48,17 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | [#4143](https://github.com/facebook/astryx/issues/4143) | Default accessible labels (Online/Away/Busy). Esperando review de @humbertovirtudes. |
-| **Nuestro PR** | [#4298](https://github.com/facebook/astryx/pull/4298) | **open** |
+| **Issue** | [#4143](https://github.com/facebook/astryx/issues/4143) | Cerrado 22/08 por redundante: main absorbió el fix vía #4157 (default label por variante) y #5034 (composición vía AvatarStatusLabelContext). Comentario de cierre publicado agradeciendo a imdreamrunner. Lección: verificar contra main antes de force-pushear rebases viejos. |
+| **Nuestro PR** | [#4298](https://github.com/facebook/astryx/pull/4298) | **closed** |
 | **Contexto** | - | Gonzo abrió #4218 primero (icon+label). humbertovirtudes sugirió converger con #4157 por ser base más sólida. PR #4218 cerrado, contenido migrado a #4298. |
 
-| **Issue** | [#4421](https://github.com/facebook/astryx/issues/4421) | Non-color indicator (font-weight) en current breadcrumb. **MERGEABLE, scope limpio, respaldado por auditoría #5332.** Sin reviews. |
+| **Issue** | [#4421](https://github.com/facebook/astryx/issues/4421) | Non-color indicator (font-weight) en current breadcrumb. MERGEABLE, sin reviews. |
 | **Nuestro PR** | [#4605](https://github.com/facebook/astryx/pull/4605) | **open** |
-| **Contexto** | - | Abierto 31 Jul. WCAG 1.4.1 fix. **22/08: audit #5332 (Breadcrumbs) cita este PR como la fix canónica de B8 y no lo toca para no pisarlo. Scope limpiado (se sacaron los commits de #3654 que ya viven en #4022). Rebaseado sobre upstream/main. Comment publicado pidiendo review citando el respaldo.** |
-
-| **Issue** | [#3654](https://github.com/facebook/astryx/issues/3654) | Contraste WCAG 2.1 AA en tokens core. **Reactivado 22/08: body actualizado (solo border-emphasized tras revert de disabled), comment con @ernestt, MERGEABLE.** |
-| **Nuestro PR** | [#4022](https://github.com/facebook/astryx/pull/4022) | **open** |
-| **Contexto** | - | Abierto 16 Jul. ernestt pidió CHANGES_REQUESTED (disabled tokens exentos bajo SC 1.4.3). Gonzalo revirtió text/icon-disabled, quedó solo border-emphasized (borde activo, SC 1.4.11). Quedó dormido 3 semanas en CHANGES_REQUESTED. 22/08: body actualizado + comment citando auditoría #5332 + @ernestt. Falta re-review humano. |
+| **Contexto** | - | Abierto 31 Jul. WCAG 1.4.1 fix. |
 
 | **Issue** | [#4450](https://github.com/facebook/astryx/issues/4450) | aria-labelledby en Selector trigger. CONFLICTING, sin reviews. |
 | **Nuestro PR** | [#4604](https://github.com/facebook/astryx/pull/4604) | **open** |
 | **Contexto** | - | Abierto 31 Jul. Tiene conflictos con main. |
-
-| **Issue** | [#4994](https://github.com/facebook/astryx/issues/4994) | Divider role=separator dentro de role=listbox (crítico axe). **PR nuevo 22/08, MERGEABLE, CI corriendo.** |
-| **Nuestro PR** | [#5344](https://github.com/facebook/astryx/pull/5344) | **open** |
-| **Contexto** | - | 22/08: detectado en scan a11y recurrente. Bug crítico axe aria-required-children (WCAG 1.3.1/4.1.2). Fix: dividers dentro del listbox pasan a role=presentation; Divider acepta role override. Fix en Selector + MultiSelector + tests + changeset. **Candidato a PR propio de a11y (no competía por issues tomados).** |
 
 ### google/skills
 
@@ -185,11 +177,3 @@
 | **Issue** | - | warn when reasoning tokens spent. Review bot de Vercel addressado. Squash 22 Jul. |
 | **Nuestro PR** | [#17274](https://github.com/vercel/ai/pull/17274) | **waiting_review** |
 
-
-### facebook/docusaurus
-
-| Eslabón | Link | Detalle |
-|---------|------|---------|
-| **Issue** | [#11332](https://github.com/facebook/docusaurus/issues/11332) | SPA route navigations no anunciadas por screen readers (NVDA/VoiceOver). **22/08: comentario de posicionamiento a11y publicado.** |
-| **Nuestro aporte** | [comment](https://github.com/facebook/docusaurus/issues/11332#issuecomment-5382562896) | **comentario** |
-| **Contexto** | - | Comentario técnico: clarificó el criterio WCAG (2.4.2 Page Titled, no 4.1.3 Status Messages) - cambia el fix. Live region (PR #8110) es band-aid que no llega a braille displays. Recomendó focus management (patrón Slack/Next.js App Router) + document.title por página. Aria Notify (Chrome 141) prometedor pero experimental. Posicionamiento como voz de a11y en repo de Meta no-core. |

@@ -73,6 +73,17 @@ gh pr merge 55 --repo owner/repo --squash
 
 URLs work directly: `gh pr view https://github.com/owner/repo/pull/55`.
 
+### ⚠️ Listing YOUR PRs across all repos (known gotcha)
+
+`gh pr list --author <user>` **sin `--repo` devuelve `[]` vacio** - el flag `--author` sin un repo concreto no itera sobre los repos del usuario. No es un fix que dependa del token ni del casing.
+
+**Formas que SI funcionan:**
+- Buscar el propio usuario: `gh api "search/issues?q=author:<user>+is:pr+is:open&per_page=100" --jq '.items[] | ...'` (la GitHub Search API, fuente confiable, devuelve todo).
+- Listar por repo trackeado: el script `skills/github/scripts/pr-batch-check.sh --mine-only` (usa `--repo` + `--author`, que si funciona).
+- Por repo puntual: `gh pr list --repo owner/repo --author <user> --state open`.
+
+**Regla:** para revisar el estado de TODOS los PRs OSS de Gonzo, usar la **Search API** (completa) o el script `pr-batch-check.sh --mine-only` (repos trackeados). Nunca `gh pr list --author` a secas.
+
 ## gh CLI: Issues
 
 ```bash
