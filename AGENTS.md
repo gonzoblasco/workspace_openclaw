@@ -256,10 +256,12 @@ projects/<slug>/
 1. Nuevo producto → `./scripts/init-project.sh <slug> [--repo <url>]`
    - Crea `projects/<slug>/.knowledge/` con BRIEF.md + STATUS.md
    - Crea `.gitignore` que ignora `.knowledge/` para el repo del proyecto
-   - Si tiene `--repo`, inicializa git, pushea, y registra como submodule
+   - Si tiene `--repo`, inicializa git y pushea
 2. Go decision → scaffold en `projects/<slug>/` (repo separado, ignora `.knowledge/`)
 3. Desarrollo → actualizar `projects/<slug>/.knowledge/STATUS.md` con cada hito
 4. Commits: `.knowledge/` al workspace, código al repo del proyecto
+
+**Sin submódulos.** GitHub es la fuente de la verdad. Los proyectos se clonan en `projects/<slug>/` bajo demanda (cuando se trabajan), no como submódulos del workspace. El workspace trackea solo `.knowledge/` (la memoria institucional); el código vive en su repo. Si una carpeta de `projects/` no tiene repo en GitHub, se elimina.
 
 **Excepciones:**
 - Forks externos (create-next-stack, TanStack/router, etc.) → sus docs de sesión (HANDOFF) van en `.knowledge/` del slug correspondiente. La carpeta `docs/` original del fork se ignora (es parte del código).

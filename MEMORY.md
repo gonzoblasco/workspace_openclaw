@@ -115,48 +115,60 @@ Si algo falla, el commit no se crea. Para saltar: `SKIP_SIMPLE_GIT_HOOKS=1 git c
 - Scaffolder opinado Next.js. Publicado en npm como `@gonzoblasco/create-stack`. **Vivo, no tocar.**
 - Gonzo quiere mantener el scope `@gonzoblasco/` como firma (posible rename futuro a "kanam", pero el scope queda con firma gonzoblasco).
 
-### workflow-kit
-- Portable AI agent workflow skills. Publicado en npm. Uso diario. **Vivo, no tocar.**
-
 ### ai-engineering-bootcamp
-- 10 niveles, 23 proyectos hands-on de AI-assisted development. Estructura completa, contenido en Pending. Proyecto de contenido por escribir.
+- 10 niveles, 23 proyectos hands-on de AI-assisted development. **Curso completado (10/10). Repo archivado en gh.** Detalle en `docs/LEARNINGS.md`.
 
 ### Proyectos candidatos a reset/archivar
 - **accessible-ui:** espacio saturado (Radix, Ariakit, React Aria). Reset con angle único o archivar.
-- **accessibility-auditor:** competitivo, sin diferenciación fuerte. Reset como API-first/CI tool o archivar.
 - **create-with-ai:** mercado hipercompetitivo. Reset con angle específico o archivar.
 
 ## Repos propios (no forks)
 
-Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no se listan.
+Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no se listan. Fuente de verdad: GitHub (`gh repo list`).
+
+### Activos
 
 | Repo | Privado | Descripción |
 |---|---|---|
 | workspace_openclaw | ✅ | El workspace |
 | kanam-skills | - | Repo público + web de agent skills |
-| quedamos | - | App PWA de matching para salidas |
-| sportcars | ✅ | Eliminado 2026-08-17 |
-| cabala | ✅ | Eliminado - build roto |
-| a11y-fixer | ✅ | Accessibility fix engine |
+| kanam-story | - | Co-writer de ficción local-first |
+| kanam-mind | - | Segundo cerebro local-first con IA |
+| kanam-solitaires | - | Colección de solitarios PWA |
+| soporteml | - | CRM multi-tenant para ML sellers (v1) |
+| soporteml-v4 | ✅ | SoporteML V4 - reinicio con diseño avanzado |
+| a11y-fixer | - | Accessibility fix engine |
 | ai-developer-stack | - | Skills de ingeniería con IA |
 | create-stack | - | Scaffolder opinado Next.js |
-| workflow-kit | - | Portable AI agent workflow skills |
-| create-with-ai | - | Generador de apps con IA |
-| accessible-ui | - | Headless component library |
-| soporteml | - | CRM multi-tenant para ML sellers |
-| accessibility-auditor | - | Plataforma de auditoría WCAG |
-| ai-engineering-bootcamp | - | 10 niveles de AI-assisted dev |
-| umbrawriter | ✅ | - |
-| sudolab | ✅ | AI fiction writing assistant |
-| react-18-design-patterns | ✅ | Libro React 18 (Packt), actualizado a React 19 LTS |
-| react-anti-patterns-book | ✅ | Libro React Anti-Patterns (Packt) |
-| hyatt-copilot-agent | ✅ | Agente IA para staff de hoteles Hyatt |
+| create-with-ai | ✅ | Generador de apps con IA |
+| accessible-ui | ✅ | Headless component library |
+| quedamos | ✅ | App PWA de matching para salidas |
+| kanam-forge | - | Herramienta de forja de skills |
 
-## Repos eliminados
+### Archivados (existen en gh, sin clon local)
+
+| Repo | Privado | Estado |
+|---|---|---|
+| soporteml-v3 | ✅ | ARCHIVED |
+| ai-engineering-bootcamp | - | ARCHIVED - curso 10/10 completado |
+| hyatt-copilot-agent | ✅ | ARCHIVED |
+| ensulugar | - | ARCHIVED |
+| cabala | - | ARCHIVED |
+| health-tracker | - | ARCHIVED |
+| umbrawriter | ✅ | En Lovable, sin clon local |
+
+## Repos eliminados / inexistentes
 
 - **Moderno-Access-Virtual-Plate** → eliminado
 - **antigravity-developer-stack** → eliminado (contenido migrado a ai-developer-stack)
-- **copilot-skills** → eliminado (reemplazado por workflow-kit)
+- **copilot-skills** → eliminado (reemplazado por workflow-kit, que tampoco existe ya en gh)
+- **workflow-kit** → eliminado (no existe en gh ni en npm)
+- **accessibility-auditor** → eliminado (no existe en gh; estaba como submodulo muerto)
+- **sudolab** → eliminado (no existe en gh; estaba como submodulo muerto)
+- **react-18-design-patterns** → eliminado (no existe en gh; estaba como submodulo muerto)
+- **react-anti-patterns-book** → eliminado (no existe en gh; estaba como submodulo muerto)
+- **umbrawriter-v2** → eliminado (no existe en gh; estaba como submodulo muerto)
+- **sportcars** → eliminado (decisión 2026-08-17)
 - **futbol-ps2** → eliminado (MVP completo, descartado)
 - **kanam** → eliminado (PWA sistema operativo personal con IA, decisión 2026-08-06; BRIEF + ROADMAP en `projects/_archived/kanam/`)
 - **chatgpt-project-architect** → archivado (absorbido por AGDS)

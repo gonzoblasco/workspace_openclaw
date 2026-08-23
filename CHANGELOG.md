@@ -57,6 +57,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Eliminados submódulos del workspace
+
+### Removed
+- **Submódulos:** eliminados los 18 submódulos del `.gitmodules` y los 9 gitlinks registrados (a11y-fixer, accessible-ui, ai-developer-stack, create-stack, create-with-ai, kanam-solitaires, quedamos, soporteml, soporteml-v4). Regla de Gonzo: sin submódulos - GitHub es la fuente de la verdad, los proyectos se clonan bajo demanda en `projects/`.
+- **Entradas muertas del `.gitmodules`:** accessibility-auditor, sudolab, umbrawriter-v2, react-18-design-patterns, react-anti-patterns-book (apuntaban a repos que no existen en gh).
+- **Carpetas vacías:** eliminadas las 9 carpetas de submódulos que quedaron vacías tras el deinit (el código vive en sus repos en gh, incluidos los `.knowledge/`).
+
+### Changed
+- **AGENTS.md:** flujo típico de doble git actualizado - sin submódulos, GitHub como fuente de la verdad.
+- **MEMORY.md:** tabla de repos propios alineada con la realidad de GitHub (20 repos reales, activos + archivados). Repos inexistentes movidos a la sección de eliminados. Estado de proyectos corregido (ai-engineering-bootcamp archivado, no "en Pending").
+
+---
+
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed
