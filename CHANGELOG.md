@@ -12,7 +12,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **projects/HANDOFF.md:** eliminado. Handoff obsoleto de un "Proyecto Mobile End-to-End" (brainstorming inconcluso de julio 2026, sin decisión tomada). Referenciaba workflows inexistentes (`workflow-product-discovery`, `workflow-build-scaffold`). No corresponde a la estructura actual (cada proyecto tiene su HANDOFF en `.knowledge/`). Movido a trash.
 
 ### Changed
-- **projects/PROYECTOS.md:** reestructurado como índice universal (sin indicar máquina de clonado - Gonzo trabaja entre dos computadoras). Lista todos los repos propios de GitHub (OWN + forks adoptados: kanam-forge, gonzoblasco-payload, gonzoblasco-primitives, gonzoblasco-router). Separado en Activos / Archivados / Eliminados. Nota sobre forks adoptados vs forks OSS para PRs.
+- **projects/PROYECTOS.md:** reestructurado como índice universal (sin indicar máquina de clonado - Gonzo trabaja entre dos computadoras). Lista todos los repos propios de GitHub (OWN + `kanam-forge` como único fork adoptado). Los `gonzoblasco-*` (payload, primitives, router) son repos espejo OSS para PRs, no proyectos. Separado en Activos / Archivados / Eliminados.
 
 ---
 

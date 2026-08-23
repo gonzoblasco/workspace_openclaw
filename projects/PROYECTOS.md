@@ -23,9 +23,6 @@
 | **ai-developer-stack** | Skills de ingeniería con IA. | pub | gonzoblasco/ai-developer-stack |
 | **create-with-ai** | Generador de apps con IA. | PRIV | gonzoblasco/create-with-ai |
 | **accessible-ui** | Headless component library accesible. | PRIV | gonzoblasco/accessible-ui |
-| **payload** (fork) | Framework fullstack Next.js (fork adoptado como propio). | pub | gonzoblasco/gonzoblasco-payload |
-| **primitives** (fork) | Radix Primitives - componentes headless accesibles (fork adoptado). | pub | gonzoblasco/gonzoblasco-primitives |
-| **router** (fork) | TanStack Router (fork adoptado). | pub | gonzoblasco/gonzoblasco-router |
 
 ---
 
@@ -60,7 +57,8 @@
 
 ## 📋 Notas
 
-- **Forks adoptados como propios:** los repos con prefijo `gonzoblasco-*` (payload, primitives, router) y `kanam-forge` son forks que Gonzo adoptó y modificó como proyectos propios. Se listan porque son parte del catálogo actual (una versión 100% nuestra vendrá después).
+- **Forks adoptados como propios:** `kanam-forge` (fork de Lovable) es el único fork que Gonzo adoptó como proyecto propio. Se lista porque es parte del catálogo actual (una versión 100% nuestra vendrá después).
+- **Repos espejo OSS (`gonzoblasco-*`):** `gonzoblasco-payload`, `gonzoblasco-primitives`, `gonzoblasco-router` son repos OSS que Gonzo creó como workaround para contribuir con PRs (no son proyectos propios). Se usan solo para OSS.
 - **Forks OSS para PRs** (create-t3-app, ui, ai, react-spectrum, material-ui, carbon, zod, astryx, radix, TanStack/query, TanStack/router, etc.): NO son proyectos de Gonzo, se descargan solo para PRs OSS. Viven en GitHub, no se listan aquí.
 - **Doble-git:** cuando un proyecto se clona, el workspace trackea solo `projects/<slug>/.knowledge/` + README. El código vive en el repo propio. Sin submódulos.
 - Para agregar un proyecto: crear repo en GitHub, clonar en `projects/<slug>/` donde se trabaje, y agregar a la tabla de activos.
