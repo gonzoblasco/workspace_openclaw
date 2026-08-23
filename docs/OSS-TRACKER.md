@@ -7,10 +7,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 17 |
-| PRs mergeados | 0 |
-| PRs cerrados sin merge | 12 |
-| Repos con PRs | 15 |
+| PRs abiertos | 23 |
+| PRs mergeados | 1 |
+| PRs cerrados sin merge | 14 |
+| Repos con PRs | 19 |
 
 ## PR Registry
 
@@ -36,12 +36,26 @@
 | **Nuestro PR** | [#7878](https://github.com/TanStack/router/pull/7878) | **open** |
 | **Contexto** | - | Abierto 22 Jul. |
 
+### adobe/react-spectrum
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | - | fix(react-aria): aria-posinset global across sections en listbox. Agosto. |
+| **Nuestro PR** | [#10487]() | **open** |
+
+### carbon-design-system/carbon
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | - | ComposedModal: add aria-describedby prop support. Agosto, sin review. |
+| **Nuestro PR** | [#22887]() | **open** |
+
 ### colinhacks/zod
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | [#6220](https://github.com/colinhacks/zod/issues/6220) | Report __proto__ como unrecognized. MERGEABLE, sin reviews. |
-| **Nuestro PR** | [#6222](https://github.com/colinhacks/zod/pull/6222) | **open** |
+| **Issue** | [#6220](https://github.com/colinhacks/zod/issues/6220) | Cerrado (verificado 22/08 - el PR ya no estaba abierto). |
+| **Nuestro PR** | [#6222](https://github.com/colinhacks/zod/pull/6222) | **closed** |
 | **Contexto** | - | Abierto 22 Jul. Security fix (prototype pollution defense preservado). |
 
 ### facebook/astryx
@@ -56,9 +70,18 @@
 | **Nuestro PR** | [#4605](https://github.com/facebook/astryx/pull/4605) | **open** |
 | **Contexto** | - | Abierto 31 Jul. WCAG 1.4.1 fix. |
 
-| **Issue** | [#4450](https://github.com/facebook/astryx/issues/4450) | aria-labelledby en Selector trigger. CONFLICTING, sin reviews. |
-| **Nuestro PR** | [#4604](https://github.com/facebook/astryx/pull/4604) | **open** |
+| **Issue** | [#4450](https://github.com/facebook/astryx/issues/4450) | Cerrado (verificado 22/08 - el PR ya no estaba abierto). |
+| **Nuestro PR** | [#4604](https://github.com/facebook/astryx/pull/4604) | **closed** |
 | **Contexto** | - | Abierto 31 Jul. Tiene conflictos con main. |
+
+| **Issue** | [#3654]() | WCAG 2.1 AA contrast failures en core color tokens. CHANGES_REQUESTED (ernestt), trabajado 22/08. Solo border-emphasized tras revert de disabled. |
+| **Nuestro PR** | [#4022]() | **open** |
+
+| **Issue** | [#4994]() | Selector in-listbox dividers como presentation. Bug a11y critico axe. MERGEABLE/BLOCKED, trabajado 22/08. |
+| **Nuestro PR** | [#5344]() | **open** |
+
+| **Issue** | - | CI: fall back a two-dot diff en analyze-pr cuando falta merge base. CHANGES_REQUESTED (cixzhang), findings addressados 12/08. |
+| **Nuestro PR** | [#4914]() | **open** |
 
 ### google/skills
 
@@ -75,12 +98,26 @@
 | **Nuestro PR** | [#37](https://github.com/ibelick/ui-skills/pull/37) | **closed** |
 | **Contexto** | - | Abierto 16 Jul. |
 
+### mui/base-ui
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | - | [combobox] Remove invalid aria-orientation from grid role. Agosto. |
+| **Nuestro PR** | [#5551]() | **open** |
+
+### mui/material-ui
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | - | [docs][templates] Remove focusable links de hidden carousel slides. Agosto. |
+| **Nuestro PR** | [#49003]() | **open** |
+
 ### openclaw/openclaw
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | [#127212](https://github.com/openclaw/openclaw/issues/127212) | expose active split pane to assistive tech (aria-current=true en pane activo). Cierra #127212. Sin cambio visual. Nace de feedback de gonzoblasco en #126714. Tests: aria-current migra tras pointerdown. |
-| **Nuestro PR** | [#127213](https://github.com/openclaw/openclaw/pull/127213) | **open** |
+| **Issue** | [#127212](https://github.com/openclaw/openclaw/issues/127212) | MERGEADO 21/08 por vyctorbrzezowski. PRIMER PR mergeado del portfolio! a11y: active split pane a assistive tech. Generado desde feedback de gonzoblasco en #126714. |
+| **Nuestro PR** | [#127213](https://github.com/openclaw/openclaw/pull/127213) | **merged** |
 | **Contexto** | - | Maintainer convirtio feedback de a11y en PR con tests. Portfolio vivo. |
 
 ### payloadcms/payload
@@ -112,6 +149,9 @@
 | **Nuestro PR** | [#4065](https://github.com/radix-ui/primitives/pull/4065) | **closed** |
 | **Contexto** | - | Abierto 22 Jul. |
 
+| **Issue** | - | Select: announce option position/total para screen readers. Agosto. |
+| **Nuestro PR** | [#4109]() | **open** |
+
 ### shadcn-ui/ui
 
 | Eslabón | Link | Detalle |
@@ -128,6 +168,9 @@
 | **Issue** | [#11157](https://github.com/shadcn-ui/ui/issues/11157) | Prevent layout shift on keyboard nav. 1 review (CodeRabbit). |
 | **Nuestro PR** | [#11198](https://github.com/shadcn-ui/ui/pull/11198) | **open** |
 | **Contexto** | - | Abierto 16 Jul. Approach alternativo a #11179. |
+
+| **Issue** | [#11465]() | fix(react): drain released tail spacer tras scroll manual. Agosto. |
+| **Nuestro PR** | [#11465]() | **open** |
 
 ### shuding/nextra
 
