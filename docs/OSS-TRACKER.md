@@ -7,10 +7,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 23 |
+| PRs abiertos | 22 |
 | PRs mergeados | 0 |
 | PRs cerrados sin merge | 14 |
-| Repos con PRs | 18 |
+| Repos con PRs | 17 |
 
 ## PR Registry
 
@@ -196,14 +196,6 @@
 | **Issue** | [#2185](https://github.com/t3-oss/create-t3-app/issues/2185) | aria-label en clipboard button. MERGEABLE, sin reviews. |
 | **Nuestro PR** | [#2243](https://github.com/t3-oss/create-t3-app/pull/2243) | **open** |
 | **Contexto** | - | Abierto 30 Jul. WCAG 4.1.2 fix. |
-
-### trekhleb/javascript-algorithms
-
-| Eslabón | Link | Detalle |
-|---------|------|---------|
-| **Issue** | [#2057](https://github.com/trekhleb/javascript-algorithms/issues/2057) | Return ordered cycle path array instead of parent mapping in detectUndirectedCycle. APPROVED por m-coder567 (Milan Parmar) + COMMENTED positivo por daltino (Dalton Whyte). MERGEABLE, 587 tests. |
-| **Nuestro PR** | [#2198](https://github.com/trekhleb/javascript-algorithms/pull/2198) | **open** |
-| **Contexto** | - | Repo EDUCATIVO (algoritmos y estructuras de datos con explicaciones, para preparacion de entrevistas). Los PRs son contribuciones de aprendizaje, no fixes de produccion. 100+ PRs abiertos es la naturaleza del repo (popular, muchos contributors). El maintainer mergea en batches a su ritmo, sin urgencia. PR bien hecho, aprobado, mergeable. Se agradecio a los reviewers por nombre (Milan y Dalton). |
 
 ### vercel/ai
 
