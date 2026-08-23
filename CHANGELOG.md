@@ -78,6 +78,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - SOUL.md: de template a principios propios
+
+### Changed
+- **SOUL.md:** reescrito del template default (inglés, genérico) a documento de principios en español. Enfocado en lo innegociable (ayudar de verdad, opiniones, buscar antes de preguntar, confianza por competencia, respeto a la privacidad) y límites. La identidad personal queda en IDENTITY.md (refactorizado el mismo día). Se avisó a Gonzo del cambio (regla del propio SOUL.md).
+
+---
+
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed
