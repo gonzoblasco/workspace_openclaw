@@ -49,6 +49,14 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Refactor MEMORY.md y LEARNINGS.md
+
+### Changed
+- **MEMORY.md:** reducido de ~41 KB a ~14 KB. Reorganizado como memoria curada de largo plazo: preferencias de Gonzo, reglas de operación, metodología, pipeline de agentes, config de modelos, estado resumido de proyectos, repos. Eliminados duplicados con AGENTS.md, USER.md, CONTRIBUTING.md, LEARNINGS.md y OSS-TRACKER.md. Actualizado estado laboral (entrevista OpenSistemas 25/08).
+- **docs/LEARNINGS.md:** consolidadas las lecciones técnicas que vivían en MEMORY.md (Godot, Sport Cars, feature flags, mockups, npm, bootcamp, patrón por inercia, meta-aprendizaje). Corregidos 4 em dashes preexistentes en entradas de 2026-08-17.
+
+---
+
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed

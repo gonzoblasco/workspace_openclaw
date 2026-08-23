@@ -401,7 +401,7 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - LESSON: verificar el estado real (reviews/comentarios) de cada PR antes de proponer acciones; mis reviews previos son señal de decisiones ya tomadas
 - BIASES DETECTED: recency bias (el #4112 era "reciente" en mi lectura y lo traté como pendiente) + falta de verificación (no chequé el thread completo antes de opinar)
 
-## 2026-08-17 — Compatibilidad en cascada del stack de Adorable (Kanam Forge)
+## 2026-08-17 - Compatibilidad en cascada del stack de Adorable (Kanam Forge)
 
 **Context:** al validar el loop del agente de Kanam Forge con Ollama local, el chat fallaba con `AI_UnsupportedModelVersionError: Unsupported model version v1`. El stack de Adorable (fork) está atado a AI SDK 6, pero `ollama-ai-provider` v1 implementa spec v1, incompatible con AI SDK 6 (exige spec v2).
 
@@ -410,12 +410,12 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - **Subir a AI SDK 7** → rompe `useMessage` (renombrado en `@assistant-ui/react@0.15.x`). El código usa APIs de 0.12.x.
 - **Solución final:** `ollama-ai-provider-v2@3.6.0` (spec v2, compatible con ai@6) + pin `@assistant-ui/react@0.12.12` con overrides de `store@0.2.1`/`core@0.1.1`/`tap@0.5.1` (evita `tapAssistantClientRef` roto en versiones nuevas de store).
 
-**Lección — los stacks de librerías de UI/IA son frágiles en cadena:**
+**Lección - los stacks de librerías de UI/IA son frágiles en cadena:**
 - Cuando un paquete (ej. `@assistant-ui/react`) tiene dependencias internas (`@assistant-ui/store`, `@assistant-ui/core`) con versiones desalineadas, npm resuelve a versiones que no son compatibles entre sí. El síntoma es un export que "no existe" (`tapAssistantClientRef`) aunque la versión cumpla el semver.
 - **Diagnóstico:** cuando un export "no existe" en un paquete que cumple el semver, sospechar de dependencias internas desalineadas, no del paquete en sí. Verificar con `grep` qué paquete importa el export faltante y de dónde viene.
 - **Fix robusto:** fijar versiones exactas (no `^`) + `overrides` en el package.json del ROOT del workspace (no en el workspace hijo) para forzar versiones internas compatibles.
 - **Provider de Ollama:** `ollama-ai-provider` v1 (spec v1) solo funciona con AI SDK 5. Para AI SDK 6 usar `ollama-ai-provider-v2@3.6.0` (spec v2). Para AI SDK 7 usar `ollama-ai-provider-v2@4.x`. El baseURL de Ollama necesita sufijo `/api`.
-- **Regla de oro:** antes de tocar versiones, verificar el lockfile del commit que funcionaba (las versiones exactas que npm resolvió en ese momento) — es la fuente de verdad de la combinación que funciona.
+- **Regla de oro:** antes de tocar versiones, verificar el lockfile del commit que funcionaba (las versiones exactas que npm resolvió en ese momento) - es la fuente de verdad de la combinación que funciona.
 
 **Self-reflection:**
 - CONTEXT: debugging de compatibilidad de dependencias
@@ -435,7 +435,7 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - Eliminar `tailwind.config.ts` (en Tailwind 4, el `@theme` en CSS es la fuente de verdad; el config JS es opcional y puede interferir).
 - Reiniciar el dev server con caché limpia (`rm -rf .next`).
 
-**Lesson — el síntoma de "CSS compila pero sin utilidades":**
+**Lesson - el síntoma de "CSS compila pero sin utilidades":**
 - Si el CSS compilado tiene las variables/`@theme` pero **no** las clases de los componentes (`bg-primary`, `flex`, etc.), el problema es que el pipeline de PostCSS no está procesando Tailwind. Verificar que `@tailwindcss/postcss` esté instalado y que exista `postcss.config.mjs`.
 - En Tailwind 4, `@theme` con valores directos (no `var()`) genera las utilidades. `@theme inline` con `var()` de referencia NO genera utilidades de color.
 - El `tailwind.config.ts` con `theme.extend` vacío puede interferir con el `@theme` del CSS en Tailwind 4 - si no se necesita, eliminarlo.
@@ -631,3 +631,51 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: arranqué con `gh pr list --author` que devolvió vacío y perdí ~10 tools en debuguear el JSON vacío en vez de cambiar rápido a la Search API. Además clasifiqué PRs por estado superficial (mergeable/reviewDecision) sin leer el contenido de los comments inline, lo que me llevó a recomendar empujar un PR que el maintainer ya había rechazado.
 - LESSON: (1) para listar MIS PRs usar SIEMPRE la Search API, no `gh pr list --author` a secas; (2) el triage de PRs requiere leer TODOS los comments (inline + reviews), no solo los generales; (3) verificar contra la fuente real (main del repo) antes de force-pushear rebases de PRs viejos - el astryx#4298 parecía aprobado pero main ya lo había absorbido via #4157/#5034.
 - BIASES DETECTED: anchoring (me anclé en `gh pr list --author`), sunk cost (seguí debugueando el JSON vacío en vez de pivotar), y confirmation (quería ver el PR aprobado como empujable sin leer los comments del maintainer).
+
+---
+
+## 2026-08-23 - Consolidación de lecciones (migradas desde MEMORY.md)
+
+Lecciones que vivían en MEMORY.md como "Lecciones del ..." y se consolidan acá (detalle técnico) para que MEMORY.md quede como memoria curada de largo plazo.
+
+### Godot: aprender juntos, no automatizar (2026-08-02)
+Gonzo quiere aprender Godot paso a paso. No construir juegos de un prompt. El skill `godot-mcp` se reescribió de "build-everything" a "learn-together". Registro del viaje en `projects/godot-journey/.knowledge/BRIEF.md`.
+
+### Skill Workshop stale cuando SKILL.md ya existe (2026-08-02)
+Si se crea el archivo físico antes de aprobar el workshop, la propuesta queda stale y no se puede aplicar. Workaround: editar el SKILL.md directamente y commitear. El workshop es para skills nuevas que aún no existen en disco.
+
+### MCP server `editor_instantiate_scene` rompe .tscn (2026-08-02)
+La tool `editor_instantiate_scene` del Godot MCP corrompe el formato de main.tscn (ids con triple comilla, nodos perdidos). Preferir edición manual de .tscn o usar `add_node` + `attach_script` por separado.
+
+### Export templates de Godot 4.7.1 (2026-08-02)
+El mirror tuxfamily.org falló por timeout. Probar GitHub releases o mirror alternativo cuando se retome el export.
+
+### Sport Cars: validación visual obligatoria para sitios de marca (2026-08-02)
+El build pasando no garantiza que el sitio se vea profesional. Para proyectos con identidad visual, la validación con screenshots + evaluación crítica debe ser parte del cierre de cada iteración. Issues como contraste bajo, colores inconsistentes o títulos engañosos no los detecta Biome.
+
+### Feature flags portable: no hardcodear en UI (2026-08-02)
+El primer flag (`showPrices`) se implementó con provider client-side + localStorage + componente `PriceDisplay`. El panel de flags solo se renderiza en desarrollo. El siguiente paso es extraerlo a `@workflow-kit/feature-flags` para reuso.
+
+### No commitear mockups intermedios (2026-08-02)
+Los mockups y screenshots de iteración (v2, v3, etc.) son ruido en el repo del proyecto. Solo conservar la evidencia final (home/catálogo) en el commit de release; los intermedios van al daily note o a un artifact.
+
+### npm 404 en publish scoped no es problema de scope (2026-08-04)
+El 404 `PUT .../@scope%2fpackage` al publicar NO significa que el scope esté mal. Primero verificar `npm whoami` - si da 401, el fix es `npm login`, no tocar el scope. El scope `@usuario/` se resuelve solo cuando coincide con el username logueado. (Pasó con `@gonzoblasco/create-stack`.)
+
+### npm login usa browser OTP flow (2026-08-04)
+El login de npm ahora abre browser (OTP), no acepta token en consola. Los tokens que saltan 2FA se están restringiendo - para CI a futuro usar tokens con `mfa=publish` o `automation`.
+
+### AI Engineering Bootcamp - COMPLETO (2026-08-03)
+- 10/10 niveles completados. N1-N4 fundamentos, N5-N6 calidad/seguridad, N7-N8 arquitectura/producción, N9 estándares/dashboard, N10 sistema completo (capstone).
+- N8-N10 son convergentes: reusan el sistema del N7 (vive dentro de `projects/level-07-microservices/`).
+- El N10 junta todo: auth + users + orders + notifications + gateway + CI/CD + dashboard + cloud. Probado: gateway enruta, health agregado ok, register/login/orders funcionan, 401 en credenciales malas.
+- **El nivel 7 es el núcleo físico de los niveles 7-10**: N8, N9 y N10 extienden el mismo folder (ADR-001). El nombre del folder confunde - el README lo documenta como "Niveles 7-10" con tabla de acumulación y diagrama de arquitectura.
+
+### Patrón por inercia vs contexto cambiado (2026-08-03)
+Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nueva), el riesgo no es equivocarse en el patrón - es aplicarlo por inercia cuando el contexto ya cambió. La señal de alerta no es "¿lo sé hacer?" sino "¿es este caso realmente igual a los que ya resolví?". Pasó en el Nivel 8 del bootcamp (convergente, no lineal - transformaba el N7, no creaba carpeta nueva). ADR: `projects/ai-engineering-bootcamp/.knowledge/ADR-001-niveles-convergentes.md`.
+
+### Reflexión del curso (meta-aprendizaje, 2026-08-03)
+- El patrón "detectores locales + validación cruzada / IA contextual" apareció 5 veces (N3, N5, N6, N8, N9) → formalizado como skill `pipeline-detector`.
+- Formato nivel de bootcamp (teoría + práctica + LinkedIn + self-review) es un template de skill reusable.
+- Los proyectos resueltos son el "contrato" del curso - demuestran que el nivel es posible, no son la respuesta.
+- Falta un mecanismo de verificación automática al final de cada nivel (tests contra el proyecto del alumno).
