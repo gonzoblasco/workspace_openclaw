@@ -7,9 +7,9 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 21 |
+| PRs abiertos | 19 |
 | PRs mergeados | 0 |
-| PRs cerrados sin merge | 15 |
+| PRs cerrados sin merge | 17 |
 | Repos con PRs | 17 |
 
 ## PR Registry
@@ -182,15 +182,15 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | - | biome ignore generated files. CI verde, changeset listo, Vercel ready. Follow-up bump 31 Jul. |
-| **Nuestro PR** | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | **waiting_review** |
+| **Issue** | - | Cerrado 22/08 por consolidación de PRs (tooling genérico sin reviews, 1 mes). Branch eliminado. |
+| **Nuestro PR** | [#2239](https://github.com/t3-oss/create-t3-app/pull/2239) | **closed** |
 
 | **Issue** | - | .prettierignore para generated Prisma. MERGEABLE, 1 review. |
 | **Nuestro PR** | [#2240](https://github.com/t3-oss/create-t3-app/pull/2240) | **open** |
 | **Contexto** | - | Abierto 15 Jul. Complementario a #2239. |
 
-| **Issue** | - | Fix table prefix placeholder. MERGEABLE, sin reviews. |
-| **Nuestro PR** | [#2244](https://github.com/t3-oss/create-t3-app/pull/2244) | **open** |
+| **Issue** | - | Cerrado 22/08 por consolidación de PRs (tooling genérico sin reviews, 1 mes). Branch eliminado. |
+| **Nuestro PR** | [#2244](https://github.com/t3-oss/create-t3-app/pull/2244) | **closed** |
 | **Contexto** | - | Abierto 30 Jul. |
 
 | **Issue** | [#2185](https://github.com/t3-oss/create-t3-app/issues/2185) | aria-label en clipboard button. MERGEABLE, sin reviews. |
