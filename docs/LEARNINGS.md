@@ -596,3 +596,20 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: el sintoma (modelos ocultos) se veia como problema de config proveedor pero era el policy de visibilidad de modelos; perseguir versiones/PATH era la pista del warning de inicio.
 - LESSON: cuando un warning de version aparece en OpenClaw, chequear instalaciones duplicadas (homebrew vs nvm) en el PATH de shell de login. Cuando el picker de modelos no muestra todos, revisar agents.defaults.models (allowlist) y agregar wildcard.
 - BIASES DETECTED: anchoring - me enfoque primero en el problema de versiones/PATH (por el warning) y tarde en reconocer que la causa del sintoma de modelos era la allowlist de config. La pista del warning de version era real pero era una causa separada (el TUI viejo de nvm), no la causa del sintoma de modelos.
+
+## 2026-08-22 - memory-wiki como capa analítica sobre la memoria del workspace (infraestructura)
+
+**Context:** Gonzo pasó un artículo de Composio sobre plugins de OpenClaw. De ahí: eliminar openclaw-os-plugin y habilitar memory-wiki. Al investigar, Gonzo corrigió un error conceptual importante: yo trataba `memory.db` + `memory-db.sh` como "ajeno al core" cuando en realidad es la herramienta propia de Gonzo (todos/inbox/contributions/daily), parte de su sistema de memoria real.
+
+**Aprendizajes:**
+1. **memory.db NO es el backend de memoria de OpenClaw.** Es la herramienta propia de Gonzo (memory-db.sh, SQLite). La memoria activa de OpenClaw es `memory-core` (markdown + embeddings locales Ollama nomic-embed-text). Confundir ambas capas lleva a decisiones erróneas.
+2. **memory-wiki brilla con claims estructurados, no con ingest de markdown plano.** Los dashboards (contradictions, stale, claim-health, provenance) se pueblan cuando las páginas tienen claims con sourceIds + updatedAt. Ingerir markdown plano solo crea sources, no análisis.
+3. **El lint de memory-wiki es estricto:** cada entity necesita `sourceIds` (provenance) y `updatedAt` (page + cada claim). Sin eso, warnings de "missing sourceIds" y "freshness needs review". Se corrigen agregando esos campos.
+4. **memory-wiki NO sirve UI web.** Es markdown local navegable (o Obsidian con renderMode obsidian). La UI browser que servía el OSS tracker era de openclaw-os-plugin, no de memory-wiki.
+5. **El vault del wiki vive en `~/.openclaw/wiki/main` (FUERA del workspace git)** - no se sincroniza a la portátil por git automáticamente. Solo la skill viaja.
+
+**Self-reflection:**
+- CONTEXT: configuración de infraestructura de memoria (plugins OpenClaw)
+- REFLECTION: cometí el error de tratar memory.db como "ajeno" - Gonzo lo corrigió señalando que era parte de su sistema. El insight es ver el ecosistema completo: memory.db (fuente de verdad) + memory-core (búsqueda) + memory-wiki (análisis) son capas complementarias, no competidoras.
+- LESSON: antes de recomendar migrar/eliminar algo de memoria, verificar QUÉ es realmente cada pieza en el ecosistema del usuario, no asumir que lo que no es del core es descartable. memory.db es la columna vertebral, memory-wiki es la capa analítica encima.
+- BIASES DETECTED: confirmation bias - quería validar la recomendación de memory-lancedb del artículo sin verificar el ecosistema completo; el usuario me reencaminó correctamente.
