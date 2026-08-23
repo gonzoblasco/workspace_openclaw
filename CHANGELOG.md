@@ -70,6 +70,14 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - SKILLS-INDEX.md al día
+
+### Changed
+- **SKILLS-INDEX.md:** agregadas 3 skills que existían en disco pero no estaban listadas (agent-orchestration-pipeline-model-arbitration, cleanmymac-maintenance, memory-wiki-workflow). Total actualizado de 63 a 66 skills. Fecha actualizada.
+- **Mirror `.github/skills/`:** sincronizado con `skills/` (rsync + copia del índice).
+
+---
+
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed

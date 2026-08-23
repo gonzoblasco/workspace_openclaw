@@ -1,6 +1,6 @@
 # SKILLS-INDEX.md - Skills del Workspace
 
-> Skills activas organizadas por categoría. Actualizado: 2026-08-17
+> Skills activas organizadas por categoría. Actualizado: 2026-08-23
 >
 > **Nota de consolidación:** En agosto 2026 se redujo el set de skills de 96 a 60 activas, adoptando las 24 skills de ingeniería de `addyosmani/agent-skills` como base y fusionando en ellas las funcionalidades de skills propias redundantes. Las skills redundantes fueron eliminadas (recuperables desde el historial de git, commit `ba12459`).
 >
@@ -63,6 +63,7 @@
 | Skill | Descripción |
 |---|---|
 | [using-agent-skills](skills/using-agent-skills/) | Mapea el trabajo entrante a la skill correcta y define reglas de operación compartidas |
+| [agent-orchestration-pipeline-model-arbitration](skills/agent-orchestration-pipeline-model-arbitration/) | Arbitraje de modelo para pipeline A/B: reducir costos priorizando Kimi K2.7 Code solo cuando se justifica |
 
 ## Core OpenClaw (Infraestructura Propia)
 
@@ -72,6 +73,7 @@
 | [knowledge-management](skills/knowledge-management/) | Gobernanza de conocimiento, learning signals, conflict resolution, DREAMS |
 | [memory-agent](skills/memory-agent/) | Memory Agent autónomo: consolida memoria, detecta patrones, mantiene knowledge |
 | [openspec](skills/openspec/) | CLI de OpenSpec para spec-driven development |
+| [memory-wiki-workflow](skills/memory-wiki-workflow/) | Flujo para usar memory-wiki como capa analítica de memoria: entities con claims, dashboards, síntesis y visualización markdown |
 | [background-execution](skills/background-execution/) | Patrones para ejecutar tareas en background: exec + process, worktrees |
 | [engineering-governance](skills/engineering-governance/) | Evolución continua del AI Engineering OS, auditoría y mejora sistémica |
 | [git-changelog](skills/git-changelog/) | Auto-genera CHANGELOG.md desde git history con conventional commits |
@@ -135,6 +137,7 @@
 | [checkmate](skills/checkmate/) | Goal-to-execution-to-verification loop con worker + judge |
 | [github](skills/github/) | Official GitHub MCP server wrapper: security alerts, notifications |
 | [godot-mcp](skills/godot-mcp/) | Aprender Godot 4.x paso a paso con asistencia de OpenClaw |
+| [cleanmymac-maintenance](skills/cleanmymac-maintenance/) | Protocolo flexible de mantenimiento con CleanMyMac CLI vía frases naturales |
 
 ---
 
@@ -144,4 +147,4 @@
 
 **Además (2026-08-06):** `adhd-daily-planner` se fusionó dentro de `adhd-assistant` (energy windows, transition buffers, dopamine sequencing, shutdown ritual, recovery protocol). Recuperable desde git si hiciera falta.
 
-**Totales activas:** 63 skills
+**Totales activas:** 66 skills

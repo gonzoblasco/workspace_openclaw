@@ -175,15 +175,45 @@ Cuando el contexto de sesión llegue al ~60% (verificable con `session_status`),
 
 ## Compaction Recovery
 
-Si despertás sin contexto (compactación, reinicio, o Gonzo dice "dónde estábamos?"):
+Hay **dos mecanismos** que trabajan juntos para recuperar contexto tras una compactación. No son excluyentes - el plugin cubre lo automático, el buffer manual cubre lo que el plugin no ve (decisivo cuando el contexto es largo o la compactación fue agresiva).
 
-1. **Leer** `memory/working-buffer.md` - exchanges crudos de la zona de peligro
-2. **Leer** `memory/YYYY-MM-DD.md` del día de hoy y ayer
-3. **Search** `memory_search()` por contexto faltante
-4. **Extraer** lo importante del buffer a `memory/YYYY-MM-DD.md`
-5. **Presentar:** "Recuperado del working buffer. Última tarea era X. ¿Continuamos?"
+### A. Plugin `compaction-context` (automático) - instalado 2026-08-22
+
+El plugin está instalado en `~/.openclaw/extensions/compaction-context/` (instalación local, parcheada) y registrado como hook-only en `plugins.entries.compaction-context`. Hace un snapshot automático:
+
+1. **`before_compaction`** - antes de compactar, lee las últimas N mensajes (default 20) del `.jsonl` de la sesión y las escribe en `RECENT.md` del workspace + setea el flag `.compaction-recovery-pending`.
+2. **`before_agent_start`** - si el flag existe (recién compactó), lee `RECENT.md` y lo inyecta como `prependContext` dentro de `<compaction_context_recovery>...</compaction_context_recovery>`, y borra el flag.
+
+**Qué significa para mí (el agente):** después de una compactación, NO estoy 100% en blanco. El `prependContext` reinyecta las últimas 20 mensajes. Si no tenés idea de qué pasó, revisar el `prependContext` inyectado ANTES de hacer cualquier pregunta.
+
+**Config actual (defaults):** 20 mensajes × 500 chars/mensaje (~10K chars / ~2.5K tokens, inyectado solo una vez post-compactación). Configurable en `openclaw.json` → `plugins.entries.compaction-context.config`.
+
+**⚠️ Manejo del ensuciamiento del workspace (importante):** el plugin escribe `RECENT.md` y `.compaction-recovery-pending` en `~/.openclaw/workspace/`, que es un repo git (`workspace_openclaw`). Ya están en el `.gitignore` (agregado 2026-08-22), así que no ensucian el `git status`. No commitearlos.
+
+### B. Buffer manual (existing) - `memory/working-buffer.md`
+
+El plugin no captura todo: solo las últimas 20 mensajes truncados a 500 chars, y no guarda decisiones clave a medio contexto. El working-buffer manual sigue siendo fuente para:
+
+- Decisiones tomadas "entre líneas" no evidentes en el snapshot
+- Contexto de más de 20 mensajes atrás
+- Pendientes que el snapshot truncó
+
+### C. Flujo de recuperación post-compactación (consolidado)
+
+Al despertar sin contexto (compactación, reinicio, o Gonzo dice "dónde estábamos?"):
+
+1. **Revisar el `prependContext` inyectado** (el plugin ya lo reinyectó). Es la fuente inmediata - las últimas 20 mensajes.
+2. **Leer `memory/working-buffer.md`** - exchanges crudos de la zona de peligro que el snapshot no cubre
+3. **Leer `memory/YYYY-MM-DD.md`** del día de hoy y ayer
+4. **`memory_search()`** por contexto faltante
+5. **Extraer** lo importante del buffer a `memory/YYYY-MM-DD.md`
+6. **Presentar:** "Recuperado del buffer + snapshot del plugin. Última tarea era X. ¿Continuamos?"
 
 No preguntar "de qué estábamos hablando?" - el buffer tiene la conversación.
+
+---
+
+*Nota de deuda técnica pendiente:* el plugin se instaló local parcheado (el paquete npm del autor viene con `index.ts` sin compilar + bug "hook registration missing name" contra la API 2026.7.1-2). Si el autor publica una versión corregida, migrar a `openclaw plugins install compaction-context`.
 
 ## Handoff entre Subagentes
 
