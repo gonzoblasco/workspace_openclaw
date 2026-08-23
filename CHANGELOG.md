@@ -42,6 +42,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Eliminado INBOX.md de la raíz
+
+### Removed
+- **INBOX.md (raíz):** eliminado. Era un puntero huérfano sin contenido real - el espejo real es `memory/inbox.md` (generado por `memory-db.sh export-inbox` desde la DB, que es la fuente de verdad). Nadie lo leía ni lo generaba. Mismo caso que FREEZER.md.
+
+---
+
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed
