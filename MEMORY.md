@@ -87,6 +87,9 @@ Error costoso (10+ tools) al revisar PRs de terceros. `gh pr list --author gonzo
 ### Scripts bash inline con `set -- $repo` en loops: evitar
 Mi script de un solo uso con `set -- $repo` en un loop estaba mal construido y genero un output feo de "Exec failed" con traceback. Para verificar multiples PRs, escribir un script bash con funciones bien definidas (como /tmp/check_prs.sh) en vez de loops inline rotos, o iterar con variables de loop simples.
 
+### Revisar PRs OSS: leer TODOS los comments (incluidos inline) antes de clasificar
+Al hacer triage de PRs de terceros, `gh pr view --json comments` solo muestra los comments generales. Los **inline comments de codigo** (`gh api repos/OWNER/REPO/pulls/N/comments`) y las **reviews** (`--json reviews`) llevan el feedback real del maintainer y pueden cambiar la decision por completo. Error del 2026-08-22: mi primer analisis clasifico como "empujable" el router #7834 cuando el maintainer schiller-manuel ya lo habia rechazado as-is ("too niche, bundlesize impact not warranted"), y como "esperando reviewer" el payload #17413 cuando el inline comment ya estaba resuelto ("Thank you! Glad I could help"). **Regla: antes de empujar/cerrar un PR, revisar comments + inline comments + reviews.**
+
 ## Lecciones del 2026-08-02
 
 ### Godot: aprender juntos, no automatizar

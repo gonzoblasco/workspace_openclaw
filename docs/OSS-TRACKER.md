@@ -7,9 +7,9 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 26 |
+| PRs abiertos | 17 |
 | PRs mergeados | 0 |
-| PRs cerrados sin merge | 3 |
+| PRs cerrados sin merge | 12 |
 | Repos con PRs | 15 |
 
 ## PR Registry
@@ -18,8 +18,8 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | [#22](https://github.com/Nutlope/hallmark/issues/22) | Use native skills directory. MERGEABLE, sin reviews. |
-| **Nuestro PR** | [#32](https://github.com/Nutlope/hallmark/pull/32) | **open** |
+| **Issue** | [#22](https://github.com/Nutlope/hallmark/issues/22) | Cerrado 22/08 por inactividad (1 mes sin review del maintainer). Branch eliminado. Comentario de cierre publicado. |
+| **Nuestro PR** | [#32](https://github.com/Nutlope/hallmark/pull/32) | **closed** |
 | **Contexto** | - | Abierto 16 Jul. |
 
 ### TanStack/router
@@ -71,8 +71,8 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | - | WCAG 2.2 coverage. Sin reviews. |
-| **Nuestro PR** | [#37](https://github.com/ibelick/ui-skills/pull/37) | **open** |
+| **Issue** | - | Cerrado 22/08 por inactividad (1 mes sin review del maintainer). Branch eliminado. Comentario de cierre publicado. |
+| **Nuestro PR** | [#37](https://github.com/ibelick/ui-skills/pull/37) | **closed** |
 | **Contexto** | - | Abierto 16 Jul. |
 
 ### openclaw/openclaw
@@ -87,29 +87,29 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | - | duplicate latest=true version rows. Review humano de sviat-barbutsa (21 Jul). Fix addressado. Follow-up 31 Jul. |
-| **Nuestro PR** | [#17413](https://github.com/payloadcms/payload/pull/17413) | **waiting_review** |
+| **Issue** | - | Cerrado 22/08 por inactividad (1 mes sin review del maintainer). Branch eliminado. Comentario de cierre publicado. |
+| **Nuestro PR** | [#17413](https://github.com/payloadcms/payload/pull/17413) | **closed** |
 
-| **Issue** | - | lexical blocks stale form state. Sin review humano. Follow-up bump 31 Jul. |
-| **Nuestro PR** | [#17342](https://github.com/payloadcms/payload/pull/17342) | **waiting_review** |
+| **Issue** | - | Cerrado 22/08 por inactividad (1 mes sin review del maintainer). Branch eliminado. Comentario de cierre publicado. |
+| **Nuestro PR** | [#17342](https://github.com/payloadcms/payload/pull/17342) | **closed** |
 
 ### radix-ui/primitives
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | - | Select inside Dialog focus freeze. Sin review humano, sin CI. Changeset agregado 23 Jul. |
-| **Nuestro PR** | [#4053](https://github.com/radix-ui/primitives/pull/4053) | **waiting_review** |
+| **Issue** | - | Cerrado 22/08 por inactividad (1 mes sin review del maintainer). Branch eliminado. Comentario de cierre publicado. |
+| **Nuestro PR** | [#4053](https://github.com/radix-ui/primitives/pull/4053) | **closed** |
 
-| **Issue** | [#3636](https://github.com/radix-ui/primitives/issues/3636) | aria-activedescendant + aria-selected fix. Sin reviews. |
-| **Nuestro PR** | [#4067](https://github.com/radix-ui/primitives/pull/4067) | **open** |
+| **Issue** | [#3636](https://github.com/radix-ui/primitives/issues/3636) | Cerrado 22/08 por inactividad (1 mes sin review del maintainer). Branch eliminado. Comentario de cierre publicado. |
+| **Nuestro PR** | [#4067](https://github.com/radix-ui/primitives/pull/4067) | **closed** |
 | **Contexto** | - | Abierto 22 Jul. Accesibilidad. |
 
-| **Issue** | [#3640](https://github.com/radix-ui/primitives/issues/3640) | ArrowUp handling en DropdownMenu. Sin reviews. |
-| **Nuestro PR** | [#4066](https://github.com/radix-ui/primitives/pull/4066) | **open** |
+| **Issue** | [#3640](https://github.com/radix-ui/primitives/issues/3640) | Cerrado 22/08 por inactividad (1 mes sin review del maintainer). Branch eliminado. Comentario de cierre publicado. |
+| **Nuestro PR** | [#4066](https://github.com/radix-ui/primitives/pull/4066) | **closed** |
 | **Contexto** | - | Abierto 22 Jul. W3C APG pattern compliance. |
 
-| **Issue** | [#3619](https://github.com/radix-ui/primitives/issues/3619) | Blur handler para commit. Sin reviews. |
-| **Nuestro PR** | [#4065](https://github.com/radix-ui/primitives/pull/4065) | **open** |
+| **Issue** | [#3619](https://github.com/radix-ui/primitives/issues/3619) | Cerrado 22/08 por inactividad (1 mes sin review del maintainer). Branch eliminado. Comentario de cierre publicado. |
+| **Nuestro PR** | [#4065](https://github.com/radix-ui/primitives/pull/4065) | **closed** |
 | **Contexto** | - | Abierto 22 Jul. |
 
 ### shadcn-ui/ui
@@ -133,8 +133,8 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | - | select modal={false}. UNSTABLE es falso positivo, branch actualizado. Follow-up check-in 31 Jul. |
-| **Nuestro PR** | [#5029](https://github.com/shuding/nextra/pull/5029) | **waiting_review** |
+| **Issue** | - | Cerrado 22/08 por inactividad (1 mes sin review del maintainer). Branch eliminado. Comentario de cierre publicado. |
+| **Nuestro PR** | [#5029](https://github.com/shuding/nextra/pull/5029) | **closed** |
 
 ### swiftlang/swift-testing
 
