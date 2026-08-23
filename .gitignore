@@ -6,6 +6,10 @@
 # OpenClaw state (machine-specific)
 openclaw-workspace-state.json
 
+# Plugin compaction-context (snapshot transitorio de la compactacion)
+RECENT.md
+.compaction-recovery-pending
+
 # Node (belt and suspenders — projects have their own .gitignore too)
 node_modules/
 .next/
