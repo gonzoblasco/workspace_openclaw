@@ -6,35 +6,43 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 
 | # | Titulo | Origen |
 |---|---|---|
-| ADR-001 | [Patron convergente](./ADR-001-patron-convergente.md) | ai-engineering-bootcamp |
-| ADR-002 | [Primitives, Conventions, Levers](./ADR-002-primitives-conventions-levers.md) | remix-book |
-| ADR-003 | [Server/Client file naming convention](./ADR-003-server-client-file-convention.md) | remix-book |
-| ADR-004 | [Next.js full-stack platform](./ADR-004-nextjs-fullstack-platform.md) | sportcars |
-| ADR-005 | [Supabase BaaS](./ADR-005-supabase-baas.md) | sportcars |
-| ADR-006 | [Capacidad Computacional - DeepSeek V4 Flash con Reasoning Maximum](./ADR-006.md) | kanam-workflow |
-| ADR-007 | [Patrones de Agente Autonomo - Goal-Oriented Architecture](./ADR-007.md) | kanam-workflow |
-| ADR-008 | [Replace Jest with Vitest](./ADR-008-vitest-over-jest.md) | testing-react-library |
-| ADR-009 | [TypeScript for test files](./ADR-009-typescript-for-tests.md) | testing-react-library |
-| ADR-010 | [Prefer screen queries over render destructuring](./ADR-010-screen-queries-over-destructuring.md) | testing-react-library |
-| ADR-011 | [Use userEvent over fireEvent](./ADR-011-userevent-over-fireevent.md) | testing-react-library |
-| ADR-012 | [Use jest-dom matchers for DOM assertions](./ADR-012-jest-dom-matchers.md) | testing-react-library |
-| ADR-013 | [Vite as Default Bundler Over webpack](./ADR-013-vite-default-bundler.md) | fullstack-graphql-react |
-| ADR-014 | [createRoot API for React Entry Point](./ADR-014-createRoot-api.md) | fullstack-graphql-react |
-| ADR-015 | [Node --watch for Development Server Reload](./ADR-015-node-watch.md) | fullstack-graphql-react |
-| ADR-016 | [Drizzle ORM as Default SQL ORM](./ADR-016-drizzle-orm.md) | fullstack-graphql-react |
-| ADR-017 | [Apollo Client React Hooks from @apollo/client/react](./ADR-017-apollo-client-react-imports.md) | fullstack-graphql-react |
-| ADR-018 | [Enfoque Iterativo para Adopcion de Tooling](./ADR-018-enfoque-iterativo-tooling.md) | react-18-design-patterns |
-| ADR-019 | [Convencion de Nomenclatura TypeScript: Sin Prefijos I/T](./ADR-019-sin-prefijos-IT.md) | react-18-design-patterns |
-| ADR-020 | [tsconfig Moderno con Vite (2026)](./ADR-020-tsconfig-moderno-vite.md) | react-18-design-patterns |
-| ADR-021 | [Biome como Toolchain Unificado](./ADR-021-biome-toolchain.md) | react-18-design-patterns |
-| ADR-022 | [Custom Hooks como Estandar para Compartir Logica](./ADR-022-custom-hooks-estandar.md) | react-18-design-patterns |
-| ADR-023 | [Patron de Controlled Components con Single Change Handler](./ADR-023-controlled-components-single-handler.md) | react-18-design-patterns |
-| ADR-024 | [CSS Modules con Vite (Zero-Config)](./ADR-024-css-modules-vite.md) | react-18-design-patterns |
-| ADR-025 | [Memoizacion Bajo Demanda (No Prematura)](./ADR-025-memoizacion-bajo-demanda.md) | react-18-design-patterns |
-| ADR-026 | [Concurrent Mode como Default (React 19)](./ADR-026-concurrent-mode-default.md) | react-18-design-patterns |
-| ADR-027 | [Server Components como Estandar de SSR](./ADR-027-server-components-estandar.md) | react-18-design-patterns |
-| ADR-028 | [bcrypt para Password Hashing (No SHA1)](./ADR-028-bcrypt-password-hashing.md) | react-18-design-patterns |
-| ADR-029 | [Turborepo + pnpm como Estandar para Monorepos](./ADR-029-turborepo-pnpm-monorepo.md) | react-18-design-patterns |
+| ADR-001 | [Product Pipeline Integration](./ADR-001-product-pipeline-integration.md) | kanam-workflow |
+| ADR-002 | [OpenSpec as Primary Doc Format](./ADR-002-openspec-primary-doc-format.md) | kanam-workflow |
+| ADR-003 | [Product Reset Phase Triggers](./ADR-003-product-reset-triggers.md) | kanam-workflow |
+| ADR-004 | [Growth Strategy Triggers](./ADR-004-growth-strategy-triggers.md) | kanam-workflow |
+| ADR-005 | [OSS Contribution Pipeline](./ADR-005-oss-contribution-pipeline.md) | kanam-workflow |
+| ADR-006 | [Capacidad Computacional - DeepSeek V4 Flash con Reasoning Maximum](./ADR-006-capacidad-computacional-deepseek.md) | kanam-workflow |
+| ADR-007 | [Patrones de Agente Autonomo - Goal-Oriented Architecture](./ADR-007-patrones-agente-autonomo.md) | kanam-workflow |
+| ADR-008 | [Patron convergente](./ADR-008-patron-convergente.md) | ai-engineering-bootcamp |
+| ADR-009 | [Primitives, Conventions, Levers](./ADR-009-primitives-conventions-levers.md) | remix-book |
+| ADR-010 | [Server/Client file naming convention](./ADR-010-server-client-file-convention.md) | remix-book |
+| ADR-011 | [Next.js full-stack platform](./ADR-011-nextjs-fullstack-platform.md) | sportcars |
+| ADR-012 | [Supabase BaaS](./ADR-012-supabase-baas.md) | sportcars |
+| ADR-013 | [Replace Jest with Vitest](./ADR-013-vitest-over-jest.md) | testing-react-library |
+| ADR-014 | [TypeScript for test files](./ADR-014-typescript-for-tests.md) | testing-react-library |
+| ADR-015 | [Data Fetching con TanStack Query](./ADR-015-data-fetching-tanstack-query.md) | testing-react-library |
+| ADR-016 | [Prefer screen queries over render destructuring](./ADR-016-screen-queries-over-destructuring.md) | testing-react-library |
+| ADR-017 | [Preferir Hooks sobre HOCs y Render Props](./ADR-017-hooks-sobre-hocs.md) | testing-react-library |
+| ADR-018 | [Use userEvent over fireEvent](./ADR-018-userevent-over-fireevent.md) | testing-react-library |
+| ADR-019 | [Use jest-dom matchers for DOM assertions](./ADR-019-jest-dom-matchers.md) | testing-react-library |
+| ADR-020 | [Vite as Default Bundler Over webpack](./ADR-020-vite-default-bundler.md) | fullstack-graphql-react |
+| ADR-021 | [createRoot API for React Entry Point](./ADR-021-createroot-api.md) | fullstack-graphql-react |
+| ADR-022 | [Node --watch for Development Server Reload](./ADR-022-node-watch.md) | fullstack-graphql-react |
+| ADR-023 | [Drizzle ORM as Default SQL ORM](./ADR-023-drizzle-orm.md) | fullstack-graphql-react |
+| ADR-024 | [Apollo Client React Hooks from @apollo/client/react](./ADR-024-apollo-client-react-imports.md) | fullstack-graphql-react |
+| ADR-025 | [Enfoque Iterativo para Adopcion de Tooling](./ADR-025-enfoque-iterativo-tooling.md) | react-18-design-patterns |
+| ADR-026 | [Convencion de Nomenclatura TypeScript: Sin Prefijos I/T](./ADR-026-sin-prefijos-it.md) | react-18-design-patterns |
+| ADR-027 | [tsconfig Moderno con Vite (2026)](./ADR-027-tsconfig-moderno-vite.md) | react-18-design-patterns |
+| ADR-028 | [Biome como Toolchain Unificado](./ADR-028-biome-toolchain.md) | react-18-design-patterns |
+| ADR-029 | [Custom Hooks como Estandar para Compartir Logica](./ADR-029-custom-hooks-estandar.md) | react-18-design-patterns |
+| ADR-030 | [Patron de Controlled Components con Single Change Handler](./ADR-030-controlled-components-single-handler.md) | react-18-design-patterns |
+| ADR-031 | [CSS Modules con Vite (Zero-Config)](./ADR-031-css-modules-vite.md) | react-18-design-patterns |
+| ADR-032 | [Memoizacion Bajo Demanda (No Prematura)](./ADR-032-memoizacion-bajo-demanda.md) | react-18-design-patterns |
+| ADR-033 | [Concurrent Mode como Default (React 19)](./ADR-033-concurrent-mode-default.md) | react-18-design-patterns |
+| ADR-034 | [Server Components como Estandar de SSR](./ADR-034-server-components-estandar.md) | react-18-design-patterns |
+| ADR-035 | [bcrypt para Password Hashing (No SHA1)](./ADR-035-bcrypt-password-hashing.md) | react-18-design-patterns |
+| ADR-036 | [Turborepo + pnpm como Estandar para Monorepos](./ADR-036-turborepo-pnpm-monorepo.md) | react-18-design-patterns |
+| ADR-037 | [Lucide como iconos base](./ADR-037-lucide-iconos-base.md) | react-18-design-patterns |
 
 ## Formato
 

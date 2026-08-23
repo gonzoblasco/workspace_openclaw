@@ -1,0 +1,124 @@
+# ADR-006: Capacidad Computacional Deepseek
+
+**Status:** Accepted (rev. 2026-07-28)  
+**Deciders:** Gonzo / Kanam  
+**Fecha:** 2026-07-28  
+**Origen:** kanam-workflow
+
+## Decisión
+
+DeepSeek V4 Flash:cloud con reasoning maximum es el modelo default. DeepSeek V4 Pro:cloud es la única escalación cuando Flash falla consistentemente. Modelos más grandes (Kimi K3, etc.) quedan descartados por costo/beneficio para el perfil de trabajo actual.
+
+## Context
+
+Gonzo y Kanam trabajan con DeepSeek V4 Flash:cloud como modelo default, con reasoning configurado en "maximum". Este ADR nace de una investigación empírica sobre el espectro de eficiencia GPU de los modelos en Ollama Cloud, donde se verificó que:
+
+- DeepSeek V4 Flash es **Level 2 (Medium Usage)** en Ollama Cloud - el nivel más eficiente entre los modelos grandes
+- DeepSeek V4 Pro es **Level 4 (Extra High Usage)** - el más pesado del catálogo
+- La diferencia de consumo GPU entre Flash y Pro es aproximadamente **4x**
+- Hardware local: Mac Mini M4 con 24GB - todo el cómputo corre en cloud. Self-hosting no es una opción para ningún modelo de este tamaño.
+
+## Datos Verificados
+
+Fuente: Artificial Analysis Intelligence Index v4.1, BenchLM.ai, Ollama Cloud pricing page, benchmarks públicos (Julio 2026). Datos actualizados respecto a la versión original del ADR.
+
+### Rendimiento por Modelo
+
+| Modelo | AA Index | Params activos | Velocidad (t/s) | Costo output/1M | Nivel Ollama |
+|---|---|---|---|---|---|
+| DeepSeek V4 Flash (Max) | 47 | 13B | 81 | $0.28 | Medium (2) |
+| Qwen 3.5 397B | 44 | 17B | ~50 | $2.34 | Medium (2) |
+| DeepSeek V4 Pro (Max) | 52 | 49B | 36 | $0.87 | Extra High (4) |
+
+### Flash Max vs Pro Max - Brecha Real en Benchmarks
+
+Datos de Artificial Analysis, DeepSeek model cards, y BenchLM.ai (Julio 2026).
+
+| Benchmark | Flash Max | Pro Max | Diferencia |
+|---|---|---|---|
+| AA Intelligence Index | 47 | 52 | 5 pts |
+| MMLU-Pro | 86.2% | 87.5% | 1.3 pts |
+| GPQA Diamond | 88.1% | 90.1% | 2.0 pts |
+| LiveCodeBench Pass@1 | 91.6% | 93.5% | 1.9 pts |
+| SWE-bench Verified | 79.0% | 80.6% | 1.6 pts |
+| Codeforces Rating | 3,052 | 3,206 | 154 Elo |
+| HMMT 2026 Feb | 94.8% | 95.2% | 0.4 pts |
+| IMOAnswerBench | 88.4% | 89.8% | 1.4 pts |
+| HLE (Humanity's Last Exam) | 34.6% | 37.7% | 3.1 pts |
+| Terminal-Bench 2.0 | 56.9% | 67.9% | **11.0 pts** |
+| BrowseComp | ~73% | 83.4% | **10.2 pts** |
+| SimpleQA-Verified | 34.1% | 57.9% | **23.8 pts** |
+| MRCR @ 1M (long context) | 78.7% | 83.5% | 4.8 pts |
+
+**Conclusión:** Flash con Max Thinking rinde **90-95% de la calidad de Pro** en coding y razonamiento general. La brecha real está en:
+- **Tareas agentic multi-paso** (Terminal-Bench: 11 pts, BrowseComp: 10 pts) - donde Pro sí marca diferencia
+- **Conocimiento factual** (SimpleQA: 23.8 pts) - Flash alucina el doble en hechos concretos
+- Coding del día a día: la brecha es marginal (1-2 pts)
+
+### Costo por Sesión Típica (Agente de Coding, 50K output)
+
+| Modelo | Costo/sesión | Intentos por $1 |
+|---|---|---|
+| DeepSeek V4 Flash | $0.014 | ~71 |
+| DeepSeek V4 Pro | $0.044 | ~23 |
+
+## Consecuencias
+
+### Positivas
+
+1. **Iteración agresiva:** 71 intentos de Flash por $1 vs 23 de Pro. Podemos ejecutar loops de "generar → review → corregir → regenerar" sin preocupación económica.
+2. **Contextos grandes sin costo prohibitivo:** Flash tiene 1M de contexto. Llenar 500K tokens de input cuesta ~$0.07.
+3. **Agentes autónomos largos:** Sesiones de horas con múltiples herramientas y generación de código son viables económicamente.
+4. **Experimentación sin fricción:** Probar 5 enfoques distintos para un mismo problema es trivial.
+5. **Velocidad:** Flash es 2.3x más rápido que Pro (81 vs 36 t/s), lo que se nota en la experiencia interactiva.
+
+### Negativas
+
+1. **Brecha en conocimiento factual:** Flash alucina el doble que Pro en hechos concretos (SimpleQA: 34.1% vs 57.9%). Para tareas que requieren precisión factual, escalar a Pro.
+2. **Tareas agentic complejas:** En cadenas de 8+ tool calls, la tasa de error de Flash se acumula. Pro es significativamente más confiable (Terminal-Bench: 11 pts de diferencia).
+3. **Visión:** Flash no soporta entrada de imágenes. Para tareas multimodales, se necesita otro modelo.
+4. **Matemática de frontera:** En problemas tipo HLE, Pro tiene una ventaja de ~3 pts que puede ser decisiva.
+
+## Estrategia de Uso
+
+### Default: DeepSeek V4 Flash con Reasoning Maximum
+
+Usar para todo el desarrollo del día a día:
+- Coding, debugging, refactors, arquitectura
+- Generación de documentación y ADRs
+- Análisis de código y code review
+- Exploración de tecnologías y spikes
+- Agentes autónomos multi-paso (hasta 5-6 tool calls por cadena)
+- Procesamiento de contextos grandes
+
+### Escalar a Pro solo cuando:
+
+1. Una tarea falle con Flash después de 2-3 intentos
+2. Se necesite conocimiento factual de alta precisión (datos, fechas, APIs, specs)
+3. El agente requiera cadenas de 8+ tool calls donde el error se acumula
+4. Se esté en un bloqueo donde "pensar más" ayude
+5. Se necesite el mejor resultado posible sin restricción de costo
+
+### Táctica de "Escalación Automática"
+
+En flujos de agente, implementar:
+1. Intentar con Flash Max
+2. Si el resultado no pasa validación → reintentar con Flash Max (hasta 3 veces)
+3. Si persiste el fracaso → escalar a Pro para destrabar
+4. Documentar el caso para futura referencia
+
+## Notas
+
+- Los niveles de Ollama Cloud (Medium/Extra High) son la mejor aproximación pública al consumo GPU. Ollama no publica factores de conversión exactos.
+- El Intelligence Index de Artificial Analysis es un composite de 9 evaluaciones. No es lineal y no debe interpretarse como "IQ" del modelo.
+- Hardware local (Mac Mini M4 24GB) no es relevante para inferencia de modelos grandes - todo corre en cloud de Ollama.
+- Esta evaluación debe revisarse periódicamente a medida que nuevos modelos y optimizaciones estén disponibles.
+
+## Referencias
+
+- [Ollama Pricing](https://ollama.com/pricing)
+- [Artificial Analysis - DeepSeek V4 Flash](https://artificialanalysis.ai/models/deepseek-v4-flash)
+- [Artificial Analysis - DeepSeek V4 Pro](https://artificialanalysis.ai/models/deepseek-v4-pro)
+- [DeepSeek V4 Pro vs Flash Guide](https://codersera.com/blog/deepseek-v4-pro-vs-flash/)
+- [BenchLM.ai - DeepSeek V4 Pro vs Kimi K3](https://benchlm.ai/compare/deepseek-v4-pro-vs-kimi-3)
+- [Ollama Cloud Free Tier Tracker](https://github.com/OshriFatkiev/ollama-cloud-free-tier)

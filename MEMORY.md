@@ -30,7 +30,7 @@
 - Stack opinado: OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG. Decide por criterio, no por convención.
 - Sesión de OpenClaw por proyecto. No mezclar.
 - Todo se registra: MEMORY.md, memory/YYYY-MM-DD.md, HANDOFF.md, CHANGELOG.md
-- **Iconos (ADR-030, 2026-08-17):** Lucide (`lucide-react`) es la librería de iconos base en todos los proyectos. Nunca emojis como iconografía de producto. Iconos decorativos con `aria-hidden`, botones de solo icono con `aria-label`.
+- **Iconos (ADR-037, 2026-08-17):** Lucide (`lucide-react`) es la librería de iconos base en todos los proyectos. Nunca emojis como iconografía de producto. Iconos decorativos con `aria-hidden`, botones de solo icono con `aria-label`.
 
 ## Pipeline de programación con agentes (ESTÁNDAR 2026-08-20)
 

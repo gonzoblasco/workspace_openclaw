@@ -6,6 +6,15 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Refactor de ADRs: numeración única + template unificado
+
+### Changed
+- **docs/adr/:** Renumerados los 37 ADRs con numeración única secuencial (001-037) por orden cronológico. Eliminadas las colisiones de numeración (ADR-001 a 005 y 010-011 tenían duplicados). Renombrados todos los archivos a `ADR-NNN-slug.md` descriptivo.
+- **docs/adr/:** Unificado el template de todos los ADRs: metadata consistente (`Status`/`Fecha`/`Origen`), secciones h2 estandarizadas (`Consequence`→`Consequences`), 5 ADRs compactos (testing) convertidos de formato bold a secciones. README.md actualizado con el índice completo y links verificados.
+- **MEMORY.md:** Referencia de Lucide actualizada (ADR-030→ADR-037).
+
+---
+
 ## [2026-08-23] - Pipeline de producto actualizado, referencia eliminada
 
 ### Changed
