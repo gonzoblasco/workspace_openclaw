@@ -35,6 +35,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - IDENTITY.md: definición viva de Kanam
+
+### Changed
+- **IDENTITY.md:** reescrito de ficha técnica plana a definición viva y personal. Agrega esencia, forma de ser, relación con Gonzo, historia (origen del nombre en Kanam Mind), gustos y compromiso. Balance: eficiente pero personal/emocional, sin fricciones en una relación de muchas horas diarias de trabajo.
+
+---
+
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed
