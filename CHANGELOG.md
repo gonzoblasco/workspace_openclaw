@@ -6,6 +6,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Limpieza de docs/checklists/
+
+### Removed
+- **docs/checklists/orchestration-patterns.md:** eliminado. Contenido desalineado con el setup real: describía un sistema de orchestration con "personas", "slash commands" y plugins de Claude Code que no corresponde al pipeline real de agentes Qwen (`agent-orchestration-pipeline`). Huérfano (nadie lo referencia desde docs/ - las referencias de la skill `doubt-driven-development` apuntan a su propia copia en `references/`). Movido a trash.
+
+### Changed
+- **docs/checklists/task-template.md:** corregidas referencias rotas a skills inexistentes (`task-execution`, `gh-issue-planner`). Ahora apunta a `planning-and-task-breakdown`.
+- **docs/checklists/ (observability, performance, security):** reemplazados en dashes (U+2013) por guion común en rangos numéricos. Regla de Gonzo.
+
+---
+
 ## [2026-08-23] - Refactor de ADRs: numeración única + template unificado
 
 ### Changed

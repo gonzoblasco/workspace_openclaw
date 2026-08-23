@@ -1,6 +1,6 @@
 # Task Template - Desglose de tareas verificables
 
-Guía para desglosar tareas en subtareas verificables. Recuperado de `task-execution` (skill absorbida en la consolidación 2026-08) y `gh-issue-planner`.
+Guía para desglosar tareas en subtareas verificables. Complementa `planning-and-task-breakdown`.
 
 ## Task Breakdown Template
 
