@@ -85,6 +85,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Eliminado TODO.md de la raíz
+
+### Removed
+- **TODO.md (raíz):** eliminado. Era un puntero huérfano sin contenido real - el espejo real es `memory/todos.md` (generado por `memory-db.sh export-todos` desde la DB, que es la fuente de verdad). Mismo caso que FREEZER.md e INBOX.md.
+
+### Changed
+- **memory/todos.md:** espejo regenerado - le faltaba el todo #6 (Fase 2 de SoporteML V4). Ahora sincronizado con la DB.
+- **memory/memory.db:** corregido em dash en el todo #1 (Erradicar em dashes) - reemplazado por guión común.
+
+---
+
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed
