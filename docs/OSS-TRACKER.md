@@ -8,9 +8,9 @@
 | Métrica | Valor |
 |---------|-------|
 | PRs abiertos | 23 |
-| PRs mergeados | 1 |
+| PRs mergeados | 0 |
 | PRs cerrados sin merge | 14 |
-| Repos con PRs | 19 |
+| Repos con PRs | 18 |
 
 ## PR Registry
 
@@ -111,14 +111,6 @@
 |---------|------|---------|
 | **Issue** | - | [docs][templates] Remove focusable links de hidden carousel slides. Agosto. |
 | **Nuestro PR** | [#49003]() | **open** |
-
-### openclaw/openclaw
-
-| Eslabón | Link | Detalle |
-|---------|------|---------|
-| **Issue** | [#127212](https://github.com/openclaw/openclaw/issues/127212) | MERGEADO 21/08 por vyctorbrzezowski. PRIMER PR mergeado del portfolio! a11y: active split pane a assistive tech. Generado desde feedback de gonzoblasco en #126714. |
-| **Nuestro PR** | [#127213](https://github.com/openclaw/openclaw/pull/127213) | **merged** |
-| **Contexto** | - | Maintainer convirtio feedback de a11y en PR con tests. Portfolio vivo. |
 
 ### payloadcms/payload
 
