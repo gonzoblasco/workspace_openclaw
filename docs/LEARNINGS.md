@@ -576,3 +576,23 @@ Lessons learned during development. Distilled from session notes; for cross-proj
 - REFLECTION: la regla existia pero no la aplique al escribir bodies de PR en ingles - el em dash es idiomatico en ingles y se me escapo.
 - LESSON: escribir el guard automatizado (check_em_dash.py) y correrlo SIEMPRE antes de publicar a GitHub.
 - BIASES DETECTED: ninguno relevante - fue falta de mecanismo, no sesgo cognitivo.
+
+## 2026-08-22 - OpenClaw no mostraba los modelos de Ollama en el TUI (infraestructura)
+
+**Context:** Gonzo reporto que al lanzar OpenClaw desde el CLI de Ollama, el TUI solo mostraba 3 modelos (default deepseek + openrouter/auto + openrouter/free) en vez de los 9 de Ollama. Tambien habia warnings de version/config al inicio. Venia de probar OMLX y LMStudio como proveedores alternativos, eliminarlos, y volver a Ollama.
+
+**Root cause (cadena de 4 problemas, cada uno enmascaraba el siguiente):**
+1. **Warnings de config**: plugins bundled deshabilitados (canvas, device-pair) con config huerfana en `openclaw.json`. Inofensivo, se limpio.
+2. **Version vieja de OpenClaw en nvm**: `~/.nvm/.../openclaw` = 2026.6.10 instalado global. Cuando Ollama hace spawn del TUI desde un shell de login zsh que carga nvm, el PATH resolvia `openclaw` a esa version vieja. Se desinstalo - ahora resuelve a homebrew 2026.7.1-2.
+3. **Node de nvm desactualizado**: default era v24.9.0, que no soporta OpenClaw 2026.7.1-2 (requiere >=24.15.0). Se instalo v24.18.0 como default de nvm.
+4. **Modelos ocultos (causa raiz real del sintoma)**: `agents.defaults.models` en openclaw.json (solo `openrouter/auto`, `openrouter/free`) actua como **allowlist estricta** del model picker del TUI. Sin wildcard de provider, el picker solo muestra los modelos listados + el default. Los 9 modelos de Ollama quedaban ocultos. Fix: agregar `ollama/*` como wildcard.
+
+**Lesson principal:** en OpenClaw, `agents.defaults.models` definido sin wildcard de provider = allowlist estricta del picker (visibleCatalog policy). Para permitir todos los modelos de un provider, usar wildcard `provider/*`. Si el TUI muestra solo el default + fallbacks, revisar `agents.defaults.models` ANTES de perseguir problemas de version/PATH.
+
+**Lesson secundaria (debugging):** el warning "config written by version X, running version Y" en OpenClaw puede indicar DOS instalaciones de OpenClaw compitiendo por el PATH (homebrew + nvm), no un problema de config. El que lanza via shell de login (ej. Ollama) puede resolver a una instalacion distinta a la del gateway. Verificar con `which openclaw` en un shell de login (`zsh -l -i -c 'which openclaw'`), no solo en el shell interactivo actual.
+
+**Self-reflection:**
+- CONTEXT: diagnostico de infraestructura OpenClaw multi-capa
+- REFLECTION: el sintoma (modelos ocultos) se veia como problema de config proveedor pero era el policy de visibilidad de modelos; perseguir versiones/PATH era la pista del warning de inicio.
+- LESSON: cuando un warning de version aparece en OpenClaw, chequear instalaciones duplicadas (homebrew vs nvm) en el PATH de shell de login. Cuando el picker de modelos no muestra todos, revisar agents.defaults.models (allowlist) y agregar wildcard.
+- BIASES DETECTED: anchoring - me enfoque primero en el problema de versiones/PATH (por el warning) y tarde en reconocer que la causa del sintoma de modelos era la allowlist de config. La pista del warning de version era real pero era una causa separada (el TUI viejo de nvm), no la causa del sintoma de modelos.
