@@ -2,7 +2,7 @@
 
 Registro de cambios estructurales del workspace. No incluye cambios de skills (ver `skills/CHANGELOG.md`), aprendizajes (ver `docs/LEARNINGS.md`), ni actividad diaria (ver `memory/`).
 
-**Regla:** cada vez que se modifique la estructura del workspace (AGENTS.md, MEMORY.md, SOUL.md, USER.md, TOOLS.md, HEARTBEAT.md, FREEZER.md, scripts/, estructura de proyectos, skills), actualizar este archivo en el mismo commit.
+**Regla:** cada vez que se modifique la estructura del workspace (AGENTS.md, MEMORY.md, SOUL.md, USER.md, TOOLS.md, HEARTBEAT.md, scripts/, estructura de proyectos, skills), actualizar este archivo en el mismo commit.
 
 ---
 
@@ -18,6 +18,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ### Changed
 - **CONTRIBUTING.md:** Alineado con el flujo real de trabajo (worktrees/temp dirs, no `projects/`). Agregada regla crítica de leer todos los comments (incluidos inline y reviews) antes de clasificar/empujar un PR. Agregado protocolo de cierre de PRs stale (~1 mes sin review). Agregado em dash check obligatorio. Documentado el gotcha de `gh pr list --author` sin `--repo`. Tracking apunta a `docs/OSS-TRACKER.md` (regenerado desde la DB).
+
+---
+
+## [2026-08-23] - Eliminado FREEZER.md
+
+### Removed
+- **FREEZER.md:** eliminado. Era redundante - solo apuntaba a `projects/PROYECTOS.md` (índice maestro con secciones de archivados/eliminados) sin contenido propio. Referencias limpiadas en AGENTS.md y CHANGELOG.md.
 
 ---
 
