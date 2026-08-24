@@ -185,6 +185,19 @@ Formato: `type(#issue): description in english`
 
 **Al analizar un issue/PR, leer SIEMPRE el link completo** (body, todos los reviews, todos los comentarios incluidos bots, files, estado) y comprender la totalidad antes de registrar o proponer acción. Registrar los cambios sean para un lado u otro (merged, closed, follow-up, trabajo ajeno en curso).
 
+#### Reglas operativas de feedback en PRs/issues ajenos (2026-08-24)
+
+Reglas duras de Gonzo para publicar feedback/review en repos de terceros. Corregidas 24/08 - no repetirlas.
+
+1. **Leer SIEMPRE toda la vida del ticket ANTES de comentar o hacer nada.** Body, reviews, TODOS los comments (incluidos los de autores/maintainers posteriores al review), inline comments, estado actual. Si no tengo el repo clonado y el claim depende del código base, plantear como pregunta/"worth checking" honesto, NO como afirmación. Opción: clonar el repo en `forks/` para poder verificar.
+2. **En un PR/issue ajeno, el autor es el dueño.** No cerrar con elogios/"nice work"/adulación - el invitado no agradece ni valida el trabajo ajeno; eso es ruido. El reconocimiento va implícito en la interacción.
+3. **No pedir disculpas ni reconocer errores en el hilo público.** Si un comentario no debió publicarse (desactualizado, mal contexto, error), BORRARLO silenciosamente y publicar el correcto. No hay "disculpas" - el error no debería haber pasado. Corregir y seguir.
+4. **Nunca repetir lo que ya se dijo en el hilo** ni repetir mis propios comentarios. Siempre aportar algo nuevo que ayude, sin huevadas.
+5. **NO exponer notas internas/borradores en el hilo público.** El archivo de borrador (con encabezado "Borrador", "Notas para Gonzo", análisis interno) es SOLO para revisión de Gonzo - NUNCA publicarlo directo. Al publicar, usar SOLO el texto del comentario final limpio (sin encabezado de borrador ni notas internas). (Error real en #5204 y #4611: publiqué el archivo con notas internas; se borró y se republicó limpio.)
+6. **Siempre dar la URL** del PR/issue al reportar trabajo hecho.
+
+**Regla de contexto:** los borradores de feedback se guardan en `docs/feedback-<repo>-<numero>-draft.md` para revisión de Gonzo. El archivo de borrador y el texto a publicar son cosas DISTINTAS - al publicar, nunca usar el archivo de borrador directo; extraer solo el texto final del comentario.
+
 #### Verify Before Push
 
 Para proyectos con build step (Vite, Next.js, etc.):
