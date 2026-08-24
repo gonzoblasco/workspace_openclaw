@@ -7,8 +7,8 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 18 |
-| PRs mergeados | 0 |
+| PRs abiertos | 17 |
+| PRs mergeados | 1 |
 | PRs cerrados sin merge | 18 |
 | Repos con PRs | 17 |
 
@@ -66,8 +66,8 @@
 | **Nuestro PR** | [#4298](https://github.com/facebook/astryx/pull/4298) | **closed** |
 | **Contexto** | - | Gonzo abrió #4218 primero (icon+label). humbertovirtudes sugirió converger con #4157 por ser base más sólida. PR #4218 cerrado, contenido migrado a #4298. |
 
-| **Issue** | [#4421](https://github.com/facebook/astryx/issues/4421) | Non-color indicator (font-weight) en current breadcrumb. MERGEABLE, sin reviews. |
-| **Nuestro PR** | [#4605](https://github.com/facebook/astryx/pull/4605) | **open** |
+| **Issue** | [#4421](https://github.com/facebook/astryx/issues/4421) | MERGED 23/08. Non-color indicator (font-weight semibold) en current breadcrumb. Aprobado por cixzhang. Resuelve #4421 (WCAG 1.4.1 Use of Color). |
+| **Nuestro PR** | [#4605](https://github.com/facebook/astryx/pull/4605) | **merged** |
 | **Contexto** | - | Abierto 31 Jul. WCAG 1.4.1 fix. |
 
 | **Issue** | [#4450](https://github.com/facebook/astryx/issues/4450) | Cerrado (verificado 22/08 - el PR ya no estaba abierto). |
