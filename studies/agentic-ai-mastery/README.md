@@ -20,7 +20,8 @@ Dominio de agentic AI: fundamentos, arquitecturas, frameworks (Track 1) e implem
 
 | # | Curso | Duración | Estado | Notas |
 |---|---|---|---|---|
-| 1 | Inside Agentic AI: Foundations and Frontiers | 39m | 🔄 En curso (video 3/6) | `01-track-1-foundations/course-01-inside-agentic-ai-foundations/` |
+| 1 | Inside Agentic AI: Foundations and Frontiers | 39m | ✅ **COMPLETO** (2026-08-21) - 8 videos + 2 knowledge checks + final exam | `01-track-1-foundations/course-01-inside-agentic-ai-foundations/` |
+| 2 | Inside Agentic AI: Core Architecture of Agentic Systems | 35m | 🔄 En curso (video 1/10) | `01-track-1-foundations/course-02-core-architecture/` |
 | 2 | Inside Agentic AI: Core Architecture of Agentic Systems | 35m | ⬜ Pendiente | - |
 | 3 | Inside Agentic AI: Popular Frameworks | 32m | ⬜ Pendiente | - |
 | 4 | Agentic AI Design Patterns: Reusable Blueprints | 49m | ⬜ Pendiente | - |

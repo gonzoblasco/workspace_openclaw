@@ -8,7 +8,7 @@
 
 | Curso | Plataforma | Estado | Estructura |
 |---|---|---|---|
-| **agentic-ai-mastery** | Codecademy | En curso — Track 1, Course 1 (video 3/6) | `agentic-ai-mastery/` |
+| **agentic-ai-mastery** | Codecademy | En curso — Track 1, Course 2 (video 1/10) | `agentic-ai-mastery/` |
 
 ---
 
