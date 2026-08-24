@@ -7,11 +7,11 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 16 |
+| PRs abiertos | 17 |
 | PRs mergeados | 4 |
 | PRs cerrados sin merge | 18 |
 | Colaboraciones no-codigo | 6 |
-| Repos con contribuciones | 18 |
+| Repos con contribuciones | 19 |
 
 ## PR Registry
 
@@ -96,6 +96,14 @@
 | **Issue** | [#4912](https://github.com/facebook/astryx/issues/4912) | MERGED 24/08. build-storybook fallaba con no merge base en PRs viejos (fetch-depth 50). Fix: two-dot diff fallback en analyze-pr.js. Resuelve #4912. Merge commit 152e956. |
 | **Nuestro PR** | [#4914](https://github.com/facebook/astryx/pull/4914) | **merged** |
 | **Contexto** | - | Abierto 11 Ago. Aprobado por cixzhang 24/08 (los 5 findings del review del 12/08 fueron addressados). FOLLOW-UP sugerido por cixzhang: --deepen=200 solo cubre ~250 commits atras, y 55 de 122 PRs stale estan mas atras - valdria un segundo deepen. |
+
+### facebook/docusaurus
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | [#11332](https://github.com/facebook/docusaurus/issues/11332) | fix(theme-classic): announce page title on route change for screen readers |
+| **Nuestro PR** | [#12387](https://github.com/facebook/docusaurus/pull/12387) | **open** |
+| **Contexto** | - | Focus management: pasa el titulo del Layout al SkipToContent y lo anuncia en route change. WestonThayer valido el enfoque. 116 + 51 tests pass. Comentado en issue. |
 
 ### google/skills
 
