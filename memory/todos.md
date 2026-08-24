@@ -15,7 +15,6 @@
 - [ ] **[]** (medium) PORTAR (de ClawHub models, ToggleLogic sin licencia): rutas de modelo por tipo de tarea + overrides sticky + audit de decision de modelo en pipeline A/B
 - [ ] **[]** (medium) OBSERVAR (de ClawHub models): memoria grafica / knowledge graph (Memory Graph, Graph Memory) - relaciones entre conceptos, futuro upgrade de QMD
 - [ ] **[]** (medium) PORTAR (de ClawHub context, Session Compact): estructurar la compactacion con resumen tipo Scope/Recent requests/Pending work/Key files/Timeline en lugar de resumen generico
-- [ ] **[]** (medium) PORTAR (de ClawHub media): skill de manejo de PDF/OCR local - extraer texto de PDFs, OCR de imagenes escaneadas, convertir formatos. Util para specs, documentos, recibos (familia PDF Extract/OCR/Convert del clawhub)
 - [ ] **[]** (medium) PORTAR (de ClawHub web, Search Fusion): skill de busqueda federada - elegir provider/estrategia por intencion (research/keyword/coding) + dedupe de resultados. A nuestro modo con DuckDuckGo key-free + web_fetch + browser
 - [ ] **[]** (medium) OBSERVAR (de ClawHub web): Deep Research multi-paso, Tavily Extract (paginas a markdown), Apify/scraping para sitios especificos
 - [ ] **[]** (medium) OBSERVAR (de ClawHub tools): MCP Client/MCPBundles (acceso MCP estandar), Agent Collaboration OS / A2A / cross-agent orchestration
@@ -25,6 +24,7 @@
 ## Completados
 
 - [x] **[]** PORTAR (de ClawHub tools, Pipeline Architect) CANDIDATO FUERTE: estado durable + crash recovery + lifecycle para el pipeline A/B - que el plan de unidades sobreviva a SIGKILL/restarts con taskflow-like (list/get/resume), directo a nuestro problema de Qwen muriendo
+- [x] **[]** PORTAR (de ClawHub media): skill de manejo de PDF/OCR local - extraer texto de PDFs, OCR de imagenes escaneadas, convertir formatos. Util para specs, documentos, recibos (familia PDF Extract/OCR/Convert del clawhub)
 - [x] **[]** PORTAR (de ClawHub context) CANDIDATO FUERTE: compaction domain-aware con tiers 0-4 - skill que preserve arquitectura/ADRs/API contracts/seguridad al compactar sesiones de software (sesion-lifecycle + knowledge-management)
 - [x] **[]** PORTAR (de ClawHub models) CANDIDATO #1: skill-ai-inject - auto-match de tareas con las 59 skills (cascada keyword L1 gratis -> embedding L2, Ollama-only con bge-m3/nomic). Resolver el problema de saber cual skill aplicar por tarea. Ver skill-router propio
 - [x] **[]** PORTAR (de ClawHub channels): skill de URL pre-flight check local antes de web_fetch - esquema https + blocklist + typosquatting + payload injection (idea de PreClick, sin mandar URLs a terceros)

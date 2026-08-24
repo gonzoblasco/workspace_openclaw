@@ -120,6 +120,24 @@ Cierre: A y B revisan el conjunto + orquestador hace release
 Orquestador implementa (opcional) → Agente A revisa/corrige → Agente B re-revisa las correcciones de A → (rondas extra si se requiere) → aprobado
 ```
 
+## Seleccion de modelo por tarea (model-router.sh)
+
+El pipeline usa un router de modelo configurable por tipo de tarea + overrides sticky, portado del concepto ToggleLogic (ClawHub) SIN su licencia patentada. En vez de elegir el modelo manualmente cada vez, se consulta la ruta del tipo de tarea:
+
+```bash
+./scripts/model-router.sh model <tipo>   # code/review/long/cheap/writing/default
+./scripts/model-router.sh set <tipo> <model>   # override sticky (persiste)
+./scripts/model-router.sh reset <tipo>         # limpiar override
+./scripts/model-router.sh default <model>      # cambiar default
+./scripts/model-router.sh list                 # ver rutas + overrides
+```
+
+**Rutas por defecto:** code → kimi-k2.7-code, review → deepseek-v4-flash, long → deepseek-v4-pro, cheap → gemma4, writing → kimi-k3, default → deepseek-v4-flash.
+
+**Uso en el pipeline:** al lanzar un agente, el orquestador consulta `model-router.sh model <tipo>` para decidir el `--model` (en vez de elegirlo ad hoc). Los overrides sticky permiten fijar " usá kimi para todo el codigo de esta fase" y persiste hasta reset.
+
+**Nota:** el router es una sugerencia de modelo; el orquestador puede sobreescribir si la tarea lo justifica (es una decision de Kanam, no del router).
+
 ## Templates de prompt para agentes
 
 ### Estado durable del pipeline + crash recovery (pipeline-track.sh)
