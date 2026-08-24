@@ -7,8 +7,8 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 17 |
-| PRs mergeados | 2 |
+| PRs abiertos | 16 |
+| PRs mergeados | 3 |
 | PRs cerrados sin merge | 18 |
 | Repos con PRs | 18 |
 
@@ -118,8 +118,9 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | - | [docs][templates] Remove focusable links de hidden carousel slides. Agosto. |
-| **Nuestro PR** | [#49003]() | **open** |
+| **Issue** | [#48990](https://github.com/mui/material-ui/issues/48990) | MERGED 24/08. [docs][templates] Remove focusable links from hidden carousel slides. WCAG 4.1.2 aria-hidden-focus: el carousel (react-swipeable-views) esconde slides inactivos con aria-hidden pero el link Go to store seguia focusable. Fix: tabIndex={-1} en slides inactivos (1 archivo, +1 -0). Aprobado por silviuaavram. Resuelve #48990 (cerrado COMPLETED). |
+| **Nuestro PR** | [#49003]() | **merged** |
+| **Contexto** | - | Abierto en agosto. PR de docs (templates). Merge 06:44 UTC 24/08. |
 
 ### payloadcms/payload
 
