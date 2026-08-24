@@ -9,7 +9,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ## [2026-08-24] - Reglas operativas de feedback OSS en AGENTS.md
 
 ### Added
-- **AGENTS.md (Colaboracion OSS):** seccion nueva "Reglas operativas de feedback en PRs/issues ajenos" con 6 reglas duras de Gonzo (corregidas 24/08): leer SIEMPRE toda la vida del ticket antes de comentar; el autor es dueno (no elogios); no disculpas en el hilo publico (borrar y corregir); no repetir lo ya dicho; NO exponer notas internas/borradores en el hilo publico (usar solo el texto limpio); siempre dar la URL al reportar. Regla de contexto: borradores en `docs/feedback-*-draft.md`, el archivo y el texto a publicar son cosas distintas.
+- **AGENTS.md (Colaboracion OSS):** seccion nueva "Reglas operativas de feedback en PRs/issues ajenos" con reglas duras de Gonzo (corregidas 24/08): leer SIEMPRE toda la vida del ticket antes de comentar; el autor del PR/issue define (ver quien lo creo) - no elogios; no subir un comentario solo para disculparse por otro (disculparse no esta mal, pero genera ruido - mejor borrar el malo y regenerarlo); no repetir lo ya dicho; NO exponer notas internas/borradores en el hilo publico (usar solo el texto limpio); siempre dar la URL al reportar. Regla de contexto: borradores en `docs/feedback-*-draft.md`, el archivo y el texto a publicar son cosas distintas.
 
 ### Why
 - Gonzo: "no puedo confiar sino en ti para tareas largas si en estas breves ya tengo que estar corriendote". Los errores del dia (publicar sin leer el hilo completo en #4690, exponer notas internas en #5204 y #4611, elogios en PR ajeno en #5414) se consolidaron como reglas duras en las instrucciones, no en memorias.
