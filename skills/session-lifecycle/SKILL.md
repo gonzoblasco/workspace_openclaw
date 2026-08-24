@@ -174,6 +174,24 @@ Cuando el contexto de sesión llegue al ~60% (verificable con `session_status`),
 [1-2 oraciones con detalles clave]
 ```
 
+### Resumen estructurado de compactación (idea de Session Compact)
+
+Cuando se compacta la sesión (no solo el buffer), generar un **resumen estructurado** en vez de un bloque de texto generico. Al compactar, armar el resumen con estos campos (portado de Session Compact - ClawHub):
+
+```markdown
+# Resumen de Compactación
+**Scope:** <que se compacto - ej. "35 mensajes de la sesion de desarrollo de X">
+**Pending work:** <todos/pendientes en curso - ej. 'terminar U3, revisar U2'>
+**Key files:** <archivos importantes tocados - ej. 'src/auth.ts, db/schema.sql'>
+**Decisions:** <decisiones clave tomadas que no deben perderse>
+**Key timeline:** <3-5 hitos de la conversacion que importan>
+**Next step:** <que sigue>
+```
+
+- El **Pending work** y **Next step** son los mas criticos - que no se pierdan al compactar.
+- Los **Key files** y **Decisions** permiten retomar sin re-descubrir.
+- Complementa el working buffer (log crudo) con un resumen accionable post-compactacion.
+
 ## Compaction Recovery
 
 Hay **dos mecanismos** que trabajan juntos para recuperar contexto tras una compactación. No son excluyentes - el plugin cubre lo automático, el buffer manual cubre lo que el plugin no ve (decisivo cuando el contexto es largo o la compactación fue agresiva).

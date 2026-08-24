@@ -62,6 +62,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Added
 - **MEMORY.md (regla de Gonzo):** colaborar en un repo ajeno NO es sinónimo de abrir PR. El valor suele estar en comentar, revisar, criticar con sustancia, o destrabar. Si otro contribuidor ya reclamó/tiene un finding o PR en curso, abrir otro PR para lo mismo es pisarle el trabajo, no colaborar. Antes de proponer "hacer un PR", preguntar si ya hay trabajo en curso y qué aporta Gonzo sin duplicar. (Nace de hermes-agent #38072.)
 - **AGENTS.md (nueva subsección "Colaboración OSS - NO es abrir PRs" en Git & Commits):** regla operativa de colaboración - no asumir PR, sumar sin pisar, y leer SIEMPRE el link completo (issue/PR) con todos los reviews/comentarios/estado antes de registrar o proponer acción.
+## [2026-08-24] - Resumen estructurado de compactacion en session-lifecycle
+
+### Changed
+- **skills/session-lifecycle/SKILL.md:** seccion "Resumen estructurado de compactacion" - al compactar, generar resumen con campos (Scope, Pending work, Key files, Decisions, Key timeline, Next step) en vez de texto generico. Portado del concepto Session Compact (ClawHub).
+
+### Why
+- Al compactar, hoy se pierde contexto por resumen generico; los campos estructurados capturan lo esencial (pendientes, archivos, decisiones, siguiente paso) para retomar sin re-descubrir.
+
+---
+
 ## [2026-08-24] - model-router.sh: rutas de modelo por tarea + overrides
 
 ### Added
