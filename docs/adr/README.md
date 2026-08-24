@@ -43,6 +43,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-035 | [bcrypt para Password Hashing (No SHA1)](./ADR-035-bcrypt-password-hashing.md) | react-18-design-patterns |
 | ADR-036 | [Turborepo + pnpm como Estandar para Monorepos](./ADR-036-turborepo-pnpm-monorepo.md) | react-18-design-patterns |
 | ADR-037 | [Lucide como iconos base](./ADR-037-lucide-iconos-base.md) | react-18-design-patterns |
+| ADR-038 | [Learnings con mirror en DB (categorias + consulta veloz)](./ADR-038-learnings-mirror-db.md) | workspace |
 
 ## Formato
 

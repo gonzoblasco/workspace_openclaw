@@ -6,6 +6,14 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - ADR-038: Learnings con mirror en DB
+
+### Added
+- **docs/adr/ADR-038-learnings-mirror-db.md:** documenta la decisión de separar las lecciones por categoría en `docs/learnings/` con mirror en la DB (`memory/memory.db`, tabla `learnings`) como fuente de verdad. Incluye el límite del patrón (no extrapolar a documentos narrativos puros como MEMORY.md/AGENTS.md).
+- **docs/adr/README.md:** ADR-038 agregado al índice (origen: workspace).
+
+---
+
 ## [2026-08-23] - Learnings separados por categoría + mirror en DB
 
 ### Added
