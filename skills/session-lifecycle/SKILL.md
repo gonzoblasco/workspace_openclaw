@@ -155,7 +155,8 @@ Cuando el contexto de sesión llegue al ~60% (verificable con `session_status`),
 
 1. Crear o limpiar `memory/working-buffer.md`
 2. A partir de ese punto, **cada exchange** se loggea: mensaje de Gonzo + resumen de tu respuesta
-3. Después de compactación, leer el buffer primero antes de cualquier otra cosa
+3. **Flush ANTES de compactar** (idea de Honcho): cuando se acerque la compactación, asegurar que el buffer esté completo y al día ANTES de perder contexto - no después. Si la sesión está por compactar (cerca del límite), hacer un flush final del buffer con lo último importante.
+4. Después de compactación, leer el buffer primero antes de cualquier otra cosa
 
 **Formato:**
 

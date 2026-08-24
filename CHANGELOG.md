@@ -62,6 +62,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Added
 - **MEMORY.md (regla de Gonzo):** colaborar en un repo ajeno NO es sinónimo de abrir PR. El valor suele estar en comentar, revisar, criticar con sustancia, o destrabar. Si otro contribuidor ya reclamó/tiene un finding o PR en curso, abrir otro PR para lo mismo es pisarle el trabajo, no colaborar. Antes de proponer "hacer un PR", preguntar si ya hay trabajo en curso y qué aporta Gonzo sin duplicar. (Nace de hermes-agent #38072.)
 - **AGENTS.md (nueva subsección "Colaboración OSS - NO es abrir PRs" en Git & Commits):** regla operativa de colaboración - no asumir PR, sumar sin pisar, y leer SIEMPRE el link completo (issue/PR) con todos los reviews/comentarios/estado antes de registrar o proponer acción.
+## [2026-08-24] - Portes ClawHub: anti-repetition en DREAMS + flush pre-compactacion
+
+### Changed
+- **skills/knowledge-management/SKILL.md:** seccion "Anti-Repetition en la Consolidacion" dentro de DREAMS.md - exclude promoted, text-level dedupe, theme cooldown, narrative freshness, idle novelty (idea del plugin memory-lancedb-dreaming). Evita repetir el mismo material al consolidar.
+- **skills/session-lifecycle/SKILL.md:** paso "Flush ANTES de compactar" en el working buffer - asegurar que el buffer este completo antes de perder contexto, no despues (idea de Honcho Memory).
+
+### Why
+- Consolidacion programada (DREAMS) tendia a repetir material; el anti-repetition lo evita.
+- El flush antes de compactar asegura no perder contexto importante al compactar.
+
+---
+
 ## [2026-08-24] - compaction-domain-aware: tiers de prioridad al compactar
 
 ### Added
