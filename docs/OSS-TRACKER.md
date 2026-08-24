@@ -10,7 +10,8 @@
 | PRs abiertos | 15 |
 | PRs mergeados | 4 |
 | PRs cerrados sin merge | 18 |
-| Repos con PRs | 18 |
+| Colaboraciones no-codigo | 6 |
+| Repos con contribuciones | 18 |
 
 ## PR Registry
 
@@ -215,3 +216,15 @@
 | **Issue** | - | warn when reasoning tokens spent. Review bot de Vercel addressado. Squash 22 Jul. |
 | **Nuestro PR** | [#17274](https://github.com/vercel/ai/pull/17274) | **waiting_review** |
 
+## Colaboraciones no-codigo
+
+> Contribuciones donde el aporte de Gonzo fue comentario, review, audit o diagnostico (no un PR con merge a su nombre). Impacto real via PRs de otros o conversaciones.
+
+| Repo | Eslabón | Detalle |
+|------|---------|---------|
+| NousResearch/hermes-agent | [#38072](https://github.com/NousResearch/hermes-agent/issues/38072) | COLABORACION NO-CODIGO. Re-audit de a11y publicado como comentario (24/08): verifico contra main actual que findings siguen vivos (#3,#4,#5,#6) y cuales se mitigaron (#1 mejorado, #2 resuelto). Comentario issuecomment-5393570919. |
+| facebook/astryx | [#3764](https://github.com/facebook/astryx/issues/3764) | COLABORACION NO-CODIGO. Selector typeahead: el diagnostico/audit de Gonzo fue la base, el fix llego a main via PR de otro autor (merged 11/08). Impacto real sin merge a nombre de Gonzo. |
+| facebook/astryx | [#5107](https://github.com/facebook/astryx/pull/5107) | COLABORACION NO-CODIGO. Dividers/Selector a11y: el trabajo de Gonzo (PR #5344, cerrado sin merge) fue la base, el fix llego a main via PR de otro autor (merged 23/08). Diagnostico de Gonzo fue el punto de partida. |
+| facebook/astryx | [#4157](https://github.com/facebook/astryx/pull/4157) | COLABORACION NO-CODIGO. Avatar status labels: el trabajo de Gonzo fue la base, el fix llego a main via PR de otro autor (merged 24/07). |
+| facebook/astryx | [#5034](https://github.com/facebook/astryx/pull/5034) | COLABORACION NO-CODIGO. Avatar status label via context: fix llego a main via PR de otro autor (merged 22/08). Composicion via AvatarStatusLabelContext. |
+| facebook/astryx | [#3654](https://github.com/facebook/astryx/issues/3654) | COLABORACION NO-CODIGO. Contrast tokens WCAG: el diagnostico de Gonzo (PR #4022, abierto) fue la base; PR #3677 de otro autor quedo CLOSED sin merge pero el trabajo influyo. El #4022 de Gonzo sigue open. |

@@ -40,19 +40,20 @@ case "$1" in
       echo ""
       echo "| Métrica | Valor |"
       echo "|---------|-------|"
-      echo "| PRs abiertos | $(sqlite3 "$DB" "SELECT count(*) FROM contributions WHERE status IN ('open','waiting_review');") |"
-      echo "| PRs mergeados | $(sqlite3 "$DB" "SELECT count(*) FROM contributions WHERE status='merged';") |"
-      echo "| PRs cerrados sin merge | $(sqlite3 "$DB" "SELECT count(*) FROM contributions WHERE status='closed';") |"
-      echo "| Repos con PRs | $(sqlite3 "$DB" "SELECT count(DISTINCT repo) FROM contributions;") |"
+      echo "| PRs abiertos | $(sqlite3 "$DB" "SELECT count(*) FROM contributions WHERE tipo='pr' AND status IN ('open','waiting_review');") |"
+      echo "| PRs mergeados | $(sqlite3 "$DB" "SELECT count(*) FROM contributions WHERE tipo='pr' AND status='merged';") |"
+      echo "| PRs cerrados sin merge | $(sqlite3 "$DB" "SELECT count(*) FROM contributions WHERE tipo='pr' AND status='closed';") |"
+      echo "| Colaboraciones no-codigo | $(sqlite3 "$DB" "SELECT count(*) FROM contributions WHERE tipo='collab';") |"
+      echo "| Repos con contribuciones | $(sqlite3 "$DB" "SELECT count(DISTINCT repo) FROM contributions;") |"
       echo ""
       echo "## PR Registry"
       echo ""
-      sqlite3 "$DB" "SELECT repo FROM contributions GROUP BY repo ORDER BY repo;" | while read -r repo; do
+      sqlite3 "$DB" "SELECT repo FROM contributions WHERE tipo='pr' GROUP BY repo ORDER BY repo;" | while read -r repo; do
         echo "### $repo"
         echo ""
         echo "| Eslabón | Link | Detalle |"
         echo "|---------|------|---------|"
-        sqlite3 "$DB" "SELECT issue, issue_url, pr, pr_url, status, detail, context FROM contributions WHERE repo='$repo' ORDER BY id;" | while IFS='|' read -r issue iurl pr purl status detail context; do
+        sqlite3 "$DB" "SELECT issue, issue_url, pr, pr_url, status, detail, context FROM contributions WHERE repo='$repo' AND tipo='pr' ORDER BY id;" | while IFS='|' read -r issue iurl pr purl status detail context; do
           if [ -n "$issue" ]; then
             echo "| **Issue** | [$issue]($iurl) | $detail |"
           else
@@ -64,6 +65,23 @@ case "$1" in
           fi
           echo ""
         done
+      done
+      echo "## Colaboraciones no-codigo"
+      echo ""
+      echo "> Contribuciones donde el aporte de Gonzo fue comentario, review, audit o diagnostico (no un PR con merge a su nombre). Impacto real via PRs de otros o conversaciones."
+      echo ""
+      echo "| Repo | Eslabón | Detalle |"
+      echo "|------|---------|---------|"
+      sqlite3 "$DB" "SELECT repo, issue, issue_url, pr, pr_url, detail, context FROM contributions WHERE tipo='collab' ORDER BY repo, id;" | while IFS='|' read -r repo issue iurl pr purl detail context; do
+        # armar link del eslabon (issue o pr)
+        if [ -n "$issue" ] && [ -n "$iurl" ]; then
+          eslabon="[$issue]($iurl)"
+        elif [ -n "$pr" ] && [ -n "$purl" ]; then
+          eslabon="[$pr]($purl)"
+        else
+          eslabon="-"
+        fi
+        echo "| $repo | $eslabon | $detail |"
       done
     } > docs/OSS-TRACKER.md
     echo "OSS-TRACKER.md regenerado desde la DB."

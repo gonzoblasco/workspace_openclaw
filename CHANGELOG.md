@@ -6,6 +6,15 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-24] - OSS-TRACKER: colaboraciones no-codigo
+
+### Added
+- **Tabla `contributions`: columna `tipo`** (`pr` default | `collab`) para distinguir PRs de colaboraciones no-codigo (comentarios, reviews, audits, diagnostico que llego a main via PR de otro).
+- **`scripts/memory-db.sh export-oss`:** seccion "Colaboraciones no-codigo" en el OSS-TRACKER, separada del PR Registry. Metricas del resumen separan PRs de colaboraciones.
+- **Retro-carga de 6 colaboraciones historicas:** astryx #3797/#5107/#4157/#5034/#3677 (diagnostico de Gonzo que llego a main via PR de otro) + hermes-agent #38072 (re-audit comentado).
+
+---
+
 ## [2026-08-24] - Colaboración OSS: NO es abrir PRs
 
 ### Added
