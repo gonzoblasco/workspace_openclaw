@@ -8,7 +8,7 @@
 | Métrica | Valor |
 |---------|-------|
 | PRs abiertos | 17 |
-| PRs mergeados | 4 |
+| PRs mergeados | 5 |
 | PRs cerrados sin merge | 18 |
 | Colaboraciones no-codigo | 6 |
 | Repos con contribuciones | 19 |
@@ -96,6 +96,10 @@
 | **Issue** | [#4912](https://github.com/facebook/astryx/issues/4912) | MERGED 24/08. build-storybook fallaba con no merge base en PRs viejos (fetch-depth 50). Fix: two-dot diff fallback en analyze-pr.js. Resuelve #4912. Merge commit 152e956. |
 | **Nuestro PR** | [#4914](https://github.com/facebook/astryx/pull/4914) | **merged** |
 | **Contexto** | - | Abierto 11 Ago. Aprobado por cixzhang 24/08 (los 5 findings del review del 12/08 fueron addressados). FOLLOW-UP sugerido por cixzhang: --deepen=200 solo cubre ~250 commits atras, y 55 de 122 PRs stale estan mas atras - valdria un segundo deepen. |
+
+| **Issue** | [#5049](https://github.com/facebook/astryx/issues/5049) | MERGED 24/08. HoverCard con label expone rich card como dialog popup (no como descripcion). Trigger ahora usa aria-haspopup=dialog + aria-controls (gateado en open state, como DateInput) + aria-expanded sincronizado. useHoverCard expone id e isOpen; describedBy queda como alias deprecado. Sin label mantiene aria-describedby (role=group). Merge commit f4d494c. 38 tests pass, a11y audit sin violaciones. |
+| **Nuestro PR** | [#5419](https://github.com/facebook/astryx/pull/5419) | **merged** |
+| **Contexto** | - | Abierto 24/08. Review de cixzhang con 3 comentarios, todos addressados: label en el hook template, merge (no overwrite) de atributos popup existentes del trigger, y gating de aria-controls en open state. Re-review y merge el mismo dia. Commits 52262da7 + c1603cad. |
 
 ### facebook/docusaurus
 
