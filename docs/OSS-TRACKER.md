@@ -7,8 +7,8 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 16 |
-| PRs mergeados | 3 |
+| PRs abiertos | 15 |
+| PRs mergeados | 4 |
 | PRs cerrados sin merge | 18 |
 | Repos con PRs | 18 |
 
@@ -111,8 +111,9 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | - | [combobox] Remove invalid aria-orientation from grid role. Agosto. |
-| **Nuestro PR** | [#5551]() | **open** |
+| **Issue** | [#5548](https://github.com/mui/base-ui/issues/5548) | MERGED 24/08. [combobox][menu][select] Move aria-orientation to the role owners. Grid Combobox/Autocomplete emitian aria-orientation=horizontal pero el role grid no lo soporta. Fix: mover aria-orientation a los role owners, omitirlo en grid/presentation, preservando navegacion. 7 archivos +69 -4 con tests de regresion. Aprobado por atomiks. Resuelve #5548. |
+| **Nuestro PR** | [#5551]() | **merged** |
+| **Contexto** | - | El Codex bot (20/08) senalo P1: omitir orientation rompia la navegacion horizontal del grid. Gonzo lo addresso separando la orientacion de navegacion del atributo ARIA (strip aria-orientation de listProps en grid). Buen ejemplo de atender feedback de bot con solucion correcta. |
 
 ### mui/material-ui
 
