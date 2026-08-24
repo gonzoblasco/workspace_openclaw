@@ -6,6 +6,14 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Spike ForgeCode: probado y descartado
+
+### Changed
+- **MEMORY.md:** nueva lección en "Lecciones clave del pipeline" - los harnesses de terminal tipo Claude Code (ForgeCode y similares) NO son orquestables por agente (requieren TTY interactivo para su setup inicial, fallan con `Device not configured` en headless). Regla: verificar orquestabilidad sin TTY antes de evaluar un CLI de terminal.
+- **memory/2026-08-23.md:** registro del spike completo (qué se probó, causa raíz verificada, conclusión para no repetir).
+
+---
+
 ## [2026-08-23] - ADR-038: Learnings con mirror en DB
 
 ### Added

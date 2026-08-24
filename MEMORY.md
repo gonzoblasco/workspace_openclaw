@@ -41,6 +41,7 @@ La forma de programar: pipeline en cadena A/B con **Qwen Code vía Ollama** como
 **Lecciones clave del pipeline:**
 - **SIGKILL:** los procesos de Qwen mueren en tareas largas (~3 min) - usar prompts cortos para revisiones; si un agente muere, el orquestador verifica/commitea y relanza con prompt corto.
 - **Cross-review no es infalible (2026-08-21):** el Agente B puede INTRODUCIR bugs al "corregir" código correcto basándose en suposiciones falsas. El orquestador debe verificar contra la fuente real (doc/spec de la API) antes de aceptar un fix de un agente. No confiar en el veredicto del agente, verificar con evidencia.
+- **Harnesses de terminal NO son orquestables por agente (2026-08-23):** ForgeCode probado y descartado. Los harnesses tipo Claude Code (ForgeCode, y por extensión la mayoría de los CLIs de terminal) requieren TTY interactivo real para su setup inicial - fallan con `Device not configured (os error 6)` en entornos headless (keyring de macOS inaccesible, fallback a archivo roto en la migración de credenciales). Nuestro pipeline A/B depende de que Kanam orqueste los agentes desde el agente; solo sirven herramientas orquestables (Qwen Code via `ollama launch qwen`, Claude Code via ANTHROPIC_BASE_URL). **Regla: antes de evaluar un CLI de terminal, verificar si puede configurarse/ejecutarse sin TTY interactivo.** Detalle en daily 2026-08-23.
 
 ## Arquitectura de Agentes - Goal-Oriented
 
