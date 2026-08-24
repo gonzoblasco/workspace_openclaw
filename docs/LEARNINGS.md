@@ -679,3 +679,20 @@ Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nue
 - Formato nivel de bootcamp (teoría + práctica + LinkedIn + self-review) es un template de skill reusable.
 - Los proyectos resueltos son el "contrato" del curso - demuestran que el nivel es posible, no son la respuesta.
 - Falta un mecanismo de verificación automática al final de cada nivel (tests contra el proyecto del alumno).
+
+## 2026-08-23 - Cambiar a role="presentation" puede crear un trade-off de violaciones ARIA (astryx #5344)
+
+**Context:** PR facebook/astryx #5344 (fix selector: render in-listbox dividers as presentation). El bug era real (divider con `role="separator"` dentro de un `listbox` = violación crítica axe `aria-required-children`). Mi fix cambiaba el divider a `role="presentation"`. El maintainer eligió el PR alternativo #5107 (aria-hidden) porque mi approach tenía un trade-off invisible.
+
+**La lección - al cambiar un role ARIA, verificar qué atributos ARIA escribe el componente por defecto:**
+- `Divider` siempre escribe `aria-orientation`. `role="presentation"` NO permite `aria-orientation`. Entonces axe cambiaba `aria-required-children` (crítica x1) por `aria-allowed-attr` (crítica x1) en el mismo elemento = **crítica x2**. Un role restrictivo puede crear un trade-off de violaciones, no resolver el problema.
+- El fix superior (#5107): `aria-hidden="true"` en el Divider. Mantiene el visual y el `role="separator"` en el DOM, pero lo saca del árbol de accesibilidad por completo. Sin nuevo API surface, sin trade-off.
+- Este tipo de detalle solo se ve en un axe run - no es obvio leyendo el código.
+
+**Regla práctica:** antes de cambiar un role ARIA a uno más restrictivo (presentation, none), revisar qué atributos ARIA escribe el componente por defecto. Si escribe atributos que el role nuevo no permite, el fix puede empeorar el conteo de violaciones. `aria-hidden` suele ser más limpio para elementos puramente visuales que no aportan info.
+
+**Self-reflection:**
+- CONTEXT: fix de a11y en astryx selector
+- REFLECTION: el diagnóstico del bug era correcto y el maintainer lo reconoció, pero mi approach de solución tenía un trade-off que solo un axe run revela. El cierre no fue un rechazo al trabajo - fue una decisión de diseño donde el approach alternativo resultó más limpio.
+- LESSON: al proponer fixes de a11y, validar el approach con un axe run real antes de abrir el PR, no solo el diagnóstico del bug. Y considerar `aria-hidden` como alternativa a cambiar roles restrictivos.
+- BIASES DETECTED: none (el maintainer explicó el trade-off con claridad; no hubo sesgo de mi parte, solo falta de validación con axe).

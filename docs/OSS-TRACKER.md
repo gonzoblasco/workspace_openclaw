@@ -7,9 +7,9 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 19 |
+| PRs abiertos | 18 |
 | PRs mergeados | 0 |
-| PRs cerrados sin merge | 17 |
+| PRs cerrados sin merge | 18 |
 | Repos con PRs | 17 |
 
 ## PR Registry
@@ -77,8 +77,8 @@
 | **Issue** | [#3654]() | WCAG 2.1 AA contrast failures en core color tokens. CHANGES_REQUESTED (ernestt), trabajado 22/08. Solo border-emphasized tras revert de disabled. |
 | **Nuestro PR** | [#4022]() | **open** |
 
-| **Issue** | [#4994]() | Selector in-listbox dividers como presentation. Bug a11y critico axe. MERGEABLE/BLOCKED, trabajado 22/08. |
-| **Nuestro PR** | [#5344]() | **open** |
+| **Issue** | [#4994]() | Cerrado 23/08 sin merge. Diagnostico correcto (bug a11y critico axe), pero eligieron PR #5107 con aria-hidden: presentation no permite aria-orientation que Divider siempre escribe, trade aria-required-children por aria-allowed-attr (critica x2). Maintainer invita a seguir contribuyendo. |
+| **Nuestro PR** | [#5344]() | **closed** |
 
 | **Issue** | - | CI: fall back a two-dot diff en analyze-pr cuando falta merge base. CHANGES_REQUESTED (cixzhang), findings addressados 12/08. |
 | **Nuestro PR** | [#4914]() | **open** |
