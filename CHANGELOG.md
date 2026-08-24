@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-23] - Learnings separados por categoría + mirror en DB
+
+### Added
+- **docs/learnings/:** lecciones separadas por categoría (a11y, oss, pipeline-agentes, infraestructura, proyectos, metodologia). LEARNINGS.md queda como portada-índice con links.
+- **Tabla `learnings` en memory/memory.db:** mirror de las lecciones con categoría + tags para consulta veloz al arrancar una tarea. Fuente de verdad: la DB.
+- **scripts/migrate-learnings.py:** migra docs/LEARNINGS.md a la tabla learnings (clasifica por categoría, separa sub-lecciones).
+
+### Changed
+- **scripts/memory-db.sh:** nuevos comandos `learnings [categoria]` (consulta rápida), `add-learning` (agregar lección), `export-learnings` (regenera docs/learnings/ desde la DB). `stats` ahora incluye el conteo de learnings.
+- **docs/LEARNINGS.md:** de archivo monolítico (681 líneas, 40+ lecciones) a portada-índice con links a las categorías.
+
+---
+
 ## [2026-08-23] - Limpieza de projects/: HANDOFF obsoleto eliminado, PROYECTOS.md alineado
 
 ### Removed

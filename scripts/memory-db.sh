@@ -10,6 +10,9 @@
 #   ./scripts/memory-db.sh contributions [estado]  - lista contribuciones OSS (opcional filtro por estado)
 #   ./scripts/memory-db.sh add-todo "texto" [proyecto] - agrega un todo
 #   ./scripts/memory-db.sh add-inbox "idea"       - agrega una idea al inbox
+#   ./scripts/memory-db.sh learnings [categoria]  - lista lecciones (opcional filtro por categoria)
+#   ./scripts/memory-db.sh add-learning <cat> "<titulo>" "<contenido>" [tags] - agrega una leccion
+#   ./scripts/memory-db.sh export-learnings       - regenera docs/learnings/ desde la DB
 
 DB="memory/memory.db"
 
@@ -114,6 +117,8 @@ case "$1" in
     sqlite3 "$DB" "SELECT status, count(*) FROM inbox GROUP BY status;"
     echo "=== Contribuciones ==="
     sqlite3 "$DB" "SELECT status, count(*) FROM contributions GROUP BY status;"
+    echo "=== Learnings ==="
+    sqlite3 "$DB" "SELECT category, count(*) FROM learnings GROUP BY category;"
     ;;
   todos)
     sqlite3 -header -column "$DB" "SELECT id, status, priority, project, text FROM todos ORDER BY status, priority DESC;"
@@ -135,7 +140,74 @@ case "$1" in
     sqlite3 "$DB" "INSERT INTO inbox (idea) VALUES ('$idea');"
     echo "Idea agregada al inbox."
     ;;
+  learnings)
+    cat_filter="${2:-%}"
+    sqlite3 -header -column "$DB" "SELECT id, category, substr(title,1,60) AS title, substr(tags,1,40) AS tags FROM learnings WHERE category LIKE '$cat_filter' ORDER BY category, id;"
+    ;;
+  add-learning)
+    cat="$2"; title="$3"; content="$4"; tags="${5:-}"
+    sqlite3 "$DB" "INSERT INTO learnings (category, title, content, tags) VALUES ('$cat', '$title', '$content', '$tags');"
+    echo "Leccion agregada (categoria: $cat)."
+    ;;
+  export-learnings)
+    # Regenera docs/learnings/ desde la DB (tabla learnings)
+    mkdir -p docs/learnings
+    # README indice
+    {
+      echo "# Learnings por categoria"
+      echo ""
+      echo "> Generado desde memory/memory.db (tabla learnings). Fuente de verdad: la DB."
+      echo "> Regenerar con: ./scripts/memory-db.sh export-learnings"
+      echo ""
+      echo "## Como consultar"
+      echo ""
+      echo "Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde la DB:"
+      echo ""
+      echo "\`\`\`bash"
+      echo "./scripts/memory-db.sh learnings <categoria>"
+      echo "\`\`\`"
+      echo ""
+      echo "## Categorias"
+      echo ""
+      sqlite3 "$DB" "SELECT category, count(*) FROM learnings GROUP BY category ORDER BY category;" | while IFS='|' read -r cat n; do
+        echo "- **[$cat](docs/learnings/$cat.md)** - $n lecciones"
+      done
+      echo ""
+      echo "## Total"
+      echo ""
+      echo "$(sqlite3 "$DB" "SELECT count(*) FROM learnings;") lecciones en total."
+    } > docs/learnings/README.md
+    # Un archivo por categoria. Iterar por id para manejar contenido multilinea
+    # sin romper el parseo (cada campo se lee por separado).
+    sqlite3 "$DB" "SELECT DISTINCT category FROM learnings ORDER BY category;" | while read -r cat; do
+      out="docs/learnings/$cat.md"
+      {
+        echo "# Learnings - $cat"
+        echo ""
+        echo "> Generado desde memory/memory.db (tabla learnings). Fuente de verdad: la DB."
+        echo ""
+      } > "$out"
+      sqlite3 "$DB" "SELECT id FROM learnings WHERE category='$cat' ORDER BY id;" | while read -r id; do
+        title=$(sqlite3 "$DB" "SELECT title FROM learnings WHERE id=$id;")
+        content=$(sqlite3 "$DB" "SELECT content FROM learnings WHERE id=$id;")
+        tags=$(sqlite3 "$DB" "SELECT tags FROM learnings WHERE id=$id;")
+        {
+          echo "## $title"
+          echo ""
+          echo "$content"
+          echo ""
+          if [ -n "$tags" ]; then
+            echo "**Tags:** $tags"
+            echo ""
+          fi
+          echo "---"
+          echo ""
+        } >> "$out"
+      done
+    done
+    echo "docs/learnings/ regenerado desde la DB."
+    ;;
   *)
-    echo "Uso: $0 {export-daily|export-all|export-oss|export-todos|export-inbox|stats|todos|inbox|contributions|add-todo|add-inbox}"
+    echo "Uso: $0 {export-daily|export-all|export-oss|export-todos|export-inbox|stats|todos|inbox|contributions|add-todo|add-inbox|learnings|add-learning|export-learnings}"
     ;;
 esac

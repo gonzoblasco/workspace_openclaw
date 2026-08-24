@@ -1,0 +1,90 @@
+# Learnings - pipeline-agentes
+
+> Generado desde memory/memory.db (tabla learnings). Fuente de verdad: la DB.
+
+## 2026-08-12 - soporteml-v3: modelo cloud de IA en loops + decisión Storybook
+
+**Context:** Sesión de integración MeLi + port de diseño en soporteml-v3. El sync mock llamaba a la IA real (modelo cloud) por cada pregunta, y el frontend lo veía como "paso eterno".
+
+**Lesson - un loop que llama a IA con modelo cloud puede tardar decenas de segundos sin feedback:**
+- El sync mock hacía 5 preguntas × 2 llamadas a Ollama (categorizar + sugerir) en serie. Con modelo cloud (`deepseek-v4-flash:cloud`), cada llamada ~4s → ~40s total. El frontend lo mostraba como colgado (HTTP 000, timeout).
+- **Fix:** en modo mock/dev, usar un fallback determinístico (categorización por keywords, respuestas plantilla) en vez de la IA real. La IA real queda solo para el flujo real (token conectado). El sync pasó de ~40s a ~6ms.
+- Regla generalizable: si un loop llama a IA, (1) usar fallback determinístico cuando el objetivo es dev/mock/demo, (2) considerar concurrencia o timeout por llamada, (3) medir el tiempo total antes de asumir que "funciona".
+
+**Lesson - Storybook no aporta para equipo de 1 dev:**
+- Evalué agregar Storybook para documentar el design system. Decisión: no vale la pena. Storybook brilla con varios devs + diseñador (catálogo compartido); con un solo dev que además escribe los componentes, el costo de mantenimiento (stories, providers, config) supera el beneficio.
+- **Alternativa elegida:** un "playground" de componentes (`src/pages/Playground.tsx`, solo en dev con `import.meta.env.DEV`) que lista los componentes con variantes. Cubre ~80% del valor de Storybook sin infraestructura.
+- Regla: Storybook (o catálogo visual) se agrega cuando el diseño necesita ser revisado por otro humano (diseñador, cliente) o el equipo crece. Para 1 dev, el playground es suficiente.
+
+**Self-reflection:**
+- CONTEXT: integración + diseño en proyecto propio
+- REFLECTION: el bug del sync "eterno" fue un buen catch - no asumí que era un cuelgue de red, investigué y encontré que era la IA cloud en serie. El port de diseño de v1 fue eficiente (extraer código real de v1 en vez de reimplementar desde las guías).
+- LESSON: en proyectos con IA, el fallback determinístico para dev/mock no es opcional - es la diferencia entre una app usable y una que parece colgada. Y para decisiones de infra (como Storybook), pensar en el tamaño del equipo antes de agregar.
+- BIASES DETECTED: none (el diagnóstico del sync fue sistemático, no asumí).
+
+**Tags:** soporteml-v3: modelo cloud de IA en loops + decisión Storybook
+
+---
+
+## 2026-08-14 - Cross-review multi-ronda con agentes paralelos atrapa bugs reales
+
+**Context:** Desarrollo del backlog B1-B7 de kanam-story con pipeline multi-agente: orquestador (Kanam) divide en items, agentes A (VS Code) y B (ZCode) desarrollan en paralelo y se revisan mutuamente (cross-review multi-ronda).
+
+**Resultado:** el cross-review atrapo **8 bugs reales** que los autores no vieron en self-review:
+- Orden de sync (U5): sincronizaba la biblia vieja antes de regenerar.
+- vfs_fonts (B3): PDF crasheaba por asumir shape `{pdfMake:{vfs}}` cuando es mapa plano.
+- Race condition (B4): updateScene sin await + read-modify-write concurrente perdia cambios.
+- Anti-flash anulado (B5): el effect de tema corria con default 'dark' antes de cargar settings, pisando el tema persistido.
+- 2 bugs de streaming (B7): cierre de dialogo caia al final del doc; chunk con solo whitespace no reemplazaba seleccion.
+- CI: jsdom 30 + Node 20 rompia (markAsUncloneable ausente) - el CI usaba Node 20 pero el proyecto corre en Node 22.
+
+**Leccion:** el self-review del autor falla sistematicamente porque el autor asume que su codigo es correcto. Un revisor con ojos frescos detecta los supuestos rotos. El cross-review multi-ronda (cada agente revisa al otro + rondas de correccion) es mas fuerte que una sola pasada. Formalizado en la skill `agent-orchestration-pipeline`. Valor: el codigo mergeado a main pasa por 2+ rondas antes de publicarse.
+
+**Advertencia:** discrepancia de versiones dev/CI (Node 20 vs 22) es fuente clasica de "pasa local, falla en CI". Alinear con `.nvmrc` + CI.
+
+**Tags:** Cross-review multi-ronda con agentes paralelos atrapa bugs reales
+
+---
+
+## 2026-08-21 - El cross-review puede INTRODUCIR bugs, no solo atraparlos
+
+**Context:** SoporteML V4 U7 (métricas de visitas de MeLi). El Agente A implementó `getItemVisits` parseando la respuesta como objeto plano `{ total_visits }` (correcto según la doc oficial). El Agente B, en su cross-review, "corrigió" el parseo asumiendo que la API devuelve un array `[{ id, total_visits }]` - sin verificar la doc real. El fix de B habría roto las visitas en producción (siempre 0).
+
+**Resultado:** el orquestador (Kanam) verificó contra la doc oficial de MeLi (objeto plano, confirmado) y revirtió el parseo de B (commit `99a010e`), conservando la mejora válida de B (try/catch aislado). Luego hizo el parseo **defensivo** (`extractVisits`) que tolera objeto, array y mapa - 11 tests unitarios.
+
+**Leccion:** el cross-review NO es infalible. Un revisor puede **introducir** una regresión basándose en una suposición falsa sobre el formato de una API externa, en vez de verificar. El orquestador debe:
+1. **Verificar contra la fuente real** (doc de la API, spec, o probar el endpoint) antes de aceptar un fix de un agente - no confiar en el veredicto del revisor.
+2. Distinguir las mejoras válidas del fix de un agente (puede mezclar lo bueno con lo roto) - conservar lo válido, revertir lo incorrecto.
+3. Cuando no se pueda validar empíricamente (sin token/datos reales), hacer el código **defensivo** para los formatos posibles y cubrirlo con tests.
+
+**Biases detectados:** anchoring del revisor (asumió el array por un patrón visto antes sin confirmar) + confirmation del autor (no defendió su parseo correcto porque el revisor "tenía razón").
+
+**Tags:** El cross-review puede INTRODUCIR bugs, no solo atraparlos
+
+---
+
+## 2026-08-21 - Delegar a Qwen Code SIEMPRE, incluso en demos (buenas prácticas como prácticas)
+
+**Context:** SoporteML V4. Hice yo mismo la edición de código (timeout en MeliClient, refactor del sync, etc.) en lugar de delegar a Qwen Code. Gonzo me señaló: "por qué estás editando tú en lugar de usar Qwen Code?" y luego "las buenas prácticas deben ser siempre prácticas".
+
+**La lección - la costumbre de delegar se construye delegando siempre:**
+- El patrón correcto es: Kanam (orquestador) redacta las tareas, Qwen Code es el agente implementador, y yo verifico contra la fuente real. No edito el código yo mismo.
+- **No hay atajo válido.** Aunque la tarea sea "chica" o "solo una demo", se delega. Delegar solo en tareas grandes NO construye la costumbre - la construye delegar en todas.
+- Cuando ofrecí "hacerlo yo rápido (3 líneas)", Gonzo lo corrigió: la buena práctica es práctica siempre, no solo cuando conviene.
+
+**Refinamiento del pipeline A/B con delegación real (hoy, válido):**
+- Agente A (deepseek-v4-flash): modificó `dev/setup` para reusar la empresa con token.
+- Cross-review Agente B (deepseek-v4-flash): detectó que `LIMIT 1` arbitrario devolvía la cuenta propia vacía; lo corrigió ordenando por datos sincronizados.
+- El orquestador (yo) verifiqué contra la DB real (lección U7 aplicada): el conteo de Agente B reportó 1150 productos pero el real es 23 - el resultado era correcto pero el reporte tenía un error numérico. Verificar con evidencia, no confiar en el texto del agente.
+- Luego Agente A de nuevo: fix de membership activa (el primer fix devolvía userId null y el authMiddleware rechazaba 403).
+
+**Self-reflection:**
+- CONTEXT: edición de código en SoporteML V4 + delegación a Qwen
+- REFLECTION: mi instinto de "resolver rápido yo" es fuerte, pero rompe el patrón delegado y el rol de orquestador. Gonzo tiene razón: la disciplina se mantiene siempre.
+- LESSON: delegar a Qwen Code SIEMPRE (features, demos, fixes chicos). Kanam redacta la tarea, encadena A/B, verifica contra la fuente real. Nunca editar el código directamente salvo orquestación de infra/tests.
+- BIASES DETECTED: effort-optimization (opté por hacerlo yo porque "era más rápido" - subestimé el costo de no construir la costumbre).
+
+**Tags:** Delegar a Qwen Code SIEMPRE, incluso en demos (buenas prácticas como prácticas)
+
+---
+
