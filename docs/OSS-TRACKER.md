@@ -82,7 +82,7 @@
 
 | **Issue** | [#4912](https://github.com/facebook/astryx/issues/4912) | MERGED 24/08. build-storybook fallaba con no merge base en PRs viejos (fetch-depth 50). Fix: two-dot diff fallback en analyze-pr.js. Resuelve #4912. Merge commit 152e956. |
 | **Nuestro PR** | [#4914](https://github.com/facebook/astryx/pull/4914) | **merged** |
-| **Contexto** | - | Abierto 11 Ago. Segunda contribucion mergeada en astryx (junto a #4605). |
+| **Contexto** | - | Abierto 11 Ago. Aprobado por cixzhang 24/08 (los 5 findings del review del 12/08 fueron addressados). FOLLOW-UP sugerido por cixzhang: --deepen=200 solo cubre ~250 commits atras, y 55 de 122 PRs stale estan mas atras - valdria un segundo deepen. |
 
 ### google/skills
 
