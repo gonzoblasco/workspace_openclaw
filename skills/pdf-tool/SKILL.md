@@ -6,13 +6,14 @@ metadata:
     - pdf
     - ocr
     - documentos
-description: "Manejo local de PDFs y OCR: extraer texto, metadata, buscar en documentos, y OCR de PDFs escaneados o imagenes. Usa poppler (pdftotext/pdfinfo/pdftoppm) + tesseract, 100% local sin servicios cloud. Portado de la familia PDF/OCR de ClawHub."
+    - markdown
+description: "Manejo local de PDFs: leer (extraer texto, metadata, OCR) y generar (exportar markdown a PDF). Usa poppler + tesseract para lectura y md-to-pdf para exportar MD. 100% local sin servicios cloud. Portado de la familia PDF/OCR de ClawHub."
 user-invocable: false
 ---
 
 # PDF Tool
 
-Procesar PDFs localmente: extraer texto, metadata, OCR de documentos escaneados, y convertir a imagenes. Portado del concepto de la familia PDF/OCR (ClawHub: media + tools). 100% local, sin mandar documentos a la nube.
+Procesar PDFs localmente: extraer texto, OCR de documentos escaneados, y **exportar markdown a PDF**. Portado del concepto de la familia PDF/OCR (ClawHub: media + tools). 100% local, sin mandar documentos a la nube.
 
 ## Cuando usar
 
@@ -20,42 +21,56 @@ Procesar PDFs localmente: extraer texto, metadata, OCR de documentos escaneados,
 - OCR de documentos escaneados (sin texto nativo) o imagenes con texto.
 - Obtener metadata de un PDF (paginas, tamaño).
 - Buscar un termino dentro de un PDF.
-- Convertir paginas de PDF a imagenes (para QA visual, revisar).
+- **Exportar los MDs que generamos (dailies, HANDOFF, README) a PDF.**
 
 ## Como usarlo
 
 ```bash
 ./scripts/pdf-tool.sh check                    # verificar herramientas instaladas
 ./scripts/pdf-tool.sh info <pdf>               # metadata (paginas, tam, titulo)
-./scripts/pdf-tool.sh text <pdf>               # extraer todo el texto
-./scripts/pdf-tool.sh pages <pdf> <n>          # texto de la pagina N
-./scripts/pdf-tool.sh search <pdf> <termino>   # buscar un termino
-./scripts/pdf-tool.sh ocr <pdf>                # OCR de un PDF escaneado/sin texto
-./scripts/pdf-tool.sh pdfimages <pdf> [out]    # renderizar paginas a PNG
+./scripts/pdf-tool.sh text <pdf>                # extraer todo el texto
+./scripts/pdf-tool.sh pages <pdf> <n>           # texto de la pagina N
+./scripts/pdf-tool.sh search <pdf> <termino>    # buscar un termino
+./scripts/pdf-tool.sh ocr <pdf>                 # OCR de un PDF escaneado
+./scripts/pdf-tool.sh pdfimages <pdf> [out]     # renderizar paginas a PNG
+./scripts/pdf-tool.sh md2pdf <md> [out.pdf]     # EXPORTAR markdown a PDF
 ```
 
 ## Interpretar resultados
 
-- **`text`**: texto plano extraido (mejor para PDFs con texto nativo - son la mayoria de los digitales).
-- **`ocr`**: para PDFs escaneados (imagenes, sin texto). Tesseract reconoce el texto de las imagenes. Mas lento y menos exacto que text, pero funciona donde text no da nada.
-- **`info`**: cuantas paginas, tamano, titulo. Util para entender el documento antes de leerlo.
-- **`search`**: ubica un termino en el texto (grep). Util para encontrar una seccion especifica.
+- **`text`**: texto plano extraido (mejor para PDFs con texto nativo).
+- **`ocr`**: para PDFs escaneados (imagenes). Tesseract reconoce el texto. Mas lento, menos exacto.
+- **`md2pdf`**: convierte un archivo .md a .pdf (mismo nombre por default, o especifica el output). Bueno para tablas, code blocks y headers - usa md-to-pdf (Puppeteer/Chromium en el fondo).
+
+## Exportar MD a PDF (md2pdf)
+
+Para exportar los markdowns del workspace (daily, HANDOFF, README, docs) a PDF:
+
+```bash
+./scripts/pdf-tool.sh md2pdf memory/2026-08-24.md /tmp/daily.pdf
+./scripts/pdf-tool.sh md2pdf HANDOFF.md                 # -> HANDOFF.pdf (default)
+```
+
+- El output por default es el mismo nombre con .pdf.
+- Genera PDF con estilos decentes (headers, tablas, code blocks resaltados).
+- Usa npx md-to-pdf (descarga Puppeteer la primera vez, luego cacheado).
 
 ## Requisitos
 
-- **poppler**: `brew install poppler` (pdftotext, pdfinfo, pdftoppm).
-- **tesseract**: `brew install tesseract` (OCR). Para mejor OCR en espanol: `brew install tesseract-lang`.
+- **poppler**: `brew install poppler` (pdftotext, pdfinfo, pdftoppm) - lectura.
+- **tesseract**: `brew install tesseract` (OCR).
+- **node/npx**: para md2pdf (npm). Puppeteer se descarga la primera vez.
 
 ## Reglas
 
-- **100% local** - los documentos nunca se envian a servicios externos. Respetamos la privacidad de specs, recibos y documentos sensibles.
-- Para documentos grandes, extraer texto y leerlo por partes (pages) en vez de cargar todo.
-- Para PDFs escaneados, usar `ocr` (tesseract) - es lo que da texto donde no lo hay.
+- **100% local** - los documentos nunca se envian a servicios externos.
+- Para documentos grandes, extraer texto y leer por partes (pages).
+- Para PDFs escaneados, usar `ocr`.
 
 ## Limites
 
-- El OCR de tesseract no es perfecto: calidad depende de la resolucion y claridad del escaneado. Textos manchados o fuentes raras pueden dar errores.
-- No hace analisis semantico - solo extrae texto/OCR. El agente interpreta.
+- El OCR no es perfecto (depende de la resolucion).
+- md2pdf requiere node/npx (descarga Chromium la primera vez, ~170MB).
 
 ## Related
 

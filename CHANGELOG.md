@@ -65,8 +65,8 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ## [2026-08-24] - pdf-tool.sh + skill: manejo local de PDFs y OCR
 
 ### Added
-- **scripts/pdf-tool.sh:** toolkit PDF/OCR local (check, info, text, pages, search, ocr via tesseract, pdfimages). 100% local, sin servicios cloud. Requiere poppler + tesseract (brew install poppler tesseract).
-- **skills/pdf-tool/SKILL.md:** documenta cuando/como usar pdf-tool.sh (leer specs, OCR de escaneados, metadata, buscar).
+- **scripts/pdf-tool.sh:** toolkit PDF/OCR local (check, info, text, pages, search, ocr via tesseract, pdfimages, **md2pdf**). 100% local, sin servicios cloud. Requiere poppler + tesseract (brew install poppler tesseract) para lectura, y node/npx (md-to-pdf) para generar PDF desde MD.
+- **skills/pdf-tool/SKILL.md:** documenta cuando/como usar pdf-tool.sh (leer specs, OCR de escaneados, metadata, buscar, **exportar MD a PDF**).
 
 ### Dependencies
 - **poppler** instalado via brew (pdftotext/pdfinfo/pdftoppm).
