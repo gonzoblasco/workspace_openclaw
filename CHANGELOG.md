@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-24] - Doble-git completo: .knowledge/ en workspace + carpeta forks/
+
+### Added
+- **Carpeta `forks/`** para repos de terceros (TanStack, shadcn, etc.): ignorada AL 100% en el workspace (no llevan `.knowledge/` porque no se modifica el `.gitignore` de proyectos ajenos). Memoria de sesion de contribucion va a `docs/` o `memory/`.
+- **AGENTS.md:** regla de forks actualizada - `projects/` = proyectos propios (trackea `.knowledge/`), `forks/` = repos ajenos (ignora todo).
+
+### Changed
+- **`.gitignore`:** patron global `!/projects/*/.knowledge/**` reemplaza el listado manual por proyecto. Ahora trackea `.knowledge/` de CUALQUIER proyecto automaticamente, sin listar cada uno.
+- **Trackeado en el workspace el `.knowledge/` de 6 proyectos** que estaban en disco pero no en el repo: a11y-fixer (2), create-stack (6), kanam-solitaires (6), quedamos (11), soporteml (1), ultimo-turno (3) = 29 archivos. Mecanismo: `git hash-object -w` + `git update-index --cacheinfo` (git add normal no funciona dentro de repos embebidos/worktrees).
+
+---
+
 ## [2026-08-24] - Fix memory-db.sh: quoting SQL en helpers de insert
 
 ### Fixed

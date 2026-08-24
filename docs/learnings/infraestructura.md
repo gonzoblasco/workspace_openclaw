@@ -242,3 +242,32 @@
 
 ---
 
+## Trackear archivos dentro de un repo git embebido: git add no funciona, usar hash-object + update-index
+
+**Context:** Al implementar el doble-git (trackear projects/*/.knowledge/ en el workspace privado), descubri que git NO permite trackear archivos individuales dentro de un directorio que es un repo git embebido (worktree o repo normal). Los proyectos en projects/ son todos repos (kanam-forge, a11y-fixer como worktrees, etc.), y git los trata como gitlinks/submodules.
+
+**Lesson - git add normal no trackea archivos dentro de un repo embebido:**
+- Si projects/<slug>/ tiene un .git (repo o worktree), `git add projects/<slug>/.knowledge/file.md` da exit 0 pero NO staggea nada. Git ve el directorio como una unidad (gitlink/submodule), no como archivos individuales.
+- `git add -A` ademas arrastra los directorios con repo como gitlinks (modo 160000), ensuciando el workspace con "advertencia: agregando repositorio de git embebido".
+- NO usar `git add -A` a ciegas en el workspace; usar paths explicitos.
+
+**Lesson - la solucion: hash-object -w + update-index --cacheinfo:**
+- `hash=$(git hash-object -w "file")` escribe el blob al object store (el -w es crucial; sin el, el commit falla con "invalid object").
+- `git update-index --add --cacheinfo 100644 "$hash" "file"` agrega la entrada al index sin pasar por el path-checking de git add.
+- Asi se trackea un archivo dentro de un repo embebido, con su contenido intacto.
+- Script util: iterar con `find "$dir" -type f` + hash-object -w + update-index.
+
+**Lesson - el orden importa (modelo correcto):**
+- La forma MAS limpia: trackear projects/<slug>/.knowledge/ en el workspace ANTES de clonar el repo del proyecto en esa carpeta. Una vez trackeado, git lo mantiene aunque despues exista el .git (lo confirmé con test).
+- Retroactivamente (cuando el repo ya esta clonado), usar hash-object -w + update-index.
+
+**Self-reflection:**
+- CONTEXT: implementacion de doble-git + carpeta forks/
+- REFLECTION: perdi tiempo probando git add -f y git add normal dentro de repos embebidos antes de encontrar el mecanismo correcto (update-index). El comportamiento de git con repos anidados es contraintuitivo.
+- LESSON: en repos con proyectos embebidos, verificar desde el inicio si son gitlinks (git ls-files -s muestra mode 160000) y usar update-index si es el caso.
+- BIASES DETECTED: anchoring (asumi que git add funcionaria porque "es lo normal" sin considerar el repo anidado).
+
+**Tags:** infraestructura: git repos embebidos, doble-git, update-index
+
+---
+
