@@ -18,9 +18,9 @@
 
 | Eslabón | Link | Detalle |
 |---------|------|---------|
-| **Issue** | [#38072](https://github.com/NousResearch/hermes-agent/issues/38072) | Issue OPEN de a11y del Desktop renderer (apps/desktop). Audit de andrea9292 (03/06): 6 findings - 1) pane cerrado aria-hidden con focusable, 2) resize separator sin aria-valuenow (CRITICO), 3) nested interactive en session rows, 4) contraste en texto secundario, 5) sin h1 top-level / titlebar fuera de landmarks, 6) hit targets < 24px. Gonzo comento 05/08 ofreciendose a trabajar (re-audit + PRs individuales), sin respuesta del maintainer. |
+| **Issue** | [#38072](https://github.com/NousResearch/hermes-agent/issues/38072) | Issue OPEN de a11y del Desktop renderer (apps/desktop). Audit de andrea9292 (03/06): 6 findings. Gonzo comento 05/08 ofreciendose a trabajar. RE-AUDIT publicado por Gonzo 24/08 contra main actual: #3 nested-interactive VIGENTE (reclamado por elchic00), #5 sin h1/landmarks VIGENTE, #4 contraste VIGENTE, #6 hit targets VIGENTE, #1 aria-hidden-focus MEJORADO (invisible+pointer-events-none), #2 resize separator RESUELTO (ya no es focusable). Comentario: issuecomment-5393570919. |
 | **Nuestro PR** | []() | **open** |
-| **Contexto** | - | Enfoque COLABORATIVO (no competitivo): elchic00 reclamo el finding #3 (24/08) y tiene PR en curso - NO abrir PR para eso. Valor de Gonzo: re-auditar contra main (componente movido a tree/renderer/) para comentar que findings siguen vivos, ofrecer review del PR de elchic00 (a11y es especialidad de Gonzo), y criticar con sustancia. Findings 1,2,4,5,6 disponibles para comentar/colaborar, no necesariamente para PR. |
+| **Contexto** | - | Colaborativo, no competitivo: elchic00 reclamo el finding #3 (24/08) y tiene PR en curso - NO abrir PR para eso. Gonzo aporto re-audit verificando que findings siguen vivos tras refactor a tree/renderer/. Ofrecio ayudar a revisar el fix del #3 o tomar el #5. |
 
 ### Nutlope/hallmark
 
