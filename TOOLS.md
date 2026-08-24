@@ -43,6 +43,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/safe-fetch.sh` | URL pre-flight check local antes de web_fetch: esquema https, typosquatting de dominios confiables, payload prompt injection. Exit: 0 ALLOW / 1 DENY / 2 CAUTION. Portado del concepto PreClick, 100% local |
 | `scripts/skill-router.py` | Sugiere que skill usar para una tarea (matching local keyword + embeddings Ollama nomic). Portado del concepto skill-ai-inject. Uso: `skill-router.py "<tarea>"` |
 | `scripts/pipeline-track.sh` | Estado durable del pipeline A/B: init/start/review/done/status/resume/note. Sobrevive a SIGKILL/restarts (crash recovery). Portado del concepto Pipeline Architect |
+| `scripts/pdf-tool.sh` | Toolkit PDF/OCR local: text, info, pages, search, ocr (tesseract), pdfimages. 100% local. Requiere poppler + tesseract (brew). Portado de la familia PDF/OCR de ClawHub |
 | `scripts/pre-commit.template` | Template de pre-commit hooks (lint → test → build) |
 | `scripts/test-skills.sh` | Verifica que las skills estén bien formadas |
 

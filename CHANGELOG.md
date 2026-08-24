@@ -62,6 +62,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Added
 - **MEMORY.md (regla de Gonzo):** colaborar en un repo ajeno NO es sinónimo de abrir PR. El valor suele estar en comentar, revisar, criticar con sustancia, o destrabar. Si otro contribuidor ya reclamó/tiene un finding o PR en curso, abrir otro PR para lo mismo es pisarle el trabajo, no colaborar. Antes de proponer "hacer un PR", preguntar si ya hay trabajo en curso y qué aporta Gonzo sin duplicar. (Nace de hermes-agent #38072.)
 - **AGENTS.md (nueva subsección "Colaboración OSS - NO es abrir PRs" en Git & Commits):** regla operativa de colaboración - no asumir PR, sumar sin pisar, y leer SIEMPRE el link completo (issue/PR) con todos los reviews/comentarios/estado antes de registrar o proponer acción.
+## [2026-08-24] - pdf-tool.sh + skill: manejo local de PDFs y OCR
+
+### Added
+- **scripts/pdf-tool.sh:** toolkit PDF/OCR local (check, info, text, pages, search, ocr via tesseract, pdfimages). 100% local, sin servicios cloud. Requiere poppler + tesseract (brew install poppler tesseract).
+- **skills/pdf-tool/SKILL.md:** documenta cuando/como usar pdf-tool.sh (leer specs, OCR de escaneados, metadata, buscar).
+
+### Dependencies
+- **poppler** instalado via brew (pdftotext/pdfinfo/pdftoppm).
+- **tesseract** ya estaba instalado (OCR).
+
+### Why
+- Util para specs, docs, recibos y documentos en PDF. Portado de la familia PDF/OCR de ClawHub (media+tools), como pidio Gonzo (interes en trabajar con PDF).
+
+---
+
 ## [2026-08-24] - Portes ClawHub: anti-repetition en DREAMS + flush pre-compactacion
 
 ### Changed
