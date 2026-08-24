@@ -12,7 +12,6 @@
 - [ ] **[]** (medium) Definir alcance de Fase 2 de SoporteML V4 (bandeja operativa: estado de preguntas, IA on-demand, publicar a MeLi, autopilot). Propuesta en artifact 9c009492-a0be-4815-af4b-1a2d8e602eca. Lunes.
 - [ ] **[]** (medium) Crear carpeta sandbox/ para pruebas temporales (plugins, experimentos aislados) - no commitear al repo
 - [ ] **[]** (medium) Analizar plugin github-workflow (chris-openclaw) en sandbox: estudiar approach de risk signals y agrupacion de PRs para optimizar pr-dashboard.sh y ritual de inicio
-- [ ] **[]** (medium) PORTAR (de ClawHub channels): flush de memoria antes de compactacion /new + limpiar metadata de conversacion al persistir (idea de Honcho)
 - [ ] **[]** (medium) PORTAR (de ClawHub models, ToggleLogic sin licencia): rutas de modelo por tipo de tarea + overrides sticky + audit de decision de modelo en pipeline A/B
 - [ ] **[]** (medium) OBSERVAR (de ClawHub models): memoria grafica / knowledge graph (Memory Graph, Graph Memory) - relaciones entre conceptos, futuro upgrade de QMD
 - [ ] **[]** (medium) PORTAR (de ClawHub context, Session Compact): estructurar la compactacion con resumen tipo Scope/Recent requests/Pending work/Key files/Timeline en lugar de resumen generico
@@ -29,6 +28,7 @@
 - [x] **[]** PORTAR (de ClawHub context) CANDIDATO FUERTE: compaction domain-aware con tiers 0-4 - skill que preserve arquitectura/ADRs/API contracts/seguridad al compactar sesiones de software (sesion-lifecycle + knowledge-management)
 - [x] **[]** PORTAR (de ClawHub models) CANDIDATO #1: skill-ai-inject - auto-match de tareas con las 59 skills (cascada keyword L1 gratis -> embedding L2, Ollama-only con bge-m3/nomic). Resolver el problema de saber cual skill aplicar por tarea. Ver skill-router propio
 - [x] **[]** PORTAR (de ClawHub channels): skill de URL pre-flight check local antes de web_fetch - esquema https + blocklist + typosquatting + payload injection (idea de PreClick, sin mandar URLs a terceros)
+- [x] **[]** PORTAR (de ClawHub channels): flush de memoria antes de compactacion /new + limpiar metadata de conversacion al persistir (idea de Honcho)
 - [x] **[]** PORTAR (de ClawHub channels): filtro de ruido en pipeline de memoria - no persistir HEARTBEAT_OK/cron/queued headers a memory.db/dailies (idea de Honcho Memory)
 - [x] **[]** Analisis ClawHub por secciones (con Gonzo): gateway y security analizadas, github-workflow portado a github-pr-risk.sh. Seccion 'other' = low yield (providers redundantes con Ollama, canales no usados). Pendientes: secciones restantes para portar ideas a plugins/skills propios
 - [x] **[oss]** Mejorar el OSS-TRACKER
