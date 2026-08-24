@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-24] - CV búsqueda laboral (Principal Full Stack)
+
+### Added
+- **`memory/tmp/CV_Gonzalo_Blasco_Principal_FullStack.pdf`** (+ `.md` fuente): CV reorientado al rol Principal Full Stack (Ritz-Carlton Yacht Collection). Título a Principal, perfil con ADRs y estándares de arquitectura, sección de skills Arquitectura & DevOps, Selected Projects = 3 sólidos (a11y-fixer, kanam-skills, create-stack). **SoporteML v4 sacado** (no está listo para portfolio, es privado).
+
+### Changed
+- **Open Source corregido con datos reales** (verificados con `gh`): 4 merges en MUI (material-ui #49003, base-ui #5551) + Facebook astryx (#4605, #4914), reviewer activo TanStack Query, 17+ PRs abiertos. El CV anterior decía merges en shadcn/ui, TanStack Router y Vercel AI SDK, pero NINGUNO de esos está mergeado - era información incorrecta.
+
+### Why
+- Búsqueda laboral activa: 2 procesos en paralelo (Ritz-Carlton Principal, EY Frontend Lead vía LTM). CV desactualizado y con datos falsos en Open Source; no se podía mandar así.
+
+---
+
 ## [2026-08-24] - Reglas operativas de feedback OSS en AGENTS.md
 
 ### Added
