@@ -1,0 +1,42 @@
+# LinkedIn Post - 3 merges OSS 2026-08-24 (draft)
+
+**Status:** draft para revision de Gonzo
+**Idioma:** ingles
+**Tono:** historia de dev, natural, no corporativo (mismo estilo que linkedin-astryx-4605.md)
+
+---
+
+## Post
+
+Three open-source merges in one day, and every one of them is about the same quiet thing: making UIs that respect the accessibility tree.
+
+**1. MUI Material UI - remove focusable links from hidden carousel slides** ([PR #49003](https://github.com/mui/material-ui/pull/49003))
+
+The templates carousel uses `react-swipeable-views`, which puts `aria-hidden="true"` on every slide except the active one. But the "Go to store" link inside each slide was still keyboard-focusable. So a keyboard user could tab into a slide that screen readers could not see - a WCAG 4.1.2 `aria-hidden-focus` violation, exactly the kind of mismatch that makes an interface feel broken for assistive tech.
+
+The fix is one prop: `tabIndex={-1}` on inactive slides. Keep the active slide fully keyboard accessible, drop the hidden ones out of the focus order.
+
+**2. MUI Base UI - move aria-orientation to the role owners** ([PR #5551](https://github.com/mui/base-ui/pull/5551))
+
+Grid comboboxes and autocompletes were emitting `aria-orientation="horizontal"` - but the `grid` role does not support that property. So the ARIA said something the role could not legally express. The navigation hook still needs horizontal orientation to move in two dimensions, so the fix moved the attribute to the components that own the final role, and stopped emitting it where it does not belong. With regression tests so the next person does not reintroduce it.
+
+**3. astryx (Facebook) - CI fix** ([PR #4914](https://github.com/facebook/astryx/pull/4914))
+
+The build-storybook job hard-failed with "no merge base" on PRs open long enough for main to move past the shallow clone's window. Fixed by recovering the merge base before degrading, with a visible caveat when the analysis is approximate. A fix aimed at the CI tooling, but it unblocks every stale PR in the repo.
+
+What I notice about all three: none of them is glamorous. They are a `tabIndex`, an `aria-orientation` move, and a git fetch. But that is what accessibility work mostly is - finding the places where the interface and the accessibility tree disagree, and making them agree.
+
+If you build UI, check your carousels for focusable content inside `aria-hidden`, and your grids for ARIA attributes the role does not support. Chances are one of them is quietly wrong.
+
+---
+
+## Notas para Gonzo
+
+- **Longitud:** ~330 palabras, mismo formato historia: gancho + 3 mini-historias + reflexion + CTA.
+- **Guion comun** en todo el texto (verificado, sin em dash).
+- **Enlaces a incluir:**
+  - material-ui PR: https://github.com/mui/material-ui/pull/49003
+  - base-ui PR: https://github.com/mui/base-ui/pull/5551
+  - astryx PR: https://github.com/facebook/astryx/pull/4914
+- **Opcional:** taggear a MUI / Facebook Open Source para mas alcance.
+- **Ajuste:** si lo queres mas corto, mas tecnico, o enfocado en un solo merge, decime y lo reescribo.
