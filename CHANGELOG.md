@@ -9,7 +9,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ## [2026-08-23] - Spike ForgeCode: probado y descartado
 
 ### Changed
-- **MEMORY.md:** nueva lección en "Lecciones clave del pipeline" - los harnesses de terminal tipo Claude Code (ForgeCode y similares) NO son orquestables por agente (requieren TTY interactivo para su setup inicial, fallan con `Device not configured` en headless). Regla: verificar orquestabilidad sin TTY antes de evaluar un CLI de terminal.
+- **MEMORY.md:** nueva lección en "Lecciones clave del pipeline" - los harnesses de terminal tipo Claude Code (ForgeCode y similares) NO son orquestables por agente (son TUI que necesitan TTY real en su uso normal, fallan con `Device not configured` en headless). Matiz: es límite del entorno del agente, no de la herramienta. Regla: verificar ejecución sin TTY en uso normal (no solo setup) antes de evaluar un CLI de terminal.
 - **memory/2026-08-23.md:** registro del spike completo (qué se probó, causa raíz verificada, conclusión para no repetir).
 
 ---
