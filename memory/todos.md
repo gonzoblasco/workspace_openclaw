@@ -11,6 +11,8 @@
 - [ ] **[a11y-fixer]** (medium) a11y-fixer: redefinir proyecto, agregar features
 - [ ] **[]** (medium) Definir alcance de Fase 2 de SoporteML V4 (bandeja operativa: estado de preguntas, IA on-demand, publicar a MeLi, autopilot). Propuesta en artifact 9c009492-a0be-4815-af4b-1a2d8e602eca. Lunes.
 - [ ] **[oss]** (medium) Mejorar el OSS-TRACKER
+- [ ] **[]** (medium) Crear carpeta sandbox/ para pruebas temporales (plugins, experimentos aislados) - no commitear al repo
+- [ ] **[]** (medium) Analizar plugin github-workflow (chris-openclaw) en sandbox: estudiar approach de risk signals y agrupacion de PRs para optimizar pr-dashboard.sh y ritual de inicio
 
 ## Completados
 

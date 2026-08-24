@@ -122,6 +122,22 @@ Orquestador implementa (opcional) → Agente A revisa/corrige → Agente B re-re
 
 ## Templates de prompt para agentes
 
+### Detector de riesgos en el cross-review
+
+Antes de pasar el codigo de un agente al siguiente para revision, el orquestador puede correr el detector de riesgo de PRs para darle al revisor senales de que mirar con lupa:
+
+```bash
+./scripts/github-pr-risk.sh <owner/repo> <pr-number>
+```
+
+Salida (markdown):
+- **Risk signals** detectados por paths del PR (schema/migraciones, auth, secrets/config, API publica, dependencias, PR grande) + hints del titulo (breaking, hotfix, refactor).
+- **Preguntas de review sugeridas** dirigidas por esos riesgos (adaptadas de la funcion `buildReviewQuestions` del plugin github-workflow de chris-openclaw, portada a gh CLI + jq).
+
+Si el cambio es local (sin PR), Kanam aplica las mismas heurisiscas manualmente sobre los paths del diff. El objetivo es darle al Agente B (revisor) las senales de riesgo antes de que revise, no confiar en que las descubra solo.
+
+La logica del detector esta portada del plugin (ver `sandbox/github-workflow/` para el analisis original). Uso bajo demanda, no en el batch del dashboard - el dashboard es una vista rapida; el risk es para el review puntual de un PR.
+
 Cada prompt de agente sigue esta estructura:
 
 ```

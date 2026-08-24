@@ -39,6 +39,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/init-project.sh` | Scaffold de proyecto con doble git: crea `projects/<slug>/.knowledge/` + repo en gh (privado por defecto) |
 | `scripts/oss-tracker.js` | Tracker de contribuciones OSS |
 | `scripts/pr-dashboard.sh` | Dashboard de PRs (para el batch check del ritual de inicio de sesión) |
+| `scripts/github-pr-risk.sh` | Detector de risk signals de un PR (schema/auth/deps/API/secrets) + preguntas de review. Uso bajo demanda en el cross-review del pipeline. Portado del plugin github-workflow. Solo lectura |
 | `scripts/pre-commit.template` | Template de pre-commit hooks (lint → test → build) |
 | `scripts/test-skills.sh` | Verifica que las skills estén bien formadas |
 

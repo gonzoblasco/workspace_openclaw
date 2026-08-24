@@ -62,6 +62,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Added
 - **MEMORY.md (regla de Gonzo):** colaborar en un repo ajeno NO es sinónimo de abrir PR. El valor suele estar en comentar, revisar, criticar con sustancia, o destrabar. Si otro contribuidor ya reclamó/tiene un finding o PR en curso, abrir otro PR para lo mismo es pisarle el trabajo, no colaborar. Antes de proponer "hacer un PR", preguntar si ya hay trabajo en curso y qué aporta Gonzo sin duplicar. (Nace de hermes-agent #38072.)
 - **AGENTS.md (nueva subsección "Colaboración OSS - NO es abrir PRs" en Git & Commits):** regla operativa de colaboración - no asumir PR, sumar sin pisar, y leer SIEMPRE el link completo (issue/PR) con todos los reviews/comentarios/estado antes de registrar o proponer acción.
+## [2026-08-24] - github-pr-risk.sh: detector de riesgos para cross-review
+
+### Added
+- **scripts/github-pr-risk.sh:** detector de risk signals de un PR (schema/migraciones, auth, secrets/config, API publica, dependencias, PR grande) + hints del titulo (breaking, hotfix, refactor) + preguntas de review sugeridas. Portado de las heurisiscas del plugin github-workflow de chris-openclaw (analizado en sandbox), adaptado a gh CLI + jq. Sin nuevas dependencias.
+- **sandbox/:** carpeta nueva para pruebas temporales y analisis aislado. NO se commitea (en .gitignore). Se uso para clonar y analizar el plugin github-workflow.
+
+### Changed
+- **skills/agent-orchestration-pipeline/SKILL.md:** nueva seccion "Detector de riesgos en el cross-review" - documenta el uso de github-pr-risk.sh para darle al agente revisor senales de riesgo antes de revisar (uso bajo demanda, no en el batch del dashboard).
+
+### Decision
+- NO instalar el plugin github-workflow. En cambio, portar las 3 ideas buenas (risk signals por path, agrupacion por estado, review-requested:@me) a nuestro stack propio. El dashboard actual (pr-dashboard.sh) ya es mejor que el plugin en clasificacion (usa reviewDecision real, no heuristica de comments), asi que no se toca.
 
 ---
 
