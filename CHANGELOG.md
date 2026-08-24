@@ -62,6 +62,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Added
 - **MEMORY.md (regla de Gonzo):** colaborar en un repo ajeno NO es sinónimo de abrir PR. El valor suele estar en comentar, revisar, criticar con sustancia, o destrabar. Si otro contribuidor ya reclamó/tiene un finding o PR en curso, abrir otro PR para lo mismo es pisarle el trabajo, no colaborar. Antes de proponer "hacer un PR", preguntar si ya hay trabajo en curso y qué aporta Gonzo sin duplicar. (Nace de hermes-agent #38072.)
 - **AGENTS.md (nueva subsección "Colaboración OSS - NO es abrir PRs" en Git & Commits):** regla operativa de colaboración - no asumir PR, sumar sin pisar, y leer SIEMPRE el link completo (issue/PR) con todos los reviews/comentarios/estado antes de registrar o proponer acción.
+## [2026-08-24] - compaction-domain-aware: tiers de prioridad al compactar
+
+### Added
+- **skills/compaction-domain-aware/SKILL.md:** compactacion de contexto con conciencia de dominio - tiers 0-4 de que preservar (Tier 0 = ADRs/arquitectura/API contracts/seguridad preservar completo; Tier 4 = chit-chat descartar). Dominios: software, a11y, oss, supabase. Complementa session-lifecycle (working buffer) y compaction-context (plugin). Portado del concepto DomainAwareCompaction (ClawHub).
+
+### Why
+- Al compactar, hoy se preserva por mensajes recientes + buffer; esta skill garantiza que los items criticos (ADRs, invariantes, criterios de aceptacion) esten textualmente preservados, no solo resumidos.
+
+---
+
 ## [2026-08-24] - pipeline-track.sh: estado durable + crash recovery del pipeline A/B
 
 ### Added
