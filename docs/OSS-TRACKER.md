@@ -7,7 +7,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 15 |
+| PRs abiertos | 16 |
 | PRs mergeados | 4 |
 | PRs cerrados sin merge | 18 |
 | Colaboraciones no-codigo | 6 |
@@ -51,6 +51,10 @@
 |---------|------|---------|
 | **Issue** | - | fix(react-aria): aria-posinset global across sections en listbox. Agosto. |
 | **Nuestro PR** | [#10487]() | **open** |
+
+| **Issue** | [#10220](https://github.com/adobe/react-spectrum/issues/10220) | fix(react-aria): only announce combobox section changes to VoiceOver |
+| **Nuestro PR** | [#10503](https://github.com/adobe/react-spectrum/pull/10503) | **open** |
+| **Contexto** | - | Gate del announcement effect a solo cambios de seccion. Maintainer LFDanLu dio luz verde 24/08. 218 + 41 tests pass. Comentado en issue. |
 
 ### carbon-design-system/carbon
 
