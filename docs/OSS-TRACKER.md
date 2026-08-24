@@ -7,8 +7,8 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 17 |
-| PRs mergeados | 1 |
+| PRs abiertos | 16 |
+| PRs mergeados | 2 |
 | PRs cerrados sin merge | 18 |
 | Repos con PRs | 17 |
 
@@ -80,8 +80,9 @@
 | **Issue** | [#4994]() | Cerrado 23/08 sin merge. Diagnostico correcto (bug a11y critico axe), pero eligieron PR #5107 con aria-hidden: presentation no permite aria-orientation que Divider siempre escribe, trade aria-required-children por aria-allowed-attr (critica x2). Maintainer invita a seguir contribuyendo. |
 | **Nuestro PR** | [#5344]() | **closed** |
 
-| **Issue** | - | CI: fall back a two-dot diff en analyze-pr cuando falta merge base. CHANGES_REQUESTED (cixzhang), findings addressados 12/08. |
-| **Nuestro PR** | [#4914]() | **open** |
+| **Issue** | [#4912](https://github.com/facebook/astryx/issues/4912) | MERGED 24/08. build-storybook fallaba con no merge base en PRs viejos (fetch-depth 50). Fix: two-dot diff fallback en analyze-pr.js. Resuelve #4912. Merge commit 152e956. |
+| **Nuestro PR** | [#4914](https://github.com/facebook/astryx/pull/4914) | **merged** |
+| **Contexto** | - | Abierto 11 Ago. Segunda contribucion mergeada en astryx (junto a #4605). |
 
 ### google/skills
 
