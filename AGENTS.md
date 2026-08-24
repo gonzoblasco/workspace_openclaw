@@ -277,7 +277,7 @@ projects/<slug>/
 **Sin submódulos.** GitHub es la fuente de la verdad. Los proyectos se clonan en `projects/<slug>/` bajo demanda (cuando se trabajan), no como submódulos del workspace. El workspace trackea solo `.knowledge/` (la memoria institucional); el código vive en su repo. Si una carpeta de `projects/` no tiene repo en GitHub, se elimina.
 
 **Excepciones:**
-- Forks externos (create-next-stack, TanStack/router, etc.) → sus docs de sesión (HANDOFF) van en `.knowledge/` del slug correspondiente. La carpeta `docs/` original del fork se ignora (es parte del código).
+- Forks de terceros (TanStack/router, shadcn/ui, etc.) → viven en `forks/<slug>/`, carpeta ignorada AL 100% en el workspace. No llevan `.knowledge/` (no se modifica el `.gitignore` de proyectos ajenos). El repo del fork vive por si solo; la memoria de la sesion de contribucion va a `docs/` o `memory/` del workspace. La distincion: `projects/` = proyectos propios (trackea `.knowledge/`), `forks/` = repos ajenos (ignora todo).
 - Skills de OpenClaw → viven en `skills/` con su propio SKILL.md
 - Proyectos sin documentación completa → los archivos faltantes se documentan en HANDOFF.md en `.knowledge/`
 

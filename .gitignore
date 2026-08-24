@@ -43,77 +43,31 @@ memory/2026-07-20-1750*.md
 memory/2026-07-23-1951.md
 
 # Proyectos — cada uno tiene su propio repo, se sincronizan por separado
-# Los submodules (declarados en .gitmodules) se trackean automaticamente.
-# Para proyectos sin submodule, solo trackeamos lo necesario.
+# En el workspace SOLO trackeamos .knowledge/ (memoria institucional: BRIEF, ROADMAP,
+# STATUS, ADRs, decisiones) para poder planificar y trabajar conceptualmente con todos
+# los proyectos sin clonar cada repo. El codigo/README/.env viven en el repo del proyecto.
+#
+# Doble-git: .knowledge/ viaja SOLO en el workspace (privado). En el repo de cada proyecto
+# (publico o privado) el .knowledge/ NO va - cada proyecto lo excluye con su propio .gitignore.
+# En cada maquina puede haber: solo .knowledge/, o .knowledge/ + el repo clonado en el mismo slug.
+# Al sincronizar entre maquinas, los .knowledge/ se COMBINAN (merge), no se pisan.
 
-# Ignorar todo projects/ por defecto
+# Ignorar TODO projects/ por defecto
 /projects/*
 
-# Pero NO ignorar los directorios en si (para poder trackear submodules y .knowledge)
+# Permitir el directorio raiz de cada proyecto (para poder negar contenido adentro)
 !/projects/*/
 
-# Ignorar contenido de proyectos NO-submodule (daily-ink, ensulugar, etc.)
-/projects/daily-ink/*
-/projects/ensulugar/*
-/projects/godot-journey/*
-/projects/kanam/*
-/projects/kanam-story/*
-/projects/learning-js-ds-algos/*
-/projects/remix-book/*
-/projects/soporteml-v2/*
-/projects/soporteml-v3/*
-/projects/soporteml-v4/*
-/projects/sportcars/*
-/projects/testing-react-library/*
-/projects/kanam-forge/*
-/projects/kanam-mind/*
+# Ignorar el CONTENIDO de cada proyecto (segundo nivel: codigo, README, etc.)
+/projects/*/*
 
-# kanam-skills: repo público independiente, vive entero en GitHub
-/projects/kanam-skills
+# Pero trackear SOLO .knowledge/ de cualquier proyecto (patron global, no listar por proyecto)
+!/projects/*/.knowledge/
+!/projects/*/.knowledge/**
 
-# Pero trackear .knowledge/ y README.md en esos proyectos
-!/projects/daily-ink/.knowledge/
-!/projects/daily-ink/.knowledge/**
-!/projects/daily-ink/README.md
-!/projects/ensulugar/.knowledge/
-!/projects/ensulugar/.knowledge/**
-!/projects/ensulugar/README.md
-!/projects/godot-journey/.knowledge/
-!/projects/godot-journey/.knowledge/**
-!/projects/godot-journey/README.md
-!/projects/kanam/.knowledge/
-!/projects/kanam/.knowledge/**
-!/projects/kanam/README.md
-!/projects/kanam-story/.knowledge/
-!/projects/kanam-story/.knowledge/**
-!/projects/kanam-story/README.md
-!/projects/learning-js-ds-algos/.knowledge/
-!/projects/learning-js-ds-algos/.knowledge/**
-!/projects/learning-js-ds-algos/README.md
-!/projects/remix-book/.knowledge/
-!/projects/remix-book/.knowledge/**
-!/projects/remix-book/README.md
-!/projects/soporteml-v2/.knowledge/
-!/projects/soporteml-v2/.knowledge/**
-!/projects/soporteml-v2/README.md
-!/projects/soporteml-v3/.knowledge/
-!/projects/soporteml-v3/.knowledge/**
-!/projects/soporteml-v3/README.md
-!/projects/sportcars/.knowledge/
-!/projects/sportcars/.knowledge/**
-!/projects/sportcars/README.md
-!/projects/testing-react-library/.knowledge/
-!/projects/testing-react-library/.knowledge/**
-!/projects/testing-react-library/README.md
-!/projects/kanam-forge/.knowledge/
-!/projects/kanam-forge/.knowledge/**
-!/projects/kanam-forge/README.md
-!/projects/kanam-mind/.knowledge/
-!/projects/kanam-mind/.knowledge/**
-!/projects/kanam-mind/README.md
-# .env* del proyecto viven en el repo del proyecto, no en el workspace
-/projects/kanam-forge/.env*
-/projects/kanam-mind/.env*
+# kanam-skills: repo publico independiente, vive entero en GitHub.
+# Su .knowledge/ se trackea igual que el de cualquier proyecto (patron global arriba).
+# El resto (codigo, web) no viaja en el workspace.
 
 # Antigua estructura products/ (migrada a projects/<slug>/docs/)
 products/
@@ -133,3 +87,18 @@ projects/cabala
 # Repo embebido - tiene su propio repo, no trackear
 umbrawriter-v2
 umbrawriter-v2/
+
+# Repos git embebidos: se trackea SOLO su .knowledge/ (ya en el index).
+# Ignorar el gitlink (el directorio) para que git status no los liste como untracked.
+/projects/kanam-forge
+/projects/kanam-mind
+/projects/kanam-skills
+/projects/kanam-story
+/projects/soporteml-v3
+
+# Forks de terceros: repos ajenos donde se contribuye (TanStack, shadcn, etc.)
+# Se ignoran AL 100% - no llevan .knowledge/ (no se modifica el .gitignore de proyectos ajenos).
+# El repo del fork vive por si solo; la memoria de la sesion va a docs/ o memory/.
+/forks/*
+/forks/*/
+/forks/*/**
