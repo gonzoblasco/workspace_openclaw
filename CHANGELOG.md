@@ -62,6 +62,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Added
 - **MEMORY.md (regla de Gonzo):** colaborar en un repo ajeno NO es sinónimo de abrir PR. El valor suele estar en comentar, revisar, criticar con sustancia, o destrabar. Si otro contribuidor ya reclamó/tiene un finding o PR en curso, abrir otro PR para lo mismo es pisarle el trabajo, no colaborar. Antes de proponer "hacer un PR", preguntar si ya hay trabajo en curso y qué aporta Gonzo sin duplicar. (Nace de hermes-agent #38072.)
 - **AGENTS.md (nueva subsección "Colaboración OSS - NO es abrir PRs" en Git & Commits):** regla operativa de colaboración - no asumir PR, sumar sin pisar, y leer SIEMPRE el link completo (issue/PR) con todos los reviews/comentarios/estado antes de registrar o proponer acción.
+## [2026-08-24] - Portadas de ClawHub: noise filtering + safe-fetch
+
+### Added
+- **scripts/safe-fetch.sh:** URL pre-flight security check 100% local (esquema https, blocklist, typosquatting con variantes conocidas + near-match, payload prompt injection en path/query). Portado del concepto del plugin PreClick (ClawHub) SIN mandar URLs a terceros. Exit codes: 0 ALLOW, 1 DENY, 2 CAUTION.
+- **skills/knowledge-management/SKILL.md:** seccion "Noise Filtering - Que No Persistir a la Memoria" - regla para no escribir HEARTBEAT_OK/cron/confirmaciones/ruido operativo en dailies/memoria (idea del plugin Honcho Memory de ClawHub).
+
+### Why
+- Ejercicio de analisis ClawHub (12 categorias): adoptar ideas de plugins de terceros a nuestro stack propio, sin instalar. Primera ronda de portage de candidatos rapidos.
+
+---
+
 ## [2026-08-24] - github-pr-risk.sh: detector de riesgos para cross-review
 
 ### Added

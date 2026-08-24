@@ -365,6 +365,26 @@ Los daily logs (`memory/YYYY-MM-DD.md`) son raw data. Periódicamente, consolida
 
 **Lección:** la memoria no se mantiene sola. La consolidación programada evita que MEMORY.md se llene de ruido o que insights valiosos se pierdan en daily logs olvidados.
 
+## Noise Filtering - Qué No Persistir a la Memoria
+
+Idea portada del plugin Honcho Memory (ClawHub): filtrar el ruido antes de que entre a la memoria, para que el sistema no se llene de basura operativa. En nuestro setup la captura es curada (Kanam escribe el daily conscientemente), pero hay patrones que NO deben persistir:
+
+**NO escribir en dailies / memoria:**
+- **HEARTBEAT_OK** - acknowledgments de heartbeat (ya tenemos HEARTBEAT.md para eso)
+- **Cron/reminder boilerplate** - "se disparo el cron X", "recordatorio activado" - solo si aporta algo nuevo, no el mero evento
+- **Queued message headers** - cabeceras de mensajes encolados
+- **Startup/session boilerplate** - el ritual de arranque en si (a menos que algo importante surja del ritual)
+- **Confirmaciones obvias** - "listo", "ok", "hecho" sin contexto que valga la pena
+- **Ruido de ejecución** - comandos que corrieron bien, build verde sin incidente, checks de rutina que pasaron
+
+**Si la idea aparece:**
+- ¿Es una decisión/preferencia/lección? → MEMORY.md o LEARNINGS.md
+- ¿Es progreso de una tarea? → todos/STATUS
+- ¿Es contexto de sesión? → el daily, pero solo la parte sustantiva
+- ¿Es solo ruido operativo? → NO persistir
+
+Esta regla mantiene la memoria curada y evita que se llene de ruido operativo que no aporta valor. El mismo principio aplica al DREAMS: al consolidar, descartar ruido (HEARTBEAT, cron, confirmaciones) que pueda haber entrado a los daily logs.
+
 ## Related Skills
 
 - [Engineering Governance](../engineering-governance): Para auditar la calidad del conocimiento
