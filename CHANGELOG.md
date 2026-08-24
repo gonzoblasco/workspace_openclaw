@@ -6,6 +6,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-24] - Fix memory-db.sh: quoting SQL en helpers de insert
+
+### Fixed
+- **`scripts/memory-db.sh`:** los helpers `add-todo`, `add-inbox` y `add-learning` interpolaban valores crudos en el SQL, rompiendose con comillas simples o contenido multilinea (fallo real al insertar una leccion).
+- **`sql_escape()`:** nueva funcion que escapa comillas simples (`'` → `''`) para interpolacion SQL segura. Aplicada a los tres helpers.
+- **`add-learning`:** ahora acepta contenido multilinea por `@archivo` o `-` (stdin), ademas del argumento directo, para no depender del quoting del shell.
+- Verificado con tests: comillas simples/dobles, multilinea, `$`, acentos y backticks se preservan en round-trip.
+
+---
+
 ## [2026-08-24] - OSS-TRACKER: colaboraciones no-codigo
 
 ### Added

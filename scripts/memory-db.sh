@@ -12,9 +12,16 @@
 #   ./scripts/memory-db.sh add-inbox "idea"       - agrega una idea al inbox
 #   ./scripts/memory-db.sh learnings [categoria]  - lista lecciones (opcional filtro por categoria)
 #   ./scripts/memory-db.sh add-learning <cat> "<titulo>" "<contenido>" [tags] - agrega una leccion
+#     El contenido puede ser: texto directo, @archivo (lee el archivo), o - (lee de stdin)
+#     para contenidos multilinea largos sin problemas de quoting del shell.
 #   ./scripts/memory-db.sh export-learnings       - regenera docs/learnings/ desde la DB
 
 DB="memory/memory.db"
+
+# Escape comillas simples para interpolacion SQL segura (evita SQL injection / broken quoting)
+sql_escape() {
+  printf '%s' "$1" | sed "s/'/''/g"
+}
 
 case "$1" in
   export-daily)
@@ -150,12 +157,15 @@ case "$1" in
     ;;
   add-todo)
     text="$2"; project="${3:-}"
-    sqlite3 "$DB" "INSERT INTO todos (text, project) VALUES ('$text', '$project');"
+    text_esc=$(sql_escape "$text")
+    project_esc=$(sql_escape "$project")
+    sqlite3 "$DB" "INSERT INTO todos (text, project) VALUES ('$text_esc', '$project_esc');"
     echo "Todo agregado."
     ;;
   add-inbox)
     idea="$2"
-    sqlite3 "$DB" "INSERT INTO inbox (idea) VALUES ('$idea');"
+    idea_esc=$(sql_escape "$idea")
+    sqlite3 "$DB" "INSERT INTO inbox (idea) VALUES ('$idea_esc');"
     echo "Idea agregada al inbox."
     ;;
   learnings)
@@ -164,7 +174,23 @@ case "$1" in
     ;;
   add-learning)
     cat="$2"; title="$3"; content="$4"; tags="${5:-}"
-    sqlite3 "$DB" "INSERT INTO learnings (category, title, content, tags) VALUES ('$cat', '$title', '$content', '$tags');"
+    # Contenido multilinea: soporte para archivo (@ruta) o stdin (-)
+    # Si $4 empieza con @, lee de ese archivo; si es -, lee de stdin; si no, usa el arg directo
+    case "$content" in
+      @*)
+        f="${content#@}"
+        [ -r "$f" ] || { echo "Error: no se puede leer el archivo: $f" >&2; exit 1; }
+        content="$(cat "$f")"
+        ;;
+      -)
+        content="$(cat)"
+        ;;
+    esac
+    cat_esc=$(sql_escape "$cat")
+    title_esc=$(sql_escape "$title")
+    content_esc=$(sql_escape "$content")
+    tags_esc=$(sql_escape "$tags")
+    sqlite3 "$DB" "INSERT INTO learnings (category, title, content, tags) VALUES ('$cat_esc', '$title_esc', '$content_esc', '$tags_esc');"
     echo "Leccion agregada (categoria: $cat)."
     ;;
   export-learnings)
