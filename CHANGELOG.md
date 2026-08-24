@@ -62,6 +62,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Added
 - **MEMORY.md (regla de Gonzo):** colaborar en un repo ajeno NO es sinónimo de abrir PR. El valor suele estar en comentar, revisar, criticar con sustancia, o destrabar. Si otro contribuidor ya reclamó/tiene un finding o PR en curso, abrir otro PR para lo mismo es pisarle el trabajo, no colaborar. Antes de proponer "hacer un PR", preguntar si ya hay trabajo en curso y qué aporta Gonzo sin duplicar. (Nace de hermes-agent #38072.)
 - **AGENTS.md (nueva subsección "Colaboración OSS - NO es abrir PRs" en Git & Commits):** regla operativa de colaboración - no asumir PR, sumar sin pisar, y leer SIEMPRE el link completo (issue/PR) con todos los reviews/comentarios/estado antes de registrar o proponer acción.
+## [2026-08-24] - search-fusion: estrategia de busqueda por intencion
+
+### Added
+- **skills/search-fusion/SKILL.md:** guia de busqueda efectiva por intencion (research/keyword/answer/news/code) + flujo de fusion multi-fuente (buscar + leer + cruzar + dedupe). Portado del concepto Search Fusion (ClawHub) adaptado a nuestras herramientas (DuckDuckGo key-free + web_fetch + browser).
+
+### Why
+- Mejorar la calidad de las busquedas: elegir la estrategia segun la intencion y no conformarse con el primer resultado. Verificar antes de responder (regla de Gonzo).
+
+---
+
 ## [2026-08-24] - Resumen estructurado de compactacion en session-lifecycle
 
 ### Changed
