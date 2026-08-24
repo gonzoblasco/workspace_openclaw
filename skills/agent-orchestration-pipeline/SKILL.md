@@ -122,6 +122,29 @@ Orquestador implementa (opcional) → Agente A revisa/corrige → Agente B re-re
 
 ## Templates de prompt para agentes
 
+### Estado durable del pipeline + crash recovery (pipeline-track.sh)
+
+El pipeline usa un tracker de estado durable para sobrevivir a crashes (SIGKILL de Qwen), restarts y eviction de contexto. Portado del concepto Pipeline Architect (ClawHub).
+
+```bash
+# Inicializar el plan de la fase con unidades
+./scripts/pipeline-track.sh init "Fase 3 - editor" U1 U2 U3 U4 U5 U6
+
+# Marcar el estado de cada unidad
+./scripts/pipeline-track.sh start U3    # agente empezo U3
+./scripts/pipeline-track.sh review U2   # U2 en cross-review
+./scripts/pipeline-track.sh done U1     # U1 completa
+./scripts/pipeline-track.sh note U2 "B encontro bug en U1, corregido"
+
+# Ver estado y que falta (tras crash/SIGKILL)
+./scripts/pipeline-track.sh status
+./scripts/pipeline-track.sh resume      # unidades no-done (para relanzar)
+```
+
+**Flujo de crash recovery:** si un agente muere (SIGKILL) a mitad de una unidad, el orquestador corre `pipeline-track.sh resume` para ver que quedo pendiente, verifica el trabajo parcial real (archivos/build/tests), y relanza el agente con un prompt corto para la unidad que quedo en `running` o `queued`. El estado vive en `pipeline-state.json` (o $PIPELINE_STATE_FILE), durable entre sesiones.
+
+**Nota sobre el estado:** el tracker es una sugerencia del orquestador, no una autoridad - Kanam decide que relanzar basandose en el estado + la verificacion real del trabajo (no confiar solo en el estado JSON).
+
 ### Detector de riesgos en el cross-review
 
 Antes de pasar el codigo de un agente al siguiente para revision, el orquestador puede correr el detector de riesgo de PRs para darle al revisor senales de que mirar con lupa:
