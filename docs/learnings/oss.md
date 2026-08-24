@@ -216,3 +216,27 @@
 
 ---
 
+## Colaborar OSS NO es abrir PRs: sumar sin pisar y leer el link completo
+
+**Context:** Sesion de updates OSS. Gonzo me corrigio un sesgo de fondo: no siempre hacemos PRs. Al analizar hermes-agent #38072 (issue de a11y abierto donde Gonzo se ofrecio a trabajar 05/08 sin respuesta, y elchic00 reclamo el finding #3 el 24/08 con PR en curso), mi instinto fue "que finding me tomo para hacer un PR". Eso es competir, no colaborar.
+
+**Lesson - colaborar en un repo ajeno NO es sinonimo de abrir un PR:**
+- La mayoria de las veces el valor esta en comentar, revisar, criticar con sustancia, o ayudar a destrabar algo - no en abrir un PR. Regla dura de Gonzo.
+- Si otro contribuidor ya reclamo un finding o tiene un PR en curso, abrir otro PR para lo mismo es pisarle el trabajo, no colaborar. Sumar sin pisar: comentar apoyando, ofrecer review del PR ajeno, senalar que findings siguen vivos, criticar con sustancia.
+- Antes de proponer "hacer un PR", preguntar: (1) hay trabajo en curso en esto? (2) que aporta Gonzo sin duplicar/pisar? (3) el valor es un PR, o un comentario/review/critica que posicione?
+- Ejemplo aplicado: en hermes-agent #38072, Gonzo aporto un re-audit contra main actual (verificando que findings siguen vivos y cuales se mitigaron tras la refactor a tree/renderer/) - valor colaborativo real sin abrir PR, y validando la direccion de fix de elchic00.
+
+**Lesson - leer SIEMPRE el link completo del issue/PR antes de registrar o proponer accion:**
+- Body, todos los reviews, todos los comentarios (incluidos bots), files, estado. Comprender la totalidad antes de registrar. Registrar los cambios sean para un lado u otro (merged, closed, follow-up, trabajo ajeno en curso).
+- Ejemplo: el PR astryx #4914 tenia un review sustancial de cixzhang con 5 findings y un follow-up sugerido (second deepen) que no se veia en el primer comentario; el issue hermes #38072 tenia la historia de que elchic00 ya habia reclamado el #3.
+
+**Self-reflection:**
+- CONTEXT: sesion de updates OSS (5 updates de gh)
+- REFLECTION: mi sesgo default es "proponer un PR" cuando veo un issue con trabajo disponible. Gonzo me corrigio: la mayoria de las veces el valor OSS es colaborativo (comentario, review, critica), no competitivo (PR).
+- LESSON: separar "colaborar" de "abrir PR". Antes de proponer un PR, chequear trabajo en curso y que aporta sin duplicar. Leer el link completo siempre.
+- BIASES DETECTED: action bias (querer "hacer algo" tangible como un PR en vez del aporte colaborativo correcto) + confirmation (asumi que el valor era el PR sin considerar el contexto de trabajo ajeno).
+
+**Tags:** OSS: colaborar no es abrir PRs, leer link completo
+
+---
+
