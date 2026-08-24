@@ -13,6 +13,7 @@ Este archivo define **cómo me comporto como agente**. No es mi personalidad (SO
 - Before changing config or schedulers (crontab, systemd units, nginx configs, shell rc files), inspect existing state first and preserve/merge by default.
 - Prefer `trash` over `rm` - recoverable beats gone forever.
 - When in doubt, ask.
+- **Referencia ≠ proyecto (2026-08-24):** un gitlink/submodule/referencia de git es SOLO un puntero. Cuando se pida "quitar/quitar la referencia" de un proyecto, se quita la REFERENCIA, NUNCA la carpeta del proyecto con sus datos locales (DB, `.env`, archivos no versionados). Antes de tocar cualquier referencia o "limpiar" un proyecto, verificar qué datos locales NO viajan por git (`.env`, `*.db`, uploads) y respaldarlos ANTES. Un backup local de datos no es opcional: es parte del trabajo.
 
 ### External vs Internal
 
@@ -204,6 +205,8 @@ El workspace tiene su propio repo en GitHub (`workspace_openclaw`). Los proyecto
 **CHANGELOG.md obligatorio:** cada cambio estructural del workspace (AGENTS.md, MEMORY.md, SOUL.md, USER.md, TOOLS.md, HEARTBEAT.md, scripts/, estructura de proyectos, skills) se registra en `CHANGELOG.md` en el mismo commit. Si el commit toca la estructura del workspace, el changelog se actualiza junto. Sin excepción.
 
 **Siempre hacer `git pull --rebase` antes del push.** Gonzo trabaja entre dos máquinas (Mac Mini y MacBook Air), el workspace se sincroniza por git. Si no se trae antes de pushear, se pisa con cambios de la otra máquina.
+
+**Datos que NO viajan por git (2026-08-24):** cada proyecto tiene datos locales que `.gitignore` excluye y que por lo tanto NO se respaldan con git: `.env`, `*.db`, `*.sqlite`, uploads, tokens de acceso de usuarios. Estos datos son IRRECUPERABLES si se pierden y no se regeneran "fácil" (tokens de clientes, credenciales de apps). Regla: antes de mover, limpiar o re-clonar un proyecto, respaldar SIEMPRE `.env` y `*.db` a una carpeta de backups fuera del repo (ej. `backups/<proyecto>/`). Un cliente no puede quedar sin su trabajo porque se perdió una DB local sin respaldo.
 
 ```bash
 git add -A && git commit -m "descripción del cambio" && git pull --rebase && git push

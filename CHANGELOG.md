@@ -6,7 +6,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
-## [2026-08-24] - Doble-git completo: .knowledge/ en workspace + carpeta forks/
+## [2026-08-24] - Regla dura: referencia git ≠ proyecto (leccion por perdida de token)
+
+### Added
+- **AGENTS.md (Red Lines):** regla "Referencia ≠ proyecto" - un gitlink/referencia de git es SOLO un puntero; quitar la referencia NUNCA debe tocar la carpeta del proyecto con sus datos locales (DB, `.env`). Antes de tocar cualquier referencia o limpiar un proyecto, verificar que datos locales NO viajan por git y respaldarlos ANTES.
+- **AGENTS.md (Workspace Git):** seccion "Datos que NO viajan por git" - `.env`, `*.db`, uploads, tokens de clientes son irrecuperables y no se regeneran facil. Regla: respaldar SIEMPRE `.env` y `*.db` a `backups/<proyecto>/` antes de mover/limpiar/re-clonar.
+- **MEMORY.md:** leccion dura registrada (referencia ≠ proyecto, soporteml-v4, perdida del token de MeLi de un cliente).
+
+### Why
+- Al remover la referencia del submódulo `soporteml-v4` (2026-08-23) se perdio la DB local (`soporteml.db`) con el token de acceso real de Mercado Libre de un cliente - irrecuperable, sin respaldo. La laptop estuvo encendida todo el finde justamente para protegerlo. Leccion: los datos que no viajan por git deben respaldarse antes de cualquier limpieza/movimiento, y no minimizar la perdida de un token de cliente.
+
+---
 
 ### Added
 - **Carpeta `forks/`** para repos de terceros (TanStack, shadcn, etc.): ignorada AL 100% en el workspace (no llevan `.knowledge/` porque no se modifica el `.gitignore` de proyectos ajenos). Memoria de sesion de contribucion va a `docs/` o `memory/`.
