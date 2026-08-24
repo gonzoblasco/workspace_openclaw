@@ -20,7 +20,7 @@
 |---------|------|---------|
 | **Issue** | [#38072](https://github.com/NousResearch/hermes-agent/issues/38072) | Issue OPEN de a11y del Desktop renderer (apps/desktop). Audit de andrea9292 (03/06): 6 findings - 1) pane cerrado aria-hidden con focusable, 2) resize separator sin aria-valuenow (CRITICO), 3) nested interactive en session rows, 4) contraste en texto secundario, 5) sin h1 top-level / titlebar fuera de landmarks, 6) hit targets < 24px. Gonzo comento 05/08 ofreciendose a trabajar (re-audit + PRs individuales), sin respuesta del maintainer. |
 | **Nuestro PR** | []() | **open** |
-| **Contexto** | - | ELCHIC00 reclamo el finding #3 (24/08) - hara PR cubriendo session-row.tsx + profile-switcher.tsx. Findings 1, 2, 4, 5, 6 siguen disponibles. Finding #2 (aria-valuenow) es critico y concreto, buen candidato. Pendiente: re-auditar contra main (componente movido a tree/renderer/) antes de tomar un finding. |
+| **Contexto** | - | Enfoque COLABORATIVO (no competitivo): elchic00 reclamo el finding #3 (24/08) y tiene PR en curso - NO abrir PR para eso. Valor de Gonzo: re-auditar contra main (componente movido a tree/renderer/) para comentar que findings siguen vivos, ofrecer review del PR de elchic00 (a11y es especialidad de Gonzo), y criticar con sustancia. Findings 1,2,4,5,6 disponibles para comentar/colaborar, no necesariamente para PR. |
 
 ### Nutlope/hallmark
 

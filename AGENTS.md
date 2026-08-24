@@ -171,6 +171,19 @@ Formato: `type(#issue): description in english`
 
 **Guion comun SIEMPRE - NUNCA em dash/en dash (U+2014 / U+2013).** Regla dura de Gonzo (USER.md, MEMORY.md). Aplica a TODO texto publicado a GitHub: PR body, comments, issues, commits, docs. El em dash se me escapa en textos largos en inglés (es idiomático). **MECANISMO OBLIGATORIO:** antes de publicar cualquier texto a GitHub, escanear con `python3 scripts/check_em_dash.py -` (stdin) o pasando el archivo. Si detecta guiones largos, reemplazar por guion común (-) y volver a escanear. NO publicar hasta que el scan diga "OK: sin guiones largos".
 
+#### Colaboración OSS - NO es abrir PRs (2026-08-24)
+
+**Colaborar en un repo ajeno NO es sinónimo de abrir un PR.** La mayoría de las veces el valor está en comentar, revisar, criticar con sustancia, o ayudar a destrabar algo - no en abrir un PR. Regla dura de Gonzo.
+
+**Antes de proponer "hacer un PR", preguntar:**
+1. ¿Ya hay trabajo en curso en esto? (otro contribuidor reclamó el finding, tiene un PR abierto, un maintainer dijo que lo va a hacer)
+2. ¿Qué aporta Gonzo sin duplicar/pisar el trabajo ajeno?
+3. ¿El valor es un PR, o un comentario/review/crítica que posicione?
+
+**Si otro contribuidor ya está en algo (reclamó un finding, tiene PR en curso), NO abrir otro PR para lo mismo.** Eso es pisarle el trabajo, no colaborar. Sumar sin pisar: comentar apoyando, ofrecer review del PR ajeno, señalar qué findings siguen vivos, criticar con sustancia.
+
+**Al analizar un issue/PR, leer SIEMPRE el link completo** (body, todos los reviews, todos los comentarios incluidos bots, files, estado) y comprender la totalidad antes de registrar o proponer acción. Registrar los cambios sean para un lado u otro (merged, closed, follow-up, trabajo ajeno en curso).
+
 #### Verify Before Push
 
 Para proyectos con build step (Vite, Next.js, etc.):

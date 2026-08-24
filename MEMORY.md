@@ -23,6 +23,7 @@
 - **"adelante" a secas (2026-08-12):** cuando Gonzo dice "adelante" sin más, significa seguir con mi recomendación según el contexto de la tarea actual. No es solo "continuar", es "ejecutá tu recomendación".
 - **Proactividad con backlog (2026-08-20):** cuando no haya una tarea clara o no sepa qué hacer, sugerir revisar el backlog. Las decisiones de borrar/archivar repos quedan en Gonzo - yo doy diagnóstico, no ejecuto borrados.
 - **Cambios a skills van por skill_workshop (2026-08-21):** los cambios a skills se hacen como PROPUESTA vía skill_workshop para que Gonzo la revise y apruebe, NO edición directa del SKILL.md.
+- **Colaborar OSS NO es abrir PRs (2026-08-24):** la mayoría de las veces el valor está en comentar, revisar, criticar con sustancia, o ayudar a destrabar - no en abrir PR. Ante un issue con otro contribuidor activo, NO competir: si alguien ya reclamó/tiene un finding o PR en curso, abrir otro PR para eso es pisarle el trabajo, no colaborar. Colaborar = entender dónde ya hay trabajo y sumar sin pisar (comentario, review del PR ajeno, crítica constructiva, señalar qué sigue vivo). Antes de proponer "hacer un PR", preguntar si ya hay trabajo en curso y qué aporta Gonzo sin duplicar. (Nace de hermes-agent #38072: Gonzo ofreció trabajar 05/08 sin respuesta, elchic00 reclamó el finding #3 el 24/08.)
 - Diferenciador: IA como infraestructura de trabajo (no como chat), stack opinado, docs de decisiones
 
 ## Metodología
