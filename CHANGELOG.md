@@ -6,6 +6,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-24] - Regla MEMORY: no agradecer a bots de review
+
+### Added
+- **MEMORY.md:** regla nueva "No agradecer a bots de review" - cuando el review de un PR es de una IA (ej: Enough1122 en hermes-agent, "AI code review - automated review for reference"), NO ponerle "Thanks for the review"; solo se agradece a humanos. Los reviews de IA con puntos accionables se responden directo a la sustancia con evidencia, sin saludo. (Nace de hermes-agent #93848: puse "Thanks for the review" a un bot y Gonzo lo corrigió.)
+
+### Why
+- Correción de Gonzo en sesión: no agradecer a bots de review de código, solo a humanos. Regla de interacción durable.
+
+---
+
 ## [2026-08-24] - CV búsqueda laboral (Principal Full Stack)
 
 ### Added
