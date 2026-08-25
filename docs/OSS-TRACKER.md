@@ -101,6 +101,10 @@
 | **Nuestro PR** | [#5419](https://github.com/facebook/astryx/pull/5419) | **merged** |
 | **Contexto** | - | Abierto 24/08. Review de cixzhang con 3 comentarios, todos addressados: label en el hook template, merge (no overwrite) de atributos popup existentes del trigger, y gating de aria-controls en open state. Re-review y merge el mismo dia. Commits 52262da7 + c1603cad. |
 
+| **Issue** | [#5476](https://github.com/facebook/astryx/issues/5476) | Abierto 25/08 (autor Astro-Han, diagnostico con Claude Code). List y TreeList dropeaban todos los atributos de BaseProps (aria-*, role, tabIndex, id, event handlers) por no tener rest spread - una lista sin header visible no se podia nombrar en screen reader. |
+| **Nuestro PR** | [#5493](https://github.com/facebook/astryx/pull/5493) | **open** |
+| **Contexto** | - | Abierto 25/08. Fix: agregar ...restProps a List y TreeList esparciendolo al root, siguiendo el patron de la casa (ListItem/Kbd). 2 tests de regresion nuevos, 388 tests pass, typecheck y build OK, mergeable. Comentado en el issue #5476 (issuecomment-5410882738) avisando al autor. Commit 94e8ee7c. |
+
 ### facebook/docusaurus
 
 | Eslabón | Link | Detalle |

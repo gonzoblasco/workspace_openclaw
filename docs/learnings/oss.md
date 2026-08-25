@@ -240,3 +240,9 @@
 
 ---
 
+## 2026-08-25 - Elegir issue para demo en vivo con reclutador
+
+OSS: bug acotado + fix canonico + reproduccion armada
+
+---
+
