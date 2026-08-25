@@ -80,14 +80,8 @@ echo "   ¿Qué aprendimos? ¿Algún patrón nuevo?"
 echo "   ¿Es global (🌍) o de proyecto (🏗️)?"
 echo "   Si hay algo, registrarlo en docs/LEARNINGS.md"
 echo ""
-
-# Check open PRs
-echo "🔍 Checking open PRs..."
-PR_SCRIPT="skills/oss-contribution/scripts/pr-status-check.sh"
-if [[ -f "$PR_SCRIPT" ]]; then
-  bash "$PR_SCRIPT" --author gonzoblasco 2>/dev/null || echo "   (no PRs or gh not available)"
-fi
-echo ""
+# PRs (2026-08-25): Gonzo los revisa manualmente en GitHub y pasa los URLs a revisar.
+# No se chequean PRs automáticamente al cerrar sesión.
 echo "📋 Don't forget to:"
 echo "   1. Review HANDOFF.md"
 echo "   2. Commit workspace changes"

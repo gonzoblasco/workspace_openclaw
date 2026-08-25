@@ -6,6 +6,43 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-25] - Quitar PR review del inicio/cierre de sesion
+
+### Changed
+- **AGENTS.md (ritual "iniciar sesion"):** quito el paso 1 "PR Review Check" (auto-review de PRs abiertos con `gh`). Ahora los PRs los revisa Gonzo manualmente en GitHub y pasa los URLs. Los pasos quedan: 1) Daily check, 2) Memory search, 3) Presentación.
+- **skills/session-lifecycle/scripts/session-end.sh:** quito el bloque "Check open PRs" del cierre de sesion (ya no llama a `pr-status-check.sh`).
+- **skills/session-lifecycle/SKILL.md:** actualizo la tabla de helper scripts.
+- **MEMORY.md:** preferencia durable - inicio/cierre de sesion NO revisa PRs automaticamente.
+
+### Why
+- Gonzo revisa los PRs manualmente en GitHub y pasa los URLs a revisar. El auto-check de PRs en el ritual de sesion ya no aporta.
+
+---
+
+## [2026-08-24] - Regla: no agradecer a bots de review (AGENTS.md)
+
+### Added
+- **AGENTS.md (Reglas operativas de feedback, punto 7):** regla "No agradecer a bots de review" - cuando el review de un PR es de una IA (ej: Enough1122 en hermes-agent, "AI code review - automated review for reference"), NO ponerle "Thanks for the review"; solo se agradece a humanos. Los reviews de IA con puntos accionables se responden directo a la sustancia con evidencia, sin saludo.
+- **MEMORY.md:** referencia corta a la regla canónica en AGENTS.md (no duplica el texto completo).
+
+### Why
+- Correción de Gonzo en sesión: no agradecer a bots de review de código, solo a humanos. Regla operativa que encaja con las otras reglas de feedback en AGENTS.md.
+
+---
+
+## [2026-08-24] - CV búsqueda laboral (Principal Full Stack)
+
+### Added
+- **`memory/tmp/CV_Gonzalo_Blasco_Principal_FullStack.pdf`** (+ `.md` fuente): CV reorientado al rol Principal Full Stack (Ritz-Carlton Yacht Collection). Título a Principal, perfil con ADRs y estándares de arquitectura, sección de skills Arquitectura & DevOps, Selected Projects = 3 sólidos (a11y-fixer, kanam-skills, create-stack). **SoporteML v4 sacado** (no está listo para portfolio, es privado).
+
+### Changed
+- **Open Source corregido con datos reales** (verificados con `gh`): 4 merges en MUI (material-ui #49003, base-ui #5551) + Facebook astryx (#4605, #4914), reviewer activo TanStack Query, 17+ PRs abiertos. El CV anterior decía merges en shadcn/ui, TanStack Router y Vercel AI SDK, pero NINGUNO de esos está mergeado - era información incorrecta.
+
+### Why
+- Búsqueda laboral activa: 2 procesos en paralelo (Ritz-Carlton Principal, EY Frontend Lead vía LTM). CV desactualizado y con datos falsos en Open Source; no se podía mandar así.
+
+---
+
 ## [2026-08-24] - Reglas operativas de feedback OSS en AGENTS.md
 
 ### Added

@@ -76,15 +76,11 @@ Sin "iniciar sesión": asumo que es una consulta rápida, un proyecto aislado, o
 
 #### "iniciar sesión" - Ritual completo
 
-1. **PR Review Check** - revisar PRs abiertos de Gonzo en repos externos:
-   - Comentarios nuevos de maintainers que requieran respuesta
-   - Cambios solicitados (review requests, CI failures)
-   - PRs mergeados (para celebrar y actualizar CONTRIBUTING.md)
-   - PRs stale sin actividad (para considerar follow-up)
-   - Usar `gh pr list --author gonzoblasco --state open --json number,title,comments,updatedAt` por repo, o el batch check del `docs/OSS-TRACKER.md`
-2. **Daily check** - leer `memory/YYYY-MM-DD.md` del día (crear si no existe)
-3. **Memory search** - `memory_search()` por contexto relevante
-4. **Presentación** - resumen de estado + "estoy lista"
+> **PRs (2026-08-25):** ya no se revisan PRs en el inicio de sesión. Gonzo los revisa manualmente en GitHub y pasa los URLs a revisar. Solo se revisan cuando Gonzo los comparte.
+
+1. **Daily check** - leer `memory/YYYY-MM-DD.md` del día (crear si no existe)
+2. **Memory search** - `memory_search()` por contexto relevante
+3. **Presentación** - resumen de estado + "estoy lista"
 
 #### "guardar sesión" - Guardado formal
 
@@ -195,6 +191,7 @@ Reglas duras de Gonzo para publicar feedback/review en repos de terceros. Correg
 4. **Nunca repetir lo que ya se dijo en el hilo** ni repetir mis propios comentarios. Siempre aportar algo nuevo que ayude, sin huevadas.
 5. **NO exponer notas internas/borradores en el hilo público.** El archivo de borrador (con encabezado "Borrador", "Notas para Gonzo", análisis interno) es SOLO para revisión de Gonzo - NUNCA publicarlo directo. Al publicar, usar SOLO el texto del comentario final limpio (sin encabezado de borrador ni notas internas). (Error real en #5204 y #4611: publiqué el archivo con notas internas; se borró y se republicó limpio.)
 6. **Siempre dar la URL** del PR/issue al reportar trabajo hecho.
+7. **No agradecer a bots de review.** Cuando el review/comentario de un PR es de una IA (ej: Enough1122 en hermes-agent, "AI code review - automated review for reference"), NO ponerle "Thanks for the review" - solo se agradece a humanos. Los reviews de IA con puntos accionables se responden directo a la sustancia con evidencia (qué se arregló, cómo se verificó), sin saludo. (Corrección de Gonzo en hermes-agent #93848.)
 
 **Regla de contexto:** los borradores de feedback se guardan en `docs/feedback-<repo>-<numero>-draft.md` para revisión de Gonzo. El archivo de borrador y el texto a publicar son cosas DISTINTAS - al publicar, nunca usar el archivo de borrador directo; extraer solo el texto final del comentario.
 
