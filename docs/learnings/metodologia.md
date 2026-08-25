@@ -114,3 +114,11 @@ Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nue
 
 ---
 
+## Seleccion de libros tecnicos para preparar un puesto
+
+Para comprar libros tecnicos para preparar una entrevista o puesto, buscar editoriales serias (Packt, O'Reilly) y filtrar el ruido de autoayuda que domina Amazon ('make money with AI', autores fantasma, series de ingreso pasivo). El valor esta en arquitectura e ingenieria de produccion, no en guias de principiante. Caso real: de 50 resultados 'openclaw' en Amazon solo 1 era tecnico serio (OpenClaw AI in Production de Ken Huang, Packt). Nota: 3 de 4 titulos 'openclaw' en PacktPub eran videos, no libros.
+
+**Tags:** libros,amazon,packt,entrevista,aiaa
+
+---
+
