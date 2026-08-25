@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-25] - Quitar PR review del inicio/cierre de sesion
+
+### Changed
+- **AGENTS.md (ritual "iniciar sesion"):** quito el paso 1 "PR Review Check" (auto-review de PRs abiertos con `gh`). Ahora los PRs los revisa Gonzo manualmente en GitHub y pasa los URLs. Los pasos quedan: 1) Daily check, 2) Memory search, 3) Presentación.
+- **skills/session-lifecycle/scripts/session-end.sh:** quito el bloque "Check open PRs" del cierre de sesion (ya no llama a `pr-status-check.sh`).
+- **skills/session-lifecycle/SKILL.md:** actualizo la tabla de helper scripts.
+- **MEMORY.md:** preferencia durable - inicio/cierre de sesion NO revisa PRs automaticamente.
+
+### Why
+- Gonzo revisa los PRs manualmente en GitHub y pasa los URLs a revisar. El auto-check de PRs en el ritual de sesion ya no aporta.
+
+---
+
 ## [2026-08-24] - Regla: no agradecer a bots de review (AGENTS.md)
 
 ### Added

@@ -97,7 +97,7 @@ Scripts en `skills/session-lifecycle/scripts/`:
 | Script | Uso |
 |---|---|
 | `session-start.sh --project <name> --objective <obj>` | Carga HANDOFF previo y crea/actualiza el log diario en `memory/YYYY-MM-DD.md`. Usar al inicio de sesion con proyecto. |
-| `session-end.sh --project <name> --summary <text>` | Genera/actualiza HANDOFF, escribe el guardado en el log diario, e intenta revisar PRs abiertos. Usar al guardar sesion. |
+| `session-end.sh --project <name> --summary <text>` | Genera/actualiza HANDOFF, escribe el guardado en el log diario. Los PRs los revisa Gonzo manualmente (2026-08-25). Usar al guardar sesion. |
 
 Si la sesion toca scripts de skill del workspace, correr `npm test` antes del commit final.
 
