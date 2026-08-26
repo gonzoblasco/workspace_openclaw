@@ -187,3 +187,55 @@ Si Gonzo no esta de acuerdo, usa el que el pida y registra la preferencia para f
 - MiniMax M3 announcement
 - GLM-5.2 release notes
 - Gemma 4 technical report
+
+---
+
+## Casos Especiales: Procesamiento de Archivos
+
+Cuando el input incluye archivos adjuntos (imagenes, PDFs, documentos), no todos los modelos pueden procesarlos. Usar esta guia:
+
+### Imagenes (input visual, no generacion)
+
+Modelos con **vision nativa** (aceptan imagen + texto como input):
+
+- **`gemma4:31b`** - vision + razonamiento. Bueno para debugging visual (capturas de error, screenshots de UI, diagramas). Google DeepMind.
+- **`minimax-m3`** - vision + 1M contexto. Bueno para imagenes largas o multiples (capturas de sesion completa).
+- **`kimi-k2.7-code`** - vision via MoonViT. Especialista en codigo con screenshot de error.
+- **`kimi-k3`** - vision nativa + 1M contexto + video. El mas capaz pero el mas caro.
+- **`qwen3.5`** - vision + 201 idiomas.
+- **`glm-5.2`** - NO tiene vision nativa. No sirve para input de imagen.
+
+**Modelos SIN vision nativa** (texto solamente):
+- `deepseek-v4-flash` ❌
+- `deepseek-v4-pro` ❌
+- `glm-5.2` ❌
+- `nemotron-3-*` ❌
+- `gpt-oss` ❌
+
+**Cuando Kanam debe sugerir cambio:** Cuando el input incluya una imagen, Kanam cambia automaticamente a `gemma4:31b` o `minimax-m3` y avisa: "Estoy cambiando a [modelo] porque necesito vision para procesar la imagen."
+
+### PDFs
+
+Ningun modelo de la lista procesa PDFs nativamente (salvo que el PDF se convierta a texto o imagen). Estrategia:
+
+1. **Si el PDF es escaneado (imagen):** usar modelo con vision + OCR. `gemma4:31b` o `kimi-k3`.
+2. **Si el PDF tiene texto seleccionable:** extraer texto con `scripts/pdf-tool.sh` y pasar el texto a cualquier modelo. En ese caso, `deepseek-v4-flash` es suficiente.
+3. **Si el PDF es mixto (imagenes + texto):** extraer con `scripts/pdf-tool.sh` + pasar a modelo con vision si se necesita analisis de las imagenes.
+
+### Audio
+
+Ningun modelo de la lista procesa audio nativamente. El setup actual no contempla input de audio (no hay whisper/local STT conectado). Si se necesita, abrir un issue.
+
+### Archivos de codigo (bundles, repos, archivos individuales)
+
+- **Archivos individuales:** `deepseek-v4-flash` es suficiente.
+- **Repos completos o bundles grandes (>1M tokens):** `glm-5.2` o `kimi-k3` (1M contexto real). Kanam debe avisar: "El contexto es muy grande para flash, cambiando a [modelo]."
+- **Bundles de codigo con imagenes (screenshots de error + codigo):** `gemma4:31b` o `kimi-k2.7-code`.
+
+### Regla general
+
+Cuando Kanam detecte que el input incluye algo que el modelo actual no puede procesar (imagen, PDF, contexto extralargo), DEBE:
+
+1. Informar el cambio: "Este input requiere [capacidad], cambiando a [modelo]."
+2. Hacer el cambio automaticamente (no preguntar, salvo que el cambio implique un salto de costo grande tipo flash -> kimi-k3).
+3. Si el salto de costo es grande (ej: flash -> kimi-k3), preguntar: "Esto requiere kimi-k3 por [razon]. ¿Procedo?"
