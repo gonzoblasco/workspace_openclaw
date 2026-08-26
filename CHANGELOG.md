@@ -17,6 +17,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-26] - Configuracion de modelos OpenClaw en VPS
+
+### Changed
+- **`/data/.openclaw/openclaw.json`:** reordenados fallbacks del modelo default. Primer fallback ahora `ollama-cloud/kimi-k2.7-code` (antes `ollama-cloud/glm-5.2`); `glm-5.2` pasa al final de la lista. Cambiado primary a `ollama-cloud/deepseek-v4-flash:preview`.
+
+### Why
+- La API key de `ollama-cloud:default` era invalida (`Unauthorized` para `deepseek-v4-flash`), haciendo que el sistema saltara automaticamente a `glm-5.2` en cada turno. Mientras se resuelve la key, `deepseek-v4-flash:preview` funciona y `kimi-k2.7-code` es un fallback mucho mas barato.
+
+### Pending
+- Re-generar/verificar la API key de Ollama Cloud para que funcione `deepseek-v4-flash` sin `:preview`.
+
+---
+
 ## [2026-08-26] - Fusion de skills de estudio + indice maestro unico
 
 ### Changed
@@ -67,6 +80,8 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - Búsqueda laboral activa: 2 procesos en paralelo (Ritz-Carlton Principal, EY Frontend Lead vía LTM). CV desactualizado y con datos falsos en Open Source; no se podía mandar así.
 
 ---
+
+## [2026-08-24] - Reglas operativas de feedback OSS en AGENTS.md
 
 ## [2026-08-24] - Reglas operativas de feedback OSS en AGENTS.md
 
