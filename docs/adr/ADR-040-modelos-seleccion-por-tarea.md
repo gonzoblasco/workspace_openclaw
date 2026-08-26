@@ -190,55 +190,37 @@ Si Gonzo no esta de acuerdo, usa el que el pida y registra la preferencia para f
 
 ---
 
-## Thinking Levels: DeepSeek Flash vs Kimi K3 (Estudio Empirico, 2026-08-26)
+## Thinking Levels: DeepSeek Flash vs Kimi K3 vs Gemma4 (Estudio Empirico, 2026-08-26)
 
-Se realizo un experimento controlado: el mismo prompt de arquitectura (migracion SPA a Next.js 16 RSC) se paso a ambos modelos con 4 niveles de thinking (off/low/medium/high), midiendo runtime, tokens de output, y calidad segun 5 criterios (cobertura, profundidad, accionabilidad, originalidad, calidad). Resultados:
+Se realizo un experimento controlado: el mismo prompt de arquitectura (migracion SPA a Next.js 16 RSC) se paso a 3 modelos con 4 niveles de thinking (off/low/medium/high), midiendo runtime, tokens de output, y calidad segun 5 criterios (cobertura, profundidad, accionabilidad, originalidad, calidad). Resultados:
 
 ### Datos brutos
 
-| Nivel | DeepSeek Flash | Kimi K3 |
-|-------|----------------|---------|
-| OFF | 22s / 2.8k tok | 5m34s / 7.3k tok |
-| LOW | 21s / 2.6k tok | 2m20s / 2.9k tok |
-| MEDIUM | 48s / 3.9k tok | 2m40s / 3.0k tok |
-| HIGH | 60s / 5.4k tok | 5m16s / 3.5k tok |
+| Nivel | DeepSeek Flash | Kimi K3 | Gemma4 |
+|-------|----------------|---------|--------|
+| OFF | 22s / 2.8k tok | 5m34s / 7.3k tok | No probado |
+| LOW | 21s / 2.6k tok | 2m20s / 2.9k tok | ~10s / ~3k tok |
+| MEDIUM | 48s / 3.9k tok | 2m40s / 3.0k tok | No probado |
+| HIGH | 60s / 5.4k tok | 5m16s / 3.5k tok | No probado |
+| MAX/xhigh | ~60s (meta-analisis) | Rechazado por sistema | ~10s (mismo output que LOW) |
 
-### Hallazgo central: usan el thinking de forma opuesta
+### Hallazgo central: cada modelo usa el thinking distinto
 
-**DeepSeek Flash:** el thinking escala el RAZONAMIENTO. OFF da respuestas genericas de manual. HIGH muestra planificacion deliberada, decisiones justificadas, y analisis profundo. La calidad del output varia significativamente segun el nivel.
+**DeepSeek Flash:** el thinking escala el RAZONAMIENTO. OFF da respuestas genericas de manual. HIGH muestra planificacion deliberada y decisiones justificadas. MAX se autoevalua y senala sus propias debilidades. La calidad del output varia significativamente segun el nivel. Es el unico modelo donde el thinking realmente cambia el contenido, no solo la presentacion.
 
-**Kimi K3:** el thinking no cambia el razonamiento base, cambia la EDICION. Incluso en OFF, K3 propone la misma arquitectura que en HIGH (strangler, clasificacion 30-35/15-20, tabla de estado, fases). Lo que varia es la verbosidad: OFF produce 7.3k tokens divagando; LOW/MEDIUM/HIGH recortan a ~3k manteniendo la misma sustancia.
+**Kimi K3:** el thinking no cambia el razonamiento base, cambia la EDICION. Incluso en OFF propone la misma arquitectura que en HIGH. Lo que varia es la verbosidad: OFF produce 7.3k tokens divagando; LOW/MEDIUM/HIGH recortan a ~3k manteniendo la misma sustancia. Es ~6x mas lento que Flash.
 
-### Implicancia practica
+**Gemma4:** igual que Kimi, el thinking no escala el razonamiento. Con LOW da la misma calidad que con MAX/xhigh en el mismo tiempo (~10s). El razonamiento base es fijo y rapido. Es la opcion ideal para tareas que no requieren escalabilidad de profundidad.
 
-**Kimi no se justifica para el dia a dia.** DeepSeek Flash con HIGH (60s) produce calidad equivalente o superior a Kimi con LOW (2m20s), en menos tiempo y con menor costo de GPU. La latencia de Kimi es ~6x la de Flash incluso en su nivel mas bajo.
+### Stack final recomendado
 
-### Cuando USAR Kimi K3 igual
+| Puesto | Modelo | Para que |
+|--------|--------|----------|
+| **Primario (daily driver)** | **DeepSeek Flash** | Todo el desarrollo. Thinking segun profundidad necesaria: LOW para rapido, HIGH para arquitectura, MAX para meta-analisis. |
+| **Vision** | **Gemma4** | Debugging visual, capturas de error, cualquier input con imagen. Razonamiento fijo pero solido, respuesta instantanea. |
+| **Contexto extralargo** | **Kimi K3** | Solo cuando se necesita >1M de contexto o cuando Gemma4 y Flash fallaron. Usar en LOW para optimizar tiempo. |
 
-- Vision (imagen + texto) - Flash no tiene vision nativa
-- Contexto extralargo (>1M tokens) - Flash tiene 1M pero K3 lo maneja mejor
-- Flash fallo consistentemente en 2-3 intentos (cross-check)
-- Se necesita la maxima capacidad disponible sin restriccion de tiempo
-
-### Cuando NO usarlo
-
-- Como modelo default (nunca, siempre Flash)
-- Para tareas cotidianas de codigo
-- Cuando el tiempo de respuesta importa
-- Cuando se necesita iterar rapido (pipeline A/B)
-
-### Recomendacion operativa
-
-| Lo que necesitas | Haz esto | En vez de esto |
-|---|---|---|
-| Respuesta rapida y correcta | Flash LOW (21s) | Kimi LOW (2m20s) |
-| Analisis solido de arquitectura | Flash HIGH (60s) | Kimi MEDIUM (2m40s) |
-| Maxima profundidad | Flash HIGH + xhigh | Kimi HIGH (5m16s) |
-| Vision (imagen + texto) | Gemma4 o MiniMax M3 | Kimi K3 (solo si los otros no alcanzan) |
-
-### Analogia: el thinking como "cargo" (solo DeepSeek Flash)
-
-Para DeepSeek Flash (NO aplica a Kimi K3, que tiene logica distinta):
+### Analogia: el thinking como "cargo" (solo DeepSeek Flash, no aplica a Kimi K3 ni Gemma4)
 
 | Nivel | Equivalente | Cuando usarlo |
 |-------|-------------|---------------|
@@ -248,11 +230,11 @@ Para DeepSeek Flash (NO aplica a Kimi K3, que tiene logica distinta):
 | HIGH | Lead | Decisiones de arquitectura reales, ADRs |
 | MAX | Principal | Autoevaluacion, meta-analisis, revision critica |
 
-Nota: MAX solo existe como nivel en DeepSeek (modo Max thinking). En el sistema de OpenClaw, el nivel equivalente como parametro de spawn es `xhigh` (no `maximum`, que fue rechazado por el sistema). Al usar el chat directamente, DeepSeek acepta `max` como nivel. El modo `xhigh` no se evaluo en este experimento.
+Nota: MAX solo existe como nivel en DeepSeek Flash (modo Max thinking del modelo). En el sistema de OpenClaw, el nivel equivalente como parametro de spawn es `xhigh` (no `maximum`, que fue rechazado por el sistema por no ser un valor valido). Al usar el chat directamente, DeepSeek acepta `max` como nivel. El modo `xhigh` no se evaluo formalmente en este experimento.
 
 ---
 
-## Casos Especiales: Procesamiento de Archivos
+## Casos Especiales: Procesamiento de Archivos## Casos Especiales: Procesamiento de Archivos
 
 
 Cuando el input incluye archivos adjuntos (imagenes, PDFs, documentos), no todos los modelos pueden procesarlos. Usar esta guia:
