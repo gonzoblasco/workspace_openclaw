@@ -50,7 +50,7 @@ Parte 1 - Fundamentos de Producción
 │   ├── Topic: Canvas/A2UI access control
 │   └── Topic: Fail-closed defaults
 
-Nivel 2 - Runtime State, Hooks, Observabilidad
+Parte 2 - Runtime State, Hooks, Observabilidad
 ├── Nivel 6 - State Management distribuido (Cap 6)
 │   ├── Topic: Append-only event log
 │   ├── Topic: Compaction + memory flush
@@ -72,7 +72,7 @@ Nivel 2 - Runtime State, Hooks, Observabilidad
 │   ├── Topic: PII redaction
 │   └── Topic: Async telemetry pipelines
 
-Nivel 3 - Self-Correction, Scale, Federated
+Parte 3 - Self-Correction, Scale, Federated
 ├── Nivel 9 - Self-Correcting Stack (Cap 9)
 │   ├── Topic: Circuit breaker (model providers)
 │   ├── Topic: Health hooks + auto-remediation
