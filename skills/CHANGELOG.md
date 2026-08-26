@@ -15,11 +15,11 @@ Registro de cambios de skills del workspace. Los cambios estructurales del works
   - Regla dura nueva: TODO estudio vive en `studies/<slug>/`. NUNCA `study/` (singular).
 
 ### Removed / Deprecated
-- **`skills/learning-tracker/`:** absorbida por `study-tracker`. Marcar como deprecada (ver nota abajo).
+- **`skills/learning-tracker/`:** absorbida por `study-tracker` y **eliminada** del workspace (decidido por Gonzo 2026-08-26). Quitada del SKILLS-INDEX.md. Referencias historicas en `memory/` y changelogs se mantienen como registro del cambio.
 
 ### Why
 - Inconsistencia real (2026-08-26): el curso Codecademy quedo en `studies/` y el libro Packt en `study/` (singular) porque study-tracker definia `studies/` y learning-tracker era agnostica de rutas (creo `study/` en la sesion del 25/08). La fusion elimina la ambiguedad: una skill, una ruta (`studies/`), un indice maestro.
 - Migracion: libro Packt movido de `study/openclaw-ai-in-production/` a `studies/openclaw-ai-in-production/`; `study/` eliminado.
 
 ### Nota de migracion
-- `learning-tracker` queda deprecada pero se conserva en el workspace hasta confirmar que nada mas la referencia. No eliminar hasta validar (check de referencias en `skills/` y `AGENTS.md`). Proximo paso: mover a archivado si se confirma que `study-tracker` cubre todos los casos.
+- `learning-tracker` fue eliminada (2026-08-26) tras confirmar que `study-tracker` cubre todos los casos (estructura de cursos + gamificacion + preparacion de entrevista/JD).
