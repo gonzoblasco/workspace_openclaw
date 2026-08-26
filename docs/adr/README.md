@@ -58,3 +58,4 @@ Cuando un ADR de proyecto se identifique como de alcance general, migrarlo aca:
 3. Asignar el proximo numero disponible.
 4. Agregar al indice.
 5. Dejar una nota en el ADR original del proyecto linkeando al global.
+| ADR-040 | [Seleccion de Modelos por Tipo de Tarea](./ADR-040-modelos-seleccion-por-tarea.md) | workspace |

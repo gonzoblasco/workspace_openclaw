@@ -604,3 +604,15 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Changed
 - Workspace skills count: 20 → 33
 - Skills mirror synced to `.github/skills/`
+
+## [2026-08-26] - ADR-040: Seleccion de Modelos por Tipo de Tarea
+
+### Added
+- **`docs/adr/ADR-040-modelos-seleccion-por-tarea.md`:** nuevo ADR que define el criterio de seleccion de modelos segun el tipo de tarea. Reemplaza al ADR-006. Incluye perfiles de personalidad para 8 modelos, guia rapida de seleccion, y regla operativa para que Kanam sugiera el modelo adecuado antes de cada tarea.
+- **`docs/adr/README.md`:** agregado ADR-040 al indice.
+
+### Changed
+- **ADR-006 (Capacidad Computacional DeepSeek):** marcado como reemplazado por ADR-040.
+
+### Why
+- La migracion a Ollama Pro abrio acceso a 8+ modelos. No tiene sentido usar siempre el mismo modelo cuando cada uno tiene fortalezas distintas. Este ADR captura el criterio de seleccion basado en una cata empirica de 8 modelos con el mismo prompt.
