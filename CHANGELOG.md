@@ -6,6 +6,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-26] - ADR-039: Changesets (cuando usarlos y como)
+
+### Added
+- **`docs/adr/ADR-039-changesets-cuando-y-como.md`:** nuevo ADR de alcance workspace. Define cuando un proyecto debe usar changesets (librerias publicadas a npm con semver y changelog generado) y cuando no (apps de producto, mantener CHANGELOG.md). Incluye el formato del archivo y el tipo de bump. Nace de la colaboracion en facebook/astryx PR #5493, donde el reviewer pidio un changeset.
+- **`docs/adr/README.md`:** agregado ADR-039 al indice.
+
+### Why
+- El workspace no tenia un criterio explicito sobre cuando usar changesets. La colaboracion en astryx mostro que es practica estandar de la industria para librerias publicadas, y quedo documentado para no depender de la memoria.
+
+---
+
 ## [2026-08-26] - Fusion de skills de estudio + indice maestro unico
 
 ### Changed
