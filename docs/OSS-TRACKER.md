@@ -8,7 +8,7 @@
 | Métrica | Valor |
 |---------|-------|
 | PRs abiertos | 17 |
-| PRs mergeados | 5 |
+| PRs mergeados | 6 |
 | PRs cerrados sin merge | 18 |
 | Colaboraciones no-codigo | 6 |
 | Repos con contribuciones | 19 |
@@ -101,9 +101,9 @@
 | **Nuestro PR** | [#5419](https://github.com/facebook/astryx/pull/5419) | **merged** |
 | **Contexto** | - | Abierto 24/08. Review de cixzhang con 3 comentarios, todos addressados: label en el hook template, merge (no overwrite) de atributos popup existentes del trigger, y gating de aria-controls en open state. Re-review y merge el mismo dia. Commits 52262da7 + c1603cad. |
 
-| **Issue** | [#5476](https://github.com/facebook/astryx/issues/5476) | Abierto 25/08 (autor Astro-Han, diagnostico con Claude Code). List y TreeList dropeaban todos los atributos de BaseProps (aria-*, role, tabIndex, id, event handlers) por no tener rest spread - una lista sin header visible no se podia nombrar en screen reader. |
-| **Nuestro PR** | [#5493](https://github.com/facebook/astryx/pull/5493) | **open** |
-| **Contexto** | - | Abierto 25/08. Fix: agregar ...restProps a List y TreeList esparciendolo al root, siguiendo el patron de la casa (ListItem/Kbd). 2 tests de regresion nuevos, 388 tests pass, typecheck y build OK, mergeable. Comentado en el issue #5476 (issuecomment-5410882738) avisando al autor. Commit 94e8ee7c. |
+| **Issue** | [#5476](https://github.com/facebook/astryx/issues/5476) | MERGED 26/08. TreeList forward BaseProps: aria-label/aria-labelledby al <ul role=tree>, header visible gana, role despues del rest. Bug a11y: tree sin header no podia nombrarse. |
+| **Nuestro PR** | [#5493](https://github.com/facebook/astryx/pull/5493) | **merged** |
+| **Contexto** | - | Abierto 25/08. 3 reviews de cixzhang (2 CHANGES_REQUESTED + 1 APPROVED): acotar a TreeList (List va en #5288), aria-label al ul no al div, header visible gana sobre caller aria-labelledby. Merge 26/08. Es a11y -> dispara post LinkedIn nicho a11y. |
 
 ### facebook/docusaurus
 

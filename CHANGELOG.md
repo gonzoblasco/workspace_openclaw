@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-26] - Comando add-contribution en memory-db.sh
+
+### Added
+- **`scripts/memory-db.sh add-contribution`:** nuevo subcomando para registrar contribuciones OSS en la DB (`memory/memory.db`, tabla `contributions`) sin SQL manual. Firma: `add-contribution <repo> <pr> <pr_url> <status> "<detail>" [context] [issue] [issue_url] [tier] [tipo]`. Campos opcionales con defaults (tipo default `pr`; `collab` para no-codigo). Escapa comillas para SQL seguro.
+
+### Changed
+- **`docs/OSS-TRACKER.md`:** regenerado con `export-oss`. Registrado el merge de `facebook/astryx` PR #5493 (TreeList forward BaseProps, a11y).
+
+### Why
+- Al registrar el PR #5493 en el tracker, faltaba un comando dedicado y hubo que insertar con SQL directo. Agregarlo es el principio Boy Scout (dejar el workspace mejor) y evita SQL manual futuro.
+
+---
+
 ## [2026-08-26] - ADR-039: Changesets (cuando usarlos y como)
 
 ### Added
