@@ -365,6 +365,49 @@ Los daily logs (`memory/YYYY-MM-DD.md`) son raw data. Periódicamente, consolida
 
 **Lección:** la memoria no se mantiene sola. La consolidación programada evita que MEMORY.md se llene de ruido o que insights valiosos se pierdan en daily logs olvidados.
 
+### Anti-Repetition en la Consolidación (idea portada de memory-lancedb-dreaming)
+
+El problema real de consolidar periodicamente es que se **repite el mismo material** dia tras dia (los mismos temas, las mismas lecciones, reworded). Para evitarlo, aplicar estos frenos al consolidar:
+
+1. **Exclude promoted** - si un tema/leccion ya esta en MEMORY.md o LEARNINGS.md, NO volver a promoverlo. Solo actualizarlo si cambio (no duplicarlo).
+2. **Text-level dedupe** - antes de promover algo, comparar su texto contra lo ya consolidado en los ultimos ~30 dias. Si es similar (parafraseo del mismo tema), descartar o fusionar, no crear entrada nueva.
+3. **Theme cooldown** - si un tema se consolido hace menos de ~7 dias, no volver a promoverlo (saldria de nuevo por otro wording). Esperar a que sea un avance real, no una repeticion.
+4. **Narrative freshness** - si en el periodo no hay material nuevo suficiente, NO forzar una consolidacion larga. Mejor consolidar solo lo puntual o saltar el ciclo. No fabricar narrativa con contenido reciclado.
+5. **Idle novelty** - si llevas varios ciclos (ej. 7 dias) sin promover nada nuevo, revisar si la consolidacion esta atrapada en un loop de repetir lo mismo; ajustar para buscar solo material genuinamente nuevo.
+
+**Flujo de anti-repetition al consolidar:**
+```
+leer dailies recientes
+  -> por cada tema candidato:
+     - ya esta en MEMORY.md?  → skip (exclude promoted)
+     - similar a algo consolidado hace <30 dias? → fusionar o skip (dedupe)
+     - mismo tema que hace <7 dias? → skip (cooldown)
+     - si no hay novedades → no forzar narrativa (freshness)
+  → promover lo genuinamente nuevo a MEMORY.md/LEARNINGS.md
+```
+
+**Leccion:** la consolidacion no es un copy-paste de los dailies; es destilar solo lo nuevo. Repetir material consolidado ensucia MEMORY.md y desperdicia el ejercicio.
+
+## Noise Filtering - Qué No Persistir a la Memoria
+
+Idea portada del plugin Honcho Memory (ClawHub): filtrar el ruido antes de que entre a la memoria, para que el sistema no se llene de basura operativa. En nuestro setup la captura es curada (Kanam escribe el daily conscientemente), pero hay patrones que NO deben persistir:
+
+**NO escribir en dailies / memoria:**
+- **HEARTBEAT_OK** - acknowledgments de heartbeat (ya tenemos HEARTBEAT.md para eso)
+- **Cron/reminder boilerplate** - "se disparo el cron X", "recordatorio activado" - solo si aporta algo nuevo, no el mero evento
+- **Queued message headers** - cabeceras de mensajes encolados
+- **Startup/session boilerplate** - el ritual de arranque en si (a menos que algo importante surja del ritual)
+- **Confirmaciones obvias** - "listo", "ok", "hecho" sin contexto que valga la pena
+- **Ruido de ejecución** - comandos que corrieron bien, build verde sin incidente, checks de rutina que pasaron
+
+**Si la idea aparece:**
+- ¿Es una decisión/preferencia/lección? → MEMORY.md o LEARNINGS.md
+- ¿Es progreso de una tarea? → todos/STATUS
+- ¿Es contexto de sesión? → el daily, pero solo la parte sustantiva
+- ¿Es solo ruido operativo? → NO persistir
+
+Esta regla mantiene la memoria curada y evita que se llene de ruido operativo que no aporta valor. El mismo principio aplica al DREAMS: al consolidar, descartar ruido (HEARTBEAT, cron, confirmaciones) que pueda haber entrado a los daily logs.
+
 ## Related Skills
 
 - [Engineering Governance](../engineering-governance): Para auditar la calidad del conocimiento
