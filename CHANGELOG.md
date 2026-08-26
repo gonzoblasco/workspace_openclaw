@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-26] - Fusion de skills de estudio + indice maestro unico
+
+### Changed
+- **`studies/README.md` (indice maestro):** reescrito. Ahora lista cursos online (Codecademy) Y libros gamificados (Packt), con la regla dura de una sola fuente de verdad: todo en `studies/<slug>/`, nunca `study/`.
+- **`studies/`:** unificado. Movido el libro de Packt de `study/` (singular) a `studies/openclaw-ai-in-production/`; eliminado `study/`.
+
+### Added
+- **`skills/CHANGELOG.md`:** creado (faltaba - era deuda tecnica referenciada desde CHANGELOG principal y AGENTS.md). Registra cambios de skills.
+
+### Why
+- Fusion de las skills `study-tracker` + `learning-tracker` en una sola (`study-tracker`, "One Skill to Rule Them All") para una unica fuente de verdad de estudios. Inconsistencia real: curso en `studies/`, libro en `study/`. Detalle completo en `skills/CHANGELOG.md`.
+
+---
+
 ## [2026-08-25] - Quitar PR review del inicio/cierre de sesion
 
 ### Changed

@@ -1,22 +1,31 @@
-# STUDIES.md — Índice Maestro de Estudios
+# STUDIES.md - Índice Maestro de Estudios
 
-**Última actualización:** 2026-08-21
+**Última actualización:** 2026-08-26
+
+> Fuente de verdad unica para todo estudio (cursos y libros). Gestionado por la skill `study-tracker` (fusion de study-tracker + learning-tracker, 2026-08-26).
+> **Regla dura:** todo vive en `studies/<slug>/`. NUNCA crear `study/` (singular) ni otra ruta.
 
 ---
 
-## 🎓 CURSOS
+## 🎓 CURSOS (online - estructura de lecciones)
 
 | Curso | Plataforma | Estado | Estructura |
 |---|---|---|---|
-| **agentic-ai-mastery** | Codecademy | En curso — Track 1, Course 2 (video 1/10) | `agentic-ai-mastery/` |
+| **agentic-ai-mastery** | Codecademy | En curso - Track 1, Course 2 (video 1/10) | `agentic-ai-mastery/` |
+
+## 📚 LIBROS (estudio gamificado - niveles/XP/badges)
+
+| Libro | Autor / Editorial | Estado | Estructura |
+|---|---|---|---|
+| **openclaw-ai-in-production** | Ken Huang (Packt, 2026) | En curso - 3/13 capitulos mapeados | `openclaw-ai-in-production/` |
 
 ---
 
 ## 📋 Notas
 
-- Cada curso vive en `studies/<curso-slug>/` con su propio `README.md` (portada + progreso).
-- Las lecciones se documentan en `notes/NN-titulo.md` (español, guion común).
-- Los ejercicios prácticos van en `exercises/` dentro de cada course.
-- Los quizzes y respuestas modelo van en `quiz/`.
-- Para agregar un curso: crear `studies/<curso-slug>/`, su `README.md`, y agregar a la tabla de arriba.
-- Los apuntes son material personal de referencia — en español, no van a GitHub como portfolio.
+- Todo estudio vive en `studies/<curso-slug>/` con su propio `README.md` (portada + progreso).
+- **Cursos (lecciones):** `notes/NN-titulo.md` (espanol, guion comun), `exercises/`, `quiz/`.
+- **Libros / entrevistas (gamificado):** `PLAN-MAESTRO.md` + `nivel-N-tema.md` + `PROGRESO.md` (3 capas, XP/badges/streak).
+- Para agregar un estudio: crear `studies/<slug>/`, su `README.md`, y agregar a la tabla de arriba.
+- Los apuntes son material personal de referencia - en espanol, no van a GitHub como portfolio.
+- **Migracion 2026-08-26:** fusion de study-tracker + learning-tracker en `study-tracker`. Se movio el libro de Packt de `study/` (singular) a `studies/`. Ver skill y CHANGELOG.
