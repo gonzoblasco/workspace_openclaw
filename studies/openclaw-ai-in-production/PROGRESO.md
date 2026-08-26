@@ -9,9 +9,9 @@ El mapeo completo de todos los niveles se documenta antes de empezar la segunda 
 
 | Nivel | Cap | Estado mapeo | XP |
 |-------|-----|--------------|----|
-| 1 | 1 | ✅ mapeado (resumen en artifact) | 0 |
-| 2 | 2 | ✅ mapeado (resumen en artifact) | 0 |
-| 3 | 3 | ✅ mapeado (resumen en artifact) | 0 |
+| 1 | 1 | ✅ mapeado + dominio (cuaderno completo) | 40 |
+| 2 | 2 | ⏳ | 0 |
+| 3 | 3 | ⏳ | 0 |
 | 4 | 4 | ⏳ | 0 |
 | 5 | 5 | ⏳ | 0 |
 | 6 | 6 | ⏳ | 0 |
@@ -23,10 +23,11 @@ El mapeo completo de todos los niveles se documenta antes de empezar la segunda 
 | 12 | 12 | ⏳ | 0 |
 | 13 | 13 | ⏳ | 0 |
 
-XP total: 0 | Badges: 0 | Streak: 1 (25/08)
+XP total: 40 | Badges: 0 | Streak: 1 (26/08)
 
 ## Notas por fase
 
-- **25/08:** inicio del curso. Plan maestro + progreso creados. Cap 1 mapeado (ver artifact Nivel 1).
-- **25/08 (22:18):** Cap 2 mapeado (ver artifact Nivel 2 - Request Traversal). Pipeline de 6 fases, context assembly + dedupe, tool latency, streaming, idempotency, access gates, retry backoff.
-- **25/08 (22:59):** Cap 3 mapeado (ver artifact Nivel 3 - Cascading Failures). Cascade anatomy, Bulkhead (logico via try/catch, no thread pools), graceful degradation ladder, cross-layer error signaling, plugin failure isolation, sandboxing fail-closed, per-layer catch-and-continue.
+- **26/08:** reinicio del estudio. Progreso anterior (mapas de caps 1-3) limpiado. Se empieza de cero con el plan maestro intacto.
+- **26/08:** Cap 1 leido completo. Nivel 1 en dominio (cuaderno `nivel-1-gateway.md` con los 6 topics: control plane, startup bulkhead, channel adapters, PluginRegistry, routing waterfall, horizontal scaling + token exchange). Verificado contra nuestro `openclaw.json` en vivo. 40 XP.
+
+**Dónde quedó:** siguiente es Nivel 2 - Request Traversal (Cap 2).

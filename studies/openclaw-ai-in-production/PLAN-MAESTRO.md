@@ -131,7 +131,7 @@ Parte 3 - Self-Correction, Scale, Federated
 
 | Nivel | Estado |
 |-------|--------|
-| 1 - Arquitectura Gateway | 🚧 En estudio (Cap 1 mapeado) |
+| 1 - Arquitectura Gateway | ✅ 🏛️ |
 | 2 - Request Traversal | ⏳ |
 | 3 - Cascading Failures | ⏳ |
 | 4 - Identity & Encryption | ⏳ |

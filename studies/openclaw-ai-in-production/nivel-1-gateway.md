@@ -2,114 +2,201 @@
 
 Badge: 🏛️ Gateway Architecture | Recursos: libro Cap 1 + repo OpenClaw live + workspace real
 
+> **Fecha:** 26/08 - reinicio del estudio, lectura completa del Cap 1.
+> **Nota al margen (Preface):** el libro pide 16GB de RAM, pero corremos bien en la Air M2 con 8GB porque los modelos van a cloud (la inferencia pesada no toca la RAM local). El requisito del editor es para autohosting completo de modelos, no para el setup cloud-first de Gonzo.
+
 ## Subnivel 1.1 - El Gateway como control plane
 
-### Topic: Gateway como control plane (hub-and-spoke)
+**Idea central:** OpenClaw es **Gateway-centric hub-and-spoke**. El Gateway es el *control plane* - la única costura arquitectónica (seam) que decide qué pasa, a dónde van los requests y quién puede conectarse.
 
-**Teoría (vocabulario con nombre):**
-- **Control plane**: el componente que decide qué puede pasar, a dónde van las requests y quién puede conectarse. En OpenClaw es el proceso Gateway.
-- **Hub-and-spoke**: el Gateway es el hub central; canales, plugins y agentes son los spokes que se conectan a él.
-- **Single control plane**: auth + routing + session management en un solo proceso. 3 propiedades: (1) seguridad consistente (ningún canal se saltea el check), (2) routing auditable en un lugar, (3) un solo proceso para restart/upgrade/observar.
-- **Trade-off del bottleneck**: todo pasa por el Gateway -> potencial bottleneck. Solución: request path fino (auth = comparación constante, routing = lookups en memoria con cache). El Gateway NO hace inference, NO maneja tool calls largos, NO posee el session state filesystem - eso es del **Agent Runtime**.
-- **gateway.bind**: loopback | lan | tailnet | auto | custom - define la superficie de red.
-- **gateway.port**: default 18789.
-- **gateway.auth**: mode (none/token/password/tailscale/device-token/trusted-proxy) + token + rateLimit.
-- **gateway.mode**: local (gestiona canales + agent runtime) vs remote (thin transport relay a otro Gateway) - base del edge deployment (Cap 13).
-- **Startup sidecar sequence** (src/gateway/server-startup.ts): cada sidecar (hooks, browser server, canales, plugin services, ACP session manager) arranca en su propio try/catch -> **Bulkhead pattern al arranque**. Parcial > total: si cae Telegram, Discord arranca igual.
-- **Stale session lock cleanup**: locks de sesión muertos > 30 min se limpian con PID-alive checks (isPidAlive) - evita robar sesiones a un sibling en rolling restart.
-- **Insight del cap**: la simplicidad operativa del Gateway se compra con un modelo de plugins más sofisticado. El diagnostics del registry es tu primera señal de monitoreo.
+**Por qué centralizar en un solo proceso (3 propiedades):**
+1. **Seguridad consistente** - un solo lugar donde se aplican las políticas; ningún channel adapter puede saltarse la auth mientras otro la cumple.
+2. **Estado de routing en un lugar** - el mapeo origen → agente se computa una vez y es auditable.
+3. **Un solo proceso para reiniciar/observar** a las 2am.
 
-**Práctica:** identificamos en nuestro workspace: gateway.bind loopback + Tailscale Serve (modo tailnet), auth por token.
+**Trade-off deliberado:** el Gateway puede ser cuello de botella. La respuesta de OpenClaw: **path de request lo más delgado posible**. El Gateway NO hace inferencia, NO maneja tool calls largos, NO es dueño del filesystem de sesión. Todo eso lo delega al **Agent Runtime** (Cap 2).
 
-**Verificación (mock interview):** ¿Por qué el Gateway es un bottleneck potencial y cómo lo evita OpenClaw?
-**Respuesta esperada:** Porque todo el tráfico lo atraviesa; lo evita manteniendo el request path fino (auth de comparación constante, routing por lookups cacheados) y delegando inference/tool calls/state al Agent Runtime. Cap 2 detalla la asignación de trabajo.
+**Configuración de red (gateway.bind y gateway.port):**
+- `gateway.bind`: loopback (solo misma máquina) | lan | tailnet | auto | custom
+- `gateway.port`: default `18789` para operación local
+- **Regla de seguridad clave:** cambiar `bind` a algo no-loopback SIN endurecer `auth.mode` es la forma más común de exponerse a la red local. El Gateway arranca sin warning porque "weak" es context-dependent - no conoce tu topología.
 
-### Topic: Channel adapters como spokes desacoplados
+**gateway.mode (eje ortogonal a bind):**
+- `local`: mismo proceso maneja auth + ciclo de vida de channel adapters + routing (deployment estándar)
+- `remote`: solo auth y proxying corren localmente, el Agent Runtime vive en otro host (base del edge agent pattern del Cap 13)
 
-**Teoría:**
-- **Channel adapter / ChannelPlugin**: plugin autónomo que habla el protocolo de UN servicio de mensajería, traduce eventos a formato interno, y entrega respuestas. Sin dependencia entre canales ni con el runtime - solo hablan con el Gateway.
-- **Decoupling**: un fallo en Slack no afecta a Telegram; agregar un canal no toca routing/session de otros.
-- **Channel registry** (src/channels/registry.ts): lista canónica de 9 canales core (telegram, whatsapp, discord, irc, googlechat, slack, signal, imessage, line) con metadata pero SIN implementación. Las implementaciones viven en extensions/.
-- **normalizeAnyChannelId**: resuelve cualquier string raw a un ID canónico consultando el plugin registry live, no una lista hardcodeada. Nuevo canal (extensions/zalo/) se agrega sin tocar core.
-- **Alias**: mismo adapter bajo múltiples nombres lógicos (imessage/imsg, irc/internet-relay-chat). Usar siempre IDs canónicos en config nueva; no remover aliases sin auditar bindings.
-- **ChannelPlugin interface**: id (canónico, efectivamente inmutable post-deploy) + meta (nombre, aliases, docs) + config/setup + status (probeAccount) + outbound (delivery mode + chunking). SIN métodos start/stop top-level. Interface minimal.
-- **Blue-green deploy de canales**: cambiar el id de un adapter forzado exige actualizar todos los bindings (Cap 10).
+### Verificación 1.1
+- ¿Qué propiedad gana OpenClaw al centralizar auth/routing/session en un solo proceso?
+- ¿Cuál es el trade-off de esa centralización y cómo lo mitiga OpenClaw?
+- ¿Qué hace `bind: loopback` y qué riesgo hay al cambiarlo sin endurecer auth?
 
-**Práctica:** nuestro workspace usa webchat como único canal. La lista de canales disponibles es propiedad de qué plugins se cargan (openclaw.json), no del core - core chico, sin credenciales de canales que no usamos.
+## Subnivel 1.2 - Startup sidecar sequence (Bulkhead)
 
-**Verificación:** ¿Por qué cambiar el id de un channel adapter roto es una decisión de deployment no trivial?
-**Esperada:** porque el id es el identificador que routing/config/allowlist usan; cambiarlo rompe todos los bindings existentes - por eso los aliases existen y por eso se trata como migración.
+**Idea:** el Gateway nunca queda "parcialmente abierto": o presenta una superficie completamente autenticada, o no escucha en absoluto.
 
-### Topic: PluginRegistry (extensión sin tocar core)
+**Secuencia (src/gateway/server-startup.ts):** los sidecars (hooks internos, browser control server, channel adapters, plugin services) arrancan DESPUÉS de que el listener HTTP/WebSocket está bound y autenticado.
 
-**Teoría:**
-- **PluginRegistry** (src/plugins/registry.ts): estructura central de lo que el Gateway entiende en runtime. Registra: tools, hooks, typedHooks, channels, providers, gatewayHandlers, httpRoutes, cliRegistrars, services, commands, diagnostics.
-- **gatewayHandlers**: diccionario method->handler; registry ENFORCE que no haya 2 plugins con el mismo method name (el segundo se dropea + diagnostic). Evita dispatch impredecible.
-- **diagnostics**: acumula warnings/errors del load. error = blocking alert en producción (registro fallido = capability ausente sin excepción).
-- **createApi()**: superficie que cada plugin usa (registerTool, registerHook, registerHttpRoute, registerChannel, registerProvider, registerGatewayMethod, registerCli, registerService, registerCommand, on).
-- **hookPolicy / allowPromptInjection**: seguridad por plugin. Si plugins.entries.<id>.hooks.allowPromptInjection es false, bloquea o limpia los hooks before_prompt_build/before_agent_start. **Enforcement en registration time, no invocation** - un plugin malicioso no puede saltarse el filtro con loading dinámico.
-- **Global registry singleton** (src/plugins/runtime.ts): Symbol.for("openclaw.pluginRegistryState") - evita split-registry cuando hay múltiples copias del SDK (Jest/Vitest, plugin bundling). El version counter detecta rebuilds (config reload).
+**Bulkhead pattern al startup:** cada sidecar corre en su propio `try/catch`. Un adapter que falla (ej. Telegram caído) NO impide que Discord arranque, y ninguno de los dos impide que el Gateway sirva control UI o health endpoint. **"Partial availability > total unavailability"** - un Gateway con 2 de 3 canales es más útil que uno que se niega a arrancar.
 
-**Verificación:** ¿Por qué la política de prompt injection se aplica en registration time y no en invocation?
-- Esperada: para que un plugin malicioso no pueda bypassear la restricción retrasando su registro o con module loading dinámico. La capacidad de injectar contenido en el prompt se decide por config del plugin, no por su código.
+**Housekeeping de largo plazo:** cleanup de session locks stale. `SESSION_LOCK_STALE_MS = 30 min`. Un lock es stale solo si su proceso dueño está muerto hace ≥30min (PID-alive checks via `getProcessStartTime`/`isPidAlive`). Evita que un Gateway nuevo robe sesiones de un sibling aún corriendo en rolling-restart.
 
-### Topic: Routing de 7 tiers (agent-to-agent)
+**Pendiente de diseño:** los shutdown hooks del Cap 11 (`Platform-as-a-Service`) para zero-downtime restart - el viejo debe terminar sus agent sessions antes de que el nuevo tome los locks.
 
-**Teoría:**
-- **Routing waterfall** (src/routing/resolve-route.ts): 7 tiers de menos específico a menos específico, primer match gana:
-  1. peer-exact
-  2. thread-parent peer
-  3. guild-with-roles
-  4. guild
-  5. team
-  6. account
-  7. channel-wide
-  + default (si nada matchea)
-- **matchedBy**: el tier que produjo el match. Logarlo (`[routing] match: matchedBy=<tier> agentId=<id>` con --verbose) es clave para diagnosticar routing sorpresas.
-- **Determinismo**: el waterfall fijo hace el routing predecible y auditable, no emergente.
-- **Session key + mainSessionKey**: session key codifica agent+channel+account+peer; mainSessionKey es la versión colapsada para DM collapse.
-- **lastRoutePolicy** ("main"|"session"): qué key recibe las last-route updates.
-- **dmScope** ("main"|"per-peer"): cambiarlo post-deploy = session keys distintas = conversaciones reinician. Es deployment-time decision, no runtime.
-- **ACP (Agent Client Protocol)**: cuando un orchestrator spawna un sub-agent, AcpSessionManager asigna identidad de sesión separada - no aparece en history del canal usuario, puede ser reemplazado sin disrupar el orchestrator. **reconcilePendingSessionIdentities** al arranque re-linkea ACP sessions commiteadas antes de un restart - multi-agent sobrevive restarts.
+**Vocabulario:** sidecar, bulkhead pattern, partial availability, session lock stale, PID-alive check, rolling-restart.
 
-**Verificación:** Si cambias dmScope de "main" a "per-peer" post-deploy, ¿qué pasa?
-- Las session keys cambian -> las conversaciones existentes aparecen como nuevas (reinician). Por eso dmScope es deployment-time decision con migración explícita de session keys.
+## Subnivel 1.3 - Channel adapters como spokes desacoplados
 
-### Topic: Horizontal scaling topology
+**Idea:** cada canal es un **channel adapter** - un plugin autocontenido que sabe el protocolo de UN servicio de mensajería, traduce sus eventos al formato interno de OpenClaw y entrega respuestas de vuelta.
 
-**Teoría:**
-- El Gateway en gran parte es **stateless** (auth token-based, routing lee config, conexiones de canal por-instancia). Lo **stateful** es la session data (history, tool calls, memory embeddings) en OPENCLAW_STATE_DIR.
-- **Shared persistent volume**: en multi-instancia, OPENCLAW_STATE_DIR debe ser un volumen compartido montado en todas las réplicas.
-- **Write-lock** (src/agents/session-write-lock.ts): previene que 2 instancias procesen la misma sesión simultáneamente; la otra espera o devuelve backpressure.
-- **Por qué funciona**: agentes conversacionales = bajo rate/sesión (seg-min entre mensajes) + alto tiempo por request (seg a decenas de seg). Bajo este patrón, filesystem lock en volume de red alcanza. NO escala a high-frequency trading, pero evita la complejidad de Redis/etcd.
-- **bind + reverse proxy**: bind lan + auth trusted-proxy (userHeader). 2 safety checks: (1) validate request from known proxy IP (trustedProxies), (2) requiredHeaders (ej HMAC). Falla con trusted_proxy_untrusted_source o trusted_proxy_missing_header_<name>.
+**Propiedades clave:**
+- Los adapters NO dependen entre sí, NO dependen del agent runtime. Solo hablan con el Gateway.
+- Si la API de Slack cae, Telegram sigue operando.
+- Agregar una extensión nueva no afecta el routing ni el session state de otros canales.
 
-**Práctica:** nuestra depl es single-host (loopback), el shared volume no aplica aún. Concepto claro para cuando OpenClaw escale a multi-instancia.
+**Channel registry (src/channels/registry.ts):** los 9 canales core (Telegram, WhatsApp, Discord, IRC, Google Chat, Slack, Signal, iMessage, LINE) en un tuple constante. Cada entrada lleva metadata (label, docs path, system image name) pero **sin implementación** - viven en `extensions/`.
 
-**Verificación:** ¿Qué es lo stateful en OpenClaw y dónde vive? ¿Por qué el lock de archivo alcanza?
-- La session data en OPENCLAW_STATE_DIR. Alcanza porque el patrón de agentes conversacionales tiene bajo rate y alto tiempo por request; no requiere coordinación distribuida como Redis.
+**El punto crítico de diseño:** `normalizeAnyChannelId` consulta el **live plugin registry**, NO una lista hardcodeada. Un canal nuevo (ej. Zalo en `extensions/zalo/`) se resuelve sin tocar `src/channels/registry.ts`. El registry es la única seam entre core y spoke.
 
-### Topic: Token Exchange en el boundary
+**ChannelPlugin interface (mínima a propósito):**
+- `id` - identificador canónico (ej. `"telegram"`)
+- `meta` - display name, aliases, docs path
+- `config` + `setup` - resuelve/valida config
+- `status` adapter - `probeAccount` prueba la cuenta antes de usarla
+- `outbound` adapter - `ChannelOutboundAdapter` con delivery mode + chunking
+- **NO tiene** métodos top-level start/stop. No necesita saber de sesión, routing ni hooks.
 
-**Teoría:**
-- **Token Exchange**: el long-lived device credential (OPENCLAW_GATEWAY_TOKEN / gateway.auth.token) se cambia en el boundary por un session token corto y scope-limited. No es RFC 8693 (no minta downstream token). El long-lived NUNCA viaja más allá del Gateway; el runtime recibe un context con authority ya resuelta.
-- **Razón**: el ataque surface de un long-lived vs short-lived difiere. Interceptado: long-lived = acceso indefinido hasta rotación; short-lived = solo la sesión actual, no crea sesiones nuevas.
-- **authorizeGatewayConnect** (src/gateway/auth.ts): punto central de enforcement. GatewayAuthResult = { ok, method, user, reason, rateLimited, retryAfterMs }. method: none|token|password|tailscale|device-token|trusted-proxy.
-- **safeEqualSecret** (src/security/secret-equal.ts): comparación de tiempo constante anti timing-attack. Es la ÚNICA vía aprobada para comparar credenciales en el Gateway - un === rompe la garantía.
-- **Rate limiting**: limiter.recordFailure en mismatch, reset en success. maxAttempts/windowMs. rate_limited + retryAfterMs (señal de retry con backoff). El contador sobrevive connection resets (efectivo contra reconnect-looping). Sin rate limit, un client mal config en loop puede saturar la auth path.
-- **ResolvedGatewayAuth**: separa mode (auth scheme) de modeSource (de dónde derivó: override/config/token/password/default). Diagnostic: modeSource="token" vs declarado - señal de config drift.
-- **Local vs remote credentials** (src/gateway/credentials.ts): separa credenciales locales (Gateway habla con su HTTP surface) de remotas (cliente -> Gateway en otro host). Rotan independientes.
-- **Tailscale identity**: variante de Token Exchange. resolveVerifiedTailscaleUser hace WhoIs contra el control plane de Tailscale para verificar que el header tailscale-user-login matchea la identidad del IP del nodo. No confía en el header solo. Mismatch -> tailscale_user_mismatch = auth failure.
+**El `id` es inmutable en producción:** si forkés un adapter y cambiás su id, tenés que actualizar TODOS los bindings de openclaw.json que lo referencian. Crucial para blue-green de adapters (Cap 10).
 
-**Práctica:** usamos Tailscale Serve para webchat remoto (la variante tailscale de auth). Nuestra regla de "no exfiltrar datos privados" es coherente con el least-privilege del agent layer.
+**Alias y discovery:** el mismo adapter alcanzable bajo varios nombres lógicos (iMessage = "imessage" + "imsg"; IRC = "irc" + "internet-relay-chat"). Los alias permiten que configs viejas sigan funcionando cuando un adapter cambia su id canónico. **Regla:** usar ids canónicos en config nueva, pero NO remover aliases sin auditar los bindings.
 
-**Verificación:** ¿Qué gana el sistema al mantener el long-lived credential en el boundary y pasar solo una identity claim al runtime?
-- El agent layer queda least-privileged: un secreto de larga duración interceptado da acceso indefinido, pero un session token interceptado da acceso solo a la sesión actual. Los secretos durables nunca alcanzan el agent runtime.
+**Más allá de los 9 core:** extensions/msteams, matrix, zalo, feishu, twitch, nostr, nextcloud-talk, etc. La lista de canales runtime es propiedad de **qué plugins están cargados** (tu openclaw.json), no del core. Core binary chico, no carga credenciales/TLS/network de canales que no usás.
 
-## Cierre del nivel
+## Subnivel 1.4 - PluginRegistry (extensión sin tocar core)
 
-- **Self-review (rúbrica):**
-  - Qué salió bien: conexión directa de cada concepto con nuestro workspace real (loopback+Tailscale, ACP/subagentes, memory persistente, crash recovery). Vocabulario con nombre dominado.
-  - Qué faltó: hands-on de routing multi-binding (no tenemos 2 canales). Verificar auth mode en startup (pendiente).
-- **Pendiente del nivel:** hacer el hands-on del cap (2 canales o simular con HTTP endpoint), verificar modeSource en startup del Gateway.
-- **Badge:** 🏛️ Gateway Architecture (nivel 1 mapeado en primera pasada; XP pendiente de segunda pasada).
+**Idea:** el **PluginRegistry** es la estructura central que el Gateway usa para entender qué hay disponible en runtime. Lleva tools, hooks, HTTP routes, CLI commands, Gateway method handlers, services - cada punto de extensión.
+
+**Objetivo de diseño:** agregar cualquier capacidad nueva (tool, route, hook, channel) **sin editar nada en `src/`**.
+
+**PluginRegistry type (src/plugins/registry.ts):** un named list por extension point. Cada plugin append-a su lista sin tocar el estado de otros.
+
+**gatewayHandlers (atención especial):** dict de method-name → handler-function. El registry **impone que no haya duplicados**: si dos plugins registran el mismo method, el registry registra un error en `diagnostics` y droppea el registro en silencio (fail-safe).
+
+**diagnostics (crítico para producción):** acumula warnings/errors del proceso de carga. Hace visible el fallo de registro **al startup**, no cuando se invoca la capability faltante:
+- Typed hook con nombre no reconocido → `level: "warn"` (no runtime exception)
+- HTTP route que overlap con ruta existente a distinto auth level → `level: "error"`
+- **Regla operativa:** cualquier `level: "error"` en diagnostics es un **blocking alert** para el pipeline de monitoreo.
+
+**plugin API (createApi):** `registerTool`, `registerChannel`, `registerHook`, `registerHttpRoute`, `registerProvider`, `registerGatewayMethod`, `registerCli`, `registerService`, `registerCommand`, + shorthand `on`. Todo escribe en el registry compartido.
+
+**hookPolicy (intersección con seguridad):** `allowPromptInjection` controla si un plugin puede registrar hooks `before_prompt_build`/`before_agent_start`. **Security policy se enforcea en registration time, no en invocation time** - un plugin malicioso no puede bypassear restricciones de prompt injection difiriendo su registro o con dynamic module loading. Cap 5 lo desarrolla.
+
+**Singleton global (src/plugins/runtime.ts):** `Symbol.for("openclaw.pluginRegistryState")` asegura que TODAS las copias del paquete (aun si un plugin bundlea su propia copia del SDK) compartan el mismo state object - evita split-registry bugs. `version` counter permite detectar rebuild tras config reload.
+
+**Vocabulario:** PluginRegistry, diagnostics, registration-time enforcement, split-registry bug, typed hooks.
+
+## Subnivel 1.5 - Seven-tier routing waterfall
+
+**Idea:** `resolveAgentRoute` (src/routing/resolve-route.ts) implementa un **waterfall de 7 tiers** - secuencia de match predicates cada vez menos específicos, primer match gana.
+
+**Tiers (de más a menos específico):**
+1. peer-exact match
+2. thread-parent peer match
+3. guild-with-roles match
+4. guild match
+5. team match
+6. account match
+7. channel-wide match
+- fallback: default agent
+
+**Determinismo + auditabilidad:** el campo `matchedBy` en `ResolvedAgentRoute` te dice exactamente qué tier hizo match. Loggear esto para cada inbound es valioso en producción (diagnóstico de routing surprises). Con `--verbose`: `[routing] match: matchedBy=<tier> agentId=<id>`.
+
+**sessionKey y mainSessionKey:**
+- `sessionKey` - identifica dónde se guarda el estado del agent conversation (agent ID + channel + account + peer en string lowercase estable).
+- `mainSessionKey` - forma simplificada para "direct message collapse" (múltiples peers del mismo account comparten un thread).
+- `lastRoutePolicy` ("main" | "session") - qué key recibe los updates de last-route.
+
+**Riesgo operativo (dmScope):** cambiar `dmScope` de `"main"` a `"per-peer"` post-deployment cambia los session keys calculados → las conversations existentes parecen reiniciarse de cero. **Session key migration NO es automática** - dmScope es decisión de deployment-time, no runtime.
+
+**Agent-to-agent dispatch via ACP:**
+- Un orchestrator que spawnea sub-agent usa **ACP sessions** (AcpSessionManager en src/acp/control-plane/manager.ts).
+- El sub-agent tiene su propia session identity, separada del channel session del orchestrator → no aparece en el historial del canal, y puede ser reemplazado/upgradeado sin romper la sesión del orchestrator.
+- `reconcilePendingSessionIdentities` al startup: re-linkea ACP sessions cuyo identity se commiteó a disco antes de un restart, garantizando que workflows multi-agent sobrevivan restarts.
+
+**Vocabulario:** routing waterfall, tier, matchedBy, sessionKey, mainSessionKey, lastRoutePolicy, dmScope, ACP, session reconciliation.
+
+## Subnivel 1.6 - Horizontal scaling topology
+
+**Mito a romper:** OpenClaw NO es inherentemente single-instance.
+
+**Qué es stateless:** el proceso Gateway (auth token-based, routing lee del config object cargado de disco).
+
+**Qué es stateful:** los agent session data (conversation history, in-progress tool calls, memory embeddings) bajo `OPENCLAW_STATE_DIR`. En single-host es un dir local; en multi-instance debe ser un **shared persistent volume**.
+
+**Render config (render.yaml):** `disk: mountPath /data` + `OPENCLAW_STATE_DIR: /data/.openclaw` + `OPENCLAW_WORKSPACE_DIR: /data/workspace` + `generateValue: true` para el token (platform-managed, no se commitea).
+
+**Two-instance consistency:**
+- Ambos montan el mismo volume, ambos leen el mismo state dir, un load balancer distribuye.
+- `session-write-lock.ts` (src/agents/session-write-lock.ts) previene que dos instancias procesen el mismo session simultáneamente (file-system lock).
+- **El shared volume es el punto único de coordinación.** Para el workload conversacional (bajo request rate, alto processing time por request) el file-system locking en network volume es ADECUADO. No escala a high-frequency trading ni real-time game server, pero evita la complejidad de Redis/etcd para agentes conversacionales.
+
+**Bind mode + reverse proxy:**
+- En contenedor con LB que termina TLS: `bind: lan` (o 0.0.0.0 via PORT=8080) + `auth.mode: trusted-proxy`.
+- Trusted-proxy extrae el user identity de un header del proxy upstream (`gateway.auth.trustedProxy.userHeader`), no de bearer token.
+- **Dos safety checks:** (1) valida que el request venga de un proxy IP conocido (`gateway.trustedProxies`), (2) `requiredHeaders` exige headers extra (ej. HMAC). Falla → `trusted_proxy_untrusted_source` o `trusted_proxy_missing_header_<name>`.
+
+**Lección:** saber qué es stateless vs qué debe compartirse separa el deployment que escala limpio del que corrompe sesiones bajo carga.
+
+## Subnivel 1.6 - Token Exchange en el boundary
+
+**Idea:** el patrón más importante de seguridad. Un device credential de largo plazo (`OPENCLAW_GATEWAY_TOKEN` o `gateway.auth.token`) se intercambia en el boundary por un session token de corta duración y scope-limitado. **OJO:** es credential-scoping, NO RFC 8693 OAuth token exchange (no se mintea downstream token).
+
+**Por qué importa:** la superficie de ataque de un credential largo (si lo interceptan, acceso indefinido hasta rotación manual) vs un session token (solo durante la sesión actual, no crea sesiones nuevas). El Gateway **nunca deja pasar el credential largo** - el agent runtime recibe un context object con authority ya resuelta.
+
+**authorizeGatewayConnect (src/gateway/auth.ts):** el punto central de enforcement. Token branch:
+- Sin token → `{ ok: false, reason: "token_missing" }`
+- Token mal → `safeEqualSecret` (constant-time) + rate limit failure → `{ ok: false, reason: "token_mismatch" }`
+- Token OK → resetea el limiter → `{ ok: true, method: "token" }`
+
+**safeEqualSecret (src/security/secret-equal.ts):** comparación en tiempo constante para prevenir timing attacks (inferir cuántos chars acertaste por el tiempo de respuesta). **Es la ÚNICA ruta de comparación aprobada** para credenciales en el Gateway. Un fallback a `===` rompe la garantía para esa branch.
+
+**ResolvedGatewayAuth:** separa config del credential. `mode` (none|token|password|trusted-proxy) + `modeSource` (override|config|token|password|default). El modo y su origen se reportan al startup - **diagnóstico de config drift**: si `modeSource: "token"` (inferido de env var) en vez de `"config"`/`"override"`, significa que el modo no fue declarado explícitamente.
+
+**Local vs remote credential resolution (credentials.ts):** separa credenciales locales (Gateway habla con su propia HTTP surface) de remotas (client conecta a Gateway en otro host), basado en `gateway.mode` + `OPENCLAW_SERVICE_KIND=gateway`. En split-topology (macOS app → VM cloud), el app lee `gateway.remote.url` + token local; la VM lee `OPENCLAW_GATEWAY_TOKEN` del env. Rotan de forma independiente.
+
+**Rate limiting como control de confiabilidad + seguridad:** sobrepasar `maxAttempts` en `windowMs` → `rate_limited` + `retryAfterMs` (Retry with Exponential Backoff signal). El count sobrevive resets de conexión → efectivo contra reconnect-looping attackers. Sin rate limit, un cliente misconfigurado en loop tight puede saturar el auth path con miles de log lines.
+
+**Tailscale como variante de Token Exchange:** `auth.allowTailscale: true` → `resolveVerifiedTailscaleUser` hace WhoIs lookup contra el Tailscale control plane. Verifica que la identidad del header `tailscale-user-login` coincide con la identidad del nodo IP. El machine key de Tailscale nunca toca el Gateway; solo un verified user claim (login, email, name) para audit + access decisions. **Mismatch guard:** proxy comprometido que inyecta otro login → `{ ok: false, reason: "tailscale_user_mismatch" }`, tratado como auth failure, no silent pass-through. (Cap 4 completa: zero-trust, mTLS, SOUL.md signing.)
+
+**Net effect:** el credential largo NUNCA llega al agent runtime. El Gateway guarda el secret y reenvía solo un identity claim verificado de corta vida. El agent layer queda least-privileged aunque canales y deployments se multipliquen.
+
+## Verificación en vivo contra nuestro workspace
+
+> Nuestro `openclaw.json` (2026-08-26) confirma el capítulo directamente:
+
+```json
+{
+  "gateway": {
+    "auth": { "mode": "token", "token": "..." },
+    "bind": "loopback",
+    "mode": "local",
+    "port": 18789,
+    "tailscale": { "mode": "serve", "resetOnExit": false }
+  }
+}
+```
+
+- `bind: loopback` + `port: 18789` = el default seguro que el libro recomienda para single-host. ✔️
+- `mode: token` = Token Exchange explícito (no inferido). ✔️
+- `mode: local` = deployment estándar, el mismo proceso que maneja auth + canales. ✔️
+- `tailscale: serve` = el patrón de remote webchat (PWA en iPhone) que el capítulo describe como variante Tailscale de Token Exchange. Nuestro webchat remoto ES el caso de uso que motiva la sección. ✔️
+
+**Esto es la ventaja diferencial del estudio:** el libro describe teoría, nosotros la operamos en producción real todos los días.
+
+## Notas de conexión
+
+- **Bulkhead (startup)** → Cap 3 lo desarrolla en profundidad (containing cascading failures).
+- **Hook policy / prompt injection** → Cap 5 (PBAC).
+- **trusted-proxy pattern** → Cap 10 (rate limiting + versioning para public-facing).
+- **Edge agent deployment (remote mode)** → Cap 13.
+- **Zero-trust, mTLS, SOUL.md signing** → Cap 4.
+- **Shutdown hooks / zero-downtime restart** → Cap 11.
