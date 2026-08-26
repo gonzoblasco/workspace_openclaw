@@ -11,7 +11,7 @@ El mapeo completo de todos los niveles se documenta antes de empezar la segunda 
 |-------|-----|--------------|----|
 | 1 | 1 | ✅ mapeado (resumen en artifact) | 0 |
 | 2 | 2 | ✅ mapeado (resumen en artifact) | 0 |
-| 3 | 3 | ⏳ | 0 |
+| 3 | 3 | ✅ mapeado (resumen en artifact) | 0 |
 | 4 | 4 | ⏳ | 0 |
 | 5 | 5 | ⏳ | 0 |
 | 6 | 6 | ⏳ | 0 |
@@ -29,3 +29,4 @@ XP total: 0 | Badges: 0 | Streak: 1 (25/08)
 
 - **25/08:** inicio del curso. Plan maestro + progreso creados. Cap 1 mapeado (ver artifact Nivel 1).
 - **25/08 (22:18):** Cap 2 mapeado (ver artifact Nivel 2 - Request Traversal). Pipeline de 6 fases, context assembly + dedupe, tool latency, streaming, idempotency, access gates, retry backoff.
+- **25/08 (22:59):** Cap 3 mapeado (ver artifact Nivel 3 - Cascading Failures). Cascade anatomy, Bulkhead (logico via try/catch, no thread pools), graceful degradation ladder, cross-layer error signaling, plugin failure isolation, sandboxing fail-closed, per-layer catch-and-continue.
