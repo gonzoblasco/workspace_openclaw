@@ -107,6 +107,13 @@
 - **Diagnóstico:** las conversaciones SÍ se guardan en el backend. El problema era de restauración: el `runtimeKey` se basaba en un ref que no se actualiza al recargar, así que el provider no se remontaba y el useChat arrancaba vacío.
 - **Fix:** `runtimeKey` ahora deriva de `localConversationId`/`localRepoId` (estado, no ref). `ThreadList` lee del backend (ProjectConversationsProvider) en vez del localStorage de assistant-ui. Botón "New" navega a `/<repoId>`.
 
+## GESTION DE PROYECTOS (2026-08-27) - commit bed9456
+
+- **Rename:** `PATCH /api/repos/[repoId]` cambia el name en metadata.json (el repoId/carpeta no cambia).
+- **Delete:** `DELETE /api/repos/[repoId]` detiene el contenedor Docker + borra la carpeta del proyecto.
+- **UI:** menú de acciones (rename/delete) en las cards del HomeWelcome (la UI real de proyectos). `refreshRepos` en el ReposProvider.
+- **Nota:** el RepoSidebar/ThreadListSidebar son código muerto (no se renderizan). La UI real es el HomeWelcome (cards con previews).
+
 ---
 
-**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui), 69f9969 (export), 3e1c549 (fix conversaciones).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui), 69f9969 (export), 3e1c549 (fix conversaciones), bed9456 (gestion proyectos).
