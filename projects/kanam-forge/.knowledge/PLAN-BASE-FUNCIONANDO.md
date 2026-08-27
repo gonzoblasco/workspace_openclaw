@@ -24,24 +24,17 @@
 - **Fix (cb5eea8):** lista de archivos con paths relativos + sección "File paths" que prohíbe paths absolutos. **Verificado:** el agente usa paths relativos sin ENOENT.
 - **Bug 2 (puerto 3000) también resuelto en cb5eea8:** el agente ya no inventa `localhost:3000` como URL pública, dice "miralo en el preview de la interfaz". **Verificado** con prueba real.
 
-### P2 - `.env.local` duplicado (root y `adorable/`)
-- **Síntoma:** el `.env.local` está en `projects/kanam-forge/` y también en `adorable/` (lo copié para que Next.js lo lea).
-- **Causa:** Next.js con workspaces busca los env files en el directorio del proceso (`adorable/`), no en el root del proyecto.
-- **Fix:** decidir dónde vive. Opción A: solo en `adorable/` (donde corre Next). Opción B: configurar el root para que lea del root del proyecto. El `.env.local` está gitignored, así que no afecta el repo.
+### P2 - `.env.local` duplicado (root y `adorable/`) - RESUELTO (94f3d36)
+- **Fix:** ubicación canónica = `adorable/.env.local` (donde corre Next.js). Eliminado el del root. `.env.example` actualizado (nota de ubicación, `/api` en OLLAMA_BASE_URL, advertencia sobre `~`).
 
-### P3 - Warning de lockfiles del workspace
-- **Síntoma:** Next.js detecta el `package-lock.json` del workspace y se confunde.
-- **Causa:** el workspace tiene su propio lockfile.
-- **Fix:** mitigado con `turbopack.root`, pero el warning puede volver. Evaluar si hace falta más config.
+### P3 - Warning de lockfiles del workspace - RESUELTO (turbopack.root)
+- **Fix:** el `turbopack.root` configurado en `next.config.ts` eliminó el warning. Verificado: dev server arranca limpio sin warnings.
 
-### P4 - 5 vulnerabilidades npm (2 low, 3 high)
-- **Síntoma:** `npm audit` reporta 5 vulnerabilidades.
-- **Causa:** del upstream (Adorable).
-- **Fix:** evaluar `npm audit fix` (con cuidado, puede romper el stack pinneado de assistant-ui).
+### P4 - 5 vulnerabilidades npm (2 low, 3 high) - RESUELTO (94f3d36)
+- **Fix:** upgrade `next` 16.1.5 → 16.3.3 (fix de advisories high). Verificado: build + loop del agente OK. Quedan 3 vulnerabilidades low (de @ai-sdk, requieren breaking change - documentado como deuda).
 
-### P5 - Dev server no es un servicio
-- **Síntoma:** hay que levantar `npm run dev` manualmente cada vez.
-- **Fix:** opcional - crear un script de arranque o documentar el comando.
+### P5 - Dev server no es un servicio - RESUELTO (02614dd)
+- **Fix:** README documenta los pasos exactos de arranque (Docker, .env.local en adorable/, npm run dev) + troubleshooting.
 
 ## Plan de ejecución (pipeline A/B)
 
@@ -62,18 +55,19 @@
 - [ ] Actualizar README con los pasos exactos: Docker up, npm install, .env.local, npm run dev.
 - [ ] Actualizar STATUS.md de kanam-forge con el estado real.
 
-## Criterio de "base funcionando"
+## Criterio de "base funcionando" - COMPLETADO (2026-08-27)
 
-- [ ] Crear un proyecto nuevo desde cero (POST /api/repos) sin errores
-- [ ] El agente responde a un pedido de cambio SIN fallar con path absoluto
-- [ ] El preview refleja el cambio
-- [ ] El workspace del proyecto tiene commit del cambio
-- [ ] README documenta el arranque
-- [ ] STATUS.md actualizado
+- [x] Crear un proyecto nuevo desde cero (POST /api/repos) sin errores
+- [x] El agente responde a un pedido de cambio SIN fallar con path absoluto
+- [x] El preview refleja el cambio
+- [x] El workspace del proyecto tiene commit del cambio
+- [x] README documenta el arranque
+- [x] STATUS.md actualizado
 
 ## Notas
 
 - El dev server quedó corriendo en localhost:3000 (para pruebas).
 - Docker Desktop quedó corriendo (daemon activo).
 - La imagen sandbox está construida.
-- El proyecto de prueba se limpió (container + carpeta).
+- Los proyectos de prueba se limpiaron (containers + carpetas).
+- **Deuda documentada:** 3 vulnerabilidades low de @ai-sdk (requieren breaking change, diferir a upgrade planificado del stack).

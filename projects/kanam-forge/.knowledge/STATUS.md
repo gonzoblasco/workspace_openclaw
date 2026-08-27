@@ -53,16 +53,21 @@
 - **Plan completo:** `FUSION-CREATE-WITH-AI.md`
 - **Punto de integración clave:** reemplazar el scaffold básico de `provision.ts` por el scaffold completo de create-with-ai (React+Vite+Supabase+shadcn+CI+migraciones) + integrar el `ai/analyzer` al flujo del chat.
 
-## BASE FUNCIONANDO (2026-08-27) - VERIFICADO
+## BASE FUNCIONANDO (2026-08-27) - COMPLETA ✅
 
 - **Build:** compila (TypeScript OK, todas las rutas).
 - **Dev server:** corre en localhost:3000.
 - **Docker:** daemon + imagen sandbox construida (`kanam-forge/sandbox:latest`).
 - **Creación de proyecto:** POST /api/repos → container + workspace provisionado + preview.
 - **Loop del agente:** chat → Ollama (deepseek-v4-flash) → tools (readFile, replaceInFile, checkApp) → exec en container → verificación. Probado: cambió el título de la app y el preview lo reflejó.
-- **Bugs arreglados (commit `ce390dd`):** turbopack.root (Next.js no leía .env.local) + KANAM_FORGE_DATA_DIR con `~` sin expandir.
-- **Pendiente P1:** el agente usa path absoluto `/workspace/...` que falla (ENOENT) - ajustar system-prompt para paths relativos. Plan: `PLAN-BASE-FUNCIONANDO.md`.
+- **Bugs arreglados:**
+  - `ce390dd`: turbopack.root (Next.js no leía .env.local) + KANAM_FORGE_DATA_DIR con `~` sin expandir.
+  - `cb5eea8`: system-prompt - paths relativos (sin ENOENT) + no inventar puerto 3000.
+  - `94f3d36`: upgrade next 16.1.5 → 16.3.3 (fix vulns high) + .env.example corregido.
+  - `02614dd`: README con setup + troubleshooting.
+- **Deuda documentada:** 3 vulnerabilidades low de @ai-sdk (requieren breaking change, diferir).
+- **Plan:** `PLAN-BASE-FUNCIONANDO.md` (completo).
 
 ---
 
-**Último log:** 2026-08-27 — Base verificada funcionando (build + dev server + loop del agente). Bugs de turbopack.root y KANAM_FORGE_DATA_DIR arreglados. Plan de base funcionando creado (PLAN-BASE-FUNCIONANDO.md). Repo clonado en el workspace con remote propio. create-with-ai archivado. Commits del fork: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs).
