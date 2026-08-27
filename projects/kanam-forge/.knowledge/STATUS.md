@@ -23,8 +23,9 @@
 - [x] LLM provider Ollama local (LLM_PROVIDER=ollama, modelo deepseek-v4-flash:cloud)
 - [x] **HITO PARCIAL:** crear proyecto → provisionar → npm install → dev server → preview HTTP 200 (puerto dinámico)
 - [x] **HITO: loop completo del AGENTE validado** (chat → Ollama deepseek-v4-flash → tools → exec en container)
-- [ ] Ajustar system prompt para paths relativos (el agente usa `workspace/` como prefijo → ENOENT)
+- [x] Ajustar system prompt para paths relativos (el agente usa `workspace/` como prefijo → ENOENT) - FIX cb5eea8
 - [ ] Supabase central compartido + integración de backend en apps generadas
+- [x] **BUG:** el agente informa el puerto 3000 en lugar de la `previewUrl` al finalizar la creación - FIX cb5eea8
 
 **Stack alineado (2026-08-17):** el stack de Adorable estaba atado a AI SDK 6 con `ollama-ai-provider` v1 (spec v1, incompatible). Fix: `ollama-ai-provider-v2@3.6.0` (spec v2, compatible con ai@6) + pin `@assistant-ui/react@0.12.12` con overrides de `store@0.2.1`/`core@0.1.1`/`tap@0.5.1` (evita `tapAssistantClientRef` roto). Ollama baseURL necesita sufijo `/api`. ApiKeyGate salta con Ollama (no requiere key). Commit `e72f10b`.
 

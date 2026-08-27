@@ -18,10 +18,11 @@
 
 ## Pendientes / deuda detectada
 
-### P1 - El agente usa path absoluto `/workspace/...` que falla
+### P1 - El agente usa path absoluto `/workspace/...` que falla - RESUELTO (cb5eea8)
 - **Síntoma:** el agente intentó `readFileTool` con `/workspace/app/layout.tsx` → "Invalid file path" (ENOENT). Se auto-corrigió con path relativo `app/layout.tsx`.
-- **Causa:** el `system-prompt.ts` dice que el workspace está en `${WORKDIR}` (`/workspace`), pero las tools esperan paths relativos.
-- **Fix:** ajustar el system-prompt para que el agente use paths relativos (sin prefijo `/workspace`). Es el pendiente que ya estaba anotado en STATUS.md ("Ajustar system prompt para paths relativos").
+- **Causa:** el `system-prompt.ts` decía que el workspace está en `${WORKDIR}` (`/workspace`), pero las tools esperan paths relativos.
+- **Fix (cb5eea8):** lista de archivos con paths relativos + sección "File paths" que prohíbe paths absolutos. **Verificado:** el agente usa paths relativos sin ENOENT.
+- **Bug 2 (puerto 3000) también resuelto en cb5eea8:** el agente ya no inventa `localhost:3000` como URL pública, dice "miralo en el preview de la interfaz". **Verificado** con prueba real.
 
 ### P2 - `.env.local` duplicado (root y `adorable/`)
 - **Síntoma:** el `.env.local` está en `projects/kanam-forge/` y también en `adorable/` (lo copié para que Next.js lo lea).
