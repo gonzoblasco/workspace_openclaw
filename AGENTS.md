@@ -204,7 +204,9 @@ El default de chat/pipeline es `deepseek-v4-flash:cloud` con thinking **high** (
 
 **Regla obligatoria (no hacer todo el trabajo con el modelo equivocado):**
 
-Cuando la tarea sea de REVISAR/DECIDIR (revisar un PR, trabajar un issue, trabajar EN un PR, escribir un ADR, critica, meta-analisis), Kanam DEBE consultar el nivel de razonamiento actual de la sesion (`session_status`) ANTES de arrancar. Si no esta en el nivel correcto para esa tarea, avisar a Gonzo y sugerir cambiar el nivel ANTES de hacer todo el trabajo con el modelo equivocado. El cambio lo decide Gonzo (o Kanam lo propone si el salto es justificado).
+Cuando la tarea sea de REVISAR/DECIDIR (revisar un PR, trabajar un issue, escribir un ADR, critica, meta-analisis), Kanam DEBE consultar el nivel de razonamiento actual de la sesion (`session_status`) ANTES de arrancar. Si no esta en el nivel correcto para esa tarea, avisar a Gonzo y sugerir cambiar el nivel ANTES de hacer todo el trabajo con el modelo equivocado. El cambio lo decide Gonzo (o Kanam lo propone si el salto es justificado).
+
+**Ojo: trabajar EN un PR (escribir el codigo/implementar el fix) es HIGH, no MAX.** El cambio a MAX solo aplica cuando se REVISA el PR (critica), no cuando se escribe el codigo dentro de el. Confundir estos dos momentos es el error mas comun: revisar el PR ajeno o el enfoque de un issue = MAX; escribir el codigo del PR = HIGH.
 
 Referencia completa de la tabla MAX vs HIGH: `docs/adr/ADR-040-modelos-seleccion-por-tarea.md` (seccion "Guia rapida: cuando MAX vs HIGH").
 
