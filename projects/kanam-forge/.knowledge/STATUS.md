@@ -93,6 +93,14 @@
 - **Divisor:** arrastrable entre chat y viewport (resizer, 25%-70% del ancho del chat).
 - **Paleta:** bajada la saturación del fondo (oklch 0.97 0.008 20) y sidebar (0.99 0.004 20).
 
+## EXPORT (reemplaza PUBLISH) (2026-08-27) - commit 69f9969
+
+- **Publish eliminado:** ya no estamos ligados a Vercel. Eliminado `PublishDialog` y el flujo de domains .style.dev + promote.
+- **ExportDialog:** descargar ZIP del código fuente o pushear a repo nuevo de GitHub (privado por default).
+- **API routes:** `/api/repos/[repoId]/export` (ZIP, excluye node_modules/.next) y `/api/repos/[repoId]/export-github` (gh CLI).
+- **Sidebar:** pestaña "deployments" reemplazada por "export".
+- **Nota:** las routes production-domain/promote quedan en el repo pero sin uso (se pueden borrar después).
+
 ---
 
-**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada. Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada. Export reemplaza publish (ZIP + GitHub). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui), 69f9969 (export).
