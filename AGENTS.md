@@ -208,9 +208,19 @@ Cuando la tarea sea de REVISAR/DECIDIR (revisar un PR, trabajar un issue, escrib
 
 **Ojo: trabajar EN un PR (escribir el codigo/implementar el fix) es HIGH, no MAX.** El cambio a MAX solo aplica cuando se REVISA el PR (critica), no cuando se escribe el codigo dentro de el. Confundir estos dos momentos es el error mas comun: revisar el PR ajeno o el enfoque de un issue = MAX; escribir el codigo del PR = HIGH.
 
-**Pausa obligatoria: escribir -> code review propio -> recien subir (2026-08-27).** Al trabajar en un PR propio, NO hacer todo de corrido. Flujo: (1) escribir el codigo + commits en HIGH; (2) PAUSA para cambiar de nivel a MAX; (3) hacer un code review propio del codigo escrito (critica) antes de subir nada; (4) recien entonces push/abrir PR. El codigo que escribe el modelo en HIGH se revisa con el mismo modelo en MAX antes de exponerlo. Es la oportunidad mas valiosa de MAX: atrapar los errores de tu propio PR antes de que los vea un reviewer.
+**Pausa obligatoria: agentes iteran -> pausa -> revision final -> push -> redactar borrador (2026-08-27).** Flujo completo al trabajar en un PR propio con el pipeline de agentes:
 
-**La pausa es agnostica a como se escribio el codigo.** Da igual si el codigo lo escribe Kanam, Gonzo, o el pipeline A/B de agentes (Qwen/Claude Code via `ollama launch qwen` / ANTHROPIC_BASE_URL). Todo eso termina en los commits del PR, y ahi viene la pausa y el self-review en MAX. El cross-check A/B de los agentes es parte de la escritura (HIGH); la pausa MAX es la capa de critica de TU PR encima de esa cadena, antes de exponerlo.
+1. **Agente A** hace los cambios (HIGH).
+2. **Agente B** revisa los cambios del Agente A (HIGH).
+3. **Si hay mas cambios:** repetir pasos 1 y 2, pero **alternando el orden** de los agentes (si en la ronda anterior A escribio y B reviso, en la siguiente B escribe y A revisa, y asi).
+4. **PAUSA.** Se cambia el nivel a MAX.
+5. **Revision final:** Kanam analiza TODO el trabajo ya iterado por A y B como una unidad (el PR completo, no piezas sueltas), desde OpenClaw, en MAX.
+6. **Push** (solo despues de la revision final aprobada).
+7. **Redactar el borrador** del PR/feedback.
+
+El cross-review del Agente B (paso 2) es parte de la cadena de escritura (HIGH, ojos frescos de otro agente). La revision final de Kanam en MAX (paso 5) es la SEGUNDA revision, despues de que los agentes terminaron de iterar, y analiza el conjunto completo - es la oportunidad mas valiosa de MAX: atrapar errores de TU PR antes de que los vea un reviewer.
+
+**La pausa es agnostica a como se escribio el codigo.** Da igual si el codigo lo escribe Kanam, Gonzo, o el pipeline A/B de agentes (Qwen/Claude Code via `ollama launch qwen` / ANTHROPIC_BASE_URL). Todo eso termina en los commits del PR, y ahi viene la pausa, la revision final de Kanam en MAX analizando el conjunto, el push, y el borrador del PR.
 
 Referencia completa de la tabla MAX vs HIGH: `docs/adr/ADR-040-modelos-seleccion-por-tarea.md` (seccion "Guia rapida: cuando MAX vs HIGH").
 
