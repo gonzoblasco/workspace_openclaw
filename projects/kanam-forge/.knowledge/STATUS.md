@@ -86,6 +86,13 @@
 - **System prompt:** el agente se presenta como "Kanam Forge".
 - **Tools:** "Adorable VM" → "sandbox" en descripciones.
 
+## UI AJUSTES (2026-08-27) - commit 09520d5
+
+- **Settings:** removido el botón de API key settings (Ollama local no necesita key).
+- **Terminal:** colapsado por default (solo barra con toggle), expandir/colapsar con ChevronUp.
+- **Divisor:** arrastrable entre chat y viewport (resizer, 25%-70% del ancho del chat).
+- **Paleta:** bajada la saturación del fondo (oklch 0.97 0.008 20) y sidebar (0.99 0.004 20).
+
 ---
 
-**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada. Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui).
