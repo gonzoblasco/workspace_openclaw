@@ -35,16 +35,16 @@
 
 ## Fases de integración
 
-### Fase A — Portar el analyzer + scaffold a kanam-forge
-- [ ] Portar `ai/analyzer.ts` → `lib/analyzer.ts` (adaptar imports, quitar @clack/prompts, soportar Ollama)
-- [ ] Portar `scaffold/index.ts` + `migrations.ts` → `lib/scaffold/` (adaptar de Vite a Next.js App Router)
-- [ ] Reemplazar el `FILES` de `provision.ts` por el scaffold completo de create-with-ai (adaptado a Next.js)
-- [ ] Configurar Vitest + Biome + shadcn en el scaffold generado
+### Fase A — Portar el analyzer + scaffold a kanam-forge (COMPLETA)
+- [x] Portar `ai/analyzer.ts` → `lib/analyzer.ts` (adaptar imports, quitar @clack/prompts, soportar Ollama) - commit 8faa542
+- [x] Portar `scaffold/index.ts` + `migrations.ts` → `lib/scaffold/files.ts` (adaptar de Vite a Next.js App Router) - commit 2e087f3
+- [x] Reemplazar el `FILES` de `provision.ts` por el scaffold completo de create-with-ai (adaptado a Next.js) - commit 82e919d
+- [x] Configurar Vitest + Biome + shadcn en el scaffold generado
 
-### Fase B — Integrar el analyzer al flujo del chat
-- [ ] Cuando el usuario describe un proyecto nuevo, kanam-forge corre el analyzer ANTES de provisionar (para determinar stack/features/tablas/auth/billing)
-- [ ] El scaffold se genera con la config del análisis (tablas SQL, auth, billing)
-- [ ] Adaptar el system-prompt para que el agente sepa que el proyecto ya viene con stack opinado (Supabase, shadcn, Biome, Vitest, CI)
+### Fase B — Integrar el analyzer al flujo del chat (COMPLETA)
+- [x] Cuando el usuario describe un proyecto nuevo, kanam-forge corre el analyzer ANTES de provisionar (para determinar stack/features/tablas/auth/billing) - commit 18bc401
+- [x] El scaffold se genera con la config del análisis (tablas SQL, auth, billing) - buildScaffold en commit 1493673
+- [ ] Adaptar el system-prompt para que el agente sepa que el proyecto ya viene con stack opinado (Supabase, shadcn, Biome, Vitest, CI) — PENDIENTE
 
 ### Fase C — Portar la iteración (reader)
 - [ ] Portar `iteration/reader.ts` → alimentar el contexto inicial del agente (qué tiene el proyecto: auth, supabase, tests)
