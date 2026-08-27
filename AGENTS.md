@@ -195,6 +195,19 @@ Reglas duras de Gonzo para publicar feedback/review en repos de terceros. Correg
 
 **Regla de contexto:** los borradores de feedback se guardan en `docs/feedback-<repo>-<numero>-draft.md` para revisión de Gonzo. El archivo de borrador y el texto a publicar son cosas DISTINTAS - al publicar, nunca usar el archivo de borrador directo; extraer solo el texto final del comentario.
 
+#### Nivel de razonamiento por tipo de tarea (2026-08-27)
+
+El default de chat/pipeline es `deepseek-v4-flash:cloud` con thinking **high** (`agents.defaults.thinkingDefault = "high"`). MAX (`max`) es un salto on-demand. El criterio fino: **REVISAR vs CREAR**.
+
+- **MAX:** tareas de revision/critica/decision. Revisar un PR, trabajar un issue (decidir enfoque), ADRs, meta-analisis, revision critica de algo terminado, problema grave en prod. Donde la respuesta QUEDA ESCRITA o el ERROR ES CARO.
+- **HIGH (default):** tareas de produccion/avance. Trabajar EN un PR (escribir codigo/fix), escribir commits, codigo, docs, respuestas, coding diario, debugging normal.
+
+**Regla obligatoria (no hacer todo el trabajo con el modelo equivocado):**
+
+Cuando la tarea sea de REVISAR/DECIDIR (revisar un PR, trabajar un issue, trabajar EN un PR, escribir un ADR, critica, meta-analisis), Kanam DEBE consultar el nivel de razonamiento actual de la sesion (`session_status`) ANTES de arrancar. Si no esta en el nivel correcto para esa tarea, avisar a Gonzo y sugerir cambiar el nivel ANTES de hacer todo el trabajo con el modelo equivocado. El cambio lo decide Gonzo (o Kanam lo propone si el salto es justificado).
+
+Referencia completa de la tabla MAX vs HIGH: `docs/adr/ADR-040-modelos-seleccion-por-tarea.md` (seccion "Guia rapida: cuando MAX vs HIGH").
+
 #### Verify Before Push
 
 Para proyectos con build step (Vite, Next.js, etc.):

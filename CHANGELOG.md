@@ -6,14 +6,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
-## [2026-08-27] - Thinking default high en config del gateway
+## [2026-08-27] - Guia MAX vs HIGH + regla de nivel de razonamiento
+
+### Added
+- **`docs/adr/ADR-040-modelos-seleccion-por-tarea.md`:** nueva seccion "Guia rapida: cuando MAX vs HIGH (default)" con tabla por tarea (revisar PR = MAX, escribir codigo/commit = HIGH, etc) y regla practica (queda escrita / error caro -> MAX; avanzar -> HIGH).
+- **`AGENTS.md`:** nueva subseccion "Nivel de razonamiento por tipo de tarea" bajo Reglas de Ingenieria. Regla obligatoria: cuando la tarea es revisar/decidir (PR, issue, ADR, critica), Kanam DEBE consultar `session_status` antes de arrancar y avisar si el nivel no es el correcto, para no hacer todo el trabajo con el modelo equivocado.
 
 ### Changed
-- **`~/.openclaw/openclaw.json`:** `agents.defaults.thinkingDefault = "high"`. El default de chat/pipeline con `deepseek-v4-flash:cloud` quedó en thinking high (primero se probó max, luego Gonzo bajó a high por recomendación de Kanam). max queda como salto on-demand para análisis a profundidad.
-- **`MEMORY.md` y `TOOLS.md`:** actualizada la sección de modelo default.
+- **`~/.openclaw/openclaw.json`:** `agents.defaults.thinkingDefault = "high"` (bajado de max a high; max queda como salto on-demand).
+- **`MEMORY.md` y `TOOLS.md`:** reflejan default high.
 
 ### Why
-- El ADR-040 muestra que el thinking de Flash escala el razonamiento; high da planificación deliberada sin el costo de meta-análisis. max es el techo (autoevaluación crítica) y no se justifica como default del día a día.
+- El ADR-040 muestra que MAX escala el razonamiento (autoevaluacion critica) pero no se justifica como default del dia a dia. High da planificacion deliberada sin el costo. Y la regla operativa evita arrancar una tarea de revision con el nivel equivocado.
 
 ---
 

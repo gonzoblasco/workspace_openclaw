@@ -234,6 +234,28 @@ Nota: MAX solo existe como nivel en DeepSeek Flash (modo Max thinking del modelo
 
 ---
 
+### Guia rapida: cuando MAX vs HIGH (default) (2026-08-27)
+
+El default del workspace es **high** (`agents.defaults.thinkingDefault = "high"`). MAX es un salto on-demand. El criterio fino es: **REVISAR vs CREAR**.
+
+| Tarea | Nivel | Por que |
+|-------|-------|---------|
+| **Revisar un PR** (critica de trabajo ajeno/terminado) | **MAX** | Error caro y duradero. MAX se autoevalua y senala contrapartidas que HIGH no ve. |
+| **Trabajar un issue** (analizar, decidir enfoque) | **MAX** | Es decision/critica, no produccion. |
+| **Trabajar EN un PR** (escribir codigo, implementar fix) | **HIGH** | Es avanzar, no criticar. High da planificacion deliberada sin el costo de meta-analisis. |
+| **Escribir un commit** | **HIGH** | Texto corto y bajo riesgo. High alcanza. |
+| **Escribir codigo, docs, respuestas** | **HIGH** | Producir, no juzgar. |
+| **ADRs / decisiones de arquitectura** | **MAX** | Quedan escritos para siempre, error caro. |
+| **Meta-analisis / revision critica de algo terminado** | **MAX** | El estudio del 26/08 mostro que MAX identifica modos de falla que HIGH no alcanza con el mismo prompt. |
+| **Problema grave en prod donde HIGH no alcanzo** | **MAX** | Recurso de emergencia (cirujano). |
+| **Coding diario, debugging normal, respuestas rapidas** | **HIGH** | El default. HIGH da planificacion deliberada sin el costo. |
+
+**Regla practica:** si la respuesta va a QUEDAR ESCRITA (documento, ADR, decision) o el ERROR ES CARO (produccion, critica) -> MAX. Si es para AVANZAR (escribir, debuggear, iterar) -> HIGH.
+
+**Regla operativa del agente (AGENTS.md):** antes de empezar una tarea de revisar/decidir (PR review, issue, ADR, critica), Kanam DEBE consultar el nivel de razonamiento actual de la sesion (session_status) y avisar a Gonzo si no esta en el nivel correcto, ANTES de hacer todo el trabajo con el modelo equivocado.
+
+---
+
 ## Casos Especiales: Procesamiento de Archivos## Casos Especiales: Procesamiento de Archivos
 
 
