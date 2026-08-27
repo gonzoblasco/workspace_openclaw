@@ -6,6 +6,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-27] - Thinking default max en config del gateway
+
+### Changed
+- **`~/.openclaw/openclaw.json`:** `agents.defaults.thinkingDefault = "max"`. El default de chat/pipeline pasa de reasoning medium a thinking max con `deepseek-v4-flash:cloud` (decisión de Gonzo, 2026-08-27). Backup: `openclaw.json.bak-thinkingdefault`.
+- **`MEMORY.md` y `TOOLS.md`:** actualizada la sección de modelo default.
+
+### Why
+- Gonzo quiere aprovechar el thinking maximum de DeepSeek Flash como default tras el estudio empírico del ADR-040 (el único modelo donde el thinking escala el razonamiento de verdad). Afecta sesiones nuevas.
+
+---
+
 ## [2026-08-26] - Comando add-contribution en memory-db.sh
 
 ### Added

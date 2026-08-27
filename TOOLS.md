@@ -13,7 +13,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 
 ## Modelos (Ollama local + cloud)
 
-- **Default de chat/pipeline:** `deepseek-v4-flash:cloud` con **reasoning medium**. Si Kanam no dice nada, medium está bien.
+- **Default de chat/pipeline:** `deepseek-v4-flash:cloud` con **thinking max** (2026-08-27). Antes medium. Si la latencia molesta, Kanam sugiere bajar a medium/low para tareas rápidas. Config: `agents.defaults.thinkingDefault = "max"`.
 - **web_search provider:** `DuckDuckGo Search (experimental)` (key-free, no consume créditos). El provider `ollama` usaba `glm-5.2:cloud` y consumía requests del presupuesto sin pedirlo - NO usar.
 - **Modelos disponibles (Ollama):**
   - Local: `qwen3.5:9b-mlx` (8.9 GB), `nomic-embed-text:latest` (embeddings)
