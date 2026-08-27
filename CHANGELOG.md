@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-27] - Reorganizacion de docs/ por categoria (pipeline y entrevistas)
+
+### Changed
+- **`docs/`:** dos documentos de referencia general movidos a carpetas propias:
+  - `docs/pipeline/kanam-product-pipeline.md` - el mapa de skills del workspace (Define→Plan→Build→Verify→Review→Ship)
+  - `docs/entrevistas/OpenSistemas-OpenClaw-Resumen-Capacidades.md` - material de apoyo para la entrevista con OpenSistemas
+- **`CHANGELOG.md`:** actualizadas las referencias a `docs/pipeline/kanam-product-pipeline.md`.
+- **`skills/agent-orchestration-pipeline/SKILL.md` y `.github/skills/agent-orchestration-pipeline/SKILL.md`:** actualizada la referencia al pipeline a `docs/pipeline/kanam-product-pipeline.md`.
+
+### Why
+- Completar la organizacion de `docs/` por categoria: los documentos de referencia general con identidad propia (pipeline de skills, material de entrevistas) tienen carpeta propia, consistente con `linkedin/`, `feedback/`, `prs/`, `adr/`, `checklists/` y `learnings/`.
+
+---
+
 ## [2026-08-27] - Reorganizacion de docs/ por categoria
 
 ### Changed
@@ -31,7 +45,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`AGENTS.md`:** reescrita la seccion de niveles de razonamiento. Kanam piensa en MAX (decide/planifica/arma prompts), agentes ejecutan en HIGH (escriben codigo/corrigen bugs). Default automatico: cada vez que se pida escribir codigo, usar el pipeline A/B en HIGH sin pedirlo. Flujo punta a punta de corrido sin interaccion (analisis -> A escribe -> B revisa -> iterar alternando orden -> revision final en max -> push -> borrador).
 - **`docs/adr/ADR-040-modelos-seleccion-por-tarea.md`:** actualizada la guia de niveles por rol (Kanam MAX, agentes HIGH).
 - **`MEMORY.md` y `TOOLS.md`:** reflejan el modelo nuevo.
-- **`docs/kanam-product-pipeline.md`:** actualizado el modo multi-agente con el modelo de razonamiento (Kanam max, agentes high) y el flujo punta a punta; actualizado el flujo de PR de accesibilidad para reflejar la revision final de Kanam en max y el push antes del borrador.
+- **`docs/pipeline/kanam-product-pipeline.md`:** actualizado el modo multi-agente con el modelo de razonamiento (Kanam max, agentes high) y el flujo punta a punta; actualizado el flujo de PR de accesibilidad para reflejar la revision final de Kanam en max y el push antes del borrador.
 
 ### Why
 - Gonzo reestructuro el modelo: el maximo razonamiento debe estar en el orquestador (Kanam), no en los ejecutores (agentes). Elimina la friccion de cambiar niveles: Kanam fijo en max, agentes fijos en high. El flujo completo corre punta a punta sin interaccion, con el push y el borrador del PR como entregables.
@@ -378,7 +392,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ## [2026-08-23] - Pipeline de producto actualizado, referencia eliminada
 
 ### Changed
-- **docs/kanam-product-pipeline.md:** agregadas skills agent-orchestration-pipeline-model-arbitration y memory-wiki-workflow al pipeline de soporte. Fecha actualizada (2026-08-23).
+- **docs/pipeline/kanam-product-pipeline.md:** agregadas skills agent-orchestration-pipeline-model-arbitration y memory-wiki-workflow al pipeline de soporte. Fecha actualizada (2026-08-23).
 
 ### Removed
 - **docs/reference/ai-agent-setup.md:** eliminado. Era referencia conceptual no operativa ("no se ejecuta"), huérfana (nadie la referenciaba) con frontmatter de skill obsoleto. Movido a trash. La carpeta docs/reference/ (vacía) también se eliminó.

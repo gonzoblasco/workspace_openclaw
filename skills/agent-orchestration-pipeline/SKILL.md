@@ -216,7 +216,7 @@ Estas trabajando en <proyecto>, <fase>. Sos el Agente <X> (<entorno>). Tu rol en
 
 ## Relacion con otros pipelines
 
-Este skill es la capa de ORQUESTACION que coordina el pipeline existente (`kanam-product-pipeline.md`). Se aplica en las fases Build/Review del ciclo Define→Plan→Build→Verify→Review→Ship: en vez de un solo agente implementando, se dividen las unidades entre multiples agentes con cross-review. Las skills de Build/Review (`incremental-implementation`, `test-driven-development`, `code-review-and-quality`, etc.) siguen aplicando a nivel de cada unidad; este skill coordina el "quien hace que y quien revisa que".
+Este skill es la capa de ORQUESTACION que coordina el pipeline existente (`docs/pipeline/kanam-product-pipeline.md`). Se aplica en las fases Build/Review del ciclo Define→Plan→Build→Verify→Review→Ship: en vez de un solo agente implementando, se dividen las unidades entre multiples agentes con cross-review. Las skills de Build/Review (`incremental-implementation`, `test-driven-development`, `code-review-and-quality`, etc.) siguen aplicando a nivel de cada unidad; este skill coordina el "quien hace que y quien revisa que".
 
 ## Ejemplo real (kanam-story Fase 3 y Fase 5)
 
