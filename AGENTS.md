@@ -195,6 +195,36 @@ Reglas duras de Gonzo para publicar feedback/review en repos de terceros. Correg
 
 **Regla de contexto:** los borradores de feedback se guardan en `docs/feedback-<repo>-<numero>-draft.md` para revisión de Gonzo. El archivo de borrador y el texto a publicar son cosas DISTINTAS - al publicar, nunca usar el archivo de borrador directo; extraer solo el texto final del comentario.
 
+#### Nivel de razonamiento: Kanam SIEMPRE en MAX, agentes SIEMPRE en HIGH (2026-08-27)
+
+**Modelo de trabajo definitivo:**
+
+- **Kanam (OpenClaw) SIEMPRE en MAX** (`max`). Es el orquestador: toma decisiones, analiza, planifica y prepara los prompts de los agentes. El maximo nivel de razonamiento esta en el orquestador, no en los ejecutores. Toda tarea de decision/analisis/planificacion se hace en max.
+- **Agentes A/B (pipeline) SIEMPRE en HIGH** (`high`). Son los que ejecutan: escriben codigo y corrigen bugs. Correr en HIGH siempre, con deepseek-v4-flash como motor (y kimi-k2.7-code en medium como salto si tras mejorar el prompt no se llega a un resultado correcto).
+- **Default automatico:** cada vez que se pida escribir codigo (incluso sin pedirlo explicitamente), usar el pipeline A/B en HIGH. No hay que decidir el nivel cada vez.
+
+**Racional:** Kanam piensa en MAX, los agentes ejecutan en HIGH. El high para escribir/corregir bugs es el nivel de los agentes SIEMPRE. El orquestador necesita el maximo razonamiento porque es quien decide y arma los prompts (ahi la calidad del analisis importa); los agentes ejecutan en HIGH porque es el nivel optimo para producir codigo (MAX no aporta a la escritura).
+
+**Beneficio operativo:** elimina la friccion de cambiar niveles. Gonzo no tiene que tocar nada: Kanam queda fijo en max, los agentes en high. El flujo completo corre punta a punta de corrido (analisis -> A escribe -> B revisa -> iterar -> revision final -> push -> borrador) sin interaccion, salvo que Gonzo interrumpa.
+
+#### Pausa obligatoria: agentes iteran -> revision final -> push -> redactar borrador (2026-08-27)
+
+Flujo completo al trabajar en un PR propio con el pipeline de agentes (Kanam en MAX, agentes en HIGH):
+
+1. **Kanam** analiza, planifica y redacta el prompt (MAX).
+2. **Agente A** hace los cambios (HIGH).
+3. **Agente B** revisa los cambios del Agente A (HIGH).
+4. **Si hay mas cambios:** repetir pasos 2 y 3, **alternando el orden** de los agentes (si A escribio y B reviso, en la siguiente ronda B escribe y A revisa, y asi).
+5. **Revision final:** Kanam analiza TODO el trabajo ya iterado por A y B como una unidad (el PR completo, no piezas sueltas), desde OpenClaw, en MAX (nivel fijo de Kanam - no hay pausa de cambio de nivel).
+6. **Push** (solo despues de la revision final aprobada).
+7. **Redactar el borrador** del PR/feedback.
+
+El cross-review del Agente B (paso 3) es parte de la cadena de escritura (HIGH, ojos frescos de otro agente). La revision final de Kanam en MAX (paso 5) es la SEGUNDA revision, despues de que los agentes terminaron de iterar, y analiza el conjunto completo - es la oportunidad mas valiosa de MAX: atrapar errores de TU PR antes de que los vea un reviewer.
+
+**La pausa es agnostica a como se escribio el codigo.** Da igual si el codigo lo escribe Kanam, Gonzo, o el pipeline A/B de agentes (Qwen/Claude Code via `ollama launch qwen` / ANTHROPIC_BASE_URL). Todo eso termina en los commits del PR, y ahi viene la pausa, la revision final de Kanam en MAX analizando el conjunto, el push, y el borrador del PR.
+
+Referencia completa de la tabla MAX vs HIGH: `docs/adr/ADR-040-modelos-seleccion-por-tarea.md` (seccion "Guia rapida: cuando MAX vs HIGH").
+
 #### Verify Before Push
 
 Para proyectos con build step (Vite, Next.js, etc.):

@@ -114,3 +114,37 @@ Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nue
 
 ---
 
+## Seleccion de libros tecnicos para preparar un puesto
+
+Para comprar libros tecnicos para preparar una entrevista o puesto, buscar editoriales serias (Packt, O'Reilly) y filtrar el ruido de autoayuda que domina Amazon ('make money with AI', autores fantasma, series de ingreso pasivo). El valor esta en arquitectura e ingenieria de produccion, no en guias de principiante. Caso real: de 50 resultados 'openclaw' en Amazon solo 1 era tecnico serio (OpenClaw AI in Production de Ken Huang, Packt). Nota: 3 de 4 titulos 'openclaw' en PacktPub eran videos, no libros.
+
+**Tags:** libros,amazon,packt,entrevista,aiaa
+
+---
+
+## Fusion de skills de estudio: una skill debe definir su ruta de artifacts
+
+## 2026-08-26 - Fusion de skills de estudio: una skill de estudio debe definir SIEMPRE su ruta de artifacts
+
+**Context:** Gonzo detecto una inconsistencia: el curso de Codecademy (agentic-ai-mastery) vivia en `studies/` y el libro de Packt (openclaw-ai-in-production) en `study/` (singular). Se pidio fusionar las skills de estudio en una sola fuente de verdad.
+
+**Causa raiz:** la skill `learning-tracker` era agnostica de rutas - su SKILL.md definia el metodo (3 capas de artifacts, gamificacion) pero NO donde guardarlos. Al usarla para el libro (sesion del 25/08), se eligio `study/` sin respetar la convencion `studies/` que ya documentaba `study-tracker`. Resultado: dos directorios para el mismo proposito.
+
+**Lesson:**
+- Una skill que genera artifacts en el filesystem debe definir SIEMPRE su ruta de destino en el SKILL.md, o es fuente de inconsistencia.
+- Cuando dos skills cubren el mismo dominio (estudio), la fusion en una sola ("one skill to rule them all") con una regla explicita de ruta elimina la ambiguedad.
+- Al fusionar skills, verificar el mirror `.github/skills/` (regla AGENTS.md: rsync cada vez que cambien skills) - el mirror estaba stale 3 dias.
+- La convencion nueva: todo estudio en `studies/<slug>/`, nunca `study/` (singular).
+
+**Self-reflection:**
+- CONTEXT: fusion de skills de estudio (study-tracker + learning-tracker) + migracion de directorios + sync de mirror.
+- REFLECTION: la inconsistencia nacio de una skill sin ruta definida + una convencion no respetada. La solucion fue fusionar y explicitar la ruta. Ademas se detecto deuda: `skills/CHANGELOG.md` referenciado pero nunca creado, y mirror stale.
+- LESSON: las convenciones de estructura deben estar escritas EN la skill que las usa, no implictas en otros archivos. Y cuando se cambian skills, el changelog de skills + mirror son parte del mismo commit.
+- BIASES DETECTED: none.
+
+**Tags:** skills,estudio,fusion,estudios,mirror,changelog
+
+**Tags:** skills,estudio,fusion,mirror
+
+---
+

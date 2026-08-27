@@ -6,6 +6,74 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-27] - Guia MAX vs HIGH + regla de nivel de razonamiento
+
+### Added
+- **Modelo de razonamiento definitivo:** Kanam (OpenClaw) corre SIEMPRE en thinking `max`; los agentes A/B del pipeline corren SIEMPRE en `high` con `deepseek-v4-flash:cloud` (kimi-k2.7-code en medium como salto si tras mejorar el prompt no se llega a resultado).
+
+### Changed
+- **`~/.openclaw/openclaw.json`:** `agents.defaults.thinkingDefault = "max"` (era high).
+- **`AGENTS.md`:** reescrita la seccion de niveles de razonamiento. Kanam piensa en MAX (decide/planifica/arma prompts), agentes ejecutan en HIGH (escriben codigo/corrigen bugs). Default automatico: cada vez que se pida escribir codigo, usar el pipeline A/B en HIGH sin pedirlo. Flujo punta a punta de corrido sin interaccion (analisis -> A escribe -> B revisa -> iterar alternando orden -> revision final en max -> push -> borrador).
+- **`docs/adr/ADR-040-modelos-seleccion-por-tarea.md`:** actualizada la guia de niveles por rol (Kanam MAX, agentes HIGH).
+- **`MEMORY.md` y `TOOLS.md`:** reflejan el modelo nuevo.
+- **`docs/kanam-product-pipeline.md`:** actualizado el modo multi-agente con el modelo de razonamiento (Kanam max, agentes high) y el flujo punta a punta; actualizado el flujo de PR de accesibilidad para reflejar la revision final de Kanam en max y el push antes del borrador.
+
+### Why
+- Gonzo reestructuro el modelo: el maximo razonamiento debe estar en el orquestador (Kanam), no en los ejecutores (agentes). Elimina la friccion de cambiar niveles: Kanam fijo en max, agentes fijos en high. El flujo completo corre punta a punta sin interaccion, con el push y el borrador del PR como entregables.
+
+---
+
+## [2026-08-26] - Comando add-contribution en memory-db.sh
+
+### Added
+- **`scripts/memory-db.sh add-contribution`:** nuevo subcomando para registrar contribuciones OSS en la DB (`memory/memory.db`, tabla `contributions`) sin SQL manual. Firma: `add-contribution <repo> <pr> <pr_url> <status> "<detail>" [context] [issue] [issue_url] [tier] [tipo]`. Campos opcionales con defaults (tipo default `pr`; `collab` para no-codigo). Escapa comillas para SQL seguro.
+
+### Changed
+- **`docs/OSS-TRACKER.md`:** regenerado con `export-oss`. Registrado el merge de `facebook/astryx` PR #5493 (TreeList forward BaseProps, a11y).
+
+### Why
+- Al registrar el PR #5493 en el tracker, faltaba un comando dedicado y hubo que insertar con SQL directo. Agregarlo es el principio Boy Scout (dejar el workspace mejor) y evita SQL manual futuro.
+
+---
+
+## [2026-08-26] - ADR-039: Changesets (cuando usarlos y como)
+
+### Added
+- **`docs/adr/ADR-039-changesets-cuando-y-como.md`:** nuevo ADR de alcance workspace. Define cuando un proyecto debe usar changesets (librerias publicadas a npm con semver y changelog generado) y cuando no (apps de producto, mantener CHANGELOG.md). Incluye el formato del archivo y el tipo de bump. Nace de la colaboracion en facebook/astryx PR #5493, donde el reviewer pidio un changeset.
+- **`docs/adr/README.md`:** agregado ADR-039 al indice.
+
+### Why
+- El workspace no tenia un criterio explicito sobre cuando usar changesets. La colaboracion en astryx mostro que es practica estandar de la industria para librerias publicadas, y quedo documentado para no depender de la memoria.
+
+---
+
+## [2026-08-26] - Configuracion de modelos OpenClaw en VPS
+
+### Changed
+- **`/data/.openclaw/openclaw.json`:** reordenados fallbacks del modelo default. Primer fallback ahora `ollama-cloud/kimi-k2.7-code` (antes `ollama-cloud/glm-5.2`); `glm-5.2` pasa al final de la lista. Cambiado primary a `ollama-cloud/deepseek-v4-flash:preview`.
+
+### Why
+- La API key de `ollama-cloud:default` era invalida (`Unauthorized` para `deepseek-v4-flash`), haciendo que el sistema saltara automaticamente a `glm-5.2` en cada turno. Mientras se resuelve la key, `deepseek-v4-flash:preview` funciona y `kimi-k2.7-code` es un fallback mucho mas barato.
+
+### Pending
+- Re-generar/verificar la API key de Ollama Cloud para que funcione `deepseek-v4-flash` sin `:preview`.
+
+---
+
+## [2026-08-26] - Fusion de skills de estudio + indice maestro unico
+
+### Changed
+- **`studies/README.md` (indice maestro):** reescrito. Ahora lista cursos online (Codecademy) Y libros gamificados (Packt), con la regla dura de una sola fuente de verdad: todo en `studies/<slug>/`, nunca `study/`.
+- **`studies/`:** unificado. Movido el libro de Packt de `study/` (singular) a `studies/openclaw-ai-in-production/`; eliminado `study/`.
+
+### Added
+- **`skills/CHANGELOG.md`:** creado (faltaba - era deuda tecnica referenciada desde CHANGELOG principal y AGENTS.md). Registra cambios de skills.
+
+### Why
+- Fusion de las skills `study-tracker` + `learning-tracker` en una sola (`study-tracker`, "One Skill to Rule Them All") para una unica fuente de verdad de estudios. Inconsistencia real: curso en `studies/`, libro en `study/`. Detalle completo en `skills/CHANGELOG.md`.
+
+---
+
 ## [2026-08-25] - Quitar PR review del inicio/cierre de sesion
 
 ### Changed
@@ -42,6 +110,8 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - Búsqueda laboral activa: 2 procesos en paralelo (Ritz-Carlton Principal, EY Frontend Lead vía LTM). CV desactualizado y con datos falsos en Open Source; no se podía mandar así.
 
 ---
+
+## [2026-08-24] - Reglas operativas de feedback OSS en AGENTS.md
 
 ## [2026-08-24] - Reglas operativas de feedback OSS en AGENTS.md
 
@@ -564,3 +634,15 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Changed
 - Workspace skills count: 20 → 33
 - Skills mirror synced to `.github/skills/`
+
+## [2026-08-26] - ADR-040: Seleccion de Modelos por Tipo de Tarea
+
+### Added
+- **`docs/adr/ADR-040-modelos-seleccion-por-tarea.md`:** nuevo ADR que define el criterio de seleccion de modelos segun el tipo de tarea. Reemplaza al ADR-006. Incluye perfiles de personalidad para 8 modelos, guia rapida de seleccion, y regla operativa para que Kanam sugiera el modelo adecuado antes de cada tarea.
+- **`docs/adr/README.md`:** agregado ADR-040 al indice.
+
+### Changed
+- **ADR-006 (Capacidad Computacional DeepSeek):** marcado como reemplazado por ADR-040.
+
+### Why
+- La migracion a Ollama Pro abrio acceso a 8+ modelos. No tiene sentido usar siempre el mismo modelo cuando cada uno tiene fortalezas distintas. Este ADR captura el criterio de seleccion basado en una cata empirica de 8 modelos con el mismo prompt.

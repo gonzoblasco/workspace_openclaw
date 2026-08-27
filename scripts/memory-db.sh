@@ -8,6 +8,8 @@
 #   ./scripts/memory-db.sh todos                   - lista todos pendientes
 #   ./scripts/memory-db.sh inbox                   - lista inbox
 #   ./scripts/memory-db.sh contributions [estado]  - lista contribuciones OSS (opcional filtro por estado)
+#   ./scripts/memory-db.sh add-contribution <repo> <pr> <pr_url> <status> "<detail>" [context] [issue] [issue_url] [tier] [tipo]
+#     - registra una contribucion OSS en la DB (tipo default 'pr'; 'collab' para no-codigo)
 #   ./scripts/memory-db.sh add-todo "texto" [proyecto] - agrega un todo
 #   ./scripts/memory-db.sh add-inbox "idea"       - agrega una idea al inbox
 #   ./scripts/memory-db.sh learnings [categoria]  - lista lecciones (opcional filtro por categoria)
@@ -168,6 +170,21 @@ case "$1" in
     sqlite3 "$DB" "INSERT INTO inbox (idea) VALUES ('$idea_esc');"
     echo "Idea agregada al inbox."
     ;;
+  add-contribution)
+    # Firma: add-contribution <repo> <pr> <pr_url> <status> "<detail>" ["<context>"] ["<issue>"] ["<issue_url>"] ["<tier>"] ["<tipo>"]
+    # Campos opcionales: context, issue, issue_url, tier (default 1..3), tipo (default 'pr', collab para no-codigo).
+    repo="$2"; pr="$3"; pr_url="$4"; status="$5"; detail="$6"
+    context="${7:-}"; issue="${8:-}"; issue_url="${9:-}"; tier="${10:-}"; tipo="${11:-pr}"
+    if [ -z "$repo" ] || [ -z "$pr" ] || [ -z "$pr_url" ] || [ -z "$status" ] || [ -z "$detail" ]; then
+      echo "Error: faltan argumentos obligatorios." >&2
+      echo "Uso: $0 add-contribution <repo> <pr> <pr_url> <status> \"<detail>\" [context] [issue] [issue_url] [tier] [tipo]" >&2
+      exit 1
+    fi
+    repo_esc=$(sql_escape "$repo"); pr_esc=$(sql_escape "$pr"); pr_url_esc=$(sql_escape "$pr_url")
+    status_esc=$(sql_escape "$status"); detail_esc=$(sql_escape "$detail"); context_esc=$(sql_escape "$context")
+    issue_esc=$(sql_escape "$issue"); issue_url_esc=$(sql_escape "$issue_url"); tier_esc=$(sql_escape "$tier"); tipo_esc=$(sql_escape "$tipo")
+    sqlite3 "$DB" "INSERT INTO contributions (repo, issue, issue_url, pr, pr_url, status, detail, context, tier, tipo) VALUES ('$repo_esc', '$issue_esc', '$issue_url_esc', '$pr_esc', '$pr_url_esc', '$status_esc', '$detail_esc', '$context_esc', '$tier_esc', '$tipo_esc'); SELECT 'Contribucion agregada (id ' || last_insert_rowid() || ').';"
+    ;;
   learnings)
     cat_filter="${2:-%}"
     sqlite3 -header -column "$DB" "SELECT id, category, substr(title,1,60) AS title, substr(tags,1,40) AS tags FROM learnings WHERE category LIKE '$cat_filter' ORDER BY category, id;"
@@ -252,6 +269,6 @@ case "$1" in
     echo "docs/learnings/ regenerado desde la DB."
     ;;
   *)
-    echo "Uso: $0 {export-daily|export-all|export-oss|export-todos|export-inbox|stats|todos|inbox|contributions|add-todo|add-inbox|learnings|add-learning|export-learnings}"
+    echo "Uso: $0 {export-daily|export-all|export-oss|export-todos|export-inbox|stats|todos|inbox|contributions|add-todo|add-inbox|add-contribution|learnings|add-learning|export-learnings}"
     ;;
 esac

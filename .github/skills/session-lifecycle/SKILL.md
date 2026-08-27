@@ -97,7 +97,7 @@ Scripts en `skills/session-lifecycle/scripts/`:
 | Script | Uso |
 |---|---|
 | `session-start.sh --project <name> --objective <obj>` | Carga HANDOFF previo y crea/actualiza el log diario en `memory/YYYY-MM-DD.md`. Usar al inicio de sesion con proyecto. |
-| `session-end.sh --project <name> --summary <text>` | Genera/actualiza HANDOFF, escribe el guardado en el log diario, e intenta revisar PRs abiertos. Usar al guardar sesion. |
+| `session-end.sh --project <name> --summary <text>` | Genera/actualiza HANDOFF, escribe el guardado en el log diario. Los PRs los revisa Gonzo manualmente (2026-08-25). Usar al guardar sesion. |
 
 Si la sesion toca scripts de skill del workspace, correr `npm test` antes del commit final.
 
@@ -155,7 +155,8 @@ Cuando el contexto de sesión llegue al ~60% (verificable con `session_status`),
 
 1. Crear o limpiar `memory/working-buffer.md`
 2. A partir de ese punto, **cada exchange** se loggea: mensaje de Gonzo + resumen de tu respuesta
-3. Después de compactación, leer el buffer primero antes de cualquier otra cosa
+3. **Flush ANTES de compactar** (idea de Honcho): cuando se acerque la compactación, asegurar que el buffer esté completo y al día ANTES de perder contexto - no después. Si la sesión está por compactar (cerca del límite), hacer un flush final del buffer con lo último importante.
+4. Después de compactación, leer el buffer primero antes de cualquier otra cosa
 
 **Formato:**
 
@@ -172,6 +173,24 @@ Cuando el contexto de sesión llegue al ~60% (verificable con `session_status`),
 ## 2026-07-22T12:01:05 Kanam (resumen)
 [1-2 oraciones con detalles clave]
 ```
+
+### Resumen estructurado de compactación (idea de Session Compact)
+
+Cuando se compacta la sesión (no solo el buffer), generar un **resumen estructurado** en vez de un bloque de texto generico. Al compactar, armar el resumen con estos campos (portado de Session Compact - ClawHub):
+
+```markdown
+# Resumen de Compactación
+**Scope:** <que se compacto - ej. "35 mensajes de la sesion de desarrollo de X">
+**Pending work:** <todos/pendientes en curso - ej. 'terminar U3, revisar U2'>
+**Key files:** <archivos importantes tocados - ej. 'src/auth.ts, db/schema.sql'>
+**Decisions:** <decisiones clave tomadas que no deben perderse>
+**Key timeline:** <3-5 hitos de la conversacion que importan>
+**Next step:** <que sigue>
+```
+
+- El **Pending work** y **Next step** son los mas criticos - que no se pierdan al compactar.
+- Los **Key files** y **Decisions** permiten retomar sin re-descubrir.
+- Complementa el working buffer (log crudo) con un resumen accionable post-compactacion.
 
 ## Compaction Recovery
 

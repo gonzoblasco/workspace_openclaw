@@ -123,7 +123,6 @@
 | [deslop](skills/deslop/) | Limpia código AI slop de branches antes de PRs |
 | [image-generation](skills/image-generation/) | Genera imágenes para juegos, web, mockups y proyectos creativos |
 | [curriculum-builder](skills/curriculum-builder/) | Scaffold para tutores adaptativos con IA |
-| [learning-tracker](skills/learning-tracker/) | Estudia cualquier tema en niveles gamificados (nivel → subnivel → topic), documentando en 3 capas de artifacts: plan maestro, por nivel, registro de progreso |
 | [technical-book-processor](skills/technical-book-processor/) | Procesa libros técnicos capítulo por capítulo: extrae learnings, formaliza ADRs, implementa ejercicios en un proyecto acompañante y commitea atómicamente. Deja trail público de aprendizaje (portfolio) |
 
 ## Vida Diaria y Herramientas

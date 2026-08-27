@@ -120,7 +120,64 @@ Cierre: A y B revisan el conjunto + orquestador hace release
 Orquestador implementa (opcional) → Agente A revisa/corrige → Agente B re-revisa las correcciones de A → (rondas extra si se requiere) → aprobado
 ```
 
+## Seleccion de modelo por tarea (model-router.sh)
+
+El pipeline usa un router de modelo configurable por tipo de tarea + overrides sticky, portado del concepto ToggleLogic (ClawHub) SIN su licencia patentada. En vez de elegir el modelo manualmente cada vez, se consulta la ruta del tipo de tarea:
+
+```bash
+./scripts/model-router.sh model <tipo>   # code/review/long/cheap/writing/default
+./scripts/model-router.sh set <tipo> <model>   # override sticky (persiste)
+./scripts/model-router.sh reset <tipo>         # limpiar override
+./scripts/model-router.sh default <model>      # cambiar default
+./scripts/model-router.sh list                 # ver rutas + overrides
+```
+
+**Rutas por defecto:** code → kimi-k2.7-code, review → deepseek-v4-flash, long → deepseek-v4-pro, cheap → gemma4, writing → kimi-k3, default → deepseek-v4-flash.
+
+**Uso en el pipeline:** al lanzar un agente, el orquestador consulta `model-router.sh model <tipo>` para decidir el `--model` (en vez de elegirlo ad hoc). Los overrides sticky permiten fijar " usá kimi para todo el codigo de esta fase" y persiste hasta reset.
+
+**Nota:** el router es una sugerencia de modelo; el orquestador puede sobreescribir si la tarea lo justifica (es una decision de Kanam, no del router).
+
 ## Templates de prompt para agentes
+
+### Estado durable del pipeline + crash recovery (pipeline-track.sh)
+
+El pipeline usa un tracker de estado durable para sobrevivir a crashes (SIGKILL de Qwen), restarts y eviction de contexto. Portado del concepto Pipeline Architect (ClawHub).
+
+```bash
+# Inicializar el plan de la fase con unidades
+./scripts/pipeline-track.sh init "Fase 3 - editor" U1 U2 U3 U4 U5 U6
+
+# Marcar el estado de cada unidad
+./scripts/pipeline-track.sh start U3    # agente empezo U3
+./scripts/pipeline-track.sh review U2   # U2 en cross-review
+./scripts/pipeline-track.sh done U1     # U1 completa
+./scripts/pipeline-track.sh note U2 "B encontro bug en U1, corregido"
+
+# Ver estado y que falta (tras crash/SIGKILL)
+./scripts/pipeline-track.sh status
+./scripts/pipeline-track.sh resume      # unidades no-done (para relanzar)
+```
+
+**Flujo de crash recovery:** si un agente muere (SIGKILL) a mitad de una unidad, el orquestador corre `pipeline-track.sh resume` para ver que quedo pendiente, verifica el trabajo parcial real (archivos/build/tests), y relanza el agente con un prompt corto para la unidad que quedo en `running` o `queued`. El estado vive en `pipeline-state.json` (o $PIPELINE_STATE_FILE), durable entre sesiones.
+
+**Nota sobre el estado:** el tracker es una sugerencia del orquestador, no una autoridad - Kanam decide que relanzar basandose en el estado + la verificacion real del trabajo (no confiar solo en el estado JSON).
+
+### Detector de riesgos en el cross-review
+
+Antes de pasar el codigo de un agente al siguiente para revision, el orquestador puede correr el detector de riesgo de PRs para darle al revisor senales de que mirar con lupa:
+
+```bash
+./scripts/github-pr-risk.sh <owner/repo> <pr-number>
+```
+
+Salida (markdown):
+- **Risk signals** detectados por paths del PR (schema/migraciones, auth, secrets/config, API publica, dependencias, PR grande) + hints del titulo (breaking, hotfix, refactor).
+- **Preguntas de review sugeridas** dirigidas por esos riesgos (adaptadas de la funcion `buildReviewQuestions` del plugin github-workflow de chris-openclaw, portada a gh CLI + jq).
+
+Si el cambio es local (sin PR), Kanam aplica las mismas heurisiscas manualmente sobre los paths del diff. El objetivo es darle al Agente B (revisor) las senales de riesgo antes de que revise, no confiar en que las descubra solo.
+
+La logica del detector esta portada del plugin (ver `sandbox/github-workflow/` para el analisis original). Uso bajo demanda, no en el batch del dashboard - el dashboard es una vista rapida; el risk es para el review puntual de un PR.
 
 Cada prompt de agente sigue esta estructura:
 
