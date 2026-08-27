@@ -127,6 +127,11 @@
 - **Verificado:** `localhost:11434` desde el contenedor responde 200 con los modelos reales de Ollama.
 - **Import dialog:** texto actualizado (repos públicos, sin nota de Freestyle).
 
+## FIX REFVM (2026-08-27) - commit f8d29c0
+
+- **Problema:** al recrear un contenedor (tras rebuild del sandbox image), el `refVm` no arrancaba el dev server ni actualizaba el preview URL.
+- **Fix:** el `refVm` ahora asigna puertos, actualiza el preview URL en la metadata, y arranca el dev server al recrear un contenedor.
+
 ---
 
-**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Import desde GitHub. Proxy Ollama (localhost:11434 → host). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui), 69f9969 (export), 3e1c549 (fix conversaciones), bed9456 (gestion proyectos), 46a04d7 (import github), 1628d85 (proxy ollama).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Import desde GitHub. Proxy Ollama (localhost:11434 → host). Fix refVm (recrea contenedor + dev server + preview). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui), 69f9969 (export), 3e1c549 (fix conversaciones), bed9456 (gestion proyectos), 46a04d7 (import github), 1628d85 (proxy ollama), f8d29c0 (fix refVm).
