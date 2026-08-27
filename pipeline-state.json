@@ -1,17 +1,17 @@
 {
-  "fase": "Fase 2 - rework PR #10517 con visuallyHiddenStyle",
+  "fase": "kanam-forge fase-B analyzer integrado",
   "units": [
     {
       "name": "U1",
       "state": "done",
       "owner": "A",
-      "note": "Comentario de update publicado en issue #9687 (5439098660) con approach revisado + requisito position:relative. PR #10517 mergeable con 1 commit. Todo pusheado."
+      "note": "minimax escribio build-scaffold+test+provision+docker-vm (verificado tsc+vitet 8/8). Se revirtio files.ts (reformateo no deseado) y .qwen/. U1 done."
     },
     {
       "name": "U2",
       "state": "done",
       "owner": "B",
-      "note": "Review B: REQUEST_CHANGES. C1 tests falsos positivos (input cubre viewport, no label, sin position:relative). C2 test Radio mide label equivocado. C3 fix requiere position:relative en label no documentado. W1 Switch no cubierto. Todos verificados."
+      "note": "deepseek implemento wiring: POST /api/repos corre analyzer antes de provisionar + persiste analysis en metadata. Cross-review detecto bug de Fase A: DEFAULT_OLLAMA_URL host.docker.internal no resuelve en host -> fix a localhost + env override (Kanam verificado). Commits 18bc401."
     }
   ]
 }
