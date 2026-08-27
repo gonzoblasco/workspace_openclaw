@@ -142,6 +142,13 @@
 - Reemplacé el perrito de Adorable del welcome screen (hero) por la hoja de Kanam (KanamLogo grande).
 - **Pendiente:** Gonzo pidió "un pequeño reader" - confirmar qué quiere.
 
+## TOP BAR + CODE READER (2026-08-27) - commit 88348cd
+
+- **Top bar:** nombre del proyecto junto al "All Apps" (izquierda). Botón Export movido a la derecha del todo.
+- **CodeReader:** panel lateral para explorar el árbol de archivos del proyecto y previsualizar contenido. Botón con icono de libro.
+- **API routes:** `/api/repos/[repoId]/files` y `/file` (con límite de tamaño + protección de path traversal).
+- **Pendiente:** syntax highlighting, reader de docs/contenido (Gonzo quiere todas las variantes).
+
 ---
 
-**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode + welcome). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Import desde GitHub. Proxy Ollama (localhost:11434 → host). Fix refVm (recrea contenedor + dev server + preview). Auto-start dev server + abrir conversación más reciente. Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui), 69f9969 (export), 3e1c549 (fix conversaciones), bed9456 (gestion proyectos), 46a04d7 (import github), 1628d85 (proxy ollama), f8d29c0 (fix refVm), 15b00df (auto-start + conversacion), 62ae83c (branding welcome).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode + welcome). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada, top bar (nombre + export derecha), code reader. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Import desde GitHub. Proxy Ollama (localhost:11434 → host). Fix refVm (recrea contenedor + dev server + preview). Auto-start dev server + abrir conversación más reciente. Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui), 69f9969 (export), 3e1c549 (fix conversaciones), bed9456 (gestion proyectos), 46a04d7 (import github), 1628d85 (proxy ollama), f8d29c0 (fix refVm), 15b00df (auto-start + conversacion), 62ae83c (branding welcome), 88348cd (top bar + reader).
