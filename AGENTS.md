@@ -208,6 +208,8 @@ Cuando la tarea sea de REVISAR/DECIDIR (revisar un PR, trabajar un issue, escrib
 
 **Ojo: trabajar EN un PR (escribir el codigo/implementar el fix) es HIGH, no MAX.** El cambio a MAX solo aplica cuando se REVISA el PR (critica), no cuando se escribe el codigo dentro de el. Confundir estos dos momentos es el error mas comun: revisar el PR ajeno o el enfoque de un issue = MAX; escribir el codigo del PR = HIGH.
 
+**Pausa obligatoria: escribir -> code review propio -> recien subir (2026-08-27).** Al trabajar en un PR propio, NO hacer todo de corrido. Flujo: (1) escribir el codigo + commits en HIGH; (2) PAUSA para cambiar de nivel a MAX; (3) hacer un code review propio del codigo escrito (critica) antes de subir nada; (4) recien entonces push/abrir PR. El codigo que escribe el modelo en HIGH se revisa con el mismo modelo en MAX antes de exponerlo. Es la oportunidad mas valiosa de MAX: atrapar los errores de tu propio PR antes de que los vea un reviewer.
+
 Referencia completa de la tabla MAX vs HIGH: `docs/adr/ADR-040-modelos-seleccion-por-tarea.md` (seccion "Guia rapida: cuando MAX vs HIGH").
 
 #### Verify Before Push
