@@ -263,6 +263,7 @@ Ciclo del PR astryx #4022 (WCAG contrast fix). El reviewer (cixzhang) pidio CHAN
 - La forma correcta de responder a un review que pide cambios: dejar el body como esta (o actualizarlo minimamente) y **comentar abajo en el PR** confirmando que se hizo lo pedido. El thread del review queda con la respuesta directa, y el body conserva el contexto.
 - La historia del PR (que se propuso, que se acoto y por que) vive en el body + los comentarios del review. No sacrificar eso por consistencia cosmetica.
 - Prioridad: preservar la historia > consistencia del body.
+- **Matiz (15:49, mismo PR #4022):** si el maintainer/reviewer pide EXPLICITAMENTE limpiar el body (ej. cixzhang: "remove stale script references from the PR body"), entonces SI se edita - es un pedido directo del reviewer, no una iniciativa propia. La regla de "no editar para limpiar" aplica cuando NADIE lo pidió y es decision mia. Distinguir: edicion pedida por el reviewer = ok; edicion auto-iniciada por consistencia = no.
 
 **Self-reflection:**
 - CONTEXT: PR astryx #4022, review de cixzhang pidiendo quitar scripts

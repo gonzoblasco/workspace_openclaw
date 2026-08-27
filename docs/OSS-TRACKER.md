@@ -7,8 +7,8 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 17 |
-| PRs mergeados | 7 |
+| PRs abiertos | 18 |
+| PRs mergeados | 6 |
 | PRs cerrados sin merge | 18 |
 | Colaboraciones no-codigo | 6 |
 | Repos con contribuciones | 19 |
@@ -91,8 +91,8 @@
 | **Nuestro PR** | [#4604](https://github.com/facebook/astryx/pull/4604) | **closed** |
 | **Contexto** | - | Abierto 31 Jul. Tiene conflictos con main. |
 
-| **Issue** | [#3654]() | MERGED 27/08. WCAG 2.1 AA contrast fix en --color-border-emphasized (SC 1.4.11 Non-text Contrast, 1.37:1 -> 3.02:1 sobre body). 1 archivo, 1 linea, 521/521 tests. Disabled text/icon exentos de 1.4.3/1.4.11 (revertidos por review de ernestt). |
-| **Nuestro PR** | [#4022]() | **merged** |
+| **Issue** | [#3654]() | OPEN 27/08. WCAG 2.1 AA contrast fix en --color-border-emphasized (SC 1.4.11 Non-text Contrast, 1.37:1 -> 3.02:1 sobre body). 1 archivo, 1 linea, 521/521 tests. Disabled text/icon exentos de 1.4.3/1.4.11 (revertidos por review de ernestt). Aprobado por cixzhang (27/08) tras regenerar tokens.doc.mjs + limpiar body; a la espera de re-aprobacion y checks. |
+| **Nuestro PR** | [#4022]() | **waiting_review** |
 
 | **Issue** | [#4994]() | Cerrado 23/08 sin merge. Diagnostico correcto (bug a11y critico axe), pero eligieron PR #5107 con aria-hidden: presentation no permite aria-orientation que Divider siempre escribe, trade aria-required-children por aria-allowed-attr (critica x2). Maintainer invita a seguir contribuyendo. |
 | **Nuestro PR** | [#5344]() | **closed** |
@@ -251,4 +251,4 @@
 | facebook/astryx | [#5107](https://github.com/facebook/astryx/pull/5107) | COLABORACION NO-CODIGO. Dividers/Selector a11y: el trabajo de Gonzo (PR #5344, cerrado sin merge) fue la base, el fix llego a main via PR de otro autor (merged 23/08). Diagnostico de Gonzo fue el punto de partida. |
 | facebook/astryx | [#4157](https://github.com/facebook/astryx/pull/4157) | COLABORACION NO-CODIGO. Avatar status labels: el trabajo de Gonzo fue la base, el fix llego a main via PR de otro autor (merged 24/07). |
 | facebook/astryx | [#5034](https://github.com/facebook/astryx/pull/5034) | COLABORACION NO-CODIGO. Avatar status label via context: fix llego a main via PR de otro autor (merged 22/08). Composicion via AvatarStatusLabelContext. |
-| facebook/astryx | [#3654](https://github.com/facebook/astryx/issues/3654) | COLABORACION NO-CODIGO. Contrast tokens WCAG: el diagnostico de Gonzo (PR #4022) fue la base; PR #3677 de otro autor quedo CLOSED sin merge pero el trabajo influyo. El #4022 de Gonzo MERGED 27/08 (fix de --color-border-emphasized). |
+| facebook/astryx | [#3654](https://github.com/facebook/astryx/issues/3654) | COLABORACION NO-CODIGO. Contrast tokens WCAG: el diagnostico de Gonzo (PR #4022) fue la base; PR #3677 de otro autor quedo CLOSED sin merge pero el trabajo influyo. El #4022 de Gonzo OPEN 27/08 (fix de --color-border-emphasized, aprobado pendiente de re-aprobacion). |
