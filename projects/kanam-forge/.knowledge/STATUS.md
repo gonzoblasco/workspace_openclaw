@@ -77,6 +77,15 @@
 - **Verificado:** build + loop del agente funcionan con la estructura plana.
 - **Nota:** queda un warning de Next.js sobre el lockfile del workspace (fuera del repo) - inofensivo, Next.js lo ignora correctamente.
 
+## BRANDING (2026-08-27) - commit 8c280d3
+
+- **Título:** Adorable → Kanam Forge (layout, sidebars, api-key-gate).
+- **Logo:** nuevo `KanamLogo` (hoja estilizada, evolución del emoji 🌿, no el emoji directo). Reemplaza el perrito de Adorable en los 2 sidebars.
+- **Favicon:** `icon.svg` + `icon.png` + `apple-icon.png` (marca de hoja).
+- **Light mode:** removida la clase `dark` del `<html>` (usa las variables light de `:root`).
+- **System prompt:** el agente se presenta como "Kanam Forge".
+- **Tools:** "Adorable VM" → "sandbox" en descripciones.
+
 ---
 
-**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding).
