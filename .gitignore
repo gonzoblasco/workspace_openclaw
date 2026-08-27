@@ -89,12 +89,10 @@ umbrawriter-v2
 umbrawriter-v2/
 
 # Repos git embebidos: se trackea SOLO su .knowledge/ (ya en el index).
-# Ignorar el gitlink (el directorio) para que git status no los liste como untracked.
-/projects/kanam-forge
-/projects/kanam-mind
+# El patron global arriba (/projects/*/* + !/projects/*/.knowledge/) ya cubre estos repos:
+# ignora el codigo del repo y permite el .knowledge/. No listar por proyecto (rompe el git add de .knowledge/).
+# Excepcion: kanam-skills es repo publico independiente - su .knowledge/ (assets) NO se trackea en el workspace.
 /projects/kanam-skills
-/projects/kanam-story
-/projects/soporteml-v3
 
 # Forks de terceros: repos ajenos donde se contribuye (TanStack, shadcn, etc.)
 # Se ignoran AL 100% - no llevan .knowledge/ (no se modifica el .gitignore de proyectos ajenos).

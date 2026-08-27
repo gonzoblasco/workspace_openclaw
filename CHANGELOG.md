@@ -6,6 +6,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-27] - Fix gitignore: repos embebidos y .knowledge/
+
+### Fixed
+- **`.gitignore`:** los patrones especificos de repos embebidos (`/projects/kanam-forge`, `/projects/kanam-mind`, etc.) rompian el `git add` de archivos en `.knowledge/` (git se niega a agregar contenido bajo un directorio ignorado). Se eliminaron y el patron global (`/projects/*/*` + `!/projects/*/.knowledge/`) los cubre. Excepcion: `kanam-skills` (repo publico independiente, su `.knowledge/` con assets no se trackea en el workspace) mantiene su linea especifica.
+- **`projects/kanam-forge/.gitignore`:** se movio `/.knowledge/` al `.git/info/exclude` del repo. El `.gitignore` del repo embebido bloqueaba el `git add` del workspace sobre `.knowledge/` de kanam-forge. Ahora el workspace puede trackear `.knowledge/` y el repo publico de kanam-forge sigue sin trackearlo (via exclude local). Commit `4449382` en kanam-forge.
+
+### Why
+- Al guardar sesion, el `STATUS.md` de kanam-forge (actualizado en la sesion de hoy) no se podia commitear: el `.gitignore` del workspace y el del repo embebido lo bloqueaban. Bug latente que recien se nota cuando hay cambios en `.knowledge/` de un repo embebido.
+
+---
+
 ## [2026-08-27] - Reorganizacion de docs/ por categoria (pipeline y entrevistas)
 
 ### Changed
