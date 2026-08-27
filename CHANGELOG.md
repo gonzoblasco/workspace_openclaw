@@ -16,6 +16,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`AGENTS.md`:** reescrita la seccion de niveles de razonamiento. Kanam piensa en MAX (decide/planifica/arma prompts), agentes ejecutan en HIGH (escriben codigo/corrigen bugs). Default automatico: cada vez que se pida escribir codigo, usar el pipeline A/B en HIGH sin pedirlo. Flujo punta a punta de corrido sin interaccion (analisis -> A escribe -> B revisa -> iterar alternando orden -> revision final en max -> push -> borrador).
 - **`docs/adr/ADR-040-modelos-seleccion-por-tarea.md`:** actualizada la guia de niveles por rol (Kanam MAX, agentes HIGH).
 - **`MEMORY.md` y `TOOLS.md`:** reflejan el modelo nuevo.
+- **`docs/kanam-product-pipeline.md`:** actualizado el modo multi-agente con el modelo de razonamiento (Kanam max, agentes high) y el flujo punta a punta; actualizado el flujo de PR de accesibilidad para reflejar la revision final de Kanam en max y el push antes del borrador.
 
 ### Why
 - Gonzo reestructuro el modelo: el maximo razonamiento debe estar en el orquestador (Kanam), no en los ejecutores (agentes). Elimina la friccion de cambiar niveles: Kanam fijo en max, agentes fijos en high. El flujo completo corre punta a punta sin interaccion, con el push y el borrador del PR como entregables.

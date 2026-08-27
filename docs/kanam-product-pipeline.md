@@ -99,6 +99,8 @@ Cierre: A y B revisan el conjunto + orquestador hace release
 
 **Reglas:** cada unidad = commit atomico + push; nadie avanza sin validar lo anterior; verificacion obligatoria (build+tests+lint); no romper invariantes; docs al dia. Para calidad maxima, el codigo puede pasar por varias rondas de revision (orquestador implementa → A revisa → B re-revisa las correcciones de A).
 
+**Modelo de razonamiento (2026-08-27):** en modo multi-agente, Kanam (orquestador) corre SIEMPRE en thinking `max` y los agentes A/B corren SIEMPRE en `high` con `deepseek-v4-flash:cloud` (kimi-k2.7-code en medium como salto si tras mejorar el prompt no se llega a un resultado correcto). Kanam decide/planifica/arma prompts en max; los agentes ejecutan (escriben codigo/corrigen bugs) en high. Default automatico: cada vez que se pida escribir codigo, usar el pipeline A/B en HIGH sin pedirlo. El flujo punta a punta corre de corrido: analisis (max) -> A escribe (high) -> B revisa (high) -> iterar alternando orden -> revision final (max) -> push -> borrador del PR. Detalle en AGENTS.md y ADR-040.
+
 **Skill:** [`agent-orchestration-pipeline`](./skills/agent-orchestration-pipeline/SKILL.md) - roles, reglas de oro, templates de prompt, checklist de cierre.
 
 **Validado:** kanam-story Fase 3 (U1-U8, 189 tests, release v0.7.0). El cross-review atrapo un bug real (sync corria antes de regenerar) que el orquestador no detecto en su revision.
@@ -179,7 +181,8 @@ oss-contribution (PR → post-PR watch → community → batch → registry) →
 
 ### PR de accesibilidad (OSS)
 ```
-oss-contribution (triaje) → incremental-implementation (fix a11y con tests) →
+oss-contribution (triaje) → agent-orchestration-pipeline (A escribe en high, B revisa en high, iterar alternando orden) →
+Kanam revisión final en max (analiza el conjunto completo) → push → redactar borrador del PR →
 a11y-at-validation (validación AT manual obligatoria: anuncio, captions, casos límite) →
 oss-contribution (documentar en PR/issue, separar hallazgos) → session-lifecycle
 ```
