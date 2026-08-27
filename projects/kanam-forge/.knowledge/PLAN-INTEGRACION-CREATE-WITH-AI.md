@@ -46,9 +46,10 @@
 - [x] El scaffold se genera con la config del análisis (tablas SQL, auth, billing) - buildScaffold en commit 1493673
 - [ ] Adaptar el system-prompt para que el agente sepa que el proyecto ya viene con stack opinado (Supabase, shadcn, Biome, Vitest, CI) — PENDIENTE
 
-### Fase C — Portar la iteración (reader)
-- [ ] Portar `iteration/reader.ts` → alimentar el contexto inicial del agente (qué tiene el proyecto: auth, supabase, tests)
-- [ ] El agente arranca cada sesión sabiendo la estructura del proyecto
+### Fase C — Portar la iteración (reader) (COMPLETA)
+- [x] Portar `iteration/reader.ts` → `lib/project-context.ts` (readProjectContext + buildProjectSystemPrompt) - commit 1493673
+- [x] Alimentar el contexto inicial del agente (qué tiene el proyecto: auth, supabase, tests) - `app/api/chat/route.ts` inyecta el contexto real al system-prompt - commit b67253b
+- [x] El agente arranca cada sesión sabiendo la estructura del proyecto (verificado: responde el stack real)
 
 ### Fase D — Proceso de desarrollo en el agente
 - [ ] El system-prompt del agente (ya actualizado con plan + incremental + TDD) ahora tiene sentido porque el scaffold incluye Vitest

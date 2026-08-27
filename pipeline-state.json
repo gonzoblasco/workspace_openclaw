@@ -1,17 +1,17 @@
 {
-  "fase": "kanam-forge fase-B analyzer integrado",
+  "fase": "kanam-forge fase-C project-context integrado",
   "units": [
     {
       "name": "U1",
       "state": "done",
       "owner": "A",
-      "note": "minimax escribio build-scaffold+test+provision+docker-vm (verificado tsc+vitet 8/8). Se revirtio files.ts (reformateo no deseado) y .qwen/. U1 done."
+      "note": "deepseek porto lib/project-context.ts (reader + buildProjectSystemPrompt) + 7 tests. Verificado tsc + vitest 7/7."
     },
     {
       "name": "U2",
       "state": "done",
       "owner": "B",
-      "note": "deepseek implemento wiring: POST /api/repos corre analyzer antes de provisionar + persiste analysis en metadata. Cross-review detecto bug de Fase A: DEFAULT_OLLAMA_URL host.docker.internal no resuelve en host -> fix a localhost + env override (Kanam verificado). Commits 18bc401."
+      "note": "deepseek integro project-context a chat/route.ts (try/catch fallback al base). Verificado end-to-end: agente responde Next.js+React+Vitest (conoce stack real). Side effect: sobrescribio conversacion 'hola' (120B) del proyecto kanam-story de prueba con formato incorrecto (content vs parts) - restaurada a estado coherente. Leccion: validar formato UIMessage antes de escribir."
     }
   ]
 }
