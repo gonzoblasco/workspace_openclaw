@@ -46,6 +46,13 @@
 - [ ] Publish multi-tenant
 - [ ] Producto
 
+## FUSIÓN con create-with-ai (2026-08-27)
+
+- **Decisión:** kanam-forge es el proyecto DESTINO de la fusión. create-with-ai se archiva (sin más cambios).
+- **Plan completo:** `FUSION-CREATE-WITH-AI.md`
+- **Punto de integración clave:** reemplazar el scaffold básico de `provision.ts` por el scaffold completo de create-with-ai (React+Vite+Supabase+shadcn+CI+migraciones) + integrar el `ai/analyzer` al flujo del chat.
+- **Pendiente:** clonar el repo de kanam-forge en el workspace (hoy solo está `.knowledge/`) para trabajar la fusión.
+
 ---
 
-**Último log:** 2026-08-17 — Fase 1 casi completa. Loop completo del agente validado con Ollama (deepseek-v4-flash): chat → tools → exec en container. Stack alineado (ollama-ai-provider-v2 + pin de @assistant-ui). ApiKeyGate salta con Ollama. Pendiente: ajustar system prompt para paths relativos + Supabase central. Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack).
+**Último log:** 2026-08-27 — Plan de fusión con create-with-ai creado (FUSION-CREATE-WITH-AI.md). kanam-forge = destino, create-with-ai = archivar. Fase 1 del fork sigue casi completa (loop del agente validado con Ollama). Commits del fork: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack).

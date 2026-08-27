@@ -115,6 +115,13 @@ Si algo falla, el commit no se crea. Para saltar: `SKIP_SIMPLE_GIT_HOOKS=1 git c
 - NUEVA VERSIÓN reescrita desde cero por fuera de Kanam. v0.6.0, 102 tests, 3,041 líneas TS, pipeline completo. Repo: github.com/gonzoblasco/a11y-fixer.
 - Pendiente: redefinir proyecto, agregar features.
 
+### kanam-forge
+- Fork de freestyle-sh/Adorable (MIT): Lovable self-hosted. Chat + preview + terminales, 13 tools de agente, Docker local + Ollama. Fase 1 casi completa (loop del agente validado).
+- **FUSIÓN con create-with-ai (2026-08-27):** kanam-forge es el DESTINO. create-with-ai se archiva. Plan en `projects/kanam-forge/.knowledge/FUSION-CREATE-WITH-AI.md`. Punto clave: reemplazar el scaffold básico de `provision.ts` por el scaffold completo de create-with-ai + integrar el `ai/analyzer` al chat.
+
+### create-with-ai
+- **ARCHIVADO 2026-08-27** (fusionado a kanam-forge, sin más cambios). CLI "Lovable propio" (`@gonzoblasco/create-with-ai` 0.0.2, 288 descargas npm). Código: `ai/analyzer`, `scaffold`, `generator`, `iteration`. Su scaffold + analyzer se integran a kanam-forge.
+
 ### daily-ink (2026-08-02)
 - PWA de prompts de escritura diarios. Vite + vanilla TS + localStorage. 60 prompts embebidos, selección determinística por fecha. Folder en `projects/daily-ink/`. Personal creative tool, sin IA/backend.
 
@@ -147,7 +154,7 @@ Cuando pida lista de repos, solo mostrar estos. Los forks son de terceros y no s
 | a11y-fixer | - | Accessibility fix engine |
 | ai-developer-stack | - | Skills de ingeniería con IA |
 | create-stack | - | Scaffolder opinado Next.js |
-| create-with-ai | ✅ | Generador de apps con IA |
+| create-with-ai | ✅ | Generador de apps con IA - ARCHIVADO 2026-08-27, fusionado a kanam-forge |
 | accessible-ui | ✅ | Headless component library |
 | quedamos | ✅ | App PWA de matching para salidas |
 | kanam-forge | - | Herramienta de forja de skills |
