@@ -3,13 +3,13 @@
   "units": [
     {
       "name": "U1",
-      "state": "queued",
+      "state": "done",
       "owner": "A",
       "note": "Comentario de update publicado en issue #9687 (5439098660) con approach revisado + requisito position:relative. PR #10517 mergeable con 1 commit. Todo pusheado."
     },
     {
       "name": "U2",
-      "state": "queued",
+      "state": "done",
       "owner": "B",
       "note": "Review B: REQUEST_CHANGES. C1 tests falsos positivos (input cubre viewport, no label, sin position:relative). C2 test Radio mide label equivocado. C3 fix requiere position:relative en label no documentado. W1 Switch no cubierto. Todos verificados."
     }
