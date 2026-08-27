@@ -248,17 +248,9 @@ OSS: bug acotado + fix canonico + reproduccion armada
 
 ## 2026-08-26 - Reviewer humano que usa AI: tratarlo como humano
 
-**Context:** ciclo de review completo del PR astryx #5493 (TreeList a11y). El reviewer (cixzhang) usa AI para responder - sus reviews salen con "[Reviewed by Robohands]", pero son de un humano (CONTRIBUTOR) que dicta la sustancia. Hubo 3 reviews: 2 CHANGES_REQUESTED + 1 APPROVED, merge el mismo dia.
-
-**Lesson:** un reviewer humano con asistencia de AI se trata como humano, no como bot:
-- Se le agradece el review con su nombre ("Thanks for the review, cixzhang") - la regla de "no agradecer a bots" aplica SOLO a reviews de IA puros (sin humano detrás).
-- Correccion de Gonzo (2 veces): el primer borrador no agradecia ni nombraba al reviewer. Al detectar que es humano detras de la herramienta, el trato es humano.
-- No dar vueltas cuando el maintainer ya valido la direccion: acotar el PR y ejecutar, no ofrecer "happy to iterate".
-
-**Self-reflection:**
-- CONTEXT: ciclo de review astryx #5493 (3 reviews, merge)
-- REFLECTION: asumi que un review firmado "[Reviewed by Robohands]" era de bot y omiti el agradecimiento. Gonzo me corrigio: cixzhang es humano aunque use AI para responder (como el mismo Gonzo). El agradecimiento con nombre era lo correcto.
-- LESSON: no inferir "es un bot" por la firma de la herramienta. Si detras hay un humano (CONTRIBUTOR/maintainer que dicta la sustancia), tratarlo como humano: agradecer, nombrar, ser directo.
-- BIASES DETECTED: pattern matching superficial (firma de bot = tratar como bot) - no distinguir entre "revisado por herramienta AI" y "autor humano".
+Ciclo de review completo del PR astryx #5493 (TreeList a11y). El reviewer (cixzhang) usa AI para responder - sus reviews salen con "[Reviewed by Robohands]", pero son de un humano (CONTRIBUTOR) que dicta la sustancia. Hubo 3 reviews: 2 CHANGES_REQUESTED + 1 APPROVED, merge el mismo dia. Lesson: un reviewer humano con asistencia de AI se trata como humano, no como bot: se le agradece el review con su nombre ("Thanks for the review, cixzhang") - la regla de no agradecer a bots aplica SOLO a reviews de IA puros (sin humano detras). Correccion de Gonzo (2 veces): el primer borrador no agradecia ni nombraba al reviewer. Al detectar que es humano detras de la herramienta, el trato es humano. No dar vueltas cuando el maintainer ya valido la direccion: acotar el PR y ejecutar, no ofrecer happy to iterate. Self-reflection: asumi que un review firmado "[Reviewed by Robohands]" era de bot y omiti el agradecimiento. Gonzo me corrigio: cixzhang es humano aunque use AI para responder (como el mismo Gonzo). El agradecimiento con nombre era lo correcto. LESSON: no inferir es un bot por la firma de la herramienta. Si detras hay un humano (CONTRIBUTOR/maintainer que dicta la sustancia), tratarlo como humano: agradecer, nombrar, ser directo. BIASES DETECTED: pattern matching superficial (firma de bot = tratar como bot) - no distinguir entre revisado por herramienta AI y autor humano.
 
 **Tags:** OSS: reviewer humano con AI, agradecer con nombre
+
+---
+
