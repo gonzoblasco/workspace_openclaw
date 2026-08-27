@@ -7,7 +7,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 17 |
+| PRs abiertos | 18 |
 | PRs mergeados | 6 |
 | PRs cerrados sin merge | 18 |
 | Colaboraciones no-codigo | 6 |
@@ -55,6 +55,10 @@
 | **Issue** | [#10220](https://github.com/adobe/react-spectrum/issues/10220) | fix(react-aria): only announce combobox section changes to VoiceOver |
 | **Nuestro PR** | [#10503](https://github.com/adobe/react-spectrum/pull/10503) | **open** |
 | **Contexto** | - | Gate del announcement effect a solo cambios de seccion. Maintainer LFDanLu dio luz verde 24/08. 218 + 41 tests pass. Comentado en issue. |
+
+| **Issue** | [https://github.com/adobe/react-spectrum/issues/9687](a11y) | fix: expose input styling on RAC Checkbox and Radio (inputClassName/inputStyle) |
+| **Nuestro PR** | [10517](https://github.com/adobe/react-spectrum/pull/10517) | **open** |
+| **Contexto** | - | 9687 |
 
 ### carbon-design-system/carbon
 
