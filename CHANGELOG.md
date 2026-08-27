@@ -6,14 +6,14 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
-## [2026-08-27] - Thinking default max en config del gateway
+## [2026-08-27] - Thinking default high en config del gateway
 
 ### Changed
-- **`~/.openclaw/openclaw.json`:** `agents.defaults.thinkingDefault = "max"`. El default de chat/pipeline pasa de reasoning medium a thinking max con `deepseek-v4-flash:cloud` (decisión de Gonzo, 2026-08-27). Backup: `openclaw.json.bak-thinkingdefault`.
+- **`~/.openclaw/openclaw.json`:** `agents.defaults.thinkingDefault = "high"`. El default de chat/pipeline con `deepseek-v4-flash:cloud` quedó en thinking high (primero se probó max, luego Gonzo bajó a high por recomendación de Kanam). max queda como salto on-demand para análisis a profundidad.
 - **`MEMORY.md` y `TOOLS.md`:** actualizada la sección de modelo default.
 
 ### Why
-- Gonzo quiere aprovechar el thinking maximum de DeepSeek Flash como default tras el estudio empírico del ADR-040 (el único modelo donde el thinking escala el razonamiento de verdad). Afecta sesiones nuevas.
+- El ADR-040 muestra que el thinking de Flash escala el razonamiento; high da planificación deliberada sin el costo de meta-análisis. max es el techo (autoevaluación crítica) y no se justifica como default del día a día.
 
 ---
 

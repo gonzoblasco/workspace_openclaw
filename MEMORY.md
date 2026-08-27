@@ -78,7 +78,7 @@ Si algo falla, el commit no se crea. Para saltar: `SKIP_SIMPLE_GIT_HOOKS=1 git c
 
 ## Modelo default y config de tools
 
-- **Default de chat/pipeline:** `deepseek-v4-flash:cloud` con **thinking max** (2026-08-27, decisión de Gonzo). Antes era medium; Gonzo decidió probar maximum como default. Kanam puede recomendar bajar a medium/low para tareas rápidas si la latencia molesta. Nota: el ADR-040 define medium como default teórico; la decisión de Gonzo la overridea.
+- **Default de chat/pipeline:** `deepseek-v4-flash:cloud` con **thinking high** (2026-08-27, decisión de Gonzo). Arrancó probando max, y por recomendación de Kanam bajó a high como default; max queda como salto on-demand para análisis a profundidad (arquitectura, ADRs, meta-análisis, revisión crítica). Kanam puede sugerir bajar a medium/low para tareas rápidas si la latencia molesta. Config: `agents.defaults.thinkingDefault = "high"`.
 - **web_search provider (2026-08-21):** `DuckDuckGo Search (experimental)`. El provider anterior `ollama` usaba Ollama Cloud Web Search API (con `glm-5.2:cloud`) y consumía requests del presupuesto sin pedirlo. DuckDuckGo es key-free.
 
 ## Proyectos (estado resumido - detalle en `.knowledge/` de cada uno)
