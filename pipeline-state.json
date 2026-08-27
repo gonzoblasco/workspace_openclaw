@@ -1,0 +1,11 @@
+{
+  "fase": "Fase 1 - fix #9687 SR focus indicator",
+  "units": [
+    {
+      "name": "U1",
+      "state": "done",
+      "owner": "A",
+      "note": "Push OK (rama fix/checkbox-radio-sr-focus-indicator en fork). Borrador PR en docs/pr-9687-draft.md con seccion Findings (Switch, Slider/Table/HiddenDateInput como deuda). Listo para crear PR contra adobe/react-spectrum"
+    }
+  ]
+}
