@@ -148,3 +148,22 @@ Para comprar libros tecnicos para preparar una entrevista o puesto, buscar edito
 
 ---
 
+
+## No pisar drafts historicos de feedback (2026-08-27)
+
+**Contexto:** en astryx #4690, el draft de feedback del 24/08 (defendia "drop ARIA" contra el treegrid) quedo desactualizado cuando el maintainer rulo el 27/08 que AKnassa construya el treegrid. Al actualizar el draft, sobrescribi el archivo con el comment nuevo post-ruling. Gonzo me corrigio: el draft viejo es un registro historico del debate, no se pisa.
+
+**Lesson:**
+- Un draft de feedback a un PR ajeno documenta el estado del debate en un momento dado. Cuando el PR evoluciona (ruling, merge, cambios), el draft viejo queda como registro historico - NO sobrescribirlo.
+- Para el comment nuevo, crear un archivo aparte (ej. `astryx-4690-draft-2.md`) o, si es un comment corto, imprimirlo directo en el chat para aprobacion sin tocar archivos.
+- Regla general: los drafts de feedback son historial, no estado mutable. Preservar la linea de tiempo del debate.
+
+**Self-reflection:**
+- CONTEXT: actualizacion de draft de feedback post-ruling del maintainer.
+- REFLECTION: sobrescribi el draft viejo con el nuevo sin considerar que el viejo documentaba el debate original. Gonzo pidio "un draft nuevo, no el mismo".
+- LESSON: los drafts de feedback ajenos son registros historicos - nunca pisarlos, crear archivo nuevo o imprimir el comment directo.
+- BIASES DETECTED: none.
+
+**Tags:** feedback,drafts,historial,prs,proceso
+
+---
