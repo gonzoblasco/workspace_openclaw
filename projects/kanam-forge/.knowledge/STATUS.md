@@ -154,6 +154,14 @@
 - **Proceso de desarrollo en el system-prompt del agente:** 1) Plan first (plan de tareas con acceptance criteria), 2) Build incrementally (rebanadas verticales, implementar→testear→verificar→commitear), 3) TDD (RED→GREEN→REFACTOR, configurar Vitest si no hay), 4) Commit every slice (historial para viajar en el tiempo).
 - **Plan de integracion (PLAN-INTEGRACION-CREATE-WITH-AI.md):** mantener Next.js en kanam-forge, portar el stack opinado de create-with-ai (analyzer + scaffold con Vitest/Biome/Supabase/shadcn/CI) adaptado a Next.js. NO migrar a Vite.
 
+## FASE A INTEGRACION CREATE-WITH-AI COMPLETADA (2026-08-27) - pipeline A/B
+
+- **U1 (A):** `lib/scaffold/files.ts` - scaffold Next.js App Router con stack opinado (Vitest, Biome, shadcn/ui, Supabase, CI). Commits 2e087f3.
+- **U2 (B):** `lib/analyzer.ts` - analyzer portado para Ollama (host.docker.internal:11434, deepseek-v4-flash). Commit 8faa542.
+- **U3 (A):** `provision.ts` usa el scaffold completo (elimino el basico). Commit 82e919d.
+- **Verificado end-to-end:** scaffold provisionado, dev server arranca (Next 16.3.3), tests corren.
+- **Siguiente:** Fase B (integrar analyzer al chat), Fase C (iteracion/reader).
+
 ---
 
-**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode + welcome). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada, top bar (nombre + export derecha), code reader. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Import desde GitHub. Proxy Ollama (localhost:11434 → host). Fix refVm (recrea contenedor + dev server + preview). Auto-start dev server + abrir conversación más reciente. Proceso de desarrollo en el agente (plan + incremental + TDD + commits). Plan de integración create-with-ai (Next.js + stack opinado). Commits: ... 88348cd (top bar + reader), d0e88fe (proceso dev).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode + welcome). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada, top bar (nombre + export derecha), code reader. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Import desde GitHub. Proxy Ollama (localhost:11434 → host). Fix refVm (recrea contenedor + dev server + preview). Auto-start dev server + abrir conversación más reciente. Proceso de desarrollo en el agente (plan + incremental + TDD + commits). Plan de integración create-with-ai (Next.js + stack opinado). Fase A de integración completa (scaffold + analyzer + provision). Commits: ... 88348cd (top bar + reader), d0e88fe (proceso dev), 2e087f3 (U1 scaffold), 8faa542 (U2 analyzer), 82e919d (U3 provision).
