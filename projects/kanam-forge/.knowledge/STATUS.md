@@ -120,6 +120,13 @@
 - **Verificado:** importé `gonzoblasco/kanam-story` - se clonó completo, preview respondió 200 con el título real.
 - **Pendiente:** actualizar el texto del diálogo de import (aún menciona "Install GitHub App" de Freestyle - ahora es por URL pública).
 
+## PROXY OLLAMA + IMPORT (2026-08-27) - commit 1628d85
+
+- **Problema:** apps importadas que usan `localhost:11434` para Ollama fallan dentro del contenedor (localhost es el propio contenedor).
+- **Solución:** sandbox image corre un proxy `socat` que redirige `localhost:11434` → `host.docker.internal:11434`. `--add-host=host.docker.internal:host-gateway` en la creación. `refVm` recrea contenedores faltantes. System prompt instruye a usar `host.docker.internal` para servicios del host.
+- **Verificado:** `localhost:11434` desde el contenedor responde 200 con los modelos reales de Ollama.
+- **Import dialog:** texto actualizado (repos públicos, sin nota de Freestyle).
+
 ---
 
-**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Import desde GitHub. Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui), 69f9969 (export), 3e1c549 (fix conversaciones), bed9456 (gestion proyectos), 46a04d7 (import github).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Import desde GitHub. Proxy Ollama (localhost:11434 → host). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten), 8c280d3 (branding), 94a1fb4 (palette), 09520d5 (ui), 69f9969 (export), 3e1c549 (fix conversaciones), bed9456 (gestion proyectos), 46a04d7 (import github), 1628d85 (proxy ollama).
