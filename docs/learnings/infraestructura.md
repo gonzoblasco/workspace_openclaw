@@ -271,3 +271,11 @@
 
 ---
 
+## 2026-08-27 - Backend tsx watch zombie contamina la DB real al cambiar codigo
+
+Al cambiar el codigo de un backend que corre con tsx watch, los procesos viejos pueden seguir vivos e inyectar data en la DB real. En SoporteML v4, al congelar la sincronizacion (MELI_MOCK), el backend viejo seguia corriendo con el codigo anterior e inyecto data sintetica en la DB real (174->187 preguntas). El lsof -tiTCP:3001 solo mata el proceso con el puerto; quedan procesos tsx watch zombie sin puerto que siguen escribiendo. Regla: al cambiar codigo de un backend, matar TODOS los procesos tsx watch (pkill -f tsx) antes de probar, y verificar que no queden procesos zombie. Restaurar la DB desde backup si se contamino. Tambien: cp -f (forzado) para sobrescribir la DB, y verificar md5 despues del cp.
+
+**Tags:** tsx watch, procesos zombie, DB, soporteml, MELI_MOCK, backup
+
+---
+
