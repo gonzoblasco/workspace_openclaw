@@ -254,3 +254,23 @@ Ciclo de review completo del PR astryx #5493 (TreeList a11y). El reviewer (cixzh
 
 ---
 
+## 2026-08-27 - No editar el body de un PR para "limpiarlo": la historia importa
+
+Ciclo del PR astryx #4022 (WCAG contrast fix). El reviewer (cixzhang) pidio CHANGES_REQUESTED: quitar los scripts de auditoria y dejar solo el cambio de token. Al ejecutar, edite el body del PR para quitar las referencias a los scripts y dejarlo "consistente" con el estado final. Gonzo me corrigio: el body del PR es parte de la historia del PR - documenta el que y el porque del cambio, y la evolucion (que se propuso, que se acoto tras el review). Al editarlo borre el rastro de las decisiones.
+
+**Lesson - el body del PR es un documento vivo, no un snapshot del estado final:**
+- No editar el body para que quede "limpio" o "consistente" con el estado actual. Eso borra la historia de las decisiones.
+- La forma correcta de responder a un review que pide cambios: dejar el body como esta (o actualizarlo minimamente) y **comentar abajo en el PR** confirmando que se hizo lo pedido. El thread del review queda con la respuesta directa, y el body conserva el contexto.
+- La historia del PR (que se propuso, que se acoto y por que) vive en el body + los comentarios del review. No sacrificar eso por consistencia cosmetica.
+- Prioridad: preservar la historia > consistencia del body.
+
+**Self-reflection:**
+- CONTEXT: PR astryx #4022, review de cixzhang pidiendo quitar scripts
+- REFLECTION: al ejecutar el pedido del review, edite el body del PR para quitar las referencias a los scripts y dejarlo consistente. Gonzo me freno: eso borra la historia. Lo correcto era dejar el body y comentar abajo.
+- LESSON: el body del PR es un documento vivo que cuenta la evolucion. No editarlo para "limpiarlo". Responder al review con un comentario abajo, no reescribiendo el body.
+- BIASES DETECTED: confirmation bias (asumi que "consistente" = mejor, sin considerar que la historia del PR es el valor) + action bias (quise dejar el body "perfecto" en vez de preservar el contexto).
+
+**Tags:** OSS: no editar body de PR, historia del PR, responder review con comentario
+
+---
+
