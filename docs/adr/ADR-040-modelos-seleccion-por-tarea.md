@@ -234,25 +234,25 @@ Nota: MAX solo existe como nivel en DeepSeek Flash (modo Max thinking del modelo
 
 ---
 
-### Guia rapida: cuando MAX vs HIGH (default) (2026-08-27)
+### Guia rapida: niveles de razonamiento por rol (2026-08-27)
 
-El default del workspace es **high** (`agents.defaults.thinkingDefault = "high"`). MAX es un salto on-demand. El criterio fino es: **REVISAR vs CREAR**.
+**Modelo definitivo (Kanam en MAX, agentes en HIGH):** Kanam (OpenClaw) corre SIEMPRE en thinking `max`; los agentes A/B del pipeline corren SIEMPRE en thinking `high`. `agents.defaults.thinkingDefault = "max"`. El criterio fino que lo origino: **REVISAR/DECIDIR vs CREAR/AVANZAR**.
 
-| Tarea | Nivel | Por que |
-|-------|-------|---------|
-| **Revisar un PR** (critica de trabajo ajeno/terminado) | **MAX** | Error caro y duradero. MAX se autoevalua y senala contrapartidas que HIGH no ve. |
-| **Trabajar un issue** (analizar, decidir enfoque) | **MAX** | Es decision/critica, no produccion. |
-| **Trabajar EN un PR** (escribir codigo, implementar fix) | **HIGH** | Es avanzar, no criticar. High da planificacion deliberada sin el costo de meta-analisis. |
-| **Escribir un commit** | **HIGH** | Texto corto y bajo riesgo. High alcanza. |
-| **Escribir codigo, docs, respuestas** | **HIGH** | Producir, no juzgar. |
-| **ADRs / decisiones de arquitectura** | **MAX** | Quedan escritos para siempre, error caro. |
-| **Meta-analisis / revision critica de algo terminado** | **MAX** | El estudio del 26/08 mostro que MAX identifica modos de falla que HIGH no alcanza con el mismo prompt. |
-| **Problema grave en prod donde HIGH no alcanzo** | **MAX** | Recurso de emergencia (cirujano). |
-| **Coding diario, debugging normal, respuestas rapidas** | **HIGH** | El default. HIGH da planificacion deliberada sin el costo. |
+| Rol / Tarea | Nivel | Por que |
+|------------|-------|---------|
+| **Kanam (orquestador) - SIEMPRE** | **MAX** | Decide, planifica, arma prompts, analiza. El maximo razonamiento esta en el orquestador. |
+| **Agentes A/B (ejecucion) - SIEMPRE** | **HIGH** | Escriben codigo y corrigen bugs. HIGH es el optimo para producir codigo. |
+| **Revisar un PR** (critica de trabajo ajeno/terminado) | **MAX** (Kanam) | Error caro y duradero. MAX se autoevalua y senala contrapartidas que HIGH no ve. |
+| **Trabajar un issue** (analizar, decidir enfoque) | **MAX** (Kanam) | Es decision/critica, no produccion. |
+| **Trabajar EN un PR** (escribir codigo, implementar fix) | **HIGH** (agente) | Es avanzar, no criticar. High da planificacion deliberada sin el costo de meta-analisis. |
+| **Escribir codigo, docs, commits, respuestas** | **HIGH** (agente) | Producir, no juzgar. |
+| **ADRs / decisiones de arquitectura** | **MAX** (Kanam) | Quedan escritos para siempre, error caro. |
+| **Meta-analisis / revision critica de algo terminado** | **MAX** (Kanam) | El estudio del 26/08 mostro que MAX identifica modos de falla que HIGH no alcanza con el mismo prompt. |
+| **Problema grave en prod donde HIGH no alcanzo** | **MAX** (Kanam) | Recurso de emergencia (cirujano). |
 
-**Regla practica:** si la respuesta va a QUEDAR ESCRITA (documento, ADR, decision) o el ERROR ES CARO (produccion, critica) -> MAX. Si es para AVANZAR (escribir, debuggear, iterar) -> HIGH.
+**Regla practica:** si la tarea es DECIDIR/CRITICAR/PLANIFICAR (queda escrita, error caro) -> MAX, la hace Kanam. Si es AVANZAR (escribir, debuggear, iterar) -> HIGH, la ejecutan los agentes A/B.
 
-**Regla operativa del agente (AGENTS.md):** antes de empezar una tarea de revisar/decidir (PR review, issue, ADR, critica), Kanam DEBE consultar el nivel de razonamiento actual de la sesion (session_status) y avisar a Gonzo si no esta en el nivel correcto, ANTES de hacer todo el trabajo con el modelo equivocado.
+**Regla operativa (AGENTS.md):** Kanam corre siempre en max y los agentes siempre en high. No hay que cambiar niveles entre tareas. El flujo punta a punta (analisis en max -> A escribe en high -> B revisa en high -> iterar -> revision final en max -> push -> borrador) corre de corrido sin interaccion.
 
 ---
 

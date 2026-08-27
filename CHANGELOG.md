@@ -9,15 +9,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ## [2026-08-27] - Guia MAX vs HIGH + regla de nivel de razonamiento
 
 ### Added
-- **`docs/adr/ADR-040-modelos-seleccion-por-tarea.md`:** nueva seccion "Guia rapida: cuando MAX vs HIGH (default)" con tabla por tarea (revisar PR = MAX, escribir codigo/commit = HIGH, etc) y regla practica (queda escrita / error caro -> MAX; avanzar -> HIGH).
-- **`AGENTS.md`:** nueva subseccion "Nivel de razonamiento por tipo de tarea" bajo Reglas de Ingenieria. Regla obligatoria: cuando la tarea es revisar/decidir (PR, issue, ADR, critica), Kanam DEBE consultar `session_status` antes de arrancar y avisar si el nivel no es el correcto, para no hacer todo el trabajo con el modelo equivocado. Nota aclarada: trabajar EN un PR (escribir codigo) es HIGH, no MAX; el cambio a MAX solo aplica cuando se REVISA el PR. Tambien: **pausa obligatoria** al trabajar en un PR propio con pipeline de agentes - A escribe, B revisa, alternar orden si hay mas cambios, PAUSA, revision final de Kanam en MAX del conjunto completo, push, y recien despues redactar el borrador del PR. La pausa es agnostica a como se escribio el codigo.
+- **Modelo de razonamiento definitivo:** Kanam (OpenClaw) corre SIEMPRE en thinking `max`; los agentes A/B del pipeline corren SIEMPRE en `high` con `deepseek-v4-flash:cloud` (kimi-k2.7-code en medium como salto si tras mejorar el prompt no se llega a resultado).
 
 ### Changed
-- **`~/.openclaw/openclaw.json`:** `agents.defaults.thinkingDefault = "high"` (bajado de max a high; max queda como salto on-demand).
-- **`MEMORY.md` y `TOOLS.md`:** reflejan default high.
+- **`~/.openclaw/openclaw.json`:** `agents.defaults.thinkingDefault = "max"` (era high).
+- **`AGENTS.md`:** reescrita la seccion de niveles de razonamiento. Kanam piensa en MAX (decide/planifica/arma prompts), agentes ejecutan en HIGH (escriben codigo/corrigen bugs). Default automatico: cada vez que se pida escribir codigo, usar el pipeline A/B en HIGH sin pedirlo. Flujo punta a punta de corrido sin interaccion (analisis -> A escribe -> B revisa -> iterar alternando orden -> revision final en max -> push -> borrador).
+- **`docs/adr/ADR-040-modelos-seleccion-por-tarea.md`:** actualizada la guia de niveles por rol (Kanam MAX, agentes HIGH).
+- **`MEMORY.md` y `TOOLS.md`:** reflejan el modelo nuevo.
 
 ### Why
-- El ADR-040 muestra que MAX escala el razonamiento (autoevaluacion critica) pero no se justifica como default del dia a dia. High da planificacion deliberada sin el costo. Y la regla operativa evita arrancar una tarea de revision con el nivel equivocado.
+- Gonzo reestructuro el modelo: el maximo razonamiento debe estar en el orquestador (Kanam), no en los ejecutores (agentes). Elimina la friccion de cambiar niveles: Kanam fijo en max, agentes fijos en high. El flujo completo corre punta a punta sin interaccion, con el push y el borrador del PR como entregables.
 
 ---
 

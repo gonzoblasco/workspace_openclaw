@@ -78,7 +78,7 @@ Si algo falla, el commit no se crea. Para saltar: `SKIP_SIMPLE_GIT_HOOKS=1 git c
 
 ## Modelo default y config de tools
 
-- **Default de chat/pipeline:** `deepseek-v4-flash:cloud` con **thinking high** (2026-08-27, decisión de Gonzo). Arrancó probando max, y por recomendación de Kanam bajó a high como default; max queda como salto on-demand para análisis a profundidad (arquitectura, ADRs, meta-análisis, revisión crítica). Kanam puede sugerir bajar a medium/low para tareas rápidas si la latencia molesta. Config: `agents.defaults.thinkingDefault = "high"`.
+- **Modelo de trabajo (2026-08-27):** Kanam (OpenClaw) SIEMPRE en **thinking max**; agentes A/B del pipeline SIEMPRE en **high** con `deepseek-v4-flash:cloud` (kimi-k2.7-code en medium como salto si tras mejorar el prompt no se llega a resultado). Default automático: cada vez que se pida escribir codigo, usar el pipeline A/B en HIGH sin pedirlo. Config: `agents.defaults.thinkingDefault = "max"`. Kanam decide/planifica en max, los agentes ejecutan en high. Flujo punta a punta sin interaccion (ver AGENTS.md).
 - **web_search provider (2026-08-21):** `DuckDuckGo Search (experimental)`. El provider anterior `ollama` usaba Ollama Cloud Web Search API (con `glm-5.2:cloud`) y consumía requests del presupuesto sin pedirlo. DuckDuckGo es key-free.
 
 ## Proyectos (estado resumido - detalle en `.knowledge/` de cada uno)
