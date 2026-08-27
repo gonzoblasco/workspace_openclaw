@@ -88,3 +88,11 @@
 
 ---
 
+## Cross-review A/B atrapa bugs de layout que Kanam no vio
+
+En el rework del PR #10517 (react-spectrum, SR focus indicator), el Agente B detecto 3 bugs reales que yo no vi: (1) tests de browser falsos positivos - el input absolute+inset:0 sin position:relative en el label se estira al viewport, no al componente, y el test pasaba por la razon equivocada; (2) test de Radio media el label equivocado (querySelector('label') devuelve el <Label>Test</Label> que precede al del Radio, no el del Radio); (3) el fix requiere position:relative en el label (contenedor posicionado) que no estaba documentado. Todos verificados contra la fuente real. Leccion: los tests de layout en jsdom son falsos positivos - solo el browser real valida (getBoundingClientRect). Y el cross-review del pipeline A/B es valioso cuando se verifica cada hallazgo contra la fuente real, no confiando ciegamente en el veredicto del agente. Bias detectado: confirmation bias - asumi que el approach funcionaba porque mi verificacion standalone usaba position:relative en el label, sin darme cuenta de que el componente real no lo tiene.
+
+**Tags:** layout, jsdom, browser, cross-review, falsos-positivos
+
+---
+
