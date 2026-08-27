@@ -51,8 +51,17 @@
 - **Decisión:** kanam-forge es el proyecto DESTINO de la fusión. create-with-ai se archiva (sin más cambios).
 - **Plan completo:** `FUSION-CREATE-WITH-AI.md`
 - **Punto de integración clave:** reemplazar el scaffold básico de `provision.ts` por el scaffold completo de create-with-ai (React+Vite+Supabase+shadcn+CI+migraciones) + integrar el `ai/analyzer` al flujo del chat.
-- **Pendiente:** clonar el repo de kanam-forge en el workspace (hoy solo está `.knowledge/`) para trabajar la fusión.
+
+## BASE FUNCIONANDO (2026-08-27) - VERIFICADO
+
+- **Build:** compila (TypeScript OK, todas las rutas).
+- **Dev server:** corre en localhost:3000.
+- **Docker:** daemon + imagen sandbox construida (`kanam-forge/sandbox:latest`).
+- **Creación de proyecto:** POST /api/repos → container + workspace provisionado + preview.
+- **Loop del agente:** chat → Ollama (deepseek-v4-flash) → tools (readFile, replaceInFile, checkApp) → exec en container → verificación. Probado: cambió el título de la app y el preview lo reflejó.
+- **Bugs arreglados (commit `ce390dd`):** turbopack.root (Next.js no leía .env.local) + KANAM_FORGE_DATA_DIR con `~` sin expandir.
+- **Pendiente P1:** el agente usa path absoluto `/workspace/...` que falla (ENOENT) - ajustar system-prompt para paths relativos. Plan: `PLAN-BASE-FUNCIONANDO.md`.
 
 ---
 
-**Último log:** 2026-08-27 — Plan de fusión con create-with-ai creado (FUSION-CREATE-WITH-AI.md). kanam-forge = destino, create-with-ai = archivar. Fase 1 del fork sigue casi completa (loop del agente validado con Ollama). Commits del fork: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack).
+**Último log:** 2026-08-27 — Base verificada funcionando (build + dev server + loop del agente). Bugs de turbopack.root y KANAM_FORGE_DATA_DIR arreglados. Plan de base funcionando creado (PLAN-BASE-FUNCIONANDO.md). Repo clonado en el workspace con remote propio. create-with-ai archivado. Commits del fork: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root).
