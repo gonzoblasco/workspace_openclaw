@@ -210,6 +210,8 @@ Cuando la tarea sea de REVISAR/DECIDIR (revisar un PR, trabajar un issue, escrib
 
 **Pausa obligatoria: escribir -> code review propio -> recien subir (2026-08-27).** Al trabajar en un PR propio, NO hacer todo de corrido. Flujo: (1) escribir el codigo + commits en HIGH; (2) PAUSA para cambiar de nivel a MAX; (3) hacer un code review propio del codigo escrito (critica) antes de subir nada; (4) recien entonces push/abrir PR. El codigo que escribe el modelo en HIGH se revisa con el mismo modelo en MAX antes de exponerlo. Es la oportunidad mas valiosa de MAX: atrapar los errores de tu propio PR antes de que los vea un reviewer.
 
+**La pausa es agnostica a como se escribio el codigo.** Da igual si el codigo lo escribe Kanam, Gonzo, o el pipeline A/B de agentes (Qwen/Claude Code via `ollama launch qwen` / ANTHROPIC_BASE_URL). Todo eso termina en los commits del PR, y ahi viene la pausa y el self-review en MAX. El cross-check A/B de los agentes es parte de la escritura (HIGH); la pausa MAX es la capa de critica de TU PR encima de esa cadena, antes de exponerlo.
+
 Referencia completa de la tabla MAX vs HIGH: `docs/adr/ADR-040-modelos-seleccion-por-tarea.md` (seccion "Guia rapida: cuando MAX vs HIGH").
 
 #### Verify Before Push
