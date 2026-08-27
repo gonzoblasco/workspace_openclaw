@@ -68,6 +68,15 @@
 - **Deuda documentada:** 3 vulnerabilidades low de @ai-sdk (requieren breaking change, diferir).
 - **Plan:** `PLAN-BASE-FUNCIONANDO.md` (completo).
 
+## ESTRUCTURA APLANADA (2026-08-27) - commit 656292d
+
+- **Cambio:** se eliminó la subcarpeta `adorable/` (residuo del monorepo de Adorable). Todo el código ahora vive en el root del proyecto: `app/`, `components/`, `lib/`, `docker/`, `hooks/`, `next.config.ts`, `tsconfig.json`, etc.
+- **package.json:** fusionado (deps + overrides + allowScripts), sin workspaces. Nombre: `kanam-forge`.
+- **.env.local:** movido al root (ya no hay problema de ubicación).
+- **next.config.ts:** removido el `turbopack.root` (ya no hace falta con estructura plana).
+- **Verificado:** build + loop del agente funcionan con la estructura plana.
+- **Nota:** queda un warning de Next.js sobre el lockfile del workspace (fuera del repo) - inofensivo, Next.js lo ignora correctamente.
+
 ---
 
-**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Commits: ecfb84b (F0), 4150854 (fase-1), e72f10b (fix stack), ce390dd (fix turbopack root), cb5eea8 (fix system-prompt), 94f3d36 (upgrade next), 02614dd (docs), 656292d (flatten).
