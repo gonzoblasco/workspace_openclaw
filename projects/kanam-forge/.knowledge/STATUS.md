@@ -179,6 +179,19 @@
 - **Nota:** el system-prompt base ya no necesita la lista fija de archivos (ahora viene del contexto real). Queda como mejora futura limpiar esa seccion estatica.
 - **Siguiente:** Fase D (proceso de desarrollo en el agente - ya en system-prompt), Fase E (cierre: archivar create-with-ai).
 
+## FASE D PROCESO DE DESARROLLO EN EL AGENTE - VERIFICADA (2026-08-27)
+
+- **Verificacion end-to-end con el tetris de Gonzo (proyecto f3066af2):** el agente construyo un juego Tetris completo con TDD - tests (lib/tetris/__tests__/game.test.ts 8, types.test.ts 16, hooks/useTetris.test.tsx 2, test/page.test.tsx 2 = 28 tests) + implementacion (game.ts, types.ts, useTetris.ts, Board, NextPiece). Todos los tests pasan dentro del contenedor (28/28).
+- **Commit every slice verificado:** historial del tetris con un commit por slice (9 commits, mensajes descriptivos, fixes atómicos) - viajar en el tiempo funcionando.
+- **Nota de arquitectura (rollup):** el npm install se hace dentro del contenedor, asi el node_modules tiene binarios Linux (rollup-linux-arm64-musl). El agente corre vitest DENTRO del contenedor (funciona). Si se corre vitest desde el HOST falla con 'Cannot find module @rollup/rollup-darwin-arm64' - esperado, no es bug.
+- **Pendiente:** el dev server del orquestador en :3000 necesita restart para tomar el fix del default URL del analyzer (Fase B) - hasta entonces el analyzer cae al fallback en el endpoint.
+
+## FASE E CIERRE (2026-08-27)
+
+- [ ] Archivar create-with-ai en GitHub (ya archivado 2026-08-27 10:08)
+- [ ] Deprecar @gonzoblasco/create-with-ai en npm
+- [ ] Actualizar MEMORY.md, TOOLS.md, STATUS.md
+
 ---
 
-**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode + welcome). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada, top bar (nombre + export derecha), code reader. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Import desde GitHub. Proxy Ollama (localhost:11434 → host). Fix refVm (recrea contenedor + dev server + preview). Auto-start dev server + abrir conversación más reciente. Proceso de desarrollo en el agente (plan + incremental + TDD + commits). Plan de integración create-with-ai (Next.js + stack opinado). Fase A de integración completa (scaffold + analyzer + provision). Fase B de integración completa (analyzer integrado al chat + fix default URL). Fase C de integración completa (project-context inyectado al system-prompt del agente). Commits: ... 82e919d (U3 provision), 1493673 (Fase B U1 buildScaffold), 18bc401 (Fase B U2 analyzer integrado), 0020c43 (gitignore knowledge), b67253b (Fase C U2 project-context al chat).
+**Último log:** 2026-08-27 — Base completa y verificada. Fase 1 del fork operativa (loop del agente validado). Estructura aplanada (sin adorable/). Branding a Kanam Forge (hoja + light mode + welcome). UI: settings removido, terminal colapsable, divisor resizable, paleta suavizada, top bar (nombre + export derecha), code reader. Export reemplaza publish (ZIP + GitHub). Fix de conversaciones (restauración + sidebar al backend). Gestión de proyectos (rename + delete). Import desde GitHub. Proxy Ollama (localhost:11434 → host). Fix refVm (recrea contenedor + dev server + preview). Auto-start dev server + abrir conversación más reciente. Proceso de desarrollo en el agente (plan + incremental + TDD + commits). Plan de integración create-with-ai (Next.js + stack opinado). Fase A de integración completa (scaffold + analyzer + provision). Fase B de integración completa (analyzer integrado al chat + fix default URL). Fase C de integración completa (project-context inyectado al system-prompt del agente). Fase D verificada (TDD + commit every slice con el tetris). Commits: ... 1493673 (Fase B U1 buildScaffold), 18bc401 (Fase B U2 analyzer integrado), 0020c43 (gitignore knowledge), b67253b (Fase C U2 project-context al chat).

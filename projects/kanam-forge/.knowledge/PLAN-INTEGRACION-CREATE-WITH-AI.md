@@ -51,9 +51,9 @@
 - [x] Alimentar el contexto inicial del agente (qué tiene el proyecto: auth, supabase, tests) - `app/api/chat/route.ts` inyecta el contexto real al system-prompt - commit b67253b
 - [x] El agente arranca cada sesión sabiendo la estructura del proyecto (verificado: responde el stack real)
 
-### Fase D — Proceso de desarrollo en el agente
-- [ ] El system-prompt del agente (ya actualizado con plan + incremental + TDD) ahora tiene sentido porque el scaffold incluye Vitest
-- [ ] Verificar el loop completo: pedir app → analyzer → scaffold con tests → agente implementa con TDD → tests pasan → commits
+### Fase D — Proceso de desarrollo en el agente (VERIFICADA)
+- [x] El system-prompt del agente (ya actualizado con plan + incremental + TDD) ahora tiene sentido porque el scaffold incluye Vitest
+- [x] Verificar el loop completo: pedir app → analyzer → scaffold con tests → agente implementa con TDD → tests pasan → commits - **VERIFICADO con el tetris de Gonzo (28/28 tests, 9 commits por slice)**
 
 ### Fase E — Cierre
 - [ ] Archivar create-with-ai en GitHub (sin borrar)
