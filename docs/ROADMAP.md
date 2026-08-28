@@ -13,13 +13,20 @@
 
 ## Capa 0 - Fundaciones (sostiene todo)
 
-### 0.1 Estabilidad de la infraestructura (gateway) 🔴 P0
-- **Qué**: el gateway de OpenClaw se reinicia suave bajo cadenas largas de exec en serie (diagnosticado 2026-08-28). Cada caída corta el contexto; retomar cuesta más que seguir.
+### 0.1 Estabilidad de la infraestructura (gateway) 🟡 P0
+- **Qué**: el gateway de OpenClaw se reinicia suave bajo sesiones long-running (diagnosticado 2026-08-28). Cada reinicio corta el contexto; retomar cuesta más que seguir.
 - **Por qué**: es la deuda más cara del sistema. No se ve, pero todo lo demás se apoya en esto.
-- **Criterio de éxito**: 0 caídas de gateway en una sesión de trabajo pesado (refactor + validación + browser).
+- **Criterio de éxito**: 0 reinicios de gateway en una sesión de trabajo pesado (refactor + validación + browser).
 - **Señal de listo**: una sesión completa de validación de endpoints (15+ POST + 11 GET) sin reinicio del bridge.
+- **Diagnóstico (2026-08-28, medido en log)**:
+  - 8 SIGTERM en la ventana 17:44-18:15 (sesión del refactor de Moderno).
+  - El gateway se apaga limpio (`shutdown completed cleanly in 215ms`) y launchd (`KeepAlive=true`) lo relanza 10s después.
+  - Disparadores correlacionados: `long-running session` (procesando >2min con `queueDepth=1`) + `auto-compaction succeeded ... retrying prompt` + `post-compaction guard armed`.
+  - **AGENTS.md = 30.439 chars vs límite 20.000** → se trunca en cada bootstrap (20 veces hoy). MEMORY.md = 22.706 chars, también sobre el límite.
+  - NO es crash (sin dump), NO es OOM (sería SIGKILL), NO es el proyecto (worktrees anidados solo generan warnings de cleanup).
 - **Acciones**:
-  - [ ] Medir: contar caídas por sesión durante una semana (log del gateway).
+  - [ ] **Reducir AGENTS.md a <20K chars** (está 52% sobre el límite). Es la acción de mayor impacto: menos contexto = menos compactación = menos reinicios, y además arregla el truncamiento de reglas.
+  - [ ] Reducir MEMORY.md a <20K si es viable (archivar detalle a docs/).
   - [ ] Batchear exec: agrupar validaciones masivas en scripts `.sh` de un solo exec (ya aplicado en Moderno, formalizar como regla).
   - [ ] No mezclar browser tool con exec grande en la misma respuesta.
   - [ ] Revisar si el hot-reload de `~/.openclaw/openclaw.json` (cambios de model/context) contribuye; si sí, separar cambios de config de la corrida.
