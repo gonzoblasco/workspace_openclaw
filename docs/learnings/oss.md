@@ -262,3 +262,11 @@ Ciclo del PR astryx #4022 (WCAG contrast fix). El reviewer (cixzhang) pidio CHAN
 
 ---
 
+## Chequear si un issue ya esta ASIGNADO antes de abrir PR (astryx #4022)
+
+PR #4022 (WCAG 2.1 AA contrast en --color-border-emphasized) fue CERRADO por ownership, no por calidad. Aprobado 2x por cixzhang (27/08) tras limpiar scripts + regenerar tokens.doc.mjs, todo en verde. Motivo del cierre: el issue #3654 ya estaba ASIGNADO a @rubyycheung y hay un programa coordinado (#4475) de contrast de color-tokens con ownership de a11y + design. 'Parallel implementation PRs' no son bienvenidos. LECCION: antes de abrir un PR en astryx (y en general), chequear si el issue ya esta ASIGNADO (no solo abierto) - pisar ownership ya reclamado es contraproducente aunque el trabajo sea tecnico y solido. El audit y la metodologia quedaron documentados en la conversacion, pero el PR no mergeo.
+
+**Tags:** oss,astryx,ownership,contrast,wcag
+
+---
+
