@@ -70,6 +70,17 @@ Nada se pushea sin pasar por linter + tests primero. Los commits de "fix lint" o
 
 Si algo falla, el commit no se crea. Para saltar: `SKIP_SIMPLE_GIT_HOOKS=1 git commit`. **Regla:** cada vez que se identifique un proyecto sin pre-commit hooks, agregarlos. Es prioridad sobre features.
 
+### Validar fixes visuales con browser real, no con jsdom/headless (2026-08-27)
+
+Cuando un fix toca la UI (CSS, layout, appearance), validar con browser real (Chrome/Firefox/Safari desktop), NO con jsdom ni con Playwright headless. jsdom no hace layout; Playwright headless usa `chromium_headless_shell` que renderiza `appearance: auto` (chrome nativo de inputs) diferente que Chrome desktop con tema del sistema.
+
+**Lección viva:** el PR #10517 de react-spectrum (fix para SR focus ring en Checkbox/Radio) tenía browser tests reales con Playwright que pasaban + tsc limpio + formato OK + validación con VoiceOver OK. Pero al validar visualmente con Chrome desktop, Gonzo detectó que el chrome nativo del input se renderiza encima del SVG custom - bug preexistente que jsdom/headless no detecta. Si solo hubiera confiado en los tests automatizados, el PR habría mergeado con un bug visual crítico.
+
+**Reglas derivadas:**
+- Tests automatizados (vitest, playwright, jest+jsdom) son necesarios pero no suficientes para fixes de UI.
+- Antes de declarar "validado" un fix visual, pedirle al humano que abra Chrome/Firefox/Safari desktop y mire.
+- Para el cross-review del pipeline A/B: si el agente B dice "todo OK" sin haber abierto un browser real, es una señal roja para fixes UI.
+
 ## Modelo de agentes en OpenClaw OS (2026-08-10)
 
 - La unidad de aislamiento es el AGENTE (workspace completo), no la sesión.

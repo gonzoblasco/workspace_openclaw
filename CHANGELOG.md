@@ -17,6 +17,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-27] - Leccion de ingenieria: validar fixes visuales con browser real
+
+### Added
+- **`MEMORY.md`** (seccion "Reglas de ingenieria"): nueva sub-seccion **"Validar fixes visuales con browser real, no con jsdom/headless"** con la leccion aprendida del PR #10517 de react-spectrum. jsdom no hace layout; Playwright headless usa `chromium_headless_shell` que renderiza `appearance: auto` distinto que Chrome desktop. Regla: para fixes UI, los tests automatizados no son suficiente - hay que abrir Chrome/Firefox/Safari desktop y mirar.
+
+### Why
+- El PR #10517 tenia browser tests reales con Playwright que pasaban + tsc limpio + formato OK + validacion con VoiceOver OK. Pero al validar visualmente con Chrome desktop, Gonzo detecto que el chrome nativo del input se renderizaba encima del SVG custom - bug preexistente que jsdom/headless no detecta. Si solo se hubiera confiado en los tests automatizados, el PR habria mergeado con un bug visual critico.
+
+---
+
 ## [2026-08-27] - Reorganizacion de docs/ por categoria (pipeline y entrevistas)
 
 ### Changed
