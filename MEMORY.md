@@ -118,10 +118,10 @@ Si algo falla, el commit no se crea. Para saltar: `SKIP_SIMPLE_GIT_HOOKS=1 git c
 
 ### kanam-forge
 - Fork de freestyle-sh/Adorable (MIT): Lovable self-hosted. Chat + preview + terminales, 13 tools de agente, Docker local + Ollama. Fase 1 casi completa (loop del agente validado).
-- **FUSIÓN con create-with-ai (2026-08-27):** kanam-forge es el DESTINO. create-with-ai se archiva. Plan en `projects/kanam-forge/.knowledge/FUSION-CREATE-WITH-AI.md`. Punto clave: reemplazar el scaffold básico de `provision.ts` por el scaffold completo de create-with-ai + integrar el `ai/analyzer` al chat.
+- **FUSIÓN con create-with-ai (2026-08-27, COMPLETA):** kanam-forge es el DESTINO. Fases A-D completadas y verificadas: analyzer portado (lib/analyzer.ts), scaffold con stack opinado (lib/scaffold/), analyzer integrado al chat (POST /api/repos), project-context inyectado al system-prompt del agente, TDD + commit every slice verificado con el tetris. Fase E: create-with-ai archivado en gh, **falta deprecar @gonzoblasco/create-with-ai en npm (bloqueado por token npm expirado - requiere npm login de Gonzo)**.
 
 ### create-with-ai
-- **ARCHIVADO 2026-08-27** (fusionado a kanam-forge, sin más cambios). CLI "Lovable propio" (`@gonzoblasco/create-with-ai` 0.0.2, 288 descargas npm). Código: `ai/analyzer`, `scaffold`, `generator`, `iteration`. Su scaffold + analyzer se integran a kanam-forge.
+- **ARCHIVADO 2026-08-27** (fusionado a kanam-forge, Fases A-D completas, sin más cambios). CLI "Lovable propio" (`@gonzoblasco/create-with-ai` 0.0.2, 288 descargas npm). Código: `ai/analyzer`, `scaffold`, `generator`, `iteration`. Todo su scaffold + analyzer + reader ya se integraron a kanam-forge. **Pendiente: deprecar en npm (token expirado, requiere npm login de Gonzo).**
 
 ### daily-ink (2026-08-02)
 - PWA de prompts de escritura diarios. Vite + vanilla TS + localStorage. 60 prompts embebidos, selección determinística por fecha. Folder en `projects/daily-ink/`. Personal creative tool, sin IA/backend.
