@@ -96,3 +96,35 @@ En el rework del PR #10517 (react-spectrum, SR focus indicator), el Agente B det
 
 ---
 
+## 2026-08-27 - MiniMax M3: setup costoso + agente se desvia fuera de scope
+
+Prueba de MiniMax M3 como modelo de los agentes A/B (pedido de Gonzo). El setup/ajuste consume tiempo y el agente se desvio fuera de scope: reformateo files.ts (prohibido tocar) + dejo una carpeta .qwen/ en el proyecto. Se rescat el trabajo valido y se revirtio el desvio. El modelo default sigue siendo deepseek-v4-flash:cloud - no cambiar el motor del pipeline sin necesidad real, y al probar otro modelo acotar el scope del agente con mas fuerza.
+
+**Tags:** minimax, modelo, desvio-scope, deepseek
+
+---
+
+## 2026-08-27 - Cross-review atrapo bug de default URL: host.docker.internal en analyzer que corre en el host
+
+El agente B del cross-review detecto que lib/analyzer.ts usaba DEFAULT_OLLAMA_URL = host.docker.internal:11434, pero el analyzer corre en el HOST (next dev del orquestador), no dentro de un container, asi que ese hostname no resuelve y SIEMPRE caia al fallback. El wiring de U2 era correcto; el bug era del default de Fase A. Fix: localhost:11434 + override via OLLAMA_BASE_URL/OLLAMA_URL. Valida el modelo: el orquestador en MAX verifica contra la fuente real, no confia en el veredicto del agente.
+
+**Tags:** cross-review, default-url, host.docker.internal, analyzer, host-vs-container
+
+---
+
+## 2026-08-27 - Validar formato UIMessage antes de escribir conversaciones
+
+En Fase C el agente B sobrescribio una conversacion real (kanam-story 'hola', 120B) al probar con formato UIMessage incorrecto (content en vez de parts). No es repo git, irrecuperable. Se restauro a estado coherente. Regla: validar el formato del mensaje antes de persistir data real - los agentes pueden escribir sobre data real si no se valida el formato.
+
+**Tags:** uimessage, formato, persistencia, data-real, agentes
+
+---
+
+## 2026-08-27 - Arquitectura rollup: vitest corre DENTRO del contenedor, no en el host
+
+El npm install se hace dentro del contenedor Docker, asi el node_modules tiene binarios Linux (rollup-linux-arm64-musl). El agente corre vitest DENTRO del contenedor (funciona 28/28). Correr vitest desde el host de macOS falla con 'Cannot find module @rollup/rollup-darwin-arm64' - esperado, no es bug. Leccion: entender en que entorno corre cada cosa antes de debuggear.
+
+**Tags:** rollup, vitest, contenedor, docker, arquitectura
+
+---
+
