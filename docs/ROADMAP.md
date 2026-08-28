@@ -24,12 +24,17 @@
   - Disparadores correlacionados: `long-running session` (procesando >2min con `queueDepth=1`) + `auto-compaction succeeded ... retrying prompt` + `post-compaction guard armed`.
   - **AGENTS.md = 30.439 chars vs límite 20.000** → se trunca en cada bootstrap (20 veces hoy). MEMORY.md = 22.706 chars, también sobre el límite.
   - NO es crash (sin dump), NO es OOM (sería SIGKILL), NO es el proyecto (worktrees anidados solo generan warnings de cleanup).
+- **Estado actual (2026-08-28 noche, evidencia):**
+  - AGENTS.md bajó a **8.890 chars** (de 30.439) y MEMORY.md a **5.966 chars** (de 22.706) - ambos muy por debajo del límite de 20K. La acción de mayor impacto YA está resuelta (las secciones extensas viven en `docs/AGENTS-DETALLE.md`).
+  - Sesión de higiene del portfolio (cadenas largas de exec + browser) corrió 2h30m con **0 reinicios de gateway** y **0 compactaciones** (contexto usado 11% de 1M). El gatillo de reinicio (auto-compaction + long-running) no se armó.
+  - FALTA la señal de listo formal: una sesión de validación de 15+ POST + 11 GET sin reinicio (eso no se hizo hoy).
 - **Acciones**:
-  - [ ] **Reducir AGENTS.md a <20K chars** (está 52% sobre el límite). Es la acción de mayor impacto: menos contexto = menos compactación = menos reinicios, y además arregla el truncamiento de reglas.
-  - [ ] Reducir MEMORY.md a <20K si es viable (archivar detalle a docs/).
-  - [ ] Batchear exec: agrupar validaciones masivas en scripts `.sh` de un solo exec (ya aplicado en Moderno, formalizar como regla).
-  - [ ] No mezclar browser tool con exec grande en la misma respuesta.
-  - [ ] Revisar si el hot-reload de `~/.openclaw/openclaw.json` (cambios de model/context) contribuye; si sí, separar cambios de config de la corrida.
+  - [x] **Reducir AGENTS.md a <20K chars** - HECHO (8.890 chars). Mayor acción, ya resuelta.
+  - [x] Reducir MEMORY.md a <20K - HECHO (5.966 chars).
+  - [x] Batchear exec: agrupar validaciones masivas en scripts `.sh` de un solo exec (aplicado y verificado en la sesión de higiene - la sesión corrió larga sin reinicio).
+  - [ ] Confirmar la señal de listo: correr una validación de 15+ POST + 11 GET sin reinicio (pendiente).
+  - [ ] No mezclar browser tool con exec grande en la misma respuesta (regla operativa, a respetar).
+  - [ ] Revisar si el hot-reload de `~/.openclaw/openclaw.json` contribuye; si sí, separar cambios de config de la corrida.
 
 ### 0.2 Higiene del workspace 🟡 P1
 - **Qué**: `projects/*` sin trackear, gitlinks desincronizados, restos de merges, archivos basura (ej. el archivo con nombre de query SQL del 28/08).
@@ -109,13 +114,16 @@
   - [ ] Verificar que cada post queda documentado en `docs/linkedin/`.
 
 ### 2.3 Búsqueda laboral 🟡 P0
-- **Qué**: entrevista con OpenSistemas confirmada (25/08, 9AM) - perfil AI-Native, colaboración freelance 100% remoto LATAM.
+- **Qué**: OpenSistemas - perfil AI-Native, colaboración freelance 100% remoto LATAM. Entrevista del 25/08 muy buena (reclutadora maravillada con demo en vivo de astryx PR #5419/#5493).
 - **Por qué**: es el objetivo activo; el roadmap debería capitalizar el resultado (entre o no).
-- **Criterio de éxito**: resultado de la entrevista procesado y siguiente paso definido.
-- **Señal de listo**: un track explícito de "preparar y capitalizar" el resultado.
-- **Acciones**:
-  - [ ] Preparar material (pitch, portfolio, PRs mergeados).
-  - [ ] Definir el siguiente paso según el resultado (entra → onboarding; no entra → feedback + ajuste).
+- **Criterio de éxito**: resultado procesado y siguiente paso definido.
+- **Estado (2026-08-28):** el aviso del resultado quedó en "para fin de semana o lunes" (dicho el 27/08). Hoy es viernes 28/08 noche - **estamos en la ventana de respuesta**. Acción inminente, no diferida.
+- **Señal de listo**: respuesta recibida y capitalizada (onboarding si entra, feedback+ajuste si no).
+- **Acciones (preparadas, listas para ejecutar al recibir el aviso):**
+  - [ ] **Si entra → onboarding:** confirmar alcance real, dedicación y tarifa (re-negociar con el contexto ganado). Preparar onboarding con el sistema que ya tenemos (este workspace ES el pitch).
+  - [ ] **Si no entra → feedback + ajuste:** pedir feedback concreto, registrar la lección, ajustar pitch/CV según aprendido.
+  - [ ] Seguimiento proactivo: si no hay aviso el lunes (31/08), consultar a Camila de forma natural (no regalarse, mantener el criterio de Gonzo).
+  - [x] (Hecho) Preparar material: pitch, PRs mergeados (astryx #5419 mergeado, #5493), sistema IA-asistido como caso de uso de SofIA.
 
 ---
 
