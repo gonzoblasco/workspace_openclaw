@@ -1,6 +1,6 @@
 # SKILLS-INDEX.md - Skills del Workspace
 
-> Skills activas organizadas por categoría. Actualizado: 2026-08-23
+> Skills activas organizadas por categoría. Actualizado: 2026-08-28
 >
 > **Nota de consolidación:** En agosto 2026 se redujo el set de skills de 96 a 60 activas, adoptando las 24 skills de ingeniería de `addyosmani/agent-skills` como base y fusionando en ellas las funcionalidades de skills propias redundantes. Las skills redundantes fueron eliminadas (recuperables desde el historial de git, commit `ba12459`).
 >
@@ -82,6 +82,7 @@
 
 | Skill | Descripción |
 |---|---|
+| [workspace-portfolio-hygiene](skills/workspace-portfolio-hygiene/) | Audita/limpia/estructura projects/*: clasifica gitlinks vs blobs, respeta decisiones de ADR, archiva repos, promueve carpetas a doble git |
 | [supabase-assistant](skills/supabase-assistant/) | Interact with Supabase projects: schemas, queries, types, migrations |
 | [sql-insight](skills/sql-insight/) | Traducir lenguaje natural a SQL, optimizar queries, interpretar EXPLAIN |
 | [db-readonly](skills/db-readonly/) | Queries read-only seguras a PostgreSQL y MySQL |
