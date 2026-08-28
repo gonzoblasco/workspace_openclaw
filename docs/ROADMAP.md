@@ -114,16 +114,23 @@
   - [ ] Verificar que cada post queda documentado en `docs/linkedin/`.
 
 ### 2.3 Búsqueda laboral 🟡 P0
-- **Qué**: OpenSistemas - perfil AI-Native, colaboración freelance 100% remoto LATAM. Entrevista del 25/08 muy buena (reclutadora maravillada con demo en vivo de astryx PR #5419/#5493).
-- **Por qué**: es el objetivo activo; el roadmap debería capitalizar el resultado (entre o no).
-- **Criterio de éxito**: resultado procesado y siguiente paso definido.
-- **Estado (2026-08-28):** el aviso del resultado quedó en "para fin de semana o lunes" (dicho el 27/08). Hoy es viernes 28/08 noche - **estamos en la ventana de respuesta**. Acción inminente, no diferida.
-- **Señal de listo**: respuesta recibida y capitalizada (onboarding si entra, feedback+ajuste si no).
-- **Acciones (preparadas, listas para ejecutar al recibir el aviso):**
-  - [ ] **Si entra → onboarding:** confirmar alcance real, dedicación y tarifa (re-negociar con el contexto ganado). Preparar onboarding con el sistema que ya tenemos (este workspace ES el pitch).
-  - [ ] **Si no entra → feedback + ajuste:** pedir feedback concreto, registrar la lección, ajustar pitch/CV según aprendido.
-  - [ ] Seguimiento proactivo: si no hay aviso el lunes (31/08), consultar a Camila de forma natural (no regalarse, mantener el criterio de Gonzo).
-  - [x] (Hecho) Preparar material: pitch, PRs mergeados (astryx #5419 mergeado, #5493), sistema IA-asistido como caso de uso de SofIA.
+- **Qué**: DOS procesos en paralelo (decisión: "la primera que salga, la tomo").
+  - **Ritz-Carlton Yacht Collection (Principal Full Stack) - PRIORIDAD**: vía Steven Sharma (Qualified Recruiter). $95k-$105k USD, remote→hybrid BA 3-6 meses, full-time directo a nómina. JD match MUY fuerte (React/Next, Node, ADRs, OSS, Principal = 50% hands-on / 50% dirección).
+  - **OpenSistemas (AI-Native)**: perfil AI-Native freelance remoto LATAM. Entrevista 25/08 muy buena; aviso "fin de semana o lunes".
+  - **EY vía LTM (Frontend Lead)**: plan B. Aclarado presupuesto $28/hr (~$58k) por debajo; dejado en pausa sin cerrar puerta.
+- **Por qué**: es el objetivo activo; situación económica urgente.
+- **Criterio de éxito**: al menos un proceso avanza a oferta/onboarding.
+- **Estado (2026-08-28):**
+  - **Ritz-Carlton**: assessment de lógica (15 min, mínimo 70%) hecho. Resultado bajo el suficiente - **le dieron otra oportunidad de reintentar el lunes 31/08 para subir la nota**. Preparación activa: secuencias numéricas, operaciones alternadas, silogismos, razonamiento abstracto (ver archive 27-1340).
+  - **OpenSistemas**: en ventana de respuesta (fin de semana/lunes).
+  - **EY**: pausado.
+- **Señal de listo**: un proceso llega a oferta/onboarding, o feedback que ajusta el pitch.
+- **Acciones**:
+  - [ ] (Lunes 31/08) Reintentar el assessment de lógica de Ritz-Carlton para subir la nota. Preparar hoy/domingo: ejercicios de secuencias, operaciones alternadas, silogismos, razonamiento abstracto (ya hay base del 27/08).
+  - [ ] (Fin de semana/lunes) Manejar el aviso de OpenSistemas (entra → onboarding; no entra → feedback + ajuste).
+  - [ ] (Si no hay aviso de OpenSistemas lunes) Seguimiento natural con Camila.
+  - [x] (Hecho) CV actualizado a Principal Full Stack ($95k-$105k), OSS corregido con datos reales (MUI + astryx), SoporteML sacado (no listo).
+  - [x] (Hecho) Prep lógica 27/08: secuencias, alternadas, silogismos, razonamiento abstracto.
 
 ---
 
