@@ -96,12 +96,16 @@ Estado de los 16 projects/:
 
 **GITLINK - sin .knowledge como blob (4):** accessible-ui (archivado), ai-developer-stack, create-with-ai (archivado), soporteml-v4 (tiene .knowledge en disco pero NO trackeado por workspace)
 
-**REPO-PROPIO sin track (1):** kanam-skills
-
-**Con cambios sucios:** kanam-forge (README.md), kanam-mind (components/SettingsModal.tsx - código, no .knowledge), soporteml-v4 (HANDOFF, NO TOCAR)
+**REPO-PROPIO/otros:** kanam-skills (repo de skills vivo en GitHub, sin .knowledge/ - su contenido son skills, correcto así), kanam-forge (README.md modificado = trabajo en curso de Gonzo, no tocar), kanam-mind (components/SettingsModal.tsx modificado = trabajo en curso, no tocar)
 
 ### Observación clave
-Coexisten DOS patrones: el dominante (blob `.knowledge/` trackeado por workspace) y el gitlink (solo puntero al repo, sin `.knowledge/` como blob). Los gitlinks parecen ser proyectos más nuevos o que no migraron. Los archivados (accessible-ui, create-with-ai) no necesitan migrar. PERO `ai-developer-stack` y `soporteml-v4` son activos con `.knowledge/` en disco NO trackeado - riesgo de pérdida si se pierde la carpeta local.
+Coexisten DOS patrones: el dominante (blob `.knowledge/` trackeado por workspace) y el gitlink (solo puntero al repo, sin `.knowledge/` como blob). Los gitlinks parecen ser proyectos más nuevos o que no migraron. LOS ARCHIVADOS (accessible-ui, create-with-ai) y SOPORTEML (v3/v4, decisión cerrada) NO se tocan.
+
+### Hallazgo: ai-developer-stack (proyecto vivo, NO tocar sin pedido)
+- Es un gitlink. Su `.knowledge` es un **symlink roto**: apunta a `../ai-developer-stack-knowledge`, directorio que NO existe ni en disco ni en GitHub (modo 120000 en git).
+- El contenido real (ai-agents, backend-infra, etc.) vive en carpetas del repo, no en un `.knowledge/` real.
+- ES PROYECTO VIVO de skills de agentes IA. No es basura. Reparar su estructura requiere decisión explícita de Gonzo.
+- Registrado como hallazgo, no como acción de higiene.
 
 ### Decisión pendiente
 ¿Migrar los gitlinks activos (ai-developer-stack, soporteml-v4) al patrón blob (trackear `.knowledge/` en workspace) para garantizar respaldo? O dejarlos como gitlink si el repo GitHub es la fuente confiable.
@@ -110,7 +114,7 @@ Coexisten DOS patrones: el dominante (blob `.knowledge/` trackeado por workspace
 
 ## 6. Pendiente para completar el skill
 
-- [ ] Decidir la migración de gitlinks activos a blob (ai-developer-stack, soporteml-v4).
+- [ ] Decidir si reparar el symlink roto de .knowledge en ai-developer-stack (requiere pedido explícito de Gonzo - es proyecto vivo).
 - [ ] Auditar los `projects/*` restantes en detalle (kanam-skills, soporteml, quedamos - por qué blob vs gitlink).
 - [ ] Decidir el destino local de `accessible-ui` (archivado en GitHub, pero ¿se deja la carpeta local o se limpia?).
 - [ ] Verificar si todos los proyectos activos siguen el patrón `.knowledge/` en el repo GitHub (validar que "GitHub es la fuente" se cumple).
