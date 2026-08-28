@@ -37,9 +37,15 @@
 - **Criterio de éxito**: `git status` del workspace limpio y explicable (solo cambios intencionales).
 - **Señal de listo**: `git status --short` no muestra nada inesperado al abrir una sesión.
 - **Acciones**:
-  - [ ] Auditar `projects/*`: cuáles son gitlinks válidos, cuáles son restos.
-  - [ ] Decidir el destino de los candidatos a reset/archivar (accessible-ui, create-with-ai).
+  - [x] Auditar `projects/*`: 16 proyectos clasificados (10 blob, 4 gitlink, 1 repo-propio). Ver `docs/skills/portfolio-hygiene-notes.md`.
+  - [x] Archivar en GitHub: `accessible-ui`, `create-with-ai` (ya archivado) → `gh repo archive`.
+  - [x] Promover `portfolio-strategy` a doble git (ADR-001 trackeado por workspace).
+  - [x] Limpiar `.DS_Store` trackeado en `create-with-ai`.
+  - [ ] Decidir migración de gitlinks activos a blob: `ai-developer-stack`, `soporteml-v4` (su `.knowledge/` en disco NO está trackeado por el workspace - riesgo de pérdida).
+  - [ ] Decidir destino de `kanam-skills` (repo propio sin trackeo del workspace).
+  - [ ] Resolver cambios sucios de `kanam-forge` (README) y `kanam-mind` (SettingsModal.tsx).
   - [ ] Verificar que `.gitignore` cubre los archivos de sesión (RECENT.md, .compaction-recovery-pending).
+  - [ ] (Nota) El template `init-project.sh` ignora `.knowledge/` pero los proyectos activos NO - el patrón real es blob trackeado, documentar y corregir el script.
 
 ### 0.3 Consolidación de memoria 🟡 P1
 - **Qué**: el daily + learnings ya existe; falta el patrón de *cuándo* se archiva y *qué* merece ser lección vs ruido.
