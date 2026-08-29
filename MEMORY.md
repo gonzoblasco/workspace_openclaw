@@ -65,6 +65,8 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 
 ## Proyectos (Detalle en `.knowledge/` de cada uno)
 
+- **Regla (2026-08-28):** NO proponer SoporteML en estrategia de proyectos. Gonzo lo pidió explícitamente.
+
 - **Kanam Story:** Co-writer de ficción. PWA, roles especializados. Local-first $\rightarrow$ Nube (en plan).
 - **Kanam Mind:** Segundo cerebro local-first. Timeline, CRUD accesible, resumen IA. Local-first puro (IndexedDB).
 - **SoporteML:** CRM MeLi. v4 es el reinicio actual (frontend avanzado, backend v3 sólido).
