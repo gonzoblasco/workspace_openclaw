@@ -121,7 +121,7 @@
 - **Por qué**: es el objetivo activo; situación económica urgente.
 - **Criterio de éxito**: al menos un proceso avanza a oferta/onboarding.
 - **Estado (2026-08-28):**
-  - **Ritz-Carlton**: assessment de lógica (15 min, mínimo 70%) hecho. Resultado bajo el suficiente - **le dieron otra oportunidad de reintentar el lunes 31/08 para subir la nota**. Preparación activa: secuencias numéricas, operaciones alternadas, silogismos, razonamiento abstracto (ver archive 27-1340).
+  - **Ritz-Carlton**: assessment de JavaScript (15 min, mínimo 70%). Resultado **60** - bajo el umbral, **le dieron otra oportunidad de reintentar el lunes 31/08 para subir la nota**. Contenido real del examen: (1) promesas y orden de ejecución (event loop, microtasks vs macrotasks), (2) callbacks, (3) IIFE `(() => {})`, (4) algoritmos de JS (strings, arrays), (5) crear una función (ej. string -> acrónimo filtrando stop words, "United States of America" -> USA). Nota: se preparó psicotécnico (27/08) pero era JS técnico - lección registrada.
   - **OpenSistemas**: en ventana de respuesta (fin de semana/lunes).
   - **EY**: pausado.
 - **Señal de listo**: un proceso llega a oferta/onboarding, o feedback que ajusta el pitch.
