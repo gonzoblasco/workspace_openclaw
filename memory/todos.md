@@ -17,6 +17,7 @@
 - [ ] **[]** (medium) OBSERVAR (de ClawHub tools): MCP Client/MCPBundles (acceso MCP estandar), Agent Collaboration OS / A2A / cross-agent orchestration
 - [ ] **[]** (medium) OBSERVAR (de ClawHub runtime): observabilidad del agente con OpenTelemetry/Prometheus/Langfuse/Otel - metricas del pipeline (runtime, latencia, errores, SIGKILL) a futuro
 - [ ] **[Deprecate del paquete npm 0.0.2 (288 descargas) que quedo publicado tras la fusion a kanam-forge. Requiere token npm valido (el de ~/.npmrc expiro, 401). Comando listo: npm deprecate @gonzoblasco/create-with-ai@0.0.2 'Fusionado a kanam-forge. Usa kanam-forge en su lugar.' Deprecar NO borra el paquete - lo marca como desaconsejado.]** (medium) Deprecar @gonzoblasco/create-with-ai en npm (no borrar)
+- [ ] **[]** (medium) Pipeline A/B: Alternar Agente A (deepseek-v4-flash) y Agente B (gemma4) en razonamiento HIGH para comparar propuestas de modelos distintos
 
 ## Completados
 
