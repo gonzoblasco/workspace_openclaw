@@ -14,6 +14,7 @@
 #   model-router.sh set <tipo> <model>    # override model for a type (sticky)
 #   model-router.sh reset <tipo>          # clear override for a type
 #   model-router.sh default <model>       # set the fallback default
+#   model-router.sh fail <tipo> <model>   # log a failure for telemetry
 #   model-router.sh edit                  # open routes file for manual edit
 #
 # Exit: 0 ok.
@@ -23,14 +24,16 @@ set -uo pipefail
 STATE_FILE="${MODEL_ROUTES_FILE:-model-router.json}"
 
 # Default routes (task type -> model). Edit with `model-router.sh edit`.
+# Sincronizado con Regla MAX/HIGH: Code y Review usan DeepSeek Flash.
 ROUTES='{
   "default": "deepseek-v4-flash:cloud",
   "routes": {
-    "code": "kimi-k2.7-code:cloud",
+    "code": "deepseek-v4-flash:cloud",
     "review": "deepseek-v4-flash:cloud",
     "long": "deepseek-v4-pro:cloud",
     "cheap": "gemma4:cloud",
-    "writing": "kimi-k3:cloud"
+    "writing": "kimi-k3:cloud",
+    "pipeline_ab": "deepseek-v4-flash:cloud | gemma4:cloud"
   },
   "overrides": {}
 }'
@@ -52,7 +55,7 @@ write_state() {
 }
 
 CMD="${1:-}"
-[ -z "$CMD" ] && { echo "Usage: model-router.sh {list|model|set|reset|default|edit}" >&2; exit 1; }
+[ -z "$CMD" ] && { echo "Usage: model-router.sh {list|model|set|reset|default|fail|edit}" >&2; exit 1; }
 
 case "$CMD" in
   list)
@@ -102,6 +105,20 @@ case "$CMD" in
     echo "[default] $MODEL"
     ;;
 
+  fail)
+    TYPE="${2:-}"; MODEL="${3:-}"
+    [ -z "$TYPE" ] || [ -z "$MODEL" ] && { echo "fail requires <tipo> <model>" >&2; exit 1; }
+    LOG_FILE="model-failures.json"
+    # Initialize log file if not exists
+    [ ! -f "$LOG_FILE" ] && echo "[]" > "$LOG_FILE"
+    # Append failure: timestamp, type, model
+    TIMESTAMP=$(date +%s)
+    NEW_LOG=$(jq --arg t "$TYPE" --arg m "$MODEL" --arg ts "$TIMESTAMP" \
+      '. + [{timestamp: $ts, type: $t, model: $m}]' "$(cat "$LOG_FILE")")
+    echo "$NEW_LOG" > "$LOG_FILE"
+    echo "[fail] Registered failure for $MODEL in $TYPE"
+    ;;
+
   edit)
     if [ ! -f "$STATE_FILE" ]; then
       write_state "$ROUTES"
@@ -111,7 +128,7 @@ case "$CMD" in
     ;;
 
   *)
-    echo "usage: model-router.sh {list|model|set|reset|default|edit}" >&2
+    echo "usage: model-router.sh {list|model|set|reset|default|fail|edit}" >&2
     exit 1
     ;;
 esac

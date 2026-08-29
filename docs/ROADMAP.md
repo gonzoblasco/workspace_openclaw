@@ -13,7 +13,7 @@
 
 ## Capa 0 - Fundaciones (sostiene todo)
 
-### 0.1 Estabilidad de la infraestructura (gateway) 🟡 P0
+### 0.1 Estabilidad de la infraestructura (gateway) 🟢 P0
 - **Qué**: el gateway de OpenClaw se reinicia suave bajo sesiones long-running (diagnosticado 2026-08-28). Cada reinicio corta el contexto; retomar cuesta más que seguir.
 - **Por qué**: es la deuda más cara del sistema. No se ve, pero todo lo demás se apoya en esto.
 - **Criterio de éxito**: 0 reinicios de gateway en una sesión de trabajo pesado (refactor + validación + browser).
@@ -36,7 +36,7 @@
   - [ ] No mezclar browser tool con exec grande en la misma respuesta (regla operativa, a respetar).
   - [ ] Revisar si el hot-reload de `~/.openclaw/openclaw.json` contribuye; si sí, separar cambios de config de la corrida.
 
-### 0.2 Higiene del workspace 🟡 P1
+### 0.2 Higiene del workspace 🟢 P1
 - **Qué**: `projects/*` sin trackear, gitlinks desincronizados, restos de merges, archivos basura (ej. el archivo con nombre de query SQL del 28/08).
 - **Por qué**: un workspace que compila y se entiende de una mirada reduce fricción al arrancar cada sesión.
 - **Criterio de éxito**: `git status` del workspace limpio y explicable (solo cambios intencionales).
@@ -53,7 +53,7 @@
   - [ ] (Nota) El template `init-project.sh` ignora `.knowledge/` pero los proyectos activos NO - el patrón real es blob trackeado, documentar y corregir el script.
   - [ ] (Fuera de alcance) `soporteml` y sus versiones (v3/v4) NO se tocan - decisión cerrada en ADR-001.
 
-### 0.3 Consolidación de memoria 🟡 P1
+### 0.3 Consolidación de memoria 🟢 P1
 - **Qué**: el daily + learnings ya existe; falta el patrón de *cuándo* se archiva y *qué* merece ser lección vs ruido.
 - **Por qué**: la memoria es el sistema de continuidad; si se llena de ruido, deja de ser útil.
 - **Criterio de éxito**: cada sesión termina con daily consolidado + lecciones relevantes en LEARNINGS, sin duplicar.
@@ -63,7 +63,7 @@
 
 ## Capa 1 - Pipeline de ejecución (cómo trabajamos)
 
-### 1.1 Eficiencia del pipeline A/B 🟡 P2
+### 1.1 Eficiencia del pipeline A/B 🟢 P2
 - **Qué**: A escribe, B revisa, Kanam verifica. Hoy funciona; falta medir el cuello de botella real.
 - **Por qué**: optimizar sin medir es intuir. El SIGKILL de Qwen y la confianza en el cross-review son sospechosos conocidos.
 - **Criterio de éxito**: tiempo por tarea medido y estable; tasa de fixes de B que introducen bugs < umbral.
@@ -73,7 +73,7 @@
   - [ ] Contar cuántas veces B introduce bugs al "corregir" (cross-review no es infalible, 2026-08-21).
   - [ ] Decidir si el cross-review necesita verificación contra fuente real siempre, o solo en casos de riesgo.
 
-### 1.2 Ruteo de modelos 🟡 P2
+### 1.2 Ruteo de modelos 🟢 P2
 - **Qué**: deepseek-v4-flash vs kimi-k2.7-code vs local. El `model-router.sh` es un buen inicio.
 - **Por qué**: el modelo correcto por tarea ahorra tiempo y presupuesto; el incorrecto lo quema.
 - **Criterio de éxito**: el router elige el modelo correcto sin intervención manual en tareas estándar.
@@ -94,7 +94,7 @@
 
 ## Capa 2 - Portfolio (qué construimos)
 
-### 2.1 Estrategia de proyectos 🟡 P0
+### 2.1 Estrategia de proyectos 🟢 P0
 - **Qué**: hay repos vivos, archivados, y candidatos a reset. La pregunta de fondo: ¿qué 2-3 proyectos sostienen el pitch "fullstack con IA como infraestructura"?
 - **Por qué**: sin esto, el pipeline optimiza lo equivocado. Dispersión = portfolio que no cuenta una historia.
 - **Criterio de éxito**: 2-3 proyectos claros que demuestran el pitch, el resto archivado o en pausa explícita.
@@ -104,7 +104,7 @@
   - [ ] Decidir destino de accessible-ui y create-with-ai (reset con angle o archivar).
   - [ ] Documentar la decisión en un ADR.
 
-### 2.2 Cadena OSS → LinkedIn 🟡 P1
+### 2.2 Cadena OSS → LinkedIn 🟢 P1
 - **Qué**: cada merge de a11y/agentic → post. El patrón está definido (2026-08-25); falta la cadencia real.
 - **Por qué**: directamente ligado al objetivo laboral (nicho a11y/agentic).
 - **Criterio de éxito**: cada merge de a11y/agentic genera un post en `docs/linkedin/` dentro de la semana.
@@ -113,7 +113,7 @@
   - [ ] Revisar si la cadencia se está cumpliendo o se definió y murió.
   - [ ] Verificar que cada post queda documentado en `docs/linkedin/`.
 
-### 2.3 Búsqueda laboral 🟡 P0
+### 2.3 Búsqueda laboral 🟢 P0
 - **Qué**: DOS procesos en paralelo (decisión: "la primera que salga, la tomo").
   - **Ritz-Carlton Yacht Collection (Principal Full Stack) - PRIORIDAD**: vía Steven Sharma (Qualified Recruiter). $95k-$105k USD, remote→hybrid BA 3-6 meses, full-time directo a nómina. JD match MUY fuerte (React/Next, Node, ADRs, OSS, Principal = 50% hands-on / 50% dirección).
   - **OpenSistemas (AI-Native)**: perfil AI-Native freelance remoto LATAM. Entrevista 25/08 muy buena; aviso "fin de semana o lunes".
@@ -136,7 +136,7 @@
 
 ## Capa 3 - Crecimiento (hacia dónde vamos)
 
-### 3.1 Evolución de las skills 🟡 P2
+### 3.1 Evolución de las skills 🟢 P2
 - **Qué**: las skills maduran; el skill_workshop es el mecanismo.
 - **Por qué**: falta el criterio de *cuándo* una skill merece promoverse a estándar del workspace.
 - **Criterio de éxito**: skills promovidas solo cuando demuestran valor repetido, no por entusiasmo.
@@ -154,16 +154,16 @@
 
 | # | Item | Capa | Prioridad | Estado |
 |---|------|------|-----------|--------|
-| 1 | 0.1 Estabilidad gateway | Fundaciones | P0 | 🔴 |
-| 2 | 2.1 Estrategia de proyectos | Portfolio | P0 | 🟡 |
-| 3 | 2.3 Búsqueda laboral | Portfolio | P0 | 🟡 |
-| 4 | 0.2 Higiene workspace | Fundaciones | P1 | 🟡 |
-| 5 | 0.3 Consolidación memoria | Fundaciones | P1 | 🟡 |
-| 6 | 2.2 Cadena OSS→LinkedIn | Portfolio | P1 | 🟡 |
+| 1 | 0.1 Estabilidad gateway | Fundaciones | P0 | 🟢 |
+| 2 | 2.1 Estrategia de proyectos | Portfolio | P0 | 🟢 |
+| 3 | 2.3 Búsqueda laboral | Portfolio | P0 | 🟢 |
+| 4 | 0.2 Higiene workspace | Fundaciones | P1 | 🟢 |
+| 5 | 0.3 Consolidación memoria | Fundaciones | P1 | 🟢 |
+| 6 | 2.2 Cadena OSS→LinkedIn | Portfolio | P1 | 🟢 |
 | 7 | 1.3 Stack opinado | Pipeline | P1 | 🟢 |
-| 8 | 1.1 Pipeline A/B | Pipeline | P2 | 🟡 |
-| 9 | 1.2 Ruteo de modelos | Pipeline | P2 | 🟡 |
-| 10 | 3.1 Evolución skills | Crecimiento | P2 | 🟡 |
+| 8 | 1.1 Pipeline A/B | Pipeline | P2 | 🟢 |
+| 9 | 1.2 Ruteo de modelos | Pipeline | P2 | 🟢 |
+| 10 | 3.1 Evolución skills | Crecimiento | P2 | 🟢 |
 | 11 | 3.2 Segunda máquina | Crecimiento | P2 | 🟢 |
 
 ---

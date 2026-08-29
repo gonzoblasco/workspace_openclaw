@@ -64,7 +64,7 @@ case "$CMD" in
     for u in "${UNITS[@]}"; do
       if [ $((i % 2)) -eq 0 ]; then owner="A"; else owner="B"; fi
       units_json=$(echo "$units_json" | jq --arg u "$u" --arg o "$owner" --arg s "queued" --arg n "" \
-        '. + [{name: $u, state: $s, owner: $o, note: $n}]')
+        '. + [{name: $u, state: $s, owner: $o, note: $n, startTime: null, endTime: null, iterations: 0, regressions: 0}]')
       i=$((i+1))
     done
     write_state "{\"fase\":\"$FASE\",\"units\":$units_json}"
@@ -92,7 +92,23 @@ case "$CMD" in
     if [ "$COUNT" != "1" ]; then
       echo "Unidad '$UNIT' no existe en el pipeline (o estado corrupto)." >&2; exit 2
     fi
-    NEW=$(echo "$STATE" | jq --arg u "$UNIT" --arg s "$CMD" '(.units[] | select(.name==$u) | .state) = $s')
+
+    # Telemetry logic
+    NOW=$(date +%s)
+    if [ "$CMD" = "start" ]; then
+      # If it already had a startTime, it's a re-iteration
+      S_TIME=$(echo "$STATE" | jq --arg u "$UNIT" '.units[] | select(.name==$u) | .startTime')
+      if [ "$S_TIME" != "null" ]; then
+        STATE=$(echo "$STATE" | jq --arg u "$UNIT" '(.units[] | select(.name==$u) | .iterations) += 1')
+      fi
+      NEW=$(echo "$STATE" | jq --arg u "$UNIT" --arg s "$CMD" --arg t "$NOW" \
+        '(.units[] | select(.name==$u) | .state) = $s | (.units[] | select(.name==$u) | .startTime) = (if .startTime == null then $t else .startTime end)')
+    elif [ "$CMD" = "done" ]; then
+      NEW=$(echo "$STATE" | jq --arg u "$UNIT" --arg s "$CMD" --arg t "$NOW" \
+        '(.units[] | select(.name==$u) | .state) = $s | (.units[] | select(.name==$u) | .endTime) = $t')
+    else
+      NEW=$(echo "$STATE" | jq --arg u "$UNIT" --arg s "$CMD" '(.units[] | select(.name==$u) | .state) = $s')
+    fi
     write_state "$NEW"
     echo "[$CMD] $UNIT"
     ;;
@@ -104,6 +120,20 @@ case "$CMD" in
     NEW=$(echo "$STATE" | jq --arg u "$UNIT" --arg n "$NOTE" '(.units[] | select(.name==$u) | .note) = $n')
     write_state "$NEW"
     echo "[note] $UNIT: $NOTE"
+    ;;
+
+  regress)
+    UNIT="${2:-}"
+    [ -z "$UNIT" ] && { echo "regress requires <unit>" >&2; exit 2; }
+    STATE=$(read_state)
+    # validate unit exists
+    COUNT=$(echo "$STATE" | jq --arg u "$UNIT" '[.units[] | select(.name==$u)] | length' 2>/dev/null)
+    if [ "$COUNT" != "1" ]; then
+      echo "Unidad '$UNIT' no existe en el pipeline." >&2; exit 2
+    fi
+    NEW=$(echo "$STATE" | jq --arg u "$UNIT" '(.units[] | select(.name==$u) | .regressions) += 1')
+    write_state "$NEW"
+    echo "[regress] $UNIT: regression marked (Agent B introduced error)"
     ;;
 
   reset)

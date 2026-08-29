@@ -1,0 +1,59 @@
+# Plan de Seguimiento - OpenSistemas
+
+**Fecha:** 2026-08-28
+**Estado:** Esperando aviso (se esperaba "fin de semana o lunes" = 29/08-01/09)
+
+---
+
+## Contexto
+
+- **Entrevista**: 25/08, 9:00 AM (GMT-3). Exitosa - la reclutadora quedó "maravillada" con la demo en vivo del PR #5419 (astryx) y el trabajo del #5493.
+- **Contacto**: Mamen De Anselmo Vázquez (recruiting) → pasó a Catalina y Camila (Recruiting) para coordinar.
+- **Último filtro antes de la entrevista**: referencia de tarifa.
+- **Perfil**: AI-Native Software Engineering, colaboración freelance 100% remoto LATAM.
+- **Empresa**: OpenSistemas (Madrid, 2003, ~117 empleados, IA empresarial "soberana"). Tecnologías: SofIA, SOKAI.
+
+---
+
+## Escenarios y Plan de Acción
+
+### Escenario A: Entra (oferta recibida)
+- **Acción inmediata**: Procesar la oferta (tarifa, alcance, dedicación, tipo de proyecto, clientes).
+- **Re-negociar con contexto**: Si la tarifa es menor a la esperada, usar el valor demostrado (demo en vivo, PRs mergeados, sistema de trabajo con IA) como argumento.
+- **Onboarding**: Preparar pitch de "qué puedo aportar desde el día 1" (pipeline A/B, stack opinado, a11y como diferenciador).
+- **Registro**: Documentar la decisión y el siguiente paso en `docs/entrevistas/`.
+
+### Escenario B: No entra (rechazo)
+- **Acción inmediata**: Pedir feedback específico (¿fue la tarifa, el perfil, la disponibilidad?).
+- **Ajuste de estrategia**: Usar el feedback para refinar el pitch o el material.
+- **Registro**: Documentar la lección en `docs/entrevistas/` y en `docs/LEARNINGS.md`.
+
+### Escenario C: Sin respuesta (aviso no llegó)
+- **Acción**: Mensaje de seguimiento elegante el lunes 01/09 (si no hubo aviso el fin de semana).
+- **Timing**: Lunes por la mañana (GMT-3), respetando el horario laboral de Madrid (GMT+2, 5h de diferencia).
+- **Tono**: Profesional, breve, sin presión. Reafirmar interés y disponibilidad.
+
+---
+
+## Borrador de Mensaje de Seguimiento (Escenario C)
+
+> **Asunto:** Seguimiento - Entrevista AI-Native (Gonzalo)
+>
+> Hola [Catalina/Camila],
+>
+> Espero que estén teniendo una buena semana. Quería hacer un seguimiento de la entrevista del martes pasado y saber si hay alguna novedad sobre el proceso.
+>
+> Quedé muy entusiasmado con la oportunidad de colaborar con OpenSistemas en el perfil AI-Native. La demo en vivo del trabajo de accesibilidad (PRs mergeados en Astryx y MUI) refleja el tipo de contribución que puedo aportar desde el día 1.
+>
+> Quedo atento a cualquier novedad o si necesitan más información de mi lado.
+>
+> Saludos,
+> Gonzalo
+
+---
+
+## Notas
+
+- **Referencias**: Ofrecidas, no las pidieron aún (Camila respondió neutral-positivo).
+- **Post de LinkedIn**: Publicado el 25/08 (mismo día de la entrevista) - refuerza el perfil mientras la reclutadora busca en LinkedIn.
+- **Estudio**: Plan de estudio del libro "OpenClaw AI in Production" (Packt) armado en `study/` - valida vocabulario de arquitectura para el puesto.
