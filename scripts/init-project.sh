@@ -1,5 +1,5 @@
 #!/bin/bash
-# init-project.sh — Create a new project with double-git structure
+# init-project.sh - Create a new project with double-git structure
 #
 # Usage:
 #   ./scripts/init-project.sh <slug> [--repo <url>]
@@ -67,7 +67,7 @@ mkdir -p "${KNOWLEDGE_DIR}"
 
 # .knowledge/BRIEF.md
 cat > "${KNOWLEDGE_DIR}/BRIEF.md" << 'BRIEF'
-# BRIEF — Project Overview
+# BRIEF - Project Overview
 
 ## What
 
@@ -75,7 +75,7 @@ cat > "${KNOWLEDGE_DIR}/BRIEF.md" << 'BRIEF'
 
 ## Why
 
-[Why this project exists — problem it solves, goal it serves]
+[Why this project exists - problem it solves, goal it serves]
 
 ## Stack
 
@@ -92,12 +92,12 @@ cat > "${KNOWLEDGE_DIR}/BRIEF.md" << 'BRIEF'
 
 ## Key Decisions
 
-- [Decision 1] — [rationale]
+- [Decision 1] - [rationale]
 BRIEF
 
 # .knowledge/STATUS.md
 cat > "${KNOWLEDGE_DIR}/STATUS.md" << 'STATUS'
-# STATUS — Project Status
+# STATUS - Project Status
 
 ## Current Phase
 
@@ -116,7 +116,7 @@ cat > "${KNOWLEDGE_DIR}/STATUS.md" << 'STATUS'
 1. [ ]
 STATUS
 
-# .gitignore (for the project's own git repo — ignores .knowledge/)
+# .gitignore (for the project's own git repo - ignores .knowledge/)
 cat > "${PROJECT_DIR}/.gitignore" << 'GITIGNORE'
 # Project .gitignore
 # .knowledge/ is tracked by the workspace git, not the project git
@@ -212,28 +212,36 @@ if gh repo view "$REPO_PATH" --json name &>/dev/null; then
 else
   echo "  Repo does not exist yet. Creating private repo on GitHub..."
 
-  # Create private repo on GitHub
-  gh repo create "${REPO_PATH}" --private --source="${PROJECT_DIR}" --push --remote origin
+  # Create private repo on GitHub (no --push yet; we init git first)
+  gh repo create "${REPO_PATH}" --private
 
   echo ""
-  echo "Setting up submodule..."
+  echo "Setting up project git (double-git, no submodule)..."
 
+  # Initialize the project's own git repo and push initial commit
+  cd "${PROJECT_DIR}"
+  git init -q
+  git branch -M main
+  git remote add origin "${REPO_URL}"
+  git add -A
+  git commit -q -m "chore: initial scaffold"
+  git push -u origin main
+
+  # Track .knowledge/ as a blob in the workspace git (NOT a submodule)
   cd "${WORKSPACE_DIR}"
-
-  # Remove the directory so submodule add can clone it fresh
-  rm -rf "${PROJECT_DIR}"
-
-  git submodule add "${REPO_URL}" "projects/${SLUG}"
+  git add "projects/${SLUG}/.knowledge"
+  git commit -q -m "feat(projects): add ${SLUG} project (.knowledge)"
 
   echo ""
   echo "  ✅ Private repo created at ${REPO_URL}"
-  echo "  ✅ Submodule registered in workspace"
+  echo "  ✅ Project git initialized and pushed"
+  echo "  ✅ .knowledge/ tracked as blob in workspace (double-git)"
 fi
 
 echo ""
-echo "Next steps:"
-echo "  1. cd projects/${SLUG}"
-echo "  2. Start coding!"
-echo ""
-echo "Remember: .knowledge/ is tracked by workspace git."
-echo "Project code is tracked by its own repo at ${REPO_URL}."
+ echo "Next steps:"
+ echo "  1. cd projects/${SLUG}"
+ echo "  2. Start coding!"
+ echo ""
+ echo "Remember: .knowledge/ is tracked by workspace git (blob, double-git)."
+ echo "Project code is tracked by its own repo at ${REPO_URL}."
