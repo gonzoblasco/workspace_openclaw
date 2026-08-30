@@ -10,7 +10,7 @@ openclaw-workspace-state.json
 RECENT.md
 .compaction-recovery-pending
 
-# Node (belt and suspenders — projects have their own .gitignore too)
+# Node (belt and suspenders - projects have their own .gitignore too)
 node_modules/
 .next/
 dist/
@@ -42,7 +42,7 @@ __pycache__/
 memory/2026-07-20-1750*.md
 memory/2026-07-23-1951.md
 
-# Proyectos — cada uno tiene su propio repo, se sincronizan por separado
+# Proyectos - cada uno tiene su propio repo, se sincronizan por separado
 # En el workspace SOLO trackeamos .knowledge/ (memoria institucional: BRIEF, ROADMAP,
 # STATUS, ADRs, decisiones) para poder planificar y trabajar conceptualmente con todos
 # los proyectos sin clonar cada repo. El codigo/README/.env viven en el repo del proyecto.
