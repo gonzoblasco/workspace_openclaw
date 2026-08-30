@@ -60,9 +60,10 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 
 ## Config de Tools
 
-- **Modelos (2026-08-29):** Kanam en **thinking max**; agentes A/B en **high** (`glm-5.3-flash:cloud`). Default: pipeline A/B en HIGH.
+- **Modelos (2026-08-29):** Default de OpenClaw: `glm-5.3-flash:cloud`. Kanam en **thinking max**; agentes A/B en **high** (`glm-5.3-flash:cloud`). Default: pipeline A/B en HIGH.
 - **Cambio de motor (2026-08-29):** DeepSeek V4 Flash → GLM 5.3 Flash, tras comparativa de 5 modelos con un mismo prompt pesado de arquitectura de agentes (DeepSeek V4 Flash xhigh, GLM 5.3 Flash, GLM 5.3, Kimi K2.7 Code xhigh, Kimi K3 xhigh). DeepSeek fue el más estructurado pero el menos agudo; GLM 5.3 Flash ganó en insights operativos y es multimodal nativo (imagen/video/PDF, 1M de contexto). Kimi K2.7 Code (xhigh) fue el mejor pensador: pendiente probarlo en high cuando haya GPU.
 - **Niveles de razonamiento (2026-08-29):** el max NO es driver de calidad (DeepSeek en max filosofa, ADR-040; Kimi K3 en xhigh inventó números). Los mejores outputs vinieron sin razonamiento visible. Agentes de código siempre en high; max solo para diseño difícil puntual.
+- **DeepSeek V4 Flash fuera del ecosistema (2026-08-29):** sacado de la config de OpenClaw (default + lista estática de modelos). Volver solo en emergencia: backup `~/.openclaw/openclaw.json.bak-20260829` o re-agregar la entry (dinámico de Ollama también puede mostrarlo).
 - **Search:** `DuckDuckGo Search (experimental)` (key-free).
 
 ## Proyectos (Detalle en `.knowledge/` de cada uno)

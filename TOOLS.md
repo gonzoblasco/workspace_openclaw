@@ -13,12 +13,12 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 
 ## Modelos (Ollama local + cloud)
 
-- **Modelo de trabajo (2026-08-29):** Kanam (OpenClaw) en thinking **max**; agentes A/B del pipeline SIEMPRE en **high** con `glm-5.3-flash:cloud` (reemplaza a `deepseek-v4-flash:cloud` tras la comparativa de 5 modelos del 2026-08-29). Config: `agents.defaults.thinkingDefault = "max"`. Pipeline en cadena A/B: Kanam planifica en max, agentes ejecutan en high. Regla de niveles: agentes de codigo siempre high, max solo para diseño dificil puntual (el max no fue driver de calidad en la comparativa; DeepSeek en max filosofa, ADR-040).
+- **Modelo de trabajo (2026-08-29):** Default de OpenClaw: `glm-5.3-flash:cloud` (desde 2026-08-29, antes `deepseek-v4-flash:cloud`). Kanam en thinking **max**; agentes A/B del pipeline SIEMPRE en **high** con `glm-5.3-flash:cloud` (motor elegido tras la comparativa de 5 modelos del 2026-08-29). Config: `agents.defaults.thinkingDefault = "max"`. Pipeline en cadena A/B: Kanam planifica en max, agentes ejecutan en high. Regla de niveles: agentes de codigo siempre high, max solo para diseño dificil puntual (el max no fue driver de calidad en la comparativa; DeepSeek en max filosofa, ADR-040).
 - **GLM-5.3-Flash (2026-08-29):** primer GLM nativamente multimodal: imagen, video y archivos (PDFs) como input. 1M de contexto, 131k output, 320B params totales / 18B activos (MoE), licencia MIT. En el backend soporta `reasoning_effort` (low/high/max, default max) pero Ollama no expone el knob. Ex "ox-alpha" (stealth en OpenRouter/OpenCode, probado en batalla con agentes de codigo). Ficha verificada en docs.z.ai + Hugging Face.
 - **web_search provider:** `DuckDuckGo Search (experimental)` (key-free, no consume créditos). El provider `ollama` usaba `glm-5.2:cloud` y consumía requests del presupuesto sin pedirlo - NO usar.
 - **Modelos disponibles (Ollama):**
   - Local: `qwen3.5:9b-mlx` (8.9 GB), `nomic-embed-text:latest` (embeddings)
-  - Cloud: `glm-5.3-flash:cloud` (motor del pipeline A/B, multimodal), `glm-5.3:cloud`, `deepseek-v4-flash:cloud`, `deepseek-v4-pro:cloud`, `kimi-k2.7-code:cloud` (código), `kimi-k3:cloud`, `gemma4:cloud`, `qwen3.5:cloud`, `minimax-m3:cloud`, `nemotron-3-nano:30b-cloud`
+  - Cloud: `glm-5.3-flash:cloud` (default OpenClaw + motor del pipeline A/B, multimodal), `glm-5.3:cloud`, `deepseek-v4-pro:cloud`, `kimi-k2.7-code:cloud` (código), `kimi-k3:cloud`, `gemma4:cloud`, `qwen3.5:cloud`, `minimax-m3:cloud`, `nemotron-3-nano:30b-cloud`. `deepseek-v4-flash:cloud` FUERA del ecosistema (2026-08-29): sacado de la config; para emergencia, restaurar desde el backup `~/.openclaw/openclaw.json.bak-20260829`
 
 ## Pipeline de agentes (programación)
 
