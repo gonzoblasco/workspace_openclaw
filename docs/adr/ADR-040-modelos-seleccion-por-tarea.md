@@ -10,6 +10,8 @@
 
 No existe un "mejor modelo". Cada modelo tiene una personalidad de output distinta. La seleccion se hace por **tipo de tarea**, no por tamaño o costo. Este ADR define que modelo usar para cada situacion en el flujo de trabajo diario de Gonzo.
 
+> **Actualizacion 2026-08-29:** DeepSeek V4 Flash esta FUERA del ecosistema y el default de OpenClaw + motor del pipeline es ahora `glm-5.3-flash:cloud`. Ver **ADR-041** (manual del motor) y la seccion "Re-cata 2026-08-29" al final de este archivo. Los perfiles de especialistas y la metodologia siguen vigentes; los apartados de default/fallback primario de las secciones anteriores estan desactualizados.
+
 ## Context
 
 Gonzo trabajo los ultimos meses con DeepSeek V4 Flash como default unico. En agosto 2026, al migrar a Ollama Pro (nube, sin restricciones de hardware local), se abrio el acceso a 8+ modelos de distintas familias (DeepSeek, Kimi, MiniMax, GLM, Gemma, Qwen, Nemotron, GPT-OSS).
@@ -306,3 +308,16 @@ Cuando Kanam detecte que el input incluye algo que el modelo actual no puede pro
 1. Informar el cambio: "Este input requiere [capacidad], cambiando a [modelo]."
 2. Hacer el cambio automaticamente (no preguntar, salvo que el cambio implique un salto de costo grande tipo flash -> kimi-k3).
 3. Si el salto de costo es grande (ej: flash -> kimi-k3), preguntar: "Esto requiere kimi-k3 por [razon]. ¿Procedo?"
+
+---
+
+## Re-cata 2026-08-29: cambio de motor y retiro de DeepSeek V4 Flash
+
+Detalle completo y ficha de capacidades en **ADR-041**. Lo que cambia sobre este ADR:
+
+- **Comparativa de 5 modelos** (mismo prompt pesado de arquitectura de agentes): Kimi K2.7 Code (xhigh) mejor pensador - GLM 5.3 mejor criterio central - Kimi K3 mejor presentador (con numeros inventados y esquivas) - GLM 5.3 Flash el mejor "chico" - DeepSeek V4 Flash el mas estructurado y el menos agudo. Todos truncados por limite de salida antes de la seccion final.
+- **Motor y default: GLM-5.3-Flash, cero parametros de razonamiento** (default del servidor; Ollama no expone el knob). La regla "Kanam max / agentes high" sigue vigente conceptualmente (decidir vs avanzar), pero para GLM no se administra ningun nivel: el default observado rinde a nivel high-max sin tocar nada.
+- **Costo verificado (llmreference, 2026-08-29):** GLM-5.3-Flash $0.075/$0.25 - Kimi K3 $3.00/$15.00 por 1M tokens (40x/60x). Dato empirico de uso real: 1 request de K3 = 41 requests de GLM Flash (medicion de Gonzo en Ollama). K3 razona siempre (always-on, inapagable): el costo es estructural, no config.
+- **PDFs e imagen:** GLM-5.3-Flash procesa nativamente imagen, video y archivos; la seccion de arriba que decia "ningun modelo procesa PDFs nativamente" queda desactualizada. El flujo con `scripts/pdf-tool.sh` sigue siendo el fallback.
+- **Pendiente:** K2.7 Code en high y validacion de GLM Flash en tareas reales de produccion del pipeline.
+- **Rollback:** backup `~/.openclaw/openclaw.json.bak-20260829`.
