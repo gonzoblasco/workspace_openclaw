@@ -1,10 +1,11 @@
 # HANDOFF - kanam-pulse
 
 ## Session Context
-- **Date:** 2026-08-29 23:27
+- **Date:** 2026-08-29 23:40
 - **Project:** kanam-pulse
-- **Repo:** https://github.com/gonzoblasco/kanam-pulse (PUBLIC, MIT)
-- **Workspace:** double-git (`.knowledge/` tracked as workspace blob, not in project repo)
+- **Repo (codigo):** https://github.com/gonzoblasco/kanam-pulse (PUBLIC, MIT)
+- **Dev clone:** `~/.openclaw/dev/kanam-pulse` (aqui se edita codigo; el workspace solo trackea `.knowledge/` como blob - ver Decision de estructura)
+- **Workspace:** double-git real: `projects/kanam-pulse/.knowledge/` = blob del workspace; el repo de codigo vive FUERA del arbol de blobs
 
 ## Summary (Sesion 1 del proyecto - 29/08 22:46-23:27)
 
@@ -15,6 +16,7 @@ M0 completo. Nace de la inversa del camino Breacorp: refactor web monolito -> CL
 - Contenido publicado (`0f2b4b8`): README honesto (pre-alpha, roadmap M0-M5, creditos a Breacorp), LICENSE MIT, `docs/SPEC-v1.md` (arquitectura packages/core+server+web, consent-driven fixes, a11y AA como principio, open questions).
 - BRIEF.md + STATUS.md de `.knowledge/` con contenido real.
 - Fix estructural de paso: `scripts/init-project.sh` generaba un `.gitignore` que listaba `.knowledge/` - como git parsea los `.gitignore` anidados y el mas profundo gana, el workspace no podia trackear el `.knowledge` como blob (inexpugnable para `git add`, silencioso). Ahora el `.gitignore` del proyecto NO lista `.knowledge/` y la exclusion va en `.git/info/exclude` local (invisible al workspace). Registrado en CHANGELOG.md.
+- **Decision de estructura (23:40) - descubierta al verificar el push:** git NO trackea blobs dentro de un repo anidado (`.git` en projects/<slug>), y ni `-f` lo cruza: el add restaura silencioso con el dir como `??`. El doble-git con `.knowledge` blob solo funciona si el clone de desarrollo vive FUERA del arbol de blobs. Resolucion: dev clone reubicado a `~/.openclaw/dev/kanam-pulse` (repo intacto, remoto intacto), `projects/kanam-pulse/` contiene solo `.knowledge/` (blob del workspace, sync cross-machine OK - `5c54c28`). Alinear AGENTS-DETALLE y `init-project.sh` a esta convencion en la proxima sesion (严格遵守: no tocar AGENTS.md a esta hora sin Gonzo).
 
 ## Files Changed
 - `projects/kanam-pulse/**` (repo propio: README, LICENSE, docs/SPEC-v1.md, .gitignore)
