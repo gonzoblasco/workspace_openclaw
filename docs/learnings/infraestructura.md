@@ -311,3 +311,11 @@ Al cerrar sesion dejé memory/memory.db modificado (3 lecciones + 3 todos) fuera
 
 ---
 
+## Glitch-words en outputs largos: releer artefactos permanentes antes de persistir
+
+Tres glitches esta noche (29/08) en outputs largos: 'porno-grafia' en el daily (queria decir desglose), 'pollitos inventados' en la descripcion de una skill-proposal, y typos internos ('email del prompt', 'noisible'). Patron: palabras garrafales intercaladas en texto largo que suenan plausibles re-leyendo por encima. Regla: todo artefacto permanente (dailies, ADRs, skill proposals, docs) se relee PALABRA POR PALABRA antes de persistir; los typos en chat se corrigen al vuelo, los en artefactos durables son deuda visible.
+
+**Tags:** glm-flash,calidad-output,revision
+
+---
+
