@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-29] - Regla de pagos obligatoria: Mercado Pago, nunca Stripe
+
+### Added
+- **`docs/adr/ADR-042-mercado-pago-pagos-latam.md`:** nuevo ADR workspace: Mercado Pago como unico proveedor de pagos en todo proyecto (Checkout Pro/Checkout API + webhooks IPN). Stripe prohibido. Excepcion posible solo si Gonzo la marca explicitamente y queda documentada en el proyecto.
+
+### Changed
+- **`MEMORY.md`** (seccion "Reglas de Ingenieria"): regla de pagos agregada.
+- **`TOOLS.md`** (seccion "Desarrollo"): pagos por Mercado Pago.
+- **`docs/adr/README.md`:** indice actualizado: filas de ADR-040, ADR-041 y ADR-042 movidas a la tabla (la de ADR-040 estaba suelta al final).
+
+### Why
+- En Argentina y LATAM en general Stripe no existe como opcion de cobro real. Usarlo por inercia de documentacion bloquea el mercado principal. Mercado Pago cubre moneda local y medios de pago (QR, tarjetas, Rapipago/PagoFacil, transferencias).
+
+---
+
 ## [2026-08-29] - Nuevo proyecto publico kanam-pulse + fix de doble git en init-project.sh
 
 ### Added

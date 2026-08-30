@@ -23,6 +23,8 @@
 - [ ] **[workspace]** (medium) Re-cata de modelos LLM ~2026-09-29: revisar novedades (GLM, Kimi, alternativas) y decidir si mantener el trio actual. Ver ADR-041 pendiente 4
 - [ ] **[kanam-pulse]** (medium) Kickoff M1 kanam-pulse: extraer engine de system-health-check a packages/core (TS), 46 tests verdes, dashboard read-only
 - [ ] **[kanam-pulse]** (medium) Traer codigo system-health-check desde MacBook Air (no tiene repo GitHub; el dir local solo tiene .knowledge/)
+- [ ] **[]** (medium) Explorar Kanam Studio: Engine de Narrativa No Lineal y World-building con consistencia IA
+- [ ] **[kanam-pulse]** (medium) kanam-pulse: evaluar envoltorio nativo a futuro (Electron/Tauri/React Native/nativa) SOLO despues de que la web v1 este completa y pulida. No bloquea nada hoy - es decision de distribucion futura. Nota: Tauri es candidata natural si algun dia se hace (mas liviana que Electron, binario unico)
 
 ## Completados
 

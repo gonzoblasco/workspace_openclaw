@@ -45,6 +45,9 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-037 | [Lucide como iconos base](./ADR-037-lucide-iconos-base.md) | react-18-design-patterns |
 | ADR-038 | [Learnings con mirror en DB (categorias + consulta veloz)](./ADR-038-learnings-mirror-db.md) | workspace |
 | ADR-039 | [Changesets - cuando usarlos y como (release de librerias)](./ADR-039-changesets-cuando-y-como.md) | workspace |
+| ADR-040 | [Seleccion de Modelos por Tipo de Tarea](./ADR-040-modelos-seleccion-por-tarea.md) | workspace |
+| ADR-041 | [Motor LLM del Sistema - GLM-5.3-Flash](./ADR-041-motor-llm-glm-5.3-flash.md) | workspace |
+| ADR-042 | [Mercado Pago como Proveedor de Pagos (Nunca Stripe)](./ADR-042-mercado-pago-pagos-latam.md) | workspace |
 
 ## Formato
 
@@ -58,4 +61,3 @@ Cuando un ADR de proyecto se identifique como de alcance general, migrarlo aca:
 3. Asignar el proximo numero disponible.
 4. Agregar al indice.
 5. Dejar una nota en el ADR original del proyecto linkeando al global.
-| ADR-040 | [Seleccion de Modelos por Tipo de Tarea](./ADR-040-modelos-seleccion-por-tarea.md) | workspace |

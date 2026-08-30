@@ -70,6 +70,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 - **Pre-commit hooks** (`simple-git-hooks`): lint (Biome) → test (Vitest) → build. Omitir con `SKIP_SIMPLE_GIT_HOOKS=1`.
 - **Iconos:** Lucide (`lucide-react`) en todos los proyectos. Nunca emojis como iconografía de producto.
 - **Stack opinado:** OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG.
+- **Pagos:** Mercado Pago SIEMPRE, nunca Stripe (ADR-042). Excepción: solo explícita de Gonzo y documentada en el proyecto. Mercado: Argentina/LATAM.
 - **Regla de idioma:** todo lo que se ve en GitHub va en INGLES; los strings de UI en ESPAÑOL.
 
 ---
