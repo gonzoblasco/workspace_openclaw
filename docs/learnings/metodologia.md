@@ -156,3 +156,15 @@ En astryx #4690, el draft de feedback del 24/08 (defendia drop ARIA contra el tr
 
 ---
 
+## Definido en ADR = resuelto, no se vuelve a preguntar. Si un ADR dice que un proyecto queda EXCLUIDO o ARCHIVADO, eso queda definido: no se lista como 'candidato a decidir' en auditorías de higiene ni se vuelve a preguntar su destino. El ADR es la autoridad. Fallo propio: al auditar soporteml-v4 (excluido en ADR-001), lo listé como a decidir en vez de darlo por resuelto.
+
+
+
+---
+
+## Cuando un recruiter dice 'test de logica', confirmar SIEMPRE si es psicotecnico (secuencias, patrones, silogismos) o logica de programacion (JS: promises/event loop, callbacks, IIFE, algoritmos). Son cosas Muy distintas. Fallo: el 27/08 Steven dijo 'test de logica 15 min min 70%' y preparamos psicotecnico, pero el examen real era JavaScript tecnico (saque 60, reintento lunes). En procesos tecnicos, asumir que 'logica' = fundamentos de programacion salvo que confirmen lo contrario.
+
+
+
+---
+

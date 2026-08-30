@@ -279,27 +279,27 @@ Al cambiar el codigo de un backend que corre con tsx watch, los procesos viejos 
 
 ---
 
+## Purgar lista estatica de modelos no basta: wildcard del catalogo sigue invitando
 
-## 2026-08-28 - El gateway de OpenClaw se cae bajo cadenas largas de exec en serie
+Remover modelos de models.providers.ollama.models purga la config frontal, pero el picker /model usa el catalogo agents.defaults.models con wildcard (ollama/*) que filtra por descubrimiento dinamico: sigue mostrando TODO el catalogo cloud de Ollama (ej: gemma4-31b:cloud con id distinto al de nuestra lista). Fix duradero: catalogo explicito con los modelos finales como keys (no wildcard). Verificado 2026-08-29.
 
-Durante el refactor de Moderno AI Cleaner Pro (repo ajeno, clon en /tmp), el gateway se desconectaba/restarteaba repetidamente al encadenar muchos `exec` en serie dentro de la misma tool-call (ej. `cd && ls && cat && grep && wc`), o al iterar con `for f in ...; node --check` sobre muchos archivos. El log no mostraba crash dump (descarta OOM/SIGKILL del binario): es un reinicio suave del bridge/WebSocket de la sesion.
+**Tags:** openclaw,config,modelos
 
-**Sintomas y patrones:**
-- Cadenas largas de exec en una sola tool-call = handles + watchers que el sandbox no cierra a tiempo bajo presion.
-- Salidas grandes (grep/find de ~400 lineas) combinadas con thinking extendido saturan la capa WebSocket.
-- Cambios recientes a `~/.openclaw/openclaw.json` (model/context/thinking) disparan hot-reload del watcher durante la corrida.
-- El browser tool (CDP paralelo) en la misma respuesta que un exec grande es gatillo adicional.
+---
 
-**Soluciones que funcionaron:**
-- Romper cadenas de exec pesadas en varias rondas con yieldMs explicito.
-- Mover validaciones masivas (endpoint checks, syntax checks) a un script `.sh` que corre en UN solo exec, en vez de iterar en el shell.
-- No mezclar browser tool con exec grande en la misma respuesta.
-- Para validar muchos endpoints: un script bash que hace todos los curl en un solo proceso (evita handle churn).
+## Nombres de modelos en config: los originales, sin rebranding propio
 
-**Self-reflection:**
-- CONTEXT: refactor de repo ajeno + validacion de endpoints + gateway cayendose.
-- REFLECTION: perdi mucho tiempo re-lanzando el server y re-validando porque el gateway se cortaba a mitad de la validacion. La validacion POST quedo incompleta por esto.
-- LESSON: para trabajo pesado de validacion, agrupar TODO en un script .sh de un solo exec desde el inicio, no descubrirlo a mitad de camino.
-- BIASES DETECTED: none (fue un problema de entorno, no de decision).
+Al crear el catalogo explicito post-purga, le puse aliases propios ('Motor (default)') y Gonzo corrigio: 'nadie te dio permiso a renombrarlo'. Regla: en config, los nombres de modelos son los nombres literales del proveedor; creative naming solo si Gonzo lo pide. Aplica a modelos, canales y cualquier id de infraestructura. 2026-08-29.
 
-**Tags:** gateway, exec, validacion, scripts, openclaw, reinicio suave
+**Tags:** openclaw,config,estilo
+
+---
+
+## El fallback de escape debe ser el no-consumible (openrouter/free, no auto)
+
+El default historico tenia fallback openrouter/auto: facturaba igual que el modelo principal. Gonzo corrigio: si Ollama se cae o faltan creditos, se cae a openrouter/free. Principio: la red de seguridad de un servicio de pago debe ser gratis, nunca otra cosa pagable disfrazada de salvavidas. Config: agents.defaults.model.fallbacks = [openrouter/free]. 2026-08-29.
+
+**Tags:** openclaw,config,fallbacks
+
+---
+
