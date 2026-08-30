@@ -17,7 +17,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 - **GLM-5.3-Flash (2026-08-29):** primer GLM nativamente multimodal: imagen, video y archivos (PDFs) como input. 1M de contexto, 131k output, 320B params totales / 18B activos (MoE), licencia MIT. En el backend soporta `reasoning_effort` (low/high/max, default max) pero Ollama no expone el knob: se le pasa CERO parametros, default del servidor (ADR-041). Ex "ox-alpha" (stealth en OpenRouter/OpenCode, probado en batalla con agentes de codigo). Ficha verificada en docs.z.ai + Hugging Face. Manual completo: `docs/adr/ADR-041-motor-llm-glm-5.3-flash.md`.
 - **web_search provider:** `DuckDuckGo Search (experimental)` (key-free, no consume créditos). El provider `ollama` usaba `glm-5.2:cloud` y consumía requests del presupuesto sin pedirlo - NO usar.
 - **Modelos disponibles (Ollama):**
-  - Local: `qwen3.5:9b-mlx` (8.9 GB), `nomic-embed-text:latest` (embeddings)
+  - Local: `nomic-embed-text:latest` (embeddings, unico local; qwen3.5:9b-mlx borrado 2026-08-29)
   - Cloud (7 -> 3 el 2026-08-29): `glm-5.3-flash:cloud` (default OpenClaw + motor del pipeline A/B, multimodal), `glm-5.3:cloud` (escalada intra-familia), `gemma4:cloud` (vision + tono/voz). FUERA del ecosistema (2026-08-29): `deepseek-v4-flash`, `kimi-k3`, `deepseek-v4-pro`, `kimi-k2.7-code`, `minimax-m3`, `qwen3.5`, `nemotron-3-nano`, `gemma4:31b` - sacados de la config; para emergencia, restaurar desde el backup `~/.openclaw/openclaw.json.bak-20260829`
 
 ## Pipeline de agentes (programación)
