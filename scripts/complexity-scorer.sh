@@ -5,26 +5,13 @@
 # with recommended model, thinking level, and pipeline config.
 #
 # Usage:
-#   ./complexity-scorer.sh "<objective>"
-#   ./complexity-scorer.sh --interactive
-#   cat task.txt | ./complexity-scorer.sh --stdin
-#
-# Output: JSON to stdout (parseable, machine-readable)
-#   { score, bucket, model, thinking, ticket, justification }
-#
-# Buckets:
-#   trivial  (T 1-6)  : Kanam solo, no pipeline
-#   low      (T 7-12)  : A/B pipeline, model high, thinking high
-#   medium   (T 13-16) : A/B pipeline, cross-review by B, thinking high
-#   high     (T 17-20) : Kanam designs in max, A/B execute in high, verification
-#
-# Exit codes:
-#   0 = scored successfully
-#   1 = missing input
-#   2 = model error
+#    ./complexity-scorer.sh "<objective>"
+#    echo '<objective>' | ./complexity-scorer.sh --stdin
+#    ./complexity-scorer.sh --interactive
+#    ./complexity-scorer.sh --score <T> "<objective>"  # force score without LLM
 # ============================================================
 
-set -euo pipefail
+set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -37,8 +24,8 @@ OLLAMA_BASE="${OLLAMA_BASE:-http://127.0.0.1:11434}"
 usage() {
   echo "Usage: $0 <objective>"
   echo "       echo '<objective>' | $0 --stdin"
-  echo "       $0 --interactive"
-  echo "       $0 --score <T>   # force score without LLM"
+  echo "      $0 --interactive"
+  echo "      $0 --score <T> '<objective>'  # force score without LLM"
   exit 1
 }
 
@@ -57,116 +44,149 @@ elif [[ "$1" == "--stdin" ]]; then
   OBJECTIVE=$(cat)
 elif [[ "$1" == "--score" ]]; then
   FORCE_T="$2"
+   # Use remaining args as the actual objective when --score is provided
+  shift 2 || true
+  if [[ $# -gt 0 ]]; then
+    OBJECTIVE="$*"
+  else
+    OBJECTIVE="forced-t$FORCE_T-for-validation"
+  fi
 else
   OBJECTIVE="$*"
 fi
 
-if [[ -z "${OBJECTIVE}" ]]; then
+if [[ -z "${OBJECTIVE:-}" ]]; then
   log_warn "Objective is empty."
   usage
 fi
 
 OBJECTIVE=$(echo "$OBJECTIVE" | sed 's/"/\\"/g' | tr -d '\n')
 
-log_info "Scoring: ${OBJECTIVE:0:80}..."
+log_info "Scoring objective: ${OBJECTIVE:0:80}..."
 
 # --- Prompt for scoring ---
-SYSTEM_PROMPT="You are a task complexity evaluator. Analyze the objective and score it.
-Return ONLY valid JSON with no markdown fences or extra text:
+SYSTEM_PROMPT="You are a task complexity evaluator. Analyze the objective and score it. Return ONLY valid JSON, no markdown fences or extra text:
 
 {
-  \"A\": <1-5, scope: files/systems touched>,
-  \"B\": <1-5, abstraction: trivial=1, full-arch-design=5>,
-  \"C\": <1-5, risk: cosmetic=1, data-loss/breakage=5>,
-  \"D\": <1-5, ambiguity: crystal-clear=1, abstract=5>,
-  \"justification\": \"<one line explaining each dimension value>\"
+   \"A\": <1-5 integer, scope: 1=one file, 2=2-3 files, 3=multi-file same module, 4=multi-module, 5=multi-repo>,
+   \"B\": <1-5 integer, abstraction: 1=trivial fix, 2=feature, 3=refactor, 4=design, 5=system architecture>,
+   \"C\": <1-5 integer, risk: 1=cosmetic, 2=minor breakage, 3=feature broken, 4=significant, 5=critical/data loss>,
+   \"D\": <1-5 integer, ambiguity: 1=crystal clear, 2=mostly clear, 3=some interpretation, 4=needs research, 5=vague>,
+   \"justification\": \"<one line explaining each dimension value>\"
 }
 
 Dimensions:
-- A (Scope): 1=single file, 2=2-3 files/same system, 3=multi-file/same module, 4=multi-module, 5=multi-repo
+- A (Scope): 1=single file, 2=2-3 files/same system, 3=multi-file module, 4=multi-module, 5=multi-repo
 - B (Abstraction): 1=trivial fix, 2=feature, 3=refactor, 4=design, 5=system architecture
-- C (Risk): 1=cosmetic, 2=minor breakage, 3=feature broken, 4=significant breakage, 5=data loss/critical
-- D (Ambiguity): 1=crystal clear, 2=mostly clear, 3=needs some interpretation, 4=needs significant interpretation, 5=vague
+- C (Risk): 1=cosmetic, 2=minor breakage, 3=feature broken, 4=significant, 5=critical/data loss
+- D (Ambiguity): 1=crystal clear, 2=mostly clear, 3=some interpretation, 4=needs research, 5=vague
 
-Return ONLY the JSON. No markdown, no explanation."
+Return ONLY the JSON object with A, B, C, D as integers and justification. No markdown fences."
 
 USER_PROMPT="Objective: $OBJECTIVE"
 
-# --- Call Ollama ---
+# --- Call Ollama (with fallback chain) ---
+T=""
+SCORED_MODEL=""
+
 if [[ -n "${FORCE_T:-}" ]]; then
   T="$FORCE_T"
+  SCORED_MODEL="manual"
   log_info "Forced score: T=$T"
 else
-  # Try primary model first, then fallback if quota/auth error
-  for SCORER_MODEL in "glm-5.3-flash:cloud" "deepseek-v4-flash:cloud" "gemma4:cloud"; do
+   # Try models in order: local first, then cloud fallbacks
+  for SCORER_MODEL in "qwen3.5:9b-mlx" "deepseek-v4-flash:cloud" "gemma4:cloud"; do
     log_info "Trying model: $SCORER_MODEL"
-    RESPONSE=$(curl -s --max-time 30 "$OLLAMA_BASE/api/generate" \
-      -H "Content-Type: application/json" \
-      -d "{
-        \"model\": \"$SCORER_MODEL\",
-        \"system\": \"$SYSTEM_PROMPT\",
-        \"prompt\": \"$USER_PROMPT\",
-        \"stream\": false,
-        \"options\": { \"temperature\": 0.1, \"num_predict\": 300 }
-      }" 2>&1) || {
-        log_warn "$SCORER_MODEL: curl failed"
-        continue
-      }
-
-    # Check for quota/auth error in response
-    if echo "$RESPONSE" | grep -qi "usage limit\|upgrade\|error.*:.*you\|refused"; then
-      ERR_MSG=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('error','')[:200])" 2>/dev/null || echo "$RESPONSE" | head -c 200)
-      log_warn "$SCORER_MODEL rejected: $ERR_MSG"
-      continue
-    fi
-
-    # Extract JSON response
-    RAW=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('response',''))" 2>/dev/null) || continue
-
-    if [[ -z "$RAW" ]]; then
-      log_warn "$SCORER_MODEL: empty response"
-      continue
-    fi
-
-    # Parse dimensions using Python (more robust than regex)
-    DIM_JSON=$(echo "$RAW" | python3 -c "
-import sys, re
-text = sys.stdin.read()
-# Try to find JSON block
-m = re.search(r'\{[^{}]*\"A\"[^{}]*\}', text)
-if m:
-    print(m.group(0))
-else:
-    # Try to extract individual values
-    a = re.search(r'\"A\"\\s*:\\s*(\\d)', text)
-    b = re.search(r'\"B\"\\s*:\\s*(\\d)', text)
-    c = re.search(r'\"C\"\\s*:\\s*(\\d)', text)
-    d = re.search(r'\"D\"\\s*:\\s*(\\d)', text)
-    if all([a,b,c,d]):
-        print('{\"A\":'+a.group(1)+',\"B\":'+b.group(1)+',\"C\":'+c.group(1)+',\"D\":'+d.group(1)+'}')
+    
+    # Compact JSON payload (avoids "Thinking Style" eating the response on local models)
+    PAYLOAD=$(python3 -c "
+import json,sys
+sys.stdout.write(json.dumps({
+  'model': '$SCORER_MODEL',
+  'system': 'Return ONLY a JSON object: {\"A\":<1-5>,\"B\":<1-5>,\"C\":<1-5>,\"D\":<1-5>,\"justification\":\"<text>\"}. No prose.',
+  'prompt': 'Score this objective. A=scope 1-5 (1=1file,5=multirepo). B=abstraction 1-5 (1=fix,5=arch). C=risk 1-5 (1=cosmetic,5=critical). D=ambiguity 1-5 (1=clear,5=vague). Return ONLY JSON.\n\nObjective: $OBJECTIVE',
+  'stream': False,
+  'options': {'temperature': 0.1, 'num_predict': 800, 'num_ctx': 4096}
+}))
 ")
-    if [[ -n "$DIM_JSON" ]]; then
+    
+    RESPONSE=$(curl -s --max-time 60 "$OLLAMA_BASE/api/generate" -H "Content-Type: application/json" -d "$PAYLOAD" 2>&1) || {
+      log_warn "$SCORER_MODEL: curl failed (network/auth)"
+      continue
+    }
+    
+    # Check for quota/auth error in response
+    if echo "$RESPONSE" | grep -qi "usage limit\|upgrade\|error.*:.*you.*have\|refused"; then
+      ERR_MSG=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('error','')[:200])" 2>/dev/null || echo "$RESPONSE" | head -c 200)
+      log_warn "$SCORER_MODEL rejected (quota/auth): $ERR_MSG"
+      continue
+    fi
+    
+    # Extract response + thinking (local models put content in 'thinking' field)
+    RAW_JSON=$(echo "$RESPONSE" | python3 -c "
+import sys,json
+try:
+  d = json.load(sys.stdin)
+  r = d.get('response','')
+  t = d.get('thinking','')
+  # Prefer 'response', fall back to 'thinking' if response is empty
+  if r.strip():
+    print(r)
+  elif t.strip():
+    print(t)
+  else:
+    print('')
+except Exception:
+  print('')
+" 2>/dev/null)
+    
+    if [[ -z "$RAW_JSON" ]]; then
+      log_warn "$SCORER_MODEL: empty response (no response, no thinking)"
+      continue
+    fi
+    
+    # Parse dimensions using Python (robust regex extraction)
+    DIM_JSON=$(echo "$RAW_JSON" | python3 -c "
+import sys, re
+try:
+  text = sys.stdin.read()
+  a = re.search(r'\"A\"\s*:\s*(\d+)', text)
+  b = re.search(r'\"B\"\s*:\s*(\d+)', text)
+  c = re.search(r'\"C\"\s*:\s*(\d+)', text)
+  d = re.search(r'\"D\"\s*:\s*(\d+)', text)
+  j = re.search(r'\"justification\"\s*:\s*\"([^\"]+)\"', text)
+  if a and b and c and d:
+    print(json.dumps({\"A\":int(a.group(1)),\"B\":int(b.group(1)),\"C\":int(c.group(1)),\"D\":int(d.group(1)),\"justification\":j.group(1) if j else 'scored via LLM'}))
+except Exception as e:
+  print('ERROR:' + str(e))
+" 2>/dev/null) || {
+    log_warn "$SCORER_MODEL: python3 parse failed"
+    continue
+  }
+  
+    if [[ -n "$DIM_JSON" ]] && [[ "$DIM_JSON" != ERROR* ]]; then
       A=$(echo "$DIM_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('A',2))" 2>/dev/null || echo 2)
       B=$(echo "$DIM_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('B',2))" 2>/dev/null || echo 2)
       C=$(echo "$DIM_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('C',2))" 2>/dev/null || echo 2)
       D=$(echo "$DIM_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('D',2))" 2>/dev/null || echo 2)
+      
       SCORED_MODEL="$SCORER_MODEL"
+      log_info "$SCORER_MODEL: parsed A=$A B=$B C=$C D=$D (T=${A+B+C+D})"
       break
     fi
   done
-
+  
   if [[ -z "${SCORED_MODEL:-}" ]]; then
     log_warn "All scorer models failed. Use --score T to force a value."
-    echo "{\"error\": \"No scorer model available. Use --score T to force.\"}"
+    echo "{\"error\": \"No scorer model available or reachable. Use --score T to force.\"}"
     exit 2
   fi
-
+  
   T=$((A + B + C + D))
-  log_info "Scored by $SCORER_MODEL: T=$T (A=$A B=$B C=$C D=$D)"
 fi
 
 # --- Map to config ---
-if   [[ $T -le 6 ]];  then
+if [[ $T -le 6 ]]; then
   BUCKET="trivial"
   MODEL="$DEFAULT_MODEL"
   THINKING="off"
@@ -198,21 +218,22 @@ TICKET="T-${T}-$(date +%H%M%S)"
 # --- Output JSON ---
 cat <<EOF
 {
-  "ticket": "$TICKET",
-  "score": $T,
-  "bucket": "$BUCKET",
-  "model": "$MODEL",
-  "thinking": "$THINKING",
-  "agents": "$AGENTS",
-  "pipeline": "$PIPELINE",
-  "objective": "${OBJECTIVE:0:120}",
-  "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+   "ticket": "$TICKET",
+   "score": $T,
+   "bucket": "$BUCKET",
+   "model": "$MODEL",
+   "thinking": "$THINKING",
+   "agents": "$AGENTS",
+   "pipeline": "$PIPELINE",
+   "objective": "${OBJECTIVE:0:120}",
+   "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+   "scorer_model": "$SCORED_MODEL"
 }
 EOF
 
-log_info "T=$T [$BUCKET] | thinking=$THINKING | pipeline=$PIPELINE"
+log_info "T=$T [$BUCKET] | thinking=$THINKING | pipeline=$PIPELINE | scorer=$SCORED_MODEL"
 
-# Confirmation gate for T >= 17
+# Confirmation gate for T >= 17 (Gonzo must confirm)
 if [[ $T -ge 17 ]]; then
   echo "" >&2
   log_warn "T=$T is HIGH-CRITICAL. Requires Gonzo confirmation before proceeding."
