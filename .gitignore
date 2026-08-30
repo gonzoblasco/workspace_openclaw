@@ -107,3 +107,6 @@ sandbox/
 # Session logs automaticos de OpenClaw (memory/YYYY-MM-DD-HHMM.md) - no se commitean.
 memory/*-[0-9][0-9][0-9][0-9].md
 writings/
+
+# Chunks derivados de memoria (indice semantic highlighting, regenerable)
+memory/export/
