@@ -65,19 +65,19 @@ Estas reglas de ADR-040 (Casos Especiales) quedan ACTUALIZADAS:
 
 1. **Default para todo lo diario:** sesiones, pipeline A/B (agentes en su default, sin parámetros), PRs, docs. Cero knobs.
 2. **Vision/PDF:** pasar la imagen o el archivo directo. No cambiar de modelo por capacidad, solo por calidad de tarea (ver ADR-040 para especialistas).
-3. **Kimi K3:** recurso de cirujano. 41x mas caro y razonamiento inagotable. Solo: problema grave en prod donde otros fallaron. NUNCA default.
-4. **Kimi K2.7 Code:** el mejor pensador de la comparativa. Candidato a motor alternativo. Pendiente prueba en high (ver Pendientes).
-5. **Si la tarea no da para GLM** (se traba, alucina, contexto exotico): escalar segun ADR-040 (glm-5.3, kimi, gemma) y anotar el caso en el daily.
+3. **Sin caros en el ecosistema (2026-08-29):** `kimi-k3` y `deepseek-v4-pro` removidos de la config de OpenClaw junto con DeepSeek V4 Flash. Los tres volvibles desde el backup `~/.openclaw/openclaw.json.bak-20260829`. Si un problema requiere frontier, pedir autorizacion explicita a Gonzo y restaurar el modelo puntual.
+4. **Kimi K2.7 Code:** el mejor pensador de la comparativa, sigue en la lista. Candidato a motor alternativo. Pendiente prueba en high (ver Pendientes).
+5. **Si la tarea no da para GLM** (se traba, alucina, contexto exotico): escalar segun ADR-040 (glm-5.3, kimi-k2.7, gemma) y anotar el caso en el daily.
 6. **A GLM jamas pasarle parámetros de razonamiento.** Si OpenClaw u Ollama exponen el knob en el futuro, abrir revision de este ADR antes de usarlo.
 
 ## Riesgos y Mitigaciones
 
 | Riesgo | Mitigacion |
 |---|---|
-| Dependencia mono-familia (GLM/Z.ai) | Fallback `openrouter/auto` en config; `glm-5.3:cloud` y `deepseek-v4-pro:cloud` en lista; K3/K2.7 disponibles |
+| Dependencia mono-familia (GLM/Z.ai) | Fallback `openrouter/auto` en config; `glm-5.3:cloud`, `kimi-k2.7-code:cloud` y `gemma4:cloud` en la lista de alternativas |
 | Modelo muy nuevo (lanzamiento 2026-08-26) | Validado en batalla pre-lanzamiento (ox-alpha). Monitorear en tareas reales; diario registra fallos |
 | Sin control de razonamiento desde Ollama | Aceptado por decision: default del servidor, sin administramos niveles |
-| Rollback | Backup `~/.openclaw/openclaw.json.bak-20260829` (restaura default + lista con DeepSeek) |
+| Rollback | Backup `~/.openclaw/openclaw.json.bak-20260829` (restaura default + lista con DeepSeek V4 Flash, K3 y pro) |
 
 ## Pendientes (por donde seguir)
 
