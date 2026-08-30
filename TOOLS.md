@@ -13,16 +13,16 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 
 ## Modelos (Ollama local + cloud)
 
-- **Modelo de trabajo (2026-08-29):** Default de OpenClaw: `glm-5.3-flash:cloud` (desde 2026-08-29, antes `deepseek-v4-flash:cloud`). Kanam en thinking **max**; agentes A/B del pipeline SIEMPRE en **high** con `glm-5.3-flash:cloud` (motor elegido tras la comparativa de 5 modelos del 2026-08-29). Config: `agents.defaults.thinkingDefault = "max"`. Pipeline en cadena A/B: Kanam planifica en max, agentes ejecutan en high. Regla de niveles: agentes de codigo siempre high, max solo para diseño dificil puntual (el max no fue driver de calidad en la comparativa; DeepSeek en max filosofa, ADR-040).
+- **Modelo de trabajo (2026-08-29):** Default de OpenClaw: `deepseek-v4-flash:cloud` (tras preferencia de Gonzo). Kanam en thinking **max**; agentes A/B del pipeline SIEMPRE en **high** con `deepseek-v4-flash:cloud`. Config: `agents.defaults.thinkingDefault = "max"`. Pipeline en cadena A/B: Kanam planifica en max, agentes ejecutan en high. Regla de niveles: agentes de codigo siempre high, max solo para diseño dificil puntual (el max no fue driver de calidad en la comparativa; DeepSeek en max filosofa, ADR-040).
 - **GLM-5.3-Flash (2026-08-29):** primer GLM nativamente multimodal: imagen, video y archivos (PDFs) como input. 1M de contexto, 131k output, 320B params totales / 18B activos (MoE), licencia MIT. En el backend soporta `reasoning_effort` (low/high/max, default max) pero Ollama no expone el knob: se le pasa CERO parametros, default del servidor (ADR-041). Ex "ox-alpha" (stealth en OpenRouter/OpenCode, probado en batalla con agentes de codigo). Ficha verificada en docs.z.ai + Hugging Face. Manual completo: `docs/adr/ADR-041-motor-llm-glm-5.3-flash.md`.
 - **web_search provider:** `DuckDuckGo Search (experimental)` (key-free, no consume créditos). El provider `ollama` usaba `glm-5.2:cloud` y consumía requests del presupuesto sin pedirlo - NO usar.
 - **Modelos disponibles (Ollama):**
   - Local: `nomic-embed-text:latest` (embeddings, unico local; qwen3.5:9b-mlx borrado 2026-08-29)
-  - Cloud (7 -> 4 el 2026-08-29): `glm-5.3-flash:cloud` (default OpenClaw + motor del pipeline A/B, multimodal), `glm-5.3:cloud` (escalada intra-familia), `gemma4:cloud` (vision + tono/voz), `deepseek-v4-flash:cloud` (re-agregado como opción 2026-08-29, no default). FUERA del ecosistema (2026-08-29): `kimi-k3`, `deepseek-v4-pro`, `kimi-k2.7-code`, `minimax-m3`, `qwen3.5`, `nemotron-3-nano`, `gemma4:31b` - sacados de la config; para emergencia, restaurar desde el backup `~/.openclaw/openclaw.json.bak-20260829`
+  - Cloud (7 -> 4 el 2026-08-29): `deepseek-v4-flash:cloud` (default OpenClaw + motor del pipeline A/B), `glm-5.3-flash:cloud` (multimodal), `glm-5.3:cloud` (escalada intra-familia), `gemma4:cloud` (vision + tono/voz). FUERA del ecosistema (2026-08-29): `kimi-k3`, `deepseek-v4-pro`, `kimi-k2.7-code`, `minimax-m3`, `qwen3.5`, `nemotron-3-nano`, `gemma4:31b` - sacados de la config; para emergencia, restaurar desde el backup `~/.openclaw/openclaw.json.bak-20260829`
 
 ## Pipeline de agentes (programación)
 
-- **Motor estándar:** Qwen Code vía Ollama. Comando: `ollama launch qwen --model glm-5.3-flash:cloud -- -p "<tarea>" -y`
+- **Motor estándar:** Qwen Code vía Ollama. Comando: `ollama launch qwen --model deepseek-v4-flash:cloud -- -p "<tarea>" -y`
 - **Claude Code** (alternativa para SIGKILL/casos largos):
   - `ANTHROPIC_BASE_URL=http://localhost:11434` + `ANTHROPIC_AUTH_TOKEN` + settings.json de permisos
   - `claude -p "<tarea>" --model <modelo>`
@@ -43,7 +43,8 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/github-pr-risk.sh` | Detector de risk signals de un PR (schema/auth/deps/API/secrets) + preguntas de review. Uso bajo demanda en el cross-review del pipeline. Portado del plugin github-workflow. Solo lectura |
 | `scripts/safe-fetch.sh` | URL pre-flight check local antes de web_fetch: esquema https, typosquatting de dominios confiables, payload prompt injection. Exit: 0 ALLOW / 1 DENY / 2 CAUTION. Portado del concepto PreClick, 100% local |
 | `scripts/skill-router.py` | Sugiere que skill usar para una tarea (matching local keyword + embeddings Ollama nomic). Portado del concepto skill-ai-inject. Uso: `skill-router.py "<tarea>"` |
-| `scripts/pipeline-track.sh` | Estado durable del pipeline A/B: init/start/review/done/status/resume/note. Sobrevive a SIGKILL/restarts (crash recovery). Portado del concepto Pipeline Architect |
+| `scripts/pipeline-track.sh` | Estado durable del pipeline A/B: init/start/review/done/status/resume/note. Sobrevive a SIGKILL/restarts (crash recovery). Portado del concepto Pipeline Architect. Acepta `--score T` en init (integrado con complexity-scorer) |
+| `scripts/complexity-scorer.sh` | Evalua objetivo en 4 dimensiones (A/B/C/D), devuelve T-score 1-20 + bucket + modelo + thinking. Llama a Ollama. `--score T` para forzar. T>=17 requiere confirmacion de Gonzo. Cablea complexity-driven-pipeline |
 | `scripts/pdf-tool.sh` | Toolkit PDF/OCR local: text, info, pages, search, ocr (tesseract), pdfimages, md2pdf (exportar MD a PDF). 100% local. Requiere poppler + tesseract + npx (brew). Portado de la familia PDF/OCR de ClawHub |
 | `scripts/model-router.sh` | Router de modelo Ollama por tipo de tarea (code/review/long/cheap/writing) + overrides sticky. Consulta `model <tipo>` para decidir el --model. Portado del concepto ToggleLogic sin licencia |
 | `scripts/task-notify.sh` | Notificacion desktop macOS cuando un agente termina tarea. Uso en pipeline A/B. Portado del concepto Task Notifier |

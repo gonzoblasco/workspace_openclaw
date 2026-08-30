@@ -10,9 +10,11 @@
 #   state: queued | running | review | done
 #   owner: A | B        (parity)
 #   note:  last comment
+#   complexity: T-score (1-20) from complexity-scorer.sh
 #
 # Usage:
 #   pipeline-track.sh init "<fase>" U1 U2 U3 ...   # create plan
+#   pipeline-track.sh init "<fase>" --score T U1 U2 # create plan with complexity
 #   pipeline-track.sh start U2                     # mark running (owner auto)
 #   pipeline-track.sh review U2                    # mark needs review
 #   pipeline-track.sh done U2                      # mark done
@@ -54,11 +56,22 @@ case "$CMD" in
   init)
     FASE="${2:-}"
     shift 2 || true
-    UNITS=( "$@" )
+    COMPLEXITY_SCORE=""
+    UNITS=()
+    # scan for --score T
+    WAIT_SCORE=""
+    for arg in "$@"; do
+      if [ "$arg" = "--score" ]; then
+        WAIT_SCORE=true; continue
+      elif [ "${WAIT_SCORE:-}" = "true" ]; then
+        COMPLEXITY_SCORE="$arg"; WAIT_SCORE=""
+      else
+        UNITS+=("$arg")
+      fi
+    done
     if [ -z "$FASE" ] || [ "${#UNITS[@]}" -eq 0 ]; then
-      echo "init requires: <fase> <U1> <U2> ..." >&2; exit 2
+      echo "init requires: <fase> [--score T] <U1> <U2> ..." >&2; exit 2
     fi
-    # owner by parity: odd index -> A, even -> B (0-based)
     units_json="[]"
     i=0
     for u in "${UNITS[@]}"; do
@@ -67,13 +80,18 @@ case "$CMD" in
         '. + [{name: $u, state: $s, owner: $o, note: $n, startTime: null, endTime: null, iterations: 0, regressions: 0}]')
       i=$((i+1))
     done
-    write_state "{\"fase\":\"$FASE\",\"units\":$units_json}"
-    echo "Pipeline '$FASE' inicializado: ${#UNITS[@]} unidades. Owners: A=impares, B=pares."
+    if [ -n "$COMPLEXITY_SCORE" ]; then
+      write_state "{\"fase\":\"$FASE\",\"complexity\":\"$COMPLEXITY_SCORE\",\"units\":$units_json}"
+      echo "Pipeline '$FASE' inicializado: ${#UNITS[@]} unidades. Complexity: T=$COMPLEXITY_SCORE."
+    else
+      write_state "{\"fase\":\"$FASE\",\"units\":$units_json}"
+      echo "Pipeline '$FASE' inicializado: ${#UNITS[@]} unidades. (sin T-score)"
+    fi
     ;;
 
   show|status)
     # separator is | to avoid tab/quote escaping issues in jq
-    read_state | jq -r '"Fase: " + .fase, "", "UNIT | STATE | OWNER | NOTE", (.units[] | (.name + " | " + .state + " | " + .owner + " | " + (.note // "-")))' 2>/dev/null || {
+    read_state | jq -r '"Fase: " + .fase + " | T-score: " + (.complexity // "n/a"), "", "UNIT | STATE | OWNER | NOTE", (.units[] | (.name + " | " + .state + " | " + .owner + " | " + (.note // "-")))' 2>/dev/null || {
       echo "Estado (sin jq):"; read_state; }
     ;;
 

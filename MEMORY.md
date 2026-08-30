@@ -1,10 +1,16 @@
-# MEMORY.md - Long-Term Memory
+## ⚙️ DECISIÓN DE MOTOR LLM (2026-08-30)
+
+**Tema:** Consolidación de motor de trabajo para el pipeline A/B.
+**Decisión:** Se establece `deepseek-v4-flash:cloud` como el modelo preferido para los agentes de código y orquestación de pipeline, reemplazando temporalmente a `glm-5.3-flash:cloud` en la configuración operativa (detallado en `tools.md`).
+**Motivación:** Preferencia explícita de Gonzo tras la auditoría de coherencia. El modelo fue seleccionado por su *estructura* en el contexto de las tareas complejas, priorizando la consistencia operativa sobre la preferencia inicial del proveedor.
+**Impacto:** Los futuros *tasks* deben referenciar este cambio y cualquier uso de `glm-5.3-flash:cloud` deberá pasar por un flag de excepción y ser justificado.
+**Referencia:** [#AGENTS-DETALLE]
 
 > Memoria curada de largo plazo. Detalle técnico en `docs/LEARNINGS.md`, OSS en `docs/OSS-TRACKER.md`, dailies en `memory/` y proyectos en `projects/<slug>/.knowledge/`.
 
 ## Sobre Gonzo
 
-- Gonzalo, Argentina (GMT-3). Fullstack (React/TS, Supabase/Edge Functions, DB, billing, tooling).
+- Gonzalo Blasco, Argentina (GMT-3). Fullstack (React/TS, Supabase/Edge Functions, DB, billing, tooling).
 - Búsqueda laboral: perfil AI-Native / a11y. Entrevista con OpenSistemas (25/08).
 - Perfil: fotógrafo, comunicación social, escritor de novelas.
 - Preferencias: honestidad absoluta, autonomía total, registro escrito crítico.
@@ -28,6 +34,7 @@
 - **Bots de review (2026-08-24):** No agradecer a bots. Responder directo a la sustancia con evidencia.
 - **Referencia ≠ proyecto (2026-08-24):** "Quitar referencia" = quitar puntero git, NUNCA borrar carpeta con datos locales (`.env`, `*.db`). Respaldar SIEMPRE antes de limpiar.
 - **Diferenciador:** IA como infraestructura de trabajo (no chat), stack opinado, docs de decisiones.
+- **Regla de tools (2026-08-30):** Cuando un `file_write`/`edit`/`apply_patch` devuelve error de validación (ej. falta de `node`), NO asumir que la operacion tuvo exito. Confirmar con el resultado del tool o con un `read` posterior. Reportar el fallo al usuario, no inventar el exito.
 
 ## Metodología
 
@@ -38,7 +45,9 @@
 
 ## Pipeline de Programación (ESTÁNDAR)
 
-Pipeline A/B con **Qwen Code vía Ollama** (motor: `glm-5.3-flash:cloud`, desde 2026-08-29; antes `deepseek-v4-flash:cloud`). Flujo: A escribe $\rightarrow$ Kanam pasa a B $\rightarrow$ B revisa $\rightarrow$ Verificar $\rightarrow$ Iterar.
+Pipeline A/B con **Qwen Code vía Ollama** (motor: `deepseek-v4-flash:cloud`). Flujo: A escribe $\rightarrow$ Kanam pasa a B $\rightarrow$ B revisa $\rightarrow$ Verificar $\rightarrow$ Iterar.
+
+**Complexity-First (2026-08-30):** Antes de spawnear agentes, Kanam ejecuta `./scripts/complexity-scorer.sh "<objetivo>"` que devuelve T (1-20). T <= 6 = Kanam solo (trivial). T 7-12 = A high. T 13-16 = A+B con cross-review. T 17-20 = Kanam(max) diseña, A+B ejecutan high, verificacion obligatoria + confirmacion de Gonzo. Persistir T con `pipeline-track.sh init ... --score T`. Skill: `complexity-driven-pipeline`.
 - **Claude Code (Alternativa):** Para SIGKILL o tareas largas.
 - **Lecciones:**
     - **SIGKILL:** Prompts cortos para revisiones; relanzar si muere.
@@ -52,6 +61,7 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 ## Reglas de Ingeniería
 
 - **Pre-commit hooks:** Obligatorios en todo proyecto (Biome $\rightarrow$ Vitest $\rightarrow$ Build). Prioridad sobre features.
+- **Evaluación de Complejidad Previa (2026-08-30):** Antes de cada *task*, el orquestador (Kanam) DEBE evaluar el objetivo en 4 dimensiones (Alcance, Abstracción, Riesgo, Ambigüedad) y asignar un score T (1-20). Este score selecciona el modelo y el nivel de *thinking* de forma automática. Detalle: `prompts/complexity-scorer.md`.
 - **Validación UI (2026-08-27):** Fixes visuales se validan SOLO con browser real (Desktop). jsdom/headless no detectan problemas de layout/chrome nativo.
 - **Pagos (2026-08-29):** Mercado Pago SIEMPRE, NUNCA Stripe (ADR-042). Excepción solo si Gonzo la marca explícitamente y queda documentada en el proyecto. Razón: en Argentina y LATAM Stripe no opera como opción real; Mercado Pago cubre moneda local y medios de pago.
 
@@ -78,6 +88,9 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 - **SoporteML:** CRM MeLi. v4 es el reinicio actual (frontend avanzado, backend v3 sólido).
 - **kanam-skills:** Repo público de skills. Sanitización obligatoria (Gonzo $\rightarrow$ usuario).
 - **a11y-fixer:** Engine de fixes de accesibilidad. v0.6.0 reescrito.
+- **a11y-playground:** Capa visual de testing sobre a11y-fixer. Depende de a11y-fixer (base).
+- **kanam-insight:** Motor de insights/analisis. Activo (dependencias TBD).
+- **kanam-pulse:** Monitor de salud del sistema. M1 Kickoff en curso (2026-08-30): extraer engine a packages/core (TS), 46 tests verdes, dashboard read-only. Codigo ya en el repo. Pendiente: refactor + dashboard.
 - **kanam-forge:** Lovable self-hosted. Fusionado con `create-with-ai`. Fase 1 completa.
 - **create-with-ai:** ARCHIVADO. Fusionado a kanam-forge. Deprecar en npm (requiere npm login).
 - **daily-ink:** PWA prompts de escritura.

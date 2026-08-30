@@ -22,7 +22,10 @@
 - [ ] **[workspace]** (medium) Probar input visual de GLM 5.3 Flash en caso real (mockup/screenshot -> UI o screenshot de error -> fix). Ver ADR-041 pendiente 3
 - [ ] **[workspace]** (medium) Re-cata de modelos LLM ~2026-09-29: revisar novedades (GLM, Kimi, alternativas) y decidir si mantener el trio actual. Ver ADR-041 pendiente 4
 - [ ] **[kanam-pulse]** (medium) Kickoff M1 kanam-pulse: extraer engine de system-health-check a packages/core (TS), 46 tests verdes, dashboard read-only
-- [ ] **[kanam-pulse]** (medium) Traer codigo system-health-check desde MacBook Air (no tiene repo GitHub; el dir local solo tiene .knowledge/)
+- [ ] **[kanam-pulse]** (medium) [M1.1] Extraer engine de system-health-check a packages/core (TS) - modularidad y separacion [DONE]
+- [ ] **[kanam-pulse]** (medium) [M1.2] Confirmar 46 tests verdes post-refactor [DONE: 46 core + 11 server = 57 tests pass]
+- [ ] **[kanam-pulse]** (medium) [M1.2.1] Aislamiento: Fix timeout SSE en vitest [DONE: reader.cancel() + 500ms wait + timeout 20s]
+- [ ] **[kanam-pulse]** (medium) [M1.3] Implementar dashboard read-only consumiendo packages/core (cierre M1)
 - [ ] **[]** (medium) Explorar Kanam Studio: Engine de Narrativa No Lineal y World-building con consistencia IA
 - [ ] **[kanam-pulse]** (medium) kanam-pulse: evaluar envoltorio nativo a futuro (Electron/Tauri/React Native/nativa) SOLO despues de que la web v1 este completa y pulida. No bloquea nada hoy - es decision de distribucion futura. Nota: Tauri es candidata natural si algun dia se hace (mas liviana que Electron, binario unico)
 

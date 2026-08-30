@@ -1,17 +1,25 @@
 {
-  "fase": "kanam-forge fase-C project-context integrado",
+  "fase": "kanam-pulse M1 - server + dashboard",
   "units": [
     {
       "name": "U1",
-      "state": "done",
+      "state": "start",
       "owner": "A",
-      "note": "deepseek porto lib/project-context.ts (reader + buildProjectSystemPrompt) + 7 tests. Verificado tsc + vitest 7/7."
+      "note": "",
+      "startTime": "1788059856",
+      "endTime": null,
+      "iterations": 0,
+      "regressions": 0
     },
     {
       "name": "U2",
-      "state": "done",
+      "state": "queued",
       "owner": "B",
-      "note": "deepseek integro project-context a chat/route.ts (try/catch fallback al base). Verificado end-to-end: agente responde Next.js+React+Vitest (conoce stack real). Side effect: sobrescribio conversacion 'hola' (120B) del proyecto kanam-story de prueba con formato incorrecto (content vs parts) - restaurada a estado coherente. Leccion: validar formato UIMessage antes de escribir."
+      "note": "",
+      "startTime": null,
+      "endTime": null,
+      "iterations": 0,
+      "regressions": 0
     }
   ]
 }
