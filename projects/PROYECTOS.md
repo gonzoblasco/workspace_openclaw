@@ -1,6 +1,6 @@
 # PROYECTOS.md - Índice Maestro Universal
 
-**Última actualización:** 2026-08-23
+**Última actualización:** 2026-08-29
 
 > **Regla de oro:** GitHub es la fuente de la verdad. Cada proyecto vive en su propio repo (sin submódulos ni repos dentro del repo). El workspace (`~/.openclaw/workspace`) solo contiene config, memoria y skills. Este archivo es un **índice universal**: lista todos los proyectos de Gonzo en GitHub, sin importar en qué máquina estén clonados (Gonzo trabaja entre dos computadoras y no siempre el mismo proyecto en cada una).
 
@@ -11,7 +11,6 @@
 | Proyecto | Descripción | Priv | GitHub |
 |---|---|---|---|
 | **kanam-story** | Co-writer de ficción local-first. Chat con manos + biblia viva + brújula + outline/beats. | pub | gonzoblasco/kanam-story |
-| **kanam-mind** | Segundo cerebro local-first con IA. Timeline personal + resumen IA diario. IndexedDB + Ollama local. | pub | gonzoblasco/kanam-mind |
 | **kanam-skills** | Skills de agente para todo el trabajo + web pública. | pub | gonzoblasco/kanam-skills |
 | **kanam-forge** | Herramienta de forja de skills (fork de Lovable, open source). | pub | gonzoblasco/kanam-forge |
 | **kanam-pulse** | Health monitor/cleaner macOS local-first, web-first, a11y de fabrica, IA local. Open source. | pub | gonzoblasco/kanam-pulse |
@@ -38,6 +37,7 @@
 | **ensulugar** | Tutor de cocina adaptativo con IA (BYOK). | pub | gonzoblasco/ensulugar |
 | **cabala** | Proyecto cabala. | pub | gonzoblasco/cabala |
 | **health-tracker** | PWA de monitoreo de salud personal. | pub | gonzoblasco/health-tracker |
+| **kanam-mind** | Segundo cerebro local-first con IA. Timeline personal + resumen IA diario. IndexedDB + Ollama local. Archivado del portfolio (reemplazado por kanam-pulse como ancla Local-First). | pub | gonzoblasco/kanam-mind |
 
 ---
 
