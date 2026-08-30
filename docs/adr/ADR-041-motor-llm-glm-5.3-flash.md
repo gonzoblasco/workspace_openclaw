@@ -65,19 +65,19 @@ Estas reglas de ADR-040 (Casos Especiales) quedan ACTUALIZADAS:
 
 1. **Default para todo lo diario:** sesiones, pipeline A/B (agentes en su default, sin parámetros), PRs, docs. Cero knobs.
 2. **Vision/PDF:** pasar la imagen o el archivo directo. No cambiar de modelo por capacidad, solo por calidad de tarea (ver ADR-040 para especialistas).
-3. **Sin caros en el ecosistema (2026-08-29):** `kimi-k3` y `deepseek-v4-pro` removidos de la config de OpenClaw junto con DeepSeek V4 Flash. Los tres volvibles desde el backup `~/.openclaw/openclaw.json.bak-20260829`. Si un problema requiere frontier, pedir autorizacion explicita a Gonzo y restaurar el modelo puntual.
+3. **Ecosistema minimo (2026-08-29, decision de Gonzo):** la config queda en SOLAMENTE 3 modelos cloud: `glm-5.3-flash` (default + motor), `glm-5.3` (escalada intra-familia) y `gemma4` (vision + tono/voz), mas el fallback externo `openrouter/auto`. Fuera los 8 restantes (los caros kimi-k3/deepseek-v4-pro/kimi-k2.7-code/deepseek-v4-flash y los nicho minimax/qwen/nemotron/gemma4:31b, sin uso previsto ni ventaja sobre los 3). Volver solo con autorizacion explicita de Gonzo y restaurando el modelo puntual desde el backup `~/.openclaw/openclaw.json.bak-20260829`.
 4. **Retiro de K2.7 (2026-08-29, decision de Gonzo):** probado en high (ver Pendientes 1): solido, sin win claro, y su decision central en high contradice su propio xhigh. GLM Flash ya cubre lo diario y ningun caso previsiblemente justifica su costo. Removido del ecosistema junto a kimi-k3 y deepseek-v4-pro; volver solo con autorizacion explicita.
-5. **Si la tarea no da para GLM** (se traba, alucina, contexto exotico): escalar segun ADR-040 (glm-5.3, minimax o gemma) y anotar el caso en el daily.
+5. **Si la tarea no da para GLM** (se traba, alucina, contexto exotico): escalar segun este ADR: glm-5.3 (misma familia), gemma4 (vision), o openrouter/auto en ultimo caso y anotar el caso en el daily.
 6. **A GLM jamas pasarle parámetros de razonamiento.** Si OpenClaw u Ollama exponen el knob en el futuro, abrir revision de este ADR antes de usarlo.
 
 ## Riesgos y Mitigaciones
 
 | Riesgo | Mitigacion |
 |---|---|
-| Dependencia mono-familia (GLM/Z.ai) | Fallback `openrouter/auto` en config; `glm-5.3:cloud`, `gemma4:cloud` y `minimax-m3:cloud` en la lista de alternativas |
+| Dependencia mono-familia (GLM/Z.ai) | Fallback `openrouter/auto` en config; `glm-5.3:cloud` y `gemma4:cloud` en la lista de alternativas |
 | Modelo muy nuevo (lanzamiento 2026-08-26) | Validado en batalla pre-lanzamiento (ox-alpha). Monitorear en tareas reales; diario registra fallos |
 | Sin control de razonamiento desde Ollama | Aceptado por decision: default del servidor, sin administramos niveles |
-| Rollback | Backup `~/.openclaw/openclaw.json.bak-20260829` (restaura default + lista con DeepSeek V4 Flash, K3, pro y K2.7) |
+| Rollback | Backup `~/.openclaw/openclaw.json.bak-20260829` (restaura default + lista completa de 11 modelos) |
 
 ## Pendientes (por donde seguir)
 
