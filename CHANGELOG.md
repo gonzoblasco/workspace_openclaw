@@ -11,7 +11,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Changed
 - **`MEMORY.md`** (seccion "Modelo default y config de tools"): los agentes A/B pasan de `deepseek-v4-flash:cloud` a `glm-5.3-flash:cloud` en high. Registrada la comparativa de 5 modelos (mismo prompt pesado de arquitectura de agentes) y la leccion de niveles de razonamiento (max no es driver de calidad; agentes de codigo siempre en high).
 - **`TOOLS.md`** (secciones "Modelos" y "Pipeline de agentes"): motor estandar actualizado a `glm-5.3-flash:cloud`, ficha de GLM-5.3-Flash (multimodal nativo: imagen/video/PDF, 1M de contexto, 320B/18B MoE, MIT), modelos cloud actualizados.
-- **Config de OpenClaw (`~/.openclaw/openclaw.json`):** default general `agents.defaults.model.primary` cambió a `glm-5.3-flash:cloud`; `deepseek-v4-flash:cloud` removido de la lista estática de modelos. Ficha glm-5.3-flash corregida con specs verificados (input imagen + maxTokens 131072). Backup previo: `openclaw.json.bak-20260829`.
+- **Config de OpenClaw (`~/.openclaw/openclaw.json`):** default general `agents.defaults.model.primary` cambió a `glm-5.3-flash:cloud`; ecosistema purgado a 3 modelos cloud (glm-5.3-flash, glm-5.3, gemma4) - fuera: DeepSeek V4 Flash/Pro, Kimi K2.7/K3, MiniMax M3, Qwen3.5, Nemotron, Gemma4:31b. Ficha glm-5.3-flash corregida con specs verificados (input imagen + maxTokens 131072). Backup previo: `openclaw.json.bak-20260829`.
 
 - **`.gitignore` + memoria:** dailies viejos (13-24/08) archivados a `memory/archive/` (verificados identicos antes de borrar); `memory/export/` (chunks derivados de indices, regenerables) agregado al gitignore.
 
