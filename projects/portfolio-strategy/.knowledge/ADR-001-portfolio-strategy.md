@@ -21,7 +21,7 @@ Se definen tres proyectos como los estandartes del portfolio. Estos son los que 
 | :--- | :--- | :--- |
 | **kanam-forge** | Infraestructura AI | Orquestación de contenedores, sandboxing local, pipeline de construcción de apps asistida por IA. |
 | **a11y-fixer** | Especialización a11y | Automatización de auditorías WCAG, integración en CI/CD, dominio de axe-core y Playwright. |
-| **Kanam Mind** | Local-First / Privacidad | Gestión de datos privados, PWA offline, integración de LLMs locales (Ollama). |
+| **kanam-pulse** | Local-First / Privacidad | Monitor de salud y limpieza de macOS local-first: dashboard web que lee el pulso real de la máquina (disco, memoria, CPU, seguridad, red) y actúa con consentimiento explícito y granular. Sin telemetría ni cuentas; IA local opcional (Ollama) que explica la auditoría en lenguaje simple; accesibilidad WCAG 2.2 AA desde el día uno. |
 
 ## 4. Decisiones de Limpieza y Archivo
 
@@ -29,6 +29,7 @@ Para optimizar la "señal" del portfolio, se toman las siguientes decisiones:
 
 - **create-with-ai $\rightarrow$ ARCHIVAR**: El proyecto fue fusionado técnicamente en `kanam-forge`. Mantener ambos genera redundancia. La evolución es la prueba de crecimiento.
 - **accessible-ui $\rightarrow$ ARCHIVAR**: Aunque técnicamente sólido, el mercado de primitivas headless está saturado. El expertise en accesibilidad queda representado con mayor impacto por `a11y-fixer`.
+- **Kanam Mind $\rightarrow$ DEJA DE SER ANCLA (2026-08-29)**: Reemplazado por `kanam-pulse` como proyecto ancla del pilar Local-First / Privacidad. Kanam pulse cubre el mismo pilar con mayor impacto (local-first + privacidad + a11y + IA local en un solo producto). Kanam Mind queda fuera de la narrativa de ancla; su destino de archivo se decide por separado.
 - **SoporteML $\rightarrow$ EXCLUIR**: El proyecto queda fuera de la narrativa pública de portfolio por razones de privacidad/estratégicas hasta nuevo aviso. **NO TOCAR**: este proyecto no se modifica, no se decide su destino, y no se lista como candidato en auditorías de higiene del workspace. La exclusión es una decisión cerrada; no se vuelve a abrir salvo que Gonzo lo pida explícitamente.
 
 ## 5. Criterios de Éxito
