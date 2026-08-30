@@ -18,7 +18,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 - **web_search provider:** `DuckDuckGo Search (experimental)` (key-free, no consume créditos). El provider `ollama` usaba `glm-5.2:cloud` y consumía requests del presupuesto sin pedirlo - NO usar.
 - **Modelos disponibles (Ollama):**
   - Local: `qwen3.5:9b-mlx` (8.9 GB), `nomic-embed-text:latest` (embeddings)
-  - Cloud: `glm-5.3-flash:cloud` (default OpenClaw + motor del pipeline A/B, multimodal), `glm-5.3:cloud`, `minimax-m3:cloud`, `nemotron-3-nano:30b-cloud`, `gemma4:cloud`, `kimi-k2.7-code:cloud` (código), `qwen3.5:cloud`, `gemma4:31b-cloud`. FUERA del ecosistema (2026-08-29): `deepseek-v4-flash:cloud`, `kimi-k3:cloud`, `deepseek-v4-pro:cloud` - sacados de la config; para emergencia, restaurar desde el backup `~/.openclaw/openclaw.json.bak-20260829`
+  - Cloud: `glm-5.3-flash:cloud` (default OpenClaw + motor del pipeline A/B, multimodal), `glm-5.3:cloud`, `minimax-m3:cloud`, `nemotron-3-nano:30b-cloud`, `gemma4:cloud`, `qwen3.5:cloud`, `gemma4:31b-cloud`. FUERA del ecosistema (2026-08-29): `deepseek-v4-flash:cloud`, `kimi-k3:cloud`, `deepseek-v4-pro:cloud`, `kimi-k2.7-code:cloud` - sacados de la config; para emergencia, restaurar desde el backup `~/.openclaw/openclaw.json.bak-20260829`
 
 ## Pipeline de agentes (programación)
 

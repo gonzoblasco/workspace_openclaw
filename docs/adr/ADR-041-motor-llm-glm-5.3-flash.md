@@ -66,22 +66,22 @@ Estas reglas de ADR-040 (Casos Especiales) quedan ACTUALIZADAS:
 1. **Default para todo lo diario:** sesiones, pipeline A/B (agentes en su default, sin parámetros), PRs, docs. Cero knobs.
 2. **Vision/PDF:** pasar la imagen o el archivo directo. No cambiar de modelo por capacidad, solo por calidad de tarea (ver ADR-040 para especialistas).
 3. **Sin caros en el ecosistema (2026-08-29):** `kimi-k3` y `deepseek-v4-pro` removidos de la config de OpenClaw junto con DeepSeek V4 Flash. Los tres volvibles desde el backup `~/.openclaw/openclaw.json.bak-20260829`. Si un problema requiere frontier, pedir autorizacion explicita a Gonzo y restaurar el modelo puntual.
-4. **Kimi K2.7 Code:** el mejor pensador de la comparativa, sigue en la lista. Candidato a motor alternativo. Pendiente prueba en high (ver Pendientes).
-5. **Si la tarea no da para GLM** (se traba, alucina, contexto exotico): escalar segun ADR-040 (glm-5.3, kimi-k2.7, gemma) y anotar el caso en el daily.
+4. **Retiro de K2.7 (2026-08-29, decision de Gonzo):** probado en high (ver Pendientes 1): solido, sin win claro, y su decision central en high contradice su propio xhigh. GLM Flash ya cubre lo diario y ningun caso previsiblemente justifica su costo. Removido del ecosistema junto a kimi-k3 y deepseek-v4-pro; volver solo con autorizacion explicita.
+5. **Si la tarea no da para GLM** (se traba, alucina, contexto exotico): escalar segun ADR-040 (glm-5.3, minimax o gemma) y anotar el caso en el daily.
 6. **A GLM jamas pasarle parámetros de razonamiento.** Si OpenClaw u Ollama exponen el knob en el futuro, abrir revision de este ADR antes de usarlo.
 
 ## Riesgos y Mitigaciones
 
 | Riesgo | Mitigacion |
 |---|---|
-| Dependencia mono-familia (GLM/Z.ai) | Fallback `openrouter/auto` en config; `glm-5.3:cloud`, `kimi-k2.7-code:cloud` y `gemma4:cloud` en la lista de alternativas |
+| Dependencia mono-familia (GLM/Z.ai) | Fallback `openrouter/auto` en config; `glm-5.3:cloud`, `gemma4:cloud` y `minimax-m3:cloud` en la lista de alternativas |
 | Modelo muy nuevo (lanzamiento 2026-08-26) | Validado en batalla pre-lanzamiento (ox-alpha). Monitorear en tareas reales; diario registra fallos |
 | Sin control de razonamiento desde Ollama | Aceptado por decision: default del servidor, sin administramos niveles |
-| Rollback | Backup `~/.openclaw/openclaw.json.bak-20260829` (restaura default + lista con DeepSeek V4 Flash, K3 y pro) |
+| Rollback | Backup `~/.openclaw/openclaw.json.bak-20260829` (restaura default + lista con DeepSeek V4 Flash, K3, pro y K2.7) |
 
 ## Pendientes (por donde seguir)
 
-1. **RESUELTO (2026-08-29 22:08): Kimi K2.7 Code en high probado** con el mismo prompt de arquitectura. Veredicto: solido pero SIN win claro sobre GLM Flash en lo visible (secciones 1-3; se trunco de nuevo antes de 4-7). Hallazgo clave: **el nivel de razonamiento le cambio el juicio arquitectonico** - en xhigh eligio single-agent con refutaciones operativas duras al multi-agente; en high eligio multi-agente de 9 workers (9 bootstraps por issue), contradiciendo su propio argumento xhigh y la evidencia acumulada. Aportes reales en high: artifacts estructurados como unico contrato entre workers, Safety Gatekeeper que "nunca ejecuta, solo bloquea", y convergencia con la regla decide-en-max/avanza-en-high. **Conclusion: el motor queda en GLM Flash; K2.7 sigue como especialista de codigo pesado (ADR-040), preferentemente en xhigh cuando el caso lo justifique.**
+1. **RESUELTO (2026-08-29 22:08): Kimi K2.7 Code en high probado** con el mismo prompt de arquitectura. Veredicto: solido pero SIN win claro sobre GLM Flash en lo visible (secciones 1-3; se trunco de nuevo antes de 4-7). Hallazgo clave: **el nivel de razonamiento le cambio el juicio arquitectonico** - en xhigh eligio single-agent con refutaciones operativas duras al multi-agente; en high eligio multi-agente de 9 workers (9 bootstraps por issue), contradiciendo su propio argumento xhigh y la evidencia acumulada. Aportes reales en high: artifacts estructurados como unico contrato entre workers, Safety Gatekeeper que "nunca ejecuta, solo bloquea", y convergencia con la regla decide-en-max/avanza-en-high. **Conclusion: el motor queda en GLM Flash. Ese mismo dia Gonzo decidio retirar K2.7 del ecosistema: GLM Flash cubre lo diario y ningun caso previsto justifica su costo. Volver solo por decision explicita.**
 2. **Validar GLM Flash en tareas REALES del pipeline** (escribir codigo, tests, PRs). La comparativa midio diseno de arquitectura, no produccion. Registrar resultado en daily.
 3. **Probar input visual en casos reales:** mockup -> UI (best practice oficial de Z.ai), screenshot de error -> fix.
 4. **Re-cata en ~1 mes (fines de septiembre):** el mercado se mueve rapido; revisar si hay novedades en GLM 5.4/x o equivalentes.
