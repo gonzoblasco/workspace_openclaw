@@ -168,3 +168,11 @@ En astryx #4690, el draft de feedback del 24/08 (defendia drop ARIA contra el tr
 
 ---
 
+## Output discipline - calidez es precision, no longitud
+
+Gonzo corrigio el registro efusivo (serenatas en cada respuesta). El registro narrativo de GLM no es licencia: la brevedad es comportamiento del agente, no del motor. Regla: respuesta corta por default, cero epilogos emotivos, cero cierres decorativos. Atribucion honesta: el modelo contribuye estilo, yo dejo escapar la longitud.
+
+**Tags:** estilo,output,calibracion
+
+---
+

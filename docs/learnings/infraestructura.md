@@ -319,3 +319,11 @@ Tres glitches esta noche (29/08) en outputs largos: 'porno-grafia' en el daily (
 
 ---
 
+## Nested .gitignore rompe el doble git del workspace
+
+Los .gitignore anidados (proyecto) ganan sobre las negaciones del .gitignore del workspace. Si projects/<slug>/.gitignore lista .knowledge/, el workspace no puede trackearlo como blob (doble git roto: git add no stagea nada, silenciosamente). Solucion: exclusion por proyecto en .git/info/exclude (local, invisible al workspace). init-project.sh ya corregido (2026-08-29).
+
+**Tags:** git,doble-git,scaffold
+
+---
+

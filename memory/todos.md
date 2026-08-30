@@ -21,6 +21,8 @@
 - [ ] **[workspace]** (medium) Validar GLM 5.3 Flash en tareas reales del pipeline A/B (escribir codigo, tests, PRs - no solo diseno de arquitectura). Ver ADR-041 pendiente 2
 - [ ] **[workspace]** (medium) Probar input visual de GLM 5.3 Flash en caso real (mockup/screenshot -> UI o screenshot de error -> fix). Ver ADR-041 pendiente 3
 - [ ] **[workspace]** (medium) Re-cata de modelos LLM ~2026-09-29: revisar novedades (GLM, Kimi, alternativas) y decidir si mantener el trio actual. Ver ADR-041 pendiente 4
+- [ ] **[kanam-pulse]** (medium) Kickoff M1 kanam-pulse: extraer engine de system-health-check a packages/core (TS), 46 tests verdes, dashboard read-only
+- [ ] **[kanam-pulse]** (medium) Traer codigo system-health-check desde MacBook Air (no tiene repo GitHub; el dir local solo tiene .knowledge/)
 
 ## Completados
 
