@@ -4,7 +4,7 @@
 - **Date:** 2026-08-29 23:40
 - **Project:** kanam-pulse
 - **Repo (codigo):** https://github.com/gonzoblasco/kanam-pulse (PUBLIC, MIT)
-- **Dev clone:** `~/.openclaw/dev/kanam-pulse` (aqui se edita codigo; el workspace solo trackea `.knowledge/` como blob - ver Decision de estructura)
+- **Dev clone:** `~/.openclaw/dev/kanam-pulse` (aqui se edita codigo; el workspace solo trackea `.knowledge/` como blob - ver Decision de estructura). `.knowledge/` tambien visible en el dev clone via symlink al blob del workspace (2026-08-30, recomendacion de Kanam sobre repo-separado de Gonzo: misma colocacion, cero piezas extra). El `.gitignore` del proyecto vuelve a listar `.knowledge/` (seguro ahora: dev clone fuera del arbol del workspace)
 - **Workspace:** double-git real: `projects/kanam-pulse/.knowledge/` = blob del workspace; el repo de codigo vive FUERA del arbol de blobs
 
 ## Summary (Sesion 1 del proyecto - 29/08 22:46-23:27)
