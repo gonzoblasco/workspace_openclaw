@@ -81,7 +81,7 @@ Estas reglas de ADR-040 (Casos Especiales) quedan ACTUALIZADAS:
 
 ## Pendientes (por donde seguir)
 
-1. **Kimi K2.7 Code en high** (cuando haya GPU): mismo prompt de arquitectura. Si sostiene el nivel, evaluar como segundo motor o reemplazo. Costo: K2.7 es mucho mas caro que GLM Flash - el trade-off es calidad vs 41x de este tipo de brecha.
+1. **RESUELTO (2026-08-29 22:08): Kimi K2.7 Code en high probado** con el mismo prompt de arquitectura. Veredicto: solido pero SIN win claro sobre GLM Flash en lo visible (secciones 1-3; se trunco de nuevo antes de 4-7). Hallazgo clave: **el nivel de razonamiento le cambio el juicio arquitectonico** - en xhigh eligio single-agent con refutaciones operativas duras al multi-agente; en high eligio multi-agente de 9 workers (9 bootstraps por issue), contradiciendo su propio argumento xhigh y la evidencia acumulada. Aportes reales en high: artifacts estructurados como unico contrato entre workers, Safety Gatekeeper que "nunca ejecuta, solo bloquea", y convergencia con la regla decide-en-max/avanza-en-high. **Conclusion: el motor queda en GLM Flash; K2.7 sigue como especialista de codigo pesado (ADR-040), preferentemente en xhigh cuando el caso lo justifique.**
 2. **Validar GLM Flash en tareas REALES del pipeline** (escribir codigo, tests, PRs). La comparativa midio diseno de arquitectura, no produccion. Registrar resultado en daily.
 3. **Probar input visual en casos reales:** mockup -> UI (best practice oficial de Z.ai), screenshot de error -> fix.
 4. **Re-cata en ~1 mes (fines de septiembre):** el mercado se mueve rapido; revisar si hay novedades en GLM 5.4/x o equivalentes.
