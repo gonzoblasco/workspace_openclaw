@@ -116,17 +116,20 @@ cat > "${KNOWLEDGE_DIR}/STATUS.md" << 'STATUS'
 1. [ ]
 STATUS
 
-# .gitignore (for the project's own git repo - ignores .knowledge/)
+# .gitignore (for the project's own git repo)
+# NOTE: .knowledge/ is NOT listed here on purpose. This .gitignore is also parsed
+# by the workspace git, and listing .knowledge/ would break workspace blob tracking
+# (double-git). The project-local exclusion lives in .git/info/exclude instead.
 cat > "${PROJECT_DIR}/.gitignore" << 'GITIGNORE'
 # Project .gitignore
-# .knowledge/ is tracked by the workspace git, not the project git
-.knowledge/
+# .knowledge/ exclusion lives in .git/info/exclude (do not list it here)
 
 # Node
 node_modules/
 dist/
 .next/
 .turbo/
+coverage/
 
 # Env
 .env
@@ -138,7 +141,7 @@ dist/
 GITIGNORE
 
 # README.md
-cat > "${PROJECT_DIR}/README.md" << 'README'
+cat > "${PROJECT_DIR}/README.md" << README
 # ${SLUG}
 
 [Description]
@@ -222,6 +225,8 @@ else
   cd "${PROJECT_DIR}"
   git init -q
   git branch -M main
+  # Double-git: exclude .knowledge/ locally (NOT via .gitignore - workspace git parses it too)
+  printf '\n# Double-git: .knowledge/ belongs to the workspace git, never to this repo\n.knowledge/\n' >> .git/info/exclude
   git remote add origin "${REPO_URL}"
   git add -A
   git commit -q -m "chore: initial scaffold"

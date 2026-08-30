@@ -6,7 +6,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
-## [2026-08-29] - Cambio de motor del pipeline A/B: DeepSeek V4 Flash → GLM 5.3 Flash
+## [2026-08-29] - Nuevo proyecto publico kanam-pulse + fix de doble git en init-project.sh
+
+### Added
+- **`projects/kanam-pulse/`:** nuevo proyecto (doble git, repo publico `gonzoblasco/kanam-pulse`). Web health monitor/cleaner macOS local-first con IA local y a11y de fabrica. Motor heredado de `system-health-check` (CLI validado v1.0.0). README (ingles) + LICENSE MIT + docs/SPEC-v1.md. Registrado en `projects/PROYECTOS.md`.
+
+### Changed
+- **`scripts/init-project.sh`:** fix de doble git para proyectos nuevos. El `.gitignore` generado ya NO lista `.knowledge/` (git parsea los .gitignore anidados y le pisa la negacion `!/projects/**/.knowledge` del workspace: el proyecto quedaba inexpugnable para `git add`). La exclusion de `.knowledge/` ahora se escribe en `.git/info/exclude` del proyecto (local, invisible para el workspace). Ademas el README template ahora expande `${SLUG}` (heredoc sin quote).
+
+### Fixed
+- `projects/kanam-pulse/.gitignore` igual: regenerado sin `.knowledge/`, con exclusion en `.git/info/exclude`.
+
+---
 
 ### Changed
 - **`MEMORY.md`** (seccion "Modelo default y config de tools"): los agentes A/B pasan de `deepseek-v4-flash:cloud` a `glm-5.3-flash:cloud` en high. Registrada la comparativa de 5 modelos (mismo prompt pesado de arquitectura de agentes) y la leccion de niveles de razonamiento (max no es driver de calidad; agentes de codigo siempre en high).

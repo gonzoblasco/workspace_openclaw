@@ -14,6 +14,7 @@
 | **kanam-mind** | Segundo cerebro local-first con IA. Timeline personal + resumen IA diario. IndexedDB + Ollama local. | pub | gonzoblasco/kanam-mind |
 | **kanam-skills** | Skills de agente para todo el trabajo + web pública. | pub | gonzoblasco/kanam-skills |
 | **kanam-forge** | Herramienta de forja de skills (fork de Lovable, open source). | pub | gonzoblasco/kanam-forge |
+| **kanam-pulse** | Health monitor/cleaner macOS local-first, web-first, a11y de fabrica, IA local. Open source. | pub | gonzoblasco/kanam-pulse |
 | **kanam-solitaires** | Colección de solitarios PWA (Klondike, Spider, FreeCell, Pyramid). | pub | gonzoblasco/kanam-solitaires |
 | **soporteml** | CRM multi-tenant para ML sellers (v1). | pub | gonzoblasco/soporteml |
 | **soporteml-v4** | CRM multi-tenant para ML sellers (reinicio con diseño avanzado). | PRIV | gonzoblasco/soporteml-v4 |

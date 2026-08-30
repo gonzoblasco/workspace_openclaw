@@ -8,6 +8,7 @@
 - Búsqueda laboral: perfil AI-Native / a11y. Entrevista con OpenSistemas (25/08).
 - Perfil: fotógrafo, comunicación social, escritor de novelas.
 - Preferencias: honestidad absoluta, autonomía total, registro escrito crítico.
+- **Estilo de respuesta (2026-08-29):** breve por defecto, sobre todo en pedidos simples. Sin epílogos emotivos ni cierres decorativos ("serenatas"). Calidez = precisión y cuidado, no longitud. El registro efusivo de GLM no es excusa: la disciplina de output es mía.
 - Setup: Mac Mini + MacBook Air (workspace sincronizado por git).
 - **PRs en sesiones (2026-08-25):** No se revisan automáticamente al inicio. Solo cuando Gonzo los comparte.
 - **Branding LinkedIn (2026-08-25):** 3 nichos: (1) **a11y** (diferenciador), (2) **Agentic/AI-Native** (laboral), (3) **Fullstack** (base). Patrón: Solo PRs MERGEADOS, postura didáctica/pedagógica (el qué+proceso+por qué), sin tutoriales secuenciales. Archivo cada post en `docs/linkedin/`.
