@@ -303,3 +303,11 @@ El default historico tenia fallback openrouter/auto: facturaba igual que el mode
 
 ---
 
+## git checkout -- en la DB de memoria destruye cambios sin commitear
+
+Al cerrar sesion dejé memory/memory.db modificado (3 lecciones + 3 todos) fuera del git add. Despues, para 'limpiar' el status, corrí git checkout -- memory/memory.db: revirtio la DB al ultimo commit y borro mis propios cambios. Los espejos MD sobrevivieron por estar commiteados, pero la DB (fuente de verdad) se cayo atras. Regla: memory.db se commitea SIEMPRE en el mismo commit que sus espejos; jamas checkout/stash sobre ella sin verificar antes que los cambios esten commiteados o respaldados. 2026-08-29.
+
+**Tags:** git,sqlite,memoria
+
+---
+
