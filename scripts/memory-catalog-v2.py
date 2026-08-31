@@ -266,6 +266,9 @@ def catalog_session(conn, content, date_str, detected_topics):
     """Upsert a single session into sessions_relacional"""
     c = conn.cursor()
 
+    # Better summary: representative section (more informative than raw head)
+    summary = extract_representative_section(content, max_chars=300)
+
     existing = c.execute(
         "SELECT id FROM sessions_relacional WHERE date=?", (date_str,)
     ).fetchone()
@@ -279,7 +282,7 @@ def catalog_session(conn, content, date_str, detected_topics):
             (
                 date_str,
                 "",
-                content[:200],
+                summary,
                 content,
                 datetime.now().isoformat(),
                 session_id,
@@ -296,7 +299,7 @@ def catalog_session(conn, content, date_str, detected_topics):
                 date_str,
                 date_str,
                 "",
-                content[:200],
+                summary,
                 content,
                 datetime.now().isoformat(),
             ),
@@ -308,6 +311,54 @@ def catalog_session(conn, content, date_str, detected_topics):
     return session_id
 
     conn.commit()
+
+
+def extract_representative_section(content, max_chars=2000):
+    """Extract the most informative section from a daily note.
+    Prefers sections under ## headers over raw leading content.
+    Returns the best section text for embedding."""
+    lines = content.split("\n")
+    sections = []  # (title, text)
+    current_title = ""
+    current_text = []
+
+    for line in lines:
+        if line.startswith("## ") and current_title:
+            sections.append((current_title, " ".join(current_text)))
+            current_title = line.strip().lstrip("#").strip()
+            current_text = []
+        elif line.startswith("## "):
+            current_title = line.strip().lstrip("#").strip()
+        elif current_title and line.strip():
+            current_text.append(line.strip())
+
+    if current_title and current_text:
+        sections.append((current_title, " ".join(current_text)))
+
+    if not sections:
+        return content[:max_chars]
+
+    # Prefer sections whose title suggests substance: achievement, insight, decision, result
+    preferred_keywords = ["achievement", "insight", "decision", "result", "summary", "logro",
+                          "decision", "conclusion", "aprendizaje", "learn", "hicimos", "avance"]
+    best_idx = 0
+    best_score = -1
+    for i, (title, text) in enumerate(sections):
+        score = 0
+        title_low = title.lower()
+        for kw in preferred_keywords:
+            if kw in title_low:
+                score += 3
+        # Longer substantive sections score higher
+        if 100 <= len(text) <= max_chars:
+            score += 1
+        if score > best_score:
+            best_score = score
+            best_idx = i
+
+    title, text = sections[best_idx]
+    combined = f"{title}: {text}"
+    return combined[:max_chars]
 
 
 def catalog_memory():
@@ -343,10 +394,15 @@ def catalog_memory():
         # Insert/update session
         session_id = catalog_session(conn, content, date_str, detected_topics)
 
-        # Generate chunk vectors
-        chunks = [
+        # Generate chunk vectors - chunk 0 is the representative section (most informative)
+        representative = extract_representative_section(content)
+        chunks = [representative]
+        # Add raw content chunks for coarse coverage (skip the representative section to avoid dup)
+        raw_chunks = [
             content[j : j + CHUNK_SIZE] for j in range(0, len(content), CHUNK_SIZE)
-        ][:MAX_CHUNKS_PER_SESSION]
+        ]  # include first chunk for continuity
+        for cchunk in raw_chunks[:MAX_CHUNKS_PER_SESSION - 1]:
+            chunks.append(cchunk)
 
         for chunk_idx, chunk in enumerate(chunks):
             chunk_embedding = get_embedding(chunk)
