@@ -38,6 +38,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/memory-db.sh` | DB de memoria: `export-all`, `export-todos`, `export-inbox`, `export-oss`, `add-todo`, `add-inbox`, `export-daily`, `stats`, `catalog` (cataloga memoria en DB relacional + embeddings), `search "<query>" [n]` (busqueda semantica), `topics`, `recent [n]` |
 | `scripts/memory-catalog-v2.py` | Cataloga dailies en DB relacional + embeddings semanticos (Ollama nomic-embed-text). Idempotente (upsert por date). Puebla sessions_relacional, session_vectors, topics, topic_sessions, learnings_enriquecido |
 | `scripts/memory-search.py` | Busqueda semantica sobre la memoria: query -> embedding -> cosine similarity -> top N sesiones. Flags: `--topics`, `--recent [n]` |
+| `scripts/memory-topics.py` | Descubre topics emergentes via K-means clustering sobre embeddings + recalcula topics fijos por keywords. Flags: `--refresh`, `--list`. Comandos memory-db: `topics-cluster`, `topics-list` |
 | `scripts/semantic-search.js` | Busqueda semantica RAG-lite sobre `memory.db` (CLI legible). Uso: `node scripts/semantic-search.js "consulta"`. Requiere Ollama (`nomic-embed-text:latest`). |
 | `scripts/semantic-search-json.js` | Version JSON de la busqueda semantica para integracion con herramientas/agentes. Uso: `node scripts/semantic-search-json.js "consulta" [topN]`. Retorna `{query, results:[{score, sessionId, title, text}]}`. |
 | `scripts/check_em_dash.py` | Escanear texto por guiones largos (U+2014/U+2013) antes de publicar a GitHub. Regla obligatoria. |

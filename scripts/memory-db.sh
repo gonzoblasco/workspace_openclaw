@@ -48,6 +48,13 @@ case "$1" in
   topics)
     python3 "$SCRIPT_DIR/memory-search.py" --topics
     ;;
+  topics-cluster)
+    # Descubre topics emergentes via K-means clustering
+    python3 "$SCRIPT_DIR/memory-topics.py" --refresh
+    ;;
+  topics-list)
+    python3 "$SCRIPT_DIR/memory-topics.py" --list
+    ;;
   recent)
     n="${2:-10}"
     python3 "$SCRIPT_DIR/memory-search.py" --recent "$n"
