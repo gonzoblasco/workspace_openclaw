@@ -1,42 +1,49 @@
-# HANDOFF - kanam-pulse (v1.0.0 released)
+# HANDOFF - kanam-pulse (v1.0.1 candidates on main, conversacion limpia)
 
 ## Session Context
-- **Date:** 2026-08-31 02:22
+- **Date:** 2026-08-31 02:40
 - **Project:** kanam-pulse
 - **Repo:** https://github.com/gonzoblasco/kanam-pulse (PUBLIC, MIT)
 - **Dev clone:** `~/.openclaw/dev/kanam-pulse`
-- **Workspace:** `projects/kanam-pulse/.knowledge/` = blob del workspace (doble-git)
+- **Workspace:** `projects/kanam-pulse/.knowledge/`
 
-## Estado: v1.0.0 RELEASED
+## Estado: v1.0.0 RELEASED + 3 hotfixes en main (candidatos a v1.0.1)
 
-Roadmap M0-M5 completo. Tag `v1.0.0` pusheado (31/08). Commit `4d6d6ad`.
+Roadmap M0-M5 completo. Tag `v1.0.0` + GitHub Release publicada (31/08).
+MAIN tiene 3 commits extra post-tag, NO incluidos en el tag v1.0.0 (candidatos a v1.0.1):
 
-## Resumen por hito
+1. `869d011` docs(readme): reflect v1.0.0 release status (badge + roadmap)
+2. `05e9412` fix(m3): disable reasoning (think:false) - BUG REAL encontrado en runtime
+3. `6141cf4` perf(m3): explainAudit default model -> deepseek-v4-flash (configurable via KANAM_PULSE_AI_MODEL)
 
-- **M1** (`d4f3ea9`): motor a core (46 tests), server Fastify, dashboard read-only, SSE fix
-- **M2** (`9556bf1`): consent-driven fixes (scan/dry-run/apply), web accesible (FixesPanel+ConfirmDialog), fix build web
-- **M3** (`92b8f1c`+`4824daa`): Ollama audit summary (prompt sanitizado) + vitest/RTL (deuda resuelta)
-- **M4** (`d1de4fa`): axe-core a11y + CI (lint+test+build) + README overhaul + i18n (ES default/EN, 32 keys)
-- **M5** (`4d6d6ad`): Biome 2.5.11 + CHANGELOG + CONTRIBUTING + trash-style (cleaner usa /usr/bin/trash con guard de seguridad) + tag v1.0.0
+## BUG REAL ENCONTRADO Y RESUELTO (importante)
 
-## Quality v1.0.0
+**Sintoma (lo encontro Gonzo probando la app):** boton "Explain this audit" -> "ollama returned an empty response".
 
-- 118 tests (core 61, server 21, web 36)
-- Biome lint exit 0 (4 warnings documentados)
-- Build OK, CI gateado, axe a11y tests
+**Causa raiz:** modelos de razonamiento (qwen3.5:9b-mlx, deepseek-v4-flash:cloud) emiten un campo `thinking` largo que consume `num_predict` (300), dejando `response` vacio. done_reason: "length".
 
-## Pipeline utilizado
+**Fix:** `think:false` en el payload de /api/generate en `explainAudit` (packages/core/src/audit/summary.js). Test de regresion: assert body.think === false.
 
-M2-M5: complexity-scorer -> pipeline-track -> spawn A -> cross-review Kanam -> spawn B -> cross-review -> commit/tag.
-T scores: M2=13, M3=11, M4=9, M5=13.
+**Fix 2:** default model cambiado de qwen3.5:9b-mlx (local, lento) a deepseek-v4-flash:cloud (rapido, ~2s warm). Configurable via env KANAM_PULSE_AI_MODEL.
 
-## Deuda / next
+**VERIFICADO end-to-end:** /api/audit/explain devuelve 450+ chars de explicacion en lenguaje humano (firewall off + memoria alta detectados).
 
-- GitHub Release notes para el tag v1.0.0 (pendiente, texto del CHANGELOG Unreleased)
-- Community announcement (LinkedIn - decisión de Gonzo)
-- Puerto core a TypeScript (incremental)
-- Envoltorio nativo (Electron/Tauri) - post-v1, no bloquea
+## Como correr en local
 
-## Importante sobre la convencion trash
+```bash
+cd ~/.openclaw/dev/kanam-pulse/packages/server && npm start   # 127.0.0.1:4270
+cd ~/.openclaw/dev/kanam-pulse/packages/web && npm run dev    # localhost:5173
+```
+Dashboard: http://localhost:5173 (NO 127.0.0.1:4270 que es API-only, da 404 en /)
 
-`clearDirContents` ahora usa `/usr/bin/trash` (mueve a papelera) y REFUSA limpiar si la papelera no existe (no degrada a borrado permanente). Esto cumple el principio "trash over delete" del SPEC. Tests mockeado; nunca toca la papelera real en CI.
+## Test & Quality
+
+- 118 tests verdes (core 61, server 21, web 36) + fix no agrega tests nuevos (solo assertion)
+- Biome lint exit 0 (4 warnings documentados), build OK, CI gateado
+
+## Pendiente / decisiones Gonzo
+
+- [ ] Crear tag v1.0.1 con los 3 hotfixes de main (release notes con el fix del explain)
+- [ ] Community announcement / LinkedIn (a decidir)
+- [ ] Por que el boton explain "no funciona" en el navegador de Gonzo a las 02:37 (backend OK verificada; probable HMR/cache del navegador - hard refresh Cmd+Shift+R)
+- [ ] Backlog: puerto core a TypeScript, envoltorio nativo

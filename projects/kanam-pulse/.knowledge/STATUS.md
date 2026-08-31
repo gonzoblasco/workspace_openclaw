@@ -1,47 +1,43 @@
 # STATUS - Project Status
 
-> **Ultima actualizacion:** 2026-08-31 02:22
+> **Ultima actualizacion:** 2026-08-31 02:40
 
 ## Current Phase
 
-**v1.0.0 RELEASED** (2026-08-31). Roadmap M0-M5 completo. Pre-release -> primera release publica.
+**v1.0.0 RELEASED.** Roadmap M0-M5 completo. Main tiene 3 hotfixes post-tag (candidatos v1.0.1).
 
 ## What's Working
 
-- [x] **M0-M5 completos** (30-31/08): de scaffold a v1.0.0
+- [x] M0-M5 completos. Tag v1.0.0 + GitHub Release (31/08)
 - [x] Monorepo npm workspaces (core + server + web)
-- [x] Dev clone + symlink `.knowledge` (convencion doble-git)
-- [x] M1: motor a packages/core (46 tests) + dashboard read-only + SSE
-- [x] M2: consent-driven fixes (scan/dry-run/apply con confirmacion)
-- [x] M3: Ollama audit summary (prompt sanitizado, fallback available:false) + vitest/RTL
-- [x] M4: a11y axe tests + CI (lint+test+build) + README + i18n (ES default/EN)
-- [x] M5: Biome lint + CHANGELOG + CONTRIBUTING + trash-style + tag v1.0.0 (commit 4d6d6ad)
+- [x] Engine health-check (46 tests) + dashboard + SSE
+- [x] Consent-driven fixes (scan/dry-run/apply con confirmacion + trash-style)
+- [x] Ollama audit summary (explain) - FIXED: think:false + default deepseek-v4-flash
+- [x] a11y axe tests + CI (lint+test+build) + i18n (ES default/EN)
+- [x] Biome lint + CHANGELOG + CONTRIBUTING + trash-style (SPEC trash-over-delete)
 
-## Test & Quality (v1.0.0)
+## Quality
 
-- **118 tests verdes** (core 61, server 21, web 36)
-- Biome lint exit 0 (4 warnings documentados, no bloqueantes)
-- Build OK (tsc + vite), CI gateado (lint->test->build)
-- axe-core tests de a11y (ConfirmDialog, FixesPanel, HealthScoreCard)
+- 118 tests verdes (core 61, server 21, web 36)
+- Biome lint exit 0 (4 warnings), build OK, CI gateado
 
-## What's Blocked
+## BUG EXPLAIN (resuelto 31/08 02:30)
 
-- [ ] Nothing at the moment
+- Sintoma: "ollama returned an empty response"
+- Causa: modelos de razonamiento comen num_predict en `thinking`, dejando response vacio
+- Fix: `think:false` en explainAudit + default -> deepseek-v4-flash:cloud (KANAM_PULSE_AI_MODEL override)
+- Verificado end-to-end: 450+ chars de explicacion humana
 
-## Next Up (post-v1.0.0)
+## Next / Pendiente
 
-1. **GitHub Release notes** para tag v1.0.0 (pegar seccion Unreleased del CHANGELOG)
-2. Community announcement (LinkedIn, portfolio - a decidir con Gonzo)
-3. Backlog futuro:
-   - Puerto del core a TypeScript (incremental)
-   - Evaluar envoltorio nativo (Electron/Tauri) - decision post-v1 completa y pulida
-   - Mas metricas (latencia red, tendencias historicas)
+1. Tag v1.0.1 (3 hotfixes en main) - decision Gonzo
+2. Community announcement (LinkedIn)
+3. Verificar boton explain en navegador Gonzo (backend OK; probable HMR/cache)
+4. Backlog: core a TypeScript, envoltorio nativo
 
-## Decisions Log (quick reference)
+## Decisions Log
 
-- Name: Kanam Pulse (29/08)
-- Public repo: yes (29/08)
-- No Electron v1: yes (29/08)
-- Pipeline M2-M5: complexity-scorer + pipeline-track + A/B con cross-review (Kanam aprueba)
-- M5 (31/08): Biome 2.5.11 (stack opinionado de Gonzo), trash-style con /usr/bin/trash (SPEC trash-over-delete), tag v1.0.0
-- i18n (M4): es canonical + en type-checked parity, spanish default
+- v1.0.0 released (31/08)
+- explainAudit: think:false + default deepseek-v4-flash (31/08)
+- trash-style con /usr/bin/trash (SPEC trash-over-delete)
+- i18n es default + en pack (M4)
