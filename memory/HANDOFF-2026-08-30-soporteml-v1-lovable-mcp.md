@@ -146,3 +146,31 @@ Pendientes de OTRAS sesiones de hoy (no bloquean): memory-catalog (`export-catal
 1. Definir el primer feature sobre la base real (PLAN.md sugiere: hacer operativo billing MP, o hardening).
 2. Reescribir el bridge MCP con SDK real (`@modelcontextprotocol/sdk`) o conectar directo al MCP server de SoporteML (`/functions/v1/mcp`).
 3. Instalar `bun` + dependencias para poder buildear/testear localmente (respetando stack).
+
+---
+
+## ACTUALIZACION 2026-08-31 12:22 - Auditoria + fixes de billing MP
+
+### Contexto
+Gonzo pidio asegurarse de que el billing MP funcione de verdad ("MP puede estar escrito pero nunca se probo").
+Se hizo una auditoria profunda de las 4 Edge Functions de billing contra la documentacion oficial de MP (preapproval + webhooks).
+
+### Bugs encontrados y corregidos (commit `d35c1a9`)
+
+1. **CRITICO - `***` corrupto en 3 archivos:** `mp-create-subscription`, `mp-check-subscription`, `mp-cancel-subscription` tenian `const MP_ACCESS_TOKEN = ***"MP_ACCESS_TOKEN");` en vez de `Deno.env.get("MP_ACCESS_TOKEN")`. Ninguna de las 3 compilaba. (El `mp-webhook` si estaba bien.)
+2. **CRITICO - `userData` undefined en modo test (`mp-create-subscription`):** usaba `userData.user.email` pero `userData` solo existe en el bloque JWT. En modo test (X-Test-Secret) crasheaba con ReferenceError. Fix: variable `payerEmail` seteada en ambos modos.
+3. **CRITICO - faltaba `notification_url` al crear el preapproval:** la doc oficial dice que para Subscriptions el webhook NO se configura por "Your integrations", sino durante la creacion del preapproval. Sin `notification_url`, el webhook nunca recibe eventos. Fix: se agrega `notification_url` construido desde `SUPABASE_URL`.
+4. **ALTO - `data.id` del webhook:** MP envia `data.id` como query param de la URL, no en el body. El codigo usaba `body.data?.id` para validar la firma HMAC y obtener el preapprovalId. Fix: leer del query param con fallback al body.
+
+### Verificacion
+- Las 4 Edge Functions pasan `deno check` (sin errores).
+- Guia de configuracion creada: `docs/MP-BILLING-SETUP.md` (commit `5f9935a`) - secrets, plan, webhook, flujo de test.
+
+### Lo que falta (requiere credenciales de Gonzo)
+1. Crear el plan de preapproval en MP (via API o panel).
+2. Configurar secrets en Supabase: `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`, `MP_PREAPPROVAL_PLAN_ID`, `MP_TEST_SECRET`.
+3. Probar el flujo completo (crear -> pagar -> webhook -> verificar -> cancelar).
+
+### Estado
+- Branch `etapa-1`, working tree limpio, pusheado a origin.
+- Commits: `d35c1a9` (fixes) + `5f9935a` (guia MP).
