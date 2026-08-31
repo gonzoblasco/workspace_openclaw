@@ -1,5 +1,7 @@
 # Kanam Mind 🌿
 
+> **ARCHIVADO (2026-08-29)** - Este proyecto fue archivado del portfolio. Fue reemplazado como proyecto ancla del pilar Local-First / Privacidad por [**kanam-pulse**](https://github.com/gonzoblasco/kanam-pulse), que cubre el mismo pilar con mayor impacto (local-first + privacidad + a11y + IA local en un solo producto). El repo se conserva como referencia.
+
 Segundo cerebro local-first con IA. Tu vida digital, privada.
 
 ## Qué es
