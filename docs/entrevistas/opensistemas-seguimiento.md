@@ -1,7 +1,7 @@
 # Plan de Seguimiento - OpenSistemas
 
-**Fecha:** 2026-08-28
-**Estado:** Esperando aviso (se esperaba "fin de semana o lunes" = 29/08-01/09)
+**Fecha:** 2026-08-28 (actualizado 2026-08-31)
+**Estado:** ENTREVISTA TECNICA CONFIRMADA - Fernando quiere conocer a Gonzalo. Camila (recruiting) está revisando la agenda de Fernando para confirmar día y hora.
 
 ---
 
@@ -12,6 +12,16 @@
 - **Último filtro antes de la entrevista**: referencia de tarifa.
 - **Perfil**: AI-Native Software Engineering, colaboración freelance 100% remoto LATAM.
 - **Empresa**: OpenSistemas (Madrid, 2003, ~117 empleados, IA empresarial "soberana"). Tecnologías: SofIA, SOKAI.
+
+---
+
+## UPDATE 2026-08-31 - Entrevista técnica con Fernando 🎉
+
+- **Mensaje de Camila Cuevas Sánchez (LinkedIn, 31/08 14:31):** "me han confirmado que Fernando te quiere conocer, sería una entrevista técnica, para hablar en detalle de tus conocimientos y para que también puedan hablar de lo que se espera del rol. Estoy revisando su agenda y esperando disponibilidad, por lo que en cuanto tenga confirmado el día y hora te comento."
+- **Contexto:** Camila inició el contacto ("te traigo buenas noticias!") - Gonzalo no tuvo que hacer seguimiento, el avance vino solo.
+- **Qué es:** entrevista técnica con Fernando (probablemente lead/tech de OpenSistemas). Hablar en detalle de conocimientos + expectativas del rol.
+- **Pendiente:** esperar que Camila confirme día y hora.
+- **Preparación sugerida:** repasar perfil AI-Native (demo PRs astryx #5419/#5493, pipeline A/B, stack opinado, a11y). Tener claro qué se espera del rol (colaboración freelance 100% remoto LATAM).
 
 ---
 
