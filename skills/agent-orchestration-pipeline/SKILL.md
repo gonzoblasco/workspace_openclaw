@@ -132,7 +132,7 @@ El pipeline usa un router de modelo configurable por tipo de tarea + overrides s
 ./scripts/model-router.sh list                 # ver rutas + overrides
 ```
 
-**Rutas por defecto:** code → kimi-k2.7-code, review → deepseek-v4-flash, long → deepseek-v4-pro, cheap → gemma4, writing → kimi-k3, default → deepseek-v4-flash.
+**Rutas por defecto (2026-08-30):** code → deepseek-v4-flash, review → deepseek-v4-flash, long → glm-5.3-flash, cheap → gemma4, writing → glm-5.3-flash, pipeline_ab → deepseek-v4-flash | glm-5.3-flash | kimi-k2.7-code, default → deepseek-v4-flash.
 
 **Uso en el pipeline:** al lanzar un agente, el orquestador consulta `model-router.sh model <tipo>` para decidir el `--model` (en vez de elegirlo ad hoc). Los overrides sticky permiten fijar " usá kimi para todo el codigo de esta fase" y persiste hasta reset.
 

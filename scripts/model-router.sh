@@ -24,16 +24,17 @@ set -uo pipefail
 STATE_FILE="${MODEL_ROUTES_FILE:-model-router.json}"
 
 # Default routes (task type -> model). Edit with `model-router.sh edit`.
+# Pipeline A/B (2026-08-30): DeepSeek Flash (iter 1-2) -> GLM 5.3 Flash (iter 3) -> Kimi K2.7 Code (iter 4, nivel superior).
 # Sincronizado con Regla MAX/HIGH: Code y Review usan DeepSeek Flash.
 ROUTES='{
   "default": "deepseek-v4-flash:cloud",
   "routes": {
     "code": "deepseek-v4-flash:cloud",
     "review": "deepseek-v4-flash:cloud",
-    "long": "deepseek-v4-pro:cloud",
+    "long": "glm-5.3-flash:cloud",
     "cheap": "gemma4:cloud",
-    "writing": "kimi-k3:cloud",
-    "pipeline_ab": "deepseek-v4-flash:cloud | gemma4:cloud"
+    "writing": "glm-5.3-flash:cloud",
+    "pipeline_ab": "deepseek-v4-flash:cloud | glm-5.3-flash:cloud | kimi-k2.7-code:cloud"
   },
   "overrides": {}
 }'

@@ -18,7 +18,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 - **web_search provider:** `DuckDuckGo Search (experimental)` (key-free, no consume créditos). El provider `ollama` usaba `glm-5.2:cloud` y consumía requests del presupuesto sin pedirlo - NO usar.
 - **Modelos disponibles (Ollama):**
   - Local: `nomic-embed-text:latest` (embeddings, unico local; qwen3.5:9b-mlx reinstalado 2026-08-30 para comparativa vs gemma4:e4b-mlx), `gemma4:e4b-mlx` (vision + tono/voz).
-  - Cloud (7 -> 4 el 2026-08-29): `deepseek-v4-flash:cloud` (default OpenClaw + motor del pipeline A/B), `glm-5.3-flash:cloud` (multimodal), `glm-5.3:cloud` (escalada intra-familia), `gemma4:cloud` (vision + tono/voz). FUERA del ecosistema (2026-08-29): `kimi-k3`, `deepseek-v4-pro`, `kimi-k2.7-code`, `minimax-m3`, `qwen3.5`, `nemotron-3-nano`, `gemma4:31b` - sacados de la config; para emergencia, restaurar desde el backup `~/.openclaw/openclaw.json.bak-20260829`
+  - Cloud (8 en config desde 2026-08-30): `deepseek-v4-flash:cloud` (default OpenClaw + motor del pipeline A/B), `glm-5.3-flash:cloud` (multimodal + escalada iter 3), `glm-5.3:cloud` (escalada intra-familia), `gemma4:cloud` (vision + tono/voz), `kimi-k2.7-code:cloud` (nivel superior, iter 4), `minimax-m3:cloud` (variante costo similar a GLM, opcional). FUERA del ecosistema (2026-08-30): `kimi-k3`, `deepseek-v4-pro`, `qwen3.5:cloud`, `nemotron-3-nano`, `gemma4:31b-cloud` - sacados de la config; para emergencia, restaurar desde el backup `~/.openclaw/openclaw.json.bak-20260830-pipeline-glm`
 
 ## Pipeline de agentes (programación)
 
@@ -46,7 +46,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/pipeline-track.sh` | Estado durable del pipeline A/B: init/start/review/done/status/resume/note. Sobrevive a SIGKILL/restarts (crash recovery). Portado del concepto Pipeline Architect. Acepta `--score T` en init (integrado con complexity-scorer) |
 | `scripts/complexity-scorer.sh` | Evalua objetivo en 4 dimensiones (A/B/C/D), devuelve T-score 1-20 + bucket + modelo + thinking. Prueba qwen3.5:9b-mlx local primero, luego fallbacks cloud. `--score T` para forzar. T>=17 requiere confirmacion de Gonzo. Cablea complexity-driven-pipeline. Parser externo: `scripts/complexity-parse.py` |
 | `scripts/pdf-tool.sh` | Toolkit PDF/OCR local: text, info, pages, search, ocr (tesseract), pdfimages, md2pdf (exportar MD a PDF). 100% local. Requiere poppler + tesseract + npx (brew). Portado de la familia PDF/OCR de ClawHub |
-| `scripts/model-router.sh` | Router de modelo Ollama por tipo de tarea (code/review/long/cheap/writing) + overrides sticky. Consulta `model <tipo>` para decidir el --model. Portado del concepto ToggleLogic sin licencia |
+| `scripts/model-router.sh` | Router de modelo Ollama por tipo de tarea (code/review/long/cheap/writing/pipeline_ab) + overrides sticky. Pipeline A/B: DeepSeek (1-2) → GLM 5.3 Flash (3) → Kimi K2.7 Code (4). Consulta `model <tipo>` para decidir el --model. Portado del concepto ToggleLogic sin licencia |
 | `scripts/task-notify.sh` | Notificacion desktop macOS cuando un agente termina tarea. Uso en pipeline A/B. Portado del concepto Task Notifier |
 | `scripts/pre-commit.template` | Template de pre-commit hooks (lint → test → build) |
 | `scripts/test-skills.sh` | Verifica que las skills estén bien formadas |
