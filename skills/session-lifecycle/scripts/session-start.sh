@@ -58,6 +58,22 @@ if [[ -f "$HANDOFF_FILE" ]]; then
   echo ""
 fi
 
+# --- Semantic memory injection (2026-08-31) ---
+# Search past sessions + learnings relevant to the objective and surface them
+# as context, so the session starts with relevant memory instead of cold.
+SEARCHER="scripts/memory-search.py"
+if [[ -f "$SEARCHER" ]] && command -v python3 >/dev/null 2>&1; then
+  echo "🧠 Searching memory for relevant context..."
+  echo ""
+  python3 "$SEARCHER" "$OBJECTIVE" --top 3 2>/dev/null | head -40 || echo "   (sin resultados de memoria)"
+  echo ""
+  echo "---"
+  echo ""
+else
+  echo "   ⚠️  memory-search.py no disponible - arranco sin contexto semantico"
+  echo ""
+fi
+
 # Create session log
 MEMORY_DIR="memory"
 mkdir -p "$MEMORY_DIR"

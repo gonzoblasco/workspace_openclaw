@@ -65,6 +65,7 @@ Si Gonzo dice `"iniciar sesión"`, `"brainstorming"`, `"aún no sé en qué proy
 
 **En todos los modos:**
 
+- **Inyección de contexto semántico (2026-08-31):** al iniciar sesión con proyecto, `session-start.sh` busca automáticamente en la memoria (sesiones + learnings) las entradas más relevantes al objetivo y las muestra como contexto. Así la sesión arranca con memoria relevante en vez de en frío. Usa `scripts/memory-search.py` con el objetivo como query.
 - Detectar sesión previa no guardada: si el `session_id` actual no existe en `session-context`, avisar: `"La sesión anterior no fue guardada - ¿querés guardarla antes de arrancar?"`.
 - **Session Goal:** definir objetivo explícito de la sesión. ¿Qué queremos lograr? ¿Cuál es el criterio de éxito?
 - Si el objetivo es difuso, clarificar antes de avanzar. No arrancar sin dirección.
