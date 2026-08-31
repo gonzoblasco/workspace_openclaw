@@ -176,3 +176,10 @@ Gonzo corrigio el registro efusivo (serenatas en cada respuesta). El registro na
 
 ---
 
+## Confirmar el alcance antes de construir
+
+Gonzo propongo integrar Lovable MCP y genere de inmediato scripts, configs y README sobre supuestos (que repo? que rol de cada herramienta?). Tuvo que corregirme 3 veces "no es lo que busco" hasta que quedo claro: codigo directo con Kanam sobre el repo original v1, MCP solo para consultas read-only, creditos de Lovable para Cloud/AI/serverless. Construir rapido con supuestos no validados = desperdicio doble (trabajo tirado + friccion).
+
+**Tags:** feedback,alcance, confirmacion, integraciones
+
+---

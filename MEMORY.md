@@ -82,6 +82,7 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 ## Proyectos (Detalle en `.knowledge/` de cada uno)
 
 - **Regla (2026-08-28):** NO proponer SoporteML en estrategia de proyectos. Gonzo lo pidió explícitamente.
+- **soporteml v1 (2026-08-30):** ciclo activo sobre `gonzoblasco/soporteml` (el original) con Kanam + pipeline A/B escribiendo código directo. Lovable MCP = solo consultas read-only (arquitectura, DB); créditos Lovable para Lovable Cloud/AI/serverless. v2/v3/v4 = referencia. Handoff: `memory/HANDOFF-2026-08-30-soporteml-v1-lovable-mcp.md`.
 
 - **Kanam Story:** Co-writer de ficción. PWA, roles especializados. Local-first $\rightarrow$ Nube (en plan).
 - **Kanam Mind:** Segundo cerebro local-first. Timeline, CRUD accesible, resumen IA. Local-first puro (IndexedDB).
