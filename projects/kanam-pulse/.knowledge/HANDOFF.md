@@ -1,48 +1,42 @@
-# HANDOFF - kanam-pulse (M3 cerrado)
+# HANDOFF - kanam-pulse (v1.0.0 released)
 
 ## Session Context
-- **Date:** 2026-08-31 00:52
+- **Date:** 2026-08-31 02:22
 - **Project:** kanam-pulse
-- **Repo (codigo):** https://github.com/gonzoblasco/kanam-pulse (PUBLIC, MIT)
+- **Repo:** https://github.com/gonzoblasco/kanam-pulse (PUBLIC, MIT)
 - **Dev clone:** `~/.openclaw/dev/kanam-pulse`
 - **Workspace:** `projects/kanam-pulse/.knowledge/` = blob del workspace (doble-git)
 
-## Summary (Sesion 30/08 - M1, M2 y M3)
+## Estado: v1.0.0 RELEASED
 
-### M1 (commit `d4f3ea9`)
-- Motor a `packages/core` (46 tests), server Fastify, dashboard read-only
-- Fix timeout SSE test. 57 tests verdes
+Roadmap M0-M5 completo. Tag `v1.0.0` pusheado (31/08). Commit `4d6d6ad`.
 
-### M2 (commit `9556bf1`)
-- Consent-driven fixes: server scan/dry-run/apply (apply exige confirmed)
-- Web UI accesible: FixesPanel + ConfirmDialog (focus trap, aria-modal, Escape, restore focus)
-- Fix build web (roto desde M1). 63 tests verdes
+## Resumen por hito
 
-### M3 (commits `92b8f1c` + `4824daa`)
-- **Backend explain** (U1): `packages/core/src/audit/summary.js`
-  - buildAuditSummaryPrompt: prompt solo-resumen, sanitizado (sin paths de datos de usuario)
-  - isOllamaAvailable: fetch a /api/tags con timeout 2s
-  - explainAudit: POST a /api/generate, nunca lanza, devuelve {ok,explanation|error}
-  - Endpoint `POST /api/audit/explain`: available:false si no hay Ollama, sino explanation
-- **Web** (U2): test runner + botón Explain
-  - vitest 3 + RTL + user-event + jest-dom + jsdom (deuda M2 resuelta)
-  - 20 tests web: ConfirmDialog (8), FixesPanel (3), useFixes (5), HealthScoreCard (4)
-  - useExplainAudit hook + botón "Explain this audit" con aria-live=polite
-- **100 tests verdes** (59 core + 21 server + 20 web)
+- **M1** (`d4f3ea9`): motor a core (46 tests), server Fastify, dashboard read-only, SSE fix
+- **M2** (`9556bf1`): consent-driven fixes (scan/dry-run/apply), web accesible (FixesPanel+ConfirmDialog), fix build web
+- **M3** (`92b8f1c`+`4824daa`): Ollama audit summary (prompt sanitizado) + vitest/RTL (deuda resuelta)
+- **M4** (`d1de4fa`): axe-core a11y + CI (lint+test+build) + README overhaul + i18n (ES default/EN, 32 keys)
+- **M5** (`4d6d6ad`): Biome 2.5.11 + CHANGELOG + CONTRIBUTING + trash-style (cleaner usa /usr/bin/trash con guard de seguridad) + tag v1.0.0
 
-## Pipeline
+## Quality v1.0.0
 
-- M2: T=13 (A+B cross-review). M3: T=11 (A escribe -> Kanam revisa)
-- Proceso: complexity-scorer -> pipeline-track -> spawn A -> cross-review -> spawn B -> cross-review -> commit
+- 118 tests (core 61, server 21, web 36)
+- Biome lint exit 0 (4 warnings documentados)
+- Build OK, CI gateado, axe a11y tests
 
-## Deuda tecnica
+## Pipeline utilizado
 
-- Puerto del core a TypeScript (incremental) - pendiente
-- (Resuelto) web sin test runner -> vitest+RTL con 20 tests
+M2-M5: complexity-scorer -> pipeline-track -> spawn A -> cross-review Kanam -> spawn B -> cross-review -> commit/tag.
+T scores: M2=13, M3=11, M4=9, M5=13.
 
-## Next Steps (M4)
+## Deuda / next
 
-- a11y audit pass: axe-core clean en CI, keyboard-first, ARIA live, reduced-motion, contraste AA
-- Docs: README completo, guía de uso, arquitectura
-- CI: lint (Biome) + test (Vitest) + build en GitHub Actions
-- i18n: strings centralizados (español default, English pack)
+- GitHub Release notes para el tag v1.0.0 (pendiente, texto del CHANGELOG Unreleased)
+- Community announcement (LinkedIn - decisión de Gonzo)
+- Puerto core a TypeScript (incremental)
+- Envoltorio nativo (Electron/Tauri) - post-v1, no bloquea
+
+## Importante sobre la convencion trash
+
+`clearDirContents` ahora usa `/usr/bin/trash` (mueve a papelera) y REFUSA limpiar si la papelera no existe (no degrada a borrado permanente). Esto cumple el principio "trash over delete" del SPEC. Tests mockeado; nunca toca la papelera real en CI.
