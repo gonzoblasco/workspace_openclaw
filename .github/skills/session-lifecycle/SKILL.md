@@ -68,6 +68,7 @@ Si Gonzo dice `"iniciar sesión"`, `"brainstorming"`, `"aún no sé en qué proy
 - Detectar sesión previa no guardada: si el `session_id` actual no existe en `session-context`, avisar: `"La sesión anterior no fue guardada - ¿querés guardarla antes de arrancar?"`.
 - **Session Goal:** definir objetivo explícito de la sesión. ¿Qué queremos lograr? ¿Cuál es el criterio de éxito?
 - Si el objetivo es difuso, clarificar antes de avanzar. No arrancar sin dirección.
+- **Complexity score (complexity-driven-pipeline):** al definir el Session Goal, correr `./scripts/complexity-scorer.sh "<objetivo>"` para obtener el T-score (1-20). Esto decide modelo, thinking y profundidad del pipeline ANTES de spawnear agentes. `session-start.sh` ya lo hace automáticamente y persisté el T-score en el session log. Buckets: T≤6 = Kanam solo; T 7-12 = A; T 13-16 = A+B cross-review; T≥17 = Kanam(max)+A+B+verificación + gate de confirmación. Ver skill `complexity-driven-pipeline`.
 
 ### 2. Dispatcher - spawnear sub-agentes según la tarea:
 - **fork**: cuando el sub-agente necesita el transcript actual (ej: continuar una investigación, analizar una conversación)
@@ -78,6 +79,7 @@ Si Gonzo dice `"iniciar sesión"`, `"brainstorming"`, `"aún no sé en qué proy
 - Si el checkpoint revela desvío, redefinir objetivo o restricciones antes de seguir.
 
 ### 4. Guardado - escanear sesión, escribir HANDOFF, memory, CHANGELOG
+- **Auto-catalogación de memoria (2026-08-30):** al guardar sesión, `session-end.sh` corre `scripts/memory-catalog-v2.py` automáticamente. Esto mantiene `memory/memory.db` al día (sessions_relacional, session_vectors, topics, learnings_enriquecido) sin corrida manual. La DB queda lista para búsqueda semántica con `./scripts/memory-db.sh search "<query>"`.
 - Si la sesión tuvo un proyecto asociado, ejecutar `session-context:save` con el resumen de la sesión: `summary`, `leftOff`, `nextSteps`, `decisions`, `blockers`, y `goal` solo si cambió.
 - Si fue una sesión sin proyecto (brainstorming/triage), guardar el resumen en `memory/YYYY-MM-DD.md` y no tocar `session-context`.
 - Mostrar borrador al usuario para confirmación o edición antes de persistir.
@@ -96,8 +98,9 @@ Scripts en `skills/session-lifecycle/scripts/`:
 
 | Script | Uso |
 |---|---|
-| `session-start.sh --project <name> --objective <obj>` | Carga HANDOFF previo y crea/actualiza el log diario en `memory/YYYY-MM-DD.md`. Usar al inicio de sesion con proyecto. |
+| `session-start.sh --project <name> --objective <obj>` | Carga HANDOFF previo, corre el complexity-scorer sobre el objetivo, y crea/actualiza el log diario en `memory/YYYY-MM-DD.md`. Usar al inicio de sesion con proyecto. |
 | `session-end.sh --project <name> --summary <text>` | Genera/actualiza HANDOFF, escribe el guardado en el log diario. Los PRs los revisa Gonzo manualmente (2026-08-25). Usar al guardar sesion. |
+| `scripts/complexity-scorer.sh <objetivo>` | Evalúa complejidad en 4 dimensiones → T-score 1-20 + bucket + modelo + thinking + pipeline. Corrido automáticamente por `session-start.sh`. Skill: `complexity-driven-pipeline`. |
 
 Si la sesion toca scripts de skill del workspace, correr `npm test` antes del commit final.
 

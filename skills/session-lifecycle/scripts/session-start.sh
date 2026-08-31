@@ -27,6 +27,28 @@ HANDOFF_FILE="$HANDOFF_DIR/HANDOFF.md"
 echo "🔧 Starting session for: $PROJECT"
 echo ""
 
+# --- Complexity score (complexity-driven-pipeline, 2026-08-30) ---
+# Score the objective upfront so model/thinking/pipeline depth is decided
+# together before spawning any agent.
+SCORER="scripts/complexity-scorer.sh"
+if [[ -f "$SCORER" ]] && command -v python3 >/dev/null 2>&1; then
+  echo "📊 Scoring complexity of objective..."
+  SCORE_OUT=$("$SCORER" "$OBJECTIVE" 2>/dev/null | python3 -c "
+import sys, json
+try:
+    d = json.load(sys.stdin)
+    print(f\"{d.get('score','?')} ({d.get('bucket','unknown')}) - {d.get('pipeline','')}\")
+except Exception:
+    print('not scored')
+" 2>/dev/null || echo "not scored") || true
+  echo "   📈 Complexity T-score: $SCORE_OUT"
+  echo ""
+else
+  echo "   ⚠️  Scorer no disponible - arranco sin T-score"
+  echo ""
+  SCORE_OUT="not scored"
+fi
+
 # Check for existing HANDOFF
 if [[ -f "$HANDOFF_FILE" ]]; then
   echo "📋 Previous HANDOFF found:"
@@ -47,6 +69,7 @@ if [[ ! -f "$SESSION_LOG" ]]; then
 
 ## $PROJECT
 **Objective:** $OBJECTIVE
+**Complexity T-score:** $SCORE_OUT
 **Start:** $DATE
 
 LOG
