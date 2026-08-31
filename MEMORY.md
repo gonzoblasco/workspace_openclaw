@@ -6,6 +6,13 @@
 **Impacto:** Los futuros *tasks* deben referenciar este cambio y cualquier uso de `glm-5.3-flash:cloud` deberá pasar por un flag de excepción y ser justificado.
 **Referencia:** [#AGENTS-DETALLE]
 
+## ⚙️ REVERT A DEEPSEEK V4 FLASH COMO DEFAULT (2026-08-30)
+
+**Tema:** Default de todo el sistema.
+**Decisión:** `deepseek-v4-flash:cloud` vuelve a ser el default de TODO el sistema (OpenClaw + pipeline A/B), revirtiendo el cambio a `glm-5.3-flash:cloud`. La diferencia de calidad entre ambos es muchísima a favor de DeepSeek (decisión explícita de Gonzo).
+**Acción:** `agents.defaults.model.primary = ollama/deepseek-v4-flash:cloud`. Backup previo: `~/.openclaw/openclaw.json.bak-20260830-revert-deepseek`. Gateway reiniciado y verificado.
+**Impacto:** `glm-5.3-flash:cloud` queda como opción disponible (multimodal) pero NO es default. Cualquier uso como default requiere flag de excepción justificado.
+
 > Memoria curada de largo plazo. Detalle técnico en `docs/LEARNINGS.md`, OSS en `docs/OSS-TRACKER.md`, dailies en `memory/` y proyectos en `projects/<slug>/.knowledge/`.
 
 ## Sobre Gonzo
@@ -72,11 +79,11 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 
 ## Config de Tools
 
-- **Modelos (2026-08-29):** Default de OpenClaw: `glm-5.3-flash:cloud`. Kanam en **thinking max**; agentes A/B en **high** (`glm-5.3-flash:cloud`). Default: pipeline A/B en HIGH.
+- **Modelos (2026-08-30):** Default de OpenClaw: `deepseek-v4-flash:cloud` (revert 2026-08-30, ver decisión arriba). Kanam en **thinking max**; agentes A/B en **high** (`deepseek-v4-flash:cloud`). Default: pipeline A/B en HIGH.
 - **Cambio de motor (2026-08-29):** DeepSeek V4 Flash → GLM 5.3 Flash, tras comparativa de 5 modelos con un mismo prompt pesado de arquitectura de agentes (DeepSeek V4 Flash xhigh, GLM 5.3 Flash, GLM 5.3, Kimi K2.7 Code xhigh, Kimi K3 xhigh). DeepSeek fue el más estructurado pero el menos agudo; GLM 5.3 Flash ganó en insights operativos y es multimodal nativo (imagen/video/PDF, 1M de contexto). Kimi K2.7 Code (xhigh) fue el mejor pensador (validado en high el 29/08: solido, sin win claro sobre GLM Flash); retirado del ecosistema el mismo dia.
 - **Niveles de razonamiento (2026-08-29):** el max NO es driver de calidad (DeepSeek en max filosofa, ADR-040; Kimi K3 en xhigh inventó números). Los mejores outputs vinieron sin razonamiento visible. Agentes de código siempre en high; max solo para diseño difícil puntual. Para GLM: CERO parámetros, default del servidor (ADR-041).
 - **Regla de costo (2026-08-29):** 1 request de Kimi K3 = 41 requests de GLM 5.3 Flash en consumo real (medición Ollama). K3 = cirujano, nunca default. Precios verificados: GLM Flash $0.075/$0.25 - K3 $3.00/$15.00 por 1M.
-- **Purga de modelos (2026-08-29):** fuera del ecosistema `kimi-k2.7-code`, `kimi-k3`, `deepseek-v4-pro`, `minimax-m3`, `qwen3.5`, `nemotron-3-nano`, `gemma4:31b`. Quedan 4 en config: `glm-5.3-flash` (default + motor pipeline), `glm-5.3` (escalada familia), `gemma4` (vision + tono/voz), `deepseek-v4-flash` (re-agregado como opción el 2026-08-29 a pedido de Gonzo, NO es default) + fallback `openrouter/free` (si Ollama se cae o falta credito, el salvavidas es free, no auto que consume). Criterio: solo modelos que se usan o que son el reemplazo natural. Volver solo en emergencia: backup `~/.openclaw/openclaw.json.bak-20260829` o re-agregar la entry.
+- **Purga de modelos (2026-08-29):** fuera del ecosistema `kimi-k2.7-code`, `kimi-k3`, `deepseek-v4-pro`, `minimax-m3`, `qwen3.5`, `nemotron-3-nano`, `gemma4:31b`. Quedan 4 en config: `deepseek-v4-flash` (default + motor pipeline), `glm-5.3-flash` (multimodal, NO default), `glm-5.3` (escalada familia), `gemma4` (vision + tono/voz) + fallback `openrouter/free` (si Ollama se cae o falta credito, el salvavidas es free, no auto que consume). Criterio: solo modelos que se usan o que son el reemplazo natural. Volver solo en emergencia: backup `~/.openclaw/openclaw.json.bak-20260829` o re-agregar la entry.
 - **Search:** `DuckDuckGo Search (experimental)` (key-free).
 
 ## Proyectos (Detalle en `.knowledge/` de cada uno)

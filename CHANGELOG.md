@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-08-30] - Revert a DeepSeek V4 Flash como default de todo el sistema
+
+### Changed
+- **Config de OpenClaw (`~/.openclaw/openclaw.json`):** `agents.defaults.model.primary` vuelve a `ollama/deepseek-v4-flash:cloud` (revert del cambio a `glm-5.3-flash:cloud`). Decisión explícita de Gonzo: la diferencia de calidad entre ambos es muchísima a favor de DeepSeek. Gateway reiniciado y verificado (status: "Configured default: ollama/deepseek-v4-flash:cloud"). Backup previo: `openclaw.json.bak-20260830-revert-deepseek`.
+- **`MEMORY.md`:** nueva decisión "REVERT A DEEPSEEK V4 FLASH COMO DEFAULT (2026-08-30)"; secciones "Config de Tools" actualizadas (default + purga de modelos: deepseek-v4-flash es default y motor del pipeline; glm-5.3-flash queda como opción multimodal, NO default).
+- **`TOOLS.md`:** entrada "Modelo de trabajo" actualizada a 2026-08-30 con el revert.
+- **`memory/todos.md`:** todo del pipeline A/B actualizado al motor actual (`deepseek-v4-flash:cloud`).
+
+### Why
+- Gonzo comparó ambos modelos y la diferencia de calidad es muchísima a favor de DeepSeek V4 Flash. GLM 5.3 Flash queda disponible como opción (multimodal) pero cualquier uso como default requiere flag de excepción justificado.
+
+---
+
 ## [2026-08-29] - Regla de pagos obligatoria: Mercado Pago, nunca Stripe
 
 ### Added
