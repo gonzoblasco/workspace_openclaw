@@ -110,3 +110,6 @@ writings/
 
 # Chunks derivados de memoria (indice semantic highlighting, regenerable)
 memory/export/
+
+# Pipeline state (mutable working state, not versioned - kanam-pulse etc.)
+pipeline-state.json
