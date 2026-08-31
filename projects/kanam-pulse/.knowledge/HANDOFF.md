@@ -1,41 +1,53 @@
-# HANDOFF - kanam-pulse
+# HANDOFF - kanam-pulse (M2 cerrado)
 
 ## Session Context
-- **Date:** 2026-08-29 23:40
+- **Date:** 2026-08-31 00:05
 - **Project:** kanam-pulse
 - **Repo (codigo):** https://github.com/gonzoblasco/kanam-pulse (PUBLIC, MIT)
-- **Dev clone:** `~/.openclaw/dev/kanam-pulse` (aqui se edita codigo; el workspace solo trackea `.knowledge/` como blob - ver Decision de estructura). `.knowledge/` tambien visible en el dev clone via symlink al blob del workspace (2026-08-30, recomendacion de Kanam sobre repo-separado de Gonzo: misma colocacion, cero piezas extra). El `.gitignore` del proyecto vuelve a listar `.knowledge/` (seguro ahora: dev clone fuera del arbol del workspace)
-- **Workspace:** double-git real: `projects/kanam-pulse/.knowledge/` = blob del workspace; el repo de codigo vive FUERA del arbol de blobs
+- **Dev clone:** `~/.openclaw/dev/kanam-pulse`
+- **Workspace:** `projects/kanam-pulse/.knowledge/` = blob del workspace (doble-git)
 
-## Summary (Sesion 1 del proyecto - 29/08 22:46-23:27)
+## Summary (Sesion 30/08 - M1 y M2)
 
-M0 completo. Nace de la inversa del camino Breacorp: refactor web monolito -> CLI propio (`system-health-check`) -> vuelta a la web sobre el motor del CLI.
+### M1 (cerrado, commit `d4f3ea9`)
+- Motor exportado a `packages/core` (46 tests verdes)
+- Server Fastify: `/api/health`, `/api/checks`, `/api/run`, `/api/history`, `/api/metrics/stream` (SSE)
+- Dashboard read-only (Vite + React + TS) consumiendo `/api/run`
+- Fix: timeout SSE test (reader.cancel + 500ms wait + 20s)
+- 57 tests verdes (46 core + 11 server)
 
-- Nombre decidido: **Kanam Pulse** ("Pulse" evoca salud/monitoreo, "Boost" suena a optimizador 2000s; elegi yo, aprobo Gonzo).
-- Repo publico creado y confirmado: `gh repo edit` -> PUBLIC.
-- Contenido publicado (`0f2b4b8`): README honesto (pre-alpha, roadmap M0-M5, creditos a Breacorp), LICENSE MIT, `docs/SPEC-v1.md` (arquitectura packages/core+server+web, consent-driven fixes, a11y AA como principio, open questions).
-- BRIEF.md + STATUS.md de `.knowledge/` con contenido real.
-- Fix estructural de paso: `scripts/init-project.sh` generaba un `.gitignore` que listaba `.knowledge/` - como git parsea los `.gitignore` anidados y el mas profundo gana, el workspace no podia trackear el `.knowledge` como blob (inexpugnable para `git add`, silencioso). Ahora el `.gitignore` del proyecto NO lista `.knowledge/` y la exclusion va en `.git/info/exclude` local (invisible al workspace). Registrado en CHANGELOG.md.
-- **Decision de estructura (23:40) - descubierta al verificar el push:** git NO trackea blobs dentro de un repo anidado (`.git` en projects/<slug>), y ni `-f` lo cruza: el add restaura silencioso con el dir como `??`. El doble-git con `.knowledge` blob solo funciona si el clone de desarrollo vive FUERA del arbol de blobs. Resolucion: dev clone reubicado a `~/.openclaw/dev/kanam-pulse` (repo intacto, remoto intacto), `projects/kanam-pulse/` contiene solo `.knowledge/` (blob del workspace, sync cross-machine OK - `5c54c28`). Alinear AGENTS-DETALLE y `init-project.sh` a esta convencion en la proxima sesion (严格遵守: no tocar AGENTS.md a esta hora sin Gonzo).
+### M2 (cerrado, commit `9556bf1`)
+- **Server** (U1, agente A): endpoints de fixes con consentimiento
+  - `GET /api/fixes/scan` -> caches seguros + procesos pesados
+  - `POST /api/fixes/dry-run` -> estima sin ejecutar
+  - `POST /api/fixes/apply` -> exige `confirmed:true`, si no 400
+- **Web** (U2, agente B): UI accesible de consentimiento
+  - Fix del build web (estaba roto desde M1: sin index.html/main.tsx, react nunca instalado, tsconfig mal)
+  - FixesPanel: scan -> checkbox por target -> dry-run -> apply (gated)
+  - ConfirmDialog: role=dialog + aria-modal, focus trap, Escape, restore focus
+  - useFixes hook, useMemoryStream corregido
+- Verificacion: build 36 modules, tsc 0 errores, 63 tests verdes
 
-## Files Changed
-- `projects/kanam-pulse/**` (repo propio: README, LICENSE, docs/SPEC-v1.md, .gitignore)
-- `.knowledge/`: BRIEF.md, STATUS.md, HANDOFF.md
-- `scripts/init-project.sh` (fix doble git), `CHANGELOG.md`, `projects/PROYECTOS.md`
+## Pipeline
 
-## How to Verify
-- `gh repo view gonzoblasco/kanam-pulse` -> PUBLIC
-- `ls projects/kanam-pulse/` -> .gitignore LICENSE README.md docs (.knowledge/ presente)
-- `bash -n scripts/init-project.sh` -> ok
-- Workspace check-ignore: `git check-ignore -v projects/kanam-pulse/.knowledge/BRIEF.md` -> lin 66 negacion (NO ignorado)
+- M2: T=13 (A+B con cross-review, thinking high, Kanam aprobo ambas unidades)
+- Proceso completo: complexity-scorer -> pipeline-track -> spawn A (U1) -> cross-review -> spawn B (U2) -> cross-review -> commit
 
-## Known Issues / Risks
-- **El codigo del motor CLI no esta en esta maquina** (`projects/system-health-check/` solo tiene `.knowledge/`; el CLI se hizo en la MacBook Air y no tiene repo GitHub). M1 requiere traer el codigo: pushear desde la MBA o copiar. Todo creado (#get done en DB).
-- Ci/CD, hooks y lint todavia no existen en el repo (vienen con M1).
-- Spec tiene 3 open questions marcadas (Linux depth, charts lib, i18n) - decidir en M1.
+## Deuda tecnica
 
-## Next Steps
-1. Traer codigo de `system-health-check` desde la MacBook Air (sin repo, requiere push desde ahi o copia).
-2. M1: extraer engine a `packages/core` (TS), 46 tests heredados en verde en este repo.
-3. M1: server local (Fastify, bind 127.0.0.1) + dashboard read-only (checks + metricas en vivo).
-4. Despues: M2 fixes con consentimiento -> M3 resumen IA con Ollama -> M4 a11y pass + CI -> M5 release + annuncio.
+- **web sin test runner**: falta vitest + RTL para ConfirmDialog y flujos de consentimiento (resolver en M3/M4)
+- Puerto del core a TypeScript (incremental)
+
+## Files Changed (M2)
+
+- `packages/server/src/app.js` + `tests/fixes.test.js`
+- `packages/web/*`: App.tsx, main.tsx, index.html, App.css, FixesPanel.tsx, ConfirmDialog.tsx, HealthScoreCard.tsx, useFixes.ts, useHealthData.ts, useMemoryStream.ts, types/api.ts, tsconfig.json, package.json
+- `packages/core`: sin cambios en M2
+- `.knowledge/STATUS.md` (este workspace)
+
+## Next Steps (M3)
+
+- Ollama audit summary: detectar Ollama, ofrecer "Explain this audit" en UI
+- Prompt solo-resumen, modelo opcional (GLM Flash / Gemma)
+- Feature oculta si Ollama ausente, nunca rompe
+- Idealmente: agregar vitest + RTL al web (resolver deuda)
