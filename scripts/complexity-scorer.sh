@@ -145,24 +145,11 @@ except Exception:
       continue
     fi
     
-    # Parse dimensions using Python (robust regex extraction)
-    DIM_JSON=$(echo "$RAW_JSON" | python3 -c "
-import sys, re
-try:
-  text = sys.stdin.read()
-  a = re.search(r'\"A\"\s*:\s*(\d+)', text)
-  b = re.search(r'\"B\"\s*:\s*(\d+)', text)
-  c = re.search(r'\"C\"\s*:\s*(\d+)', text)
-  d = re.search(r'\"D\"\s*:\s*(\d+)', text)
-  j = re.search(r'\"justification\"\s*:\s*\"([^\"]+)\"', text)
-  if a and b and c and d:
-    print(json.dumps({\"A\":int(a.group(1)),\"B\":int(b.group(1)),\"C\":int(c.group(1)),\"D\":int(d.group(1)),\"justification\":j.group(1) if j else 'scored via LLM'}))
-except Exception as e:
-  print('ERROR:' + str(e))
-" 2>/dev/null) || {
-    log_warn "$SCORER_MODEL: python3 parse failed"
-    continue
-  }
+    # Parse dimensions using external parser (handles JSON or prose/thinking text)
+    DIM_JSON=$(echo "$RAW_JSON" | python3 "$SCRIPT_DIR/complexity-parse.py" 2>/dev/null) || {
+      log_warn "$SCORER_MODEL: python3 parse failed"
+      continue
+    }
   
     if [[ -n "$DIM_JSON" ]] && [[ "$DIM_JSON" != ERROR* ]]; then
       A=$(echo "$DIM_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('A',2))" 2>/dev/null || echo 2)
@@ -171,7 +158,7 @@ except Exception as e:
       D=$(echo "$DIM_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('D',2))" 2>/dev/null || echo 2)
       
       SCORED_MODEL="$SCORER_MODEL"
-      log_info "$SCORER_MODEL: parsed A=$A B=$B C=$C D=$D (T=${A+B+C+D})"
+      log_info "$SCORER_MODEL: parsed A=$A B=$B C=$C D=$D (T=$((A+B+C+D)))"
       break
     fi
   done

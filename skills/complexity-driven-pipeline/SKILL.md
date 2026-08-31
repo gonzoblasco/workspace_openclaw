@@ -95,6 +95,17 @@ T = A + B + C + D
 ```
 Use when Ollama is slow or unavailable.
 
+## Files
+
+- `scripts/complexity-scorer.sh` - main scorer (tries local qwen3.5:9b-mlx first, then cloud fallbacks)
+- `scripts/complexity-parse.py` - external parser (handles strict JSON or prose/thinking text from local models)
+- `scripts/pipeline-track.sh` - durable pipeline state (accepts `--score T`)
+
+## Notes (2026-08-30)
+
+- Local models (qwen3.5:9b-mlx) put the answer in the `thinking` field, not `response`, and often truncate before closing the JSON. The external parser handles both formats.
+- Cloud models (deepseek-v4-flash:cloud, gemma4:cloud) may hit weekly usage limits; the scorer falls back gracefully and reports which model scored.
+
 ## Status
 
 - Version: 1.0.0

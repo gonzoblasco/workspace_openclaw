@@ -137,6 +137,7 @@
 | [github](skills/github/) | Official GitHub MCP server wrapper: security alerts, notifications |
 | [godot-mcp](skills/godot-mcp/) | Aprender Godot 4.x paso a paso con asistencia de OpenClaw |
 | [cleanmymac-maintenance](skills/cleanmymac-maintenance/) | Protocolo flexible de mantenimiento con CleanMyMac CLI vía frases naturales |
+| [complexity-driven-pipeline](skills/complexity-driven-pipeline/) | Complexity-first orchestration: score antes de spawnear agentes (T 1-20), decide modelo/thinking/pipeline |
 
 ---
 
