@@ -189,6 +189,83 @@ def extract_learnings(content):
     return [l for l in learnings if l.get("is_learning")] or learnings[:0]
 
 
+def compute_category_centroids(min_examples=5):
+    """Compute average embedding (centroid) for each learning category.
+    Only returns centroids for categories with >= min_examples (reliable signal)."""
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    rows = c.execute(
+        "SELECT category, learning_vector FROM learnings_enriquecido WHERE learning_vector IS NOT NULL"
+    ).fetchall()
+    conn.close()
+
+    centroids = {}
+    counts = {}
+    for category, vec_json in rows:
+        try:
+            vec = json.loads(vec_json)
+        except (json.JSONDecodeError, TypeError):
+            continue
+        if category not in centroids:
+            centroids[category] = [0.0] * len(vec)
+            counts[category] = 0
+        for i, v in enumerate(vec):
+            centroids[category][i] += v
+        counts[category] += 1
+
+    # Only keep categories with enough examples
+    reliable = {cat for cat, cnt in counts.items() if cnt >= min_examples}
+    centroids = {cat: v for cat, v in centroids.items() if cat in reliable}
+
+    for cat, vec in centroids.items():
+        cnt = counts.get(cat, 0)
+        if cnt > 0:
+            centroids[cat] = [v / cnt for v in vec]
+        else:
+            centroids[cat] = [0.0] * len(vec)
+
+    return centroids
+
+
+def categorize_learning(learning_text, category_centroids=None):
+    """Assign a learning to the category whose centroid is most similar.
+    Falls back to keyword matching if no reliable centroid exists."""
+    if category_centroids is None:
+        category_centroids = compute_category_centroids()
+
+    # Keyword fallback (also catches obvious keywords)
+    title_low = learning_text.lower()
+    if any(kw in title_low for kw in ["accessib", "accesib", " a11y", "wcag", "screen reader"]):
+        return "a11y"
+    if any(kw in title_low for kw in ["infraestruct", "server setup", "deploy to", "devops", "docker", "kubernetes"]):
+        return "infraestructura"
+    if any(kw in title_low for kw in ["open source", "contribution", "astryx", "radix", " github", "pull request", "pr "]):
+        return "oss"
+    if any(kw in title_low for kw in ["agent", "subagent", "orchestr", "pipeline a/b"]):
+        return "pipeline-agentes"
+
+    # Workspace / memory / script workflow notes are methodology (Kanam work)
+    if any(kw in title_low for kw in ["memory", "script", "workspace", "learnings",
+                                       "memoria", "catalog", "busqueda", "archiv",
+                                       "daily", "handoff", "session", "skey"]):
+        return "metodologia"
+
+    # Embedding-based: pick closest category centroid
+    embedding = get_embedding(learning_text)
+    best_cat = None
+    best_sim = -1
+    for cat, centroid in category_centroids.items():
+        sim = cosine_similarity(embedding, centroid)
+        if sim > best_sim:
+            best_sim = sim
+            best_cat = cat
+
+    if best_cat is not None and best_sim > 0.35:  # Tunable threshold
+        return best_cat
+
+    return "metodologia"  # Default
+
+
 def create_schema():
     """Create database schema if not exists"""
     conn = sqlite3.connect(DB_PATH)
@@ -461,17 +538,8 @@ def catalog_memory():
             if exists:
                 continue
 
-            # Categorize
-            if any(kw in title.lower() for kw in ["access", "a11y"]):
-                category = "a11y"
-            elif any(kw in title.lower() for kw in ["infrastructure", "setup"]):
-                category = "infraestructura"
-            elif any(kw in title.lower() for kw in ["metodolog", "method", "process", "pipeline"]):
-                category = "metodologia"
-            elif any(kw in title.lower() for kw in ["oss", "contribution", "pr"]):
-                category = "oss"
-            else:
-                category = "metodologia"
+            # Categorize using embeddings (with keyword fallback)
+            category = categorize_learning(title + " " + content_text)
 
             learning_embedding = get_embedding(content_text)
             c.execute(
