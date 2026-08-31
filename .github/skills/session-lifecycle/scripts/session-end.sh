@@ -66,8 +66,37 @@ cat >> "$SESSION_LOG" << LOG
 **End:** $DATE
 **Summary:** $SUMMARY
 **Branch:** $BRANCH
-
 LOG
+
+# Recover the complexity T-score recorded at session start (session-start.sh)
+# and insert it into the just-written Session End block (standard record).
+TSCORE=$(grep -A3 "^## $PROJECT$" "$SESSION_LOG" 2>/dev/null | grep -oE "\*\*Complexity T-score:\*\* .*" | head -1)
+if [[ -n "$TSCORE" ]]; then
+  python3 - "$SESSION_LOG" "$PROJECT" "$TSCORE" << 'PYEOF'
+import sys
+log, project, score = sys.argv[1], sys.argv[2], sys.argv[3]
+content = open(log).read()
+lines = content.split("\n")
+out = []
+i = 0
+inserted = False
+while i < len(lines):
+    out.append(lines[i])
+    if not inserted and lines[i].startswith("## Session End - " + project):
+        j = i + 1
+        while j < len(lines) and not lines[j].startswith("## "):
+            if lines[j].startswith("**Branch:**") and not lines[j].startswith(score.split(":")[0]):
+                out.append(score)
+                inserted = True
+                break
+            j += 1
+    i += 1
+if not inserted:
+    # Fallback: append at end
+    out.append(score)
+open(log, "w").write("\n".join(out) + "\n")
+PYEOF
+fi
 
 echo "✅ Session closed"
 echo "   HANDOFF: $HANDOFF_DIR/HANDOFF.md"
