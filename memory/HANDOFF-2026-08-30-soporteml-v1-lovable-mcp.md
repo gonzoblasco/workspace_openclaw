@@ -110,3 +110,39 @@ Pendientes de OTRAS sesiones de hoy (no bloquean): memory-catalog (`export-catal
 - `memory/HANDOFF-2026-08-30.md` - handoff de la sesion Memoria Catalogada (19:51, NO mezclar)
 - Docs Lovable MCP: https://docs.lovable.dev/integrations/lovable-mcp-server
 - `projects/soporteml/.knowledge/UI-DESIGN-SKILL.md` - design system de SoporteML
+---
+
+## ACTUALIZACION 22:09-22:15 - Repo integrado + ramas sincronizadas
+
+### Repo clonado e integrado al workspace
+- Clonado `gonzoblasco/soporteml` (v1, Lovable) en `projects/soporteml/` (reemplazo el folder que solo tenia `.knowledge/`).
+- El `.knowledge/UI-DESIGN-SKILL.md` del workspace era IDENTICO al del repo (verificado con diff) - no se perdio nada.
+- Backup del folder viejo en `/tmp/soporteml-workspace-old/`.
+- El borrador del bridge MCP (`.mcp/`, `README-MCP-BRIDGE.md`, `query-schema.mjs`) se movio a `/tmp/soporteml-bridge-draft/` - NO se commiteo al repo porque `query-schema.mjs` crashea (require en ESM). Reescribir con SDK real en proxima sesion.
+
+### Hallazgo clave: el MCP YA esta construido dentro del repo
+- No es el MCP generico de Lovable: es un **MCP server propio de SoporteML** (`soporteml-mcp`) definido con `@lovable.dev/mcp-js`, expuesto en la Edge Function `/functions/v1/mcp`.
+- 5 tools: `list_my_companies`, `list_pending_questions`, `get_question`, `search_knowledge_base` (read-only) + `answer_question` (escritura, publica en MeLi).
+- Esto es exactamente lo que Gonzo queria: MCP para consultas (estructura DB, tablas, relaciones) sin tocar el servidor.
+
+### Stack (NO tocar - sigue en Lovable)
+- Frontend: React 18 + Vite + TS + Tailwind + shadcn/ui + React Router + TanStack Query + framer-motion
+- Backend: Supabase (PostgreSQL + Auth + Realtime + Edge Functions + RLS + pgvector)
+- IA: Edge Function `ai-copilot` + OpenAI `text-embedding-3-small`
+- Billing: Mercado Pago Preapproval (ARS)
+- 24 tablas, 26 Edge Functions, 54 migraciones, 16 paginas, 23 componentes, 4 specs openspec
+
+### Ramas sincronizadas
+- **`main`** (agosto 2026) = rama correcta y actualizada (tiene EL-1 a EL-5 + features completas).
+- **`el-upgrade`** (abril 2026) = snapshot viejo, desactualizado. Tenia 1 archivo unico: `CHANGELOG.md` (452 lineas, documenta EL-2 a EL-6 + fixes de seguridad).
+- **Accion:** CHANGELOG preservado en main (commit `50058a7`, em-dashes limpiados). `el-upgrade` sincronizado a main y luego ELIMINADO (local + remoto).
+- **Branch nuevo creado:** `etapa-1` (desde main, pusheado a origin). Este es el branch de trabajo para esta etapa.
+
+### Deuda tecnica detectada
+- `.env` esta TRACKEADO en el repo (no en .gitignore) - contiene VITE_SUPABASE_PUBLISHABLE_KEY y URL. Bajo riesgo (publishable key es publica por diseño) pero mala practica. NO se toco (respetar stack Lovable). Anotar para mas adelante.
+- El proyecto usa `bun` (no instalado localmente) y `@lovable.dev/cloud-auth-js` (no corre local). Build local pendiente para proxima sesion.
+
+### Pendiente inmediato (proxima sesion)
+1. Definir el primer feature sobre la base real (PLAN.md sugiere: hacer operativo billing MP, o hardening).
+2. Reescribir el bridge MCP con SDK real (`@modelcontextprotocol/sdk`) o conectar directo al MCP server de SoporteML (`/functions/v1/mcp`).
+3. Instalar `bun` + dependencias para poder buildear/testear localmente (respetando stack).
