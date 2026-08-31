@@ -38,6 +38,8 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/memory-db.sh` | DB de memoria: `export-all`, `export-todos`, `export-inbox`, `export-oss`, `add-todo`, `add-inbox`, `export-daily`, `stats`, `catalog` (cataloga memoria en DB relacional + embeddings), `search "<query>" [n]` (busqueda semantica), `topics`, `recent [n]` |
 | `scripts/memory-catalog-v2.py` | Cataloga dailies en DB relacional + embeddings semanticos (Ollama nomic-embed-text). Idempotente (upsert por date). Puebla sessions_relacional, session_vectors, topics, topic_sessions, learnings_enriquecido |
 | `scripts/memory-search.py` | Busqueda semantica sobre la memoria: query -> embedding -> cosine similarity -> top N sesiones. Flags: `--topics`, `--recent [n]` |
+| `scripts/semantic-search.js` | Busqueda semantica RAG-lite sobre `memory.db` (CLI legible). Uso: `node scripts/semantic-search.js "consulta"`. Requiere Ollama (`nomic-embed-text:latest`). |
+| `scripts/semantic-search-json.js` | Version JSON de la busqueda semantica para integracion con herramientas/agentes. Uso: `node scripts/semantic-search-json.js "consulta" [topN]`. Retorna `{query, results:[{score, sessionId, title, text}]}`. |
 | `scripts/check_em_dash.py` | Escanear texto por guiones largos (U+2014/U+2013) antes de publicar a GitHub. Regla obligatoria. |
 | `scripts/init-project.sh` | Scaffold de proyecto con doble git: crea `projects/<slug>/.knowledge/` + repo en gh (privado por defecto) |
 | `scripts/oss-tracker.js` | Tracker de contribuciones OSS |
@@ -56,6 +58,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 ## Memoria (SQLite + espejos)
 
 - **Fuente de verdad:** `memory/memory.db` (tablas: `daily_notes`, `todos`, `inbox`, `contributions`).
+- **Busqueda semantica (2026-08-30):** `session_vectors` con embeddings reales de Ollama (768 dims) + `chunk_text`. Usar `scripts/semantic-search-json.js` para recuperar sesiones por significado. Re-catalogar con `scripts/memory-catalog-simple.sh` si se agregan dailies nuevos.
 - **Espejos MD** (regenerar con `./scripts/memory-db.sh export-all`):
   - `memory/todos.md` ← tabla todos
   - `memory/inbox.md` ← tabla inbox
