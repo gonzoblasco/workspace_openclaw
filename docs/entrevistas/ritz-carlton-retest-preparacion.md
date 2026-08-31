@@ -10,8 +10,11 @@
 
 - **Score:** 69% (avance real desde 60). Samarth confirmó por LinkedIn.
 - **Estado:** Samarth dijo "I will update the team" y luego "I am checking with the team".
-- **Señal positiva:** Samarth preguntó "Are you out of town currently?" - chequeando logística, probable coordinación del siguiente paso. El punto de diferencia no parece frenar el proceso.
-- **Pendiente:** esperar respuesta de Samarth sobre el siguiente paso.
+- **Señal positiva:** Samarth preguntó "Are you out of town currently?" - chequeando logística.
+- **CAUSA de la pregunta:** el hiring manager vio IP de Córdoba (probablemente iCloud Privacy Relay / proxy). Se resolvió: Gonzo desactivó el proxy y pasó la IP real (200.61.165.7).
+- **RESULTADO (13:32):** PASO a primera ronda de entrevista. Samarth: "The team wants to schedule first round of interview with you".
+- **Estado:** confirmado el avance. Pendiente fecha/horario de la primera ronda.
+- **Lección:** si un reclutador te pregunta por ubicación/IP, suele ser por detección de proxy/VPN, no una bandera negativa. Responder rápido y proactivamente (ofrecer IP) despeja cualquier duda.
 - **Lección:** el 69% confirma que el acrónimo + event loop ya están sólidos; el punto perdido probablemente fue en otro ejercicio de código. Si hay un 3er intento, repasar los algoritmos de código (reverse, countLetters) además del acrónimo.
 
 ---
