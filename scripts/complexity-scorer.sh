@@ -95,7 +95,9 @@ if [[ -n "${FORCE_T:-}" ]]; then
   log_info "Forced score: T=$T"
 else
    # Try models in order: local first, then cloud fallbacks
-  for SCORER_MODEL in "qwen3.5:9b-mlx" "deepseek-v4-flash:cloud" "gemma4:cloud"; do
+  # Order: gemma4:e4b-mlx (local, 6.7x faster than qwen3.5) first, then cloud fallbacks.
+  # qwen3.5:9b-mlx kept as last local fallback (slow, 154s vs 23s on benchmark 2026-08-30).
+  for SCORER_MODEL in "gemma4:e4b-mlx" "deepseek-v4-flash:cloud" "gemma4:cloud" "qwen3.5:9b-mlx"; do
     log_info "Trying model: $SCORER_MODEL"
     
     # Compact JSON payload (avoids "Thinking Style" eating the response on local models)
