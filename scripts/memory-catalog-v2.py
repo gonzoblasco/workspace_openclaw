@@ -260,21 +260,31 @@ def catalog_memory():
         # Generate embeddings for main content
         print(f"\n{i}/{len(md_files)} Cataloging: {date_str[:10]}")
 
-        # Get embedding of summary/title
-        summary_embedding = get_embedding(content[:200])
-
-        # Insert into sessions_relacional
-        c.execute(
-            """INSERT OR REPLACE INTO sessions_relacional
-               (id, date, title, tags, model_used, thinking_level, summary, content_bare, created_at)
-               VALUES (?, ?, ?, ?, 'unknown', 'high', ?, ?, ?)""",
-            (None, date_str, date_str, "", json.dumps(summary_embedding), content[:200], content),
-        )
-        conn.commit()
-
-        session_id = c.execute(
+        # Insert into sessions_relacional (upsert by date - no duplicates)
+        existing = c.execute(
             "SELECT id FROM sessions_relacional WHERE date=?", (date_str,)
-        ).fetchone()[0]
+        ).fetchone()
+        if existing:
+            session_id = existing[0]
+            c.execute(
+                """UPDATE sessions_relacional SET
+                   title=?, tags=?, summary=?, content_bare=?, created_at=?
+                   WHERE id=?""",
+                (date_str, "", content[:200], content, datetime.now().isoformat(), session_id),
+            )
+            # Remove old vectors for this session (will re-insert fresh)
+            c.execute("DELETE FROM session_vectors WHERE session_id=?", (session_id,))
+        else:
+            c.execute(
+                """INSERT INTO sessions_relacional
+                   (id, date, title, tags, model_used, thinking_level, summary, content_bare, created_at)
+                   VALUES (?, ?, ?, ?, 'unknown', 'high', ?, ?, ?)""",
+                (None, date_str, date_str, "", content[:200], content, datetime.now().isoformat()),
+            )
+            session_id = c.execute(
+                "SELECT id FROM sessions_relacional WHERE date=?", (date_str,)
+            ).fetchone()[0]
+        conn.commit()
 
         # Generate vectors for chunked content
         chunks = [content[j : j + CHUNK_SIZE] for j in range(0, len(content), CHUNK_SIZE)][

@@ -17,8 +17,13 @@
 #     El contenido puede ser: texto directo, @archivo (lee el archivo), o - (lee de stdin)
 #     para contenidos multilinea largos sin problemas de quoting del shell.
 #   ./scripts/memory-db.sh export-learnings       - regenera docs/learnings/ desde la DB
+#   ./scripts/memory-db.sh catalog                - cataloga memoria en DB relacional + embeddings (memory-catalog-v2.py)
+#   ./scripts/memory-db.sh search "<query>" [n]  - busqueda semantica sobre la memoria (memory-search.py)
+#   ./scripts/memory-db.sh topics                - lista topics con frecuencia
+#   ./scripts/memory-db.sh recent [n]             - lista sesiones recientes
 
 DB="memory/memory.db"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Escape comillas simples para interpolacion SQL segura (evita SQL injection / broken quoting)
 sql_escape() {
@@ -26,6 +31,27 @@ sql_escape() {
 }
 
 case "$1" in
+  catalog)
+    # Cataloga memoria en DB relacional + embeddings
+    python3 "$SCRIPT_DIR/memory-catalog-v2.py"
+    ;;
+  search)
+    # Busqueda semantica sobre la memoria
+    query="${2:-}"
+    if [ -z "$query" ]; then
+      echo "Uso: $0 search \"<query>\" [top_n]" >&2
+      exit 1
+    fi
+    top_n="${3:-5}"
+    python3 "$SCRIPT_DIR/memory-search.py" "$query" --top "$top_n"
+    ;;
+  topics)
+    python3 "$SCRIPT_DIR/memory-search.py" --topics
+    ;;
+  recent)
+    n="${2:-10}"
+    python3 "$SCRIPT_DIR/memory-search.py" --recent "$n"
+    ;;
   export-daily)
     date="${2:-$(date +%F)}"
     sqlite3 "$DB" "SELECT content FROM daily_notes WHERE date='$date' AND type='daily' ORDER BY id DESC LIMIT 1;"
@@ -269,6 +295,6 @@ case "$1" in
     echo "docs/learnings/ regenerado desde la DB."
     ;;
   *)
-    echo "Uso: $0 {export-daily|export-all|export-oss|export-todos|export-inbox|stats|todos|inbox|contributions|add-todo|add-inbox|add-contribution|learnings|add-learning|export-learnings}"
+    echo "Uso: $0 {export-daily|export-all|export-oss|export-todos|export-inbox|stats|todos|inbox|contributions|add-todo|add-inbox|add-contribution|learnings|add-learning|export-learnings|catalog|search|topics|recent}"
     ;;
 esac
