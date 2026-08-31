@@ -6,6 +6,16 @@
 
 ---
 
+## RESULTADO RETEST (31/08/2026): 69% - a 1 punto del 70%
+
+- **Score:** 69% (avance real desde 60). Samarth confirmó por LinkedIn.
+- **Estado:** Samarth dijo "I will update the team" y luego "I am checking with the team".
+- **Señal positiva:** Samarth preguntó "Are you out of town currently?" - chequeando logística, probable coordinación del siguiente paso. El punto de diferencia no parece frenar el proceso.
+- **Pendiente:** esperar respuesta de Samarth sobre el siguiente paso.
+- **Lección:** el 69% confirma que el acrónimo + event loop ya están sólidos; el punto perdido probablemente fue en otro ejercicio de código. Si hay un 3er intento, repasar los algoritmos de código (reverse, countLetters) además del acrónimo.
+
+---
+
 ## Contenido real del examen (lo que entró)
 
 1. **Resolución de problemas de JS** (algoritmos).
