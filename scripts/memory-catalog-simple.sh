@@ -21,15 +21,12 @@ def get_embedding(text):
         import requests
         response = requests.post(f"{OLLAMA_BASE}/api/embeddings", json={
             "model": "nomic-embed-text:latest",
-            "prompt": text[:768] if len(text) > 768 else text,
-            "n_preamble": 0,
-            "n_context": 768,
-            "n_predict": 0
+            "prompt": text[:768] if len(text) > 768 else text
         }, timeout=25)
         if response.status_code == 200:
             data = response.json()
-            if data.get("embeddings"):
-                return data["embeddings"][0]
+            if data.get("embedding"):
+                return data["embedding"]
     except Exception as e:
         pass
     
