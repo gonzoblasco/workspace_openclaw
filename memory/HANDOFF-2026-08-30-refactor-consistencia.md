@@ -41,11 +41,12 @@ Se creo **`scripts/model-compare-qwen-gemma.sh`** (1952 bytes) para comparar `qw
 
 ### Prioridad Alta
 
-1. **Ejecutar la comparativa real**
-   - El script `model-compare-qwen-gemma.sh` no se ha ejecutado con exito.
-   - El fallo fue: `zsh:1: no such file or directory: ./model-compare-qwen-gemma.sh` (el script no estaba en el PATH).
-   - **Accion:** Ejecutar con ruta absoluta: `bash /Users/gonzoblasco/.openclaw/workspace/scripts/model-compare-qwen-gemma.sh "<prompt>"`.
-   - **Decidir:** Si qwen3.5:9b-mlx es mas potente que gemma4:e4b-mlx, actualizar el rol de cada uno en `tools.md` y `model-router.sh`.
+1. **Comparativa ejecutada (21:55) - RESUELTO**
+   - **Qwen3.5:9b-mlx:** 154s para respuesta corta, 10,765 chars (muy lento, thinking extenso).
+   - **Gemma4:e4b-mlx:** 23s, 3,150 chars (6.7x mas rapido, conciso).
+   - **Ganador velocidad: Gemma4:e4b-mlx.** Para scorer local, Gemma4 es superior.
+   - **Script corregido:** `model-compare-qwen-gemma.sh` ahora mide tiempo real de generacion y longitud de respuesta (bug de tokens corregido).
+   - **Pendiente:** Decidir si qwen3.5:9b-mlx se mantiene como scorer local o se reemplaza por gemma4:e4b-mlx en `complexity-scorer.sh`.
 
 2. **Integrar el meta-prompt en `model-router.sh`**
    - `prompts/complexity-scorer.md` existe pero NO esta cableado en el router.
