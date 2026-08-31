@@ -108,8 +108,21 @@ def main():
         title_match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
         title = title_match.group(1).strip() if title_match else date_str
         
-        # Extract tags
-        tags = list(set(re.findall(r'\[(\w+)\]', content)))[:5]
+        # Extract tags: match known domain keywords + bracketed tags
+        KNOWN_TAGS = [
+            'soporteml', 'kanam', 'a11y', 'accessibility', 'pipeline', 'agent',
+            'git', 'github', 'oss', 'linkedin', 'entrevista', 'supabase',
+            'react', 'typescript', 'fastify', 'vitest', 'ollama', 'glm',
+            'deepseek', 'qwen', 'kimi', 'memory', 'catalog', 'semantic',
+            'docker', 'tailscale', 'meli', 'mercadolibre', 'adr', 'openspec',
+            'biome', 'billing', 'mp', 'mercadopago', 'cron', 'skill', 'workspace',
+        ]
+        content_lower = content.lower()
+        tags = list(set(re.findall(r'\[(\w+)\]', content)))
+        for kw in KNOWN_TAGS:
+            if kw in content_lower and kw not in tags:
+                tags.append(kw)
+        tags = tags[:5]
         
         # Generate embedding
         print(f"\n{i}/{len(md_files)} Cataloging: {date_str}")
