@@ -7,7 +7,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 17 |
+| PRs abiertos | 18 |
 | PRs mergeados | 6 |
 | PRs cerrados sin merge | 19 |
 | Colaboraciones no-codigo | 6 |
@@ -199,6 +199,10 @@
 
 | **Issue** | [#11465]() | fix(react): drain released tail spacer tras scroll manual. Agosto. |
 | **Nuestro PR** | [#11465]() | **open** |
+
+| **Issue** | [https://github.com/shadcn-ui/ui/issues/11125](collab) | Publicado comment reactivacion en issue #11125 (issuecomment-5473908810) como autor del fix: cerre compatibilidad con PR gemelo #11223 (doneumark) + senale cuello de botella de 3 semanas sin re-review. PR #11465 sigue OPEN, REVIEW_REQUIRED. |
+| **Nuestro PR** | [11465](https://github.com/shadcn-ui/ui/pull/11465) | **open** |
+| **Contexto** | - | 11125 |
 
 ### shuding/nextra
 
