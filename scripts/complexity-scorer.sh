@@ -65,23 +65,19 @@ OBJECTIVE=$(echo "$OBJECTIVE" | sed 's/"/\\"/g' | tr -d '\n')
 log_info "Scoring objective: ${OBJECTIVE:0:80}..."
 
 # --- Prompt for scoring ---
-SYSTEM_PROMPT="You are a task complexity evaluator. Analyze the objective and score it. Return ONLY valid JSON, no markdown fences or extra text:
-
-{
-   \"A\": <1-5 integer, scope: 1=one file, 2=2-3 files, 3=multi-file same module, 4=multi-module, 5=multi-repo>,
-   \"B\": <1-5 integer, abstraction: 1=trivial fix, 2=feature, 3=refactor, 4=design, 5=system architecture>,
-   \"C\": <1-5 integer, risk: 1=cosmetic, 2=minor breakage, 3=feature broken, 4=significant, 5=critical/data loss>,
-   \"D\": <1-5 integer, ambiguity: 1=crystal clear, 2=mostly clear, 3=some interpretation, 4=needs research, 5=vague>,
-   \"justification\": \"<one line explaining each dimension value>\"
-}
-
-Dimensions:
-- A (Scope): 1=single file, 2=2-3 files/same system, 3=multi-file module, 4=multi-module, 5=multi-repo
-- B (Abstraction): 1=trivial fix, 2=feature, 3=refactor, 4=design, 5=system architecture
-- C (Risk): 1=cosmetic, 2=minor breakage, 3=feature broken, 4=significant, 5=critical/data loss
-- D (Ambiguity): 1=crystal clear, 2=mostly clear, 3=some interpretation, 4=needs research, 5=vague
-
-Return ONLY the JSON object with A, B, C, D as integers and justification. No markdown fences."
+# Meta-prompt is the single source of truth (prompts/complexity-scorer.md).
+# Build the LLM system prompt from that file's scoring rules.
+SYSTEM_PROMPT="You are the task complexity evaluator. Score the objective on 4 dimensions (1-5 each):\n"
+META="prompts/complexity-scorer.md"
+if [[ -f "$META" ]]; then
+  # Extract the 4 dimension descriptions from the meta-prompt
+  DIMS=$(grep -A1 -E '^   \* \*\*(Alcance|Abstracción|Riesgo|Ambigüedad)\*\*' "$META" | grep -oE '\(1=.*\)' | tr '\n' '; ')
+  SYSTEM_PROMPT="You are the task complexity evaluator. Score the objective on 4 dimensions A/B/C/D (each 1-5):\n"
+  SYSTEM_PROMPT+="A (Scope): 1=one file, 5=multi-repo. B (Abstraction): 1=trivial fix, 5=system arch. C (Risk): 1=cosmetic, 5=critical/data loss. D (Ambiguity): 1=crystal clear, 5=vague.\n"
+  SYSTEM_PROMPT+="Return ONLY valid JSON: { \"A\":<1-5>,\"B\":<1-5>,\"C\":<1-5>,\"D\":<1-5>,\"justification\":\"<one line>\" }. No prose, no markdown fences."
+else
+  SYSTEM_PROMPT="You are a task complexity evaluator. Analyze the objective and score it. Return ONLY valid JSON, no markdown fences or extra text:\n\n{\n   \"A\": <1-5 integer, scope: 1=one file, 2=2-3 files, 3=multi-file same module, 4=multi-module, 5=multi-repo>,\n   \"B\": <1-5 integer, abstraction: 1=trivial fix, 2=feature, 3=refactor, 4=design, 5=system architecture>,\n   \"C\": <1-5 integer, risk: 1=cosmetic, 2=minor breakage, 3=feature broken, 4=significant, 5=critical/data loss>,\n   \"D\": <1-5 integer, ambiguity: 1=crystal clear, 2=mostly clear, 3=some interpretation, 4=needs research, 5=vague>,\n   \"justification\": \"<one line explaining each dimension value>\"\n}\n\nDimensions:\n- A (Scope): 1=single file, 2=2-3 files/same system, 3=multi-file module, 4=multi-module, 5=multi-repo\n- B (Abstraction): 1=trivial fix, 2=feature, 3=refactor, 4=design, 5=system architecture\n- C (Risk): 1=cosmetic, 2=minor breakage, 3=feature broken, 4=significant, 5=critical/data loss\n- D (Ambiguity): 1=crystal clear, 2=mostly clear, 3=some interpretation, 4=needs research, 5=vague\n\nReturn ONLY the JSON object with A, B, C, D as integers and justification. No markdown fences."
+fi
 
 USER_PROMPT="Objective: $OBJECTIVE"
 
