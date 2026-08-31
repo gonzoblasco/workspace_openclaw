@@ -170,8 +170,26 @@ except Exception:
   T=$((A + B + C + D))
 fi
 
+# --- Risk escalation rule (calibration 2026-08-31) ---
+# A high-risk task (C>=4) that is moderately complex (T>=14) must be treated
+# as HIGH, even if low ambiguity drops the linear total below 17.
+# Rationale: ambiguity (D) can be clarified, but production data-loss risk (C)
+# cannot. This protects dangerous-yet-clear tasks from being under-pipelined.
+ESCALATED=0
+if [[ -n "${A:-}" && -n "${C:-}" ]] && [[ "${C}" -ge 4 ]] && [[ "$T" -ge 14 ]]; then
+  ESCALATED=1
+  log_info "Risk escalation: C=$C >= 4 and T=$T >= 14 -> forcing HIGH bucket"
+fi
+
 # --- Map to config ---
-if [[ $T -le 6 ]]; then
+if [[ "$ESCALATED" -eq 1 ]] \
+   || [[ "$T" -ge 17 ]]; then
+  BUCKET="high"
+  MODEL="$DEFAULT_MODEL"
+  THINKING="max"
+  AGENTS="A+B+Kanam"
+  PIPELINE="Kanam diseña(max) -> A escribe(high) -> B revisa(high) -> verification"
+elif [[ $T -le 6 ]]; then
   BUCKET="trivial"
   MODEL="$DEFAULT_MODEL"
   THINKING="off"
@@ -206,6 +224,7 @@ cat <<EOF
    "ticket": "$TICKET",
    "score": $T,
    "bucket": "$BUCKET",
+   "escalated": $ESCALATED,
    "model": "$MODEL",
    "thinking": "$THINKING",
    "agents": "$AGENTS",
