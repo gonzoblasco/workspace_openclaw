@@ -132,9 +132,9 @@ def main():
         for chunk_idx, chunk in enumerate(chunks[:3]):
             chunk_vector = get_embedding(chunk)
             c.execute("""INSERT INTO session_vectors 
-                         (session_id, query_vector, relevance_score, chunk_index, created_at)
-                         VALUES (?, ?, 0.5, ?, ?)""",
-                      (session_id, json.dumps(chunk_vector), chunk_idx, datetime.now().isoformat()))
+                         (session_id, query_vector, relevance_score, chunk_index, chunk_text, created_at)
+                         VALUES (?, ?, 0.5, ?, ?, ?)""",
+                      (session_id, json.dumps(chunk_vector), chunk_idx, chunk, datetime.now().isoformat()))
         
         # Extract topics from tags
         for tag in tags:

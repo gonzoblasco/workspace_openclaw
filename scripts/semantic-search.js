@@ -64,7 +64,7 @@ function main() {
 
   const db = new DatabaseSync(DB_PATH);
   const rows = db.prepare(
-    'SELECT v.id, v.session_id, v.query_vector, v.chunk_index, s.title, s.summary, s.content_bare ' +
+    'SELECT v.id, v.session_id, v.query_vector, v.chunk_text, s.title, s.summary ' +
     'FROM session_vectors v ' +
     'JOIN sessions_relacional s ON s.id = v.session_id',
   ).all();
@@ -74,9 +74,8 @@ function main() {
     const stored = parseStored(row.query_vector);
     if (!stored) continue;
     const score = cosine(qVec, stored);
-    // Extraer el chunk correspondiente del content_bare (aproximado por chunk_index)
-    const chunk = extractChunk(row.content_bare, row.chunk_index);
-    scored.push({ score, sessionId: row.session_id, title: row.title, text: chunk || row.summary });
+    const text = row.chunk_text || row.summary;
+    scored.push({ score, sessionId: row.session_id, title: row.title, text });
   }
 
   scored.sort((a, b) => b.score - a.score);
@@ -88,14 +87,6 @@ function main() {
     console.log(`  ${r.text.slice(0, 200)}${r.text.length > 200 ? '...' : ''}\n`);
   }
   db.close();
-}
-
-// ---------- 5. Extraer chunk del content_bare por indice ----------
-function extractChunk(content, index) {
-  if (!content) return null;
-  const CHUNK = 1500;
-  const start = index * CHUNK;
-  return content.slice(start, start + CHUNK);
 }
 
 main();
