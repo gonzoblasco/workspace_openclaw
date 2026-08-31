@@ -78,6 +78,7 @@ Si Gonzo dice `"iniciar sesión"`, `"brainstorming"`, `"aún no sé en qué proy
 - Si el checkpoint revela desvío, redefinir objetivo o restricciones antes de seguir.
 
 ### 4. Guardado - escanear sesión, escribir HANDOFF, memory, CHANGELOG
+- **Auto-catalogación de memoria (2026-08-30):** al guardar sesión, `session-end.sh` corre `scripts/memory-catalog-v2.py` automáticamente. Esto mantiene `memory/memory.db` al día (sessions_relacional, session_vectors, topics, learnings_enriquecido) sin corrida manual. La DB queda lista para búsqueda semántica con `./scripts/memory-db.sh search "<query>"`.
 - Si la sesión tuvo un proyecto asociado, ejecutar `session-context:save` con el resumen de la sesión: `summary`, `leftOff`, `nextSteps`, `decisions`, `blockers`, y `goal` solo si cambió.
 - Si fue una sesión sin proyecto (brainstorming/triage), guardar el resumen en `memory/YYYY-MM-DD.md` y no tocar `session-context`.
 - Mostrar borrador al usuario para confirmación o edición antes de persistir.

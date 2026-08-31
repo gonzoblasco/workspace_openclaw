@@ -74,6 +74,16 @@ echo "   HANDOFF: $HANDOFF_DIR/HANDOFF.md"
 echo "   Log: $SESSION_LOG"
 echo ""
 
+# Auto-catalog memory into relational DB + embeddings (2026-08-30)
+# Keeps memory.db always in sync with the daily notes without manual runs.
+if command -v python3 >/dev/null 2>&1 && [ -f "scripts/memory-catalog-v2.py" ]; then
+  echo "🗂️  Cataloging memory into DB..."
+  python3 "scripts/memory-catalog-v2.py" >/dev/null 2>&1 && echo "   ✅ Memory cataloged" || echo "   ⚠️  Catalog skipped (see error above)"
+else
+  echo "   ⚠️  memory-catalog-v2.py not found - skip cataloging"
+fi
+echo ""
+
 # Reflection prompt
 echo "🤔 Quick reflection:"
 echo "   ¿Qué aprendimos? ¿Algún patrón nuevo?"

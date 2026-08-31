@@ -31,8 +31,13 @@ def get_embedding(text):
             json={"model": EMBED_MODEL, "prompt": text[:768], "n_preamble": 0, "n_context": 768, "n_predict": 0},
             timeout=25,
         )
-        if response.status_code == 200 and "embeddings" in response.json():
-            return response.json()["embeddings"][0]
+        if response.status_code == 200:
+            data = response.json()
+            # Ollama returns 'embedding' (singular) for /api/embeddings
+            if "embedding" in data:
+                return data["embedding"]
+            if "embeddings" in data and data["embeddings"]:
+                return data["embeddings"][0]
     except Exception as e:
         print(f"⚠️ Ollama unavailable ({e}), using hash fallback", file=sys.stderr)
 
