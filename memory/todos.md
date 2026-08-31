@@ -17,7 +17,7 @@
 - [ ] **[]** (medium) OBSERVAR (de ClawHub tools): MCP Client/MCPBundles (acceso MCP estandar), Agent Collaboration OS / A2A / cross-agent orchestration
 - [ ] **[]** (medium) OBSERVAR (de ClawHub runtime): observabilidad del agente con OpenTelemetry/Prometheus/Langfuse/Otel - metricas del pipeline (runtime, latencia, errores, SIGKILL) a futuro
 - [ ] **[Deprecate del paquete npm 0.0.2 (288 descargas) que quedo publicado tras la fusion a kanam-forge. Requiere token npm valido (el de ~/.npmrc expiro, 401). Comando listo: npm deprecate @gonzoblasco/create-with-ai@0.0.2 'Fusionado a kanam-forge. Usa kanam-forge en su lugar.' Deprecar NO borra el paquete - lo marca como desaconsejado.]** (medium) Deprecar @gonzoblasco/create-with-ai en npm (no borrar)
-- [ ] **[]** (medium) Pipeline A/B: Alternar Agente A y Agente B con deepseek-v4-flash:cloud (motor actual desde 2026-08-30, revert desde glm-5.3-flash:cloud), via Qwen Code en Ollama
+- [ ] **[]** (medium) Pipeline A/B: Alternar Agente A y Agente B con glm-5.3-flash:cloud (motor actual desde 2026-08-29), via Qwen Code en Ollama
 - [ ] **[workspace]** (medium) Validar GLM 5.3 Flash en tareas reales del pipeline A/B (escribir codigo, tests, PRs - no solo diseno de arquitectura). Ver ADR-041 pendiente 2
 - [ ] **[workspace]** (medium) Probar input visual de GLM 5.3 Flash en caso real (mockup/screenshot -> UI o screenshot de error -> fix). Ver ADR-041 pendiente 3
 - [ ] **[workspace]** (medium) Re-cata de modelos LLM ~2026-09-29: revisar novedades (GLM, Kimi, alternativas) y decidir si mantener el trio actual. Ver ADR-041 pendiente 4
