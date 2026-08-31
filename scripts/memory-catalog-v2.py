@@ -155,9 +155,14 @@ def extract_topics_from_content(content, centroids=None):
 
 
 def extract_learnings(content):
-    """Extract learning sections from content (### Topic Title format)"""
+    """Extract learning sections from content. More selective: only treat
+    ### headers as learnings if they look like real learning entries (not generic sections)."""
     learnings = []
     section_pattern = re.compile(r"^###\s+(.+?)\s*$")
+
+    # Learning-like keywords that indicate a real learning entry
+    learning_kws = ["learn", "lesson", "leccion", "aprend", "insight", "tip", "clave",
+                    "key", "takeaway", "conclusion"]
 
     lines = content.split("\n")
     current_learning = {}
@@ -168,7 +173,11 @@ def extract_learnings(content):
         if match:
             if current_learning and "content" in current_learning:
                 learnings.append(current_learning)
-            current_learning = {"title": match.group(1)}
+            # Only start a learning if title looks like a real learning
+            title = match.group(1)
+            title_low = title.lower()
+            is_learning = any(kw in title_low for kw in learning_kws)
+            current_learning = {"title": title, "is_learning": is_learning}
         elif current_learning and line:
             current_learning.setdefault("content", "")
             current_learning["content"] += " " + line
@@ -176,7 +185,8 @@ def extract_learnings(content):
     if current_learning and "content" in current_learning:
         learnings.append(current_learning)
 
-    return learnings
+    # Filter: only return sections that look like real learnings
+    return [l for l in learnings if l.get("is_learning")] or learnings[:0]
 
 
 def create_schema():
@@ -437,20 +447,32 @@ def catalog_memory():
                     (session_id, topic_id[0], TAG_THRESHOLD),
                 )
 
-        # Extract learnings from markdown
+        # Extract learnings from markdown (only real learning entries + categorize)
         for learning in extract_learnings(content):
             if not learning.get("content"):
                 continue
             title = learning.get("title", "")
             content_text = learning.get("content", "")[:500]
+
+            # Skip if a learning with this title already exists in enriquecido
+            exists = c.execute(
+                "SELECT id FROM learnings_enriquecido WHERE title=? LIMIT 1", (title,)
+            ).fetchone()
+            if exists:
+                continue
+
+            # Categorize
             if any(kw in title.lower() for kw in ["access", "a11y"]):
                 category = "a11y"
             elif any(kw in title.lower() for kw in ["infrastructure", "setup"]):
                 category = "infraestructura"
-            elif any(kw in title.lower() for kw in ["method", "process", "pipeline"]):
+            elif any(kw in title.lower() for kw in ["metodolog", "method", "process", "pipeline"]):
                 category = "metodologia"
+            elif any(kw in title.lower() for kw in ["oss", "contribution", "pr"]):
+                category = "oss"
             else:
-                continue
+                category = "metodologia"
+
             learning_embedding = get_embedding(content_text)
             c.execute(
                 """INSERT INTO learnings_enriquecido

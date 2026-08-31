@@ -64,6 +64,7 @@ def search(query, top_n=5):
 
     qv = get_embedding(query)
 
+    # Search sessions
     rows = c.execute(
         "SELECT session_id, query_vector, chunk_index FROM session_vectors"
     ).fetchall()
@@ -123,6 +124,46 @@ def search(query, top_n=5):
                 start = chunk_idx * chunk_size
                 chunk_text = content[0][start : start + chunk_size]
                 print(f"      📄 {chunk_text[:200]}...")
+
+    # Also search learnings
+    conn.commit()
+    search_learnings(query, top_n=3)
+    conn.close()
+
+
+def search_learnings(query, top_n=3):
+    """Search learnings by semantic similarity to query"""
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+
+    qv = get_embedding(query)
+
+    rows = c.execute(
+        "SELECT id, category, title, content, learning_vector FROM learnings_enriquecido WHERE learning_vector IS NOT NULL"
+    ).fetchall()
+
+    scored = []
+    for lid, category, title, content, vec_json in rows:
+        try:
+            vec = json.loads(vec_json)
+        except (json.JSONDecodeError, TypeError):
+            continue
+        score = cosine_similarity(qv, vec)
+        scored.append((score, lid, category, title, content))
+
+    scored.sort(key=lambda x: x[0], reverse=True)
+    scored = scored[:top_n]
+
+    if not scored:
+        return
+
+    print(f"\n📚 Top learnings")
+    print("=" * 60)
+    for score, lid, category, title, content in scored:
+        pct = score * 100
+        print(f"\n  [{pct:.1f}%] [{category}] {title}")
+        if content:
+            print(f"      {content[:150]}...")
 
     conn.close()
 
