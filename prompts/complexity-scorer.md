@@ -23,6 +23,7 @@
    * `7 <= T <= 12`: Agente A escribe → Kanam revisa (`thinking=high`).
    * `13 <= T <= 16`: Agente A escribe → Agente B cross-review → Kanam aprueba (`thinking=high`).
    * `T >= 17`: Kanam(max) diseña → A(high) ejecuta → B(high) revisa → verificación obligatoria (`thinking=max` solo para Kanam).
+   * **Escalada por riesgo (calibración 2026-08-31):** si `Riesgo (C) >= 4` **y** `T >= 14`, forzar bucket `high` aunque la baja ambigüedad (D) deje el total < 17. La ambigüedad se clarifica; el riesgo de pérdida de datos (producción) no. Protege tareas peligrosas pero claras de ser sub-pipelineadas. Marca `escalated=1` en el output.
 5. **Justificar siempre** la decisión en una línea antes de proceder.
 
 > **Modelo de scorer:** el script evaluador usa `gemma4:e4b-mlx` local primero

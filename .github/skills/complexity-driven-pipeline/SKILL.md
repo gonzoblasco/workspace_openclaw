@@ -44,6 +44,12 @@ User objective
 | medium  | 13-16   | A → B → Kanam | default | high     | A+B  |
 | high    | 17-20   | Kanam(max) → A(high) → B(high) → verify | default | max+high | A+B+Kanam |
 
+**Risk escalation (2026-08-31):** if `C >= 4` AND `T >= 14`, force the `high`
+bucket even if low ambiguity (D) leaves the linear total below 17. This protects
+dangerous-but-clear tasks (e.g. prod DB migration to sharding: T=16 but C=5) from
+being under-pipelined. Output marks `escalated: 1`. Rationale: ambiguity can be
+clarified, production data-loss risk cannot.
+
 ## Step-by-step
 
 ### 1. Score
