@@ -2,6 +2,8 @@
 
 **T=15 (high)** | Pipeline: Kanam diseña → A escribe → B revisa → verificación
 
+> **Estado: COMPLETO 2026-08-31 23:35.** Verificación: 34 tests verdes (incluye 5 tests de edge cases de review B), lint + typecheck + build OK, endpoint validado contra Ollama real (reply + 2 acciones). Fixes de review B aplicados (idempotencia, validación de existencia). Tag v0.3.0 + GitHub Release publicados.
+
 ## Objetivo
 
 Chat con manos: el autor conversa con la IA sobre la historia y la IA puede **proponer acciones** (crear nodos, conectar edges, editar contenido) que el autor aprueba y se aplican al grafo. Proxy a Ollama, contexto = story completa + ruta actual.
