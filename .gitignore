@@ -113,3 +113,7 @@ memory/export/
 
 # Pipeline state (mutable working state, not versioned - kanam-pulse etc.)
 pipeline-state.json
+
+# Repos embebidos de proyectos: ignorar su .git/ para que el workspace los vea como dirs normales
+# (si no, git los trata como gitlink y no desciende al .knowledge/)
+/projects/*/.git/
