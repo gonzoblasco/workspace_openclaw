@@ -117,3 +117,8 @@ pipeline-state.json
 # Repos embebidos de proyectos: ignorar su .git/ para que el workspace los vea como dirs normales
 # (si no, git los trata como gitlink y no desciende al .knowledge/)
 /projects/*/.git/
+
+# OpenClaw dreaming state (local, machine-specific)
+DREAMS.md
+memory/.dreams/
+memory/dreaming/
