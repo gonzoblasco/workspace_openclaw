@@ -7,7 +7,7 @@
     "test": "npm run test:scripts && npm run test:bats && npm run test:pytest",
     "test:scripts": "./scripts/test-skills.sh",
     "test:bats": "bats tests/bash/",
-    "test:pytest": "pytest tests/python/"
+    "test:pytest": "python3 -m pytest tests/python/"
   },
   "devDependencies": {
     "bats": "^1.13.0"
