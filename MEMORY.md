@@ -25,6 +25,7 @@
 - Setup: Mac Mini + MacBook Air (workspace sincronizado por git).
 - **PRs en sesiones (2026-08-25):** No se revisan automáticamente al inicio. Solo cuando Gonzo los comparte.
 - **Branding LinkedIn (2026-08-25):** 3 nichos: (1) **a11y** (diferenciador), (2) **Agentic/AI-Native** (laboral), (3) **Fullstack** (base). Patrón: Solo PRs MERGEADOS, postura didáctica/pedagógica (el qué+proceso+por qué), sin tutoriales secuenciales. Archivo cada post en `docs/linkedin/`.
+- **Regla de branding (2026-09-02):** Issues/participaciones con crédito de maintainers NO son material de post - solo PRs mergeados propios. El crédito externo (ej. cixzhang en #4777) es material de ENTREVISTA (evidencia de proceso), no de LinkedIn. Registro interno (OSS-TRACKER/daily) captura todo; branding público solo merges propios.
 - **Ley de vida (2026-08-12):** Silencio = respeto. Hablar solo si hay algo que aportar. Un "ok" es ruido.
 - **Principio Boy Scout (2026-08-17):** Dejar el lugar mejor de como estaba al guardar sesión. Documentación constante y tests sobre lo nuevo.
 - **Regla de merge:** Siempre merge, nunca reset (evita perder commits de la otra máquina).
