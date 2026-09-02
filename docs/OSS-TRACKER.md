@@ -10,7 +10,7 @@
 | PRs abiertos | 17 |
 | PRs mergeados | 6 |
 | PRs cerrados sin merge | 20 |
-| Colaboraciones no-codigo | 9 |
+| Colaboraciones no-codigo | 10 |
 | Repos con contribuciones | 19 |
 
 ## PR Registry
@@ -252,6 +252,7 @@
 |------|---------|---------|
 | NousResearch/hermes-agent | [#38072](https://github.com/NousResearch/hermes-agent/issues/38072) | COLABORACION NO-CODIGO. Re-audit de a11y publicado como comentario (24/08): verifico contra main actual que findings siguen vivos (#3,#4,#5,#6) y cuales se mitigaron (#1 mejorado, #2 resuelto). Comentario issuecomment-5393570919. |
 | adobe/react-spectrum | [#9556](https://github.com/adobe/react-spectrum/issues/9556) | PR PROPIO CERRADO 02/09 como innecesario (decision documentada). Fix de #9556 (aria-posinset global en secciones): el helper getPosInSet hacia DOBLE CONTEO (item.index en react-stately ya es global 0,1,2,3 - verificado empiricamente; sumaba index+1 + items de secciones precedentes = 5 en vez de 3). El codigo ORIGINAL ya produce posinset global correcto (test nuevo pasa contra main sin el fix). Bug de #9556 ya resuelto upstream por #9615 (merged Feb 2026, co-autor snowystinger). CI rojo (lint, s2-docs, test, test-16/17/18) consistente con el doble conteo. snowystinger pidio arreglar + evidencia de SR testing humano (politica AI-assisted de Adobe). Cierre con analisis completo (issuecomment-5510672207) + oferta de PR test-only con el test de regresion. Leccion: verificar contra main ANTES de abrir PR cuando el issue es viejo. |
+| adobe/react-spectrum | [#10220](https://github.com/adobe/react-spectrum/issues/10220) | PR PROPIO (fix #10220, combobox announcements section-gate). 02/09: snowystinger senalo CI rojo + pidio evidencia de SR testing humano (politica AI-assisted). Fix: SearchAutocomplete.test.js (usa useComboBox internamente) tenia asserts del comportamiento viejo - actualizados al section-gated (commit 322a9543b, pusheado). A diferencia del #10487, este fix NO esta roto: el gate es direccion valida, ComboBox.test.js ya estaba actualizado, solo faltaba SearchAutocomplete. Comment honesto (issuecomment-5510942540): sin acceso a VoiceOver real, gate conservador, verificacion final requiere humano con Mac. Pendiente: CI + re-review. |
 | facebook/astryx | [#3764](https://github.com/facebook/astryx/issues/3764) | COLABORACION NO-CODIGO. Selector typeahead: el diagnostico/audit de Gonzo fue la base, el fix llego a main via PR de otro autor (merged 11/08). Impacto real sin merge a nombre de Gonzo. |
 | facebook/astryx | [#5107](https://github.com/facebook/astryx/pull/5107) | COLABORACION NO-CODIGO. Dividers/Selector a11y: el trabajo de Gonzo (PR #5344, cerrado sin merge) fue la base, el fix llego a main via PR de otro autor (merged 23/08). Diagnostico de Gonzo fue el punto de partida. |
 | facebook/astryx | [#4157](https://github.com/facebook/astryx/pull/4157) | COLABORACION NO-CODIGO. Avatar status labels: el trabajo de Gonzo fue la base, el fix llego a main via PR de otro autor (merged 24/07). |
