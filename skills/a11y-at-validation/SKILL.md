@@ -42,6 +42,8 @@ Si el cambio cae en la columna "solo verificable manualmente" de la tabla, la va
 
 ### 2. Ejecutar la validación manual
 
+0. **Si el repo tiene tests de layout en browser real (`.browser.test.*` con vitest), correrlos primero** - es la evidencia automatizable que los maintainers piden (Adobe lo pidió explícitamente). En react-spectrum: `yarn vitest run --config=vitest.browser.config.ts --project=chromium-desktop <archivo>` y `--project=firefox-desktop`. Requiere `npx playwright install chromium firefox` la primera vez. Un test de layout mide el bounding box del input oculto contra el componente visible (lo que jsdom no puede validar) y es la prueba de que el SR focus ring coincide con el visual. Documentar la matriz (browser x resultado) en el PR.
+
 1. Levantar el storybook/playground local apuntando a la rama del PR (workspace build, no main).
 2. Activar el AT del sistema:
    - macOS: VoiceOver con **Cmd + F5**.
@@ -68,6 +70,23 @@ ANTES de proponer cambiar el componente, buscar en el código si el comportamien
 ### 4. Documentar la validación en el PR/issue
 
 Comentar en el PR la evidencia de validación manual (qué anunció cada caso, captions confirmados). Si hay un hallazgo separado, abrir un issue aparte y referenciarlo - no mezclar con el PR principal.
+
+## Antes de reworkear un PR de a11y que falla CI: verificar contra main
+
+Cuando un maintainer reporta que un PR de a11y falla tests/lint, NO reworkear a ciegas. Verificar primero, con evidencia empírica, dos cosas:
+
+1. **¿El bug reportado existe en main actual?** El issue puede ser viejo y ya resuelto por otro PR. Correr el test de regresión contra main (sin el fix) - si pasa, el fix es innecesario y el PR debe cerrarse con el hallazgo documentado, no reworkearse.
+2. **¿La suposición del fix sobre el modelo de datos es cierta?** Ej. asumir que `item.index` reinicia por sección cuando en react-stately ya es global. Verificar con un test de debug que imprima los valores reales (index, parentKey) en la estructura real, no leyendo el código.
+
+**Método:** escribir un test de debug que renderice la colección real y loguee los valores que el fix asume, correrlo contra main, y comparar con lo que el fix espera. Si el código original ya produce el resultado correcto, el fix rompe sin arreglar nada - cerrar el PR con comentario honesto en vez de insistir.
+
+**Regla derivada:** un fix que "arregla" un bug que ya no existe, y que además rompe tests existentes por una suposición falsa, no se reworkea - se cierra documentando el hallazgo. La política AI-assisted de Adobe (y similares) exige además validación humana de SR, que no se puede fabricar.
+
+### Distinguir "fix roto" de "test hermano sin actualizar"
+
+Cuando un maintainer reporta CI rojo en un PR de a11y, antes de decidir entre cerrar o reworkear, buscar si el fallo viene de un **test hermano** que usa el mismo hook internamente pero quedó con el comportamiento viejo. Ej. react-spectrum: `SearchAutocomplete.test.js` usa `useComboBox` internamente, así que un cambio en el announcement de `useComboBox` rompe sus asserts aunque el fix sea correcto.
+
+**Método:** `grep -rln "expect(announce)" packages/` (o el assert que cambió) para encontrar todos los tests que dependen del comportamiento modificado, no solo el del componente directo. Si el fix es una dirección válida y solo falta actualizar el test hermano al nuevo comportamiento (mismo patrón que el test del componente ya actualizado), se actualiza y se pushea - no se cierra. Si en cambio el fix rompe por una suposición falsa sobre el modelo de datos, se cierra (caso anterior).
 
 ## Errores comunes
 
