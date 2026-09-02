@@ -6,6 +6,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-02] - Regla de auto-review antes de abrir PRs
+
+### Added
+- **`MEMORY.md`** (seccion "Sobre Gonzo"): nueva regla durable "Auto-review antes de abrir PRs (2026-09-02)" - un test que dice cubrir X debe renderizar la estructura real de X, no una version simplificada. Checklist: (1) DOM/estructura real, (2) aserciones alineadas al body del PR, (3) el test falla si el comportamiento se rompe. Leccion del PR react-spectrum #10554 (test de secciones que flatteneaba la estructura).
+
+### Why
+- El PR react-spectrum #10554 se abrió con un test que afirmaba cubrir secciones pero renderizaba un menu plano - el maintainer lo detectó en segundos. La regla evita que un atajo en tests queme reputación en PRs públicos.
+
+---
+
 ## [2026-08-30] - Revert a DeepSeek V4 Flash como default de todo el sistema
 
 ### Changed

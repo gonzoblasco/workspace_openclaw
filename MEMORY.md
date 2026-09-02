@@ -44,6 +44,7 @@
 - **Referencia ≠ proyecto (2026-08-24):** "Quitar referencia" = quitar puntero git, NUNCA borrar carpeta con datos locales (`.env`, `*.db`). Respaldar SIEMPRE antes de limpiar.
 - **Diferenciador:** IA como infraestructura de trabajo (no chat), stack opinado, docs de decisiones.
 - **Regla de tools (2026-08-30):** Cuando un `file_write`/`edit`/`apply_patch` devuelve error de validación (ej. falta de `node`), NO asumir que la operacion tuvo exito. Confirmar con el resultado del tool o con un `read` posterior. Reportar el fallo al usuario, no inventar el exito.
+- **Auto-review antes de abrir PRs (2026-09-02):** Un test que dice cubrir X debe renderizar la estructura real de X, no una version simplificada. Checklist antes de abrir: (1) el test ejercita el DOM/estructura real, no un mock flatten; (2) las aserciones verifican el comportamiento declarado en el body del PR; (3) el test falla si el comportamiento se rompe (probar mutandolo mentalmente). Un maintainer detecta atajos en segundos - mejor iterar localmente que en review. Leccion del PR react-spectrum #10554 (test de secciones que flatteneaba y no renderizaba la estructura).
 
 ## Metodología
 
