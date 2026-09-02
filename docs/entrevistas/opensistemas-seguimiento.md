@@ -1,7 +1,7 @@
 # Plan de Seguimiento - OpenSistemas
 
-**Fecha:** 2026-08-28 (actualizado 2026-08-31)
-**Estado:** ENTREVISTA TECNICA CONFIRMADA - Fernando quiere conocer a Gonzalo. Camila (recruiting) está revisando la agenda de Fernando para confirmar día y hora.
+**Fecha:** 2026-08-28 (actualizado 2026-09-02)
+**Estado:** ENTREVISTA TECNICA CONFIRMADA - MAÑANA 03/09 8:30 (GMT-3) con Fernando
 
 ---
 
@@ -22,6 +22,12 @@
 - **Qué es:** entrevista técnica con Fernando (probablemente lead/tech de OpenSistemas). Hablar en detalle de conocimientos + expectativas del rol.
 - **Pendiente:** esperar que Camila confirme día y hora.
 - **Preparación sugerida:** repasar perfil AI-Native (demo PRs astryx #5419/#5493, pipeline A/B, stack opinado, a11y). Tener claro qué se espera del rol (colaboración freelance 100% remoto LATAM).
+
+## UPDATE 2026-09-02 - Fecha confirmada: MAÑANA 03/09 8:30 🎯
+
+- **Confirmado:** entrevista técnica con Fernando, miércoles 03/09 8:30 (GMT-3).
+- **Preparación:** repasar perfil AI-Native (demo PRs astryx #5419/#5493, pipeline A/B, stack opinado, a11y). Tener claro qué se espera del rol (colaboración freelance 100% remoto LATAM).
+- **Material fresco de hoy:** PR #10517 de react-spectrum (rework con maintainer real, browser tests verdes) - mejor demo que los PRs de astryx para mostrar iteración con reviewers.
 
 ---
 
