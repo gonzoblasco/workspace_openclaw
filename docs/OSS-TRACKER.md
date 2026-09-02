@@ -10,8 +10,8 @@
 | PRs abiertos | 17 |
 | PRs mergeados | 6 |
 | PRs cerrados sin merge | 20 |
-| Colaboraciones no-codigo | 11 |
-| Repos con contribuciones | 19 |
+| Colaboraciones no-codigo | 12 |
+| Repos con contribuciones | 20 |
 
 ## PR Registry
 
@@ -261,3 +261,4 @@
 | facebook/astryx | [#3654](https://github.com/facebook/astryx/issues/3654) | COLABORACION NO-CODIGO. Contrast tokens WCAG: el diagnostico de Gonzo (PR #4022) fue la base; PR #3677 de otro autor quedo CLOSED sin merge pero el trabajo influyo. El #4022 de Gonzo CERRADO 28/08 por ownership (issue #3654 asignado a @rubyycheung, programa #4475) - aprobado 2x por cixzhang pero cerrado por coordinacion a11y+design. |
 | facebook/astryx | [#3349](https://github.com/facebook/astryx/issues/3349) | COLABORACION NO-CODIGO. RFC InfoTip: unico feedback sustantivo (16/07). Argumento Option A (standalone InfoTip) sobre B, propuse patron toggletip (tap abre, Escape/2do tap cierra) y aria-describedby al elemento explicado, ofreci implementacion/tests. ISSUE CERRADO 01/09 como COMPLETED por rubyycheung: #3355 (merged 08/07) implemento InfoTip en lab con button+aria-label+hover/focus+Escape; #5248 (merged 21/08) agrego touchTrigger=tap (tap abre/cierra); #4408 (AKnassa, cerrado sin merge) aporto el diagnostico de tap que entro via #5248. Option A y comportamiento toggletip coincidieron con lo implementado; aria-describedby NO se implemento. PR #3355 se mergeo 8 dias ANTES del comment, sin causalidad directa. |
 | facebook/astryx | [#4777](https://github.com/facebook/astryx/issues/4777) | COLABORACION NO-CODIGO. Avatar status a11y: ISSUE CERRADO 02/09 como FIXED por cixzhang con CREDITO EXPLICITO a Gonzo: 'the parent-reads-child framing is what made this fixable, and the follow-up discussion about the interactive <a>/<button> branches shaped the answer'. Fix en main via #5034 (cixzhang, merged 22/08): AvatarStatusDot reporta label via ref compartido en commit phase (sin render extra, sin API change, sin breaking change). Tests cubren el ejemplo del issue (wrapper arbitrario, nesting depth, decorative avatar). Nota: label cae en commit phase, SSR lleva el nombre plano hasta hydration. Aportes de Gonzo: comment 07/08 (3 opciones, empuje a opcion 3 con spike AT), comment 10/08 (sibling del root en vez de role=group para ramas interactivas - la forma que se implemento). |
+| vercel/next.js | [73474](https://github.com/vercel/next.js/issues/73474) | Comentario de diagnostico (16/07) en issue de Loading.tsx/Suspense que no funcionan en 2do load. Separo 3 escenarios confluidos: A) Antivirus/proxy (Kaspersky cachea text/html y text/x-component), B) Streaming roto en prod por reverse proxy (X-Accel-Buffering), C) await antes de Suspense como clue de flush de boundaries sin async work en el parent. CERRADO 02/09 por marcoshernanz como 'downstream response buffering, not a Next.js failure' - confirma el diagnostico A/B. Mi comentario estructuro el analisis que el maintainer valido al cerrar. |

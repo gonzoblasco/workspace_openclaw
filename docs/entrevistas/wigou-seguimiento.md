@@ -5,11 +5,14 @@
 
 ---
 
-## UPDATE 2026-09-02 - Meet realizado
+## UPDATE 2026-09-02 - Meet realizado + follow-up con chiste
 
 - **Meet:** miércoles 02/09 9:30 con Andrés Abraham (Co-Founder/COO).
 - **Sensación de Gonzo:** no fue maravilloso. Al pedir feedback, respuesta genérica de siempre ("siempre comunicamos los motivos").
 - **Lectura:** sin señales claras de avance ni de rechazo. Proceso en pausa - no hacer seguimiento agresivo; si no vuelven, es señal.
+- **Follow-up de Gonzo (11:30, LinkedIn):** le quedó picando la frase de Andrés sobre los cursos "te prometo lo importante son los prompts". Le escribió en tono de charla: "yo creo que lo importante está siempre en el contexto... por bueno que sea el prompt, si el contexto es el equivocado responde cualquier cosa... sorry, je... me quedó picando".
+- **Respuesta de Andrés (12:01):** "exacto! a eso me refería, que los que dan cursos repiten información a medias que encuentran en tiktok jaja". Validación total - conectó con la posición técnica de Gonzo (contexto > prompt).
+- **Lectura del intercambio:** el "sorry, je" era chiste/tic, no disculpa (origen de la regla "analizar antes de asumir" en USER.md/MEMORY.md). La respuesta de Andrés en el mismo tono de charla = diálogo vivo, señal positiva aunque el meet haya sido regular.
 - **Pendiente:** esperar. Si no hay novedad en ~1 semana, considerar cerrado.
 
 ---

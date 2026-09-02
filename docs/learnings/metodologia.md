@@ -176,10 +176,11 @@ Gonzo corrigio el registro efusivo (serenatas en cada respuesta). El registro na
 
 ---
 
-## Confirmar el alcance antes de construir
+## 2026-09-02 - Registrar TODO en MD + DB, nunca depender de la conversacion
 
-Gonzo propongo integrar Lovable MCP y genere de inmediato scripts, configs y README sobre supuestos (que repo? que rol de cada herramienta?). Tuvo que corregirme 3 veces "no es lo que busco" hasta que quedo claro: codigo directo con Kanam sobre el repo original v1, MCP solo para consultas read-only, creditos de Lovable para Cloud/AI/serverless. Construir rapido con supuestos no validados = desperdicio doble (trabajo tirado + friccion).
+Caso real: el chiste del follow-up a Andres (Wigou) no estaba en las notas - dependia de la conversacion. Si la sesion se borraba, se perdia. La regla: registrar todo (mensajes, intercambios, decisiones) en los .md y en la DB en el momento (WAL), para que el contexto sea 100% recuperable sin depender del transcript. La conversacion es efimera; los archivos son la memoria.
 
-**Tags:** feedback,alcance, confirmacion, integraciones
+**Tags:** registro,wal,contexto,entrevistas
 
 ---
+
