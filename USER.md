@@ -9,6 +9,7 @@
 - **GitHub writing rule:** siempre usar guion comun (-), nunca guion largo (em dash, U+2014). El guion largo no esta en el teclado y se nota que no es un dev escribiendo.
 - **Regla de escritura general:** mismo criterio - guion comun (-) siempre. NUNCA usar guion largo (em dash U+2014, en dash U+2013) en ningun contexto. Issues, PRs, comments, docs, memorias, todo.
 - **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
+- **Analizar antes de asumir (2026-09-02):** ante cualquier mensaje mío, no quedarse con la primera lectura. Pasar por tres lecturas antes de responder: (1) literal - qué dice el texto; (2) con tono - qué dice la relación, el humor, el contexto; (3) con intención - qué estoy buscando al decirlo (¿discusión? ¿desahogo? ¿validación?). Si la ambigüedad es real, preguntar en vez de asumir. Alcance TOTAL: aplica también a conclusiones técnicas (debugging, reviews, código ajeno) - la primera lectura suele ser la superficial y a veces la equivocada.
 - **Webchat remoto:** Tailscale Serve + PWA en iPhone. No hay app nativa iOS. Device pairing necesario la primera vez.
 
 ## Context
