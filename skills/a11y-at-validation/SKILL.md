@@ -82,6 +82,8 @@ Cuando un maintainer reporta que un PR de a11y falla tests/lint, NO reworkear a 
 
 **Regla derivada:** un fix que "arregla" un bug que ya no existe, y que además rompe tests existentes por una suposición falsa, no se reworkea - se cierra documentando el hallazgo. La política AI-assisted de Adobe (y similares) exige además validación humana de SR, que no se puede fabricar.
 
+**Rescatar el test de regresión como PR test-only:** si el fix es innecesario pero el test de regresión que lo acompaña tiene valor (pasa contra main y fija el comportamiento), no descartarlo con el PR cerrado. Extraerlo como PR test-only: `git checkout -b test/<desc> origin/main`, aplicar solo el diff del test con `git show <commit> -- <archivo-test> | git apply`, verificar que pasa contra main, abrir el PR (sin cambios de producción) y referenciarlo en el comment de cierre del PR original. Así el valor del test sobrevive sin arrastrar el fix roto.
+
 ### Distinguir "fix roto" de "test hermano sin actualizar"
 
 Cuando un maintainer reporta CI rojo en un PR de a11y, antes de decidir entre cerrar o reworkear, buscar si el fallo viene de un **test hermano** que usa el mismo hook internamente pero quedó con el comportamiento viejo. Ej. react-spectrum: `SearchAutocomplete.test.js` usa `useComboBox` internamente, así que un cambio en el announcement de `useComboBox` rompe sus asserts aunque el fix sea correcto.
