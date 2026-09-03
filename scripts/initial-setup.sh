@@ -285,7 +285,7 @@ setup_subrepos() {
   for dir in "${PROJECTS_DIR}"/*/; do
     [[ -d "$dir" ]] || continue
     slug="$(basename "$dir")"
-    if [[ -d "${dir}/.git" ]]; then
+    if git -C "${dir}" rev-parse --git-dir >/dev/null 2>&1; then
       info "${slug}: already cloned"
       if [[ "${DO_PULL}" == "1" ]]; then
         git -C "${dir}" pull --rebase -q && info "  pulled"
@@ -316,7 +316,9 @@ verify() {
   for d in "${PROJECTS_DIR}"/*/; do
     [[ -d "$d" ]] || continue
     total=$((total + 1))
-    [[ -d "$d/.git" ]] && with_git=$((with_git + 1))
+    if git -C "$d" rev-parse --git-dir >/dev/null 2>&1; then
+      with_git=$((with_git + 1))
+    fi
   done
   ok "${with_git}/${total} projects have their own .git (rest are workspace-memory only)"
 
