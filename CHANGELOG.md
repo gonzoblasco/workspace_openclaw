@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-02] - Repo agregado projects_openclaw (privado)
+
+### Added
+- **`gonzoblasco/projects_openclaw`** (PRIVADO): repo agregado con el código fuente completo de los 20 proyectos (`projects/`), 1887 archivos. Cada proyecto respeta su propio `.gitignore` (node_modules, .next, dist, .env, *.db excluidos) + `.gitignore` raíz de red de seguridad. Sin `.git/` embebidos (imposible en git sin gitlinks) - el historial de cada proyecto sigue en su repo individual. 838M de disco -> 18M en el repo.
+- **Carpeta local `projects_openclaw/`** en el workspace, ignorada al 100% por el `.gitignore` del workspace (no se versiona; el repo vive en GitHub).
+
+### Why
+- Gonzo quiere un solo repo privado con casi todo el código fuente de sus proyectos (como snapshot/archive consultable) sin las carpetas pesadas ni secretos ni historiales de git embebidos.
+
+### Notes
+- `ai-developer-stack/.knowledge` es un symlink roto (del repo original) - entra como symlink, no como contenido.
+- `projects/` conservó su repo local previo (sin remote, 2 commits, trackea PROYECTOS.md + `.knowledge/`) - intacto.
+
+---
+
 ## [2026-09-02] - Clone completo de projects/ + resolución de gitlinks
 
 ### Added

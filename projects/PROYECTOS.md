@@ -1,8 +1,10 @@
 # PROYECTOS.md - Índice Maestro Universal
 
-**Última actualización:** 2026-08-29
+**Última actualización:** 2026-09-02
 
 > **Regla de oro:** GitHub es la fuente de la verdad. Cada proyecto vive en su propio repo (sin submódulos ni repos dentro del repo). El workspace (`~/.openclaw/workspace`) solo contiene config, memoria y skills. Este archivo es un **índice universal**: lista todos los proyectos de Gonzo en GitHub, sin importar en qué máquina estén clonados (Gonzo trabaja entre dos computadoras y no siempre el mismo proyecto en cada una).
+>
+> **Repo agregado (2026-09-02):** [`gonzoblasco/projects_openclaw`](https://github.com/gonzoblasco/projects_openclaw) (PRIVADO) contiene el código fuente completo de los 20 proyectos de `projects/` como snapshot consultable (sin `.git/`, sin node_modules/.env/*.db, cada proyecto respeta su propio `.gitignore`). No es la fuente de la verdad para trabajar - el historial de cada proyecto vive en su repo individual.
 
 ---
 

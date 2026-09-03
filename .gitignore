@@ -122,3 +122,7 @@ pipeline-state.json
 DREAMS.md
 memory/.dreams/
 memory/dreaming/
+
+# projects_openclaw: repo agregado privado con el codigo fuente de todos los proyectos
+# (copia de projects/ sin .git ni node_modules). Vive aparte, no se versiona en el workspace.
+projects_openclaw/
