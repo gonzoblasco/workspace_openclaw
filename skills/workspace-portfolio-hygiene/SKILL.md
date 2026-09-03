@@ -1,6 +1,6 @@
 ---
 name: "workspace-portfolio-hygiene"
-description: "Audit, clean, and structure workspace projects: classify gitlinks vs blobs, honor ADR decisions, archive repos, promote folders to double git."
+description: "Update portfolio hygiene (rebase 02:37, final)"
 ---
 
 # Workspace portfolio hygiene
@@ -36,6 +36,17 @@ Rules:
 - `scripts/initial-setup.sh` fails on machines that once used submodules: a project's `.git` there is a gitfile (a 47-byte file containing `gitdir: ...`, not a directory), and repos armed with `init+fetch+reset` have no upstream tracking. Recovery that works: detect repos by `[[ "$(git -C dir rev-parse --show-toplevel)" == "$dir" ]]` (covers dir + gitfile and avoids the false positive of resolving to the parent aggregate), and pull with explicit `git pull --rebase origin main` instead of relying on tracking. Local dirty changes (uncommitted source, `.knowledge/` the workspace owns) are respected - the script must never pull over or stash them. Before a real run, probe the existing machine with `--dry-run` to see which projects resolve as real repos vs "would clone" (memory-only).
 
 Old scripts (`init-project.sh` pre-2026-09-02) generated a `.gitignore` ignoring `.knowledge/` and registered submodules - that is obsolete; the script was rewritten.
+
+## Post-pull verification (after a machine ran initial-setup.sh)
+
+After `git pull --rebase` from a machine that just ran the setup, inspect every dirty subrepo and repair the two expected residues; then verify the memory DB was cataloged.
+
+1. Classify each dirty state (`git -C projects/<slug> status --porcelain`):
+   - `?? .knowledge/` (untracked, not in repo history): add the triple-git exclude - `printf '\n# Triple-git: .knowledge/ belongs to the workspace git\n.knowledge/\n' >> projects/<slug>/.git/info/exclude` - and the repo goes clean.
+   - `D <tracked file>` (deleted, exists in HEAD): the aggregate checkout excluded it (e.g. `.vscode/`, `.env`) and reset left it out - restore with `git -C projects/<slug> restore <path>` after confirming it is in HEAD (`git show HEAD:<path>`). For a tracked `.env` in a public repo, DO NOT auto-restore - record a todo (possible historical secrets) and ask Gonzo whether to restore or purge history.
+   - `M .knowledge/*` (modified, tracked in repo history): known double-tracking debt - the workspace version is the authority; do NOT touch.
+2. After repairs, one repo may still carry a real blocker (e.g. archived target) - record it as a todo, never leave it silent.
+3. Sync the workspace daily to the DB (DB-first): write the post-pull section with `scripts/memory-end-session.py --project <name> --summary <text> --date <today>`, then run `scripts/memory-db.sh catalog`. If catalog crashes with `IndexError` in topic-centroid math, the DB mixes embedding dimensions (old 32-dim vectors vs current 768-dim) - fix `compute_topic_centroids` to only sum vectors of equal length per topic, then re-run.
 
 ## Workflow
 

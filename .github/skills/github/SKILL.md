@@ -1,6 +1,6 @@
 ---
 name: "github"
-description: "Add official GitHub MCP server wrapper for advanced tools: security alerts, notifications, discussions, project boards, code analysis."
+description: "Update github (rebase of 20260902 proposal)"
 metadata:
   category: "Development"
   tags:
@@ -147,6 +147,10 @@ gh api --cache 1h repos/owner/repo --jq '{stars: .stargazers_count, forks: .fork
 ```
 
 Use `--json` + `--jq` for structured output. Use `--body-file` for comments/bodies containing backticks, shell snippets, env names, or user text.
+
+### ⚠️ Referenced #NNNN puede ser una Discussion, no un Issue
+
+Cuando un hilo referencia `#NNNN` y `gh api repos/owner/repo/issues/NNNN` devuelve 404, el numero probablemente es una **Discussion** (numeracion propia, no consultable por la issues API). Verificar con `curl -s -o /dev/null -w "%{http_code}" https://github.com/owner/repo/discussions/NNNN` (200 = discussion) o con la Search API. No asumir que el numero es un issue inexistente.
 
 ## gh CLI: Comments & Reviews
 

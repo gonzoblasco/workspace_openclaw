@@ -1,6 +1,6 @@
 ---
-name: api-and-interface-design
-description: Guides stable API and interface design. Use when designing APIs, module boundaries, or any public interface. Use when creating REST or GraphQL endpoints, defining type contracts between modules, or establishing boundaries between frontend and backend.
+name: "api-and-interface-design"
+description: "Guides stable API and interface design. Use when designing APIs, module boundaries, or any public interface. Use when creating REST or GraphQL endpoints, defini"
 ---
 
 # API and Interface Design
@@ -89,25 +89,7 @@ interface APIError {
 
 Trust internal code. Validate at system edges where external input enters:
 
-```typescript
-// Validate at the API boundary
-app.post('/api/tasks', async (req, res) => {
-  const result = CreateTaskSchema.safeParse(req.body);
-  if (!result.success) {
-    return res.status(422).json({
-      error: {
-        code: 'VALIDATION_ERROR',
-        message: 'Invalid task data',
-        details: result.error.flatten(),
-      },
-    });
-  }
-
-  // After validation, internal code trusts the types
-  const task = await taskService.create(result.data);
-  return res.status(201).json(task);
-});
-```
+Validate at the API boundary with `Schema.safeParse(req.body)`; after validation, internal code trusts the types.
 
 Where validation belongs:
 - API route handlers (user input)
@@ -121,6 +103,8 @@ Where validation does NOT belong:
 - Between internal functions that share type contracts
 - In utility functions called by already-validated code
 - On data that just came from your own database
+
+**Request schemas that validate the root model go in a sibling `*-request.ts` file.** When the domain module's schemas are embedded in the root model (root imports the domain module at runtime), the API request schema that validates the full root model must live in a separate `*-request.ts` next to the domain module. Importing the root model schema into the domain module creates a runtime import cycle that breaks Zod parsing ("Cannot read properties of undefined (reading '_parse')"). Check for an existing `*-request.ts` sibling and follow it before writing the schema into the domain module.
 
 ### 4. Prefer Addition Over Modification
 

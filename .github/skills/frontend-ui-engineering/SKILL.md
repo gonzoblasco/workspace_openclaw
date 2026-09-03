@@ -1,6 +1,6 @@
 ---
-name: frontend-ui-engineering
-description: Builds production-quality, accessible, responsive user-facing UIs. Integrates accessibility standards (WCAG 2.1 AA), design system adherence, and generation prompts for component creation. Use when building or modifying interfaces, creating components, implementing layouts, managing state, or when the output needs to look and feel production-quality rather than AI-generated.
+name: "frontend-ui-engineering"
+description: "Update frontend-ui-engineering (rebase of stale proposal)"
 ---
 
 # Frontend UI Engineering
@@ -17,6 +17,12 @@ Build production-quality user interfaces that are accessible, performant, and vi
 - Adding interactivity or state management
 - Fixing visual, accessibility, or UX issues
 - Creating reusable component patterns from design specs
+
+---
+
+## 🧹 Inline Styles → CSS Modules
+
+One `.module.css` per component, semantic classes, values unchanged. Dynamic styles → conditional classes (`selected`, `:disabled`, `[aria-pressed='true']`). Class maps typed `string | undefined` (CSS module imports are `string | undefined` under `noUncheckedIndexedAccess`).
 
 ---
 

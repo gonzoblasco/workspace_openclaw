@@ -1,6 +1,6 @@
 ---
-name: code-review-and-quality
-description: Conducts multi-axis code review with quality gates. Integrates five-axis review (correctness, readability, architecture, security, performance), anti-pattern detection, and mentorship feedback. Use when reviewing code written by yourself, another agent, or a human before merging any change to the main branch.
+name: "code-review-and-quality"
+description: "Conducts multi-axis code review with quality gates. Integrates five-axis review (correctness, readability, architecture, security, performance), anti-pattern de"
 ---
 
 # Code Review and Quality: The Five-Axis Inspection
@@ -22,21 +22,6 @@ Multi-dimensional code review with quality gates. Every change gets reviewed bef
 - [ ] Are edge cases handled?
 - [ ] Is error handling comprehensive?
 - [ ] Are type signatures correct (if TypeScript)?
-
-**Common Issues:**
-```tsx
-// ✗ WRONG - Missing null check
-function getUser(id) {
-  return users.find(u => u.id === id); // Returns undefined, not null
-}
-
-// ✓ CORRECT - Explicit handling
-function getUser(id) {
-  const user = users.find(u => u.id === id);
-  if (!user) throw new NotFoundError('User not found');
-  return user;
-}
-```
 
 ---
 

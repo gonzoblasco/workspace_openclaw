@@ -1,5 +1,6 @@
 ---
 name: "oss-contribution"
+description: "Update oss-contribution (rebase 00:12, final)"
 metadata:
   category: "Contribution"
   tags:
@@ -8,7 +9,6 @@ metadata:
     - pr
     - issues
     - community
-description: "Workflow de contribución estratégica a repos OSS externos: triaje, seguimiento de issues y PRs, reglas de interacción, registry. Complementa github (que cubre el cómo: comandos y MCP)."
 user-invocable: false
 ---
 
@@ -79,6 +79,7 @@ Además de trackear PRs, **revisar periódicamente los issues en los que ya come
 - **No meterse en hilos cerrados/muertos.** Si un PR está closed y no hay una pregunta directa hacia Gonzo, no comentar. El silencio no es una invitación.
 - **Menciones como referencia técnica ≠ llamado a la acción.** Si alguien menciona a Gonzo como referencia de un bug (ej: "como @gonzoblasco observó"), no requiere respuesta a menos que haya una pregunta explícita.
 - **PRs cerrados por detección de automatización:** evaluar caso por caso. Por defecto no intervenir. Si hay una razón para mostrar empatía, comentar con cuidado y consultar a Gonzo primero.
+- **Verificar con Gonzo antes de publicar (2026-09-02):** antes de pushear commits a un PR ajeno o publicar una respuesta en un hilo de review, mostrar el plan/diff a Gonzo y esperar su aprobación. El flujo establecido es borrador → aprobación de Gonzo → publicar. No encadenar múltiples rondas de push + respuesta sin verificación intermedia - cada ronda de review se confirma con Gonzo antes de actuar. Lección del PR react-spectrum #10554 (3 pushes + 3 respuestas sin verificar, corrección explícita de Gonzo).
 
 ## Outputs
 

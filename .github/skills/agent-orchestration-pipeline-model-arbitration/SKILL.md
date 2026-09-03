@@ -1,6 +1,6 @@
 ---
 name: "agent-orchestration-pipeline-model-arbitration"
-description: "Arbitraje de modelo para pipeline A/B: DeepSeek Flash (iter 1-2), GLM 5.3 Flash (iter 3), Kimi K2.7 Code (iter 4, nivel superior)."
+description: "Update model arbitration (rebase 22:51, final)"
 ---
 
 # Arbitraje de modelo en Agent Orchestration Pipeline
@@ -47,6 +47,9 @@ Si una tarea con Flash falla:
 - Reintentar una vez mas con Flash mejorando el prompt.
 - Si sigue fallando, escalar a GLM 5.3 Flash.
 - Si GLM tampoco, escalar a Kimi K2.7 Code.
+
+### 7. GLM sin output: volver a Flash (validado 2026-09-02)
+Si un agente con `glm-5.3-flash:cloud` corre sin escribir nada (working tree limpio tras ~10-20 min, proceso vivo sin cambios): matar el proceso y relanzar la misma tarea con `deepseek-v4-flash:cloud`. DeepSeek escribio el fix completo en ~10 min donde GLM no produjo nada en 20. Verificar con `git status`/`git diff --stat` antes de relanzar; si el agente muerto ya dejo cambios, completar y verificar directamente (ver skill agent-orchestration-pipeline).
 
 ## Asignacion por rol en el pipeline
 
