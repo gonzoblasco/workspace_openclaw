@@ -140,7 +140,7 @@ setup_aggregate() {
       return 1
     fi
     ok "aggregate already set up (${url})"
-    [[ "${DO_PULL}" == "1" ]] && { git -C "${PROJECTS_DIR}" pull --rebase -q; ok "aggregate pulled"; }
+    [[ "${DO_PULL}" == "1" ]] && { git -C "${PROJECTS_DIR}" pull --rebase -q origin main; ok "aggregate pulled"; }
     return 0
   fi
 
