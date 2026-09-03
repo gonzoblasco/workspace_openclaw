@@ -9,7 +9,8 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ## [2026-09-02] - Fix initial-setup.sh: repos con gitfile de submódulo viejo
 
 ### Fixed
-- **`scripts/initial-setup.sh`**: el check de "ya clonado" usaba `[[ -d .git ]]`, que no reconoce repos cuyo `.git` es un gitfile (residuo de la etapa de submódulos, 9 repos: a11y-fixer, accessible-ui, ai-developer-stack, create-stack, create-with-ai, kanam-solitaires, match3, quedamos, soporteml). El script abortaba con `set -e` en el primero (`could not clone or attach git`) sin procesar el resto. Ahora detecta repos con `git rev-parse --git-dir` (cubre .git dir y gitfile) en el loop de subrepos y en el conteo del verify.
+- **`scripts/initial-setup.sh`**: el check de "ya clonado" usaba `[[ -d .git ]]`, que no reconoce repos cuyo `.git` es un gitfile (residuo de la etapa de submódulos, 9 repos: a11y-fixer, accessible-ui, ai-developer-stack, create-stack, create-with-ai, kanam-solitaires, match3, quedamos, soporteml). El script abortaba con `set -e` en el primero (`could not clone or attach git`) sin procesar el resto. Ahora detecta repos con `git rev-parse --show-toplevel` comparado contra el dir del proyecto (cubre `.git` dir y gitfile, y evita el falso positivo de resoluciones que ascienden al repo agregado: a11y-playground y kanam-insight no tienen repo propio y quedan como "would clone").
+- **`scripts/initial-setup.sh`**: el pull de agregado y subrepos usaba `git pull --rebase` dependiendo del upstream, que no queda configurado en repos armados con `init + fetch + reset` (abortaba con "no hay información de rastreo"). Ahora tira `pull --rebase origin main` explícito.
 
 ### Why
 - En una máquina fresca no hay gitfiles, por eso la simulación no lo detectó; en la laptop (ex Mac Mini con submódulos) quedaron los residuos. El fix mantiene la semántica original y agrega robustez al criterio de detección sin cambiar el flujo.

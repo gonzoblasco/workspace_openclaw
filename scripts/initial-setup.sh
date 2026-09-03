@@ -285,10 +285,10 @@ setup_subrepos() {
   for dir in "${PROJECTS_DIR}"/*/; do
     [[ -d "$dir" ]] || continue
     slug="$(basename "$dir")"
-    if git -C "${dir}" rev-parse --git-dir >/dev/null 2>&1; then
+    if [[ "$(git -C "${dir}" rev-parse --show-toplevel 2>/dev/null)" == "${dir%/}" ]]; then
       info "${slug}: already cloned"
       if [[ "${DO_PULL}" == "1" ]]; then
-        git -C "${dir}" pull --rebase -q && info "  pulled"
+        git -C "${dir}" pull --rebase -q origin main && info "  pulled"
       fi
       continue
     fi
@@ -316,7 +316,7 @@ verify() {
   for d in "${PROJECTS_DIR}"/*/; do
     [[ -d "$d" ]] || continue
     total=$((total + 1))
-    if git -C "$d" rev-parse --git-dir >/dev/null 2>&1; then
+    if [[ "$(git -C "$d" rev-parse --show-toplevel 2>/dev/null)" == "${d%/}" ]]; then
       with_git=$((with_git + 1))
     fi
   done
