@@ -133,7 +133,6 @@ openspec show add-login-button
 
 | Skill / Script | Uso |
 |---|---|
-| `product-discovery/scripts/generate-openspec.sh` | Genera un OpenSpec a partir de la definición del producto cuando no hay CLI instalado. |
 | `architecture-designer` | Diseña la arquitectura que luego se documenta con OpenSpec. |
 | `tech-docs/scripts/generate-adr.sh` | Genera ADRs para decisiones arquitectónicas que afectan el spec. |
 

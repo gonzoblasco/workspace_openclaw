@@ -26,8 +26,6 @@ Lee el historial de git commits convencionales y produce un changelog categoriza
 | Skill / Script | Uso |
 |---|---|
 | `tech-docs/scripts/update-changelog.sh` | Inserta una entrada `[Unreleased]` en CHANGELOG.md. |
-| `release-management/scripts/generate-release-notes.sh` | Genera notas de release desde commits/tags para GitHub. |
-| `release-management/scripts/release-check.sh` | Verifica que CHANGELOG tenga la version antes de taggear. |
 
 ## Notas
 - Asume que los commits siguen Conventional Commits format

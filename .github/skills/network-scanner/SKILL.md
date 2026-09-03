@@ -26,7 +26,6 @@ Escanea redes locales usando nmap para descubrir dispositivos conectados y recol
 | Skill / Script | Uso |
 |---|---|
 | `clawdstrike` | Auditoría de seguridad del gateway y red después de descubrir dispositivos. |
-| `observability/scripts/health-check.sh` | Verificar salud de servicios en dispositivos descubiertos. |
 
 ## Notas
 - Requiere nmap instalado (brew install nmap)

@@ -187,4 +187,3 @@ Releé el post y preguntate:
 ## Related Skills
 
 - [Copy Editing](../copy-editing): Revisión final de cada post antes de publicar
-- [Campaign Plan](../campaign-plan): Si además querés un brief de campaña completo (audiencia, canales, KPI)

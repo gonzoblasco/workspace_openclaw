@@ -17,10 +17,10 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`scripts/test-skills.sh`**: de syntax check a suite de validacion - agrega checks de frontmatter (bloque ---), em dash (regla de oro U+2014/U+2013), scripts referenciados en SKILL.md que no existen, y links a skills inexistentes. Flag `--quick` para solo sintaxis.
 
 ### Known debt (hallazgos del nuevo test)
-- 14 scripts referenciados en SKILL.md que no existen (skills importadas de ClawHub con referencias aspiracionales: gateway-config, gateway-restart-helper, health-check-dashboard, openspec, git-changelog, deepwiki, network-scanner, clawdstrike, db-readonly, checkmate).
-- 24 links markdown a skills inexistentes (skills eliminadas/renombradas cuyos links quedaron: task-execution, session-context, debug-investigation, observability, campaign-plan, product-discovery, build-scaffold, review-quality, utils, api, design, docs, code-mentor, project-feature-a/b, HANDOFF).
-- 1 falso positivo aceptado: skill-collection-maintenance menciona `narrative-content/scripts/progress-tracker.sh` como ejemplo historico de un incidente CI (no es referencia viva).
-- Pendiente: sesion de limpieza para decidir skill por skill (escribir script, re-apuntar, o borrar referencia).
+- ~~14 scripts referenciados en SKILL.md que no existen~~ **RESUELTO 2026-09-03**: re-apuntados los que existian en otra skill (checkmate -> scripts/test-skills.sh raiz), borradas las secciones de scripts aspiracionales (gateway-config, health-check-dashboard, gateway-restart-helper), borradas las filas de scripts inexistentes (deepwiki, git-changelog, network-scanner, clawdstrike, db-readonly, openspec).
+- ~~24 links markdown a skills inexistentes~~ **RESUELTO 2026-09-03**: re-apuntados los que tenian equivalente (observability -> observability-and-instrumentation, debug-investigation -> debugging-and-error-recovery, review-quality -> code-review-and-quality, task-execution -> planning-and-task-breakdown), borrados los que no (campaign-plan, product-discovery, build-scaffold, code-mentor, session-context).
+- 1 excepcion documentada en allowlist del test: skill-collection-maintenance menciona `narrative-content/scripts/progress-tracker.sh` como ejemplo historico de un incidente CI (no es referencia viva).
+- **Deuda funcional pendiente:** session-lifecycle referencia `session-context` (resume.mjs, init, save) que no existe como skill - solo queda `.data/session-context.db`. El flujo de inicio/guardado de sesion con proyecto depende de comandos inexistentes. Requiere decision: reconstruir la skill o migrar a otro mecanismo.
 
 ### Why
 - Inspirado en el Curator de Hermes Agent (reflexion automatica post-tarea): adoptamos una version liviana que aprovecha la infraestructura existente (memory.db + skill-router) sin copiar el loop completo. La reflexion de learnings ya existia en session-lifecycle; esta etapa agrega deteccion de skills y persistencia inmediata.

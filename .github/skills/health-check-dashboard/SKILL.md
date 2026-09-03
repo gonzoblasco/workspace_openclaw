@@ -14,18 +14,9 @@ A dashboard que monitorea el estado del OpenClaw Gateway en tiempo real, mostran
 - Integración con notificaciones (Slack, email)
 
 ## Uso
-```bash
-# Acceder al dashboard
-# http://localhost:8080/health
+- Dashboard web: `http://localhost:8080/health` (requiere Gateway corriendo)
 
-# Monitorizar desde terminal
-./scripts/health-check-dashboard.sh
-```
 
-## Scripts auxiliares
-- `./scripts/health-check-dashboard.sh` - Dashboard principal
-- `./scripts/health-check-dashboard.sh` - Versión con argumentos
-- `./scripts/health-check-dashboard.sh` - Script principal
 
 ## Requisitos
 - Gateway corriendo

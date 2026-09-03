@@ -15,18 +15,9 @@ Automatiza el reinicio del OpenClaw Gateway con validación de salud previa y po
 - Logs de auditoría de operaciones de reinicio
 
 ## Uso
-```bash
-# Reiniciar el gateway de forma segura
-./scripts/gateway-restart-helper --force
+- Reinicio del gateway: `openclaw gateway restart` (ver skill `gateway-restart-helper` del sistema)
 
-# Verificar estado antes de reiniciar
-./scripts/gateway-restart-helper --status
-```
 
-## Scripts auxiliares
-- `./scripts/gateway-restart-helper.sh` - Lógica principal de reinicio
-- `./scripts/gateway-restart-helper.sh` - Versión con argumentos
-- `./scripts/gateway-restart-helper.sh` - Script principal
 
 ## Requisitos
 - Gateway en estado estable (no en mantenimiento)

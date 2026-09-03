@@ -20,15 +20,7 @@ This skill provides a web-based interface and API to view and edit the OpenClaw 
 - Docker corriendo (para la interfaz web)
 
 ## Uso
-```bash
-# Desplegar la interfaz de configuración
-./scripts/gateway-config.sh deploy
+- Interfaz web: `http://localhost:8080/config` (requiere Docker)
+- La configuración del gateway se edita con `openclaw` (ver skill `gateway-config` del sistema)
 
-# Acceder a la interfaz web
-# http://localhost:8080/config
-```
 
-## Scripts auxiliares
-- `./scripts/gateway-config.sh` - Gestión principal
-- `./scripts/gateway-backup.sh` - Backup de configuración
-- `./scripts/gateway-validate.sh` - Validación de sintaxis

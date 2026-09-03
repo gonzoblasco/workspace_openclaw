@@ -51,5 +51,4 @@ Workshop sistemático de naming que genera 8 candidatos de nombre usando método
 
 ## Related Skills
 
-- [Product Discovery](../product-discovery): Para definir producto antes de nombrarlo
 - [Copy Editing](../copy-editing): Para pulir el messaging de la marca

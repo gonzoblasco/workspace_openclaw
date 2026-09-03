@@ -38,6 +38,13 @@ LINK_OK=0; LINK_FAIL=0
 
 failures=()
 
+# Excepciones documentadas (referencias historicas/ilustrativas, no vivas):
+#   skill-collection-maintenance -> narrative-content/scripts/progress-tracker.sh
+#     (ejemplo de un incidente CI pasado, no una referencia a usar)
+ALLOWLIST_REF=(
+  "skills/skill-collection-maintenance/SKILL.md|narrative-content/scripts/progress-tracker.sh"
+)
+
 note() { if [[ $VERBOSE -eq 1 ]]; then echo "  $1"; fi; }
 
 # --- A. Sintaxis bash/python ---
@@ -141,15 +148,30 @@ if [[ $QUICK -eq 0 ]]; then
       if [[ -f "$WORKSPACE_DIR/skills/$ref" ]]; then
         REF_OK=$((REF_OK + 1))
       else
-        REF_FAIL=$((REF_FAIL + 1))
-        echo "  ❌ script ref FAIL: $skmd -> $ref"
-        failures+=("$skmd -> $ref")
+        # check allowlist antes de fallar (match por basename del SKILL.md)
+        allowed=0
+        for entry in "${ALLOWLIST_REF[@]}"; do
+          entry_file="${entry%%|*}"
+          entry_ref="${entry##*|}"
+          if [[ "$(basename "$skmd")" == "$(basename "$entry_file")" && "$ref" == "$entry_ref" ]]; then
+            allowed=1
+            break
+          fi
+        done
+        if [[ $allowed -eq 1 ]]; then
+          REF_OK=$((REF_OK + 1))
+        else
+          REF_FAIL=$((REF_FAIL + 1))
+          echo "  ❌ script ref FAIL: $skmd -> $ref"
+          failures+=("$skmd -> $ref")
+        fi
       fi
     done < <(echo "$body" | grep -oE '[A-Za-z0-9_-]+/scripts/[A-Za-z0-9_./-]+\.(sh|py|mjs|js)' 2>/dev/null | sort -u || true)
   done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
 
   # --- E. Links markdown relativos a skills existen ---
-  # Formato: ](../<skill>) o ](../<skill>/SKILL.md) - resuelve contra el dir de la skill.
+  # Solo links reales: ](../<skill>) o ](../<skill>/SKILL.md).
+  # No matchea texto plano (ej: paths en bloques de codigo, menciones sueltas).
   while IFS= read -r -d '' skmd; do
     skill_dir="$(dirname "$skmd")"
     skills_root="$(dirname "$skill_dir")"  # subir de skills/<x>/ a skills/
@@ -165,7 +187,7 @@ if [[ $QUICK -eq 0 ]]; then
         echo "  ❌ skill link FAIL: $skmd -> $ref"
         failures+=("$skmd -> $ref")
       fi
-    done < <(grep -oE '\.\./[A-Za-z0-9_-]+(/SKILL\.md)?' "$skmd" 2>/dev/null | sort -u || true)
+    done < <(grep -oE '\]\(\.\./[A-Za-z0-9_-]+(/SKILL\.md)?\)' "$skmd" 2>/dev/null | sed -E 's/^\]\(//; s/\)$//' | sort -u || true)
   done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
 
 fi

@@ -27,7 +27,7 @@ Convierte una descripción de tarea en criterios pass/fail explícitos, spawnéa
 
 | Skill / Script | Uso |
 |---|---|
-| `engineering-governance/scripts/test-skills.sh` | Validar scripts que el worker/judge generen para el workspace. |
+| `scripts/test-skills.sh` (raíz del workspace) | Validar scripts que el worker/judge generen para el workspace. |
 | `code-review-and-quality` | Revisión de calidad del output cuando es código (absorbio a review-quality). |
 | `qa-patrol` | QA automatizado adicional para verificar criterios de aceptación. |
 

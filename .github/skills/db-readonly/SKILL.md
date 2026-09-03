@@ -26,7 +26,6 @@ Ejecuta consultas SELECT, WITH y EXPLAIN contra bases de datos PostgreSQL o MySQ
 | Skill / Script | Uso |
 |---|---|
 | `sql-insight/scripts/sql_query_helper.py` | Optimizar queries lentas, interpretar EXPLAIN, y extraer schema en formato compacto. |
-| `observability/scripts/metrics-report.sh` | Generar reportes de metricas a partir de resultados exportados. |
 | `performance-optimization/scripts/benchmark.sh` | Medir impacto de performance de queries. |
 
 ## Notas

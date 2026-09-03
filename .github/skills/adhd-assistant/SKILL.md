@@ -128,4 +128,4 @@ Scripts en `skills/adhd-assistant/scripts/`:
 # Related Skills
 
 - [Session Lifecycle](../session-lifecycle): Para estructurar sesiones de trabajo
-- [Task Execution](../task-execution): Para ejecutar tareas desglosadas
+- [Task Execution](../planning-and-task-breakdown): Para ejecutar tareas desglosadas

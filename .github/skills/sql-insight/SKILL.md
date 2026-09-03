@@ -116,5 +116,5 @@ Scripts en `skills/sql-insight/scripts/`:
 
 # Related Skills
 
-- [Observability](../observability): Para monitorear performance de DB
+- [Observability](../observability-and-instrumentation): Para monitorear performance de DB
 - [Performance Optimization](../performance-optimization): Para optimizar queries lentas

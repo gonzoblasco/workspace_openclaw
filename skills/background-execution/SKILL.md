@@ -267,6 +267,6 @@ Cuando una tarea background modifica scripts de skill del workspace, correr `npm
 
 ## Related Skills
 
-- [Task Execution](../task-execution): Para el workflow completo de tareas
+- [Task Execution](../planning-and-task-breakdown): Para el workflow completo de tareas
 - [Session Lifecycle](../session-lifecycle): Para handoffs y guardado de sesión
-- [Debug Investigation](../debug-investigation): Para debugging de procesos que fallan
+- [Debug Investigation](../debugging-and-error-recovery): Para debugging de procesos que fallan

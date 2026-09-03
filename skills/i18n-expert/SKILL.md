@@ -141,5 +141,4 @@ Scripts en `skills/i18n-expert/scripts/`:
 
 # Related Skills
 
-- [Build & Scaffold](../build-scaffold): Para incluir i18n en el scaffolding inicial
-- [Review & Quality](../review-quality): Para revisar que no haya strings hardcodeadas
+- [Review & Quality](../code-review-and-quality): Para revisar que no haya strings hardcodeadas

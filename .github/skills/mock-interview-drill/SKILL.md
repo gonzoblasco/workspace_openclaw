@@ -206,4 +206,3 @@ Scripts en `skills/mock-interview-drill/scripts/`:
 ## Related Skills
 
 - [CV Tailor](../cv-tailor): Para optimizar CV antes de las entrevistas
-- [Code Mentor](../code-mentor): Para practicar algoritmos y system design

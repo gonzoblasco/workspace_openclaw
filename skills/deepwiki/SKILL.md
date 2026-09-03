@@ -27,7 +27,6 @@ Accede a documentación de repositorios públicos de GitHub mediante el servidor
 |---|---|
 | `oss-contribution/scripts/triage-issues.sh` | Encontrar issues en el repo consultado para aplicar lo aprendido. |
 | `oss-contribution/scripts/setup-fork.sh` | Preparar fork local si se decide contribuir. |
-| `research-spike/scripts/compare-alternatives.sh` | Comparar el framework/documentado contra alternativas. |
 
 ## Notas
 - Sin autenticación requerida

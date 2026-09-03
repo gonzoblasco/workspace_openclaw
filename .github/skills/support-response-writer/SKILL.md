@@ -87,4 +87,3 @@ Tambien ver [copy-editing/scripts/readability-check.sh](../copy-editing/scripts/
 ## Related Skills
 
 - [Copy Editing](../copy-editing): Para pulir el tono de las respuestas
-- [Campaign Plan](../campaign-plan): Para campañas de customer communication

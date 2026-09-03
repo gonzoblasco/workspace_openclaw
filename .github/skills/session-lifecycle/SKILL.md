@@ -325,6 +325,5 @@ Si detecto alguna de estas, paro y pregunto antes de seguir:
 
 ## Related Skills
 
-- [Task Execution](../task-execution): Para ejecutar tareas dentro de la sesión
+- [Task Execution](../planning-and-task-breakdown): Para ejecutar tareas dentro de la sesión
 - [Knowledge Management](../knowledge-management): Para registrar aprendizajes de la sesión
-- [session-context](../session-context): Para persistencia estructurada de contexto por proyecto

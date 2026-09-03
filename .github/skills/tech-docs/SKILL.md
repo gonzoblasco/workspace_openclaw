@@ -81,4 +81,3 @@ Si se tocan estos scripts, correr `npm test` en el workspace antes de commitear.
 ## Related Skills
 
 - [Knowledge Management](../knowledge-management): Para mantener la base de conocimiento
-- [Build & Scaffold](../build-scaffold): Para documentar decisiones de scaffolding

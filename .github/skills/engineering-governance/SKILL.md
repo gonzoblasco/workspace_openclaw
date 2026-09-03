@@ -339,7 +339,7 @@ La gobernanza existe para reducir la entropía del sistema.
 ## Related Skills
 
 - [Knowledge Management](../knowledge-management): Para mantener la base de conocimiento actualizada
-- [Observability](../observability): Para medir la salud del sistema
+- [Observability](../observability-and-instrumentation): Para medir la salud del sistema
 
 ## Growth Loops - Ciclos de Mejora Continua
 

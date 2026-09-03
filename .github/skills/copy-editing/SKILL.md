@@ -128,4 +128,3 @@ Scripts en `skills/copy-editing/scripts/`:
 
 # Related Skills
 
-- [Campaign Plan](../campaign-plan): Para planificar campañas de marketing
