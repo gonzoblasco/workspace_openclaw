@@ -17,15 +17,24 @@ Use when auditing `projects/*` for cleanliness, deciding what to archive, promot
 Make it executable in the ADR text with an explicit clause:
 > **DO NOT TOUCH**: this project is not modified, its fate is not re-decided, and it is not listed as a candidate in hygiene audits. The exclusion is closed.
 
-## Real double-git pattern (differs from the init script)
+## Real triple-git pattern (2026-09-02, differs from the old init script)
 
-The `init-project.sh` template ignores `.knowledge/` and registers a submodule. Active projects do NOT do that. The real pattern:
+Three layers coexist since 2026-09-02:
 
-- **Workspace tracks `.knowledge/` as loose blobs** (mode `100644`).
-- Project folder keeps its own git repo (`.git`) that coexists.
-- `.knowledge/` is NOT ignored in the project `.gitignore` (both workspace and project repo track it - double tracking).
-- No `.gitmodules` in the workspace (no submodules).
+- **Workspace git** (`workspace_openclaw`): tracks `projects/**/.knowledge/` as loose blobs (mode `100644`). Root `.gitignore` ignores `/projects/*/.git/`.
+- **Aggregate git** (`projects/` -> `projects_openclaw`, PRIVATE): tracks the full source of all projects as plain files. Root `.gitignore` ignores `*/.git/` (the trick that avoids gitlinks) + node_modules/.env/*.db safety net + `PROYECTOS.md`/`.gitignore-template` (workspace files). It is the "see everything" archive, NOT the source of truth.
+- **Individual repo** (`gonzoblasco/<slug>`): source of truth for working. Own history, branches, PRs. Its `.gitignore` is respected by the aggregate and workspace.
+
+Rules:
+- No `.gitmodules` anywhere (no submodules ever).
+- `.knowledge/` is NOT ignored in project `.gitignore` (exclusion lives in `.git/info/exclude`).
+- Never commit `.git/` dirs into the aggregate (would become gitlinks).
+- Sync the aggregate explicitly with `scripts/aggregate-sync.sh` (status|commit|push|sync|check). It refuses to run if `projects/` points to a remote other than `projects_openclaw`.
+- `git reset --hard` in `projects/` can delete `.knowledge/` dirs from disk (project gitignores exclude them) - restore with `git restore --worktree -- projects/` from the workspace.
 - Verify: `git ls-files --stage projects/<slug>/` shows `100644 .../HANDOFF.md` (blob), not `160000` (gitlink).
+- `scripts/initial-setup.sh` fails on machines that once used submodules: a project's `.git` there is a gitfile (a 47-byte file containing `gitdir: ...`, not a directory), and repos armed with `init+fetch+reset` have no upstream tracking. Recovery that works: detect repos by `[[ "$(git -C dir rev-parse --show-toplevel)" == "$dir" ]]` (covers dir + gitfile and avoids the false positive of resolving to the parent aggregate), and pull with explicit `git pull --rebase origin main` instead of relying on tracking. Local dirty changes (uncommitted source, `.knowledge/` the workspace owns) are respected - the script must never pull over or stash them. Before a real run, probe the existing machine with `--dry-run` to see which projects resolve as real repos vs "would clone" (memory-only).
+
+Old scripts (`init-project.sh` pre-2026-09-02) generated a `.gitignore` ignoring `.knowledge/` and registered submodules - that is obsolete; the script was rewritten.
 
 ## Workflow
 
@@ -34,14 +43,16 @@ The `init-project.sh` template ignores `.knowledge/` and registers a submodule. 
 3. Archive repos that need it:
    `gh repo archive <owner>/<repo> --yes` (repo becomes read-only, no more pushes).
 4. Clean tracked cruft (e.g. `.DS_Store`): `git rm --cached <path>` + `trash` from disk, commit + push (skip push if repo archived).
-5. Promote a folder to double git (see references/workspace-double-git.md):
+5. Promote a folder to triple git (see references/workspace-double-git.md):
    - `git init && git branch -m main`
-   - Project `.gitignore` WITHOUT ignoring `.knowledge/`
+   - Project `.gitignore` WITHOUT ignoring `.knowledge/` (exclusion in `.git/info/exclude`)
    - `gh repo create <owner>/<slug> --private --source=. --push`
    - Workspace tracks `.knowledge/` as blob (NOT `git submodule add`).
-   - **Order is critical**: track `.knowledge/` in the workspace. If the internal `.git` is created first and `.knowledge/` is not yet tracked, the workspace treats the folder as an embedded repo and will not track it (even with `-f`). Once tracked, the internal `.git` does not interfere.
-6. Commit atomically + push workspace with `git pull --rebase` first.
-7. Verify final state clean: `git status --short` only intentional changes.
+   - Register the folder in the aggregate (`git -C projects add <slug>` + commit + `aggregate-sync.sh push`).
+   - **Order is critical**: track `.knowledge/` in the workspace. If the internal `.git` is created first and `.knowledge/` is not yet tracked (and `/projects/*/.git/` not ignored), the workspace treats the folder as an embedded repo and will not track it (even with `-f`). Once tracked, the internal `.git` does not interfere.
+6. Sync the aggregate repo when project code changes: `./scripts/aggregate-sync.sh sync [msg]` (status/commit/push/check available). The aggregate is NOT automatic.
+7. Commit atomically + push workspace with `git pull --rebase` first.
+8. Verify final state clean: `git status --short` only intentional changes.
 
 ## Pitfalls
 

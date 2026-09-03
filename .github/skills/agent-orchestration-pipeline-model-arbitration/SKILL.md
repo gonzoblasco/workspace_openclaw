@@ -1,17 +1,18 @@
 ---
 name: "agent-orchestration-pipeline-model-arbitration"
-description: "Arbitraje de modelo para pipeline A/B: reducir costos priorizando Kimi K2.7 Code solo cuando se justifica."
+description: "Arbitraje de modelo para pipeline A/B: DeepSeek Flash (iter 1-2), GLM 5.3 Flash (iter 3), Kimi K2.7 Code (iter 4, nivel superior)."
 ---
 
-# Proposal: Arbitraje de modelo en Agent Orchestration Pipeline
+# Arbitraje de modelo en Agent Orchestration Pipeline
 
 ## Resumen
-Agregar al skill `agent-orchestration-pipeline` una seccion que defina como el orquestador elige el modelo de Ollama Cloud para cada paso del pipeline A/B. El objetivo es reducir costos manteniendo calidad: `deepseek-v4-flash:cloud` es el default, y `kimi-k2.7-code:cloud` se usa selectivamente donde su contexto largo, razonamiento y multimodalidad realmente evitan regresiones.
+Define como el orquestador elige el modelo de Ollama Cloud para cada paso del pipeline A/B. El objetivo es reducir costos manteniendo calidad: `deepseek-v4-flash:cloud` es el default, `glm-5.3-flash:cloud` es la escalada intermedia, y `kimi-k2.7-code:cloud` es el nivel superior (solo cuando se justifica).
 
 ## Motivacion
 - Gonzo esta en el plan mas barato de Ollama Cloud con limite fijo.
-- El consumo real (2026-08-21) muestra ~95% de requests en Flash y ~7-8% en Kimi K2.7 Code; GLM 5.2 no destaco en la practica.
-- DeepSeek v4 Pro es extra-high usage y no es multimodal; Kimi K3 es aun mas caro (top frontier). No son viables para volumen.
+- Comparativa 2026-08-30 (mismo prompt, razonamiento apagado): GLM 5.3 Flash gana en profundidad tecnica y robustez sobre DeepSeek Flash, pero cuesta ~2.4x mas recursos en Ollama Pro.
+- DeepSeek Flash es mas conciso y prolijo; GLM anticipa problemas reales (carreras, dedupe en reconexion, setState tras unmount).
+- Kimi K2.7 Code es el nivel superior (mejor pensador, validado en high el 29/08), reservado para cuando GLM no alcanza.
 - El cross-review ya introdujo un bug (SoporteML V4 U7, 2026-08-21), asi que el revisor necesita calidad donde importa, no ahorro a ciegas.
 
 ## Reglas de arbitraje
@@ -19,64 +20,47 @@ Agregar al skill `agent-orchestration-pipeline` una seccion que defina como el o
 ### 1. Default
 Cada tarea del pipeline A/B parte en `deepseek-v4-flash:cloud`.
 
-### 2. Kimi directo
-Escalar a `kimi-k2.7-code:cloud` sin retry cuando:
-- **Multimodalidad obligatoria:** imagen, screenshot, diagrama, PDF visual, UI.
+### 2. Escalada a GLM 5.3 Flash (iteracion 3)
+Escalar a `glm-5.3-flash:cloud` cuando:
+- **Diseño/arquitectura puntual:** donde la profundidad tecnica paga (GLM gana en robustez).
 - **Revision/debug con ambiguedad real:** test falla sin motivo obvio, logica de negocio cruzada, bug no trivial.
 - **Contexto extenso:** archivos grandes, diff grueso, refactor de multiples modulos donde Flash tiende a perderse.
+- **Multimodalidad:** GLM 5.3 Flash es multimodal nativo (imagen/video/PDF).
 
 ### 3. Feature compleja / mucho contexto
-No va directo a Kimi. Secuencia:
+No va directo a GLM. Secuencia:
 1. **Intento 1:** Flash con prompt normal.
 2. **Intento 2:** Flash con prompt mejorado (mas estructurado, contexto resumido, ejemplos, instrucciones explicitas).
-3. **Intento 3:** recien `kimi-k2.7-code:cloud`.
+3. **Intento 3:** recien `glm-5.3-flash:cloud`.
 
-### 4. Veto por presupuesto
+### 4. Nivel superior: Kimi K2.7 Code (iteracion 4)
+Si GLM no alcanza o la tarea es critica, escalar a `kimi-k2.7-code:cloud` (mejor pensador, contexto largo). Reservado para cuando se justifica - no es default.
+
+### 5. Veto por presupuesto
 Si el uso semanal supera el 85%:
 - Default a Flash en todos los casos.
-- Mantener Kimi solo para multimodalidad obligatoria.
-- En revision/debug y contexto extenso, aplicar la regla de doble retry con Flash antes de considerar Kimi.
+- Mantener GLM solo para multimodalidad obligatoria o diseño critico puntual.
+- En revision/debug y contexto extenso, aplicar la regla de doble retry con Flash antes de considerar GLM.
 
-### 5. Retry post-error
+### 6. Retry post-error
 Si una tarea con Flash falla:
 - Reintentar una vez mas con Flash mejorando el prompt.
-- Si sigue fallando, escalar a Kimi.
+- Si sigue fallando, escalar a GLM 5.3 Flash.
+- Si GLM tampoco, escalar a Kimi K2.7 Code.
 
 ## Asignacion por rol en el pipeline
 
 | Paso | Modelo |
 |---|---|
 | Agente A escribe feature simple / refactor mecanico | `deepseek-v4-flash:cloud` |
-| Agente A escribe feature compleja / mucho contexto | Flash → Flash mejorado → `kimi-k2.7-code:cloud` |
-| Agente A genera interpretacion de imagen / UI / screenshot | `kimi-k2.7-code:cloud` |
+| Agente A escribe feature compleja / mucho contexto | Flash → Flash mejorado → `glm-5.3-flash:cloud` |
+| Agente A genera interpretacion de imagen / UI / screenshot | `glm-5.3-flash:cloud` |
 | Agente B revisa cambios triviales | `deepseek-v4-flash:cloud` |
-| Agente B revisa cambios complejos / debug / arquitectura | Flash → Flash mejorado → `kimi-k2.7-code:cloud` |
+| Agente B revisa cambios complejos / debug / arquitectura | Flash → Flash mejorado → `glm-5.3-flash:cloud` |
 | Orquestador verifica contra API/spec / fuente real | `deepseek-v4-flash:cloud` |
-
-## Cambio al SKILL.md
-Insertar una nueva seccion entre "Motor: Qwen Code via Ollama" y "Cuando usar", titulada:
-
-```markdown
-## Arbitraje de modelo (default: deepseek-v4-flash, escalado selectivo a kimi-k2.7-code)
-
-Cada tarea del pipeline A/B arranca con `deepseek-v4-flash:cloud` por defecto. El orquestador escala a `kimi-k2.7-code:cloud` solo cuando se justifica, siguiendo estas reglas:
-
-1. **Kimi directo:** multimodalidad obligatoria; revision/debug con ambiguedad real; contexto extenso donde Flash pierde coherencia.
-2. **Feature compleja / mucho contexto:** doble intento con Flash (prompt normal, luego prompt mejorado) antes de Kimi.
-3. **Veto por presupuesto:** si el uso semanal supera el 85%, se mantiene Flash salvo multimodalidad obligatoria.
-4. **Retry post-error:** un fallo con Flash se reintenta una vez con Flash mejorado; si persiste, se escala a Kimi.
-
-| Paso del pipeline | Modelo |
-|---|---|
-| A escribe feature simple / refactor mecanico | `deepseek-v4-flash:cloud` |
-| A escribe feature compleja / mucho contexto | Flash → Flash mejorado → `kimi-k2.7-code:cloud` |
-| A interpreta imagen / UI / screenshot | `kimi-k2.7-code:cloud` |
-| B revisa cambios triviales | `deepseek-v4-flash:cloud` |
-| B revisa cambios complejos / debug / arquitectura | Flash → Flash mejorado → `kimi-k2.7-code:cloud` |
-| Orquestador verifica contra API/spec / fuente real | `deepseek-v4-flash:cloud` |
-```
+| Nivel superior (si GLM no alcanza) | `kimi-k2.7-code:cloud` |
 
 ## Notas
 - No se propone cambiar el motor base (Qwen Code via Ollama).
-- No se propone usar deepseek-v4-pro ni kimi-k3 para volumen; quedan reservados para tareas puntuales si Gonzo lo decide explicitamente.
-- GLM 5.2 queda descartado del arbitraje estandar por no haber destacado en la practica.
+- `minimax-m3:cloud` queda como variante de costo similar a GLM (opcional, decision de Gonzo).
+- Modelos purgados del ecosistema (2026-08-30): `kimi-k3`, `deepseek-v4-pro`, `nemotron-3-nano`, `qwen3.5:cloud`, `gemma4:31b-cloud`. No usar.
