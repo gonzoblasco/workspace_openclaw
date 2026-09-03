@@ -69,6 +69,13 @@ memory/2026-07-23-1951.md
 # Su .knowledge/ se trackea igual que el de cualquier proyecto (patron global arriba).
 # El resto (codigo, web) no viaja en el workspace.
 
+# Proyectos sin .knowledge/ en el workspace (ya archivados o sin memoria propia):
+# el codigo vive en GitHub + en el agregado projects_openclaw. Sin trackear aca para
+# evitar ruido de untracked al clonar/reclonar (checkout local util, no parte del repo).
+/projects/accessible-ui/
+/projects/ai-developer-stack/
+/projects/create-with-ai/
+
 # Antigua estructura products/ (migrada a projects/<slug>/docs/)
 products/
 

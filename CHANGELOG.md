@@ -833,3 +833,11 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ### Why
 - La migracion a Ollama Pro abrio acceso a 8+ modelos. No tiene sentido usar siempre el mismo modelo cuando cada uno tiene fortalezas distintas. Este ADR captura el criterio de seleccion basado en una cata empirica de 8 modelos con el mismo prompt.
+
+## [2026-09-02] - .gitignore: silenciar proyectos sin .knowledge/ en el workspace
+
+### Changed
+- **`.gitignore`:** ignorados explícitamente `projects/accessible-ui/`, `projects/ai-developer-stack/`, `projects/create-with-ai/` - los 3 quedaban como untracked crónicos porque el patrón global `!/projects/*/` los re-incluye pero no tienen `.knowledge/` que trackear (el código vive en GitHub y en el agregado `projects_openclaw`; el checkout local es util pero no parte del repo del workspace).
+
+### Why
+- Después del setup triple-git quedaban 3 carpetas sin `.knowledge/` que ensuciaban el `status` del workspace. El fix documenta la excepción en el propio .gitignore en vez de listarla en memoria.
