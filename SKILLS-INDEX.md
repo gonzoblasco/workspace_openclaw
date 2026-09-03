@@ -1,10 +1,12 @@
 # SKILLS-INDEX.md - Skills del Workspace
 
-> Skills activas organizadas por categoría. Actualizado: 2026-08-28
+> Skills activas organizadas por categoría. Actualizado: 2026-09-03
 >
 > **Nota de consolidación:** En agosto 2026 se redujo el set de skills de 96 a 60 activas, adoptando las 24 skills de ingeniería de `addyosmani/agent-skills` como base y fusionando en ellas las funcionalidades de skills propias redundantes. Las skills redundantes fueron eliminadas (recuperables desde el historial de git, commit `ba12459`).
 >
 > **Actualización 2026-08-17:** alineado con el estado real (63 skills). Se documentaron `a11y-at-validation` y `technical-book-processor` (existentes pero no listadas). Se movieron los checklists sueltos de `skills/references/` a `docs/checklists/` y se eliminaron los directorios zombies `architecture-designer` y `pre-deploy-qa` (vacíos).
+>
+> **Actualización 2026-09-03:** alineado con el estado real (81 skills). Se documentaron 15 skills existentes pero no listadas: `anti-ai`, `compaction-domain-aware`, `complexity-driven-pipeline`, `gateway-config`, `gateway-restart-helper`, `health-check-dashboard`, `model-cata`, `model-router-pro`, `openspec-pattern`, `pdf-tool`, `project-closure`, `search-fusion`, `skill-collection-maintenance`, `skill-router`, `study-tracker`.
 
 ## Ingeniería de Desarrollo (Base Addy Osmani + Fusiones)
 
@@ -59,12 +61,17 @@
 | [documentation-and-adrs](skills/documentation-and-adrs/) | ADRs, API docs, inline docs - documentar el *why* |
 | [observability-and-instrumentation](skills/observability-and-instrumentation/) | Structured logging, RED metrics, OpenTelemetry, symptom-based alerting |
 | [shipping-and-launch](skills/shipping-and-launch/) | Pre-launch checklists, feature flag lifecycle, staged rollouts, rollback |
+| [project-closure](skills/project-closure/) | Cierre completo de proyecto: captura decisión, aprendizaje y estado en ADR + DB + skill. Reproducible con script |
 
 ### Meta
 | Skill | Descripción |
 |---|---|
 | [using-agent-skills](skills/using-agent-skills/) | Mapea el trabajo entrante a la skill correcta y define reglas de operación compartidas |
 | [agent-orchestration-pipeline-model-arbitration](skills/agent-orchestration-pipeline-model-arbitration/) | Arbitraje de modelo para pipeline A/B: reducir costos priorizando Kimi K2.7 Code solo cuando se justifica |
+| [skill-router](skills/skill-router/) | Sugiere qué skill usar para una tarea dada: matchea el prompt contra las skills disponibles (keywords + embeddings semántico local) y devuelve top sugerencias |
+| [skill-collection-maintenance](skills/skill-collection-maintenance/) | Mantenimiento de la colección de skills: diagnostica el cron semanal `skill-collection-review` fallando por tamaño y elimina skills limpiamente |
+| [complexity-driven-pipeline](skills/complexity-driven-pipeline/) | Orquestación complexity-first: scorer de complejidad antes de spawnear agentes A/B. Decide modelo, thinking level y profundidad de pipeline |
+| [model-cata](skills/model-cata/) | Ritual formal de comparación de modelos LLM: mismo prompt pesado, rúbrica de análisis crítico y decisión de motor/especialistas documentada en ADR |
 
 ## Core OpenClaw (Infraestructura Propia)
 
@@ -78,6 +85,12 @@
 | [background-execution](skills/background-execution/) | Patrones para ejecutar tareas en background: exec + process, worktrees |
 | [engineering-governance](skills/engineering-governance/) | Evolución continua del AI Engineering OS, auditoría y mejora sistémica |
 | [git-changelog](skills/git-changelog/) | Auto-genera CHANGELOG.md desde git history con conventional commits |
+| [openspec-pattern](skills/openspec-pattern/) | Contrato de intención (OpenSpec) para prevenir scope creep y deuda técnica: define el *what* antes del *how* |
+| [compaction-domain-aware](skills/compaction-domain-aware/) | Compactación de contexto con conciencia de dominio: tiers de prioridad (Tier 0-4) para decidir qué preservar al compactar una sesión |
+| [gateway-config](skills/gateway-config/) | Gestión de configuración del gateway OpenClaw en runtime: edición, health checks y tracking de cambios sin reinicios |
+| [gateway-restart-helper](skills/gateway-restart-helper/) | Reinicio automático del gateway con health checks previos/posteriores y rollback seguro |
+| [health-check-dashboard](skills/health-check-dashboard/) | Dashboard de monitoreo del gateway en tiempo real: memoria, CPU, conexiones activas, latencia, alertas por umbrales |
+| [model-router-pro](skills/model-router-pro/) | Routing inteligente de modelos con fallback y balanceo entre instancias locales (Ollama) y cloud |
 
 ## Stack de Gonzo (Infraestructura Única)
 
@@ -99,6 +112,7 @@
 | [deepwiki](skills/deepwiki/) | Consulta documentación de repos GitHub via DeepWiki MCP |
 | [tech-docs](skills/tech-docs/) | Documentación técnica: ADRs, README, API docs, CHANGELOG, guías |
 | [oss-contribution](skills/oss-contribution/) | Workflow de contribución OSS: triaje, seguimiento de issues/PRs, community, registry |
+| [search-fusion](skills/search-fusion/) | Búsqueda efectiva por intención: elige estrategia y herramientas según el tipo de búsqueda (research, keyword, answer, news) y fusiona fuentes |
 
 ## Seguridad y Red
 
@@ -125,6 +139,7 @@
 | [image-generation](skills/image-generation/) | Genera imágenes para juegos, web, mockups y proyectos creativos |
 | [curriculum-builder](skills/curriculum-builder/) | Scaffold para tutores adaptativos con IA |
 | [technical-book-processor](skills/technical-book-processor/) | Procesa libros técnicos capítulo por capítulo: extrae learnings, formaliza ADRs, implementa ejercicios en un proyecto acompañante y commitea atómicamente. Deja trail público de aprendizaje (portfolio) |
+| [anti-ai](skills/anti-ai/) | Elimina modismos y estructuras que delatan texto de IA para que suene humano. Incluye la regla del guion común. Usar antes de publicar posts, feedback o PRs |
 
 ## Vida Diaria y Herramientas
 
@@ -138,6 +153,8 @@
 | [github](skills/github/) | Official GitHub MCP server wrapper: security alerts, notifications |
 | [godot-mcp](skills/godot-mcp/) | Aprender Godot 4.x paso a paso con asistencia de OpenClaw |
 | [cleanmymac-maintenance](skills/cleanmymac-maintenance/) | Protocolo flexible de mantenimiento con CleanMyMac CLI vía frases naturales |
+| [study-tracker](skills/study-tracker/) | Estructura de cursos + gamificación (niveles/XP/badges) en una sola fuente de verdad bajo `studies/<slug>/` |
+| [pdf-tool](skills/pdf-tool/) | Manejo local de PDFs: leer (texto, metadata, OCR) y generar (exportar markdown a PDF). 100% local (poppler + tesseract) |
 
 ---
 
@@ -147,4 +164,4 @@
 
 **Además (2026-08-06):** `adhd-daily-planner` se fusionó dentro de `adhd-assistant` (energy windows, transition buffers, dopamine sequencing, shutdown ritual, recovery protocol). Recuperable desde git si hiciera falta.
 
-**Totales activas:** 66 skills
+**Totales activas:** 81 skills
