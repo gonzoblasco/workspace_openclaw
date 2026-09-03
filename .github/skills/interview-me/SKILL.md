@@ -39,7 +39,7 @@ This skill needs a live, responsive user. **Do not invoke in non-interactive con
 
 ### Step 1: Hypothesize, with a confidence number
 
-Before asking anything, write down your current best read of what the user wants in **one sentence**, plus an honest confidence number (0–100%):
+Before asking anything, write down your current best read of what the user wants in **one sentence**, plus an honest confidence number (0-100%):
 
 ```
 HYPOTHESIS: You want a way to answer "how are we doing?" in standup, and "dashboard" was the convention that came to mind.
@@ -93,7 +93,7 @@ That single question often does more work than the previous five.
 
 ### Step 4: Restate intent in the user's own words
 
-When your confidence is high, write back what you now think the user wants. Keep it tight (5–8 lines), use their language where possible, and structure it so the user can confirm or correct line by line:
+When your confidence is high, write back what you now think the user wants. Keep it tight (5-8 lines), use their language where possible, and structure it so the user can confirm or correct line by line:
 
 ```
 Here's what I now think you want:
@@ -190,7 +190,7 @@ Two questions in, the agent has discovered the actual ask isn't "a dashboard." I
 | Rationalization | Reality |
 |---|---|
 | "The ask is clear enough" | If you can't write the user's desired outcome in one sentence right now, the ask isn't clear. Run Step 1 before deciding. |
-| "Asking too many questions wastes their time" | Time wasted by 4–6 targeted questions is small. Time wasted by building the wrong thing is enormous, and the user is the one bearing that cost. |
+| "Asking too many questions wastes their time" | Time wasted by 4-6 targeted questions is small. Time wasted by building the wrong thing is enormous, and the user is the one bearing that cost. |
 | "I'll figure it out as I build" | Switching costs after code exists are 10x what they are now. Discovery during implementation is rework. |
 | "They said 'whatever you think,' so I should just decide" | "Whatever you think" is delegation, not decision. Re-ask with two concrete options as a choice. |
 | "I should give them several options to pick from" | Options work when the user knows what they want and is choosing between trade-offs. They don't know what they want yet. Listing options widens the search; asking narrows it. |

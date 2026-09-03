@@ -89,13 +89,15 @@ if [[ $QUICK -eq 0 ]]; then
   done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
 
   # --- C. Em dash (U+2014/U+2013) ---
+  # Usa python3 (portable): grep -P no existe en BSD grep de macOS, lo que
+  # daba falsos OK locales y fallos en CI Linux. Python detecta en ambos.
   while IFS= read -r -d '' skmd; do
-    if grep -qP '[\x{2013}\x{2014}]' "$skmd" 2>/dev/null; then
+    if python3 -c 'import sys; c=open(sys.argv[1],encoding="utf-8").read(); sys.exit(1 if ("\u2013" in c or "\u2014" in c) else 0)' "$skmd" 2>/dev/null; then
+      DASH_OK=$((DASH_OK + 1))
+    else
       DASH_FAIL=$((DASH_FAIL + 1))
       echo "  ❌ em dash FAIL (usar guion comun -): $skmd"
       failures+=("$skmd")
-    else
-      DASH_OK=$((DASH_OK + 1))
     fi
   done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
 

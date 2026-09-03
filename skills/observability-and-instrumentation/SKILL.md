@@ -26,7 +26,7 @@ Code you can't observe is code you can't operate. Observability is the ability t
 
 ### 1. Define "working" before instrumenting
 
-Telemetry without a question is noise. Before adding any instrumentation, write down 2–4 questions an on-call engineer will ask about this feature:
+Telemetry without a question is noise. Before adding any instrumentation, write down 2-4 questions an on-call engineer will ask about this feature:
 
 ```
 FEATURE: checkout payment retry

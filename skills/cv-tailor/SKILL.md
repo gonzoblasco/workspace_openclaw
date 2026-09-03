@@ -95,7 +95,7 @@ Cada entry rewrite debe:
 | Fonts | Arial, Calibri, Times New Roman |
 | Tables | Avoid complex layouts |
 | Section titles | "Work Experience", "Education", "Skills" |
-| Date format | Consistent (Jan 2023 – Jun 2024) |
+| Date format | Consistent (Jan 2023 - Jun 2024) |
 | File naming | FirstName_LastName_Role_Resume.pdf |
 
 ## 5. Output

@@ -100,11 +100,11 @@ T = A + B + C + D
 
 ## Key Rules
 
-1. **No max thinking in agents A/B** — only in Kanam (orchestrator) for high-complexity design.
-2. **T≥17 = Gonzo gate** — confirm before proceeding.
-3. **trivial = no agents** — don't spawn agents for T≤6. Kanam handles it.
-4. **Document in daily if T≥13** — builds a calibration dataset over time.
-5. **Use pipeline-track** — always init with `--score T` so the run is auditable.
+1. **No max thinking in agents A/B**  -  only in Kanam (orchestrator) for high-complexity design.
+2. **T≥17 = Gonzo gate**  -  confirm before proceeding.
+3. **trivial = no agents**  -  don't spawn agents for T≤6. Kanam handles it.
+4. **Document in daily if T≥13**  -  builds a calibration dataset over time.
+5. **Use pipeline-track**  -  always init with `--score T` so the run is auditable.
 
 ## Force Score (no LLM)
 

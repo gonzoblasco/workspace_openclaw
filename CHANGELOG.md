@@ -15,6 +15,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ### Changed
 - **`scripts/test-skills.sh`**: de syntax check a suite de validacion - agrega checks de frontmatter (bloque ---), em dash (regla de oro U+2014/U+2013), scripts referenciados en SKILL.md que no existen, y links a skills inexistentes. Flag `--quick` para solo sintaxis.
+- **`scripts/test-skills.sh` (fix CI 2026-09-03)**: el check de em dash usaba `grep -P` (PCRE) que no existe en BSD grep de macOS - fallaba silencioso y daba falso OK local, pero en CI Linux detectaba los em dashes y rompia el build. Reemplazado por check portable en python3 (detecta U+2013/U+2014 en ambos OS). Corregidos 13 em dashes en 6 skills: cv-tailor (1), doubt-driven-development (2), planning-and-task-breakdown (1), complexity-driven-pipeline (5), interview-me (3), observability-and-instrumentation (1).
 
 ### Known debt (hallazgos del nuevo test)
 - ~~14 scripts referenciados en SKILL.md que no existen~~ **RESUELTO 2026-09-03**: re-apuntados los que existian en otra skill (checkmate -> scripts/test-skills.sh raiz), borradas las secciones de scripts aspiracionales (gateway-config, health-check-dashboard, gateway-restart-helper), borradas las filas de scripts inexistentes (deepwiki, git-changelog, network-scanner, clawdstrike, db-readonly, openspec).

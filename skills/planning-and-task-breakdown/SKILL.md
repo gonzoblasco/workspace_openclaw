@@ -150,7 +150,7 @@ npm run test -- --testNamePattern="feature X"
 **Adjustment Factors:**
 ```
 Base Estimate ×
-├── Complexity Factor (novel pattern vs familiar) ×1.5–2x
+├── Complexity Factor (novel pattern vs familiar) ×1.5-2x
 ├── Testing Effort (more edge cases = +30%)
 ├── Dependencies (waiting on other work = +20%)
 └── Risk Factor (unknowns, untested areas) ×1.25x
