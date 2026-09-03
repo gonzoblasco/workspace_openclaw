@@ -17,8 +17,10 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`scripts/test-skills.sh`**: de syntax check a suite de validacion - agrega checks de frontmatter (bloque ---), em dash (regla de oro U+2014/U+2013), scripts referenciados en SKILL.md que no existen, y links a skills inexistentes. Flag `--quick` para solo sintaxis.
 
 ### Known debt (hallazgos del nuevo test)
-- 29 scripts referenciados en SKILL.md que no existen (skills importadas de ClawHub con referencias aspiracionales: gateway-config, openspec, github, deepwiki, git-changelog, brand-name-forge, clawdstrike, db-readonly, etc.).
-- 3 links a skills renombradas/inexistentes: `skills/session-context` (session-lifecycle), `skills/conocimiento` (skill-router), `skills/SKILLS-INDEX` (skill-collection-maintenance).
+- 14 scripts referenciados en SKILL.md que no existen (skills importadas de ClawHub con referencias aspiracionales: gateway-config, gateway-restart-helper, health-check-dashboard, openspec, git-changelog, deepwiki, network-scanner, clawdstrike, db-readonly, checkmate).
+- 50 links markdown a skills inexistentes (skills eliminadas/renombradas cuyos links quedaron: task-execution, session-context, debug-investigation, observability, campaign-plan, product-discovery, build-scaffold, review-quality, utils, api, design, docs, code-mentor, project-feature-a/b, HANDOFF, etc.).
+- 1 falso positivo aceptado: skill-collection-maintenance menciona `narrative-content/scripts/progress-tracker.sh` como ejemplo historico de un incidente CI (no es referencia viva).
+- Pendiente: sesion de limpieza para decidir skill por skill (escribir script, re-apuntar, o borrar referencia).
 
 ### Why
 - Inspirado en el Curator de Hermes Agent (reflexion automatica post-tarea): adoptamos una version liviana que aprovecha la infraestructura existente (memory.db + skill-router) sin copiar el loop completo. La reflexion de learnings ya existia en session-lifecycle; esta etapa agrega deteccion de skills y persistencia inmediata.

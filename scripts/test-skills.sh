@@ -93,12 +93,18 @@ if [[ $QUICK -eq 0 ]]; then
   done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
 
   # --- D. Scripts referenciados existen ---
+  # Resuelve tres patrones:
+  #   - relativos: ./scripts/foo.sh (con ./ explicito) o scripts/foo.sh tras pipe/espacio
+  #   - cross-skill con prefijo: skills/<otra>/scripts/foo.sh
+  #   - cross-skill sin prefijo: <otra-skill>/scripts/foo.sh
+  # Excluye bloques de codigo (```) - ahi los scripts son ejemplos ilustrativos.
   while IFS= read -r -d '' skmd; do
     skill_dir="$(dirname "$skmd")"
-    # patrones: scripts/foo.sh, scripts/foo.py, ./scripts/foo
+    body=$(awk 'BEGIN{inblock=0} /^```/{inblock=!inblock; next} !inblock{print}' "$skmd")
+    # relativos con ./ explicito
     while read -r ref; do
       [[ -z "$ref" ]] && continue
-      # resolver relativo al dir de la skill
+      ref="${ref#./}"
       if [[ -f "$skill_dir/$ref" || -f "$WORKSPACE_DIR/$ref" ]]; then
         REF_OK=$((REF_OK + 1))
       else
@@ -106,23 +112,59 @@ if [[ $QUICK -eq 0 ]]; then
         echo "  ❌ script ref FAIL: $skmd -> $ref"
         failures+=("$skmd -> $ref")
       fi
-    done < <(grep -oE '(\./)?scripts/[A-Za-z0-9_./-]+\.(sh|py|mjs|js)' "$skmd" 2>/dev/null | sed 's|^\./||' | sort -u || true)
-  done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
-
-  # --- E. Links a skills locales existen ---
-  while IFS= read -r -d '' skmd; do
+    done < <(echo "$body" | grep -oE '\./scripts/[A-Za-z0-9_./-]+\.(sh|py|mjs|js)' 2>/dev/null | sort -u || true)
+    # relativos sin ./ pero delimitados (inicio de linea, pipe de tabla, espacio)
     while read -r ref; do
       [[ -z "$ref" ]] && continue
-      # ref puede ser skills/foo o skills/foo/SKILL.md
-      target="${ref%/SKILL.md}"
-      if [[ -d "$WORKSPACE_DIR/$target" ]]; then
+      if [[ -f "$skill_dir/$ref" || -f "$WORKSPACE_DIR/$ref" ]]; then
+        REF_OK=$((REF_OK + 1))
+      else
+        REF_FAIL=$((REF_FAIL + 1))
+        echo "  ❌ script ref FAIL: $skmd -> $ref"
+        failures+=("$skmd -> $ref")
+      fi
+    done < <(echo "$body" | grep -oE '(^|[|` ])scripts/[A-Za-z0-9_./-]+\.(sh|py|mjs|js)' 2>/dev/null | grep -oE 'scripts/[A-Za-z0-9_./-]+\.(sh|py|mjs|js)' | sort -u || true)
+    # cross-skill con prefijo skills/
+    while read -r ref; do
+      [[ -z "$ref" ]] && continue
+      if [[ -f "$WORKSPACE_DIR/$ref" ]]; then
+        REF_OK=$((REF_OK + 1))
+      else
+        REF_FAIL=$((REF_FAIL + 1))
+        echo "  ❌ script ref FAIL: $skmd -> $ref"
+        failures+=("$skmd -> $ref")
+      fi
+    done < <(echo "$body" | grep -oE 'skills/[A-Za-z0-9_-]+/scripts/[A-Za-z0-9_./-]+\.(sh|py|mjs|js)' 2>/dev/null | sort -u || true)
+    # cross-skill sin prefijo: <skill>/scripts/foo
+    while read -r ref; do
+      [[ -z "$ref" ]] && continue
+      if [[ -f "$WORKSPACE_DIR/skills/$ref" ]]; then
+        REF_OK=$((REF_OK + 1))
+      else
+        REF_FAIL=$((REF_FAIL + 1))
+        echo "  ❌ script ref FAIL: $skmd -> $ref"
+        failures+=("$skmd -> $ref")
+      fi
+    done < <(echo "$body" | grep -oE '[A-Za-z0-9_-]+/scripts/[A-Za-z0-9_./-]+\.(sh|py|mjs|js)' 2>/dev/null | sort -u || true)
+  done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
+
+  # --- E. Links markdown relativos a skills existen ---
+  # Formato: ](../<skill>) o ](../<skill>/SKILL.md) - resuelve contra el dir de la skill.
+  while IFS= read -r -d '' skmd; do
+    skill_dir="$(dirname "$skmd")"
+    while read -r ref; do
+      [[ -z "$ref" ]] && continue
+      # ref es tipo ../<skill> o ../<skill>/SKILL.md
+      target="${ref#../}"
+      target="${target%/SKILL.md}"
+      if [[ -d "$skill_dir/$target" ]]; then
         LINK_OK=$((LINK_OK + 1))
       else
         LINK_FAIL=$((LINK_FAIL + 1))
         echo "  ❌ skill link FAIL: $skmd -> $ref"
         failures+=("$skmd -> $ref")
       fi
-    done < <(grep -oE 'skills/[A-Za-z0-9_-]+(/SKILL\.md)?' "$skmd" 2>/dev/null | sort -u || true)
+    done < <(grep -oE '\.\./[A-Za-z0-9_-]+(/SKILL\.md)?' "$skmd" 2>/dev/null | sort -u || true)
   done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
 
 fi
