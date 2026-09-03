@@ -184,3 +184,11 @@ Caso real: el chiste del follow-up a Andres (Wigou) no estaba en las notas - dep
 
 ---
 
+## Verificar la data de stack que dan en entrevistas: OpenSistemas dijo OpenClaw pero usan Hermes
+
+En la entrevista de OpenSistemas pasaron data incorrecta sobre su stack de agentes. Antes de preparar una colaboracion, verificar el stack real de la empresa (web, releases, blog) en vez de confiar en lo dicho en la entrevista.
+
+**Tags:** entrevistas,stack,verificacion
+
+---
+

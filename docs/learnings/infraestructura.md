@@ -335,3 +335,19 @@ El 2026-09-02 subimos de doble-git a triple-git: workspace/ (workspace_openclaw,
 
 ---
 
+## Migracion de OpenClaw a Hermes Agent con hermes claw migrate
+
+El tool de migracion corre en modo preview en sesiones no interactivas y exige --yes explicito; los conflictos de overwrite son duplicados esperados, no errores
+
+**Tags:** config,reflexion-post-tarea
+
+---
+
+## grep -P no es portable: BSD grep de macOS no lo soporta, GNU de Linux si
+
+El check de em dash con grep -P daba falso OK local (exit 2 enmascarado) y rompia el CI Linux. Para checks Unicode en scripts que corren en CI, usar python3. El test local no puede dar verde si el CI corre en otro OS.
+
+**Tags:** grep,portable,ci,em-dash
+
+---
+
