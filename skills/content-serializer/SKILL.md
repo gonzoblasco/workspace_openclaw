@@ -188,4 +188,3 @@ Releé el post y preguntate:
 
 - [Copy Editing](../copy-editing): Revisión final de cada post antes de publicar
 - [Campaign Plan](../campaign-plan): Si además querés un brief de campaña completo (audiencia, canales, KPI)
-- [Narrative Content](../narrative-content): Si el contenido es ficción/narrativa (no técnico)

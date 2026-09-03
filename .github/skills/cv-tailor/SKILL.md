@@ -171,4 +171,3 @@ Scripts en `skills/cv-tailor/scripts/`:
 # Related Skills
 
 - [Mock Interview Drill](../mock-interview-drill): Para practicar entrevistas post-CV
-- [Narrative Content](../narrative-content): Para contar tu historia profesional

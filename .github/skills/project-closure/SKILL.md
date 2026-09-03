@@ -1,3 +1,15 @@
+---
+name: "project-closure"
+metadata:
+  category: "Workflow"
+  tags:
+    - proyecto
+    - cierre
+    - adr
+description: "Cierre completo de proyecto: captura decision, aprendizaje y estado en ADR + DB + skill. Reproducible con script."
+user-invocable: false
+---
+
 # project-closure
 
 > Cierra un proyecto de forma completa e inmortaliza su conocimiento en ADR + DB + skill.

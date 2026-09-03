@@ -128,5 +128,4 @@ Scripts en `skills/copy-editing/scripts/`:
 
 # Related Skills
 
-- [Narrative Content](../narrative-content): Para escritura de ficción y narrativa
 - [Campaign Plan](../campaign-plan): Para planificar campañas de marketing

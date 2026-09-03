@@ -81,7 +81,6 @@
 | Copy | `copy-editing` | Editar copy de marketing |
 | Campañas | `content-serializer` | Serializar contenido multi-plataforma |
 | Naming | `brand-name-forge` | Nombrar producto o empresa |
-| Narrativa | `narrative-content` | Escribir ficción |
 | ADHD | `adhd-assistant` | Estructura diaria |
 | Soporte | `support-response-writer` | Respuestas a clientes |
 

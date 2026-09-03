@@ -99,5 +99,4 @@ Caso base. Escanear con `scripts/check_em_dash.py`.
 ## Related Skills
 
 - [Copy Editing](../copy-editing): Para mejorar conversion de copy de marketing (complementario, se puede encadenar)
-- [Narrative Content](../narrative-content): Para escritura de ficcion y narrativa
 - [Skill Router](../skill-router): Para sugerir este skill cuando el contexto sea publicar texto hacia afuera

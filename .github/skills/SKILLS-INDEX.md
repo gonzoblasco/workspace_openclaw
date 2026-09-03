@@ -119,7 +119,6 @@
 | Skill | Descripción |
 |---|---|
 | [copy-editing](skills/copy-editing/) | Edición profesional de copy: 7 sweeps de claridad, tono, beneficio |
-| [narrative-content](skills/narrative-content/) | Taller de escritura de ficción: mentoría, técnicas, guía |
 | [brand-name-forge](skills/brand-name-forge/) | Workshop sistemático de naming de marca: 8 métodos clásicos |
 | [content-serializer](skills/content-serializer/) | Convertir contenido en posts multi-plataforma para LinkedIn y X |
 | [deslop](skills/deslop/) | Limpia código AI slop de branches antes de PRs |

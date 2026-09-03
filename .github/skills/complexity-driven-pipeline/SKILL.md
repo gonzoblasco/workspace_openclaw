@@ -1,3 +1,15 @@
+---
+name: "complexity-driven-pipeline"
+metadata:
+  category: "Workflow"
+  tags:
+    - pipeline
+    - complejidad
+    - orquestacion
+description: "Orquestacion complexity-first: scorer de complejidad antes de spawnear agentes A/B. Decide modelo, thinking level y profundidad de pipeline."
+user-invocable: false
+---
+
 # complexity-driven-pipeline
 
 > Complexity-first orchestration. Score before spawning.
