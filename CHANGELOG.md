@@ -18,7 +18,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ### Known debt (hallazgos del nuevo test)
 - 14 scripts referenciados en SKILL.md que no existen (skills importadas de ClawHub con referencias aspiracionales: gateway-config, gateway-restart-helper, health-check-dashboard, openspec, git-changelog, deepwiki, network-scanner, clawdstrike, db-readonly, checkmate).
-- 50 links markdown a skills inexistentes (skills eliminadas/renombradas cuyos links quedaron: task-execution, session-context, debug-investigation, observability, campaign-plan, product-discovery, build-scaffold, review-quality, utils, api, design, docs, code-mentor, project-feature-a/b, HANDOFF, etc.).
+- 24 links markdown a skills inexistentes (skills eliminadas/renombradas cuyos links quedaron: task-execution, session-context, debug-investigation, observability, campaign-plan, product-discovery, build-scaffold, review-quality, utils, api, design, docs, code-mentor, project-feature-a/b, HANDOFF).
 - 1 falso positivo aceptado: skill-collection-maintenance menciona `narrative-content/scripts/progress-tracker.sh` como ejemplo historico de un incidente CI (no es referencia viva).
 - Pendiente: sesion de limpieza para decidir skill por skill (escribir script, re-apuntar, o borrar referencia).
 

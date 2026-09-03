@@ -152,12 +152,13 @@ if [[ $QUICK -eq 0 ]]; then
   # Formato: ](../<skill>) o ](../<skill>/SKILL.md) - resuelve contra el dir de la skill.
   while IFS= read -r -d '' skmd; do
     skill_dir="$(dirname "$skmd")"
+    skills_root="$(dirname "$skill_dir")"  # subir de skills/<x>/ a skills/
     while read -r ref; do
       [[ -z "$ref" ]] && continue
       # ref es tipo ../<skill> o ../<skill>/SKILL.md
       target="${ref#../}"
       target="${target%/SKILL.md}"
-      if [[ -d "$skill_dir/$target" ]]; then
+      if [[ -d "$skills_root/$target" ]]; then
         LINK_OK=$((LINK_OK + 1))
       else
         LINK_FAIL=$((LINK_FAIL + 1))
