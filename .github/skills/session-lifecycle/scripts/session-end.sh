@@ -102,6 +102,17 @@ fi
 echo ""
 
 # Reflection prompt
+# Post-task reflection (2026-09-03): etapa automatica de reflexion post-tarea.
+# Complementa la self-reflection de cierre: esta corre por tarea, no por sesion.
+# Uso: ./scripts/post-task-reflection.sh --type <tipo> --summary "..." [--check-dups --propose-skill --save]
+if [[ -x "scripts/post-task-reflection.sh" ]]; then
+  echo "🤔 Reflexion post-tarea disponible:"
+  echo "   ./scripts/post-task-reflection.sh --type <debug|feature|review|config|research|oss|docs|other> \\"
+  echo "       --summary \"<que paso>\" --lesson \"<leccion>\" --check-dups --propose-skill --save"
+  echo "   (correrla por tarea compleja, no solo al cerrar sesion)"
+  echo ""
+fi
+# Self-reflection de cierre (learnings globales)
 echo "🤔 Quick reflection:"
 echo "   ¿Qué aprendimos? ¿Algún patrón nuevo?"
 echo "   ¿Es global (🌍) o de proyecto (🏗️)?"
