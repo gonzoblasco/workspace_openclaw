@@ -207,6 +207,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/check_em_dash.py` | Escanear texto por guiones largos (U+2014/U+2013) antes de publicar a GitHub. Regla obligatoria. |
 | `scripts/init-project.sh` | Scaffold de proyecto con triple git: crea `projects/<slug>/.knowledge/` + repo en gh (privado por defecto) + lo registra en el repo agregado `projects_openclaw` |
 | `scripts/aggregate-sync.sh` | Sincroniza el repo agregado (`projects/` ↔ `projects_openclaw`): status/commit/pull/push del archivo completo. Uso: `aggregate-sync.sh [status|commit|push|pull]` |
+| `scripts/initial-setup.sh` | Setup one-shot para máquina nueva (laptop/Mac nuevo): clona workspace + arma `projects/` como agregado (preservando `.knowledge/`) + attacha/clona los subrepos + verifica. Idempotente, con `--dry-run` y `--pull`. Uso: `initial-setup.sh [--dry-run|--pull|--workspace <dir>]` |
 | `scripts/oss-tracker.js` | Tracker de contribuciones OSS |
 | `scripts/pr-dashboard.sh` | Dashboard de PRs (para el batch check del ritual de inicio de sesión) |
 | `scripts/github-pr-risk.sh` | Detector de risk signals de un PR (schema/auth/deps/API/secrets) + preguntas de review. Uso bajo demanda en el cross-review del pipeline. Portado del plugin github-workflow. Solo lectura |

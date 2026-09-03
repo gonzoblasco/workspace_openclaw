@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-02] - initial-setup.sh: setup one-shot para máquina nueva
+
+### Added
+- **`scripts/initial-setup.sh`**: setup idempotente para laptop/Mac nuevo - clona el workspace, arma `projects/` como clon del agregado `projects_openclaw` (preservando SIEMPRE los `.knowledge/` del workspace), attacha o clona los subrepos de cada proyecto, y verifica (gitlinks, limpieza, remotes). Flags: `--dry-run` (plan sin cambios), `--pull` (además actualiza repos existentes), `--workspace <dir>`. Probado con simulación completa en máquina fresca: 25 checkpoints OK, 0 errores, workspace limpio, cero anidamientos de `.knowledge/`.
+
+### Changed
+- **`AGENTS.md`:** tabla de scripts + entry de `initial-setup.sh`.
+
+### Why
+- Al pasar a triple-git (2026-09-02), la laptop quedaba sin un camino reproducible para clonar todo (eran 20 clones manuales con el ritual de preservar `.knowledge/`). Este script lo resuelve con un comando.
+
+### Known debt (no bug del script)
+- `kanam-pulse` y `portfolio-strategy` quedan con `.knowledge/` modificado tras el setup: tienen versiones viejas de ese `.knowledge/` commiteadas en sus repos individuales (doble-tracking histórico). El workspace es la autoridad - los cambios en el working tree son los correctos. No se tocan sin pedido explícito.
+
+---
+
 ## [2026-09-02] - Scripts y skills actualizados al cruce de repos (triple-git)
 
 ### Changed
