@@ -37,5 +37,4 @@ Hace 7 sweeps en orden, y después de cada uno vuelve a verificar los anteriores
 
 ## Skills relacionadas
 
-- [Narrative Content](../narrative-content) - Para escritura de ficción
 - [Campaign Plan](../campaign-plan) - Para planificar campañas
