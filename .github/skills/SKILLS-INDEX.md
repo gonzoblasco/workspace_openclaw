@@ -1,6 +1,6 @@
 # SKILLS-INDEX.md - Skills del Workspace
 
-> Skills activas organizadas por categoría. Actualizado: 2026-08-23
+> Skills activas organizadas por categoría. Actualizado: 2026-08-28
 >
 > **Nota de consolidación:** En agosto 2026 se redujo el set de skills de 96 a 60 activas, adoptando las 24 skills de ingeniería de `addyosmani/agent-skills` como base y fusionando en ellas las funcionalidades de skills propias redundantes. Las skills redundantes fueron eliminadas (recuperables desde el historial de git, commit `ba12459`).
 >
@@ -37,6 +37,7 @@
 | Skill | Descripción |
 |---|---|
 | [browser-testing-with-devtools](skills/browser-testing-with-devtools/) | Chrome DevTools MCP: DOM, console, network, performance en vivo |
+| [playwright-e2e-reactflow](skills/playwright-e2e-reactflow/) | Playwright E2E specs para editores React Flow (kanam-studio, kanam-story): patrones cuando programmatic state no drivea selection, controls overlay intercepta drags, o aria-label collisions rompen role locators |
 | [a11y-at-validation](skills/a11y-at-validation/) | Cuándo la validación manual de accesibilidad es OBLIGATORIA (no opcional) en OSS, y cómo ejecutarla y documentarla. Basado en casos reales (radix-ui #4109/#4110) |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery/) ⭐ | Triage de 5 pasos: reproduce, localize, reduce, fix, guard + logging forense + failure patterns. Fusiona: debug-agent, debug-investigation, failure-memory |
 
@@ -82,6 +83,7 @@
 
 | Skill | Descripción |
 |---|---|
+| [workspace-portfolio-hygiene](skills/workspace-portfolio-hygiene/) | Audita/limpia/estructura projects/*: clasifica gitlinks vs blobs, respeta decisiones de ADR, archiva repos, promueve carpetas a doble git |
 | [supabase-assistant](skills/supabase-assistant/) | Interact with Supabase projects: schemas, queries, types, migrations |
 | [sql-insight](skills/sql-insight/) | Traducir lenguaje natural a SQL, optimizar queries, interpretar EXPLAIN |
 | [db-readonly](skills/db-readonly/) | Queries read-only seguras a PostgreSQL y MySQL |
@@ -137,8 +139,6 @@
 | [github](skills/github/) | Official GitHub MCP server wrapper: security alerts, notifications |
 | [godot-mcp](skills/godot-mcp/) | Aprender Godot 4.x paso a paso con asistencia de OpenClaw |
 | [cleanmymac-maintenance](skills/cleanmymac-maintenance/) | Protocolo flexible de mantenimiento con CleanMyMac CLI vía frases naturales |
-| [complexity-driven-pipeline](skills/complexity-driven-pipeline/) | Complexity-first orchestration: score antes de spawnear agentes (T 1-20), decide modelo/thinking/pipeline |
-| [project-closure](skills/project-closure/) | Cierra e inmortaliza un proyecto terminado: ADR + memory.db + skill + script reproducible |
 
 ---
 

@@ -37,6 +37,7 @@
 | Skill | Descripción |
 |---|---|
 | [browser-testing-with-devtools](skills/browser-testing-with-devtools/) | Chrome DevTools MCP: DOM, console, network, performance en vivo |
+| [playwright-e2e-reactflow](skills/playwright-e2e-reactflow/) | Playwright E2E specs para editores React Flow (kanam-studio, kanam-story): patrones cuando programmatic state no drivea selection, controls overlay intercepta drags, o aria-label collisions rompen role locators |
 | [a11y-at-validation](skills/a11y-at-validation/) | Cuándo la validación manual de accesibilidad es OBLIGATORIA (no opcional) en OSS, y cómo ejecutarla y documentarla. Basado en casos reales (radix-ui #4109/#4110) |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery/) ⭐ | Triage de 5 pasos: reproduce, localize, reduce, fix, guard + logging forense + failure patterns. Fusiona: debug-agent, debug-investigation, failure-memory |
 
