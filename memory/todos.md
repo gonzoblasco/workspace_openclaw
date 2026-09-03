@@ -28,6 +28,10 @@
 - [ ] **[]** (medium) Clonar gonzoblasco/soporteml en projects/soporteml (GitHub es la fuente) y mudar ahi el puente Lovable MCP: hoy quedo ignorado por el gitignore del workspace. Respaldar .knowledge/ antes.
 - [ ] **[]** (medium) Reparar scripts spin-review del 2026-08-30 o quarantinarlos en scripts/wip/: bugs listados en memory/HANDOFF-2026-08-30-soporteml-v1-lovable-mcp.md (jq, BSD date, overwrite de HANDOFF, em-dash check, require-in-ESM)
 - [ ] **[]** (medium) Definir cliente MCP real para Lovable en OpenClaw (https://mcp.lovable.dev, OAuth): evaluar integracion nativa, SDK @modelcontextprotocol o via Claude Code. Contrato read-only: get_project, list_projects, query_database
+- [ ] **[Definir roadmap de slices de Kanam Studio (grafo -> jugar -> IA de ramas -> canon checker -> export). Brief listo en projects/kanam-studio/.knowledge/BRIEF.md]** (medium) kanam-studio
+- [ ] **[World-building con IA en Kanam Studio: personajes, mundo, reglas construidos y mantenidos con IA durante todo el viaje (no capa final). Version superada de kanam-story. Brief: projects/kanam-studio/.knowledge/BRIEF.md]** (medium) kanam-studio
+- [ ] **[]** (medium) Verificar .env de soporteml (repo público trackea .env en HEAD, desapareció del disco - decidir si restaurar con secrets históricos o eliminarlo del historial)
+- [ ] **[]** (medium) Desarchivar create-with-ai (archivado, fusionado en kanam-forge) para pushear commit local legítimo - decisión de Gonzo
 
 ## Completados
 

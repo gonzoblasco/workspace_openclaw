@@ -841,3 +841,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ### Why
 - Después del setup triple-git quedaban 3 carpetas sin `.knowledge/` que ensuciaban el `status` del workspace. El fix documenta la excepción en el propio .gitignore en vez de listarla en memoria.
+
+---
+
+## [2026-09-02] - Fixes a scripts de memoria (catalog + export) tras sync con la Air
+
+### Fixed
+- **`scripts/memory-catalog-v2.py`:** crash `IndexError: list index out of range` en `compute_topic_centroids` - vectores de 32 dims (sesiones catalogadas con otro modelo de embedding) se mezclaban con los de 768 dims (nomic actual) para el mismo topic. Fix: solo mezclar vectores de la misma dimensión por topic (los de otra dims se saltean).
+- **`scripts/memory-db.sh export-all`:** generaba ~2600 archivos basura en `memory/export/` - el split por `|` y por líneas rompía contra el contenido markdown (que tiene pipes y saltos de línea). Fix: una query por fecha, sin separadores. Ahora exporta 33 dailies limpios.
+
+### Why
+- El catalog crasheó al catalogar el daily tras el pull de la Air (que había catalogado con otro modelo). El export-all corrupto ensuciaba `memory/export/` (ignorado por .gitignore pero igual).
+
+### Notes
+- Sesión completa del día catalogada en DB (DB-first): las 3 secciones (22:00-22:56 mine desde desktop, 23:00-23:20 laptop, 23:26-23:40 post-pull verify). 28 sesiones, 74 vectores, 84 learnings.
+- 2 todos nuevos: `.env` de soporteml (repo público trackea .env - decidir restaurar o purgar) y desarchivar create-with-ai (commit local legítimo bloqueado por repo archivado).

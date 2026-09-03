@@ -94,9 +94,18 @@ def compute_topic_centroids():
             vec = json.loads(vec_json)
         except (json.JSONDecodeError, TypeError):
             continue
+        # Robustness: some sessions were catalogued with a different embedding
+        # model (32-dim vs the current 768-dim nomic). Only mix vectors of the
+        # same dimensionality per topic, otherwise centroid math breaks.
+        if not vec or not isinstance(vec[0], (int, float)):
+            continue
         if topic_name not in centroids:
             centroids[topic_name] = [0.0] * len(vec)
             counts[topic_name] = 0
+        elif len(vec) != len(centroids[topic_name]):
+            # Different dims for the same topic - keep the most common one.
+            # Simple, safe: skip this vector (centroid stays from first dim).
+            continue
         for i, v in enumerate(vec):
             centroids[topic_name][i] += v
         counts[topic_name] += 1
