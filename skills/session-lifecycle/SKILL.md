@@ -125,6 +125,23 @@ BIASES DETECTED: [sunk cost / anchoring / confirmation / etc. o none]
 
 **Destino:** si es una lección nueva → `docs/LEARNINGS.md`. Si es un patrón que ya existe → actualizar Recurrence-Count.
 
+### Reflexión post-tarea automatizada (2026-09-03)
+
+Etapa nueva del ciclo: `scripts/post-task-reflection.sh` estructura la reflexión por tarea (no por sesión), detecta duplicados en la DB, cruza con skills existentes vía skill-router, y propone skill nueva si el patrón no está cubierto.
+
+```bash
+./scripts/post-task-reflection.sh --type <debug|feature|review|config|research|oss|docs|other> \
+  --summary "<que paso>" --lesson "<leccion>" \
+  --check-dups --propose-skill --save
+```
+
+**Flags:**
+- `--check-dups`: búsqueda semántica de learnings similares (evita duplicar)
+- `--propose-skill`: genera propuesta en `skills/_proposals/` si el patrón no está cubierto (requiere match keyword L1 + score ≥ 0.6; solo-embedding no cuenta)
+- `--save`: persiste el learning en `memory.db` (tabla learnings, categoría por tipo)
+
+**Relación con la self-reflection de cierre:** la de cierre (abajo) registra learnings globales al guardar sesión; esta corre por tarea compleja, en el momento, y además detecta skills. Complementarias, no redundantes.
+
 ## WAL Protocol - Write-Ahead Logging
 
 **Regla de oro:** si es importante recordarlo, ESCRIBILO AHORA - no después. El contexto desaparece. El archivo queda.

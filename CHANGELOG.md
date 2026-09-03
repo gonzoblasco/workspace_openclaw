@@ -6,7 +6,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
-## [2026-09-02] - Fix initial-setup.sh: repos con gitfile de submódulo viejo
+## [2026-09-03] - Reflexion post-tarea automatica + test-skills.sh ampliado
+
+### Added
+- **`scripts/post-task-reflection.sh`**: nueva etapa del ciclo de vida - reflexion post-tarea por tarea (no por sesion). Estructura la reflexion, detecta duplicados en la DB (busqueda semantica), cruza con skills existentes via skill-router, y genera propuesta de skill en `skills/_proposals/` si el patron no esta cubierto (requiere match keyword L1 + score >= 0.6; solo-embedding no cuenta). Flags: `--type`, `--summary`, `--lesson`, `--check-dups`, `--propose-skill`, `--save` (persiste en tabla learnings de memory.db).
+- **`skills/session-lifecycle/SKILL.md`**: seccion de reflexion post-tarea automatizada documentada (complementaria a la self-reflection de cierre).
+- **`skills/session-lifecycle/scripts/session-end.sh`**: al cerrar sesion, ofrece correr la reflexion post-tarea.
+
+### Changed
+- **`scripts/test-skills.sh`**: de syntax check a suite de validacion - agrega checks de frontmatter (bloque ---), em dash (regla de oro U+2014/U+2013), scripts referenciados en SKILL.md que no existen, y links a skills inexistentes. Flag `--quick` para solo sintaxis.
+
+### Known debt (hallazgos del nuevo test)
+- 29 scripts referenciados en SKILL.md que no existen (skills importadas de ClawHub con referencias aspiracionales: gateway-config, openspec, github, deepwiki, git-changelog, brand-name-forge, clawdstrike, db-readonly, etc.).
+- 3 links a skills renombradas/inexistentes: `skills/session-context` (session-lifecycle), `skills/conocimiento` (skill-router), `skills/SKILLS-INDEX` (skill-collection-maintenance).
+
+### Why
+- Inspirado en el Curator de Hermes Agent (reflexion automatica post-tarea): adoptamos una version liviana que aprovecha la infraestructura existente (memory.db + skill-router) sin copiar el loop completo. La reflexion de learnings ya existia en session-lifecycle; esta etapa agrega deteccion de skills y persistencia inmediata.
+
+---
 
 ### Fixed
 - **`scripts/initial-setup.sh`**: el check de "ya clonado" usaba `[[ -d .git ]]`, que no reconoce repos cuyo `.git` es un gitfile (residuo de la etapa de submódulos, 9 repos: a11y-fixer, accessible-ui, ai-developer-stack, create-stack, create-with-ai, kanam-solitaires, match3, quedamos, soporteml). El script abortaba con `set -e` en el primero (`could not clone or attach git`) sin procesar el resto. Ahora detecta repos con `git rev-parse --show-toplevel` comparado contra el dir del proyecto (cubre `.git` dir y gitfile, y evita el falso positivo de resoluciones que ascienden al repo agregado: a11y-playground y kanam-insight no tienen repo propio y quedan como "would clone").
