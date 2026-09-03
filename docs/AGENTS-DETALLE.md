@@ -54,34 +54,41 @@ El repo `kanam-skills` (github.com/gonzoblasco/kanam-skills) es **público**. La
 
 **Excepción legítima:** las referencias a `gonzoblasco/kanam-skills` en README, docs y web/generate.js (identidad de instalación del repo) y el LICENSE (copyright legal) se mantienen.
 
-## Estructura de Proyectos - Doble Git (detalle ampliado)
+## Estructura de Proyectos - Triple Git (detalle ampliado)
 
-**Filosofía:** Cada proyecto tiene su carpeta en `projects/<slug>/` con sincronización selectiva:
+**Filosofía:** cada proyecto tiene su carpeta en `projects/<slug>/`, y el cruce de repos se resuelve en TRES capas git que conviven:
 
 ```
-projects/<slug>/
-├── .knowledge/     # Documentación interna: BRIEF, EVALUATION, DEFINITION, ROADMAP, STATUS, HANDOFF, ADRs, decisiones
-├── src/            # Código fuente (con su propio .git y remote)
-├── package.json    # Configuración del proyecto
-└── .gitignore      # Ignora .knowledge/ (ya lo guarda el workspace) + node_modules, etc.
+workspace/                    (repo: workspace_openclaw)
+└── projects/                 (repo agregado: projects_openclaw, PRIVADO - archivo de todo el código)
+    └── <slug>/               (repo individual del proyecto: gonzoblasco/<slug>)
+        ├── .knowledge/       # memoria institucional (BRIEF, ADRs, STATUS, HANDOFF) - SOLO workspace
+        ├── src/              # código fuente (trackea el repo individual)
+        └── .gitignore        # del proyecto (lo respetan el agregado y el workspace)
 ```
 
-**Reglas de Doble Git:**
-- **Workspace git:** Trackea solo `projects/**/.knowledge/`. Ignora el resto del código (`.gitignore` raíz: `projects/` + `!projects/**/.knowledge/`).
-- **Proyecto git:** Trackea todo el código. Ignora `.knowledge/` (ya lo guarda el workspace).
-- **Memoria institucional:** El workspace git versiona intensivamente `.knowledge/` (el qué y por qué).
-- **Código:** Cada proyecto tiene su propio repo para la implementación (el cómo).
+**Capas y responsabilidades:**
+- **Workspace git** (`workspace_openclaw`): trackea `projects/**/.knowledge/` (la memoria: el qué y por qué). Ignora el resto de `projects/`.
+- **Repo agregado** (`projects_openclaw`): trackea el código fuente de los 20 proyectos como archivos planos (sin `.git/`, sin node_modules/.env/*.db). Es el archivo "ver todo junto", NO la fuente de la verdad para trabajar. Su `.gitignore` raíz tiene `*/.git/` para que git descienda al contenido en vez de crear gitlinks, y `PROYECTOS.md` + `.gitignore-template` (son del workspace).
+- **Repo individual** (`gonzoblasco/<slug>`): la fuente de la verdad del código. Ahí viven commits, branches, PRs, push. Cada uno con su propio `.gitignore`.
+
+**Reglas clave:**
+- **Los `.git/` de los subrepos se ignoran** en el agregado (`*/.git/`) y en el workspace (`/projects/*/.git/`). Ese es el truco que evita los gitlinks: git desciende al contenido cuando el `.git/` está ignorado.
+- **NUNCA committear los `.git/` de los subrepos** en el agregado (rompería todo: gitlos vería como repos embebidos/gitlinks).
+- **La fuente de la verdad para trabajar es el repo individual.** El agregado se mantiene al día con `scripts/aggregate-sync.sh` (no es automático: un cambio en `<slug>/` es visible para ambos repos; hay que commitear en cada uno).
+- **OJO con `git reset --hard` en `projects/`:** como los `.gitignore` de varios proyectos excluyen su `.knowledge/` (doble-git correcto), el reset borra esos `.knowledge/` del disco. Restaurar con `git restore --worktree -- projects/` desde el workspace (la memoria está commiteada ahí).
 
 **Flujo típico:**
-1. Nuevo producto → `./scripts/init-project.sh <slug> [--repo <url>]`
+1. Nuevo producto → `./scripts/init-project.sh <slug>`
    - Crea `projects/<slug>/.knowledge/` con BRIEF.md + STATUS.md
-   - Crea `.gitignore` que ignora `.knowledge/` para el repo del proyecto
-   - Si tiene `--repo`, inicializa git y pushea
-2. Go decision → scaffold en `projects/<slug>/` (repo separado, ignora `.knowledge/`)
-3. Desarrollo → actualizar `projects/<slug>/.knowledge/STATUS.md` con cada hito
-4. Commits: `.knowledge/` al workspace, código al repo del proyecto
+   - Crea repo privado en gh, inicializa el git del proyecto (excluye `.knowledge/` vía `.git/info/exclude`) y pushea
+   - Commitea `.knowledge/` al workspace
+   - Registra el proyecto en el repo agregado (commit inicial de la carpeta)
+2. Go decision → scaffold en `projects/<slug>/` (repo individual, ignora `.knowledge/`)
+3. Desarrollo → actualizar `projects/<slug>/.knowledge/STATUS.md` con cada hito (commit al workspace)
+4. Commits: `.knowledge/` al workspace, código al repo del proyecto, cambios del archivo al agregado (`aggregate-sync.sh`)
 
-**Sin submódulos.** GitHub es la fuente de la verdad. Los proyectos se clonan en `projects/<slug>/` bajo demanda (cuando se trabajan), no como submódulos del workspace. El workspace trackea solo `.knowledge/` (la memoria institucional); el código vive en su repo. Si una carpeta de `projects/` no tiene repo en GitHub, se elimina.
+**Sin submódulos.** Los proyectos se clonan en `projects/<slug>/` bajo demanda (cuando se trabajan), no como submódulos. Si una carpeta de `projects/` no tiene repo en GitHub, se elimina.
 
 **Excepciones:**
 - Forks de terceros (TanStack/router, shadcn/ui, etc.) → viven en `forks/<slug>/`, carpeta ignorada AL 100% en el workspace. No llevan `.knowledge/` (no se modifica el `.gitignore` de proyectos ajenos). El repo del fork vive por si solo; la memoria de la sesion de contribucion va a `docs/` o `memory/` del workspace. La distincion: `projects/` = proyectos propios (trackea `.knowledge/`), `forks/` = repos ajenos (ignora todo).
@@ -90,7 +97,7 @@ projects/<slug>/
 
 **Ventajas:**
 - Cero conflictos: el workspace nunca intenta commitear `node_modules` ni código de build.
-- Portabilidad: el código viaja en su repo, la memoria institucional en el workspace.
+- Portabilidad: el código viaja en sus repos, la memoria institucional en el workspace, el archivo completo en el agregado.
 - Forks limpios: no colisiona con carpetas `docs/` de repos externos.
 
 ## Project Cleanup - Al Finalizar un Proyecto (detalle ampliado)

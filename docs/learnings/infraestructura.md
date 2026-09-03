@@ -327,3 +327,11 @@ Los .gitignore anidados (proyecto) ganan sobre las negaciones del .gitignore del
 
 ---
 
+## Triple-git: workspace + repo agregado projects_openclaw + subrepos individuales
+
+El 2026-09-02 subimos de doble-git a triple-git: workspace/ (workspace_openclaw, trackea solo projects/**/.knowledge/), projects/ (projects_openclaw, PRIVADO, archiva el codigo fuente completo de los 20 proyectos como archivos planos) y cada projects/<slug>/ (repo individual, fuente de la verdad). El truco que lo hace posible: git no desciende a un dir con .git/ (lo trata como gitlink), pero si el .git/ esta IGNORADO por el .gitignore del repo superior, lo trata como contenido plano. Por eso el workspace ignora /projects/*/.git/ y el agregado ignora */.git/. Reglas: nunca commitear los .git/ de subrepos en el agregado (rompe todo), la fuente de verdad para trabajar es el repo individual, el agregado se sincroniza a mano con scripts/aggregate-sync.sh (status|commit|push|sync|check). OJO: git reset --hard en projects/ borra del disco los .knowledge/ excluidos por gitignores de proyecto - restaurar con git restore --worktree -- projects/ desde el workspace. Los 4 gitlinks historicos (accessible-ui, ai-developer-stack, create-with-ai, soporteml-v4) se resolvieron clonando y quitando el puntero del index.
+
+**Tags:** git,triple-git,agregado,projects_openclaw
+
+---
+

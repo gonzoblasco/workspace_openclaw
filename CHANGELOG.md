@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-02] - Scripts y skills actualizados al cruce de repos (triple-git)
+
+### Changed
+- **`AGENTS.md`:** sección "Estructura de Proyectos" actualizada de Doble Git a **Triple Git** (workspace ↔ repo agregado `projects_openclaw` ↔ subrepos individuales). Tabla de scripts: entry de `init-project.sh` actualizado + nuevo `aggregate-sync.sh`.
+- **`docs/AGENTS-DETALLE.md`:** sección completa reescrita con el detalle del triple-git (capas, reglas, flujo, excepciones, ventajas) + advertencia del `git reset --hard`.
+- **`scripts/init-project.sh`:** reescrito para triple-git - crea repo individual (excluye `.knowledge/` vía `.git/info/exclude`), commitea `.knowledge/` al workspace y registra el proyecto en el repo agregado. Sin submodulos.
+- **`scripts/aggregate-sync.sh` (nuevo):** sincroniza el repo agregado: `status|commit|push|sync|check`. Refusa operar si `projects/` no apunta a `projects_openclaw`; verifica que no haya gitlinks.
+- **`skills/workspace-portfolio-hygiene/SKILL.md` + `references/workspace-double-git.md`:** actualizados a triple-git (capas, truco del `.git/` ignorado, sync del agregado, gitlinks 2026-09-02 resueltos).
+- **`docs/learnings/infraestructura.md`:** nuevo learning "Triple-git: workspace + repo agregado projects_openclaw + subrepos" (vía memory-db, fuente de verdad).
+
+### Why
+- El cruce de repos nuevo (projects/ ↔ projects_openclaw con subrepos adentro) no estaba reflejado en la documentación ni en las herramientas: los scripts y skills seguían describiendo el esquema viejo (doble-git, submodulos, gitlinks).
+
+---
+
 ## [2026-09-02] - Repo agregado projects_openclaw (privado)
 
 ### Added

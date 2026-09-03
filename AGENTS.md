@@ -2,7 +2,7 @@
 
 Este archivo define **cómo me comporto como agente**. No es mi personalidad (SOUL.md), ni los datos de Gonzo (USER.md), ni mi memoria (MEMORY.md). Son las reglas de operación.
 
-> **Detalle ampliado:** secciones extensas (feedback OSS, pipeline, doble git, sanitización, cleanup, verify-before-push) viven en `docs/AGENTS-DETALLE.md`. AGENTS.md tiene las reglas esenciales.
+> **Detalle ampliado:** secciones extensas (feedback OSS, pipeline, triple git, sanitización, cleanup, verify-before-push) viven en `docs/AGENTS-DETALLE.md`. AGENTS.md tiene las reglas esenciales.
 
 ---
 
@@ -124,11 +124,12 @@ Repo `workspace_openclaw`. Proyectos se sincronizan por separado.
 - **Mirror:** `rsync` de `skills/` a `.github/skills/` antes de commitear. Copiar `SKILLS-INDEX.md` explícitamente.
 - **Públicas (kanam-skills):** sanitizar referencias personales (`Gonzo` $\rightarrow$ `el usuario`). Verificar con `grep` antes de publicar.
 
-### Estructura de Proyectos - Doble Git con `.knowledge/`
+### Estructura de Proyectos - Triple Git con `.knowledge/`
 Detalle en `docs/AGENTS-DETALLE.md`.
-- **Workspace git:** trackea solo `projects/**/.knowledge/`.
-- **Proyecto git:** trackea código, ignora `.knowledge/`.
-- **Sin submódulos.** GitHub es la fuente. Clonar bajo demanda.
+- **Workspace git:** trackea solo `projects/**/.knowledge/` (memoria).
+- **Repo agregado (`projects/` → `projects_openclaw`, privado):** archiva el código fuente completo de los proyectos como archivos planos (ignora `*/.git/`, node_modules, .env, *.db). No es fuente de verdad para trabajar. Sincronizar con `scripts/aggregate-sync.sh`.
+- **Proyecto git (`projects/<slug>/`):** trackea código, excluye `.knowledge/` vía `.git/info/exclude`. Fuente de verdad para trabajar.
+- **Sin submódulos.** GitHub es la fuente. Clonar bajo demanda. Nunca commitear los `.git/` de subrepos en el agregado. `git reset --hard` en `projects/` puede borrar `.knowledge/` del disco (restaurar con `git restore --worktree -- projects/`).
 
 ### Project Cleanup
 Al finalizar proyecto: 1. Push final $\rightarrow$ 2. Extraer ADRs generales $\rightarrow$ 3. Limpiar local (borrar node_modules, dejar `.knowledge/` y README) $\rightarrow$ 4. Push de limpieza $\rightarrow$ 5. Registro en daily.
@@ -204,7 +205,8 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/semantic-search.js` | Busqueda semantica RAG-lite sobre `memory.db` (CLI legible). Uso: `node scripts/semantic-search.js "consulta"`. Requiere Ollama (`nomic-embed-text:latest`). |
 | `scripts/semantic-search-json.js` | Version JSON de la busqueda semantica para integracion con herramientas/agentes. Uso: `node scripts/semantic-search-json.js "consulta" [topN]`. Retorna `{query, results:[{score, sessionId, title, text}]}`. |
 | `scripts/check_em_dash.py` | Escanear texto por guiones largos (U+2014/U+2013) antes de publicar a GitHub. Regla obligatoria. |
-| `scripts/init-project.sh` | Scaffold de proyecto con doble git: crea `projects/<slug>/.knowledge/` + repo en gh (privado por defecto) |
+| `scripts/init-project.sh` | Scaffold de proyecto con triple git: crea `projects/<slug>/.knowledge/` + repo en gh (privado por defecto) + lo registra en el repo agregado `projects_openclaw` |
+| `scripts/aggregate-sync.sh` | Sincroniza el repo agregado (`projects/` ↔ `projects_openclaw`): status/commit/pull/push del archivo completo. Uso: `aggregate-sync.sh [status|commit|push|pull]` |
 | `scripts/oss-tracker.js` | Tracker de contribuciones OSS |
 | `scripts/pr-dashboard.sh` | Dashboard de PRs (para el batch check del ritual de inicio de sesión) |
 | `scripts/github-pr-risk.sh` | Detector de risk signals de un PR (schema/auth/deps/API/secrets) + preguntas de review. Uso bajo demanda en el cross-review del pipeline. Portado del plugin github-workflow. Solo lectura |
