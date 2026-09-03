@@ -10,14 +10,15 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ### Added
 - **`gonzoblasco/projects_openclaw`** (PRIVADO): repo agregado con el código fuente completo de los 20 proyectos (`projects/`), 1887 archivos. Cada proyecto respeta su propio `.gitignore` (node_modules, .next, dist, .env, *.db excluidos) + `.gitignore` raíz de red de seguridad. Sin `.git/` embebidos (imposible en git sin gitlinks) - el historial de cada proyecto sigue en su repo individual. 838M de disco -> 18M en el repo.
-- **Carpeta local `projects_openclaw/`** en el workspace, ignorada al 100% por el `.gitignore` del workspace (no se versiona; el repo vive en GitHub).
+- **Estructura final (2026-09-02):** `projects/` es el espejo local del repo agregado (como `workspace` ↔ `workspace_openclaw`): se le apuntó el `origin` al remoto nuevo y se alineó con `git reset --hard origin/main`. Los 20 subrepos `.git/` de cada proyecto quedan en disco pero ignorados por el `.gitignore` del agregado (`*/.git/`). `PROYECTOS.md` y `.gitignore-template` están ignorados en `projects/` (son del workspace, no del agregado).
 
 ### Why
 - Gonzo quiere un solo repo privado con casi todo el código fuente de sus proyectos (como snapshot/archive consultable) sin las carpetas pesadas ni secretos ni historiales de git embebidos.
 
 ### Notes
 - `ai-developer-stack/.knowledge` es un symlink roto (del repo original) - entra como symlink, no como contenido.
-- `projects/` conservó su repo local previo (sin remote, 2 commits, trackea PROYECTOS.md + `.knowledge/`) - intacto.
+- `projects/` conservó su repo local previo (sin remote, 2 commits, trackea PROYECTOS.md + `.knowledge/`) - intacto. Quedó descartado (reemplazado por el mirror del agregado).
+- OJO: los `.gitignore` de varios proyectos excluyen su propio `.knowledge/` y el import del agregado no lo incluye. Esto es correcto (doble-git: la memoria viaja en el workspace, no en los repos de código) pero el `reset --hard` en `projects/` puede borrar del disco esos `.knowledge/` - se restauran con `git restore --worktree -- projects/` desde el workspace.
 
 ---
 
