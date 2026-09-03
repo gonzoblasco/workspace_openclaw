@@ -147,3 +147,24 @@
 
 ---
 
+
+## 2026-09-03 - Eliminar una skill rompe el CI si quedan referencias residuales
+
+**Context:** Al eliminar `narrative-content` (reemplazada por apps dedicadas), la verificación de referencias residuales se truncó con `| head` y el scope del grep no cubría `tests/` ni el mirror. Resultado: quedaron 2 referencias en `skills/` (last-audit.md, copy-editing/README.md) y un test huérfano (`tests/bash/progress-tracker.bats` apuntaba a `narrative-content/scripts/progress-tracker.sh`). El CI (`skills-ci.yml` → `npx bats tests/bash/`) falló con exit 127.
+
+**Lesson - verificación completa, sin truncar, con scope total:**
+- El grep de referencias debe cubrir TODO el workspace: `grep -rn "<slug>" --include="*.md" --include="*.bats" skills tests docs .github` - no solo `skills docs`.
+- NUNCA truncar el scan con `| head`: los hits de `memory/archive/` (históricos, intencionales) llenan el output y esconden los hits vivos en `skills/` o `tests/`. Filtrar con `grep -v "memory/archive"` en vez de cortar.
+- Los tests de bats pueden quedar huérfanos al borrar una skill con scripts: correr `npx bats tests/bash/` localmente ANTES de pushear. El test huérfano se elimina con la skill.
+- Re-escanear el mirror DESPUÉS del rsync (la copia vieja en `.github/skills/` conserva hits hasta resincronizar).
+- El CI es la red de seguridad final: correr los tests locales antes del push evita el ciclo rojo.
+
+**Self-reflection:**
+- CONTEXT: eliminación de skill + verificación de referencias
+- REFLECTION: la verificación con `| head` fue un atajo que ocultó hits reales; el scope incompleto del grep dejó fuera `tests/` y el mirror.
+- LESSON: la verificación de limpieza es un paso de calidad - scope total, sin truncar, y validar con los tests locales antes de pushear.
+- BIASES DETECTED: confirmation bias (asumí que el grep con head era suficiente porque "no vi nada raro").
+
+**Tags:** skill removal, CI, bats, referencias residuales, verificación
+
+---

@@ -31,7 +31,10 @@ The 10,000-char SKILL.md cap still averages ~10 KB per skill, so 240 KB fits onl
 ## Remove a skill cleanly (workspace conventions)
 
 1. `trash skills/<slug>` and `trash .github/skills/<slug>` (never `rm`; the `.github/skills` dir is the mirror).
-2. Remove its row from `SKILLS-INDEX.md`, from docs tables (e.g. `docs/pipeline/kanam-product-pipeline.md`), and from other skills' Related Skills sections: `grep -rn "<slug>" --include="*.md" skills docs` and edit each live hit. Keep `memory/archive/` hits untouched (historical).
+2. Remove its row from `SKILLS-INDEX.md`, from docs tables (e.g. `docs/pipeline/kanam-product-pipeline.md`), and from other skills' Related Skills sections. **Scan the FULL workspace, not just `skills docs`:** `grep -rn "<slug>" --include="*.md" --include="*.bats" skills tests docs .github` and edit each live hit. Keep `memory/archive/` hits untouched (historical).
 3. Resync the mirror: `rsync -a --delete skills/ .github/skills/` and `cp SKILLS-INDEX.md .github/skills/SKILLS-INDEX.md`.
 4. Run `python3 scripts/check_em_dash.py`; it must print "OK". Commit atomically in English, `git pull --rebase`, then push.
-5. Verify no stray references remain with the same grep before closing the turn.
+5. **Verify no stray references remain BEFORE closing the turn** - and never truncate the scan with `| head` (memory/archive hits can fill the output and hide live hits in `skills/` or `tests/`):
+   - `grep -rn "<slug>" --include="*.md" --include="*.bats" skills tests .github | grep -v "memory/archive"` must be empty.
+   - **Run the bats suite locally** (`npx bats tests/bash/`) - a deleted skill's script can orphan a test (e.g. `progress-tracker.bats` referenced `narrative-content/scripts/progress-tracker.sh` and broke CI with exit 127). Delete orphaned tests with the skill.
+   - Re-scan the mirror after the rsync (the mirror copy can still hold stale hits until resynced).
