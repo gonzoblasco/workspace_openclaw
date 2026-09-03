@@ -142,6 +142,10 @@ Etapa nueva del ciclo: `scripts/post-task-reflection.sh` estructura la reflexió
 
 **Relación con la self-reflection de cierre:** la de cierre (abajo) registra learnings globales al guardar sesión; esta corre por tarea compleja, en el momento, y además detecta skills. Complementarias, no redundantes.
 
+### Methodology Audit - check rápido (2026-09-03)
+
+Si la sesión tocó metodología (skills, AGENTS.md, scripts, docs de proceso, lecciones nuevas), correr el check rápido de 8 casillas de `docs/METHODOLOGY-AUDIT.md` antes de cerrar. Si 3+ casillas quedan sin marcar, la sesión dejó deuda metodológica: registrarla como pendiente, no ignorarla. Si la sesión no tocó metodología, saltarlo (sería ruido). Auditoría profunda (puntaje 0-16): trimestral o a pedido de Gonzo.
+
 ## WAL Protocol - Write-Ahead Logging
 
 **Regla de oro:** si es importante recordarlo, ESCRIBILO AHORA - no después. El contexto desaparece. El archivo queda.
