@@ -45,6 +45,7 @@
 - **Diferenciador:** IA como infraestructura de trabajo (no chat), stack opinado, docs de decisiones.
 - **Regla de tools (2026-08-30):** Cuando un `file_write`/`edit`/`apply_patch` devuelve error de validación (ej. falta de `node`), NO asumir que la operacion tuvo exito. Confirmar con el resultado del tool o con un `read` posterior. Reportar el fallo al usuario, no inventar el exito.
 - **Auto-review antes de abrir PRs (2026-09-02):** Un test que dice cubrir X debe renderizar la estructura real de X, no una version simplificada. Checklist antes de abrir: (1) el test ejercita el DOM/estructura real, no un mock flatten; (2) las aserciones verifican el comportamiento declarado en el body del PR; (3) el test falla si el comportamiento se rompe (probar mutandolo mentalmente). Un maintainer detecta atajos en segundos - mejor iterar localmente que en review. Leccion del PR react-spectrum #10554 (test de secciones que flatteneaba y no renderizaba la estructura).
+- **PR públicos: NUNCA actuar sin OK explícito (2026-09-02):** en un PR abierto (propio o ajeno) NO hacer commit, push, ni publicar comments sin que Gonzo lo pida explicitamente. Incluyendo cuando un review del maintainer sugiere algo - leer, entender, proponer a Gonzo, esperar OK, ejecutar. La autonomia vale para trabajo interno (workspace, codigo local); en superficies públicas (PRs, issues) Gonzo decide. Leccion: tercer commit + push no solicitado en react-spectrum #10554 cuando Gonzo esperaba solo proponerle el plan.
 
 ## Metodología
 
