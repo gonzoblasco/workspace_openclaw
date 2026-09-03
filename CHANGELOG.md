@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-02] - Clone completo de projects/ + resolución de gitlinks
+
+### Added
+- Clonados los 19 proyectos que estaban como referencia (solo .knowledge/) desde GitHub: `a11y-fixer`, `a11y-playground`, `accessible-ui`, `ai-developer-stack`, `create-stack`, `create-with-ai`, `kanam-forge`, `kanam-insight`, `kanam-mind`, `kanam-pulse`, `kanam-solitaires`, `kanam-story`, `match3`, `portfolio-strategy`, `quedamos`, `soporteml`, `soporteml-v3`, `soporteml-v4`, `system-health-check`. Ahora `projects/` tiene los 20 repos completos con su `.git` (kanam-studio ya estaba clonado).
+
+### Changed
+- **Gitlinks resueltos:** `accessible-ui`, `ai-developer-stack`, `create-with-ai` y `soporteml-v4` estaban en el index del workspace como submódulos (punteros SHA, sin código ni `.knowledge/` trackeado). Al clonarlos, se quitaron los punteros del index (`git rm --cached`) preservando el disco. Los repos embebidos quedan cubiertos por `/projects/*/.git/` en el .gitignore (no vuelven a gitlink).
+- **Memoria recuperada:** el `.knowledge/` de `soporteml-v4` (BRIEF, HANDOFF, STATUS, ADRs, PIPELINE-AB, prompts del pipeline A/B - 14 archivos) existía solo en el repo de GitHub; ahora el workspace lo trackea.
+- **Restaurados archivos pisados por checkout:** el clone de `kanam-pulse` y `portfolio-strategy` trajo versiones viejas de `.knowledge/` commiteadas en sus repos (STATUS.md, HANDOFF.md, ADR-001) e hizo checkout sobre las locales. Restauradas las versiones correctas desde backup.
+- `.knowledge/` de `ai-developer-stack` es un symlink roto del repo (apunta a `../ai-developer-stack-knowledge`, inexistente) - sin contenido real que trackear, se deja como está.
+
+### Why
+- La estructura doble-git (workspace trackea solo `.knowledge/`, GitHub es la fuente del código) dejó en esta máquina solo la memoria de los proyectos, sin sus repos clonados. Gonzo pidió tener todos los proyectos localmente para trabajar.
+
+---
+
 ## [2026-09-02] - Regla de auto-review antes de abrir PRs
 
 ### Added
