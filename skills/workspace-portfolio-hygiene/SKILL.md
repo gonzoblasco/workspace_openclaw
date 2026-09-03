@@ -32,6 +32,7 @@ Rules:
 - Sync the aggregate explicitly with `scripts/aggregate-sync.sh` (status|commit|push|sync|check). It refuses to run if `projects/` points to a remote other than `projects_openclaw`.
 - `git reset --hard` in `projects/` can delete `.knowledge/` dirs from disk (project gitignores exclude them) - restore with `git restore --worktree -- projects/` from the workspace.
 - Verify: `git ls-files --stage projects/<slug>/` shows `100644 .../HANDOFF.md` (blob), not `160000` (gitlink).
+- `scripts/initial-setup.sh` fails on machines that once used submodules: a project's `.git` there is a gitfile (a 47-byte file containing `gitdir: ...`, not a directory), and repos armed with `init+fetch+reset` have no upstream tracking. Recovery that works: detect repos by `[[ "$(git -C dir rev-parse --show-toplevel)" == "$dir" ]]` (covers dir + gitfile and avoids the false positive of resolving to the parent aggregate), and pull with explicit `git pull --rebase origin main` instead of relying on tracking. Local dirty changes (uncommitted source, `.knowledge/` the workspace owns) are respected - the script must never pull over or stash them. Before a real run, probe the existing machine with `--dry-run` to see which projects resolve as real repos vs "would clone" (memory-only).
 
 Old scripts (`init-project.sh` pre-2026-09-02) generated a `.gitignore` ignoring `.knowledge/` and registered submodules - that is obsolete; the script was rewritten.
 
