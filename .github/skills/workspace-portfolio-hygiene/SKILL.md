@@ -59,7 +59,8 @@ Old scripts (`init-project.sh` pre-2026-09-02) generated a `.gitignore` ignoring
 
 - Do NOT use `git submodule add` for workspace projects (breaks the pattern: creates `.gitmodules`, which the rest do not have).
 - To undo a mistakenly created submodule: `git rm --cached -f projects/<slug>` + `git config --remove-section submodule.projects/<slug>` + remove `.gitmodules`, and clean the stage entries.
-- Archived repos are read-only on GitHub; a local commit will not push (expected).
+- Archived repos are read-only on GitHub; a local commit will not push and stays `ahead=1` locally (expected - report it, do not unarchive without explicit go-ahead).
+- Cascading pushes across machines: when a project push is rejected non-fast-forward and you had local commits, `git pull --rebase origin main` may discard them with "contenidos del parche ya están en upstream" - the remote already has those changes (the other machine pushed them), so the local copies were redundant, not lost. Confirm `status -sb` shows "Everything up-to-date", not missing work. After the cascade, re-check the workspace git and aggregate: if a project repo tracks old `.knowledge/`, its rebase checkout overwrites the workspace's correct copies on disk - restore with `git restore --worktree -- projects/` (workspace memory wins).
 - Dangling `.knowledge` symlinks (e.g. ai-developer-stack) are findings, not hygiene tasks - repairing a live project's structure needs explicit user go-ahead.
 
 ## References
