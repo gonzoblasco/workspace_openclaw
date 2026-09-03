@@ -204,6 +204,10 @@
 | **Nuestro PR** | [11465](https://github.com/shadcn-ui/ui/pull/11465) | **open** |
 | **Contexto** | - | 11125 |
 
+| **Issue** | [https://github.com/shadcn-ui/ui/issues/11757](0) | Comentario analitico en #11757 (Select: flechas con dropdown cerrado). Diagnostico: el comportamiento actual es APG combobox compliant (openOnArrowKeyDown=true en useListNavigation de base-ui), no un bug. El select nativo es listbox, por eso cambia sin abrir. Inconsistencia real: base-ui ya commitea valores con popup cerrado via typeahead (tests closed trigger). Propuesta: prop opt-in (keyboardNavigation=native o arrowKeysChangeValue) para flechas que commiteen sin abrir. Oferta de abrir issue en mui/base-ui. |
+| **Nuestro PR** | [-](https://github.com/shadcn-ui/ui/issues/11757) | **comment** |
+| **Contexto** | - | https://github.com/shadcn-ui/ui/issues/11757 |
+
 ### shuding/nextra
 
 | Eslabón | Link | Detalle |
