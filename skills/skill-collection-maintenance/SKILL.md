@@ -38,3 +38,13 @@ The 10,000-char SKILL.md cap still averages ~10 KB per skill, so 240 KB fits onl
    - `grep -rn "<slug>" --include="*.md" --include="*.bats" skills tests .github | grep -v "memory/archive"` must be empty.
    - **Run the bats suite locally** (`npx bats tests/bash/`) - a deleted skill's script can orphan a test (e.g. `progress-tracker.bats` referenced `narrative-content/scripts/progress-tracker.sh` and broke CI with exit 127). Delete orphaned tests with the skill.
    - Re-scan the mirror after the rsync (the mirror copy can still hold stale hits until resynced).
+
+## Sync the index when skills are added
+
+The index drifts when skills land without being documented (2026-09-03: 15 skills missing; index said 66, dir had 81).
+
+1. Extract listed slugs: `grep -oE '\[[a-z0-9-]+\]\(skills/[a-z0-9-]+/' SKILLS-INDEX.md | sed -E 's/\[([a-z0-9-]+)\]\(skills\/[a-z0-9-]+\//\1/' | sort -u`.
+2. Diff both directions against `ls -1 skills/ | grep -v -E 'CHANGELOG|\.zip' | sort` with `comm -23` (in dir, not listed) and `comm -13` (listed, not in dir).
+3. For each missing skill, read its frontmatter `description:` and add a row in the matching category table; update the date line and the "Totales activas" count.
+4. Verify both `comm` directions are empty (dir count == listed count) before closing.
+5. The mirror copy drifts independently: `cp SKILLS-INDEX.md .github/skills/SKILLS-INDEX.md`, then commit atomically in English, `git pull --rebase`, push.

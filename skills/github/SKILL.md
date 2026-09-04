@@ -60,6 +60,19 @@ gh auth login
 
 The MCP wrapper reads `~/.openclaw/secrets/github-token` automatically.
 
+### ⚠️ OAuth token write-block en orgs con OAuth App restrictions
+
+El token OAuth de OpenClaw (`gho_`) NO puede escribir (comentar, abrir PRs/issues) en orgs con OAuth App access restrictions: shadcn-ui, radix-ui, facebook, TanStack, adobe, mui, vercel, etc. La lectura funciona; el write falla con `GraphQL: ... OAuth App access restrictions`. No es un problema del token ni del casing.
+
+**Sintoma:** `gh issue comment` / `gh pr create` fallan con ese error en orgs de terceros, pero funcionan en repos propios.
+
+**Solucion aplicada (03/09):** PAT clasico de Gonzo en el store de secrets (`GITHUB_PERSONAL_ACCESS_TOKEN`) + `secrets.egressProxy.enabled=true` + `allowedHosts=["api.github.com","github.com"]` en openclaw.json + restart del gateway. El proxy inyecta en exec de gateway: sentinel del secret, `HTTPS_PROXY`, `SSL_CERT_FILE`/`CURL_CA_BUNDLE`/`NODE_EXTRA_CA_CERTS` apuntando al CA efimero.
+
+**TLS gotcha (macOS):** `gh` (Go) y `git` (libcurl) NO respetan `SSL_CERT_FILE` en macOS - fallan con `x509: certificate is not trusted` / `SSL certificate problem` cuando el proxy esta activo.
+- API calls: usar `curl -sS https://api.github.com/...` (respeta el CA bundle del proxy) en vez de `gh api`.
+- Git push/pull: prefijar `GIT_SSL_CAINFO="$SSL_CERT_FILE"` (ej: `GIT_SSL_CAINFO="$SSL_CERT_FILE" git push`).
+- Verificar proxy activo: `echo $HTTPS_PROXY` y `echo $SSL_CERT_FILE` en exec de gateway (host=gateway).
+
 ## gh CLI: PRs
 
 ```bash

@@ -365,3 +365,9 @@ En entornos con proxy egress, git necesita GIT_SSL_CAINFO apuntando al trust bun
 
 ---
 
+
+## El egress proxy es el cuello de botella para MCP remoto: cada server (y su authorization server OAuth) hay que agregarlo a allowedHosts + restart
+
+Al conectar MCP servers remotos (Lovable, GitHub), el egress proxy (secrets.egressProxy.allowedHosts) bloquea todo host fuera de la lista con 403 en HTTP tunneling. Los servers stdio locales (Playwright) NO pasan por el egress proxy. El flujo OAuth de un server remoto puede necesitar MAS de un host: verificar `https://<server>/.well-known/oauth-protected-resource` para descubrir el authorization server (ej: mcp.lovable.dev + lovable.dev). Agregar TODOS los hosts de una vez para evitar multiples restarts. Config aplicada 03/09.
+
+**Tags:** mcp,egress-proxy,oauth,config,infraestructura

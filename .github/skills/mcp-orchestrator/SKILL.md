@@ -68,6 +68,15 @@ Central skill for managing MCP servers as discoverable infrastructure. Decides w
    - Example pattern: `/tmp/godot-mcp.sh`.
 4. Test with `tools/list` and one tool call before considering it working.
 
+## Workflow: register a server natively in OpenClaw
+
+1. Add the server: `openclaw mcp add <name> --url <url> --transport streamable-http` (remote) or `--command`/`--arg` (stdio).
+2. Probe it: `openclaw mcp doctor <name> --probe`. A probe that fails with `Proxy response (403) !== 200 when HTTP Tunneling` means the host is not in `secrets.egressProxy.allowedHosts`.
+3. Fix egress: bind the secret to the host with `openclaw secrets store set <NAME> --allow-host <host>` (repeatable), and add the host to `secrets.egressProxy.allowedHosts` if the proxy allowlist is set. Restart the Gateway after changing the allowlist.
+4. For OAuth servers, run `openclaw mcp login <name>` and approve in the browser; verify with `openclaw mcp status --verbose`.
+5. `mcp.servers.*.headers.*` does not accept SecretRef; keep tokens out of config literals and prefer OAuth or env-template refs.
+6. Reload runtimes with `openclaw mcp reload` so the agent picks up the new server.
+
 ## Workflow: orchestrate multiple MCPs
 
 1. Define the task and the MCPs involved.
