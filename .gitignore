@@ -108,6 +108,12 @@ umbrawriter-v2/
 /forks/*/
 /forks/*/**
 
+# clones/: repos de terceros con pull total (no forks especificos). NO se commitea.
+# La memoria/deliverables de la sesion van a docs/ o memory/ del workspace.
+/clones/*
+/clones/*/
+/clones/*/**
+
 # sandbox/: pruebas temporales y analisis aislado. NO se commitea.
 sandbox/
 
