@@ -351,3 +351,17 @@ El check de em dash con grep -P daba falso OK local (exit 2 enmascarado) y rompi
 
 ---
 
+## El token OAuth de OpenClaw (gho_) esta bloqueado para escritura en orgs con OAuth App access restrictions (shadcn-ui, radix-ui, facebook, TanStack, adobe, mui, vercel...). Solucion: PAT clasico en el store de secrets + secret egress proxy (secrets.egressProxy.enabled=true + allowedHosts=[api.github.com, github.com]). El proxy inyecta sentinel + HTTPS_PROXY + CA bundle en exec de gateway; gh (Go) no respeta SSL_CERT_FILE en macOS, usar curl con el CA bundle del proxy. Config aplicada 03/09.
+
+
+
+---
+
+## Push de git fallaba con SSL certificate problem al usar el proxy egress del entorno. git no respeta SSL_CERT_FILE (curl si). Fix: GIT_SSL_CAINFO=$SSL_CERT_FILE git push
+
+En entornos con proxy egress, git necesita GIT_SSL_CAINFO apuntando al trust bundle del proxy; encadenar git pull+push muere en el pull, correr push con el fix
+
+**Tags:** config,reflexion-post-tarea
+
+---
+
