@@ -365,9 +365,11 @@ En entornos con proxy egress, git necesita GIT_SSL_CAINFO apuntando al trust bun
 
 ---
 
+## Config de OpenClaw es efimera, la memoria del workspace es durable (2026-09-04)
 
-## El egress proxy es el cuello de botella para MCP remoto: cada server (y su authorization server OAuth) hay que agregarlo a allowedHosts + restart
+Un update fallido de OpenClaw obligo a reinstalar de cero y se perdio el setup de modelos (la config purgada del 26-30/08 con sus backups 20260829/20260830 no existen). Lo que quedo es la config actual con 15 modelos, no la purgada. La purga y las decisiones de motor (DeepSeek V4 Flash default, Gemma 4 para vision) sobrevivieron SOLO en la memoria del workspace, que esta versionada en git. Leccion: la config de OpenClaw es efimera (se pierde en updates fallidos), la memoria del workspace es la fuente de verdad durable. No hacer cambios sobre la config actual; documentar la config deseada en memoria para poder reconstruirla si se vuelve a perder.
 
-Al conectar MCP servers remotos (Lovable, GitHub), el egress proxy (secrets.egressProxy.allowedHosts) bloquea todo host fuera de la lista con 403 en HTTP tunneling. Los servers stdio locales (Playwright) NO pasan por el egress proxy. El flujo OAuth de un server remoto puede necesitar MAS de un host: verificar `https://<server>/.well-known/oauth-protected-resource` para descubrir el authorization server (ej: mcp.lovable.dev + lovable.dev). Agregar TODOS los hosts de una vez para evitar multiples restarts. Config aplicada 03/09.
+**Tags:** config efimera, memoria durable, update fallido, reinstalacion, purga modelos, workspace versionado, 2026-09-04
 
-**Tags:** mcp,egress-proxy,oauth,config,infraestructura
+---
+
