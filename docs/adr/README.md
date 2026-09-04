@@ -48,6 +48,8 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-040 | [Seleccion de Modelos por Tipo de Tarea](./ADR-040-modelos-seleccion-por-tarea.md) | workspace |
 | ADR-041 | [Motor LLM del Sistema - GLM-5.3-Flash](./ADR-041-motor-llm-glm-5.3-flash.md) | workspace |
 | ADR-042 | [Mercado Pago como Proveedor de Pagos (Nunca Stripe)](./ADR-042-mercado-pago-pagos-latam.md) | workspace |
+| ADR-043 | [Complexity-Driven Pipeline (Orquestación por T-Score)](./ADR-043-complexity-driven-pipeline.md) | workspace |
+| ADR-044 | [Methodology Audit - Marco de 8 Fases como Lente de Auditoría](./ADR-044-methodology-audit-framework.md) | workspace (propuesto) |
 
 ## Formato
 
