@@ -140,6 +140,10 @@
 | **Nuestro PR** | [#5551]() | **merged** |
 | **Contexto** | - | El Codex bot (20/08) senalo P1: omitir orientation rompia la navegacion horizontal del grid. Gonzo lo addresso separando la orientacion de navegacion del atributo ARIA (strip aria-orientation de listProps en grid). Buen ejemplo de atender feedback de bot con solucion correcta. |
 
+| **Issue** | [https://github.com/mui/base-ui/issues/5633](1) | Comentario analitico en #5633 (Select: flechas con dropdown cerrado) - cross-reference del analisis de shadcn #11757. Zezombye abrio el issue tras nuestro comentario en shadcn. Aportamos el diagnostico completo: APG combobox compliant (openOnArrowKeyDown), typeahead closed-trigger como precedente, prop opt-in propuesta. Tono colaborativo (we) - trabajo en equipo con el reporter. Cierre: opinion del maintainer resolveria el patron para el ecosistema (base-ui + shadcn + radix). |
+| **Nuestro PR** | [-](https://github.com/mui/base-ui/issues/5633) | **comment** |
+| **Contexto** | - | https://github.com/mui/base-ui/issues/5633 |
+
 ### mui/material-ui
 
 | Eslabón | Link | Detalle |
