@@ -192,3 +192,19 @@ En la entrevista de OpenSistemas pasaron data incorrecta sobre su stack de agent
 
 ---
 
+## Verificar vigencia de la fuente, no solo su existencia (2026-09-04)
+
+Al citar data para afirmar algo del mercado actual, chequear la fecha de la fuente y si sigue vigente para el contexto. Error real: use la encuesta WebAIM #10 (2024) para afirmar que Windows domina laptops por precio, sin notar que la MacBook Neo (marzo 2026, USD 599) cambio el mercado. La data era real pero caducada para el contexto. La data de accesibilidad (WebAIM, cada ~2 anios) y la de mercado (IDC/Counterpoint, meses) se mueven a velocidades distintas. Aplica tambien a citar respuestas de issues/PRs viejos como si reflejaran el estado actual del codigo.
+
+**Tags:** verificar vigencia, data actualizada, mercado, WebAIM, MacBook Neo, 2026-09-04
+
+---
+
+## MacBook Neo y la economia de la accesibilidad (2026-09-04)
+
+La MacBook Neo (USD 599) y la Mac mini no solo cambiaron la cuota de mercado de laptops: cambiaron la economia de la accesibilidad. Hasta hace poco, en Windows los lectores de pantalla eficientes eran JAWS (caro, licencia paga) y NVDA (gratis pero menos pulido). Con la Neo/mini a precio accesible, ahora se puede tener accesibilidad integrada (VoiceOver) sin pagar fortunas por JAWS. Esto refuerza el argumento de seguir macOS en componentes de UI: ya no es solo preferencia de nicho, es acceso economico a accesibilidad de calidad. Complementa la leccion 'Verificar vigencia de la fuente' (id 118): la data de mercado y la de accesibilidad se mueven juntas.
+
+**Tags:** accesibilidad, MacBook Neo, JAWS, NVDA, VoiceOver, economia, 2026-09-04
+
+---
+
