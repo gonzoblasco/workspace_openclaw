@@ -1,6 +1,6 @@
 # ADR-044: Methodology Audit - Marco de 8 Fases como Lente de Auditoría
 
-**Status:** Proposed (borrador)
+**Status:** Accepted (2026-09-03)
 **Deciders:** Gonzo / Kanam
 **Fecha:** 2026-09-03
 **Origen:** workspace (sesión 2026-09-03, framework traído por Gonzo)
