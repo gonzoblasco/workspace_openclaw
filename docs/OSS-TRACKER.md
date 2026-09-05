@@ -9,7 +9,7 @@
 |---------|-------|
 | PRs abiertos | 17 |
 | PRs mergeados | 6 |
-| PRs cerrados sin merge | 20 |
+| PRs cerrados sin merge | 22 |
 | Colaboraciones no-codigo | 12 |
 | Repos con contribuciones | 20 |
 
@@ -140,8 +140,8 @@
 | **Nuestro PR** | [#5551]() | **merged** |
 | **Contexto** | - | El Codex bot (20/08) senalo P1: omitir orientation rompia la navegacion horizontal del grid. Gonzo lo addresso separando la orientacion de navegacion del atributo ARIA (strip aria-orientation de listProps en grid). Buen ejemplo de atender feedback de bot con solucion correcta. |
 
-| **Issue** | [https://github.com/mui/base-ui/issues/5633](1) | Comentario analitico en #5633 (Select: flechas con dropdown cerrado) - cross-reference del analisis de shadcn #11757. Zezombye abrio el issue tras nuestro comentario en shadcn. Aportamos el diagnostico completo: APG combobox compliant (openOnArrowKeyDown), typeahead closed-trigger como precedente, prop opt-in propuesta. Tono colaborativo (we) - trabajo en equipo con el reporter. Cierre: opinion del maintainer resolveria el patron para el ecosistema (base-ui + shadcn + radix). |
-| **Nuestro PR** | [-](https://github.com/mui/base-ui/issues/5633) | **comment** |
+| **Issue** | [https://github.com/mui/base-ui/issues/5633](1) | Comentario analitico en #5633 (Select: flechas con dropdown cerrado). RESOLUCION (2026-09-04): atomiks (maintainer) cerro el issue como by-design - Base UI sigue el select nativo de macOS + patron APG select-only combobox. ArrowDown en select cerrado abre el menu (spec-compliant); typeahead que commitea cerrado tambien es comportamiento macOS. La convencion Windows (ciclar con flechas) es diferencia de plataforma, no bug. Sugirio tecnica hover (estilo Photoshop) como alternativa UX. Nuestro analisis fue validado en sustancia (atomiks cubrio el punto del typeahead). No hay PR que abrir. |
+| **Nuestro PR** | [-](https://github.com/mui/base-ui/issues/5633) | **closed** |
 | **Contexto** | - | https://github.com/mui/base-ui/issues/5633 |
 
 ### mui/material-ui
@@ -208,8 +208,8 @@
 | **Nuestro PR** | [11465](https://github.com/shadcn-ui/ui/pull/11465) | **open** |
 | **Contexto** | - | 11125 |
 
-| **Issue** | [https://github.com/shadcn-ui/ui/issues/11757](0) | Comentario analitico en #11757 (Select: flechas con dropdown cerrado). Diagnostico: el comportamiento actual es APG combobox compliant (openOnArrowKeyDown=true en useListNavigation de base-ui), no un bug. El select nativo es listbox, por eso cambia sin abrir. Inconsistencia real: base-ui ya commitea valores con popup cerrado via typeahead (tests closed trigger). Propuesta: prop opt-in (keyboardNavigation=native o arrowKeysChangeValue) para flechas que commiteen sin abrir. Oferta de abrir issue en mui/base-ui. |
-| **Nuestro PR** | [-](https://github.com/shadcn-ui/ui/issues/11757) | **comment** |
+| **Issue** | [https://github.com/shadcn-ui/ui/issues/11757](0) | Comentario analitico en #11757 (Select: flechas con dropdown cerrado). RESOLUCION (2026-09-05): el fix pertenece upstream en mui/base-ui, donde atomiks cerro #5633 como by-design (macOS + APG). Issue de shadcn queda abierto pero efectivamente muerto - nadie va a fixear algo declarado intencional. Ultimo comentario (shahharis98) se retira del tema. No hay accion posible. |
+| **Nuestro PR** | [-](https://github.com/shadcn-ui/ui/issues/11757) | **closed** |
 | **Contexto** | - | https://github.com/shadcn-ui/ui/issues/11757 |
 
 ### shuding/nextra
