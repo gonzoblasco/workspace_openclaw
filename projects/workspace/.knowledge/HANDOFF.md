@@ -1,15 +1,14 @@
 # HANDOFF - workspace
 
 ## Session Context
-- **Date:** 2026-09-05 14:25
+- **Date:** 2026-09-07 18:12
 - **Project:** workspace
 - **Branch:** main
 
 ## Summary
-Cierre del hilo OSS shadcn-ui/ui#11757 (Select: flechas con dropdown cerrado). Gonzo paso el link al ultimo comentario (shahharis98, 2026-09-05): se retira del tema porque el fix pertenece upstream. Verificado el estado completo: (1) nuestro analisis en shadcn #11757 (id 61) y mui/base-ui #5633 (id 62) fue validado en sustancia; (2) atomiks (maintainer de Base UI) cerro #5633 como by-design el 04/09 - Base UI sigue el select nativo de macOS + patron APG select-only combobox, ArrowDown en cerrado abre el menu (spec-compliant), typeahead cerrado tambien es macOS; la convencion Windows de ciclar con flechas es diferencia de plataforma, no bug; sugirio hover estilo Photoshop como alternativa UX; (3) el issue de shadcn queda abierto pero muerto - nadie va a fixear algo declarado intencional upstream. Decision: no hay PR que abrir, no hay accion posible. Contributions 61 y 62 actualizadas a status=closed en la DB + OSS-TRACKER regenerado. Sin pendientes nuevos.
+Setup canal remoto Telegram: bot @kanam_ai_bot creado via BotFather, token + allowFrom (user ID 7921100122) configurados por Gonzo via Control UI. Canal verificado end-to-end (primer DM /start 17:44, segunda prueba 17:53). Tailscale desinstalado por Gonzo (friccion permanente) - Telegram lo reemplaza para chat remoto desde iPhone. Decision: un solo gateway por token de bot (long polling Telegram, error 409 si dos gateways escuchan juntos); patron recomendado: Mac Mini como servidor fijo 24/7, TODO #44 registrado. Heartbeat apagado (agents.defaults.heartbeat.every=0m, sin restart). USER.md actualizado (webchat Tailscale -> canal remoto Telegram). Daily 2026-09-07 importado a DB (fuente de verdad).
 
 ## Files Changed
-docs/OSS-TRACKER.md
 memory/memory.db
 
 ## Next Steps
