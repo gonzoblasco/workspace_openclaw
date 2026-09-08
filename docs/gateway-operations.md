@@ -37,7 +37,15 @@ Convención: `~/.openclaw/openclaw.json.bak-<motivo>-<fecha>`. Antes de cualquie
 - El botToken de Telegram vive en el store de secretos (`TELEGRAM_BOT_TOKEN`), referenciado desde la config por SecretRef. Nunca en texto plano en el JSON ni en chat.
 - `openclaw secrets list` para ver metadatos (no valores).
 
-## Pendiente (Fase 2 - requiere OK explícito de Gonzo)
+## Automations de Fase 2 (activos desde 2026-09-08)
 
-- Crons/watchers que ejecuten `gateway-jobs-check.sh` (patrón: alerta solo en fallo) y un audit diario 09:00.
-- Fase 3: entrega de la alerta por Telegram al iPhone.
+| Job | Schedule | Qué hace | Delivery |
+|---|---|---|---|
+| `gateway-jobs-watcher` | cada 2h | Trigger headless corre `gateway-jobs-check.sh`; dispara solo si exit 1 | Alerta por Telegram a `7921100122` (solo en fallo; silencio = sano) |
+| `gateway-daily-audit` | cron 09:00 ART | Corre `gateway-audit.sh` y anexa a `~/.openclaw/gateway-audit.log` | none (silencioso por diseño) |
+
+Contrato del trigger: el runner de `kind:script` exige que la última expresión retorne un objeto (`return {done: true}`) - sin eso el run marca error aunque el comando haya corrido. Lección de la primera corrida (2026-09-08).
+
+## Pendiente (Fase 3 - requiere OK explícito de Gonzo)
+
+- Endurecer la alerta: failure routes por Telegram si el propio watcher falla 2 veces seguidas (hoy la cadena watcher->alerta ya está activa; falta revisar el umbral `failureAlert`).
