@@ -46,6 +46,12 @@ Convención: `~/.openclaw/openclaw.json.bak-<motivo>-<fecha>`. Antes de cualquie
 
 Contrato del trigger: el runner de `kind:script` exige que la última expresión retorne un objeto (`return {done: true}`) - sin eso el run marca error aunque el comando haya corrido. Lección de la primera corrida (2026-09-08).
 
+## Reindex de memoria vs restarts del gateway (2026-09-08)
+
+- Los reindex via CLI (`openclaw memory index`) son frágiles a restarts del gateway: quedan huérfanos con `reindex-lock.sqlite` residual y bloquentan intentos siguientes.
+- Ritual de recovery: (1) `lsof` sobre el lock para identificar el holder real, (2) matar procesos `openclaw-memory` huérfanos a 0% CPU, (3) borrar `openclaw-agent.sqlite.reindex-lock.sqlite` (+ journal) y los scratch `memory-reindex-*` de intentos muertos, (4) reintentar.
+- Señal de progreso real durante un reindex: scratch DB `memory-reindex-<uuid>` creciendo + CPU de Ollama activa. El proceso CLI a ~0% CPU es normal (el trabajo lo hace Ollama).
+
 ## Pendiente (Fase 3 - requiere OK explícito de Gonzo)
 
 - Endurecer la alerta: failure routes por Telegram si el propio watcher falla 2 veces seguidas (hoy la cadena watcher->alerta ya está activa; falta revisar el umbral `failureAlert`).
