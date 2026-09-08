@@ -373,3 +373,27 @@ Un update fallido de OpenClaw obligo a reinstalar de cero y se perdio el setup d
 
 ---
 
+## Gobernanza de modelos: un agente remoto puede llamar al modelo descartado por costoso (2026-09-06)
+
+El OpenClaw del VPS de Hostinger tenia kimi-k2.7-code como fallback #1 del modelo default desde 2026-08-26 (key de ollama-cloud daba Unauthorized y se reordenaron los fallbacks). Los heartbeats/crons del VPS caian al fallback caro (~15x deepseek-v4-flash) sin que nadie lo pidiera. Las catas comparativas de modelos no sirven si un agente por detras llama al modelo descartado. Leccion: al configurar cualquier instancia nueva (VPS, otra maquina, workspace clonado), verificar SIEMPRE el orden de fallbacks del modelo default y que ningun modelo fuera del ecosistema (ADR-040/041) quede como fallback. El VPS se dio de baja.
+
+**Tags:** openclaw, modelos, config, vps, gobernanza, costo
+
+---
+
+## Un solo gateway por token de bot Telegram (2026-09-07)
+
+Telegram usa long polling: dos gateways escuchando el mismo bot token causan error 409 y mensajes perdidos. Patron correcto en multi-maquina: un servidor fijo 24/7 (Mac Mini) con el canal activo, y el canal deshabilitado en la otra maquina. El token viaja por git en openclaw.json, pero solo un gateway puede escuchar a la vez.
+
+**Tags:** telegram, gateway, multi-maquina
+
+---
+
+## Autonomia: responder con evidencia ante pedidos de auditoria
+
+Sesion 2026-09-07: Gonzo pregunto que habia corrido sin su solicitud. La respuesta correcta fue auditar (sessions_history, automations list/runs, git reflog) y mostrar evidencia. Jobs built-in del gateway enabled no implican ejecucion (lastRunAtMs null). Si el usuario vio algo concreto, preguntar que fue antes de cerrar la conclusion.
+
+**Tags:** autonomia, auditoria, gateway, automations
+
+---
+
