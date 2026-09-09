@@ -8,7 +8,7 @@
 | Métrica | Valor |
 |---------|-------|
 | PRs abiertos | 19 |
-| PRs mergeados | 6 |
+| PRs mergeados | 7 |
 | PRs cerrados sin merge | 22 |
 | Colaboraciones no-codigo | 14 |
 | Repos con contribuciones | 21 |
@@ -59,6 +59,9 @@
 | **Issue** | [https://github.com/adobe/react-spectrum/issues/9687](a11y) | fix: expose input styling on RAC Checkbox and Radio (inputClassName/inputStyle) |
 | **Nuestro PR** | [10517](https://github.com/adobe/react-spectrum/pull/10517) | **open** |
 | **Contexto** | - | 9687 |
+
+| **Issue** | [10554](https://github.com/adobe/react-spectrum/issues/9556) | Test-only PR: regression for global aria-posinset across sections. Merged 2026-09-09 by yihuiliao. Draft LinkedIn: docs/linkedin/react-spectrum-aria-posinset.md |
+| **Nuestro PR** | [10554](https://github.com/adobe/react-spectrum/pull/10554) | **merged** |
 
 ### carbon-design-system/carbon
 
