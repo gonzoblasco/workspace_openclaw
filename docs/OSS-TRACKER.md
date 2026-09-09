@@ -7,7 +7,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 18 |
+| PRs abiertos | 19 |
 | PRs mergeados | 6 |
 | PRs cerrados sin merge | 22 |
 | Colaboraciones no-codigo | 12 |
@@ -73,6 +73,9 @@
 |---------|------|---------|
 | **Issue** | [9864](https://github.com/carbon-design-system/ibm-products/issues/9864) | PR #9878 (2026-09-09). CreateFullPage: getActiveStep en useCreateComponentFocus buscaba pasos sin ancestro [inert] pero los steps se ocultan solo con display:none (__step--hidden-step). Devolvia siempre el paso 1 oculto, .focus() no-op, foco se perdia al Skip to main content. Regression v2.44. Fix: querySelector directo de la clase __step--visible-step (blockClass compuesto de CreateFullPage resuelve a __step__step--visible-step en el DOM real). Test de regresion: falla sin fix (timeout), pasa con fix; suite 28/28. Issue fresco (creado 08/09), root cause reportado por el autor, verificado contra main antes de actuar. Pipeline T=8: Agente A escribio, Kanam reviso y corrigio (fixture con inputs reales + selector compuesto). |
 | **Nuestro PR** | [9878](https://github.com/carbon-design-system/ibm-products/pull/9878) | **open** |
+
+| **Issue** | [9839](https://github.com/carbon-design-system/ibm-products/issues/9839) | PR #9879 (2026-09-09). Datagrid sortable headers anunciados como toggle buttons: el boton sort en useSortableColumns.tsx seteaba aria-pressed (true/false), VoiceOver lo anuncia como toggle sin direccion. aria-sort ya existe en el th via getAriaSortValue (DatagridHeaderRow). Verificado que @carbon/react DataTable TableHeader NO usa aria-pressed (outlier de Datagrid). Fix: remover aria-pressed + helper getAriaPressedValue sin uso. Test de regresion: falla en main (aria-pressed=false presente), pasa con fix; suite Datagrid 47/48 (1 skipped pre-existente). T=6 trivial: Kanam solo, sin Agente A. Issue 25/08 (15 dias), sin asignar, sin PRs cruzados. |
+| **Nuestro PR** | [9879](https://github.com/carbon-design-system/ibm-products/pull/9879) | **open** |
 
 ### colinhacks/zod
 
