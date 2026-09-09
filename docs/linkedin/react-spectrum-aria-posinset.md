@@ -13,6 +13,8 @@ Not every accessibility bug breaks something visibly. Some just disappear from t
 
 A few days ago I got a PR merged in Adobe React Spectrum that illustrates this point: it's a test-only PR, and that's exactly what makes it interesting.
 
+[PR #10554 - adobe/react-spectrum](https://github.com/adobe/react-spectrum/pull/10554)
+
 **The context**
 
 In a menu with sections (groups of items), the ARIA specification requires `aria-posinset` to be **global**: if there are 4 items spread across 2 sections, the positions run 1 through 4 continuously, consistent with `aria-setsize=4`. If a section restarts the count, screen readers announce positions that don't match reality ("item 1 of 2" when it's actually "item 1 of 4"), and navigation becomes confusing.
