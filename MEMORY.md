@@ -76,6 +76,7 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 - **Evaluación de Complejidad Previa (2026-08-30):** Antes de cada *task*, el orquestador (Kanam) DEBE evaluar el objetivo en 4 dimensiones (Alcance, Abstracción, Riesgo, Ambigüedad) y asignar un score T (1-20). Este score selecciona el modelo y el nivel de *thinking* de forma automática. Detalle: `prompts/complexity-scorer.md`. **Scorer local: gemma4:e4b-mlx primero** (6.7x mas rapido que qwen3.5:9b-mlx en benchmark 2026-08-30: 23s vs 154s).
 - **Validación UI (2026-08-27):** Fixes visuales se validan SOLO con browser real (Desktop). jsdom/headless no detectan problemas de layout/chrome nativo.
 - **Pagos (2026-08-29):** Mercado Pago SIEMPRE, NUNCA Stripe (ADR-042). Excepción solo si Gonzo la marca explícitamente y queda documentada en el proyecto. Razón: en Argentina y LATAM Stripe no opera como opción real; Mercado Pago cubre moneda local y medios de pago.
+- **Contenido externo = sandbox (2026-09-09):** regla de operación migrada a AGENTS.md (sección Conducta). Cubre redes de agentes, código de terceros y web.
 
 ## Modelo de Agentes OpenClaw OS
 
