@@ -1,36 +1,36 @@
-# LinkedIn Post: aria-posinset global en menús con secciones (react-spectrum)
+# LinkedIn Post: global aria-posinset across menu sections (react-spectrum)
 
-**Nicho:** a11y (diferenciador)
-**Proyecto:** adobe/react-spectrum
-**PR:** #10554 (mergeado 2026-09-09 por yihuiliao)
-**Fecha:** 2026-09-09
+**Niche:** a11y (differentiator)
+**Project:** adobe/react-spectrum
+**PR:** #10554 (merged 2026-09-09 by yihuiliao)
+**Date:** 2026-09-09
 
 ---
 
 ## Draft
 
-No todos los bugs de accesibilidad rompen algo visible. Algunos simplemente desaparecen del test suite un día, sin que nadie se dé cuenta.
+Not every accessibility bug breaks something visibly. Some just disappear from the test suite one day, and nobody notices.
 
-Hace unos días mergeé un PR en Adobe React Spectrum que ilustra este punto: es solo un test, y justamente por eso es interesante.
+A few days ago I got a PR merged in Adobe React Spectrum that illustrates this point: it's a test-only PR, and that's exactly what makes it interesting.
 
-**El contexto**
+**The context**
 
-En un menú con secciones (grupos de ítems), la especificación ARIA exige que `aria-posinset` sea **global**: si hay 4 ítems repartidos en 2 secciones, las posiciones van de 1 a 4 seguidas, consistente con `aria-setsize=4`. Si una sección reinicia el conteo, los screen readers anuncian posiciones que no corresponden ("elemento 1 de 2" cuando en realidad es "elemento 1 de 4"), y la navegación se vuelve confusa.
+In a menu with sections (groups of items), the ARIA specification requires `aria-posinset` to be **global**: if there are 4 items spread across 2 sections, the positions run 1 through 4 continuously, consistent with `aria-setsize=4`. If a section restarts the count, screen readers announce positions that don't match reality ("item 1 of 2" when it's actually "item 1 of 4"), and navigation becomes confusing.
 
-React Spectrum ya producía los valores correctos. El problema era que **nada lo garantizaba**: un refactor futuro del cálculo de índices podía reintroducir el reinicio por sección sin que ningún test fallara.
+React Spectrum was already producing the correct values. The problem was that **nothing guaranteed it**: a future refactor of the index computation could silently reintroduce per-section restarts without any test failing.
 
-**La trampa del test**
+**The test trap**
 
-Escribir el test parecía trivial: renderizar un menú con secciones y asertar que las posiciones son 1, 2, 3, 4. Pero la primera versión tenía una falla que yo mismo no vi: el helper que armaba el mock "aplanaba" las secciones en una lista plana de ítems. El DOM resultante nunca contenía la estructura de secciones que el test decía cubrir.
+Writing the test looked trivial: render a menu with sections and assert the positions are 1, 2, 3, 4. But the first version had a flaw I didn't see myself: the helper building the mock "flattened" the sections into a plain list of items. The resulting DOM never contained the sectioned structure the test claimed to cover.
 
-El test pasaba. Pero no estaba testeando lo que decía testear. Un maintainer lo detectó en segundos, y con razón: es exactamente el tipo de atajo que da falsa confianza.
+The test passed. But it wasn't testing what it said it was testing. A maintainer spotted it in seconds - and rightly so: it's exactly the kind of shortcut that gives false confidence.
 
-**La corrección**
+**The fix**
 
-La versión final renderiza cada sección a través del hook real (`useMenuSection`), incluyendo los grupos con sus headings, y además cubre el caso de secciones sin heading (donde el nombre accesible viene por `aria-label`). Así, cualquier cambio futuro en la lógica de secciones -no solo en el cálculo de índices- queda ejercido por el test.
+The final version renders each section through the real hook (`useMenuSection`), including the labelled groups and their headings, and also covers sections without a heading (where the accessible name comes from `aria-label`). That way, any future change in section logic - not just the index computation - gets exercised by the test.
 
-**El por qué importa**
+**Why it matters**
 
-Un test de accesibilidad solo vale lo que vale la estructura que ejercita. Si el setup simplifica el DOM hasta convertirlo en una lista plana, el test verde es decoración. La regla que me quedó: el test tiene que renderizar la estructura real del componente, fallar si el comportamiento se rompe, y verificar exactamente lo que el PR declara.
+An accessibility test is only as good as the structure it exercises. If the setup simplifies the DOM down to a flat list, a green test is decoration. The rule I took away: the test must render the real component structure, fail when the behavior breaks, and verify exactly what the PR claims.
 
 #Accessibility #ARIA #Testing #OpenSource #FrontendEngineering
