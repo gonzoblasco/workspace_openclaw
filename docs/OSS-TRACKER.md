@@ -7,11 +7,11 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 17 |
+| PRs abiertos | 18 |
 | PRs mergeados | 6 |
 | PRs cerrados sin merge | 22 |
 | Colaboraciones no-codigo | 12 |
-| Repos con contribuciones | 20 |
+| Repos con contribuciones | 21 |
 
 ## PR Registry
 
@@ -66,6 +66,13 @@
 |---------|------|---------|
 | **Issue** | - | ComposedModal: add aria-describedby prop support. Agosto, sin review. |
 | **Nuestro PR** | [#22887]() | **open** |
+
+### carbon-design-system/ibm-products
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | [9864](https://github.com/carbon-design-system/ibm-products/issues/9864) | PR #9878 (2026-09-09). CreateFullPage: getActiveStep en useCreateComponentFocus buscaba pasos sin ancestro [inert] pero los steps se ocultan solo con display:none (__step--hidden-step). Devolvia siempre el paso 1 oculto, .focus() no-op, foco se perdia al Skip to main content. Regression v2.44. Fix: querySelector directo de la clase __step--visible-step (blockClass compuesto de CreateFullPage resuelve a __step__step--visible-step en el DOM real). Test de regresion: falla sin fix (timeout), pasa con fix; suite 28/28. Issue fresco (creado 08/09), root cause reportado por el autor, verificado contra main antes de actuar. Pipeline T=8: Agente A escribio, Kanam reviso y corrigio (fixture con inputs reales + selector compuesto). |
+| **Nuestro PR** | [9878](https://github.com/carbon-design-system/ibm-products/pull/9878) | **open** |
 
 ### colinhacks/zod
 
