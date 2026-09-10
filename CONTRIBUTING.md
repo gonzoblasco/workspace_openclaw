@@ -32,6 +32,17 @@ Los repos OSS **no** se clonan en `projects/` (esa carpeta es para proyectos pro
 - Nunca modificar el repo del proyecto directamente sin approval explícito.
 - Limpiar con `trash` (no `rm -rf`).
 
+## Antes de responder cualquier link de issue/PR: chequear contexto interno
+
+**Regla (lecciones 2026-09-09 y 2026-09-10, carbon #16031):** antes de responder, resumir o actuar sobre cualquier URL de issue/PR, SIEMPRE chequear si ya participamos:
+
+1. `memory_search()` por el numero de issue/repo.
+2. `sessions_search()` por el numero de issue/repo.
+3. Si participamos (comentario propio, verificacion, seguimiento): la respuesta se contextualiza con NUESTRO rol en el hilo. Ejemplo real: el cierre del issue es "che, tu comentario sirvio para que lo cierren", no un resumen del PR como si fuera nuevo.
+4. Recien despues leer el hilo actualizado (ver regla siguiente).
+
+Presentar como novedad algo en lo que ya actuamos repite trabajo, pierde el hilo de seguimiento y obliga a Gonzo a corregirme. Dos veces seguidas es suficiente leccion.
+
 ## Antes de clasificar o empujar un PR: leer TODO
 
 **Regla crítica (lección 2026-08-22):** antes de empujar, cerrar, o clasificar un PR, leer **todos** los comentarios, incluidos los **inline comments de código** y las **reviews**. El feedback real del maintainer vive ahí y puede cambiar la decisión por completo.

@@ -99,6 +99,7 @@ Valor está en comentar, revisar o ayudar a destrabar. **Antes de proponer un PR
 
 #### Feedback en PRs/issues ajenos (2026-08-24)
 Detalle en `docs/AGENTS-DETALLE.md`.
+0. **Antes de responder cualquier URL de issue/PR:** buscar en memoria/sesiones por numero de issue (regla 2026-09-10, detalle en CONTRIBUTING.md). Si ya participamos, contextualizar con nuestro rol, nunca como novedad.
 1. **Leer todo** antes de comentar. Si no hay repo, plantear como pregunta, no afirmación.
 2. **Autor define, invitado no**. No usar elogios/adulación; es ruido.
 3. **No disculparse en nuevo comentario**. Borrar el malo y generar el correcto.
