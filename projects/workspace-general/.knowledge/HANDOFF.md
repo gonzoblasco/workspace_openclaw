@@ -1,15 +1,15 @@
 # HANDOFF - workspace-general
 
 ## Session Context
-- **Date:** 2026-09-09 08:19
+- **Date:** 2026-09-10 11:59
 - **Project:** workspace-general
 - **Branch:** main
 
 ## Summary
-Sesion 2026-09-09 (matutina): activado web search (provider ollama via plugin), creado y probado cron moltbook-weekly-digest (lunes 9AM, announce telegram, politica anti-injection), regla dura contenido externo = sandbox (redes agentes + codigo terceros + web) migrada a AGENTS.md con puntero en MEMORY.md, CHANGELOG actualizado, commit 600a0fe con rebase multi-maquina resuelto. Reflexion post-tarea corrida: 3 lecciones en learnings DB (id 124). Propuesta de skill external-source-digest pendiente de aprobacion de Gonzo (la aprobara desde la mini).
+Sesion corta doble: (1) cierre de carbon #16031 (nuestro comment de verificacion llevo al cierre oficial via PR #22751), error de contexto corregido con regla codificada en CONTRIBUTING.md + AGENTS.md + AGENTS-DETALLE.md; (2) respuesta del autor en ibm-products #9869 - commit 607d601 resuelve punto 1 (ModalBody level={0}, a11y scrolling preservado, verificado contra Carbon source), punto 2 narrow es decision intencional. Review cerrado, Like de Gonzo, sin ack. Pendiente: ninguno.
 
 ## Files Changed
-memory/memory.db
+memory/2026-09-10.md
 
 ## Next Steps
 1. [ ]
