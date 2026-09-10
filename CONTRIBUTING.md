@@ -34,12 +34,12 @@ Los repos OSS **no** se clonan en `projects/` (esa carpeta es para proyectos pro
 
 ## Antes de responder cualquier link de issue/PR: chequear contexto interno
 
-**Regla (lecciones 2026-09-09 y 2026-09-10, carbon #16031):** antes de responder, resumir o actuar sobre cualquier URL de issue/PR, SIEMPRE chequear si ya participamos:
+**Regla (lecciones 2026-09-09 y 2026-09-10, carbon #16031):** antes de responder, resumir o actuar sobre cualquier URL de issue/PR, hacer DOS chequeos en orden:
 
-1. `memory_search()` por el numero de issue/repo.
+1. **Contexto interno:** `memory_search()` por el numero de issue/repo.
 2. `sessions_search()` por el numero de issue/repo.
 3. Si participamos (comentario propio, verificacion, seguimiento): la respuesta se contextualiza con NUESTRO rol en el hilo. Ejemplo real: el cierre del issue es "che, tu comentario sirvio para que lo cierren", no un resumen del PR como si fuera nuevo.
-4. Recien despues leer el hilo actualizado (ver regla siguiente).
+4. **Hilo externo completo:** leer body, TODOS los comentarios e interacciones (incluidos reviews e inline comments), estado actual y eventos de cierre. Nunca responder basandose solo en el comentario/enlace compartido: el contexto que Gonzo manda es el punto de partida, no el hilo completo.
 
 Presentar como novedad algo en lo que ya actuamos repite trabajo, pierde el hilo de seguimiento y obliga a Gonzo a corregirme. Dos veces seguidas es suficiente leccion.
 
