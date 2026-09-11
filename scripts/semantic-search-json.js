@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB_PATH = path.join(__dirname, '..', 'memory', 'memory.db');
-const MODEL = 'nomic-embed-text:latest';
+const MODEL = 'qwen3-embedding:0.6b';
 
 function embed(text) {
   const safe = text.replace(/"/g, '\\"').replace(/\n/g, ' ');

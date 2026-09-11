@@ -8,7 +8,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DB="memory/memory.db"
 OLLAMA_BASE="${OLLAMA_BASE:-http://127.0.0.1:11434}"
-EMBED_MODEL="${EMBED_MODEL:-nomic-embed-text:latest}"
+EMBED_MODEL="${EMBED_MODEL:-qwen3-embedding:0.6b}"
 
 echo "=================================================="
 echo "Memory Cataloger - Transformando memoria a DB relacional + vectorial"
@@ -28,26 +28,38 @@ from pathlib import Path
 
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
-EMBED_MODEL = os.environ.get("EMBED_MODEL", "nomic-embed-text:latest")
+EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
 
 def generate_embedding(text, model=EMBED_MODEL, base=OLLAMA_BASE):
-    """Call Ollama embeddings API and return normalized vector"""
+    """Call Ollama embeddings API and return normalized vector
+
+    Uses urllib (stdlib): the system python has no requests installed, which
+    silently made every call fail.
+    """
     try:
-        import requests
-        response = requests.post(
+        import urllib.request
+        body = json.dumps({
+            "model": model,
+            "prompt": text,
+            "n_preamble": 0,
+            "n_context": 768,
+            "n_predict": 0,
+        }).encode("utf-8")
+        req = urllib.request.Request(
             f"{base}/api/embeddings",
-            json={"model": model, "prompt": text, "n_preamble": 0, "n_context": 768, "n_predict": 0},
-            timeout=30
+            data=body,
+            headers={"Content-Type": "application/json"},
         )
-        if response.status_code == 200 and "embeddings" in response.json():
-            embeds = response.json()["embeddings"]
-            if len(embeds) > 0:
-                return [round(float(v), 6) for v in embeds[0]]
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            if resp.status == 200:
+                data = json.loads(resp.read())
+                embeds = data.get("embeddings") or ([data["embedding"]] if data.get("embedding") else [])
+                if embeds:
+                    return [round(float(v), 6) for v in embeds[0]]
     except Exception as e:
-        pass
-    
-    # Fallback: return empty array or use simple hashing
-    print(f"Embedding call failed: {e}", file=sys.stderr)
+        print(f"Embedding call failed: {e}", file=sys.stderr)
+
+    # No silent hash fallback: return empty so the caller can tell it failed.
     return []
 
 def cosine_similarity(vec1, vec2):

@@ -20,7 +20,7 @@ from datetime import datetime
 
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
-EMBED_MODEL = os.environ.get("EMBED_MODEL", "nomic-embed-text:latest")
+EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
 
 CHUNK_SIZE = 1500
 MAX_CHUNKS_PER_SESSION = 3
@@ -109,7 +109,7 @@ def compute_topic_centroids():
         except (json.JSONDecodeError, TypeError):
             continue
         # Robustness: some sessions were catalogued with a different embedding
-        # model (32-dim vs the current 768-dim nomic). Only mix vectors of the
+        # model (32-dim vs the current 1024-dim qwen3). Only mix vectors of the
         # same dimensionality per topic, otherwise centroid math breaks.
         if not vec or not isinstance(vec[0], (int, float)):
             continue
@@ -231,7 +231,7 @@ def compute_category_centroids(min_examples=5):
         except (json.JSONDecodeError, TypeError):
             continue
         # Robustness: some learnings were catalogued with a different embedding
-        # model (32-dim SHA-256 fallback vs the current 768-dim nomic). Mixing
+        # model (32-dim SHA-256 fallback vs the current 1024-dim qwen3). Mixing
         # dimensions in one centroid raises IndexError. Same guard as
         # compute_topic_centroids: only mix same-dimensional vectors per
         # category; skip the rest.

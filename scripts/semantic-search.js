@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // semantic-search.js
-// Busqueda semantica sobre memory/memory.db usando embeddings de Ollama (nomic-embed-text).
+// Busqueda semantica sobre memory/memory.db usando embeddings de Ollama (qwen3-embedding:0.6b).
 // Uso: node scripts/semantic-search.js "tu consulta aqui"
 // Retorna los fragmentos de sesion mas cercanos semanticamente (RAG lite).
 
@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB_PATH = path.join(__dirname, '..', 'memory', 'memory.db');
-const MODEL = 'nomic-embed-text:latest';
+const MODEL = 'qwen3-embedding:0.6b';
 
 // ---------- 1. Embedder de consulta (Ollama) ----------
 function embed(text) {

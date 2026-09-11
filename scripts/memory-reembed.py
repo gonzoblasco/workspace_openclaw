@@ -10,10 +10,15 @@ Deliberately does NOT fall back: if Ollama fails, the row is skipped and
 reported, so a failed run never writes another useless hash.
 
 Usage:
-  ./memory-reembed.py [--dry-run] [--limit N]
+  ./memory-reembed.py [--dry-run] [--limit N] [--all]
+
+By default it re-embeds every vector whose dimension differs from the model's
+output, which covers both the 32-dim SHA-256 fallbacks and any vectors left
+over from a previous embedding model (for example a 768-dim model after
+switching to a 1024-dim one).
 
 Env:
-  EMBED_MODEL   default nomic-embed-text:latest
+  EMBED_MODEL   default qwen3-embedding:0.6b
   OLLAMA_BASE   default http://127.0.0.1:11434
   MEMORY_DB     default memory/memory.db
 """
@@ -28,9 +33,9 @@ import urllib.request
 
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
-EMBED_MODEL = os.environ.get("EMBED_MODEL", "nomic-embed-text:latest")
+EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
 
-# Any vector shorter than this is treated as a fallback hash, never a real one.
+# Any vector shorter than this is treated as garbage, never a real embedding.
 MIN_REAL_DIM = 128
 
 
@@ -50,13 +55,6 @@ def embed(text):
     return vec
 
 
-def is_fallback(vec_json):
-    try:
-        return len(json.loads(vec_json)) < MIN_REAL_DIM
-    except (json.JSONDecodeError, TypeError):
-        return False
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
@@ -67,12 +65,25 @@ def main():
         print(f"DB not found: {DB_PATH}", file=sys.stderr)
         sys.exit(1)
 
+    # Probe the model once: we need its real dimension to know what to target.
+    try:
+        target_dim = len(embed("dimension probe"))
+    except Exception as exc:
+        print(f"Model {EMBED_MODEL} not usable: {exc}", file=sys.stderr)
+        print("Nothing written. Fix Ollama/model first.", file=sys.stderr)
+        sys.exit(1)
+
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
+    def stale(vec_json):
+        try:
+            return len(json.loads(vec_json)) != target_dim
+        except (json.JSONDecodeError, TypeError):
+            return False
+
     targets = []
 
-    # learnings: vector built from title + content
     for row_id, title, content in c.execute(
         "SELECT id, title, coalesce(content,'') FROM learnings_enriquecido "
         "WHERE learning_vector IS NOT NULL"
@@ -80,23 +91,22 @@ def main():
         vj = c.execute(
             "SELECT learning_vector FROM learnings_enriquecido WHERE id=?", (row_id,)
         ).fetchone()[0]
-        if is_fallback(vj):
+        if stale(vj):
             targets.append(("learnings_enriquecido", "learning_vector", row_id, f"{title} {content}".strip()))
 
-    # session_vectors: vector built from the stored chunk text
     for row_id, chunk_text in c.execute(
         "SELECT id, chunk_text FROM session_vectors "
         "WHERE query_vector IS NOT NULL AND chunk_text IS NOT NULL AND TRIM(chunk_text)!=''"
     ).fetchall():
         vj = c.execute("SELECT query_vector FROM session_vectors WHERE id=?", (row_id,)).fetchone()[0]
-        if is_fallback(vj):
+        if stale(vj):
             targets.append(("session_vectors", "query_vector", row_id, chunk_text))
 
     if args.limit:
         targets = targets[: args.limit]
 
-    print(f"Fallback vectors found: {len(targets)}")
-    print(f"Model: {EMBED_MODEL}")
+    print(f"Model: {EMBED_MODEL} ({target_dim} dims)")
+    print(f"Vectors to re-embed (dim != {target_dim}): {len(targets)}")
     if args.dry_run:
         print("(dry run - nothing written)")
         for t in targets[:5]:

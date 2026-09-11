@@ -18,18 +18,25 @@ OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
 
 def get_embedding(text):
     try:
-        import requests
-        response = requests.post(f"{OLLAMA_BASE}/api/embeddings", json={
-            "model": "nomic-embed-text:latest",
-            "prompt": text[:768] if len(text) > 768 else text
-        }, timeout=25)
-        if response.status_code == 200:
-            data = response.json()
-            if data.get("embedding"):
-                return data["embedding"]
+        import urllib.request
+        body = json.dumps({
+            "model": "qwen3-embedding:0.6b",
+            "prompt": text[:768] if len(text) > 768 else text,
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            f"{OLLAMA_BASE}/api/embeddings",
+            data=body,
+            headers={"Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=25) as resp:
+            if resp.status == 200:
+                data = json.loads(resp.read())
+                vec = data.get("embedding") or (data.get("embeddings") or [None])[0]
+                if vec:
+                    return vec
     except Exception as e:
-        pass
-    
+        print(f"Ollama fallback: {e}", file=sys.stderr)
+
     import hashlib
     h = hashlib.sha256(text.encode('utf-8', errors='ignore')).digest()
     return [float(i) for i in h]

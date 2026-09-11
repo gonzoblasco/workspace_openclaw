@@ -15,29 +15,42 @@ import sys
 import json
 import math
 import hashlib
-import requests
 from datetime import datetime
 
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
-EMBED_MODEL = os.environ.get("EMBED_MODEL", "nomic-embed-text:latest")
+EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
 
 
 def get_embedding(text):
-    """Get embedding vector from text via Ollama (fallback to hash)"""
+    """Get embedding vector from text via Ollama (fallback to hash)
+
+    Uses urllib (stdlib): the system python has no requests installed, which
+    silently forced every call into the SHA-256 fallback.
+    """
     try:
-        response = requests.post(
+        import urllib.request
+
+        body = json.dumps({
+            "model": EMBED_MODEL,
+            "prompt": text[:768],
+            "n_preamble": 0,
+            "n_context": 768,
+            "n_predict": 0,
+        }).encode("utf-8")
+        req = urllib.request.Request(
             f"{OLLAMA_BASE}/api/embeddings",
-            json={"model": EMBED_MODEL, "prompt": text[:768], "n_preamble": 0, "n_context": 768, "n_predict": 0},
-            timeout=25,
+            data=body,
+            headers={"Content-Type": "application/json"},
         )
-        if response.status_code == 200:
-            data = response.json()
-            # Ollama returns 'embedding' (singular) for /api/embeddings
-            if "embedding" in data:
-                return data["embedding"]
-            if "embeddings" in data and data["embeddings"]:
-                return data["embeddings"][0]
+        with urllib.request.urlopen(req, timeout=25) as resp:
+            if resp.status == 200:
+                data = json.loads(resp.read())
+                # Ollama returns 'embedding' (singular) for /api/embeddings
+                if "embedding" in data:
+                    return data["embedding"]
+                if "embeddings" in data and data["embeddings"]:
+                    return data["embeddings"][0]
     except Exception as e:
         print(f"⚠️ Ollama unavailable ({e}), using hash fallback", file=sys.stderr)
 

@@ -5,14 +5,14 @@ skill-router.py - Suggest which skill(s) to use for a given task.
 Ported concept from the skill-ai-inject plugin (ClawHub), adapted to our
 workspace. Two-tier matching:
   L1: keyword match (free, no LLM) - task terms hit skill descriptions.
-  L2: embedding match (Ollama nomic-embed-text) - semantic cosine similarity.
+  L2: embedding match (Ollama qwen3-embedding:0.6b) - semantic cosine similarity.
 
 Usage:
   ./skill-router.py "<task description>"
   ./skill-router.py --top 5 "<task>"
   ./skill-router.py --list          # list available skills
 
-Requires: Ollama running with nomic-embed-text (embedding model).
+Requires: Ollama running with qwen3-embedding:0.6b (embedding model).
 Outputs top-N skill suggestions with score and match type.
 """
 
@@ -27,7 +27,7 @@ import urllib.request
 WORKSPACE = os.path.expanduser("~/.openclaw/workspace")
 SKILLS_DIR = os.path.join(WORKSPACE, "skills")
 OLLAMA_URL = "http://localhost:11434/api/embeddings"
-EMBED_MODEL = "nomic-embed-text"
+EMBED_MODEL = "qwen3-embedding:0.6b"
 TOP_N = 3
 L1_THRESHOLD = 1  # min keyword hits for L1 match
 L2_THRESHOLD = 0.5  # cosine threshold for L2 match
