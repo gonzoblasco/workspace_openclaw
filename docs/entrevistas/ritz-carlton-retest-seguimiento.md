@@ -1,7 +1,9 @@
 # Plan de Seguimiento - Ritz-Carlton
 
-**Fecha:** 2026-08-24 (actualizado 2026-09-02)
-**Estado:** PRIMERA RONDA HOY 02/09 14:00 (GMT-3) con la gente de la empresa
+**Fecha:** 2026-08-24 (actualizado 2026-09-11)
+**Estado:** **ABIERTA - sin respuesta directa.** Primera ronda realizada 02/09 14:00 (30 min). Sin feedback concreto ni cierre por parte de la empresa. Gonzo decidio (11/09) NO darla por cerrada: "pese a no haber tenido una respuesta directa, aun no la demos por cerrada".
+
+> **Ojo:** esta es la propuesta que Gonzo mas valora a futuro: liderar la apertura de la oficina en Buenos Aires, con viajes a USA 2 veces al mes y ~USD 82k. EIT (Lead a11y, USD 48k) es el ingreso inmediato; esto es la proyeccion. No son excluyentes hasta que haya oferta en firme.
 
 ---
 
@@ -208,6 +210,14 @@
 - **Qué pasó:** le pidieron que cuente una historia de trabajo; el equipo comentó mucho de la empresa.
 - **Frase de Gonzo que él marca como posible error:** "nunca fui principal pero tuve gente a cargo y espero poder serlo con ellos" ("I've never been a Principal but I've had people under my charge and I hope to be one with them"). No notó que le prestaran atención a esa frase.
 - **Registro pendiente:** detalle de qué historia contó y qué contaron de la empresa.
+
+## UPDATE 2026-09-11 - Sin respuesta: queda abierta, no cerrada
+
+- **Situacion:** desde la primera ronda (02/09) no hubo feedback ni decision. Silencio de 9 dias.
+- **Decision de Gonzo:** no darla por cerrada todavia. La propuesta sigue viva.
+- **Que significa el silencio:** ni rechazo ni avance. En procesos US es comun que la empresa este cerrando presupuesto o comparando candidatos. No hay base para asumir lo peor.
+- **Por que importa:** es el rol con mas proyeccion de todos (liderar una oficina nueva). El de EIT da el ingreso de octubre; este puede dar la carrera.
+- **Pendiente:** si no hay novedad a fin de septiembre, un follow-up corto a Steven/Samarth (el contacto ya es cercano y se tomo el 60% con humor). Tono: check-in, no presion.
 
 ## Timeline resumido
 
