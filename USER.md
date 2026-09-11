@@ -15,7 +15,7 @@
 ## Context
 
 - Desarrolla aplicaciones - Fullstack real (React/TS frontend, Supabase/Edge Functions backend, DB, billing, tooling)
-- 9 años como Frontend React, ahora Fullstack con IA como copiloto metodológico
+- 9+ años como desarrollador (frontend React), ahora Fullstack con IA como copiloto metodológico. Accesibilidad como hilo continuo desde 2016 (ver Trayectoria).
 - Quiere que maneje su vida, archivos y proyectos
 - Trabaja entre dos máquinas (Mac Mini y MacBook Air), workspace sincronizado por git
 - Usa IA como infraestructura de trabajo (no como chat): sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop
@@ -25,6 +25,20 @@
 - Proyecto estrella: SoporteML (CRM multi-tenant para vendedores de Mercado Libre con IA)
 - También: fotógrafo, comunicación social, quiere escribir novelas
 - Quiere organizar actividad física y mejorar salud
+
+## Trayectoria profesional (verificado)
+
+- **EY** (Sep 2021 - May 2025) - consultora internacional. Referente de accesibilidad del equipo: validó y corrigió 50+ componentes de una librería empresarial a WCAG, y fue parte del equipo que construyó una plataforma de inteligencia financiera. Nivel senior.
+- **Super7ui** (Ago 2020 - May 2021) - consultora de medios digitales. En una plataforma de streaming global remedió 200+ problemas de accesibilidad probados con lectores de pantalla e implementó pruebas automáticas de a11y.
+- **Minutentag / EULAS** (Feb 2016 - Nov 2019) - agencia de e-commerce para marcas de EE.UU. Desarrolló y mantuvo flujos de compra (checkout, carrito), participó de la migración a React y mejoró un sitio con 2M+ usuarios mensuales. Accesibilidad desde el inicio.
+
+**Lectura para propuestas a11y (corregido 2026-09-11, 2da correccion de Gonzo):** a11y NO es un hilo secundario - es continua desde 2016 y en dos roles fue la funcion central:
+- **Super7ui (Ago 2020 - May 2021, ~1 ano):** rol dedicado a accesibilidad. 200+ fixes probados con lectores de pantalla + pruebas automaticas de a11y. Contar como ano entero de a11y engineering.
+- **EY (Sep 2021 - May 2025, ~3.7 anos):** referente de a11y del equipo, 50+ componentes enterprise a WCAG. Enterprise.
+- **Minutentag/EULAS (Feb 2016 - Nov 2019, ~3.7 anos):** a11y parte sustantiva del rol; crecio de junior a referente de accesibilidad.
+- **Total:** ~8+ anos de desarrollo con a11y; ~5 anos con a11y como funcion central/dedicada.
+
+**Gap real y unico: no tiene certificacion IAAP (CPWA / WAS / CPACC).** No volver a marcar su a11y como "reciente" ni JAWS como gap, ni omitir Super7ui del conteo.
 
 ## Perfil profesional (diferenciador)
 
