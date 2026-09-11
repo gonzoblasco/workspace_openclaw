@@ -208,3 +208,19 @@ La MacBook Neo (USD 599) y la Mac mini no solo cambiaron la cuota de mercado de 
 
 ---
 
+## Sesion: activacion web search (provider ollama), cron moltbook-weekly-digest probado, regla sandbox contenido externo migrada a AGENTS.md, conflicto rebase daily multi-maquina resuelto
+
+Leccion 1 (edit de markdown): al mover reglas entre archivos con edit de multi-bloque, un oldText pegado puede fusionar o pisar bullets adyacentes - leer el archivo despues de cada edit y verificar secciones antes de seguir. Ya ocurrio 2 veces hoy (fusion accidental en MEMORY.md, entradas de la Air borradas en conflicto del daily). Leccion 2 (web search provider): duckduckgo no existe como plugin en esta instalacion; el plugin ollama expone un provider de search sin config extra. Leccion 3 (patron digest): cron agentTurn en sesion aislada + politica anti-injection en el prompt + verificacion obligatoria + modo anti-spam de una linea - generalizable a otras fuentes externas.
+
+**Tags:** session-closing,reflexion-post-tarea
+
+---
+
+## Draft LinkedIn para PR mergeado #10554: primera version en espanol, Gonzo pidio ingles (promocion/difusion) y tambien link al PR en el draft.
+
+Los posts de LinkedIn van en INGLES (misma regla que GitHub: promocion/difusion publica). Incluir siempre el link al PR mergeado en el draft.
+
+**Tags:** other,reflexion-post-tarea
+
+---
+

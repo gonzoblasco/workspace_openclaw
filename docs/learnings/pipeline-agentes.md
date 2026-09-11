@@ -128,3 +128,11 @@ El npm install se hace dentro del contenedor Docker, asi el node_modules tiene b
 
 ---
 
+## Review de PR ajeno #9869 (Tearsheet next layers): preguntamos por el comportamiento que el diff eliminaba (ModalBody -> div pelado, se perdia role=region/tabIndex/aria-label para contenido scrolleable). El autor lo restauro pasando level={0} explicito a ModalBody.
+
+En review de PR ajeno, revisar el diff por lo que ELIMINA, no solo por lo que agrega. El comportamiento que se pierde al reemplazar un primitivo del design system por un elemento pelado es el hallazgo de mayor valor: el autor de #9869 restauro ModalBody por esa pregunta.
+
+**Tags:** review,reflexion-post-tarea
+
+---
+

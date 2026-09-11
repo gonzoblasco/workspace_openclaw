@@ -270,3 +270,11 @@ PR #4022 (WCAG 2.1 AA contrast en --color-border-emphasized) fue CERRADO por own
 
 ---
 
+## Gonzo compartio link de cierre de carbon #16031; Kanam lo trato como novedad sin chequear memoria (participamos el dia previo) y sin leer el hilo completo. Segunda vez que ocurre.
+
+Antes de responder cualquier URL de issue/PR: (1) chequear contexto interno con memory_search + sessions_search por numero de issue, (2) leer el hilo externo completo (body, todos los comentarios, reviews, inline, estado), (3) contextualizar con nuestro rol si participamos. Regla codificada en CONTRIBUTING.md + AGENTS.md paso 0 + AGENTS-DETALLE.md regla 1.
+
+**Tags:** oss,reflexion-post-tarea
+
+---
+

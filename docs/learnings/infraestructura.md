@@ -397,3 +397,11 @@ Sesion 2026-09-07: Gonzo pregunto que habia corrido sin su solicitud. La respues
 
 ---
 
+## Correccion de bug en trigger del watcher ds-v4.1-rollout-watcher (2026-09-10): falso positivo por regex que matcheaba el eco del propio comando en el output capturado
+
+Leccion: en trigger scripts de automations que hacen probe con exec, NUNCA matchear contra una cadena fija que aparezca en el propio comando (ej. el printf del prompt) - el output capturado puede incluir el eco del shell y produce fire:true en falso. Fix: (1) check del estado de bloqueo PRIMERO (403/rollout => fire:false si o si), (2) nonce unico generado en runtime que solo puede coincidir con la respuesta real del modelo, (3) validar la logica con harness de casos (403->false, ok->true, 403+nonce coexistente->false, salida rara->false) ANTES de aplicar al job.
+
+**Tags:** config,reflexion-post-tarea
+
+---
+
