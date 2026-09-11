@@ -1,15 +1,15 @@
 # HANDOFF - workspace-general
 
 ## Session Context
-- **Date:** 2026-09-10 11:59
+- **Date:** 2026-09-10 21:59
 - **Project:** workspace-general
 - **Branch:** main
 
 ## Summary
-Sesion corta doble: (1) cierre de carbon #16031 (nuestro comment de verificacion llevo al cierre oficial via PR #22751), error de contexto corregido con regla codificada en CONTRIBUTING.md + AGENTS.md + AGENTS-DETALLE.md; (2) respuesta del autor en ibm-products #9869 - commit 607d601 resuelve punto 1 (ModalBody level={0}, a11y scrolling preservado, verificado contra Carbon source), punto 2 narrow es decision intencional. Review cerrado, Like de Gonzo, sin ack. Pendiente: ninguno.
+Sesion 2026-09-10 (nocturna): comparacion deepseek-v4.1-flash vs v4-flash vs glm-5.3-flash (specs + benchmarks de la tabla oficial de Ollama). Plan confirmado con Gonzo: seguir con GLM-5.3 como default; cuando el rollout habilite el v4.1, migrar default a ollama-cloud/deepseek-v4.1-flash y fallback a glm-5.3-flash, con prueba real del pipeline A/B antes y OK explicito de Gonzo. Watcher ds-v4.1-rollout-watcher creado (cada 12h, trigger con probe real, once:true). Bug del trigger corregido: falso positivo por eco del printf en el output - fix con nonce unico + check 403 prioritario, validado con harness de 4 casos. Leccion registrada en learnings DB (id 127).
 
 ## Files Changed
-memory/2026-09-10.md
+memory/memory.db
 
 ## Next Steps
 1. [ ]
