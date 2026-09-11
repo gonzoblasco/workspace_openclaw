@@ -405,3 +405,11 @@ Leccion: en trigger scripts de automations que hacen probe con exec, NUNCA match
 
 ---
 
+## Revert parcial de modelos: v4.1-flash como default consumia mas recursos que GLM 5.3 Flash y v4 con menos requests (capturas de uso semanal Ollama Cloud). Roles nuevos: v4 primary, glm fallback+vision, v4.1 fase de escalada.
+
+El costo por request difiere entre modelos flash de la misma familia; medir consumo real (barra vs requests) antes de promover un modelo a default de todo el sistema. Un modelo nuevo mejor en calidad no justifica default si su costo operativo es mayor y la diferencia de calidad es marginal.
+
+**Tags:** config,reflexion-post-tarea
+
+---
+
