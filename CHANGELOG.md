@@ -22,6 +22,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - Verificado por mutación: reintroducir cada uno de los bugs históricos hace fallar el test que le corresponde. El guard de `clearing` en `rotate()` sobrevive la mutación porque es defensa en profundidad inalcanzable, no un agujero de cobertura.
 - Pendiente: validación visual en browser real (píxeles de canvas, rampa del flash, centrado de previews). El review comparó el código, no midió render.
 
+## [2026-09-11] - Trayectoria verificada de Gonzo en USER.md/MEMORY.md + voz-gonzo v2 (reglas 9-12)
+
+### Added
+- **`USER.md` > Trayectoria profesional (verificado)**: nueva seccion con las empresas, fechas y logros reales (Minutentag/EULAS 2016-2019, Super7ui 2020-2021 con 1 ano dedicado a a11y, EY 2021-2025 como referente enterprise), mas la lectura correcta para propuestas a11y y el unico gap real (certificacion IAAP). Antes esta data solo vivia en `memory/archive/2026-08-19-0951.md` y se perdia entre sesiones.
+- **`MEMORY.md`**: regla nueva - antes de afirmar algo sobre la trayectoria de Gonzo, buscar en memoria primero; marcar gaps solo con evidencia. Entrada de trayectoria en "Sobre Gonzo".
+- **`docs/voz-gonzo.md`**: 2 casos nuevos (EIT, en ingles) y 4 reglas consolidadas (9-12). Alcance extendido a ingles cuando el hilo es con un tercero en ingles.
+
+### Changed
+- **Skill `voz-gonzo`** (workshop): paso explicito de definir longitud antes de escribir y filtro de recorte que incluye preguntas que no bloquean el arranque. La version que se entrega es la mas corta que hace el trabajo, no la mas completa.
+- **`docs/entrevistas/`**: seguimiento de EIT/HTC/Disney + CV a11y unico (markdown + PDF generado con `scripts/pdf-tool.sh md2pdf`).
+
 ## [2026-09-11] - Registro de voz de Gonzo (espanol) + skill viva `voz-gonzo`
 
 ### Added
