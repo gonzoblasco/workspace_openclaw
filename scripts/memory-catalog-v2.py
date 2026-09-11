@@ -210,14 +210,26 @@ def compute_category_centroids(min_examples=5):
 
     centroids = {}
     counts = {}
+    skipped = {}
     for category, vec_json in rows:
         try:
             vec = json.loads(vec_json)
         except (json.JSONDecodeError, TypeError):
             continue
+        # Robustness: some learnings were catalogued with a different embedding
+        # model (32-dim SHA-256 fallback vs the current 768-dim nomic). Mixing
+        # dimensions in one centroid raises IndexError. Same guard as
+        # compute_topic_centroids: only mix same-dimensional vectors per
+        # category; skip the rest.
+        if not vec or not isinstance(vec[0], (int, float)):
+            continue
         if category not in centroids:
             centroids[category] = [0.0] * len(vec)
             counts[category] = 0
+            skipped[category] = 0
+        elif len(vec) != len(centroids[category]):
+            skipped[category] = skipped.get(category, 0) + 1
+            continue
         for i, v in enumerate(vec):
             centroids[category][i] += v
         counts[category] += 1
@@ -225,6 +237,11 @@ def compute_category_centroids(min_examples=5):
     # Only keep categories with enough examples
     reliable = {cat for cat, cnt in counts.items() if cnt >= min_examples}
     centroids = {cat: v for cat, v in centroids.items() if cat in reliable}
+
+    if skipped:
+        total = sum(skipped.values())
+        det = ", ".join(f"{cat}:{n}" for cat, n in sorted(skipped.items()) if n)
+        print(f"ℹ️  Centroides: {total} vector(es) de dimension distinta omitidos ({det})", file=sys.stderr)
 
     for cat, vec in centroids.items():
         cnt = counts.get(cat, 0)
@@ -307,11 +324,19 @@ def create_schema():
             query_vector TEXT NOT NULL,
             relevance_score REAL DEFAULT 0.0,
             chunk_index INTEGER DEFAULT 0,
+            chunk_text TEXT,
             created_at TEXT,
             FOREIGN KEY(session_id) REFERENCES sessions_relacional(id)
         )
     """
     )
+
+    # Migration: older databases created session_vectors without chunk_text
+    # (the column arrived later via memory-catalog-simple.sh). Without it,
+    # semantic search returns matches with empty text.
+    sv_cols = {r[1] for r in c.execute("PRAGMA table_info(session_vectors)")}
+    if "chunk_text" not in sv_cols:
+        c.execute("ALTER TABLE session_vectors ADD COLUMN chunk_text TEXT")
 
     c.execute(
         """
@@ -505,13 +530,14 @@ def catalog_memory():
             relevance = TAG_THRESHOLD if (detected_topics and chunk_idx == 0) else 0.0
             c.execute(
                 """INSERT INTO session_vectors
-                   (session_id, query_vector, relevance_score, chunk_index, created_at)
-                   VALUES (?, ?, ?, ?, ?)""",
+                   (session_id, query_vector, relevance_score, chunk_index, chunk_text, created_at)
+                   VALUES (?, ?, ?, ?, ?, ?)""",
                 (
                     session_id,
                     json.dumps(chunk_embedding),
                     relevance,
                     chunk_idx,
+                    chunk,
                     datetime.now().isoformat(),
                 ),
             )

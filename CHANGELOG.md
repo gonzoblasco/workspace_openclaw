@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-11] - Fix: memory-catalog-v2.py crasheaba por dimensiones mixtas de embeddings (+ chunk_text NULL)
+
+### Fixed
+- **`scripts/memory-catalog-v2.py` > `compute_category_centroids()`**: crasheaba con `IndexError: list index out of range` (linea 222) y el catalogo entero no corria. Causa: mezcla de dimensiones en `learnings_enriquecido`. 85 filas tenian vectores de **32 dims** (fallback SHA-256 del script, cuando Ollama no responde o se usa `use_ollama=False`) y 4 filas **768 dims** (modelo real). El loop inicializaba el centroide con la dimension del primer vector de la categoria y despues indexaba con la de los siguientes -> IndexError. `compute_topic_centroids()` ya tenia el guard; `compute_category_centroids()` no.
+- **Fix:** mismo guard que topic centroids (el vector de dimension distinta se omite y se cuenta), mas un aviso a stderr con el total omitido por categoria, para que la deuda de vectores viejos sea visible.
+- **`session_vectors` > `chunk_text` NULL**: el catalogo nunca escribia esa columna (el INSERT no la incluia) y la tabla creada por v2 no la tenia. Resultado: **108 de 108 filas con `chunk_text` NULL**, y la busqueda semantica devolvia matches con `text: ""`. Se agrego la columna al CREATE TABLE, una migracion `ALTER TABLE` para DBs viejas, y la columna al INSERT.
+
+### Notes
+- Verificado: catalogo completo 20/20, busqueda semantica devuelve texto real.
+- Backfill de historicos: 46 filas recuperadas desde `sessions_relacional.content_bare`. 5 filas quedaron fuera: 3 con `chunk_index` mas alla del contenido actual (vectores de texto que ya no existe) y 2 huerfanas de una sesion borrada -> eliminadas. `session_vectors` 108 -> 103, cero vacias, cero huerfanas.
+- **Deuda pendiente:** quedan 103 vectores de 32 dims (fallback) y 1 de 768. Los fallback no sirven para similitud semantica real. Re-embeddear con `qwen3-embedding:0.6b` (768) reincorporaria esas filas y mejoraria el ranking.
+- Backups: `/tmp/db-before-catalog-fix.db` (pre-fix) y `/tmp/db-before-chunktext-fix.db` (pre-chunk_text).
+
 ## [2026-09-11] - Revert parcial de modelos: primary vuelve a deepseek-v4-flash
 
 ### Changed
