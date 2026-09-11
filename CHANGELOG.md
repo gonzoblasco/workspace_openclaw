@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-11] - kanam-tetris v0.3: refactor estructural + red de tests
+
+### Changed
+- **`projects/kanam-tetris/`**: el single-file de 901 líneas se parte en módulos ES sin build ni dependencias. `src/core.js` (530) queda puro -sin DOM, canvas, reloj ni storage-, con `step(deltaMs)` determinista y `rng` inyectable. `index.html` baja a 193 líneas y monta `src/main.js` como módulo.
+- **`projects/kanam-tetris/test/`**: red nueva con `node --test` nativo, cero dependencias. 33 tests: las reglas del core (los bugs que costaron dos ciclos de pipeline en v0.2) más el cableado del browser.
+- **`projects/kanam-tetris/package.json`** (nuevo): `type: module` y `npm test`.
+- **`projects/kanam-tetris/README.md`**: cómo correrlo (necesita `python3 -m http.server`, porque `file://` bloquea módulos ES), estructura de módulos y contrato del core.
+
+### Fixed
+- **`blur` registrado en `document` en vez de `window`**: `blur` no burbujea y el foco de ventana se dispara en `window`, así que el handler nunca corría. Con una flecha apretada, salir con Cmd+Tab dejaba el DAS vivo y la pieza seguía deslizándose. `attachInput` acepta `blurTarget` inyectable para que la costura sea testeable en Node.
+
+### Notas
+- Cero features nuevas: comportamiento observable idéntico a v0.2, con la excepción del fix de `blur`.
+- Verificado por mutación: reintroducir cada uno de los bugs históricos hace fallar el test que le corresponde. El guard de `clearing` en `rotate()` sobrevive la mutación porque es defensa en profundidad inalcanzable, no un agujero de cobertura.
+- Pendiente: validación visual en browser real (píxeles de canvas, rampa del flash, centrado de previews). El review comparó el código, no midió render.
+
 ## [2026-09-11] - Registro de voz de Gonzo (espanol) + skill viva `voz-gonzo`
 
 ### Added
