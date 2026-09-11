@@ -34,10 +34,11 @@
 - [ ] **[]** (medium) Desarchivar create-with-ai (archivado, fusionado en kanam-forge) para pushear commit local legítimo - decisión de Gonzo
 - [ ] **[]** (medium) Fix memory-catalog-v2.py: IndexError en categorize_learning (compute_category_centroids, list index out of range) al correr el catalog tras guardar sesion 2026-09-06. No bloqueo el guardado (DB-first OK) pero las embeddings/semantic search quedan sin re-catalogar.
 - [ ] **[workspace]** (medium) Activar gateway de OpenClaw en el Mac Mini como servidor fijo 24/7 del bot Telegram (@kanam_ai_bot). Hoy el canal esta configurado en la MacBook Air (2026-09-07). Al moverlo: deshabilitar el canal Telegram en la Air para evitar conflicto de long polling (error 409).
-- [ ] **[workspace]** (medium) Decidir kanam-tetris: repo local listo (2 commits, sin push) pero el .git anidado bloquea el triple-git del workspace (git no trackea .knowledge con repo embebido). Opciones: (1) pushear a GitHub (kanam-tetris) cuando Gonzo lo decida, o (2) archivar como los demas (quitar .git local, trackear solo .knowledge). Mientras tanto .knowledge/BRIEF.md no viaja entre maquinas.
+- [ ] **[workspace]** (medium) Cerrar todo #45: kanam-tetris pusheado a GitHub (b0b8e77) y repo embebido ignorado en el workspace; falta decidir si el .knowledge/ viaja al repo publico o queda solo en el workspace
 
 ## Completados
 
+- [x] **[workspace]** Decidir kanam-tetris: repo local listo (2 commits, sin push) pero el .git anidado bloquea el triple-git del workspace (git no trackea .knowledge con repo embebido). Opciones: (1) pushear a GitHub (kanam-tetris) cuando Gonzo lo decida, o (2) archivar como los demas (quitar .git local, trackear solo .knowledge). Mientras tanto .knowledge/BRIEF.md no viaja entre maquinas.
 - [x] **[]** PORTAR (de ClawHub runtime): Task Notifier - notificacion desktop cuando un agente termina tarea (ya visto tambien en security), util para pipeline A/B
 - [x] **[]** PORTAR (de ClawHub tools, Pipeline Architect) CANDIDATO FUERTE: estado durable + crash recovery + lifecycle para el pipeline A/B - que el plan de unidades sobreviva a SIGKILL/restarts con taskflow-like (list/get/resume), directo a nuestro problema de Qwen muriendo
 - [x] **[]** PORTAR (de ClawHub web, Search Fusion): skill de busqueda federada - elegir provider/estrategia por intencion (research/keyword/coding) + dedupe de resultados. A nuestro modo con DuckDuckGo key-free + web_fetch + browser

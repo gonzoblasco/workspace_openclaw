@@ -136,3 +136,19 @@ En review de PR ajeno, revisar el diff por lo que ELIMINA, no solo por lo que ag
 
 ---
 
+## 2026-09-11 - kanam-tetris v0.2: review con harness instrumentado > review de lectura
+
+Ciclo A/B de kanam-tetris v0.2 con deepseek-v4.1-flash. El Agente B no leyo el codigo y opino: construyo un harness instrumentado en Node y reprodujo los bugs con evidencia de ejecucion (timers medidos, conteo de celdas antes/despues). Encontro dos criticos que un review de lectura no habria cazado: (1) falta de guard del estado 'clearing' durante el flash de limpieza - mantener Espacio reseteaba el timer y congelaba la limpieza para siempre, y una flecha + Espacio estampaba bloques fantasma con score duplicado (invisible porque draw() suprime la pieza activa durante el flash); (2) lookup de wall kicks CCW espejado, PREEXISTENTE desde v0.1 - la tabla tenia las 8 filas correctas pero el indice leia la fila CW de la transicion inversa. Regla: cuando el bug depende de tiempo (timers, ventanas de input, estado transitorio), el reviewer debe EJECUTAR, no leer. Y cuando se revisa una base, revisar el INDICE/lookup, no solo los datos que indexa - el bug de v0.1 vivia en el indice, no en la tabla.
+
+**Tags:** cross-review,harness,testing,tetris,pipeline-ab,v4.1,verificacion
+
+---
+
+## 2026-09-11 - deepseek-v4.1-flash validado como motor del pipeline A/B
+
+Primer uso real de deepseek-v4.1-flash:cloud como motor de los agentes A/B (via Claude Code apuntando al gateway Ollama 127.0.0.1:11434), aplicando la pausa obligatoria del AGENTS.md (planifica MAX -> A escribe HIGH -> B revisa HIGH -> iterar -> revision final Kanam MAX -> push -> borrador). Resultado: ciclo completo sin intervencion de Kanam en el medio. El Agente A implemento 6 features complejas (hold, lock delay con cap, DAS/ARR, flash, pausa, high score) y SE AUTOCAZO un bug propio (Escape nunca pausaba por comparacion case-sensitive) - la autoverificacion del motor es un indicador de calidad. El Agente B produjo el mejor review del experimento y ademas declaro con honestidad lo que NO verifico (render/pixeles, alcanzabilidad de un caso de borde). Ambos agentes fueron honestos sobre los limites de su propio trabajo. Conclusion: v4.1 valido como motor de pipeline para tareas de escritura + review.
+
+**Tags:** pipeline-ab,v4.1,motor,claude-code,ollama,tetris,validacion
+
+---
+

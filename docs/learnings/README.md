@@ -17,9 +17,9 @@ Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde
 - **[infraestructura](docs/learnings/infraestructura.md)** - 30 lecciones
 - **[metodologia](docs/learnings/metodologia.md)** - 25 lecciones
 - **[oss](docs/learnings/oss.md)** - 15 lecciones
-- **[pipeline-agentes](docs/learnings/pipeline-agentes.md)** - 10 lecciones
+- **[pipeline-agentes](docs/learnings/pipeline-agentes.md)** - 12 lecciones
 - **[proyectos](docs/learnings/proyectos.md)** - 6 lecciones
 
 ## Total
 
-90 lecciones en total.
+92 lecciones en total.
