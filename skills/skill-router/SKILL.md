@@ -53,7 +53,7 @@ Sugerir que skill aplicar a una tarea, usando matching local (keyword + embeddin
 
 ## Requisitos
 
-- **Ollama local** corriendo con el modelo `nomic-embed-text` (el modelo de embeddings default del workspace).
+- **Ollama local** corriendo con el modelo `qwen3-embedding:0.6b` (el modelo de embeddings del workspace, 1024 dims).
 - Python 3 + urllib (estandar) + numpy (opcional, solo si se usa).
 
 ## Limites

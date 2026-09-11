@@ -6,6 +6,26 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-11] - Unificacion del modelo de embeddings: todo el workspace a qwen3-embedding
+
+### Changed
+- **9 scripts alineados a `qwen3-embedding:0.6b` (1024 dims):** `memory-catalog-v2.py`, `memory-catalog.sh`, `memory-catalog-simple.sh`, `memory-topics.py`, `memory-search.py`, `skill-router.py`, `semantic-search.js`, `semantic-search-json.js`, `memory-reembed.py`. Antes usaban `nomic-embed-text:latest` (768 dims) mientras `openclaw.json` usaba qwen3: dos espacios vectoriales incomparables entre si.
+- **`memory-reembed.py` ahora detecta por dimension objetivo**: hace un probe del modelo y re-embebbea todo vector cuyo dim no coincida con el output real, en vez de solo cazar los fallbacks de 32 dims. Asi tambien sirve para migrar de modelo.
+- **Vectores migrados:** 207 filas re-embebidas (`learnings_enriquecido` 104 + `session_vectors` 103), todas a 1024 dims. Cero vectores de 32, cero de 768.
+
+### Fixed
+- **`memory-search.py` y `memory-topics.py` tenian el mismo bug de `requests`** que `memory-catalog-v2.py` (importaban `requests`, ausente en el python del sistema -> fallback silencioso a hash SHA-256). Pasados a `urllib.request`.
+- **`memory-catalog.sh` y `memory-catalog-simple.sh`**, mismo bug dentro de sus heredocs Python.
+- Queda **cero** uso de `requests` en `scripts/`.
+
+### Notes
+- Verificado end-to-end: catalogo completo 20/20 sin regenerar fallbacks, `memory-search.py` y `semantic-search*.js` devuelven texto y scores coherentes, `memory-topics.py --list` corre, y `skill-router.py` ahora resuelve por embedding real (no solo keyword).
+- **Documentacion alineada:** `AGENTS.md` (modelos locales, tabla de scripts), `skills/skill-router/SKILL.md` + su espejo en `.github/skills/`.
+- **Correccion de un error mio:** en el CHANGELOG anterior afirme que `nomic-embed-text` no estaba instalado. Si esta (768 dims). Y `qwen3-embedding:0.6b` es de **1024** dims, no 768.
+- Backups: `/tmp/db-before-qwen3.db` (pre-migracion), `/tmp/db-before-reembed.db`, `/tmp/db-before-catalog-fix.db`.
+
+---
+
 ## [2026-09-11] - Fix raiz: el catalogo de memoria generaba vectores basura (requests ausente)
 
 ### Fixed
