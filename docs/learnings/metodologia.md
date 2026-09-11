@@ -224,3 +224,11 @@ Los posts de LinkedIn van en INGLES (misma regla que GitHub: promocion/difusion 
 
 ---
 
+## Sistema de voz en espanol para Gonzo: registro docs/voz-gonzo.md + skill voz-gonzo que aprende de cada edicion suya
+
+Al redactar en nombre del usuario, el default no es la version diplomatica/sumisa sino la que pide en presente lo que el quiere; la cortesia excesiva debilita la posicion
+
+**Tags:** docs,reflexion-post-tarea
+
+---
+
