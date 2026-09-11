@@ -890,3 +890,32 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Notes
 - Sesión completa del día catalogada en DB (DB-first): las 3 secciones (22:00-22:56 mine desde desktop, 23:00-23:20 laptop, 23:26-23:40 post-pull verify). 28 sesiones, 74 vectores, 84 learnings.
 - 2 todos nuevos: `.env` de soporteml (repo público trackea .env - decidir restaurar o purgar) y desarchivar create-with-ai (commit local legítimo bloqueado por repo archivado).
+
+## [2026-09-11] - kanam-tetris v0.2: segundo ciclo del pipeline A/B con deepseek-v4.1-flash
+
+### Added
+- **`projects/kanam-tetris/index.html` (v0.2):** seis features nuevas sobre la base v0.1, implementadas por el Agente A (deepseek-v4.1-flash:cloud via Claude Code + gateway Ollama) y revisadas por el Agente B con un harness instrumentado:
+  - Hold piece (`C`), un hold por pieza clavada.
+  - Lock delay con cap de 15 resets (move reset, guideline SRS).
+  - DAS 170ms / ARR 50ms con re-step inmediato al cambiar de direccion.
+  - Flash de 180ms al limpiar lineas antes de removerlas.
+  - Pausa (`P`/`Esc`) con overlay.
+  - High score persistente en localStorage.
+- **`projects/kanam-tetris/.knowledge/BRIEF.md`:** alcance v0.2 documentado.
+
+### Fixed
+- **Guard de estado `clearing` (bug nuevo, alcanzable en juego normal):** durante el flash de limpieza la pieza ya clavada seguia siendo controlable. Mantener Espacio reseteaba el timer y congelaba la limpieza de linea indefinidamente; una flecha + Espacio estampaba bloques fantasma con score duplicado (invisible porque `draw()` suprime la pieza activa durante el flash). Guards agregados en `rotate()`, `move()`, `hardDrop()` y el keydown.
+- **Lookup de wall kicks CCW espejado (preexistente desde v0.1):** la tabla tenia las 8 filas direction-specific correctas, pero el indice leia la fila CW de la transicion inversa para rotacion antihoraria. Unificado a `${from}>${to}` para ambas direcciones.
+- **`holdUsed` reset movido a `afterLock()`:** el preview de Reserva ya no se "des-dim" 180ms antes de ser usable.
+- **`saveHighScore()`:** sacado de `checkHighScore()` (que sigue actualizando el HUD en vivo); unica escritura en `endGame()`.
+- **Clamp de delta:** `Math.max(0, Math.min(time - lastTime, 100))` - un delta negativo podia propagarse a `lockTimer`, `dropCounter` y `clearing.timer`.
+
+### Changed
+- **`projects/kanam-tetris` pusheado a GitHub:** https://github.com/gonzoblasco/kanam-tetris (antes vivia solo local). `HEAD == origin/main`.
+
+### Why
+- Cerrar v0.1 con un ciclo real del pipeline A/B usando el motor nuevo (v4.1), aplicando la pausa obligatoria (A escribe -> B revisa -> Kanam revisa el conjunto -> push). El review de B demostro que para bugs dependientes de tiempo el reviewer debe EJECUTAR, no leer: los dos criticos eran invisibles a la lectura del codigo.
+
+### Notes
+- El bug de CCW estaba desde v0.1 y lo dejamos pasar ayer porque el review se centro en las filas de la tabla, no en el indice. Leccion registrada: al revisar una base, revisar el lookup, no solo los datos que indexa.
+- Aprendizaje operativo: `git push` falla con `could not read Username for 'https://github.com'` cuando osxkeychain no tiene credencial; se resuelve inyectando `GH_TOKEN=$(gh auth token)` como credential helper inline.
