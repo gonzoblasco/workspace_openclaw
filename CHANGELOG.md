@@ -6,6 +6,11 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-11] - Revert parcial de modelos: primary vuelve a deepseek-v4-flash
+
+### Changed
+- **`MEMORY.md` + `agents.defaults.model.primary`**: primary de `ollama-cloud/deepseek-v4.1-flash` a `ollama-cloud/deepseek-v4-flash:0731`. Motivo: uso semanal medido (v4.1 consume mas que GLM 5.3 Flash y v4 con menos requests; v4 el mas eficiente por request). Roles definidos con Gonzo: v4 = primary, glm-5.3-flash = fallback + vision, v4.1 = fase de escalada para analisis complejo (entre glm y Kimi K2.7 Code en costo). v4 deja de existir en unas semanas - a reevaluar entonces.
+
 ## [2026-09-11] - kanam-tetris v0.3: refactor estructural + red de tests
 
 ### Changed
