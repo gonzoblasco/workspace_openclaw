@@ -146,6 +146,7 @@
 | Skill | Descripción |
 |---|---|
 | [adhd-assistant](skills/adhd-assistant/) | Gestión de vida diaria para ADHD: planificación, desglose de tareas, energy windows, transition buffers, dopamine sequencing, shutdown ritual. Fusiona: adhd-daily-planner |
+| [adhd-output](skills/adhd-output/) | Formato de respuesta ADHD-friendly: acción primero, pasos numerados, next step concreto, sin preámbulo ni cierres. Adaptado de ayghri/i-have-adhd (MIT) |
 | [apple-photos](skills/apple-photos/) | Acceso terminal a Photos.app: buscar, listar, exportar |
 | [calorie-counter](skills/calorie-counter/) | Tracking diario de calorías y proteína en SQLite local |
 | [mlx-stt](skills/mlx-stt/) | Speech-to-text local en Apple Silicon con MLX |
@@ -164,4 +165,4 @@
 
 **Además (2026-08-06):** `adhd-daily-planner` se fusionó dentro de `adhd-assistant` (energy windows, transition buffers, dopamine sequencing, shutdown ritual, recovery protocol). Recuperable desde git si hiciera falta.
 
-**Totales activas:** 81 skills
+**Totales activas:** 82 skills
