@@ -4,12 +4,14 @@
 
 const { execSync } = require("child_process");
 
+// Repos where we contribute: PRs we opened plus repos where we do review work.
 const REPOS = [
   "facebook/astryx",
   "radix-ui/primitives",
   "colinhacks/zod",
   "shadcn-ui/ui",
   "carbon-design-system/carbon",
+  "carbon-design-system/ibm-products",
   "payloadcms/payload",
 ];
 
