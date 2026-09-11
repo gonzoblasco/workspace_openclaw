@@ -6,6 +6,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-11] - Fix raiz: el catalogo de memoria generaba vectores basura (requests ausente)
+
+### Fixed
+- **`scripts/memory-catalog-v2.py` > `get_embedding()`**: cada llamada caia al fallback SHA-256 de 32 dims, incluso con Ollama arriba. Causa: `import requests` dentro de la funcion - el python del sistema (`/usr/bin/python3`, 3.9.6) **no tiene `requests` instalado**, asi que la excepcion `ModuleNotFoundError` se tragaba silenciosamente y devolvia el hash. Por eso cada corrida del catalogo regeneraba vectores inutiles, y los centroides de categoria quedaban construidos sobre ruido.
+- **Fix:** reemplazar `requests` por `urllib.request` (stdlib, cero dependencias). Ademas, cuando el fallback se activa ahora imprime un aviso explicito a stderr indicando que el vector NO sirve para busqueda semantica y como repararlo.
+- **`scripts/memory-reembed.py` (nuevo)**: re-embebbea los vectores fallback existentes contra Ollama. Deliberadamente **no** tiene fallback: si el modelo falla, deja la fila intacta y la reporta, para no volver a escribir basura. Uso: `./scripts/memory-reembed.py [--dry-run] [--limit N]`.
+
+### Notes
+- Reparados **325 vectores fallback** (177 + 148 en dos pasadas: la primera corrida del catalogo intermedio regenero algunos antes del fix de raiz).
+- Estado final verificado: `learnings_enriquecido` 104/104 y `session_vectors` 103/103 en 768 dims, cero de 32. Re-correr el catalogo completo ya no regenera ninguno.
+- La busqueda semantica paso de devolver `text: ""` a devolver contenido y scores mas altos y coherentes (0.61 en a11y vs 0.58 previos sobre embeddings falsos).
+- Backups: `/tmp/db-before-reembed.db`.
+
+### Pendiente (no aplicado, requiere decision)
+- **Modelo de embeddings inconsistente en el workspace.** `scripts/memory-catalog-v2.py`, `memory-catalog-simple.sh` y `semantic-search*.js` usan `nomic-embed-text:latest` (**768** dims), pero `openclaw.json` (`memory.search.model` y `models.providers.ollama-local`) usa `qwen3-embedding:0.6b` (**1024** dims). Son dos espacios vectoriales distintos: las dos rutas de busqueda no son comparables. Alinear a uno solo.
+
+---
+
 ## [2026-09-11] - Fix: memory-catalog-v2.py crasheaba por dimensiones mixtas de embeddings (+ chunk_text NULL)
 
 ### Fixed
