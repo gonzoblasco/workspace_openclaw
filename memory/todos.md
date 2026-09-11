@@ -32,6 +32,9 @@
 - [ ] **[World-building con IA en Kanam Studio: personajes, mundo, reglas construidos y mantenidos con IA durante todo el viaje (no capa final). Version superada de kanam-story. Brief: projects/kanam-studio/.knowledge/BRIEF.md]** (medium) kanam-studio
 - [ ] **[]** (medium) Verificar .env de soporteml (repo público trackea .env en HEAD, desapareció del disco - decidir si restaurar con secrets históricos o eliminarlo del historial)
 - [ ] **[]** (medium) Desarchivar create-with-ai (archivado, fusionado en kanam-forge) para pushear commit local legítimo - decisión de Gonzo
+- [ ] **[]** (medium) Fix memory-catalog-v2.py: IndexError en categorize_learning (compute_category_centroids, list index out of range) al correr el catalog tras guardar sesion 2026-09-06. No bloqueo el guardado (DB-first OK) pero las embeddings/semantic search quedan sin re-catalogar.
+- [ ] **[workspace]** (medium) Activar gateway de OpenClaw en el Mac Mini como servidor fijo 24/7 del bot Telegram (@kanam_ai_bot). Hoy el canal esta configurado en la MacBook Air (2026-09-07). Al moverlo: deshabilitar el canal Telegram en la Air para evitar conflicto de long polling (error 409).
+- [ ] **[workspace]** (medium) Decidir kanam-tetris: repo local listo (2 commits, sin push) pero el .git anidado bloquea el triple-git del workspace (git no trackea .knowledge con repo embebido). Opciones: (1) pushear a GitHub (kanam-tetris) cuando Gonzo lo decida, o (2) archivar como los demas (quitar .git local, trackear solo .knowledge). Mientras tanto .knowledge/BRIEF.md no viaja entre maquinas.
 
 ## Completados
 
