@@ -6,6 +6,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-11] - Registro de voz de Gonzo (espanol) + skill viva `voz-gonzo`
+
+### Added
+- **`docs/voz-gonzo.md`**: registro vivo de como Gonzo se expresa en espanol. Estructura por caso (contexto, borrador Kanam, edicion final, que cambio, patron) + seccion "Reglas consolidadas" que la skill aplica por defecto. Primer caso: respuesta a rechazo de OpenSistemas (2026-09-11).
+- **Skill `voz-gonzo`** (`~/.openclaw/agents/main/agent/workshop-skills/voz-gonzo/`, creada via `skill_workshop`): redactar en espanol en nombre de Gonzo y aprender de cada edicion suya. 7 pasos: leer corpus -> identificar objetivo real (presente vs futuro) -> redactar -> entregar con variantes -> registrar la edicion -> consolidar solo si el patron cambio -> escanear guiones.
+
+### Notas
+- Alcance: interacciones en espanol (LinkedIn, mails, mensajes directos, entrevistas). Fuera de alcance: GitHub y repos (ingles, rige USER.md + AGENTS.md).
+- Reglas consolidadas iniciales: presente no futuro; alcance amplio; calido sin adornos; no exponer urgencia; sin numeros por escrito; cerrar con confianza; honestidad emocional medida; guion comun siempre.
+
 ## [2026-09-09] - Regla de seguridad: contenido externo = sandbox
 
 ### Added
