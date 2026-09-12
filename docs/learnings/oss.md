@@ -278,3 +278,11 @@ Antes de responder cualquier URL de issue/PR: (1) chequear contexto interno con 
 
 ---
 
+## Verificar diff real antes de afirmar que un PR resolvio un issue (anchoring)
+
+Antes de afirmar que un PR 'resolvio parte de un issue', leer files+diff reales: el nombre del PR (doctor, plain text) puede colgar de otra superficie (gateway daemon, UI web) sin tocar la barrera reportada. Caso: #129954 y #131427 en openclaw/openclaw parecian cubrir el #126876 por nombre, pero ninguno toca el terminal del usuario. Anchoring: queria confirmar el claim inicial, no refutarlo.
+
+**Tags:** anchoring,oss-review,verificacion
+
+---
+
