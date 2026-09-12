@@ -69,8 +69,11 @@ memory/2026-07-23-1951.md
 # el `git add -A` stagea el directorio como gitlink (commit 160000) y no el arbol de memoria.
 /projects/*/.git/
 
-# kanam-tetris: repo publico independiente (gonzoblasco/kanam-tetris). Igual que kanam-skills,
-# vive entero en GitHub y su .knowledge/ NO se trackea en el workspace.
+# kanam-tetris: repo publico independiente (gonzoblasco/kanam-tetris), con .git ANIDADO.
+# La regla blanket de abajo es LOAD-BEARING: sin ella `git add -A` stagea el directorio como
+# gitlink (160000) en vez del arbol de memoria. Verificado 2026-09-11 con experimento controlado.
+# Su .knowledge/BRIEF.md SI viaja en el workspace: se force-agrego una vez (moviendo el .git
+# temporalmente), y desde entonces un `git add -A` normal lo actualiza sin -f.
 /projects/kanam-tetris
 
 # kanam-skills: repo publico independiente, vive entero en GitHub.
