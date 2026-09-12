@@ -286,3 +286,11 @@ Antes de afirmar que un PR 'resolvio parte de un issue', leer files+diff reales:
 
 ---
 
+## El cierre de un hilo que salio bien ES el resultado, no un problema a gestionar
+
+Cuando un hilo de OSS cierra bien (el autor recibio aporte, lo integro, y cerro el mismo), el cierre es el desenlace - no un problema de triage para resolver ni una oportunidad de seguir aportando. Distinguir: Gonzo comparte la evolucion de un hilo como INFORMACION (como ayudo nuestro comentario) vs como pedido de accion. Bias detectado: querer ser util tocando algo mas en cada turno - a veces el mejor output es no hacer nada mas. No somos nadie en repos ajenos: no validar decisiones de cierre de quien reporto, el autor estudio el tema mejor que nosotros.
+
+**Tags:** bias,oss,boundaries,cierre-hilos
+
+---
+
