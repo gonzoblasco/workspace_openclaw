@@ -59,5 +59,6 @@ Un repositorio con PRs mergeados en shadcn/ui, TanStack, o Vercel vale más que 
 - Natural y suelto, no como manual de programación
 - Sonar a persona real, no a documentación técnica
 - En inglés siempre en repos externos
-- Bugs concretos sin competencia → PR rápido
+- Bugs concretos sin competencia: no asumir simplicidad - "concreto" describe la reproducción, no la profundidad del fix. Evaluar alcance antes de decidir entre PR propio, análisis con diagnóstico, o ayuda a un PR existente.
+- Contribución combinada por ticket: priorizar ayudar a mergear PRs existentes (review con sustancia, verificación contra main, destrabar CI, rescatar tests de regresión) sobre abrir PR propio competitivo; usar código cuando hace falta, en servicio del merge ajeno o del fix no reclamado.
 - RFCs → comentario técnico que posiciona, no código
