@@ -11,7 +11,7 @@
 | PRs mergeados | 7 |
 | PRs cerrados sin merge | 22 |
 | Colaboraciones no-codigo | 15 |
-| Repos con contribuciones | 21 |
+| Repos con contribuciones | 22 |
 
 ## PR Registry
 
@@ -164,6 +164,14 @@
 | **Issue** | [#48990](https://github.com/mui/material-ui/issues/48990) | MERGED 24/08. [docs][templates] Remove focusable links from hidden carousel slides. WCAG 4.1.2 aria-hidden-focus: el carousel (react-swipeable-views) esconde slides inactivos con aria-hidden pero el link Go to store seguia focusable. Fix: tabIndex={-1} en slides inactivos (1 archivo, +1 -0). Aprobado por silviuaavram. Resuelve #48990 (cerrado COMPLETED). |
 | **Nuestro PR** | [#49003]() | **merged** |
 | **Contexto** | - | Abierto en agosto. PR de docs (templates). Merge 06:44 UTC 24/08. |
+
+### openclaw/openclaw
+
+| Eslabón | Link | Detalle |
+|---------|------|---------|
+| **Issue** | [126876](https://github.com/openclaw/openclaw/issues/126876) | Comentario tecnico en issue #126876 (audit 13 barreras screen reader). Aporte sin duplicar al bot: (1) tabla de plugins list persiste aun con stdout piped - verbose/json son los unicos escapes y no estan enmarcados como camino accesible; (2) modo plain automatico no es implementable (no hay deteccion portable de SR desde stdout) - el contrato viable es flag global explicito hermano de --no-color; (3) seam tecnico: loadHumanListModules aislaria el renderer de lineas etiquetadas sin tocar cold-imports. |
+| **Nuestro PR** | [comment-126876](https://github.com/openclaw/openclaw/issues/126876#issuecomment-5642289378) | **active** |
+| **Contexto** | - | openclaw/openclaw |
 
 ### payloadcms/payload
 
