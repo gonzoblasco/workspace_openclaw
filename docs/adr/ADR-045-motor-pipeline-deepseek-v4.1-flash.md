@@ -1,10 +1,12 @@
 # ADR-045: Motor del Pipeline A/B - DeepSeek V4.1 Flash
 
-**Status:** Accepted (2026-09-11)
+**Status:** Superseded por ADR-046 (2026-09-11)
 **Deciders:** Gonzo / Kanam
 **Fecha:** 2026-09-11
 **Origen:** workspace (ciclo real de kanam-tetris v0.2, 2026-09-11)
 **Complementa:** ADR-041 (Motor LLM del Sistema - GLM-5.3-Flash). Su seccion de motor del pipeline queda actualizada por este ADR.
+
+> **Actualizacion 2026-09-11 (19:30):** este ADR queda **revertido por ADR-046**. El motor del pipeline vuelve a `deepseek-v4-flash:cloud` por costo: medido en el uso semanal de Ollama Cloud, v4.1 consumia mas por request que v4 y glm (1.348 requests de v4.1 con la barra mas alta, contra 1.631 de v4 con la mas baja). v4.1 baja a **fase de escalada** para analisis complejo. Las reglas tecnicas de este ADR sobre v4.1 (think:false en roles mecanicos, API /api/chat con stream:false, presupuesto de tokens) siguen vigentes SOLO al escalar a v4.1.
 
 ## Decision
 

@@ -6,6 +6,28 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-11] - ADR-046: revert del motor del pipeline A/B a deepseek-v4-flash (por costo)
+
+### Added
+- **`docs/adr/ADR-046-motor-pipeline-revert-deepseek-v4-flash.md`:** el motor de los agentes A/B del pipeline vuelve a `deepseek-v4-flash:cloud`. Revierte ADR-045 (v4.1 como motor) por costo: medido en el uso semanal de Ollama Cloud, v4.1 consumia mas por request que v4 y glm (1.348 requests con la barra mas alta, contra 1.631 de v4 con la mas baja). v4.1 baja a fase de escalada para analisis complejo.
+- **Convencion `Status: Superseded`:** primer uso del campo en ADR-045 (antes ningun ADR lo usaba; los superseded se marcaban solo con nota al pie).
+
+### Changed
+- **`docs/adr/ADR-045`:** `Status: Accepted` -> `Superseded por ADR-046` + nota de actualizacion. Las reglas tecnicas sobre v4.1 (think:false en roles mecanicos, API /api/chat con stream:false) siguen vigentes solo al escalar a v4.1.
+- **`docs/adr/ADR-041`:** nota de actualizacion del 11/09 reapuntada de ADR-045 a ADR-046.
+- **`docs/adr/README.md`:** agregado ADR-046 al indice; ADR-045 marcado como superseded.
+- **`MEMORY.md`:** motor del pipeline = `deepseek-v4-flash:cloud` (ADR-046). Nueva leccion: nombres de modelo no intercambiables - `deepseek-v4-flash:cloud` resuelve en Ollama (motor del pipeline), `deepseek-v4-flash:0731` es solo del runtime de OpenClaw y NO resuelve en Ollama.
+- **`docs/pipeline/kanam-product-pipeline.md`:** nota de modelo actualizada con el revert por costo.
+- **`docs/learnings/pipeline-agentes.md`:** nota de actualizacion en la leccion de v4.1 - el valor del review por ejecucion y de la autoverificacion del motor no depende del modelo.
+
+### Fixed
+- **`model-router.json`: overrides sticky pineando v4.1.** El estado runtime del router tenia `overrides.code`, `overrides.review` y `overrides.pipeline_ab` en `deepseek-v4.1-flash:cloud` (seteados el 11/09 al promover v4.1 como motor). **Ese era el mecanismo real que forzaba v4.1 en el pipeline.** Reseteados los tres: el router vuelve a las rutas por defecto (v4-flash). Verificado con `model-router.sh list` (Overrides: ninguno).
+- **`model-router.json` agregado a `.gitignore`:** estado runtime del router (generado por `model-router.sh`), machine-local. Estaba sin trackear pero SIN regla de ignore.
+
+### Notas operativas
+- **Watcher `ds-v4.1-rollout-watcher` deshabilitado:** su proposito (avisar cuando v4.1 saliera del rollout) quedo cumplido el mismo dia y obsoleto por este ADR. Se deshabilito, no se borro.
+- **Sin cambios en `openclaw.json`:** el motor del pipeline no vive ahi. Se fija por el `--model` de la invocacion (Claude Code / Qwen Code) y por el router. El default de OpenClaw ya era v4-flash desde el revert de las 19:15.
+
 ## [2026-09-11] - Unificacion del modelo de embeddings: todo el workspace a qwen3-embedding
 
 ### Changed

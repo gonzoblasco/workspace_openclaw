@@ -152,3 +152,11 @@ Primer uso real de deepseek-v4.1-flash:cloud como motor de los agentes A/B (via 
 
 ---
 
+## Revert del motor del pipeline a v4-flash por costo (ADR-046, revierte ADR-045)
+
+El 2026-09-11 el motor de los agentes A/B del pipeline volvio de deepseek-v4.1-flash a deepseek-v4-flash por costo: medido en el uso semanal de Ollama Cloud, v4.1 consumia mas por request que v4 y glm (1.348 requests con la barra mas alta, contra 1.631 de v4 con la mas baja). La mejora de calidad de v4.1 sobre v4 no justificaba el gasto. v4.1 queda como fase de escalada para analisis complejo. El mecanismo real que forzaba v4.1 no era el ADR sino los overrides sticky de model-router.json (code, review, pipeline_ab), reseteados el mismo dia. Lo que NO cambia con el motor: el valor del review por ejecucion (harness instrumentado cuando el bug depende de tiempo) y la autoverificacion del motor - esas lecciones nacieron en el ciclo v0.2 con v4.1 y valen con cualquier modelo. Pendiente: v4 sera retirado en unas semanas (reemplazo por 4.1), reevaluar entonces.
+
+**Tags:** pipeline-ab,v4-flash,v4.1,adr-046,costo,model-router
+
+---
+

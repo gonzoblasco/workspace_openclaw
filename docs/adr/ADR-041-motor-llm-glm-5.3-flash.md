@@ -10,7 +10,7 @@
 
 **GLM-5.3-Flash es el motor del sistema:** default de OpenClaw y motor de los agentes A/B del pipeline. DeepSeek V4 Flash queda FUERA del ecosistema (ver rollback).
 
-> **Actualizacion 2026-09-11:** el motor de los agentes A/B del pipeline pasa a `deepseek-v4.1-flash:cloud` (ver **ADR-045**). GLM-5.3-Flash sigue siendo el default de OpenClaw para sesiones y uso diario. Este ADR queda vigente en todo lo demas (regla de cero parametros, fallback, ficha de capacidades, ecosistema minimo).
+> **Actualizacion 2026-09-11:** el motor de los agentes A/B del pipeline pasa a `deepseek-v4-flash:cloud` (ver **ADR-046**, que revierte ADR-045 por costo). El default de OpenClaw para sesiones y uso diario es `deepseek-v4-flash:0731`. GLM-5.3-Flash sigue como fallback + vision. Este ADR queda vigente en todo lo demas (regla de cero parametros, ficha de capacidades, ecosistema minimo).
 
 **Regla de parametros: a GLM-5.3-Flash se le pasa CERO parametros de razonamiento.** Sin `reasoning_effort`, sin thinking config, sin knobs. Corre con el default del servidor. Razones:
 

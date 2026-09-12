@@ -413,3 +413,11 @@ El costo por request difiere entre modelos flash de la misma familia; medir cons
 
 ---
 
+## Una decision de modelo no se cierra con el ADR: revisar el estado runtime
+
+Al revertir el motor del pipeline A/B de deepseek-v4.1-flash a v4-flash (ADR-046), el ADR-045 documentaba la decision pero quien la aplicaba en cada invocacion era model-router.json (estado runtime del router) con overrides sticky en code, review y pipeline_ab apuntando a v4.1. Cambiar solo el ADR habria dejado el pipeline corriendo v4.1 igual. Regla: toda decision de modelo se cierra revisando los TRES planos - (1) config de OpenClaw, (2) ADR (documentacion), (3) estado runtime que la ejecuta (model-router.json, env vars del harness). Segundo hallazgo del mismo dia: los nombres no son intercambiables - deepseek-v4-flash:cloud resuelve en Ollama (motor del pipeline), deepseek-v4-flash:0731 es solo del runtime de OpenClaw y NO resuelve en Ollama.
+
+**Tags:** modelos,pipeline-ab,adr,model-router,ollama
+
+---
+
