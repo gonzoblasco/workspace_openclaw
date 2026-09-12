@@ -197,6 +197,37 @@ case "$1" in
     filter="${2:-%}"
     sqlite3 -header -column "$DB" "SELECT repo, pr, status, substr(detail,1,50) AS detail FROM contributions WHERE status LIKE '$filter' ORDER BY repo;"
     ;;
+  oss-rows)
+    # Filas en formato pipe para consumo programatico (widget/sync): id|repo|pr|tipo|status|detail|context|pr_url
+    # Filtro opcional por tipo (pr|collab); sin filtro lista todo.
+    filter="${2:-}"
+    if [ -n "$filter" ]; then
+      sqlite3 "$DB" "SELECT id, repo, COALESCE(pr,'-'), tipo, status, detail, COALESCE(context,''), COALESCE(pr_url,'') FROM contributions WHERE tipo = '$filter' ORDER BY repo, id;"
+    else
+      sqlite3 "$DB" "SELECT id, repo, COALESCE(pr,'-'), tipo, status, detail, COALESCE(context,''), COALESCE(pr_url,'') FROM contributions ORDER BY repo, id;"
+    fi
+    ;;
+  update-contribution)
+    # Firma: update-contribution <id> <status> ["<detail>"] ["<context>"] ["<pr_url>"]
+    # Actualiza solo los campos pasados no vacios; status es obligatorio (usar '-' para no tocar).
+    id="$2"; status="${3:-}"
+    detail="${4:-}"; context="${5:-}"; pr_url="${6:-}"
+    if [ -z "$id" ] || [ -z "$status" ]; then
+      echo "Error: faltan id o status." >&2
+      echo "Uso: $0 update-contribution <id> <status> [detail] [context] [pr_url]" >&2
+      exit 1
+    fi
+    sets="status='$(sql_escape "$status")'"
+    if [ -n "$detail" ]; then sets="$sets, detail='$(sql_escape "$detail")'"; fi
+    if [ -n "$context" ]; then sets="$sets, context='$(sql_escape "$context")'"; fi
+    if [ -n "$pr_url" ]; then sets="$sets, pr_url='$(sql_escape "$pr_url")'"; fi
+    sqlite3 "$DB" "UPDATE contributions SET $sets WHERE id='$(sql_escape "$id")'; SELECT 'Contribucion actualizada: ' || changes() || ' fila(s).';"
+    ;;
+  oss-sync-status)
+    # Muestra la metadata de sync de la tabla oss_sync.
+    sqlite3 -header -column "$DB" "CREATE TABLE IF NOT EXISTS oss_sync (repo TEXT NOT NULL, pr TEXT NOT NULL, last_checked TEXT, state TEXT, merged TEXT, mergeable_state TEXT, comments INTEGER, updated_at TEXT, PRIMARY KEY (repo, pr));"
+    sqlite3 -header -column "$DB" "SELECT repo, pr, last_checked, state, mergeable_state, comments, updated_at FROM oss_sync ORDER BY repo, pr;"
+    ;;
   add-todo)
     text="$2"; project="${3:-}"
     text_esc=$(sql_escape "$text")
