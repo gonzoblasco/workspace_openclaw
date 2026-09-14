@@ -35,6 +35,8 @@
 - [ ] **[]** (medium) Fix memory-catalog-v2.py: IndexError en categorize_learning (compute_category_centroids, list index out of range) al correr el catalog tras guardar sesion 2026-09-06. No bloqueo el guardado (DB-first OK) pero las embeddings/semantic search quedan sin re-catalogar.
 - [ ] **[workspace]** (medium) Activar gateway de OpenClaw en el Mac Mini como servidor fijo 24/7 del bot Telegram (@kanam_ai_bot). Hoy el canal esta configurado en la MacBook Air (2026-09-07). Al moverlo: deshabilitar el canal Telegram en la Air para evitar conflicto de long polling (error 409).
 - [ ] **[workspace]** (medium) Actualizar skill model-cata para cubrir tests de CODIGO ejecutables (extraer bloque de codigo de la respuesta, correr suite oculta con node, pass/fail objetivo). Agregar: escalera L1-L5 (funcion pura, bordes ocultos, algoritmo O(1), DP con reconstruccion, parser desde cero), validacion obligatoria del test del test contra soluciones de referencia ANTES de medir, medicion de overhead fijo (cold start ~4s en v4.1) separado del throughput, y caveat de replicas. Nace de la cata v4-flash vs v4.1-flash del 2026-09-11.
+- [ ] **[kanam-lab]** (medium) BIFURCACION 2026-09-14: retomar kanam-lab Fase 5 (juez automatico con modelo tercero o estadisticas por modelo). Pausado por Gonzo para enfocar training de diseno UI/UX.
+- [ ] **[]** (medium) Decidir el destino de Radix/shadcn en el stack UI (aprenderlo en serio, evaluar reemplazo, o dejar la deuda anotada). Es la capa que resuelve foco/ARIA/teclado en nuestras UIs y no hay ADR de adopcion: se decidio sin decidir. Motiva la regla 'el precedente no es un motivo' (2026-09-14).
 
 ## Completados
 

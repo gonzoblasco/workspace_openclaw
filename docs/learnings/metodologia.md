@@ -244,3 +244,19 @@ Dato util: gh guarda su sesion en su GH_CONFIG_DIR y git no la conoce por su cue
 
 ---
 
+## El precedente no es un motivo: dependencias sin decision explicita
+
+Regla de Gonzo (2026-09-14): "no usemos radix solo por el motivo de que ya lo hemos usado".
+
+Problema de fondo: un template instala shadcn/ui (que trae Radix por debajo) y la eleccion queda implicita. Despues ADR-037 (Lucide) cita "el ecosistema shadcn/Radix" como si fuera un hecho del stack y fundamenta otra decision en eso. El ADR mismo admite el origen: "cada proyecto usaba lo que traia el template (...) pero no estaba documentado como decision". Precedente fabricado: una eleccion implicita se cita como decision tomada.
+
+Regla operativa: ninguna dependencia se adopta, se mantiene ni se cita por el solo hecho de estar presente o de haberse usado antes. Orden obligatorio antes de citarla: (1) que hace, (2) por que se elige hoy, (3) decision explicita (ADR), (4) recien entonces se cita. "Ya lo usamos" no responde "por que lo usamos".
+
+Aplicado a: USER.md (regla de preferencia, se carga cada sesion) y AGENTS.md seccion 3 (regla operativa, junto a Existing Solutions Preflight).
+
+Deuda derivada: no existe ADR de adopcion de shadcn/Radix en todo el workspace (verificado: grep shadcn|radix en docs/adr/ devuelve solo ADR-037). No hay @radix-ui instalado ni lockfile en el workspace; el codigo vive en repos aparte, asi que el uso real no se puede verificar desde aca.
+
+**Tags:** dependencias,adr,precedente,radix,shadcn,template
+
+---
+

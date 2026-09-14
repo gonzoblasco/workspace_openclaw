@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - Regla: el precedente no es un motivo (dependencias de UI/stack)
+
+### Changed
+- **`USER.md` - regla de dependencias.** Ninguna dependencia de UI o stack se adopta, se mantiene ni se cita como justificada por el solo hecho de estar ya presente o de haberse usado antes. Orden obligatorio antes de citarla como fundamento: (1) que hace, (2) por que se elige hoy, (3) decision explicita (ADR si corresponde), (4) recien entonces se cita. Origen: Gonzo marco que Radix/shadcn entraron por el template, sin decision, y hoy se citan como si fueran un hecho del stack.
+- **`AGENTS.md` - seccion 3 (Ingenieria).** Nueva subseccion "Dependencias: el precedente no es un motivo" junto a Existing Solutions Preflight, con la regla operativa y el caso que la motiva.
+
+### Added
+- **Leccion `metodologia`:** el precedente fabricado - una eleccion implicita del template (shadcn/ui + Radix) citada despues como decision tomada en `ADR-037` (Lucide), que el propio ADR admite no haber documentado como decision.
+- **TODO:** decidir el destino de Radix/shadcn en el stack UI (aprenderlo, evaluar reemplazo, o dejar la deuda anotada). Verificado: no existe ADR de adopcion de shadcn/Radix en el workspace; `grep shadcn|radix docs/adr/` devuelve solo ADR-037.
+
+### Notes
+- **Verificacion negativa registrada:** no hay paquetes `@radix-ui`, lockfiles ni `package.json` en el workspace (el codigo vive en repos aparte), asi que el uso real de Radix no se puede confirmar desde aca. Una afirmacion previa de esta sesion ("Radix si lo usamos") se apoyo en menciones declarativas de docs, no en evidencia de instalacion - corregida antes de escribir la regla.
+
+---
+
 ## [2026-09-14] - Limpieza y revision real de docs/ROADMAP.md
 
 ### Changed

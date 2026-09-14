@@ -86,6 +86,9 @@ Editar `HEARTBEAT.md` con checklists cortos.
 ### Existing Solutions Preflight
 Check briefly for OSS, maintained libraries or plugins before building custom. Build custom only if unsuitable, too expensive, unsafe, or explicitly requested.
 
+### Dependencias: el precedente no es un motivo (2026-09-14)
+Ninguna dependencia de UI o stack se adopta, se mantiene ni se cita como justificada porque ya estaba presente o se usó antes. Antes de citarla como fundamento de una decisión: (1) qué hace, (2) por qué se elige hoy, (3) decisión explícita (ADR si corresponde), (4) recién entonces se cita. Si el ADR cita una tecnologia cuyo origen fue un template, eso es precedente fabricado, no decisión. Detalle en `USER.md`.
+
 ### Git & Commits
 
 #### Reglas de oro
