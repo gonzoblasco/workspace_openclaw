@@ -33,16 +33,16 @@
   - Disparadores correlacionados: `long-running session` + `auto-compaction succeeded ... retrying prompt` + `post-compaction guard armed`.
   - Causa dominante: AGENTS.md (30.439 chars) y MEMORY.md (22.706) sobre el límite de bootstrap de 20.000 -> truncado en cada arranque.
 - **Estado al 2026-09-14 (reabierto, evidencia dura):**
-  - **Regresión**: AGENTS.md volvió a **24.044 chars** (el 28/08 había bajado a 8.890). Está otra vez sobre el límite de 20.000. MEMORY.md en **16.099** (bajó a 5.966 el 28/08; dentro del límite, pero creció).
+  - **Regresión resuelta (14/09, 20:xx)**: AGENTS.md volvió a 24.044-24.638 chars (el 28/08 había bajado a 8.890) -> otra vez sobre el límite de bootstrap. **Corregido: 15.167 chars** moviendo la sección `## Tools` a `docs/SETUP.md`. MEMORY.md en 16.483 (dentro del límite).
   - Reinicios registrados en `~/.openclaw/logs/gateway-restart.log` después del 28/08: **09-08, 09-11, 09-13 y 09-14**.
   - El **13/09** se generaron **4 dumps `gateway.restart_close_failed`** en `~/.openclaw/logs/stability/` (el gateway no cerró limpio durante el restart).
   - La señal de listo formal nunca se corrió.
-  - **Conclusión**: la deuda de mayor impacto está de vuelta. 0.1 pasa de 🟢 a 🟡.
+  - **Conclusión**: la causa de mayor impacto (tamaño del bootstrap) está corregida, pero la señal de listo sigue sin verificarse. 0.1 queda en 🟡 hasta correr la validación.
 - **Acciones**:
   - [x] Reducir AGENTS.md a <20K (28/08: 8.890 chars) - **REGRESIÓN al 14/09: 24.044**.
   - [x] Reducir MEMORY.md a <20K (28/08: 5.966) - al 14/09: 16.099, dentro del límite.
   - [x] Batchear exec masivo en scripts `.sh` (aplicado y verificado en la sesión de higiene del 28/08).
-  - [ ] Bajar de nuevo AGENTS.md a <20K (regresión verificada 14/09). Es la acción de mayor impacto.
+  - [x] Bajar de nuevo AGENTS.md a <20K (regresión verificada 14/09). **HECHO 14/09**: 24.638 -> 15.167 chars (la sección `## Tools`, 11.334 chars, movida a `docs/SETUP.md`). Bajo el limite por primera vez desde el 28/08.
   - [ ] Confirmar la señal de listo: validación de 15+ POST + 11 GET sin reinicio.
   - [ ] Revisar si el hot-reload de `~/.openclaw/openclaw.json` contribuye; si sí, separar cambios de config de la corrida.
 - **Regla operativa (no es checkbox)**: no mezclar browser tool con exec grande en la misma respuesta.
