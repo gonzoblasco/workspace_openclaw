@@ -58,21 +58,40 @@ El HANDOFF del 2026-08-02 listaba 3 pasos. **Ninguno sigue vigente tal como est�
 | Next Step del HANDOFF | Estado real |
 |---|---|
 | 1. Definir roadmap v0.7: baseline comparison, AI explanations, config validation | **Obsoleto al momento de escribirse.** Esas tres features ya estaban en v0.6.0 (released 29/07, el HANDOFF es del 02/08): baseline = Epic 1.5.3, AI explanations = Epic 3.1, config validation = Zod schema en Epic 1.1.3/1.1.4. El roadmap real (ROADMAP + TRACKER) ya existía y muestra 40/40. |
-| 2. Abrir issues para gaps conocidos e invitar feedback | **Parcialmente hecho y con deuda:** los issues #10 y #11 existen, pero quedaron **abiertos** con sus checklists 100% completos. Falta cerrarlos. No hay invitación a feedback a terceros. |
+| 2. Abrir issues para gaps conocidos e invitar feedback | **Parcialmente hecho.** Los issues #10 y #11 existen. **#11 cerrado el 2026-09-14** (documentación verificada completa: `CONTRIBUTING.md` + los 4 ejemplos existen). **#10 sigue abierto y NO debe cerrarse** - su premisa es falsa (ver punto 3). Nunca se invitó feedback a terceros. |
 | 3. Sumar session-context save al ritual de cierre | **Hecho:** el repo versiona su `.knowledge/` (HANDOFF + session-context) y tiene commits `docs: update session-context handoff` del 02/08. |
 
 **Pendiente real, en orden:**
 
-1. **Cerrar los issues #10 y #11** - ambos son epics de Fase 4 con todas las tareas `[x]`; quedaron abiertos. *(Acción en superficie pública: requiere OK explícito de Gonzo.)*
-2. **Sincronizar los headers de estado del repo** - `docs/ROADMAP.md` dice "Phase 4 (In Progress)" y tiene todas las casillas sin marcar; `docs/TRACKER.md` dice "Status: Phase 0.4 (Planning)" con 40/40 abajo. Los dos headers quedaron viejos.
-3. **Verificar la publicación en el Marketplace** - el Epic 4.1.2 dice hecho y `action.yml` tiene el branding, pero no pude confirmar la publicación (la página del Marketplace se renderiza por JS y el README no la menciona). **Sin verificar.**
+1. **Publicar en el Marketplace** (el paso que falta de verdad). El Epic 4.1.2 lo declara hecho **y es falso**: verificado el 2026-09-14, el action **no está publicado**. Detalle en "Hallazgo verificado" abajo. Es el único bloqueante para cerrar #10.
+2. **Sincronizar los headers de estado del repo** - `docs/ROADMAP.md` dice "Phase 4 (In Progress)" y tiene todas las casillas sin marcar; `docs/TRACKER.md` dice "Status: Phase 0.4 (Planning)" con 40/40 abajo. Los dos headers quedaron viejos. *(Requiere escribir en el repo: pedir OK a Gonzo.)*
+3. **Corregir las dos afirmaciones falsas en los docs del repo** - el check `4.1.2` del issue #10 y del TRACKER dicen que la publicación está hecha; `docs/ROADMAP.md` lista hechas features que existen. *(Mismo caso: pedir OK.)*
 4. Definir el próximo horizonte real: no es "v0.7 de features", es **adopción** (ver deuda abajo).
+
+## Hallazgo verificado: el Marketplace (2026-09-14)
+
+**El action NO está publicado en GitHub Marketplace.** Verificado con prueba de control, porque el fetch directo no alcanzaba (la página se renderiza por JS):
+
+| URL probada | HTTP |
+|---|---|
+| `marketplace/actions/checkout` (control positivo) | 200 |
+| `marketplace/actions/definitely-not-a-real-action-xyz123` (control negativo) | 404 |
+| `marketplace/actions/a11y-fixer` | **404** |
+| `marketplace/actions/a11y-fixer-action` | **404** |
+| `marketplace/actions/gonzoblasco-a11y-fixer` | **404** |
+
+Los dos controles prueban que el patrón de URL es correcto; el 200 de `checkout` descarta que el endpoint esté caído. Además, en el listado de acciones de accesibilidad del Marketplace aparecen `a11y-check`, `a11yguard`, `a11ytester-action`, `accessibility-scanner` y otros - **`a11y-fixer` no aparece**.
+
+**Consecuencia:** el check `4.1.2` ("Publish action on GitHub Marketplace") está marcado `[x]` en el issue #10 y en `docs/TRACKER.md`, pero **nunca se hizo**. El branding en `action.yml` (icon: eye, color: green) es el *preparativo* para publicar, no la publicación. Los otros dos checks del #10 (README con badges, template de quickstart) sí están hechos y verificados.
+
+**Lo que falta para publicar** (requiere acción de Gonzo en la UI de GitHub, no es automatizable): cortar un release nuevo con la opción "Publish this Action to the GitHub Marketplace" tildada. El release actual (v0.6.0) se publicó sin eso.
 
 ## Deuda / riesgo
 
 - **Cero adopción.** 0 estrellas, 0 usuarios externos, y el criterio del Horizonte 1 de `docs/NORTH.md` es exactamente eso: una pieza con usuarios reales que no seas vos. **El proyecto está listo para eso y no lo está buscando.**
 - **El ancla más fría de las tres.** Último commit 2026-08-17 (solo un chore de `.DS_Store`), último commit de código a fines de julio. kanam-forge y kanam-pulse tienen actividad más reciente.
-- **Admin desincronizada:** issues de epics terminados abiertos, headers de estado viejos, casillas del ROADMAP sin marcar. Nada de esto bloquea, pero da una imagen de proyecto más verde de lo que es.
+- **Admin desincronizada:** headers de estado viejos y casillas del ROADMAP sin marcar. Nada de esto bloquea, pero da una imagen de proyecto más verde de lo que es.
+- **Dos afirmaciones falsas en los docs del repo:** el check `4.1.2` del issue #10 y de `docs/TRACKER.md` afirman que el action está publicado en el Marketplace, y no lo está. Una tarea marcada como hecha que nunca se hizo es peor que una tarea abierta: infla el progreso real del proyecto.
 - **Publicado en npm pero sin README que lo mencione** - hay un canal de distribución activo que la documentación no explota.
 
 ## Constraint

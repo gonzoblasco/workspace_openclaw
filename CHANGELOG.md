@@ -53,10 +53,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Fixed (revision del HANDOFF, 2026-09-14 - pedido de Gonzo)
 - **`BRIEF.md` reescrito tras revisar el HANDOFF de verdad.** El HANDOFF del 2026-08-02 listaba 3 Next Steps y los tres quedaron **invalidados** al contrastarlos con el repo:
   - **Paso 1 ("definir roadmap v0.7: baseline comparison, AI explanations, config validation") - obsoleto desde el momento en que se escribio.** Las tres features ya estaban en v0.6.0 (released 2026-07-29, nueve dias antes del HANDOFF): baseline = Epic 1.5.3, AI explanations = Epic 3.1, config validation = Zod schema en Epics 1.1.3/1.1.4.
-  - **Paso 2 ("abrir issues para gaps conocidos") - parcial, con deuda.** Los issues #10 y #11 existen pero quedaron **abiertos con sus checklists 100% completos**.
+  - **Paso 2 ("abrir issues para gaps conocidos") - parcial.** Los issues #10 y #11 existian. **#11 cerrado el 2026-09-14** (documentacion verificada completa: `CONTRIBUTING.md` + los 4 ejemplos existen en el repo). **#10 NO se cierra** - su premisa es falsa (ver abajo).
   - **Paso 3 ("sumar session-context save al ritual de cierre") - hecho.** El repo versiona su `.knowledge/` y tiene commits de update del 02/08.
-- **Correccion de marco en el BRIEF:** el proyecto **no esta abandonado a mitad de camino, esta construido y publicado**. El `docs/TRACKER.md` del propio repo marca **40/40 tareas** completas en las Fases 1-4. Lo que falta no es codigo: es **adopcion**. El BRIEF anterior lo presentaba como "ancla fria" sin el dato de que esta feature-complete.
-- **Dato no verificado antes, ahora confirmado:** `@gonzoblasco/a11y-fixer@0.6.0` **esta publicado en npm** (registry.npmjs.org, 2026-07-29) y el README no lo menciona - hay un canal de distribucion activo que la documentacion no explota.
+- **Correccion de marco en el BRIEF:** el proyecto **no esta abandonado a mitad de camino, esta feature-complete**. El `docs/TRACKER.md` del propio repo marca **40/40 tareas** completas en las Fases 1-4. Lo que falta no es codigo: es **adopcion**. El BRIEF anterior lo presentaba como "ancla fria" sin el dato de que esta terminado.
+- **HALLAZGO VERIFICADO - el action NO esta publicado en GitHub Marketplace.** El check `4.1.2` del issue #10 y de `docs/TRACKER.md` lo dan por hecho, y es falso. Verificado con prueba de control (el fetch directo no alcanzaba: la pagina se renderiza por JS):
+  - `marketplace/actions/checkout` (control positivo) = **200**
+  - `marketplace/actions/definitely-not-a-real-action-xyz123` (control negativo) = **404**
+  - `marketplace/actions/a11y-fixer` / `-action` / `gonzoblasco-a11y-fixer` = **404** los tres
+  - En el listado de acciones de accesibilidad del Marketplace aparecen `a11y-check`, `a11yguard`, `accessibility-scanner` y otros; `a11y-fixer` no aparece.
+  - El branding en `action.yml` (icon: eye, color: green) es el **preparativo** para publicar, no la publicacion. Falta cortar un release con la opcion "Publish this Action to the GitHub Marketplace" tildada - eso requiere accion de Gonzo en la UI, no es automatizable.
+- **Consecuencia:** el issue #10 queda abierto en lugar de cerrado. Una tarea marcada como hecha que nunca se hizo es peor que una tarea abierta: infla el progreso real.
+- **Dato verificado:** `@gonzoblasco/a11y-fixer@0.6.0` **esta publicado en npm** (registry.npmjs.org, 2026-07-29) y el README no lo menciona - hay un canal de distribucion activo que la documentacion no explota. *(Esto es npm, distinto del Marketplace.)*
 
 ### Notes
 - **Gap operativo documentado en el BRIEF:** el codigo de a11y-fixer NO esta clonado en el workspace - `projects/a11y-fixer/` contiene solo `.knowledge/`. Para trabajar en el hay que clonar el repo aparte. El repo si versiona su propio `.knowledge/` (HANDOFF + session-context).
