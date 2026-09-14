@@ -119,3 +119,4 @@ Protocolo aplicado (pausa obligatoria del AGENTS.md):
 ## Decisiones
 - 2026-09-08: nace el proyecto por pedido de Gonzo como experimento de agentes. Single-file HTML/Canvas. Ghost + hard drop sí, hold no.
 - 2026-09-11: repo pusheado a https://github.com/gonzoblasco/kanam-tetris (antes solo local). v0.2 cerrada y validada por Gonzo en browser.
+- **2026-09-14 (PIVOT DE OBJETIVO, decisión de Gonzo):** el proyecto deja de ser solo experimento del pipeline - **ahora ES kanam-tetris. Objetivo: hacer que brille y sea perfecto.** El juego pasa de ratón de laboratorio a producto. Consecuencias: las features del no-alcance (T-spins, combos, sonido, móvil) pasan a roadmap real; "perfecto" se define como fidelidad a la guideline de Tetris + pulido visual/sonoro + calidad de código sostenida (la red de tests crece con cada feature). La metodología A/B sigue siendo el vehículo, no el destino.
