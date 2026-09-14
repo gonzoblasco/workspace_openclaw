@@ -100,9 +100,9 @@
 - **Criterio de éxito**: 2-3 proyectos claros que demuestran el pitch, el resto archivado o en pausa explícita.
 - **Señal de listo**: una lista corta de proyectos "estrella" con su rol en el pitch, documentada.
 - **Acciones**:
-  - [ ] Definir los 2-3 proyectos ancla (candidatos: SoporteML, kanam-forge, a11y-fixer).
-  - [ ] Decidir destino de accessible-ui y create-with-ai (reset con angle o archivar).
-  - [ ] Documentar la decisión en un ADR.
+  - [x] Definir los proyectos ancla (ADR-001: kanam-forge, a11y-fixer, kanam-pulse). SoporteML queda EXCLUIDO - decisión cerrada, no se reabre.
+  - [x] Decidir destino de accessible-ui y create-with-ai (ADR-001, sección 4: ambas archivadas).
+  - [x] Documentar la decisión en un ADR (ADR-001, 2026-08-28).
 
 ### 2.2 Cadena OSS → LinkedIn 🟢 P1
 - **Qué**: cada merge de a11y/agentic → post. El patrón está definido (2026-08-25); falta la cadencia real.

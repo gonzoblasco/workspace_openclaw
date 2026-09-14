@@ -26,7 +26,7 @@ No es "el bot". No es "el workspace". Es las tres cosas a la vez:
 | Capa | Qué es | Nombre | Estado |
 |---|---|---|---|
 | **1. El sistema** | El OS de trabajo: agente, pipeline A/B, memoria DB-first, skills, decisiones documentadas | `workspace_openclaw` + Kanam | En producción diaria |
-| **2. La constelación** | Los productos que salen de ese sistema | 9 proyectos `kanam-*` + a11y | Mixto: 2 anclas, 5 activos, 2 experimentos |
+| **2. La constelación** | Los productos que salen de ese sistema | 9 proyectos `kanam-*` + a11y | Mixto: 3 anclas, 3 de infraestructura interna, 3 en la línea narrativa, 2 experimentos |
 | **3. El hilo** | La especialización que atraviesa todo | Accesibilidad (a11y) | Diferenciador real, con evidencia OSS |
 
 El nombre no es azar: **Kanam** viene del "segundo cerebro" original que descartaste en 2026 y que resucitó como `kanam-mind`. El nombre sobrevivió a su primer proyecto y hoy nombra al ecosistema entero. Eso no es un detalle: significa que la idea de fondo era más grande que cualquiera de sus implementaciones.

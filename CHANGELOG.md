@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - Alineacion de anclas del portfolio (NORTH + ROADMAP + BRIEF a11y-fixer)
+
+### Fixed
+- **`docs/NORTH.md` - conteo de anclas inconsistente:** la tabla de la constelacion decia "2 anclas, 5 activos, 2 experimentos" mientras la seccion siguiente listaba **3** anclas (kanam-forge, a11y-fixer, kanam-pulse, segun ADR-001). Corregido a "3 anclas, 3 de infraestructura interna, 3 en la linea narrativa, 2 experimentos".
+- **`docs/ROADMAP.md` 2.1 - accion stale:** la accion abierta proponia "Definir los 2-3 proyectos ancla (candidatos: SoporteML, kanam-forge, a11y-fixer)", con SoporteML ya EXCLUIDO por decision cerrada (ADR-001 seccion 4 + MEMORY.md) y sin kanam-pulse. Actualizada a los 3 anclas reales de ADR-001, con la exclusion de SoporteML marcada como cerrada. Las tres acciones de 2.1 pasan a `[x]` (las tres estan resueltas por ADR-001 del 2026-08-28).
+
+### Added
+- **`projects/a11y-fixer/.knowledge/BRIEF.md`:** era la unica de las tres anclas sin BRIEF (solo tenia HANDOFF autogenerado). Contenido verificado contra `package.json`, releases de GitHub, la API del repo y el README real - no contra memoria. Incluye el estado real (v0.6.0, ultimo release 2026-07-29, ultimo push 2026-08-17, 102 tests, 0 estrellas), las features de v0.6.0, y la deuda: es el ancla mas fria de las tres y con cero usuarios externos, que es exactamente el criterio del Horizonte 1 de `docs/NORTH.md`.
+
+### Notes
+- **Gap operativo documentado en el BRIEF:** el codigo de a11y-fixer NO esta clonado en el workspace - `projects/a11y-fixer/` contiene solo `.knowledge/`. Para trabajar en el hay que clonar el repo aparte.
+- Auditoria de consistencia entre `docs/NORTH.md`, `docs/ROADMAP.md` y `projects/portfolio-strategy/ADR-001`, a raiz de la pregunta de Gonzo sobre el para que del proyecto (2026-09-14).
+
 ## [2026-09-14] - Fix del export DB->.md (pisada de contenido) + causa raiz del drift
 
 ### Fixed
