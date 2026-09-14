@@ -2,6 +2,14 @@
 
 Objetivo vigente (decisión de Gonzo, 2026-09-14): **hacer que brille y sea perfecto.** El juego es el producto; el pipeline A/B es el vehículo.
 
+## Dirección visual oficial: "wireframe de cajitas"
+Decidida sobre 6 propuestas (ver BRIEF). Es **v0.4** del roadmap (antes del scoring), porque el lenguaje visual condiciona cómo se dibujan los eventos nuevos: en wireframe, el color de relleno queda libre para codificar estado - que es exactamente lo que T-spin/combo/B2B necesitan para anunciar sus eventos.
+
+Alcance v0.4-visual:
+- `render.js`: rejilla de puntos, piezas wireframe (contorno + fill al 10%), ghost punteado, perspectiva sutil en piso/marco.
+- Contraste: mantener los 7 colores de pieza verificados (todos ≥ 6.3:1); el resto de la paleta se re-verifica contra WCAG al cambiar tokens.
+- Los 33 tests no deben cambiar: es puro `render.js`. Si alguno muere, el cambio rompió el contrato.
+
 "Perfecto" se define en tres capas, en este orden: (1) fidelidad a la guideline de Tetris, (2) pulido que se siente, (3) calidad de código sostenida. El orden importa: pulir sobre una base equivocada es deuda.
 
 ## Dónde estamos (auditoría contra la guideline)

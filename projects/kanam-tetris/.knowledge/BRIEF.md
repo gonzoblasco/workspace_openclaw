@@ -78,6 +78,15 @@ test/harness.js     # helpers: tablero desde string, pieza forzada
 
 **Verificado en browser real (paso 7 del protocolo):** Gonzo jugó la v0.3 el 2026-09-11 y reportó que funciona perfecto. Con eso se cierra el único hueco que quedaba abierto - la fidelidad de render (rampa del flash, centrado de previews) no la había mirado nadie, porque el review comparó el código del canvas línea por línea pero no midió píxeles. **v0.3 cerrada.**
 
+## Dirección visual (decisión de Gonzo, 2026-09-14)
+**"Wireframe de cajitas"** - el lenguaje elegido sobre 6 propuestas (3 paletas D1-D3, 3 wireframes V1-V3). Elementos:
+- **Rejilla de puntos** como piso del tablero (reemplaza las líneas de grilla).
+- **Piezas wireframe:** contorno + relleno apenas perceptible del color de la pieza. Las formas identifican la pieza; el color queda libre para codificar ESTADO (activa, lock inminente, clear, T-spin) - el hallazgo de diseño del ciclo.
+- **Perspectiva sutil** (V2 calibrada suave, ~10-15° rotateX insinuado en piso y marco; las celdas siguen en grid recto para no perder lectura de columnas).
+- Ghost punteado; paneles laterales planos (instrumento) frente al tablero con profundidad (contraste de planos).
+- Pieza activa: glow breve solo en el lock.
+Descartadas con razón: V3 isométrico (modelo de exhibición, no partida - queda como tema futuro), D2 CRT (glow permanente cansa).
+
 ## No-alcance (para futuras iteraciones)
 - T-spins, combos, sonido, multiplayer, móvil/touch.
 
