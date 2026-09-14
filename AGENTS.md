@@ -131,7 +131,7 @@ Repo `workspace_openclaw`. Proyectos se sincronizan por separado.
 
 ##### Skills Mirror & Públicas
 - **Mirror:** `rsync` de `skills/` a `.github/skills/` antes de commitear. Copiar `SKILLS-INDEX.md` explícitamente.
-- **Públicas (kanam-skills):** sanitizar referencias personales (`Gonzo` $\rightarrow$ `el usuario`). Verificar con `grep` antes de publicar.
+- **Públicas (kanam-skills):** contenido **genérico**, no solo sin nombres. NUNCA mencionar nuestro trabajo ni identidades: sin `Gonzo`/`gonzoblasco`, sin `kanam-*`, `a11y-fixer`, `workspace_openclaw`, sin issues ni rutas locales, sin el nombre del agente. Se escribe como **plantilla que sirve para cualquier proyecto**. Verificar con `grep` (2 pasadas: personales + nuestro trabajo) antes de publicar. Detalle en `docs/AGENTS-DETALLE.md`.
 
 ### Estructura de Proyectos - Triple Git con `.knowledge/`
 Detalle en `docs/AGENTS-DETALLE.md`.

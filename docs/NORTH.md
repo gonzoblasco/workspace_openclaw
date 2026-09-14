@@ -84,7 +84,7 @@ Verificado contra el estado real de cada repo el 2026-09-14.
 - **`kanam-story`** - Co-writer de ficción local-first donde **el chat ES el producto** y el agente tiene manos. v0.11.0, Fases 1-4 completas.
 - **`kanam-studio`** - Taller de construcción de mundos y planificación narrativa. La **versión superada** de kanam-story: grafo de nodos en vez de manuscrito lineal. v0.6.0, slices 1-4 completos.
 
-> Nota: `kanam-story` y `kanam-studio` nacieron como proyectos separados y hoy se pisan parcialmente. kanam-studio se documentó como "la versión superada". **La relación entre ambos es una decisión abierta.**
+> Nota: `kanam-story` y `kanam-studio` nacieron como proyectos separados y hoy se pisan parcialmente. **DECISION (Gonzo, 2026-09-14): son UNO.** kanam-studio se documentó como "la versión superada" de kanam-story (grafo de nodos + world-building con IA sobre el manuscrito lineal). La consolidación está pendiente de plan: qué dirección toma (studio absorbe story, o un nombre nuevo), qué pasa con el recorrido ya hecho (story v0.11.0 Fases 1-4 vs studio v0.6.0 slices 1-4) y qué repo queda.
 
 ### La infraestructura interna
 - **`kanam-insight`** - Motor de inteligencia transversal: cruza los `.knowledge/` de todos los proyectos, detecta patrones y deuda técnica. Es Kanam mirándose a sí misma.
@@ -133,9 +133,9 @@ Eso está bien. Pero conviene tenerlo escrito para no confundir actividad con pr
 
 ## Decisiones abiertas (que este documento NO cierra)
 
-1. **kanam-story vs kanam-studio:** ¿convive o se consolida? kanam-studio se documentó como versión superada, pero kanam-story tiene más recorrido (v0.11.0 vs v0.6.0). Definir.
-2. **`accessible-ui`:** archivado en ADR-001 pero con trabajo real hecho. ¿Se rescata su código como base de otro ancla?
-3. **`kanam-skills` público:** ¿es el canal para el Horizonte 2, o queda como repo interno?
+1. **kanam-story + kanam-studio (DECIDIDO: son uno):** falta el plan de consolidación - dirección del merge, qué repo queda, y cómo se preserva el recorrido de cada uno (story v0.11.0 vs studio v0.6.0).
+2. **`accessible-ui`:** archivado en ADR-001 pero con trabajo real hecho (3 componentes APG, 3 capas de test, Storybook con a11y addon, nunca publicado a npm). Plan de resurrección propuesto 2026-09-14.
+3. **`kanam-skills` público:** sigue vivo pero desactualizado (54/59 skills divergen del local, último push 2026-08-12) y con referencias personales a sanitizar. Regla: contenido **genérico**, sin mención a nuestro trabajo ni identidades - debe servir como plantilla para cualquier proyecto.
 4. **La métrica del Horizonte 1:** "usuarios reales" es vago. Falta el número concreto (¿10 descargas? ¿1 issue externo?).
 
 ---
