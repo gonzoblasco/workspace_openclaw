@@ -43,6 +43,15 @@ Los repos OSS **no** se clonan en `projects/` (esa carpeta es para proyectos pro
 
 Presentar como novedad algo en lo que ya actuamos repite trabajo, pierde el hilo de seguimiento y obliga a Gonzo a corregirme. Dos veces seguidas es suficiente leccion.
 
+## Alcance: un ticket por vez
+
+**Regla (leccion 2026-09-14):** cuando Gonzo comparte la URL de un ticket, el analisis y la respuesta cubren **solo ese ticket**.
+
+- **No arrastrar** estado, comparaciones ni follow-ups de otros PRs del mismo repo, aunque sean vecinos, del mismo ciclo o esten linked.
+- **No cerrar** un ticket porque se resolvio otro: cada uno tiene su propio estado y su propio hilo de contexto. Cerrar o dar por resuelto un ticket que Gonzo no pidio rompe la consistencia del seguimiento.
+- **Excepcion unica:** el ticket compartido depende de otro (PR linked, blocker de CI, dependencia de merge). Se menciona lo estrictamente necesario para ese ticket, no el estado del otro.
+- Si hay algo relevante de otro ticket, se deja como nota aparte o como TODO, nunca dentro de la respuesta del ticket pedido.
+
 ## Antes de clasificar o empujar un PR: leer TODO
 
 **Regla crítica (lección 2026-08-22):** antes de empujar, cerrar, o clasificar un PR, leer **todos** los comentarios, incluidos los **inline comments de código** y las **reviews**. El feedback real del maintainer vive ahí y puede cambiar la decisión por completo.

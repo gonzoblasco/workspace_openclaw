@@ -19,6 +19,8 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **Leccion `metodologia`:** precision al reportar fallos de herramienta - nombrar el comando exacto, no mezclar binarios (caso `git push` vs `gh`).
 
 ### Changed
+- **`AGENTS.md`:** nueva regla 0b en "Feedback en PRs/issues ajenos" - alcance: un ticket por vez. Cuando Gonzo comparte un ticket, el analisis cubre solo ese ticket.
+- **`CONTRIBUTING.md`:** seccion nueva "Alcance: un ticket por vez" con la regla, la prohibicion de cerrar/dar por resuelto un ticket no pedido y la excepcion unica (dependencia real entre tickets).
 - **`USER.md`:** regla "Verificar antes de descartar" (agregada 13/09, se commitea junto con este cierre).
 - **`docs/OSS-TRACKER.md`:** contribuciones id=46 e id=58 (#10503) actualizadas con el diagnostico y fix del CI.
 - **`memory/2026-09-12.md`, `-13.md`, `-14.md`:** regenerados desde la DB (ahora con las filas sembradas) + secciones nuevas del 14/09.
