@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - AGENTS.md bajo el limite de bootstrap (regresion resuelta)
+
+### Changed
+- **`AGENTS.md`: 24.638 -> 15.167 chars.** La seccion `## Tools` (11.334 chars, el 46% del archivo) era el cheat sheet de entorno migrado desde el viejo `TOOLS.md` - scripts, modelos, maquinas, memoria, red - no reglas de conducta. Se movio intacto a **`docs/SETUP.md`** y en su lugar quedo un puntero con un resumen operativo minimo. AGENTS.md vuelve a estar bajo el limite de inyeccion de contexto (20K chars) por primera vez desde el 28/08.
+
+### Added
+- **`docs/SETUP.md`:** cheat sheet del entorno (maquinas, modelos Ollama local+cloud, pipeline de agentes, tabla completa de scripts del workspace, memoria SQLite + espejos, red/remoto). Es el destino de la seccion `## Tools`, consistente con la convencion de OpenClaw (las notas de entorno viven en `## Tools` de AGENTS.md, que es lo unico que reciben los subagentes - por eso AGENTS.md conserva el resumen minimo).
+
+### Notes
+- **Verificacion de cero perdida:** las 170 lineas de reglas de AGENTS.md quedaron identicas byte a byte (`diff` contra el backup en `/tmp`), y las 74 lineas significativas del bloque `## Tools` viejo se compararon una por una contra `docs/SETUP.md` - las 3 diferencias restantes son cosmeticas (dos encabezados viejos de TOOLS.md descartados a proposito y el footer de fecha actualizado).
+- **Contexto:** AGENTS.md habia bajado a 8.890 chars el 28/08, pero volvio a 24.044 el 14/09 y seguia creciendo (24.638 al momento del corte). El truncado era observable en el propio bootstrap de la sesion. Esta es la accion P0 de 0.1 (estabilidad del gateway) del `docs/ROADMAP.md`.
+- `MEMORY.md` queda en 16.483 chars, dentro del limite.
+
 ## [2026-09-14] - Regla: el precedente no es un motivo (dependencias de UI/stack)
 
 ### Changed
