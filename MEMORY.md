@@ -18,7 +18,7 @@
 ## Sobre Gonzo
 
 - Gonzalo Blasco, Argentina (GMT-3). Fullstack (React/TS, Supabase/Edge Functions, DB, billing, tooling).
-- **Trayectoria (2026-09-11, corregido por Gonzo, 2 correcciones):** Minutentag/EULAS (2016-2019, e-commerce) -> Super7ui (2020-2021, streaming global) -> EY (2021-2025, senior). **Accesibilidad como hilo continuo desde 2016**, con a11y como funcion CENTRAL en dos roles: ~1 ano dedicado en Super7ui (200+ fixes probados con lectores de pantalla, incluido JAWS) y ~3.7 anos en EY (50+ componentes enterprise remediados a WCAG, referente de a11y del equipo). **Total ~8+ anos de desarrollo, ~5 anos con a11y como funcion central.** **Unico gap a11y real: sin certificacion IAAP (CPWA/WAS/CPACC).** NUNCA describir su a11y como "reciente", marcar JAWS como gap, ni omitir Super7ui del conteo. Detalle en USER.md > Trayectoria profesional.
+- **Trayectoria (2026-09-11, corregido por Gonzo, 2 correcciones):** Minutentag/EULAS (2016-2019, e-commerce) -> Super7ui (2020-2021, streaming global) -> EY (2021-2025, senior). **Accesibilidad como hilo continuo desde 2016**, con a11y como funcion CENTRAL en dos roles: ~1 ano dedicado en Super7ui (200+ fixes probados con lectores de pantalla, incluido JAWS) y ~3.7 anos en EY (50+ componentes enterprise remediados a WCAG, referente de a11y del equipo). **Total ~10 anos de desarrollo continuo (feb 2016 - hoy), ~5 anos con a11y como funcion central.** Historia previa: backend PHP 2001-2008, que NO se suma al total ni se usa como headline (decisión de Gonzo 2026-09-14; hay un gap 2008-2016). **Unico gap a11y real: sin certificacion IAAP (CPWA/WAS/CPACC).** NUNCA describir su a11y como "reciente", marcar JAWS como gap, ni omitir Super7ui del conteo. Detalle en USER.md > Trayectoria profesional.
 - Búsqueda laboral: perfil AI-Native / a11y. Entrevista con OpenSistemas (25/08) - cerrada 11/09 (avanzaron con otro candidato; pidio reconsideracion).
 - Perfil: fotógrafo, comunicación social, escritor de novelas.
 - Preferencias: honestidad absoluta, autonomía total, registro escrito crítico.
@@ -102,7 +102,7 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 
 - **Kanam Story:** Co-writer de ficción. PWA, roles especializados. Local-first $\rightarrow$ Nube (en plan).
 - **Kanam Mind:** Segundo cerebro local-first. Timeline, CRUD accesible, resumen IA. Local-first puro (IndexedDB).
-- **SoporteML:** CRM MeLi. v4 es el reinicio actual (frontend avanzado, backend v3 sólido).
+- **SoporteML:** CRM MeLi. v4 es el reinicio actual (frontend avanzado, backend v3 sólido). **FUERA de la narrativa (2026-09-14, ADR-001):** Gonzo cerro explícitamente que no es el proyecto estrella bajo ningún sentido y que "es hora de dejarlo ir". No proponerlo como ancla ni mencionarlo en estrategia.
 - **kanam-skills:** Repo público de skills. Sanitización obligatoria (Gonzo $\rightarrow$ usuario).
 - **a11y-fixer:** Engine de fixes de accesibilidad. v0.6.0 reescrito.
 - **a11y-playground:** Capa visual de testing sobre a11y-fixer. Depende de a11y-fixer (base).

@@ -5,7 +5,7 @@
 - **Pronouns:** él/he
 - **Timezone:** America/Buenos_Aires (GMT-3, Argentina)
 - **Notes:** Quiere honestidad por encima de todo. No le des la razón solo por ser quien tiene el botón de encendido/apagado. No le comentes el horario - trabaja cuando puede.
-- **Búsqueda laboral:** entrevista con OpenSistemas confirmada (25/08, 9AM) - perfil AI-Native, colaboración freelance 100% remoto LATAM.
+- **Búsqueda laboral (actualizado 2026-09-14):** proceso principal CERRADO con oferta aceptada - EIT/HTC (cliente Disney), Lead Software Engineer Digital Accessibility, USD 4.000/mes como contractor US, 40h/semana en horario EST (10-18 Argentina), arranque 01/10. La propuesta llego por LinkedIn. Cruceros/Ritz-Carlton caido; OpenSistemas cerrado 11/09 (avanzaron con otro candidato). Estado vivo: docs/ROADMAP.md 2.3 + docs/entrevistas/job-search-tracker.md.
 - **GitHub writing rule:** siempre usar guion comun (-), nunca guion largo (em dash, U+2014). El guion largo no esta en el teclado y se nota que no es un dev escribiendo.
 - **Regla de escritura general:** mismo criterio - guion comun (-) siempre. NUNCA usar guion largo (em dash U+2014, en dash U+2013) en ningun contexto. Issues, PRs, comments, docs, memorias, todo.
 - **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
@@ -18,14 +18,14 @@
 ## Context
 
 - Desarrolla aplicaciones - Fullstack real (React/TS frontend, Supabase/Edge Functions backend, DB, billing, tooling)
-- 9+ años como desarrollador (frontend React), ahora Fullstack con IA como copiloto metodológico. Accesibilidad como hilo continuo desde 2016 (ver Trayectoria).
+- 10+ años de desarrollo continuo desde 2016 (frontend React, hoy Fullstack con IA como copiloto metodológico). Accesibilidad como hilo continuo desde 2016 (ver Trayectoria). Historia previa: backend PHP entre 2001 y 2008 (no se usa como headline - ver nota en Trayectoria).
 - Quiere que maneje su vida, archivos y proyectos
 - Trabaja entre dos máquinas (Mac Mini y MacBook Air), workspace sincronizado por git
 - Usa IA como infraestructura de trabajo (no como chat): sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop
 - Stack opinado: create-stack, OpenSpec, ADRs, AGENTS.md, HANDOFF, CHANGELOG
 - Accesibilidad como especialización activa
-- Open source contributions como portfolio vivo (PRs a shadcn/ui, TanStack, astryx, radix, vercel/ai, y más)
-- Proyecto estrella: SoporteML (CRM multi-tenant para vendedores de Mercado Libre con IA)
+- Open source como portfolio vivo: **8 PRs mergeados en grandes marcas** - Adobe (react-spectrum), IBM/Carbon (ibm-products), Meta (astryx, x4) y MUI (material-ui + base-ui). Ademas, PRs abiertos o en review en shadcn/ui, TanStack, radix y vercel/ai, todavia sin mergear.
+- **Marca personal (LinkedIn):** posts sobre PRs mergeados, nicho a11y. Evidencia de alcance: Darren Denham (CPACC, Assistant Director of Digital Accessibility) interactuo dos veces con posts distintos (astryx #5419 en agosto, ibm-products #9878 en septiembre). La propuesta de EIT/HTC/Disney llego por LinkedIn: el canal convierte.
 - También: fotógrafo, comunicación social, quiere escribir novelas
 - Quiere organizar actividad física y mejorar salud
 
@@ -39,7 +39,9 @@
 - **Super7ui (Ago 2020 - May 2021, ~1 ano):** rol dedicado a accesibilidad. 200+ fixes probados con lectores de pantalla + pruebas automaticas de a11y. Contar como ano entero de a11y engineering.
 - **EY (Sep 2021 - May 2025, ~3.7 anos):** referente de a11y del equipo, 50+ componentes enterprise a WCAG. Enterprise.
 - **Minutentag/EULAS (Feb 2016 - Nov 2019, ~3.7 anos):** a11y parte sustantiva del rol; crecio de junior a referente de accesibilidad.
-- **Total:** ~8+ anos de desarrollo con a11y; ~5 anos con a11y como funcion central/dedicada.
+- **Total:** ~10 anos de desarrollo continuo (feb 2016 - hoy); ~5 anos con a11y como funcion central/dedicada.
+- **Nota sobre el conteo (2026-09-14):** antes de 2016 hubo backend PHP entre 2001 y 2008 (~7 anos). NO se suma al total ni se usa como headline: es backend (no a11y), hay un gap de ~8 anos (2008-2016), y Gonzo no lo quiere destacar. Si alguna vez se necesita amplitud ("20+ anos en software") es defendible, pero abre la pregunta por el gap: decidir por audiencia.
+- **SoporteML (2026-09-14):** fuera de la narrativa publica (ADR-001) y fuera del perfil - no es el proyecto estrella, decision explicita de Gonzo. No proponerlo como ancla. Proyectos ancla vigentes: kanam-forge, a11y-fixer, kanam-pulse (ADR-001).
 
 **Gap real y unico: no tiene certificacion IAAP (CPWA / WAS / CPACC).** No volver a marcar su a11y como "reciente" ni JAWS como gap, ni omitir Super7ui del conteo.
 
@@ -54,7 +56,7 @@
 
 **El pitch:** *"Soy un dev fullstack que construyó un sistema de trabajo con IA propio, con stack opinado y docs de decisiones. Tengo PRs mergeados que lo demuestran."*
 
-Un repositorio con PRs mergeados en shadcn/ui, TanStack, o Vercel vale más que cualquier take-home test.
+Un repositorio con PRs mergeados en Adobe, IBM/Carbon, Meta o MUI vale más que cualquier take-home test.
 
 ## Estilo en issues/PRs de terceros
 
