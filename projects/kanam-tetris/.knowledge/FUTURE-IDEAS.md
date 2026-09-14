@@ -56,5 +56,5 @@ Dos tableros, un teclado (o dos ventanas sincronizadas). Riesgo: rompe la suposi
 
 ## Descartadas (con la razón, para no re-proponerlas)
 - **Multiplayer online:** backend + matchmaking, contradice cero-dependencias. Si hay multiplayer, es local (I13).
-- **Build step / TypeScript:** contradice el espíritu módulos ES nativos. JSDoc si algún día hace falta.
+- **Build step / transpilar .ts:** contradice el espíritu módulos ES nativos. La CORRECCIÓN (2026-09-14, cuestionado por Gonzo): la seguridad de tipos no se descarta junto con el build - **JSDoc + `tsc --noEmit` + `checkJs`** da tipado real manteniendo archivos `.js` ejecutables directo por Node y browser. El check de tipos es un comando más del review, no un build step. Candidato a adoptar cuando el core crezca (v0.4+).
 - **Canvas con librerías (PixiJS, etc.):** el canvas puro ya alcanza y es parte del encanto.
