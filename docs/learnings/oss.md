@@ -294,3 +294,17 @@ Cuando un hilo de OSS cierra bien (el autor recibio aporte, lo integro, y cerro 
 
 ---
 
+## Cambio en helper compartido: grepear consumidores por simbolo Y por asercion, no solo el archivo editado
+
+Al cambiar comportamiento en un helper compartido (hook/effect/util que otros componentes consumen), el archivo de test del componente que tocaste no alcanza: hay que buscar en TODO el repo los hermanos que consumen el mismo helper y actualizarlos en el mismo commit.
+
+Caso #10503 (adobe/react-spectrum, react-aria useComboBox): se gateo el announcement effect a solo cambios de seccion. Se actualizaron los tests de ComboBox.test.js, pero SearchAutocomplete usa useComboBox internamente y sus tests seguian asertando el comportamiento viejo (per-item announce). CI quedo rojo con 4 jobs test FAILURE. Mismo patron ya habia pasado en el commit del 02/09 (mismo archivo, mismo motivo) - o sea que no era un descuido aislado: era un metodo incompleto que se repitio.
+
+Como encontrarlo rapido: grep por el nombre del helper/simbolo en packages/*/test/ (los consumers no siempre estan en el mismo paquete) y por las aserciones tipicas del comportamiento viejo (toHaveBeenLastCalledWith('One'), toHaveBeenCalledTimes(N), NthCalledWith). En este repo: grep -rn "announce" --include="*.test.js" packages/ habria mostrado los dos archivos de una.
+
+Regla: antes de pushear un cambio de comportamiento en algo compartido, grepear consumidores por simbolo Y por asercion, no solo por el archivo que editaste. Y si el fix pasa por un test, correr la suite del vecindario, no solo el archivo propio. Reproducir el fallo en local ANTES de tocar: el error da el archivo y la linea exactos.
+
+**Tags:** oss,ci,tests,react-spectrum,consumers,regresion
+
+---
+

@@ -421,3 +421,37 @@ Al revertir el motor del pipeline A/B de deepseek-v4.1-flash a v4-flash (ADR-046
 
 ---
 
+## daily_notes drift vs .md: sembrar la DB antes de correr memory-end-session.py
+
+daily_notes en la DB puede quedar desincronizado de los .md del workspace. Verificado 2026-09-14: ultima fila era 2026-09-11, mientras memory/2026-09-12.md, -13.md y -14.md existian con contenido. Los .md se habian escrito a mano (o por otra via) sin pasar por la DB.
+
+El riesgo concreto: memory-end-session.py regenera memory/YYYY-MM-DD.md DESDE la DB (export_daily_to_md). Si la fila del dia no existe, export_daily_to_md hace return None si no hay fila, pero si el script crea una fila nueva con SOLO el bloque de cierre, el export pisa el .md y borra todo lo de la manana. En este caso la fila 114 se creo con el contenido del .md sembrado antes, asi que no se perdio nada - pero solo porque se sembro primero.
+
+Protocolo antes de correr memory-end-session.py:
+1. Comparar: ./scripts/memory-db.sh export-daily <fecha> vs memory/<fecha>.md (wc -l de ambos).
+2. Si la DB tiene menos contenido que el .md (o cero), SEMBRAR la fila desde el .md antes de escribir.
+3. Backup del .md a /tmp antes de cualquier regeneracion.
+4. Despues, verificar linea por linea que lo original sigue presente (grep -qF -- con el -- para lineas que empiezan con guion).
+
+Comando de verificacion: ./scripts/memory-db.sh export-daily <fecha> | wc -l  contra  wc -l < memory/<fecha>.md.
+
+**Tags:** memoria,sqlite,drift,backup,db-first
+
+---
+
+## Entorno local para correr tests de adobe/react-spectrum (yarn 4 vendorizado + postinstall de iconos)
+
+Entorno local para correr los tests de adobe/react-spectrum (verificado 2026-09-14 con el PR #10503):
+
+1. Clone shallow a /tmp: gh repo clone <fork> rs -- --depth=1 --branch <branch> (445M de repo, ~1.8G con node_modules).
+2. yarn 4 viene vendorizado: node .yarn/releases/yarn-4.18.0.cjs install. NO usar --mode=skip-build: el root tiene postinstall = "patch-package && yarn build:icons", y sin los iconos generados los tests ni arrancan ("Cannot find module '@spectrum-icons/ui/ChevronDownMedium'"). Si se salteo, correr: node .yarn/releases/yarn-4.18.0.cjs run postinstall.
+3. Correr un archivo: STRICT_MODE=1 VIRT_ON=1 node .yarn/releases/yarn-4.18.0.cjs jest <ruta>. Sin STRICT_MODE/VIRT_ON el comportamiento cambia.
+4. Lint del repo: NO usa eslint. Usa oxlint + oxfmt. Chequear un archivo: node .yarn/releases/yarn-4.18.0.cjs oxfmt --check <file> y node .yarn/releases/yarn-4.18.0.cjs oxlint <file>.
+5. CI (CircleCI) corre el subset por timings: yarn test ${TESTFILES}. Los jobs test-16/17/18 son las variantes de React 16/17/18.
+
+El error de un test que no arranca por modulo faltante casi siempre es el postinstall salteado, no un problema del codigo.
+
+**Tags:** react-spectrum,jest,yarn,tests,oxlint,entorno
+
+---
+

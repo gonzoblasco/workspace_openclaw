@@ -232,3 +232,15 @@ Al redactar en nombre del usuario, el default no es la version diplomatica/sumis
 
 ---
 
+## Precision al reportar fallos: nombrar el comando exacto, no mezclar binarios
+
+Al reportar un fallo de herramienta, nombrar el comando EXACTO que fallo y no mezclar binarios. Caso 2026-09-14: `git push` fallo con "Invalid username or token" y lo explique como "gh no funciona". Gonzo corrigio: "como que gh no esta funcionando?". `gh` andaba perfecto (token managed OAuth available, scopes repo/workflow); el que fallo fue `git push`, que no tenia el credential helper de gh configurado en el clon. Dos comandos distintos, un diagnostico mal atribuido.
+
+Regla: cuando algo falla, antes de explicar, separar (a) que binario fallo, (b) que invoco a quien, (c) cual es la fuente de credencial config. Verificar cada capa con un probe chico (dry-run, ls-remote, auth status) en vez de atribuir el fallo al componente mas visible. Un "X no funciona" mal dicho desinforma y manda a arreglar lo que no esta roto.
+
+Dato util: gh guarda su sesion en su GH_CONFIG_DIR y git no la conoce por su cuenta. Si el clon no tiene credential.helper apuntando a gh, el push por HTTPS falla aunque gh este autenticado. Workaround one-off sin tocar la config global: git -c credential.helper='!gh auth git-credential' push.
+
+**Tags:** precision,diagnostico,git,gh,reporte
+
+---
+

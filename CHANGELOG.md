@@ -6,6 +6,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - Fix de CI en PR #10503 + recuperacion de drift en daily_notes
+
+### Fixed
+- **`daily_notes` desincronizado de los `.md` (drift detectado 14/09):** la ultima fila de la DB era `2026-09-11`, mientras `memory/2026-09-12.md`, `-13.md` y `-14.md` existian con contenido. Correr `memory-end-session.py` tal cual habria regenerado el `.md` desde una DB sin la fila del dia, pisando el contenido. Se sembraron las filas faltantes desde los `.md` antes de escribir. **Verificado sin perdida:** 100/100 lineas originales del 09-13 y 34/34 del 09-12 presentes post-regeneracion.
+- **Consolidacion de sesion perdida:** `memory/2026-09-13-2041.md` (y su duplicado `-2041-2.md`, generados por un `sessions.reset`) contenian la sesion del update de OpenClaw por terminal que el daily del 09-13 NO tenia. Consolidada al daily y ambos sueltos movidos a `memory/archive/`.
+
+### Added
+- **Leccion `oss`:** cambio en helper compartido -> grepear consumidores por simbolo Y por asercion, no solo el archivo editado (caso #10503: `SearchAutocomplete` consume `useComboBox` y quedo con aserciones del comportamiento viejo).
+- **Leccion `infraestructura`:** protocolo para el drift `daily_notes` vs `.md` (comparar, sembrar la DB, backup, verificar linea por linea).
+- **Leccion `infraestructura`:** entorno local para correr los tests de adobe/react-spectrum (yarn 4 vendorizado, `postinstall` obligatorio por los iconos, `STRICT_MODE=1 VIRT_ON=1`, lint via `oxlint`/`oxfmt`).
+- **Leccion `metodologia`:** precision al reportar fallos de herramienta - nombrar el comando exacto, no mezclar binarios (caso `git push` vs `gh`).
+
+### Changed
+- **`USER.md`:** regla "Verificar antes de descartar" (agregada 13/09, se commitea junto con este cierre).
+- **`docs/OSS-TRACKER.md`:** contribuciones id=46 e id=58 (#10503) actualizadas con el diagnostico y fix del CI.
+- **`memory/2026-09-12.md`, `-13.md`, `-14.md`:** regenerados desde la DB (ahora con las filas sembradas) + secciones nuevas del 14/09.
+- **`projects/kanam-lab/.knowledge/BRIEF.md`:** fases renumeradas (v1/v2/v3 -> Fase 1/1.5/2/3).
+
 ## [2026-09-11] - ADR-046: revert del motor del pipeline A/B a deepseek-v4-flash (por costo)
 
 ### Added
