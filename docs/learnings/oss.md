@@ -308,3 +308,19 @@ Regla: antes de pushear un cambio de comportamiento en algo compartido, grepear 
 
 ---
 
+## Alcance: un ticket por vez al responder un PR/issue
+
+Cuando Gonzo comparte un ticket, el analisis y la respuesta cubren SOLO ese ticket. No arrastrar estado ni comparaciones de otros PRs del mismo repo (aunque sean vecinos o del mismo ciclo). No cerrar ni dar por resuelto un ticket que Gonzo no pidio: cada uno tiene su propio estado y su propio hilo de contexto. Excepcion unica: el ticket compartido depende de otro (PR linked, blocker de CI). Caso 2026-09-14: al recibir #9878 (mergeado), la respuesta agrego el estado de #9879 y lo dio por cerrado, cuando #9879 sigue OPEN/BLOCKED. Regla escrita en AGENTS.md (0b) y CONTRIBUTING.md.
+
+**Tags:** oss,comunicacion,regla
+
+---
+
+## Tickets como entidades individuales: referencia si, sentencia no
+
+Cada ticket/PR se trata como entidad individual salvo pedido explicito de Gonzo. Matiz operativo (2026-09-14): SI se puede referenciar trazabilidad ('esto ya se trabajo en tal ticket'), pero NUNCA concluir el estado de ese otro ticket (abierto, cerrado, mergeado, bloqueado, resuelto) - dar por A o por B es afirmar algo no pedido y potencialmente desactualizado. Si el estado de otro ticket importa, verificarlo en el momento con la fuente real (gh pr view, hilo externo) y presentarlo con URL. Caso: #9878 -> agregue estado de #9879 y lo di por resuelto; #9879 seguia OPEN/BLOCKED.
+
+**Tags:** oss,comunicacion,regla,seguimiento
+
+---
+
