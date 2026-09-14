@@ -52,6 +52,14 @@ Presentar como novedad algo en lo que ya actuamos repite trabajo, pierde el hilo
 - **Excepcion unica:** el ticket compartido depende de otro (PR linked, blocker de CI, dependencia de merge). Se menciona lo estrictamente necesario para ese ticket, no el estado del otro.
 - Si hay algo relevante de otro ticket, se deja como nota aparte o como TODO, nunca dentro de la respuesta del ticket pedido.
 
+### Referencia si, sentencia no
+
+Cada ticket es una **entidad individual** salvo que Gonzo pida lo contrario. La distincion operativa:
+
+- **Valido:** referenciar trazabilidad - "esto ya se trabajo en el ticket #X". Es dato util, le dice a Gonzo donde vive el hilo.
+- **Invalido:** concluir sobre ese otro ticket - declararlo abierto, cerrado, mergeado, bloqueado o resuelto. Dar por A o por B es afirmar un estado que no se pidio y que puede estar desactualizado.
+- Si el estado de otro ticket importa de verdad para la respuesta, se **verifica en el momento** con la fuente real (`gh pr view`, el hilo externo) y se presenta como dato verificado con su URL - no como memoria ni como inferencia.
+
 ## Antes de clasificar o empujar un PR: leer TODO
 
 **Regla crítica (lección 2026-08-22):** antes de empujar, cerrar, o clasificar un PR, leer **todos** los comentarios, incluidos los **inline comments de código** y las **reviews**. El feedback real del maintainer vive ahí y puede cambiar la decisión por completo.
