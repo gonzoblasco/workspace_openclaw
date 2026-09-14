@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - Limpieza y revision real de docs/ROADMAP.md
+
+### Changed
+- **`docs/ROADMAP.md` - reescritura de estado contra fuentes reales.** El documento no se tocaba desde el 28/08 y tenia 22 checkboxes abiertos bajo encabezados que declaraban los 11 items en 🟢. Se contrasto cada item contra git, GitHub, hooks y logs:
+  - **Tachadas por hechas:** `.gitignore` de archivos de sesion (lineas 10-11); la nota de `init-project.sh` (el script ya excluye `.knowledge/` via `.git/info/exclude`, lineas 26-28 y 203 - la premisa de la nota era falsa); los tres items de 2.1 (resueltos por ADR-001).
+  - **Borradas por obsoletas:** cambios sucios de `kanam-forge`/`kanam-mind` (ninguno tiene `.git` propio); los tres items fechados de busqueda laboral del 31/08-01/09 (vencidos).
+  - **Regresion detectada:** AGENTS.md volvio a **24.044 chars** (habia bajado a 8.890 el 28/08) -> otra vez sobre el limite de bootstrap de 20.000. MEMORY.md en 16.099. Por eso 0.1 vuelve de 🟢 a 🟡, con 4 dumps `gateway.restart_close_failed` del 13/09 y reinicios los dias 08, 11, 13 y 14/09.
+  - **Auditoria de hooks (1.3):** **0 de 21** proyectos tiene `pre-commit` hook o `simple-git-hooks`. La senal de listo de 1.3 no se cumple -> 🟡.
+  - **2.3 Busqueda laboral:** actualizada al estado real (oferta EIT/HTC/Disney aceptada el 11/09, arranque 01/10). El criterio de exito esta cumplido.
+  - **Estados corregidos:** 0.1, 1.1, 1.2, 1.3 y 2.2 pasan de 🟢 a 🟡.
+
+### Notes
+- **Rol del documento explicitado:** el ROADMAP define decisiones y estado por capa; el "para que" de largo plazo es `docs/NORTH.md`, y la lista de tareas es `memory/memory.db` (`todos`). Se agrego el encabezado "Que NO es este documento" para cortar la duplicacion de backlog.
+- **Regla nueva:** un item solo pasa a 🟢 con evidencia de su senal de listo, y la revision se hace contra fuentes reales - no contra lo que creiamos recordar.
+
 ## [2026-09-14] - Alineacion de anclas del portfolio (NORTH + ROADMAP + BRIEF a11y-fixer)
 
 ### Fixed
