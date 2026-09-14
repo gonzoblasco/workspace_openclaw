@@ -13,6 +13,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`AGENTS.md` - seccion 3 (Ingenieria).** Nueva subseccion "Dependencias: el precedente no es un motivo" junto a Existing Solutions Preflight, con la regla operativa y el caso que la motiva.
 
 ### Added
+- **Estudio `radix-primitives`** (`studies/radix-primitives/`, modo gamificado): plan maestro con 5 niveles / 46 topics para aprender Radix en serio. Origen: al decidir el destino de Radix/shadcn se eligio aprenderlo (integrarlo naturalmente y saber cuando sacarle provecho). Registrado en `studies/README.md` como seccion nueva de TEMAS TECNICOS.
 - **Leccion `metodologia`:** el precedente fabricado - una eleccion implicita del template (shadcn/ui + Radix) citada despues como decision tomada en `ADR-037` (Lucide), que el propio ADR admite no haber documentado como decision.
 - **TODO:** decidir el destino de Radix/shadcn en el stack UI (aprenderlo, evaluar reemplazo, o dejar la deuda anotada). Verificado: no existe ADR de adopcion de shadcn/Radix en el workspace; `grep shadcn|radix docs/adr/` devuelve solo ADR-037.
 

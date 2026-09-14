@@ -21,6 +21,14 @@
 
 ---
 
+## 🧩 TEMAS TECNICOS (estudio gamificado - niveles/XP/badges)
+
+| Tema | Motivo | Estado | Estructura |
+|---|---|---|---|
+| **radix-primitives** | Entro al stack por el template, sin decision documentada. Es la capa que resuelve foco, ARIA y teclado en nuestras UIs. | Nivel 1 abierto - mapeo (5 niveles / 46 topics) | `radix-primitives/` |
+
+---
+
 ## 📋 Notas
 
 - Todo estudio vive en `studies/<curso-slug>/` con su propio `README.md` (portada + progreso).
