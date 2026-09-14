@@ -8,6 +8,8 @@
 - No define el "para qué" de largo plazo: eso es `docs/NORTH.md`.
 - No es la lista de tareas: eso es `memory/memory.db` (tabla `todos`, espejo `memory/todos.md`). Si un item de acá se vuelve tarea concreta y fechada, vive en la DB, no acá.
 
+**Cómo se mantiene:** con `docs/checklists/roadmap-review-checklist.md`. La revisión se hace **contra fuentes reales** (git, GitHub, filesystem, logs), nunca contra lo que creíamos recordar. Un item solo pasa a 🟢 con su señal de listo verificada.
+
 ## Cómo leer este documento
 
 - **Capas**: el sistema vive en 4 planos superpuestos (fundaciones, pipeline, portfolio, crecimiento). Cada capa tiene su propio tipo de optimización.
@@ -58,7 +60,7 @@
   - [x] Diagnóstico `ai-developer-stack`: `.knowledge` es symlink roto. Repararlo requiere decisión explícita de Gonzo.
   - [x] Verificar que `.gitignore` cubre los archivos de sesión (14/09: `RECENT.md` y `.compaction-recovery-pending` en las líneas 10-11).
   - [x] Cerrar la nota de `init-project.sh` (14/09: el script ya excluye `.knowledge/` del repo del proyecto vía `.git/info/exclude` y lo commitea al workspace git - líneas 26-28 y 203. La premisa de la nota era incorrecta: no hay nada que corregir).
-  - [ ] Decidir destino de `kanam-skills` (repo público, hoy desactualizado y con referencias a sanitizar - ver `docs/NORTH.md`, decisiones abiertas).
+  - [ ] Decidir destino de `kanam-skills` (verificado 14/09: vive en `projects/kanam-skills` con `.git` propio y remote a `gonzoblasco/kanam-skills`; excluido a propósito en `.gitignore:113`. El repo está desactualizado y con referencias a sanitizar - ver `docs/NORTH.md`, decisiones abiertas).
 - **Descartado (14/09)**: "resolver cambios sucios de `kanam-forge` (README) y `kanam-mind` (SettingsModal.tsx)" - ninguno de los dos tiene `.git` propio; el item partía de un supuesto que ya no aplica.
 - **Restricción cerrada (no es acción)**: `soporteml` y sus versiones no se tocan - decisión cerrada en ADR-001.
 

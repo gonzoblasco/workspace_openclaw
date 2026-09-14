@@ -32,9 +32,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
   - **2.3 Busqueda laboral:** actualizada al estado real (oferta EIT/HTC/Disney aceptada el 11/09, arranque 01/10). El criterio de exito esta cumplido.
   - **Estados corregidos:** 0.1, 1.1, 1.2, 1.3 y 2.2 pasan de 🟢 a 🟡.
 
+### Added
+- **`docs/checklists/roadmap-review-checklist.md`:** procedimiento de revision del ROADMAP contra fuentes reales (git, GitHub, filesystem, logs, DB). Define cuando correrlo, la tabla de veredictos (hecho / pendiente / obsoleto / regla / restriccion cerrada), que fuente usar por tipo de item, el recalculo de estados y la reconciliacion de la tabla de prioridad. Incluye los antipatrones observados (marcar 🟢 por optimismo, usar el ROADMAP como backlog, confiar en el encabezado, revisar de memoria).
+
 ### Notes
-- **Rol del documento explicitado:** el ROADMAP define decisiones y estado por capa; el "para que" de largo plazo es `docs/NORTH.md`, y la lista de tareas es `memory/memory.db` (`todos`). Se agrego el encabezado "Que NO es este documento" para cortar la duplicacion de backlog.
+- **Rol del documento explicitado:** el ROADMAP define decisiones y estado por capa; el "para que" de largo plazo es `docs/NORTH.md`, y la lista de tareas es `memory/memory.db` (`todos`). Se agrego el encabezado "Que NO es este documento" para cortar la duplicacion de backlog, y el puntero al checklist de revision.
 - **Regla nueva:** un item solo pasa a 🟢 con evidencia de su senal de listo, y la revision se hace contra fuentes reales - no contra lo que creiamos recordar.
+- **`kanam-skills` reverificado:** el item abierto de 0.2 se corrigio con el estado real - el repo vive en `projects/kanam-skills` con `.git` propio y remote a `gonzoblasco/kanam-skills`, excluido a proposito en `.gitignore:113`. No es "sin trackeo" por olvido: la exclusion es deliberada.
 
 ## [2026-09-14] - Alineacion de anclas del portfolio (NORTH + ROADMAP + BRIEF a11y-fixer)
 
