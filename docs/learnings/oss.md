@@ -290,7 +290,11 @@ Antes de afirmar que un PR 'resolvio parte de un issue', leer files+diff reales:
 
 Cuando un hilo de OSS cierra bien (el autor recibio aporte, lo integro, y cerro el mismo), el cierre es el desenlace - no un problema de triage para resolver ni una oportunidad de seguir aportando. Distinguir: Gonzo comparte la evolucion de un hilo como INFORMACION (como ayudo nuestro comentario) vs como pedido de accion. Bias detectado: querer ser util tocando algo mas en cada turno - a veces el mejor output es no hacer nada mas. No somos nadie en repos ajenos: no validar decisiones de cierre de quien reporto, el autor estudio el tema mejor que nosotros.
 
-**Tags:** bias,oss,boundaries,cierre-hilos
+RECURRENCIA (2026-09-14, ambito ampliado - ya no solo OSS): en la sesion de LinkedIn, Gonzo paso el comentario de Darren Denham (CPACC, senior de a11y) sobre el post de #9878 solo para actualizar, y arme un draft de respuesta tecnica sin que lo pidiera. Tercera vez en el mismo dia del mismo patron (yapa), el mismo dia en que se escribio la regla 0b de alcance. La leccion no es de repos ajenos: aplica a TODA pieza externa que Gonzo comparte (LinkedIn, comentarios, hilos). Regla operativa: compartir una evolucion = registrar y responder corto; armar un deliverable sin pedido obliga a Gonzo a frenar y corregir alcance.
+
+MATIZ DE JERARQUIA (2026-09-14): en interacciones publicas no se valida ni se responde desde la cuenta propia a un senior del dominio cuando no se suma algo nuevo. Un 'good catch' hacia afuera invierte la relacion (el senior valida, nosotros no le confirmamos el acierto). Si no hay aporte nuevo, el silencio es la respuesta correcta.
+
+**Tags:** bias,oss,boundaries,cierre-hilos,jerarquia,linkedin,informacion-vs-accion
 
 ---
 
