@@ -455,3 +455,11 @@ El error de un test que no arranca por modulo faltante casi siempre es el postin
 
 ---
 
+## memory-end-session.py: export DB->.md a ciegas pisaba contenido del .md (fix 2026-09-14)
+
+CAUSA RAIZ del drift 12-14 y de la pisada del 14/09. Hay dos problemas distintos: (1) FLUJO: guardar sesion es manual; los dias 12 y 13 la sesion escribio el daily editando el .md directo (commits track(oss)/docs(prefs)) sin correr session-end.sh, asi que la DB nunca recibio fila esos dias (ultima fila: 09-11 13:41). Cuando el 14/09 corrio el guardado, la DB tenia 3 dias de atraso. (2) BUG DEL SCRIPT: export_daily_to_md regeneraba el .md DESDE la DB sin comparar - si el .md tenia secciones que la DB no, las borraba. Repro real: 17 lineas del daily 14/09 (secciones de dos sesiones paralelas) desaparecieron. Unica proteccion previa: el marker '## Session End - <project>' del mismo proyecto; si el .md tenia otra sesion, se insertaba la fila desde cero con el .md entero. FIX aplicado: guard reconcile_md_into_db corre ANTES del export y mergea secciones solo-en-.md hacia la DB (y preserva las solo-en-DB), backup a /tmp/daily-<date>.backup.md antes de regenerar, escape hatch --no-reconcile. Probado con 6 escenarios: A (md-only mergea, 09:30 sobrevive), B (DB cubre el .md: guard silencioso, sin merge espurio), C (DB-only se preserva), D (sin fila en DB: se crea desde el .md entero), E (--no-reconcile reproduce el viejo comportamiento, opt-in), F (idempotente). Leccion de metodo: un export 'fuente->vista' asume que la fuente esta mas completa; cuando las dos superficies se editan, hay que reconciliar antes, no exportar.
+
+**Tags:** infraestructura,memoria,db-first,bug,export
+
+---
+

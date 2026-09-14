@@ -62,6 +62,7 @@ Se activa solo cuando Gonzo dice **"iniciar sesión"**. Sin eso, asumo consulta 
 
 #### "guardar sesión" - Guardado formal
 Protocolo de `session-lifecycle`: self-reflection, registro en daily, commit + push del workspace.
+**El daily se escribe por `session-end.sh` / `scripts/memory-end-session.py`, nunca editando `memory/YYYY-MM-DD.md` a mano** (2026-09-14). Editar el `.md` directo deja la DB atrasada y el proximo export DB->.md borra esa seccion. Desde el mismo dia el script reconcilia `.md` -> DB antes de exportar y hace backup en `/tmp`, asi que el export ya no es destructivo - pero la via correcta sigue siendo el script.
 
 #### `/fuera` - Mensaje fuera de contexto
 Al inicio: no actualiza contexto, no se registra en daily, no activa startup, respuesta mínima y directa, no perdura.
@@ -209,7 +210,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/memory-catalog-v2.py` | Cataloga dailies en DB relacional + embeddings semanticos (Ollama `qwen3-embedding:0.6b`, 1024 dims). Idempotente (upsert por date). Puebla sessions_relacional, session_vectors, topics, topic_sessions, learnings_enriquecido |
 | `scripts/memory-search.py` | Busqueda semantica sobre la memoria: query -> embedding -> cosine similarity -> top N sesiones. Flags: `--topics`, `--recent [n]` |
 | `scripts/memory-topics.py` | Descubre topics emergentes via K-means clustering sobre embeddings + recalcula topics fijos por keywords. Flags: `--refresh`, `--list`. Comandos memory-db: `topics-cluster`, `topics-list` |
-| `scripts/memory-end-session.py` | Guarda el cierre de sesion DB-first: escribe directo a `daily_notes` (fuente de verdad) y regenera `memory/YYYY-MM-DD.md` como vista. Idempotente (no duplica por proyecto/fecha). Integrado en session-end.sh |
+| `scripts/memory-end-session.py` | Guarda el cierre de sesion DB-first: escribe directo a `daily_notes` (fuente de verdad) y regenera `memory/YYYY-MM-DD.md` como vista. Idempotente (no duplica por proyecto/fecha). Desde 2026-09-14 trae guard de reconciliacion: si el `.md` tiene secciones que la DB no, las mergea antes del export y respalda el `.md` en `/tmp`; `--no-reconcile` reproduce el comportamiento viejo. Integrado en session-end.sh |
 | `scripts/semantic-search.js` | Busqueda semantica RAG-lite sobre `memory.db` (CLI legible). Uso: `node scripts/semantic-search.js "consulta"`. Requiere Ollama (`qwen3-embedding:0.6b`). |
 | `scripts/memory-reembed.py` | Repara vectores cuyo dim no coincide con el modelo actual (fallbacks SHA-256 de 32 dims, o vectores de un modelo viejo). Sin fallback propio: si Ollama falla no escribe nada. Uso: `./scripts/memory-reembed.py [--dry-run] [--limit N]` |
 | `scripts/semantic-search-json.js` | Version JSON de la busqueda semantica para integracion con herramientas/agentes. Uso: `node scripts/semantic-search-json.js "consulta" [topN]`. Retorna `{query, results:[{score, sessionId, title, text}]}`. |

@@ -10,12 +10,18 @@ Usage:
   ./memory-end-session.py --project "<name>" --summary "<text>" [--date YYYY-MM-DD]
 
 Behavior:
-  1. Appends the session-end block to daily_notes in the DB (source of truth)
-  2. Regenerates memory/YYYY-MM-DD.md from the DB (view)
-  3. Keeps everything DB-first
+  1. Reconciles the .md into the DB if the .md has content the DB lacks (guard, 2026-09-14)
+  2. Appends the session-end block to daily_notes in the DB (source of truth)
+  3. Regenerates memory/YYYY-MM-DD.md from the DB (view)
+  4. Keeps everything DB-first
+
+Guard (2026-09-14): the export DB -> .md is LOSSY when the .md was edited directly or
+written by a concurrent session, because the DB is not always the more complete source.
+Before writing, md-only sections are merged into the DB and the .md is backed up to /tmp.
 """
 
 import argparse
+import shutil
 import sqlite3
 import os
 import re
@@ -87,6 +93,98 @@ def append_to_daily_db(conn, date, block, project):
     return daily_id, True
 
 
+def _strip_title(text, date):
+    """Drop the leading '# Daily YYYY-MM-DD' header so md/db bodies compare cleanly."""
+    t = text.lstrip("\n")
+    if t.startswith("# "):
+        parts = t.split("\n", 1)
+        return parts[1] if len(parts) > 1 else ""
+    return text
+
+
+def _split_sections(text):
+    """Split markdown into ordered (heading, block) pairs; preamble gets heading None."""
+    sections = []
+    cur_head = None
+    cur_lines = []
+    for ln in text.split("\n"):
+        if ln.startswith("## "):
+            if cur_lines or cur_head is not None:
+                sections.append((cur_head, "\n".join(cur_lines)))
+            cur_head = ln.strip()
+            cur_lines = [ln]
+        else:
+            cur_lines.append(ln)
+    if cur_lines:
+        sections.append((cur_head, "\n".join(cur_lines)))
+    return sections
+
+
+def reconcile_md_into_db(conn, date):
+    """Seed the DB from the .md when the .md holds sections the DB lacks.
+
+    Returns a report string when it acted, or None when the DB already covers the .md.
+    """
+    md_path = WORKSPACE / "memory" / f"{date}.md"
+    if not md_path.exists():
+        return None
+
+    md_body = _strip_title(md_path.read_text(encoding="utf-8"), date).strip("\n")
+    if not md_body.strip():
+        return None
+
+    row = get_or_create_daily(conn, date)
+
+    if row is None:
+        # No DB row for the date: writing the session-end block alone would clobber
+        # the whole .md on export. Seed the row from the .md first.
+        md_heads = [h for h, _ in _split_sections(md_body) if h]
+        backup = _backup_md(md_path, date)
+        cur = conn.execute(
+            "INSERT INTO daily_notes (date, type, content, created_at) VALUES (?, 'daily', ?, datetime('now'))",
+            (date, md_body.rstrip("\n") + "\n"),
+        )
+        conn.commit()
+        note = f"la DB no tenia fila para {date} - creada desde el .md (id={cur.lastrowid}, {len(md_heads)} secciones)"
+        return note + (f" | backup: {backup}" if backup else "")
+
+    db_body = (row["content"] or "").strip("\n")
+    md_secs = _split_sections(md_body)
+    db_secs = _split_sections(db_body)
+    md_heads = {h for h, _ in md_secs if h}
+    db_heads = {h for h, _ in db_secs if h}
+
+    md_only = [(h, b) for h, b in md_secs if h and h not in db_heads]
+    if not md_only:
+        return None  # DB already covers the .md: the export is lossless
+
+    db_only = [b for h, b in db_secs if h and h not in md_heads]
+    merged = md_body.rstrip("\n")
+    if db_only:
+        merged += "\n\n" + "\n\n".join(b.strip("\n") for b in db_only)
+    merged += "\n"
+
+    backup = _backup_md(md_path, date)
+    conn.execute("UPDATE daily_notes SET content=? WHERE id=?", (merged, row["id"]))
+    conn.commit()
+
+    parts = ["secciones solo en el .md: " + ", ".join(h for h, _ in md_only)]
+    if db_only:
+        parts.append(f"{len(db_only)} seccion(es) de la DB preservadas")
+    note = f"DB reconciliada desde el .md (id={row['id']}) - " + "; ".join(parts)
+    return note + (f" | backup: {backup}" if backup else "")
+
+
+def _backup_md(md_path, date):
+    """Copy the .md to /tmp before it is regenerated. Returns the backup path or None."""
+    backup = Path("/tmp") / f"daily-{date}.backup.md"
+    try:
+        shutil.copy2(md_path, backup)
+        return str(backup)
+    except OSError:
+        return None
+
+
 def export_daily_to_md(conn, date):
     """Regenerate memory/YYYY-MM-DD.md from the DB (view)."""
     row = get_or_create_daily(conn, date)
@@ -120,6 +218,11 @@ def main():
     parser.add_argument("--tscore", default="", help="Complexity T-score line if any")
     parser.add_argument("--skip-catalog", action="store_true", help="Skip running the catalog")
     parser.add_argument("--skip-export", action="store_true", help="Skip regenerating the .md view")
+    parser.add_argument(
+        "--no-reconcile",
+        action="store_true",
+        help="Skip the .md -> DB guard and export the DB as-is (may drop md-only sections)",
+    )
     args = parser.parse_args()
 
     if not os.path.exists(DB_PATH):
@@ -130,6 +233,10 @@ def main():
 
     conn = db_connection()
     try:
+        if not args.no_reconcile:
+            report = reconcile_md_into_db(conn, args.date)
+            if report:
+                print(f"   [guard] {report}")
         daily_id, inserted = append_to_daily_db(conn, args.date, block, args.project)
         if inserted:
             print(f"✅ Daily actualizado en DB (id={daily_id}) para {args.date}")

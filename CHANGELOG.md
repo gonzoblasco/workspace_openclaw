@@ -6,6 +6,25 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - Fix del export DB->.md (pisada de contenido) + causa raiz del drift
+
+### Fixed
+- **`scripts/memory-end-session.py` - el export DB->.md pisaba contenido del `.md`:** `export_daily_to_md` regeneraba `memory/YYYY-MM-DD.md` DESDE la DB sin comparar, y la DB no siempre es la fuente mas completa. Repro real: 17 lineas del daily del 14/09 (secciones de dos sesiones paralelas) se borraron, y el mismo flujo amenazaba los dias 12-14. **Guard nuevo `reconcile_md_into_db`:** corre ANTES del export, compara secciones `.md` vs DB, mergea hacia la DB las que solo viven en el `.md` y preserva las solo-en-DB; si la fecha no tiene fila, la crea desde el `.md` entero. Backup del `.md` en `/tmp/daily-<fecha>.backup.md` antes de regenerar. Escape hatch `--no-reconcile` reproduce el comportamiento viejo (opt-in). **Probado con 6 escenarios:** A (md-only mergea, seccion sobrevive), B (DB cubre el `.md`: guard silencioso, sin merge espurio), C (DB-only preservado), D (sin fila en DB: la crea desde el `.md`), E (`--no-reconcile`), F (idempotencia).
+- **`scripts/memory-end-session.py` sin permiso de ejecucion:** estaba `644` y se invocaba como `./scripts/memory-end-session.py` - fallaba con `permission denied`. Ahora `755`.
+
+### Changed
+- **`AGENTS.md`:** protocolo de "guardar sesion" ahora dice explicitamente que el daily se escribe con `session-end.sh` / `memory-end-session.py`, **nunca editando el `.md` a mano**; tabla de scripts actualizada con el guard y `--no-reconcile`.
+- **`skills/session-lifecycle/SKILL.md`:** documentado el guard de reconciliacion (por que el export era lossy y como se reconcilia ahora).
+- **`.github/skills/session-lifecycle/SKILL.md`:** mirror sincronizado (`SKILLS-INDEX.md` restaurado tras el rsync).
+- **`memory/todos.md` / `docs/learnings/`:** regenerados desde la DB.
+
+### Added
+- **Leccion `infraestructura`:** causa raiz doble del drift 12-14 - (1) flujo: guardar sesion es manual y los dias 12/13 el daily se edito directo en el `.md` sin correr el script, asi que la DB no recibio fila; (2) bug del script: export a ciegas sin comparar superficies.
+- **`docs/learnings/infraestructura.md`:** protocolo de reconciliacion previa al export.
+
+### Notes
+- **Causa raiz del flujo cortado (evidencia):** la DB tenia como ultima fila `2026-09-11` (13:41) mientras los `.md` de 12, 13 y 14 existian. Los dias 12 y 13 se commiteo el daily (`track(oss)`, `docs(prefs)`, `c5f6f07`) **sin** un `chore(session)`/`docs(session)` de cierre, y sin `## Session End` en el `.md` (0 blocks en 12 y 13, contra 5 en el 11). Conclusion: se edito el `.md` a mano y nunca se corrio el guardado.
+
 ## [2026-09-14] - Fix de CI en PR #10503 + recuperacion de drift en daily_notes
 
 ### Fixed
