@@ -50,13 +50,19 @@ El repo `kanam-skills` (github.com/gonzoblasco/kanam-skills) es **público**. La
 - Repos `github.com/gonzoblasco/...` → `github.com/<usuario>/...`
 - Issues específicos (ej. `astryx #4777`) → enseñanza genérica sin la referencia
 
-**Regla ampliada (Gonzo, 2026-09-14): contenido genérico, no solo sin nombres.** El material publicado NO debe mencionar nuestro trabajo ni nuestras identidades en ninguna forma. No alcanza con reemplazar `Gonzo` -> `el usuario`: hay que sacar toda referencia a nuestros proyectos, repos, herramientas y flujos particulares (ej. `a11y-fixer`, `kanam-*`, `workspace_openclaw`, issues específicos, rutas locales, nombres de modelos del setup). El contenido se escribe como **plantilla genérica que sirve para cualquier proyecto**, no como la receta de nuestro setup con los nombres cambiados.
+**Regla ampliada (Gonzo, 2026-09-14): contenido genérico, no solo sin nombres.** El material publicado NO debe mencionar nuestro trabajo ni nuestras identidades en ninguna forma. No alcanza con reemplazar `Gonzo` -> `el usuario`: hay que sacar toda referencia a nuestros proyectos, repos, herramientas y flujos particulares (ej. `a11y-fixer`, proyectos `kanam-*` internos, `workspace_openclaw`, issues específicos, rutas locales, nombres de modelos del setup). El contenido se escribe como **plantilla genérica que sirve para cualquier proyecto**, no como la receta de nuestro setup con los nombres cambiados.
+
+**La marca Kanam SÍ se queda (corregido por Gonzo, 2026-09-14).** `Kanam` es el **nombre del producto** que se publica, no una identidad personal. Distinción clave:
+- **Se queda:** `Kanam` como nombre/marca del producto y de sus skills (ej. `author: Kanam` en frontmatter, "Kanam, consolidá la memoria" como ejemplo de invocación del agente, `kanam-skills` como nombre del repo).
+- **Sale:** datos personales (`Gonzo`, `Gonzalo`, `gonzoblasco`, `@gonzoblasco`, `/Users/gonzoblasco/`) y **proyectos internos** que no son parte del producto publicado (ej. `a11y-fixer`, `kanam-lab`, `soporteml`, `workspace_openclaw`, issues propios).
+
+El error a evitar: tratar la marca como si fuera un dato personal. `Kanam` nombra lo que publicamos; `Gonzo` nombra a quién se lo publicamos.
 
 **Verificación obligatoria (dos pasadas):**
 1. Referencias personales: `grep -rn "gonzoblasco\|Gonzalo\|Gonzo\|@gonzoblasco" skills/ | grep -v __pycache__` debe dar vacío.
-2. Referencias a nuestro trabajo: `grep -rn -E "\bKanam\b|kanam-|a11y-fixer|workspace_openclaw|soporteml|/Users/" skills/ | grep -v __pycache__` debe dar vacío (salvo la excepción legítima de abajo).
+2. Referencias a proyectos internos: `grep -rn -E "a11y-fixer|workspace_openclaw|soporteml|/Users/" skills/ | grep -v __pycache__` debe dar vacío. (`Kanam` NO entra en este grep - es la marca.)
 
-**Puntos de fuga tipicos (auditados 2026-09-14):** `author: Kanam` en frontmatter; ejemplos de invocación con el nombre del agente; plantillas con `<agente> (resumen)`; ejemplos que citan un proyecto propio; el nombre del agente como autor en plantillas de RFC.
+**Puntos de fuga tipicos (auditados 2026-09-14):** ejemplos que citan un proyecto interno propio; rutas locales; el handle personal en scripts (author filters -> `$(gh api user --jq '.login')`).
 
 **Excepción legítima:** las referencias a `gonzoblasco/kanam-skills` en README, docs y web/generate.js (identidad de instalación del repo) y el LICENSE (copyright legal) se mantienen.
 
