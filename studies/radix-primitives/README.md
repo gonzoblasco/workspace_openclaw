@@ -34,10 +34,10 @@ Radix entro al stack por el template, no por decision: `shadcn/ui` lo trae por d
 
 | # | Nivel | Topics | Estado |
 |---|---|---|---|
-| 1 | El modelo mental (que es y que no es) | 4 | 🟡 abierto |
-| 2 | La API (como se usa) | 5 | 🔴 |
-| 3 | La accesibilidad (el contrato) | 5 | 🔴 |
-| 4 | Radix en el stack real (shadcn y nuestros proyectos) | 4 | 🔴 |
-| 5 | Criterio de decision y mantenimiento | 3 | 🔴 |
+| 1 | El modelo mental (que es y que no es) | 10 | ⏳ verificar |
+| 2 | La API (como se usa) | 14 | 🔴 |
+| 3 | La accesibilidad (el contrato) | 10 | 🔴 |
+| 4 | Radix en el stack real (shadcn y nuestros proyectos) | 8 | 🔴 |
+| 5 | Criterio de decision y mantenimiento | 4 | 🔴 |
 
 Ver `PLAN-MAESTRO.md` para el detalle y `PROGRESO.md` para el avance.

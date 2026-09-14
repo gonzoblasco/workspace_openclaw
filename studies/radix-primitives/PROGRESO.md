@@ -8,21 +8,22 @@ Capa 3. Se actualiza despues de cada topic. Fuente de verdad del avance.
 
 ## Tabla de progreso
 
-| Nivel | Topics | Completados | XP | Badge |
+| Nivel | Topics | Cubiertos | XP | Badge |
 |---|---|---|---|---|
-| 1 - Modelo mental | 8 | 0 | 0 | 🔴 |
+| 1 - Modelo mental | 10 | 10 (verificacion pendiente) | 0 | 🔴 |
 | 2 - La API | 14 | 0 | 0 | 🔴 |
-| 3 - Accesibilidad | 11 | 0 | 0 | 🔴 |
+| 3 - Accesibilidad | 10 | 0 | 0 | 🔴 |
 | 4 - Stack real | 8 | 0 | 0 | 🔴 |
-| 5 - Criterio | 5 | 0 | 0 | 🔴 |
-| **Total** | **46** | **0** | **0** | - |
+| 5 - Criterio | 4 | 0 | 0 | 🔴 |
+| **Total** | **46** | **10** | **0** | - |
 
 ---
 
 ## Estado actual
 
 **Pasada:** mapeo (Capa 1) completada el 2026-09-14. No suma XP.
-**Siguiente:** arrancar la pasada de dominio por el Nivel 1, topic 1.1.1.
+**Nivel 1:** teoria cubierta (10/10 topics) en `nivel-1-modelo-mental.md`. **Verificacion pendiente** - los 3 puntos del final del cuaderno. El XP del nivel y el badge se otorgan al verificar.
+**Siguiente:** Nivel 2 (la API) una vez cerrada la verificacion del Nivel 1.
 
 ---
 
@@ -31,6 +32,7 @@ Capa 3. Se actualiza despues de cada topic. Fuente de verdad del avance.
 | Fecha | Topic | Resultado | XP |
 |---|---|---|---|
 | 2026-09-14 | (mapeo) | Plan maestro con 5 niveles / 46 topics. Fuente: docs oficiales verificados. | 0 |
+| 2026-09-14 | Nivel 1 (1.1.1 a 1.4.3) | Teoria cubierta: problema que resuelve, 6 propiedades, anatomia, limites. Cuaderno `nivel-1-modelo-mental.md`. Verificacion pendiente. | 0 |
 
 ---
 
