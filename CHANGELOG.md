@@ -6,6 +6,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - Re-diagnostico de 0.1 (estabilidad del gateway) contra evidencia
+
+### Changed
+- **`docs/ROADMAP.md` 0.1 reescrito con evidencia dura.** La hipotesis original ("el gateway se reinicia solo bajo sesiones long-running, disparado por auto-compaction") **no se sostiene** contra los datos del 13-14/09:
+  - Los **19 reinicios registrados son TODOS `source=cli`** (intencionales); cero espontaneos.
+  - **`gateway.restart_close_failed` no es un crash:** verificado en `dist/run-fzUO4BXB.mjs:1088` - si `server.close()` lanza durante un restart, marca `shutdownFailed` y fuerza la salida con stability bundle. Es cierre sucio de un restart pedido.
+  - **La compactacion no aparece:** los 4 dumps tienen `compaction_events=0`. El gatillo del 28/08 no se reproduce.
+  - Los 4 dumps son una cascada de 1h36m (23:40 / 00:02 / 00:56 / 01:16) y el primero (uptime 55h) coincide con el update fallido. Errores de modelo en la ventana: 3x `qwen3.8:27b-mlx` de ~50s + 1x `deepseek-v4-flash`.
+  - Runtime: npm/CLI en **2026.9.4** pero el gateway corre **2026.9.3** con update fallido y startup migrations pendientes - swap de version a medio hacer.
+
+### Added
+- **Hallazgo: `USER.md` se trunca en cada arranque.** Tiene un **cap fijo de 4.000 chars** (`USER_BOOTSTRAP_MAX_CHARS = 4e3`, `dist/bootstrap-DYYMCrXY.mjs`), NO configurable por `bootstrapMaxChars`, y el archivo real tiene **10.008 chars** -> se descartan ~6.000 chars de preferencias en cada bootstrap. Detectado con `openclaw doctor`. Es el mismo problema de fondo que tenia AGENTS.md, en un archivo sin margen.
+
+### Notes
+- **Ningun archivo se edito fuera del workspace.** El diagnostico fue 100% lectura (logs, dumps via `jq` selectivo, codigo fuente, `doctor --json`).
+- **Criterio de señal de listo corregido:** "15+ POST + 11 GET sin reinicio" no probaria nada sobre reinicios espontaneos (no los hay). La señal util es **0 dumps nuevos en `logs/stability/` tras una sesion pesada**.
+- Acciones nuevas en 0.1: bajar `USER.md` a <=4.000, completar el swap de version, redefinir la señal, y evaluar `qwen3.8:27b-mlx` (17-18 GB en una Mini de 24 GB).
+
 ## [2026-09-14] - AGENTS.md bajo el limite de bootstrap (regresion resuelta)
 
 ### Changed

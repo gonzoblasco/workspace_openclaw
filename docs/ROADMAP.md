@@ -23,28 +23,34 @@
 ## Capa 0 - Fundaciones (sostiene todo)
 
 ### 0.1 Estabilidad de la infraestructura (gateway) 🟡 P0
-- **Qué**: el gateway de OpenClaw se reinicia suave bajo sesiones long-running (diagnosticado 2026-08-28). Cada reinicio corta el contexto; retomar cuesta más que seguir.
+- **Qué**: el gateway de OpenClaw se reinicia bajo sesiones long-running (formulado 2026-08-28). Cada reinicio corta el contexto; retomar cuesta más que seguir.
 - **Por qué**: es la deuda más cara del sistema. No se ve, pero todo lo demás se apoya en esto.
-- **Criterio de éxito**: 0 reinicios de gateway en una sesión de trabajo pesado (refactor + validación + browser).
-- **Señal de listo**: una sesión completa de validación de endpoints (15+ POST + 11 GET) sin reinicio del bridge.
+- **Criterio de éxito**: 0 reinicios no intencionales de gateway en una sesión de trabajo pesado (refactor + validación + browser).
+- **Señal de listo**: sesión completa de validación de endpoints (15+ POST + 11 GET) con 0 reinicios, Y 0 dumps nuevos en `~/.openclaw/logs/stability/`.
 - **Diagnóstico histórico (2026-08-28)**:
   - 8 SIGTERM en la ventana 17:44-18:15 (sesión del refactor de Moderno).
   - NO es crash (sin dump), NO es OOM (sería SIGKILL), NO es el proyecto.
-  - Disparadores correlacionados: `long-running session` + `auto-compaction succeeded ... retrying prompt` + `post-compaction guard armed`.
-  - Causa dominante: AGENTS.md (30.439 chars) y MEMORY.md (22.706) sobre el límite de bootstrap de 20.000 -> truncado en cada arranque.
-- **Estado al 2026-09-14 (reabierto, evidencia dura):**
-  - **Regresión resuelta (14/09, 20:xx)**: AGENTS.md volvió a 24.044-24.638 chars (el 28/08 había bajado a 8.890) -> otra vez sobre el límite de bootstrap. **Corregido: 15.167 chars** moviendo la sección `## Tools` a `docs/SETUP.md`. MEMORY.md en 16.483 (dentro del límite).
-  - Reinicios registrados en `~/.openclaw/logs/gateway-restart.log` después del 28/08: **09-08, 09-11, 09-13 y 09-14**.
-  - El **13/09** se generaron **4 dumps `gateway.restart_close_failed`** en `~/.openclaw/logs/stability/` (el gateway no cerró limpio durante el restart).
-  - La señal de listo formal nunca se corrió.
-  - **Conclusión**: la causa de mayor impacto (tamaño del bootstrap) está corregida, pero la señal de listo sigue sin verificarse. 0.1 queda en 🟡 hasta correr la validación.
+  - Disparadores correlacionados en ese momento: `long-running session` + `auto-compaction succeeded ... retrying prompt` + `post-compaction guard armed`.
+  - Causa dominante identificada entonces: AGENTS.md (30.439 chars) y MEMORY.md (22.706) sobre el límite de bootstrap de 20.000 -> truncado en cada arranque.
+- **Re-diagnóstico (2026-09-14, releído contra los dumps y el código fuente) - CORRIGE la hipótesis original:**
+  - **Los 19 reinicios registrados son TODOS intencionales (`source=cli`)**: 09-08 (3), 09-11 (2), 09-13 (1), 09-14 (4), con `source=handoff` en los intentos de relanzamiento. **Cero reinicios espontáneos.** El gateway no se auto-reinicia: alguien (o el intento de update) dispara el restart.
+  - **`gateway.restart_close_failed` NO es un crash.** Verificado en `dist/run-fzUO4BXB.mjs:1088`: en un restart, si `server.close()` lanza, se marca `shutdownFailed = true` y se fuerza la salida escribiendo el stability bundle. Es un **cierre sucio durante un restart pedido**, no un reinicio autónomo.
+  - **La hipótesis de la compactación no se reproduce:** los 4 dumps del 13-14/09 tienen **0 eventos de compaction** (`compaction_events=0` en los 4). Sí hay `session.long_running` (1-5), pero sin compactación. El gatillo `auto-compaction` del 28/08 no aparece acá.
+  - Los 4 dumps son una **cascada de 1h36m** el 13-14/09: 23:40 (uptime 55h), 00:02 (0.3h), 00:56 (0.8h), 01:16 (0.3h). El primero, con 55h de uptime, coincide con el intento de update (`Update run: OpenClaw update failed: global-install-failed`).
+  - **Errores de modelo en la ventana (relevante):** en el dump 01:16 hay 3 errores de `qwen3.8:27b-mlx` de ~50-55s cada uno + 1 de `deepseek-v4-flash:cloud`. `qwen3.8:27b-mlx` es el modelo local (~17-18 GB) que se agregó el 13/09 sobre una Mini M4/24GB: carga pesada, probable contribuyente a la lentitud del cierre.
+  - **Estado del runtime (14/09):** npm global y CLI en `2026.9.4`, pero el gateway reporta correr `2026.9.3` con el update fallido; doctor marca "Startup migrations need attention". Hay un swap de versión incompleto, no un gateway roto.
+  - **Conclusión honesta:** el marco "el gateway se reinicia solo bajo sesiones largas" **no está respaldado** por la evidencia del 13-14/09. Lo que la evidencia muestra es (a) restarts intencionales que cierran sucio, (b) truncado de bootstrap por tamaño de archivos, y (c) un swap de versión a medio hacer. La deuda real es distinta a la diagnosticada el 28/08.
+- **Hallazgo nuevo (14/09): `USER.md` se trunca en cada arranque.** `USER.md` tiene un **cap fijo de 4.000 chars** (`USER_BOOTSTRAP_MAX_CHARS = 4e3` en `dist/bootstrap-DYYMCrXY.mjs`, NO configurable vía `bootstrapMaxChars`). `USER.md` real: **10.008 chars** -> se descartan ~6.000 chars de preferencias y reglas en cada bootstrap. Es el mismo problema de fondo que tenía AGENTS.md, en un archivo que no tiene margen de configuración.
+- **Estado de los archivos de bootstrap (14/09):** AGENTS.md 15.167 (ok, corregido hoy), MEMORY.md 16.483 (ok, bajo 20K), USER.md 10.008 -> **4.000 por cap fijo (truncado)**, SOUL.md 1.650, IDENTITY.md 3.295.
 - **Acciones**:
-  - [x] Reducir AGENTS.md a <20K (28/08: 8.890 chars) - **REGRESIÓN al 14/09: 24.044**.
-  - [x] Reducir MEMORY.md a <20K (28/08: 5.966) - al 14/09: 16.099, dentro del límite.
+  - [x] Reducir AGENTS.md a <20K (28/08: 8.890 chars) - REGRESIÓN al 14/09: 24.044.
+  - [x] Reducir MEMORY.md a <20K (28/08: 5.966) - al 14/09: 16.483, dentro del límite.
   - [x] Batchear exec masivo en scripts `.sh` (aplicado y verificado en la sesión de higiene del 28/08).
-  - [x] Bajar de nuevo AGENTS.md a <20K (regresión verificada 14/09). **HECHO 14/09**: 24.638 -> 15.167 chars (la sección `## Tools`, 11.334 chars, movida a `docs/SETUP.md`). Bajo el limite por primera vez desde el 28/08.
-  - [ ] Confirmar la señal de listo: validación de 15+ POST + 11 GET sin reinicio.
-  - [ ] Revisar si el hot-reload de `~/.openclaw/openclaw.json` contribuye; si sí, separar cambios de config de la corrida.
+  - [x] Bajar de nuevo AGENTS.md a <20K (regresión verificada 14/09). **HECHO 14/09**: 24.638 -> 15.167 chars (sección `## Tools`, 11.334 chars, movida a `docs/SETUP.md`).
+  - [ ] **Bajar `USER.md` a <=4.000 chars** (o mover el detalle a `docs/`). Hoy se truncan ~6.000 chars en cada arranque - hallazgo del 14/09.
+  - [ ] Completar el swap de versión: gateway en 2026.9.3, CLI/npm en 2026.9.4. Correr `openclaw doctor --fix` para las startup migrations y reintentar el update (requiere al owner).
+  - [ ] **Redefinir la señal de listo:** "15+ POST + 11 GET sin reinicio" no probaría nada sobre reinicios espontáneos (no los hay). Mejor señal: 0 dumps nuevos en `logs/stability/` tras una sesión pesada.
+  - [ ] Evaluar el impacto de `qwen3.8:27b-mlx` (17-18 GB en una Mini de 24 GB) en la ventana de restarts; decidir si conviene descargarlo.
 - **Regla operativa (no es checkbox)**: no mezclar browser tool con exec grande en la misma respuesta.
 
 ### 0.2 Higiene del workspace 🟢 P1
