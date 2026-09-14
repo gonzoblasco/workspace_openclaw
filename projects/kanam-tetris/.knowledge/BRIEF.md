@@ -87,6 +87,42 @@ test/harness.js     # helpers: tablero desde string, pieza forzada
 - Pieza activa: glow breve solo en el lock.
 Descartadas con razón: V3 isométrico (modelo de exhibición, no partida - queda como tema futuro), D2 CRT (glow permanente cansa).
 
+## Alcance v0.4-visual - IMPLEMENTADA (2026-09-14) - wireframe de cajitas, sin features de juego
+
+**La dirección visual decidida por Gonzo se implementa:** solo `src/render.js` (147 -> 196 líneas) e `index.html` (193 -> 220). El core NO cambió; los 33 tests siguen en 33/33.
+
+### Qué se implementó
+- **Rejilla de puntos** como piso (arc en centros de celda, alpha 0.06) - reemplaza las líneas de grilla.
+- **Cajitas wireframe:** fill del color al 10% + contorno al 80% (strokeRect con inset de lineWidth/2). Clavadas: stroke 1px. Activa: stroke 2px.
+- **Ghost punteado:** `setLineDash([3,4])`, fill al 4%, stroke al 30%. Mismo `gy !== cur.y`.
+- **Glow de lock inminente:** cuando la pieza está apoyada (`grounded`), shadowBlur = 6 + 22 * (lockTimer / LOCK_DELAY_MS). Información de estado, no decoración. Decisión de diseño: en vez del glow post-lock (el lock es instantáneo y `clearing` es el estado visible), se eligió el glow PRE-lock - la pieza anuncia que se va a clavar.
+- **Flash de limpieza adaptado:** pulso de contorno blanco (stroke 2.5px, alpha 0.35+0.6*pulse, shadowBlur 14*pulse con `pulse = sin(pi*t)`), fill de soporte al 5% - nunca el blanco sólido viejo.
+- **Perspectiva sutil en contenedor CSS:** `perspective: 1000px` + `rotateX(12deg)` con `transform-origin: 50% 20%` y sombra de losa. Las celdas del canvas siguen en grid recto (no se deforman) - regla dura de lectura de columnas.
+- **Jerarquía de paneles:** Puntuación es `panel primary` (valor más grande), Récord/Nivel/Líneas son `panel secondary` (más chicos, dim). El tablero se distingue con `--board-border` nuevo.
+- Tokens: `--bg` #0d0f12 -> #0a0c0f, `--panel` -> #0f1217, `--text-dim` -> #848d9e, nuevo `--board-border` #3a4658.
+
+### Verificación por EJECUCIÓN (harness mock ctx, no lectura - el Agente B cayó otra vez sin entregar)
+El Agente B (deepseek-v4-flash) volvió a morir a mitad de la revisión (ver nota de pipeline abajo). La verificación la hizo Kanam con un harness de mock canvas 2D que registra cada llamada:
+| Check | Resultado |
+|---|---|
+| Dots: ~200 arcs (COLS*ROWS) | ok |
+| Cero moveTo/lineTo (sin líneas de grilla) | ok |
+| Celda clavada: strokeRect + fill (alpha 0.10) + stroke 0.8 | ok |
+| Ghost usa setLineDash | ok |
+| En el aire: cero asginaciones de shadowBlur | ok |
+| Apoyada timer~0: blur ~6 | ok |
+| Apoyada 80%: blur ~23.6 (6+22*0.8) | ok |
+| Flash: stroke grueso presente, sin fill blanco sólido masivo | ok |
+| IDs DOM: todos los de main.js existen en index.html | ok |
+
+**Contraste WCAG re-verificado (tokens nuevos):** text vs bg 14.33:1 AAA, dim vs bg 5.86:1 AA, accent vs panel 12.68:1, board-border vs bg 2.05:1 (marco visible), y las 7 piezas 7.1:1 a 12.25:1 contra el panel nuevo (todas >= 3:1 bloque gráfico, varias AA).
+
+### Pendiente (paso 7 del protocolo)
+**Validación visual de Gonzo en browser real** - es un cambio visual, más que en ningún ciclo: `python3 -m http.server 8000` y jugar. Atención a: leer la columna correctamente con el tilt de 12", el glow pre-lock no distraer, el pulso del clear en vez del flash blanco, y que los dots no compitan con las piezas.
+
+### Nota de pipeline (patrón a vigilar)
+El Agente B cayó **por tercera vez** en medio de una revisión (v0.3 B original, v0.4 B, v0.4 B relanzado... verificar conteo real en dailies). El patrón: muere en tareas largas de revisión con el motor default. Consecuencia práctica: cuando B no entrega, la verificación de ejecución la hace Kanam - que era el paso 5 del protocolo de todas formas. Anotar como hallazgo operativo del pipeline.
+
 ## No-alcance (para futuras iteraciones)
 - T-spins, combos, sonido, multiplayer, móvil/touch.
 
