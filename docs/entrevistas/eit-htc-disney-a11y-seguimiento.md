@@ -230,3 +230,50 @@ Responder con interes + las 2 preguntas bloqueantes. Liderar con la fuerza real:
 > Gonzalo
 
 **Pendiente:** validar con Gonzo antes de enviar. Escanear guiones con `scripts/check_em_dash.py`.
+
+---
+
+## UPDATE 2026-09-14 11:29-11:56 - Retailoring del CV para el JD (pedido de reclutadores)
+
+**Pedido de Gonzo:** los reclutadores de Disney pidieron agregar skills al CV para matchear el JD.
+
+**Base:** el CV que se envio el 11/09 para este mismo proceso (`Gonzalo_Blasco_Lead_Digital_Accessibility_Resume.pdf` + `eit-cv-gonzalo-blasco-a11y.md`), no un CV generico.
+
+**Entregable:** `docs/entrevistas/Gonzalo_Blasco_Lead_Software_Engineer_Digital_Accessibility.docx` (13 KB, formato original del DOCX intacto - misma tipografia/colores, single-column, sin tablas, sin header/footer, sin em/en dash). Gonzo pidio explicitamente Word (no PDF).
+
+### Cobertura de keywords
+
+| Metrica | Antes | Ahora |
+|---|---|---|
+| Cobertura total | - | **95%** (19/20) |
+| Hard skills | - | 92% (11/12) |
+| Soft skills | - | 100% (5/5) |
+| Domain/Industry | - | 100% (3/3) |
+
+Unico gap: **Flutter/SDUI** (Preferred, no Required). No se agrego por falta de evidencia real.
+
+### Cambios aplicados (todos verificados con Gonzo antes de escribir)
+
+| Cambio | Motivo |
+|---|---|
+| `roughly 5 years` -> `6+ years in enterprise digital accessibility engineering` | El JD pide minimo 6 anos. Defendible con las fechas propias (a11y continua desde 2016, foco enterprise desde Super7UI). Confirmado por Gonzo. |
+| `CORE COMPETENCIES` -> `SKILLS` | Heading estandar que buscan los ATS + el JD usa "skills". |
+| Sumo **Narrator** y **ZoomText** a AT | Estaban en el JD. Confirmado por Gonzo que los uso. |
+| **Axe DevTools** explicito + **ACR** escrito entero + axe-core/Lighthouse | El JD busca los nombres exactos de las tools y el acronimo. Confirmado por Gonzo. |
+| Sumo **EAA y ACA** a estandares | Requisito blando del JD, ya presentes de forma implicita. |
+| Nueva linea **Delivery and stakeholder management** | El JD lista colaboracion, comunicacion con stakeholders y multiples SDLC en paralelo. |
+| EY: suma `Axe DevTools, Lighthouse, JAWS y NVDA` | Conecta la experiencia concreta con las tools del JD. |
+
+### Decisiones y correcciones de Gonzo en esta sesion
+
+1. **Sin PDF:** "no pdf, necesito un word". Solo DOCX.
+2. **Sin seccion EDUCACION:** "quite educacion... no aporta literalmente nada". Se agrego en la primera version y Gonzo la hizo sacar. El CV final NO tiene seccion EDUCATION (ni Digital House ni UADE).
+3. **No se toco:** Flutter/SDUI (sin evidencia), Evinced (no confirmado), AMP (no confirmado), IAAP (no la tiene - Deque University cubre la "relevant regional certification" del Required).
+
+### Riesgo residual (sin cambios)
+
+La certificacion **IAAP** sigue en Preferred, no Required. Si el payroll team la pone como gate mas adelante, el proceso puede complicarse. Deque University Accessibility Specialist (2021) es el argumento actual. **Vigilar.**
+
+### Secciones finales del CV
+
+PROFESSIONAL SUMMARY | SKILLS | PROFESSIONAL EXPERIENCE | CERTIFICATIONS | SELECTED PROJECTS | OSS PARTICIPATIONS (Merged PRs + Contributions)
