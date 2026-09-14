@@ -43,10 +43,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`docs/ROADMAP.md` 2.1 - accion stale:** la accion abierta proponia "Definir los 2-3 proyectos ancla (candidatos: SoporteML, kanam-forge, a11y-fixer)", con SoporteML ya EXCLUIDO por decision cerrada (ADR-001 seccion 4 + MEMORY.md) y sin kanam-pulse. Actualizada a los 3 anclas reales de ADR-001, con la exclusion de SoporteML marcada como cerrada. Las tres acciones de 2.1 pasan a `[x]` (las tres estan resueltas por ADR-001 del 2026-08-28).
 
 ### Added
-- **`projects/a11y-fixer/.knowledge/BRIEF.md`:** era la unica de las tres anclas sin BRIEF (solo tenia HANDOFF autogenerado). Contenido verificado contra `package.json`, releases de GitHub, la API del repo y el README real - no contra memoria. Incluye el estado real (v0.6.0, ultimo release 2026-07-29, ultimo push 2026-08-17, 102 tests, 0 estrellas), las features de v0.6.0, y la deuda: es el ancla mas fria de las tres y con cero usuarios externos, que es exactamente el criterio del Horizonte 1 de `docs/NORTH.md`.
+- **`projects/a11y-fixer/.knowledge/BRIEF.md`:** era la unica de las tres anclas sin BRIEF (solo tenia HANDOFF autogenerado). Contenido verificado contra `package.json`, releases de GitHub, la API del repo, el registry de npm y el README real - no contra memoria.
+
+### Fixed (revision del HANDOFF, 2026-09-14 - pedido de Gonzo)
+- **`BRIEF.md` reescrito tras revisar el HANDOFF de verdad.** El HANDOFF del 2026-08-02 listaba 3 Next Steps y los tres quedaron **invalidados** al contrastarlos con el repo:
+  - **Paso 1 ("definir roadmap v0.7: baseline comparison, AI explanations, config validation") - obsoleto desde el momento en que se escribio.** Las tres features ya estaban en v0.6.0 (released 2026-07-29, nueve dias antes del HANDOFF): baseline = Epic 1.5.3, AI explanations = Epic 3.1, config validation = Zod schema en Epics 1.1.3/1.1.4.
+  - **Paso 2 ("abrir issues para gaps conocidos") - parcial, con deuda.** Los issues #10 y #11 existen pero quedaron **abiertos con sus checklists 100% completos**.
+  - **Paso 3 ("sumar session-context save al ritual de cierre") - hecho.** El repo versiona su `.knowledge/` y tiene commits de update del 02/08.
+- **Correccion de marco en el BRIEF:** el proyecto **no esta abandonado a mitad de camino, esta construido y publicado**. El `docs/TRACKER.md` del propio repo marca **40/40 tareas** completas en las Fases 1-4. Lo que falta no es codigo: es **adopcion**. El BRIEF anterior lo presentaba como "ancla fria" sin el dato de que esta feature-complete.
+- **Dato no verificado antes, ahora confirmado:** `@gonzoblasco/a11y-fixer@0.6.0` **esta publicado en npm** (registry.npmjs.org, 2026-07-29) y el README no lo menciona - hay un canal de distribucion activo que la documentacion no explota.
 
 ### Notes
-- **Gap operativo documentado en el BRIEF:** el codigo de a11y-fixer NO esta clonado en el workspace - `projects/a11y-fixer/` contiene solo `.knowledge/`. Para trabajar en el hay que clonar el repo aparte.
+- **Gap operativo documentado en el BRIEF:** el codigo de a11y-fixer NO esta clonado en el workspace - `projects/a11y-fixer/` contiene solo `.knowledge/`. Para trabajar en el hay que clonar el repo aparte. El repo si versiona su propio `.knowledge/` (HANDOFF + session-context).
+- **Leccion de metodo:** "leer el HANDOFF" no es "revisar el HANDOFF". El primer BRIEF se escribio con los Next Steps copiados y marcados como "sin revisar"; al verificarlos contra el repo, los tres estaban vencidos o ya hechos. Un handoff es una hipotesis con fecha - se valida contra la fuente, no se transcribe.
 - Auditoria de consistencia entre `docs/NORTH.md`, `docs/ROADMAP.md` y `projects/portfolio-strategy/ADR-001`, a raiz de la pregunta de Gonzo sobre el para que del proyecto (2026-09-14).
 
 ## [2026-09-14] - Fix del export DB->.md (pisada de contenido) + causa raiz del drift
