@@ -76,11 +76,13 @@ Claude Code no lee AGENTS.md por defecto - **no lo prioriza, lo ignora**. Verifi
 | Import con ruta absoluta | Funciona |
 | cwd en subdir + `CLAUDE.md` en el padre | Auto-discovery sube directorios y lo lee |
 
-**Mecanismo adoptado:** el directorio raiz (workspace) lleva un **`CLAUDE.md` minimo que hace `@import` de su `AGENTS.md`**. Asi `AGENTS.md` **sigue siendo la unica fuente de verdad** (nada duplicado) y Claude Code carga las convenciones del pipeline.
+**Mecanismo adoptado:** **cada directorio raiz de proyecto (o workspace) lleva el PAR** `AGENTS.md` + `CLAUDE.md`. El `AGENTS.md` es la **unica fuente de verdad** de las reglas del proyecto; el `CLAUDE.md` es su **espejo que se dirige a el** (`@import` del `AGENTS.md`), no lo reemplaza. Asi nada se duplica y Claude Code carga las convenciones.
 
-**Alcance verificado (2026-09-15):** el `CLAUDE.md` de la raiz **cubre todo el arbol, incluidos `projects/x/` a 2 niveles de profundidad**. El `@./AGENTS.md` se resuelve relativo a la **ubicacion del `CLAUDE.md`** (la raiz), no al cwd, y el discovery sube directorios hasta encontrarlo. Verificado con el binario: cwd en `ws/proj/deep/deeper` obedecio la instruccion del `AGENTS.md` de la raiz importado.
+**Prioridad verificada empiricamente (2026-09-15, binario 2.1.260):** con cwd dentro de un proyecto que tiene su par propio Y la raiz con el suyo, Claude Code obedece **el par del proyecto** (respondio al marker del AGENTS.md del proyecto, no al de la raiz). El paquete de reglas mas especifico (el del proyecto) gana sobre el global.
 
-**Regla, corregida tras la verificacion:** NO se crea un `CLAUDE.md` por proyecto. Ningun proyecto de `projects/` tiene `AGENTS.md` propio (verificado 2026-09-15), asi que un per-proyecto con `@./AGENTS.md` seria un import roto. Solo se agrega un `CLAUDE.md` per-proyecto si ese proyecto introduce su propio `AGENTS.md` (con reglas especificas que el workspace no debe pisar globalmente).
+**Contenido del par:** el `AGENTS.md` del proyecto es **especializado y personalizado para la tarea en curso** (que es el proyecto, su stack, su dominio y sus decisiones vivas), no una copia del global. El `CLAUDE.md` hace `@import` de ese `AGENTS.md` para que Claude Code lo cargue.
+
+**Regla:** se crea el par en un proyecto **cuando ese proyecto entra al flujo de pipeline** (se trabaja con agentes Claude Code sobre el). El clon de un proyecto para pipeline agrega su par si no lo tiene. Hoy estan en el workspace raiz y en kanam-fixer (piloto 2026-09-15).
 
 ---
 

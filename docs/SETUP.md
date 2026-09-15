@@ -34,7 +34,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
   - Warnings de `unrecognized_model` por modelos custom = ruido, no bloquean.
 - **Qwen Code:** queda como fallback o segundo par de ojos, no como estandar (ADR-049). Para SIGKILL/sesiones largas, Claude maneja mejor que Qwen.
 - **El modelo que carga el harness** se elige por tipo de tarea (ADR-040): `deepseek-v4-flash:cloud` default/motor, `glm-5.3-flash` escalada multimodal, `kimi-k2.7-code` nivel superior.
-- **Claude Code ignora AGENTS.md** (verificado ADR-049): no lo lee en absoluto. El `CLAUDE.md` de la raiz del workspace hace `@import` de su `AGENTS.md`, y eso cubre todo el arbol incluidos `projects/x/` (el import se resuelve relativo al `CLAUDE.md`, y el discovery sube directorios). NO crear `CLAUDE.md` por proyecto: solo si un proyecto introduce su propio `AGENTS.md` (nada lo tiene hoy).
+- **Claude Code ignora AGENTS.md** (verificado ADR-049): no lo lee en absoluto. Cada directorio raiz de proyecto (y el workspace) lleva el **PAR** `AGENTS.md` (fuente de verdad, reglas especializadas del proyecto) + `CLAUDE.md` espejo que hace `@import` de ese `AGENTS.md` (lo dirige, no lo reemplaza). Verificado: el par del proyecto gana sobre el de la raiz cuando el cwd esta dentro del proyecto. Se crea el par cuando un proyecto entra al flujo de pipeline; hoy estan la raiz y kanam-fixer (piloto).
 - Detalle en la skill `agent-orchestration-pipeline` (que aun no refleja ADR-049; al tocarla, alinearla).
 
 ## Scripts del workspace
