@@ -120,11 +120,14 @@ echo "publish-skills | modo=$MODE | group1=$GROUP1 | skills=${#targets[@]}"
 echo
 
 # --- Fase 2: comparar / copiar ------------------------------------------------
+# La comparacion usa compare-skills.py: el publico esta sanitizado, asi que un diff
+# crudo reporta diferencias falsas en toda skill que mencionaba un dato personal o
+# un proyecto interno. El comparador sanitiza la fuente EN MEMORIA antes de comparar.
 same=0; written=0; created=0
 for n in "${targets[@]}"; do
   s="$SRC/$n"; t="$DST/$n"
 
-  if [ -d "$t" ] && diff -rq --exclude '.DS_Store' --exclude '__pycache__' --exclude '.knowledge' "$s" "$t" >/dev/null 2>&1; then
+  if [ -d "$t" ] && python3 "$WS/scripts/compare-skills.py" "$SRC" "$DST" "$n" >/dev/null 2>&1; then
     same=$((same+1)); continue
   fi
 
