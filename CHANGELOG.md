@@ -6,6 +6,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Fase 0 cableada: watcher de la cola durable + bug del watchdog existente
+
+### Added
+- **Job `pipeline-queue-watcher` (automations, cada 15m, isolated).** Cablea la cola durable a la ejecucion: `trigger` headless que corre `orphans` y lee el estado, y solo entonces gasta modelo. El payload corre `tick` (reencola huerfanas), reporta estado y avisa por Telegram. **Habilitado y verificado end-to-end:** el gate se evaluo 4 veces de verdad (`triggerEvalCount: 4`) y devolvio `fire:false` / `last:"idle"` / `stallCount:0` sobre la cola sana.
+- **`scripts/pipeline-queue-trigger.js`** - el trigger versionado en el repo (no solo en la DB del scheduler). Read-only: la recuperacion vive en el payload.
+- **`tests/node/pipeline-queue-trigger.test.js`** - 15 escenarios con `exec` mockeado: idle, cola detenida en 1er y 2do check, dedupe, trabajando, huerfana, transicion, post-tick, estado corrupto, exec fallido, JSON no-array, failed. Cableado en `npm test` como `test:node`.
+
+### Fixed
+- **`gateway-jobs-watcher` estaba CIEGO y nadie lo sabia.** Su `trigger.script` leia `r.output`, pero la forma real del retorno de `exec` en code-mode es `{status, exitCode, exitSignal, exitReason, durationMs, aggregated, noOutputTimedOut, cwd}` - **no existe `output`**, el campo de texto es `aggregated`. Resultado: `out = ''`, el regex nunca matcheaba, `exitCode` quedaba en `-1` y el estado persistido era `error--1` en **80 evaluaciones consecutivas**. El watchdog nunca habria disparado aunque `gateway-jobs-check.sh` fallara: habria que haber descubierto el problema por otro lado.
+
+### Notes
+- **Forma del retorno de `exec` verificada empiricamente, no leida.** Se creo un job temporal (`pq-shape-probe`, ya borrado) que imprimio su propia forma de retorno en `state`. Evidencia: `{"status":"completed","exitCode":0,"aggregated":"hello-probe\\n__EXIT__:0",...}`. Esto es lo que permitio detectar el bug del watcher antes de heredarlo: el ejemplo de `docs/automation/cron-jobs/schedules.md` ya usa `res.aggregated`, y el job existente no.
+- **`runMode:"force"` NO evalua el trigger.** Un run forzado saltea el gate y ejecuta el payload directo: por eso la primera prueba forzada reporto una falsa alarma con la cola sana, y por eso `triggerEvalCount` seguia en `None`. La unica prueba valida del gate es esperar una evaluacion natural (se bajo el intervalo a 30s y luego se restauro a 15m).
+- **La cola no es (todavia) el driver de ejecucion:** el pipeline A/B corre por `sessions_spawn`, y `running` solo se setea si alguien llama `claim`. Por eso un "stall" de un solo check es normal y no debe alertar: el trigger exige **2 checks consecutivos** del mismo conjunto de unidades antes de gritar `persistentStall`. Huerfanas y estado ilegible si son señales duras (disparan al primer check).
+- **Dedupe por nombres de unidades**, estable frente al `tick` (running -> queued no cambia el conjunto), asi que la recuperacion automatica no re-dispara en loop.
+- **Ruido de prueba aceptado:** el force run de prueba envio un mensaje real a Telegram ("falsa alarma, cola sana"). Es el comportamiento documentado de `announce`, no un bug.
+- **Verificacion:** harness 15/15 PASS; gate real evaluado 4 veces con `fire:false` sobre estado sano; `check_em_dash.py` OK; trigger con sintaxis valida como funcion async (top-level `await`, igual que el executor).
+
 ## [2026-09-15] - Fase 0: cola durable del pipeline A/B
 
 ### Added

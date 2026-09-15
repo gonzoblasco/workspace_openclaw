@@ -4,9 +4,10 @@
   "description": "OpenClaw workspace tooling and skill scripts",
   "private": true,
   "scripts": {
-    "test": "npm run test:scripts && npm run test:bats && npm run test:pytest",
+    "test": "npm run test:scripts && npm run test:bats && npm run test:node && npm run test:pytest",
     "test:scripts": "./scripts/test-skills.sh",
     "test:bats": "bats tests/bash/",
+    "test:node": "node tests/node/pipeline-queue-trigger.test.js",
     "test:pytest": "python3 -m pytest tests/python/"
   },
   "devDependencies": {
