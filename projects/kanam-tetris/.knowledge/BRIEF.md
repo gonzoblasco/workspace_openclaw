@@ -123,9 +123,9 @@ El Agente B (deepseek-v4-flash) volvió a morir a mitad de la revisión (ver not
 ### Nota de pipeline (patrón a vigilar)
 El Agente B cayó **por tercera vez** en medio de una revisión (v0.3 B original, v0.4 B, v0.4 B relanzado... verificar conteo real en dailies). El patrón: muere en tareas largas de revisión con el motor default. Consecuencia práctica: cuando B no entrega, la verificación de ejecución la hace Kanam - que era el paso 5 del protocolo de todas formas. Anotar como hallazgo operativo del pipeline.
 
-## Alcance v0.4-scoring - IMPLEMENTADA (2026-09-14) - T-spins, combos, B2B y cola de 5
+## Alcance v0.4-scoring - CERRADA (2026-09-15) - T-spins, combos, B2B y cola de 5
 
-Features de guideline sobre el core puro. `input.js` y `storage.js` no cambian; `render.js`, `index.html` y `main.js` solo muestran.
+**Validada en browser real por Gonzo (paso 7).** El ciclo destapo 3 bugs de costura que la suite del core no podia ver (game over entre frames, panel de cola vacio, overlay tapado por el contexto 3D) y agrego `test/dom.test.js` como primera red de la capa UI. Leccion central del ciclo: **core verde no significa juego sano** - toda la clase "wiring" necesitaba red propia y no la tenia.
 
 ### R1 - Deteccion de T-spin (3-corner rule)
 - `state.lastAction = { type: "rotate", kick: i }` en cada rotacion exitosa (i = indice del kick que la logro). **Solo una maniobra LATERAL (`move`) lo pisa** con `{ type: "move" }`; la rotacion fallida no lo toca. `spawn` lo limpia a `null`: una pieza nueva no hereda la historia de la anterior.
@@ -161,8 +161,10 @@ Features de guideline sobre el core puro. `input.js` y `storage.js` no cambian; 
 4. **`resolveLock` reemplazaba la pieza antes de puntuar** en el camino sin clear.
 
 ### Verificacion
-- `node --test test/`: 62 tests, 62 pass, 0 fail (los 33 originales siguen verdes; no murio ninguno).
-- Mutaciones corridas (cada una mata su test, y se restauro el original en cada caso): no invalidar por `move`, por gravedad, por `softDrop`, por `hardDrop`; kick fallido arma el flag; spawn no limpia `lastAction`; esquinas corridas `centro +/- 1`; combo no se resetea en lock seco; b2b roto por lock seco; b2b no roto por clear normal; mini valuado como full; bonus b2b ausente; cola sin refill, con head equivocado y con profundidad corta; tetris no-dificil; T-spin no-dificil.
+- `node --test test/`: **74 tests, 74 pass, 0 fail** (los 33 originales siguen verdes; no murio ninguno). 62 del core + 12 de `test/dom.test.js` (capa UI).
+- **Verificacion en browser real (paso 7, 2026-09-15):** sonda via beacon HTTP servida desde el propio proyecto, abierta en Safari. Resultado: `over0=false | over1=true | fired=1 | ovClass=visible | ovDisplay=flex | ovRect=302x715 | topAtCenter=overlay-sub`. El overlay aparece, tiene tamaño real y esta arriba de todo (`elementFromPoint` en su centro lo devuelve a el, no al canvas). Probado tambien el camino del fin de partida tras un flash de limpieza: emite `gameover` igual.
+- **Nota de metodo:** las dos primeras rondas de "fix" se verificaron solo con DOM falso y no alcanzaron. Lo que cerro el diagnostico fue medir el browser REAL (`elementFromPoint` + computed style), no leer el codigo. Cuando un bug sobrevive a un fix verificado, la verificacion es la que esta mal.
+- Mutaciones corridas (cada una mata su test, y se restauro el original en cada caso): no invalidar por `move`, por gravedad, por `softDrop`, por `hardDrop`; kick fallido arma el flag; spawn no limpia `lastAction`; esquinas corridas `centro +/- 1`; combo no se resetea en lock seco; b2b roto por lock seco; b2b no roto por clear normal; mini valuado como full; bonus b2b ausente; cola sin refill, con head equivocado y con profundidad corta; tetris no-dificil; T-spin no-dificil. En la capa UI: restaurar el frame-diff mata el test del overlay; quitar el getter de `state.queue` mata los de la cola; meter el overlay dentro del contexto de perspectiva mata el estructural.
 
 ## No-alcance (para futuras iteraciones)
 - Sonido, game feel (v0.5). Lock delay por pieza, tabla de gravedad guideline, verificacion visual medida (v0.6). Multiplayer, movil/touch.
