@@ -126,3 +126,13 @@ Responder estas 3, en una frase cada una:
 1. Si Radix ya sigue WAI-ARIA, **que es lo que aporta** frente a leer la spec y escribir el componente?
 2. Nombrar **una cosa que Radix NO hace** y que hay que hacer igual.
 3. Por que la API esta partida en `Root`/`Trigger`/`Content` en vez de ser un solo componente con props?
+
+---
+
+## Respuestas (Gonzo no las tenia a mano - queda como material de referencia)
+
+**1. Que aporta frente a la spec.** La spec define **que** tiene que pasar; Radix entrega **el cableado ya escrito y probado** de la parte que no se puede improvisar: foco, teclado, ARIA y los edge cases (que son muchos mas de los que uno enumera leyendo la spec). Leer la spec no te da el codigo: te da el enunciado. Aporta la implementacion dificil, no el requisito.
+
+**2. Algo que no hace.** No estiliza **ni lo funcional**: un `Dialog.Overlay` no cubre el viewport hasta que lo escribis. (Alternativas igual de validas: no provee los nombres accesibles -`Title`/`Description`/`Label` son abstracciones, el contenido lo pones vos-, y no valida contraste, jerarquia ni orden de tabulacion del layout.)
+
+**3. Por que esta partida en partes.** Porque **cada parte es un punto de intervencion**: se puede cambiar el elemento que renderiza, sus estilos o sus eventos sin tocar la logica de accesibilidad, que vive en `Root`/`Content`. Un componente unico con props te obligaria a aceptar su estructura; las partes permiten meter el primitive en un design system propio. Es la diferencia entre consumir un componente y componer con el.
