@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Fix del gateway-jobs-watcher ciego (bug silencioso del 08/09)
+
+### Fixed
+- **`gateway-jobs-watcher` (job de automations) quedó ciego y nadie lo sabia.** Su `trigger.script` leia `r.output`, pero la forma real del retorno de `exec` en code-mode es `{status, exitCode, exitSignal, exitReason, durationMs, aggregated, noOutputTimedOut, cwd}` - **no existe `output`**, el campo de texto es `aggregated`. Reproducido con harness: con `r.output` el exitCode quedaba siempre en `-1`, la condicion `exitCode === 1` jamas se cumplia y el watcher **nunca habria disparado aunque `gateway-jobs-check.sh` fallara**. Llevaba 80 evaluaciones en `triggerState.lastResult = error--1`.
+  - Ahora usa `r.aggregated` con fallback a `r.exitCode`, y dispara ante **cualquier** fallo: exit 1 (problemas encontrados) o exit 2 (no se pudo chequear).
+- **`scripts/gateway-jobs-watcher-trigger.js`** - trigger corregido, versionado en el repo.
+- **`tests/node/gateway-jobs-watcher-trigger.test.js`** - 3 escenarios (exit 0 sano -> quiet, exit 1 -> FIRE, exit 2 -> FIRE para no quedar mudo).
+
+### Notes
+- **Forma del retorno de `exec` verificada empiricamente**, no leida de docs: un job temporal (`pq-shape-probe`, ya borrado) imprimio su propia forma de retorno. El ejemplo de `docs/automation/cron-jobs/schedules.md` ya usa `res.aggregated`; el job existente no.
+- **`runMode:"force"` NO evalua el trigger** - saltea el gate y ejecuta el payload directo. La unica prueba valida del gate es una evaluacion natural del scheduler (se bajo el intervalo a 30s, y luego se resto a 2h). Verificado: 3 evaluaciones naturales con `lastResult:"ok"` - la primera vez en la vida del watcher.
+- El trigger esta cableado en `npm test` como parte de `test:node`.
+
 ## [2026-09-15] - Fase 0 cableada: watcher de la cola durable + bug del watchdog existente
 
 ### Added
