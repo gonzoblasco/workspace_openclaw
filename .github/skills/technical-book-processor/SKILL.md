@@ -42,11 +42,13 @@ Read the chapter text and extract:
 
 #### b. Write LEARNINGS
 Append a new section to `LEARNINGS.md` with:
-- `## Capitulo N - Title`
-- `### Conceptos clave`
-- `### Citas para recordar`
-- `### Preguntas para explorar`
-- `### Conexiones con experiencia previa`
+- `## Chapter N - Title`
+- `### Key concepts`
+- `### Quotes to remember`
+- `### Questions to explore`
+- `### Connections to prior experience`
+
+Write it in the same language as the working session.
 
 #### c. Create ADR (if applicable)
 If the chapter introduces a significant architectural pattern or decision, create an ADR:
@@ -59,24 +61,24 @@ ADR template:
 ```markdown
 # ADR-NNN - Pattern Name
 
-**Fecha:** YYYY-MM-DD
-**Contexto:** Capitulo N de "Book Title"
-**Fuente:** Author / Framework team
+**Date:** YYYY-MM-DD
+**Context:** Chapter N of "Book Title"
+**Source:** Author / Framework team
 
 ## Decision
 
 [One-line decision statement]
 
-## Detalle
+## Detail
 
 [Explanation of the pattern, when to use, tradeoffs]
 
-## Consecuencias
+## Consequences
 
-**Positivas:** [...]
-**Negativas:** [...]
+**Positive:** [...]
+**Negative:** [...]
 
-## Notas
+## Notes
 
 [Optional: connections to other ADRs, framework-specific notes]
 ```
@@ -130,8 +132,8 @@ After processing a 17-chapter book:
 
 ## Rules
 
-- Always write LEARNINGS in the same language as the user's session
-- ADRs and commits in English (per AGENTS.md rules)
+- Write LEARNINGS in the same language as the session
+- ADRs and commits in English
 - Verify build before marking a chapter as complete
 - Skip purely conceptual chapters (no code changes needed)
-- Use `guion comun (-)` never em dash
+- Use a plain hyphen (-), never an em dash

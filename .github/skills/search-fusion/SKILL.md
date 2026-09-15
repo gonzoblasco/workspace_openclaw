@@ -3,86 +3,85 @@ name: search-fusion
 metadata:
   category: "Web"
   tags:
-    - busqueda
     - search
-    - investigacion
+    - research
     - web
-description: "Busqueda efectiva por intencion: elige la estrategia y herramientas segun el tipo de busqueda (research, keyword, answer, news) y fusiona fuentes. Portado del concepto Search Fusion (ClawHub) adaptado a nuestras herramientas (DuckDuckGo + web_fetch + browser)."
+description: "Effective search by intent: pick the strategy and tools based on the kind of search (research, keyword, answer, news) and fuse sources. Adapted to web_search + web_fetch + browser."
 user-invocable: false
 ---
 
 # Search Fusion
 
-Buscar de forma efectiva **eligiendo la estrategia por intencion** y fusionando resultados de multiples fuentes. Portado del concepto del plugin Search Fusion (ClawHub), adaptado a nuestro stack (web_search DuckDuckGo key-free + web_fetch + browser).
+Search effectively by **choosing the strategy by intent** and fusing results from multiple sources. Adapted to a key-free search tool + `web_fetch` + a browser.
 
-## Cuando usar
+## When to use it
 
-- Cualquier busqueda web que requiera mas que un resultado simple.
-- Investigacion de APIs, specs, docs, precios.
-- Cuando se necesita cruzar varias fuentes para confirmar algo.
+- Any web search that needs more than a single result.
+- Researching APIs, specs, docs, prices.
+- When you need to cross several sources to confirm something.
 
-## Elige la estrategia por intencion
+## Choose the strategy by intent
 
-| Intencion | Que es | Estrategia |
+| Intent | What it is | Strategy |
 |---|---|---|
-| **research** | Investigacion profunda de un tema | Varias busquedas + leer fuentes completas (web_fetch) |
-| **keyword** | Busqueda clasica de un termino/pagina | DuckDuckGo (web_search) directo |
-| **answer** | Respuesta directa a una pregunta | Buscar + extraer respuesta especifica de la fuente |
-| **news** | Noticias/eventos recientes | Busqueda reciente (freshness) + verificar fecha |
-| **code/spec** | Docs de API, specs tecnicas | Buscar + web_fetch de la doc oficial |
+| **research** | Deep investigation of a topic | Several searches + read full sources (web_fetch) |
+| **keyword** | Classic search for a term/page | Direct web search |
+| **answer** | Direct answer to a question | Search + extract the specific answer from the source |
+| **news** | Recent news/events | Recent search (freshness) + verify the date |
+| **code/spec** | API docs, technical specs | Search + web_fetch the official doc |
 
-## Como fusionar (multi-fuente)
+## How to fuse (multi-source)
 
-Para una investigacion seria, no conformarse con el primer resultado:
+For serious research, don't settle for the first result:
 
-1. **Buscar** con DuckDuckGo (web_search tool).
-2. **Leer** las 2-3 fuentes mas relevantes con web_fetch (no solo el snippet).
-3. **Cruzar** - si las fuentes coinciden, es confiable; si contradicen, anotar la discrepancia.
-4. **Dedupe** - no repetir el mismo dato de multiples fuentes; sintetizar.
+1. **Search** with the web search tool.
+2. **Read** the 2-3 most relevant sources with web_fetch (not just the snippet).
+3. **Cross-check** - if the sources agree, it's reliable; if they contradict, note the discrepancy.
+4. **Dedupe** - don't repeat the same fact from multiple sources; synthesize.
 
-## **Flujo sugerido por intencion**
+## Suggested flow per intent
 
-### Investigacion (research)
+### Research
 ```
-web_search "<tema>" (2-3 queries distintas)
-  -> web_fetch las 2-3 fuentes top
-  -> sintetizar, citando la fuente
-```
-
-### Doc de API / spec
-```
-web_search "<libreria> <api> <doc>"
-  -> web_fetch la doc oficial (priorizar el sitio oficial sobre blogs)
-  -> extraer el spec/parametros
+web_search "<topic>" (2-3 different queries)
+  -> web_fetch the top 2-3 sources
+  -> synthesize, citing the source
 ```
 
-### Respuesta a un dato (answer)
+### API doc / spec
 ```
-web_search "<pregunta concreta>"
-  -> verificar en 1-2 fuentes confiables
-  -> responder con la fuente
-```
-
-### Noticias (news)
-```
-web_search "<tema> <fecha o 'news'>"
-  -> verificar freshness (que sea reciente)
-  -> cruzar 2 medios si es importante
+web_search "<library> <api> <doc>"
+  -> web_fetch the official doc (prefer the official site over blogs)
+  -> extract the spec/parameters
 ```
 
-## Reglas
+### Answering a fact (answer)
+```
+web_search "<concrete question>"
+  -> verify in 1-2 reliable sources
+  -> answer with the source
+```
 
-- **Verificar antes de responder** - no confiar en un solo snippet; leer la fuente si el dato importa (precios, fechas, specs - regla de Gonzo).
-- **Prefiere el sitio oficial** para specs/APIs (docs oficiales sobre blogs).
-- **Dedupe**: no repetir la misma info de varias fuentes; sintetizar una vez.
-- **100% con nuestras herramientas** (DuckDuckGo key-free, web_fetch, browser) - sin APIs pagas.
+### News
+```
+web_search "<topic> <date or 'news'>"
+  -> verify freshness (that it's recent)
+  -> cross 2 outlets if it matters
+```
 
-## Limites
+## Rules
 
-- No fusiona N providers automaticamente (solo tenemos DuckDuckGo key-free). La "fusion" es manual: buscar + leer + cruzar.
-- Si en el futuro configuramos mas buscadores (Brave, Tavily), podriamos automatizar el fan-out como hace el plugin original.
+- **Verify before answering** - don't trust a single snippet; read the source if the fact matters (prices, dates, specs).
+- **Prefer the official site** for specs/APIs (official docs over blogs).
+- **Dedupe**: don't repeat the same info from several sources; synthesize once.
+- **100% with local tools** (key-free search, web_fetch, browser) - no paid APIs.
+
+## Limits
+
+- It does not automatically fuse N providers (only one key-free search backend). The "fusion" is manual: search + read + cross-check.
+- If more search engines are configured later (Brave, Tavily), the fan-out could be automated.
 
 ## Related
 
-- [Deep Research](../deepwiki): investigacion profunda de temas.
-- [Knowledge Management](../knowledge-management): consolidar hallazgos de busquedas a la memoria.
+- [Deep Research](../deepwiki): deep investigation of topics.
+- [Knowledge Management](../knowledge-management): consolidate search findings into memory.

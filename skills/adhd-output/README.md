@@ -1,86 +1,86 @@
 # ADHD Output
 
-Formato de respuesta que no entierra la respuesta.
+A response format that doesn't bury the answer.
 
-## Para que sirve?
+## What is it for?
 
-Para cuando el agente te responde con tres parrafos de contexto antes de decirte que hacer. Este skill fuerza: **accion primero**, **pasos numerados**, **un next step concreto** al final.
+For when an agent answers you with three paragraphs of context before telling you what to do. This skill forces: **action first**, **numbered steps**, **one concrete next step** at the end.
 
-## Cuando usarlo?
+## When to use it?
 
-- Pedis "se directo", "sin vueltas", "accion primero"
-- Sesion de debugging donde la respuesta esta enterrada en prosa
-- Venis sobrecargado y necesitas el siguiente paso, no el analisis
-- Reviews largos donde hay que separar hallazgo de accion
+- You ask for "be direct", "no fluff", "action first"
+- A debugging session where the answer is buried in prose
+- You're overloaded and need the next step, not the analysis
+- Long reviews where you have to separate finding from action
 
-## Las 10 reglas
+## The 10 rules
 
-1. Liderar con la proxima accion
-2. Numerar tareas multi-paso
-3. Cerrar con un next step concreto
-4. Suprimir tangentes
-5. Restatear el estado cada turno
-6. Time estimates en minutos
-7. Hacer visibles las victorias
-8. Errores matter-of-fact
-9. Cap de listas a 5 items
-10. Sin preambulo, sin recap, sin cierres
+1. Lead with the next action
+2. Number multi-step tasks
+3. Close with a concrete next step
+4. Suppress tangents
+5. Restate the state each turn
+6. Time estimates in minutes
+7. Make wins visible
+8. Matter-of-fact errors
+9. Cap lists at 5 items
+10. No preamble, no recap, no closing
 
-## Como se usa?
+## How is it used?
 
-Es un skill de estilo, no de contenido. Se activa por pedido explicito o por contexto.
+It is a style skill, not a content skill. It activates on explicit request or by context.
 
-**Pedido explicito:**
-> "Respondeme en formato ADHD"
+**Explicit request:**
+> "Answer me in ADHD format"
 
-**Por contexto:**
-> "No puedo arrancar con este bug. Que hago?"
+**By context:**
+> "I can't get started on this bug. What do I do?"
 
-## Antes / despues
+## Before / after
 
-**Antes:**
-> Gran pregunta! Tu flujo de auth tiene varias piezas. Mirando src/auth.ts, la funcion verifyToken parece usar una API vieja... Espero que ayude!
+**Before:**
+> Great question! Your auth flow has several pieces. Looking at src/auth.ts, the verifyToken function seems to use an old API... Hope this helps!
 
-**Despues:**
-> Correr `npm install jsonwebtoken@latest`, despues editar `src/auth.ts:42`.
+**After:**
+> Run `npm install jsonwebtoken@latest`, then edit `src/auth.ts:42`.
 >
-> 1. Abrir `src/auth.ts`
-> 2. Reemplazar `verifyToken` (42-58)
-> 3. Correr `npm test -- auth.spec.ts`
+> 1. Open `src/auth.ts`
+> 2. Replace `verifyToken` (42-58)
+> 3. Run `npm test -- auth.spec.ts`
 >
-> Next: pegame la primera linea del test que falla.
+> Next: paste me the first line of the failing test.
 
-## Diferencia con `adhd-assistant`
+## Difference from `adhd-assistant`
 
-| Skill | Que hace |
+| Skill | What it does |
 |---|---|
-| `adhd-assistant` | Sistema de vida: planificar, desglosar, body doubling |
-| `adhd-output` | Formato de la respuesta: como se comunica |
+| `adhd-assistant` | Life system: planning, breaking down tasks, body doubling |
+| `adhd-output` | Response format: how it communicates |
 
-Complementarios. Uno puede estar activo sin el otro.
+Complementary. One can be active without the other.
 
-## Archivos
+## Files
 
-| Archivo | Que contiene |
+| File | What it contains |
 |---|---|
-| `references/rules.md` | Las 10 reglas en detalle, con racional y contraejemplos |
-| `references/adaptations.md` | Que se cambio respecto al original de ayghri y por que |
-| `templates/response.md` | Plantillas de respuesta + checklist de salida |
-| `scripts/check-output.sh` | Lint heuristico: preambulo, cierres, disculpas, em dash, listas largas |
+| `references/rules.md` | The 10 rules in detail, with rationale and counterexamples |
+| `references/adaptations.md` | What changed from the original and why |
+| `templates/response.md` | Response templates + output checklist |
+| `scripts/check-output.sh` | Heuristic lint: preamble, closings, apologies, em dash, long lists |
 
-## Uso del script
+## Using the script
 
 ```bash
-skills/adhd-output/scripts/check-output.sh respuesta.md
-echo "Gran pregunta! ..." | skills/adhd-output/scripts/check-output.sh
+skills/adhd-output/scripts/check-output.sh answer.md
+echo "Great question! ..." | skills/adhd-output/scripts/check-output.sh
 ```
 
-## Skills relacionadas
+## Related skills
 
-- [adhd-assistant](../adhd-assistant) - Sistema de vida y planificacion
-- [anti-ai](../anti-ai) - Limpieza de modismos de IA
-- [session-lifecycle](../session-lifecycle) - Estructura de sesiones
+- [adhd-assistant](../adhd-assistant) - Life system and planning
+- [anti-ai](../anti-ai) - AI idiom cleanup
+- [session-lifecycle](../session-lifecycle) - Session structure
 
-## Credito
+## Credit
 
-Basado en [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd) (MIT), adaptado al workspace de Kanam.
+Based on [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd) (MIT), adapted.

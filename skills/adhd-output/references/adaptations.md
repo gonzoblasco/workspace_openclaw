@@ -1,70 +1,70 @@
-# Adaptaciones respecto al original
+# Adaptations from the original
 
-El skill original es [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd) (MIT), pensado para agentes de codigo CLI (Claude Code). Estas son las diferencias y por que.
-
----
-
-## Cambios
-
-### "No recap" -> "Recap minimo de lo que cambio"
-
-**Original:** sin recap en absoluto.
-
-**Adaptado:** restatear solo lo que cambio (que corre, que falta, donde estamos).
-
-**Por que:** en el workspace de Kanam la memoria es el punto. El recap no es ruido, es continuidad. En una sesion larga de horas, saber donde estamos parados es la diferencia entre retomar y re-descubrir. Pero el recap completo de todo si es ruido - de ahi "solo lo que cambio".
-
-### "Cap a 5 items" -> con excepcion explicita
-
-**Original:** cap duro a 5.
-
-**Adaptado:** cap por default, excepcion cuando la lista ES el entregable.
-
-**Por que:** en un inventario, catalogo o comparativa pedida, cortar a 5 destruye el valor. La regla existe para forzar priorizacion, no para mutilar entregables. Cuando la lista es el entregable, tabla en vez de bullets.
-
-### "Restate state every turn" -> version workspace
-
-**Original:** restatear estado cada turno en el mensaje.
-
-**Adaptado:** el restateo puede vivir en el `progress_card` en vez del mensaje.
-
-**Por que:** en sesiones largas el progress card es la superficie de estado; duplicarlo en el mensaje es ruido. El mensaje lleva la accion, el card lleva el estado.
-
-### Contexto local
-
-- Idioma: el workspace es en espanol, con regla de guion comun (nunca em dash).
-- Se agrego seccion de interaccion con `anti-ai`, `adhd-assistant` y `session-lifecycle`.
-- Se agrego script de lint de formato (`scripts/check-output.sh`), que el original no tiene.
+The original skill is [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd) (MIT), designed for CLI coding agents. These are the differences and why.
 
 ---
 
-## Lo que NO se cambio
+## Changes
 
-- **Accion primero.** Sin excepcion.
-- **Pasos numerados.** Sin excepcion.
-- **Next step concreto.** Sin excepcion.
-- **Time estimates en minutos.** Sin excepcion.
-- **Errores matter-of-fact.** Sin excepcion.
-- **Sin preambulo ni cierres.** Sin excepcion.
-- **Hacer visibles las victorias.** Sin excepcion.
-- **Suprimir tangentes.** Sin excepcion.
+### "No recap" -> "Minimal recap of what changed"
+
+**Original:** no recap at all.
+
+**Adapted:** restate only what changed (what's running, what's left, where we stand).
+
+**Why:** in a long-running workspace the memory is the point. The recap is not noise, it is continuity. In a session that runs for hours, knowing where you stand is the difference between resuming and re-discovering. But the full recap of everything is noise - hence "only what changed".
+
+### "Cap at 5 items" -> with an explicit exception
+
+**Original:** hard cap at 5.
+
+**Adapted:** cap by default, exception when the list IS the deliverable.
+
+**Why:** in an inventory, catalog or requested comparison, cutting to 5 destroys the value. The rule exists to force prioritization, not to mutilate deliverables. When the list is the deliverable, use a table instead of bullets.
+
+### "Restate state every turn" -> workspace version
+
+**Original:** restate the state every turn in the message.
+
+**Adapted:** the restatement can live in the progress card instead of the message.
+
+**Why:** in long sessions the progress card is the state surface; duplicating it in the message is noise. The message carries the action, the card carries the state.
+
+### Local context
+
+- Language: keep documentation in the language of the session.
+- Added an interaction section with `anti-ai`, `adhd-assistant` and `session-lifecycle`.
+- Added a format lint script (`scripts/check-output.sh`), which the original does not have.
 
 ---
 
-## Cuando NO aplicar este skill
+## What was NOT changed
 
-| Situacion | Por que |
+- **Action first.** No exception.
+- **Numbered steps.** No exception.
+- **Concrete next step.** No exception.
+- **Time estimates in minutes.** No exception.
+- **Matter-of-fact errors.** No exception.
+- **No preamble or closing.** No exception.
+- **Make wins visible.** No exception.
+- **Suppress tangents.** No exception.
+
+---
+
+## When NOT to apply this skill
+
+| Situation | Why |
 |---|---|
-| Cierre de sesion / handoff | El recap ES el entregable |
-| El usuario pide analisis exploratorio | La exploracion necesita el desarrollo, no solo la conclusion |
-| Explicacion pedagogica | El paso a paso del razonamiento ES el valor |
-| El usuario pide una lista larga | La lista es el entregable |
-| Conversacion casual | No hay accion, hay charla |
+| Session close / handoff | The recap IS the deliverable |
+| The user asks for exploratory analysis | Exploration needs the development, not just the conclusion |
+| Pedagogical explanation | The step-by-step reasoning IS the value |
+| The user asks for a long list | The list is the deliverable |
+| Casual conversation | There's no action, just talk |
 
-La regla general: si el usuario pidio el proceso, dar el proceso. Si pidio el resultado, dar el resultado. Este skill es para lo segundo.
+The general rule: if the user asked for the process, give the process. If they asked for the result, give the result. This skill is for the latter.
 
 ---
 
-## Licencia
+## License
 
-El original es MIT (c) ayghri. Esta adaptacion mantiene el espiritu y las 10 reglas; los cambios son de contexto (idioma, excepciones, scripts).
+The original is MIT (c) ayghri. This adaptation keeps the spirit and the 10 rules; the changes are contextual (language, exceptions, scripts).

@@ -1,130 +1,130 @@
 ---
 name: "study-tracker"
-description: "One skill to rule them all: estructura de cursos + gamificacion (niveles/XP/badges) en una sola fuente de verdad bajo studies/<slug>/."
+description: "One skill to rule them all: course structure + gamification (levels/XP/badges) in a single source of truth under studies/<slug>/."
 metadata:
   category: "Learning"
   tags:
-    - estudios
-    - cursos
-    - libros
-    - documentacion
-    - progreso
-    - gamificacion
+    - studies
+    - courses
+    - books
+    - documentation
+    - progress
+    - gamification
 user-invocable: true
 ---
 
 # Study Tracker - One Skill to Rule Them All
 
-Skill unica de estudio. Fusiona lo que antes eran dos skills (study-tracker y learning-tracker) en una sola fuente de verdad bajo `studies/`. Sirve para CUALQUIER estudio: cursos online (Codecademy, Udemy, etc.), libros tecnicos (Packt, O'Reilly), bootcamps, preparacion de entrevistas, temas sueltos.
+Single study skill. It merges what used to be two skills (a course-structure tracker and a gamified learning tracker) into a single source of truth under `studies/`. It works for ANY study: online courses (Codecademy, Udemy, etc.), technical books (Packt, O'Reilly), bootcamps, interview prep, loose topics.
 
-## Fuente de verdad unica (IMPORTANTE)
+## Single source of truth (IMPORTANT)
 
-**TODO estudio vive en `studies/<slug>/`.** Nunca usar `study/` (singular) ni ninguna otra ruta. El indice maestro es `studies/README.md` - todo curso/libro se registra ahi.
+**Every study lives in `studies/<slug>/`.** Never use `study/` (singular) or any other path. The master index is `studies/README.md` - every course/book is registered there.
 
-Razones:
-- `studies/` es la convencion que ya documentaba el indice maestro (era la de study-tracker).
-- learning-tracker era agnostico de rutas y eso causo la inconsistencia: el libro de Packt quedo en `study/` (singular) mientras el curso de Codecademy estaba en `studies/`.
-- Al fusionar, la regla es una sola: **todo en `studies/<slug>/`**.
+Why:
+- `studies/` is the convention the master index already documented.
+- A path-agnostic tracker caused the inconsistency in the first place: one book ended up in `study/` (singular) while a course was in `studies/`.
+- After merging, the rule is one: **everything under `studies/<slug>/`**.
 
-## Dos modos de estudio
+## Two study modes
 
-La skill fusiona las dos capacidades:
+The skill merges both capabilities:
 
-### Modo A - Estructura de curso (viene de study-tracker)
-Para cursos con lecciones/videos/quizzes (ej. Codecademy, Udemy):
+### Mode A - Course structure
+For courses with lessons/videos/quizzes (e.g. Codecademy, Udemy):
 ```
 studies/<slug>/
-├── README.md          # portada + tabla de progreso
-├── <track>/           # opcional, solo si el curso tiene tracks
+├── README.md          # cover + progress table
+├── <track>/           # optional, only if the course has tracks
 │   └── <course>/
-│       ├── notes/NN-titulo.md      # notas por leccion/video (espanol, guion comun)
-│       ├── quiz/NN-pregunta.md      # knowledge checks + respuestas modelo
-│       └── exercises/               # ejercicios practicos
+│       ├── notes/NN-title.md      # notes per lesson/video
+│       ├── quiz/NN-question.md     # knowledge checks + model answers
+│       └── exercises/               # hands-on exercises
 ```
 
-### Modo B - Estructura gamificada (viene de learning-tracker)
-Para estudio profundo con niveles, XP y badges (libros, preparacion de entrevista, temas estructurados):
+### Mode B - Gamified structure
+For deep study with levels, XP and badges (books, interview prep, structured topics):
 ```
 studies/<slug>/
-├── PLAN-MAESTRO.md    # Capa 1: todos los niveles + subniveles + topics (estatico)
-├── nivel-N-tema.md    # Capa 2: cuaderno por nivel (crece con el aprendizaje)
-└── PROGRESO.md        # Capa 3: tabla de progreso, XP, badges, streak
+├── PLAN.md            # Layer 1: all levels + sublevels + topics (static)
+├── level-N-topic.md   # Layer 2: notebook per level (grows with learning)
+└── PROGRESS.md        # Layer 3: progress table, XP, badges, streak
 ```
 
-Los dos modos **no son excluyentes**: un curso online tambien puede gamificarse con niveles/XP (Modo B sobre la estructura del Modo A). Y un libro puede llevar notas de leccion. La regla es que **todo vive bajo `studies/<slug>/`** - lo demas es formato.
+The two modes **are not mutually exclusive**: an online course can also be gamified with levels/XP (Mode B over Mode A's structure). And a book can carry lesson notes. The rule is that **everything lives under `studies/<slug>/`** - the rest is format.
 
-## El patron de gamificacion (de learning-tracker)
+## The gamification pattern
 
-**Nivel → Subnivel → Topic**, no al reves. Cada topic es una unidad que se completa y verifica sola.
+**Level -> Sublevel -> Topic**, not the other way around. Each topic is a unit that completes and verifies on its own.
 
-1. **Nivel → Subnivel → Topic** - nivel en bloques grandes, subnivel en piezas chicas.
-2. **Documentar en 3 capas** - plan maestro (estatico) + artifact por nivel (crece) + registro de progreso (se actualiza cada paso).
-3. **Gamificar** - XP por topic, badges por nivel, streak de practica, jefe final (mock interview / evaluacion completa).
+1. **Level -> Sublevel -> Topic** - level in big blocks, sublevel in small pieces.
+2. **Document in 3 layers** - master plan (static) + artifact per level (grows) + progress record (updated every step).
+3. **Gamify** - XP per topic, badges per level, practice streak, final boss (mock interview / full assessment).
 
 ## Workflow
 
-### 1. Arrancar un estudio nuevo
-1. Determinar el **objetivo** (aprender un curso / preparar entrevista / leer un libro / complementar).
-2. Crear `studies/<slug>/` con su `README.md` (portada + progreso).
-3. Si es gamificado: crear `PLAN-MAESTRO.md` (Capa 1) + `PROGRESO.md` (Capa 3) vacio.
-4. Registrar en el indice maestro `studies/README.md`.
+### 1. Start a new study
+1. Determine the **objective** (learn a course / prepare for an interview / read a book / complement something).
+2. Create `studies/<slug>/` with its `README.md` (cover + progress).
+3. If gamified: create `PLAN.md` (Layer 1) + an empty `PROGRESS.md` (Layer 3).
+4. Register it in the master index `studies/README.md`.
 
-### 2. Por cada unidad (leccion, video, capitulo)
-1. Dar la teoria (conceptos con nombre, vocabulario) - espanol, guion comun.
-2. Guiar la practica (ejercicio, diseno, problema) si aplica.
-3. Verificar con una pregunta / mock interview.
-4. Actualizar la nota / artifact de nivel (Capa 2) con lo aprendido.
-5. Actualizar el progreso (Capa 3) - marcar, sumar XP.
+### 2. Per unit (lesson, video, chapter)
+1. Give the theory (named concepts, vocabulary).
+2. Guide the practice (exercise, design, problem) if applicable.
+3. Verify with a question / mock interview.
+4. Update the note / level artifact (Layer 2) with what was learned.
+5. Update the progress (Layer 3) - mark it, add XP.
 
-### 3. Por cada nivel
-1. Completar todos los topics.
-2. Mock interview / evaluacion completa del nivel.
-3. Self-review (rubrica: que salio bien, que falto).
-4. Otorgar badge del nivel.
+### 3. Per level
+1. Complete all topics.
+2. Mock interview / full level assessment.
+3. Self-review (rubric: what went well, what was missing).
+4. Award the level badge.
 
-### 4. Jefe final (fin del estudio)
-1. Evaluacion completa estilo entrevista/examen (si aplica).
-2. Cierre del progreso (Capa 3).
-3. Actualizar el plan maestro (Capa 1) si hace falta.
-4. Registrar el hito en el daily.
+### 4. Final boss (end of study)
+1. Full interview/exam-style assessment (if applicable).
+2. Close the progress (Layer 3).
+3. Update the master plan (Layer 1) if needed.
+4. Record the milestone in the daily log.
 
-## Modo preparacion de entrevista / JD (viene de learning-tracker)
+## Interview / JD prep mode
 
-Cuando el objetivo es prepararse para un puesto, se enriquece:
+When the objective is preparing for a role, it gets richer:
 
-**Dos fuentes de entrada:**
-- **Input A - JD formal** (job description): extraer stack, frameworks, niveles criticos, formato de evaluacion.
-- **Input B - Lista de temas externa** (de otra IA, un curso, el usuario): validar la lista, estructurarla en niveles/subniveles/topics, ampliarla con contexto del usuario, verificar temas antes de citar detalles (web_fetch si son precios/fechas/specs - regla de Gonzo).
+**Two input sources:**
+- **Input A - formal JD** (job description): extract stack, frameworks, critical levels, evaluation format.
+- **Input B - external topic list** (from another AI, a course, the user): validate the list, structure it into levels/sublevels/topics, expand it with user context, verify topics before citing details (fetch prices/dates/specs, never assume).
 
-**Variante de Input B - URL de indice de libro:** si el usuario pasa una URL (Packt, O'Reilly, mirror), hacer `web_fetch` para extraer el indice real y usarlo como fuente de verdad de que cubrir. Si el fetch directo falla (403 anti-bot/Cloudflare), buscar TOC en mirrors o con web_search. Agrupar los capitulos en niveles logicos.
+**Input B variant - book index URL:** if the user passes a URL (Packt, O'Reilly, a mirror), `web_fetch` it to extract the real table of contents and use it as the source of truth for what to cover. If the direct fetch fails (403 anti-bot/Cloudflare), look for the TOC in mirrors or via web search. Group the chapters into logical levels.
 
-**Dos pasadas (mapa → profundidad):**
-- **Primera pasada (mapeo):** documentar TODO el contenido (panorama + vocabulario + verificacion), creando el mapa de referencia. No suma XP.
-- **Segunda pasada (dominio):** reiniciar topic por topic en profundidad - practica real, verificacion en voz alta, sumando XP.
+**Two passes (map -> depth):**
+- **First pass (mapping):** document ALL the content (overview + vocabulary + verification), creating the reference map. Adds no XP.
+- **Second pass (mastery):** restart topic by topic in depth - real practice, out-loud verification, adding XP.
 
-## Reglas
+## Rules
 
-- **Todo bajo `studies/<slug>/`** - NUNCA `study/` ni otra ruta. Una sola fuente de verdad.
-- **Nivel → Subnivel → Topic**, no al reves.
-- **Cada topic se verifica solo** - no esperar a terminar el nivel.
-- **3 capas de artifacts** para el modo gamificado, no un doc gigante.
-- **El progreso se actualiza despues de cada paso** - cambio chiquito.
-- **Vocabulario con nombre** en cada topic.
-- **Gamificar** - XP, badges, streak, jefe final.
-- **Idioma:** documentar en el idioma de la sesion (espanol con Gonzo).
-- **Guion comun (-)** nunca em dash (regla de Gonzo).
-- **Los artifacts NO se comparten publicos** (material de estudio personal).
-- Si un ejercicio crece a "proyecto demo" con complejidad real, moverlo a `projects/` (vive con su propio repo).
+- **Everything under `studies/<slug>/`** - NEVER `study/` or another path. One source of truth.
+- **Level -> Sublevel -> Topic**, not the other way around.
+- **Each topic verifies on its own** - don't wait to finish the level.
+- **3 artifact layers** for the gamified mode, not one giant doc.
+- **Progress updates after every step** - a small change.
+- **Named vocabulary** in each topic.
+- **Gamify** - XP, badges, streak, final boss.
+- **Language:** document in the language of the session.
+- **Plain hyphen (-)**, never an em dash.
+- **Artifacts are not shared publicly** (personal study material).
+- If an exercise grows into a "demo project" with real complexity, move it to `projects/` (it lives with its own repo).
 
-## Relacion con otros skills
+## Relationship with other skills
 
-- **technical-book-processor** - procesa libros tecnicos cap por cap generando ADRs y un proyecto de portfolio en `projects/`. study-tracker es para el estudio personal del usuario (en `studies/`); technical-book-processor es para dejar un trail publico/portfolio. Se complementan.
-- **curriculum-builder** - construye tutores adaptativos con IA (frontend + LLM). study-tracker documenta el estudio del usuario; curriculum-builder construye un tutor para otros.
-- **content-serializer** - serializa contenido. study-tracker es sobre la estructura de documentacion del aprendizaje.
+- **technical-book-processor** - processes technical books chapter by chapter, generating ADRs and a portfolio project under `projects/`. study-tracker is for the user's personal study (under `studies/`); technical-book-processor is for leaving a public/portfolio trail. They complement each other.
+- **curriculum-builder** - builds adaptive AI tutors (frontend + LLM). study-tracker documents the user's own study; curriculum-builder builds a tutor for others.
+- **content-serializer** - serializes content. study-tracker is about the documentation structure of learning.
 
-## Migracion desde las skills anteriores
+## Migration from the previous skills
 
-Este skill reemplaza a `study-tracker` (estructura de cursos) y `learning-tracker` (gamificacion), fusionadas. Al migrar:
-- Mover cualquier cosa en `study/` a `studies/<slug>/` (git mv) y eliminar `study/`.
-- Mantener `studies/README.md` como indice maestro, actualizado con todos los estudios.
-- Los artifacts de gamificacion (PLAN-MAESTRO, PROGRESO, niveles) viven igual bajo `studies/<slug>/`.
+This skill replaces two merged skills (a course-structure tracker and a gamified learning tracker). When migrating:
+- Move anything in `study/` to `studies/<slug>/` (git mv) and delete `study/`.
+- Keep `studies/README.md` as the master index, updated with every study.
+- The gamification artifacts (plan, progress, levels) also live under `studies/<slug>/`.

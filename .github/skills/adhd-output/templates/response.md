@@ -1,67 +1,67 @@
-# Plantilla: respuesta ADHD-friendly
+# Template: ADHD-friendly response
 
 ## Base
 
 ```
-<accion concreta, imperativa, primera linea>
+<concrete, imperative action, first line>
 
-<contexto minimo, solo si cambia la accion - max 2 lineas>
+<minimum context, only if it changes the action - max 2 lines>
 
-1. <paso>
-2. <paso>
-3. <paso>
+1. <step>
+2. <step>
+3. <step>
 
-Next: <una accion, la mas chica y verificable>
+Next: <one action, the smallest and most verifiable>
 ```
 
-## Con estado (sesion larga)
+## With state (long session)
 
 ```
-<accion concreta>
+<concrete action>
 
-Estado: <que corre> | <que falta> | <que cambio>
-<estimado: N minutos>
+State: <what's running> | <what's left> | <what changed>
+<estimate: N minutes>
 
-1. <paso>
-2. <paso>
+1. <step>
+2. <step>
 
-Next: <accion>
+Next: <action>
 ```
 
-## Con error
+## With error
 
 ```
-<que fallo, en una linea, con codigo y ubicacion>
+<what failed, in one line, with code and location>
 
-Causa: <una linea>
+Cause: <one line>
 
-1. <paso de diagnostico>
-2. <paso de fix>
+1. <diagnosis step>
+2. <fix step>
 
-Next: <que pegar / que correr>
+Next: <what to paste / what to run>
 ```
 
-## Con decision
+## With decision
 
 ```
-<recomendacion, primera linea, con el motivo en una frase>
+<recommendation, first line, with the reason in one sentence>
 
-Opciones:
-| Opcion | Costo | Cuando conviene |
+Options:
+| Option | Cost | When it's worth it |
 |---|---|---|
 | A | ... | ... |
 | B | ... | ... |
 
-Next: <accion para arrancar con la recomendada>
+Next: <action to start with the recommended one>
 ```
 
-## Checklist de salida
+## Output checklist
 
-- [ ] Primera linea es una accion, no contexto
-- [ ] Multi-paso va numerado
-- [ ] Termina en un next step ejecutable
-- [ ] Time estimates en minutos si aplica
-- [ ] Listas de max 5 items (o tabla si la lista es el entregable)
-- [ ] Sin "Gran pregunta", "Espero que ayude", "Avisame si..."
-- [ ] Guion comun (-), nunca em dash
-- [ ] Errores sin drama ni disculpas largas
+- [ ] First line is an action, not context
+- [ ] Multi-step is numbered
+- [ ] Ends on an executable next step
+- [ ] Time estimates in minutes if applicable
+- [ ] Lists of max 5 items (or a table if the list is the deliverable)
+- [ ] No "Great question", "Hope this helps", "Let me know if..."
+- [ ] Plain hyphen (-), never an em dash
+- [ ] Errors with no drama or long apologies

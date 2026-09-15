@@ -7,7 +7,7 @@ description: "Playwright E2E specs for React Flow editors. Use when node selecti
 
 ## Overview
 
-E2E specs against React Flow editors (kanam-studio, kanam-story) fail in predictable ways: programmatic state changes do not drive React Flow's internal selection, the controls overlay intercepts drags, and aria-label collisions break role locators. Apply these patterns before running the suite.
+E2E specs against React Flow editors fail in predictable ways: programmatic state changes do not drive React Flow's internal selection, the controls overlay intercepts drags, and aria-label collisions break role locators. Apply these patterns before running the suite.
 
 ## Steps
 
@@ -17,8 +17,8 @@ E2E specs against React Flow editors (kanam-studio, kanam-story) fail in predict
 
 3. **Use `force: true` on handle drags.** Nodes placed in cascade can land under the React Flow controls overlay (bottom-right), which intercepts pointer events and makes `dragTo` retry forever. Pass `{ force: true }` to `dragTo` for source-to-target handle connections.
 
-4. **Resolve aria-label collisions by element id.** When a section's `aria-label` equals a label's text (for example "Personaje a interpretar" on both the section and the select), `getByLabel` throws a strict mode violation. Locate the control by id (`#character-select`) instead.
+4. **Resolve aria-label collisions by element id.** When a section's `aria-label` equals a label's text (for example the same phrase on both the section and the select), `getByLabel` throws a strict mode violation. Locate the control by id (`#character-select`) instead.
 
-5. **Keep AI-dependent flows deterministic.** E2E must not call AI endpoints: verify panel UI exists (inputs, buttons, selectors) without sending messages. For one real integration smoke, POST the minimal valid payload and `test.skip(!ollamaUp, ...)` after probing Ollama's health endpoint with a short timeout.
+5. **Keep AI-dependent flows deterministic.** E2E must not call AI endpoints: verify panel UI exists (inputs, buttons, selectors) without sending messages. For one real integration smoke, POST the minimal valid payload and `test.skip(!ollamaUp, ...)` after probing the model server's health endpoint with a short timeout.
 
 6. **Verify the full gate before finishing.** New spec green, then full `npx playwright test`, `npm test`, `npx tsc --noEmit`, `npm run lint`, `npm run build`.

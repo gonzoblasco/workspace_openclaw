@@ -1,139 +1,139 @@
-# Las 10 reglas en detalle
+# The 10 rules in detail
 
-Racional y contraejemplos de cada regla. El SKILL.md tiene la version corta; aca esta el por que.
-
----
-
-## 1. Liderar con la proxima accion
-
-**Racional:** en ADHD, el costo de arrancar es el cuello de botella. Si la primera linea es contexto, el cerebro tiene que procesar informacion antes de saber que hacer - y ahi es donde se pierde.
-
-**Cumple:** `Correr npm install jsonwebtoken@latest, despues editar src/auth.ts:42.`
-
-**No cumple:** `Tu flujo de auth tiene varias piezas. Mirando src/auth.ts, la funcion verifyToken...`
-
-**Test:** si el usuario solo lee la primera linea, sabe que hacer?
+Rationale and counterexamples for each rule. SKILL.md has the short version; here is the why.
 
 ---
 
-## 2. Numerar tareas multi-paso
+## 1. Lead with the next action
 
-**Racional:** la prosa esconde la secuencia. El ojo no sabe cuantos pasos hay ni donde esta.
+**Rationale:** in ADHD, the cost of starting is the bottleneck. If the first line is context, the brain has to process information before knowing what to do - and that's where it gets lost.
 
-**Cumple:**
+**Passes:** `Run npm install jsonwebtoken@latest, then edit src/auth.ts:42.`
+
+**Fails:** `Your auth flow has several pieces. Looking at src/auth.ts, the verifyToken function...`
+
+**Test:** if the user only reads the first line, do they know what to do?
+
+---
+
+## 2. Number multi-step tasks
+
+**Rationale:** prose hides the sequence. The eye doesn't know how many steps there are or where it is.
+
+**Passes:**
 ```
-1. Abrir src/auth.ts
-2. Reemplazar verifyToken (42-58)
-3. Correr npm test -- auth.spec.ts
+1. Open src/auth.ts
+2. Replace verifyToken (42-58)
+3. Run npm test -- auth.spec.ts
 ```
 
-**No cumple:** `Primero abri el archivo, despues reemplaza la funcion y al final corre los tests.`
+**Fails:** `First open the file, then replace the function and at the end run the tests.`
 
-**Test:** se ve a simple vista cuantos pasos hay?
-
----
-
-## 3. Cerrar con un next step concreto
-
-**Racional:** terminar en una accion chica y verificable convierte el analisis en movimiento. "Avanzar con el proyecto" no es accion, es intencion.
-
-**Cumple:** `Next: pegame la primera linea del test que falla.`
-
-**No cumple:** `Next: avisame si queres que siga.`
-
-**Test:** el next step se puede ejecutar sin decidir nada mas?
+**Test:** can you see at a glance how many steps there are?
 
 ---
 
-## 4. Suprimir tangentes
+## 3. Close with a concrete next step
 
-**Racional:** cada tangente compite por atencion con la accion principal. Si es valioso, se registra (suggest_task, todo, nota) y se sigue.
+**Rationale:** ending on a small, verifiable action turns analysis into movement. "Move the project forward" is not an action, it is an intention.
 
-**Cumple:** mencionar el hallazgo lateral en una linea al final, o registrarlo como follow-up y no mencionarlo.
+**Passes:** `Next: paste me the first line of the failing test.`
 
-**No cumple:** `...por cierto, tambien deberias revisar las versiones de dependencias, y de paso el CI esta raro, y...`
+**Fails:** `Next: let me know if you want me to continue.`
 
-**Test:** esto le sirve al usuario AHORA para la accion de este turno?
-
----
-
-## 5. Restatear el estado cada turno
-
-**Racional:** la memoria de trabajo es corta. Saber donde estamos parados reduce la carga de reconstruir contexto.
-
-**Version workspace:** no el recap completo de todo. Solo:
-- que esta corriendo
-- que quedo pendiente
-- que cambio desde el turno anterior
-
-**Cumple:** `Sigue corriendo el build. Falta el paso 3 de 5.`
-
-**No cumple:** repetir toda la historia de la sesion.
-
-**Test:** si el usuario volvio despues de 20 minutos, entiende donde esta parado?
+**Test:** can the next step be executed without deciding anything else?
 
 ---
 
-## 6. Time estimates en minutos
+## 4. Suppress tangents
 
-**Racional:** "un rato" no es una unidad. La time blindness se compensa con numeros.
+**Rationale:** every tangent competes for attention with the main action. If it's valuable, record it (follow-up task, todo, note) and move on.
 
-**Cumple:** `Esto son 10 minutos.` / `El build tarda 3-4 minutos.`
+**Passes:** mention the sideways finding in one line at the end, or record it as a follow-up and don't mention it.
 
-**No cumple:** `Esto es rapido.` / `Tarda un poco.`
+**Fails:** `...by the way, you should also review the dependency versions, and while you're at it the CI looks odd, and...`
 
-**Test:** el numero es verificable despues?
-
----
-
-## 7. Hacer visibles las victorias
-
-**Racional:** el progreso invisible no genera dopamina, y sin dopamina no hay continuidad. Nombrar lo hecho no es felicitacion, es marcador.
-
-**Cumple:** `Build verde, 3 tests nuevos pasando, commit hecho.`
-
-**No cumple:** `Excelente trabajo! Ya casi terminamos!`
-
-**Test:** hay un hecho concreto que cambio, no un adjetivo?
+**Test:** does this help the user NOW for this turn's action?
 
 ---
 
-## 8. Errores matter-of-fact
+## 5. Restate the state each turn
 
-**Racional:** el drama consume banda ancha emocional que hace falta para resolver. Y las disculpas largas esconden el diagnostico.
+**Rationale:** working memory is short. Knowing where you stand reduces the load of rebuilding context.
 
-**Cumple:** `El build rompe: TS2345 en src/api/client.ts:88. Sigue: revisar el tipo de retorno de fetchUser.`
+**Workspace version:** not the full recap of everything. Only:
+- what's running
+- what's left pending
+- what changed since the previous turn
 
-**No cumple:** `Uy, perdon! Parece que me equivoque en algo, lamento el inconveniente, puede ser que...`
+**Passes:** `The build is still running. Step 3 of 5 is left.`
 
-**Test:** el error y el siguiente paso estan en las primeras dos lineas?
+**Fails:** repeating the whole history of the session.
 
----
-
-## 9. Cap de listas a 5 items
-
-**Racional:** una lista larga no se lee, se saltea. El cap fuerza priorizacion.
-
-**Excepcion:** cuando la lista ES el entregable (inventario, catalogo, comparativa pedida). En ese caso usar tabla, que es escaneable.
-
-**Cumple:** `3 opciones: A, B, C.` (de 12 posibles, elegir las 3 que importan)
-
-**No cumple:** bullets 1-12 sin jerarquia.
-
-**Test:** si tuviera que cortar a 5, cuales quedan? Esos van.
+**Test:** if the user came back after 20 minutes, do they understand where they stand?
 
 ---
 
-## 10. Sin preambulo, sin recap, sin cierres
+## 6. Time estimates in minutes
 
-**Racional:** el preambulo retrasa la accion, el recap repite lo que el usuario ya sabe, el cierre agrega una pregunta que el usuario no pidio.
+**Rationale:** "a while" is not a unit. Time blindness is compensated with numbers.
 
-**Cumple:** la respuesta termina en el next step.
+**Passes:** `This is 10 minutes.` / `The build takes 3-4 minutes.`
 
-**No cumple:**
-- Preambulo: `Gran pregunta! Dejame pensar...`
-- Cierre: `Espero que ayude! Avisame si queres profundizar.`
+**Fails:** `This is quick.` / `It takes a bit.`
 
-**Excepcion:** cierre de sesion / handoff, donde el recap ES el entregable.
+**Test:** is the number verifiable afterwards?
 
-**Test:** se puede borrar la primera o la ultima linea sin perder informacion? Entonces sobraban.
+---
+
+## 7. Make wins visible
+
+**Rationale:** invisible progress generates no dopamine, and without dopamine there is no continuity. Naming what was done is not praise, it is a marker.
+
+**Passes:** `Build green, 3 new tests passing, commit done.`
+
+**Fails:** `Excellent work! We're almost there!`
+
+**Test:** is there a concrete fact that changed, not an adjective?
+
+---
+
+## 8. Matter-of-fact errors
+
+**Rationale:** drama consumes emotional bandwidth that is needed to solve the problem. And long apologies hide the diagnosis.
+
+**Passes:** `The build breaks: TS2345 in src/api/client.ts:88. Next: check the return type of fetchUser.`
+
+**Fails:** `Oops, sorry! It seems I got something wrong, sorry for the inconvenience, it might be...`
+
+**Test:** are the error and the next step in the first two lines?
+
+---
+
+## 9. Cap lists at 5 items
+
+**Rationale:** a long list doesn't get read, it gets skipped. The cap forces prioritization.
+
+**Exception:** when the list IS the deliverable (inventory, catalog, requested comparison). In that case use a table, which is scannable.
+
+**Passes:** `3 options: A, B, C.` (out of 12 possible, pick the 3 that matter)
+
+**Fails:** bullets 1-12 with no hierarchy.
+
+**Test:** if you had to cut to 5, which remain? Those go.
+
+---
+
+## 10. No preamble, no recap, no closing
+
+**Rationale:** the preamble delays the action, the recap repeats what the user already knows, the closing adds a question the user didn't ask for.
+
+**Passes:** the answer ends on the next step.
+
+**Fails:**
+- Preamble: `Great question! Let me think...`
+- Closing: `Hope this helps! Let me know if you want to go deeper.`
+
+**Exception:** session close / handoff, where the recap IS the deliverable.
+
+**Test:** can you delete the first or the last line without losing information? Then they were excess.

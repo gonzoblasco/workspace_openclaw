@@ -4,150 +4,150 @@ metadata:
   category: "Life"
   tags:
     - adhd
-    - comunicacion
-    - formato
-    - estilo
-description: "Formato de respuesta ADHD-friendly: accion primero, pasos numerados, next step concreto. Para cuando el usuario pide respuestas directas sin preambulo ni relleno."
+    - communication
+    - formatting
+    - style
+description: "ADHD-friendly response format: action first, numbered steps, a concrete next step. For when the user asks for direct answers with no preamble or filler."
 user-invocable: true
 ---
 
 # Workflow: ADHD Output
 
-## Proposito
+## Purpose
 
-Forzar un formato de respuesta que no entierre la respuesta. Accion primero, pasos numerados, un next step concreto al final. Sin preambulo, sin recap, sin cierres.
+Force a response format that doesn't bury the answer. Action first, numbered steps, one concrete next step at the end. No preamble, no recap, no closing.
 
-Basado en [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd) (MIT), adaptado al contexto del workspace de Kanam.
+Based on [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd) (MIT), adapted for general use.
 
-## Diferencia con `adhd-assistant`
+## Difference from `adhd-assistant`
 
-| Skill | Que hace |
+| Skill | What it does |
 |---|---|
-| `adhd-assistant` | Sistema de vida: planificar el dia, desglosar tareas, body doubling, regulacion emocional |
-| `adhd-output` | Formato de la respuesta: como se comunica, no que se comunica |
+| `adhd-assistant` | Life system: planning the day, breaking down tasks, body doubling, emotional regulation |
+| `adhd-output` | Response format: how it communicates, not what it communicates |
 
-Son complementarios. Uno puede estar activo sin el otro.
-
----
-
-# Cuando usarlo
-
-- El usuario pide "se directo", "sin vueltas", "accion primero"
-- Sesiones de debugging o coding donde la respuesta esta enterrada en prosa
-- Cuando el usuario viene sobrecargado y necesita el siguiente paso, no el analisis
-- Reviews o analisis largos donde hay que separar hallazgo de accion
-- Invocacion explicita: "formato ADHD", "i-have-adhd"
-
-**NO usarlo cuando:** la lista ES el entregable (catalogo, comparativa, inventario), o cuando el recap es la memoria (cierre de sesion, handoff).
+They are complementary. One can be active without the other.
 
 ---
 
-# Las 10 reglas
+# When to use it
 
-## 1. Liderar con la proxima accion
-La primera linea es lo que hay que hacer, no el contexto de por que. Si el usuario tiene que scrollear para encontrar la accion, fallo.
+- The user asks to "be direct", "no fluff", "action first"
+- Debugging or coding sessions where the answer is buried in prose
+- When the user is overloaded and needs the next step, not the analysis
+- Long reviews or analyses where you have to separate finding from action
+- Explicit invocation: "ADHD format", "i-have-adhd"
 
-## 2. Numerar tareas multi-paso
-Si hay mas de un paso, va numerado. Prosa para secuencias es donde se pierde la gente.
-
-## 3. Cerrar con un next step concreto
-Una sola accion, la mas chica y verificable. No "avanzar con el proyecto" - "correr `npm test -- auth.spec.ts`".
-
-## 4. Suprimir tangentes
-Lo que aparece de costado se omite o se registra aparte. No interrumpir la accion principal con un "por cierto, tambien...".
-
-## 5. Restatear el estado cada turno
-Que esta corriendo, que quedo pendiente, donde estamos parados. Version workspace: no el recap completo, solo lo que cambio.
-
-## 6. Time estimates en minutos
-"10 minutos", "2 horas", no "un rato" ni "un poco". La time blindness necesita numeros concretos.
-
-## 7. Hacer visibles las victorias
-Nombrar lo que se completo. No como felicitacion vacia, sino como marcador de progreso: "build verde, 3 tests nuevos pasando".
-
-## 8. Errores matter-of-fact
-Sin drama, sin disculpas largas. Que fallo, por que, que sigue. "El test rompe en la linea 42. Sigue: revisar el mock."
-
-## 9. Cap de listas a 5 items
-Si hay mas de 5, agrupar o priorizar. Una lista de 12 items no se lee, se saltea.
-
-**Excepcion:** cuando la lista ES el entregable (inventario, catalogo, comparativa pedida). En ese caso, usar tabla en vez de bullets.
-
-## 10. Sin preambulo, sin recap, sin cierres
-No "Gran pregunta", no "Espero que ayude", no "avanzame si queres profundizar". La respuesta termina cuando termina la informacion.
+**Do NOT use it when:** the list IS the deliverable (catalog, comparison, inventory), or when the recap IS the memory (session close, handoff).
 
 ---
 
-# Formato
+# The 10 rules
 
-## Estructura base
+## 1. Lead with the next action
+The first line is what to do, not the context of why. If the user has to scroll to find the action, you failed.
+
+## 2. Number multi-step tasks
+If there is more than one step, it is numbered. Prose for sequences is where people get lost.
+
+## 3. Close with a concrete next step
+A single action, the smallest and most verifiable one. Not "move the project forward" - "run `npm test -- auth.spec.ts`".
+
+## 4. Suppress tangents
+What shows up sideways is omitted or recorded elsewhere. Don't interrupt the main action with a "by the way, also...".
+
+## 5. Restate the state each turn
+What's running, what's left pending, where we stand. Workspace version: not the full recap, only what changed.
+
+## 6. Time estimates in minutes
+"10 minutes", "2 hours", not "a while" or "a bit". Time blindness needs concrete numbers.
+
+## 7. Make wins visible
+Name what got completed. Not as empty praise, but as a progress marker: "build green, 3 new tests passing".
+
+## 8. Matter-of-fact errors
+No drama, no long apologies. What failed, why, what's next. "The test breaks at line 42. Next: check the mock."
+
+## 9. Cap lists at 5 items
+If there are more than 5, group or prioritize. A list of 12 items doesn't get read, it gets skipped.
+
+**Exception:** when the list IS the deliverable (inventory, catalog, requested comparison). In that case, use a table instead of bullets.
+
+## 10. No preamble, no recap, no closing
+No "Great question", no "Hope this helps", no "Let me know if you want to go deeper". The answer ends when the information ends.
+
+---
+
+# Format
+
+## Base structure
 
 ```
-<accion concreta, imperativa>
+<concrete, imperative action>
 
-<contexto minimo necesario, solo si cambia la accion>
+<minimum context needed, only if it changes the action>
 
-1. <paso>
-2. <paso>
-3. <paso>
+1. <step>
+2. <step>
+3. <step>
 
-Next: <una accion, la mas chica>
+Next: <one action, the smallest one>
 ```
 
-## Antes / despues
+## Before / after
 
-**Antes:**
-> Gran pregunta! Tu flujo de auth tiene varias piezas: el middleware, la verificacion de token y el manejo de cookies. Mirando src/auth.ts, la funcion verifyToken (lineas 42-58) parece usar una API vieja de jsonwebtoken. Un enfoque seria actualizar el paquete y reescribir esa funcion. Despues querrias correr los tests de auth para confirmar que nada rompe. Por cierto, tambien podrias revisar las versiones de dependencias. Espero que ayude!
+**Before:**
+> Great question! Your auth flow has several pieces: the middleware, token verification and cookie handling. Looking at src/auth.ts, the verifyToken function (lines 42-58) seems to use an old jsonwebtoken API. One approach would be to update the package and rewrite that function. Then you'd want to run the auth tests to confirm nothing breaks. By the way, you could also review the dependency versions. Hope this helps!
 
-**Despues:**
-> Correr `npm install jsonwebtoken@latest`, despues editar `src/auth.ts:42`.
+**After:**
+> Run `npm install jsonwebtoken@latest`, then edit `src/auth.ts:42`.
 >
-> 1. Abrir `src/auth.ts`
-> 2. Reemplazar `verifyToken` (lineas 42-58) con el snippet de abajo
-> 3. Correr `npm test -- auth.spec.ts`
+> 1. Open `src/auth.ts`
+> 2. Replace `verifyToken` (lines 42-58) with the snippet below
+> 3. Run `npm test -- auth.spec.ts`
 >
-> Next: pegame la primera linea del test que falla, si falla.
+> Next: paste me the first line of the failing test, if it fails.
 
-## Errores
+## Errors
 
-**Antes:**
-> Hmm, parece que hubo un problema con el build. Lamento el inconveniente! Puede ser que haya algo mal configurado...
+**Before:**
+> Hmm, it looks like there was a problem with the build. Sorry for the inconvenience! It might be that something is misconfigured...
 
-**Despues:**
-> El build rompe: `TS2345` en `src/api/client.ts:88` - `string` no asignable a `Response`.
+**After:**
+> The build breaks: `TS2345` in `src/api/client.ts:88` - `string` not assignable to `Response`.
 >
-> 1. Revisar el tipo de retorno de `fetchUser`
-> 2. Castear o corregir la firma
+> 1. Check the return type of `fetchUser`
+> 2. Cast it or fix the signature
 >
-> Next: pegame las lineas 80-95 de `src/api/client.ts`.
+> Next: paste me lines 80-95 of `src/api/client.ts`.
 
 ---
 
-# Reglas de interaccion con otras skills
+# Interaction rules with other skills
 
-- **`anti-ai`:** se complementan. `anti-ai` limpia modismos de IA en texto publicado; `adhd-output` limpia estructura de respuesta en conversacion. Aplicar ambos cuando se publica.
-- **`adhd-assistant`:** si el usuario pide plan del dia, ese skill define el contenido y este define el formato.
-- **`session-lifecycle`:** al guardar sesion, el recap ES la memoria. La regla 10 (sin recap) no aplica ahi.
-- **`progress_card`:** el restateo de estado (regla 5) puede vivir en el progress card en vez del mensaje, para sesiones largas.
+- **`anti-ai`:** they complement each other. `anti-ai` cleans AI idioms from published text; `adhd-output` cleans response structure in conversation. Apply both when publishing.
+- **`adhd-assistant`:** if the user asks for a plan for the day, that skill defines the content and this one defines the format.
+- **`session-lifecycle`:** when saving a session, the recap IS the memory. Rule 10 (no recap) does not apply there.
+- **progress card:** the state restatement (rule 5) can live in the progress card instead of the message, for long sessions.
 
 ---
 
 # Helper Scripts
 
-| Script | Uso |
+| Script | Use |
 |---|---|
-| `scripts/check-output.sh` | Heuristicas de lint sobre un texto: detecta preambulo, cierres, em dashes y listas largas. Uso: `check-output.sh <archivo>` o `echo "texto" \| check-output.sh` |
+| `scripts/check-output.sh` | Lint heuristics over a text: detects preamble, closings, em dashes and long lists. Usage: `check-output.sh <file>` or `echo "text" \| check-output.sh` |
 
-# Referencias y templates
+# References and templates
 
-| Archivo | Uso |
+| File | Use |
 |---|---|
-| `references/rules.md` | Las 10 reglas en detalle, con racional y contraejemplos |
-| `references/adaptations.md` | Que se cambio respecto al original de ayghri y por que |
-| `templates/response.md` | Plantilla de respuesta ADHD-friendly |
+| `references/rules.md` | The 10 rules in detail, with rationale and counterexamples |
+| `references/adaptations.md` | What changed from the original and why |
+| `templates/response.md` | ADHD-friendly response template |
 
 # Related Skills
 
-- [adhd-assistant](../adhd-assistant) - Sistema de vida y planificacion
-- [anti-ai](../anti-ai) - Limpieza de modismos de IA
-- [session-lifecycle](../session-lifecycle) - Estructura de sesiones de trabajo
+- [adhd-assistant](../adhd-assistant) - Life system and planning
+- [anti-ai](../anti-ai) - AI idiom cleanup
+- [session-lifecycle](../session-lifecycle) - Work session structure

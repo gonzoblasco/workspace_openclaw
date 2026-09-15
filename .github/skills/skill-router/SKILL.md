@@ -5,64 +5,64 @@ metadata:
   tags:
     - skills
     - routing
-    - seleccion
-description: "Sugiere que skill usar para una tarea dada. Dado un prompt/objetivo, matchea contra las skills disponibles (por keywords y embeddings semantico local) y devuelve las top sugerencias. Usar al iniciar una tarea para saber cual skill aplicar."
+    - selection
+description: "Suggests which skill to use for a given task. Given a prompt or objective, it matches against the available skills (by keywords and local semantic embeddings) and returns the top suggestions. Use when starting a task to know which skill applies."
 user-invocable: false
 ---
 
 # Skill Router
 
-Sugerir que skill aplicar a una tarea, usando matching local (keyword + embeddings Ollama). Portado del concepto del plugin skill-ai-inject (ClawHub), adaptado a nuestro workspace.
+Suggest which skill to apply to a task, using local matching (keyword + embeddings). Useful when a skill collection grows past the point where you remember what exists.
 
-## Cuando usar
+## When to use it
 
-- Al iniciar una tarea/objetivo y no estar seguro de cual skill(es) aplicar.
-- Cuando hay multiples skills candidatas y se quiere priorizar.
-- Para recordar que skills existen y cual encaja con la tarea actual.
+- When starting a task/objective and you're not sure which skill(s) to apply.
+- When there are multiple candidate skills and you want to prioritize.
+- To recall which skills exist and which one fits the current task.
 
-## Como usarlo
+## How to use it
 
-### Listar skills disponibles
+### List available skills
 
 ```bash
 ./scripts/skill-router.py --list
 ```
 
-### Sugerir skills para una tarea
+### Suggest skills for a task
 
 ```bash
-./scripts/skill-router.py "<descripcion de la tarea>"
-./scripts/skill-router.py -n 5 "<tarea>"   # top 5
+./scripts/skill-router.py "<task description>"
+./scripts/skill-router.py -n 5 "<task>"   # top 5
 ```
 
-### Interpretar resultados
+### Interpreting results
 
-- Cada sugerencia muestra: nombre de skill, score, tipo de match (embed = semantico, keyword = por palabra), y L1 (cantidad de keywords coincidentes).
-- El score de **embedding (semantico) domina** - refleja la intencion real de la tarea.
-- El keyword (L1) es refuerzo: suma un bonus pequeno si la tarea contiene palabras clave de la skill.
-- Si no hay coincidencias claras, reconsiderar la descripcion o ver `--list`.
+- Each suggestion shows: skill name, score, match type (embed = semantic, keyword = by word), and L1 (number of matching keywords).
+- The **embedding (semantic) score dominates** - it reflects the real intent of the task.
+- The keyword (L1) match is reinforcement: it adds a small bonus if the task contains the skill's keywords.
+- If there are no clear matches, reconsider the description or check `--list`.
 
-## Ejemplos validados
+## Validated examples
 
-| Tarea | Top skill sugerida |
+| Task | Top suggested skill |
 |---|---|
 | "review this code before merging" | code-review-and-quality |
 | "set up a CI/CD pipeline" | ci-cd-and-automation |
-| "validar accesibilidad de un componente antes de abrir PR en OSS" | a11y-at-validation, oss-contribution |
+| "validate a component's accessibility before opening an OSS PR" | a11y-at-validation, oss-contribution |
 | "design a REST API for the module" | api-and-interface-design |
 
-## Requisitos
+## Requirements
 
-- **Ollama local** corriendo con el modelo `qwen3-embedding:0.6b` (el modelo de embeddings del workspace, 1024 dims).
-- Python 3 + urllib (estandar) + numpy (opcional, solo si se usa).
+- **A local embedding model** served by Ollama (or any OpenAI-compatible endpoint).
+- Python 3 + urllib (standard) + numpy (optional).
 
-## Limites
+## Limits
 
-- El matching no es perfecto: tareas internas de infraestructura (ej. "guardar sesion") pueden no matchear bien. Usar el criterio de Kanam para decidir, la skill router es una sugerencia, no una autoridad.
-- Solo escanea `skills/` del workspace (no skills de plugins bundled ni de kanam-skills externo).
-- Requiere Ollama corriendo para el embedding (si no, cae a solo keyword match).
+- Matching is not perfect: internal infrastructure tasks (e.g. "save session") may not match well. Use your own judgment - the router is a suggestion, not an authority.
+- It only scans the local `skills/` directory (not bundled plugin skills or external collections).
+- It needs the embedding endpoint running for semantic match (otherwise it falls back to keyword match only).
 
 ## Related
 
-- [Agent Orchestration Pipeline](../agent-orchestration-pipeline): el pipeline donde Kanam decide que skill usar por unidad.
-- [Knowledge Management](../knowledge-management): gestion de la base de skills/conocimiento.
+- **Agent orchestration pipelines**: a pipeline where an orchestrator decides which skill to use per unit. The router is the lookup; the pipeline is the policy.
+- [Knowledge Management](../knowledge-management): managing the skills/knowledge base.

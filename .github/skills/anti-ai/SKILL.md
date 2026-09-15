@@ -1,102 +1,98 @@
 ---
 name: "anti-ai"
-description: "Elimina modismos y estructuras que delatan texto de IA para que suene humano. Incluye la regla del guion comun. Usar antes de publicar posts, feedback o PRs."
+description: "Removes idioms and structures that give away AI-written text so it reads human. Includes the plain-hyphen rule. Use before publishing posts, feedback or PRs."
 metadata:
   category: "Content"
   tags:
-    - escritura
-    - humanizar
+    - writing
+    - humanize
     - anti-ai
-    - edicion
-    - publicacion
+    - editing
+    - publishing
 user-invocable: true
 ---
 
 # Workflow: Anti-AI
 
-## Proposito
+## Purpose
 
-Eliminar el "olor a IA" de cualquier texto antes de que salga hacia afuera. No es reescribir el contenido: es quitar las marcas de fabrica que delatan que lo escribio un modelo, para que suene a persona real.
+Remove the "smell of AI" from any text before it goes out. It is not rewriting the content: it is stripping the factory marks that give away that a model wrote it, so it reads like a real person.
 
-## Filosofia
+## Philosophy
 
-> La IA no se nota por lo que dice, sino por como lo dice.
+> AI doesn't show in what it says, but in how it says it.
 
-Un humano no escribe con transiciones perfectas, triadas forzadas ni cierres genericos. Este skill detecta esos patrones y los reemplaza por lenguaje natural.
+A human doesn't write with perfect transitions, forced triads or generic closings. This skill detects those patterns and replaces them with natural language.
 
-## Regla base obligatoria: guion comun
+## Base mandatory rule: plain hyphen
 
-**NUNCA usar guion largo (em dash U+2014) ni en dash (U+2013).** Siempre guion comun (-). Es la regla dura de Gonzo y el delator de IA mas clasico.
+**NEVER use an em dash (U+2014) or an en dash (U+2013).** Always a plain hyphen (-). It is the hard rule and the most classic AI tell.
 
-Mecanismo obligatorio: escanear el texto con `scripts/check_em_dash.py` antes de dar por terminada la edicion.
+Mandatory mechanism: scan the text with a dash-check script before considering the edit done.
 
-## Cuando usarlo
+## When to use it
 
-- Antes de publicar un post de LinkedIn (paso obligatorio del flujo, ver abajo)
-- Antes de mandar feedback o comentarios en PRs/issues ajenos
-- Antes de publicar cualquier texto hacia afuera (docs, issues, PRs, comments)
-- Al revisar texto que suena "demasiado perfecto" o generico
+- Before publishing a post (a mandatory step in the flow, see below)
+- Before sending feedback or comments on other people's PRs/issues
+- Before publishing any text outward (docs, issues, PRs, comments)
+- When reviewing text that sounds "too perfect" or generic
 
-## Categorias de deteccion
+## Detection categories
 
-### 1. Muletillas de transicion
-"Sin embargo", "es importante destacar", "cabe mencionar", "vale la pena senalar", "en conclusion", "por otro lado", "ademas" repetido.
+### 1. Transition filler
+"However", "it is important to note", "worth mentioning", "in conclusion", "on the other hand", repeated "moreover".
 
-**Fix:** eliminar o reemplazar por conexion natural. Un humano no anuncia cada giro.
+**Fix:** delete or replace with a natural connection. A human doesn't announce every turn.
 
-### 2. Estructuras predecibles
-- Aperturas tipo "En el mundo actual...", "En la era de...", "Hoy en dia..."
-- Triadas forzadas (tres adjetivos o tres items perfectamente paralelos)
-- Listados donde cada item tiene exactamente la misma longitud y ritmo
+### 2. Predictable structures
+- Openings like "In today's world...", "In the era of...", "Nowadays..."
+- Forced triads (three adjectives or three perfectly parallel items)
+- Lists where every item has exactly the same length and rhythm
 
-**Fix:** romper el paralelismo. Variar longitud de oraciones. Empezar directo, sin preambulo.
+**Fix:** break the parallelism. Vary sentence length. Start directly, no preamble.
 
-### 3. Adverbios y relleno
-"Efectivamente", "ciertamente", "indudablemente", "de hecho" repetido, "realmente" sin aportar.
+### 3. Adverbs and filler
+"Effectively", "certainly", "undoubtedly", repeated "in fact", "really" adding nothing.
 
-**Fix:** borrar. Si la oracion funciona sin el adverbio, el adverbio sobra.
+**Fix:** cut it. If the sentence works without the adverb, the adverb is excess.
 
-### 4. Falsas precisiones
-"Aproximadamente", "alrededor de", "casi" cuando no aportan dato real.
+### 4. False precision
+"Approximately", "around", "nearly" when they add no real data.
 
-**Fix:** o dar el numero exacto o quitarlo. La falsa precision es marca de IA.
+**Fix:** either give the exact number or drop it. False precision is an AI mark.
 
-### 5. Cierre generico
-"En resumen", "para concluir", "espero que esto ayude", "no dudes en contactarme".
+### 5. Generic closing
+"In summary", "to conclude", "hope this helps", "don't hesitate to reach out".
 
-**Fix:** terminar con la idea, no con el resumen. Un cierre humano corta cuando termina.
+**Fix:** end on the idea, not the summary. A human closing stops when it's done.
 
-### 6. Guiones largos (U+2014 / U+2013)
-Caso base. Escanear con `scripts/check_em_dash.py`.
+### 6. Em dashes (U+2014 / U+2013)
+The base case. Scan the text with the dash-check script.
 
-**Fix:** reemplazar por guion comun (-) o reestructurar la oracion.
+**Fix:** replace with a plain hyphen (-) or restructure the sentence.
 
-## Flujo de trabajo
+## Workflow
 
-1. **Escaneo mecanico:** correr `scripts/check_em_dash.py` sobre el texto (guiones largos).
-2. **Pasada de patrones:** revisar cada categoria (1-5) y marcar instancias.
-3. **Reescritura natural:** reemplazar cada instancia por lenguaje humano, preservando el mensaje.
-4. **Verificacion:** releer en voz alta. Si suena a ensayo, sigue oliendo a IA.
-5. **Regla de oro:** si no estas seguro si una frase es marca de IA, preguntate "lo diria un humano en una conversacion?" Si la respuesta es no, cambiala.
-
-## Integracion con el flujo de posts de LinkedIn
-
-**Paso obligatorio:** todo post de LinkedIn (guardado en `docs/linkedin/linkedin-*.md`) debe pasar por anti-ai antes de publicarse. El post se escribe, se pasa por anti-ai, y recien entonces se publica. Esto aplica a los posts de a11y y agentic del patron de branding.
+1. **Mechanical scan:** run the dash-check script over the text.
+2. **Pattern pass:** review each category (1-5) and mark instances.
+3. **Natural rewrite:** replace each instance with human language, preserving the message.
+4. **Verification:** read it out loud. If it sounds like an essay, it still smells of AI.
+5. **Golden rule:** if you're unsure whether a phrase is an AI mark, ask "would a human say this in a conversation?" If the answer is no, change it.
 
 ## Outputs
 
-- Texto editado sin marcas de IA
-- Lista de instancias removidas (opcional, para aprendizaje)
-- Confirmacion de que paso el escaneo de guiones largos
+- Edited text with no AI marks
+- List of removed instances (optional, for learning)
+- Confirmation that it passed the em dash scan
 
-## Principios
+## Principles
 
-- No cambiar el mensaje core; solo quitar el olor a IA
-- Preservar la voz del autor
-- Menos es mas: si dudas, corta
-- La regla del guion comun es innegociable
+- Don't change the core message; only remove the AI smell
+- Preserve the author's voice
+- Less is more: if in doubt, cut
+- The plain-hyphen rule is non-negotiable
 
 ## Related Skills
 
-- [Copy Editing](../copy-editing): Para mejorar conversion de copy de marketing (complementario, se puede encadenar)
-- [Skill Router](../skill-router): Para sugerir este skill cuando el contexto sea publicar texto hacia afuera
+- [Copy Editing](../copy-editing): To improve marketing copy conversion (complementary, can be chained)
+- [Skill Router](../skill-router): To suggest this skill when the context is publishing text outward

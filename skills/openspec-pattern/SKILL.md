@@ -1,6 +1,6 @@
 ---
 name: "openspec-pattern"
-description: "Establece el contrato de intención (OpenSpec) para prevenir scope creep y deuda técnica."
+description: "Establishes the intent contract (OpenSpec) to prevent scope creep and technical debt. Use when a feature needs a written 'what' before implementation starts."
 ---
 
 # SKILL: OpenSpec Pattern (Intent-Driven Development)
@@ -13,12 +13,12 @@ An OpenSpec is the definitive, structured contract defining *what* must be built
 
 ## 🚀 Usage (The Workflow)
 1. **Definition:** Create the OpenSpec file, detailing the intent.
-2. **Guardrail Check (Radar):** Run the `kanam-insight` to validate the Spec against existing ADRs and knowledge base.
+2. **Guardrail Check (Radar):** Validate the spec against existing ADRs and the knowledge base before writing code.
 3. **Execution:** Code is written ONLY to satisfy the Spec.
 4. **Verification:** The final code/PR must satisfy 100% of the `AcceptanceCriteria` listed in the Spec.
 
 ## ⚔️ Dependency
-Requires `kanam-insight` to be active for the `Guardrail Check` step.
+The Guardrail Check step needs a way to cross-reference ADRs and project knowledge. If your setup has no knowledge index, do that step manually against `docs/adr/`.
 
 ## 💥 Value
 Prevents scope creep and technical debt by forcing alignment on **intent** before implementation complexity is added. It forces the discipline of writing down the 'Why' first.

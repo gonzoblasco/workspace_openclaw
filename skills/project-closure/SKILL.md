@@ -3,127 +3,127 @@ name: "project-closure"
 metadata:
   category: "Workflow"
   tags:
-    - proyecto
-    - cierre
+    - project
+    - closure
     - adr
-description: "Cierre completo de proyecto: captura decision, aprendizaje y estado en ADR + DB + skill. Reproducible con script."
+description: "Complete project closure: capture the decision, the learning and the state in ADR + DB + skill. Reproducible with a script."
 user-invocable: false
 ---
 
 # project-closure
 
-> Cierra un proyecto de forma completa e inmortaliza su conocimiento en ADR + DB + skill.
+> Close a project completely and immortalize its knowledge in ADR + DB + skill.
 
-## Propósito
+## Purpose
 
-Cuando un proyecto queda terminado, no basta con un commit. Hay que **capturar la decisión, el aprendizaje y el estado** en los tres lugares donde persiste la memoria institucional: un ADR (decisión), la base de datos (sessions + learnings), y la documentación de la skill asociada. Todo reproducible con un script.
+When a project is finished, a commit is not enough. You have to **capture the decision, the learning and the state** in the three places where institutional memory persists: an ADR (decision), the database (sessions + learnings), and the associated skill documentation. All reproducible with a script.
 
-## Cuándo usarla
+## When to use it
 
-- Gonzo dice "cerremos el proyecto", "documentemos X", "que quede immortlizado".
-- Un proyecto alcanza su criterio de éxito y no habrá más iteración.
-- Una serie de sesiones cierra un ciclo (ej. un sistema nuevo).
+- The user says "let's close the project", "let's document X", "make it stick".
+- A project hits its success criterion and there will be no more iteration.
+- A series of sessions closes a cycle (e.g. a new system).
 
-**Importante:** "cerrar proyecto" ≠ "separarse del workspace". Es documentar el trabajo de forma durable, no abandonar la relación de trabajo. El conocimiento queda accesible para futuras sesiones.
+**Important:** "closing a project" is not "leaving the workspace". It is documenting the work durably, not abandoning the working relationship. The knowledge stays accessible for future sessions.
 
-## Workflow de cierre
+## Closure workflow
 
 ```
-Proyecto terminado
+Project finished
     │
     ▼
 ┌─────────────────────────────────────────────┐
-│ 1. Identificar qué se cierra y su alcance    │
-│    (¿es un proyecto? ¿un sistema? ¿una fase?)│
+│ 1. Identify what is closing and its scope    │
+│    (is it a project? a system? a phase?)     │
 └─────────────────┬───────────────────────────┘
                   │
     ┌─────────────▼─────────────┐
-    │ 2. Escribir el ADR        │  docs/adr/ADR-XXX-<slug>.md
-    │    (decisión + racional + │  Formato: Status/Decision/Consecuencias/Alternativas
-    │    validación)            │
+    │ 2. Write the ADR          │  docs/adr/ADR-XXX-<slug>.md
+    │    (decision + rationale +│  Format: Status/Decision/Consequences/Alternatives
+    │    validation)            │
     └─────────────┬─────────────┘
                   │
     ┌─────────────▼─────────────┐
-    │ 3. Registrar en DB        │  memory.db:
-    │    - daily_notes (summary)│  sessions_relacional (T-score, modelo, thinking)
-    │    - sessions_relacional  │  learnings (si hay lección nueva)
+    │ 3. Record in the DB       │  memory.db:
+    │    - daily_notes (summary)│  sessions (T-score, model, thinking)
+    │    - sessions             │  learnings (if there is a new lesson)
     └─────────────┬─────────────┘
                   │
     ┌─────────────▼─────────────┐
     │ 4. Skill + script          │  skills/<slug>/SKILL.md
-    │    para hacerlo reproducible│  + scripts/project-closure.sh
+    │    to make it reproducible │  + scripts/project-closure.sh
     └─────────────┬─────────────┘
                   │
     ┌─────────────▼─────────────┐
-    │ 5. Commit + push + daily   │  workspace commit, mirror de skills, daily actualizado
+    │ 5. Commit + push + daily   │  workspace commit, skills mirror, updated daily
     └───────────────────────────┘
 ```
 
 ## Step-by-step
 
-### 1. Identificar el cierre
+### 1. Identify the closure
 
-Antes de escribir nada, **clarificar el alcance** con Gonzo:
-- ¿Se cierra el proyecto completo o solo una fase/sistema?
-- ¿Cuál es la decisión más importante que quedar documentada?
+Before writing anything, **clarify the scope** with the user:
+- Is the whole project closing, or just a phase/system?
+- What is the most important decision to leave documented?
 
-**No asumir:** un "cierre" puede ser existencial (todo el workspace) o puntual (un sistema). Confirmar antes de gastar esfuerzo.
+**Don't assume:** a "closure" can be existential (the whole workspace) or specific (one system). Confirm before spending effort.
 
-### 2. Escribir el ADR
+### 2. Write the ADR
 
-Numero el próximo ADR (`ls docs/adr/` y +1). Formato (ver `ADR-043` como ejemplo):
-- **Status / Deciders / Fecha / Origen**
-- **Contexto:** el problema que motivó la decisión.
-- **Decision:** qué se decidió, conciso y accionable.
-- **Implementación:** archivos y componentes.
-- **Consecuencias:** positivas y limitaciones.
-- **Alternativas:** qué se descartó y por qué.
-- **Validación:** evidencia empírica de que la decisión es correcta.
+Number the next ADR (`ls docs/adr/` and +1). Format:
+- **Status / Deciders / Date / Origin**
+- **Context:** the problem that motivated the decision.
+- **Decision:** what was decided, concise and actionable.
+- **Implementation:** files and components.
+- **Consequences:** positives and limitations.
+- **Alternatives:** what was discarded and why.
+- **Validation:** empirical evidence that the decision is right.
 
-### 3. Registrar en la DB
+### 3. Record in the DB
 
-Usar Python + sqlite3 sobre `memory/memory.db`:
+Use Python + sqlite3 against `memory/memory.db`:
 
 ```sql
--- daily_notes: resumen del cierre (type='daily')
+-- daily_notes: closure summary (type='daily')
 INSERT INTO daily_notes (date, type, content, source_file, created_at) VALUES (...);
 
--- sessions_relacional: con complexity score si aplica
-INSERT INTO sessions_relacional (date, title, tags, complexity_score, model_used,
+-- sessions: with a complexity score if applicable
+INSERT INTO sessions (date, title, tags, complexity_score, model_used,
   thinking_level, summary, content_bare, created_at) VALUES (...);
 
--- learnings: si hay una lección nueva y durable
+-- learnings: if there is a new, durable lesson
 INSERT INTO learnings (category, title, content, tags, created_at, updated_at) VALUES (...);
 ```
 
-### 4. Crear skill + script de cierre
+### 4. Create the skill + closure script
 
-La skill documenta el workflow (este archivo). El script automatiza:
+The skill documents the workflow (this file). The script automates it:
 
 ```bash
-./scripts/project-closure.sh --name "<slug>" --title "<título>" \
-  --summary "<resumen>" --complexity <T-score> --model "<modelo>" \
-  --create-adr --tag "pipeline,cierre" [--learning]
+./scripts/project-closure.sh --name "<slug>" --title "<title>" \
+  --summary "<summary>" --complexity <T-score> --model "<model>" \
+  --create-adr --tag "pipeline,closure" [--learning]
 ```
 
-Qué hace el script:
-1. Crea el ADR con el template.
-2. Registra en `daily_notes` + `sessions_relacional` (+ `learnings` opcional).
-3. Devuelve el resumen para el daily markdown.
+What the script does:
+1. Creates the ADR from the template.
+2. Records in `daily_notes` + `sessions` (+ `learnings` if requested).
+3. Returns the summary for the daily markdown.
 
-### 5. Commit final
+### 5. Final commit
 
-- Commit del workspace con el ADR + script + skill.
-- Mirror de skills (`rsync` a `.github/skills/`).
-- Push con `--rebase`.
+- Commit the workspace with the ADR + script + skill.
+- Sync the skills mirror.
+- Push with `--rebase`.
 
-## Reglas clave
+## Key rules
 
-1. **ADR = decisión inmutable.** Lo documentado no se re-abre salvo evidencia nueva.
-2. **Referencia ≠ proyecto.** Al des-trackear/limpiar, nunca borrar datos locales (`.env`, `*.db`, uploads). `git rm --cached` preserva el archivo en disco.
-3. **Cierre ≠ abandono.** El conocimiento queda en ADR + DB para retomarlo. La relación de trabajo continúa.
-4. **Confirmar alcance antes.** Un cierre existencial vs puntual son trabajos muy distintos.
-5. **Todo reproducible.** El script `project-closure.sh` debe dejar el cierre repetible, no manual.
+1. **ADR = immutable decision.** What is documented is not re-opened unless there is new evidence.
+2. **Reference is not the project.** When untracking/cleaning, never delete local data (`.env`, `*.db`, uploads). `git rm --cached` preserves the file on disk.
+3. **Closure is not abandonment.** The knowledge stays in ADR + DB to be picked up again. The working relationship continues.
+4. **Confirm scope first.** An existential closure and a specific one are very different jobs.
+5. **Everything reproducible.** The `project-closure.sh` script should make the closure repeatable, not manual.
 
 ## Status
 
