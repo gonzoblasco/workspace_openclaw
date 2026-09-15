@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Fase 0: cola durable del pipeline A/B
+
+### Added
+- **`scripts/pipeline-queue.sh`** - capa aditiva sobre `pipeline-track.sh` que da continuidad de ejecucion al pipeline: seleccion de proxima unidad (`next`), deteccion de huerfanas por `kill -0` (`orphans`), reintentos acotados (`PIPELINE_MAX_ATTEMPTS`, default 3) y un estado `failed` terminal que **no bloquea** el resto de la cola. Campos nuevos en el mismo `pipeline-state.json`: `attempts`, `pid`, `lastError`. Comandos: `enqueue`, `next`, `claim`, `release`, `done`, `review`, `orphans`, `tick`, `report`, `status`.
+- **`tests/bash/pipeline-queue.bats`** - 17 tests: enqueue, orden de `next`, salto de `failed`, claim idempotente, reintento, agotamiento del cap, huerfanas, compatibilidad con planes viejos sin `attempts`/`pid`.
+- **`docs/architecture/fase0-cola-durable-spec.md`** - spec de la fase (T=14 high).
+- **`docs/architecture/kanam-os-layers-evaluacion.md`** - evaluacion de la arquitectura por capas propuesta.
+
+### Changed
+- **`scripts/pipeline-queue.sh`:** se agrego el bit de ejecucion (`chmod +x`). El Agente A lo dejo en `-rw-------` y los tests no lo detectaron porque invocan con `bash "$SCRIPT"` explicito - un CLI sin bit de ejecucion falla para cualquier consumidor real. Detectado por verificacion manual, no por la suite.
+
+### Notes
+- **El diagnostico original estaba desactualizado:** la evaluacion nombro el gap como "SIGKILL de Qwen Code a ~3 min". Verificado el 2026-09-15: el harness migro a **Claude Code 2.1.260** (binario en `Claude-3p/`, valida headless contra el gateway Ollama), que maneja mejor las sesiones largas. El gap real **no es el SIGKILL: es la falta de continuidad** - nada reencolaba una unidad interrumpida.
+- **`pipeline-track.sh` NO se modifico.** Consume y escribe el mismo archivo; verificado el flujo mixto (init/start/review/done + enqueue/claim/release) sin que se pisen.
+- **Verificacion real:** `bash -n` limpio; `npx bats tests/bash/` -> 27/27 (17 nuevos + 10 preexistentes); casos borde probados a mano (plan viejo sin campos nuevos, cap de reintentos, huerfana con pid muerto, claim sobre `failed`); `check_em_dash.py` OK.
+- **Deuda de entorno (preexistente, no introducida aca):** `npm test` falla en `test:bats` con `sh: bats: command not found` porque `bats` esta declarado como devDependency pero **no esta en el PATH ni en `node_modules/.bin`**; con `npx bats` corre verde. `python3 -m pytest` tampoco existe en esta maquina. La suite completa via `npm test` no se puede correr de un tiro hasta resolver eso.
+
 ## [2026-09-15] - Evaluacion de arquitectura por capas para Kanam OS
 
 ### Added
