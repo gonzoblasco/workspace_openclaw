@@ -8,9 +8,9 @@ metadata:
     - memoria
     - proyecto
     - ck
-  description: "Persistent per-project session context for OpenClaw. Adapted from Context Keeper (ck) for OpenClaw's skill system, SQLite memory, and .knowledge/ handoffs."
   author: "Kanam (adapted from sreedhargs89/context-keeper)"
   origin: "workspace"
+description: "Persistent per-project session context for OpenClaw. Adapted from Context Keeper (ck) for OpenClaw's skill system, SQLite memory, and .knowledge/ handoffs."
 user-invocable: false
 ---
 
