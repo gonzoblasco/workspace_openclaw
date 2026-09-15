@@ -22,6 +22,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - Los 3 cierran decisiones que vivian solo en la practica o la conversacion; con ADR en el repo no se re-abren sin evidencia nueva (regla de oro del ADR).
 - ADR-049 no pisa ADR-040/041/045/046: esos deciden *que* modelo; el 049 solo *en que harness* corre.
 - **Hallazgo post-ADR (Gonzo):** Claude Code ignora AGENTS.md (verificado con el binario 2.1.260 - issue antrhopics/claude-code #6235). Se adopto el mecanismo `CLAUDE.md` minimo con `@import` de `AGENTS.md` (fuente de verdad unica, verificado que el import relativo y absoluto funcionan y que sube directorios). `CLAUDE.md` creado en el workspace raiz; regla operativa documentada en ADR-049 y SETUP.md.
+- **Correccion del alcance (verificado con el binario):** el `CLAUDE.md` de la raiz cubre todo el arbol, incluidos `projects/x/` a 2 niveles - el `@./AGENTS.md` se resuelve relativo al `CLAUDE.md` (no al cwd) y el discovery sube. Y ningun proyecto tiene `AGENTS.md` propio, asi que NO se crea `CLAUDE.md` per-proyecto (seria un import roto); solo si un proyecto introduce su propio `AGENTS.md`.
 
 ## [2026-09-15] - Fix del gateway-jobs-watcher ciego (bug silencioso del 08/09)
 

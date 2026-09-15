@@ -76,9 +76,11 @@ Claude Code no lee AGENTS.md por defecto - **no lo prioriza, lo ignora**. Verifi
 | Import con ruta absoluta | Funciona |
 | cwd en subdir + `CLAUDE.md` en el padre | Auto-discovery sube directorios y lo lee |
 
-**Mecanismo adoptado:** cada directorio donde corra un agente Claude Code (workspace, proyectos) lleva un **`CLAUDE.md` minimo que hace `@import` de su `AGENTS.md`**. Asi `AGENTS.md` **sigue siendo la unica fuente de verdad** (nada duplicado) y Claude Code carga las convenciones del pipeline.
+**Mecanismo adoptado:** el directorio raiz (workspace) lleva un **`CLAUDE.md` minimo que hace `@import` de su `AGENTS.md`**. Asi `AGENTS.md` **sigue siendo la unica fuente de verdad** (nada duplicado) y Claude Code carga las convenciones del pipeline.
 
-**Estado:** el `CLAUDE.md` del workspace raiz esta creado. Los proyectos se cubren cuando entren al flujo - regla: al crear/clonar un proyecto para pipeline, agregar su `CLAUDE.md` (mismo patron: `@./AGENTS.md`) junto con el `AGENTS.md`.
+**Alcance verificado (2026-09-15):** el `CLAUDE.md` de la raiz **cubre todo el arbol, incluidos `projects/x/` a 2 niveles de profundidad**. El `@./AGENTS.md` se resuelve relativo a la **ubicacion del `CLAUDE.md`** (la raiz), no al cwd, y el discovery sube directorios hasta encontrarlo. Verificado con el binario: cwd en `ws/proj/deep/deeper` obedecio la instruccion del `AGENTS.md` de la raiz importado.
+
+**Regla, corregida tras la verificacion:** NO se crea un `CLAUDE.md` por proyecto. Ningun proyecto de `projects/` tiene `AGENTS.md` propio (verificado 2026-09-15), asi que un per-proyecto con `@./AGENTS.md` seria un import roto. Solo se agrega un `CLAUDE.md` per-proyecto si ese proyecto introduce su propio `AGENTS.md` (con reglas especificas que el workspace no debe pisar globalmente).
 
 ---
 
