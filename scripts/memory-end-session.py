@@ -72,7 +72,10 @@ def append_to_daily_db(conn, date, block, project):
     Avoids duplicating if the same project already has a Session End for this date."""
     marker = f"## Session End - {project}"
     row = get_or_create_daily(conn, date)
-    if row and marker in row["content"]:
+    # Match the marker on a WHOLE LINE, never as a substring: "## Session End - workspace"
+    # is a substring of "## Session End - workspace-general", so a plain `in` check
+    # silently blocked saves for the shorter slug (found 2026-09-15).
+    if row and any(ln.strip() == marker for ln in row["content"].split("\n")):
         # Already recorded for this project/date - skip to avoid duplicate
         return row["id"], False
 

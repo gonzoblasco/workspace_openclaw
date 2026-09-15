@@ -6,6 +6,27 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Fix del guard de idempotencia en memory-end-session.py
+
+### Fixed
+- **`scripts/memory-end-session.py` - el guard de idempotencia matcheaba por substring.** La comprobación era `marker in row["content"]` con `marker = "## Session End - {project}"`. Como `"## Session End - workspace"` es **substring** de `"## Session End - workspace-general"`, guardar una sesión con el slug corto quedaba **silenciosamente bloqueado** cuando el día ya tenía una entrada del slug largo (y al revés, cualquier slug prefijo de otro). Hoy bloqueó dos guardados consecutivos. Corregido a match por **línea completa** (`any(ln.strip() == marker ...)`).
+
+### Notes
+- **Bug encontrado por uso real, no por test:** el síntoma fue el mensaje `ℹ️ Ya existe un Session End para 'workspace' en 2026-09-15 - sin duplicar` cuando ese marker no existía en el archivo. La verificación fue directa: `'## Session End - workspace' in '## Session End - workspace-general'` devuelve `True`.
+- **Impacto del bug:** cualquier proyecto cuyo slug sea prefijo de otro del mismo día (`workspace` / `workspace-general`, y potencialmente `kanam-*`) podía perder su registro de cierre sin aviso. Los datos no se corrompían - el guard simplemente no escribía.
+- Verificación del fix: `py_compile` OK + test unitario de la lógica (el marker largo matchea, el corto no) + `test-skills.sh` (84 skills, 0 fallos) + bats vía npx (10/10).
+
+## [2026-09-15] - Limpieza de legacy agent dirs + fix de la skill session-context
+
+### Fixed
+- **`skills/session-context/SKILL.md` - frontmatter inválido.** Era la **única** skill del workspace con `description` anidada dentro de `metadata` en vez de top-level; el loader la rechazaba con `description is required` (`dist/local-loader-CR9dHge0.mjs:175` lee `frontmatter.description`). Movida a top-level y mirror `.github/skills/` sincronizado. Ahora carga: `session-context ✓ Ready`.
+
+### Notes
+- **Limpieza de infraestructura:** los 6 directorios `agents/main/agent.legacy-*` (17 MB) movidos a `trash`. Verificados uno por uno antes: cada uno contenía un solo archivo `bin/fd`, idéntico byte a byte al del agente actual, y cero datos únicos. Backup previo en `/tmp/openclaw-agents-backup-20260915-101128.tar.gz` (7.4M).
+- **`doctor --fix` verificado (corrido por Gonzo a las 09:26):** las startup migrations quedaron **resueltas** - 0 ocurrencias del aviso, sin finding en `doctor --json`. Config válida, backup en `openclaw.json.bak`.
+- **NO se tocó `agents/openclaw/`:** el doctor lo marca como directorio sin entrada en `agents.list`, pero el gateway **lo tiene abierto** (4 handles verificados con `lsof`). No se borra sin confirmar.
+- **Recordatorios abiertos:** no hay backup registrado (`openclaw backup create`) ni command owner configurado (`commands.ownerAllowFrom`).
+
 ## [2026-09-15] - kanam-fixer: repo público + pin del perfil pendiente (limitación de API)
 
 ### Changed
