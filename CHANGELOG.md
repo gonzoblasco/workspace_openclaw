@@ -47,6 +47,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - `doctor --fix` resuelve las startup migrations + skill rota arreglada
+
+### Changed
+- **`docs/ROADMAP.md` 0.1 - migraciones RESUELTAS (verificado).** Gonzo corrió `openclaw doctor --fix` + restart a las 09:26 del 15/09. El aviso `Startup migrations need attention` **desapareció** (0 ocurrencias en `status`, sin finding en `doctor --json`). Lo que el fix hizo: relocalizó las credenciales compartidas a SQLite, normalizó 9 `num_ctx`, deshabilitó 34 skills inutilizables y copió el `allowFrom` de Telegram al allowlist de grupos. Config válida, backup en `openclaw.json.bak`.
+- **`skills/session-context/SKILL.md` - frontmatter corregido (bug real destapado por el doctor).** Era la **única** skill del workspace con `description` anidada dentro de `metadata` en vez de top-level, y el loader la rechazaba con `description is required` (`dist/local-loader-CR9dHge0.mjs:175` lee `frontmatter.description`). Movida a top-level; el mirror `.github/skills/` sincronizado. Ahora carga: `session-context ✓ Ready`.
+
+### Notes
+- **Metodología:** el output del terminal que compartió Gonzo se trató como **dato**, y cada afirmación se verificó por separado contra el estado real (gateway, config, disco, logs). No se asumió que el fix hubiera funcionado.
+- **El restart de hoy cerró limpio:** los 4 dumps de `logs/stability/` siguen siendo todos del 13/09; no se generó uno nuevo. El gateway corre 2026.9.4 (pid 43766, probe ok).
+- **Residuos no bloqueantes, registrados en el ROADMAP:** los 6 `agent.legacy-*` siguen en disco (17 MB de cruft inofensivo - el fix resolvió las credenciales, no los borró); `agents/openclaw/` figura como directorio sin entrada en `agents.list` pero el gateway **lo tiene abierto** (verificado con `lsof`), así que NO se borra sin confirmar; no hay backup registrado ni command owner configurado.
+- **Nota de proceso:** un commit propio falló por un pre-commit hook instalado por otra sesión que invocaba `npm run lint`/`build` (scripts inexistentes en el workspace). El hook ya fue corregido por esa sesión al template real (`test-skills.sh` + bats + pytest). Se evitó el atajo de `SKIP_SIMPLE_GIT_HOOKS`.
+
 ## [2026-09-14] - Diagnostico read-only de las startup migrations (causa raiz encontrada)
 
 ### Notes
