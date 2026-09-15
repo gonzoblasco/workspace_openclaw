@@ -117,8 +117,8 @@ El Agente B (deepseek-v4-flash) volvió a morir a mitad de la revisión (ver not
 
 **Contraste WCAG re-verificado (tokens nuevos):** text vs bg 14.33:1 AAA, dim vs bg 5.86:1 AA, accent vs panel 12.68:1, board-border vs bg 2.05:1 (marco visible), y las 7 piezas 7.1:1 a 12.25:1 contra el panel nuevo (todas >= 3:1 bloque gráfico, varias AA).
 
-### Pendiente (paso 7 del protocolo)
-**Validación visual de Gonzo en browser real** - es un cambio visual, más que en ningún ciclo: `python3 -m http.server 8000` y jugar. Atención a: leer la columna correctamente con el tilt de 12", el glow pre-lock no distraer, el pulso del clear en vez del flash blanco, y que los dots no compitan con las piezas.
+### Pendiente (paso 7 del protocolo) - CERRADO
+**Validación visual de Gonzo en browser real: OK (2026-09-14, "muy bien, me gustó mucho").** Con eso queda cerrado v0.4-visual: la primera iteración visual completa del proyecto, con el lenguaje wireframe de cajitas validado por el ojo de su dueño. **v0.4-visual CERRADA.**
 
 ### Nota de pipeline (patrón a vigilar)
 El Agente B cayó **por tercera vez** en medio de una revisión (v0.3 B original, v0.4 B, v0.4 B relanzado... verificar conteo real en dailies). El patrón: muere en tareas largas de revisión con el motor default. Consecuencia práctica: cuando B no entrega, la verificación de ejecución la hace Kanam - que era el paso 5 del protocolo de todas formas. Anotar como hallazgo operativo del pipeline.
