@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - a11y-fixer: BRIEF alineado al archivado + topics y homepage del repo
+
+### Changed
+- **`projects/a11y-fixer/.knowledge/BRIEF.md` - alineado a la enmienda de ADR-001.** El BRIEF se habia escrito ~2h antes de que Gonzo archivara el proyecto, y quedaba contradiciendolo: decia "Ancla del pilar: Accesibilidad como diferenciador". Ahora declara **ARCHIVADO (2026-09-14)** en el header, reemplaza "Por que es ancla" por "Por que fue ancla (y por que ya no lo es)", y suma a la deuda el **estado de cierre incompleto**: el repo sigue `isArchived=false` y el paquete npm sigue publicado (ambos pendientes del todo id=54). El aprendizaje de "cero adopcion pese a estar tecnicamente listo" queda anotado como transferible a `kanam-fixer`.
+- **`gonzoblasco/a11y-fixer` (repo) - `topics` poblados.** Estaban vacios (`[]`). Ahora: `a11y, accessibility, accessibility-testing, axe-core, ci, github-action, github-actions, playwright, typescript, wcag`. Descubrimiento gratis que no se estaba usando.
+- **`gonzoblasco/a11y-fixer` (repo) - `homepage` limpiado.** Apuntaba a `https://github.com/gonzoblasco/a11y-fixer-v2`, que hace 301 de vuelta al mismo repo. Resto de una version vieja; ahora vacio.
+
+### Notes
+- **Tension registrada, no resuelta:** publicar en el Marketplace y submitir a awesome lists son actos de *lanzamiento*, y contradicen el archivado recien decidido. Se prepararon los textos pero **no se ejecuto ninguna accion publica**. Requiere decision de Gonzo.
+
+---
+
 ## [2026-09-14] - ADR-001 enmendado: a11y-fixer archivado, kanam-fixer como proyecto nuevo
 
 ### Changed

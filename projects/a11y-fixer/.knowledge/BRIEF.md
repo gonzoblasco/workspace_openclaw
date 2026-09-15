@@ -1,8 +1,8 @@
 # BRIEF - a11y-fixer
 
-**Estado:** Feature-complete hasta Fase 4 (40/40 tareas) - sin desarrollo desde 2026-08-17
-**Última actualización:** 2026-09-14
-**Ancla del pilar:** Accesibilidad como diferenciador (ADR-001)
+**Estado:** ARCHIVADO (2026-09-14, decision de Gonzo). Feature-complete hasta Fase 4 (40/40 tareas)
+**Última actualización:** 2026-09-14 (tras la enmienda de ADR-001)
+**Rol en el portfolio:** ~~Ancla del pilar Accesibilidad~~ - **archivado, sale de la tabla de anclas** (ADR-001 seccion 6). Su sucesor es `kanam-fixer`, proyecto nuevo con alcance sin definir.
 
 ## Qué es
 
@@ -10,9 +10,11 @@ Bot de auditoría de accesibilidad para PRs de GitHub. Corre axe-core dentro de 
 
 Sin lock-in de SaaS: todo corre en los runners de GitHub Actions del usuario. La IA (explicaciones de fixes) es opcional y BYOK (OpenAI / Anthropic / OpenRouter).
 
-## Por qué es ancla
+## Por que fue ancla (y por que ya no lo es)
 
-Es el puente entre la especialización a11y y el trabajo OSS. Demuestra tres cosas a la vez: dominio de axe-core y Playwright, integración real en CI/CD, y producto instalable por terceros. Es el proyecto que mejor encarna el pilar "accesibilidad como diferenciador" del ADR-001.
+**Fue** el ancla del pilar "accesibilidad como diferenciador". Es el puente entre la especializacion a11y y el trabajo OSS: demuestra dominio de axe-core y Playwright, integracion real en CI/CD, y producto instalable por terceros.
+
+**El 2026-09-14 Gonzo decidio archivarlo** y que su sucesor sea `kanam-fixer`, un proyecto **nuevo** (no un renombre). El alcance de `kanam-fixer` esta sin definir, y **no se asume** que herede el rol de engine de fixes a11y. Consecuencia: el pilar Accesibilidad queda **sin ancla formal** hasta que ese alcance se defina. Ver ADR-001 seccion 6 (la enmienda agrega; el texto original de la seccion 3 se conserva por trazabilidad).
 
 ## Stack
 
@@ -88,8 +90,10 @@ Los dos controles prueban que el patrón de URL es correcto; el 200 de `checkout
 
 ## Deuda / riesgo
 
-- **Cero adopción.** 0 estrellas, 0 usuarios externos, y el criterio del Horizonte 1 de `docs/NORTH.md` es exactamente eso: una pieza con usuarios reales que no seas vos. **El proyecto está listo para eso y no lo está buscando.**
-- **El ancla más fría de las tres.** Último commit 2026-08-17 (solo un chore de `.DS_Store`), último commit de código a fines de julio. kanam-forge y kanam-pulse tienen actividad más reciente.
+- **Archivado el 2026-09-14 (ADR-001 seccion 6).** Esta es la decision mas importante del documento: todo lo de abajo describe el estado del proyecto al momento de archivarlo.
+- **Estado de cierre incompleto:** el repo `gonzoblasco/a11y-fixer` sigue con `isArchived=false` en GitHub (no se archivo en la plataforma) y el paquete npm `@gonzoblasco/a11y-fixer@0.6.0` sigue publicado. Los dos son parte de los pendientes de la enmienda (todo id=54).
+- **Cero adopcion.** 0 estrellas, 0 usuarios externos. El criterio del Horizonte 1 de `docs/NORTH.md` -una pieza con usuarios reales que no seas vos- **nunca se alcanzo**: el proyecto estaba tecnicamente listo y no lo busco. Ese aprendizaje se transfiere a kanam-fixer.
+- **Fue la mas fria de las tres anclas.** Ultimo commit 2026-08-17 (solo un chore de `.DS_Store`), ultimo commit de codigo a fines de julio.
 - **Admin desincronizada:** headers de estado viejos y casillas del ROADMAP sin marcar. Nada de esto bloquea, pero da una imagen de proyecto más verde de lo que es.
 - **Dos afirmaciones falsas en los docs del repo:** el check `4.1.2` del issue #10 y de `docs/TRACKER.md` afirman que el action está publicado en el Marketplace, y no lo está. Una tarea marcada como hecha que nunca se hizo es peor que una tarea abierta: infla el progreso real del proyecto.
 - **Publicado en npm pero sin README que lo mencione** - hay un canal de distribución activo que la documentación no explota.
