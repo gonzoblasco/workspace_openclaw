@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Todo #38: cliente MCP para Lovable - decidido (nativo de OpenClaw)
+
+### Changed
+- **`docs/adr/mcp-lovable-decision.md`** - decision del todo #38: cliente MCP real para Lovable.
+
+### Fixed
+- El #38 pedía evaluar 3 caminos (nativo, SDK @modelcontextprotocol, via Claude Code). **Respuesta verificada:** la integracion NATIVA de OpenClaw existe y cubre el caso entero (`openclaw mcp` con add/login/probe/status y `--auth oauth`, `--transport streamable-http`, `--include` para restringir al contrato read-only get_project/list_projects/query_database). Endpoint Lovable verificado vivo (v1.18.7, "Auth with API key or OAuth", fetch status 200). No hace falta SDK propio ni Claude Code.
+- Estado previo: `openclaw mcp list` reporta 0 servers; `mcp.servers` en openclaw.json vacio.
+
+### Notes
+- **Pendiente de Gonzo (bloquea el cableado, no la decision):** el `openclaw mcp add lovable --url https://mcp.lovable.dev --transport streamable-http --auth oauth --include get_project,list_projects,query_database` + `openclaw mcp login lovable` requieren el OAuth de la cuenta Lovable de Gonzo. NO se ejecuto ni se toco config para respetar esa dependencia.
+- Todo #38 -> done en la DB (decision definida y documentada; el paso OAuth queda anotado como accion de Gonzo).
+
 ## [2026-09-15] - Todo #37: scripts spin-review cuarentenados (rojos desde 2026-08-30)
 
 ### Changed
