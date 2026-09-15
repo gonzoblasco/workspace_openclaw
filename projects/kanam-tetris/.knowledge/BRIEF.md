@@ -166,6 +166,35 @@ El Agente B cayó **por tercera vez** en medio de una revisión (v0.3 B original
 - **Nota de metodo:** las dos primeras rondas de "fix" se verificaron solo con DOM falso y no alcanzaron. Lo que cerro el diagnostico fue medir el browser REAL (`elementFromPoint` + computed style), no leer el codigo. Cuando un bug sobrevive a un fix verificado, la verificacion es la que esta mal.
 - Mutaciones corridas (cada una mata su test, y se restauro el original en cada caso): no invalidar por `move`, por gravedad, por `softDrop`, por `hardDrop`; kick fallido arma el flag; spawn no limpia `lastAction`; esquinas corridas `centro +/- 1`; combo no se resetea en lock seco; b2b roto por lock seco; b2b no roto por clear normal; mini valuado como full; bonus b2b ausente; cola sin refill, con head equivocado y con profundidad corta; tetris no-dificil; T-spin no-dificil. En la capa UI: restaurar el frame-diff mata el test del overlay; quitar el getter de `state.queue` mata los de la cola; meter el overlay dentro del contexto de perspectiva mata el estructural.
 
+## Alcance v0.5 - CERRADA (2026-09-15) - sonido + game feel
+
+Primera feature fuera del core. **`src/core.js` con diff CERO: ni una linea tocada.** 123 tests (74 previos + 49 nuevos).
+
+### R5 - Audio sintetizado (`src/audio.js`, 309 lineas)
+- **Cero assets:** todo con osciladores de Web Audio.
+- **AudioContext perezoso:** se crea en el primer keydown (los browsers bloquean el audio hasta un gesto). `contextFactory` inyectable = la costura de la casa (`rng`, `blurTarget`).
+- **Mute (`M`)** persistido, y al mutear **suelta la referencia al contexto**: no se construye nada mientras esta muteado.
+- **Nunca rompe el juego:** sin `AudioContext` o si el constructor tira, el juego sigue jugable en silencio.
+- Mapa de eventos: lock = `clear` con 0 lineas; clear 1-3 = arpegio; 4+ = fanfarria; T-spin = acorde; hold = `holdUsed:true` (el `false` del refill es mudo); game over = `gameover`. **Derivados** (el core no los emite): levelup (por cambio de `payload.level`) y hard drop (flag en el keydown de Espacio, consumido por el `clear` sin lineas siguiente). Preferido antes que agregar eventos al core.
+
+### R6 - Game feel (`src/effects.js`, 142 lineas)
+- **Screen shake** (3px, ~120ms) en clear y T-spin. **`prefers-reduced-motion` lo desactiva entero.**
+- **Particulas**: cuadraditos del color de la pieza que se desvanecen. Con reduced-motion **bajan de 3 a 1 por celda** pero NO se eliminan: son informacion (que filas se limpiaron), no decoracion.
+- El loop avanza `effects`; el renderer solo LEE (`effects.state.shakeX/particles`), asi `render.js` sigue sin mutar estado del juego.
+- Overlay con fade de 150ms (CSS), apagado tambien por reduced-motion.
+
+### Consistencia (fix de Kanam sobre el trabajo del agente)
+Un **T-spin sin lineas** paga 400/100 y el juego lo anuncia en pantalla con "T-SPIN", pero el sonido caia en el tick de lock comun: imagen y sonido se contradecian. Ahora suena el acorde. El agente lo habia decidido a proposito y documentado ("locks with a tick"); se corrigio porque el cartel contradice esa logica. Test que lo fija y muere al revertir.
+
+### Servidor de desarrollo (`serve.py`, nuevo)
+`python3 -m http.server` no manda `Cache-Control`, y **Safari cachea heuristicamente los modulos ES**: sirve una version vieja tras editar. Se vio dos veces en este ciclo (un `render.js` viejo con alpha 0.10, y un `storage.js` viejo sin `loadMuted` que rompia el grafo de imports). `serve.py` manda `no-store` en cada respuesta.
+
+### Verificacion
+- `node --test test/`: **123 pass, 0 fail**. Desglose: core 29, scoring 29, input 4, dom 18, audio 26, effects 17. Los 74 previos verdes sin tocarlos.
+- **Revision de Kanam por ejecucion** (el agente verifico estructura; Kanam verifico comportamiento): 20 aserciones propias con mock de AudioContext (conteo de osciladores por sonido, mute que no construye contexto, degradacion sin `AudioContext`, expiracion de particulas, reduced-motion) mas mutacion del fix de consistencia.
+- **Verificacion en browser REAL (Safari, sonda con beacon):** `created_pre_gesture=0 | created_post_gesture=1 | osc_total=6 | osc_started=6 | suena=true | mute_label=MUTE | muted | osc_tras_mute=0`. El contexto se crea SOLO tras el gesto, suena, y el mute corta de verdad.
+- **NOTA HONESTA:** que los sonidos *suenen bien* (timbre, volumen, musicalidad) no se puede verificar sin oido humano. Lo verificado es la estructura (que suenen, cuantos osciladores, cuando). El juicio estetico es de Gonzo.
+
 ## No-alcance (para futuras iteraciones)
 - Sonido, game feel (v0.5). Lock delay por pieza, tabla de gravedad guideline, verificacion visual medida (v0.6). Multiplayer, movil/touch.
 
