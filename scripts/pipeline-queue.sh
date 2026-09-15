@@ -65,11 +65,90 @@ require_valid_state() {
 }
 
 write_state() {
+  # Atomic write: build the full document in a temp file and rename it into
+  # place. A bare `> "$STATE_FILE"` truncated the file before jq ran, and a
+  # failed redirection was swallowed by the pipeline (echo/jq both exit 0),
+  # so the command reported success while the on-disk state never changed.
+  local tmp="${STATE_FILE}.tmp.$$"
   if command -v jq >/dev/null 2>&1; then
-    echo "$1" | jq . > "$STATE_FILE"
+    if ! printf '%s' "$1" | jq . > "$tmp" 2>/dev/null; then
+      rm -f "$tmp"
+      echo "Error: estado invalido, no se pudo serializar. '$STATE_FILE' sin cambios." >&2
+      exit 2
+    fi
   else
-    echo "$1" > "$STATE_FILE"
+    if ! printf '%s' "$1" > "$tmp" 2>/dev/null; then
+      rm -f "$tmp"
+      echo "Error: no se pudo escribir '$tmp' (disco o permisos)." >&2
+      exit 2
+    fi
   fi
+  if ! mv "$tmp" "$STATE_FILE" 2>/dev/null; then
+    rm -f "$tmp"
+    echo "Error: no se pudo reemplazar '$STATE_FILE' (directorio inexistente o sin permiso)." >&2
+    exit 2
+  fi
+}
+
+# --- Locking ----------------------------------------------------------------
+# macOS has no flock(1). Atomic mkdir is the portable mutual-exclusion
+# primitive: exactly one process can create the directory. Held for the whole
+# mutating command, so the read-modify-write window is protected.
+LOCK_DIR="${STATE_FILE}.lock"
+LOCK_PID_FILE="$LOCK_DIR/pid"
+LOCK_TRIES=100   # ~10s at 0.1s per attempt
+LOCK_GRACE=20    # ~2s before breaking a lock that has no pid file
+LOCK_HELD=0
+
+acquire_lock() {
+  local i=0 locker=""
+  # Fail fast and clearly when the state directory itself is missing:
+  # retrying mkdir for 10s only to blame a lock holder is misleading.
+  case "$STATE_FILE" in
+    */*)
+      local parent; parent=$(dirname "$STATE_FILE")
+      if [ ! -d "$parent" ]; then
+        echo "Error: el directorio '$parent' no existe. No se puede escribir '$STATE_FILE'." >&2
+        return 1
+      fi
+      ;;
+  esac
+  while ! mkdir "$LOCK_DIR" 2>/dev/null; do
+    i=$((i + 1))
+    # Break a lock whose owner is gone (crashed agent, killed shell).
+    if [ -f "$LOCK_PID_FILE" ]; then
+      locker=$(cat "$LOCK_PID_FILE" 2>/dev/null || echo "")
+      case "$locker" in
+        ''|*[!0-9]*) : ;;
+        *)
+          if ! kill -0 "$locker" 2>/dev/null; then
+            rm -rf "$LOCK_DIR" 2>/dev/null || true
+            continue
+          fi
+          ;;
+      esac
+    elif [ "$i" -gt "$LOCK_GRACE" ]; then
+      # No pid file: the owner died between mkdir and writing its pid, or the
+      # pid file vanished. Without this, such a lock is never broken and every
+      # later command stalls until the retry ceiling and then fails.
+      rm -rf "$LOCK_DIR" 2>/dev/null || true
+      continue
+    fi
+    if [ "$i" -ge "$LOCK_TRIES" ]; then
+      echo "No se pudo adquirir el lock de '$STATE_FILE' (pid ${locker:-?} lo retiene)." >&2
+      return 1
+    fi
+    sleep 0.1
+  done
+  printf '%s' "$$" > "$LOCK_PID_FILE" 2>/dev/null || true
+  LOCK_HELD=1
+  return 0
+}
+
+release_lock() {
+  [ "$LOCK_HELD" -eq 1 ] || return 0
+  rm -rf "$LOCK_DIR" 2>/dev/null || true
+  LOCK_HELD=0
 }
 
 # unit_count <unit>: 1 if the unit exists, 0 otherwise
@@ -113,6 +192,15 @@ if [ "$CMD" != "enqueue" ]; then
   require_valid_state
 fi
 
+# Commands that mutate the plan take the lock for their whole duration, so
+# two concurrent claims cannot both read `queued` and both write `running`.
+case "$CMD" in
+  enqueue|claim|release|done|review|tick)
+    acquire_lock || exit 2
+    trap 'release_lock' EXIT INT TERM
+    ;;
+esac
+
 case "$CMD" in
   enqueue)
     # Delegate plan creation to pipeline-track (parity + complexity), then add
@@ -122,6 +210,12 @@ case "$CMD" in
     NEW=$(echo "$STATE" | jq '.units[] |= . + {attempts: 0}')
     write_state "$NEW"
     N_UNITS=$(echo "$NEW" | jq '[.units[]] | length')
+    # A silent zero here means the plan never landed on disk (missing dir,
+    # full disk). Reporting success would let an automation march on.
+    if [ "${N_UNITS:-0}" -lt 1 ]; then
+      echo "Error: no se pudo encolar el plan (0 unidades escritas en '$STATE_FILE')." >&2
+      exit 2
+    fi
     echo "Pipeline encolado: $N_UNITS unidades con attempts=0."
     ;;
 

@@ -294,3 +294,74 @@ teardown() {
   [ "$status" -eq 0 ]
   [ "$output" = "U1" ]
 }
+
+# --- regression: silent write failures ---
+
+@test "enqueue into a missing directory fails loud instead of reporting success" {
+  export PIPELINE_STATE_FILE="$TMP_DIR/nodir/state.json"
+  run bash "$SCRIPT" enqueue "fase" U1
+  [ "$status" -eq 2 ]
+  [[ "$output" != *"encolado"* ]]
+  [ ! -f "$PIPELINE_STATE_FILE" ]
+}
+
+@test "claim reports failure when the state cannot be written, and says so" {
+  bash "$SCRIPT" enqueue "test-phase" U1
+  chmod 444 "$PIPELINE_STATE_FILE"
+  # A read-only file makes the final rename fail: the command must not claim success.
+  run bash "$SCRIPT" claim U1 777
+  chmod 644 "$PIPELINE_STATE_FILE"
+  # Either it wrote atomically (rename bypasses file perms), or it failed loud.
+  if [ "$status" -eq 0 ]; then
+    run jq -r '.units[0].state' "$PIPELINE_STATE_FILE"
+    [ "$output" = "running" ]
+  else
+    [ "$status" -eq 2 ]
+  fi
+}
+
+# --- regression: concurrency ---
+
+@test "claim: concurrent claims yield exactly one winner" {
+  bash "$SCRIPT" enqueue "test-phase" U1 U2 U3
+  sleep 20 &
+  LIVE_PID=$!
+  for i in 1 2 3 4 5 6 7 8 9 10; do
+    ( bash "$SCRIPT" claim U1 "$LIVE_PID" > "$TMP_DIR/c$i" 2>&1 ) &
+  done
+  wait
+  kill "$LIVE_PID" 2>/dev/null || true
+
+  WINNERS=$(grep -l '^\[claim\]' "$TMP_DIR"/c* 2>/dev/null | wc -l | tr -d ' ')
+  [ "$WINNERS" -eq 1 ]
+  run jq -r '.units[0].attempts' "$PIPELINE_STATE_FILE"
+  [ "$output" = "1" ]
+}
+
+@test "lock: an orphan lock without a pid file is broken, not stalled forever" {
+  bash "$SCRIPT" enqueue "test-phase" U1
+  mkdir -p "$PIPELINE_STATE_FILE.lock"
+  run bash "$SCRIPT" claim U1 4242
+  [ "$status" -eq 0 ]
+  run jq -r '.units[0].state' "$PIPELINE_STATE_FILE"
+  [ "$output" = "running" ]
+  [ ! -d "$PIPELINE_STATE_FILE.lock" ]
+}
+
+@test "lock: an orphan lock held by a dead pid is broken" {
+  bash "$SCRIPT" enqueue "test-phase" U1
+  mkdir -p "$PIPELINE_STATE_FILE.lock"
+  echo 999999 > "$PIPELINE_STATE_FILE.lock/pid"
+  run bash "$SCRIPT" claim U1 4242
+  [ "$status" -eq 0 ]
+  run jq -r '.units[0].state' "$PIPELINE_STATE_FILE"
+  [ "$output" = "running" ]
+}
+
+@test "lock: normal commands leave no lock behind" {
+  bash "$SCRIPT" enqueue "test-phase" U1 U2
+  bash "$SCRIPT" claim U1 999999
+  bash "$SCRIPT" release U1 "transient"
+  bash "$SCRIPT" next >/dev/null
+  [ ! -d "$PIPELINE_STATE_FILE.lock" ]
+}
