@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run test:scripts && npm run test:bats && npm run test:node && npm run test:pytest",
     "test:scripts": "./scripts/test-skills.sh",
-    "test:bats": "bats tests/bash/",
+    "test:bats": "npx bats tests/bash/",
     "test:node": "node tests/node/pipeline-queue-trigger.test.js && node tests/node/gateway-jobs-watcher-trigger.test.js",
     "test:pytest": "python3 -m pytest tests/python/"
   },

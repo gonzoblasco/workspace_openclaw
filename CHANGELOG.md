@@ -6,6 +6,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Deuda de entorno cerrada: npm test corre de un tiro
+
+### Fixed
+- **`test:bats` usaba `bats` del PATH, que no existe** - `npm test` fallaba siempre en el 2do paso con `sh: bats: command not found` (bats esta como devDependency pero no en el PATH ni en `node_modules/.bin`). Cambiado a `npx bats tests/bash/` (verificado Bats 1.13.0).
+- **`pytest` no estaba instalado en esta maquina** (`python3 -m pytest: No module named pytest`), asi que `test:pytest` nunca corria. Instalado user-local (`pip install --user pytest` -> 8.4.2, reversible, no toca el entorno del sistema).
+
+### Notes
+- **Resultado: `npm test` ahora corre COMPLETO de un tiro con exit 0.** Los 4 pasos en serie: `test:scripts` (skills, bash/python/frontmatter/dash/links), `test:bats` (47 tests), `test:node` (15+3 harness scenarios) y `test:pytest` (17 passed). Antes nunca se habia podido correr la suite de un tiro en esta maquina.
+- La deuda quedaba documentada en los CHANGELOG previos desde la Fase 0 ("npm test no se puede correr de un tiro hasta resolver esto"); resuelta al fin.
+
 ## [2026-09-15] - Prompts versionados (formato con frontmatter + verificador)
 
 ### Added
