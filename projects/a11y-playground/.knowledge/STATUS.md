@@ -1,3 +1,5 @@
+**Estado General:** ❄️ **ARCHIVADO (2026-09-15)** - nunca pasó de M0. Se conserva como registro.
+
 # STATUS: a11y-playground - M1 Kickoff
 
 **Estado General:** 🟢 **IN_PROGRESS (M1)**

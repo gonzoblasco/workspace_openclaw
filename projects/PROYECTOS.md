@@ -19,7 +19,7 @@
 | **kanam-solitaires** | Colección de solitarios PWA (Klondike, Spider, FreeCell, Pyramid). | pub | gonzoblasco/kanam-solitaires |
 | **soporteml** | CRM multi-tenant para ML sellers (v1). | pub | gonzoblasco/soporteml |
 | **soporteml-v4** | CRM multi-tenant para ML sellers (reinicio con diseño avanzado). | PRIV | gonzoblasco/soporteml-v4 |
-| **kanam-fixer** | Proyecto nuevo (2026-09-14), sucesor de `a11y-fixer`. Alcance por definir. | pub | (repo por crear) |
+| **kanam-fixer** | Proyecto nuevo (2026-09-14), sucesor de `a11y-fixer`. Greenfield, no hereda su código. Alcance definido: aserción sobre el anuncio del lector de pantalla. Repo creado 2026-09-15 (privado, sin código aún). | PRIV | gonzoblasco/kanam-fixer |
 | **quedamos** | App PWA de matching para salidas. | PRIV | gonzoblasco/quedamos |
 | **create-stack** | Scaffolder opinado Next.js. | pub | gonzoblasco/create-stack |
 | **ai-developer-stack** | Skills de ingeniería con IA. | pub | gonzoblasco/ai-developer-stack |
@@ -40,7 +40,8 @@
 | **cabala** | Proyecto cabala. | pub | gonzoblasco/cabala |
 | **health-tracker** | PWA de monitoreo de salud personal. | pub | gonzoblasco/health-tracker |
 | **kanam-mind** | Segundo cerebro local-first con IA. Timeline personal + resumen IA diario. IndexedDB + Ollama local. Archivado del portfolio (reemplazado por kanam-pulse como ancla Local-First). | pub | gonzoblasco/kanam-mind |
-| **a11y-fixer** | Accessibility audit bot para PRs de GitHub (axe-core). Archivado 2026-09-14 (decisión de Gonzo); su sucesor es `kanam-fixer`. El repo en GitHub sigue activo (`isArchived=false`) - archivarlo está pendiente. | pub | gonzoblasco/a11y-fixer |
+| **a11y-fixer** | Accessibility audit bot para PRs de GitHub (axe-core). Archivado 2026-09-14 (decisión de Gonzo); su sucesor es `kanam-fixer`. **Repo archivado en GitHub el 2026-09-15 (`isArchived=true`).** El paquete npm sigue publicado - deprecarlo requiere `npm login`. | pub | gonzoblasco/a11y-fixer |
+| **a11y-playground** | Scaffold que nunca pasó de M0: un solo commit (`chore: initial scaffold`), size 0, cero código. Su única dependencia declarada era `a11y-fixer`. Archivado 2026-09-15. | PRIV | gonzoblasco/a11y-playground |
 
 ---
 

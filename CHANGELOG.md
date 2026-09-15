@@ -6,6 +6,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Cierre de la enmienda ADR-001: a11y-fixer y a11y-playground archivados + kanam-fixer formalizado
+
+### Changed
+- **`gonzoblasco/a11y-fixer` - repo ARCHIVADO en GitHub** (`isArchived=true`, 2026-09-15). Acción en superficie pública, con OK explícito de Gonzo ("confirmo todo").
+- **`gonzoblasco/a11y-playground` - repo ARCHIVADO** (`isArchived=true`). **Veredicto con evidencia:** era un scaffold que nunca pasó de M0 - repo privado creado el 2026-08-30, **un solo commit** (`chore: initial scaffold`), **size 0** (solo `.gitignore` + README, cero código). Su única dependencia declarada era `a11y-fixer`, hoy archivado. Gonzo no recordaba el proyecto; la evidencia mostró que no había nada que recordar.
+- **`projects/portfolio-strategy/.knowledge/ADR-001-portfolio-strategy.md` - sección 6 cerrada.** Los 4 pendientes de la enmienda pasan a RESUELTOS con su fecha: (1) alcance de `kanam-fixer` definido y **dirección confirmada por Gonzo** el 2026-09-15; (2) relación con el código de `a11y-fixer` = **greenfield**, no hereda; (3) repo archivado, **resto acotado al paquete npm** (sigue publicado, requiere `npm login`); (4) `a11y-playground` archivado.
+- **`projects/PROYECTOS.md`:** `a11y-playground` movido a ARCHIVADOS; `a11y-fixer` con la nota de repo archivado; `kanam-fixer` con repo creado (privado) y alcance definido.
+- **`projects/a11y-playground/.knowledge/`** (BRIEF + STATUS): marcados como archivados, con la dependencia hacia `a11y-fixer` anotada como ya no aplicable.
+
+### Added
+- **Repo `gonzoblasco/kanam-fixer` creado** (privado, 2026-09-15) para reservar el nombre. Sin código todavía - el repo del proyecto se puebla en el slice S1. El nombre sigue libre en npm (404).
+
+### Notes
+- **Superficies públicas tocadas en esta entrada:** archivado de 2 repos + creación de 1. Todo con OK explícito de Gonzo.
+- **Sin tocar a propósito:** el paquete npm `@gonzoblasco/a11y-fixer@0.6.0` (requiere credencial que no está en la máquina) y el pinned del perfil de GitHub (decisión de vidriera, de Gonzo).
+
+---
+
 ## [2026-09-15] - kanam-fixer: material de lanzamiento guardado (DISTRIBUTION.md)
 
 ### Added

@@ -1,3 +1,5 @@
+**Estado:** ARCHIVADO (2026-09-15). Nunca pasó de M0 - el repo en GitHub tenía un solo commit de scaffold, size 0, cero código.
+
 # BRIEF: a11y-playground
 
 **Nombre:** a11y-playground
@@ -7,7 +9,7 @@
 **Diferenciador:** Fusiona el nicho de a11y con la capacidad de la IA para procesar y mejorar contenido.
 **Requerimientos mínimos:** Frontend (React/TS), API (Edge Function simulada para la lógica de procesamiento), DB (para persistir reportes), Algoritmo de escaneo DOM.
 **Dependencias conocidas:**
-- `a11y-fixer` (código fuente será fuente de inspiración para la lógica).
+- `a11y-fixer` (código fuente será fuente de inspiración para la lógica). **Nota 2026-09-15:** `a11y-fixer` fue archivado el 2026-09-14, y este proyecto se archivó con él. La dependencia ya no aplica.
 - Memoria de decisión en el workspace.
 **Limita-tions:** La versión 0.1.0 NO hará escaneo real de DOM en producción; el escaneo inicial será un análisis de metadatos y estructura HTML base.
 **Next Step:** Implementar la primera *feature* (ej. validación de contrastes de color básicos).

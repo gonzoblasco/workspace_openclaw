@@ -54,9 +54,11 @@ Para optimizar la "señal" del portfolio, se toman las siguientes decisiones:
 **Consecuencia inmediata:** el pilar **Accesibilidad como Diferenciador** queda **sin ancla formal** hasta que el alcance de `kanam-fixer` se defina y se acepte. **No se asume** que `kanam-fixer` hereda el rol de "engine de fixes de accesibilidad": eso es justamente lo que falta decidir.
 
 **Pendientes para cerrar esta enmienda** (seguimiento en la DB de memoria, todo id=54):
-1. Definir alcance y propuesta de valor de `kanam-fixer` (que resuelve, para quién).
-2. Decidir la relación con el código de `a11y-fixer`: heredar, portar o greenfield.
-3. Archivar el repo `gonzoblasco/a11y-fixer` en GitHub (hoy `isArchived=false`) y decidir el destino del paquete npm `@gonzoblasco/a11y-fixer@0.6.0`.
-4. Resolver `a11y-playground`, que declara depender de `a11y-fixer` como base.
+1. ~~Definir alcance y propuesta de valor de `kanam-fixer`~~ - **RESUELTO 2026-09-14/15:** alcance definido en `kanam-fixer/.knowledge/BRIEF.md` + `ROADMAP.md` (asercion sobre el anuncio del lector de pantalla; virtual en CI, real en local). Direccion **confirmada por Gonzo** el 2026-09-15.
+2. ~~Decidir la relación con el código de `a11y-fixer`: heredar, portar o greenfield~~ - **RESUELTO:** **greenfield**. El BRIEF lo declara explicito: "No hereda su codigo ni su alcance". Si algo del codigo sirve, se porta con decision explicita, no por inercia.
+3. ~~Archivar el repo `gonzoblasco/a11y-fixer` en GitHub~~ - **HECHO 2026-09-15:** `isArchived=true` (mas banner de archivo en el README y en los 6 headers de docs). **Pendiente acotado:** el paquete npm `@gonzoblasco/a11y-fixer@0.6.0` sigue publicado - deprecarlo requiere `npm login` y no hay credencial en la maquina.
+4. ~~Resolver `a11y-playground`~~ - **RESUELTO 2026-09-15: archivado.** Era un scaffold que nunca paso de M0: repo privado creado el 2026-08-30, **un solo commit** (`chore: initial scaffold`), **size 0** (solo `.gitignore` + README, cero codigo). Su unica dependencia declarada era `a11y-fixer`, hoy archivado. Se archivo el repo en GitHub (`isArchived=true`).
+
+**Estado de la enmienda:** los 4 pendientes cerrados (el punto 3 con el resto acotado a npm). El pilar *Accesibilidad* tiene ancla candidata formalizada en `kanam-fixer` con alcance ya definido; la validacion real del ancla sigue siendo el criterio de NORTH.md Horizonte 1 (usuarios que no sean Gonzo).
 
 **Nota sobre la seccion 4:** la justificación para archivar `accessible-ui` invocaba a `a11y-fixer` como el proyecto que representaba mejor el expertise a11y. Esa premisa queda **suspendida** junto con el ancla: se conserva el texto original por trazabilidad, pero la razón ya no aplica tal como está escrita.
