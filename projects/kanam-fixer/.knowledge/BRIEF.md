@@ -1,6 +1,6 @@
 # BRIEF - kanam-fixer
 
-**Estado:** Definicion (2026-09-14). Proyecto **nuevo, greenfield** - no hay codigo.
+**Estado:** S1 completado (2026-09-15). Esqueleto y tooling en pie, sin logica de a11y todavia. Repo local del proyecto inicializado (commit `6044856`), **sin remoto** - crearlo en GitHub es accion publica, requiere OK.
 **Primer ciclo:** 0.0.1
 **Pilar:** Accesibilidad como diferenciador (ADR-001, seccion 6: candidato a ancla, alcance en definicion)
 **Sucede a:** `a11y-fixer` (archivado 2026-09-14). **No hereda su codigo ni su alcance.**
