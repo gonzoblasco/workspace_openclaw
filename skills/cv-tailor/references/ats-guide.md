@@ -19,7 +19,7 @@ Guía de compatibilidad con Applicant Tracking Systems.
 | Check | Standard |
 |---|---|
 | Section titles | "Work Experience", "Education", "Projects", "Skills" |
-| Date format | Consistent: "Jan 2023 – Jun 2024" |
+| Date format | Consistent: "Jan 2023 - Jun 2024" |
 | Company names | Full names, not abbreviations |
 | Contact info | Name, phone, email at top |
 | File naming | "FirstName_LastName_Role_Resume.pdf" |
