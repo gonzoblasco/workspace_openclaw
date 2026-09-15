@@ -60,6 +60,7 @@ Este ADR es ese paso 3. Existe **porque el precedente no era razon suficiente**.
 5. **Los componentes de shadcn son codigo propio:** se editan, se traducen (los strings de UI van en espanol) y **se mantienen a mano**. Si shadcn mejora upstream, no llega solo.
 6. **Ningun ADR, doc o comentario vuelve a citar Radix/shadcn como "el stack" sin apuntar a este ADR.**
 7. **La accesibilidad no se delega:** Radix cubre roles, foco, teclado basico y anuncios de modal. **Quedan nuestros** el contenido de los nombres, el contraste, la jerarquia, los anuncios live, los errores de formulario y el orden de tabulacion del layout.
+8. **Generacion de componentes shadcn (2026-09-15):** proyecto nuevo = generacion **actual** del CLI de shadcn, siempre. Componente existente = **no se toca** salvo que entre en un cambio real (verificacion del 14/09: `kanam-mind` quedo en la generacion vieja `forwardRef`+`displayName` y `kanam-forge` en la nueva `data-slot`; es el momento de vida de cada repo, no una deuda por saldar). Convivencia de generaciones es aceptable; lo que no se hace es re-generar componentes viejos por estetica.
 
 ### Disparadores de revision (cuando se reabre este ADR)
 
