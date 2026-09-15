@@ -2,6 +2,7 @@
 
 **Fecha:** 2026-08-28
 **Estado:** Aceptado
+**Ultima enmienda:** 2026-09-14 (ver seccion 6)
 **Contexto:** Definición de la narrativa profesional para búsqueda laboral y posicionamiento de marca personal.
 
 ## 1. El Problema
@@ -36,3 +37,26 @@ Para optimizar la "señal" del portfolio, se toman las siguientes decisiones:
 - El portfolio presenta una narrativa coherente: **Infraestructura $\rightarrow$ Accesibilidad $\rightarrow$ Privacidad**.
 - Los proyectos ancla cuentan con READMEs pulidos, documentación de decisiones (ADRs) y tests verdes.
 - La actividad de LinkedIn se alinea con los nichos de estos tres pilares.
+
+## 6. Enmienda - 2026-09-14
+
+**Estado:** Aceptada. Esta seccion modifica la seccion 3. **El texto original se conserva sin cambios** (el historial de decisiones importa), pero la tabla de anclas vigente es la de acá abajo.
+
+**Decision (Gonzo, 2026-09-14):** `a11y-fixer` **queda archivado** y su sucesor es **`kanam-fixer`, un proyecto nuevo** - no un renombre del anterior. Palabras textuales: "ya no se llama a11y-fixer.. esta ya queda archivada.. es un proyecto nuevo, el kanam-fixer".
+
+| Proyecto | Pilar | Estado |
+| :--- | :--- | :--- |
+| **kanam-forge** | Infraestructura AI | Ancla vigente, sin cambios. |
+| **kanam-pulse** | Local-First / Privacidad | Ancla vigente, sin cambios. |
+| **a11y-fixer** | Especialización a11y | **Archivado (2026-09-14).** Sale de la tabla de anclas. |
+| **kanam-fixer** | Especialización a11y | **Candidato a ancla.** Alcance y propuesta de valor **sin definir** a la fecha de esta enmienda. |
+
+**Consecuencia inmediata:** el pilar **Accesibilidad como Diferenciador** queda **sin ancla formal** hasta que el alcance de `kanam-fixer` se defina y se acepte. **No se asume** que `kanam-fixer` hereda el rol de "engine de fixes de accesibilidad": eso es justamente lo que falta decidir.
+
+**Pendientes para cerrar esta enmienda** (seguimiento en la DB de memoria, todo id=54):
+1. Definir alcance y propuesta de valor de `kanam-fixer` (que resuelve, para quién).
+2. Decidir la relación con el código de `a11y-fixer`: heredar, portar o greenfield.
+3. Archivar el repo `gonzoblasco/a11y-fixer` en GitHub (hoy `isArchived=false`) y decidir el destino del paquete npm `@gonzoblasco/a11y-fixer@0.6.0`.
+4. Resolver `a11y-playground`, que declara depender de `a11y-fixer` como base.
+
+**Nota sobre la seccion 4:** la justificación para archivar `accessible-ui` invocaba a `a11y-fixer` como el proyecto que representaba mejor el expertise a11y. Esa premisa queda **suspendida** junto con el ancla: se conserva el texto original por trazabilidad, pero la razón ya no aplica tal como está escrita.

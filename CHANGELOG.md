@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - ADR-001 enmendado: a11y-fixer archivado, kanam-fixer como proyecto nuevo
+
+### Changed
+- **`projects/portfolio-strategy/.knowledge/ADR-001-portfolio-strategy.md` - sección 6 agregada (enmienda formal).** Decisión de Gonzo: `a11y-fixer` queda **archivado** y su sucesor es **`kanam-fixer`, un proyecto nuevo** (no un renombre). El **texto original de la sección 3 se conserva sin cambios** - la enmienda agrega, no reescribe (el historial de decisiones importa). Se declara explícito que **no se asume** que `kanam-fixer` hereda el rol de engine de fixes a11y: eso es lo que falta decidir. Consecuencia: el pilar **Accesibilidad como Diferenciador queda sin ancla formal** hasta que el alcance se defina.
+- **`docs/NORTH.md` - 5 referencias alineadas.** El conteo de la constelación pasó de "3 anclas" a "2 anclas vigentes + 1 en transición"; el Horizonte 1 y la constelación ahora nombran `kanam-fixer` (alcance sin definir) en lugar de `a11y-fixer`; la dirección de Comunidad se reescribió para no afirmar que kanam-fixer ya es open source con usuarios.
+- **`docs/ROADMAP.md` 2.1 - acción de enmienda marcada como hecha** + acción abierta nueva: definir el alcance de `kanam-fixer`, que es lo que desbloquea reasignar el ancla del pilar Accesibilidad.
+- **`projects/PROYECTOS.md` - `a11y-fixer` movido a ARCHIVADOS** (con la nota de que el repo en GitHub sigue `isArchived=false`), y `kanam-fixer` listado como proyecto nuevo sin repo aún. Fecha del índice actualizada.
+
+### Notes
+- **`memory/HANDOFF.md` NO se tocó a propósito:** es un snapshot fechado (2026-08-30). Reescribir el estado de proyectos de un handoff histórico falsifica el registro - se aplica el mismo criterio que "no editar el body de un PR para limpiarlo".
+- **Dato verificado (no asumido):** el repo `gonzoblasco/a11y-fixer` sigue con `isArchived=false` en GitHub. Archivarlo requiere OK explícito de Gonzo (acción en superficie pública).
+- **Seguimiento:** todo id=54 en la DB de memoria (`project=kanam-fixer`) con los 4 pendientes: alcance, relación con el código, archivado del repo + paquete npm, y destino de `a11y-playground`.
+
+---
+
 ## [2026-09-14] - 0.1: swap de version verificado y cierre de items abiertos
 
 ### Changed

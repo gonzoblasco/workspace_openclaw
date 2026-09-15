@@ -1,6 +1,6 @@
 # PROYECTOS.md - Índice Maestro Universal
 
-**Última actualización:** 2026-09-02
+**Última actualización:** 2026-09-14
 
 > **Regla de oro:** GitHub es la fuente de la verdad. Cada proyecto vive en su propio repo (sin submódulos ni repos dentro del repo). El workspace (`~/.openclaw/workspace`) solo contiene config, memoria y skills. Este archivo es un **índice universal**: lista todos los proyectos de Gonzo en GitHub, sin importar en qué máquina estén clonados (Gonzo trabaja entre dos computadoras y no siempre el mismo proyecto en cada una).
 >
@@ -19,7 +19,7 @@
 | **kanam-solitaires** | Colección de solitarios PWA (Klondike, Spider, FreeCell, Pyramid). | pub | gonzoblasco/kanam-solitaires |
 | **soporteml** | CRM multi-tenant para ML sellers (v1). | pub | gonzoblasco/soporteml |
 | **soporteml-v4** | CRM multi-tenant para ML sellers (reinicio con diseño avanzado). | PRIV | gonzoblasco/soporteml-v4 |
-| **a11y-fixer** | Accessibility audit bot para PRs de GitHub (axe-core). | pub | gonzoblasco/a11y-fixer |
+| **kanam-fixer** | Proyecto nuevo (2026-09-14), sucesor de `a11y-fixer`. Alcance por definir. | pub | (repo por crear) |
 | **quedamos** | App PWA de matching para salidas. | PRIV | gonzoblasco/quedamos |
 | **create-stack** | Scaffolder opinado Next.js. | pub | gonzoblasco/create-stack |
 | **ai-developer-stack** | Skills de ingeniería con IA. | pub | gonzoblasco/ai-developer-stack |
@@ -40,6 +40,7 @@
 | **cabala** | Proyecto cabala. | pub | gonzoblasco/cabala |
 | **health-tracker** | PWA de monitoreo de salud personal. | pub | gonzoblasco/health-tracker |
 | **kanam-mind** | Segundo cerebro local-first con IA. Timeline personal + resumen IA diario. IndexedDB + Ollama local. Archivado del portfolio (reemplazado por kanam-pulse como ancla Local-First). | pub | gonzoblasco/kanam-mind |
+| **a11y-fixer** | Accessibility audit bot para PRs de GitHub (axe-core). Archivado 2026-09-14 (decisión de Gonzo); su sucesor es `kanam-fixer`. El repo en GitHub sigue activo (`isArchived=false`) - archivarlo está pendiente. | pub | gonzoblasco/a11y-fixer |
 
 ---
 

@@ -122,6 +122,8 @@
 - **Señal de listo**: una lista corta de proyectos "estrella" con su rol en el pitch, documentada.
 - **Acciones**:
   - [x] Definir los proyectos ancla (ADR-001: kanam-forge, a11y-fixer, kanam-pulse). SoporteML queda EXCLUIDO - decisión cerrada, no se reabre.
+  - [x] **Enmendar ADR-001 tras archivar `a11y-fixer` (2026-09-14):** sección 6 agregada, sin borrar el original. `kanam-fixer` queda como **candidato a ancla con alcance sin definir**; el pilar *Accesibilidad* queda sin ancla formal hasta entonces. Seguimiento: todo id=54 en la DB de memoria.
+  - [ ] **Definir el alcance de `kanam-fixer`** (qué resuelve, para quién) - es lo que desbloquea reasignar el ancla del pilar Accesibilidad.
   - [x] Decidir destino de accessible-ui y create-with-ai (ADR-001, sección 4: ambas archivadas).
   - [x] Documentar la decisión en un ADR (ADR-001, 2026-08-28).
 
