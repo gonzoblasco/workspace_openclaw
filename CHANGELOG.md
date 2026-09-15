@@ -6,6 +6,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Evaluacion de arquitectura por capas para Kanam OS
+
+### Added
+- **`docs/architecture/kanam-os-layers-evaluacion.md`** - evaluacion de la arquitectura por capas propuesta por Gonzo (frontend -> BFF -> orquestacion IA -> datos -> workers), contrastada contra el estado real del sistema. Conclusion: 4 de 5 capas ya existen; el gap real es la ejecucion sin cola durable (SIGKILL de Qwen a ~3 min) y los prompts sin versionar. Se rechazan explicitamente monorepo, migracion a Postgres/pgvector, Redis y BullMQ/Celery por no resolver ningun problema a esta escala (regla 2026-09-14: el precedente no es motivo). Incluye plan de 6 fases y 5 decisiones abiertas para ADR.
+
+### Notes
+- **Verificacion previa con fuentes reales:** config de OpenClaw (loopback:18789, auth token), `ollama list` (3 locales + 8 cloud), compat OpenAI de Ollama (`/v1/models` operativo), RAG (SQLite + `qwen3-embedding:0.6b` 1024 dims), `model-router.json` (6 rutas), grep de keys en frontend (0 resultados), `prompts/` (1 solo archivo).
+- **Nombre acunado por Gonzo:** "Kanam OS" designa el conjunto del sistema (workspace + gateway + pipeline + memoria + constelacion), alineado con la capa 1 de `docs/NORTH.md`.
+- Escaneado con `scripts/check_em_dash.py`: OK.
+- No se tomo ninguna decision de arquitectura: el doc deja 5 decisiones abiertas que, al cerrarse, merecen ADR.
+
 ## [2026-09-15] - Fix del guard de idempotencia en memory-end-session.py
 
 ### Fixed
