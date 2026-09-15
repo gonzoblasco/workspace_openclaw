@@ -54,6 +54,9 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-046 | [Revert del Motor del Pipeline A/B - DeepSeek V4 Flash (por costo)](./ADR-046-motor-pipeline-revert-deepseek-v4-flash.md) | workspace |
 | ADR-047 | [Kanam Design System como identidad transversal de todo producto](./ADR-047-kanam-design-system.md) | workspace |
 | ADR-048 | [Radix/shadcn como capa de UI - adopcion con criterio, no por precedente](./ADR-048-shadcn-radix-stack-ui.md) | workspace |
+| ADR-049 | [Claude Code como motor del pipeline A/B (Qwen Code a fallback)](./ADR-049-claude-code-motor-pipeline-ab.md) | workspace |
+| ADR-050 | [La memoria de Kanam OS sigue en SQLite local - umbral de migracion a Postgres/Supabase](./ADR-050-memoria-sqlite-local-umbral-migracion.md) | workspace |
+| ADR-051 | [Regla de extraccion de lib/ai compartido (construir solo con divergencia real)](./ADR-051-regla-lib-ai-shared.md) | workspace |
 
 ## Formato
 

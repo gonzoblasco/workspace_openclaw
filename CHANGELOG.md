@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - ADR-049/050/051: motor del pipeline, umbral de datos, regla de lib/ai
+
+### Added
+- **ADR-049 - Claude Code como motor del pipeline A/B (Qwen Code a fallback).** Documenta como decision lo que la practica ya venia haciendo desde ~2026-09-11: los ciclos reales (kanam-tetris, duelos atoi, harness) corren con **Claude Code 2.1.260** (embebido en Claude-3p) apuntando al gateway Ollama. Cierra la deriva: `docs/SETUP.md` y la skill seguian afirmando que Qwen Code era el estandar.
+- **ADR-050 - La memoria de Kanam OS sigue en SQLite local, con umbral de migracion a Postgres/Supabase.** Fija con numeros (115 vectores, 11 MB) que no migra hoy, y el umbral objetivo para reabrir: concurencia real, ~1 GB, >100k vectores con filtros, acceso remoto, multi-tenant. Senala que el limite que llega primero es la **higiene de git** de `memory.db`, no el rendimiento.
+- **ADR-051 - Regla de extraccion de `lib/ai` compartido.** No se construye anticipado: solo con 4 condiciones (2+ proyectos del mismo lenguaje, divergencia real, consumidor en el ciclo, refactor same-behavior). TS y Python no comparten paquete.
+- **`docs/adr/README.md`** con los 3 ADRs en el indice.
+
+### Changed
+- **`docs/SETUP.md`:** seccion de motor del pipeline reescrita para reflejar ADR-049 (Claude Code estandar, Qwen fallback, ruta fragil del ejecutable de Claude-3p).
+- **`skills/agent-orchestration-pipeline/SKILL.md`:** alineada con ADR-049. El comando base ahora es Claude Code headless; Qwen pasa a fallback. Mirror `.github/skills/` sincronizado.
+
+### Notes
+- Los 3 cierran decisiones que vivian solo en la practica o la conversacion; con ADR en el repo no se re-abren sin evidencia nueva (regla de oro del ADR).
+- ADR-049 no pisa ADR-040/041/045/046: esos deciden *que* modelo; el 049 solo *en que harness* corre.
+
 ## [2026-09-15] - Fix del gateway-jobs-watcher ciego (bug silencioso del 08/09)
 
 ### Fixed

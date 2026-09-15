@@ -26,14 +26,15 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 
 ## Pipeline de agentes (programación)
 
-- **Motor estándar:** Qwen Code vía Ollama. Comando: `ollama launch qwen --model deepseek-v4-flash:cloud -- -p "<tarea>" -y`
-- **Claude Code** (alternativa para SIGKILL/casos largos):
-  - `ANTHROPIC_BASE_URL=http://localhost:11434` + `ANTHROPIC_AUTH_TOKEN` + settings.json de permisos
-  - `claude -p "<tarea>" --model <modelo>`
-  - NO usar `ollama launch claude --model` (bug: rechaza el flag como "unknown option")
-  - Requiere Claude Code >= 2.x (la 0.2.18 crashea con modelos de razonamiento)
-- **SIGKILL:** los procesos de Qwen mueren en tareas largas (~3 min) - usar prompts cortos, relanzar si muere.
-- Detalle en la skill `agent-orchestration-pipeline`.
+- **Motor estándar (ADR-049):** Claude Code (embebido en Claude Desktop 3p, >= 2.x) apuntando al gateway Ollama, con el modelo dinámico de Ollama. Comando:
+  - `ANTHROPIC_BASE_URL=http://127.0.0.1:11434` (o 11435) + `ANTHROPIC_AUTH_TOKEN=<cualquier valor>` + `claude -p "<tarea>" --model <modelo>` headless.
+  - El ejecutable: `~/Library/Application Support/Claude-3p/claude-code/2.1.260/claude.app/Contents/MacOS/claude` (fragil a cambios de version, verificar con `ls`).
+  - NO usar `ollama launch claude --model` (bug: rechaza el flag como "unknown option").
+  - Requiere Claude Code >= 2.x (la 0.2.18 no maneja el bloque thinking de los modelos de razonamiento).
+  - Warnings de `unrecognized_model` por modelos custom = ruido, no bloquean.
+- **Qwen Code:** queda como fallback o segundo par de ojos, no como estandar (ADR-049). Para SIGKILL/sesiones largas, Claude maneja mejor que Qwen.
+- **El modelo que carga el harness** se elige por tipo de tarea (ADR-040): `deepseek-v4-flash:cloud` default/motor, `glm-5.3-flash` escalada multimodal, `kimi-k2.7-code` nivel superior.
+- Detalle en la skill `agent-orchestration-pipeline` (que aun no refleja ADR-049; al tocarla, alinearla).
 
 ## Scripts del workspace
 
