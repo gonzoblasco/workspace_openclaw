@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Todo #32: kanam-pulse core migrado de JS a TypeScript
+
+### Changed
+- **kanam-pulse `packages/core` JS -> TS completo** (commit `597b7ac` en gonzoblasco/kanam-pulse): 15 modulos src + 8 tests tipados.
+  - Recon previo (todo #32): el clon local `projects/kanam-pulse` esta corrupto (remote apunta a workspace_openclaw, sin packages/) - se trabajo sobre el repo real clonado en aislamiento.
+  - Contrato de resolucion corregido: core ahora emite a `packages/core/dist/` (el tsconfig heredaba outDir a la raiz) y `main`/`exports` -> `dist/index.js` compilado, porque Node no carga `src/index.ts` en runtime (verificado RESOLVE OK).
+  - 2 fixes TS2783 (spread redundante en disk/memory: `{usedPct, ...stats}` -> `{...stats}`) + cast de exec via `unknown` - todos behavior-identicos.
+  - Agregado `@types/node` + script build (tsc) a core.
+
+### Fixed
+- **server importa `@kanam-pulse/core` por nombre**: verificado que resuelve tras el cambio a dist (build server exit 0, tests 21/21).
+
+### Notes
+- **Verificado end-to-end:** core 61/61, server 21/21, web 36/36, `npm test` del monorepo verde, `import('@kanam-pulse/core')` -> RESOLVE OK.
+- El clon en aislamiento se limpio con trash; el clon local corrupto en `projects/kanam-pulse` queda (fuera de alcance, anotado).
+- Todo #32 -> done en la DB.
+
 ## [2026-09-15] - Todo #38: cliente MCP para Lovable - decidido (nativo de OpenClaw)
 
 ### Changed
