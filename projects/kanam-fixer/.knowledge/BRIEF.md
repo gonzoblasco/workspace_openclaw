@@ -154,6 +154,8 @@ Ese comando escribe directo en la base de privacidad del sistema (`TCC.db` via `
 3. ~~`a11y-fixer`~~ **HECHO:** repo de GitHub archivado (verificado `isArchived=true`, 2026-09-15 12:46 UTC).
 4. ~~Paquete npm `@gonzoblasco/a11y-fixer@0.6.0`~~ **DECIDIDO (2026-09-15):** queda **publicado a proposito, sin deprecar**. Razon de Gonzo: "puede servir de entrada a alguien quien llegue a el por error". Verificado: sigue publicado (`0.6.0`), sin flag de deprecacion, 28 descargas en el ultimo mes.
 5. ~~`a11y-playground`~~ **DECIDIDO (2026-09-15):** **archivado**. Verificado: `isArchived=true`, `size=0KB`, un solo commit, sin descripcion (era un scaffold vacio).
-6. **S5 - cierre del ciclo:** decidir a la luz del resultado negativo de S4. La apuesta se sostiene para bugs de **atributos y composicion** (S2) y no para los de **timing y viewport** (S4). Lectura propuesta en `STATUS.md`: el valor se invierte hacia el **plano real** como unico juez de esa clase.
+6. ~~S5 - cierre del ciclo~~ **HECHO (2026-09-15):** ciclo `0.0.1` **cerrado**. La apuesta se sostiene para bugs de **atributos y composicion** (S2) y no para los de **timing y viewport** (S4, que ademas encontro falsos verdes ahi). Lectura adoptada: el valor se invierte hacia el **plano real** como unico juez de esa clase. **Decision: no abrir `0.0.2`** hasta que S3 se pueda cerrar.
+
+**Abierto, y es una espera, no una tarea:** Guidepup publique el asset de VoiceOver para Darwin 27 ([issue #149](https://github.com/guidepup/guidepup/issues/149), ya reportado).
 
 Seguimiento en la DB de memoria: todo **id=54**.

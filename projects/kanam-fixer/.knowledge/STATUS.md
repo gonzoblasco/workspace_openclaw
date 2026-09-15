@@ -1,8 +1,7 @@
 # STATUS - kanam-fixer
 
 **Actualizado:** 2026-09-15
-**Ciclo:** 0.0.1
-**Slice actual:** S4 completado con **resultado negativo**. S5 (cierre del ciclo) pendiente.
+**Ciclo:** 0.0.1 **CERRADO**. Decision: no abrir `0.0.2` todavia (depende de S3, que depende de upstream).
 
 ## Donde estamos
 
@@ -10,12 +9,23 @@
 |---|---|---|
 | S1 - Esqueleto y decisiones | **Completado** | Commit `6044856`. Terna en verde, hook activo. |
 | S2 - La asercion, solo virtual | **Completado** | Commit `fb931ea`. 7 tests. Criterio de salida verificado. |
-| S3 - VoiceOver real en local | **Codigo listo, criterio NO verificado** | Commits `b98bf1b` + `a080a27`. Blocker: **upstream** - Guidepup 0.34.0 no tiene asset de VoiceOver para Darwin 27 (ver seccion S3). Diferido. |
+| S3 - VoiceOver real en local | **Bloqueado por upstream** | Commits `b98bf1b` + `a080a27`. Reportado en guidepup/guidepup#149. |
 | S4 - El caso testigo (#4109) | **Completado - NO reproduce** | Commit `5090278`. 8 tests. Hallazgo abajo. |
-| S5 - Cierre del ciclo | Pendiente | Requiere decision de Gonzo (ver al final). |
+| S5 - Cierre del ciclo | **Completado** | Commit `88ca9ff`. README con la evidencia + `HANDOFF.md`. |
 
-**Repo publico:** https://github.com/gonzoblasco/kanam-fixer (`5090278`). Verificado que `.knowledge/` no se filtra.
+**Repo publico:** https://github.com/gonzoblasco/kanam-fixer (`88ca9ff`). Verificado que `.knowledge/` no se filtra.
 **Terna:** 17 passed, 4 skipped (los 4 son el plano real, con su causa impresa).
+
+## S5: el cierre del ciclo
+
+- **README reescrito para abrir por lo que el ciclo ENCONTRO**, no por la promesa. Tabla de que clases de bug captura el plano virtual (atributos: si, con las frases observadas) y cuales no (timing y viewport). El caso testigo quedo etiquetado como **hueco del ecosistema**, no como demostracion de que esta herramienta lo cubra.
+- **Corregido un ejemplo enganoso:** el README mostraba `import from 'kanam-fixer'` como si fuera instalable, cuando el paquete es `private: true` y no esta en npm (verificado: 404).
+- **ADR-0002 actualizado:** las filas de la matriz ya no dicen "Previsto en S3". La version del plano real **la determina el asset que Guidepup publique** para la plataforma del host: dependencia dura, ahora hecho medido.
+- **`HANDOFF.md` nuevo:** donde vive cada cosa, el blocker y como se cierra, la trampa de debugging, las decisiones tomadas y lo que no hay que hacer.
+
+### La decision sobre 0.0.2
+
+**No se abre todavia.** Y la razon es concreta, no una postergacion: el siguiente paso del proyecto depende de **S3**, y S3 depende de que Guidepup publique un asset para Darwin 27. Abrir `0.0.2` hoy seria invertir sobre la parte que resulto **mas fragil** sin resolverla primero.
 
 ---
 
@@ -146,23 +156,34 @@ En los tres casos freno un commit que no estaba limpio.
 
 ## Proximo paso
 
-**S5 (cierre del ciclo), y requiere una decision de Gonzo.** El ROADMAP dice que si la apuesta no se sostiene, se descarta antes de invertir mas.
+**El ciclo 0.0.1 esta cerrado. No se abre `0.0.2` todavia.** La razon es concreta: el siguiente paso del proyecto depende de **S3**, y S3 depende de que Guidepup publique un asset de VoiceOver para Darwin 27. Invertir sobre la parte que resulto mas fragil, sin resolverla primero, es exactamente lo que el ciclo `0.0.1` existia para evitar.
 
-Los datos dicen algo mas matizado que "se sostiene" o "no se sostiene":
+### Cuando se destraba
 
-- **Se sostiene** para bugs de **atributos y composicion**: S2 lo demostro con evidencia.
-- **No se sostiene** para bugs de **timing y derivacion del viewport**: S4 lo demostro con evidencia, y ademas encontro que el plano virtual puede dar **falsos verdes** ahi.
+| Evento | Que pasa |
+|---|---|
+| Guidepup publica el asset de Darwin 27 | Correr `npm test`. Los 4 skips se vuelven tests reales. **Sin cambiar codigo.** Ese es el cierre de S3. |
+| Se corre el plano real en una maquina con Darwin 21-25 | Igual: `npm test` y los skips se activan. |
+| Gonzo decide no esperar a upstream | Abrir `0.0.2` declarando la limitacion en la matriz (ADR-0002) y apoyarse en el plano virtual **solo** para bugs de atributos. |
 
-**Mi lectura:** la apuesta original ("misma asercion, dos planos") sigue en pie, pero **invertida**: el valor no esta en el plano virtual como sustituto, sino en el **plano real como unico juez** de esa clase, con el virtual como red barata para lo demas. Eso cambia el peso de S3: pasa de "cobertura extra" a **nucleo del producto**.
+### Lo que el ciclo dejo claro
 
-**Ademas, `DISTRIBUTION.md`** estaba congelado esperando la evidencia de S4: si reproducia, se destrababa; si no, se descartaba. **No reprodujo.** Queda sin destrabar, a la espera de la decision de S5.
+- **Se sostiene** para bugs de **atributos y composicion** (S2, con las frases observadas).
+- **No se sostiene** para **timing y derivacion del viewport** (S4), y ahi el plano virtual puede dar **falsos verdes**.
+- **La apuesta sigue en pie, invertida:** el valor no esta en el virtual como sustituto, sino en el **real como unico juez** de esa clase, con el virtual como red barata para lo demas. S3 pasa de "cobertura extra" a **nucleo del producto**, y a la vez resulto ser la parte fragil.
+
+### `DISTRIBUTION.md`
+
+Estaba congelado esperando la evidencia de S4: si reproducia, se destrababa; si no, se descartaba. **No reprodujo.** Queda **sin destrabar**, y esa es la decision, no un pendiente olvidado.
 
 ## Pendientes de decision (de Gonzo)
 
 1. ~~Crear el repo y hacerlo publico~~ **HECHO:** `gonzoblasco/kanam-fixer`, publico.
 2. ~~Archivar `a11y-fixer`~~ **HECHO:** `isArchived=true` (2026-09-15 12:46 UTC).
-3. ~~Paquete npm `@gonzoblasco/a11y-fixer@0.6.0`~~ **DECIDIDO (2026-09-15):** queda **publicado a proposito, sin deprecar**. Razon textual de Gonzo: "puede servir de entrada a alguien quien llegue a el por error". Verificado: sigue publicado (`0.6.0`), sin flag de deprecacion, 28 descargas en el ultimo mes. `kanam-fixer` sigue libre en npm.
+3. ~~Paquete npm `@gonzoblasco/a11y-fixer@0.6.0`~~ **DECIDIDO (2026-09-15):** queda **publicado a proposito, sin deprecar**. Razon textual de Gonzo: "puede servir de entrada a alguien quien llegue a el por error". Verificado: sigue publicado (`0.6.0`), sin flag de deprecacion, 28 descargas en el ultimo mes. `kanam-fixer` sigue libre en npm y **no se publica** (el paquete es `private: true`).
 4. ~~`a11y-playground`~~ **DECIDIDO (2026-09-15):** **archivado**. Verificado: `isArchived=true`, y era un scaffold vacio (1 commit, `size=0KB`, sin descripcion).
-5. **S5:** decidir el cierre del ciclo a la luz del resultado negativo de S4 (ver arriba).
+5. ~~S5 - cierre del ciclo~~ **HECHO (2026-09-15):** ciclo cerrado con evidencia. Decision: **no abrir `0.0.2`** hasta que S3 se pueda cerrar. Ver "Proximo paso".
+
+**Abierto, y es una espera, no una tarea:** Guidepup publique el asset de Darwin 27 ([issue #149](https://github.com/guidepup/guidepup/issues/149), ya reportado).
 
 Seguimiento en la DB de memoria: todo id=54.
