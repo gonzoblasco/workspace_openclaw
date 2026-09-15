@@ -25,6 +25,18 @@ set -uo pipefail
 
 STATE_FILE="${PIPELINE_STATE_FILE:-pipeline-state.json}"
 MAX_ATTEMPTS="${PIPELINE_MAX_ATTEMPTS:-3}"
+# Sanitize the cap: a non-numeric or <1 value leaks `integer expression
+# expected` and silently disables the retry ceiling.
+case "$MAX_ATTEMPTS" in
+  ''|*[!0-9]*)
+    echo "PIPELINE_MAX_ATTEMPTS='$MAX_ATTEMPTS' invalido: usando 3." >&2
+    MAX_ATTEMPTS=3
+    ;;
+esac
+if [ "$MAX_ATTEMPTS" -lt 1 ]; then
+  echo "PIPELINE_MAX_ATTEMPTS=$MAX_ATTEMPTS invalido (minimo 1): usando 3." >&2
+  MAX_ATTEMPTS=3
+fi
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 TRACK="$SCRIPT_DIR/pipeline-track.sh"
 
@@ -34,10 +46,21 @@ usage() {
 }
 
 read_state() {
-  if [ -f "$STATE_FILE" ]; then
+  if [ -f "$STATE_FILE" ] && [ -s "$STATE_FILE" ]; then
     cat "$STATE_FILE"
   else
     echo '{"fase":"","units":[]}'
+  fi
+}
+
+# A corrupt state file must fail loud: reading it as an empty queue would
+# drop every pending unit without a trace.
+require_valid_state() {
+  if [ -f "$STATE_FILE" ] && [ -s "$STATE_FILE" ]; then
+    if ! jq -e . "$STATE_FILE" >/dev/null 2>&1; then
+      echo "Estado corrupto: '$STATE_FILE' no es JSON valido. Abortando." >&2
+      exit 2
+    fi
   fi
 }
 
@@ -66,6 +89,15 @@ require_unit() {
 orphan_names() {
   read_state | jq -r '.units[] | select(.state == "running" and (.pid != null)) | (.name + "\t" + (.pid | tostring))' 2>/dev/null |
   while IFS=$'\t' read -r name pid; do
+    # Only a positive integer is a real pid. `kill -0 0` and `kill -0 -1`
+    # succeed (process group / all processes), so such a unit would look
+    # permanently alive and never be requeued. Non-numeric pids are dead.
+    case "$pid" in
+      ''|*[!0-9]*) echo "$name"; continue ;;
+    esac
+    if [ "$pid" -le 0 ]; then
+      echo "$name"; continue
+    fi
     if ! kill -0 "$pid" 2>/dev/null; then
       echo "$name"
     fi
@@ -74,6 +106,12 @@ orphan_names() {
 
 CMD="${1:-}"
 shift || true
+
+# Fail loud on a corrupt state file for every command that reads it.
+# enqueue is excluded: it rewrites the plan and is the recovery path.
+if [ "$CMD" != "enqueue" ]; then
+  require_valid_state
+fi
 
 case "$CMD" in
   enqueue)

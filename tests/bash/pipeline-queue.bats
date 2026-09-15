@@ -232,3 +232,65 @@ teardown() {
   [ "$status" -eq 0 ]
   [ "$output" = "L1" ]
 }
+
+# --- regression: corrupt and hostile state ---
+
+@test "corrupt state file: read commands fail loud with exit 2" {
+  echo 'this is not json' > "$PIPELINE_STATE_FILE"
+
+  run bash "$SCRIPT" next
+  [ "$status" -eq 2 ]
+  [[ "$output" == *"corrupt"* || "$output" == *"no es JSON"* ]]
+
+  run bash "$SCRIPT" status
+  [ "$status" -eq 2 ]
+}
+
+@test "empty state file: treated as empty queue, not an error" {
+  : > "$PIPELINE_STATE_FILE"
+  run bash "$SCRIPT" next
+  [ "$status" -eq 0 ]
+  [ "$output" = "" ]
+}
+
+@test "corrupt state file: enqueue still works as the recovery path" {
+  echo 'garbage' > "$PIPELINE_STATE_FILE"
+  run bash "$SCRIPT" enqueue "recovered" U1
+  [ "$status" -eq 0 ]
+  run jq -r '.units[0].name' "$PIPELINE_STATE_FILE"
+  [ "$output" = "U1" ]
+}
+
+@test "PIPELINE_MAX_ATTEMPTS non-numeric falls back to 3 instead of leaking an error" {
+  bash "$SCRIPT" enqueue "test-phase" U1
+  run env PIPELINE_MAX_ATTEMPTS=abc bash "$SCRIPT" claim U1 12345
+  [ "$status" -eq 0 ]
+  [[ "$output" != *"integer expression expected"* ]]
+  run jq -r '.units[0].state' "$PIPELINE_STATE_FILE"
+  [ "$output" = "running" ]
+}
+
+@test "PIPELINE_MAX_ATTEMPTS zero is rejected and falls back to 3" {
+  bash "$SCRIPT" enqueue "test-phase" U1
+  run env PIPELINE_MAX_ATTEMPTS=0 bash "$SCRIPT" claim U1 12345
+  [ "$status" -eq 0 ]
+  run jq -r '.units[0].state' "$PIPELINE_STATE_FILE"
+  [ "$output" = "running" ]
+}
+
+@test "orphans: pid 0 and pid -1 are dead, not always-alive" {
+  # kill -0 0 and kill -0 -1 succeed, so a naive check never requeues them.
+  for bad in 0 -1; do
+    printf '{"fase":"t","units":[{"name":"U1","state":"running","owner":"A","note":"","startTime":null,"endTime":null,"iterations":0,"regressions":0,"attempts":1,"pid":"%s"}]}' "$bad" > "$PIPELINE_STATE_FILE"
+    run bash "$SCRIPT" orphans
+    [ "$status" -eq 0 ]
+    [ "$output" = "U1" ]
+  done
+}
+
+@test "orphans: non-numeric pid is treated as dead" {
+  printf '{"fase":"t","units":[{"name":"U1","state":"running","owner":"A","note":"","startTime":null,"endTime":null,"iterations":0,"regressions":0,"attempts":1,"pid":"abc"}]}' > "$PIPELINE_STATE_FILE"
+  run bash "$SCRIPT" orphans
+  [ "$status" -eq 0 ]
+  [ "$output" = "U1" ]
+}

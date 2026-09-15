@@ -14,13 +14,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`docs/architecture/fase0-cola-durable-spec.md`** - spec de la fase (T=14 high).
 - **`docs/architecture/kanam-os-layers-evaluacion.md`** - evaluacion de la arquitectura por capas propuesta.
 
-### Changed
+### Fixed
+- **`scripts/pipeline-queue.sh` - tres defectos encontrados en verificacion adversarial (el Agente B no llego a entregar su reporte, asi que la revision la hizo el orquestador):**
+  1. **Estado corrupto borraba la cola en silencio.** `read_state` hacia `cat` del archivo sin validar; con JSON invalido, `jq` fallaba y el `|| echo` de las ramas devolvia una cola vacia -> `next` no devolvia nada y las unidades pendientes desaparecian sin aviso. Ahora `require_valid_state` aborta con exit 2 y mensaje explicito en todo comando que lee el estado (`enqueue` queda exceptuado: es la via de recuperacion).
+  2. **`PIPELINE_MAX_ATTEMPTS` no numerico desactivaba el cap.** `[ "$NA" -gt abc ]` emitia `integer expression expected` y la comparacion seguia evaluando, con lo que el tope de reintentos dejaba de aplicarse (reintentos infinitos). Un valor `0` o negativo tampoco tenia sentido. Ahora el valor se sanitiza al arranque: si no es entero >= 1, avisa y usa 3.
+  3. **Pids `0` y `-1` se leian como siempre vivos.** `kill -0 0` y `kill -0 -1` **devuelven exito** (grupo de procesos / todos los procesos), asi que una unidad con esos pids jamas se detectaba como huerfana y quedaba `running` para siempre. Ahora solo un entero `> 0` se considera candidato; pids no numericos, `0` y negativos se tratan como muertos.
 - **`scripts/pipeline-queue.sh`:** se agrego el bit de ejecucion (`chmod +x`). El Agente A lo dejo en `-rw-------` y los tests no lo detectaron porque invocan con `bash "$SCRIPT"` explicito - un CLI sin bit de ejecucion falla para cualquier consumidor real. Detectado por verificacion manual, no por la suite.
 
 ### Notes
 - **El diagnostico original estaba desactualizado:** la evaluacion nombro el gap como "SIGKILL de Qwen Code a ~3 min". Verificado el 2026-09-15: el harness migro a **Claude Code 2.1.260** (binario en `Claude-3p/`, valida headless contra el gateway Ollama), que maneja mejor las sesiones largas. El gap real **no es el SIGKILL: es la falta de continuidad** - nada reencolaba una unidad interrumpida.
+- **El review cruzado fallo en su forma, no en su fondo:** el Agente B settleo sin entregar reporte. Los 3 hallazgos los produjo la verificacion adversarial del orquestador, con reproduccion directa antes y despues del fix. Los 7 tests de regresion nuevos quedan como barrera.
 - **`pipeline-track.sh` NO se modifico.** Consume y escribe el mismo archivo; verificado el flujo mixto (init/start/review/done + enqueue/claim/release) sin que se pisen.
-- **Verificacion real:** `bash -n` limpio; `npx bats tests/bash/` -> 27/27 (17 nuevos + 10 preexistentes); casos borde probados a mano (plan viejo sin campos nuevos, cap de reintentos, huerfana con pid muerto, claim sobre `failed`); `check_em_dash.py` OK.
+- **Verificacion real:** `bash -n` limpio; `npx bats tests/bash/` -> **34/34** (24 de la cola + 10 preexistentes); casos borde probados a mano (plan viejo sin campos nuevos, cap de reintentos, huerfana con pid muerto, claim sobre `failed`, JSON corrupto, pids `0`/`-1`/no numericos); `check_em_dash.py` OK; `test-skills.sh` OK (84 skills); estado real verificado byte-identico tras todas las corridas.
 - **Deuda de entorno (preexistente, no introducida aca):** `npm test` falla en `test:bats` con `sh: bats: command not found` porque `bats` esta declarado como devDependency pero **no esta en el PATH ni en `node_modules/.bin`**; con `npx bats` corre verde. `python3 -m pytest` tampoco existe en esta maquina. La suite completa via `npm test` no se puede correr de un tiro hasta resolver eso.
 
 ## [2026-09-15] - Evaluacion de arquitectura por capas para Kanam OS
