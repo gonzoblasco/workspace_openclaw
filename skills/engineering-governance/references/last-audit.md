@@ -178,6 +178,17 @@
 | Related Skills | 🟢 Present |
 | Structure | 🟢 5 sections |
 
+## narrative-content
+
+| Check | Status |
+|-------|--------|
+| Size | 🟢 45 lines |
+| References | 🟢 3 files |
+| Scripts | 🟢 3 files |
+| Description | 🟢 Present |
+| Related Skills | 🟢 Present |
+| Structure | 🟢 6 sections |
+
 ## observability
 
 | Check | Status |
