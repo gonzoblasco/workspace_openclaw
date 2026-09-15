@@ -186,6 +186,12 @@ Primera feature fuera del core. **`src/core.js` con diff CERO: ni una linea toca
 ### Consistencia (fix de Kanam sobre el trabajo del agente)
 Un **T-spin sin lineas** paga 400/100 y el juego lo anuncia en pantalla con "T-SPIN", pero el sonido caia en el tick de lock comun: imagen y sonido se contradecian. Ahora suena el acorde. El agente lo habia decidido a proposito y documentado ("locks with a tick"); se corrigio porque el cartel contradice esa logica. Test que lo fija y muere al revertir.
 
+### Timbre y musica (v0.5.1, 2026-09-15 - ajuste tras quejarse de tonos "desesperantes")
+- Filtro low-pass compartido: cada nota pasa por el filtro, los cuadrados y sierra pierden el filo hiriente. Envolvente con attack chico (sin click) y release musical exponencial.
+- **Musica de fondo Korobeiniki** (tema del Game Boy): tabla de notas secuenciadas con los mismos osciladores, cero archivos. Canal de gain propio -> mismo filtro, la SFX no corta la melodia.
+- **Tecla M cicla 3 estados**: SFX solo -> SFX + musica -> mute (y al mutear se limpia el flag de musica: desmutear no resucita el tema).
+- Fix del crash que congelaba el juego al limpiar lineas: `effects.burst` ahora valida que `rows` sea array. El loop ya no puede morir en un clear.
+
 ### Servidor de desarrollo (`serve.py`, nuevo)
 `python3 -m http.server` no manda `Cache-Control`, y **Safari cachea heuristicamente los modulos ES**: sirve una version vieja tras editar. Se vio dos veces en este ciclo (un `render.js` viejo con alpha 0.10, y un `storage.js` viejo sin `loadMuted` que rompia el grafo de imports). `serve.py` manda `no-store` en cada respuesta.
 
