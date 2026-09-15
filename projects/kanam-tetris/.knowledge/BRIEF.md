@@ -123,8 +123,44 @@ El Agente B (deepseek-v4-flash) volvió a morir a mitad de la revisión (ver not
 ### Nota de pipeline (patrón a vigilar)
 El Agente B cayó **por tercera vez** en medio de una revisión (v0.3 B original, v0.4 B, v0.4 B relanzado... verificar conteo real en dailies). El patrón: muere en tareas largas de revisión con el motor default. Consecuencia práctica: cuando B no entrega, la verificación de ejecución la hace Kanam - que era el paso 5 del protocolo de todas formas. Anotar como hallazgo operativo del pipeline.
 
+## Alcance v0.4-scoring - IMPLEMENTADA (2026-09-14) - T-spins, combos, B2B y cola de 5
+
+Features de guideline sobre el core puro. `input.js` y `storage.js` no cambian; `render.js`, `index.html` y `main.js` solo muestran.
+
+### R1 - Deteccion de T-spin (3-corner rule)
+- `state.lastAction = { type: "rotate", kick: i }` en cada rotacion exitosa (i = indice del kick que la logro). `move`, `softDrop`, el descenso por gravedad y `hardDrop` lo pisan con `{ type: "move" }`. `spawn` lo limpia a `null`: una pieza nueva no hereda la historia de la anterior.
+- En el lock, si la pieza es T y la ultima accion fue rotar, se cuentan las 4 esquinas del bounding box. `>= 3` bloqueadas u fuera del tablero -> T-spin.
+- **Coordenadas (hallazgo critico):** el origen `(x, y)` de la pieza es la esquina SUPERIOR IZQUIERDA de la matriz, no su centro. Las esquinas del 3x3 son `(x,y)`, `(x+2,y)`, `(x,y+2)`, `(x+2,y+2)`. La primera version leyo `centro +/- 1`, un box corrido una fila y una columna: toda la deteccion quedaba silenciosamente mal. Lo destapo el escenario de prueba (reportaba 0 esquinas bloqueadas en un slot real).
+- **Full vs mini (decision documentada):** FULL si (a) el kick fue el indice 4 (el kick tardio que solo entra en una cavidad), o (b) el nub apunta hacia abajo, o (c) las dos esquinas frontales Y las dos traseras estan bloqueadas (slot 1x1 que la T solo entra kickeando). MINI en cualquier otro caso con 3+ esquinas. El kick 4 se acepta como senal de full pero NO se exige: una T rotada contra una pared en kick 0 tambien puede ser full.
+- `state.lastClear = { type, lines, tspin, b2b, combo, points }` en cada lock, tambien cuando no limpia lineas. El evento `clear` lleva el tipo.
+- Scoring x nivel: full single 800, double 1200, triple 1600; mini single 200, mini double 400; sin lineas full 400 / mini 100. La tabla normal (100/300/500/800) no cambia.
+
+### R2 - Combos
+`state.combo` arranca en -1. Lock con lineas: `combo++`, bonus `50 * combo * level` solo si `combo >= 1`. Lock sin lineas: `combo = -1`. **El bonus de combo ya lleva el nivel multiplicado y NO se vuelve a multiplicar por nivel** (bug encontrado en esta iteracion: `(base + b2b + combo) * level` aplicaba el nivel dos veces al combo; el test de escalado por nivel lo cazo).
+
+### R3 - Back-to-back
+`state.b2b` bool. Limpieza dificil (tetris, o T-spin con 1+ lineas) con b2b previo: `+ floor(base * 0.5)`. Dificil setea `b2b = true`; limpieza normal lo rompe; lock sin clear NO lo rompe; T-spin sin lineas NO lo rompe (guideline). Test de mutacion: quitar el `else if (lines > 0)` y el caso "lock sin clear mantiene la cadena" muere.
+
+### R4 - Cola de 5
+`game.queue` como getter: `[nextType, ...bag]` con refill garantizado (`while (bag.length < NEXT_QUEUE_SIZE) refillBag()`). Leer la cola nunca consume el bag. El renderer dibuja las 4 siguientes en un canvas vertical en cascada; la 1ra sigue siendo el panel "Siguiente" grande.
+
+### HUD y feedback
+- **T-spin:** anuncio flotante en el canvas ("T-SPIN" / "T-SPIN MINI") + pulso del marco del board, y el flash de la limpieza usa el color de la T (violeta) en vez de blanco. Elegido sobre particulas o banner por coherencia con el lenguaje wireframe: es texto y un borde, nada nuevo. El timestamp vive en `state.announce` (lo setea `main.js` desde el evento `clear`), asi el core sigue sin reloj.
+- **Combo:** contador junto al score, visible solo con `combo >= 1`.
+- **B2B:** badge cuando `b2b` esta activo.
+
+### Costuras (bugs encontrados y corregidos en este ciclo)
+1. **`findFullRows()` corria ANTES de estampar la pieza:** una I que completaba la fila de abajo no registraba limpieza. Regresion introducida al reordenar `lockPiece` para que la deteccion leyera el board pre-estampado. Fix: deteccion -> estampar -> `findFullRows()`. Las 3 pruebas de `clearing` lo cazaron.
+2. **`applyClear` duplicada** tras un patch, con la primera definicion ganando y salteandose el scoring. Un `node -e` contando definiciones la encontro.
+3. **El nivel se aplicaba dos veces al bonus de combo** (ver R2).
+4. **`resolveLock` reemplazaba la pieza antes de puntuar** en el camino sin clear.
+
+### Verificacion
+- `node --test test/`: 62 tests, 62 pass, 0 fail (los 33 originales siguen verdes; no murio ninguno).
+- Mutaciones corridas (cada una mata su test, y se restauro el original en cada caso): no invalidar por `move`, por gravedad, por `softDrop`, por `hardDrop`; kick fallido arma el flag; spawn no limpia `lastAction`; esquinas corridas `centro +/- 1`; combo no se resetea en lock seco; b2b roto por lock seco; b2b no roto por clear normal; mini valuado como full; bonus b2b ausente; cola sin refill, con head equivocado y con profundidad corta; tetris no-dificil; T-spin no-dificil.
+
 ## No-alcance (para futuras iteraciones)
-- T-spins, combos, sonido, multiplayer, móvil/touch.
+- Sonido, game feel (v0.5). Lock delay por pieza, tabla de gravedad guideline, verificacion visual medida (v0.6). Multiplayer, movil/touch.
 
 ## Experimento
 Pipeline A/B con agentes. Motor: `deepseek-v4.1-flash:cloud` (Claude Code via gateway Ollama `127.0.0.1:11434`) desde v0.2; v0.1 corrió con GLM 5.3 Flash (`127.0.0.1:11435`).
