@@ -21,6 +21,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - Diagnostico read-only de las startup migrations (causa raiz encontrada)
+
+### Notes
+- **Causa raíz identificada, sin tocar nada.** El aviso "Startup migrations need attention" del `doctor`/`status` sale de `dist/state-migrations.messages-CxjvWU23.mjs`: es un `startupMigrationWarning` guardado cuando las migraciones corren con warnings. En el log del gateway (`/tmp/openclaw/openclaw-2026-09-13.log`, 3 eventos a las 21:02, 21:56 y 22:16) el mensaje exacto es `Left legacy agent dir at .../agents/main/agent.legacy-<ts>`.
+- **Qué son:** **6 directorios `agent.legacy-*`** (17 MB en total, 2.8 MB cada uno) bajo `agents/main/`. Cada uno contiene **un único archivo, `bin/fd`**, idéntico byte a byte al `agent/bin/fd` del agente actual (`cmp` OK, mismo sha256) y **cero archivos fuera de `bin/`**.
+- **Por qué se conservan a propósito:** en `dist/state-migrations.doctor-J5ZgjZY8.mjs:2876`, `inspectLegacyAgentDir` busca `openclaw-agent.sqlite`; si no está pero hay un archivo que no reconoce (`bin/fd`), devuelve `status: "payload"` y la migración deja el directorio con warning en vez de borrarlo. Es cruft de reinstalaciones, **no hay datos únicos en riesgo**.
+- **Reparación (requiere al owner):** `openclaw doctor --fix` + `openclaw gateway restart`. El agente no reinicia el gateway hospedador.
+- **Metodología:** diagnóstico 100% read-only, siguiendo `diagnose-gateway` (prohíbe `--fix`, restarts y matar listeners). Se leyeron logs, dumps y código fuente; **ninguna reparación ni migración de estado fue ejecutada**.
+- **Estado del agente:** sano. `openclaw-agent.sqlite` de 499 MB, gateway corriendo (pid 80466, probe ok). El aviso es persistente, no un gateway roto.
+
 ## [2026-09-14] - 0.1: swap de version verificado y cierre de items abiertos
 
 ### Changed
