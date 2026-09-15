@@ -103,11 +103,11 @@ Confirmado por el CLI: `npx @guidepup/setup install voiceover` -> `The requested
 
 S3 **no depende de Gonzo, depende de upstream.** Y materializa el riesgo que **ADR-0001** anticipo como el mas duro: *"el plano real es el lado mas dificil de reemplazar"*. Ya no es advertencia teorica: el driver virtual corre en cualquier SO; el real exige un asset para la version exacta del sistema.
 
-### Opciones (ninguna tomada)
+### Opciones (estado: 1 tomada, 2 descartada, 3 abierta)
 
-1. **Reportar el hueco upstream** (no hay issue abierto por darwin 26/27, buscado hoy). Contribucion OSS de valor real. **Requiere OK de Gonzo** (accion publica).
-2. **Correr el plano real en otra maquina** con macOS soportado (Darwin 21-25).
-3. **Declarar la limitacion** en la matriz de ADR-0002 y dejar S3 documentado como bloqueado por upstream.
+1. **Reportar el hueco upstream** **HECHO (2026-09-15):** issue https://github.com/guidepup/guidepup/issues/149, abierto.
+2. **Correr el plano real en otra maquina** con macOS soportado (Darwin 21-25). **DESCARTADA (2026-09-15):** todas las maquinas de Gonzo corren macOS 27. No hay segunda maquina aprovechable.
+3. **Declarar la limitacion** en la matriz de ADR-0002 y dejar S3 documentado como bloqueado por upstream. Sigue siendo la opcion de respaldo.
 
 ### Advertencia que sigue en pie: `@guidepup/setup setup`
 
@@ -163,7 +163,7 @@ En los tres casos freno un commit que no estaba limpio.
 | Evento | Que pasa |
 |---|---|
 | Guidepup publica el asset de Darwin 27 | Correr `npm test`. Los 4 skips se vuelven tests reales. **Sin cambiar codigo.** Ese es el cierre de S3. |
-| Se corre el plano real en una maquina con Darwin 21-25 | Igual: `npm test` y los skips se activan. |
+| ~~Correr el plano real en una maquina con Darwin 21-25~~ | ~~Igual: `npm test` y los skips se activan.~~ **Descartado (2026-09-15):** todas las maquinas de Gonzo tienen macOS 27. |
 | Gonzo decide no esperar a upstream | Abrir `0.0.2` declarando la limitacion en la matriz (ADR-0002) y apoyarse en el plano virtual **solo** para bugs de atributos. |
 
 ### Lo que el ciclo dejo claro

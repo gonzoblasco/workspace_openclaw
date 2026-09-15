@@ -133,8 +133,8 @@ Esto es exactamente el riesgo que **ADR-0001** anticipo como el mas duro: *"el p
 
 ### Opciones (ninguna tomada todavia)
 
-1. **Esperar / seguir upstream.** No hay issue abierto reportando el hueco de darwin 26/27 (buscado el 2026-09-15). Reportarlo es una contribucion OSS de valor real, y encaja con el objetivo del pilar. **Requiere OK de Gonzo** (accion publica).
-2. **Correr el plano real en otra maquina** con macOS soportado (Darwin 21-25). El MacBook Air, segun su version.
+1. **Esperar / seguir upstream.** **HECHO (2026-09-15):** el hueco fue reportado en https://github.com/guidepup/guidepup/issues/149. No existia un issue previo por darwin 26/27 (buscado el mismo dia). Queda esperar que lo tomen o que el asset de Darwin 27 aparezca.
+2. **Correr el plano real en otra maquina** con macOS soportado (Darwin 21-25). **DESCARTADA (2026-09-15):** todas las maquinas de Gonzo corren macOS 27. No hay segunda maquina aprovechable.
 3. **Declarar la limitacion** en la matriz de ADR-0002 y dejar S3 documentado como bloqueado por upstream.
 
 ### Lo que si se aprende de esto
