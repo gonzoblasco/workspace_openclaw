@@ -104,8 +104,9 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 - **Kanam Mind:** Segundo cerebro local-first. Timeline, CRUD accesible, resumen IA. Local-first puro (IndexedDB).
 - **SoporteML:** CRM MeLi. v4 es el reinicio actual (frontend avanzado, backend v3 sólido). **FUERA de la narrativa (2026-09-14, ADR-001):** Gonzo cerro explícitamente que no es el proyecto estrella bajo ningún sentido y que "es hora de dejarlo ir". No proponerlo como ancla ni mencionarlo en estrategia.
 - **kanam-skills:** Repo público de skills. Sanitización obligatoria (Gonzo $\rightarrow$ usuario).
-- **a11y-fixer:** Engine de fixes de accesibilidad. v0.6.0 reescrito.
-- **a11y-playground:** Capa visual de testing sobre a11y-fixer. Depende de a11y-fixer (base).
+- **a11y-fixer:** ARCHIVADO (2026-09-14, decision de Gonzo). Engine de fixes de accesibilidad, v0.6.0. **Su sucesor es `kanam-fixer`, proyecto NUEVO** (no un renombre): alcance a definir - todo id=54. Repo GitHub `gonzoblasco/a11y-fixer` sigue `isArchived=false` (archivado pendiente de OK).
+- **kanam-fixer:** PROYECTO NUEVO (2026-09-14). Nombre elegido por Gonzo. Alcance/propuesta de valor SIN DEFINIR - no asumir que hereda el rol de engine de fixes a11y. Antes de arrancar hay que resolver: relacion con el codigo de a11y-fixer (heredar/portar/greenfield), lugar del pilar Accesibilidad en el portfolio (ADR-001 nombra a a11y-fixer como ancla -> requiere enmienda formal) y que pasa con `a11y-playground`, que depende de a11y-fixer.
+- **a11y-playground:** Capa visual de testing sobre a11y-fixer. Depende de a11y-fixer (base). **Dependencia en riesgo (2026-09-14):** su base quedo archivada; definir si migra a kanam-fixer, se archiva o se sostiene sola.
 - **kanam-insight:** Motor de insights/analisis. Activo (dependencias TBD).
 - **kanam-pulse:** Monitor de salud del sistema. M1 Kickoff en curso (2026-08-30): extraer engine a packages/core (TS), 46 tests verdes, dashboard read-only. Codigo ya en el repo. Pendiente: refactor + dashboard.
 - **kanam-forge:** Lovable self-hosted. Fusionado con `create-with-ai`. Fase 1 completa.
@@ -118,7 +119,8 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 
 ### Activos
 - workspace_openclaw (Privado)
-- kanam-skills, kanam-story, kanam-mind, kanam-solitaires, soporteml, soporteml-v4 (Privado), a11y-fixer, ai-developer-stack, create-stack, accessible-ui (Privado), quedamos (Privado), kanam-forge.
+- kanam-skills, kanam-story, kanam-mind, kanam-solitaires, soporteml, soporteml-v4 (Privado), ai-developer-stack, create-stack, accessible-ui (Privado), quedamos (Privado), kanam-forge, kanam-tetris, kanam-insight (Privado), a11y-playground (Privado).
+- **Nota:** `kanam-lab` NO tiene repo en GitHub (git local, sin remoto - verificado 2026-09-14). No agregarlo a este listado.
 
 ### Archivados
-- soporteml-v3 (Privado), ai-engineering-bootcamp, hyatt-copilot-agent (Privado), ensulugar, cabala, health-tracker, umbrawriter (Privado).
+- soporteml-v3 (Privado), ai-engineering-bootcamp, hyatt-copilot-agent (Privado), ensulugar, cabala, health-tracker, umbrawriter (Privado), a11y-fixer (2026-09-14, reemplazado por kanam-fixer).

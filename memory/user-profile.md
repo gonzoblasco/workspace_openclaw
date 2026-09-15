@@ -18,7 +18,8 @@
 - **Minutentag/EULAS (Feb 2016 - Nov 2019, ~3.7 anos):** a11y parte sustantiva del rol; crecio de junior a referente de accesibilidad.
 - **Total:** ~10 anos de desarrollo continuo (feb 2016 - hoy); ~5 anos con a11y como funcion central/dedicada.
 - **Nota sobre el conteo (2026-09-14):** antes de 2016 hubo backend PHP entre 2001 y 2008 (~7 anos). NO se suma al total ni se usa como headline: es backend (no a11y), hay un gap de ~8 anos (2008-2016), y Gonzo no lo quiere destacar. Si alguna vez se necesita amplitud ("20+ anos en software") es defendible, pero abre la pregunta por el gap: decidir por audiencia.
-- **SoporteML (2026-09-14):** fuera de la narrativa publica (ADR-001) y fuera del perfil - no es el proyecto estrella, decision explicita de Gonzo. No proponerlo como ancla. Proyectos ancla vigentes: kanam-forge, a11y-fixer, kanam-pulse (ADR-001).
+- **SoporteML (2026-09-14):** fuera de la narrativa publica (ADR-001) y fuera del perfil - no es el proyecto estrella, decision explicita de Gonzo. No proponerlo como ancla.
+- **Pilar Accesibilidad - en transicion (2026-09-14):** `a11y-fixer` **quedo archivado** por decision de Gonzo, y su sucesor es **`kanam-fixer`, un proyecto NUEVO** (no un renombre). El alcance de kanam-fixer esta **sin definir**: no asumir que hereda el rol de engine de fixes de a11y. Mientras eso no se defina, el pilar Accesibilidad **no tiene ancla formal** - `ADR-001` todavia nombra a `a11y-fixer` como ancla, asi que requiere enmienda explicita (los ADR no se reescriben en silencio). Los otros dos anclas siguen firmes: kanam-forge y kanam-pulse. Todo en DB id=54.
 
 **Gap real y unico: no tiene certificacion IAAP (CPWA / WAS / CPACC).** No volver a marcar su a11y como "reciente" ni JAWS como gap, ni omitir Super7ui del conteo.
 
