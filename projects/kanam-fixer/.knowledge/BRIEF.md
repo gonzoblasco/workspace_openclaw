@@ -80,6 +80,11 @@ Eso es un workflow que hoy nadie empaqueta, y que nosotros ya ejecutamos a mano.
 3. **Dependencia de terceros.** Guidepup es MIT y esta activo, pero es una dependencia central. Verificado el 2026-09-14: `stars=561`, `pushed=2026-09-13`, `archived=false`, `license=MIT`. No hay alternativa real para automatizar lectores de pantalla reales; el riesgo se mitiga con una capa propia fina sobre su API.
 4. **La frase anunciada varia por lector, version y SO.** No se puede prometer "el anuncio" universal: hay que declarar la matriz (lector x version x SO) igual que hacemos en los PRs.
 
+### Documentos del proyecto
+
+- **`ROADMAP.md`** - el ciclo `0.0.1` y sus slices.
+- **`DISTRIBUTION.md`** - material de lanzamiento **guardado, sin ejecutar**. Investiga los canales de descubrimiento (awesome lists, GitHub Marketplace) y conserva los textos redactados el 2026-09-14 para `a11y-fixer`, con la advertencia de que no se reciclan tal cual. **Congelado hasta que exista evidencia (S4).** Publicar esta fuera de alcance de `0.0.1`.
+
 ## Pendientes de decision (de Gonzo)
 
 1. **Confirmar la direccion** de este BRIEF.

@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - kanam-fixer: material de lanzamiento guardado (DISTRIBUTION.md)
+
+### Added
+- **`projects/kanam-fixer/.knowledge/DISTRIBUTION.md` (NUEVO):** conserva el material de lanzamiento redactado el 2026-09-14 para `a11y-fixer`, que nunca se uso porque el proyecto se archivo ese mismo dia. Contiene: la investigacion verificada de canales (awesome lists con stars y requisitos reales de cada CONTRIBUTING + hallazgos del GitHub Marketplace), los 3 textos (release/Marketplace, awesome-a11y, awesome-actions) y el checklist previo a publicar.
+- **`projects/kanam-fixer/.knowledge/BRIEF.md`:** seccion "Documentos del proyecto" con el puntero al material nuevo.
+
+### Notes
+- **Advertencia de procedencia en el documento:** los textos se escribieron para un **GitHub Action**; `kanam-fixer` es una **asercion sobre el anuncio del lector de pantalla**. Se marca que **no se reciclan tal cual** y hay una tabla de "que sirve y que no" (la entrada de `awesome-actions` solo aplica si shippea un `action.yml`; el BRIEF marca el comentario automatico en PRs como fuera de alcance).
+- **Congelado por diseno:** el ROADMAP de `0.0.1` declara publicar como fuera de alcance ("el ciclo prueba, no distribuye"). El material queda guardado hasta que exista evidencia del caso testigo (S4).
+- **Ninguna accion publica ejecutada.** Los 3 textos quedan sin enviar por decision explicita.
+- **Nota de proceso:** el turno que creo el archivo se corto por un reinicio de gateway. Se verifico el contenido en disco (165 lineas, integridad head/tail, scan de guiones OK) antes de continuar - el write no se dio por exitoso sin comprobacion.
+
+---
+
 ## [2026-09-14] - a11y-fixer: BRIEF alineado al archivado + topics y homepage del repo
 
 ### Changed
