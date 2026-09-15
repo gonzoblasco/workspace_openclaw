@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Observabilidad minima del pipeline (ROADMAP 1.1): pipeline-report.sh
+
+### Added
+- **`scripts/pipeline-report.sh`** - vista de telemetria **read-only** sobre la cola durable. No captura nada nuevo: agrega y renderiza lo que ya guardaban `pipeline-track.sh` (startTime/endTime/iterations/regressions) y `pipeline-queue.sh` (attempts/pid/lastError). Asi la observabilidad cuesta $0 y agrega cero dependencias (decision de la evaluacion por capas).
+  - `--json` para parsear programaticamente, formato legible por defecto.
+  - Superficie las senales de ROADMAP 1.1 que nadie habia medido: duracion por unidad (endTime-startTime), total/promedio/max por fase, reintentos (flaky/crash) y **regresiones (bugs que B introduce al "corregir")**.
+- **`tests/bash/pipeline-report.bats`** - 7 tests: read-only (no muta el state), resumen, totales agregados, `--json`, faltante/corrupto con exit 2, sin unidades medibles degrada con gracia.
+
+### Fixed
+- **Un quirk de jq:** `//` como valor directo de un literal de objeto (`{phase: $r.fase // ""}`) falla en sintaxis; entre parentesis (`($r.fase // "")`) funciona. Documentado por el bug en el desarrollo, no asumido.
+
+### Notes
+- Senal de listo del ROADMAP 1.1 (metricas de duracion registradas en 5+ sesiones): este entregable la habilita; falta que se registre en sesiones reales de pipeline, que es trabajo de uso, no de codigo.
+- El estado real de `pipeline-state.json` (kanam-fixer S1) tiene startTime/endTime nulos: el report degrada a "sin unidades medibles" hasta que las unidades futuras se midan (pipeline-track las setea con `start`/`done`).
+
 ## [2026-09-15] - ADR-049/050/051: motor del pipeline, umbral de datos, regla de lib/ai
 
 ### Added
