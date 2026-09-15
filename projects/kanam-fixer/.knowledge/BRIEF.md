@@ -1,6 +1,6 @@
 # BRIEF - kanam-fixer
 
-**Estado:** S1 completado (2026-09-15). Esqueleto y tooling en pie, sin logica de a11y todavia. Repo local del proyecto inicializado (commit `6044856`), **sin remoto** - crearlo en GitHub es accion publica, requiere OK.
+**Estado:** S1 completado (2026-09-15). Esqueleto y tooling en pie, sin logica de a11y todavia. Repo publico: https://github.com/gonzoblasco/kanam-fixer (commit `6044856`).
 **Primer ciclo:** 0.0.1
 **Pilar:** Accesibilidad como diferenciador (ADR-001, seccion 6: candidato a ancla, alcance en definicion)
 **Sucede a:** `a11y-fixer` (archivado 2026-09-14). **No hereda su codigo ni su alcance.**
@@ -87,9 +87,9 @@ Eso es un workflow que hoy nadie empaqueta, y que nosotros ya ejecutamos a mano.
 
 ## Pendientes de decision (de Gonzo)
 
-1. **Confirmar la direccion** de este BRIEF.
-2. **Nombre:** `kanam-fixer` esta libre en npm (404) y en GitHub (sin repo). Tomarlo es accion publica - requiere OK.
-3. **Destino de `a11y-fixer`:** archivar el repo en GitHub (hoy `isArchived=false`) y decidir el paquete npm `@gonzoblasco/a11y-fixer@0.6.0` (publicado, con descargas).
-4. **`a11y-playground`:** declara depender de `a11y-fixer` como base. Migra, se archiva o se sostiene sola.
+1. ~~Confirmar la direccion~~ **HECHO (2026-09-15):** direccion confirmada ("si, dale").
+2. ~~Nombre / repo~~ **HECHO (2026-09-15):** `gonzoblasco/kanam-fixer` creado y **publico** (https://github.com/gonzoblasco/kanam-fixer). Codigo de S1 pusheado (commit `6044856`). Verificado que `.knowledge/` NO se filtro al repo publico. `kanam-fixer` sigue libre en npm (404) - publicar el paquete es una decision aparte, no tomada.
+3. **`a11y-fixer`:** repo de GitHub **archivado** (verificado: `isArchived=true`, 2026-09-15 12:46 UTC). **Falta decidir** el paquete npm `@gonzoblasco/a11y-fixer@0.6.0` (publicado 2026-07-29, con descargas): dejarlo, deprecarlo o despublicar.
+4. **`a11y-playground`:** declara depender de `a11y-fixer` como base. Migra, se archiva o se sostiene sola. **Sin decision.**
 
 Seguimiento en la DB de memoria: todo **id=54**.
