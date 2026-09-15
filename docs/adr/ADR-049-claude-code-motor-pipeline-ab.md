@@ -64,6 +64,22 @@ ANTHROPIC_AUTH_TOKEN=<token> \
 ### Regla de actualizacion
 - **Este ADR es la fuente de la verdad.** Cualquier doc/skill que describa el motor del pipeline se actualiza para reflejarlo cuando se toque ese archivo. Si mañana el estandar vuelve a cambiar, se escribe ADR-052+ (supersede a este), no se edita la practica por debajo del ADR.
 
+### Consecuencia: Claude Code ignora AGENTS.md (verificado empiricamente 2026-09-15)
+
+Claude Code no lee AGENTS.md por defecto - **no lo prioriza, lo ignora**. Verificado con el binario 2.1.260:
+
+| Escenario | Resultado |
+|---|---|
+| `CLAUDE.md` + `AGENTS.md` juntos | Responde al de `CLAUDE.md` (lo prioriza) |
+| Solo `AGENTS.md` | *"I'm not instructed to reply with any specific token"* - no se lee (issue antrhopics/claude-code #6235) |
+| `CLAUDE.md` con `@./AGENTS.md` | Las reglas del AGENTS.md se aplican |
+| Import con ruta absoluta | Funciona |
+| cwd en subdir + `CLAUDE.md` en el padre | Auto-discovery sube directorios y lo lee |
+
+**Mecanismo adoptado:** cada directorio donde corra un agente Claude Code (workspace, proyectos) lleva un **`CLAUDE.md` minimo que hace `@import` de su `AGENTS.md`**. Asi `AGENTS.md` **sigue siendo la unica fuente de verdad** (nada duplicado) y Claude Code carga las convenciones del pipeline.
+
+**Estado:** el `CLAUDE.md` del workspace raiz esta creado. Los proyectos se cubren cuando entren al flujo - regla: al crear/clonar un proyecto para pipeline, agregar su `CLAUDE.md` (mismo patron: `@./AGENTS.md`) junto con el `AGENTS.md`.
+
 ---
 
 ## Alternativas consideradas
