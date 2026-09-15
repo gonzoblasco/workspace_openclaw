@@ -1,7 +1,7 @@
 # STATUS - kanam-fixer
 
-**Actualizado:** 2026-09-15
-**Ciclo:** 0.0.1 **CERRADO**. Decision: no abrir `0.0.2` todavia (depende de S3, que depende de upstream).
+**Actualizado:** 2026-09-15 (tarde)
+**Ciclo:** 0.0.1 **CERRADO**, con S3 en el ultimo tramo: falta UN permiso manual.
 
 ## Donde estamos
 
@@ -9,23 +9,47 @@
 |---|---|---|
 | S1 - Esqueleto y decisiones | **Completado** | Commit `6044856`. Terna en verde, hook activo. |
 | S2 - La asercion, solo virtual | **Completado** | Commit `fb931ea`. 7 tests. Criterio de salida verificado. |
-| S3 - VoiceOver real en local | **Bloqueado por upstream** | Commits `b98bf1b` + `a080a27`. Reportado en guidepup/guidepup#149. |
+| S3 - VoiceOver real en local | **Workaround aplicado; falta 1 permiso manual** | Commit `2fc3d0d` (workaround). Avance: el error paso de `macOS version not supported` a `EPERM` de Full Disk Access (ver abajo). |
 | S4 - El caso testigo (#4109) | **Completado - NO reproduce** | Commit `5090278`. 8 tests. Hallazgo abajo. |
 | S5 - Cierre del ciclo | **Completado** | Commit `88ca9ff`. README con la evidencia + `HANDOFF.md`. |
 
-**Repo publico:** https://github.com/gonzoblasco/kanam-fixer (`88ca9ff`). Verificado que `.knowledge/` no se filtra.
+**Repo publico:** https://github.com/gonzoblasco/kanam-fixer (`2fc3d0d`). Verificado que `.knowledge/` no se filtra.
 **Terna:** 17 passed, 4 skipped (los 4 son el plano real, con su causa impresa).
 
-## S5: el cierre del ciclo
+## S3: ESTADO ACTUALIZADO - workaround aplicado, falta un permiso de Gonzo
 
-- **README reescrito para abrir por lo que el ciclo ENCONTRO**, no por la promesa. Tabla de que clases de bug captura el plano virtual (atributos: si, con las frases observadas) y cuales no (timing y viewport). El caso testigo quedo etiquetado como **hueco del ecosistema**, no como demostracion de que esta herramienta lo cubra.
-- **Corregido un ejemplo enganoso:** el README mostraba `import from 'kanam-fixer'` como si fuera instalable, cuando el paquete es `private: true` y no esta en npm (verificado: 404).
-- **ADR-0002 actualizado:** las filas de la matriz ya no dicen "Previsto en S3". La version del plano real **la determina el asset que Guidepup publique** para la plataforma del host: dependencia dura, ahora hecho medido.
-- **`HANDOFF.md` nuevo:** donde vive cada cosa, el blocker y como se cierra, la trampa de debugging, las decisiones tomadas y lo que no hay que hacer.
+### Que cambio (2026-09-15, tarde)
 
-### La decision sobre 0.0.2
+El bloqueo de arriba (asset de Darwin 27) tiene **workaround verificado**: el commit `2fc3d0d` parchea el `manifest.json` local (agrega `platformVersion 27` con el asset de macOS 26, que el issue #149 senala como compatible) e instala el DMG en el cache con SHA verificado. **No toca TCC ni SIP.** Idempotente: re-correr no rompe nada.
 
-**No se abre todavia.** Y la razon es concreta, no una postergacion: el siguiente paso del proyecto depende de **S3**, y S3 depende de que Guidepup publique un asset para Darwin 27. Abrir `0.0.2` hoy seria invertir sobre la parte que resulto **mas fragil** sin resolverla primero.
+**El error avanzo de verdad.** La cadena completa de causes ahora es:
+
+```
+VoiceOver cannot be started
+  cause: Failed to mount Guidepup preferences
+  cause: EPERM: operation not permitted, symlink ... com.apple.VoiceOver4.portable.scrd
+```
+
+Eso es TCC protegiendo el Group Container de VoiceOver: macOS impide el symlink de preferencias portables. **El unico paso que falta es manual de Gonzo:**
+
+> **System Settings -> Privacy & Security -> Full Disk Access -> agregar y tildar el proceso que ejecuta los tests (p.ej. Terminal).**
+
+Cuando se otorgue y corra `npm test`, los 4 skips deberian volverse tests reales y **S3 se cierra**. Despues queda marcar el cierre aca y en BRIEF (el workaround ya apunta al issue #149).
+
+### Contexto previo (para no re-descubrir)
+
+El bloqueo original era: `screenReader.start()` fallaba con `VoiceOver cannot be started` ocultando `macOS version not supported` en el cause. Guidepup 0.34.0 no tenia asset para Darwin 27 (manifest: 21-25; main tampoco). Reportado en https://github.com/guidepup/guidepup/issues/149. Los permisos de VoiceOver Utility y AppleScript **funcionan** (verificado); el muro era el asset, y ahora es el Group Container.
+
+### Lo que quedo construido (y sigue valido)
+
+- **`ReaderDriver`**: contrato propio (ADR-0001). `virtualDriver` (CI) y `realDriver` (VoiceOver) lo implementan; **la misma asercion corre en los dos planos**.
+- **`expectAnnouncement(container, expected, { driver })`**: el driver es opcional; el default es el virtual.
+- **`realReaderAvailability()`**: arranca y para el lector una vez, para que el llamador pueda **saltear con la razon real** en vez de reportar un falso verde.
+
+### Advertencias que siguen en pie
+
+- **No ejecutar `npx @guidepup/setup setup`**: escribe directo en TCC.db con lista de clientes ajena al proyecto. El workaround no lo necesita.
+- **Nunca desactivar SIP** (verificado: sigue `enabled`).
 
 ---
 
@@ -64,56 +88,47 @@ El suite de S4 es un **test de caracterizacion**: fija el comportamiento observa
 
 ---
 
-## S3: el plano del lector real - BLOQUEADO POR UPSTREAM (no por permisos)
+## S3: historial del diagnostico (contexto de la correccion)
 
-> **Correccion de diagnostico (2026-09-15).** El registro anterior atribuia este blocker a **permisos de macOS faltantes**. **Era incorrecto.** Se deja escrito el error y su correccion, no solo el resultado final.
+> **Correccion de diagnostico (2026-09-15).** El registro anterior atribuia este blocker a **permisos de macOS faltantes**. **Era incorrecto.** Ver seccion "S3: ESTADO ACTUALIZADO" (arriba) para el estado real; esto queda como historial de la leccion.
 
-### La causa real
+### Que se creia vs que era (la leccion)
 
-`screenReader.start()` falla con `VoiceOver cannot be started`, pero ese mensaje **oculta un cause anidado**:
-
-```
-VoiceOver cannot be started
-  cause: Error: macOS version not supported
-```
-
-Guidepup busca la version mayor de Darwin (`os.release()`) en su `manifest.json` y lanza si no hay asset para esa plataforma.
+El primer diagnostico leyo solo el mensaje externo (`VoiceOver cannot be started`) y concluyo "permisos". La causa real estaba en el `cause` anidado (`macOS version not supported`): Guidepup busca la version mayor de Darwin (`os.release()`) en su `manifest.json` y lanza si no hay asset para esa plataforma.
 
 | Este equipo | Guidepup 0.34.0 (latest) |
 |---|---|
 | macOS 27.0, **Darwin 27** | `platformVersions`: **21, 22, 23, 24, 25** |
 
-Confirmado por el CLI: `npx @guidepup/setup install voiceover` -> `The requested screen reader asset is not available for this platform: VoiceOver on darwin 27`. Verificado tambien contra `main` upstream: tampoco tiene 26 ni 27.
+El CLI lo confirma sin ambiguedad: `npx @guidepup/setup install voiceover` -> `asset is not available for this platform: VoiceOver on darwin 27`.
 
-### Los permisos NO eran el problema (verificado)
+**La leccion, aplicada al codigo:** `realReaderAvailability()` ahora aplana la cadena de `cause`, asi el skip muestra la razon real y no un mensaje que sugiere permisos. Un error que no nombra la causa concreta es una pista incompleta, no una conclusion.
 
-- El paso de **VoiceOver Utility** esta **hecho**: `/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled` existe con `a` (creado hoy 10:39).
-- El **control por AppleScript funciona**: `osascript -e 'tell application "VoiceOver" to activate'` arranco VoiceOver. El binario arranca y se controla.
-- `detect()`/`.default()` dan `true` porque VoiceOver **esta instalado**; eso nunca probo que Guidepup pudiera manejarlo.
+### Consecuencia para el proyecto (sigue vigente)
 
-### Lo que quedo construido (y sigue valido)
+S3 materializo el riesgo que **ADR-0001** anticipo como el mas duro: *"el plano real es el lado mas dificil de reemplazar"*. El driver virtual corre en cualquier SO; el real depende del asset de Guidepup para la version exacta del sistema. Y lo que falta ahora no es codigo ni asset: es **un permiso manual de Gonzo** (Full Disk Access), paso final del workaround.
 
-- **`ReaderDriver`**: contrato propio (ADR-0001). `virtualDriver` (CI) y `realDriver` (VoiceOver) lo implementan, asi que **la misma asercion corre en los dos planos**.
-- **`expectAnnouncement(container, expected, { driver })`**: el driver es opcional; el default sigue siendo el virtual.
-- **`realReaderAvailability()`**: arranca y para el lector una vez, para que el llamador pueda **saltear con la razon real** en vez de reportar un falso verde.
+### Opciones sobre el hueco upstream (estado final)
 
-**El codigo esta listo; lo que falta es cobertura de un tercero.** Cuando Guidepup publique el asset de Darwin 27, S3 se cierra corriendo el test, sin cambiar nada de lo escrito.
-
-### Consecuencia para el proyecto
-
-S3 **no depende de Gonzo, depende de upstream.** Y materializa el riesgo que **ADR-0001** anticipo como el mas duro: *"el plano real es el lado mas dificil de reemplazar"*. Ya no es advertencia teorica: el driver virtual corre en cualquier SO; el real exige un asset para la version exacta del sistema.
-
-### Opciones (estado: 1 tomada, 2 descartada, 3 abierta)
-
-1. **Reportar el hueco upstream** **HECHO (2026-09-15):** issue https://github.com/guidepup/guidepup/issues/149, abierto.
-2. **Correr el plano real en otra maquina** con macOS soportado (Darwin 21-25). **DESCARTADA (2026-09-15):** todas las maquinas de Gonzo corren macOS 27. No hay segunda maquina aprovechable.
-3. **Declarar la limitacion** en la matriz de ADR-0002 y dejar S3 documentado como bloqueado por upstream. Sigue siendo la opcion de respaldo.
+1. **Reportar el hueco upstream** **HECHO (2026-09-15):** issue https://github.com/guidepup/guidepup/issues/149, abierto. El workaround (`2fc3d0d`) lo referencia.
+2. **Correr el plano real en otra maquina** con macOS soportado (Darwin 21-25). **DESCARTADA (2026-09-15):** todas las maquinas de Gonzo corren macOS 27.
+3. **Declarar la limitacion** en la matriz de ADR-0002 y dejar S3 documentado como bloqueado por upstream. Sigue siendo la opcion de respaldo si el permiso manual no destraba.
 
 ### Advertencia que sigue en pie: `@guidepup/setup setup`
 
-Escribe directo en la base de privacidad del sistema (`TCC.db` via `sqlite3`), con lista de clientes ajena al proyecto (`sshd`, `bash`, `zsh`, `osascript`, Terminal, System Events, navegadores). **No ejecutarlo.** En este caso ademas no habria servido: el bloqueo es un asset faltante, no un permiso.
+Escribe directo en la base de privacidad del sistema (`TCC.db` via `sqlite3`), con lista de clientes ajena al proyecto (`sshd`, `bash`, `zsh`, `osascript`, Terminal, System Events, navegadores). **No ejecutarlo.** El workaround no lo necesita.
 
-**Nunca desactivar SIP** (verificado: sigue `enabled`). El maintainer de setup reporto (`guidepup/setup#66`) que en macOS 26 el marcador solo se escribe con SIP desactivado, y que escribirlo como root falla igual.
+**Nunca desactivar SIP** (verificado: sigue `enabled`). El maintainer de setup reporto (`guidepup/setup#66`) que el marcador de VoiceOver solo se escribe con SIP desactivado, y que escribirlo como root falla igual.
+
+---
+
+## S5: el cierre del ciclo (registro)
+
+- **README reescrito para abrir por lo que el ciclo ENCONTRO**, no por la promesa: tabla de que clases de bug captura el plano virtual (atributos: si) y cuales no (timing y viewport). El caso testigo quedo etiquetado como hueco del ecosistema.
+- **Corregido un ejemplo enganoso**: el README mostraba `import from 'kanam-fixer'` como instalable, cuando el paquete es `private: true` y no esta en npm (verificado: 404).
+- **ADR-0002 actualizado**: la version del plano real la determina el asset que Guidepup publique para la plataforma del host (dependencia dura, medida).
+- **`HANDOFF.md` creado**: donde vive cada cosa, el blocker y como se cierra, la trampa de debugging, decisiones y lo que no hay que hacer.
+- **Decision**: no abrir `0.0.2` hasta que S3 se cierre. Sigue vigente; ver "Proximo paso".
 
 ---
 
@@ -162,7 +177,8 @@ En los tres casos freno un commit que no estaba limpio.
 
 | Evento | Que pasa |
 |---|---|
-| Guidepup publica el asset de Darwin 27 | Correr `npm test`. Los 4 skips se vuelven tests reales. **Sin cambiar codigo.** Ese es el cierre de S3. |
+| **Gonzo otorga Full Disk Access al proceso que ejecuta los tests** (System Settings -> Privacy & Security -> Full Disk Access -> agregar y tildar p.ej. Terminal) | **Es el paso actual.** Correr `npm test`: si los 4 skips se vuelven tests reales, **S3 se cierra** y el ciclo 0.0.1 queda completo. |
+| ~~Guidepup publica el asset de Darwin 27~~ | ~~Correr `npm test`, sin cambiar codigo.~~ **Superado por el workaround** (`2fc3d0d`): el asset parcheado ya cubre 27; cuando salga el oficial, el workaround deja de ser necesario (es local, idempotente y no toca TCC/SIP). |
 | ~~Correr el plano real en una maquina con Darwin 21-25~~ | ~~Igual: `npm test` y los skips se activan.~~ **Descartado (2026-09-15):** todas las maquinas de Gonzo tienen macOS 27. |
 | Gonzo decide no esperar a upstream | Abrir `0.0.2` declarando la limitacion en la matriz (ADR-0002) y apoyarse en el plano virtual **solo** para bugs de atributos. |
 
@@ -184,6 +200,6 @@ Estaba congelado esperando la evidencia de S4: si reproducia, se destrababa; si 
 4. ~~`a11y-playground`~~ **DECIDIDO (2026-09-15):** **archivado**. Verificado: `isArchived=true`, y era un scaffold vacio (1 commit, `size=0KB`, sin descripcion).
 5. ~~S5 - cierre del ciclo~~ **HECHO (2026-09-15):** ciclo cerrado con evidencia. Decision: **no abrir `0.0.2`** hasta que S3 se pueda cerrar. Ver "Proximo paso".
 
-**Abierto, y es una espera, no una tarea:** Guidepup publique el asset de Darwin 27 ([issue #149](https://github.com/guidepup/guidepup/issues/149), ya reportado).
+**Abierto:** UN permiso manual de Gonzo (Full Disk Access al proceso que ejecuta los tests). Cuando se otorgue, `npm test` deberia cerrar S3: los 4 skips se vuelven tests reales. El workaround del asset ya esta aplicado y verificado (commit `2fc3d0d`, issue #149).
 
 Seguimiento en la DB de memoria: todo id=54.

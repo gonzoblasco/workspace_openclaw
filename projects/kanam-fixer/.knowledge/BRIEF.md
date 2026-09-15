@@ -91,6 +91,16 @@ Eso es un workflow que hoy nadie empaqueta, y que nosotros ya ejecutamos a mano.
 
 ## Blocker real de S3: Guidepup no soporta macOS 27
 
+> **Actualizacion (2026-09-15, tarde):** el asset ya no es el bloqueo. El workaround `2fc3d0d` (``scripts/apply-darwin27-workaround.sh``, idempotente, no toca TCC ni SIP) parchea el manifest local con `platformVersion 27` → asset de macOS 26 e instala el DMG con SHA verificado. El error avanzo de verdad (cadena de `cause` verificada):
+>
+> ```
+> VoiceOver cannot be started
+>   cause: Failed to mount Guidepup preferences
+>   cause: EPERM: operation not permitted, symlink ... com.apple.VoiceOver4.portable.scrd
+> ```
+>
+> **El unico paso que falta es manual de Gonzo:** System Settings -> Privacy & Security -> **Full Disk Access** -> agregar y tildar el proceso que ejecuta los tests (p. ej. Terminal). Al otorgarlo y correr `npm test`, los 4 skips deberian volverse tests reales y S3 se cierra.
+
 > **Correccion de diagnostico (2026-09-15).** Un diagnostico previo, escrito el mismo dia, atribuyo el fallo a **permisos de macOS faltantes**. **Era incorrecto.** Los permisos se resolvieron y el fallo siguio. La causa real esta abajo, verificada siguiendo el codigo de Guidepup hasta el origen. Se deja registrado el error y su correccion, no solo el resultado final.
 
 ### La causa exacta
