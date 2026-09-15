@@ -201,6 +201,9 @@ Un **T-spin sin lineas** paga 400/100 y el juego lo anuncia en pantalla con "T-S
 - **Verificacion en browser REAL (Safari, sonda con beacon):** `created_pre_gesture=0 | created_post_gesture=1 | osc_total=6 | osc_started=6 | suena=true | mute_label=MUTE | muted | osc_tras_mute=0`. El contexto se crea SOLO tras el gesto, suena, y el mute corta de verdad.
 - **NOTA HONESTA:** que los sonidos *suenen bien* (timbre, volumen, musicalidad) no se puede verificar sin oido humano. Lo verificado es la estructura (que suenen, cuantos osciladores, cuando). El juicio estetico es de Gonzo.
 
+## Deuda tecnica pendiente
+- **Sonido silenciado en la sesion de Gonzo (2026-09-15):** el motor de audio esta sano (la sonda via beacon verifico que el contexto se crea tras el gesto y blip() vuelve true), y los reintentos de resume() estan implementados, pero en la maquina real el usuario NO oye nada aunque el badge no muestre error y no haya errores en consola. No se pudo reproducir desde el entorno; no se seguira iterando sin repro. Si se retoma: instrumentar la salida real (no solo el grafo de nodos) con un oscilador de prueba audible, y descartar el estado de la salida/mac del usuario antes de tocar el engine de nuevo. Hasta entonces el juego queda jugable, estable y en silencio: 123/123 tests verdes, recor 36444.
+
 ## No-alcance (para futuras iteraciones)
 - Sonido, game feel (v0.5). Lock delay por pieza, tabla de gravedad guideline, verificacion visual medida (v0.6). Multiplayer, movil/touch.
 
