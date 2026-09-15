@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Prompts versionados (formato con frontmatter + verificador)
+
+### Added
+- **Esquema de prompts versionados:** cada archivo en `prompts/` lleva frontmatter `id` (debe coincidir con el slug del archivo), `version` (entero >= 1), `scope` (workspace|project|global) y `tags` (lista no vacia). El cuerpo es el prompt en si.
+- **`prompts/complexity-scorer.md`** - primer prompt migrado al formato (version 1, scope workspace, tags scoring/pipeline/complexity/orchestrator).
+- **`scripts/check-prompts.py`** - verificador de todos los `prompts/*.md`: id coincide con filename, version entera >= 1, scope permitido, tags no vacias, ids unicos, cuerpo presente. Exit 0 ok / 1 con los problemas listados.
+- **`tests/python/test_check_prompts.py`** - 9 tests (buen caso, id-filename, version, scope, tags, frontmatter ausente, ids duplicados, dir vacio, y que el `prompts/` real siempre valida).
+
+### Notes
+- **El formato es aditivo y no rompe `complexity-scorer.sh`:** el script lee `prompts/complexity-scorer.md` via `grep` de las 4 dimensiones (A/B/C/D), y el frontmatter no altera esas lineas del cuerpo. Verificado: el checker pasa (exit 0) y el scorer sigue andando (T=8 en una prueba).
+- **Hallazgo de paso (no arreglado, fuera de alcance):** el `grep` de dimensiones en `complexity-scorer.sh` (variable `DIMS`, linea 74) esta **roto desde siempre** - el regex espera `Alcance**` pegado, pero la linea real es `Alcance (A):**`, asi que `DIMS` siempre devuelve vacio. Y es codigo muerto: el script usa un `SYSTEM_PROMPT` en ingles hardcodeado, no `DIMS` (solo la define). Queda anotado como deuda tecnica de `complexity-scorer.sh` para refactor futuro.
+- **Los tests pytest no se pudieron ejecutar aca** (pytest no instalado en esta maquina, deuda de entorno ya documentada); la logica del checker se verifico manualmente contra casos buenos/malos (id-filename, version 0, scope invalido, sin frontmatter, tags vacio - cada uno falla con su mensaje, y el caso bueno pasa con exit 0).
+
 ## [2026-09-15] - Observabilidad minima del pipeline (ROADMAP 1.1): pipeline-report.sh
 
 ### Added

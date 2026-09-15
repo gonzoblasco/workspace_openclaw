@@ -1,3 +1,10 @@
+---
+id: complexity-scorer
+version: 1
+scope: workspace
+tags: ["scoring", "pipeline", "complexity", "orchestrator"]
+---
+
 # Meta-Prompt: Evaluador de Complejidad de Objetivo
 
 **Propósito:** Estandarizar la selección del motor LLM y el nivel de razonamiento (`thinking`) basándose en un análisis de la complejidad del *objetivo* en lugar de hacerlo por intuición o por regla fija.
