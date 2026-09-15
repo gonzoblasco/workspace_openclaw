@@ -8,10 +8,10 @@ utilizable (una hoja por contexto: sistema base + cada tema de producto).
 Uso:
   python3 design/tokens/build-tokens.py
 
-Salida:
-  design/tokens/dist/kanam.css          (sistema base: capa semantica Kanam)
-  design/tokens/dist/plaza.css          (tema Plaza, scope [data-theme="plaza"])
-  design/tokens/dist/terrario.css       (tema Terrario, scope [data-theme="terrario"])
+Salida (por contexto):
+  design/tokens/dist/kanam.css          sistema base Kanam (:root)
+  design/tokens/dist/<tema>.css         scope [data-theme="<tema>"] (apps multi-tema)
+  design/tokens/dist/<tema>.root.css    scope :root (apps de un solo tema, ej. Gradio)
 """
 
 import json
@@ -94,21 +94,37 @@ def build():
     (DIST / "kanam.css").write_text("\n".join(lines) + "\n", encoding="utf-8")
     written.append(("kanam.css", len(sem_flat)))
 
-    # 2) Temas: override de la capa semantica bajo su scope
+    # 2) Temas: override de la capa semantica, en dos variantes de scope.
+    #    - [data-theme="x"]: apps multi-tema (cambian el tema en runtime).
+    #    - :root:            apps de un solo tema que no controlan el atributo del root (Gradio).
     for name, path_json in THEMES:
         theme = load(path_json)
         t_flat = flatten(theme.get("semantic", {}))
-        lines = [
-            f"/* TEMA {name.upper()} - generado por build-tokens.py. NO editar a mano. */",
-            f"/* Fuente: design/tokens/themes/{name}.tokens.json (extiende el sistema Kanam) */",
-            f'[data-theme="{name}"] {{',
-        ]
+        body = []
         for path, val in t_flat.items():
             resolved = resolve(val, prim_flat, {**sem_flat, **t_flat})
-            lines.append(f"  {css_name(path)}: {resolved};")
-        lines.append("}")
-        (DIST / f"{name}.css").write_text("\n".join(lines) + "\n", encoding="utf-8")
+            body.append(f"  {css_name(path)}: {resolved};")
+        header = [
+            f"/* TEMA {name.upper()} - generado por build-tokens.py. NO editar a mano. */",
+            f"/* Fuente: design/tokens/themes/{name}.tokens.json (extiende el sistema Kanam) */",
+        ]
+        (DIST / f"{name}.css").write_text(
+            "\n".join(header + [f'[data-theme="{name}"] {{'] + body + ["}"]) + "\n",
+            encoding="utf-8",
+        )
         written.append((f"{name}.css", len(t_flat)))
+        (DIST / f"{name}.root.css").write_text(
+            "\n".join(
+                header
+                + [f"/* scope :root - para apps de un solo tema (consumir junto a kanam.css) */"]
+                + [":root {"]
+                + body
+                + ["}"]
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        written.append((f"{name}.root.css", len(t_flat)))
 
     for fname, n in written:
         print(f"  {fname}: {n} tokens")

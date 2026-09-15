@@ -24,7 +24,9 @@ design/tokens/
   dist/                      <- CSS GENERADO (no editar a mano)
     kanam.css                  sistema base
     plaza.css                  [data-theme="plaza"]
+    plaza.root.css             :root (apps de un solo tema)
     terrario.css               [data-theme="terrario"]
+    terrario.root.css          :root (apps de un solo tema)
 ```
 
 | Capa | Qué contiene | Regla |
@@ -60,9 +62,18 @@ Verifica que **todas** las referencias se resuelvan; si alguna queda sin resolve
 ```
 Cambiar de tema = cambiar `data-theme`. Los componentes no se tocan.
 
+**Apps de un solo tema (ej. Gradio)** que no controlan el atributo del root: usar la variante
+`.root.css` en lugar de la de scope:
+```html
+<link rel="stylesheet" href="design/tokens/dist/kanam.css">
+<link rel="stylesheet" href="design/tokens/dist/terrario.root.css">
+```
+
 ### En Python (Gradio)
-Inyectar el CSS generado en `launch(css=...)` y usar los `--k-*` en las variables de Gradio
-(ver kanam-lab como implementación de referencia del tema Terrario).
+Leer el CSS generado (`kanam.css` + `<tema>.root.css`) y pasarlo a `launch(css=...)`, con un
+adapter que mapee los `--k-*` a las variables que consume Gradio. **kanam-lab es la
+implementación de referencia**: `projects/kanam-lab/app/app.py` (`_load_ds_css()` + adapter),
+que además corre el build una vez si el `dist/` no existe.
 
 ---
 
