@@ -71,3 +71,7 @@ import { Inbox, Zap, BarChart } from "lucide-react";
 - Lucide: https://lucide.dev
 - `lucide-react` en npm: https://www.npmjs.com/package/lucide-react
 - Ya usado en: Soporteml v1 (`projects/soporteml`), Soporteml v3 (`projects/soporteml-v3`), mockup de identidad V4 (`projects/soporteml-v4/mockups/identidad-v4.html`)
+
+## Nota (2026-09-14)
+
+El punto 1 de "Por que Lucide" cita *el ecosistema shadcn/Radix*. En su momento era una referencia circular: este ADR admitia que la eleccion venia del template y la usaba igual como fundamento. Desde el **ADR-048** esa cita tiene respaldo real - la adopcion de Radix/shadcn quedo documentada como decision explicita, con reglas de uso y disparadores de revision.

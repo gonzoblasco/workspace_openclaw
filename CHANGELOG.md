@@ -106,7 +106,9 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`AGENTS.md` - seccion 3 (Ingenieria).** Nueva subseccion "Dependencias: el precedente no es un motivo" junto a Existing Solutions Preflight, con la regla operativa y el caso que la motiva.
 
 ### Added
-- **Estudio `radix-primitives`** (`studies/radix-primitives/`, modo gamificado): plan maestro con 5 niveles / 46 topics para aprender Radix en serio. Origen: al decidir el destino de Radix/shadcn se eligio aprenderlo (integrarlo naturalmente y saber cuando sacarle provecho). Registrado en `studies/README.md` como seccion nueva de TEMAS TECNICOS.
+- **ADR-048: Radix/shadcn como capa de UI** (`docs/adr/ADR-048-shadcn-radix-stack-ui.md`). El ADR de adopcion que no existia: hasta hoy la eleccion venia del template y `ADR-037` la citaba como si fuera una decision tomada. Documenta las 4 alternativas evaluadas con datos verificados (Radix vs Base UI vs Ariakit vs HTML nativo), 7 reglas de uso (incluida **cuando NO usar Radix**) y 4 disparadores de revision. Nace de la regla "el precedente no es un motivo" (mismo dia).
+- **`docs/adr/ADR-037` - nota de respaldo:** la cita al "ecosistema shadcn/Radix" dejo de ser circular; apunta al ADR-048.
+- **Estudio `radix-primitives` COMPLETO** (`studies/radix-primitives/`): 5 niveles, 46 topics, 460 XP. Cuadernos 1-5. Hallazgos verificados: `kanam-pulse` es a11y-first y no usa Radix a proposito; solo 2 de 4 proyectos lo usan de verdad; dos generaciones de shadcn conviviendo (`forwardRef` vs `data-slot`); el dist-tag `latest` de Ariakit apunta a un prerelease de 2023.
 - **Leccion `metodologia`:** el precedente fabricado - una eleccion implicita del template (shadcn/ui + Radix) citada despues como decision tomada en `ADR-037` (Lucide), que el propio ADR admite no haber documentado como decision.
 - **TODO:** decidir el destino de Radix/shadcn en el stack UI (aprenderlo, evaluar reemplazo, o dejar la deuda anotada). Verificado: no existe ADR de adopcion de shadcn/Radix en el workspace; `grep shadcn|radix docs/adr/` devuelve solo ADR-037.
 

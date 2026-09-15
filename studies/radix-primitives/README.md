@@ -38,6 +38,8 @@ Radix entro al stack por el template, no por decision: `shadcn/ui` lo trae por d
 | 2 | La API (como se usa) | 14 | ✅ cerrado |
 | 3 | La accesibilidad (el contrato) | 10 | ✅ cerrado |
 | 4 | Radix en el stack real (shadcn y nuestros proyectos) | 8 | ✅ cerrado |
-| 5 | Criterio de decision y mantenimiento | 4 | 🔴 |
+| 5 | Criterio de decision y mantenimiento | 4 | ✅ cerrado |
 
 Ver `PLAN-MAESTRO.md` para el detalle y `PROGRESO.md` para el avance.
+
+**Estudio completo:** 46/46 topics, 460 XP, 5 badges. El jefe final es **`docs/adr/ADR-048-shadcn-radix-stack-ui.md`**.

@@ -77,7 +77,7 @@ Decisiones de fondo que cambian la arquitectura de todo lo demás.
 | # | Qué | Decisión de fondo |
 |---|---|---|
 | #44 | Gateway OpenClaw 24/7 en la Mini + bot Telegram `@kanam_ai_bot` | ¿El bot vive siempre encendido? Cambia la arquitectura operativa |
-| #52 | Destino de Radix/shadcn en el stack UI | **DECIDIDO 2026-09-14: aprenderlo en serio.** Estudio en `studies/radix-primitives/` (5 niveles / 46 topics). Ya no es decision abierta - queda como seguimiento del estudio. |
+| #52 | Destino de Radix/shadcn en el stack UI | **CERRADO 2026-09-14.** Estudio `studies/radix-primitives/` completo (5 niveles, 46 topics) y **ADR-048** escrito: adopcion con criterio, reglas de uso y disparadores de revision. Queda como seguimiento del ADR, no como decision abierta. |
 | #38 | Cliente MCP real para Lovable (OAuth) | Evaluar integración nativa vs mantener el puente actual |
 | #47 | Actualizar skill `model-cata` para cubrir tests de código ejecutables | Trazabilidad de la evaluación de modelos |
 
