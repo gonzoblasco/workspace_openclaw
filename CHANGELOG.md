@@ -6,6 +6,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - 0.1: swap de version verificado y cierre de items abiertos
+
+### Changed
+- **`docs/ROADMAP.md` 0.1 - swap de version resuelto (verificado, no asumido).** Gonzo indico que las dos acciones pendientes ya estaban hechas. Verificado con datos: el gateway corre **2026.9.4** (`gateway.self.version`, `runtimeVersion` y `gatewayService.layout.packageVersion` los tres coinciden). El proceso (pid 80466) arranco 13/09 22:16, **despues** del install manual de 2026.9.4 (package.json mtime 13/09 20:40), asi que quedo tomada. La linea "The gateway is running 2026.9.3" del `status` es un **registro historico obsoleto** del run automatico fallido (creado 13/09 11:51, con `before`/`after` en 2026.9.3), superado por el install manual posterior.
+- **`qwen3.8:27b-mlx`: decision de Gonzo (14/09) - dejar como esta.** Se cierra la accion de evaluarlo/descargarlo. Sigue instalado (18 GB).
+- **Contradiccion propia corregida:** quedaban dos acciones opuestas sobre `qwen3.8` (una que la cerraba y otra que pedia evaluarla). Se elimino la duplicada.
+
+### Notes
+- **Sigue abierto (item aparte del swap):** `openclaw doctor` reporta "Startup migrations need attention" y pide `openclaw doctor --fix` + restart. El swap de version esta resuelto; las migraciones no. Requiere al owner (el agente no reinicia el gateway).
+- **Validacion del fix de bootstrap (doctor):** `USER.md` ahora reporta 3,985 chars = 20% del limite, y el doctor **ya no emite el finding `bootstrap-size`** que antes marcaba el truncado. Total inyectado 23.915 chars (40% del cap de 60.000).
+
 ## [2026-09-14] - USER.md bajo el cap fijo de bootstrap (10.008 -> 3.986)
 
 ### Changed

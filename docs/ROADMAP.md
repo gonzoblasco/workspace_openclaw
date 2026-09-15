@@ -48,9 +48,10 @@
   - [x] Batchear exec masivo en scripts `.sh` (aplicado y verificado en la sesión de higiene del 28/08).
   - [x] Bajar de nuevo AGENTS.md a <20K (regresión verificada 14/09). **HECHO 14/09**: 24.638 -> 15.167 chars (sección `## Tools`, 11.334 chars, movida a `docs/SETUP.md`).
   - [x] **Bajar `USER.md` a <=4.000 chars.** **HECHO 14/09**: 10.008 -> **3.986 chars**, con el detalle ampliado movido a `memory/user-profile.md` (bajo `memory/` a propósito: `memory_search` indexa `memory/`, no `docs/`). Punteros de MEMORY.md actualizados.
-  - [ ] Completar el swap de versión: gateway en 2026.9.3, CLI/npm en 2026.9.4. Correr `openclaw doctor --fix` para las startup migrations y reintentar el update (requiere al owner).
+  - [x] **Completar el swap de versión.** **VERIFICADO 14/09 21:50**: el gateway corre **2026.9.4** (`gateway.self.version`, `runtimeVersion` y `gatewayService.layout.packageVersion` los tres en 2026.9.4). El proceso (pid 80466) arrancó 13/09 22:16, *después* del install manual de 2026.9.4 (package.json mtime 13/09 20:40) -> quedó tomada. La línea "The gateway is running 2026.9.3" del `status` es un **registro histórico obsoleto** del run automático fallido (creado 13/09 11:51, `before`/`after` = 2026.9.3), superado por el install manual posterior.
+  - [ ] **Startup migrations: sigue pendiente.** `openclaw doctor` reporta "Startup migrations need attention" y pide `openclaw doctor --fix` + restart. Es un item aparte del swap de versión (el swap está resuelto; las migraciones no). Requiere al owner (el restart del gateway no lo puede hacer el agente).
+  - [x] `qwen3.8:27b-mlx`: **decisión de Gonzo (14/09): dejar como está por ahora.** Sigue instalado (18 GB). No se evalúa ni se descarga en este momento.
   - [ ] **Redefinir la señal de listo:** "15+ POST + 11 GET sin reinicio" no probaría nada sobre reinicios espontáneos (no los hay). Mejor señal: 0 dumps nuevos en `logs/stability/` tras una sesión pesada.
-  - [ ] Evaluar el impacto de `qwen3.8:27b-mlx` (17-18 GB en una Mini de 24 GB) en la ventana de restarts; decidir si conviene descargarlo.
 - **Regla operativa (no es checkbox)**: no mezclar browser tool con exec grande en la misma respuesta.
 
 ### 0.2 Higiene del workspace 🟢 P1
