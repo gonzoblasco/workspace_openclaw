@@ -260,3 +260,15 @@ Deuda derivada: no existe ADR de adopcion de shadcn/Radix en todo el workspace (
 
 ---
 
+## No puede = no puede con ESTE harness
+
+
+
+**Tags:** Duelo atoi 2026-09-14: el MISMO qwen3.8:27b-mlx que daba HTTP 500 (OOM Metal) como agente de OpenClaw, paso 24/24 via API directa, y en Claude Code headless respondio todos los requests con 200.
+
+Leccion: cuando un componente falla, el limite suele estar en el contexto completo (harness, sesion, memoria), no en el componente aislado. Antes de concluir 'X no puede', aislar la variable: probar el mismo X en otro harness. La atribucion correcta es 'X no puede CON esto', que es actionable, no 'X no puede', que cierra la puerta.
+
+Caso concreto: el error fue intentar el 27B como agente OpenClaw (sesion pesada: AGENTS+USER+SOUL+runtime+historial supera los 24GB junto a los 18GB de pesos). Con contexto liviano (Claude Code, API directa) entra sin problema.
+
+---
+

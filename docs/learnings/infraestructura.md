@@ -463,3 +463,17 @@ CAUSA RAIZ del drift 12-14 y de la pisada del 14/09. Hay dos problemas distintos
 
 ---
 
+## num_predict chico trunca la salida estructurada con thinking activo
+
+
+
+**Tags:** Patron repetido (2026-09-13/14, minimo 4 apariciones): al pedir salida estructurada (JSON) a un modelo con thinking activo, un num_predict chico se lo come el razonamiento y la respuesta llega truncada o vacia.
+
+Sintomas vistos: content vacio (deepseek, qwen3.5:cloud), y 'Unterminated string starting at...' al parsear el JSON del juez (Fase 5 de kanam-lab).
+
+Arreglo verificado: subir num_predict (220 -> 600 en el juez) Y agregar un parser de respaldo por regex que extraiga el campo critico del texto crudo aunque el JSON este incompleto. Doble red: JSON estricto cuando llega completo, regex cuando llega cortado. Tras el fix: 3/3 corridas consistentes.
+
+Regla: toda salida estructurada de un modelo con thinking necesita presupuesto amplio y un fallback tolerante a truncamiento. Si el proceso escribe en la DB en paralelo al catalog, puede fallar por lock: verificar que la fila quedo, no confiar en el mensaje de exito.
+
+---
+
