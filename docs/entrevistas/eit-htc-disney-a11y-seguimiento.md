@@ -277,3 +277,32 @@ La certificacion **IAAP** sigue en Preferred, no Required. Si el payroll team la
 ### Secciones finales del CV
 
 PROFESSIONAL SUMMARY | SKILLS | PROFESSIONAL EXPERIENCE | CERTIFICATIONS | SELECTED PROJECTS | OSS PARTICIPATIONS (Merged PRs + Contributions)
+
+## 2026-09-15 (12:22-13:33) - IAAP certification: respuesta al cliente + plan de estudio
+
+**Disparador:** el cliente pregunto por (1) certificaciones y CEUs mas recientes, (2) si hay plan de rendir IAAP, (3) para cuando la completa. Envia Parthasarathy, responde Gonzo.
+
+### Hechos verificados contra el handbook oficial de IAAP (Candidate and Certificant Handbook, enero 2026)
+- Examenes en **6 ventanas por ano**, rendicion online proctored o test center.
+- Credenciales validas **3 anos**; renovacion **sin costo con membresia IAAP activa** (renovacion con fee si no hay membresia continua).
+- CEUs por ciclo trienal: CPACC 45, WAS 35, CPWA 55, ADS 35.
+- Fee del examen: USD 385-545 segun credencial/membresia (fuente de terceros, confirmar en portal).
+
+### Entregable: `iaap-certification-email-draft.md`
+Email en ingles (subject "IAAP Certification - Status and Plan"), verificado sin em/en dash con `scripts/check_em_dash.py`. Estrategia:
+1. **Punto 1 (certificaciones):** Deque University Accessibility Specialist (2021) descrito con precision - son certificados de cursos, no una credencial IAAP vencida. Mata el "lapsed" con exactitud; el curso "IAAP Certification Quick Guide (04/2021)" queda como evidencia de prep previa hacia IAAP. Ademas: educacion continua aplicada (referente a11y en EY hasta 05/2025, contribuciones OSS mergeadas en 2026, estudio estructurado WCAG 2.2 / APG / lectores).
+2. **Punto 2 (plan IAAP):** si, CPACC primero + WAS segundo (credencial natural de profundidad tecnica).
+3. **Punto 3 (timeline):** registro el 01/10 al arrancar; completar ~1 mes desde el arranque (fin de octubre), rendiendo la ventana IAAP mas temprana disponible; fecha exacta se confirma al registrar. Fee: "if the client or HTC is able to sponsor or reimburse it, I will register immediately" - positivo, sin mencionar dinero en tono negativo (cumple lo que pidio Parthasarathy).
+4. Cierra ofreciendo compartir los certificados Deque y documentacion.
+
+### Plan de estudio (pedido de Gonzo, 13:33)
+- **Recomendado:** Deque University IAAP CPACC prep (video + practica, self-paced; curriculum completo USD 400/ano, incluye contenido de prep para WAS). Ya conoce la plataforma (5 cursos Deque en 2021).
+- **Alternativa economica:** Level Access Academy IAAP Bundle, USD 249/ano, 12 meses, incluye 18.25 creditos CEU (mitad de un ciclo de renovacion).
+- **Obligatorio gratis:** CPACC Body of Knowledge (oct 2023, v4.0) - fuente del examen. Princeton CPACC prep course gratis para miembros IAAP (beneficio extra si el cliente sponsoriza membresia).
+- **Focos de estudio de Gonzo (perfil dev):** (1) leyes y regulaciones (ADA, Section 508, AODA, EN 301 549); (2) datos de discapacidad (OMS) y modelos de discapacidad (medico vs social), 7 principios de universal design; (3) estructura y terminologia WCAG (niveles A/AA/AAA, documento: principles -> guidelines -> SC -> techniques).
+- Con la base de Gonzo (5 anos a11y central), 4 semanas de preparacion es holgado; el riesgo es solo calendario de ventanas.
+
+### Estado
+- Email entregado, **pendiente de revision/aprobacion de Gonzo** antes de enviar.
+- Si el cliente sponsoriza: pedir examen + membresia IAAP + curso en un mismo paquete (renovable gratis de por vida = argumento facil de vender).
+- **Riesgo IAAP (Preferred) ahora mitigado activamente** con el plan; seguir vigilando si payroll lo pone como gate.
