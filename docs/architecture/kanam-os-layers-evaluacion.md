@@ -22,7 +22,7 @@ Todo lo que sigue se contrasto contra el estado real el 2026-09-15:
 | Que se verifico | Fuente | Resultado |
 |---|---|---|
 | Gateway / auth / puerto | `~/.openclaw/openclaw.json` | `loopback`, puerto 18789, `auth.mode=token` |
-| Proveedores LLM | config + `ollama list` | 3 locales + 8 cloud en config; 8 instaldos en Ollama |
+| Proveedores LLM | config + `ollama list` | 9 declarados en config (2 locales + 7 cloud); 8 instalados en Ollama (3 locales + 5 cloud) |
 | Compatibilidad OpenAI en Ollama | `curl 127.0.0.1:11434/v1/models` | Operativo: expone `/v1/models` |
 | RAG / embeddings | `scripts/semantic-search.js`, `memory-search.py` | SQLite + `qwen3-embedding:0.6b`, 1024 dims, coseno |
 | Memoria | `memory/memory.db`, `MEMORY.md`, `USER.md` | DB-first, 4 tablas, espejos `.md` regenerables |
