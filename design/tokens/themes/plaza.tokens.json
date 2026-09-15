@@ -1,0 +1,58 @@
+{
+  "$description": "TEMA DE PRODUCTO: PLAZA. Productos comerciales que venden al publico (Kanam Desk, SoporteML). Sobreescribe SOLO la capa semantica: los componentes no cambian, cambia la marca.",
+  "$meta": { "theme": "plaza", "extends": "kanam.tokens.json", "use": "producto comercial / landings / seller-facing", "updated": "2026-09-14" },
+
+  "semantic": {
+    "brand": {
+      "primary": "{primitive.color.navy.700}",
+      "primaryHover": "{primitive.color.navy.900}",
+      "primarySubtle": "{primitive.color.cream.100}",
+      "secondary": "{primitive.color.green.600}",
+      "accent": "{primitive.color.sun.400}"
+    },
+    "text": {
+      "primary": "{primitive.color.navy.700}",
+      "secondary": "#4A5568",
+      "muted": "#8A7F6B",
+      "inverse": "{primitive.color.cream.100}",
+      "onBrand": "{primitive.color.neutral.0}",
+      "link": "{primitive.color.green.600}"
+    },
+    "surface": {
+      "base": "{primitive.color.cream.100}",
+      "card": "{primitive.color.neutral.0}",
+      "elevated": "{primitive.color.neutral.0}",
+      "sunken": "{primitive.color.cream.200}",
+      "inverse": "{primitive.color.navy.700}"
+    },
+    "border": {
+      "subtle": "{primitive.color.cream.300}",
+      "base": "{primitive.color.cream.300}",
+      "strong": "{primitive.color.navy.700}"
+    },
+    "state": {
+      "success": "{primitive.color.green.600}",
+      "successSubtle": "#E8F5EE",
+      "warning": "{primitive.color.amber.500}",
+      "warningSubtle": "#FDF3E3",
+      "danger": "{primitive.color.coral.500}",
+      "dangerSubtle": "#FCEDEA",
+      "info": "{primitive.color.navy.500}",
+      "infoSubtle": "#EAF1FE"
+    },
+    "focus": { "ring": "{primitive.color.green.600}", "ringOffset": "{primitive.color.cream.100}", "width": "2px", "offset": "2px" },
+    "typography": {
+      "body": { "family": "{primitive.font.family.body}", "size": "{primitive.font.size.lg}", "lineHeight": "{primitive.font.lineHeight.base}" },
+      "heading": { "family": "{primitive.font.family.display}", "weight": "{primitive.font.weight.black}", "lineHeight": "{primitive.font.lineHeight.tight}" }
+    },
+    "radius": { "control": "10px", "card": "{primitive.radius.lg}", "panel": "{primitive.radius.lg}" }
+  },
+
+  "$contrast": {
+    "text.primary on surface.base": "13.5:1 AAA",
+    "sun on navy (accent)": "11.8:1 AAA",
+    "brand.primary (navy) on sun": "11.8:1 AAA",
+    "state.success on cream": "5.2:1 AA",
+    "state.danger on cream": "4.9:1 AA"
+  }
+}

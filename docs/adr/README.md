@@ -52,6 +52,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-044 | [Methodology Audit - Marco de 8 Fases como Lente de Auditoría](./ADR-044-methodology-audit-framework.md) | workspace |
 | ADR-045 | [Motor del Pipeline A/B - DeepSeek V4.1 Flash](./ADR-045-motor-pipeline-deepseek-v4.1-flash.md) (superseded por ADR-046) | workspace |
 | ADR-046 | [Revert del Motor del Pipeline A/B - DeepSeek V4 Flash (por costo)](./ADR-046-motor-pipeline-revert-deepseek-v4-flash.md) | workspace |
+| ADR-047 | [Kanam Design System como identidad transversal de todo producto](./ADR-047-kanam-design-system.md) | workspace |
 
 ## Formato
 

@@ -1,3 +1,8 @@
+> ⚠️ **SUPERSEDED (2026-09-14, ADR-047).** Este borrador fue integrado y evolucionado en el
+> **Kanam Design System**: `design/README.md` + `design/tokens/kanam.tokens.json`. La marca Kanam
+> (teal `#0d9488`, Inter, focus visible) se conservó; lo de acá que no está en el sistema es
+> historia, no fuente de verdad. No usar este archivo como referencia de tokens.
+
 # 🌿 Kanam Design Tokens
 **Identity**: IA that fuels all products (identidad transversal + guardrails)  
 **Emoji**: 🌿  

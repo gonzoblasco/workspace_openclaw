@@ -1,0 +1,118 @@
+{
+  "$schema": "https://design-tokens.org/schema.json",
+  "$description": "KANAM DESIGN SYSTEM - Capa 1 (primitivas) + Capa 2 (semantica de marca). Fuente de verdad. Los temas de producto (plaza, terrario) viven en design/tokens/themes/ y solo sobreescriben la capa semantica.",
+  "$meta": {
+    "system": "Kanam Design System",
+    "version": "1.0.0",
+    "owner": "Kanam",
+    "updated": "2026-09-14"
+  },
+
+  "primitive": {
+    "$description": "Valores crudos sin intencion. Nunca se usan directo en producto: la capa semantica los referencia.",
+    "color": {
+      "teal": { "50": "#f0fdf9", "100": "#d7f7ee", "300": "#5eead4", "500": "#14b8a6", "600": "#0d9488", "700": "#057a6b", "900": "#04302b" },
+      "navy": { "500": "#2f5aa8", "700": "#12294B", "900": "#0a1830" },
+      "cream": { "100": "#FFF8EC", "200": "#F6EFE2", "300": "#E8DCC4" },
+      "sand": { "100": "#FAF9F5", "200": "#EFEDE6", "300": "#E2DFD6" },
+      "sun": { "400": "#FFDD3A", "600": "#d9b400" },
+      "green": { "500": "#3D7A4D", "600": "#0E7C5A", "700": "#0a5c43" },
+      "coral": { "500": "#C4452C", "600": "#B03A2E" },
+      "amber": { "500": "#B7791F", "600": "#96610F" },
+      "neutral": { "0": "#FFFFFF", "50": "#FAFAF9", "100": "#F4F4F2", "300": "#D6D3D1", "500": "#78716C", "600": "#57534E", "700": "#44403C", "900": "#111318", "950": "#0A0A0A" },
+      "lime": { "400": "#C6F24E" },
+      "blue": { "500": "#2F6FED", "600": "#0057FF" }
+    },
+    "space": {
+      "$description": "Grilla base de 4px. Escala de 8 pasos.",
+      "0": "0px", "1": "4px", "2": "8px", "3": "12px", "4": "16px", "5": "24px", "6": "32px", "7": "48px", "8": "64px", "9": "96px", "10": "128px"
+    },
+    "radius": { "none": "0px", "sm": "8px", "md": "12px", "lg": "16px", "full": "9999px" },
+    "font": {
+      "family": {
+        "body": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "display": "'Archivo', 'Sora', Inter, sans-serif",
+        "serif": "Georgia, 'Source Serif', 'Times New Roman', serif",
+        "mono": "ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace"
+      },
+      "size": { "xs": "11px", "sm": "13px", "md": "15px", "lg": "17px", "xl": "22px", "2xl": "28px", "3xl": "40px", "4xl": "56px", "5xl": "72px" },
+      "weight": { "regular": "400", "medium": "500", "semibold": "600", "bold": "700", "black": "800" },
+      "lineHeight": { "tight": "1.05", "snug": "1.3", "base": "1.55", "loose": "1.75" },
+      "letterSpacing": { "tight": "-0.03em", "normal": "0", "wide": "0.08em", "wider": "0.2em" }
+    },
+    "motion": {
+      "duration": { "instant": "80ms", "fast": "120ms", "base": "200ms", "slow": "400ms" },
+      "easing": { "standard": "cubic-bezier(0.2, 0, 0, 1)", "entrance": "cubic-bezier(0, 0, 0.2, 1)", "exit": "cubic-bezier(0.4, 0, 1, 1)" }
+    },
+    "zIndex": { "base": "0", "dropdown": "10", "sticky": "20", "overlay": "30", "modal": "40", "toast": "50" },
+    "borderWidth": { "thin": "1px", "base": "2px", "thick": "3px" },
+    "breakpoint": { "sm": "640px", "md": "768px", "lg": "1024px", "xl": "1280px", "2xl": "1536px" }
+  },
+
+  "semantic": {
+    "$description": "Capa de INTENCION. Es la que usan los componentes. Los temas de producto redefinen SOLO estas claves (intent over value), y asi el sistema escala a multi-marca sin reescribir componentes.",
+    "brand": {
+      "primary": "{primitive.color.teal.600}",
+      "primaryHover": "{primitive.color.teal.700}",
+      "primarySubtle": "{primitive.color.teal.50}",
+      "secondary": "{primitive.color.neutral.700}",
+      "accent": "{primitive.color.amber.500}"
+    },
+    "text": {
+      "primary": "{primitive.color.neutral.900}",
+      "secondary": "{primitive.color.neutral.600}",
+      "muted": "{primitive.color.neutral.500}",
+      "inverse": "{primitive.color.neutral.0}",
+      "onBrand": "{primitive.color.neutral.0}",
+      "link": "{primitive.color.teal.600}"
+    },
+    "surface": {
+      "base": "{primitive.color.neutral.0}",
+      "card": "{primitive.color.neutral.0}",
+      "elevated": "{primitive.color.neutral.50}",
+      "sunken": "{primitive.color.neutral.100}",
+      "inverse": "{primitive.color.neutral.900}"
+    },
+    "border": {
+      "subtle": "{primitive.color.neutral.100}",
+      "base": "{primitive.color.neutral.300}",
+      "strong": "{primitive.color.neutral.700}"
+    },
+    "state": {
+      "$description": "Semantica unica en todo el ecosistema: nunca se invierte. El estado nunca depende solo del color (siempre icono o texto).",
+      "success": "{primitive.color.green.600}",
+      "successSubtle": "#E8F5EE",
+      "warning": "{primitive.color.amber.500}",
+      "warningSubtle": "#FDF3E3",
+      "danger": "{primitive.color.coral.500}",
+      "dangerSubtle": "#FCEDEA",
+      "info": "{primitive.color.blue.500}",
+      "infoSubtle": "#EAF1FE"
+    },
+    "focus": {
+      "$description": "Anillo de foco: 2px minimo (WCAG 2.2), visible en TODOS los interactivos.",
+      "ring": "{primitive.color.teal.600}",
+      "ringOffset": "{primitive.color.neutral.0}",
+      "width": "{primitive.borderWidth.base}",
+      "offset": "2px"
+    },
+    "typography": {
+      "body": { "family": "{primitive.font.family.body}", "size": "{primitive.font.size.md}", "lineHeight": "{primitive.font.lineHeight.base}" },
+      "heading": { "family": "{primitive.font.family.display}", "weight": "{primitive.font.weight.bold}", "lineHeight": "{primitive.font.lineHeight.tight}" },
+      "code": { "family": "{primitive.font.family.mono}", "size": "{primitive.font.size.sm}" },
+      "label": { "size": "{primitive.font.size.sm}", "weight": "{primitive.font.weight.semibold}", "letterSpacing": "{primitive.font.letterSpacing.wide}" }
+    },
+    "radius": { "control": "{primitive.radius.sm}", "card": "{primitive.radius.md}", "panel": "{primitive.radius.lg}" },
+    "shadow": {
+      "$description": "Sombras minimas por decision de sistema: la separacion la hacen borde y superficie.",
+      "none": "none",
+      "sm": "0 1px 2px rgba(17, 19, 24, 0.06)",
+      "md": "0 4px 12px rgba(17, 19, 24, 0.08)"
+    },
+    "space": {
+      "inset-sm": "{primitive.space.3}", "inset-md": "{primitive.space.4}", "inset-lg": "{primitive.space.6}",
+      "stack-sm": "{primitive.space.2}", "stack-md": "{primitive.space.4}", "stack-lg": "{primitive.space.7}",
+      "inline-sm": "{primitive.space.2}", "inline-md": "{primitive.space.4}"
+    }
+  }
+}

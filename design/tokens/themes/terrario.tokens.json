@@ -1,0 +1,54 @@
+{
+  "$description": "TEMA DE PRODUCTO: TERRARIO. Herramientas internas y laboratorio (kanam-lab, dashboards internos). La misma arquitectura, marca distinta.",
+  "$meta": { "theme": "terrario", "extends": "kanam.tokens.json", "use": "interno / laboratorio / herramientas de trabajo", "updated": "2026-09-14" },
+
+  "semantic": {
+    "brand": {
+      "primary": "{primitive.color.green.500}",
+      "primaryHover": "#2F6140",
+      "primarySubtle": "#F0F6F1",
+      "secondary": "{primitive.color.amber.500}",
+      "accent": "{primitive.color.amber.500}"
+    },
+    "text": {
+      "primary": "#1C1E21",
+      "secondary": "#555B63",
+      "muted": "#7A8B99",
+      "inverse": "{primitive.color.neutral.0}",
+      "onBrand": "{primitive.color.neutral.0}",
+      "link": "{primitive.color.green.500}"
+    },
+    "surface": {
+      "base": "{primitive.color.sand.100}",
+      "card": "{primitive.color.neutral.0}",
+      "elevated": "{primitive.color.neutral.0}",
+      "sunken": "{primitive.color.sand.200}",
+      "inverse": "#1C1E21"
+    },
+    "border": {
+      "subtle": "{primitive.color.sand.200}",
+      "base": "{primitive.color.sand.300}",
+      "strong": "{primitive.color.green.500}"
+    },
+    "state": {
+      "success": "{primitive.color.green.500}",
+      "successSubtle": "#E8F5EE",
+      "warning": "{primitive.color.amber.500}",
+      "warningSubtle": "#FDF3E3",
+      "danger": "{primitive.color.coral.600}",
+      "dangerSubtle": "#FCEDEA",
+      "info": "{primitive.color.blue.500}",
+      "infoSubtle": "#EAF1FE"
+    },
+    "focus": { "ring": "{primitive.color.green.500}", "ringOffset": "{primitive.color.sand.100}", "width": "2px", "offset": "2px" },
+    "radius": { "control": "{primitive.radius.sm}", "card": "{primitive.radius.md}", "panel": "{primitive.radius.lg}" }
+  },
+
+  "$contrast": {
+    "text.primary on surface.base": "15.4:1 AAA",
+    "brand.primary on surface.base": "6.4:1 AA+",
+    "state.danger on sand": "4.9:1 AA",
+    "amber (chip modelo glm) on sand": "5.9:1 AA"
+  },
+  "$notes": "Los colores de identidad por modelo de IA del lab (deepseek azul #2F6FED, glm ambar, qwen verde) viven como tokens de componente en el proyecto kanam-lab, no en el sistema: son una convencion de ESA herramienta."
+}
