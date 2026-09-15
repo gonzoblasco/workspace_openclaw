@@ -33,6 +33,10 @@ Ese limite esta documentado en nuestra propia practica. La skill `a11y-at-valida
 
 **Caso testigo (radix-ui #4109/#4110):** el `aria-posinset` estaba correcto en el DOM y los 51 tests pasaban en verde - pero con VoiceOver el first option **no anunciaba nada**, por una carrera de timing entre el mount y el anuncio. Ningun test unitario podia atraparlo.
 
+> **Correccion importante (2026-09-15, resultado de S4):** este caso **no se reproduce en el plano virtual**. Medido con sondas discriminantes: el driver virtual **deriva** la posicion de la estructura cuando el atributo falta (anuncia `position 1, set size 4` igual), **repite** atributos erroneos (dice `position 9` de `99` en una lista de 4), y da salida **identica** si el atributo se aplica tarde o nunca (no hay momento de anuncio contra el cual correr una carrera).
+>
+> Las dos causas reales - total derivado del viewport y carrera en el anuncio - viven en el lector real y el browser. **Consecuencia:** el plano virtual puede dar un **falso verde** en esa clase de bug. El caso testigo queda como evidencia del **hueco del ecosistema**, no como demostracion de que este driver lo cubra. El detalle esta en `STATUS.md`, seccion S4.
+
 Hoy eso se resuelve **a mano**: abrir el storybook, prender VoiceOver, escuchar. Es conocimiento de especialista, no se automatiza. **Ahi esta el producto.** Y es exactamente el trabajo que hacemos en cada PR de accesibilidad en repos ajenos.
 
 ## El usuario
@@ -104,9 +108,11 @@ Ese comando automatiza los permisos, pero **escribe directo en la base de privac
 
 ## Pendientes de decision (de Gonzo)
 
-1. ~~Confirmar la direccion~~ **HECHO (2026-09-15):** direccion confirmada ("si, dale").
-2. ~~Nombre / repo~~ **HECHO (2026-09-15):** `gonzoblasco/kanam-fixer` creado y **publico** (https://github.com/gonzoblasco/kanam-fixer). Codigo de S1 pusheado (commit `6044856`). Verificado que `.knowledge/` NO se filtro al repo publico. `kanam-fixer` sigue libre en npm (404) - publicar el paquete es una decision aparte, no tomada.
-3. **`a11y-fixer`:** repo de GitHub **archivado** (verificado: `isArchived=true`, 2026-09-15 12:46 UTC). **Falta decidir** el paquete npm `@gonzoblasco/a11y-fixer@0.6.0` (publicado 2026-07-29, con descargas): dejarlo, deprecarlo o despublicar.
-4. **`a11y-playground`:** declara depender de `a11y-fixer` como base. Migra, se archiva o se sostiene sola. **Sin decision.**
+1. ~~Confirmar la direccion~~ **HECHO (2026-09-15):** direccion confirmada.
+2. ~~Nombre / repo~~ **HECHO (2026-09-15):** `gonzoblasco/kanam-fixer` creado y **publico** (https://github.com/gonzoblasco/kanam-fixer). Verificado que `.knowledge/` NO se filtra al repo publico. `kanam-fixer` sigue libre en npm (404) - publicar el paquete es una decision aparte, no tomada.
+3. ~~`a11y-fixer`~~ **HECHO:** repo de GitHub archivado (verificado `isArchived=true`, 2026-09-15 12:46 UTC).
+4. ~~Paquete npm `@gonzoblasco/a11y-fixer@0.6.0`~~ **DECIDIDO (2026-09-15):** queda **publicado a proposito, sin deprecar**. Razon de Gonzo: "puede servir de entrada a alguien quien llegue a el por error". Verificado: sigue publicado (`0.6.0`), sin flag de deprecacion, 28 descargas en el ultimo mes.
+5. ~~`a11y-playground`~~ **DECIDIDO (2026-09-15):** **archivado**. Verificado: `isArchived=true`, `size=0KB`, un solo commit, sin descripcion (era un scaffold vacio).
+6. **S5 - cierre del ciclo:** decidir a la luz del resultado negativo de S4. La apuesta se sostiene para bugs de **atributos y composicion** (S2) y no para los de **timing y viewport** (S4). Lectura propuesta en `STATUS.md`: el valor se invierte hacia el **plano real** como unico juez de esa clase.
 
 Seguimiento en la DB de memoria: todo **id=54**.
