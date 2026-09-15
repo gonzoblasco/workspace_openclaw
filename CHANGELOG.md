@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-14] - USER.md bajo el cap fijo de bootstrap (10.008 -> 3.986)
+
+### Changed
+- **`USER.md`: 10.008 -> 3.986 chars.** OpenClaw le aplica un **cap fijo de 4.000 chars** (`USER_BOOTSTRAP_MAX_CHARS = 4e3` en `dist/bootstrap-DYYMCrXY.mjs`) que **no se puede subir** por config: verificado en codigo, gana sobre `bootstrapMaxChars`. Con 10.008 chars se descartaban ~6.000 en cada bootstrap (el truncado era observable en el contexto de la propia sesion). Ahora entra completo.
+- **`MEMORY.md`: punteros corregidos.** Dos referencias mandaban a "USER.md > Trayectoria profesional", seccion que ya no existe ahi; apuntan a `memory/user-profile.md`.
+
+### Added
+- **`memory/user-profile.md`:** el detalle ampliado que salio de `USER.md` - trayectoria profesional completa (EY, Super7ui, Minutentag + el conteo de a11y y la nota sobre PHP 2001-2008), perfil diferenciador con el pitch, marca personal y alcance en LinkedIn, estilo en issues/PRs de terceros, y reglas de interaccion con su detalle y casos.
+- **Por que en `memory/` y no en `docs/`:** `memory_search` indexa `memory/` y **no** `docs/`. Poner el detalle ahi lo mantiene recuperable por busqueda semantica en vez de solo por lectura explicita.
+
+### Notes
+- **Verificacion de cero perdida:** se comparo linea por linea el `USER.md` anterior contra el nuevo + `memory/user-profile.md`. Detecto una perdida real ("Quiere que maneje su vida, archivos y proyectos") que se restauro. El resto de las diferencias son reescrituras deliberadas para entrar en el cap.
+- **Estado de los archivos de bootstrap (14/09):** AGENTS.md 15.059 (cap 20.000), MEMORY.md 16.361 (cap 20.000), USER.md 3.986 (cap fijo 4.000). **Los tres dentro de sus limites por primera vez desde el 28/08.**
+
 ## [2026-09-14] - Re-diagnostico de 0.1 (estabilidad del gateway) contra evidencia
 
 ### Changed

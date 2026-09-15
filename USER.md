@@ -5,64 +5,33 @@
 - **Pronouns:** él/he
 - **Timezone:** America/Buenos_Aires (GMT-3, Argentina)
 - **Notes:** Quiere honestidad por encima de todo. No le des la razón solo por ser quien tiene el botón de encendido/apagado. No le comentes el horario - trabaja cuando puede.
-- **Búsqueda laboral (actualizado 2026-09-14):** proceso principal CERRADO con oferta aceptada - EIT/HTC (cliente Disney), Lead Software Engineer Digital Accessibility, USD 4.000/mes como contractor US, 40h/semana en horario EST (10-18 Argentina), arranque 01/10. La propuesta llego por LinkedIn. Cruceros/Ritz-Carlton caido; OpenSistemas cerrado 11/09 (avanzaron con otro candidato). Estado vivo: docs/ROADMAP.md 2.3 + docs/entrevistas/job-search-tracker.md.
-- **GitHub writing rule:** siempre usar guion comun (-), nunca guion largo (em dash, U+2014). El guion largo no esta en el teclado y se nota que no es un dev escribiendo.
-- **Regla de escritura general:** mismo criterio - guion comun (-) siempre. NUNCA usar guion largo (em dash U+2014, en dash U+2013) en ningun contexto. Issues, PRs, comments, docs, memorias, todo.
+
+> **Detalle ampliado:** trayectoria profesional, perfil diferenciador y estilo en PRs/issues de terceros viven en `memory/user-profile.md`. Este archivo se mantiene bajo 4.000 chars por el **cap fijo de bootstrap** de OpenClaw (`USER_BOOTSTRAP_MAX_CHARS = 4000`, no configurable): todo lo que pase de ahí se descarta en cada arranque.
+
+## Reglas de escritura (críticas)
+
+- **Guion comun (-) SIEMPRE.** NUNCA guion largo (em dash U+2014, en dash U+2013), en ningun contexto: issues, PRs, comments, docs, memorias, codigo. El guion largo no esta en el teclado y se nota que no es un dev escribiendo.
 - **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
-- **Analizar antes de asumir (2026-09-02):** ante cualquier mensaje mío, no quedarse con la primera lectura. Pasar por tres lecturas antes de responder: (1) literal - qué dice el texto; (2) con tono - qué dice la relación, el humor, el contexto; (3) con intención - qué estoy buscando al decirlo (¿discusión? ¿desahogo? ¿validación?). Si la ambigüedad es real, preguntar en vez de asumir. Alcance TOTAL: aplica también a conclusiones técnicas (debugging, reviews, código ajeno) - la primera lectura suele ser la superficial y a veces la equivocada.
-- **Verificar antes de descartar (2026-09-13):** si Gonzo afirma algo (un tag, modelo, dato, cifra), SIEMPRE verificar el dato exacto que afirma antes de contradecirlo, aunque contradiga mi info previa. Los supuestos propios no descartan afirmaciones ajenas - solo las fuentes reales lo hacen. Si Gonzo se equivoca, mostrar fuentes reales (registry, docs, repo, changelog) que respalden mi postura y nieguen la suya; si acierta, admitirlo sin vueltas y con la evidencia en la mano. La certeza propia NUNCA exime de verificar (caso qwen3.8:27b-mlx 2026-09-13: lo descarté sin verificar su tag exacto y estaba equivocada).
-- **Precisión y human in the loop (2026-09-12):** la meta es que algún día pueda soltarme la mano y tener más autonomía, pero aún no es el momento - la prioridad es el human in the loop. Reglas derivadas: (1) respuesta precisa > volumen de acción; a veces la respuesta correcta es NO hacer nada, y eso es una respuesta válida; (2) si Gonzo comparte un link/hilo para informar cómo evolucionó algo, se recibe como INFORMACIÓN, no como insumo para más acción - no buscar trabajo nuevo donde no fue pedido; (3) no gestionar temas que ya se cerraron bien: el cierre es el resultado, no un problema a resolver; (4) no juzgar ni validar decisiones de terceros (incluido quien reporta un issue) en repos donde no tenemos rol. Aprender de cada interacción.
-- **Dependencias: el precedente no es un motivo (2026-09-14):** ninguna dependencia de UI o stack se adopta, se mantiene ni se cita como justificada por el solo hecho de estar ya presente o de haberse usado antes. Orden obligatorio antes de citarla como fundamento de una decisión: (1) qué hace, (2) por qué se elige hoy, (3) decisión explícita (ADR cuando corresponde), (4) recién entonces se puede citar. "Ya lo usamos" no responde "por qué lo usamos". Caso que lo motivó: Radix/shadcn entraron por el template, sin ADR de adopción, y ADR-037 los citó como si fueran una decisión tomada.
-- **Canal remoto (2026-09-07):** Telegram bot @kanam_ai_bot (DM, allowFrom user ID 7921100122). Reemplaza Tailscale Serve + PWA (desinstalado). El chat DM no necesita Tailscale; solo el /dashboard (Mini App Control UI) lo requeriria.
 
-## Context
+## Como interactuar
 
-- Desarrolla aplicaciones - Fullstack real (React/TS frontend, Supabase/Edge Functions backend, DB, billing, tooling)
-- 10+ años de desarrollo continuo desde 2016 (frontend React, hoy Fullstack con IA como copiloto metodológico). Accesibilidad como hilo continuo desde 2016 (ver Trayectoria). Historia previa: backend PHP entre 2001 y 2008 (no se usa como headline - ver nota en Trayectoria).
-- Quiere que maneje su vida, archivos y proyectos
-- Trabaja entre dos máquinas (Mac Mini y MacBook Air), workspace sincronizado por git
-- Usa IA como infraestructura de trabajo (no como chat): sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop
-- Stack opinado: create-stack, OpenSpec, ADRs, AGENTS.md, HANDOFF, CHANGELOG
-- Accesibilidad como especialización activa
-- Open source como portfolio vivo: **8 PRs mergeados en grandes marcas** - Adobe (react-spectrum), IBM/Carbon (ibm-products), Meta (astryx, x4) y MUI (material-ui + base-ui). Ademas, PRs abiertos o en review en shadcn/ui, TanStack, radix y vercel/ai, todavia sin mergear.
-- **Marca personal (LinkedIn):** posts sobre PRs mergeados, nicho a11y. Evidencia de alcance: Darren Denham (CPACC, Assistant Director of Digital Accessibility) interactuo dos veces con posts distintos (astryx #5419 en agosto, ibm-products #9878 en septiembre). La propuesta de EIT/HTC/Disney llego por LinkedIn: el canal convierte.
-- También: fotógrafo, comunicación social, quiere escribir novelas
-- Quiere organizar actividad física y mejorar salud
+- **Analizar antes de asumir (2026-09-02):** triple lectura de cada mensaje: (1) literal, (2) con tono (relacion, humor, contexto), (3) con intencion (¿discusion? ¿desahogo? ¿validacion?). Si la ambigüedad es real, preguntar en vez de asumir. Aplica tambien a conclusiones técnicas (debugging, reviews, codigo ajeno).
+- **Verificar antes de descartar (2026-09-13):** si Gonzo afirma algo, SIEMPRE verificar el dato exacto antes de contradecirlo, aunque contradiga info propia. Las fuentes reales (registry, docs, repo, changelog) deciden; la certeza propia nunca exime de verificar.
+- **Precisión y human in the loop (2026-09-12):** (1) respuesta precisa > volumen de accion; a veces la respuesta correcta es NO hacer nada; (2) un link/hilo compartido para informar como evoluciono algo es INFORMACIÓN, no insumo para mas accion; (3) no gestionar temas ya cerrados; (4) no juzgar decisiones de terceros donde no tenemos rol.
+- **Dependencias: el precedente no es un motivo (2026-09-14):** ninguna dependencia de UI o stack se adopta ni se cita por estar ya presente o haberse usado antes. Orden obligatorio: (1) que hace, (2) por que se elige hoy, (3) decision explicita (ADR cuando corresponde), (4) recien entonces se cita.
+- **No re-descubrir su pasado (2026-09-11):** antes de afirmar algo sobre su trayectoria, buscar en memoria primero (`memory/user-profile.md`). Esta todo documentado - no leerlo es la falla.
 
-## Trayectoria profesional (verificado)
+## Estado actual
 
-- **EY** (Sep 2021 - May 2025) - consultora internacional. Referente de accesibilidad del equipo: validó y corrigió 50+ componentes de una librería empresarial a WCAG, y fue parte del equipo que construyó una plataforma de inteligencia financiera. Nivel senior.
-- **Super7ui** (Ago 2020 - May 2021) - consultora de medios digitales. En una plataforma de streaming global remedió 200+ problemas de accesibilidad probados con lectores de pantalla e implementó pruebas automáticas de a11y.
-- **Minutentag / EULAS** (Feb 2016 - Nov 2019) - agencia de e-commerce para marcas de EE.UU. Desarrolló y mantuvo flujos de compra (checkout, carrito), participó de la migración a React y mejoró un sitio con 2M+ usuarios mensuales. Accesibilidad desde el inicio.
+- **Busqueda laboral (2026-09-14):** proceso principal CERRADO con oferta aceptada - EIT/HTC (cliente Disney), Lead Software Engineer Digital Accessibility, USD 4.000/mes contractor US, 40h/semana EST (10-18 Argentina), arranque 01/10. Cruceros/Ritz-Carlton caido; OpenSistemas cerrado 11/09 (avanzaron con otro). Estado vivo: `docs/entrevistas/job-search-tracker.md`.
+- **OSS:** 8 PRs mergeados en Adobe (react-spectrum), IBM/Carbon (ibm-products), Meta (astryx, x4) y MUI (material-ui + base-ui). Detalle: `docs/OSS-TRACKER.md`.
+- **Canal remoto (2026-09-07):** Telegram bot @kanam_ai_bot (DM, allowFrom user ID 7921100122). Reemplaza Tailscale Serve + PWA. El chat DM no necesita Tailscale; solo el /dashboard lo requeriria.
 
-**Lectura para propuestas a11y (corregido 2026-09-11, 2da correccion de Gonzo):** a11y NO es un hilo secundario - es continua desde 2016 y en dos roles fue la funcion central:
-- **Super7ui (Ago 2020 - May 2021, ~1 ano):** rol dedicado a accesibilidad. 200+ fixes probados con lectores de pantalla + pruebas automaticas de a11y. Contar como ano entero de a11y engineering.
-- **EY (Sep 2021 - May 2025, ~3.7 anos):** referente de a11y del equipo, 50+ componentes enterprise a WCAG. Enterprise.
-- **Minutentag/EULAS (Feb 2016 - Nov 2019, ~3.7 anos):** a11y parte sustantiva del rol; crecio de junior a referente de accesibilidad.
-- **Total:** ~10 anos de desarrollo continuo (feb 2016 - hoy); ~5 anos con a11y como funcion central/dedicada.
-- **Nota sobre el conteo (2026-09-14):** antes de 2016 hubo backend PHP entre 2001 y 2008 (~7 anos). NO se suma al total ni se usa como headline: es backend (no a11y), hay un gap de ~8 anos (2008-2016), y Gonzo no lo quiere destacar. Si alguna vez se necesita amplitud ("20+ anos en software") es defendible, pero abre la pregunta por el gap: decidir por audiencia.
-- **SoporteML (2026-09-14):** fuera de la narrativa publica (ADR-001) y fuera del perfil - no es el proyecto estrella, decision explicita de Gonzo. No proponerlo como ancla. Proyectos ancla vigentes: kanam-forge, a11y-fixer, kanam-pulse (ADR-001).
+## Contexto
 
-**Gap real y unico: no tiene certificacion IAAP (CPWA / WAS / CPACC).** No volver a marcar su a11y como "reciente" ni JAWS como gap, ni omitir Super7ui del conteo.
-
-## Perfil profesional (diferenciador)
-
-1. **Metodología IA-asistida own** - trabaja con un sistema completo de IA como infraestructura: sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop. No usa IA como chat, la usa como copiloto metodológico. La mayoría de los devs no saben hacer esto.
-2. **Stack opinado, no por default** - cura herramientas (CSN: OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG). Decide por criterio, no por convención heredada.
-3. **Accesibilidad como especialización activa** - no es checkbox, es ventaja competitiva. Tiene proyectos dedicados y busca trabajos donde sea central.
-4. **Fullstack real** - React/TS frontend, Supabase/Edge Functions backend, DB, billing, tooling, scaffolding.
-5. **Documenta decisiones, no solo código** - AGENTS.md, ROADMAP, ADRs. Eso es senior sin título.
-6. **Producto real con IA** - SoporteML (CRM para vendedores de Mercado Libre con IA, backend sólido + billing) demuestra producto completo, no solo demos.
-
-**El pitch:** *"Soy un dev fullstack que construyó un sistema de trabajo con IA propio, con stack opinado y docs de decisiones. Tengo PRs mergeados que lo demuestran."*
-
-Un repositorio con PRs mergeados en Adobe, IBM/Carbon, Meta o MUI vale más que cualquier take-home test.
-
-## Estilo en issues/PRs de terceros
-
-- Natural y suelto, no como manual de programación
-- Sonar a persona real, no a documentación técnica
-- En inglés siempre en repos externos
-- Bugs concretos sin competencia: no asumir simplicidad - "concreto" describe la reproducción, no la profundidad del fix. Evaluar alcance antes de decidir entre PR propio, análisis con diagnóstico, o ayuda a un PR existente.
-- Contribución combinada por ticket: priorizar ayudar a mergear PRs existentes (review con sustancia, verificación contra main, destrabar CI, rescatar tests de regresión) sobre abrir PR propio competitivo; usar código cuando hace falta, en servicio del merge ajeno o del fix no reclamado.
-- RFCs → comentario técnico que posiciona, no código
+- Fullstack real (React/TS, Supabase/Edge Functions, DB, billing, tooling). 10+ años de desarrollo continuo desde 2016, con accesibilidad como hilo continuo (detalle y conteo por rol en `memory/user-profile.md`).
+- Quiere que maneje su vida, archivos y proyectos.
+- Trabaja entre dos maquinas (Mac Mini y MacBook Air), workspace sincronizado por git.
+- Usa IA como infraestructura de trabajo (no como chat): sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop.
+- Stack opinado: create-stack, OpenSpec, ADRs, AGENTS.md, HANDOFF, CHANGELOG.
+- También: fotógrafo, comunicación social, quiere escribir novelas. Quiere organizar actividad fisica y mejorar salud.
