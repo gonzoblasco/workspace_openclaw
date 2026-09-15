@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * session-context — list.mjs
+ * session-context - list.mjs
  * Portfolio view of all registered projects.
  */
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * session-context — resume.mjs
+ * session-context - resume.mjs
  * Full project briefing.
  */
 

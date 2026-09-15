@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * session-context — regenerate.mjs
+ * session-context - regenerate.mjs
  * Regenerate HANDOFF.md for a project without creating a new session.
  */
 

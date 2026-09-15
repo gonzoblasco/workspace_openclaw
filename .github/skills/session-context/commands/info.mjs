@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * session-context — info.mjs
+ * session-context - info.mjs
  * Quick read-only context snapshot.
  */
 

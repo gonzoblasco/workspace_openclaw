@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * session-context — save.mjs
+ * session-context - save.mjs
  * Write session data to SQLite and regenerate HANDOFF.md.
  */
 
@@ -25,7 +25,7 @@ try {
   if (!raw) throw new Error('empty stdin');
   input = JSON.parse(raw);
 } catch (e) {
-  console.error(`session-context save: invalid JSON on stdin — ${e.message}`);
+  console.error(`session-context save: invalid JSON on stdin - ${e.message}`);
   console.log('Expected schema (save):  {"summary":"...","leftOff":"...","nextSteps":["..."],"decisions":[{"what":"...","why":"..."}],"blockers":["..."]}');
   console.log('Expected schema (--init): {"name":"...","path":"...","description":"...","stack":["..."],"goal":"...","constraints":["..."],"repo":"..."}');
   process.exit(1);

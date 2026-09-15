@@ -1,6 +1,6 @@
 ---
 name: "agent-orchestration-pipeline-model-arbitration"
-description: "Update model arbitration (rebase 22:51, final)"
+description: "Elegir el modelo de Ollama Cloud para cada paso del pipeline A/B: default, escalada y nivel superior, segun costo y calidad."
 ---
 
 # Arbitraje de modelo en Agent Orchestration Pipeline

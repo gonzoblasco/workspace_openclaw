@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * session-context — init.mjs
+ * session-context - init.mjs
  * Auto-detect project info and output JSON for confirmation.
  */
 

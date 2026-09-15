@@ -1,6 +1,6 @@
 ---
 name: "workspace-portfolio-hygiene"
-description: "Update portfolio hygiene (rebase 02:37, final)"
+description: "Auditar projects/* por limpieza: decidir que archivar, promover una carpeta a proyecto double-git, y limpiar restos de git (.DS_Store, symlinks rotos, gitlinks)."
 ---
 
 # Workspace portfolio hygiene
