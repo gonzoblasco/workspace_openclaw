@@ -1,6 +1,6 @@
 ---
 name: "model-cata"
-description: "Ritual para comparar modelos LLM del sistema con un mismo prompt pesado, rubrica de analisis critico y decision de motor/especialistas documentada en ADR"
+description: "Ritual para comparar modelos LLM del sistema con un mismo prompt pesado, rubrica de analisis critico y decision de motor/especialistas documentada en ADR. Cuando el motor genera CODIGO, se agrega cata de tests ejecutables (suite oculta, pass/fail objetivo)."
 ---
 
 # Skill: model-cata - Comparacion formal de modelos LLM
@@ -46,6 +46,31 @@ Un prompt debil hace catas inutiles. Requisitos minimos (si falta alguno, mejora
 4. **Nombres literales del proveedor en config:** cero rebranding sin permiso (regla de Gonzo, 2026-08-29)
 5. **Docs sync:** TOOLS.md, MEMORY.md, CHANGELOG, daily + commit/push del workspace
 6. **Follow-ups como todos fechados** (validacion en tareas reales, input visual, re-cata a 30 dias)
+
+## Fase 6 - Cata de codigo: tests ejecutables (pass/fail objetivo)
+
+**Cuando:** la decision de motor incluye calidad de CODIGO generado (no solo prosa). El prompt pesado mide razonamiento escrito; la suite oculta mide codigo que corre.
+
+### Escalera L1-L5 (dificultad creciente, mismo lenguaje y harness para todos)
+1. **L1 - Funcion pura:** string/number in/out, sin estado externo ni I/O.
+2. **L2 - Bordes ocultos:** edge cases que el modelo no ve (clamp, signos duplicados, espacios tras signo, corte en no-digito).
+3. **L3 - Algoritmo eficiente:** restriccion explicita en el prompt (ej: O(1) u O(n)); falla si entrega O(n^2).
+4. **L4 - DP con reconstruccion:** no solo el valor optimo, el camino. Si solo devuelve el valor, no pasa.
+5. **L5 - Parser desde cero:** gramatica sin librerias de parsing.
+
+### Reglas del harness
+- **Suite oculta:** los casos NO se muestran al modelo; el prompt pide solo la funcion. El harness corre la solucion.
+- **VALIDACION OBLIGATORIA del test del test:** ANTES de medir ningun modelo, correr la suite contra una solucion de referencia correcta (escrita a mano o de fuente confiable) y exigir pass 100%. Si la referencia no pasa, el harness esta mal: medir seria basura. Leccion del duelo atoi (13/09): "no puede" siempre es "no puede con ESTE harness"; el harness importa tanto como el modelo.
+- **Overhead fijo separado del throughput:** medir el cold start (primera request, incluye carga del runner y descarga del modelo) POR SEPARADO de las requests sucesivas. Mezclarlos infla el tiempo atribuible al modelo.
+- **Caveat de replicas:** en Ollama Cloud u runners con replicas, la primera request puede caer en una replica fria y la siguiente en otra caliente. Repetir el cold start 2-3 veces y registrar el RANGO, no un punto unico.
+
+### Registro
+- Pass/fail por modelo y por nivel (tabla). Un modelo que resuelve L1-L3 pero no L5 es distinto de uno que falla en L2.
+- Tiempo por request: cold vs warm en columnas separadas, nunca sumadas.
+- Si el modelo NO entrega (timeout, error, archivo invalido): es un fallo de INFRAESTRUCTURA distinto de un fallo de codigo. Documentar cual era (OOM del runner vs logica incorrecta). El duelo atoi lo demostro: qwen 27b paso 24/24 con speculative off pero OOM como agente completo - no es lo mismo "no sabe" que "no puede" con la RAM disponible.
+
+### Dato de referencia verificable
+Duelo atoi 2026-09-13 (24 casos edge): deepseek-v4-flash:cloud PASS 24/24 a ciegas. qwen3.8:27b-mlx: con speculative decoding fallo (cache restore); con num_speculative=0 paso 24/24 via API directa; NO corrio como agente completo (OOM Metal, 24GB). Harness reusable: /tmp/test_atoi.py.
 
 ## Anti-patrones vistos con costos reales
 - Razonamiento max/xhigh como lever de calidad: no lo fue en ninguna cata (filosofa o inventa); decisivo fue la familia del modelo
