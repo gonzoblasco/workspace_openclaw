@@ -100,7 +100,7 @@ XP: 10 por topic, badge por nivel, jefe final al cierre.
 - **4.3.2** Lo que ni shadcn ni Radix cubren y hay que escribir.
 
 **Subnivel 4.4 - Aplicacion a proyectos propios**
-- **4.4.1** Barrido de `kanam-pulse`, `soporteml-v4`, `kanam-forge`: que primitives estan en uso y por que.
+- **4.4.1** Barrido de los proyectos que declaran shadcn/Radix: `kanam-forge` (ancla), `quedamos`, `kanam-mind`. Que primitives estan en uso y por que. **Fuera del barrido: toda la familia `soporteml`** (v1, v3, v4) - ADR-001 la excluye de narrativa y de auditorias; no se toca ni se lista. **Caso aparte - `kanam-pulse`:** a11y WCAG 2.2 AA desde el dia uno y **NO usa Radix**. Es el contraejemplo que vale estudiar: por que un proyecto a11y-first no necesita primitives.
 - **4.4.2** Donde el uso es correcto, donde es inercia.
 
 **Verificacion del nivel:** producir la lista de primitives realmente usados en los proyectos, con justificacion por cada uno.
