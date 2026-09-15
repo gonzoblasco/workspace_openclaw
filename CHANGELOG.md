@@ -113,6 +113,15 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **NO se tocó `agents/openclaw/`:** el doctor lo marca como directorio sin entrada en `agents.list`, pero el gateway **lo tiene abierto** (4 handles verificados con `lsof`). No se borra sin confirmar.
 - **Recordatorios abiertos:** no hay backup registrado (`openclaw backup create`) ni command owner configurado (`commands.ownerAllowFrom`).
 
+## [2026-09-15] - Watcher Guidepup Darwin 27 (kanam-fixer S3 se cierra solo)
+
+### Added
+- **Automation `guidepup-darwin27-watcher` (cada 12h, `sessionTarget: isolated`, `delivery: none`).** Copia el patron del `base-ui-stable-check`: chequea `dist-tags.latest` de `@guidepup/guidepup` en npm; cuando hay version nueva baja el tarball y mira el `manifest.json` buscando un asset de VoiceOver para `platformVersion 27` (la maquina de Gonzo es Darwin 27). Tambien cuenta los comentarios del issue `guidepup/guidepup#149`. Avisa a Gonzo por Telegram SOLO con novedad real (asset 27 o comentario nuevo en el issue), deduplicado por archivo de estado `tmp/guidepup-darwin27.json`.
+
+### Notes
+- **Por que existe:** kanam-fixer (ciclo `0.0.1` cerrado en `88ca9ff`) tiene S3 bloqueado por un tercero: Guidepup 0.34.0 no tiene asset de VoiceOver para Darwin 27 (su manifest cubre 21-25). El issue ya se reporto upstream (`guidepup/guidepup#149`). Cuando el asset exista, S3 se cierra corriendo el test sin tocar codigo - es el reemplazo del "acordarse a mano de chequear".
+- **Verificado con force-run real (no asumido):** el job creo `tmp/guidepup-darwin27.json` con `{"latest_checked": "0.34.0", "platform27_announced": false, "last_comment_count": 0}` - deteccion correcta (0.34.0 no tiene 27), dedup escrito, y NO aviso (no habia novedad). El tarball temporal se limpio solo.
+
 ## [2026-09-15] - kanam-fixer: corrección del blocker de S3 (es upstream, no permisos)
 
 ### Fixed
