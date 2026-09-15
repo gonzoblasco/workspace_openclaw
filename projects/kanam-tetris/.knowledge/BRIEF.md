@@ -151,6 +151,7 @@ Features de guideline sobre el core puro. `input.js` y `storage.js` no cambian; 
 - **B2B:** badge cuando `b2b` esta activo.
 
 ### Costuras (bugs encontrados y corregidos en este ciclo)
+0. **Game over sin anuncio (paso 7, reportado por Gonzo):** el overlay de fin de partida nunca aparecia. Causa: la UI detectaba la transicion comparando `state.gameOver` entre frames de rAF, pero un hard drop termina la partida SINCRONICAMENTE dentro del keydown - entre frames. El frame siguiente veia `wasGameOver` ya en true y la transicion nunca se detectaba. El core SIEMPRE emitio el evento `gameover`; nadie lo escuchaba. Fix: la UI reacciona al evento, no al diff de frames (`3fee4b0`). Leccion: el diff de frames solo caza transiciones que ocurren DENTRO de step(); todo lo que corre en handlers de input necesita el evento.
 1. **`findFullRows()` corria ANTES de estampar la pieza:** una I que completaba la fila de abajo no registraba limpieza. Regresion introducida al reordenar `lockPiece` para que la deteccion leyera el board pre-estampado. Fix: deteccion -> estampar -> `findFullRows()`. Las 3 pruebas de `clearing` lo cazaron.
 2. **`applyClear` duplicada** tras un patch, con la primera definicion ganando y salteandose el scoring. Un `node -e` contando definiciones la encontro.
 3. **El nivel se aplicaba dos veces al bonus de combo** (ver R2).
