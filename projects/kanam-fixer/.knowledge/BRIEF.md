@@ -85,6 +85,23 @@ Eso es un workflow que hoy nadie empaqueta, y que nosotros ya ejecutamos a mano.
 - **`ROADMAP.md`** - el ciclo `0.0.1` y sus slices.
 - **`DISTRIBUTION.md`** - material de lanzamiento **guardado, sin ejecutar**. Investiga los canales de descubrimiento (awesome lists, GitHub Marketplace) y conserva los textos redactados el 2026-09-14 para `a11y-fixer`, con la advertencia de que no se reciclan tal cual. **Congelado hasta que exista evidencia (S4).** Publicar esta fuera de alcance de `0.0.1`.
 
+## Requisitos de S3 (permisos de macOS)
+
+El plano del lector real **no corre sin dos pasos que solo se hacen a mano** en macOS. Verificado el 2026-09-15 en esta maquina: `screenReader.detect()` y `.default()` devuelven `true`, pero `start()` falla con `VoiceOver cannot be started`.
+
+1. **VoiceOver Utility -> General -> "Allow VoiceOver to be controlled with AppleScript".** El archivo que lo habilita, `/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled`, **no existe** hoy.
+2. **System Settings -> Privacy & Security -> Accessibility:** agregar y tildar el proceso que corre los tests (la terminal o el host del agente).
+
+Hasta que esos dos permisos existan, el plano real **se saltea con su causa a la vista** (`REAL_READER_UNAVAILABLE: VoiceOver cannot be started`), nunca pasa en falso.
+
+### Advertencia: `@guidepup/setup setup`
+
+Ese comando automatiza los permisos, pero **escribe directo en la base de privacidad del sistema** (`/Library/Application Support/com.apple.TCC/TCC.db`, via `sqlite3`) y en el archivo de VoiceOver. Su lista de clientes es amplia e incluye cosas ajenas a este proyecto (`sshd`, `bash`, `zsh`, `osascript`, Terminal, System Events, navegadores, runners de CI).
+
+**Decision (2026-09-15):** no ejecutarlo sin pedido explicito de Gonzo. Es un cambio de seguridad de la maquina, no del proyecto. Existe ademas una via manual, mas acotada, documentada en https://www.guidepup.dev/docs/guides/manual-voiceover-setup - **preferible**, porque otorga el permiso solo al proceso que lo necesita.
+
+**Nunca desactivar SIP** para esto: la propia documentacion de Guidepup lo advierte por sus implicancias de seguridad.
+
 ## Pendientes de decision (de Gonzo)
 
 1. ~~Confirmar la direccion~~ **HECHO (2026-09-15):** direccion confirmada ("si, dale").

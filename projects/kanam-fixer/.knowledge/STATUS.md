@@ -2,7 +2,7 @@
 
 **Actualizado:** 2026-09-15
 **Ciclo:** 0.0.1
-**Slice actual:** S2 completado, S3 por arrancar
+**Slice actual:** S3 construido, **bloqueado en una accion humana** (permisos de macOS)
 
 ## Donde estamos
 
@@ -10,11 +10,37 @@
 |---|---|---|
 | S1 - Esqueleto y decisiones | **Completado** | Commit `6044856`. Terna en verde, hook activo. |
 | S2 - La asercion, solo virtual | **Completado** | Commit `fb931ea`. 7 tests. Criterio de salida verificado. |
-| S3 - VoiceOver real en local | No iniciado | |
+| S3 - VoiceOver real en local | **Codigo listo, criterio NO verificado** | Commit `b98bf1b`. Blocker: permisos de macOS (ver abajo). |
 | S4 - El caso testigo (#4109) | No iniciado | |
 | S5 - Cierre del ciclo | No iniciado | |
 
-**Repo publico:** https://github.com/gonzoblasco/kanam-fixer (`fb931ea`). Verificado que `.knowledge/` no se filtra.
+**Repo publico:** https://github.com/gonzoblasco/kanam-fixer (`b98bf1b`). Verificado que `.knowledge/` no se filtra.
+
+## S3: el plano del lector real - BLOQUEADO
+
+El codigo esta escrito y pusheado, pero **el criterio de salida NO se cumplio todavia**. No lo doy por hecho: el test se saltea con la causa a la vista, no pasa en falso.
+
+### Que quedo construido
+
+- **`ReaderDriver`**: contrato propio (ADR-0001). `virtualDriver` (CI) y `realDriver` (VoiceOver) lo implementan, asi que **la misma asercion corre en los dos planos**.
+- **`expectAnnouncement(container, expected, { driver })`**: el driver es opcional; el default sigue siendo el virtual.
+- **`realReaderAvailability()`**: arranca y para el lector una vez, para que el llamador pueda **saltear con la razon real** en vez de reportar un falso verde.
+- **9 passed, 4 skipped**: los 4 skips son el plano real, con `REAL_READER_UNAVAILABLE: VoiceOver cannot be started` impreso.
+
+### El blocker (necesita a Gonzo, no a un agente)
+
+`screenReader.detect()` y `.default()` devuelven **true**, pero `start()` falla con `VoiceOver cannot be started`. Faltan dos pasos que solo se hacen a mano en macOS:
+
+1. **VoiceOver Utility -> General -> tildar "Allow VoiceOver to be controlled with AppleScript".** Verificado que el archivo que lo habilita (`/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled`) **no existe** en esta maquina.
+2. **System Settings -> Privacy & Security -> Accessibility**: agregar y tildar el proceso que corre los tests (la terminal / el host del agente).
+
+### Lo que NO hice, y por que
+
+`npx @guidepup/setup setup` existe y automatiza esto, **pero escribe directo en la base de permisos de privacidad de macOS** (`/Library/Application Support/com.apple.TCC/TCC.db` via `sqlite3`, mas el archivo de VoiceOver) y su propia lista incluye clientes que no son de este proyecto (`sshd`, `bash`, `zsh`, `osascript`, Terminal, System Events, navegadores). **No ejecute eso sin pedido explicito de Gonzo**: es un cambio de seguridad del sistema, no del proyecto. Ver "Requisitos de S3" en el BRIEF.
+
+### Nota de honestidad
+
+Este slice es el unico de los tres que **no puedo cerrar solo**. S1 y S2 se verificaron con evidencia real; S3 tiene el codigo y el diseno correctos, pero la evidencia del lector real **todavia no existe**. Se cierra cuando los permisos esten otorgados y el log de VoiceOver aparezca en la salida.
 
 ## S1: esqueleto y decisiones
 
@@ -50,9 +76,11 @@ El criterio era "el test falla al mutar el componente". Se cumplio, y ademas se 
 
 El hook no es decorativo: en los dos casos freno un commit que no compilaba sin la correccion.
 
-## Proximo paso (S3)
+## Proximo paso
 
-El mismo assert con VoiceOver real en local. Criterio de salida: la misma asercion pasa con el lector real, y el reporte muestra la frase que salio de verdad.
+**S3 esta bloqueado, no terminado.** Se cierra cuando Gonzo otorgue los dos permisos de macOS y el log de VoiceOver aparezca en la salida del test. Pasa a S4 (el caso testigo #4109, que corre en el plano virtual y **no** depende de esos permisos) solo si se decide dejarlo bloqueado por ahora.
+
+S4 puede hacerse ya: reproduce el bug de anuncio por timing en el plano virtual, que es el que funciona hoy.
 
 ## Pendientes de decision (de Gonzo)
 
