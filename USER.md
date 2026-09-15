@@ -26,6 +26,7 @@
 - **Busqueda laboral (2026-09-14):** proceso principal CERRADO con oferta aceptada - EIT/HTC (cliente Disney), Lead Software Engineer Digital Accessibility, USD 4.000/mes contractor US, 40h/semana EST (10-18 Argentina), arranque 01/10. Cruceros/Ritz-Carlton caido; OpenSistemas cerrado 11/09 (avanzaron con otro). Estado vivo: `docs/entrevistas/job-search-tracker.md`.
 - **OSS:** 8 PRs mergeados en Adobe (react-spectrum), IBM/Carbon (ibm-products), Meta (astryx, x4) y MUI (material-ui + base-ui). Detalle: `docs/OSS-TRACKER.md`.
 - **Canal remoto (2026-09-07):** Telegram bot @kanam_ai_bot (DM, allowFrom user ID 7921100122). Reemplaza Tailscale Serve + PWA. El chat DM no necesita Tailscale; solo el /dashboard lo requeriria.
+- **Gateway 24/7 (2026-09-08):** el gateway de OpenClaw corre como servidor fijo en el Mac Mini (LaunchAgent cargado, pid activo). Telegram migrado Air -> Mini el 08/09 (en la Air queda apagado para evitar conflicto de long polling 409). El chat DM responde desde el Mini.
 
 ## Contexto
 
