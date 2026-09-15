@@ -11,7 +11,13 @@
 #   ./scripts/publish-skills.sh --apply --group1         # publica las que ya estan en EN
 #   ./scripts/publish-skills.sh --apply                  # publica todo lo que exista en ambos
 #   ./scripts/publish-skills.sh --apply --skill <name>   # una sola skill
-#   ./scripts/publish-skills.sh --apply --include-new    # ademas publica skills nuevas
+#   ./scripts/publish-skills.sh --apply --only a,b,c    # publica/actualiza SOLO esas skills
+#   ./scripts/publish-skills.sh --apply --only a,b,c --new  # ademas las crea si no existen
+#
+# PUBLICAR ALGO NUEVO REQUIERE ALLOWLIST. `--new` sin `--only` aborta: publicar una
+# skill nueva la vuelve publica para siempre, asi que el default seguro es no hacerlo.
+# (Antes existia --include-new sin filtro y publico 25 skills de una, incluidas 15
+# que solo tienen sentido dentro de un setup particular.)
 #
 # Sanitizacion (ver docs/AGENTS-DETALLE.md):
 #   SALE:  datos personales (Gonzo/Gonzalo/gonzoblasco/rutas /Users/) y proyectos internos
@@ -26,7 +32,7 @@ WS="${HOME}/.openclaw/workspace"
 SRC="${WS}/skills"
 DST="${WS}/projects/kanam-skills/skills"
 
-MODE="check"; ONLY_SKILL=""; GROUP1=0; INCLUDE_NEW=0
+MODE="check"; ONLY_SKILL=""; GROUP1=0; INCLUDE_NEW=0; ONLY_LIST=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -35,11 +41,21 @@ while [ $# -gt 0 ]; do
     --skill) ONLY_SKILL="${2:-}"; shift ;;
     --group1) GROUP1=1 ;;
     --include-new) INCLUDE_NEW=1 ;;
+    --new) INCLUDE_NEW=1 ;;
+    --only) ONLY_LIST="${2:-}"; shift ;;
     -h|--help) sed -n '2,22p' "$0"; exit 0 ;;
     *) echo "Opcion desconocida: $1" >&2; exit 1 ;;
   esac
   shift
 done
+
+# --new sin allowlist es el error que hay que prevenir: abortar antes de tocar nada.
+if [ "$INCLUDE_NEW" = 1 ] && [ -z "$ONLY_LIST" ]; then
+  echo "ERROR: --new requiere --only <lista-de-skills>." >&2
+  echo "Publicar una skill nueva es una decision explicita, no un efecto colateral." >&2
+  echo "Ejemplo: ./scripts/publish-skills.sh --apply --only anti-ai,pdf-tool --new" >&2
+  exit 1
+fi
 
 [ -d "$SRC" ] || { echo "No existe el origen: $SRC" >&2; exit 1; }
 [ -d "$DST" ] || { echo "No existe el destino: $DST" >&2
@@ -68,6 +84,11 @@ sys.exit(0 if s / (s + e) < 0.35 else 1)
 PY
 }
 
+in_only_list() {  # $1 = skill name -> 0 si ONLY_LIST esta vacia o la contiene
+  [ -z "$ONLY_LIST" ] && return 0
+  case ",$ONLY_LIST," in *",$1,"*) return 0 ;; *) return 1 ;; esac
+}
+
 # --- Fase 1: set de skills a evaluar ------------------------------------------
 targets=()
 if [ -n "$ONLY_SKILL" ]; then
@@ -78,14 +99,16 @@ else
     [ -d "$d" ] || continue
     n=$(basename "$d")
     [ -f "$SRC/$n/SKILL.md" ] || continue
+    in_only_list "$n" || continue
     if [ "$GROUP1" = 1 ] && ! is_english "$n"; then continue; fi
     targets+=("$n")
   done
-  if [ "$INCLUDE_NEW" = 1 ]; then
-    for d in "$SRC"/*/; do
-      [ -d "$d" ] || continue
-      n=$(basename "$d")
-      [ -f "$d/SKILL.md" ] || continue
+  if [ "$INCLUDE_NEW" = 1 ] && [ -n "$ONLY_LIST" ]; then
+    # Allowlist explicita: recorre SOLO esas y crea las que no existan en el destino.
+    IFS=',' read -ra WANTED <<< "$ONLY_LIST"
+    for n in "${WANTED[@]}"; do
+      [ -n "$n" ] || continue
+      [ -f "$SRC/$n/SKILL.md" ] || { echo "  aviso: no existe la skill local '$n' (se omite)" >&2; continue; }
       [ -d "$DST/$n" ] && continue
       if [ "$GROUP1" = 1 ] && ! is_english "$n"; then continue; fi
       targets+=("$n")
