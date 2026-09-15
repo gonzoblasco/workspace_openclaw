@@ -54,26 +54,56 @@ El suite de S4 es un **test de caracterizacion**: fija el comportamiento observa
 
 ---
 
-## S3: el plano del lector real - BLOQUEADO (diferido)
+## S3: el plano del lector real - BLOQUEADO POR UPSTREAM (no por permisos)
 
-Diferido por decision de Gonzo (2026-09-15): se avanza S4 primero, S3 queda esperando una accion humana.
+> **Correccion de diagnostico (2026-09-15).** El registro anterior atribuia este blocker a **permisos de macOS faltantes**. **Era incorrecto.** Se deja escrito el error y su correccion, no solo el resultado final.
 
-### Que quedo construido
+### La causa real
+
+`screenReader.start()` falla con `VoiceOver cannot be started`, pero ese mensaje **oculta un cause anidado**:
+
+```
+VoiceOver cannot be started
+  cause: Error: macOS version not supported
+```
+
+Guidepup busca la version mayor de Darwin (`os.release()`) en su `manifest.json` y lanza si no hay asset para esa plataforma.
+
+| Este equipo | Guidepup 0.34.0 (latest) |
+|---|---|
+| macOS 27.0, **Darwin 27** | `platformVersions`: **21, 22, 23, 24, 25** |
+
+Confirmado por el CLI: `npx @guidepup/setup install voiceover` -> `The requested screen reader asset is not available for this platform: VoiceOver on darwin 27`. Verificado tambien contra `main` upstream: tampoco tiene 26 ni 27.
+
+### Los permisos NO eran el problema (verificado)
+
+- El paso de **VoiceOver Utility** esta **hecho**: `/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled` existe con `a` (creado hoy 10:39).
+- El **control por AppleScript funciona**: `osascript -e 'tell application "VoiceOver" to activate'` arranco VoiceOver. El binario arranca y se controla.
+- `detect()`/`.default()` dan `true` porque VoiceOver **esta instalado**; eso nunca probo que Guidepup pudiera manejarlo.
+
+### Lo que quedo construido (y sigue valido)
 
 - **`ReaderDriver`**: contrato propio (ADR-0001). `virtualDriver` (CI) y `realDriver` (VoiceOver) lo implementan, asi que **la misma asercion corre en los dos planos**.
 - **`expectAnnouncement(container, expected, { driver })`**: el driver es opcional; el default sigue siendo el virtual.
 - **`realReaderAvailability()`**: arranca y para el lector una vez, para que el llamador pueda **saltear con la razon real** en vez de reportar un falso verde.
 
-### El blocker (necesita a Gonzo, no a un agente)
+**El codigo esta listo; lo que falta es cobertura de un tercero.** Cuando Guidepup publique el asset de Darwin 27, S3 se cierra corriendo el test, sin cambiar nada de lo escrito.
 
-`screenReader.detect()` y `.default()` devuelven **true**, pero `start()` falla con `VoiceOver cannot be started`. Faltan dos pasos manuales de macOS:
+### Consecuencia para el proyecto
 
-1. **VoiceOver Utility -> General -> tildar "Allow VoiceOver to be controlled with AppleScript".** Verificado: `/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled` **no existe** en esta maquina.
-2. **System Settings -> Privacy & Security -> Accessibility**: agregar y tildar el proceso que corre los tests.
+S3 **no depende de Gonzo, depende de upstream.** Y materializa el riesgo que **ADR-0001** anticipo como el mas duro: *"el plano real es el lado mas dificil de reemplazar"*. Ya no es advertencia teorica: el driver virtual corre en cualquier SO; el real exige un asset para la version exacta del sistema.
 
-### Lo que NO se hizo, y por que
+### Opciones (ninguna tomada)
 
-`npx @guidepup/setup setup` automatiza esto, **pero escribe directo en la base de permisos de privacidad de macOS** (`/Library/Application Support/com.apple.TCC/TCC.db` via `sqlite3`, mas el archivo de VoiceOver) y su lista de clientes incluye cosas ajenas a este proyecto (`sshd`, `bash`, `zsh`, `osascript`, Terminal, System Events, navegadores). **Decidido: no ejecutarlo.** Es un cambio de seguridad de la maquina, no del proyecto. La via manual es mas acotada y es la preferida. **Nunca desactivar SIP** (verificado: sigue `enabled`).
+1. **Reportar el hueco upstream** (no hay issue abierto por darwin 26/27, buscado hoy). Contribucion OSS de valor real. **Requiere OK de Gonzo** (accion publica).
+2. **Correr el plano real en otra maquina** con macOS soportado (Darwin 21-25).
+3. **Declarar la limitacion** en la matriz de ADR-0002 y dejar S3 documentado como bloqueado por upstream.
+
+### Advertencia que sigue en pie: `@guidepup/setup setup`
+
+Escribe directo en la base de privacidad del sistema (`TCC.db` via `sqlite3`), con lista de clientes ajena al proyecto (`sshd`, `bash`, `zsh`, `osascript`, Terminal, System Events, navegadores). **No ejecutarlo.** En este caso ademas no habria servido: el bloqueo es un asset faltante, no un permiso.
+
+**Nunca desactivar SIP** (verificado: sigue `enabled`). El maintainer de setup reporto (`guidepup/setup#66`) que en macOS 26 el marcador solo se escribe con SIP desactivado, y que escribirlo como root falla igual.
 
 ---
 

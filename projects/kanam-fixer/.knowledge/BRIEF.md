@@ -89,22 +89,63 @@ Eso es un workflow que hoy nadie empaqueta, y que nosotros ya ejecutamos a mano.
 - **`ROADMAP.md`** - el ciclo `0.0.1` y sus slices.
 - **`DISTRIBUTION.md`** - material de lanzamiento **guardado, sin ejecutar**. Investiga los canales de descubrimiento (awesome lists, GitHub Marketplace) y conserva los textos redactados el 2026-09-14 para `a11y-fixer`, con la advertencia de que no se reciclan tal cual. **Congelado hasta que exista evidencia (S4).** Publicar esta fuera de alcance de `0.0.1`.
 
-## Requisitos de S3 (permisos de macOS)
+## Blocker real de S3: Guidepup no soporta macOS 27
 
-El plano del lector real **no corre sin dos pasos que solo se hacen a mano** en macOS. Verificado el 2026-09-15 en esta maquina: `screenReader.detect()` y `.default()` devuelven `true`, pero `start()` falla con `VoiceOver cannot be started`.
+> **Correccion de diagnostico (2026-09-15).** Un diagnostico previo, escrito el mismo dia, atribuyo el fallo a **permisos de macOS faltantes**. **Era incorrecto.** Los permisos se resolvieron y el fallo siguio. La causa real esta abajo, verificada siguiendo el codigo de Guidepup hasta el origen. Se deja registrado el error y su correccion, no solo el resultado final.
 
-1. **VoiceOver Utility -> General -> "Allow VoiceOver to be controlled with AppleScript".** El archivo que lo habilita, `/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled`, **no existe** hoy.
-2. **System Settings -> Privacy & Security -> Accessibility:** agregar y tildar el proceso que corre los tests (la terminal o el host del agente).
+### La causa exacta
 
-Hasta que esos dos permisos existan, el plano real **se saltea con su causa a la vista** (`REAL_READER_UNAVAILABLE: VoiceOver cannot be started`), nunca pasa en falso.
+`screenReader.start()` falla con `VoiceOver cannot be started`, pero ese mensaje **oculta un cause anidado**. El error real es:
 
-### Advertencia: `@guidepup/setup setup`
+```
+VoiceOver cannot be started
+  cause: Error: macOS version not supported
+```
 
-Ese comando automatiza los permisos, pero **escribe directo en la base de privacidad del sistema** (`/Library/Application Support/com.apple.TCC/TCC.db`, via `sqlite3`) y en el archivo de VoiceOver. Su lista de clientes es amplia e incluye cosas ajenas a este proyecto (`sshd`, `bash`, `zsh`, `osascript`, Terminal, System Events, navegadores, runners de CI).
+El origen esta en `lib/macOS/VoiceOver/VoiceOver.js` y en `preferences/resolveDmgPath.js`: Guidepup busca la version mayor de Darwin (`os.release()`) en su `manifest.json` y **lanza si no hay asset para esa plataforma**.
 
-**Decision (2026-09-15):** no ejecutarlo sin pedido explicito de Gonzo. Es un cambio de seguridad de la maquina, no del proyecto. Existe ademas una via manual, mas acotada, documentada en https://www.guidepup.dev/docs/guides/manual-voiceover-setup - **preferible**, porque otorga el permiso solo al proceso que lo necesita.
+| Este equipo | Guidepup 0.34.0 (latest, 2026-08-31) |
+|---|---|
+| macOS 27.0, **Darwin 27** | `platformVersions` disponibles: **21, 22, 23, 24, 25** |
 
-**Nunca desactivar SIP** para esto: la propia documentacion de Guidepup lo advierte por sus implicancias de seguridad.
+Confirmado tambien por el CLI, que lo dice sin ambiguedad:
+
+```
+$ npx @guidepup/setup install voiceover
+Error: The requested screen reader asset is not available for this platform: VoiceOver on darwin 27
+```
+
+Verificado ademas contra la rama `main` del repo upstream: su `manifest.json` tampoco tiene 26 ni 27.
+
+### Los permisos NO eran el problema (verificado)
+
+Esto importa porque invalida la receta que habia quedado escrita:
+
+- El paso de **VoiceOver Utility** esta **hecho**: `/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled` existe y contiene `a` (creado 2026-09-15 10:39).
+- El **control por AppleScript funciona**: verificado con `osascript -e 'tell application "VoiceOver" to activate'`, que arranco VoiceOver. El binario arranca y se controla. Lo que falla es que Guidepup **no tiene el asset de preferencias portables** para Darwin 27, asi que ni siquiera llega a intentar arrancarlo.
+- `detect()` y `.default()` devuelven `true` porque VoiceOver **esta instalado en el sistema**; eso nunca fue una prueba de que Guidepup pudiera manejarlo.
+
+### Consecuencia: S3 no depende de Gonzo, depende de un tercero
+
+**S3 no se puede cerrar en esta maquina hasta que Guidepup publique un asset de VoiceOver para Darwin 27.** No es una accion del usuario, ni una configuracion, ni un permiso: es cobertura faltante upstream.
+
+Esto es exactamente el riesgo que **ADR-0001** anticipo como el mas duro: *"el plano real es el lado mas dificil de reemplazar"*. Dejo de ser una advertencia teorica y pasa a ser un hecho medido: el driver virtual corre en cualquier SO, el real depende de que exista un asset para la version exacta del sistema.
+
+### Opciones (ninguna tomada todavia)
+
+1. **Esperar / seguir upstream.** No hay issue abierto reportando el hueco de darwin 26/27 (buscado el 2026-09-15). Reportarlo es una contribucion OSS de valor real, y encaja con el objetivo del pilar. **Requiere OK de Gonzo** (accion publica).
+2. **Correr el plano real en otra maquina** con macOS soportado (Darwin 21-25). El MacBook Air, segun su version.
+3. **Declarar la limitacion** en la matriz de ADR-0002 y dejar S3 documentado como bloqueado por upstream.
+
+### Lo que si se aprende de esto
+
+El mensaje de error de Guidepup es enganoso: `VoiceOver cannot be started` sugiere un problema de arranque o permisos, cuando la causa real es una plataforma no soportada. **Un cause anidado que no se lee es un diagnostico perdido.** Vale registrarlo como leccion de debugging.
+
+### Advertencia que sigue en pie: `@guidepup/setup setup`
+
+Ese comando escribe directo en la base de privacidad del sistema (`TCC.db` via `sqlite3`) y su lista de clientes incluye cosas ajenas a este proyecto (`sshd`, `bash`, `zsh`, `osascript`, Terminal, System Events, navegadores). **No ejecutarlo.** Ademas, en este caso no habria servido: el bloqueo es un asset faltante, no un permiso.
+
+**Nunca desactivar SIP.** Verificado: sigue `enabled`. Su propio maintainer reporto (issue `guidepup/setup#66`) que en macOS 26 el marcador solo se escribe con SIP desactivado, y que escribirlo como root falla igual. No es un camino viable ni seguro.
 
 ## Pendientes de decision (de Gonzo)
 
