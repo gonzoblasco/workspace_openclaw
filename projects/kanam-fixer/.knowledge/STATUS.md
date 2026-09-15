@@ -10,7 +10,7 @@
 |---|---|---|
 | S1 - Esqueleto y decisiones | **Completado** | Commit `6044856`. Terna en verde, hook activo. |
 | S2 - La asercion, solo virtual | **Completado** | Commit `fb931ea`. 7 tests. Criterio de salida verificado. |
-| S3 - VoiceOver real en local | **Codigo listo, criterio NO verificado** | Commit `b98bf1b`. Blocker: permisos de macOS. Diferido por decision de Gonzo. |
+| S3 - VoiceOver real en local | **Codigo listo, criterio NO verificado** | Commits `b98bf1b` + `a080a27`. Blocker: **upstream** - Guidepup 0.34.0 no tiene asset de VoiceOver para Darwin 27 (ver seccion S3). Diferido. |
 | S4 - El caso testigo (#4109) | **Completado - NO reproduce** | Commit `5090278`. 8 tests. Hallazgo abajo. |
 | S5 - Cierre del ciclo | Pendiente | Requiere decision de Gonzo (ver al final). |
 

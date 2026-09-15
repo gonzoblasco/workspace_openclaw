@@ -64,6 +64,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **NO se tocó `agents/openclaw/`:** el doctor lo marca como directorio sin entrada en `agents.list`, pero el gateway **lo tiene abierto** (4 handles verificados con `lsof`). No se borra sin confirmar.
 - **Recordatorios abiertos:** no hay backup registrado (`openclaw backup create`) ni command owner configurado (`commands.ownerAllowFrom`).
 
+## [2026-09-15] - kanam-fixer: corrección del blocker de S3 (es upstream, no permisos)
+
+### Fixed
+- **`projects/kanam-fixer/.knowledge/STATUS.md` - la fila S3 de la tabla resumen quedaba stale.** Decia "Blocker: permisos de macOS", cuando la seccion detallada del mismo archivo (mas abajo) ya documentaba la causa correcta. Se alineo la fila a la seccion, con los dos commits (`b98bf1b`, `a080a27`).
+
+### Notes
+- **El blocker de S3 NUNCA fueron los permisos de macOS.** Verificado de forma independiente: macOS 27.0 / kernel `27.0.0` (Darwin 27); `@guidepup/guidepup@0.34.0` y `@guidepup/setup@0.25.3` (ambos ya en la ultima version); `npx @guidepup/setup install voiceover` -> *"The requested screen reader asset is not available for this platform: VoiceOver on darwin 27"*; el `manifest.json` del paquete lista `platformVersion: 21, 22, 23, 24, 25` - **sin 26 ni 27**. El marcador `/private/var/db/Accessibility/.VoiceOverAppleScriptEnabled` **existe** (root:wheel, creado 10:39), o sea que el permiso se otorgo y el fallo siguio.
+- **Una receta equivocada se le paso a Gonzo** (permisos de macOS) y el la ejecuto. No desperdicio el dato: su marcador es ahora la evidencia de que no era ese el problema. Registrado para que no se repita.
+- **Leccion de debugging (causa raiz del desvio):** el mensaje `VoiceOver cannot be started` **ocultaba un `cause` anidado** (`macOS version not supported`). Se corrigio la funcion que reportaba solo el mensaje externo; ahora aplana la cadena de causas y el skip del test dice las dos. Un cause anidado que no se lee es un diagnostico perdido.
+- **Sesion duena inactiva:** la correccion se aplico desde otra sesion porque la duena del proyecto ya habia cerrado su turno y dejo la inconsistencia. Verificado `status: done` antes de escribir (sin riesgo de pisada).
+
 ## [2026-09-15] - kanam-fixer: repo público + pin del perfil pendiente (limitación de API)
 
 ### Changed
