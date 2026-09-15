@@ -102,24 +102,24 @@ fi
 echo ""
 
 # Reflection prompt
-# Post-task reflection (2026-09-03): etapa automatica de reflexion post-tarea.
-# Complementa la self-reflection de cierre: esta corre por tarea, no por sesion.
-# Uso: ./scripts/post-task-reflection.sh --type <tipo> --summary "..." [--check-dups --propose-skill --save]
+# Post-task reflection (2026-09-03): automatic post-task reflection stage.
+# Complements the closing self-reflection: this one runs per task, not per session.
+# Usage: ./scripts/post-task-reflection.sh --type <type> --summary "..." [--check-dups --propose-skill --save]
 if [[ -x "scripts/post-task-reflection.sh" ]]; then
-  echo "🤔 Reflexion post-tarea disponible:"
+  echo "🤔 Post-task reflection available:"
   echo "   ./scripts/post-task-reflection.sh --type <debug|feature|review|config|research|oss|docs|other> \\"
-  echo "       --summary \"<que paso>\" --lesson \"<leccion>\" --check-dups --propose-skill --save"
-  echo "   (correrla por tarea compleja, no solo al cerrar sesion)"
+  echo "       --summary \"<what happened>\" --lesson \"<lesson>\" --check-dups --propose-skill --save"
+  echo "   (run it per complex task, not only when closing a session)"
   echo ""
 fi
-# Self-reflection de cierre (learnings globales)
+# Closing self-reflection (global learnings)
 echo "🤔 Quick reflection:"
-echo "   ¿Qué aprendimos? ¿Algún patrón nuevo?"
-echo "   ¿Es global (🌍) o de proyecto (🏗️)?"
-echo "   Si hay algo, registrarlo en docs/LEARNINGS.md"
+echo "   What did we learn? Any new pattern?"
+echo "   Is it global (🌍) or project-specific (🏗️)?"
+echo "   If there is something, record it in docs/LEARNINGS.md"
 echo ""
-# PRs (2026-08-25): Gonzo los revisa manualmente en GitHub y pasa los URLs a revisar.
-# No se chequean PRs automáticamente al cerrar sesión.
+# PRs (2026-08-25): Gonzo reviews them manually on GitHub and passes the URLs to review.
+# PRs are not checked automatically when closing a session.
 echo "📋 Don't forget to:"
 echo "   1. Review HANDOFF.md"
 echo "   2. Commit workspace changes"

@@ -44,7 +44,7 @@ except Exception:
   echo "   📈 Complexity T-score: $SCORE_OUT"
   echo ""
 else
-  echo "   ⚠️  Scorer no disponible - arranco sin T-score"
+  echo "   ⚠️  Scorer not available - starting without T-score"
   echo ""
   SCORE_OUT="not scored"
 fi
@@ -65,12 +65,12 @@ SEARCHER="scripts/memory-search.py"
 if [[ -f "$SEARCHER" ]] && command -v python3 >/dev/null 2>&1; then
   echo "🧠 Searching memory for relevant context..."
   echo ""
-  python3 "$SEARCHER" "$OBJECTIVE" --top 3 2>/dev/null | head -40 || echo "   (sin resultados de memoria)"
+  python3 "$SEARCHER" "$OBJECTIVE" --top 3 2>/dev/null | head -40 || echo "   (no memory results)"
   echo ""
   echo "---"
   echo ""
 else
-  echo "   ⚠️  memory-search.py no disponible - arranco sin contexto semantico"
+  echo "   ⚠️  memory-search.py not available - starting without semantic context"
   echo ""
 fi
 

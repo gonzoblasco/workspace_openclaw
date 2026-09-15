@@ -3,189 +3,189 @@ name: "session-lifecycle"
 metadata:
   category: "Workflow"
   tags:
-    - sesion
-    - ciclo
-    - productividad
-description: "Workflow de Session Lifecycle: ciclo de sesión completo. Reemplaza 4 skills de sesión."
+    - session
+    - lifecycle
+    - productivity
+description: "Session Lifecycle workflow: complete session cycle. Replaces 4 session skills."
 user-invocable: false
 ---
 
 # Workflow: Session Lifecycle
 
-## Skills que reemplaza
+## Skills it replaces
 - `session-closure`
 - `session-closure-ritual`
 - `context-management`
 - `agent-dispatcher`
 
-## Propósito
-Gestión del ciclo de vida completo de una sesión de trabajo con IA.
+## Purpose
+Management of the complete lifecycle of an AI work session.
 
-## Cuándo usarlo
-- Al iniciar una sesión de trabajo con IA (cargar contexto + memoria)
-- Al cerrar una sesión (escribir HANDOFF, memory, CHANGELOG)
-- Para spawnear sub-agentes según la tarea (fork vs isolated)
-- Para convertir pendientes en tareas accionables y hacer commit del workspace
+## When to use it
+- When starting an AI work session (load context + memory)
+- When closing a session (write HANDOFF, memory, CHANGELOG)
+- To spawn sub-agents according to the task (fork vs isolated)
+- To turn pending items into actionable tasks and commit the workspace
 
-## Fases
+## Phases
 
-### 1. Inicio - cargar contexto, memoria, handoff del proyecto activo
+### 1. Start - load context, memory, handoff of the active project
 
-El inicio de sesión se activa **solo cuando Gonzo lo pide explícitamente** ("iniciar sesión", "arrancar", "empezar a trabajar", etc.). No correr el ritual de inicio en consultas sueltas.
+Session start is triggered **only when Gonzo explicitly asks for it** ("start session", "get going", "start working", etc.). Do not run the start ritual on casual queries.
 
-**Modos de inicio:**
+**Start modes:**
 
-#### A. Inicio con proyecto explícito
+#### A. Start with explicit project
 
-Si Gonzo dice `"iniciar sesión en a11y-fixer"` o similar:
+If the user says `"start session in <project>"` or similar:
 
-1. Resolver el proyecto por nombre: `node skills/session-context/commands/resume.mjs <nombre>`.
-2. Si no existe, ofrecer `session-context:init`.
-3. Si existe, mostrar el briefing de `resume` verbatim.
-4. Preguntar por el **Session Goal** de hoy.
+1. Resolve the project by name: `node skills/session-context/commands/resume.mjs <name>`.
+2. If it does not exist, offer `session-context:init`.
+3. If it exists, show the `resume` briefing verbatim.
+4. Ask for today's **Session Goal**.
 
-#### B. Inicio con auto-detección por cwd
+#### B. Start with cwd auto-detection
 
-Si Gonzo dice `"iniciar sesión"` y el `cwd` actual está registrado en `session-context`:
+If Gonzo says `"start session"` and the current `cwd` is registered in `session-context`:
 
-1. Detectar el proyecto con `resume.mjs` sin argumento.
-2. Mostrar el briefing.
-3. Preguntar: `"¿Seguimos en <proyecto> o querés cambiar de proyecto?"`
-4. Si Gonzo quiere otro proyecto → ir al modo A.
-5. Si quiere brainstorming sin proyecto fijo → ir al modo C.
+1. Detect the project with `resume.mjs` without arguments.
+2. Show the briefing.
+3. Ask: `"Are we continuing in <project> or do you want to switch projects?"`
+4. If Gonzo wants another project - go to mode A.
+5. If he wants brainstorming without a fixed project - go to mode C.
 
-#### C. Inicio sin proyecto definido (brainstorming / triage)
+#### C. Start without a defined project (brainstorming / triage)
 
-Si Gonzo dice `"iniciar sesión"`, `"brainstorming"`, `"aún no sé en qué proyecto"`, etc.:
+If Gonzo says `"start session"`, `"brainstorming"`, `"I don't know which project yet"`, etc.:
 
-1. No correr `session-context:resume` de ningún proyecto.
-2. Cargar memoria general: `MEMORY.md`, `memory/YYYY-MM-DD.md` de hoy, lista de proyectos recientes opcionalmente con `session-context:list`.
-3. Preguntar: `"¿En qué proyecto trabajamos? ¿O es una sesión general de planificación/brainstorming?"`
-4. Definir un Session Goal temporal. No requiere proyecto fijo.
+1. Do not run `session-context:resume` for any project.
+2. Load general memory: `MEMORY.md`, today's `memory/YYYY-MM-DD.md`, recent project list optionally with `session-context:list`.
+3. Ask: `"Which project are we working on? Or is this a general planning/brainstorming session?"`
+4. Define a temporary Session Goal. It does not require a fixed project.
 
-**En todos los modos:**
+**In all modes:**
 
-- **Inyección de contexto semántico (2026-08-31):** al iniciar sesión con proyecto, `session-start.sh` busca automáticamente en la memoria (sesiones + learnings) las entradas más relevantes al objetivo y las muestra como contexto. Así la sesión arranca con memoria relevante en vez de en frío. Usa `scripts/memory-search.py` con el objetivo como query.
-- Detectar sesión previa no guardada: si el `session_id` actual no existe en `session-context`, avisar: `"La sesión anterior no fue guardada - ¿querés guardarla antes de arrancar?"`.
-- **Session Goal:** definir objetivo explícito de la sesión. ¿Qué queremos lograr? ¿Cuál es el criterio de éxito?
-- Si el objetivo es difuso, clarificar antes de avanzar. No arrancar sin dirección.
-- **Complexity score (complexity-driven-pipeline):** al definir el Session Goal, correr `./scripts/complexity-scorer.sh "<objetivo>"` para obtener el T-score (1-20). Esto decide modelo, thinking y profundidad del pipeline ANTES de spawnear agentes. `session-start.sh` ya lo hace automáticamente y persisté el T-score en el session log. Buckets: T≤6 = Kanam solo; T 7-12 = A; T 13-16 = A+B cross-review; T≥17 = Kanam(max)+A+B+verificación + gate de confirmación. Ver skill `complexity-driven-pipeline`.
+- **Semantic context injection (2026-08-31):** when starting a session with a project, `session-start.sh` automatically searches memory (sessions + learnings) for the most relevant entries for the objective and shows them as context. This way the session starts with relevant memory instead of cold. Uses `scripts/memory-search.py` with the objective as query.
+- Detect unsaved previous session: if the current `session_id` does not exist in `session-context`, warn: `"The previous session was not saved - do you want to save it before starting?"`
+- **Session Goal:** define the session's explicit objective. What do we want to achieve? What is the success criterion?
+- If the objective is fuzzy, clarify before moving forward. Do not start without direction.
+- **Complexity score (complexity-driven-pipeline):** when defining the Session Goal, run `./scripts/complexity-scorer.sh "<objective>"` to get the T-score (1-20). This decides model, thinking and pipeline depth BEFORE spawning agents. `session-start.sh` already does this automatically and persists the T-score in the session log. Buckets: T≤6 = Kanam only; T 7-12 = A; T 13-16 = A+B cross-review; T≥17 = Kanam(max)+A+B+verification + confirmation gate. See skill `complexity-driven-pipeline`.
 
-### 2. Dispatcher - spawnear sub-agentes según la tarea:
-- **fork**: cuando el sub-agente necesita el transcript actual (ej: continuar una investigación, analizar una conversación)
-- **isolated**: cuando es trabajo independiente (ej: buscar issues, leer docs, hacer tareas paralelas sin contexto compartido)
+### 2. Dispatcher - spawn sub-agents according to the task:
+- **fork**: when the sub-agent needs the current transcript (e.g.: continuing an investigation, analyzing a conversation)
+- **isolated**: when it is independent work (e.g.: searching issues, reading docs, doing parallel tasks without shared context)
 
-### 3. Ejecución - trabajo principal, decisiones, archivos tocados
-- **Mid-session checkpoint:** a mitad de sesión (o al cambiar de tarea), preguntar: "¿Sigo en el camino correcto hacia el objetivo? ¿Necesito ajustar algo?"
-- Si el checkpoint revela desvío, redefinir objetivo o restricciones antes de seguir.
+### 3. Execution - main work, decisions, files touched
+- **Mid-session checkpoint:** halfway through the session (or when changing tasks), ask: "Am I on the right track toward the objective? Do I need to adjust anything?"
+- If the checkpoint reveals a detour, redefine the objective or constraints before continuing.
 
-### 4. Guardado - escanear sesión, escribir HANDOFF, memory, CHANGELOG
-- **Auto-catalogación + DB-first (2026-08-31):** al guardar sesión, `session-end.sh` (1) escribe el resumen **directo a `memory/memory.db`** (tabla `daily_notes`) como fuente de verdad vía `scripts/memory-end-session.py`, (2) regenera `memory/YYYY-MM-DD.md` como **vista exportada** (regenerable con `export-all`), y (3) corre `scripts/memory-catalog-v2.py` para actualizar embeddings/topics/learnings. Con esto la DB es la fuente y los `.md` pasan a ser opcionales.
-- **Guard de reconciliación (2026-09-14):** el export DB->.md es lossy cuando el `.md` se editó a mano o lo escribió una sesión concurrente. Antes de exportar, `memory-end-session.py` compara secciones `.md` vs DB y mergea hacia la DB las que solo viven en el `.md` (preservando las solo-en-DB), con backup en `/tmp/daily-<fecha>.backup.md`. Si la fecha no tiene fila en la DB, la crea desde el `.md` entero. `--no-reconcile` reproduce el comportamiento viejo (destructivo, opt-in). **El daily se escribe con el script, nunca a mano:** editar el `.md` directo deja la DB atrasada.
-- Inyección de contexto semántico: al guardar, la sesión queda indexada en la DB para búsqueda futura (`./scripts/memory-db.sh search "..."`).
-- Si la sesión tuvo un proyecto asociado, ejecutar `session-context:save` con el resumen de la sesión: `summary`, `leftOff`, `nextSteps`, `decisions`, `blockers`, y `goal` solo si cambió.
-- Si fue una sesión sin proyecto (brainstorming/triage), guardar el resumen en `memory/YYYY-MM-DD.md` y no tocar `session-context`.
-- Mostrar borrador al usuario para confirmación o edición antes de persistir.
-- **Revisar sesiones anteriores del día:** antes de cerrar, leer los archivos `memory/YYYY-MM-DD-*.md` del día para asegurarse de que no hubo sesiones previas que el daily note resumido no capture. No confiar solo en el daily note ni en la memoria.
-- **Consolidar archivos sueltos del día:** si hay archivos `memory/YYYY-MM-DD-HHMM.md` (sesiones individuales), moverlos a `memory/archive/`. El daily consolidado `memory/YYYY-MM-DD.md` ya tiene toda la info.
-- **Self-reflection obligatoria:** si hubo correcciones de Gonzo, cambios estructurales, o aprendizajes significativos, registrar en LEARNINGS.md antes de cerrar. No esperar a que Gonzo pregunte "¿revisamos lecciones?"
-- Si se modificó CONTRIBUTING.md, skills, o AGENTS.md, verificar que el cambio esté completo y no falten adaptaciones en skills relacionadas
+### 4. Save - scan session, write HANDOFF, memory, CHANGELOG
+- **Auto-cataloging + DB-first (2026-08-31):** when saving a session, `session-end.sh` (1) writes the summary **directly to `memory/memory.db`** (`daily_notes` table) as the source of truth via `scripts/memory-end-session.py`, (2) regenerates `memory/YYYY-MM-DD.md` as an **exported view** (regenerable with `export-all`), and (3) runs `scripts/memory-catalog-v2.py` to update embeddings/topics/learnings. With this, the DB is the source and the `.md` files become optional.
+- **Reconciliation guard (2026-09-14):** the DB->.md export is lossy when the `.md` was edited by hand or written by a concurrent session. Before exporting, `memory-end-session.py` compares `.md` sections vs the DB and merges into the DB the ones that only live in the `.md` (preserving the DB-only ones), with a backup in `/tmp/daily-<date>.backup.md`. If the date has no row in the DB, it creates one from the whole `.md`. `--no-reconcile` reproduces the old behavior (destructive, opt-in). **The daily is written with the script, never by hand:** editing the `.md` directly leaves the DB behind.
+- Semantic context injection: when saving, the session is indexed in the DB for future search (`./scripts/memory-db.sh search "..."`).
+- If the session had an associated project, run `session-context:save` with the session summary: `summary`, `leftOff`, `nextSteps`, `decisions`, `blockers`, and `goal` only if it changed.
+- If it was a session without a project (brainstorming/triage), save the summary in `memory/YYYY-MM-DD.md` and do not touch `session-context`.
+- Show the draft to the user for confirmation or editing before persisting.
+- **Review previous sessions of the day:** before closing, read the day's `memory/YYYY-MM-DD-*.md` files to make sure there were no prior sessions that the summarized daily note does not capture. Do not rely only on the daily note or memory.
+- **Consolidate loose files of the day:** if there are `memory/YYYY-MM-DD-HHMM.md` files (individual sessions), move them to `memory/archive/`. The consolidated daily `memory/YYYY-MM-DD.md` already has all the info.
+- **Mandatory self-reflection:** if there were Gonzo corrections, structural changes, or significant learnings, record them in LEARNINGS.md before closing. Do not wait for Gonzo to ask "shall we review lessons?"
+- If CONTRIBUTING.md, skills, or AGENTS.md were modified, verify that the change is complete and no adaptations are missing in related skills
 
-### 5. Tareas - convertir pendientes en tareas accionables. Crear cron jobs para follow-ups, o escribir en TODO.md del proyecto. No dejar pendientes en el aire
+### 5. Tasks - turn pending items into actionable tasks. Create cron jobs for follow-ups, or write them in the project's TODO.md. Do not leave pending items up in the air
 
-### 6. Commit - commit + push del workspace (después de HANDOFF y memory, no antes)
+### 6. Commit - commit + push the workspace (after HANDOFF and memory, not before)
 
 ## Helper Scripts
 
-Scripts en `skills/session-lifecycle/scripts/`:
+Scripts in `skills/session-lifecycle/scripts/`:
 
-| Script | Uso |
+| Script | Use |
 |---|---|
-| `session-start.sh --project <name> --objective <obj>` | Carga HANDOFF previo, corre el complexity-scorer sobre el objetivo, y crea/actualiza el log diario en `memory/YYYY-MM-DD.md`. Usar al inicio de sesion con proyecto. |
-| `session-end.sh --project <name> --summary <text>` | Genera/actualiza HANDOFF, escribe el guardado en el log diario. Los PRs los revisa Gonzo manualmente (2026-08-25). Usar al guardar sesion. |
-| `scripts/complexity-scorer.sh <objetivo>` | Evalúa complejidad en 4 dimensiones → T-score 1-20 + bucket + modelo + thinking + pipeline. Corrido automáticamente por `session-start.sh`. Skill: `complexity-driven-pipeline`. |
+| `session-start.sh --project <name> --objective <obj>` | Loads the previous HANDOFF, runs the complexity-scorer on the objective, and creates/updates the daily log in `memory/YYYY-MM-DD.md`. Use at session start with a project. |
+| `session-end.sh --project <name> --summary <text>` | Generates/updates HANDOFF, writes the save in the daily log. PRs are reviewed manually by Gonzo (2026-08-25). Use when saving a session. |
+| `scripts/complexity-scorer.sh <objective>` | Evaluates complexity in 4 dimensions - T-score 1-20 + bucket + model + thinking + pipeline. Run automatically by `session-start.sh`. Skill: `complexity-driven-pipeline`. |
 
-Si la sesion toca scripts de skill del workspace, correr `npm test` antes del commit final.
+If the session touches workspace skill scripts, run `npm test` before the final commit.
 
-## Self-Reflection Post-Tarea
+## Post-Task Self-Reflection
 
-Después de tareas significativas (multi-step, debugging, PRs, cambios de config), hacer una pausa rápida de evaluación:
+After significant tasks (multi-step, debugging, PRs, config changes), take a quick evaluation pause:
 
 ```
-CONTEXT: [tipo de tarea]
-REFLECTION: [qué noté]
-LESSON: [qué haría distinto]
-BIASES DETECTED: [sunk cost / anchoring / confirmation / etc. o none]
+CONTEXT: [task type]
+REFLECTION: [what I noticed]
+LESSON: [what I would do differently]
+BIASES DETECTED: [sunk cost / anchoring / confirmation / etc. or none]
 ```
 
-**Cuándo hacerlo:**
-- Después de completar una tarea multi-step
-- Después de recibir feedback (positivo o negativo)
-- Después de fixear un bug
-- Cuando notes que tu output podría ser mejor
+**When to do it:**
+- After completing a multi-step task
+- After receiving feedback (positive or negative)
+- After fixing a bug
+- When you notice your output could be better
 
-**Destino:** si es una lección nueva → `docs/LEARNINGS.md`. Si es un patrón que ya existe → actualizar Recurrence-Count.
+**Destination:** if it is a new lesson - `docs/LEARNINGS.md`. If it is an existing pattern - update Recurrence-Count.
 
-### Reflexión post-tarea automatizada (2026-09-03)
+### Automated post-task reflection (2026-09-03)
 
-Etapa nueva del ciclo: `scripts/post-task-reflection.sh` estructura la reflexión por tarea (no por sesión), detecta duplicados en la DB, cruza con skills existentes vía skill-router, y propone skill nueva si el patrón no está cubierto.
+New stage of the cycle: `scripts/post-task-reflection.sh` structures reflection per task (not per session), detects duplicates in the DB, cross-references existing skills via skill-router, and proposes a new skill if the pattern is not covered.
 
 ```bash
 ./scripts/post-task-reflection.sh --type <debug|feature|review|config|research|oss|docs|other> \
-  --summary "<que paso>" --lesson "<leccion>" \
+  --summary "<what happened>" --lesson "<lesson>" \
   --check-dups --propose-skill --save
 ```
 
 **Flags:**
-- `--check-dups`: búsqueda semántica de learnings similares (evita duplicar)
-- `--propose-skill`: genera propuesta en `skills/_proposals/` si el patrón no está cubierto (requiere match keyword L1 + score ≥ 0.6; solo-embedding no cuenta)
-- `--save`: persiste el learning en `memory.db` (tabla learnings, categoría por tipo)
+- `--check-dups`: semantic search of similar learnings (avoids duplication)
+- `--propose-skill`: generates a proposal in `skills/_proposals/` if the pattern is not covered (requires L1 keyword match + score >= 0.6; embedding-only does not count)
+- `--save`: persists the learning in `memory.db` (learnings table, category by type)
 
-**Relación con la self-reflection de cierre:** la de cierre (abajo) registra learnings globales al guardar sesión; esta corre por tarea compleja, en el momento, y además detecta skills. Complementarias, no redundantes.
+**Relationship with closing self-reflection:** the closing one (below) records global learnings when saving a session; this one runs per complex task, in the moment, and also detects skills. Complementary, not redundant.
 
-### Methodology Audit - check rápido (2026-09-03)
+### Methodology Audit - quick check (2026-09-03)
 
-Si la sesión tocó metodología (skills, AGENTS.md, scripts, docs de proceso, lecciones nuevas), correr el check rápido de 8 casillas de `docs/METHODOLOGY-AUDIT.md` antes de cerrar. Si 3+ casillas quedan sin marcar, la sesión dejó deuda metodológica: registrarla como pendiente, no ignorarla. Si la sesión no tocó metodología, saltarlo (sería ruido). Auditoría profunda (puntaje 0-16): trimestral o a pedido de Gonzo.
+If the session touched methodology (skills, AGENTS.md, scripts, process docs, new lessons), run the quick 8-box check of `docs/METHODOLOGY-AUDIT.md` before closing. If 3+ boxes remain unchecked, the session left methodological debt: record it as pending, do not ignore it. If the session did not touch methodology, skip it (it would be noise). Deep audit (score 0-16): quarterly or on Gonzo's request.
 
 ## WAL Protocol - Write-Ahead Logging
 
-**Regla de oro:** si es importante recordarlo, ESCRIBILO AHORA - no después. El contexto desaparece. El archivo queda.
+**Golden rule:** if it is important to remember it, WRITE IT NOW - not later. Context disappears. The file stays.
 
-### Escaneá cada mensaje en busca de:
-- ✏️ **Correcciones** - "Es X, no Y" / "En realidad..." / "No, quise decir..."
-- 📍 **Nombres propios** - personas, lugares, empresas, productos
-- 🎨 **Preferencias** - colores, estilos, approaches, "me gusta/no me gusta"
-- 📋 **Decisiones** - "Hagamos X" / "Vamos con Y" / "Usá Z"
-- 📝 **Cambios a drafts** - ediciones a algo que estamos trabajando
-- 🔢 **Valores específicos** - números, fechas, IDs, URLs
+### Scan every message for:
+- ✏️ **Corrections** - "It's X, not Y" / "Actually..." / "No, I meant..."
+- 📍 **Proper names** - people, places, companies, products
+- 🎨 **Preferences** - colors, styles, approaches, "I like / I don't like"
+- 📋 **Decisions** - "Let's do X" / "We go with Y" / "Use Z"
+- 📝 **Draft changes** - edits to something we are working on
+- 🔢 **Specific values** - numbers, dates, IDs, URLs
 
-### El Protocolo
+### The Protocol
 
-Si APARECE ALGUNO de estos:
+If ANY of these APPEARS:
 
-1. **STOP** - No empieces a redactar tu respuesta
-2. **WRITE** - Actualizá `memory/YYYY-MM-DD.md` o el archivo relevante con el detalle
-3. **THEN** - Respondé a Gonzo
+1. **STOP** - Do not start drafting your response
+2. **WRITE** - Update `memory/YYYY-MM-DD.md` or the relevant file with the detail
+3. **THEN** - Reply to Gonzo
 
-El impulso de responder es el enemigo. El detalle se siente tan claro en contexto que parece innecesario escribirlo. Pero el contexto se va a perder. Escribí primero.
+The urge to respond is the enemy. The detail feels so clear in context that writing it seems unnecessary. But the context will be lost. Write first.
 
-**Ejemplo:**
+**Example:**
 
-Gonzo dice: "Usá el tema azul, no el rojo"
+Gonzo says: "Use the blue theme, not the red one"
 
-❌ MAL: "Dale, azul!" (parece obvio, para qué escribirlo)
-✅ BIEN: Escribir a `memory/YYYY-MM-DD.md`: "Tema: azul (no rojo)" → LUEGO responder
+❌ WRONG: "OK, blue!" (seems obvious, why write it)
+✅ RIGHT: Write to `memory/YYYY-MM-DD.md`: "Theme: blue (not red)" - THEN reply
 
-## Working Buffer - Zona de Peligro
+## Working Buffer - Danger Zone
 
-Cuando el contexto de sesión llegue al ~60% (verificable con `session_status`), activar el buffer:
+When the session context reaches ~60% (verifiable with `session_status`), activate the buffer:
 
-1. Crear o limpiar `memory/working-buffer.md`
-2. A partir de ese punto, **cada exchange** se loggea: mensaje de Gonzo + resumen de tu respuesta
-3. **Flush ANTES de compactar** (idea de Honcho): cuando se acerque la compactación, asegurar que el buffer esté completo y al día ANTES de perder contexto - no después. Si la sesión está por compactar (cerca del límite), hacer un flush final del buffer con lo último importante.
-4. Después de compactación, leer el buffer primero antes de cualquier otra cosa
+1. Create or clear `memory/working-buffer.md`
+2. From that point on, **every exchange** is logged: Gonzo's message + summary of your response
+3. **Flush BEFORE compacting** (Honcho's idea): when compaction approaches, make sure the buffer is complete and up to date BEFORE losing context - not after. If the session is about to compact (close to the limit), do a final flush of the buffer with the latest important items.
+4. After compaction, read the buffer first before anything else
 
-**Formato:**
+**Format:**
 
 ```markdown
 # Working Buffer
@@ -195,140 +195,140 @@ Cuando el contexto de sesión llegue al ~60% (verificable con `session_status`),
 ---
 
 ## 2026-07-22T12:01:00 Gonzo
-[mensaje]
+[message]
 
-## 2026-07-22T12:01:05 Kanam (resumen)
-[1-2 oraciones con detalles clave]
+## 2026-07-22T12:01:05 Kanam (summary)
+[1-2 sentences with key details]
 ```
 
-### Resumen estructurado de compactación (idea de Session Compact)
+### Structured compaction summary (Session Compact idea)
 
-Cuando se compacta la sesión (no solo el buffer), generar un **resumen estructurado** en vez de un bloque de texto generico. Al compactar, armar el resumen con estos campos (portado de Session Compact - ClawHub):
+When the session is compacted (not just the buffer), generate a **structured summary** instead of a generic text block. When compacting, build the summary with these fields (ported from Session Compact - ClawHub):
 
 ```markdown
-# Resumen de Compactación
-**Scope:** <que se compacto - ej. "35 mensajes de la sesion de desarrollo de X">
-**Pending work:** <todos/pendientes en curso - ej. 'terminar U3, revisar U2'>
-**Key files:** <archivos importantes tocados - ej. 'src/auth.ts, db/schema.sql'>
-**Decisions:** <decisiones clave tomadas que no deben perderse>
-**Key timeline:** <3-5 hitos de la conversacion que importan>
-**Next step:** <que sigue>
+# Compaction Summary
+**Scope:** <what was compacted - e.g. "35 messages of the X development session">
+**Pending work:** <todos/pending items in progress - e.g. 'finish U3, review U2'>
+**Key files:** <important files touched - e.g. 'src/auth.ts, db/schema.sql'>
+**Decisions:** <key decisions made that must not be lost>
+**Key timeline:** <3-5 conversation milestones that matter>
+**Next step:** <what comes next>
 ```
 
-- El **Pending work** y **Next step** son los mas criticos - que no se pierdan al compactar.
-- Los **Key files** y **Decisions** permiten retomar sin re-descubrir.
-- Complementa el working buffer (log crudo) con un resumen accionable post-compactacion.
+- **Pending work** and **Next step** are the most critical - they must not be lost when compacting.
+- **Key files** and **Decisions** allow resuming without re-discovering.
+- Complements the working buffer (raw log) with an actionable post-compaction summary.
 
 ## Compaction Recovery
 
-Hay **dos mecanismos** que trabajan juntos para recuperar contexto tras una compactación. No son excluyentes - el plugin cubre lo automático, el buffer manual cubre lo que el plugin no ve (decisivo cuando el contexto es largo o la compactación fue agresiva).
+There are **two mechanisms** that work together to recover context after a compaction. They are not mutually exclusive - the plugin covers the automatic part, the manual buffer covers what the plugin does not see (decisive when the context is long or the compaction was aggressive).
 
-### A. Plugin `compaction-context` (automático) - instalado 2026-08-22
+### A. Plugin `compaction-context` (automatic) - installed 2026-08-22
 
-El plugin está instalado en `~/.openclaw/extensions/compaction-context/` (instalación local, parcheada) y registrado como hook-only en `plugins.entries.compaction-context`. Hace un snapshot automático:
+The plugin is installed in `~/.openclaw/extensions/compaction-context/` (local, patched installation) and registered as hook-only in `plugins.entries.compaction-context`. It takes an automatic snapshot:
 
-1. **`before_compaction`** - antes de compactar, lee las últimas N mensajes (default 20) del `.jsonl` de la sesión y las escribe en `RECENT.md` del workspace + setea el flag `.compaction-recovery-pending`.
-2. **`before_agent_start`** - si el flag existe (recién compactó), lee `RECENT.md` y lo inyecta como `prependContext` dentro de `<compaction_context_recovery>...</compaction_context_recovery>`, y borra el flag.
+1. **`before_compaction`** - before compacting, reads the last N messages (default 20) of the session `.jsonl` and writes them into the workspace `RECENT.md` + sets the `.compaction-recovery-pending` flag.
+2. **`before_agent_start`** - if the flag exists (just compacted), reads `RECENT.md` and injects it as `prependContext` inside `<compaction_context_recovery>...</compaction_context_recovery>`, and deletes the flag.
 
-**Qué significa para mí (el agente):** después de una compactación, NO estoy 100% en blanco. El `prependContext` reinyecta las últimas 20 mensajes. Si no tenés idea de qué pasó, revisar el `prependContext` inyectado ANTES de hacer cualquier pregunta.
+**What it means for me (the agent):** after a compaction, I am NOT 100% blank. The `prependContext` reinjects the last 20 messages. If you have no idea what happened, check the injected `prependContext` BEFORE asking anything.
 
-**Config actual (defaults):** 20 mensajes × 500 chars/mensaje (~10K chars / ~2.5K tokens, inyectado solo una vez post-compactación). Configurable en `openclaw.json` → `plugins.entries.compaction-context.config`.
+**Current config (defaults):** 20 messages x 500 chars/message (~10K chars / ~2.5K tokens, injected only once post-compaction). Configurable in `openclaw.json` - `plugins.entries.compaction-context.config`.
 
-**⚠️ Manejo del ensuciamiento del workspace (importante):** el plugin escribe `RECENT.md` y `.compaction-recovery-pending` en `~/.openclaw/workspace/`, que es un repo git (`workspace_openclaw`). Ya están en el `.gitignore` (agregado 2026-08-22), así que no ensucian el `git status`. No commitearlos.
+**⚠️ Workspace clutter handling (important):** the plugin writes `RECENT.md` and `.compaction-recovery-pending` into the workspace root, which is a git repo. They are already in `.gitignore` (added 2026-08-22), so they do not clutter `git status`. Do not commit them.
 
-### B. Buffer manual (existing) - `memory/working-buffer.md`
+### B. Manual buffer (existing) - `memory/working-buffer.md`
 
-El plugin no captura todo: solo las últimas 20 mensajes truncados a 500 chars, y no guarda decisiones clave a medio contexto. El working-buffer manual sigue siendo fuente para:
+The plugin does not capture everything: only the last 20 messages truncated to 500 chars, and it does not save key decisions made mid-context. The manual working-buffer remains a source for:
 
-- Decisiones tomadas "entre líneas" no evidentes en el snapshot
-- Contexto de más de 20 mensajes atrás
-- Pendientes que el snapshot truncó
+- Decisions made "between the lines" not evident in the snapshot
+- Context older than 20 messages
+- Pending items the snapshot truncated
 
-### C. Flujo de recuperación post-compactación (consolidado)
+### C. Post-compaction recovery flow (consolidated)
 
-Al despertar sin contexto (compactación, reinicio, o Gonzo dice "dónde estábamos?"):
+When waking up without context (compaction, restart, or Gonzo says "where were we?"):
 
-1. **Revisar el `prependContext` inyectado** (el plugin ya lo reinyectó). Es la fuente inmediata - las últimas 20 mensajes.
-2. **Leer `memory/working-buffer.md`** - exchanges crudos de la zona de peligro que el snapshot no cubre
-3. **Leer `memory/YYYY-MM-DD.md`** del día de hoy y ayer
-4. **`memory_search()`** por contexto faltante
-5. **Extraer** lo importante del buffer a `memory/YYYY-MM-DD.md`
-6. **Presentar:** "Recuperado del buffer + snapshot del plugin. Última tarea era X. ¿Continuamos?"
+1. **Check the injected `prependContext`** (the plugin already reinjected it). It is the immediate source - the last 20 messages.
+2. **Read `memory/working-buffer.md`** - raw danger-zone exchanges that the snapshot does not cover
+3. **Read today's and yesterday's `memory/YYYY-MM-DD.md`**
+4. **`memory_search()`** for missing context
+5. **Extract** the important items from the buffer into `memory/YYYY-MM-DD.md`
+6. **Present:** "Recovered from buffer + plugin snapshot. Last task was X. Shall we continue?"
 
-No preguntar "de qué estábamos hablando?" - el buffer tiene la conversación.
+Do not ask "what were we talking about?" - the buffer has the conversation.
 
 ---
 
-*Nota de deuda técnica pendiente:* el plugin se instaló local parcheado (el paquete npm del autor viene con `index.ts` sin compilar + bug "hook registration missing name" contra la API 2026.7.1-2). Si el autor publica una versión corregida, migrar a `openclaw plugins install compaction-context`.
+*Pending technical debt note:* the plugin was installed local and patched (the author's npm package ships with uncompiled `index.ts` + "hook registration missing name" bug against the 2026.7.1-2 API). If the author publishes a fixed version, migrate to `openclaw plugins install compaction-context`.
 
-## Handoff entre Subagentes
+## Handoff Between Sub-agents
 
-Cuando un subagente pasa trabajo a otro (o devuelve resultados al main), el handoff debe incluir:
+When a sub-agent hands work to another (or returns results to the main), the handoff must include:
 
-- **Qué se hizo** - resumen de cambios/output
-- **Dónde están los artifacts** - rutas exactas de archivos
-- **Cómo verificar** - comandos de test o criterios de aceptación
-- **Issues conocidos** - todo lo que está incompleto o riesgoso
-- **Qué sigue** - próxima acción clara para el agente receptor
+- **What was done** - summary of changes/output
+- **Where the artifacts are** - exact file paths
+- **How to verify** - test commands or acceptance criteria
+- **Known issues** - anything incomplete or risky
+- **What's next** - clear next action for the receiving agent
 
-**Mal handoff:** "Listo, revisá los archivos."
-**Buen handoff:** "Construí el módulo de auth en /shared/artifacts/auth/. Corré `npm test auth` para verificar. Issue conocido: rate limiting no implementado todavía. Siguiente: reviewer checkea edge cases de error handling."
+**Bad handoff:** "Done, review the files."
+**Good handoff:** "I built the auth module in /shared/artifacts/auth/. Run `npm test auth` to verify. Known issue: rate limiting not implemented yet. Next: reviewer checks error handling edge cases."
 
-**Lección:** un handoff vago genera trabajo duplicado o errores. Ser explícito sobre qué se hizo, dónde está, y qué falta ahorra tiempo a ambos lados.
+**Lesson:** a vague handoff generates duplicated work or errors. Being explicit about what was done, where it is, and what is missing saves time for both sides.
 
-## Productividad & ADHD - Cómo Trabajamos
+## Productivity & ADHD - How We Work
 
-Gonzo tiene ADHD. El sistema de productividad debe adaptarse a eso, no al revés.
+Gonzo has ADHD. The productivity system must adapt to that, not the other way around.
 
-### Principios
+### Principles
 
-- **Una cosa a la vez.** No mezclar proyectos en una misma sesión. Cada sesión de OpenClaw = un proyecto.
-- **Inbox capture.** Si a Gonzo se le ocurre algo mientras trabajamos en otra cosa, lo atrapo en `inbox.md` y sigo con lo que estábamos.
-- **Overload triage.** Si hay demasiadas cosas abiertas, parar y priorizar antes de seguir. Preguntar: "¿Qué es lo más importante AHORA?"
-- **Rutinas de inicio.** Al arrancar una sesión, revisar qué quedó pendiente de la sesión anterior antes de meter cosas nuevas.
-- **Rutinas de guardado.** Al terminar una sesión, dejar claro qué sigue para la próxima. Así Gonzo no pierde 10 min retomando.
-- **Focus > multitasking.** Una sesión enfocada de 2h vale más que 4h de contexto switching.
-- **Sin culpa por lo no hecho.** Si algo quedó sin terminar, se retoma. No hay "debería haber hecho más".
+- **One thing at a time.** Do not mix projects in the same session. Each OpenClaw session = one project.
+- **Inbox capture.** If something occurs to Gonzo while we work on something else, I catch it in `inbox.md` and continue with what we were doing.
+- **Overload triage.** If there are too many open things, stop and prioritize before continuing. Ask: "What is the most important thing NOW?"
+- **Start routines.** When starting a session, review what was left pending from the previous session before adding new things.
+- **Save routines.** When ending a session, make clear what comes next for the next one. This way Gonzo does not lose 10 min resuming.
+- **Focus > multitasking.** A focused 2h session is worth more than 4h of context switching.
+- **No guilt for what was not done.** If something was left unfinished, it gets picked up again. There is no "I should have done more".
 
-### Pausa Deliberada - Leer, Procesar, Responder
+### Deliberate Pause - Read, Process, Respond
 
-Gonzo pide que nuestras respuestas tengan una **demora deliberada** entre leer el mensaje y actuar. No responder con la primera reacción.
+Gonzo asks that our responses have a **deliberate delay** between reading the message and acting. Do not respond with the first reaction.
 
-El flujo es: **LEER → PROCESAR → (pausa reflexiva) → RESPONDER**.
+The flow is: **READ - PROCESS - (reflective pause) - RESPOND**.
 
-- **LEER** - Leer el mensaje completo, sin saltar a la conclusión. Identificar qué pide realmente, no qué parece pedir.
-- **PROCESAR** - Hacer la tarea con las herramientas disponibles. Reunir evidencia antes de opinar.
-- **PAUSA REFLEXIVA** - Antes de responder, preguntar: ¿entendí el pedido? ¿verifiqué lo mutable? ¿hay un supuesto que estoy dando por hecho? ¿esto es lo que mejor responde a lo que pidió, o es la respuesta más fácil?
-- **RESPONDER** - Recién ahí, emitir la respuesta.
+- **READ** - Read the whole message, without jumping to conclusions. Identify what it really asks, not what it seems to ask.
+- **PROCESS** - Do the task with the available tools. Gather evidence before opining.
+- **REFLECTIVE PAUSE** - Before responding, ask: did I understand the request? Did I verify what is mutable? Is there an assumption I am taking for granted? Is this what best answers what was asked, or is it the easiest answer?
+- **RESPOND** - Only then, give the response.
 
-**Reglas de oro:**
-- No responder a medio leer. Si el mensaje es largo o ambiguo, parafrasear el pedido antes de ejecutar.
-- Las tareas que tocan el mundo exterior (pushear, publicar, enviar) merecen doble pausa: verificar antes de accionar.
-- Si Gonzo pide algo que cambia el curso de lo que estábamos haciendo (ej. "no pushees"), incorporar esa restricción y seguir, no abandonar.
+**Golden rules:**
+- Do not respond half-read. If the message is long or ambiguous, paraphrase the request before executing.
+- Tasks that touch the outside world (push, publish, send) deserve a double pause: verify before acting.
+- If Gonzo asks for something that changes the course of what we were doing (e.g. "do not push"), incorporate that constraint and continue, do not abandon.
 
-### Señales de sobrecarga
+### Overload signals
 
-Si detecto alguna de estas, paro y pregunto antes de seguir:
-- Gonzo menciona 3+ proyectos diferentes en la misma conversación
-- Hay tareas abiertas de sesiones anteriores sin resolver
-- El daily log del día tiene entradas de 3+ temas distintos
-- Gonzo dice "estoy en mil cosas" o similar
+If I detect any of these, I stop and ask before continuing:
+- Gonzo mentions 3+ different projects in the same conversation
+- There are unresolved open tasks from previous sessions
+- The day's daily log has entries from 3+ different topics
+- Gonzo says "I'm in a thousand things" or similar
 
-### Cómo Ayudo
+### How I Help
 
-- **Recordatorio suave:** "Antes de arrancar con esto, acordate que tenías X pendiente de ayer. ¿Seguimos con eso o arrancamos nuevo?"
-- **Triage rápido:** "Tenés 4 cosas abiertas. ¿Cuál es la prioritaria ahora?"
-- **Guardado explícito:** Al final de cada sesión, dejo un resumen de qué se hizo y qué sigue.
-- **Sin presión:** Si Gonzo quiere cambiar de tema, cambiamos. El sistema se adapta.
+- **Soft reminder:** "Before starting with this, remember you had X pending from yesterday. Do we continue with that or start fresh?"
+- **Quick triage:** "You have 4 open things. Which is the priority now?"
+- **Explicit saving:** At the end of each session, I leave a summary of what was done and what's next.
+- **No pressure:** If Gonzo wants to change topics, we change. The system adapts.
 
 ## Outputs
-- `.data/session-context.db` (proyectos, sesiones, decisiones)
+- `.data/session-context.db` (projects, sessions, decisions)
 - `projects/<slug>/.knowledge/HANDOFF.md`
 - `memory/YYYY-MM-DD.md`
-- Tareas creadas en el sistema (cron jobs o TODO.md)
-- Workspace commiteado y pusheado
+- Tasks created in the system (cron jobs or TODO.md)
+- Workspace committed and pushed
 
 ## Related Skills
 
-- [Task Execution](../planning-and-task-breakdown): Para ejecutar tareas dentro de la sesión
-- [Knowledge Management](../knowledge-management): Para registrar aprendizajes de la sesión
+- [Task Execution](../planning-and-task-breakdown): To execute tasks within the session
+- [Knowledge Management](../knowledge-management): To record session learnings

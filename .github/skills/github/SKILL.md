@@ -60,18 +60,18 @@ gh auth login
 
 The MCP wrapper reads `~/.openclaw/secrets/github-token` automatically.
 
-### ⚠️ OAuth token write-block en orgs con OAuth App restrictions
+### ⚠️ OAuth token write-block in orgs with OAuth App restrictions
 
-El token OAuth de OpenClaw (`gho_`) NO puede escribir (comentar, abrir PRs/issues) en orgs con OAuth App access restrictions: shadcn-ui, radix-ui, facebook, TanStack, adobe, mui, vercel, etc. La lectura funciona; el write falla con `GraphQL: ... OAuth App access restrictions`. No es un problema del token ni del casing.
+The OpenClaw OAuth token (`gho_`) CANNOT write (comment, open PRs/issues) in orgs with OAuth App access restrictions: shadcn-ui, radix-ui, facebook, TanStack, adobe, mui, vercel, etc. Reading works; writes fail with `GraphQL: ... OAuth App access restrictions`. It is not a token or casing problem.
 
-**Sintoma:** `gh issue comment` / `gh pr create` fallan con ese error en orgs de terceros, pero funcionan en repos propios.
+**Symptom:** `gh issue comment` / `gh pr create` fail with that error in third-party orgs, but work in our own repos.
 
-**Solucion aplicada (03/09):** PAT clasico de Gonzo en el store de secrets (`GITHUB_PERSONAL_ACCESS_TOKEN`) + `secrets.egressProxy.enabled=true` + `allowedHosts=["api.github.com","github.com"]` en openclaw.json + restart del gateway. El proxy inyecta en exec de gateway: sentinel del secret, `HTTPS_PROXY`, `SSL_CERT_FILE`/`CURL_CA_BUNDLE`/`NODE_EXTRA_CA_CERTS` apuntando al CA efimero.
+**Solution applied (03/09):** Gonzo's classic PAT in the secrets store (`GITHUB_PERSONAL_ACCESS_TOKEN`) + `secrets.egressProxy.enabled=true` + `allowedHosts=["api.github.com","github.com"]` in openclaw.json + gateway restart. The proxy injects into gateway exec: secret sentinel, `HTTPS_PROXY`, `SSL_CERT_FILE`/`CURL_CA_BUNDLE`/`NODE_EXTRA_CA_CERTS` pointing to the ephemeral CA.
 
-**TLS gotcha (macOS):** `gh` (Go) y `git` (libcurl) NO respetan `SSL_CERT_FILE` en macOS - fallan con `x509: certificate is not trusted` / `SSL certificate problem` cuando el proxy esta activo.
-- API calls: usar `curl -sS https://api.github.com/...` (respeta el CA bundle del proxy) en vez de `gh api`.
-- Git push/pull: prefijar `GIT_SSL_CAINFO="$SSL_CERT_FILE"` (ej: `GIT_SSL_CAINFO="$SSL_CERT_FILE" git push`).
-- Verificar proxy activo: `echo $HTTPS_PROXY` y `echo $SSL_CERT_FILE` en exec de gateway (host=gateway).
+**TLS gotcha (macOS):** `gh` (Go) and `git` (libcurl) do NOT respect `SSL_CERT_FILE` on macOS - they fail with `x509: certificate is not trusted` / `SSL certificate problem` when the proxy is active.
+- API calls: use `curl -sS https://api.github.com/...` (respects the proxy CA bundle) instead of `gh api`.
+- Git push/pull: prefix `GIT_SSL_CAINFO="$SSL_CERT_FILE"` (e.g.: `GIT_SSL_CAINFO="$SSL_CERT_FILE" git push`).
+- Verify active proxy: `echo $HTTPS_PROXY` and `echo $SSL_CERT_FILE` in gateway exec (host=gateway).
 
 ## gh CLI: PRs
 
@@ -88,14 +88,14 @@ URLs work directly: `gh pr view https://github.com/owner/repo/pull/55`.
 
 ### ⚠️ Listing YOUR PRs across all repos (known gotcha)
 
-`gh pr list --author <user>` **sin `--repo` devuelve `[]` vacio** - el flag `--author` sin un repo concreto no itera sobre los repos del usuario. No es un fix que dependa del token ni del casing.
+`gh pr list --author <user>` **without `--repo` returns an empty `[]`** - the `--author` flag without a concrete repo does not iterate over the user's repos. It is not a fix that depends on the token or casing.
 
-**Formas que SI funcionan:**
-- Buscar el propio usuario: `gh api "search/issues?q=author:<user>+is:pr+is:open&per_page=100" --jq '.items[] | ...'` (la GitHub Search API, fuente confiable, devuelve todo).
-- Listar por repo trackeado: el script `skills/github/scripts/pr-batch-check.sh --mine-only` (usa `--repo` + `--author`, que si funciona).
-- Por repo puntual: `gh pr list --repo owner/repo --author <user> --state open`.
+**Forms that DO work:**
+- Search for the user themselves: `gh api "search/issues?q=author:<user>+is:pr+is:open&per_page=100" --jq '.items[] | ...'` (the GitHub Search API, a reliable source, returns everything).
+- List by tracked repo: the script `skills/github/scripts/pr-batch-check.sh --mine-only` (uses `--repo` + `--author`, which does work).
+- For a specific repo: `gh pr list --repo owner/repo --author <user> --state open`.
 
-**Regla:** para revisar el estado de TODOS los PRs OSS de Gonzo, usar la **Search API** (completa) o el script `pr-batch-check.sh --mine-only` (repos trackeados). Nunca `gh pr list --author` a secas.
+**Rule:** to review the status of ALL of Gonzo's OSS PRs, use the **Search API** (complete) or the script `pr-batch-check.sh --mine-only` (tracked repos). Never `gh pr list --author` by itself.
 
 ## gh CLI: Issues
 
@@ -161,9 +161,9 @@ gh api --cache 1h repos/owner/repo --jq '{stars: .stargazers_count, forks: .fork
 
 Use `--json` + `--jq` for structured output. Use `--body-file` for comments/bodies containing backticks, shell snippets, env names, or user text.
 
-### ⚠️ Referenced #NNNN puede ser una Discussion, no un Issue
+### ⚠️ Referenced #NNNN may be a Discussion, not an Issue
 
-Cuando un hilo referencia `#NNNN` y `gh api repos/owner/repo/issues/NNNN` devuelve 404, el numero probablemente es una **Discussion** (numeracion propia, no consultable por la issues API). Verificar con `curl -s -o /dev/null -w "%{http_code}" https://github.com/owner/repo/discussions/NNNN` (200 = discussion) o con la Search API. No asumir que el numero es un issue inexistente.
+When a thread references `#NNNN` and `gh api repos/owner/repo/issues/NNNN` returns 404, the number is probably a **Discussion** (its own numbering, not queryable through the issues API). Verify with `curl -s -o /dev/null -w "%{http_code}" https://github.com/owner/repo/discussions/NNNN` (200 = discussion) or with the Search API. Do not assume the number is a nonexistent issue.
 
 ## gh CLI: Comments & Reviews
 
@@ -205,14 +205,14 @@ gh api repos/owner/repo/pulls/55/comments -f body="Thanks, fixed!" -f in_reply_t
 
 ## Helper Scripts
 
-Scripts en `skills/github/scripts/`:
+Scripts in `skills/github/scripts/`:
 
-| Script | Uso |
+| Script | Usage |
 |---|---|
-| `pr-batch-check.sh [--json] [--mine-only]` | Lista PRs abiertos en repos trackeados. Con `--mine-only` filtra por el usuario autenticado. Usar para monitorear estado de contribuciones OSS. |
-| `github-mcp.py` | Wrapper del GitHub MCP server para operaciones avanzadas (security alerts, notifications, project boards). |
+| `pr-batch-check.sh [--json] [--mine-only]` | Lists open PRs in tracked repos. With `--mine-only` filters by the authenticated user. Use to monitor the status of OSS contributions. |
+| `github-mcp.py` | GitHub MCP server wrapper for advanced operations (security alerts, notifications, project boards). |
 
-Para triage de issues de un repo especifico, ver [oss-contribution/scripts/triage-issues.sh](../oss-contribution/scripts/triage-issues.sh).
+For issue triage of a specific repo, see [oss-contribution/scripts/triage-issues.sh](../oss-contribution/scripts/triage-issues.sh).
 
 ## Related
 

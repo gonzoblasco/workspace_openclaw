@@ -16,9 +16,10 @@ gh repo fork "$REPO" --clone --remote=false 2>&1 || {
   echo "⚠️  Fork may already exist, trying to clone..."
 }
 
-# Clone the fork
+# Clone the fork (resolve the authenticated user, never hardcode a handle)
+GH_USER=$(gh api user --jq '.login' 2>/dev/null || echo "")
 echo "📌 Cloning fork..."
-gh repo clone "gonzoblasco/$FORK_DIR" 2>/dev/null || {
+gh repo clone "${GH_USER:?Could not resolve the authenticated gh user}/$FORK_DIR" 2>/dev/null || {
   echo "⚠️  Fork not found, cloning original..."
   gh repo clone "$REPO"
 }

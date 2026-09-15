@@ -8,7 +8,7 @@
 set -euo pipefail
 
 # ── Config ──────────────────────────────────────────────────
-# Username del gh autenticado (override con --author <user>)
+# Authenticated gh username (override with --author <user>)
 AUTHOR="${GH_AUTHOR:-$(gh api user --jq '.login' 2>/dev/null || echo "$USER")}"
 OUTPUT_JSON=false
 MINE_ONLY=false

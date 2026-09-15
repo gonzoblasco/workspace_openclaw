@@ -115,12 +115,10 @@ for n in "${targets[@]}"; do
 done
 
 # --- Fase 3: sanitizar (solo apply) -------------------------------------------
+# Usa sanitize-skills.py: saca datos personales y proyectos internos, y PRESERVA
+# la marca Kanam y la identidad de instalacion del repo (gonzoblasco/kanam-skills).
 if [ "$MODE" = apply ]; then
-  while IFS= read -r f; do
-    [ -f "$f" ] || continue
-    perl -0pi -e 's/\bGonzo\b/the user/g; s/\bGonzalo\b/the user/g;
-                  s/\@gonzoblasco/\@user/g; s{/Users/gonzoblasco/}{/Users/user/}g;' "$f" 2>/dev/null || true
-  done < <(find "$DST" -type f \( -name '*.md' -o -name '*.sh' -o -name '*.py' -o -name '*.json' -o -name '*.yml' \) 2>/dev/null)
+  python3 "$WS/scripts/sanitize-skills.py" "$DST" || true
 fi
 
 # --- Fase 4: verificar (siempre) ----------------------------------------------
