@@ -1,7 +1,7 @@
 # STATUS - kanam-fixer
 
-**Actualizado:** 2026-09-15 (tarde)
-**Ciclo:** 0.0.1 **CERRADO**, con S3 en el ultimo tramo: falta UN permiso manual.
+**Actualizado:** 2026-09-15 (noche)
+**Ciclo:** 0.0.1 **CERRADO**. S3: workaround probado con el permiso de Gonzo, **no estabilizo**; se declara la limitacion (ver S3).
 
 ## Donde estamos
 
@@ -9,47 +9,52 @@
 |---|---|---|
 | S1 - Esqueleto y decisiones | **Completado** | Commit `6044856`. Terna en verde, hook activo. |
 | S2 - La asercion, solo virtual | **Completado** | Commit `fb931ea`. 7 tests. Criterio de salida verificado. |
-| S3 - VoiceOver real en local | **Workaround aplicado; falta 1 permiso manual** | Commit `2fc3d0d` (workaround). Avance: el error paso de `macOS version not supported` a `EPERM` de Full Disk Access (ver abajo). |
+| S3 - VoiceOver real en local | **Limitado: no verificable en esta maquina** | El plano real HABLO una vez (workaround + Full Disk Access de Gonzo), pero la suite no estabiliza. Detalle en S3. |
 | S4 - El caso testigo (#4109) | **Completado - NO reproduce** | Commit `5090278`. 8 tests. Hallazgo abajo. |
 | S5 - Cierre del ciclo | **Completado** | Commit `88ca9ff`. README con la evidencia + `HANDOFF.md`. |
 
 **Repo publico:** https://github.com/gonzoblasco/kanam-fixer (`2fc3d0d`). Verificado que `.knowledge/` no se filtra.
 **Terna:** 17 passed, 4 skipped (los 4 son el plano real, con su causa impresa).
 
-## S3: ESTADO ACTUALIZADO - workaround aplicado, falta un permiso de Gonzo
+## S3: workaround probado - el plano real hablo, la suite no estabilizo, se declara la limitacion
 
-### Que cambio (2026-09-15, tarde)
+### Que paso (2026-09-15, noche - intento acotado con el permiso de Gonzo)
 
-El bloqueo de arriba (asset de Darwin 27) tiene **workaround verificado**: el commit `2fc3d0d` parchea el `manifest.json` local (agrega `platformVersion 27` con el asset de macOS 26, que el issue #149 senala como compatible) e instala el DMG en el cache con SHA verificado. **No toca TCC ni SIP.** Idempotente: re-correr no rompe nada.
+El acuerdo fue: un intento acotado del workaround; si no estabilizaba, se abandona y se declara la limitacion. **Se abandona.**
 
-**El error avanzo de verdad.** La cadena completa de causes ahora es:
+**El Full Disk Access de Gonzo funciono:** el EPERM del mount de preferencias desaparecio (la cadena de `cause` dejo de mostrarlo).
+
+**El plano real HABLO en esta maquina:** con el workaround del manifest (`2fc3d0d`) + un parche local al `start.js` de Guidepup (fallback al binario actual + lanzamiento en background, espejando el setup oficial), el smoke capturo frase real:
 
 ```
-VoiceOver cannot be started
-  cause: Failed to mount Guidepup preferences
-  cause: EPERM: operation not permitted, symlink ... com.apple.VoiceOver4.portable.scrd
+RESULT: START OK
+RESULT: PHRASE | "VoiceOver Audio de VoiceOver cuadro de dialogo Audio de VoiceOver ..."
+RESULT: STOP OK
 ```
 
-Eso es TCC protegiendo el Group Container de VoiceOver: macOS impide el symlink de preferencias portables. **El unico paso que falta es manual de Gonzo:**
+**Pero la suite real no estabilizo.** Dos motivos medidos, el segundo es el que decide:
 
-> **System Settings -> Privacy & Security -> Full Disk Access -> agregar y tildar el proceso que ejecuta los tests (p.ej. Terminal).**
+1. **El `activate` de Guidepup es intermitente** en este SO: a mano da `rc=0`, dentro de node falla un porcentaje de corridas (`Unable to activate application: VoiceOver`). Timing del bridge de scripting, no permiso (los permisos dan otro codigo).
+2. **`readAnnouncements()` termina solo cuando el lector dice `end of document`** - el marcador que usa el plano virtual. El SO de Gonzo esta en espanol y el VoiceOver real nunca pronuncia esa frase: el bucle se va a MAX_STEPS (1000) y el test muere por timeout. Eso es un bug del arnes, no del driver: el criterio de fin de recorrido tiene que ser del plano, no una frase fija.
 
-Cuando se otorgue y corra `npm test`, los 4 skips deberian volverse tests reales y **S3 se cierra**. Despues queda marcar el cierre aca y en BRIEF (el workaround ya apunta al issue #149).
+### Decision (2026-09-15)
 
-### Contexto previo (para no re-descubrir)
+**S3 queda declarado como limitacion** (opcion 3 del plan): el plano real no es verificable en esta maquina hasta que Guidepup soporte Darwin 27 oficialmente. No se sigue parcheando: el workaround de `node_modules` no sobrevive a un `npm ci` y requiere re-aplicacion manual en cada entorno.
 
-El bloqueo original era: `screenReader.start()` fallaba con `VoiceOver cannot be started` ocultando `macOS version not supported` en el cause. Guidepup 0.34.0 no tenia asset para Darwin 27 (manifest: 21-25; main tampoco). Reportado en https://github.com/guidepup/guidepup/issues/149. Los permisos de VoiceOver Utility y AppleScript **funcionan** (verificado); el muro era el asset, y ahora es el Group Container.
+**Estado de la maquina al cerrar:** repos pristinos (`2fc3d0d`, working tree limpio, `npm ci` re-ejecutado), VoiceOver apagado, preferencia maestra en `0` y estable tras 24s de monitoreo, sin procesos de prueba. Los parches locales quedaron eliminados.
 
-### Lo que quedo construido (y sigue valido)
+### Que deja el intento (para quien retome)
 
-- **`ReaderDriver`**: contrato propio (ADR-0001). `virtualDriver` (CI) y `realDriver` (VoiceOver) lo implementan; **la misma asercion corre en los dos planos**.
-- **`expectAnnouncement(container, expected, { driver })`**: el driver es opcional; el default es el virtual.
-- **`realReaderAvailability()`**: arranca y para el lector una vez, para que el llamador pueda **saltear con la razon real** en vez de reportar un falso verde.
+- **El plano real FUNCIONA** en este hardware/SO con el parche minimo: la frase capturada es prueba de eso.
+- **El cierre de S3 necesita dos arreglos, ambos del arnes, no del driver:** (a) criterio de fin de recorrido por plano (no la frase fija `end of document`); (b) retry en `activate` o espera del bridge de scripting. Con eso, la suite real deberia correr.
+- **Reportado upstream:** https://github.com/guidepup/guidepup/issues/149 (sin respuesta al cierre de esta acta).
 
 ### Advertencias que siguen en pie
 
-- **No ejecutar `npx @guidepup/setup setup`**: escribe directo en TCC.db con lista de clientes ajena al proyecto. El workaround no lo necesita.
+- **No ejecutar `npx @guidepup/setup setup`**: escribe directo en TCC.db con lista de clientes ajena al proyecto.
 - **Nunca desactivar SIP** (verificado: sigue `enabled`).
+
+---
 
 ---
 
@@ -200,6 +205,6 @@ Estaba congelado esperando la evidencia de S4: si reproducia, se destrababa; si 
 4. ~~`a11y-playground`~~ **DECIDIDO (2026-09-15):** **archivado**. Verificado: `isArchived=true`, y era un scaffold vacio (1 commit, `size=0KB`, sin descripcion).
 5. ~~S5 - cierre del ciclo~~ **HECHO (2026-09-15):** ciclo cerrado con evidencia. Decision: **no abrir `0.0.2`** hasta que S3 se pueda cerrar. Ver "Proximo paso".
 
-**Abierto:** UN permiso manual de Gonzo (Full Disk Access al proceso que ejecuta los tests). Cuando se otorgue, `npm test` deberia cerrar S3: los 4 skips se vuelven tests reales. El workaround del asset ya esta aplicado y verificado (commit `2fc3d0d`, issue #149).
+**Abierto (2026-09-15, ultima iteracion):** S3 quedó declarado como **limitacion** en ADR-0002. El intento acotado probó que el plano real arranca y se detiene limpio en Darwin 27, pero la "frase real" capturada era el **dialogo del sistema de AirPlay**, no el contenido del fixture: VoiceOver anuncia contenido solo con una **aplicacion real enfocada**, y los tests corren sobre jsdom. El camino al plano real verificable pasa por **@guidepup/playwright** (browser real, ya declarado en S1) + criterio de fin de recorrido por plano + retry de activate. Ese fix queda como proximo paso coordinado, sin tocar esta maquina sin aviso.
 
 Seguimiento en la DB de memoria: todo id=54.
