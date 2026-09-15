@@ -6,6 +6,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - Todo #37: scripts spin-review cuarentenados (rojos desde 2026-08-30)
+
+### Changed
+- **5 scripts rotos movidos a `scripts/wip/`:** `spinreview.sh`, `hideak.sh`, `pre-push-hook.sh`, `daily-auto-archive.sh`, `session-template-generator.sh`. Los bugs documentados el 30/08 (HANDOFF) seguian presentes y fueron verificados: find -maxdepth 1 -name '*/' no matchea, jq malformado (comilla de mas), git log format invalido, date -d inexistente en BSD/macOS, overwrite de HANDOFF.md sin preguntar.
+
+### Notes
+- **Siguieron los 6 scripts del 30/08? No - 1 ya no existe:** `query-schema.mjs` no esta (el HANDOFF lo movio a /tmp como borrador y el cliente MCP real es el todo #38, separado).
+- **Decision cuarentenar, no reparar:** ninguno de los 5 esta cableado a hook, cron ni skill (verificado); son tooling muerto con bugs reales. Repararlos seria refactor sin consumidor. Todo #37 dice "reparar O cuarentenar"; frente a scripts sin uso, cuarentenar es lo de bajo riesgo.
+- **Skills no referencian los scripts movidos** (validacion: Script refs 53 OK).
+- Todo #37 -> done en la DB.
+
 ## [2026-09-15] - Deuda de entorno cerrada: npm test corre de un tiro
 
 ### Fixed
