@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-15] - kanam-fixer: repo público + pin del perfil pendiente (limitación de API)
+
+### Changed
+- **`gonzoblasco/kanam-fixer` - repo cambiado a PÚBLICO** (decisión de Gonzo, 2026-09-15). Descripción del repo ya poblada con el pitch real ("Asserts what a screen reader actually announces..."). Sin código todavía - el repo del proyecto se puebla en el slice S1.
+- **`projects/PROYECTOS.md`:** `kanam-fixer` pasa de `PRIV` a `pub`.
+
+### Notes
+- **El pin del perfil NO se puede cambiar por API.** Verificado contra el schema GraphQL de GitHub: las únicas mutations de pin son `pinEnvironment`, `pinIssue`, `pinIssueComment`, `unpinIssue` y `unpinIssueComment` - **no existe ninguna para pinnear repositorios**. Cambiar los pinned (quitar `a11y-fixer`, poner `kanam-fixer`) requiere hacerlo a mano en la UI del perfil. Estado actual de los 6 pinned: `create-stack`, `a11y-fixer`, `kanam-skills`, `kanam-forge`, `kanam-solitaires`, `kanam-story`.
+- **Decisión de Gonzo sobre el paquete npm:** se deja publicado a propósito, sin deprecar. Razón textual: "puede servir de entrada a alguien quien llegue a él por error". El paquete `@gonzoblasco/a11y-fixer@0.6.0` queda sin cambios (verificado: `deprecated: no`). Esto **cierra** el último pendiente de la enmienda ADR-001.
+
+---
+
 ## [2026-09-15] - Cierre de la enmienda ADR-001: a11y-fixer y a11y-playground archivados + kanam-fixer formalizado
 
 ### Changed
