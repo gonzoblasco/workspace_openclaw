@@ -1,6 +1,6 @@
-# Guerra de modelos - registro de batallas
+# Batallas - registro de kanam-lab
 
-> Exportado automáticamente desde kanam-lab el 2026-09-15 12:04.
+> Exportado automáticamente desde kanam-lab el 2026-09-15 12:18.
 > Cada batalla: dos modelos con el mismo prompt y el veredicto de un juez tercero.
 > 8 batallas en este registro.
 
