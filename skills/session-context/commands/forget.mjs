@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * session-context — forget.mjs
+ * session-context - forget.mjs
  * Remove a project, its sessions, decisions, and HANDOFF.md.
  */
 
@@ -32,7 +32,7 @@ db.prepare('DELETE FROM projects WHERE id = ?').run(id);
 try {
   rmSync(handoffPath(projectPath), { force: true });
 } catch (e) {
-  console.log(`session-context: could not remove HANDOFF.md — ${e.message}`);
+  console.log(`session-context: could not remove HANDOFF.md - ${e.message}`);
 }
 
 console.log(`✓ Context for '${name}' removed.`);
