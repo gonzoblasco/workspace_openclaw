@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-16] - Todo #34: politica de backup del gateway - respaldo git automatizado
+
+### Changed
+- **Backup local verificado** creado en `~/Backups/2026-09-16T09-53-59.695-03-00-openclaw-backup.tar.gz` (321M, `--verify` passed).
+  - Via que funciona (verificado en el intento): `openclaw backup create --no-include-workspace --verify`. El workspace ya esta cubierto por git; el primer intento SIN el flag fallo por un symlink absoluto en `projects/kanam-lab/.venv` (OpenClaw rechaza a proposito symlinks absolutos que escapan del root; los venvs son regenerables).
+- **Git backup automatizado**: repo inicializado en `~/Backups/openclaw-git` + schedule `openclaw backup enable --every 24h --agent main`. Commit de prueba `35edbcb` (`backup git create --all --exclude-secrets`).
+- **Politica definida (con datos, no teoria):**
+  - **Que:** estado/config/credenciales/SQLite de `~/.openclaw` (el workspace NO - ya vive en git via workspace_openclaw).
+  - **Como:** 2 vias complementarias - archivo tar.gz local (`backup create --no-include-workspace`, con `--verify`) + snapshots SQLite versionados en git (`backup git create --exclude-secrets`).
+  - **Cada cuanto:** schedule diario 24h (git backups) automatizado; archivo tar a demanda con `--verify`.
+  - **Donde:** `~/Backups/` (local, sin push remoto - bajo control de Gonzo).
+
+### Notes
+- El schedule `backup enable` provisiona un automation del gateway (no visible en el inventario restringido de esta sesion - confirmado por el CLI).
+- Todo #55 (backup local) ya estaba done; esto lo EXTENDIO con la via git versionada + automatizacion.
+
 ## [2026-09-15] - Todo #32: kanam-pulse core migrado de JS a TypeScript
 
 ### Changed
