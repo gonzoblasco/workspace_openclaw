@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-16] - Limpieza de la cola Kanam OS + todos 9 y 10 (#9/#10 done)
+
+### Changed
+- **Cola de todos depurada** (DB `memory.db`): fuera 2/3/4 (kanam-skills), #6 eliminado de verdad (kill, no marcado done), #27-30 + #36 olvidados, y los 4 OBSERVAR (17/22/24/25) quitados por pedido de Gonzo. Cola abierta reducida de 18 a 2: **#31 (re-cata de modelos) y #35 (envoltorio nativo kanam-pulse)**.
+- **#40 (kanam-studio world-building / Slice 5) -> done**: recon en repo real (clon en aislamiento) confirmo que el Slice 5 YA estaba implementado y superado (repo en v0.15.0, slices 5-6 + hitos 5/6/7 completos). No habia trabajo pendiente real; se cerro y se restauro el texto completo del todo.
+- **#9 (sandbox/) -> done**: carpeta `sandbox/` creada en la raiz del workspace; ya cubierta por `.gitignore` (linea 128-129) - verificada con `git check-ignore`.
+- **#10 (analizar github-workflow) -> done + mejora aplicada**: el plugin ya habia sido analizado (08-24) y sus risk signals portados a `github-pr-risk.sh`. Lo que faltaba (agrupacion de PRs) se anadio a `scripts/pr-dashboard.sh`: cada PR ahora trae `bucket` (draft/needs_review/stale/ok) + resumen `by_state`. Aditivo y compatible (no toca los campos existentes). Verificado real: 19 PRs open, by_state {needs_review:12, ok:2, stale:5}.
+
+### Notes
+- El clon de `kanam-studio` y `kanam-pulse` local en `projects/` estan corruptos (remote apunta a workspace_openclaw, solo .knowledge/); se trabajo sobre repos GIT de GitHub en aislamiento.
+- Residuo sin tocar (sesion paralela): ADR-048, dailies 09-15/16, MEMORY.md - no commiteados aqui.
+
 ## [2026-09-16] - Todo #34: politica de backup del gateway - respaldo git automatizado
 
 ### Changed

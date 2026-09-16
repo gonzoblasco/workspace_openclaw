@@ -46,6 +46,21 @@ OLDEST_DAYS=$(( (NOW_EPOCH - OLDEST_SECS) / 86400 ))
 # Stale: no activity in 14+ days
 STALE_COUNT=$(echo "$ENRICHED" | jq "[.[] | select((.updatedAt | fromdateiso8601) < $((NOW_EPOCH - 1209600)))] | length")
 
+# Bucket cada PR por estado (agrupacion portada del plugin github-workflow, aditivo)
+BUCKETED=$(echo "$ENRICHED" | jq --argjson now "$NOW_EPOCH" '
+  map(
+    . + { bucket: (
+      if .isDraft then "draft"
+      elif (.reviewDecision == "REVIEW_REQUIRED" or .reviewDecision == "CHANGES_REQUESTED") then "needs_review"
+      elif ((.updatedAt | fromdateiso8601) < ($now - 1209600)) then "stale"
+      else "ok" end
+    ) }
+  )
+')
+
+# Resumen por estado (count por bucket)
+BY_STATE=$(echo "$BUCKETED" | jq 'group_by(.bucket) | map({key: .[0].bucket, value: length}) | from_entries')
+
 # Build final output with clean shape
 jq -n \
   --argjson open_count "$OPEN_COUNT" \
@@ -55,5 +70,6 @@ jq -n \
   --argjson total_additions "$TOTAL_ADD" \
   --argjson total_deletions "$TOTAL_DEL" \
   --argjson oldest_days "$OLDEST_DAYS" \
-  --argjson prs "$ENRICHED" \
-  '{open_count: $open_count, review_count: $review_count, draft_count: $draft_count, stale_count: $stale_count, total_additions: $total_additions, total_deletions: $total_deletions, oldest_days: $oldest_days, prs: $prs}'
+  --argjson by_state "$BY_STATE" \
+  --argjson prs "$BUCKETED" \
+  '{open_count: $open_count, review_count: $review_count, draft_count: $draft_count, stale_count: $stale_count, total_additions: $total_additions, total_deletions: $total_deletions, oldest_days: $oldest_days, by_state: $by_state, prs: $prs}'
