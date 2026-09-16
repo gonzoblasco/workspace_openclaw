@@ -1,8 +1,8 @@
 # ROADMAP - kanam-fixer
 
-**Version objetivo del primer ciclo:** `0.0.1`
-**Estado:** propuesta (2026-09-14), pendiente de confirmacion de direccion
-**Regla del ciclo:** `0.0.1` no lleva features. **Prueba la apuesta.** Si la apuesta no se sostiene, se descarta antes de invertir mas.
+**Version objetivo del primer ciclo:** `0.0.1` (cerrado 2026-09-15)
+**Siguiente ciclo:** `0.0.2` - MCP companion server (abierto 2026-09-15, commit `f1f60fa`)
+**Estado:** 0.0.1 cerrado. La apuesta se sostiene parcial (atributos: si; timing: no). 0.0.2 expone la asercion a agentes IA via MCP mientras S3 espera upstream.
 
 ## La apuesta, en una frase
 

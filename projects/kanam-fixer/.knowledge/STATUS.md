@@ -1,7 +1,7 @@
 # STATUS - kanam-fixer
 
 **Actualizado:** 2026-09-15 (noche)
-**Ciclo:** 0.0.1 **CERRADO**. S3: workaround probado con el permiso de Gonzo, **no estabilizo**; se declara la limitacion (ver S3).
+**Ciclo:** 0.0.1 **CERRADO**. S3: workaround probado con el permiso de Gonzo, **no estabilizo**; se declara la limitacion (ver S3). 0.0.2 **ABIERTO** (2026-09-15): MCP companion server, commit `f1f60fa`.
 
 ## Donde estamos
 
@@ -176,9 +176,9 @@ En los tres casos freno un commit que no estaba limpio.
 
 ## Proximo paso
 
-**El ciclo 0.0.1 esta cerrado. No se abre `0.0.2` todavia.** La razon es concreta: el siguiente paso del proyecto depende de **S3**, y S3 depende de que Guidepup publique un asset de VoiceOver para Darwin 27. Invertir sobre la parte que resulto mas fragil, sin resolverla primero, es exactamente lo que el ciclo `0.0.1` existia para evitar.
+**Ciclo 0.0.2 ABIERTO (2026-09-15, noche):** el MCP companion server (ADR-0003, commit `f1f60fa`) expone `read_announcements` y `assert_announcement` a agentes IA via MCP/stdio, sobre el plano virtual (corre en cualquier host, sin browser). La decision de abrirlo: la sesion hermana cerro 0.0.1 hoy con S3 limitado; el companion destraba el valor de la asercion sin esperar a Guidepup y es demoable/CI-safe. **S3 sigue declarado como limitacion** y el camino real (Playwright coordinado + criterio de fin por plano) queda pendiente de coordenar con Gonzo, sin tocar esta maquina sin aviso. Ver `docs/adr/ADR-0003-mcp-companion-server.md`.
 
-### Cuando se destraba
+### Cuando se destraba S3
 
 | Evento | Que pasa |
 |---|---|

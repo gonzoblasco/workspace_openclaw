@@ -19,7 +19,7 @@
 | **kanam-solitaires** | Colección de solitarios PWA (Klondike, Spider, FreeCell, Pyramid). | pub | gonzoblasco/kanam-solitaires |
 | **soporteml** | CRM multi-tenant para ML sellers (v1). | pub | gonzoblasco/soporteml |
 | **soporteml-v4** | CRM multi-tenant para ML sellers (reinicio con diseño avanzado). | PRIV | gonzoblasco/soporteml-v4 |
-| **kanam-fixer** | Proyecto nuevo (2026-09-14), sucesor de `a11y-fixer`. Greenfield, no hereda su código. Alcance definido: aserción sobre el anuncio del lector de pantalla. Repo público creado 2026-09-15 (sin código aún). | pub | gonzoblasco/kanam-fixer |
+| **kanam-fixer** | Aserciones sobre el anuncio del lector de pantalla (no atributos), mismo contrato en dos planos: virtual (CI) y real (VoiceOver). Ciclo 0.0.1 cerrado 2026-09-15 (S3 limitado por upstream); ciclo 0.0.2: MCP companion server para agentes IA. | pub | gonzoblasco/kanam-fixer |
 | **quedamos** | App PWA de matching para salidas. | PRIV | gonzoblasco/quedamos |
 | **create-stack** | Scaffolder opinado Next.js. | pub | gonzoblasco/create-stack |
 | **ai-developer-stack** | Skills de ingeniería con IA. | pub | gonzoblasco/ai-developer-stack |

@@ -1,6 +1,6 @@
 # BRIEF - kanam-fixer
 
-**Estado:** S1 completado (2026-09-15). Esqueleto y tooling en pie, sin logica de a11y todavia. Repo publico: https://github.com/gonzoblasco/kanam-fixer (commit `6044856`).
+**Estado:** ciclo 0.0.1 cerrado (2026-09-15, limitacion S3 declarada); ciclo 0.0.2 abierto con el MCP companion server (commit `f1f60fa`). Repo publico: https://github.com/gonzoblasco/kanam-fixer.
 **Primer ciclo:** 0.0.1
 **Pilar:** Accesibilidad como diferenciador (ADR-001, seccion 6: candidato a ancla, alcance en definicion)
 **Sucede a:** `a11y-fixer` (archivado 2026-09-14). **No hereda su codigo ni su alcance.**
