@@ -497,6 +497,96 @@ El Batch 2 cambia **una cosa y solo una**, elegida segun lo que dijo la grilla. 
 
 ---
 
+## Capitulo 6 - El calendario del Batch 1
+
+> Estado: fechas y horas fijadas. Este capitulo no agrega teoria: convierte los capitulos 1, 2 y 3 en un calendario con horas reales. La unica variable que manda es el reloj de la heladera.
+
+### Decisiones nuevas de este capitulo
+
+| # | Decision | Razon | Fecha |
+|---|----------|-------|-------|
+| ADR-P22 | Arranque viernes 18/09 a las 12:30; frio a las 17:45 | Cierra las 48 h exactas el domingo 17:45, con el horno en la ventana del domingo a la tarde | 2026-09-17 |
+| ADR-P23 | Los recordatorios van al calendario del gateway, no a la memoria | Un proceso de 48 h no se sostiene con voluntad: a las 12:30 del viernes nadie se acuerda de la autolisis | 2026-09-17 |
+| ADR-P24 | La compra se hace la manana del viernes, antes del arranque | Sin harina de fuerza ni balanza en la mesada, el Dia 1 no empieza | 2026-09-17 |
+| ADR-P25 | Si el arranque se corre, se corre todo el bloque completo | Estirar la fermentacion a 50-60 h es otro experimento; el batch cambia dos variables y no ensena nada | 2026-09-17 |
+
+### La secuencia con horas
+
+**Viernes 18/09 - Dia 1 (compra + masa)**
+
+| Hora | Que | Senal de control |
+|------|-----|------------------|
+| Manana | Compra del Capitulo 2: harina de fuerza 12%+, tomate entero pelado, mozzarella en bloque, pepperoni, levadura seca, balanza | Etiqueta leida, no frente del paquete |
+| 12:30 | Autolisis: 500 g harina + 310 g agua fria, integrar sin amasar, tapar | Masa rugosa, fea, sin gluten |
+| 13:30 | Levadura 2,5 g espolvoreada, integrada con plegos 2-3 min | |
+| 13:35 | Sal 11 g disuelta en una cucharada de agua + 8 g de aceite, plegos | Nunca sal seca contra la levadura |
+| 13:40 | Amasado en mesa 10-12 min | Test de la ventana al final |
+| 13:55 | Fermentacion en bloque, tapada | |
+| ~14:55 | 4 plegos hacia el centro | |
+| ~16:30 | Test del puntero: dedo hundido 1 cm, vuelve lento en 2-3 s | Si colapsa, se paso; si vuelve rapido, falta |
+| 17:00 | Dividir en 2 bolas de ~415 g, formado tenso | Superficie lisa y con brillo |
+| **17:45** | **A la heladera. Arrancan las 48 h** | Contenedores tapados y con espacio (crece ~50%) |
+
+**Sabado 19/09 - dia muerto**
+
+No se toca nada. La heladera trabaja. Es el unico dia del proyecto en el que no hay nada que hacer, y es el dia en el que mas pasa.
+
+**Domingo 20/09 - Dia 3 (horneado + cata)**
+
+| Hora | Que | Senal de control |
+|------|-----|------------------|
+| **17:45** | **Salen las bolas. 48 h exactas.** Horno al maximo con la chapa en el tercio superior | Mano a 15 cm de la rejilla: calor fuerte en menos de 3 s |
+| 18:15 | Mise en place: salsa aplastada a mano, aceite de ajo reposado 10 min, mozzarella drenada 20-30 min, pepperoni contado | |
+| 18:35 | Armado pizza 1 sobre papel manteca con semola; manos, nunca palo; 2 cm de borde intactos | Disco de ~30 cm, centro de 3-4 mm |
+| 18:45 | Pizza 1 al horno | Hora anotada |
+| 18:50 | Inspeccion de fondo con espatula | Dorado, no palido |
+| 18:51 | Grill 1-2 min si el queso no se tosto | Manchas tostadas |
+| 18:53 | Salida a rejilla, 90 s, corte | Primera foto al corte transversal |
+| 18:55 | Cata tiempos 1 y 2, puntaje individual antes de comparar | Grilla del Capitulo 5 |
+| 19:10 | Pizza 2 al horno, con la correccion que pidio la pizza 1 | |
+| ~19:20 | Cata tiempo 3: el delta entre pizza 1 y pizza 2 | La primera medida real de aprendizaje |
+| Lunes 21/09 | Cata tiempo 4: la porcion fria | Evalua la retrogradacion del almidon (cadena 3) |
+
+### Recordatorios armados
+
+Tres avisos al calendario del gateway, todos apuntando a esta conversacion. No son eventos de calendario decorativos: son el mecanismo que hace que el bloque de 48 h exista.
+
+| Cuando | Aviso |
+|--------|-------|
+| Viernes 12:30 | Arranca la masa: autolisis, levadura, sal, amasado, bloque, bolas, heladera 17:45 |
+| Viernes 17:45 | Las 2 bolas a la heladera. Arrancan las 48 h |
+| Domingo 17:45 | Salen las bolas, horno al maximo, mise en place, pizza 1 a las 18:45 |
+
+Si una fecha no sirve, se mueve el bloque completo (ADR-P25). Los tres recordatorios se reajustan juntos, nunca uno solo.
+
+### Donde puede fallar el calendario
+
+| Riesgo | Que pasa | Que se hace |
+|--------|----------|-------------|
+| El arranque se atrasa 1 h | El frio entra 18:45 y sale el domingo con una hora menos de temperatura ambiente | Se corre la salida del domingo a 18:45 y el horno a 19:45. El bloque sigue intacto |
+| El arranque se atrasa de un dia | Serian 72 h de frio, no 48 | Es otro ADR: se anota como Batch 1-bis y se juzga como experimento distinto |
+| La fermentacion en bloque se pasa de 3 h | Masa acidificada, olor a vino | Se anota en el registro. Si el borde sale plano, ya esta mapeado en el mapa de rescate |
+| La compra no consigue harina 12%+ | Red debil para 48 h | Bajar a 24 h de frio y registrar la desviacion (el ADR-P1 no se reinterpreta: se registra el incumplimiento) |
+| Se olvida el horario del horno | Pizza con base palida, queso pasado | Mapa de rescate del Capitulo 2: completar en el piso del horno 1-2 min |
+
+### Checklist previo al arranque (viernes en la manana)
+
+- [ ] Compra completa del Capitulo 2
+- [ ] Balanza funcionando y con bateria
+- [ ] Harina pesada 500 g y agua 310 g separadas en dos bowls
+- [ ] Contenedores para las bolas limpios y secos
+- [ ] Heladera con espacio real en el estante del medio
+- [ ] Recordatorio de las 12:30 todavia activo
+
+### Pendiente de este capitulo
+
+- Hora real de inicio de autolisis: [---]
+- Hora real de entrada al frio: [---]
+- Horas reales de fermentacion fria: [---]
+- Hora real de salida del horno: [---]
+
+---
+
 ## Capitulos
 
 | Capitulo | Batch | Fecha | Veredicto |
@@ -507,4 +597,5 @@ El Batch 2 cambia **una cosa y solo una**, elegida segun lo que dijo la grilla. 
 | 3 | El guion de vuelo del Batch 1 | 2026-09-17 | Checklist tachable con senales de control |
 | 4 | El atlas molecular | 2026-09-17 | 8 cadenas moleculares atadas al protocolo |
 | 5 | La cata | 2026-09-17 | Criterios fijados antes de hornear |
-| 6 | Batch 1 | pendiente | Se escribe comiendo |
+| 6 | El calendario del Batch 1 | 2026-09-17 | Fechas y horas fijadas; 3 recordatorios armados |
+| 7 | Batch 1 | pendiente | Se escribe comiendo |
