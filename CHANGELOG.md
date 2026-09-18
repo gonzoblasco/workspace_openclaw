@@ -6,6 +6,16 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-18] - Limpieza de la raiz del workspace - deuda tecnica y reordenamiento
+
+### Changed
+- **Eliminados (recuperables via git history + Trash de macOS):** `useMemoryStream.ts` (duplicado del hook real en `projects/kanam-pulse/packages/web/src/hooks/`), `src/` (spike simulado de a11y-fixer: analyzer.ts + a11yHandler.ts; proyecto archivado), `scripts/wip/` (5 scripts completos pero sin ninguna referencia: spinreview, hideak, pre-push-hook, daily-auto-archive, session-template-generator), `.zcode/` (plan scratch de CLI externa), `.DS_Store`, `public/` (directorio vacio), `pipeline-state.json` (estado rancio de pipeline viejo, regenerable por `pipeline-track.sh`).
+- **Reubicados:** `kanam-lab/` (perfil del asistente creado en la sesion 2026-09-16, NO el proyecto Gradio) -> `docs/profiles/kanam-lab/` para eliminar la colision de nombre con `projects/kanam-lab`; `migration-spin-review-changes.md` -> `docs/pipeline/2026-08-30-spin-review-migration.md`; `docs/conversation_2026-09-16_kanam_lab.md` -> `docs/conversations/conversation_2026-09-16_kanam_lab_summary.md` (junto a su version full).
+
+### Notes
+- Verificado pre-movimiento: cero referencias a los paths eliminados/reubicados en AGENTS.md, docs/, skills/, scripts/, memory/.
+- Tests node del workspace: 3 PASS / 0 FAIL post-limpieza.
+
 ## [2026-09-16] - Limpieza de la cola Kanam OS + todos 9 y 10 (#9/#10 done)
 
 ### Changed
