@@ -1,43 +1,10 @@
 {
   "name": "workspace",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
-  },
-  "dependencies": {
-    "detect-libc": "^2.1.2",
-    "fdir": "^6.5.0",
-    "lightningcss": "^1.33.0",
-    "lightningcss-darwin-arm64": "^1.33.0",
-    "nanoid": "^3.3.19",
-    "picocolors": "^1.1.1",
-    "picomatch": "^4.0.7",
-    "postcss": "^8.5.28",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
-    "rolldown": "^1.2.9",
-    "scheduler": "^0.28.0",
-    "source-map-js": "^1.2.1",
-    "tinyglobby": "^0.2.17",
-    "vite": "^8.3.0"
-  },
-  "devDependencies": {},
+  "description": "OpenClaw workspace - skills, scripts and configuration",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No npm tests - use bats\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gonzoblasco/workspace_openclaw.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/gonzoblasco/workspace_openclaw/issues"
-  },
-  "homepage": "https://github.com/gonzoblasco/workspace_openclaw#readme"
+  "devDependencies": {}
 }
