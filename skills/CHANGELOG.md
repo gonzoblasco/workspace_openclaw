@@ -6,6 +6,16 @@ Registro de cambios de skills del workspace. Los cambios estructurales del works
 
 ---
 
+## [2026-09-22] - Nueva skill: engram-project-memory
+
+### Added
+- **`skills/engram-project-memory/SKILL.md`:** memoria persistente de proyecto para los agentes de pipeline (Qwen Code / Claude Code) via MCP de Engram. Documenta el protocolo: orientar antes de escribir (`mem_current_project`, `mem_context`, `mem_search`), cuando guardar con `mem_save` y su formato (What/Why/Where/Learned), topic_keys para temas que evolucionan, que nunca guardar (secrets, `.env`, output crudo de tools), handoff con `mem_session_summary` y recovery pos-compaction. Decision en ADR-052. Verificada end-to-end con `ollama launch qwen`.
+
+### Notes
+- Engram standalone v2.0.0 (`brew install gentleman-programming/tap/engram`), integrado con `engram setup qwen`. No se adopta Gentle-AI completo.
+
+---
+
 ## [2026-09-19] - Skill consolidation Phase 1: create + delete
 
 ### Added (consolidated skills)
