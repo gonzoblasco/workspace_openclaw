@@ -6,6 +6,23 @@ Registro de cambios de skills del workspace. Los cambios estructurales del works
 
 ---
 
+## [2026-09-22] - Limpieza: directorios huerfanos e indice sincronizado
+
+### Removed
+- **19 directorios vacios en `skills/`:** `ai`, `archive`, `automation`, `code`, `communication`, `data`, `devops`, `docs`, `document`, `graphics`, `infra`, `learning`, `operations`, `productivity`, `router.py` (directorio, no archivo), `search`, `security`, `session-context`, `test`. Todos con 0 archivos (ni `SKILL.md` ni `.gitkeep`); scaffolding de categorias que nunca se poblo. Timestamps 14:52-14:55 (19 de golpe), 18:42 (`archive`), 19:03 (`session-context`, fusionada a `session-lifecycle`). Borrados con `trash`. No estaban trackeados en git (git ignora dirs vacios).
+- **24 entradas stale en `SKILLS-INDEX.md`:** apuntaban a skills ya eliminadas en la reestructuracion previa.
+
+### Changed
+- **`SKILLS-INDEX.md`:** sincronizado contra `openclaw skills list --json` (fuente `openclaw-workspace`). Total real: **60 skills** (antes declaraba 82). Se documento `publish-skills`, que existia sin figurar.
+- **Mirror `.github/skills/`:** sincronizado (61 entradas, solo `_proposals` queda vacio por diseno: es el output de `scripts/post-task-reflection.sh`).
+
+### Notes
+- Verificacion de contaminacion entre fuentes: el workspace NO tiene skills mezcladas de OpenClaw. Comparadas por nombre contra bundled/custodian/plugin/workshop: la unica coincidencia es `github` (y es la propia, con metadata Kanam). Sin duplicados por contenido (md5 de los 159 `SKILL.md` del sistema).
+- **13 de las 24 stale siguen existiendo en `projects/kanam-skills/skills`** (repo publico, 70 skills). Ese es un estado distinto del workspace y no se toco.
+- `_proposals` se preservo: es dependencia viva de `scripts/post-task-reflection.sh --propose-skill`.
+
+---
+
 ## [2026-09-22] - Nueva skill: engram-project-memory
 
 ### Added
