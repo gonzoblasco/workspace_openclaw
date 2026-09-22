@@ -73,6 +73,5 @@ When workspace skill files are updated, they must be synchronized to the public 
 ## Related Skills
 
 - `skill-collection-maintenance` - monitors collection size limits.
-- `skill-workshop-proposals` - handles pending workshop updates before publishing.
 
 ---

@@ -46,9 +46,9 @@ Suggest which skill to apply to a task, using local matching (keyword + embeddin
 
 | Task | Top suggested skill |
 |---|---|
-| "review this code before merging" | code-review-and-quality |
+| "write and test a new feature" | incremental-implementation |
 | "set up a CI/CD pipeline" | ci-cd-and-automation |
-| "validate a component's accessibility before opening an OSS PR" | a11y-at-validation, oss-contribution |
+| "validate accessibility before opening an OSS PR" | a11y-at-validation |
 | "design a REST API for the module" | api-and-interface-design |
 
 ## Requirements
