@@ -141,4 +141,4 @@ Scripts in `skills/i18n-expert/scripts/`:
 
 # Related Skills
 
-- [Review & Quality](../code-review-and-quality): To review that there are no hardcoded strings
+

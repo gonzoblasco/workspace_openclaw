@@ -27,7 +27,7 @@ Tracks daily calorie and protein intake using a local SQLite database. Accepts f
 | Skill / Script | Usage |
 |---|---|
 | `sql-insight/scripts/sql_query_helper.py` | Query and analyze the SQLite calorie/weight history. |
-| `db-readonly` | Safe read-only queries against the local SQLite. |
+
 
 ## Notes
 - Everything local, no account or subscription

@@ -27,7 +27,7 @@ Terminal access to macOS Photos.app through direct queries to the Photos SQLite 
 | Skill / Script | Use |
 |---|---|
 | `sql-insight/scripts/sql_query_helper.py` | Optimize and audit SQLite queries against the Photos DB. |
-| `db-readonly` | Run safe read-only queries to the Photos SQLite if reports are needed. |
+
 
 ## Notes
 - Requires Full Disk Access for Terminal in System Settings > Privacy & Security

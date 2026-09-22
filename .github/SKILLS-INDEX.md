@@ -39,7 +39,7 @@
 | Skill | Descripción |
 |---|---|
 | [browser-testing-with-devtools](skills/browser-testing-with-devtools/) | Chrome DevTools MCP: DOM, console, network, performance en vivo |
-| [playwright-e2e-reactflow](skills/playwright-e2e-reactflow/) | Playwright E2E specs para editores React Flow (kanam-studio, kanam-story): patrones cuando programmatic state no drivea selection, controls overlay intercepta drags, o aria-label collisions rompen role locators |
+
 | [a11y-at-validation](skills/a11y-at-validation/) | Cuándo la validación manual de accesibilidad es OBLIGATORIA (no opcional) en OSS, y cómo ejecutarla y documentarla. Basado en casos reales (radix-ui #4109/#4110) |
 | [debugging-and-error-recovery](skills/debugging-and-error-recovery/) ⭐ | Triage de 5 pasos: reproduce, localize, reduce, fix, guard + logging forense + failure patterns. Fusiona: debug-agent, debug-investigation, failure-memory |
 
@@ -99,7 +99,7 @@
 | [workspace-portfolio-hygiene](skills/workspace-portfolio-hygiene/) | Audita/limpia/estructura projects/*: clasifica gitlinks vs blobs, respeta decisiones de ADR, archiva repos, promueve carpetas a doble git |
 | [supabase-assistant](skills/supabase-assistant/) | Interact with Supabase projects: schemas, queries, types, migrations |
 | [sql-insight](skills/sql-insight/) | Traducir lenguaje natural a SQL, optimizar queries, interpretar EXPLAIN |
-| [db-readonly](skills/db-readonly/) | Queries read-only seguras a PostgreSQL y MySQL |
+
 | [mcp-orchestrator](skills/mcp-orchestrator/) | Orquestación de MCP servers |
 
 ## Especializadas
@@ -107,7 +107,7 @@
 | Skill | Descripción |
 |---|---|
 | [i18n-expert](skills/i18n-expert/) | Internacionalización/localización: setup, auditoría, reemplazo de strings, paridad de locales |
-| [shortcuts-generator](skills/shortcuts-generator/) | Genera Shortcuts de Apple válidos desde lenguaje natural |
+
 | [support-response-writer](skills/support-response-writer/) | Respuestas profesionales de customer support |
 | [deepwiki](skills/deepwiki/) | Consulta documentación de repos GitHub via DeepWiki MCP |
 | [tech-docs](skills/tech-docs/) | Documentación técnica: ADRs, README, API docs, CHANGELOG, guías |
@@ -119,7 +119,7 @@
 | Skill | Descripción |
 |---|---|
 | [clawdstrike](skills/clawdstrike/) | Security audit del gateway OpenClaw |
-| [network-scanner](skills/network-scanner/) | Escáner de red local para descubrir dispositivos |
+
 
 ## Carrera y Crecimiento
 

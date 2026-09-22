@@ -77,6 +77,15 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
   - `docs/OSS-TRACKER.md` ← tabla contributions
 - **Dailies:** viven en `memory/YYYY-MM-DD.md`; los viejos se archivan a la DB + `memory/archive/`.
 
+### Engram (memoria de proyecto para agentes, 2026-09-22)
+
+- **Binario:** `engram 2.0.0` (brew install gentleman-programming/tap/engram). Store: `~/.engram/engram.db`. Config Qwen: `~/.qwen/settings.json` (mcpServers.engram) + `~/.qwen/QWEN.md` (protocolo con markers).
+- **Proposito:** memoria persistente para agentes del pipeline A/B (Qwen Code) que hoy arrancan de cero. Kanam usa `memory.db` (personal); Engram es memoria **de proyecto** compartida via MCP.
+- **Nunca en Engram:** secrets, `.env`, tokens, datos personales, output crudo de tools.
+- **Politica sync:** workspace NUNCA commitea `.engram/`; proyectos con equipo decide por ADR.
+- **Comandos:** `engram doctor` (health check), `engram search`, `engram tui`, `engram projects list`.
+- **Skill:** proposal `engram-project-memory-20260922-aebbba7411` pendiente de apply.
+
 ## Red / remoto
 
 - **Webchat remoto:** Tailscale Serve + PWA en iPhone. No hay app nativa iOS. Device pairing necesario la primera vez.

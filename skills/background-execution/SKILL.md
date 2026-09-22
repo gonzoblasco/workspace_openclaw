@@ -269,4 +269,4 @@ When a background task modifies skill scripts of the workspace, run `npm test` b
 
 - [Task Execution](../planning-and-task-breakdown): For the full task workflow
 - [Session Lifecycle](../session-lifecycle): For handoffs and session saving
-- [Debug Investigation](../debugging-and-error-recovery): For debugging failing processes
+

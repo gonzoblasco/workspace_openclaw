@@ -1,8 +1,13 @@
+---
+name: "design-cycle"
+description: "Design iteration workflow for UI/UX"
+---
+
 # Design Cycle Skill
 
 ## Propósito
 
-Formalizar el proceso de **generar → iterar → justificar** que utilizamos en los entrenamientos de diseño UI/UX (kanam‑lab). La skill permite reproducir el flujo de forma consistente y registrar evidencia de cada paso.
+Formalizar el proceso de **generar - iterar - justificar** que utilizamos en los entrenamientos de diseno UI/UX (kanam-lab). La skill permite reproducir el flujo de forma consistente y registrar evidencia de cada paso.
 
 ## Paso a paso
 
@@ -22,8 +27,8 @@ design-cycle/
 
 ## Integración en el workflow
 
-* **CLI** – `kanam skill run design-cycle` crea la estructura y abre el editor de `design-iteration.md`.
-* **Automatización** – al marcar la skill como *completed* en `progress_card`, `publish-skills.sh` la incluye automáticamente en el repositorio público.
+* **CLI** - `kanam skill run design-cycle` crea la estructura y abre el editor de `design-iteration.md`.
+* **Automatizacion** - al marcar la skill como *completed* en `progress_card`, `publish-skills.sh` la incluye automaticamente en el repositorio publico.
 
 ## Criterios de aceptación
 

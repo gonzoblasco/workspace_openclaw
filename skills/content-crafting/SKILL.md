@@ -1,4 +1,9 @@
-# Content Crafting — Skill
+---
+name: "content-crafting"
+description: "Writing, editing, and polishing all text content"
+---
+
+# Content Crafting - Skill
 
 ## Scope & Capabilities
 - Writing, editing, and polishing all text content
@@ -7,13 +12,13 @@
 - Content validation against style guides and audience expectations
 
 ## Key Principles
-- **Clarity over cleverness** — every sentence must serve the reader.
-- **Audience-aware** — adapt language, depth, and format to the audience.
-- **Iterative refinement** — draft → review → polish cycle.
+- **Clarity over cleverness** - every sentence must serve the reader.
+- **Audience-aware** - adapt language, depth, and format to the audience.
+- **Iterative refinement** - draft - review - polish cycle.
 
 ## Boundary Constraints
 - Do not generate images or audio files; focus on text content.
-- Always maintain factual accuracy — no hallucinated sources.
+- Always maintain factual accuracy - no hallucinated sources.
 
 ## Sub-skills / Related Skills
 - `copy-editing` (merged)

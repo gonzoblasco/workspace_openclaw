@@ -18,9 +18,9 @@ user-invocable: true
 
 When workspace skill files are updated, they must be synchronized to the public `kanam-skills` repository. This skill automates the process, ensuring:
 
-1. **Sanitization** – personal data and internal project references are removed (via `scripts/sanitize-skills.py`).
-2. **Verification** – no remaining personal references, em‑/en‑dashes, or missing `SKILL.md` files.
-3. **Controlled publishing** – optional allow‑list for new skills and explicit confirmation before committing.
+1. **Sanitization** - personal data and internal project references are removed (via `scripts/sanitize-skills.py`).
+2. **Verification** - no remaining personal references, em/en-dashes, or missing `SKILL.md` files.
+3. **Controlled publishing** - optional allow-list for new skills and explicit confirmation before committing.
 
 ## When to use
 
@@ -30,7 +30,7 @@ When workspace skill files are updated, they must be synchronized to the public 
 
 ## Procedure
 
-1. **Dry‑run check** (no changes written):
+1. **Dry-run check** (no changes written):
    ```bash
    cd $WORKSPACE/skills
    ./scripts/publish-skills.sh --check
@@ -43,10 +43,10 @@ When workspace skill files are updated, they must be synchronized to the public 
      ```
    - To add new skills (must be allowed explicitly):
      ```bash
-     ./scripts/publish-skills.sh --apply --only skill‑a,skill‑b --new
+     ./scripts/publish-skills.sh --apply --only skill-a,skill-b --new
      ```
    *Never run `--apply` without `--only` for new skills; the script aborts otherwise.*
-3. **Sanitization verification** – the script runs `scripts/sanitize-skills.py` automatically. After it finishes, run:
+3. **Sanitization verification** - the script runs `scripts/sanitize-skills.py` automatically. After it finishes, run:
    ```bash
    ./scripts/check_em_dash.py
    ```
@@ -67,12 +67,12 @@ When workspace skill files are updated, they must be synchronized to the public 
 
 - **Do not publish** if the `--check` output shows personal data, internal project names, or missing `SKILL.md` files.
 - **Only allow new skills** when the operator explicitly approves the list via `--only … --new`.
-- **Abort** on any non‑zero exit code from `scripts/check_em_dash.py`.
+- **Abort** on any non-zero exit code from `scripts/check_em_dash.py`.
 - **Rollback**: if after pushing a mistake is discovered, revert the commit with `git revert <hash>` and re‑run the skill after fixing the issue.
 
 ## Related Skills
 
-- `skill-collection-maintenance` – monitors collection size limits.
-- `skill-workshop-proposals` – handles pending workshop updates before publishing.
+- `skill-collection-maintenance` - monitors collection size limits.
+- `skill-workshop-proposals` - handles pending workshop updates before publishing.
 
 ---
