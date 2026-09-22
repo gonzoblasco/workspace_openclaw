@@ -1,6 +1,7 @@
 ---
 name: "technical-book-processor"
 description: "Process technical books chapter by chapter: extract learnings, formalize ADRs, implement exercises, commit atomically"
+disable-model-invocation: true
 ---
 
 # Technical Book Processor

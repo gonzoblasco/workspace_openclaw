@@ -6,6 +6,33 @@ Registro de cambios de skills del workspace. Los cambios estructurales del works
 
 ---
 
+## [2026-09-22] - Curación del catálogo: presupuesto del prompt (47k -> 17.7k chars)
+
+### Contexto
+El catálogo de skills visible al modelo excedía el presupuesto del prompt en ~2.9x. Evidencia: 126 visibles, ~47.473 chars contra el límite real de 18.000 (`DEFAULT_MAX_SKILLS_PROMPT_CHARS` en `dist/skill-prompt-limits-*.mjs`). El banner del propio prompt lo confirmaba: "included 117 of 126 (compact format, descriptions omitted)". Fuente primaria: [arXiv 2605.24050](https://arxiv.org/abs/2605.24050), "skill shadowing" degrada hasta 21 puntos de pass-rate; el costo de contexto es indistinguible de cero.
+
+### Changed
+- **26 skills del workspace ocultas del prompt** con `disable-model-invocation: true`: sin uso registrado en 2 semanas Y con más de 3 días de antigüedad. Siguen invocables con `$nombre`. Incluye las del bloque de ingeniería de Addy Osmani (api-and-interface-design, ci-cd-and-automation, context-engineering, doubt-driven-development, security-and-hardening, shipping-and-launch, etc.).
+- **31 skills del workshop ocultas** por el mismo criterio.
+- **11 descripciones compactadas** preservando triggers (468 -> 200 chars la más larga).
+
+### Added
+- **18 overrides en `~/.openclaw/skills/`** (managed dir) para ocultar skills bundled/custodian de OpenClaw sin editar el install: `clawhub`, `cloud-image-bake`, `configure-channel`, `control-ui`, `diagram-maker`, `gh-issues`, `healthcheck`, `meme-maker`, `node-connect`, `node-inspect-debugger`, `notion`, `python-debugpy`, `spike`, `taskflow`, `taskflow-inbox-triage`, `visualize`, `weather`. El managed dir tiene precedencia sobre bundled, así que el override no se pierde en updates.
+
+### Removed
+- **Duplicado `engram-project-memory` en el workshop** (existía en workspace y workshop con contenido distinto; el de git es el canónico).
+
+### Resultado
+- Visibles: **126 -> 53**. Presupuesto: **47.473 -> 17.713 chars** (dentro de 18.000).
+- Ninguna skill perdió invocabilidad: las 74 ocultas conservan `commandVisible`/`userInvocable`, salvo las que ya lo tenían en `false` por diseño propio.
+
+### Notes
+- Backup completo del workshop: `~/.openclaw/backups/workshop-skills-20260922-2041`.
+- Fuente de uso: tabla `skill_usage` en `~/.openclaw/state/openclaw.sqlite` (65 filas, tracking desde 2026-09-08).
+- Lección: NO editar archivos bundled/custodian de OpenClaw (se sobrescriben en updates). Para ocultarlos, usar el managed dir `~/.openclaw/skills/`.
+
+---
+
 ## [2026-09-22] - Limpieza: directorios huerfanos e indice sincronizado
 
 ### Removed

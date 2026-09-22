@@ -8,6 +8,7 @@ metadata:
     - web
 description: "Effective search by intent: pick the strategy and tools based on the kind of search (research, keyword, answer, news) and fuse sources. Adapted to web_search + web_fetch + browser."
 user-invocable: false
+disable-model-invocation: true
 ---
 
 # Search Fusion

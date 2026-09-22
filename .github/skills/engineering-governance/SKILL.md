@@ -8,6 +8,7 @@ metadata:
     - continuous-improvement
 description: "Engineering Governance workflow: continuous evolution of the AI Engineering OS. Audits workflows, consolidates learnings, removes duplication and proposes systemic improvements."
 user-invocable: false
+disable-model-invocation: true
 ---
 
 # Workflow: Engineering Governance

@@ -9,6 +9,7 @@ metadata:
     - memoria
 description: "Compactacion de contexto con conciencia de dominio: usa tiers de prioridad (Tier 0-4) para decidir que preservar al compactar una sesion. Preserva ADRs, arquitectura, API contracts y seguridad (Tier 0) y descarta ruido (Tier 4). Portado del concepto DomainAwareCompaction (ClawHub)."
 user-invocable: false
+disable-model-invocation: true
 ---
 
 # Compaction Domain-Aware

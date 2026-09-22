@@ -8,6 +8,7 @@ metadata:
     - orquestacion
 description: "Orquestacion complexity-first: scorer de complejidad antes de spawnear agentes A/B. Decide modelo, thinking level y profundidad de pipeline."
 user-invocable: false
+disable-model-invocation: true
 ---
 
 # complexity-driven-pipeline

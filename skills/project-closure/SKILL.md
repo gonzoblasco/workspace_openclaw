@@ -8,6 +8,7 @@ metadata:
     - adr
 description: "Complete project closure: capture the decision, the learning and the state in ADR + DB + skill. Reproducible with a script."
 user-invocable: false
+disable-model-invocation: true
 ---
 
 # project-closure

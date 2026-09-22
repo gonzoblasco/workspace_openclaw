@@ -6,6 +6,50 @@ Registro de cambios de skills del workspace. Los cambios estructurales del works
 
 ---
 
+## [2026-09-22] - Curación del catálogo: presupuesto del prompt (47k -> 17.7k chars)
+
+### Contexto
+El catálogo de skills visible al modelo excedía el presupuesto del prompt en ~2.9x. Evidencia: 126 visibles, ~47.473 chars contra el límite real de 18.000 (`DEFAULT_MAX_SKILLS_PROMPT_CHARS` en `dist/skill-prompt-limits-*.mjs`). El banner del propio prompt lo confirmaba: "included 117 of 126 (compact format, descriptions omitted)". Fuente primaria: [arXiv 2605.24050](https://arxiv.org/abs/2605.24050), "skill shadowing" degrada hasta 21 puntos de pass-rate; el costo de contexto es indistinguible de cero.
+
+### Changed
+- **26 skills del workspace ocultas del prompt** con `disable-model-invocation: true`: sin uso registrado en 2 semanas Y con más de 3 días de antigüedad. Siguen invocables con `$nombre`. Incluye las del bloque de ingeniería de Addy Osmani (api-and-interface-design, ci-cd-and-automation, context-engineering, doubt-driven-development, security-and-hardening, shipping-and-launch, etc.).
+- **31 skills del workshop ocultas** por el mismo criterio.
+- **11 descripciones compactadas** preservando triggers (468 -> 200 chars la más larga).
+
+### Added
+- **18 overrides en `~/.openclaw/skills/`** (managed dir) para ocultar skills bundled/custodian de OpenClaw sin editar el install: `clawhub`, `cloud-image-bake`, `configure-channel`, `control-ui`, `diagram-maker`, `gh-issues`, `healthcheck`, `meme-maker`, `node-connect`, `node-inspect-debugger`, `notion`, `python-debugpy`, `spike`, `taskflow`, `taskflow-inbox-triage`, `visualize`, `weather`. El managed dir tiene precedencia sobre bundled, así que el override no se pierde en updates.
+
+### Removed
+- **Duplicado `engram-project-memory` en el workshop** (existía en workspace y workshop con contenido distinto; el de git es el canónico).
+
+### Resultado
+- Visibles: **126 -> 53**. Presupuesto: **47.473 -> 17.713 chars** (dentro de 18.000).
+- Ninguna skill perdió invocabilidad: las 74 ocultas conservan `commandVisible`/`userInvocable`, salvo las que ya lo tenían en `false` por diseño propio.
+
+### Notes
+- Backup completo del workshop: `~/.openclaw/backups/workshop-skills-20260922-2041`.
+- Fuente de uso: tabla `skill_usage` en `~/.openclaw/state/openclaw.sqlite` (65 filas, tracking desde 2026-09-08).
+- Lección: NO editar archivos bundled/custodian de OpenClaw (se sobrescriben en updates). Para ocultarlos, usar el managed dir `~/.openclaw/skills/`.
+
+---
+
+## [2026-09-22] - Limpieza: directorios huerfanos e indice sincronizado
+
+### Removed
+- **19 directorios vacios en `skills/`:** `ai`, `archive`, `automation`, `code`, `communication`, `data`, `devops`, `docs`, `document`, `graphics`, `infra`, `learning`, `operations`, `productivity`, `router.py` (directorio, no archivo), `search`, `security`, `session-context`, `test`. Todos con 0 archivos (ni `SKILL.md` ni `.gitkeep`); scaffolding de categorias que nunca se poblo. Timestamps 14:52-14:55 (19 de golpe), 18:42 (`archive`), 19:03 (`session-context`, fusionada a `session-lifecycle`). Borrados con `trash`. No estaban trackeados en git (git ignora dirs vacios).
+- **24 entradas stale en `SKILLS-INDEX.md`:** apuntaban a skills ya eliminadas en la reestructuracion previa.
+
+### Changed
+- **`SKILLS-INDEX.md`:** sincronizado contra `openclaw skills list --json` (fuente `openclaw-workspace`). Total real: **60 skills** (antes declaraba 82). Se documento `publish-skills`, que existia sin figurar.
+- **Mirror `.github/skills/`:** sincronizado (61 entradas, solo `_proposals` queda vacio por diseno: es el output de `scripts/post-task-reflection.sh`).
+
+### Notes
+- Verificacion de contaminacion entre fuentes: el workspace NO tiene skills mezcladas de OpenClaw. Comparadas por nombre contra bundled/custodian/plugin/workshop: la unica coincidencia es `github` (y es la propia, con metadata Kanam). Sin duplicados por contenido (md5 de los 159 `SKILL.md` del sistema).
+- **13 de las 24 stale siguen existiendo en `projects/kanam-skills/skills`** (repo publico, 70 skills). Ese es un estado distinto del workspace y no se toco.
+- `_proposals` se preservo: es dependencia viva de `scripts/post-task-reflection.sh --propose-skill`.
+
+---
+
 ## [2026-09-22] - Nueva skill: engram-project-memory
 
 ### Added

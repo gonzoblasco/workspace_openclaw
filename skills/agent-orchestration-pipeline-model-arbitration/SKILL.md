@@ -1,6 +1,7 @@
 ---
 name: "agent-orchestration-pipeline-model-arbitration"
 description: "Elegir el modelo de Ollama Cloud para cada paso del pipeline A/B: default, escalada y nivel superior, segun costo y calidad."
+disable-model-invocation: true
 ---
 
 # Arbitraje de modelo en Agent Orchestration Pipeline

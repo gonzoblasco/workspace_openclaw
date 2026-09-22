@@ -6,7 +6,7 @@ metadata:
     - skills
     - routing
     - selection
-description: "Suggests which skill to use for a given task. Given a prompt or objective, it matches against the available skills (by keywords and local semantic embeddings) and returns the top suggestions. Use when starting a task to know which skill applies."
+description: "Suggests which skill applies to a given task: matches a prompt or objective against the available skills (keywords + local semantic embeddings) and returns the top suggestions."
 user-invocable: false
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: planning-and-task-breakdown
 description: Decomposes specs into small, verifiable tasks with acceptance criteria and dependency ordering. Integrates timeline estimation from builder patterns and GitHub issue planning. Use when you have a spec or clear requirements and need to break work into implementable tasks - or when a task feels too large/vague to start.
+disable-model-invocation: true
 ---
 
 # Planning and Task Breakdown: From Spec to Actionable Units

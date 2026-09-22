@@ -1,6 +1,7 @@
 ---
 name: spec-driven-development
 description: Creates comprehensive specifications before any code is written. Integrates OpenSpec generation, build scaffolding from specs, documentation artifacts, and requirements traceability. Use when starting new projects/features with ambiguous/vague requirements or when no specification exists yet - NOT for single-line fixes or typo corrections.
+disable-model-invocation: true
 ---
 
 # Spec-Driven Development: Build from Specification, Not Guessing

@@ -1,6 +1,7 @@
 ---
 name: "workspace-portfolio-hygiene"
 description: "Auditar projects/* por limpieza: decidir que archivar, promover una carpeta a proyecto double-git, y limpiar restos de git (.DS_Store, symlinks rotos, gitlinks)."
+disable-model-invocation: true
 ---
 
 # Workspace portfolio hygiene

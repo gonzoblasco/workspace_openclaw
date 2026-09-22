@@ -13,6 +13,7 @@ allowed-tools:
   - file_write
   - file_fetch
   - skill_workshop
+disable-model-invocation: true
 ---
 
 # Supabase Assistant

@@ -1,6 +1,6 @@
 ---
 name: "model-cata"
-description: "Ritual para comparar modelos LLM del sistema con un mismo prompt pesado, rubrica de analisis critico y decision de motor/especialistas documentada en ADR. Cuando el motor genera CODIGO, se agrega cata de tests ejecutables (suite oculta, pass/fail objetivo)."
+description: "Ritual para comparar modelos LLM con un mismo prompt pesado, rubrica de analisis critico y decision de motor documentada en ADR. Si el motor genera codigo, cata de tests ejecutables (suite oculta, pass/fail objetivo)."
 ---
 
 # Skill: model-cata - Comparacion formal de modelos LLM
