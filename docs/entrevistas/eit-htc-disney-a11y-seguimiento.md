@@ -278,6 +278,7 @@ La certificacion **IAAP** sigue en Preferred, no Required. Si el payroll team la
 
 PROFESSIONAL SUMMARY | SKILLS | PROFESSIONAL EXPERIENCE | CERTIFICATIONS | SELECTED PROJECTS | OSS PARTICIPATIONS (Merged PRs + Contributions)
 
+<<<<<<< HEAD
 ## 2026-09-15 (12:22-13:33) - IAAP certification: respuesta al cliente + plan de estudio
 
 **Disparador:** el cliente pregunto por (1) certificaciones y CEUs mas recientes, (2) si hay plan de rendir IAAP, (3) para cuando la completa. Envia Parthasarathy, responde Gonzo.
@@ -306,3 +307,60 @@ Email en ingles (subject "IAAP Certification - Status and Plan"), verificado sin
 - Email entregado, **pendiente de revision/aprobacion de Gonzo** antes de enviar.
 - Si el cliente sponsoriza: pedir examen + membresia IAAP + curso en un mismo paquete (renovable gratis de por vida = argumento facil de vender).
 - **Riesgo IAAP (Preferred) ahora mitigado activamente** con el plan; seguir vigilando si payroll lo pone como gate.
+=======
+---
+
+## UPDATE 2026-09-17 - Gate de certificacion IAAP: el cliente pide CPACC
+
+**Entrante (Parthasarathy, 17/09):**
+
+> Hi Gonzalo,
+>
+> We got an update from client as below :
+>
+> Disney / HTC is not going to sponsor certifications expenses. Let us know you can complete any one IAAP certification by 30th November 2026 to proceed further.
+>
+> Or else let us know how soon you can complete
+
+**Lectura:** el gate de IAAP dejo de ser "preferred" y paso a ser condicion para avanzar. Gonzo tiene entendido que la que piden es **CPACC**. El costo lo cubre Gonzo (Disney/HTC no lo sponsorea) - **no se discute el costo con el cliente, no se menciona**.
+
+**Respuesta enviada por Gonzo (17/09, email - texto exacto):**
+
+> Hi ,
+>
+> Thanks for the update. I can have the IAAP CPACC certification by 31 December and will aim to obtain it earlier, by 30 November.
+>
+> Please let me know if this timeline works for you and what documentation you need from me to move forward with the contract.
+>
+> Best regards,
+>
+> Gonzalo Blasco
+
+**Nota de Kanam:** el email salio sin el nombre del reclutador ("Hi ,"). Gonzo ya lo habia enviado - no se corrige, se registra. Decidio no incluir el motivo del plazo en el email; el detalle (inscripcion cerrada) va por LinkedIn si hace falta.
+
+### Ventanas de examen IAAP (investigado 2026-09-17)
+
+Fuente: IAAP D-A-CH, espejo del calendario de IAAP Global - `iaap-dach.de/zertifizierungen/pruefungszeitraeume.html`
+
+| Ventana | Fechas de examen | Abre inscripcion | Cierra inscripcion | Deadline scheduling |
+|---|---|---|---|---|
+| Sep/Oct 2026 | 16/09 - 14/10 | 02/09 | **16/09 17:00 EDT - CERRADA** | 05/10 |
+| **Nov/Dec 2026** | **12/11 - 09/12** | **28/10** | **12/11 17:00 EDT** | **30/11** |
+| Ene/Feb 2027 | (sin publicar) | - | - | - |
+
+- **Resultados de la ventana Nov/Dec 2026:** se envian entre el **6 y el 20 de enero de 2027**.
+- **Riesgo de la promesa del 31/12:** con la ventana Nov/Dec, el examen se puede rendir desde el 12/11, pero el **resultado oficial no llega antes de enero**. Si el cliente exige resultado emitido, el 31/12 no es alcanzable; si acepta "examen rendido", si.
+- **Pendiente de verificar:** que el calendario de IAAP Global (/US) sea identico al de D-A-CH, y que criterio aplica el cliente (rendido vs emitido).
+
+### Borrador LinkedIn (17/09)
+
+> Hi Parthasarathy,
+>
+> Quick note on the certification timeline. The IAAP application window for the current exam period closed on 16 September, which is why I could not give you a firm date earlier. The next window opens in late October and I plan to apply as soon as it does, with the exam in the November/December period.
+>
+> I will confirm the exact date with you as soon as my application is submitted. Let me know if you need anything else from me in the meantime.
+>
+> Best regards,
+>
+> Gonzalo
+>>>>>>> 29bddae8 (daily update: automatic commit before pull)
