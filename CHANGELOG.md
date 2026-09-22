@@ -6,6 +6,25 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-22] - Nuevo proyecto: langchain-starter (RAG + API + LaunchAgent)
+
+### Added
+- **`projects/langchain-starter/`:** proyecto Python nuevo, integracion LangChain completa en 4 fases (estrategia en `LANGCHAIN_STRATEGY.md`):
+  - Fase 1: venv + Hello World via Ollama (`gemma4:cloud`, `langchain-ollama`).
+  - Fase 2: RAG - `scripts/ingest.py` (chunking semantico), embeddings `qwen3-embedding:0.6b` (1024d), ChromaDB local (`config/chroma_db/`), `scripts/query.py` cadena RAG con respuesta restringida a contexto.
+  - Fase 3: `app/api.py` FastAPI - `/health`, `/chat` (streaming), `/ingest`; docs en `/docs`.
+  - Fase 4: `scripts/agent.py` agente ReAct con tool-calling (LangGraph: `search_knowledge` + `word_count`), `scripts/service.sh` + LaunchAgent `dev.gonzoblasco.langchain-starter` en `~/Library/LaunchAgents/` (KeepAlive, RunAtLoad, auto-restart verificado), automation OpenClaw `langchain-starter-health-watch` (cada 15m).
+- **`projects/langchain-starter/Dockerfile`:** escrito para futuro, NO desplegado (decision: LaunchAgent nativo para Mac Mini).
+- **`app/config.py`:** configuracion centralizada via env vars (OLLAMA_BASE_URL, LLM_MODEL, EMBED_MODEL, CHUNK_SIZE, CHUNK_OVERLAP, API_PORT).
+
+### Decisions
+- Python (no JS) para LangChain por madurez del ecosistema; Ollama local (no OpenAI) porque el gateway ya corre modelos locales; ChromaDB local primero, Supabase PGVector como evolucion posterior; LaunchAgent sobre Docker para servicio permanente del Mac Mini.
+
+### Notes
+- El servicio corre en `127.0.0.1:8100` gestionado por LaunchAgent (pid auto-reparado ante kill, verificado).
+- Pendientes: migracion Chroma -> Supabase Vector, ingesta de documentos reales mas alla del doc de estrategia.
+- Los docs estructurales raiz (AGENTS-DETALLE, NORTH, ROADMAP, SETUP) se movieron a `docs/` (cambios de otra sesion incluidos en este commit).
+
 ## [2026-09-16] - Limpieza de la cola Kanam OS + todos 9 y 10 (#9/#10 done)
 
 ### Changed
