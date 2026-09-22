@@ -57,6 +57,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-049 | [Claude Code como motor del pipeline A/B (Qwen Code a fallback)](./ADR-049-claude-code-motor-pipeline-ab.md) | workspace |
 | ADR-050 | [La memoria de Kanam OS sigue en SQLite local - umbral de migracion a Postgres/Supabase](./ADR-050-memoria-sqlite-local-umbral-migracion.md) | workspace |
 | ADR-051 | [Regla de extraccion de lib/ai compartido (construir solo con divergencia real)](./ADR-051-regla-lib-ai-shared.md) | workspace |
+| ADR-052 | [Engram como memoria persistente de los agentes de pipeline (standalone, no gentle-ai)](./ADR-052-engram-memoria-agentes-pipeline.md) | workspace |
 
 ## Formato
 

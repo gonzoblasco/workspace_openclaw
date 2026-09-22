@@ -82,6 +82,7 @@
 | [memory-agent](skills/memory-agent/) | Memory Agent autónomo: consolida memoria, detecta patrones, mantiene knowledge |
 | [openspec](skills/openspec/) | CLI de OpenSpec para spec-driven development |
 | [memory-wiki-workflow](skills/memory-wiki-workflow/) | Flujo para usar memory-wiki como capa analítica de memoria: entities con claims, dashboards, síntesis y visualización markdown |
+| [engram-project-memory](skills/engram-project-memory/) | Engram: memoria persistente de proyecto para agentes de pipeline (Qwen/Claude Code) vía MCP. Cuándo guardar, cuándo buscar, handoff y recovery pos-compaction (ADR-052) |
 | [background-execution](skills/background-execution/) | Patrones para ejecutar tareas en background: exec + process, worktrees |
 | [engineering-governance](skills/engineering-governance/) | Evolución continua del AI Engineering OS, auditoría y mejora sistémica |
 | [git-changelog](skills/git-changelog/) | Auto-genera CHANGELOG.md desde git history con conventional commits |
