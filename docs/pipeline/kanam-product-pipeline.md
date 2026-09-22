@@ -59,7 +59,6 @@
 |---|---|---|
 | No sé qué quiero | `interview-me` | El pedido está subespecificado |
 | Contexto degradado | `context-engineering` | El agente pierde foco, ignora convenciones, alucina |
-| Qué skill aplica | `using-agent-skills` | Al empezar sesión, mapear el trabajo a la skill correcta |
 | Conocimiento | `knowledge-management` | Documentación inconsistente, learning signals |
 | Análisis de memoria | `memory-wiki-workflow` | Usar memory-wiki como capa analítica: entities con claims, dashboards, síntesis |
 | Gobernanza | `engineering-governance` | Post-milestone: auditar y mejorar el sistema |
@@ -80,7 +79,7 @@
 | Entrevistas | `mock-interview-drill` | Practicar entrevistas |
 | Copy | `copy-editing` | Editar copy de marketing |
 | Campañas | `content-serializer` | Serializar contenido multi-plataforma |
-| Naming | `brand-name-forge` | Nombrar producto o empresa |
+| Naming | `brand-name-forge` | ~~Nombrar producto o empresa~~ (archivado) |
 | ADHD | `adhd-assistant` | Estructura diaria |
 | Soporte | `support-response-writer` | Respuestas a clientes |
 
@@ -138,7 +137,6 @@ graph TD
     W[deprecation-and-migration] -.-> I
     X[git-workflow-and-versioning] -.-> H
     Y[context-engineering] -.-> A
-    Z[using-agent-skills] -.-> A
 ```
 
 ## Flujos típicos

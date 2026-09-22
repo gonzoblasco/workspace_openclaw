@@ -66,7 +66,6 @@
 ### Meta
 | Skill | Descripción |
 |---|---|
-| [using-agent-skills](skills/using-agent-skills/) | Mapea el trabajo entrante a la skill correcta y define reglas de operación compartidas |
 | [agent-orchestration-pipeline-model-arbitration](skills/agent-orchestration-pipeline-model-arbitration/) | Arbitraje de modelo para pipeline A/B: reducir costos priorizando Kimi K2.7 Code solo cuando se justifica |
 | [skill-router](skills/skill-router/) | Sugiere qué skill usar para una tarea dada: matchea el prompt contra las skills disponibles (keywords + embeddings semántico local) y devuelve top sugerencias |
 | [skill-collection-maintenance](skills/skill-collection-maintenance/) | Mantenimiento de la colección de skills: diagnostica el cron semanal `skill-collection-review` fallando por tamaño y elimina skills limpiamente |

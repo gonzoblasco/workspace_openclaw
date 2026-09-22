@@ -317,4 +317,4 @@ Scripts in `skills/performance-optimization/scripts/`:
 ## Related Skills
 
 - [Observability](../observability-and-instrumentation): To measure and monitor performance
-- [Debug Investigation](../debugging-and-error-recovery): To investigate causes of degradation
+
