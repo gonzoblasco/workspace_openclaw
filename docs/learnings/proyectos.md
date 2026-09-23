@@ -19,8 +19,6 @@
 - Archived/pruned content is recoverable from git history - deleting is safe as long as the consolidation mapping is documented in the commit message and SKILLS-INDEX.
 - When removing a process doc, fold its durable lessons into LEARNINGS.md first so the knowledge outlives the file.
 
-**Tags:** Skill consolidation: google/addy skills patterns + prune
-
 ---
 
 ## 2026-08-06 (cierre) - Consolidación no-dev + fusión de skills + eliminación de proyecto
@@ -48,8 +46,6 @@
 - LESSON: distinguir "muchas skills" (problema de descubribilidad, resuelve con capas/entradas) de "skills duplicadas" (problema de competencia, resuelve con fusión). No son lo mismo.
 - BIASES DETECTED: ninguno flagrante; evité el sesgo de "menos = mejor" sin evidencia de duplicación.
 
-**Tags:** Consolidación no-dev + fusión de skills + eliminación de proyecto
-
 ---
 
 ## 2026-08-10 (cierre 2) - Narrativa del pipeline + sanitización de skills públicas
@@ -70,8 +66,6 @@
 - REFLECTION: cometí el error de describir el set como "de Addy Osmani" cuando es propio organizado con ese esquema, y de no considerar las skills 100% propias. Gonzo lo notó ("solo hiere mi orgullo").
 - LESSON: la atribución y la narrativa del origen son parte del deliverable. Verificar que la descripción del origen sea precisa antes de commitearla.
 - BIASES DETECTED: anchoring (me anclé en la narrativa previa de "24 de Addy" de la consolidación sin cuestionarla).
-
-**Tags:** Narrativa del pipeline + sanitización de skills públicas
 
 ---
 
@@ -96,8 +90,6 @@
 - LESSON: en brainstorming de negocio, separar "definición de decisiones" (se documenta) de "exploración sin validar" (no se documenta como artifact). El acceso en caliente (familia) es el mayor activo para el primer cliente.
 - BIASES DETECTED: none (el flujo conversacional guiado evitó confirmación prematura; Gonzo frenó la creación de artifacts hasta tener insumo real).
 
-**Tags:** Tormenta de ideas: convertir una idea en negocio
-
 ---
 
 ## 2026-08-11 - Estructura de estudio gamificada: nivel → subnivel → topic (3 capas de artifacts)
@@ -112,8 +104,6 @@
 **Self-reflection:** el patrón ya existía implícito (bootcamp de AI engineering), pero la estructura de 3 capas de artifacts fue un refinamiento explícito de Gonzo que lo hizo reusable. Se formalizó como skill `learning-tracker` para que cualquier estudio futuro (no solo este curso) use la misma documentación.
 
 **Lección pedagógica (corrección de Gonzo):** no pedir respuestas de conceptos que todavía no se enseñaron - primero explicar la teoría, después verificar. Verificar sin haber enseñado genera frustración ("clueless").
-
-**Tags:** Estructura de estudio gamificada: nivel → subnivel → topic (3 capas de artifacts)
 
 ---
 
@@ -142,8 +132,6 @@
 - REFLECTION: me fui por las ramas con submodules sin verificar el sistema real de Gonzo. La corrección fue oportuna pero costó varias iteraciones de git.
 - LESSON: la organización de proyectos es una decisión estructural - verificar el sistema documentado (AGENTS.md, skills) y la práctica real de proyectos existentes ANTES de tocar nada.
 - BIASES DETECTED: anchoring (me anclé en el patrón de submodules de quedamos/kanam-solitaires sin verificar que soporteml-v3 es NO-submodule).
-
-**Tags:** SoporteML v3: estructura de doble git (leer skills antes de tocar organización)
 
 ---
 

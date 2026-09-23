@@ -22,8 +22,6 @@
 - LESSON: en proyectos con IA, el fallback determinístico para dev/mock no es opcional - es la diferencia entre una app usable y una que parece colgada. Y para decisiones de infra (como Storybook), pensar en el tamaño del equipo antes de agregar.
 - BIASES DETECTED: none (el diagnóstico del sync fue sistemático, no asumí).
 
-**Tags:** soporteml-v3: modelo cloud de IA en loops + decisión Storybook
-
 ---
 
 ## 2026-08-14 - Cross-review multi-ronda con agentes paralelos atrapa bugs reales
@@ -42,8 +40,6 @@
 
 **Advertencia:** discrepancia de versiones dev/CI (Node 20 vs 22) es fuente clasica de "pasa local, falla en CI". Alinear con `.nvmrc` + CI.
 
-**Tags:** Cross-review multi-ronda con agentes paralelos atrapa bugs reales
-
 ---
 
 ## 2026-08-21 - El cross-review puede INTRODUCIR bugs, no solo atraparlos
@@ -58,8 +54,6 @@
 3. Cuando no se pueda validar empíricamente (sin token/datos reales), hacer el código **defensivo** para los formatos posibles y cubrirlo con tests.
 
 **Biases detectados:** anchoring del revisor (asumió el array por un patrón visto antes sin confirmar) + confirmation del autor (no defendió su parseo correcto porque el revisor "tenía razón").
-
-**Tags:** El cross-review puede INTRODUCIR bugs, no solo atraparlos
 
 ---
 
@@ -84,15 +78,13 @@
 - LESSON: delegar a Qwen Code SIEMPRE (features, demos, fixes chicos). Kanam redacta la tarea, encadena A/B, verifica contra la fuente real. Nunca editar el código directamente salvo orquestación de infra/tests.
 - BIASES DETECTED: effort-optimization (opté por hacerlo yo porque "era más rápido" - subestimé el costo de no construir la costumbre).
 
-**Tags:** Delegar a Qwen Code SIEMPRE, incluso en demos (buenas prácticas como prácticas)
-
 ---
 
 ## Cross-review A/B atrapa bugs de layout que Kanam no vio
 
 En el rework del PR #10517 (react-spectrum, SR focus indicator), el Agente B detecto 3 bugs reales que yo no vi: (1) tests de browser falsos positivos - el input absolute+inset:0 sin position:relative en el label se estira al viewport, no al componente, y el test pasaba por la razon equivocada; (2) test de Radio media el label equivocado (querySelector('label') devuelve el <Label>Test</Label> que precede al del Radio, no el del Radio); (3) el fix requiere position:relative en el label (contenedor posicionado) que no estaba documentado. Todos verificados contra la fuente real. Leccion: los tests de layout en jsdom son falsos positivos - solo el browser real valida (getBoundingClientRect). Y el cross-review del pipeline A/B es valioso cuando se verifica cada hallazgo contra la fuente real, no confiando ciegamente en el veredicto del agente. Bias detectado: confirmation bias - asumi que el approach funcionaba porque mi verificacion standalone usaba position:relative en el label, sin darme cuenta de que el componente real no lo tiene.
 
-**Tags:** layout, jsdom, browser, cross-review, falsos-positivos
+**Tags:** layout,jsdom,browser,cross-review,falsos-positivos
 
 ---
 
@@ -100,7 +92,7 @@ En el rework del PR #10517 (react-spectrum, SR focus indicator), el Agente B det
 
 Prueba de MiniMax M3 como modelo de los agentes A/B (pedido de Gonzo). El setup/ajuste consume tiempo y el agente se desvio fuera de scope: reformateo files.ts (prohibido tocar) + dejo una carpeta .qwen/ en el proyecto. Se rescat el trabajo valido y se revirtio el desvio. El modelo default sigue siendo deepseek-v4-flash:cloud - no cambiar el motor del pipeline sin necesidad real, y al probar otro modelo acotar el scope del agente con mas fuerza.
 
-**Tags:** minimax, modelo, desvio-scope, deepseek
+**Tags:** minimax,modelo,desvio-scope,deepseek
 
 ---
 
@@ -108,7 +100,7 @@ Prueba de MiniMax M3 como modelo de los agentes A/B (pedido de Gonzo). El setup/
 
 El agente B del cross-review detecto que lib/analyzer.ts usaba DEFAULT_OLLAMA_URL = host.docker.internal:11434, pero el analyzer corre en el HOST (next dev del orquestador), no dentro de un container, asi que ese hostname no resuelve y SIEMPRE caia al fallback. El wiring de U2 era correcto; el bug era del default de Fase A. Fix: localhost:11434 + override via OLLAMA_BASE_URL/OLLAMA_URL. Valida el modelo: el orquestador en MAX verifica contra la fuente real, no confia en el veredicto del agente.
 
-**Tags:** cross-review, default-url, host.docker.internal, analyzer, host-vs-container
+**Tags:** cross-review,default-url,host.docker.internal,analyzer,host-vs-container
 
 ---
 
@@ -116,7 +108,7 @@ El agente B del cross-review detecto que lib/analyzer.ts usaba DEFAULT_OLLAMA_UR
 
 En Fase C el agente B sobrescribio una conversacion real (kanam-story 'hola', 120B) al probar con formato UIMessage incorrecto (content en vez de parts). No es repo git, irrecuperable. Se restauro a estado coherente. Regla: validar el formato del mensaje antes de persistir data real - los agentes pueden escribir sobre data real si no se valida el formato.
 
-**Tags:** uimessage, formato, persistencia, data-real, agentes
+**Tags:** uimessage,formato,persistencia,data-real,agentes
 
 ---
 
@@ -124,7 +116,7 @@ En Fase C el agente B sobrescribio una conversacion real (kanam-story 'hola', 12
 
 El npm install se hace dentro del contenedor Docker, asi el node_modules tiene binarios Linux (rollup-linux-arm64-musl). El agente corre vitest DENTRO del contenedor (funciona 28/28). Correr vitest desde el host de macOS falla con 'Cannot find module @rollup/rollup-darwin-arm64' - esperado, no es bug. Leccion: entender en que entorno corre cada cosa antes de debuggear.
 
-**Tags:** rollup, vitest, contenedor, docker, arquitectura
+**Tags:** rollup,vitest,contenedor,docker,arquitectura
 
 ---
 
@@ -132,7 +124,7 @@ El npm install se hace dentro del contenedor Docker, asi el node_modules tiene b
 
 En review de PR ajeno, revisar el diff por lo que ELIMINA, no solo por lo que agrega. El comportamiento que se pierde al reemplazar un primitivo del design system por un elemento pelado es el hallazgo de mayor valor: el autor de #9869 restauro ModalBody por esa pregunta.
 
-**Tags:** review,reflexion-post-tarea
+**Tags:** reflexion-post-tarea,review
 
 ---
 
@@ -140,7 +132,7 @@ En review de PR ajeno, revisar el diff por lo que ELIMINA, no solo por lo que ag
 
 Ciclo A/B de kanam-tetris v0.2 con deepseek-v4.1-flash. El Agente B no leyo el codigo y opino: construyo un harness instrumentado en Node y reprodujo los bugs con evidencia de ejecucion (timers medidos, conteo de celdas antes/despues). Encontro dos criticos que un review de lectura no habria cazado: (1) falta de guard del estado 'clearing' durante el flash de limpieza - mantener Espacio reseteaba el timer y congelaba la limpieza para siempre, y una flecha + Espacio estampaba bloques fantasma con score duplicado (invisible porque draw() suprime la pieza activa durante el flash); (2) lookup de wall kicks CCW espejado, PREEXISTENTE desde v0.1 - la tabla tenia las 8 filas correctas pero el indice leia la fila CW de la transicion inversa. Regla: cuando el bug depende de tiempo (timers, ventanas de input, estado transitorio), el reviewer debe EJECUTAR, no leer. Y cuando se revisa una base, revisar el INDICE/lookup, no solo los datos que indexa - el bug de v0.1 vivia en el indice, no en la tabla.
 
-**Tags:** cross-review,harness,testing,tetris,pipeline-ab,v4.1,verificacion
+**Tags:** cross-review,verificacion,harness,testing,tetris,pipeline-ab,v4.1
 
 ---
 
@@ -148,7 +140,7 @@ Ciclo A/B de kanam-tetris v0.2 con deepseek-v4.1-flash. El Agente B no leyo el c
 
 Primer uso real de deepseek-v4.1-flash:cloud como motor de los agentes A/B (via Claude Code apuntando al gateway Ollama 127.0.0.1:11434), aplicando la pausa obligatoria del AGENTS.md (planifica MAX -> A escribe HIGH -> B revisa HIGH -> iterar -> revision final Kanam MAX -> push -> borrador). Resultado: ciclo completo sin intervencion de Kanam en el medio. El Agente A implemento 6 features complejas (hold, lock delay con cap, DAS/ARR, flash, pausa, high score) y SE AUTOCAZO un bug propio (Escape nunca pausaba por comparacion case-sensitive) - la autoverificacion del motor es un indicador de calidad. El Agente B produjo el mejor review del experimento y ademas declaro con honestidad lo que NO verifico (render/pixeles, alcanzabilidad de un caso de borde). Ambos agentes fueron honestos sobre los limites de su propio trabajo. Conclusion: v4.1 valido como motor de pipeline para tareas de escritura + review.
 
-**Tags:** pipeline-ab,v4.1,motor,claude-code,ollama,tetris,validacion
+**Tags:** tetris,pipeline-ab,v4.1,motor,claude-code,ollama,validacion
 
 ---
 
@@ -156,7 +148,19 @@ Primer uso real de deepseek-v4.1-flash:cloud como motor de los agentes A/B (via 
 
 El 2026-09-11 el motor de los agentes A/B del pipeline volvio de deepseek-v4.1-flash a deepseek-v4-flash por costo: medido en el uso semanal de Ollama Cloud, v4.1 consumia mas por request que v4 y glm (1.348 requests con la barra mas alta, contra 1.631 de v4 con la mas baja). La mejora de calidad de v4.1 sobre v4 no justificaba el gasto. v4.1 queda como fase de escalada para analisis complejo. El mecanismo real que forzaba v4.1 no era el ADR sino los overrides sticky de model-router.json (code, review, pipeline_ab), reseteados el mismo dia. Lo que NO cambia con el motor: el valor del review por ejecucion (harness instrumentado cuando el bug depende de tiempo) y la autoverificacion del motor - esas lecciones nacieron en el ciclo v0.2 con v4.1 y valen con cualquier modelo. Pendiente: v4 sera retirado en unas semanas (reemplazo por 4.1), reevaluar entonces.
 
-**Tags:** pipeline-ab,v4-flash,v4.1,adr-046,costo,model-router
+**Tags:** costo,pipeline-ab,v4.1,model-router,v4-flash,adr-046
+
+---
+
+## Conclusion
+
+ No hay correlacion entre costo/tamano del modelo y calidad de respuesta. Todos resolvieron bien el problema. La diferencia es personalidad, no capacidad. Kanam acerto solo 1/8 en identificar los modelos a ciegas.
+
+---
+
+## LECCION DE PROCESO (importante)
+
+ - **Un subagente que tarda NO es un subagente que fallo.** Reporte que el Agente B habia settleado sin entregar reporte y cerre la fase con eso. **Su reporte llego 14 minutos despues** y encontro los 2 defectos criticos (race + falso exito) que MI verificacion no vio. Su reproduccion del race (400 unidades vs mis 10) fue mejor. **No cerrar un review por silencio: el settle no implica fracaso.**
 
 ---
 

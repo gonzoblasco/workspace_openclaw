@@ -131,10 +131,14 @@ def make_db(tmp_path, n=3):
             query_vector TEXT NOT NULL,
             chunk_index INTEGER DEFAULT 0
         );
-        CREATE TABLE learnings_enriquecido (
+        -- Desde ADR-058 el vector de learnings vive en la propia tabla.
+        CREATE TABLE learnings (
             id INTEGER PRIMARY KEY,
-            learning_vector TEXT,
-            query_vector TEXT
+            learning_vector TEXT
+        );
+        CREATE TABLE sessions_relacional (
+            id INTEGER PRIMARY KEY,
+            agent_id TEXT
         );
         """
     )
@@ -145,7 +149,7 @@ def make_db(tmp_path, n=3):
             (i + 1, json.dumps(vec)),
         )
         conn.execute(
-            "INSERT INTO learnings_enriquecido (id, learning_vector, query_vector) VALUES (?,?,NULL)",
+            "INSERT INTO learnings (id, learning_vector) VALUES (?,?)",
             (i + 1, json.dumps(vec)),
         )
     conn.commit()
@@ -168,7 +172,7 @@ def test_migration_converts_all_and_preserves_values(tmp_path):
     conn.close()
 
     conn = sqlite3.connect(db)
-    for table, col in (("session_vectors", "query_vector"), ("learnings_enriquecido", "learning_vector")):
+    for table, col in (("session_vectors", "query_vector"), ("learnings", "learning_vector")):
         rows = conn.execute(f"SELECT {col} FROM {table}").fetchall()
         assert rows, f"{table} quedo vacia"
         for (v,) in rows:
@@ -214,7 +218,7 @@ def test_drop_dead_columns_skips_when_not_null(tmp_path):
     """Una columna con valores NO debe dropearse aunque este en la lista."""
     db = make_db(tmp_path)
     conn = sqlite3.connect(db)
-    conn.execute("UPDATE learnings_enriquecido SET query_vector='algo' WHERE id=1")
+    conn.execute("INSERT INTO sessions_relacional (id, agent_id) VALUES (1, 'kanam')")
     conn.commit()
     conn.close()
 
@@ -223,7 +227,7 @@ def test_drop_dead_columns_skips_when_not_null(tmp_path):
     m = vu()
     conn = sqlite3.connect(db)
     report = "\n".join(mod.migrate(conn, m, dry_run=False, drop_dead=True))
-    cols = [r[1] for r in conn.execute("PRAGMA table_info(learnings_enriquecido)")]
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(sessions_relacional)")]
     conn.close()
-    assert "query_vector" in cols, "dropeo una columna que tenia datos"
+    assert "agent_id" in cols, "dropeo una columna que tenia datos"
     assert "SE SALTA" in report

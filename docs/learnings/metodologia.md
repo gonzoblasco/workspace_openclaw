@@ -8,15 +8,11 @@
 
 **Lesson:** Start documentation in parallel with development. Each significant decision or feature should incrementally update the relevant doc file.
 
-**Tags:** Documentation at milestone end is expensive
-
 ---
 
 ## Godot: aprender juntos, no automatizar (2026-08-02)
 
 Gonzo quiere aprender Godot paso a paso. No construir juegos de un prompt. El skill `godot-mcp` se reescribió de "build-everything" a "learn-together". Registro del viaje en `projects/godot-journey/.knowledge/BRIEF.md`.
-
-**Tags:** Godot: aprender juntos, no automatizar (2026-08-02)
 
 ---
 
@@ -24,15 +20,11 @@ Gonzo quiere aprender Godot paso a paso. No construir juegos de un prompt. El sk
 
 Si se crea el archivo físico antes de aprobar el workshop, la propuesta queda stale y no se puede aplicar. Workaround: editar el SKILL.md directamente y commitear. El workshop es para skills nuevas que aún no existen en disco.
 
-**Tags:** Skill Workshop stale cuando SKILL.md ya existe (2026-08-02)
-
 ---
 
 ## MCP server `editor_instantiate_scene` rompe .tscn (2026-08-02)
 
 La tool `editor_instantiate_scene` del Godot MCP corrompe el formato de main.tscn (ids con triple comilla, nodos perdidos). Preferir edición manual de .tscn o usar `add_node` + `attach_script` por separado.
-
-**Tags:** MCP server `editor_instantiate_scene` rompe .tscn (2026-08-02)
 
 ---
 
@@ -40,15 +32,11 @@ La tool `editor_instantiate_scene` del Godot MCP corrompe el formato de main.tsc
 
 El mirror tuxfamily.org falló por timeout. Probar GitHub releases o mirror alternativo cuando se retome el export.
 
-**Tags:** Export templates de Godot 4.7.1 (2026-08-02)
-
 ---
 
 ## Sport Cars: validación visual obligatoria para sitios de marca (2026-08-02)
 
 El build pasando no garantiza que el sitio se vea profesional. Para proyectos con identidad visual, la validación con screenshots + evaluación crítica debe ser parte del cierre de cada iteración. Issues como contraste bajo, colores inconsistentes o títulos engañosos no los detecta Biome.
-
-**Tags:** Sport Cars: validación visual obligatoria para sitios de marca (2026-08-02)
 
 ---
 
@@ -56,15 +44,11 @@ El build pasando no garantiza que el sitio se vea profesional. Para proyectos co
 
 El primer flag (`showPrices`) se implementó con provider client-side + localStorage + componente `PriceDisplay`. El panel de flags solo se renderiza en desarrollo. El siguiente paso es extraerlo a `@workflow-kit/feature-flags` para reuso.
 
-**Tags:** Feature flags portable: no hardcodear en UI (2026-08-02)
-
 ---
 
 ## No commitear mockups intermedios (2026-08-02)
 
 Los mockups y screenshots de iteración (v2, v3, etc.) son ruido en el repo del proyecto. Solo conservar la evidencia final (home/catálogo) en el commit de release; los intermedios van al daily note o a un artifact.
-
-**Tags:** No commitear mockups intermedios (2026-08-02)
 
 ---
 
@@ -72,15 +56,11 @@ Los mockups y screenshots de iteración (v2, v3, etc.) son ruido en el repo del 
 
 El 404 `PUT .../@scope%2fpackage` al publicar NO significa que el scope esté mal. Primero verificar `npm whoami` - si da 401, el fix es `npm login`, no tocar el scope. El scope `@usuario/` se resuelve solo cuando coincide con el username logueado. (Pasó con `@gonzoblasco/create-stack`.)
 
-**Tags:** npm 404 en publish scoped no es problema de scope (2026-08-04)
-
 ---
 
 ## npm login usa browser OTP flow (2026-08-04)
 
 El login de npm ahora abre browser (OTP), no acepta token en consola. Los tokens que saltan 2FA se están restringiendo - para CI a futuro usar tokens con `mfa=publish` o `automation`.
-
-**Tags:** npm login usa browser OTP flow (2026-08-04)
 
 ---
 
@@ -91,15 +71,11 @@ El login de npm ahora abre browser (OTP), no acepta token en consola. Los tokens
 - El N10 junta todo: auth + users + orders + notifications + gateway + CI/CD + dashboard + cloud. Probado: gateway enruta, health agregado ok, register/login/orders funcionan, 401 en credenciales malas.
 - **El nivel 7 es el núcleo físico de los niveles 7-10**: N8, N9 y N10 extienden el mismo folder (ADR-001). El nombre del folder confunde - el README lo documenta como "Niveles 7-10" con tabla de acumulación y diagrama de arquitectura.
 
-**Tags:** COMPLETO (2026-08-03)
-
 ---
 
 ## Patrón por inercia vs contexto cambiado (2026-08-03)
 
 Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nueva), el riesgo no es equivocarse en el patrón - es aplicarlo por inercia cuando el contexto ya cambió. La señal de alerta no es "¿lo sé hacer?" sino "¿es este caso realmente igual a los que ya resolví?". Pasó en el Nivel 8 del bootcamp (convergente, no lineal - transformaba el N7, no creaba carpeta nueva). ADR: `projects/ai-engineering-bootcamp/.knowledge/ADR-001-niveles-convergentes.md`.
-
-**Tags:** Patrón por inercia vs contexto cambiado (2026-08-03)
 
 ---
 
@@ -109,8 +85,6 @@ Cuando un patrón se repite muchas veces (7+ niveles de bootcamp con carpeta nue
 - Formato nivel de bootcamp (teoría + práctica + LinkedIn + self-review) es un template de skill reusable.
 - Los proyectos resueltos son el "contrato" del curso - demuestran que el nivel es posible, no son la respuesta.
 - Falta un mecanismo de verificación automática al final de cada nivel (tests contra el proyecto del alumno).
-
-**Tags:** Reflexión del curso (meta-aprendizaje, 2026-08-03)
 
 ---
 
@@ -196,7 +170,7 @@ En la entrevista de OpenSistemas pasaron data incorrecta sobre su stack de agent
 
 Al citar data para afirmar algo del mercado actual, chequear la fecha de la fuente y si sigue vigente para el contexto. Error real: use la encuesta WebAIM #10 (2024) para afirmar que Windows domina laptops por precio, sin notar que la MacBook Neo (marzo 2026, USD 599) cambio el mercado. La data era real pero caducada para el contexto. La data de accesibilidad (WebAIM, cada ~2 anios) y la de mercado (IDC/Counterpoint, meses) se mueven a velocidades distintas. Aplica tambien a citar respuestas de issues/PRs viejos como si reflejaran el estado actual del codigo.
 
-**Tags:** verificar vigencia, data actualizada, mercado, WebAIM, MacBook Neo, 2026-09-04
+**Tags:** mercado,2026-09-04
 
 ---
 
@@ -204,7 +178,7 @@ Al citar data para afirmar algo del mercado actual, chequear la fecha de la fuen
 
 La MacBook Neo (USD 599) y la Mac mini no solo cambiaron la cuota de mercado de laptops: cambiaron la economia de la accesibilidad. Hasta hace poco, en Windows los lectores de pantalla eficientes eran JAWS (caro, licencia paga) y NVDA (gratis pero menos pulido). Con la Neo/mini a precio accesible, ahora se puede tener accesibilidad integrada (VoiceOver) sin pagar fortunas por JAWS. Esto refuerza el argumento de seguir macOS en componentes de UI: ya no es solo preferencia de nicho, es acceso economico a accesibilidad de calidad. Complementa la leccion 'Verificar vigencia de la fuente' (id 118): la data de mercado y la de accesibilidad se mueven juntas.
 
-**Tags:** accesibilidad, MacBook Neo, JAWS, NVDA, VoiceOver, economia, 2026-09-04
+**Tags:** 2026-09-04,accesibilidad,economia
 
 ---
 
@@ -212,7 +186,7 @@ La MacBook Neo (USD 599) y la Mac mini no solo cambiaron la cuota de mercado de 
 
 Leccion 1 (edit de markdown): al mover reglas entre archivos con edit de multi-bloque, un oldText pegado puede fusionar o pisar bullets adyacentes - leer el archivo despues de cada edit y verificar secciones antes de seguir. Ya ocurrio 2 veces hoy (fusion accidental en MEMORY.md, entradas de la Air borradas en conflicto del daily). Leccion 2 (web search provider): duckduckgo no existe como plugin en esta instalacion; el plugin ollama expone un provider de search sin config extra. Leccion 3 (patron digest): cron agentTurn en sesion aislada + politica anti-injection en el prompt + verificacion obligatoria + modo anti-spam de una linea - generalizable a otras fuentes externas.
 
-**Tags:** session-closing,reflexion-post-tarea
+**Tags:** reflexion-post-tarea,session-closing
 
 ---
 
@@ -220,7 +194,7 @@ Leccion 1 (edit de markdown): al mover reglas entre archivos con edit de multi-b
 
 Los posts de LinkedIn van en INGLES (misma regla que GitHub: promocion/difusion publica). Incluir siempre el link al PR mergeado en el draft.
 
-**Tags:** other,reflexion-post-tarea
+**Tags:** reflexion-post-tarea,other
 
 ---
 
@@ -228,7 +202,7 @@ Los posts de LinkedIn van en INGLES (misma regla que GitHub: promocion/difusion 
 
 Al redactar en nombre del usuario, el default no es la version diplomatica/sumisa sino la que pide en presente lo que el quiere; la cortesia excesiva debilita la posicion
 
-**Tags:** docs,reflexion-post-tarea
+**Tags:** reflexion-post-tarea,docs
 
 ---
 
@@ -240,7 +214,7 @@ Regla: cuando algo falla, antes de explicar, separar (a) que binario fallo, (b) 
 
 Dato util: gh guarda su sesion en su GH_CONFIG_DIR y git no la conoce por su cuenta. Si el clon no tiene credential.helper apuntando a gh, el push por HTTPS falla aunque gh este autenticado. Workaround one-off sin tocar la config global: git -c credential.helper='!gh auth git-credential' push.
 
-**Tags:** precision,diagnostico,git,gh,reporte
+**Tags:** git,precision,diagnostico,gh,reporte
 
 ---
 
@@ -256,7 +230,7 @@ Aplicado a: USER.md (regla de preferencia, se carga cada sesion) y AGENTS.md sec
 
 Deuda derivada: no existe ADR de adopcion de shadcn/Radix en todo el workspace (verificado: grep shadcn|radix en docs/adr/ devuelve solo ADR-037). No hay @radix-ui instalado ni lockfile en el workspace; el codigo vive en repos aparte, asi que el uso real no se puede verificar desde aca.
 
-**Tags:** dependencias,adr,precedente,radix,shadcn,template
+**Tags:** adr,dependencias,precedente,radix,shadcn,template
 
 ---
 
@@ -264,11 +238,7 @@ Deuda derivada: no existe ADR de adopcion de shadcn/Radix en todo el workspace (
 
 
 
-**Tags:** Duelo atoi 2026-09-14: el MISMO qwen3.8:27b-mlx que daba HTTP 500 (OOM Metal) como agente de OpenClaw, paso 24/24 via API directa, y en Claude Code headless respondio todos los requests con 200.
-
-Leccion: cuando un componente falla, el limite suele estar en el contexto completo (harness, sesion, memoria), no en el componente aislado. Antes de concluir 'X no puede', aislar la variable: probar el mismo X en otro harness. La atribucion correcta es 'X no puede CON esto', que es actionable, no 'X no puede', que cierra la puerta.
-
-Caso concreto: el error fue intentar el 27B como agente OpenClaw (sesion pesada: AGENTS+USER+SOUL+runtime+historial supera los 24GB junto a los 18GB de pesos). Con contexto liviano (Claude Code, API directa) entra sin problema.
+**Tags:** sesion
 
 ---
 
@@ -276,7 +246,7 @@ Caso concreto: el error fue intentar el 27B como agente OpenClaw (sesion pesada:
 
 VERIFICAR ANTES DE ACTUAR: cuando un todo viene de dias atras, la premisa puede estar obsoleta - el trabajo real es confirmar el estado actual (git log, registry, status) antes de ejecutar; muchas veces la resolucion correcta es cerrar sin accion. Y: un check que nunca puede pasar escribe ruido y esconde drift - validar las herramientas de verificacion tanto como el codigo
 
-**Tags:** other,reflexion-post-tarea
+**Tags:** reflexion-post-tarea,other
 
 ---
 
@@ -292,7 +262,13 @@ Gonzo distingue tres estados de limpieza de la cola: quitar (marcar done, p.ej. 
 
 El todo 40 (kanam-studio world-building / Slice 5) parecia pendiente (texto pisado en DB, solo 'kanam-studio'). El recon en el repo real mostro que el Slice 5 YA estaba implementado y superado: el proyecto esta en v0.15.0, con slices 5-6 (biblia world con IA + relato lineal) y hitos 5/6/7 (canonical, prosa final, E2E) completos. Resultado: cerrar sin accion, restaurado el texto completo, no inventar trabajo. Refuerza la leccion 149 (verificar antes de actuar).
 
-**Tags:** metodologia,recon,kanam-studio,verificacion
+**Tags:** verificacion,metodologia,recon,kanam-studio
+
+---
+
+## Lecciones
+
+ - Un test que dice cubrir estructura debe renderizar la estructura real - el flatten era un atajo que invalidaba el propósito del test. - Los keys de colección de react-stately son compuestos (`$.0`) - no hardcodear ids en aserciones, resolver relacionalmente. - React valida DOM nesting en tests (li dentro de li) - el setup de react-spectrum falla el test en console.error. - **Auto-review antes de abrir PRs (regla durable, MEMORY.md):** el test debe ejercitar la estructura real que dice cubrir.
 
 ---
 
@@ -300,7 +276,25 @@ El todo 40 (kanam-studio world-building / Slice 5) parecia pendiente (texto pisa
 
 El modelo puede cambiarse a mitad de sesion: el runtime del contexto de arranque refleja SOLO el turno actual, no el modelo que produjo los turnos previos. Al fichar o registrar identidad de modelo (fichas de interaccion, registros de duelos, atribucion de salidas), confirmar con el usuario o verificar con session_status; el header del bootstrap es dato insuficiente. Caso: ficha de kanam-lab atribuida a glm-5.3-flash por el runtime del cierre cuando la conversacion corrio en nemotron-3-ultra:cloud (Gonzo corrigio). Refuerzo: el override de modelo puede ser rechazado por modelPolicy.allow y el runtime reporta el modelo efectivo, no el pedido.
 
-**Tags:** metodologia,kanam-lab,modelo,identidad,verificacion
+**Tags:** modelo,verificacion,metodologia,kanam-lab,identidad
+
+---
+
+## Lección clave (registrada en DB learnings)
+
+ - Cuando un recruiter dice "test de lógica" en proceso técnico, confirmar si es psicotécnico o **lógica de programación/JS** - son cosas muy distintas. El 27/08 se preparó lo equivocado.
+
+---
+
+## Post-cierre (22:32): propuesta de skill model-cata + leccion de glitch-words
+
+ - **Analisis de skills nuevas:** la cata de modelos (procedimiento repetido 2 veces: 26/08 y 29/08) es candidata real. Creada propuesta pendiente `model-cata-20260830-0a6ac57901` via skill_workshop (trigger, prompt discriminador, rubrica de agudeza, costo real, ADR manual, purga en dos capas, anti-patrones). Pendiente de aprobacion de Gonzo para aplicar. - Candidata #2 observada (no propuesta): fusion cross-machine de dailies + ancestry-verify de submodulos. Esperar segundo caso antes de skill.
+
+---
+
+## Noche (00:03) - Extraccion selectiva de learnings + busqueda en learnings
+
+ - Mejorado `extract_learnings` en memory-catalog-v2.py: solo captura ### secciones que parecen learnings reales (keywords learn/leccion/aprend/insight/clave/takeaway/conclusion). Ya no sobre-puebla con secciones genericas. - Limpiados learnings falsos previos (59 registros extra que eran secciones de dailies, no learnings curados). learnings_enriquecido ahora solo tiene learnings reales. - Mejorado categorizacion: ahora incluye 'metodolog' y 'oss' (antes solo access/infrastructure/method). - Nu
 
 ---
 

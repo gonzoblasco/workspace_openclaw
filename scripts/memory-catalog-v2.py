@@ -4,7 +4,8 @@ memory-catalog-v2.py - Memory to SQLite with semantic topic extraction
 Improvements over v1:
 - Idempotent (upsert by date, no duplicates on re-run)
 - Semantic topic inference using cosine similarity to topic centroids
-- Completes learnings_enriquecido table from existing learnings
+- Absorbe la tabla gemela: los vectores de learnings viven en `learnings`
+  (la tabla `learnings_enriquecido` se elimino en ADR-058: duplicaba el 94% del texto).
 - Handles embedding generation with Ollama fallback to hash
 """
 
@@ -229,7 +230,7 @@ def compute_category_centroids(min_examples=5):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     rows = c.execute(
-        "SELECT category, learning_vector FROM learnings_enriquecido WHERE learning_vector IS NOT NULL"
+        "SELECT category, learning_vector FROM learnings WHERE learning_vector IS NOT NULL"
     ).fetchall()
     conn.close()
 
@@ -383,22 +384,6 @@ def create_schema():
             PRIMARY KEY (session_id, topic_id),
             FOREIGN KEY(session_id) REFERENCES sessions_relacional(id),
             FOREIGN KEY(topic_id) REFERENCES topics(id)
-        )
-    """
-    )
-
-    c.execute(
-        """
-        CREATE TABLE IF NOT EXISTS learnings_enriquecido (
-            id INTEGER PRIMARY KEY,
-            category TEXT NOT NULL,
-            title TEXT NOT NULL,
-            content TEXT NOT NULL,
-            tags TEXT,
-            learning_vector BLOB,
-            created_at TEXT,
-            updated_at TEXT,
-            FOREIGN KEY(id) REFERENCES learnings(id)
         )
     """
     )
@@ -590,9 +575,9 @@ def catalog_memory():
             title = learning.get("title", "")
             content_text = learning.get("content", "")[:500]
 
-            # Skip if a learning with this title already exists in enriquecido
+            # Skip if a learning with this title already exists
             exists = c.execute(
-                "SELECT id FROM learnings_enriquecido WHERE title=? LIMIT 1", (title,)
+                "SELECT id FROM learnings WHERE title=? LIMIT 1", (title,)
             ).fetchone()
             if exists:
                 continue
@@ -602,33 +587,25 @@ def catalog_memory():
 
             learning_embedding = get_embedding(content_text)
             c.execute(
-                """INSERT INTO learnings_enriquecido
+                """INSERT INTO learnings
                    (category, title, content, tags, learning_vector, created_at, updated_at)
                    VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now'))""",
                 (category, title, content_text, "", encode_vector(learning_embedding)),
             )
 
-    # Populate learnings_enriquecido from existing learnings table (source of truth)
+    # Rellenar el vector de los learnings que todavia no lo tengan.
+    # Antes esto copiaba TODA la tabla a una gemela; ahora el vector vive en
+    # la misma fila, asi que solo se completan los que faltan (ADR-058).
     existing = c.execute(
-        "SELECT id, category, title, content, tags FROM learnings"
+        "SELECT id, title, content FROM learnings WHERE learning_vector IS NULL"
     ).fetchall()
-    for row in existing:
-        lid, lcat, ltitle, lcontent, ltags = row
+    for lid, ltitle, lcontent in existing:
         if not lcontent:
             continue
         learning_embedding = get_embedding(lcontent[:500])
         c.execute(
-            """INSERT OR REPLACE INTO learnings_enriquecido
-               (id, category, title, content, tags, learning_vector, created_at, updated_at)
-               VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))""",
-            (
-                lid,
-                lcat,
-                ltitle,
-                lcontent,
-                ltags or "",
-                json.dumps(learning_embedding),
-            ),
+            "UPDATE learnings SET learning_vector=?, updated_at=datetime('now') WHERE id=?",
+            (encode_vector(learning_embedding), lid),
         )
 
     conn.commit()
@@ -644,7 +621,7 @@ def catalog_memory():
         f"   - topic_sessions mappings: {c.execute('SELECT COUNT(*) FROM topic_sessions').fetchone()[0]}"
     )
     print(
-        f"   - learnings_enriquecido (with vectors): {c.execute('SELECT COUNT(*) FROM learnings_enriquecido WHERE learning_vector IS NOT NULL').fetchone()[0]}"
+        f"   - learnings (with vectors): {c.execute('SELECT COUNT(*) FROM learnings WHERE learning_vector IS NOT NULL').fetchone()[0]}"
     )
 
     conn.close()

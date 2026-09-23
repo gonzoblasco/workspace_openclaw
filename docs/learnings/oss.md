@@ -31,8 +31,6 @@
 - LESSON: verificar contra el upstream real antes de descartar un conflicto; escribir skills públicas como si las usara un extraño.
 - BIASES DETECTED: confirmation bias (asumí que el conflicto era falso porque mi main local estaba desactualizado y confirmaba mi hipótesis).
 
-**Tags:** Sesión OSS: conflictos, PR nuevo, reconstrucción de skill
-
 ---
 
 ## 2026-08-11 - OSS astryx: diagnóstico de CI + PR de fix (doble contribución)
@@ -58,8 +56,6 @@
 - LESSON: en contribuciones OSS, un diagnóstico técnico incorrecto en un thread público resta credibilidad. Verificar el run/job exacto con `gh run view --log-failed` antes de afirmar la causa.
 - BIASES DETECTED: anchoring (me anclé en el nombre "smoke-test" del `gh pr checks` sin verificar el job real del run).
 
-**Tags:** OSS astryx: diagnóstico de CI + PR de fix (doble contribución)
-
 ---
 
 ## 2026-08-14 - radix-ui: cuando alguien implementa tu análisis, sé el reviewer
@@ -77,8 +73,6 @@
 - REFLECTION: el instinto inicial de Gonzo fue "nos quieren robar". Mi lectura honesta lo reencuadró: no es robo, es validación de que el análisis era correcto, y la ejecución ajena fue mejor. El review honesto posiciona mejor que el reclamo.
 - LESSON: en OSS, cuando alguien implementa tu análisis, sé el reviewer con el contexto completo - no el reclamante. El gap de tests del otro PR es tu puerta de entrada.
 - BIASES DETECTED: sunk cost / territorialidad (querer defender "nuestro" reporte). Contrarrestado con honestidad y foco en el resultado.
-
-**Tags:** radix-ui: cuando alguien implementa tu análisis, sé el reviewer
 
 ---
 
@@ -98,8 +92,6 @@
 - LESSON: en repos con maintainer opinado, alinear la implementación con la visión del maintainer desde el arranque (mirar cómo resolvió problemas similares) vale más que un fix funcionalmente correcto con arquitectura ajena.
 - BIASES DETECTED: confirmation bias (asumir que un fix con 3921 tests verdes y 2 P2 arreglados estaba "listo para mergear" sin considerar la dirección de diseño del maintainer).
 
-**Tags:** colinhacks/zod: el diagnóstico correcto no garantiza el merge si la implementación no respeta la arquitectura
-
 ---
 
 ## 2026-08-17 - Verificar el estado real de los PRs ANTES de proponer acciones
@@ -115,8 +107,6 @@
 - REFLECTION: no leí mi propio review en #4112 antes de proponer cerrar #4109
 - LESSON: verificar el estado real (reviews/comentarios) de cada PR antes de proponer acciones; mis reviews previos son señal de decisiones ya tomadas
 - BIASES DETECTED: recency bias (el #4112 era "reciente" en mi lectura y lo traté como pendiente) + falta de verificación (no chequé el thread completo antes de opinar)
-
-**Tags:** Verificar el estado real de los PRs ANTES de proponer acciones
 
 ---
 
@@ -137,8 +127,6 @@
 - REFLECTION: usé `gh pr list --author` (herramienta de seguimiento) para una tarea de descubrimiento (buscar oportunidades), y me confundió el resultado vacío. Gonzo aclaró: buscar en repos nuevos de terceros, no donde ya trabajamos.
 - LESSON: separar las dos operaciones - seguimiento de PRs propios (por repo, con --author) vs triaje de oportunidades (repos nuevos, sin --author, verificar competencia).
 - BIASES DETECTED: anchoring (me anclé en el workflow de seguimiento de PRs propios y lo apliqué mal a la búsqueda de oportunidades).
-
-**Tags:** Buscar oportunidades OSS ≠ revisar mis PRs (repos nuevos de terceros)
 
 ---
 
@@ -165,8 +153,6 @@
 - LESSON: (1) al diseñar serializers para hashes, taggear tipos y escapar colisiones; (2) el humano define la dirección, el bot aporta hallazgos técnicos válidos; (3) nunca pasar backticks crudos a `gh pr comment` por shell.
 - BIASES DETECTED: confirmation (asumí que el serializer era correcto porque los tests pasaban, sin pensar en colisiones entre tipos distintos).
 
-**Tags:** Serializers de hash: colisión de tipos es un bug real (y el humano manda sobre el bot)
-
 ---
 
 ## 2026-08-22 - Em dash se me escapa en textos largos en ingles (error recurrente)
@@ -187,8 +173,6 @@
 - REFLECTION: la regla existia pero no la aplique al escribir bodies de PR en ingles - el em dash es idiomatico en ingles y se me escapo.
 - LESSON: escribir el guard automatizado (check_em_dash.py) y correrlo SIEMPRE antes de publicar a GitHub.
 - BIASES DETECTED: ninguno relevante - fue falta de mecanismo, no sesgo cognitivo.
-
-**Tags:** Em dash se me escapa en textos largos en ingles (error recurrente)
 
 ---
 
@@ -212,8 +196,6 @@
 
 ---
 
-**Tags:** Triage de PRs OSS: leer TODOS los comments (inline incluidos) y usar la Search API
-
 ---
 
 ## Colaborar OSS NO es abrir PRs: sumar sin pisar y leer el link completo
@@ -236,8 +218,6 @@
 - LESSON: separar "colaborar" de "abrir PR". Antes de proponer un PR, chequear trabajo en curso y que aporta sin duplicar. Leer el link completo siempre.
 - BIASES DETECTED: action bias (querer "hacer algo" tangible como un PR en vez del aporte colaborativo correcto) + confirmation (asumi que el valor era el PR sin considerar el contexto de trabajo ajeno).
 
-**Tags:** OSS: colaborar no es abrir PRs, leer link completo
-
 ---
 
 ## 2026-08-25 - Elegir issue para demo en vivo con reclutador
@@ -250,15 +230,11 @@ OSS: bug acotado + fix canonico + reproduccion armada
 
 Ciclo de review completo del PR astryx #5493 (TreeList a11y). El reviewer (cixzhang) usa AI para responder - sus reviews salen con "[Reviewed by Robohands]", pero son de un humano (CONTRIBUTOR) que dicta la sustancia. Hubo 3 reviews: 2 CHANGES_REQUESTED + 1 APPROVED, merge el mismo dia. Lesson: un reviewer humano con asistencia de AI se trata como humano, no como bot: se le agradece el review con su nombre ("Thanks for the review, cixzhang") - la regla de no agradecer a bots aplica SOLO a reviews de IA puros (sin humano detras). Correccion de Gonzo (2 veces): el primer borrador no agradecia ni nombraba al reviewer. Al detectar que es humano detras de la herramienta, el trato es humano. No dar vueltas cuando el maintainer ya valido la direccion: acotar el PR y ejecutar, no ofrecer happy to iterate. Self-reflection: asumi que un review firmado "[Reviewed by Robohands]" era de bot y omiti el agradecimiento. Gonzo me corrigio: cixzhang es humano aunque use AI para responder (como el mismo Gonzo). El agradecimiento con nombre era lo correcto. LESSON: no inferir es un bot por la firma de la herramienta. Si detras hay un humano (CONTRIBUTOR/maintainer que dicta la sustancia), tratarlo como humano: agradecer, nombrar, ser directo. BIASES DETECTED: pattern matching superficial (firma de bot = tratar como bot) - no distinguir entre revisado por herramienta AI y autor humano.
 
-**Tags:** OSS: reviewer humano con AI, agradecer con nombre
-
 ---
 
 ## No editar el body de un PR para limpiarlo: la historia importa
 
 Ciclo del PR astryx #4022 (WCAG contrast fix). El reviewer (cixzhang) pidio CHANGES_REQUESTED: quitar los scripts de auditoria y dejar solo el cambio de token. Al ejecutar, edite el body del PR para quitar las referencias a los scripts y dejarlo consistente con el estado final. Gonzo me corrigio: el body del PR es parte de la historia del PR - documenta el que y el porque del cambio, y la evolucion (que se propuso, que se acoto tras el review). Al editarlo borre el rastro de las decisiones. Lesson: el body del PR es un documento vivo, no un snapshot del estado final. No editar el body para que quede limpio o consistente con el estado actual. La forma correcta de responder a un review que pide cambios: dejar el body como esta (o actualizarlo minimamente) y comentar abajo en el PR confirmando que se hizo lo pedido. La historia del PR vive en el body + los comentarios del review. Matiz: si el maintainer/reviewer pide EXPLICITAMENTE limpiar el body, entonces SI se edita - es un pedido directo del reviewer, no una iniciativa propia. Distinguir: edicion pedida por el reviewer = ok; edicion auto-iniciada por consistencia = no.
-
-**Tags:** OSS, body de PR, historia del PR, responder review
 
 ---
 
@@ -282,7 +258,7 @@ Antes de responder cualquier URL de issue/PR: (1) chequear contexto interno con 
 
 Antes de afirmar que un PR 'resolvio parte de un issue', leer files+diff reales: el nombre del PR (doctor, plain text) puede colgar de otra superficie (gateway daemon, UI web) sin tocar la barrera reportada. Caso: #129954 y #131427 en openclaw/openclaw parecian cubrir el #126876 por nombre, pero ninguno toca el terminal del usuario. Anchoring: queria confirmar el claim inicial, no refutarlo.
 
-**Tags:** anchoring,oss-review,verificacion
+**Tags:** verificacion,anchoring,oss-review
 
 ---
 
@@ -294,7 +270,7 @@ RECURRENCIA (2026-09-14, ambito ampliado - ya no solo OSS): en la sesion de Link
 
 MATIZ DE JERARQUIA (2026-09-14): en interacciones publicas no se valida ni se responde desde la cuenta propia a un senior del dominio cuando no se suma algo nuevo. Un 'good catch' hacia afuera invierte la relacion (el senior valida, nosotros no le confirmamos el acierto). Si no hay aporte nuevo, el silencio es la respuesta correcta.
 
-**Tags:** bias,oss,boundaries,cierre-hilos,jerarquia,linkedin,informacion-vs-accion
+**Tags:** oss,bias,boundaries,cierre-hilos,jerarquia,linkedin,informacion-vs-accion
 
 ---
 
@@ -325,6 +301,12 @@ Cuando Gonzo comparte un ticket, el analisis y la respuesta cubren SOLO ese tick
 Cada ticket/PR se trata como entidad individual salvo pedido explicito de Gonzo. Matiz operativo (2026-09-14): SI se puede referenciar trazabilidad ('esto ya se trabajo en tal ticket'), pero NUNCA concluir el estado de ese otro ticket (abierto, cerrado, mergeado, bloqueado, resuelto) - dar por A o por B es afirmar algo no pedido y potencialmente desactualizado. Si el estado de otro ticket importa, verificarlo en el momento con la fuente real (gh pr view, hilo externo) y presentarlo con URL. Caso: #9878 -> agregue estado de #9879 y lo di por resuelto; #9879 seguia OPEN/BLOCKED.
 
 **Tags:** oss,comunicacion,regla,seguimiento
+
+---
+
+## Leccion (2026-09-10) - Verificar ANTES de dudar de datos de Gonzo
+
+ En review del CV: marque "astryx" (facebook/astryx, design system de Meta) como posible typo SIN verificar. Existia y tenia ~12k stars. Golpe serio a la confianza de Gonzo ("acaso tendre que dejar de confiar en lo que me dices?"). **Regla:** cuando dude de un hecho que afirma Gonzo (repo, empresa, dato de CV, nombre propio), NO opinar con sospecha disfrazada de dato. Verificar primero (GitHub API, web, archivo) y despues hablar. Si no puedo verificar, expresarlo como duda explicita, nunca como 
 
 ---
 

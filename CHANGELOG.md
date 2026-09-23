@@ -6,6 +6,38 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-22] - Refactor de schema: taxonomia normalizada y una FK espuria desarmada
+
+### Added
+- **`scripts/migrate-schema.py`:** el refactor completo, con `--dry-run` y `--db`. Repara cinco defectos de modelado con la reparacion correcta para cada uno.
+- **Tablas `tags` + `learning_tags`:** vocabulario controlado con 157 tags y 233 vinculos. Un tag real es un token (minuscula, sin espacios, `[a-z0-9._-]`).
+- **Tabla `categories` con columna `kind`:** distingue los DOS ejes que antes se llamaban igual (`learning` vs `topic`).
+- **`tests/python/test_schema_migration.py`:** 20 tests, uno por propiedad. Incluye el que cazo un bug de idempotencia en mi propio script.
+- **Vista de Learnings con chips de tag** (`getLearningTags`), con conteo por tag y filtro real.
+
+### Changed
+- **`learnings_enriquecido` absorbida y eliminada.** Duplicaba el 94% del texto (112 de 119 filas identicas byte a byte). El vector ahora vive en la misma fila que su texto: `learnings.learning_vector`.
+- **Lectores parcheados** para la tabla que desaparece: `memory-search.py`, `memory-reembed.py`, `memory-catalog-v2.py`, `memory-catalog.sh`, `memory-db.sh`.
+
+### Fixed
+- **`tags`: 0 de 121 filas cumplian el contrato "JSON array".** Y 48 eran **titulos pegados** por un bug de carga. Ahora la fuente de verdad es la junction; la columna vieja queda como legacy documentada. El filtro por tag paso de devolver ruido a ser confiable: `tag=oss` -> 6, `tag=config` -> 9, inexistente -> 0.
+- **20 violaciones de foreign key reparadas.** Y el hallazgo que importa: no eran un problema sino **tres**, con reparaciones distintas.
+  - **9 hijos huerfanos promovidos** (no borrados): tenian contenido valido, sus ids estaban libres.
+  - **7 vinculos colgados eliminados** (apuntaban a la sesion 73, nunca catalogada).
+  - **FK `sessions_relacional.id -> daily_notes.id` ELIMINADA: era espuria.** Verificado: de los 47 vinculos que resuelven, **0 comparten fecha** con su daily. Los escritores pasan `id=None` y las dos secuencias coinciden por numeracion. Ningun codigo hace JOIN entre esas tablas.
+- **La FK espuria era una bomba de tiempo.** Los `ON DELETE CASCADE` nunca dispararon (`PRAGMA foreign_keys = 0`). Si se hubiera activado el pragma sin quitarla, borrar la daily 53 habria destruido la sesion 53 (otra cosa) con 8 topics y 2 vectores. **Arreglar la integridad era desarmar la FK, no activar el pragma.**
+- **2 columnas muertas eliminadas** (`learnings_enriquecido.query_vector`, `sessions_relacional.agent_id`): siempre NULL. Es higiene, no espacio.
+
+### Notes
+- **Verificacion que importa:** la busqueda `"em dash guion"` devuelve **57.5% y 52.0%, identicos** antes y despues. 0 violaciones de FK (eran 20). 128 vectores preservados. Las 51 sesiones y los indices sobrevivieron el rebuild. App 200 en las 5 vistas. 65/65 tests.
+- **Migrado primero sobre una copia**, comparado, y despues sobre la DB real. Backup: `memory/memory.db.pre-schema`.
+- **Dos bugs propios cazados por los tests:** la promocion de huerfanos consultaba la tabla gemela sin verificar que existiera (rompia la segunda corrida), y los tests de la migracion de vectores apuntaban al schema viejo (fallaron correctamente al cambiar `learnings_enriquecido` -> `learnings`).
+- **Lo que NO se hizo:** no se fusionaron `daily_notes` y `sessions_relacional` (juntas son el 53% del peso) porque son **capas distintas** - conversacion cruda vs sesion curada, verificado con contenido distinto por id. No se activo `foreign_keys=1`: 5 lugares usan `INSERT OR REPLACE` (= DELETE + INSERT) que dispararia CASCADEs; es un pase propio.
+- **No es un refactor por espacio** (sale 0.2 MB). Es por correccion: el 53% del peso esta bien donde esta.
+- ADR-058.
+
+---
+
 ## [2026-09-22] - Refactor de la DB: embeddings de JSON a BLOB float32 (12 MB -> 4 MB)
 
 ### Changed

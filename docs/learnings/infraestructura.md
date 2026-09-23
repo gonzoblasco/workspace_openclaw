@@ -15,8 +15,6 @@
 
 **Lesson:** For any PWA with hashed build assets, never serve the shell cache-first. The HTML must be fresh so it can reference the assets that actually exist on the current deployment.
 
-**Tags:** Service worker cache strategy for hashed assets
-
 ---
 
 ## 2026-08-01 - Template literals can silently become literal strings
@@ -26,8 +24,6 @@
 **Impact:** No build errors, but the UI showed literal `$` text instead of interpolated values (stock count, card positions, announcements).
 
 **Lesson:** After any edit that touches template literals, grep for isolated `$` inside string literals and visually verify interpolations. Build/tests do not catch this.
-
-**Tags:** Template literals can silently become literal strings
 
 ---
 
@@ -41,8 +37,6 @@
 
 **Lesson:** In PWAs/touch interfaces, `dblclick` only covers desktop. Always pair it with a tap handler for mobile.
 
-**Tags:** Double-click is not double-tap
-
 ---
 
 ## 2026-08-01 - Build is the real quality gate
@@ -50,8 +44,6 @@
 **Context:** Pre-commit hook runs Biome, tests, and build.
 
 **Lesson:** Lint + tests can pass while the build fails due to runtime-only issues (duplicate imports, unresolved exports). The build must be the last gate before pushing.
-
-**Tags:** Build is the real quality gate
 
 ---
 
@@ -77,8 +69,6 @@
 - Always push the backup tag to the remote so the legacy version survives even if local disk dies.
 - When a project's `.gitignore` needs `.knowledge/` ignored (workspace owns institutional memory), verify the ignore actually took after a merge - the merge can restore an old `.gitignore` and silently re-expose ignored files.
 
-**Tags:** Orphaned submodule + divergent repo versions
-
 ---
 
 ## 2026-08-14 - Refactorización del setup: archivos planos → SQLite (modo híbrido)
@@ -97,8 +87,6 @@
 - REFLECTION: el diseño híbrido (presente en markdown, pasado en SQLite) respeta el flujo de trabajo real sin romperlo. La decisión clave fue versionar la DB (excepción al .gitignore) para no romper la sincronización entre máquinas.
 - LESSON: al migrar archivos planos a DB, separar datos estructurados (migrar) de documentos narrativos (no migrar), y versionar la DB si el flujo depende de sincronización entre máquinas.
 - BIASES DETECTED: none (el diseño consideró el flujo de doble máquina y la legibilidad antes de ejecutar).
-
-**Tags:** Refactorización del setup: archivos planos → SQLite (modo híbrido)
 
 ---
 
@@ -124,8 +112,6 @@
 - LESSON: ante un problema de compatibilidad, primero mirar el lockfile del estado que funcionaba (git show) para obtener las versiones exactas, en vez de probar rangos de versiones a ciegas
 - BIASES DETECTED: sunk cost (insistí en bajar a v5 cuando ya se veía que rompía la UI) + falta de verificación temprana del lockfile original
 
-**Tags:** Compatibilidad en cascada del stack de Adorable (Kanam Forge)
-
 ---
 
 ## 2026-08-17 - Tailwind 4 utilities silently not generating (Next 16 + Turbopack)
@@ -145,8 +131,6 @@
 - En Tailwind 4, `@theme` con valores directos (no `var()`) genera las utilidades. `@theme inline` con `var()` de referencia NO genera utilidades de color.
 - El `tailwind.config.ts` con `theme.extend` vacío puede interferir con el `@theme` del CSS en Tailwind 4 - si no se necesita, eliminarlo.
 - **Diagnóstico rápido:** `grep -o "\.bg-primary{[^}]*}" .next/**/*.css` - si no aparece, el pipeline de Tailwind no está generando utilidades.
-
-**Tags:** Tailwind 4 utilities silently not generating (Next 16 + Turbopack)
 
 ---
 
@@ -168,8 +152,6 @@
 - REFLECTION: el análisis de arquitectura previo (localizar los 3 archivos de acoplamiento) hizo que el desacople fuera un cambio acotado, no una reescritura.
 - LESSON: medir el acoplamiento real (archivos que tocan el backend cloud) antes de planificar la dockerización; la interfaz de las tools es el contrato que permite el reemplazo limpio.
 - BIASES DETECTED: none (el análisis de arquitectura precedió a la ejecución).
-
-**Tags:** Dockerizar un stack cloud manteniendo la interfaz (Kanam Forge Fase 1)
 
 ---
 
@@ -193,8 +175,6 @@
 - LESSON: (1) en syncs de workspace, comparar daily notes locales vs repo antes de decidir; (2) submodulos pueden estar desregistrados o apuntar a repos muertos - inspeccionar `.gitmodules` vs gitlinks; (3) backup siempre antes de resolver conflictos.
 - BIASES DETECTED: none significativo - la pausa reflexiva del skill (LEER → PROCESAR → PAUSA → RESPONDER) fue lo que evitó el error.
 
-**Tags:** Sync de workspace tras larga ausencia (daily notes locales vs repo, submodulos huérfanos)
-
 ---
 
 ## 2026-08-22 - OpenClaw no mostraba los modelos de Ollama en el TUI (infraestructura)
@@ -217,8 +197,6 @@
 - LESSON: cuando un warning de version aparece en OpenClaw, chequear instalaciones duplicadas (homebrew vs nvm) en el PATH de shell de login. Cuando el picker de modelos no muestra todos, revisar agents.defaults.models (allowlist) y agregar wildcard.
 - BIASES DETECTED: anchoring - me enfoque primero en el problema de versiones/PATH (por el warning) y tarde en reconocer que la causa del sintoma de modelos era la allowlist de config. La pista del warning de version era real pero era una causa separada (el TUI viejo de nvm), no la causa del sintoma de modelos.
 
-**Tags:** OpenClaw no mostraba los modelos de Ollama en el TUI (infraestructura)
-
 ---
 
 ## 2026-08-22 - memory-wiki como capa analítica sobre la memoria del workspace (infraestructura)
@@ -237,8 +215,6 @@
 - REFLECTION: cometí el error de tratar memory.db como "ajeno" - Gonzo lo corrigió señalando que era parte de su sistema. El insight es ver el ecosistema completo: memory.db (fuente de verdad) + memory-core (búsqueda) + memory-wiki (análisis) son capas complementarias, no competidoras.
 - LESSON: antes de recomendar migrar/eliminar algo de memoria, verificar QUÉ es realmente cada pieza en el ecosistema del usuario, no asumir que lo que no es del core es descartable. memory.db es la columna vertebral, memory-wiki es la capa analítica encima.
 - BIASES DETECTED: confirmation bias - quería validar la recomendación de memory-lancedb del artículo sin verificar el ecosistema completo; el usuario me reencaminó correctamente.
-
-**Tags:** memory-wiki como capa analítica sobre la memoria del workspace (infraestructura)
 
 ---
 
@@ -267,7 +243,7 @@
 - LESSON: en repos con proyectos embebidos, verificar desde el inicio si son gitlinks (git ls-files -s muestra mode 160000) y usar update-index si es el caso.
 - BIASES DETECTED: anchoring (asumi que git add funcionaria porque "es lo normal" sin considerar el repo anidado).
 
-**Tags:** infraestructura: git repos embebidos, doble-git, update-index
+**Tags:** doble-git,update-index
 
 ---
 
@@ -275,7 +251,7 @@
 
 Al cambiar el codigo de un backend que corre con tsx watch, los procesos viejos pueden seguir vivos e inyectar data en la DB real. En SoporteML v4, al congelar la sincronizacion (MELI_MOCK), el backend viejo seguia corriendo con el codigo anterior e inyecto data sintetica en la DB real (174->187 preguntas). El lsof -tiTCP:3001 solo mata el proceso con el puerto; quedan procesos tsx watch zombie sin puerto que siguen escribiendo. Regla: al cambiar codigo de un backend, matar TODOS los procesos tsx watch (pkill -f tsx) antes de probar, y verificar que no queden procesos zombie. Restaurar la DB desde backup si se contamino. Tambien: cp -f (forzado) para sobrescribir la DB, y verificar md5 despues del cp.
 
-**Tags:** tsx watch, procesos zombie, DB, soporteml, MELI_MOCK, backup
+**Tags:** soporteml,backup
 
 ---
 
@@ -323,7 +299,7 @@ Tres glitches esta noche (29/08) en outputs largos: 'porno-grafia' en el daily (
 
 Los .gitignore anidados (proyecto) ganan sobre las negaciones del .gitignore del workspace. Si projects/<slug>/.gitignore lista .knowledge/, el workspace no puede trackearlo como blob (doble git roto: git add no stagea nada, silenciosamente). Solucion: exclusion por proyecto en .git/info/exclude (local, invisible al workspace). init-project.sh ya corregido (2026-08-29).
 
-**Tags:** git,doble-git,scaffold
+**Tags:** doble-git,git,scaffold
 
 ---
 
@@ -369,7 +345,7 @@ En entornos con proxy egress, git necesita GIT_SSL_CAINFO apuntando al trust bun
 
 Un update fallido de OpenClaw obligo a reinstalar de cero y se perdio el setup de modelos (la config purgada del 26-30/08 con sus backups 20260829/20260830 no existen). Lo que quedo es la config actual con 15 modelos, no la purgada. La purga y las decisiones de motor (DeepSeek V4 Flash default, Gemma 4 para vision) sobrevivieron SOLO en la memoria del workspace, que esta versionada en git. Leccion: la config de OpenClaw es efimera (se pierde en updates fallidos), la memoria del workspace es la fuente de verdad durable. No hacer cambios sobre la config actual; documentar la config deseada en memoria para poder reconstruirla si se vuelve a perder.
 
-**Tags:** config efimera, memoria durable, update fallido, reinstalacion, purga modelos, workspace versionado, 2026-09-04
+**Tags:** 2026-09-04,reinstalacion
 
 ---
 
@@ -377,7 +353,7 @@ Un update fallido de OpenClaw obligo a reinstalar de cero y se perdio el setup d
 
 El OpenClaw del VPS de Hostinger tenia kimi-k2.7-code como fallback #1 del modelo default desde 2026-08-26 (key de ollama-cloud daba Unauthorized y se reordenaron los fallbacks). Los heartbeats/crons del VPS caian al fallback caro (~15x deepseek-v4-flash) sin que nadie lo pidiera. Las catas comparativas de modelos no sirven si un agente por detras llama al modelo descartado. Leccion: al configurar cualquier instancia nueva (VPS, otra maquina, workspace clonado), verificar SIEMPRE el orden de fallbacks del modelo default y que ningun modelo fuera del ecosistema (ADR-040/041) quede como fallback. El VPS se dio de baja.
 
-**Tags:** openclaw, modelos, config, vps, gobernanza, costo
+**Tags:** openclaw,config,modelos,vps,gobernanza,costo
 
 ---
 
@@ -385,7 +361,7 @@ El OpenClaw del VPS de Hostinger tenia kimi-k2.7-code como fallback #1 del model
 
 Telegram usa long polling: dos gateways escuchando el mismo bot token causan error 409 y mensajes perdidos. Patron correcto en multi-maquina: un servidor fijo 24/7 (Mac Mini) con el canal activo, y el canal deshabilitado en la otra maquina. El token viaja por git en openclaw.json, pero solo un gateway puede escuchar a la vez.
 
-**Tags:** telegram, gateway, multi-maquina
+**Tags:** telegram,gateway,multi-maquina
 
 ---
 
@@ -393,7 +369,7 @@ Telegram usa long polling: dos gateways escuchando el mismo bot token causan err
 
 Sesion 2026-09-07: Gonzo pregunto que habia corrido sin su solicitud. La respuesta correcta fue auditar (sessions_history, automations list/runs, git reflog) y mostrar evidencia. Jobs built-in del gateway enabled no implican ejecucion (lastRunAtMs null). Si el usuario vio algo concreto, preguntar que fue antes de cerrar la conclusion.
 
-**Tags:** autonomia, auditoria, gateway, automations
+**Tags:** gateway,autonomia,auditoria,automations
 
 ---
 
@@ -417,7 +393,7 @@ El costo por request difiere entre modelos flash de la misma familia; medir cons
 
 Al revertir el motor del pipeline A/B de deepseek-v4.1-flash a v4-flash (ADR-046), el ADR-045 documentaba la decision pero quien la aplicaba en cada invocacion era model-router.json (estado runtime del router) con overrides sticky en code, review y pipeline_ab apuntando a v4.1. Cambiar solo el ADR habria dejado el pipeline corriendo v4.1 igual. Regla: toda decision de modelo se cierra revisando los TRES planos - (1) config de OpenClaw, (2) ADR (documentacion), (3) estado runtime que la ejecuta (model-router.json, env vars del harness). Segundo hallazgo del mismo dia: los nombres no son intercambiables - deepseek-v4-flash:cloud resuelve en Ollama (motor del pipeline), deepseek-v4-flash:0731 es solo del runtime de OpenClaw y NO resuelve en Ollama.
 
-**Tags:** modelos,pipeline-ab,adr,model-router,ollama
+**Tags:** modelos,pipeline-ab,ollama,adr,model-router
 
 ---
 
@@ -435,7 +411,7 @@ Protocolo antes de correr memory-end-session.py:
 
 Comando de verificacion: ./scripts/memory-db.sh export-daily <fecha> | wc -l  contra  wc -l < memory/<fecha>.md.
 
-**Tags:** memoria,sqlite,drift,backup,db-first
+**Tags:** backup,sqlite,memoria,drift,db-first
 
 ---
 
@@ -451,7 +427,7 @@ Entorno local para correr los tests de adobe/react-spectrum (verificado 2026-09-
 
 El error de un test que no arranca por modulo faltante casi siempre es el postinstall salteado, no un problema del codigo.
 
-**Tags:** react-spectrum,jest,yarn,tests,oxlint,entorno
+**Tags:** tests,react-spectrum,jest,yarn,oxlint,entorno
 
 ---
 
@@ -459,7 +435,7 @@ El error de un test que no arranca por modulo faltante casi siempre es el postin
 
 CAUSA RAIZ del drift 12-14 y de la pisada del 14/09. Hay dos problemas distintos: (1) FLUJO: guardar sesion es manual; los dias 12 y 13 la sesion escribio el daily editando el .md directo (commits track(oss)/docs(prefs)) sin correr session-end.sh, asi que la DB nunca recibio fila esos dias (ultima fila: 09-11 13:41). Cuando el 14/09 corrio el guardado, la DB tenia 3 dias de atraso. (2) BUG DEL SCRIPT: export_daily_to_md regeneraba el .md DESDE la DB sin comparar - si el .md tenia secciones que la DB no, las borraba. Repro real: 17 lineas del daily 14/09 (secciones de dos sesiones paralelas) desaparecieron. Unica proteccion previa: el marker '## Session End - <project>' del mismo proyecto; si el .md tenia otra sesion, se insertaba la fila desde cero con el .md entero. FIX aplicado: guard reconcile_md_into_db corre ANTES del export y mergea secciones solo-en-.md hacia la DB (y preserva las solo-en-DB), backup a /tmp/daily-<date>.backup.md antes de regenerar, escape hatch --no-reconcile. Probado con 6 escenarios: A (md-only mergea, 09:30 sobrevive), B (DB cubre el .md: guard silencioso, sin merge espurio), C (DB-only se preserva), D (sin fila en DB: se crea desde el .md entero), E (--no-reconcile reproduce el viejo comportamiento, opt-in), F (idempotente). Leccion de metodo: un export 'fuente->vista' asume que la fuente esta mas completa; cuando las dos superficies se editan, hay que reconciliar antes, no exportar.
 
-**Tags:** infraestructura,memoria,db-first,bug,export
+**Tags:** memoria,db-first,infraestructura,bug,export
 
 ---
 
@@ -467,21 +443,13 @@ CAUSA RAIZ del drift 12-14 y de la pisada del 14/09. Hay dos problemas distintos
 
 
 
-**Tags:** Patron repetido (2026-09-13/14, minimo 4 apariciones): al pedir salida estructurada (JSON) a un modelo con thinking activo, un num_predict chico se lo come el razonamiento y la respuesta llega truncada o vacia.
-
-Sintomas vistos: content vacio (deepseek, qwen3.5:cloud), y 'Unterminated string starting at...' al parsear el JSON del juez (Fase 5 de kanam-lab).
-
-Arreglo verificado: subir num_predict (220 -> 600 en el juez) Y agregar un parser de respaldo por regex que extraiga el campo critico del texto crudo aunque el JSON este incompleto. Doble red: JSON estricto cuando llega completo, regex cuando llega cortado. Tras el fix: 3/3 corridas consistentes.
-
-Regla: toda salida estructurada de un modelo con thinking necesita presupuesto amplio y un fallback tolerante a truncamiento. Si el proceso escribe en la DB en paralelo al catalog, puede fallar por lock: verificar que la fila quedo, no confiar en el mensaje de exito.
-
 ---
 
 ## Hooks de git en proyecto nuevo: git init antes de instalar, o se pisa el hook del workspace
 
 
 
-**Tags:** infraestructura,git-hooks,triple-git
+**Tags:** triple-git,infraestructura,git-hooks
 
 ---
 
@@ -489,7 +457,7 @@ Regla: toda salida estructurada de un modelo con thinking necesita presupuesto a
 
 Patron repetido 3 veces (kanam-pulse, kanam-studio, soporteml): el dir projects/<slug>/ local es un repo git cuyo remote apunta a workspace_openclaw (no al repo real), tiene SOLO .knowledge/ y no el codigo. Sintoma clasico: git remote -v muestra workspace_openclaw y no existe src/. El codigo real vive en GitHub del dueno. Regla: antes de trabajar un todo de proyecto, verificar si el clon local tiene el codigo real o es placeholder; si es placeholder, clonar bajo demanda en aislamiento (mktemp) y limpiar con trash. No committear el codigo a workspace (el .knowledge si viaja).
 
-**Tags:** infraestructura,clon,proyectos,triple-git
+**Tags:** triple-git,infraestructura,clon,proyectos
 
 ---
 
@@ -505,7 +473,7 @@ El todo 10 era analizar el plugin github-workflow (chris-openclaw). El recon mos
 
 El doctor marcaba 'sin backup registrado'. Habia uno local (todo 55) pero sin automatizacion ni versionado git. Politica definida y aplicada: (1) backup local tar.gz con --no-include-workspace --verify (el workspace ya vive en git; incluir workspace FALLA por symlink absoluto en projects/kanam-lab/.venv que OpenClaw rechaza a proposito - venv regenerable); (2) repo git de backups en ~/Backups/openclaw-git + schedule diario 24h via openclaw backup enable --agent main; (3) snapshots SQLite con --exclude-secrets. Que: estado/config/credenciales/SQLite de ~/.openclaw. Donde: ~/Backups local, sin push remoto (control de Gonzo).
 
-**Tags:** infraestructura,backup,gateway,openclaw
+**Tags:** backup,openclaw,gateway,infraestructura
 
 ---
 
@@ -521,48 +489,11 @@ Create venvs and projects in their FINAL location from the start; moving a venv 
 
 
 
-**Tags:** Sintoma: `git add projects/<slug>/.knowledge` no stagea nada y **sale con codigo 0**. No hay error, no hay warning. El script que lo invoca cree que funciono y commitea vacio.
-
-Causa: si `projects/<slug>/.git` ya existe, el repo del workspace ve ese directorio como **embedded repository**. Git no desciende al `.knowledge/` y el add no tiene efecto.
-
-Verificado en sandbox (/tmp/gt3, /tmp/gt4) el 2026-09-22:
-- add **antes** del `git init` del proyecto -> funciona.
-- add **despues** del `git init` -> falla, y **no importa el patron de .gitignore** (se probaron tres variantes, todas fallan).
-- Una vez que el indice tiene el .knowledge seedeado, los updates posteriores funcionan normal aunque el `.git` del proyecto exista.
-
-Fix aplicado en `scripts/init-project.sh`: mover el `git add/commit` del `.knowledge` a **antes** del init del proyecto + guard que falla ruidoso (`git diff --cached --quiet` -> exit 1) en vez de imprimir un check falso.
-
-Workaround para un proyecto ya creado con el bug: mover el `.git` temporalmente, stagear el `.knowledge`, devolver el `.git`. Fue el que se uso para kanam-os.
-
-Leccion de metodo: cuando un comando de git "funciona" sin output, verificar con `git ls-files` o `git diff --cached --quiet`, no con el exit code.
-
 ---
 
 ## La verificacion que miente: exit 1 dentro de un pipe y word-splitting de zsh
 
 
-
-**Tags:** Dos bugs de la misma clase, los dos encontrados al construir el CRUD de kanam-os (2026-09-22). La clase: **una verificacion que da verde sin haber verificado nada**.
-
-**1. exit 1 dentro de un pipe no propaga.** El guard era:
-
-```bash
-sqlite3 "$DB" "UPDATE ...; SELECT changes();" | { read -r n; if [ "$n" = "0" ]; then exit 1; fi; }
-```
-
-El `exit 1` corre en el **subshell** del lado derecho del pipe, no en el shell principal. El script imprime el error y **sale con exit 0**. La UI habria mostrado "ok" sobre una operacion que no hizo nada. Fix: sacar el pipe y capturar con `n=$(sqlite3 ...)`, que deja el `exit 1` en el shell principal. Leccion de bash: para propagar el codigo de salida, la decision tiene que tomarse fuera del pipe.
-
-**2. zsh no hace word-splitting sobre variables sin comillas.** El test que valide los guards era:
-
-```bash
-for cmd in "done-todo 999999" ...; do ./scripts/memory-db.sh $cmd; done
-```
-
-En zsh (no en bash) `$cmd` viaja como **un solo argumento**: "done-todo 999999". El script no matchea ningun case, cae al `*)` de usage y sale 0. Resultado: el test reportaba `exit=0` para **todos** los casos, incluido el que yo ya habia verificado a mano con `exit=1`. Un falso verde perfecto. Fix: pasar los argumentos separados (`./script done-todo 999999`) o usar bash.
-
-**Como se detecto cada uno:** el 1 con el test de `execFile` (el mecanismo real que usa la app), que reporto honestamente que un id inexistente no fallaba. El 2 comparando una corrida directa (exit=1) contra el loop (exit=0) - cuando dos mediciones del mismo hecho discrepan, la medicion es el bug.
-
-**Regla general:** cuando un comando "funciona" sin output, verificar el EFECTO (`git ls-files`, `git diff --cached`, el contenido de la DB), nunca el exit code ni la ausencia de error. Y desconfiar del propio test antes que del codigo: si la medicion y el hecho no coinciden, revisar la medicion primero.
 
 ---
 
@@ -570,15 +501,13 @@ En zsh (no en bash) `$cmd` viaja como **un solo argumento**: "done-todo 999999".
 
 
 
-**Tags:** Caso kanam-os (2026-09-22). `next dev` **default es `--hostname 0.0.0.0`** (todas las interfaces), no loopback. Verificado: `curl http://192.168.100.7:4317/` devolvia **200**.
+**Tags:** learnings
 
-Por que importa aca y no en un proyecto cualquiera: kanam-os **lee y escribe la memoria de Kanam OS** (fichas, learnings, TODOs, DB de 12 MB) y tiene botones de escritura. Cualquier dispositivo en la red local - invitados, IoT, la TV - podia leer y **modificar** la memoria, sin autenticacion.
+---
 
-La confusion que lo hizo facil de pasar por alto: **el portal SI tiene token** (`?openclaw_portal=...`, 401 sin el), y el listener del portal esta bien bindeado a 127.0.0.1. Pero el **puerto directo del server (4317) no tiene token**, y el portal solo protege el suyo (55149). Proteger el proxy no protege el puerto de atras.
+## Learning: git + proxy egress SSL
 
-Fix: `--hostname 127.0.0.1` en los scripts dev/start de package.json. El portal sigue funcionando (mismo host) y la LAN queda cerrada (verificado: 000).
-
-Regla general: para cualquier app local que sirva **datos privados o de escritura**, bindear explicitamente a loopback. Un portal con token no alcanza si el server tambien escucha en la LAN.
+ El push fallaba con `SSL certificate problem: unable to get local issuer certificate`. Causa: el entorno inyecta un proxy egress con trust bundle (`SSL_CERT_FILE=/Users/gonzoblasco/.openclaw/secret-egress-proxy/.../trust-bundle.pem`) que curl respeta pero git no usa por defecto. **Fix: `GIT_SSL_CAINFO="$SSL_CERT_FILE" git push`.** Los primeros intentos con `git pull --rebase && git push` encadenados murieron en el pull; el commit local quedó y se pusheó después. ## Sesión: MCP servers - Supabas
 
 ---
 

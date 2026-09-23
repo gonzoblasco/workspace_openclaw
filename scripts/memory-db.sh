@@ -361,7 +361,7 @@ case "$1" in
     ;;
   learnings)
     cat_filter="${2:-%}"
-    sqlite3 -header -column "$DB" "SELECT id, category, substr(title,1,60) AS title, substr(tags,1,40) AS tags FROM learnings WHERE category LIKE '$cat_filter' ORDER BY category, id;"
+    sqlite3 -header -column "$DB" "SELECT id, category, substr(title,1,60) AS title, substr((SELECT group_concat(t.name, ',') FROM learning_tags lt JOIN tags t ON t.id=lt.tag_id WHERE lt.learning_id=learnings.id),1,40) AS tags FROM learnings WHERE category LIKE '$cat_filter' ORDER BY category, id;"
     ;;
   add-learning)
     cat="$2"; title="$3"; content="$4"; tags="${5:-}"
@@ -425,7 +425,7 @@ case "$1" in
       sqlite3 "$DB" "SELECT id FROM learnings WHERE category='$cat' ORDER BY id;" | while read -r id; do
         title=$(sqlite3 "$DB" "SELECT title FROM learnings WHERE id=$id;")
         content=$(sqlite3 "$DB" "SELECT content FROM learnings WHERE id=$id;")
-        tags=$(sqlite3 "$DB" "SELECT tags FROM learnings WHERE id=$id;")
+        tags=$(sqlite3 "$DB" "SELECT COALESCE(group_concat(t.name, ','), '') FROM learning_tags lt JOIN tags t ON t.id=lt.tag_id WHERE lt.learning_id=$id;")
         {
           echo "## $title"
           echo ""

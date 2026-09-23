@@ -163,7 +163,7 @@ def search_learnings(query, top_n=3):
     qv = get_embedding(query)
 
     rows = c.execute(
-        "SELECT id, category, title, content, learning_vector FROM learnings_enriquecido WHERE learning_vector IS NOT NULL"
+        "SELECT id, category, title, content, learning_vector FROM learnings WHERE learning_vector IS NOT NULL"
     ).fetchall()
 
     scored = []

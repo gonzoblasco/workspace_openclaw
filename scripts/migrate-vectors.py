@@ -7,7 +7,7 @@ guardados como texto JSON. 1024 floats ocupaban ~22 KB en JSON y 4096 bytes en
 BLOB float32. Con ~168 vectores nuevos por mes, el JSON crecia ~3.6 MB/mes.
 
 Lo que hace:
-  1. Convierte session_vectors.query_vector y learnings_enriquecido.learning_vector
+  1. Convierte session_vectors.query_vector y learnings.learning_vector
      de TEXT(JSON) a BLOB(float32). Idempotente: salta los que ya son BLOB.
   2. Reemplaza idx_learnings_vector (copia completa de los vectores en texto,
      3.2 MB) por un indice parcial sobre id (KB). El original solo servia para
@@ -35,22 +35,22 @@ from pathlib import Path
 WS = Path(__file__).resolve().parent.parent
 DB = WS / "memory" / "memory.db"
 
-# (tabla, columna) con vectores que hay que convertir.
+# (tabla, columna) con vectores que hay que convertir. Desde ADR-058 el vector
+# de learnings vive en `learnings`, no en la tabla gemela eliminada.
 VECTOR_COLS = [
     ("session_vectors", "query_vector"),
-    ("learnings_enriquecido", "learning_vector"),
+    ("learnings", "learning_vector"),
 ]
 
 # El indice pesado y su reemplazo liviano.
 HEAVY_INDEX = "idx_learnings_vector"
 LIGHT_INDEX_SQL = (
     "CREATE INDEX IF NOT EXISTS idx_learnings_vec_present "
-    "ON learnings_enriquecido(id) WHERE learning_vector IS NOT NULL"
+    "ON learnings(id) WHERE learning_vector IS NOT NULL"
 )
 
 # Columnas siempre NULL (verificado antes de escribir esto).
 DEAD_COLS = [
-    ("learnings_enriquecido", "query_vector"),
     ("sessions_relacional", "agent_id"),
 ]
 

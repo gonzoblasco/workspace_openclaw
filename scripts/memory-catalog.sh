@@ -151,22 +151,8 @@ def create_schema():
         )
     ''')
     
-    # learnings_enriquecido table
-    conn.execute('''
-        CREATE TABLE IF NOT EXISTS learnings_enriquecido (
-            id INTEGER PRIMARY KEY,
-            category TEXT NOT NULL,
-            title TEXT NOT NULL,
-            content TEXT NOT NULL,
-            tags TEXT,
-            learning_vector TEXT,
-            query_vector TEXT,
-            relevance_score REAL DEFAULT 0.0,
-            created_at TEXT NOT NULL DEFAULT (datetime('now')),
-            updated_at TEXT,
-            FOREIGN KEY(id) REFERENCES learnings(id) ON DELETE CASCADE
-        )
-    ''')
+    # Los vectores de learnings viven en la propia tabla `learnings` desde
+    # ADR-058 (la tabla gemela `learnings_enriquecido` duplicaba el 94% del texto).
     
     # Create indexes
     conn.execute('CREATE INDEX IF NOT EXISTS idx_sessions_date ON sessions_relacional(date)')
@@ -260,14 +246,15 @@ def catalog_memory():
                     VALUES (?, ?, 0.7)
                 ''', (session_id, topic_id))
             
-            # Process learnings if present
+            # Process learnings if present. Desde ADR-058 el vector vive en la
+            # misma fila de learnings, asi que la seccion solo aporta la
+            # categoria cuando la fila todavia no la tiene.
             learning_sections = re.findall(r'###\s+(.+?)\n\n(.*?)(?=###|$)', content)
-            for section_title, section_content in learning_sections:
+            for section_title, _section_content in learning_sections:
                 conn.execute('''
-                    INSERT OR IGNORE INTO learnings_enriquecido 
-                    (id, category, title, content, tags, created_at, updated_at)
-                    SELECT id, ?, ?, ?, ?, datetime('now'), datetime('now')
-                    FROM learnings WHERE id IN (SELECT id FROM learnings WHERE LOWER(title) LIKE ?)
+                    UPDATE learnings SET category = ?, updated_at = datetime('now')
+                    WHERE category IS NULL OR TRIM(category) = ''
+                      AND LOWER(title) LIKE ?
                 ''', (section_title.lower(), f'%{section_title.lower()}%'))
             
             conn.commit()
@@ -308,7 +295,7 @@ SELECT 'topics: ' || COUNT(*) FROM topics
 UNION ALL
 SELECT 'topic_sessions: ' || COUNT(*) FROM topic_sessions
 UNION ALL
-SELECT 'learnings_enriquecido: ' || COUNT(*) FROM learnings_enriquecido WHERE learning_vector IS NOT NULL;
+SELECT 'learnings (con vector): ' || COUNT(*) FROM learnings WHERE learning_vector IS NOT NULL;
 
 SQL
 

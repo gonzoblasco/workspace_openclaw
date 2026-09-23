@@ -63,6 +63,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-055 | [Bloques managed - settings de la DB propagados a documentos de identidad](./ADR-055-bloques-managed-settings-db.md) | workspace |
 | ADR-056 | [Guardas de gobernanza en el pre-commit - guion comun y rutas citadas](./ADR-056-guardas-gobernanza-pre-commit.md) | workspace |
 | ADR-057 | [Embeddings en BLOB float32, no JSON de texto](./ADR-057-embeddings-blob-float32.md) | workspace |
+| ADR-058 | [Taxonomia normalizada, tabla gemela absorbida y una FK espuria](./ADR-058-taxonomia-normalizada-fk-espuria.md) | workspace |
 
 ## Formato
 

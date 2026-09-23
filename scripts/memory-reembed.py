@@ -96,14 +96,14 @@ def main():
     targets = []
 
     for row_id, title, content in c.execute(
-        "SELECT id, title, coalesce(content,'') FROM learnings_enriquecido "
+        "SELECT id, title, coalesce(content,'') FROM learnings "
         "WHERE learning_vector IS NOT NULL"
     ).fetchall():
         vj = c.execute(
-            "SELECT learning_vector FROM learnings_enriquecido WHERE id=?", (row_id,)
+            "SELECT learning_vector FROM learnings WHERE id=?", (row_id,)
         ).fetchone()[0]
         if stale(vj):
-            targets.append(("learnings_enriquecido", "learning_vector", row_id, f"{title} {content}".strip()))
+            targets.append(("learnings", "learning_vector", row_id, f"{title} {content}".strip()))
 
     for row_id, chunk_text in c.execute(
         "SELECT id, chunk_text FROM session_vectors "
@@ -152,7 +152,7 @@ def main():
 
     # Post-run dimension report
     import collections
-    for table, column in (("learnings_enriquecido", "learning_vector"), ("session_vectors", "query_vector")):
+    for table, column in (("learnings", "learning_vector"), ("session_vectors", "query_vector")):
         dims = collections.Counter()
         for (vj,) in c.execute(f"SELECT {column} FROM {table} WHERE {column} IS NOT NULL"):
             d = _vu.dims(vj)
