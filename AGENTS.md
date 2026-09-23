@@ -115,7 +115,9 @@ Detalle en `docs/AGENTS-DETALLE.md`.
 
 #### Razonamiento: HIGH unificado (ADR-053, 2026-09-22)
 - **Thinking `high` para todos los roles** (Kanam y agentes A/B). Decidido por Gonzo "para no gastar recursos innecesarios".
+<!-- BEGIN MANAGED:model-triple -->
 - **Modelo primario:** `deepseek-v4.1-flash:cloud`. **Auxiliar:** `gemma4:cloud`. **Alternativo:** `glm-5.3-flash:cloud`.
+<!-- END MANAGED:model-triple -->
 - _Historico (2026-08-27 a 2026-09-22): Kanam MAX / agentes HIGH, criterio REVISAR vs CREAR. Reemplazado por ADR-053; ver ahi la consecuencia aceptada._
 
 #### Pausa obligatoria: iteran $\rightarrow$ revisión final $\rightarrow$ push $\rightarrow$ borrador

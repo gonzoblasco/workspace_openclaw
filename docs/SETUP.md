@@ -17,7 +17,13 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 
 ## Modelos (Ollama local + cloud)
 
-- **Modelo de trabajo (2026-08-30):** Default de OpenClaw: `deepseek-v4-flash:cloud` (revert 2026-08-30, decisión explícita de Gonzo: la diferencia de calidad vs GLM 5.3 Flash es muchísima). Kanam en thinking **max**; agentes A/B del pipeline SIEMPRE en **high** con `deepseek-v4-flash:cloud`. Config: `agents.defaults.thinkingDefault = "max"`. Pipeline en cadena A/B: Kanam planifica en max, agentes ejecutan en high. Regla de niveles: agentes de codigo siempre high, max solo para diseño dificil puntual (el max no fue driver de calidad en la comparativa; DeepSeek en max filosofa, ADR-040).
+<!-- BEGIN MANAGED:model-triple -->
+- **Modelo de trabajo:** primario `deepseek-v4.1-flash:cloud`, auxiliar `gemma4:cloud`, alternativo `glm-5.3-flash:cloud`. Thinking default: **high** (ADR-053).
+<!-- END MANAGED:model-triple -->
+
+> Los valores de arriba los mantiene `scripts/managed-blocks.py` desde la tabla `settings` de `memory.db`. Para cambiarlos: `managed-blocks.py set <key> <value>` y despues `apply`. No editar a mano.
+
+- **Modelo de trabajo (2026-08-30, historico):** Default de OpenClaw: `deepseek-v4-flash:cloud` (revert 2026-08-30, decisión explícita de Gonzo: la diferencia de calidad vs GLM 5.3 Flash es muchísima). Kanam en thinking **max**; agentes A/B del pipeline SIEMPRE en **high** con `deepseek-v4-flash:cloud`. Config: `agents.defaults.thinkingDefault = "max"`. Pipeline en cadena A/B: Kanam planifica en max, agentes ejecutan en high. Regla de niveles: agentes de codigo siempre high, max solo para diseño dificil puntual (el max no fue driver de calidad en la comparativa; DeepSeek en max filosofa, ADR-040).
 - **GLM-5.3-Flash (2026-08-29):** primer GLM nativamente multimodal: imagen, video y archivos (PDFs) como input. 1M de contexto, 131k output, 320B params totales / 18B activos (MoE), licencia MIT. En el backend soporta `reasoning_effort` (low/high/max, default max) pero Ollama no expone el knob: se le pasa CERO parametros, default del servidor (ADR-041). Ex "ox-alpha" (stealth en OpenRouter/OpenCode, probado en batalla con agentes de codigo). Ficha verificada en docs.z.ai + Hugging Face. Manual completo: `docs/adr/ADR-041-motor-llm-glm-5.3-flash.md`.
 - **web_search provider:** `DuckDuckGo Search (experimental)` (key-free, no consume créditos). El provider `ollama` usaba `glm-5.2:cloud` y consumía requests del presupuesto sin pedirlo - NO usar.
 - **Modelos disponibles (Ollama):**

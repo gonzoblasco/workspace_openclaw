@@ -6,6 +6,27 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-22] - Fase 3: bloques managed (settings de la DB propagados a los archivos)
+
+### Added
+- **`scripts/managed-blocks.py`:** mecanismo que propaga valores globales desde la tabla `settings` de `memory.db` a bloques delimitados por marcadores `MANAGED` dentro de los archivos. Subcomandos: `list`, `seed`, `set`, `check`, `apply [--dry-run]`. Reglas duras: solo reescribe lo que esta entre marcadores; si faltan, **no inserta nada** y muestra el snippet exacto para pegar; idempotente; `set` y `apply` son pasos separados.
+- **Tabla `settings`** en `memory/memory.db` (key, value, description, updated_at) con 4 claves semilla: `model_primary`, `model_auxiliary`, `model_alternative`, `thinking_default`.
+- **`tests/python/test_managed_blocks.py`:** 9 tests que cubren las propiedades criticas (idempotencia, no tocar el texto de afuera de los marcadores, no adivinar cuando faltan, que el cambio de un setting propague al bloque).
+- **`projects/kanam-os/app/settings`:** vista que lista los settings, permite cambiarlos, ver el diff y propagar. En dos pasos visibles: cambiar el valor no toca archivos; propagar si, y avisa.
+- **`docs/adr/ADR-055-bloques-managed-settings-db.md`:** la decision, con la frontera explicita respecto de ADR-038.
+- **Primer bloque aplicado:** `model-triple` en `AGENTS.md` y `docs/SETUP.md`.
+
+### Fixed
+- **`docs/SETUP.md` contradecia a ADR-053 desde que se escribio.** Declaraba default `deepseek-v4-flash:cloud` y Kanam en thinking **`max`**, cuando el config real (`~/.openclaw/openclaw.json`: `thinkingDefault: "high"`) y ADR-053 dicen primario `deepseek-v4.1-flash:cloud` con thinking `high` para todos. Nadie lo habia notado porque nadie compara archivos a mano. Resuelto sin editar a mano: se inserto el bloque managed y la linea vieja se preservo marcada como historica. Es exactamente el drift que ADR-055 viene a hacer detectable.
+- **`lib/actions.ts`: prefijo de interprete equivocado.** Al unificar los dos scripts en un solo helper quedo `python3 <script>` para ambos, lo que rompia `memory-db.sh` (es un script de shell). Ahora se invocan directo por shebang: `python3 memory-db.sh` falla, verificado.
+
+### Notes
+- **Verificacion:** 9/9 tests; `check` sobre los archivos reales reporta ambos bloques "al dia" y `apply` no cambia nada (idempotente); propagacion probada cambiando `thinking_default` a `max` (mostro el diff correcto) y **revertida en el acto** porque ADR-053 dice `high`.
+- `AGENTS.md` quedo en 15696 chars, bajo el limite de bootstrap de 20000.
+- **Limite respetado:** los documentos narrativos (MEMORY.md, SOUL.md, AGENTS.md, USER.md) no se migran a la DB (ADR-038), pero ahora pueden contener un bloque generado. La distincion: un valor unico y verificable repetido en varios archivos es un dato mal modelado; la prosa alrededor es interpretacion.
+
+---
+
 ## [2026-09-22] - Kanam OS: app local para ver la memoria como fichas, tablas y grafos
 
 ### Fixed
