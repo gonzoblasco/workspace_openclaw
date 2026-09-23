@@ -89,6 +89,7 @@ def db():
     if not DB_PATH.exists():
         sys.exit(f"Error: no existe la DB en {DB_PATH}")
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     conn.execute(
         """CREATE TABLE IF NOT EXISTS settings (
             key TEXT PRIMARY KEY,

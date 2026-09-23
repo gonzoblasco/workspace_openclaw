@@ -84,6 +84,7 @@ def cosine_similarity(vec1, vec2):
 def load_chunks():
     """Load session chunks with their content snippets for labeling"""
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
     rows = c.execute(
         """SELECT sv.session_id, sv.query_vector, sv.chunk_index, s.date, s.content_bare
@@ -218,6 +219,7 @@ def summarize_cluster(cluster):
 def assign_new_topics(cluster_map):
     """Insert discovered topics into DB and link to sessions"""
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
 
     for cluster_name, cluster in cluster_map.items():
@@ -278,6 +280,7 @@ def recalc_fixed_topics():
     menciones = vinculo mas fuerte), no un valor fijo.
     """
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
     sessions = c.execute("SELECT id, date, content_bare FROM sessions_relacional").fetchall()
 
@@ -331,6 +334,7 @@ def prune_junk_topics(coverage_cap=0.33, min_sessions=3):
     Solo se tocan los AUTO-DISCOVERED: los fijos son curados a mano.
     """
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
     sessions = [r[0] or "" for r in c.execute("SELECT content_bare FROM sessions_relacional")]
     total = max(len(sessions), 1)
@@ -368,6 +372,7 @@ def main():
 
     if "--list" in sys.argv:
         conn = sqlite3.connect(DB_PATH)
+        conn.execute("PRAGMA foreign_keys = ON")
         rows = conn.execute(
             """SELECT t.name, t.description, COUNT(ts.session_id)
                FROM topics t LEFT JOIN topic_sessions ts ON t.id = ts.topic_id
@@ -424,6 +429,7 @@ def main():
     # Show existing fixed topics for contrast
     print("\n" + "=" * 60)
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     rows = conn.execute(
         """SELECT t.name, COUNT(ts.session_id) FROM topics t
            LEFT JOIN topic_sessions ts ON t.id = ts.topic_id

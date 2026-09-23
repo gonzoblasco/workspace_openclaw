@@ -35,7 +35,7 @@ gh auth status >/dev/null 2>&1 || { echo "Error: gh sin autenticar." >&2; exit 1
 sql_escape() { printf '%s' "$1" | sed "s/'/''/g"; }
 
 # Crea la tabla de metadata de sync si no existe.
-sqlite3 "$DB_PATH" "CREATE TABLE IF NOT EXISTS oss_sync (
+sqlite3 -cmd "PRAGMA foreign_keys=ON" "$DB_PATH" "CREATE TABLE IF NOT EXISTS oss_sync (
   repo TEXT NOT NULL,
   pr TEXT NOT NULL,
   last_checked TEXT,
@@ -82,14 +82,14 @@ while IFS='|' read -r id repo pr; do
   fi
 
   # Consulta el estado actual en la DB.
-  current=$(sqlite3 "$DB_PATH" "SELECT status FROM contributions WHERE id='$id';")
+  current=$(sqlite3 -cmd "PRAGMA foreign_keys=ON" "$DB_PATH" "SELECT status FROM contributions WHERE id='$id';")
   action=""
 
   if [ -n "$new_status" ] && [ "$current" != "$new_status" ]; then
     if [ "$DRY_RUN" = "1" ]; then
       action="DRY|$repo|$pr|$current->$new_status"
     else
-      sqlite3 "$DB_PATH" "UPDATE contributions SET status='$new_status' WHERE id='$id';"
+      sqlite3 -cmd "PRAGMA foreign_keys=ON" "$DB_PATH" "UPDATE contributions SET status='$new_status' WHERE id='$id';"
       action="UPD|$repo|$pr|$current->$new_status"
     fi
   elif [ "$current" = "open" ] && [ "$mergeable_state" = "dirty" ] || [ "$current" = "open" ] && [ "$mergeable_state" = "failing" ]; then
@@ -97,20 +97,20 @@ while IFS='|' read -r id repo pr; do
     if [ "$DRY_RUN" = "1" ]; then
       action="DRY|$repo|$pr|needs-rebase($mergeable_state)"
     else
-      sqlite3 "$DB_PATH" "INSERT OR REPLACE INTO oss_sync (repo, pr, last_checked, state, merged, mergeable_state, comments, updated_at) VALUES ('$(sql_escape "$repo")', '$(sql_escape "$pr")', '$now', '$state', '$merged', '$mergeable_state', $comments, '$updated_at');"
+      sqlite3 -cmd "PRAGMA foreign_keys=ON" "$DB_PATH" "INSERT OR REPLACE INTO oss_sync (repo, pr, last_checked, state, merged, mergeable_state, comments, updated_at) VALUES ('$(sql_escape "$repo")', '$(sql_escape "$pr")', '$now', '$state', '$merged', '$mergeable_state', $comments, '$updated_at');"
       action="NOTE|$repo|$pr|needs-rebase($mergeable_state)"
     fi
   fi
 
   # Guarda metadata de la consulta (si no es dry-run y no se guardo arriba).
   if [ "$DRY_RUN" != "1" ] && [ -z "$action" ] || [ "$DRY_RUN" != "1" ] && [ "${action#NOTE}" = "$action" ]; then
-    sqlite3 "$DB_PATH" "INSERT OR REPLACE INTO oss_sync (repo, pr, last_checked, state, merged, mergeable_state, comments, updated_at) VALUES ('$(sql_escape "$repo")', '$(sql_escape "$pr")', '$now', '$state', '$merged', '$mergeable_state', $comments, '$updated_at');"
+    sqlite3 -cmd "PRAGMA foreign_keys=ON" "$DB_PATH" "INSERT OR REPLACE INTO oss_sync (repo, pr, last_checked, state, merged, mergeable_state, comments, updated_at) VALUES ('$(sql_escape "$repo")', '$(sql_escape "$pr")', '$now', '$state', '$merged', '$mergeable_state', $comments, '$updated_at');"
   fi
 
   if [ -n "$action" ]; then
     echo "$action"
   fi
-done < <(sqlite3 "$DB_PATH" "SELECT id, repo, pr FROM contributions WHERE tipo='pr'
+done < <(sqlite3 -cmd "PRAGMA foreign_keys=ON" "$DB_PATH" "SELECT id, repo, pr FROM contributions WHERE tipo='pr'
   AND pr <> '-' AND pr <> '' AND pr GLOB '*[0-9]*';")
 
 if [ "$QUIET" != "1" ]; then

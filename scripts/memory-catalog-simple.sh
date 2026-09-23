@@ -47,6 +47,7 @@ def main():
         sys.exit(1)
     
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
     
     # Create sessions_relacional table

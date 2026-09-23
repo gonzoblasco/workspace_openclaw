@@ -22,12 +22,26 @@
 #   ./scripts/memory-db.sh topics                - lista topics con frecuencia
 #   ./scripts/memory-db.sh recent [n]             - lista sesiones recientes
 
-DB="memory/memory.db"
+# Permite apuntar a otra DB (para probar sobre una copia sin tocar la real).
+# Los scripts de Python ya respetan MEMORY_DB; esto los alinea.
+DB="${MEMORY_DB:-memory/memory.db}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Escape comillas simples para interpolacion SQL segura (evita SQL injection / broken quoting)
 sql_escape() {
   printf '%s' "$1" | sed "s/'/''/g"
+}
+
+# CLI de sqlite3 con las FOREIGN KEYS ACTIVAS.
+#
+# `PRAGMA foreign_keys` es por conexion y viene APAGADA por defecto: declarar la
+# FK en el schema no alcanza. Medido el 2026-09-23: la DB tenia 6 FK declaradas y
+# 0 activas, y por eso se acumularon huerfanos que hubo que limpiar a mano.
+# Toda escritura pasa por aca para que la integridad se aplique siempre.
+# (Los SELECT tambien lo llevan: activarlo en lectura no rompe nada y mantiene un
+# unico camino de acceso.)
+db() {
+  sqlite3 -cmd "PRAGMA foreign_keys = ON" "$DB" "$@"
 }
 
 case "$1" in
@@ -221,7 +235,7 @@ case "$1" in
     if [ -n "$detail" ]; then sets="$sets, detail='$(sql_escape "$detail")'"; fi
     if [ -n "$context" ]; then sets="$sets, context='$(sql_escape "$context")'"; fi
     if [ -n "$pr_url" ]; then sets="$sets, pr_url='$(sql_escape "$pr_url")'"; fi
-    sqlite3 "$DB" "UPDATE contributions SET $sets WHERE id='$(sql_escape "$id")'; SELECT 'Contribucion actualizada: ' || changes() || ' fila(s).';"
+    db "UPDATE contributions SET $sets WHERE id='$(sql_escape "$id")'; SELECT 'Contribucion actualizada: ' || changes() || ' fila(s).';"
     ;;
   oss-sync-status)
     # Muestra la metadata de sync de la tabla oss_sync.
@@ -232,13 +246,13 @@ case "$1" in
     text="$2"; project="${3:-}"
     text_esc=$(sql_escape "$text")
     project_esc=$(sql_escape "$project")
-    sqlite3 "$DB" "INSERT INTO todos (text, project) VALUES ('$text_esc', '$project_esc');"
+    db "INSERT INTO todos (text, project) VALUES ('$text_esc', '$project_esc');"
     echo "Todo agregado."
     ;;
   add-inbox)
     idea="$2"
     idea_esc=$(sql_escape "$idea")
-    sqlite3 "$DB" "INSERT INTO inbox (idea) VALUES ('$idea_esc');"
+    db "INSERT INTO inbox (idea) VALUES ('$idea_esc');"
     echo "Idea agregada al inbox."
     ;;
   done-todo)
@@ -251,7 +265,7 @@ case "$1" in
     fi
     # Sin pipe: el `exit 1` tiene que correr en el shell principal, no en un
     # subshell (dentro de un pipe no cambia el exit code del script).
-    n=$(sqlite3 "$DB" "UPDATE todos SET status='done', done_at=datetime('now') WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    n=$(db "UPDATE todos SET status='done', done_at=datetime('now') WHERE id='$(sql_escape "$id")'; SELECT changes();")
     if [ "$n" = "0" ]; then
       echo "Error: no existe un todo con id $id." >&2
       exit 1
@@ -267,7 +281,7 @@ case "$1" in
       echo "Uso: $0 reopen-todo <id>" >&2
       exit 1
     fi
-    n=$(sqlite3 "$DB" "UPDATE todos SET status='open', done_at=NULL WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    n=$(db "UPDATE todos SET status='open', done_at=NULL WHERE id='$(sql_escape "$id")'; SELECT changes();")
     if [ "$n" = "0" ]; then
       echo "Error: no existe un todo con id $id." >&2
       exit 1
@@ -283,7 +297,7 @@ case "$1" in
       echo "Uso: $0 triage-inbox <id>" >&2
       exit 1
     fi
-    n=$(sqlite3 "$DB" "UPDATE inbox SET status='triaged' WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    n=$(db "UPDATE inbox SET status='triaged' WHERE id='$(sql_escape "$id")'; SELECT changes();")
     if [ "$n" = "0" ]; then
       echo "Error: no existe una idea con id $id." >&2
       exit 1
@@ -298,7 +312,7 @@ case "$1" in
       high|medium|low) ;;
       *) echo "Error: prioridad invalida '$prio' (usar high|medium|low)." >&2; exit 1 ;;
     esac
-    n=$(sqlite3 "$DB" "UPDATE todos SET priority='$(sql_escape "$prio")' WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    n=$(db "UPDATE todos SET priority='$(sql_escape "$prio")' WHERE id='$(sql_escape "$id")'; SELECT changes();")
     if [ "$n" = "0" ]; then
       echo "Error: no existe un todo con id $id." >&2
       exit 1
@@ -337,7 +351,7 @@ case "$1" in
       exit 1
     fi
     sets="${sets#, }"
-    n=$(sqlite3 "$DB" "UPDATE sessions_relacional SET $sets WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    n=$(db "UPDATE sessions_relacional SET $sets WHERE id='$(sql_escape "$id")'; SELECT changes();")
     if [ "$n" = "0" ]; then
       echo "Error: no existe una ficha con id $id." >&2
       exit 1
@@ -357,7 +371,7 @@ case "$1" in
     repo_esc=$(sql_escape "$repo"); pr_esc=$(sql_escape "$pr"); pr_url_esc=$(sql_escape "$pr_url")
     status_esc=$(sql_escape "$status"); detail_esc=$(sql_escape "$detail"); context_esc=$(sql_escape "$context")
     issue_esc=$(sql_escape "$issue"); issue_url_esc=$(sql_escape "$issue_url"); tier_esc=$(sql_escape "$tier"); tipo_esc=$(sql_escape "$tipo")
-    sqlite3 "$DB" "INSERT INTO contributions (repo, issue, issue_url, pr, pr_url, status, detail, context, tier, tipo) VALUES ('$repo_esc', '$issue_esc', '$issue_url_esc', '$pr_esc', '$pr_url_esc', '$status_esc', '$detail_esc', '$context_esc', '$tier_esc', '$tipo_esc'); SELECT 'Contribucion agregada (id ' || last_insert_rowid() || ').';"
+    db "INSERT INTO contributions (repo, issue, issue_url, pr, pr_url, status, detail, context, tier, tipo) VALUES ('$repo_esc', '$issue_esc', '$issue_url_esc', '$pr_esc', '$pr_url_esc', '$status_esc', '$detail_esc', '$context_esc', '$tier_esc', '$tipo_esc'); SELECT 'Contribucion agregada (id ' || last_insert_rowid() || ').';"
     ;;
   learnings)
     cat_filter="${2:-%}"
@@ -381,7 +395,7 @@ case "$1" in
     title_esc=$(sql_escape "$title")
     content_esc=$(sql_escape "$content")
     tags_esc=$(sql_escape "$tags")
-    sqlite3 "$DB" "INSERT INTO learnings (category, title, content, tags) VALUES ('$cat_esc', '$title_esc', '$content_esc', '$tags_esc');"
+    db "INSERT INTO learnings (category, title, content, tags) VALUES ('$cat_esc', '$title_esc', '$content_esc', '$tags_esc');"
     echo "Leccion agregada (categoria: $cat)."
     ;;
   export-learnings)

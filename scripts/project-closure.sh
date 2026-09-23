@@ -120,6 +120,7 @@ name = sys.argv[8]
 now = datetime.now().isoformat()
 
 c = sqlite3.connect(db)
+c.execute("PRAGMA foreign_keys = ON")
 # daily_notes
 c.execute("INSERT INTO daily_notes (date, type, content, source_file, created_at) VALUES (?, 'daily', ?, ?, ?)",
           (today, summary, "memory/" + today + ".md", now))

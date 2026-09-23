@@ -355,6 +355,7 @@ def main():
 
     size_before = DB.stat().st_size
     conn = sqlite3.connect(DB)
+    conn.execute("PRAGMA foreign_keys = ON")
     try:
         fk_before = set(map(tuple, conn.execute("PRAGMA foreign_key_check").fetchall()))
         print("Migracion:" + (" (DRY-RUN)" if args.dry_run else ""))

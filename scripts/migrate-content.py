@@ -297,6 +297,7 @@ def main():
 
     size_before = DB.stat().st_size
     conn = sqlite3.connect(DB)
+    conn.execute("PRAGMA foreign_keys = ON")
     try:
         if not args.dry_run:
             conn.executescript(SCHEMA)

@@ -96,6 +96,7 @@ def extract_summary(content, max_words=100):
 def create_schema():
     """Create new tables if they don't exist"""
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     
     # sessions_relacional table
     conn.execute('''
@@ -211,14 +212,14 @@ def catalog_memory():
             
             # Insert into sessions_relacional (upsert)
             conn = sqlite3.connect(DB_PATH)
+            conn.execute("PRAGMA foreign_keys = ON")
             conn.execute('''
                 INSERT OR REPLACE INTO sessions_relacional 
-                (id, date, title, tags, complexity_score, model_used, thinking_level, summary, agent_id, content_bare, created_at)
-                VALUES (?, ?, ?, ?, 0, 'unknown', 'high', ?, ?, ?, datetime('now'))
+                (id, date, title, tags, complexity_score, model_used, thinking_level, summary, content_bare, created_at)
+                VALUES (?, ?, ?, ?, 0, 'unknown', 'high', ?, ?, datetime('now'))
             ''', (
                 None, date_str, title, ','.join(tags),
-                json.dumps(vector),
-                summary, 'Kanam', re.sub(r'[^\x00-\x7F]+| ', ' ', content)
+                summary, re.sub(r'[^\x00-\x7F]+| ', ' ', content)
             ))
             conn.commit()
             session_id = conn.execute("SELECT id FROM sessions_relacional WHERE date=? LIMIT 1", (date_str,)).fetchone()[0]
@@ -285,7 +286,7 @@ echo "✅ Cataloging complete!"
 echo "=================================================="
 echo ""
 echo "Summary:"
-sqlite3 "$DB" <<'SQL'
+sqlite3 -cmd "PRAGMA foreign_keys=ON" "$DB" <<'SQL'
 SELECT 
   'sessions_relacional: ' || COUNT(*) as item FROM sessions_relacional
 UNION ALL

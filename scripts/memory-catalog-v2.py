@@ -102,6 +102,7 @@ def cosine_similarity(vec1, vec2):
 def compute_topic_centroids():
     """Compute average embedding (centroid) for each topic from existing sessions"""
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
 
     rows = c.execute(
@@ -228,6 +229,7 @@ def compute_category_centroids(min_examples=5):
     """Compute average embedding (centroid) for each learning category.
     Only returns centroids for categories with >= min_examples (reliable signal)."""
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
     rows = c.execute(
         "SELECT category, learning_vector FROM learnings WHERE learning_vector IS NOT NULL"
@@ -320,6 +322,7 @@ def categorize_learning(learning_text, category_centroids=None):
 def create_schema():
     """Create database schema if not exists"""
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
 
     c.execute(

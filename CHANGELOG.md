@@ -6,6 +6,28 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-23] - Foreign keys activas: la integridad del schema pasa a aplicarse
+
+### Added
+- **`scripts/db.py`:** punto de entrada unico a `memory.db` con las FK activas (`connect()`), mas `check()` para verificar violaciones.
+- **Tabla `session_entries`:** las 521 unidades de nivel 2 que estaban aplanadas dentro del texto de las fichas (408 temas, 113 boilerplate), con offsets en vez de copia.
+- **Columnas `project` y `daily_id`** en las fichas, capturadas donde el dato existe.
+- **`scripts/migrate-entries.py`** y **`scripts/interpret-entries.py`** (el LLM propone campos, no los escribe), con 27 tests.
+
+### Fixed
+- **6 foreign keys declaradas y 0 activas.** `PRAGMA foreign_keys` es por conexion y viene apagado por defecto: los `ON DELETE CASCADE` **nunca dispararon**, y por eso ADR-058 tuvo que limpiar 20 huerfanos a mano. Ahora el pragma se activa en todas las conexiones que escriben.
+- **`memory-catalog.sh` estaba roto desde ADR-058:** su `INSERT` referenciaba `agent_id`, columna que se elimino por estar siempre vacia. El mismo bloque tenia mas valores que placeholders. Los dos corregidos.
+- **`memory-db.sh` ahora respeta `MEMORY_DB`.** Lo ignoraba (lo tenia hardcodeado), asi que no se podia probar sobre una copia: la prueba escribio en la DB real. Los scripts de Python ya lo respetaban; esto los alinea.
+
+### Notes
+- **Se corrigio una advertencia previa demasiado amplia.** ADR-058 decia que activar las FK era riesgoso por los `INSERT OR REPLACE`. Medido el patron real: los que hay usan **id=None** (nunca reemplazan) o tocan tablas **sin hijos**. El riesgo pedia un id explicito existente, que ningun escritor usa. La prueba que sugeria lo contrario era un escenario construido.
+- **Verificado sobre una copia**, con el pragma activo: los 3 migradores corren con 0 violaciones, las escrituras reales (`add-todo`, `add-inbox`, `update-ficha`) dejan los hijos intactos (13/3/7), y `foreign_key_check` da 0. 122 tests.
+- **`migrate-learnings.py` queda marcado como peligroso:** borra `learnings` entero y perderia `learning_tags` por CASCADE. No se usa; queda documentado.
+- **Un `DELETE` sobre un padre ahora borra hijos.** Es lo correcto, pero es un cambio de comportamiento a tener presente.
+- ADR-060.
+
+---
+
 ## [2026-09-22] - Contenido descompuesto: secciones y TODOs que estaban enterrados en el markdown
 
 ### Added
