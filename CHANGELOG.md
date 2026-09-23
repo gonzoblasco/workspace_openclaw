@@ -6,6 +6,31 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-23] - Vectores re-cortados por unidad semantica, sin duplicar el texto
+
+### Added
+- **`scripts/rechunk-vectors.py`:** re-corta los vectores por unidades semanticas. 781 vectores de ficha (eran 136 con corte ciego) + 2352 de seccion.
+- **`scripts/chunk-util.py`:** el corte de texto, en un solo lugar. `rechunk-vectors.py` (que genera) y `memory-search.py` (que muestra) lo comparten.
+- **Busqueda en dos niveles:** la busqueda devuelve fichas y fragmentos de seccion, estos ultimos con su fecha y hora.
+
+### Fixed
+- **El corte ciego de 1500 caracteres partia el 29% de los chunks a mitad de frase.** Un fragmento que empezaba en `'should be archived to...'` no representa su contenido, y la busqueda lo devolvia por parecido con cosas sin relacion.
+- **El 15% de los chunks era el volcado del harness** (`# Session: ... Session Key`): se vectorizaba metadata en vez de contenido.
+- **18 fichas no tenian vectores.** El script las salteaba por no tener unidades de tema; medido antes de descartarlas, 17 tienen contenido propio y 0 estan duplicadas.
+- **`chunk_text` duplicaba 2.16 MB.** El 75% era identico al cuerpo de su seccion, que ya vive en el padre. Se elimino la columna: el texto se reconstruye desde los offsets. Importa porque **memory.db esta trackeada en git**: la duplicacion crecia la historia del repo en cada commit.
+- **`split_large` y `strip_harness_header` estaban duplicadas en dos scripts.** Ahora hay una sola fuente, y un test prohibe redefinirlas.
+- **`memory-search.py` reconstruia el texto con `chunk_idx * 1500`**, asumiendo el corte viejo. Ahora usa el mismo modulo que lo genera.
+
+### Notes
+- **La busqueda mejora de verdad.** La consulta sobre "mantener la confianza del usuario" traia ".v1.0.0 released"; ahora trae fragmentos del tema (0.733 en una consulta sobre TreeList a11y).
+- **Los vectores NO son la herramienta principal.** Medido: el SQL estructurado gana para topics, TODOs y estados (exacto y rapido); los vectores sirven para cuando no se recuerda la palabra exacta. Queda pendiente estudiar como se enseña esa distincion.
+- **La DB subio de 4.4 a 19.1 MB** (los 2352 vectores de seccion pesan 9.6 MB). El ahorro de no duplicar texto fue 1.7 MB.
+- **`learnings` sigue con vectores en JSON** (22 KB cada uno, el formato viejo, contra 4096 bytes en BLOB). Migrarlo es trabajo pendiente.
+- **Verificado:** 156 tests, 0 violaciones de FK, 0 chunks con volcado del harness, 0 chunks semanticos sin titulo, 0 huerfanos.
+- ADR-062.
+
+---
+
 ## [2026-09-23] - Campos interpretados con revision: el LLM propone, la persona aplica
 
 ### Added

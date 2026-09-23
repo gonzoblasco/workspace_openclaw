@@ -29,6 +29,16 @@ _vu = _ilu.module_from_spec(_spec)
 _spec.loader.exec_module(_vu)
 decode_vector = _vu.decode
 
+# El corte de texto es COMPARTIDO con rechunk-vectors.py: si divergieran, el
+# texto mostrado no seria el que se vectorizo.
+_spec2 = _ilu.spec_from_file_location(
+    "chunk_util", os.path.join(os.path.dirname(os.path.abspath(__file__)), "chunk-util.py")
+)
+_cu = _ilu.module_from_spec(_spec2)
+_spec2.loader.exec_module(_cu)
+split_large = _cu.split_large
+strip_harness_header = _cu.strip_harness_header
+
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
@@ -83,76 +93,132 @@ def cosine_similarity(vec1, vec2):
 
 
 def search(query, top_n=5):
-    """Search sessions by semantic similarity to query"""
+    """Search sessions and sections by semantic similarity to query.
+
+    Busca en DOS niveles, porque un chunk de ficha (un tema entero) y un chunk
+    de seccion (una parte concreta) responden preguntas distintas:
+
+      - session_vectors: "¿que sesiones hablan de X?"
+      - section_vectors: "¿en que parte exacta se dijo X?"
+
+    Devuelve los mejores de cada uno, marcados. Antes solo miraba fichas.
+    """
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
     qv = get_embedding(query)
 
-    # Search sessions
-    rows = c.execute(
-        "SELECT session_id, query_vector, chunk_index FROM session_vectors"
-    ).fetchall()
-
-    # Score each vector against query
+    # --- Nivel ficha ---
     scored = []
-    for session_id, vec_json, chunk_idx in rows:
-        vec = decode_vector(vec_json)
+    for session_id, blob, chunk_idx, txt in c.execute(
+        "SELECT session_id, query_vector, chunk_index, chunk_text FROM session_vectors"
+    ):
+        vec = decode_vector(blob)
         if vec is None:
             continue
-        score = cosine_similarity(qv, vec)
-        scored.append((score, session_id, chunk_idx))
-
-    # Sort by score desc, dedupe by session (keep best chunk)
+        scored.append((cosine_similarity(qv, vec), session_id, chunk_idx, txt))
     scored.sort(key=lambda x: x[0], reverse=True)
+
     seen = set()
     results = []
-    for score, session_id, chunk_idx in scored:
+    for score, session_id, chunk_idx, txt in scored:
         if session_id in seen:
             continue
         seen.add(session_id)
-        results.append((score, session_id, chunk_idx))
+        results.append((score, session_id, chunk_idx, txt))
         if len(results) >= top_n:
             break
 
-    # Fetch session details
     print(f"\n🔍 Results for: \"{query}\"")
     print("=" * 60)
     if not results:
         print("  No results found.")
-        return
-
-    for score, session_id, chunk_idx in results:
+    for score, session_id, chunk_idx, txt in results:
         row = c.execute(
             "SELECT date, title, summary FROM sessions_relacional WHERE id=?", (session_id,)
         ).fetchone()
         if not row:
             continue
         date, title, summary = row
-        pct = score * 100
-        print(f"\n  [{pct:.1f}%] {date} - {title}")
+        print(f"\n  [{score * 100:.1f}%] {date} - {title}")
         if summary:
             print(f"      {summary[:150]}...")
-        # Show matching chunk content
-        vec_row = c.execute(
-            "SELECT query_vector FROM session_vectors WHERE session_id=? AND chunk_index=?",
-            (session_id, chunk_idx),
-        ).fetchone()
-        if vec_row:
-            # Find the content chunk from the session
-            content = c.execute(
-                "SELECT content_bare FROM sessions_relacional WHERE id=?", (session_id,)
-            ).fetchone()
-            if content and content[0]:
-                chunk_size = 1500
-                start = chunk_idx * chunk_size
-                chunk_text = content[0][start : start + chunk_size]
-                print(f"      📄 {chunk_text[:200]}...")
+        # El texto del chunk AHORA se lee de su columna, no se reconstruye con
+        # una ventana fija: desde el re-chunking los cortes son semanticos y
+        # `chunk_idx * 1500` devolvia texto de otro lado.
+        if txt:
+            print(f"      📄 {txt[:200].replace(chr(10), ' ')}...")
 
-    # Also search learnings
+    # --- Nivel seccion ---
+    # El texto NO se lee de una columna: `section_vectors` solo guarda el vector
+    # y apunta a la seccion. El texto se reconstruye desde los offsets, que es
+    # lo que evita duplicar 2.9 MB en una DB versionada.
+    secs = []
+    for sec_id, blob, ci in c.execute(
+        "SELECT section_id, query_vector, chunk_index FROM section_vectors"
+    ):
+        vec = decode_vector(blob)
+        if vec is None:
+            continue
+        secs.append((cosine_similarity(qv, vec), sec_id, ci))
+    secs.sort(key=lambda x: x[0], reverse=True)
+
+    if secs:
+        print(f"\n📑 Fragmentos")
+        print("=" * 60)
+        for score, sec_id, ci in secs[:top_n]:
+            meta = c.execute(
+                """SELECT doc_type, doc_id, level, time_start FROM sections WHERE id=?""",
+                (sec_id,),
+            ).fetchone()
+            donde = ""
+            if meta:
+                dt, did, lvl, ts = meta
+                tabla = "daily_notes" if dt == "daily" else "sessions_relacional"
+                d = c.execute(f"SELECT date FROM {tabla} WHERE id=?", (did,)).fetchone()
+                donde = f"{dt}:{d[0] if d else did}" + (f" {ts}" if ts else "")
+            print(f"\n  [{score * 100:.1f}%] {donde}")
+            txt = rebuild_section_text(c, sec_id, ci)
+            if txt:
+                print(f"      {txt[:180].replace(chr(10), ' ')}...")
+
     conn.commit()
     search_learnings(query, top_n=3)
     conn.close()
+
+
+def body_of_section(conn, doc_type, doc_id, char_start, char_end):
+    """Reconstruye el cuerpo de una seccion desde los offsets de su padre."""
+    tabla = "daily_notes" if doc_type == "daily" else "sessions_relacional"
+    col = "content" if doc_type == "daily" else "content_bare"
+    row = conn.execute(f"SELECT {col} FROM {tabla} WHERE id=?", (doc_id,)).fetchone()
+    return (row[0][char_start:char_end] or "") if row else ""
+
+
+
+
+
+
+def rebuild_section_text(conn, section_id, chunk_index):
+    """Reconstruye el texto de un chunk de seccion desde los offsets del padre.
+
+    Mismo algoritmo que rechunk-vectors.py, para que el texto mostrado sea
+    exactamente el que se vectorizo.
+    """
+    meta = conn.execute(
+        """SELECT title, doc_type, doc_id, char_start, char_end FROM sections WHERE id=?""",
+        (section_id,),
+    ).fetchone()
+    if not meta:
+        return ""
+    title, dt, did, cs, ce = meta
+    body = body_of_section(conn, dt, did, cs, ce).strip()
+    if not body:
+        return ""
+    piezas = split_large(body)
+    if chunk_index >= len(piezas):
+        return ""
+    return f"## {strip_harness_header(title)}\n\n{piezas[chunk_index]}"
 
 
 def search_learnings(query, top_n=3):
