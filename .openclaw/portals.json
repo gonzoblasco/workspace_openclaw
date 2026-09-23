@@ -1,0 +1,12 @@
+{
+  "portals": [
+    {
+      "name": "kanam-os",
+      "command": "npm run dev",
+      "cwd": "projects/kanam-os",
+      "port": 4317,
+      "title": "Kanam OS",
+      "description": "Memoria de Kanam OS como fichas, tablas y grafos (read-only sobre memory.db)."
+    }
+  ]
+}

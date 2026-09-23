@@ -6,6 +6,27 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-22] - Kanam OS: app local para ver la memoria como fichas, tablas y grafos
+
+### Added
+- **`projects/kanam-os/`:** app local que lee `memory/memory.db` y la muestra como fichas, tablas y grafos. Fase 1 = lectura completa. Vistas: resumen, fichas (+ detalle con cuerpo de la sesion), topics (tabla + grafo bipartito topics-sesiones en SVG puro, sin dependencias), learnings por categoria, TODOs, inbox, OSS y daily navegable. Stack: Next.js 16.3.6 (App Router) + Tailwind 4 + Biome + TypeScript. Repo propio (`gonzoblasco/kanam-os`, pendiente de crear en GitHub); el workspace trackea solo su `.knowledge/`, segun la convencion existente.
+- **`.openclaw/portals.json`:** declaracion del server de desarrollo de kanam-os (puerto 4317) para que el portal del Control UI lo levante en un click.
+- **`docs/adr/ADR-054-kanam-os-app-local-memoria.md`:** Kanam OS como app local de lectura sobre `memory.db` (Next.js + `node:sqlite`). Extiende ADR-038 (DB manda, markdown espejo) a una UI; ADR-050 sigue vigente sin revisar.
+
+### Decisions
+- **Next.js y no FastAPI**, aunque el pedido original sugeria Python "para cosas de IA": la UI no calcula embeddings, los proyecta (ya estan persistidos en `session_vectors` y `learnings_enriquecido`). FastAPI habria agregado un segundo runtime, un segundo puerto y un bridge HTTP para leer un SQLite que Node 26 lee nativo. Python queda como **unico escritor** de la DB.
+- **`memory.db` se queda trackeada en git.** Sacarla del repo romperia el sync entre el Mac Mini y el MacBook Air (pedido explicito de Gonzo). El riesgo real de `-wal`/`-shm` ensuciando el repo se mitiga abriendo la DB en `readOnly`: verificado que no se crean tras el build y las 9 vistas servidas. `journal_mode=WAL` descartado por el mismo motivo.
+- **La UI nunca escribe SQL crudo.** La fase CRUD (2) agrega botones que disparan los scripts de Python existentes, no un escritor nuevo: un `UPDATE` directo dejaria los markdown mintiendo respecto de la DB.
+- **`next telemetry` deshabilitada** en el proyecto, coherente con local-first.
+- **Next 16.0.0 descartado** por CVE-2025-66478; se uso 16.3.6.
+
+### Notes
+- Verificacion: `next build` OK (typecheck + 9 rutas), smoke test HTTP 200 en las 8 vistas con datos reales (55 dailies, 51 fichas, 118 learnings, 66 contribuciones OSS, 11 topics).
+- El grafo de topics es layout determinista (topics a la izquierda, sesiones a la derecha, grosor = confianza del vinculo) en vez de force-directed: con decenas de nodos se lee mejor y no cambia en cada render.
+- Roadmap: fase 2 CRUD delegando a scripts, fase 3 bloques managed (settings en DB propagados a `USER.md`/`AGENTS.md`/`.knowledge/`), fase 4 busqueda semantica sobre los vectores persistidos.
+
+---
+
 ## [2026-09-22] - Auditoria de deuda de ADRs: revalidacion, ADR-053, duplicado 048 y docs mal ubicados
 
 ### Fixed
