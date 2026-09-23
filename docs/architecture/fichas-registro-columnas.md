@@ -85,10 +85,52 @@ pasaban `id=None` y las dos secuencias coincidian por numeracion.
 
 **Esa FK estaba mal, pero la relacion existe.** `daily_id` como columna explicita (nullable,
 con FK real) modela el vinculo correcto: una ficha **puede** pertenecer a un documento diario.
-Se llena cuando el escritor lo sabe (20 casos), queda NULL cuando no (28).
+Se llena cuando el escritor lo sabe (23 casos), queda NULL cuando no.
 
 Diferencia clave: la FK espuria **afirmaba** que el id coincidia. `daily_id` **declara** a
 que diario pertenece, y puede ser NULL sin mentir.
+
+#### 3.2.1 Cuanto texto esta duplicado (medido 2026-09-23)
+
+Que las fechas coincidan **no** significa que el texto sea el mismo. Medido con una prueba
+de igualdad estricta, no de contencion:
+
+| Caso | Fichas | Texto |
+|---|---|---|
+| Copia exacta del daily | 3 | |
+| Ficha = cabecera + daily (delta 20 chars) | 7 | **280 KB en total** |
+| Mismo dia, texto **distinto** | 13 | no es copia |
+
+**Solo 10 de las 23 tienen el cuerpo duplicado.** Las otras 13 guardan contenido propio:
+la ficha 96 tiene 105.940 chars contra 105.920 del daily (copia), pero la 82 tiene 20.130
+contra 716, y la 93 tiene 81.162 contra 71.523. **El diff no es el header: son textos
+distintos del mismo dia.**
+
+**Leccion de medicion:** la primera version de esta cuenta buscaba *contencion*
+(`cb in daily or daily in cb`) y daba 15 fichas y 415 KB. Una ficha puede **contener** un
+daily corto sin ser una copia suya. La prueba correcta es igualdad (o igualdad tras quitar
+la cabecera), no contencion. El numero honesto es **10 fichas / 280 KB**.
+
+#### 3.2.2 Por que NO se puede simplemente vaciar `content_bare`
+
+Los offsets de `sections` y `session_entries` apuntan **dentro** de `content_bare`. En las
+10 fichas copiadas son **231 secciones y 157 unidades**. Borrar la columna invalida todas.
+
+Re-apuntarlas al daily **no es copiar un offset**: el daily tiene 20 chars de cabecera al
+inicio, asi que cada offset hay que **desplazarlo** por ese delta, y el padre cambia de
+tabla (`sessions_relacional.content_bare` -> `daily_notes.content`). Es migracion de datos,
+no de esquema: reescribir 388 offsets con su delta.
+
+**Se hace solo si el ahorro de 280 KB lo justifica.** En una DB versionada eso no es trivial
+(crece la historia del repo en cada commit), pero el riesgo de desplazar mal un offset es
+peor: offsets malos hacen que la busqueda devuelva texto de otro lado. **Pendiente de
+decision, no de implementacion.**
+
+#### 3.2.3 `daily_id` como columna derivable
+
+`daily_id` no es un dato que se captura: **se deriva de la fecha** (hay 0 casos donde la
+fecha de la ficha no coincida con la del daily asignado). Eso lo vuelve regenerable con una
+sola query, a diferencia de `project` o `session_key`, que son datos del momento.
 
 ### 3.3 `session_key` / `session_id` - linkear a la sesion de OpenClaw
 
