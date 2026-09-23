@@ -61,12 +61,17 @@ CREATE TABLE IF NOT EXISTS session_entries (
     session_id  INTEGER NOT NULL,      -- FK a sessions_relacional (la ficha = el dia)
     ordinal     INTEGER NOT NULL,      -- orden dentro de la ficha
     level       INTEGER NOT NULL,      -- 2 | 3 (normalmente 2)
-    kind        TEXT NOT NULL,         -- 'tema' | 'boilerplate'
+    kind        TEXT NOT NULL,         -- 'tema' | 'boilerplate' (determinista)
     title       TEXT NOT NULL,
     char_start  INTEGER NOT NULL,      -- offsets hacia content_bare del padre
     char_end    INTEGER NOT NULL,
     time_start  TEXT,
     time_end    TEXT,
+    -- Campos INTERPRETADOS (los llena interpret-entries.py, con revision):
+    topic       TEXT,
+    summary     TEXT,
+    activity    TEXT,                  -- eje interpretado: trabajo | estudio | reflexion
+                                       -- (distinto de `kind`, que es determinista)
     UNIQUE (session_id, ordinal),
     FOREIGN KEY(session_id) REFERENCES sessions_relacional(id) ON DELETE CASCADE
 );

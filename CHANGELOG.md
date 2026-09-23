@@ -6,6 +6,26 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-23] - Campos interpretados con revision: el LLM propone, la persona aplica
+
+### Added
+- **Ciclo completo en `interpret-entries.py`:** `--review` (ver), `--approve` / `--reject` (decidir), `--apply-dry-run` (simular), `--apply` (escribir). Nada se aplica sin pasar por la aprobacion humana.
+- **Columna `session_entries.activity`:** el eje interpretado (`trabajo` / `estudio` / `reflexion`), separado del determinista.
+- **Filtro de centralidad:** un proyecto solo se acepta si esta en el titulo o aparece 2+ veces en el cuerpo.
+
+### Fixed
+- **`kind` mezclaba dos ejes en una columna.** Las 8 unidades interpretadas pisaron su clasificacion determinista: 408 `tema` pasaron a 400, y una query `WHERE kind='tema'` dejaba de traerlas. Ahora `kind` es determinista (`tema`/`boilerplate`) y `activity` es el interpretado. Los 408 quedaron restaurados.
+  - Es **el mismo defecto ya documentado** para `contributions.tier` (mezcla numeros 1/2/3 con categorias external/collab/pr). Se documento el error y se cometio dos horas despues, en una tabla nueva. Regla: un eje por columna.
+- **Falso positivo de proyecto, medido.** La unidad "libros OpenClaw + sync workspace + post LinkedIn" recibio `project=soporteml` porque el cuerpo decia una vez "seccion SoporteML del remote" al resolver un conflicto de git. Era incidental, no el tema. De 8 propuestas de proyecto, 1 fue falsa (12%).
+
+### Notes
+- **La calibracion movio el filtro, no el prompt.** El modelo si detecto que SoporteML aparecia; el error fue no exigir que fuera central. Se arregla en la validacion (determinista y testeable), no en el prompt (probabilistico).
+- **Separacion de destinos:** `project` va a la ficha (es atributo del dia); `topic`, `activity` y `summary` van a `session_entries` (una unidad no define el resumen de la ficha entera). Si dos unidades del mismo dia proponen proyectos distintos, se toma el primero y se avisa.
+- **Verificado:** 111 tests, 0 violaciones de FK, `--apply` idempotente, 25 propuestas aplicadas y 1 rechazada sin contaminar la ficha.
+- ADR-061.
+
+---
+
 ## [2026-09-23] - Foreign keys activas: la integridad del schema pasa a aplicarse
 
 ### Added

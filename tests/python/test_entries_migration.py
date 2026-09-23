@@ -305,8 +305,8 @@ def test_validate_project_is_case_insensitive():
 
 def test_validate_rejects_bad_kind():
     m = ie()
-    assert "kind" not in m.validate(None, 1, {"kind": "inventado"}, [])
-    assert m.validate(None, 1, {"kind": "estudio"}, [])["kind"] == "estudio"
+    assert "activity" not in m.validate(None, 1, {"kind": "inventado"}, [])
+    assert m.validate(None, 1, {"kind": "estudio"}, [])["activity"] == "estudio"
 
 
 def test_validate_rejects_too_short():
@@ -366,3 +366,253 @@ def test_proposals_live_in_their_own_table(tmp_path):
     conn.close()
     assert props == 1
     assert "topic" not in cols
+
+
+# --- aplicar: el ciclo revisar -> aprobar -> escribir ---
+
+def test_central_project_in_title_accepted():
+    """El proyecto es central si esta en el TITULO."""
+    m = ie()
+    assert m.is_central("texto sin el proyecto", "Sesion: soporteml-v4 - tags", "soporteml")
+
+
+def test_central_project_repeated_accepted():
+    """O si aparece 2+ veces en el cuerpo."""
+    m = ie()
+    body = "arreglamos soporteml y despues soporteml otra vez"
+    assert m.is_central(body, "Sin mencion", "soporteml")
+
+
+def test_incidental_mention_rejected():
+    """El falso positivo real: 1 mencion de paso en un cuerpo ajeno.
+
+    'libros OpenClaw + sync workspace + post LinkedIn' recibio project=soporteml
+    porque decia una vez 'seccion SoporteML del remote' al resolver un conflicto.
+    """
+    m = ie()
+    body = "resolviendo el conflicto preservando la seccion SoporteML del remote"
+    assert not m.is_central(body, "Sesion: libros OpenClaw para el puesto", "soporteml")
+
+
+def test_validate_needs_title_and_body_for_project():
+    """Sin titulo/cuerpo no se puede evaluar centralidad, asi que se confia en la lista."""
+    m = ie()
+    ok = m.validate(None, 1, {"project": "soporteml"}, ["soporteml"])
+    assert ok["project"] == "soporteml"
+
+
+def test_validate_rejects_incidental_project():
+    m = ie()
+    body = "una mencion suelta de kanam-os aca"
+    ok = m.validate(None, 1, {"project": "kanam-os"}, ["kanam-os"], title="Otra cosa", body=body)
+    assert "project" not in ok
+
+
+def make_conn(tmp_path):
+    db = make_db(tmp_path)
+    mod = me()
+    mod.DB = db
+    conn = sqlite3.connect(db)
+    conn.executescript(mod.SCHEMA)
+    conn.commit()
+    mod.migrate(conn, dry_run=False)
+    conn.executescript(ie().SCHEMA)
+    conn.commit()
+    return conn
+
+
+def make_conn_fresh(tmp_path):
+    """Igual, pero sin correr migrate: para probar do_apply con FK activas."""
+    db = make_db(tmp_path)
+    mod = me()
+    mod.DB = db
+    conn = sqlite3.connect(db)
+    conn.executescript(mod.SCHEMA)
+    conn.commit()
+    mod.migrate(conn, dry_run=False)
+    conn.executescript(ie().SCHEMA)
+    conn.commit()
+    return conn
+
+
+def test_apply_only_touches_approved(tmp_path):
+    """Una propuesta PENDIENTE no se aplica. Solo las aprobadas."""
+    m = ie()
+    conn = make_conn(tmp_path)
+    eid = conn.execute("SELECT id FROM session_entries WHERE session_id=10 LIMIT 1").fetchone()[0]
+    conn.execute(
+        "INSERT INTO proposed_fields (entry_id, field, value, status) VALUES (?,?,?, 'pending')",
+        (eid, "topic", "pendiente sin aprobar"),
+    )
+    conn.commit()
+    n = m.do_apply(conn, None)
+    val = conn.execute("SELECT topic FROM session_entries WHERE id=?", (eid,)).fetchone()[0]
+    conn.close()
+    assert n == 0
+    assert val is None
+
+
+def test_apply_writes_entry_fields(tmp_path):
+    m = ie()
+    conn = make_conn(tmp_path)
+    eid = conn.execute("SELECT id FROM session_entries WHERE session_id=10 LIMIT 1").fetchone()[0]
+    conn.execute(
+        """INSERT INTO proposed_fields (entry_id, field, value, status)
+           VALUES (?,?,?, 'approved')""",
+        (eid, "topic", "un topic aprobado"),
+    )
+    conn.commit()
+    m.do_apply(conn, None)
+    val = conn.execute("SELECT topic FROM session_entries WHERE id=?", (eid,)).fetchone()[0]
+    conn.close()
+    assert val == "un topic aprobado"
+
+
+def test_apply_writes_project_to_ficha(tmp_path):
+    m = ie()
+    conn = make_conn(tmp_path)
+    eid = conn.execute("SELECT id FROM session_entries WHERE session_id=10 LIMIT 1").fetchone()[0]
+    conn.execute(
+        "INSERT INTO proposed_fields (entry_id, field, value, status) VALUES (?,?,?, 'approved')",
+        (eid, "project", "kanam-os"),
+    )
+    conn.commit()
+    m.do_apply(conn, None)
+    val = conn.execute("SELECT project FROM sessions_relacional WHERE id=10").fetchone()[0]
+    conn.close()
+    assert val == "kanam-os"
+
+
+def test_apply_marks_as_applied(tmp_path):
+    """Una vez aplicada, la propuesta deja de estar aprobada: ya es dato."""
+    m = ie()
+    conn = make_conn(tmp_path)
+    eid = conn.execute("SELECT id FROM session_entries WHERE session_id=10 LIMIT 1").fetchone()[0]
+    conn.execute(
+        "INSERT INTO proposed_fields (entry_id, field, value, status) VALUES (?,?,?, 'approved')",
+        (eid, "topic", "x" * 12),
+    )
+    conn.commit()
+    m.do_apply(conn, None)
+    st = conn.execute("SELECT status FROM proposed_fields WHERE entry_id=?", (eid,)).fetchone()[0]
+    conn.close()
+    assert st == "applied"
+
+
+def test_apply_is_idempotent(tmp_path):
+    m = ie()
+    conn = make_conn(tmp_path)
+    eid = conn.execute("SELECT id FROM session_entries WHERE session_id=10 LIMIT 1").fetchone()[0]
+    conn.execute(
+        "INSERT INTO proposed_fields (entry_id, field, value, status) VALUES (?,?,?, 'approved')",
+        (eid, "topic", "un topic"),
+    )
+    conn.commit()
+    m.do_apply(conn, None)
+    n2 = m.do_apply(conn, None)  # segunda vez: ya no hay aprobadas
+    conn.close()
+    assert n2 == 0
+
+
+def test_apply_dry_run_changes_nothing(tmp_path):
+    m = ie()
+    conn = make_conn(tmp_path)
+    eid = conn.execute("SELECT id FROM session_entries WHERE session_id=10 LIMIT 1").fetchone()[0]
+    conn.execute(
+        "INSERT INTO proposed_fields (entry_id, field, value, status) VALUES (?,?,?, 'approved')",
+        (eid, "topic", "no deberia escribirse"),
+    )
+    conn.commit()
+    m.do_apply(conn, None, dry_run=True)
+    val = conn.execute("SELECT topic FROM session_entries WHERE id=?", (eid,)).fetchone()[0]
+    st = conn.execute("SELECT status FROM proposed_fields WHERE entry_id=?", (eid,)).fetchone()[0]
+    conn.close()
+    assert val is None
+    assert st == "approved"
+
+
+def test_set_status_approve_and_reject(tmp_path):
+    m = ie()
+    conn = make_conn(tmp_path)
+    rows = conn.execute("SELECT id FROM session_entries WHERE session_id=10").fetchall()
+    for i, (eid,) in enumerate(rows):
+        conn.execute(
+            "INSERT INTO proposed_fields (entry_id, field, value) VALUES (?,?,?)",
+            (eid, "topic", f"t{i}" * 3),
+        )
+    conn.commit()
+    m.set_status(conn, 10, "approved")
+    n = conn.execute("SELECT count(*) FROM proposed_fields WHERE status='approved'").fetchone()[0]
+    conn.close()
+    assert n == len(rows)
+
+
+def test_project_is_per_ficha_not_per_entry(tmp_path):
+    """Si dos unidades del mismo dia proponen proyectos distintos, se toma uno."""
+    m = ie()
+    conn = make_conn(tmp_path)
+    rows = conn.execute(
+        "SELECT id FROM session_entries WHERE session_id=10 ORDER BY ordinal LIMIT 2"
+    ).fetchall()
+    for eid, val in zip(rows, ("kanam-os", "soporteml")):
+        conn.execute(
+            "INSERT INTO proposed_fields (entry_id, field, value, status) VALUES (?,?,?, 'approved')",
+            (eid[0], "project", val),
+        )
+    conn.commit()
+    m.do_apply(conn, None)
+    val = conn.execute("SELECT project FROM sessions_relacional WHERE id=10").fetchone()[0]
+    conn.close()
+    assert val == "kanam-os"
+
+
+# --- los dos ejes NO se mezclan ---
+
+def test_activity_does_not_overwrite_kind():
+    """El bug real: 'kind' mezclaba el eje determinista y el interpretado.
+
+    Las 8 unidades interpretadas pisaron su clasificacion determinista (408
+    'tema' pasaron a 400). Mismo defecto que `contributions.tier`, que mezcla
+    numero con categoria.
+    """
+    m = ie()
+    ok = m.validate(None, 1, {"kind": "trabajo"}, [])
+    # Se guarda como `activity`, nunca como `kind`.
+    assert "activity" in ok and ok["activity"] == "trabajo"
+    assert "kind" not in ok
+
+
+def test_entry_columns_map_to_distinct_columns():
+    """kind no debe aparecer como destino: es el eje determinista."""
+    m = ie()
+    assert "kind" not in m.ENTRY_COLUMNS.values()
+    assert m.ENTRY_COLUMNS["activity"] == "activity"
+
+
+def test_kind_and_activity_coexist(tmp_path):
+    """Las dos columnas existen y son independientes."""
+    conn = make_conn(tmp_path)
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(session_entries)")}
+    conn.close()
+    assert "kind" in cols and "activity" in cols
+
+
+def test_deterministic_kind_survives_activity_apply(tmp_path):
+    """Aplicar una actividad no debe tocar el kind de la fila."""
+    m = ie()
+    conn = make_conn(tmp_path)
+    eid, kind0 = conn.execute(
+        "SELECT id, kind FROM session_entries WHERE session_id=10 LIMIT 1"
+    ).fetchone()
+    conn.execute(
+        "INSERT INTO proposed_fields (entry_id, field, value, status) VALUES (?,?,?, 'approved')",
+        (eid, "activity", "estudio"),
+    )
+    conn.commit()
+    m.do_apply(conn, None)
+    kind1, act = conn.execute(
+        "SELECT kind, activity FROM session_entries WHERE id=?", (eid,)
+    ).fetchone()
+    conn.close()
+    assert kind1 == kind0, "el eje determinista se perdio"
+    assert act == "estudio"
