@@ -1,0 +1,453 @@
+{
+  "version": 1,
+  "skills": {
+    "self-improving-agent": {
+      "version": "4.0.2",
+      "registry": "https://clawhub.ai",
+      "ownerHandle": "pskoett",
+      "installedAt": 1790121297875,
+      "artifact": {
+        "kind": "archive",
+        "sha256": "89f2a239f9d675c4c5787cf61c17f709cd38cb9c7d395f9dc50f487a59a47291",
+        "integrity": "sha256-ifKiOfnWdcTFeHz2HBf3Cc04y5x9OV+dxQ9IelmkcpE="
+      },
+      "skillFile": {
+        "path": "SKILL.md",
+        "sha256": "eff889950f23bb8a3de90cd617481bbf2557f9495f884bd5b1e9b7604a20817c"
+      },
+      "fileTreeSha256": "sha256:cd72f5c1910da8f21f4e326cc4f3b39de8b5bd371411f6a026f1f72b6747de8d",
+      "verification": {
+        "schema": "clawhub.skill.verify.v1",
+        "ok": false,
+        "decision": "fail",
+        "reasons": [
+          "security.status_not_clean"
+        ],
+        "card": {
+          "available": true,
+          "path": "skill-card.md",
+          "url": "https://wry-manatee-359.convex.site/api/v1/skills/self-improving-agent/card?ownerHandle=pskoett&version=4.0.2",
+          "sha256": "6f9beece207f7b423e9a20c1b804b664741ee8d76cc77ade7240766b32d4916d",
+          "size": 2633,
+          "contentType": "text/markdown; charset=utf-8"
+        },
+        "artifact": {
+          "sourceFingerprint": "c75aa847057f2210ef7136d8456b1f91b7d7cd0352962c9f920679cce045adf2",
+          "bundleFingerprints": [
+            "a0b59e786c352370b6031b7f2b956eaade2dec1467933d0f97e104aa28220214",
+            "3bb2a005cd20f56524be2d5e379f14b0f4cadc5ae2a6801179d46a4530385612",
+            "ca25cab698e926de89a5b4548f7c090dcf5f1ca70558c537b3f998f1e95ad346"
+          ],
+          "files": [
+            {
+              "path": "CHANGELOG.md",
+              "size": 7598,
+              "sha256": "8d8e946a3e1482470068773fa62482af3440431b3aa400df23b8c781906ba934",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "references/uninstall.md",
+              "size": 1891,
+              "sha256": "c569a88473ac0187e0d9dde1686eb24efe4666d84af2a149b5fb8e99b7a99828",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "references/examples.md",
+              "size": 8287,
+              "sha256": "ba521451abf0f1cc774b061894c94689390dafa3ce3905f63d5fa6f860a5e3b8",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "references/openclaw-integration.md",
+              "size": 9814,
+              "sha256": "517a40ddec886f07cf66cb7c98e61ea464af953b505610722ed46a297741708a",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "hooks/openclaw/handler.test.js",
+              "size": 8921,
+              "sha256": "3047f4239bc3eadcb8f12cc3515f946e86b16cb482de82ae900e5b994c403e69",
+              "contentType": "text/javascript"
+            },
+            {
+              "path": "hooks/openclaw/handler.js",
+              "size": 13741,
+              "sha256": "b94261dce2de54ba6bd1d6aca48d9ef11236cbe7396bd37354daa218e0ceecf3",
+              "contentType": "text/javascript"
+            },
+            {
+              "path": "hooks/openclaw/HOOK.md",
+              "size": 2465,
+              "sha256": "2ae0820cc5cad75d9ecce8cfc6a9c4c8baafcb4c96f820bf85f3a0e7ff2364f5",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "hooks/openclaw/handler.ts",
+              "size": 14615,
+              "sha256": "35f8ccd18d6979b4bacfbf1841f4f0965193ed694e46fa6cee67994f3ac838ba",
+              "contentType": "application/octet-stream"
+            },
+            {
+              "path": "scripts/extract-skill.sh",
+              "size": 5293,
+              "sha256": "d9af3d6f2cde0eeb3c0a85b898828656c1c6d9d51f61ba38f9801030424f5147",
+              "contentType": "text/x-sh"
+            },
+            {
+              "path": "SKILL.md",
+              "size": 21361,
+              "sha256": "eff889950f23bb8a3de90cd617481bbf2557f9495f884bd5b1e9b7604a20817c",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "assets/FEATURE_REQUESTS.md",
+              "size": 84,
+              "sha256": "a6291573936034efaad57b43b6f57bdb35ed627f01ce9309b2c781da63563c37",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "assets/ERRORS.md",
+              "size": 75,
+              "sha256": "731f4a26fee7074d11e999920e5c3ca63b0e025b75a4d9966429ee88a2cb5988",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "assets/SKILL-TEMPLATE.md",
+              "size": 3407,
+              "sha256": "3ee008f80d53e0e576f7e747ac4c4e040ff659f02d3f5689a95524a3696e4881",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "assets/LEARNINGS.md",
+              "size": 1135,
+              "sha256": "58b31d4cda7d1f2a6fdaf1aff06f45288e6cb0161dd1ed1bf2152c7f8c3c88da",
+              "contentType": "text/markdown"
+            }
+          ]
+        },
+        "provenance": {
+          "source": "unavailable",
+          "reason": "No server-resolved GitHub import provenance is stored for this version."
+        },
+        "security": {
+          "status": "suspicious",
+          "passed": false,
+          "rawStatus": "suspicious",
+          "verdict": "suspicious",
+          "confidence": "high",
+          "summary": "This skill is mostly purpose-aligned, but its optional hook can automatically read session transcripts and persist excerpts with insufficient path scoping and only best-effort redaction.",
+          "model": null,
+          "checkedAt": 1789015140848,
+          "scannerReports": {
+            "aig": null,
+            "skillspector": null
+          }
+        },
+        "signature": {
+          "status": "unsigned"
+        }
+      }
+    },
+    "skill-vetter": {
+      "version": "1.0.0",
+      "registry": "https://clawhub.ai",
+      "ownerHandle": "spclaudehome",
+      "installedAt": 1790121344135,
+      "artifact": {
+        "kind": "archive",
+        "sha256": "325917e083610606416e736d78dea9b84b52b264722f3507f737e9e48480752e",
+        "integrity": "sha256-MlkX4INhBgZBbnNteN6puEtSsmRyLzUH9zfp5ISAdS4="
+      },
+      "skillFile": {
+        "path": "SKILL.md",
+        "sha256": "e8eb7583355c2ae78a79187dca6a1ec448d9c8360e91652871392179f7ffb8bf"
+      },
+      "fileTreeSha256": "sha256:55aa631639924e6b5d8520ecf70eb7c378269be1e95406022ac6fdb79a685de7",
+      "verification": {
+        "schema": "clawhub.skill.verify.v1",
+        "ok": true,
+        "decision": "pass",
+        "reasons": [],
+        "card": {
+          "available": true,
+          "path": "skill-card.md",
+          "url": "https://wry-manatee-359.convex.site/api/v1/skills/skill-vetter/card?ownerHandle=spclaudehome&version=1.0.0",
+          "sha256": "7616306f79ddebac34c2f53a33e6ffc04b8cc70c32a20c84de21b9fd9adc875c",
+          "size": 2139,
+          "contentType": "text/markdown; charset=utf-8"
+        },
+        "artifact": {
+          "sourceFingerprint": "f122c18eec876b399a1ba3172f3971bb9b9b6e31209704912142b0372706d850",
+          "bundleFingerprints": [
+            "11c457add800e62518ad63fcc770ed6adf10c915bb7836eb3ff0616d1e36c229",
+            "9406707b8dd000d5cea0fa123ba7a6a4f0fdebbb88cead000053c4d964061015",
+            "bdf31f55750da5166d7abb88ecbef14b1e6e135fdf8e9829aec45d740c47ff60"
+          ],
+          "files": [
+            {
+              "path": "SKILL.md",
+              "size": 4561,
+              "sha256": "e8eb7583355c2ae78a79187dca6a1ec448d9c8360e91652871392179f7ffb8bf",
+              "contentType": "text/markdown"
+            }
+          ]
+        },
+        "provenance": {
+          "source": "unavailable",
+          "reason": "No server-resolved GitHub import provenance is stored for this version."
+        },
+        "security": {
+          "status": "clean",
+          "passed": true,
+          "rawStatus": "clean",
+          "verdict": "benign",
+          "confidence": "high",
+          "summary": "This skill is a security checklist for reviewing other skills and does not contain hidden execution, persistence, credential use, or destructive behavior.",
+          "model": null,
+          "checkedAt": 1789024532178,
+          "scannerReports": {
+            "aig": null,
+            "skillspector": null
+          }
+        },
+        "signature": {
+          "status": "unsigned"
+        }
+      }
+    },
+    "find-skills-skill": {
+      "version": "1.0.0",
+      "registry": "https://clawhub.ai",
+      "ownerHandle": "fangkelvin",
+      "installedAt": 1790121369680,
+      "artifact": {
+        "kind": "archive",
+        "sha256": "a7cd17a68156581095e29fca26aff0603c61672248914ed179e89d6bb5b4ae0d",
+        "integrity": "sha256-p80XpoFWWBCV4p/KJq/wYDxhZyJIkU7Reeida7W0rg0="
+      },
+      "skillFile": {
+        "path": "SKILL.md",
+        "sha256": "6a456ab419a1dafd427fb88bc7cebcc9bedb238a7e5ba6f1325145ada14b195a"
+      },
+      "fileTreeSha256": "sha256:47e590e5dfc3b58bb3c7a03624d0fcdc60df40db4ea1501dcd82fbae513daf56",
+      "verification": {
+        "schema": "clawhub.skill.verify.v1",
+        "ok": true,
+        "decision": "pass",
+        "reasons": [],
+        "card": {
+          "available": true,
+          "path": "skill-card.md",
+          "url": "https://wry-manatee-359.convex.site/api/v1/skills/find-skills-skill/card?ownerHandle=fangkelvin&version=1.0.0",
+          "sha256": "5dfff5d29799ae3aae99b718ae0bd05b07bb9197d91c6a48b4528989914db588",
+          "size": 1763,
+          "contentType": "text/markdown; charset=utf-8"
+        },
+        "artifact": {
+          "sourceFingerprint": "ff1746c59ee82483c792be6de8f1e265e127562c80ee991d0c7b0a8d1767e640",
+          "bundleFingerprints": [
+            "c0a2d1baa15bbcd73e57b15ef1553d32a34a80e2676421ea41d2caf319169a58",
+            "f4ed9bce54a64fc80e4b973e95e0b3fd0709f7aaf0409e22a9544d2541f7b170"
+          ],
+          "files": [
+            {
+              "path": "SKILL.md",
+              "size": 3283,
+              "sha256": "6a456ab419a1dafd427fb88bc7cebcc9bedb238a7e5ba6f1325145ada14b195a",
+              "contentType": "text/markdown"
+            }
+          ]
+        },
+        "provenance": {
+          "source": "unavailable",
+          "reason": "No server-resolved GitHub import provenance is stored for this version."
+        },
+        "security": {
+          "status": "clean",
+          "passed": true,
+          "rawStatus": "clean",
+          "verdict": "benign",
+          "confidence": "high",
+          "summary": "This skill is a straightforward guide for finding OpenClaw skills, with a notable but disclosed supply-chain caution around unpinned npx examples.",
+          "model": null,
+          "checkedAt": 1789094607512,
+          "scannerReports": {
+            "aig": null,
+            "skillspector": null
+          }
+        },
+        "signature": {
+          "status": "unsigned"
+        }
+      }
+    },
+    "word-docx": {
+      "version": "1.0.2",
+      "registry": "https://clawhub.ai",
+      "ownerHandle": "ivangdavila",
+      "installedAt": 1790121381553,
+      "artifact": {
+        "kind": "archive",
+        "sha256": "433c586060f4e30d7c16e3a81b51eea994dfc12a0c131c05723d2414327499c7",
+        "integrity": "sha256-QzxYYGD04w18FuOoG1HuqZTfwSoMExwFcj0kFDJ0mcc="
+      },
+      "skillFile": {
+        "path": "SKILL.md",
+        "sha256": "c766da489810acf03290283780ba9d3be798678d689255ace34477caeb6d7541"
+      },
+      "fileTreeSha256": "sha256:bd666100238f058ae35d6a9d2c029b628541a0d1724957b779ef6561bede63a0",
+      "verification": {
+        "schema": "clawhub.skill.verify.v1",
+        "ok": true,
+        "decision": "pass",
+        "reasons": [],
+        "card": {
+          "available": true,
+          "path": "skill-card.md",
+          "url": "https://wry-manatee-359.convex.site/api/v1/skills/word-docx/card?ownerHandle=ivangdavila&version=1.0.2",
+          "sha256": "ee543d852ff1ee291171a5c768b546451e93558e990dc0ae9e9ac1189da54364",
+          "size": 2484,
+          "contentType": "text/markdown; charset=utf-8"
+        },
+        "artifact": {
+          "sourceFingerprint": "868e9d062e2e999d67f8b6f208dc3a07b38a2ee4ad9090f46cf44230724985ca",
+          "bundleFingerprints": [
+            "d4ddcd3627da5e74e6c61779c4ba00b99c98d45f577ec3143c75c42be4cc43d9",
+            "5e7853c3e9a2d4f68f2e423746043f6a54038c325df01e08fc2aa3d188988604"
+          ],
+          "files": [
+            {
+              "path": "SKILL.md",
+              "size": 7887,
+              "sha256": "c766da489810acf03290283780ba9d3be798678d689255ace34477caeb6d7541",
+              "contentType": "text/markdown"
+            }
+          ]
+        },
+        "provenance": {
+          "source": "unavailable",
+          "reason": "No server-resolved GitHub import provenance is stored for this version."
+        },
+        "security": {
+          "status": "clean",
+          "passed": true,
+          "rawStatus": "clean",
+          "verdict": "benign",
+          "confidence": "high",
+          "summary": "This skill is a straightforward Word/DOCX handling guide with no hidden execution, persistence, or credential behavior.",
+          "model": null,
+          "checkedAt": 1789056377387,
+          "scannerReports": {
+            "aig": null,
+            "skillspector": null
+          }
+        },
+        "signature": {
+          "status": "unsigned"
+        }
+      }
+    },
+    "superpowers": {
+      "version": "1.0.0",
+      "registry": "https://clawhub.ai",
+      "ownerHandle": "wlshlad85",
+      "installedAt": 1790121429373,
+      "artifact": {
+        "kind": "archive",
+        "sha256": "5aa96cc33cf6eb9d6af51244431b62368ddd92f1d01223e03d1e2895910c7f7c",
+        "integrity": "sha256-Wqlswzz2651q9RJEQxtiNo3dkvHQEiPgPR4olZEMf3w="
+      },
+      "skillFile": {
+        "path": "SKILL.md",
+        "sha256": "6519b20f4dae0f55cc8fb60828935305018ea3fe3c8335eee46703a59b765e7b"
+      },
+      "fileTreeSha256": "sha256:cb03c9baf5feeadf0334ffc23c859f6c0970fc684845c66f8b1f97c8c4d67fd4",
+      "verification": {
+        "schema": "clawhub.skill.verify.v1",
+        "ok": true,
+        "decision": "pass",
+        "reasons": [],
+        "card": {
+          "available": true,
+          "path": "skill-card.md",
+          "url": "https://wry-manatee-359.convex.site/api/v1/skills/superpowers/card?ownerHandle=wlshlad85&version=1.0.0",
+          "sha256": "d58136d0b8cbd014db27301060f42845821fff930130e8e23f1913310508baba",
+          "size": 2764,
+          "contentType": "text/markdown; charset=utf-8"
+        },
+        "artifact": {
+          "sourceFingerprint": "ebdc3c116625f4bda22f8e4bcf957a6939ebfab6603e667ac4af506e5380c41f",
+          "bundleFingerprints": [
+            "db10ae86b9026aa451dde95b5ec220392e6148763b8b0fe49fa127d3d96f5be2",
+            "6d9da4573d3eefc89441292ca60ba3597dfee9f62f8719e1cca36859ae446857"
+          ],
+          "files": [
+            {
+              "path": "references/brainstorming.md",
+              "size": 1433,
+              "sha256": "cc8d8c12a8bb1e226cb7d4fcf8af0b6312c108e14d67406f628846d496757783",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "references/finishing-branch.md",
+              "size": 2313,
+              "sha256": "e1343098d799f9ea1124ca908c3360fda1a79ce868a414f24d341925e4b44e0e",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "references/subagent-development.md",
+              "size": 3083,
+              "sha256": "8a3bc330dd63b10457f2c93d48063946cc7206a5e527a412c354d7e3ab384b6c",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "references/systematic-debugging.md",
+              "size": 2914,
+              "sha256": "eefa17bd25120dc585bdcbd86510225a31a2f2994f990e18230e0ece483ac64e",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "references/tdd.md",
+              "size": 2527,
+              "sha256": "f76698a6d0c8b63494d151483abd423c99588f76c8e00d1176eb7335f946f0c4",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "references/writing-plans.md",
+              "size": 1995,
+              "sha256": "347cda5f0167624ef4cd749751aa72f06bd1d672977e1c98373ba8b3367fea6f",
+              "contentType": "text/markdown"
+            },
+            {
+              "path": "SKILL.md",
+              "size": 4774,
+              "sha256": "6519b20f4dae0f55cc8fb60828935305018ea3fe3c8335eee46703a59b765e7b",
+              "contentType": "text/markdown"
+            }
+          ]
+        },
+        "provenance": {
+          "source": "unavailable",
+          "reason": "No server-resolved GitHub import provenance is stored for this version."
+        },
+        "security": {
+          "status": "clean",
+          "passed": true,
+          "rawStatus": "clean",
+          "verdict": "benign",
+          "confidence": "high",
+          "summary": "This is a disclosed software-development workflow skill; its command use, subagents, commits, and branch actions fit that purpose and include user gates for higher-impact steps.",
+          "model": null,
+          "checkedAt": 1789090083733,
+          "scannerReports": {
+            "aig": null,
+            "skillspector": null
+          }
+        },
+        "signature": {
+          "status": "unsigned"
+        }
+      }
+    }
+  }
+}

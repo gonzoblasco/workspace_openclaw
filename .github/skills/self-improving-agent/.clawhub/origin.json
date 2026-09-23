@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "registry": "https://clawhub.ai",
+  "slug": "self-improving-agent",
+  "ownerHandle": "pskoett",
+  "installedAt": 1790121297875,
+  "artifact": {
+    "kind": "archive",
+    "sha256": "89f2a239f9d675c4c5787cf61c17f709cd38cb9c7d395f9dc50f487a59a47291",
+    "integrity": "sha256-ifKiOfnWdcTFeHz2HBf3Cc04y5x9OV+dxQ9IelmkcpE="
+  },
+  "skillFile": {
+    "path": "SKILL.md",
+    "sha256": "eff889950f23bb8a3de90cd617481bbf2557f9495f884bd5b1e9b7604a20817c"
+  },
+  "fileTreeSha256": "sha256:cd72f5c1910da8f21f4e326cc4f3b39de8b5bd371411f6a026f1f72b6747de8d",
+  "installedVersion": "4.0.2"
+}

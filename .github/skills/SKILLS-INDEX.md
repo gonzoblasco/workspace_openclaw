@@ -70,6 +70,9 @@
 | [publish-skills](skills/publish-skills/) | Publica skills del workspace (privado) al repo publico como artefacto generado: sanitizacion en memoria, allowlist para altas y verificacion post-apply |
 | [complexity-driven-pipeline](skills/complexity-driven-pipeline/) | Orquestación complexity-first: scorer de complejidad antes de spawnear agentes A/B. Decide modelo, thinking level y profundidad de pipeline |
 | [model-cata](skills/model-cata/) | Ritual formal de comparación de modelos LLM: mismo prompt pesado, rúbrica de análisis crítico y decisión de motor/especialistas documentada en ADR |
+| [find-skills](skills/find-skills-skill/) | Busca y descubre skills de OpenClaw desde varias fuentes (ClawHub y otras) |
+| [superpowers](skills/superpowers/) | Workflow spec-first con TDD y ejecución por subagentes: brainstorm → plan → implementación, debugging sistemático y cierre de branch |
+| [self-improving-agent](skills/self-improving-agent/) | Captura aprendizajes, errores y correcciones en archivos markdown para mejora continua |
 
 ## Core OpenClaw (Infraestructura Propia)
 
@@ -111,6 +114,7 @@
 | Skill | Descripción |
 |---|---|
 | [clawdstrike](skills/clawdstrike/) | Security audit del gateway OpenClaw |
+| [skill-vetter](skills/skill-vetter/) | Vetting de seguridad antes de instalar una skill de terceros: banderas rojas, alcance de permisos y patrones sospechosos |
 
 ## Carrera y Crecimiento
 
@@ -136,6 +140,7 @@
 | [github](skills/github/) | Official GitHub MCP server wrapper: security alerts, notifications |
 | [cleanmymac-maintenance](skills/cleanmymac-maintenance/) | Protocolo flexible de mantenimiento con CleanMyMac CLI vía frases naturales |
 | [pdf-tool](skills/pdf-tool/) | Manejo local de PDFs: leer (texto, metadata, OCR) y generar (exportar markdown a PDF). 100% local (poppler + tesseract) |
+| [word-docx](skills/word-docx/) | Crear, inspeccionar y editar documentos Word/DOCX: estilos, numeración, tracked changes, tablas, secciones y compatibilidad |
 
 ---
 
@@ -149,4 +154,4 @@
 
 `adhd-assistant`, `adhd-output`, `anti-ai`, `apple-photos`, `brand-name-forge`, `calorie-counter`, `code-review-and-quality`, `code-simplification`, `curriculum-builder`, `db-readonly`, `debugging-and-error-recovery`, `gateway-restart-helper`, `godot-mcp`, `health-check-dashboard`, `image-generation`, `mcp-orchestrator`, `memory-agent`, `mlx-stt`, `model-router-pro`, `network-scanner`, `playwright-e2e-reactflow`, `shortcuts-generator`, `study-tracker`, `using-agent-skills`.
 
-**Totales activas:** 60 skills (verificado con `openclaw skills list --json`, fuente `openclaw-workspace`).
+**Totales activas:** 65 skills (verificado con `openclaw skills list --json`, fuente `openclaw-workspace`).
