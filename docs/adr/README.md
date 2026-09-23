@@ -64,6 +64,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-056 | [Guardas de gobernanza en el pre-commit - guion comun y rutas citadas](./ADR-056-guardas-gobernanza-pre-commit.md) | workspace |
 | ADR-057 | [Embeddings en BLOB float32, no JSON de texto](./ADR-057-embeddings-blob-float32.md) | workspace |
 | ADR-058 | [Taxonomia normalizada, tabla gemela absorbida y una FK espuria](./ADR-058-taxonomia-normalizada-fk-espuria.md) | workspace |
+| ADR-059 | [Contenido markdown descompuesto en campos consultables](./ADR-059-contenido-descompuesto-campos.md) | workspace |
 
 ## Formato
 

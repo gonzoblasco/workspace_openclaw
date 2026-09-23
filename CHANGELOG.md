@@ -6,6 +6,30 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-22] - Contenido descompuesto: secciones y TODOs que estaban enterrados en el markdown
+
+### Added
+- **`scripts/content-parse.py`:** parser del markdown de la DB (`doc_kind`, `harness_fields`, `split_sections`, `extract_checklist`).
+- **Tabla `sections`:** 1987 secciones consultables por titulo, nivel y rango horario. **Con offsets, no con copia del texto.**
+- **Tabla `checklist_items`:** **102 items rescatados** (67 abiertos) que hasta hoy solo existian dentro de la prosa y no aparecian en ningun listado.
+- **Columnas de metadatos en `daily_notes`:** `doc_kind`, `session_key`, `session_id`, `source`.
+- **`tests/python/test_content_migration.py`:** 30 tests.
+
+### Fixed
+- **`type` mentia en 6 filas:** seis dumps del harness estaban marcados `type='daily'`. Ahora el tipo se **recalcula desde el contenido**, que es la fuente de verdad. La app filtraba por esa columna.
+- **17 filas con `content` guardado como BLOB** (no corrompidas: eran UTF-8 valido, pero con el tipo de dato equivocado). Cualquier lector que asumiera `str` fallaba. Lo destapo un regex que tiro `cannot use a string pattern on a bytes-like object`.
+
+### Notes
+- **El texto no se duplica.** La primera version copiaba el `body` de cada seccion y la DB pasaba de 3.8 a **6.5 MB**: el texto copiado era el **95% del contenido ya presente en el padre**. Era exactamente el defecto que ADR-058 acababa de eliminar. Con offsets (`content[char_start:char_end]`), `sections` pesa **140 KB** y la DB queda en 4.2 MB.
+- **Los offsets no se invalidan** porque el contenido solo crece por append (`memory-end-session.py` hace `content + block`). Matiz documentado: el `char_end` de la **ultima** seccion si avanza. El test que lo cubre fallo dos veces al escribirlo, y las dos veces el error era del test, no del parser.
+- **Lo que NO se extrajo:** entidades (repos, PRs) del texto libre. Medido: de 5143 matches de `owner/name`, los mas frecuentes son `dist/stacks`, `memory/archive`, `origin/main`, `28/08` - rutas de archivo y fechas, no repos. **Regex sobre prosa fabrica datos falsos.**
+- **Migrado primero sobre una copia** (`--db`), y fue lo que destapo lo de los 6.5 MB. Sobre la DB real solo se aplico la version corregida.
+- **Verificacion:** busqueda `"em dash guion"` identica (57.5%, 52.0%); 0 secciones huerfanas; 0 offsets invalidos; 0 docs sin `doc_kind`; el `content` original intacto (la migracion es aditiva). App 200 en las 5 vistas. 95/95 tests.
+- **Un numero que reporte mal y corregi:** dije "108 mismatches en `type` (95%)" y era artefacto de mi propia regex de clasificacion. Con la definicion correcta eran **6**. Se corrigio antes de actuar.
+- ADR-059.
+
+---
+
 ## [2026-09-22] - Refactor de schema: taxonomia normalizada y una FK espuria desarmada
 
 ### Added
