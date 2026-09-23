@@ -7,19 +7,7 @@ description: "Fix the weekly skill-collection-review cron failing on collection 
 
 The Skill Workshop runs a weekly system-owned cron job per writable workspace named `skill-collection-review-<agent>` (declarationKey ``skill-collection-review:<agent>``). In `auto` mode it reviews the writable skill collection and proposes rewrites or drops. It fails only when the collection exceeds its admission limits, but the failure is silent: it shows only in the job's `lastRunError`.
 
-## Diagnose skill prompt budget (2026-09-22)
-
-The model prompt has a hard budget of ~18,000 characters for the skill catalog. Each skill costs: name + description + location path (full `SKILL.md` path) + XML wrapper (~375 chars avg). With 126 visible skills the total is ~47,000 chars (excess +29,000). The system falls back to compact format with descriptions omitted, which breaks routing (the router decides on name + description only).
-
-**Verificar estado actual:** el banner en AGENTS.md dice `Skills truncated: included N of M`. Si M > ~50 con descripciones, hay exceso. El model prediction formula: `HEADER(300) + skills × 152` para sin descripciones; con descripciones completas, el max es ~48 skills.
-
-**Fix sin borrar skills (two documented levers):**
-1. `disable-model-invocation: true` por skill: sale del prompt del modelo, queda disponible como `$skill-name`. Reversible, no toca archivos.
-2. `agents.defaults.skills: [...]`: allowlist explícita de qué ve el modelo. Solo lo reversible y documentado.
-
-**No mover al workshop:** el workshop vive fuera del repo git (`~/.openclaw/agents/main/agent/workshop-skills`). Las skills de workspace tienen 173 archivos versionados. Moverlas pierde git + quedan bajo revisión autónoma. La UI muestra workshop skills como fichas editables y workspace skills como lista — eso es por diseño, no un bug.
-
-**El curator solo trackea workshop skills** (4 skills). Las de workspace no tienen tracking de uso. Para saber cuáles se usan hay que minar sesiones.
+This is the collection-review job and clean removal. For the model prompt budget (what reaches the model, the 18,000-char catalog limit, curating with `disable-model-invocation` instead of deleting), see the `skill-catalog-budget` skill.
 
 ## Diagnose (collection review failure)
 
