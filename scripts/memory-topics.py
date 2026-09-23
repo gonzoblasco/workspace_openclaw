@@ -243,45 +243,121 @@ def assign_new_topics(cluster_map):
     conn.close()
 
 
-def recalc_fixed_topics():
-    """Reassign fixed topics by real keyword matching (more discriminative than embeddings).
-    Fixed topics are those NOT marked 'Auto-discovered'."""
-    topic_keywords = {
-        "soporteml": ["soporteml", "mercado", "meli", "ml ", "vendedor"],
-        "accessibility": ["accessib", "a11y", "accesib"],
-        "git": ["git", "commit", "push", "rebase", "merge", "branch"],
-        "linkedin": ["linkedin", "post", "branding"],
-        "agentic": ["agentic", "pipeline", "agente", "subagente", "orquestad"],
-        "kanam-skills": ["kanam-skills", "skill", "skills"],
-        "assessment": ["assessment", "interview", "entrevista", "samarth", "hiring"],
-    }
+# Cuantas veces debe aparecer una keyword en una sesion para contar como tema.
+# Medido: con 1+ aparicion, `push`/`commit`/`post` aparecian en 3 de cada 4
+# sesiones y los 7 topics cubrian el 93% de las aristas (el grafo era una sopa
+# sin informacion). Con 3+ y keywords discriminativas, cada tema toca entre el
+# 14% y el 47% de las sesiones: ahi si distingue.
+MIN_KEYWORD_HITS = 3
 
+# Palabras que aparecen en cualquier sesion de trabajo y por lo tanto NO
+# identifican un tema. Medido por cobertura sobre las 51 sesiones reales:
+#   git 71%, commit 76%, push 73%, pipeline 67%, skill 61%, post 57%
+# Se excluyen a proposito; las que quedan bajan de 50%.
+TOPIC_KEYWORDS = {
+    "soporteml": ["soporteml", "mercado", "meli", "ml ", "vendedor"],
+    "accessibility": ["accessib", "a11y", "accesib"],
+    "git": ["rebase", "merge", "branch", "stash", "pull request", "git log"],
+    "linkedin": ["linkedin", "branding"],
+    "agentic": ["agentic", "agente", "subagente", "orquestad"],
+    "kanam-skills": ["kanam-skills", "skills"],
+    "assessment": ["assessment", "interview", "entrevista", "samarth", "hiring"],
+}
+
+
+def recalc_fixed_topics():
+    """Reasigna los topics fijos por keyword matching CON umbral de frecuencia.
+
+    El bug original era `if any(kw in content)`: bastaba UNA mencion de `push`
+    para que la sesion contara como 'git'. Como casi toda sesion de trabajo
+    menciona push o commit alguna vez, 'git' terminaba tocando el 94% de las
+    sesiones y el grafo no decia nada.
+
+    Ahora se cuentan las ocurrencias de todas las keywords del tema y se exige
+    MIN_KEYWORD_HITS. La confianza de la arista refleja la densidad (mas
+    menciones = vinculo mas fuerte), no un valor fijo.
+    """
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    sessions = c.execute(
-        "SELECT id, date, content_bare FROM sessions_relacional"
-    ).fetchall()
+    sessions = c.execute("SELECT id, date, content_bare FROM sessions_relacional").fetchall()
 
-    print("\nRecalculando topics fijos por keywords...")
-    for topic, kws in topic_keywords.items():
+    print("\nRecalculando topics fijos (umbral: %d menciones)..." % MIN_KEYWORD_HITS)
+    for topic, kws in TOPIC_KEYWORDS.items():
         tid = c.execute("SELECT id FROM topics WHERE name=?", (topic,)).fetchone()
         if not tid:
             continue
         tid = tid[0]
         c.execute("DELETE FROM topic_sessions WHERE topic_id=?", (tid,))
         count = 0
-        for sid, date, content in sessions:
-            content_lower = (content or "").lower()
-            if any(kw in content_lower for kw in kws):
-                c.execute(
-                    "INSERT OR IGNORE INTO topic_sessions (session_id, topic_id, confidence) VALUES (?,?,?)",
-                    (sid, tid, 0.9),
-                )
-                count += 1
+        for sid, _date, content in sessions:
+            low = (content or "").lower()
+            hits = sum(low.count(k) for k in kws)
+            if hits < MIN_KEYWORD_HITS:
+                continue
+            # Confianza proporcional: 3 hits -> 0.6, 10+ hits -> 0.95 (cap).
+            conf = min(0.95, 0.5 + hits * 0.05)
+            c.execute(
+                "INSERT OR IGNORE INTO topic_sessions (session_id, topic_id, confidence) VALUES (?,?,?)",
+                (sid, tid, round(conf, 2)),
+            )
+            count += 1
         print(f"  {topic}: {count} sesiones")
 
     conn.commit()
     conn.close()
+
+
+def prune_junk_topics(coverage_cap=0.33, min_sessions=3):
+    """Borra topics auto-descubiertos que no identifican un tema.
+
+    El clustering nombraba cada cluster con sus palabras mas frecuentes, y como
+    los stopwords de `summarize_cluster` no cubrian todo, quedaron temas
+    llamados 'todos' (desc: "todos, also, push, inbox, says, note") o 'regla'
+    ("regla, solo, agents, tests, push, skill"): palabras vacias usadas como
+    nombre.
+
+    Se borra por dos criterios MEDIDOS, sin hardcodear nombres:
+
+      1. Cobertura: si el nombre aparece en >= 33% de las sesiones, no
+         distingue nada. Medido: 'regla' 71%, 'todos' 49%, 'modelos' 39%.
+         (El tope de 33% sale de los topics curados: el peor, 'git' con
+         keywords refinadas, queda en 47% de cobertura de *menciones*, pero su
+         nombre aparece en el 71%... igual que 'regla'. Ver ADR-060.)
+
+      2. Volumen: un tema con menos de 3 sesiones no es un tema.
+         Medido: 'archived' toca 2 sesiones (18% de cobertura, pasa el punto 1
+         pero no este).
+
+    Solo se tocan los AUTO-DISCOVERED: los fijos son curados a mano.
+    """
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    sessions = [r[0] or "" for r in c.execute("SELECT content_bare FROM sessions_relacional")]
+    total = max(len(sessions), 1)
+
+    rows = c.execute(
+        """SELECT t.id, t.name, COUNT(ts.session_id) n FROM topics t
+           LEFT JOIN topic_sessions ts ON ts.topic_id = t.id
+           WHERE t.description LIKE 'Auto-discovered:%'
+           GROUP BY t.id"""
+    ).fetchall()
+
+    removed = []
+    for tid, name, n in rows:
+        coverage = sum(1 for s in sessions if name.lower() in s.lower()) / total
+        if n < min_sessions:
+            reason = f"solo {n} sesion(es)"
+        elif coverage >= coverage_cap:
+            reason = f"nombre en {coverage:.0%} de las sesiones (no distingue)"
+        else:
+            continue
+        c.execute("DELETE FROM topic_sessions WHERE topic_id=?", (tid,))
+        c.execute("DELETE FROM topics WHERE id=?", (tid,))
+        removed.append(f"{name} ({reason})")
+
+    conn.commit()
+    conn.close()
+    return removed
 
 
 def main():
@@ -337,6 +413,13 @@ def main():
         print("\n⚙️  Assigning discovered topics to DB...")
         assign_new_topics(named)
         print("   Done.")
+
+    # La poda va DESPUES de asignar: si va antes, el clustering agrega de nuevo
+    # los temas basura que se acababan de borrar (medido: reaparecian 'cloud',
+    # 'solo', 'real', 'buffering').
+    removed = prune_junk_topics()
+    if removed:
+        print(f"\n  topics basura borrados: {', '.join(removed)}")
 
     # Show existing fixed topics for contrast
     print("\n" + "=" * 60)
