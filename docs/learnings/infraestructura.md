@@ -477,3 +477,64 @@ Regla: toda salida estructurada de un modelo con thinking necesita presupuesto a
 
 ---
 
+## Hooks de git en proyecto nuevo: git init antes de instalar, o se pisa el hook del workspace
+
+
+
+**Tags:** infraestructura,git-hooks,triple-git
+
+---
+
+## Clon local de proyectos corrupto: remote apunta a workspace_openclaw, solo .knowledge, sin src/
+
+Patron repetido 3 veces (kanam-pulse, kanam-studio, soporteml): el dir projects/<slug>/ local es un repo git cuyo remote apunta a workspace_openclaw (no al repo real), tiene SOLO .knowledge/ y no el codigo. Sintoma clasico: git remote -v muestra workspace_openclaw y no existe src/. El codigo real vive en GitHub del dueno. Regla: antes de trabajar un todo de proyecto, verificar si el clon local tiene el codigo real o es placeholder; si es placeholder, clonar bajo demanda en aislamiento (mktemp) y limpiar con trash. No committear el codigo a workspace (el .knowledge si viaja).
+
+**Tags:** infraestructura,clon,proyectos,triple-git
+
+---
+
+## pr-dashboard.sh: portar la agrupacion de PRs del plugin github-workflow (aditivo)
+
+El todo 10 era analizar el plugin github-workflow (chris-openclaw). El recon mostro que el 08-24 ya se portaron los risk signals a github-pr-risk.sh, pero la AGRUPACION por estado no. pr-dashboard.sh contaba draft/stale/review pero devolvia la lista plana en prs. Se anadio bucket por PR (draft/needs_review/stale/ok) + resumen by_state. Aditivo y compatible: no se tocan campos existentes, se agrega. Verificado con 19 PRs reales: by_state {needs_review:12, ok:2, stale:5}; la cabecera stale_count=7 incluye 2 en review (precedencia, no perdida). Leccion: cuando un todo dice 'optimizar X', reconfirmar que parte del analisis previo ya se porto para no re-hacer.
+
+**Tags:** infraestructura,pr-dashboard,github,gh-cli
+
+---
+
+## Backup del gateway: --no-include-workspace es la via correcta + git backups automatizados
+
+El doctor marcaba 'sin backup registrado'. Habia uno local (todo 55) pero sin automatizacion ni versionado git. Politica definida y aplicada: (1) backup local tar.gz con --no-include-workspace --verify (el workspace ya vive en git; incluir workspace FALLA por symlink absoluto en projects/kanam-lab/.venv que OpenClaw rechaza a proposito - venv regenerable); (2) repo git de backups en ~/Backups/openclaw-git + schedule diario 24h via openclaw backup enable --agent main; (3) snapshots SQLite con --exclude-secrets. Que: estado/config/credenciales/SQLite de ~/.openclaw. Donde: ~/Backups local, sin push remoto (control de Gonzo).
+
+**Tags:** infraestructura,backup,gateway,openclaw
+
+---
+
+## Setup langchain-starter: venv created in workspace root by mistake, then moved to projects/ which broke venv (absolute paths in pyvenv.cfg); recreated in final location. Also pip broken-interpreter error after move; fixed by calling python3 -m pip instead of venv/bin/pip.
+
+Create venvs and projects in their FINAL location from the start; moving a venv breaks it (absolute interpreter paths). If a venv breaks, recreate it, do not patch. Rule: new projects always under projects/.
+
+**Tags:** config,reflexion-post-tarea
+
+---
+
+## git add sobre .knowledge de un repo anidado: el orden importa (falla silenciosa)
+
+
+
+**Tags:** Sintoma: `git add projects/<slug>/.knowledge` no stagea nada y **sale con codigo 0**. No hay error, no hay warning. El script que lo invoca cree que funciono y commitea vacio.
+
+Causa: si `projects/<slug>/.git` ya existe, el repo del workspace ve ese directorio como **embedded repository**. Git no desciende al `.knowledge/` y el add no tiene efecto.
+
+Verificado en sandbox (/tmp/gt3, /tmp/gt4) el 2026-09-22:
+- add **antes** del `git init` del proyecto -> funciona.
+- add **despues** del `git init` -> falla, y **no importa el patron de .gitignore** (se probaron tres variantes, todas fallan).
+- Una vez que el indice tiene el .knowledge seedeado, los updates posteriores funcionan normal aunque el `.git` del proyecto exista.
+
+Fix aplicado en `scripts/init-project.sh`: mover el `git add/commit` del `.knowledge` a **antes** del init del proyecto + guard que falla ruidoso (`git diff --cached --quiet` -> exit 1) en vez de imprimir un check falso.
+
+Workaround para un proyecto ya creado con el bug: mover el `.git` temporalmente, stagear el `.knowledge`, devolver el `.git`. Fue el que se uso para kanam-os.
+
+Leccion de metodo: cuando un comando de git "funciona" sin output, verificar con `git ls-files` o `git diff --cached --quiet`, no con el exit code.
+
+---
+

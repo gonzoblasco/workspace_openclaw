@@ -272,3 +272,35 @@ Caso concreto: el error fue intentar el 27B como agente OpenClaw (sesion pesada:
 
 ---
 
+## Sesion 2026-09-15: 6 todos cerrados. Patron repetido 3 veces (#43, #42, #44): los todos describian problemas cuya premisa ya no existia (bug ya arreglado, commit inexistente, migracion ya hecha). En #54 la racha incluyo accion publica (npm publish) - la regla de credenciales por terminal de Gonzo funciona. Hallazgo propio: publish-skills.sh --check comparaba workspace crudo vs publico sanitizado, mintiendo con 8 falsos positivos permanentes que escondian drift real
+
+VERIFICAR ANTES DE ACTUAR: cuando un todo viene de dias atras, la premisa puede estar obsoleta - el trabajo real es confirmar el estado actual (git log, registry, status) antes de ejecutar; muchas veces la resolucion correcta es cerrar sin accion. Y: un check que nunca puede pasar escribe ruido y esconde drift - validar las herramientas de verificacion tanto como el codigo
+
+**Tags:** other,reflexion-post-tarea
+
+---
+
+## Matar un todo = borrar la fila; olvidar = cerrar; no mezclar estados
+
+Gonzo distingue tres estados de limpieza de la cola: quitar (marcar done, p.ej. OBSERVAR y kanam-skills), MATAR (borrar la fila de verdad, p.ej. todo 6 que pidio eliminar, no marcar done), y OLVIDAR (cerrar porque no se trabaja, 27-30/36). El verbo importa: marcar done algo que pidio matar falsifica el historial. Con esta sesion la cola abierta paso de 18 a 2 todos reales (31 re-cata modelos, 35 envoltorio nativo kanam-pulse).
+
+**Tags:** metodologia,todos,backlog,limpieza
+
+---
+
+## Recon antes de dar por hecho un todo de dias atras; puede estar ya resuelto por commits posteriores
+
+El todo 40 (kanam-studio world-building / Slice 5) parecia pendiente (texto pisado en DB, solo 'kanam-studio'). El recon en el repo real mostro que el Slice 5 YA estaba implementado y superado: el proyecto esta en v0.15.0, con slices 5-6 (biblia world con IA + relato lineal) y hitos 5/6/7 (canonical, prosa final, E2E) completos. Resultado: cerrar sin accion, restaurado el texto completo, no inventar trabajo. Refuerza la leccion 149 (verificar antes de actuar).
+
+**Tags:** metodologia,recon,kanam-studio,verificacion
+
+---
+
+## Identidad del modelo: el header de runtime es del turno actual, no de la conversacion
+
+El modelo puede cambiarse a mitad de sesion: el runtime del contexto de arranque refleja SOLO el turno actual, no el modelo que produjo los turnos previos. Al fichar o registrar identidad de modelo (fichas de interaccion, registros de duelos, atribucion de salidas), confirmar con el usuario o verificar con session_status; el header del bootstrap es dato insuficiente. Caso: ficha de kanam-lab atribuida a glm-5.3-flash por el runtime del cierre cuando la conversacion corrio en nemotron-3-ultra:cloud (Gonzo corrigio). Refuerzo: el override de modelo puede ser rechazado por modelPolicy.allow y el runtime reporta el modelo efectivo, no el pedido.
+
+**Tags:** metodologia,kanam-lab,modelo,identidad,verificacion
+
+---
+

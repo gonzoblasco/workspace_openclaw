@@ -23,9 +23,9 @@
 #   projects/<slug>/README.md
 #
 # Also:
+#   - Tracks .knowledge/ as a blob in the workspace git (BEFORE the project's own git init - see note below)
 #   - Initializes the project as its own git repo (excludes .knowledge/ via .git/info/exclude)
 #   - Pushes initial commit to its remote
-#   - Commits .knowledge/ to the workspace git
 #   - Registers the folder in the aggregate repo (projects/ -> projects_openclaw)
 
 set -euo pipefail
@@ -182,6 +182,26 @@ echo "  ✅ Created .knowledge/STATUS.md"
 echo "  ✅ Created .gitignore"
 echo "  ✅ Created README.md"
 
+# Track .knowledge/ as a blob in the workspace git (NOT a submodule, NOT a gitlink).
+#
+# ORDER MATTERS: this must run BEFORE the project's own `git init`. Once
+# projects/<slug>/.git exists, the workspace repo treats the directory as an
+# embedded repository, and `git add projects/<slug>/.knowledge` stages NOTHING
+# (git exits 0 with no effect - silent failure). Seeding the index first makes
+# every later update to .knowledge/ work normally.
+# Verified 2026-09-22 (sandbox /tmp/gt3, /tmp/gt4): add-before-init works;
+# add-after-init fails regardless of .gitignore; existing tracked projects
+# (kanam-lab, langchain-starter, kanam-pulse) are unaffected.
+cd "${WORKSPACE_DIR}"
+git add "projects/${SLUG}/.knowledge"
+if git diff --cached --quiet -- "projects/${SLUG}/.knowledge"; then
+  echo "  ❌ .knowledge/ NO se pudo stagear en el workspace git."
+  echo "     Causa tipica: projects/${SLUG}/.git ya existe. Revisar ANTES de seguir."
+  exit 1
+fi
+git commit -q -m "feat(projects): add ${SLUG} project (.knowledge)"
+echo "  ✅ .knowledge/ tracked as blob in workspace (triple-git)"
+
 # Determine repo URL
 if [[ -z "$REPO_URL" ]]; then
   # Default: private repo on GitHub under gonzoblasco
@@ -235,12 +255,6 @@ else
   echo "  ✅ Private repo created at ${REPO_URL}"
   echo "  ✅ Project git initialized and pushed"
 fi
-
-# Track .knowledge/ as a blob in the workspace git (NOT a submodule, NOT a gitlink)
-cd "${WORKSPACE_DIR}"
-git add "projects/${SLUG}/.knowledge"
-git commit -q -m "feat(projects): add ${SLUG} project (.knowledge)"
-echo "  ✅ .knowledge/ tracked as blob in workspace (triple-git)"
 
 # Register in the aggregate repo
 if [[ "$AGGREGATE_OK" == "1" ]]; then

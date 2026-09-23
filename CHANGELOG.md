@@ -8,6 +8,9 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ## [2026-09-22] - Kanam OS: app local para ver la memoria como fichas, tablas y grafos
 
+### Fixed
+- **`scripts/init-project.sh` - falla silenciosa al trackear el `.knowledge/` de un proyecto nuevo.** El script imprimia `✅ .knowledge/ tracked as blob in workspace` sobre un `git add` que no stageaba nada: en cuanto `projects/<slug>/.git` existe, el repo del workspace ve el directorio como *embedded repository*, no desciende al `.knowledge/` y el add sale con **codigo 0 y sin efecto**. Se reprodujo en sandbox y se verifico que el patron de `.gitignore` no incide (tres variantes, todas fallan). Fix: el `git add`/`commit` del `.knowledge` se movio a **antes** del `git init` del proyecto, mas un guard (`git diff --cached --quiet` -> `exit 1`) que hace ruidosa la falla en vez de falsa. Verificado el ciclo completo: add antes del init, init despues, y updates posteriores del `.knowledge` funcionando. Los proyectos ya trackeados (`kanam-lab`, `langchain-starter`, `kanam-pulse`) no estaban afectados porque su `.knowledge` entro antes del init. Leccion guardada en `docs/learnings/infraestructura.md`.
+
 ### Added
 - **`projects/kanam-os/`:** app local que lee `memory/memory.db` y la muestra como fichas, tablas y grafos. Fase 1 = lectura completa. Vistas: resumen, fichas (+ detalle con cuerpo de la sesion), topics (tabla + grafo bipartito topics-sesiones en SVG puro, sin dependencias), learnings por categoria, TODOs, inbox, OSS y daily navegable. Stack: Next.js 16.3.6 (App Router) + Tailwind 4 + Biome + TypeScript. Repo propio (`gonzoblasco/kanam-os`, pendiente de crear en GitHub); el workspace trackea solo su `.knowledge/`, segun la convencion existente.
 - **`.openclaw/portals.json`:** declaracion del server de desarrollo de kanam-os (puerto 4317) para que el portal del Control UI lo levante en un click.
