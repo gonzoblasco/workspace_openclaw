@@ -15,15 +15,20 @@ Los agentes implementadores son instancias de **Claude Code** lanzadas por el or
 
 ### Comando base (headless)
 ```bash
-ANTHROPIC_BASE_URL=http://127.0.0.1:11434 \  # o 11435
+# Camino recomendado (verificado 2026-09-22): levanta el gateway y resuelve el enmascarado solo
+ollama launch claude --model <tag> -- -p "<tarea>"
+
+# Alternativa directa
+ANTHROPIC_BASE_URL=http://127.0.0.1:11434 \  # o 11435 (gateway, para aliases)
 ANTHROPIC_AUTH_TOKEN=<cualquier-valor> \
-<ruta-al-claude-de-Claude-3p>/claude -p "<tarea>" --model deepseek-v4-flash:cloud \
+claude -p "<tarea>" --model <tag o alias> \
   --dangerously-skip-permissions
 ```
-- NO usar `ollama launch claude --model` (bug: rechaza el flag como "unknown option").
-- Ejecutable: `~/Library/Application Support/Claude-3p/claude-code/<version>/claude.app/Contents/MacOS/claude` (fragil a cambios de version, verificar con `ls`).
+- **`claude` esta en el PATH (2026-09-22):** instalado global (`/opt/homebrew/bin/claude`, 2.1.280). El embebido de Claude Desktop 3p sigue como respaldo.
+- **Aliases vs tags crudos:** los aliases (`claude-sonnet-5`) los resuelve el gateway `11435` (requiere Claude Desktop corriendo); contra el daemon `11434` fallan - ahi va el tag crudo (`deepseek-v4.1-flash:cloud`). `ollama launch claude` evita tener que elegir.
+- **Config persistente:** `~/.claude/settings.json` acepta un bloque `env` con `ANTHROPIC_BASE_URL` + `ANTHROPIC_AUTH_TOKEN` + `CLAUDE_CODE_MAX_CONTEXT_TOKENS`; no hace falta exportar en el shell. Un install global NO hereda la config del 3p.
 - `-p` = headless; `--dangerously-skip-permissions` = auto-aprueba tools (write, edit, shell) sin prompt.
-- Modelo: cualquiera de `ollama list` (deepseek-v4-flash:cloud por defecto), elegido por tarea (ADR-040).
+- Modelo: cualquiera de `ollama list`, elegido por tarea (ADR-040).
 - El prompt (`-p`) lo redacta el ORQUESTADOR (Kanam), no el desarrollador.
 
 **Requisitos Claude Code:** >= 2.x (la 0.2.18 no maneja el bloque `{type:thinking}`), `~/.claude/settings.json` con `permissions.allow` (Edit, Write, Bash, Read), y tolerar los warnings `unrecognized_model` (ruido, no bloquean).
@@ -234,7 +239,7 @@ Kanam (este agente, corriendo en OpenClaw) es el orquestador. El flujo de trabaj
 - **NOTA sobre el motor (ADR-049):** el harness estandar es **Claude Code** (headless contra el gateway Ollama). Qwen Code queda como fallback. No usar `ollama launch claude --model` (bug: rechaza el flag).
 
 ### Pasos tecnicos en OpenClaw
-- **Claude Code (estandar, ADR-049):** `exec` con `ANTHROPIC_BASE_URL=http://127.0.0.1:11434 ANTHROPIC_AUTH_TOKEN=<x> <ruta-al-claude-de-Claude-3p>/claude -p "..." --model <modelo>` (pty: true para sesiones largas).
+- **Claude Code (estandar, ADR-049):** `exec` con `ollama launch claude --model <tag> -- -p "..."`, o directo `ANTHROPIC_BASE_URL=http://127.0.0.1:11434 ANTHROPIC_AUTH_TOKEN=<x> claude -p "..." --model <tag>` (`claude` ya esta en el PATH, 2.1.280; `pty: true` para sesiones largas).
 - **Qwen Code (fallback):** `exec` con `ollama launch qwen --model <modelo> -- -p "..." -y`.
 - **Modelo dinamico en ambos:** elegir por tarea via `--model` (deepseek-v4-flash:cloud default, kimi-k2.7-code:cloud cuando se justifica).
 - La redaccion de prompts y el encadenado de outputs es responsabilidad del orquestador, no del desarrollador.

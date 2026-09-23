@@ -26,10 +26,12 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 
 ## Pipeline de agentes (programación)
 
-- **Motor estándar (ADR-049):** Claude Code (embebido en Claude Desktop 3p, >= 2.x) apuntando al gateway Ollama, con el modelo dinámico de Ollama. Comando:
-  - `ANTHROPIC_BASE_URL=http://127.0.0.1:11434` (o 11435) + `ANTHROPIC_AUTH_TOKEN=<cualquier valor>` + `claude -p "<tarea>" --model <modelo>` headless.
-  - El ejecutable: `~/Library/Application Support/Claude-3p/claude-code/2.1.260/claude.app/Contents/MacOS/claude` (fragil a cambios de version, verificar con `ls`).
-  - NO usar `ollama launch claude --model` (bug: rechaza el flag como "unknown option").
+- **Motor estándar (ADR-049):** Claude Code apuntando al gateway Ollama, con el modelo dinámico de Ollama. Camino recomendado (verificado 2026-09-22):
+  - `ollama launch claude --model <tag> -- -p "<tarea>"` -> levanta el gateway y resuelve el enmascarado solo (verificado: `LAUNCH_OK`).
+  - Alternativa headless directa: `ANTHROPIC_BASE_URL=http://127.0.0.1:11434` (o 11435) + `ANTHROPIC_AUTH_TOKEN=<cualquier valor>` + `claude -p "<tarea>" --model <modelo>`.
+  - **`claude` ya está en el PATH (2026-09-22):** instalado global con `npm install -g --allow-scripts=@anthropic-ai/claude-code @anthropic-ai/claude-code`, versión 2.1.280 en `/opt/homebrew/bin/claude`. El embebido de Claude Desktop 3p (`~/Library/Application Support/Claude-3p/claude-code/<ver>/`) sigue como respaldo; ya no es el único camino.
+  - **Config persistente:** `~/.claude/settings.json` acepta un bloque `env` con `ANTHROPIC_BASE_URL` + `ANTHROPIC_AUTH_TOKEN` + `CLAUDE_CODE_MAX_CONTEXT_TOKENS`, así no hace falta exportar nada en el shell. Un install global NO hereda la config del 3p: sin ese bloque dice `Not logged in` e intenta api.anthropic.com.
+  - **Aliases vs tags crudos:** los aliases (`claude-sonnet-5` -> deepseek-v4.1-flash:cloud) viven en `~/.ollama/config.json` (`integrations.claude-desktop.aliases`, editables desde la app de Ollama) y los resuelve el **gateway 11435**, que requiere Claude Desktop corriendo. El **daemon 11434** solo acepta tags crudos. Usar `ollama launch claude` evita tener que elegir a mano.
   - Requiere Claude Code >= 2.x (la 0.2.18 no maneja el bloque thinking de los modelos de razonamiento).
   - Warnings de `unrecognized_model` por modelos custom = ruido, no bloquean.
 - **Qwen Code:** queda como fallback o segundo par de ojos, no como estandar (ADR-049). Para SIGKILL/sesiones largas, Claude maneja mejor que Qwen.

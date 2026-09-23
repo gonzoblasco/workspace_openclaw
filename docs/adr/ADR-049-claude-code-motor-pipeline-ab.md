@@ -40,13 +40,88 @@ El modelo que ambos cargan se sigue eligiendo por tipo de tarea (ADR-040): `deep
 ```bash
 ANTHROPIC_BASE_URL=http://127.0.0.1:11434 \
 ANTHROPIC_AUTH_TOKEN=<token> \
-<ruta-al-claude-de-Claude-3p>/claude -p "<tarea>" --model <modelo> \  # headless
+claude -p "<tarea>" --model <modelo> \  # headless
   --dangerously-skip-permissions
 ```
 
-- NO usar `ollama launch claude --model` (bug: rechaza el flag como "unknown option").
+**`claude` ya esta en el PATH (2026-09-22).** Instalado global via npm:
+`npm install -g --allow-scripts=@anthropic-ai/claude-code @anthropic-ai/claude-code`.
+Binario en `/opt/homebrew/bin/claude` (nativo de 217 MB, sin dependencias). Verificado:
+2.1.280, smoke test headless devolvio `OK`. Esto elimina la ultima consecuencia negativa que
+declaro este ADR: la ruta embebida de Claude-3p ya no es el unico camino.
+
+**Config persistente (verificado 2026-09-22):** `~/.claude/settings.json` acepta un bloque
+`env`, asi que no hace falta exportar nada en el shell:
+
+```json
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://127.0.0.1:11434",
+    "ANTHROPIC_AUTH_TOKEN": "ollama",
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "200000"
+  }
+}
+```
+
+Verificado sin variables de entorno externas: respondio `OLLAMA_OK`. **Un install global NO
+hereda la config del deployment 3p** - sin este bloque el CLI dice `Not logged in` e intenta
+autenticar contra api.anthropic.com. Nunca apuntar a api.anthropic.com con una key real en
+este setup.
+
+**Camino recomendado: `ollama launch claude` (verificado 2026-09-22).** Es la via soportada y
+la que menos configuracion manual requiere: levanta el gateway y resuelve el enmascarado de
+modelos por si sola.
+
+```bash
+ollama launch claude --model deepseek-v4.1-flash:cloud -- -p "<tarea>"   # verificado: LAUNCH_OK
+```
+
+- El paquete npm trae un `postinstall` (`install.cjs`) que detecta plataforma y hardlinkea el
+  binario nativo. Auditado en cuarentena: cero red, cero ejecucion arbitraria, cero
+  dependencias. npm 11 lo bloquea por defecto; se autoriza con `--allow-scripts`.
+- El embebido de Claude Desktop 3p (`~/Library/Application Support/Claude-3p/claude-code/<ver>/`)
+  sigue existiendo y funciona; queda como respaldo. Ambas versiones coexisten.
 - Requiere Claude Code >= 2.x (la 0.2.18 no maneja el bloque `{type:thinking}` de los modelos de razonamiento).
-- `ANTHROPIC_AUTH_TOKEN`: cualquier valor no vacio cuando el base url es el gateway local de Ollama.
+- `ANTHROPIC_AUTH_TOKEN`: cualquier valor no vacio cuando el base url es el daemon o el gateway local.
+
+### Enmascarado de modelos: donde vive cada cosa (verificado 2026-09-22)
+
+Ollama permite **enmascarar cualquier modelo** con un alias estilo Anthropic, editado en la
+app de Ollama (Apps -> panel de Claude) y persistido en
+`~/.ollama/config.json` -> `integrations.claude-desktop.aliases`:
+
+| Alias (lo que habla Claude Code) | Modelo real de Ollama |
+|---|---|
+| `claude-sonnet-5` | deepseek-v4.1-flash:cloud |
+| `claude-sonnet-4-6` | deepseek-v4-flash:0731:cloud |
+| `claude-opus-5` | glm-5.3:cloud |
+| `claude-fable-5` | kimi-k2.7-code:cloud |
+| `claude-haiku-4-5-20251001` | gemma4:31b-cloud |
+
+**Los aliases los resuelve el gateway, no el daemon.** El gateway vive en
+`http://127.0.0.1:11435` (`~/Library/Application Support/Claude-3p/configLibrary/*.json`:
+`inferenceProvider: gateway`, `inferenceGatewayApiKey: ollama`) y **requiere que Claude
+Desktop haya corrido al menos una vez**. El daemon (`11434`) no conoce los aliases: pasarle
+`--model claude-sonnet-5` falla con *"It may not exist or you may not have access to it"*.
+
+Regla practica:
+
+- **Alias** (`claude-sonnet-5`) -> gateway `11435`, o simplemente `ollama launch claude`.
+- **Tag crudo** (`deepseek-v4.1-flash:cloud`) -> funciona contra el daemon `11434` o el gateway.
+  Es la unica opcion para un modelo que el owner todavia no mapeo.
+
+### Correccion 2026-09-22: los dos enunciados del 15/09 quedaron stale
+
+Al reverificar se comprobo que **ambos eran ciertos cuando se escribieron**, y hoy ya no:
+
+| Enunciado original (2026-09-15) | Estado al 2026-09-22 |
+|---|---|
+| "NO usar `ollama launch claude --model` (bug: rechaza el flag como unknown option)" | **Stale.** El binario de Ollama es del **2026-09-19** (posterior a este ADR, version 0.34.2) y ya no reproduce el bug: `ollama launch claude --help` expone `--model string`, y la integracion acepta el flag (verificado end-to-end: `LAUNCH_OK`) |
+| "no hay binario global `qwen`/`claude`" | **Stale.** `qwen` global se instalo el **2026-09-22 17:24** (`/opt/homebrew/bin/qwen` -> `@qwen-code/qwen-code` 0.24.4); `claude` global tambien existe desde hoy (2.1.280) |
+
+Ninguno de los dos era un error de escritura: son datos que caducaron. Un ADR con datos
+caducados sin fecha de revalidacion es indistinguible de un ADR equivocado. De ahi la regla
+de revalidacion agregada abajo.
 
 ---
 
