@@ -64,6 +64,25 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 
 Cada ADR sigue el formato estandar (Contexto, Decision, Consecuencias, Alternativas) pero sin referencias al proyecto que lo origino. El campo `Origen` en el indice es solo trazabilidad.
 
+### Campos del header
+
+| Campo | Obligatorio | Contenido |
+|---|---|---|
+| `Fecha` | Si | `YYYY-MM-DD` |
+| `Estado` | Si | `Aceptado` / `Superseded por ADR-NNN` / `Rechazado` |
+| `Decisores` | Si | Quien decide (`Gonzo` / `Gonzo / Kanam`) |
+| `Origen` | Si | De donde salio la decision (workspace, proyecto, libro, evaluacion externa) |
+| `Relacionado` | No | ADRs vinculados |
+| `Supersede` / `Revierte` / `Reemplaza` | No | Solo si aplica, con el ADR referenciado |
+
+**Idioma del header: por generacion, no por archivo.** Los ADR-001 a ADR-046 (hasta 2026-09-14) usan los campos en ingles (`Status`, `Source`, `Scope`); los ADR-047 en adelante usan la forma en español (`Estado`, `Origen`, `Decisores`), consistente con la regla de idioma por capa del workspace. No es deuda: es un cambio de convencion deliberado y el corte esta limpio. Un ADR nuevo sigue el estilo de su generacion (hoy: español).
+
+**`Source` y `Origen` coexisten en los ADR-020 a ADR-036 y NO son lo mismo:** `Origen` es el slug corto de procedencia (trazabilidad, `fullstack-graphql-react`) y `Source` la referencia bibliografica larga (`Extracted from Full-Stack GraphQL + React book processing`). En la generacion en español solo se conserva `Origen`.
+
+**`Scope`** (solo los ADR-020 a ADR-039) declara el alcance de aplicacion (`Global - all React projects` / `Workspace - sistema de memoria`). Es el campo que separa una decision global de una de proyecto.
+
+**Campos historicos sin poblado uniforme:** `Deciders` figura en 17 de los 46 ADR en ingles (los primeros, ADR-001 a ADR-007, y los ultimos del bloque, ADR-037 a ADR-046). Los ADR-008 a ADR-036 no lo llevan. Si se toca uno de esos archivos, agregarlo; no vale un barrido masivo por si solo.
+
 ## Como agregar
 
 Cuando un ADR de proyecto se identifique como de alcance general, migrarlo aca:

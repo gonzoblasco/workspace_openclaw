@@ -2,7 +2,8 @@
 
 **Fecha:** 2026-09-14
 **Estado:** Aceptado
-**Decisor:** Gonzo (pedido explícito) + Kanam (diseño)
+**Decisores:** Gonzo (pedido explícito) + Kanam (diseño)
+**Origen:** workspace (pedido explicito de Gonzo; integra `design/tokens.kitano` de julio 2026)
 **Supersede:** `design/tokens.kitano` (borrador de julio 2026, integrado y evolucionado acá)
 
 ---
