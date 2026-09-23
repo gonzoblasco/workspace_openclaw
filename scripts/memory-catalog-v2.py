@@ -16,6 +16,18 @@ import json
 import hashlib
 import math
 from pathlib import Path
+
+# Vectores en BLOB float32 (nuevo) o JSON (legacy): decoder/encoder compartidos.
+# Asi el catalogo sigue leyendo vectores viejos y escribe siempre el formato nuevo.
+import importlib.util as _ilu
+
+_spec = _ilu.spec_from_file_location(
+    "vector_util", os.path.join(os.path.dirname(os.path.abspath(__file__)), "vector-util.py")
+)
+_vu = _ilu.module_from_spec(_spec)
+_spec.loader.exec_module(_vu)
+decode_vector = _vu.decode
+encode_vector = _vu.encode
 from datetime import datetime
 
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
@@ -104,9 +116,8 @@ def compute_topic_centroids():
     centroids = {}
     counts = {}
     for session_id, vec_json, topic_name in rows:
-        try:
-            vec = json.loads(vec_json)
-        except (json.JSONDecodeError, TypeError):
+        vec = decode_vector(vec_json)
+        if vec is None:
             continue
         # Robustness: some sessions were catalogued with a different embedding
         # model (32-dim vs the current 1024-dim qwen3). Only mix vectors of the
@@ -226,9 +237,8 @@ def compute_category_centroids(min_examples=5):
     counts = {}
     skipped = {}
     for category, vec_json in rows:
-        try:
-            vec = json.loads(vec_json)
-        except (json.JSONDecodeError, TypeError):
+        vec = decode_vector(vec_json)
+        if vec is None:
             continue
         # Robustness: some learnings were catalogued with a different embedding
         # model (32-dim SHA-256 fallback vs the current 1024-dim qwen3). Mixing
@@ -335,7 +345,7 @@ def create_schema():
         CREATE TABLE IF NOT EXISTS session_vectors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             session_id INTEGER NOT NULL,
-            query_vector TEXT NOT NULL,
+            query_vector BLOB NOT NULL,
             relevance_score REAL DEFAULT 0.0,
             chunk_index INTEGER DEFAULT 0,
             chunk_text TEXT,
@@ -385,7 +395,7 @@ def create_schema():
             title TEXT NOT NULL,
             content TEXT NOT NULL,
             tags TEXT,
-            learning_vector TEXT,
+            learning_vector BLOB,
             created_at TEXT,
             updated_at TEXT,
             FOREIGN KEY(id) REFERENCES learnings(id)
@@ -548,7 +558,7 @@ def catalog_memory():
                    VALUES (?, ?, ?, ?, ?, ?)""",
                 (
                     session_id,
-                    json.dumps(chunk_embedding),
+                    encode_vector(chunk_embedding),
                     relevance,
                     chunk_idx,
                     chunk,
@@ -595,7 +605,7 @@ def catalog_memory():
                 """INSERT INTO learnings_enriquecido
                    (category, title, content, tags, learning_vector, created_at, updated_at)
                    VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now'))""",
-                (category, title, content_text, "", json.dumps(learning_embedding)),
+                (category, title, content_text, "", encode_vector(learning_embedding)),
             )
 
     # Populate learnings_enriquecido from existing learnings table (source of truth)

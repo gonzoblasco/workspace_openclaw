@@ -15,6 +15,16 @@ import sys
 import json
 import math
 import random
+
+# Vectores en BLOB float32 (nuevo) o JSON (legacy): el decoder compartido acepta ambos.
+import importlib.util as _ilu
+
+_spec = _ilu.spec_from_file_location(
+    "vector_util", os.path.join(os.path.dirname(os.path.abspath(__file__)), "vector-util.py")
+)
+_vu = _ilu.module_from_spec(_spec)
+_spec.loader.exec_module(_vu)
+decode_vector = _vu.decode
 import re
 from collections import Counter
 from pathlib import Path
@@ -85,9 +95,8 @@ def load_chunks():
 
     chunks = []
     for session_id, vec_json, chunk_idx, date, content in rows:
-        try:
-            vec = json.loads(vec_json)
-        except (json.JSONDecodeError, TypeError):
+        vec = decode_vector(vec_json)
+        if vec is None:
             continue
         chunks.append({
             "session_id": session_id,

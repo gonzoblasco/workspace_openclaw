@@ -31,6 +31,17 @@ import sys
 import time
 import urllib.request
 
+# Vectores en BLOB float32 (nuevo) o JSON (legacy): decoder/encoder compartidos.
+import importlib.util as _ilu
+
+_spec = _ilu.spec_from_file_location(
+    "vector_util", os.path.join(os.path.dirname(os.path.abspath(__file__)), "vector-util.py")
+)
+_vu = _ilu.module_from_spec(_spec)
+_spec.loader.exec_module(_vu)
+decode_vector = _vu.decode
+encode_vector = _vu.encode
+
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
@@ -77,10 +88,10 @@ def main():
     c = conn.cursor()
 
     def stale(vec_json):
-        try:
-            return len(json.loads(vec_json)) != target_dim
-        except (json.JSONDecodeError, TypeError):
+        vec = decode_vector(vec_json)
+        if vec is None:
             return False
+        return len(vec) != target_dim
 
     targets = []
 
@@ -123,7 +134,8 @@ def main():
             failed.append((table, row_id, str(exc)[:80]))
             print(f"  [{i}/{len(targets)}] FAIL {table} id={row_id}: {exc}", file=sys.stderr)
             continue
-        c.execute(f"UPDATE {table} SET {column}=? WHERE id=?", (json.dumps(vec), row_id))
+        # Siempre se escribe BLOB: re-embeddear tambien migra el formato.
+        c.execute(f"UPDATE {table} SET {column}=? WHERE id=?", (encode_vector(vec), row_id))
         ok += 1
         if i % 10 == 0 or i == len(targets):
             conn.commit()
@@ -143,10 +155,8 @@ def main():
     for table, column in (("learnings_enriquecido", "learning_vector"), ("session_vectors", "query_vector")):
         dims = collections.Counter()
         for (vj,) in c.execute(f"SELECT {column} FROM {table} WHERE {column} IS NOT NULL"):
-            try:
-                dims[len(json.loads(vj))] += 1
-            except (json.JSONDecodeError, TypeError):
-                dims["malformed"] += 1
+            d = _vu.dims(vj)
+            dims[d if d else "malformed"] += 1
         print(f"{table}.{column}: {dict(dims)}")
 
     conn.close()

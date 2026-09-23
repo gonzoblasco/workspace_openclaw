@@ -17,6 +17,18 @@ import math
 import hashlib
 from datetime import datetime
 
+# Los vectores pueden estar en BLOB float32 (nuevo) o JSON (legacy). El decoder
+# compartido acepta ambos, asi el script sigue funcionando durante y despues de
+# la migracion (scripts/migrate-vectors.py).
+import importlib.util as _ilu
+
+_spec = _ilu.spec_from_file_location(
+    "vector_util", os.path.join(os.path.dirname(os.path.abspath(__file__)), "vector-util.py")
+)
+_vu = _ilu.module_from_spec(_spec)
+_spec.loader.exec_module(_vu)
+decode_vector = _vu.decode
+
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
@@ -85,9 +97,8 @@ def search(query, top_n=5):
     # Score each vector against query
     scored = []
     for session_id, vec_json, chunk_idx in rows:
-        try:
-            vec = json.loads(vec_json)
-        except (json.JSONDecodeError, TypeError):
+        vec = decode_vector(vec_json)
+        if vec is None:
             continue
         score = cosine_similarity(qv, vec)
         scored.append((score, session_id, chunk_idx))
@@ -157,9 +168,8 @@ def search_learnings(query, top_n=3):
 
     scored = []
     for lid, category, title, content, vec_json in rows:
-        try:
-            vec = json.loads(vec_json)
-        except (json.JSONDecodeError, TypeError):
+        vec = decode_vector(vec_json)
+        if vec is None:
             continue
         score = cosine_similarity(qv, vec)
         scored.append((score, lid, category, title, content))

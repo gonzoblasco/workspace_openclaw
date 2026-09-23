@@ -6,6 +6,33 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-22] - Refactor de la DB: embeddings de JSON a BLOB float32 (12 MB -> 4 MB)
+
+### Changed
+- **Los embeddings pasan de JSON de texto a BLOB float32.** Medido con `dbstat` antes de tocar nada: **el 77% de los 12 MB eran 264 vectores en JSON.** Un vector de 1024 dims ocupaba ~22.700 chars en JSON y ocupa 4096 bytes en float32 (ratio real: 0.18, -82%). Resultado: **memory.db paso de 12 MB a 4 MB (-67%)**.
+- **La tasa de crecimiento baja 5x:** de ~3.6 MB/mes a ~0.66 MB/mes en vectores, con el ritmo actual (~168 vectores/mes).
+- **`idx_learnings_vector` eliminado.** Pesaba 3.2 MB - mas que la columna que indexaba - porque indexaba el texto completo del vector. Su unico uso real era responder "que filas tienen vector", y para eso el valor no hace falta: se reemplazo por `idx_learnings_vec_present`, un indice parcial sobre `id` que pesa KB.
+
+### Added
+- **`scripts/vector-util.py`:** codec compartido (`encode`, `decode`, `is_json`, `dims`, `cosine`). El `decode` acepta **ambos formatos**: los vectores viejos siguen leyendose durante la transicion. Antes el formato JSON era un detalle implicito del que dependian 4 scripts por `json.loads` suelto.
+- **`scripts/migrate-vectors.py`:** conversion + limpieza de indice + VACUUM, con `--dry-run` y `--db`. **Verifica el invariante antes de escribir cada fila** (decodifica el BLOB y lo compara con el original); si no coincide, no escribe.
+- **`tests/python/test_vector_migration.py`:** 16 tests (roundtrip, compat con JSON, dims, coseno, conversion end-to-end sobre una DB real, idempotencia, que el dry-run no escriba, que no dropee una columna con datos).
+
+### Fixed
+- **4 scripts parcheados para leer ambos formatos:** `memory-search.py`, `memory-topics.py`, `memory-reembed.py`, `memory-catalog-v2.py`. Sin esto la busqueda semantica se rompia al migrar. `memory-reembed.py` ahora escribe BLOB, asi que re-embeddear tambien migra el formato.
+- **DDL de `memory-catalog-v2.py`:** las DB nuevas nacen con las columnas en BLOB, no en TEXT.
+- **`.gitignore`:** los backups de migracion (`*.db.pre-*`) no se versionan. Un backup de 12 MB habria entrado al commit.
+
+### Notes
+- **Verificacion que importa:** no es el tamano, son los resultados. La busqueda `"em dash guion"` devuelve **57.5% y 52.0%, identicos antes y despues** de migrar. Ademas: 45/45 tests, la app sirve 200, los conteos de todas las tablas intactos.
+- **Migrado primero sobre una copia**, comparados los resultados, y recien despues sobre la DB real.
+- **Hallazgo colateral: 20 violaciones de foreign key preexistentes** (9 `learnings_enriquecido`, 7 `topic_sessions`, 4 `sessions_relacional`). Causa raiz: **`PRAGMA foreign_keys = 0`**, nadie lo activa, asi que los `ON DELETE CASCADE` del schema **nunca dispararon**. No se corrigio: limpiar huerfanos es una decision aparte y activar el pragma haria cascadear borrados sobre datos existentes. **Queda como deuda con evidencia.**
+- **Limitacion documentada, no escondida:** un byte-string arbitrario cuyo largo sea multiplo de 4 decodifica a float32 y es indistinguible de un vector. En esta DB la columna contiene JSON legacy o BLOB (garantizado por la migracion), asi que no se presenta. Si alguna vez pudiera tener otra cosa, haria falta una columna `format`.
+- **Dos bugs de mis propios tests**, cazados al correrlos: uno usaba floats cortos (medía 0.8 en vez de 0.18) y el otro asumia que bytes basura no decodifican. El segundo destapo la limitacion de arriba.
+- ADR-057.
+
+---
+
 ## [2026-09-22] - Auditoria #2: referencias rotas, guiones y un guard que estaba ausente
 
 ### Added

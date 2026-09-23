@@ -20,6 +20,10 @@ build/
 # Databases (local dev)
 *.db
 *.db-journal
+# Backups de migraciones: son locales, pesan MB y no deben sincronizarse.
+# (memory.db si se versiona: ver la excepcion de abajo.)
+*.db.pre-vector-blob
+*.db.pre-*
 
 # Excepción: la DB de memoria del workspace SÍ se versiona (sincroniza entre máquinas)
 !memory/memory.db
