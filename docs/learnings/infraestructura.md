@@ -566,3 +566,19 @@ En zsh (no en bash) `$cmd` viaja como **un solo argumento**: "done-todo 999999".
 
 ---
 
+## server de desarrollo bindeado a 0.0.0.0: Next dev expone la LAN sin token
+
+
+
+**Tags:** Caso kanam-os (2026-09-22). `next dev` **default es `--hostname 0.0.0.0`** (todas las interfaces), no loopback. Verificado: `curl http://192.168.100.7:4317/` devolvia **200**.
+
+Por que importa aca y no en un proyecto cualquiera: kanam-os **lee y escribe la memoria de Kanam OS** (fichas, learnings, TODOs, DB de 12 MB) y tiene botones de escritura. Cualquier dispositivo en la red local - invitados, IoT, la TV - podia leer y **modificar** la memoria, sin autenticacion.
+
+La confusion que lo hizo facil de pasar por alto: **el portal SI tiene token** (`?openclaw_portal=...`, 401 sin el), y el listener del portal esta bien bindeado a 127.0.0.1. Pero el **puerto directo del server (4317) no tiene token**, y el portal solo protege el suyo (55149). Proteger el proxy no protege el puerto de atras.
+
+Fix: `--hostname 127.0.0.1` en los scripts dev/start de package.json. El portal sigue funcionando (mismo host) y la LAN queda cerrada (verificado: 000).
+
+Regla general: para cualquier app local que sirva **datos privados o de escritura**, bindear explicitamente a loopback. Un portal con token no alcanza si el server tambien escucha en la LAN.
+
+---
+
