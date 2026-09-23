@@ -70,7 +70,13 @@ import { Inbox, Zap, BarChart } from "lucide-react";
 
 - Lucide: https://lucide.dev
 - `lucide-react` en npm: https://www.npmjs.com/package/lucide-react
-- Ya usado en: Soporteml v1 (`projects/soporteml`), Soporteml v3 (`projects/soporteml-v3`), mockup de identidad V4 (`projects/soporteml-v4/mockups/identidad-v4.html`)
+- Ya usado en: Soporteml v1 (`projects/soporteml`), Soporteml v3 (`projects/soporteml-v3`), mockup de identidad V4 (ver nota abajo)
+
+## Nota (2026-09-22): ubicacion del mockup
+
+El mockup `projects/soporteml-v4/mockups/identidad-v4.html` **existio y fue validado por Gonzo**, pero **ya no esta en disco**: se commiteo en `b450ebda` (restart de soporteml-v4 con diseno premium) y se removio al limpiar el proyecto terminado, que borra el codigo y conserva solo `.knowledge/` (ver AGENTS.md, Project Cleanup). No es un artefacto que nunca se creo.
+
+La decision de identidad visual que ese mockup fundamento sigue registrada en `projects/soporteml-v4/.knowledge/ADR-001-identidad-visual.md`, que conserva los tokens CSS y la direccion de diseno. Si hace falta el archivo en si, recuperarlo con `git show b450ebda:projects/soporteml-v4/mockups/identidad-v4.html`.
 
 ## Nota (2026-09-14)
 

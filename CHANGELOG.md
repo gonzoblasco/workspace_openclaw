@@ -6,9 +6,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
-## [2026-09-22] - Auditoria de deuda de ADRs: revalidacion, ADR-053 y duplicado 048
+## [2026-09-22] - Auditoria de deuda de ADRs: revalidacion, ADR-053, duplicado 048 y docs mal ubicados
 
 ### Fixed
+- **Docs estructurales mal ubicados (movimiento incompleto):** el commit `5c2e3b03` movio `AGENTS-DETALLE`, `NORTH`, `ROADMAP` y `SETUP` de la raiz a `docs/`, pero dejo cuatro atras: `LEARNINGS.md`, `OSS-TRACKER.md`, `METHODOLOGY-AUDIT.md` y `MAPA-PROXIMOS-PASOS.md`. Se completo el movimiento a `docs/`.
+  - **Bug activo que esto causaba:** `scripts/memory-db.sh` escribe `docs/OSS-TRACKER.md` y `scripts/migrate-learnings.py` lee `docs/LEARNINGS.md`, mientras los archivos vivian en la raiz. Los scripts apuntaban a un path inexistente.
+- **`docs/LEARNINGS.md`:** los 7 links internos apuntaban a `docs/learnings/...`, que desde `docs/` resolvian a `docs/docs/...`. Corregidos a `learnings/...`.
+- **`docs/adr/ADR-037`:** citaba el mockup `projects/soporteml-v4/mockups/identidad-v4.html` como si estuviera en disco. Existio y se valido (commit `b450ebda`), pero se removio al limpiar el proyecto terminado (el cleanup borra codigo y conserva `.knowledge/`). Se documenta como removido en cleanup, con la instruccion para recuperarlo desde git.
 - **`docs/adr/ADR-049` revalidado:** dos enunciados del 2026-09-15 quedaron stale (el "bug" de `ollama launch claude --model` y la ausencia de binario global `qwen`/`claude`). Ambos eran ciertos al escribirse: el binario de Ollama es del 2026-09-19 (posterior al ADR) y `qwen` se instalo el 2026-09-22. Se documenta como dato caducado, no como error del autor. Se agrega el camino `ollama launch claude` (verificado end-to-end) y el enmascarado de modelos.
 - **`docs/adr/ADR-048` duplicado resuelto:** dos decisiones compartian el numero 048. `ADR-048-kanam-lab-ui-choice` era de alcance de PROYECTO (mantener Gradio en kanam-lab), no global, y colisionaba con `ADR-048-shadcn-radix-stack-ui`. Se movio a `projects/kanam-lab/.knowledge/adr/0002-ui-framework-gradio.md` y se renumero como 002. El corpus global queda sin duplicados y sin huecos.
 - **`docs/adr/ADR-041`, `ADR-046`, `ADR-040`:** se marcaron las secciones superseded por ADR-053 (roles de modelo y nivel de thinking).
@@ -20,6 +24,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`projects/kanam-lab/.knowledge/adr/`:** directorio nuevo para ADRs de alcance de proyecto, trackeado por el workspace git (no `docs/`, que `projects/*/docs` ignora).
 
 ### Notes
+- **Correccion del reporte inicial de la auditoria:** los tres "artefactos prometidos y ausentes" NO eran artefactos que nunca se crearon. `LEARNINGS.md` y `METHODOLOGY-AUDIT.md` existian (mal ubicados); el mockup existio y se borro en el cleanup del proyecto. La distincion importa: "movido" y "removido en cleanup" son casos distintos de "nunca creado", y el caso de los docs requeria completar un movimiento, no crear un archivo.
 - Config aplicada via `openclaw config patch` (8 updates, sin restart) y verificada live con `openclaw models status`. Los tres modelos pasaron smoke test contra el daemon.
 - Se documento que la lista local y el catalogo cloud de Ollama NO coinciden en nomenclatura (`gemma4:cloud` vs `gemma4:31b`): la disponibilidad se chequea contra ambas.
 
