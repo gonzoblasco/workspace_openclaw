@@ -73,8 +73,24 @@ def _time_range(title: str):
     return m.group(1), m.group(2)
 
 
+# Marcador de scoping por proyecto: `<!-- project: owner/repo -->`.
+# Es metadata para busquedas (regla del workspace), no parte del titulo humano.
+HTML_COMMENT = re.compile(r"<!--.*?-->", re.S)
+
+
+def clean_title(title: str) -> str:
+    """Titulo legible: sin rango horario y sin comentarios HTML.
+
+    El comentario de proyecto se filtra de los titulos porque se VEIA crudo en
+    la UI: 'Engram - adopcion completa <!-- project: github.com/... -->'. La
+    metadata sigue en el texto del documento; solo no ensucia el encabezado.
+    """
+    return TIME_RANGE.sub("", HTML_COMMENT.sub("", title)).strip()
+
+
 def _strip_time_range(title: str) -> str:
-    return TIME_RANGE.sub("", title).strip()
+    """Compatibilidad: el nombre queda, la logica vive en clean_title."""
+    return clean_title(title)
 
 
 def split_sections(text: str):
@@ -153,7 +169,7 @@ def split_sections(text: str):
         sections.append(
             {
                 "level": lvl,
-                "title": _strip_time_range(raw_title),
+                "title": clean_title(raw_title),
                 "char_start": start,
                 "char_end": end,
                 "time_start": ts,

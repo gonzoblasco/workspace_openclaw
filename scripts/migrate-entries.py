@@ -84,6 +84,23 @@ LEVEL2 = re.compile(r"^##\s+(.+?)\s*$", re.M)
 TIME_RANGE = re.compile(r"\(\s*(\d{1,2}:\d{2})\s*[-\u2013]\s*(\d{1,2}:\d{2})\s*\)\s*$")
 
 
+def load_parser():
+    """El parser de contenido (una sola fuente para limpiar titulos).
+
+    `clean_title` vive en content-parse.py: esta script extraia el titulo con
+    su propia logica y por eso un comentario `<!-- project: ... -->` llego
+    crudo a la UI ('Engram - adopcion completa <!-- project: ... -->').
+    """
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "content_parse", WS / "scripts" / "content-parse.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def human(n):
     for u in ("B", "KB", "MB", "GB"):
         if abs(n) < 1024:
@@ -125,7 +142,7 @@ def split_level2(text):
         tr = TIME_RANGE.search(raw)
         if tr:
             ts, te = tr.group(1), tr.group(2)
-        title = TIME_RANGE.sub("", raw).strip()
+        title = load_parser().clean_title(raw)
         entries.append(
             {
                 "level": 2,

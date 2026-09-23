@@ -369,3 +369,42 @@ def test_dry_run_changes_nothing(tmp_path):
     cols_after = [r[1] for r in conn.execute("PRAGMA table_info(daily_notes)")]
     conn.close()
     assert cols_before == cols_after
+
+
+# --- clean_title: titulos legibles ---
+
+def test_clean_title_strips_html_comment():
+    """El comentario de proyecto se veia crudo en la UI de la ficha."""
+    m = cp()
+    assert m.clean_title("Engram - adopcion <!-- project: github.com/x/y -->") == "Engram - adopcion"
+
+
+def test_clean_title_strips_time_range():
+    m = cp()
+    assert m.clean_title("Sesion (08:00 - 10:35)") == "Sesion"
+
+
+def test_clean_title_strips_both():
+    m = cp()
+    assert m.clean_title("Tema (09:00-10:00) <!-- project: a/b -->") == "Tema"
+
+
+def test_clean_title_keeps_normal():
+    m = cp()
+    assert m.clean_title("Technical Debt") == "Technical Debt"
+
+
+def test_clean_title_handles_multiline_comment():
+    """Un comentario puede ocupar varias lineas."""
+    m = cp()
+    out = m.clean_title("Titulo <!-- project:\nowner/repo -->")
+    assert out == "Titulo"
+
+
+def test_sections_have_no_html_comment():
+    """Ningun titulo extraido debe conservar el comentario."""
+    m = cp()
+    sample = "# Doc\n\n## Real <!-- project: a/b -->\n\ncuerpo\n"
+    secs = m.split_sections(sample)
+    for sec in secs:
+        assert "<!--" not in sec["title"], f"comentario crudo en {sec['title']!r}"
