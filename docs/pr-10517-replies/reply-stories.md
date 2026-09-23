@@ -1,1 +1,1 @@
-Removed both. With anchor positioning on by default there is nothing opt-in left to demonstrate, and the browser tests are the coverage. The manual VoiceOver check from the earlier round stays recorded in this thread.
+Removed both. With the anchoring on by default there is nothing opt-in left to demonstrate, and the browser tests are the coverage.

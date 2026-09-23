@@ -144,20 +144,22 @@ Medido: con **4 hosts usando el mismo `anchor-name`** y sin `anchor-scope`, **lo
 
 Hay una ventana **Chrome 125-130** donde el anclaje funciona pero `anchor-scope` no: ahi los duplicados colisionarian. Conclusion: **seguir con nombre unico por instancia** (de ahi viene la necesidad del `useId` de C2, y el `anchor-scope` no reemplaza el id).
 
-### Hallazgo B - el input con `position: fixed` no sigue el scroll de un contenedor interno
+### Hallazgo B - el scroll tracking funciona (falsa alarma, corregida)
 
-Medido: 6 componentes con nombres unicos dentro de un contenedor con `overflow-y: auto`.
+En una primera medicion, 6 componentes con nombres unicos dentro de un contenedor con `overflow-y: auto` parecian no seguir el scroll: medidos de forma **sincrona** justo despues de `scrollTop = 40`, los 6 quedaban 40px corridos.
 
-| Momento | Resultado |
-|---|---|
-| antes del scroll | los 6 cubren al componente |
-| `scrollTop = 40` | los 6 quedan **40px corridos** (no siguen) |
+Al re-medir esperando frames, el resultado se invierte:
 
-Es coherente con que `fixed` saca al input de la cadena del ancestro: queda en coordenadas de viewport y no re-resuelve al scrollear un contenedor interno.
+| Momento | Antes (sync) | Despues (+50ms) |
+|---|---|---|
+| `scrollTop = 40`, medicion inmediata | 40px corridos | 40px corridos |
+| 50ms despues | - | **0px (siguen el componente)** |
+| 350ms y 650ms despues | - | 0px |
+| tras scroll de ventana (200px) | - | 0px |
 
-**Necesita confirmacion en browser real (no headless)** antes de tratarlo como bug: el headless shell puede no refrescar el anclaje al scrollear. **Dato fuerte:** el `spike-anchor.mjs` que se saco en `cedc9e3` se llamaba literalmente "Spike v5: scroll tracking + clip disambiguation for fixed+anchor hidden input" - o sea, el scroll tracking ya era un problema conocido en este mismo trabajo.
+Reproducido igual en headless y en Chrome real (con ventana): el offset vuelve a 0 solo. **Es un artefacto de medicion:** la posicion del ancla la recalcula el compositor, y `getBoundingClientRect()` en el mismo tick devuelve el valor viejo. El input **si** sigue el scroll.
 
-**Accion:** verificar en Chrome real con VoiceOver; si se confirma, decidir si entra aca o se abre como follow-up (el review ya acepto que las limitaciones de `VisuallyHidden` se atacan de a poco).
+**Conclusion: no hay bug de scroll. No hace falta reportarlo ni abrir follow-up.** Leccion aplicable: las mediciones de layout con anchor positioning necesitan esperar al menos un frame antes de leerse.
 
 ---
 
@@ -170,7 +172,7 @@ Es coherente con que `fixed` saca al input de la cadena del ancestro: queda en c
 | 3 | Nombre del ancla por CSS variable, leida en host **y** input; eliminar el layout effect y el `getComputedStyle` | `hiddenInputAnchor.ts`, `Checkbox.tsx`, `RadioGroup.tsx` | C4, C3 |
 | 4 | Borrar las 2 stories | `stories/*.stories.tsx` | C1 |
 | 5 | Tests: reemplazar el de classname por uno de la custom property; agregar test RTL | `test/Checkbox.sr-focus.browser.test.tsx` | C4, C6 |
-| 6 | Verificar scroll en browser real y decidir (aca o follow-up) | - | Hallazgo B |
+| 6 | ~~Verificar scroll~~ | - | Cerrado: era artefacto de medicion, no hay bug |
 
 Nota: el paso 3 hace desaparecer `useHiddenInputAnchor` y `getAnchorSupport`. El archivo `hiddenInputAnchor.ts` queda solo con los estilos, o se fusiona en un helper por componente.
 
@@ -199,4 +201,4 @@ Drafts en `/tmp/rs10517-replies/` (revisar antes de publicar; `/tmp` no es durab
 
 1. Publicar los borradores ahora, o primero implementar los arreglos y responder con el diff ya verde.
 2. Approach de C4: **variable CSS** (recomendado por el maintainer, sin `getComputedStyle`) vs conservar `anchor-name` por classname.
-3. Hallazgo B (scroll): confirmar en browser real antes de responder; decidir si entra en este PR o va como follow-up.
+3. ~~Hallazgo B (scroll)~~: cerrado. Verificado que el input si sigue el scroll (el desvio inicial era medicion sincrona sin esperar frame).

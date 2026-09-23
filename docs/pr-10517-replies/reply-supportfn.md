@@ -1,3 +1,3 @@
-With the CSS variable approach below, the hook goes away entirely, so this function goes with it - the check only stays in the browser tests, as the skip condition.
+This function is gone now. The custom property replaces the hook entirely, so there is no support check left on the component side - the declarations are inert in browsers without anchor positioning, and the check only remains in the browser tests as the skip condition.
 
-If we keep a check on the src side it should stay lazy. A module-load constant also evaluates during SSR, where `CSS` does not exist, so it can freeze a false the client then reuses.
+If a check does come back to the src side later it should stay lazy: a module-load constant also evaluates during SSR, where `CSS` does not exist, so it would freeze a false the client then reuses.
