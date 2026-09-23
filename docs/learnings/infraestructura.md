@@ -538,3 +538,31 @@ Leccion de metodo: cuando un comando de git "funciona" sin output, verificar con
 
 ---
 
+## La verificacion que miente: exit 1 dentro de un pipe y word-splitting de zsh
+
+
+
+**Tags:** Dos bugs de la misma clase, los dos encontrados al construir el CRUD de kanam-os (2026-09-22). La clase: **una verificacion que da verde sin haber verificado nada**.
+
+**1. exit 1 dentro de un pipe no propaga.** El guard era:
+
+```bash
+sqlite3 "$DB" "UPDATE ...; SELECT changes();" | { read -r n; if [ "$n" = "0" ]; then exit 1; fi; }
+```
+
+El `exit 1` corre en el **subshell** del lado derecho del pipe, no en el shell principal. El script imprime el error y **sale con exit 0**. La UI habria mostrado "ok" sobre una operacion que no hizo nada. Fix: sacar el pipe y capturar con `n=$(sqlite3 ...)`, que deja el `exit 1` en el shell principal. Leccion de bash: para propagar el codigo de salida, la decision tiene que tomarse fuera del pipe.
+
+**2. zsh no hace word-splitting sobre variables sin comillas.** El test que valide los guards era:
+
+```bash
+for cmd in "done-todo 999999" ...; do ./scripts/memory-db.sh $cmd; done
+```
+
+En zsh (no en bash) `$cmd` viaja como **un solo argumento**: "done-todo 999999". El script no matchea ningun case, cae al `*)` de usage y sale 0. Resultado: el test reportaba `exit=0` para **todos** los casos, incluido el que yo ya habia verificado a mano con `exit=1`. Un falso verde perfecto. Fix: pasar los argumentos separados (`./script done-todo 999999`) o usar bash.
+
+**Como se detecto cada uno:** el 1 con el test de `execFile` (el mecanismo real que usa la app), que reporto honestamente que un id inexistente no fallaba. El 2 comparando una corrida directa (exit=1) contra el loop (exit=0) - cuando dos mediciones del mismo hecho discrepan, la medicion es el bug.
+
+**Regla general:** cuando un comando "funciona" sin output, verificar el EFECTO (`git ls-files`, `git diff --cached`, el contenido de la DB), nunca el exit code ni la ausencia de error. Y desconfiar del propio test antes que del codigo: si la medicion y el hecho no coinciden, revisar la medicion primero.
+
+---
+

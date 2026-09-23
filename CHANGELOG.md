@@ -10,9 +10,11 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ### Fixed
 - **`scripts/init-project.sh` - falla silenciosa al trackear el `.knowledge/` de un proyecto nuevo.** El script imprimia `✅ .knowledge/ tracked as blob in workspace` sobre un `git add` que no stageaba nada: en cuanto `projects/<slug>/.git` existe, el repo del workspace ve el directorio como *embedded repository*, no desciende al `.knowledge/` y el add sale con **codigo 0 y sin efecto**. Se reprodujo en sandbox y se verifico que el patron de `.gitignore` no incide (tres variantes, todas fallan). Fix: el `git add`/`commit` del `.knowledge` se movio a **antes** del `git init` del proyecto, mas un guard (`git diff --cached --quiet` -> `exit 1`) que hace ruidosa la falla en vez de falsa. Verificado el ciclo completo: add antes del init, init despues, y updates posteriores del `.knowledge` funcionando. Los proyectos ya trackeados (`kanam-lab`, `langchain-starter`, `kanam-pulse`) no estaban afectados porque su `.knowledge` entro antes del init. Leccion guardada en `docs/learnings/infraestructura.md`.
+- **`scripts/memory-db.sh` - guard de id inexistente que salia con exit 0.** El `exit 1` corria dentro del subshell de un pipe, asi que no cambiaba el codigo de salida del script: imprimia el error y devolvia exito. La UI habria mostrado "ok" sobre una operacion fallida. Fix: se saco el pipe y se captura el resultado con `n=$(sqlite3 ...)`, dejando la decision en el shell principal. Verificado con `execFile` (el mecanismo real de las server actions): 7/7 casos correctos.
 
 ### Added
-- **`projects/kanam-os/`:** app local que lee `memory/memory.db` y la muestra como fichas, tablas y grafos. Fase 1 = lectura completa. Vistas: resumen, fichas (+ detalle con cuerpo de la sesion), topics (tabla + grafo bipartito topics-sesiones en SVG puro, sin dependencias), learnings por categoria, TODOs, inbox, OSS y daily navegable. Stack: Next.js 16.3.6 (App Router) + Tailwind 4 + Biome + TypeScript. Repo propio (`gonzoblasco/kanam-os`, pendiente de crear en GitHub); el workspace trackea solo su `.knowledge/`, segun la convencion existente.
+- **`projects/kanam-os/`:** app local que lee `memory/memory.db` y la muestra como fichas, tablas y grafos. Fases 1 (lectura) y 2 (escritura) completas. Vistas: resumen, fichas (+ detalle con cuerpo de la sesion), topics (tabla + grafo bipartito topics-sesiones en SVG puro, sin dependencias), learnings por categoria, TODOs, inbox, OSS y daily navegable. Stack: Next.js 16.3.6 (App Router) + Tailwind 4 + Biome + TypeScript. Repo privado `gonzoblasco/kanam-os` creado y pusheado; el workspace trackea solo su `.knowledge/`, segun la convencion existente.
+- **`scripts/memory-db.sh`: 6 subcomandos de escritura nuevos** (`done-todo`, `reopen-todo`, `set-todo-priority`, `triage-inbox`, `update-ficha`). Cada uno valida el efecto y **regenera el espejo markdown** en el mismo paso. Con guard de id inexistente que sale con exit 1.
 - **`.openclaw/portals.json`:** declaracion del server de desarrollo de kanam-os (puerto 4317) para que el portal del Control UI lo levante en un click.
 - **`docs/adr/ADR-054-kanam-os-app-local-memoria.md`:** Kanam OS como app local de lectura sobre `memory.db` (Next.js + `node:sqlite`). Extiende ADR-038 (DB manda, markdown espejo) a una UI; ADR-050 sigue vigente sin revisar.
 
@@ -24,9 +26,12 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **Next 16.0.0 descartado** por CVE-2025-66478; se uso 16.3.6.
 
 ### Notes
-- Verificacion: `next build` OK (typecheck + 9 rutas), smoke test HTTP 200 en las 8 vistas con datos reales (55 dailies, 51 fichas, 118 learnings, 66 contribuciones OSS, 11 topics).
+- Verificacion fase 1: `next build` OK (typecheck + 9 rutas), smoke test HTTP 200 en las 8 vistas con datos reales (55 dailies, 51 fichas, 118 learnings, 66 contribuciones OSS, 11 topics).
+- Verificacion fase 2: los 6 subcomandos probados en sandbox (escriben + regeneran el `.md`); guards de id inexistente 7/7 con `execFile`; path y permisos verificados contra el workspace real.
+- **No verificado por Kanam:** el click en el navegador. El POST a mano replicando el protocolo de server actions dio 500 (`Connection closed`) porque curl no reproduce el streaming RSC de Next; no es un fallo de la app. Se comprueba abriendo la app y haciendo click.
+- **Las server actions se llaman a mano** (en un `useTransition`), no via el prop `action` de `<form>`: ese prop exige `Promise<void>` y las actions devuelven `ActionResult`, que es lo que permite mostrar el error en el lugar en vez de tragarlo.
 - El grafo de topics es layout determinista (topics a la izquierda, sesiones a la derecha, grosor = confianza del vinculo) en vez de force-directed: con decenas de nodos se lee mejor y no cambia en cada render.
-- Roadmap: fase 2 CRUD delegando a scripts, fase 3 bloques managed (settings en DB propagados a `USER.md`/`AGENTS.md`/`.knowledge/`), fase 4 busqueda semantica sobre los vectores persistidos.
+- Roadmap: fase 3 bloques managed (settings en DB propagados a `USER.md`/`AGENTS.md`/`.knowledge/`), fase 4 busqueda semantica sobre los vectores persistidos.
 
 ---
 

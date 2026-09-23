@@ -241,6 +241,109 @@ case "$1" in
     sqlite3 "$DB" "INSERT INTO inbox (idea) VALUES ('$idea_esc');"
     echo "Idea agregada al inbox."
     ;;
+  done-todo)
+    # Firma: done-todo <id> - marca un todo como hecho y regenera el .md
+    id="$2"
+    if [ -z "$id" ]; then
+      echo "Error: falta el id." >&2
+      echo "Uso: $0 done-todo <id>" >&2
+      exit 1
+    fi
+    # Sin pipe: el `exit 1` tiene que correr en el shell principal, no en un
+    # subshell (dentro de un pipe no cambia el exit code del script).
+    n=$(sqlite3 "$DB" "UPDATE todos SET status='done', done_at=datetime('now') WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    if [ "$n" = "0" ]; then
+      echo "Error: no existe un todo con id $id." >&2
+      exit 1
+    fi
+    echo "Todo $id marcado como hecho."
+    "$0" export-todos > /dev/null
+    ;;
+  reopen-todo)
+    # Firma: reopen-todo <id> - vuelve un todo a 'open' y regenera el .md
+    id="$2"
+    if [ -z "$id" ]; then
+      echo "Error: falta el id." >&2
+      echo "Uso: $0 reopen-todo <id>" >&2
+      exit 1
+    fi
+    n=$(sqlite3 "$DB" "UPDATE todos SET status='open', done_at=NULL WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    if [ "$n" = "0" ]; then
+      echo "Error: no existe un todo con id $id." >&2
+      exit 1
+    fi
+    echo "Todo $id reabierto."
+    "$0" export-todos > /dev/null
+    ;;
+  triage-inbox)
+    # Firma: triage-inbox <id> - marca una idea del inbox como triaged y regenera el .md
+    id="$2"
+    if [ -z "$id" ]; then
+      echo "Error: falta el id." >&2
+      echo "Uso: $0 triage-inbox <id>" >&2
+      exit 1
+    fi
+    n=$(sqlite3 "$DB" "UPDATE inbox SET status='triaged' WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    if [ "$n" = "0" ]; then
+      echo "Error: no existe una idea con id $id." >&2
+      exit 1
+    fi
+    echo "Idea $id marcada como triaged."
+    "$0" export-inbox > /dev/null
+    ;;
+  set-todo-priority)
+    # Firma: set-todo-priority <id> <high|medium|low> - cambia la prioridad y regenera el .md
+    id="$2"; prio="$3"
+    case "$prio" in
+      high|medium|low) ;;
+      *) echo "Error: prioridad invalida '$prio' (usar high|medium|low)." >&2; exit 1 ;;
+    esac
+    n=$(sqlite3 "$DB" "UPDATE todos SET priority='$(sql_escape "$prio")' WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    if [ "$n" = "0" ]; then
+      echo "Error: no existe un todo con id $id." >&2
+      exit 1
+    fi
+    echo "Todo $id -> prioridad $prio."
+    "$0" export-todos > /dev/null
+    ;;
+  update-ficha)
+    # Firma: update-ficha <id> [--title <t>] [--tags <a,b>]
+    # Solo toca campos pasados. Los tags se normalizan a JSON array.
+    id="$2"; shift 2 2>/dev/null || true
+    sets=""
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        --title)
+          t="$(sql_escape "$2")"
+          sets="$sets, title='$t'"
+          shift 2
+          ;;
+        --tags)
+          j="[$(printf '%s' "$2" | tr ',' '\n' | sed '/^$/d' | sed 's/^ *//; s/ *$//' | sed 's/"/\\"/g' | sed 's/.*/"&"/' | paste -sd, -)]"
+          jesc="$(sql_escape "$j")"
+          sets="$sets, tags='$jesc'"
+          shift 2
+          ;;
+        *)
+          echo "Error: opcion desconocida '$1'." >&2
+          echo "Uso: $0 update-ficha <id> [--title <t>] [--tags <a,b>]" >&2
+          exit 1
+          ;;
+      esac
+    done
+    if [ -z "$sets" ] || [ -z "$id" ]; then
+      echo "Error: falta id o ningun campo para actualizar." >&2
+      echo "Uso: $0 update-ficha <id> [--title <t>] [--tags <a,b>]" >&2
+      exit 1
+    fi
+    sets="${sets#, }"
+    n=$(sqlite3 "$DB" "UPDATE sessions_relacional SET $sets WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    if [ "$n" = "0" ]; then
+      echo "Error: no existe una ficha con id $id." >&2
+      exit 1
+    fi
+    echo "Ficha $id actualizada."
+    ;;
   add-contribution)
     # Firma: add-contribution <repo> <pr> <pr_url> <status> "<detail>" ["<context>"] ["<issue>"] ["<issue_url>"] ["<tier>"] ["<tipo>"]
     # Campos opcionales: context, issue, issue_url, tier (default 1..3), tipo (default 'pr', collab para no-codigo).
