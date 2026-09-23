@@ -12,6 +12,8 @@
 
 > **Actualizacion 2026-09-11:** el motor de los agentes A/B del pipeline pasa a `deepseek-v4-flash:cloud` (ver **ADR-046**, que revierte ADR-045 por costo). El default de OpenClaw para sesiones y uso diario es `deepseek-v4-flash:0731`. GLM-5.3-Flash sigue como fallback + vision. Este ADR queda vigente en todo lo demas (regla de cero parametros, ficha de capacidades, ecosistema minimo).
 
+> **Actualizacion 2026-09-22 (ADR-053):** el default de OpenClaw ya no es GLM ni DeepSeek V4: el primario es `deepseek-v4.1-flash:cloud`, el auxiliar `gemma4:cloud` y el alternativo `glm-5.3-flash:cloud`. Ver **ADR-053**. Lo que sigue vigente de este ADR es la ficha de capacidades, la regla de cero parametros y el ecosistema minimo.
+
 **Regla de parametros: a GLM-5.3-Flash se le pasa CERO parametros de razonamiento.** Sin `reasoning_effort`, sin thinking config, sin knobs. Corre con el default del servidor. Razones:
 
 1. Ollama no expone el knob (las opciones existentes en la UI no aplican a GLM), y decidimos NO hackearlo por otras vias.

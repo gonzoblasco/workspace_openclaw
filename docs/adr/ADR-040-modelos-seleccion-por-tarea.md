@@ -238,6 +238,8 @@ Nota: MAX solo existe como nivel en DeepSeek Flash (modo Max thinking del modelo
 
 ### Guia rapida: niveles de razonamiento por rol (2026-08-27)
 
+> **Superseded por ADR-053 (2026-09-22).** Gonzo definio **thinking `high` unificado** para todos los roles ("para no gastar recursos innecesarios"). `agents.defaults.thinkingDefault` es `high`; el primario es `deepseek-v4.1-flash:cloud`, el auxiliar `gemma4:cloud` y el alternativo `glm-5.3-flash:cloud`. La tabla de abajo queda como registro historico del criterio REVISAR/ADMINISTRAR vs CREAR/AVANZAR, que ya no se aplica.
+
 **Modelo definitivo (Kanam en MAX, agentes en HIGH):** Kanam (OpenClaw) corre SIEMPRE en thinking `max`; los agentes A/B del pipeline corren SIEMPRE en thinking `high`. `agents.defaults.thinkingDefault = "max"`. El criterio fino que lo origino: **REVISAR/DECIDIR vs CREAR/AVANZAR**.
 
 | Rol / Tarea | Nivel | Por que |

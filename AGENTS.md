@@ -113,10 +113,10 @@ Detalle en `docs/AGENTS-DETALLE.md`.
 6. **Dar siempre la URL** del ticket.
 7. **No agradecer a bots de review**. Responder directo a la sustancia con evidencia.
 
-#### Razonamiento: Kanam MAX, agentes HIGH (2026-08-27)
-- **Kanam (OpenClaw) SIEMPRE en MAX (`max`)**. Orquestador: decide, analiza, planifica.
-- **Agentes A/B (pipeline) SIEMPRE en HIGH (`high`)**. Ejecutan: escriben código, corrigen bugs. Motor: `deepseek-v4-flash:cloud`.
-- **Default:** escribir código $\rightarrow$ pipeline A/B en HIGH.
+#### Razonamiento: HIGH unificado (ADR-053, 2026-09-22)
+- **Thinking `high` para todos los roles** (Kanam y agentes A/B). Decidido por Gonzo "para no gastar recursos innecesarios".
+- **Modelo primario:** `deepseek-v4.1-flash:cloud`. **Auxiliar:** `gemma4:cloud`. **Alternativo:** `glm-5.3-flash:cloud`.
+- _Historico (2026-08-27 a 2026-09-22): Kanam MAX / agentes HIGH, criterio REVISAR vs CREAR. Reemplazado por ADR-053; ver ahi la consecuencia aceptada._
 
 #### Pausa obligatoria: iteran $\rightarrow$ revisión final $\rightarrow$ push $\rightarrow$ borrador
 Detalle en `docs/AGENTS-DETALLE.md`.

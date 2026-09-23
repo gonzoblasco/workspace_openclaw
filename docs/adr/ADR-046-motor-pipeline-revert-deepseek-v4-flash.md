@@ -9,6 +9,8 @@
 
 ## Decision
 
+> **Actualizacion 2026-09-22 (ADR-053):** los roles de modelo se redefinieron. Primario `deepseek-v4.1-flash:cloud`, auxiliar `gemma4:cloud`, alternativo `glm-5.3-flash:cloud`, thinking `high` unificado. La tabla de abajo queda como registro del criterio de costo vigente al 2026-09-11. Ver **ADR-053**.
+
 **`deepseek-v4-flash:cloud` vuelve a ser el motor de los agentes A/B del pipeline** (via Claude Code o Qwen Code apuntando al gateway Ollama `127.0.0.1:11434`).
 
 `deepseek-v4.1-flash:cloud` sale del rol de motor del pipeline: queda como **fase de escalada** para analisis complejo, cuando ni v4 ni glm resuelven.
