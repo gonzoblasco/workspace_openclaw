@@ -176,7 +176,9 @@ Workflows detallados en `skills/` (índice en `SKILLS-INDEX.md`). Referencias cl
 Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/SETUP.md`** el 2026-09-14, para bajar este archivo bajo el limite de bootstrap (20K chars). Consultar ese archivo para el detalle del setup.
 
 **Resumen operativo** (los subagentes solo reciben `AGENTS.md`, no `docs/SETUP.md` ni `MEMORY.md`):
-- **Modelo:** `deepseek-v4-flash:cloud` es el default de OpenClaw y el motor del pipeline A/B. Kanam en thinking `max`; agentes A/B en `high`.
+<!-- BEGIN MANAGED:model-operativo -->
+- **Modelo:** primario de OpenClaw `deepseek-v4.1-flash:cloud`, thinking `high` para todos los roles (ADR-053); motor del pipeline A/B `deepseek-v4-flash:cloud`.
+<!-- END MANAGED:model-operativo -->
 - **Pipeline:** Qwen Code via Ollama -> `ollama launch qwen --model deepseek-v4-flash:cloud -- -p "<tarea>" -y`. Alternativa para casos largos (SIGKILL): Claude Code con `ANTHROPIC_BASE_URL=http://localhost:11434`.
 - **Memoria:** `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables.
 - **Scripts clave:** `scripts/complexity-scorer.sh` (T-score antes de spawnear agentes), `scripts/pipeline-track.sh` (estado durable del pipeline), `scripts/check_em_dash.py` (scan obligatorio antes de publicar).

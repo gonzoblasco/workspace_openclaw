@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-22] - Auditoria de drift: AGENTS.md se contradecia a si mismo
+
+### Fixed
+- **`AGENTS.md` afirmaba dos cosas falsas sobre los modelos, en el bloque que leen TODOS los subagentes.** El "Resumen operativo" decia: "`deepseek-v4-flash:cloud` es el default de OpenClaw" y "Kanam en thinking `max`". Las dos son incorrectas: el config real (`~/.openclaw/openclaw.json`) tiene `model.primary = ollama/deepseek-v4.1-flash:cloud` y `thinkingDefault = high`, y ADR-053 unifica el thinking en `high` para todos los roles.
+  - **Gravedad:** es el peor lugar posible para un dato stale. Los subagentes reciben **solo `AGENTS.md`** (no `docs/SETUP.md` ni `MEMORY.md`), asi que ese resumen es toda su fuente de contexto sobre que modelo corre. Y el archivo **se contradecia a si mismo**: la linea 119 (bloque managed) decia `v4.1-flash`, la 179 decia `v4-flash`.
+  - **Resuelto con el mecanismo, no a mano:** la linea paso a ser el bloque managed `model-operativo` (nuevo), atado a un setting `model_pipeline` agregado a la tabla. Ahora dice: primario `deepseek-v4.1-flash:cloud`, thinking `high` para todos los roles (ADR-053), motor del pipeline A/B `deepseek-v4-flash:cloud`.
+- **`docs/SETUP.md` linea 26:** la afirmacion vieja (thinking `max`) ya se habia preservado marcada como `historico` al insertar el primer bloque. Se mantiene asi: es registro de lo que regia el 2026-08-30, no una afirmacion vigente.
+
+### Notes
+- **Tercer candidato auditado y descartado: `docs/SETUP.md:44`** ("el modelo que carga el harness usa `deepseek-v4-flash:cloud` default"). **No es drift:** el router real (`scripts/model-router.sh`, `"default": "deepseek-v4-flash:cloud"`) lo confirma. Verificar antes de "corregir" evito romper un dato correcto.
+- **Metodo de la auditoria:** no se busco por intuicion. Se grepearon los valores que se repiten entre archivos (modelos, thinking, rutas), y cada candidato se contrasto contra la fuente autoritativa: el config del gateway para el runtime, `scripts/model-router.sh` para el routing, y los ADRs para las decisiones. Solo se corrigio lo que la fuente desmintio.
+- Registro de bloques tras esta fase: `model-triple` y `model-operativo` en `AGENTS.md`; `model-triple` en `docs/SETUP.md`. `AGENTS.md` quedo en 15791 chars (limite de bootstrap: 20000).
+
+---
+
 ## [2026-09-22] - Fase 3: bloques managed (settings de la DB propagados a los archivos)
 
 ### Added

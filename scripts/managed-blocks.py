@@ -46,6 +46,9 @@ DEFAULTS = {
     "model_auxiliary": "gemma4:cloud",
     "model_alternative": "glm-5.3-flash:cloud",
     "thinking_default": "high",
+    # Motor del pipeline A/B. Distinto del primario: el router lo usa para los
+    # agentes de codigo (scripts/model-router.sh, ruta 'default').
+    "model_pipeline": "deepseek-v4-flash:cloud",
 }
 
 # Que bloque vive en que archivo, con que plantilla.
@@ -58,6 +61,16 @@ REGISTRY = [
             "- **Modelo primario:** `{model_primary}`. "
             "**Auxiliar:** `{model_auxiliary}`. "
             "**Alternativo:** `{model_alternative}`."
+        ),
+    },
+    {
+        # El resumen operativo que reciben TODOS los subagentes: es el bloque
+        # mas critico, porque ellos no ven docs/SETUP.md ni MEMORY.md.
+        "file": "AGENTS.md",
+        "key": "model-operativo",
+        "template": (
+            "- **Modelo:** primario de OpenClaw `{model_primary}`, thinking `{thinking_default}` "
+            "para todos los roles (ADR-053); motor del pipeline A/B `{model_pipeline}`."
         ),
     },
     {
