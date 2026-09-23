@@ -6,6 +6,25 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-22] - Auditoria de deuda de ADRs: revalidacion, ADR-053 y duplicado 048
+
+### Fixed
+- **`docs/adr/ADR-049` revalidado:** dos enunciados del 2026-09-15 quedaron stale (el "bug" de `ollama launch claude --model` y la ausencia de binario global `qwen`/`claude`). Ambos eran ciertos al escribirse: el binario de Ollama es del 2026-09-19 (posterior al ADR) y `qwen` se instalo el 2026-09-22. Se documenta como dato caducado, no como error del autor. Se agrega el camino `ollama launch claude` (verificado end-to-end) y el enmascarado de modelos.
+- **`docs/adr/ADR-048` duplicado resuelto:** dos decisiones compartian el numero 048. `ADR-048-kanam-lab-ui-choice` era de alcance de PROYECTO (mantener Gradio en kanam-lab), no global, y colisionaba con `ADR-048-shadcn-radix-stack-ui`. Se movio a `projects/kanam-lab/.knowledge/adr/0002-ui-framework-gradio.md` y se renumero como 002. El corpus global queda sin duplicados y sin huecos.
+- **`docs/adr/ADR-041`, `ADR-046`, `ADR-040`:** se marcaron las secciones superseded por ADR-053 (roles de modelo y nivel de thinking).
+- **`AGENTS.md`:** la regla de razonamiento decia "Kanam SIEMPRE en MAX", contradiciendo el config vigente. Reemplazada por la regla de HIGH unificado.
+- **`docs/SETUP.md` y `skills/agent-orchestration-pipeline`:** se corrigio el dato stale de `ollama launch claude` y la ruta embebida como unico camino.
+
+### Added
+- **`docs/adr/ADR-053-modelos-primario-auxiliar-alternativo.md`:** primario `deepseek-v4.1-flash:cloud`, auxiliar `gemma4:cloud`, alternativo `glm-5.3-flash:cloud`, thinking `high` para todos los roles. Cierra el drift silencioso que encontro la auditoria (el primario habia rotado cuatro veces sin registro, y `minimax-m2.7` corria pese a que ADR-040 lo excluia explicitamente).
+- **`projects/kanam-lab/.knowledge/adr/`:** directorio nuevo para ADRs de alcance de proyecto, trackeado por el workspace git (no `docs/`, que `projects/*/docs` ignora).
+
+### Notes
+- Config aplicada via `openclaw config patch` (8 updates, sin restart) y verificada live con `openclaw models status`. Los tres modelos pasaron smoke test contra el daemon.
+- Se documento que la lista local y el catalogo cloud de Ollama NO coinciden en nomenclatura (`gemma4:cloud` vs `gemma4:31b`): la disponibilidad se chequea contra ambas.
+
+---
+
 ## [2026-09-22] - Nuevo proyecto: langchain-starter (RAG + API + LaunchAgent)
 
 ### Added
