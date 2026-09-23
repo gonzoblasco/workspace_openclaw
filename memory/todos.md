@@ -5,7 +5,6 @@
 
 ## Abiertos
 
-- [ ] **[workspace]** (medium) Re-cata de modelos LLM ~2026-09-29: revisar novedades (GLM, Kimi, alternativas) y decidir si mantener el trio actual. Ver ADR-041 pendiente 4
 - [ ] **[kanam-pulse]** (medium) kanam-pulse: evaluar envoltorio nativo a futuro (Electron/Tauri/React Native/nativa) SOLO despues de que la web v1 este completa y pulida. No bloquea nada hoy - es decision de distribucion futura. Nota: Tauri es candidata natural si algun dia se hace (mas liviana que Electron, binario unico)
 
 ## Completados
@@ -36,6 +35,7 @@
 - [x] **[]** RESUELTO 2026-09-15: la premisa del todo quedo absorbida. 'Explorar Kanam Studio' era el paso previo a definir el roadmap, y el roadmap ya existe: ROADMAP.md con 7 slices (grafo -> jugar -> IA de ramas -> canon checker -> world-building -> export -> simulacion), BRIEF.md y 14 planes por slice/hito en .knowledge/. El criterio de este todo ('explorar') se cumplio y se supero: hay direccion, alcance y road map documentado, no una exploracion pendiente.
 - [x] **[kanam-pulse]** RESUELTO 2026-09-15: la premisa del todo quedo REFUTADA al verificar. El codigo NO esta atascado en la MacBook Air: existen gonzoblasco/kanam-pulse (PUBLIC, pushed 2026-08-31, tag v1.0.0 + GitHub Release segun su STATUS) y gonzoblasco/system-health-check (PRIVATE, pushed 2026-08-29). Ambos con codigo completo en GitHub. Los dirs locales en projects/ solo tienen .knowledge/ porque la regla del triple-git es 'GitHub es la fuente, clonar bajo demanda' - eso es lo correcto, no una perdida. La accion que reemplaza a 'traer codigo': clonar desde GitHub al iniciar M1.
 - [x] **[kanam-pulse]** kanam-pulse M1 - RECON 2026-09-15: el engine YA esta extraido a packages/core pero en JAVASCRIPT (24 archivos .js, 0 .ts). Dashboard read-only existe y los tests pasan (clon verificado en /tmp, 36 tests en web). README y STATUS marcan M1 'Done', pero el propio STATUS del proyecto lo lista en 'Next: core a TypeScript': esa parte del M1 del todo (#32, '(TS)') esta PENDIENTE. Codigo esta en GitHub (kanam-pulse PUBLIC + system-health-check PRIVATE); no en la Air (#33 refutado). Trabajo real restante: migrar packages/core JS->TS manteniendo tests verdes + build. En curso.
+- [x] **[workspace]** Re-cata de modelos LLM ~2026-09-29: revisar novedades (GLM, Kimi, alternativas) y decidir si mantener el trio actual. Ver ADR-041 pendiente 4
 - [x] **[workspace]** Probar input visual de GLM 5.3 Flash en caso real (mockup/screenshot -> UI o screenshot de error -> fix). Ver ADR-041 pendiente 3
 - [x] **[workspace]** Validar GLM 5.3 Flash en tareas reales del pipeline A/B (escribir codigo, tests, PRs - no solo diseno de arquitectura). Ver ADR-041 pendiente 2
 - [x] **[]** Pipeline A/B: Alternar Agente A y Agente B con glm-5.3-flash:cloud (motor actual desde 2026-08-29), via Qwen Code en Ollama
