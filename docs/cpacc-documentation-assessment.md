@@ -1,19 +1,19 @@
-# CPACC – Evaluación de la documentación disponible
+# CPACC - Evaluación de la documentación disponible
 
 ## Documentación ya recopilada
-- **CertHandbookV2 (English)** – Procedimientos de examen, reglas, fechas, logística, requisitos y proceso de mantenimiento.  
-- **Guía de estudio IAAP CPACC 2026 (Spanish)** – Índice de contenidos, dominios del examen, modelos de discapacidad, conceptos clave, recursos recomendados.  
-- **Transcripciones de videos** (dos archivos) – Explicación del examen, roadmap, experiencia personal, sugerencias de estudio.  
-- **Resumen estructurado** – Peso de temas, cronograma de estudio, checklist de día de examen, ROI.  
-- **Mini‑documento interno (≈2 páginas)** – Visión general, plan de estudio de 4 semanas, recursos clave, checklist.  
-- **Plan de acción Semana 1** – Mapeo de conocimientos y primeras tareas.  
+- **CertHandbookV2 (English)** - Procedimientos de examen, reglas, fechas, logística, requisitos y proceso de mantenimiento.  
+- **Guía de estudio IAAP CPACC 2026 (Spanish)** - Índice de contenidos, dominios del examen, modelos de discapacidad, conceptos clave, recursos recomendados.  
+- **Transcripciones de videos** (dos archivos) - Explicación del examen, roadmap, experiencia personal, sugerencias de estudio.  
+- **Resumen estructurado** - Peso de temas, cronograma de estudio, checklist de día de examen, ROI.  
+- **Mini‑documento interno (≈2 páginas)** - Visión general, plan de estudio de 4 semanas, recursos clave, checklist.  
+- **Plan de acción Semana 1** - Mapeo de conocimientos y primeras tareas.  
 
 ## Qué falta para estar “completamente preparado”
-1. **Book of Knowledge (BoK) oficial** – Fuente primaria de todas las competencias del CPACC; indispensable para cubrir cada sub‑competencia.  
-2. **Content Outline actualizado** – Confirma los dominios y sub‑temas exactos que aparecen en el examen; útil para validar la tabla de “Conocido / Por aprender”.  
+1. **Book of Knowledge (BoK) oficial** - Fuente primaria de todas las competencias del CPACC; indispensable para cubrir cada sub‑competencia.  
+2. **Content Outline actualizado** - Confirma los dominios y sub‑temas exactos que aparecen en el examen; útil para validar la tabla de “Conocido / Por aprender”.  
 3. **Banco de preguntas de práctica** (más de 10 ítems) y/o mock‑exam cronometrado de 100 preguntas.  
-4. **Actualizaciones de normas** – WCAG 2.2, cambios legislativos recientes (por ejemplo, actualizaciones de la Ley de Igualdad del Reino Unido, nuevas directrices de la UE).  
-5. **Recursos de apoyo adicional** – Cursos (Deque University, Princeton) y materiales de estudio complementarios, en caso de que necesites profundizar algún dominio.  
+4. **Actualizaciones de normas** - WCAG 2.2, cambios legislativos recientes (por ejemplo, actualizaciones de la Ley de Igualdad del Reino Unido, nuevas directrices de la UE).  
+5. **Recursos de apoyo adicional** - Cursos (Deque University, Princeton) y materiales de estudio complementarios, en caso de que necesites profundizar algún dominio.  
 
 ## Conclusión
 Con la documentación que ya posees ya cuentas con la mayor parte de la información necesaria para: entender la estructura del examen, conocer los dominios, seguir el plan de estudio, y cumplir con los requisitos logísticos y de mantenimiento.  

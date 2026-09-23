@@ -61,6 +61,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-053 | [Modelos primario, auxiliar y alternativo (thinking HIGH unificado)](./ADR-053-modelos-primario-auxiliar-alternativo.md) | workspace |
 | ADR-054 | [Kanam OS como app local de lectura sobre memory.db (Next.js + node:sqlite)](./ADR-054-kanam-os-app-local-memoria.md) | workspace |
 | ADR-055 | [Bloques managed - settings de la DB propagados a documentos de identidad](./ADR-055-bloques-managed-settings-db.md) | workspace |
+| ADR-056 | [Guardas de gobernanza en el pre-commit - guion comun y rutas citadas](./ADR-056-guardas-gobernanza-pre-commit.md) | workspace |
 
 ## Formato
 

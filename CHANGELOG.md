@@ -6,6 +6,29 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-22] - Auditoria #2: referencias rotas, guiones y un guard que estaba ausente
+
+### Added
+- **`scripts/pr-thread-brief.sh`:** el script que `docs/AGENTS-DETALLE.md` citaba como "verificacion mecanica" de la regla de atribucion por login - **y que nunca existio**. Clasifica cada evento de un hilo de PR (comentarios, reviews, inline) en `OURS` / `BOT` / `THIRD` por el `user.login` de la API, resume por actor y nombra quien tiene la pelota. Solo lectura (`gh api` GET). Probado contra PRs reales de astryx.
+  - La regla que respalda existe por un error real: en astryx #4690 el `CHANGES_REQUESTED` de un maintainer se reporto como nuestro por proximidad de contexto. Una regla que dice tener verificacion mecanica sin tenerla es peor que una sin respaldo: da confianza falsa.
+- **`scripts/check-refs.py`:** verifica que cada ruta citada con backticks (`docs/...`, `scripts/...`) exista de verdad. Ignora placeholders (`<repo>-<n>`), directorios, globs y los directorios historicos (`docs/archives/`, `docs/conversations/`): una ruta rota ahi es un dato del pasado, no una promesa vigente.
+- **`tests/python/test_check_refs.py`:** 11 tests (deteccion, no falsos positivos, end-to-end, que falle ante una rota, que ignore historicos).
+- **Chequeos baratos en el pre-commit, para TODO markdown staged:** guion comun (sobre el contenido staged, no el del disco) y rutas citadas. Antes corrian solo sobre `skills/`.
+
+### Fixed
+- **44 en dash y 2 em dash en `docs/`.** La regla del guion comun se cumplia solo dentro de `skills/` porque `test-skills.sh` mira unicamente `$SKILLS_DIR`. Resultado: los docs de trabajo acumularon 44 en dash sin que nada los viera. Normalizados a guion comun en `cpacc-mini-doc.md`, `cpacc-documentation-assessment.md`, `cpacc-improvements.md`, `cpacc-week-1-plan.md` y `pipeline/2026-08-30-spin-review-migration.md`.
+  - No se toco U+2011 (guion no separable): la regla nombra U+2013/U+2014, y U+2011 aparece en rangos tipo "1-5", donde es separador de rango, no puntuacion.
+- **`docs/cpacc-improvements.md`: 5 celdas de tabla con `\n` literales.** El texto se habia escrito con escapes en vez de saltos reales; un `\n` real dentro de una celda rompe la tabla. Pasados a `<br>`. Ademas, la referencia a `docs/cpacc-weekly-plan.md` apuntaba a un archivo que no existe: el real es `docs/cpacc-week-1-plan.md`.
+- **Bug propio cazado por su propio test: `check-refs.py --all` no escaneaba nada extra.** El filtro de argumentos descartaba todo lo que empezara con `-`, incluido `--all`, que caia al default en silencio: reportaba "OK: 19 rutas" creyendo haber revisado todo. Corregido; ahora escanea 133 y fue lo que destapo las 2 rotas. Es exactamente la clase de falla que este checker existe para encontrar.
+- **Falso positivo en la deteccion de bots de `pr-thread-brief.sh`:** el glob `*bot` clasificaba `abbot` y `talbot` como bots. Ajustado a la convencion real de GitHub (`[bot]`) mas unos pocos nombres conocidos.
+
+### Notes
+- **Metodo:** grep de los valores repetidos, y **cada candidato contra su fuente** antes de tocarlo. Verificar evito romper datos correctos: `docs/SETUP.md:44` ("el harness usa deepseek-v4-flash:cloud") parecia drift y **no lo es** - `scripts/model-router.sh` lo confirma.
+- **Un guard que nunca falla es un guard que miente.** El hook nuevo se probo en negativo: aborta con un en dash y con una ruta rota, verificado con archivos temporales (no solo que pase en limpio).
+- `AGENTS.md` en 15791 chars (limite de bootstrap: 20000). Suite completa: 29/29.
+
+---
+
 ## [2026-09-22] - Auditoria de drift: AGENTS.md se contradecia a si mismo
 
 ### Fixed

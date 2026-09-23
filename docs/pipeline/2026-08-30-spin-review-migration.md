@@ -64,7 +64,7 @@ Created the complete **Spin Review System** - a comprehensive automation suite f
 
 ## ✅ Quality Checks Passed
 
-- ✨ No em-dashes (—, —) in any generated content
+- ✨ No em-dashes (-, -) in any generated content
 - ✓ GitHub English / UI Spanish maintained
 - ✓ AGENTS.md compliance verified
 - ✓ Scripts made executable (chmod +x)

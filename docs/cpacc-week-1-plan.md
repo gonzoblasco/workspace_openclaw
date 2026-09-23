@@ -1,10 +1,10 @@
-# CPACC – Semana 1 – Plan de acción
+# CPACC - Semana 1 - Plan de acción
 
 ## Objetivo de la semana
 Mapear el conocimiento actual versus los requisitos del examen y consolidar los recursos base.
 
 ## Tareas concretas
-1. **Abrir el Book of Knowledge (BoK)** – PDF oficial de IAAP (≈ 100 páginas).  
+1. **Abrir el Book of Knowledge (BoK)** - PDF oficial de IAAP (≈ 100 páginas).  
    - Leer la sección *Introduction* y *Certification Overview* (páginas 1‑5).  
    - Anotar en un documento los temas que ya dominas y marcar los que no conoces.
 2. **Revisar el Content Outline** (índice de contenidos) y cruzarlo con el BoK.  
