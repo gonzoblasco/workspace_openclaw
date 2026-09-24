@@ -85,6 +85,28 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
   - `docs/OSS-TRACKER.md` ← tabla contributions
 - **Dailies:** viven en `memory/YYYY-MM-DD.md`; los viejos se archivan a la DB + `memory/archive/`.
 
+### Regla: DB-first vs doc-only (2026-09-24)
+
+La memoria del workspace tiene **dos clases de superficie**, y confundirlas lleva a buscar en el lugar equivocado o a esperar un export que no existe. La distincion se reconstruyo a mano el 2026-09-24 (pregunta de Gonzo): vale tenerla explicita.
+
+**1. DB-first (dentro del ciclo de `memory.db`):** el dato vive en la DB y el markdown es una **vista regenerable**. Si el `.md` y la DB discrepan, gana la DB.
+
+| Documento | Tabla | Direccion |
+|---|---|---|
+| `memory/YYYY-MM-DD.md` (dailies) | `daily_notes` | ambos sentidos (el guardado reconcilia `.md` -> DB, y `export-daily` regenera) |
+| `memory/todos.md` | `todos` | DB -> MD |
+| `memory/inbox.md` | `inbox` | DB -> MD |
+| `docs/OSS-TRACKER.md` | `contributions` | DB -> MD |
+| `docs/learnings/*.md` | `learnings` | DB -> MD (portada `docs/LEARNINGS.md` escrita a mano) |
+
+**2. Doc-only (fuera del ciclo):** el archivo **es** la fuente de verdad. No hay tabla, no hay export, no hay reconciliacion. Editarlo mal no se detecta contra nada.
+
+`MEMORY.md`, `AGENTS.md`, `SOUL.md`, `USER.md`, `IDENTITY.md`, `docs/NORTH.md`, `docs/ROADMAP.md`, `docs/AGENTS-DETALLE.md`, **el corpus de ADRs (`docs/adr/`)** y el resto de `docs/`.
+
+**El caso de los ADR:** no hay tabla `adr` ni `decision`, y los ADR no se exportan ni se indexan como entidad. Solo aparecen en la DB como **texto incidental** (alguien los *nombra* en un daily, una sesion o una leccion), nunca como registro consultable. Consecuencia practica: para auditar el corpus hay que leer los archivos, no consultar la DB. El camino a un almacen de conocimiento para ADRs es el **wiki** (`openclaw wiki ingest`), no `memory.db`.
+
+**Regla practica:** antes de buscar un dato, decidir si es DB-first o doc-only. Si es doc-only y se quiere consulta rapida, el camino es ingesta explicita (wiki) o indexacion, nunca asumir que un `export-*` lo va a regenerar.
+
 ### Engram (memoria de proyecto para agentes, 2026-09-22)
 
 - **Binario:** `engram 2.0.0` (brew install gentleman-programming/tap/engram). Store: `~/.engram/engram.db`. Config Qwen: `~/.qwen/settings.json` (mcpServers.engram) + `~/.qwen/QWEN.md` (protocolo con markers).

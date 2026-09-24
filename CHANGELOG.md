@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Regla DB-first vs doc-only documentada en SETUP.md
+
+### Added
+- **`docs/SETUP.md` seccion "Regla: DB-first vs doc-only":** la memoria del workspace tiene dos clases de superficie y confundirlas manda a buscar en el lugar equivocado. Se documenta explicito, porque la distincion se reconstruyo a mano el 2026-09-24 (pregunta de Gonzo).
+  - **DB-first (dentro del ciclo de `memory.db`):** el dato vive en la DB y el markdown es vista regenerable; si discrepan, gana la DB. Aplica a dailies, `todos.md`, `inbox.md`, `OSS-TRACKER.md` y `learnings/`.
+  - **Doc-only (fuera del ciclo):** el archivo ES la fuente de verdad, sin tabla ni export. Aplica a `MEMORY.md`, `AGENTS.md`, `SOUL.md`, `USER.md`, `IDENTITY.md`, `NORTH.md`, `ROADMAP.md`, el corpus de ADRs y el resto de `docs/`.
+  - **El caso de los ADR:** no existe tabla `adr` ni `decision`; los ADR solo aparecen en la DB como texto incidental (alguien los nombra en un daily o leccion), nunca como registro consultable. Para auditarlos hay que leer los archivos. Su camino a un almacen de conocimiento es el wiki (`openclaw wiki ingest`), no `memory.db`.
+
+### Notes
+- **Verificado, no asumido:** se confirmo contra el esquema real de `memory.db` (20 tablas, ninguna de ADR) y contra el flujo de scripts (`export-*` solo cubre dailies/todos/inbox/oss/learnings).
+- Origen del hallazgo: al verificar la hipotesis de Gonzo ("los ADRs van en direccion opuesta, de los documentos a la DB"). La intuicion era real pero el nombre estaba corrido: los ADR no van hacia la DB, van **fuera** del ciclo de la DB.
+
+---
+
 ## [2026-09-24] - Temas dark y light en kanam-os + guardia multi-tema
 
 ### Added
