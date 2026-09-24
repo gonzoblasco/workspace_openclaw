@@ -20,12 +20,15 @@ La integración de LangChain en el ecosistema de OpenClaw no busca reemplazar la
 
 ## 2. Análisis Técnico y Arquitectura
 
-### El Stack Tecnológico
-- **Lenguaje:** Python 3.11+ (por madurez del ecosistema LLM).
+### El Stack Tecnológico (real, verificado 2026-09-24)
+- **Lenguaje:** Python **3.12.14** (migrado desde 3.9.6 el 2026-09-24).
 - **Framework de IA:** LangChain (Core, Community, LangGraph).
-- **API Server:** FastAPI (por su alta performance y soporte nativo de async/streaming).
-- **Vector Store:** Supabase Vector (PGVector) para persistencia de conocimiento semántico.
-- **Infraestructura:** Docker para aislamiento y despliegue en Mac Mini.
+- **API Server:** FastAPI + uvicorn (async/streaming nativo).
+- **Vector Store:** **ChromaDB local** (sin servidor, embebido). Supabase Vector (PGVector) queda para la Fase 6, cuando haya que compartir conocimiento entre maquinas.
+- **Infraestructura:** **LaunchAgent nativo de macOS** para el Mac Mini (decision 2026-09-22). Docker queda escrito (`Dockerfile`) para la Fase 7, al desplegar fuera del Mac Mini.
+- **Motor de IA:** **Ollama local** para LLM y embeddings. Sin proveedores cloud, sin API keys.
+
+> **Correccion de deriva (2026-09-24):** esta seccion declaraba Supabase Vector y Docker como el stack, y Python 3.11+. Era el **plan**, no lo construido: se implemento ChromaDB local (mas simple, cero infraestructura) y LaunchAgent (Docker no estaba instalado). Supabase y Docker siguen siendo el destino, pero en fases posteriores.
 
 ### Flujo de Datos (RAG Pipeline)
 `Usuario` -> `FastAPI` -> `LangChain` -> `Vector Store (Búsqueda Semántica)` -> `Contexto recuperado + Prompt` -> `LLM` -> `Respuesta Streaming` -> `Usuario`.
@@ -38,19 +41,21 @@ La integración de LangChain en el ecosistema de OpenClaw no busca reemplazar la
 
 ## 3. Planificación por Fases (Roadmap)
 
-### Fase 1: Cimientos (The Infrastructure)
+### Fase 1: Cimientos (The Infrastructure) - COMPLETA
 **Objetivo:** Tener un entorno de desarrollo aislado y una conexión básica con el LLM.
-- [ ] **1.1 Setup del Entorno:** Creación de repo `langchain-starter`, configuración de `venv` y estructura de carpetas (`app/`, `scripts/`, `config/`).
-- [ ] **1.2 Gestión de Secretos:** Integración con `openclaw secrets` para inyección de API Keys.
-- [ ] **1.3 Hello World:** Implementación de una cadena básica (`Prompt` $\rightarrow$ `LLM` $\rightarrow$ `OutputParser`) ejecutable via terminal.
-- **Hito:** Script funcional que responda consultas simples usando la arquitectura de LangChain.
+- [x] **1.1 Setup del Entorno:** `projects/langchain-starter` con `venv` (hoy 3.12.14) y estructura `app/`, `scripts/`, `config/`. Repo git creado el 2026-09-24.
+- [~] **1.2 Gestión de Secretos:** **NO aplica hoy.** El proyecto usa Ollama local: no hay API keys que gestionar. Queda pendiente para cuando se integre un proveedor cloud (Fase 6/7). El contrato de configuracion vive en `.env.example`.
+- [x] **1.3 Hello World:** `app/main.py` con cadena `Prompt -> LLM -> OutputParser` via LangChain + Ollama (`gemma4:cloud`), verificado.
+- **Hito:** ✅ CUMPLIDO - script funcional respondiendo consultas simples.
 
-### Fase 2: El Conocimiento (RAG Implementation)
+> **Nota sobre 1.2:** no es deuda, es una decision: no se integran secretos que no existen. Cuando aparezca el primer proveedor cloud, va al gestor de secretos (nunca en texto plano).
+
+### Fase 2: El Conocimiento (RAG Implementation) - COMPLETA
 **Objetivo:** Que la IA responda basándose en datos propios.
-- [ ] **2.1 Pipeline de Ingesta:** Desarrollo de scripts para carga de documentos (Markdown/PDF), *chunking* inteligente y generación de *embeddings*.
-- [ ] **2.2 Conexión Vector Store:** Configuración de cliente Supabase Vector para almacenamiento y recuperación de vectores.
-- [ ] **2.3 Retrieval Chain:** Implementación de la cadena de recuperación que inyecta el contexto encontrado en el prompt final.
-- **Hito:** Sistema capaz de responder preguntas sobre un set de documentos específicos con citas de fuente.
+- [x] **2.1 Pipeline de Ingesta:** `scripts/ingest.py` (chunking semantico) + `scripts/store.py` (embeddings + persistencia). Embeddings via Ollama `qwen3-embedding:0.6b` (1024 dim).
+- [x] **2.2 Vector Store:** **implementado con ChromaDB local**, no Supabase. Mismo rol, menos infraestructura; la migracion a Supabase es la Fase 6.1.
+- [x] **2.3 Retrieval Chain:** `scripts/query.py` con prompt restringido a responder SOLO con el contexto recuperado (garantia anti-alucinacion, fijada por test).
+- **Hito:** ✅ CUMPLIDO - el sistema responde sobre documentos propios y cita la fuente.
 
 ### Fase 3: La Interfaz (API & Streaming)
 **Objetivo:** Convertir la lógica de script en un servicio accesible.
@@ -68,8 +73,6 @@ La integración de LangChain en el ecosistema de OpenClaw no busca reemplazar la
 
 ---
 
----
-
 ## 4. Matriz de Riesgos y Mitigación
 
 | Riesgo | Impacto | Mitigación |
@@ -83,18 +86,31 @@ La integración de LangChain en el ecosistema de OpenClaw no busca reemplazar la
 
 ## 5. Deuda técnica detectada (auditoría 2026-09-24)
 
-Gap entre "funciona" y "sirve como herramienta". Nada de esto bloquea la demo, todo esto bloquea el uso diario y la comercialización:
+Gap entre "funciona" y "sirve como herramienta". Estado **al cierre del 2026-09-24** (los items de la deuda base se cerraron ese día):
 
-| Item | Estado real | Por qué importa |
+| Item | Estado | Por qué importa |
 |---|---|---|
-| `requirements.txt` | **VACÍO (0 bytes)** | Sin pinning, el entorno no es reproducible. Nadie puede clonar y correr esto. Primer bloqueante de exportabilidad. |
-| ~~Python~~ | **CERRADO 2026-09-24:** era 3.9.6, hoy **3.12.14** | Migrado con validacion previa en venv paralelo (suites + indice + busqueda + embeddings + servicio vivo). |
-| Repo git | **No existe** (solo carpeta + `.knowledge/` en el workspace) | Sin repo no hay portabilidad, ni CI, ni entrega a un cliente. |
-| Base de conocimiento | **10 chunks de 1 solo documento** (`LANGCHAIN_STRATEGY.md`) | Es una demo, no una herramienta. Falta ingesta real. |
-| Tests | **Ninguno** | Sin red de seguridad, cada cambio es a ciegas. |
-| `README.md` | 8 bytes ("FastAPI") | Superficie de GitHub/proyecto vacía. |
-| `.env.example` | **Vacío** | Sin contrato de configuración. |
-| Secretos | No integrado con `openclaw secrets` | Hoy no se necesita (todo local via Ollama), pero será necesario al salir del Mac Mini. |
+| `requirements.txt` | ✅ **CERRADO:** 16 deps pinneadas (era 0 bytes) | Sin pinning el entorno no es reproducible. |
+| Python | ✅ **CERRADO:** 3.12.14 (era 3.9.6) | 3.9 estaba al final de su vida. |
+| Repo git | ✅ **CERRADO:** `gonzoblasco/langchain-starter` (era "no existe") | Sin repo no hay portabilidad, ni CI, ni entrega. |
+| `README.md` | ✅ **CERRADO:** 4.371 bytes (eran 8) | Superficie del proyecto. |
+| `.env.example` | ✅ **CERRADO:** contrato de config (era vacío) | Sin contrato no se sabe qué configurar. |
+| Tests | ✅ **CERRADO:** 10 tests en el starter + 18 en kanam-insight | Verificados por mutación: romper una propiedad hace fallar su test. |
+| **Base de conocimiento** | ❌ **ABIERTO:** 10 chunks de 1 solo documento | Sigue siendo demo, no herramienta. Es la Fase 5.2. |
+| **`kanam-insight` sin `requirements.txt` propio** | ❌ **ABIERTO** (hallazgo de esta auditoría) | Depende del venv del starter. Como repo independiente **no se puede reproducir solo**: clonarlo y correr `pip install` no alcanza. |
+| Secretos | ⚪ **NO APLICA hoy:** todo local via Ollama | No hay API keys que gestionar. Se integra cuando aparezca el primer proveedor cloud. |
+
+---
+
+## 5b. Causa raíz de la deriva (hallazgo de la auditoría 2026-09-24)
+
+**Este documento vive en la raíz del workspace, y el Debt Detector solo escanea `projects/*/.knowledge/`.**
+
+Consecuencia medida: las Fases 1 y 2 quedaron sin marcar aunque estaban completas desde el 2026-09-22, la sección 2 declaraba Supabase + Docker + Python 3.11 cuando lo construido era ChromaDB + LaunchAgent + Python 3.9, y la sección 5 listaba como deuda items ya cerrados. **Ninguna de esas tres derivas fue detectada por la herramienta que construimos para detectar derivas.**
+
+Es el mismo patrón que apareció tres veces en el día: documentación que declara un estado que ya no es cierto, sin nada que lo verifique.
+
+**Lección:** un verificador con alcance limitado da una falsa sensación de cobertura. El Debt Detector escanea 26 proyectos pero es ciego a la documentación de nivel workspace, que es justamente la más estratégica.
 
 ---
 
@@ -104,8 +120,8 @@ Gap entre "funciona" y "sirve como herramienta". Nada de esto bloquea la demo, t
 **Objetivo:** Que el servicio deje de ser una demo y pase a usarse todos los días.
 - [x] **5.1 Cerrar deuda de base:** `requirements.txt` con versiones pinneadas ✅, Python 3.12 ✅ (2026-09-24), repo git ✅, README real ✅, `.env.example` ✅. **Deuda base cerrada.**
 - [ ] **5.2 Ingesta real de conocimiento:** indexar memoria y docs del workspace (dailies, `docs/`, `skills/`) con chunking por secciones. Criterio de éxito: preguntar algo de una sesión pasada y que responda con cita de fuente.
-- [ ] **5.3 Red de seguridad:** pytest para los 3 caminos críticos (chunking, retrieval, endpoint `/chat`).
-- **Hito:** el servicio responde preguntas reales sobre nuestro propio historial y es reproducible en otra máquina.
+- [x] **5.3 Red de seguridad:** ✅ HECHO (2026-09-24): 10 tests en el starter (chunking, overlap, prompt anti-alucinacion, `/health`, endpoints, RAG end-to-end) + 18 en kanam-insight. Verificados por mutacion.
+- **Hito:** falta solo 5.2 (ingesta real) para cerrar la fase.
 
 ### Fase 6: Producto multi-cliente
 **Objetivo:** Pasar de "una base de conocimiento" a "varias, aisladas, con acceso controlado".

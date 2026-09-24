@@ -2,7 +2,7 @@
 
 **Registrado:** 2026-09-24 (sesión webchat)
 **Contexto:** decisión tomada al cerrar la Fase 4 de `langchain-starter`. Gonzo pidió registrar la lista de apuestas con su orden de prioridad y poder volver a esta etapa sin perder estado.
-**Razonamiento completo:** `LANGCHAIN_STRATEGY.md` (sección 6) + el análisis del 2026-09-24.
+**Razonamiento completo:** `docs/LANGCHAIN_STRATEGY.md` (sección 6) + el análisis del 2026-09-24.
 
 ---
 
@@ -58,7 +58,7 @@
 
 **La "enciclopedia de accesibilidad" como encuadre.** Se descartó el 2026-09-24: un RAG que responde sobre WCAG ya existe repetidas veces, no es defendible. El encuadre correcto del dominio a11y es **servicio de auditoría sobre el anuncio real**, que es exactamente `kanam-fixer` (prioridad 3), no un chatbot de documentación.
 
-**Nota de método:** la sección 6 de `LANGCHAIN_STRATEGY.md` había titulado esto como "primera apuesta comercial", lo que sugería que era la única o la principal. No lo era. Corregido en ese documento.
+**Nota de método:** la sección 6 de `docs/LANGCHAIN_STRATEGY.md` había titulado esto como "primera apuesta comercial", lo que sugería que era la única o la principal. No lo era. Corregido en ese documento.
 
 ---
 

@@ -123,6 +123,28 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Auditoria de la base: la deriva que el propio detector no veia
+
+### Changed
+- **`LANGCHAIN_STRATEGY.md` movido de la raiz a `docs/`.** Es documentacion estrategica, no bootstrap del agente: junto a NORTH, ROADMAP y APUESTAS. Referencias actualizadas en `projects/langchain-starter/README.md`, su HANDOFF y `docs/APUESTAS.md`.
+- **Fases 1 y 2 marcadas como COMPLETAS** (estaban sin marcar desde el 2026-09-22 pese a estar hechas). 1.2 (secretos) pasa a "no aplica hoy": no hay API keys que gestionar con Ollama local.
+- **Seccion 2 (stack) corregida:** declaraba Supabase Vector + Docker + Python 3.11; lo construido es ChromaDB local + LaunchAgent + Python 3.12. Se distinguio el plan del estado real.
+- **Seccion 5 (deuda):** 6 de 8 items pasaron a cerrados con evidencia. Quedan 2 abiertos: la ingesta real y el `requirements.txt` propio de kanam-insight.
+- **5.3 (red de seguridad) marcada como hecha.**
+
+### Added
+- **`projects/kanam-insight/requirements.txt`:** hallazgo de la auditoria. kanam-insight es un repo independiente pero **dependia del venv de langchain-starter**: clonarlo solo y hacer `pip install` no alcanzaba. Ahora se reproduce solo (verificado con un venv limpio desde cero: 21 tests en verde y el radar leyendo el indice).
+- **Seccion 5b del documento: causa raiz de la deriva.** El doc vive en la raiz y el Debt Detector solo escanea `projects/*/.knowledge/`: era **ciego a la documentacion de nivel workspace**. Tres derivas acumuladas sin que la herramienta que construimos para detectar derivas las viera.
+- **Debt Detector: cobertura de `docs/` del workspace.** Nuevo check `REF_ROTA_DOC_WORKSPACE`. Al agregarlo aparecieron 5 refs rotas y **4 eran falsos positivos de la misma clase ya conocida** (en un doc estrategico, `scripts/ingest.py` es del proyecto que describe, no del workspace; y `<repo>-<numero>-draft.md` es un placeholder, no un path). Corregidos, con 3 tests nuevos que fijan los limites.
+
+### Fixed
+- **`.gitignore` de ambos proyectos:** el patron `venv3*/` era demasiado estrecho y no cubria `venv-test-standalone`. Ahora `venv*/` y `.venv*/` cubren cualquier nombre auxiliar.
+
+### Notes
+- **Tercera vez en el dia que aparece el mismo patron:** documentacion que declara un estado vencido, sin nada que lo verifique. Las tres veces el problema lo encontro una persona preguntando, no una herramienta.
+- **Leccion:** un verificador con alcance limitado da falsa sensacion de cobertura. El Debt Detector escaneaba 26 proyectos pero era ciego a la documentacion mas estrategica, la de nivel workspace.
+- **Verificado por mutacion:** reintroducir el falso positivo hace fallar el test nuevo.
+
 ## [2026-09-24] - Migracion del venv a Python 3.12 (era 3.9.6)
 
 ### Changed

@@ -20,7 +20,7 @@ Starter kit de IA local sobre LangChain, completo y en produccion interna. Corre
 
 ## Decisiones
 
-- **Python + LangChain**, Ollama local (no OpenAI), ChromaDB local primero. Full razonamiento en `LANGCHAIN_STRATEGY.md` (workspace).
+- **Python + LangChain**, Ollama local (no OpenAI), ChromaDB local primero. Full razonamiento en `docs/LANGCHAIN_STRATEGY.md` (workspace).
 - **LaunchAgent nativo**, no Docker, para el Mac Mini. `Dockerfile` queda escrito para despliegue futuro.
 - **Watchdog que respeta el apagado intencional:** `service.sh stop` deja `.intentional-stop` y el watchdog no revive; `start` limpia el marcador.
 - **El prompt del RAG responde solo con el contexto recuperado** (si no esta en los documentos, lo dice).
