@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Provisioning de browsers de Playwright: el zip a mano y los markers
+
+### Added
+- **`scripts/playwright-provision.sh`:** provisiona un browser de Playwright cuando `playwright install` se cuelga al extraer o deja el build incompleto. Saca la URL con `--dry-run`, baja el zip con `curl`, lo descomprime en el install location y crea los dos markers. Idempotente: si el build ya esta completo, no hace nada.
+
+### Fixed
+- **Un build completo en disco sin `INSTALLATION_COMPLETE` es borrado por el siguiente `playwright install` de CUALQUIER engine.** Verificado dos veces el mismo dia: el instalador de firefox borro el `webkit-2227` que se habia extraido a mano (quedo con solo `libwebrtc.dylib`), y el `firefox-1497` real estaba en 888K cuando el build completo pesa 253M. El script detecta el build incompleto, lo reemplaza y escribe los markers.
+
+### Notes
+- **Validado reparando el cache real:** el `firefox` paso de 888K a 253M y su suite de browser, que antes crasheaba al lanzar, quedo verde. Los tres motores (chromium, firefox, webkit) corren el mismo set de tests.
+- **Los dos markers importan:** `INSTALLATION_COMPLETE` **y** `DEPENDENCIES_VALIDATED`. Con uno solo, el build se considera incompleto.
+- **`trash` antes que `rm`:** es cache regenerable, pero el camino reversible es el default.
+
+---
+
 ## [2026-09-23] - Vectores re-cortados por unidad semantica, sin duplicar el texto
 
 ### Added
