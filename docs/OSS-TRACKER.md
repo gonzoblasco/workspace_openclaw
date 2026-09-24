@@ -7,7 +7,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 17 |
+| PRs abiertos | 18 |
 | PRs mergeados | 8 |
 | PRs cerrados sin merge | 22 |
 | Colaboraciones no-codigo | 15 |
@@ -22,6 +22,10 @@
 | **Issue** | [#38072](https://github.com/NousResearch/hermes-agent/issues/38072) | Issue OPEN de a11y del Desktop renderer (apps/desktop). Audit de andrea9292 (03/06): 6 findings. Gonzo comento 05/08 ofreciendose a trabajar. RE-AUDIT publicado por Gonzo 24/08 contra main actual: #3 nested-interactive VIGENTE (reclamado por elchic00), #5 sin h1/landmarks VIGENTE, #4 contraste VIGENTE, #6 hit targets VIGENTE, #1 aria-hidden-focus MEJORADO (invisible+pointer-events-none), #2 resize separator RESUELTO (ya no es focusable). Comentario: issuecomment-5393570919. |
 | **Nuestro PR** | []() | **open** |
 | **Contexto** | - | Colaborativo, no competitivo: elchic00 reclamo el finding #3 (24/08) y tiene PR en curso - NO abrir PR para eso. Gonzo aporto re-audit verificando que findings siguen vivos tras refactor a tree/renderer/. Ofrecio ayudar a revisar el fix del #3 o tomar el #5. |
+
+| **Issue** | [#38072](https://github.com/NousResearch/hermes-agent/issues/38072) | Merge de main resuelto en la branch (3 hunks, 2 archivos: contrib/controller.tsx y shell/titlebar-controls.tsx). El fix SIGUE VIGENTE: route-heading.tsx no existe en main, routeTitles ausente en i18n, ningun cluster del titlebar con role=group, kanban sigue con h1. Conflictos: (a) rama HUD de ContribController en 'RouteHeading' vs 'AppContextMenu' de upstream -> se conservan ambos; (b) early-return de paginas que proyectan chrome propio envuelve el cluster izquierdo -> se toma la forma de upstream y se re-aplica role=group; (c) label del cluster pane-tools renombrado paneControls -> appControls -> se toma el label de upstream + role=group. Drift de vocabulario post-refactor: AppView 'skills' -> 'capabilities' y nuevo 'session-import'; locales de 5 a 9 (ru/fr/de/es con defineLocale). Rekeyeo de routeTitles en 9 locales + 'session-import'; h1 visible de session-import demoteado a h2 (mismo criterio que kanban). Verificacion local: typecheck OK, 1018 suites / 8571 tests verdes (vitest --project ui). Push fast-forward d3709141da (sin force). PR paso de CONFLICTING/DIRTY a MERGEABLE/BLOCKED: el bloqueo es el gate 'All required checks pass' con CI en action_required (aprobacion de maintainer pendiente, jobs=0), no falla de codigo. Sin reviewers asignados ni reviews. Proximo actor: maintainer que apruebe el workflow. |
+| **Nuestro PR** | [#93838](https://github.com/NousResearch/hermes-agent/pull/93838) | **waiting_review** |
+| **Contexto** | - | Colaborativo, no competitivo. Los 3 puntos del review de Enough1122 (2026-08-24) ya fueron respondidos en bbc7139 y mantenidos en la resolucion. |
 
 ### Nutlope/hallmark
 
@@ -273,6 +277,12 @@
 |---------|------|---------|
 | **Issue** | - | warn when reasoning tokens spent. Review bot de Vercel addressado. Squash 22 Jul. |
 | **Nuestro PR** | [#17274](https://github.com/vercel/ai/pull/17274) | **waiting_review** |
+
+| **Issue** | [15704](https://github.com/vercel/ai/issues/15704) | Conflicto de merge RESUELTO y pusheado. Antes: CONFLICTING/DIRTY. Causa: ccf98e734 (#21245) movio el bloque model-call-end; a22b5b277 (#20762) reescribio el finish de Google. Ambos hunks re-injertados sobre upstream. Ademas: patch changeset x3 (gate Verify Changesets), y cerrado el gap real de StepResult.warnings que el bot de Vercel habia senalado y nuestro comentario del 15/07 daba por resuelto sin estarlo. Gates: type-check exit 0, 962 tests google OK, 1550 tests generate-text OK, oxlint/oxfmt limpios. PR ahora MERGEABLE; CI en action_required (0 jobs) = compuerta de maintainer. Pendiente: mis 3 commits quedaron sin firmar (la clave de firma no esta en el Mac mini). |
+| **Nuestro PR** | [17274](https://github.com/vercel/ai/pull/17274) | **mergeable** |
+
+| **Issue** | [15704](https://github.com/vercel/ai/issues/15704) | Comentario publicado (issuecomment-5821050898): correccion explicita de la afirmacion vieja (stepWarningsMerged nunca existio) + estado actual (merge resuelto, changeset, gap cerrado, gates verdes). Re-verificado en el head 99b2f2fc8: google 963 tests, generate-text 1550, type-check 3 paquetes OK, lint/format limpios. PR MERGEABLE; CI action_required con 0 jobs = compuerta de maintainer. Sin ping de review agregado (no sumar ruido). Pendiente unico: mis 3 commits sin firmar. |
+| **Nuestro PR** | [17274](https://github.com/vercel/ai/pull/17274) | **mergeable** |
 
 ## Colaboraciones no-codigo
 

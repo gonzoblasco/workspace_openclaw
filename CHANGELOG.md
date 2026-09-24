@@ -123,6 +123,29 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Fase 5.2: ingesta real (el radar ahora cruza todo el conocimiento)
+
+### Added
+- **`kanam-insight/scripts/scan.py`: escaneo de 3 fuentes.** Antes solo los `.knowledge/` de proyectos (122 archivos); ahora tambien `docs/` estrategicos y `skills/` (442 archivos, 2.478.792 chars). Nuevo flag `--source {all,projects,docs,skills}`.
+- **4 tests nuevos** (25 en total, eran 21): escaneo multi-fuente, exclusion de `insights/` y `archives/`, aislamiento de `--project`, y deteccion del tipo `SKILL`.
+
+### Changed
+- **Indice: de 1243 a 2557 vectores.** Reindexado con el corpus extendido.
+- **`kanam-insight/README.md`:** la seccion de alcance refleja las 3 fuentes y documenta las exclusiones.
+- **`kanam-insight/.knowledge/STATUS.md`:** numeros reales y fase 5.2 cerrada.
+
+### Fixed
+- **Bug en `scan_workspace()` encontrado por los tests:** la primera version usaba las constantes `DOCS_DIR`/`SKILLS_DIR` del modulo, asi que ignoraba el `tmp_path` de los tests y leia los docs reales del workspace. Corregido derivando las rutas de `WORKSPACE` en cada llamada. **En produccion habria pasado desapercibido:** el escaneo funcionaba igual, solo era intesteable.
+
+### Decisions
+- **El criterio de 5.2 tal como estaba escrito ya se cumplia** ("preguntar algo de una sesion pasada con cita de fuente"): `memory.db` ya indexa los dailies y las sesiones (1144 secciones `daily` + 843 `session`). Verificado ANTES de indexar, para no duplicar. Se indexo lo que faltaba de verdad: docs estrategicos y skills.
+- **Excluidos a proposito:** `docs/insights/` (reportes del propio Debt Detector: indexarlos es ruido auto-referencial y quedan vencidos) y `docs/archives/` (historico).
+
+### Notes
+- **Fase 5 CERRADA** (5.1 deuda de base + 5.2 ingesta real + 5.3 red de seguridad). El hito se cumple: el servicio responde sobre nuestro propio historial con cita de fuente, y es reproducible en otra maquina.
+- **Cruce nuevo que antes era imposible:** el radar acerco `docs/ADR-057` (SQLite local con BLOB float32) con `soporteml-v3` (Postgres con ivfflat) para el mismo problema de vectores, resuelto distinto segun escala. Ese par de decisiones vivia en silos.
+- **Lo que sigue (Fase 6):** multi-cliente (Supabase Vector, namespaces por tenant, auth) o el Handoff Synthesizer (tercer pilar de kanam-insight).
+
 ## [2026-09-24] - Auditoria de la base: la deriva que el propio detector no veia
 
 ### Changed

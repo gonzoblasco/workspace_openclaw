@@ -5,13 +5,14 @@
 
 ## Health
 
-- 🟢 Scanner de `.knowledge/` funcionando (122 archivos, 24 proyectos, 768K chars)
-- 🟢 Índice semántico propio: colección `insight_knowledge` con **1243 vectores**
+- 🟢 Scanner funcionando: **3 fuentes** (proyectos + `docs/` + `skills/`), 442 archivos, 2.478.792 chars
+- 🟢 Índice semántico propio: colección `insight_knowledge` con **2557 vectores** (eran 1243)
+- 🟢 Fase 5.2 cerrada: el radar cruza las tres fuentes y trae cruces que antes eran imposibles
 - 🟢 Pattern Radar verificado: cruzó 8 proyectos en una consulta de a11y; sus afirmaciones se contrastaron contra los archivos fuente (no alucinó)
 - 🟢 Stack confirmado y documentado en **ADR-063** (Python + LangChain, reusa el starter)
 - 🟢 Búsqueda semántica con citas de fuente (`radar.py search`)
 - 🟢 Debt Detector operativo (análisis estructural, sin vectores): 26 proyectos analizados
-- 🟡 Deuda: sin tests, sin Handoff Synthesizer
+- 🟡 Deuda: sin Handoff Synthesizer
 
 ## Bloqueos
 
@@ -35,8 +36,8 @@ Se construyó la capacidad completa de punta a punta, con el stack reusado:
 
 | Pieza | Archivo | Verificación |
 |---|---|---|
-| Scanner | `scripts/scan.py` | 122 archivos, 24 proyectos, 768.465 chars |
-| Indexador | `scripts/index.py` | 1243 chunks vectorizados en `insight_knowledge` |
+| Scanner | `scripts/scan.py` | 442 archivos de 3 fuentes (proyectos + docs + skills) |
+| Indexador | `scripts/index.py` | 2557 chunks en `insight_knowledge` |
 | Pattern Radar | `scripts/radar.py` | Cruzó 8 proyectos; 5 patrones; 2 verificados a mano |
 
 **Hallazgo del radar que vale registrar:** la consulta sobre accesibilidad destapó un patrón real que cruza proyectos - `kanam-fixer` y `kanam-story` coinciden, por vías distintas, en que **los tests verdes no alcanzan para validar el anuncio de un lector de pantalla**. Ese es exactamente el tipo de señal que se perdía en silos y que justifica el proyecto.
@@ -60,3 +61,17 @@ Se construyó la capacidad completa de punta a punta, con el stack reusado:
 3. Refs de proyectos sin repo clonado tratadas como rotas (pueden vivir en GitHub).
 
 **Lección:** un detector de deuda que no se verifica a sí mismo produce deuda de credibilidad. La primera versión habría hecho reportar como problema cosas que estaban bien. Regla aplicada: **sin el repo del proyecto clonado no se puede afirmar que un doc falte**; solo la renumeración de ADR es señal inequívocamente nuestra, porque ese cambio ocurrió en el workspace.
+
+---
+
+## Sesión 2026-09-24 (cierre) - Fase 5.2: ingesta real
+
+El scanner pasó de cubrir solo `.knowledge/` de proyectos a **3 fuentes**: proyectos + `docs/` + `skills/`. Índice: de 1243 a **2557 vectores**.
+
+**Un hallazgo que cambió el plan:** el criterio de éxito de 5.2 (*"preguntar algo de una sesión pasada y que responda con cita de fuente"*) **ya lo cumplía `memory.db`** (1144 secciones `daily` + 843 `session` vectorizadas). Verificado antes de indexar, para no duplicar. Lo que faltaba de verdad eran los docs estratégicos y las skills.
+
+**Excluidos a propósito:** `docs/insights/` (reportes del propio detector: indexarlos es ruido auto-referencial y quedan vencidos) y `docs/archives/` (histórico).
+
+**Bug encontrado por los tests:** el primer refactor de `scan_workspace()` usaba las constantes `DOCS_DIR`/`SKILLS_DIR` del módulo, así que ignoraba el `tmp_path` de los tests y leía los docs reales del workspace. Corregido derivando las rutas de `WORKSPACE` en cada llamada. **Los tests atraparon un bug que en producción habría pasado desapercibido.**
+
+25 tests en verde (eran 18; los 4 nuevos cubren el escaneo multi-fuente y las exclusiones).
