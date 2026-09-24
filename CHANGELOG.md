@@ -6,6 +6,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - memory-wiki activado + regla DB-first vs doc-only + ADR-064/065
+
+### Added
+- **`docs/adr/ADR-064-memory-wiki-capa-analitica.md`:** se activa `memory-wiki` (bundled v2026.9.5) como capa analitica de memoria en modo `isolated`. Estaba instalado pero deshabilitado, con una skill del workspace que lo asumia activo y un pendiente abierto desde el 2026-09-22. Documenta la diferencia con memory-core, la verificacion end-to-end (incluida la sonda de detectores) y la politica de ingesta: arranca por `docs/`, nunca `memory/` ni `docs/entrevistas/` sin decision explicita.
+- **`docs/adr/ADR-065-db-first-vs-doc-only.md`:** formaliza las dos clases de superficie de la memoria. DB-first (el dato vive en la DB, el `.md` es vista regenerable) vs doc-only (el archivo ES la fuente de verdad). Verificado: `memory.db` tiene 20 tablas y ninguna de ADR; los ADR solo aparecen como texto incidental.
+- **`docs/SETUP.md`:** seccion "Regla: DB-first vs doc-only" con la tabla de documentos por clase y la regla practica de busqueda.
+
+### Fixed
+- **`docs/adr/README.md`:** agregadas las filas de ADR-064 y ADR-065. Corpus en 65/65, sin duplicados ni huecos.
+
+### Notes
+- **Hallazgo central de memory-wiki:** la ingesta sola NO alimenta los reports. `provenance-coverage` lo dijo explicito ("No structured claims with provenance coverage yet"): el analisis opera sobre la capa de **claims**, no sobre texto crudo. El flujo real es `ingest` (evidencia) -> `entities con claims` (conocimiento) -> `compile/lint` (analisis). Sin el paso intermedio el vault es evidencia inerte.
+- **Detectores probados con sonda deliberada** (claim sin evidencia, confianza 0.2, `contested`, fecha vieja): `claim-health`, `low-confidence` y `stale-pages` reportaron los tres defectos y `lint` paso de 0 a 3 issues. Borrada la sonda, los reports se limpiaron solos.
+- El plugin pide grants amplios (`allowConversationAccess`, `allowPromptInjection`): es bundled, pero conviene saberlo.
+- `~/.openclaw/wiki/main` **no esta en el workspace git**: el conocimiento compilado ahi no tiene backup por versionado.
+
+---
+
 ## [2026-09-24] - ADR-063 agregado al indice (corpus 63/63)
 
 ### Fixed

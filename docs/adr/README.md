@@ -69,6 +69,8 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-061 | [Campos interpretados con revision, y un eje por columna](./ADR-061-campos-interpretados-con-revision.md) | workspace |
 | ADR-062 | [Vectores re-cortados por unidad semantica, sin duplicar el texto](./ADR-062-vectores-rechunk-semantico.md) | workspace |
 | ADR-063 | [kanam-insight en Python sobre LangChain, no en TypeScript con Bun](./ADR-063-kanam-insight-python-langchain.md) | workspace |
+| ADR-064 | [memory-wiki como capa analitica de memoria (modo isolated)](./ADR-064-memory-wiki-capa-analitica.md) | workspace |
+| ADR-065 | [DB-first vs doc-only - que documentos viven en el ciclo de la DB y cuales no](./ADR-065-db-first-vs-doc-only.md) | workspace |
 
 ## Formato
 
