@@ -62,3 +62,32 @@ Para optimizar la "señal" del portfolio, se toman las siguientes decisiones:
 **Estado de la enmienda:** los 4 pendientes cerrados (el punto 3 con el resto acotado a npm). El pilar *Accesibilidad* tiene ancla candidata formalizada en `kanam-fixer` con alcance ya definido; la validacion real del ancla sigue siendo el criterio de NORTH.md Horizonte 1 (usuarios que no sean Gonzo).
 
 **Nota sobre la seccion 4:** la justificación para archivar `accessible-ui` invocaba a `a11y-fixer` como el proyecto que representaba mejor el expertise a11y. Esa premisa queda **suspendida** junto con el ancla: se conserva el texto original por trazabilidad, pero la razón ya no aplica tal como está escrita.
+
+## 7. Enmienda - 2026-09-24 (SoporteML: se reabre su destino)
+
+**Estado:** Aceptada. Esta seccion **enmienda la seccion 4** en lo que respecta a SoporteML. El texto original se conserva sin cambios.
+
+**Decision (Gonzo, 2026-09-24):** SoporteML **se reabre** como producto nuevo - una aplicacion SaaS CRM y contable para pymes, con las mismas features que v1 y el alcance ampliado al contable. Palabras textuales: *"reabramos soporteml, la version completa"*.
+
+**Base de esta enmienda:** la seccion 4 decia textualmente que la exclusion *"no se vuelve a abrir salvo que Gonzo lo pida explicitamente"*. **Lo pidio explicitamente**, asi que se cumple la condicion prevista. No es una excepcion ni una violacion del ADR: es la clausula de reapertura de ese mismo ADR, ejercida.
+
+### Que cambia y que no
+
+| Punto de la seccion 4 | Estado |
+|---|---|
+| **"NO TOCAR: este proyecto no se modifica, no se decide su destino"** | **Levantado.** El destino del proyecto se esta decidiendo (ADR-068). |
+| **"No se lista como candidato en auditorias de higiene del workspace"** | **Sigue vigente.** El proyecto no entra en barridos automaticos de limpieza. |
+| **Fuera de la narrativa PUBLICA de portfolio / del CV** | **Sigue vigente.** El motivo era privacidad y estrategia, y esa razon no la toca esta reapertura. |
+
+**El encuadre que resuelve las dos cosas a la vez:** la nueva generacion se construye como **producto privado**, no como ancla de portfolio. No contradice la decision de privacidad del 2026-09-14 y permite construir sin deshacerla.
+
+### Efecto sobre las anclas
+
+**Ninguno.** La tabla de anclas de la seccion 6 no se modifica: `kanam-forge` y `kanam-pulse` siguen vigentes, `kanam-fixer` sigue como candidata con alcance definido. SoporteML **no entra** a la tabla de anclas. El pilar *Accesibilidad* sigue con su pendiente de validacion.
+
+### Relacion con otros documentos
+
+- **ADR-068** (workspace): encuadre de la nueva generacion - greenfield, base v1, y los 6 puntos pendientes.
+- **ADR-067** (workspace): por que ningun ADR del workspace pertenece a SoporteML, con la medicion que lo prueba (0 de 68 como sujeto).
+- **`MEMORY.md`:** la entrada que decia *"FUERA de la narrativa... es hora de dejarlo ir"* requiere nota de actualizacion (hecha el 2026-09-24).
+- **`memory/user-profile.md`:** la linea de 2026-09-14 sobre SoporteML fuera del perfil **sigue vigente** (es la parte de narrativa publica).

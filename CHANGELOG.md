@@ -2,6 +2,26 @@
 
 Registro de cambios estructurales del workspace. No incluye cambios de skills (ver `skills/CHANGELOG.md`), aprendizajes (ver `docs/LEARNINGS.md`), ni actividad diaria (ver `memory/`).
 
+---
+
+## [2026-09-24] - SoporteML se reabre: definicion de la nueva generacion (ADR-067 + ADR-068)
+
+### Added
+- **ADR-067 - los ADRs del workspace no pertenecen a un proyecto.** Ante el pedido de "eliminar los ADRs que referencian versiones previas de SoporteML", se midio antes de borrar: **0 de 68 ADRs tienen SoporteML como sujeto**; los 11 que lo mencionan solo lo citan. Dos dicen lo contrario (ADR-048: "la familia soporteml queda fuera de todo barrido"). Borrar "los 47 que citan tecnologia" habria eliminado decisiones que sostienen entre 7 y 20 proyectos (ADR-048 -> 20, ADR-037 -> 15, ADR-036 -> 7). La decision fija el procedimiento: distinguir sujeto de cita, medir blast radius, y archivar antes que borrar.
+- **ADR-068 - la nueva generacion de SoporteML es greenfield y se basa en v1.** Inventario medido de las cuatro generaciones: **v1 es la mas completa** (54 migraciones, 24 tablas, 25 Edge Functions, 81 componentes, 18.889 lineas). v3 y v4 son **podas**, no sucesoras. v4 copio los 3 ADRs de v3 byte-identicos (checksum `83022a062fdc`): heredo el stack sin decidirlo. Deja 6 pendientes explicitos para Gonzo (encuadre, alcance contable, nombre, app OAuth de MeLi, destino de ADRs de v3/v4, y la pregunta de demanda sin responder en 4 generaciones).
+
+### Changed
+- **`projects/portfolio-strategy/.knowledge/ADR-001` - enmienda seccion 7:** SoporteML se reabre por pedido explicito de Gonzo, que es la clausula de reapertura prevista por el propio ADR ("no se vuelve a abrir salvo que Gonzo lo pida explicitamente"). **Sigue vigente** que queda fuera de la narrativa publica / del CV y fuera de barridos automaticos. **No entra a la tabla de anclas.** Encuadre: producto privado.
+- **`MEMORY.md`:** la entrada de SoporteML actualizada (decia "v4 es el reinicio actual" y "es hora de dejarlo ir"). La regla del 2026-08-28 matizada: sigue aplicando a la narrativa publica, ya no prohibe trabajarlo.
+- **`docs/adr/README.md`:** indice con ADR-067 y ADR-068.
+
+### Notes
+- **La demanda sigue sin probar en cuatro generaciones.** v1 nunca cobro: su billing esta escrito y jamas fue operativo (secrets sin configurar, plan de preapproval sin crear). La pregunta "por que esta vez tendra usuarios" queda registrada como pendiente, no resuelta.
+- **Mercado verificado (web_fetch):** Buin ERP ya vende "facturacion ARCA + stock + contabilidad + integracion MeLi". El diferencial imaginado esta ocupado; el contable ademas es dominio regulado (responsabilidad legal).
+- **La nueva generacion es, literalmente, la "Fase 4" de v1** ("salir de Lovable") que v1 declaro en su propio PLAN.md y nunca ejecuto.
+
+## [2026-09-24] - kanam-insight: Handoff Synthesizer y reparacion del indice
+
 **Regla:** cada vez que se modifique la estructura del workspace (AGENTS.md, MEMORY.md, SOUL.md, USER.md, TOOLS.md, HEARTBEAT.md, scripts/, estructura de proyectos, skills), actualizar este archivo en el mismo commit.
 
 ---
