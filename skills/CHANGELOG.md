@@ -6,6 +6,25 @@ Registro de cambios de skills del workspace. Los cambios estructurales del works
 
 ---
 
+## [2026-09-24] - memory-wiki-workflow: la trampa de la capa de claims
+
+### Contexto
+Al activar `memory-wiki` (ADR-064) y probarlo end-to-end, la skill describia el flujo pero **no advertia la trampa central**: ingerir fuentes no alimenta los reports analiticos, porque estos leen la capa de **claims**, no el texto crudo. Ingeste 3 fuentes y los reports siguieron diciendo "no issues" en todos los casos. Casi se reporto como fallo del plugin; era un paso faltante del flujo. Un report que dice "No structured claims yet" no es un fallo, es una instruccion sobre el paso que falta.
+
+### Changed
+- **`memory-wiki-workflow`:** se documenta el flujo completo como secuencia explicita (`ingest` -> `entities con claims` -> `compile/lint`) y se advierte que sin el paso intermedio el vault queda con fuentes y analisis vacio.
+- **Setup:** se corrige "luego `openclaw gateway restart`" -> verificado 2026-09-24 que `plugins enable` devolvio `restartRequired: false` y el `config patch` aplico sin reinicio. Se agregan los grants que pide el plugin (`allowConversationAccess`, `allowPromptInjection`) y la via oficial de activacion con `reviewToken`.
+
+### Added
+- **Paso de verificacion de detectores:** como saber que los reports funcionan de verdad (crear una entity con claims deliberadamente malos y confirmar que `claim-health`, `low-confidence` y `stale-pages` reportan exactamente esos defectos). Un detector esta probado recien cuando se le sembro el defecto; "no issues" sobre datos limpios no prueba nada.
+- **Politica de ingesta:** `memory/` y `docs/entrevistas/` no se ingestan sin decision explicita; `bridge` y `unsafe-local` se dejan apagados.
+- **Nota de durabilidad:** el vault vive fuera del workspace git y no tiene backup por versionado.
+
+### Notes
+- La description del frontmatter cambio (ahora nombra la trampa), asi que se actualizo `SKILLS-INDEX.md` y el mirror `.github/skills/`.
+
+---
+
 ## [2026-09-24] - Nueva skill: cross-engine-css-measurement
 
 ### Contexto

@@ -1,6 +1,6 @@
 ---
 name: "memory-wiki-workflow"
-description: "Flujo para usar memory-wiki como capa analítica de memoria: entities con claims, dashboards, síntesis y visualización markdown."
+description: "Capa analítica de memoria con memory-wiki: entities con claims (la ingesta sola no alcanza), dashboards y síntesis."
 ---
 
 # Memory Wiki Workflow
@@ -43,16 +43,27 @@ Config en `~/.openclaw/openclaw.json`:
 }
 ```
 
-Luego: `openclaw gateway restart`.
+No siempre hace falta reiniciar. Verificado 2026-09-24: `openclaw plugins enable memory-wiki` devolvio `restartRequired: false` y el `config patch` aviso "will apply without restarting the gateway"; `wiki status` respondio de inmediato. Si algo no responde, ahi si: `openclaw gateway restart`.
+
+**Grants que pide el plugin (saberlo ANTES de activar):** `allowConversationAccess` y `allowPromptInjection`. Es bundled y de la casa, pero no es pasivo: escribe un vault y toca la conversacion. Se activa por la via oficial (`plugins enable`, con el `reviewToken` del `inspect`), nunca editando el JSON a mano.
 
 ### 2. Verificar
 
 ```bash
 openclaw wiki status       # modo, salud, páginas
 openclaw wiki doctor       # health checks
+openclaw wiki lint         # ideal: 0 issues
 ```
 
 ## Flujo: convertir datos estructurados en entities
+
+**La trampa central: ingerir NO alcanza.** Los reports analiticos (claim-health, provenance-coverage, contradictions) **no leen el texto crudo** de `sources/`: leen la capa de **claims**. Si solo corres el paso (a), el vault queda con fuentes y los reports siguen diciendo "No structured claims yet" o "No issues", y **parece que el plugin no funciona** cuando en realidad falta un paso. El flujo completo:
+
+```
+ingest (evidencia)  ->  entities con claims (conocimiento)  ->  compile/lint (analisis)
+```
+
+Verificado 2026-09-24: tras ingestar 3 fuentes los reports siguieron vacios; con 1 entity de 4 claims, `provenance-coverage` paso a reportar "Evidence entries: 4 / Claims missing evidence: 0".
 
 ### a. Ingerir fuente (markdown crudo)
 
@@ -97,7 +108,11 @@ openclaw wiki compile   # regenera índices + agent-digest
 openclaw wiki lint      # ideal: 0 issues
 ```
 
+**Que los reports digan "no issues" NO prueba que funcionen.** Un detector esta probado recien cuando se le sembro el defecto que debe cazar. Para verificarlos: crear una entity con claims deliberadamente malos (uno sin `evidence`, uno con `confidence: 0.2`, uno con `status: contested`, y `updatedAt` viejo), correr `compile` + `lint`, y confirmar que `claim-health`, `low-confidence` y `stale-pages` reportan exactamente esos defectos. Borrada la sonda, los reports se limpian solos en el siguiente `compile`.
+
 ### d. Dashboards generados (en reports/)
+
+Se pueblan desde la capa de **claims** (paso b), no desde las fuentes: vacios con fuentes y sin entities es el estado normal, no un fallo.
 
 - `relationship-graph.md` - edges entre entities y sources
 - `provenance-coverage.md` - cuánta evidencia tiene cada claim
@@ -123,6 +138,8 @@ Crea una síntesis con claims para consolidar decisiones. Puebla dashboards.
 
 ## Notas
 
+- **El vault no tiene backup por versionado:** vive en `~/.openclaw/wiki/main`, fuera del workspace git. El conocimiento compilado ahi **no viaja entre maquinas**; solo el material de origen (que si es workspace) es recuperable.
+- **Politica de ingesta:** `memory/` y `docs/entrevistas/` contienen datos personales y de busqueda laboral: NO se ingestan sin decision explicita de Gonzo. El plugin viene con `bridge` y `unsafe-local` **apagados** por defecto, y esos son justamente los canales por los que podria chupar archivos privados: dejarlos asi.
 - memory-wiki **no sirve UI web**. Es markdown local navegable (o Obsidian con renderMode obsidian). Para UI web hay que construir renderer aparte.
 - La UI web que servía openclaw-os-plugin (ya eliminado) fue la que daba vista browser, no memory-wiki.
 - El `index.md` del vault genera una página navegable con links a todas las entities/sources/syntheses/reports.
