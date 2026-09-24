@@ -278,7 +278,6 @@ La certificacion **IAAP** sigue en Preferred, no Required. Si el payroll team la
 
 PROFESSIONAL SUMMARY | SKILLS | PROFESSIONAL EXPERIENCE | CERTIFICATIONS | SELECTED PROJECTS | OSS PARTICIPATIONS (Merged PRs + Contributions)
 
-<<<<<<< HEAD
 ## 2026-09-15 (12:22-13:33) - IAAP certification: respuesta al cliente + plan de estudio
 
 **Disparador:** el cliente pregunto por (1) certificaciones y CEUs mas recientes, (2) si hay plan de rendir IAAP, (3) para cuando la completa. Envia Parthasarathy, responde Gonzo.
@@ -307,7 +306,7 @@ Email en ingles (subject "IAAP Certification - Status and Plan"), verificado sin
 - Email entregado, **pendiente de revision/aprobacion de Gonzo** antes de enviar.
 - Si el cliente sponsoriza: pedir examen + membresia IAAP + curso en un mismo paquete (renovable gratis de por vida = argumento facil de vender).
 - **Riesgo IAAP (Preferred) ahora mitigado activamente** con el plan; seguir vigilando si payroll lo pone como gate.
-=======
+
 ---
 
 ## UPDATE 2026-09-17 - Gate de certificacion IAAP: el cliente pide CPACC
@@ -363,4 +362,23 @@ Fuente: IAAP D-A-CH, espejo del calendario de IAAP Global - `iaap-dach.de/zertif
 > Best regards,
 >
 > Gonzalo
->>>>>>> 29bddae8 (daily update: automatic commit before pull)
+
+---
+
+## UPDATE 2026-09-24 - Mensaje de Gonzo al reclutador (respuesta al "we will update if")
+
+**Contexto:** Gonzo lo escribio y lo envio el 24/09 por la manana, sin consultar antes. Ya salio: no se corrige, se registra textual.
+
+**Texto exacto enviado (a Parthasarathy Ebenezer, E-IT Professionals):**
+
+> Regarding the last sentence: "we will update if they want..." So you are saying it's a no actually. You shouldn't create any expectation. I was really hoping to get this position. I would love to say this was a miss-understanding and you have the job waiting for me.
+
+**Lectura:**
+- Honesto y humano, pero estrategicamente cierra el hilo por la via emocional: le entrega al vendor la formulacion del "no" y no le da nada accionable para responder.
+- **Riesgo real: bajo.** El proceso ya estaba sin oferta firme y sin fecha. Un vendor de staffing no descarta un req futuro por un mensaje asi; el costo practico es cero.
+- **No enviar mas mensajes.** Perseguir al vendor es la peor posicion. Si responden, responder corto y neutro, sin reclamar.
+- **Palanca que sigue viva:** la condicion declarada el 17/09 era completar una certificacion IAAP (CPACC) antes del 30/11 para poder avanzar. Esa via no la cerro el cliente: el "we will update if they want to schedule call" era sobre agendar call, no sobre el gate de certificacion.
+
+**Estado del proceso:** el arranque 01/10 no existe (nunca hubo call con el cliente ni oferta firme). Sin follow-up activo. Reactivable solo si (a) el cliente pide call, o (b) Gonzo obtiene CPACC y decide avisarles.
+
+**Deuda corregida en este archivo:** habia marcadores de rebase sin resolver (`<<<<<<< HEAD`, `=======`, `>>>>>>>`) entre la seccion del 15/09 y la del 17/09. Se removieron conservando ambas secciones en orden cronologico.

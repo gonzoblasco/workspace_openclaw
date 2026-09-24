@@ -1,7 +1,7 @@
 # Plan de Seguimiento - Wigou
 
-**Fecha:** 2026-08-31
-**Estado:** MEET REALIZADO 02/09 9:30 - sensación regular, sin feedback concreto
+**Fecha:** 2026-08-31 (actualizado 2026-09-24)
+**Estado:** CERRADO 24/09 - meet realizado 02/09, sin feedback concreto ni contacto posterior. Cerrado por su propia regla ("si no hay novedad en ~1 semana, considerar cerrado"). No volver a escribir.
 
 ---
 

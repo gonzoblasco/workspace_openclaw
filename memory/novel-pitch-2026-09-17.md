@@ -23,3 +23,9 @@
 - Que Gonzo elija una de las dos
 - O pida una variante de las 8 evaluadas
 - O reabra anclas
+
+## Estado del proyecto (actualizado 2026-09-24) <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+- Titulo elegido: **Quienes Quedan** (variante B, madre e hijas, gotico rural).
+- Lore, personajes y escaleta cerrados en `projects/quienes_quedan/` (WORLD, CHARACTERS, PLOT, STYLE).
+- Manuscrito: Capitulo 1 completo, Capitulo 2 con dos escenas.
+- Convencion local: raya (—) para dialogos en este proyecto unicamente.
