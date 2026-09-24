@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Registro de apuestas + punto de retorno pre-kanam-insight
+
+### Added
+- **`docs/APUESTAS.md`:** registro durable de las apuestas evaluadas con orden de prioridad confirmado por Gonzo (1. kanam-insight, 2. soporteml-v4, 3. kanam-fixer), las cuatro capas (infraestructura / uso interno / producto / personal), el razonamiento de cada lugar en el orden, lo descartado explicitamente (el encuadre "enciclopedia de accesibilidad") y el principio rector. Incluye el punto de retorno.
+
+### Changed
+- **`LANGCHAIN_STRATEGY.md` seccion 6:** corregido el encuadre que titulaba una "primera apuesta comercial" sobre accesibilidad, lo que sugeria que era la unica apuesta. Ahora referencia `docs/APUESTAS.md` como registro unico y deja escrita la correccion.
+- **Fases 1-4 marcadas como completadas** en el mismo documento (incluye el despliegue real por LaunchAgent + watchdog, no Docker). Agregadas secciones 5 (deuda tecnica detectada) y 6 (fases 5-7).
+
+### Notes
+- Tag `etapa-2026-09-24-pre-kanam-insight`: sellado para poder volver a esta etapa sin perder estado. Cubre lo trackeado por el repo del workspace; NO cubre el codigo de proyectos (viven en sus repos) ni `langchain-starter` (aun sin repo propio).
+- El repo agregado (`projects/` -> `projects_openclaw`) no esta clonado en esta maquina; el script `aggregate-sync.sh` fallaria si se invoca aca.
+
 ## [2026-09-24] - Provisioning de browsers de Playwright: el zip a mano y los markers
 
 ### Added
