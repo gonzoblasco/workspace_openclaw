@@ -68,6 +68,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-060 | [Foreign keys activas en todas las conexiones](./ADR-060-foreign-keys-activas.md) | workspace |
 | ADR-061 | [Campos interpretados con revision, y un eje por columna](./ADR-061-campos-interpretados-con-revision.md) | workspace |
 | ADR-062 | [Vectores re-cortados por unidad semantica, sin duplicar el texto](./ADR-062-vectores-rechunk-semantico.md) | workspace |
+| ADR-063 | [kanam-insight en Python sobre LangChain, no en TypeScript con Bun](./ADR-063-kanam-insight-python-langchain.md) | workspace |
 
 ## Formato
 

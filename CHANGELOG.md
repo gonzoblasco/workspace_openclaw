@@ -6,6 +6,17 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - ADR-063 agregado al indice (corpus 63/63)
+
+### Fixed
+- **`docs/adr/README.md`:** faltaba la fila de `ADR-063` (kanam-insight en Python sobre LangChain). El archivo existia y estaba commiteado desde el 2026-09-24 14:11, pero el indice quedaba en 62: un ADR fuera del indice es un ADR que nadie encuentra. Corpus reconciliado: 63 en disco, 63 indexados, sin duplicados ni huecos.
+
+### Notes
+- Detectado durante la prueba de memory-wiki: la ingesta del indice de ADRs dejo el hueco a la vista. Es el tipo de contradiccion entre documento y estado real que el wiki deberia detectar solo, y que en este caso se encontro leyendo.
+- El ADR lo creo otra sesion (kanam-insight, apuesta 1). No se toco su contenido, solo se agrego la fila faltante una vez que esa sesion termino, para no pisar trabajo en curso.
+
+---
+
 ## [2026-09-24] - Regla DB-first vs doc-only documentada en SETUP.md
 
 ### Added
