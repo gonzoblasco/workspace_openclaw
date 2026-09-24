@@ -2,11 +2,11 @@
   "portals": [
     {
       "name": "kanam-os",
-      "command": "npm run dev",
-      "cwd": "projects/kanam-os",
+      "command": "./projects/kanam-os/scripts/dashboard.sh start",
+      "cwd": ".",
       "port": 4317,
       "title": "Kanam OS",
-      "description": "Memoria de Kanam OS como fichas, tablas y grafos (read-only sobre memory.db)."
+      "description": "Memoria de Kanam OS: fichas, topics, learnings, TODOs, OSS, daily. Corre como servicio permanente (LaunchAgent dev.gonzoblasco.kanam-os), no como dev server: NO usar `npm run dev` aca, porque un `next dev` pelea por el directorio .next con el `next start` del servicio y tumba ambos. Control: scripts/dashboard.sh {start|stop|restart|status}. URL fija: http://127.0.0.1:4317"
     }
   ]
 }

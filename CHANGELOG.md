@@ -49,6 +49,25 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Dashboard de Kanam OS como servicio permanente (LaunchAgent)
+
+### Added
+- **`projects/kanam-os` corre como LaunchAgent** (`dev.gonzoblasco.kanam-os`), con URL fija `http://127.0.0.1:4317`. Existe porque correrlo desde una sesion del agente no servia: el dev server muere con el turno y el link del portal muere cuando reinicia el Gateway. Ahora sobrevive al Gateway, a la sesion y al reboot.
+- **`scripts/dashboard.sh`** (`start|stop|restart|status|url`): control para humanos. Maneja el servicio via `launchctl` y NUNCA arranca un server por su cuenta (un `next start` suelto chocaria con el de launchd).
+- **`scripts/watchdog.sh`** + su plist: recuperacion cada 60s que respeta la parada deliberada (marcador `config/.intentional-stop`, que `stop` deja y `start` saca). Sin ese escape, apagar el dashboard seria imposible.
+- **`app/health/route.ts`**: health check con `force-dynamic`, para que no se cachee. Un health cacheado responderia "ok" con el server caido, o sea lo contrario de lo que tiene que detectar.
+
+### Changed
+- **`.openclaw/portals.json`** apuntaba a `npm run dev`, que choca con el servicio: un `next dev` pelea por el directorio `.next` con el `next start` de launchd y tumba ambos (paso durante esta sesion, tres veces). Ahora apunta a `scripts/dashboard.sh start` y lo explica en la descripcion.
+
+### Notes
+- **Dos decisiones que evitan los fallos clasicos de LaunchAgent.** (1) `KeepAlive <true/>` sin condicion: `{SuccessfulExit: false}` no cubre el caso mas probable, y el test de matar el proceso no lo detecta porque SIGTERM es una salida anormal. (2) El comando real va en el plist, no detras de un wrapper: un script con guard "ya esta corriendo -> exit 0" termina el job limpiamente y nada lo revive.
+- **Hallazgo al probar la salida limpia:** SIGTERM da **exit 143**, que es anormal, asi que ese test NO prueba el caso limpio. Medido aparte: un `next start` con el puerto tomado sale con **codigo 1**, no 0. El intento de probar el caso limpio con un agente de prueba fallo dos veces por error de bootstrap (5: Input/output error) y se abandono; queda documentado que el caso limpio no se verifico de forma directa.
+- **Verificado en vivo:** arranca y sirve (8 vistas 200 + `/health` ok); `kill -9` -> revivido en ~8s; parada deliberada -> tras un tick completo (68s) el servicio sigue abajo y el watchdog no registro intento; `restart` deja todo arriba.
+- Si el Gateway se reinicia, esta URL sigue viva (no depende del portal). El portal puede seguir usandose para verlo embebido en el Control UI, pero ya no es la unica via.
+
+---
+
 ## [2026-09-24] - Temas dark y light en kanam-os + guardia multi-tema
 
 ### Added
