@@ -69,6 +69,30 @@ def read_vars(css):
     return variables
 
 
+def find_hardcoded(css):
+    """Colores hex escritos a mano fuera de :root, con su rol.
+
+    Devuelve (selector, propiedad, valor). Solo mira `color` y `border-color`:
+    son los que tienen umbral WCAG. Un hex en un `background` decorativo o en
+    `.bar > span` (barra de progreso, sin texto) no aplica.
+
+    Existe porque el guardia original solo leia :root, y asi se le escaparon
+    tres colores con falla real, dos de ellos en CONTROLES. Escribir un color
+    a mano esquiva cualquier validacion que solo mire las variables.
+    """
+    m = re.search(r":root\s*\{(.*?)\}", css, re.S)
+    cuerpo = css[m.end() :] if m else css
+    hallados = []
+    for bloque in re.finditer(r"([^{}]+)\{([^}]*)\}", cuerpo):
+        sel = bloque.group(1).strip().splitlines()[-1].strip()
+        props = bloque.group(2)
+        for h in re.findall(r"(?<![\w-])color:\s*(#[0-9a-fA-F]{6})", props):
+            hallados.append((sel, "color", h))
+        for h in re.findall(r"border-color:\s*(#[0-9a-fA-F]{6})", props):
+            hallados.append((sel, "border-color", h))
+    return hallados
+
+
 def check(css_path):
     css = Path(css_path).read_text(encoding="utf-8")
     V = read_vars(css)
@@ -112,6 +136,29 @@ def check(css_path):
         if not ok:
             fallas.append(f"accent (foco) sobre {s}: {r:.2f} (necesita 3)")
         print(f"    {'OK  ' if ok else 'FALLA'}  accent sobre {s:8} {r:5.2f}:1")
+
+    # Hex HARDCODEADOS fuera de :root.
+    #
+    # La primera version de este script solo leia :root, y asi se le escaparon
+    # .badge-open (#1e3a5f = 1.24:1), .btn-warn y .chip-clear (#5c4715 =
+    # 1.60:1). Dos de esos son CONTROLES: incumplian 1.4.11 sin que el guardia
+    # lo viera. Un color escrito a mano esquiva una validacion que solo mira
+    # las variables.
+    hard = find_hardcoded(css)
+    if hard:
+        print("\n  Colores hardcodeados fuera de :root")
+        for sel, prop, val in hard:
+            umbral = 4.5 if prop == "color" else 3.0
+            peor = min((contrast(val, V[s]), s) for s in SURFACES)
+            ok = peor[0] >= umbral
+            if not ok:
+                fallas.append(
+                    f"{sel} {prop} {val}: {peor[0]:.2f} sobre {peor[1]} (necesita {umbral})"
+                )
+            print(
+                f"    {'OK  ' if ok else 'FALLA'}  {sel:22} {prop:12} {val}  "
+                f"peor {peor[0]:5.2f}:1 sobre {peor[1]} (min {umbral})"
+            )
 
     # 2.4.7: quitar el outline sin dar otro indicador deja el teclado a ciegas.
     print("\n  Foco visible (2.4.7)")
