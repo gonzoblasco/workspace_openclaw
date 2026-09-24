@@ -1,0 +1,65 @@
+/* Fixture: el CONTRATO DE TEMAS que check-contrast.py espera.
+ *
+ * Por que un fixture y no el globals.css real: el workspace NO versiona el
+ * codigo de los proyectos (solo `projects/<slug>/.knowledge/`), asi que
+ * `projects/kanam-os/app/globals.css` existe en la maquina de desarrollo pero
+ * JAMAS en CI. Un test que lo lee pasa local y falla en CI por razones que no
+ * tienen que ver con la logica del guard: 12 tests en rojo durante ~25 pushes
+ * el 2026-09-24, cada uno empujado como "memory:" o "docs:".
+ *
+ * Que prueba cada cosa, ahora:
+ *   - este fixture (siempre disponible): que el guard PUEDE fallar, y con que
+ *     umbrales. Es la logica del guard, verificable en cualquier maquina.
+ *   - la paleta real: su guard vive donde vive la paleta (repo kanam-os),
+ *     porque el workspace no puede ver ese archivo. Ver ADR-066.
+ *
+ * Los valores son los de la paleta real al 2026-09-24, extraidos del archivo,
+ * no transcritos a mano. El test `test_fixture_no_deriva_del_css_real` compara
+ * las CLAVES contra el CSS real en la maquina que si lo tiene clonado.
+ */
+
+:root,
+[data-theme="dark"] {
+  --bg: #222d29;
+  --panel: #2a3632;
+  --panel-2: #333f3b;
+  --border: #404e49;
+  --border-control: #7a8a82;
+  --text: #f0f4f2;
+  --muted: #a9b6b1;
+  --accent: #6ee7a0;
+  --accent-dim: #4ea870;
+  --warn: #fcd34d;
+  --info: #7dd3fc;
+  --danger: #fca5a5;
+  --badge-info-border: #5791cb;
+  --badge-warn-border: #ad922d;
+  --badge-comment-border: #9a7ac9;
+  --badge-comment-text: #cba0fc;
+}
+
+[data-theme="light"] {
+  --bg: #f6f9f8;
+  --panel: #ffffff;
+  --panel-2: #eaf0ee;
+  --border: #cbd6d3;
+  --border-control: #74847e;
+  --text: #16211d;
+  --muted: #57665f;
+  --accent: #186338;
+  --accent-dim: #38905d;
+  --warn: #7d5200;
+  --info: #155099;
+  --danger: #a81818;
+  --badge-info-border: #3d6fa8;
+  --badge-warn-border: #9c8226;
+  --badge-comment-border: #9a7ac9;
+  --badge-comment-text: #7d59b0;
+}
+
+/* 2.4.7: el foco es obligatorio y usa --accent, asi cada tema lo resuelve. */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

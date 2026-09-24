@@ -6,6 +6,25 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - ADR-066: los guardias del workspace no leen codigo de proyectos (CI en rojo)
+
+### Added
+- **`docs/adr/ADR-066-guardias-no-dependen-de-codigo-de-proyecto.md`:** la decision de fondo detras del fix. Ningun chequeo ni test del workspace lee codigo de proyectos como fuente de verdad: los tests prueban la logica con un fixture versionado, el anti-deriva es opt-in por presencia, y el guard de una paleta real vive donde vive la paleta.
+- **`tests/python/fixtures/kanam-os-themes.css`:** el contrato de temas (dos temas, 16 variables cada uno) extraido del `globals.css` real, no transcrito a mano. Es la base de los tests de `check-contrast.py`.
+
+### Fixed
+- **`tests/python/test_contrast.py` leia `projects/kanam-os/app/globals.css`:** ese archivo no esta versionado (el workspace trackea solo `projects/<slug>/.knowledge/`), asi que la suite pasaba local y fallaba en CI. 12 tests en rojo durante **12 runs seguidos**, empujados como `memory:`, `docs:` y `chore:` porque "solo cambio documentacion". Ahora corren contra el fixture.
+- **`test_paleta_actual_pasa` -> `test_paleta_del_fixture_pasa`:** el nombre decia "actual" y verificaba una paleta que la suite no puede ver. Ademas el contrato de esa paleta (que cumple AA) es lo que hace inequivocos los mutation tests de abajo.
+- **`test_fixture_no_deriva_del_css_real` (nuevo):** compara las CLAVES del fixture contra el CSS real cuando el proyecto esta clonado, y se saltea en CI. Probado por mutacion: quitando `--badge-comment-text` del fixture, falla con el diagnostico exacto.
+
+### Notes
+- **Diagnostico con evidencia:** `git ls-files projects/kanam-os` devuelve solo los dos `.knowledge/`; el pre-commit hook no lo puede ver porque localmente el archivo existe (confianza falsa, la misma familia que la auditoria de contraste que reportaba "0 fallas").
+- **Segunda falla, misma familia, el mismo dia:** `docs/LANGCHAIN_STRATEGY.md` citaba `scripts/ingest.py` y compania sin el prefijo del proyecto; se corrigio en `bc060729`. Queda documentado que calificar la ruta arregla el sintoma pero **no** vuelve existente un archivo que no se versiona, asi que un test no debe exigirlo.
+- **Verificado en un checkout limpio de `HEAD` sin el proyecto clonado** (simulacion del checkout de CI): 187 tests, 1 skip, 0 fallas. Antes: 12 fallas.
+- **Deuda declarada:** la paleta real de kanam-os no tiene guard automatico hasta que el repo kanam-os monte el suyo (pendiente de la Decision 3 del ADR-066). No se oculta como si estuviera cubierta.
+
+---
+
 ## [2026-09-24] - check-adr-integrity.py: el corpus de ADRs ahora se verifica solo
 
 ### Added

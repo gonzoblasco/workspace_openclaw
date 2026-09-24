@@ -71,6 +71,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-063 | [kanam-insight en Python sobre LangChain, no en TypeScript con Bun](./ADR-063-kanam-insight-python-langchain.md) | workspace |
 | ADR-064 | [memory-wiki como capa analitica de memoria (modo isolated)](./ADR-064-memory-wiki-capa-analitica.md) | workspace |
 | ADR-065 | [DB-first vs doc-only - que documentos viven en el ciclo de la DB y cuales no](./ADR-065-db-first-vs-doc-only.md) | workspace |
+| ADR-066 | [Los guardias del workspace no leen codigo de proyectos](./ADR-066-guardias-no-dependen-de-codigo-de-proyecto.md) | workspace |
 
 ## Formato
 

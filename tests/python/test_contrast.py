@@ -10,13 +10,29 @@ check que no puede fallar no verifica nada.
 
 Cubren los DOS temas: al agregar el tema claro, el mismo verde del oscuro daba
 ~1.5:1 sobre blanco. Un guardia que solo mira un tema deja ese agujero abierto.
+
+SOBRE EL FIXTURE (2026-09-24): estos tests leian `projects/kanam-os/app/globals.css`
+directamente. El workspace NO versiona el codigo de los proyectos (solo
+`projects/<slug>/.knowledge/`), asi que ese archivo existe en la maquina de
+desarrollo pero NUNCA en CI: 12 tests pasaban local y fallaban en CI desde
+cualquier otra maquina. La causa era el entorno, no la logica del guard.
+
+Ahora la base es `fixtures/kanam-os-themes.css`, siempre disponible. Prueba el
+CONTRATO del guard (que puede fallar, y con que umbrales). La paleta REAL se
+guarda donde vive la paleta: en el repo kanam-os, que es el unico que puede ver
+su `globals.css`. Ver ADR-066.
 """
 import importlib.util
 import re
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parent.parent.parent
-CSS = ROOT / "projects" / "kanam-os" / "app" / "globals.css"
+# El fixture es la base de todos los tests: el contrato de temas, no la paleta.
+CSS = Path(__file__).resolve().parent / "fixtures" / "kanam-os-themes.css"
+# La paleta real solo existe donde el repo del proyecto esta clonado (no en CI).
+CSS_REAL = ROOT / "projects" / "kanam-os" / "app" / "globals.css"
 
 
 def load(name, path):
@@ -95,8 +111,13 @@ def test_contraste_es_simetrico():
 
 # --- el chequeo contra el CSS real ---
 
-def test_paleta_actual_pasa():
-    """Los DOS temas cumplen WCAG AA en todos los pares declarados."""
+def test_paleta_del_fixture_pasa():
+    """El contrato de temas (los DOS) cumple WCAG AA en todos los pares.
+
+    Es una paleta concreta y valida: si el guard fallara contra ella, cualquier
+    test de mutacion de abajo seria ambiguo (no se sabria si detecta la
+    mutacion o si el guard falla de entrada).
+    """
     m = cc()
     assert m.check(CSS) == 0
 
@@ -246,3 +267,32 @@ def test_ambos_temas_tienen_foco_visible():
     assert "outline: 2px solid var(--accent)" in css, (
         "el foco no usa --accent: al cambiar de tema quedaria con el color viejo"
     )
+
+
+# --- anti-deriva: el fixture contra la paleta real ---
+
+@pytest.mark.skipif(
+    not CSS_REAL.exists(),
+    reason="el repo kanam-os no esta clonado: la paleta real no existe aca (normal en CI)",
+)
+def test_fixture_no_deriva_del_css_real():
+    """En la maquina que SI tiene el proyecto, el fixture no puede quedar viejo.
+
+    Se comparan las CLAVES, no los valores: una clave que desaparece (el guard
+    la busca y no la encuentra) rompe la logica del guard y hay que reflejarlo;
+    un valor distinto solo significa que la paleta se retoco, y eso lo guarda
+    el check del repo kanam-os, no este archivo. Atar el fixture a los valores
+    haria fallar esta suite por un motivo ajeno al guard.
+    """
+    m = cc()
+    real = m.read_themes(CSS_REAL.read_text(encoding="utf-8"))
+    fixture = m.read_themes(leer_css())
+    assert set(real) == set(fixture), (
+        f"los temas cambiaron: real {sorted(real)} vs fixture {sorted(fixture)}"
+    )
+    for tema in sorted(real):
+        faltan = sorted(set(real[tema]) - set(fixture[tema]))
+        sobran = sorted(set(fixture[tema]) - set(real[tema]))
+        assert not faltan and not sobran, (
+            f"el fixture de '{tema}' deriva del CSS real: faltan {faltan}, sobran {sobran}"
+        )
