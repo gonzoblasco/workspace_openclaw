@@ -322,3 +322,23 @@ El modelo puede cambiarse a mitad de sesion: el runtime del contexto de arranque
 
 ---
 
+## Verificar el idioma de salida antes de enviar (la regla ya existia: falla de atencion)
+
+Verificar el IDIOMA de salida antes de enviar, sobre todo en respuestas largas.
+
+Caso real (2026-09-24, cierre de #10517): una respuesta completa salio en **chino** sin que lo notara. Gonzo lo marco con un solo mensaje: "te pasaste al chino".
+
+El idioma no es opcional ni cosmetico, y ya hay regla escrita en `AGENTS.md` ("Regla de idioma por capa", 2026-09-15):
+
+| Capa | Idioma |
+|---|---|
+| Lo que se VE en GitHub (commits, PRs, issues, comments, body, AGENTS.md de proyectos publicos) | **INGLES** |
+| Strings de UI | **ESPANOL** |
+| Workspace privado (AGENTS.md raiz, SOUL/IDENTITY/USER, memoria, dailies, reportes a Gonzo) | **ESPANOL** |
+
+**Regla practica:** en respuestas largas o generadas de corrido, releer el primer parrafo antes de enviar y confirmar que esta en el idioma de la capa. Si dudo, releo el canal: reporte a Gonzo = espanol; superficie de GitHub = ingles.
+
+**Por que pasa:** es una falla de atencion, no de conocimiento (la regla ya existia). El riesgo crece cuando el texto es largo y se genera en un solo pase, o cuando se cambia de contexto entre capas (publicar en ingles en GitHub y despues reportar en espanol).
+
+---
+
