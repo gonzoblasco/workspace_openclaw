@@ -7,7 +7,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 18 |
+| PRs abiertos | 17 |
 | PRs mergeados | 8 |
 | PRs cerrados sin merge | 22 |
 | Colaboraciones no-codigo | 15 |
@@ -41,9 +41,9 @@
 | **Issue** | - | MatchInner throw undefined on cleared loadPromise. CLOSED (no merged). schiller-manuel dijo que #7805 lo arreglará properly. |
 | **Nuestro PR** | [#7861](https://github.com/TanStack/router/pull/7861) | **closed** |
 
-| **Issue** | [#7873](https://github.com/TanStack/router/issues/7873) | Skip console.log para AbortError. Sin reviews. |
-| **Nuestro PR** | [#7878](https://github.com/TanStack/router/pull/7878) | **open** |
-| **Contexto** | - | Abierto 22 Jul. |
+| **Issue** | [#7873](https://github.com/TanStack/router/issues/7873) | Skip console.log para AbortError. CERRADO sin merge: #8204 (cbbfbe37, 16 Sep) ya removio el console.log del catch de getResponse en main, asi que el guard quedo redundante y el conflicto no tenia resolucion util. Comentario de cierre + aviso en el issue #7873. |
+| **Nuestro PR** | [#7878](https://github.com/TanStack/router/pull/7878) | **superseded** |
+| **Contexto** | - | Cerrado 24 Sep 2026. |
 
 ### adobe/react-spectrum
 
