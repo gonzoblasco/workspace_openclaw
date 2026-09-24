@@ -52,9 +52,9 @@ La integración de LangChain en el ecosistema de OpenClaw no busca reemplazar la
 
 ### Fase 2: El Conocimiento (RAG Implementation) - COMPLETA
 **Objetivo:** Que la IA responda basándose en datos propios.
-- [x] **2.1 Pipeline de Ingesta:** `scripts/ingest.py` (chunking semantico) + `scripts/store.py` (embeddings + persistencia). Embeddings via Ollama `qwen3-embedding:0.6b` (1024 dim).
+- [x] **2.1 Pipeline de Ingesta:** `projects/langchain-starter/scripts/ingest.py` (chunking semantico) + `projects/langchain-starter/scripts/store.py` (embeddings + persistencia). Embeddings via Ollama `qwen3-embedding:0.6b` (1024 dim).
 - [x] **2.2 Vector Store:** **implementado con ChromaDB local**, no Supabase. Mismo rol, menos infraestructura; la migracion a Supabase es la Fase 6.1.
-- [x] **2.3 Retrieval Chain:** `scripts/query.py` con prompt restringido a responder SOLO con el contexto recuperado (garantia anti-alucinacion, fijada por test).
+- [x] **2.3 Retrieval Chain:** `projects/langchain-starter/scripts/query.py` con prompt restringido a responder SOLO con el contexto recuperado (garantia anti-alucinacion, fijada por test).
 - **Hito:** ✅ CUMPLIDO - el sistema responde sobre documentos propios y cita la fuente.
 
 ### Fase 3: La Interfaz (API & Streaming)
@@ -66,7 +66,7 @@ La integración de LangChain en el ecosistema de OpenClaw no busca reemplazar la
 
 ### Fase 4: Evolución y Operación (Agents & Ops)
 **Objetivo:** Pasar de una cadena lineal a un agente autónomo y desplegado.
-- [x] **4.1 Tool-Calling:** `scripts/agent.py` con LangGraph ReAct: `search_knowledge` (RAG) + `word_count`. Verificado: decide tools en paralelo y sintetiza.
+- [x] **4.1 Tool-Calling:** `projects/langchain-starter/scripts/agent.py` con LangGraph ReAct: `search_knowledge` (RAG) + `word_count`. Verificado: decide tools en paralelo y sintetiza.
 - [x] **4.2 Despliegue:** RESUELTO por **LaunchAgent nativo** (decision de Gonzo 2026-09-22): Docker descartado para el Mac Mini, `Dockerfile` queda escrito para futuro. Incluye `service.sh` (start/stop/restart/status via launchctl) y `watchdog.sh`.
 - [x] **4.3 Observabilidad:** Doble capa: (a) watchdog launchd cada 60s que recupera el servicio salvo apagado intencional (marcador `.intentional-stop`); (b) automation OpenClaw `langchain-starter-health-alert` cada 30 min que avisa por Telegram solo si el watchdog no pudo recuperar.
 - **Hito:** CUMPLIDO (salvo contenedor) - agente con tools + servicio autorreparable + monitoreo.
