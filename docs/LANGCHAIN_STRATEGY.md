@@ -119,7 +119,7 @@ Es el mismo patrón que apareció tres veces en el día: documentación que decl
 ### Fase 5: Solidez y uso real
 **Objetivo:** Que el servicio deje de ser una demo y pase a usarse todos los días.
 - [x] **5.1 Cerrar deuda de base:** `requirements.txt` con versiones pinneadas ✅, Python 3.12 ✅ (2026-09-24), repo git ✅, README real ✅, `.env.example` ✅. **Deuda base cerrada.**
-- [x] **5.2 Ingesta real de conocimiento:** ✅ HECHO (2026-09-24). El scanner ahora cubre **3 fuentes: proyectos + `docs/` + `skills/`** (eran 122 archivos, son 442). Índice: **2557 vectores** (eran 1243).
+- [x] **5.2 Ingesta real de conocimiento:** ✅ HECHO (2026-09-24). El scanner ahora cubre **3 fuentes: proyectos + `docs/` + `skills/`** (eran 122 archivos, son 445). Índice: **4423 vectores** (eran 1243).
   - Los **dailies y las sesiones ya los cubría `memory.db`** (1144 secciones `daily` + 843 `session`), asi que no se duplicaron: el criterio de exito "preguntar algo de una sesion pasada" ya estaba cumplido por esa via.
   - Se indexa lo que faltaba de verdad: los docs estrategicos (`docs/`) y las skills.
   - Excluidos: `docs/insights/` (reportes del propio detector: ruido auto-referencial y quedan vencidos) y `docs/archives/` (historico).

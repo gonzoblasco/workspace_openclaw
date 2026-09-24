@@ -178,16 +178,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ## [2026-09-24] - Fase 5.2: ingesta real (el radar ahora cruza todo el conocimiento)
 
 ### Added
-- **`kanam-insight/scripts/scan.py`: escaneo de 3 fuentes.** Antes solo los `.knowledge/` de proyectos (122 archivos); ahora tambien `docs/` estrategicos y `skills/` (442 archivos, 2.478.792 chars). Nuevo flag `--source {all,projects,docs,skills}`.
+- **`kanam-insight/scripts/scan.py`: escaneo de 3 fuentes.** Antes solo los `.knowledge/` de proyectos (122 archivos); ahora tambien `docs/` estrategicos y `skills/` (445 archivos, 2.496.240 chars). Nuevo flag `--source {all,projects,docs,skills}`.
 - **4 tests nuevos** (25 en total, eran 21): escaneo multi-fuente, exclusion de `insights/` y `archives/`, aislamiento de `--project`, y deteccion del tipo `SKILL`.
 
 ### Changed
-- **Indice: de 1243 a 2557 vectores.** Reindexado con el corpus extendido.
+- **Indice: de 1243 a 4423 vectores.** Reindexado con el corpus extendido.
 - **`kanam-insight/README.md`:** la seccion de alcance refleja las 3 fuentes y documenta las exclusiones.
 - **`kanam-insight/.knowledge/STATUS.md`:** numeros reales y fase 5.2 cerrada.
 
 ### Fixed
 - **Bug en `scan_workspace()` encontrado por los tests:** la primera version usaba las constantes `DOCS_DIR`/`SKILLS_DIR` del modulo, asi que ignoraba el `tmp_path` de los tests y leia los docs reales del workspace. Corregido derivando las rutas de `WORKSPACE` en cada llamada. **En produccion habria pasado desapercibido:** el escaneo funcionaba igual, solo era intesteable.
+- **Bug de IDs duplicados en `index.py` (encontrado al verificar el indexado, horas despues):** los IDs de chunk se generaban con el **nombre de archivo**, asi que archivos homonimos en carpetas distintas colisionaban (`docs/README.md` vs `docs/adr/README.md` -> ambos `docs::README.md::0`). Eran 142 colisiones reales. Chroma rechaza IDs repetidos dentro de un lote y **abortaba el indexado a la mitad**. El indice quedo con 1920 vectores y se reporto 2557 como exito: **el numero era de una corrida parcial, no completa.** Corregido: IDs por **ruta relativa** (unica) + un guard que valida la unicidad **antes** de tocar la coleccion, para que falle ruidoso en vez de dejar el indice a medias. Reindexado completo: **4423 vectores**, verificado con busqueda y radar.
+- **`metadata.source_kind`:** el metadata no guardaba la fuente, asi que las consultas por fuente devolvian `None`. Agregado.
 
 ### Decisions
 - **El criterio de 5.2 tal como estaba escrito ya se cumplia** ("preguntar algo de una sesion pasada con cita de fuente"): `memory.db` ya indexa los dailies y las sesiones (1144 secciones `daily` + 843 `session`). Verificado ANTES de indexar, para no duplicar. Se indexo lo que faltaba de verdad: docs estrategicos y skills.

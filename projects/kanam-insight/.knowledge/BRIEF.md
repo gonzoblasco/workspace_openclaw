@@ -54,8 +54,8 @@ v0.1.0 - **los tres pilares operativos**, con 32 tests en verde.
 
 | Pieza | Estado |
 |---|---|
-| Scanner (`scan.py`) | 3 fuentes: proyectos + `docs/` + `skills/` (442 archivos) |
-| Indice (`index.py`) | 2557 vectores en `insight_knowledge` |
+| Scanner (`scan.py`) | 3 fuentes: proyectos + `docs/` + `skills/` (445 archivos) |
+| Indice (`index.py`) | 4423 vectores en `insight_knowledge` |
 | Pattern Radar (`radar.py`) | cruce semantico entre proyectos + busqueda con citas |
 | Debt Detector (`debt.py`) | 26 proyectos; deuda estructural y refs rotas |
 | Handoff Synthesizer (`handoff.py`) | 26 proyectos; estado + desalineacion con el ROADMAP |

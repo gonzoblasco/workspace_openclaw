@@ -5,14 +5,14 @@
 
 ## Health
 
-- 🟢 Scanner funcionando: **3 fuentes** (proyectos + `docs/` + `skills/`), 442 archivos, 2.478.792 chars
-- 🟢 Índice semántico propio: colección `insight_knowledge` con **2557 vectores** (eran 1243)
+- 🟢 Scanner funcionando: **3 fuentes** (proyectos + `docs/` + `skills/`), 445 archivos, 2.496.240 chars
+- 🟢 Índice semántico propio: colección `insight_knowledge` con **4423 vectores** (eran 1243)
 - 🟢 Fase 5.2 cerrada: el radar cruza las tres fuentes y trae cruces que antes eran imposibles
 - 🟢 Pattern Radar verificado: cruzó 8 proyectos en una consulta de a11y; sus afirmaciones se contrastaron contra los archivos fuente (no alucinó)
 - 🟢 Stack confirmado y documentado en **ADR-063** (Python + LangChain, reusa el starter)
 - 🟢 Búsqueda semántica con citas de fuente (`radar.py search`)
 - 🟢 Debt Detector operativo (análisis estructural, sin vectores): 26 proyectos analizados
-- 🟢 **Handoff Synthesizer operativo): 26 proyectos, 11 con desalineación detectada
+- 🟢 **Handoff Synthesizer operativo**: 26 proyectos, 11 con desalineación detectada
 - 🟡 Deuda: ingesta incremental (hoy el índice se rearma completo)
 
 ## Bloqueos
@@ -39,8 +39,8 @@ Se construyó la capacidad completa de punta a punta, con el stack reusado:
 
 | Pieza | Archivo | Verificación |
 |---|---|---|
-| Scanner | `scripts/scan.py` | 442 archivos de 3 fuentes (proyectos + docs + skills) |
-| Indexador | `scripts/index.py` | 2557 chunks en `insight_knowledge` |
+| Scanner | `scripts/scan.py` | 445 archivos de 3 fuentes (proyectos + docs + skills) |
+| Indexador | `scripts/index.py` | 4423 chunks en `insight_knowledge` |
 | Pattern Radar | `scripts/radar.py` | Cruzó 8 proyectos; 5 patrones; 2 verificados a mano |
 
 **Hallazgo del radar que vale registrar:** la consulta sobre accesibilidad destapó un patrón real que cruza proyectos - `kanam-fixer` y `kanam-story` coinciden, por vías distintas, en que **los tests verdes no alcanzan para validar el anuncio de un lector de pantalla**. Ese es exactamente el tipo de señal que se perdía en silos y que justifica el proyecto.
@@ -69,7 +69,9 @@ Se construyó la capacidad completa de punta a punta, con el stack reusado:
 
 ## Sesión 2026-09-24 (cierre) - Fase 5.2: ingesta real
 
-El scanner pasó de cubrir solo `.knowledge/` de proyectos a **3 fuentes**: proyectos + `docs/` + `skills/`. Índice: de 1243 a **2557 vectores**.
+El scanner pasó de cubrir solo `.knowledge/` de proyectos a **3 fuentes**: proyectos + `docs/` + `skills/`. Índice: de 1243 a **4423 vectores**.
+
+**Incidente (mismo día, más tarde):** el número que se declaró primero (2557) era de un indexado **abortado a la mitad**, no de una corrida completa. El bug: los IDs de chunk se generaban con el **nombre de archivo**, así que archivos homónimos en carpetas distintas (`docs/README.md` vs `docs/adr/README.md`) colisionaban. Chroma rechaza IDs repetidos en un lote y abortaba, dejando el índice a medias. Corregido: IDs por **ruta relativa** (única) + un guard que valida los IDs **antes** de tocar la colección. Reindexado completo y verificado: **4423 vectores**, búsqueda y radar OK.
 
 **Un hallazgo que cambió el plan:** el criterio de éxito de 5.2 (*"preguntar algo de una sesión pasada y que responda con cita de fuente"*) **ya lo cumplía `memory.db`** (1144 secciones `daily` + 843 `session` vectorizadas). Verificado antes de indexar, para no duplicar. Lo que faltaba de verdad eran los docs estratégicos y las skills.
 
