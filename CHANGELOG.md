@@ -142,6 +142,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Handoff Synthesizer: el tercer pilar (kanam-insight completo)
+
+### Added
+- **`kanam-insight/scripts/handoff.py`:** responde "donde esta parado este proyecto y que sigue?" y detecta la desalineacion entre STATUS (que paso), HANDOFF (punto de retorno) y ROADMAP (que falta). Estructural, sin vectores ni LLM.
+- **Checks:** `SIN_PUNTO_DE_RETORNO` (sin HANDOFF ni ROADMAP), `HITO_SIN_ESTADO` (hitos despues de uno completado sin marcador), `FASE_FUERA_DE_ORDEN`, `ROADMAP_VIEJO` (roadmap mas viejo que el estado).
+- **`docs/insights/handoff-2026-09-24.md`:** primer reporte. 26 proyectos, **11 con desalineacion**.
+- **8 tests nuevos** (32 en total, eran 25).
+
+### Fixed
+- **`STATUS_VIEJO` y `ROADMAP_VIEJO` eran codigo muerto.** `parse_date` no matcheaba `ACTUALIZADO` en mayusculas, y varios docs lo escriben asi: el check **nunca disparaba**. Corregido con `IGNORECASE`. Ahora `create-stack` (66 dias sin actualizar) aparece como debe.
+- **`HITO_SIN_ESTADO` estaba condicionado a que existiera STATUS/HANDOFF**, pero la consistencia interna del ROADMAP no depende de eso. Lo destapo un test, no la corrida real.
+- **`last_phase_line` devolvia el heading** (`## Estado actual`) en vez de su contenido, y arrastraba marcas de markdown. Corregido, cuidando no mutilar contenido real ('Fase 1 (lectura)' se preserva).
+
+### Notes
+- **Kanam-insight queda completo:** los tres pilares (Pattern Radar + Debt Detector + Handoff Synthesizer) operativos, 32 tests, 2 repos sincronizados.
+- **Un tercer bug de metodo, y van cuatro hoy:** la mutacion destapo que un test mio era debil. La asercion `not startswith("Nota")` pasaba igual con el valor mutado, porque el string venia con marcas (`**Nota Fase 0:**`). Reforzado con una asercion que si discrimina; la mutacion ahora falla como debe.
+- **Hallazgo real del sintetizador:** 11 de 26 proyectos no tienen HANDOFF ni ROADMAP. No es alarma (muchos estan cerrados o archivados), pero explica por que retomar un proyecto viejo cuesta: no hay punto de retorno escrito.
+
 ## [2026-09-24] - Fase 5.2: ingesta real (el radar ahora cruza todo el conocimiento)
 
 ### Added

@@ -1,7 +1,7 @@
 # STATUS: kanam-insight
 
 **Versión:** 0.1.0
-**Fase:** Pattern Radar + Debt Detector operativos
+**Fase:** los tres pilares operativos
 
 ## Health
 
@@ -12,7 +12,8 @@
 - 🟢 Stack confirmado y documentado en **ADR-063** (Python + LangChain, reusa el starter)
 - 🟢 Búsqueda semántica con citas de fuente (`radar.py search`)
 - 🟢 Debt Detector operativo (análisis estructural, sin vectores): 26 proyectos analizados
-- 🟡 Deuda: sin Handoff Synthesizer
+- 🟢 **Handoff Synthesizer operativo): 26 proyectos, 11 con desalineación detectada
+- 🟡 Deuda: ingesta incremental (hoy el índice se rearma completo)
 
 ## Bloqueos
 
@@ -20,7 +21,9 @@
 
 ## Próximos pasos
 
-1. Evaluar el Handoff Synthesizer (estructural: estado real vs ROADMAP).
+1. ~~Evaluar el Handoff Synthesizer~~ ✅ hecho el 2026-09-24 (tercer pilar, 32 tests).
+2. Deuda: ingesta incremental (hoy `index.py --reset` rearma todo).
+3. Fase 6 del starter (multi-cliente) cuando haya decisión de negocio.
 2. ~~Tests~~ ✅ hechos el 2026-09-24 (18 tests, verificados por mutación).
 3. ~~README + repo en GitHub~~ ✅ hechos el 2026-09-24.
 
@@ -75,3 +78,24 @@ El scanner pasó de cubrir solo `.knowledge/` de proyectos a **3 fuentes**: proy
 **Bug encontrado por los tests:** el primer refactor de `scan_workspace()` usaba las constantes `DOCS_DIR`/`SKILLS_DIR` del módulo, así que ignoraba el `tmp_path` de los tests y leía los docs reales del workspace. Corregido derivando las rutas de `WORKSPACE` en cada llamada. **Los tests atraparon un bug que en producción habría pasado desapercibido.**
 
 25 tests en verde (eran 18; los 4 nuevos cubren el escaneo multi-fuente y las exclusiones).
+
+---
+
+## Sesión 2026-09-24 (cierre) - Handoff Synthesizer: el tercer pilar
+
+`scripts/handoff.py`: responde la pregunta que hoy se contestaba leyendo 4 archivos a mano - **"dónde está parado este proyecto y qué sigue?"** - y detecta la desalineación entre STATUS (qué pasó), HANDOFF (punto de retorno) y ROADMAP (qué falta).
+
+Estructural, sin vectores ni LLM: comparar fechas, fases y marcadores no requiere semántica.
+
+**Checks:** `SIN_PUNTO_DE_RETORNO` (sin HANDOFF ni ROADMAP: un tercero no puede retomar), `HITO_SIN_ESTADO` (hitos después de uno completado sin marcador), `FASE_FUERA_DE_ORDEN`, `ROADMAP_VIEJO` (roadmap más viejo que el estado).
+
+**Resultado real:** 26 proyectos, **11 con desalineación**. Reporte en `docs/insights/handoff-2026-09-24.md`.
+
+**Dos bugs que encontré al verificar mi propio código:**
+
+1. **`ROADMAP_VIEJO` y `STATUS_VIEJO` eran código muerto.** `parse_date` no matcheaba `ACTUALIZADO` en mayúsculas, y varios docs lo escriben así. El check nunca disparaba. Corregido con `IGNORECASE`; ahora `create-stack` (66 días sin actualizar) aparece como debe.
+2. **`HITO_SIN_ESTADO` estaba condicionado a que existiera STATUS/HANDOFF**, pero la consistencia interna del ROADMAP no depende de eso. Lo destapó un test, no la corrida real.
+
+**Un test débil que la mutación destapó:** la aserción `not startswith("Nota")` pasaba igual con el valor mutado, porque el string venía con marcas (`**Nota Fase 0:**`). Reforzado con una aserción que sí discrimina.
+
+32 tests en verde (eran 25).

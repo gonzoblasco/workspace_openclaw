@@ -50,7 +50,17 @@ Gonzo (uso primario). CLI local-first, ejecutable desde el workspace.
 
 ## Estado
 
-v0.1.0 - **Pattern Radar funcionando**. Scanner + índice + radar operativos y verificados (122 archivos / 1243 vectores). Pendientes: Debt Detector, Handoff Synthesizer, tests.
+v0.1.0 - **los tres pilares operativos**, con 32 tests en verde.
+
+| Pieza | Estado |
+|---|---|
+| Scanner (`scan.py`) | 3 fuentes: proyectos + `docs/` + `skills/` (442 archivos) |
+| Indice (`index.py`) | 2557 vectores en `insight_knowledge` |
+| Pattern Radar (`radar.py`) | cruce semantico entre proyectos + busqueda con citas |
+| Debt Detector (`debt.py`) | 26 proyectos; deuda estructural y refs rotas |
+| Handoff Synthesizer (`handoff.py`) | 26 proyectos; estado + desalineacion con el ROADMAP |
+
+**Deuda registrada:** la ingesta es completa (`--reset` rearma todo), no incremental. Con 442 archivos tarda unos minutos; conviene incrementarla cuando el corpus crezca.
 
 ## Los tres pilares y su mecanismo real
 
