@@ -22,6 +22,28 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - kanam-insight arrancado (apuesta 1): Pattern Radar operativo
+
+### Added
+- **`projects/kanam-insight/scripts/scan.py`:** scanner de los `.knowledge/` de todos los proyectos. Solo stdlib, sin dependencias. Verificado: 122 archivos, 24 proyectos, 768.465 chars.
+- **`projects/kanam-insight/scripts/index.py`:** indexado con chunking por unidad semantica (ADR-062: secciones de markdown con el titulo al frente, no ventana ciega). Coleccion propia `insight_knowledge`, separada de la del starter. Verificado: 1243 vectores.
+- **`projects/kanam-insight/scripts/radar.py`:** Pattern Radar (cruce de patrones entre proyectos + sintesis con LLM) y busqueda semantica con citas de fuente.
+- **`projects/kanam-insight/README.md`:** superficie del proyecto (que hace, stack, alcance, privacidad, ejemplo de salida).
+- **`docs/adr/ADR-063-kanam-insight-python-langchain.md`:** decision de stack.
+
+### Changed
+- **`projects/kanam-insight/.knowledge/`** (BRIEF, STATUS, HANDOFF): spec corregido al stack real. El original (2026-08-30) declaraba TS + Bun + SQLite-vec "confirmado", pero quedo **anterior** a la construccion de `langchain-starter` (2026-09-22). Se reusa la capacidad existente en lugar de reconstruirla en otro lenguaje.
+
+### Decisions
+- **Python + LangChain, no TypeScript + Bun** (ADR-063). Razon: el starter ya resuelve ingesta, chunking, embeddings y retrieval; el stack de memoria del workspace ya es Python con vectores funcionando (ADR-062). Construir en TS duplicaria la capacidad.
+- **Solo `.knowledge/` de proyectos** en esta fase. `docs/` y `memory/` quedan afuera: los dailies son ruido para el retrieval, las entrevistas no aportan al cruce.
+- **Solo el Pattern Radar es semantico.** El Debt Detector y el Handoff Synthesizer seran estructurales (comparar fechas y estados, no similitud), segun el hallazgo del ADR-062.
+
+### Notes
+- **Hallazgo del radar:** `kanam-fixer` y `kanam-story` coinciden, por vias distintas, en que los tests verdes no alcanzan para validar el anuncio de un lector de pantalla. Verificado contra los archivos fuente.
+- **Deuda registrada:** el codigo de kanam-insight (scripts, README) **no esta en ningun repo** - el workspace git solo trackea `projects/*/.knowledge/`. Misma brecha que `langchain-starter`. Pendiente: repo en GitHub.
+- **Leccion de metodo:** un spec que declara un stack "confirmado" puede estar vencido si se escribio antes de construir la alternativa. Los specs con fecha vencen; se revisan al arrancar.
+
 ## [2026-09-24] - Registro de apuestas + punto de retorno pre-kanam-insight
 
 ### Added

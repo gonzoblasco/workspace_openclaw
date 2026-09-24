@@ -14,28 +14,30 @@ Gonzo tiene ~12 proyectos activos en el workspace. Cada uno tiene su propio `.kn
 2. **Handoff Synthesizer:** al iniciar un proyecto, sintetiza el estado actual contra el `ROADMAP.md` y prioriza el día.
 3. **Debt Detector:** identifica ADRs obsoletos, decisiones que fueron parches, y oportunidades de refactor con el stack actual.
 
-## Stack
+## Stack (actualizado 2026-09-24, ver ADR-063)
 
-- TypeScript (Node CLI + librerías)
-- Ollama (LLM local: `glm-5.3-flash:cloud`)
-- LanceDB o SQLite-vec (embeddings + búsqueda semántica local)
-- Bun (runtime + tests)
-- Biome (lint)
-- Vitest (tests)
+- **Python**, reusando el `venv` de `langchain-starter`
+- LangChain + ChromaDB (colección propia `insight_knowledge`)
+- Ollama local: embeddings `qwen3-embedding:0.6b`, LLM `gemma4:cloud`
+- Sin framework de tests todavía (deuda)
+
+> **Cambio de stack (2026-09-24):** el spec original (2026-08-30) pedía TypeScript + Bun + SQLite-vec. Ese spec quedó **anterior** a la construcción de `langchain-starter` (2026-09-22), que ya resuelve ingesta, chunking, embeddings y retrieval. Se cambió a Python para reusar esa capacidad en lugar de reconstruirla en otro lenguaje. Razonamiento completo en **ADR-063**.
+
+## Alcance de la primera versión
+
+Solo `.knowledge/` de los proyectos (122 archivos, 24 proyectos). `docs/` y `memory/` quedan afuera de esta fase: los dailies son ruido para el retrieval (fechados, mezclan temas) y las entrevistas no aportan al cruce entre proyectos.
 
 ## Estructura
 
 ```
 projects/kanam-insight/
-├── .knowledge/          ← BRIEF, HANDOFF, STATUS, ADRs
-├── src/
-│   ├── index.ts         ← CLI entrypoint
-│   ├── scanners/        ← lectores de .knowledge/, ADRs, código
-│   ├── analyzers/       ← lógica de pattern/debt/handoff
-│   ├── llm/             ← cliente Ollama, prompts
-│   └── db/              ← índice local (SQLite-vec)
-├── tests/
-└── package.json
+├── .knowledge/           ← BRIEF, HANDOFF, STATUS
+├── scripts/
+│   ├── scan.py           ← scanner de .knowledge/ (stdlib, sin deps)
+│   ├── index.py          ← indexado (chunking semántico -> Chroma)
+│   └── radar.py          ← Pattern Radar + búsqueda con fuentes
+├── config/chroma_db/     ← índice local (colección insight_knowledge)
+└── README.md
 ```
 
 ## Diferenciador
@@ -48,4 +50,16 @@ Gonzo (uso primario). CLI local-first, ejecutable desde el workspace.
 
 ## Estado
 
-v0.1.0 — Spec v1 en construcción.
+v0.1.0 - **Pattern Radar funcionando**. Scanner + índice + radar operativos y verificados (122 archivos / 1243 vectores). Pendientes: Debt Detector, Handoff Synthesizer, tests.
+
+## Los tres pilares y su mecanismo real
+
+Un hallazgo del ADR-062 aplica directo: *"el SQL estructurado sigue siendo la puerta principal; los vectores sirven para el caso donde no se recuerda la palabra exacta"*. Traducido a los tres pilares:
+
+| Pilar | Mecanismo | Por qué |
+|---|---|---|
+| **Pattern Radar** | semántico (vectores + LLM) | El cruce entre proyectos exige encontrar lo mismo dicho con otras palabras |
+| **Debt Detector** | estructural | ADR obsoleto = comparar fechas y estados, no similitud |
+| **Handoff Synthesizer** | estructural | Estado real vs ROADMAP = comparar, no buscar |
+
+Usar RAG para los dos últimos sería usar un martillo para atornillar.

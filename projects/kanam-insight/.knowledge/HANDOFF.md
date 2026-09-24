@@ -1,22 +1,47 @@
 # HANDOFF: kanam-insight
 
+## Session Context
+- **Date:** 2026-09-24
+- **Project:** kanam-insight
+- **Fase:** 0.1.0 - Pattern Radar operativo
+
 ## Estado actual
 
-Spec v1 cerrada. Tres pilares:
-- Pattern Radar (cross-project)
-- Handoff Synthesizer (project-aware)
-- Debt Detector (ADR/code)
+Apuesta 1 de `docs/APUESTAS.md` arrancada y con la capacidad completa funcionando. Stack reusado de `langchain-starter` (ADR-063).
 
-## Decisiones de diseño (Sesión 1, 2026-08-30)
+| Pieza | Archivo | Verificación |
+|---|---|---|
+| Scanner de `.knowledge/` | `scripts/scan.py` | 122 archivos, 24 proyectos, 768.465 chars |
+| Indexador | `scripts/index.py` | 1243 chunks en la colección `insight_knowledge` |
+| Pattern Radar | `scripts/radar.py` | Cruzó 8 proyectos; 5 patrones; 2 verificados a mano |
 
-- **Fuente ADRs:** escanear ambos paths: `.knowledge/adr/` y `docs/adr/`. Sin unificar.
-- **Stack LLM:** Ollama (`glm-5.3-flash:cloud`) vía app local (mismo endpoint que API directa, usa config existente).
-- **Salida:** CLI + reports Markdown en `docs/insights/YYYY-MM-DD.md`.
-- **Local-first:** índice SQLite-vec local. Sin nube para embeddings.
+## Decisiones registradas
+
+- **ADR-063:** Python sobre LangChain, no TypeScript con Bun. El spec original (2026-08-30) quedó anterior a la construcción de `langchain-starter` (2026-09-22). Se reusa la capacidad en lugar de reconstruirla en otro lenguaje.
+- **Colección propia** (`insight_knowledge`), separada de `starter_knowledge`: mezclar corpus degrada el retrieval, y separar por colección es el mismo mecanismo que después sirve para multi-tenant.
+- **Chunking por unidad semántica** (ADR-062): secciones de markdown con el título al frente, no ventana ciega de caracteres.
+- **Alcance:** solo `.knowledge/` de proyectos. `docs/` y `memory/` quedan afuera (los dailies son ruido para el retrieval; las entrevistas no aportan al cruce).
+
+## Hallazgo que vale registrar
+
+El radar destapó un patrón real que cruza proyectos: `kanam-fixer` y `kanam-story` coinciden, por vías distintas, en que **los tests verdes no alcanzan para validar el anuncio de un lector de pantalla**. Ese cruce no estaba escrito en ningún lado; emerge de leer los dos proyectos juntos. Es exactamente la señal que justifica el proyecto.
 
 ## Próximo paso
 
-1. `init-project` (repo privado en gh + scaffolding).
-2. Spike: scanner de `.knowledge/` + `docs/adr/` (sin LLM todavía).
-3. Spike: indexación con SQLite-vec.
-4. Primer analizador (Pattern Radar MVP).
+1. **Debt Detector** (estructural, sin vectores): ADRs obsoletos, decisiones-parche, contradicciones entre STATUS y ROADMAP.
+2. **Tests** de los caminos críticos (scanner, chunking, retrieval).
+3. **README + repo en GitHub** (hoy el código de kanam-insight no está en git, aunque el workspace trackea este `.knowledge/`).
+4. Evaluar el **Handoff Synthesizer**.
+
+## Open Questions
+
+- ¿El Debt Detector necesita el LLM, o alcanza con análisis estructural puro? El hallazgo del ADR-062 sugiere que la comparación de fechas y estados no requiere semántica.
+- El `venv` del starter se reusa; conviene un `requirements.txt` propio antes de que el acoplamiento moleste.
+
+## Lección de método
+
+Un spec que declara un stack "confirmado" puede estar vencido si se escribió antes de construir la alternativa. Se detectó al revisar, no al ejecutar. **Los specs con fecha vencen; se revisan al arrancar.**
+
+---
+
+*Generado por session-lifecycle workflow*
