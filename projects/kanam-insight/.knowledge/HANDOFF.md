@@ -3,7 +3,7 @@
 ## Session Context
 - **Date:** 2026-09-24
 - **Project:** kanam-insight
-- **Fase:** 0.1.0 - Pattern Radar operativo
+- **Fase:** 0.1.0 - Pattern Radar + Debt Detector operativos
 
 ## Estado actual
 
@@ -14,6 +14,7 @@ Apuesta 1 de `docs/APUESTAS.md` arrancada y con la capacidad completa funcionand
 | Scanner de `.knowledge/` | `scripts/scan.py` | 122 archivos, 24 proyectos, 768.465 chars |
 | Indexador | `scripts/index.py` | 1243 chunks en la colección `insight_knowledge` |
 | Pattern Radar | `scripts/radar.py` | Cruzó 8 proyectos; 5 patrones; 2 verificados a mano |
+| Debt Detector | `scripts/debt.py` | 26 proyectos analizados; reporte en `docs/insights/` |
 
 ## Decisiones registradas
 
@@ -26,12 +27,23 @@ Apuesta 1 de `docs/APUESTAS.md` arrancada y con la capacidad completa funcionand
 
 El radar destapó un patrón real que cruza proyectos: `kanam-fixer` y `kanam-story` coinciden, por vías distintas, en que **los tests verdes no alcanzan para validar el anuncio de un lector de pantalla**. Ese cruce no estaba escrito en ningún lado; emerge de leer los dos proyectos juntos. Es exactamente la señal que justifica el proyecto.
 
+El Debt Detector destapó otro: el ADR de Lucide fue **renumerado de 030 a 037** (commit `1769ecc1`) y dos docs de `soporteml-v4` siguen apuntando al número viejo. Deuda invisible a la lectura manual.
+
+## Trabajo de precisión del detector (vale para el próximo)
+
+La primera corrida del Debt Detector reportó 27 hallazgos de severidad alta. Al verificar cada uno contra los archivos reales aparecieron **tres clases de falso positivo**:
+
+1. Docs base en la raíz del proyecto contados como ausentes (existen, pero fuera de `.knowledge/`).
+2. Refs con glob (`scripts/*.py`) tratadas como paths concretos.
+3. Refs de proyectos sin repo clonado tratadas como rotas (pueden vivir en GitHub).
+
+**Regla que quedó:** sin el repo del proyecto clonado no se puede afirmar que un doc falte. Solo la renumeración de ADR es señal inequívocamente nuestra, porque ese cambio ocurrió en el workspace. Un detector sin verificación propia produce deuda de credibilidad.
+
 ## Próximo paso
 
-1. **Debt Detector** (estructural, sin vectores): ADRs obsoletos, decisiones-parche, contradicciones entre STATUS y ROADMAP.
-2. **Tests** de los caminos críticos (scanner, chunking, retrieval).
-3. **README + repo en GitHub** (hoy el código de kanam-insight no está en git, aunque el workspace trackea este `.knowledge/`).
-4. Evaluar el **Handoff Synthesizer**.
+1. **Tests** de los caminos críticos (scanner, chunking, retrieval, detector).
+2. **Handoff Synthesizer** (estructural: estado real vs ROADMAP).
+3. **README + repo en GitHub**: el código de kanam-insight (scripts, README) no está en ningún repo; el workspace git solo trackea `projects/*/.knowledge/`. Misma brecha que `langchain-starter`.
 
 ## Open Questions
 

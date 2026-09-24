@@ -41,6 +41,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - kanam-insight: Debt Detector operativo
+
+### Added
+- **`projects/kanam-insight/scripts/debt.py`:** deteccion estructural de deuda en los 26 proyectos del workspace. Sin vectores ni LLM (comparar fechas, refs y backlog no requiere semantica). Checks: doc base ausente, doc fuera de `.knowledge/` (no versionado), STATUS viejo/sin fecha, pendientes acumulados, referencias rotas, docs sin fecha. Reporte en `docs/insights/YYYY-MM-DD.md`.
+- **`docs/insights/2026-09-24.md`:** primer reporte del detector.
+
+### Fixed
+- **Tres clases de falso positivo del detector**, detectadas al verificar cada hallazgo contra los archivos reales (la primera corrida reporto 27 hallazgos de severidad alta que no eran todos ciertos):
+  1. Docs base en la raiz del proyecto contados como ausentes (existen, fuera de `.knowledge/`).
+  2. Refs con glob (`scripts/*.py`) tratadas como paths concretos.
+  3. Refs de proyectos sin repo clonado tratadas como rotas (pueden vivir en GitHub).
+
+### Notes
+- **Hallazgo real:** el ADR de Lucide fue **renumerado de 030 a 037** (commit `1769ecc1`); dos docs de `soporteml-v4` siguen apuntando al numero viejo. Deuda invisible a la lectura manual. El detector ahora la señala con el numero actual.
+- **Hallazgo real:** `quienes_quedan/BRIEF.md` y los docs base de `kanam-fixer-v2` viven en la raiz de su proyecto, **no en `.knowledge/`**, asi que el workspace git no los trackea (`.gitignore` solo incluye `projects/*/.knowledge/`). Sin repo propio, esos docs no estan versionados en ningun lado.
+- **Regla que quedo:** sin el repo del proyecto clonado no se puede afirmar que un doc falte. Solo la renumeracion de ADR es señal inequivocamente nuestra. Un detector sin verificacion propia produce deuda de credibilidad.
+- Solo 6 de 26 proyectos tienen repo git local (`kanam-fixer`, `kanam-lab`, `kanam-os`, `kanam-skills`, `kanam-tetris`, `soporteml`).
+
 ## [2026-09-24] - kanam-insight arrancado (apuesta 1): Pattern Radar operativo
 
 ### Added
