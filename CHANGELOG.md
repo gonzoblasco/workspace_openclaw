@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - check-adr-integrity.py: el corpus de ADRs ahora se verifica solo
+
+### Added
+- **`scripts/check-adr-integrity.py`:** valida que el corpus de ADRs y su indice esten reconciliados. Cubre cuatro clases de defecto: (1) ADR en disco sin fila en el indice, (2) fila del indice que promete un archivo inexistente, (3) numero duplicado (dos decisiones con una direccion = una cita resuelve ambigua, peor que un hueco), (4) ref cruzada a un ADR que no existe. Los huecos de numeracion se reportan como **informativos y no fallan**: un hueco puede ser una decision retirada a proposito, un duplicado nunca es intencional.
+- **`tests/python/test_check_adr_integrity.py`:** 9 tests. Cada uno **siembra el defecto** que el checker debe cazar en un corpus falso, mas el contrapeso (corpus limpio -> sin defectos). Incluye los dos casos de exit code (1 con defecto, 0 sin el): juntos prueban que el codigo de salida discrimina.
+
+### Fixed
+- **Enganchado al pre-commit hook** (`scripts/pre-commit.template` + hook instalado, mantenidos identicos): corre junto a `check_em_dash.py` y `check-refs.py` cuando hay markdown staged.
+- **`docs/SETUP.md`:** fila del script en la tabla.
+
+### Notes
+- **Hueco que cierra, con evidencia:** ADR-063 existia y estaba commiteado, pero sin fila en el indice, y **nada lo detectaba**. `check-refs.py` valida que una ruta citada exista, no la direccion inversa (que todo ADR este en el indice). Se encontro leyendo. Un ADR fuera del indice es un ADR que nadie encuentra.
+- **Probado por mutacion:** desactivando el chequeo 1, fallan exactamente los 2 tests que lo cubren. Un test que no puede fallar no verifica nada.
+- **Dos decisiones de diseño que evitan trampas:** (1) las rutas son inyectables, asi los tests usan un corpus desechable en `tmp_path`; la primera version sembraba el defecto editando el README real y restaurandolo con `git checkout`, y si fallaba a mitad dejaba el indice del workspace roto - el mismo riesgo que el script existe para prevenir. (2) Usa `Optional` en vez de `X | None`: este equipo corre **Python 3.9.6**, y las uniones PEP 604 son 3.10+.
+
+---
+
 ## [2026-09-24] - memory-wiki activado + regla DB-first vs doc-only + ADR-064/065
 
 ### Added
