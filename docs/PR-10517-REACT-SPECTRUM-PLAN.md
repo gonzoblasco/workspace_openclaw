@@ -163,20 +163,53 @@ Reproducido igual en headless y en Chrome real (con ventana): el offset vuelve a
 
 ---
 
-## 4. Plan de arreglos (orden de ejecucion)
+### Hallazgo C - el `inset` solo no dimensiona el input: regresion real, atrapada por CI
 
-| # | Cambio | Archivo(s) | Responde |
-|---|---|---|---|
-| 1 | `Math.random` -> `useId` de `react-aria/useId` + sanitizador | `Checkbox.tsx`, `RadioGroup.tsx` | C2 |
-| 2 | `inset` shorthand en lugar de `top`/`left` + `anchor-size` sueltos | `hiddenInputAnchor.ts` | C6 |
-| 3 | Nombre del ancla por CSS variable, leida en host **y** input; eliminar el layout effect y el `getComputedStyle` | `hiddenInputAnchor.ts`, `Checkbox.tsx`, `RadioGroup.tsx` | C4, C3 |
-| 4 | Borrar las 2 stories | `stories/*.stories.tsx` | C1 |
-| 5 | Tests: reemplazar el de classname por uno de la custom property; agregar test RTL | `test/Checkbox.sr-focus.browser.test.tsx` | C4, C6 |
-| 6 | ~~Verificar scroll~~ | - | Cerrado: era artefacto de medicion, no hay bug |
+Al pasar los offsets al shorthand `inset` saque los `width`/`height: anchor-size()`. Eso **rompio WebKit**, y no se veia en Chromium (el unico browser que tenia instalado).
 
-Nota: el paso 3 hace desaparecer `useHiddenInputAnchor` y `getAnchorSupport`. El archivo `hiddenInputAnchor.ts` queda solo con los estilos, o se fusiona en un helper por componente.
+Un `input` de checkbox o radio es un **control reemplazado con tamano intrinseco**. Medido en WebKit 26:
 
-Verificacion antes de pushear: `yarn lint`, `vitest` unit, y `test-browser` (`yarn playwright install && vitest run --config=vitest.browser.config.ts`). CI del repo corre `test-16/17/18` y `test-browser`, que es exactamente donde rompio `useId` la primera vez.
+| Declaracion sobre el input | Resultado (WebKit) |
+|---|---|
+| `inset` solo (mi version) | input **12x12**, no cubre el componente |
+| `inset` + `anchor-size` | input = componente, exacto |
+| `top`/`left` + `anchor-size` (version vieja) | input = componente, exacto |
+| `input type=text` + `inset` solo (control) | input = componente |
+| `radio` + `inset` solo | input **12x12**, no cubre |
+
+Chromium estira el control desde `inset` solo; WebKit no. Por eso los browser tests pasaban en local y fallaron en CI en `test-browser` (7 fallos: 6 webkit + 1 firefox).
+
+**Evidencia A/B que lo cerro:** con el codigo viejo (`1b4a15c`) + test viejo, WebKit pasa 4/4. Con el codigo nuevo, falla. Regresion nuestra, no test fragil.
+
+**Arreglo:** `inset` (offsets, correcto en RTL) **+** `width`/`height: anchor-size()` (dimension). Con ambos la caja coincide exacta (delta 0x0 medido).
+
+#### El otro fallo: assertion fuera del guard (Firefox)
+
+`expect(new Set(names).size).toBe(labels.length)` estaba **fuera** del `if (supportsAnchorPositioning())`. Firefox 144 no soporta anchor positioning, el `anchor-name` inline se descarta y los 3 labels computan al mismo valor vacio -> Set de tamano 1 vs 3 labels. Movido adentro del guard.
+
+**Leccion operativa:** no declarar comportamiento cross-browser medido en un solo motor. `test-browser` del repo corre chromium + firefox + webkit, y los tres hacen falta antes de pushear.
+
+---
+
+## 4. Plan de arreglos (ejecutado)
+
+| # | Cambio | Archivo(s) | Responde | Estado |
+|---|---|---|---|---|
+| 1 | `Math.random` -> `useId` de `react-aria/useId` + sanitizador | `Checkbox.tsx`, `RadioGroup.tsx` | C2 | Hecho |
+| 2 | `inset` para los offsets **+ `anchor-size` para el tamano** | `hiddenInputAnchor.ts` | C6, Hallazgo C | Hecho (`6996f68`) |
+| 3 | Nombre del ancla por CSS variable, leida en host **y** input; eliminar el layout effect y el `getComputedStyle` | `hiddenInputAnchor.ts`, `Checkbox.tsx`, `RadioGroup.tsx` | C4, C3 | Hecho |
+| 4 | Borrar las 2 stories | `stories/*.stories.tsx` | C1 | Hecho |
+| 5 | Tests: test de la custom property + RTL + por-instancia; assertion movida al guard | `test/Checkbox.sr-focus.browser.test.tsx` | C4, C6, Hallazgo C | Hecho (`6996f68`) |
+| 6 | Verificar scroll | - | Cerrado: era artefacto de medicion | Hecho |
+
+**Commits pusheados a la rama del fork:**
+
+| sha | Mensaje |
+|---|---|
+| `0c48f75` | `fix: resolve hidden input anchor via CSS custom property` |
+| `6996f68` | `fix: size the hidden input explicitly for WebKit` |
+
+**Verificacion final (head `6996f68`):** CI CircleCI **success** en todos los checks, incluido `test-browser` (chromium + firefox + webkit). Local: jest del paquete RAC 1637 passed (antes del fix de sizing, que no toca unit tests), browser tests 6/6 en chromium y webkit, oxlint 0 errores, oxfmt OK, typecheck 0 errores en RAC.
 
 ---
 

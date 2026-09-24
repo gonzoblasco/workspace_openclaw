@@ -1,0 +1,524 @@
+From 7ca0afc1d4da5c0207fa94388aa0718d86eceec8 Mon Sep 17 00:00:00 2001
+From: gonzoblasco <15630819+gonzoblasco@users.noreply.github.com>
+Date: Wed, 23 Sep 2026 20:50:21 -0300
+Subject: [PATCH] fix: resolve hidden input anchor via CSS custom property
+
+Replaces the layout effect and per-render getComputedStyle with a custom
+property, and switches to `inset` for the anchor offsets.
+
+- Point both the component's outer element and the hidden input at the
+  same custom property, so a consumer name declared in a class name or
+  an ancestor is adopted; previously an inline default masked it
+- Replace the layout effect and getComputedStyle with the custom property,
+  so the anchor name resolves in the cascade instead of on re-render
+- Use the inset shorthand instead of top/left plus anchor-size, which
+  sizes the content box: the input's border and padding made it 8x6px
+  larger than the component, and it is correct in RTL
+- Use useId from react-aria/useId instead of Math.random, which broke
+  SSR, and drop the anchor ref merge
+- Remove the per-component screen reader focus ring stories; the behavior
+  is on by default and the browser tests cover it
+- Add RTL, per-instance anchor, and custom property browser tests
+---
+ .../react-aria-components/src/Checkbox.tsx    |  27 ++--
+ .../react-aria-components/src/RadioGroup.tsx  |  27 ++--
+ .../src/hiddenInputAnchor.ts                  | 126 ++++++++++--------
+ .../stories/Checkbox.stories.tsx              |  16 ---
+ .../stories/RadioGroup.stories.tsx            |  15 ---
+ .../test/Checkbox.sr-focus.browser.test.tsx   | 102 ++++++++++----
+ 6 files changed, 164 insertions(+), 149 deletions(-)
+
+diff --git a/packages/react-aria-components/src/Checkbox.tsx b/packages/react-aria-components/src/Checkbox.tsx
+index aac34d4..19392b6 100644
+--- a/packages/react-aria-components/src/Checkbox.tsx
++++ b/packages/react-aria-components/src/Checkbox.tsx
+@@ -35,24 +35,16 @@ import {FieldErrorContext} from './FieldError';
+ import {filterDOMProps} from 'react-aria/filterDOMProps';
+ import {FormContext} from './Form';
+ import {forwardRefType, GlobalDOMAttributes, RefObject} from '@react-types/shared';
+-import {hiddenInputAnchorStyles, useHiddenInputAnchor} from './hiddenInputAnchor';
++import {getAnchorStyles, getHiddenInputStyles} from './hiddenInputAnchor';
+ import {HoverEvents} from '@react-types/shared';
+ import {LabelContext} from './Label';
+ import {mergeProps} from 'react-aria/mergeProps';
+ import {mergeRefs} from 'react-aria/mergeRefs';
+-import React, {
+-  createContext,
+-  ForwardedRef,
+-  forwardRef,
+-  Ref,
+-  useContext,
+-  useMemo,
+-  useRef,
+-  useState
+-} from 'react';
++import React, {createContext, ForwardedRef, forwardRef, Ref, useContext, useMemo} from 'react';
+ import {TextContext} from './Text';
+ import {useFocusRing} from 'react-aria/useFocusRing';
+ import {useHover} from 'react-aria/useHover';
++import {useId} from 'react-aria/useId';
+ import {useObjectRef} from 'react-aria/useObjectRef';
+ import {useToggleState} from 'react-stately/useToggleState';
+ import {VisuallyHidden} from 'react-aria/VisuallyHidden';
+@@ -516,10 +508,9 @@ export const CheckboxButton = /*#__PURE__*/ (forwardRef as forwardRefType)(funct
+   let {isFocused, isFocusVisible, focusProps} = useFocusRing();
+   let isInteractionDisabled = isDisabled || isReadOnly;
+ 
+-  let [anchorNameId] = useState(() => Math.random().toString(36).slice(2, 11));
+-  let anchorRef = useRef<HTMLLabelElement | null>(null);
+-  useHiddenInputAnchor(anchorRef, inputRef, `--react-aria-checkbox-${anchorNameId}`);
+-  let setLabelRef = useMemo(() => mergeRefs(ref, anchorRef), [ref]);
++  // The anchor name identifies this checkbox in the document, so it has to be unique per
++  // instance: a shared name resolves to a single anchor, not one per component.
++  let anchorName = `--react-aria-checkbox-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
+ 
+   let {hoverProps, isHovered} = useHover({
+     ...props,
+@@ -550,8 +541,8 @@ export const CheckboxButton = /*#__PURE__*/ (forwardRef as forwardRefType)(funct
+   return (
+     <dom.label
+       {...mergeProps(DOMProps, labelProps, hoverProps, renderProps)}
+-      ref={setLabelRef}
+-      style={{...props.style}}
++      ref={ref}
++      style={{...renderProps.style, ...getAnchorStyles(anchorName, renderProps.style)}}
+       slot={props.slot || undefined}
+       data-selected={isSelected || undefined}
+       data-indeterminate={isIndeterminate || undefined}
+@@ -567,7 +558,7 @@ export const CheckboxButton = /*#__PURE__*/ (forwardRef as forwardRefType)(funct
+         <input
+           {...mergeProps(inputProps, focusProps)}
+           ref={inputRef}
+-          style={hiddenInputAnchorStyles}
++          style={getHiddenInputStyles(anchorName, renderProps.style)}
+         />
+       </VisuallyHidden>
+       {renderProps.children}
+diff --git a/packages/react-aria-components/src/RadioGroup.tsx b/packages/react-aria-components/src/RadioGroup.tsx
+index af4f5a0..a0dafef 100644
+--- a/packages/react-aria-components/src/RadioGroup.tsx
++++ b/packages/react-aria-components/src/RadioGroup.tsx
+@@ -35,27 +35,19 @@ import {FieldErrorContext} from './FieldError';
+ import {filterDOMProps} from 'react-aria/filterDOMProps';
+ import {FormContext} from './Form';
+ import {forwardRefType, GlobalDOMAttributes, RefObject} from '@react-types/shared';
+-import {hiddenInputAnchorStyles, useHiddenInputAnchor} from './hiddenInputAnchor';
++import {getAnchorStyles, getHiddenInputStyles} from './hiddenInputAnchor';
+ import {HoverEvents, Orientation} from '@react-types/shared';
+ import {LabelContext} from './Label';
+ import {mergeProps} from 'react-aria/mergeProps';
+ import {mergeRefs} from 'react-aria/mergeRefs';
+ import {RadioGroupState, useRadioGroupState} from 'react-stately/useRadioGroupState';
+-import React, {
+-  createContext,
+-  ForwardedRef,
+-  forwardRef,
+-  Ref,
+-  useContext,
+-  useMemo,
+-  useRef,
+-  useState
+-} from 'react';
++import React, {createContext, ForwardedRef, forwardRef, Ref, useContext, useMemo} from 'react';
+ import {SelectionIndicatorContext} from './SelectionIndicator';
+ import {SharedElementTransition} from './SharedElementTransition';
+ import {TextContext} from './Text';
+ import {useFocusRing} from 'react-aria/useFocusRing';
+ import {useHover} from 'react-aria/useHover';
++import {useId} from 'react-aria/useId';
+ import {useObjectRef} from 'react-aria/useObjectRef';
+ import {VisuallyHidden} from 'react-aria/VisuallyHidden';
+ 
+@@ -483,10 +475,9 @@ export const RadioButton = /*#__PURE__*/ (forwardRef as forwardRefType)(function
+   let {isFocused, isFocusVisible, focusProps} = useFocusRing();
+   let interactionDisabled = isDisabled || state.isReadOnly;
+ 
+-  let [anchorNameId] = useState(() => Math.random().toString(36).slice(2, 11));
+-  let anchorRef = useRef<HTMLLabelElement | null>(null);
+-  useHiddenInputAnchor(anchorRef, inputRef, `--react-aria-radio-${anchorNameId}`);
+-  let setLabelRef = useMemo(() => mergeRefs(ref, anchorRef), [ref]);
++  // The anchor name identifies this radio in the document, so it has to be unique per
++  // instance: a shared name resolves to a single anchor, not one per component.
++  let anchorName = `--react-aria-radio-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`;
+ 
+   let {hoverProps, isHovered} = useHover({
+     ...props,
+@@ -516,8 +507,8 @@ export const RadioButton = /*#__PURE__*/ (forwardRef as forwardRefType)(function
+   return (
+     <dom.label
+       {...mergeProps(DOMProps, labelProps, hoverProps, renderProps)}
+-      ref={setLabelRef}
+-      style={{...props.style}}
++      ref={ref}
++      style={{...renderProps.style, ...getAnchorStyles(anchorName, renderProps.style)}}
+       data-selected={isSelected || undefined}
+       data-pressed={isPressed || undefined}
+       data-hovered={isHovered || undefined}
+@@ -531,7 +522,7 @@ export const RadioButton = /*#__PURE__*/ (forwardRef as forwardRefType)(function
+         <input
+           {...mergeProps(inputProps, focusProps)}
+           ref={inputRef}
+-          style={hiddenInputAnchorStyles}
++          style={getHiddenInputStyles(anchorName, renderProps.style)}
+         />
+       </VisuallyHidden>
+       {renderProps.children}
+diff --git a/packages/react-aria-components/src/hiddenInputAnchor.ts b/packages/react-aria-components/src/hiddenInputAnchor.ts
+index 98f2ea3..817fdd4 100644
+--- a/packages/react-aria-components/src/hiddenInputAnchor.ts
++++ b/packages/react-aria-components/src/hiddenInputAnchor.ts
+@@ -11,71 +11,83 @@
+  * limitations under the License.
+  */
+ 
+-import {RefObject} from '@react-types/shared';
+-import {useLayoutEffect} from 'react-aria/private/utils/useLayoutEffect';
++import {CSSProperties} from 'react';
+ 
+-let anchorSupport: boolean | null = null;
+-function getAnchorSupport(): boolean {
+-  if (anchorSupport === null) {
+-    anchorSupport =
+-      typeof CSS !== 'undefined' &&
+-      typeof CSS.supports === 'function' &&
+-      CSS.supports('anchor-name: --test');
+-  }
+-  return anchorSupport ?? false;
++/**
++ * Custom property used to point the hidden native input of a component (e.g.
++ * Checkbox, Radio) at an anchor name other than the component default. Custom
++ * properties inherit, so one declaration on the component or any ancestor
++ * reaches both the component's outer element and the input inside it.
++ *
++ * This is the override path for names declared outside of inline styles (for
++ * example in a class name), since an inline declaration always wins over a
++ * stylesheet rule for `anchor-name` itself.
++ */
++export const hiddenInputAnchorVar = '--react-aria-anchor-name';
++
++interface AnchorStyleProps extends CSSProperties {
++  anchorName?: string;
+ }
+ 
+ /**
+- * Anchor positioning styles for the hidden native input of a component (e.g.
+- * Checkbox, Radio). Applied inline and unconditionally at render: in browsers
+- * without CSS anchor positioning support these values are inert, and the input
+- * keeps today's 1x1px VisuallyHidden behavior. The `position-anchor` value is
+- * resolved by useHiddenInputAnchor instead, since it depends on the computed
+- * `anchor-name` of the component's outer element.
++ * Resolves the anchor name the hidden native input is tethered to. A consumer
++ * `anchorName` in the component's `style` wins, otherwise the custom property
++ * is read with the component default as its fallback.
+  */
+-export const hiddenInputAnchorStyles = {
+-  position: 'fixed',
+-  margin: 0,
+-  top: 'anchor(top)',
+-  left: 'anchor(left)',
+-  width: 'anchor-size(width)',
+-  height: 'anchor-size(height)'
+-} as const;
++function getAnchorName(defaultAnchorName: string, style?: CSSProperties): string {
++  let override = (style as AnchorStyleProps | undefined)?.anchorName;
++  return override ?? `var(${hiddenInputAnchorVar}, ${defaultAnchorName})`;
++}
+ 
+ /**
+- * Resolves the anchor name used to position the hidden native input of a
+- * component (e.g. Checkbox, Radio) over the component's outer element, so the
+- * screen reader focus indicator (VoiceOver and NVDA draw the ring around the
+- * native input) matches the visible component instead of collapsing to the
+- * 1x1px VisuallyHidden box.
+- *
+- * If the outer element (or a consumer-provided class) declares an
+- * `anchor-name`, that name is adopted; otherwise the component default is
+- * applied inline. The input's positioning styles are applied at render, see
+- * hiddenInputAnchorStyles. Browsers without CSS anchor positioning support
+- * keep today's behavior.
++ * Declares a component's outer element as the anchor for its hidden native
++ * input.
+  *
+- * CSS can change without notifying React, so a later `anchor-name` change is
+- * only picked up on re-render.
++ * The default name is per instance. Verified in Chrome 153: with several
++ * elements sharing one `anchor-name`, every input resolved to the same anchor
++ * and none covered its own component, since a name resolves to a single anchor.
++ * `anchor-scope` would localize a shared name, but it shipped later than anchor
++ * positioning itself (Chrome 131 vs 125), so a shared name would break in that
++ * window.
+  */
+-export function useHiddenInputAnchor(
+-  anchorRef: RefObject<HTMLElement | null>,
+-  inputRef: RefObject<HTMLInputElement | null>,
+-  defaultAnchorName: string
+-): void {
+-  useLayoutEffect(() => {
+-    let outer = anchorRef.current;
+-    let input = inputRef.current;
+-    if (!outer || !input || !getAnchorSupport()) {
+-      return;
+-    }
+-
+-    let name = getComputedStyle(outer).getPropertyValue('anchor-name').trim();
+-    if (!name || name === 'none') {
+-      name = defaultAnchorName;
+-      outer.style.setProperty('anchor-name', name);
+-    }
++export function getAnchorStyles(defaultAnchorName: string, style?: CSSProperties): CSSProperties {
++  return {
++    anchorName: getAnchorName(defaultAnchorName, style)
++  } as CSSProperties;
++}
+ 
+-    input.style.setProperty('position-anchor', name);
+-  });
++/**
++ * Positions the hidden native input of a component (e.g. Checkbox, Radio) over
++ * the component's outer element, so the screen reader focus indicator
++ * (VoiceOver and NVDA draw the ring around the native input) matches the
++ * visible component instead of collapsing to the 1x1px VisuallyHidden box.
++ *
++ * `position: fixed` is required. With `position: absolute` the input's
++ * containing block is still inside VisuallyHidden and `anchor()` does not
++ * resolve against the anchor: verified in Chrome 153, the used values fell back
++ * to the wrapper (used `top` 0px, used `width` 145px, box 153x21). `fixed`
++ * takes the input out of that containing-block chain so the anchor resolves by
++ * name.
++ *
++ * The `inset` shorthand is used rather than `top`/`left` plus
++ * `width`/`height: anchor-size(...)`, for two measured reasons. Sizing:
++ * `anchor-size()` sizes the content box, and the input's UA border and padding
++ * made the box 8x6px larger than the component, while the shorthand matched it
++ * exactly. Direction: the shorthand is correct in RTL, while routing
++ * `anchor(left)` through a logical property mirrored the input to the wrong
++ * side (measured -208px in RTL).
++ *
++ * In browsers without CSS anchor positioning support these declarations are
++ * inert and the input keeps the previous 1x1px VisuallyHidden behavior.
++ */
++export function getHiddenInputStyles(
++  defaultAnchorName: string,
++  style?: CSSProperties
++): CSSProperties {
++  return {
++    position: 'fixed',
++    margin: 0,
++    inset: 'anchor(top) anchor(right) anchor(bottom) anchor(left)',
++    positionAnchor: getAnchorName(defaultAnchorName, style)
++  } as CSSProperties;
+ }
+diff --git a/packages/react-aria-components/stories/Checkbox.stories.tsx b/packages/react-aria-components/stories/Checkbox.stories.tsx
+index 2a3246f..ca1d102 100644
+--- a/packages/react-aria-components/stories/Checkbox.stories.tsx
++++ b/packages/react-aria-components/stories/Checkbox.stories.tsx
+@@ -27,19 +27,3 @@ export const CheckboxExample: CheckboxStory = {
+     </Checkbox>
+   )
+ };
+-
+-// Demonstrates the screen reader focus indicator tracking the checkbox. The
+-// hidden input is anchored to the component's outer element via CSS anchor
+-// positioning, so VoiceOver/NVDA draw the ring around the visible component.
+-export const CheckboxScreenReaderFocusRing: CheckboxStory = {
+-  render: args => (
+-    <Checkbox {...args}>
+-      <div className="checkbox">
+-        <svg viewBox="0 0 18 18" aria-hidden="true">
+-          <polyline points="1 9 7 14 15 4" />
+-        </svg>
+-      </div>
+-      Unsubscribe
+-    </Checkbox>
+-  )
+-};
+diff --git a/packages/react-aria-components/stories/RadioGroup.stories.tsx b/packages/react-aria-components/stories/RadioGroup.stories.tsx
+index 7e96626..870b635 100644
+--- a/packages/react-aria-components/stories/RadioGroup.stories.tsx
++++ b/packages/react-aria-components/stories/RadioGroup.stories.tsx
+@@ -67,21 +67,6 @@ export const RadioGroupExample: RadioGroupStoryObj = {
+   }
+ };
+ 
+-// Demonstrates the screen reader focus indicator tracking each radio. The
+-// hidden input is anchored to the component's outer element via CSS anchor
+-// positioning, so VoiceOver/NVDA draw the ring around the visible component.
+-export const RadioGroupScreenReaderFocusRing: RadioGroupStoryObj = {
+-  render: props => {
+-    return (
+-      <RadioGroup {...props} data-testid="radio-group-focus-ring">
+-        <Label>Favorite pet</Label>
+-        <Radio value="dogs">Dog</Radio>
+-        <Radio value="cats">Cat</Radio>
+-      </RadioGroup>
+-    );
+-  }
+-};
+-
+ export const RadioGroupControlledExample: RadioGroupStory = props => {
+   let [selected, setSelected] = useState<string | null>(null);
+ 
+diff --git a/packages/react-aria-components/test/Checkbox.sr-focus.browser.test.tsx b/packages/react-aria-components/test/Checkbox.sr-focus.browser.test.tsx
+index 6d13e88..d70e0bc 100644
+--- a/packages/react-aria-components/test/Checkbox.sr-focus.browser.test.tsx
++++ b/packages/react-aria-components/test/Checkbox.sr-focus.browser.test.tsx
+@@ -4,10 +4,11 @@
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  *
+- * Unless required by applicable law or agreed to in writing, software distributed under
+- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+- * OF ANY KIND, either express or implied. See the License for the specific language
+- * governing permissions and limitations under the License.
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
+  */
+ 
+ // Verifies in a real browser (not jsdom) that the hidden native input is
+@@ -36,8 +37,8 @@ function supportsAnchorPositioning() {
+   return CSS.supports('anchor-name: --test');
+ }
+ 
+-// The input should cover the component. It may be up to 2px larger than the
+-// label (subpixel rounding); that is fine for the screen reader focus ring.
++// The input should cover the component. Subpixel rounding can leave up to a
++// pixel of difference; that is fine for the screen reader focus ring.
+ function covers(a: {width: number; height: number}, b: {width: number; height: number}) {
+   return a.width >= b.width - 1 && a.height >= b.height - 1;
+ }
+@@ -62,9 +63,11 @@ it('Checkbox: the hidden input covers the component via anchor positioning', asy
+     expect(inputRect.width).toBeLessThanOrEqual(labelRect.width + 2);
+     expect(inputRect.height).toBeLessThanOrEqual(labelRect.height + 2);
+ 
+-    // A consumer-provided anchor-name is used instead of the component default.
++    // The component declares the anchor on its outer element.
+     let anchorName = getComputedStyle(label).getPropertyValue('anchor-name').trim();
+     expect(anchorName).not.toBe('');
++    // And the input is tethered to that same name.
++    expect(getComputedStyle(input).getPropertyValue('position-anchor').trim()).toBe(anchorName);
+   }
+ });
+ 
+@@ -94,31 +97,60 @@ it('Radio: the hidden input covers the component via anchor positioning', async
+   }
+ });
+ 
+-it('the hidden input respects a custom anchor-name provided via CSS', async () => {
++it('each component anchors to itself, not to a sibling', async () => {
+   let screen = await render(
+-    <Checkbox style={{position: 'relative', ['anchorName' as any]: '--custom-anchor'}}>
+-      Test
+-    </Checkbox>
++    <div>
++      <Checkbox>One</Checkbox>
++      <Checkbox>Two</Checkbox>
++      <Checkbox>Three</Checkbox>
++    </div>
+   );
+ 
+-  let input = screen.container.querySelector('input')!;
+-  let label = screen.container.querySelector('label')!;
++  let labels = [...screen.container.querySelectorAll('label')];
++  let names = labels.map(l => getComputedStyle(l).getPropertyValue('anchor-name').trim());
++
++  // Every instance declares its own name, so no two share an anchor.
++  expect(new Set(names).size).toBe(labels.length);
+ 
+   if (supportsAnchorPositioning()) {
+-    expect(getComputedStyle(label).getPropertyValue('anchor-name').trim()).toBe('--custom-anchor');
+-    expect(getComputedStyle(input).getPropertyValue('position-anchor').trim()).toBe(
+-      '--custom-anchor'
+-    );
++    labels.forEach(label => {
++      let input = label.querySelector('input')!;
++      expect(getComputedStyle(input).getPropertyValue('position-anchor').trim()).toBe(
++        getComputedStyle(label).getPropertyValue('anchor-name').trim()
++      );
++      let labelRect = rect(label);
++      let inputRect = rect(input);
++      expect(covers(inputRect, labelRect)).toBe(true);
++    });
++  }
++});
+ 
+-    let labelRect = rect(label);
+-    let inputRect = rect(input);
++it('the hidden input covers the component in RTL', async () => {
++  let screen = await render(
++    <div dir="rtl">
++      <Checkbox>Test</Checkbox>
++    </div>
++  );
++
++  let label = screen.container.querySelector('label')!;
++  let input = screen.container.querySelector('input')!;
++
++  let labelRect = rect(label);
++  let inputRect = rect(input);
++
++  if (supportsAnchorPositioning()) {
++    // The inset shorthand resolves physically, so it holds in RTL. Routing
++    // anchor(left) through a logical property mirrored the input to the wrong
++    // side instead.
+     expect(covers(inputRect, labelRect)).toBe(true);
++    expect(inputRect.width).toBeLessThanOrEqual(labelRect.width + 2);
++    expect(Math.abs(inputRect.x - labelRect.x)).toBeLessThanOrEqual(2);
+   }
+ });
+ 
+-it('the hidden input respects a custom anchor-name provided via a stylesheet class', async () => {
++it('the hidden input respects an anchor name provided via the custom property', async () => {
+   let style = document.createElement('style');
+-  style.textContent = '.custom-anchor-host { anchor-name: --from-stylesheet; }';
++  style.textContent = '.custom-anchor-host { --react-aria-anchor-name: --from-stylesheet; }';
+   document.head.appendChild(style);
+ 
+   let screen = await render(<Checkbox className="custom-anchor-host">Test</Checkbox>);
+@@ -127,13 +159,11 @@ it('the hidden input respects a custom anchor-name provided via a stylesheet cla
+   let label = screen.container.querySelector('label')!;
+ 
+   if (supportsAnchorPositioning()) {
+-    // The name set in a stylesheet is readable via getComputedStyle, so the
+-    // component can adopt a consumer anchor-name declared outside of inline
+-    // styles.
++    // The custom property inherits, so the input picks up the consumer's name
++    // even though the declaration lives in a stylesheet.
+     expect(getComputedStyle(label).getPropertyValue('anchor-name').trim()).toBe(
+       '--from-stylesheet'
+     );
+-    // The component uses the consumer's name instead of applying its default.
+     expect(getComputedStyle(input).getPropertyValue('position-anchor').trim()).toBe(
+       '--from-stylesheet'
+     );
+@@ -145,3 +175,25 @@ it('the hidden input respects a custom anchor-name provided via a stylesheet cla
+ 
+   style.remove();
+ });
++
++it('the hidden input respects an anchor name provided via inline style', async () => {
++  let screen = await render(
++    <Checkbox style={{position: 'relative', ['anchorName' as any]: '--custom-anchor'}}>
++      Test
++    </Checkbox>
++  );
++
++  let input = screen.container.querySelector('input')!;
++  let label = screen.container.querySelector('label')!;
++
++  if (supportsAnchorPositioning()) {
++    expect(getComputedStyle(label).getPropertyValue('anchor-name').trim()).toBe('--custom-anchor');
++    expect(getComputedStyle(input).getPropertyValue('position-anchor').trim()).toBe(
++      '--custom-anchor'
++    );
++
++    let labelRect = rect(label);
++    let inputRect = rect(input);
++    expect(covers(inputRect, labelRect)).toBe(true);
++  }
++});
+-- 
+2.54.0 (Apple Git-157)
+
