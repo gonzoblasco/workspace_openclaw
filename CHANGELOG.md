@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Guardia de contraste WCAG para la paleta de kanam-os
+
+### Added
+- **`scripts/check-contrast.py`:** revisa el contraste WCAG 2.1 del CSS real de kanam-os y falla con exit 1 si el texto baja de 4.5:1 (AA), el borde de un CONTROL baja de 3:1 (1.4.11), el indicador de foco baja de 3:1 (1.4.11 + 2.4.7), o desaparecen las reglas `:focus-visible`. Existe porque el contraste se habia revisado a mano UNA vez y una revision manual no protege nada: el proximo cambio de color lo rompe sin que nadie note.
+- **`tests/python/test_contrast.py`:** 10 tests. El central es `test_detecta_la_paleta_vieja`, que prueba que el chequeo PUEDE fallar usando la paleta que tenia el defecto real.
+
+### Fixed
+- **La auditoria manual de contraste estaba rota.** Comparaba claves con `--` contra claves sin `--`, asi que nunca encontraba un par y reportaba "0 fallas". Detectado al correrla y ver que devolvia cero pares sobre un CSS con 9: un chequeo que no puede fallar no verifica nada. El script nuevo extrae las variables quitando el `--` en un solo lugar.
+- **Un test nacia ciego, igual que el bug que previene.** `test_detecta_falta_de_foco_visible` renombraba `focus-visible` a `focus-visible-x`, que contiene el original como substring: el check seguia viendolo y el test fallaba. Ahora reemplaza el token completo y verifica con un assert que desaparecio.
+
+### Notes
+- El defecto real que motiva el guardia: `.input`, `.btn` y `.chip` usaban `--border` (#24302d) como limite de componente = **1.31:1** sobre panel, cuando 1.4.11 pide 3:1. Y `.input:focus` tenia `outline: none` con borde accent-dim (**2.97:1**): navegar con teclado era a ciegas.
+- La app tiene su propio commit (`kanam-os` 997a5a4) con la paleta corregida. El workspace ignora `projects/*/*`, asi que el codigo de la app no viaja en este repo: por eso el chequeo se registra como test de la suite, no como hook del pre-commit.
+
+---
+
 ## [2026-09-24] - Registro de apuestas + punto de retorno pre-kanam-insight
 
 ### Added
