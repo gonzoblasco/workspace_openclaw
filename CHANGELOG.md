@@ -123,6 +123,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Migracion del venv a Python 3.12 (era 3.9.6)
+
+### Changed
+- **`projects/langchain-starter/venv` migrado de 3.9.6 a 3.12.14.** El venv es compartido con `kanam-insight`, asi que la migracion alcanza a los dos proyectos.
+- **`requirements.txt`:** la cabecera ya no declara 3.9.6 como deuda.
+- **`README.md` de langchain-starter:** la seccion de estado refleja 3.12.14.
+- **`.gitignore` de ambos proyectos:** ahora cubren `venv3*/` y `venv3*-backup/` (los nombres que usa una migracion de version). Sin esto, un venv de backup habria aparecido en `git status`.
+- **`LANGCHAIN_STRATEGY.md`:** el item de Python en la deuda tecnica marcado como cerrado; **5.1 (deuda de base) queda completa** (requirements pinneados + 3.12 + repo git + README + .env.example).
+- **`docs/adr/ADR-063`:** la consecuencia negativa sobre 3.9 marcada como cerrada.
+
+### Notes
+- **Proceso sin downtime:** el venv 3.12 se construyo aparte y se valido ANTES del swap (10 tests del starter + 18 de kanam-insight en verde, el indice Chroma de 1243 vectores legible desde 3.12, busqueda funcionando, embeddings de 1024 dim). Recien entonces se swapeo.
+- **El venv nuevo se creo DIRECTO en la ruta final** (`venv`), no renombrado: renombrar un venv rompe los shebangs del binario (leccion del 2026-09-22 aplicada).
+- **Venvs temporales a Trash**, no `rm`: recuperables si algo salia mal.
+- **Verificacion end-to-end post-migracion:** RAG via API (`POST /chat`) y agente con tools, ambos funcionando. El proceso del servicio corre bajo `python@3.12`.
+
 ## [2026-09-24] - Tests: red de seguridad para ambos proyectos (28 tests)
 
 ### Added

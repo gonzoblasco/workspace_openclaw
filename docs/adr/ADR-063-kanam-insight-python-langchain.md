@@ -50,7 +50,7 @@ Precedente del propio workspace: la regla *"el precedente no es un motivo"* (202
 - **El spec queda reescrito.** Quien lea el histórico verá TS + Bun y este ADR explicando por qué cambió.
 - **Se pierde la cercanía con el ecosistema TS/Node** donde viven la mayoría de los proyectos de producto (kanam-pulse, soporteml-v4, create-stack).
 - **Dependencia del `venv` del starter:** si ese venv se recrea o se muda, kanam-insight lo sigue. Se documenta el acoplamiento; un `requirements.txt` propio queda como deuda.
-- **Python 3.9 en el venv** (el starter arrastra esa versión). Funciona, pero está al final de su vida. Misma deuda que el starter.
+- **~~Python 3.9 en el venv~~ CERRADO (2026-09-24):** el venv migro a **3.12.14**. Era deuda real: el 3.9 lo arrastraba el starter y varias libs modernas requieren 3.10+.
 
 ---
 

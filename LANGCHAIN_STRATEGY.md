@@ -88,7 +88,7 @@ Gap entre "funciona" y "sirve como herramienta". Nada de esto bloquea la demo, t
 | Item | Estado real | Por qué importa |
 |---|---|---|
 | `requirements.txt` | **VACÍO (0 bytes)** | Sin pinning, el entorno no es reproducible. Nadie puede clonar y correr esto. Primer bloqueante de exportabilidad. |
-| Python | **3.9.6** en el venv (la estrategia dice 3.11+) | 3.9 está al final de su vida; varias libs modernas requieren 3.10+. Hay `python3.12` disponible en el sistema. |
+| ~~Python~~ | **CERRADO 2026-09-24:** era 3.9.6, hoy **3.12.14** | Migrado con validacion previa en venv paralelo (suites + indice + busqueda + embeddings + servicio vivo). |
 | Repo git | **No existe** (solo carpeta + `.knowledge/` en el workspace) | Sin repo no hay portabilidad, ni CI, ni entrega a un cliente. |
 | Base de conocimiento | **10 chunks de 1 solo documento** (`LANGCHAIN_STRATEGY.md`) | Es una demo, no una herramienta. Falta ingesta real. |
 | Tests | **Ninguno** | Sin red de seguridad, cada cambio es a ciegas. |
@@ -102,7 +102,7 @@ Gap entre "funciona" y "sirve como herramienta". Nada de esto bloquea la demo, t
 
 ### Fase 5: Solidez y uso real
 **Objetivo:** Que el servicio deje de ser una demo y pase a usarse todos los días.
-- [ ] **5.1 Cerrar deuda de base:** `requirements.txt` con versiones pinneadas, migrar a Python 3.12, repo git + README real, `.env.example` con contrato de config.
+- [x] **5.1 Cerrar deuda de base:** `requirements.txt` con versiones pinneadas ✅, Python 3.12 ✅ (2026-09-24), repo git ✅, README real ✅, `.env.example` ✅. **Deuda base cerrada.**
 - [ ] **5.2 Ingesta real de conocimiento:** indexar memoria y docs del workspace (dailies, `docs/`, `skills/`) con chunking por secciones. Criterio de éxito: preguntar algo de una sesión pasada y que responda con cita de fuente.
 - [ ] **5.3 Red de seguridad:** pytest para los 3 caminos críticos (chunking, retrieval, endpoint `/chat`).
 - **Hito:** el servicio responde preguntas reales sobre nuestro propio historial y es reproducible en otra máquina.
