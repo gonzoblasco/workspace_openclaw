@@ -6,6 +6,21 @@ Registro de cambios de skills del workspace. Los cambios estructurales del works
 
 ---
 
+## [2026-09-24] - Nueva skill: cross-engine-css-measurement
+
+### Contexto
+En el cierre del PR adobe/react-spectrum #10517 (anchor positioning en el input hidden de RAC Checkbox/Radio), CI fallo en WebKit (6 tests) y Firefox (1) despues de que el run local en chromium pasara 6/6. La causa era medible, pero el metodo para llegar a ella estaba en ningun lado: hubo que construir sondas, aislar variables y hacer un A/B contra el commit anterior para saber si la regresion era nuestra o el test era fragil.
+
+### Added
+- **`cross-engine-css-measurement`:** metodo para el caso "funciona en Chrome, falla en WebKit". Ocho pasos: nombrar el motor y la assertion que falla, reproducir con la geometria real del componente, aislar una variable por sonda, usar el mismo tipo de elemento (incluidos controles reemplazados), A/B contra el commit anterior, correr la matriz de motores del CI, medir layout esperando un frame, y provisionar el motor con `scripts/playwright-provision.sh`.
+
+### Notes
+- Los aprendizajes que la sostienen ya estaban registrados en la DB: `inset` posiciona pero no dimensiona (a11y #179), assertion fuera del guard de soporte (oss #180), medir esperando un frame (infraestructura #181).
+- Las sondas reproducibles viven en `docs/pr-10517-probes/`, no en `/tmp`.
+- El paso decisivo es el A/B (paso 5): "el test es muy estricto" y "rompimos algo" piden arreglos opuestos, y solo el run con el codigo viejo los separa.
+
+---
+
 ## [2026-09-22] - Curación del catálogo: presupuesto del prompt (47k -> 17.7k chars)
 
 ### Contexto

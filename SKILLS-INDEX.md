@@ -41,6 +41,7 @@
 | Skill | Descripción |
 |---|---|
 | [browser-testing-with-devtools](skills/browser-testing-with-devtools/) | Chrome DevTools MCP: DOM, console, network, performance en vivo |
+| [cross-engine-css-measurement](skills/cross-engine-css-measurement/) | "Funciona en Chrome, falla en WebKit": aislar la causa con sondas mínimas, A/B contra el commit anterior y matriz por motor. Basado en #10517 (anchor positioning) |
 | [a11y-at-validation](skills/a11y-at-validation/) | Cuándo la validación manual de accesibilidad es OBLIGATORIA (no opcional) en OSS, y cómo ejecutarla y documentarla. Basado en casos reales (radix-ui #4109/#4110) |
 
 ### Review
