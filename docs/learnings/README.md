@@ -16,11 +16,11 @@ Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde
 - **[a11y](docs/learnings/a11y.md)** - 6 lecciones
 - **[debugging](docs/learnings/debugging.md)** - 1 lecciones
 - **[infraestructura](docs/learnings/infraestructura.md)** - 48 lecciones
-- **[metodologia](docs/learnings/metodologia.md)** - 42 lecciones
+- **[metodologia](docs/learnings/metodologia.md)** - 44 lecciones
 - **[oss](docs/learnings/oss.md)** - 24 lecciones
 - **[pipeline-agentes](docs/learnings/pipeline-agentes.md)** - 15 lecciones
 - **[proyectos](docs/learnings/proyectos.md)** - 7 lecciones
 
 ## Total
 
-143 lecciones en total.
+145 lecciones en total.

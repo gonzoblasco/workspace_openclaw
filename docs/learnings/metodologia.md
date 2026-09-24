@@ -170,6 +170,8 @@ En la entrevista de OpenSistemas pasaron data incorrecta sobre su stack de agent
 
 Al citar data para afirmar algo del mercado actual, chequear la fecha de la fuente y si sigue vigente para el contexto. Error real: use la encuesta WebAIM #10 (2024) para afirmar que Windows domina laptops por precio, sin notar que la MacBook Neo (marzo 2026, USD 599) cambio el mercado. La data era real pero caducada para el contexto. La data de accesibilidad (WebAIM, cada ~2 anios) y la de mercado (IDC/Counterpoint, meses) se mueven a velocidades distintas. Aplica tambien a citar respuestas de issues/PRs viejos como si reflejaran el estado actual del codigo.
 
+**Actualizacion 2026-09-24 (misma clase, otro dominio):** aplica tambien a documentacion tecnica propia, no solo a fuentes de mercado. Caso: el ADR-049 (2026-09-15) afirmaba que `ollama launch claude --model` tenia un bug ("unknown option") y que no habia binario global `claude`/`qwen`. Ambos enunciados ERAN CIERTOS al escribirse y eran falsos al revalidarlos: el binario de Ollama es del 2026-09-19 (posterior al ADR) y `qwen` se instalo el 2026-09-22. Procedimiento obligatorio antes de declarar un documento equivocado: (1) leer el propio doc por si la ubicacion del artefacto esta descrita en otra parte (el harness embebido de Claude estaba donde el ADR decia), y (2) FECHAR el entorno - `stat -f '%SB' -t '%Y-%m-%d' <binario>` da la fecha de nacimiento. Reportar "dato caducado por el entorno" es un hallazgo DISTINTO de "el autor se equivoco": piden arreglos distintos (nota de revalidacion vs correccion), y confundirlos le entrega al usuario una acusacion falsa.
+
 **Tags:** mercado,2026-09-04
 
 ---
@@ -339,6 +341,28 @@ El idioma no es opcional ni cosmetico, y ya hay regla escrita en `AGENTS.md` ("R
 **Regla practica:** en respuestas largas o generadas de corrido, releer el primer parrafo antes de enviar y confirmar que esta en el idioma de la capa. Si dudo, releo el canal: reporte a Gonzo = espanol; superficie de GitHub = ingles.
 
 **Por que pasa:** es una falla de atencion, no de conocimiento (la regla ya existia). El riesgo crece cuando el texto es largo y se genera en un solo pase, o cuando se cambia de contexto entre capas (publicar en ingles en GitHub y despues reportar en espanol).
+
+---
+
+## Un artefacto ausente puede estar movido o removido en cleanup, no nunca creado
+
+Al auditar deuda documental, "el archivo no esta" tiene TRES causas distintas que piden arreglos opuestos: (1) NUNCA se creo -> hay que crearlo; (2) esta MOVIDO -> hay que corregir las referencias y no crear nada; (3) se REMOVIO en un cleanup deliberado -> hay que documentar donde fue y como recuperarlo.
+
+Verificado 2026-09-24: el reporte "3 artefactos prometidos y ausentes" era FALSO. LEARNINGS.md y METHODOLOGY-AUDIT.md existian pero mal ubicados (un commit previo movio 4 docs a docs/ y dejo 4 atras: movimiento incompleto), y el mockup de ADR-037 existio y se borro al limpiar el proyecto terminado. Crearlos de nuevo habria duplicado dos archivos vivos y dejado sin tocar el bug real que causaba el mal ubicamiento: dos scripts apuntando a docs/ mientras los archivos estaban en la raiz.
+
+Procedimiento antes de declarar ausente: git log --diff-filter=D (fue borrado?), git log --all -- <path> (existio alguna vez?), y buscar el nombre en todo el arbol. Distinguir "movido" y "removido en cleanup" de "nunca creado" evita trabajo duplicado y deja a la vista el bug de fondo.
+
+---
+
+## Un validador se prueba sembrando el defecto que debe detectar
+
+Un chequeo que solo se corrio contra datos limpios NO esta probado: puede estar devolviendo "todo ok" sin mirar nada. La unica forma de saber que un validador funciona es sembrarle el defecto que tiene que detectar y verificar que lo reporta.
+
+Verificado 2026-09-24 con los detectores de memory-wiki: tras activar el plugin e ingestar 3 fuentes, los reports daban "no issues" en todos los casos. Eso no probaba que funcionaran: podia ser que miraran correctamente y no hubiera nada, o que no miraran nada. Se creo una sonda deliberada (claim sin evidencia, confianza 0.2, estado contested, fecha vieja) y los tres detectores reportaron exactamente los tres defectos, con lint de 0 a 3 issues. Borrada la sonda, los reports se limpiaron solos. Recien ahi "funciona" paso de supuesto a verificado.
+
+Precedente en el mismo workspace: la auditoria de contraste de kanam-os comparaba claves con -- contra claves sin -- y reportaba "0 fallas" sobre un CSS con 9 pares. Un chequeo que no puede fallar no verifica nada. Y un test que nace ciego reproduce el bug que previene (el que renombraba focus-visible a focus-visible-x, que contiene el original como substring y el check seguia viendolo).
+
+Practica: por cada detector o guardia nuevo, escribir el caso sembrado que lo hace fallar, y correrlo. Si no se puede sembrar el defecto, el chequeo esta mal diseñado, no es que no haya defectos.
 
 ---
 
