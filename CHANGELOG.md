@@ -6,6 +6,25 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Temas dark y light en kanam-os + guardia multi-tema
+
+### Added
+- **Selector de tema en kanam-os (dark / light):** pedido de Gonzo. El tema se guarda en una cookie y lo resuelve el **servidor** en `app/layout.tsx`, escribiendo `<html data-theme>`. La via de cliente (localStorage + script) pintaria primero el tema por defecto y despues saltaria al elegido: un flash visible en cada carga. El selector es un `<form>` con server action, asi funciona tambien sin JS, y usa `aria-pressed` (son dos opciones de un grupo, no dos botones sueltos).
+- **`app/globals.css` con dos bloques de tema:** los MISMOS nombres de variable (`--bg`, `--text`, `--accent`...), asi ningun componente sabe que tema esta activo. Los valores NO son simetricos: el accent del tema oscuro (`#6ee7a0`) sobre blanco da 1.54:1, ilegible.
+
+### Fixed
+- **Seis colores hardcodeados pasaron a variables por tema.** `.badge-open`, `.badge-waiting_review`, `.badge-comment`, `.btn-warn` y `.chip-clear` tenian hex escritos a mano dentro de sus reglas. Dos son **controles** y incumplian WCAG 1.4.11 (1.24:1). Ademas un hex a mano esquiva cualquier validacion que solo mire las variables, y con dos temas el problema se duplica.
+- **`scripts/check-contrast.py` ahora cubre TODOS los temas.** Revisar uno solo deja el agujero abierto justo al agregar el segundo. Descubre los temas del CSS (`:root` + cada `[data-theme="X"]`), y evalua los hardcodeados contra todos: un color a mano tiene que cumplir en ambos.
+- **`iter_top_blocks` calculaba offsets sobre el CSS sin comentarios y los aplicaba al original.** Los indices quedaban corridos y una mutacion de prueba cambiaba la variable equivocada. Se detecto porque un test daba OK cuando tenia que fallar. Ahora `block_spans()` recorre con conciencia de comentarios.
+- **Cinco tests quedaron atados a un estado concreto** (asumian 1 ocurrencia por variable, o buscaban hex que ya no existian). Reescritos para buscar por **nombre** de variable y mutar un solo tema.
+
+### Notes
+- **Hallazgo de medicion:** recorriendo los grises, el unico que llega a 3:1 en los dos temas es `#888888` (min 3.07). Ese limite no es casualidad: es la razon de que cada tema tenga su propia paleta en vez de compartir colores fijos. Un hardcodeado "neutro" como `#000000` es ilegible en el tema oscuro (1.47:1).
+- **Claridad medida (CIE L*):** el tema oscuro quedo en bg L* 17.4 (referencia: VS Code dark+ 11.6, Dracula 17.2) y el claro en 97.7. Gonzo habia reportado DOS veces que estaba "demasiado oscuro": el primer ajuste subio de 4.0 a 6.6 y no se percibio (2.6 puntos no se notan).
+- Los 17 errores de `biome check` en kanam-os son **preexistentes**: verificado con `git stash`, identicos con y sin estos cambios. No se tocaron (fuera del alcance).
+
+---
+
 ## [2026-09-24] - Guardia de contraste WCAG para la paleta de kanam-os
 
 ### Added
