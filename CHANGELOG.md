@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Nuevo proyecto: kanam-spec (generador de especificaciones tecnicas)
+
+### Added
+- **`projects/kanam-spec/` (nuevo proyecto):** app web que convierte un brief corto en una especificacion tecnica completa, con IA local (Ollama) y catalogo de 14 secciones. Estructura triple-git: `.knowledge/` en el workspace, codigo en el repo del proyecto.
+- **`.knowledge/BRIEF.md` y `.knowledge/STATUS.md`:** alcance, stack y las decisiones de fondo (IA local en vez de cloud, catalogo fijo de secciones en vez de generacion libre, plantillas + IA, proxy local en vez de fetch directo a Ollama).
+- **`src/lib/sections.ts`:** fuente unica de la estructura de la spec: esqueleto de headings e instruccion por seccion.
+- **`server/index.mjs`:** servidor sin dependencias que sirve `dist/` y proxea `/api/ollama/*`. Evita CORS y `OLLAMA_ORIGINS`, y deja el puerto de Ollama en una variable de entorno.
+
+### Notes
+- Verificacion: 10 tests en verde (runner nativo de Node sobre TypeScript), `tsc --noEmit` limpio, build productivo OK, y smoke test del proxy contra Ollama (22 modelos, chat con y sin streaming).
+- Dos bugs reales encontrados y corregidos durante la verificacion: el proxy reescribia `/api/ollama/tags` a `/tags` (404 de Ollama) en vez de `/api/tags`; y el export a Markdown incluia los esqueletos de las secciones sin generar.
+- Pendiente de decision de Gonzo: crear el repo en GitHub y pushear (el workspace todavia no tiene el agregado `projects/` configurado en esta maquina).
+
+---
+
 ## [2026-09-24] - ADR-066: los guardias del workspace no leen codigo de proyectos (CI en rojo)
 
 ### Added
