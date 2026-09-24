@@ -1,0 +1,82 @@
+<!doctype html>
+<html><head><meta charset="utf-8"></head>
+<body><div id="results"></div>
+<script>
+let out = [];
+function box(t) { t.style.cssText = 'display:inline-block;width:100px;height:30px;background:#ccc'; }
+
+// 1) Does CSSOM expose camelCase anchorName / positionAnchor (what React style objects assign)?
+out.push({
+  has_style_anchorName: 'anchorName' in document.documentElement.style,
+  has_style_positionAnchor: 'positionAnchor' in document.documentElement.style,
+  has_style_anchorScope: 'anchorScope' in document.documentElement.style,
+  has_style_inset: 'inset' in document.documentElement.style
+});
+
+// 2) camelCase assignment path (React: style[styleName] = value)
+let a = document.createElement('div'); box(a);
+a.style.anchorName = '--camel';
+out.push({case:'camelCase-anchorName', applied: a.style.anchorName, cssTextHas: a.style.cssText.includes('anchor-name')});
+
+// 3) camelCase with var() fallback
+let b = document.createElement('div'); box(b);
+b.style.anchorName = 'var(--rac-anchor, --fallback)';
+out.push({case:'camelCase-anchorName-var', applied: b.style.anchorName});
+
+// 4) camelCase positionAnchor with var() fallback
+let c = document.createElement('div'); box(c);
+c.style.positionAnchor = 'var(--rac-anchor, --fallback)';
+out.push({case:'camelCase-positionAnchor-var', applied: c.style.positionAnchor});
+
+// 5) shorthand inset via setProperty with anchor()
+let d = document.createElement('div'); box(d);
+d.style.setProperty('inset', 'anchor(top) anchor(right) anchor(bottom) anchor(left)');
+out.push({case:'setProperty-inset-anchor', applied: d.style.getPropertyValue('inset'),
+  inset: getComputedStyle(d).inset});
+
+// 6) camelCase inset assignment
+let e = document.createElement('div'); box(e);
+e.style.inset = 'anchor(top) anchor(right) anchor(bottom) anchor(left)';
+out.push({case:'camelCase-inset-anchor', applied: e.style.inset});
+
+// 7) does the custom-property form of a var actually inherit and drive anchor-name?
+let host = document.createElement('div');
+host.style.cssText = 'position:relative;width:120px;height:40px;background:#ddd;margin:10px';
+host.style.anchorName = 'var(--rac-anchor, --comp)';
+let vh = document.createElement('span');
+vh.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)';
+let inp = document.createElement('input');
+inp.style.cssText = 'position:fixed;margin:0;inset:anchor(top) anchor(right) anchor(bottom) anchor(left)';
+inp.style.positionAnchor = 'var(--rac-anchor, --comp)';
+vh.appendChild(inp); host.appendChild(vh); document.body.appendChild(host);
+
+let hr = host.getBoundingClientRect(), ir = inp.getBoundingClientRect();
+out.push({case:'var-driven-default',
+  computedAnchorName: getComputedStyle(host).getPropertyValue('anchor-name').trim(),
+  computedPositionAnchor: getComputedStyle(inp).getPropertyValue('position-anchor').trim(),
+  host:{x:+hr.x.toFixed(1),y:+hr.y.toFixed(1),w:+hr.width.toFixed(1),h:+hr.height.toFixed(1)},
+  input:{x:+ir.x.toFixed(1),y:+ir.y.toFixed(1),w:+ir.width.toFixed(1),h:+ir.height.toFixed(1)},
+  covers: Math.abs(ir.x-hr.x)<=0.5 && Math.abs(ir.y-hr.y)<=0.5 && Math.abs(ir.width-hr.width)<=0.5 && Math.abs(ir.height-hr.height)<=0.5});
+
+// 8) consumer overrides via a class that sets the custom property
+let style = document.createElement('style');
+style.textContent = '.ovr { --rac-anchor: --consumer-name; }';
+document.head.appendChild(style);
+let host2 = document.createElement('div');
+host2.className = 'ovr';
+host2.style.cssText = 'position:relative;width:120px;height:40px;background:#ddd;margin:10px';
+host2.style.anchorName = 'var(--rac-anchor, --comp2)';
+let vh2 = document.createElement('span');
+vh2.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)';
+let inp2 = document.createElement('input');
+inp2.style.cssText = 'position:fixed;margin:0;inset:anchor(top) anchor(right) anchor(bottom) anchor(left)';
+inp2.style.positionAnchor = 'var(--rac-anchor, --comp2)';
+vh2.appendChild(inp2); host2.appendChild(vh2); document.body.appendChild(host2);
+let hr2 = host2.getBoundingClientRect(), ir2 = inp2.getBoundingClientRect();
+out.push({case:'var-consumer-override-class',
+  computedAnchorName: getComputedStyle(host2).getPropertyValue('anchor-name').trim(),
+  computedPositionAnchor: getComputedStyle(inp2).getPropertyValue('position-anchor').trim(),
+  covers: Math.abs(ir2.x-hr2.x)<=0.5 && Math.abs(ir2.y-hr2.y)<=0.5 && Math.abs(ir2.width-hr2.width)<=0.5 && Math.abs(ir2.height-hr2.height)<=0.5});
+
+document.getElementById('results').textContent = JSON.stringify(out, null, 2);
+</script></body></html>

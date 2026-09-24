@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  .vh { border:0; clip:rect(0 0 0 0); clip-path:inset(50%); height:1px; margin:-1px;
+        overflow:hidden; padding:0; position:absolute; width:1px; white-space:nowrap; }
+  .vhStatic { border:0; clip:rect(0 0 0 0); clip-path:inset(50%); height:1px; margin:-1px;
+        overflow:hidden; padding:0; width:1px; white-space:nowrap; } /* no position */
+  .host { position:relative; width:200px; height:40px; background:#ddd; margin:20px; }
+</style>
+</head>
+<body><div id="results"></div>
+
+<!-- M: abspos input inside a STATIC (non-positioned) VisuallyHidden-like wrapper -->
+<div class="host" id="hM"><span class="vhStatic"><input id="iM"></span>label</div>
+<!-- N: fixed baselines, inset shorthand, width/height omitted, LTR -->
+<div class="host" id="hN"><span class="vh"><input id="iN"></span>label</div>
+<!-- O: same, RTL -->
+<div class="host" id="hO" dir="rtl"><span class="vh"><input id="iO"></span>label</div>
+<!-- P: inset shorthand + border-box, LTR -->
+<div class="host" id="hP"><span class="vh"><input id="iP"></span>label</div>
+
+<script>
+let out=[];
+function g(id){let r=document.getElementById(id).getBoundingClientRect();
+  return {x:+r.x.toFixed(2),y:+r.y.toFixed(2),w:+r.width.toFixed(2),h:+r.height.toFixed(2)};}
+function run(name,hostId,inputId,styles){
+  let host=document.getElementById(hostId),input=document.getElementById(inputId);
+  let an='--x-'+hostId; host.style.setProperty('anchor-name',an);
+  Object.assign(input.style,styles,{'position-anchor':an});
+  let hr=g(hostId),ir=g(inputId);
+  out.push({case:name,host:hr,input:ir,
+    computedW:getComputedStyle(input).width, computedPos:getComputedStyle(input).position,
+    delta:{dx:+(ir.x-hr.x).toFixed(2),dy:+(ir.y-hr.y).toFixed(2),dw:+(ir.w-hr.w).toFixed(2),dh:+(ir.h-hr.h).toFixed(2)}});
+}
+
+// M: does anchor() resolve for abspos when the wrapper is NOT positioned?
+run('M-absolute-static-wrapper','hM','iM',{position:'absolute',margin:'0',
+  top:'anchor(top)',left:'anchor(left)',width:'anchor-size(width)',height:'anchor-size(height)'});
+
+run('N-inset-shorthand-fixed-ltr','hN','iN',{position:'fixed',margin:'0',
+  inset:'anchor(top) anchor(right) anchor(bottom) anchor(left)'});
+
+run('O-inset-shorthand-fixed-rtl','hO','iO',{position:'fixed',margin:'0',
+  inset:'anchor(top) anchor(right) anchor(bottom) anchor(left)'});
+
+run('P-inset-shorthand-bordercss','hP','iP',{position:'fixed',margin:'0',boxSizing:'border-box',
+  inset:'anchor(top) anchor(right) anchor(bottom) anchor(left)'});
+
+document.getElementById('results').textContent=JSON.stringify(out,null,2);
+</script></body></html>

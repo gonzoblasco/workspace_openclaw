@@ -1,0 +1,59 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  .vh { border:0; clip:rect(0 0 0 0); clip-path:inset(50%); height:1px; margin:-1px;
+        overflow:hidden; padding:0; position:absolute; width:1px; white-space:nowrap; }
+  .host { position:relative; width:200px; height:40px; background:#ddd; margin:20px; }
+  .sib  { position:relative; width:300px; height:80px; background:#efe; margin:20px; }
+
+  /* --- consumer override via a single custom property (classname path) --- */
+  .consumerVar { --rac-anchor: --consumer-anchor; }
+</style></head>
+<body><div id="results"></div>
+
+<!-- abspos anchor-size isolation: anchor is a SIBLING -->
+<div class="sib" id="sibY">
+  <span id="aY1" style="anchor-name:--ay1;display:inline-block;width:120px;height:30px;background:#fbb">anchor</span>
+  <div id="y1" style="position:absolute;position-anchor:--ay1;top:anchor(bottom);left:anchor(left);width:anchor-size(width);height:anchor-size(height);background:#bbf"></div>
+  <div id="y2" style="position:fixed;position-anchor:--ay1;top:anchor(bottom);left:anchor(left);width:anchor-size(width);height:anchor-size(height);background:#8f8"></div>
+</div>
+
+<!-- var-fallback: component default expressed as a var fallback, consumer overrides one property -->
+<div class="host" id="hW1" data-anchor="--comp-w1"><span class="vh"><input id="iW1"></span>label</div>
+<div class="host consumerVar" id="hW2" data-anchor="--comp-w2"><span class="vh"><input id="iW2"></span>label</div>
+<div class="host consumerVar" id="hW3"><span class="vh"><input id="iW3"></span>label</div>
+
+<script>
+let out=[];
+function g(id){let r=document.getElementById(id).getBoundingClientRect();
+  return {x:+r.x.toFixed(2),y:+r.y.toFixed(2),w:+r.width.toFixed(2),h:+r.height.toFixed(2)};}
+
+// --- group Y ---
+out.push({case:'Y1-abspos-div-anchor-size', target:g('y1'), anchor:g('aY1'),
+  w:getComputedStyle(document.getElementById('y1')).width});
+out.push({case:'Y2-fixed-div-anchor-size', target:g('y2'), anchor:g('aY1'),
+  w:getComputedStyle(document.getElementById('y2')).width});
+
+// --- group W: anchor-name: var(--rac-anchor, <default>) inline, on BOTH host and input ---
+function runW(name, hostId, inputId){
+  let host=document.getElementById(hostId), input=document.getElementById(inputId);
+  let def=host.dataset.anchor || '--comp-w3';
+  // component default expressed as a var fallback, NOT a hard inline anchor-name
+  host.style.setProperty('anchor-name', `var(--rac-anchor, ${def})`);
+  Object.assign(input.style,{
+    position:'fixed', margin:'0',
+    inset:'anchor(top) anchor(right) anchor(bottom) anchor(left)',
+    'position-anchor':`var(--rac-anchor, ${def})`
+  });
+  let hr=g(hostId), ir=g(inputId);
+  out.push({case:name, host:hr, input:ir,
+    computedAnchorName:getComputedStyle(host).getPropertyValue('anchor-name').trim(),
+    computedPositionAnchor:getComputedStyle(input).getPropertyValue('position-anchor').trim(),
+    covers:Math.abs(ir.x-hr.x)<=0.5&&Math.abs(ir.y-hr.y)<=0.5&&ir.w>=hr.w-0.5&&ir.h>=hr.h-0.5});
+}
+runW('W1-var-fallback-default','hW1','iW1');
+runW('W2-consumer-override-via-classname-custom-prop','hW2','iW2');
+runW('W3-consumer-classname-custom-prop-no-inline-default','hW3','iW3');
+
+document.getElementById('results').textContent=JSON.stringify(out,null,2);
+</script></body></html>

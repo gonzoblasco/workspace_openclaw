@@ -1,0 +1,71 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  .vh { border:0; clip:rect(0 0 0 0); clip-path:inset(50%); height:1px; margin:-1px;
+        overflow:hidden; padding:0; position:absolute; width:1px; white-space:nowrap; }
+  .host { position:relative; width:200px; height:40px; background:#ddd; margin:12px; }
+  .scoped { anchor-scope: --react-aria-checkbox; }
+  .scopedAll { anchor-scope: all; }
+  .scroll { height:200px; overflow:auto; border:1px solid #999; }
+</style></head>
+<body><div id="results"></div>
+<div id="plain"></div>
+<div id="scopedWrap"></div>
+<div id="scrolled" class="scroll"></div>
+
+<script>
+let out=[];
+const NAME='--react-aria-checkbox';
+function g(el){let r=el.getBoundingClientRect();
+  return {x:+r.x.toFixed(1),y:+r.y.toFixed(1),w:+r.width.toFixed(1),h:+r.height.toFixed(1)};}
+function make(container, cls, label){
+  let host=document.createElement('div');
+  host.className='host '+(cls||'');
+  let vh=document.createElement('span'); vh.className='vh';
+  let inp=document.createElement('input');
+  host.style.anchorName=`var(--rac-anchor, ${NAME})`;
+  // input reads the same variable; no per-instance id anywhere
+  inp.style.cssText='position:fixed;margin:0;position-anchor:var(--rac-anchor, '+NAME+');'+
+    'inset:anchor(top) anchor(right) anchor(bottom) anchor(left)';
+  vh.appendChild(inp); host.appendChild(vh); host.appendChild(document.createTextNode(label));
+  container.appendChild(host);
+  return {host, inp};
+}
+// A: many hosts in normal flow, duplicate static name, unscoped
+let A=[]; for(let i=0;i<4;i++) A.push(make(document.getElementById('plain'),null,'A'+i));
+// B: duplicate name + anchor-scope
+let B=[]; for(let i=0;i<4;i++) B.push(make(document.getElementById('scopedWrap'),'scopedAll','B'+i));
+// C: inside a scroll container
+let C=[]; for(let i=0;i<4;i++) C.push(make(document.getElementById('scrolled'),null,'C'+i));
+
+function check(set,tag){
+  return set.map((p,i)=>{
+    let hr=g(p.host), ir=g(p.inp);
+    return {tag:tag+i, covers:
+      Math.abs(ir.x-hr.x)<=0.5 && Math.abs(ir.y-hr.y)<=0.5 &&
+      Math.abs(ir.w-hr.w)<=0.5 && Math.abs(ir.h-hr.h)<=0.5,
+      d:{dx:+(ir.x-hr.x).toFixed(1),dy:+(ir.y-hr.y).toFixed(1),
+         dw:+(ir.w-hr.w).toFixed(1),dh:+(ir.h-hr.h).toFixed(1)}};
+  });
+}
+out.push({set:'A-unscoped-duplicates', results:check(A,'A')});
+out.push({set:'B-anchor-scope-all', results:check(B,'B')});
+out.push({set:'C-inside-scroll-container', results:check(C,'C')});
+
+// after scrolling the container, does it still track?
+let sc=document.getElementById('scrolled'); sc.scrollTop=60;
+out.push({set:'C-after-scroll-60', results:check(C,'C')});
+
+// also: a consumer override via class sets the var, per instance granularity
+let st=document.createElement('style');
+st.textContent='.ovr{--rac-anchor:--consumer-inst;}';
+document.head.appendChild(st);
+let ov=make(document.getElementById('plain'),'ovr','D0');
+let r=g(ov.host), ir=g(ov.inp);
+out.push({set:'D-consumer-var-override',
+  computedAnchorName:getComputedStyle(ov.host).getPropertyValue('anchor-name').trim(),
+  computedPositionAnchor:getComputedStyle(ov.inp).getPropertyValue('position-anchor').trim(),
+  covers:Math.abs(ir.x-r.x)<=0.5&&Math.abs(ir.y-r.y)<=0.5&&Math.abs(ir.w-r.w)<=0.5&&Math.abs(ir.h-r.h)<=0.5});
+
+document.getElementById('results').textContent=JSON.stringify(out,null,2);
+</script></body></html>

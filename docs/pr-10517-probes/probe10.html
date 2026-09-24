@@ -1,0 +1,66 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  .vh { border:0; clip:rect(0 0 0 0); clip-path:inset(50%); height:1px; margin:-1px;
+        overflow:hidden; padding:0; position:absolute; width:1px; white-space:nowrap; }
+  .host { position:relative; width:220px; height:44px; background:#ddd; margin:24px;
+          display:flex; align-items:center; gap:8px; }
+  .mark { width:20px; height:20px; background:#333; }
+</style></head>
+<body><div id="results"></div>
+
+<!-- 1 baseline: untouched VisuallyHidden -->
+<div class="host" id="h1"><span class="vh"><input id="i1"></span><span class="mark"></span>label</div>
+
+<!-- 2 emulated UNSUPPORTED browser: anchor values wrapped in vars so they become IACVT -> unset,
+     exactly what a browser without anchor() does with our inline styles. position:fixed stays. -->
+<div class="host" id="h2">
+  <span class="vh"><input id="i2" style="--t:anchor(top);--l:anchor(left);--w:anchor-size(width);--h:anchor-size(height);
+    position:fixed;margin:0;top:var(--t);left:var(--l);width:var(--w);height:var(--h)"></span>
+  <span class="mark"></span>label</div>
+
+<!-- 3 supported browser, our real inline styles, anchor association present -->
+<div class="host" id="h3"><span class="vh"><input id="i3"></span><span class="mark"></span>label</div>
+
+<!-- 4 supported browser, our real inline styles, but NO anchor association (position-anchor missing) -->
+<div class="host" id="h4"><span class="vh"><input id="i4"></span><span class="mark"></span>label</div>
+
+<script>
+let out=[];
+function probe(name, hostId, inputId){
+  let host=document.getElementById(hostId), input=document.getElementById(inputId);
+  let hr=host.getBoundingClientRect(), ir=input.getBoundingClientRect();
+  let cx=ir.x+ir.width/2, cy=ir.y+ir.height/2;
+  let hit=document.elementFromPoint(cx,cy);
+  // also probe the host centre: is the input the pointer target over the component?
+  let hx=hr.x+hr.width/2, hy=hr.y+hr.height/2;
+  let hitHost=document.elementFromPoint(hx,hy);
+  out.push({case:name,
+    inputRect:{x:+ir.x.toFixed(1),y:+ir.y.toFixed(1),w:+ir.width.toFixed(1),h:+ir.height.toFixed(1)},
+    hitAtInputCentre: hit?hit.tagName+(hit.id?'#'+hit.id:''):null,
+    inputIsPaintedAtItsOwnRect: hit===input,
+    hitAtHostCentre: hitHost?hitHost.tagName+(hitHost.id?'#'+hitHost.id:''):null,
+    inputIsPointerTargetOverComponent: hitHost===input,
+    visible: input.checkVisibility ? input.checkVisibility() : 'n/a',
+    pos:getComputedStyle(input).position,
+    top:getComputedStyle(input).top, width:getComputedStyle(input).width});
+}
+
+probe('1-baseline-untouched','h1','i1');
+probe('2-fixed-with-anchor-values-DROPPED(emulated-no-support)','h2','i2');
+
+// case 3: apply our real styles + association
+let i3=document.getElementById('i3');
+document.getElementById('h3').style.setProperty('anchor-name','--n3');
+Object.assign(i3.style,{position:'fixed',margin:'0',top:'anchor(top)',left:'anchor(left)',
+  width:'anchor-size(width)',height:'anchor-size(height)','position-anchor':'--n3'});
+probe('3-supported-with-association','h3','i3');
+
+// case 4: our real styles but no association
+let i4=document.getElementById('i4');
+Object.assign(i4.style,{position:'fixed',margin:'0',top:'anchor(top)',left:'anchor(left)',
+  width:'anchor-size(width)',height:'anchor-size(height)'});
+probe('4-supported-NO-association','h4','i4');
+
+document.getElementById('results').textContent=JSON.stringify(out,null,2);
+</script></body></html>

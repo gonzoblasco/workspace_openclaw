@@ -1,0 +1,48 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  .vh { border:0; clip:rect(0 0 0 0); clip-path:inset(50%); height:1px; margin:-1px;
+        overflow:hidden; padding:0; position:absolute; width:1px; white-space:nowrap; }
+  .host { position:relative; height:50px; background:#ddd; margin:0 0 10px 0; }
+  .scroll { height:150px; overflow-y:auto; border:2px solid #333; }
+</style></head>
+<body><div id="results">PENDING</div>
+<div class="scroll" id="inner"></div>
+
+<script>
+let out={};
+function g(el){let r=el.getBoundingClientRect();
+  return {x:+r.x.toFixed(1),y:+r.y.toFixed(1),w:+r.width.toFixed(1),h:+r.height.toFixed(1)};}
+let uid=0;
+function make(container, pos){
+  let host=document.createElement('div'); host.className='host';
+  let name='--u'+(++uid); host.style.anchorName=name;
+  let vh=document.createElement('span'); vh.className='vh';
+  let inp=document.createElement('input');
+  inp.style.cssText='position:'+pos+';margin:0;position-anchor:'+name+
+    ';inset:anchor(top) anchor(right) anchor(bottom) anchor(left)';
+  vh.appendChild(inp); host.appendChild(vh); host.appendChild(document.createTextNode('item'));
+  container.appendChild(host);
+  return {host, inp};
+}
+let F=[];
+for(let i=0;i<6;i++) F.push(make(document.getElementById('inner'),'fixed'));
+function measure(set,tag){
+  return set.map((p,i)=>{
+    let hr=g(p.host), ir=g(p.inp);
+    return {tag:tag+i, dy:+(ir.y-hr.y).toFixed(1), covers: Math.abs(ir.y-hr.y)<=0.5};
+  });
+}
+let inner=document.getElementById('inner');
+out.maxScroll = inner.scrollHeight - inner.clientHeight;
+out.before = measure(F,'F');
+inner.scrollTop = 40;
+out.scrollTopApplied = inner.scrollTop;
+out.afterScroll40 = measure(F,'F');
+// force layout flush and re-measure
+void inner.offsetHeight;
+out.afterScroll40_sync = measure(F,'F');
+out.computed = {pos: getComputedStyle(F[0].inp).position, inset: getComputedStyle(F[0].inp).inset,
+  anchorName: getComputedStyle(F[0].host).getPropertyValue('anchor-name').trim()};
+document.getElementById('results').textContent = JSON.stringify(out,null,2);
+</script></body></html>

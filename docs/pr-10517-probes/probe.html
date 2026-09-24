@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  /* exact VisuallyHidden styles from react-aria */
+  .vh {
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    white-space: nowrap;
+  }
+  .host { position: relative; width: 200px; height: 40px; background: #ddd; margin: 20px; }
+  .hostWrap { transform: translateZ(0); }
+</style>
+</head>
+<body>
+<div id="results"></div>
+
+<!-- A: position fixed, default anchor name -->
+<div class="host" id="hostA" data-case="A-fixed">
+  <span class="vh"><input id="inpA"></span>label</div>
+
+<!-- B: position absolute (instead of fixed) -->
+<div class="host" id="hostB" data-case="B-absolute">
+  <span class="vh"><input id="inpB"></span>label</div>
+
+<!-- C: position fixed inside a transformed wrapper -->
+<div class="hostWrap">
+  <div class="host" id="hostC" data-case="C-fixed-transformed-ancestor">
+    <span class="vh"><input id="inpC"></span>label</div>
+</div>
+
+<!-- D: position absolute inside a transformed wrapper -->
+<div class="hostWrap">
+  <div class="host" id="hostD" data-case="D-absolute-transformed-ancestor">
+    <span class="vh"><input id="inpD"></span>label</div>
+</div>
+
+<!-- E: RTL host, position fixed -->
+<div class="host" id="hostE" dir="rtl" data-case="E-fixed-rtl">
+  <span class="vh"><input id="inpE"></span>label</div>
+
+<!-- F: logical inset-inline/inset-block instead of left/top, position fixed -->
+<div class="host" id="hostF" data-case="F-logical-inset">
+  <span class="vh"><input id="inpF"></span>label</div>
+
+<script>
+let out = [];
+
+function geom(id) {
+  let el = document.getElementById(id);
+  let r = el.getBoundingClientRect();
+  return {x: +r.x.toFixed(2), y: +r.y.toFixed(2), w: +r.width.toFixed(2), h: +r.height.toFixed(2)};
+}
+
+function hitIsInput(hostId, inputId) {
+  let host = document.getElementById(hostId);
+  let input = document.getElementById(inputId);
+  let r = host.getBoundingClientRect();
+  let hit = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+  return {hitTag: hit ? hit.tagName + (hit.id ? '#' + hit.id : '') : null, isInput: hit === input};
+}
+
+function runCase(name, hostId, inputId, styles, extraHostStyles) {
+  let host = document.getElementById(hostId);
+  let input = document.getElementById(inputId);
+  let anchorName = '--a-' + hostId;
+  host.style.setProperty('anchor-name', anchorName);
+  Object.assign(input.style, styles, {'position-anchor': anchorName});
+  if (extraHostStyles) Object.assign(host.style, extraHostStyles);
+
+  let hostRect = geom(hostId);
+  let inputRect = geom(inputId);
+  let covers =
+    inputRect.w >= hostRect.w - 0.5 &&
+    inputRect.h >= hostRect.h - 0.5 &&
+    Math.abs(inputRect.x - hostRect.x) <= 0.5 &&
+    Math.abs(inputRect.y - hostRect.y) <= 0.5;
+  out.push({
+    case: name,
+    host: hostRect,
+    input: inputRect,
+    coversHost: covers,
+    hitTest: hitIsInput(hostId, inputId),
+    computedPosition: getComputedStyle(input).position,
+    computedPositionAnchor: getComputedStyle(input).getPropertyValue('position-anchor').trim(),
+    computedAnchorName: getComputedStyle(host).getPropertyValue('anchor-name').trim()
+  });
+}
+
+let supports = CSS.supports('anchor-name: --test');
+
+runCase('A-fixed', 'hostA', 'inpA', {
+  position: 'fixed', margin: '0',
+  top: 'anchor(top)', left: 'anchor(left)',
+  width: 'anchor-size(width)', height: 'anchor-size(height)'
+});
+
+runCase('B-absolute', 'hostB', 'inpB', {
+  position: 'absolute', margin: '0',
+  top: 'anchor(top)', left: 'anchor(left)',
+  width: 'anchor-size(width)', height: 'anchor-size(height)'
+});
+
+runCase('C-fixed-transformed-ancestor', 'hostC', 'inpC', {
+  position: 'fixed', margin: '0',
+  top: 'anchor(top)', left: 'anchor(left)',
+  width: 'anchor-size(width)', height: 'anchor-size(height)'
+});
+
+runCase('D-absolute-transformed-ancestor', 'hostD', 'inpD', {
+  position: 'absolute', margin: '0',
+  top: 'anchor(top)', left: 'anchor(left)',
+  width: 'anchor-size(width)', height: 'anchor-size(height)'
+});
+
+runCase('E-fixed-rtl', 'hostE', 'inpE', {
+  position: 'fixed', margin: '0',
+  top: 'anchor(top)', left: 'anchor(left)',
+  width: 'anchor-size(width)', height: 'anchor-size(height)'
+});
+
+runCase('F-logical-inset-fixed', 'hostF', 'inpF', {
+  position: 'fixed', margin: '0',
+  insetBlockStart: 'anchor(top)', insetInlineStart: 'anchor(left)',
+  width: 'anchor-size(width)', height: 'anchor-size(height)'
+});
+
+// G: does a logical-only `inset` shorthand accept anchor()?
+let probeG = document.createElement('div');
+probeG.style.cssText = 'position:fixed;inset:anchor(top) anchor(right) anchor(bottom) anchor(left)';
+document.body.appendChild(probeG);
+
+document.getElementById('results').textContent = JSON.stringify({
+  supportsAnchor: supports,
+  cases: out,
+  insetWithAnchorAccepted: probeG.style.inset !== ''
+}, null, 2);
+</script>
+</body>
+</html>

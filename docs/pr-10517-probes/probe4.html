@@ -1,0 +1,42 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  .vh { border:0; clip:rect(0 0 0 0); clip-path:inset(50%); height:1px; margin:-1px;
+        overflow:hidden; padding:0; position:absolute; width:1px; white-space:nowrap; }
+  .host { position:relative; width:200px; height:40px; background:#ddd; margin:20px; }
+  .hostNoPos { width:200px; height:40px; background:#eef; margin:20px; }
+</style></head>
+<body><div id="results"></div>
+
+<!-- Q: input is a DIRECT child of the anchor, position:absolute -->
+<div class="host" id="hQ"><input id="iQ"></div>
+<!-- R: input is a DIRECT child of the anchor, position:fixed -->
+<div class="host" id="hR"><input id="iR"></div>
+<!-- S: anchor is NOT positioned; input inside .vh wrapper; position:absolute -->
+<div class="hostNoPos" id="hS"><span class="vh"><input id="iS"></span>x</div>
+<!-- T: input inside .vh wrapper; position:absolute; anchor IS the .vh's parent's ancestor -->
+<div class="host" id="hT"><span class="vh"><input id="iT"></span>x</div>
+
+<script>
+let out=[];
+function g(id){let r=document.getElementById(id).getBoundingClientRect();
+  return {x:+r.x.toFixed(2),y:+r.y.toFixed(2),w:+r.width.toFixed(2),h:+r.height.toFixed(2)};}
+function run(name,hostId,inputId,pos){
+  let host=document.getElementById(hostId),input=document.getElementById(inputId);
+  let an='--q-'+hostId; host.style.setProperty('anchor-name',an);
+  Object.assign(input.style,{position:pos,margin:'0',top:'anchor(top)',left:'anchor(left)',
+    width:'anchor-size(width)',height:'anchor-size(height)','position-anchor':an});
+  let hr=g(hostId),ir=g(inputId);
+  out.push({case:name,pos,
+    host:hr,input:ir,
+    anchorResolvedX: Math.abs(ir.x-hr.x)<=1,
+    anchorResolvedSize: Math.abs(ir.w-hr.w)<=2,
+    parentPos:getComputedStyle(input.parentElement).position,
+    offsetParent: input.offsetParent ? (input.offsetParent.id||input.offsetParent.tagName) : null});
+}
+run('Q-direct-child-absolute','hQ','iQ','absolute');
+run('R-direct-child-fixed','hR','iR','fixed');
+run('S-anchor-not-positioned-absolute','hS','iS','absolute');
+run('T-inside-vh-wrapper-absolute','hT','iT','absolute');
+document.getElementById('results').textContent=JSON.stringify(out,null,2);
+</script></body></html>

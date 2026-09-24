@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  .vh {
+    border: 0; clip: rect(0 0 0 0); clip-path: inset(50%);
+    height: 1px; margin: -1px; overflow: hidden; padding: 0;
+    position: absolute; width: 1px; white-space: nowrap;
+  }
+  .host { position: relative; width: 200px; height: 40px; background: #ddd; margin: 20px; }
+</style>
+</head>
+<body>
+<div id="results"></div>
+
+<!-- RTL host + physical left/top -->
+<div class="host" id="hG" dir="rtl"><span class="vh"><input id="iG"></span>label</div>
+<!-- RTL host + logical inset-inline-start: anchor(left) -->
+<div class="host" id="hH" dir="rtl"><span class="vh"><input id="iH"></span>label</div>
+<!-- RTL host + logical inset-inline-start: anchor(right) -->
+<div class="host" id="hI" dir="rtl"><span class="vh"><input id="iI"></span>label</div>
+<!-- RTL host + full inset shorthand with anchor() -->
+<div class="host" id="hJ" dir="rtl"><span class="vh"><input id="iJ"></span>label</div>
+<!-- LTR host + physical left/top + border-box -->
+<div class="host" id="hK"><span class="vh"><input id="iK"></span>label</div>
+<!-- LTR host + full inset shorthand with anchor() -->
+<div class="host" id="hL"><span class="vh"><input id="iL"></span>label</div>
+
+<script>
+let out = [];
+function geom(id) {
+  let r = document.getElementById(id).getBoundingClientRect();
+  return {x: +r.x.toFixed(2), y: +r.y.toFixed(2), w: +r.width.toFixed(2), h: +r.height.toFixed(2)};
+}
+function run(name, hostId, inputId, inputStyles, hostDir) {
+  let host = document.getElementById(hostId), input = document.getElementById(inputId);
+  let an = '--an-' + hostId;
+  host.style.setProperty('anchor-name', an);
+  Object.assign(input.style, inputStyles, {'position-anchor': an});
+  let hr = geom(hostId), ir = geom(inputId);
+  out.push({
+    case: name,
+    dir: hostDir || getComputedStyle(host).direction,
+    host: hr, input: ir,
+    coversX: Math.abs(ir.x - hr.x) <= 0.5,
+    coversY: Math.abs(ir.y - hr.y) <= 0.5,
+    coversW: ir.w >= hr.w - 0.5,
+    delta: {dx: +(ir.x - hr.x).toFixed(2), dy: +(ir.y - hr.y).toFixed(2), dw: +(ir.w - hr.w).toFixed(2), dh: +(ir.h - hr.h).toFixed(2)}
+  });
+}
+const BASE = {position: 'fixed', margin: '0', width: 'anchor-size(width)', height: 'anchor-size(height)'};
+
+run('G-rtl-physical-left-top', 'hG', 'iG', {...BASE, top: 'anchor(top)', left: 'anchor(left)'});
+run('H-rtl-logical-inline-start-anchor(left)', 'hH', 'iH', {...BASE, insetBlockStart: 'anchor(top)', insetInlineStart: 'anchor(left)'});
+run('I-rtl-logical-inline-start-anchor(right)', 'hI', 'iI', {...BASE, insetBlockStart: 'anchor(top)', insetInlineStart: 'anchor(right)'});
+run('J-rtl-full-inset-shorthand', 'hJ', 'iJ', {position: 'fixed', margin: '0', width: 'anchor-size(width)', height: 'anchor-size(height)', inset: 'anchor(top) anchor(right) anchor(bottom) anchor(left)'});
+run('K-ltr-bordercss-box-sizing', 'hK', 'iK', {...BASE, top: 'anchor(top)', left: 'anchor(left)', boxSizing: 'border-box'});
+run('L-ltr-full-inset-shorthand', 'hL', 'iL', {position: 'fixed', margin: '0', width: 'anchor-size(width)', height: 'anchor-size(height)', inset: 'anchor(top) anchor(right) anchor(bottom) anchor(left)'});
+
+document.getElementById('results').textContent = JSON.stringify(out, null, 2);
+</script>
+</body>
+</html>

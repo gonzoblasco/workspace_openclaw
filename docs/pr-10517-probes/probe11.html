@@ -1,0 +1,44 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  .vh { border:0; clip:rect(0 0 0 0); clip-path:inset(50%); height:1px; margin:-1px;
+        overflow:hidden; padding:0; position:absolute; width:1px; white-space:nowrap; }
+  .host { position:relative; width:200px; height:40px; background:#ddd; margin:20px; }
+  .scoped { anchor-scope: all; }
+</style></head>
+<body><div id="results"></div>
+
+<!-- scoped: two hosts, SAME static anchor name, each scoped to its own subtree -->
+<div class="host scoped" id="s1"><span class="vh"><input id="si1"></span>one</div>
+<div class="host scoped" id="s2"><span class="vh"><input id="si2"></span>two</div>
+
+<!-- unscoped control: same static name, no anchor-scope -->
+<div class="host" id="u1"><span class="vh"><input id="ui1"></span>one</div>
+<div class="host" id="u2"><span class="vh"><input id="ui2"></span>two</div>
+
+<script>
+let out=[];
+function g(id){let r=document.getElementById(id).getBoundingClientRect();
+  return {x:+r.x.toFixed(1),y:+r.y.toFixed(1),w:+r.width.toFixed(1),h:+r.height.toFixed(1)};}
+function cs(id,p){return getComputedStyle(document.getElementById(id)).getPropertyValue(p).trim();}
+const NAME='--react-aria-checkbox';
+
+out.push({supportsAnchorScope: CSS.supports('anchor-scope: all'),
+          supportsAnchorName: CSS.supports('anchor-name: --test')});
+
+function wire(hostId,inputId){
+  let host=document.getElementById(hostId), input=document.getElementById(inputId);
+  host.style.setProperty('anchor-name',NAME);
+  Object.assign(input.style,{position:'fixed',margin:'0','position-anchor':NAME,
+    inset:'anchor(top) anchor(right) anchor(bottom) anchor(left)'});
+}
+['s1','s2','u1','u2'].forEach((h,i)=>{
+  let ids={s1:'si1',s2:'si2',u1:'ui1',u2:'ui2'};
+  wire(h,ids[h]);
+  let hr=g(h), ir=g(ids[h]);
+  out.push({case:h, host:hr, input:ir,
+    covers:Math.abs(ir.x-hr.x)<=0.5&&Math.abs(ir.y-hr.y)<=0.5&&ir.w>=hr.w-0.5&&ir.h>=hr.h-0.5});
+});
+
+document.getElementById('results').textContent=JSON.stringify(out,null,2);
+</script></body></html>

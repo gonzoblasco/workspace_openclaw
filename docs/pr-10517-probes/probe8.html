@@ -1,0 +1,98 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  /* exact VisuallyHidden wrapper styles */
+  .vh { border:0; clip:rect(0 0 0 0); clip-path:inset(50%); height:1px; margin:-1px;
+        overflow:hidden; padding:0; position:absolute; width:1px; white-space:nowrap; }
+  .plain { }
+  .host { position:relative; width:200px; height:40px; background:#ddd; margin:20px; }
+  .hostStatic { width:200px; height:40px; background:#eef; margin:20px; }
+  .sib { position:relative; width:400px; height:220px; background:#efe; margin:20px; }
+  .ancBox { display:inline-block; width:120px; height:30px; background:#fbb; }
+</style></head>
+<body><div id="results"></div>
+
+<!-- ===== group A: mechanism, anchor is the ANCESTOR host ===== -->
+<div class="host" id="hA1"><span class="vh"><input id="a1"></span>label</div>
+<div class="host" id="hA2"><span class="vh"><input id="a2"></span>label</div>
+<div class="host" id="hA3"><input id="a3">label</div>
+<div class="host" id="hA4"><input id="a4">label</div>
+<div class="host" id="hA5"><span class="plain"><input id="a5"></span>label</div>
+
+<!-- ===== group B: no-support simulation (no position-anchor, no anchor values) ===== -->
+<div class="host" id="hB1"><span class="vh"><input id="b1"></span>label</div>   <!-- baseline: untouched VisuallyHidden -->
+<div class="host" id="hB2"><span class="vh"><input id="b2"></span>label</div>   <!-- fixed, no anchor values -->
+
+<!-- ===== group C: sibling anchor, fixed vs absolute (control) ===== -->
+<div class="sib" id="sibC">
+  <span class="ancBox" id="cAnc" style="anchor-name:--c-anc">anchor</span>
+  <div id="cAbs" style="background:#bbf"></div>
+  <div id="cFix" style="background:#8f8"></div>
+</div>
+
+<script>
+let out=[];
+function g(id){let r=document.getElementById(id).getBoundingClientRect();
+  return {x:+r.x.toFixed(2),y:+r.y.toFixed(2),w:+r.width.toFixed(2),h:+r.height.toFixed(2)};}
+function cs(id,p){return getComputedStyle(document.getElementById(id)).getPropertyValue(p).trim();}
+
+// --- group A: full anchor setup, vary only position / wrapper ---
+function A(name,hostId,inputId,pos){
+  let host=document.getElementById(hostId), input=document.getElementById(inputId);
+  let an='--an-'+inputId;
+  host.style.setProperty('anchor-name', an);
+  input.style.setProperty('position', pos);
+  input.style.setProperty('margin','0');
+  input.style.setProperty('top','anchor(top)');
+  input.style.setProperty('left','anchor(left)');
+  input.style.setProperty('width','anchor-size(width)');
+  input.style.setProperty('height','anchor-size(height)');
+  input.style.setProperty('position-anchor', an);
+  let hr=g(hostId), ir=g(inputId);
+  out.push({case:name,pos,
+    host:hr, input:ir,
+    usedTop:cs(inputId,'top'), usedWidth:cs(inputId,'width'),
+    resolvedAnchor:cs(inputId,'position-anchor'),
+    wrapperPosition:cs(inputId,'position') && getComputedStyle(input.parentElement).position,
+    covers:Math.abs(ir.x-hr.x)<=0.5&&Math.abs(ir.y-hr.y)<=0.5&&ir.w>=hr.w-0.5&&ir.h>=hr.h-0.5});
+}
+A('A1-vh-wrapper-absolute','hA1','a1','absolute');
+A('A2-vh-wrapper-fixed','hA2','a2','fixed');
+A('A3-direct-child-absolute','hA3','a3','absolute');
+A('A4-direct-child-fixed','hA4','a4','fixed');
+A('A5-plain-wrapper-absolute','hA5','a5','absolute');
+
+// --- group B: is `position: fixed` inert with NO anchor support? ---
+// b1: untouched (baseline base VisuallyHidden)
+out.push({case:'B1-baseline-untouched', host:g('hB1'), input:g('b1'),
+  pos:cs('b1','position'), top:cs('b1','top'), w:cs('b1','width'), h:cs('b1','height')});
+// b2: fixed applied, anchor values NOT supported/absent (simulates unsupported browser)
+document.getElementById('b2').style.setProperty('position','fixed');
+document.getElementById('b2').style.setProperty('margin','0');
+out.push({case:'B2-fixed-no-anchor-support', host:g('hB2'), input:g('b2'),
+  pos:cs('b2','position'), top:cs('b2','top'), w:cs('b2','width'), h:cs('b2','height'),
+  hitAtHostCenter:(function(){let r=document.getElementById('hB2').getBoundingClientRect();
+    let el=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+    return el?el.tagName+(el.id?'#'+el.id:''):null;})()});
+out.push({case:'B3-baseline-hitAtHostCenter', hit:(function(){
+    let r=document.getElementById('hB1').getBoundingClientRect();
+    let el=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+    return el?el.tagName+(el.id?'#'+el.id:''):null;})()});
+
+// --- group C: control with sibling anchor ---
+function C(name,targetId,pos){
+  let t=document.getElementById(targetId);
+  t.style.setProperty('position',pos);
+  t.style.setProperty('margin','0');
+  t.style.setProperty('top','anchor(top)'); t.style.setProperty('left','anchor(left)');
+  t.style.setProperty('width','anchor-size(width)'); t.style.setProperty('height','anchor-size(height)');
+  t.style.setProperty('position-anchor','--c-anc');
+  let ar=g('cAnc'), tr=g(targetId);
+  out.push({case:name,pos,anchor:ar,target:tr,usedWidth:cs(targetId,'width'),
+    matches:Math.abs(tr.x-ar.x)<=0.5&&Math.abs(tr.y-ar.y)<=0.5});
+}
+C('C1-sibling-anchor-absolute','cAbs','absolute');
+C('C2-sibling-anchor-fixed','cFix','fixed');
+
+document.getElementById('results').textContent=JSON.stringify(out,null,2);
+</script></body></html>

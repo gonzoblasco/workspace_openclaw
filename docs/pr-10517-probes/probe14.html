@@ -1,0 +1,70 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  .vh { border:0; clip:rect(0 0 0 0); clip-path:inset(50%); height:1px; margin:-1px;
+        overflow:hidden; padding:0; position:absolute; width:1px; white-space:nowrap; }
+  .host { position:relative; width:200px; height:40px; background:#ddd; margin:12px; }
+  .scopedAll { anchor-scope: all; }
+  .scroll { height:160px; overflow:auto; border:2px solid #333; }
+  .clipanc { overflow:hidden; height:120px; border:2px solid #c00; }
+  .transformed { transform: translateZ(0); }
+</style></head>
+<body><div id="results"></div>
+<div id="scrollWrap" class="scroll"></div>
+<div id="clipWrap" class="clipanc"></div>
+<div id="transWrap" class="transformed"></div>
+
+<script>
+let out=[];
+function g(el){let r=el.getBoundingClientRect();
+  return {x:+r.x.toFixed(1),y:+r.y.toFixed(1),w:+r.width.toFixed(1),h:+r.height.toFixed(1)};}
+let uid=0;
+function make(container, cls, label, fixed){
+  let host=document.createElement('div');
+  host.className='host '+(cls||'');
+  let name='--n'+(++uid);
+  host.style.anchorName=name;
+  let vh=document.createElement('span'); vh.className='vh';
+  let inp=document.createElement('input');
+  inp.style.cssText='position:'+(fixed===false?'absolute':'fixed')+';margin:0;'+
+    'position-anchor:'+name+';inset:anchor(top) anchor(right) anchor(bottom) anchor(left)';
+  vh.appendChild(inp); host.appendChild(vh); host.appendChild(document.createTextNode(label));
+  container.appendChild(host);
+  return {host, inp, name};
+}
+function track(set, tag){
+  return set.map((p,i)=>{
+    let hr=g(p.host), ir=g(p.inp);
+    return {tag:tag+i, covers:
+      Math.abs(ir.x-hr.x)<=0.5 && Math.abs(ir.y-hr.y)<=0.5 &&
+      Math.abs(ir.w-hr.w)<=0.5 && Math.abs(ir.h-hr.h)<=0.5,
+      dy:+(ir.y-hr.y).toFixed(1), dx:+(ir.x-hr.x).toFixed(1)};
+  });
+}
+// unique names inside a scroll container
+let S=[]; for(let i=0;i<4;i++) S.push(make(document.getElementById('scrollWrap'),null,'S'+i));
+out.push({set:'S-scroll-container-unique-names-before', r:track(S,'S')});
+let sc=document.getElementById('scrollWrap'); sc.scrollTop=70;
+out.push({set:'S-scroll-container-after-scroll-70', r:track(S,'S')});
+
+// fixed vs absolute inside a scroll container
+let S2=[]; for(let i=0;i<2;i++) S2.push(make(document.getElementById('scrollWrap'),null,'T'+i,false));
+sc.scrollTop=70;
+out.push({set:'S2-absolute-inside-scroll', r:track(S2,'T')});
+
+// clip ancestor (overflow hidden) - does the fixed input get clipped?
+let C=[]; for(let i=0;i<2;i++) C.push(make(document.getElementById('clipWrap'),null,'C'+i));
+out.push({set:'C-overflow-hidden-ancestor', r:track(C,'C')});
+
+// transformed ancestor
+let X=[]; for(let i=0;i<2;i++) X.push(make(document.getElementById('transWrap'),null,'X'+i));
+out.push({set:'X-transformed-ancestor', r:track(X,'X')});
+
+out.push({caps:{anchorName:CSS.supports('anchor-name: --t'),
+  anchorScope:CSS.supports('anchor-scope: all'),
+  positionAnchor:CSS.supports('position-anchor: --t'),
+  anchorFn:CSS.supports('top: anchor(top)'),
+  anchorSize:CSS.supports('width: anchor-size(width)')}});
+
+document.getElementById('results').textContent=JSON.stringify(out,null,2);
+</script></body></html>

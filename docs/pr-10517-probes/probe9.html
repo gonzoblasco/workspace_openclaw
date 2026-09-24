@@ -1,0 +1,53 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  .sib { position:relative; width:400px; height:120px; background:#efe; margin:10px; }
+  .ancBox { display:inline-block; width:100px; height:40px; background:#fbb; }
+</style></head>
+<body><div id="results"></div>
+
+<!-- 1: anchor = positioned ancestor, target absolute -->
+<div id="host1" style="position:relative;width:100px;height:40px;background:#ddd;margin:10px;anchor-name:--h1">
+  <div id="t1"></div></div>
+<!-- 2: same, target fixed -->
+<div id="host2" style="position:relative;width:100px;height:40px;background:#ddd;margin:10px;anchor-name:--h2">
+  <div id="t2"></div></div>
+<!-- 3: anchor = NOT positioned (static) ancestor, target absolute -->
+<div id="host3" style="width:100px;height:40px;background:#ddd;margin:10px;anchor-name:--h3">
+  <div id="t3"></div></div>
+<!-- 4: sibling anchor, absolute -->
+<div class="sib" id="wrap4"><span class="ancBox" id="host4" style="anchor-name:--h4"></span><div id="t4"></div></div>
+<!-- 5: sibling anchor, fixed -->
+<div class="sib" id="wrap5"><span class="ancBox" id="host5" style="anchor-name:--h5"></span><div id="t5"></div></div>
+<!-- 6: anchor = positioned ancestor, target absolute, but NO anchor-size (only anchor() offsets) -->
+<div id="host6" style="position:relative;width:100px;height:40px;background:#ddd;margin:10px;anchor-name:--h6">
+  <div id="t6"></div></div>
+
+<script>
+let out=[];
+function g(id){let r=document.getElementById(id).getBoundingClientRect();
+  return {x:+r.x.toFixed(2),y:+r.y.toFixed(2),w:+r.width.toFixed(2),h:+r.height.toFixed(2)};}
+function cs(id,p){return getComputedStyle(document.getElementById(id)).getPropertyValue(p).trim();}
+function setup(t,anchor,pos,sizeOnly){
+  let s={position:pos,margin:'0','position-anchor':anchor,
+    top:'anchor(top)',left:'anchor(left)'};
+  if(sizeOnly!==false){s.width='anchor-size(width)';s.height='anchor-size(height)';}
+  Object.assign(document.getElementById(t).style,s);
+}
+function rep(name,hostId,targetId){
+  let hr=g(hostId),tr=g(targetId);
+  out.push({case:name,anchor:hr,target:tr,
+    usedTop:cs(targetId,'top'),usedWidth:cs(targetId,'width'),
+    posMatches:Math.abs(tr.x-hr.x)<=0.5&&Math.abs(tr.y-hr.y)<=0.5,
+    sizeMatches:Math.abs(tr.w-hr.w)<=1&&Math.abs(tr.h-hr.h)<=1});
+}
+setup('t1','--h1','absolute'); rep('1-ancestor-positioned-absolute','host1','t1');
+setup('t2','--h2','fixed');    rep('2-ancestor-positioned-fixed','host2','t2');
+setup('t3','--h3','absolute'); rep('3-ancestor-static-absolute','host3','t3');
+setup('t4','--h4','absolute'); rep('4-sibling-absolute','host4','t4');
+setup('t5','--h5','fixed');    rep('5-sibling-fixed','host5','t5');
+setup('t6','--h6','absolute',false); rep('6-ancestor-absolute-no-anchor-size','host6','t6');
+out.push({note:'t6 width/height left at natural (no anchor-size)'});
+
+document.getElementById('results').textContent=JSON.stringify(out,null,2);
+</script></body></html>
