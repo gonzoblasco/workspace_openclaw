@@ -26,6 +26,23 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - kanam-spec: servicio permanente con LaunchAgent y watchdog
+
+### Added
+- **LaunchAgent `dev.gonzoblasco.kanam-spec`** (`projects/kanam-spec/config/`): levanta la app al boot con `KeepAlive` incondicional, puerto 4173, logs en `logs/`. El comando real vive en `ProgramArguments` (no detras de un wrapper, que saldria 0 por diseno y dejaria el job sin revivir).
+- **LaunchAgent `dev.gonzoblasco.kanam-spec-watchdog`:** cada 60 s revive el servicio si se cayo (kickstart -k si esta cargado, bootstrap si no) y respeta el apagado deliberado via `config/.intentional-stop`.
+- **`scripts/service.sh`** (`start|stop|restart|status`) y **`scripts/watchdog.sh`:** operan el servicio por `launchctl`, sin procesos node sueltos peleando por el puerto.
+
+### Fixed
+- **`server/index.mjs` sale con codigo 1 si el puerto esta tomado:** sin eso una colision de puerto dejaba el servicio a medio levantar.
+
+### Notes
+- Causa del incidente de las 19:10: la app corria como proceso de sesion de exec y el runner la mato al vencer su timeout de 30m. Nada se rompio; el trabajo del usuario vive en `localStorage` del navegador.
+- Verificado en las TRES rutas, observadas y no asumidas: `pkill` -> KeepAlive revive con pid nuevo; `stop` deliberado -> sigue caido tras 75 s y el marcador lo frena; caida accidental -> recuperado por bootstrap con una linea `RECOVERED` en `watchdog.log`.
+- El marcador de apagado intencional queda en `.gitignore`: es estado local de la maquina, y el workspace se sincroniza entre el Mini y la Air.
+
+---
+
 ## [2026-09-24] - Nuevo proyecto: kanam-spec (generador de especificaciones tecnicas)
 
 ### Added

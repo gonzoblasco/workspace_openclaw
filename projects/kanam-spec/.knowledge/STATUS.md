@@ -7,12 +7,15 @@ Development (M0: app funcional con generacion por seccion, export y persistencia
 ## What's Working
 
 - Scaffold Vite + React + TS, build productivo
-- Catalogo de 12 secciones de spec con esqueleto y prompt propio
+- Catalogo de 14 secciones de spec con esqueleto y prompt propio
 - Cliente Ollama con streaming (NDJSON) via proxy `/api`
 - UI: brief, navegacion de secciones, generacion/regeneracion, edicion, cancelar
 - Export a Markdown y JSON, copiado al portapapeles, descarga de archivo
 - Persistencia local de proyectos en `localStorage`
 - Servidor Node sin dependencias que sirve `dist/` y proxea a Ollama
+- **Servicio permanente (LaunchAgent `dev.gonzoblasco.kanam-spec`):** auto-start al boot, `KeepAlive` incondicional, puerto 4173
+- **Watchdog (LaunchAgent `dev.gonzoblasco.kanam-spec-watchdog`):** cada 60 s revive el servicio si se cayo y respeta el apagado deliberado via `config/.intentional-stop`
+- `scripts/service.sh` (`start|stop|restart|status`) opera el servicio por launchctl, sin procesos sueltos
 
 ## What's Blocked
 
