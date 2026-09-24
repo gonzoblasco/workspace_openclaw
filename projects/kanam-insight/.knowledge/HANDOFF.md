@@ -43,7 +43,7 @@ La primera corrida del Debt Detector reportó 27 hallazgos de severidad alta. Al
 
 1. **Tests** de los caminos críticos (scanner, chunking, retrieval, detector).
 2. **Handoff Synthesizer** (estructural: estado real vs ROADMAP).
-3. **README + repo en GitHub**: el código de kanam-insight (scripts, README) no está en ningún repo; el workspace git solo trackea `projects/*/.knowledge/`. Misma brecha que `langchain-starter`.
+3. **README + repo en GitHub**: ✅ HECHO el 2026-09-24 - https://github.com/gonzoblasco/kanam-insight (PRIVADO). El repo ya existia desde el 2026-08-30 pero **vacio**; ahora tiene el codigo. El workspace git sigue trackeando `projects/*/.knowledge/` (regla del triple git: el repo del proyecto excluye esa carpeta).
 
 ## Open Questions
 

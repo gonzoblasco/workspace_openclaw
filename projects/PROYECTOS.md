@@ -1,6 +1,6 @@
 # PROYECTOS.md - Índice Maestro Universal
 
-**Última actualización:** 2026-09-14
+**Última actualización:** 2026-09-24
 
 > **Regla de oro:** GitHub es la fuente de la verdad. Cada proyecto vive en su propio repo (sin submódulos ni repos dentro del repo). El workspace (`~/.openclaw/workspace`) solo contiene config, memoria y skills. Este archivo es un **índice universal**: lista todos los proyectos de Gonzo en GitHub, sin importar en qué máquina estén clonados (Gonzo trabaja entre dos computadoras y no siempre el mismo proyecto en cada una).
 >
@@ -12,6 +12,8 @@
 
 | Proyecto | Descripción | Priv | GitHub |
 |---|---|---|---|
+| **kanam-insight** | Motor de inteligencia transversal: cruza los `.knowledge/` de todos los proyectos para detectar patrones y deuda técnica. Pattern Radar + Debt Detector operativos. | PRIV | gonzoblasco/kanam-insight |
+| **langchain-starter** | Starter kit de IA local sobre LangChain: RAG, agentes ReAct y API HTTP con streaming, todo contra Ollama local. Sin proveedores cloud. | PRIV | gonzoblasco/langchain-starter |
 | **kanam-story** | Co-writer de ficción local-first. Chat con manos + biblia viva + brújula + outline/beats. | pub | gonzoblasco/kanam-story |
 | **kanam-skills** | Skills de agente para todo el trabajo + web pública. | pub | gonzoblasco/kanam-skills |
 | **kanam-forge** | Herramienta de forja de skills (fork de Lovable, open source). | pub | gonzoblasco/kanam-forge |

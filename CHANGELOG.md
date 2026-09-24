@@ -84,6 +84,23 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Versionado: kanam-insight y langchain-starter van a GitHub
+
+### Added
+- **`gonzoblasco/kanam-insight`** (PRIVADO): repo que ya existia desde el 2026-08-30 pero **vacio** (nunca se le pusheo nada). Ahora con codigo: `scripts/{scan,index,radar,debt}.py`, README, `.gitignore`.
+- **`gonzoblasco/langchain-starter`** (PRIVADO, nuevo): `app/`, `scripts/`, `config/*.plist`, `Dockerfile`, README, `.env.example`, `requirements.txt`.
+
+### Fixed
+- **`langchain-starter/requirements.txt` estaba VACIO (0 bytes).** Ahora con 15 dependencias de nivel superior con version fija, tomadas del venv real. Sin esto el repo no era reproducible.
+- **`langchain-starter/README.md` tenia 8 bytes** (la palabra "FastAPI"). Reemplazado por documentacion real: arquitectura, instalacion, endpoints, uso del servicio.
+- **`langchain-starter/.env.example` estaba vacio.** Ahora con el contrato de configuracion completo.
+
+### Notes
+- **Regla del triple git respetada:** cada repo de proyecto excluye `.knowledge/` via `.git/info/exclude`; esa memoria sigue viviendo en el workspace git.
+- **Lo que NO se versiono (y por que):** `venv/` (332 MB), `logs/`, `config/chroma_db/` de ambos proyectos, y `.env`. Cubiertos por `.gitignore` propio de cada proyecto.
+- **Scan de secretos previo al push:** limpio. No hay API keys en el codigo (el proyecto usa Ollama local, sin proveedores cloud).
+- **Brecha cerrada.** Hasta hoy, el codigo de ambos proyectos existia **solo en disco**: el workspace git trackea `projects/*/.knowledge/`, no el codigo. El Debt Detector lo habia señalado horas antes.
+
 ## [2026-09-24] - kanam-insight: Debt Detector operativo
 
 ### Added
