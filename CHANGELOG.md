@@ -123,6 +123,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - Tests: red de seguridad para ambos proyectos (28 tests)
+
+### Added
+- **`langchain-starter/tests/test_starter.py`** (10 tests): chunking con metadata de fuente, **overlap entre chunks**, prompt restringido al contexto, `/health` sin depender del LLM, input vacio sin gastar llamada al modelo, `--ingest` con 404 explicito, y RAG end-to-end (marcado, se salta si Ollama no responde).
+- **`kanam-insight/tests/test_insight.py`** (18 tests): scanner (tipo de doc, ADR con sufijo, frontmatter, subcarpetas), chunking semantico, y los **tres limites aprendidos del Debt Detector** fijados como propiedades.
+
+### Fixed
+- **`langchain-starter/requirements.txt` no declaraba pytest.** Los tests no corrian desde un clone limpio. Deuda cerrada en el mismo paso.
+
+### Notes
+- **Los tests se verificaron mutando el codigo a proposito** (romper cada propiedad y confirmar que el test falla). No alcanza con que esten en verde.
+- **Hueco encontrado por mutacion:** poner `chunk_overlap=0` pasaba los 9 tests originales **en verde**. El overlap es lo que evita perder una idea que cae en el borde entre dos chunks, y su falla es silenciosa (la busqueda simplemente deja de encontrar cosas del borde). Se agrego el test faltante; la mutacion ahora falla como debe.
+- **Los tests de kanam-insight testean funciones puras con `tmp_path`**, sin depender del corpus real del workspace: un test que cambia cuando cambia el contenido no sirve como red de seguridad.
+- Los tres falsos positivos del Debt Detector quedaron fijados como propiedades testeables: sin repo clonado no se puede afirmar que un doc falte; un basename igual en otro proyecto no es el mismo archivo; los globs no son paths.
+
 ## [2026-09-24] - Versionado: kanam-insight y langchain-starter van a GitHub
 
 ### Added

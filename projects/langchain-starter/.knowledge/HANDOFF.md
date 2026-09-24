@@ -40,7 +40,7 @@ Deuda cerrada en el mismo paso:
 ## Próximo paso
 
 1. **Migrar a Python 3.12** (el venv es 3.9.6, heredado del sistema y al final de su vida).
-2. **Tests** de los caminos criticos (chunking, retrieval, endpoint `/chat`).
+2. ~~Tests de los caminos criticos~~ ✅ hechos el 2026-09-24 (10 tests, verificados por mutacion).
 3. **Migracion a Supabase Vector** cuando haya que compartir conocimiento entre maquinas (hoy Chroma local alcanza).
 4. Ingesta de documentos reales mas alla del doc de estrategia (hoy la coleccion `starter_knowledge` tiene 10 chunks).
 

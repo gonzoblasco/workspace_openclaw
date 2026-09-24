@@ -19,9 +19,9 @@
 
 ## Próximos pasos
 
-1. Tests de los caminos críticos (scanner, chunking, retrieval, detector).
-2. Evaluar el Handoff Synthesizer.
-3. README + repo en GitHub.
+1. Evaluar el Handoff Synthesizer (estructural: estado real vs ROADMAP).
+2. ~~Tests~~ ✅ hechos el 2026-09-24 (18 tests, verificados por mutación).
+3. ~~README + repo en GitHub~~ ✅ hechos el 2026-09-24.
 
 ## Corrección de spec (2026-09-24)
 

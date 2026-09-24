@@ -41,7 +41,7 @@ La primera corrida del Debt Detector reportó 27 hallazgos de severidad alta. Al
 
 ## Próximo paso
 
-1. **Tests** de los caminos críticos (scanner, chunking, retrieval, detector).
+1. ~~**Tests** de los caminos críticos (scanner, chunking, retrieval, detector)~~ ✅ hechos el 2026-09-24: 18 tests, verificados por mutación.
 2. **Handoff Synthesizer** (estructural: estado real vs ROADMAP).
 3. **README + repo en GitHub**: ✅ HECHO el 2026-09-24 - https://github.com/gonzoblasco/kanam-insight (PRIVADO). El repo ya existia desde el 2026-08-30 pero **vacio**; ahora tiene el codigo. El workspace git sigue trackeando `projects/*/.knowledge/` (regla del triple git: el repo del proyecto excluye esa carpeta).
 
