@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-check-contrast.py - Verifica contraste WCAG 2.1 de la paleta de kanam-os.
+check-contrast.py - Verifica contraste WCAG 2.1 de TODOS los temas de kanam-os.
 
 Por que existe: el contraste se reviso UNA VEZ a mano (2026-09-24, tras el
 reporte de Gonzo "quedo muy oscuro, no se si cumple accesibilidad"). Una
@@ -12,17 +12,25 @@ comparaba claves con `--` contra claves sin `--`, asi que NUNCA encontraba un
 par y reportaba "0 fallas". Un chequeo que no puede fallar no verifica nada.
 Aca los pares se extraen del CSS real y el script falla con exit 1.
 
-Que revisa:
-  1. Texto normal sobre cada superficie: >= 4.5:1 (AA).
-  2. Borde de CONTROL (`--border-control`): >= 3:1 sobre las 3 superficies.
-     WCAG 1.4.11 lo exige para el limite de un componente de UI.
-  3. Indicador de foco: >= 3:1 sobre las 3 superficies (1.4.11 + 2.4.7).
-  4. Que el foco NO sea `outline: none` sin reemplazo: eso anula 2.4.7.
+Cubre los DOS temas (dark y light). Revisar solo uno es un agujero: al agregar
+el tema claro el mismo verde del oscuro daba ~1.5:1 sobre blanco, ilegible.
+
+Que revisa, por tema:
+  1. Texto de cuerpo (`text`, `muted`) sobre las 3 superficies: >= 4.5:1 (AA).
+  2. Texto de estado (`warn`, `info`, `danger`, `badge-comment-text`): >= 4.5.
+     Se usan como texto en badges y botones, no como decoracion.
+  3. `accent` como texto: >= 4.5 (tags, badge-merged).
+  4. Bordes de CONTROL (`border-control`, `accent-dim` y los `badge-*-border`):
+     >= 3:1. WCAG 1.4.11 lo exige para el limite de un componente de UI.
+  5. Hex HARDCODEADOS fuera de los bloques de tema: mismo umbral segun su rol.
+     Escribir un color a mano esquiva una validacion que solo mira variables,
+     y asi se escaparon seis, dos de ellos en controles.
+  6. Que existan reglas `:focus-visible` (2.4.7: teclado a ciegas sin ellas).
 
 Uso:
     python3 scripts/check-contrast.py [ruta/globals.css]
 
-Salida: una linea por par y exit 1 si alguna falla.
+Salida: una seccion por tema y exit 1 si alguna falla.
 """
 import re
 import sys
@@ -33,8 +41,22 @@ DEFAULT_CSS = WS / "projects" / "kanam-os" / "app" / "globals.css"
 
 # Superficies de fondo del tema, de mas oscura a mas clara.
 SURFACES = ("bg", "panel", "panel-2")
-# Texto que debe leerse como cuerpo de texto.
+# Texto de cuerpo.
 TEXT_ROLES = ("text", "muted")
+# Texto de estado (badges, botones): se lee, no decora.
+STATUS_TEXT = ("warn", "info", "danger", "badge-comment-text")
+# `accent` se usa como texto en tags y badge-merged.
+ACCENT_TEXT = ("accent",)
+# Bordes que delimitan un control o un estado: 1.4.11 pide 3:1.
+BORDER_ROLES = (
+    "border-control",
+    "accent-dim",
+    "badge-info-border",
+    "badge-warn-border",
+    "badge-comment-border",
+)
+# El tema por defecto vive en `:root`.
+DEFAULT_THEME = "dark"
 
 
 def srgb(c):
@@ -54,90 +76,178 @@ def contrast(fg, bg):
     return (hi + 0.05) / (lo + 0.05)
 
 
+def lstar(hex_color):
+    """Claridad perceptual (CIE L*): 0 = negro, 100 = blanco.
+
+    Se usa para distinguir "tema oscuro" de "negro casi puro": el bg original
+    estaba en L* 4.0 y se veia como un pozo. Un tema oscuro real vive en 8-20.
+    """
+    v = luminance(hex_color)
+    return 116 * (v ** (1 / 3)) - 16 if v > 0.008856 else 903.3 * v
+
+
+def block_spans(css):
+    """(selector, inicio, fin) de los bloques de primer nivel, en el CSS ORIGINAL.
+
+    Recorre caracter a caracter con conciencia de comentarios, asi los offsets
+    son validos para el texto tal cual viene. La version anterior limpiaba los
+    comentarios ANTES de contar y despues aplicaba los offsets al texto sin
+    limpiar: los indices quedaban corridos y una mutacion de prueba cambiaba
+    la variable equivocada (o ninguna). Se descubrio porque un test de
+    mutacion dejo de detectar el cambio que inyectaba.
+
+    Devuelve offsets en vez de strings para que quien mute el CSS pueda
+    reemplazar en el lugar correcto sin volver a parsear.
+    """
+    spans = []
+    profundidad = 0
+    sel_inicio = 0
+    cuerpo_inicio = 0
+    i = 0
+    n = len(css)
+    while i < n:
+        # Saltar comentarios: pueden contener llaves y desalinear el conteo.
+        if css.startswith("/*", i):
+            j = css.find("*/", i + 2)
+            i = n if j < 0 else j + 2
+            continue
+        ch = css[i]
+        if ch == "{":
+            profundidad += 1
+            if profundidad == 1:
+                cuerpo_inicio = i + 1
+        elif ch == "}":
+            profundidad -= 1
+            if profundidad == 0:
+                sel = css[sel_inicio:i].split("{")[0].strip()
+                spans.append((sel, cuerpo_inicio, i))
+                sel_inicio = i + 1
+        i += 1
+    return spans
+
+
+def iter_top_blocks(css):
+    """Bloques de primer nivel (selector, cuerpo), ignorando los anidados.
+
+    Los @media contienen bloques adentro, asi que un regex simple los confunde
+    y puede atribuirle variables de color al selector equivocado. `block_spans`
+    los recorre por profundidad: solo interesa el nivel 0.
+    """
+    return [(sel, css[ini:fin]) for sel, ini, fin in block_spans(css)]
+
+
+def theme_of(selector):
+    """Nombre de tema del selector, o None si no define uno.
+
+    `:root` define el tema por defecto; `[data-theme="X"]` define el suyo.
+    Un selector como `:root, [data-theme="dark"]` cae en el mismo tema: es el
+    patron que usa el CSS para "default + explicito".
+    """
+    m = re.search(r"\[data-theme=[\"']([a-z]+)[\"']\]", selector)
+    if m:
+        return m.group(1)
+    return DEFAULT_THEME if ":root" in selector else None
+
+
+def read_themes(css):
+    """Todos los temas del CSS: {nombre: {variable: hex}}."""
+    temas = {}
+    for sel, cuerpo in iter_top_blocks(css):
+        nombre = theme_of(sel)
+        if nombre is None:
+            continue
+        variables = dict(re.findall(r"--([a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", cuerpo))
+        if variables:
+            temas[nombre] = variables
+    return temas
+
+
 def read_vars(css):
-    """Las variables de color de :root, con la clave SIN los guiones.
+    """Variables del tema por defecto, con la clave SIN los guiones.
 
     El `--` se saca aca y no en cada uso: comparar `--bg` contra `bg` es
     exactamente el bug que hacia que la auditoria previa no encontrara nada.
     """
-    m = re.search(r":root\s*\{(.*?)\}", css, re.S)
-    if not m:
+    temas = read_themes(css)
+    if DEFAULT_THEME not in temas:
         raise SystemExit("ERROR: no encontre el bloque :root en el CSS")
-    variables = dict(re.findall(r"--([a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", m.group(1)))
-    if not variables:
-        raise SystemExit("ERROR: :root no tiene variables de color")
-    return variables
+    return temas[DEFAULT_THEME]
 
 
 def find_hardcoded(css):
-    """Colores hex escritos a mano fuera de :root, con su rol.
+    """Colores hex escritos a mano fuera de los bloques de tema, con su rol.
 
     Devuelve (selector, propiedad, valor). Solo mira `color` y `border-color`:
     son los que tienen umbral WCAG. Un hex en un `background` decorativo o en
-    `.bar > span` (barra de progreso, sin texto) no aplica.
+    `.bar > span` (barra de progreso, sin texto encima) no aplica.
 
     Existe porque el guardia original solo leia :root, y asi se le escaparon
-    tres colores con falla real, dos de ellos en CONTROLES. Escribir un color
+    seis colores con falla real, dos de ellos en CONTROLES. Escribir un color
     a mano esquiva cualquier validacion que solo mire las variables.
     """
-    m = re.search(r":root\s*\{(.*?)\}", css, re.S)
-    cuerpo = css[m.end() :] if m else css
     hallados = []
-    for bloque in re.finditer(r"([^{}]+)\{([^}]*)\}", cuerpo):
-        sel = bloque.group(1).strip().splitlines()[-1].strip()
-        props = bloque.group(2)
+    for sel, props in iter_top_blocks(css):
+        if theme_of(sel) is not None:
+            continue
         for h in re.findall(r"(?<![\w-])color:\s*(#[0-9a-fA-F]{6})", props):
-            hallados.append((sel, "color", h))
+            hallados.append((sel.splitlines()[-1].strip(), "color", h))
         for h in re.findall(r"border-color:\s*(#[0-9a-fA-F]{6})", props):
-            hallados.append((sel, "border-color", h))
+            hallados.append((sel.splitlines()[-1].strip(), "border-color", h))
     return hallados
+
+
+def check_theme(nombre, V, fallas):
+    """Revisa un tema y agrega sus problemas a `fallas`."""
+
+    def par(rol, etiqueta, umbral):
+        for s in SURFACES:
+            if rol not in V:
+                continue
+            r = contrast(V[rol], V[s])
+            ok = r >= umbral
+            if not ok:
+                fallas.append(f"[{nombre}] {etiqueta} sobre {s}: {r:.2f} (necesita {umbral})")
+            print(f"    {'OK  ' if ok else 'FALLA'}  {etiqueta:20} sobre {s:8} {r:5.2f}:1")
+
+    print(f"\n  Tema '{nombre}'")
+    print(f"    superficies: bg {V.get('bg','?')} (L* {lstar(V['bg']):.1f})  "
+          f"panel {V.get('panel','?')}  panel-2 {V.get('panel-2','?')}")
+
+    print("    -- texto (AA exige 4.5) --")
+    for rol in TEXT_ROLES:
+        par(rol, rol, 4.5)
+    for rol in ACCENT_TEXT:
+        par(rol, f"{rol} (tag)", 4.5)
+    for rol in STATUS_TEXT:
+        if rol in V:
+            par(rol, rol, 4.5)
+
+    print("    -- bordes de control y estado (1.4.11 exige 3) --")
+    for rol in BORDER_ROLES:
+        if rol in V:
+            par(rol, rol, 3.0)
 
 
 def check(css_path):
     css = Path(css_path).read_text(encoding="utf-8")
-    V = read_vars(css)
+    temas = read_themes(css)
+    if not temas:
+        raise SystemExit("ERROR: no encontre ningun bloque de tema en el CSS")
+    if DEFAULT_THEME not in temas:
+        raise SystemExit(f"ERROR: falta el tema por defecto ({DEFAULT_THEME}) en :root")
+
     fallas = []
-
-    def need(name):
-        if name not in V:
-            raise SystemExit(f"ERROR: falta la variable --{name} en :root")
-        return V[name]
-
-    for s in SURFACES:
-        need(s)
-    need("border-control")
-    need("accent")
-
     print(f"Chequeo de contraste: {css_path}")
+    print(f"  temas encontrados: {', '.join(sorted(temas))}")
 
-    print("\n  Texto (AA exige 4.5:1)")
-    for role in TEXT_ROLES:
-        if role not in V:
-            continue
+    for nombre in sorted(temas):
+        V = temas[nombre]
         for s in SURFACES:
-            r = contrast(V[role], V[s])
-            ok = r >= 4.5
-            if not ok:
-                fallas.append(f"{role} sobre {s}: {r:.2f} (necesita 4.5)")
-            print(f"    {'OK  ' if ok else 'FALLA'}  {role:8} sobre {s:8} {r:5.2f}:1")
+            if s not in V:
+                raise SystemExit(f"ERROR: el tema '{nombre}' no define --{s}")
+        check_theme(nombre, V, fallas)
 
-    print("\n  Borde de control (1.4.11 exige 3:1)")
-    for s in SURFACES:
-        r = contrast(V["border-control"], V[s])
-        ok = r >= 3
-        if not ok:
-            fallas.append(f"border-control sobre {s}: {r:.2f} (necesita 3)")
-        print(f"    {'OK  ' if ok else 'FALLA'}  {V['border-control']} sobre {s:8} {r:5.2f}:1")
-
-    print("\n  Indicador de foco (1.4.11 + 2.4.7 exigen 3:1)")
-    for s in SURFACES:
-        r = contrast(V["accent"], V[s])
-        ok = r >= 3
-        if not ok:
-            fallas.append(f"accent (foco) sobre {s}: {r:.2f} (necesita 3)")
-        print(f"    {'OK  ' if ok else 'FALLA'}  accent sobre {s:8} {r:5.2f}:1")
-
-    # Hex HARDCODEADOS fuera de :root.
+    # Hex HARDCODEADOS fuera de los temas.
     #
     # La primera version de este script solo leia :root, y asi se le escaparon
     # .badge-open (#1e3a5f = 1.24:1), .btn-warn y .chip-clear (#5c4715 =
@@ -146,33 +256,30 @@ def check(css_path):
     # las variables.
     hard = find_hardcoded(css)
     if hard:
-        print("\n  Colores hardcodeados fuera de :root")
+        print("\n  Colores hardcodeados fuera de los temas")
         for sel, prop, val in hard:
             umbral = 4.5 if prop == "color" else 3.0
-            peor = min((contrast(val, V[s]), s) for s in SURFACES)
-            ok = peor[0] >= umbral
-            if not ok:
+            peores = {t: min((contrast(val, V[s]), s) for s in SURFACES) for t, V in temas.items()}
+            malos = {t: p for t, p in peores.items() if p[0] < umbral}
+            for t, (r, s) in malos.items():
                 fallas.append(
-                    f"{sel} {prop} {val}: {peor[0]:.2f} sobre {peor[1]} (necesita {umbral})"
+                    f"[{t}] {sel} {prop} {val}: {r:.2f} sobre {s} (necesita {umbral})"
                 )
+            peor_t, (peor_r, peor_s) = min(peores.items(), key=lambda kv: kv[1][0])
+            marca = "FALLA" if malos else "OK  "
             print(
-                f"    {'OK  ' if ok else 'FALLA'}  {sel:22} {prop:12} {val}  "
-                f"peor {peor[0]:5.2f}:1 sobre {peor[1]} (min {umbral})"
+                f"    {marca}  {sel:22} {prop:12} {val}  "
+                f"peor [{peor_t}] {peor_r:5.2f}:1 sobre {peor_s} (min {umbral})"
             )
 
     # 2.4.7: quitar el outline sin dar otro indicador deja el teclado a ciegas.
     print("\n  Foco visible (2.4.7)")
     hay_focus_visible = "focus-visible" in css
-    outline_none = re.findall(r"outline:\s*none", css)
     if not hay_focus_visible:
         fallas.append("no hay reglas :focus-visible: el teclado no tiene indicador")
         print("    FALLA  no hay ninguna regla :focus-visible")
     else:
         print(f"    OK     hay reglas :focus-visible ({css.count('focus-visible')} usos)")
-    if outline_none:
-        print(f"    nota   {len(outline_none)} regla(s) con `outline: none`")
-        if not hay_focus_visible:
-            fallas.append("`outline: none` sin reemplazo de foco visible")
 
     print()
     if fallas:
@@ -180,7 +287,7 @@ def check(css_path):
         for f in fallas:
             print(f"  - {f}")
         return 1
-    print("OK: contraste WCAG AA en todos los pares declarados.")
+    print("OK: contraste WCAG AA en todos los pares de todos los temas.")
     return 0
 
 
