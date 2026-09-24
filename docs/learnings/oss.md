@@ -310,3 +310,35 @@ Cada ticket/PR se trata como entidad individual salvo pedido explicito de Gonzo.
 
 ---
 
+## Leccion de la sesion
+
+ - Como reviewer externo (no maintainer), el feedback se mantiene A NIVEL CODIGO. No validar decisiones de proyecto/empresa ni marcar agenda - eso le corresponde al maintainer. El reviewer confirma que sus puntos tecnicos se resolvieron y senala lo que falta verificar, sin determinarlo. - No agradecer por cambios en codigo ajeno: la validacion tecnica del reviewer es el aporte, no un favor que agradecer. --- ## Sesion: quitar PR review del inicio/cierre de sesion (08:5x) Gonzo pidio sacar la rev
+
+---
+
+## Job pipeline-queue-watcher (ACTIVO) y lecciones de automations
+
+ - **Job:** `pipeline-queue-watcher`, cada 15 min, trigger headless (no gasta tokens si todo esta sano), payload corre `tick` + reporta por Telegram. - **Trigger versionado:** `scripts/pipeline-queue-trigger.js` + harness de **15 escenarios** cableado en `npm test` como `test:node`. <!-- project: github.com/gonzoblasco/workspace_openclaw --> - **Diseno del trigger (por que 2 checks):** la cola HOY NO es el driver de ejecucion (el pipeline A/B corre por `sessions_spawn`; `running` solo se setea s
+
+---
+
+## Assertion fuera del guard de soporte: bug de test que se lee como bug de producto
+
+Toda assertion que dependa de una capacidad del motor va DENTRO del guard de soporte.
+
+Caso real: en los browser tests de #10517 tenia
+
+```js
+let names = labels.map(l => getComputedStyle(l).getPropertyValue('anchor-name').trim());
+expect(new Set(names).size).toBe(labels.length);   // FUERA del guard
+if (supportsAnchorPositioning()) { ... }
+```
+
+En Firefox 144 (sin anchor positioning) la declaracion inline se descarta, los 3 labels computan al MISMO string vacio, y el suite fallo con `expected 1 to be 3`. Eso se lee como bug de producto pero es bug de autoría del test.
+
+**Regla:** una declaracion que solo existe donde existe la feature no es comparable donde no existe. Mover la assertion adentro del `if (supportsAnchorPositioning())`.
+
+**Corolario mas amplio:** verificar los motores que corre el CI del repo antes de dar por hecho el trabajo de browser. Un run scopeado a un solo motor es evidencia SOLO de ese motor. En #10517 verifique local en chromium (6/6 verde) y CI fallo en webkit (6) y firefox (1).
+
+---
+

@@ -298,3 +298,27 @@ El modelo puede cambiarse a mitad de sesion: el runtime del contexto de arranque
 
 ---
 
+## SSH key para sincronizar workspace con Mac Mini M4 y MacBook Air M2
+
+ - Iniciada creacion de key en VPS (pendiente: crear `~/.ssh` porque el contenedor lo tenia ausente). - Pendiente: copiar public key a ambas Mac y configurar git remote en las maquinas. ## Cata empirica de 8 modelos (ADR-040)
+
+---
+
+## Leccion
+
+ - El reviewer (cixzhang) es humano aunque use AI para responder - se le agradece el review con nombre, no es un bot. La regla de "no agradecer a bots" aplica a reviews de IA puros. - Una libreria publicada espera un changeset por PR; no es obligatorio vs voluntario, es seguir la convencion del repo. ## Lecciones - Una skill de estudio debe definir SIEMPRE su ruta de artifacts. `learning-tracker` era agnostica y eso genero la inconsistencia. La nueva study-tracker tiene la regla explicita: `stud
+
+---
+
+## Decisiones clave
+
+ - **Compatibilidad de rutas**: `system.js` montado en `/api` (no `/api/system`) para preservar paths planos del frontend (`/api/system-metrics`, `/api/processes/kill`). `audit.js` queda en `/api/system` para `/api/system/full-audit`. - **Sin bundler**: frontend como `<script>` tags en orden compartiendo scope global. Más simple, más cercano al toolchain original. - **Tests en módulos puros**: format/security/paths son los únicos testeables sin mockear sistema. - **Quirk de formatSize documentad
+
+---
+
+## Hallazgo clave
+
+ El template `init-project.sh` ignora `.knowledge/` y usa submodule, pero los proyectos activos siguen otro patrón real: `.knowledge/` como blob trackeado por workspace + repo propio en carpeta, sin `.gitmodules`, doble trackeo. Documentado en skill notes.
+
+---
+

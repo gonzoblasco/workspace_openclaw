@@ -511,3 +511,36 @@ Create venvs and projects in their FINAL location from the start; moving a venv 
 
 ---
 
+## 2 lecciones nuevas en `docs/learnings/infraestructura.md` <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+
+ 1. "git add sobre .knowledge de un repo anidado: el orden importa (falla silenciosa)". 2. "La verificacion que miente: exit 1 dentro de un pipe y word-splitting de zsh".
+
+---
+
+## Observacion: el espejo de learnings estaba atrasado <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+
+ Al correr `export-learnings` aparecieron lecciones que estaban en la DB pero no en los `.md`: infraestructura 36 -> 42, metodologia 29 -> 33, y una categoria nueva (`debugging`, 1). La DB se esta poblando y los `.md` no se regeneran con la frecuencia debida. **Candidato a automatizar** (regenerar espejos al cerrar sesion, o un cron).
+
+---
+
+## Anchor positioning: medir layout esperando un frame, no sincronico
+
+Mediciones de layout con anchor positioning: esperar al menos un frame antes de leer `getBoundingClientRect()`.
+
+Caso real (falsa alarma propia): reporte que "el input con `position: fixed` no sigue el scroll de un contenedor con overflow". Medido **sincronicamente** justo despues de `scrollTop = 40`: los 6 componentes quedaban 40px corridos.
+
+Re-medido esperando frames:
+
+| Momento | Offset |
+|---|---|
+| medicion inmediata | 40px corridos |
+| +50ms | **0px (sigue el componente)** |
+| +350ms, +650ms | 0px |
+| tras scroll de ventana (200px) | 0px |
+
+Reproducido igual en headless Y en Chrome real con ventana. **No hay bug de scroll: es artefacto de medicion.** El compositor recalcula la posicion del ancla y `getBoundingClientRect()` en el mismo tick devuelve el valor viejo.
+
+**Regla:** antes de reportar un bug de layout/anclaje, re-medir esperando al menos un frame (`requestAnimationFrame` x2 o ~50ms). Un desvio medido sincronicamente no es evidencia suficiente.
+
+---
+

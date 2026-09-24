@@ -135,3 +135,9 @@
 
 ---
 
+## Documentacion formal del estudio (learning-tracker)
+
+ - Creados los 3 artifacts del skill learning-tracker (modo entrevista): - `study/openclaw-ai-in-production/PLAN-MAESTRO.md` (Capa 1): 13 niveles agrupados en 3 partes, niveles criticos (4 Identity, 5 PBAC, 8 Observability, 9 Self-correcting), gamificacion. - `study/openclaw-ai-in-production/nivel-1-gateway.md` (Capa 2): artifact Nivel 1 con los 6 topics del Cap 1 (vocabulario con nombre + practica + verificacion). - `study/openclaw-ai-in-production/PROGRESO.md` (Capa 3): tabla de progreso, XP, 
+
+---
+
