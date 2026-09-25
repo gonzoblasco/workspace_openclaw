@@ -39,7 +39,7 @@ Session start is triggered **only when Gonzo explicitly asks for it** ("start se
 
 If the user says `"start session in <project>"` or similar:
 
-1. Resolve the project by name: `node skills/session-context/commands/resume.mjs <name>`.
+1. Resolve the project by name: `node skills/session-lifecycle/commands/resume.mjs <name>`.
 2. If it does not exist, offer `session-context:init`.
 3. If it exists, show the `resume` briefing verbatim.
 4. Ask for today's **Session Goal**.

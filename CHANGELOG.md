@@ -4,6 +4,12 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-25] - kanam-spec: spec skeleton completed
+
+### Added
+- Created detailed `spec.md` in `projects/kanam-spec/openspec/specs/kanam-spec/` with Overview, Goals, Requirements (functional \u0026 non‑functional), Non‑goals, Scenarios, Acceptance Criteria and extended functional requirements FR‑4 - FR‑7 covering UI input, generation process, preview/export, validation, UX flow, edge‑case handling, performance, security, accessibility, and compatibility.
+- Updated `CHANGELOG.md` to record this addition.
+
 ## [2026-09-24] - SoporteML se reabre: definicion de la nueva generacion (ADR-067 + ADR-068)
 
 ### Added
