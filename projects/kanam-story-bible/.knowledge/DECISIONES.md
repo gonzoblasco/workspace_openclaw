@@ -48,6 +48,37 @@ Se evaluo y se **descarto** la alternativa de drenar el outbox dentro del propio
 retrieve (consistencia eventual invisible al cliente): oculta el estado real y hace
 que una lectura sea una escritura. El 409 es honesto y el cliente sabe que hacer.
 
+## Apply: el candado es por candidato, no por job
+
+`generation_job.aplicado` era un booleano del job. Eso convertia "aplicar una
+propuesta" en "cerrar el job": apenas entraba la primera ficha, la segunda,
+tercera o quinta devolvian `409 el job ya fue aplicado (operacion no repetible)`.
+
+La spec decia "el job ya fue aplicado (operacion no repetible)" pensando en
+proteger contra reaplicar **lo mismo**. Un booleano del job es la implementacion
+mas simple, y es incorrecta en cuanto el job trae mas de un candidato, que es el
+caso normal (`count` llega hasta 10).
+
+**Ahora:** `candidatos_aplicados` (jsonb) guarda que propuestas entraron. El 409 se
+dispara solo al reaplicar el **mismo** candidato, y el detalle lo nombra. El pedido
+se valida entero antes de crear nada, asi que un request con varios candidatos no
+queda a medio aplicar por culpa de uno invalido. `aplicado` queda como derivado:
+`true` solo cuando no queda ninguna propuesta suelta.
+
+`applied_candidates` viaja en la respuesta del job para que la UI lea el estado de
+la base en vez de guardarlo en memoria del navegador. Sin esto, recargar la pagina
+perdida que candidatos ya estaban aplicados y los ofrecia de nuevo.
+
+**Migracion:** `002_apply_por_candidato.sql`. Los jobs que quedaron cerrados bajo la
+semantica vieja no tienen registro de que candidato entro, asi que el backfill los
+marca todos como aplicados. Si alguno nunca entro al mundo, la validacion de nombre
+duplicado lo detecta igual al intentar aplicarlo. Se prefiere eso a reabrir un job
+ya cerrado.
+
+**Verificacion:** `scripts/verify_apply.py` (14 aserciones, 0 fallas) aplica los tres
+candidatos de un job uno por uno, comprueba el 409 al reaplicar, y confirma que el
+estado sobrevive una recarga. Test de regresion en la UI.
+
 ## Truncamiento del modelo
 
 Los modelos de razonamiento consumen `max_tokens` **pensando** antes de emitir
