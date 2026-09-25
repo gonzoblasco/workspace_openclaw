@@ -50,12 +50,38 @@ que una lectura sea una escritura. El 409 es honesto y el cliente sabe que hacer
 
 ## Truncamiento del modelo
 
-Si el modelo termina con `finish_reason == "length"`, el JSON llega cortado. La spec
-acepta un unico reintento ("un segundo rara vez corrige y duplica el costo").
+Los modelos de razonamiento consumen `max_tokens` **pensando** antes de emitir
+contenido. Con un presupuesto corto, `content` sale vacio y `finish_reason` es
+`length`: no hay JSON truncado, no hay JSON en absoluto.
 
-Implementado: reintento unico con el doble de presupuesto de tokens y una
-instruccion explicita de brevedad, y recien despues se parsea. Evidencia: sin esto,
-el job real fallaba con `Unterminated string starting at: line 10 column 16`.
+Medido el 2026-09-24 sobre el mundo real "Cartas sin Mandar" (braindump de ~6.900
+caracteres, contexto RAG de 6.211 caracteres):
+
+| `max_tokens` | `finish_reason` | caracteres de contenido | resultado |
+|---|---|---|---|
+| 1200 | `length` | **0** | `Expecting value: line 1 column 1 (char 0)` |
+| 3000 | `length` | 1466 | JSON truncado |
+| 8000 | `stop` | 2278 | JSON valido, 3 candidatos |
+
+La spec pedia un unico reintento ("un segundo rara vez corrige y duplica el
+costo"). Se mantiene uno solo, pero con dos correcciones:
+
+1. **Piso de salida** (`generation_min_max_tokens`, 4000 por defecto). El
+   presupuesto de razonamiento va **encima** del de salida; no compiten. Si el
+   cliente pide 1200, se usa el piso.
+2. **El reintento cubre los dos modos de fallo**: respuesta cortada (`length`) y
+   contenido vacio, que son el mismo problema con distinto sintoma. Va con
+   `generation_retry_max_tokens` (16000) y una instruccion explicita de no
+   explicar el razonamiento.
+
+`llm.chat_detallado` ahora devuelve un dataclass con `contenido`, `finish_reason`,
+`razonamiento_chars` y `tokens_completion`, mas un `diagnostico()` que traduce el
+fallo a una frase entendible. El job guarda `presupuesto_tokens` y
+`razonamiento_chars` en su resultado, asi que un fallo futuro se explica solo.
+
+**Leccion general:** "el modelo se corto" y "el modelo no dijo nada" tienen la
+misma causa raiz en modelos de razonamiento. Tratarlos como un solo caso de
+presupuesto insuficiente es mas simple y mas correcto que distinguirlos.
 
 ## Embeddings
 
