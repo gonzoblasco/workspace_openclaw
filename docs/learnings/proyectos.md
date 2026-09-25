@@ -141,3 +141,17 @@
 
 ---
 
+## Cuatro generaciones de SoporteML: el trabajo tecnico fue bueno, la demanda nunca se probo
+
+CONTEXTO: definiendo SoporteML v5 (greenfield, basado exclusivamente en v1 de Lovable), inventarié las cuatro generaciones del producto.
+
+EL PATRON QUE ENCONTRÉ: v3 -> v4 repitió el mismo movimiento. v3 tenía backend completo y features modeladas; se reinició por la UI. v4 construyó identidad visual y pulido; se congeló sin usuarios. Cuatro generaciones, mucho código, y LA MISMA PREGUNTA SIN CONTESTAR LAS CUATRO VECES: ¿algún vendedor lo usó y volvió al día siguiente?
+
+EVIDENCIA DURA: v1 es la generación MÁS COMPLETA (54 migraciones, 24 tablas, 25 Edge Functions, 81 componentes, 18.889 líneas). v3 y v4 no son sucesoras: son podas - al salir de Lovable perdieron features en el camino. Y v1 nunca cobró: su billing está escrito y jamás fue operativo (secrets sin configurar, plan de preapproval sin crear en MP).
+
+SEGUNDO HALLAZGO (precedente fabricado, materializado en archivos): v4 copió los 3 ADRs de v3 de forma BYTE-IDENTICA. Mismo checksum (83022a062fdc) en los dos repos. Por eso v4 heredó Node+Hono, SQLite y los tokens de Lovable sin decidirlos: no los eligió, los copió.
+
+REGLA QUE ME LLEVO: al arrancar una versión nueva, inventariar QUÉ TENÍA la anterior y POR QUÉ SE ABANDONÓ, antes de diseñar. Si el motivo del abandono fue "la UI es sosa", eso no justifica perder features. Y la pregunta de demanda (¿alguien lo usa y vuelve?) va ANTES del stack, no después.
+
+---
+

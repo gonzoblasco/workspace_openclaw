@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-Development - **v0.2.0: API completa + interfaz web funcionando**.
+Development - **v0.3.0: API completa, interfaz web con recuperacion de datos**.
 
 ## Como se levanta
 
@@ -33,15 +33,17 @@ La UI habla same-origin con `/api` y Vite lo proxea al 8080, asi que no hay CORS
 - Generacion asincrona: candidatos que no persisten, `/apply` con `source=ia`, apply repetido 409, duplicado 409.
 - Gaps, export JSON/Markdown, borrado en dos fases.
 
-**UI (verificado con `npx vitest run`: 6/6):**
+**UI (verificado con `npx vitest run`: 9/9):**
 
-- 8 secciones: Mundo, Fichas, Relaciones, Outline, Retrieval, Generar, Que falta, Export.
+- 9 secciones: Mundo, Fichas, Relaciones, Outline, Retrieval, Generar, Que falta, Papelera, Export.
 - Crear, editar y borrar fichas; el formulario de atributos se arma desde el tipo.
 - Panel de retrieval que muestra puntaje, origen y relevancia de cada fragmento.
-- Generacion con propuestas aplicables de a una.
+- Generacion con propuestas aplicables de a una, mas **historial** de generaciones
+  anteriores con boton para reabrir las propuestas sin volver a llamar al modelo.
+- **Papelera**: lista las fichas borradas y las restaura.
 - Estados vacio, de carga y de error en cada vista.
 
-**Calidad:** ruff limpio, mypy limpio (20 archivos), 9 unitarios Python, 64 aserciones de humo, 6 tests de UI, typecheck estricto y build de la UI limpios.
+**Calidad:** ruff limpio, mypy limpio (20 archivos), 9 unitarios Python, 64 aserciones de humo, 9 tests de UI, `scripts/verify_apply.py` (14 aserciones), typecheck estricto y build de la UI limpios. Las 8 vistas medidas a 420px sin desborde horizontal (`scripts/ui-shot.mjs`).
 
 ## What's Blocked
 
@@ -60,11 +62,14 @@ Nada bloqueado.
 - El dev server de Vite y el stack de Docker no sobreviven un reinicio de la maquina: no hay LaunchAgent.
 - Sin paginacion infinita en la UI (hay boton "Cargar mas" en Fichas).
 - `chunk.embedding` es `vector(768)` fijo: cambiar de modelo de embeddings exige migracion.
-- Los scripts de prueba crean mundos en la misma base que los mundos reales. Con
-  `DELETE /projects/{id}` se limpian facil, pero la convivencia es una fuente de
-  ruido: separar la base de test es el arreglo de fondo.
+- **Los scripts de prueba comparten base con los datos reales.** Es la deuda que mas
+  dolio: `verify_apply.py` corrio contra un mundo real y lo dejo vacio (ADR-069).
+  Mitigado con la regla "un script no toca un mundo que no creo", pero la separacion
+  fisica de la base es el arreglo de fondo y sigue pendiente.
 - El endpoint de purga fisica de un mundo ya borrado no esta expuesto (la funcion
   `purgar_bible` existe en `services.py`).
+- `neat-bloom` (dev server de Vite) corre como proceso de la sesion: si se cierra la
+  sesion, la UI queda servida desde el build pero sin HMR. Ver deuda del LaunchAgent.
 
 ## Como recuperar cosas
 

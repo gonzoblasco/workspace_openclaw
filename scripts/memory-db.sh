@@ -419,7 +419,7 @@ case "$1" in
       echo "## Categorias"
       echo ""
       sqlite3 "$DB" "SELECT category, count(*) FROM learnings GROUP BY category ORDER BY category;" | while IFS='|' read -r cat n; do
-        echo "- **[$cat](docs/learnings/$cat.md)** - $n lecciones"
+        echo "- **[$cat](./$cat.md)** - $n lecciones"
       done
       echo ""
       echo "## Total"
@@ -453,6 +453,20 @@ case "$1" in
           echo ""
         } >> "$out"
       done
+    done
+    # Purgar los .md de categorias que ya no existen en la DB. Sin esto, una
+    # categoria que se vacia o se renombra deja su archivo huerfano para siempre y
+    # el directorio deja de reflejar la DB, que es la fuente de verdad. Caso real
+    # (2026-09-25): una fila con categoria vacia genero docs/learnings/.md, la fila
+    # se borro, y el archivo sobrevivio a la regeneracion.
+    for f in docs/learnings/*.md; do
+      [ -e "$f" ] || continue
+      base=$(basename "$f" .md)
+      [ "$base" = "README" ] && continue
+      if ! sqlite3 "$DB" "SELECT 1 FROM learnings WHERE category='$base' LIMIT 1;" | grep -q .; then
+        if command -v trash >/dev/null 2>&1; then trash "$f"; else rm -f "$f"; fi
+        echo "   podado: $f (la categoria '$base' ya no existe)"
+      fi
     done
     echo "docs/learnings/ regenerado desde la DB."
     ;;

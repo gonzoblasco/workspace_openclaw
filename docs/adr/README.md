@@ -74,6 +74,8 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-066 | [Los guardias del workspace no leen codigo de proyectos](./ADR-066-guardias-no-dependen-de-codigo-de-proyecto.md) | workspace |
 | ADR-067 | [Los ADRs del workspace no pertenecen a un proyecto - verificar el sujeto antes de borrar](./ADR-067-adrs-del-workspace-no-son-de-un-proyecto.md) | workspace |
 | ADR-068 | [La nueva generacion de SoporteML es greenfield y se basa en v1, no en v4](./ADR-068-nueva-generacion-soporteml-greenfield-desde-v1.md) | workspace |
+| ADR-069 | [Los datos de prueba no comparten base con los datos reales](./ADR-069-datos-de-prueba-no-comparten-base.md) | kanam-story-bible |
+| ADR-070 | [Todo estado recuperable expone su via de recuperacion](./ADR-070-estado-recuperable-expone-su-recuperacion.md) | kanam-story-bible |
 
 ## Formato
 

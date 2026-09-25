@@ -342,3 +342,57 @@ En Firefox 144 (sin anchor positioning) la declaracion inline se descarta, los 3
 
 ---
 
+## Prettier: --write antes de --list-different da falso OK
+
+Verificado 2026-09-24 en carbon-design-system/ibm-products #9879.
+
+**El dato:** el job `format` (`yarn format:diff` = `prettier . --list-different -u`) marcaba `Datagrid.test.jsx` por una linea de 81 chars contra `printWidth: 80` (regla de `prettier-config-carbon` 0.12.0, menos `bracketSameLine`). Fallo arrastrado desde el 11/09, no introducido por el merge del 24/09.
+
+**La leccion (nueva, no obvia):** el comando de la CI es `--list-different`. Si uno reproduce con `--write` y despues vuelve a medir `--list-different` **sobre la misma copia ya reescrita**, el segundo comando sale 0 y da un falso "TODO OK": la corrida previa ya arreglo el archivo. Esto casi hizo reportar el fix como verificado sin haber medido nada. Regla: cada medicion de formato arranca de una **copia fresca** del archivo (o se mide directo `--list-different` sin `--write` antes). Re-medido en copia fresca: PR head exit 1 / main exit 0, con 3.9.6, 3.5.3 y 2.8.8 - el resultado no depende de la version de prettier, asi que la version del lock no es la variable que importa.
+
+**Corolario para diagnosticar "CI rojo" en este repo:** `format` es un job **separado** de `lint`. Lint en verde no limpia format. Y "CI rojo" no es "todos los tests fallaron": hay que enumerar job por job - en este PR 18/18 jobs del run CI estaban en success salvo `format`.
+
+**Firma de commits:** el ruleset de firma no bloquea el merge en ibm-products - el sibling mergeado #9869 tiene 4 commits `unsigned` y #9878 uno. Un commit propio `unsigned` no es un bloqueo que haya que resolver con material de firma local.
+
+---
+
+## Conflicto de PR: el hunk sigue siendo necesario - segunda instancia verificada (hermes-agent #93838)
+
+Segunda instancia verificada del caso "hunk SIGUE siendo necesario" (el complemento del caso "redundante" de TanStack/router #7878).
+
+Caso: NousResearch/hermes-agent #93838 (a11y h1 + role=group), branch 16.863 commits atras de main, 3 hunks en 2 archivos. Se resolvio, no se cerro.
+
+EVIDENCIA DE QUE EL FIX SEGUIA VIVO (buscada ANTES de resolver, no despues):
+- `route-heading.tsx` no existe en main (404 en contents API)
+- `routeTitles` ausente del i18n de main y de types.ts
+- ningun cluster del titlebar con `role="group"` (0 en shell/)
+- kanban sigue con `<h1>` (board.tsx:1334)
+Verificar esto es lo que decide entre cerrar y resolver; el tamano del diff no lo dice.
+
+LAS TRES FORMAS QUE TOMO LA RESOLUCION (todas "tomar la forma de upstream y re-aplicar solo lo nuestro"):
+1. Hermano agregado por upstream donde iba el nuestro (rama HUD de ContribController): el conflicto era `<RouteHeading />` vs `<AppContextMenu />` y la resolucion correcta fue conservar AMBOS, no elegir uno.
+2. Upstream reescribio el bloque y lo envolvio en un early-return (`hidesFixedTitlebarClusters(view) && pageOwnsTitlebar`): se tomo la estructura nueva completa (`leftClusterClass`, `data-titlebar-cluster`) y se re-aplico nuestro `role="group"`; no se restauro nuestro className viejo.
+3. Upstream renombro un label (`paneControls` -> `appControls`): se tomo el nombre de upstream y se agrego solo nuestro atributo. Resolver hacia nuestro lado habria reintroducido el nombre viejo.
+
+LECCION QUE NINGUN MARCADOR MUESTRA: el conflicto tapaba un DRIFT DE VOCABULARIO que los marcadores no revelan. Despues de resolver, hay que releer el arbol mergeado contra main y no solo borrar marcadores: `AppView` habia cambiado `skills` -> `capabilities` y aparecio `session-import`; los locales pasaron de 5 a 9. Nuestro test seguia pidiendo `/skills`. Sin releer eso, el merge "resuelto" quedaba con un test rojo y un mapa de titulos incompleto.
+
+VERIFICACION: typecheck + suite completa del proyecto (1018 archivos / 8571 tests verdes). Un merge resuelto sin correr la suite del area no esta verificado.
+
+---
+
+## Dos firmas de CI que no son fallas de codigo: workflow obsoleto en la base vs action_required
+
+Dos causas distintas de "CI en rojo" que NO son fallas del cambio, distinguibles por la firma. Ambas dan jobs=0; el texto y el `conclusion` son lo que las separa.
+
+1. BASE CON WORKFLOW OBSOLETO -> `completed/failure` + 0 jobs + el texto "This run likely failed because of a workflow file issue". El workflow de la BASE del PR quedo viejo frente a main y no pudo ni crear jobs.
+   Caso: hermes-agent #93838. Los 3 runs del head viejo daban esa firma y los PRs hermanos (#93836, #93848) tenian EXACTAMENTE la misma: eso confirma que era ambiental y no del contenido. Se arregla actualizando la base (merge de main), NO tocando codigo.
+
+2. COMPUERTA DE APROBACION DE MAINTAINER -> `completed/action_required` + jobs 0. El workflow espera aprobacion de un maintainer antes de crear jobs.
+   Caso: el mismo PR, despues del merge de main. Pasa de "workflow file issue" a action_required sin que cambie una linea de codigo: es la prueba de que la firma era de la base, no del diff.
+
+COMO USARLO: ante "CI rojo", leer el `conclusion` de cada run y el `total_count` de jobs ANTES de tocar nada. `action_required` = esperar a un maintainer. "workflow file issue" = actualizar la base. En ninguno de los dos casos se re-corre CI ni se "arregla" codigo.
+
+COMPLEMENTO: el check requerido del ruleset puede seguir bloqueando el merge aunque todo lo demas este verde (`All required checks pass` en hermes-agent, con `required_approving_review_count: 0`). Sin reviewers asignados, el bloqueo es la compuerta de CI, no la falta de review.
+
+---
+

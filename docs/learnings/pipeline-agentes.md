@@ -164,3 +164,24 @@ El 2026-09-11 el motor de los agentes A/B del pipeline volvio de deepseek-v4.1-f
 
 ---
 
+## La skill langchain-rag-service RECOMIENDA el patron de IDs que tumbo el indice (corregir, no agregar skill nueva)
+
+CONTEXTO: al cerrar la sesion, evaluando si hacia falta una skill nueva para el incidente del indice, revise las skills existentes. Encontre algo mejor que una skill nueva: un error ACTIVO en una skill viva.
+
+HALLAZGO: la skill `langchain-rag-service` (workshop) recomienda en su paso 6, textual:
+  `add_documents(chunks, ids=[f"{name}::{i}", ...])`
+con el comentario "Deterministic ids make re-ingests overwrite instead of duplicating". El problema: `name` es ambiguo. Si se resuelve al NOMBRE del archivo -que es lo natural- colisiona con homonimos en carpetas distintas. Es EXACTAMENTE el bug que hoy tumbo el indice de kanam-insight: 142 colisiones (docs/README.md vs docs/adr/README.md -> ambos `docs::README.md::0`), Chroma aborto el lote, y el indice quedo a medias.
+
+Es decir: la skill no solo no protege del bug, lo RECOMIENDA. El proximo proyecto RAG que la siga va a repetirlo.
+
+SEGUNDO HALLAZGO: el reference `chroma-store-recovery.md` de la misma skill ya documenta la firma del segfault (EXIT=139 al abrir un segmento HNSW danado, SQLite intacta) y trae una tabla de reproduccion donde la fila "Build 3000 docs while a second process reads (count() in a loop)" figura como **hipotesis, NO reproducida**. Hoy tengo evidencia mas fuerte de que esa es la causa (aunque tampoco en aislamiento: el dano previo por el aborto pudo contribuir). No lo declaro reproducido; anoto que hay un caso mas en la misma direccion.
+
+CORRECCION QUE PROPONGO (para Gonzo, que es quien edita las skills del Workshop):
+1. Paso 6: `ids=[f"{name}::{i}"]` -> `ids=[f"{path}::{i}"]`, con la razon escrita: el ID debe salir de la RUTA RELATIVA (unica en el corpus), nunca del nombre del archivo.
+2. Agregar el guard previo: validar `len(set(ids)) == len(ids)` ANTES de tocar la coleccion y abortar con el detalle de los colisiones. Sin el guard, Chroma aborta a mitad de lote y deja el indice parcial - y un indice parcial se ve como exito si solo se mira el conteo final.
+3. Aclarar que `--reset` no sirve para recuperarse de un store que crashea al abrir (ya lo dice el reference, pero el paso 6 no lo enlaza).
+
+REGLA DE METODO QUE ME LLEVO: antes de proponer una skill nueva para un problema, buscar si alguna skill existente LO RECOMIENDA. Corregir la causa es mas valioso que documentar el sintoma. Y es la misma leccion de hoy desde el otro lado: un verificador (o una guia) con alcance limitado no solo deja pasar el error, a veces lo prescribe.
+
+---
+

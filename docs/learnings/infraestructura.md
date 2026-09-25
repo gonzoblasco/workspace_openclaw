@@ -544,3 +544,33 @@ Reproducido igual en headless Y en Chrome real con ventana. **No hay bug de scro
 
 ---
 
+## Monorepo: npm ci --workspace <pkg> puede dejar deps sin hoistear y romper la suite
+
+En un monorepo, `npm ci --workspace <pkg>` puede dejar dependencias SIN hoistear y romper la suite del paquete bajo prueba.
+
+Caso real (2026-09-24, hermes-agent #93838): instale con `npm ci --workspace apps/desktop` y el barrido marco 3 suites fallidas por `Failed to resolve import "lucide-react"` desde `components/onboarding-chat/cards/setup.tsx`.
+
+No era el cambio: `lucide-react` NO esta declarado en `apps/desktop/package.json`. Lo declaran `web/package.json` y `apps/bootstrap-installer/package.json`, y en el layout real npm lo hoistea a la raiz del monorepo. El install acotado no lo trajo; el `npm ci` completo (1346 paquetes) si, y las 3 suites pasaron sin tocar codigo.
+
+REGLA: para CORRER LA SUITE de un workspace en un monorepo, instalar desde la raiz (`npm ci`), no con `--workspace`. El install acotado sirve para mirar un paquete, pero puede romper resoluciones que dependen del hoisting.
+
+ANTE UNA SUITE QUE FALLA POR UN MODULO NO DECLARADO EN EL PAQUETE BAJO PRUEBA: revisar si el hoisting lo resolvia antes de culpar al diff. `grep -rn "\"<dep>\"" --include=package.json .` sin node_modules muestra quien lo declara de verdad.
+
+NOTA DE PROCESO: se reporto el fallo como ambiental recien despues de probarlo (install completo -> verde). Declarar "es del entorno" sin la contraprueba habria sido una excusa, no un diagnostico.
+
+---
+
+## Nunca consultar la DB vectorial mientras el indexador escribe: corrompe el HNSW (segfault)
+
+CONTEXTO: mientras reconstruía el índice de kanam-insight, hice polling al conteo de vectores desde varios procesos de monitoreo en paralelo.
+
+QUÉ PASÓ: el índice HNSW quedó corrupto y todo comando que lo cargaba moría con EXIT=139 (segfault). La DB SQLite estaba INTACTA (PRAGMA integrity_check = ok, 4417 embeddings), pero el archivo HNSW no. Tuve que reconstruir desde cero.
+
+POR QUÉ: consultar una base vectorial mientras otro proceso la escribe. El monitoreo parecía inocuo (solo lectura), pero abrir la colección implica cargar el HNSW en memoria, y eso compite con el escritor.
+
+REGLA QUE ME LLEVO: nunca abrir la base mientras el indexador escribe. Para monitorear, leer el LOG del proceso (o el tamaño de los archivos en disco con stat), jamás consultar la colección. Si hace falta saber el progreso, que el propio proceso lo imprima.
+
+DETALLE ÚTIL: el log estaba vacío porque Python bufferiza stdout cuando redirige a archivo. Se soluciona con `python3 -u`.
+
+---
+

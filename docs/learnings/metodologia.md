@@ -366,3 +366,113 @@ Practica: por cada detector o guardia nuevo, escribir el caso sembrado que lo ha
 
 ---
 
+## Un archivo puede cambiar entre la lectura y el patch: re-leer, no reintentar
+
+Al editar un archivo compartido, entre la lectura y la escritura puede pasar otro proceso. Reintentar el mismo patch con el mismo texto falla de forma confusa o pisa la edicion ajena; lo correcto es RE-LEER y redraftear desde el contenido actual.
+
+Verificado 2026-09-24: prepare_patch sobre una skill del Workshop (adr-collection-audit) fallo con "oldString not found", y el archivo tenia mtime de un minuto antes. La causa no era mi cita: entre mi read y mi patch, otra sesion habia editado la misma skill. Al re-leer, la mejora que yo iba a proponer YA estaba aplicada (el script nuevo en el paso 1, y las lecciones de hoy reflejadas en rule-enforcement-audit y db-first-session-save). Un segundo intento fallo con "changed since it was read" - el tool valida contra la ultima lectura, no contra el disco.
+
+Reglas que salen de esto:
+1. Un patch que falla por oldString: PRIMERO leer mtime y re-leer el archivo. Nunca reintentar el mismo texto.
+2. Si el cambio ajeno YA cubre lo que ibas a hacer, NO lo dupliques: verifica si esta completo y reporta el hallazgo.
+3. Un archivo que no versionas no tiene historial: si algo aparece cambiado y no hay commit que lo explique, la evidencia es el mtime, no un diff.
+4. Antes de escribir en un arbol compartido, chequear que no haya una sesion trabajando lo mismo. Si la hay, esperar (verificado: espere a que terminara la sesion de kanam-insight antes de agregar la fila del ADR-063).
+
+Corolario para skills del Workshop: la via es la herramienta (read -> prepare_patch -> patch), que ademas valida contra la ultima lectura y por eso DETECTA la carrera en vez de pisarla en silencio.
+
+---
+
+## Trampa de medicion: $? tras un pipe mide head, no el script
+
+Trampa de medicion: `$?` tras un pipe mide el ULTIMO comando de la cadena, no el script que te interesa.
+
+Caso real (2026-09-24, cierre de hermes-agent #93838): medi el exit code de `check-refs.py` con `python3 scripts/check-refs.py --all 2>&1 | head -3; echo $?` y anote "devuelve exit 0". Era falso: `$?` era el de `head`, que siempre sale 0. El script SI devuelve 1 (verificado sembrando una ruta rota: `RUTAS ROTAS (1 de 180)` + exit 1), y el hook depende de ese codigo (`check-refs.py --all || exit 1`), asi que el gate funciona perfecto por exit code.
+
+REGLA: para medir el exit code de un comando, no encadenarlo a un pipe. O se redirige a archivo y se mide (`cmd > out 2>&1; echo $?`), o se usa `${PIPESTATUS[0]}` en bash.
+
+POR QUE IMPORTA MAS QUE UN BUG: el numero falso era comodo (confirmaba que "el checker no sirve como gate" y justificaba leer el texto a mano). Un resultado que valida lo que uno ya sospechaba pasa sin revision. Es el mismo patron que el workspace ya registro dos veces: un chequeo que da confianza falsa. Un numero medido asi no es evidencia.
+
+---
+
+## Releer la decision vigente COMPLETA antes de proponer codigo (mi propuesta contradecia ADR-066 del mismo dia)
+
+Propuse un script nuevo sin releer la decision que ya gobernaba esa area, y la decision era del MISMO dia.
+
+QUE PROPUSE: validar en el workspace las rutas citadas que apuntan a codigo de proyecto (`projects/<slug>/...`), con el patron opt-in por presencia (skipif si el proyecto no esta clonado) que usa ADR-066 decision 2.
+
+POR QUE ESTABA MAL: ADR-066 (2026-09-24, el mismo dia, y que yo misma habia leido horas antes en esta sesion) decision 4 dice textual: "Si apunta a codigo de un proyecto: calificarla con `projects/<slug>/` (es trazabilidad, no una promesa de existencia) y **no** exigir su existencia por test." Mi script hacia exactamente lo que la decision prohibe, con skipif o sin el. Hay un motivo de fondo: `AGENTS.md` establece que al cerrar un proyecto se limpia el codigo local, asi que esos caminos pueden no existir legitimamente; un validador ahi genera falsos positivos por diseño.
+
+POR QUE NO LO VI: leí ADR-066 esa misma tarde (para decidir si hacia falta un ADR nuevo) y aun asi propuse el script. Leer un ADR para "ver si aplica uno nuevo" no es lo mismo que leerlo para "ver si ya decidio esto". La segunda lectura es la que importa antes de escribir codigo.
+
+REGLA DE ORO (AGENTS.md): "Definido en ADR = resuelto, no se vuelve a preguntar... no se sugiere su revision a menos que surja una evidencia tecnica nueva y disruptiva." El dato nuevo que yo tenia (el regex de check-refs ignora las rutas calificadas) es CONSISTENTE con la decision, no disruptivo: no habilita reabrirla.
+
+REGLA PRACTICA: antes de proponer un guard, script o test en un area, grepear el indice de ADRs por esa area (`grep -il "<area>" docs/adr/*.md`) y leer la decision vigente COMPLETA. Si la decision ya cubre el caso, la propuesta se retira; reabrirla requiere evidencia nueva y disruptiva, y eso es decision de Gonzo, no mia.
+
+---
+
+## Verificar la premisa ANTES de ejecutar una orden de borrado (0 de 68 ADRs tenian el sujeto que se creia)
+
+CONTEXTO: Gonzo pidió "eliminar los ADRs que hagan referencia a definiciones tecnológicas" y luego "los que hagan referencia a versiones previas de SoporteML". Antes de borrar, audití el terreno.
+
+QUÉ ENCONTRÉ: de los 68 ADRs del workspace, NINGUNO tiene a SoporteML como sujeto. Los 11 que lo mencionan solo lo citan de pasada (como ejemplo o trazabilidad). Y dos dicen lo CONTRARIO de lo que buscábamos: ADR-048 dice textual "la familia soporteml queda fuera de todo barrido (ADR-001, decisión de Gonzo). No se toca".
+
+EL RIESGO EVITADO: esos 47 ADRs que citan tecnología son decisiones que hoy sostienen entre 15 y 20 proyectos (ADR-048 lo citan 20 proyectos, ADR-037 15, ADR-036 7). Borrarlos para resetear UN proyecto habría roto el workspace entero.
+
+QUÉ SÍ ENCONTRÉ: los ADRs que cumplían el criterio estaban en otro lado - los repos de v3 y v4 (independencia de vendor, runtime Node+Hono, tokens de Lovable). Y el único que genera ruido hoy es el ADR-001 de identidad visual de v4, porque kanam-insight lo indexa junto al resto.
+
+REGLA QUE ME LLEVO: antes de ejecutar una orden de borrado, verificar la premisa de la orden. Preguntar "¿el sujeto de esto es realmente lo que se cree?" y "¿quién depende de esto?". Una orden de limpieza puede describir un objeto que no existe, y ejecutarla igual borra otra cosa.
+
+DATO ÚTIL: `grep -l` sobre el título distingue "es el sujeto" de "solo lo cita". Y contar las referencias externas por ADR (`grep -rl ADR-NNN fuera de su archivo`) mide el blast radius antes de tocar.
+
+---
+
+## Un test mio paso en verde con el codigo mutado: la asercion no discriminaba (marcas markdown)
+
+CONTEXTO: escribí 8 tests nuevos para el Handoff Synthesizer y los verifiqué por mutación, como manda el método. Uno de ellos paso EN VERDE con el codigo roto.
+
+LA ASERCION ERA: `assert not s["current_state"].startswith("Nota")`. El valor mutado era `**Nota Fase 0:** el build fallaba.` - empieza con `**`, no con `Nota`, asi que la asercion pasaba por la razon equivocada. El test no discriminaba nada.
+
+POR QUE IMPORTA: un test que pasa siempre es peor que no tener test, porque da confianza falsa y ademas ocupa lugar. La mutacion lo destapo; leer el test no lo habria hecho (la asercion "se lee bien").
+
+REGLA QUE ME LLEVO: al escribir una asercion sobre texto, verificar QUE EL VALOR MUTADO LA HAGA FALLAR. Si el valor real y el mutado pueden compartir un prefijo o un marcador, la asercion tiene que comparar el CONTENIDO que importa (`"Nota Fase 0" not in valor` + `"integrando el motor" in valor`), no la forma del string.
+
+PATRON GENERAL: es la cuarta vez en el dia que un paso de VERIFICACION atrapa algo (spec vencido, requirements.txt vacio, overlap faltante, este). Verificar no es un tramite final: es la etapa que produce los hallazgos.
+
+---
+
+## Construimos un detector de deuda ciego a su propio documento (alcance del verificador)
+
+CONTEXTO: audite docs/LANGCHAIN_STRATEGY.md porque Gonzo pregunto por que las fases 1 y 2 figuraban sin marcar. Encontre tres derivas mas: el stack declarado (Supabase+Docker+Python 3.11) no era el construido (ChromaDB+LaunchAgent+3.12), 6 de 8 items de deuda ya estaban cerrados, y una fase pedia gestionar API keys que con Ollama local no existen.
+
+LA CAUSA RAIZ - y esto es lo que importa: el documento vivia en la RAIZ del workspace y el Debt Detector solo escaneaba `projects/*/.knowledge/`. Construimos una herramienta para detectar derivas y era CIEGA a la documentacion mas estrategica que tenemos. El documento acumulo tres derivas sin que nada las señalara.
+
+REGLA QUE ME LLEVO: al construir un verificador, preguntar "¿que queda FUERA de mi alcance?" y revisar si ahi vive justo lo que mas importa. Un verificador con alcance limitado da falsa sensacion de cobertura: escaneaba 26 proyectos y no veia su propio documento.
+
+CONTEXTO MAS AMPLIO: ese dia el mismo patron aparecio TRES veces (docs de proyecto, docs de workspace, y los ADRs de v4). Documentacion que declara un estado vencido, sin nada que lo verifique. Las tres veces lo encontro una persona preguntando, no una herramienta.
+
+---
+
+## Un estado que se declara recuperable sin via de recuperacion no es recuperable (ADR-070)
+
+Dos mecanismos del mismo producto tenian solo la pierna de ida. El borrado en dos fases ponia `deleted_at` y la ficha salia de todas las consultas, pero no existia endpoint para volver a alcanzarla: la "ventana de recuperacion de 30 dias" era una promesa sin puerta. El historial de generaciones guardaba los candidatos en la DB, pero la UI nunca listaba ese endpoint: al recargar la pagina, el trabajo del modelo desaparecia de la vista aunque seguia en disco.
+
+Gonzo lo vivio como perdida de datos y lo reporto dos veces con palabras distintas ("no veo modo de recuperar lo generado", "solo veo el primer tab").
+
+Regla: un mecanismo que produce estado recuperable se entrega junto con su via de recuperacion, en el mismo cambio. El Definition of Done incluye (1) la operacion de vuelta en la API, (2) una via en la UI, no solo curl, (3) un test del ciclo completo (crear, borrar, listar lo borrado, restaurar, comparar), (4) la operacion de vuelta auditada.
+
+Segundo corolario, en datos: el estado `aplicado` de un candidato se habia vuelto un booleano almacenado, y como no existia "desaplicar", un candidato marcado de mas quedaba bloqueado para siempre. Se resolvio DERIVANDO el estado de la fuente de verdad (que fichas apuntan al job) en vez de agregar la operacion inversa. Un estado derivable no necesita inverso. Ver ADR-070.
+
+---
+
+## Un script de verificacion apunto a datos reales y los destruyo (ADR-069)
+
+Al verificar el fix de apply por candidato, `verify_apply.py` apunto al mundo real de Gonzo en vez de crear uno descartable, y creo 3 fichas ahi. Despues, al limpiar lo que identifique como "basura de test", vi esas 3 fichas como mias, las borre, y el efecto neto fue que el mundo real de Gonzo quedo VACIO sin que el hubiera hecho nada. Su reporte ("no veo ficha alguna") era mi dano, no un bug del producto.
+
+Segundo efecto del mismo problema: los scripts de smoke y seed dejan sus mundos en la misma base que los reales. En una sesion se acumularon 6 mundos de prueba mezclados con 2 reales, visibles en el selector del usuario.
+
+Regla: un script que escribe no toca un mundo que no creo el mismo. Crea su propio mundo, registra el id que le devuelve la API, y limpia por ESE id, nunca por heuristica sobre titulos o contenido. Limpiar por titulo (`WHERE title LIKE '...'`) puede borrar datos reales con ese titulo.
+
+Y la leccion de proceso: cuando el usuario reporta un sintoma, primero hay que preguntarse si lo causamos nosotros. Yo asumi un bug del producto durante varios turnos; era mi dano. Verificar el propio historial de acciones antes de diagnosticar.
+
+---
+
