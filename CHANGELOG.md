@@ -42,6 +42,28 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - kanam-spec: verificacion en dos capas (linter determinista + revision con modelo)
+
+### Added
+- **Linter determinista (`projects/kanam-spec/src/lib/lint.ts`):** reglas sin modelo que detectan secciones sin contenido o en el esqueleto, requisitos sin criterio de verificacion (citando el ID de fila), plantillas sin completar (TBD/TODO/FIXME, corchetes de ejemplo) y tablas con celdas vacias. Es valor derivado: se recalcula sobre el documento, nunca se guarda, asi que no puede quedar desincronizado.
+- **Revision cruzada cableada a la UI:** `buildReviewMessages` existia en el primer commit, con tests, y nunca se habia conectado a ningun boton. Ahora corre con streaming, con aviso de "el modelo esta razonando" y cancelacion.
+- **Estado de revision con marca de vigencia:** el documento guarda `review` con el `updatedAt` que tenia al revisarse; la vigencia se resuelve comparando dos campos. Guardar la revision no toca `updatedAt`, o se marcaria desactualizada a si misma.
+- **Panel de hallazgos (`ReviewPanel.tsx`):** separa los chequeos automaticos de la revision del modelo, con severidad y salto a la seccion afectada.
+- **Verificacion en el export:** el Markdown lleva una seccion con los hallazgos abiertos y la ultima revision. Informa, no bloquea la descarga.
+- **OpenSpec inicializado en el proyecto:** el change `add-spec-review` es el primero, con proposal, spec deltas (`spec-lint`, `spec-review`), design y tasks. Valida con `--strict`.
+- **ADR del proyecto:** `.knowledge/adr/0001-verificacion-en-dos-capas.md`, con las alternativas descartadas.
+
+### Fixed
+- **Anclas del indice del export (bug preexistente del primer commit):** el indice derivaba el anchor del label del catalogo (`#contexto-y-problema`) mientras el cuerpo emitia el heading del esqueleto (`## Contexto`). 12 de 14 anclas apuntaban a un destino inexistente. **Lo encontro la revision con el modelo sobre un documento real**, que es exactamente lo que la capa de juicio tiene que aportar. Cubierto con 2 tests de regresion.
+
+### Notes
+- **Metodo:** pipeline A/B (T=12, bucket low). Un subagente escribio el nucleo puro (`src/lib/`) y Kanam reviso, cableo la UI, y encontro el bug de anclas al probar la revision contra el servicio vivo.
+- **Verificacion:** 35/35 tests en verde, `tsc --noEmit` limpio, build de produccion OK, `openspec validate --strict` OK, scan de guion largo OK. La revision se probo de punta a punta contra Ollama por el proxy del servicio: devolvio 4595 caracteres y detecto el TBD y las contradicciones del documento de prueba.
+- **Pendiente honesto:** el click-through en el navegador (tarea 5.3) NO esta hecho. No hay plugin de browser habilitado en el gateway. Lo verificado sin navegador: el servicio sirve el build actual y ese bundle contiene el panel y las reglas del linter.
+- **Techo del proyecto:** la app sigue sin repo en GitHub (falta decision de visibilidad de Gonzo).
+
+---
+
 ## [2026-09-24] - kanam-spec: servicio permanente con LaunchAgent y watchdog
 
 ### Added
