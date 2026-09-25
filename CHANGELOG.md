@@ -26,6 +26,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-24] - kanam-spec: verificacion en dos capas (linter + revision con modelo)
+
+### Added
+- **Linter determinista (`projects/kanam-spec/src/lib/lint.ts`):** detecta sin modelo secciones sin contenido o en esqueleto, requisitos sin criterio de verificacion (cita el ID de fila), plantillas sin completar (TBD/TODO/FIXME, corchetes de ejemplo) y celdas de tabla vacias, con severidad y resumen "listo para entregar".
+- **Revision cruzada con el modelo, cableada (`src/lib/review.ts` + `ReviewPanel.tsx`):** `buildReviewMessages` existia desde el primer commit y no estaba conectado a nada. Ahora la revision corre con streaming, se cancela, se persiste con marca de vigencia (`docUpdatedAt` vs `updatedAt`) y avisa cuando quedo desactualizada.
+- **Panel de verificacion** (`src/components/ReviewPanel.tsx`): las dos capas separadas y etiquetadas, salto del hallazgo a su seccion, estado vacio explicito.
+- **Export con estado de verificacion:** el Markdown lleva los hallazgos abiertos y la marca de la ultima revision; no bloquea la descarga. La entrada del modelo excluye esa seccion para no sesgar su analisis cruzado (fix aplicado en revision sobre el trabajo del subagente).
+- **OpenSpec en el proyecto:** `openspec/` con el change `add-spec-review` completo (proposal, specs de las capacidades `spec-lint` y `spec-review`, design con 5 decisiones, tasks 18/19 completas) y `openspec validate --strict` en verde. ADR de proyecto: `.knowledge/adr/0001-verificacion-en-dos-capas.md`.
+
+### Notes
+- Pipeline: T=12 -> subagente escribio el nucleo (lint/review/types/storage/spec + 21 tests nuevos), Kanam reviso el diff, cableo la UI y corrigio un sesgo (el modelo recibia los hallazgos del linter y tendia a repetirlos). 33/33 tests, typecheck limpio, build OK.
+- Decision de Gonzo en el debate: herramienta personal, la verificacion es LA etapa (no futura), OpenSpec/ADR porque va en serio.
+- Pendiente: tarea 5.3 (recorrido de punta a punta en el navegador, con click del usuario), `openspec archive`, repo en GitHub.
+
+---
+
 ## [2026-09-24] - kanam-spec: servicio permanente con LaunchAgent y watchdog
 
 ### Added

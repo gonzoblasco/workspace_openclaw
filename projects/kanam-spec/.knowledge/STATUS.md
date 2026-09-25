@@ -23,8 +23,8 @@ Development (M0: app funcional con generacion por seccion, export y persistencia
 
 ## Next Up
 
-1. Deteccion de modelos con capacidad de `tools` para habilitar un modo "revisar spec" con agente
-2. Export a OpenSpec (`openspec/` con change proposal) y a ADR
-3. Multi-proyecto en una sidebar con busqueda
-4. Tests: unitarios de `buildSectionPrompt` y de los exporters (Vitest)
+1. Cierre del change `add-spec-review`: verificacion de punta a punta en el navegador (tarea 5.3) y `openspec archive`
+2. Repo en GitHub (falta decision de visibilidad) y push del proyecto
+3. Export a OpenSpec/ADR desde la app (que la spec generada entre al pipeline del proyecto destino)
+4. Multi-proyecto en una sidebar con busqueda
 5. Importar brief desde URL de issue/README
