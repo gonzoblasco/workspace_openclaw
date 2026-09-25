@@ -6,7 +6,8 @@
 #   cp scripts/pre-commit.template .git/hooks/pre-commit
 #   chmod +x .git/hooks/pre-commit
 
-SCRIPT_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+# Determine the repository root regardless of where this hook lives
+SCRIPT_DIR=$(git rev-parse --show-toplevel)
 
 # Only run full tests if skills/ or scripts/ changed
 CHANGED=$(git diff --cached --name-only --diff-filter=ACMR)
@@ -19,6 +20,11 @@ SKILL_OR_SCRIPT_CHANGED=$(echo "$CHANGED" | grep -qE '^(skills/|scripts/)' && ec
 MD_CHANGED=$(echo "$CHANGED" | grep -E '\.md$' || true)
 
 if [ -n "$MD_CHANGED" ]; then
+  # 0) Apply hyphen enforcement on staged markdown files first
+  ./scripts/hyphen_enforcer.sh $MD_CHANGED
+  # Re‑stage any files modified by the enforcer so the commit includes the fixes
+  git add $MD_CHANGED
+
   # 1) Guion comun en el markdown que se esta por commitear (staged).
   #    Se le pasa el contenido staged, no el del disco: es lo que se commitea.
   DASH_BAD=0
@@ -41,6 +47,11 @@ if [ -n "$MD_CHANGED" ]; then
 fi
 
 if [ "$SKILL_OR_SCRIPT_CHANGED" = "1" ]; then
+  # 0) Ensure every SKILL.md has front‑matter before running skill tests
+  ./scripts/frontmatter_validator.sh
+  # Re‑stage any modified SKILL.md files
+  git add $(git ls-files "skills/**/*.md")
+
   # Syntax checks for skill scripts
   "${SCRIPT_DIR}/scripts/test-skills.sh" || exit 1
 
