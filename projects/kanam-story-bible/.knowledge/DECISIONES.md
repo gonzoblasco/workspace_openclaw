@@ -133,6 +133,48 @@ generacion -> apply -> export) y se dejo explicitamente afuera:
 - **Multiusuario, roles y permisos.** La spec se contradice en esto (el alcance los
   excluye y hay capitulos enteros que los especifican). Se sigue el alcance: fuera.
 
+## Recuperacion: lo generado y lo borrado
+
+Dos caminos sin salida del v0.2.0, ambos del mismo tipo: el dato existia en la base
+pero no habia forma de alcanzarlo por la interfaz.
+
+### Las propuestas de IA desaparecian de la vista
+
+Los candidatos de un job se guardan en `generation_job.resultado`. Pero el estado de
+cual esta abierto vivia solo en memoria de React: al recargar la pagina, las
+propuestas desaparecian de la pantalla. El trabajo del modelo seguia facturado y
+seguia en disco, sin manera de volver a verlo.
+
+**Ahora:** la seccion Generar lista el historial completo (cuando, que, instruccion,
+cantidad de propuestas, cuantas aplicadas, estado) y un boton reabre las propuestas
+de cualquier job anterior. El endpoint `GET /projects/{id}/generations` existia desde
+v0.1.0 y la UI nunca lo usaba.
+
+Nota de diseno: para reabrir candidatos de un job viejo NO hay que drenar el outbox
+ni reindexar. `POST /generations/{id}/apply` recibe el job directo por id y no busca
+nada en el indice. La regla del 409 por indice atrasado aplica solo a `/retrieve`.
+
+### Una ficha borrada era irrecuperable
+
+El borrado en dos fases estaba implementado desde v0.1.0, pero solo tenia la ida:
+`deleted_at` se ponia y la ficha salia de todas las consultas. No habia ningun
+endpoint para volver a alcanzarla. La "ventana de recuperacion de 30 dias" de la
+spec era una promesa sin puerta.
+
+**Ahora:** `GET /projects/{id}/entities/deleted` y
+`POST /projects/{id}/entities/{eid}/restore`, mas la seccion Papelera en la UI.
+Restaurar sube la version, vuelve a indexar y registra `restaurar` en `audit_log`.
+Si otra ficha reclamó el nombre mientras estaba borrada, devuelve 409 con el motivo
+en vez de romper la unicidad.
+
+### La leccion comun
+
+Las dos fallas son la misma: **un estado que la spec define como recuperable no sirve
+de nada si no se expone la via de recuperacion.** El borrado logico y el historial de
+generaciones se implementaron como mecanica de datos y se dieron por completos sin la
+contraparte de lectura. Al construir un mecanismo de dos fases, la fase de vuelta es
+parte del mecanismo, no una mejora posterior.
+
 ## Correcciones aplicadas a la spec
 
 La spec generada tenia ruido que no se traslado al codigo:

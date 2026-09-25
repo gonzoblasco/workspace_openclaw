@@ -60,3 +60,16 @@ Nada bloqueado.
 - El dev server de Vite y el stack de Docker no sobreviven un reinicio de la maquina: no hay LaunchAgent.
 - Sin paginacion infinita en la UI (hay boton "Cargar mas" en Fichas).
 - `chunk.embedding` es `vector(768)` fijo: cambiar de modelo de embeddings exige migracion.
+- Los scripts de prueba crean mundos en la misma base que los mundos reales. Con
+  `DELETE /projects/{id}` se limpian facil, pero la convivencia es una fuente de
+  ruido: separar la base de test es el arreglo de fondo.
+- El endpoint de purga fisica de un mundo ya borrado no esta expuesto (la funcion
+  `purgar_bible` existe en `services.py`).
+
+## Como recuperar cosas
+
+- **Una ficha borrada:** seccion Papelera, o `POST /projects/{id}/entities/{eid}/restore`.
+- **Propuestas de una generacion anterior:** seccion Generar, tabla "Generaciones
+  anteriores", boton "Ver propuestas".
+- **Un mundo entero:** `DELETE /projects/{id}` con el header
+  `X-Confirmar-Titulo: <titulo exacto>` (borrado logico, mismo esquema de dos fases).
