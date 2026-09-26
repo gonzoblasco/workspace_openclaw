@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
-# Tests for skills/copy-editing/scripts/word-count.sh
+# Tests for agents/kanam-studio/skills/copy-editing/scripts/word-count.sh
 
-SCRIPT="$BATS_TEST_DIRNAME/../../skills/copy-editing/scripts/word-count.sh"
+SCRIPT="$BATS_TEST_DIRNAME/../../agents/kanam-studio/skills/copy-editing/scripts/word-count.sh"
 
 setup() {
   TMP_DIR=$(mktemp -d)

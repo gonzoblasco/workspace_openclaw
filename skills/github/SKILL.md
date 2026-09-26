@@ -212,7 +212,7 @@ Scripts in `skills/github/scripts/`:
 | `pr-batch-check.sh [--json] [--mine-only]` | Lists open PRs in tracked repos. With `--mine-only` filters by the authenticated user. Use to monitor the status of OSS contributions. |
 | `github-mcp.py` | GitHub MCP server wrapper for advanced operations (security alerts, notifications, project boards). |
 
-For issue triage of a specific repo, see [oss-contribution/scripts/triage-issues.sh](../oss-contribution/scripts/triage-issues.sh).
+For issue triage of a specific repo, see [oss-contribution/scripts/triage-issues.sh](../../agents/kanam-studio/skills/oss-contribution/scripts/triage-issues.sh).
 
 ## Related
 

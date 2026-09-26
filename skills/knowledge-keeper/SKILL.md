@@ -1,4 +1,3 @@
-<!-- project: github.com/gonzoblasco/workspace_openclaw -->
 ---
 name: "knowledge-keeper"
 metadata:
@@ -7,4 +6,5 @@ metadata:
 description: "Placeholder for the knowledge-keeper skill (consolidated from knowledge-management, memory-agent, and memory-wiki-workflow)."
 user-invocable: false
 ---
+<!-- project: github.com/gonzoblasco/workspace_openclaw -->
 This skill consolidates knowledge-management and personal wiki workflows. Detailed implementation lives in the original source skills; this placeholder satisfies references.

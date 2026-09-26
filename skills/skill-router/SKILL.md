@@ -65,4 +65,4 @@ Suggest which skill to apply to a task, using local matching (keyword + embeddin
 ## Related
 
 - **Agent orchestration pipelines**: a pipeline where an orchestrator decides which skill to use per unit. The router is the lookup; the pipeline is the policy.
-- [Knowledge Management](../knowledge-management): managing the skills/knowledge base.
+- [Knowledge Management](../../agents/kanam-mind/skills/knowledge-management): managing the skills/knowledge base.

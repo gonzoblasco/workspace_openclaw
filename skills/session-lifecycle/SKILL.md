@@ -330,5 +330,5 @@ If I detect any of these, I stop and ask before continuing:
 
 ## Related Skills
 
-- [Task Execution](../planning-and-task-breakdown): To execute tasks within the session
-- [Knowledge Management](../knowledge-management): To record session learnings
+- [Task Execution](../../agents/kanam-dev/skills/planning-and-task-breakdown): To execute tasks within the session
+- [Knowledge Management](../../agents/kanam-mind/skills/knowledge-management): To record session learnings

@@ -37,3 +37,16 @@ jobs:
 
       - name: Python functional tests
         run: pytest tests/python/
+
+      # Segunda barrera del boundary de a11y-at-validation. El pre-commit se
+      # puede saltear con --no-verify; esto lo cubre en la superficie publica.
+      # En un PR el rango es contra la base; en un push a main, el ultimo commit.
+      - name: Accessibility trigger gate
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --no-tags origin "${{ github.base_ref }}"
+            RANGE="origin/${{ github.base_ref }}..HEAD"
+          else
+            RANGE="HEAD~1..HEAD"
+          fi
+          python3 scripts/check-a11y-trigger.py --range "$RANGE"

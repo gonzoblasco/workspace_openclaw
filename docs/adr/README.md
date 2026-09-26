@@ -76,6 +76,9 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-068 | [La nueva generacion de SoporteML es greenfield y se basa en v1, no en v4](./ADR-068-nueva-generacion-soporteml-greenfield-desde-v1.md) | workspace |
 | ADR-069 | [Los datos de prueba no comparten base con los datos reales](./ADR-069-datos-de-prueba-no-comparten-base.md) | kanam-story-bible |
 | ADR-070 | [Todo estado recuperable expone su via de recuperacion](./ADR-070-estado-recuperable-expone-su-recuperacion.md) | kanam-story-bible |
+| ADR-071 | [Hyphen enforcement in markdown/spec files](./ADR-071-hyphen-enforcement.md) | workspace |
+| ADR-072 | [Front-matter enforcement for SKILL.md files](./ADR-072-frontmatter-enforcement.md) | workspace |
+| ADR-073 | [Transicion a arquitectura de orquestacion multi-agente](./ADR-073-arquitectura-multi-agente.md) | workspace |
 
 ## Formato
 

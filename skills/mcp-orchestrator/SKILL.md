@@ -1,4 +1,3 @@
-<!-- project: github.com/gonzoblasco/workspace_openclaw -->
 ---
 name: "mcp-orchestrator"
 metadata:
@@ -7,4 +6,5 @@ metadata:
 description: "Placeholder for the mcp-orchestrator skill, which previously contained scripts for multi-model orchestration. The detailed implementation has been consolidated elsewhere; this placeholder satisfies legacy documentation references."
 user-invocable: false
 ---
+<!-- project: github.com/gonzoblasco/workspace_openclaw -->
 This skill originally provided orchestration scripts for multi-model pipelines. The functional components now reside in other skills. This placeholder exists to resolve broken references.

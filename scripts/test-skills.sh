@@ -47,6 +47,28 @@ ALLOWLIST_REF=(
 
 note() { if [[ $VERBOSE -eq 1 ]]; then echo "  $1"; fi; }
 
+# Resuelve una ref cross-skill contra todos los lugares donde puede vivir una
+# skill hoy: la raiz del workspace, skills/, y agents/<rol>/skills/ (ADR-073).
+# Antes solo miraba los dos primeros, asi que al mover skills al arbol de
+# agentes el check marcaba roto un link valido (y peor: habria marcado valido
+# uno roto si el nombre se repetia).
+ref_exists() {
+  local ref="$1"
+  [[ -f "$WORKSPACE_DIR/$ref" ]] && return 0
+  [[ -f "$WORKSPACE_DIR/skills/$ref" ]] && return 0
+  # `skills/<x>/...` calificado: la skill puede vivir hoy en agents/<rol>/skills/.
+  local bare="${ref#skills/}"
+  [[ -f "$WORKSPACE_DIR/skills/$bare" ]] && return 0
+  local candidate
+  for candidate in "$WORKSPACE_DIR"/agents/*/skills/"$bare"; do
+    [[ -f "$candidate" ]] && return 0
+  done
+  for candidate in "$WORKSPACE_DIR"/agents/*/skills/"$ref"; do
+    [[ -f "$candidate" ]] && return 0
+  done
+  return 1
+}
+
 # --- A. Sintaxis bash/python ---
 while IFS= read -r -d '' file; do
   if bash -n "$file" 2>/tmp/bash.err; then
@@ -136,7 +158,7 @@ if [[ $QUICK -eq 0 ]]; then
     # cross-skill con prefijo skills/
     while read -r ref; do
       [[ -z "$ref" ]] && continue
-      if [[ -f "$WORKSPACE_DIR/$ref" ]]; then
+      if ref_exists "$ref"; then
         REF_OK=$((REF_OK + 1))
       else
         REF_FAIL=$((REF_FAIL + 1))
@@ -147,7 +169,7 @@ if [[ $QUICK -eq 0 ]]; then
     # cross-skill sin prefijo: <skill>/scripts/foo
     while read -r ref; do
       [[ -z "$ref" ]] && continue
-      if [[ -f "$WORKSPACE_DIR/skills/$ref" ]]; then
+      if ref_exists "$ref"; then
         REF_OK=$((REF_OK + 1))
       else
         # check allowlist antes de fallar (match por basename del SKILL.md)
@@ -172,24 +194,27 @@ if [[ $QUICK -eq 0 ]]; then
   done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
 
   # --- E. Links markdown relativos a skills existen ---
-  # Solo links reales: ](../<skill>) o ](../<skill>/SKILL.md).
-  # No matchea texto plano (ej: paths en bloques de codigo, menciones sueltas).
+  # Resuelve el link relativo contra el directorio real del SKILL.md, que es
+  # como lo resuelve markdown. Antes solo matcheaba `](../<skill>)` de un solo
+  # nivel: al mover skills a agents/<rol>/skills/ los links validos pasaron a
+  # ser `](../../agents/...)` y el check dejaba de verlos (verde sobre links
+  # rotos). Resolver el path de verdad cubre ambas formas sin enumerarlas.
+  # No matchea texto plano (paths en bloques de codigo, menciones sueltas).
   while IFS= read -r -d '' skmd; do
     skill_dir="$(dirname "$skmd")"
-    skills_root="$(dirname "$skill_dir")"  # subir de skills/<x>/ a skills/
     while read -r ref; do
       [[ -z "$ref" ]] && continue
-      # ref es tipo ../<skill> o ../<skill>/SKILL.md
-      target="${ref#../}"
-      target="${target%/SKILL.md}"
-      if [[ -d "$skills_root/$target" ]]; then
+      case "$ref" in
+        *'<'*|*'>'*|*'#'*) continue ;;  # placeholder o ancla, no una ruta
+      esac
+      if [[ -e "$skill_dir/$ref" ]]; then
         LINK_OK=$((LINK_OK + 1))
       else
         LINK_FAIL=$((LINK_FAIL + 1))
         echo "  ❌ skill link FAIL: $skmd -> $ref"
         failures+=("$skmd -> $ref")
       fi
-    done < <(grep -oE '\]\(\.\./[A-Za-z0-9_-]+(/SKILL\.md)?\)' "$skmd" 2>/dev/null | sed -E 's/^\]\(//; s/\)$//' | sort -u || true)
+    done < <(grep -oE '\]\(\.\./[^) ]+' "$skmd" 2>/dev/null | sed -E 's/^\]\(//' | sort -u || true)
   done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
 
 fi

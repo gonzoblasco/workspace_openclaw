@@ -80,4 +80,4 @@ If these scripts are touched, run `npm test` in the workspace before committing.
 
 ## Related Skills
 
-- [Knowledge Management](../knowledge-management): To keep the knowledge base up to date
+- [Knowledge Management](../../agents/kanam-mind/skills/knowledge-management): To keep the knowledge base up to date

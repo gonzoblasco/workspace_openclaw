@@ -71,7 +71,7 @@ product-reset --mode PIVOT --trigger GROWTH_FAILURE \
 
 ## Related
 
-- [ADR-003](docs/ADR-003.md): Phase advancement criteria
+- [ADR-003](./ADR-003-product-reset-triggers.md): Phase advancement criteria
 - `product-orchestrator` skill: Growth evaluation tool
 
 ---

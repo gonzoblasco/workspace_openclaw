@@ -53,7 +53,7 @@ kanam-pipeline --feed OSS_SIGNAL \
 
 - `oss-contribute` skill: OSS pipeline foundation
 - `profile-positioning` skill: Market fit analysis
-- [ADR-001](docs/ADR-001.md): Product pipeline main entry point
+- [ADR-001](./ADR-001-product-pipeline-integration.md): Product pipeline main entry point
 
 ---
 

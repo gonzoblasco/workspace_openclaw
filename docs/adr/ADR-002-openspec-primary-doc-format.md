@@ -70,7 +70,7 @@ find projects/brainweb-v2/docs -name "*.md" -exec grep "^---$" {} \; | head -n 1
 
 ## Related
 
-- [ADR-001](docs/ADR-001.md): Product pipeline integration
+- [ADR-001](./ADR-001-product-pipeline-integration.md): Product pipeline integration
 - [adr-framework](skill): ADR management skill
 
 ---

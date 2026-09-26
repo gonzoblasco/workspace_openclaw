@@ -22,8 +22,13 @@ MD_CHANGED=$(echo "$CHANGED" | grep -E '\.md$' || true)
 if [ -n "$MD_CHANGED" ]; then
   # 0) Apply hyphen enforcement on staged markdown files first
   ./scripts/hyphen_enforcer.sh $MD_CHANGED
-  # Re‑stage any files modified by the enforcer so the commit includes the fixes
-  git add $MD_CHANGED
+  # Re-stage any files modified by the enforcer so the commit includes the fixes
+  # --literal-pathspecs: hay un path trackeado con `*` literal en el nombre
+  # (`skills/*/SKILL.md`, placeholder), y git trata todo pathspec como glob. Un
+  # `git add` sin comillas pasaba ese path sin comillas y stageaba TODAS las
+  # skills borradas. (Encontrado 2026-09-26: 96 bajas de la migracion se colaron
+  # asi a un commit ajeno.)
+  git --literal-pathspecs add -- $MD_CHANGED
 
   # 1) Guion comun en el markdown que se esta por commitear (staged).
   #    Se le pasa el contenido staged, no el del disco: es lo que se commitea.
@@ -46,11 +51,30 @@ if [ -n "$MD_CHANGED" ]; then
   python3 "${SCRIPT_DIR}/scripts/check-adr-integrity.py" || exit 1
 fi
 
+# --- Gate de accesibilidad: el boundary de la skill a11y-at-validation ---
+# Por que no vive dentro del bloque de markdown: el disparador es el codigo de
+# UI (aria-*, roles, foco), no los docs. Si el cambio afecta lo que ANUNCIA el
+# screen reader, la validacion manual con AT es obligatoria (caso radix #4109:
+# DOM correcto, 51 tests verdes, y el option no anunciaba nada). Un script no
+# puede validar el anuncio; si puede no dejar pasar el cambio en silencio.
+# Override consciente: A11Y_VALIDATED=1 (documentar la evidencia en el PR).
+if [ -n "$CHANGED" ]; then
+  python3 "${SCRIPT_DIR}/scripts/check-a11y-trigger.py" || exit 1
+fi
+
 if [ "$SKILL_OR_SCRIPT_CHANGED" = "1" ]; then
   # 0) Ensure every SKILL.md has front‑matter before running skill tests
   ./scripts/frontmatter_validator.sh
-  # Re‑stage any modified SKILL.md files
-  git add $(git ls-files "skills/**/*.md")
+  # Re-stage SOLO los SKILL.md que forman parte de este commit y que el
+  # validator pudo haber corregido. Antes se re-stageaba todo `skills/**/*.md`:
+  # `git add` sobre un archivo con cambios sin stagear los mete al commit (barrido
+  # de cambios ajenos), y el pathspec `skills/*/SKILL.md` es un path LITERAL
+  # trackeado que git expandia como glob y stageaba las skills borradas.
+  for f in $MD_CHANGED; do
+    case "$f" in
+      */SKILL.md) [ -f "$f" ] && git --literal-pathspecs add -- "$f" ;;
+    esac
+  done
 
   # Syntax checks for skill scripts
   "${SCRIPT_DIR}/scripts/test-skills.sh" || exit 1

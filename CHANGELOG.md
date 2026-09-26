@@ -4,6 +4,28 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-26] - Gates de accesibilidad y refs rotas antes del push
+
+### Added
+- **`scripts/check-a11y-trigger.py`:** dispara la validacion manual de accesibilidad cuando el diff toca lo que ANUNCIA el screen reader (posinset, setsize, live regions, activedescendant, roles de widget). Cableado al pre-commit y al CI, con override consciente `A11Y_VALIDATED=1`. Antes ese boundary vivia solo en la skill `a11y-at-validation`, sin respaldo mecanico.
+- **Gate de a11y en CI** (`.github/workflows/skills-ci.yml`): segunda barrera via `--range`, porque el pre-commit se saltea con `--no-verify`.
+- **Tests:** `tests/python/test_check_a11y_trigger.py` (18) y cobertura de links markdown en `tests/python/test_check_refs.py`.
+
+### Fixed
+- **`check-refs.py` ahora valida links markdown**, no solo rutas entre backticks `docs/` y `scripts/`. Encontro 6 refs rotas en ADR-001 a ADR-005.
+- **14 referencias colgantes de la migracion multi-agente:** 12 links `../<skill>` en `skills/*/SKILL.md` y el path de script en `tests/bash/word-count.bats`.
+- **`frontmatter_validator.sh` corrompia skills:** insertaba un bloque `---` encima del front-matter real en los SKILL.md que empiezan con el comentario de proyecto, y usaba `title: SKILL` en vez del slug. Las 11 skills afectadas eran invisibles para el loader de OpenClaw (verificado: 152 a 163 tras el fix).
+- **El pre-commit arrastraba bajas ajenas:** `git add $(git ls-files ...)` expandia como glob el path literal `skills/*/SKILL.md`, stageando las bajas de la migracion. Corregido con `--literal-pathspecs` y re-stage acotado a lo que se commitea.
+- **`test-skills.sh` secciones D y E** solo miraban `skills/`: al mover skills a `agents/<rol>/skills/` quedaban verdes sobre links rotos.
+
+### Docs
+- `AGENTS.md`: los 6 links de skills apuntan a su ubicacion real.
+- `docs/adr/README.md`: filas de ADR-071, ADR-072 y ADR-073 reconciliadas (el indice desreconciliado bloqueaba el pre-commit).
+- `docs/pipeline/2026-08-30-spin-review-migration.md`: corregido, 5 de los 6 scripts que declaraba "creados" nunca funcionaron.
+
+### Notes
+- La migracion multi-agente (ADR-073) queda intacta para su sesion dedicada: este commit no toca `agents/` ni las bajas de `skills/`.
+
 ## [2026-09-25] - kanam-spec: spec skeleton completed
 
 ### Added

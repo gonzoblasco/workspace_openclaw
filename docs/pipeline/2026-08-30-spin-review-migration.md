@@ -1,8 +1,25 @@
 # Migration Summary - Spin Review System Changes
 
-**Date:** 2026-08-30  
-**Author:** Kanam (auto-generated)  
+**Date:** 2026-08-30
+**Author:** Kanam (auto-generated)
 **Status:** Ready to commit and push
+
+> **CORRECCION (2026-09-26): este documento afirmaba mas de lo que existia.**
+> De los 6 scripts que lista abajo como "created", **5 nunca funcionaron** y ya
+> no existen. Los 5 se crearon el 2026-08-30 y se cuarentenaron el 2026-09-15
+> (`a0c9dc72`, todo #37): bugs verificados en todos (`find -maxdepth 1 -name '*/'`
+> no matchea nada, jq malformado, formato invalido de `git log`, `date -d`
+> inexistente en BSD/macOS, `HANDOFF.md` pisado sin preguntar). Ninguno estaba
+> cableado a hook, cron ni skill (verificado), asi que eran tooling muerto. El
+> 2026-09-15 (`eafebc89`) se borraron como orphans. El unico que sobrevivio y
+> funciona es `cross-review-validator.sh`.
+>
+> **Por que importa:** este doc decia "Quality gate" de un `pre-push-hook.sh`
+> que nunca existio, y por eso el SOP creia tener una barrera antes del push que
+> no estaba. Es el mismo patron que el workspace ya registro tres veces: una
+> regla que dice tener respaldo sin tenerlo da confianza falsa. Las lineas de
+> abajo se conservan como registro historico de lo que se intento, no como
+> estado vigente.
 
 ---
 

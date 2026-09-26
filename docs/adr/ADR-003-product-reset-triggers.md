@@ -59,7 +59,7 @@ kanam-pipeline --on-event PR_MERGE --type ADR_SUCCESS \
 
 ## Related
 
-- [ADR-001](docs/ADR-001.md): Product pipeline structure
+- [ADR-001](./ADR-001-product-pipeline-integration.md): Product pipeline structure
 - [product-reset](skill): Phase execution skill
 
 ---

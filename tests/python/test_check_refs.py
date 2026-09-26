@@ -97,3 +97,74 @@ def test_skips_historic_dirs():
     """Una ruta rota en docs/archives/ NO debe reportarse: es historia."""
     mod = load()
     assert any("docs/archives/" in d for d in mod.SKIP_DIRS)
+
+
+# --- links markdown: la clase de pudricion que motiva la extension (2026-09-26) ---
+#
+# El REF de backticks solo miraba scripts/ y docs/. Los links `./skills/...`
+# de AGENTS.md apuntaban a 5 skills inexistentes tras moverlas a agents/ y
+# nada lo decia. Estos tests fijan esa cobertura.
+
+def test_link_regex_captures_relative_skill_link():
+    mod = load()
+    line = "Ver [`x`](./skills/session-lifecycle/SKILL.md)."
+    assert "./skills/session-lifecycle/SKILL.md" in mod.LINK.findall(line)
+
+
+def test_external_link_is_skipped():
+    mod = load()
+    assert mod.is_link_skippable("https://docs.openclaw.ai")
+
+
+def test_anchor_and_absolute_are_skipped():
+    mod = load()
+    assert mod.is_link_skippable("#essential-checks")
+    assert mod.is_link_skippable("/reference/AGENTS.default")
+
+
+def test_directory_link_is_skipped():
+    mod = load()
+    assert mod.is_link_skippable("skills/session-lifecycle/")
+
+
+def test_repo_root_link_is_checked():
+    mod = load()
+    assert not mod.is_link_skippable("agents/kanam-dev/skills/a11y-at-validation/SKILL.md")
+
+
+def test_relative_link_resolves_from_source_dir(tmp_path):
+    """`./x` se resuelve contra el doc que lo cita, no contra la raiz."""
+    mod = load()
+    sub = ROOT / "docs" / "_refs_test_sub"
+    sub.mkdir(exist_ok=True)
+    doc = sub / "a.md"
+    try:
+        (sub / "sibling.md").write_text("x", encoding="utf-8")
+        doc.write_text("x", encoding="utf-8")
+        assert mod.resolves(doc, "./sibling.md")
+        assert not mod.resolves(doc, "./no-existe-xyz.md")
+    finally:
+        for p in sub.iterdir():
+            p.unlink()
+        sub.rmdir()
+
+
+def test_reports_a_broken_relative_link(tmp_path):
+    """Un link relativo a la nada debe fallar y nombrarlo."""
+    bad = ROOT / "docs" / "_refs_link_tmp.md"
+    bad.write_text("Ver [x](./skills/no-existe-link-xyz/SKILL.md).\n", encoding="utf-8")
+    try:
+        r = subprocess.run(
+            [sys.executable, str(CHECKER), "--all"], cwd=ROOT, capture_output=True, text=True
+        )
+        assert r.returncode == 1
+        assert "no-existe-link-xyz" in r.stdout
+    finally:
+        bad.unlink(missing_ok=True)
+
+
+def test_links_on_root_anchored_convention_pass():
+    """`./skills/...` escrito en un doc de docs/ se ancla a la raiz si ahi vive."""
+    mod = load()
+    doc = ROOT / "docs" / "pipeline" / "kanam-product-pipeline.md"
+    assert mod.resolves(doc, "./skills/session-lifecycle/SKILL.md")

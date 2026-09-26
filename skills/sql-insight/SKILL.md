@@ -116,5 +116,5 @@ Scripts in `skills/sql-insight/scripts/`:
 
 # Related Skills
 
-- [Observability](../observability-and-instrumentation): For monitoring DB performance
-- [Performance Optimization](../performance-optimization): For optimizing slow queries
+- [Observability](../../agents/kanam-dev/skills/observability-and-instrumentation): For monitoring DB performance
+- [Performance Optimization](../../agents/kanam-dev/skills/performance-optimization): For optimizing slow queries

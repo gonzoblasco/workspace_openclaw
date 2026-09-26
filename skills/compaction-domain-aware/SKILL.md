@@ -92,5 +92,5 @@ La skill es una guia para Kanam, no un plugin automatico. Kanam aplica los tiers
 ## Related
 
 - [Session Lifecycle](../session-lifecycle): manejo del contexto y compactacion.
-- [Context Engineering](../context-engineering): curar el contexto del agente.
-- [Knowledge Management](../knowledge-management): DREAMS y consolidacion de memoria.
+- [Context Engineering](../../agents/kanam-dev/skills/context-engineering): curar el contexto del agente.
+- [Knowledge Management](../../agents/kanam-mind/skills/knowledge-management): DREAMS y consolidacion de memoria.

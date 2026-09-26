@@ -30,12 +30,47 @@ DEFAULTS = ["AGENTS.md", "USER.md", "MEMORY.md", "SOUL.md", "IDENTITY.md"]
 # El primer grupo es la ruta; el `!` evita capturar espacios internos.
 REF = re.compile(r"`((?:scripts|docs)/[^\s`]+\.(?:sh|py|js|cjs|md|json|txt|pdf|yml))`")
 
+# Link markdown `[texto](destino)`. El REF de arriba solo mira backticks y solo
+# scripts/docs: por eso los links `./skills/.../SKILL.md` de AGENTS.md podian
+# apuntar a la nada sin que nada lo dijera (encontrado 2026-09-26: 5 de 6 rotos
+# tras mover skills a agents/<rol>/skills). Un link es una afirmacion de que el
+# archivo existe; este regex la verifica.
+LINK = re.compile(r"\]\(([^)\s]+)\)")
+
+# Espacios de nombres que este repo puede resolver. Un destino fuera de estos
+# (o externo, o ancla) no se revisa: no es una promesa sobre este arbol.
+LINK_PREFIXES = ("skills/", "agents/", "scripts/", "docs/", "./", "../")
+
 # Lo que NO es una ruta literal y no debe reportarse.
 SKIP_IF = [
     lambda r: "<" in r or ">" in r,       # placeholders: docs/feedback/<repo>-<n>.md
     lambda r: r.endswith("/"),            # directorios
     lambda r: "*" in r,                   # globs
 ]
+
+
+def is_link_skippable(target: str) -> bool:
+    """Un link que no promete nada sobre este arbol no se verifica."""
+    if any(c in target for c in ("<", ">", "*", "{")):
+        return True
+    if target.startswith(("http://", "https://", "mailto:", "#", "/")):
+        return True
+    if not target.startswith(LINK_PREFIXES):
+        return True
+    return target.endswith("/")            # link a directorio, no a archivo
+
+
+def resolves(source: Path, target: str) -> bool:
+    """Resuelve el destino con las dos convenciones que usa este repo.
+
+    Markdown puro resuelve relativo al doc que cita. Pero el workspace escribe
+    `./skills/...` anclado a la raiz tambien dentro de docs/ (asi esta en
+    docs/pipeline/). Aceptar cualquiera de las dos evita el falso positivo de
+    una convencion valida, sin dejar pasar un link que no existe en ninguna.
+    """
+    if (ROOT / target).exists():
+        return True
+    return (source.parent / target).resolve().exists()
 
 # Directorios historicos: se leen como se escribieron, no se corrigen. Una
 # ruta rota ahi es un dato del pasado, no una promesa vigente.
@@ -83,6 +118,12 @@ def main():
                 checked += 1
                 if not (ROOT / ref).exists():
                     broken.append((path.relative_to(ROOT), line_no, ref))
+            for target in LINK.findall(line):
+                if is_link_skippable(target):
+                    continue
+                checked += 1
+                if not resolves(path, target):
+                    broken.append((path.relative_to(ROOT), line_no, target))
 
     if broken:
         print(f"RUTAS ROTAS ({len(broken)} de {checked} revisadas):")

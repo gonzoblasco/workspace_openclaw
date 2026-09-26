@@ -46,8 +46,8 @@ kanam-pipeline --start evaluate --target <product-slug>
 
 ## Related
 
-- [ADR-002](docs/ADR-002.md): OpenSpec as primary documentation format
-- [ADR-003](docs/ADR-003.md): Product reset phase triggers and criteria
+- [ADR-002](./ADR-002-openspec-primary-doc-format.md): OpenSpec as primary documentation format
+- [ADR-003](./ADR-003-product-reset-triggers.md): Product reset phase triggers and criteria
 
 ---
 

@@ -161,9 +161,9 @@ Al finalizar proyecto: 1. Push final $\rightarrow$ 2. Extraer ADRs generales $\r
 
 ### Skills
 Workflows detallados en `skills/` (índice en `SKILLS-INDEX.md`). Referencias clave:
-- **Session/Memoria:** [`session-lifecycle`](./skills/session-lifecycle/SKILL.md), [`knowledge-management`](./skills/knowledge-management/SKILL.md).
-- **Ingeniería:** [`incremental-implementation`](./skills/incremental-implementation/SKILL.md), [`engineering-governance`](./skills/engineering-governance/SKILL.md).
-- **Ejecución:** [`background-execution`](./skills/background-execution/SKILL.md), [`a11y-at-validation`](./skills/a11y-at-validation/SKILL.md).
+- **Session/Memoria:** [`session-lifecycle`](./skills/session-lifecycle/SKILL.md), [`knowledge-management`](./agents/kanam-mind/skills/knowledge-management/SKILL.md).
+- **Ingenieria:** [`incremental-implementation`](./agents/kanam-dev/skills/incremental-implementation/SKILL.md), [`engineering-governance`](./skills/engineering-governance/SKILL.md).
+- **Ejecucion:** [`background-execution`](./agents/kanam-ops/skills/background-execution/SKILL.md), [`a11y-at-validation`](./agents/kanam-dev/skills/a11y-at-validation/SKILL.md).
 
 ### Related
 - [Default AGENTS.md](/reference/AGENTS.default)

@@ -75,4 +75,4 @@ To export workspace markdown (daily notes, HANDOFF, README, docs) to PDF:
 ## Related
 
 - [Technical Docs](../tech-docs): technical documentation (may include PDFs).
-- [Knowledge Management](../knowledge-management): consolidate what was extracted from PDFs into memory.
+- [Knowledge Management](../../agents/kanam-mind/skills/knowledge-management): consolidate what was extracted from PDFs into memory.

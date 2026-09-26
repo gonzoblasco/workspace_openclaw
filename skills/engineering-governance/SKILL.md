@@ -339,8 +339,8 @@ Governance exists to reduce the entropy of the system.
 
 ## Related Skills
 
-- [Knowledge Management](../knowledge-management): To keep the knowledge base up to date
-- [Observability](../observability-and-instrumentation): To measure system health
+- [Knowledge Management](../../agents/kanam-mind/skills/knowledge-management): To keep the knowledge base up to date
+- [Observability](../../agents/kanam-dev/skills/observability-and-instrumentation): To measure system health
 
 ## Growth Loops - Continuous Improvement Cycles
 
