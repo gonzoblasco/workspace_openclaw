@@ -27,6 +27,12 @@
 |---|---|---|---|
 | **radix-primitives** | Entro al stack por el template, sin decision documentada. Es la capa que resuelve foco, ARIA y teclado en nuestras UIs. | Nivel 1 abierto - mapeo (5 niveles / 46 topics) | `radix-primitives/` |
 
+## ✍️ OFICIOS (analisis de autores y obras)
+
+| Tema | Motivo | Estado | Estructura |
+|---|---|---|---|
+| **narrative-engineering** | Gonzo quiere un modelo mental de ingenieria narrativa (como construyen tramas los grandes guionistas) para aplicarlo en sus propias historias. | Abierto - caso 01 completo, caso 02 en curso | `narrative-engineering/` |
+
 ---
 
 ## 📋 Notas
