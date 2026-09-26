@@ -3,6 +3,22 @@
 > Este archivo se consolida a medida que avanzan los casos. Se cierra al terminar el caso 02.
 
 **Base de evidencia:** Caso 01 - Dark City (original) + Caso 02 - Batman Begins (adaptacion).
+**Estado:** consolidado con 4/4 ejes en ambos casos.
+
+---
+
+## El hallazgo central (el mas util para escribir)
+
+En los dos casos el protagonista **no derrota al mundo: hereda el mecanismo del mundo**.
+- Dark City: Murdoch termina pudiendo **rediseñar** la ciudad que lo encerraba.
+- Batman Begins: Bruce termina **siendo** la cosa que la ciudad teme - le saca el arma al
+  enemigo (el miedo) y la hace propia.
+
+El arco no es "vencer al villano". Es **quedarse con la maquina que lo oprimia**.
+
+Corolario practico: si el clímax de tu historia es solo "el bueno le gana al malo", estas
+perdiendo el pago mas grande. La pregunta correcta es: *¿que mecanismo del mundo puede el
+protagonista apropiarse en la ultima escena?*
 
 ---
 
@@ -26,6 +42,7 @@ Independiente del tipo de material, Goyer aplica el mismo procedimiento:
 - No explica con dialogo lo que puede mostrar con sistema (entrenamiento, pruebas, errores).
 - No da biografia completa: da vacio.
 - No revela al villano real en el acto 1: usa una cortina de humo.
+- No deja al protagonista ganar solo por fuerza: lo hace apropiarse de una regla del mundo.
 
 ## Diferencia entre original y adaptacion (hallazgo del caso 02)
 
@@ -37,9 +54,11 @@ Independiente del tipo de material, Goyer aplica el mismo procedimiento:
 | Riesgo tipico | Mundo lindo pero vacio | Personaje dibujo, no persona |
 | Antidoto Goyer | Escenografia Activa | Sistema de adquisicion |
 
-**Hipotesis abierta (a validar en el caso 03):** los 4 ejes deberian aparecer tambien en
-materiales donde Goyer no es el autor principal. Si aparecen, el modelo es mas grande que
-Goyer: es **una forma de escribir historias**.
+**Hipotesis abierta (a validar en el caso 03):** los 4 ejes y la herencia del mecanismo
+aparecieron en material original y adaptado del **mismo autor**. La pregunta del caso 03:
+¿aparecen tambien en un autor **distinto**?
+- Si si: el modelo es una **forma de escribir historias**, no la firma de un hombre.
+- Si no: es la firma de Goyer, y sirve igual - es un manual concreto.
 
 ## Reglas operativas para Gonzo (borrador, se amplia)
 
@@ -49,3 +68,7 @@ Goyer: es **una forma de escribir historias**.
 - Nunca responder sin haber preguntado antes.
 - Dar vacio, no biografia.
 - En adaptaciones: crear el sistema de adquisicion del poder.
+- **Preguntar en el clímax: ¿de que mecanismo del mundo se apropia el protagonista?**
+- **La escenografia tambien habla:** que la arquitectura diga la verdad que el dialogo
+  todavia esconde (el tren elevado de Gotham = el legado del padre vuelto arma).
+- **La herramienta final suele ser el miedo o el lenguaje del mundo**, no un objeto nuevo.

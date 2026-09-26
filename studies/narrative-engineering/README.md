@@ -1,7 +1,7 @@
 # Ingeniería Narrativa - Estudio
 
 **Inicio:** 2026-09-26
-**Estado:** abierto - Caso 1 completo, Caso 2 en curso
+**Estado:** abierto - Caso 1 y 2 completos (4/4 ejes cada uno)
 
 ---
 
@@ -48,7 +48,7 @@ material original y en uno adaptado, deja de ser casualidad: es la firma del aut
 | # | Obra | Autor foco | Tipo de material | Estado |
 |---|------|-----------|------------------|--------|
 | 01 | Dark City (1998) | David S. Goyer (co-guion) | Idea **original** | 4/4 ejes |
-| 02 | Batman Begins (2005) | David S. Goyer | **Adaptacion** (comic DC) | 2/4 ejes |
+| 02 | Batman Begins (2005) | David S. Goyer | **Adaptacion** (comic DC) | 4/4 ejes |
 
 ---
 
@@ -57,15 +57,17 @@ material original y en uno adaptado, deja de ser casualidad: es la firma del aut
 - `metodo.md` - el enfoque, los 4 ejes, como se registra cada caso.
 - `caso-01-dark-city.md` - autopsia completa.
 - `caso-02-batman-begins.md` - autopsia en curso.
-- `modelo-goyer.md` - sintesis acumulativa (la "firma" del autor).
+- `modelo-goyer.md` - sintesis acumulativa (la "firma" del autor). **Consolidado.**
 
 ---
 
 ## Pendientes
 
-- [ ] Cerrar Batman Begins: eje 3 (World-building) y eje 4 (Arco de Identidad).
-- [ ] Consolidar `modelo-goyer.md` al cerrar el caso 2.
+- [x] Cerrar Batman Begins: eje 3 (World-building) y eje 4 (Arco de Identidad).
+- [x] Consolidar `modelo-goyer.md` al cerrar el caso 2.
 - [ ] Elegir tercer caso (camino de reinterpretacion, otro material ya existente).
+- [ ] Decidir si el caso 03 prueba a un autor **distinto** de Goyer para saber si el modelo
+      es una forma de escribir o la firma de un hombre.
 
 ---
 
