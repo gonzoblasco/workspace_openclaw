@@ -89,6 +89,6 @@ artefactos; el disco mostro 83 y 0. Ver `docs/checklists/delegation-brief.md`.
 
 ## Origen
 
-Extraido de `skill-bundles/*.yaml` y `skills/software-development/hermes-sdd-orchestration`.
+Extraido de `skill-bundles/*.yaml` y `skills/software-development/hermes-sdd-orchestration` (paths del repo Hermes, no de este workspace).
 La parte conservada como valiosa es el contrato por etapas, el gate de confianza y la
 exigencia de verificar antes de avanzar. Las rutas `~/.hermes/*` de Hermes no aplican aca.
