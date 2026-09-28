@@ -56,6 +56,29 @@ Forzando la corrida de los dos jobs que fallaban, sin esperar el schedule:
 
 **El diagnostico era correcto: la causa era el modelo, no el job.**
 
+## Correccion 2026-09-28 (misma sesion): el primary explicito SIN `fallbacks` clobbea los defaults
+
+El fix de arriba introdujo una **regresion propia** que `doctor` detecto despues:
+
+```
+agents.entries.kanam-ops.model is { primary: "ollama/gpt-oss:120b-cloud" },
+a object with no explicit "fallbacks" key. At runtime this clobbers
+agents.defaults.model.fallbacks (ollama/deepseek-v4.1-flash:cloud,
+ollama/gemma4:cloud), leaving the agent with no fallbacks.
+```
+
+Tres agentes (`kanam-dev`, `kanam-mind`, `kanam-ops`) quedaron con `primary` y **sin `fallbacks`**, y eso **no hereda**: pisa los defaults y los deja **sin ninguno**. Es el mismo tipo de error que el ADR venia a arreglar (un agente con un modelo roto sin red de contencion), reintroducido por la via opuesta.
+
+**Corregido:** se les agrego `fallbacks` explicito, cloud-first y alineado con los defaults:
+
+```
+["ollama/deepseek-v4.1-flash:cloud", "ollama/glm-5.3-flash:cloud", "ollama/gemma4:cloud"]
+```
+
+Verificado: `doctor` ya no reporta el defecto.
+
+**Leccion:** un `primary` explicito **no** hereda los `fallbacks` del default; los reemplaza. Al fijar un modelo por agente, declarar **siempre** la pareja `primary` + `fallbacks`. Un agente con primary y sin fallbacks queda mas fragil que antes del cambio que buscaba endurecerlo.
+
 ## Excepcion: embeddings
 
 Los embeddings quedan en local (`qwen3-embedding:0.6b`, provider `ollama-local`). Son otra clase de tarea, corren bien en local y migrarlos encarece cada busqueda sin ganancia. Registrado como TODO por si el owner quiere revisarlo.
