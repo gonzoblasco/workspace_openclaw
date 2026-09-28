@@ -143,6 +143,23 @@
 | [pdf-tool](skills/pdf-tool/) | Manejo local de PDFs: leer (texto, metadata, OCR) y generar (exportar markdown a PDF). 100% local (poppler + tesseract) |
 | [word-docx](skills/word-docx/) | Crear, inspeccionar y editar documentos Word/DOCX: estilos, numeración, tracked changes, tablas, secciones y compatibilidad |
 
+## Hermes SDD (Importado 2026-09-28)
+
+> Roles del repositorio `mcabreradev/hermes-sdd-agency`, importados como skills del workspace.
+> Guiones largos normalizados a guion comun. Ver `docs/checklists/delegation-brief.md` para el proceso.
+
+| Skill | Descripción |
+|---|---|
+| [hermes-architect](skills/hermes-architect/) | Diseño técnico del cambio: decisiones, límites y riesgos, no implementación |
+| [hermes-builder](skills/hermes-builder/) | Implementación: escribe el código del cambio y nada más |
+| [hermes-discovery](skills/hermes-discovery/) | Reconocimiento del proyecto: describe lo que existe, con evidencia |
+| [hermes-openspec](skills/hermes-openspec/) | Dueño del ciclo OpenSpec dentro del proyecto: convierte ideas en specs válidas |
+| [hermes-planner](skills/hermes-planner/) | Desglose del cambio en tareas ejecutables, ordenadas y verificables |
+| [hermes-pr-reviewer](skills/hermes-pr-reviewer/) | Revisión adversarial de un PR publicado, con experiencia de dominio |
+| [hermes-qa](skills/hermes-qa/) | Validación del comportamiento contra la spec, con ejecución real |
+| [hermes-release](skills/hermes-release/) | Cierre del cambio: consistencia del diff, versionado, notas, archivado |
+| [hermes-reviewer](skills/hermes-reviewer/) | Revisión adversarial del trabajo del builder: busca defectos y los prueba |
+
 ---
 
 ## Skills Eliminadas
