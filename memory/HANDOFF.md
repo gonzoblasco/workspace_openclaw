@@ -1,77 +1,54 @@
-# HANDOFF - 2026-08-30
+# HANDOFF - 2026-09-27
 
 ## Estado al cierre de sesión
-**Hora:** 15:48 GMT-3
-**Sesión:** Webchat directo
-**Modelo:** ollama/qwen3.5:9b-mlx (con fallback a OpenRouter free)
-**Última actividad:** `kanam-pulse M1` finalizado y commiteado.
+**Hora:** 00:20 GMT-3 (madrugada del 28)
+**Sesión:** Webchat directo (dashboard)
+**Modelo:** ollama/deepseek-v4.1-flash:cloud
+**Proyecto:** workspace (recuperación + cierre de la migración ADR-073)
+**Última actividad:** guardado de sesión formal (protocolo session-lifecycle completo).
 
 ## ✅ Trabajo completado en esta sesión
 
-### 1. **kanam-pulse M1 Kickoff (proyecto principal)**
-- **M1.1** Extraer engine a `packages/core` (TS): DONE.
-- **M1.2** 46 tests verdes (en realidad 57/57 pass: 46 core + 11 server): DONE.
-- **M1.2.1** Fix timeout SSE en vitest: DONE (reader.cancel() + 500ms wait + 20s timeout).
-- **M1.3** Dashboard read-only consumiendo `/api/run`: DONE.
-- **Commit:** `d4f3ea9` en `gonzoblasco/kanam-pulse` (pushed).
+### 1. Recuperación de datos (lo urgente)
+Un tour de estructura derivó en el hallazgo de una **pérdida de datos silenciosa**. El barrido de la migración ADR-073 se llevó artefactos que no le correspondían:
 
-### 2. **Estado de proyectos (consolidado)**
-- `a11y-fixer`: redefinir proyecto + features (pendiente, baja prioridad).
-- `a11y-playground`: depende de `a11y-fixer` (pendiente).
-- `kanam-insight`: estado TBD, sin tareas (pendiente de definir scope).
-- `kanam-pulse`: M1 cerrado, listo para M2.
-- `SoporteML`: NO proponer (regla explícita de Gonzo del 2026-08-28).
+- **`memory.db`** (19 MB, fuente de verdad): no existía en disco, solo en HEAD. Restaurada.
+- **`memory/archive/`** (425 dailies) + **`SKILLS-INDEX.md`** + **20 archivos curados** (`user-profile.md` entre ellos, que USER.md referencia y que NO se regeneran de la DB).
+- **24 skills CORE** (`session-lifecycle`, `engineering-governance`, `agent-orchestration-pipeline`, etc.): activas según el índice, sin casa. Restauradas una por una.
+- Dailies huérfanos (09-23, 09-26, 09-27) reconciliados a la DB con el guard de `memory-end-session.py`.
 
-## 📌 Lección del M1 (importante para próximas sesiones)
+### 2. `studies/` estaba regresionado
+El caso 02 (Batman Begins) había quedado cerrado a 4/4 ejes en `b9a104fc` y el working tree lo tenía de nuevo en 2/4, byte-idéntico al commit previo. **Descartado con `git restore`, no se commiteó.**
 
-**SSE testing en Vitest es inherentemente flaky.** El test `/api/metrics/stream` fallaba con timeout 15s cuando `app.close()` se ejecutaba antes de que el `setInterval` del server se limpiara.
+### 3. Migración ADR-073 cerrada
+- 4 `.git` anidados vacíos en `agents/` removidos: ocultaban 145 archivos. Los 4 workspaces de agente ahora trackeados.
+- 284 bajas del árbol viejo commiteadas con verificación previa (43 skills migradas tienen copia idéntica; 17 sin destino eran placeholders).
+- `hyphen_enforcer.sh` corregido (portabilidad + bit ejecutable + sus propios guiones).
 
-**Solución aplicada:**
-```js
-// Antes (flaky)
-await res.body.cancel().catch(() => {});
-await new Promise((r) => setTimeout(r, 100));
-await app.close();
-}, 15000);
+### 4. ADR-075 (nuevo)
+Los proyectos viven en `~/projects`, fuera del worktree. Documenta el movimiento del 26/09 que nunca se registró. **Decisión de Gonzo:** el `.knowledge/` es parte del proyecto y viaja con él; el workspace ya no es responsable de esa memoria. `AGENTS.md`, `.gitignore` y `aggregate-sync.sh` alineados.
 
-// Después (estable)
-await reader.cancel();
-await new Promise((r) => setTimeout(r, 500));
-await app.close();
-}, 20000);
-```
+## 📌 Lecciones (registradas en la DB)
+- **206** (metodología): un barrido de refactor puede arrastrar artefactos de otra familia y borrar la fuente de verdad.
+- **207** (metodología): un modelo de poco contexto reescribe archivos ya cerrados como si siguieran abiertos.
 
-**Regla derivada:** tests de streaming con `app.listen` real + fetch + cleanup requieren **≥500ms de wait** entre el cancel del reader y el close del server. Margen menor = flake.
+## 🔢 Estado de git
+- **15 commits** pusheados a `origin/main`.
+- HEAD: `dfa04fd9` + el commit de cierre.
+- Repo limpio: 0 pendientes.
+- Gates verdes: refs (276) / adr (75) / em-dash.
+- Suite: 217 tests Python + 47 bats, todos verdes.
 
-## 🚦 Próximos pasos (para la próxima sesión)
+## ⏭️ Próximos pasos
+1. **[Backlog #61] Sincronizar los proyectos (`~/projects`) a un repo nuevo.** Diferido a propósito por Gonzo. Hoy 135 archivos `.knowledge/` viven solo en disco, sin respaldo en git.
+2. **[Backlog #60]** Aplicar patch a la skill `github-pr-followup` (paso 3): documentar la segunda firma de 0 jobs. La edita Gonzo (Workshop).
+3. **[Backlog #58]** Script de integridad del corpus ADR (candidato al pre-commit).
 
-1. **Decidir M2 de kanam-pulse** (alertas, persistencia, métricas nuevas).
-2. **Manejar `projects/a11y-playground/` y `projects/kanam-insight/`** que están como untracked (probablemente necesitan `.git` interno o submodules).
-3. **Limpiar `migration-spin-review-changes.md`** (es un draft no finalizado, decidir si mergear o borrar).
-4. **Validar pipeline A/B en producción** (tarea abierta en `memory/todos.md`).
+## 🧠 Contexto para la próxima sesión
+La causa raíz del desastre fue trabajar **día y medio con modelos chicos locales de poco contexto**: el registro se rompió y el trabajo se reescribió sobre información incompleta. Cuatro capas de daño (la DB, las skills CORE, `studies/`, el daily duplicado). Todo quedó consolidado y pusheado.
 
-## 📂 Archivos modificados (sin commitear al workspace, pendientes)
-
-- `projects/a11y-playground/` (untracked, repo embebido)
-- `projects/kanam-insight/` (untracked, repo embebido)
-- `scripts/model-compare-qwen-gemma.sh` (untracked, decisión pendiente)
-- `TOOLS.md` (modificado, en stage)
-- `scripts/complexity-scorer.sh` (modificado, en stage)
-- `memory/memory.db` (modificado, en stage)
-
-## 🔗 Estado de git
-
-- **workspace**: 4 archivos staged, 3 untracked (los `projects/`), pendiente commit + push.
-- **kanam-pulse**: limpio después de `d4f3ea9` (M1 completo).
-
-## 🧠 Modelo y motor de IA
-
-- **Pipeline A/B** (estado en `pipeline-state.json`): en `kanam-pulse M1 - server + dashboard`, U1 en estado `start`, U2 en `queued`.
-- **Motor actual:** `qwen3.5:9b-mlx` (con cambios recientes en `TOOLS.md`).
-- **Reglas críticas:**
-   - **Regla de tools (2026-08-30):** cuando un tool devuelva error de validación, NO asumir éxito. Confirmar con `read` posterior.
-   - **Em dash rule:** guion común (-) siempre, NUNCA em dash U+2014.
-   - **Pre-commit hook:** Biome → Vitest → Build obligatorio.
+**Regla operativa nueva:** antes de commitear un barrido masivo, verificar que cada baja tenga destino o sea intencional; los artefactos de memoria y datos curados no caen en un commit de limpieza de código.
 
 ---
-*Generado por Kanam como handoff de sesión. Próximo turno: revisar este archivo antes de planificar.*
+
+*Generado al cierre de la sesión del 2026-09-27.*

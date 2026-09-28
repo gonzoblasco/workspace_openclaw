@@ -4,6 +4,31 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-27] - Recuperacion de datos y cierre de la migracion multi-agente (ADR-073)
+
+### Added
+- **ADR-075 - los proyectos viven en `~/projects`, fuera del worktree:** documenta el movimiento del 2026-09-26 que nunca se registro, y cierra la pregunta de la memoria de proyecto: el `.knowledge/` es parte de cada proyecto y viaja con el (decision de Gonzo).
+- **Los 4 workspaces de agente trackeados** (`agents/kanam-dev`, `kanam-mind`, `kanam-ops`, `kanam-studio`): 145 archivos. Sus `.git` anidados vacios (0 commits, 0 remote) se removieron: hacian que el git del workspace viera cada agente como bloque opaco.
+
+### Fixed
+- **`memory.db` recuperada (perdida de datos real):** no existia en disco, solo en HEAD, tras el barrido de la migracion. Restaurada con `memory/archive/` (425 dailies), `SKILLS-INDEX.md` y **20 archivos curados** que no se regeneran de la DB (`user-profile.md` entre ellos, referenciado por `USER.md`).
+- **24 skills CORE restauradas** (`session-lifecycle`, `engineering-governance`, `agent-orchestration-pipeline`, etc.): activas segun el indice, no migradas a `agents/<rol>/`, y ausentes del disco. Repararon 3 refs rotas en `AGENTS.md` y el pipeline (`check-refs`: 276 rutas, todas existen).
+- **`studies/` estaba regresionado:** el working tree revertia el caso 02 (Batman Begins) de 4/4 a 2/4 ejes, byte-identico al commit previo, 103 lineas de analisis ya hecho borradas. Descartado con `git restore`, no se commiteo.
+- **Indice de ADRs reconciliado:** ADR-074 estaba en disco sin fila. `check-adr-integrity.py` ahora limpio (75 ADRs).
+- **17 guiones no separables (U+2011) limpiados** de ADR-071 y ADR-072 - los propios ADRs de la regla del guion.
+- **`hyphen_enforcer.sh`:** portabilidad (`mapfile` no existe en el bash 3.2 de macOS), bit ejecutable, y sus propios 5 guiones raros normalizados.
+- **Daily 2026-09-27 deduplicado:** tenia 4 copias del mismo bloque de sesion. Deduplicado DB-first.
+
+### Changed
+- **El arbol viejo `skills/` y `projects/` retirado del workspace** (284 bajas commiteadas): 43 skills migradas tienen copia identica en `agents/<rol>/skills/`; 17 sin destino eran placeholders. `projects/` se movio a `~/projects` (ADR-075).
+- **`AGENTS.md`**: la seccion de proyectos describe `~/projects` y declara que la memoria de proyecto es del proyecto.
+- **`.gitignore`**: el bloque de excepciones de `projects/` (60 lineas) reemplazado por una sola regla de ignorado.
+- **`aggregate-sync.sh`**: apunta a `~/projects` (override con `PROJECTS_DIR`) y falla con las instrucciones exactas de inicializacion del agregado.
+
+### Notes
+- **Causa raiz (diagnostico de Gonzo, confirmado por los datos):** la migracion se hizo con modelos chicos locales de poco contexto durante dia y medio. El registro quedo mal y el trabajo se reescribio sobre contexto incompleto, lo que dejo cuatro capas de dano (la DB, las skills CORE, `studies/` y el daily duplicado).
+- **Pendiente (backlog todo #61):** sincronizar los proyectos a un repo nuevo. Hoy 135 archivos `.knowledge/` viven solo en disco, sin respaldo en git. Diferido a proposito.
+
 ## [2026-09-26] - Gates de accesibilidad y refs rotas antes del push
 
 ### Added
@@ -29,7 +54,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ## [2026-09-25] - kanam-spec: spec skeleton completed
 
 ### Added
-- Created detailed `spec.md` in `projects/kanam-spec/openspec/specs/kanam-spec/` with Overview, Goals, Requirements (functional \u0026 non‑functional), Non‑goals, Scenarios, Acceptance Criteria and extended functional requirements FR‑4 - FR‑7 covering UI input, generation process, preview/export, validation, UX flow, edge‑case handling, performance, security, accessibility, and compatibility.
+- Created detailed `spec.md` in `projects/kanam-spec/openspec/specs/kanam-spec/` with Overview, Goals, Requirements (functional \u0026 non-functional), Non-goals, Scenarios, Acceptance Criteria and extended functional requirements FR-4 - FR-7 covering UI input, generation process, preview/export, validation, UX flow, edge-case handling, performance, security, accessibility, and compatibility.
 - Updated `CHANGELOG.md` to record this addition.
 
 ## [2026-09-24] - SoporteML se reabre: definicion de la nueva generacion (ADR-067 + ADR-068)

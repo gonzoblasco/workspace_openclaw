@@ -476,3 +476,15 @@ Y la leccion de proceso: cuando el usuario reporta un sintoma, primero hay que p
 
 ---
 
+## Un barrido de refactor puede arrastrar artefactos de otra familia y borrar la fuente de verdad
+
+El barrido de la migracion ADR-073 movio legitimamente 43 skills a agents/<rol>/skills/ y projects/ a ~/projects, pero en el mismo pase se llevo memory.db (19 MB, solo sobrevivia en HEAD), memory/archive/ (425 dailies), SKILLS-INDEX.md, 20 archivos curados que NO se regeneran de la DB (user-profile.md, referenciado por USER.md) y las 24 skills CORE. Sintoma: git status con 874 bajas sin commitear y un archivo de estado que no existe en disco. Regla: antes de commitear un barrido masivo, verificar que cada baja tenga destino o sea intencional; los artefactos de memoria/datos curados no deben caer en un commit de limpieza de codigo. Verificar con git status --porcelain y comparar contra el commit previo.
+
+---
+
+## Un modelo de poco contexto reescribe archivos ya cerrados como si siguieran abiertos
+
+El working tree tenia studies/narrative-engineering/ revertido: el caso 02 (Batman Begins) habia quedado CERRADO a 4/4 ejes en b9a104fc, y aparecia de nuevo en 2/4. Byte-identico al commit ANTERIOR (c42d6a9f): 103 lineas de analisis ya hecho, borradas. Los 3 archivos con mtime de la misma franja que el resto del trabajo del modelo chico. Mismo patron en memory/2026-09-27.md: 4 copias del mismo bloque. Sintoma: un archivo con contenido que YA se habia cerrado vuelve a un estado previo. Regla: al retomar una sesion larga, comparar git diff contra HEAD antes de commitear; una regresion es byte-comparable con un commit anterior. Y no cerrar tareas pesadas con modelos de contexto insuficiente: reescriben sobre informacion incompleta.
+
+---
+
