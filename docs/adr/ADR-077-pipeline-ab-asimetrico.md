@@ -41,16 +41,34 @@ Un review con el mismo modelo que ejecuto no aporta. Con A y B distintos, el rev
 
 - **Verificar que el modelo revisora sea distinto del ejecutor.** No basta con "pedir otro ojo": hay que comprobar el modelo efectivo. En el review de los sprints 3-6 no lo fue.
 - El **motor** sigue siendo Claude Code (ADR-049); lo que cambia es el `--model` por rol.
-- Limitacion conocida y no resuelta: `ollama launch claude` **se cuelga con prompts largos** (verificado con `glm-5.3-flash:cloud` y `kimi-k3:cloud`; los mismos modelos responden bien con prompts cortos). Como el pipeline real usa prompts largos, conviene investigarlo antes de depender del pipeline para reviews de verdad.
+- **El cuelgue con prompts largos NO existe: la afirmacion se retiro.** Ver la seccion de correccion abajo.
+
+## Correccion: el "cuelgue con prompts largos" era un error de atribucion (2026-09-28)
+
+Una primera version de este ADR afirmaba que `ollama launch claude` **se cuelga con prompts largos**. **Esa afirmacion no se sostiene y queda retirada.**
+
+Re-medido el mismo dia, sin presuponer la causa:
+
+| Prueba | Alcance | Resultado |
+|---|---|---|
+| Prompt trivial, 7 tamanos | 455 B a 150 KB | **OK en los 7**, 3 a 4 s cada uno |
+| Mismo prompt, 2 modelos | `kimi-k3:cloud`, `glm-5.3-flash:cloud` | **OK en ambos** |
+| **Tarea que exige herramientas** | listar archivos con `Bash` | **OK**: ejecuto, listo y razono |
+
+**Que paso realmente:** los dos intentos originales terminaron por **SIGTERM**, y el SIGTERM lo di yo misma con `pkill -f "ollama launch claude"` despues de esperar unos minutos. No hay evidencia de cuelgue: hay evidencia de que **corte la prueba yo** y le atribui el fallo al modelo.
+
+El unico fallo real y reproducible es `qwen3.5:cloud`, que devuelve `exit status 1`.
+
+**Leccion (vale mas que el hallazgo):** terminar un proceso por impaciencia y despues reportarlo como defecto del proceso es un error de atribucion. Si una prueba se corta, el resultado es **"no concluyente"**, nunca "colgado".
 
 ## Modelos probados en Claude Code (2026-09-28)
 
-| Modelo | Prompt corto | Prompt largo |
+| Modelo | Prompt corto | Prompt largo (150 KB) |
 |---|---|---|
 | `gpt-oss:120b-cloud` | OK | - |
 | `deepseek-v4.1-flash:cloud` | OK | - |
-| `glm-5.3-flash:cloud` | OK | **se cuelga** |
-| `kimi-k3:cloud` | OK | **se cuelga** |
+| `glm-5.3-flash:cloud` | OK | **OK** |
+| `kimi-k3:cloud` | OK | **OK** |
 | `minimax-m2.7:cloud` | OK | - |
 | `qwen3.5:cloud` | **Error exit 1** | - |
 
