@@ -31,6 +31,14 @@ El movimiento no quedo registrado en ningun ADR, ni se actualizaron `AGENTS.md` 
 
 Esta decision **documenta el estado actual**; formaliza lo que ya es de hecho, para que el workspace deje de arrastrar el arbol viejo y las reglas dejen de describir una ruta que ya no existe.
 
+### La memoria de proyecto (el `.knowledge/`) es parte del proyecto
+
+Gonzo, 2026-09-27: *"el `.knowledge` ya no viaja, es parte de cada proyecto... o sea, va con el proyecto... al mover los proyectos del workspace ya quito su responsabilidad"*.
+
+Esto cierra la pregunta que quedaba abierta: el workspace **no** es responsable de la memoria de proyecto. El `.knowledge/` vive dentro de `~/projects/<slug>/` y viaja con el proyecto, en el repo del proyecto. No se re-tracking en el workspace, ni se mueve al agregado como mecanismo primario, ni se centraliza en la DB de vectores.
+
+**Pendiente operativo (backlog, todo #61):** sincronizar los proyectos a un repo nuevo. Diferido a proposito por Gonzo. Hoy 135 archivos `.knowledge/` viven solo en disco, sin respaldo en git - el respaldo llega con esa sincronizacion.
+
 ## Consecuencias
 
 ### Positivas
@@ -38,7 +46,7 @@ Esta decision **documenta el estado actual**; formaliza lo que ya es de hecho, p
 - El workspace deja de cargar el arbol de proyectos: menos ruido de untracked y menos superficie para barridos accidentales (el mismo barrido que se llevo `memory.db` arrastro estas bajas).
 
 ### Negativas / pendientes
-- **El workspace ya no puede trackear `.knowledge/`.** `~/projects` esta fuera del worktree, asi que el git del workspace no lo ve. Hoy la memoria de proyecto solo viaja si ese proyecto la trackea en su propio repo, y la mayoria la excluye. **Queda por decidir donde vive la memoria de proyecto en git** (repo del proyecto, agregado `projects_openclaw`, la DB de vectores de ADR-073, o una combinacion).
+- **El workspace ya no trackea `.knowledge/`** (por diseno, ver Decision). La memoria de proyecto es del proyecto y viaja con el. Hoy la mayoria de los repos de proyecto excluyen su `.knowledge/` y `~/projects` no es repo, asi que esa memoria vive solo en disco: el respaldo llega con la sincronizacion del todo #61.
 - **`AGENTS.md` y `.gitignore` actualizados en la misma sesion.** `AGENTS.md` ahora describe `~/projects` y aclara que el workspace ya no trackea `.knowledge/`; el `.gitignore` reemplaza el bloque muerto de `projects/` por una sola regla de ignorado.
 - **8 archivos `.knowledge/` sin copia en `~/projects`** (siguen solo en HEAD): 6 de `kanam-solitaires` (hoy dividido en `kanam-solitaires-v1` / `kanam-solitaries-v2`) y 2 de slugs sin carpeta (`workspace-general`, `workspace`). Recuperables desde git (`git show HEAD:<path>`).
 - **Las 143 bajas del arbol `projects/`** del workspace son el arbol viejo, ahora redundante: se commitearon como limpieza legitima.

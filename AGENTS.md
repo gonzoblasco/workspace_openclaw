@@ -141,7 +141,7 @@ Repo `workspace_openclaw`. Proyectos se sincronizan por separado.
 ### Estructura de Proyectos - Triple Git con `.knowledge/`
 Detalle en `docs/AGENTS-DETALLE.md` y **ADR-075** (los proyectos viven en `~/projects`, fuera del worktree).
 - **Ubicación de trabajo:** `~/projects/<slug>/`. El workspace **no** hospeda el árbol `projects/`.
-- **Workspace git:** ya **no** trackea `.knowledge/` de proyectos (`~/projects` queda fuera del worktree). La memoria de proyecto viaja en el repo del proyecto o en el agregado; pendiente de decisión (ADR-075).
+- **Workspace git:** ya **no** trackea `.knowledge/` de proyectos. La memoria de proyecto es **del proyecto y viaja con él** (decision de Gonzo, 2026-09-27; ADR-075). El workspace no es responsable de esa memoria.
 - **Repo agregado (`~/projects/` → `projects_openclaw`, privado):** archiva el código fuente completo de los proyectos como archivos planos (ignora `*/.git/`, node_modules, .env, *.db). No es fuente de verdad para trabajar. Sincronizar con `scripts/aggregate-sync.sh`.
 - **Proyecto git (`~/projects/<slug>/`):** trackea código, excluye `.knowledge/` vía `.git/info/exclude`. Fuente de verdad para trabajar.
 - **Sin submódulos.** GitHub es la fuente. Clonar bajo demanda. Nunca commitear los `.git/` de subrepos en el agregado.
