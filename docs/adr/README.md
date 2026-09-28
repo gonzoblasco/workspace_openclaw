@@ -85,6 +85,8 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-077 | [Pipeline A/B asimetrico (ejecutor liviano, revisor grande)](./ADR-077-pipeline-ab-asimetrico.md) | workspace |
 | ADR-078 | [La salida de un sub-agente es un auto-reporte, no un hecho](./ADR-078-salida-subagente-auto-reporte.md) | workspace |
 | ADR-079 | [La coleccion de skills deja de publicarse](./ADR-079-skills-dejan-de-publicarse.md) | workspace |
+| ADR-080 | [Modelo visual para Kanam STUDIO](./ADR-080-modelo-visual-studio.md) | workspace |
+| ADR-081 | [El scope del registro de plugins lo fija el ORDEN de agents.entries](./ADR-081-scope-plugins-orden-entries.md) | workspace |
 
 ## Formato
 

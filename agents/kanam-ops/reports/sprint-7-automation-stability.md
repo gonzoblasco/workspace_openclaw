@@ -91,3 +91,129 @@ y cerro en verde en la primera corrida despues.
 
 - No se cambio ninguna configuracion. No se toco `openclaw.json`. No se reinicio el gateway.
 - No se toco billing.
+
+---
+
+## Fase 2 - Veredicto medido (2026-09-28, 12:52)
+
+Metodo: copia de la DB de estado (`~/.openclaw/state/openclaw.sqlite` -> `/tmp/f2b.sqlite`),
+lectura de `cron_run_receipts` y `audit_events`. Solo lectura. **No se corrio ningun comando
+de `openclaw plugins`, `openclaw skills` ni `openclaw doctor`**: el registro de plugins no se
+toco durante la medicion, a proposito, para no contaminar el veredicto.
+
+### (a) Tabla cruda de corridas
+
+```
+2026-09-28 12:42:37 | 90564259 | error | cron trigger evaluation failed (internal_error): Plugin runtime changed
+2026-09-28 12:36:39 | b120616e | error | cron script payload failed (internal_error): Plugin runtime changed
+2026-09-28 12:27:37 | 90564259 | error | cron trigger evaluation failed (internal_error): Plugin runtime changed
+2026-09-28 12:12:37 | 90564259 | error | cron trigger evaluation failed (internal_error): Plugin runtime changed
+2026-09-28 12:06:39 | b120616e | error | cron script payload failed (internal_error): Plugin runtime changed
+2026-09-28 11:57:37 | 90564259 | error | cron trigger evaluation failed (internal_error): Plugin runtime changed
+2026-09-28 11:54:07 | b120616e | ok    | -
+2026-09-28 11:54:07 | 90564259 | ok    | -
+2026-09-28 11:44:29 | 0650e620 | ok    | -
+2026-09-28 11:42:37 | 90564259 | error | cron trigger evaluation failed (internal_error): Plugin runtime changed
+2026-09-28 11:36:39 | b120616e | error | cron script payload failed (internal_error): Plugin runtime changed
+2026-09-28 11:27:37 | 90564259 | skipped
+```
+
+Job ids: `90564259` = pipeline-queue-watcher, `b120616e` = langchain-starter-health-watch,
+`0650e620` = gateway-jobs-watcher.
+
+### (b) Corridas PROGRAMADAS y su status
+
+Las corridas de las 12:06, 12:12, 12:27, 12:36 y 12:42 fueron todas programadas. El corte
+limpio esta en los `audit_events`: la ultima invocacion de la herramienta `openclaw` fue a las
+11:57:35, y no hay **ningun** `openclaw`/plugins desde entonces. Despues de las 11:58 no se
+toco nada del runtime de plugins y las cinco corridas siguientes fallaron igual.
+
+```
+2026-09-28 12:06:39 | b120616e | error  <- programada, sin comandos
+2026-09-28 12:12:37 | 90564259 | error  <- programada, sin comandos, 0 tool calls en +/-3min
+2026-09-28 12:27:37 | 90564259 | error  <- programada, sin comandos
+2026-09-28 12:36:39 | b120616e | error  <- programada, sin comandos
+2026-09-28 12:42:37 | 90564259 | error  <- programada, sin comandos
+```
+
+### (c) Veredicto
+
+**Falla solo. El fallo es real y persistente, no inducido por los comandos.**
+
+- La hipotesis "mis comandos de plugins lo re-rompen" queda **descartada**: la corrida de las
+  12:12:37 fallo con **cero** llamadas de herramienta y **cero** agent runs en una ventana de
+  mas o menos 3 minutos alrededor. No habia nadie ejecutando nada.
+- Los `config_revision` de las corridas fallidas son **identicos** a los de las exitosas del
+  mismo job (`90564259`: `sha256:iuGlD...`; `b120616e`: `sha256:0e2Q3...`). O sea: no hubo
+  reescritura de config entre una corrida `ok` y una `error`.
+- El error es el mismo texto en las cinco corridas: `Plugin runtime changed. Continue with the
+  refreshed tool catalog`. El trigger evaluator y el script payload de cron corren en
+  code-mode, y ese guard rechaza la corrida cuando la generacion del runtime de plugins
+  cambio respecto de la que tenia la sesion.
+- Hay un cambio de generacion real y con marca de tiempo: `~/.openclaw/plugin-skills` fue
+  regenerado a las **11:57:54** (`openclaw-plugin-build-*` a las 11:57:50 y 11:58:36/39), y
+  desde ahi todas las corridas de code-mode fallan. Antes de las 11:42 el mismo job alternaba
+  `skipped` y `ok`.
+- La correlacion con actividad propia existe **hasta las 11:58** (ahi si hay solapamiento con
+  mis comandos). **Desde las 11:58 en adelante no.** El fallo se autosostiene.
+
+### (d) Lo que corresponde hacer
+
+Escalar. Por indicacion explicita del pedido, **no propongo cambios de configuracion**: el
+veredicto es que falla solo y el reporte es el deliverable.
+
+Datos de escalamiento, para quien lo tome:
+- El guard `Plugin runtime changed` esta en el camino de ejecucion de code-mode (usado por
+  `trigger.script` y por `payload.kind = "script"`). Los tres jobs usan esas dos vias.
+- La generacion del runtime de plugins cambio a las 11:57:54 y no volvio a un estado que las
+  sesiones de cron acepten. Reiniciar el gateway o reabrir las sesiones de cron son las
+  palancas plausibles, pero **no se probo ninguna** en esta fase (fuera de alcance, solo
+  lectura).
+- No se toco el registro de plugins, ni `openclaw.json`, ni el gateway.
+
+### Limpieza
+
+La copia `/tmp/f2b.sqlite` se elimino al cerrar la medicion.
+
+---
+
+## Desenlace (2026-09-28, 16:04-16:10) - causa raiz encontrada y fix aplicado
+
+El escalamiento de arriba pidio no proponer cambios y solo reportar. Horas despues, con la
+aprobacion del owner, se hallo la causa raiz y se aplico el fix. Se documenta aca para cerrar
+el ciclo del reporte (que quedo escrito antes del fix).
+
+**Causa raiz:** el scope del registro de plugins lo fija el **ORDEN de `agents.entries`**, no
+`agents.defaults.systemAgent.agentId`. El control-plane persiste el workspace del **primer**
+entry del roster. Con el orden original (`kanam-dev` primero) el scope quedaba en
+`.../workspace/agents/kanam-dev`; con `main` primero queda correcto.
+
+**Evidencia (A/B/A):**
+
+| Orden de `agents.entries` | `state` | `workspaceDir` |
+|---|---|---|
+| `kanam-dev, kanam-mind, kanam-ops, kanam-studio, main` | `stale` | `.../agents/kanam-dev` |
+| `main, kanam-dev, kanam-mind, kanam-ops, kanam-studio` | **`fresh`** | **`.../workspace`** |
+| revertido al original | `stale` | `.../agents/kanam-dev` |
+
+**Fix aplicado:** `main` primero en `agents.entries`. Sin restart.
+
+**Verificacion en el consumidor** (lo que este reporte pedia como criterio):
+
+| Job | Antes del fix | Despues |
+|---|---|---|
+| `langchain-starter-health-watch` (`b120616e`) | `error` 15:04 | **`ok` 16:04** |
+| `pipeline-queue-watcher` (`90564259`) | `error` 15:04 | `skipped` 16:04 (skip propio) |
+| `gateway-jobs-watcher` (`0650e620`) | `error` 15:23 (pre-fix) | pendiente: corre cada 2 h |
+
+**Correcciones a este mismo reporte:**
+
+- El cambio de generacion a las **11:57:54** que se detecto como disparador era el **sintoma**
+  del scope desalineado, no la causa independiente.
+- La hipotesis estructural que quedo anotada (el registro guarda **un solo** scope mientras los
+  workspaces de los agentes estan **anidados** bajo el de `main`) quedo confirmada como la forma
+  del conflicto: el orden decide cual de los cinco scopes gana.
+- **`gateway-jobs-watcher` y `base-ui-stable-check` con `model-call-started` timeout NO son este
+  problema:** firma distinta (`timeout`, no `Plugin runtime changed`) y anterior. Causa separada.
+
+Ver `docs/adr/ADR-081-scope-plugins-orden-entries.md`.
