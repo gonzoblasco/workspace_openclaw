@@ -1,4 +1,4 @@
-## 2026-09-21 – Conversación con Gonzalo
+## 2026-09-21 - Conversación con Gonzalo
 
 **Objetivo**: crear y aplicar una skill `kanam‑lab‑profile` que genere automáticamente el perfil del asistente Kanam‑Lab, evaluar habilidades usadas y archivar la conversación.
 
