@@ -42,7 +42,7 @@
 ### Escenario B: No entra (rechazo)
 - **Acción inmediata**: Pedir feedback específico (¿fue la tarifa, el perfil, la disponibilidad?).
 - **Ajuste de estrategia**: Usar el feedback para refinar el pitch o el material.
-- **Registro**: Documentar la lección en `docs/entrevistas/` y en `docs/LEARNINGS.md`.
+- **Registro**: Documentar la lección en `docs/entrevistas/` y en `docs/learnings/`.
 
 ### Escenario C: Sin respuesta (aviso no llegó)
 - **Acción**: Mensaje de seguimiento elegante el lunes 01/09 (si no hubo aviso el fin de semana).

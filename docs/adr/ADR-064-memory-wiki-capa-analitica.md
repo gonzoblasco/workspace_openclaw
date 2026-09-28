@@ -48,7 +48,7 @@ Probado end-to-end, no solo habilitado:
 
 - `wiki doctor` -> healthy. `wiki lint` -> 0 issues.
 - `wiki search` -> devuelve hits de `MEMORY.md` y `todos.md` (el corpus compartido funciona).
-- **Pipeline completo:** 3 fuentes ingestadas (`docs/adr/README.md`, `docs/LEARNINGS.md`, `docs/OSS-TRACKER.md`) + 1 entity con 4 claims y provenance.
+- **Pipeline completo:** 3 fuentes ingestadas (`docs/adr/README.md`, `docs/learnings/README.md`, `docs/OSS-TRACKER.md`) + 1 entity con 4 claims y provenance.
 - **Detectores ejercitados con una sonda deliberada** (claim sin evidencia, confianza 0.2, estado `contested`, fecha vieja). Resultado: `claim-health` reporto 1 sin evidencia + 1 contested, `low-confidence` 1 claim, `stale-pages` 1 pagina, y `lint` paso de 0 a 3 issues. Despues de borrar la sonda, los reports **se limpiaron solos**.
 
 **Hallazgo de operacion (importante):** la ingesta sola **no** alimenta los reports. `provenance-coverage` lo dijo explicito: "No *structured claims* with provenance coverage yet". El analisis opera sobre la capa de **claims**, no sobre el texto crudo. O sea: el flujo real es `ingest` (evidencia) -> `entities con claims` (conocimiento) -> `compile/lint` (analisis). Sin el paso intermedio, el vault es evidencia inerte.

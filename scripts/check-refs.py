@@ -74,7 +74,7 @@ def resolves(source: Path, target: str) -> bool:
 
 # Directorios historicos: se leen como se escribieron, no se corrigen. Una
 # ruta rota ahi es un dato del pasado, no una promesa vigente.
-SKIP_DIRS = ("docs/archives/", "docs/conversations/")
+SKIP_DIRS = ("docs/archives/", "docs/history/", "docs/conversations/")
 
 
 def is_skippable(ref: str) -> bool:

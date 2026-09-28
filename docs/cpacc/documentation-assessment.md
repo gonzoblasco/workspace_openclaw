@@ -20,7 +20,7 @@ Con la documentación que ya posees ya cuentas con la mayor parte de la informac
 Sin embargo, para garantizar que cubras **todos** los ítems del examen y maximices tu probabilidad de aprobar, es imprescindible añadir los elementos marcados en el punto 1‑5.
 
 ## Próximos pasos recomendados
-- **Obtener y guardar el BoK** (PDF oficial) en `docs/cpacc-bok.pdf`.  
+- **Obtener y guardar el BoK** (PDF oficial) en `docs/cpacc/cpacc-bok.pdf`.  
 - **Descargar el Content Outline** y actualizar la tabla de estudio.  
 - **Buscar o crear un banco de preguntas** (≥20 preguntas) y programar un mock‑exam de 2 h.  
 - **Revisar normas** (WCAG 2.2, legislación local) y añadir notas al mini‑doc.  

@@ -24,7 +24,9 @@
 | 4 | **Simulacros y logística** | • Realizar 10 preguntas oficiales + Jeopardy.<br>• Simular examen cronometrado.<br>• Revisar checklist de día de examen y preparar el espacio. |
 
 ## Próximos pasos
-- **Crear** el archivo `docs/cpacc-week-1-plan.md` con la tabla anterior (ya generado).\n- **Ejecutar** `scripts/extract_pdfs.py docs/cpacc-bok.pdf docs/cpacc-handbook.pdf` para actualizar los textos si cambian los PDFs.\n- **Actualizar** el canal de estudio interno (widget `session:report`) con este documento y el plan semanal.
+- **Crear** el archivo `docs/cpacc/week-1-plan.md` con la tabla anterior (ya generado).
+- **Ejecutar** `scripts/extract_pdfs.py docs/cpacc/cpacc-bok.pdf docs/cpacc/cpacc-handbook.pdf` para actualizar los textos si cambian los PDFs.
+- **Actualizar** el canal de estudio interno (widget `session:report`) con este documento y el plan semanal.
 
 ---
 *Este documento está pensado para uso interno del equipo y resume las lecciones aprendidas, propuestas de mejora y el plan de estudio estructurado para la certificación CPACC.*

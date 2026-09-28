@@ -26,7 +26,7 @@ Requieren el clone con `node_modules` y el browser de Playwright instalado.
 | `verify-override-paths.js` | Los 4 caminos de override del anchor name: sin override, por classname en el host, en un ancestro, por style inline. |
 | `scroll-definitive.js` | Scroll tracking con espera de frames. Cierra la falsa alarma del "no sigue el scroll". |
 
-## Hallazgos (detalle en `docs/PR-10517-REACT-SPECTRUM-PLAN.md`)
+## Hallazgos (detalle en `docs/prs/PR-10517-REACT-SPECTRUM-PLAN.md`)
 
 - `inset` **posiciona pero no dimensiona**: en WebKit un control reemplazado queda en su caja intrinseca (12x12). Chromium si lo estira. Hacen falta `width`/`height: anchor-size()`.
 - `position: absolute` no resuelve el ancla porque el containing block queda dentro de `VisuallyHidden`; `fixed` sale de esa cadena. Es la relacion de ancestro, no `absolute` en si.

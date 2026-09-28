@@ -98,7 +98,7 @@ La memoria del workspace tiene **dos clases de superficie**, y confundirlas llev
 | `memory/todos.md` | `todos` | DB -> MD |
 | `memory/inbox.md` | `inbox` | DB -> MD |
 | `docs/OSS-TRACKER.md` | `contributions` | DB -> MD |
-| `docs/learnings/*.md` | `learnings` | DB -> MD (portada `docs/LEARNINGS.md` escrita a mano) |
+| `docs/learnings/*.md` | `learnings` | DB -> MD (portada `docs/learnings/README.md`) |
 
 **2. Doc-only (fuera del ciclo):** el archivo **es** la fuente de verdad. No hay tabla, no hay export, no hay reconciliacion. Editarlo mal no se detecta contra nada.
 

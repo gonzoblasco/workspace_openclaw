@@ -8,7 +8,7 @@
 
 ## Contexto
 
-Las lecciones aprendidas vivían en `docs/LEARNINGS.md` como un archivo monolítico de 681 líneas con 40+ lecciones mezcladas por tema (a11y, OSS, pipeline de agentes, infraestructura, proyectos, metodología). Al arrancar una tarea, consultar la lección relevante implicaba escanear todo el archivo.
+Las lecciones aprendidas vivían en un archivo monolítico de 681 líneas con 40+ lecciones mezcladas por tema (a11y, OSS, pipeline de agentes, infraestructura, proyectos, metodología). Al arrancar una tarea, consultar la lección relevante implicaba escanear todo el archivo.
 
 Gonzo propuso dos mejoras: (1) separar las lecciones en archivos por categoría para consulta más rápida según el tipo de tarea, y (2) crear un mirror en la base de datos para que la consulta al arrancar una tarea sea veloz.
 
@@ -33,7 +33,7 @@ docs/learnings/
 └── metodologia.md      (proceso, documentación, patrones, ADHD, bootcamp)
 ```
 
-`docs/LEARNINGS.md` queda como portada-índice con links a cada categoría.
+`docs/learnings/README.md` queda como portada-índice con links a cada categoría.
 
 ### Tabla `learnings`
 

@@ -13,7 +13,7 @@
 **Acción:** `agents.defaults.model.primary = ollama/deepseek-v4-flash:cloud`. Backup previo: `~/.openclaw/openclaw.json.bak-20260830-revert-deepseek`. Gateway reiniciado y verificado.
 **Impacto:** `glm-5.3-flash:cloud` queda como opción disponible (multimodal) pero NO es default. Cualquier uso como default requiere flag de excepción justificado.
 
-> Memoria curada de largo plazo. Detalle técnico en `docs/LEARNINGS.md`, OSS en `docs/OSS-TRACKER.md`, dailies en `memory/` y proyectos en `projects/<slug>/.knowledge/`.
+> Memoria curada de largo plazo. Detalle técnico en `docs/learnings/README.md`, OSS en `docs/OSS-TRACKER.md`, dailies en `memory/` y proyectos en `projects/<slug>/.knowledge/`.
 
 ## Sobre Gonzo
 
