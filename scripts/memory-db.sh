@@ -77,19 +77,18 @@ case "$1" in
     date="${2:-$(date +%F)}"
     sqlite3 "$DB" "SELECT content FROM daily_notes WHERE date='$date' AND type='daily' ORDER BY id DESC LIMIT 1;"
     ;;
-  export-all)
-    mkdir -p memory/export
-    # Robust: one query per date (no separators). Splitting a concatenated
-    # column on a delimiter ALWAYS breaks when the markdown content itself
-    # contains that byte or newlines (the content is multiline).
+    export-all)
+    # Nueva ubicación: archivado de sesiones en docs/archives/sesiones/
+    mkdir -p docs/archives/sesiones
+    # Robust: una consulta por fecha (el contenido markdown es multilinea).
     dates=$(sqlite3 "$DB" "SELECT DISTINCT date FROM daily_notes WHERE type='daily' ORDER BY date;")
     count=0
     while IFS= read -r date; do
       [[ -z "$date" ]] && continue
-      sqlite3 "$DB" "SELECT content FROM daily_notes WHERE date='$date' AND type='daily' ORDER BY id DESC LIMIT 1;" > "memory/export/$date.md"
+      sqlite3 "$DB" "SELECT content FROM daily_notes WHERE date='$date' AND type='daily' ORDER BY id DESC LIMIT 1;" > "docs/archives/sesiones/$date.md"
       count=$((count + 1))
     done <<< "$dates"
-    echo "Exportados $count dailies a memory/export/"
+    echo "Exportados $count dailies a docs/archives/sesiones/"
     ;;
   export-oss)
     # Regenera docs/OSS-TRACKER.md desde la DB
