@@ -54,6 +54,15 @@ run_test "extra command fails" 1 'b.txt' 1 'false'
 # 5. Extra command succeeds -> 0
 run_test "extra command succeeds" 0 'b.txt' 1 'true'
 
+# 6. Path-shaped pattern is rejected -> 3 (never silently matches nothing)
+run_test "path-shaped pattern rejected" 3 'sub/*.md' 1
+
+# 7. Universal pattern is rejected -> 3 (verifies nothing)
+run_test "universal pattern rejected" 3 '*' 1
+
+# 8. Pattern with no match -> 3 even when expected is 0
+run_test "no match expects zero" 3 'nope-*.md' 0
+
 # A suite that checked nothing cannot pass.
 if [[ $checked -eq 0 ]]; then
   echo 'ERROR: no cases ran'

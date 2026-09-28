@@ -20,7 +20,6 @@ openclaw-backup-scheduled           status=ok     err=None
 moltbook-weekly-digest              status=ok     err=None
 skill-collection-review-kanam-mind  status=error  err=prepared model runtime owner was not published for /Users/gonzoblasco/.openclaw/agents/kanam-mind/agent
 ```
-
 ### Job 1: gateway-jobs-watcher
 
 - **Estado:** error. El detalle esta en `lastDeliveryError`, no en `lastRunError`:
@@ -32,22 +31,32 @@ skill-collection-review-kanam-mind  status=error  err=prepared model runtime own
 
 ### Job 2: skill-collection-review-kanam-mind
 
-- **Estado:** error.
+- **Estado:** error (al momento de escribir este reporte). **RESUELTO despues,** ver nota abajo.
 - **Error textual:** `prepared model runtime owner was not published for
   /Users/gonzoblasco/.openclaw/agents/kanam-mind/agent`
-- **Causa raiz (esta es la importante):** `kanam-mind` **no tiene modelo propio**. No define
-  `model` en su entrada, asi que hereda `agents.defaults.model.primary`.
-- **Verificado:** `agents.defaults.model.primary` es `ollama/gemma4:26b`, un modelo **local**.
-  `kanam-mind` y `kanam-studio` son los dos unicos agentes sin modelo explicito, y son los
-  dos unicos que heredan un modelo local.
+- **Causa raiz (esta es la importante):** `kanam-mind` **no tenia modelo propio**. No definia
+  `model` en su entrada, asi que heredaba `agents.defaults.model.primary`.
+- **Verificado:** `agents.defaults.model.primary` era `ollama/gemma4:26b`, un modelo **local
+  que ya no estaba instalado**. `kanam-mind` y `kanam-studio` eran los dos unicos agentes sin
+  modelo explicito, y los dos unicos que heredaban un modelo local.
+
+### Nota: cambio de modelos aplicado (2026-09-28)
+
+Despues de este reporte se corrigio la config. Estado **actual** (verificado):
 
 | Agente | Modelo | Tipo |
 |---|---|---|
-| main | `ollama/qwen3.8:27b-mlx` | local |
+| defaults | `ollama/gpt-oss:120b-cloud` | cloud |
+| main | `ollama/deepseek-v4.1-flash:cloud` | cloud |
 | kanam-dev | `ollama/gpt-oss:120b-cloud` | cloud |
 | kanam-ops | `ollama/gpt-oss:120b-cloud` | cloud |
-| kanam-mind | (hereda) `ollama/gemma4:26b` | **local** |
-| kanam-studio | (hereda) `ollama/gemma4:26b` | **local** |
+| kanam-mind | `ollama/gpt-oss:120b-cloud` | cloud (explicito) |
+| kanam-studio | `ollama/gpt-oss:120b-cloud` | cloud (explicito) |
+
+Ningun agente hereda ni define un modelo local como primario. Los locales quedan
+unicamente como ultimo recurso en los fallbacks de `main`. Pendiente: re-medir
+`gateway-jobs-watcher` y `skill-collection-review-kanam-mind` en su proxima corrida para
+confirmar que el fix resolvio el timeout.
 
 ### Jobs 3 y 4: moltkbook-weekly-digest y openclaw-backup-scheduled
 

@@ -6,12 +6,17 @@
 # Exit codes:
 #   0 - criteria met (exact count matches, and extra command, if any, succeeded)
 #   1 - criteria failed (count mismatch, or extra command failed)
-#   3 - could not run (no matching artifacts): zero cases is NOT a pass
+#   3 - could not run (no matching artifacts, or an unusable pattern): zero cases is NOT a pass
 #
 # Rule: a check that ran nothing must never report success.
+#
+# The pattern is a glob evaluated against the BASENAME of each file under the current
+# directory tree (e.g. 'SKILL.md', 'hermes-*'). Passing a path ('sub/*.md') is rejected
+# on purpose: -name matches basenames, so a path-shaped pattern would silently match
+# nothing and the caller would read that as "no artifacts" instead of "bad pattern".
 
-# NOTE: no `set -e`. The extra command is EXPECTED to fail in the negative
-# case, and `set -e` would abort before its status can be captured.
+# NOTE: no `set -e`. The extra command is EXPECTED to fail in the negative case,
+# and `set -e` would abort before its status can be captured.
 
 set -uo pipefail
 
@@ -27,6 +32,19 @@ fi
 PATTERN="$1"
 EXPECTED_COUNT="$2"
 EXTRA_CMD="${3-}"
+
+# Reject a path-shaped pattern instead of letting it match nothing silently.
+if [[ "$PATTERN" == */* ]]; then
+  echo "ERROR: pattern must be a basename glob, not a path ('$PATTERN')" >&2
+  echo "       use e.g. 'SKILL.md', not 'skills/*/SKILL.md'" >&2
+  exit 3
+fi
+
+# Reject a universal pattern: '*' matches everything, so it cannot express an expectation.
+if [[ "$PATTERN" == "*" || "$PATTERN" == "*.*" ]]; then
+  echo "ERROR: pattern '$PATTERN' matches anything and verifies nothing" >&2
+  exit 3
+fi
 
 # Collect matches into an array. Read -d '' keeps paths with spaces intact.
 MATCHES=()
