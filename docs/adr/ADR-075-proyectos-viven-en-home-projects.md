@@ -1,0 +1,51 @@
+# ADR-075: Los proyectos viven en `~/projects`, fuera del worktree del workspace
+
+**Fecha:** 2026-09-27
+**Estado:** Aceptado
+**Decisores:** Gonzo / Kanam
+**Origen:** sesion de recuperacion 2026-09-27 - el movimiento a `~/projects` no estaba documentado en ningun ADR y el workspace conservaba el arbol viejo como bajas sin commitear
+**Relacionado:** ADR-073 (arquitectura multi-agente), ADR-056 (guardas de gobernanza), ADR-066 (los guardias no leen codigo de proyecto)
+
+---
+
+## Contexto
+
+Hasta 2026-09-25 los proyectos vivian en `workspace/projects/<slug>/`. El git del workspace trackeaba **solo su `.knowledge/`** (memoria), mediante el bloque del `.gitignore` que ignora todo `projects/` salvo `projects/*/.knowledge/`. El codigo de cada proyecto vivia en su propio repo de GitHub, y en el agregado privado `projects_openclaw`.
+
+El **2026-09-26**, durante la migracion multi-agente (ADR-073), los proyectos se movieron a `~/projects/`, fuera del worktree del workspace. Verificado en disco y en git:
+
+- `~/projects/` existe desde 2026-09-26 14:54, con 32 directorios de proyecto.
+- `workspace/projects/` **ya no existe en disco**.
+- El git del workspace conserva **143 archivos** del arbol viejo (casi todos `.knowledge/`) como bajas sin commitear.
+- De esos 143, **135 tienen copia identica o equivalente en `~/projects`**; 8 no tienen copia (ver Consecuencias).
+
+El movimiento no quedo registrado en ningun ADR, ni se actualizaron `AGENTS.md` ni `.gitignore`, que siguen describiendo la ubicacion vieja.
+
+## Decision
+
+**La ubicacion de trabajo de los proyectos es `~/projects/<slug>/`, fuera del workspace.**
+
+- El codigo del proyecto y su `.knowledge/` conviven en `~/projects/<slug>/`.
+- **11 de los 32 proyectos** tienen su propio repo git en `~/projects/<slug>/.git`; la mayoria excluye su `.knowledge/` via `.git/info/exclude`.
+- El workspace (`~/.openclaw/workspace`) **deja de hospedar el arbol `projects/`**.
+
+Esta decision **documenta el estado actual**; formaliza lo que ya es de hecho, para que el workspace deje de arrastrar el arbol viejo y las reglas dejen de describir una ruta que ya no existe.
+
+## Consecuencias
+
+### Positivas
+- Un solo lugar para el codigo y la memoria de cada proyecto.
+- El workspace deja de cargar el arbol de proyectos: menos ruido de untracked y menos superficie para barridos accidentales (el mismo barrido que se llevo `memory.db` arrastro estas bajas).
+
+### Negativas / pendientes
+- **El workspace ya no puede trackear `.knowledge/`.** `~/projects` esta fuera del worktree, asi que el git del workspace no lo ve. Hoy la memoria de proyecto solo viaja si ese proyecto la trackea en su propio repo, y la mayoria la excluye. **Queda por decidir donde vive la memoria de proyecto en git** (repo del proyecto, agregado `projects_openclaw`, la DB de vectores de ADR-073, o una combinacion).
+- **`AGENTS.md` y `.gitignore` quedan desactualizados.** `AGENTS.md` sigue diciendo "Workspace git: trackea solo `projects/**/.knowledge/`", y el `.gitignore` conserva el bloque `/projects/*` con la negacion de `.knowledge/`. Hay que actualizar ambos a la ubicacion real.
+- **8 archivos `.knowledge/` sin copia en `~/projects`** (siguen solo en HEAD): 6 de `kanam-solitaires` (hoy dividido en `kanam-solitaires-v1` / `kanam-solitaries-v2`) y 2 de slugs sin carpeta (`workspace-general`, `workspace`). Recuperables desde git.
+- **Las 143 bajas del arbol `projects/`** del workspace son el arbol viejo, ahora redundante: se commitean como limpieza legitima.
+- **`aggregate-sync.sh` asume `workspace/projects/`.** El script resuelve `PROJECTS_DIR="${WORKSPACE_DIR}/projects"` y falla si esa ruta no existe. Necesita apuntar a `~/projects` para seguir sincronizando el agregado.
+
+## Notas
+- El movimiento ocurrio junto con la migracion de skills a `agents/<rol>/` (ADR-073). Ambos comparten el mismo origen y el mismo problema: se aplicaron a medias, sin cerrar el estado en git ni actualizar las reglas.
+- Antes de este ADR, `~/projects` ya era un directorio con proyectos sueltos (algunos desde 2026-09-08). Lo que decide este ADR no es su creacion, sino que **pasa a ser la ubicacion oficial**, en reemplazo de `workspace/projects/`.
+
+<!-- project: github.com/gonzoblasco/workspace_openclaw -->
