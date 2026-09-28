@@ -79,6 +79,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-071 | [Hyphen enforcement in markdown/spec files](./ADR-071-hyphen-enforcement.md) | workspace |
 | ADR-072 | [Front-matter enforcement for SKILL.md files](./ADR-072-frontmatter-enforcement.md) | workspace |
 | ADR-073 | [Transicion a arquitectura de orquestacion multi-agente](./ADR-073-arquitectura-multi-agente.md) | workspace |
+| ADR-074 | [Protocolo de despacho y coordinacion multi-agente](./ADR-074-protocolo-despacho-multi-agente.md) | workspace |
 
 ## Formato
 
