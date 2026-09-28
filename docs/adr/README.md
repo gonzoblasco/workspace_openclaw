@@ -81,6 +81,10 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-073 | [Transicion a arquitectura de orquestacion multi-agente](./ADR-073-arquitectura-multi-agente.md) | workspace |
 | ADR-074 | [Protocolo de despacho y coordinacion multi-agente](./ADR-074-protocolo-despacho-multi-agente.md) | workspace |
 | ADR-075 | [Los proyectos viven en ~/projects, fuera del worktree](./ADR-075-proyectos-viven-en-home-projects.md) | workspace |
+| ADR-076 | [Ningun agente hereda un modelo local](./ADR-076-ningun-agente-hereda-modelo-local.md) | workspace |
+| ADR-077 | [Pipeline A/B asimetrico (ejecutor liviano, revisor grande)](./ADR-077-pipeline-ab-asimetrico.md) | workspace |
+| ADR-078 | [La salida de un sub-agente es un auto-reporte, no un hecho](./ADR-078-salida-subagente-auto-reporte.md) | workspace |
+| ADR-079 | [La coleccion de skills deja de publicarse](./ADR-079-skills-dejan-de-publicarse.md) | workspace |
 
 ## Formato
 

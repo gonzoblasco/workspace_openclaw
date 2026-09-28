@@ -4,6 +4,35 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-28] - Politica de modelos cloud-first, integracion Hermes SDD, fin de la publicacion de skills
+
+### Added
+- **ADR-076 - ningun agente hereda un modelo local:** los modelos cloud primero, locales como ultimo recurso. Corrige la causa real de los fallos de automatizacion (`defaults.model.primary` apuntaba a `gemma4:26b`, local y desinstalado, que `kanam-mind` y `kanam-studio` heredaban).
+- **ADR-077 - pipeline A/B asimetrico:** Agente A (ejecutor) liviano en `gpt-oss:120b-cloud`; Agente B (evaluador y corrector) grande en `deepseek-v4.1-flash:cloud` con 1M de contexto. La asimetria es intencional: el revisor ve mas que el ejecutor.
+- **ADR-078 - la salida de un sub-agente es un auto-reporte, no un hecho:** `status=done` significa que el proceso termino limpio, no que el resultado sea cierto. Rutas absolutas en los briefs; el padre reproduce la verificacion.
+- **ADR-079 - la coleccion de skills deja de publicarse:** `kanam-skills` archivado en GitHub; `publish-skills` marcada `status: archived`.
+- **Skills nuevas:** `sdd-agent-loop` (loop por etapas + confidence gate), `verification-gates` (las 3 reglas anti falso-verde), `trust-vocabulary-report` (vocabulario de confianza por etapa). Extraidas de Hermes SDD.
+- **9 skills `hermes-*`** (architect, builder, discovery, openspec, planner, pr-reviewer, qa, release, reviewer).
+- **`scripts/verify-delegation.sh`** + suite interna + `tests/bash/verify-delegation.bats`: gate de verificacion de artefactos. Codigos de salida `0`/`1`/`3`; **cero artefactos nunca es un pase**. Enganchado al pre-commit.
+- **`docs/checklists/delegation-brief.md`:** plantilla obligatoria para tareas delegadas.
+- **83 specs de Hermes** importadas a `wiki/main/sources/hermes-sdd/`, con fidelidad verificada contra el origen.
+
+### Changed
+- **`openclaw.json` (config del gateway):** `defaults.model.primary` a cloud; `kanam-mind` y `kanam-studio` con modelo explicito; fallbacks de `main` 27 -> 13 (cloud primero, locales instalados al final); 8 referencias a modelos no instalados limpiadas. Backup: `openclaw.json.bak-20260928-112321-pre-cloud-models`.
+- **`scripts/model-router.sh`:** ruta `pipeline_ab` a la division asimetrica A/B.
+- **`skills/agent-orchestration-pipeline/SKILL.md`:** documentada la division de modelos por rol.
+
+### Fixed
+- **Automatizaciones que fallaban por modelo:** `gateway-jobs-watcher` (15 corridas fallidas) y `skill-collection-review:kanam-mind` pasan a `ok` tras el cambio de modelos, verificado forzando la corrida.
+- **Gate de verificacion endurecido tras review adversarial:** rechaza patrones con forma de path y el patron universal (verificado: permitian evadir la verificacion).
+- **Reporte del sprint 7 reescrito:** el sub-agente habia entregado evidencia fabricada (JSON inventado; dos jobs dados por fallidos que estaban `ok`).
+
+### Notas de metodo
+- **Los comandos de `plugins` re-rompen los triggers de automatizacion.** Los jobs quedaron `ok` y volvieron a `error` tras inspecciones posteriores. Los "hallazgos del watcher" eran efecto de la propia investigacion. Agrupar los comandos en una pasada; la estabilidad la decide la corrida programada.
+- **El registro de plugins queda `stale`** (desacuerdo de `workspaceDir`), no reparable por CLI ni `doctor`: es intervencion de estado del gateway, pendiente de decision del owner.
+
+---
+
 ## [2026-09-27] - Recuperacion de datos y cierre de la migracion multi-agente (ADR-073)
 
 ### Added
