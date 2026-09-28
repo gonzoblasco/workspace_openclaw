@@ -12,7 +12,7 @@ El workspace está estable. La fase intensiva de refactor de scripts (Fases 1-5)
 - [x] Refactor de ~37 scripts de skills (Fases 1-4)
 - [x] Suite de tests automatizados: `test-skills.sh` + bats + pytest + CI
 - [x] Documentación de tooling en ~86 skills
-- [x] Mirror `.github/skills/` sincronizado
+- [x] Mirror `.github/skills/` sincronizado (eliminado 2026-09-28, ADR-079)
 - [x] `.gitignore` con `__pycache__/`
 - [x] `.knowledge/` creado para el workspace
 
@@ -28,7 +28,7 @@ El workspace está estable. La fase intensiva de refactor de scripts (Fases 1-5)
 | Tests python (pytest) | 8 tests, todos verdes |
 | CI (GitHub Actions) | Activo en push/PR |
 | Pre-commit hook | Instalado desde template |
-| Mirror `.github/skills/` | Sincronizado con `rsync` |
+| Mirror `.github/skills/` | Eliminado 2026-09-28 (ADR-079) |
 
 ## Próximos pasos
 
@@ -39,4 +39,4 @@ El workspace está estable. La fase intensiva de refactor de scripts (Fases 1-5)
 ## Riesgos
 
 - Skills sin scripts (`blogwatcher`, `mlx-stt`, `shortcuts-generator`) no tienen tooling asociado — no es bloqueante, pero si crecen necesitarán documentación.
-- El mirror `.github/skills/` puede quedar desactualizado si no se sincroniza al modificar skills.
+- ~~El mirror `.github/skills/` puede quedar desactualizado si no se sincroniza al modificar skills.~~ _Riesgo eliminado 2026-09-28 (ADR-079): el mirror ya no existe._

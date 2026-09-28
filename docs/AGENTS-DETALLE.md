@@ -40,7 +40,7 @@ Referencia completa de la tabla MAX vs HIGH: `docs/adr/ADR-040-modelos-seleccion
 El repo `kanam-skills` (github.com/gonzoblasco/kanam-skills) es **público**. Las skills que van ahí NO deben contener referencias personales de Gonzo (nombre, handle `gonzoblasco`, repos, rutas `/Users/gonzoblasco/`, issues específicos).
 
 **Dos versiones de cada skill:**
-- **Workspace** (`skills/` + mirror `.github/skills/`): privado, **mantiene** las referencias personales - son el setup de Gonzo y el contexto es valioso.
+- **Workspace** (`skills/`): privado, **mantiene** las referencias personales - son el setup de Gonzo y el contexto es valioso. (El mirror `.github/skills/` se elimino el 2026-09-28, ADR-079.)
 - **kanam-skills** (`projects/kanam-skills/skills/`): público, **sanitizado** - se escribe como si la usara un extraño.
 
 **Regla obligatoria:** al copiar una skill del workspace al repo público, sanitizar en el camino:

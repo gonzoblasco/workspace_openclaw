@@ -66,10 +66,7 @@ When workspace skill files are updated, they must be synchronized to the public 
    git commit -m "chore: publish updated skills"
    git push
    ```
-5. **Mirror sync** (if a mirror repository exists):
-   ```bash
-   rsync -a --delete $WORKSPACE/projects/kanam-skills/ $WORKSPACE/.github/skills/
-   ```
+5. **~~Mirror sync~~** _Revocado 2026-09-28 (ADR-079): el mirror `.github/skills/` se elimino y el repo publico quedo archivado. Este paso ya no aplica._
 
 ## Decision Rules
 

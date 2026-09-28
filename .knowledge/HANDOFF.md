@@ -34,7 +34,7 @@ Sesión de refactor y documentación masiva de scripts de skills. Se auditaron 9
 
 ### Infraestructura
 - `.gitignore` con `__pycache__/` y `*.py[cod]`
-- Mirror `.github/skills/` sincronizado
+- Mirror `.github/skills/` sincronizado (eliminado 2026-09-28, ADR-079)
 - `.knowledge/` creado para el workspace (BRIEF, STATUS, HANDOFF)
 
 ## Archivos tocados
@@ -56,7 +56,7 @@ Sesión de refactor y documentación masiva de scripts de skills. Se auditaron 9
 
 - **Workspace como proyecto con `.knowledge/`:** el workspace ahora tiene BRIEF, STATUS y HANDOFF como cualquier otro proyecto. La memoria diaria sigue en `memory/`, el estado institucional en `.knowledge/`.
 - **`npm test` antes de cada commit a scripts:** obligatorio. El pre-commit hook lo enforcea localmente; CI lo enforcea en push.
-- **Mirror `.github/skills/`:** se sincroniza con `rsync -a --delete --exclude='.DS_Store' skills/ .github/skills/` cada vez que se modifican skills.
+- ~~**Mirror `.github/skills/`:** se sincroniza con `rsync -a --delete --exclude='.DS_Store' skills/ .github/skills/` cada vez que se modifican skills.~~ _Revocado 2026-09-28 (ADR-079): el mirror se elimino justamente porque esa sincronizacion causaba errores (un `rsync --delete` borro 111 archivos)._
 - **`__pycache__` ignorado:** agregado a `.gitignore` después de que se colaron en el mirror.
 
 ## Pendientes

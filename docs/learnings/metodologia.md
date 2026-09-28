@@ -108,6 +108,7 @@ Para comprar libros tecnicos para preparar una entrevista o puesto, buscar edito
 - Una skill que genera artifacts en el filesystem debe definir SIEMPRE su ruta de destino en el SKILL.md, o es fuente de inconsistencia.
 - Cuando dos skills cubren el mismo dominio (estudio), la fusion en una sola ("one skill to rule them all") con una regla explicita de ruta elimina la ambiguedad.
 - Al fusionar skills, verificar el mirror `.github/skills/` (regla AGENTS.md: rsync cada vez que cambien skills) - el mirror estaba stale 3 dias.
+  - _Actualizado 2026-09-28 (ADR-079): ya no aplica. El mirror se elimino por esta misma clase de error. La leccion sobrevive: un artefacto que se sincroniza a mano y no falla ruidosamente cuando se desincroniza es deuda, no respaldo._
 - La convencion nueva: todo estudio en `studies/<slug>/`, nunca `study/` (singular).
 
 **Self-reflection:**

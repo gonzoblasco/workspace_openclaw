@@ -32,6 +32,7 @@
 
 **Lesson - fusionar una skill = actualizar en TODAS las ubicaciones:**
 - Una skill vive en 3 lugares: `skills/`, `.github/skills/` (mirror) y `projects/kanam-skills/skills/` (repo público). Al fusionar hay que propagar a los 3 + README + `web/generate.js` del repo + regenerar la web.
+  - _Actualizado 2026-09-28 (ADR-079): ya no aplica. El mirror `.github/skills/` se elimino y `kanam-skills` esta archivado. Hoy cada skill vive en `skills/` o en `agents/<rol>/skills/`._
 - El generador de web estático **no limpia HTML huérfanos** (solo escribe, no borra). Al eliminar una skill hay que borrar `web/public/skills/<name>.html` a mano además de regenerar.
 - La web se regenera en CI desde `skills/`, así que `web/public/` está en `.gitignore` - los cambios locales ahí no se commitean.
 

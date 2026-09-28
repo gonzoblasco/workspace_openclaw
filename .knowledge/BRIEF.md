@@ -15,14 +15,14 @@ Gonzo trabaja entre dos máquinas (Mac Mini y MacBook Air) y necesita un punto �
 - bats + pytest (tests de scripts)
 - Biome (linting de skills)
 - Git + GitHub (sincronización entre máquinas)
-- rsync (mirror skills/ → .github/skills/)
+- rsync (mirror skills/ → .github/skills/) - _eliminado 2026-09-28 (ADR-079)_
 
 ## Estructura
 
 ```
 ~/.openclaw/workspace/
 ├── .knowledge/          ← Estado institucional del workspace
-├── .github/skills/      ← Mirror de skills/ para GitHub UI
+├── .github/            ← workflows CI (.github/skills/ eliminado 2026-09-28, ADR-079)
 ├── skills/              ← Skills operativas (~91)
 │   ├── <skill>/
 │   │   ├── SKILL.md

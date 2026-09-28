@@ -135,8 +135,8 @@ Repo `workspace_openclaw`. Proyectos se sincronizan por separado.
 **Datos locales (NO git):** `.env`, `*.db`, tokens. IRRECUPERABLES. Respaldar SIEMPRE antes de mover o limpiar un proyecto.
 
 ##### Skills Mirror & Públicas
-- **Mirror:** `rsync` de `skills/` a `.github/skills/` antes de commitear. Copiar `SKILLS-INDEX.md` explícitamente.
-- **Públicas (kanam-skills):** contenido **genérico**, no solo sin nombres. Sale: lo personal (`Gonzo`/`gonzoblasco`) y los **proyectos internos** (`a11y-fixer`, `kanam-lab`, `soporteml`, `workspace_openclaw`, issues, rutas locales). **Se queda: la marca `Kanam`** - es el nombre del producto publicado, no una identidad personal (corregido por Gonzo 2026-09-14). Se escribe como **plantilla que sirve para cualquier proyecto**. Verificar con `grep` (2 pasadas: personales + proyectos internos) antes de publicar. Detalle en `docs/AGENTS-DETALLE.md`.
+- **Mirror eliminado (2026-09-28, ADR-079):** `.github/skills/` ya **no existe**. Era un superset que se desincronizaba y causaba errores (un `rsync --delete` borro 111 archivos el 2026-09-28). No recrearlo: las skills viven en `skills/` y en `agents/<rol>/skills/`. Ver TODO #62.
+- **Públicas (kanam-skills):** **archivado el 2026-09-28 (ADR-079).** La coleccion ya **no se publica**. Se conserva la regla por si alguna vez se retoma: contenido **genérico**, no solo sin nombres. Sale: lo personal (`Gonzo`/`gonzoblasco`) y los **proyectos internos** (`a11y-fixer`, `kanam-lab`, `soporteml`, `workspace_openclaw`, issues, rutas locales). **Se queda: la marca `Kanam`** - es el nombre del producto publicado, no una identidad personal (corregido por Gonzo 2026-09-14). Se escribe como **plantilla que sirve para cualquier proyecto**. Verificar con `grep` (2 pasadas: personales + proyectos internos) antes de publicar. Detalle en `docs/AGENTS-DETALLE.md`.
 
 ### Estructura de Proyectos - Triple Git con `.knowledge/`
 Detalle en `docs/AGENTS-DETALLE.md` y **ADR-075** (los proyectos viven en `~/projects`, fuera del worktree).
