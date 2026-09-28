@@ -39,10 +39,10 @@ Esta decision **documenta el estado actual**; formaliza lo que ya es de hecho, p
 
 ### Negativas / pendientes
 - **El workspace ya no puede trackear `.knowledge/`.** `~/projects` esta fuera del worktree, asi que el git del workspace no lo ve. Hoy la memoria de proyecto solo viaja si ese proyecto la trackea en su propio repo, y la mayoria la excluye. **Queda por decidir donde vive la memoria de proyecto en git** (repo del proyecto, agregado `projects_openclaw`, la DB de vectores de ADR-073, o una combinacion).
-- **`AGENTS.md` y `.gitignore` quedan desactualizados.** `AGENTS.md` sigue diciendo "Workspace git: trackea solo `projects/**/.knowledge/`", y el `.gitignore` conserva el bloque `/projects/*` con la negacion de `.knowledge/`. Hay que actualizar ambos a la ubicacion real.
-- **8 archivos `.knowledge/` sin copia en `~/projects`** (siguen solo en HEAD): 6 de `kanam-solitaires` (hoy dividido en `kanam-solitaires-v1` / `kanam-solitaries-v2`) y 2 de slugs sin carpeta (`workspace-general`, `workspace`). Recuperables desde git.
-- **Las 143 bajas del arbol `projects/`** del workspace son el arbol viejo, ahora redundante: se commitean como limpieza legitima.
-- **`aggregate-sync.sh` asume `workspace/projects/`.** El script resuelve `PROJECTS_DIR="${WORKSPACE_DIR}/projects"` y falla si esa ruta no existe. Necesita apuntar a `~/projects` para seguir sincronizando el agregado.
+- **`AGENTS.md` y `.gitignore` actualizados en la misma sesion.** `AGENTS.md` ahora describe `~/projects` y aclara que el workspace ya no trackea `.knowledge/`; el `.gitignore` reemplaza el bloque muerto de `projects/` por una sola regla de ignorado.
+- **8 archivos `.knowledge/` sin copia en `~/projects`** (siguen solo en HEAD): 6 de `kanam-solitaires` (hoy dividido en `kanam-solitaires-v1` / `kanam-solitaries-v2`) y 2 de slugs sin carpeta (`workspace-general`, `workspace`). Recuperables desde git (`git show HEAD:<path>`).
+- **Las 143 bajas del arbol `projects/`** del workspace son el arbol viejo, ahora redundante: se commitearon como limpieza legitima.
+- **`aggregate-sync.sh` actualizado.** Resolvia `PROJECTS_DIR="${WORKSPACE_DIR}/projects"`; ahora apunta a `~/projects` (override con `PROJECTS_DIR`) y falla con un mensaje que incluye como inicializar el agregado.
 
 ## Notas
 - El movimiento ocurrio junto con la migracion de skills a `agents/<rol>/` (ADR-073). Ambos comparten el mismo origen y el mismo problema: se aplicaron a medias, sin cerrar el estado en git ni actualizar las reglas.

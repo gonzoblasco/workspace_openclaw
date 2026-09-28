@@ -139,11 +139,12 @@ Repo `workspace_openclaw`. Proyectos se sincronizan por separado.
 - **Públicas (kanam-skills):** contenido **genérico**, no solo sin nombres. Sale: lo personal (`Gonzo`/`gonzoblasco`) y los **proyectos internos** (`a11y-fixer`, `kanam-lab`, `soporteml`, `workspace_openclaw`, issues, rutas locales). **Se queda: la marca `Kanam`** - es el nombre del producto publicado, no una identidad personal (corregido por Gonzo 2026-09-14). Se escribe como **plantilla que sirve para cualquier proyecto**. Verificar con `grep` (2 pasadas: personales + proyectos internos) antes de publicar. Detalle en `docs/AGENTS-DETALLE.md`.
 
 ### Estructura de Proyectos - Triple Git con `.knowledge/`
-Detalle en `docs/AGENTS-DETALLE.md`.
-- **Workspace git:** trackea solo `projects/**/.knowledge/` (memoria).
-- **Repo agregado (`projects/` → `projects_openclaw`, privado):** archiva el código fuente completo de los proyectos como archivos planos (ignora `*/.git/`, node_modules, .env, *.db). No es fuente de verdad para trabajar. Sincronizar con `scripts/aggregate-sync.sh`.
-- **Proyecto git (`projects/<slug>/`):** trackea código, excluye `.knowledge/` vía `.git/info/exclude`. Fuente de verdad para trabajar.
-- **Sin submódulos.** GitHub es la fuente. Clonar bajo demanda. Nunca commitear los `.git/` de subrepos en el agregado. `git reset --hard` en `projects/` puede borrar `.knowledge/` del disco (restaurar con `git restore --worktree -- projects/`).
+Detalle en `docs/AGENTS-DETALLE.md` y **ADR-075** (los proyectos viven en `~/projects`, fuera del worktree).
+- **Ubicación de trabajo:** `~/projects/<slug>/`. El workspace **no** hospeda el árbol `projects/`.
+- **Workspace git:** ya **no** trackea `.knowledge/` de proyectos (`~/projects` queda fuera del worktree). La memoria de proyecto viaja en el repo del proyecto o en el agregado; pendiente de decisión (ADR-075).
+- **Repo agregado (`~/projects/` → `projects_openclaw`, privado):** archiva el código fuente completo de los proyectos como archivos planos (ignora `*/.git/`, node_modules, .env, *.db). No es fuente de verdad para trabajar. Sincronizar con `scripts/aggregate-sync.sh`.
+- **Proyecto git (`~/projects/<slug>/`):** trackea código, excluye `.knowledge/` vía `.git/info/exclude`. Fuente de verdad para trabajar.
+- **Sin submódulos.** GitHub es la fuente. Clonar bajo demanda. Nunca commitear los `.git/` de subrepos en el agregado.
 
 ### Project Cleanup
 Al finalizar proyecto: 1. Push final $\rightarrow$ 2. Extraer ADRs generales $\rightarrow$ 3. Limpiar local (borrar node_modules, dejar `.knowledge/` y README) $\rightarrow$ 4. Push de limpieza $\rightarrow$ 5. Registro en daily.
