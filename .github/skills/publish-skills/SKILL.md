@@ -8,11 +8,19 @@ metadata:
     - publish
     - public
     - sanitization
-description: "Publishes workspace skill changes to the public kanam-skills repository safely, ensuring sanitization and verification before committing."
-user-invocable: true
+  status: "archived"
+description: "ARCHIVADA 2026-09-28: kanam-skills ya no se actualiza. Historial de como se publicaba la coleccion de skills al repo publico con sanitizacion y verificacion previa."
+user-invocable: false
 ---
 
-# Publish Skills
+# Publish Skills (ARCHIVADA)
+
+> **ARCHIVADA el 2026-09-28.** Decision de Gonzo: `kanam-skills` ya **no se actualiza** y el
+> repo publico quedo archivado en GitHub. Ya no compartimos la coleccion de skills.
+>
+> Esta skill se conserva como registro de como se publicaba, no como procedimiento activo.
+> Si algun dia se retoma el compartir skills, esta es la referencia: el flujo, la
+> sanitizacion y los checks de verificacion siguen siendo validos.
 
 ## Purpose
 

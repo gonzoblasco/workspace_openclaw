@@ -54,9 +54,20 @@ Despues de este reporte se corrigio la config. Estado **actual** (verificado):
 | kanam-studio | `ollama/gpt-oss:120b-cloud` | cloud (explicito) |
 
 Ningun agente hereda ni define un modelo local como primario. Los locales quedan
-unicamente como ultimo recurso en los fallbacks de `main`. Pendiente: re-medir
-`gateway-jobs-watcher` y `skill-collection-review-kanam-mind` en su proxima corrida para
-confirmar que el fix resolvio el timeout.
+unicamente como ultimo recurso en los fallbacks de `main`.
+
+### Re-medicion post-fix (2026-09-28 11:44)
+
+Se forzaron las dos corridas en vez de esperar el schedule. Resultado medido:
+
+| Job | Antes del fix | Despues del fix | Modelo usado |
+|---|---|---|---|
+| `gateway-jobs-watcher` | error, timeout en `model-call-started` | **ok** | `deepseek-v4.1-flash:cloud` |
+| `skill-collection-review-kanam-mind` | error, `model runtime owner was not published` | **ok** | `gpt-oss:120b-cloud` |
+
+**El fix resolvio ambos fallos.** El diagnostico era correcto: la causa no era el timeout del job
+ni su carga, era el modelo. El watcher habia fallado 15 veces seguidas antes del cambio
+y cerro en verde en la primera corrida despues.
 
 ### Jobs 3 y 4: moltkbook-weekly-digest y openclaw-backup-scheduled
 
@@ -70,6 +81,7 @@ confirmar que el fix resolvio el timeout.
    `kanam-studio` un modelo explicito de cloud. Esto conecta directo con el pedido original
    ("quitar los modelos locales de las tareas automatizadas") y con la razon por la que
    MIND y STUDIO nunca se usaban: estaban montados sobre el modelo que se queria sacar.
+   **Aplicado 2026-09-28 y verificado** (ver re-medicion arriba).
 2. **Timeout del payload en `gateway-jobs-watcher`.** Si el cuello es el modelo, subir el
    timeout solo alarga el fallo. Primero resolver el modelo, despues medir.
 3. **No reactivar `base-ui-stable-check`** hasta que exista un modelo estable: falla por la
