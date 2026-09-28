@@ -159,6 +159,9 @@
 | [hermes-qa](skills/hermes-qa/) | Validación del comportamiento contra la spec, con ejecución real |
 | [hermes-release](skills/hermes-release/) | Cierre del cambio: consistencia del diff, versionado, notas, archivado |
 | [hermes-reviewer](skills/hermes-reviewer/) | Revisión adversarial del trabajo del builder: busca defectos y los prueba |
+| [sdd-agent-loop](skills/sdd-agent-loop/) | Loop de agentes por etapas con gate humano y verificación antes de avanzar |
+| [verification-gates](skills/verification-gates/) | Guardas que no dan falso verde: cero casos corridos, SKIP vs OK, lector honesto |
+| [trust-vocabulary-report](skills/trust-vocabulary-report/) | Reportar trabajo delegado sin inflarlo: niveles de confianza por etapa |
 
 ---
 
