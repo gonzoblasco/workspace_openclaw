@@ -133,7 +133,13 @@ El pipeline usa un router de modelo configurable por tipo de tarea + overrides s
 ./scripts/model-router.sh list                 # ver rutas + overrides
 ```
 
-**Rutas por defecto (2026-08-30):** code → deepseek-v4-flash, review → deepseek-v4-flash, long → glm-5.3-flash, cheap → gemma4, writing → glm-5.3-flash, pipeline_ab → deepseek-v4-flash | glm-5.3-flash | kimi-k2.7-code, default → deepseek-v4-flash.
+**Rutas por defecto (2026-08-30):** code → deepseek-v4-flash, review → deepseek-v4-flash, long → glm-5.3-flash, cheap → gemma4, writing → glm-5.3-flash, pipeline_ab → gpt-oss:120b-cloud / deepseek-v4.1-flash:cloud, default → deepseek-v4-flash.
+
+**Division de modelos A/B (2026-09-28, pedido de Gonzo):** en `pipeline_ab`, el **Agente A (ejecutor) usa un modelo liviano** (`gpt-oss:120b-cloud`) y el **Agente B (evaluador y corrector) usa uno grande con context window amplia** (`deepseek-v4.1-flash:cloud`, 1M de contexto).
+
+**Por que asimetrico:** A produce, B revisa. Darle a B el modelo mas grande y de mayor contexto le permite **expandirse y ver el contexto completo** - el codigo de A, el repo, las reglas - y asi corregir con fundamento en lugar de opinar sobre un fragmento. A no necesita esa profundidad: necesita velocidad y costo bajo para producir el primer borrador. La asimetria es intencional: **el revisor ve mas que el ejecutor**.
+
+> Medido el 2026-09-28: un review hecho con el mismo modelo que ejecuto no fue un "otro ojo". Con A y B distintos, el review adversarial del gate de verificacion encontro 3 evasiones reales que la suite del propio autor no cubria.
 
 **Uso en el pipeline:** al lanzar un agente, el orquestador consulta `model-router.sh model <tipo>` para decidir el `--model` (en vez de elegirlo ad hoc). Los overrides sticky permiten fijar " usá kimi para todo el codigo de esta fase" y persiste hasta reset.
 
