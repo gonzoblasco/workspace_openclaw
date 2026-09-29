@@ -75,7 +75,9 @@
 | [superpowers](skills/superpowers/) | Workflow spec-first con TDD y ejecución por subagentes: brainstorm → plan → implementación, debugging sistemático y cierre de branch |
 | [self-improving-agent](skills/self-improving-agent/) | Captura aprendizajes, errores y correcciones en archivos markdown para mejora continua |
 
-## Core OpenClaw (Infraestructura Propia)
+## Core OpenClaw (Infraestructura Propia)  
+<!-- NOTE: Este Core actúa como *único* punto de entrada y router de intenciones. Todas las tareas específicas deben delegarse a los agentes especializados (kanam-dev, kanam-ops, kanam-mind, kanam‑studio). -->
+**⚡️ Core es el único punto de entrada y router de intenciones; delega todas las tareas a los agentes especializados.**
 
 | Skill | Descripción |
 |---|---|
