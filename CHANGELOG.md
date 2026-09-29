@@ -4,6 +4,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - SKILLS-INDEX.md reescrito de cero: índice canónico, no changelog
+
+### Changed
+- **`SKILLS-INDEX.md` reescrito.** El archivo acumulaba nueve bloques `Actualización <fecha>` que se contradecían entre sí y mezclaban tres cosas distintas: inventario, historial de mantenimiento y notas de consolidación. Los totales declarados en esos bloques (82, 81, 65, 63) nunca salieron del CLI y no reflejaban el set real. La estructura nueva es fija: (1) qué es el índice y cómo se cuenta, (2) metodología (dos árboles, dónde va una skill nueva, ciclo de vida, Core define vs delega, contrato del archivo), (3) inventario de las 78 skills activas por árbol y por fase, (4) retiradas, (5) herramientas de verificación.
+- **Regla explícita: este archivo no lleva su propio changelog.** El historial de mantenimiento vive en `CHANGELOG.md` y en git; el índice es inventario. Era la causa de la repetición: cada cambio agregaba un bloque en vez de reemplazar.
+
+### Fixed
+- **Totales corregidos y medidos:** 78 activas (36 en `skills/` + 42 en `agents/*/skills/`: kanam-dev 25, kanam-mind 7, kanam-ops 4, kanam-studio 7), más 1 placeholder (`study-tracker`, `user-invocable: false`). Verificado contra el árbol en disco y contra `openclaw skills list --agent <id> --json` (filtro `source == "openclaw-workspace"`), que coincide: 36 + 25 + 7 + 4 + 7.
+- **Los cinco árboles quedan completos:** antes faltaban filas de `skills/` en el índice (`compaction-domain-aware`, `complexity-driven-pipeline`, `engineering-governance`, `find-skills`, `self-improving-agent`, `superpowers`), mientras había secciones propias para skills de rol. Ahora cada árbol tiene su tabla y las 78 rutas resuelven.
+
+### Notes
+- **Verificado end-to-end:** `check-refs.py` default OK (144 rutas, +2 respecto de las 142 previas), `test-skills.sh` en verde, `check-adr-integrity.py` OK, y un diff de conjuntos entre los links del índice y las rutas reales: la única diferencia es `study-tracker`, que es el placeholder documentado a propósito.
+- **Guiones normalizados.** El borrador tenía en dash (U+2013) como separador; se reemplazaron por guion común porque el hook del pre-commit sigue activo (ADR-082 retira la obligación de estilo, no el mecanismo).
+
+---
+
 ## [2026-09-29] - README.md: el router de entrada del workspace
 
 ### Added

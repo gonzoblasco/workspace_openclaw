@@ -1,183 +1,210 @@
-# SKILLS-INDEX.md - Skills del Workspace
+# SKILLS-INDEX - Skills del workspace
 
-> Skills activas organizadas por categoría. Actualizado: 2026-09-29
->
-> **Actualización 2026-09-29:** los links a las skills que viven en los workspaces de los agentes apuntaban a `skills/<slug>/` (ruta que ya no existe): 42 links rotos en este índice, enmascarados porque `check-refs.py` ignoraba los links terminados en `/`. Corregidos a su ruta real (`agents/<rol>/skills/<slug>/`). **78 skills activas** en disco: 36 en `skills/` + 42 en `agents/*/skills/` (el tercer dir de `kanam-mind`, `study-tracker`, es un placeholder `user-invocable: false`, no una skill activa).
->
-> **Nota de consolidación:** En agosto 2026 se redujo el set de skills de 96 a 60 activas, adoptando las 24 skills de ingeniería de `addyosmani/agent-skills` como base y fusionando en ellas las funcionalidades de skills propias redundantes. Las skills redundantes fueron eliminadas (recuperables desde el historial de git, commit `ba12459`).
->
-> **Actualización 2026-08-17:** alineado con el estado real (63 skills). Se documentaron `a11y-at-validation` y `technical-book-processor` (existentes pero no listadas). Se movieron los checklists sueltos de `skills/references/` a `docs/checklists/` y se eliminaron los directorios zombies `architecture-designer` y `pre-deploy-qa` (vacíos).
->
-> **Actualización 2026-09-03:** alineado con el estado real (81 skills). Se documentaron 15 skills existentes pero no listadas: `anti-ai`, `compaction-domain-aware`, `complexity-driven-pipeline`, `gateway-config`, `gateway-restart-helper`, `health-check-dashboard`, `model-cata`, `model-router-pro`, `openspec-pattern`, `pdf-tool`, `project-closure`, `search-fusion`, `skill-collection-maintenance`, `skill-router`, `study-tracker`.
->
-> **Actualización 2026-09-22:** sincronizado con el estado real tras la reestructuración de skills. **60 skills activas**, verificado contra `openclaw skills list --json` (fuente `openclaw-workspace`). Se removieron 24 entradas stale, se documentó `publish-skills` y se limpiaron 19 directorios vacíos de `skills/`. Ojo: 13 de las 24 stale existen todavía en `projects/kanam-skills/skills` (repo público), no en el workspace.
-
-## Ingeniería de Desarrollo (Base Addy Osmani + Fusiones)
-
-> 24 skills de `addyosmani/agent-skills` cubren el ciclo completo Define → Plan → Build → Verify → Review → Ship. 5 de ellas fueron **fusionadas** con funcionalidades de skills propias de Kanam (marcadas ⭐).
-
-### Define
-| Skill | Descripción |
-|---|---|
-| [interview-me](agents/kanam-dev/skills/interview-me/) | Interrogatorio de 1 pregunta por vez hasta 95% de claridad del requerimiento real |
-| [idea-refine](agents/kanam-dev/skills/idea-refine/) | Pensamiento divergente/convergente para afinar ideas vagas en propuestas concretas |
-| [spec-driven-development](agents/kanam-dev/skills/spec-driven-development/) ⭐ | PRD completo (objetivos, arquitectura, data model, UI, acceptance criteria, traceability) antes de código. Fusiona: build-scaffold (OpenSpec), anydocs, spec-miner |
-
-### Plan
-| Skill | Descripción |
-|---|---|
-| [planning-and-task-breakdown](agents/kanam-dev/skills/planning-and-task-breakdown/) ⭐ | Descompone specs en tareas atómicas verificables con dependency ordering, estimación de timeline y planificación de GitHub issues. Fusiona: timeline-builder, gh-issue-planner, brw-plan-my-day |
-
-### Build
-| Skill | Descripción |
-|---|---|
-| [incremental-implementation](agents/kanam-dev/skills/incremental-implementation/) | Slices verticales finos - implementar, testear, verificar, commitear |
-| [test-driven-development](agents/kanam-dev/skills/test-driven-development/) | Red-Green-Refactor, test pyramid (80/15/5), DAMP, Beyonce Rule |
-| [context-engineering](agents/kanam-dev/skills/context-engineering/) | Curación del contexto del agente: rules files, context packing, MCP |
-| [source-driven-development](agents/kanam-dev/skills/source-driven-development/) | Cada decisión de framework respaldada por documentación oficial citada |
-| [doubt-driven-development](agents/kanam-dev/skills/doubt-driven-development/) | Revisión adversarial en contexto fresco: CLAIM → EXTRACT → DOUBT → RECONCILE → STOP |
-| [frontend-ui-engineering](agents/kanam-dev/skills/frontend-ui-engineering/) ⭐ | UI de producción: accesible (WCAG 2.1 AA), responsive, design system. Fusiona: accessibility-studio, ui-design, ui-generation, anti-slop-design, a11y-audit-agent, sovereign-accessibility-auditor |
-| [api-and-interface-design](agents/kanam-dev/skills/api-and-interface-design/) | Contract-first, Hyrum's Law, One-Version Rule, error semantics, boundary validation |
-
-### Verify
-| Skill | Descripción |
-|---|---|
-| [browser-testing-with-devtools](agents/kanam-dev/skills/browser-testing-with-devtools/) | Chrome DevTools MCP: DOM, console, network, performance en vivo |
-| [cross-engine-css-measurement](agents/kanam-dev/skills/cross-engine-css-measurement/) | "Funciona en Chrome, falla en WebKit": aislar la causa con sondas mínimas, A/B contra el commit anterior y matriz por motor. Basado en #10517 (anchor positioning) |
-| [a11y-at-validation](agents/kanam-dev/skills/a11y-at-validation/) | Cuándo la validación manual de accesibilidad es OBLIGATORIA (no opcional) en OSS, y cómo ejecutarla y documentarla. Basado en casos reales (radix-ui #4109/#4110) |
-
-### Review
-| Skill | Descripción |
-|---|---|
-| [agent-orchestration-pipeline](skills/agent-orchestration-pipeline/) | Orquestar 2+ agentes implementadores con cross-review multi-ronda: divide en unidades, asigna paridad A/B, coordina cierre. Validado en kanam-story Fase 3 |
-| [security-and-hardening](agents/kanam-dev/skills/security-and-hardening/) | OWASP Top 10, auth patterns, secrets management, boundary system |
-| [performance-optimization](agents/kanam-dev/skills/performance-optimization/) | Measure-first, Core Web Vitals, profiling, bundle analysis |
-
-### Ship
-| Skill | Descripción |
-|---|---|
-| [git-workflow-and-versioning](agents/kanam-dev/skills/git-workflow-and-versioning/) | Trunk-based, atomic commits, change sizing, commit-as-save-point |
-| [ci-cd-and-automation](agents/kanam-dev/skills/ci-cd-and-automation/) | Shift Left, Faster is Safer, feature flags, quality gate pipelines |
-| [deprecation-and-migration](agents/kanam-dev/skills/deprecation-and-migration/) | Code-as-liability, compulsory vs advisory deprecation, zombie code |
-| [documentation-and-adrs](agents/kanam-dev/skills/documentation-and-adrs/) | ADRs, API docs, inline docs - documentar el *why* |
-| [observability-and-instrumentation](agents/kanam-dev/skills/observability-and-instrumentation/) | Structured logging, RED metrics, OpenTelemetry, symptom-based alerting |
-| [shipping-and-launch](agents/kanam-dev/skills/shipping-and-launch/) | Pre-launch checklists, feature flag lifecycle, staged rollouts, rollback |
-| [project-closure](agents/kanam-dev/skills/project-closure/) | Cierre completo de proyecto: captura decisión, aprendizaje y estado en ADR + DB + skill. Reproducible con script |
-
-### Meta
-| Skill | Descripción |
-|---|---|
-| [agent-orchestration-pipeline-model-arbitration](skills/agent-orchestration-pipeline-model-arbitration/) | Arbitraje de modelo para pipeline A/B: reducir costos priorizando Kimi K2.7 Code solo cuando se justifica |
-| [skill-router](skills/skill-router/) | Sugiere qué skill usar para una tarea dada: matchea el prompt contra las skills disponibles (keywords + embeddings semántico local) y devuelve top sugerencias |
-| [skill-collection-maintenance](skills/skill-collection-maintenance/) | Mantenimiento de la colección de skills: diagnostica el cron semanal `skill-collection-review` fallando por tamaño y elimina skills limpiamente |
-| [publish-skills](skills/publish-skills/) | Publica skills del workspace (privado) al repo publico como artefacto generado: sanitizacion en memoria, allowlist para altas y verificacion post-apply |
-| [complexity-driven-pipeline](skills/complexity-driven-pipeline/) | Orquestación complexity-first: scorer de complejidad antes de spawnear agentes A/B. Decide modelo, thinking level y profundidad de pipeline |
-| [model-cata](skills/model-cata/) | Ritual formal de comparación de modelos LLM: mismo prompt pesado, rúbrica de análisis crítico y decisión de motor/especialistas documentada en ADR |
-| [find-skills](skills/find-skills-skill/) | Busca y descubre skills de OpenClaw desde varias fuentes (ClawHub y otras) |
-| [superpowers](skills/superpowers/) | Workflow spec-first con TDD y ejecución por subagentes: brainstorm → plan → implementación, debugging sistemático y cierre de branch |
-| [self-improving-agent](skills/self-improving-agent/) | Captura aprendizajes, errores y correcciones en archivos markdown para mejora continua |
-
-## Core OpenClaw (Infraestructura Propia)  
-<!-- NOTE: Este Core actúa como *único* punto de entrada y router de intenciones. Todas las tareas específicas deben delegarse a los agentes especializados (kanam-dev, kanam-ops, kanam-mind, kanam‑studio). -->
-**⚡️ Core es el único punto de entrada y router de intenciones; delega todas las tareas a los agentes especializados.**
-
-| Skill | Descripción |
-|---|---|
-| [session-lifecycle](skills/session-lifecycle/) | Ciclo de sesión completo: inicio, cierre, WAL protocol, handoff, ADHD productivity |
-| [knowledge-management](agents/kanam-mind/skills/knowledge-management/) | Gobernanza de conocimiento, learning signals, conflict resolution, DREAMS |
-| [openspec](agents/kanam-dev/skills/openspec/) | CLI de OpenSpec para spec-driven development |
-| [memory-wiki-workflow](agents/kanam-mind/skills/memory-wiki-workflow/) | Capa analítica de memoria con memory-wiki: entities con claims (la ingesta sola no alcanza), dashboards y síntesis |
-| [engram-project-memory](agents/kanam-mind/skills/engram-project-memory/) | Engram: memoria persistente de proyecto para agentes de pipeline (Qwen/Claude Code) vía MCP. Cuándo guardar, cuándo buscar, handoff y recovery pos-compaction (ADR-052) |
-| [background-execution](agents/kanam-ops/skills/background-execution/) | Patrones para ejecutar tareas en background: exec + process, worktrees |
-| [engineering-governance](skills/engineering-governance/) | Evolución continua del AI Engineering OS, auditoría y mejora sistémica |
-| [git-changelog](skills/git-changelog/) | Auto-genera CHANGELOG.md desde git history con conventional commits |
-| [openspec-pattern](agents/kanam-dev/skills/openspec-pattern/) | Contrato de intención (OpenSpec) para prevenir scope creep y deuda técnica: define el *what* antes del *how* |
-| [compaction-domain-aware](skills/compaction-domain-aware/) | Compactación de contexto con conciencia de dominio: tiers de prioridad (Tier 0-4) para decidir qué preservar al compactar una sesión |
-| [gateway-config](agents/kanam-ops/skills/gateway-config/) | Gestión de configuración del gateway OpenClaw en runtime: edición, health checks y tracking de cambios sin reinicios |
-
-## Stack de Gonzo (Infraestructura Única)
-
-| Skill | Descripción |
-|---|---|
-| [workspace-portfolio-hygiene](skills/workspace-portfolio-hygiene/) | Audita/limpia/estructura projects/*: clasifica gitlinks vs blobs, respeta decisiones de ADR, archiva repos, promueve carpetas a doble git |
-| [supabase-assistant](skills/supabase-assistant/) | Interact with Supabase projects: schemas, queries, types, migrations |
-| [sql-insight](skills/sql-insight/) | Traducir lenguaje natural a SQL, optimizar queries, interpretar EXPLAIN |
-
-## Especializadas
-
-| Skill | Descripción |
-|---|---|
-| [i18n-expert](agents/kanam-studio/skills/i18n-expert/) | Internacionalización/localización: setup, auditoría, reemplazo de strings, paridad de locales |
-| [support-response-writer](agents/kanam-studio/skills/support-response-writer/) | Respuestas profesionales de customer support |
-| [deepwiki](agents/kanam-mind/skills/deepwiki/) | Consulta documentación de repos GitHub via DeepWiki MCP |
-| [tech-docs](skills/tech-docs/) | Documentación técnica: ADRs, README, API docs, CHANGELOG, guías |
-| [oss-contribution](agents/kanam-studio/skills/oss-contribution/) | Workflow de contribución OSS: triaje, seguimiento de issues/PRs, community, registry |
-| [search-fusion](agents/kanam-mind/skills/search-fusion/) | Búsqueda efectiva por intención: elige estrategia y herramientas según el tipo de búsqueda (research, keyword, answer, news) y fusiona fuentes |
-
-## Seguridad y Red
-
-| Skill | Descripción |
-|---|---|
-| [clawdstrike](agents/kanam-ops/skills/clawdstrike/) | Security audit del gateway OpenClaw |
-| [skill-vetter](agents/kanam-ops/skills/skill-vetter/) | Vetting de seguridad antes de instalar una skill de terceros: banderas rojas, alcance de permisos y patrones sospechosos |
-
-## Carrera y Crecimiento
-
-| Skill | Descripción |
-|---|---|
-| [mock-interview-drill](agents/kanam-studio/skills/mock-interview-drill/) | Simulacros de entrevistas: Behavioral (STAR), Technical, Case con diagnóstico |
-| [cv-tailor](agents/kanam-studio/skills/cv-tailor/) | Optimizar CVs: matching de keywords, reescritura STAR con datos cuantitativos |
-
-## Contenido y Creatividad
-
-| Skill | Descripción |
-|---|---|
-| [copy-editing](agents/kanam-studio/skills/copy-editing/) | Edición profesional de copy: 7 sweeps de claridad, tono, beneficio |
-| [content-serializer](agents/kanam-studio/skills/content-serializer/) | Convertir contenido en posts multi-plataforma para LinkedIn y X |
-| [deslop](skills/deslop/) | Limpia código AI slop de branches antes de PRs |
-| [technical-book-processor](agents/kanam-mind/skills/technical-book-processor/) | Procesa libros técnicos capítulo por capítulo: extrae learnings, formaliza ADRs, implementa ejercicios en un proyecto acompañante y commitea atómicamente. Deja trail público de aprendizaje (portfolio) |
-
-## Vida Diaria y Herramientas
-
-| Skill | Descripción |
-|---|---|
-| [checkmate](skills/checkmate/) | Goal-to-execution-to-verification loop con worker + judge |
-| [github](skills/github/) | Official GitHub MCP server wrapper: security alerts, notifications |
-| [cleanmymac-maintenance](skills/cleanmymac-maintenance/) | Protocolo flexible de mantenimiento con CleanMyMac CLI vía frases naturales |
-| [pdf-tool](skills/pdf-tool/) | Manejo local de PDFs: leer (texto, metadata, OCR) y generar (exportar markdown a PDF). 100% local (poppler + tesseract) |
-| [word-docx](skills/word-docx/) | Crear, inspeccionar y editar documentos Word/DOCX: estilos, numeración, tracked changes, tablas, secciones y compatibilidad |
-
-## Hermes SDD (Importado 2026-09-28)
-
-> Roles del repositorio `mcabreradev/hermes-sdd-agency`, importados como skills del workspace.
-
-| Skill | Descripción |
-|---|---|
-| [hermes-architect](skills/hermes-architect/) | Diseño técnico del cambio: decisiones, límites y riesgos, no implementación |
-| [hermes-builder](skills/hermes-builder/) | Implementación: escribe el código del cambio y nada más |
-| [hermes-discovery](skills/hermes-discovery/) | Reconocimiento del proyecto: describe lo que existe, con evidencia |
-| [hermes-openspec](skills/hermes-openspec/) | Dueño del ciclo OpenSpec dentro del proyecto: convierte ideas en specs válidas |
-| [hermes-planner](skills/hermes-planner/) | Desglose del cambio en tareas ejecutables, ordenadas y verificables |
-| [hermes-pr-reviewer](skills/hermes-pr-reviewer/) | Revisión adversarial de un PR publicado, con experiencia de dominio |
-| [hermes-qa](skills/hermes-qa/) | Validación del comportamiento contra la spec, con ejecución real |
-| [hermes-release](skills/hermes-release/) | Cierre del cambio: consistencia del diff, versionado, notas, archivado |
-| [hermes-reviewer](skills/hermes-reviewer/) | Revisión adversarial del trabajo del builder: busca defectos y los prueba |
-| [sdd-agent-loop](skills/sdd-agent-loop/) | Loop de agentes por etapas con gate humano y verificación antes de avanzar |
-| [verification-gates](skills/verification-gates/) | Guardas que no dan falso verde: cero casos corridos, SKIP vs OK, lector honesto |
-| [trust-vocabulary-report](skills/trust-vocabulary-report/) | Reportar trabajo delegado sin inflarlo: niveles de confianza por etapa |
+> Índice canónico del árbol de skills *git-tracked*. Verificado por última vez: **2026-09-29**.
+> Este archivo **no lleva su propio changelog**: cada cambio va a `CHANGELOG.md` y al historial de git.
 
 ---
 
-## Skills Eliminadas
+## 1. Qué es este índice y cómo se cuenta
 
-58 skills redundantes fueron eliminadas en la consolidación (commit `ba12459`). Su funcionalidad fue absorbida por las fusiones. **Recuperables desde el historial de git** si alguna capacidad específica llegara a faltar.
+**Alcance.** Solo el árbol versionado del workspace:
 
-**Además (2026-08-06):** `adhd-daily-planner` se fusionó dentro de `adhd-assistant` (energy windows, transition buffers, dopamine sequencing, shutdown ritual, recovery protocol). Recuperable desde git si hiciera falta.
+- `skills/` - skills del Core (transversales, infraestructura propia).
+- `agents/<rol>/skills/` - skills propias de cada rol.
 
-**Reestructuración 2026-09-22:** 24 entradas del índice apuntaban a skills ya eliminadas. Removidas del índice (no del historial):
+**No entran:** las skills bundled de OpenClaw, las del Workshop (`~/.openclaw/agents/<id>/agent/workshop-skills/`), las `managed`, `extra` y `custodian`. Esas pertenecen a las superficies del CLI, no a este repo. Tampoco entra `projects/kanam-skills` (repo público, archivado).
 
-`adhd-assistant`, `adhd-output`, `anti-ai`, `apple-photos`, `brand-name-forge`, `calorie-counter`, `code-review-and-quality`, `code-simplification`, `curriculum-builder`, `db-readonly`, `debugging-and-error-recovery`, `gateway-restart-helper`, `godot-mcp`, `health-check-dashboard`, `image-generation`, `mcp-orchestrator`, `memory-agent`, `mlx-stt`, `model-router-pro`, `network-scanner`, `playwright-e2e-reactflow`, `shortcuts-generator`, `using-agent-skills`.
+**Autoridad.** `openclaw skills list --agent <id> --json`, filtrando `source == "openclaw-workspace"`. El CLI sabe qué tiene el runtime; contar directorios no lo sabe. En un workspace multi-agente el comando necesita `--agent`, porque cada agente ve su propio árbol.
 
-**(Corrección 2026-09-29):** `study-tracker` seguía en esta lista de eliminadas, pero existe en disco como **placeholder** en `agents/kanam-mind/skills/study-tracker/` (`user-invocable: false`; su funcionalidad se fusionó en `knowledge-management`). No es una skill activa: se conserva solo para resolver referencias legacy. No se lista como fila activa.
+**Totales vigentes (medidos, no heredados):**
 
-**Totales activas:** 78 skills activas (36 en `skills/` + 42 en `agents/*/skills/`, excluido el placeholder `study-tracker`), verificado el 2026-09-29 contra el árbol real. La cifra anterior (65) era del 2026-09-22 y no incluyó las 12 skills del import Hermes.
+| Árbol | Activas |
+|---|---|
+| `skills/` (Core) | 36 |
+| `agents/kanam-dev/skills/` | 25 |
+| `agents/kanam-mind/skills/` | 7 |
+| `agents/kanam-ops/skills/` | 4 |
+| `agents/kanam-studio/skills/` | 7 |
+| **Total activas** | **78** |
+
+Además hay **1 placeholder**: `agents/kanam-mind/skills/study-tracker/` (`user-invocable: false`). Existe en disco (79 `SKILL.md` en total) pero no es una skill activa: se conserva solo para resolver referencias legacy. No se cuenta ni se lista como fila.
+
+---
+
+## 2. Metodología
+
+### 2.1 Por qué hay dos árboles
+
+Un mismo runtime con roles distintos necesita dos niveles de alcance:
+
+- `skills/` guarda lo **transversal** (session, memoria, git, docs, pipeline) y las **capacidades propias del Core**. El Core es el punto de entrada y router: ejecuta sus propias skills y delega el resto.
+- `agents/<rol>/skills/` guarda lo **propio del rol**. Ese rol las ve; otro agente no debería ejecutarlas.
+
+Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y quién responde por ella. No es cosmético.
+
+### 2.2 Dónde va una skill nueva
+
+1. ¿La usa más de un rol, o es infraestructura del workspace? → `skills/`.
+2. ¿Es la forma de trabajar de un rol puntual? → `agents/<rol>/skills/`.
+3. Dudas de si merece existir: `docs/skills-promotion-criteria.md` (regla del 3x para promover a estándar; poda a los 30 días sin uso).
+
+### 2.3 Ciclo de vida
+
+- **Alta propia:** `skill_workshop` (proposal → apply). No se escriben archivos de Workshop a mano.
+- **Import de terceros:** llega rompiendo convenciones y hay que normalizarlo al ingresarlo, porque el pre-commit juzga **toda** la colección, no solo lo staged (un import bloquea commits que ni lo tocan).
+- **Retiro:** se quita del árbol y se registra el nombre en la sección 4 de este archivo; el historial queda en git.
+- **Frontmatter:** el bloque `---` tiene que ser lo primero del archivo. Un comentario antes lo deja fuera del catálogo sin error.
+
+### 2.4 Definir vs consumir
+
+- **El Core define** sus skills (las de la sección 3.1) y las ejecuta.
+- **El Core no ejecuta** skills de otro rol: las delega. `scripts/dispatch-validation.sh <skill> <agent>` lo verifica (ver ADR-073 y ADR-074).
+- **Cada rol define** las suyas y responde por ellas.
+
+### 2.5 Contrato de este archivo
+
+- **Inventario, no historial.** Las notas de mantenimiento viven en `CHANGELOG.md`; el "por qué" de cada cambio, en git.
+- **Todo link apunta a una ruta real** a la fecha indicada arriba. `scripts/check-refs.py` escanea este archivo en su corrida default y falla si un link no resuelve.
+- **El total se re-mide en cada pasada** contra el CLI, no se copia del encabezado anterior.
+
+---
+
+## 3. Inventario
+
+### 3.1 Core - `skills/` (36)
+
+| Skill | Qué hace |
+|---|---|
+| [session-lifecycle](skills/session-lifecycle/) | Ciclo de sesión completo: inicio, cierre, WAL, handoff. Reemplaza 4 skills de sesión |
+| [engineering-governance](skills/engineering-governance/) | Evolución continua del AI Engineering OS: auditoría de workflows, consolidación de learnings, mejoras sistémicas |
+| [compaction-domain-aware](skills/compaction-domain-aware/) | Compactación con conciencia de dominio: tiers de prioridad (Tier 0-4) para decidir qué preservar |
+| [complexity-driven-pipeline](skills/complexity-driven-pipeline/) | Orquestación complexity-first: scorer antes de spawnear agentes A/B; decide modelo, thinking level y profundidad |
+| [agent-orchestration-pipeline](skills/agent-orchestration-pipeline/) | Orquesta agentes A/B en cadena con cross-review multi-ronda (Claude Code estándar; Qwen Code fallback) |
+| [agent-orchestration-pipeline-model-arbitration](skills/agent-orchestration-pipeline-model-arbitration/) | Elige el modelo por paso del pipeline A/B según costo y calidad |
+| [model-cata](skills/model-cata/) | Ritual de comparación de modelos LLM: mismo prompt, rúbrica crítica y decisión de motor en ADR |
+| [sdd-agent-loop](skills/sdd-agent-loop/) | Loop de agentes por etapas con gate humano |
+| [verification-gates](skills/verification-gates/) | Guardas que no dan falso verde: 0 casos corridos, SKIP vs OK, lector honesto |
+| [trust-vocabulary-report](skills/trust-vocabulary-report/) | Reportar trabajo delegado sin inflarlo: niveles de confianza por etapa |
+| [checkmate](skills/checkmate/) | Loop goal → ejecución → verificación con worker + judge |
+| [skill-router](skills/skill-router/) | Sugiere qué skill usar para una tarea (keywords + embeddings locales) |
+| [find-skills](skills/find-skills-skill/) | Busca y descubre skills de OpenClaw en ClawHub y otras fuentes |
+| [skill-collection-maintenance](skills/skill-collection-maintenance/) | Diagnostica el cron semanal de revisión y elimina skills limpiamente |
+| [publish-skills](skills/publish-skills/) | ARCHIVADA. Historial de cómo se publicaba la colección al repo público |
+| [workspace-portfolio-hygiene](skills/workspace-portfolio-hygiene/) | Audita/limpia `projects/*`: gitlinks vs blobs, archivo, promoción a doble git |
+| [tech-docs](skills/tech-docs/) | Documentación técnica: ADRs, README, API docs, CHANGELOG, guías |
+| [git-changelog](skills/git-changelog/) | Genera `CHANGELOG.md` desde git history con conventional commits |
+| [github](skills/github/) | Operaciones con `gh` + GitHub MCP: PRs, issues, CI, reviews, notificaciones |
+| [supabase-assistant](skills/supabase-assistant/) | Supabase vía MCP: schemas, queries, tipos, migraciones, logs |
+| [sql-insight](skills/sql-insight/) | NL a SQL, optimización e interpretación de EXPLAIN (SQLite y PostgreSQL) |
+| [pdf-tool](skills/pdf-tool/) | PDFs local: leer (texto, metadata, OCR) y generar. 100% local (poppler + tesseract) |
+| [word-docx](skills/word-docx/) | Crear, inspeccionar y editar DOCX: estilos, numeración, tracked changes, tablas, secciones |
+| [cleanmymac-maintenance](skills/cleanmymac-maintenance/) | Mantenimiento con CleanMyMac CLI disparado por frases naturales |
+| [deslop](skills/deslop/) | Limpia código AI slop de un branch antes del PR |
+| [superpowers](skills/superpowers/) | Workflow spec-first con TDD y ejecución por subagentes |
+| [self-improving-agent](skills/self-improving-agent/) | Captura aprendizajes, errores y correcciones en markdown para mejora continua |
+
+**Hermes SDD** - importado de `mcabreradev/hermes-sdd-agency` el 2026-09-28:
+
+| Skill | Qué hace |
+|---|---|
+| [hermes-discovery](skills/hermes-discovery/) | Reconocimiento del proyecto: describe lo que existe, con evidencia |
+| [hermes-openspec](skills/hermes-openspec/) | Dueño del ciclo OpenSpec: convierte ideas en specs válidas |
+| [hermes-architect](skills/hermes-architect/) | Diseño técnico: decisiones, límites y riesgos, no implementación |
+| [hermes-planner](skills/hermes-planner/) | Desglose en tareas ejecutables, ordenadas y verificables |
+| [hermes-builder](skills/hermes-builder/) | Implementación: escribe el código del cambio y nada más |
+| [hermes-reviewer](skills/hermes-reviewer/) | Revisión adversarial del builder: busca defectos y los prueba |
+| [hermes-qa](skills/hermes-qa/) | Validación del comportamiento contra la spec, con ejecución real |
+| [hermes-pr-reviewer](skills/hermes-pr-reviewer/) | Revisión adversarial de un PR publicado, con experiencia de dominio |
+| [hermes-release](skills/hermes-release/) | Cierre del cambio: consistencia del diff, versionado, notas, archivado |
+
+### 3.2 kanam-dev - `agents/kanam-dev/skills/` (25)
+
+> Ciclo completo Define → Plan → Build → Verify → Review → Ship. Base: `addyosmani/agent-skills`; ⭐ = fusionada con capacidades propias de Kanam.
+
+| Fase | Skill | Qué hace |
+|---|---|---|
+| Define | [interview-me](agents/kanam-dev/skills/interview-me/) | Interrogatorio de 1 pregunta por vez hasta ~95% de claridad |
+| Define | [idea-refine](agents/kanam-dev/skills/idea-refine/) | Divergencia + convergencia para afinar ideas vagas |
+| Define | [spec-driven-development](agents/kanam-dev/skills/spec-driven-development/) ⭐ | PRD completo antes de código |
+| Plan | [planning-and-task-breakdown](agents/kanam-dev/skills/planning-and-task-breakdown/) ⭐ | Spec a tareas atómicas verificables, con orden y dependencias |
+| Build | [incremental-implementation](agents/kanam-dev/skills/incremental-implementation/) | Slices verticales finos: implementar, testear, verificar, commitear |
+| Build | [test-driven-development](agents/kanam-dev/skills/test-driven-development/) | Red-Green-Refactor, pirámide de tests, DAMP, Beyonce Rule |
+| Build | [context-engineering](agents/kanam-dev/skills/context-engineering/) | Curación del contexto del agente: rules files, context packing, MCP |
+| Build | [source-driven-development](agents/kanam-dev/skills/source-driven-development/) | Cada decisión de framework respaldada por doc oficial citada |
+| Build | [doubt-driven-development](agents/kanam-dev/skills/doubt-driven-development/) | Revisión adversarial en contexto fresco antes de que algo quede firme |
+| Build | [frontend-ui-engineering](agents/kanam-dev/skills/frontend-ui-engineering/) ⭐ | UI de producción accesible (WCAG 2.1 AA), responsive, design system |
+| Build | [api-and-interface-design](agents/kanam-dev/skills/api-and-interface-design/) | Contract-first, Hyrum's Law, One-Version Rule, error semantics |
+| Build | [openspec-pattern](agents/kanam-dev/skills/openspec-pattern/) | Contrato de intención antes del código, contra scope creep y deuda |
+| Build | [openspec](agents/kanam-dev/skills/openspec/) | CLI de OpenSpec: proposals, spec deltas, design, tasks, archive |
+| Verify | [browser-testing-with-devtools](agents/kanam-dev/skills/browser-testing-with-devtools/) | Chrome DevTools MCP: DOM, console, network, performance en vivo |
+| Verify | [cross-engine-css-measurement](agents/kanam-dev/skills/cross-engine-css-measurement/) | "Funciona en Chrome, falla en WebKit": causas aisladas con sondas mínimas |
+| Verify | [a11y-at-validation](agents/kanam-dev/skills/a11y-at-validation/) | Cuándo la validación manual con AT es obligatoria en OSS, y cómo documentarla |
+| Review | [security-and-hardening](agents/kanam-dev/skills/security-and-hardening/) | OWASP Top 10, auth patterns, secrets, límites del sistema |
+| Review | [performance-optimization](agents/kanam-dev/skills/performance-optimization/) | Measure-first, Core Web Vitals, profiling, bundle analysis |
+| Ship | [git-workflow-and-versioning](agents/kanam-dev/skills/git-workflow-and-versioning/) | Trunk-based, commits atómicos, change sizing |
+| Ship | [ci-cd-and-automation](agents/kanam-dev/skills/ci-cd-and-automation/) | Shift Left, feature flags, pipelines con quality gates |
+| Ship | [deprecation-and-migration](agents/kanam-dev/skills/deprecation-and-migration/) | Code-as-liability, deprecación obligatoria vs advisory, zombie code |
+| Ship | [documentation-and-adrs](agents/kanam-dev/skills/documentation-and-adrs/) | ADRs, API docs, docs inline: documentar el *why* |
+| Ship | [observability-and-instrumentation](agents/kanam-dev/skills/observability-and-instrumentation/) | Structured logging, RED metrics, OpenTelemetry, alertas por síntoma |
+| Ship | [shipping-and-launch](agents/kanam-dev/skills/shipping-and-launch/) | Checklists pre-launch, feature flag lifecycle, rollouts, rollback |
+| Ship | [project-closure](agents/kanam-dev/skills/project-closure/) | Cierre de proyecto: decisión, aprendizaje y estado en ADR + DB + skill |
+
+### 3.3 kanam-mind - `agents/kanam-mind/skills/` (7)
+
+| Skill | Qué hace |
+|---|---|
+| [knowledge-management](agents/kanam-mind/skills/knowledge-management/) | Gobernanza del conocimiento: learning signals, resolución de conflictos, DREAMS |
+| [memory-wiki-workflow](agents/kanam-mind/skills/memory-wiki-workflow/) | Capa analítica de memoria: entities con claims, dashboards y síntesis |
+| [engram-project-memory](agents/kanam-mind/skills/engram-project-memory/) | Memoria persistente de proyecto para agentes de pipeline vía MCP (ADR-052) |
+| [deepwiki](agents/kanam-mind/skills/deepwiki/) | Consulta documentación de repos GitHub vía DeepWiki MCP |
+| [search-fusion](agents/kanam-mind/skills/search-fusion/) | Búsqueda por intención: elige estrategia y herramientas, y fusiona fuentes |
+| [technical-book-processor](agents/kanam-mind/skills/technical-book-processor/) | Procesa libros técnicos capítulo por capítulo: learnings, ADRs, ejercicios |
+
+*(+ `study-tracker`: placeholder, ver sección 1.)*
+
+### 3.4 kanam-ops - `agents/kanam-ops/skills/` (4)
+
+| Skill | Qué hace |
+|---|---|
+| [background-execution](agents/kanam-ops/skills/background-execution/) | Tareas en background: exec + process, worktrees en paralelo, auto-notify |
+| [gateway-config](agents/kanam-ops/skills/gateway-config/) | Config del gateway en runtime: edición, health checks, tracking sin reinicios |
+| [clawdstrike](agents/kanam-ops/skills/clawdstrike/) | Security audit del gateway OpenClaw |
+| [skill-vetter](agents/kanam-ops/skills/skill-vetter/) | Vetting de seguridad antes de instalar una skill de terceros |
+
+### 3.5 kanam-studio - `agents/kanam-studio/skills/` (7)
+
+| Skill | Qué hace |
+|---|---|
+| [oss-contribution](agents/kanam-studio/skills/oss-contribution/) | Contribución OSS estratégica: triaje, sin pisar PRs, seguimiento de hilos |
+| [support-response-writer](agents/kanam-studio/skills/support-response-writer/) | Respuestas de customer support: preventa, posventa, reclamos, devoluciones |
+| [copy-editing](agents/kanam-studio/skills/copy-editing/) | Edición de copy: 7 sweeps de claridad, tono, beneficio, prueba, especificidad |
+| [content-serializer](agents/kanam-studio/skills/content-serializer/) | Convierte contenido en posts multi-plataforma para LinkedIn y X |
+| [i18n-expert](agents/kanam-studio/skills/i18n-expert/) | i18n/l10n: setup, auditoría, reemplazo de strings, paridad de locales |
+| [cv-tailor](agents/kanam-studio/skills/cv-tailor/) | Optimiza CVs contra el JD: keywords, reescritura STAR, compatibilidad ATS |
+| [mock-interview-drill](agents/kanam-studio/skills/mock-interview-drill/) | Simulacros de entrevista: Behavioral (STAR), Technical, Case, con diagnóstico |
+
+---
+
+## 4. Retiradas
+
+Nombres que existieron y ya no están. Se listan para distinguir una baja deliberada de un olvido. El detalle y el "por qué" viven en `CHANGELOG.md` y en git; no se borran de acá.
+
+- **Consolidación de agosto 2026** (commit `ba12459`): 58 skills redundantes eliminadas; su funcionalidad se absorbió en las fusiones ⭐ de kanam-dev. Recuperables desde el historial de git.
+- **`adhd-daily-planner`** (2026-08-06): fusionada en `adhd-assistant` (a su vez retirada después).
+- **Reestructuración 2026-09-22:** `adhd-assistant`, `adhd-output`, `anti-ai`, `apple-photos`, `brand-name-forge`, `calorie-counter`, `code-review-and-quality`, `code-simplification`, `curriculum-builder`, `db-readonly`, `debugging-and-error-recovery`, `gateway-restart-helper`, `godot-mcp`, `health-check-dashboard`, `image-generation`, `mcp-orchestrator`, `memory-agent`, `mlx-stt`, `model-router-pro`, `network-scanner`, `playwright-e2e-reactflow`, `shortcuts-generator`, `using-agent-skills`.
+- **`study-tracker`:** no retirada como archivo, degradada a placeholder (sección 1).
+
+---
+
+## 5. Herramientas de verificación
+
+| Comando | Qué verifica |
+|---|---|
+| `openclaw skills list --agent <id> --json` | Autoridad sobre qué skills tiene el runtime, con `source` por skill |
+| `python3 scripts/check-refs.py` | Que cada link de este archivo resuelva a una ruta real |
+| `./scripts/test-skills.sh` | Frontmatter, sintaxis, refs a scripts y links entre skills |
+| `bash scripts/dispatch-validation.sh <skill> <agent>` | Que el Core no ejecute una skill de otro rol |
+
+---
+
+_Reescrito de cero el 2026-09-29: nueve bloques "Actualización <fecha>" que se contradecían se reemplazaron por este documento. Estructura: qué es y cómo se cuenta → metodología → inventario → retiradas → verificación. Los totales se miden contra el CLI, no se heredan._
