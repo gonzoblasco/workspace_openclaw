@@ -31,22 +31,30 @@ MD_CONTENT=$(git diff --cached --name-status -M | awk -F'\t' '
   { print $2 }
 ' | grep -E '\.md$' || true)
 
+# Excepcion explicita a la regla del guion comun: la novela en docs/stories/quienes_quedan/
+# usa la raya (U+2014) como raya de dialogo. Decision de Gonzo (2026-09-24, registrada
+# en STYLE.md del proyecto): es la unica excepcion, y dice "no corregir". El CI no
+# chequea guiones; esto solo evita que el hook bloquee cada edicion del manuscrito.
+# Excluye tambien el enforcer, que si no convertiria en-dash a guion comun en el texto.
+MD_EXEMPT='^docs/stories/quienes_quedan/'
+MD_RULE=$(echo "$MD_CONTENT" | grep -vE "$MD_EXEMPT" || true)
+
 if [ -n "$MD_CHANGED" ]; then
   # 0) Apply hyphen enforcement on staged markdown files first
-  if [ -n "$MD_CONTENT" ]; then
-    ./scripts/hyphen_enforcer.sh $MD_CONTENT
+  if [ -n "$MD_RULE" ]; then
+    ./scripts/hyphen_enforcer.sh $MD_RULE
     # Re-stage any files modified by the enforcer so the commit includes the fixes
     # --literal-pathspecs: hay un path trackeado con `*` literal en el nombre
     # (`skills/*/SKILL.md`, placeholder), y git trata todo pathspec como glob. Un
     # `git add` sin comillas pasaba ese path sin comillas y stageaba TODAS las
     # skills borradas. (Encontrado 2026-09-26: 96 bajas de la migracion se colaron
     # asi a un commit ajeno.)
-    git --literal-pathspecs add -- $MD_CONTENT
+    git --literal-pathspecs add -- $MD_RULE
 
     # 1) Guion comun en el markdown que se esta por commitear (staged).
     #    Se le pasa el contenido staged, no el del disco: es lo que se commitea.
     DASH_BAD=0
-    for f in $MD_CONTENT; do
+    for f in $MD_RULE; do
       if ! git show ":$f" 2>/dev/null | python3 "${SCRIPT_DIR}/scripts/check_em_dash.py" - >/dev/null 2>&1; then
         echo "  guion largo en $f:"
         git show ":$f" | python3 "${SCRIPT_DIR}/scripts/check_em_dash.py" - 2>&1 | sed 's/^/    /'
