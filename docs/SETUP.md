@@ -84,7 +84,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
   - `memory/todos.md` ← tabla todos
   - `memory/inbox.md` ← tabla inbox
   - `docs/OSS-TRACKER.md` ← tabla contributions
-- **Dailies:** viven en `memory/YYYY-MM-DD.md`; los viejos se archivan a la DB + `memory/archive/`.
+- **Dailies:** viven en `memory/YYYY-MM-DD.md`; los viejos se archivan a la DB + `memory/archive/dailies/` (consolidados) y `memory/archive/sessions/` (logs con hora).
 
 ### Regla: DB-first vs doc-only (2026-09-24)
 

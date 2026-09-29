@@ -359,8 +359,8 @@ The daily logs (`memory/YYYY-MM-DD.md`) are raw data. Periodically, consolidate 
 1. Read recent daily logs (last 7 days)
 2. Identify patterns, decisions, preferences worth keeping
 3. Update MEMORY.md with the new content
-4. **Consolidate memory/:** archive individual sessions (`YYYY-MM-DD-HHMM.md`) and keep only one consolidated file per day (`YYYY-MM-DD.md`). If the consolidated file already exists, move the individual ones to `memory/archive/`.
-5. Archive old daily logs (>90 days) to `memory/archive/`
+4. **Consolidate memory/:** archive individual sessions (`YYYY-MM-DD-HHMM.md`) and keep only one consolidated file per day (`YYYY-MM-DD.md`). If the consolidated file already exists, move the individual ones to `memory/archive/sessions/`.
+5. Archive old daily logs (>90 days) to `memory/archive/dailies/`
 6. Leave a note in the day's daily log: "Consolidation executed. X entries promoted to MEMORY.md. memory/: N files → M files."
 
 **Lesson:** memory does not maintain itself. Scheduled consolidation prevents MEMORY.md from filling with noise or valuable insights getting lost in forgotten daily logs.

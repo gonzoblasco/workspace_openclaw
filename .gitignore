@@ -78,7 +78,10 @@ umbrawriter-v2/
 sandbox/
 
 # Session logs automaticos de OpenClaw (memory/YYYY-MM-DD-HHMM.md) - no se commitean.
+# Anclado a la raiz (un solo * no cruza /): archive/sessions/ SI se versiona.
+# Incluye el sufijo -N (memory/2026-08-29-2345-2.md).
 memory/*-[0-9][0-9][0-9][0-9].md
+memory/*-[0-9][0-9][0-9][0-9]-*.md
 writings/
 
 # Chunks derivados de memoria (indice semantic highlighting, regenerable)
