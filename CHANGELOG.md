@@ -4,6 +4,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - retail-vehiculos: discovery, specs y knowledge de un proyecto nuevo
+
+### Added
+- **Proyecto `retail-vehiculos` en `~/projects/retail-vehiculos/`.** Sitio de un concesionario oficial multi-marca (KTM, Husqvarna, Can-Am, Sea-Doo, Ski-Doo, Segway) con catalogo publico, chatbot IA con RAG y alta de unidades con enriquecimiento desde la URL de la ficha oficial. Vive fuera del worktree (ADR-075); el workspace solo registra el puntero en `MEMORY.md`.
+- **`.knowledge/` del proyecto** (no versionado por el workspace, es memoria del proyecto): `DISCOVERY.md` (problema, usuarios, 12 capacidades candidatas, prior art verificado, riesgos), `KNOWLEDGE.md` (negocio, dominio, decisiones, reutilizacion), `BRIEF.md`, `STATUS.md`, `HANDOFF.md`, y `specs/` con `SPEC-001..006` + `README.md`.
+- **Seis specs con criterios verificables.** Cada una con `Acceptance Criteria`, `Edge Cases & Error Handling` y `Verification Plan` (las tres secciones que valida el checker de `kanam-spec`): catalogo publico, chatbot RAG, enriquecimiento desde URL, revision y aprobacion humana, base de conocimiento del local, y multi-tenancy con RLS.
+
+### Notes
+- **Prior art relevado con evidencia:** `sportcars` y `pro-motors-docs` fueron borrados el 2026-08-17; `motothrill` nunca existio como proyecto. No hay codigo de concesionaria que reutilizar, pero si un motor: `soporteml` v1 aporta RAG (`kb-search`), indexado (`kb-process-article`), multi-tenant con RLS y el patron de enriquecimiento (`enrich-product`, 352 lineas).
+- **La pieza genuinamente nueva es el scraping multi-marca**, no el catalogo ni el chat.
+- **Sin repo git todavia.** El proyecto se inicializa en la etapa de desarrollo; el ADR de stack corresponde a ese momento y va en el repo del proyecto, no en `docs/adr/` del workspace (ADR-067).
+- **Discovery cerrado con 7 decisiones** tomadas por Gonzo (alcance multi-marca, multi-tenant, origen del dato, destino sin billing, autos fuera de Fase 1, Fase 1 = motos, origen del stock actual).
+- **Pendiente tecnico detectado:** `kanam-spec-v2/server/index.mjs` no existe como archivo y `kanam-spec-nextgen` no esta en disco, asi que el flujo de specs por API (`spec-draft-creation`, `spec-discovery-creation`) no puede correr. Las specs se escribieron a mano con `docs/checklists/spec-template.md`.
+
+---
+
 ## [2026-09-29] - SKILLS-INDEX.md reescrito de cero: índice canónico, no changelog
 
 ### Changed
