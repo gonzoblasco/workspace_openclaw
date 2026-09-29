@@ -15,6 +15,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **Evidencia:** `projects/kanam-spec/logs/service.err` con 21 KB de stacktraces `MODULE_NOT_FOUND`; `launchctl print` mostraba `working directory` viejo en los 6 jobs, mientras `lsof -a -p <pid> -d cwd` mostraba que los 3 procesos vivos corrian en `~/projects/...` (la mudanza ocurrio con los procesos ya levantados).
 
 ### Changed
+- **`.openclaw/portals.json` corregido (mismo patron):** el portal `kanam-os` declaraba `./projects/kanam-os/scripts/dashboard.sh`, una ruta dentro del workspace que ya no existe. El `cwd` del archivo es **relativo a la raiz del workspace** (docs), asi que resolvia al arbol muerto. Ahora usa el **path absoluto** `/Users/gonzoblasco/projects/kanam-os/scripts/dashboard.sh` con `cwd: "."`. Verificado: `dashboard.sh status` responde `health: OK`. Unico otro ref vivo de `./projects` en el workspace era ese; el resto son dailies historicos.
 - **Ruta vieja reemplazada en 3 capas** (18 archivos): los 6 `.plist` de `~/Library/LaunchAgents`, los 6 canonicos de `~/projects/*/config/`, y los 6 scripts `service.sh`/`watchdog.sh`/`dashboard.sh` de los proyectos. Los canonicos importan: un `bootstrap` desde ahi volvia a romper.
 - **Jobs recargados:** `bootout` + `bootstrap` de los 6. Los 3 servicios quedaron corriendo con cwd correcto y respondiendo: kanam-spec :4173 (`{"ok":true}`), kanam-os :4317 (HTTP 200), langchain-starter :8100 (HTTP 200).
 
