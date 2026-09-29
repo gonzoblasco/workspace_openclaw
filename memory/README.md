@@ -13,6 +13,12 @@ La memoria del workspace. **Fuente de verdad: `memory.db`** (SQLite); los `.md` 
 
 **El daily del dia vive en la raiz.** Los viejos se archivan (DB + `archive/dailies/`).
 
+## Retencion (regla)
+
+- Raiz: solo los dailies de la **ultima semana** (~7 dias). Umbral de referencia: hoy menos 7.
+- Mas viejos: `archive/dailies/`. El contenido ya esta en la DB (`daily_notes`), que es la fuente de verdad; el `.md` archivado es la copia legible.
+- El archivado lo puede correr el agente a mano (mover por nombre de fecha) o `knowledge-management`. Antes de mover, chequear colision de nombre en `archive/dailies/` (pasa cuando un fragmento suelto quedo con nombre de fecha).
+
 ## Estructura
 
 ```
