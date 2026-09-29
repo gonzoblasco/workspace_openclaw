@@ -1,6 +1,7 @@
 # Caso 03 - *Mamma Mia!* (Broadway y pelicula)
 
-**Autor / creadora:** Catherine Johnson (libro de teatro y guion de la pelicula).
+**Autor / creadora:** Catherine Johnson (libro de teatro y guion de la película).
+**Estado:** 4/4 ejes analizados
 
 ## 1. Premisa y Regla de Hierro
 
