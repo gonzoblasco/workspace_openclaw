@@ -35,5 +35,5 @@
 - Quiere que maneje su vida, archivos y proyectos.
 - Trabaja entre dos maquinas (Mac Mini y MacBook Air), workspace sincronizado por git.
 - Usa IA como infraestructura de trabajo (no como chat): sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop.
-- Stack opinado: create-stack, OpenSpec, ADRs, AGENTS.md, HANDOFF, CHANGELOG.
+- Stack opinado: OpenSpec, ADRs, AGENTS.md, HANDOFF, CHANGELOG.
 - También: fotógrafo, comunicación social, quiere escribir novelas. Quiere organizar actividad fisica y mejorar salud.

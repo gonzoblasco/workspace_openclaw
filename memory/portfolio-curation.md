@@ -5,7 +5,6 @@
 Proyectos que definen el nivel profesional y la especialización. Deben tener READMEs impecables y enfoque en "Caso de Estudio".
 
 - **kanam-fixer**: Validación de accesibilidad real en CI. El "killer app" de A11y.
-- **create-stack**: Arquitectura, DX y escalabilidad. El proyecto de "Lead".
 - **ai-developer-stack**: Sistematización de IA en flujos de ingeniería.
 - **kanam-skills**: Abstracción de workflows y productividad sistémica.
 

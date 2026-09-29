@@ -121,7 +121,7 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 
 ### Activos
 - workspace_openclaw (Privado)
-- kanam-skills, kanam-story, kanam-mind, kanam-solitaires, soporteml (Privado desde 2026-09-15, sacado del CV por Gonzo), soporteml-v4 (Privado), ai-developer-stack, create-stack, accessible-ui (Privado), quedamos (Privado), kanam-forge, kanam-tetris, kanam-insight (Privado), a11y-playground (Privado).
+- kanam-skills, kanam-story, kanam-mind, kanam-solitaires, soporteml (Privado desde 2026-09-15, sacado del CV por Gonzo), soporteml-v4 (Privado), ai-developer-stack, accessible-ui (Privado), quedamos (Privado), kanam-forge, kanam-tetris, kanam-insight (Privado).
 - **Nota:** `kanam-lab` NO tiene repo en GitHub (git local, sin remoto - verificado 2026-09-14). No agregarlo a este listado.
 
 ### Archivados
