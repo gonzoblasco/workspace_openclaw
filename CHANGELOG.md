@@ -4,6 +4,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - `memory/` reorganizado en carpetas predecibles + fix del hook de renames
+
+### Added
+- **`memory/README.md`:** mapa de la estructura y del **contrato del tooling** (que DEBE quedar en la raiz y por que).
+
+### Changed
+- **`memory/` deja de ser una carpeta plana:** 509 archivos -> estructura por tipo. Nuevas carpetas `handoffs/`, `notes/`, `_templates/`; `archive/` partido en `archive/dailies/` (consolidados) y `archive/sessions/` (logs con hora); `archives/` (duplicado semantico) absorbido.
+- **Raiz de `memory/` solo con lo que el tooling resuelve ahi:** `memory.db`, el daily vigente (`YYYY-MM-DD.md`), las vistas generadas (`todos.md`, `inbox.md`) y `user-profile.md` (referenciado por el bootstrap). El resto se movio: 5 notas -> `notes/`, 8 handoffs -> `handoffs/`, el template -> `_templates/`.
+- **`.gitignore`:** el glob de session logs se vuelve a anclar a la raiz (un `*` no cruza `/`, asi `archive/sessions/` sigue versionado) y cubre el sufijo de desempate `-N` (antes `memory/2026-08-29-2345-2.md` estaba trackeado por error).
+- **Refs actualizadas:** skill `knowledge-management` (archivado a `archive/dailies|sessions`), `docs/SETUP.md`, `MEMORY.md` (handoff de soporteml).
+
+### Fixed
+- **El pre-commit trataba un rename puro (`R100`) como contenido nuevo:** el filtro `--diff-filter=ACMR` incluia `R`, asi que un movimiento byte-identico pasaba por el chequeo de guion largo y heredaba los em dash historicos del archivo (200 de 445 en esta reorganizacion). Un rename no introduce guiones. El hook (y `scripts/pre-commit.template`) ahora separa `MD_CONTENT` (bytes que cambiaron: `A`, `M`, `C`, y `R` no-100) para las reglas de contenido, mientras refs/ADR siguen corriendo con cualquier markdown staged. El gate no se debilito: contenido editado sigue chequeado.
+
+### Notes
+- **Deuda registrada (no resuelta):** `memory/` ya tenia **225 archivos con guiones largos historicos**, en `archive/` (dailies + sesiones), `dreaming/`, y ~5 dailies raiz. El hook los ignora correctamente al moverlos, pero al editarlos volveran a bloquear. Normalizarlos es una tarea aparte (masiva, sobre registro historico).
+- **Backup:** `/tmp/memory-backup-20260929-162454/memory.tar.gz` (15 MB).
+
 ## [2026-09-29] - 6 LaunchAgents huerfanos regeneraban `workspace/projects/` (resaca de ADR-075)
 
 ### Fixed
