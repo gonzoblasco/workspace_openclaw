@@ -4,6 +4,31 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - Kanam OnWheels: nombre definitivo y desarrollo de Fase 1 en curso
+
+### Changed
+- **El proyecto `retail-vehiculos` pasa a llamarse `Kanam OnWheels`.** Nombre definido por Gonzo; es **temporal**: el sitio publico tomara el nombre del cliente. Slug `kanam-onwheels`, ruta `~/projects/kanam-onwheels/`. Registrado en **`ADR-0009`** del proyecto. El nombre del producto no se filtra a la marca visible del concesionario.
+- **`MEMORY.md`:** la entrada del proyecto refleja las cuatro etapas cerradas mas el estado real del desarrollo, el stack decidido y los bloqueos.
+
+### Added
+- **Desarrollo de Fase 1 iniciado, con evidencia en cada pieza:**
+  - **Esquema de base:** 6 migraciones (tenancy, catalogo compartido, stock, ingesta, conocimiento/chat/publico, y la unificacion del estado de ficha). **13/13 checks de invariantes en verde contra un Postgres real desde cero** (`scripts/verify-schema.sh`, contenedor descartable).
+  - **Base de desarrollo persistente:** `scripts/dev-db.sh` (Docker + volumen, puerto 55433) con seed realista en `supabase/seed/dev.sql`.
+  - **Nucleo de enriquecimiento:** normalizacion de unidades (kW→hp metrico, cm→mm, lb→kg, y los separadores decimales es/en), registro de extractores por dominio (Pierer, BRP, Segway, generico) y orquestador con **errores tipados** (nunca lista vacia como exito).
+  - **Catalogo publico:** server-rendered (indexable, con Open Graph por unidad), filtros que viven en la URL, es-AR, estados vacios honestos y 404.
+- **`scripts/visual-check.mjs`:** validacion visual con Playwright sobre el servidor de desarrollo (el navegador del gateway bloquea localhost por politica SSRF). 12 capturas, dos viewports.
+
+### Fixed
+- **Dos fuentes de verdad para el estado de la ficha tecnica.** La ficha de unidad calculaba "parcial/completa" con un umbral propio del componente, mientras el catalogo lo derivaba en SQL. Encontrado por **revision visual**. Se extrajo `model_spec_state()`: **la base es la unica definicion**.
+- **Un bug real de unidades, encontrado por los tests:** el normalizador devolvia la unidad de origen en vez de la canonica (`96 cm` no llegaba a `960 mm`), lo que habria roto el filtro por cilindrada en silencio.
+
+### Notes
+- **Totales verificados:** 111 tests (6 archivos), typecheck, lint y build en verde.
+- **Bloqueos reales declarados:** el panel necesita Supabase Auth; el chat necesita proveedor de embeddings y clave de modelo. Ninguno esta contratado, asi que esas dos piezas no se reportan como terminadas.
+- Los ADRs del proyecto viven en `docs/adr/` del repo del proyecto, no en el workspace (ADR-067).
+
+---
+
 ## [2026-09-29] - retail-vehiculos: diseno cerrado (arquitectura, modelo de datos, dominio y 8 ADRs)
 
 ### Added
