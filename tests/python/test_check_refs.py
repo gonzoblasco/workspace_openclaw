@@ -71,6 +71,17 @@ def test_passes_on_real_agent_docs():
     assert r.returncode == 0, r.stdout + r.stderr
 
 
+def test_readme_is_scanned():
+    """README.md debe estar en la lista default: es el router de entrada.
+
+    Si queda fuera, sus links (que son la promesa "anda a este archivo") no se
+    ven: el README nace roto en silencio, que es justo la clase de pudricion
+    que este checker existe para atrapar.
+    """
+    mod = load()
+    assert "README.md" in mod.DEFAULTS
+
+
 def test_skills_index_is_scanned():
     """SKILLS-INDEX.md debe estar en la lista default: es un doc de promesas vivas.
 

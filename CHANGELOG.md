@@ -4,6 +4,20 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - README.md: el router de entrada del workspace
+
+### Added
+- **`README.md` en la raiz.** El repo tenia cinco puertas de entrada (`AGENTS.md` = conducta, `docs/SETUP.md` = entorno, `memory/README.md` = memoria, `SKILLS-INDEX.md` = skills, `CONTRIBUTING.md` = OSS) y ninguna decia "que es esto y a donde ir". El README cubre esa capa: puntos de entrada, mapa de nivel 1 (incluidas las carpetas invisibles), contexto de bootstrap y sus caps, contrato del worktree, flujo de trabajo, maquinas y mantenimiento. **Rol explicito de router, no de copia:** solo enlaza; si repite contenido, se desincroniza (precedente: `AGENTS.md` -> `docs/SETUP.md`, mirror `.github/skills/`).
+- **`README.md` sumado a `DEFAULTS` de `scripts/check-refs.py`.** Sin eso quedaba fuera del escaneo default, replicando el falso verde que tenia `SKILLS-INDEX.md` antes del fix de Nivel 2: un doc de entrada que nadie escanea se rompe en silencio. Corrida default: 142 rutas (antes 129).
+
+### Tests
+- `tests/python/test_check_refs.py`: nuevo `test_readme_is_scanned` que fija el contrato. Suite python completa en verde.
+
+### Notes
+- **Verificado end-to-end, no solo por el test:** se agrego a proposito un link roto a `README.md`, el checker default fallo nombrando `README.md:92 -> ./docs/no-existe-jamas-xyz.md`, y al restaurar volvio a OK. Un test que fija una constante no prueba que el archivo se escanee; esto si.
+
+---
+
 ## [2026-09-29] - Auditoria Nivel 2: 62 links rotos y el falso verde que los tapaba
 
 ### Fixed

@@ -24,7 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-DEFAULTS = ["AGENTS.md", "USER.md", "MEMORY.md", "SOUL.md", "IDENTITY.md", "SKILLS-INDEX.md"]
+DEFAULTS = ["README.md", "AGENTS.md", "USER.md", "MEMORY.md", "SOUL.md", "IDENTITY.md", "SKILLS-INDEX.md"]
 
 # Ruta entre backticks que empieza con scripts/ o docs/ Y termina en extension.
 # El primer grupo es la ruta; el `!` evita capturar espacios internos.
