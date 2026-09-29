@@ -4,6 +4,20 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - Dedupe de daily notes: dos escritores sobre el mismo archivo
+
+### Fixed
+- **`scripts/memory-end-session.py` deja de anexar duplicados al daily:** el flush de memoria pre-compactacion de OpenClaw (nativo, `memory-core`) escribe en el mismo archivo que el daily (`memory/YYYY-MM-DD.md`). El flush **anexa** su bloque entero (con su propio `# Daily YYYY-MM-DD`) en cada compactacion, mientras `reconcile_md_into_db` re-escribia el cuerpo crudo del `.md` hacia la DB (secciones repetidas incluidas) y lo volvia a exportar. Resultado: el daily del 2026-09-29 acumulo 5 titulos `# Daily 2026-09-29` (evidencia: `grep -c '^# Daily 2026-09-29' memory/2026-09-29.md`).
+  - `_strip_title` ahora descarta **todos** los titulos de nivel 1 iniciales, no solo uno.
+  - `_dedupe_sections` conserva solo la primera ocurrencia de cada encabezado `##`; `_normalize_section_body` elimina encabezados `#` de nivel 1 que quedaron enterrados dentro del cuerpo de una seccion.
+  - `reconcile_md_into_db` reconstruye el cuerpo desde las secciones ya deduplicadas; nunca re-ingesta el `.md` crudo.
+  - `export_daily_to_md` emite siempre exactamente **un** titulo.
+  - Nuevo flag `--dedupe-only` (reconcilia + deduplica + regenera el `.md`, sin anexar bloque de sesion) y `dedupe_daily_db` para reparar filas ya dañadas in situ.
+- **`ARCHIVED_PROJECTS/kanam-sudoku.md`:** 15 en dash (U+2013) reemplazados por guion comun; el pre-commit (`scripts/check_em_dash.py`) los rechazaba.
+
+### Known limitation
+- **El flush nativo no puede fusionar por seccion:** agrega su bloque al final y, si su primer encabezado es `# `, queda enterrado dentro de la seccion previa (observado en el bloque `Session End - react-spectrum-pr-10503`, cortado por `... (truncated)`). La contencion vive en el reconciliador de este workspace; la config `agents.defaults.compaction.memoryFlush` no expone fusion por seccion.
+
 ## [2026-09-28] - Politica de modelos cloud-first, integracion Hermes SDD, fin de la publicacion de skills
 
 ### Added
