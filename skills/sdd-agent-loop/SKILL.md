@@ -24,18 +24,32 @@ Los nombres de archivo y rutas de Hermes fueron reemplazados por el equivalente 
 
 ## Las etapas
 
-| Etapa | Rol | Entregable |
-|---|---|---|
-| discovery | `hermes-discovery` | Descripcion de lo que existe, con evidencia |
-| openspec | `hermes-openspec` | Spec valida (propuesta, tareas, delta) |
-| architect | `hermes-architect` | `design.md` y ADRs del cambio |
-| planner | `hermes-planner` | Tareas ejecutables, ordenadas y verificables |
-| builder | `hermes-builder` | Codigo del cambio, nada mas |
-| reviewer | `hermes-reviewer` | Defectos probados (adversarial) |
-| qa | `hermes-qa` | Comportamiento validado contra la spec, con ejecucion real |
-| release | `hermes-release` | Diff consistente, version, notas, archivado |
+| Etapa | Skill | Entregable | Agente que la ejecuta |
+|---|---|---|---|
+| discovery | `hermes-discovery` | Descripcion de lo que existe, con evidencia | **MIND** (con DEV) |
+| openspec | `hermes-openspec` | Spec valida (propuesta, tareas, delta) | **CORE** (gobierno) |
+| architect | `hermes-architect` | `design.md` y ADRs del cambio | **CORE** (gobierno) + DEV |
+| planner | `hermes-planner` | Tareas ejecutables, ordenadas y verificables | DEV |
+| builder | `hermes-builder` | Codigo del cambio, nada mas | DEV |
+| reviewer | `hermes-reviewer` | Defectos probados (adversarial) | DEV |
+| qa | `hermes-qa` | Comportamiento validado contra la spec, con ejecucion real | DEV |
+| release | `hermes-release` | Diff consistente, version, notas, archivado | DEV |
 
 Etapas independientes pueden correr en paralelo. **Solo reviewer y qa pueden bloquear.**
+
+### Quien ejecuta cada etapa (el CORE orquesta, no ejecuta)
+
+**El CORE no ejecuta este ciclo: lo orquesta.** Delega cada etapa al rol que corresponde. La
+columna de arriba es la parte que se olvida: **el dueño natural de una etapa no es siempre DEV.**
+
+- **discovery y research son de MIND.** El reconocimiento del ecosistema, el prior art y el estado
+de la memoria son su dominio (`knowledge-management`, `search-fusion`). El CORE aporta la
+perspectiva de gobierno del proyecto y delega la investigación.
+- **openspec y architect son del CORE** (son artefactos de gobierno: specs y ADRs).
+- **build, review, qa, release son de DEV.** El CORE no los ejecuta - ver ADR-083.
+
+Medido el 2026-09-29: el discovery de `kanam-onwheels` lo hizo el CORE solo, sin convocar a MIND. Es
+el caso que esta nota existe para prevenir: el reconocimiento tiene dueño y no es el CORE.
 
 ## El confidence gate (lo unico que despierta al humano)
 
