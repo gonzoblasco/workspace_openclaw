@@ -13,7 +13,7 @@
 ## 2. Estado del examen (verificado vs a verificar)
 
 **Verificado contra el handbook oficial (`docs/cpacc/cpacc-handbook.pdf`, ene 2026):**
-- IAAP abre **6 sesiones de examen por año**; cada una: ventana de examen de 4 semanas, apertura de aplicación, cierre de aplicación, fecha límite de pago, última fecha para agendar. **No hay aplicaciones rodantes.**
+- IAAP abre **6 sesiones de examen por año**; cada una: ventana de examen, apertura y cierre de aplicación, fecha límite de pago, última fecha para agendar. **No hay aplicaciones rodantes.** Ejemplo real del handbook: sesión *September/October 2025* → aplicaciones cerraron 17/09/2025 y el último día de examen fue 08/10/2025.
 - Resultados por email **4-6 semanas** después del cierre de la sesión.
 - Transferir de sesión: USD 50 (con +4 días hábiles) / USD 100 (con -4 días hábiles).
 - Renovación: credencial válida **3 años**; con membresía IAAP activa, sin costo. CPACC requiere **45 CEUs** por ciclo.
@@ -38,7 +38,7 @@ médico · social · biopsicosocial · económico · funcional-solución · iden
 
 | Semana | Foco | Del BoK | Entregable de la semana |
 |---|---|---|---|
-| **1** (29/09-05/10) | Mapear conocimiento vs BoK. Modelos de discapacidad. | Intro + 1A (pp. 4-8) | Tabla "conocido / por aprender" por subdominio. Flashcards de los 7 modelos. |
+| **1** (29/09-05/10) | Mapear conocimiento vs BoK. Modelos de discapacidad. | Intro + 1A (pp. 4-8) | Tabla "conocido / por aprender" por subdominio. Flashcards de los 7 modelos. Material armado en [`week-1/`](./week-1/README.md). |
 | **2** (06-12/10) | Discapacidades: categorías, barreras, soluciones. | 1B (pp. 9-25) | Fichas por categoría (visual, auditiva, motora, cognitiva, del habla) + barreras típicas. |
 | **3** (13-19/10) | Tecnologías de asistencia y estrategias adaptativas. | 1C (pp. 26-34) | Lista de AT por discapacidad (JAWS, NVDA, VoiceOver, lectores, hápticos, switch, etc.). |
 | **4** (20-26/10) | Datos e implicaciones + etiqueta. Cerrar Dominio 1. | 1D + 1E (pp. 35) | Autotest de Dominio 1. |
@@ -50,6 +50,10 @@ médico · social · biopsicosocial · económico · funcional-solución · iden
 | **10** (01-09/12) | Cierre: puntos débiles + simulacro final. | Todo | Segundo mock; cerrar la tabla "conocido / por aprender". |
 
 **Ventana del examen:** si el cierre de aplicación es el 9/12, la ventana de examen cae después. Confirmar en el portal y, si hay margen, estirar el repaso hasta la fecha de examen real.
+
+## 4.bis Material por semana
+
+- **Semana 1** - [`week-1/README.md`](./week-1/README.md): ficha de 1A, flashcards, 24 preguntas de práctica, mapa de conocimiento y logística del examen.
 
 ## 5. Recursos
 
