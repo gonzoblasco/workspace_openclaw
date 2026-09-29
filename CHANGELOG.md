@@ -10,6 +10,9 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`memory/README.md`:** mapa de la estructura y del **contrato del tooling** (que DEBE quedar en la raiz y por que).
 
 ### Changed
+- **Retencion en `memory/`: la raiz guarda solo la ultima semana.** Los dailies con fecha anterior a hoy-7 se mueven a `archive/dailies/` (26 dailies + el set `09-18-cpacc-*`). El contenido sigue en la DB (`daily_notes`, fuente de verdad); el `.md` archivado es la copia legible. `user-interests.md` tambien pasa a `notes/` (nadie lo referenciaba).
+- **Colision de nombre resuelta en `2026-08-10`:** la raiz tenia un fragmento suelto (1 KB, check-in de swift-testing) con el mismo nombre que el daily archivo completo (23 KB). El rico queda intacto; el fragmento se preserva como `archive/dailies/2026-08-10-swift-testing-check.md` (era contenido duplicado de check-ins ya presentes en 7 dailies archivados, y sin fila en la DB).
+- **`memory/README.md`:** documenta la regla de retencion (raiz = ultima semana) y el chequeo de colision antes de archivar.
 - **`memory/` deja de ser una carpeta plana:** 509 archivos -> estructura por tipo. Nuevas carpetas `handoffs/`, `notes/`, `_templates/`; `archive/` partido en `archive/dailies/` (consolidados) y `archive/sessions/` (logs con hora); `archives/` (duplicado semantico) absorbido.
 - **Raiz de `memory/` solo con lo que el tooling resuelve ahi:** `memory.db`, el daily vigente (`YYYY-MM-DD.md`), las vistas generadas (`todos.md`, `inbox.md`) y `user-profile.md` (referenciado por el bootstrap). El resto se movio: 5 notas -> `notes/`, 8 handoffs -> `handoffs/`, el template -> `_templates/`.
 - **`.gitignore`:** el glob de session logs se vuelve a anclar a la raiz (un `*` no cruza `/`, asi `archive/sessions/` sigue versionado) y cubre el sufijo de desempate `-N` (antes `memory/2026-08-29-2345-2.md` estaba trackeado por error).
