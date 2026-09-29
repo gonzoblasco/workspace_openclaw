@@ -4,11 +4,11 @@
 > Armado 2026-09-29 sobre la fuente primaria: `docs/cpacc/cpacc-bok.pdf` (Body of Knowledge, octubre 2023, 82 pp).
 > Este documento es la fuente de verdad del plan; el material de estudio vive en `docs/cpacc/`.
 
-## 1. Objetivo y deadline
+## 1. Objetivo
 
-- **Deadline declarado:** certificar antes del **30/11/2026** (fecha que Gonzo comunicó para reactivar el hilo EIT/HTC-Disney; el compromiso original fue "antes del 31/12, apuntando al 30/11").
-- **Margen real:** ~8,5 semanas desde el 2026-09-29.
-- **Meta de esfuerzo:** ~6-8 h/semana (ajustable). La ventaja: la experiencia real en a11y web cubre buena parte de los Dominios 2 y 3; el foco va al **lado humano** (Dominio 1).
+- **Motivación:** meta **personal** de Gonzo (crecimiento propio en a11y). Sin urgencia ni compromiso con terceros.
+- **Objetivo de calendario:** apuntar a la próxima sesión de examen cuya **aplicación cierra el 9 de diciembre de 2026** (a confirmar en el portal IAAP).
+- **Ritmo:** flexible, sin presión. La ventaja: la experiencia real en a11y web cubre buena parte de los Dominios 2 y 3; el foco va al **lado humano** (Dominio 1).
 
 ## 2. Estado del examen (verificado vs a verificar)
 
@@ -19,7 +19,7 @@
 - Renovación: credencial válida **3 años**; con membresía IAAP activa, sin costo. CPACC requiere **45 CEUs** por ciclo.
 
 **A verificar en el portal IAAP (acción 1):**
-- **Ventana de examen exacta** para caer antes del 30/11. La sesión Summer 2026 (20/08-14/09) ya cerró; hay que confirmar la próxima en la página *Exam Dates* de IAAP.
+- **Fecha exacta del cierre de aplicación** (Gonzo anotó el **9 de diciembre**; confirmar en la página *Exam Dates*) y las fechas de la ventana de examen de esa sesión.
 - **Fee:** ~USD 385-545 según credencial/membresía (fuente de terceros; confirmar en el portal).
 - Formato vigente: 100 preguntas de opción múltiple, 2 h, aprueba con **600/800**.
 
@@ -34,7 +34,7 @@
 **Los 7 modelos de discapacidad (Dominio 1A, alta densidad de preguntas):**
 médico · social · biopsicosocial · económico · funcional-solución · identidad social / afiliación cultural · caridad.
 
-## 4. Plan de 8 semanas
+## 4. Plan de 10 semanas (hasta el 9 de diciembre)
 
 | Semana | Foco | Del BoK | Entregable de la semana |
 |---|---|---|---|
@@ -44,10 +44,12 @@ médico · social · biopsicosocial · económico · funcional-solución · iden
 | **4** (20-26/10) | Datos e implicaciones + etiqueta. Cerrar Dominio 1. | 1D + 1E (pp. 35) | Autotest de Dominio 1. |
 | **5** (27/10-02/11) | WCAG 2.1 en web + beneficios y acomodaciones. (Fortaleza: repaso rápido y a fondo.) | 2A-2C (pp. 36-41) | Repaso de POUR + criterios que suelen confundirse. |
 | **6** (03-09/11) | Entorno construido, Diseño Universal, UDL. | 2D-2F (pp. 41-47) | Fichas de los 7 principios del Diseño Universal + UDL. |
-| **7** (10-16/11) | Estándares, leyes y gestión (los 6 subdominios). | 3A-3F (pp. 48-70) | Tabla de instrumentos: internacional vs regional vs nacional vs dominio específico. |
-| **8** (17-23/11) | Cierre: repaso integrador + simulacros. | Todo | Mock completo (100 preguntas, 2 h cronometradas) + revisión de cada error contra el BoK. |
+| **7** (10-16/11) | Estándares, leyes y gestión: instrumentos internacionales/regionales/nacionales. | 3A-3C (pp. 48-58) | Tabla de instrumentos por alcance (internacional vs regional vs nacional). |
+| **8** (17-23/11) | Leyes de dominio específico y compras + estándares TIC + gestión organizacional. Cerrar Dominio 3. | 3D-3F (pp. 59-70) | Fichas de las leyes clave (ADA, Section 508, EN 301 549) y de integración TIC. |
+| **9** (24-30/11) | Repaso integrador de los 3 dominios. | Todo | Primer mock completo (100 preguntas, 2 h) + revisión de errores contra el BoK. |
+| **10** (01-09/12) | Cierre: puntos débiles + simulacro final. | Todo | Segundo mock; cerrar la tabla "conocido / por aprender". |
 
-**Semana de colchón (24-30/11):** repaso de puntos débiles y, si la ventana lo permite, sentarse al examen. Si la ventana cae más tarde, este colchón se estira.
+**Ventana del examen:** si el cierre de aplicación es el 9/12, la ventana de examen cae después. Confirmar en el portal y, si hay margen, estirar el repaso hasta la fecha de examen real.
 
 ## 5. Recursos
 
@@ -64,7 +66,7 @@ médico · social · biopsicosocial · económico · funcional-solución · iden
 - **Diario:** 15 min de flashcards (términos, modelos, AT, instrumentos legales).
 - **2 veces/semana:** sesión de preguntas de práctica, revisando la justificación de cada error contra el BoK.
 - **Banco propio:** ir extrayendo preguntas del BoK a Anki/Quizlet desde la semana 1.
-- **Simulacro completo:** semana 8 (y repetir en el colchón si hace falta).
+- **Simulacros completos:** semanas 9 y 10.
 
 ## 7. Logística del día del examen
 
@@ -75,10 +77,10 @@ médico · social · biopsicosocial · económico · funcional-solución · iden
 
 ## 8. Primeras 3 acciones
 
-1. **Confirmar la ventana de examen** en la página *Exam Dates* de IAAP y decidir la sesión (ideal: examen antes del 30/11). Confirmar fee.
-2. **Registrarse** en la sesión elegida (la aplicación se abre y cierra por sesión; no hay aplicaciones rodantes).
+1. **Confirmar en el portal IAAP** el cierre de aplicación (verificar el 9/12) y las fechas de la ventana de examen. Confirmar fee.
+2. **Registrarse** en esa sesión cuando la aplicación esté abierta (se abre y cierra por sesión; no hay aplicaciones rodantes).
 3. **Semana 1:** abrir el BoK, leer Intro + 1A, y armar la tabla "conocido / por aprender".
 
 ---
 
-_Nota: si en el camino se decide postergar el examen a 2027 o se retoma el hilo laboral, este plan se recalcula desde la fecha real de la ventana elegida._
+_Nota: si la fecha del portal no coincide con el 9/12, el plan se recalcula desde la fecha real del cierre de aplicación._
