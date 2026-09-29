@@ -11,6 +11,9 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`MEMORY.md`:** la entrada del proyecto refleja las cuatro etapas cerradas mas el estado real del desarrollo, el stack decidido y los bloqueos.
 
 ### Added
+- **Repo privado `github.com/gonzoblasco/kanam-onwheels`** creado y pusheado (57 archivos, `main` sincronizado). Auditoria previa al push: **cero secretos** en el arbol remoto (`.env.local` ignorado por `.gitignore`, `.knowledge/` excluido por `.git/info/exclude`). Es el repo que Supabase pide para el setup.
+- **Investigacion del MCP de Supabase** (paquete oficial `@supabase/mcp-server-supabase`, endpoint `https://mcp.supabase.com/mcp` con OAuth): recomendado para administrar tablas, config y consultas, **con `read_only=true` y `project_ref`** fijado en la URL para acotar el alcance. Los secretos se cargan por el prompt enmascarado, nunca en el chat.
+- **Camino de migraciones definido:** `supabase link --project-ref` + `supabase db push --dry-run` (revision) + `supabase db push` (aplicacion). El CLI `supabase` 2.118 ya existe via `npx`; no hace falta el MCP para las migraciones y es menos superficie de riesgo.
 - **Desarrollo de Fase 1 iniciado, con evidencia en cada pieza:**
   - **Esquema de base:** 6 migraciones (tenancy, catalogo compartido, stock, ingesta, conocimiento/chat/publico, y la unificacion del estado de ficha). **13/13 checks de invariantes en verde contra un Postgres real desde cero** (`scripts/verify-schema.sh`, contenedor descartable).
   - **Base de desarrollo persistente:** `scripts/dev-db.sh` (Docker + volumen, puerto 55433) con seed realista en `supabase/seed/dev.sql`.
