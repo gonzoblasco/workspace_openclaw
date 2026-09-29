@@ -6,7 +6,7 @@ El workspace de OpenClaw de Gonzo. Es su sistema operativo personal con IA: cont
 
 ## Por qué existe
 
-Gonzo trabaja entre dos máquinas (Mac Mini y MacBook Air) y necesita un punto único de sincronización para todo su entorno de trabajo con IA. El workspace es el repositorio que orquesta skills, memoria, configuración del agente, y documentación de proyectos. No es un proyecto de código — es la infraestructura de trabajo.
+Gonzo trabaja entre dos máquinas (Mac Mini y MacBook Air) y necesita un punto único de sincronización para todo su entorno de trabajo con IA. El workspace es el repositorio que orquesta skills, memoria, configuración del agente, y documentación de proyectos. No es un proyecto de código -  es la infraestructura de trabajo.
 
 ## Stack
 
@@ -15,7 +15,7 @@ Gonzo trabaja entre dos máquinas (Mac Mini y MacBook Air) y necesita un punto �
 - bats + pytest (tests de scripts)
 - Biome (linting de skills)
 - Git + GitHub (sincronización entre máquinas)
-- rsync (mirror skills/ → .github/skills/) - _eliminado 2026-09-28 (ADR-079)_
+
 
 ## Estructura
 

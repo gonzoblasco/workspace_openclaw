@@ -42,10 +42,6 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
-# Heartbeat noise (empty sessions, no real content)
-memory/2026-07-20-1750*.md
-memory/2026-07-23-1951.md
-
 # Proyectos - viven en ~/projects, FUERA del worktree (ADR-075, 2026-09-27).
 # El workspace ya no hospeda projects/ ni trackea .knowledge/ de proyectos.
 # Se ignora la ruta por si algo la recrea: no debe volver a entrar al repo.

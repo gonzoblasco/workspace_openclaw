@@ -4,6 +4,25 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - 6 LaunchAgents huerfanos regeneraban `workspace/projects/` (resaca de ADR-075)
+
+### Fixed
+- **`projects/` del workspace se regeneraba al borrarlo:** ADR-075 (2026-09-27) movio los proyectos a `~/projects/<slug>` y el workspace dejo de hospedar el arbol, pero **6 LaunchAgents quedaron apuntando a la ruta vieja** `~/.openclaw/workspace/projects/<slug>`:
+  - `dev.gonzoblasco.kanam-spec` y `-watchdog`
+  - `dev.gonzoblasco.kanam-os` y `-watchdog`
+  - `dev.gonzoblasco.langchain-starter` y `-watchdog`
+- **Mecanismo del bucle:** `kanam-spec` tiene `KeepAlive=true` con `ProgramArguments` al `server/index.mjs` viejo (ausente). Arranca, falla con `MODULE_NOT_FOUND` y launchd lo relanza cada 10 s. Cada arranque abre su `WorkingDirectory` y `StandardErrorPath` -> **recrea `projects/kanam-spec/logs/`**. Por eso reaparecia apenas se borraba.
+- **Evidencia:** `projects/kanam-spec/logs/service.err` con 21 KB de stacktraces `MODULE_NOT_FOUND`; `launchctl print` mostraba `working directory` viejo en los 6 jobs, mientras `lsof -a -p <pid> -d cwd` mostraba que los 3 procesos vivos corrian en `~/projects/...` (la mudanza ocurrio con los procesos ya levantados).
+
+### Changed
+- **Ruta vieja reemplazada en 3 capas** (18 archivos): los 6 `.plist` de `~/Library/LaunchAgents`, los 6 canonicos de `~/projects/*/config/`, y los 6 scripts `service.sh`/`watchdog.sh`/`dashboard.sh` de los proyectos. Los canonicos importan: un `bootstrap` desde ahi volvia a romper.
+- **Jobs recargados:** `bootout` + `bootstrap` de los 6. Los 3 servicios quedaron corriendo con cwd correcto y respondiendo: kanam-spec :4173 (`{"ok":true}`), kanam-os :4317 (HTTP 200), langchain-starter :8100 (HTTP 200).
+
+### Notes
+- **Backup:** plists y canonicos en `/tmp/launchagents-backup-20260929-161611`; carpeta basura en `/tmp/kanam-stale-projects-trash`.
+- **Verificado tras 75 s:** `projects/` no se regenera.
+- **Regla preventiva:** al mover la ubicacion de un proyecto, ademas del codigo y el `.gitignore`, hay que actualizar **sus LaunchAgents** (la ruta queda hardcodeada en 3 capas).
+
 ## [2026-09-29] - Dedupe de daily notes: dos escritores sobre el mismo archivo
 
 ### Fixed

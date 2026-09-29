@@ -1,7 +1,7 @@
 # STATUS: workspace_openclaw
 
 **Fecha:** 2026-08-03
-**Fase:** Mantenimiento — refactor de scripts de skills + documentación de tooling
+**Fase:** Mantenimiento -  refactor de scripts de skills + documentación de tooling
 
 ## Estado actual
 
@@ -38,5 +38,4 @@ El workspace está estable. La fase intensiva de refactor de scripts (Fases 1-5)
 
 ## Riesgos
 
-- Skills sin scripts (`blogwatcher`, `mlx-stt`, `shortcuts-generator`) no tienen tooling asociado — no es bloqueante, pero si crecen necesitarán documentación.
-- ~~El mirror `.github/skills/` puede quedar desactualizado si no se sincroniza al modificar skills.~~ _Riesgo eliminado 2026-09-28 (ADR-079): el mirror ya no existe._
+- Skills sin scripts (`blogwatcher`, `mlx-stt`, `shortcuts-generator`) no tienen tooling asociado -  no es bloqueante, pero si crecen necesitarán documentación.
