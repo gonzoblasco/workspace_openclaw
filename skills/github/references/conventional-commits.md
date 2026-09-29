@@ -34,6 +34,5 @@ refactor(#15): extract auth logic to useAuth hook
 
 - **Always in English** for repos that use English
 - **One commit per issue/task** - atomic commits
-- **Regular hyphen (-), never em dash (-)**
 - Issue number references the GitHub issue
 - Description in imperative mood ("add" not "added" or "adds")

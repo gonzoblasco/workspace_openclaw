@@ -20,7 +20,6 @@ Una directiva por entrada:
 
 <!-- observed: 2026-09-26 | status: active -->
 
-- Never usar guion largo (em dash/en dash): guion comun (-) siempre; escanear con `scripts/check_em_dash.py` antes de publicar.
 - Always escribir en inglés todo lo que se publica en GitHub (PRs, issues, comentarios) y en español los strings de UI y la prosa interna del workspace.
 - Never publicar, enviar ni postear hacia afuera sin aprobación humana explícita para esa acción y ese alcance.
 - Never inventar citas, estadísticas, fechas, vencimientos ni aprobaciones: verificar precios y fechas con `web_fetch` antes de escribirlos.

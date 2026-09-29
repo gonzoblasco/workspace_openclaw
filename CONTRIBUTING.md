@@ -77,12 +77,6 @@ Si un PR lleva **~1 mes sin review del maintainer** (y no hay señal de que vaya
 3. Eliminar la branch remota.
 4. Actualizar `docs/OSS-TRACKER.md` (regenerar con `./scripts/memory-db.sh export-oss`).
 
-## Em dash check obligatorio
-
-**Guion comun SIEMPRE - NUNCA em dash/en dash (U+2014 / U+2013).** Aplica a TODO texto publicado a GitHub: PR body, comments, issues, commits, docs. El em dash se me escapa en textos largos en inglés (es idiomático).
-
-**MECANISMO OBLIGATORIO:** antes de publicar cualquier texto a GitHub, escanear con `python3 scripts/check_em_dash.py -` (stdin) o pasando el archivo. Si detecta guiones largos, reemplazar por guion común (-) y volver a escanear. NO publicar hasta que el scan diga "OK: sin guiones largos".
-
 ## Cómo pedirle a una sesión nueva que trabaje en un repo externo
 
 ### Prompt base (copiar y adaptar)
@@ -100,7 +94,6 @@ Si un PR lleva **~1 mes sin review del maintainer** (y no hay señal de que vaya
 > 4. Verificá build, lint, tests
 > 5. Commits semánticos, un PR por issue
 > 6. Abrí el PR referenciando el issue
-> 7. Escaneá el texto con `scripts/check_em_dash.py` antes de publicar
 
 ## Criterios para elegir nuevos repos
 

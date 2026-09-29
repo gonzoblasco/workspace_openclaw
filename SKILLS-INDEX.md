@@ -148,7 +148,6 @@
 ## Hermes SDD (Importado 2026-09-28)
 
 > Roles del repositorio `mcabreradev/hermes-sdd-agency`, importados como skills del workspace.
-> Guiones largos normalizados a guion comun. Ver `docs/checklists/delegation-brief.md` para el proceso.
 
 | Skill | Descripción |
 |---|---|

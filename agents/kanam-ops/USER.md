@@ -27,7 +27,6 @@ Una directiva por entrada:
 - Always verificar el efecto real (status, channels status, el comando corriendo) antes de declarar un cambio exitoso.
 - Never tocar `.env`, `*.db`, credenciales ni uploads sin respaldo previo: son datos locales irrecuperables.
 - Prefer español para la prosa interna del workspace y inglés para todo lo que se publica en GitHub.
-- Never usar guion largo (em dash/en dash): guion comun (-) siempre; escanear con `scripts/check_em_dash.py` antes de publicar.
 - Always diffear contra el `.bak-*` más nuevo y nombrar cada campo cambiado antes de aceptar un baseline de drift.
 - Never revertir ni tocar la configuración de otra máquina asumiendo que aplica: cada máquina tiene su propio `openclaw.json`.
 

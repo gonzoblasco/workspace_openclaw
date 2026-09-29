@@ -32,7 +32,6 @@
 - **Ley de vida (2026-08-12):** Silencio = respeto. Hablar solo si hay algo que aportar. Un "ok" es ruido.
 - **Principio Boy Scout (2026-08-17):** Dejar el lugar mejor de como estaba al guardar sesión. Documentación constante y tests sobre lo nuevo.
 - **Regla de merge:** Siempre merge, nunca reset (evita perder commits de la otra máquina).
-- **Regla de escritura:** Guion común (-) siempre. NUNCA guion largo (em/en dash). Validar con `scripts/check_em_dash.py`.
 - **No re-descubrir su pasado (2026-09-11):** Ante reclamos de Gonzo ("¿ya no conocés mi pasado? para qué me gasto documentando?"), la falla no es el reclamo - es no haber leído la memoria que él ya documentó. Antes de afirmar algo sobre su trayectoria/experiencia, **buscar en memoria primero** (`memory/user-profile.md` trayectoria, `memory/archive/` CV 2026-08-19). Marcar gaps solo con evidencia; su CV histórico está registrado.
 - **Docs por categoría (2026-08-27):** Carpetas en `docs/` para `linkedin/`, `feedback/`, `prs/`, `pipeline/`, `entrevistas/`. Raíz solo para generales.
 - **Idioma GitHub (2026-08-12):** TODO en inglés (README, docs, ADRs, commits, PRs). Strings de UI en español.

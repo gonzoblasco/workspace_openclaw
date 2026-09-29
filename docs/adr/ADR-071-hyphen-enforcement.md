@@ -1,6 +1,6 @@
 ---
 title: ADR-071 - Hyphen enforcement in markdown/spec files
-status: proposed
+status: superseded por ADR-082
 deciders:
   - Gonzo
 date: 2026-09-25

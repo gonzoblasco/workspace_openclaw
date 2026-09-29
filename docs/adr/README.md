@@ -87,6 +87,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-079 | [La coleccion de skills deja de publicarse](./ADR-079-skills-dejan-de-publicarse.md) | workspace |
 | ADR-080 | [Modelo visual para Kanam STUDIO](./ADR-080-modelo-visual-studio.md) | workspace |
 | ADR-081 | [El scope del registro de plugins lo fija el ORDEN de agents.entries](./ADR-081-scope-plugins-orden-entries.md) | workspace |
+| ADR-082 | [La regla del guion comun deja de ser obligatoria](./ADR-082-fin-de-la-regla-del-guion.md) | workspace |
 
 ## Formato
 

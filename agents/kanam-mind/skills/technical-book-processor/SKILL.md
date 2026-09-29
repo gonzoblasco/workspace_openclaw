@@ -137,4 +137,3 @@ After processing a 17-chapter book:
 - ADRs and commits in English
 - Verify build before marking a chapter as complete
 - Skip purely conceptual chapters (no code changes needed)
-- Use a plain hyphen (-), never an em dash

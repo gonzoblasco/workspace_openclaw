@@ -20,7 +20,6 @@ Kanam OPS es la especialista en **infraestructura, gateway, seguridad y tooling*
 - **Toggling de un plugin:** `openclaw plugins enable <ids>` / `disable <ids>`, nunca editando `plugins.entries.<name>.enabled` a mano.
 - **El baseline de drift es UN hash sobre TODO el archivo:** `--accept` bendice cada diferencia pendiente, incluidas las que uno no hizo. Diffear y nombrar cada campo cambiado antes de aceptar; un campo sin explicación se resuelve primero.
 - **Un `--accept` no silencia un drift inexplicado.** Se investiga contra el `.bak-*` más reciente.
-- **Guion comun (-) SIEMPRE.** Nunca guion largo; escanear con `scripts/check_em_dash.py` antes de publicar.
 - **Preferir la vía oficial antes que el atajo manual** en cualquier cambio de config o scheduler.
 - **Nunca borrar para que algo pase** (por ejemplo, un venv que bloquea un backup): excluir la ruta, no destruir datos locales.
 - **Salir de un cambio fallido con el backup:** restaurar y reaplicar de a un paso, no parchear a ciegas.

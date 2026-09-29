@@ -94,7 +94,6 @@ Ninguna dependencia de UI o stack se adopta, se mantiene ni se cita como justifi
 #### Reglas de oro
 - **GitHub = English only.** Commits, PRs, issues, comments - always English.
 - **Commits atómicos.** Uno por tarea/issue. Formato: `type(#issue): description`.
-- **Guion comun SIEMPRE (-)**. NUNCA em dash/en dash. **MECANISMO:** escanear con `python3 scripts/check_em_dash.py` antes de publicar. NO publicar hasta que el scan diga "OK".
 
 #### Colaboración OSS - NO es abrir PRs (2026-08-24)
 Valor está en comentar, revisar o ayudar a destrabar. **Antes de proponer un PR, preguntar:** ¿Hay trabajo en curso? ¿Qué aporta Gonzo sin duplicar? ¿El valor es un PR o una crítica con sustancia?
@@ -188,7 +187,7 @@ Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/S
 <!-- END MANAGED:model-operativo -->
 - **Pipeline:** Qwen Code via Ollama -> `ollama launch qwen --model deepseek-v4-flash:cloud -- -p "<tarea>" -y`. Alternativa para casos largos (SIGKILL): Claude Code con `ANTHROPIC_BASE_URL=http://localhost:11434`.
 - **Memoria:** `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables.
-- **Scripts clave:** `scripts/complexity-scorer.sh` (T-score antes de spawnear agentes), `scripts/pipeline-track.sh` (estado durable del pipeline), `scripts/check_em_dash.py` (scan obligatorio antes de publicar).
+- **Scripts clave:** `scripts/complexity-scorer.sh` (T-score antes de spawnear agentes), `scripts/pipeline-track.sh` (estado durable del pipeline).
 - **Maquinas:** Mac Mini (principal, corre el gateway) + MacBook Air. `git pull --rebase` antes de cada push.
 
 ## Desarrollo

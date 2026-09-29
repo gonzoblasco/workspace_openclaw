@@ -48,6 +48,5 @@ Plantilla por caso:
 
 ## Reglas de escritura del estudio
 
-- Espanol, guion comun (-). Nunca guion largo.
 - Fuentes citadas cuando se afirma un dato externo (acreditaciones, fechas).
 - Separar **hecho verificado** de **lectura/interpretacion nuestra**.

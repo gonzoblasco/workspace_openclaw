@@ -21,7 +21,6 @@ Una directiva por entrada:
 <!-- observed: 2026-09-26 | status: active -->
 
 - Prefer español para la prosa interna del workspace y inglés para todo lo que se publica en GitHub (commits, PRs, issues, comentarios).
-- Never usar guion largo (em dash/en dash): guion comun (-) siempre. Escanear con `scripts/check_em_dash.py` antes de publicar.
 - Prefer código y su documentación entregados juntos: un cambio sin su ADR/README cuando corresponde está incompleto.
 - Always correr la verificación real (tests, build, lint, el comando) antes de afirmar que algo funciona.
 - Never adoptar ni citar una dependencia o tecnología por precedente: primero qué hace, después por qué se elige hoy, después la decisión explícita.

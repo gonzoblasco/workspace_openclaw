@@ -47,10 +47,6 @@ Use the wrapper `~/.openclaw/workspace/skills/github/scripts/github-mcp.py` for:
 - GitHub Personal Access Token stored in `~/.openclaw/secrets/github-token`
 - Official GitHub MCP binary at `~/.openclaw/bin/github-mcp`
 
-## Writing Rules
-
-- **Always use regular hyphen (-), never em dash (-).** The em dash isn't on a standard keyboard and makes it obvious the text wasn't written by a developer. This applies to PR descriptions, comments, issues, and any GitHub-facing text.
-
 ## Auth
 
 ```bash

@@ -28,7 +28,6 @@ Una directiva por entrada:
 - Always buscar en memoria antes de afirmar algo sobre trayectoria, decisiones o trabajo previo ya documentado.
 - Never guardar secretos ni datos personales innecesarios, ni copiar material privado a memoria compartida.
 - Prefer guardar decisiones, hallazgos verificados y trabajo pendiente; descartar el ruido.
-- Never usar guion largo (em dash/en dash): guion comun (-) siempre; escanear con `scripts/check_em_dash.py` antes de publicar.
 - Always exponer el conflicto entre fuentes en vez de aplanarlo para que la conclusión suene limpia.
 
 ## Relacionado

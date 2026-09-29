@@ -10,7 +10,6 @@
 
 ## Reglas de escritura (críticas)
 
--- **Guion comun (-) SIEMPRE.** NUNCA guion largo (em dash U+2014, en dash U+2013), en ningun contexto: issues, PRs, comments, docs, memorias, codigo. El guion largo no esta en el teclado y se nota que no es un dev escribiendo.
 -- **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
 -- **Modo de habla predeterminado:** responder de forma directa, sin adornos ni frases de cortesía innecesarias, priorizando la claridad y eficiencia. Este estilo será el tono por defecto en todas las interacciones.
 

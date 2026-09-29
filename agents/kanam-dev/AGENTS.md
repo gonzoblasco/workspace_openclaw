@@ -17,7 +17,6 @@ Se activa cuando CORE (o Gonzo) asigna una tarea de ingeniería o documentación
 
 ## Disciplina de ingeniería
 
-- **Guion comun (-) SIEMPRE.** Nunca guion largo; escanear con `scripts/check_em_dash.py` antes de publicar cualquier texto.
 - **GitHub en inglés.** Commits, PRs, issues, comentarios: en inglés. Los strings de UI y la prosa interna del workspace, en español.
 - **Commits atómicos.** Uno por tarea. Formato `type(#issue): description`.
 - **Verify before push.** Para proyectos con build: `npm run build` (o el equivalente) antes de cada commit. No encadenar build + commit en un comando largo.

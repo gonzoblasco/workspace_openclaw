@@ -63,7 +63,6 @@ The personal brand tone is not a straitjacket. It modulates based on the post ty
 | **Request / CTA** (is it useful to you?, follow the series) | Direct and genuine. A single clear question, no begging. |
 
 **Hard tone rules (non-negotiable):**
-- **Never em dash (-).** Always use plain hyphen (-). The em dash is not on the keyboard and gives away that it's not a dev writing. (USER.md)
 - **No "Great question!" or "I'd be happy to help!".** That fake chatbot warmth makes you sound like a bot.
 - **No "in this post I'm going to teach you...".** Tell it, don't announce it.
 - **Don't give yourself credit just for being you.** If something failed, say it. Technical vulnerability (I found a bug, I got it wrong) is your biggest credibility asset.
@@ -72,7 +71,6 @@ The personal brand tone is not a straitjacket. It modulates based on the post ty
 
 Re-read the post and ask yourself:
 - [ ] Does it sound like Gonzo, or like a programming manual?
-- [ ] Is there any em dash (-) that should be a plain hyphen (-)?
 - [ ] Is the lesson/opinion there, or only the "what I did"?
 - [ ] Is it adapted to the occasion (deep-dive vs announcement vs opinion), or is it all the same?
 

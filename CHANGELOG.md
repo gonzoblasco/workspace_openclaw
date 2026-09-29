@@ -4,6 +4,20 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - La regla del guion comun deja de ser obligatoria (ADR-082)
+
+### Changed
+- **Se retira la regla del guion comun** (`-` siempre, nunca em/en dash) como regla obligatoria del workspace, por decision explicita de Gonzo: *"ya tenemos una evolucion y una robustez para tener identidad propia, dejemos de perder tiempo y recursos revisando los guiones"*. Formalizado en ADR-082.
+- **Archivos de instruccion limpiados:** `USER.md`, `MEMORY.md`, `AGENTS.md`, `CONTRIBUTING.md` (seccion "Em dash check obligatorio" completa) y los archivos `AGENTS.md`/`USER.md` de los cuatro agentes (`kanam-mind`, `kanam-dev`, `kanam-ops`, `kanam-studio`). Tambien el eco en `skills/github/SKILL.md`, `skills/github/references/conventional-commits.md`, `agents/kanam-studio/skills/content-serializer/SKILL.md`, `docs/SETUP.md`, `docs/voz-gonzo.md` y `studies/narrative-engineering/metodo.md`.
+- **ADR-071** (hyphen enforcement) pasa a `status: superseded por ADR-082`.
+
+### Notes
+- **El aparato mecanico NO se desarma.** El hook del pre-commit, `scripts/check_em_dash.py`, `scripts/hyphen_enforcer.sh` y `scripts/test-skills.sh` se conservan tal como estan: siguen corriendo y no molestan. Desarmarlos es una tarea aparte.
+- **Sin barrido retroactivo.** Los proyectos actuales y los textos ya publicados no se tocan: la regla se retira hacia adelante.
+- **Trade-off aceptado:** sin la regla declarada, un em dash puede volver a colarse en textos nuevos. Es el precio de dejar de gastar recursos en el cosmético.
+
+---
+
 ## [2026-09-29] - `docs/stories/` como casa de las historias + la novela Quienes Quedan
 
 ### Added
