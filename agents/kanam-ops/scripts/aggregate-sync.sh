@@ -1,12 +1,15 @@
 #!/bin/bash
-# aggregate-sync.sh - Sync the aggregate repo (projects/ <-> projects_openclaw)
+# aggregate-sync.sh - Sync the aggregate repo (~/projects <-> projects_openclaw)
 #
-# The aggregate repo (projects/) is the full-code archive of all projects.
+# The aggregate repo (~/projects) is the full-code archive of all projects.
 # It is NOT the source of truth for working on a project (that is each
 # individual repo at gonzoblasco/<slug>). Keep it in sync explicitly.
 #
+# Note (ADR-075, 2026-09-27): projects moved from workspace/projects/ to
+# ~/projects, outside the workspace worktree. This script follows.
+#
 # Usage:
-#   ./scripts/aggregate-sync.sh status          - show pending changes in projects/
+#   ./scripts/aggregate-sync.sh status          - show pending changes in ~/projects
 #   ./scripts/aggregate-sync.sh commit ["msg"]  - stage + commit all changes (default msg)
 #   ./scripts/aggregate-sync.sh push            - git pull --rebase + push
 #   ./scripts/aggregate-sync.sh sync ["msg"]    - status + commit + push (all in one)
@@ -18,17 +21,19 @@
 #   - A change made inside projects/<slug>/ is visible to both the project repo
 #     and the aggregate. Commit in each where it belongs.
 #   - If a project's .gitignore excludes its .knowledge/, that memory is NOT
-#     part of the aggregate (it lives only in the workspace git). Expected.
+#     part of the aggregate.
 
 set -euo pipefail
 
 WORKSPACE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PROJECTS_DIR="${WORKSPACE_DIR}/projects"
+PROJECTS_DIR="${PROJECTS_DIR:-${HOME}/projects}"
 AGGREGATE_URL="https://github.com/gonzoblasco/projects_openclaw.git"
 DEFAULT_MSG="chore: sync aggregate repo (projects_openclaw)"
 
 if [[ ! -d "${PROJECTS_DIR}/.git" ]]; then
   echo "Error: ${PROJECTS_DIR} is not a git repo. Expected the aggregate repo."
+  echo "Initialize it with:"
+  echo "  cd ${PROJECTS_DIR} && git init && git remote add origin ${AGGREGATE_URL} && git fetch && git checkout -b main origin/main"
   exit 1
 fi
 
