@@ -4,7 +4,30 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
-## [2026-09-29] - Kanam OnWheels: nombre definitivo y desarrollo de Fase 1 en curso
+## [2026-09-29] - Kanam OnWheels: Supabase conectado, migrado y un hallazgo de seguridad corregido
+
+### Added
+- **Supabase conectado y migrado:** proyecto `lpvtjipxzxpxygeobixn.supabase.co` (Postgres 17.6) con **7 migraciones aplicadas y verificadas**: 17 tablas, **0 sin RLS**, 36 policies, extension `vector`, y las 3 funciones publicas. Las migraciones quedan registradas en `supabase_migrations.schema_migrations`, asi que un `supabase db push` futuro no las repite.
+- **`scripts/db-apply.mjs`:** dry-run real (aplica dentro de una transaccion y hace ROLLBACK) y `--apply`. El dry-run prueba que las migraciones corren limpias contra el proyecto real **sin dejar rastro** antes de aplicarlas.
+- **`scripts/check-env.mjs`:** reporta que variables faltan o estan mal formadas **sin imprimir nunca un valor**, y marca riesgo si un secreto lleva prefijo `NEXT_PUBLIC_`.
+- **Guarda del seed (ADR-069):** `supabase/seed/dev.sql` es data de PRUEBA y ahora **se niega a correr** sin un opt-in explicito (`onwheels.allow_seed=yes`). Verificado en ambos sentidos. El seed no se aplico a Supabase: los datos de prueba no comparten base con un proyecto real.
+- **Check 14** en `tests/sql/invariants.sql`: guarda de regresion para la fuga de policies. El suite paso de 13 a **14/14 checks**.
+
+### Fixed
+- **FUGA DE SEGURIDAD en el catalogo compartido, encontrada verificando contra el proyecto real (no por un test que fallara).** Las policies eran `to authenticated using (state <> 'discarded')` sobre `spec` y `using (true)` sobre `model`: **cualquier usuario autenticado podia leer las specs scrapeadas SIN aprobar y los modelos en borrador**. Contradecia `docs/data-model.md` seccion 9 y dejaba sin sustento la invariante I9 (el corazon del producto: nada se publica sin aprobacion humana).
+  - **Demostrado antes de arreglar:** como usuario autenticado cualquiera, 1 spec propuesta y 1 modelo en borrador visibles.
+  - **Despues del arreglo:** 0 y 0, con las 23 specs aprobadas y los 5 modelos publicados todavia legibles.
+  - La concesionaria **si** necesita ver el modelo que esta enriqueciendo, asi que la policy de `model` ahora permite publicado **o** el borrador alcanzado por su propio `enrichment_run` (el esquema ya tenia el dato para responderlo).
+- **Un artefacto de redaccion en `.env.development.local`:** la herramienta de escritura redacto la contrasena y dejo un `***` literal, lo que tumbo el catalogo de desarrollo. Detectado probando la pagina en vivo. Corregido.
+
+### Notes
+- **Totales verificados:** 111 tests, lint, typecheck y build en verde; `verify-schema.sh` 14/14.
+- **La base de Supabase esta vacia a proposito.** Vacia no es roto: el catalogo en modo produccion muestra el estado vacio honesto, sin error.
+- **Leccion del hallazgo:** los tests cubrian lo que se habia pensado probar. La fuga vivia en una policy que nadie habia probado nunca. Verificar el esquema real encontro lo que el suite no buscaba.
+- **IPv6:** el host directo de la base tiene solo registro AAAA. Funciona desde esta maquina; el Session Pooler queda como alternativa documentada.
+
+---
+
 
 ### Changed
 - **El proyecto `retail-vehiculos` pasa a llamarse `Kanam OnWheels`.** Nombre definido por Gonzo; es **temporal**: el sitio publico tomara el nombre del cliente. Slug `kanam-onwheels`, ruta `~/projects/kanam-onwheels/`. Registrado en **`ADR-0009`** del proyecto. El nombre del producto no se filtra a la marca visible del concesionario.
