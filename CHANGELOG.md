@@ -4,6 +4,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - `docs/stories/` como casa de las historias + la novela Quienes Quedan
+
+### Added
+- **`docs/stories/quienes_quedan/`:** la novela (WORLD, CHARACTERS, PLOT, STYLE, README, `manuscript/` con 3 capitulos, `.knowledge/`), importada desde `~/projects/quienes_quedan/`.
+
+### Changed
+- **`docs/stories/el_descenso/historia_descenso.md`:** `historia_descenso.md` movida a una carpeta por historia.
+- **La novela deja de ser un proyecto de codigo:** tenia repo git propio en `~/projects` (privado en GitHub), pero es literatura, no herramienta. ADR-075 rige para proyectos de codigo; el contenido narrativo vive con el workspace. Se retiro la carpeta local (`~/projects/quienes_quedan` -> Trash; backup en `/tmp/quienes-quedan-backup-20260929-163652`). El workspace sigue privado, asi que la novela no se expone.
+- **Excepcion documentada al guion comun en el pre-commit:** el manuscrito usa la raya (U+2014) como raya de dialogo (decision de Gonzo 2026-09-24 en `STYLE.md`, *"solo en este proyecto, no corregir"*). El hook (y `scripts/pre-commit.template`) exceptua `docs/stories/quienes_quedan/` del chequeo y del enforcer, para no convertir el manuscrito. El CI no chequea guiones largos (verificado: solo `skills-ci.yml`, sin `check_em_dash`).
+
+### Notes
+- **Pendiente de decision de Gonzo:** el repo privado `github.com/gonzoblasco/quienes_quedan` quedo sin uso (contenido ya en el workspace). No se toco: borrarlo o archivarlo es una accion hacia afuera.
+
 ## [2026-09-29] - `memory/` reorganizado en carpetas predecibles + fix del hook de renames
 
 ### Added
