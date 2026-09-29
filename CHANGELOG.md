@@ -4,7 +4,28 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
-## [2026-09-29] - Kanam OnWheels: Supabase conectado, migrado y un hallazgo de seguridad corregido
+## [2026-09-29] - ADR-083: el CORE orquesta y no escribe codigo (la regla pasa a estar verificada)
+
+### Added
+- **`scripts/check-agent-skill-boundary.py` + suite (6 tests):** verifica la frontera entre el arbol del CORE y los arboles de rol. Caza tres cosas: una skill del ciclo de desarrollo en `skills/`, una skill en dos arboles, y el ciclo SDD incompleto en su rol. Probado **en negativo** (sembrada `skills/hermes-builder/SKILL.md`, el hook aborta con exit 1) y **en positivo**. Corre en el pre-commit.
+- **Regla en `AGENTS.md`:** "Frontera de roles: CORE no escribe codigo". Va al bootstrap porque es el unico archivo que el CORE lee siempre - antes vivia solo en `SKILLS-INDEX.md` y en ADR-073/074, que son documentacion y no contexto.
+
+### Changed
+- **El ciclo SDD (9 skills `hermes-*`) se movio de `skills/` a `agents/kanam-dev/skills/`.** Estaba en el arbol del CORE, asi que el CORE veia el playbook de ingenieria - `hermes-builder` dice "implementation. Writes the change's code" - y lo ejecuto durante una sesion entera de `kanam-onwheels`. **La separacion de arboles ES el enforcement: lo que un agente ve, un agente lo ejecuta.** El CORE conserva `sdd-agent-loop`, el orquestador.
+- **Totales del indice re-medidos:** Core 36 -> 27, kanam-dev 25 -> 34. El total sigue en 78 (fueron movimientos, no altas ni bajas).
+- **`SKILLS-INDEX.md` §2.4:** la verificacion pasa de `dispatch-validation.sh` (voluntario, sin test, nunca invocado) al check automatico.
+
+### Fixed
+- **El check nuevo nacio con el fallo que persigue:** su primera conexion usaba el disparador de `skills/|scripts/`, que **no matchea** `agents/<rol>/skills/` - justo donde se viola la frontera. Sembrar la violacion y ver que el hook salia 0 lo destapo. La conexion es parte del enforcement, no un detalle de instalacion.
+
+### Notes
+- **Contexto:** el 2026-09-29 el CORE escribio migraciones SQL, el cliente de datos, el panel completo y un e2e de Playwright de `kanam-onwheels`. Gonzo pregunto por que no se usaba `kanam-dev`. La regla existia en tres lugares y nada la verificaba. Detalle en ADR-083.
+- **Pendiente declarado:** la identidad git no distingue agentes (todos commitean como `gonzoblasco`), asi que el enforcement es previo (que ve cada agente), no forense. OpenClaw soporta `agents.entries.*.tools.github.gitAuthor`.
+- **Ruteo por etapa:** el dueño natural de una etapa no siempre es DEV - discovery y research son de MIND. El discovery de `kanam-onwheels` lo hizo el CORE solo; MIND debia haber sido convocado.
+
+---
+
+
 
 ### Added
 - **Supabase conectado y migrado:** proyecto `lpvtjipxzxpxygeobixn.supabase.co` (Postgres 17.6) con **7 migraciones aplicadas y verificadas**: 17 tablas, **0 sin RLS**, 36 policies, extension `vector`, y las 3 funciones publicas. Las migraciones quedan registradas en `supabase_migrations.schema_migrations`, asi que un `supabase db push` futuro no las repite.

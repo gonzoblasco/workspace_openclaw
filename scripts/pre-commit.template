@@ -13,6 +13,15 @@ SCRIPT_DIR=$(git rev-parse --show-toplevel)
 CHANGED=$(git diff --cached --name-only --diff-filter=ACMR)
 SKILL_OR_SCRIPT_CHANGED=$(echo "$CHANGED" | grep -qE '^(skills/|scripts/)' && echo 1 || echo 0)
 
+# Frontera de roles (ADR-083): el ciclo SDD de un rol NO vive en el arbol del Core.
+# Disparador PROPIO, no el de arriba: la violacion se comete cambiando
+# `agents/<rol>/skills/`, que `SKILL_OR_SCRIPT_CHANGED` no matchea. Conectarlo al
+# bloque de skills/scripts/ dejaba el check sin correr justo en el caso que existe
+# para cazar - verificado 2026-09-29: con `skills/hermes-builder/SKILL.md` staged,
+# el hook salia 0. El check es python puro (barato): corre ante cualquier cambio
+# bajo skills/, scripts/ o agents/.
+BOUNDARY_RELEVANT=$(echo "$CHANGED" | grep -qE '^(skills/|scripts/|agents/)' && echo 1 || echo 0)
+
 # --- Chequeos baratos: SIEMPRE que haya markdown staged ---
 # Por que: la regla del guion comun y las rutas citadas se cumplian solo
 # dentro de skills/ (test-skills.sh mira unicamente $SKILLS_DIR). Asi se
@@ -82,6 +91,13 @@ fi
 # Override consciente: A11Y_VALIDATED=1 (documentar la evidencia en el PR).
 if [ -n "$CHANGED" ]; then
   python3 "${SCRIPT_DIR}/scripts/check-a11y-trigger.py" || exit 1
+fi
+
+if [ "$BOUNDARY_RELEVANT" = "1" ]; then
+  # Frontera de roles (ADR-083): el ciclo SDD no vive en el arbol del Core. El Core
+  # tenia el playbook de ingenieria a la vista y lo ejecuto durante una sesion
+  # entera. Disparador propio (ver arriba), no el de skills/scripts/.
+  python3 "${SCRIPT_DIR}/scripts/check-agent-skill-boundary.py" || exit 1
 fi
 
 if [ "$SKILL_OR_SCRIPT_CHANGED" = "1" ]; then

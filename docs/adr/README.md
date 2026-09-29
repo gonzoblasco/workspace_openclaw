@@ -88,6 +88,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-080 | [Modelo visual para Kanam STUDIO](./ADR-080-modelo-visual-studio.md) | workspace |
 | ADR-081 | [El scope del registro de plugins lo fija el ORDEN de agents.entries](./ADR-081-scope-plugins-orden-entries.md) | workspace |
 | ADR-082 | [La regla del guion comun deja de ser obligatoria](./ADR-082-fin-de-la-regla-del-guion.md) | workspace |
+| ADR-083 | [Frontera de roles - el CORE orquesta y no escribe codigo](./ADR-083-frontera-de-roles-core-no-escribe-codigo.md) | workspace |
 
 ## Formato
 

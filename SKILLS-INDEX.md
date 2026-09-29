@@ -20,12 +20,17 @@
 
 | Árbol | Activas |
 |---|---|
-| `skills/` (Core) | 36 |
-| `agents/kanam-dev/skills/` | 25 |
+| `skills/` (Core) | 27 |
+| `agents/kanam-dev/skills/` | 34 |
 | `agents/kanam-mind/skills/` | 7 |
 | `agents/kanam-ops/skills/` | 4 |
 | `agents/kanam-studio/skills/` | 7 |
 | **Total activas** | **78** |
+
+> **El ciclo SDD (9 skills `hermes-*`) se movió del árbol del Core al de `kanam-dev` el 2026-09-29** (ADR-083).
+> Estaba en `skills/`, así que el Core veía el playbook de ingeniería - `hermes-builder` dice
+> "implementation. Writes the change's code" - y lo ejecutó. Los totales por árbol cambiaron
+> (36→27 y 25→34); el total sigue 78 porque fueron movimientos, no altas ni bajas.
 
 Además hay **1 placeholder**: `agents/kanam-mind/skills/study-tracker/` (`user-invocable: false`). Existe en disco (79 `SKILL.md` en total) pero no es una skill activa: se conserva solo para resolver referencias legacy. No se cuenta ni se lista como fila.
 
@@ -58,8 +63,14 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 ### 2.4 Definir vs consumir
 
 - **El Core define** sus skills (las de la sección 3.1) y las ejecuta.
-- **El Core no ejecuta** skills de otro rol: las delega. `scripts/dispatch-validation.sh <skill> <agent>` lo verifica (ver ADR-073 y ADR-074).
-- **Cada rol define** las suyas y responde por ellas.
+- **El Core no ejecuta** skills de otro rol: las delega. **Y no las ve.** Una skill de rol vive en
+  `agents/<rol>/skills/`, nunca en `skills/`. Lo que el Core ve, el Core lo ejecuta: la separación
+  de árboles *es* la separación de responsabilidades, no una convención de carpeta.
+- **Verificación mecánica:** `python3 scripts/check-agent-skill-boundary.py` falla si una skill del
+  ciclo de desarrollo está en el árbol del Core, si una skill vive en dos árboles, o si el ciclo SDD
+  quedó incompleto en su rol. Corre en el pre-commit.
+- **Cada rol define** las suyas y responde por ellas. Para saber si un agente puede ejecutar algo,
+  no leas su prompt: mirá qué árbol ve.
 
 ### 2.5 Contrato de este archivo
 
@@ -71,7 +82,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 
 ## 3. Inventario
 
-### 3.1 Core - `skills/` (36)
+### 3.1 Core - `skills/` (27)
 
 | Skill | Qué hace |
 |---|---|
@@ -103,21 +114,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [superpowers](skills/superpowers/) | Workflow spec-first con TDD y ejecución por subagentes |
 | [self-improving-agent](skills/self-improving-agent/) | Captura aprendizajes, errores y correcciones en markdown para mejora continua |
 
-**Hermes SDD** - importado de `mcabreradev/hermes-sdd-agency` el 2026-09-28:
-
-| Skill | Qué hace |
-|---|---|
-| [hermes-discovery](skills/hermes-discovery/) | Reconocimiento del proyecto: describe lo que existe, con evidencia |
-| [hermes-openspec](skills/hermes-openspec/) | Dueño del ciclo OpenSpec: convierte ideas en specs válidas |
-| [hermes-architect](skills/hermes-architect/) | Diseño técnico: decisiones, límites y riesgos, no implementación |
-| [hermes-planner](skills/hermes-planner/) | Desglose en tareas ejecutables, ordenadas y verificables |
-| [hermes-builder](skills/hermes-builder/) | Implementación: escribe el código del cambio y nada más |
-| [hermes-reviewer](skills/hermes-reviewer/) | Revisión adversarial del builder: busca defectos y los prueba |
-| [hermes-qa](skills/hermes-qa/) | Validación del comportamiento contra la spec, con ejecución real |
-| [hermes-pr-reviewer](skills/hermes-pr-reviewer/) | Revisión adversarial de un PR publicado, con experiencia de dominio |
-| [hermes-release](skills/hermes-release/) | Cierre del cambio: consistencia del diff, versionado, notas, archivado |
-
-### 3.2 kanam-dev - `agents/kanam-dev/skills/` (25)
+### 3.2 kanam-dev - `agents/kanam-dev/skills/` (34)
 
 > Ciclo completo Define → Plan → Build → Verify → Review → Ship. Base: `addyosmani/agent-skills`; ⭐ = fusionada con capacidades propias de Kanam.
 
@@ -148,6 +145,23 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | Ship | [observability-and-instrumentation](agents/kanam-dev/skills/observability-and-instrumentation/) | Structured logging, RED metrics, OpenTelemetry, alertas por síntoma |
 | Ship | [shipping-and-launch](agents/kanam-dev/skills/shipping-and-launch/) | Checklists pre-launch, feature flag lifecycle, rollouts, rollback |
 | Ship | [project-closure](agents/kanam-dev/skills/project-closure/) | Cierre de proyecto: decisión, aprendizaje y estado en ADR + DB + skill |
+
+**Hermes SDD** - el ciclo de desarrollo por etapas, importado de `mcabreradev/hermes-sdd-agency`
+el 2026-09-28 y **movido aquí desde `skills/` el 2026-09-29** (ADR-083). Es el playbook de
+implementación: vivía en el árbol del Core, que así lo podía ejecutar. El Core lo *orquesta*
+(`sdd-agent-loop`), no lo ejecuta.
+
+| Etapa | Skill | Qué hace |
+|---|---|---|
+| discovery | [hermes-discovery](agents/kanam-dev/skills/hermes-discovery/) | Reconocimiento del proyecto: describe lo que existe, con evidencia |
+| openspec | [hermes-openspec](agents/kanam-dev/skills/hermes-openspec/) | Dueño del ciclo OpenSpec: convierte ideas en specs válidas |
+| architect | [hermes-architect](agents/kanam-dev/skills/hermes-architect/) | Diseño técnico: decisiones, límites y riesgos, no implementación |
+| planner | [hermes-planner](agents/kanam-dev/skills/hermes-planner/) | Desglose en tareas ejecutables, ordenadas y verificables |
+| builder | [hermes-builder](agents/kanam-dev/skills/hermes-builder/) | Implementación: escribe el código del cambio y nada más |
+| reviewer | [hermes-reviewer](agents/kanam-dev/skills/hermes-reviewer/) | Revisión adversarial del builder: busca defectos y los prueba |
+| qa | [hermes-qa](agents/kanam-dev/skills/hermes-qa/) | Validación del comportamiento contra la spec, con ejecución real |
+| pr-reviewer | [hermes-pr-reviewer](agents/kanam-dev/skills/hermes-pr-reviewer/) | Revisión adversarial de un PR publicado, con experiencia de dominio |
+| release | [hermes-release](agents/kanam-dev/skills/hermes-release/) | Cierre del cambio: consistencia del diff, versionado, notas, archivado |
 
 ### 3.3 kanam-mind - `agents/kanam-mind/skills/` (7)
 
@@ -203,7 +217,7 @@ Nombres que existieron y ya no están. Se listan para distinguir una baja delibe
 | `openclaw skills list --agent <id> --json` | Autoridad sobre qué skills tiene el runtime, con `source` por skill |
 | `python3 scripts/check-refs.py` | Que cada link de este archivo resuelva a una ruta real |
 | `./scripts/test-skills.sh` | Frontmatter, sintaxis, refs a scripts y links entre skills |
-| `bash scripts/dispatch-validation.sh <skill> <agent>` | Que el Core no ejecute una skill de otro rol |
+| `python3 scripts/check-agent-skill-boundary.py` | Que la frontera CORE/rol se respete: ciclo SDD fuera del árbol del Core, sin duplicados, ciclo completo. Corre en el pre-commit |
 
 ---
 
