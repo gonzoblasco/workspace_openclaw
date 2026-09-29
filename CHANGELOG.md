@@ -4,6 +4,29 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - retail-vehiculos: diseno cerrado (arquitectura, modelo de datos, dominio y 8 ADRs)
+
+### Added
+- **Etapa de diseno del proyecto `retail-vehiculos` cerrada.** Cuatro artefactos en `~/projects/retail-vehiculos/docs/`:
+  - **`architecture.md`** (377 lineas): 8 decisiones, cada una con alternativa descartada y consecuencias; evaluacion de las 5 señales del disparador DDD; 16 invariantes de dominio, cada una con el test que falla al violarla; 6 fronteras de capacidad; 4 contratos de API; 9 riesgos con mitigacion; y tabla de trazabilidad specs ↔ diseno.
+  - **`data-model.md`** (449 lineas): contrato del esquema. Dos mitades declaradas (catalogo compartido sin `company_id` vs operacion del local con `company_id`), las 3 transiciones que no se pueden expresar como constraint de fila, la superficie publica de solo 3 funciones, y la verificacion automatica de RLS.
+  - **`CONTEXT.md`** (166 lineas): glosario autoritativo. 13 terminos con definicion afirmativa y sinonimos rechazados bajo `_Evitar_`, mas las fronteras entre capacidades.
+  - **`adr/` con 8 ADRs** + indice: cada uno con las 5 secciones, tabla de alternativas descartadas y reversibilidad.
+
+### Changed
+- **`retail-vehiculos` cambio de stack respecto del discovery.** El frontend candidato era React + Vite (heredado de `soporteml`); el diseno lo reemplaza por **Next.js App Router** con motivo concreto: el catalogo publico tiene que ser **indexable** y una SPA entrega HTML vacio. El precedente no aplicaba porque `soporteml` es un panel privado detras de login. Registrado en `ADR-0001` (supersede `ADR-011` y `ADR-020` para este proyecto).
+- **Specs reconciliadas con el diseno** (4 cambios, para que no queden dos verdades): SPEC-004 (edita su unidad, al catalogo compartido propone), SPEC-003 (`raw_value` ademas del normalizado), SPEC-002 (rate limit por sesion e IP), SPEC-005 (`company_id` denormalizado en el chunk).
+- **`DISCOVERY.md` y `BRIEF.md` actualizados** en la seccion de stack y estado; `.knowledge/STATUS.md` y `HANDOFF.md` reflejan el cierre de la etapa.
+- **`MEMORY.md`:** la entrada del proyecto pasa de "discovery cerrado" a las cuatro etapas cerradas, con el stack decidido y las decisiones centrales.
+
+### Notes
+- **Sin repo git todavia.** Los 8 ADRs viven en `docs/adr/` del proyecto, no en `docs/adr/` del workspace (ADR-067). El repo se inicializa al arrancar desarrollo.
+- **Cero decisiones abiertas** para quien construya: lo que queda son detalles de implementacion.
+- **Pieza genuinamente nueva del sistema:** el motor de scraping multi-marca (6 marcas, al menos 3 estructuras de sitio). Todo lo demas reutiliza patrones de `soporteml`.
+- **Riesgo que sigue abierto:** que el sitio no se use. Es lo que le paso a las dos generaciones anteriores de sitio de concesionaria (`sportcars`, `pro-motors-docs`), construidas y borradas sin operacion.
+
+---
+
 ## [2026-09-29] - retail-vehiculos: discovery, specs y knowledge de un proyecto nuevo
 
 ### Added
