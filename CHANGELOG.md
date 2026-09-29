@@ -4,6 +4,22 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - Auditoria Nivel 2: 62 links rotos y el falso verde que los tapaba
+
+### Fixed
+- **`check-refs.py` no escaneaba links a directorios.** `is_link_skippable` descartaba todo link terminado en `/` con el criterio "link a directorio, no a archivo". Pero un link a un directorio promete que ese directorio existe: el skip tapaba **42 links rotos** solo en `SKILLS-INDEX.md` (apuntaban a `skills/<slug>/`, que ya no existe: las skills viven en `agents/<rol>/skills/`). Un check que reportaba "291 rutas OK" mientras 42 links rotos pasaban por debajo. Corregido: los links a directorio se verifican.
+- **`SKILLS-INDEX.md` no estaba en `DEFAULTS`.** El checker nunca lo escaneaba en su corrida default. Agregado. Ahora la corrida default revisa 369 rutas (antes 291).
+- **`SKILLS-INDEX.md`: 42 links corregidos** a la ruta real (`agents/<rol>/skills/<slug>/`), y el total actualizado: decia 65 skills (dato del 2026-09-22); son **78 activas** (36 en `skills/` + 42 en `agents/*/skills/`, excluido el placeholder `study-tracker`).
+- **`agents/kanam-ops/scripts/aggregate-sync.sh`:** copia stale (2026-09-08) apuntaba a `${WORKSPACE_DIR}/projects`, ruta que ADR-075 elimino. Sincronizada con la version del workspace (`${HOME}/projects`).
+
+### Tests
+- `tests/python/test_check_refs.py`: el test que fijaba la conducta vieja (`test_directory_link_is_skipped`) se reemplazo por `test_directory_link_is_checked` + `test_reports_a_broken_directory_link` + `test_skills_index_is_scanned`. 21/21 en verde.
+
+### Notes
+- **La lección de siempre:** una guarda que dice tener respaldo sin tenerlo es peor que no tener guarda, porque induce a confiar. El skip de links a directorio era el punto ciego; los 42 links rotos llevaban ahi desde que las skills se movieron a `agents/`.
+
+---
+
 ## [2026-09-29] - La regla del guion comun deja de ser obligatoria (ADR-082)
 
 ### Changed

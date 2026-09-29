@@ -24,7 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-DEFAULTS = ["AGENTS.md", "USER.md", "MEMORY.md", "SOUL.md", "IDENTITY.md"]
+DEFAULTS = ["AGENTS.md", "USER.md", "MEMORY.md", "SOUL.md", "IDENTITY.md", "SKILLS-INDEX.md"]
 
 # Ruta entre backticks que empieza con scripts/ o docs/ Y termina en extension.
 # El primer grupo es la ruta; el `!` evita capturar espacios internos.
@@ -57,7 +57,12 @@ def is_link_skippable(target: str) -> bool:
         return True
     if not target.startswith(LINK_PREFIXES):
         return True
-    return target.endswith("/")            # link a directorio, no a archivo
+    # Un link que termina en `/` promete que ese DIRECTORIO existe. Antes se
+    # saltaba con el criterio "link a directorio, no a archivo", y eso tapaba
+    # 42 links rotos de SKILLS-INDEX.md (apuntaban a `skills/<slug>/`, que ya
+    # no existe: las skills viven en `agents/<rol>/skills/`). Un directorio
+    # inexistente es una promesa rota igual que un archivo inexistente.
+    return False
 
 
 def resolves(source: Path, target: str) -> bool:

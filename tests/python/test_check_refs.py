@@ -71,6 +71,16 @@ def test_passes_on_real_agent_docs():
     assert r.returncode == 0, r.stdout + r.stderr
 
 
+def test_skills_index_is_scanned():
+    """SKILLS-INDEX.md debe estar en la lista default: es un doc de promesas vivas.
+
+    Si queda fuera, sus links a `skills/<slug>/` rotos no se ven (el motivo por
+    el que se agregaron los links al checker en primer lugar).
+    """
+    mod = load()
+    assert "SKILLS-INDEX.md" in mod.DEFAULTS
+
+
 def test_passes_on_all_docs():
     """Todos los docs (excluyendo historicos) deben estar limpios."""
     r = subprocess.run(
@@ -127,9 +137,29 @@ def test_anchor_and_absolute_are_skipped():
     assert mod.is_link_skippable("/reference/AGENTS.default")
 
 
-def test_directory_link_is_skipped():
+def test_directory_link_is_checked():
+    """Un link a un DIRECTORIO se verifica: promete que el directorio existe.
+
+    Antes se saltaba ("link a directorio, no a archivo"), y eso tapo 42 links
+    rotos de SKILLS-INDEX.md que apuntaban a `skills/<slug>/` inexistentes.
+    """
     mod = load()
-    assert mod.is_link_skippable("skills/session-lifecycle/")
+    assert not mod.is_link_skippable("skills/session-lifecycle/")
+    assert not mod.is_link_skippable("agents/kanam-dev/skills/a11y-at-validation/")
+
+
+def test_reports_a_broken_directory_link(tmp_path):
+    """Un link a un directorio inexistente debe fallar y nombrarlo."""
+    bad = ROOT / "docs" / "_refs_dir_tmp.md"
+    bad.write_text("Ver [x](./skills/no-existe-dir-xyz/).\n", encoding="utf-8")
+    try:
+        r = subprocess.run(
+            [sys.executable, str(CHECKER), "--all"], cwd=ROOT, capture_output=True, text=True
+        )
+        assert r.returncode == 1
+        assert "no-existe-dir-xyz" in r.stdout
+    finally:
+        bad.unlink(missing_ok=True)
 
 
 def test_repo_root_link_is_checked():
