@@ -1,7 +1,7 @@
 # ADR-081: El scope del registro de plugins lo fija el ORDEN de `agents.entries`
 
-**Fecha:** 2026-09-28
-**Estado:** Aceptado
+**Fecha:** 2026-09-28 (corregido 2026-09-29)
+**Estado:** **Parcialmente refutado** - ver la correccion al final
 **Decisores:** Gonzo (aprobacion del experimento) / Kanam (diagnostico)
 **Origen:** sesion 2026-09-28 - los triggers de automatizacion fallaban con "Plugin runtime changed" desde hacia dias
 **Relacionado:** ADR-073 (arquitectura multi-agente), ADR-074 (protocolo multi-agente), ADR-078 (verificar antes de reportar)
@@ -78,3 +78,37 @@ cp state/openclaw.sqlite-shm /tmp/r.sqlite-shm
 ```
 
 **Regla:** antes de declarar que dos fuentes se contradicen, verificar que ambas lean la misma version del dato. Un `-wal` no copiado es un falso desacuerdo.
+
+---
+
+## CORRECCION 2026-09-29: la causa del fallo NO era el orden (y el orden no es una palanca durable)
+
+Diez horas despues, el sistema desmintio la conclusion principal de este ADR. Tres hechos medidos:
+
+**1. El orden se revirtio solo, y el registro volvio a `stale`.** El gateway reescribio `openclaw.json` a las **23:29-23:30** del 2026-09-28 (eventos `config.write` en `logs/config-audit.jsonl`, **sin actor de agente**), y dejo `agents.entries` en orden **alfabetico** (`kanam-dev, kanam-mind, kanam-ops, kanam-studio, main`). O sea: **la posicion de `main` no persiste entre escrituras del gateway**, asi que "mantener `main` primero" no es una decision que el sistema respete.
+
+**2. Con el orden roto, los jobs NO fallan.** Estado actual medido: `state: stale`, `persisted.workspaceDir = …/agents/kanam-dev`, orden alfabetico... y **0 errores en 31 corridas** de los tres jobs vigilados desde ayer 23:30 (36 `ok`, 74 `skipped`, 0 `error`).
+
+**3. Por lo tanto, la inferencia causal de este ADR es falsa.** El A/B/A original **si** probo que el orden controla `index.workspaceDir` (eso sigue en pie y es reproducible). Lo que **no** se sostiene es el paso siguiente: que ese desvio sea la causa del fallo de los triggers. Hay dos estados independientes que yo trate como uno:
+
+| Hecho | Estado |
+|---|---|
+| El scope persistido del registro | `stale` (cosmetico en la practica) |
+| El fallo de los triggers | resuelto |
+
+**La causa real, revisada:** el desalineamiento de la **generacion del runtime de plugins** dentro de la sesion que evalua el trigger (el guard `Plugin runtime changed` compara la generacion que tenia la sesion contra la actual). Eso se resetea con un **reinicio del gateway** -y hubo tres: 20:01, 23:14 y 23:30- y/o con un **refresh que reescriba el indice**. Mi refresh de las 16:04 coincidio con la recuperacion, pero el reinicio de las 20:01 es igualmente suficiente para explicarla. **No aislé cual de los dos fue:** el experimento que faltaba era dejar el orden roto, reiniciar, y ver si los jobs fallaban.
+
+### Que queda firme y que no
+
+- **Firme:** el orden de `agents.entries` determina el `workspaceDir` persistido del registro. Reproducible.
+- **Firme:** el gateway reescribe el config en orden alfabetico, sin actor de agente, y el scope resultante queda `stale`.
+- **Refutado:** que ese `stale` cause el fallo de los triggers. **El registro puede estar `stale` con los jobs sanos.**
+- **Refutado:** que "`main` primero" sea el fix. **No persiste**, y ademas no era lo que arreglaba el sintoma.
+
+### Regla que reemplaza a la decision original
+
+**No perseguir el flag `stale` del registro, y no tocar el orden de `agents.entries` para arreglarlo.** El flag no predice el fallo de los jobs. Si los triggers fallan con `Plugin runtime changed`, la palanca es **reiniciar el gateway** (que regenera el runtime) o **refrescar el registro**, y la verificacion es la **corrida del job**, nunca el `state`.
+
+**Y la leccion de metodo, que es la de fondo:** probe una correlacion (orden -> `state`) y salte a una causa (orden -> fallo de los jobs) **sin probar el mecanismo**. El A/B/A confirmaba una cosa y yo reporte dos. Faltaba el paso que la propia hipotesis exigia: revertir el orden **y** ver el sintoma. Una correlacion reproducible no es una cadena causal verificada.
+
+**Nota historica (no borrar):** el diagnostico original sigue util como registro del sintoma y de la superficie del flag. Lo refutado es la causa y el fix, no el sintoma.

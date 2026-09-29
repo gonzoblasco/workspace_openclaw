@@ -217,3 +217,72 @@ entry del roster. Con el orden original (`kanam-dev` primero) el scope quedaba e
   problema:** firma distinta (`timeout`, no `Plugin runtime changed`) y anterior. Causa separada.
 
 Ver `docs/adr/ADR-081-scope-plugins-orden-entries.md`.
+
+---
+
+## Fase 2 (2026-09-29, 11:23) - veredicto re-medido
+
+Medicion de solo lectura sobre la copia `~/.openclaw/state/openclaw.sqlite` -> `/tmp/f2b.sqlite`.
+No se corrio `openclaw plugins`, `openclaw skills` ni `openclaw doctor`, y no se toco el registro
+de plugins. La copia se elimino al terminar.
+
+### Corridas crudas (ultimas 12)
+
+| job | status | inicio (local) | error |
+|---|---|---|---|
+| `0650e620` | ok | 2026-09-29 11:20:26 | |
+| `90564259` | skipped | 2026-09-29 11:15:04 | |
+| `b120616e` | ok | 2026-09-29 11:08:35 | |
+| `90564259` | skipped | 2026-09-29 11:08:35 | |
+| `90564259` | skipped | 2026-09-29 10:43:24 | |
+| `b120616e` | ok | 2026-09-29 10:27:51 | |
+| `90564259` | skipped | 2026-09-29 10:27:51 | |
+| `90564259` | skipped | 2026-09-29 10:12:37 | |
+| `90564259` | skipped | 2026-09-29 10:01:03 | |
+| `b120616e` | ok | 2026-09-29 09:56:04 | |
+| `90564259` | skipped | 2026-09-29 09:56:04 | |
+| `90564259` | skipped | 2026-09-29 09:28:34 | |
+
+### Corridas programadas y su status
+
+Ventana completa de los tres jobs desde el fix:
+
+| job | ok | skipped | error | ultima corrida |
+|---|---|---|---|---|
+| `b120616e` (langchain-starter-health-watch) | 57 | 0 | 7 | 2026-09-29 11:08 ok |
+| `90564259` (pipeline-queue-watcher) | 0 | 64 | 0 | 2026-09-29 11:15 skipped |
+| `0650e620` (gateway-jobs-watcher) | 5 | 36 | 23 | 2026-09-29 11:20 ok |
+
+Todas las corridas programadas de los tres jobs posteriores al fix (2026-09-28 16:04) salen
+`ok` o `skipped`: desde esa marca **no hay una sola corrida en `error`** para ninguno de los tres.
+
+### Cruce con la pregunta de la fase
+
+La corrida de las 12:27 que se cito como "fallo sin tocar plugins" **si esta en la DB**:
+`b120616e` a las 2026-09-28 12:36:39, con `error` y firma `Plugin runtime changed`. No fue
+inducida por ningun comando del owner: ocurrio sola. Lo mismo las de 13:02, 13:32, 14:02 y la
+de `0650e620` a las 13:20. Los ultimos dos errores (15:04 y 15:23) mudaron de firma a
+`plugin_reload_failed` y despues de ese punto el registro quedo sano sin que nadie lo tocara a
+mano (el fix de alcance se aplico despues, a las 16:04).
+
+### Veredicto
+
+**El fallo era real y persistente, no inducido por los comandos.**
+
+El patron medido es: una sola generacion de runtime de plugins quedo desalineada y **todos**
+los jobs que la consumian fallaron en cada corrida programada, por horas, sin intervencion
+alguna. No hay ninguna correlacion entre los `error` y comandos de plugins previos: hay
+errores consecutivos con horas de separacion y sin actividad del owner entre medio. La firma
+`Plugin runtime changed` se mantuvo estable hasta que el registro recupero el estado sano.
+
+Causa raiz (ya documentada en ADR-081): el scope del registro lo fija el **orden de
+`agents.entries`**; con `kanam-dev` primero el scope quedaba en el workspace equivocado. Eso
+explica por que fallaba solo y por que "no tocar nada" no lo arreglaba.
+
+Estado actual: **resuelto y estable**. El criterio de esta fase (corridas posteriores sin tocar
+plugins) se cumple: `b120616e` `ok` 11:08, `0650e620` `ok` 11:20 (sus 5 unicos `ok` son
+posteriores al fix), `90564259` `skipped` 11:15 por skip propio. Cero errores de runtime de
+plugins desde el fix.
+
+Por indicacion explicita de la fase, no se proponen cambios de configuracion: el reporte es el
+deliverable.
