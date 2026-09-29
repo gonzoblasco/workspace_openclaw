@@ -7,6 +7,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ## [2026-09-28] - Politica de modelos cloud-first, integracion Hermes SDD, fin de la publicacion de skills
 
 ### Added
+- **Regla transversal: esperar el CI antes de seguir (2026-09-28, `AGENTS.md`):** despues de cada push, en cualquier proyecto, hay que esperar a que el CI termine y todos los actions pasen antes de pasar a otra tarea o cerrar la sesion. Un job `pending` no es verde; no se cierra la sesion con CI pendiente. Pasa a `AGENTS.md` seccion Git & Commits.
 - **ADR-076 - ningun agente hereda un modelo local:** los modelos cloud primero, locales como ultimo recurso. Corrige la causa real de los fallos de automatizacion (`defaults.model.primary` apuntaba a `gemma4:26b`, local y desinstalado, que `kanam-mind` y `kanam-studio` heredaban).
 - **ADR-077 - pipeline A/B asimetrico:** Agente A (ejecutor) liviano en `gpt-oss:120b-cloud`; Agente B (evaluador y corrector) grande en `deepseek-v4.1-flash:cloud` con 1M de contexto. La asimetria es intencional: el revisor ve mas que el ejecutor.
 - **ADR-078 - la salida de un sub-agente es un auto-reporte, no un hecho:** `status=done` significa que el proceso termino limpio, no que el resultado sea cierto. Rutas absolutas en los briefs; el padre reproduce la verificacion.

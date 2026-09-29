@@ -127,6 +127,12 @@ Detalle en `docs/AGENTS-DETALLE.md`.
 #### Verify Before Push
 Para proyectos con build step: **`npm run build` before every commit**. No encadenar build + commit en un comando largo. Preferir pre-commit hook (lint $\rightarrow$ test $\rightarrow$ build).
 
+#### Esperar el CI antes de seguir (2026-09-28)
+**Regla transversal (todos los proyectos):** después de cada push, **esperar a que el CI termine y todos los actions pasen** antes de pasar a otra tarea, dar el trabajo por cerrado o cerrar la sesión. No hay apuro. Un push que no se verifica es un push a ciegas: el fallo aparece recién cuando el maintainer lo señala.
+- **No cerrar la sesión con CI pendiente.** Si el CI sigue corriendo, dejarlo como pendiente explícito y volver a chequearlo, o agrupar el push antes del cierre.
+- **Verificación obligatoria:** `gh pr checks <n> --repo <owner/repo>` debe quedar sin líneas que no sean `pass`. Un job `pending` no es verde.
+- Aplica a commits propios de workspace, proyectos y PRs OSS por igual.
+
 #### Workspace Git
 Repo `workspace_openclaw`. Proyectos se sincronizan por separado.
 **Obligatorio:** Modificó config de workspace $\rightarrow$ commit + push al finalizar sesión.
