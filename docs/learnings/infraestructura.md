@@ -79,12 +79,12 @@
 - **Documentos narrativos** (MEMORY.md, LEARNINGS.md, AGENTS.md, SOUL.md): se leen como narrativa, se curan a mano, se versionan en git. Migrarlos a SQLite es un error - se pierde legibilidad y diff. Quedan como markdown.
 - **Datos estructurados** (OSS-TRACKER, TODO, INBOX): son tablas disfrazadas de markdown. SQLite brilla acá - queries, filtros, agregación. Migrar.
 - **Log cronológico** (daily notes): caso híbrido. El presente en markdown (legible, diff), el pasado archivado a SQLite (fuera del camino, consultable). Este es el "modo híbrido".
-- **SQLite en git:** el `*.db` estaba ignorado por defecto. Para sincronizar entre las dos máquinas de Gonzo (Mac Mini + MacBook Air), la DB de memoria DEBE versionarse (excepción al .gitignore). El riesgo de conflicto de merge es bajo para datos append-only. _(Nota 2026-09-29: hoy hay una sola máquina, ADR-085; la DB sigue versionada pero como respaldo, no para sincronizar.)_
+- **SQLite en git:** el `*.db` estaba ignorado por defecto. Para sincronizar entre las dos máquinas de Gonzo (Mac Mini + MacBook Air), la DB de memoria DEBE versionarse (excepción al .gitignore). El riesgo de conflicto de merge es bajo para datos append-only.
 - **El bottleneck real no es leer archivos planos** - es que la IA lee/escribe markdown que se versiona. SQLite agrega queries que no se necesitan para documentos de ~20KB. El valor real de SQLite aparece cuando los datos crecen y necesitás consultar/filtrar (el OSS-TRACKER ya estaba creciendo).
 
 **Self-reflection:**
 - CONTEXT: refactorización de infraestructura del setup
-- REFLECTION: el diseño híbrido (presente en markdown, pasado en SQLite) respeta el flujo de trabajo real sin romperlo. La decisión clave fue versionar la DB (excepción al .gitignore) para no romper la sincronización entre máquinas. _(Nota 2026-09-29: el escenario de dos máquinas ya no existe, ADR-085.)_
+- REFLECTION: el diseño híbrido (presente en markdown, pasado en SQLite) respeta el flujo de trabajo real sin romperlo. La decisión clave fue versionar la DB (excepción al .gitignore) para no romper la sincronización entre máquinas.
 - LESSON: al migrar archivos planos a DB, separar datos estructurados (migrar) de documentos narrativos (no migrar), y versionar la DB si el flujo depende de sincronización entre máquinas.
 - BIASES DETECTED: none (el diseño consideró el flujo de doble máquina y la legibilidad antes de ejecutar).
 
@@ -571,6 +571,30 @@ POR QUÉ: consultar una base vectorial mientras otro proceso la escribe. El moni
 REGLA QUE ME LLEVO: nunca abrir la base mientras el indexador escribe. Para monitorear, leer el LOG del proceso (o el tamaño de los archivos en disco con stat), jamás consultar la colección. Si hace falta saber el progreso, que el propio proceso lo imprima.
 
 DETALLE ÚTIL: el log estaba vacío porque Python bufferiza stdout cuando redirige a archivo. Se soluciona con `python3 -u`.
+
+---
+
+## Un registro stale que sobrevive al refresh: la guarda que impide reparar el workspaceDir
+
+Verificado 2026-09-28. `openclaw plugins registry` corre, reporta exito y el registro SIGUE en state=stale, con differences vacio y los 62 manifiestos coincidiendo. La causa es un desacuerdo de workspaceDir: persistido /Users/gonzoblasco/.openclaw/workspace/agents/kanam-dev contra actual /Users/gonzoblasco/.openclaw/workspace. El registro vive en la tabla config_machine_state (clave plugins.installedIndex) de ~/.openclaw/state/openclaw.sqlite, campo index.workspaceDir. Cadena: resolvePluginControlPlaneWorkspace -> tryResolveAmbientOwnerAgentId -> defaults.systemAgent.agentId ('main') resuelve BIEN el valor correcto, pero canRefreshPersistedPolicyState exige reason === 'policy-changed' y ademas corta si hay mismatch, mientras el refresh se dispara como 'source-changed'. Por eso reescribe el resto (generatedAtMs avanza) y no el scope. Conclusion: no reportar 'registro reparado' por la salida del refresh cuando state sigue stale; el sintoma de los jobs se apaga, el flag no. No lo repara doctor, ni flags de scope (solo --json y --refresh), ni la herramienta openclaw. Borrar la fila no sirve: no se regenera sola, pero el proximo comando la reescribe con el mismo valor malo.
+
+---
+
+## Los modelos cloud primero y ningun agente hereda un local (Gemma4:26B desinstalado)
+
+Verificado 2026-09-28. Politica del owner: 'estamos priorizando los modelos en la nube... los locales son solo para cuando no hay salida'. Estado roto encontrado: agents.defaults.model.primary = ollama/gemma4:26b, modelo LOCAL y DESINSTALADO. El mecanismo no obvio: un agente SIN bloque model no se queda sin modelo, HEREDA el default. Por eso kanam-mind y kanam-studio (los dos unicos sin model explicito) eran los dos unicos montados sobre un modelo local inexistente, y esa era la causa real de 'prepared model runtime owner was not published' y de los timeouts en model-call-started (gateway-jobs-watcher acumulo 15 fallos). Corregido: defaults + los 4 especialistas en ollama/gpt-oss:120b-cloud, main en ollama/deepseek-v4.1-flash:cloud; fallbacks 27 -> 13 con los cloud primero y los locales INSTALADOS al final. Verificado forzando la corrida de los jobs sin esperar schedule: ambos pasaron a ok. Regla: un modelo citado en el config que no aparece en ollama list no puede ser primary ni fallback.
+
+---
+
+## El scope del registro de plugins lo fija el ORDEN de agents.entries, no systemAgent.agentId
+
+Verificado 2026-09-28 con un experimento A/B/A aprobado por el owner. Sintoma: los triggers de automatizacion fallan con 'Plugin runtime changed' y el registro persistido queda stale con un desacuerdo de scope (persistido .../workspace/agents/kanam-dev vs correcto .../workspace, con differences vacio y los 62 manifiestos coincidiendo). Mecanismo aparente (bug): resolvePluginControlPlaneWorkspace -> tryResolveAmbientOwnerAgentId SI prefiere agents.defaults.systemAgent.agentId (configurado en main, correcto), pero el indice persistido seguia al PRIMER entry del roster. Prueba: con orden kanam-dev,...,main el resultado es stale + kanam-dev; con main primero es fresh + /workspace; revertido al original vuelve a stale + kanam-dev. Fix: main PRIMERO en agents.entries. Verificado estable (releido 20s despues, sigue fresh) y confirmado en el consumidor: langchain-starter-health-watch paso de error (15:04) a ok (16:04). No requiere restart. No reparable por refresh (guarda canRefreshPersistedPolicyState exige reason=policy-changed, el refresh corre source-changed), ni por doctor, ni borrando la fila. Regla al sumar agentes: main no se mueve de la primera posicion.
+
+---
+
+## Un primary explicito SIN fallbacks no hereda: clobbea los defaults y deja al agente sin red
+
+Verificado 2026-09-28, y es una regresion que introduje yo misma horas antes en ADR-076. Al fijar agents.entries.<rol>.model = { primary: 'ollama/gpt-oss:120b-cloud' } SIN la clave fallbacks, el runtime NO hereda agents.defaults.model.fallbacks: la pisa y deja al agente sin ningun fallback. Lo detecto doctor, no yo: 'agents.entries.kanam-ops.model is { primary: ... }, a object with no explicit "fallbacks" key. At runtime this clobbers agents.defaults.model.fallbacks, leaving the agent with no fallbacks.' Afecto a kanam-dev, kanam-mind y kanam-ops. Fix: declarar SIEMPRE la pareja primary + fallbacks (o fallbacks: [] para deshabilitar a proposito). Es el mismo tipo de error que el ADR venia a arreglar -un agente con modelo fragil- reintroducido por la via opuesta. Regla: un primary explicito no hereda fallbacks, los reemplaza; al fijar un modelo por agente, verificar la pareja completa. Cerrar el ciclo con doctor, no con la lectura del JSON.
 
 ---
 

@@ -185,3 +185,9 @@ REGLA DE METODO QUE ME LLEVO: antes de proponer una skill nueva para un problema
 
 ---
 
+## El experimento que respondio la pregunta clave
+
+ Gonzo pregunto si iterar un modelo barato sin problema de recursos puede competir con los grandes. **gemma + gate convergio**: T7 en 2 iteraciones (795 tokens), T8 en 1 iteracion (1.058 tokens). Y los fixes GENERALIZAN (0 discrepancias en 39.600 combinaciones; 4/4 casos fuera de la suite). **Con el prompt aislado (feedback-only, sin reglas nuevas) tambien convergio** -> el progreso viene del FEEDBACK, no de una spec mas explicita. El modelo incluso razono desde el test ("el descuento debe redon
+
+---
+

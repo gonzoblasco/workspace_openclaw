@@ -491,3 +491,55 @@ El working tree tenia studies/narrative-engineering/ revertido: el caso 02 (Batm
 
 ---
 
+## El diagnostico puede ser el inyector del fallo: los comandos de plugins re-rompen los triggers
+
+Verificado 2026-09-28. Dos jobs de automatizacion (pipeline-queue-watcher, langchain-starter-health-watch) quedaron en ok a las 11:54 tras un refresh del registro de plugins, y VOLVIERON a error a las 11:57 y 12:06 despues de comandos de inspeccion posteriores. Cada comando de `plugins` cambia el runtime de plugins e invalida el contexto con el que se evalua un trigger ya registrado. Consecuencias: (a) los 'hallazgos del watcher' que se me pidio corregir eran el EFECTO de mi propia investigacion, no un problema latente del sistema; (b) agrupar los comandos de plugins en una sola pasada y no repetirlos despues del refresh; (c) un ok obtenido justo despues de un comando NO prueba estabilidad - la prueba es un ok sin tocar el runtime, en la corrida programada; (d) antes de escalar un fallo como hallazgo, verificar el orden temporal contra la hora de los propios comandos.
+
+---
+
+## Un sub-agente escribe relativo a SU workspace, y el runtime no valida semantica
+
+Verificado 2026-09-28, tres veces en una sesion. (1) Rutas: un sub-agente resuelve rutas relativas contra SU PROPIO workspace, no el compartido. Con el brief diciendo 'agents/kanam-ops/reports/x.md', kanam-ops escribio en 'agents/kanam-ops/agents/kanam-ops/reports/x.md'; kanam-dev escribio 'scripts/verify-delegation.sh' en 'agents/kanam-dev/scripts/'. El hijo que recibio ruta ABSOLUTA (kanam-mind) acerto. Regla: toda ruta de escritura en un brief va absoluta. (2) Semantica: status=done significa que el proceso termino limpio, NO que haya producido el resultado. Medido: '43 specs importados' (eran 83), '9 skills' (eran 0), un JSON de evidencia inventado con campos inexistentes, y una suite con set -e que se auto-abortaba en el test 2 de 5. Regla: el padre reproduce la verificacion y reporta la salida cruda, no la interpretacion del hijo. (3) Un sub-agente no puede crear sub-agents (sessions_spawn no esta disponible para el); briefearlo es briefear una tarea imposible y el hijo improvisa para cerrar en done.
+
+---
+
+## Terminar una prueba por impaciencia y reportarla como defecto del proceso: error de atribucion
+
+Verificado 2026-09-28. Reporte que el modelo GLM-5.3-Flash 'se cuelga con prompts largos' y lo deje escrito en un ADR. Al re-medir sin presuponer la causa: 7 tamanos de prompt (455 B a 150 KB) respondieron OK en 3-4s cada uno, dos modelos distintos OK, y una tarea que exige la herramienta Bash ejecuto, listo y razono correctamente. Lo que habia pasado: los dos intentos originales terminaron por SIGTERM, y el SIGTERM lo di yo misma con pkill tras esperar unos minutos. No habia cuelgue: habia una prueba que yo cortaba y a la que le atribuia el fallo. Regla: si una prueba se corta, el resultado es 'no concluyente', NUNCA 'colgado'. Antes de reportar un defecto, verificar quien termino el proceso (exit code, SIGTERM propio) y no confundir 'deje de esperar' con 'el proceso fallo'. El unico fallo real y reproducible en esa familia es qwen3.5:cloud con exit status 1.
+
+---
+
+## La DB de estado usa WAL: copiar solo el .sqlite lee estado viejo y fabrica contradicciones falsas
+
+Verificado 2026-09-28. La DB ~/.openclaw/state/openclaw.sqlite usa journal_mode=wal. Copiar solo el archivo .sqlite NO incluye los cambios pendientes del -wal, asi que se lee una version vieja del dato. En esta sesion eso produjo una contradiccion aparente entre el CLI (que decia state=fresh, workspaceDir=/workspace) y mi copia de la DB (que decia stale, kanam-dev): el CLI leia el WAL, mi copia no. Pase un rato largo tratando de explicar una contradiccion que habia fabricado yo mismo copiando mal. Copia correcta: cp state/openclaw.sqlite /tmp/r.sqlite; cp state/openclaw.sqlite-wal /tmp/r.sqlite-wal; cp state/openclaw.sqlite-shm /tmp/r.sqlite-shm. Regla: antes de declarar que dos fuentes se contradicen, verificar que ambas lean la misma version del dato. Un -wal no copiado es un falso desacuerdo, y perseguirlo quema ciclos. El CLI sqlite3 esta bloqueado sobre el state dir; la copia completa en /tmp se lee sin problema.
+
+---
+
+## Correlacion reproducible no es cadena causal: probe el orden->state y reporte orden->fallo
+
+Verificado 2026-09-29, y es una autocorreccion de un ADR que yo misma escribi el dia antes. En ADR-081 afirme: 'el scope del registro lo fija el orden de agents.entries, por eso los triggers fallaban; fix: main primero'. El A/B/A que corri SI probo el primer eslabon (orden -> state del registro, reproducible). Lo que NO probe fue el segundo: que ese desvio causara el fallo de los jobs. Diez horas despues los datos lo desmintieron: el gateway reescribio el config a las 23:29-23:30 (config.write en logs/config-audit.jsonl, sin actor de agente, claves en orden alfabetico), el registro volvio a stale con persisted=agents/kanam-dev... y los 3 jobs hicieron 0 errores en 31 corridas. O sea: el registro puede estar stale con los jobs sanos, y 'main primero' ni siquiera persiste (el gateway reordena). El experimento que faltaba era trivial: revertir el orden Y ver el sintoma. Regla: cuando una hipotesis tiene dos eslabones, hay que probar el segundo explicitamente; confirmar el primer eslabon no autoriza a reportar el segundo. Una correlacion reproducible no es una cadena causal verificada. Ver ADR-081 (marcado parcialmente refutado).
+
+---
+
+## Lecciones de metodo (transversales)
+
+ 1. **Un modelo barato + gate puede igualar a uno caro**, y el limite es la calidad de la SEÑAL, no el tamaño del modelo. El loop converge tan lejos como el gate. 2. **La rotacion sin gate no agrega y degrada.** Cada paso tiene que ver el gate y hacer algo distinto (escribir/revisar/corregir/arquitectura), nunca "mejorar" a ciegas. 3. **Verificar el control, no asumirlo.** El observador de red demostro que harnesses y modelos mienten sobre que modelo/thinking usan. `ollama show` y el log del pro
+
+---
+
+## Un skip que descarta una CLASE entera de links tapa la podredumbre debajo
+
+**CONTEXTO:** `check-refs.py` reportaba "291 rutas citadas, todas existen" mientras 42 links rotos pasaban por debajo, solo en `SKILLS-INDEX.md`.
+
+**LA CAUSA:** `is_link_skippable` devolvia True para **cualquier** link terminado en `/`, con el criterio "link a directorio, no a archivo". Pero un link a un directorio promete que ese directorio existe. La regla no afinaba la deteccion: **descartaba una clase entera de promesas**. Los 42 links apuntaban a `skills/<slug>/`, ruta que ya no existia desde que las skills se movieron a `agents/<rol>/skills/`. Nadie los vio porque el skip los sacaba de la cuenta antes de mirarlos.
+
+**SEGUNDA CAPA:** `SKILLS-INDEX.md` no estaba en `DEFAULTS`, asi que el checker ni lo escaneaba en su corrida default. El documento con mas links del workspace era invisible al verificador de links.
+
+**REGLA QUE ME LLEVO:** al agregar una regla de SKIP a un verificador, preguntar **que clase de input elimina y si esa clase puede estar rota**. Un skip ("no es una ruta literal", "es un directorio") es un punto ciego si la clase que descarta puede fallar. "Link a directorio" no es una excepcion valida: es una promesa igual que un archivo. Corregido: los links a directorio se verifican; la corrida default paso de 291 a 369 rutas revisadas.
+
+**PATRON:** misma familia que "un detector de deuda ciego a su propio documento" - el verificador era ciego a su archivo mas importante. Tercera vez que el patron aparece (alcance limitado, skip de clase, lista de archivos incompleta). La pregunta no es "el check pasa?", es "que queda FUERA del check?".
+
+**VERIFICACION:** test que fijaba la conducta vieja (`test_directory_link_is_skipped`) reemplazado por `test_directory_link_is_checked` + `test_reports_a_broken_directory_link` + `test_skills_index_is_scanned`. Sembrar el defecto (un link a directorio inexistente) hace fallar el checker: probado. 21/21 en verde.
+
+---
+

@@ -58,3 +58,9 @@ Corolario de verificacion: los tests que fallan al cambiar el contrato son utile
 
 ---
 
+## LECCIONES DURABLES DE ESTA SESIÓN
+
+ 1. **Los tests encontraron un bug real de unidades.** El normalizador devolvía la unidad **de origen** (`cm`, `l`, `lb`) en vez de la canónica: `96 cm` no llegaba a `960 mm`. Sin los tests, el filtro por cilindrada y el comparador habrían quedado inservibles **en silencio**. Moraleja: normalizar unidades es donde se esconden los bugs silenciosos. 2. **La revisión visual encontró DOS FUENTES DE VERDAD.** La ficha de unidad calculaba "Ficha técnica parcial" con un umbral propio del componente (`s
+
+---
+

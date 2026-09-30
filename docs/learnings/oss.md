@@ -396,3 +396,15 @@ COMPLEMENTO: el check requerido del ruleset puede seguir bloqueando el merge aun
 
 ---
 
+## Leccion: las aserciones negativas no prueban nada (nueva) <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+
+ Un test cuya unica asercion es `expect(fn).not.toHaveBeenCalledWith(x)` **pasa aunque la funcion este rota**: no fija el comportamiento, solo excluye un caso. El maintainer lo detecto (review inline 14/09, `ComboBox.test.js:5138`: *"it seems more like there is no longer a need for them, rather than asserting that announce wasn't called with a specific value"*). - **Tecnica para arreglarlo sin adivinar:** instrumentar los escenarios reales con un scratch test de jest que loguee `mock.calls`, med
+
+---
+
+## Leccion: el tono IA-detectable es el problema, no la cantidad de comentarios (refuerza la del dia) <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+
+ El maintainer de react-spectrum fue explicito: *"please apply a bit more of a human touch, it's getting demoralising feeling like I'm just conversing with AI. I don't mind if you use AI, but I shouldn't really be able to tell that you're using AI"*. El patron que lo delata: prosa larga, defensiva, con estructura de ensayo ("I want to be straight about this...", "I've been following this PR closely the whole time... I own every line"). **Regla: comentarios en repos ajenos = cortos, tecnicos, sec
+
+---
+
