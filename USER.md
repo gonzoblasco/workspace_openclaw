@@ -26,13 +26,13 @@
 - **Busqueda laboral (2026-09-24):** SIN PROCESOS ABIERTOS. Todos cerrados. El principal (EIT/HTC, cliente Disney, Lead Software Engineer Digital Accessibility) nunca tuvo oferta firme: el rate lo acepto el reclutador, el cliente jamas hizo call; cerrado el 24/09 con "we will update if they want to schedule call". Arranque 01/10 descartado. Palanca que queda: CPACC antes del 30/11 si quiere retomar. Historial completo y backlog en `docs/entrevistas/job-search-tracker.md`.
 - **OSS:** 8 PRs mergeados en Adobe (react-spectrum), IBM/Carbon (ibm-products), Meta (astryx, x4) y MUI (material-ui + base-ui). Detalle: `docs/OSS-TRACKER.md`.
 - **Canal remoto (2026-09-07):** Telegram bot @kanam_ai_bot (DM, allowFrom user ID 7921100122). Reemplaza Tailscale Serve + PWA. El chat DM no necesita Tailscale; solo el /dashboard lo requeriria.
-- **Gateway 24/7 (2026-09-08):** el gateway de OpenClaw corre como servidor fijo en el Mac Mini (LaunchAgent cargado, pid activo). Telegram migrado Air -> Mini el 08/09 (en la Air queda apagado para evitar conflicto de long polling 409). El chat DM responde desde el Mini.
+- **Gateway 24/7 (2026-09-08):** el gateway de OpenClaw corre como servidor fijo en la Mac Mini (LaunchAgent cargado, pid activo). Telegram se migro Air -> Mini el 08/09 y hoy vive solo aca. El chat DM responde desde el Mini.
 
 ## Contexto
 
 - Fullstack real (React/TS, Supabase/Edge Functions, DB, billing, tooling). 10+ años de desarrollo continuo desde 2016, con accesibilidad como hilo continuo (detalle y conteo por rol en `memory/user-profile.md`).
 - Quiere que maneje su vida, archivos y proyectos.
-- Trabaja entre dos maquinas (Mac Mini y MacBook Air), workspace sincronizado por git.
+- El workspace vive **solo en la Mac Mini** (ADR-073); ya no se sincroniza entre maquinas.
 - Usa IA como infraestructura de trabajo (no como chat): sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop.
 - Stack opinado: OpenSpec, ADRs, AGENTS.md, HANDOFF, CHANGELOG.
 - También: fotógrafo, comunicación social, quiere escribir novelas. Quiere organizar actividad fisica y mejorar salud.

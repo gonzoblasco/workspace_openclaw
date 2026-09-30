@@ -1,6 +1,6 @@
 # Gateway Operations - Mapa operativo (Mac Mini)
 
-> La Mac Mini es el **servidor 24/7** (Telegram + gateway). La MacBook Air es máquina de trabajo secundaria.
+> La Mac Mini es el **servidor 24/7** (Telegram + gateway) y la **unica maquina** del workspace (ADR-085).
 > Creado: 2026-09-08. Origen: auditoría del SDLC con Gonzo - la parte OPERATIVA del gateway no estaba cubierta.
 
 ## Qué corre en el gateway
@@ -30,7 +30,7 @@
 
 ## Backups de config
 
-Convención: `~/.openclaw/openclaw.json.bak-<motivo>-<fecha>`. Antes de cualquier cambio de config: hacer backup. Existentes: `bak-telegram-off-20260908` (MacBook Air), `bak-gatewayops-20260908` (Mini).
+Convención: `~/.openclaw/openclaw.json.bak-<motivo>-<fecha>`. Antes de cualquier cambio de config: hacer backup. Existentes: `bak-telegram-off-20260908` (histórico, de la migración Air -> Mini), `bak-gatewayops-20260908` (Mini).
 
 ## Secretos
 

@@ -24,7 +24,7 @@ La integración de LangChain en el ecosistema de OpenClaw no busca reemplazar la
 - **Lenguaje:** Python **3.12.14** (migrado desde 3.9.6 el 2026-09-24).
 - **Framework de IA:** LangChain (Core, Community, LangGraph).
 - **API Server:** FastAPI + uvicorn (async/streaming nativo).
-- **Vector Store:** **ChromaDB local** (sin servidor, embebido). Supabase Vector (PGVector) queda para la Fase 6, cuando haya que compartir conocimiento entre maquinas.
+- **Vector Store:** **ChromaDB local** (sin servidor, embebido). Supabase Vector (PGVector) queda para la Fase 6, cuando haya que compartir conocimiento fuera de la maquina.
 - **Infraestructura:** **LaunchAgent nativo de macOS** para el Mac Mini (decision 2026-09-22). Docker queda escrito (`Dockerfile`) para la Fase 7, al desplegar fuera del Mac Mini.
 - **Motor de IA:** **Ollama local** para LLM y embeddings. Sin proveedores cloud, sin API keys.
 

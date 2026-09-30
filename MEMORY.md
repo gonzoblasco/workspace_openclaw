@@ -25,13 +25,13 @@
 - **Estilo de respuesta (2026-08-29):** breve por defecto, sobre todo en pedidos simples. Sin epílogos emotivos ni cierres decorativos ("serenatas"). Calidez = precisión y cuidado, no longitud. El registro efusivo de GLM no es excusa: la disciplina de output es mía.
 - **Analizar antes de asumir (2026-09-02):** regla de interacción en USER.md - no quedarse con la primera lectura de sus palabras ni de conclusiones técnicas. Alcance total: mensajes, debugging, reviews, código ajeno. Si hay ambigüedad real, preguntar. (Ref: USER.md)
 - **Revalidado (2026-09-04):** caso Base UI #5633 - atomiks respondió con `@Zezombye` sin mencionar a Gonzo. Primera lectura: "me ignoró / quedé mal parado". Segunda lectura: respondió en sustancia (cubrió el typeahead y la dirección del fix), solo sin tag. No fue desaire. La regla aplica también a interacciones OSS, no solo a código. (Ref: memory/2026-09-04.md)
-- Setup: Mac Mini + MacBook Air (workspace sincronizado por git).
+- Setup: workspace en una sola maquina, la Mac Mini (ADR-073).
 - **PRs en sesiones (2026-08-25):** No se revisan automáticamente al inicio. Solo cuando Gonzo los comparte.
 - **Branding LinkedIn (2026-08-25):** 3 nichos: (1) **a11y** (diferenciador), (2) **Agentic/AI-Native** (laboral), (3) **Fullstack** (base). Patrón: Solo PRs MERGEADOS, postura didáctica/pedagógica (el qué+proceso+por qué), sin tutoriales secuenciales. Archivo cada post en `docs/linkedin/`.
 - **Regla de branding (2026-09-02):** Issues/participaciones con crédito de maintainers NO son material de post - solo PRs mergeados propios. El crédito externo (ej. cixzhang en #4777) es material de ENTREVISTA (evidencia de proceso), no de LinkedIn. Registro interno (OSS-TRACKER/daily) captura todo; branding público solo merges propios.
 - **Ley de vida (2026-08-12):** Silencio = respeto. Hablar solo si hay algo que aportar. Un "ok" es ruido.
 - **Principio Boy Scout (2026-08-17):** Dejar el lugar mejor de como estaba al guardar sesión. Documentación constante y tests sobre lo nuevo.
-- **Regla de merge:** Siempre merge, nunca reset (evita perder commits de la otra máquina).
+- **Regla de merge:** Siempre merge, nunca reset (preserva commits al resolver conflictos de historial).
 - **No re-descubrir su pasado (2026-09-11):** Ante reclamos de Gonzo ("¿ya no conocés mi pasado? para qué me gasto documentando?"), la falla no es el reclamo - es no haber leído la memoria que él ya documentó. Antes de afirmar algo sobre su trayectoria/experiencia, **buscar en memoria primero** (`memory/user-profile.md` trayectoria, `memory/archive/` CV 2026-08-19). Marcar gaps solo con evidencia; su CV histórico está registrado.
 - **Docs por categoría (2026-08-27):** Carpetas en `docs/` para `linkedin/`, `feedback/`, `prs/`, `pipeline/`, `entrevistas/`. Raíz solo para generales.
 - **Idioma GitHub (2026-08-12):** TODO en inglés (README, docs, ADRs, commits, PRs). Strings de UI en español.

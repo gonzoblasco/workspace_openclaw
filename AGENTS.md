@@ -217,7 +217,7 @@ Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/S
 - **Pipeline:** Qwen Code via Ollama -> `ollama launch qwen --model deepseek-v4-flash:cloud -- -p "<tarea>" -y`. Alternativa para casos largos (SIGKILL): Claude Code con `ANTHROPIC_BASE_URL=http://localhost:11434`.
 - **Memoria:** `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables.
 - **Scripts clave:** `scripts/complexity-scorer.sh` (T-score antes de spawnear agentes), `scripts/pipeline-track.sh` (estado durable del pipeline).
-- **Maquinas:** Mac Mini (principal, corre el gateway) + MacBook Air. `git pull --rebase` antes de cada push.
+- **Maquinas:** solo la **Mac Mini** (corre el gateway; el workspace vive aca, ADR-073). `git pull --rebase` antes de cada push.
 
 ## Desarrollo
 

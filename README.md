@@ -6,7 +6,7 @@
 
 ## Qué es esto
 
-Workspace de trabajo de Kanam sobre OpenClaw, compartido entre dos máquinas (Mac Mini y MacBook Air) y sincronizado por git. No es una superficie pública ni un producto: es el espacio de trabajo, la memoria y las decisiones de la colaboración entre Gonzo y Kanam.
+Workspace de trabajo de Kanam sobre OpenClaw, que vive **solo en la Mac Mini** (desde la migración a arquitectura multi-agente, ADR-073). No es una superficie pública ni un producto: es el espacio de trabajo, la memoria y las decisiones de la colaboración entre Gonzo y Kanam.
 
 ## Puntos de entrada (empezá por acá)
 
@@ -26,7 +26,6 @@ Workspace de trabajo de Kanam sobre OpenClaw, compartido entre dos máquinas (Ma
 | Registros de sesión (historia) | [`docs/records/`](./docs/records/) | Fotos inmutables de sesiones pasadas (ADR-084), no documentación viva |
 | Trabajo en curso y próximo | [`docs/ROADMAP.md`](./docs/ROADMAP.md), [`docs/MAPA-PROXIMOS-PASOS.md`](./docs/MAPA-PROXIMOS-PASOS.md), [`memory/todos.md`](./memory/todos.md) | Roadmap, pasos y pendientes |
 | Operación del gateway | [`docs/gateway-operations.md`](./docs/gateway-operations.md) | Servicios y rutinas del gateway |
-| Cambiar de máquina | [`docs/machine-switch-protocol.md`](./docs/machine-switch-protocol.md) | Protocolo de handoff entre Mini y Air |
 
 ## Mapa de nivel 1
 
@@ -70,11 +69,10 @@ OpenClaw carga un subconjunto de archivos como *Project Context* en cada arranqu
 - **Pre-commit hooks:** enforcer de guion, `check-refs.py` (rutas y links vivos), `check-adr-integrity.py`. Omitir con `SKIP_SIMPLE_GIT_HOOKS=1`.
 - **Docs vivas:** CHANGELOG para cambios estructurales, daily en `memory/`, handoffs en `memory/handoffs/`.
 
-## Máquinas y sincronización
+## Máquinas
 
-- **Mac Mini:** máquina principal; corre el gateway 24/7.
-- **MacBook Air:** misma config, workspace sincronizado por git.
-- **Regla de merge:** ante conflictos, **merge, nunca reset** (el reset descarta commits de la otra máquina).
+- **Una sola máquina activa: la Mac Mini.** Corre el gateway 24/7. El workspace vive acá y no se sincroniza con otra computadora (ADR-073).
+- La MacBook Air quedó **fuera del flujo**; si alguna vez se la reconecta, ver ADR-085.
 
 ## Mantenimiento
 

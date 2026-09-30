@@ -10,10 +10,8 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 
 ## Máquinas
 
-- **Mac Mini** - máquina principal (donde corre el gateway de OpenClaw por defecto).
-- **MacBook Air** - segunda máquina, misma config. Workspace sincronizado por git.
-- **Regla de merge:** cuando venga algo del workspace (pull/rebase con conflictos), hacer merge, no reset. El soft reset descarta commits de la otra máquina.
-- **Siempre `git pull --rebase` antes del push** (evita pisar cambios de la otra máquina).
+- **Mac Mini** - unica maquina del workspace: corre el gateway de OpenClaw 24/7 y hospeda el repo. El workspace **ya no se sincroniza** con otra computadora (ADR-073).
+- **Siempre `git pull --rebase` antes del push** (higiene de historial; ya no hay segunda maquina que pushee).
 
 ## Modelos (Ollama local + cloud)
 

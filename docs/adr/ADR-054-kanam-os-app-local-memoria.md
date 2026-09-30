@@ -4,7 +4,9 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** pedido de Gonzo - "quiero ver tu conocimiento y memoria de un modo distinto al dialogo: en tablas, fichas y graficos"
-**Relacionado:** ADR-038 (learnings con mirror en DB), ADR-050 (la memoria sigue en SQLite local), ADR-011 (Next.js full-stack), ADR-047/048 (design system y UI)
+**Relacionado:** ADR-038 (learnings con mirror en DB), ADR-050 (la memoria sigue en SQLite local), ADR-011 (Next.js full-stack), ADR-047/048 (design system y UI), ADR-085 (una sola maquina)
+
+> **Nota 2026-09-29 (ADR-085):** este ADR se escribio cuando el workspace se sincronizaba entre el Mac Mini y el MacBook Air. Hoy **hay una sola maquina** (la Mini), asi que la sincronizacion entre maquinas **ya no existe**: se conserva como argumento historico. La decision (la DB se queda en git, la app es read-only) no cambia.
 
 ---
 
@@ -17,7 +19,7 @@ Lo que faltaba no era una decision de datos: era **una superficie**. La unica vi
 Tres preguntas concretas de arquitectura quedaron abiertas:
 
 1. **Python o Next en el back.** La asociacion "Python = cosas de IA" sugiere meter FastAPI para los embeddings.
-2. **`memory.db` sigue en git o se vuelve local.** Gonzo fue explicito: sacarla del repo **rompe la sincronizacion entre maquinas** (ADR-050 la habia marcado como el umbral de higiene a vigilar).
+2. **`memory.db` sigue en git o se vuelve local.** Al escribirse este ADR, sacarla del repo **rompia la sincronizacion entre maquinas** (ADR-050 la habia marcado como el umbral de higiene a vigilar). Hoy hay una sola maquina (ADR-085) y la DB se queda versionada como respaldo.
 3. **La UI puede escribir.** El destino es CRUD; el arranque es solo lectura.
 
 ### Volumen real (verificado 2026-09-22)
@@ -59,7 +61,7 @@ memory/memory.db  ──read-only──▶  kanam-os (Next.js 16, App Router)  �
 
 **1. Next.js y NO Python en el back.** FastAPI agrega un segundo runtime, un segundo puerto y un bridge HTTP para leer un archivo SQLite que Node 26 ya lee nativo (`node:sqlite` es built-in). La parte "IA" no la necesita la UI: el vector **ya esta persistido** en `session_vectors` / `learnings_enriquecido`; la UI lo proyecta, no lo calcula. Python se queda donde ya funciona y no se reescribe.
 
-**2. `memory.db` SE QUEDA en git.** Es la razon por la que la memoria viaja entre el Mac Mini y el MacBook Air. Sacarla del repo resolveria el bloat pero rompe la sincronizacion, que es el uso real. El riesgo tecnico concreto (que `-wal`/`-shm` ensucien el repo) **no aplica si la app abre read-only**: verificado - tras el build y las 9 vistas servidas, no aparecio ningun archivo `-wal`/`-shm`. Y `readOnly` evita el riesgo de que dos maquinas escriban el mismo binario a la vez.
+**2. `memory.db` SE QUEDA en git.** (El argumento original era que la memoria viajara entre el Mac Mini y el MacBook Air; con una sola maquina ese motivo ya no aplica - ver ADR-085. La DB sigue en git como **respaldo versionado** de la fuente de verdad.) El riesgo tecnico concreto (que `-wal`/`-shm` ensucien el repo) **no aplica si la app abre read-only**: verificado - tras el build y las 9 vistas servidas, no aparecio ningun archivo `-wal`/`-shm`.
 
 **3. La UI nunca escribe SQL crudo.** La fase CRUD no agrega un escritor nuevo: agrega *botones que disparan los scripts existentes*. Un `UPDATE` directo desde la UI dejaria los markdown mintiendo respecto de la DB, que es exactamente el anti-patron que ADR-038 cerro.
 
@@ -75,11 +77,11 @@ WAL mejora la concurrencia lector/escritor, pero crea `memory.db-wal` y `memory.
 - **Ver el sistema, no consultarlo.** Fichas de sesion, grafo de topics, tablas de OSS/learnings/TODOs, daily navegable.
 - **Cero infraestructura nueva:** sin Docker, sin Postgres, sin segundo server. `npm run dev` y listo.
 - **Ningun escritor nuevo:** la invariante "la DB manda, los markdown se regeneran" queda intacta.
-- **La DB sigue viajando:** el uso entre dos maquinas no se rompe.
+- **La DB sigue versionada:** el respaldo de la fuente de verdad no se pierde.
 - Consistencia con ADR-011 (Next.js como plataforma full-stack) sin forzar Supabase (ADR-012, que es para productos multi-usuario).
 
 ### Negativas
-- **El repo git sigue con un binario de 12,5 MB que cambia por sesion.** Aceptado con los ojos abiertos: es el precio de sincronizar memoria entre maquinas. El umbral de ADR-050 queda vigente y este ADR no lo re-abre.
+- **El repo git sigue con un binario de 12,5 MB que cambia por sesion.** Aceptado con los ojos abiertos: es el precio de versionar la fuente de verdad. El umbral de ADR-050 queda vigente y este ADR no lo re-abre.
 - **Un runtime mas en la maquina** (el server de Next mientras se usa la app). Se levanta on-demand, no como servicio permanente.
 - **Riesgo de que la UI se convierta en un segundo escritor.** Mitigado por regla explicita: solo dispara scripts.
 

@@ -303,6 +303,8 @@ El modelo puede cambiarse a mitad de sesion: el runtime del contexto de arranque
 
 ## SSH key para sincronizar workspace con Mac Mini M4 y MacBook Air M2
 
+> **Nota 2026-09-29 (ADR-085):** registro historico. El workspace hoy vive solo en la Mac Mini; esta tarea quedo sin sujeto.
+
  - Iniciada creacion de key en VPS (pendiente: crear `~/.ssh` porque el contenedor lo tenia ausente). - Pendiente: copiar public key a ambas Mac y configurar git remote en las maquinas. ## Cata empirica de 8 modelos (ADR-040)
 
 ---

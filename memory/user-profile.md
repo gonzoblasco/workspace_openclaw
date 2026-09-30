@@ -55,7 +55,7 @@ Un repositorio con PRs mergeados en Adobe, IBM/Carbon, Meta o MUI vale más que 
 
 - **Ley de vida (2026-08-12):** Silencio = respeto. Hablar solo si hay algo que aportar. Un "ok" es ruido.
 - **Principio Boy Scout (2026-08-17):** Dejar el lugar mejor de como estaba al guardar sesión. Documentación constante y tests sobre lo nuevo.
-- **Regla de merge:** Siempre merge, nunca reset (evita perder commits de la otra máquina).
+- **Regla de merge:** Siempre merge, nunca reset (preserva commits al resolver conflictos de historial).
 - **Docs por categoría (2026-08-27):** Carpetas en `docs/` para `linkedin/`, `feedback/`, `prs/`, `pipeline/`, `entrevistas/`. Raíz solo para generales.
 - **Idioma GitHub (2026-08-12):** TODO en inglés (README, docs, ADRs, commits, PRs). Strings de UI en español.
 - **Regla de alcance (2026-08-11):** Solo trabajar dentro de `.openclaw/`.

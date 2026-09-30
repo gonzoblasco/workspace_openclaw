@@ -65,7 +65,7 @@ Probado end-to-end, no solo habilitado:
 ### Negativas / riesgos aceptados
 - **El plugin pide acceso amplio:** los grants declarados incluyen `allowConversationAccess` y `allowPromptInjection`. Es bundled y de la casa, pero conviene saberlo: no es un plugin pasivo.
 - **El vault arranca vacio.** Activar da la capacidad, no el contenido. Requiere ingesta deliberada.
-- **`~/.openclaw/wiki/main` no esta en el workspace git** -> no tiene backup por versionado. El conocimiento compilado ahi no viaja entre maquinas. Solo el **material de origen** (que si es workspace) es recuperable.
+- **`~/.openclaw/wiki/main` no esta en el workspace git** -> no tiene backup por versionado. El conocimiento compilado ahi no viaja a otra maquina. Solo el **material de origen** (que si es workspace) es recuperable.
 - **Duplicacion potencial:** un dato puede vivir en `memory.db`, en un doc y ahora tambien en el vault. Se mitiga con la regla de que el wiki es capa analitica, nunca fuente de verdad.
 
 ### Politica de ingesta (decidida)

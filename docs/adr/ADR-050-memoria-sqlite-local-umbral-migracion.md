@@ -4,7 +4,9 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** evaluacion de arquitectura por capas (2026-09-15); pregunta de Gonzo sobre el umbral de migracion
-**Relacionado:** ADR-012 (Supabase como BaaS para proyectos), ADR-047 (Kanam Design System)
+**Relacionado:** ADR-012 (Supabase como BaaS para proyectos), ADR-047 (Kanam Design System), ADR-085 (una sola maquina)
+
+> **Nota 2026-09-29 (ADR-085):** el argumento de "sincronizar entre maquinas" era del escenario de dos equipos (Mini + Air). Hoy hay una sola maquina; el motivo historico se conserva, pero el estado actual es un workspace en la Mini.
 
 ---
 
@@ -56,7 +58,7 @@ Uno solo de estos, sostenido, es motivo para reabrir esta decision (nuevo ADR, n
 
 ### El umbral mas probable de alcanzar primero: higiene de git, no performance
 
-`memory/memory.db` **esta trackeado en git** (`.gitignore` linea 25: `!memory/memory.db`). Eso hoy funciona, pero es la pieza que primero se degrada: un binario que cambia cada sesion en un repo git genera bloat y conflictos en el sync entre maquinas. **El umbral real de vigilar es la higiene de git, no el rendimiento.**
+`memory/memory.db` **esta trackeado en git** (`.gitignore` linea 25: `!memory/memory.db`). Eso hoy funciona, y con una sola maquina (ADR-085) el sync entre equipos ya no es la preocupacion: el motivo de vigilar la higiene de git es el **bloat** (un binario que cambia cada sesion), no los conflictos de merge. **El umbral real de vigilar es la higiene de git, no el rendimiento.**
 
 Cuando el bloat de `memory.db` en git se vuelva un problema, la respuesta no es Postgres - es **sacar la DB del repo** (backups por otro mecanismo, los `.md` ya son la vista regenerable) - y ahi recien evaluar el resto.
 
@@ -71,7 +73,7 @@ Cuando el bloat de `memory.db` en git se vuelva un problema, la respuesta no es 
 
 ### Negativas
 - Un solo nodo, sin HA: si la maquina muere se pierde lo no respaldado (mitigado: los `.md` son vista regenerable desde la DB, no al reves).
-- Sin acceso remoto al agente desde otra maquina mientras corre.
+- Sin acceso remoto al agente mientras corre.
 
 ---
 

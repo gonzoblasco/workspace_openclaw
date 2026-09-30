@@ -138,7 +138,7 @@ Crea una síntesis con claims para consolidar decisiones. Puebla dashboards.
 
 ## Notas
 
-- **El vault no tiene backup por versionado:** vive en `~/.openclaw/wiki/main`, fuera del workspace git. El conocimiento compilado ahi **no viaja entre maquinas**; solo el material de origen (que si es workspace) es recuperable.
+- **El vault no tiene backup por versionado:** vive en `~/.openclaw/wiki/main`, fuera del workspace git. El conocimiento compilado ahi **no viaja a otra maquina**; solo el material de origen (que si es workspace) es recuperable.
 - **Politica de ingesta:** `memory/` y `docs/entrevistas/` contienen datos personales y de busqueda laboral: NO se ingestan sin decision explicita de Gonzo. El plugin viene con `bridge` y `unsafe-local` **apagados** por defecto, y esos son justamente los canales por los que podria chupar archivos privados: dejarlos asi.
 - memory-wiki **no sirve UI web**. Es markdown local navegable (o Obsidian con renderMode obsidian). Para UI web hay que construir renderer aparte.
 - La UI web que servía openclaw-os-plugin (ya eliminado) fue la que daba vista browser, no memory-wiki.

@@ -64,8 +64,7 @@ Los que piden meses de trabajo sostenido, no días. Necesitan foco exclusivo.
   export. World-building con IA como capa viva durante todo el desarrollo. El proyecto más ambicioso
   del tablero.
 - **soporteml** (#36): clonar desde GitHub y mudar el puente Lovable MCP. Producto real con tracción.
-- **kanam-pulse** (#33, #35): traer `system-health-check` del MacBook Air; evaluar wrapper nativo
-  (Electron/Tauri/RN) solo después de que la web esté sólida.
+- **kanam-pulse** (#33, #35): evaluar wrapper nativo (Electron/Tauri/RN) solo después de que la web esté sólida. El codigo de `system-health-check` ya esta en GitHub (repo privado); no vive en ninguna maquina.
 - **kanam-mind**: la memoria como producto (hoy es infraestructura interna).
 
 ---

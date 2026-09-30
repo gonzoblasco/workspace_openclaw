@@ -167,11 +167,9 @@
 - **Criterio de éxito**: skills promovidas solo cuando demuestran valor repetido, no por entusiasmo.
 - **Señal de listo**: cada skill estándar tiene evidencia de uso en 3+ sesiones.
 
-### 3.2 La segunda máquina como activo 🟢 P2
-- **Qué**: el sync por git entre Mac Mini y MacBook Air funciona.
-- **Por qué**: vale la pena revisar si el flujo es óptimo o si hay fricción.
-- **Criterio de éxito**: cambio de máquina sin fricción (pull --rebase, merge, no reset).
-- **Señal de listo**: 0 conflictos de merge no resueltos en un mes.
+### 3.2 La segunda máquina como activo ✅ RETIRADO (2026-09-29)
+
+> **Retirado.** El workspace ya no se sincroniza entre máquinas: desde la arquitectura multi-agente (ADR-073) vive solo en la Mac Mini (ADR-085). El item perdió su sujeto.
 
 ---
 
@@ -189,7 +187,7 @@
 | 8 | 1.1 Pipeline A/B | Pipeline | P2 | 🟡 |
 | 9 | 1.2 Ruteo de modelos | Pipeline | P2 | 🟡 |
 | 10 | 3.1 Evolución skills | Crecimiento | P2 | 🟢 |
-| 11 | 3.2 Segunda máquina | Crecimiento | P2 | 🟢 |
+| 11 | 3.2 Segunda máquina | Crecimiento | P2 | ⚫ retirado |
 
 ---
 

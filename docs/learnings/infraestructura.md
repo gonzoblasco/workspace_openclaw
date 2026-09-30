@@ -79,12 +79,12 @@
 - **Documentos narrativos** (MEMORY.md, LEARNINGS.md, AGENTS.md, SOUL.md): se leen como narrativa, se curan a mano, se versionan en git. Migrarlos a SQLite es un error - se pierde legibilidad y diff. Quedan como markdown.
 - **Datos estructurados** (OSS-TRACKER, TODO, INBOX): son tablas disfrazadas de markdown. SQLite brilla acá - queries, filtros, agregación. Migrar.
 - **Log cronológico** (daily notes): caso híbrido. El presente en markdown (legible, diff), el pasado archivado a SQLite (fuera del camino, consultable). Este es el "modo híbrido".
-- **SQLite en git:** el `*.db` estaba ignorado por defecto. Para sincronizar entre las dos máquinas de Gonzo (Mac Mini + MacBook Air), la DB de memoria DEBE versionarse (excepción al .gitignore). El riesgo de conflicto de merge es bajo para datos append-only.
+- **SQLite en git:** el `*.db` estaba ignorado por defecto. Para sincronizar entre las dos máquinas de Gonzo (Mac Mini + MacBook Air), la DB de memoria DEBE versionarse (excepción al .gitignore). El riesgo de conflicto de merge es bajo para datos append-only. _(Nota 2026-09-29: hoy hay una sola máquina, ADR-085; la DB sigue versionada pero como respaldo, no para sincronizar.)_
 - **El bottleneck real no es leer archivos planos** - es que la IA lee/escribe markdown que se versiona. SQLite agrega queries que no se necesitan para documentos de ~20KB. El valor real de SQLite aparece cuando los datos crecen y necesitás consultar/filtrar (el OSS-TRACKER ya estaba creciendo).
 
 **Self-reflection:**
 - CONTEXT: refactorización de infraestructura del setup
-- REFLECTION: el diseño híbrido (presente en markdown, pasado en SQLite) respeta el flujo de trabajo real sin romperlo. La decisión clave fue versionar la DB (excepción al .gitignore) para no romper la sincronización entre máquinas.
+- REFLECTION: el diseño híbrido (presente en markdown, pasado en SQLite) respeta el flujo de trabajo real sin romperlo. La decisión clave fue versionar la DB (excepción al .gitignore) para no romper la sincronización entre máquinas. _(Nota 2026-09-29: el escenario de dos máquinas ya no existe, ADR-085.)_
 - LESSON: al migrar archivos planos a DB, separar datos estructurados (migrar) de documentos narrativos (no migrar), y versionar la DB si el flujo depende de sincronización entre máquinas.
 - BIASES DETECTED: none (el diseño consideró el flujo de doble máquina y la legibilidad antes de ejecutar).
 

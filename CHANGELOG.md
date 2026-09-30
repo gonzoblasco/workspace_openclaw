@@ -131,6 +131,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - ADR-085: una sola maquina - el workspace deja de sincronizarse entre equipos
+
+### Changed
+- **La documentacion dejo de describir un mundo que ya no existe.** El workspace se presentaba como "compartido entre Mac Mini y MacBook Air, sincronizado por git" en `README.md`, `AGENTS.md`, `USER.md`, `MEMORY.md`, `docs/SETUP.md`, `docs/gateway-operations.md`, `.knowledge/BRIEF.md` y `docs/LANGCHAIN_STRATEGY.md`. Con la arquitectura multi-agente (ADR-073) el modo de trabajo cambio: el sistema orquesta agentes en **una sola maquina**. Corregido en todas las superficies.
+- **`memory.db` sigue en git, con otro fundamento.** El motivo original era que la memoria viajara entre equipos (ADR-050/054). Con una sola maquina ese motivo desaparece; la DB se queda como **respaldo versionado**. El umbral de higiene de git (bloat) sigue vigente; los conflictos de merge entre equipos, no. Notas de estado agregadas a ADR-050 y ADR-054 (el texto historico se conserva).
+- **Regla "merge, nunca reset" conservada, sin su porque original.** Nacio para no descartar commits de la otra maquina. Sigue siendo buena practica al resolver conflictos de historial; se retiro la justificacion "de la otra maquina" en `MEMORY.md` y `memory/user-profile.md`.
+- **Registros fechados con nota, no reescritos.** `docs/learnings/infraestructura.md` y `docs/learnings/metodologia.md` conservan su texto y suman una nota de que el escenario cambio.
+
+### Removed
+- **`docs/machine-switch-protocol.md` eliminado.** Su unico sujeto era el cambio de maquina. Sus fragmentos vivos (datos locales irrecoverables, gitlinks, `pull --rebase`) ya viven en `AGENTS.md` y `docs/AGENTS-DETALLE.md`; el resto no tenia referente. Retirado tambien el item de roadmap "3.2 La segunda maquina como activo".
+
+### Notes
+- **Hallazgo de registro:** la decision sobre la Air no estaba escrita en ningun lado (se busco en los dailies del 27/28/29 y en la memoria). Este ADR es el registro que faltaba. Una decision que solo se dice en una conversacion no viaja a la documentacion, y el sistema sigue describiendo un mundo vencido.
+- **El gate atrapo al propio ADR:** `check-refs.py --all` marco que ADR-085 citaba el archivo que acababa de retirar. Corregido. La guarda funciono sobre su propio autor.
+- Verificado: `check-adr-integrity` 85 ADRs, `check-refs --all` 441 rutas, `test-skills` verde.
+
+---
+
 ## [2026-09-29] - ADR-084: registros de sesion consolidados y el segundo arbol de skills cubierto
 
 ### Changed
