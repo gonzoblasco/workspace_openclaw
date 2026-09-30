@@ -33,7 +33,7 @@ Ademas, `ollama launch` ya lista **claude** como integracion de primera clase (j
 
 **`Qwen Code` queda como fallback o segundo par de ojos**, no como estandar.
 
-El modelo que ambos cargan se sigue eligiendo por tipo de tarea (ADR-040): `deepseek-v4-flash:cloud` como default/motor, `glm-5.3-flash` escalada multimodal, `kimi-k2.7-code` nivel superior.
+El modelo que ambos cargan se sigue eligiendo por tipo de tarea (ADR-040): `deepseek-v4.1-flash:cloud` como default/motor (v4-flash quedo retirado el 2026-09-25), `glm-5.3-flash` escalada multimodal, `kimi-k2.7-code` nivel superior.
 
 ### Comando estandar
 
@@ -166,3 +166,12 @@ Claude Code no lee AGENTS.md por defecto - **no lo prioriza, lo ignora**. Verifi
 1. **Mantener Qwen como estandar** (no documentar el cambio): ignoraria la practica real y dejaria el doc mintiendo. Rechazado.
 2. **Dual estandar** (Qwen y Claude al mismo nivel): agrega complejidad sin beneficio; los ciclos reales ya usan Claude. Rechazado.
 3. **Esto no es una decision de modelo**: ADR-040/041/045/046 siguen definiendo *que* modelo carga el harness. Este ADR solo decide *en que harness* corre. No pisa esas decisiones.
+
+## Actualizacion 2026-09-29 - retiro de `deepseek-v4-flash`
+
+`deepseek-v4-flash:cloud` fue **retirado por Ollama el 2026-09-25** (verificado con el daemon:
+`ollama show deepseek-v4-flash:cloud` responde `was retired at 2026-09-25 00:00:00 -0700 PDT`,
+ref `7e00c916-e009-455f-aa4c-f6f64a81a6bd`). Su lugar como motor de los agentes A/B del pipeline
+lo ocupa **`deepseek-v4.1-flash:cloud`**, que deja de ser "fase de escalada" y pasa a ser el
+reemplazo (la escalada sigue siendo `glm-5.3-flash:cloud`). Este ADR se conserva como registro de
+la decision vigente a su fecha; las referencias a v4-flash que quedan en el texto son historicas.

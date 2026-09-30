@@ -323,3 +323,12 @@ Detalle completo y ficha de capacidades en **ADR-041**. Lo que cambia sobre este
 - **PDFs e imagen:** GLM-5.3-Flash procesa nativamente imagen, video y archivos; la seccion de arriba que decia "ningun modelo procesa PDFs nativamente" queda desactualizada. El flujo con `scripts/pdf-tool.sh` sigue siendo el fallback.
 - **Pendiente:** K2.7 Code en high y validacion de GLM Flash en tareas reales de produccion del pipeline.
 - **Rollback:** backup `~/.openclaw/openclaw.json.bak-20260829`.
+
+## Actualizacion 2026-09-29 - retiro de `deepseek-v4-flash`
+
+`deepseek-v4-flash:cloud` fue **retirado por Ollama el 2026-09-25** (verificado con el daemon:
+`ollama show deepseek-v4-flash:cloud` responde `was retired at 2026-09-25 00:00:00 -0700 PDT`,
+ref `7e00c916-e009-455f-aa4c-f6f64a81a6bd`). Su lugar como motor de los agentes A/B del pipeline
+lo ocupa **`deepseek-v4.1-flash:cloud`**, que deja de ser "fase de escalada" y pasa a ser el
+reemplazo (la escalada sigue siendo `glm-5.3-flash:cloud`). Este ADR se conserva como registro de
+la decision vigente a su fecha; las referencias a v4-flash que quedan en el texto son historicas.

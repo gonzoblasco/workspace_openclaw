@@ -133,7 +133,7 @@ El pipeline usa un router de modelo configurable por tipo de tarea + overrides s
 ./scripts/model-router.sh list                 # ver rutas + overrides
 ```
 
-**Rutas por defecto (2026-08-30):** code → deepseek-v4-flash, review → deepseek-v4-flash, long → glm-5.3-flash, cheap → gemma4, writing → glm-5.3-flash, pipeline_ab → gpt-oss:120b-cloud / deepseek-v4.1-flash:cloud, default → deepseek-v4-flash.
+**Rutas por defecto (2026-09-30):** code → deepseek-v4.1-flash, review → deepseek-v4.1-flash, long → glm-5.3-flash, cheap → gemma4, writing → glm-5.3-flash, pipeline_ab → gpt-oss:120b-cloud / deepseek-v4.1-flash:cloud, default → deepseek-v4.1-flash.
 
 **Division de modelos A/B (2026-09-28, pedido de Gonzo):** en `pipeline_ab`, el **Agente A (ejecutor) usa un modelo liviano** (`gpt-oss:120b-cloud`) y el **Agente B (evaluador y corrector) usa uno grande con context window amplia** (`deepseek-v4.1-flash:cloud`, 1M de contexto).
 
@@ -247,7 +247,7 @@ Kanam (este agente, corriendo en OpenClaw) es el orquestador. El flujo de trabaj
 ### Pasos tecnicos en OpenClaw
 - **Claude Code (estandar, ADR-049):** `exec` con `ollama launch claude --model <tag> -- -p "..."`, o directo `ANTHROPIC_BASE_URL=http://127.0.0.1:11434 ANTHROPIC_AUTH_TOKEN=<x> claude -p "..." --model <tag>` (`claude` ya esta en el PATH, 2.1.280; `pty: true` para sesiones largas).
 - **Qwen Code (fallback):** `exec` con `ollama launch qwen --model <modelo> -- -p "..." -y`.
-- **Modelo dinamico en ambos:** elegir por tarea via `--model` (deepseek-v4-flash:cloud default, kimi-k2.7-code:cloud cuando se justifica).
+- **Modelo dinamico en ambos:** elegir por tarea via `--model` (deepseek-v4.1-flash:cloud default, kimi-k2.7-code:cloud cuando se justifica).
 - La redaccion de prompts y el encadenado de outputs es responsabilidad del orquestador, no del desarrollador.
 - Verificar siempre el resultado real (archivos, build, tests) - no confiar solo en el texto de salida del agente.
 - **SIGKILL:** aplica al fallback Qwen (~3 min en tareas largas). Con Claude Code (estandar) es menos frecuente; si un agente muere a mitad, el orquestador verifica, commitea y relanza con prompt mas corto.

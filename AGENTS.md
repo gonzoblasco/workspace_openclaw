@@ -212,9 +212,9 @@ Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/S
 
 **Resumen operativo** (los subagentes solo reciben `AGENTS.md`, no `docs/SETUP.md` ni `MEMORY.md`):
 <!-- BEGIN MANAGED:model-operativo -->
-- **Modelo:** primario de OpenClaw `deepseek-v4.1-flash:cloud`, thinking `high` para todos los roles (ADR-053); motor del pipeline A/B `deepseek-v4-flash:cloud`.
+- **Modelo:** primario de OpenClaw `deepseek-v4.1-flash:cloud`, thinking `high` para todos los roles (ADR-053); motor del pipeline A/B `deepseek-v4.1-flash:cloud`.
 <!-- END MANAGED:model-operativo -->
-- **Pipeline:** Qwen Code via Ollama -> `ollama launch qwen --model deepseek-v4-flash:cloud -- -p "<tarea>" -y`. Alternativa para casos largos (SIGKILL): Claude Code con `ANTHROPIC_BASE_URL=http://localhost:11434`.
+- **Pipeline:** Claude Code via Ollama (estandar, ADR-049) -> `ollama launch claude --model deepseek-v4.1-flash:cloud -- -p "<tarea>"`. Fallback: Qwen Code (`ollama launch qwen -- -p "<tarea>" -y`).
 - **Memoria:** `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables.
 - **Scripts clave:** `scripts/complexity-scorer.sh` (T-score antes de spawnear agentes), `scripts/pipeline-track.sh` (estado durable del pipeline).
 - **Maquinas:** solo la **Mac Mini** (corre el gateway; el workspace vive aca, ADR-073). `git pull --rebase` antes de cada push.

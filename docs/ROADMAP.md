@@ -37,7 +37,7 @@
   - **`gateway.restart_close_failed` NO es un crash.** Verificado en `dist/run-fzUO4BXB.mjs:1088`: en un restart, si `server.close()` lanza, se marca `shutdownFailed = true` y se fuerza la salida escribiendo el stability bundle. Es un **cierre sucio durante un restart pedido**, no un reinicio autónomo.
   - **La hipótesis de la compactación no se reproduce:** los 4 dumps del 13-14/09 tienen **0 eventos de compaction** (`compaction_events=0` en los 4). Sí hay `session.long_running` (1-5), pero sin compactación. El gatillo `auto-compaction` del 28/08 no aparece acá.
   - Los 4 dumps son una **cascada de 1h36m** el 13-14/09: 23:40 (uptime 55h), 00:02 (0.3h), 00:56 (0.8h), 01:16 (0.3h). El primero, con 55h de uptime, coincide con el intento de update (`Update run: OpenClaw update failed: global-install-failed`).
-  - **Errores de modelo en la ventana (relevante):** en el dump 01:16 hay 3 errores de `qwen3.8:27b-mlx` de ~50-55s cada uno + 1 de `deepseek-v4-flash:cloud`. `qwen3.8:27b-mlx` es el modelo local (~17-18 GB) que se agregó el 13/09 sobre una Mini M4/24GB: carga pesada, probable contribuyente a la lentitud del cierre.
+  - **Errores de modelo en la ventana (relevante):** en el dump 01:16 hay 3 errores de `qwen3.8:27b-mlx` de ~50-55s cada uno + 1 de `deepseek-v4-flash:cloud` (retirado el 2026-09-25; hoy el motor es v4.1). `qwen3.8:27b-mlx` es el modelo local (~17-18 GB) que se agregó el 13/09 sobre una Mini M4/24GB: carga pesada, probable contribuyente a la lentitud del cierre.
   - **Estado del runtime (14/09):** npm global y CLI en `2026.9.4`, pero el gateway reporta correr `2026.9.3` con el update fallido; doctor marca "Startup migrations need attention". Hay un swap de versión incompleto, no un gateway roto.
   - **Conclusión honesta:** el marco "el gateway se reinicia solo bajo sesiones largas" **no está respaldado** por la evidencia del 13-14/09. Lo que la evidencia muestra es (a) restarts intencionales que cierran sucio, (b) truncado de bootstrap por tamaño de archivos, y (c) un swap de versión a medio hacer. La deuda real es distinta a la diagnosticada el 28/08.
 - **Hallazgo nuevo (14/09): `USER.md` se truncaba en cada arranque.** Tenía un **cap fijo de 4.000 chars** (`USER_BOOTSTRAP_MAX_CHARS = 4e3` en `dist/bootstrap-DYYMCrXY.mjs`, NO configurable vía `bootstrapMaxChars`), y el archivo real tenía **10.008 chars** -> se descartaban ~6.000 chars de preferencias y reglas en cada bootstrap. **RESUELTO 14/09**: `USER.md` bajó a **3.986 chars** (bajo el cap), con el detalle movido a `memory/user-profile.md`.
@@ -97,7 +97,7 @@
   - [ ] Decidir si el cross-review necesita verificación contra fuente real siempre, o solo en casos de riesgo.
 
 ### 1.2 Ruteo de modelos 🟡 P2
-- **Qué**: deepseek-v4-flash vs kimi-k2.7-code vs local. El `model-router.sh` es un buen inicio.
+- **Qué**: deepseek-v4.1-flash vs kimi-k2.7-code vs local (el motor vigente; `deepseek-v4-flash` se retiro el 2026-09-25). El `model-router.sh` es un buen inicio.
 - **Por qué**: el modelo correcto por tarea ahorra tiempo y presupuesto; el incorrecto lo quema.
 - **Criterio de éxito**: el router elige el modelo correcto sin intervención manual en tareas estándar.
 - **Señal de listo**: 0 casos de "este modelo no sirvió para esto" en tareas rutinarias durante una semana.

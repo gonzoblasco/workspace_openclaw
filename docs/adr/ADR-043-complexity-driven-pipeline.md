@@ -46,7 +46,7 @@ Si `C >= 4` **y** `T >= 14`, forzar bucket `high` (marca `escalated=1`), aunque 
 
 ### Cadena de modelos del scorer
 
-El evaluador usa `gemma4:e4b-mlx` local primero (6.7x más rápido que qwen3.5, benchmark 2026-08-30), con fallbacks a `deepseek-v4-flash:cloud` → `gemma4:cloud` → `qwen3.5:9b-mlx`. El modelo de trabajo del pipeline (que escribe el código) es otro: `deepseek-v4-flash:cloud` default. El scorer local solo calcula el T-score.
+El evaluador usa `gemma4:e4b-mlx` local primero (6.7x más rápido que qwen3.5, benchmark 2026-08-30), con fallbacks a `deepseek-v4.1-flash:cloud` → `gemma4:cloud` → `qwen3.5:9b-mlx`. El modelo de trabajo del pipeline (que escribe el código) es otro: `deepseek-v4.1-flash:cloud` default. El scorer local solo calcula el T-score.
 
 ## Implementación
 
@@ -86,3 +86,12 @@ Corridas 15 tareas reales, de "cambiar el color de un botón" (T=4) a "recrear b
 ---
 
 *Cierre de proyecto `complexity-driven-pipeline`. Registrado sesión 2026-08-30/31 en daily + DB.*
+
+## Actualizacion 2026-09-29 - retiro de `deepseek-v4-flash`
+
+`deepseek-v4-flash:cloud` fue **retirado por Ollama el 2026-09-25** (verificado con el daemon:
+`ollama show deepseek-v4-flash:cloud` responde `was retired at 2026-09-25 00:00:00 -0700 PDT`,
+ref `7e00c916-e009-455f-aa4c-f6f64a81a6bd`). Su lugar como motor de los agentes A/B del pipeline
+lo ocupa **`deepseek-v4.1-flash:cloud`**, que deja de ser "fase de escalada" y pasa a ser el
+reemplazo (la escalada sigue siendo `glm-5.3-flash:cloud`). Este ADR se conserva como registro de
+la decision vigente a su fecha; las referencias a v4-flash que quedan en el texto son historicas.

@@ -6,7 +6,7 @@
 **Origen:** workspace (ciclo real de kanam-tetris v0.2, 2026-09-11)
 **Complementa:** ADR-041 (Motor LLM del Sistema - GLM-5.3-Flash). Su seccion de motor del pipeline queda actualizada por este ADR.
 
-> **Actualizacion 2026-09-11 (19:30):** este ADR queda **revertido por ADR-046**. El motor del pipeline vuelve a `deepseek-v4-flash:cloud` por costo: medido en el uso semanal de Ollama Cloud, v4.1 consumia mas por request que v4 y glm (1.348 requests de v4.1 con la barra mas alta, contra 1.631 de v4 con la mas baja). v4.1 baja a **fase de escalada** para analisis complejo. Las reglas tecnicas de este ADR sobre v4.1 (think:false en roles mecanicos, API /api/chat con stream:false, presupuesto de tokens) siguen vigentes SOLO al escalar a v4.1.
+> **Actualizacion 2026-09-29 (19:30):** el retiro que esta nota dejaba abierto **se confirmo**. `deepseek-v4-flash:cloud` fue **retirado por Ollama el 2026-09-25** (`ollama show` responde `was retired at 2026-09-25 00:00:00 -0700 PDT`, ref `7e00c916-e009-455f-aa4c-f6f64a81a6bd`). La verificacion del 2026-09-16 no lo mostraba en la tabla de retiros; era una fecha posterior. Consecuencia: el motor del pipeline pasa a `deepseek-v4.1-flash:cloud`, que deja de ser "fase de escalada" y pasa a ser **el reemplazo**. La re-medicion de costo que esta nota pedia sigue pendiente y ahora es sobre v4.1 como motor, no contra el.
 
 ## Decision
 

@@ -24,13 +24,15 @@ set -uo pipefail
 STATE_FILE="${MODEL_ROUTES_FILE:-model-router.json}"
 
 # Default routes (task type -> model). Edit with `model-router.sh edit`.
-# Pipeline A/B (2026-08-30): DeepSeek Flash (iter 1-2) -> GLM 5.3 Flash (iter 3) -> Kimi K2.7 Code (iter 4, nivel superior).
-# Sincronizado con Regla MAX/HIGH: Code y Review usan DeepSeek Flash.
+# Motor de los agentes A/B: deepseek-v4.1-flash:cloud. `deepseek-v4-flash:cloud` fue
+# RETIRADO por Ollama el 2026-09-25 (`ollama show` falla); v4.1 es su reemplazo.
+# Pipeline A/B asimetrico (ADR-077): A liviano (gpt-oss:120b-cloud) -> B grande (deepseek-v4.1-flash:cloud).
+# Sincronizado con Regla MAX/HIGH: Code y Review usan el motor de codigo.
 ROUTES='{
-  "default": "deepseek-v4-flash:cloud",
+  "default": "deepseek-v4.1-flash:cloud",
   "routes": {
-    "code": "deepseek-v4-flash:cloud",
-    "review": "deepseek-v4-flash:cloud",
+    "code": "deepseek-v4.1-flash:cloud",
+    "review": "deepseek-v4.1-flash:cloud",
     "long": "glm-5.3-flash:cloud",
     "cheap": "gemma4:cloud",
     "writing": "glm-5.3-flash:cloud",
@@ -75,7 +77,7 @@ case "$CMD" in
     if [ -n "$OVER" ]; then
       echo "$OVER"
     else
-      echo "$STATE" | jq -r --arg t "$TYPE" '.routes[$t] // .default' 2>/dev/null || echo "deepseek-v4-flash:cloud"
+      echo "$STATE" | jq -r --arg t "$TYPE" '.routes[$t] // .default' 2>/dev/null || echo "deepseek-v4.1-flash:cloud"
     fi
     ;;
 

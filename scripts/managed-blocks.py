@@ -48,7 +48,7 @@ DEFAULTS = {
     "thinking_default": "high",
     # Motor del pipeline A/B. Distinto del primario: el router lo usa para los
     # agentes de codigo (scripts/model-router.sh, ruta 'default').
-    "model_pipeline": "deepseek-v4-flash:cloud",
+    "model_pipeline": "deepseek-v4.1-flash:cloud",
 }
 
 # Que bloque vive en que archivo, con que plantilla.

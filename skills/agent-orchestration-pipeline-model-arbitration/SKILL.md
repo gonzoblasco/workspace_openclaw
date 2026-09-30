@@ -7,7 +7,7 @@ disable-model-invocation: true
 # Arbitraje de modelo en Agent Orchestration Pipeline
 
 ## Resumen
-Define como el orquestador elige el modelo de Ollama Cloud para cada paso del pipeline A/B. El objetivo es reducir costos manteniendo calidad: `deepseek-v4-flash:cloud` es el default, `glm-5.3-flash:cloud` es la escalada intermedia, y `kimi-k2.7-code:cloud` es el nivel superior (solo cuando se justifica).
+Define como el orquestador elige el modelo de Ollama Cloud para cada paso del pipeline A/B. El objetivo es reducir costos manteniendo calidad: `deepseek-v4.1-flash:cloud` es el default, `glm-5.3-flash:cloud` es la escalada intermedia, y `kimi-k2.7-code:cloud` es el nivel superior (solo cuando se justifica).
 
 ## Motivacion
 - Gonzo esta en el plan mas barato de Ollama Cloud con limite fijo.
@@ -19,7 +19,9 @@ Define como el orquestador elige el modelo de Ollama Cloud para cada paso del pi
 ## Reglas de arbitraje
 
 ### 1. Default
-Cada tarea del pipeline A/B parte en `deepseek-v4-flash:cloud`.
+Cada tarea del pipeline A/B parte en `deepseek-v4.1-flash:cloud`.
+
+> `deepseek-v4-flash:cloud` quedo **retirado** por Ollama el 2026-09-25 (verificado: `ollama show` falla). `v4.1` es su reemplazo, no una escalada: la escalada sigue siendo GLM.
 
 ### 2. Escalada a GLM 5.3 Flash (iteracion 3)
 Escalar a `glm-5.3-flash:cloud` cuando:
@@ -50,18 +52,18 @@ Si una tarea con Flash falla:
 - Si GLM tampoco, escalar a Kimi K2.7 Code.
 
 ### 7. GLM sin output: volver a Flash (validado 2026-09-02)
-Si un agente con `glm-5.3-flash:cloud` corre sin escribir nada (working tree limpio tras ~10-20 min, proceso vivo sin cambios): matar el proceso y relanzar la misma tarea con `deepseek-v4-flash:cloud`. DeepSeek escribio el fix completo en ~10 min donde GLM no produjo nada en 20. Verificar con `git status`/`git diff --stat` antes de relanzar; si el agente muerto ya dejo cambios, completar y verificar directamente (ver skill agent-orchestration-pipeline).
+Si un agente con `glm-5.3-flash:cloud` corre sin escribir nada (working tree limpio tras ~10-20 min, proceso vivo sin cambios): matar el proceso y relanzar la misma tarea con `deepseek-v4.1-flash:cloud`. DeepSeek escribio el fix completo en ~10 min donde GLM no produjo nada en 20. Verificar con `git status`/`git diff --stat` antes de relanzar; si el agente muerto ya dejo cambios, completar y verificar directamente (ver skill agent-orchestration-pipeline).
 
 ## Asignacion por rol en el pipeline
 
 | Paso | Modelo |
 |---|---|
-| Agente A escribe feature simple / refactor mecanico | `deepseek-v4-flash:cloud` |
+| Agente A escribe feature simple / refactor mecanico | `deepseek-v4.1-flash:cloud` |
 | Agente A escribe feature compleja / mucho contexto | Flash → Flash mejorado → `glm-5.3-flash:cloud` |
 | Agente A genera interpretacion de imagen / UI / screenshot | `glm-5.3-flash:cloud` |
-| Agente B revisa cambios triviales | `deepseek-v4-flash:cloud` |
+| Agente B revisa cambios triviales | `deepseek-v4.1-flash:cloud` |
 | Agente B revisa cambios complejos / debug / arquitectura | Flash → Flash mejorado → `glm-5.3-flash:cloud` |
-| Orquestador verifica contra API/spec / fuente real | `deepseek-v4-flash:cloud` |
+| Orquestador verifica contra API/spec / fuente real | `deepseek-v4.1-flash:cloud` |
 | Nivel superior (si GLM no alcanza) | `kimi-k2.7-code:cloud` |
 
 ## Notas

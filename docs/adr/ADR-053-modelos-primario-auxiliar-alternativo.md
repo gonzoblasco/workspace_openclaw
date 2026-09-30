@@ -57,7 +57,7 @@ Los tres modelos se probaron end-to-end contra el daemon: `deepseek-v4.1-flash:c
 |---|---|
 | `gemma4:cloud` | `gemma4:31b` |
 | `qwen3.5:cloud` | `qwen3.5:397b` |
-| `deepseek-v4-flash:cloud` | `deepseek-v4-flash:0731` |
+| ~~`deepseek-v4-flash:cloud`~~ (retirado 2026-09-25) | ~~`deepseek-v4-flash:0731`~~ |
 | `deepseek-v4.1-flash:cloud` | `deepseek-v4.1-flash` |
 
 El catalogo cloud autoritativo es `https://ollama.com/api/tags` (20 modelos al 2026-09-22); el local es `curl -s http://127.0.0.1:11434/api/tags`. Los proveedores en config son `ollama` y `ollama-local` (daemon `11434`) y `ollama-cloud` (`https://ollama.com`). Antes de declarar un modelo inexistente, chequear AMBAS listas.
@@ -88,3 +88,12 @@ Nota de test: pedirle a un modelo con thinking activo una respuesta corta con `n
 1. **Mantener Kanam en MAX y agentes en HIGH** (ADR-040): es la regla previa, mas granular, pero implica administrar dos niveles y consumir mas recursos. Gonzo la reemplazo explicitamente por HIGH unificado. Rechazada.
 2. **Dejar `minimax-m2.7` como primario** y actualizar ADR-040 para admitirlo: reconcilia el config con la realidad actual, pero no es lo que Gonzo definio. Rechazada.
 3. **Solo documentar el drift sin corregir el config:** deja el ADR describiendo algo que no corre, que es el problema que este ADR existe para cerrar. Rechazada.
+
+## Actualizacion 2026-09-29 - retiro de `deepseek-v4-flash`
+
+`deepseek-v4-flash:cloud` fue **retirado por Ollama el 2026-09-25** (verificado con el daemon:
+`ollama show deepseek-v4-flash:cloud` responde `was retired at 2026-09-25 00:00:00 -0700 PDT`,
+ref `7e00c916-e009-455f-aa4c-f6f64a81a6bd`). Su lugar como motor de los agentes A/B del pipeline
+lo ocupa **`deepseek-v4.1-flash:cloud`**, que deja de ser "fase de escalada" y pasa a ser el
+reemplazo (la escalada sigue siendo `glm-5.3-flash:cloud`). Este ADR se conserva como registro de
+la decision vigente a su fecha; las referencias a v4-flash que quedan en el texto son historicas.

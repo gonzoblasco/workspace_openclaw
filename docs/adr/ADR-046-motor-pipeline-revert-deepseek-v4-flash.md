@@ -11,6 +11,8 @@
 
 > **Actualizacion 2026-09-22 (ADR-053):** los roles de modelo se redefinieron. Primario `deepseek-v4.1-flash:cloud`, auxiliar `gemma4:cloud`, alternativo `glm-5.3-flash:cloud`, thinking `high` unificado. La tabla de abajo queda como registro del criterio de costo vigente al 2026-09-11. Ver **ADR-053**.
 
+> **Actualizacion 2026-09-29: `deepseek-v4-flash:cloud` fue RETIRADO por Ollama el 2026-09-25.** Verificado con el daemon: `ollama show deepseek-v4-flash:cloud` responde `was retired at 2026-09-25` (ref 7e00c916). Este ADR queda **sin efecto ejecutable**: su decision (motor = v4-flash) ya no se puede cumplir porque el modelo no existe. El motor pasa a `deepseek-v4.1-flash:cloud`, que es su **reemplazo** (no una escalada: la escalada sigue siendo GLM 5.3 Flash). La duda sobre el retiro que quedaba abierta en la entrada de MEMORY del 2026-09-16 quedo resuelta: el retiro es real y posterior a esa verificacion.
+
 **`deepseek-v4-flash:cloud` vuelve a ser el motor de los agentes A/B del pipeline** (via Claude Code o Qwen Code apuntando al gateway Ollama `127.0.0.1:11434`).
 
 `deepseek-v4.1-flash:cloud` sale del rol de motor del pipeline: queda como **fase de escalada** para analisis complejo, cuando ni v4 ni glm resuelven.

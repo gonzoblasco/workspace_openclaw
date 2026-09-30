@@ -114,3 +114,12 @@ Estas reglas de ADR-040 (Casos Especiales) quedan ACTUALIZADAS:
 - Precios: https://www.llmreference.com/model/glm-5.3-flash y /model/kimi-k3 (consultados 2026-08-29)
 - Medicion empirica de consumo: Ollama usage, Gonzo, 2026-08-29 (41x)
 - ADR-040: Seleccion de Modelos por Tipo de Tarea (perfiles de especialistas vigentes)
+
+## Actualizacion 2026-09-29 - retiro de `deepseek-v4-flash`
+
+`deepseek-v4-flash:cloud` fue **retirado por Ollama el 2026-09-25** (verificado con el daemon:
+`ollama show deepseek-v4-flash:cloud` responde `was retired at 2026-09-25 00:00:00 -0700 PDT`,
+ref `7e00c916-e009-455f-aa4c-f6f64a81a6bd`). Su lugar como motor de los agentes A/B del pipeline
+lo ocupa **`deepseek-v4.1-flash:cloud`**, que deja de ser "fase de escalada" y pasa a ser el
+reemplazo (la escalada sigue siendo `glm-5.3-flash:cloud`). Este ADR se conserva como registro de
+la decision vigente a su fecha; las referencias a v4-flash que quedan en el texto son historicas.

@@ -17,7 +17,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WORKSPACE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # --- Config ---
-DEFAULT_MODEL="ollama/deepseek-v4-flash:cloud"
+DEFAULT_MODEL="ollama/deepseek-v4.1-flash:cloud"
 OLLAMA_BASE="${OLLAMA_BASE:-http://127.0.0.1:11434}"
 
 # --- Helpers ---
@@ -93,7 +93,7 @@ else
    # Try models in order: local first, then cloud fallbacks
   # Order: gemma4:e4b-mlx (local, 6.7x faster than qwen3.5) first, then cloud fallbacks.
   # qwen3.5:9b-mlx kept as last local fallback (slow, 154s vs 23s on benchmark 2026-08-30).
-  for SCORER_MODEL in "gemma4:e4b-mlx" "deepseek-v4-flash:cloud" "gemma4:cloud" "qwen3.5:9b-mlx"; do
+  for SCORER_MODEL in "gemma4:e4b-mlx" "deepseek-v4.1-flash:cloud" "gemma4:cloud" "qwen3.5:9b-mlx"; do
     log_info "Trying model: $SCORER_MODEL"
     
     # Compact JSON payload (avoids "Thinking Style" eating the response on local models)

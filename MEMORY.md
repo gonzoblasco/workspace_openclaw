@@ -1,5 +1,7 @@
 ## ⚙️ DECISIÓN DE MOTOR LLM (2026-08-30)
 
+> **Nota 2026-09-29:** `deepseek-v4-flash:cloud` fue **retirado por Ollama el 2026-09-25** (`ollama show` responde `was retired`). Todo lo que sigue es **registro de las decisiones de agosto**; el motor vigente del pipeline A/B es `deepseek-v4.1-flash:cloud`. Las entradas de abajo se conservan como historia, no como instruccion.
+
 **Tema:** Consolidación de motor de trabajo para el pipeline A/B.
 **Decisión:** Se establece `deepseek-v4-flash:cloud` como el modelo preferido para los agentes de código y orquestación de pipeline, reemplazando temporalmente a `glm-5.3-flash:cloud` en la configuración operativa (detallado en `tools.md`).
 **Motivación:** Preferencia explícita de Gonzo tras la auditoría de coherencia. El modelo fue seleccionado por su *estructura* en el contexto de las tareas complejas, priorizando la consistencia operativa sobre la preferencia inicial del proveedor.
@@ -58,7 +60,7 @@
 
 ## Pipeline de Programación (ESTÁNDAR)
 
-Pipeline A/B con **Qwen Code vía Ollama** (motor: `deepseek-v4-flash:cloud`). Flujo: A escribe $\rightarrow$ Kanam pasa a B $\rightarrow$ B revisa $\rightarrow$ Verificar $\rightarrow$ Iterar.
+Pipeline A/B con **Qwen Code vía Ollama** (motor: `deepseek-v4.1-flash:cloud`). Flujo: A escribe $\rightarrow$ Kanam pasa a B $\rightarrow$ B revisa $\rightarrow$ Verificar $\rightarrow$ Iterar.
 
 **Complexity-First (2026-08-30):** Antes de spawnear agentes, Kanam ejecuta `./scripts/complexity-scorer.sh "<objetivo>"` que devuelve T (1-20). T <= 6 = Kanam solo (trivial). T 7-12 = A high. T 13-16 = A+B con cross-review. T 17-20 = Kanam(max) diseña, A+B ejecutan high, verificacion obligatoria + confirmacion de Gonzo. Persistir T con `pipeline-track.sh init ... --score T`. Skill: `complexity-driven-pipeline`.
 - **Claude Code (Alternativa):** Para SIGKILL o tareas largas.
