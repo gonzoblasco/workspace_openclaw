@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** auditoria #2 tras ADR-055; la regla del guion comun y las rutas citadas se cumplian solo dentro de `skills/`
-**Relacionado:** ADR-055 (bloques managed), ADR-038 (docs narrativos), ADR-054 (kanam-os)
+**Relacionado:** ADR-055 (bloques managed), ADR-038 (docs narrativos), ADR-054 (kanam-os), ADR-084 (registros de sesion: reemplaza la lista de directorios historicos)
 
 ---
 
@@ -36,7 +36,7 @@ fi
 Tres decisiones concretas dentro de esto:
 
 1. **Se chequea el contenido staged** (`git show ":$f"`), no el del disco. Es lo que se commitea; chequear el disco deja pasar el caso de archivo editado y no re-agregado.
-2. **`scripts/check-refs.py` ignora los directorios historicos** (`docs/archives/`, `docs/conversations/`). Una ruta rota ahi es un dato del pasado, no una promesa vigente. Corregir historia la falsifica.
+2. **`scripts/check-refs.py` ignora los directorios historicos.** Una ruta rota ahi es un dato del pasado, no una promesa vigente. Corregir historia la falsifica. **Nota (ADR-084, 2026-09-29):** la lista original nombraba `docs/archives/` y `docs/conversations/`; hoy es un unico directorio, `docs/records/`. El criterio no cambio, solo su lista.
 3. **Los chequeos baratos corren siempre; los caros siguen acotados.** Guion y refs son dos procesos de Python sobre archivos staged: baratos. La suite completa (bats + pytest, ~40s) sigue disparandose solo cuando cambian `skills/` o `scripts/`.
 
 ### Lo que NO se chequea, a proposito
@@ -73,7 +73,7 @@ Tres decisiones concretas dentro de esto:
 
 | Pieza | Path |
 |---|---|
-| Checker de rutas | `scripts/check-refs.py` (`--all` incluye `docs/**`) |
+| Checker de rutas | `scripts/check-refs.py` (`--all` incluye `docs/**`; `SKIP_DIRS` = `docs/records/`, ADR-084) |
 | Script que respalda la regla | `scripts/pr-thread-brief.sh` |
 | Tests | `tests/python/test_check_refs.py` (11) |
 | Hook | `scripts/pre-commit.template` (+ instalado en `.git/hooks/pre-commit`) |

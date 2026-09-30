@@ -9,11 +9,14 @@
 // Nace del proyecto kanam-story-bible (2026-09-25), donde dos fallas reales - una
 // separacion de 0.0px y un documento estirado de 420px a 599px - eran invisibles al
 // build y a los tests. Version especifica de ese proyecto, con su medicion de
-// dominio: projects/kanam-story-bible/scripts/ui-shot.mjs
+// dominio: ~/projects/kanam-story-bible/scripts/ui-shot.mjs
+//
+// Vive en la skill que lo posee (cross-engine-css-measurement) desde 2026-09-29
+// (ADR-084): era un huerfano en scripts/ que nacio como one-shot del proyecto.
 //
 // Uso:
 //   APP_URL=http://127.0.0.1:5173/ W=420 TAB=Fichas OUT=/tmp/x.png \
-//     node scripts/ui-measure.mjs
+//     node agents/kanam-dev/skills/cross-engine-css-measurement/scripts/ui-measure.mjs
 //
 // Variables de entorno:
 //   APP_URL    URL a medir                      (default http://127.0.0.1:5173/)

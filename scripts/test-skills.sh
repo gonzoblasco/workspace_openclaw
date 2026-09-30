@@ -19,6 +19,23 @@ set -euo pipefail
 
 WORKSPACE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SKILLS_DIR="${WORKSPACE_DIR}/skills"
+
+# El ciclo de skills vive en DOS arboles (ADR-073): `skills/` (workspace) y
+# `agents/<rol>/skills/` (por rol). Este script solo escaneaba el primero, asi
+# que las 42 skills de agente no tenian NINGUN check: ni sintaxis, ni
+# frontmatter, ni guion, ni scripts referenciados, ni links. Es la misma clase
+# de falso verde que el de SKILLS-INDEX (auditoria Nivel 2, 2026-09-29): un
+# check que reporta "36 ok" mientras la mitad del arbol no se mira.
+AGENT_SKILL_DIRS=()
+while IFS= read -r d; do
+  [[ -n "$d" ]] && AGENT_SKILL_DIRS+=("$d")
+done < <(find "${WORKSPACE_DIR}/agents" -maxdepth 2 -type d -name skills -print 2>/dev/null || true)
+
+if [[ ${#AGENT_SKILL_DIRS[@]} -gt 0 ]]; then
+  SKILL_ROOTS=("$SKILLS_DIR" "${AGENT_SKILL_DIRS[@]}")
+else
+  SKILL_ROOTS=("$SKILLS_DIR")
+fi
 VERBOSE=0
 QUICK=0
 
@@ -43,6 +60,19 @@ failures=()
 #     (ejemplo de un incidente CI pasado, no una referencia a usar)
 ALLOWLIST_REF=(
   "skills/skill-collection-maintenance/SKILL.md|narrative-content/scripts/progress-tracker.sh"
+)
+
+# Excepciones de links a skills (seccion E). Mismo criterio que ALLOWLIST_REF:
+# la referencia es un ejemplo ilustrativo, no una promesa sobre este arbol.
+#   spec-driven-development es la skill-PLANTILLA del formato de spec: su tabla
+#   "Related Documents" muestra rutas de un proyecto DESTINO (REQ-001,
+#   tests/registration.test.ts, una API y mockups que el proyecto describira),
+#   no archivos de este workspace. Exigir que existan convertiria la plantilla
+#   en una promesa falsa. Los otros links de la seccion si son vivos.
+ALLOWLIST_LINK=(
+  "agents/kanam-dev/skills/spec-driven-development/SKILL.md|../docs/adr/adr-001-state-management.md"
+  "agents/kanam-dev/skills/spec-driven-development/SKILL.md|../../api/docs/openapi.json"
+  "agents/kanam-dev/skills/spec-driven-development/SKILL.md|../design/mockups/"
 )
 
 note() { if [[ $VERBOSE -eq 1 ]]; then echo "  $1"; fi; }
@@ -80,7 +110,7 @@ while IFS= read -r -d '' file; do
     sed 's/^/      /' /tmp/bash.err
     failures+=("$file")
   fi
-done < <(find "$SKILLS_DIR" -type f -name "*.sh" -not -path "*/node_modules/*" -print0)
+done < <(find "${SKILL_ROOTS[@]}" -type f -name "*.sh" -not -path "*/node_modules/*" -print0)
 
 while IFS= read -r -d '' file; do
   if python3 -m py_compile "$file" 2>/tmp/python.err; then
@@ -92,7 +122,7 @@ while IFS= read -r -d '' file; do
     sed 's/^/      /' /tmp/python.err
     failures+=("$file")
   fi
-done < <(find "$SKILLS_DIR" -type f -name "*.py" -not -path "*/node_modules/*" -print0)
+done < <(find "${SKILL_ROOTS[@]}" -type f -name "*.py" -not -path "*/node_modules/*" -print0)
 
 rm -f /tmp/bash.err /tmp/python.err
 
@@ -108,7 +138,7 @@ if [[ $QUICK -eq 0 ]]; then
       echo "  ❌ frontmatter FAIL (sin bloque ---): $skmd"
       failures+=("$skmd")
     fi
-  done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
+  done < <(find "${SKILL_ROOTS[@]}" -name "SKILL.md" -print0)
 
   # --- C. Em dash (U+2014/U+2013) ---
   # Usa python3 (portable): grep -P no existe en BSD grep de macOS, lo que
@@ -121,7 +151,7 @@ if [[ $QUICK -eq 0 ]]; then
       echo "  ❌ em dash FAIL (usar guion comun -): $skmd"
       failures+=("$skmd")
     fi
-  done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
+  done < <(find "${SKILL_ROOTS[@]}" -name "SKILL.md" -print0)
 
   # --- D. Scripts referenciados existen ---
   # Resuelve tres patrones:
@@ -191,7 +221,7 @@ if [[ $QUICK -eq 0 ]]; then
         fi
       fi
     done < <(echo "$body" | grep -oE '[A-Za-z0-9_-]+/scripts/[A-Za-z0-9_./-]+\.(sh|py|mjs|js)' 2>/dev/null | sort -u || true)
-  done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
+  done < <(find "${SKILL_ROOTS[@]}" -name "SKILL.md" -print0)
 
   # --- E. Links markdown relativos a skills existen ---
   # Resuelve el link relativo contra el directorio real del SKILL.md, que es
@@ -210,12 +240,26 @@ if [[ $QUICK -eq 0 ]]; then
       if [[ -e "$skill_dir/$ref" ]]; then
         LINK_OK=$((LINK_OK + 1))
       else
-        LINK_FAIL=$((LINK_FAIL + 1))
-        echo "  ❌ skill link FAIL: $skmd -> $ref"
-        failures+=("$skmd -> $ref")
+        # check allowlist antes de fallar (mismo criterio que ALLOWLIST_REF)
+        allowed=0
+        for entry in "${ALLOWLIST_LINK[@]}"; do
+          entry_file="${entry%%|*}"
+          entry_ref="${entry##*|}"
+          if [[ "$skmd" == "$WORKSPACE_DIR/$entry_file" && "$ref" == "$entry_ref" ]]; then
+            allowed=1
+            break
+          fi
+        done
+        if [[ $allowed -eq 1 ]]; then
+          LINK_OK=$((LINK_OK + 1))
+        else
+          LINK_FAIL=$((LINK_FAIL + 1))
+          echo "  ❌ skill link FAIL: $skmd -> $ref"
+          failures+=("$skmd -> $ref")
+        fi
       fi
     done < <(grep -oE '\]\(\.\./[^) ]+' "$skmd" 2>/dev/null | sed -E 's/^\]\(//' | sort -u || true)
-  done < <(find "$SKILLS_DIR" -name "SKILL.md" -print0)
+  done < <(find "${SKILL_ROOTS[@]}" -name "SKILL.md" -print0)
 
 fi
 

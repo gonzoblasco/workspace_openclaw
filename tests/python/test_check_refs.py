@@ -114,15 +114,17 @@ def test_reports_a_broken_ref(tmp_path):
         bad.unlink(missing_ok=True)
 
 
-def test_skips_historic_dirs():
-    """Una ruta rota en un directorio historico NO debe reportarse: es historia.
+def test_skips_historic_records():
+    """Una ruta rota en `docs/records/` NO debe reportarse: es historia.
 
-    `docs/archives/` se renombro a `docs/history/` (reorg 2026-09-28); SKIP_DIRS
-    debe seguir ambos, o el historico se escanea como si fuera una promesa viva.
+    ADR-084 consolido `docs/conversations/` y `docs/history/` (y el viejo
+    `docs/archives/`) en `docs/records/`. SKIP_DIRS debe nombrar el directorio
+    que EXISTE: la lista vieja todavia nombraba `docs/archives/`, que ya no
+    estaba en disco, o sea una entrada muerta en el propio gate.
     """
     mod = load()
-    assert any("docs/archives/" in d for d in mod.SKIP_DIRS)
-    assert any("docs/history/" in d for d in mod.SKIP_DIRS)
+    assert any("docs/records/" in d for d in mod.SKIP_DIRS)
+    assert not any("docs/archives/" in d for d in mod.SKIP_DIRS)
 
 
 # --- links markdown: la clase de pudricion que motiva la extension (2026-09-26) ---

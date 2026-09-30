@@ -410,5 +410,5 @@ This rule keeps memory curated and prevents it from filling with operational noi
 
 ## Related Skills
 
-- [Engineering Governance](../engineering-governance): To audit knowledge quality
-- [Technical Documentation](../tech-docs): To create and maintain technical documentation
+- [Engineering Governance](../../../../skills/engineering-governance): To audit knowledge quality
+- [Technical Documentation](../../../../skills/tech-docs): To create and maintain technical documentation

@@ -64,7 +64,7 @@ This is not "try values until it looks right". A property can behave identically
 
 ## Evidence
 
-Verified 2026-09-24 on adobe/react-spectrum PR #10517 (RAC Checkbox/Radio hidden input, CSS anchor positioning). Working probes: `docs/pr-10517-probes/` in the workspace (sizing matrix, element-type isolation, geometry replication, override paths, scroll timing). Full narrative: `docs/PR-10517-REACT-SPECTRUM-PLAN.md`.
+Verified 2026-09-24 on adobe/react-spectrum PR #10517 (RAC Checkbox/Radio hidden input, CSS anchor positioning). Working probes: `docs/test-assets/pr-10517-probes/` in the workspace (sizing matrix, element-type isolation, geometry replication, override paths, scroll timing). Full narrative: `docs/prs/PR-10517-REACT-SPECTRUM-PLAN.md`.
 
 ## Related
 

@@ -131,6 +131,24 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-29] - ADR-084: registros de sesion consolidados y el segundo arbol de skills cubierto
+
+### Changed
+- **`docs/conversations/` + `docs/history/` -> `docs/records/` (ADR-084).** Eran dos casas para el mismo genero, sin criterio que las separara. Los dos archivos de `conversations/` eran **dos redacciones del mismo evento** (sesion kanam-lab del 2026-09-16). Consolidados en `docs/records/2026-09-16-kanam-lab-ui.md` y `docs/records/2026-09-21-kanam-lab-profile.md`. Convencion de nombre: `YYYY-MM-DD-<tema>.md`.
+- **`SKIP_DIRS` de `scripts/check-refs.py` deja de nombrar un fantasma.** La lista era `("docs/archives/", "docs/history/", "docs/conversations/")`; `docs/archives/` **ya no existia** desde el rename del 09-28. Ahora es `("docs/records/",)`, un solo directorio que si existe. El criterio de ADR-056 no cambio: la historia no se chequea, solo su lista.
+- **El registro del 09-16 declara su propia desactualizacion.** Describe la eliminacion de dos tabs de `kanam-lab`, y el proyecto los **volvio a tener** (commit `4587022`, 2026-09-29). El texto queda intacto con una nota arriba en vez de mentir por omision.
+
+### Fixed
+- **`test-skills.sh` solo escaneaba `skills/` (36), no `agents/*/skills/` (42).** Las 42 skills de agente no tenian **ningun** check: ni sintaxis, ni frontmatter, ni guion, ni scripts referenciados, ni links. La misma clase de falso verde que el de `SKILLS-INDEX.md` (Nivel 2): un check que reporta "36 ok" mientras la mitad del arbol no se mira. Ahora escanea los dos arboles via `SKILL_ROOTS`: 79 SKILL.md, 21 scripts bash, 9 python.
+- **7 links cross-skill rotos destapados por la cobertura nueva.** 4 eran referencias reales con la ruta mal puesta (`knowledge-management` -> `engineering-governance`/`tech-docs`, `background-execution` -> `planning-and-task-breakdown`/`session-lifecycle`): corregidas a la ruta real. 3 eran **ejemplos de una plantilla** (`spec-driven-development`, la skill del formato de spec: rutas de un proyecto destino como `REQ-001` o `tests/registration.test.ts`), declarados en `ALLOWLIST_LINK` con la misma justificacion que ya usaba `ALLOWLIST_REF`.
+- **`scripts/ui-measure.mjs` -> `agents/kanam-dev/skills/cross-engine-css-measurement/scripts/`.** Era un huerfano en `scripts/`: nacio como one-shot de `kanam-story-bible` y no lo citaba nadie (solo su propio comentario de uso). Un instrumento de medicion pertenece a la skill de medicion.
+
+### Notes
+- **Auto-consistencia:** mover `ui-measure.mjs` a una skill de agente **exigio** extender `test-skills.sh`; si no, la propia adicion quedaba sin verificar. El hallazgo lateral y el cambio principal se sostienen uno al otro.
+- Verificado: `check-refs` 144 rutas (default) / 434 (`--all`), `check-adr-integrity` 84 ADRs, `test-skills` verde, pytest verde, bats 55/55.
+
+---
+
 ## [2026-09-29] - README.md: el router de entrada del workspace
 
 ### Added

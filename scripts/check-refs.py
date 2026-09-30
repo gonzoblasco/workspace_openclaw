@@ -77,9 +77,11 @@ def resolves(source: Path, target: str) -> bool:
         return True
     return (source.parent / target).resolve().exists()
 
-# Directorios historicos: se leen como se escribieron, no se corrigen. Una
-# ruta rota ahi es un dato del pasado, no una promesa vigente.
-SKIP_DIRS = ("docs/archives/", "docs/history/", "docs/conversations/")
+# Historia congelada: se lee como se escribio, no se corrige. `docs/records/`
+# reemplaza a los viejos `docs/conversations/` y `docs/history/` (ADR-084),
+# que eran dos casas para el mismo genero. `docs/archives/` ya no existe
+# (rename a `docs/history/` el 2026-09-28, luego consolidado en `docs/records/`).
+SKIP_DIRS = ("docs/records/",)
 
 
 def is_skippable(ref: str) -> bool:
