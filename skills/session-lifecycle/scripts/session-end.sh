@@ -91,6 +91,15 @@ echo "   HANDOFF: $HANDOFF_DIR/HANDOFF.md"
 echo "   Log: $SESSION_LOG"
 echo ""
 
+# Limpieza de snapshots temporales del heartbeat (2026-09-30)
+# El cierre manual de sesion tambien purga los documentos temporales:
+# mantiene la misma politica de retencion (7 dias) que el job heartbeat-global-snapshot.
+if command -v find >/dev/null 2>&1; then
+  find "$HOME/.openclaw/backups" -maxdepth 1 -type d -name 'heartbeat-*' -mtime +7 -exec rm -rf {} + 2>/dev/null || true
+  echo "🧹 Snapshots temporales >7 dias purgados"
+  echo ""
+fi
+
 # Auto-catalog memory into relational DB + embeddings (2026-08-30)
 # Keeps memory.db always in sync with the daily notes without manual runs.
 if command -v python3 >/dev/null 2>&1 && [ -f "scripts/memory-catalog-v2.py" ]; then
