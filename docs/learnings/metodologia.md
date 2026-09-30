@@ -543,3 +543,20 @@ Verificado 2026-09-29, y es una autocorreccion de un ADR que yo misma escribi el
 
 ---
 
+## Un commit de cleanup borro un directorio entero de contenido y ninguna guarda lo vio
+
+Un commit de "cleanup" borro TODO el directorio studies/ (dfa94759, 2026-09-28) y nada lo detecto:
+
+- `check-refs.py` verifica que las RUTAS CITADAS en docs existan. No verifica que un directorio de CONTENIDO que existia siga existiendo.
+- `check-adr-integrity.py` cubre docs/adr/. Los directorios de contenido (studies/, design/, prompts/) quedaron sin cobertura.
+- El resultado: el estudio de ingenieria narrativa (5 archivos, 2 casos cerrados, commiteado el 26/09 con c42d6a9f y b9a104fc) desaparecio de origin/main. Los commits seguian en la historia, pero sin efecto sobre esos archivos.
+- Sintoma tardio: Gonzo pidio commitear y reporto "no hay commit ni nada nuevo" pese a que el trabajo estaba cerrado. La senal fue su observacion, no una guarda.
+
+Patron: una guarda que verifica referencias NO es una guarda que verifica existencia. Un borrado masivo en bloque (`git rm -r`, `git add -A` sobre una carpeta limpiada a mano) no deja rastro: no hay ruta citada rota, no hay ADR desindexado. Es el mismo tipo de falso verde que el skip de links a directorio (learning 223): la guarda cubre la forma, no la clase.
+
+Verificacion propuesta: un test que fije la lista de directorios de contenido de primer nivel (studies/, design/, prompts/, docs/, skills/, agents/) y falle si uno desaparece del arbol. El mismo principio de "probar la clase, no el caso": no un link, no un archivo, sino la existencia del directorio.
+
+Corolario de proceso: al commitear trabajo propio tras una sesion ajena de "limpieza", comparar `git status` con la expectativa - 256 borrados en el working tree fue la senal de que un directorio entero habia desaparecido, y se leyo como "migracion in-flight" en vez de como perdida.
+
+---
+
