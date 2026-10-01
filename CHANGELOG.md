@@ -4,6 +4,26 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-10-01] - Ecosistema OpenClaw: ronda de análisis de 20 repos + criterios de filtrado
+
+### Added
+- **`docs/ecosystem/`** (carpeta nueva, 3 capas):
+  - **`DECISIONS.md`** - consolidado ejecutivo. 6 candidatos reales (MemOS local, PowerContext, Claw Orchestrator, Crabwalk, guardspine, ClawSec), 4 solapamientos a resolver, patrones a adoptar sin instalar, descartes con razón, y movimiento recomendado.
+  - **`crew-resources.md`** - ficha de detalle de los 20 repos analizados.
+  - **`solutions-catalog.md`** - catálogo de casos de uso por problema.
+- **Regla dura: cripto/Web3 = fuera** (registrada en `USER.md` y en `crew-resources.md`).
+
+### Changed
+- **`USER.md`:** nueva preferencia de fondo - 🚫 cripto/Web3 no se hace (blockchain, tokens, wallets, DeFi, NFT, chains, mercados on-chain).
+
+### Notes
+- **Método:** cada repo se lee en dos capas - *implementación* (¿lo instalamos?) y *diseño* (¿qué aprendemos?). Descartar el repo no descarta la lección.
+- **Hallazgo principal:** el core de OpenClaw está más completo de lo que pensábamos. Dos repos (MCP adapter y MCP server) resultaron **redundantes**: el core ya expone y consume MCP nativo (`openclaw mcp add` / `openclaw mcp serve`). Regla nueva: **verificar qué hace el core antes de sumar tooling externo.**
+- **Hallazgo transversal:** tres candidatos distintos (Claw Orchestrator, MemoV, ClawSec) resuelven el mismo problema de fondo - trazar, verificar y proteger lo que hizo el agente. Es el hueco real del setup.
+- **Pendiente abierto:** decidir el eje de memoria (`DECISIONS.md` §2.1). Es lo que desbloquea el resto.
+
+---
+
 ## [2026-09-29] - ADR-083: el CORE orquesta y no escribe codigo (la regla pasa a estar verificada)
 
 ### Added
