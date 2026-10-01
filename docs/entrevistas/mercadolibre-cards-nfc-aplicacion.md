@@ -141,12 +141,11 @@ Escala: calificar (Expert/Proficient/Beginner). Completar descripcion solo donde
 
 #### API Integration
 `Ultima vez: Independent (05/2025 - Present)`
-> I integrate frontends with backend services and third-party APIs. Independently (2025-Present), in SoporteML (a multi-tenant CRM for Mercado Libre sellers), I built the backend layer with Supabase Edge Functions and connected the frontend through REST calls and webhook-driven flows, including Mercado Pago billing and event handling. I also integrated the Mercado Libre API for seller data and operations. In accessibility-auditor, I wired the audit engine (axe-core through Playwright) into the product through a clean interface that returns weighted scores and structured findings. At EY (2021-2025), I worked inside a Next.js financial platform where data came from backend services and had to be rendered correctly and accessibly. I am comfortable with the practical side of integration: request/response contracts, authentication, error handling, and keeping the frontend resilient when the backend is slow or unavailable.
+> I integrate frontends with backend services and third-party APIs. Independently (2025-Present), in SoporteML (a multi-tenant CRM for Mercado Libre sellers), I built the backend layer with Supabase Edge Functions and connected the frontend through REST calls and webhook-driven flows, and I integrated the Mercado Libre API for seller data and operations. Billing runs on Stripe (SoporteML migrated from Mercado Pago in September 2025, enabled for Argentina). In accessibility-auditor, I wired the audit engine (axe-core through Playwright) into the product through a clean interface that returns weighted scores and structured findings. At EY (2021-2025), I worked inside a Next.js financial platform where data came from backend services and had to be rendered correctly and accessibly. I am comfortable with the practical side of integration: request/response contracts, authentication, error handling, and keeping the frontend resilient when the backend is slow or unavailable.
 
 #### Webhooks
 `Ultima vez: Independent (05/2025 - Present)`
-> I work with webhooks as the event-driven side of frontend-backend integration. Independently (2025-Present), in SoporteML (a multi-tenant CRM for Mercado Libre sellers), I implemented the billing flow with Mercado Pago, where payment events arrive as webhooks, get validated and processed in Supabase Edge Functions, and update the subscription state that the frontend reads. That means handling asynchronous, out-of-order events, verifying the payload integrity, and making the UI reflect state changes without polling. I also work with webhook-driven flows in the Mercado Libre integration for seller data. At EY (2021-2025), the Next.js financial platform I led consumed backend data and had to render it correctly under asynchronous updates. The practical part I am comfortable with: endpoint design, signature/verification, retries and idempotency, and keeping the frontend consistent when events arrive late.
-`PENDIENTE: confirmar que Mercado Pago en SoporteML usa webhooks reales. Dejado como esta por decision de Gonzo (2026-09-29).`
+> I work with webhooks as the event-driven side of frontend-backend integration. Independently (2025-Present), I built and maintain the billing flow of SoporteML (a multi-tenant CRM for Mercado Libre sellers): subscriptions and payments run on Stripe (migrated in September 2025 and enabled for Argentina), with payment and subscription events handled server-side in Supabase Edge Functions and reflected in the app without polling. That means handling asynchronous, out-of-order events, verifying the payload integrity, and keeping the UI consistent when events arrive late. I am comfortable with the practical side: endpoint design, signature/verification, retries and idempotency, and keeping state in sync with the payment provider.
 
 #### REST API
 `Ultima vez: Independent (05/2025 - Present)`
@@ -192,7 +191,9 @@ Soft skills y de proceso: Collaboration, Teamwork, Communication, Proactive Comm
 
 Retail, Data Annotation, Chatgpt, Product Design, Design, Writing, Workflow, Quality Engineering, Software as a Service, REST Framework, Full Stack Development.
 
-Pendiente: `Input Validation` - calificar como Profesional o borrar.
+Pendiente: `Input Validation` - Gonzo no sabe si usarla; sugerido borrar.
+
+Ruido del taxonomy a borrar: confirmado por Gonzo (2026-09-30) - "limpiar".
 
 ---
 
@@ -200,5 +201,6 @@ Pendiente: `Input Validation` - calificar como Profesional o borrar.
 
 - No se completan patentes ni reconocimientos: no hay.
 - Publicaciones: NO declarar posts de LinkedIn (self-published, no editorial).
-- CV nuevo NO lista Narrator ni ZoomText (el CV viejo si; corregido al regenerar).
+- CV nuevo NO lista Narrator ni ZoomText (el CV viejo si).
 - Certificacion Deque = certificacion, no reconocimiento.
+- Pagos: SoporteML migro de Mercado Pago a Stripe (sep 2025, habilitado en Argentina). El CV ya enviado dice "Mercado Pago billing" - quedo stale, no critico.
