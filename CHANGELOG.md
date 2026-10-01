@@ -25,6 +25,21 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-09-30] - ADR-086: el embudo de entrada conversacional (Módulo 1 de OpenClaw Use Cases)
+
+### Added
+- **`docs/adr/ADR-086-embudo-de-entrada-conversacional.md`:** marco de referencia para el comportamiento del agente frente a canales externos. Fija cinco patrones secuenciales - triaje determinista antes de razonar (L1), especialización por Persona (L2), borradores con rationale en vez de envío directo (L3), escalación como entrega de mando y no como alerta (L4), y límites de contexto con filtro determinista previo al semántico (L5).
+- **3 learnings nuevos en `memory.db`:** el marco de los 5 patrones (`pipeline-agentes`), la equivalencia del TTL de la L5 con el heartbeat y los scripts de sesión (`pipeline-agentes`), y el método de estudio por módulo con cierre en Laboratorio de Activos (`metodologia`). Exportados a `docs/learnings/`.
+- **`studies/openclaw-use-cases/`:** registro del curso (índice de progreso + L01-L05), en español.
+
+### Notes
+- **El ADR nombra una práctica que ya existía:** L2 = los agentes `kanam-dev/ops/mind/studio` y la frontera de roles (ADR-083); L4 = el handoff al humano; L5 = heartbeat + registros de sesión (ADR-084). El aporte no es infraestructura nueva sino el marco que explica por qué esas piezas están separadas.
+- **Regla accionable:** el filtro por identidad es determinista y va ANTES de cualquier búsqueda semántica. El orden inverso es una fuga de datos.
+- **Fuera de alcance:** el agente no tiene acceso a las cuentas personales de Gonzo (Gmail, iCloud). El ADR describe seguridad para cuando esos conectores existan, no los habilita.
+- **Método acordado con Gonzo:** el estudio se procesa por módulo, y la skill del propio Laboratorio de Activos se escribirá al final, después de practicarlo al menos una vez.
+
+---
+
 
 
 ### Added

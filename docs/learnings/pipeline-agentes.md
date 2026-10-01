@@ -191,3 +191,27 @@ REGLA DE METODO QUE ME LLEVO: antes de proponer una skill nueva para un problema
 
 ---
 
+## Módulo 1 de OpenClaw Use Cases: los 5 patrones de entrada conversacional
+
+El Módulo 1 del curso (roadmap.sh) define el embudo de entrada de un agente conversacional en cinco patrones secuenciales:
+
+L1 Triaje: normalizar payloads de cada plataforma a un mensaje canonico, filtrar por reglas deterministas (menciones, comandos) antes de gastar tokens, agrupar mensajes fragmentados con debounce de ventana deslizante y un techo duro (evita buffers eternos), y clasificar con un modelo Tier 1.
+L2 Personas (enrutamiento): en vez de un agente monolitico con todas las instrucciones, un clasificador de intencion asigna la consulta a una Persona especializada con su propio set de herramientas. Evita la dilucion del prompt y permite aislar permisos de escritura.
+L3 Borradores (staged artifacts): el agente no envia en nombre del usuario; redacta un borrador con una justificacion (rationale) y espera aprobacion humana. Cero suposiciones: si el dato no esta explicito, se pregunta.
+L4 Escalacion: no es la alerta. Es el cambio de estado del canal (Atomic Channel Lock): el agente se silencia y entrega el mando al humano. Se dispara por sentimiento, loops repetidos, pedido explicito o fallo critico de herramienta.
+L5 Limites de contexto: el contexto se aisla por identidad, canal e hilo; un TTL resetea la memoria inactiva; y el filtro por identidad es DETERMINISTA y va ANTES de cualquier busqueda semantica (nunca al reves, o hay fuga de datos).
+
+Equivalencia en el workspace: L2 = los agentes kanam-dev/ops/mind/studio y la frontera de roles del ADR-083; L4 = el handoff al humano cuando una tarea supera al agente; L5 = heartbeat + scripts de registro de sesion.
+
+---
+
+## L5 (TTL de contexto) es la formalizacion de lo que el heartbeat ya hacia
+
+El TTL de contexto de la L5 del curso (olvido programado de memoria inactiva, reseteo de sesion por inactividad) describe exactamente el rol que cumplen el heartbeat y los scripts de registro del SDLC en el workspace.
+
+La diferencia es de alcance, no de concepto: el curso lo plantea como una politica de memoria en RAM con flush por inactividad; el workspace lo resuelve con persistencia (memory.db) mas un resumen de cierre. En vez de depender de que el modelo recuerde, el estado se escribe a disco y se sintetiza.
+
+Leccion: cuando una teoria externa coincide con una practica ya instalada, la teoria no se adopta como novedad - se usa como lente para auditar y optimizar lo que ya hay. En este caso valida por que los scripts de session-end y el heartbeat son necesarios.
+
+---
+

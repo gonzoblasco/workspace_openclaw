@@ -91,6 +91,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-083 | [Frontera de roles - el CORE orquesta y no escribe codigo](./ADR-083-frontera-de-roles-core-no-escribe-codigo.md) | workspace |
 | ADR-084 | [Registros de sesion - un solo lugar, fuera del gate, con historia congelada](./ADR-084-registros-de-sesion-un-solo-lugar.md) | workspace |
 | ADR-085 | [Una sola maquina - el workspace deja de sincronizarse entre equipos](./ADR-085-una-sola-maquina.md) | workspace |
+| ADR-086 | [El embudo de entrada conversacional - triaje, personas, borradores, escalacion y limites de contexto](./ADR-086-embudo-de-entrada-conversacional.md) | workspace |
 
 ## Formato
 
