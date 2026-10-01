@@ -91,6 +91,9 @@ memory/export/
 pipeline-state.json
 model-router.json
 
+# Session plan (estado mutable de la sesion en curso, no versionado)
+.session_plan.json
+
 # OpenClaw dreaming state (local, machine-specific)
 DREAMS.md
 **/memory/.dreams/
