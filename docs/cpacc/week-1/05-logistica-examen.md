@@ -1,6 +1,6 @@
 # CPACC · Semana 1 · Logística del examen IAAP
 
-> Estado a 2026-09-29. Todo lo de esta página es **verificable** y se distingue lo confirmado de lo que falta.
+> Estado a 2026-09-30. Todo lo de esta página es **verificable** y se distingue lo confirmado de lo que falta.
 
 ## Confirmado (handbook oficial, `../cpacc-handbook.pdf`)
 
@@ -11,20 +11,37 @@
 - Transferir de sesión: **USD 50** (≤4 días hábiles antes) / **USD 100** (fuera de plazo).
 - Renovación: credencial válida **3 años**; CPACC requiere ~**15 CAEC/año** (45 por ciclo).
 
-## Pendiente de confirmar (acción 1 del plan)
+## Confirmado - página oficial *Exam Session Dates* de IAAP (2026-09-30)
 
-La página oficial *Exam Dates* de IAAP está caída/404 y el portal bloquea el fetch automatizado (403). **No se pudo verificar la fecha del 9 de diciembre de forma independiente.** Lo que hay que confirmar a mano, logueado en el portal IAAP:
+Página: `https://www.accessibilityassociation.org/exam-session-dates`
 
-1. **Fecha exacta de cierre de aplicación** de la sesión objetivo. Gonzo anotó el **9 de diciembre**; confirmar en la página *Exam Dates* / *Certification* del portal.
-2. **Ventana de examen** de esa sesión (fecha límite para agendar y último día de examen).
-3. **Fee**: ~USD 385-545 según credencial/membresía (dato de terceros; confirmar en el portal).
-4. **Formato vigente**: 100 preguntas de opción múltiple, 2 h, aprueba con **600/800**.
+**Sesión objetivo - November/December 2026:**
 
-## Cómo confirmar
+| Hito | Fecha |
+|---|---|
+| Exámenes (ventana) | **12 de noviembre al 9 de diciembre de 2026** |
+| Aplicaciones abren | 28 de octubre |
+| **Aplicaciones cierran** | **12 de noviembre, 5pm ET** |
+| Pago vence | 18 de noviembre |
+| Agenda abre | 2 de noviembre |
+| Agenda cierra | 30 de noviembre |
+| Resultados | entre el 6 y el 20 de enero de 2027 |
+| Examen presencial extra | *Accessing Higher Ground*, 17 de noviembre |
 
-- Ingresar a `accessibilityassociation.org` → *Certification* → *Exam Dates* / portal del candidato (requiere login).
-- Si el portal tampoco muestra la fecha, escribir a **certification@accessibilityassociation.org** (email que da el BoK como contacto).
+**CORRECCIÓN IMPORTANTE:** el **9 de diciembre** que se manejaba como "cierre de aplicación" es en realidad el **último día de examen** de la sesión. El cierre de aplicación es el **12 de noviembre** (5pm ET). La acción con vencimiento real es aplicar entre el **28/10 y el 12/11**.
+
+**Fallback - January/February 2027:** exámenes 20/01 al 17/02/2027; aplicaciones abren 06/01, cierran 20/01/2027 (5pm ET); examen presencial extra por confirmar.
+
+## Todavía a confirmar
+
+- **Fee**: ~USD 385-545 según credencial/membresía (dato de terceros; confirmar en el portal al aplicar).
+- **Formato vigente**: 100 preguntas de opción múltiple, 2 h, aprueba con **600/800**.
+
+## Cómo confirmar el fee
+
+- Ingresar a `accessibilityassociation.org` → *Certification* → aplicar a la sesión (ahí se muestra el fee según membresía).
+- Duda puntual: **certification@accessibilityassociation.org** (contacto del BoK).
 
 ## Nota de método
 
-La fecha del 9/12 es el ancla de calendario del plan. Si difiere, el plan se recalcula desde la fecha real del cierre de aplicación (nota al pie de `../study-plan.md`).
+La fecha del 9/12 anclaba el plan y resultó ser el fin de la ventana de examen, no el cierre de aplicación. Ancla corregida el 2026-09-30 con fuente oficial; el plan se recalcula desde el **12/11** (ver `../study-plan.md`).
