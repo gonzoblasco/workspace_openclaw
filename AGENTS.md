@@ -144,7 +144,7 @@ Detalle en `docs/AGENTS-DETALLE.md`.
 #### Razonamiento: HIGH unificado (ADR-053, 2026-09-22)
 - **Thinking `high` para todos los roles** (Kanam y agentes A/B). Decidido por Gonzo "para no gastar recursos innecesarios".
 <!-- BEGIN MANAGED:model-triple -->
-- **Modelo primario:** `gpt-oss:120b-cloud`. **Auxiliar:** `gemma4:cloud`. **Alternativo:** `glm-5.3-flash:cloud`.
+- **Modelo primario:** `deepseek-v4.1-flash:cloud`. **Auxiliar:** `gemma4:cloud`. **Alternativo:** `gpt-oss:120b-cloud`.
 <!-- END MANAGED:model-triple -->
 - _Historico (2026-08-27 a 2026-09-22): Kanam MAX / agentes HIGH, criterio REVISAR vs CREAR. Reemplazado por ADR-053; ver ahi la consecuencia aceptada._
 
@@ -212,7 +212,7 @@ Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/S
 
 **Resumen operativo** (los subagentes solo reciben `AGENTS.md`, no `docs/SETUP.md` ni `MEMORY.md`):
 <!-- BEGIN MANAGED:model-operativo -->
-- **Modelo:** primario de OpenClaw `gpt-oss:120b-cloud`, thinking `high` para todos los roles (ADR-053); motor del pipeline A/B `gpt-oss:120b-cloud` (primario) / `deepseek-v4.1-flash:cloud` (auxiliar).
+- **Modelo:** primario de OpenClaw `deepseek-v4.1-flash:cloud` (fallback `gemma4:cloud`), thinking `high` para todos los roles (ADR-053); motor del pipeline A/B `gpt-oss:120b-cloud` (A: escribe) / `gemma4:cloud` (B: revisa).
 <!-- END MANAGED:model-operativo -->
 - **Pipeline:** Claude Code via Ollama (estandar, ADR-049) -> `ollama launch claude --model deepseek-v4.1-flash:cloud -- -p "<tarea>"`. Fallback: Qwen Code (`ollama launch qwen -- -p "<tarea>" -y`).
 - **Memoria:** `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables.

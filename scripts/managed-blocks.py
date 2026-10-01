@@ -70,7 +70,7 @@ REGISTRY = [
         "key": "model-operativo",
         "template": (
             "- **Modelo:** primario de OpenClaw `{model_primary}`, thinking `{thinking_default}` "
-            "para todos los roles (ADR-076); motor del pipeline A/B `{model_pipeline}`."
+            "para todos los roles (`{model_primary}` con fallback `gemma4:cloud`); motor del pipeline A/B `{model_pipeline}` (A: gpt-oss / B: gemma4)."
         ),
     },
     {
