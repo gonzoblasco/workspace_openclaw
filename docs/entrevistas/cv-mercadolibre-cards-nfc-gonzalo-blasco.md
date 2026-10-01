@@ -13,7 +13,7 @@ Senior frontend engineer with 10+ years building and scaling production interfac
 - **Languages and frameworks:** React, Next.js (SSR), TypeScript, JavaScript (ES6+), HTML5, CSS3, Sass.
 - **Architecture:** component architecture, application lifecycle, SSR, design systems, micro-frontends, SOLID, clean code.
 - **Testing and quality:** Jest, React Testing Library, Playwright, Vitest, axe-core, automated quality gates in CI/CD.
-- **Frontend-backend integration:** webhooks, REST API integrations, Supabase Edge Functions, Mercado Pago billing.
+- **Frontend-backend integration:** webhooks, REST API integrations, Supabase Edge Functions, Stripe billing.
 - **Tooling and workflow:** Git, Jira, Figma, Biome, CI/CD pipelines, agile SDLC.
 - **Code review and mentoring:** review of pull requests and diffs, best practices, guidance and code examples for teammates.
 - **Accessibility (differential):** WCAG 2.2 A/AA, WAI-ARIA Authoring Practices, screen readers (JAWS, NVDA, VoiceOver, TalkBack).
@@ -24,7 +24,7 @@ Senior frontend engineer with 10+ years building and scaling production interfac
 ### Independent - Founder and Frontend Engineer
 05/2025 - Present | Remote
 
-- Built and shipped SoporteML, an AI-powered multi-tenant CRM for Mercado Libre sellers (React, Vite, TypeScript, Supabase Edge Functions, Mercado Pago billing), covering frontend, integrations and webhook-driven billing.
+- Built and shipped SoporteML, an AI-powered multi-tenant CRM for Mercado Libre sellers (React, Vite, TypeScript, Supabase Edge Functions, Stripe billing), covering frontend, integrations and webhook-driven billing.
 - Built accessibility-auditor, an automated auditing platform that runs axe-core through Playwright and produces weighted scores, impact-level reports and PDF export.
 - Contribute fixes and reviews to open source React component libraries and frontend frameworks.
 
