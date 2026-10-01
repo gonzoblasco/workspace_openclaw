@@ -8,7 +8,7 @@
 ## 1. Objetivo
 
 - **Motivación:** meta **personal** de Gonzo (crecimiento propio en a11y). Sin urgencia ni compromiso con terceros.
-- **Objetivo de calendario:** apuntar a la sesión **November/December 2026**, cuya **aplicación cierra el 12 de noviembre de 2026 a las 5pm ET** (dato oficial, corregido el 2026-09-30). El **9 de diciembre** que se había anotado NO es el cierre de aplicación: es el **último día de examen** de esa sesión.
+- **Objetivo de calendario (meta fijada por Gonzo, 2026-09-30):** anotarse a la sesión **November/December 2026** **a más tardar la primera semana de noviembre** (meta interna, con colchón). El cierre oficial de aplicación es el **12 de noviembre, 5pm ET**, y el **9 de diciembre** es el último día de examen de la sesión (no el cierre de aplicación).
 - **Ritmo:** flexible, sin presión. La ventaja: la experiencia real en a11y web cubre buena parte de los Dominios 2 y 3; el foco va al **lado humano** (Dominio 1).
 
 ## 2. Estado del examen (verificado vs a verificar)
@@ -63,7 +63,7 @@ médico · social · biopsicosocial · económico · funcional-solución · iden
 | **10** (01-09/12) | Cierre: puntos débiles + simulacro final. | Todo | Segundo mock; cerrar la tabla "conocido / por aprender". |
 
 **Ventana del examen:** 12/11 al 09/12/2026. El examen se agenda tras la aprobación y el pago (ATT de Pearson en ≤5 días hábiles), y **la agenda cierra el 30/11** - el examen debe rendirse antes de esa fecha (o pedir transferencia de sesión: USD 50/100).
-**Acción crítica:** aplicar entre el **28/10 y el 12/11** (5pm ET). Perdida esa fecha, el fallback es la sesión de enero/febrero 2027.
+**Acción crítica (meta):** aplicar **dentro de la primera semana de noviembre** (del 28/10 al ~07/11), no esperar al límite del 12/11 - así queda colchón para aprobación, pago (vence 18/11) y agenda. Perdida la ventana del 12/11, el fallback es la sesión de enero/febrero 2027.
 
 ## 4.bis Material por semana
 
@@ -95,7 +95,7 @@ médico · social · biopsicosocial · económico · funcional-solución · iden
 
 ## 8. Primeras 3 acciones
 
-1. **Anotar la fecha de aplicación: 28/10 al 12/11** (5pm ET). Es la única acción con vencimiento duro de todo el plan. Confirmar el fee en el portal al aplicar.
+1. **Aplicar en la primera semana de noviembre** (ventana 28/10-07/11; límite oficial 12/11, 5pm ET). Es la única acción con vencimiento duro del plan. Confirmar el fee en el portal al aplicar.
 2. **Registrarse** en la sesión Nov/Dec 2026 dentro de esa ventana (se abre y cierra por sesión; no hay aplicaciones rodantes).
 3. **Semana 1:** abrir el BoK, leer Intro + 1A, y armar la tabla "conocido / por aprender".
 
