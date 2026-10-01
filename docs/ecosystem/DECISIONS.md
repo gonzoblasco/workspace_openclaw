@@ -105,12 +105,16 @@ Con la segunda tanda, el eje creció. **Ahora hay seis opciones de memoria, y se
 
 > **Señal a considerar: en dos tandas conté CINCO bases SQLite paralelas** (Studio, context-sync, Autensa, ClawDeck, Open Amnesia). El ecosistema no tiene respuesta canónica para la memoria del agente. **Eso empuja a definir el formato propio primero, y elegir la herramienta después.**
 
+> **⭐ ACTUALIZADO tras la profundización (2026-10-01):** al abrir `knowledge-graph` (jdrhyne) cambió la pregunta. **No es un séptimo motor: es una capa de entidades sobre las que ya tenemos** - dos archivos de texto (`summary.md` + `facts.jsonl`), cero infraestructura, cero embeddings, y **reconoce `memory/YYYY-MM-DD.md` y `MEMORY.md` como capas propias**. **Puede que la respuesta no sea elegir entre los seis, sino agregar esta capa liviana encima.** Es la de menor riesgo y la más rápida de probar en `mktemp -d`. Ficha completa en `crew-resources.md` → Profundización #2.
+
 ### 2.2 Seguridad: guardspine vs ClawSec
 **No compiten - son capas distintas:**
 - **guardspine** → gatea **tool calls** por riesgo (el agente *haciendo*).
 - **ClawSec** → gatea **instalaciones de skills** y vigila **drift de archivos** (el agente *incorporando* y *cambiando*).
 
 > **Decisión pendiente:** ¿se adopta una, ambas, o ninguna? Ambas son infra pesada. Si se elige una, **guardspine** pega en el corazón de las Red Lines.
+
+> **⭐ ACTUALIZADO tras la profundización:** la suite `aeon` (Bankr) agrega una **tercera capa** de seguridad de skills: `skill-security-scan` audita el **contenido** de una skill antes de instalarla (shell injection, prompt override, ofuscación Unicode). No solapa con las otras dos: **guardspine gatea la ejecución, ClawSec el drift, aeon el contenido.** Ver §2.6.
 
 ### 2.3 Trazabilidad: Claw Orchestrator vs MemoV
 Ambos trazan y verifican lo que hizo el agente, con **peso muy distinto**:
@@ -130,6 +134,45 @@ Mismo problema (Kanban visual), **sincronización invertida**:
 - **ClawDeck** → **pull** por API. El agente consulta su cola. Rails + PostgreSQL. Hosteado en cierre.
 
 > **Decisión pendiente:** ninguno es adoptable (uno es de era Clawdbot, el otro cierra), pero **el problema es real y nuestro**: nuestro TODO vive en `memory.db` y **no es visible**. Falta decidir si el backlog necesita una superficie visual propia y con qué modelo (push vs pull).
+
+### 2.6 Ciclo de vida de skills: lo que NOS FALTA por completo
+
+**⭐ Nuevo tras la profundización.** No es un solapamiento entre repos - es **un hueco propio**, y el más grande de las dos rondas.
+
+Hoy tenemos `skill_workshop` para **crear y actualizar** skills. **No tenemos nada más del ciclo:**
+
+| Etapa | ¿La tenemos? | La suite `aeon` (Bankr) la cubre con... |
+|---|---|---|
+| **Auditar antes de instalar** | ❌ | `skill-security-scan` (injection, exfiltración, prompt override, ofuscación) |
+| **Medir el output** | ❌ | `skill-evals` (manifiesto de assertions + estados de regresión) |
+| **Reparar cuando falla** | ❌ | `skill-repair` (8 categorías de fallo + receta de verificación) |
+| **Evolucionar con criterio** | ⚠️ parcial (workshop) | `autoresearch` (4 variaciones + scoring + **aborta si no mejora**) |
+
+> **Decisión pendiente:** **no instalarlas (son del repo de Bankr, 90% cripto) sino construir el ciclo, con estas cuatro como plano.** Prioridad: **`skill-security-scan` primero** - es el mayor riesgo real, porque instalamos skills de afuera. Después `skill-evals` (necesita que cada skill declare manifiesto y guarde output). `autoresearch` es el más caro y el último.
+>
+> **Por qué es el hueco más grande:** tenemos 78 skills en el índice, **instalamos de ClawHub (curado, no auditado)**, y **nada verifica que una skill siga funcionando** después de instalarla. Ficha completa en `crew-resources.md` → Profundización #3.
+
+### 2.7 Los roles que faltan: auditor de diseño y crítico de gusto
+
+**⭐ Nuevo tras la profundización.** Tampoco es un solapamiento - son **dos roles ausentes** del crew.
+
+- **Auditor de diseño** (`design-audit`, jdrhyne): el enforcement de tu filtro prioritario (diseño). Su protocolo ya respeta nuestra pausa obligatoria (plan por fases + aprobación), y sus 8 reglas destilan el criterio que hoy no tenemos escrito. **Precondición: el design system.** Su regla central (*"all values must reference tokens"*) **no se puede cumplir sin tokens que referenciar** - y no los tenemos.
+- **Crítico de gusto** (`critic`, Academic System): **el rol que distingue "esto pasó el gate" de "esto es bueno"**. Rúbrica SHARP de 5 ejes con puntaje, tests de una línea (frase única / bar), y **presión adversarial obligatoria** (las 3 objeciones más duras antes de comprometerse).
+
+> **Decisión pendiente:** ¿se crean estos roles? **El design system viene primero, siempre:** es la precondición del auditor. Y para el crítico, **el esqueleto transferible es Planner/Critic/Writer + SHARP**; los 13 roles del sistema académico son demasiados para nuestro caso. Detalle en `crew-resources.md` → Profundización #1 y #5.
+
+### 2.8 El pipeline de diseño: cuatro roles, un orden
+
+**El eje de diseño quedó cerrado** tras la profundización. No es "elegir una skill" - es **un pipeline con orden**:
+
+| Orden | Pieza | Rol |
+|---|---|---|
+| 1 | **`kj-ui-ux-pro-max`** | **Genera** los tokens y specs (lo que desbloquea todo lo demás) |
+| 2 | **`anti-slop-design`** | **Evita** la estética genérica - va desde el día uno |
+| 3 | **`design-audit`** | **Audita** contra el sistema generado |
+| 4 | **`axe-devtools`** | **Mide** accesibilidad - descartado por costo (ya tenemos cobertura; axe-core open source + la tool `browser` alcanza) |
+
+> **Decisión pendiente:** adoptar las tres primeras, en ese orden. **El design system propio sigue siendo el paso 0** - `kj-ui-ux-pro-max` es la herramienta que lo produce.
 
 ---
 
@@ -255,19 +298,26 @@ Para no volver a analizarlos.
 
 **Un paso a la vez. No adoptar dos candidatos del mismo eje en paralelo.**
 
-1. **Decidir memoria (§2.1)** - es la base que habilita lo demás, y **ahora tiene seis candidatos, no cuatro**. **Definir primero QUÉ debe recordar el sistema** (sesión / proyecto / actividad) y **con qué formato**; recién después elegir herramienta.
-2. **Decidir seguridad (§2.2)** - si se adopta algo, `guardspine` en `shadow` primero.
-3. **Diseño: adoptar 2-3 skills** (`design-audit` + `anti-slop-design` + stack Tailwind/shadcn) y **definir el design system propio del workspace**. **Ahora hay un ejemplo concreto que seguir: el contrato semántico de color de OpenClaw Studio.**
-4. **Adoptar los patrones de §3** que no requieren instalar nada. **Los de mayor retorno inmediato, de la segunda tanda:**
+**Orden corto, tras las dos tandas y la profundización:**
+
+1. **Definir el design system propio (paso 0 - ahora el más urgente).** Es la **precondición de dos roles** (auditor de diseño y todo el pipeline de estética), y **lo pide el filtro prioritario de Gonzo**. La herramienta que lo produce está identificada: **`kj-ui-ux-pro-max`**. Y hay un ejemplo concreto que seguir: el **contrato semántico de color** de OpenClaw Studio.
+2. **Construir el ciclo de vida de skills (§2.6)** - **el hueco más grande de las dos rondas.** Empezar por `skill-security-scan` (riesgo real: instalamos de afuera), después `skill-evals`.
+3. **Decidir memoria (§2.1)** - redefinida: **quizá no haya que elegir entre los seis motores, sino agregar la capa de `knowledge-graph`** (dos archivos de texto, cero infraestructura, reconoce nuestras capas). **La opción de menor riesgo y la más rápida de probar en `mktemp -d`.**
+4. **Adoptar las skills de diseño en orden (§2.8):** `kj-ui-ux-pro-max` -> `anti-slop-design` -> `design-audit`. `axe-devtools` descartado por costo.
+5. **Crear el rol crítico de gusto (§2.7)** - el `critic` con rúbrica SHARP. Es el rol que distingue "pasó el gate" de "es bueno".
+6. **Adoptar los patrones de §3** que no requieren instalar nada. Los de mayor retorno:
    - `determinism-before-LLM` - ordenar antes de enriquecer.
-   - El **3-Strike Protocol** - contador y criterio de escalada en vez de "reintentar".
+   - El **3-Strike Protocol** - contador y criterio de escalada.
    - La **2-Action Rule** - escribir hallazgos a disco antes de perderlos.
    - Los **automation tiers** - autonomía como espectro configurable.
+   - El **gate de no-empeorar** - ya presente en cuatro piezas distintas.
 
-> **Regla de oro que dejó la ronda:** el core de OpenClaw está más completo de lo que pensábamos. Antes de sumar cualquier tooling externo, **verificar qué ya hace el core.**
+> **Regla de oro que dejó la primera ronda:** el core de OpenClaw está más completo de lo que pensábamos. Antes de sumar cualquier tooling externo, **verificar qué ya hace el core.**
 
 > **Regla de oro de la segunda tanda:** **el ecosistema no tiene un formato canónico de memoria** - cinco bases SQLite en dos tandas, cada herramienta la suya. **El que defina un formato interoperable gana.** Nosotros deberíamos adoptar el **formato** antes que la herramienta.
 
+> **Regla de oro de la profundización:** **lo que falta no es una herramienta más, son tres roles y un sistema de tokens.** El auditor de diseño (con su design system), el crítico de gusto, y el ciclo de vida de skills. Los tres tienen la misma forma: **alguien que dice "esto no alcanza" con un criterio auditable.**
+
 ---
 
-_Consolidado 2026-10-01 sobre 29 repos (20 + 9). Detalle en `crew-resources.md`; casos de uso en `solutions-catalog.md`._
+_Consolidado 2026-10-01. 29 repos en dos tandas (20 + 9), + profundización de los 5 conjuntos que habían quedado solo como directorio. Detalle en `crew-resources.md`; casos de uso en `solutions-catalog.md`._

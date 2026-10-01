@@ -25,7 +25,18 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **Patrón repetido (2da tanda), ya del ecosistema y no anécdota:** memoria por **hooks de turno** (4 repos), comando **`doctor`** (4 repos), **ledger/checkpoint de agente** (3 repos).
 - **Aporte más transferible de la 2da tanda:** `determinism-before-LLM` (Open Amnesia) - normalizar, filtrar y deduplicar **antes** de cualquier paso de LLM. *"Data consistency beats prompt cleverness."*
 - **Hallazgo que nos toca directo:** una **sesión compartida entre tareas degrada al agente hasta atascarlo** (bug documentado de Autensa v2.5.0). Confirma nuestra sesión-por-tarea. Y nuestro backlog vive en `memory.db` y **no es visible** (deuda real, §2.5 de DECISIONS).
+- **Profundización (2026-10-01, tarde):** se abrieron los **5 conjuntos que habían quedado solo como directorio** en la primera parte (deuda reconocida: se catalogó el repo, no el ítem). Hallazgos:
+  - **`design-audit`** (jdrhyne) - rol auditor de diseño; sus 8 reglas destilan el criterio que no teníamos. **Precondición: el design system (no lo tenemos).**
+  - **`knowledge-graph`** (jdrhyne) - memoria **sin base de datos nueva** (2 archivos de texto, cero infraestructura, reconoce `memory/YYYY-MM-DD.md` y `MEMORY.md`). **Redefine la decisión de §2.1: quizá no haya que elegir motor, sino agregar esta capa.**
+  - **Suite `aeon`** (Bankr) - **el hueco más grande de las dos rondas:** ciclo de vida de skills (auditar/evaluar/reparar/evolucionar). Tenemos `skill_workshop` para crear, nada más.
+  - **Cluster de diseño** (VoltAgent) - `anti-slop-design` (previene la estética genérica) + `kj-ui-ux-pro-max` (**genera los tokens que `design-audit` necesita**). `axe-devtools` descartado por costo.
+  - **Academic Multi-Agent System** (13 roles) - el patrón Factory ya construido; el **`critic`** (rúbrica SHARP) es el rol de gusto adversarial que nos falta.
+- **`DECISIONS.md` ampliado:** nuevas secciones §2.6 (ciclo de vida de skills - hueco propio), §2.7 (los dos roles ausentes), §2.8 (pipeline de diseño con orden). Movimiento recomendado reordenado: **el design system pasó a ser el paso 0**.
+- **Regla de oro de la profundización:** *lo que falta no es una herramienta más, son tres roles y un sistema de tokens.*
 - **Pendiente abierto:** decidir el eje de memoria (`DECISIONS.md` §2.1) - ahora con **seis** candidatos, no cuatro. Es lo que desbloquea el resto.
+
+### Fixed
+- **`DECISIONS.md` §2.4 (error propio corregido):** `clawdeck` estaba listado como alternativa de **observabilidad** a Crabwalk, cuando es un **Kanban** (no un monitor). Se movió a §2.5 ("el backlog como objeto visible").
 
 ---
 

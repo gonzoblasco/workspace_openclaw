@@ -1251,6 +1251,415 @@ Y ataca un problema que tenemos de verdad: **el contenido de nuestras sesiones v
 - **Autensa v2.5.0:** una sesión compartida entre tareas **se degrada hasta atascar al agente**. Confirma nuestra sesión-por-tarea.
 - **rdsthomas/clawdeck:** nuestro backlog vive en `memory.db` y **no es visible**. Es una deuda real.
 
+## 🔬 Profundización - los que quedaron en directorio
+
+De la primera parte quedaron cinco colecciones anotadas **solo como ítem**, sin abrir el contenido. Acá se abren de a una. Orden: el que más prometía primero.
+
+### 1. `design-audit` (jdrhyne) - el rol de auditor de diseño
+
+Fuente: [jdrhyne/agent-skills/skills/design-audit](https://github.com/jdrhyne/agent-skills/tree/main/skills/design-audit). **No es código: es un rol en prosa** (`SKILL.md` + `references/design-rules.md`). Escaneado por AgentVerus.
+
+**Qué es:** un auditor premium de UI/UX con filosofía Jobs/Ive. No toca funcionalidad: **solo diseño**. Entrega un **plan por fases para aprobar antes de implementar**.
+
+#### 🧠 La creencia central (una sola frase)
+> *"If a user needs to think about how to use it, you've failed. If an element can be removed without losing meaning, it must be removed. **Simplicity is not a style - it is the architecture.**"*
+
+Y el test: ***"Remove until it breaks. Then add back the last thing."***
+
+#### 🔑 El protocolo (4 pasos, y el paso 4 es el que importa)
+
+1. **Startup - leer ANTES de opinar:** design system/tokens, guidelines de frontend, rutas, PRD, constraints de stack, estado del build, **y lecciones/correcciones previas**. Después, **recorrer la app viva** en mobile -> tablet -> desktop. *"Screenshots are fallback only."*
+2. **Auditoría por 15 dimensiones.** No es "se ve lindo": jerarquía visual, espaciado y ritmo, tipografía, color, alineación/grid, componentes, iconografía, motion, **empty states, loading states, error states, dark mode**, densidad, responsividad, accesibilidad. **Los estados vacíos/carga/error son de primera clase** - ahí muere la mayoría de las apps.
+3. **Jobs Filter** - cinco preguntas por elemento: ¿habría que explicarle que existe? -> rediseñar. ¿Se puede quitar sin perder sentido? -> quitar. ¿Se siente inevitable? ¿El detalle está tan cuidado como los que nadie ve? (*"the back of the fence must be painted too"*) ¿Decís no a 1000 cosas para quedarte con las grandes?
+4. **Compilar el plan y ESPERAR APROBACIÓN.** Fases: **Crítica** (jerarquía/usabilidad/responsividad) -> **Refinamiento** (espaciado/tipo/color) -> **Polish** (micro-interacciones, estados, dark mode). *"Do not implement. Present the plan."* Y el formato de instrucción es quirúrgico: *"Make softer" is not an instruction. "border-radius: 8px -> 12px" is.*
+
+#### 🔑 Las 8 reglas de diseño (el núcleo reutilizable)
+
+| # | Regla | La frase que la destila |
+|---|---|---|
+| 1 | **La simplicidad ES la arquitectura** | *"Complexity is a design failure, not a feature."* |
+| 2 | **La consistencia no se negocia** | Encontrás una inconsistencia -> la marcás, **no inventás una tercera variación**. Todo valor referencia tokens - **nada hardcodeado**. |
+| 3 | **La jerarquía manda** | **Una** acción primaria por pantalla, inconfundible. *"If everything is bold, nothing is bold."* |
+| 4 | **La alineación es precisión** | *"If something is off by 1-2 pixels, it's wrong."* |
+| 5 | **El whitespace es una feature** | *"Space is not empty - it is structure."* |
+| 6 | **Diseñá la sensación** | *"Transitions should feel like physics, not decoration."* |
+| 7 | **Responsive es el diseño real** | Mobile es el punto de partida; *"design for thumbs first, then cursors"*. |
+| 8 | **Nada cosmético sin pensamiento estructural** | Prohibido decir "ponelo azul" o "agregá padding" **sin explicar qué logra en la jerarquía**. *"Every change must have a design reason, not just a preference."* |
+
+#### 🎯 Por qué encaja con nosotros
+
+- **Es un ROL, y encaja con nuestra estructura.** Se instala igual que un agente del crew (identidad + skill), y es **el enforcement del filtro prioritario de Gonzo** (diseño = prioritario). Hoy no tenemos ningún rol que audite diseño.
+- **La pausa iterar -> revisión -> aprobación está adentro del propio protocolo.** El paso 4 es literalmente nuestra pausa obligatoria, aplicada a diseño. Y "ejecutá solo lo aprobado, presentá el resultado antes de la siguiente fase" es nuestro flujo.
+- **La regla 8 es la más valiosa para nosotros.** Prohibir el cambio cosmético sin razón estructural es exactamente lo que hace que un agente no arruine una UI "porque queda más lindo". Y la regla 2 (flag, no tercera variación) evita que el agente invente su propio estilo.
+- **El paso 1 ordena lo que hoy es intuición:** leer los tokens y las **correcciones previas** *antes* de opinar sobre diseño.
+
+#### ⚠️ Puntos de atención
+
+1. **La precondición es que exista un design system.** La regla 2 - *"all values must reference design system tokens, no hardcoded colors, spacing, or sizes"* - **no se puede cumplir sin tokens que referenciar.** Nosotros **no tenemos un design system propio**. **Sin tokens, esta skill es un buen auditor sin estándar contra el cual auditar.**
+2. **Es prosa, no mecánica.** No hay verificación automática; la calidad depende del modelo. **Es una skill volitiva, no un gate.**
+3. **Asume acceso a la app viva** (browser, viewports). Nosotros tenemos la tool `browser` y la skill `running-app-visual-review` - **la infraestructura existe. Hay que conectarlas.**
+4. **Solapa en parte con `ui-contrast-audit`** (accesibilidad) y `running-app-visual-review` (ver visualmente). **No los reemplaza: los orquesta.** `ui-contrast-audit` es un check puntual; esto es la auditoría entera con plan por fases.
+5. **No verificado por nosotros** (no lo corremos todavía).
+
+> **Veredicto: adoptable como rol del crew, con una precondición - el design system.** Es exactamente el rol que nos falta (auditor de diseño), trae un protocolo que ya respeta nuestra pausa obligatoria, y sus 8 reglas destilan el criterio que hoy no tenemos escrito. Pero **su regla central (todo referencia tokens) exige el design system que todavía no existe.** Orden correcto: **primero definir los tokens** (color, tipografía, espaciado) - y ahí el **contrato semántico de color de OpenClaw Studio** (§2da tanda) es la mejor referencia que encontramos - **y recién entonces** el rol tiene contra qué auditar. Sin ese paso, adoptarlo da una skill que sabe mirar pero no tiene vara.
+
+### 2. `knowledge-graph` (jdrhyne) - memoria sin base de datos nueva
+
+Fuente: [jdrhyne/agent-skills/clawdbot/knowledge-graph](https://github.com/jdrhyne/agent-skills/tree/main/clawdbot/knowledge-graph). **MIT.** v1.1.0. Prosa + crons + archivos. Inspirado en un [artículo de @spacepixel](https://x.com/spacepixel) sobre sistemas de memoria para agentes.
+
+**Qué es:** un grafo de entidades **append-only** que acumula hechos durables entre sesiones, con **resúmenes vivos** que se reescriben solos. Tres capas, y **reconoce explícitamente las dos que ya tenemos:**
+
+| Capa | Qué | Dónde |
+|---|---|---|
+| **Entity Knowledge** | Hechos estructurados sobre personas, empresas, proyectos | `life/areas/` |
+| **Daily Notes** | Log cronológico de sesiones | `memory/YYYY-MM-DD.md` |
+| **Persistent Memory** | Patrones y preferencias de alto nivel | `MEMORY.md` |
+
+> **Esto es lo primero que hay que notar: las capas 2 y 3 son NUESTRAS, con nuestros nombres exactos.** No propone reemplazar nada - **agrega la capa 1**, que es la que nos falta, y declara que convive con las demás.
+
+#### 🧱 El modelo de datos (y por qué es el hallazgo)
+
+```
+life/areas/
+  people/<slug>/     -> summary.md + facts.jsonl
+  companies/<slug>/  -> summary.md + facts.jsonl
+  projects/<slug>/   -> summary.md + facts.jsonl
+```
+
+Cada entidad son **dos archivos** de texto plano:
+- **`summary.md`** - el snapshot corto y actual (3-8 líneas). **El camino rápido.**
+- **`facts.jsonl`** - hechos atómicos, **append-only**, un JSON por línea.
+
+```json
+{"id":"alice-001","fact":"Frontend engineer at Acme Corp","category":"context","ts":"2026-01-15","source":"conversation","status":"active"}
+{"id":"alice-002","fact":"Promoted to senior engineer","category":"milestone","ts":"2026-06-01","source":"conversation","status":"active","supersedes":"alice-001"}
+```
+
+Categorías: `relationship | milestone | status | preference | context | decision`.
+
+#### 🔑 Diseño a robar (varios, y todos baratos)
+
+- **Sin base de datos nueva. Sin embeddings. Sin servicio.** Es **markdown + JSONL en el workspace**. **Esto es lo que rompe la ecuación:** las seis opciones de memoria de la ronda traían cada una su SQLite; esta trae **dos archivos de texto**.
+- **"Supersede, don't delete" - el patrón más fuerte.** Cuando un hecho cambia, **no se borra ni se edita el anterior**: se agrega uno nuevo con `supersedes: <id-viejo>` y el viejo pasa a `status: superseded`. **La historia queda completa y auditable.** Es lo opuesto a la memoria como overwrite.
+- **La distinción `summary.md` vs `facts.jsonl` es el diseño entero.** El agente lee **primero el resumen** (5 líneas) y **solo abre los hechos crudos si el resumen está viejo o el usuario pide detalle**. *"5 lines vs potentially hundreds of raw facts."* **Es el recall con filtro de segunda pasada, pero hecho archivo.**
+- **Recall disparado, no automático.** *"Recall should be triggered, not automatic."* Solo ante **nombre propio**, frase de "recordá/pensá", o **keyword de proyecto**. *"Most messages skip recall entirely, saving tokens."* **La política de tokens más explícita que vimos.**
+- **Extracción cada 4h con el modelo más barato.** *"typically costs less than $0.01/day."* El costo declarado y minimizado. Y **el cron de síntesis semanal (domingos 9am)** reescribe los resúmenes y **marca contradicciones como superseded**.
+- **La separación extracción vs síntesis.** Extraer es incremental y frecuente (cada 4h); sintetizar es periódico y caro (semanal). **Dos ciclos con dos costos distintos.**
+- **Instrucciones al `AGENTS.md`:** dice explícitamente *"copiá la sección a tu AGENTS.md para que **todos** los agentes sepan usar el grafo"*. Y **symlink del `life/` entre workspaces** para que varios agentes compartan el mismo grafo. **Pensado para multi-agente - como nosotros.**
+- **Límites de seguridad explícitos:** no guardar secretos ni credenciales; no crear entidades por charla casual; **no inyectar el grafo en cada conversación**; no borrar hechos históricos.
+- **Qué NO guardar, enumerado:** ✅ cambios de rol, hitos, preferencias, decisiones, contexto estable. ❌ charla casual, estados temporales, hechos ya conocidos, info vaga.
+
+#### 🎯 Por qué ataca la decisión pendiente
+
+La pregunta de `DECISIONS.md` §2.1 era: *¿qué motor de memoria adoptamos, de los seis?* Y el criterio sugerido era *"menor dependencia que resuelva el retrieval"*.
+
+> **Esta opción es la de menor dependencia posible que no sea "construilo de cero": cero infraestructura, dos formatos de texto que ya entendemos, y **reconoce las capas que ya tenemos** en vez de proponer reemplazarlas. No compite con `memory.db` - le agrega **la dimensión de entidad** que hoy no tiene.**
+
+**El eje que abre:** las seis opciones anteriores resolvían **recall semántico** (encontrar por similitud). Esta resuelve **conocimiento de entidades** (*"¿qué sabemos de X?"*). **Son problemas distintos, y puede que la respuesta sea "no elegir uno, sino agregar esta capa".**
+
+#### ⚠️ Puntos de atención
+
+1. **Necesita dos crons** (extracción 4h + síntesis semanal). Nosotros ya usamos `automations`; agregar dos es barato - pero **son dos procesos más que pueden fallar en silencio**.
+2. **La extracción de hechos depende del criterio del modelo.** El "¿qué es durable?" lo decide un LLM barato cada 4h. **Un mal extractor llena el grafo de ruido**, y ahí el `summary.md` deja de ser confiable.
+3. **Crece sin podar.** Append-only, nunca se borra. Con el tiempo, `facts.jsonl` puede volverse grande - mitigado por "leer resumen primero", pero **el archivo sigue creciendo**.
+4. **`life/areas/` es una ruta nueva en el workspace.** Hay que decidir si es la casa correcta o si esto va bajo `memory/` (donde ya vivimos).
+5. **Requiere copiar una sección al `AGENTS.md`.** Nuestro `AGENTS.md` **está al límite de bootstrap** (20K) - ya migramos cosas a `docs/SETUP.md` por eso. **Meter esto requiere sacar algo.**
+6. **No verificado por nosotros.**
+
+> **Veredicto: el candidato de memoria más limpio de las dos tandas, y el que cambia la decisión.** No trae base de datos, no trae embeddings, no trae servicio: **trae dos formatos de texto plano y una política de tokens explícita**. Reconoce nuestras capas (`memory/YYYY-MM-DD.md`, `MEMORY.md`) y **agrega la que falta: la de entidades**. "Supersede, don't delete" es el mejor patrón de memoria durable que vimos. **Y redefine la pregunta de §2.1: quizá no haya que elegir entre los seis motores, sino agregar esta capa liviana encima de lo que ya tenemos.** Es la opción que menos riesgo introduce y la que más rápido se puede probar en `mktemp -d` sin tocar nada real.
+
+### 3. La suite `aeon` (Bankr) - el ciclo de vida de una skill
+
+Fuente: [BankrBot/skills](https://github.com/BankrBot/skills). **Recordatorio: el repo es ~90% cripto y todo eso queda afuera por regla.** Lo que se profundiza acá son las cuatro skills **stack-agnósticas** de meta-mantenimiento: `skill-security-scan`, `skill-evals`, `skill-repair`, `autoresearch`.
+
+> **La idea que las une: una skill instalada no es un artefacto terminado, es algo que se audita, se mide, se repara y evoluciona.** Nosotros tenemos `skill_workshop` (que crea y actualiza) pero **no tenemos el ciclo de vida posterior**. Esto es ese ciclo, con nombre y apellido en cada etapa.
+
+#### Las cuatro etapas
+
+| Skill | Etapa | Qué hace |
+|---|---|---|
+| **skill-security-scan** | **Antes** | Audita SKILL.md y scripts por amenazas antes de correrlas. |
+| **skill-evals** | **Durante** | Valida el output contra un manifiesto de assertions. |
+| **skill-repair** | **Cuando falla** | Diagnostica y repara, con receta de verificación. |
+| **autoresearch** | **Cuando quedó vieja** | Genera variaciones, las puntúa, aplica la ganadora. |
+
+#### 🛡️ 1. `skill-security-scan` - la auditoría previa
+
+Escanea `<skills-dir>/*/SKILL.md`, los scripts compañeros (`*.sh`, `*.py`) y los `references/`.
+
+**Amenazas que caza** (y que nosotros deberíamos cazar, porque instalamos skills de afuera):
+- **Shell injection:** expansión de variable sin comillas, `eval`, backticks, `$(...)` con datos del usuario.
+- **Exfiltración de secretos:** env vars o contenido de archivos pipeados a HTTP saliente.
+- **Path traversal:** cadenas `../..`, rutas absolutas que salen del directorio de la skill.
+- **Prompt override:** *"ignore previous instructions"*, cambios de persona, **instrucciones dentro de contenido fetcheado**.
+- **Comandos destructivos:** deletes recursivos con raíz en `/` o `~`.
+- **Ofuscación:** caracteres Unicode invisibles (U+200B, U+FEFF), **bidi override (U+202E, "Trojan Source")**, pipes de base64-a-shell, hosts SSRF conocidos (ngrok, interact.sh, webhook.site).
+
+**Diseño a robar:**
+- **Code-fence downgrade:** un match dentro de un bloque de código **baja un nivel de severidad** (es documentación, no ejecución) - pero **los bloques `run:` reales nunca se bajan**. Distinguir "esto es ejemplo" de "esto se ejecuta" es fino.
+- **Delta vs estado previo:** fingerprint por `sha256(file + línea + patrón)`, clasifica **NEW / RESOLVED / PERSISTENT**. **Solo reporta lo nuevo o lo resuelto** - no te repite el mismo hallazgo cada vez.
+- **Silenciosa en no-op:** *"never notifies on a pure no-op week"*. Si no hay nada, no dice nada. **La regla del silencio aplicada a un scanner.**
+- **Veredicto `CLEAN` / `ATTENTION` / `DEGRADED`**, más PASS/WARN/FAIL por skill.
+- **Read-only, y con límites:** nunca auto-borra una supresión de baseline, nunca edita su propia biblioteca de patrones desde adentro.
+- **Remediación por hallazgo:** cada patrón tiene su fix de una línea (comillar la variable, mover el secreto a prefetch, allow-list, borrar la skill si es payload).
+
+#### 📊 2. `skill-evals` - la red de calidad
+
+Cada skill declara un **manifiesto de assertions** en YAML, y el output se chequea contra él:
+
+```yaml
+narrative-tracker:
+  min_words: 400
+  required_sections: ["TRANSITIONS", "POSITIONS", "MAP"]
+  forbidden_patterns: ["exciting", "consider"]
+  must_cite_source: true
+```
+
+Assertions soportadas: `min_words`/`max_words`, `required_patterns`/`forbidden_patterns`, `required_sections`, `must_cite_source`, `min_distinct_items`, `output_pattern` (regex).
+
+**Diseño a robar (muy bueno):**
+- **Estados de regresión, no un simple pass/fail:**
+  | Estado | Significado |
+  |---|---|
+  | `NEW_FAIL` | Pasaba, ahora falla. **La severidad escala con la racha de pases previos.** |
+  | `NEW_PASS` | Fallaba, ahora pasa. **Se registra la victoria.** |
+  | `CHRONIC` | Falla hace más de 3 corridas. **Recomienda revisión, no re-file.** |
+  | `STABLE_FAIL` | Siempre falló. **Es un mismatch del manifiesto, no del output.** |
+- **Distinguir regresión de test mal escrito.** `STABLE_FAIL` significa *"el manifiesto está mal"*, no *"la skill está rota"*. **Esa distinción evita el falso positivo permanente** - el mismo mal que ya nos mordió con checks que dan falso verde.
+- **Bootstrap mode:** en vez de escribir las assertions especulativamente, **muestrea las últimas 5 corridas exitosas** y deriva el manifiesto (min_words en el p25 histórico, patrones de los headers comunes). *"Assertions are observations, not specifications."* **El contrato se deriva de la realidad, no se inventa.**
+- **Nunca auto-commitea un manifiesto:** *"assertions need a human signoff"*.
+- **Lista negra de patrones de relleno:** `"I cannot"`, `"as an AI"`, `"exciting"`, `"consider"` - marcadores de alucinación y de hedgeo. **Y la regla: mantenerla corta y no usarla para lintear estilo.**
+
+#### 🔧 3. `skill-repair` - el diagnóstico con receta
+
+Clasifica el fallo en **ocho categorías** y aplica el playbook correspondiente:
+
+| Categoría | Detección | Fix |
+|---|---|---|
+| `api-change` | 404/410, schema mismatch | Actualizar endpoint/payload **citando la spec viva**. |
+| `rate-limit` | 429 | **Agregar backoff. "Never raise the limit."** |
+| `timeout` | Corte a mitad | Stagear el trabajo, early-return en éxito parcial. |
+| `sandbox-limitation` | curl con auth falla | Convertir a patrón prefetch/postprocess. |
+| `prompt-bug` | Alucinación, rechazo, sección faltante | **Mínima edición de especificidad, diff menor a 30 líneas.** |
+| `output-format` | Ejecuta pero falla el parser | Editar hasta satisfacer la assertion que falla. |
+| `missing-secret` | Env var sin setear | **CERO cambio de código.** Nombra la var faltante y sale `REPAIR_DIAGNOSED_NO_FIX`. |
+| `unknown` | Ninguna de las anteriores | **No edita a ciegas.** Guarda el dossier y sale sin fix. |
+
+**Diseño a robar:**
+- **`missing-secret` no es un bug de código.** El instinto de un agente es "falta la var, la agrego" - **esto lo prohíbe explícitamente** y escala al operador. Exactamente nuestra regla de secretos.
+- **Clases de riesgo con umbral de aplicación:** LOW (< 30 líneas, fallback) se auto-aplica; MED se auto-aplica **con receta de verificación**; **HIGH requiere revisión del operador, nunca auto-aplica**. Es el mismo gradiente que los automation tiers de Autensa, aplicado a reparar código.
+- **Receta de verificación obligatoria en toda reparación:** (1) re-correr con la invocación exacta, (2) **señal esperada específica de la categoría** (*"no rate-limit in trace"*, *"≥ 200 words"*), (3) camino de fallback. **Reparar sin receta de verificación es el falso verde.**
+- **Cooldown de 24h por skill:** evita loops de reparación sobre un fix que no pegó.
+- **Chequeo de liveness de las fuentes:** hace WebFetch sobre las URLs referenciadas para detectar 404s o cambios de schema. **La skill se testea contra el mundo real, no contra sí misma.**
+
+#### 🧬 4. `autoresearch` - la evolución
+
+Toma un SKILL.md objetivo, genera **cuatro variaciones** en paralelo, las puntúa y aplica la ganadora.
+
+**Las cuatro tesis (el diseño central):**
+- **A - Mejores inputs:** reemplazar APIs deprecadas, agregar fallbacks, arreglar endpoints rotos.
+- **B - Output más filoso:** formato más ajustado, señal sobre ruido, veredictos explícitos, relleno prohibido.
+- **C - Más robusta:** manejo de datos vacíos, reintentos, dedup de estado, conciencia de rate-limit.
+- **D - Replanteo:** **metodología fundamentalmente distinta para el mismo objetivo.**
+
+**Scoring:** 1-5 por eje, total ponderado sobre 50:
+| Eje | Peso |
+|---|---|
+| Mejora vs original | **3x** |
+| Valor del output | 2x |
+| Claridad, calidad de datos, robustez | 1.5x c/u |
+| Convenciones | 1x |
+
+Desempate (dentro de 2 puntos): **prefiere la variación con la mejora más grande en un eje** por sobre muchas mejoras chicas.
+
+**Diseño a robar (y es el mejor de la suite):**
+- **La garantía de seguridad: "never downgrades a working skill".** Si **todas** las variaciones puntúan ≤ el original en el eje *Mejora*, **aborta con `AUTORESEARCH_NO_IMPROVEMENT` y no escribe nada.** **Nuestro equivalente es el gate que no da falso verde: acá está como imposibilidad mecánica de empeorar.** El patrón general: *"el cambio solo se aplica si demuestra mejora respecto del estado actual"*.
+- **La variación D es la más interesante:** obliga a incluir **un replanteo metodológico**, no solo mejoras incrementales. Evita el óptimo local.
+- **Dos modos:** `evolve` (escribe el diff) y **`dry-run` (puntúa e imprime, no escribe nada)**. Nuestra regla de inspeccionar antes de modificar.
+- **Versionado con rollback:** dentro de un repo git, va a una rama `autoresearch/<skill>` y **el operador revisa el diff antes de mergear**; fuera de git, preserva `SKILL.md.before-autoresearch`. **Nunca pisa directo.**
+- **Output = el diff + la tabla de scoring de las cuatro + un párrafo de racional.** La decisión es auditable.
+
+#### 🎯 Por qué encaja con nosotros
+
+Es **el ciclo de vida completo de una skill**, y **la mitad ya la tenemos a medias**:
+- `skill_workshop` cubre parcialmente **crear/actualizar** (≈ autoresearch), pero **sin scoring, sin cuatro tesis y sin garantía de no-empeorar**.
+- No tenemos el **scan de seguridad previo** (crítico: instalamos skills de afuera).
+- No tenemos **evals** (assertions contra output real).
+- No tenemos **repair** con clasificación de fallo y receta de verificación.
+
+**Y las cuatro comparten un valor transversal:** cada una tiene **un gate explícito de "no empeorar"** - scan no toca el baseline, evals no auto-commitea, repair no toca HIGH ni secrets, autoresearch aborta si no hay mejora. **Es la misma filosofía que nuestras Red Lines, hechas mecanismo.**
+
+#### ⚠️ Puntos de atención
+
+1. **Son del repo de Bankr** (90% cripto) - **no adoptar el repo, adoptar estas cuatro skills como referencia.** Auditar el código de cada una antes de copiarla: son skills que **escanean y escriben skills**, o sea que tienen permiso para tocar el árbol de skills. **Hay que leerlas con el mismo criterio que ellas exigen.**
+2. **Dependencias:** `skill-evals` necesita que cada skill declare un manifiesto; `autoresearch` necesita un modelo para generar y puntuar (caro); `security-scan` asume `<skills-dir>`. **Ninguna es drop-in.**
+3. **Escalan con la cantidad de skills.** Tenemos 78 en el índice (27 core + 51 de roles). Un scan de 78 skills y un autoresearch sobre una de ellas son costos reales.
+4. **`skill-evals` necesita "el output más reciente"** de cada skill - nuestros skills no todos producen un output guardado. **Sin output persistido, no hay contra qué evaluar.**
+5. **No verificado por nosotros.**
+
+> **Veredicto: el hueco más grande que encontramos en las dos rondas, y con la solución más clara.** Tenemos `skill_workshop` para crear y actualizar, **pero nada que audite antes, mida después, repare cuando falla, ni evolucione con criterio.** Las cuatro etapas existen, son stack-agnósticas, y **cada una trae un gate de no-empeorar alineado a nuestras Red Lines**. No hay que instalarlas: **hay que construir el ciclo, y estas cuatro son el plano.** Prioridad sugerida: `skill-security-scan` primero (es el de mayor riesgo real, porque instalamos de afuera), después `skill-evals`. `autoresearch` es el más caro y el último.
+
+### 4. El cluster de diseño de VoltAgent - el filtro prioritario, con sustancia
+
+Fuente: [VoltAgent/awesome-openclaw-skills](https://github.com/VoltAgent/awesome-openclaw-skills) (= ClawHub, 5.300 skills). **Recordatorio del filtro: curan, NO auditan** - 7.215 skills quedaron fuera (4.065 spam, 373 maliciosas). Cada una es untrusted hasta que se lee.
+
+**Del directorio, ~20 candidatas y ni una abierta hasta ahora.** Acá van las tres que importan.
+
+#### 🥇 `anti-slop-design` (kjaylee) - el que ataca el problema real
+
+**Qué hace:** previene la **estética genérica de IA** en frontends. Cubre tipografía, color, motion, layout y UI de juegos. *"Rather than general design advice, it names specific forbidden patterns and forces a deliberate aesthetic choice from a concrete list of styles each time."*
+
+> **Las dos mitades de esa frase son el diseño entero:** (1) **nombra patrones prohibidos concretos** - no "usá buen tipografía", sino *"esto sí, esto no"*; (2) **fuerza una elección estética deliberada de una lista concreta** - no deja que el modelo caiga en el default.
+
+Casos de uso declarados que nos tocan:
+- **"Una landing que no se vea como cualquier otro sitio SaaS"** - es exactamente nuestro problema.
+- **"Font pairings que evitan defaults sobreusados como Inter"** - el default de facto de la IA.
+- **"Un dashboard con asimetría intencional y jerarquía visual"** - nuestro caso, cada vez que armamos una UI.
+
+**Por qué es el más valioso del cluster:** es **el equivalente de `deslop` pero para UI**. Nosotros ya tenemos la skill `deslop` (limpia código slop de IA antes de un PR) - **esta es la misma idea aplicada a la estética.** Y es **la única que ataca la causa** (el default genérico) en vez del síntoma.
+
+#### 🥈 `kj-ui-ux-pro-max` (kjaylee) - el generador con tokens
+
+**Qué hace:** guía UI/UX para construir y refinar interfaces web y mobile. Cubre **layout, mapeo de flujos UX, tokens de design system, specs de componentes, microcopy y accesibilidad.** Puede producir artefactos de diseño, planes de implementación, o ambos en una pasada.
+
+**Lo que importa:** *"Covers design decisions and frontend implementation together, so you don't have to context-switch."*
+
+> **Y acá aparece lo que `design-audit` pedía y no teníamos: esta skill GENERA los tokens.** `design-audit` audita *contra* un design system; `kj-ui-ux-pro-max` **produce el design system**. **Son complementarias, no alternativas** - una crea la vara, la otra mide contra ella.
+
+Casos de uso: generar un layout con **spacing y color tokens**, auditar un form para **WCAG AA**, especificar una librería de componentes **con estados y reglas de interacción**, mapear un flujo **con estados de error y vacío**, refactorizar Tailwind hacia una dirección de marca.
+
+#### 🥉 `axe-devtools` (dylanb) - la accesibilidad medida, no declarada
+
+**Qué hace:** corre escaneos de accesibilidad en **páginas vivas** usando el **MCP Server de axe DevTools vía Docker**. Devuelve violaciones con **rule IDs, nivel de impacto y selectores afectados**, y después **trae guía de fix por violación**. Sin página viva, aplica buenas prácticas estáticas.
+
+**El diseño a robar:** *"devuelve fixes de código específicos en vez de solo una lista de nombres de reglas"*. **Detectar no alcanza: la herramienta trae la remediación.** Y permite **re-correr el scan tras los fixes para confirmar cero violaciones** - el ciclo cerrar-medir-verificar.
+
+**⚠️ Punto de atención serio:** requiere `AXE_API_KEY`, **una suscripción PAGA** a Axe DevTools for Web, Docker corriendo y la imagen `dequesystems/axe-mcp-server`. **No es gratuito ni liviano.**
+
+> **Y nosotros ya tenemos cobertura acá:** `a11y-at-validation` y `ui-contrast-audit` propias. **Comparar antes de pagar** - lo que axe agrega es el escaneo contra **página viva** (vs estático) y la guía de fix por violación. **Eso se puede cubrir con la tool `browser` + axe-core open source, sin suscripción.** Es el único del cluster que descarto por costo/beneficio.
+
+#### 🎯 El cuadro completo (y por qué cierra el eje)
+
+| Pieza | Rol en el eje | ¿La necesitamos? |
+|---|---|---|
+| **`anti-slop-design`** | **Evita** la estética genérica | ✅ **La más valiosa** - ataca la causa |
+| **`kj-ui-ux-pro-max`** | **Genera** tokens y specs | ✅ Cubre el hueco que `design-audit` señaló |
+| **`design-audit`** (jdrhyne) | **Audita** contra el sistema | ✅ El rol que falta |
+| **`axe-devtools`** | **Mide** accesibilidad | ⚠️ Ya cubierto; pagar solo si el estático no alcanza |
+
+> **La conclusión del eje de diseño:** no es "elegir una skill". **Es un pipeline de cuatro roles** - evitar el default, generar el sistema, auditar contra él, medir accesibilidad. Y el orden importa: **primero `kj-ui-ux-pro-max` produce los tokens** (es lo que desbloquea a `design-audit`), **`anti-slop-design` va desde el día uno** (evita el daño antes de que exista), y `axe-devtools` solo si el escaneo estático no alcanza.
+
+#### ⚠️ Puntos de atención
+
+1. **Vienen de ClawHub, curadas pero NO auditadas.** `anti-slop-design` y `kj-ui-ux-pro-max` hay que leerlas antes de instalar - **y son justamente las que escriben en nuestro árbol de skills.**
+2. **`kjaylee` tiene tres skills del mismo autor** (`anti-slop-design`, `kj-ui-ux-pro-max`, `kj-web-design-guidelines`) - **se refuerzan entre sí, son un paquete.**
+3. **`axe-devtools` es de pago** y ya tenemos cobertura propia; el open source lo cubre casi todo.
+4. **Los defaults que atacan son de ecosistema web genérico** (SaaS, landing, dashboard). **Nuestro caso no es vender un producto** - es la UI del workspace y de los proyectos de Gonzo. El filtro sigue siendo bueno, pero **el tono de marca es una decisión, no un default a evitar.**
+5. **No verificado por nosotros.** Ninguna instalada.
+
+> **Veredicto: el cluster tiene sustancia real, y confirma el hallazgo del eje de diseño.** `anti-slop-design` es la joya (previene la causa), `kj-ui-ux-pro-max` **genera los tokens que `design-audit` necesita** (cierra el círculo), y `axe-devtools` se descarta por costo/cobertura. **El veredicto del directorio - "no instalar 10 skills, adoptar 2-3 y definir un design system" - se confirma, pero ahora con los roles exactos y el orden correcto.**
+
+### 5. El Academic Multi-Agent System (13 roles) - el patrón Factory, ya construido
+
+Fuente: [TravisLeeeeee/awesome-openclaw-personas/personas/academic](https://github.com/TravisLeeeeee/awesome-openclaw-personas/tree/main/personas/academic). **Es la implementación viva del "Factory de investigación"** que nuestro catálogo tenía como idea. **13 roles reales**, cada uno un directorio con `SOUL.md` + `AGENTS.md` + `SKILL.md`.
+
+**Los 13 roles:** `planner` (orquestador), `ideator`, `literature-scout`, `surveyor`, `critic`, `reviewer`, `writer`, `coder`, + **cinco especialistas de dominio** (`anthropologist`, `geographer`, `historian`, `narratologist`, `psychologist`).
+
+#### 🔌 La capa de agentes (el `AGENTS.md` del Planner)
+
+Los `AGENTS.md` son **configuración operativa real**, no prosa. El del Planner define:
+- **Modelo primario + fallback** por rol.
+- **Tools asignadas:** `read, write, edit, exec, apply_patch` + **`sessions_list, sessions_history, sessions_send, sessions_spawn`**. Es **la capa de orquestación de subagentes de OpenClaw, cableada a nivel rol.**
+- **Gestión de sesión:** mantener un **tablero de estado del proyecto persistente** entre conversaciones, trackear fases, blockers y asignaciones.
+- **Comunicación inter-agente con direcciones explícitas:** *Upstream* (recibe del agente principal), *Downstream* (despacha a todos los sub-agentes), y **escalación: reporta conflictos sin resolver al principal después de 3 rondas.** **Un límite de rondas antes de escalar - nuestro 3-Strike Protocol, pero entre agentes.**
+
+> **Lo que confirma: nuestro patrón de roles y spawns es el correcto.** Acá está validado por un sistema de 13 agentes que corre de verdad. Y agrega dos cosas que no tenemos: **el tablero de estado persistente entre conversaciones** y **la escalación con límite de rondas.**
+
+#### 🎯 El `critic` - y acá está la joya
+
+**El rol más valioso de los 13, y el que más tenemos que robar.** Su credo: ***"Good enough is the enemy of great."***
+
+No es un reviewer: **es el guardián del *gusto*.** El propio repo marca la distinción:
+
+| | **Reviewer** | **Critic** |
+|---|---|---|
+| Perspectiva | ¿Pasa el corte? | **¿Merece ser bueno?** |
+| Foco | Corrección técnica, completitud | **Profundidad del insight, narrativa, impacto** |
+| Output | Lista de fortalezas/debilidades | **"¿Cuál es el alma de esto?"** |
+| Estándar | Umbral de aceptación | **Nivel excepcional** |
+
+**El marco SHARP de evaluación de ideas** (5 ejes, 1-5 cada uno, total /25):
+| Eje | Pregunta |
+|---|---|
+| **S** - Sharpness | ¿El insight central es filoso, da en el blanco? |
+| **H** - Horizon | ¿Tiene valor de largo plazo o es efímero? |
+| **A** - Asymmetry | ¿Tenés un ángulo o información que otros no? |
+| **R** - Resistance | Ante el crítico más duro, ¿tu tesis se sostiene? |
+| **P** - Parsimony | ¿Es elegante y simple, o sobre-complejo? |
+
+**Veredictos:** Exquisito (25-23) / Refinado (22-18) / Crudo (17-13) / Insulso (<12).
+
+**Y dos pruebas de una línea, geniales:**
+- **"El test de la frase única":** *si no podés explicar por qué funciona en una frase, el insight no es filoso.*
+- **"El test del bar":** *¿en 30 segundos, un colega en un bar diría "esto sí es interesante"?*
+
+**El drill-down de presión simulada:** obliga a listar **las 3 objeciones más duras** y la respuesta preparada a cada una, más un veredicto de resistencia (sólido / aguanta / se rompe). **Es el adversarial review convertido en paso obligatorio.**
+
+**Los seis anti-patrones que detecta** (con la frase exacta que dice):
+| Anti-patrón | Lo que dice |
+|---|---|
+| **Innovación de envoltorio** | *"Sacá tu nombre de marca: ¿qué diferencia esencial tiene con X?"* |
+| **Paper apilado** | *"¿Qué componente es tu insight? ¿Borrás los otros y sigue funcionando?"* |
+| **El cómo sin el porqué** | *"¿Por qué funciona realmente? ¿Podés explicarlo teóricamente?"* |
+| **Puntaje SOTA** | *"¿Subir 0.5% qué insight trae? ¿Qué nos dice?"* |
+| **Ablación falsa** | *"¿Cuánto le saca al baseline más simple? ¿La diferencia es por tu innovación?"* |
+| **Investigación follow-up** | *"Si el autor original lo ve, ¿creería que merece un paper propio?"* |
+
+**Las "tres preguntas del alma":** ¿resuelve un problema real o uno inventado? ¿el lector va a cambiar algo después de leerlo? ¿cuántas veces se citará en cinco años y por quién?
+
+> **Por qué esto es oro para nosotros:** es **un rol de gusto adversarial con criterio explícito y medible**, y su trabajo es **el que hoy nadie hace**: distinguir "esto pasó el gate" de "esto es bueno". Nuestro `verification-gates` verifica que algo **funcione**; el Critic verifica que algo **valga la pena**. **Son preguntas distintas, y la segunda no está cubierta.**
+
+#### 🔑 Diseño a robar
+
+- **El Reviewer y el Critic como roles separados.** Corrección técnica vs gusto. **Un solo revisor hace una sola de las dos cosas bien.** Es la separación de `verifier`/`verifier-of-verifier`, un nivel más arriba.
+- **Criterio de gusto con rúbrica y número.** El SHARP convierte "esto es bueno" en **25 puntos con ejes ponderables**. **La subjetividad hecha medible.**
+- **Los tests de una línea** (frase única, bar) - filtros baratos y rápidos para ideas.
+- **Presión adversarial obligatoria:** las 3 objeciones más duras con respuesta preparada. **Antes de comprometerse, no después.**
+- **Los anti-patrones con frase exacta.** No describe el problema: **da el guion de qué decir.**
+- **Especialistas de dominio como capa.** `anthropologist`, `historian`, `psychologist` - **el mismo esqueleto (planner/critic/writer) con la lente del dominio encima.** Es el patrón "perfil" de Natilius aplicado a investigación.
+- **Escalación con límite de rondas** (3) **y tablero de estado persistente** entre conversaciones.
+
+#### ⚠️ Puntos de atención
+
+1. **El `critic` está en chino.** Todo el `SOUL.md` está escrito en chino (con el español/inglés entremezclado en frases de citas). **El contenido es excelente, pero hay que traducirlo y adaptarlo** para usarlo.
+2. **Es un sistema académico de papers** - arXiv, peer-review, Oral/Best Paper. **Nuestro caso es investigación de producto y de tools, no publicar papers.** El marco se adapta, pero **el tono academicista no calza directo.**
+3. **Es de `awesome-openclaw-personas`** - el repo **patrocinado por DeskClaw** (plataforma comercial). Ya lo marcamos en la ficha del repo.
+4. **Dice `anthropic/claude-sonnet-4-5`** como modelo - **de nuevo el sesgo a Claude.** Nuestros modelos son otros (ADR-053).
+5. **13 roles son demasiados para nuestro caso.** El valor no está en copiar los 13, sino en **robar el esqueleto de tres** (planner/critic/writer) + el marco SHARP.
+6. **No verificado por nosotros.**
+
+> **Veredicto: el más valioso como REFERENCIA arquitectónica, y el `critic` es el rol que más nos falta.** No vamos a copiar los 13 roles ni el tono académico, pero **el triángulo Planner/Critic/Writer + el marco SHARP + los seis anti-patrones son directamente transferibles** a cómo revisamos nuestro propio trabajo (specs, ADRs, decisiones de producto). **La conclusión honesta:** nuestro catálogo de soluciones ya tenía "Factory de Investigación" como idea, y acá está **el diseño de 13 roles con SOPs reales.** Cuando montemos la nuestra, empezamos desde acá. **Y el rol `critic` debería existir en el crew, con o sin el resto.**
+
+---
+
+## 🏁 Cierre de la profundización (5 de 5)
+
+Se abrieron los **cinco conjuntos** que habían quedado solo como directorio en la primera parte. El balance:
+
+**Lo que se encontró, por orden de valor:**
+1. **La suite `aeon`** - el **ciclo de vida de skills** (auditar/evaluar/reparar/evolucionar). **El hueco más grande de las dos rondas.**
+2. **`knowledge-graph`** - memoria **sin base de datos nueva**, que **redefine la decisión de memoria pendiente**: quizá no haya que elegir entre los seis motores.
+3. **El `critic`** (Academic System) - **el rol de gusto adversarial** que no tenemos, con rúbrica medible.
+4. **El cluster de diseño** - `anti-slop-design` (previene la causa) + `kj-ui-ux-pro-max` (**genera los tokens que `design-audit` necesita**).
+5. **`design-audit`** - el rol de auditor, con la precondición del design system.
+
+**Los dos patrones que se repitieron en la profundización:**
+- **El gate de no-empeorar:** `autoresearch` aborta sin mejora; el `critic` no aprueba mediocre; `design-audit` no cambia sin razón estructural. **Tres piezas distintas, el mismo principio.**
+- **Roles con criterio explícito y medible** (SHARP / los 15 ejes de `design-audit` / el scoring de `autoresearch`). **El gusto se sistematiza, no se improvisa.**
+
+**Y el hallazgo que cierra las dos tandas:**
+> **Lo que nos falta no es una herramienta más, son tres roles y un sistema de tokens.** El auditor de diseño (con su design system), el crítico de gusto, y el ciclo de vida de skills. Y los tres tienen la misma forma: **alguien que dice "esto no alcanza" con un criterio que se puede auditar.**
+
 ---
 
 ## 🛠️ Estrategia de Expansión (Crew Scaling)
