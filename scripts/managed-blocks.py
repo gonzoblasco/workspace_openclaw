@@ -40,7 +40,7 @@ DB_PATH = WORKSPACE / "memory" / "memory.db"
 BEGIN = "<!-- BEGIN MANAGED:{key} -->"
 END = "<!-- END MANAGED:{key} -->"
 
-# Valores vigentes al 2026-09-22 (ADR-053). Semilla, no verdad: la DB manda.
+# Valores vigentes al 2026-09-30 (ADR-076). Semilla, no verdad: la DB manda.
 DEFAULTS = {
     "model_primary": "deepseek-v4.1-flash:cloud",
     "model_auxiliary": "gemma4:cloud",
@@ -70,7 +70,7 @@ REGISTRY = [
         "key": "model-operativo",
         "template": (
             "- **Modelo:** primario de OpenClaw `{model_primary}`, thinking `{thinking_default}` "
-            "para todos los roles (ADR-053); motor del pipeline A/B `{model_pipeline}`."
+            "para todos los roles (ADR-076); motor del pipeline A/B `{model_pipeline}`."
         ),
     },
     {
@@ -79,7 +79,7 @@ REGISTRY = [
         "template": (
             "- **Modelo de trabajo:** primario `{model_primary}`, "
             "auxiliar `{model_auxiliary}`, alternativo `{model_alternative}`. "
-            "Thinking default: **{thinking_default}** (ADR-053)."
+            "Thinking default: **{thinking_default}** (ADR-076)."
         ),
     },
 ]

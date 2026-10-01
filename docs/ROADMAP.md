@@ -22,7 +22,7 @@
 
 ## Capa 0 - Fundaciones (sostiene todo)
 
-### 0.1 Estabilidad de la infraestructura (gateway) 🟡 P0
+### 0.1 Estabilidad de la infraestructura (gateway) 🟢 P0
 - **Qué**: el gateway de OpenClaw se reinicia bajo sesiones long-running (formulado 2026-08-28). Cada reinicio corta el contexto; retomar cuesta más que seguir.
 - **Por qué**: es la deuda más cara del sistema. No se ve, pero todo lo demás se apoya en esto.
 - **Criterio de éxito**: 0 reinicios no intencionales de gateway en una sesión de trabajo pesado (refactor + validación + browser).
@@ -177,7 +177,7 @@
 
 | # | Item | Capa | Prioridad | Estado |
 |---|------|------|-----------|--------|
-| 1 | 0.1 Estabilidad gateway | Fundaciones | P0 | 🟡 |
+| 1 | 0.1 Estabilidad gateway | Fundaciones | P0 | 🟢 |
 | 2 | 2.1 Estrategia de proyectos | Portfolio | P0 | 🟢 |
 | 3 | 2.3 Búsqueda laboral | Portfolio | P0 | 🟢 |
 | 4 | 0.2 Higiene workspace | Fundaciones | P1 | 🟢 |
