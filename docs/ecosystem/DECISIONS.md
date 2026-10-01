@@ -30,9 +30,19 @@ Seis piezas que resuelven un hueco **real y actual** de nuestro setup. Ordenadas
 | 1 | **MemOS (local plugin)** | Memoria | (core OSS) | ✅ | MoltBrain, qmd, embeddings propios |
 | 2 | **PowerContext** | Handoff / contexto | Apache-2.0 | ✅ | flujo HANDOFF/daily |
 | 3 | **Claw Orchestrator** | Orquestación + verificación | MIT | ✅ | pipeline A/B, MemoV |
-| 4 | **Crabwalk** | Observabilidad | - | ✅ | mission-control, clawdeck |
+| 4 | **Crabwalk** | Observabilidad | - | ✅ | mission-control (vincentkoc) |
 | 5 | **guardspine** | Gobernanza (tool calls) | Apache-2.0 | ✅ (Ollama) | ClawSec |
 | 6 | **ClawSec** | Seguridad (skills/drift) | **AGPL-3.0** | ✅ | guardspine |
+
+**Segunda tanda (2026-10-01) - tres candidatos nuevos:**
+
+| # | Candidato | Categoría | Licencia | Local | Solapa con |
+|---|-----------|-----------|----------|:---:|---|
+| 7 | **context-sync** | Memoria de codebase (**MCP**) | por confirmar | ✅ | `.knowledge/`, discovery |
+| 8 | **Open Amnesia** | Memoria desde trazas crudas | por confirmar | ✅ | todo el eje de memoria |
+| 9 | **planning-with-files** | Planificación persistente | MIT | ✅ | HANDOFF/daily, PowerContext |
+
+> Nota de encaje: **context-sync es el más "instalable" de los nueve** porque entra por MCP nativo, sin plugin. **planning-with-files** es el más accionable por sus patrones. **Open Amnesia** es el más valioso conceptualmente (su tesis), pero de madurez más baja.
 
 ### Fichas
 
@@ -78,15 +88,22 @@ Seis piezas que resuelven un hueco **real y actual** de nuestro setup. Ordenadas
 
 Cuatro decisiones pendientes. **No se suman ambos lados - se elige.**
 
-### 2.1 Memoria: cuatro caminos al mismo cuarto
-| Opción | Pro | Contra |
-|---|---|---|
-| **MemOS local** | Híbrido FTS5+vector, multi-cube, evidencia | Proyecto de investigación |
-| **MoltBrain local** | SQLite + ChromaDB explícito, simple | **AGPL**, entrelazado con cripto |
-| **tobi/qmd** | Markdown-native (calza con nuestro modelo) | Menos features |
-| **Embeddings propios** | Cero dependencia, sobre `memory.db` existente | Hay que construirlo |
+### 2.1 Memoria: SEIS caminos al mismo cuarto
 
-> **Decisión pendiente.** Criterio sugerido: *menor dependencia que resuelva el retrieval*. Si `tobi/qmd` o los embeddings propios alcanzan, evitan traer un motor entero.
+Con la segunda tanda, el eje creció. **Ahora hay seis opciones de memoria, y se solapan parcialmente** - hay que separarlas por *qué* recuerdan:
+
+| Opción | Recuerda... | Pro | Contra |
+|---|---|---|---|
+| **MemOS local** | sesión / agente | Híbrido FTS5+vector, multi-cube, evidencia | Proyecto de investigación |
+| **MoltBrain local** | sesión / agente | SQLite + ChromaDB explícito, simple | **AGPL**, entrelazado con cripto |
+| **tobi/qmd** | sesión (markdown-native) | Calza con nuestro modelo | Menos features |
+| **Embeddings propios** | sesión | Cero dependencia, sobre `memory.db` existente | Hay que construirlo |
+| **context-sync** | **codebase / proyecto** | **MCP nativo**, git-aware, hooks de git | Auto-config en `-g`, toca `.git/hooks/`, SQLite paralela |
+| **Open Amnesia** | **trazas crudas de actividad** | Determinista antes de LLM, exporta `YYYY_MM_DD.md` | Madurez v0, ingesta iMessage |
+
+> **Decisión pendiente, ahora más urgente.** Los seis no son el mismo problema: **cuatro recuerdan sesión, uno recuerda codebase, uno recuerda actividad**. Criterio sugerido: (a) definir **qué necesita recordar el sistema** (sesión vs proyecto vs actividad); (b) preferir el **formato** sobre la herramienta; (c) preferir **menor dependencia**. Si `tobi/qmd`, los embeddings propios o `context-sync` alcanzan, evitan traer un motor entero.
+
+> **Señal a considerar: en dos tandas conté CINCO bases SQLite paralelas** (Studio, context-sync, Autensa, ClawDeck, Open Amnesia). El ecosistema no tiene respuesta canónica para la memoria del agente. **Eso empuja a definir el formato propio primero, y elegir la herramienta después.**
 
 ### 2.2 Seguridad: guardspine vs ClawSec
 **No compiten - son capas distintas:**
@@ -102,10 +119,17 @@ Ambos trazan y verifican lo que hizo el agente, con **peso muy distinto**:
 
 > **Decisión pendiente:** si se adopta Claw Orchestrator, MemoV queda redundante. Si **no**, MemoV es la vía liviana.
 
-### 2.4 Observabilidad: Crabwalk vs mission-control / clawdeck
-Los tres muestran actividad de agentes. **Crabwalk** es el único evaluado a fondo (local, liviano, calidad visual).
+### 2.4 Observabilidad: Crabwalk vs mission-control (vincentkoc)
+Ambos muestran actividad de agentes en vivo. **Crabwalk** es el único evaluado a fondo (local, liviano, calidad visual).
 
-> **Decisión pendiente:** evaluar Crabwalk primero; los otros dos quedan como alternativa.
+> **Decisión pendiente:** evaluar Crabwalk primero; el otro queda como alternativa.
+
+### 2.5 "El backlog como objeto visible": rdsthomas vs clawdeck
+Mismo problema (Kanban visual), **sincronización invertida**:
+- **rdsthomas/mission-control** → **push** por webhook de GitHub. Datos en `tasks.json` versionado. Era Clawdbot.
+- **ClawDeck** → **pull** por API. El agente consulta su cola. Rails + PostgreSQL. Hosteado en cierre.
+
+> **Decisión pendiente:** ninguno es adoptable (uno es de era Clawdbot, el otro cierra), pero **el problema es real y nuestro**: nuestro TODO vive en `memory.db` y **no es visible**. Falta decidir si el backlog necesita una superficie visual propia y con qué modelo (push vs pull).
 
 ---
 
@@ -148,6 +172,49 @@ Lo más valioso de la ronda. Estas ideas se llevan **aunque no se instale ningú
 - **`knowledge-graph`** (jdrhyne) - memoria de 3 capas: extracción de hechos + grafo de entidades + síntesis semanal.
 - **`aeon` suite** (Bankr): `skill-security-scan`, `skill-evals`, `skill-repair`, `autoresearch-loop` (evoluciona skills con rúbrica).
 - **`Polygraph`** - calificaciones de confianza A-F para MCP servers y skills, con gate de CI.
+- **[2da tanda] Contrato semántico de color** (OpenClaw Studio): no una paleta, sino **reglas** de qué color significa acción / estado / peligro. **El ejemplo más concreto de cómo especificar un design system.**
+- **[2da tanda] Arquitectura de socket server-owned** (Studio): `Browser -> Studio` (HTTP+SSE) y `Studio -> Gateway` (**un solo WebSocket del proceso Node**), no uno por browser.
+
+### Memoria (segunda tanda)
+- **`determinism-before-LLM`** (Open Amnesia): **el aporte más transferible de la ronda.** Normalización, filtrado y deduplicación **antes** de cualquier paso de LLM. *"Data consistency beats prompt cleverness."* Si le tirás logs crudos al modelo, el ruido se amplifica.
+- **La unidad "momento" con forma fija** (Open Amnesia): `intent -> actions/tool calls -> outcomes -> artifacts`. El contrato `snap()` de MemoV, más rico.
+- **Redacción ANTES del enrichment** (Open Amnesia): filtrar secret/PII **en el paso 2**, antes de que nada toque un LLM. Nuestra Red Line como paso de pipeline, no como promesa.
+- **Dos frecuencias de recall** (Supermemory): contexto semántico cada turno + **perfil completo cada N turnos**. Hechos estables vs contexto puntual.
+- **Olvido explícito como tool de primera clase** (Supermemory: `supermemory-forget`). **Nuestro sistema de memoria no tiene olvido explícito.**
+- **Ruteo por contenedor como instrucción de prompt** (Supermemory): tags con descripción + instrucciones al modelo de qué va en cada uno.
+- **Memoria derivada de las trazas crudas** (Open Amnesia): en vez de pedirle al agente que recuerde, **ingesta sus propios logs** y los estructura.
+- **Separar escritura (pipeline) de lectura (API read-only)** (Open Amnesia): la API no puede mutar. Planos de lectura/escritura como arquitectura.
+
+### Planificación persistente (segunda tanda)
+- **`Context window = RAM, filesystem = disco`** (planning-with-files): la metáfora que decide **qué se escribe y cuándo**. Todo lo importante va a disco.
+- **La "2-Action Rule"**: cada 2 operaciones de view/browser/search, **guardar hallazgos a disco**. La información multimodal - capturas, PDFs, imágenes - **no persiste** si no se pasa a texto.
+- **El "5-Question Reboot Test"**: ¿dónde estoy? ¿a dónde voy? ¿cuál es el goal? ¿qué aprendí? ¿qué hice? ¿qué hago? **Nuestro protocolo de arranque, mejor formulado.**
+- **"3-Strike Error Protocol"**: intento 1 diagnostica -> intento 2 **cambia de enfoque** (*"NEVER repeat exact same failing action"*) -> intento 3 replantea premisas -> después de 3, **escalar al humano**. Nuestro *"vary query/path/source"* con contador y criterio de escalada.
+- **SHA-256 attestation del plan** (planning-with-files): el plan se firma; si el hash no coincide, los hooks **rechazan inyectarlo** con `[PLAN TAMPERED]`. Detecta la reescritura silenciosa.
+- **Gated stop**: retener el stop **solo mientras quede una fase `in_progress`**, con tope y detección de estancamiento.
+- **Ledger por agente + un dueño del plan** (planning-with-files): los workers appenden a su ledger; el orquestador es dueño del artefacto compartido. **"Ningún texto libre del disco llega al modelo por ese bloque."**
+- **Guard de escritura paralela**: avisar si los items chequeados o las fases completadas **bajaron** entre turnos. *"Advisory check, not a lock"* - honesto sobre sus límites.
+- **Los archivos de plan son memoria de trabajo, no entregable.** Gitignored, sin archivar; *"anything worth keeping should be promoted into code, a commit, or a doc"*. Persistencia ≠ runtime.
+
+### Orquestación (segunda tanda)
+- **Automation Tiers como espectro** (Autensa): Supervised -> el PR se crea y se revisa; Semi-Auto -> auto-merge **si el CI pasa y el review agent aprueba**; Full Auto -> todo. **Mejor que nuestro gate binario: autonomía como configuración por contexto.**
+- **Checkpoint & crash recovery** (Autensa): el progreso se guarda en checkpoints configurables; si la sesión crashea, *"work resumes from the last checkpoint, not from scratch"*.
+- **Health monitoring con auto-nudge** (Autensa): detectar agentes estancados/zombie y **reasignar o reiniciar** al que quedó oscuro. *Es el "el subagente se colgó" resuelto como sistema.*
+- **Spend caps que auto-pausan el dispatch** (Autensa): límites de costo que frenan el trabajo al excederse.
+- **Aislamiento por tarea** (Autensa): git worktrees, sandboxes, **asignación de puertos**, **cola de merge serializada**, locking por producto.
+- **Repo Setup / preflight** (Autensa): verificar git, rama default, API, Actions, permisos de token, secrets **antes** de que el agente empiece. **Nuestro `doctor`, aplicado a un repo entero.**
+- **PR checks recovery**: triaje del fallo de CI en **retryable / repo setup / external provider** - no reintentar a ciegas.
+- **Operator Chat con dos modos** (Autensa): *queued notes* (próximo checkpoint) y *direct messages* (inmediatos). **Distinguir "para después" de "ahora".**
+- **Skill creation loop con confianza bayesiana** (Autensa): aprender procedimientos de las tareas hechas, puntuar y **promover** los probados. Es `skill_workshop` con modelo de confianza.
+- **Un bug que nos confirma**: *"all tasks assigned to the same agent shared one session, causing context to accumulate until the model's context window was exhausted and the agent stalled"*. **La sesión compartida entre tareas degrada al agente.**
+
+### Sincronización de superficies (segunda tanda)
+- **`GitHub-as-hub`** (rdsthomas): usar GitHub como almacén de datos + bus de eventos + hosting estático a la vez.
+- **Trigger por diff, no por evento crudo**: comparar snapshot vs estado nuevo y **despertar al agente solo si hay una transición relevante**.
+- **Modelo pull vs push**: el trabajo empuja al agente (webhook) o el agente consulta su cola (`?assigned=true`). **El pull permite que el agente tome trabajo sin que nadie le escriba.**
+- **Identidad de agente en headers** (`X-Agent-Name`, `X-Agent-Emoji`): define **quién** actúa sin acoplarlo al token.
+- **`activity_note` en el mismo update de estado**: no solo cambia el status, **deja el porqué en el mismo request**.
+- **Guard de startup dev-vs-prod** (Studio): `dev` repara, `start` **solo chequea y no muta dependencias**.
 
 ---
 
@@ -170,19 +237,37 @@ Para no volver a analizarlos.
 | **Community Channels** (Moltbook, Clawk...) | Redes de agentes - solo lectura por regla de sandbox. |
 | **Polymarket / AgenticBets** | 🚫 Cripto + fuera de perfil de riesgo. |
 
+**Segunda tanda:**
+
+| Repo | Por qué afuera |
+|---|---|
+| **Supermemory** (`supermemoryai`) | 🔴 **Cloud** - manda la conversación entera y el perfil del usuario a un tercero. Plan pago. **El descarte más claro de la ronda.** |
+| **mission-control (rdsthomas)** | Era **Clawdbot**; expone el gateway por Tailscale Funnel; PAT de escritura en el browser. Rescatado el patrón `GitHub-as-hub`. |
+| **Autensa** (`crshdn`) | Fuera de perfil (motor de producto autónomo, research de mercado, swipe). Pesado. Rescatado el diseño de orquestación. |
+| **ClawDeck** (`clawdeckio`) | **Hosteado en cierre**, evolucionó a lst.so. Rails + PostgreSQL. Rescatado el modelo *pull*. |
+| **vibeclaw** (`jasonkneen`) | Modo Live Gateway manda **tu token a un sitio de terceros** (`vibeclaw.dev`) y duplica el Control UI. Rescatado el protocolo del gateway. |
+| **OpenClaw Studio** (`grp06`) | Front de tercero con **aprobaciones de exec**, solapa con el Control UI nativo. Rescatado el **contrato semántico de color**. |
+| **planning-with-files** | **No descartado, pero cojo en OpenClaw**: somos tier *"sin lifecycle hooks"*, que es justo el mecanismo diferenciador. |
+
 ---
 
 ## 5. ▶️ Movimiento recomendado
 
 **Un paso a la vez. No adoptar dos candidatos del mismo eje en paralelo.**
 
-1. **Decidir memoria (§2.1)** - es la base que habilita lo demás. Comparar las 4 opciones, elegir una, probar en `mktemp -d`.
+1. **Decidir memoria (§2.1)** - es la base que habilita lo demás, y **ahora tiene seis candidatos, no cuatro**. **Definir primero QUÉ debe recordar el sistema** (sesión / proyecto / actividad) y **con qué formato**; recién después elegir herramienta.
 2. **Decidir seguridad (§2.2)** - si se adopta algo, `guardspine` en `shadow` primero.
-3. **Diseño: adoptar 2-3 skills** (`design-audit` + `anti-slop-design` + stack Tailwind/shadcn) y **definir el design system propio del workspace** (tokens: color, tipo, espaciado). La estética no se resuelve con skills sueltas.
-4. **Adoptar los patrones de §3** que no requieren instalar nada: `doctor`, `--check`, contrato `snap`, distinción self-report/verified.
+3. **Diseño: adoptar 2-3 skills** (`design-audit` + `anti-slop-design` + stack Tailwind/shadcn) y **definir el design system propio del workspace**. **Ahora hay un ejemplo concreto que seguir: el contrato semántico de color de OpenClaw Studio.**
+4. **Adoptar los patrones de §3** que no requieren instalar nada. **Los de mayor retorno inmediato, de la segunda tanda:**
+   - `determinism-before-LLM` - ordenar antes de enriquecer.
+   - El **3-Strike Protocol** - contador y criterio de escalada en vez de "reintentar".
+   - La **2-Action Rule** - escribir hallazgos a disco antes de perderlos.
+   - Los **automation tiers** - autonomía como espectro configurable.
 
 > **Regla de oro que dejó la ronda:** el core de OpenClaw está más completo de lo que pensábamos. Antes de sumar cualquier tooling externo, **verificar qué ya hace el core.**
 
+> **Regla de oro de la segunda tanda:** **el ecosistema no tiene un formato canónico de memoria** - cinco bases SQLite en dos tandas, cada herramienta la suya. **El que defina un formato interoperable gana.** Nosotros deberíamos adoptar el **formato** antes que la herramienta.
+
 ---
 
-_Consolidado 2026-10-01 sobre 20 repos. Detalle en `crew-resources.md`; casos de uso en `solutions-catalog.md`._
+_Consolidado 2026-10-01 sobre 29 repos (20 + 9). Detalle en `crew-resources.md`; casos de uso en `solutions-catalog.md`._

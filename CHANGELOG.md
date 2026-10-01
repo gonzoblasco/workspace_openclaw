@@ -4,12 +4,12 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
-## [2026-10-01] - Ecosistema OpenClaw: ronda de análisis de 20 repos + criterios de filtrado
+## [2026-10-01] - Ecosistema OpenClaw: ronda de análisis de 29 repos + criterios de filtrado
 
 ### Added
 - **`docs/ecosystem/`** (carpeta nueva, 3 capas):
-  - **`DECISIONS.md`** - consolidado ejecutivo. 6 candidatos reales (MemOS local, PowerContext, Claw Orchestrator, Crabwalk, guardspine, ClawSec), 4 solapamientos a resolver, patrones a adoptar sin instalar, descartes con razón, y movimiento recomendado.
-  - **`crew-resources.md`** - ficha de detalle de los 20 repos analizados.
+  - **`DECISIONS.md`** - consolidado ejecutivo. Candidatos reales, solapamientos a resolver, patrones a adoptar sin instalar, descartes con razón, y movimiento recomendado.
+  - **`crew-resources.md`** - ficha de detalle de los 29 repos analizados (en dos tandas).
   - **`solutions-catalog.md`** - catálogo de casos de uso por problema.
 - **Regla dura: cripto/Web3 = fuera** (registrada en `USER.md` y en `crew-resources.md`).
 
@@ -18,9 +18,14 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ### Notes
 - **Método:** cada repo se lee en dos capas - *implementación* (¿lo instalamos?) y *diseño* (¿qué aprendemos?). Descartar el repo no descarta la lección.
-- **Hallazgo principal:** el core de OpenClaw está más completo de lo que pensábamos. Dos repos (MCP adapter y MCP server) resultaron **redundantes**: el core ya expone y consume MCP nativo (`openclaw mcp add` / `openclaw mcp serve`). Regla nueva: **verificar qué hace el core antes de sumar tooling externo.**
-- **Hallazgo transversal:** tres candidatos distintos (Claw Orchestrator, MemoV, ClawSec) resuelven el mismo problema de fondo - trazar, verificar y proteger lo que hizo el agente. Es el hueco real del setup.
-- **Pendiente abierto:** decidir el eje de memoria (`DECISIONS.md` §2.1). Es lo que desbloquea el resto.
+- **Hallazgo principal (1ra tanda):** el core de OpenClaw está más completo de lo que pensábamos. Dos repos (MCP adapter y MCP server) resultaron **redundantes**: el core ya expone y consume MCP nativo (`openclaw mcp add` / `openclaw mcp serve`). Regla nueva: **verificar qué hace el core antes de sumar tooling externo.**
+- **Hallazgo transversal (1ra tanda):** tres candidatos distintos (Claw Orchestrator, MemoV, ClawSec) resuelven el mismo problema de fondo - trazar, verificar y proteger lo que hizo el agente. Es el hueco real del setup.
+- **2da tanda (9 repos):** context-sync (MCP, memoria de codebase), Open Amnesia (memoria desde trazas crudas, local-first), planning-with-files (planificación persistente). Descartados: Supermemory (cloud - el descarte más claro), y cinco dashboards de tercero que compiten con el Control UI (vibeclaw, Studio, ClawDeck, Autensa, mission-control rdsthomas).
+- **Hallazgo transversal (2da tanda):** el ecosistema **no tiene formato canónico de memoria** - cinco bases SQLite paralelas contadas en dos tandas, cada herramienta la suya. **El que defina un formato interoperable gana**; conviene adoptar el **formato** antes que la herramienta.
+- **Patrón repetido (2da tanda), ya del ecosistema y no anécdota:** memoria por **hooks de turno** (4 repos), comando **`doctor`** (4 repos), **ledger/checkpoint de agente** (3 repos).
+- **Aporte más transferible de la 2da tanda:** `determinism-before-LLM` (Open Amnesia) - normalizar, filtrar y deduplicar **antes** de cualquier paso de LLM. *"Data consistency beats prompt cleverness."*
+- **Hallazgo que nos toca directo:** una **sesión compartida entre tareas degrada al agente hasta atascarlo** (bug documentado de Autensa v2.5.0). Confirma nuestra sesión-por-tarea. Y nuestro backlog vive en `memory.db` y **no es visible** (deuda real, §2.5 de DECISIONS).
+- **Pendiente abierto:** decidir el eje de memoria (`DECISIONS.md` §2.1) - ahora con **seis** candidatos, no cuatro. Es lo que desbloquea el resto.
 
 ---
 

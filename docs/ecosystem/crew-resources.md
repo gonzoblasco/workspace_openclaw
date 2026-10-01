@@ -794,7 +794,7 @@ Fuente: [prompt-security/clawsec](https://github.com/prompt-security/clawsec). *
 
 ---
 
-## 🏁 Cierre de tanda (20 repos)
+## 🏁 Cierre de la primera tanda (20 repos)
 
 **Balance:** de 20 repos, muy pocos son "instalar y usar". El valor se repartió en:
 - **4 candidatos reales a adopción:** MemOS local (memoria), PowerContext (handoff), Claw Orchestrator (orquestación+verificación), Crabwalk (observabilidad).
@@ -803,6 +803,453 @@ Fuente: [prompt-security/clawsec](https://github.com/prompt-security/clawsec). *
 - **Reglas nuevas que salieron de la ronda:** cripto = fuera; dos capas (implementación vs diseño); **verificar qué hace el core antes de sumar tooling externo**.
 
 **Patrón transversal:** tres de los candidatos (Claw Orchestrator, MemoV, ClawSec) resuelven el mismo problema de fondo - **trazar, verificar y proteger lo que hizo el agente**. El ecosistema está convergiendo ahí. Eso sugiere que *ese* es el hueco real de nuestro setup.
+
+---
+
+## 🗂️ Segunda tanda
+
+### 🎛️ Mission Control (rdsthomas) - Kanban visual para el asistente
+
+Fuente: [rdsthomas/mission-control](https://github.com/rdsthomas/mission-control). **MIT.** v2.2.1, estado *stable*. Construido para **Clawdbot**.
+
+> **⚠️ Ojo con el homónimo.** Este es **otro** repo que el `mission-control` de [vincentkoc](https://github.com/vincentkoc/mission-control) que mencionamos al analizar Crabwalk. Aquel era un dashboard/observabilidad; este es un **tablero Kanban chat-to-task**, una generación anterior (época Clawdbot). No confundir.
+
+**Qué es:** un tablero Kanban (Permanent / Backlog / In Progress / Review / Done) donde **el humano y el agente trabajan sobre la misma fuente de verdad**. El humano arrastra tarjetas en el dashboard; el agente crea, mueve y completa tareas por chat o por CLI. Trae además una pestaña **Brain** (memoria: edita `MEMORY.md`, hojas diarias, changelog) y una de **Skills** (ver/configurar capacidades).
+
+**El problema que ataca:** exactamente el nuestro. *"Después de una semana tenés 50+ tareas dispersas en cientos de mensajes. ¿Dónde quedó aquel refactor?"* Nuestro backlog vive en `memory.db` (tabla `todos`) y **no es visible** - hay que pedirlo. Esto es el backlog **como objeto visual permanente**.
+
+#### 🔧 La arquitectura (lo más valioso)
+
+**GitHub como hub**, en tres roles a la vez: **almacén de datos** (`data/tasks.json` es la fuente de verdad), **bus de eventos** (webhooks) y **hosting estático** (GitHub Pages sirve el dashboard).
+
+```
+Dashboard (GitHub Pages)  --commit via API-->  GitHub (tasks.json)
+                                                    |  webhook
+                                                    v
+                                            Tailscale Funnel (HTTPS)
+                                                    v
+                                     Gateway :18789  /hooks/github
+                                                    v
+                                     Transform (.mjs): valida HMAC + diff
+                                                    v
+                                              Agente (trabaja)
+                                                    v
+                                     mc-update.sh -> git commit + push
+```
+
+**Canal 1 (Dashboard -> Agente):** el humano mueve una tarjeta -> el dashboard hace commit a GitHub -> GitHub dispara webhook -> Tailscale Funnel -> gateway -> **transform** que valida HMAC, lee el estado previo del *snapshot*, fetchea el estado nuevo, **calcula el diff** y **solo si una tarea pasó a `in_progress`** despierta al agente con una *work order*.
+
+**Canal 2 (Agente -> Dashboard):** el agente modifica `tasks.json` con `mc-update.sh`, hace commit + push, y GitHub Pages redespliega. El dashboard refresca.
+
+#### 🔑 Diseño a robar (varios, muy buenos)
+
+- **GitHub como hub de datos + bus de eventos + hosting.** Sin servidor propio, sin base de datos que mantener. La fuente de verdad es un archivo versionado, con historia, resolución de conflictos y auditabilidad **gratis**.
+- **Trigger por diff, no por evento crudo.** El transform compara snapshot viejo contra estado nuevo y **solo despierta al agente si hay una transición relevante** (tarea a `in_progress`). No se despierta por cualquier push. Evita el ruido y el gasto.
+- **Git Blob API para consistencia exacta por SHA.** Eligen los tres llamados de blobs (`commit -> tree -> blob`) porque la API de contenido **cachea** y `?ref=<sha>` puede devolver datos viejos. Obtener el archivo exacto en el commit exacto es el requisito. Detalle fino de ingeniería.
+- **Snapshot de estado previo** (`data/.tasks-snapshot.json`, gitignored) para calcular el delta. El patrón mínimo para cualquier trigger reactivo.
+- **Webhook directo, sin GitHub Actions intermedio** - *"no intermediate Action runner (saves 5-15 seconds)"* y cero minutos de Actions consumidos. Argumentado explícitamente.
+- **`mc-update.sh` como superficie única del agente** (status, comment, subtask, complete, push). Una sola herramienta, verbos claros.
+- **EPIC handling:** tareas padre con hijos (`MC-XXX-001`), y el timeout escala `base + (children x perChild)`. Modelo para nuestros spawns con dependencias.
+- **HMAC con `timingSafeEqual`** y secreto en archivo aparte, no en el código.
+
+#### ⚠️ Puntos de atención
+
+1. **Es de la generación Clawdbot.** Configura en `~/.clawdbot/`, hooks en `~/.clawdbot/hooks-transforms/`. No está escrito para OpenClaw actual - habría que portar rutas y esquema de config.
+2. **Tailscale Funnel expone el gateway a internet.** El webhook tiene token en el query string, pero eso es una superficie de ataque externa sobre el puerto del gateway. Nuestro setup es self-hosted cerrado; esto lo abre.
+3. **PAT de GitHub con scope `repo` en `localStorage` del browser.** El token vive en el navegador. Aceptable para single-user, pero es una credencial de escritura expuesta al front.
+4. **Nuestro backlog ya vive en `memory.db`.** Adoptar esto implicaría **mover** la fuente de verdad del TODO a un `tasks.json` en un repo de GitHub. Es un cambio de arquitectura de la memoria, no un plugin.
+5. **El canal 2 (agente -> dashboard) depende de que el agente commitee y pushee** por cada cambio de estado. Cada movimiento de tarjeta es un commit en el repo de tareas.
+6. **No verificado por nosotros.**
+
+#### 🎯 Lo que enseña, aunque no se instale
+
+El hallazgo importante no es el Kanban - es **cómo sincroniza dos actores sin un servidor compartido**. GitHub como hub, webhook para notificar en un sentido y git para sincronizar en el otro. Es un patrón de arquitectura completo, y aplica a cualquier cosa que queramos sincronizar entre el agente y una superficie visual.
+
+> **Veredicto: descartado como instalación, rescatado como arquitectura.** Es de la era Clawdbot, expone el gateway por Tailscale Funnel, pone un PAT de escritura en el browser, y adoptarlo implicaría mudar nuestro backlog de `memory.db` a un `tasks.json` en GitHub - demasiado para lo que aporta. Pero **el patrón `GitHub-as-hub` (datos + eventos + hosting) y el trigger por diff valen oro**, y la idea de fondo -**que el backlog sea un objeto visible y no algo que hay que pedir**- es una deuda real nuestra.
+
+#### 🚀 planning-with-files (OthmanAdi) - el plan que sobrevive al context window
+
+Fuente: [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files). **MIT.** v3.21.0. Instala en 60+ agentes vía el estándar Agent Skills.
+
+**Qué es:** una forma de trabajar, empaquetada como skill + hooks. La idea en una frase: ***context window = RAM (volátil), filesystem = disco (persistente) -> todo lo importante se escribe a disco.*** El modelo Manus, explícito. Tres archivos en disco:
+
+| Archivo | Para qué | Cuándo se actualiza |
+|---|---|---|
+| `task_plan.md` | Fases, estado, decisiones, errores | Después de cada fase |
+| `findings.md` | Research, descubrimientos | Después de **cualquier** hallazgo |
+| `progress.md` | Log de sesión, resultados de tests | Durante toda la sesión |
+
+Los hooks del ciclo de vida **re-inyectan el plan al inicio de cada turno**, así que las fases quedan en la ventana de atención y el plan **sobrevive a `/clear`, crash y compactación**.
+
+#### 🎯 Ataca un problema que conocemos de primera mano
+
+Este es **el problema de nuestro HANDOFF.md**, pero resuelto con enforcement en vez de disciplina. Nosotros escribimos el HANDOFF al cerrar sesión - y depende de que yo me acuerde de hacerlo. Ellos **re-inyectan el estado cada turno desde disco**: no es una regla que hay que recordar, es un hook que dispara.
+
+> **La conexión con ADR-083 es directa:** *"una regla sin enforcement se viola sola"*. Nuestro protocolo de sesión es prosa; esto es mecanismo.
+
+#### 🔬 El tier de OpenClaw (importante)
+
+El README trae una tabla de tres tiers. **OpenClaw está en el tier "Standard Agent Skills"**, junto a Continue, Pi, Kilocode, AdaL:
+
+> *"SKILL.md discovery via npx skills add; **the pattern without lifecycle hooks**"*
+
+Es decir: **en OpenClaw tenemos el patrón, NO los hooks.** Sin hooks, la re-inyección por turno y el gate de Stop no existen - queda como una skill que hay que invocar voluntariamente. **Que es exactamente lo que no funciona.** El hook es el mecanismo diferenciador, y ellos lo admiten: *"The hooks are the differentiating mechanism"*.
+
+#### 🔑 Diseño a robar (muchísimo, y todo aplicable)
+
+**Sobre el control del contexto:**
+- **La metáfora RAM/disco, aplicada.** No es decorativa: decide qué se escribe y cuándo.
+- **La "2-Action Rule":** después de cada 2 operaciones de view/browser/search, **guardar hallazgos a disco** - porque la información multimodal (imágenes, screenshots, PDFs) no persiste si no se pasa a texto. Nos pasa: analizamos un repo leyendo un README y si no lo anotamos ya, se pierde.
+- **Matriz read-vs-write:** *¿acabo de escribir el archivo? NO lo leas, ya está en contexto. ¿Vi una imagen? Escribí AHORA.* Micro-decisión hecha tabla. Elegante.
+- **El "5-Question Reboot Test":** ¿dónde estoy? ¿a dónde voy? ¿cuál es el goal? ¿qué aprendí? ¿qué hice? ¿qué voy a hacer? **Seis preguntas que definen si tu manejo de contexto es sólido.** Directamente nuestro protocolo de arranque de sesión, mejor formulado.
+
+**Sobre el fallo y la verificación (lo más valioso):**
+- **"3-Strike Error Protocol":** intento 1 diagnostica y arregla; intento 2 cambia de enfoque (*"NEVER repeat exact same failing action"*); intento 3 replantea las premisas; después de 3 fallos, **escalar al humano**. Esto es nuestra *"weak/empty result: vary query/path/command/source, then conclude"* pero con contador y criterio de escalada.
+- **Tabla de errores con intento y resolución** (`| Error | Attempt | Resolution |`) - el error deja de ser incidente y se vuelve conocimiento.
+- **SHA-256 attestation del plan** (`attest-plan.sh`): el cuerpo del plan se firma; si difiere del hash aprobado, los hooks **rechazan la inyección con `[PLAN TAMPERED]`**. Es el *"evidence packs hash-chained"* de guardspine, pero aplicado al plan. **Detecta que un tool result, un colaborador o un bug reescribió el plan en silencio.**
+- **`/plan-doctor`:** self-check de los fallos que *fallan en silencio* - resolución del plan, inyección, attestation, superficies de instalación, latencia. **Tercer repo seguido con patrón `doctor`** (PowerContext, Natilius, este). Ya no es coincidencia: es un estándar del ecosistema.
+- **Gated mode:** el *Stop gate* retiene el stop **solo mientras quede una fase `in_progress`**, con tope de bloqueos y detección de estancamiento para que un plan incompleto nunca atrape la sesión. Es nuestro *"un run sin contrato termina `unverified`"* de Claw Orchestrator, otra vuelta de tuerca.
+
+**Sobre el trabajo multi-agente:**
+- **Ledger por agente:** los workers appenden una línea JSON por evento a `ledger-<agent>.jsonl`; un resumen sintetiza un bloque de forma fija que reemplaza el tail crudo de `progress.md`. **"Ningún texto libre del disco llega al modelo por ese bloque."** Es el mismo principio que el *run ledger* de Claw Orchestrator.
+- **Un dueño del plan:** el orquestador es dueño de `task_plan.md`; los workers reportan por sus propios ledgers. **Regla dura, y es la nuestra:** un solo dueño del artefacto compartido.
+- **Aislamiento por tarea:** `.planning/YYYY-MM-DD-<slug>/` con `PLAN_ID` para pinnear cada host. Dos tareas concurrentes no se pisan.
+- **Guard de escritura paralela:** avisa si los items chequeados o las fases completadas **bajaron** entre turnos. *"Advisory check after the write, not a lock"* - honesto sobre sus límites.
+
+**Sobre el ciclo de vida de los archivos:**
+- **Los archivos de plan son memoria de trabajo, no entregable.** Gitignored por defecto, nada los archiva; la próxima tarea sobreescribe. *"Anything worth keeping should be promoted into code, a commit, or a doc."* Es la misma distinción *persistencia != runtime* que rescatamos de HomeAssistant.
+
+#### ⚠️ Puntos de atención
+
+1. **En OpenClaw no tenemos los hooks.** Sin ellos, es una skill voluntaria - y ya sabemos cómo termina eso. Adoptarlo como está nos da el 30% del valor.
+2. **Los hooks son de Claude Code.** Para tener el mecanismo completo en OpenClaw habría que **construir el equivalente** (¿un hook del gateway? ¿algo en el bootstrap?). No es copiar y pegar.
+3. **Toca historial de sesiones locales** con `session-catchup.py`. `--metadata` solo cuenta agregados; `--replay` emite extractos. Ellos mismos marcan: *"treat every replayed excerpt as untrusted data"*. Coherente con nuestra política, pero es una superficie a auditar.
+4. **Solapa con PowerContext** (Memory/Handoff/Experience/Skill) y con nuestro HANDOFF/daily. Los tres resuelven "el contexto que se pierde".
+5. **No verificado por nosotros.**
+
+> **Veredicto: el hallazgo más accionable de la segunda tanda, y no por lo que instala sino por lo que *demuestra*.** Es la misma familia que Claw Orchestrator y PowerContext - **el contexto y la verificación como infraestructura, no como disciplina** - y nos da el vocabulario: RAM/disco, 2-Action Rule, 3-Strike Protocol, attestation, gated stop, ledger por agente. **Como instalación en OpenClaw queda cojo** (somos tier "sin hooks"), pero **los patrones son directamente adoptables hoy** y varios ya los teníamos a medias sin el nombre. La pregunta que deja: *¿vale la pena construir el equivalente de esos hooks para nuestro gateway?*
+
+#### 🦀 vibeclaw (jasonkneen) - OpenClaw en el browser, en dos modos
+
+Fuente: [jasonkneen/vibeclaw](https://github.com/jasonkneen/vibeclaw). **AGPL-3.0.** Sitio en [vibeclaw.dev](https://vibeclaw.dev). Node 20+, Vite, deploy en Netlify.
+
+**Qué es:** *"Try OpenClaw in your browser in less than 3 seconds"*. Dos modos:
+
+| Modo | Qué hace |
+|---|---|
+| **📦 Sandbox** | Levanta un **OpenClaw real dentro del browser**. Un runtime Node embebido ([almostnode](https://github.com/nicholasgriffintn/almostnode)) carga el runtime de OpenClaw con un filesystem virtual (VFS), y chateás con **modelos gratis vía OpenRouter** (proxy serverless; sin API key). |
+| **🔴 Live Gateway** | Te conectás a **tu** gateway corriendo y obtenés un dashboard: sesiones, agentes, archivos, skills, cron, métricas, presencia, logs y chat streaming. |
+
+**"Flavours":** personalidades de sandbox intercambiables, cada una con sus agentes, skills, teams y system prompt. Viene con seis (OpenClaw, TinyClaw, ShipIt, R00t, Pixie, Professor). Se agrega una carpeta con `manifest.json` y se reconstruye. **Es el mismo patrón que nuestros roles (CORE/DEV/OPS/MIND/STUDIO), pero empaquetado como preset intercambiable.**
+
+#### 🎯 El modo Sandbox: cero-fricción para *mostrar* OpenClaw
+
+Levantar un agente real en el browser sin instalar nada - sin Docker, sin CLI, sin API keys - es una propuesta fuerte **para demo/onboarding**. Si alguna vez queremos mostrarle a alguien cómo trabaja un agente sin pedirle que instale el gateway, esto resuelve ese caso exacto. **Bajo el filtro de diseño, además, es una pieza visualmente cuidada.**
+
+#### 🔴 El modo Live Gateway: acá está el riesgo
+
+Es un **dashboard de terceros que recibe la URL y el token de tu gateway**. El token viaja al front, y desde ahí al gateway. **Es la misma superficie que marcamos en Crabwalk** - un componente externo con acceso a las credenciales del gateway. A diferencia de Crabwalk, acá **el código no corre en tu máquina: es un sitio hosteado en Netlify** (`vibeclaw.dev`). Conectar el gateway real a un sitio de terceros es una decisión de riesgo, no una comodidad.
+
+**Y no aporta lo que ya tenemos:** el Control UI de OpenClaw **ya es** el dashboard del gateway (sesiones, agentes, archivos, skills, cron, logs). Adoptar este modo sería cambiar un dashboard nativo por uno externo con el token expuesto. **No.**
+
+#### 🔑 Diseño a robar
+
+- **El protocolo del gateway queda documentado en el README:** JSON-RPC por WebSocket, con `connect.challenge` (nonce) -> cliente firma con Ed25519 -> `connect`; métodos `status`, `agents.list`, `sessions.list`, `skills.status`, `cron.list`, `agents.files.get`, `logs.tail`, `usage.cost`, `chat.send`, `chat.history`. **Es una referencia técnica útil** del protocolo que OpenClaw expone - nos sirve para entender qué superficies hay.
+- **Auth por challenge firmado con Ed25519** (con `@noble/ed25519`, que funciona incluso en orígenes HTTP). Modelo de autenticación **sin mandar el token en cada request** - la firma del nonce prueba posesión.
+- **Cero-fricción como valor de producto:** "en menos de 3 segundos", sin instalar nada. El modelo a copiar si alguna vez hacemos una demo.
+- **VFS + runtime Node en el browser** (almostnode + COOP/COEP para `SharedArrayBuffer`) - ingeniería notable, aunque fuera de nuestro alcance actual.
+
+#### ⚠️ Puntos de atención
+
+1. **AGPL-3.0** - copyleft fuerte. Tercer repo de la ronda con AGPL (MoltBrain, ClawSec).
+2. **El modo Live Gateway manda tu token al sitio de terceros** (`vibeclaw.dev`). Superficie de riesgo, y **redundante con el Control UI nativo**.
+3. **Los créditos apuntan a `nicholasgriffintn/openclaw`** - no a la URL oficial `openclaw/openclaw`. Mismo patrón que vimos en guardspine. No es concluyente, pero es una señal que conviene verificar antes de confiar.
+4. **El sandbox corre OpenClaw + OpenRouter a través de un proxy serverless ajeno.** Lo que chateás pasa por su infraestructura. Aceptable para probar con datos falsos; inaceptable con información real.
+5. **No verificado por nosotros.**
+
+> **Veredicto: descartado como instalación; rescatado el protocolo y la lección de cero-fricción.** El modo Sandbox es una buena idea de *demo* (mostrar sin instalar) y el modo Live Gateway es un riesgo de seguridad que además duplica el Control UI nativo. Lo que vale es la **documentación del protocolo del gateway** (JSON-RPC + challenge Ed25519) y el principio de que **"probar en 3 segundos" es una feature**, no un adorno.
+
+#### 🔗 context-sync (Intina47) - memoria de proyecto local vía MCP
+
+Fuente: [Intina47/context-sync](https://github.com/Intina47/context-sync). Licencia **no declarada en el README** (verificar). npm: `@context-sync/server`. Se instala global y **auto-configura** los clientes MCP.
+
+**Qué es:** *"Local-first project memory for AI coding tools over MCP"*. Una capa de memoria persistente **por codebase**, servida como **MCP**: identidad del proyecto y stack, trabajo activo, decisiones, constraints y caveats, exploración estructurada de archivos, contexto git-aware, y lookup opcional de Notion.
+
+#### 🔌 La diferencia clave de esta ronda: es MCP
+
+> **Acá se conecta con nuestro hallazgo anterior.** Descartamos dos repos (MCP adapter y MCP server) **porque el core ya expone MCP nativo**. Pues bien: **este servicio se enchufa por esa vía nativa** - `openclaw mcp add`, sin plugin, sin wrapper. Es el **primer candidato de memoria que entra por una puerta que ya tenemos abierta y verificada**.
+
+#### 🎯 Ataca el eje de memoria... desde otro ángulo
+
+No compite con MemOS/MoltBrain/qmd de igual a igual: **aquellos son memoria de *sesión/agente*; este es memoria de *codebase*.** Su scope es el proyecto, no la conversación. Eso lo acerca a otra cosa nuestra: **nuestro `.knowledge/` por proyecto** y el trabajo de discovery. La pregunta de solapamiento no es "¿reemplaza a `memory.db`?" sino **"¿reemplaza/complementa a `.knowledge/`?"**.
+
+#### 🔑 Diseño a robar
+
+- **Superficie MCP chica y por verbos:** `set_project`, `remember`, `recall`, `search`, `structure`, `git`. Ocho tools, nombres de acción. **Lo opuesto a los 78 tools de Claw Orchestrator** - y más fácil de razonar.
+- **El protocolo de arranque de sesión es LITERALMENTE el nuestro:**
+  ```
+  1. set_project({ path: "..." })   -> fijar contexto
+  2. recall()                        -> recuperar lo que sabemos
+  3. structure({ depth: 2 })         -> orientarse en el código
+  4. read_file({ path: "..." })      -> inspección enfocada
+  5. remember({ type: "decision", content: "..." })  -> persistir lo que debe sobrevivir
+  ```
+  Es nuestro **"iniciar sesión"** (daily check -> memory search -> presentación) mecanizado, con el paso 5 explícito: **recordar es una decisión deliberada, no un efecto colateral.**
+- **Tipos de memoria con nombre:** `decision`, y por extensión constraints/caveats. Categorizar al escribir mejora el recall.
+- **Captura automática por hooks de git** (`post-commit`, `pre-push`, `post-merge`, `post-checkout`): el contexto se captura **en los límites naturales del trabajo**, no cuando alguien se acuerda. **Backupea los hooks existentes antes de tocar** - regla de merge, no overwrite.
+- **Git-aware context:** `hotspots` (dónde está el calor del cambio), `coupling` (qué archivos cambian juntos), `blame`, `analysis`. Inteligencia de codebase que nosotros **no tenemos**, y que aplica directo a un repo de 2600+ líneas de changelog como el nuestro.
+- **Notion read-only por diseño** en la superficie del tool (*"intentionally read-only"*). Limitar la escritura externa por diseño es una buena práctica de blast radius.
+
+#### ⚠️ Puntos de atención
+
+1. **Auto-configura durante el `-g`.** Un `npm install -g` que **escribe config en tus herramientas de IA** sin preguntar. Es exactamente la clase de comportamiento que nuestra política marca como untrusted. **Leer el preflight, no usar el instalador a ciegas.**
+2. **Instala hooks en tus repos git.** `post-commit`, `pre-push`, etc. Aunque backupea, **toca `.git/hooks/` de cada repo donde corras `set_project`**. Con un pre-commit hook propio que ya aborta commits (guion común, rutas rotas), cualquier interacción hay que probarla aislada.
+3. **Licencia sin declarar en el README.** Verificar antes de integrar.
+4. **Notion = superficie externa.** Opt-in y read-only, pero es una dependencia de red.
+5. **Segunda base SQLite paralela** (`~/.context-sync/data.db`) además de nuestra `memory.db`. Dos fuentes de verdad es lo que hay que evitar.
+6. **No verificado por nosotros.**
+
+> **Veredicto: candidato real, categoría *memoria de codebase*, y el más "instalable" de todos por venir como MCP.** No reemplaza nuestra memoria de sesión - cubre el eje que hoy ocupan `.knowledge/` y el discovery. **La pregunta que abre:** ¿`context-sync` reemplaza a `.knowledge/`, o se suma como una capa más de retrieval sobre el código? Antes de instalarlo hay que decidir el eje de memoria (DECISIONS.md §2.1), porque **una tercera base SQLite sin esa decisión es deuda, no capacidad.**
+
+#### 🎨 OpenClaw Studio (grp06) - el dashboard que compite con el Control UI
+
+Fuente: [grp06/openclaw-studio](https://github.com/grp06/openclaw-studio). Licencia **no declarada en el README** (verificar). Node 20.9+, Next.js, deploy con `npx openclaw-studio@latest`. Trae Discord propio y documentación de UI.
+
+**Qué es:** un **dashboard web "limpio"** para OpenClaw - *"el"* del pitch. Se conecta al gateway, ve agentes, chatea, gestiona aprobaciones y configura jobs desde un lugar. **Es un reemplazo del Control UI nativo, hecho por un tercero.**
+
+#### 🚨 La diferencia que importa con vibeclaw
+
+vibeclaw live era **un sitio hosteado por un tercero** que recibía tu token. **Este es distinto: corre en tu propia máquina** (`npx`, `localhost:3000`). El token va al gateway local, no a un servidor ajeno. **Eso baja el riesgo de "exfiltración" - pero no lo elimina:** sigue siendo un **segundo front con acceso completo al gateway** (sesiones, agentes, archivos, aprobaciones de exec), y guarda su propio `runtime.db` (otra SQLite) y su token en `~/.openclaw/openclaw-studio/settings.json`.
+
+> **El riesgo cambió de clase:** no es *"¿a quién le mando el token?"* sino *"¿cuánta superficie de escritura delego a una app que no audité?"*. Es un dashboard que **gestiona aprobaciones de exec** - es decir, puede aprobar comandos.
+
+#### 🎯 Bajo el filtro de diseño: lo más relevante de la ronda
+
+Es un producto **cuyo valor declarado es ser "limpio"** - la estética es el pitch. Y lo respalda con documentos:
+
+- **`color-system.md` (doc del repo de Studio):** *"the semantic color contract, status mappings, and guardrails that keep action/status/danger usage consistent across the UI"*. **Un contrato semántico de color con guardrails** - acción vs estado vs peligro con reglas de uso. **Esto es exactamente lo que nos falta:** hablamos de "definir el design system propio", y acá hay un ejemplo concreto de cómo se especifica.
+- **`permissions-sandboxing.md` (doc del repo de Studio):** cómo las decisiones de creación de agente (tool policy, sandbox, exec approvals) **fluyen desde el front hacia el gateway, y el gateway las aplica en runtime**. Modelo de cómo una UI **no debe** implementar seguridad - la delega al core.
+- **`pi-chat-streaming.md` (doc del repo de Studio):** streaming de eventos por SSE con **replay/history determinista** y render de tool calls, *thinking traces* y transcript. **El mismo eje que Crabwalk** - observabilidad de lo que hace el agente - pero dentro de un dashboard.
+
+#### 🔑 Diseño a robar
+
+- **El contrato semántico de color como documento.** No "una paleta", sino **reglas**: qué color significa acción, cuál estado, cuál peligro, y por qué. **Directamente adoptable para nuestro design system.**
+- **Arquitectura de dos saltos clara:** `Browser -> Studio` (HTTP + SSE) y `Studio -> Gateway` (un solo WebSocket del proceso Node). Un solo socket server-owned, no uno por browser. **Contrasta con vibeclaw**, donde el browser hablaba directo con el gateway.
+- **Proyección durable + replay outbox en `runtime.db`:** el historial de runtime sobrevive refrescos y reinicios, y el replay es determinista. **Patrón de "la UI no pierde estado",** relevante porque nuestro dashboard también podría.
+- **Guard de startup diferenciado:** `dev` corre `verify:native-runtime:repair` (repara), `start` corre `verify:native-runtime:check` (solo chequea, no muta dependencias). **Distinguir "modo desarrollo puede arreglar" de "modo producción no toca nada" es fino y correcto.**
+- **`STUDIO_ACCESS_TOKEN` obligatorio solo fuera de loopback**, y **los bind públicos exigen segundo factor** (abrir `/?access_token=` una vez por browser para setear cookie). Postura de seguridad proporcional al blast radius.
+- **Tres escenarios de deploy documentados** (local, gateway en cloud, todo en cloud) con el mismo comando. **"Elegí tu setup" en vez de un instructivo único** - buena forma de documentar.
+
+#### ⚠️ Puntos de atención
+
+1. **Es un front de tercero con acceso completo al gateway**, incluidas **aprobaciones de exec**. Auditarlo antes de conectarlo a datos reales.
+2. **Licencia sin declarar en el README.** Verificar.
+3. **Tercera SQLite paralela** (`runtime.db`) sumada a `memory.db` y a la de context-sync. **Las bases se acumulan sin una decisión de arquitectura.**
+4. **Solapa de lleno con el Control UI nativo.** Es, literalmente, una alternativa a algo que ya tenemos. Adoptarlo es cambiar un componente mantenido por el core por uno de tercero, **a cambio de estética**.
+5. **El `npx -y @latest`** ejecuta lo último publicado sin pin. Es el patrón que nuestra política marca como untrusted.
+6. **No verificado por nosotros.**
+
+> **Veredicto: descartado como instalación; el más valioso de la tanda para el FILTRO DE DISEÑO.** Solapa con el Control UI (que ya tenemos y mantiene el core), así que no hay razón fuerte para adoptarlo - **salvo que su calidad visual sea muy superior, y eso se decide mirando, no leyendo.** Lo que sí se lleva hoy: **el contrato semántico de color** (ejemplo concreto de cómo especificar un design system), la **arquitectura de socket server-owned**, y el **guard de startup dev-vs-prod**. Es el **segundo repo seguido que muestra que "dashboard de tercero" es un patrón vivo en el ecosistema** (vibeclaw, este) - y la pregunta de fondo es si el Control UI nativo se queda corto en diseño.
+
+#### 🏭 Autensa (crshdn/mission-control) - "Autonomous Product Engine"
+
+Fuente: [crshdn/mission-control](https://github.com/crshdn/mission-control). **Tercer repo con el nombre `mission-control`** (ya renombrado **Autensa**, [autensa.com](https://autensa.com)). Next.js 14 + TypeScript + SQLite, corre en el puerto 4000, se conecta al gateway por WebSocket. Node 18+, Docker. Licencia por confirmar.
+
+> **Los tres homónimos, para no confundirlos jamas:** (1) `vincentkoc/mission-control` - dashboard/observabilidad; (2) `rdsthomas/mission-control` - Kanban chat-to-task de la era Clawdbot; (3) **este** - un motor de producto autónomo. Mismo nombre, tres productos distintos.
+
+**Qué es:** el más ambicioso (y el más fuera de perfil) de la ronda. Apuntás a un producto (repo + URL en vivo) y corre un ciclo continuo: **Research -> Ideation -> Swipe -> Build -> Test -> Review -> PR**. Investigación de mercado, generación de ideas con scoring, una interfaz de swipe tipo Tinder para aprobar/rechazar, y el pipeline de agentes que construye y abre el PR. *"Tu único trabajo es el swipe."*
+
+#### ⚪ Como producto: fuera de perfil
+
+- **No hacemos productos que se auto-mejoran 24/7.** No hacemos research de mercado, ni ideation, ni swipe interfaces. Es de otro dominio.
+- **Pesado:** Next.js + SQLite + 80+ endpoints + Docker + puerto propio. **Cuarta app con base SQLite paralela** (tras Studio y context-sync).
+- **Otro front de tercero con el token del gateway**, y este **dispara trabajo autónomo**. Es la superficie de riesgo más grande de la tanda.
+- **`Hetzner VPS` con link de referido en el README** - interés comercial declarado de forma sutil. No invalida nada, pero es un dato.
+- "The world's first Autonomous Product Engine" - marketing fuerte. Y **no verificado por nosotros**.
+
+#### 🔑 Diseño a robar (acá está el valor, y es mucho)
+
+**Sobre gates y confianza:**
+- **Automation Tiers: Supervised / Semi-Auto / Full Auto.** *"Elegí tu nivel de comodidad por producto"*: Supervised -> el PR se crea y vos mergeás; Semi-Auto -> auto-merge **si el CI pasa y el review agent aprueba**; Full Auto -> todo, idea a feature deployed. **Es la mejor formulación que vi del gradiente humano-en-el-loop.** Nosotros tenemos un gate binario (pausa o no); esto es un **espectro por contexto**.
+- **Approval gate: el plan antes que el código.** *"You review the plan before any code is written."* Es nuestra pausa obligatoria (iterar -> revisión -> push) hecha paso del pipeline.
+- **La lección es el nivel de autonomía como configuración, no como conducta.**
+
+**Sobre sesiones (hallazgo que nos toca directo):**
+- **v2.5.0: una sesión de OpenClaw por tarea.** Bug que encontraron y arreglaron: *"all tasks assigned to the same agent shared one session, causing context to accumulate across tasks until the model's context window was exhausted and the agent stalled"*. **Una sesión compartida entre tareas se degrada hasta atascar al agente.** Es exactamente la razón por la que nuestro modelo de sesión-por-tarea es correcto - y una advertencia concreta sobre lo que pasa si no lo respetamos.
+- **Aislamiento de workspace por build:** git worktrees para repos, sandboxes de tarea para lo local, **asignación de puertos (4200-4299)**, **cola de merge serializada** con detección de conflictos, y **locking por producto** (los completados del mismo producto se encolan). **Una tarea, un espacio, sin colisiones** - el problema de la concurrencia resuelto en serio.
+
+**Sobre orquestación y resiliencia:**
+- **Convoy Mode: DAG de subtareas con scheduling por dependencias.** Grafo de dependencias visual, **health monitoring que detecta agentes estancados/zombie** y **auto-nudge** que reasigna o reinicia al agente que se quedó oscuro. *"Detects stalled, stuck, or zombie agents automatically."* **Es el problema "el subagente se colgó" resuelto como sistema.**
+- **Checkpoint & crash recovery:** el progreso se guarda en checkpoints configurables; si la sesión crashea, *"work resumes from the last checkpoint, not from scratch"*. **Es el archivo `progress.md` de planning-with-files, pero automático por checkpoint.**
+- **Repo Setup / preflight que verifica antes de construir:** acceso git autenticado, rama default, API de GitHub, estado de Actions, permisos del workflow token, secrets y variables. *"Verifies a repository is ready before agents create PR-bound work."* **Es nuestro `doctor` aplicado a un repo entero.**
+- **PR checks recovery:** clasifica los checks fallidos en **retryable / repo setup / external provider** y ofrece la acción correcta. **Triaje del fallo de CI, no reintentar a ciegas.**
+
+**Sobre costos y aprendizaje:**
+- **Cost tracking con caps que auto-pausan el dispatch.** Costo por tarea, por producto, agregado diario/mensual, y **límites que frenan el despacho al excederse**. Es el *run ledger + spend caps* de Claw Orchestrator.
+- **Agent Skill Creation Loop (v2.4.0):** *"agents learn reusable procedures from completed tasks; Bayesian confidence scoring promotes proven skills; matched skills injected at dispatch as primary instructions"*. **Es `skill_workshop` con un modelo de confianza.** El mismo eje: qué skill probó servir y cómo se promueve.
+- **Product Program (patrón Karpathy AutoResearch):** un documento vivo que le dice a los agentes de research **qué mirar y qué ignorar**, y que **evoluciona con los datos**. Es nuestro `AGENTS.md` pero como instrucción evolutiva.
+- **Operator Chat con dos modos:** *queued notes* (se entregan en el próximo checkpoint) y *direct messages* (inmediatos, corrección en tiempo real). **Distinguir "para después" de "ahora" en la intervención humana.**
+
+#### ⚠️ Puntos de atención
+
+1. **Superficie de riesgo máxima:** un front de tercero con el token del gateway que **despacha trabajo autónomo**. Es el opuesto a nuestro perfil self-hosted cerrado.
+2. **Complejidad de despliegue alta** (Next.js, SQLite, Docker, puerto, 80+ endpoints).
+3. **Link de referido** en el README (interés comercial).
+4. **Cuarta SQLite paralela** sumada al ecosistema. Sin decisión de arquitectura, es acumulación.
+5. **Licencia sin confirmar** en lo que leí.
+6. **No verificado por nosotros.**
+
+> **Veredicto: descartado como instalación (fuera de perfil y pesado); el más rico en DISEÑO de orquestación despues de Claw Orchestrator.** Como producto no aplica - no construimos features por swipe. Pero el motor tiene **cuatro patrones que deberiamos adoptar**: los **automation tiers** (autonomía como espectro configurable), el **checkpoint recovery**, el **health monitoring con auto-nudge**, y los **spend caps que auto-pausan**. Y sobre todo deja un hallazgo que nos toca de cerca: **una sesión compartida entre tareas se degrada hasta atascar al agente** - la confirmación externa de que nuestra sesión-por-tarea es la decisión correcta.
+
+#### 🦞 ClawDeck (clawdeckio) - Kanban con cola de trabajo por API
+
+Fuente: [clawdeckio/clawdeck](https://github.com/clawdeckio/clawdeck). **MIT.** Ruby 3.3.1 / **Rails 8.1**, PostgreSQL, Hotwire + Tailwind. Self-host (puerto 3000).
+
+> **⚠️ Proyecto discontinuado en su parte hosteada.** *"The hosted version at clawdeck.io is shutting down May 30, 2026. This repo stays up - self-hosted installs keep working."* Evoluciono a **lst.so**, un producto distinto. **Se lee como diseño/patrón, no como algo a adoptar: no habria a quién seguir.**
+
+**Qué es:** Kanban para agentes. Creás tareas y las organizás en boards; **cuando están listas se las asignás a un agente**; el agente **hace polling de las tareas asignadas**, las trabaja, y **reporta progreso por la API** (activity feed). Todo en tiempo real.
+
+#### 🔀 El contraste que vale con el otro Kanban (rdsthomas)
+
+Tuvimos **dos Kanban** en esta ronda, y resuelven la sincronización **al revés**:
+
+| | rdsthomas/mission-control | ClawDeck |
+|---|---|---|
+| Transporte | **GitHub** (datos + webhook + Pages) | **REST propio + polling** |
+| Dirección | **Push**: el webhook despierta al agente | **Pull**: el agente pregunta por su cola |
+| Backend | Archivo `tasks.json` + GitHub | Rails + PostgreSQL |
+| Estado hoy | Era Clawdbot | **Hosteado en cierre** (evoluciono a lst.so) |
+
+Ninguno de los dos es adoptable, pero **juntos definen el espacio de diseño**: *¿el trabajo empuja al agente o el agente sale a buscar trabajo?* Nosotros hoy hacemos push (yo recibo la tarea en la conversación). **El modelo pull tiene una ventaja que no tenemos: el agente puede tomar trabajo sin que nadie le escriba.**
+
+#### 🔑 Diseño a robar
+
+- **Cola de trabajo por filtro:** `GET /api/v1/tasks?assigned=true` es *"your work queue"*. **La asignación no es un evento, es una consulta.** El agente decide cuándo y qué tomar.
+- **Identidad de agente en headers:** `X-Agent-Name` y `X-Agent-Emoji`. Simple, y define **quién** actúa sin acoplarlo al token. **Directamente aplicable a nuestras APIs internas** si alguna vez exponemos una.
+- **`activity_note` en el update de estado:** no solo cambia el status, **deja el porqué en el mismo request**: `{ "status": "in_progress", "activity_note": "Starting work on this" }`. Es el contrato `snap()` de MemoV, reducido a un campo.
+- **Estados canónicos y chicos:** `inbox -> up_next -> in_progress -> in_review -> done`. Cinco, con el **`in_review` explícito** - el mismo valor que le damos a la pausa de revisión.
+- **REST sobre WebSocket:** acá el agente habla por HTTP, no por el protocolo del gateway. **Contraste útil con context-sync**: dos formas de darle herramientas a un agente (MCP vs API propia).
+
+#### ⚠️ Puntos de atención
+
+1. **Hosteado en cierre, evoluciono a lst.so** → el repo queda como referencia histórica. **No adoptar.**
+2. **Stack pesado para nosotros:** Rails + PostgreSQL + Solid Queue/Cache/Cable. **Otra base de datos más** (quinta de la ronda) y un runtime Ruby que no usamos.
+3. **El agente hace polling** - a diferencia de un webhook, el trabajo se descubre por consulta periódica. **Latencia y gasto de sondeo** son el costo del modelo pull.
+4. **Auth por GitHub OAuth o email/password** - pensado para multi-usuario; nosotros somos single-user.
+5. **No verificado por nosotros.** Y no instalamos nada.
+
+> **Veredicto: descartado (proyecto en cierre, stack ajeno y pesado); vale como pieza de diseño.** El aporte es el **modelo pull** (cola por consulta), la **identidad por headers**, y el **`activity_note` en el mismo update**. El contraste con el Kanban de rdsthomas (push por webhook vs pull por API) **mapea el espacio entero** de cómo una superficie visual y un agente se sincronizan, y es la parte que nos queda.
+
+#### ☁️ OpenClaw Supermemory (supermemoryai) - memoria en la nube de un tercero
+
+Fuente: [supermemoryai/openclaw-supermemory](https://github.com/supermemoryai/openclaw-supermemory). Plugin oficial de Supermemory. **Requiere plan Pro o superior** - es un producto comercial con capa gratuita.
+
+> **🔴 DESCARTE POR REGLA, no por calidad.** *"all powered by Supermemory cloud. Everything runs in the cloud."* Cada turno de conversación **se manda a la nube de un tercero**, y las memorias recuperadas se inyectan con `allowPromptInjection: true` y `allowConversationAccess: true`. **Es el mismo caso que ya descartamos con MemOS Cloud Plugin** - y contra nuestra política es de los más claros: memoria privada completa (conversaciones, perfil del usuario) a infraestructura ajena.
+
+**Qué hace:** memoria de largo plazo automática. **Auto-Recall** antes de cada turno (busca memorias relevantes y las inyecta), **Auto-Capture** después de cada turno (manda la conversación a extraer y guardar), y **perfil persistente del usuario**. Todo extracción, deduplicación y armado de perfil lo hace la nube.
+
+**Lo único que salva al repo: `baseUrl` configurable.** El código permite apuntar a una instancia self-hosted (`baseUrl: http://localhost:8000`). **Pero el producto es la nube**, y eso no cambia lo que vende.
+
+#### 🔑 Diseño a robar (hay algo, y es bueno)
+
+- **Auto-Recall / Auto-Capture como hooks de turno.** Otra vez el mismo patrón: **recuperar antes, capturar después, automático**. Es la memoria como ciclo de vida del turno, no como acción manual. **Tercer repo de la ronda con este mecanismo** (planning-with-files re-inyecta, MemOS, este). Ya es un patrón del ecosistema, no una idea suelta.
+- **`profileFrequency`:** inyectar el **perfil completo cada N turnos**, no la búsqueda semántica de cada turno. **Dos frecuencias distintas para dos necesidades distintas** - hechos estables vs contexto puntual. Fino.
+- **Contenedores con instrucción de ruteo:** los tags (`work`, `personal`) vienen con **descripción**, y hay un `customContainerInstructions` que le dice **al modelo** qué va en cada contenedor. **Es `agentOverrides` de MemOS / los multi-cube, con el ruteo como instrucción de prompt.**
+- **`captureMode: "all"` filtra textos cortos** por defecto. **No capturar el ruido** es una decisión de diseño explícita, no un detalle.
+- **`supermemory-forget` como tool de primera clase.** Poder **borrar por query o ID** desde el agente, al lado de guardar y buscar. **Nuestro sistema de memoria no tiene olvido explícito.**
+- **Nombres viejos deprecados con resolución:** documentan que `supermemory_store` sigue funcionando y resuelve al tool nuevo, y avisan que en 3.0 se van. **Migración con gracia** - buena práctica de versionado.
+- **`/supermemory-index` como skill:** explora el codebase y guarda memorias enfocadas, **distinto de `/remember`**. Indexación de proyecto con criterio, no volcado.
+
+#### ⚠️ Puntos de atención
+
+1. **🔴 Cloud por diseño** - viola la Red Line de no mandar datos privados afuera. **Descartado.**
+2. **`allowPromptInjection: true` + `allowConversationAccess: true`** en la config de ejemplo: el plugin **puede inyectar prompts** y **leer la conversación**. Es el permiso más alto que se le puede dar a un plugin, y se activa para que la memoria funcione. **Superficie máxima.**
+3. **Plan pago (Pro+)** - es un producto comercial, no un proyecto comunitario.
+4. **Solapa con toda la familia de memoria** (MemOS, MoltBrain, qmd, context-sync) y con nuestra `memory.db`.
+5. **Tiene `baseUrl` self-hosted** - si algún día se quisiera el mecanismo, existe el camino local, pero **habría que auditar que no llame a casa**.
+6. **No verificado por nosotros.**
+
+> **Veredicto: DESCARTADO, y por la regla más clara de todas (datos privados a la nube de un tercero).** No es que sea malo: **hace bien cosas que nos faltan** - el ciclo auto-recall/auto-capture, las dos frecuencias (contexto vs perfil), el `forget` explícito, y el ruteo por contenedor como instrucción. **Es el quinto repo seguido que muestra que la memoria por hooks de turno es un patrón del ecosistema.** Todo eso se roba; **la implementación cloud se descarta.**
+
+#### 🧠 Open Amnesia (vincentkoc) - local-first, de trazas crudas a contexto confiable
+
+Fuente: [vincentkoc/openamnesia](https://github.com/vincentkoc/openamnesia). **Tercer repo de `vincentkoc`** en la ronda (mission-control, natilius, este). Python + TypeScript, FastAPI + SQLite, React + Vite + Tailwind. `pip install -e .`
+
+**Qué es:** *"Local-first memory for agents. From raw traces to reliable context."* Un **motor de contexto con aprendizaje continuo** que convierte logs de sesión desordenados en **momentos, hechos y skills estructurados**.
+
+> **La tesis, en una frase del propio repo:** ***"Data consistency beats prompt cleverness."*** La calidad de la memoria del agente depende del **preprocesamiento determinista** - normalización, filtrado, deduplicación - **antes de cualquier paso de LLM**. Una vez que la *forma* de los datos es confiable, extraer y resumir sale mucho mejor y más barato.
+
+#### 🎯 Por qué es candidato fuerte para nosotros
+
+**Exporta archivos de memoria por fecha: `YYYY_MM_DD.md`.** Es **literalmente** nuestro `memory/YYYY-MM-DD.md`. No hay que adaptar el formato: ya habla el idioma de nuestras daily notes.
+
+Y ataca un problema que tenemos de verdad: **el contenido de nuestras sesiones vive en transcripts que nadie procesa**. Este repo lo ingestaría y lo convertiría en hechos y skills con estructura.
+
+#### 🏗️ El pipeline (8 pasos, y el orden es la lección)
+
+```
+1. Connectors     -> ingesta logs de Codex, Claude, iMessage
+2. Filtros+redaccion -> limpia y acota (ventanas de tiempo, tags de proyecto, patrones secret/PII)
+3. Normalization  -> Event IR estable (turno a turno con tool call/result)
+4. Sessionization -> agrupa eventos en "momentos" y threads
+5. Enrichment     -> resumenes + extraccion LLM (SOLO despues de 3 y 4)
+6. Storage        -> SQLite como system-of-record
+7. Serving        -> API FastAPI read-only
+8. UI             -> React: inspeccion, filtro, control de export
+```
+
+**El paso 5 despues del 4 es el diseño entero.** *"LLM noise + token budgets: enrichment is expensive and can amplify messy clusters if run too early."* Si le tirás logs crudos al LLM, el ruido se amplifica. **Primero se ordena determinísticamente, después se enriquece.** Es lo opuesto a "tírale todo al modelo y que se arregle".
+
+#### 🔑 Diseño a robar (mucho, y todo aplicable)
+
+- **El principio `determinism-before-LLM`.** Es una regla de arquitectura de memoria, no un detalle de implementación.
+- **La segmentación en *momentos*, con forma fija:** `intent -> actions/tool calls -> outcomes -> artifacts`. **Cuatro campos que capturan la unidad real de trabajo.** Es el contrato `snap()` de MemoV, más rico.
+- **Redacción ANTES del enrichment.** Los patrones de secret/PII se filtran **en el paso 2** - antes de que nada toque un LLM. **Es nuestra Red Line aplicada como paso de pipeline, no como promesa.**
+- **Deduplicación explícita** de *"repeated banners, retries, and tool spam creating low-quality memories"*. **No capturar ruido** - mismo principio que el `captureMode: "all"` de Supermemory.
+- **Filtros universales por dimensión:** `content` / `group` / `actor` / `time window`. Cuatro ejes de acotamiento aplicables a cualquier fuente. **`actor` es interesante:** permite separar por quién actuó, útil en multi-agente.
+- **Tool call/result con evidencia preservada:** *"preserves evidence and artifacts (diffs, commands, links)"*. La memoria **no solo dice qué pasó, guarda la prueba**.
+- **Storage SQLite + serving read-only separados.** Escribe el pipeline, lee la API, y **la API no puede mutar**. Separación de planos de lectura y escritura hecha arquitectura.
+- **Exports multi-granularidad:** diario, semanal, mensual, **y `per_project`**. Cuatro cortes del mismo material.
+- **Extracción de **skills** como candidatos con forma:** *"triggers, steps, checks"*. Y el roadmap agrega **métricas** y versionado ("Skill Gym"). **Es `skill_workshop` alimentado desde los logs reales.**
+- **Roadmap de continual learning:** *"friction signals -> skill patches -> eval -> promote"*. **El ciclo completo que a nosotros nos falta:** detectar fricción, parchear la skill, evaluarla, promoverla.
+
+#### ⚠️ Puntos de atención
+
+1. **Es un proyecto de hackathon/v0** (el README tiene toda la estructura típica: *Inspiration, How we built it, Challenges, Accomplishments, What we learned, What's next*). **Madurez baja, no verificado.**
+2. **Ingesta iMessage** - toca datos personales. El proyecto es local-first con redacción, pero es una superficie sensible que hay que auditar antes.
+3. **Dependencias de terceros en el enrichment:** LiteLLM, **You.com**, **Composio**. Si el enrichment llama afuera, hay que decidir si sale el contenido o no.
+4. **Tiene deploy a Render y Akash** - o sea, contempla correr la memoria fuera de la máquina. **Opt-in, pero existe.**
+5. **Otra SQLite** (`data/amnesia.db`). Sexta de la ronda. **El patrón ya es evidente: cada herramienta trae su base.**
+6. **En la config aparece `mode: openclawd`** como modo de export - está pensado para consumir desde OpenClaw. **Señal buena, pero es solo un flag de config: no verifica integración real.**
+7. **Mismo autor que natilius** (que quedó descartado por GPL y por no haber Mac virgen). Acá no vi la licencia - verificar.
+
+> **Veredicto: candidato real, y el cierre perfecto de la tanda - porque ataca el eje que menos exploramos.** No es "memoria de sesión" (MemOS) ni "memoria de codebase" (context-sync): es **memoria derivada de las trazas crudas de la propia actividad**, con preprocesamiento determinista antes de LLM. **Su tesis - `data consistency beats prompt cleverness` - es la más transferible de toda la ronda**, y aplica a cualquier cosa que hagamos con memoria. Exporta `YYYY_MM_DD.md` (nuestro formato exacto), filtra secretos **antes** del LLM, y su roadmap es el ciclo de continual learning que nos falta. **Madurez baja; el valor hoy es el diseño, no la instalación.**
+
+---
+
+## 🏁 Cierre de la segunda tanda (9 repos)
+
+**Balance:** la segunda tanda no trajo candidatos de instalación tan fuertes como la primera, pero **bajó a tierra el eje de la memoria** y **produjo el mejor material de diseño**.
+
+**Por categoría:**
+- **Memoria:** context-sync (MCP, codebase), Open Amnesia (trazas crudas, local-first), Supermemory (descartado: cloud).
+- **Observabilidad/dashboard:** OpenClaw Studio, vibeclaw, ClawDeck, Autensa, Mission Control (rdsthomas) - **cinco productos que compiten con el Control UI nativo**, todos descartados como instalación por solapar con el core o por riesgo de credenciales.
+- **Planificación/contexto:** planning-with-files (el más accionable).
+
+**Los patrones que se repitieron (y por eso son del ecosistema, no anécdotas):**
+1. **Memoria por hooks de turno** (recuperar antes, capturar después): planning-with-files, MemOS, Supermemory, Open Amnesia. **Cuatro repos.**
+2. **Patrón `doctor`** (self-check de fallos silenciosos): PowerContext, Natilius, planning-with-files, Autensa. **Cuatro repos.**
+3. **Ledger/checkpoint de agente:** Claw Orchestrator, planning-with-files, Autensa. **Tres repos.**
+4. **Preprocesamiento determinista antes de LLM:** Open Amnesia (explícito), todos los demás por implicación.
+5. **`determinism-before-LLM` como regla:** el aporte más transferible de la tanda.
+6. **Cada herramienta trae su SQLite:** Studio, context-sync, Autensa, ClawDeck, Open Amnesia. **Cinco bases paralelas** contadas en dos tandas. **Esto es una señal de que el ecosistema no tiene una respuesta canónica para la memoria del agente - cada uno inventa la suya.**
+
+**El hallazgo transversal de la tanda:**
+> **El ecosistema está convergiendo en "memoria del agente" sin converger en formato.** Todos hacen casi lo mismo (capturar, segmentar, extraer, recuperar) con piezas distintas y bases distintas. **Eso significa que el que defina un formato interoperable gana** - y que nosotros, si adoptamos, deberíamos adoptar el **formato** antes que la herramienta.
+
+**Los dos hallazgos que nos tocan directo:**
+- **Autensa v2.5.0:** una sesión compartida entre tareas **se degrada hasta atascar al agente**. Confirma nuestra sesión-por-tarea.
+- **rdsthomas/clawdeck:** nuestro backlog vive en `memory.db` y **no es visible**. Es una deuda real.
 
 ---
 
