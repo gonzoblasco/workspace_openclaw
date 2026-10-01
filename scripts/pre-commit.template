@@ -93,6 +93,16 @@ if [ -n "$CHANGED" ]; then
   python3 "${SCRIPT_DIR}/scripts/check-a11y-trigger.py" || exit 1
 fi
 
+# Guard de directorios de contenido (2026-09-30). SIN CONDICION, a proposito.
+# Lo que detecta - un directorio de contenido que desaparece - es INVISIBLE a los
+# filtros de diff: el commit dfa94759 borro TODO studies/ y no aparecio en CHANGED,
+# porque --diff-filter=ACMR excluye justamente las bajas (D). Un trigger que
+# dependa del diff no puede ver lo que el diff no reporta. Es python puro (10
+# stat()): correrlo siempre es mas barato que dejar el agujero abierto.
+# Disparador gemelo de la leccion: una guarda de referencias no es una guarda de
+# existencia.
+python3 "${SCRIPT_DIR}/scripts/check-content-dirs.py" || exit 1
+
 if [ "$BOUNDARY_RELEVANT" = "1" ]; then
   # Frontera de roles (ADR-083): el ciclo SDD no vive en el arbol del Core. El Core
   # tenia el playbook de ingenieria a la vista y lo ejecuto durante una sesion
