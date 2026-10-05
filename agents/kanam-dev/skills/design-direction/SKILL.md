@@ -116,6 +116,78 @@ Una dirección excluye alternativas. Si todo es posible, nada está elegido.
 
 ---
 
+## Output Gates: verificación de diseño
+
+La dirección decide; los gates verifican que se cumplió. Antes de dar por terminado un artefacto de diseño (wireframe, composición de una vista, tokens aplicados a una superficie) se corre la batería completa: es la diferencia entre "la dirección está escrita" y "la dirección se respetó". Son gates de diseño visual, previos a la implementación. No reemplazan la validación completa (WCAG, AT, `prefers-reduced-motion`), que sigue viviendo en [a11y-at-validation](../a11y-at-validation/).
+
+### Jerarquía como ranking
+
+La jerarquía no es una consecuencia de los estilos: es un **ranking** decidido antes. Se inventaría cada elemento de la vista y se le asigna un nivel 1 a 3 según su importancia para el usuario:
+
+- **1 - debe verse:** el foco o la acción primaria. **Exactamente uno por vista.**
+- **2 - de apoyo:** sostiene al 1 sin competir con él.
+- **3 - metadata:** está disponible, pero no compite por la mirada.
+
+Check: una captura en escala de grises debe revelar el ranking en 3 segundos. Si a los 3 segundos no se sabe dónde mirar, no hay jerarquía: hay una lista de estilos.
+
+**Un canal por paso de nivel.** Dos niveles adyacentes deben diferir en un canal: tamaño (x1.25), peso (+300) o un salto de luminosidad. Tres tweaks chicos apilados leen como ruido, no como niveles. Ejemplo: 18px/600 al lado de 16px/400 son dos medio-pasos y rankean mal; usar 20px/400 o 16px/700.
+
+### Los 6 gates
+
+Se corren los seis, en orden, antes de entregar. Un gate que falla no se documenta: se corrige y se vuelve a correr la batería.
+
+1. **Grayscale test:** en desaturado, ¿el ranking 1-3 sigue siendo obvio en 3 segundos?
+2. **Squint test:** desenfocada la vista, ¿saltan exactamente el título y la acción primaria?
+3. **Alignment count:** ¿hay 3 líneas de alineación vertical o menos, y cada elemento está sobre una?
+4. **Spacing audit:** ¿cada gap es múltiplo de la base espacial, y el gap entre grupos es >= 2x el gap intra-grupo?
+5. **Contrast check:** ¿cada par texto/fondo cumple su piso? 4.5:1 body, 3:1 texto large y componentes de UI.
+6. **Single rank-1:** ¿hay exactamente una acción primaria o un foco por vista? Con dos primarias, ninguna lo es.
+
+### Design in grayscale first
+
+Layout, jerarquía y spacing tienen que funcionar sin color. El color entra último y para una sola cosa: codificar significado (estado, acción, marca). Nunca rescatar con color una jerarquía que no se sostiene sola: esa decisión falla el grayscale gate y falla para cerca del 8% de los hombres con daltonismo (CVD). Tamaño, peso y espacio construyen la jerarquía; el color la confirma.
+
+### Space belongs to what it labels
+
+El espacio pertenece a lo que etiqueta: un heading está más cerca del texto que encabeza (8px) que de la sección anterior (32px). Gaps iguales destruyen el agrupamiento: si la distancia no distingue, la vista se lee como una pila plana de bloques.
+
+### Optical beats mathematical
+
+A nivel componente, la ótica gana a la matemática: iconos, triángulos y botones de play necesitan un shift de 1 a 3px hacia su peso visual para verse centrados. Default: la grilla es matemática (layout); la corrección ótica se permite por componente. Nunca al revés: una grilla corregida a ojo rompe las alineaciones que el alignment count mide.
+
+### One radius scale per artifact
+
+Una sola escala de radios por artefacto (ej. 4/8/16), y ningún radio fuera de escala. Radios mezclados en elementos hermanos (un card con 8px al lado de otro con 11px) es el tell más rápido de una UI generada sin revisar.
+
+### Traps que los gates atrapan
+
+| Trap | Por qué falla | Qué hacer |
+|---|---|---|
+| Centrar texto largo | Cada línea arranca en un punto distinto y el ojo pierde el anclaje de lectura | Texto corrido alineado a la izquierda; el centrado queda para titulares y piezas cortas |
+| Dar énfasis con bold + grande + color a la vez | Tres canales a la vez leen como ruido, no como énfasis | Un canal por paso de nivel: elegir uno |
+| Color como única señal de estado | Falla el grayscale gate y falla para ~8% con CVD | Codificar el estado también con texto, icono o peso |
+| Grises puros al lado de un accent saturado | El accent vibra, los neutros se apagan y el ranking se miente | Neutros que pertenezcan a la paleta - la regla vive en [frontend-ui-engineering](../frontend-ui-engineering/) |
+| Rellenar cada espacio vacío | El espacio es la señal de agrupamiento; rellenarlo lo borra | El gap entre grupos es un dato: >= 2x intra-grupo |
+| Restyling antes de rankear | Estilar sin ranking previo produce jerarquía aleatoria | Inventariar y rankear 1-3 antes de tocar un estilo |
+| Diseñar solo el happy state | La vista real pasa más tiempo en vacío, carga o error | Rankear y verificar los estados de borde con la misma batería |
+
+---
+
+## Cuando NO aplicar una direccion bold
+
+Una direccion fuerte no siempre es la respuesta. Antes de comprometerse con una pieza memorable, chequear el contexto: hay superficies donde el criterio correcto es la sobriedad, no el caracter.
+
+| Contexto | Por que la direccion bold estorba | Que hacer |
+|---|---|---|
+| Conversion (e-commerce, checkout, alta) | La friccion visual cuesta ventas: cada distraccion es un abandono | Simplicidad: claridad sobre creatividad |
+| Informacion densa (dashboard, admin, tablas) | La densidad ya es ruido; encima, ruido estetico | Es una herramienta funcional: neutralidad decidida |
+| Accessibility-first | El motion pesado y los efectos custom pueden excluir | WCAG primero; efectos solo si no bloquean |
+| Presupuesto o tiempo acotado | Una direccion bold mal ejecutada es peor que una sobria bien hecha | Ejecutar poco, pero impecable |
+
+La pregunta que ordena todo sigue siendo la misma: **que es esta superficie**. Un sitio que convierte y un portfolio que se recuerda piden decisiones opuestas, y ambas pueden estar bien tomadas. El error no es elegir un extremo: es no elegir, o elegir el equivocado para el contexto.
+
+---
+
 ## Salida esperada
 
 Tres artefactos, todos antes del primer commit de UI:

@@ -96,6 +96,231 @@ nueva las necesita, la decisión de stack va por el flujo de ADRs antes de imple
 
 ---
 
+## 📐 Reglas de calidad visual
+
+Reglas cortas y verificables sobre el resultado final: cada una aterriza en CSS/código
+concreto (tokens, selectores, medidas) y no se queda en concepto. Complementan la
+micro-sintaxis de la sección "Design Thinking Before Code" y el checklist de
+verificación de esta skill; no las duplican.
+
+### Neutros siempre con tinte
+
+Los neutros llevan una pizca de tinte (warm gray o cool gray); nunca gris puro:
+
+```css
+/* ✗ gris puro: es el tell #1 de UI generada */
+--muted: #888;              /* hsl(0 0% 53%), mismo problema */
+
+/* ✓ pizca de tinte */
+--muted: hsl(30 3% 55%);    /* warm gray */
+--muted: hsl(220 4% 55%);   /* cool gray */
+```
+
+Un neutro con tinte se lee intencional y no cuesta legibilidad.
+
+### Dark mode: base con tinte, nunca negro puro
+
+Fondo oscuro `#0f0f0f` (o su equivalente oklch), nunca `#000000`: el negro puro aplasta
+y no deja profundidad ni jerarquía por elevación. Las capas suben desde esa base:
+
+```css
+--bg: #0f0f0f;         /* oklch(0.17 0 0) */
+--surface-1: #16161b;  /* elevación: sube y conserva el tinte del tema */
+```
+
+### Easing y duraciones canónicas
+
+Curva base para las transiciones: `cubic-bezier(0.16, 1, 0.3, 1)` (fast-in, slow-out).
+
+```css
+--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+--dur-micro: 150ms;    /* micro-interacciones: rango 100-200ms */
+--dur-view: 400ms;     /* transición de página o vista: rango 300-500ms */
+```
+
+**Reglas duras:** micro-interacciones entre 100ms y 200ms; transiciones de página entre
+300ms y 500ms; nada por encima de 600ms. Prohibido bounce y elastic easing. Los rangos
+son los de la tabla de duraciones de la micro-sintaxis; esta sección aporta la curva
+canónica, el techo de 600ms y la prohibición de bounce/elastic. La regla dura de
+`prefers-reduced-motion` sigue vigente tal cual.
+
+### Medidas de lectura
+
+```css
+.prose { max-width: 65ch; }        /* bloque de texto corrido */
+.page-shell { max-width: 1280px; margin-inline: auto; } /* contenedor amplio */
+```
+
+El texto de lectura se corta en `65ch`; el contenedor amplio queda en `1280px`.
+
+### Elegir fuente por contexto
+
+La elección de tipografía sigue la regla de `design-direction` y depende del contexto;
+nunca es una prohibición absoluta de una familia:
+
+- **Herramienta funcional** (dashboard, form, tabla): Inter o system-ui son una decisión
+  válida por legibilidad, densidad y carga instantánea.
+- **Pieza memorable** (landing, portfolio, marca): fuente con carácter.
+
+Los catálogos de fuentes en tendencia son ejemplos, no criterio: se elige por contexto.
+
+---
+
+## 🧱 Patrones CSS de produccion
+
+Patrones de CSS en producción para el stack de esta skill (CSS Modules sobre tokens
+semánticos): layout con Grid y Flexbox, tipografía y spacing fluidos, profundidad y
+motion. Complementan "Reglas de calidad visual" y la fase responsive; los tokens, la
+curva base de motion y la regla de dark mode siguen mandando ahí, así que esta sección
+solo agrega lo que esa base no cubre. Las reglas de a11y de acá se citan por criterio
+WCAG con su número (última subsección).
+
+### Grid vs Flexbox: tabla de decisión por contexto
+
+| Contexto             | Herramienta                        | Por qué |
+|----------------------|------------------------------------|---------|
+| Estructura de página | Grid con `grid-template-areas`     | Regiones nombradas: el layout completo se lee y se reordena sin tocar el markup |
+| Barra de navegación  | Flexbox                            | Eje único: los ítems fluyen y se alinean en una sola dirección |
+| Card grid            | Grid `auto-fill` / `auto-fit`      | Responsive sin media queries (ver `clamp()` más abajo) |
+| Centrado             | `place-items: center`              | Una línea, sin trucos de transform ni márgenes negativos |
+| Sidebar + contenido  | `grid-template-columns: 250px 1fr` | El `1fr` ocupa el resto, sin `calc` |
+| Superposición        | Grid stacking (`grid-area: 1/1`)   | En vez de `position: absolute`: ver siguiente subsección |
+
+Criterio general: dos dimensiones que se coordinan (filas y columnas que se ajustan
+entre sí) -> Grid; un solo eje de distribución -> Flexbox.
+
+### Superposición con Grid stacking
+
+Para superponer elementos (badge sobre imagen, overlay sobre card, fondo debajo del
+texto), compartir la celda en vez de sacar el elemento del flujo:
+
+```css
+.layered { display: grid; }
+.layered > * { grid-area: 1 / 1; } /* todas las capas comparten la celda (1,1) */
+```
+
+Por qué: es más predecible que `position: absolute`, el elemento sigue en el flujo (la
+celda mide su contenido más grande, no hay que fijar alturas a mano) y evita los
+stacking contexts que `absolute` con `z-index` suele crear. `position: absolute` queda
+para elementos que realmente flotan fuera del layout del componente.
+
+### Tipografía y spacing fluidos con `clamp()`
+
+`clamp(min, preferido, max)` acota el valor entre un mínimo y un máximo con una
+preferencia que escala con el viewport: reemplaza saltos de breakpoint por curvas
+continuas.
+
+```css
+font-size: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+padding-block: clamp(2rem, 1rem + 4vw, 6rem);
+grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+```
+
+El `min(100%, 20rem)` dentro de `minmax()` evita el overflow cuando la columna mínima
+no entra en un contenedor angosto. La escala tipográfica del sistema sigue definiendo
+qué valores existen; `clamp()` los vuelve fluidos entre breakpoints.
+
+### Container queries: el componente responde a su contenedor
+
+```css
+.card-area { container-type: inline-size; }
+
+.card-title { font-size: 1rem; }
+
+@container (min-width: 28rem) {
+  .card-title { font-size: 1.25rem; }
+}
+```
+
+La query se dispara por el ancho del contenedor, no del viewport: la misma card queda
+bien en un sidebar angosto y en el main. Complementa la estrategia mobile-first de la
+fase responsive: layout de página por breakpoint, adaptación fina por componente con
+`@container`.
+
+### Surface layering: profundidad por luminosidad, no por sombras
+
+La profundidad se construye con luminosidad en capas, no invirtiendo colores ni
+apilando drop shadows:
+
+```css
+--surface-0: hsl(220 15% 8%);   /* page */
+--surface-1: hsl(220 15% 12%);  /* card */
+--surface-2: hsl(220 15% 16%);  /* raised */
+--surface-3: hsl(220 15% 20%);  /* modal */
+```
+
+Cada nivel sube la luminosidad y conserva el tinte: la versión tokenizada de la regla
+de dark mode de "Reglas de calidad visual" (base con tinte, nunca negro puro, capas que
+suben desde la base). La sombra queda como refuerzo puntual cuando el sistema lo pide;
+la escala de surfaces es el sistema de profundidad.
+
+### Motion por propósito: apertura y cierre asimétricos
+
+Los tokens canónicos (`--ease-out-expo`, `--dur-micro`, `--dur-view`) y los rangos
+duros de "Reglas de calidad visual" siguen mandando. Esta tabla agrega los momentos
+que faltaban, con duración y carácter de easing por interacción:
+
+| Momento          | Duración | Easing      | Por qué                                  |
+|------------------|----------|-------------|------------------------------------------|
+| Hover puntual    | 150ms    | ease-out    | rango micro                              |
+| Modal open       | 250ms    | ease-out    | la capa entra desacelerando              |
+| Modal close      | 200ms    | ease-in     | asimétrico: sale más rápido, acelerando  |
+| Page transition  | 300ms    | ease-in-out | límite inferior del rango de vista       |
+| Micro-feedback   | 100ms    | ease-out    | límite inferior del rango micro          |
+
+El carácter ease-out lo resuelve la curva base `--ease-out-expo`; el cierre de modal es
+la única desviación consciente: sale con `ease-in` y en menos tiempo (`200ms`), porque
+lo que desaparece no necesita presentación. Todo queda bajo el techo de `600ms` y la
+prohibición de bounce/elastic.
+
+**Stagger reveal:** las listas y grids que entran, entran escalonadas con
+`animation-delay` de 50-80ms por ítem. Con la preferencia `prefers-reduced-motion`
+activa, el stagger desaparece (regla dura vigente: fade simple o nada).
+
+### `gap` en el contenedor, no margin en los hijos
+
+```css
+.list { display: grid; gap: 1rem; }  /* ✓: el contenedor distribuye */
+.list > * + * { margin-top: 1rem; }  /* ✗: margin-collapse y overrides responsive */
+```
+
+Razón: `gap` elimina de raíz los bugs de margin-collapse (sin excepciones
+`:first-child` / `:last-child`) y simplifica el responsive: al cambiar de breakpoint se
+ajusta un solo valor del contenedor. Los márgenes de un bloque respecto de sus
+secciones vecinas siguen siendo del bloque.
+
+### Tokens en tres capas: primitive -> semantic -> component
+
+```css
+/* capa 1: primitive - valores crudos de la escala, sin propósito */
+--cool-300: hsl(220 15% 75%);
+--cool-500: hsl(220 15% 55%);
+--cool-700: hsl(220 15% 35%);
+
+/* capa 2: semantic - propósito. Acá viven --primary, --muted, --border.
+   (valores ilustrativos: el punto es la estructura de capas) */
+--primary: var(--cool-700);
+--muted: var(--cool-500);
+--border: var(--cool-300);
+
+/* capa 3: component - alias con alcance de un componente */
+--button-primary-bg: var(--primary);
+```
+
+Los componentes leen capa 3 (o 2), nunca un primitive directo. Cambiar de tema es
+remapear la capa 2: los mismos `--primary`, `--muted`, `--border` pasan a apuntar a
+otros primitives y la UI completa cambia sin tocar un componente.
+
+### Criterios WCAG citados por número
+
+Cuando esta skill o un handoff documente una regla de a11y, citar el criterio con su
+número, no solo el tema: **2.4.7** focus visible, **2.5.8** target size (WCAG 2.2),
+**2.3.3** animation from interactions. El número es verificable contra la spec y mapea
+a las reglas de axe-core: formaliza con criterio numerado lo que el checklist de la
+fase de accesibilidad ya hace.
+
+---
+
 ## 🧹 Inline Styles → CSS Modules
 
 One `.module.css` per component, semantic classes, values unchanged. Dynamic styles → conditional classes (`selected`, `:disabled`, `[aria-pressed='true']`). Class maps typed `string | undefined` (CSS module imports are `string | undefined` under `noUncheckedIndexedAccess`).
