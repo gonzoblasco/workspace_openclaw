@@ -36,7 +36,8 @@ ROUTES='{
     "long": "glm-5.3-flash:cloud",
     "cheap": "gemma4:cloud",
     "writing": "glm-5.3-flash:cloud",
-    "pipeline_ab": "gpt-oss:120b-cloud / deepseek-v4.1-flash:cloud"
+    "pipeline_ab": "gpt-oss:120b-cloud / deepseek-v4.1-flash:cloud",
+    "pipeline_ab_prefilter": "gemma4:cloud"
   },
   "overrides": {}
 }'

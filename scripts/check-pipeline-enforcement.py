@@ -43,6 +43,8 @@ ROOT = Path(__file__).resolve().parent.parent
 # Rol ejecutor (A) y revisor (B). La asimetria es la decision (ADR-077).
 A_ROLE = "gpt-oss:120b-cloud"
 B_ROLE = "deepseek-v4.1-flash:cloud"
+# Pre-filtro barato (ADR-089). Corre antes del gate B; no autoriza solo.
+PREFILTER = "gemma4:cloud"
 
 
 def _read(path: Path) -> Optional[str]:
@@ -71,6 +73,23 @@ def models_in_blocks(root: Path) -> Tuple[Optional[str], Optional[str]]:
     a = re.search(r'"model_pipeline_a"\s*:\s*"([^"]+)"', text)
     b = re.search(r'"model_pipeline_b"\s*:\s*"([^"]+)"', text)
     return (a.group(1) if a else None), (b.group(1) if b else None)
+
+
+def prefilter_in_router(root: Path) -> Optional[str]:
+    """Modelo de la ruta `pipeline_ab_prefilter` de model-router.sh."""
+    text = _read(root / "scripts" / "model-router.sh")
+    if not text:
+        return None
+    m = re.search(r'"pipeline_ab_prefilter"\s*:\s*"([^"]+)"', text)
+    return m.group(1) if m else None
+
+
+def prefilter_in_blocks(root: Path) -> Optional[str]:
+    text = _read(root / "scripts" / "managed-blocks.py")
+    if not text:
+        return None
+    m = re.search(r'"model_pipeline_prefilter"\s*:\s*"([^"]+)"', text)
+    return m.group(1) if m else None
 
 
 def models_in_skills(root: Path) -> Tuple[Optional[str], List[str]]:
@@ -155,6 +174,26 @@ def find_violations(root: Path) -> List[str]:
                 % (name, a, b, A_ROLE, B_ROLE)
             )
 
+    # 5) Pre-filtro (ADR-089): declarado y consistente en router y managed-blocks.
+    pf_router = prefilter_in_router(root)
+    pf_blocks = prefilter_in_blocks(root)
+    if pf_router is None:
+        violations.append(
+            "model-router.sh no declara la ruta `pipeline_ab_prefilter` (ADR-089)."
+        )
+    if pf_blocks is None:
+        violations.append(
+            "managed-blocks.py no declara `model_pipeline_prefilter` (ADR-089)."
+        )
+    if pf_router and pf_blocks and pf_router != pf_blocks:
+        violations.append(
+            "pre-filtro inconsistente: router=%s, managed-blocks=%s." % (pf_router, pf_blocks)
+        )
+    if pf_router and pf_router != PREFILTER:
+        violations.append(
+            "pre-filtro declarado como %s, distinto del canon %s." % (pf_router, PREFILTER)
+        )
+
     return violations
 
 
@@ -177,7 +216,7 @@ def main(argv: List[str]) -> int:
 
     print(
         "OK: pacto A/B consistente en router, managed-blocks, skill y ADR-077 "
-        "(A=%s, B=%s, distintos)." % (A_ROLE, B_ROLE)
+        "(A=%s, B=%s, pre-filtro=%s, distintos)." % (A_ROLE, B_ROLE, PREFILTER)
     )
     return 0
 

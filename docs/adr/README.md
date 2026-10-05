@@ -94,6 +94,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-086 | [El embudo de entrada conversacional - triaje, personas, borradores, escalacion y limites de contexto](./ADR-086-embudo-de-entrada-conversacional.md) | workspace |
 | ADR-087 | [Cata por rol - los modelos elegidos quedan validados con evidencia](./ADR-087-cata-por-rol-modelos-2026-10-05.md) | workspace |
 | ADR-088 | [El pipeline A/B tiene enforcement, no buena voluntad](./ADR-088-pipeline-ab-enforcement.md) | workspace |
+| ADR-089 | [Pre-filtro barato en el pipeline A/B (gemma4:cloud) con guard de falso negativo](./ADR-089-prefiltro-pipeline-ab.md) | workspace |
 
 ## Formato
 

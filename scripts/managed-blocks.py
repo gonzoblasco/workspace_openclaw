@@ -54,6 +54,10 @@ DEFAULTS = {
     # lo verifica contra el codigo real.
     "model_pipeline_a": "gpt-oss:120b-cloud",
     "model_pipeline_b": "deepseek-v4.1-flash:cloud",
+    # Pre-filtro barato del pipeline A/B (ADR-089): triage rapido antes del gate
+    # deepseek. NO autoriza solo (tiene un falso negativo medido en defectos
+    # semanticos); lo que toca logica pasa siempre por deepseek.
+    "model_pipeline_prefilter": "gemma4:cloud",
     # Distribucion por agente (2026-10-05, ADR-087). Vive en un setting para que
     # el bloque de AGENTS.md la conserve administrada en vez de un resumen generico.
     "model_by_agent": (
@@ -95,12 +99,13 @@ REGISTRY = [
         "file": "AGENTS.md",
         "key": "pipeline-ab",
         "template": (
-            "- **Pipeline A/B (ADR-077/ADR-088):** al delegar, el CORE spawnea DOS agentes "
+            "- **Pipeline A/B (ADR-077/ADR-088/ADR-089):** al delegar, el CORE spawnea DOS agentes "
             "distintos, nunca uno: **A escribe** con `{model_pipeline_a}` y **B revisa/corrige** "
-            "con `{model_pipeline_b}`. Los prompts los redacta el CORE (no el rol). El CORE "
-            "verifica el repo, pero su verificacion **NO reemplaza** al revisor B. Fuente de "
-            "verdad del modelo: `./scripts/model-router.sh model pipeline_ab`; gate: "
-            "`scripts/check-pipeline-enforcement.py`."
+            "con `{model_pipeline_b}`. **Pre-filtro** `{model_pipeline_prefilter}` corre primero "
+            "(triage ~1s) pero **NO autoriza solo**: lo que toca logica/semantica pasa SIEMPRE por B. "
+            "Los prompts los redacta el CORE (no el rol). El CORE verifica el repo, pero su verificacion "
+            "**NO reemplaza** al revisor B. Fuente de verdad: `./scripts/model-router.sh model pipeline_ab`; "
+            "gate: `scripts/check-pipeline-enforcement.py`."
         ),
     },
     {

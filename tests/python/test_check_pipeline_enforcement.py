@@ -33,14 +33,16 @@ def clean_root(tmp_path, mod):
     (tmp_path / "docs" / "adr").mkdir(parents=True, exist_ok=True)
 
     (tmp_path / "scripts" / "model-router.sh").write_text(
-        'ROUTES=\'{"routes": {"pipeline_ab": "%s / %s"}}\'\n' % (mod.A_ROLE, mod.B_ROLE),
+        'ROUTES=\'{"routes": {"pipeline_ab": "%s / %s", "pipeline_ab_prefilter": "%s"}}\'\n'
+        % (mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
         encoding="utf-8",
     )
     (tmp_path / "scripts" / "managed-blocks.py").write_text(
         'DEFAULTS = {\n'
         '    "model_pipeline_a": "%s",\n'
         '    "model_pipeline_b": "%s",\n'
-        '}\n' % (mod.A_ROLE, mod.B_ROLE),
+        '    "model_pipeline_prefilter": "%s",\n'
+        '}\n' % (mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
         encoding="utf-8",
     )
     (tmp_path / "skills" / "agent-orchestration-pipeline-model-arbitration" / "SKILL.md").write_text(
@@ -121,3 +123,28 @@ def test_exit_codes_distinguish_clean_from_dirty(tmp_path):
 
     (tmp_path / "scripts" / "model-router.sh").write_text('ROUTES=\'{"routes": {}}\'\n', encoding="utf-8")
     assert mod.main(["check", str(tmp_path)]) == 1
+
+
+def test_missing_prefilter_is_reported(tmp_path):
+    """Sin la ruta del pre-filtro (ADR-089) no hay triage declarado."""
+    mod = load()
+    clean_root(tmp_path, mod)
+    (tmp_path / "scripts" / "model-router.sh").write_text(
+        'ROUTES=\'{"routes": {"pipeline_ab": "%s / %s"}}\'\n' % (mod.A_ROLE, mod.B_ROLE),
+        encoding="utf-8",
+    )
+    violations = mod.find_violations(tmp_path)
+    assert any("pipeline_ab_prefilter" in v for v in violations), violations
+
+
+def test_inconsistent_prefilter_is_reported(tmp_path):
+    """Router y managed-blocks con pre-filtros distintos."""
+    mod = load()
+    clean_root(tmp_path, mod)
+    (tmp_path / "scripts" / "managed-blocks.py").write_text(
+        'DEFAULTS = {\n    "model_pipeline_a": "%s",\n    "model_pipeline_b": "%s",\n'
+        '    "model_pipeline_prefilter": "glm4:9b",\n}\n' % (mod.A_ROLE, mod.B_ROLE),
+        encoding="utf-8",
+    )
+    violations = mod.find_violations(tmp_path)
+    assert any("pre-filtro" in v for v in violations), violations
