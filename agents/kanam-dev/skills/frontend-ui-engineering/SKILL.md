@@ -22,6 +22,8 @@ Build production-quality user interfaces that are accessible, performant, and vi
 
 ## 🧭 Design Thinking Before Code
 
+Esta seccion asume que ya existe una direccion estetica. Para UI nueva sin direccion definida, ver la skill `design-direction`.
+
 Antes de escribir código de UI, el diseño se piensa en artefactos planos. Es el mismo
 contrato de intención de `openspec-pattern` ("el qué antes del cómo"), aplicado al eje
 visual. Aplica a **UI nueva**; para cambios menores alcanza con anotar el cambio sobre

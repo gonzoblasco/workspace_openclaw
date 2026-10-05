@@ -21,7 +21,7 @@
 | Árbol | Activas |
 |---|---|
 | `skills/` (Core) | 27 |
-| `agents/kanam-dev/skills/` | 34 |
+| `agents/kanam-dev/skills/` | 35 |
 | `agents/kanam-mind/skills/` | 7 |
 | `agents/kanam-ops/skills/` | 4 |
 | `agents/kanam-studio/skills/` | 7 |
@@ -114,7 +114,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [superpowers](skills/superpowers/) | Workflow spec-first con TDD y ejecución por subagentes |
 | [self-improving-agent](skills/self-improving-agent/) | Captura aprendizajes, errores y correcciones en markdown para mejora continua |
 
-### 3.2 kanam-dev - `agents/kanam-dev/skills/` (34)
+### 3.2 kanam-dev - `agents/kanam-dev/skills/` (35)
 
 > Ciclo completo Define → Plan → Build → Verify → Review → Ship. Base: `addyosmani/agent-skills`; ⭐ = fusionada con capacidades propias de Kanam.
 
@@ -129,6 +129,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | Build | [context-engineering](agents/kanam-dev/skills/context-engineering/) | Curación del contexto del agente: rules files, context packing, MCP |
 | Build | [source-driven-development](agents/kanam-dev/skills/source-driven-development/) | Cada decisión de framework respaldada por doc oficial citada |
 | Build | [doubt-driven-development](agents/kanam-dev/skills/doubt-driven-development/) | Revisión adversarial en contexto fresco antes de que algo quede firme |
+| Build | [design-direction](agents/kanam-dev/skills/design-direction/) | Dirección de arte antes de codear: las 4 preguntas (propósito, tono, restricciones, diferenciación), herramienta funcional vs pieza memorable, y el orden layout → tema → animación → código |
 | Build | [frontend-ui-engineering](agents/kanam-dev/skills/frontend-ui-engineering/) ⭐ | UI de producción accesible (WCAG 2.1 AA), responsive, design system |
 | Build | [api-and-interface-design](agents/kanam-dev/skills/api-and-interface-design/) | Contract-first, Hyrum's Law, One-Version Rule, error semantics |
 | Build | [openspec-pattern](agents/kanam-dev/skills/openspec-pattern/) | Contrato de intención antes del código, contra scope creep y deuda |

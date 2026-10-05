@@ -1,0 +1,129 @@
+---
+name: "design-direction"
+description: "Dirección de arte de una UI antes de implementarla: las 4 preguntas (propósito, tono, restricciones, diferenciación), la decisión de contexto (herramienta funcional vs pieza memorable) y el orden de pensamiento layout → tema → animación → código. Use when starting new UI without an existing aesthetic direction (landing, portfolio, dashboard, product), when choosing typography or visual theme for a project, or when a design is technically correct but has no identity. No cubre implementación ni WCAG: eso es frontend-ui-engineering."
+---
+
+# Design Direction
+
+## Overview
+
+Decide la **dirección de arte** de una interfaz **antes** de escribir código de UI: qué se quiere que se sienta, qué decisiones la sostienen y qué se sacrifica para conservarlas. No es una skill de implementación: responde el **por qué** del aspecto visual; el **cómo** de escribirlo vive en [frontend-ui-engineering](../frontend-ui-engineering/) y el ritmo de trabajo en [incremental-implementation](../incremental-implementation/).
+
+```
+design-direction (decidir) → incremental-implementation (el cómo, por slices) →
+frontend-ui-engineering (la ejecución) → a11y-at-validation (cerrar el loop)
+```
+
+## When to Use
+
+- UI nueva sin dirección estética definida: landing, portfolio, página de marca, producto, dashboard nuevo.
+- Se va a elegir tipografía o tema visual para un proyecto o superficie nueva.
+- El diseño es técnicamente correcto pero no tiene identidad: ninguna decisión visual que se pueda defender en voz alta.
+
+**No usar para:** implementar la UI, estados, WCAG, verificación o anti-patrones de ejecución - todo eso es [frontend-ui-engineering](../frontend-ui-engineering/). Esta skill termina donde empieza el código.
+
+---
+
+## 1. Las 4 preguntas antes de codear
+
+Se responden en orden y por escrito. Un brief sin respuestas escritas es opinión, no dirección.
+
+**1. Propósito.** ¿Qué problema resuelve la interfaz? ¿Quién la usa, en qué momento y con qué apuro? ¿Qué única acción debe permitir? Si la respuesta es un verbo (comparar, cargar, vender), hay diseño posible; si es un adjetivo ("moderno"), todavía hay solo gusto.
+
+**2. Tono.** Se elige UNA dirección conceptual y se responde por ella: minimalismo refinado, maximalista bold, editorial, orgánico, industrial, utilitario, etc. La regla:
+
+> La clave es la **intencionalidad**, no la intensidad.
+
+Un minimalismo refinado y un maximalista bold son igualmente válidos si cada decisión responde a la dirección elegida. Lo indefendible no es ningún extremo: es el promedio sin criterio, "moderno" sin más.
+
+**3. Restricciones.** Framework y stack de estilado (CSS Modules + tokens), budget de performance (peso de assets, fuentes), accesibilidad desde el diseño (contraste como material del tema, `prefers-reduced-motion` previsto desde el plan). Las restricciones no van contra el tono: son el material con el que se talla. La validación con AT cierra el loop después - ver [a11y-at-validation](../a11y-at-validation/).
+
+**4. Diferenciación.** ¿Cuál es la ÚNICA cosa que alguien va a recordar? Si la respuesta serviría para cualquier UI del mundo, no es diferenciación. En una herramienta funcional la respuesta honesta es otra en naturaleza: se recuerda lo que no estorba.
+
+**Salida de esta fase:** el brief de dirección (5-10 líneas, junto al proposal de [openspec-pattern](../openspec-pattern/)): tono elegido, contexto de cada superficie, restricciones duras y la única cosa memorable.
+
+---
+
+## 2. Primero QUÉ es: herramienta funcional vs pieza memorable
+
+La pregunta que resuelve el conflicto eterno de la tipografía. Se responde antes de elegir fuentes, nunca después:
+
+| | Herramienta funcional | Pieza memorable |
+|---|---|---|
+| Superficies típicas | dashboard, formulario, tabla densa, admin | landing, portfolio, página de marca |
+| La neutralidad | **ES la decisión**: el usuario trabaja ahí horas y la fricción visual se paga por sesión | **es pereza**: una página que se parece a todas no se recuerda |
+| Tipografía | fuentes de sistema o Inter: legibilidad y densidad mandan | display con carácter + una body neutra: la pareja display/body es la decisión |
+| La prueba de oro | "no pienso en la interfaz mientras la uso" | "podría describirla de memoria" |
+
+Regla: **primero preguntar qué es, después elegir tipografía. Nunca al revés.**
+
+Matiz: un mismo producto tiene ambas superficies. La decisión es por superficie, y el puente entre las dos son los tokens compartidos (`--primary`, `--border`): la landing puede gritar mientras el dashboard susurra, con el mismo vocabulario.
+
+---
+
+## 3. El orden del pensamiento: layout → tema → animación → código
+
+Este orden es el punto de entrada del pensamiento de diseño. No es una preferencia: mover un bloque en un wireframe cuesta un borrador, y descubrirlo después de animar cuesta reescribir estilos y transiciones.
+
+1. **Layout** - estructura, jerarquía de lectura y ubicación del CTA. El artefacto es el wireframe ASCII que [frontend-ui-engineering](../frontend-ui-engineering/) define: no se escribe código de layout sin wireframe.
+2. **Tema** - color y tipografía bajados a tokens semánticos propios (`--primary`, `--muted`, `--border`); acá se aplica la decisión de contexto (herramienta vs pieza memorable); iconografía con **Lucide**, nunca emojis como iconos.
+3. **Animación** - solo el movimiento que comunica. La micro-sintaxis y las duraciones canónicas viven en [frontend-ui-engineering](../frontend-ui-engineering/); acá se decide si el movimiento existe y qué cuenta.
+4. **Código** - recién acá se implementa: la ejecución es [frontend-ui-engineering](../frontend-ui-engineering/) y el ritmo de slices verificables es [incremental-implementation](../incremental-implementation/), que trata cada fase como un paso verificable antes del siguiente.
+
+---
+
+## 4. La regla de intencionalidad
+
+> La ausencia de look malo no es un look bueno.
+
+Evitar el look IA (púrpura, gradientes, cards de stock, hero genérico: anti-patrones ya tabulados en [frontend-ui-engineering](../frontend-ui-engineering/)) apenas evita un defecto. Quitar el púrpura no deja identidad: deja una UI anodina y correcta. Un look bueno es **afirmativo**: declara una dirección y responde por cada decisión.
+
+Test de compromiso: para cada decisión visual importante preguntar "¿por qué?". Si la respuesta es "para no parecer el look malo" o "para parecerse a X", no es una decisión propia: es otra neutralidad con disfraz.
+
+Una dirección excluye alternativas. Si todo es posible, nada está elegido.
+
+---
+
+## Anclaje al stack
+
+- **Tokens semánticos como contrato.** La dirección se baja a tokens (`--primary`, `--muted`, `--border`); ninguna decisión de color o tipografía viaja como número suelto al CSS. La dirección expresa relaciones, no valores de moda:
+
+```css
+/* Ejemplo del vocabulario decidido para una dirección "editorial calmada" */
+:root {
+  --primary: /* un solo color con presencia - todo lo demás es neutro */;
+  --muted:   /* el gris de ESTA paleta, no el gris por defecto de nadie */;
+  --border:  /* línea discreta: la jerarquía se construye con tipografía y espacio, no con cajas */;
+}
+```
+
+- **Lucide** para toda la iconografía (regla del workspace: nunca emojis como iconos). El tono también se juega en los iconos: un solo set, con trazo y peso consistentes con la dirección.
+- **CSS Modules** como vía de estilado, con clases semánticas que nombran por rol y no por apariencia.
+- **Fuera de alcance de stack:** Tailwind y sus utilidades como filosofía de estilado, y Shadcn/ui o Radix, que siguen sin ADR de adopción - el TODO abierto vive en `frontend-ui-engineering`; esta skill no decide stack, solo dirección.
+- **`a11y-at-validation` cierra el loop:** las restricciones de la pregunta 3 ya incluyen contraste, `prefers-reduced-motion` y AT. Toda UI que cambie lo que anuncia un lector de pantalla se valida manualmente según esa skill antes de darse por terminada.
+
+---
+
+## Errores comunes de dirección
+
+| Error | Por qué es trampa | Corrección |
+|---|---|---|
+| Elegir la tipografía antes de definir el contexto | Una display con carácter en una tabla densa es ruido; una neutra en una landing es pereza | La pregunta de contexto primero: ¿qué es esta superficie? |
+| Neutralidad que nadie decidió | "No arriesgar" parece prudencia y es abandono | Si la superficie es una herramienta, anotarlo como decisión; si no, elegir dirección y responder por ella |
+| Copiar el tema de un producto exitoso | El tema del otro responde al propósito del otro; no sobrevive a tus restricciones | Partir del propósito propio y dejar que el tema salga de ahí |
+| Tono elegido sin pasar por restricciones | Un maximalista bold sin budget de performance se implementa mal o no se implementa | Las restricciones recortan el tono antes de llegar al código |
+| Confundir "diferente" con "diferenciado" | El gimmick sin propósito también es una no-dirección, solo que más ruidosa | La diferenciación responde al propósito; el gimmick lo ignora |
+
+---
+
+## Salida esperada
+
+Tres artefactos, todos antes del primer commit de UI:
+
+1. **Brief de dirección:** las 4 preguntas respondidas (tono elegido, contexto por superficie, restricciones, la única cosa memorable). Vive junto al proposal/contrato.
+2. **Tokens decididos:** `--primary`, `--muted`, `--border` (y el par display/body si la superficie lo pide), con la decisión anotada.
+3. **Wireframe ASCII por superficie:** el artefacto de la fase de layout, definido en [frontend-ui-engineering](../frontend-ui-engineering/).
+
+Con eso la ejecución arranca en [incremental-implementation](../incremental-implementation/) y en [frontend-ui-engineering](../frontend-ui-engineering/), y se cierra con [a11y-at-validation](../a11y-at-validation/).
+
+_Relacionadas: `frontend-ui-engineering` (ejecución) · `incremental-implementation` (ritmo) · `a11y-at-validation` (validación) · `openspec-pattern` (contrato previo). Origen: `docs/specs/design-direction-spec.md`._

@@ -4,6 +4,29 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-10-05] - Skill nueva `design-direction`: dirección de arte antes de escribir código
+
+### Added
+- **`agents/kanam-dev/skills/design-direction/`** (kanam-dev 34 → 35): cubre el hueco entre decidir qué construir (spec, `openspec-pattern`) y cómo implementarlo (`frontend-ui-engineering`). Cuatro bloques:
+  - Las 4 preguntas antes de codear (propósito, tono, restricciones, diferenciación). Regla: la clave es la **intencionalidad**, no la intensidad - un minimalismo refinado y un maximalista bold son igualmente válidos si son decisiones.
+  - La distinción de contexto: **herramienta funcional** (dashboard, form, tabla densa: la neutralidad ES la decisión, fuentes de sistema/Inter correctas) vs **pieza memorable** (landing, portfolio, marca: la neutralidad es pereza, pareja display/body). Primero preguntar qué es, después elegir tipografía.
+  - El orden de las 4 fases de pensamiento: layout → tema → animación → código, enlazado a `incremental-implementation` (el cómo) y `frontend-ui-engineering` (la ejecución).
+  - La regla de intencionalidad: "la ausencia de look malo no es un look bueno" - evitar el look IA no alcanza, hay que comprometerse con una dirección.
+  - Anclaje al stack real: tokens semánticos (`--primary`, `--muted`, `--border`), Lucide para iconografía (nunca emojis), CSS Modules como vía de estilado, loop cerrado con `a11y-at-validation`.
+- Origen: `docs/specs/design-direction-spec.md` (análisis de 3 skills externas de diseño traidas por Gonzo). Nada se importó ni instaló: el criterio se reescribió para este workspace y su stack.
+
+### Changed
+- **`frontend-ui-engineering/SKILL.md`:** 1 sola línea de contexto al inicio de "Design Thinking Before Code": asume dirección existente y deriva UI sin dirección a `design-direction`. Nada más cambió en esa skill.
+- **`SKILLS-INDEX.md`:** fila nueva en §3.2 y conteo de kanam-dev 34 → 35 (línea 24).
+
+### Notes
+- **Grupo Build, no Define:** no es definición de requerimientos (eso es Define); su output alimenta directamente a `frontend-ui-engineering` dentro del mismo ciclo, así que la fila va inmediatamente antes de esa skill.
+- **Verificación real:** `check-agent-skill-boundary.py` OK, `check-refs.py` OK (145 rutas), `test-skills.sh` completo OK (80 SKILL.md: frontmatter, em dash, refs, links), `check_em_dash.py` OK sobre los 4 archivos, y grep del stack de las skills externas: 1 línea única (rechazo explícito de Tailwind/Shadcn/Radix, con la excepción del spec §6.3: rechazo, no adopción; 0 líneas de Flowbite/cdn/unpkg).
+- Sin commit: el Core verifica primero (ADR-078).
+- **Heredado, fuera de alcance:** la fila "Total activas" (78) ya traía una inconsistencia antes de este cambio (la suma de los encabezados daba 79): re-medir con `openclaw skills list` en la próxima pasada completa. Los follow-ups del spec §9 quedan abiertos: ADR de Radix/shadcn, WCAG 2.1 vs 2.2, regla transform/opacity.
+
+---
+
 ## [2026-10-05] - Rediseño de modelos: distribución por agente (2026-10-05)
 
 ### Changed
