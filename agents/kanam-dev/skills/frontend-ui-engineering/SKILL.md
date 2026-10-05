@@ -20,6 +20,80 @@ Build production-quality user interfaces that are accessible, performant, and vi
 
 ---
 
+## 🧭 Design Thinking Before Code
+
+Antes de escribir código de UI, el diseño se piensa en artefactos planos. Es el mismo
+contrato de intención de `openspec-pattern` ("el qué antes del cómo"), aplicado al eje
+visual. Aplica a **UI nueva**; para cambios menores alcanza con anotar el cambio sobre
+el wireframe existente.
+
+### Wireframe ASCII como primer artefacto
+
+Para toda UI nueva, el primer entregable es un boceto ASCII del layout: estructura de
+bloques, jerarquía visual y ubicación del CTA. **No se escribe código de layout sin
+wireframe.** El boceto vive junto al proposal/contract de `openspec-pattern`, así el
+diseño queda versionado antes de implementarse.
+
+```
+┌────────────────────────────────────┐
+│ Header: logo · nav                 │
+├────────────────────────────────────┤
+│ Hero: H1 + subtítulo               │
+│ [ CTA primario ]                   │
+├─────────────────┬──────────────────┤
+│ Card destacada  │ Card secundaria  │
+├─────────────────┴──────────────────┤
+│ Footer (texto muted)               │
+└────────────────────────────────────┘
+```
+
+El wireframe define jerarquía (qué domina la vista), flujo de lectura y ubicación del
+CTA. Color y movimiento no van acá; se deciden en las fases 2 y 3.
+
+### Micro-sintaxis de animación
+
+Notación compacta para *planificar* el movimiento antes de codearlo. Cada línea declara
+la intención; se traduce a CSS/transiciones recién en la fase de código:
+
+- `hover: 200ms [Y0->-2, shadow^]`
+- `fadeIn: 400ms ease-out [Y+20->0, a0->1]`
+
+Duraciones canónicas (elegir de esta tabla, no inventar por caso):
+
+| Momento | Duración  | Easing   |
+|---------|-----------|----------|
+| Entry   | 300-500ms | ease-out |
+| Hover   | 150-200ms | -        |
+| Press   | 100-150ms | -        |
+
+**Regla dura:** todo motion respeta `prefers-reduced-motion` - con la preferencia
+activa, el movimiento se degrada (fade u opacidad inmediata), nunca se ignora. La
+micro-sintaxis es planificación; no reemplaza la verificación, que cierra el loop con
+`a11y-at-validation`.
+
+### El orden: layout → tema → animación → código
+
+El diseño se piensa en cuatro fases, en este orden:
+
+1. **Layout** - wireframe ASCII: estructura, jerarquía, CTA.
+2. **Tema** - solo tokens semánticos propios (`--primary`, `--muted`, `--border`):
+   color, tipografía y espaciado salen del sistema. Iconografía con **Lucide**; nunca
+   emojis como iconos.
+3. **Animación** - micro-sintaxis: solo el movimiento que comunica, con
+   `prefers-reduced-motion` previsto desde el plan.
+4. **Código** - recién acá se implementa, con el pipeline del resto de esta skill
+   (CSS Modules, tokens, verificación).
+
+El orden encuadra con `incremental-implementation` (slices verticales, eje de diseño):
+cada fase es verificable antes de la siguiente, y el layout se corrige antes de
+invertir en animación.
+
+**TODO abierto (no se resuelve acá):** la adopción de **Radix/shadcn** sigue sin ADR de
+stack. Mientras falte ese ADR, esta sección no asume primitivas headless; si una UI
+nueva las necesita, la decisión de stack va por el flujo de ADRs antes de implementar.
+
+---
+
 ## 🧹 Inline Styles → CSS Modules
 
 One `.module.css` per component, semantic classes, values unchanged. Dynamic styles → conditional classes (`selected`, `:disabled`, `[aria-pressed='true']`). Class maps typed `string | undefined` (CSS module imports are `string | undefined` under `noUncheckedIndexedAccess`).
