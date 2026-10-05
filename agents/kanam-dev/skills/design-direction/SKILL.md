@@ -84,6 +84,46 @@ Una dirección excluye alternativas. Si todo es posible, nada está elegido.
 
 ---
 
+## Descubrimiento y registro
+
+### Elegir la dirección con previews: show, don't tell
+
+Para elegir una dirección, en vez de describir los estilos en texto, generar 2-3 micro-previews visuales (una card, un header o una title-slide en cada estilo) y mostrarlos para que el humano elija: la conversación abstracta sobre "qué tono queremos" se reemplaza por una reacción a lo que se ve.
+
+Regla complementaria: usar preview visual cuando el contenido ES visual (layout, wireframe, paleta); usar texto cuando es conceptual (propósito, trade-offs, opciones A/B/C/D).
+
+Test: "¿el humano entendería mejor viéndolo que leyéndolo?"
+
+Los previews solo eligen la dirección: no reemplazan el wireframe ASCII de la fase de layout, que vive en [frontend-ui-engineering](../frontend-ui-engineering/).
+
+### Contraste extremo de peso y tamaño (pieza memorable)
+
+Para una pieza memorable, el contraste tipográfico puede ser extremo, no incremental:
+
+- Peso: 100 vs 900, no solo 400 vs 700. El salto máximo de peso define el registro.
+- Tamaño: salto mínimo de 3x (body 14-16px vs hero 48px+).
+
+Complementa, no reemplaza, la regla "un canal por paso de nivel" (sección Output Gates): ahí el foco es el salto por PASO de jerarquía entre dos niveles adyacentes; acá es el registro general de la pieza. Contexto: solo pieza memorable; en herramienta funcional rige la neutralidad (la pregunta de contexto, sección 2).
+
+### Paletas derivadas de temas de editor
+
+Un origen de paleta válido y no obvio: los temas de IDE (Dracula, Nord, Tokyo Night, Monokai). Son paletas ya balanceadas por uso intensivo y con reglas propias de contraste. Da mejor resultado que elegir de una lista plana de paletas: da un ORIGEN con criterio en vez de una opción entre muchas. La paleta elegida se baja igual a tokens semánticos según "Anclaje al stack".
+
+### La tabla 80/20 de calidad percibida
+
+Dónde se va el esfuerzo, por impacto percibido:
+
+| Canal | Peso en la calidad percibida |
+|---|---|
+| Tipografía | ~40% |
+| Spacing | ~25% |
+| Color | ~20% |
+| Lo demás (sombras, bordes, motion) | ~15% |
+
+Tipografía + spacing suman ~65% de la calidad percibida: ahí se invierte primero. La tabla también explica por qué las secciones de tipografía y spacing son las más extensas: es proporción de impacto, no verbosidad.
+
+---
+
 ## Anclaje al stack
 
 - **Tokens semánticos como contrato.** La dirección se baja a tokens (`--primary`, `--muted`, `--border`); ninguna decisión de color o tipografía viaja como número suelto al CSS. La dirección expresa relaciones, no valores de moda:

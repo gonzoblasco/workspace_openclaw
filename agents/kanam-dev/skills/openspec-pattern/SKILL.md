@@ -17,6 +17,17 @@ An OpenSpec is the definitive, structured contract defining *what* must be built
 3. **Execution:** Code is written ONLY to satisfy the Spec.
 4. **Verification:** The final code/PR must satisfy 100% of the `AcceptanceCriteria` listed in the Spec.
 
+## 🚦 Hard Gate: aprobación antes de construir
+
+1. **Aprobación previa, sin excepciones:** antes de invocar cualquier skill de implementación, escribir código o arrancar un proyecto, presentar el diseño y obtener aprobación del humano, sin importar la complejidad percibida. "Simple" es justo donde los supuestos no examinados causan más desperdicio: el diseño puede ser corto (pocas frases para un proyecto simple), pero debe presentarse y aprobarse. El flujo se detiene en el diseño aprobado y nunca salta a construir.
+2. **Alcance antes que detalle:** si el pedido describe múltiples subsistemas independientes (ej. chat + storage + billing + analytics), marcarlo de inmediato. No refinar detalles de algo que primero hay que descomponer: un contrato de intención por subsistema.
+3. **Spec self-review (4 chequeos):** después de escribir el spec, revisarlo con ojos frescos:
+   - Placeholder scan: ¿hay "TBD", "TODO" o partes incompletas?
+   - Consistencia interna: ¿se contradicen las secciones?
+   - Scope check: ¿es suficientemente enfocado para un solo plan?
+   - Ambiguity check: ¿algún requisito admite dos interpretaciones? Elegir una y explicitarla.
+   - Arreglar inline, sin re-revisar.
+
 ## ⚔️ Dependency
 The Guardrail Check step needs a way to cross-reference ADRs and project knowledge. If your setup has no knowledge index, do that step manually against `docs/adr/`.
 
