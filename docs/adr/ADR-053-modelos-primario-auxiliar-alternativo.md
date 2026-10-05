@@ -89,6 +89,15 @@ Nota de test: pedirle a un modelo con thinking activo una respuesta corta con `n
 2. **Dejar `minimax-m2.7` como primario** y actualizar ADR-040 para admitirlo: reconcilia el config con la realidad actual, pero no es lo que Gonzo definio. Rechazada.
 3. **Solo documentar el drift sin corregir el config:** deja el ADR describiendo algo que no corre, que es el problema que este ADR existe para cerrar. Rechazada.
 
+## Actualizacion 2026-10-05 - distribucion por agente (supersede del trio)
+
+La distribucion primario/auxiliar/alternativo de este ADR quedo **superseded** por la
+distribucion por-agente del 2026-10-05 (config + AGENTS.md): cada rol tiene `model.primary`
++ `fallbacks` explicitos en `agents.entries` (main glm-5.3-flash, dev deepseek-v4.1-flash,
+auditor nemotron-3-super, critic gpt-oss:120b, planner minimax-m3, mind deepseek-v4.1-flash,
+ops glm-5.3-flash, studio gemma4; fallbacks en glm-5.3-flash, con locales glm4:9b para ops/studio).
+El pipeline A/B mantiene su pareja asimetrica según ADR-077 (A gpt-oss:120b / B deepseek-v4.1-flash).
+
 ## Actualizacion 2026-09-29 - retiro de `deepseek-v4-flash`
 
 `deepseek-v4-flash:cloud` fue **retirado por Ollama el 2026-09-25** (verificado con el daemon:

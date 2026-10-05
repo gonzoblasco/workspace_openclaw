@@ -4,6 +4,26 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-10-05] - Rediseño de modelos: distribución por agente (2026-10-05)
+
+### Changed
+- **`openclaw.json`:** limpieza completa de modelos - defaults (primary `ollama/glm-5.3-flash:cloud`, utilityModel y `defaults.models` solo glm) + 8 agentes con primary/fallbacks explícitos:
+  - main glm-5.3-flash:cloud · dev deepseek-v4.1-flash:cloud · auditor nemotron-3-super:cloud · critic gpt-oss:120b-cloud · planner minimax-m3:cloud · mind deepseek-v4.1-flash:cloud · ops glm-5.3-flash:cloud · studio gemma4:cloud.
+  - Fallbacks: glm-5.3-flash universal; ops/studio caen a glm4:9b local.
+  - Eliminados ~27 fallbacks huérfanos del agente `main` (locales inexistentes, rutas hf.co/...) - causa del "configured (not in catalog)".
+
+### Changed (docs)
+- **`AGENTS.md`:** sección de modelos operativos + bloque managed `model-triple` actualizados a la distribución por agente (supersede ADR-053).
+- **`docs/adr/ADR-053`:** sección "Actualización 2026-10-05" que registra el supersede sin borrar el histórico.
+- **Pipeline A/B (sin cambios, verificado):** ADR-077 + skill `agent-orchestration-pipeline` ya definían la pareja asimétrica vigente (A `gpt-oss:120b-cloud` escribe / B `deepseek-v4.1-flash:cloud` 1M revisa).
+
+### Notes
+- Backup pre-cambio: `~/.openclaw/openclaw.json.bak-20261005-models`.
+- Probe de fallbacks studio: `glm4:9b` aprobado (7.9s local); DavidAU GLM-4.7 mod descartado (29GB, 62% CPU, hangs).
+- Evidencia de latencia previa (cata 2026-09-28): deepseek 6.5s · gemma4 1.9s · glm-5.3-flash 19.8s.
+
+---
+
 ## [2026-10-01] - Ecosistema OpenClaw: ronda de análisis de 29 repos + criterios de filtrado
 
 ### Added
