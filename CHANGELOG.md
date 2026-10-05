@@ -4,6 +4,19 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-10-05] - `validate-spec.sh` de kanam-dev: una sola fuente de verdad
+
+### Changed
+- **`agents/kanam-dev/scripts/validate-spec.sh`:** deja de ser un validador propio y **delega** en el validador compartido de la skill (`~/.agents/skills/spec-driven-development/scripts/validate-spec.sh`). Pasa a recibir el directorio de specs como argumento (default `./specs`) y a ejecutar el compartido vía `exec`. Fallback explícito con `exit 2` si el compartido no existe.
+
+### Notes
+- **Por qué:** la versión propia chequeaba **forma, no sustancia** (daba `exit 0` sobre una spec con el Brief vacío, sin Status y con placeholders de plantilla sin completar). Dos validadores con criterios distintos es peor que uno malo: el mismo archivo pasa en uno y falla en el otro, y no se sabe a cuál creer.
+- **Verificación:** el script delega y corre (`bash agents/kanam-dev/scripts/validate-spec.sh <dir>`); el original queda recuperable en `git HEAD` y su copia `.bak-share-20261005` es redundante con git (se retira).
+- **Origen:** cambio de una sesión previa del día quedó sin commitear en el árbol (mtime 12:24); se documenta el rationale y se registra acá.
+- Sin commit: el Core verifica primero (ADR-078).
+
+---
+
 ## [2026-10-05] - Skill nueva `design-direction`: dirección de arte antes de escribir código
 
 ### Added

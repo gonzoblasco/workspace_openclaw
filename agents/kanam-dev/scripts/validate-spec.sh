@@ -1,51 +1,30 @@
 #!/usr/bin/env bash
+#
+# validate-spec.sh - delega en el validador de la skill spec-driven-development.
+#
+# Por que delega en vez de tener su propia copia (decision 2026-10-05):
+# esta version chequeaba forma, no sustancia. Daba exit 0 sobre una spec con el
+# Brief vacio, sin Status y con placeholders de plantilla sin completar. La
+# version de la skill detecta los tres.
+#
+# Dos validadores con criterios distintos es peor que uno malo: el mismo archivo
+# pasa en uno y falla en el otro, y no se sabe a cual creer. Una sola fuente.
+#
+# La version anterior quedo en validate-spec.sh.bak-share-20261005.
+#
+# Uso: bash validate-spec.sh [directorio]     (default: ./specs)
+#
+# Nota: la rutina que antes exigia CWD=$HOME ya no aplica; el directorio es un
+# argumento y el default es relativo al CWD.
+
 set -euo pipefail
 
-# Validation script for kanam-spec-v2 specifications.
-# Checks that each spec markdown file under projects/kanam-spec-v2/specs
-# contains required metadata and sections.
+SHARED_VALIDATOR="$HOME/.agents/skills/spec-driven-development/scripts/validate-spec.sh"
 
-SPEC_DIR="projects/kanam-spec-v2/specs"
-FAIL=0
-
-for file in "$SPEC_DIR"/*.md; do
-  echo "Validating $file"
-  # ---- Mandatory metadata ----
-  if ! grep -qE '^#\s+kanam-spec' "$file"; then
-    echo "::error file=$file::Missing top-level title '# kanam-spec'"
-    FAIL=1
-  fi
-  if ! grep -qE '^\*\*ID:\*\*' "$file"; then
-    echo "::error file=$file::Missing **ID:** metadata"
-    FAIL=1
-  fi
-  if ! grep -qE '^\*\*Title:\*\*' "$file"; then
-    echo "::error file=$file::Missing **Title:** metadata"
-    FAIL=1
-  fi
-  if ! grep -qE '^\*\*Owner:\*\*' "$file"; then
-    echo "::error file=$file::Missing **Owner:** metadata"
-    FAIL=1
-  fi
-  # ---- Required sections ----
-  if ! grep -qE '^##\s+Acceptance Criteria' "$file"; then
-    echo "::error file=$file::Missing ## Acceptance Criteria section"
-    FAIL=1
-  fi
-  if ! grep -qE '^##\s+Edge Cases \& Error Handling' "$file"; then
-    echo "::error file=$file::Missing ## Edge Cases & Error Handling section"
-    FAIL=1
-  fi
-  if ! grep -qE '^##\s+Verification Plan' "$file"; then
-    echo "::error file=$file::Missing ## Verification Plan section"
-    FAIL=1
-  fi
-done
-
-if [ $FAIL -ne 0 ]; then
-  echo "::error ::Spec validation failed"
-  exit 1
+if [ ! -f "$SHARED_VALIDATOR" ]; then
+  echo "::error ::No se encontro el validador compartido en $SHARED_VALIDATOR" >&2
+  echo "  La skill spec-driven-development es la fuente unica. Instalala o revisa la ruta." >&2
+  exit 2
 fi
 
-echo "All specs passed validation."
-
+exec bash "$SHARED_VALIDATOR" "$@"
