@@ -22,6 +22,13 @@ SKILL_OR_SCRIPT_CHANGED=$(echo "$CHANGED" | grep -qE '^(skills/|scripts/)' && ec
 # bajo skills/, scripts/ o agents/.
 BOUNDARY_RELEVANT=$(echo "$CHANGED" | grep -qE '^(skills/|scripts/|agents/)' && echo 1 || echo 0)
 
+# Pacto del pipeline A/B (ADR-077/ADR-088). Disparador propio: lo que declara los
+# modelos vive en scripts/, skills/ y el ADR (docs/). Si una fuente deriva de las
+# otras, el pacto tiene dos verdades. Verificado 2026-10-05: el CORE delego una
+# sesion entera con un solo agente y el default del rol; la regla estaba escrita y
+# nada la verificaba. Python puro (barato): corre ante cualquier cambio relevante.
+PACTO_RELEVANT=$(echo "$CHANGED" | grep -qE '^(scripts/|skills/|docs/|AGENTS\.md)' && echo 1 || echo 0)
+
 # --- Chequeos baratos: SIEMPRE que haya markdown staged ---
 # Por que: la regla del guion comun y las rutas citadas se cumplian solo
 # dentro de skills/ (test-skills.sh mira unicamente $SKILLS_DIR). Asi se
@@ -108,6 +115,13 @@ if [ "$BOUNDARY_RELEVANT" = "1" ]; then
   # tenia el playbook de ingenieria a la vista y lo ejecuto durante una sesion
   # entera. Disparador propio (ver arriba), no el de skills/scripts/.
   python3 "${SCRIPT_DIR}/scripts/check-agent-skill-boundary.py" || exit 1
+fi
+
+if [ "$PACTO_RELEVANT" = "1" ]; then
+  # Pacto del pipeline A/B (ADR-077/ADR-088): router, managed-blocks, skill y ADR
+  # deben declarar el MISMO A/B, con A != B. Una deriva es un pacto con dos
+  # verdades; el CORE puede citar la conveniente.
+  python3 "${SCRIPT_DIR}/scripts/check-pipeline-enforcement.py" || exit 1
 fi
 
 if [ "$SKILL_OR_SCRIPT_CHANGED" = "1" ]; then

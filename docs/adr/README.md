@@ -93,6 +93,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-085 | [Una sola maquina - el workspace deja de sincronizarse entre equipos](./ADR-085-una-sola-maquina.md) | workspace |
 | ADR-086 | [El embudo de entrada conversacional - triaje, personas, borradores, escalacion y limites de contexto](./ADR-086-embudo-de-entrada-conversacional.md) | workspace |
 | ADR-087 | [Cata por rol - los modelos elegidos quedan validados con evidencia](./ADR-087-cata-por-rol-modelos-2026-10-05.md) | workspace |
+| ADR-088 | [El pipeline A/B tiene enforcement, no buena voluntad](./ADR-088-pipeline-ab-enforcement.md) | workspace |
 
 ## Formato
 

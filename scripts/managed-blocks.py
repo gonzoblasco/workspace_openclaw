@@ -49,6 +49,11 @@ DEFAULTS = {
     # Motor del pipeline A/B. Distinto del primario: el router lo usa para los
     # agentes de codigo (scripts/model-router.sh, ruta 'default').
     "model_pipeline": "deepseek-v4.1-flash:cloud",
+    # Pipeline A/B asimetrico (ADR-077/ADR-088): A ejecuta, B revisa. El CORE
+    # spawnea DOS agentes con estos modelos; scripts/check-pipeline-enforcement.py
+    # lo verifica contra el codigo real.
+    "model_pipeline_a": "gpt-oss:120b-cloud",
+    "model_pipeline_b": "deepseek-v4.1-flash:cloud",
 }
 
 # Que bloque vive en que archivo, con que plantilla.
@@ -70,7 +75,26 @@ REGISTRY = [
         "key": "model-operativo",
         "template": (
             "- **Modelo:** primario de OpenClaw `{model_primary}`, thinking `{thinking_default}` "
-            "para todos los roles (`{model_primary}` con fallback `gemma4:cloud`); motor del pipeline A/B `{model_pipeline}` (A: gpt-oss / B: gemma4)."
+            "para todos los roles; pipeline A/B `{model_pipeline_a}` (A escribe) / "
+            "`{model_pipeline_b}` (B revisa)."
+        ),
+    },
+    {
+        # Regla del pipeline A/B (ADR-077/ADR-088). En su PROPIO bloque para que
+        # el CORE -que lee AGENTS.md siempre, y cuyos subagentes solo reciben
+        # AGENTS.md- la tenga a la vista al delegar. La causa de la violacion
+        # 2026-10-05 fue operativa: spawnear un solo agente con el default de rol
+        # en vez de A y B con los modelos del pacto. Una regla sin enforcement se
+        # viola sola (ADR-083); el gate es scripts/check-pipeline-enforcement.py.
+        "file": "AGENTS.md",
+        "key": "pipeline-ab",
+        "template": (
+            "- **Pipeline A/B (ADR-077/ADR-088):** al delegar, el CORE spawnea DOS agentes "
+            "distintos, nunca uno: **A escribe** con `{model_pipeline_a}` y **B revisa/corrige** "
+            "con `{model_pipeline_b}`. Los prompts los redacta el CORE (no el rol). El CORE "
+            "verifica el repo, pero su verificacion **NO reemplaza** al revisor B. Fuente de "
+            "verdad del modelo: `./scripts/model-router.sh model pipeline_ab`; gate: "
+            "`scripts/check-pipeline-enforcement.py`."
         ),
     },
     {
@@ -79,7 +103,16 @@ REGISTRY = [
         "template": (
             "- **Modelo de trabajo:** primario `{model_primary}`, "
             "auxiliar `{model_auxiliary}`, alternativo `{model_alternative}`. "
-            "Thinking default: **{thinking_default}** (ADR-076)."
+            "Thinking default: **{thinking_default}**."
+        ),
+    },
+    {
+        "file": "docs/SETUP.md",
+        "key": "model-pipeline-ab",
+        "template": (
+            "- **Pipeline A/B:** A escribe con `{model_pipeline_a}`; B revisa/corrige con "
+            "`{model_pipeline_b}` (ADR-077/ADR-088). Ruta del router: "
+            "`scripts/model-router.sh model pipeline_ab`."
         ),
     },
 ]

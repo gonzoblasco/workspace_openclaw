@@ -16,8 +16,11 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 ## Modelos (Ollama local + cloud)
 
 <!-- BEGIN MANAGED:model-triple -->
-- **Modelo de trabajo:** primario `deepseek-v4.1-flash:cloud`, auxiliar `gemma4:cloud`, alternativo `glm-5.3-flash:cloud`. Thinking default: **high** (ADR-053).
+- **Modelo de trabajo:** primario `deepseek-v4.1-flash:cloud`, auxiliar `gemma4:cloud`, alternativo `glm-5.3-flash:cloud`. Thinking default: **high**.
 <!-- END MANAGED:model-triple -->
+<!-- BEGIN MANAGED:model-pipeline-ab -->
+- **Pipeline A/B:** A escribe con `gpt-oss:120b-cloud`; B revisa/corrige con `deepseek-v4.1-flash:cloud` (ADR-077/ADR-088). Ruta del router: `scripts/model-router.sh model pipeline_ab`.
+<!-- END MANAGED:model-pipeline-ab -->
 
 > Los valores de arriba los mantiene `scripts/managed-blocks.py` desde la tabla `settings` de `memory.db`. Para cambiarlos: `managed-blocks.py set <key> <value>` y despues `apply`. No editar a mano.
 
