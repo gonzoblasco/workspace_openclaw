@@ -152,7 +152,9 @@ def test_change_propagates_to_block(tmp_path):
     conn = mod.db()
     mod.run_all(conn, dry_run=False)
     class A:
-        key, value = "model_primary", "modelo-nuevo:cloud"
+        # model-triple se arma con {model_by_agent} (2026-10-05, ADR-087), no con
+        # {model_primary}: mutar un setting que el bloque ya no usa no lo mueve.
+        key, value = "model_by_agent", "modelo-nuevo:cloud"
     mod.cmd_set(conn, A())
     mod.run_all(conn, dry_run=False)
     conn.close()
