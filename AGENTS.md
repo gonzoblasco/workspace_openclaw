@@ -144,7 +144,7 @@ Detalle en `docs/AGENTS-DETALLE.md`.
 #### Razonamiento: HIGH unificado (ADR-053, 2026-09-22)
 - **Thinking `high` para todos los roles** (Kanam y agentes A/B). Decidido por Gonzo "para no gastar recursos innecesarios".
 <!-- BEGIN MANAGED:model-triple -->
-- **Distribución por agente (2026-10-05, supersede ADR-053):** primary/fallbacks explícitos por rol en `agents.entries` - main glm-5.3-flash:cloud · dev deepseek-v4.1-flash:cloud · auditor nemotron-3-super:cloud · critic gpt-oss:120b-cloud · planner minimax-m3:cloud · mind deepseek-v4.1-flash:cloud · ops glm-5.3-flash:cloud · studio gemma4:cloud. No hay trío global; defaults.model = glm-5.3-flash:cloud.
+- **Distribución por agente (2026-10-05, rev. 01:22 - canje deepseek/glm):** main/defaults deepseek-v4.1-flash:cloud (chat común, más rápido) · dev glm-5.3-flash:cloud · ops glm-5.3-flash:cloud · auditor nemotron-3-super:cloud · critic gpt-oss:120b-cloud · planner minimax-m3:cloud · mind deepseek-v4.1-flash:cloud · studio gemma4:cloud. Fallbacks: deepseek para dev/ops/auditor, glm-5.3-flash para main/planner; studio cae a glm4:9b local.
 <!-- END MANAGED:model-triple -->
 - _Historico (2026-08-27 a 2026-09-22): Kanam MAX / agentes HIGH, criterio REVISAR vs CREAR. Reemplazado por ADR-053; ver ahi la consecuencia aceptada._
 
@@ -212,7 +212,7 @@ Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/S
 
 **Resumen operativo** (los subagentes solo reciben `AGENTS.md`, no `docs/SETUP.md` ni `MEMORY.md`):
 <!-- BEGIN MANAGED:model-operativo -->
-- **Modelo por agente (distribución 2026-10-05, ver ADR/config):** main glm-5.3-flash:cloud · dev deepseek-v4.1-flash:cloud · auditor nemotron-3-super:cloud · critic gpt-oss:120b-cloud · planner minimax-m3:cloud · mind deepseek-v4.1-flash:cloud · ops glm-5.3-flash:cloud · studio gemma4:cloud. Fallbacks: glm-5.3-flash:cloud universal; studio/ops caen a glm4:9b local.
+- **Modelo por agente (2026-10-05, rev. canje):** main/defaults deepseek-v4.1-flash:cloud (fallback glm-5.3-flash) · dev glm-5.3-flash:cloud (fallback deepseek) · auditor nemotron-3-super:cloud (fallback deepseek) · critic gpt-oss:120b-cloud · planner minimax-m3:cloud · mind deepseek-v4.1-flash:cloud · ops glm-5.3-flash:cloud (fallback deepseek) · studio gemma4:cloud (fallback glm4:9b local). Deepseek al chat común: 6.5s vs 19.8s de glm en la cata; glm consume muchos más recursos.
 <!-- END MANAGED:model-operativo -->
 - **Pipeline A/B (2026-10-05):** A escribe con `gpt-oss:120b-cloud`; B revisa con `deepseek-v4.1-flash:cloud` (1M de contexto, apto para code review de diffs largos). Kanam-dev genera los prompts de ambos; orquestador y revisor pueden compartir modelo sin problema en esa tarea.
 - **Memoria:** `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables.

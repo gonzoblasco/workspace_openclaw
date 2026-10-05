@@ -20,6 +20,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Notes
 - Backup pre-cambio: `~/.openclaw/openclaw.json.bak-20261005-models`.
 - Probe de fallbacks studio: `glm4:9b` aprobado (7.9s local); DavidAU GLM-4.7 mod descartado (29GB, 62% CPU, hangs).
+- Rev. 01:22 - canje deepseek/glm: main/defaults pasan a `deepseek-v4.1-flash:cloud` (chat común, 6.5s vs 19.8s; glm consume muchos más recursos); dev y ops toman `glm-5.3-flash:cloud`. Fallbacks: deepseek para dev/ops/auditor, glm para main/planner. AGENTS.md y ADR-053 alineados.
 - Evidencia de latencia previa (cata 2026-09-28): deepseek 6.5s · gemma4 1.9s · glm-5.3-flash 19.8s.
 
 ---

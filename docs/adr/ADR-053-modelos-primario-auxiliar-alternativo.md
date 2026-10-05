@@ -93,9 +93,11 @@ Nota de test: pedirle a un modelo con thinking activo una respuesta corta con `n
 
 La distribucion primario/auxiliar/alternativo de este ADR quedo **superseded** por la
 distribucion por-agente del 2026-10-05 (config + AGENTS.md): cada rol tiene `model.primary`
-+ `fallbacks` explicitos en `agents.entries` (main glm-5.3-flash, dev deepseek-v4.1-flash,
-auditor nemotron-3-super, critic gpt-oss:120b, planner minimax-m3, mind deepseek-v4.1-flash,
-ops glm-5.3-flash, studio gemma4; fallbacks en glm-5.3-flash, con locales glm4:9b para ops/studio).
++ `fallbacks` explicitos en `agents.entries`. Revision del 2026-10-05 (canje deepseek/glm por
+consumo: glm-5.3-flash gasta muchos mas recursos, 19.8s vs 6.5s en la cata): main/defaults
+y mind en deepseek-v4.1-flash:cloud; dev y ops en glm-5.3-flash:cloud; auditor nemotron-3-super
+critic gpt-oss:120b; planner minimax-m3; studio gemma4. Fallbacks: deepseek para dev/ops/auditor,
+glm-5.3-flash para main/planner, glm4:9b local para studio.
 El pipeline A/B mantiene su pareja asimetrica según ADR-077 (A gpt-oss:120b / B deepseek-v4.1-flash).
 
 ## Actualizacion 2026-09-29 - retiro de `deepseek-v4-flash`
