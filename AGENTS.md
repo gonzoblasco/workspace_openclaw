@@ -144,7 +144,7 @@ Detalle en `docs/AGENTS-DETALLE.md`.
 #### Razonamiento: HIGH unificado (ADR-053, 2026-09-22)
 - **Thinking `high` para todos los roles** (Kanam y agentes A/B). Decidido por Gonzo "para no gastar recursos innecesarios".
 <!-- BEGIN MANAGED:model-triple -->
-- **Modelo primario:** `deepseek-v4.1-flash:cloud`. **Auxiliar:** `gemma4:cloud`. **Alternativo:** `glm-5.3-flash:cloud`.
+- **Distribución por agente (ADR-087):** main/defaults deepseek-v4.1-flash:cloud (fallback glm-5.3-flash) · dev glm-5.3-flash:cloud (fallback deepseek) · ops glm-5.3-flash:cloud (fallback deepseek) · auditor nemotron-3-super:cloud (fallback deepseek) · critic gpt-oss:120b-cloud · planner minimax-m3:cloud · mind deepseek-v4.1-flash:cloud · studio gemma4:cloud (fallback glm4:9b local).
 <!-- END MANAGED:model-triple -->
 - _Historico (2026-08-27 a 2026-09-22): Kanam MAX / agentes HIGH, criterio REVISAR vs CREAR. Reemplazado por ADR-053; ver ahi la consecuencia aceptada._
 
@@ -212,7 +212,7 @@ Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/S
 
 **Resumen operativo** (los subagentes solo reciben `AGENTS.md`, no `docs/SETUP.md` ni `MEMORY.md`):
 <!-- BEGIN MANAGED:model-operativo -->
-- **Modelo:** primario de OpenClaw `deepseek-v4.1-flash:cloud`, thinking `high` para todos los roles; pipeline A/B `gpt-oss:120b-cloud` (A escribe) / `deepseek-v4.1-flash:cloud` (B revisa).
+- **Modelo por agente:** main/defaults deepseek-v4.1-flash:cloud (fallback glm-5.3-flash) · dev glm-5.3-flash:cloud (fallback deepseek) · ops glm-5.3-flash:cloud (fallback deepseek) · auditor nemotron-3-super:cloud (fallback deepseek) · critic gpt-oss:120b-cloud · planner minimax-m3:cloud · mind deepseek-v4.1-flash:cloud · studio gemma4:cloud (fallback glm4:9b local). Por tarea: primario `deepseek-v4.1-flash:cloud`; pipeline A/B: A `gpt-oss:120b-cloud` / B `deepseek-v4.1-flash:cloud`.
 <!-- END MANAGED:model-operativo -->
 <!-- BEGIN MANAGED:pipeline-ab -->
 - **Pipeline A/B (ADR-077/ADR-088):** al delegar, el CORE spawnea DOS agentes distintos, nunca uno: **A escribe** con `gpt-oss:120b-cloud` y **B revisa/corrige** con `deepseek-v4.1-flash:cloud`. Los prompts los redacta el CORE (no el rol). El CORE verifica el repo, pero su verificacion **NO reemplaza** al revisor B. Fuente de verdad del modelo: `./scripts/model-router.sh model pipeline_ab`; gate: `scripts/check-pipeline-enforcement.py`.

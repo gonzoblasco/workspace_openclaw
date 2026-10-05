@@ -54,6 +54,15 @@ DEFAULTS = {
     # lo verifica contra el codigo real.
     "model_pipeline_a": "gpt-oss:120b-cloud",
     "model_pipeline_b": "deepseek-v4.1-flash:cloud",
+    # Distribucion por agente (2026-10-05, ADR-087). Vive en un setting para que
+    # el bloque de AGENTS.md la conserve administrada en vez de un resumen generico.
+    "model_by_agent": (
+        "main/defaults deepseek-v4.1-flash:cloud (fallback glm-5.3-flash) · "
+        "dev glm-5.3-flash:cloud (fallback deepseek) · ops glm-5.3-flash:cloud "
+        "(fallback deepseek) · auditor nemotron-3-super:cloud (fallback deepseek) · "
+        "critic gpt-oss:120b-cloud · planner minimax-m3:cloud · "
+        "mind deepseek-v4.1-flash:cloud · studio gemma4:cloud (fallback glm4:9b local)"
+    ),
 }
 
 # Que bloque vive en que archivo, con que plantilla.
@@ -63,9 +72,7 @@ REGISTRY = [
         "file": "AGENTS.md",
         "key": "model-triple",
         "template": (
-            "- **Modelo primario:** `{model_primary}`. "
-            "**Auxiliar:** `{model_auxiliary}`. "
-            "**Alternativo:** `{model_alternative}`."
+            "- **Distribución por agente (ADR-087):** {model_by_agent}."
         ),
     },
     {
@@ -74,9 +81,8 @@ REGISTRY = [
         "file": "AGENTS.md",
         "key": "model-operativo",
         "template": (
-            "- **Modelo:** primario de OpenClaw `{model_primary}`, thinking `{thinking_default}` "
-            "para todos los roles; pipeline A/B `{model_pipeline_a}` (A escribe) / "
-            "`{model_pipeline_b}` (B revisa)."
+            "- **Modelo por agente:** {model_by_agent}. Por tarea: primario "
+            "`{model_primary}`; pipeline A/B: A `{model_pipeline_a}` / B `{model_pipeline_b}`."
         ),
     },
     {
