@@ -1,5 +1,7 @@
 # Skill Evals System (Kanam OS) 🌿
 
+> **Estado: EXPERIMENTO NO ADOPTADO (2026-10-06).** La implementación existe (`scripts/eval-engine.py`) pero **nada la invoca** (ni pre-commit ni cierre de sesión). Se conserva como spec del experimento de la Etapa 2; no se borra. Si se retoma el frente "ciclo de vida de skills", este es el punto de partida.
+
 Este sistema define cómo se verifica el comportamiento de una skill. Una skill no se considera "estable" solo porque el código corre, sino cuando pasa sus **Assertions**.
 
 ## 📄 Formato de Assertions (`.eval.yaml`)

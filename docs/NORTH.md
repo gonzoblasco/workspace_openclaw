@@ -36,6 +36,26 @@ Kanam no "usa IA". Construye el sistema que hace posible usarla bien, y lo pone 
 
 ---
 
+## El camino de madurez del sistema (Kanam OS, por etapas)
+
+El sistema no se construyó de una: maduró por etapas, cada una habilitando la siguiente. Es un **mapa de dependencias, no una lista de tareas**. (Absorbido de `EVOLUTION.md` el 2026-10-06.)
+
+| Etapa | Qué es | Estado (2026-10-06) |
+|---|---|---|
+| **1. El Suelo** - sistemas de referencia | Design system (tokens semánticos + Anti-Slop), diccionario de entidades (`.knowledge/entities/`), rúbrica de gusto (SHARP) | ✅ Completada |
+| **2. El Ritmo** - ciclos de vida y gates | `security-scan`, skill evals, lifecycle tracker, regression control, session hooks | 🟡 **Parcial:** los scripts existen, pero **no están cableados** (ni pre-commit ni cierre). Ver decisión abajo. |
+| **3. El Equipo** - Kanam's Crew | `critic` (sustancia), `auditor` (superficie), `planner` (gobierno), + la guía de inicio rápido | ✅ Completada |
+| **4. Expansión y refinamiento** | Módulo de especialistas, validación a11y técnica (`axe-core`), tablero de control del backlog | 🔄 En curso |
+
+**Metodología de evolución:**
+1. **No saltar etapas.** Un `critic` sin rúbrica SHARP es ruido. Un agente sin estándar no es un agente, es una suma de opiniones.
+2. **Documentación como código.** Cada paso se registra en un ADR y se implementa como skill o script.
+3. **Validación real.** Una etapa se considera completada solo cuando el Core puede verificar el estándar de forma automatizada o semi-automatizada.
+
+> **Decisión abierta (Etapa 2):** los cinco gates existen y cuatro compilan, pero **ninguno se invoca** (2026-10-06). Pendiente: cablear `security-scan` al pre-commit (riesgo real al instalar skills de afuera) y decidir el destino de los otros cuatro - ver la nota de estado en cada spec.
+
+---
+
 ## El norte, en tres horizontes
 
 ### Horizonte 0 - Construir y terminar (ahora, 0-3 meses)
@@ -132,4 +152,5 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 
 - Creado 2026-09-14, en la sesión donde Gonzo preguntó "¿cuál era el objetivo, el para qué de este proyecto?".
 - **Reconstruido 2026-10-06** contra las últimas dos semanas de trabajo real. Motivo: la versión previa describía una constelación de productos narrativos y experimentos que ya no son el eje. Fuentes: dailies 2026-09-22 a 2026-10-06, `docs/APUESTAS.md`, ADRs del workspace, `~/projects/*/.knowledge/`, `docs/studies/` (`design/`, `narrative-engineering/`), `docs/stories/`.
+- **Absorbido `EVOLUTION.md` el 2026-10-06.** El blueprint de madurez de Kanam OS (etapas + metodología) pasó a la sección "El camino de madurez del sistema": un solo documento de norte, no dos. Las referencias de los agentes (`critic`, `planner`) se reapuntaron a este archivo.
 - Principio: no inventar. Lo que este documento afirma sobre un proyecto sale de su BRIEF/ROADMAP real o del daily donde se trabajó. Las aspiraciones están marcadas como tales (Horizontes 1 y 2).

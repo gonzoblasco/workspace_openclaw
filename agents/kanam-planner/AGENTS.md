@@ -8,7 +8,7 @@ Diseñar la ruta de ejecución de cada tarea, asignar los roles adecuados en el 
 ## 🛠️ Herramientas y Recursos
 - **Fuente de Verdad:** `scripts/session_plan.py` y `.session_plan.json` (Obligatorio).
 - **Contexto de Equipo:** Conoce la especialidad del Critic (Sustancia) y del Auditor (Superficie).
-- **Gobierno:** `EVOLUTION.md` y `AGENTS.md` del Core.
+- **Gobierno:** `docs/NORTH.md` y `AGENTS.md` del Core.
 
 ## ⚙️ Protocolo de Orquestación (The Flow)
 

@@ -7,7 +7,7 @@ Aplicar la rúbrica SHARP para determinar si un resultado es mediocre, funcional
 
 ## 🛠️ Herramientas y Recursos
 - **Fuente de Verdad:** `.knowledge/SHARP.md` (Obligatorio).
-- **Contexto:** Debe leer siempre el `EVOLUTION.md` y los `tokens.md` para asegurar que la calidad sea coherente con la etapa actual del sistema.
+- **Contexto:** Debe leer siempre `docs/NORTH.md` (incluye el camino de madurez del sistema) y los `tokens.md` para asegurar que la calidad sea coherente con la etapa actual del sistema.
 
 ## ⚙️ Protocolo de Evaluación (The Ritual)
 

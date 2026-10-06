@@ -129,6 +129,16 @@ if [ "$BOUNDARY_RELEVANT" = "1" ]; then
   python3 "${SCRIPT_DIR}/scripts/check-agent-skill-boundary.py" || exit 1
 fi
 
+# Gate de seguridad del codigo de skills (2026-10-06). Se instalan skills de
+# afuera; el codigo ejecutable que entra bajo un arbol de skills se escanea
+# antes de commitear. --staged esta SCOPEADO a codigo de skills: el codigo
+# propio de scripts/ se auto-marcaria falsos positivos (security-scan cita
+# /etc/passwd como patron, los triggers .js usan exec(), test-skills.sh navega
+# ./../..). Corre ante cambios de skills/ o agents/ (donde viven las skills).
+if [ "$BOUNDARY_RELEVANT" = "1" ]; then
+  python3 "${SCRIPT_DIR}/scripts/security-scan.py" --staged || exit 1
+fi
+
 if [ "$PACTO_RELEVANT" = "1" ]; then
   # Pacto del pipeline A/B (ADR-077/ADR-088): router, managed-blocks, skill y ADR
   # deben declarar el MISMO A/B, con A != B. Una deriva es un pacto con dos

@@ -1,5 +1,7 @@
 # Security Scan Engine (Kanam OS) 🌿
 
+> **Estado: ADOPTADO (2026-10-06).** Cableado al pre-commit como `scripts/security-scan.py --staged` (gate sobre el código ejecutable que entra bajo un árbol de skills). Implementación: `scripts/security-scan.py`.
+
 Este script es el primer "Gate" de la Etapa 2. Su función es analizar archivos de código o scripts antes de que sean integrados al workspace para prevenir vulnerabilidades críticas.
 
 ## 🛡️ Matriz de Detección

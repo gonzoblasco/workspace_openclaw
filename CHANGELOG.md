@@ -6,6 +6,26 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-06] - EVOLUTION.md absorbido en NORTH.md; Kanam OS Etapa 2 reubicada
+
+### Changed
+- **`EVOLUTION.md` eliminado; su contenido vive en `docs/NORTH.md`.** El blueprint de madurez de Kanam OS (etapas + metodología) pasó a la nueva sección "El camino de madurez del sistema". Había tres documentos diciendo "hacia dónde va Kanam" (`NORTH`, `EVOLUTION`, capa 4 del `ROADMAP`): ahora hay uno. Refs de agentes reapuntadas: `agents/kanam-critic/AGENTS.md` y `agents/kanam-planner/AGENTS.md` (leían `EVOLUTION.md`); entity `.knowledge/entities/projects/kanam_os.md` actualizado.
+- **Los 5 specs de Kanam OS Etapa 2 documentan su estado real.** No eran huérfanos: son las specs de implementaciones vivas que nadie cableó.
+  - `docs/security-scan-spec.md` -> **ADOPTADO**: cableado al pre-commit.
+  - `docs/skill-evals-spec.md`, `docs/skill-lifecycle-tracker.md`, `docs/regression-control-spec.md` -> **EXPERIMENTO NO ADOPTADO** (implementación existe, nada la invoca).
+  - `docs/session-planning-hooks.md` -> **PARCIAL** (el `AGENTS.md` del planner la referencia; no hay hook automático).
+
+### Added
+- **`scripts/security-scan.py --staged`:** modo gate que escanea **solo el código ejecutable staged bajo un árbol de skills** (`skills/`, `agents/<rol>/skills/`). El modo original sobre `scripts/` daba falsos positivos sobre código propio (se marca a sí mismo por citar `/etc/passwd` como patrón, los triggers `.js` por usar `exec(`, `test-skills.sh` por navegar `./../..`); `--staged` los evita por scope.
+- **Pre-commit (hook + template):** corre `security-scan.py --staged` ante cambios de `skills/` o `agents/` - el caso real de "skill de afuera".
+
+### Fixed
+- **`scripts/regression_gate.py` no compilaba:** un bloque ` ``` ` de markdown al EOF, una flecha rota en un f-string y un path absoluto `/Users/...`. Reparado.
+- **`scripts/lifecycle_tracker.py`:** path absoluto `/Users/...` hardcodeado. Ahora deriva del propio script.
+
+### Removed
+- **`EVOLUTION.md`** (contenido absorbido en `docs/NORTH.md`).
+
 ## [2026-10-06] - Dream Diary en rotación mensual (DREAMS)
 
 ### Added

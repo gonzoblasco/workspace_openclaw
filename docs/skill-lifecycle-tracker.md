@@ -1,5 +1,7 @@
 # Skill Lifecycle Tracker (Kanam OS) 🌿
 
+> **Estado: EXPERIMENTO NO ADOPTADO (2026-10-06).** La implementación existe (`scripts/lifecycle_tracker.py`) pero **nada la invoca**. Se conserva como spec; no se borra.
+
 Este sistema rastrea la salud y la obsolescencia de las skills integradas en el workspace. El objetivo es transformar la estabilidad estática en una **estabilidad dinámica**.
 
 ## 📊 Estructura del Registro (`.knowledge/skill_lifecycle.json`)

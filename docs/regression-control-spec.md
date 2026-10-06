@@ -1,5 +1,7 @@
 # Regression Control Gate (Kanam OS) 🌿
 
+> **Estado: EXPERIMENTO NO ADOPTADO (2026-10-06).** La implementación existe (`scripts/regression_gate.py`, reparada el 2026-10-06: no compilaba) pero **nada la invoca**. Se conserva como spec; no se borra.
+
 Este sistema implementa el "Freno de Mano de Calidad". Su objetivo es garantizar que ninguna actualización del workspace degrade la calidad sistémica medida a través de la rúbrica SHARP.
 
 ## 📉 El Concepto de Degradación
