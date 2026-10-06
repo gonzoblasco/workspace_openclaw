@@ -81,7 +81,11 @@ def resolves(source: Path, target: str) -> bool:
 # reemplaza a los viejos `docs/conversations/` y `docs/history/` (ADR-084),
 # que eran dos casas para el mismo genero. `docs/archives/` ya no existe
 # (rename a `docs/history/` el 2026-09-28, luego consolidado en `docs/records/`).
-SKIP_DIRS = ("docs/records/",)
+# `docs/archive/` (2026-10-06) guarda bloques rotados de documentos vivos
+# (CHANGELOG, etc.); su texto cita rutas de la epoca - p.ej. un ADR que luego
+# se renombro - y no se reescribe. Misma politica que records/: la historia
+# congelada no es una promesa sobre el arbol actual.
+SKIP_DIRS = ("docs/records/", "docs/archive/")
 
 
 def is_skippable(ref: str) -> bool:
