@@ -1,6 +1,6 @@
 # Session Planning Hooks (Kanam OS) 🌿
 
-> **Estado: PARCIAL (2026-10-06).** La implementación existe (`scripts/session_plan.py`) y el `AGENTS.md` del `planner` la referencia como fuente de verdad, pero **no hay hook automático** que la dispare. Se conserva como spec.
+> **Estado: ADOPTADO (2026-10-06).** El script es portable (`SESSION_PLAN_PATH` sobrescribible) y vive en `.knowledge/session_plan.json`. **Cableado:** `session-start.sh` lo lee al arrancar (presenta el plan activo); `session-end.sh` lo cierra y archiva via `session_plan.py close`. Ver ADR-093. Implementación: `scripts/session_plan.py`.
 
 Este sistema implementa la "Memoria de Intención". El objetivo es que la planificación de la sesión no sea efímera (que no viva solo en el historial del chat), sino que sea un objeto persistente del sistema que sobreviva a reinicios del Gateway o cambios de contexto.
 

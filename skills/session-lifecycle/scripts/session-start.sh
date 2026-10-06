@@ -21,11 +21,37 @@ if [[ -z "$PROJECT" || -z "$OBJECTIVE" ]]; then
 fi
 
 DATE=$(date '+%Y-%m-%d %H:%M')
-HANDOFF_DIR="projects/$PROJECT/.knowledge"
-HANDOFF_FILE="$HANDOFF_DIR/HANDOFF.md"
+
+# --- HANDOFF del proyecto (o del workspace) ---
+# El destino sigue el modelo ADR-075: el workspace (o un alias suyo) usa su
+# propio .knowledge/; un proyecto vive en ~/projects/<slug>/.knowledge/. Antes
+# resolvia "projects/$PROJECT/.knowledge" - la estructura pre-ADR-075, muerta
+# desde 2026-09-26. Unificar con scripts/session-handoff.py.
+case "$(echo "$PROJECT" | tr '[:upper:]' '[:lower:]')" in
+  workspace|workspace_openclaw|workspace-openclaw|main|core|kanam-core|sistema|system)
+    HANDOFF_FILE=".knowledge/HANDOFF.md" ;;
+  *)
+    HANDOFF_FILE="$HOME/projects/$PROJECT/.knowledge/HANDOFF.md" ;;
+esac
 
 echo "🔧 Starting session for: $PROJECT"
 echo ""
+
+# --- Session plan: memoria de intencion (Kanam OS Etapa 2, 2026-10-06) ---
+# El plan vive en .knowledge/session_plan.json y sobrevive reinicios del
+# Gateway. Si hay un plan activo de una sesion anterior, se presenta para
+# retomarlo en vez de re-descubrir donde quedamos. Idempotente: sin plan, no
+# imprime nada.
+if [[ -f "scripts/session_plan.py" ]] && command -v python3 >/dev/null 2>&1; then
+  PLAN_SUMMARY=$(python3 scripts/session_plan.py summary 2>/dev/null || true)
+  if [[ -n "$PLAN_SUMMARY" && "$PLAN_SUMMARY" != "No hay plan activo." ]]; then
+    echo "📋 Plan de sesion activo:"
+    echo "$PLAN_SUMMARY"
+    echo ""
+    echo "---"
+    echo ""
+  fi
+fi
 
 # --- Complexity score (complexity-driven-pipeline, 2026-08-30) ---
 # Score the objective upfront so model/thinking/pipeline depth is decided

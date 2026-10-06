@@ -6,7 +6,24 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-## [2026-10-06] - EVOLUTION.md absorbido en NORTH.md; Kanam OS Etapa 2 reubicada
+## [2026-10-06] - El plan de sesión se cablea (Kanam OS Etapa 2: session-planning-hooks)
+
+### Added
+- **ADR-093** (`docs/adr/ADR-093-plan-de-sesion-persistente.md`): el plan de sesión como objeto persistente del sistema. Cierra el hueco declarado en `docs/NORTH.md` (la Etapa 2 tenía cinco gates que nadie invocaba).
+- **`scripts/session_plan.py close`:** marca el plan `completed` y lo archiva en `.knowledge/archive/session_plan_<id>.json`. Defensivo e idempotente (sale 0 siempre: el cierre corre bajo `set -e`).
+- **`tests/python/test_session_plan.py`:** 5 casos (path portable/sobrescribible, init, close+archivo, idempotencia, exit code del CLI).
+
+### Changed
+- **`scripts/session_plan.py` portable:** el path, antes clavado a `/Users/gonzoblasco/...`, ahora se deriva del script y es sobrescribible con `SESSION_PLAN_PATH`. El plan se muda de la raíz (`.session_plan.json`) a `.knowledge/session_plan.json`.
+- **`session-start.sh`:** hook de arranque. Si hay un plan activo, lo presenta antes de scorear/buscar memoria ("retomando: estábamos en el paso X"). Elimina la amnesia de sesión que el `AGENTS.md` del planner ya prohibía y nada garantizaba.
+- **`session-end.sh`:** hook de cierre. Cierra y archiva el plan.
+- **`session-start.sh` (path obsoleto):** el HANDOFF se resolvía en `projects/$PROJECT/.knowledge/` - estructura **pre-ADR-075**, muerta desde 2026-09-26. Se alinea con `scripts/session-handoff.py` (workspace -> `.knowledge/` propio; proyecto -> `~/projects/<slug>/.knowledge/`).
+
+### Docs
+- **`docs/session-planning-hooks.md`:** estado `PARCIAL` -> `ADOPTADO`.
+- **`docs/NORTH.md`:** Etapa 2 actualizada (2 de 5 gates cableados; los 3 restantes sin cablear a propósito, con motivo).
+
+---
 
 ### Changed
 - **`EVOLUTION.md` eliminado; su contenido vive en `docs/NORTH.md`.** El blueprint de madurez de Kanam OS (etapas + metodología) pasó a la nueva sección "El camino de madurez del sistema". Había tres documentos diciendo "hacia dónde va Kanam" (`NORTH`, `EVOLUTION`, capa 4 del `ROADMAP`): ahora hay uno. Refs de agentes reapuntadas: `agents/kanam-critic/AGENTS.md` y `agents/kanam-planner/AGENTS.md` (leían `EVOLUTION.md`); entity `.knowledge/entities/projects/kanam_os.md` actualizado.

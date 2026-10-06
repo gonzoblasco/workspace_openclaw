@@ -43,7 +43,7 @@ El sistema no se construyó de una: maduró por etapas, cada una habilitando la 
 | Etapa | Qué es | Estado (2026-10-06) |
 |---|---|---|
 | **1. El Suelo** - sistemas de referencia | Design system (tokens semánticos + Anti-Slop), diccionario de entidades (`.knowledge/entities/`), rúbrica de gusto (SHARP) | ✅ Completada |
-| **2. El Ritmo** - ciclos de vida y gates | `security-scan`, skill evals, lifecycle tracker, regression control, session hooks | 🟡 **Parcial:** los scripts existen, pero **no están cableados** (ni pre-commit ni cierre). Ver decisión abajo. |
+| **2. El Ritmo** - ciclos de vida y gates | `security-scan` (pre-commit), session hooks (`session_plan.py`), skill evals, lifecycle tracker, regression control | 🟡 **Parcial:** 2 de 5 cableados (`security-scan` al pre-commit; session hooks a arranque/cierre). Los otros 3 quedan como experimentos **sin cablear a propósito**: no tienen qué medir todavía. Ver decisión abajo. |
 | **3. El Equipo** - Kanam's Crew | `critic` (sustancia), `auditor` (superficie), `planner` (gobierno), + la guía de inicio rápido | ✅ Completada |
 | **4. Expansión y refinamiento** | Módulo de especialistas, validación a11y técnica (`axe-core`), tablero de control del backlog | 🔄 En curso |
 
@@ -52,7 +52,7 @@ El sistema no se construyó de una: maduró por etapas, cada una habilitando la 
 2. **Documentación como código.** Cada paso se registra en un ADR y se implementa como skill o script.
 3. **Validación real.** Una etapa se considera completada solo cuando el Core puede verificar el estándar de forma automatizada o semi-automatizada.
 
-> **Decisión abierta (Etapa 2):** los cinco gates existen y cuatro compilan, pero **ninguno se invoca** (2026-10-06). Pendiente: cablear `security-scan` al pre-commit (riesgo real al instalar skills de afuera) y decidir el destino de los otros cuatro - ver la nota de estado en cada spec.
+> **Decisión abierta (Etapa 2):** de los cinco gates, **dos están cableados**: `security-scan` al pre-commit (el caso real: código de skills de afuera), y `session-planning-hooks` a arranque/cierre (ADR-093). Los otros tres - `skill-evals`, `lifecycle-tracker`, `regression-control` - quedan **sin cablear a propósito**: exigen un objeto que hoy no existe (`.eval.yaml` por skill, un baseline SHARP medido). Cablearlos sería un gate que no puede juzgar nada. Sus specs se conservan con su estado real; si el frente "ciclo de vida de skills" se retoma, ahí está el punto de partida.
 
 ---
 

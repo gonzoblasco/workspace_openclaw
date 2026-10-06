@@ -1,0 +1,39 @@
+{
+  "session_id": "202610011235",
+  "objective": "Creación de la Guía de Inicio Rápido del Crew",
+  "status": "active",
+  "steps": [
+    {
+      "id": 1,
+      "task": "Redacción del borrador",
+      "status": "completed",
+      "blocker": null,
+      "timestamp": "2026-10-01T12:36:47.843959"
+    },
+    {
+      "id": 2,
+      "task": " Auditoría visual (Auditor)",
+      "status": "pending",
+      "blocker": null,
+      "timestamp": null
+    },
+    {
+      "id": 3,
+      "task": " Evaluación de sustancia (Critic)",
+      "status": "completed",
+      "blocker": null,
+      "timestamp": "2026-10-01T12:37:37.684307"
+    },
+    {
+      "id": 4,
+      "task": " Consolidación y estabilización",
+      "status": "completed",
+      "blocker": null,
+      "timestamp": "2026-10-01T12:37:37.712155"
+    }
+  ],
+  "metadata": {
+    "started_at": "2026-10-01T12:35:03.271853",
+    "last_update": "2026-10-01T12:37:37.712160"
+  }
+}

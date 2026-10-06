@@ -117,6 +117,15 @@ else
 fi
 echo ""
 
+# --- Session plan: cierre (Kanam OS Etapa 2, 2026-10-06) ---
+# El plan de la sesion se marca completado y se archiva en
+# .knowledge/archive/. El hook es defensivo (`|| true`): el cierre NUNCA debe
+# abortar por el plan. Idempotente: sin plan, no hace nada.
+if [[ -f "scripts/session_plan.py" ]] && command -v python3 >/dev/null 2>&1; then
+  python3 scripts/session_plan.py close 2>/dev/null || true
+  echo ""
+fi
+
 # Reflection prompt
 # Post-task reflection (2026-09-03): automatic post-task reflection stage.
 # Complements the closing self-reflection: this one runs per task, not per session.
