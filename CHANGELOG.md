@@ -4,6 +4,23 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-10-06] - Cata persistida y "thinking leakage" re-diagnosticado como artefacto del CLI
+
+### Changed
+- **`sandbox/model-cata-2026-10-06/`:** la cata de modelos (6 modelos × 6 roles × 4 escenarios, 144 corridas + 4 evaluaciones cross) se copió de `/tmp` (efímero) al workspace. `sandbox/` está gitignored: sobrevive reboot sin inflar el repo.
+- **`docs/adr/ADR-090-pensamiento-nivel-configuracion.md`:** corregida la narrativa del "thinking leakage". No era defecto del harness de producción sino **artefacto del runner de la cata** (`ollama run`, que imprime el thinking a stdout mezclado con la respuesta).
+
+### Added
+- **`sandbox/model-cata-2026-10-06/run-one-api.py`:** runner de cata corregido. Llama a `POST /api/chat` y guarda el entregable en `raw_output` y el razonamiento en `thinking_output`, en campos separados. Reemplaza el `run-one.sh`/`run-one-safe.py` basados en CLI.
+- **`sandbox/model-cata-2026-10-06/verify-no-leakage.py`:** sonda que verifica la separación thinking/content.
+
+### Verified
+- **Sonda `verify-no-leakage.py`:** 6 modelos × {think off, think high} → **0 fugas**. El campo `thinking` de la API llega poblado y separado del `content`; con `think:false` el thinking viene vacío.
+- **Claude Code headless** (`claude -p --model deepseek-v4.1-flash:cloud`): output limpio, sin fuga. Es el motor estándar del pipeline A/B (ADR-049) y ya separaba el razonamiento.
+- **Conclusión:** no había bug de producción que arreglar. Lo útil era persistir la evidencia y corregir la narrativa. El fix real para futuras catas es usar la API, no el CLI.
+
+---
+
 ## [2026-10-06] - ADR-090 corregido: decisión de modelos por rol vs estado real del runtime
 
 ### Changed

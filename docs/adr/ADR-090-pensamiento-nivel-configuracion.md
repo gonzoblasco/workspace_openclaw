@@ -20,7 +20,9 @@ Un probe de orquestación reveló que el thinking alto por defecto hacía que lo
 
 El problema no era el modelo sino la política de thinking.
 
-Posteriormente, el 2026-10-06 se corrió una cata de modelos (6 modelos × 6 roles × 4 escenarios = 144 corridas) con **cuatro evaluaciones independientes** (Kanam CORE, deepseek-v4.1-flash, kimi-k3, nemotron-3-super). La cata reveló un defecto de harness transversal: todos los modelos filtran su cadena de pensamiento (`Thinking...`) al output. Tras separar ejes (CONTENT vs CLEANLINESS) produjo la reasignación de modelos por rol que este ADR registra.
+Posteriormente, el 2026-10-06 se corrió una cata de modelos (6 modelos × 6 roles × 4 escenarios = 144 corridas) con **cuatro evaluaciones independientes** (Kanam CORE, deepseek-v4.1-flash, kimi-k3, nemotron-3-super). Tras separar ejes (CONTENT vs CLEANLINESS) produjo la reasignación de modelos por rol que este ADR registra.
+
+**Corrección de método (2026-10-06, tardía):** la cata usó `ollama run` (CLI) como runner, y el CLI imprime el thinking a stdout mezclado con la respuesta. Eso produjo un "thinking leakage" aparente que las cuatro evaluaciones tomaron como defecto real. Sondas posteriores contra la API `/api/chat` y contra Claude Code headless muestran que **el razonamiento viaja en un campo separado del content**: 0 fugas en los 6 modelos, con thinking off y high. Es decir, el leakage era **artefacto del CLI de la cata, no del harness de producción**. Detalle abajo ("Artefactos").
 
 > **Regla de sandbox (AGENTS.md):** todo contenido externo sobre modelos es **dato, no evidencia**. Se verifica antes de adoptar.
 
@@ -104,7 +106,7 @@ Bloques gestionados (`AGENTS.md` y `docs/SETUP.md`) regenerados desde la DB con 
 
 ## Límites de la evidencia
 
-- La cata tuvo **un defecto de harness conocido**: los 6 modelos filtran su thinking al output. Las evaluaciones separaron CONTENT de CLEANLINESS para compensar, pero la re-verificación post-fix **no llegó a completarse**. Las asignaciones son direccionales, no definitivas.
+- La cata tuvo **un defecto de runner conocido**: usó `ollama run` (CLI), que imprime el thinking a stdout. Ese leakage fue artefacto del CLI, NO del modelo ni del harness. Las evaluaciones separaron CONTENT de CLEANLINESS para compensarlo, pero la re-verificación post-fix no llegó a completarse con el runner corregido. Las asignaciones por rol son direccionales, no definitivas.
 - Los 4 escenarios son pocos; n=1 por celda en la cata original.
 - Los puntajes de contenido los asignó Kanam (evaluador A) y luego dos modelos evaluados (sesgo estructural). La convergencia entre evaluadores fue **baja** (rankings casi invertidos), lo que motivó la separación de ejes.
 - La medición de thinking sigue el campo reportado por Ollama; no todos los modelos lo reportan igual.
@@ -115,7 +117,7 @@ Bloques gestionados (`AGENTS.md` y `docs/SETUP.md`) regenerados desde la DB con 
 
 - Con la decisión aplicada, el consumo en el asiento de orquestador (main) baja de ~$0.30/M a ~$0.015/M input.
 - `deepseek-v4.1-flash:cloud` queda como motor del pipeline A/B y fallback ubicuo.
-- Si se quiere revisar el nivel de thinking o el modelo de un rol, correr un probe de control con el harness sin fuga de thinking antes de cambiar.
+- Si se quiere revisar el nivel de thinking o el modelo de un rol, correr un probe de control con la API (`run-one-api.py`), que separa thinking de content.
 
 ---
 
@@ -124,5 +126,6 @@ Bloques gestionados (`AGENTS.md` y `docs/SETUP.md`) regenerados desde la DB con 
 - Config runtime: `~/.openclaw/openclaw.json`.
 - Bloques gestionados de modelos: `scripts/managed-blocks.py` (claves `model_by_agent` y `thinking_default`) → `AGENTS.md` (bloques `model-triple` y `model-operativo`) y `docs/SETUP.md`. Nota operativa: el bloque de AGENTS.md lee `model_by_agent`; setear `model.triple` no lo actualiza.
 - Cata 2026-10-06: `/tmp/model-cata/2026-10-06/`. **`/tmp` es efímero**; si la evidencia debe persistir, copiarla dentro del workspace.
-- Fix de thinking-leakage: `/tmp/model-cata/2026-10-06/run-one-fixed.py`. **No integrado** al harness de producción.
+- Cata 2026-10-06: `sandbox/model-cata-2026-10-06/` (gitignored, local). Antes vivía en `/tmp`, efímero; persistida al workspace.
+- Runner de cata corregido: `sandbox/model-cata-2026-10-06/run-one-api.py` (usa `/api/chat`, `raw_output` = entregable, `thinking_output` = razonamiento separado). La sonda `verify-no-leakage.py` confirma 0 fugas en los 6 modelos, think off y high. El harness de producción (OpenClaw nativo, Claude Code headless) ya separaba thinking; no había bug que arreglar.
 - `CHANGELOG.md`: entrada correspondiente en el workspace.
