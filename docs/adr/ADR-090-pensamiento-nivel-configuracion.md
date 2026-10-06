@@ -30,16 +30,17 @@ Posteriormente, el 2026-10-06 se corrió una cata de modelos (6 modelos × 6 rol
 
 | Agente | Rol | Nivel decidido |
 |--------|-----|----------------|
-| main (CORE) | Orquestador general | `low` |
-| kanam-dev | Desarrollador | `low` |
-| kanam-mind | Investigador | `low` |
-| kanam-ops | Operaciones | `low` |
-| kanam-studio | Diseño/Comunicación | `low` |
-| kanam-critic | Revisor adversarial | `high` |
-| kanam-auditor | Auditor UI/UX | `high` |
-| kanam-planner | Planificador | `high` |
+| main (CORE) | Orquestador general | `off` |
+| kanam-dev | Desarrollador | `off` |
+| kanam-mind | Investigador | `off` |
+| kanam-ops | Operaciones | `off` |
+| kanam-studio | Diseño/Comunicación | `off` |
+| kanam-critic | Revisor adversarial | `low` |
+| kanam-auditor | Auditor UI/UX | `low` |
+| kanam-planner | Planificador | `low` |
 
-- **Default global:** `low`.
+- **Reparto (2026-10-06, corrección de Gonzo):** los tres de juicio (critic, auditor, planner) bajan de `high` a `low`; los cinco de ejecución pasan de heredar el default a `off` explícito. Antes solo 3 agentes tenían nivel explícito; el resto no lo tenía aplicado.
+- **Default global:** `off`.
 - **Escalado por complejidad:** `complexity-scorer` puede subir a `high`/`max` para tareas puntuales.
 - **`max`:** reservado a decisión dura one-shot (adjudicación de reviews en conflicto, pre-merge complejo).
 
@@ -47,14 +48,16 @@ Posteriormente, el 2026-10-06 se corrió una cata de modelos (6 modelos × 6 rol
 
 | Agente | Modelo decidido | Fallback decidido | Contexto real (Ollama) |
 |--------|-----------------|-------------------|------------------------|
-| main | `nemotron-3-super:cloud` | `deepseek-v4.1-flash:cloud` | 256k |
+| main | `deepseek-v4.1-flash:cloud` | `glm-5.3-flash:cloud` | 1M |
 | kanam-planner | `gpt-oss:120b-cloud` | `glm-5.3-flash:cloud` | 128k |
 | kanam-dev | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | 128k |
 | kanam-critic | `gpt-oss:120b-cloud` | `nemotron-3-super:cloud` | 128k |
 | kanam-auditor | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | 1M |
 | kanam-studio | `gemma4:cloud` | `glm4:9b` (local) | 256k |
-| kanam-mind | `nemotron-3-super:cloud` | `glm4:9b` (local) | 256k |
+| kanam-mind | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | 1M |
 | kanam-ops | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | 128k |
+
+> **main y mind quedan en `deepseek-v4.1-flash:cloud` por decisión explícita de Gonzo (2026-10-06):** nemotron-3-super "se pierde y quiere resolver en lugar de conversar" en esos dos asientos, que son de orquestación y diálogo, no de ejecución. No re-elegirlo por olvido.
 
 Contextos medidos con `ollama show` el 2026-10-06 (no estimados):
 
@@ -69,24 +72,24 @@ Contextos medidos con `ollama show` el 2026-10-06 (no estimados):
 
 ---
 
-## Estado de implementación (2026-10-06; leer antes de asumir)
+## Estado de implementación (2026-10-06; aplicar y verificado)
 
-**El ADR registra la decisión, no el estado del runtime.** A la fecha de la última verificación, hay tres fuentes que NO coinciden entre sí:
+**La decisión de arriba está aplicada en el runtime (`openclaw.json`) y verificada** contra las tres fuentes (config del gateway, bloques gestionados, este ADR):
 
-| Agente | Decidido (arriba) | Runtime (`openclaw.json`) | Coincide |
-|--------|-------------------|---------------------------|----------|
-| main | nemotron-3-super | deepseek-v4.1-flash | ❌ |
-| planner | gpt-oss:120b | minimax-m3 | ❌ |
-| dev | gpt-oss:120b | glm-5.3-flash | ❌ |
-| critic | gpt-oss:120b | gpt-oss:120b | ✅ |
-| auditor | deepseek-v4.1-flash | nemotron-3-super | ❌ |
-| studio | gemma4 | gemma4 | ✅ |
-| mind | nemotron-3-super | deepseek-v4.1-flash | ❌ |
-| ops | gpt-oss:120b | glm-5.3-flash | ❌ |
+| Agente | Modelo en runtime | Thinking | Coincide |
+|--------|-------------------|----------|----------|
+| main | deepseek-v4.1-flash | off | ✅ |
+| planner | gpt-oss:120b | low | ✅ |
+| dev | gpt-oss:120b | off | ✅ |
+| critic | gpt-oss:120b | low | ✅ |
+| auditor | deepseek-v4.1-flash | low | ✅ |
+| studio | gemma4 | off | ✅ |
+| mind | deepseek-v4.1-flash | off | ✅ |
+| ops | gpt-oss:120b | off | ✅ |
 
-Y sobre thinking: solo `kanam-critic`, `kanam-auditor` y `kanam-planner` tienen `thinkingDefault: "high"` en runtime. El `low` para el resto **no está aplicado**; esos agentes heredan el default del sistema.
+Bloques gestionados (`AGENTS.md` y `docs/SETUP.md`) regenerados desde la DB con `managed-blocks.py apply`.
 
-**Pendiente para que este ADR deje de mentir:** alinear el runtime con la tabla de decisión (vía el tool `openclaw`, no editando el JSON a mano) y aplicar el default `low`. Mientras tanto, la fuente de verdad operativa es el runtime, no este documento.
+**Nota de operación:** el cambio de modelo de `main` debe hacerse **fuera** de una sesión que corre sobre `main`. Hacerlo desde dentro superpone la generación del plugin de runtime y bloquea el tool `openclaw` con `prepared model runtime plugin generation was superseded`. Se resolvió con un restart del gateway (`/update`); para futuras ediciones de `main`, aplicar desde otra sesión o reiniciar después.
 
 ---
 
@@ -119,7 +122,7 @@ Y sobre thinking: solo `kanam-critic`, `kanam-auditor` y `kanam-planner` tienen 
 ## Artefactos
 
 - Config runtime: `~/.openclaw/openclaw.json`.
-- Bloques gestionados de modelos: `scripts/managed-blocks.py` (clave `model.triple`) → `AGENTS.md` y `docs/SETUP.md`. **Nota:** el bloque `model.triple` arrastra un typo (`gpt-oss:120b-cloud:cloud`) y su entrada `main/defaults` no coincide con la decisión; corregir.
+- Bloques gestionados de modelos: `scripts/managed-blocks.py` (claves `model_by_agent` y `thinking_default`) → `AGENTS.md` (bloques `model-triple` y `model-operativo`) y `docs/SETUP.md`. Nota operativa: el bloque de AGENTS.md lee `model_by_agent`; setear `model.triple` no lo actualiza.
 - Cata 2026-10-06: `/tmp/model-cata/2026-10-06/`. **`/tmp` es efímero**; si la evidencia debe persistir, copiarla dentro del workspace.
 - Fix de thinking-leakage: `/tmp/model-cata/2026-10-06/run-one-fixed.py`. **No integrado** al harness de producción.
 - `CHANGELOG.md`: entrada correspondiente en el workspace.

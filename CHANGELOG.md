@@ -18,7 +18,13 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ### Notes
 - **Por qué:** el ADR afirmaba cambios de modelo que nunca se aplicaron al runtime; un ADR que miente es peor que no tenerlo (regla de corpus ADR + README).
 - **Verificación:** `check-adr-integrity.py` → `OK: 90 ADRs, todos indexados, sin duplicados ni refs rotas`.
-- **Pendiente (requiere acción fuera de este commit):** alinear el runtime al ADR vía el tool `openclaw` (no editando el JSON a mano) y corregir el typo `gpt-oss:120b-cloud:cloud` en la clave `model.triple` de `managed-blocks.py`.
+
+### Changed (corrección 2026-10-06, decisión de Gonzo)
+- **Decisión de modelos corregida:** `main` y `kanam-mind` NO van a nemotron-3-super ("se pierde y quiere resolver en lugar de conversar" en asientos de orquestación/diálogo); quedan en `deepseek-v4.1-flash:cloud`. El resto de la asignación por rol se mantiene.
+- **Thinking corregido:** los tres de juicio (`kanam-critic`, `kanam-auditor`, `kanam-planner`) bajan de `high` a `low`; los cinco de ejecución (`main`, `kanam-dev`, `kanam-mind`, `kanam-ops`, `kanam-studio`) pasan a `off` explícito. Default global `off`.
+- **Runtime aplicado y verificado:** los 8 agentes en `~/.openclaw/openclaw.json` coinciden con la decisión (model.primary, fallbacks, thinkingDefault), vía el tool `openclaw`, sin editar el JSON a mano.
+- **Bloques gestionados regenerados:** corregido el uso de `managed-blocks.py` (el bloque de AGENTS.md lee `model_by_agent`, no `model.triple`); `AGENTS.md` y `docs/SETUP.md` alineados con el runtime.
+- **ADR-090:** decisión y estado de implementación actualizados; se documenta que cambiar el modelo de `main` desde una sesión que corre sobre `main` bloquea el tool (`prepared model runtime plugin generation was superseded`) y se resuelve con restart.
 
 ---
 
