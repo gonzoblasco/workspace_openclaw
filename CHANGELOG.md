@@ -4,7 +4,23 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
-## [2026-10-05] - `validate-spec.sh` de kanam-dev: una sola fuente de verdad
+## [2026-10-06] - ADR-090 corregido: decisión de modelos por rol vs estado real del runtime
+
+### Changed
+- **`docs/adr/ADR-090-pensamiento-nivel-configuracion.md`:** reescrito. El documento estaba desactualizado y contenía una **ref cruzada rota** (citaba `ADR-210`, que no existe) que dejaba el corpus ADR desreconciliado (`check-adr-integrity.py` fallaba). Ahora:
+  - Registra la decisión de thinking por agente y la asignación de modelos por rol surgida de la cata 2026-10-06.
+  - Separa explícitamente **decisión** de **estado de implementación**: el runtime (`openclaw.json`) no coincide con la decisión en 6 de 8 agentes.
+  - Reemplaza context windows estimados por contextos **medidos** con `ollama show` (gpt-oss 128k, deepseek 1M, nemotron 256k, gemma4 256k, minimax 500k, glm-5.3 1M).
+  - Documenta los límites reales: cata con defecto de harness, n=1 por celda, evaluadores con sesgo estructural, re-verificación post-fix sin completar.
+- **`docs/adr/README.md`:** título del índice alineado al nuevo alcance del ADR.
+- **`ADR-090-*.md.backup`:** a la papelera (redundante con git).
+
+### Notes
+- **Por qué:** el ADR afirmaba cambios de modelo que nunca se aplicaron al runtime; un ADR que miente es peor que no tenerlo (regla de corpus ADR + README).
+- **Verificación:** `check-adr-integrity.py` → `OK: 90 ADRs, todos indexados, sin duplicados ni refs rotas`.
+- **Pendiente (requiere acción fuera de este commit):** alinear el runtime al ADR vía el tool `openclaw` (no editando el JSON a mano) y corregir el typo `gpt-oss:120b-cloud:cloud` en la clave `model.triple` de `managed-blocks.py`.
+
+---
 
 ### Changed
 - **`agents/kanam-dev/scripts/validate-spec.sh`:** deja de ser un validador propio y **delega** en el validador compartido de la skill (`~/.agents/skills/spec-driven-development/scripts/validate-spec.sh`). Pasa a recibir el directorio de specs como argumento (default `./specs`) y a ejecutar el compartido vía `exec`. Fallback explícito con `exit 2` si el compartido no existe.
