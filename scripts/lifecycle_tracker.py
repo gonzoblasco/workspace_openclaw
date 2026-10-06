@@ -6,7 +6,10 @@ from datetime import datetime
 from pathlib import Path
 
 # Configuración
-TRACKER_PATH = Path("/Users/gonzoblasco/.openclaw/workspace/.knowledge/skill_lifecycle.json")
+# Ruta derivada del propio script (no absoluta). El workspace vive solo en la
+# Mac Mini (ADR-085), pero un path relativo lo hace portable y testeable.
+WORKSPACE = Path(__file__).resolve().parent.parent
+TRACKER_PATH = WORKSPACE / ".knowledge" / "skill_lifecycle.json"
 
 def load_tracker():
     if not TRACKER_PATH.exists():

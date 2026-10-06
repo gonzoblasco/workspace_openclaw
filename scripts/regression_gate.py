@@ -5,7 +5,10 @@ from pathlib import Path
 from datetime import datetime
 
 # Configuración
-BASELINE_PATH = Path("/Users/gonzoblasco/.openclaw/workspace/.knowledge/quality_baseline.json")
+# Ruta derivada del propio script (no absoluta): el workspace vive solo en la
+# Mac Mini (ADR-085), pero un path relativo lo hace portable y testeable.
+WORKSPACE = Path(__file__).resolve().parent.parent
+BASELINE_PATH = WORKSPACE / ".knowledge" / "quality_baseline.json"
 S_LOWER_BOUND = 13 # Umbral de mediocridad
 DELTA_WARN = 3
 DELTA_FAIL = 6
@@ -36,7 +39,7 @@ def check_regression(component_name, current_scores):
     curr_total = calculate_score(current_scores)
     delta = prev_total - curr_total
     
-    print(f"📊 {component_name}: {prev_total} $\rightarrow$ {curr_total} (Delta: {delta})")
+    print(f"📊 {component_name}: {prev_total} -> {curr_total} (Delta: {delta})")
 
     if delta <= 0:
         # Mejora o estabilidad
@@ -73,4 +76,3 @@ if __name__ == "__main__":
         print("Integración permitida, pero se debe registrar deuda técnica.")
     else:
         print(f"\n✅ QUALITY CHECK: {comp} es estable o ha mejorado.")
-```
