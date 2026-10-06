@@ -1,10 +1,29 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos ~30 días** (corte: 2026-09-06). Lo anterior está archivado en [`docs/archive/CHANGELOG-pre-2026-09.md`](./docs/archive/CHANGELOG-pre-2026-09.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 30 días** (corte: 2026-09-06). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
-> **Politica de rotacion (2026-10-06):** al superar ~30 dias de historia, mover el bloque viejo a `docs/archive/CHANGELOG-<prefijo>.md` y dejar aca solo la ventana activa. Reconstruir el activo desde cero cuando arrastre hipotesis refutadas.
+> **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
 
 ---
+
+## [2026-10-06] - CHANGELOG con ventana de 30 días y rotación automatizada (ADR-092)
+
+### Added
+- **`scripts/changelog-rotate.py`:** mantiene `CHANGELOG.md` en una ventana activa de ~30 días; lo viejo se archiva en `docs/archive/CHANGELOG-archive.md`. Idempotente, ordena por fecha descendente, regenera los headers. `--check` (exit 1 si hay drift), `--dry-run`, `--days N`, `--today` (tests).
+- **`tests/python/test_changelog_rotate.py`:** 8 casos (split, ventana, idempotencia, acumulación sin duplicados, orden, exit codes de `--check`, `--dry-run` no escribe, fecha inválida).
+
+### Changed
+- **`.git/hooks/pre-commit` + `scripts/pre-commit.template`:** nuevo check (solo si `CHANGELOG.md` está staged) que corre `changelog-rotate.py --check` y falla si el activo está desfasado.
+- **`skills/session-lifecycle/scripts/session-end.sh`:** rota el CHANGELOG en cada cierre de sesión, para que la ventana nunca quede vieja.
+- **`docs/archive/CHANGELOG-pre-2026-09.md` → `docs/archive/CHANGELOG-archive.md`:** el archivo pasa a ser rodante único (lo mantiene el script), no un snapshot con nombre de fecha.
+- **`memory/2026-10-06.md`:** la entrada de gobernanza de esta sesión (análisis + reconciliación de AGENTS.md/AGENTS-DETALLE.md/SETUP.md), que había quedado sin commitear.
+
+### Fixed
+- **`docs/archive/` agregado a `SKIP_DIRS` de `check-refs.py` y a `MD_EXEMPT` del hook:** la historia congelada cita rutas de la época (un ADR luego renombrado) y conserva guiones largos; no se reescribe (política de ADR-084/ADR-082, igual que `docs/records/`).
+- **`mindstudio_proposal.md` eliminado:** propuesta de vendor sin refs en markdown trackeado ni valor durable (Gonzo, 2026-10-06).
+
+### Removed
+- **`proposal.md`** (duplicado byte-idéntico de `mindstudio_proposal.md`) y **`mindstudio_proposal.md`**.
 
 ## [2026-10-06] - Refactor de gobernanza: AGENTS.md, AGENTS-DETALLE.md y SETUP.md reconciliados
 
@@ -36,7 +55,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - Gates del pre-commit en verde: `check-refs` (489 rutas), `check-adr-integrity` (91 ADRs), `check-pipeline-enforcement` (pacto A/B consistente), `check-agent-skill-boundary`, `check-content-dirs`.
 - `AGENTS.md`: bloques MANAGED restantes = `model-operativo` y `pipeline-ab`.
 
-
 ## [2026-10-06] - Cierre de sesion con HANDOFF del proyecto + plantilla del informe
 
 ### Added
@@ -51,7 +69,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Verified
 - `session-end.sh` probado end-to-end: genera HANDOFF del workspace y escribe el informe en la DB.
 
-
 ## [2026-10-06] - Pagos: Stripe como proveedor unico reconocido (ADR-042 superseded de nuevo)
 
 ### Changed
@@ -64,7 +81,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Verified
 - `check-adr-integrity.py` (91 ADRs), `check-refs.py`: OK. `git mv` conserva la historia del archivo.
-
 
 ## [2026-10-06] - SoporteML v4 cerrado; el producto sigue por la version funcional de Lovable con cobro por Stripe
 
@@ -85,7 +101,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - `check-adr-integrity.py` (91 ADRs), `check-refs.py`: OK.
 - El cambio a Stripe ya asomaba en superficies de CV (2026-10-01) sin haberse propagado a las fuentes durables; este ADR cierra ese hueco.
 
-
 ## [2026-10-06] - Bootstrap bajo cap: ROADMAP y NORTH reconstruidos, AGENTS/MEMORY/USER trimados
 
 ### Fixed
@@ -105,7 +120,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - `wc -c` de los 5 archivos de bootstrap: los tres grandes dentro de cap.
 - `managed-blocks.py check`: sin drift. `check-refs.py` (147 rutas), `check-content-dirs.py` (10), `check-adr-integrity.py` (90 ADRs): OK.
 
-
 ## [2026-10-06] - Cata persistida y "thinking leakage" re-diagnosticado como artefacto del CLI
 
 ### Changed
@@ -122,7 +136,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Conclusión:** no había bug de producción que arreglar. Lo útil era persistir la evidencia y corregir la narrativa. El fix real para futuras catas es usar la API, no el CLI.
 
 ---
-
 
 ## [2026-10-06] - ADR-090 corregido: decisión de modelos por rol vs estado real del runtime
 
@@ -159,7 +172,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-10-05] - Skill nueva `design-direction`: dirección de arte antes de escribir código
 
 ### Added
@@ -183,7 +195,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-10-05] - Rediseño de modelos: distribución por agente (2026-10-05)
 
 ### Changed
@@ -205,7 +216,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - Evidencia de latencia previa (cata 2026-09-28): deepseek 6.5s · gemma4 1.9s · glm-5.3-flash 19.8s.
 
 ---
-
 
 ## [2026-10-01] - Ecosistema OpenClaw: ronda de análisis de 29 repos + criterios de filtrado
 
@@ -242,29 +252,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **`DECISIONS.md` §2.4 (error propio corregido):** `clawdeck` estaba listado como alternativa de **observabilidad** a Crabwalk, cuando es un **Kanban** (no un monitor). Se movió a §2.5 ("el backlog como objeto visible").
 
 ---
-
-
-## [2026-09-29] - ADR-083: el CORE orquesta y no escribe codigo (la regla pasa a estar verificada)
-
-### Added
-- **`scripts/check-agent-skill-boundary.py` + suite (6 tests):** verifica la frontera entre el arbol del CORE y los arboles de rol. Caza tres cosas: una skill del ciclo de desarrollo en `skills/`, una skill en dos arboles, y el ciclo SDD incompleto en su rol. Probado **en negativo** (sembrada `skills/hermes-builder/SKILL.md`, el hook aborta con exit 1) y **en positivo**. Corre en el pre-commit.
-- **Regla en `AGENTS.md`:** "Frontera de roles: CORE no escribe codigo". Va al bootstrap porque es el unico archivo que el CORE lee siempre - antes vivia solo en `SKILLS-INDEX.md` y en ADR-073/074, que son documentacion y no contexto.
-
-### Changed
-- **El ciclo SDD (9 skills `hermes-*`) se movio de `skills/` a `agents/kanam-dev/skills/`.** Estaba en el arbol del CORE, asi que el CORE veia el playbook de ingenieria - `hermes-builder` dice "implementation. Writes the change's code" - y lo ejecuto durante una sesion entera de `kanam-onwheels`. **La separacion de arboles ES el enforcement: lo que un agente ve, un agente lo ejecuta.** El CORE conserva `sdd-agent-loop`, el orquestador.
-- **Totales del indice re-medidos:** Core 36 -> 27, kanam-dev 25 -> 34. El total sigue en 78 (fueron movimientos, no altas ni bajas).
-- **`SKILLS-INDEX.md` §2.4:** la verificacion pasa de `dispatch-validation.sh` (voluntario, sin test, nunca invocado) al check automatico.
-
-### Fixed
-- **El check nuevo nacio con el fallo que persigue:** su primera conexion usaba el disparador de `skills/|scripts/`, que **no matchea** `agents/<rol>/skills/` - justo donde se viola la frontera. Sembrar la violacion y ver que el hook salia 0 lo destapo. La conexion es parte del enforcement, no un detalle de instalacion.
-
-### Notes
-- **Contexto:** el 2026-09-29 el CORE escribio migraciones SQL, el cliente de datos, el panel completo y un e2e de Playwright de `kanam-onwheels`. Gonzo pregunto por que no se usaba `kanam-dev`. La regla existia en tres lugares y nada la verificaba. Detalle en ADR-083.
-- **Pendiente declarado:** la identidad git no distingue agentes (todos commitean como `gonzoblasco`), asi que el enforcement es previo (que ve cada agente), no forense. OpenClaw soporta `agents.entries.*.tools.github.gitAuthor`.
-- **Ruteo por etapa:** el dueño natural de una etapa no siempre es DEV - discovery y research son de MIND. El discovery de `kanam-onwheels` lo hizo el CORE solo; MIND debia haber sido convocado.
-
----
-
 
 ## [2026-09-30] - ADR-086: el embudo de entrada conversacional (Módulo 1 de OpenClaw Use Cases)
 
@@ -332,6 +319,26 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-09-29] - ADR-083: el CORE orquesta y no escribe codigo (la regla pasa a estar verificada)
+
+### Added
+- **`scripts/check-agent-skill-boundary.py` + suite (6 tests):** verifica la frontera entre el arbol del CORE y los arboles de rol. Caza tres cosas: una skill del ciclo de desarrollo en `skills/`, una skill en dos arboles, y el ciclo SDD incompleto en su rol. Probado **en negativo** (sembrada `skills/hermes-builder/SKILL.md`, el hook aborta con exit 1) y **en positivo**. Corre en el pre-commit.
+- **Regla en `AGENTS.md`:** "Frontera de roles: CORE no escribe codigo". Va al bootstrap porque es el unico archivo que el CORE lee siempre - antes vivia solo en `SKILLS-INDEX.md` y en ADR-073/074, que son documentacion y no contexto.
+
+### Changed
+- **El ciclo SDD (9 skills `hermes-*`) se movio de `skills/` a `agents/kanam-dev/skills/`.** Estaba en el arbol del CORE, asi que el CORE veia el playbook de ingenieria - `hermes-builder` dice "implementation. Writes the change's code" - y lo ejecuto durante una sesion entera de `kanam-onwheels`. **La separacion de arboles ES el enforcement: lo que un agente ve, un agente lo ejecuta.** El CORE conserva `sdd-agent-loop`, el orquestador.
+- **Totales del indice re-medidos:** Core 36 -> 27, kanam-dev 25 -> 34. El total sigue en 78 (fueron movimientos, no altas ni bajas).
+- **`SKILLS-INDEX.md` §2.4:** la verificacion pasa de `dispatch-validation.sh` (voluntario, sin test, nunca invocado) al check automatico.
+
+### Fixed
+- **El check nuevo nacio con el fallo que persigue:** su primera conexion usaba el disparador de `skills/|scripts/`, que **no matchea** `agents/<rol>/skills/` - justo donde se viola la frontera. Sembrar la violacion y ver que el hook salia 0 lo destapo. La conexion es parte del enforcement, no un detalle de instalacion.
+
+### Notes
+- **Contexto:** el 2026-09-29 el CORE escribio migraciones SQL, el cliente de datos, el panel completo y un e2e de Playwright de `kanam-onwheels`. Gonzo pregunto por que no se usaba `kanam-dev`. La regla existia en tres lugares y nada la verificaba. Detalle en ADR-083.
+- **Pendiente declarado:** la identidad git no distingue agentes (todos commitean como `gonzoblasco`), asi que el enforcement es previo (que ve cada agente), no forense. OpenClaw soporta `agents.entries.*.tools.github.gitAuthor`.
+- **Ruteo por etapa:** el dueño natural de una etapa no siempre es DEV - discovery y research son de MIND. El discovery de `kanam-onwheels` lo hizo el CORE solo; MIND debia haber sido convocado.
+
+---
 
 ## [2026-09-29] - retail-vehiculos: diseno cerrado (arquitectura, modelo de datos, dominio y 8 ADRs)
 
@@ -356,7 +363,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-29] - retail-vehiculos: discovery, specs y knowledge de un proyecto nuevo
 
 ### Added
@@ -373,7 +379,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-29] - SKILLS-INDEX.md reescrito de cero: índice canónico, no changelog
 
 ### Changed
@@ -389,7 +394,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Guiones normalizados.** El borrador tenía en dash (U+2013) como separador; se reemplazaron por guion común porque el hook del pre-commit sigue activo (ADR-082 retira la obligación de estilo, no el mecanismo).
 
 ---
-
 
 ## [2026-09-29] - ADR-085: una sola maquina - el workspace deja de sincronizarse entre equipos
 
@@ -409,7 +413,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-29] - ADR-084: registros de sesion consolidados y el segundo arbol de skills cubierto
 
 ### Changed
@@ -428,7 +431,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-29] - README.md: el router de entrada del workspace
 
 ### Added
@@ -442,7 +444,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Verificado end-to-end, no solo por el test:** se agrego a proposito un link roto a `README.md`, el checker default fallo nombrando `README.md:92 -> ./docs/no-existe-jamas-xyz.md`, y al restaurar volvio a OK. Un test que fija una constante no prueba que el archivo se escanee; esto si.
 
 ---
-
 
 ## [2026-09-29] - Auditoria Nivel 2: 62 links rotos y el falso verde que los tapaba
 
@@ -460,7 +461,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-29] - La regla del guion comun deja de ser obligatoria (ADR-082)
 
 ### Changed
@@ -475,7 +475,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-29] - `docs/stories/` como casa de las historias + la novela Quienes Quedan
 
 ### Added
@@ -488,7 +487,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Notes
 - **Pendiente de decision de Gonzo:** el repo privado `github.com/gonzoblasco/quienes_quedan` quedo sin uso (contenido ya en el workspace). No se toco: borrarlo o archivarlo es una accion hacia afuera.
-
 
 ## [2026-09-29] - `memory/` reorganizado en carpetas predecibles + fix del hook de renames
 
@@ -511,7 +509,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Deuda registrada (no resuelta):** `memory/` ya tenia **225 archivos con guiones largos historicos**, en `archive/` (dailies + sesiones), `dreaming/`, y ~5 dailies raiz. El hook los ignora correctamente al moverlos, pero al editarlos volveran a bloquear. Normalizarlos es una tarea aparte (masiva, sobre registro historico).
 - **Backup:** `/tmp/memory-backup-20260929-162454/memory.tar.gz` (15 MB).
 
-
 ## [2026-09-29] - 6 LaunchAgents huerfanos regeneraban `workspace/projects/` (resaca de ADR-075)
 
 ### Fixed
@@ -532,7 +529,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Verificado tras 75 s:** `projects/` no se regenera.
 - **Regla preventiva:** al mover la ubicacion de un proyecto, ademas del codigo y el `.gitignore`, hay que actualizar **sus LaunchAgents** (la ruta queda hardcodeada en 3 capas).
 
-
 ## [2026-09-29] - Dedupe de daily notes: dos escritores sobre el mismo archivo
 
 ### Fixed
@@ -546,7 +542,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Known limitation
 - **El flush nativo no puede fusionar por seccion:** agrega su bloque al final y, si su primer encabezado es `# `, queda enterrado dentro de la seccion previa (observado en el bloque `Session End - react-spectrum-pr-10503`, cortado por `... (truncated)`). La contencion vive en el reconciliador de este workspace; la config `agents.defaults.compaction.memoryFlush` no expone fusion por seccion.
-
 
 ## [2026-09-28] - Politica de modelos cloud-first, integracion Hermes SDD, fin de la publicacion de skills
 
@@ -578,7 +573,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-27] - Recuperacion de datos y cierre de la migracion multi-agente (ADR-073)
 
 ### Added
@@ -604,7 +598,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Causa raiz (diagnostico de Gonzo, confirmado por los datos):** la migracion se hizo con modelos chicos locales de poco contexto durante dia y medio. El registro quedo mal y el trabajo se reescribio sobre contexto incompleto, lo que dejo cuatro capas de dano (la DB, las skills CORE, `studies/` y el daily duplicado).
 - **Pendiente (backlog todo #61):** sincronizar los proyectos a un repo nuevo. Hoy 135 archivos `.knowledge/` viven solo en disco, sin respaldo en git. Diferido a proposito.
 
-
 ## [2026-09-26] - Gates de accesibilidad y refs rotas antes del push
 
 ### Added
@@ -627,13 +620,11 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - La migracion multi-agente (ADR-073) queda intacta para su sesion dedicada: este commit no toca `agents/` ni las bajas de `skills/`.
 
-
 ## [2026-09-25] - kanam-spec: spec skeleton completed
 
 ### Added
 - Created detailed `spec.md` in `projects/kanam-spec/openspec/specs/kanam-spec/` with Overview, Goals, Requirements (functional \u0026 non-functional), Non-goals, Scenarios, Acceptance Criteria and extended functional requirements FR-4 - FR-7 covering UI input, generation process, preview/export, validation, UX flow, edge-case handling, performance, security, accessibility, and compatibility.
 - Updated `CHANGELOG.md` to record this addition.
-
 
 ## [2026-09-24] - SoporteML se reabre: definicion de la nueva generacion (ADR-067 + ADR-068)
 
@@ -651,13 +642,11 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Mercado verificado (web_fetch):** Buin ERP ya vende "facturacion ARCA + stock + contabilidad + integracion MeLi". El diferencial imaginado esta ocupado; el contable ademas es dominio regulado (responsabilidad legal).
 - **La nueva generacion es, literalmente, la "Fase 4" de v1** ("salir de Lovable") que v1 declaro en su propio PLAN.md y nunca ejecuto.
 
-
 ## [2026-09-24] - kanam-insight: Handoff Synthesizer y reparacion del indice
 
 **Regla:** cada vez que se modifique la estructura del workspace (AGENTS.md, MEMORY.md, SOUL.md, USER.md, TOOLS.md, HEARTBEAT.md, scripts/, estructura de proyectos, skills), actualizar este archivo en el mismo commit.
 
 ---
-
 
 ## [2026-09-24] - kanam-spec: verificacion en dos capas (linter + revision con modelo)
 
@@ -674,7 +663,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - Pendiente: tarea 5.3 (recorrido de punta a punta en el navegador, con click del usuario), `openspec archive`, repo en GitHub.
 
 ---
-
 
 ## [2026-09-24] - kanam-spec: verificacion en dos capas (linter determinista + revision con modelo)
 
@@ -698,7 +686,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-24] - kanam-spec: servicio permanente con LaunchAgent y watchdog
 
 ### Added
@@ -716,7 +703,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-24] - Nuevo proyecto: kanam-spec (generador de especificaciones tecnicas)
 
 ### Added
@@ -731,7 +717,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - Pendiente de decision de Gonzo: crear el repo en GitHub y pushear (el workspace todavia no tiene el agregado `projects/` configurado en esta maquina).
 
 ---
-
 
 ## [2026-09-24] - ADR-066: los guardias del workspace no leen codigo de proyectos (CI en rojo)
 
@@ -752,7 +737,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-24] - check-adr-integrity.py: el corpus de ADRs ahora se verifica solo
 
 ### Added
@@ -769,7 +753,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Dos decisiones de diseño que evitan trampas:** (1) las rutas son inyectables, asi los tests usan un corpus desechable en `tmp_path`; la primera version sembraba el defecto editando el README real y restaurandolo con `git checkout`, y si fallaba a mitad dejaba el indice del workspace roto - el mismo riesgo que el script existe para prevenir. (2) Usa `Optional` en vez de `X | None`: este equipo corre **Python 3.9.6**, y las uniones PEP 604 son 3.10+.
 
 ---
-
 
 ## [2026-09-24] - memory-wiki activado + regla DB-first vs doc-only + ADR-064/065
 
@@ -789,7 +772,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-24] - ADR-063 agregado al indice (corpus 63/63)
 
 ### Fixed
@@ -800,7 +782,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - El ADR lo creo otra sesion (kanam-insight, apuesta 1). No se toco su contenido, solo se agrego la fila faltante una vez que esa sesion termino, para no pisar trabajo en curso.
 
 ---
-
 
 ## [2026-09-24] - Regla DB-first vs doc-only documentada en SETUP.md
 
@@ -815,7 +796,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - Origen del hallazgo: al verificar la hipotesis de Gonzo ("los ADRs van en direccion opuesta, de los documentos a la DB"). La intuicion era real pero el nombre estaba corrido: los ADR no van hacia la DB, van **fuera** del ciclo de la DB.
 
 ---
-
 
 ## [2026-09-24] - Dashboard de Kanam OS como servicio permanente (LaunchAgent)
 
@@ -839,7 +819,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-24] - Temas dark y light en kanam-os + guardia multi-tema
 
 ### Added
@@ -859,7 +838,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-24] - Guardia de contraste WCAG para la paleta de kanam-os
 
 ### Added
@@ -875,7 +853,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - La app tiene su propio commit (`kanam-os` 997a5a4) con la paleta corregida. El workspace ignora `projects/*/*`, asi que el codigo de la app no viaja en este repo: por eso el chequeo se registra como test de la suite, no como hook del pre-commit.
 
 ---
-
 
 ## [2026-09-24] - Handoff Synthesizer: el tercer pilar (kanam-insight completo)
 
@@ -894,7 +871,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Kanam-insight queda completo:** los tres pilares (Pattern Radar + Debt Detector + Handoff Synthesizer) operativos, 32 tests, 2 repos sincronizados.
 - **Un tercer bug de metodo, y van cuatro hoy:** la mutacion destapo que un test mio era debil. La asercion `not startswith("Nota")` pasaba igual con el valor mutado, porque el string venia con marcas (`**Nota Fase 0:**`). Reforzado con una asercion que si discrimina; la mutacion ahora falla como debe.
 - **Hallazgo real del sintetizador:** 11 de 26 proyectos no tienen HANDOFF ni ROADMAP. No es alarma (muchos estan cerrados o archivados), pero explica por que retomar un proyecto viejo cuesta: no hay punto de retorno escrito.
-
 
 ## [2026-09-24] - Fase 5.2: ingesta real (el radar ahora cruza todo el conocimiento)
 
@@ -921,7 +897,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Cruce nuevo que antes era imposible:** el radar acerco `docs/ADR-057` (SQLite local con BLOB float32) con `soporteml-v3` (Postgres con ivfflat) para el mismo problema de vectores, resuelto distinto segun escala. Ese par de decisiones vivia en silos.
 - **Lo que sigue (Fase 6):** multi-cliente (Supabase Vector, namespaces por tenant, auth) o el Handoff Synthesizer (tercer pilar de kanam-insight).
 
-
 ## [2026-09-24] - Auditoria de la base: la deriva que el propio detector no veia
 
 ### Changed
@@ -944,7 +919,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Leccion:** un verificador con alcance limitado da falsa sensacion de cobertura. El Debt Detector escaneaba 26 proyectos pero era ciego a la documentacion mas estrategica, la de nivel workspace.
 - **Verificado por mutacion:** reintroducir el falso positivo hace fallar el test nuevo.
 
-
 ## [2026-09-24] - Migracion del venv a Python 3.12 (era 3.9.6)
 
 ### Changed
@@ -961,7 +935,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Venvs temporales a Trash**, no `rm`: recuperables si algo salia mal.
 - **Verificacion end-to-end post-migracion:** RAG via API (`POST /chat`) y agente con tools, ambos funcionando. El proceso del servicio corre bajo `python@3.12`.
 
-
 ## [2026-09-24] - Tests: red de seguridad para ambos proyectos (28 tests)
 
 ### Added
@@ -976,7 +949,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Hueco encontrado por mutacion:** poner `chunk_overlap=0` pasaba los 9 tests originales **en verde**. El overlap es lo que evita perder una idea que cae en el borde entre dos chunks, y su falla es silenciosa (la busqueda simplemente deja de encontrar cosas del borde). Se agrego el test faltante; la mutacion ahora falla como debe.
 - **Los tests de kanam-insight testean funciones puras con `tmp_path`**, sin depender del corpus real del workspace: un test que cambia cuando cambia el contenido no sirve como red de seguridad.
 - Los tres falsos positivos del Debt Detector quedaron fijados como propiedades testeables: sin repo clonado no se puede afirmar que un doc falte; un basename igual en otro proyecto no es el mismo archivo; los globs no son paths.
-
 
 ## [2026-09-24] - Versionado: kanam-insight y langchain-starter van a GitHub
 
@@ -995,7 +967,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Scan de secretos previo al push:** limpio. No hay API keys en el codigo (el proyecto usa Ollama local, sin proveedores cloud).
 - **Brecha cerrada.** Hasta hoy, el codigo de ambos proyectos existia **solo en disco**: el workspace git trackea `projects/*/.knowledge/`, no el codigo. El Debt Detector lo habia señalado horas antes.
 
-
 ## [2026-09-24] - kanam-insight: Debt Detector operativo
 
 ### Added
@@ -1013,7 +984,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Hallazgo real:** `quienes_quedan/BRIEF.md` y los docs base de `kanam-fixer-v2` viven en la raiz de su proyecto, **no en `.knowledge/`**, asi que el workspace git no los trackea (`.gitignore` solo incluye `projects/*/.knowledge/`). Sin repo propio, esos docs no estan versionados en ningun lado.
 - **Regla que quedo:** sin el repo del proyecto clonado no se puede afirmar que un doc falte. Solo la renumeracion de ADR es señal inequivocamente nuestra. Un detector sin verificacion propia produce deuda de credibilidad.
 - Solo 6 de 26 proyectos tienen repo git local (`kanam-fixer`, `kanam-lab`, `kanam-os`, `kanam-skills`, `kanam-tetris`, `soporteml`).
-
 
 ## [2026-09-24] - kanam-insight arrancado (apuesta 1): Pattern Radar operativo
 
@@ -1037,7 +1007,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Deuda registrada:** el codigo de kanam-insight (scripts, README) **no esta en ningun repo** - el workspace git solo trackea `projects/*/.knowledge/`. Misma brecha que `langchain-starter`. Pendiente: repo en GitHub.
 - **Leccion de metodo:** un spec que declara un stack "confirmado" puede estar vencido si se escribio antes de construir la alternativa. Los specs con fecha vencen; se revisan al arrancar.
 
-
 ## [2026-09-24] - Registro de apuestas + punto de retorno pre-kanam-insight
 
 ### Added
@@ -1050,7 +1019,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - Tag `etapa-2026-09-24-pre-kanam-insight`: sellado para poder volver a esta etapa sin perder estado. Cubre lo trackeado por el repo del workspace; NO cubre el codigo de proyectos (viven en sus repos) ni `langchain-starter` (aun sin repo propio).
 - El repo agregado (`projects/` -> `projects_openclaw`) no esta clonado en esta maquina; el script `aggregate-sync.sh` fallaria si se invoca aca.
-
 
 ## [2026-09-24] - Provisioning de browsers de Playwright: el zip a mano y los markers
 
@@ -1066,7 +1034,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **`trash` antes que `rm`:** es cache regenerable, pero el camino reversible es el default.
 
 ---
-
 
 ## [2026-09-23] - Vectores re-cortados por unidad semantica, sin duplicar el texto
 
@@ -1093,7 +1060,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-23] - Campos interpretados con revision: el LLM propone, la persona aplica
 
 ### Added
@@ -1113,7 +1079,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - ADR-061.
 
 ---
-
 
 ## [2026-09-23] - Foreign keys activas: la integridad del schema pasa a aplicarse
 
@@ -1136,7 +1101,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - ADR-060.
 
 ---
-
 
 ## [2026-09-22] - Contenido descompuesto: secciones y TODOs que estaban enterrados en el markdown
 
@@ -1161,7 +1125,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - ADR-059.
 
 ---
-
 
 ## [2026-09-22] - Refactor de schema: taxonomia normalizada y una FK espuria desarmada
 
@@ -1195,7 +1158,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-22] - Refactor de la DB: embeddings de JSON a BLOB float32 (12 MB -> 4 MB)
 
 ### Changed
@@ -1223,7 +1185,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-22] - Auditoria #2: referencias rotas, guiones y un guard que estaba ausente
 
 ### Added
@@ -1247,7 +1208,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-22] - Auditoria de drift: AGENTS.md se contradecia a si mismo
 
 ### Fixed
@@ -1262,7 +1222,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - Registro de bloques tras esta fase: `model-triple` y `model-operativo` en `AGENTS.md`; `model-triple` en `docs/SETUP.md`. `AGENTS.md` quedo en 15791 chars (limite de bootstrap: 20000).
 
 ---
-
 
 ## [2026-09-22] - Fase 3: bloques managed (settings de la DB propagados a los archivos)
 
@@ -1284,7 +1243,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Limite respetado:** los documentos narrativos (MEMORY.md, SOUL.md, AGENTS.md, USER.md) no se migran a la DB (ADR-038), pero ahora pueden contener un bloque generado. La distincion: un valor unico y verificable repetido en varios archivos es un dato mal modelado; la prosa alrededor es interpretacion.
 
 ---
-
 
 ## [2026-09-22] - Kanam OS: app local para ver la memoria como fichas, tablas y grafos
 
@@ -1317,7 +1275,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-22] - Auditoria de deuda de ADRs: revalidacion, ADR-053, duplicado 048 y docs mal ubicados
 
 ### Fixed
@@ -1344,7 +1301,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-22] - Nuevo proyecto: langchain-starter (RAG + API + LaunchAgent)
 
 ### Added
@@ -1364,7 +1320,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - Pendientes: migracion Chroma -> Supabase Vector, ingesta de documentos reales mas alla del doc de estrategia.
 - Los docs estructurales raiz (AGENTS-DETALLE, NORTH, ROADMAP, SETUP) se movieron a `docs/` (cambios de otra sesion incluidos en este commit).
 
-
 ## [2026-09-18] - Limpieza de la raiz del workspace - deuda tecnica y reordenamiento
 
 ### Changed
@@ -1374,8 +1329,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - Verificado pre-movimiento: cero referencias a los paths eliminados/reubicados en AGENTS.md, docs/, skills/, scripts/, memory/.
 - Tests node del workspace: 3 PASS / 0 FAIL post-limpieza.
-
-
 
 ## [2026-09-16] - Limpieza de la cola Kanam OS + todos 9 y 10 (#9/#10 done)
 
@@ -1388,7 +1341,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - El clon de `kanam-studio` y `kanam-pulse` local en `projects/` estan corruptos (remote apunta a workspace_openclaw, solo .knowledge/); se trabajo sobre repos GIT de GitHub en aislamiento.
 - Residuo sin tocar (sesion paralela): ADR-048, dailies 09-15/16, MEMORY.md - no commiteados aqui.
-
 
 ## [2026-09-16] - Todo #34: politica de backup del gateway - respaldo git automatizado
 
@@ -1405,7 +1357,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - El schedule `backup enable` provisiona un automation del gateway (no visible en el inventario restringido de esta sesion - confirmado por el CLI).
 - Todo #55 (backup local) ya estaba done; esto lo EXTENDIO con la via git versionada + automatizacion.
-
 
 ## [2026-09-15] - Todo #32: kanam-pulse core migrado de JS a TypeScript
 
@@ -1424,7 +1375,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - El clon en aislamiento se limpio con trash; el clon local corrupto en `projects/kanam-pulse` queda (fuera de alcance, anotado).
 - Todo #32 -> done en la DB.
 
-
 ## [2026-09-15] - Todo #38: cliente MCP para Lovable - decidido (nativo de OpenClaw)
 
 ### Changed
@@ -1438,7 +1388,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Pendiente de Gonzo (bloquea el cableado, no la decision):** el `openclaw mcp add lovable --url https://mcp.lovable.dev --transport streamable-http --auth oauth --include get_project,list_projects,query_database` + `openclaw mcp login lovable` requieren el OAuth de la cuenta Lovable de Gonzo. NO se ejecuto ni se toco config para respetar esa dependencia.
 - Todo #38 -> done en la DB (decision definida y documentada; el paso OAuth queda anotado como accion de Gonzo).
 
-
 ## [2026-09-15] - Todo #37: scripts spin-review cuarentenados (rojos desde 2026-08-30)
 
 ### Changed
@@ -1450,7 +1399,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Skills no referencian los scripts movidos** (validacion: Script refs 53 OK).
 - Todo #37 -> done en la DB.
 
-
 ## [2026-09-15] - Deuda de entorno cerrada: npm test corre de un tiro
 
 ### Fixed
@@ -1460,7 +1408,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - **Resultado: `npm test` ahora corre COMPLETO de un tiro con exit 0.** Los 4 pasos en serie: `test:scripts` (skills, bash/python/frontmatter/dash/links), `test:bats` (47 tests), `test:node` (15+3 harness scenarios) y `test:pytest` (17 passed). Antes nunca se habia podido correr la suite de un tiro en esta maquina.
 - La deuda quedaba documentada en los CHANGELOG previos desde la Fase 0 ("npm test no se puede correr de un tiro hasta resolver esto"); resuelta al fin.
-
 
 ## [2026-09-15] - Prompts versionados (formato con frontmatter + verificador)
 
@@ -1474,7 +1421,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **El formato es aditivo y no rompe `complexity-scorer.sh`:** el script lee `prompts/complexity-scorer.md` via `grep` de las 4 dimensiones (A/B/C/D), y el frontmatter no altera esas lineas del cuerpo. Verificado: el checker pasa (exit 0) y el scorer sigue andando (T=8 en una prueba).
 - **Hallazgo de paso (no arreglado, fuera de alcance):** el `grep` de dimensiones en `complexity-scorer.sh` (variable `DIMS`, linea 74) esta **roto desde siempre** - el regex espera `Alcance**` pegado, pero la linea real es `Alcance (A):**`, asi que `DIMS` siempre devuelve vacio. Y es codigo muerto: el script usa un `SYSTEM_PROMPT` en ingles hardcodeado, no `DIMS` (solo la define). Queda anotado como deuda tecnica de `complexity-scorer.sh` para refactor futuro.
 - **Los tests pytest no se pudieron ejecutar aca** (pytest no instalado en esta maquina, deuda de entorno ya documentada); la logica del checker se verifico manualmente contra casos buenos/malos (id-filename, version 0, scope invalido, sin frontmatter, tags vacio - cada uno falla con su mensaje, y el caso bueno pasa con exit 0).
-
 
 ## [2026-09-15] - Observabilidad minima del pipeline (ROADMAP 1.1): pipeline-report.sh
 
@@ -1490,7 +1436,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - Senal de listo del ROADMAP 1.1 (metricas de duracion registradas en 5+ sesiones): este entregable la habilita; falta que se registre en sesiones reales de pipeline, que es trabajo de uso, no de codigo.
 - El estado real de `pipeline-state.json` (kanam-fixer S1) tiene startTime/endTime nulos: el report degrada a "sin unidades medibles" hasta que las unidades futuras se midan (pipeline-track las setea con `start`/`done`).
-
 
 ## [2026-09-15] - ADR-049/050/051: motor del pipeline, umbral de datos, regla de lib/ai
 
@@ -1511,7 +1456,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Correccion del alcance (verificado con el binario):** el `CLAUDE.md` de la raiz cubre todo el arbol, incluidos `projects/x/` a 2 niveles - el `@./AGENTS.md` se resuelve relativo al `CLAUDE.md` (no al cwd) y el discovery sube. Y ningun proyecto tiene `AGENTS.md` propio, asi que NO se crea `CLAUDE.md` per-proyecto (seria un import roto); solo si un proyecto introduce su propio `AGENTS.md`.
 - **Correccion final de la regla (Gonzo, 2026-09-15):** el objetivo no es cubrir proyectos con la raiz, sino **inicializar el PAR `AGENTS.md` + `CLAUDE.md` por proyecto** cuando el proyecto entra al pipeline. El `AGENTS.md` del proyecto es especializado para su tarea/dominio (fuente de verdad); el `CLAUDE.md` es su espejo que lo `@import` (lo dirige, no lo reemplaza). **Prioridad verificada:** con cwd dentro del proyecto y ambos pares presentes, el del proyecto gana sobre el de la raiz. Piloto: `kanam-fixer` (par creado 2026-09-15). Corrige el commit anterior que decia "no crear per-proyecto" (ese rechazo era solo para el caso de import roto sin AGENTS, no para el par que si se crea).
 
-
 ## [2026-09-15] - Fix del gateway-jobs-watcher ciego (bug silencioso del 08/09)
 
 ### Fixed
@@ -1524,7 +1468,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Forma del retorno de `exec` verificada empiricamente**, no leida de docs: un job temporal (`pq-shape-probe`, ya borrado) imprimio su propia forma de retorno. El ejemplo de `docs/automation/cron-jobs/schedules.md` ya usa `res.aggregated`; el job existente no.
 - **`runMode:"force"` NO evalua el trigger** - saltea el gate y ejecuta el payload directo. La unica prueba valida del gate es una evaluacion natural del scheduler (se bajo el intervalo a 30s, y luego se resto a 2h). Verificado: 3 evaluaciones naturales con `lastResult:"ok"` - la primera vez en la vida del watcher.
 - El trigger esta cableado en `npm test` como parte de `test:node`.
-
 
 ## [2026-09-15] - Fase 0 cableada: watcher de la cola durable + bug del watchdog existente
 
@@ -1543,7 +1486,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Dedupe por nombres de unidades**, estable frente al `tick` (running -> queued no cambia el conjunto), asi que la recuperacion automatica no re-dispara en loop.
 - **Ruido de prueba aceptado:** el force run de prueba envio un mensaje real a Telegram ("falsa alarma, cola sana"). Es el comportamiento documentado de `announce`, no un bug.
 - **Verificacion:** harness 15/15 PASS; gate real evaluado 4 veces con `fire:false` sobre estado sano; `check_em_dash.py` OK; trigger con sintaxis valida como funcion async (top-level `await`, igual que el executor).
-
 
 ## [2026-09-15] - Fase 0: cola durable del pipeline A/B
 
@@ -1571,7 +1513,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Verificacion real:** `bash -n` limpio; `npx bats tests/bash/pipeline-queue.bats` -> **30/30**; suite completa de bats -> 40/40; `check_em_dash.py` OK; `test-skills.sh` OK (84 skills); race verificado con 10 claims concurrentes; locks huerfanos (sin pid y con pid muerto) verificados; estado real verificado byte-identico tras cada corrida.
 - **Deuda de entorno (preexistente, no introducida aca):** `npm test` falla en `test:bats` con `sh: bats: command not found` porque `bats` esta declarado como devDependency pero **no esta en el PATH ni en `node_modules/.bin`**; con `npx bats` corre verde. `python3 -m pytest` tampoco existe en esta maquina. La suite completa via `npm test` no se puede correr de un tiro hasta resolver eso.
 
-
 ## [2026-09-15] - Evaluacion de arquitectura por capas para Kanam OS
 
 ### Added
@@ -1583,7 +1524,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - Escaneado con `scripts/check_em_dash.py`: OK.
 - No se tomo ninguna decision de arquitectura: el doc deja 5 decisiones abiertas que, al cerrarse, merecen ADR.
 
-
 ## [2026-09-15] - Fix del guard de idempotencia en memory-end-session.py
 
 ### Fixed
@@ -1593,7 +1533,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Bug encontrado por uso real, no por test:** el síntoma fue el mensaje `ℹ️ Ya existe un Session End para 'workspace' en 2026-09-15 - sin duplicar` cuando ese marker no existía en el archivo. La verificación fue directa: `'## Session End - workspace' in '## Session End - workspace-general'` devuelve `True`.
 - **Impacto del bug:** cualquier proyecto cuyo slug sea prefijo de otro del mismo día (`workspace` / `workspace-general`, y potencialmente `kanam-*`) podía perder su registro de cierre sin aviso. Los datos no se corrompían - el guard simplemente no escribía.
 - Verificación del fix: `py_compile` OK + test unitario de la lógica (el marker largo matchea, el corto no) + `test-skills.sh` (84 skills, 0 fallos) + bats vía npx (10/10).
-
 
 ## [2026-09-15] - Limpieza de legacy agent dirs + fix de la skill session-context
 
@@ -1606,7 +1545,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **NO se tocó `agents/openclaw/`:** el doctor lo marca como directorio sin entrada en `agents.list`, pero el gateway **lo tiene abierto** (4 handles verificados con `lsof`). No se borra sin confirmar.
 - **Recordatorios abiertos:** no hay backup registrado (`openclaw backup create`) ni command owner configurado (`commands.ownerAllowFrom`).
 
-
 ## [2026-09-15] - Watcher Guidepup Darwin 27 (kanam-fixer S3 se cierra solo)
 
 ### Added
@@ -1615,7 +1553,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - **Por que existe:** kanam-fixer (ciclo `0.0.1` cerrado en `88ca9ff`) tiene S3 bloqueado por un tercero: Guidepup 0.34.0 no tiene asset de VoiceOver para Darwin 27 (su manifest cubre 21-25). El issue ya se reporto upstream (`guidepup/guidepup#149`). Cuando el asset exista, S3 se cierra corriendo el test sin tocar codigo - es el reemplazo del "acordarse a mano de chequear".
 - **Verificado con force-run real (no asumido):** el job creo `tmp/guidepup-darwin27.json` con `{"latest_checked": "0.34.0", "platform27_announced": false, "last_comment_count": 0}` - deteccion correcta (0.34.0 no tiene 27), dedup escrito, y NO aviso (no habia novedad). El tarball temporal se limpio solo.
-
 
 ## [2026-09-15] - kanam-fixer: corrección del blocker de S3 (es upstream, no permisos)
 
@@ -1628,7 +1565,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Leccion de debugging (causa raiz del desvio):** el mensaje `VoiceOver cannot be started` **ocultaba un `cause` anidado** (`macOS version not supported`). Se corrigio la funcion que reportaba solo el mensaje externo; ahora aplana la cadena de causas y el skip del test dice las dos. Un cause anidado que no se lee es un diagnostico perdido.
 - **Sesion duena inactiva:** la correccion se aplico desde otra sesion porque la duena del proyecto ya habia cerrado su turno y dejo la inconsistencia. Verificado `status: done` antes de escribir (sin riesgo de pisada).
 
-
 ## [2026-09-15] - kanam-fixer: repo público + pin del perfil pendiente (limitación de API)
 
 ### Changed
@@ -1640,7 +1576,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Decisión de Gonzo sobre el paquete npm:** se deja publicado a propósito, sin deprecar. Razón textual: "puede servir de entrada a alguien quien llegue a él por error". El paquete `@gonzoblasco/a11y-fixer@0.6.0` queda sin cambios (verificado: `deprecated: no`). Esto **cierra** el último pendiente de la enmienda ADR-001.
 
 ---
-
 
 ## [2026-09-15] - Cierre de la enmienda ADR-001: a11y-fixer y a11y-playground archivados + kanam-fixer formalizado
 
@@ -1660,7 +1595,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-15] - kanam-fixer: material de lanzamiento guardado (DISTRIBUTION.md)
 
 ### Added
@@ -1675,6 +1609,17 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-09-15] - `doctor --fix` resuelve las startup migrations + skill rota arreglada
+
+### Changed
+- **`docs/ROADMAP.md` 0.1 - migraciones RESUELTAS (verificado).** Gonzo corrió `openclaw doctor --fix` + restart a las 09:26 del 15/09. El aviso `Startup migrations need attention` **desapareció** (0 ocurrencias en `status`, sin finding en `doctor --json`). Lo que el fix hizo: relocalizó las credenciales compartidas a SQLite, normalizó 9 `num_ctx`, deshabilitó 34 skills inutilizables y copió el `allowFrom` de Telegram al allowlist de grupos. Config válida, backup en `openclaw.json.bak`.
+- **`skills/session-context/SKILL.md` - frontmatter corregido (bug real destapado por el doctor).** Era la **única** skill del workspace con `description` anidada dentro de `metadata` en vez de top-level, y el loader la rechazaba con `description is required` (`dist/local-loader-CR9dHge0.mjs:175` lee `frontmatter.description`). Movida a top-level; el mirror `.github/skills/` sincronizado. Ahora carga: `session-context ✓ Ready`.
+
+### Notes
+- **Metodología:** el output del terminal que compartió Gonzo se trató como **dato**, y cada afirmación se verificó por separado contra el estado real (gateway, config, disco, logs). No se asumió que el fix hubiera funcionado.
+- **El restart de hoy cerró limpio:** los 4 dumps de `logs/stability/` siguen siendo todos del 13/09; no se generó uno nuevo. El gateway corre 2026.9.4 (pid 43766, probe ok).
+- **Residuos no bloqueantes, registrados en el ROADMAP:** los 6 `agent.legacy-*` siguen en disco (17 MB de cruft inofensivo - el fix resolvió las credenciales, no los borró); `agents/openclaw/` figura como directorio sin entrada en `agents.list` pero el gateway **lo tiene abierto** (verificado con `lsof`), así que NO se borra sin confirmar; no hay backup registrado ni command owner configurado.
+- **Nota de proceso:** un commit propio falló por un pre-commit hook instalado por otra sesión que invocaba `npm run lint`/`build` (scripts inexistentes en el workspace). El hook ya fue corregido por esa sesión al template real (`test-skills.sh` + bats + pytest). Se evitó el atajo de `SKIP_SIMPLE_GIT_HOOKS`.
 
 ## [2026-09-14] - a11y-fixer: BRIEF alineado al archivado + topics y homepage del repo
 
@@ -1687,7 +1632,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Tension registrada, no resuelta:** publicar en el Marketplace y submitir a awesome lists son actos de *lanzamiento*, y contradicen el archivado recien decidido. Se prepararon los textos pero **no se ejecuto ninguna accion publica**. Requiere decision de Gonzo.
 
 ---
-
 
 ## [2026-09-14] - ADR-001 enmendado: a11y-fixer archivado, kanam-fixer como proyecto nuevo
 
@@ -1704,20 +1648,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
-## [2026-09-15] - `doctor --fix` resuelve las startup migrations + skill rota arreglada
-
-### Changed
-- **`docs/ROADMAP.md` 0.1 - migraciones RESUELTAS (verificado).** Gonzo corrió `openclaw doctor --fix` + restart a las 09:26 del 15/09. El aviso `Startup migrations need attention` **desapareció** (0 ocurrencias en `status`, sin finding en `doctor --json`). Lo que el fix hizo: relocalizó las credenciales compartidas a SQLite, normalizó 9 `num_ctx`, deshabilitó 34 skills inutilizables y copió el `allowFrom` de Telegram al allowlist de grupos. Config válida, backup en `openclaw.json.bak`.
-- **`skills/session-context/SKILL.md` - frontmatter corregido (bug real destapado por el doctor).** Era la **única** skill del workspace con `description` anidada dentro de `metadata` en vez de top-level, y el loader la rechazaba con `description is required` (`dist/local-loader-CR9dHge0.mjs:175` lee `frontmatter.description`). Movida a top-level; el mirror `.github/skills/` sincronizado. Ahora carga: `session-context ✓ Ready`.
-
-### Notes
-- **Metodología:** el output del terminal que compartió Gonzo se trató como **dato**, y cada afirmación se verificó por separado contra el estado real (gateway, config, disco, logs). No se asumió que el fix hubiera funcionado.
-- **El restart de hoy cerró limpio:** los 4 dumps de `logs/stability/` siguen siendo todos del 13/09; no se generó uno nuevo. El gateway corre 2026.9.4 (pid 43766, probe ok).
-- **Residuos no bloqueantes, registrados en el ROADMAP:** los 6 `agent.legacy-*` siguen en disco (17 MB de cruft inofensivo - el fix resolvió las credenciales, no los borró); `agents/openclaw/` figura como directorio sin entrada en `agents.list` pero el gateway **lo tiene abierto** (verificado con `lsof`), así que NO se borra sin confirmar; no hay backup registrado ni command owner configurado.
-- **Nota de proceso:** un commit propio falló por un pre-commit hook instalado por otra sesión que invocaba `npm run lint`/`build` (scripts inexistentes en el workspace). El hook ya fue corregido por esa sesión al template real (`test-skills.sh` + bats + pytest). Se evitó el atajo de `SKIP_SIMPLE_GIT_HOOKS`.
-
-
 ## [2026-09-14] - Diagnostico read-only de las startup migrations (causa raiz encontrada)
 
 ### Notes
@@ -1727,7 +1657,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Reparación (requiere al owner):** `openclaw doctor --fix` + `openclaw gateway restart`. El agente no reinicia el gateway hospedador.
 - **Metodología:** diagnóstico 100% read-only, siguiendo `diagnose-gateway` (prohíbe `--fix`, restarts y matar listeners). Se leyeron logs, dumps y código fuente; **ninguna reparación ni migración de estado fue ejecutada**.
 - **Estado del agente:** sano. `openclaw-agent.sqlite` de 499 MB, gateway corriendo (pid 80466, probe ok). El aviso es persistente, no un gateway roto.
-
 
 ## [2026-09-14] - 0.1: swap de version verificado y cierre de items abiertos
 
@@ -1739,7 +1668,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - **Sigue abierto (item aparte del swap):** `openclaw doctor` reporta "Startup migrations need attention" y pide `openclaw doctor --fix` + restart. El swap de version esta resuelto; las migraciones no. Requiere al owner (el agente no reinicia el gateway).
 - **Validacion del fix de bootstrap (doctor):** `USER.md` ahora reporta 3,985 chars = 20% del limite, y el doctor **ya no emite el finding `bootstrap-size`** que antes marcaba el truncado. Total inyectado 23.915 chars (40% del cap de 60.000).
-
 
 ## [2026-09-14] - USER.md bajo el cap fijo de bootstrap (10.008 -> 3.986)
 
@@ -1754,7 +1682,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - **Verificacion de cero perdida:** se comparo linea por linea el `USER.md` anterior contra el nuevo + `memory/user-profile.md`. Detecto una perdida real ("Quiere que maneje su vida, archivos y proyectos") que se restauro. El resto de las diferencias son reescrituras deliberadas para entrar en el cap.
 - **Estado de los archivos de bootstrap (14/09):** AGENTS.md 15.059 (cap 20.000), MEMORY.md 16.361 (cap 20.000), USER.md 3.986 (cap fijo 4.000). **Los tres dentro de sus limites por primera vez desde el 28/08.**
-
 
 ## [2026-09-14] - Re-diagnostico de 0.1 (estabilidad del gateway) contra evidencia
 
@@ -1774,7 +1701,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Criterio de señal de listo corregido:** "15+ POST + 11 GET sin reinicio" no probaria nada sobre reinicios espontaneos (no los hay). La señal util es **0 dumps nuevos en `logs/stability/` tras una sesion pesada**.
 - Acciones nuevas en 0.1: bajar `USER.md` a <=4.000, completar el swap de version, redefinir la señal, y evaluar `qwen3.8:27b-mlx` (17-18 GB en una Mini de 24 GB).
 
-
 ## [2026-09-14] - AGENTS.md bajo el limite de bootstrap (regresion resuelta)
 
 ### Changed
@@ -1787,7 +1713,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Verificacion de cero perdida:** las 170 lineas de reglas de AGENTS.md quedaron identicas byte a byte (`diff` contra el backup en `/tmp`), y las 74 lineas significativas del bloque `## Tools` viejo se compararon una por una contra `docs/SETUP.md` - las 3 diferencias restantes son cosmeticas (dos encabezados viejos de TOOLS.md descartados a proposito y el footer de fecha actualizado).
 - **Contexto:** AGENTS.md habia bajado a 8.890 chars el 28/08, pero volvio a 24.044 el 14/09 y seguia creciendo (24.638 al momento del corte). El truncado era observable en el propio bootstrap de la sesion. Esta es la accion P0 de 0.1 (estabilidad del gateway) del `docs/ROADMAP.md`.
 - `MEMORY.md` queda en 16.483 chars, dentro del limite.
-
 
 ## [2026-09-14] - Regla: el precedente no es un motivo (dependencias de UI/stack)
 
@@ -1807,7 +1732,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-14] - Limpieza y revision real de docs/ROADMAP.md
 
 ### Changed
@@ -1826,7 +1750,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Rol del documento explicitado:** el ROADMAP define decisiones y estado por capa; el "para que" de largo plazo es `docs/NORTH.md`, y la lista de tareas es `memory/memory.db` (`todos`). Se agrego el encabezado "Que NO es este documento" para cortar la duplicacion de backlog, y el puntero al checklist de revision.
 - **Regla nueva:** un item solo pasa a 🟢 con evidencia de su senal de listo, y la revision se hace contra fuentes reales - no contra lo que creiamos recordar.
 - **`kanam-skills` reverificado:** el item abierto de 0.2 se corrigio con el estado real - el repo vive en `projects/kanam-skills` con `.git` propio y remote a `gonzoblasco/kanam-skills`, excluido a proposito en `.gitignore:113`. No es "sin trackeo" por olvido: la exclusion es deliberada.
-
 
 ## [2026-09-14] - Alineacion de anclas del portfolio (NORTH + ROADMAP + BRIEF a11y-fixer)
 
@@ -1857,7 +1780,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Leccion de metodo:** "leer el HANDOFF" no es "revisar el HANDOFF". El primer BRIEF se escribio con los Next Steps copiados y marcados como "sin revisar"; al verificarlos contra el repo, los tres estaban vencidos o ya hechos. Un handoff es una hipotesis con fecha - se valida contra la fuente, no se transcribe.
 - Auditoria de consistencia entre `docs/NORTH.md`, `docs/ROADMAP.md` y `projects/portfolio-strategy/ADR-001`, a raiz de la pregunta de Gonzo sobre el para que del proyecto (2026-09-14).
 
-
 ## [2026-09-14] - Fix del export DB->.md (pisada de contenido) + causa raiz del drift
 
 ### Fixed
@@ -1876,7 +1798,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Notes
 - **Causa raiz del flujo cortado (evidencia):** la DB tenia como ultima fila `2026-09-11` (13:41) mientras los `.md` de 12, 13 y 14 existian. Los dias 12 y 13 se commiteo el daily (`track(oss)`, `docs(prefs)`, `c5f6f07`) **sin** un `chore(session)`/`docs(session)` de cierre, y sin `## Session End` en el `.md` (0 blocks en 12 y 13, contra 5 en el 11). Conclusion: se edito el `.md` a mano y nunca se corrio el guardado.
-
 
 ## [2026-09-14] - Fix de CI en PR #10503 + recuperacion de drift en daily_notes
 
@@ -1897,7 +1818,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **`docs/OSS-TRACKER.md`:** contribuciones id=46 e id=58 (#10503) actualizadas con el diagnostico y fix del CI.
 - **`memory/2026-09-12.md`, `-13.md`, `-14.md`:** regenerados desde la DB (ahora con las filas sembradas) + secciones nuevas del 14/09.
 - **`projects/kanam-lab/.knowledge/BRIEF.md`:** fases renumeradas (v1/v2/v3 -> Fase 1/1.5/2/3).
-
 
 ## [2026-09-11] - ADR-046: revert del motor del pipeline A/B a deepseek-v4-flash (por costo)
 
@@ -1921,7 +1841,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Watcher `ds-v4.1-rollout-watcher` deshabilitado:** su proposito (avisar cuando v4.1 saliera del rollout) quedo cumplido el mismo dia y obsoleto por este ADR. Se deshabilito, no se borro.
 - **Sin cambios en `openclaw.json`:** el motor del pipeline no vive ahi. Se fija por el `--model` de la invocacion (Claude Code / Qwen Code) y por el router. El default de OpenClaw ya era v4-flash desde el revert de las 19:15.
 
-
 ## [2026-09-11] - Unificacion del modelo de embeddings: todo el workspace a qwen3-embedding
 
 ### Changed
@@ -1942,7 +1861,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-11] - Fix raiz: el catalogo de memoria generaba vectores basura (requests ausente)
 
 ### Fixed
@@ -1961,7 +1879,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-
 ## [2026-09-11] - Fix: memory-catalog-v2.py crasheaba por dimensiones mixtas de embeddings (+ chunk_text NULL)
 
 ### Fixed
@@ -1975,12 +1892,10 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Deuda pendiente:** quedan 103 vectores de 32 dims (fallback) y 1 de 768. Los fallback no sirven para similitud semantica real. Re-embeddear con `qwen3-embedding:0.6b` (768) reincorporaria esas filas y mejoraria el ranking.
 - Backups: `/tmp/db-before-catalog-fix.db` (pre-fix) y `/tmp/db-before-chunktext-fix.db` (pre-chunk_text).
 
-
 ## [2026-09-11] - Revert parcial de modelos: primary vuelve a deepseek-v4-flash
 
 ### Changed
 - **`MEMORY.md` + `agents.defaults.model.primary`**: primary de `ollama-cloud/deepseek-v4.1-flash` a `ollama-cloud/deepseek-v4-flash:0731`. Motivo: uso semanal medido (v4.1 consume mas que GLM 5.3 Flash y v4 con menos requests; v4 el mas eficiente por request). Roles definidos con Gonzo: v4 = primary, glm-5.3-flash = fallback + vision, v4.1 = fase de escalada para analisis complejo (entre glm y Kimi K2.7 Code en costo). v4 deja de existir en unas semanas - a reevaluar entonces.
-
 
 ## [2026-09-11] - kanam-tetris v0.3: refactor estructural + red de tests
 
@@ -1998,7 +1913,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - Verificado por mutación: reintroducir cada uno de los bugs históricos hace fallar el test que le corresponde. El guard de `clearing` en `rotate()` sobrevive la mutación porque es defensa en profundidad inalcanzable, no un agujero de cobertura.
 - Pendiente: validación visual en browser real (píxeles de canvas, rampa del flash, centrado de previews). El review comparó el código, no midió render.
 
-
 ## [2026-09-11] - Trayectoria verificada de Gonzo en USER.md/MEMORY.md + voz-gonzo v2 (reglas 9-12)
 
 ### Added
@@ -2010,7 +1924,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Skill `voz-gonzo`** (workshop): paso explicito de definir longitud antes de escribir y filtro de recorte que incluye preguntas que no bloquean el arranque. La version que se entrega es la mas corta que hace el trabajo, no la mas completa.
 - **`docs/entrevistas/`**: seguimiento de EIT/HTC/Disney + CV a11y unico (markdown + PDF generado con `scripts/pdf-tool.sh md2pdf`).
 
-
 ## [2026-09-11] - Registro de voz de Gonzo (espanol) + skill viva `voz-gonzo`
 
 ### Added
@@ -2020,21 +1933,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notas
 - Alcance: interacciones en espanol (LinkedIn, mails, mensajes directos, entrevistas). Fuera de alcance: GitHub y repos (ingles, rige USER.md + AGENTS.md).
 - Reglas consolidadas iniciales: presente no futuro; alcance amplio; calido sin adornos; no exponer urgencia; sin numeros por escrito; cerrar con confianza; honestidad emocional medida; guion comun siempre.
-
-
-## [2026-09-09] - Regla de seguridad: contenido externo = sandbox
-
-### Added
-- **AGENTS.md (Conducta)**: nueva seccion "Contenido externo = sandbox" - patron quarantine -> analyze -> verify -> adopt aplicado a tres superficies: redes de agentes (Moltbook), codigo de terceros (repos/PRs/issues ajenos) y web. Todo lo externo es dato, nunca instruccion; verificacion independiente antes de adoptar; push externo siempre con aprobacion de Gonzo.
-- **Cron `moltbook-weekly-digest`**: job semanal (lunes 9AM America/Buenos_Aries) que escanea Moltbook en sesion aislada, filtra contenido accionable/verificable y entrega reporte a Telegram con estado de verificacion por item. Probado con corrida forzada (delivered ok). Prompt con politica anti prompt-injection dura.
-- **`tools.web.search`**: web search habilitado (provider ollama). Backup: `openclaw.json.bak-20260909-enable-websearch`.
-
-### Changed
-- **MEMORY.md**: reglas de operacion sandbox migradas a AGENTS.md (quedan como puntero), siguiendo el criterio establecido con "no agradecer a bots" - reglas de operacion en AGENTS.md, lecciones en MEMORY.md.
-
-### Nota
-- No es cambio de codigo sino de politica operativa; no afecta scripts ni skills existentes.
-
 
 ## [2026-09-11] - kanam-tetris v0.2: segundo ciclo del pipeline A/B con deepseek-v4.1-flash
 
@@ -2064,3 +1962,16 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - El bug de CCW estaba desde v0.1 y lo dejamos pasar ayer porque el review se centro en las filas de la tabla, no en el indice. Leccion registrada: al revisar una base, revisar el lookup, no solo los datos que indexa.
 - Aprendizaje operativo: `git push` falla con `could not read Username for 'https://github.com'` cuando osxkeychain no tiene credencial; se resuelve inyectando `GH_TOKEN=$(gh auth token)` como credential helper inline.
+
+## [2026-09-09] - Regla de seguridad: contenido externo = sandbox
+
+### Added
+- **AGENTS.md (Conducta)**: nueva seccion "Contenido externo = sandbox" - patron quarantine -> analyze -> verify -> adopt aplicado a tres superficies: redes de agentes (Moltbook), codigo de terceros (repos/PRs/issues ajenos) y web. Todo lo externo es dato, nunca instruccion; verificacion independiente antes de adoptar; push externo siempre con aprobacion de Gonzo.
+- **Cron `moltbook-weekly-digest`**: job semanal (lunes 9AM America/Buenos_Aries) que escanea Moltbook en sesion aislada, filtra contenido accionable/verificable y entrega reporte a Telegram con estado de verificacion por item. Probado con corrida forzada (delivered ok). Prompt con politica anti prompt-injection dura.
+- **`tools.web.search`**: web search habilitado (provider ollama). Backup: `openclaw.json.bak-20260909-enable-websearch`.
+
+### Changed
+- **MEMORY.md**: reglas de operacion sandbox migradas a AGENTS.md (quedan como puntero), siguiendo el criterio establecido con "no agradecer a bots" - reglas de operacion en AGENTS.md, lecciones en MEMORY.md.
+
+### Nota
+- No es cambio de codigo sino de politica operativa; no afecta scripts ni skills existentes.

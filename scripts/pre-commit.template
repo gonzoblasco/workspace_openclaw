@@ -49,11 +49,13 @@ MD_CONTENT=$(git diff --cached --name-status -M | awk -F'\t' '
 
 # Excepcion explicita a la regla del guion comun: (1) la novela en
 # docs/stories/quienes_quedan/ usa la raya (U+2014) como raya de dialogo
-# (decision 2026-09-24, STYLE.md: "no corregir"); (2) la historia congelada
-# (docs/archive/ y memory/archive/, 2026-10-06) se lee como se escribio -
-# bloques rotados de CHANGELOG/DREAMS citan em dash y no se reescriben (misma
-# politica que docs/records/, ADR-084). El CI no chequea guiones; esto evita
-# que el hook bloquee cada edicion. ADR-082 retiro la regla como obligacion.
+# (decision de Gonzo 2026-09-24, registrada en STYLE.md: "no corregir");
+# (2) la historia congelada (docs/archive/ y memory/archive/, 2026-10-06) se
+# lee como se escribio - bloques rotados de CHANGELOG/DREAMS citan texto con
+# em dash y no se reescriben (misma politica que docs/records/, ADR-084).
+# El CI no chequea guiones; esto solo evita que el hook bloquee cada edicion.
+# ADR-082 retiro la regla del guion como obligacion; el aparato sigue y quien
+# la padezca decide si lo desarma.
 MD_EXEMPT='^docs/stories/quienes_quedan/|^docs/archive/|^memory/archive/'
 MD_RULE=$(echo "$MD_CONTENT" | grep -vE "$MD_EXEMPT" || true)
 
@@ -85,7 +87,15 @@ if [ -n "$MD_CHANGED" ]; then
   # 2) Rutas citadas: cada `docs/...` o `scripts/...` debe existir.
   python3 "${SCRIPT_DIR}/scripts/check-refs.py" --all || exit 1
 
-  # 3) Corpus de ADRs: disco vs indice reconciliados. check-refs valida que una
+  # 3) CHANGELOG en ventana: el activo muestra solo los ultimos ~30 dias; lo
+  #    viejo vive archivado. Antes crecia sin control (310 KB al 2026-10-06).
+  #    Solo corre si el propio CHANGELOG.md esta staged: no bloquea commits
+  #    ajenos por un archivo que nadie toco. El cierre de sesion rota solo.
+  if echo "$MD_CHANGED" | grep -q '^CHANGELOG\.md$'; then
+    python3 "${SCRIPT_DIR}/scripts/changelog-rotate.py" --check || exit 1
+  fi
+
+  # 4) Corpus de ADRs: disco vs indice reconciliados. check-refs valida que una
   #    ruta citada exista, NO la direccion inversa: un ADR-063 sin fila en el
   #    indice pasaba limpio. Un ADR fuera del indice es un ADR que nadie encuentra.
   python3 "${SCRIPT_DIR}/scripts/check-adr-integrity.py" || exit 1

@@ -30,6 +30,16 @@ fi
 DATE=$(date '+%Y-%m-%d %H:%M')
 BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
 
+# --- CHANGELOG en ventana (2026-10-06, ADR-092) -------------------------------
+# El CHANGELOG activo muestra solo los ultimos ~30 dias; lo viejo se archiva.
+# Se corre en cada cierre para que nunca quede desfasado. El pre-commit lo
+# verifica cuando el archivo esta staged; aca se rota solo.
+if [ -f "scripts/changelog-rotate.py" ]; then
+  python3 scripts/changelog-rotate.py >/dev/null 2>&1 \
+    && echo "   📅 CHANGELOG en ventana (30 dias)" \
+    || echo "   ⚠️  changelog-rotate.py fallo"
+fi
+
 # --- HANDOFF del proyecto (o del workspace) -------------------------------------
 # El destino lo resuelve scripts/session-handoff.py:
 #   workspace/sistema -> <workspace>/.knowledge/HANDOFF.md

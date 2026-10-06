@@ -1,6 +1,6 @@
-# CHANGELOG (archivo) - anterior a 2026-09-06
+# CHANGELOG (archivo) - historia rotada
 
-> Rotado desde `CHANGELOG.md` el 2026-10-06 (politica de ventana de 30 dias). Entradas del 2026-07-23 al 2026-09-03.
+> Rotado desde `CHANGELOG.md`. Contiene la historia anterior al corte vigente. Mantenido por `scripts/changelog-rotate.py`. Orden: más reciente primero, igual que el activo.
 
 ---
 
@@ -36,7 +36,6 @@
 
 ---
 
-
 ## [2026-09-02] - initial-setup.sh: setup one-shot para máquina nueva
 
 ### Added
@@ -53,7 +52,6 @@
 
 ---
 
-
 ## [2026-09-02] - Scripts y skills actualizados al cruce de repos (triple-git)
 
 ### Changed
@@ -68,7 +66,6 @@
 - El cruce de repos nuevo (projects/ ↔ projects_openclaw con subrepos adentro) no estaba reflejado en la documentación ni en las herramientas: los scripts y skills seguían describiendo el esquema viejo (doble-git, submodulos, gitlinks).
 
 ---
-
 
 ## [2026-09-02] - Repo agregado projects_openclaw (privado)
 
@@ -86,7 +83,6 @@
 
 ---
 
-
 ## [2026-09-02] - Clone completo de projects/ + resolución de gitlinks
 
 ### Added
@@ -103,7 +99,6 @@
 
 ---
 
-
 ## [2026-09-02] - Regla de auto-review antes de abrir PRs
 
 ### Added
@@ -114,6 +109,28 @@
 
 ---
 
+## [2026-09-02] - .gitignore: silenciar proyectos sin .knowledge/ en el workspace
+
+### Changed
+- **`.gitignore`:** ignorados explícitamente `projects/accessible-ui/`, `projects/ai-developer-stack/`, `projects/create-with-ai/` - los 3 quedaban como untracked crónicos porque el patrón global `!/projects/*/` los re-incluye pero no tienen `.knowledge/` que trackear (el código vive en GitHub y en el agregado `projects_openclaw`; el checkout local es util pero no parte del repo del workspace).
+
+### Why
+- Después del setup triple-git quedaban 3 carpetas sin `.knowledge/` que ensuciaban el `status` del workspace. El fix documenta la excepción en el propio .gitignore en vez de listarla en memoria.
+
+---
+
+## [2026-09-02] - Fixes a scripts de memoria (catalog + export) tras sync con la Air
+
+### Fixed
+- **`scripts/memory-catalog-v2.py`:** crash `IndexError: list index out of range` en `compute_topic_centroids` - vectores de 32 dims (sesiones catalogadas con otro modelo de embedding) se mezclaban con los de 768 dims (nomic actual) para el mismo topic. Fix: solo mezclar vectores de la misma dimensión por topic (los de otra dims se saltean).
+- **`scripts/memory-db.sh export-all`:** generaba ~2600 archivos basura en `memory/export/` - el split por `|` y por líneas rompía contra el contenido markdown (que tiene pipes y saltos de línea). Fix: una query por fecha, sin separadores. Ahora exporta 33 dailies limpios.
+
+### Why
+- El catalog crasheó al catalogar el daily tras el pull de la Air (que había catalogado con otro modelo). El export-all corrupto ensuciaba `memory/export/` (ignorado por .gitignore pero igual).
+
+### Notes
+- Sesión completa del día catalogada en DB (DB-first): las 3 secciones (22:00-22:56 mine desde desktop, 23:00-23:20 laptop, 23:26-23:40 post-pull verify). 28 sesiones, 74 vectores, 84 learnings.
+- 2 todos nuevos: `.env` de soporteml (repo público trackea .env - decidir restaurar o purgar) y desarchivar create-with-ai (commit local legítimo bloqueado por repo archivado).
 
 ## [2026-08-30] - Revert a DeepSeek V4 Flash como default de todo el sistema
 
@@ -127,7 +144,6 @@
 - Gonzo comparó ambos modelos y la diferencia de calidad es muchísima a favor de DeepSeek V4 Flash. GLM 5.3 Flash queda disponible como opción (multimodal) pero cualquier uso como default requiere flag de excepción justificado.
 
 ---
-
 
 ## [2026-08-29] - Regla de pagos obligatoria: Mercado Pago, nunca Stripe
 
@@ -143,7 +159,6 @@
 - En Argentina y LATAM en general Stripe no existe como opcion de cobro real. Usarlo por inercia de documentacion bloquea el mercado principal. Mercado Pago cubre moneda local y medios de pago (QR, tarjetas, Rapipago/PagoFacil, transferencias).
 
 ---
-
 
 ## [2026-08-29] - Nuevo proyecto publico kanam-pulse + fix de doble git en init-project.sh
 
@@ -170,7 +185,6 @@
 
 ---
 
-
 ## [2026-08-27] - Fix gitignore: repos embebidos y .knowledge/
 
 ### Fixed
@@ -182,7 +196,6 @@
 
 ---
 
-
 ## [2026-08-27] - Leccion de ingenieria: validar fixes visuales con browser real
 
 ### Added
@@ -192,7 +205,6 @@
 - El PR #10517 tenia browser tests reales con Playwright que pasaban + tsc limpio + formato OK + validacion con VoiceOver OK. Pero al validar visualmente con Chrome desktop, Gonzo detecto que el chrome nativo del input se renderizaba encima del SVG custom - bug preexistente que jsdom/headless no detecta. Si solo se hubiera confiado en los tests automatizados, el PR habria mergeado con un bug visual critico.
 
 ---
-
 
 ## [2026-08-27] - Reorganizacion de docs/ por categoria (pipeline y entrevistas)
 
@@ -208,7 +220,6 @@
 
 ---
 
-
 ## [2026-08-27] - Reorganizacion de docs/ por categoria
 
 ### Changed
@@ -223,7 +234,6 @@
 - Los drafts de las tres categorias estaban amontonados en la raiz de `docs/` junto a documentos de referencia general. Separarlos por categoria hace el historial consultable y consistente con `adr/`, `checklists/` y `learnings/`.
 
 ---
-
 
 ## [2026-08-27] - Guia MAX vs HIGH + regla de nivel de razonamiento
 
@@ -242,7 +252,6 @@
 
 ---
 
-
 ## [2026-08-26] - Comando add-contribution en memory-db.sh
 
 ### Added
@@ -256,7 +265,6 @@
 
 ---
 
-
 ## [2026-08-26] - ADR-039: Changesets (cuando usarlos y como)
 
 ### Added
@@ -267,7 +275,6 @@
 - El workspace no tenia un criterio explicito sobre cuando usar changesets. La colaboracion en astryx mostro que es practica estandar de la industria para librerias publicadas, y quedo documentado para no depender de la memoria.
 
 ---
-
 
 ## [2026-08-26] - Configuracion de modelos OpenClaw en VPS
 
@@ -281,7 +288,6 @@
 - Re-generar/verificar la API key de Ollama Cloud para que funcione `deepseek-v4-flash` sin `:preview`.
 
 ---
-
 
 ## [2026-08-26] - Fusion de skills de estudio + indice maestro unico
 
@@ -297,6 +303,17 @@
 
 ---
 
+## [2026-08-26] - ADR-040: Seleccion de Modelos por Tipo de Tarea
+
+### Added
+- **`docs/adr/ADR-040-modelos-seleccion-por-tarea.md`:** nuevo ADR que define el criterio de seleccion de modelos segun el tipo de tarea. Reemplaza al ADR-006. Incluye perfiles de personalidad para 8 modelos, guia rapida de seleccion, y regla operativa para que Kanam sugiera el modelo adecuado antes de cada tarea.
+- **`docs/adr/README.md`:** agregado ADR-040 al indice.
+
+### Changed
+- **ADR-006 (Capacidad Computacional DeepSeek):** marcado como reemplazado por ADR-040.
+
+### Why
+- La migracion a Ollama Pro abrio acceso a 8+ modelos. No tiene sentido usar siempre el mismo modelo cuando cada uno tiene fortalezas distintas. Este ADR captura el criterio de seleccion basado en una cata empirica de 8 modelos con el mismo prompt.
 
 ## [2026-08-25] - Quitar PR review del inicio/cierre de sesion
 
@@ -311,7 +328,6 @@
 
 ---
 
-
 ## [2026-08-24] - Regla: no agradecer a bots de review (AGENTS.md)
 
 ### Added
@@ -322,7 +338,6 @@
 - Correción de Gonzo en sesión: no agradecer a bots de review de código, solo a humanos. Regla operativa que encaja con las otras reglas de feedback en AGENTS.md.
 
 ---
-
 
 ## [2026-08-24] - CV búsqueda laboral (Principal Full Stack)
 
@@ -337,9 +352,7 @@
 
 ---
 
-
 ## [2026-08-24] - Reglas operativas de feedback OSS en AGENTS.md
-
 
 ## [2026-08-24] - Reglas operativas de feedback OSS en AGENTS.md
 
@@ -350,7 +363,6 @@
 - Gonzo: "no puedo confiar sino en ti para tareas largas si en estas breves ya tengo que estar corriendote". Los errores del dia (publicar sin leer el hilo completo en #4690, exponer notas internas en #5204 y #4611, elogios en PR ajeno en #5414) se consolidaron como reglas duras en las instrucciones, no en memorias.
 
 ---
-
 
 ## [2026-08-24] - Regla dura: referencia git ≠ proyecto (leccion por perdida de token)
 
@@ -374,7 +386,6 @@
 
 ---
 
-
 ## [2026-08-24] - Fix memory-db.sh: quoting SQL en helpers de insert
 
 ### Fixed
@@ -385,7 +396,6 @@
 
 ---
 
-
 ## [2026-08-24] - OSS-TRACKER: colaboraciones no-codigo
 
 ### Added
@@ -394,7 +404,6 @@
 - **Retro-carga de 6 colaboraciones historicas:** astryx #3797/#5107/#4157/#5034/#3677 (diagnostico de Gonzo que llego a main via PR de otro) + hermes-agent #38072 (re-audit comentado).
 
 ---
-
 
 ## [2026-08-24] - Colaboración OSS: NO es abrir PRs
 
@@ -412,7 +421,6 @@
 
 ---
 
-
 ## [2026-08-24] - search-fusion: estrategia de busqueda por intencion
 
 ### Added
@@ -422,7 +430,6 @@
 - Mejorar la calidad de las busquedas: elegir la estrategia segun la intencion y no conformarse con el primer resultado. Verificar antes de responder (regla de Gonzo).
 
 ---
-
 
 ## [2026-08-24] - Resumen estructurado de compactacion en session-lifecycle
 
@@ -434,7 +441,6 @@
 
 ---
 
-
 ## [2026-08-24] - model-router.sh: rutas de modelo por tarea + overrides
 
 ### Added
@@ -445,7 +451,6 @@
 - Autonomizar el modelo dinamico (hoy elegimos deepseek/kimi a mano): con rutas por tipo + overrides sticky, la decision de modelo se formaliza y persiste.
 
 ---
-
 
 ## [2026-08-24] - pdf-tool.sh + skill: manejo local de PDFs y OCR
 
@@ -462,7 +467,6 @@
 
 ---
 
-
 ## [2026-08-24] - Portes ClawHub: anti-repetition en DREAMS + flush pre-compactacion
 
 ### Changed
@@ -475,7 +479,6 @@
 
 ---
 
-
 ## [2026-08-24] - compaction-domain-aware: tiers de prioridad al compactar
 
 ### Added
@@ -485,7 +488,6 @@
 - Al compactar, hoy se preserva por mensajes recientes + buffer; esta skill garantiza que los items criticos (ADRs, invariantes, criterios de aceptacion) esten textualmente preservados, no solo resumidos.
 
 ---
-
 
 ## [2026-08-24] - pipeline-track.sh: estado durable + crash recovery del pipeline A/B
 
@@ -498,7 +500,6 @@
 
 ---
 
-
 ## [2026-08-24] - skill-router: sugerir skill por tarea (embeddings local)
 
 ### Added
@@ -510,7 +511,6 @@
 
 ---
 
-
 ## [2026-08-24] - Portadas de ClawHub: noise filtering + safe-fetch
 
 ### Added
@@ -521,7 +521,6 @@
 - Ejercicio de analisis ClawHub (12 categorias): adoptar ideas de plugins de terceros a nuestro stack propio, sin instalar. Primera ronda de portage de candidatos rapidos.
 
 ---
-
 
 ## [2026-08-24] - github-pr-risk.sh: detector de riesgos para cross-review
 
@@ -537,7 +536,6 @@
 
 ---
 
-
 ## [2026-08-23] - Spike ForgeCode: probado y descartado
 
 ### Changed
@@ -546,7 +544,6 @@
 
 ---
 
-
 ## [2026-08-23] - ADR-038: Learnings con mirror en DB
 
 ### Added
@@ -554,7 +551,6 @@
 - **docs/adr/README.md:** ADR-038 agregado al índice (origen: workspace).
 
 ---
-
 
 ## [2026-08-23] - Learnings separados por categoría + mirror en DB
 
@@ -569,7 +565,6 @@
 
 ---
 
-
 ## [2026-08-23] - Limpieza de projects/: HANDOFF obsoleto eliminado, PROYECTOS.md alineado
 
 ### Removed
@@ -580,14 +575,12 @@
 
 ---
 
-
 ## [2026-08-23] - Corrección de título en LEARNINGS.md
 
 ### Changed
 - **docs/LEARNINGS.md:** corregido el título. Decía `# LEARNINGS.md - Kanam's Solitaires` (nombre de un proyecto de juegos, sin relación con el contenido). Ahora `# LEARNINGS.md - Lecciones aprendidas del workspace`, consistente con el patrón de otros archivos de docs.
 
 ---
-
 
 ## [2026-08-23] - Limpieza de docs/checklists/
 
@@ -600,7 +593,6 @@
 
 ---
 
-
 ## [2026-08-23] - Refactor de ADRs: numeración única + template unificado
 
 ### Changed
@@ -609,7 +601,6 @@
 - **MEMORY.md:** Referencia de Lucide actualizada (ADR-030→ADR-037).
 
 ---
-
 
 ## [2026-08-23] - Pipeline de producto actualizado, referencia eliminada
 
@@ -621,7 +612,6 @@
 
 ---
 
-
 ## [2026-08-23] - Eliminado script roto y referencias a products/
 
 ### Removed
@@ -632,7 +622,6 @@
 
 ---
 
-
 ## [2026-08-23] - Refactor AGENTS.md por taxonomía
 
 ### Changed
@@ -641,14 +630,12 @@
 
 ---
 
-
 ## [2026-08-23] - Refactor CONTRIBUTING.md
 
 ### Changed
 - **CONTRIBUTING.md:** Alineado con el flujo real de trabajo (worktrees/temp dirs, no `projects/`). Agregada regla crítica de leer todos los comments (incluidos inline y reviews) antes de clasificar/empujar un PR. Agregado protocolo de cierre de PRs stale (~1 mes sin review). Agregado em dash check obligatorio. Documentado el gotcha de `gh pr list --author` sin `--repo`. Tracking apunta a `docs/OSS-TRACKER.md` (regenerado desde la DB).
 
 ---
-
 
 ## [2026-08-23] - Eliminado FREEZER.md
 
@@ -657,14 +644,12 @@
 
 ---
 
-
 ## [2026-08-23] - Heartbeat reactivado como mantenimiento silencioso
 
 ### Changed
 - **HEARTBEAT.md:** reescrito de "apagado total" (solo HEARTBEAT_OK) a checklist de mantenimiento silencioso proactivo: git status, archivado de dailies, sync de MD espejo con la DB, foldear aprendizajes a MEMORY.md, y anotar backlog. Con límites claros (horario quieto, costo bajo, no molestar).
 
 ---
-
 
 ## [2026-08-23] - IDENTITY.md: definición viva de Kanam
 
@@ -673,14 +658,12 @@
 
 ---
 
-
 ## [2026-08-23] - Eliminado INBOX.md de la raíz
 
 ### Removed
 - **INBOX.md (raíz):** eliminado. Era un puntero huérfano sin contenido real - el espejo real es `memory/inbox.md` (generado por `memory-db.sh export-inbox` desde la DB, que es la fuente de verdad). Nadie lo leía ni lo generaba. Mismo caso que FREEZER.md.
 
 ---
-
 
 ## [2026-08-23] - Refactor MEMORY.md y LEARNINGS.md
 
@@ -689,7 +672,6 @@
 - **docs/LEARNINGS.md:** consolidadas las lecciones técnicas que vivían en MEMORY.md (Godot, Sport Cars, feature flags, mockups, npm, bootcamp, patrón por inercia, meta-aprendizaje). Corregidos 4 em dashes preexistentes en entradas de 2026-08-17.
 
 ---
-
 
 ## [2026-08-23] - Eliminados submódulos del workspace
 
@@ -704,7 +686,6 @@
 
 ---
 
-
 ## [2026-08-23] - SKILLS-INDEX.md al día
 
 ### Changed
@@ -713,14 +694,12 @@
 
 ---
 
-
 ## [2026-08-23] - SOUL.md: de template a principios propios
 
 ### Changed
 - **SOUL.md:** reescrito del template default (inglés, genérico) a documento de principios en español. Enfocado en lo innegociable (ayudar de verdad, opiniones, buscar antes de preguntar, confianza por competencia, respeto a la privacidad) y límites. La identidad personal queda en IDENTITY.md (refactorizado el mismo día). Se avisó a Gonzo del cambio (regla del propio SOUL.md).
 
 ---
-
 
 ## [2026-08-23] - Eliminado TODO.md de la raíz
 
@@ -733,14 +712,12 @@
 
 ---
 
-
 ## [2026-08-23] - TOOLS.md: de template a cheat sheet real del setup
 
 ### Changed
 - **TOOLS.md:** reescrito del template default (inglés, genérico, solo ejemplos) a cheat sheet operativo del setup de Gonzo en español. Agrega: máquinas (Mac Mini/MacBook Air + reglas de merge), modelos Ollama (local + cloud con los disponibles), pipeline de agentes (Qwen Code + Claude Code), scripts del workspace (los 8), memoria SQLite + espejos, red/remoto (Tailscale Serve), y desarrollo (pre-commit hooks, iconos, stack, idioma).
 
 ---
-
 
 ## [2026-08-23] - USER.md actualizado
 
@@ -749,7 +726,6 @@
 
 ---
 
-
 ## [2026-08-22] - Sesión de PRs OSS y lecciones
 
 ### Changed
@@ -757,7 +733,6 @@
 - **docs/LEARNINGS.md:** Lección del em dash en textos largos en inglés + mecanismo de verificación obligatorio.
 
 ---
-
 
 ## [2026-08-21] - Pipeline de programación con agentes
 
@@ -769,7 +744,6 @@
 - **MEMORY.md:** Documentado el pipeline Qwen como estándar de programación. Claude Code desbloqueado como agente alternativo (vía Ollama). Lección cross-review: el agente B puede introducir bugs al "corregir" código correcto - verificar contra la fuente real.
 
 ---
-
 
 ## [2026-08-20] - Proactividad con backlog y skills nuevas
 
@@ -783,14 +757,12 @@
 
 ---
 
-
 ## [2026-08-19] - Refactor de skills y limpieza
 
 ### Changed
 - **Skills:** merge de `adhd-daily-planner` en `adhd-assistant`. Refactor de calidad y portabilidad (Fase 4). Agregadas secciones de helper scripts y tooling references a skills sin scripts propios.
 
 ---
-
 
 ## [2026-08-18] - Kanam Mind y Kanam Forge
 
@@ -803,7 +775,6 @@
 
 ---
 
-
 ## [2026-08-17] - Kanam Story v0.17.0 y Boy Scout
 
 ### Changed
@@ -812,7 +783,6 @@
 - **ADR-030:** Lucide como librería de iconos base en todos los proyectos.
 
 ---
-
 
 ## [2026-08-16] - Migración a SQLite (modo híbrido)
 
@@ -826,7 +796,6 @@
 
 ---
 
-
 ## [2026-08-15] - Estructura de proyectos con doble git
 
 ### Added
@@ -838,7 +807,6 @@
 
 ---
 
-
 ## [2026-08-14] - Ley del silencio y protocolo de sesión
 
 ### Changed
@@ -847,7 +815,6 @@
 - **AGENTS.md:** reglas de commits (inglés, atómicos por issue) y verify-before-push para builds.
 
 ---
-
 
 ## [2026-08-13] - SoporteML V4 y skills de pipeline
 
@@ -860,7 +827,6 @@
 
 ---
 
-
 ## [2026-08-12] - Skills de background y a11y
 
 ### Added
@@ -872,7 +838,6 @@
 
 ---
 
-
 ## [2026-07-25] - Refactor AGENTS.md: single source of truth
 
 ### Changed
@@ -880,7 +845,6 @@
 - **CHANGELOG.md:** Separado en raíz (cambios del workspace) y `skills/CHANGELOG.md` (cambios de skills). Eliminados aprendizajes y next steps.
 
 ---
-
 
 ## [2026-07-25] - Limpieza de repositorios
 
@@ -896,14 +860,12 @@
 
 ---
 
-
 ## [2026-07-24] - Git Workflow Fix
 
 ### Changed
 - **AGENTS.md:** Added `git pull --rebase` before push in workspace git workflow.
 
 ---
-
 
 ## [2026-07-23] - Skills Workspace Overhaul: 20 → 33 Skills
 
@@ -914,41 +876,3 @@
 ### Changed
 - Workspace skills count: 20 → 33
 - Skills mirror synced to `.github/skills/`
-
-
-## [2026-08-26] - ADR-040: Seleccion de Modelos por Tipo de Tarea
-
-### Added
-- **`docs/adr/ADR-040-modelos-seleccion-por-tarea.md`:** nuevo ADR que define el criterio de seleccion de modelos segun el tipo de tarea. Reemplaza al ADR-006. Incluye perfiles de personalidad para 8 modelos, guia rapida de seleccion, y regla operativa para que Kanam sugiera el modelo adecuado antes de cada tarea.
-- **`docs/adr/README.md`:** agregado ADR-040 al indice.
-
-### Changed
-- **ADR-006 (Capacidad Computacional DeepSeek):** marcado como reemplazado por ADR-040.
-
-### Why
-- La migracion a Ollama Pro abrio acceso a 8+ modelos. No tiene sentido usar siempre el mismo modelo cuando cada uno tiene fortalezas distintas. Este ADR captura el criterio de seleccion basado en una cata empirica de 8 modelos con el mismo prompt.
-
-
-## [2026-09-02] - .gitignore: silenciar proyectos sin .knowledge/ en el workspace
-
-### Changed
-- **`.gitignore`:** ignorados explícitamente `projects/accessible-ui/`, `projects/ai-developer-stack/`, `projects/create-with-ai/` - los 3 quedaban como untracked crónicos porque el patrón global `!/projects/*/` los re-incluye pero no tienen `.knowledge/` que trackear (el código vive en GitHub y en el agregado `projects_openclaw`; el checkout local es util pero no parte del repo del workspace).
-
-### Why
-- Después del setup triple-git quedaban 3 carpetas sin `.knowledge/` que ensuciaban el `status` del workspace. El fix documenta la excepción en el propio .gitignore en vez de listarla en memoria.
-
----
-
-
-## [2026-09-02] - Fixes a scripts de memoria (catalog + export) tras sync con la Air
-
-### Fixed
-- **`scripts/memory-catalog-v2.py`:** crash `IndexError: list index out of range` en `compute_topic_centroids` - vectores de 32 dims (sesiones catalogadas con otro modelo de embedding) se mezclaban con los de 768 dims (nomic actual) para el mismo topic. Fix: solo mezclar vectores de la misma dimensión por topic (los de otra dims se saltean).
-- **`scripts/memory-db.sh export-all`:** generaba ~2600 archivos basura en `memory/export/` - el split por `|` y por líneas rompía contra el contenido markdown (que tiene pipes y saltos de línea). Fix: una query por fecha, sin separadores. Ahora exporta 33 dailies limpios.
-
-### Why
-- El catalog crasheó al catalogar el daily tras el pull de la Air (que había catalogado con otro modelo). El export-all corrupto ensuciaba `memory/export/` (ignorado por .gitignore pero igual).
-
-### Notes
-- Sesión completa del día catalogada en DB (DB-first): las 3 secciones (22:00-22:56 mine desde desktop, 23:00-23:20 laptop, 23:26-23:40 post-pull verify). 28 sesiones, 74 vectores, 84 learnings.
-- 2 todos nuevos: `.env` de soporteml (repo público trackea .env - decidir restaurar o purgar) y desarchivar create-with-ai (commit local legítimo bloqueado por repo archivado).
