@@ -6,6 +6,15 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-06] - Dream Diary en rotación mensual (DREAMS)
+
+### Added
+- **`scripts/dreams-rotate.py`:** mantiene `DREAMS.md` en el mes en curso; los meses anteriores se archivan por mes en `memory/archive/dreaming/DREAMS-YYYY-MM.md`. Idempotente, solo toca el contenido entre los marcadores del diary del plugin (deja el bloque `Deep Sleep` intacto), una entrada sin fecha no se archiva. `--check`, `--dry-run`, `--today`, `--root` (tests).
+- **`tests/bash/dreams-rotate.bats`:** 7 casos (drift, rota, marcadores intactos, idempotencia, `--check` limpio, `--dry-run`, fecha inválida).
+
+### Changed
+- **`skills/session-lifecycle/scripts/session-end.sh`:** rota DREAMS en cada cierre, junto con el CHANGELOG. Sin gate en pre-commit porque `DREAMS.md` está gitignored (estado local del plugin).
+
 ## [2026-10-06] - CHANGELOG con ventana de 30 días y rotación automatizada (ADR-092)
 
 ### Added

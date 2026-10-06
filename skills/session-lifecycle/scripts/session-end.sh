@@ -39,6 +39,13 @@ if [ -f "scripts/changelog-rotate.py" ]; then
     && echo "   📅 CHANGELOG en ventana (30 dias)" \
     || echo "   ⚠️  changelog-rotate.py fallo"
 fi
+# Dream Diary por mes (2026-10-06): el DREAMS.md lo escribe memory-core
+# append-only; se rota por mes (no tiene gate en pre-commit: esta gitignored).
+if [ -f "scripts/dreams-rotate.py" ]; then
+  python3 scripts/dreams-rotate.py >/dev/null 2>&1 \
+    && echo "   🌙 DREAMS en el mes en curso" \
+    || echo "   ⚠️  dreams-rotate.py fallo"
+fi
 
 # --- HANDOFF del proyecto (o del workspace) -------------------------------------
 # El destino lo resuelve scripts/session-handoff.py:
