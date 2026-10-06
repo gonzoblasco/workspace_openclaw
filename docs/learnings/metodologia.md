@@ -623,3 +623,9 @@ Corolario de orden (pedido explicito de Gonzo): la skill del propio Laboratorio 
 
 ---
 
+## Aprendizajes operativos del cierre (para no repetir)
+
+ - **El pre-commit tiene enforcement real de guion común:** aborta ante **em dash (- U+2014) Y en dash (- U+2013)**. Hay que usar guion común (-) SIEMPRE, incluso en rangos como L0-L4 o A-F. Me frenó el commit dos veces. Regla de Gonzo. - **El check de rutas del pre-commit** valida que toda ruta citada exista: cité `la doc del paquete npm de OpenClaw (referencia externa)` (doc del paquete npm de OpenClaw) como si fuera del workspace -> error. Corregir a "referencia externa". - Los gates del pre-commit corrieron sobre MI trabajo y fo
+
+---
+

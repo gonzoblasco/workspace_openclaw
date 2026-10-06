@@ -215,3 +215,21 @@ Leccion: cuando una teoria externa coincide con una practica ya instalada, la te
 
 ---
 
+## Hallazgos clave
+
+ - **El core de OpenClaw está más completo de lo que pensábamos.** Dos repos (MCP adapter `androidStern-personal`, MCP server `Helms-AI`) resultaron **redundantes**: el core ya expone y consume MCP nativo (`mcp.servers`, `openclaw mcp add` / `mcp serve`, transportes stdio/SSE/Streamable HTTP, policy integrada, `openclaw mcp doctor --probe`). Verificado contra `la doc del paquete npm de OpenClaw (referencia externa)` del paquete npm. - **Hallazgo transversal:** tres candidatos distintos (Claw Orchestrator, MemoV, ClawSec) resuelven e
+
+---
+
+## TRUCO CLAVE (lo que se atascaba)
+
+ - `/api/generate` con modelos grandes (12b/24b) y prompt largo + **context_length huge por defecto (1M tokens del 12b)** → se **atasca en "load"** (timeout exit 28, RAM se satura). - **Solución:** pasar `options.num_ctx` **pequeño** (2048 o 4096) vía `/api/chat` o `/api/generate`. Con `num_ctx:4096` el 12b respondió bien (4362 bytes PLANO, exit=0). - Prompt para la cata: `/tmp/cata-juez.md` (prompt de JUEZ estricto, escala 1-5, 4 dims, crítico). - Dimensión PLANO aprobada: prompt FastAPI market
+
+---
+
+## Regla de oro aprendida
+
+ - Para cata con Ollama local: **`curl` directo a `/api/chat`** con `options.num_ctx` limitado (2048-4096), `stream:false`, secuencia estricta (un modelo a la vez). No usar `/api/generate` con context default en modelos grandes. # Memory 2026-10-04 ## Context & Decisions - **Status:** Session cleared. No active tasks or sub-agents. - **Identified Pending:** `kanam-os` (contrast guard), `kanam-pulse` (long-term), and the novel "Quienes Quedan". - **GitHub Status:** Verified clean (no new PRs, iss
+
+---
+

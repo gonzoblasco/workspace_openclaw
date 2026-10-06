@@ -90,8 +90,32 @@ When a maintainer reports red CI on an a11y PR, before deciding between closing 
 
 **Method:** `grep -rln "expect(announce)" packages/` (or the assert that changed) to find all tests that depend on the modified behavior, not just the direct component test. If the fix is a valid direction and only the sibling test needs updating to the new behavior (same pattern as the already-updated component test), update it and push - do not close. If instead the fix breaks due to a false assumption about the data model, close it (previous case).
 
+## Auditing custom elements: a green axe run is not evidence (ElementInternals)
+
+A custom element can set its role/state via `this.attachInternals().role = 'button'`. That role is **not reflected in the DOM** (`el.role` is `undefined`) and there is no standard DOM API to read `ElementInternals`. So axe-core cannot tell "no role" from "role set via ElementInternals". Two consequences:
+
+- **False positives** (reports correct elements as missing a role) - the most-upvoted axe-core issue, dequelabs/axe-core#4259.
+- **False negatives**, the dangerous one: an axe run on a page with web components that do **not** expose their internals **does not prove anything**. A clean run on custom elements is incomplete coverage, not a verdict.
+
+**Why the native browser API is stalled (don't wait on it):** `w3c/aria#2663` (`implicitAria`, benbeaudry) + `whatwg/html#11040`. In Gecko/Chromium the default/implicit semantics live **inside the a11y engine**, off by default for cost. Exposing them via DOM forces either starting the engine (perf) or revealing that an AT is running, which violates Web Platform Design Principle 2.11. And "default role" is not always constant: `<section>` is `region` with an accessible name, `generic` without it - that needs the name computation, i.e. the engine. No consensus; P1 (ElementInternals-only) is feasible, P2 (general DOM API) is not.
+
+**What works today - the Web Components CG community protocol (axe-core supported it, 2026-10):**
+
+- Expose internals via a side-channel: `globalThis._elementInternals` (a `WeakMap<Element, ElementInternals>`), or a property/symbol on the element (`_internals`, `internals`, `internals_`, `Symbol('internals')`, `Symbol('privateInternals')`).
+- Docs: `dequelabs/axe-core` `doc/element-internals.md`. Proposal: `webcomponents-cg/community-protocols` `proposals/element-internals-declaration.md`. In Lit, an `InternalsController` can register for every component.
+
+**Limits - do not over-trust the stopgap:**
+
+1. **Author opt-in.** The component must register its internals. When auditing **third-party pages you don't control**, silence proves nothing.
+2. **Main world only.** Tools in an extension isolated world cannot see `globalThis._elementInternals`. It works for in-page injection: `<script>`, Playwright `page.evaluate`, CI.
+3. **Monkey-patch order.** Patching `HTMLElement.prototype.attachInternals` must run **before** any custom element is defined; already-defined elements stay unregistered.
+4. **Partial axe-core coverage.** Today only `role` (not `ariaLabel`, etc.), the role *value* is not validated, and several rules do not run on such elements (`aria-required-attr`; `aria-required-children` only partial).
+
+**Rule:** before treating an axe run as evidence, check coverage. On custom elements, if the component does not expose the protocol, the result is incomplete - **do not certify**. In **our** components that use ElementInternals, implement the protocol so audits/CI see the roles. For third-party content, automated a11y coverage of web components is a **declared limitation**, not a verdict.
+
 ## Common errors
 
+- **Treating a green axe run on custom elements as evidence they are accessible.** Without the ElementInternals protocol, coverage is incomplete (see section above).
 - **Considering an a11y PR finished with only green unit tests.** Tests verify attributes, not announcements.
 - **Proposing to change a component before verifying whether the behavior is intentional.** Risk of a PR that breaks the primitive's contract.
 - **Posting a comment on your own issue starting with "Thanks for opening this".** That phrase is for thanking someone else who reported; it is absurd when you opened the issue yourself. Start directly with the analysis.
@@ -104,3 +128,4 @@ When a maintainer reports red CI on an a11y PR, before deciding between closing 
 - [ ] Do captions confirm the announced phrase?
 - [ ] Did I verify whether a finding is intentional (guards/comments/patterns) before touching the component?
 - [ ] Did I document the evidence in the PR and separate findings into their own issues?
+- [ ] If the page uses custom elements: did I check whether they expose ElementInternals (protocol/WeakMap) before trusting the axe result?
