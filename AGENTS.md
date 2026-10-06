@@ -208,7 +208,7 @@ Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/S
 - **Pre-commit hooks** (`simple-git-hooks`): lint (Biome) → test (Vitest) → build. Omitir con `SKIP_SIMPLE_GIT_HOOKS=1`.
 - **Iconos:** Lucide (`lucide-react`) en todos los proyectos. Nunca emojis como iconografía de producto.
 - **Stack opinado:** OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG.
-- **Pagos:** el proveedor se elige por proyecto y se justifica (ADR-042). Lovable -> Stripe (única integración). Fuera de Lovable, Mercado Pago es opción fuerte (medios locales) y Stripe también es válido. Mercado: Argentina/LATAM. **SoporteML usa Stripe** (Lovable, ADR-091).
+- **Pagos:** **Stripe es el proveedor único** (ADR-042), sea o no con Lovable. Mercado Pago queda fuera como intención. Mercado: Argentina/LATAM.
 - **Regla de idioma por capa (2026-09-15):** lo que se VE en GitHub va en INGLES; los strings de UI en ESPAÑOL. Y por capa: los **AGENTS.md/CLAUDE.md de proyectos públicos** (kanam-fixer, kanam-skills, etc.) en INGLES - son superficie de GitHub (portfolio); el **workspace privado** (AGENTS.md raiz, SOUL/IDENTITY/USER, memoria) en ESPAÑOL - es espacio de trabajo y diálogo, no superficie pública. Aplica al par por-proyecto: el CLAUDE.md espejo alineado con el AGENTS.md que importa. No hay beneficio técnico de idioma para interpretacion del modelo; lo unico que importa es la superficie.
 
 ---

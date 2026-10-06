@@ -4,10 +4,23 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-10-06] - Pagos: Stripe como proveedor unico reconocido (ADR-042 superseded de nuevo)
+
+### Changed
+- **`docs/adr/ADR-042`:** reescrito y **renombrado** a `ADR-042-stripe-pagos.md` (el slug ya no dice `mercado-pago`). **Stripe es el proveedor de pagos unico reconocido del ecosistema**, sea o no un proyecto sobre Lovable. Mercado Pago queda **fuera como intencion** (no se borra su existencia ni el trabajo previo; deja de figurar como opcion prevista). No se reconocen otros proveedores. Supersede la version intermedia de la misma fecha ("eleccion por proyecto") y la original ("Mercado Pago obligatorio").
+- **`docs/adr/README.md`:** fila 042 actualizada al titulo nuevo + slug nuevo.
+- **`MEMORY.md`, `AGENTS.md`:** regla de pagos simplificada a "Stripe es el proveedor unico".
+- **`docs/adr/ADR-091`:** punto 3 de la decision alineado (Stripe deja de ser "excepcion"; es el proveedor reconocido).
+- **`docs/APUESTAS.md`:** nota de SoporteML ajustada.
+- **DB (`memory/memory.db`, tabla `learnings`):** leccion durable agregada.
+
+### Verified
+- `check-adr-integrity.py` (91 ADRs), `check-refs.py`: OK. `git mv` conserva la historia del archivo.
+
 ## [2026-10-06] - SoporteML v4 cerrado; el producto sigue por la version funcional de Lovable con cobro por Stripe
 
 ### Added
-- **`docs/adr/ADR-091-soporteml-v4-cierre-stripe.md`:** cierra SoporteML v4 (supera el greenfield de ADR-068) y registra que el producto sigue por la version funcional de Lovable (v1), ahora con **cobro por Stripe** habilitado en Argentina. Incluye la excepcion de pagos a ADR-042. Decision de alcance cerrada: **la version se queda en Lovable** (no migra a stack propio); sin pendientes abiertos. Indice `docs/adr/README.md` actualizado.
+- **`docs/adr/ADR-091-soporteml-v4-cierre-stripe.md`:** cierra SoporteML v4 (supera el greenfield de ADR-068) y registra que el producto sigue por la version funcional de Lovable (v1), ahora con **cobro por Stripe** habilitado en Argentina. Decision de alcance cerrada: **la version se queda en Lovable** (no migra a stack propio); sin pendientes abiertos. Indice `docs/adr/README.md` actualizado.
 
 ### Changed
 - **`docs/adr/ADR-042`:** reescrito. Deja de ser "Mercado Pago obligatorio, Stripe por excepcion": ahora **el proveedor se elige por proyecto y se justifica**. Lovable -> Stripe (unica integracion de la plataforma); fuera de Lovable, Mercado Pago es opcion fuerte (no unica) y Stripe tambien es valido. La regla deja de limitar Stripe.

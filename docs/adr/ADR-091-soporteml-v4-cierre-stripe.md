@@ -20,7 +20,7 @@ Esto es coherente con la medicion de ADR-068: v4 era una **poda** de v1, no una 
 
 1. **SoporteML v4 se cierra.** El reinicio v4 no continua. Supera los pendientes de *generacion* de ADR-068: el greenfield CRM+contable no se construye como estaba planteado.
 2. **El producto sigue por la version funcional de Lovable (v1)**, que ahora incorpora **cobro por Stripe**, habilitado en Argentina.
-3. **Pagos (ADR-042):** el proveedor se elige por proyecto y se justifica. En **Lovable, Stripe es la unica opcion**; SoporteML cobra con Stripe porque su version funcional vive en Lovable. No es una excepcion: es la opcion natural del entorno.
+3. **Pagos (ADR-042):** **Stripe es el proveedor único** del ecosistema, sea o no con Lovable. SoporteML cobra con Stripe porque es el proveedor reconocido (y ademas es la unica integracion disponible en Lovable).
 4. **La regla de narrativa publica no cambia:** SoporteML sigue fuera de la narrativa publica / del CV (ADR-001 seccion 7) y fuera de barridos automaticos de limpieza.
 
 ## Consecuencias
