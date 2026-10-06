@@ -1,20 +1,21 @@
 # ROADMAP - Sistema de trabajo con IA
 
-> Hoja de ruta de **decisiones y estado por capa**, no lista de features ni segundo backlog. Cada item define qué es, por qué importa, el criterio de éxito, y la señal de que está listo. La prioridad no es "lo más importante", es **lo que desbloquea más camino por unidad de esfuerzo** en el contexto actual (ADHD, sesiones por proyecto, búsqueda laboral activa).
+> Hoja de ruta de **decisiones y estado por capa**, no lista de features ni segundo backlog. Cada item define qué es, por qué importa, el criterio de éxito, y la señal de que está listo. La prioridad no es "lo más importante", es **lo que desbloquea más camino por unidad de esfuerzo** en el contexto actual (sesiones por proyecto, búsqueda laboral activa, una sola máquina).
 
-**Última revisión: 2026-09-14** (verificada contra git, GitHub, hooks y logs - no contra la memoria de la sesión anterior).
+**Última revisión: 2026-10-06** (verificada contra fuentes reales: git, GitHub, filesystem, `memory/memory.db`, runtime `openclaw`). Reconstruido desde cero: la versión anterior (revisión 09-14) arrastraba hipótesis ya refutadas y un estado de búsqueda laboral falso. El histórico queda en git.
 
 **Qué NO es este documento:**
 - No define el "para qué" de largo plazo: eso es `docs/NORTH.md`.
 - No es la lista de tareas: eso es `memory/memory.db` (tabla `todos`, espejo `memory/todos.md`). Si un item de acá se vuelve tarea concreta y fechada, vive en la DB, no acá.
+- No es el análisis del ecosistema externo (plugins/repos candidatos): eso es `docs/ecosystem/DECISIONS.md`.
 
-**Cómo se mantiene:** con `docs/checklists/roadmap-review-checklist.md`. La revisión se hace **contra fuentes reales** (git, GitHub, filesystem, logs), nunca contra lo que creíamos recordar. Un item solo pasa a 🟢 con su señal de listo verificada.
+**Cómo se mantiene:** con `docs/checklists/roadmap-review-checklist.md`. La revisión se hace **contra fuentes reales** (git, GitHub, filesystem, logs, DB, runtime), nunca contra lo que creíamos recordar. Un item solo pasa a 🟢 con su señal de listo verificada.
 
 ## Cómo leer este documento
 
-- **Capas**: el sistema vive en 4 planos superpuestos (fundaciones, pipeline, portfolio, crecimiento). Cada capa tiene su propio tipo de optimización.
+- **Capas**: el sistema vive en 5 planos superpuestos (fundaciones, pipeline, portfolio, ecosistema, crecimiento). Cada capa tiene su propio tipo de optimización.
 - **Prioridad**: P0 = desbloquea todo lo demás. P1 = alto valor, bajo riesgo. P2 = ganancia marginal, no urgente.
-- **Estado**: 🔴 no iniciado / 🟡 en curso o con deuda activa / 🟢 estable / ⚪ deprecado.
+- **Estado**: 🔴 no iniciado / 🟡 en curso o con deuda activa / 🟢 estable / ⚫ deprecado o retirado.
 - **Señal de listo**: el criterio objetivo que confirma que el item está resuelto, no "se siente mejor".
 - **Regla de estado**: un item solo pasa a 🟢 con evidencia de la señal de listo. El estado se revisa, no se arrastra.
 
@@ -22,154 +23,162 @@
 
 ## Capa 0 - Fundaciones (sostiene todo)
 
-### 0.1 Estabilidad de la infraestructura (gateway) 🟢 P0
-- **Qué**: el gateway de OpenClaw se reinicia bajo sesiones long-running (formulado 2026-08-28). Cada reinicio corta el contexto; retomar cuesta más que seguir.
-- **Por qué**: es la deuda más cara del sistema. No se ve, pero todo lo demás se apoya en esto.
-- **Criterio de éxito**: 0 reinicios no intencionales de gateway en una sesión de trabajo pesado (refactor + validación + browser).
-- **Señal de listo**: sesión completa de validación de endpoints (15+ POST + 11 GET) con 0 reinicios, Y 0 dumps nuevos en `~/.openclaw/logs/stability/`.
-- **Diagnóstico histórico (2026-08-28)**:
-  - 8 SIGTERM en la ventana 17:44-18:15 (sesión del refactor de Moderno).
-  - NO es crash (sin dump), NO es OOM (sería SIGKILL), NO es el proyecto.
-  - Disparadores correlacionados en ese momento: `long-running session` + `auto-compaction succeeded ... retrying prompt` + `post-compaction guard armed`.
-  - Causa dominante identificada entonces: AGENTS.md (30.439 chars) y MEMORY.md (22.706) sobre el límite de bootstrap de 20.000 -> truncado en cada arranque.
-- **Re-diagnóstico (2026-09-14, releído contra los dumps y el código fuente) - CORRIGE la hipótesis original:**
-  - **Los 19 reinicios registrados son TODOS intencionales (`source=cli`)**: 09-08 (3), 09-11 (2), 09-13 (1), 09-14 (4), con `source=handoff` en los intentos de relanzamiento. **Cero reinicios espontáneos.** El gateway no se auto-reinicia: alguien (o el intento de update) dispara el restart.
-  - **`gateway.restart_close_failed` NO es un crash.** Verificado en `dist/run-fzUO4BXB.mjs:1088`: en un restart, si `server.close()` lanza, se marca `shutdownFailed = true` y se fuerza la salida escribiendo el stability bundle. Es un **cierre sucio durante un restart pedido**, no un reinicio autónomo.
-  - **La hipótesis de la compactación no se reproduce:** los 4 dumps del 13-14/09 tienen **0 eventos de compaction** (`compaction_events=0` en los 4). Sí hay `session.long_running` (1-5), pero sin compactación. El gatillo `auto-compaction` del 28/08 no aparece acá.
-  - Los 4 dumps son una **cascada de 1h36m** el 13-14/09: 23:40 (uptime 55h), 00:02 (0.3h), 00:56 (0.8h), 01:16 (0.3h). El primero, con 55h de uptime, coincide con el intento de update (`Update run: OpenClaw update failed: global-install-failed`).
-  - **Errores de modelo en la ventana (relevante):** en el dump 01:16 hay 3 errores de `qwen3.8:27b-mlx` de ~50-55s cada uno + 1 de `deepseek-v4-flash:cloud` (retirado el 2026-09-25; hoy el motor es v4.1). `qwen3.8:27b-mlx` es el modelo local (~17-18 GB) que se agregó el 13/09 sobre una Mini M4/24GB: carga pesada, probable contribuyente a la lentitud del cierre.
-  - **Estado del runtime (14/09):** npm global y CLI en `2026.9.4`, pero el gateway reporta correr `2026.9.3` con el update fallido; doctor marca "Startup migrations need attention". Hay un swap de versión incompleto, no un gateway roto.
-  - **Conclusión honesta:** el marco "el gateway se reinicia solo bajo sesiones largas" **no está respaldado** por la evidencia del 13-14/09. Lo que la evidencia muestra es (a) restarts intencionales que cierran sucio, (b) truncado de bootstrap por tamaño de archivos, y (c) un swap de versión a medio hacer. La deuda real es distinta a la diagnosticada el 28/08.
-- **Hallazgo nuevo (14/09): `USER.md` se truncaba en cada arranque.** Tenía un **cap fijo de 4.000 chars** (`USER_BOOTSTRAP_MAX_CHARS = 4e3` en `dist/bootstrap-DYYMCrXY.mjs`, NO configurable vía `bootstrapMaxChars`), y el archivo real tenía **10.008 chars** -> se descartaban ~6.000 chars de preferencias y reglas en cada bootstrap. **RESUELTO 14/09**: `USER.md` bajó a **3.986 chars** (bajo el cap), con el detalle movido a `memory/user-profile.md`.
-- **Estado de los archivos de bootstrap (14/09, verificado):** AGENTS.md **15.059 chars** (cap 20.000, OK), MEMORY.md **16.361 chars** (cap 20.000, OK), USER.md **3.986 chars** (cap fijo 4.000, OK), SOUL.md 1.650, IDENTITY.md 3.295. **Los tres archivos grandes están dentro de sus límites por primera vez desde el 28/08.**
+### 0.1 Integridad del bootstrap 🟡 P0
+- **Qué**: los archivos que OpenClaw inyecta en **cada arranque** de sesión (`AGENTS.md`, `MEMORY.md`, `USER.md`, `SOUL.md`, `IDENTITY.md`) tienen un cap de inyección. Lo que lo supera **se trunca en silencio**: el agente arranca sin esas reglas y no lo sabe.
+- **Corrección histórica (2026-10-06)**: el item anterior ("Estabilidad de la infraestructura (gateway)") partía de *"el gateway se reinicia solo bajo sesiones largas"*. El re-diagnóstico del 14/09 (leído contra los dumps y el código fuente) ya había mostrado que **no hay reinicios espontáneos**: los 19 registrados eran `source=cli`/`handoff`, es decir intencionales. El problema real nunca fue el reinicio; fue el truncado del bootstrap. La versión vieja mantuvo la hipótesis refutada durante tres semanas.
+- **Estado verificado 2026-10-06 (`wc -c`)**:
+
+  | Archivo | Tamaño | Cap | Estado |
+  |---|---|---|---|
+  | `AGENTS.md` | 20.656 | 20.000 | 🟡 **TRUNCADO** |
+  | `MEMORY.md` | 24.017 | 20.000 | 🟡 **TRUNCADO** |
+  | `USER.md` | 4.582 | 4.000 (fijo, no configurable) | 🟡 **TRUNCADO** |
+  | `SOUL.md` | 2.949 | - | 🟢 OK |
+  | `IDENTITY.md` | 3.295 | - | 🟢 OK |
+
+- **Por qué importa**: es la deuda más cara y la más invisible: se paga en cada arranque. `USER.md` ya se había resuelto el 14/09 (10.008 -> 3.986) y **regresó** a 4.582.
+- **Criterio de éxito**: los tres archivos por debajo de su cap.
+- **Señal de listo**: `wc -c AGENTS.md MEMORY.md USER.md` los muestra dentro del límite.
 - **Acciones**:
-  - [x] Reducir AGENTS.md a <20K (28/08: 8.890 chars) - REGRESIÓN al 14/09: 24.044.
-  - [x] Reducir MEMORY.md a <20K (28/08: 5.966) - al 14/09: 16.483, dentro del límite.
-  - [x] Batchear exec masivo en scripts `.sh` (aplicado y verificado en la sesión de higiene del 28/08).
-  - [x] Bajar de nuevo AGENTS.md a <20K (regresión verificada 14/09). **HECHO 14/09**: 24.638 -> 15.167 chars (sección `## Tools`, 11.334 chars, movida a `docs/SETUP.md`).
-  - [x] **Bajar `USER.md` a <=4.000 chars.** **HECHO 14/09**: 10.008 -> **3.986 chars**, con el detalle ampliado movido a `memory/user-profile.md` (bajo `memory/` a propósito: `memory_search` indexa `memory/`, no `docs/`). Punteros de MEMORY.md actualizados.
-  - [x] **Completar el swap de versión.** **VERIFICADO 14/09 21:50**: el gateway corre **2026.9.4** (`gateway.self.version`, `runtimeVersion` y `gatewayService.layout.packageVersion` los tres en 2026.9.4). El proceso (pid 80466) arrancó 13/09 22:16, *después* del install manual de 2026.9.4 (package.json mtime 13/09 20:40) -> quedó tomada. La línea "The gateway is running 2026.9.3" del `status` es un **registro histórico obsoleto** del run automático fallido (creado 13/09 11:51, `before`/`after` = 2026.9.3), superado por el install manual posterior.
-  - [x] **Startup migrations: RESUELTO (15/09).** `openclaw doctor --fix` corrido por Gonzo a las 09:26 + restart del gateway. El aviso **desapareció** (0 ocurrencias en `status`) y `doctor --json` ya no emite finding de migraciones. Lo que el fix hizo: `Auto-migrated legacy state: Relocated shared auth profiles into shared SQLite state` + 9 `num_ctx` normalizados + 34 skills inutilizables deshabilitadas + `channels.telegram.groupAllowFrom` copiado del allowFrom. Config validada OK, backup en `openclaw.json.bak`.
-  - **Causa raíz (diagnosticada 14/09, read-only):** los 6 directorios `agent.legacy-*` bajo `agents/main/`. En el código (`dist/state-migrations.doctor-J5ZgjZY8.mjs:2876`, `inspectLegacyAgentDir`), al no haber `openclaw-agent.sqlite` pero sí un archivo que no reconoce (`bin/fd`), la inspección devuelve `status: "payload"` y la migración **los conserva a propósito**. Son cruft de reinstalaciones: cada uno tiene un solo archivo `bin/fd`, idéntico byte a byte al del agente actual, y cero datos únicos.
-  - **Nota (15/09):** los 6 directorios legacy **siguen en disco** (17 MB) aunque el aviso se fue - el fix resolvió las credenciales compartidas, no los borró. Es cruft inofensivo; se pueden limpiar a mano cuando se quiera.
-  - **Pendiente detectado por el doctor (no bloqueante):** `agents/openclaw/` figura como "agent directory without a matching agents.list entry", pero el gateway **lo tiene abierto** (3 handles verificados con `lsof`). NO borrarlo sin verificar: el doctor sugiere confirmarlo primero. Además: no hay backup registrado (`openclaw backup create`), y no hay command owner configurado (`commands.ownerAllowFrom`).
-  - El agente actual está sano: `openclaw-agent.sqlite` de 499 MB, gateway arriba (pid 43766, probe ok), y el restart de hoy **no generó dump de cierre sucio** (los 4 dumps siguen siendo del 13/09).
-  - [x] `qwen3.8:27b-mlx`: **decisión de Gonzo (14/09): dejar como está por ahora.** Sigue instalado (18 GB). No se evalúa ni se descarga en este momento.
-  - [ ] **Redefinir la señal de listo:** "15+ POST + 11 GET sin reinicio" no probaría nada sobre reinicios espontáneos (no los hay). Mejor señal: 0 dumps nuevos en `logs/stability/` tras una sesión pesada.
-- **Regla operativa (no es checkbox)**: no mezclar browser tool con exec grande en la misma respuesta.
+  - [ ] Bajar `AGENTS.md` a <20.000 (el detalle ampliado va a `docs/AGENTS-DETALLE.md`).
+  - [ ] Bajar `MEMORY.md` a <20.000 (el detalle por proyecto va bajo `memory/` -que `memory_search` sí indexa-, no dentro del propio `MEMORY.md`).
+  - [ ] Bajar `USER.md` a <=4.000 (detalle a `memory/user-profile.md`).
+- **Regla operativa (no es checkbox)**: un archivo de bootstrap no es documentación libre, es **contexto que se inyecta en cada turno**. Su detalle vive en `docs/` o `memory/`, nunca en el propio archivo. Al agregar a `AGENTS.md`/`MEMORY.md`, la regla es: ¿esto tiene que estar en cada arranque? Si no, va a un doc referenciado.
 
 ### 0.2 Higiene del workspace 🟢 P1
-- **Qué**: `projects/*` sin trackear, gitlinks desincronizados, restos de merges, archivos basura.
-- **Por qué**: un workspace que compila y se entiende de una mirada reduce fricción al arrancar cada sesión.
-- **Criterio de éxito**: `git status` del workspace limpio y explicable (solo cambios intencionales).
+- **Qué**: `git status` del workspace limpio y explicable; sin cruft, sin punteros desincronizados, sin archivos de sesión trackeados por error.
+- **Por qué**: un workspace que se entiende de una mirada reduce fricción al arrancar cada sesión.
 - **Señal de listo**: `git status --short` no muestra nada inesperado al abrir una sesión.
+- **Estado verificado 2026-10-06**: `git status` muestra solo `M memory/memory.db` y `M memory/todos.md` (cambios de sesión esperados). `projects/` hoy contiene **solo** `projects/workspace/.knowledge`; el resto de los proyectos se movió a `~/projects/` (ADR-075). `a11y-fixer` figura `isArchived: true` en GitHub.
 - **Acciones**:
-  - [x] Auditar `projects/*`: 16 proyectos clasificados (10 blob, 4 gitlink, 1 repo-propio). Ver `docs/skills/portfolio-hygiene-notes.md`.
-  - [x] Archivar en GitHub `accessible-ui` y `create-with-ai` (`gh repo archive`, verificado `isArchived: true`).
-  - [x] Promover `portfolio-strategy` a doble git (ADR-001 trackeado por workspace).
-  - [x] Limpiar `.DS_Store` trackeado en `create-with-ai`.
-  - [x] Diagnóstico `ai-developer-stack`: `.knowledge` es symlink roto. Repararlo requiere decisión explícita de Gonzo.
-  - [x] Verificar que `.gitignore` cubre los archivos de sesión (14/09: `RECENT.md` y `.compaction-recovery-pending` en las líneas 10-11).
-  - [x] Cerrar la nota de `init-project.sh` (14/09: el script ya excluye `.knowledge/` del repo del proyecto vía `.git/info/exclude` y lo commitea al workspace git - líneas 26-28 y 203. La premisa de la nota era incorrecta: no hay nada que corregir).
-  - [ ] Decidir destino de `kanam-skills` (verificado 14/09: vive en `projects/kanam-skills` con `.git` propio y remote a `gonzoblasco/kanam-skills`; excluido a propósito en `.gitignore:113`. El repo está desactualizado y con referencias a sanitizar - ver `docs/NORTH.md`, decisiones abiertas).
-- **Descartado (14/09)**: "resolver cambios sucios de `kanam-forge` (README) y `kanam-mind` (SettingsModal.tsx)" - ninguno de los dos tiene `.git` propio; el item partía de un supuesto que ya no aplica.
-- **Restricción cerrada (no es acción)**: `soporteml` y sus versiones no se tocan - decisión cerrada en ADR-001.
+  - [x] Proyectos movidos a `~/projects/` (ADR-075, 2026-09-26). El workspace ya no los trackea.
+  - [x] `a11y-fixer` archivado en GitHub (`gh repo view --json isArchived` -> true).
+  - [x] Regla de guion (em dash) cerrada (ADR-082).
+  - [ ] **Sincronizar `~/projects` en un repo nuevo** (id en `todos`): 135 archivos `.knowledge/` viven solo en disco, sin respaldo en git. Decisión diferida a propósito el 2026-09-27; sigue abierta.
+  - [ ] Decidir destino de `kanam-skills` público (desactualizado; ver `docs/NORTH.md`).
+- **Restricción cerrada (no es acción)**: `soporteml` y sus versiones no se tocan en barridos - decisión de ADR-001/ADR-068.
 
 ### 0.3 Consolidación de memoria 🟢 P1
-- **Qué**: el daily + learnings ya existe; falta el patrón de *cuándo* se archiva y *qué* merece ser lección vs ruido.
-- **Por qué**: la memoria es el sistema de continuidad; si se llena de ruido, deja de ser útil.
-- **Criterio de éxito**: cada sesión termina con daily consolidado + lecciones relevantes en LEARNINGS, sin duplicar.
-- **Señal de listo**: al retomar una sesión, el daily del día anterior responde "dónde estábamos" sin re-descubrir.
-- **Nota (14/09)**: el flujo DB-first se cortó el 12-14/09 (dailies editados a mano sin correr `session-end.sh`). Se agregó reconcile `.md`->DB antes del export (commit `d9e964e`), verificado con 6 escenarios. La señal de listo se sostiene.
+- **Qué**: `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables. El daily se escribe por `session-end.sh`/`scripts/memory-end-session.py`, no a mano.
+- **Por qué**: la memoria es el sistema de continuidad; si se llena de ruido o se desincroniza de la DB, deja de ser útil.
+- **Señal de listo**: al retomar, el daily del día anterior responde "dónde estábamos" sin re-descubrir; `.md` y DB coinciden.
+- **Estado**: flujo DB-first operativo. Reconcile `.md`->DB antes del export (commit `d9e964e`).
+- **Acciones**:
+  - [ ] Dedupe de `contributions` (filas duplicadas por repo+pr; números "pelados" sin `#`) - id en `todos`.
+  - [ ] Sanear `CHANGELOG.md` (sección mezclada en el cierre del 30/09) - id en `todos`.
 
 ---
 
 ## Capa 1 - Pipeline de ejecución (cómo trabajamos)
 
-### 1.1 Eficiencia del pipeline A/B 🟡 P2
-- **Qué**: A escribe, B revisa, Kanam verifica. Hoy funciona; falta medir el cuello de botella real.
-- **Por qué**: optimizar sin medir es intuir. El SIGKILL de Qwen y la confianza en el cross-review son sospechosos conocidos.
-- **Criterio de éxito**: tiempo por tarea medido y estable; tasa de fixes de B que introducen bugs < umbral.
-- **Señal de listo**: métricas de duración por tarea registradas en 5+ sesiones.
+### 1.1 Pipeline A/B 🟢 P1
+- **Qué**: A escribe (`gpt-oss:120b-cloud`), B revisa/corrige (`deepseek-v4.1-flash:cloud`), pre-filtro `gemma4:cloud` (triage). El CORE redacta los prompts y **verifica el repo**, pero su verificación **no reemplaza** al revisor B.
+- **Por qué**: es la arquitectura de calidad del sistema; sin enforcement se degrada a "un agente que dice que revisó".
+- **Criterio de éxito**: el gate `scripts/check-pipeline-enforcement.py` pasa; el pipeline se usa por defecto, no por recordatorio.
+- **Señal de listo**: 5+ sesiones con A/B aplicado y verificado sin excepción manual.
+- **Base**: ADR-077 (A/B asimétrico), ADR-088 (enforcement), ADR-089 (pre-filtro).
 - **Acciones**:
-  - [ ] Registrar duración por tarea (inicio/fin) en el pipeline-track.
-  - [ ] Contar cuántas veces B introduce bugs al "corregir" (cross-review no es infalible, 2026-08-21).
-  - [ ] Decidir si el cross-review necesita verificación contra fuente real siempre, o solo en casos de riesgo.
+  - [ ] Registrar duración por tarea (inicio/fin) en `pipeline-track.sh`.
+  - [ ] Contar cuántas veces B introduce bugs al "corregir" (el cross-review no es infalible, 2026-08-21).
 
-### 1.2 Ruteo de modelos 🟡 P2
-- **Qué**: deepseek-v4.1-flash vs kimi-k2.7-code vs local (el motor vigente; `deepseek-v4-flash` se retiro el 2026-09-25). El `model-router.sh` es un buen inicio.
-- **Por qué**: el modelo correcto por tarea ahorra tiempo y presupuesto; el incorrecto lo quema.
+### 1.2 Ruteo y política de modelos 🟢 P1
+- **Qué**: un modelo por rol, con fallback y nivel de pensamiento. Decisión viva en **ADR-090** (2026-10-06).
+- **Por qué**: el modelo correcto por tarea ahorra tiempo y presupuesto; el incorrecto lo quema (ver el caso del "thinking alto universal" que vaciaba el output).
+- **Asignación vigente (ADR-090, aplicada y verificada en runtime)**:
+
+  | Rol | Modelo | Fallback | Thinking |
+  |---|---|---|---|
+  | main | `deepseek-v4.1-flash:cloud` | `glm-5.3-flash:cloud` | off |
+  | mind | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | off |
+  | dev | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | off |
+  | ops | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | off |
+  | studio | `gemma4:cloud` | `glm4:9b` local | off |
+  | critic | `gpt-oss:120b-cloud` | `nemotron-3-super:cloud` | low |
+  | auditor | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | low |
+  | planner | `gpt-oss:120b-cloud` | `glm-5.3-flash:cloud` | low |
+
+  `kimi-k3:cloud` queda reservado al review previo al deploy.
+- **Nota de método (2026-10-06)**: la cata que decidió esto tenía un defecto de harness (runner por CLI que mezclaba thinking con el entregable, inflando un "leakage" que era artefacto del CLI, no de producción). El ADR-090 lo declara explícitamente. Para futuras catas: usar la API, no el CLI.
 - **Criterio de éxito**: el router elige el modelo correcto sin intervención manual en tareas estándar.
-- **Señal de listo**: 0 casos de "este modelo no sirvió para esto" en tareas rutinarias durante una semana.
-- **Nota (11/09)**: se detectó que los overrides sticky de `model-router.json` (no el ADR) eran el mecanismo real que forzaba v4.1. Una decisión de modelo no se cierra con el ADR; hay que revisar el runtime state del router.
+- **Señal de listo**: 0 casos de "este modelo no sirvió para esto" en una semana de tareas rutinarias.
 - **Acciones**:
-  - [ ] Agregar telemetría de fallos por modelo (cuándo rotar).
-  - [ ] Verificar que el router cubre los tipos de tarea reales (code/review/long/cheap/writing).
+  - [ ] **Test de contexto largo** (el único experimento que confirma o refuta la intuición de que nemotron "pierde el hilo"): meter un dato clave a 10k/50k/200k/300k y ver dónde cada modelo lo pierde.
+  - [ ] Telemetría de fallos por modelo (cuándo rotar).
 
 ### 1.3 Stack opinado como sistema 🟡 P1
 - **Qué**: OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG. Está decidido.
 - **Por qué**: el valor está en la consistencia, no en la elección.
 - **Criterio de éxito**: se aplica siempre, no cuando lo recordamos.
-- **Señal de listo**: pre-commit hooks presentes en todos los proyectos activos; ADRs para decisiones nuevas.
+- **Señal de listo**: pre-commit hooks (lint -> test -> build) presentes en los proyectos activos; ADRs para decisiones nuevas.
+- **Estado**: auditoría 14/09 = **0 de 21** proyectos con hook. Re-verificar contra `~/projects/*`.
 - **Acciones**:
-  - [x] Auditar proyectos activos (14/09): **0 de 21** proyectos tiene `pre-commit` hook o `simple-git-hooks`. Ninguno cumple la señal de listo.
-  - [ ] Instalar pre-commit hooks (lint -> test -> build) en los proyectos activos. Regla: prioridad sobre features.
+  - [ ] Instalar pre-commit hooks en los proyectos activos. Regla: prioridad sobre features.
 
 ---
 
 ## Capa 2 - Portfolio (qué construimos)
 
-### 2.1 Estrategia de proyectos 🟢 P0
-- **Qué**: hay repos vivos, archivados, y candidatos a reset. La pregunta de fondo: ¿qué 2-3 proyectos sostienen el pitch "fullstack con IA como infraestructura"?
+### 2.1 Estrategia de proyectos 🟡 P0
+- **Qué**: qué 2-3 proyectos sostienen el pitch "fullstack con IA como infraestructura" + el nicho a11y.
 - **Por qué**: sin esto, el pipeline optimiza lo equivocado. Dispersión = portfolio que no cuenta una historia.
-- **Criterio de éxito**: 2-3 proyectos claros que demuestran el pitch, el resto archivado o en pausa explícita.
-- **Señal de listo**: una lista corta de proyectos "estrella" con su rol en el pitch, documentada.
+- **Fuentes vivas**: `~/projects/portfolio-strategy/ADR-001` (pilares + anclas), `docs/APUESTAS.md` (orden de apuestas, 2026-09-24), `memory/notes/portfolio-curation.md` (curaduría de presencia, 2026-09-21).
+- **Estado honesto**:
+  - **Ancla en transición**: `kanam-fixer` (sucede a `a11y-fixer`, archivado). **Alcance SIN DEFINIR** - no asumir que hereda el rol del engine de fixes.
+  - **Apuestas priorizadas por Gonzo (09-24)**: 1) `kanam-insight` (uso interno), 2) `soporteml-v4` (producto, privado), 3) `kanam-fixer` (producto).
+  - **Showcase (curaduría 09-21)**: `kanam-fixer`, `ai-developer-stack`, `kanam-skills`.
+- **Criterio de éxito**: una lista corta de proyectos "estrella" con su rol en el pitch, documentada y sin contradicciones entre ADR-001 y APUESTAS.
+- **Señal de listo**: el pilar *Accesibilidad* tiene ancla formal (hoy: `kanam-fixer` sin alcance definido).
 - **Acciones**:
-  - [x] Definir los proyectos ancla (ADR-001, 28/08: kanam-forge, a11y-fixer, kanam-pulse). SoporteML queda EXCLUIDO - decisión cerrada, no se reabre. **SUPERADO 14/09:** `a11y-fixer` se archivó y el pilar Accesibilidad quedó sin ancla formal (ver la enmienda de abajo).
-  - [x] **Enmendar ADR-001 tras archivar `a11y-fixer` (2026-09-14):** sección 6 agregada, sin borrar el original. `kanam-fixer` queda como **candidato a ancla con alcance sin definir**; el pilar *Accesibilidad* queda sin ancla formal hasta entonces. Seguimiento: todo id=54 en la DB de memoria.
   - [ ] **Definir el alcance de `kanam-fixer`** (qué resuelve, para quién) - es lo que desbloquea reasignar el ancla del pilar Accesibilidad.
-  - [x] Decidir destino de accessible-ui y create-with-ai (ADR-001, sección 4: ambas archivadas).
-  - [x] Documentar la decisión en un ADR (ADR-001, 2026-08-28).
+  - [ ] Reconciliar la lista de proyectos de `MEMORY.md` con `~/projects/` real (hay drift: la memoria lista `kanam-forge`, `kanam-mind`, `create-stack-next`, etc. que conviven con `kanam-story-bible`, `kanam-writer`, `kanam-worldbuilding`, `kanam-spec`, `kanam-spec-v2`, `kanam-os`, `ollama-visor`).
 
-### 2.2 Cadena OSS → LinkedIn 🟡 P1
-- **Qué**: cada merge de a11y/agentic → post. El patrón está definido (2026-08-25); falta la cadencia real.
-- **Por qué**: directamente ligado al objetivo laboral (nicho a11y/agentic).
+### 2.2 Cadena OSS -> LinkedIn 🟡 P1
+- **Qué**: cada merge de a11y/agentic -> post. El patrón está definido (2026-08-25); falta la cadencia real.
+- **Por qué**: ligado directo al objetivo laboral (nicho a11y/agentic).
+- **Estado verificado 2026-10-06** (fuente: DB `contributions`): **18 PRs abiertos, 8 mergeados, 22 cerrados sin merge, 15 colaboraciones no-código, 22 repos**. Posts en `docs/linkedin/`.
 - **Criterio de éxito**: cada merge de a11y/agentic genera un post en `docs/linkedin/` dentro de la semana.
 - **Señal de listo**: 3+ posts publicados con el patrón didáctico, no solo drafts.
 - **Acciones**:
-  - [x] Revisar la cadencia (14/09): 9 posts en `docs/linkedin/` - 7 concentrados el 08/09, 1 el 10/09, 1 el 14/09. El mecanismo está vivo; la cadencia es irregular.
   - [ ] Sostener la cadencia: 1 post por merge de a11y/agentic dentro de la semana.
-  - [ ] Verificar que cada post queda documentado en `docs/linkedin/` (mecanismo OK; falta el flip `draft` -> publicado en al menos un archivo, ej. `ibm-products-createfullpage-focus.md`).
+  - [ ] Flip `draft` -> publicado documentado en el archivo de cada post.
 
-### 2.3 Búsqueda laboral 🟢 P0
-- **Qué**: procesos abiertos y su estado. La fuente de verdad es `docs/entrevistas/job-search-tracker.md`; acá va solo el resumen.
+### 2.3 Búsqueda laboral 🔴 P0
+- **Qué**: procesos abiertos y su estado. **Fuente de verdad única**: `docs/entrevistas/job-search-tracker.md`.
 - **Por qué**: es el objetivo activo del Horizonte 0 (`docs/NORTH.md`); situación económica urgente.
+- **CORRECCIÓN MAYOR (2026-10-06)**: la versión anterior de este ROADMAP afirmaba *"EIT/HTC/Disney - OFERTA ACEPTADA (11/09), USD 4.000/mes, arranque 01/10"*. **Era falso.** El tracker (actualizado al **2026-09-24**) dice: **EIT nunca tuvo oferta firme** (el rate lo aceptó el reclutador, el cliente jamás hizo call; era un bench req amplio). **No hay procesos abiertos: todos cerrados.** El estado 🟢 del item anterior era un falso verde de tres semanas.
 - **Criterio de éxito**: al menos un proceso avanza a oferta/onboarding.
-- **Estado al 2026-09-14:**
-  - **EIT / HTC / Disney (Lead Digital Accessibility) - OFERTA ACEPTADA (11/09)**: USD 4.000/mes, contractor US sin visa, 40h/semana 10-18 Argentina, arranque **01/10**. Pendientes: papeleo (contrato / W-8BEN) y vigilar el gate de certificación (IAAP sigue en Preferred). **El criterio de éxito está cumplido.**
-  - **Cruceros / Ritz-Carlton**: 🟡 esperando. Manager interview 02/09, feedback "24-48h" incumplido. Pasa a pasivo el 15/09 si no escriben ellos.
-  - **Kake**: video asincrónico enviado (pasó el primer filtro).
-  - **Koin Limited (AI Product Engineer)**: 🟢 activo, mejor stack match del lote.
-  - **Aliancers / Ciklum**: aplicados, sin señal humana.
-  - **OpenSistemas**: cerrado 11/09 (avanzaron con otro candidato).
-- **Señal de listo**: onboarding efectivo el 01/10.
+- **Señal de listo**: onboarding efectivo de un proceso nuevo (no de una oferta inexistente).
+- **Estado al 2026-09-24** (todos cerrados): EIT/HTC, Wigou, OpenSistemas, Ritz-Carlton, Kake, Koin, Aliancers, Ciklum. Ver trackers individuales en `docs/entrevistas/`.
+- **Backlog de prospectos** (relevado 09-23, fuera de seguimiento): Infojini, E-IT, Cheesecake Labs, Equals True, FullStack Labs, BairesDev, GitLab, Clipboard.
+- **Palanca viva**: **CPACC antes del 30/11** si quiere retomar el hilo con un entregable (ver `docs/cpacc/`).
 - **Acciones**:
-  - [ ] Completar el papeleo de EIT antes del 01/10.
-  - [ ] Mantener `docs/entrevistas/job-search-tracker.md` como única tabla de procesos (no duplicar acá).
+  - [ ] Reactivar la búsqueda: el tablero está vacío. Definir cadencia (3-5 aplicaciones/día, calidad sobre volumen) y primer lote.
+  - [ ] Mantener `job-search-tracker.md` como única tabla de procesos.
 
 ---
 
-## Capa 3 - Crecimiento (hacia dónde vamos)
+## Capa 3 - Ecosistema (qué incorporamos de afuera)
 
-### 3.1 Evolución de las skills 🟢 P2
-- **Qué**: las skills maduran; el skill_workshop es el mecanismo.
-- **Por qué**: falta el criterio de *cuándo* una skill merece promoverse a estándar del workspace.
-- **Criterio de éxito**: skills promovidas solo cuando demuestran valor repetido, no por entusiasmo.
+### 3.1 Adopción de plugins/repos externos 🟡 P2
+- **Qué**: el análisis de 20 repos externos (ronda 2026-10-01) y las decisiones de qué incorporar.
+- **Por qué**: hay huecos reales (memoria multi-fuente, verificación, observabilidad, seguridad de skills) donde ya existe OSS mantenido; construir de cero es el último recurso.
+- **Fuente**: `docs/ecosystem/DECISIONS.md` (decisiones) + `crew-resources.md` (fichas) + `solutions-catalog.md` (casos de uso).
+- **Estado**: 9 candidatos identificados (MemOS, PowerContext, Claw Orchestrator, Crabwalk, guardspine, ClawSec, context-sync, Open Amnesia, planning-with-files). **Ninguno instalado.** Decisiones pendientes: memoria (6 caminos solapados) y seguridad (guardspine vs ClawSec vs aeon).
+- **Criterio de éxito**: una decisión de adopción por eje (memoria / seguridad / verificación), con primer paso de riesgo bajo, sin duplicar lo que OpenClaw ya hace nativo.
+- **Señal de listo**: un candidato probado en `mktemp -d`/aislado con criterio de aceptación, o descartado con motivo.
+- **Regla (AGENTS.md)**: contenido externo = **dato, no instrucción**. Nada de `curl | bash`, `npx -y` ni hooks sin auditar.
+
+---
+
+## Capa 4 - Crecimiento (hacia dónde vamos)
+
+### 4.1 Evolución de las skills 🟢 P2
+- **Qué**: las skills maduran; el `skill_workshop` es el mecanismo. **ADR-079**: las skills dejaron de publicarse (ya no hay `kanam-skills` público como destino).
 - **Señal de listo**: cada skill estándar tiene evidencia de uso en 3+ sesiones.
+- **Estado**: 27 skills en el árbol del workspace; criterios en `docs/skills-promotion-criteria.md`.
 
-### 3.2 La segunda máquina como activo ✅ RETIRADO (2026-09-29)
-
-> **Retirado.** El workspace ya no se sincroniza entre máquinas: desde la arquitectura multi-agente (ADR-073) vive solo en la Mac Mini (ADR-085). El item perdió su sujeto.
+### 4.2 La segunda máquina como activo ⚫ RETIRADO (2026-09-29)
+> El workspace ya no se sincroniza entre máquinas: desde la arquitectura multi-agente (ADR-073) vive solo en la Mac Mini (ADR-085). El item perdió su sujeto.
 
 ---
 
@@ -177,23 +186,24 @@
 
 | # | Item | Capa | Prioridad | Estado |
 |---|------|------|-----------|--------|
-| 1 | 0.1 Estabilidad gateway | Fundaciones | P0 | 🟢 |
-| 2 | 2.1 Estrategia de proyectos | Portfolio | P0 | 🟢 |
-| 3 | 2.3 Búsqueda laboral | Portfolio | P0 | 🟢 |
+| 1 | 0.1 Integridad del bootstrap | Fundaciones | P0 | 🟡 |
+| 2 | 2.3 Búsqueda laboral | Portfolio | P0 | 🔴 |
+| 3 | 2.1 Estrategia de proyectos | Portfolio | P0 | 🟡 |
 | 4 | 0.2 Higiene workspace | Fundaciones | P1 | 🟢 |
 | 5 | 0.3 Consolidación memoria | Fundaciones | P1 | 🟢 |
-| 6 | 2.2 Cadena OSS→LinkedIn | Portfolio | P1 | 🟡 |
-| 7 | 1.3 Stack opinado | Pipeline | P1 | 🟡 |
-| 8 | 1.1 Pipeline A/B | Pipeline | P2 | 🟡 |
-| 9 | 1.2 Ruteo de modelos | Pipeline | P2 | 🟡 |
-| 10 | 3.1 Evolución skills | Crecimiento | P2 | 🟢 |
-| 11 | 3.2 Segunda máquina | Crecimiento | P2 | ⚫ retirado |
+| 6 | 1.1 Pipeline A/B | Pipeline | P1 | 🟢 |
+| 7 | 1.2 Ruteo de modelos | Pipeline | P1 | 🟢 |
+| 8 | 1.3 Stack opinado | Pipeline | P1 | 🟡 |
+| 9 | 2.2 Cadena OSS->LinkedIn | Portfolio | P1 | 🟡 |
+| 10 | 3.1 Adopción ecosistema | Ecosistema | P2 | 🟡 |
+| 11 | 4.1 Evolución skills | Crecimiento | P2 | 🟢 |
+| 12 | 4.2 Segunda máquina | Crecimiento | P2 | ⚫ retirado |
 
 ---
 
 ## Notas de creación y mantenimiento
 
-- Creado 2026-08-28 a partir de la sesión de refactor de Moderno AI Cleaner Pro (donde se diagnosticó la inestabilidad del gateway).
-- Revisado 2026-09-14: se contrastó cada item contra el estado real (git, GitHub, hooks, logs). Se tacharon 4 acciones ya resueltas, se borraron 4 obsoletas, se agregó la regresión de AGENTS.md y el resultado de la auditoría de hooks. Los estados que estaban todos en 🟢 se corrigieron a su valor real.
-- La prioridad P0 de "Estrategia de proyectos" y "Búsqueda laboral" refleja que el pipeline optimiza lo equivocado si no sabemos qué construimos.
+- Creado 2026-08-28 a partir de la sesión de refactor de Moderno AI Cleaner Pro.
+- Revisado 2026-09-14: contraste item por item contra fuentes reales.
+- **Reconstruido desde cero 2026-10-06**: la revisión del 09-14 durmió tres semanas arrastrando (a) una hipótesis de inestabilidad de gateway ya refutada y (b) un estado de búsqueda laboral falso (oferta aceptada que nunca existió). Ambos corregidos contra las fuentes. Se agregó la capa *Ecosistema* (análisis de 20 repos, 2026-10-01) que la versión previa no tenía.
 - Este documento es vivo: se revisa cuando un item cambia de estado o se toma una decisión de prioridad. **Regla: la revisión se hace contra fuentes reales, no contra lo que creíamos recordar.**
