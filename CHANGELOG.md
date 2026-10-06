@@ -4,6 +4,25 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-10-06] - Bootstrap bajo cap: ROADMAP y NORTH reconstruidos, AGENTS/MEMORY/USER trimados
+
+### Fixed
+- **Bootstrap truncado (regresión):** `AGENTS.md` (20.656), `MEMORY.md` (24.017) y `USER.md` (4.582) estaban **sobre su cap de inyección** (20.000 / 20.000 / 4.000 fijo) y se descartaba contenido en silencio en cada arranque. Ahora: `AGENTS.md` 19.041, `MEMORY.md` 14.062, `USER.md` 3.976. `SOUL.md` e `IDENTITY.md` ya estaban OK.
+- **`USER.md`:** corregido doble guion (`--`) que debía ser lista; compactado sin perder reglas.
+
+### Changed
+- **`docs/ROADMAP.md`:** reconstruido desde cero contra fuentes reales. Se quitó la hipótesis ya refutada de "inestabilidad del gateway" (no hay reinicios espontáneos; el problema real era el truncado del bootstrap) y el falso verde de búsqueda laboral ("oferta aceptada" que nunca existió). Se agregó la capa *Ecosistema* (análisis de 20 repos, 2026-10-01) y el item 0.1 *Integridad del bootstrap*.
+- **`docs/NORTH.md`:** reconstruido. Ubicaciones de proyectos corregidas a `~/projects/` (ADR-075), Horizonte 0 rearmado sobre el estado real (sin procesos abiertos), constelación actualizada (`kanam-onwheels`, `kanam-spec`, `ollama-visor`, etc.) y orden de apuestas de `docs/APUESTAS.md`.
+- **`MEMORY.md`:** destilado. Historial de decisiones de modelo/engine movido a `memory/model-history.md`; entradas de proyecto comprimidas a lo vigente con puntero a `~/projects/<slug>/.knowledge/`; agregado `kanam-onwheels`; corregida la regla de modelos (hoy ADR-090, no ADR-053).
+- **`AGENTS.md`:** comprimidas las secciones de Frontera de roles, Feedback en PRs y sandbox sin perder reglas; bloque de razonamiento actualizado a ADR-090.
+
+### Added
+- **`memory/model-history.md`:** archivo del historial de decisiones de motor/modelo (2026-08 a 2026-09), movido fuera de `MEMORY.md` para bajar el bootstrap.
+
+### Verified
+- `wc -c` de los 5 archivos de bootstrap: los tres grandes dentro de cap.
+- `managed-blocks.py check`: sin drift. `check-refs.py` (147 rutas), `check-content-dirs.py` (10), `check-adr-integrity.py` (90 ADRs): OK.
+
 ## [2026-10-06] - Cata persistida y "thinking leakage" re-diagnosticado como artefacto del CLI
 
 ### Changed
