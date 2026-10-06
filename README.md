@@ -19,7 +19,7 @@ Workspace de trabajo de Kanam sobre OpenClaw, que vive **solo en la Mac Mini** (
 | Perfil de Gonzo | [`USER.md`](./USER.md) | Preferencias y reglas de interacción |
 | Memoria de largo plazo | [`MEMORY.md`](./MEMORY.md) | Memorias curadas (solo main session) |
 | Mapa y contrato de la memoria | [`memory/README.md`](./memory/README.md) | Estructura de `memory/`, retención, tooling |
-| Decisiones de arquitectura | [`docs/adr/`](./docs/adr/) | ADRs aceptados (85 archivos) |
+| Decisiones de arquitectura | [`docs/adr/`](./docs/adr/) | ADRs aceptados (86 archivos) |
 | Skills disponibles | [`SKILLS-INDEX.md`](./SKILLS-INDEX.md) | Índice de las 78 skills activas |
 | Contribuir a OSS | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Estrategia y reglas de PRs |
 | Cambios estructurales | [`CHANGELOG.md`](./CHANGELOG.md) | Registro histórico del workspace |
