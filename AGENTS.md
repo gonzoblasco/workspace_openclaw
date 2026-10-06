@@ -72,8 +72,9 @@ Se activa solo cuando Gonzo dice **"iniciar sesión"**. Sin eso, asumo consulta 
 2. **Memory search** - `memory_search()` por contexto relevante.
 3. **Presentación** - resumen de estado + "estoy lista".
 
-#### "guardar sesión" - Guardado formal
+#### "guardar sesión" / "cerrar sesión" - Guardado formal (mismo disparador, indistintos)
 Protocolo de `session-lifecycle`: self-reflection, registro en daily, commit + push del workspace.
+**Dos entregables por cierre (2026-10-06):** (1) **informe detallado** en `memory/YYYY-MM-DD.md` (plantilla en `memory/_templates/session-close.md`); (2) **HANDOFF del proyecto en curso** (`scripts/session-handoff.py`): se regenera en el `.knowledge/` del proyecto (o del workspace) con resumen + estado + próximos pasos + decisiones + archivos. El HANDOFF se deriva del informe de cierre. Lo orquesta `skills/session-lifecycle/scripts/session-end.sh`.
 **El daily se escribe por `session-end.sh` / `scripts/memory-end-session.py`, nunca editando `memory/YYYY-MM-DD.md` a mano** (2026-09-14). Editar el `.md` directo deja la DB atrasada y el proximo export DB->.md borra esa seccion. Desde el mismo dia el script reconcilia `.md` -> DB antes de exportar y hace backup en `/tmp`, asi que el export ya no es destructivo - pero la via correcta sigue siendo el script.
 
 #### `/fuera` - Mensaje fuera de contexto

@@ -1,87 +1,53 @@
-# HANDOFF: workspace_openclaw
+# HANDOFF - workspace
 
-**Sesión:** 2026-08-03 11:10 GMT-3
-**Proyecto:** workspace_openclaw
-**Agente:** Kanam (main)
+**Fecha:** 2026-10-06 19:11 GMT-3
+**Proyecto:** workspace
+**Branch:** main
+**Repo:** https://github.com/gonzoblasco/workspace_openclaw
+**Autor:** Kanam (CORE)
 
-## Resumen
+> HANDOFF generado en el cierre de sesion (2026-10-06). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-10-06.md`.
 
-Sesión de refactor y documentación masiva de scripts de skills. Se auditaron 95 scripts, se repararon 12 bugs de sintaxis y 3 de runtime, se eliminaron anti-patrones (`eval "$cmd"`, `grep -c || echo 0`, `sed` GNU-only, `find` sin paréntesis), se construyó una suite de tests automatizados (bats + pytest + CI), y se documentaron ~86 skills con referencias a tooling.
+---
 
-## Lo que se hizo
+## Que se hizo en esta sesion
 
-### Fases 1-4: Refactor de scripts
-- 12 bugs de sintaxis reparados (patrón `PASS=*** + 1))`)
-- 3 bugs de runtime corregidos (`grep -c` con `set -e`, `grep -oP` en macOS, `find` sin paréntesis)
-- 9 scripts liberados de `eval "$cmd"`
-- Helpers de fecha portables (macOS/Linux) en 2 scripts
-- `sed -i.bak` portable en `close-epic.sh`
-- `.knowledge/` agregado al `.gitignore` generado por `init-git.sh`
+Gobernanza del sistema + nueva capacidad de cierre de sesion.
 
-### Fase 5: Tests automatizados
-- `scripts/test-skills.sh`: syntax check de 75 bash + 28 python
-- `tests/bash/`: 7 archivos, 17 tests (bats)
-- `tests/python/`: 2 archivos, 8 tests (pytest)
-- `.github/workflows/skills-ci.yml`: CI completo
-- `scripts/pre-commit.template`: hook con syntax + bats + pytest
-- `package.json`: scripts `npm test`, `test:scripts`, `test:bats`, `test:pytest`
+1) ROADMAP y NORTH reconstruidos desde cero contra fuentes reales (tenian un falso verde de 3 semanas: oferta EIT que nunca existio + hipotesis de inestabilidad de gateway ya refutada). NORTH reescrito contra las ultimas dos semanas reales.
+2) Bootstrap bajo cap: AGENTS/MEMORY/USER se truncaban en silencio en cada arranque (regresion). Bajados a 19.041 / ~14.0k / 3.976.
+3) SoporteML v4 CERRADO (ADR-091); el producto sigue por la version funcional de Lovable con cobro por Stripe. Se queda en Lovable, sin pendientes.
+4) ADR-042 reescrito y renombrado a ADR-042-stripe-pagos.md: Stripe como proveedor unico reconocido; Mercado Pago fuera como intencion.
+5) NUEVA CAPACIDAD: cada cierre de sesion ahora genera/actualiza el HANDOFF.md del proyecto (o del workspace) via scripts/session-handoff.py, ademas del informe en memory/. Plantilla del informe registrada en memory/_templates/session-close.md.
 
-### Fase 6: Documentación de tooling
-- ~86 skills con secciones "Helper Scripts" o "Tooling relacionado"
-- Skills con scripts propios: tabla de scripts + propósito
-- Skills sin scripts: referencias a scripts de otras skills según su flujo
-- Recordatorio de `npm test` antes de commitear cambios a scripts
+## Estado actual
 
-### Infraestructura
-- `.gitignore` con `__pycache__/` y `*.py[cod]`
-- Mirror `.github/skills/` sincronizado (eliminado 2026-09-28, ADR-079)
-- `.knowledge/` creado para el workspace (BRIEF, STATUS, HANDOFF)
+8 commits pusheados a main. Gates verdes (91 ADRs indexados, 147+ rutas OK, 0 guiones largos, bootstrap en cap).
+
+## Proximos pasos
+
+1. Definir el alcance de kanam-fixer (desbloquea el ancla de a11y).
+2. Reactivar la busqueda laboral (tablero vacio) + CPACC.
+3. Respaldo de ~/projects (135 archivos .knowledge/ sin git).
+
+## Decisiones y contexto que no debe perderse
+
+- Stripe es el proveedor unico de pagos (ADR-042). Los proyectos viven en ~/projects (ADR-075). Cerrar/guardar son el mismo disparador. El HANDOFF se deriva del informe de cierre.
 
 ## Archivos tocados
 
-- `skills/*/SKILL.md` (~86 archivos)
-- `skills/*/scripts/*.sh` y `*.py` (~37 scripts refactorizados)
-- `scripts/test-skills.sh` (nuevo)
-- `scripts/pre-commit.template` (nuevo)
-- `tests/bash/*.bats` (7 archivos, nuevos)
-- `tests/python/*.py` (2 archivos, nuevos)
-- `.github/workflows/skills-ci.yml` (nuevo)
-- `package.json` (modificado)
-- `pytest.ini` (nuevo)
-- `.gitignore` (modificado)
-- `memory/2026-08-03.md` (modificado)
-- `.knowledge/BRIEF.md`, `STATUS.md`, `HANDOFF.md` (nuevos)
-
-## Decisiones
-
-- **Workspace como proyecto con `.knowledge/`:** el workspace ahora tiene BRIEF, STATUS y HANDOFF como cualquier otro proyecto. La memoria diaria sigue en `memory/`, el estado institucional en `.knowledge/`.
-- **`npm test` antes de cada commit a scripts:** obligatorio. El pre-commit hook lo enforcea localmente; CI lo enforcea en push.
-- ~~**Mirror `.github/skills/`:** se sincroniza con `rsync -a --delete --exclude='.DS_Store' skills/ .github/skills/` cada vez que se modifican skills.~~ _Revocado 2026-09-28 (ADR-079): el mirror se elimino justamente porque esa sincronizacion causaba errores (un `rsync --delete` borro 111 archivos)._
-- **`__pycache__` ignorado:** agregado a `.gitignore` después de que se colaron en el mirror.
-
-## Pendientes
-
-- Ninguno urgente. La fase de refactor y documentación está cerrada.
-- Si se agregan nuevas skills o scripts, seguir: agregar Helper Scripts en SKILL.md + `npm test` antes de commitear.
-
-## Cómo verificar
-
-```bash
-cd ~/.openclaw/workspace
-npm test
-# Esperado: 75 bash + 28 python syntax OK, 17 bats OK, 8 pytest OK
+```
+.knowledge/HANDOFF.md
+memory/memory.db
+skills/session-lifecycle/scripts/session-end.sh
 ```
 
-## Próxima sesión sugerida
+## Como continuar
 
-- Mantenimiento gradual de skills
-- Nueva skill si Gonzo la necesita
-- Evolución del tooling
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-10-06.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
 
-## Post-cierre: SKILLS-INDEX.md + .knowledge/
+---
 
-Después del cierre inicial, Gonzo pidió:
-- **SKILLS-INDEX.md:** regenerado desde 34 → 91 skills, 13 categorías, script counts y tooling status. (`b00ca958`)
-- **.knowledge/ en el workspace:** BRIEF.md, STATUS.md, HANDOFF.md creados para darle al workspace la misma estructura institucional que cualquier proyecto. (`a45f0a10`)
-
-Ambos cambios ya están commiteados y pusheados.
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*

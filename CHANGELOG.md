@@ -4,6 +4,20 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-10-06] - Cierre de sesion con HANDOFF del proyecto + plantilla del informe
+
+### Added
+- **`scripts/session-handoff.py`:** genera/actualiza el `HANDOFF.md` del proyecto en curso (o del workspace) al cerrar sesion. Destino: `~/projects/<slug>/.knowledge/HANDOFF.md` (ADR-075); para el sistema, `<workspace>/.knowledge/HANDOFF.md`. Deriva el HANDOFF del informe de cierre (resumen + estado + proximos pasos + decisiones + archivos tocados). Normaliza guiones largos.
+- **`memory/_templates/session-close.md`:** plantilla del informe detallado de cierre de sesion (el formato de `memory/YYYY-MM-DD.md` que Gonzo pidio registrar).
+
+### Changed
+- **`skills/session-lifecycle/scripts/session-end.sh`:** reescrito. Acepta `--status`, `--next-steps`, `--decisions`; el HANDOFF lo genera `session-handoff.py` en el destino correcto (el bloque viejo apuntaba a `projects/<slug>/.knowledge` y quedo obsoleto con ADR-075). Ahora el cierre deja **dos entregables**: informe en `memory/` + HANDOFF del proyecto.
+- **`skills/session-lifecycle/SKILL.md`** y **`AGENTS.md`:** documentado el doble entregable y que **"guardar sesion" y "cerrar sesion" son el mismo disparador**.
+- **`memory/README.md`:** plantilla `session-close.md` registrada.
+
+### Verified
+- `session-end.sh` probado end-to-end: genera HANDOFF del workspace y escribe el informe en la DB.
+
 ## [2026-10-06] - Pagos: Stripe como proveedor unico reconocido (ADR-042 superseded de nuevo)
 
 ### Changed

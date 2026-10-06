@@ -37,7 +37,7 @@ memory/
 │                          #   portfolio-curation, novel-pitch, conversation_summary)
 ├── recipes/               # recetas
 ├── tech-notes/            # notas tecnicas sueltas
-├── _templates/            # plantillas (YYYY-MM-DD.md)
+├── _templates/            # plantillas (YYYY-MM-DD.md, session-close.md)
 ├── dreaming/  .dreams/    # estado de dreaming (gitignored)
 └── export/                # chunks derivados regenerables (gitignored)
 ```

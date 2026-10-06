@@ -80,6 +80,14 @@ If Gonzo says `"start session"`, `"brainstorming"`, `"I don't know which project
 - If the checkpoint reveals a detour, redefine the objective or constraints before continuing.
 
 ### 4. Save - scan session, write HANDOFF, memory, CHANGELOG
+
+**Disparador (2026-10-06):** **"guardar sesion"** y **"cerrar sesion"** son el mismo pedido - el ciclo de guardado completo. No distinguir entre ambos.
+
+**Dos entregables por cierre (2026-10-06):**
+1. **Informe detallado** en `memory/YYYY-MM-DD.md` (una seccion por sesion). Plantilla registrada en `memory/_templates/session-close.md`.
+2. **HANDOFF del proyecto en curso** (`scripts/session-handoff.py`), en el `.knowledge/` del proyecto o del workspace. Es el punto de entrada para continuar; se regenera en cada cierre. El destino lo resuelve el script (workspace -> `<workspace>/.knowledge/HANDOFF.md`; proyecto -> `~/projects/<slug>/.knowledge/HANDOFF.md`, ADR-075).
+
+El HANDOFF se **deriva del informe de cierre**: mismo resumen, mas estado actual, proximos pasos, decisiones y archivos tocados.
 - **Auto-cataloging + DB-first (2026-08-31):** when saving a session, `session-end.sh` (1) writes the summary **directly to `memory/memory.db`** (`daily_notes` table) as the source of truth via `scripts/memory-end-session.py`, (2) regenerates `memory/YYYY-MM-DD.md` as an **exported view** (regenerable with `export-all`), and (3) runs `scripts/memory-catalog-v2.py` to update embeddings/topics/learnings. With this, the DB is the source and the `.md` files become optional.
 - **Reconciliation guard (2026-09-14):** the DB->.md export is lossy when the `.md` was edited by hand or written by a concurrent session. Before exporting, `memory-end-session.py` compares `.md` sections vs the DB and merges into the DB the ones that only live in the `.md` (preserving the DB-only ones), with a backup in `/tmp/daily-<date>.backup.md`. If the date has no row in the DB, it creates one from the whole `.md`. `--no-reconcile` reproduces the old behavior (destructive, opt-in). **The daily is written with the script, never by hand:** editing the `.md` directly leaves the DB behind.
 - Semantic context injection: when saving, the session is indexed in the DB for future search (`./scripts/memory-db.sh search "..."`).
@@ -102,7 +110,8 @@ Scripts in `skills/session-lifecycle/scripts/`:
 | Script | Use |
 |---|---|
 | `session-start.sh --project <name> --objective <obj>` | Loads the previous HANDOFF, runs the complexity-scorer on the objective, and creates/updates the daily log in `memory/YYYY-MM-DD.md`. Use at session start with a project. |
-| `session-end.sh --project <name> --summary <text>` | Generates/updates HANDOFF, writes the save in the daily log. PRs are reviewed manually by Gonzo (2026-08-25). Use when saving a session. |
+| `session-end.sh --project <name> --summary <text> [--status ..] [--next-steps ..] [--decisions ..]` | Cierra la sesion: escribe el informe en la DB/`memory/` (DB-first) y genera/actualiza el HANDOFF del proyecto. Disparador: **"guardar sesion"** o **"cerrar sesion"** (son indistintos). |
+| `scripts/session-handoff.py --project <name> --summary <text> [...]` | Genera/actualiza el HANDOFF.md del proyecto en curso (o del workspace). Destino: `~/projects/<slug>/.knowledge/HANDOFF.md` (ADR-075); para el sistema, `<workspace>/.knowledge/HANDOFF.md`. |
 | `scripts/complexity-scorer.sh <objective>` | Evaluates complexity in 4 dimensions - T-score 1-20 + bucket + model + thinking + pipeline. Run automatically by `session-start.sh`. Skill: `complexity-driven-pipeline`. |
 
 If the session touches workspace skill scripts, run `npm test` before the final commit.
