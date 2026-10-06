@@ -7,7 +7,7 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 ## [2026-10-06] - SoporteML v4 cerrado; el producto sigue por la version funcional de Lovable con cobro por Stripe
 
 ### Added
-- **`docs/adr/ADR-091-soporteml-v4-cierre-stripe.md`:** cierra SoporteML v4 (supera el greenfield de ADR-068) y registra que el producto sigue por la version funcional de Lovable (v1), ahora con **cobro por Stripe** habilitado en Argentina. Incluye la excepcion de pagos a ADR-042 y los pendientes abiertos (Fase 4 - salir de Lovable; pregunta de demanda). Indice `docs/adr/README.md` actualizado.
+- **`docs/adr/ADR-091-soporteml-v4-cierre-stripe.md`:** cierra SoporteML v4 (supera el greenfield de ADR-068) y registra que el producto sigue por la version funcional de Lovable (v1), ahora con **cobro por Stripe** habilitado en Argentina. Incluye la excepcion de pagos a ADR-042. Decision de alcance cerrada: **la version se queda en Lovable** (no migra a stack propio); sin pendientes abiertos. Indice `docs/adr/README.md` actualizado.
 
 ### Changed
 - **`docs/adr/ADR-042`:** status y decision actualizados a "Mercado Pago por defecto, Stripe solo por excepcion"; nueva seccion **Excepcion otorgada (2026-10-06)** para SoporteML. La regla general no cambia.

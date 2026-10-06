@@ -29,13 +29,14 @@ Esto es coherente con la medicion de ADR-068: v4 era una **poda** de v1, no una 
 - Cierra una etapa de cuatro generaciones sin demanda probada. El producto deja de "reiniciarse".
 - **El primer proyecto del ecosistema con billing real y operativo:** v1 tenia el billing escrito y jamas operativo (secrets sin configurar, plan de preapproval sin crear en MP).
 
-### Abiertas (declaradas, no fingidas)
-- **La "Fase 4 - salir de Lovable" de v1 sigue pendiente.** La version funcional de Lovable arrastra las dependencias de Lovable (auth y AI gateway de Lovable, Supabase BaaS) que v1 misma declaro querer dejar atras. Agregar Stripe no la resuelve.
-- Sigue sin responderse, con la misma validez que en ADR-068: **¿por que esta vez tendra usuarios?** Ahora al menos hay cobro operativo, que es la condicion para probar demanda de verdad.
+### Decision de alcance (cerrada)
+- **La version se queda en Lovable.** No se migra a stack propio: la "Fase 4 - salir de Lovable" de v1 **no se persigue** (decision de Gonzo, 2026-10-06). Las dependencias de Lovable (auth y AI gateway de Lovable, Supabase BaaS) son el entorno elegido, no deuda a saldar.
+- **SoporteML no deja pendientes abiertos.** El proyecto avanza sobre la version funcional de Lovable tal como esta.
 
 ## Alternativas consideradas
 1. **Continuar el greenfield de ADR-068.** Descartada por instruccion de Gonzo.
 2. **Cerrar SoporteML por completo.** No es lo que se decidio: el producto sigue vivo por la version funcional.
+3. **Migrar a stack propio (Fase 4 de v1).** Descartada: la version se queda en Lovable.
 
 ## Notas de mantenimiento
 - La propagacion del 2026-10-06 toco: `MEMORY.md`, `AGENTS.md`, `docs/APUESTAS.md`, `docs/NORTH.md`, `docs/ROADMAP.md`, `memory/user-profile.md`, `docs/adr/ADR-042` (nota de excepcion), este ADR, y la DB (`memory/memory.db`, tabla `learnings`).

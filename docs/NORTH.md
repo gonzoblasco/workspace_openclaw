@@ -122,7 +122,7 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 
 1. **`kanam-fixer`:** alcance sin definir. Es lo que desbloquea el ancla formal del pilar *Accesibilidad* en ADR-001.
 2. **La métrica del H1:** "usuarios reales" es vago. Falta el número concreto.
-3. **`soporteml`:** v4 cerrado (ADR-091); el producto sigue por la version funcional de Lovable, ahora con cobro por Stripe. Queda la pregunta de 4 generaciones: ¿por qué esta vez tendrá usuarios?
+3. **`soporteml`:** v4 cerrado (ADR-091); el producto sigue por la version funcional de Lovable, con cobro por Stripe, y **se queda en Lovable** (no migra). Sin pendientes abiertos.
 4. **Respaldo de `~/projects`:** los `.knowledge/` viven solo en disco, sin respaldo en git.
 5. **Ecosistema:** decisión de memoria (6 caminos solapados) y de seguridad (guardspine vs ClawSec) - ver `docs/ecosystem/DECISIONS.md`.
 
