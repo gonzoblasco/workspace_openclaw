@@ -45,7 +45,10 @@ DEFAULTS = {
     "model_primary": "deepseek-v4.1-flash:cloud",
     "model_auxiliary": "gemma4:cloud",
     "model_alternative": "glm-5.3-flash:cloud",
-    "thinking_default": "high",
+    # Nivel de pensamiento por defecto (ADR-090, 2026-10-06): `off`. Los agentes
+    # de juicio (critic/auditor/planner) usan `low` y se setean por agente; el
+    # default global es off. Seed, no verdad: la DB manda.
+    "thinking_default": "off",
     # Motor del pipeline A/B. Distinto del primario: el router lo usa para los
     # agentes de codigo (scripts/model-router.sh, ruta 'default').
     "model_pipeline": "deepseek-v4.1-flash:cloud",
@@ -58,14 +61,16 @@ DEFAULTS = {
     # deepseek. NO autoriza solo (tiene un falso negativo medido en defectos
     # semanticos); lo que toca logica pasa siempre por deepseek.
     "model_pipeline_prefilter": "gemma4:cloud",
-    # Distribucion por agente (2026-10-05, ADR-087). Vive en un setting para que
-    # el bloque de AGENTS.md la conserve administrada en vez de un resumen generico.
+    # Distribucion por agente (ADR-090, cata 2026-10-06). Vive en un setting para
+    # que el bloque de AGENTS.md la conserve administrada en vez de un resumen
+    # generico. Semilla alineada al ADR-090; la DB manda.
     "model_by_agent": (
         "main/defaults deepseek-v4.1-flash:cloud (fallback glm-5.3-flash) · "
-        "dev glm-5.3-flash:cloud (fallback deepseek) · ops glm-5.3-flash:cloud "
-        "(fallback deepseek) · auditor nemotron-3-super:cloud (fallback deepseek) · "
-        "critic gpt-oss:120b-cloud · planner minimax-m3:cloud · "
-        "mind deepseek-v4.1-flash:cloud · studio gemma4:cloud (fallback glm4:9b local)"
+        "dev gpt-oss:120b-cloud (fallback deepseek) · ops gpt-oss:120b-cloud "
+        "(fallback deepseek) · auditor deepseek-v4.1-flash:cloud (fallback gemma4) · "
+        "critic gpt-oss:120b-cloud (fallback nemotron) · planner gpt-oss:120b-cloud "
+        "(fallback glm-5.3-flash) · mind deepseek-v4.1-flash:cloud (fallback gemma4) · "
+        "studio gemma4:cloud (fallback glm4:9b local)"
     ),
 }
 
@@ -73,15 +78,10 @@ DEFAULTS = {
 # Agregar una entrada aca es todo lo que hace falta para sumar un bloque nuevo.
 REGISTRY = [
     {
-        "file": "AGENTS.md",
-        "key": "model-triple",
-        "template": (
-            "- **Distribución por agente (ADR-087):** {model_by_agent}."
-        ),
-    },
-    {
         # El resumen operativo que reciben TODOS los subagentes: es el bloque
-        # mas critico, porque ellos no ven docs/SETUP.md ni MEMORY.md.
+        # mas critico, porque ellos no ven docs/SETUP.md ni MEMORY.md. Unico
+        # bloque de modelos en AGENTS.md desde 2026-10-06 (se colapso el viejo
+        # `model-triple`, que duplicaba el mismo setting en el mismo archivo).
         "file": "AGENTS.md",
         "key": "model-operativo",
         "template": (

@@ -66,7 +66,7 @@ def test_seed_inserts_defaults(tmp_path):
     got = mod.get_settings(conn)
     conn.close()
     assert got["model_primary"] == "deepseek-v4.1-flash:cloud"
-    assert got["thinking_default"] == "high"
+    assert got["thinking_default"] == "off"
 
 
 def test_seed_is_idempotent(tmp_path):

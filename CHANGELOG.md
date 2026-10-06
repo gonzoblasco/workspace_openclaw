@@ -4,6 +4,36 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-10-06] - Refactor de gobernanza: AGENTS.md, AGENTS-DETALLE.md y SETUP.md reconciliados
+
+### Fixed
+- **Contradicción `.knowledge/` resuelta.** `docs/AGENTS-DETALLE.md` decía que el workspace `trackea projects/**/.knowledge/` (modelo pre-ADR-075) mientras `AGENTS.md` decía lo contrario. Se reescribió la sección "Triple Git" completa al modelo ADR-075: proyectos en `~/projects/`, workspace sin `projects/` ni `.knowledge/`, agregado vía `aggregate-sync.sh`. Anotada la deuda de `init-project.sh` (todavía resuelve `PROJECTS_DIR=workspace/projects`).
+- **`HEARTBEAT.md` fantasma.** `AGENTS.md` mandaba "editar `HEARTBEAT.md`"; ese archivo no existe (git log: `182635ee2b`, 2026-10-04). Reemplazado por el estado real: checklist silencioso vía `automations`, mapa en `docs/gateway-operations.md`.
+- **Referencia a API legacy.** `cron(action: wake, ...)` → `automations(action: "wake", ...)` (la sintaxis vigente).
+- **`nomic-embed-text` 768 dims → 1024 dims.** `docs/SETUP.md` decía que la búsqueda semántica usa embeddings de 768 dims; los scripts usan `qwen3-embedding:0.6b` (1024 dims). El `768` de los scripts es `n_context`/truncado, no la dimensionalidad.
+- **`scripts/session-start.sh` roto en `SETUP.md`** → `skills/session-lifecycle/scripts/session-start.sh`.
+
+### Changed
+- **Bloques de modelo duplicados colapsados.** `AGENTS.md` tenía DOS bloques MANAGED con el mismo contenido (`model-triple` y `model-operativo`). Se eliminó `model-triple` de `AGENTS.md`; queda un único bloque (`model-operativo`). `managed-blocks.py`: entrada `model-triple` de `AGENTS.md` removida del REGISTRY. `docs/SETUP.md` conserva su `model-triple` (mide los modelos primario/auxiliar/alternativo, ejes distintos).
+- **`AGENTS.md`: "Modelos y razonamiento" fuera de `Git & Commits`.** Esa sección y "Skills Mirror & Públicas" colgaban de `Git & Commits` sin ser git. Modelos pasó a `## 3. Ingeniería`; el bloque de skills públicas (archivado 2026-09-28) se comprimió a un párrafo con puntero al detalle.
+- **Política de modelos unificada.** `AGENTS.md` ahora cita **ADR-090** como fuente de modelo+thinking y explicita que supersede ADR-053 y las secciones de modelo/thinking de ADR-040. `docs/SETUP.md` y `docs/AGENTS-DETALLE.md` marcaron ADR-040 como histórico y apuntan a ADR-090.
+- **Red Lines y "External vs Internal" en español.** El propio archivo declara que el workspace privado va en español; eran las últimas líneas en inglés.
+- **`type(#issue)` sin issue definido.** Se aclaró: sin ticket, `type: description`.
+- **Formato `type(#issue)`:** documentado el caso sin issue asociado.
+- **Fechas de cierre** de `AGENTS.md` y `docs/SETUP.md` actualizadas al 2026-10-06.
+
+### Added
+- **`AGENTS.md`: margen recuperado.** Bajó de 19.542 a ~18.955 chars (límite bootstrap 20K): el colapso de bloques y la compresión de la receta de skills devolvieron holgura.
+
+### Fixed (seed)
+- **`managed-blocks.py` DEFAULTS.** `thinking_default: high` → `off` (ADR-090) y `model_by_agent` alineado al ADR-090 (antes tenía la distribución pre-cata de 2026-10-05: `planner minimax-m3`, `dev/ops glm-5.3-flash`). Es semilla: la DB ya estaba correcta; faltaba el fallback.
+- **`tests/python/test_managed_blocks.py`** actualizado al nuevo default (`thinking_default == "off"`).
+
+### Verified
+- `managed-blocks.py apply` idempotente (4 bloques "al dia"); `pytest` no corre en esta máquina (no instalado), bats sí.
+- Gates del pre-commit en verde: `check-refs` (489 rutas), `check-adr-integrity` (91 ADRs), `check-pipeline-enforcement` (pacto A/B consistente), `check-agent-skill-boundary`, `check-content-dirs`.
+- `AGENTS.md`: bloques MANAGED restantes = `model-operativo` y `pipeline-ab`.
+
 ## [2026-10-06] - Cierre de sesion con HANDOFF del proyecto + plantilla del informe
 
 ### Added

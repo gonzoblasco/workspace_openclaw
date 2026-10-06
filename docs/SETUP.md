@@ -24,7 +24,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 
 > Los valores de arriba los mantiene `scripts/managed-blocks.py` desde la tabla `settings` de `memory.db`. Para cambiarlos: `managed-blocks.py set <key> <value>` y despues `apply`. No editar a mano.
 
-- **Modelo de trabajo (2026-08-30, historico):** Default de OpenClaw: `deepseek-v4-flash:cloud` (revert 2026-08-30, decisión explícita de Gonzo: la diferencia de calidad vs GLM 5.3 Flash es muchísima). Kanam en thinking **max**; agentes A/B del pipeline SIEMPRE en **high** con `deepseek-v4-flash:cloud` (motor hoy: `deepseek-v4.1-flash:cloud`; v4-flash se retiro el 2026-09-25). Config: `agents.defaults.thinkingDefault = "max"`. Pipeline en cadena A/B: Kanam planifica en max, agentes ejecutan en high. Regla de niveles: agentes de codigo siempre high, max solo para diseño dificil puntual (el max no fue driver de calidad en la comparativa; DeepSeek en max filosofa, ADR-040).
+- **Modelo de trabajo (2026-08-30, historico):** Default de OpenClaw: `deepseek-v4-flash:cloud` (revert 2026-08-30, decisión explícita de Gonzo: la diferencia de calidad vs GLM 5.3 Flash es muchísima). Kanam en thinking **max**; agentes A/B del pipeline en **high** con `deepseek-v4-flash:cloud` (motor hoy: `deepseek-v4.1-flash:cloud`; v4-flash se retiro el 2026-09-25). **SUPERSEDED:** esta politica de niveles quedo reemplazada por **ADR-090** (2026-10-06): thinking global `off`, `low` para los roles de juicio, `high`/`max` solo por escalado puntual del complexity-scorer. Lo de arriba se conserva como historia; el valor vigente esta en el bloque managed de arriba.
 - **GLM-5.3-Flash (2026-08-29):** primer GLM nativamente multimodal: imagen, video y archivos (PDFs) como input. 1M de contexto, 131k output, 320B params totales / 18B activos (MoE), licencia MIT. En el backend soporta `reasoning_effort` (low/high/max, default max) pero Ollama no expone el knob: se le pasa CERO parametros, default del servidor (ADR-041). Ex "ox-alpha" (stealth en OpenRouter/OpenCode, probado en batalla con agentes de codigo). Ficha verificada en docs.z.ai + Hugging Face. Manual completo: `docs/adr/ADR-041-motor-llm-glm-5.3-flash.md`.
 - **web_search provider:** `DuckDuckGo Search (experimental)` (key-free, no consume créditos). El provider `ollama` usaba `glm-5.2:cloud` y consumía requests del presupuesto sin pedirlo - NO usar.
 - **Modelos disponibles (Ollama):**
@@ -42,7 +42,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
   - Requiere Claude Code >= 2.x (la 0.2.18 no maneja el bloque thinking de los modelos de razonamiento).
   - Warnings de `unrecognized_model` por modelos custom = ruido, no bloquean.
 - **Qwen Code:** queda como fallback o segundo par de ojos, no como estandar (ADR-049). Para SIGKILL/sesiones largas, Claude maneja mejor que Qwen.
-- **El modelo que carga el harness** se elige por tipo de tarea (ADR-040): `deepseek-v4.1-flash:cloud` default/motor (v4-flash se retiro el 2026-09-25), `glm-5.3-flash` escalada multimodal, `kimi-k2.7-code` nivel superior.
+- **El modelo que carga el harness** se elige por tipo de tarea (ver `scripts/model-router.sh`): `deepseek-v4.1-flash:cloud` default/motor (v4-flash se retiro el 2026-09-25), `glm-5.3-flash` escalada multimodal, `kimi-k2.7-code` nivel superior. La tabla MAX vs HIGH de `docs/adr/ADR-040-modelos-seleccion-por-tarea.md` es **historica**; la politica vigente de niveles es **ADR-090**.
 - **Claude Code ignora AGENTS.md** (verificado ADR-049): no lo lee en absoluto. Cada directorio raiz de proyecto (y el workspace) lleva el **PAR** `AGENTS.md` (fuente de verdad, reglas especializadas del proyecto) + `CLAUDE.md` espejo que hace `@import` de ese `AGENTS.md` (lo dirige, no lo reemplaza). Verificado: el par del proyecto gana sobre el de la raiz cuando el cwd esta dentro del proyecto. Se crea el par cuando un proyecto entra al flujo de pipeline; hoy estan la raiz y kanam-fixer (piloto).
 - Detalle en la skill `agent-orchestration-pipeline` (que aun no refleja ADR-049; al tocarla, alinearla).
 
@@ -69,7 +69,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/skill-router.py` | Sugiere que skill usar para una tarea (matching local keyword + embeddings Ollama `qwen3-embedding:0.6b`). Portado del concepto skill-ai-inject. Uso: `skill-router.py "<tarea>"` |
 | `scripts/project-closure.sh` | Cierra/immortaliza un proyecto terminado: crea ADR template, registra en memory.db (daily_notes + sessions_relacional), devuelve resumen para daily. Reproducible. Uso: `--name <slug> --title <t> --summary <s> [--complexity T] [--model m] [--tag t] [--create-adr]`. Skill: `project-closure` |
 | `scripts/pipeline-track.sh` | Estado durable del pipeline A/B: init/start/review/done/status/resume/note. Sobrevive a SIGKILL/restarts (crash recovery). Portado del concepto Pipeline Architect. Acepta `--score T` en init (integrado con complexity-scorer) |
-| `scripts/complexity-scorer.sh` | Evalua objetivo en 4 dimensiones (A/B/C/D), devuelve T-score 1-20 + bucket + modelo + thinking. Prueba gemma4:e4b-mlx local primero (6.7x mas rapido que qwen3.5), luego fallbacks cloud. `--score T` para forzar. T>=17 requiere confirmacion de Gonzo. Cablea complexity-driven-pipeline. Parser externo: `scripts/complexity-parse.py`. Integrado en `session-start.sh` (corre al iniciar sesion y persiste T en el log) |
+| `scripts/complexity-scorer.sh` | Evalua objetivo en 4 dimensiones (A/B/C/D), devuelve T-score 1-20 + bucket + modelo + thinking. Prueba gemma4:e4b-mlx local primero (6.7x mas rapido que qwen3.5), luego fallbacks cloud. `--score T` para forzar. T>=17 requiere confirmacion de Gonzo. Cablea complexity-driven-pipeline. Parser externo: `scripts/complexity-parse.py`. Integrado en `skills/session-lifecycle/scripts/session-start.sh` (corre al iniciar sesion y persiste T en el log) |
 | `scripts/pdf-tool.sh` | Toolkit PDF/OCR local: text, info, pages, search, ocr (tesseract), pdfimages, md2pdf (exportar MD a PDF). 100% local. Requiere poppler + tesseract + npx (brew). Portado de la familia PDF/OCR de ClawHub |
 | `scripts/model-router.sh` | Router de modelo Ollama por tipo de tarea (code/review/long/cheap/writing/pipeline_ab) + overrides sticky. Pipeline A/B: DeepSeek (1-2) → GLM 5.3 Flash (3) → Kimi K2.7 Code (4). Consulta `model <tipo>` para decidir el --model. Portado del concepto ToggleLogic sin licencia |
 | `scripts/task-notify.sh` | Notificacion desktop macOS cuando un agente termina tarea. Uso en pipeline A/B. Portado del concepto Task Notifier |
@@ -79,7 +79,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 ## Memoria (SQLite + espejos)
 
 - **Fuente de verdad:** `memory/memory.db` (tablas: `daily_notes`, `todos`, `inbox`, `contributions`).
-- **Busqueda semantica (2026-08-30):** `session_vectors` con embeddings reales de Ollama (768 dims) + `chunk_text`. Usar `scripts/semantic-search-json.js` para recuperar sesiones por significado. Re-catalogar con `scripts/memory-catalog-simple.sh` si se agregan dailies nuevos.
+- **Busqueda semantica (2026-08-30):** `session_vectors` con embeddings reales de Ollama (**1024 dims**, `qwen3-embedding:0.6b`) + `chunk_text`. Usar `scripts/semantic-search-json.js` para recuperar sesiones por significado. Re-catalogar con `scripts/memory-catalog-simple.sh` si se agregan dailies nuevos.
 - **Espejos MD** (regenerar con `./scripts/memory-db.sh export-all`):
   - `memory/todos.md` ← tabla todos
   - `memory/inbox.md` ← tabla inbox
@@ -125,4 +125,4 @@ La memoria del workspace tiene **dos clases de superficie**, y confundirlas llev
 
 ---
 
-_Actualizado 2026-09-14 (migrado desde AGENTS.md). Si algo cambia en el setup, actualizá este archivo - es mi cheat sheet._
+_Actualizado 2026-10-06 (migrado desde AGENTS.md el 2026-09-14). Si algo cambia en el setup, actualizá este archivo - es mi cheat sheet._
