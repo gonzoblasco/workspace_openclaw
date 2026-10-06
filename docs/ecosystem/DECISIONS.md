@@ -292,6 +292,12 @@ Para no volver a analizarlos.
 | **OpenClaw Studio** (`grp06`) | Front de tercero con **aprobaciones de exec**, solapa con el Control UI nativo. Rescatado el **contrato semántico de color**. |
 | **planning-with-files** | **No descartado, pero cojo en OpenClaw**: somos tier *"sin lifecycle hooks"*, que es justo el mecanismo diferenciador. |
 
+**Propuestas de vendor evaluadas aparte (no son repos de la ronda):**
+
+| Propuesta | Por qué afuera |
+|---|---|
+| **MindStudio** (mindstudio.ai) | Propuesta comercial de *"Action Layer"* para agentes (SDK unificado: 140+ acciones, 850+ conectores, 200+ modelos a costo). Nunca se tomó decisión: sin ADR, sin pendiente accionable, sin refs en el workspace. Vivía duplicada en `proposal.md` + `mindstudio_proposal.md` (byte-idénticos); ambos **eliminados el 2026-10-06**. La idea no se pierde: el contenido es recuperable desde git (`git show HEAD~1:mindstudio_proposal.md`) y está en la papelera. Si se reabre la evaluación, este es el registro. |
+
 ---
 
 ## 5. ▶️ Movimiento recomendado
