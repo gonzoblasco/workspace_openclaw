@@ -82,7 +82,10 @@ def test_seed_is_idempotent(tmp_path):
 def test_apply_rewrites_only_between_markers(tmp_path):
     mod, ws = load(tmp_path)
     seed(mod)
-    p = write_block(ws, "AGENTS.md", "model-triple", "contenido viejo")
+    # El bloque de modelos de AGENTS.md es `model-operativo` (consume
+    # model_by_agent + model_primary + pipeline A/B); `model-triple` vive en
+    # docs/SETUP.md desde 2026-10-06 (dac9961410).
+    p = write_block(ws, "AGENTS.md", "model-operativo", "contenido viejo")
     conn = mod.db()
     mod.run_all(conn, dry_run=False)
     conn.close()
@@ -97,7 +100,7 @@ def test_apply_rewrites_only_between_markers(tmp_path):
 def test_apply_is_idempotent(tmp_path):
     mod, ws = load(tmp_path)
     seed(mod)
-    p = write_block(ws, "AGENTS.md", "model-triple", "viejo")
+    p = write_block(ws, "AGENTS.md", "model-operativo", "viejo")
     conn = mod.db()
     mod.run_all(conn, dry_run=False)
     first = p.read_text(encoding="utf-8")
@@ -110,7 +113,7 @@ def test_apply_is_idempotent(tmp_path):
 def test_dry_run_does_not_write(tmp_path):
     mod, ws = load(tmp_path)
     seed(mod)
-    p = write_block(ws, "AGENTS.md", "model-triple", "viejo")
+    p = write_block(ws, "AGENTS.md", "model-operativo", "viejo")
     before = p.read_text(encoding="utf-8")
     conn = mod.db()
     mod.run_all(conn, dry_run=True)
@@ -130,7 +133,7 @@ def test_missing_markers_are_reported_not_guessed(tmp_path):
     conn.close()
     assert p.read_text(encoding="utf-8") == original  # intacto
     assert "faltan los marcadores" in out
-    assert mod_begin("model-triple") in out  # el snippet a pegar
+    assert mod_begin("model-operativo") in out  # el snippet a pegar
 
 
 def test_set_updates_value(tmp_path):
@@ -148,12 +151,13 @@ def test_change_propagates_to_block(tmp_path):
     """El caso central: cambiar un setting cambia el bloque en el archivo."""
     mod, ws = load(tmp_path)
     seed(mod)
-    p = write_block(ws, "AGENTS.md", "model-triple", "viejo")
+    p = write_block(ws, "AGENTS.md", "model-operativo", "viejo")
     conn = mod.db()
     mod.run_all(conn, dry_run=False)
     class A:
-        # model-triple se arma con {model_by_agent} (2026-10-05, ADR-087), no con
-        # {model_primary}: mutar un setting que el bloque ya no usa no lo mueve.
+        # El bloque model-operativo de AGENTS.md se arma con {model_by_agent}
+        # (2026-10-05, ADR-087), no con {model_primary}: mutar un setting que el
+        # bloque ya no usa no lo mueve.
         key, value = "model_by_agent", "modelo-nuevo:cloud"
     mod.cmd_set(conn, A())
     mod.run_all(conn, dry_run=False)

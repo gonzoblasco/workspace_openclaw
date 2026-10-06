@@ -73,7 +73,7 @@ def test_archive_accumulates_without_duplicates(tmp_path):
     # Otra corrida con lo mismo + algo nuevo rotado.
     write_changelog(p, [("2026-08-01", "old"), ("2026-07-01", "older")])
     _, archive2, _, _, _ = mod.plan(30, today)
-    assert archive2.count("body old") == 1
+    assert archive2.count("## [2026-08-01] - old") == 1
     assert "older" in archive2
 
 
