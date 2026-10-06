@@ -242,7 +242,7 @@ def export_daily_to_md(conn, date):
     if not row:
         return None
     md_path = WORKSPACE / "memory" / f"{date}.md"
-    body = _strip_title(row["content"] or "", date).strip("\n")
+    body = _strip_title(row[1] or "", date).strip("\n")
     content = f"# Daily {date}\n\n{body}\n" if body else f"# Daily {date}\n"
     md_path.parent.mkdir(parents=True, exist_ok=True)
     md_path.write_text(content, encoding="utf-8")
@@ -254,7 +254,7 @@ def dedupe_daily_db(conn, date):
     row = get_or_create_daily(conn, date)
     if not row:
         return None
-    body = _strip_title(row["content"] or "", date).strip("\n")
+    body = _strip_title(row[1] or "", date).strip("\n")
     secs = _dedupe_sections(_split_sections(body))
     clean = _join_sections(secs)
     before_heads = len([h for h, _ in _split_sections(body) if h])
