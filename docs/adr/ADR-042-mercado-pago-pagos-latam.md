@@ -1,40 +1,47 @@
-# ADR-042: Mercado Pago como Proveedor de Pagos por Defecto (Stripe solo por excepcion)
+# ADR-042: Pagos - el proveedor se elige por proyecto y se justifica
 
-**Status:** Accepted (2026-08-29) - premisa de disponibilidad revalidada 2026-10-06; excepcion otorgada 2026-10-06
+**Status:** Accepted (2026-08-29) - revisado a fondo 2026-10-06
 **Deciders:** Gonzo / Kanam
 **Fecha:** 2026-08-29
-**Origen:** workspace (regla operativa fijada por Gonzo, 2026-08-29)
+**Origen:** workspace (regla operativa fijada por Gonzo, 2026-08-29; revisada 2026-10-06)
+
+---
 
 ## Contexto
 
-Los proyectos con cobros (micro-SaaS, suscripciones, prints) necesitan un proveedor de pagos. El default de facto del ecosistema JS es Stripe: excelente DX, Payment Links, SDK maduro. **Al escribir este ADR (2026-08-29), la premisa era que** en Argentina - y en LATAM en general - Stripe no existia como opcion operativa real: no procesaba pesos argentinos ni los medios de pago de la region (QR de Mercado Pago, Rapipago, PagoFacil, transferencias CBU/CVU, MODO). Elegir Stripe por inercia de documentacion bloqueaba el mercado principal de los usuarios.
+Los proyectos con cobros (micro-SaaS, suscripciones, prints) necesitan un proveedor de pagos. La version original de este ADR (2026-08-29) fijo **Mercado Pago como proveedor obligatorio y prohibio Stripe**, con un unico motivo: se creia que Stripe no operaba en Argentina.
 
-> **Revalidacion (2026-10-06):** la premisa de disponibilidad cambio. **Stripe ya opera en Argentina** (integracion reciente; confirmado por Gonzo, que la usa en SoporteML, y por la documentacion publica de Stripe, que suma Argentina a sus destinos soportados). La regla de default por defecto se conserva -Mercado Pago sigue siendo el default por los medios de pago locales-, **pero la afirmacion "Stripe no opera en Argentina" ya no es cierta y no debe repetirse como razon**. El registro original se conserva arriba como decision de origen.
+Dos hechos cambiaron (2026-10-06):
+
+1. **Stripe ya opera en Argentina** (integracion reciente). La premisa de indisponibilidad dejo de ser cierta.
+2. **Restriccion de plataforma:** en **Lovable**, Stripe es la **unica integracion de pago disponible**. Un proyecto construido en Lovable no puede cobrar con Mercado Pago sin salir de la plataforma.
+
+Un proveedor unico obligatorio choca con ambas: prohibir Stripe bloquea todo proyecto construido en Lovable; obligar Mercado Pago bloquea lo mismo por el otro lado. **La regla anterior ya no describe el mundo.**
 
 ## Decision
 
-**Mercado Pago es el proveedor de pagos por defecto en TODOS los proyectos. Stripe queda como alternativa por excepcion (ver punto 2).**
+**No hay un proveedor de pagos obligatorio en el ecosistema. Cada proyecto elige el suyo y lo justifica.**
 
-> Matiz (2026-10-06): la eleccion de Mercado Pago como default ya **no** se apoya en "Stripe no opera en Argentina" (dejo de ser cierto). Se apoya en la **cobertura de medios de pago locales** (QR de Mercado Pago, Rapipago, PagoFacil, transferencias CBU/CVU, MODO) y en la moneda local, que es como paga la mayoria del mercado objetivo. Un proyecto puede elegir Stripe por excepcion explicita.
-
-1. Regla absoluta y transversal: aplica a proyectos nuevos y a migraciones de billing.
-2. Excepcion: unica y debidamente señalada. Solo si Gonzo la marca explicitamente para un proyecto concreto, y queda documentada en el ADR/HANDOFF de ese proyecto. Sin marca explicita, la regla no se discute.
-3. Mercado objetivo: Argentina y LATAM (AR/BR/MX), con moneda local.
-4. Integraciones tipicas: Checkout Pro (redireccion) o Checkout API (on-site), webhooks de IPN/merchant orders, credenciales sandbox/produccion por integrador.
+1. **La eleccion se justifica por proyecto**, en su ADR/HANDOFF: que proveedor, por que, para que mercado. "Porque ya estaba" o "porque el ADR viejo lo decia" no es justificacion.
+2. **Proyectos sobre Lovable -> Stripe.** Es la unica integracion de pago de la plataforma. No es una excepcion ni un fallback: es la **opcion natural del entorno**. Cualquier proyecto Lovable cobra por Stripe.
+3. **Proyectos fuera de Lovable -> proveedor a eleccion, justificado.** **Mercado Pago es una opcion fuerte (no la unica)** por la cobertura de medios de pago locales en Argentina/LATAM (QR de Mercado Pago, Rapipago, PagoFacil, transferencias CBU/CVU, MODO) y moneda local. **Stripe es igualmente valido** cuando el proyecto lo justifica (y ya opera en Argentina).
+4. **Otros proveedores** (dLocal, PayU, Izipay, GetNet, MoR tipo Paddle/Lemon Squeezy): validos segun el caso, con la misma exigencia de justificacion.
+5. **Mercado objetivo:** Argentina y LATAM, con moneda local.
 
 ## Consecuencias
-- **Positivas:** cobro en pesos con los medios locales reales, alineado con como pagan los usuarios de la region. KYC y fiscalidad resueltos del lado de Mercado Pago.
-- **Limitaciones asumidas:** la DX es inferior a la de Stripe. No hay Payment Links equivalentes en todos los casos, la documentacion es mas irregular, el sandbox exige cuentas de prueba y la API de suscripciones tiene limitaciones frente a Stripe Billing.
-- **No retroactiva:** si un proyecto existente ya tiene Stripe, se migra solo cuando se toque su billing.
 
-## Excepcion otorgada (2026-10-06)
+- **Positivas:** cada proyecto cobra con lo que mejor le sirve a su entorno y su mercado; ninguna regla transversal bloquea un proyecto por estar construido sobre una plataforma distinta. La decision se toma y se registra donde corresponde.
+- **Costo asumido:** hay que **justificar** la eleccion por proyecto (mas trabajo de decision que un default impuesto), y no hay un "proveedor por defecto" memorizable. Es deliberado: preferimos la decision justificada al automatismo.
+- **Registro:** la version original de este ADR (Mercado Pago obligatorio, Stripe prohibido) queda como **registro de origen**; no es la regla vigente.
 
-**SoporteML usa Stripe.** Gonzo marco explicitamente la excepcion del punto 2: agrego el sistema de cobro por **Stripe** a la version funcional de Lovable de SoporteML, habilitado en Argentina. Registrada en **ADR-091** (que tambien cierra SoporteML v4).
+## Estado actual de la eleccion
 
-Esto no cambia la regla general: Mercado Pago sigue siendo el default del ecosistema. La excepcion es de un proyecto concreto y esta documentada (esta seccion + ADR-091). Contexto: la premisa original de este ADR ("Stripe no opera en Argentina") **dejo de ser cierta** -Stripe ya opera en Argentina-, asi que Stripe deja de ser "algo que no se puede" y pasa a ser "algo que no es default".
+| Proyecto | Proveedor | Justificacion |
+|---|---|---|
+| **SoporteML** | **Stripe** | Construido sobre Lovable (unica integracion disponible). La version funcional de Lovable ya tiene cobro con Stripe operativo, habilitado en Argentina. Ver ADR-091. |
 
 ## Alternativas
 
-- **Stripe:** al escribir el ADR, descartado por indisponibilidad en Argentina. **Esa razon ya no aplica (2026-10-06: Stripe opera en Argentina).** Sigue disponible solo por la excepcion del punto 2; su DX superior ya no esta contrapesada por falta de disponibilidad.
-- **dLocal, PayU, Izipay, GetNet, Lemon:** players regionales validos para expansion multi-pais o casos corporativos. Re-evaluables unicamente dentro de la excepcion explicita.
-- **MoR (Paddle, Lemon Squeezy):** resuelven fiscalidad del vendedor (merchant of record), pero cobertura LATAM limitada (y Lemon Squeezy es de Stripe). Mismo tratamiento: excepcion explicita.
+- **Mercado Pago obligatorio (version original):** rechazada. Bloquea Lovable (donde MP no es integrable) y era un default impuesto, no una decision por proyecto.
+- **Stripe obligatorio:** rechazada. Ignora la cobertura de medios de pago locales en Argentina/LATAM fuera de Lovable.
+- **Default + excepcion (version intermedia):** rechazada por Gonzo (2026-10-06). Decir "Stripe solo por excepcion" **limita** Stripe sin motivo, cuando en realidad es la unica opcion en Lovable y una opcion valida en el resto.

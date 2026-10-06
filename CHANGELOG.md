@@ -10,9 +10,11 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 - **`docs/adr/ADR-091-soporteml-v4-cierre-stripe.md`:** cierra SoporteML v4 (supera el greenfield de ADR-068) y registra que el producto sigue por la version funcional de Lovable (v1), ahora con **cobro por Stripe** habilitado en Argentina. Incluye la excepcion de pagos a ADR-042. Decision de alcance cerrada: **la version se queda en Lovable** (no migra a stack propio); sin pendientes abiertos. Indice `docs/adr/README.md` actualizado.
 
 ### Changed
-- **`docs/adr/ADR-042`:** status y decision actualizados a "Mercado Pago por defecto, Stripe solo por excepcion"; nueva seccion **Excepcion otorgada (2026-10-06)** para SoporteML. La regla general no cambia.
-- **`MEMORY.md`:** entrada de SoporteML reescrita (v4 cerrado; sigue por Lovable v1 con Stripe); regla de pagos actualizada con la excepcion vigente.
-- **`AGENTS.md`:** regla de pagos ajustada (excepcion SoporteML/Stripe).
+- **`docs/adr/ADR-042`:** reescrito. Deja de ser "Mercado Pago obligatorio, Stripe por excepcion": ahora **el proveedor se elige por proyecto y se justifica**. Lovable -> Stripe (unica integracion de la plataforma); fuera de Lovable, Mercado Pago es opcion fuerte (no unica) y Stripe tambien es valido. La regla deja de limitar Stripe.
+- **`docs/adr/ADR-091`:** la clausula de pagos pasa de "excepcion" a "opcion natural del entorno (Lovable)".
+- **`docs/adr/ADR-042` (previo, misma fecha):** titulo/estado ajustados; nota de que Argentina ya opera con Stripe.
+- **`MEMORY.md`:** entrada de SoporteML reescrita (v4 cerrado; sigue por Lovable v1 con Stripe); regla de pagos actualizada (eleccion por proyecto).
+- **`AGENTS.md`:** regla de pagos ajustada (eleccion por proyecto; Lovable -> Stripe).
 - **`docs/APUESTAS.md`:** apuesta 2 pasa de `soporteml-v4` a `soporteml` (version funcional de Lovable) con Stripe operativo.
 - **`docs/NORTH.md`**, **`docs/ROADMAP.md`**, **`memory/user-profile.md`:** referencias a `soporteml-v4` actualizadas al estado nuevo.
 - **DB (`memory/memory.db`, tabla `learnings`):** leccion durable agregada (categoria `proyectos`).

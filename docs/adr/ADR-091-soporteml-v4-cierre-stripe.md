@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** instruccion de Gonzo (2026-10-06): *"cerramos soporteml 4, ya he agregado sistema de cobro por Stripe en la version funcional de lovable"*
-**Relacionado:** ADR-068 (greenfield basado en v1 - superado), ADR-067, ADR-042 (pagos: excepcion de Stripe), ADR-001 de portfolio-strategy (seccion 7)
+**Relacionado:** ADR-068 (greenfield basado en v1 - superado), ADR-067, ADR-042 (pagos: eleccion por proyecto), ADR-001 de portfolio-strategy (seccion 7)
 
 ---
 
@@ -20,7 +20,7 @@ Esto es coherente con la medicion de ADR-068: v4 era una **poda** de v1, no una 
 
 1. **SoporteML v4 se cierra.** El reinicio v4 no continua. Supera los pendientes de *generacion* de ADR-068: el greenfield CRM+contable no se construye como estaba planteado.
 2. **El producto sigue por la version funcional de Lovable (v1)**, que ahora incorpora **cobro por Stripe**, habilitado en Argentina.
-3. **Excepcion de pagos registrada (ADR-042, clausula 2).** ADR-042 declara Mercado Pago como proveedor por defecto y Stripe prohibido, con una unica salida: marca explicita de Gonzo para un proyecto concreto, documentada en el ADR/HANDOFF del proyecto. **Stripe en SoporteML es esa excepcion.** La regla general (Mercado Pago por defecto) sigue vigente; la politica de pagos del ecosistema no cambia.
+3. **Pagos (ADR-042):** el proveedor se elige por proyecto y se justifica. En **Lovable, Stripe es la unica opcion**; SoporteML cobra con Stripe porque su version funcional vive en Lovable. No es una excepcion: es la opcion natural del entorno.
 4. **La regla de narrativa publica no cambia:** SoporteML sigue fuera de la narrativa publica / del CV (ADR-001 seccion 7) y fuera de barridos automaticos de limpieza.
 
 ## Consecuencias
@@ -39,5 +39,5 @@ Esto es coherente con la medicion de ADR-068: v4 era una **poda** de v1, no una 
 3. **Migrar a stack propio (Fase 4 de v1).** Descartada: la version se queda en Lovable.
 
 ## Notas de mantenimiento
-- La propagacion del 2026-10-06 toco: `MEMORY.md`, `AGENTS.md`, `docs/APUESTAS.md`, `docs/NORTH.md`, `docs/ROADMAP.md`, `memory/user-profile.md`, `docs/adr/ADR-042` (nota de excepcion), este ADR, y la DB (`memory/memory.db`, tabla `learnings`).
+- La propagacion del 2026-10-06 toco: `MEMORY.md`, `AGENTS.md`, `docs/APUESTAS.md`, `docs/NORTH.md`, `docs/ROADMAP.md`, `memory/user-profile.md`, `docs/adr/ADR-042` (revisado a eleccion por proyecto), este ADR, y la DB (`memory/memory.db`, tabla `learnings`).
 - El cambio a Stripe ya habia asomado el 2026-10-01 en superficies de CV (`docs/entrevistas/mercadolibre-cards-nfc-aplicacion.md`) y en `DREAMS.md`, pero **no se habia propagado a las fuentes durables**. Este ADR cierra ese hueco.
