@@ -2,145 +2,117 @@
 
 **Fecha:** 2026-10-06 (reconstruido desde cero)
 **Estado:** Vivo. Fija el "para qué" de largo plazo.
-**Autor:** Kanam, a pedido de Gonzo. Reescrito contra fuentes reales (git, ADRs, BRIEF de cada proyecto en `~/projects/`, `docs/APUESTAS.md`, `docs/entrevistas/job-search-tracker.md`) - no contra la memoria de una sesión.
+**Autor:** Kanam, a pedido de Gonzo. Reescrito contra el contexto real de **las últimas dos semanas** (dailies 2026-09-22 a 2026-10-06, `docs/APUESTAS.md`, ADRs, `~/projects/*/.knowledge/`) - no contra la memoria vieja.
 
-> **Nota de la reconstrucción (2026-10-06):** la versión anterior era del 2026-09-14 y arrastraba errores graves: hablaba de la constelación como si los proyectos vivieran en `projects/*` (hoy viven en `~/projects/`, ADR-075), y su Horizonte 0 estaba armado sobre una "oferta aceptada" de EIT/Disney que **nunca existió** (era un bench req; ver `job-search-tracker.md`). Este documento reemplaza aquel. El histórico queda en git.
+> **Nota de la reconstrucción (2026-10-06):** la versión anterior era del 2026-09-14 y quedó anclada a proyectos e intereses que ya no son el eje: `kanam-story`/`kanam-studio` como línea narrativa *de producto*, `kanam-solitaires`/`kanam-tetris` como experimentos de portfolio, `kanam-forge` como apuesta. Esos ya no son lo que se trabaja. El norte actual se armó leyendo qué se hizo de verdad en las últimas dos semanas. Lo viejo queda en git.
 
 ---
 
 ## Por qué existe este documento
 
-Tres documentos distintos responden tres preguntas distintas:
+Tres documentos responden tres preguntas distintas:
 
 | Documento | Pregunta |
 |---|---|
 | `docs/ROADMAP.md` | **¿Cómo trabajamos?** (capas: fundaciones, pipeline, portfolio, ecosistema, crecimiento) |
-| `~/projects/portfolio-strategy/ADR-001` + `docs/APUESTAS.md` | **¿Cómo te vendés y qué construimos?** (pilares, anclas, orden de apuestas) |
-| `docs/NORTH.md` (este) | **¿Qué queremos que exista?** |
+| `docs/APUESTAS.md` | **¿Qué construimos y en qué orden?** (apuestas de producto/herramienta) |
+| `docs/NORTH.md` (este) | **¿Qué queremos que exista y para qué?** |
 
-Sin un norte escrito, cada bifurcación se siente igual de válida y ninguna se puede priorizar contra las demás. Ese sigue siendo el problema que este archivo cierra.
+Sin un norte escrito, cada bifurcación se siente igual de válida. En las últimas dos semanas se tocaron, en simultáneo: pipeline de agentes, Kanam OS, OnWheels, CPACC, diseño UI, narrativa, OSS y ecosistema OpenClaw. Ocho frentes defendibles. Este archivo ordena cuáles importan y por qué.
 
 ---
 
 ## Qué es Kanam (la respuesta corta)
 
-**Kanam es un sistema operativo personal de trabajo con IA, y su constelación de productos.**
+**Kanam es un sistema operativo personal de trabajo con IA, y las obras que salen de él.**
 
-No es "el bot" ni "el workspace". Es tres cosas a la vez:
+| Capa | Qué es | Hoy |
+|---|---|---|
+| **1. El sistema** | El OS de trabajo: workspace multi-agente (4 roles + Crew), memoria DB-first, apps propias, pipeline A/B, skills, decisiones documentadas | En producción diaria |
+| **2. Las obras** | Lo que el sistema permite construir | `kanam-onwheels` (producto finito en curso), `kanam-os` (app), `kanam-insight`, `soporteml-v4` |
+| **3. El oficio** | Lo que atraviesa todo y lo hace valioso | a11y + IA como infraestructura + **diseño UI/UX** (el frente más nuevo y más declarado) |
 
-| Capa | Qué es | Nombre | Estado |
-|---|---|---|---|
-| **1. El sistema** | El OS de trabajo: agente multi-rol, pipeline A/B, memoria DB-first, skills, decisiones documentadas | `workspace_openclaw` + Kanam | En producción diaria en la Mac Mini |
-| **2. La constelación** | Los productos/proyectos que salen de ese sistema | ~11 repos propios + `~/projects` de trabajo | Mixto: 2-3 piezas con foco, el resto en pausa o experimento |
-| **3. El hilo** | La especialización que atraviesa todo | Accesibilidad (a11y) + IA como infraestructura | Diferenciador real, con evidencia OSS (18 PRs abiertos, 8 mergeados) |
-
-El nombre no es azar: **Kanam** viene del "segundo cerebro" original que Gonzo descartó en 2026 y que resucitó como `kanam-mind`. El nombre sobrevivió a su primer proyecto y hoy nombra al ecosistema entero.
+Kanam no "usa IA". Construye el sistema que hace posible usarla bien, y lo pone a producir obras concretas. El nombre viene del "segundo cerebro" original que Gonzo descartó en 2026 y que resucitó como `kanam-mind`; hoy nombra al ecosistema entero.
 
 ---
 
 ## El norte, en tres horizontes
 
-### Horizonte 0 - Sostener y capitalizar (ahora, 0-6 meses)
-**Para qué:** conseguir trabajo. Situación económica urgente.
+### Horizonte 0 - Construir y terminar (ahora, 0-3 meses)
+**Para qué:** que el sistema produzca **una obra terminada** y que el oficio suba de nivel. Es lo que de verdad se está haciendo.
 
-> **Corrección (2026-10-06):** al 2026-09-24 **no hay ningún proceso abierto**; el tablero de búsqueda está vacío. La versión anterior de este documento y del ROADMAP afirmaban una oferta aceptada que nunca existió. El Horizonte 0 no está "cumplido": está **en rojo**.
+Tres frentes activos, todos verificados en las últimas dos semanas:
 
-Kanam cumple acá dos funciones concretas:
-1. **Portfolio vivo:** los PRs mergeados en design systems OSS (a11y/agentic) + los proyectos con foco son la prueba, no el relato.
-2. **Diferenciador:** a11y + AI-native es una combinación rara y defendible.
+1. **`kanam-onwheels` - el primer producto "finito, final".** Palabras de Gonzo: *"busco ya lograr un producto finito, final, contigo... quiero poder darle a mi hermano Esteban el sitio completo"*. Sitio de un concesionario multi-marca con chatbot RAG que responde solo con evidencia citada, multi-concesionaria desde el diseño. Fase 1 en curso; Supabase conectado y verificado. Es el ancla de "producto terminado" del semestre.
+2. **`kanam-os` - ver la memoria como aplicación.** Pedido: *"quiero poder usarte como una aplicación"*. Fases 1-2 hechas (8 vistas + CRUD). Fase 3 (bloques managed) y Fase 4 (búsqueda semántica) pendientes. Es el sistema mirándose a sí mismo.
+3. **El oficio: diseño UI/UX.** Frente abierto por Gonzo el 2026-09-14 y con plan de estudio armado el 2026-10-05: *"entrenarme en el arte del diseño y la UI... que la estética importe SIEMPRE"*. Diagnóstico honesto del propio plan: **el problema no es información, es criterio** - falta el ojo, y eso se entrena mirando y juzgando, no leyendo. Cimiento: skill `design-direction`. Meta concreta: **tokens y design system propio** (paso 0 del pipeline de diseño de 4 pasos).
 
-**Palanca viva:** la certificación **CPACC** (antes del 30/11) como entregable que desbloquea el hilo con reclutadores.
-**Criterio de listo:** un proceso **nuevo** llega a oferta y onboarding.
+**Criterio de listo (H0):** OnWheels entregado y corriendo para Esteban; Kanam OS con las 4 fases; el design system propio definido en tokens.
 
-### Horizonte 1 - Kanam como sistema que se sostiene (6-24 meses)
-**Para qué:** que el sistema deje de depender de la atención constante de Gonzo y empiece a devolverle tiempo.
+### Horizonte 1 - Capitalizar el oficio (3-12 meses)
+**Para qué:** convertir el trabajo en reputación, credencial y trabajo remunerado.
 
-La clave no es agregar productos: es que **1 o 2 piezas funcionen solas y con usuarios reales**. Los candidatos están definidos por `docs/APUESTAS.md` (orden confirmado por Gonzo el 2026-09-24):
+- **OSS a11y** - sigue siendo el diferenciador público. PRs mergeados y vivos en Adobe (react-spectrum), IBM/Carbon, Meta (astryx), MUI. Alimenta la **narrativa** (LinkedIn, nicho a11y + agentic) y es **material de entrevista**.
+- **`CPACC`** - meta **personal** de Gonzo (crecimiento propio en a11y). Objetivo de calendario: la sesión de examen cuya aplicación cierra el **9 de diciembre de 2026**. Es la palanca que desbloquea retomar el hilo laboral con un entregable.
+- **Búsqueda laboral** - hoy **dormante**: sin procesos abiertos (todos cerrados al 2026-09-24). No es un fracaso, es una pausa. Se reactiva con la credencial CPACC y con el portfolio terminado.
 
-- **`kanam-insight`** (prioridad 1) - motor de inteligencia transversal: cruza los `.knowledge/` de todos los proyectos, detecta patrones y deuda. Riesgo cero, valor inmediato: mejora nuestro propio trabajo.
-- **`kanam-fixer`** (prioridad 3) - el puente entre la especialización a11y y OSS. **Su alcance está SIN DEFINIR** - no se puede afirmar todavía que sea el engine de fixes de `a11y-fixer` (archivado). El diferenciador técnico es real: mira **lo que el lector de pantalla efectivamente anuncia**, no solo el DOM.
-- **`soporteml-v4`** (prioridad 2, producto privado) - CRM/contable SaaS para pymes. La apuesta comercial más sólida por un motivo frío: el MVP ya incluye bandeja, KB y autopilot.
+**Criterio de listo (H1):** CPACC rendido, al menos una obra del H0 publicada como caso de estudio, y un proceso laboral nuevo (no el de Disney, que nunca existió) que avance.
 
-**Criterio de listo:** una pieza con usuarios reales que no seas vos, con issues y PRs de terceros.
+### Horizonte 2 - Kanam como plataforma (1-3 años)
+**Para qué:** que la infraestructura construida para uno mismo sirva para otros.
 
-### Horizonte 2 - Kanam como plataforma (2-5 años)
-**Para qué:** que la infraestructura de trabajo con IA construida para uno mismo sirva para otros.
+La apuesta de fondo, ya nombrada en el BRIEF de `kanam-forge`: empaquetar el pipeline -stack opinado, memoria persistente, a11y integrada, multi-agente con review cruzado- para que otros construyan con él. Los candidatos comerciales están en `docs/APUESTAS.md`: `kanam-insight` (uso interno -> producto), `soporteml-v4` (producto privado), `kanam-fixer` (a11y en CI).
 
-La apuesta más grande, ya nombrada en el BRIEF de `kanam-forge`:
-
-> "Sueño final: Lovable cloud + AI multi-tenant, self-hosted, donde en vez del agente genérico corre el pipeline de Gonzo (stack opinado, memoria persistente, a11y integrada, multi-agente con review cruzado)."
-
-El techo real de Kanam: **el pipeline que te hace productivo, empaquetado para que otros construyan con él**. No un generador de landings - una infraestructura.
-
-**Criterio de listo:** alguien que no sos vos construye algo real con Kanam, y le sale mejor que sin Kanam.
+**Criterio de listo (H2):** alguien que no sos vos construye algo real con Kanam, y le sale mejor que sin Kanam.
 
 ---
 
-## La constelación (qué hace cada pieza)
+## Los frentes vivos (lo que se trabajó de verdad en dos semanas)
 
-Los proyectos **ya no viven en el workspace**: viven en `~/projects/<slug>/` (ADR-075); el `.knowledge/` de cada uno viaja con el proyecto. Verificado 2026-10-06 contra el filesystem.
+Verificado contra los dailies 2026-09-22 a 2026-10-06. **Esto es el norte real, no la aspiración.**
 
-### El sistema (la base que sostiene todo)
-- **`workspace_openclaw`** - el OS de trabajo. Memoria DB-first, pipeline A/B, multi-agente (ADR-073/074), skills, AGENTS/SOUL/IDENTITY. Es lo que hace posible el resto.
-
-### Foco actual (las apuestas)
-- **`kanam-insight`** - inteligencia transversal sobre los `.knowledge/`. *Uso interno.* Apuesta 1.
-- **`kanam-fixer`** - puente a11y -> OSS. *Producto.* Apuesta 3. Alcance a definir.
-- **`soporteml`** - CRM/contable para pymes (v4 en curso). *Producto privado* (ADR-068). Apuesta 2.
-- **`kanam-pulse`** - monitor de salud de macOS, local-first, a11y de fábrica. Público. M1 en curso (migración JS->TS del core).
-- **`kanam-onwheels`** - sitio de concesionario multi-marca con chatbot RAG con evidencia citada. Regalo para el local de Esteban, sin billing. Fase 1 en curso; Supabase conectado, 14/14 checks de invariantes.
-
-### Infraestructura interna
-- **`kanam-os`** - app local sobre la memoria (RAG + NL a SQL).
-- **`kanam-lab`** - playground local de IA; donde Kanam aprende sobre sí misma.
-- **`ollama-visor`** - observabilidad del stack de modelos local.
-- **`kanam-spec` / `kanam-spec-v2`** - infraestructura de especificaciones (SDD).
-- **kanam-skills** - repo público de skills (regla de sanitización obligatoria; ADR-079 cambió su rol).
-
-### La línea narrativa (el "segundo cerebro" que evolucionó)
-- **`kanam-mind`** - el segundo cerebro original (timeline + resumen IA, IndexedDB). Archivado del portfolio, repo conservado.
-- **`kanam-story` / `kanam-writer` / `kanam-story-bible`** - co-writer de ficción local-first.
-- **`kanam-worldbuilding`** - taller de construcción de mundos y planificación narrativa.
-
-> **DECISIÓN (Gonzo, 2026-09-14): `kanam-story` y `kanam-studio` son UNO.** El segundo se documentó como "la versión superada" del primero (grafo de nodos vs manuscrito lineal). La consolidación sigue pendiente de plan. Hoy el trabajo narrativo aparece repartido en `kanam-writer`, `kanam-story-bible` y `kanam-worldbuilding`.
-
-### Los experimentos (valor de aprendizaje, no de producto)
-- **`kanam-tetris`** - banco de pruebas del pipeline de agentes.
-
-### Archivados / pausa
-- **`a11y-fixer`** (archivado 2026-09-14 en GitHub; sucesor `kanam-fixer`), **`create-with-ai`** (fusionado a `kanam-forge`), y otros en `MEMORY.md`.
+| Frente | Qué es | Estado (2026-10-06) |
+|---|---|---|
+| **Sistema multi-agente** | 4 roles (dev, mind, ops, studio) + Crew (critic, auditor, planner), ADR-073/074 | Operativo; pipeline A/B con enforcement (ADR-088) |
+| **Memoria** | `memory.db` (fuente de verdad) + `kanam-os` para verla; catálogo de memorias del ecosistema | DB-first estable; app Fases 1-2 |
+| **Modelos / pipeline** | Asignación por rol y nivel de pensamiento | ADR-090, aplicado y verificado en runtime |
+| **`kanam-onwheels`** | Producto finito para Esteban (concesionaria + chatbot RAG) | Fase 1 en curso; Supabase conectado |
+| **`kanam-os`** | App local para ver la memoria como fichas/tablas/grafos | Fases 1-2 entregadas |
+| **Diseño UI/UX** | El oficio: criterio visual, tokens, design system | Plan de estudio; cimientos (`design-direction`) |
+| **OSS a11y** | PRs en Adobe, IBM/Carbon, Meta, MUI | Continuo; 8 merges, PRs vivos |
+| **Ecosistema OpenClaw** | Ronda de 29 repos; candidatos (memoria, skills, verificación) | `docs/ecosystem/DECISIONS.md`; nada instalado |
+| **CPACC** | Certificación personal a11y | Plan de estudio; examen dic 2026 |
+| **Narrativa / escritura** | Novelas (`Quienes Quedan`, `El Descenso`) + estudio de ingeniería narrativa | Personal; en `docs/stories/` y `studies/` |
+| **Búsqueda laboral** | Procesos remunerados | Dormante (0 abiertos desde 09-24) |
 
 ---
 
-## El potencial (qué pasa si funciona)
+## Qué ya NO es el norte (para no volver a confundirse)
 
-Hoy el sistema es **para uno**. El potencial es que deje de serlo en tres direcciones:
+- **`kanam-story` / `kanam-studio` como productos narrativos activos.** La ficción hoy vive como **literatura personal** (`docs/stories/`) y **estudio de método** (`studies/narrative-engineering/`), no como apuesta de producto. Hubo tres intentos fallidos de clonar Sudowrite; eso es señal de mercado, no de capacidad.
+- **`kanam-solitaires` / `kanam-tetris` como vidriera de portfolio.** Fueron bancos de prueba del pipeline; su valor ya se cobró.
+- **`kanam-forge` como apuesta vigente.** Último push 2026-08-30; sin actividad en la ventana.
+- **La "segunda máquina".** Retirada el 2026-09-29 (ADR-085): el workspace vive solo en la Mac Mini.
 
-1. **Comercial** - `kanam-forge` / `soporteml-v4` como infraestructura/producto: cobrar por la capacidad, no por las apps.
-2. **Comunidad** - `kanam-pulse` (y `kanam-fixer` cuando su alcance se defina) como open source con usuarios reales.
-3. **Personal** - Kanam como el sistema que devuelve foco. El horizonte que más importa y el menos documentado: si el sistema cuesta más atención de la que devuelve, no está funcionando (ver el hallazgo del bootstrap truncado en el ROADMAP).
-
-**La tesis de fondo, tomada de ADR-001:** la IA como infraestructura, no como chat. Kanam no usa IA - construye los sistemas que hacen posible usarla bien.
+No se borran: se marcan como lo que son. Un proyecto sin actividad no es el norte; es historia o material latente.
 
 ---
 
-## Cómo decidir (el criterio que faltaba)
+## Cómo decidir (el criterio)
 
-Cuando aparezca un frente nuevo, pasa por estas tres preguntas **en orden**:
+Cuando aparezca un frente nuevo, tres preguntas **en orden**:
 
-1. **¿A qué horizonte sirve?** Si no sirve al Horizonte 0 (trabajo) y tampoco empuja una ancla hacia el Horizonte 1, es una distracción - aunque sea interesante.
-2. **¿Es nueva capacidad o es dispersión?** Sumar una pieza a un proyecto ancla = capacidad. Abrir un proyecto número 12 = dispersión.
-3. **¿La puedo sostener?** Una persona, búsqueda laboral activa, situación económica urgente, una sola máquina. Si no hay energía para mantenerla viva, no se abre.
+1. **¿Termina algo o suma dispersión?** Ya hay ocho frentes vivos. Sumar un noveno proyecto es dispersión; **profundizar uno de los ocho hasta terminarlo es capacidad**. El criterio del H0 es *terminar*, no empezar.
+2. **¿Sube el oficio o solo agrega trabajo?** Si alimenta a11y, diseño o el sistema -> capacidad. Si es una herramienta suelta que no atraviesa nada -> ruido.
+3. **¿La puedo sostener?** Una persona, una máquina, el foco puesto en terminar OnWheels y Kanam OS. Si no hay energía para mantenerla viva, no se abre.
 
-**La regla del norte:** si una bifurcación no pasa las tres, se anota en `memory/inbox.md` y se sigue con lo que estaba. No se descarta - se posterga con registro.
+**La regla del norte:** si un frente nuevo no pasa las tres, se anota en `memory/inbox.md` y se sigue con lo que estaba. No se descarta: se posterga con registro.
 
-<details><summary>Nota honesta sobre la dispersión</summary>
+<details><summary>Nota honesta sobre la tensión de fondo</summary>
 
-El conteo real: ~11 repos propios, ~17 directorios de trabajo en `~/projects`, una persona. `docs/APUESTAS.md` y el ROADMAP marcan "Estrategia de proyectos" como P0 justamente por esto.
+Hay una tensión real entre **terminar** (OnWheels, Kanam OS) y **el oficio** (diseño, CPACC, OSS). Ambas son correctas y compiten por el mismo tiempo. La resolución no es elegir una para siempre: es que el oficio **se aplique dentro de las obras** - el design system se construye haciendo OnWheels, la a11y se ejercita en los PRs sobre componentes reales. El oficio que no se aplica a una obra no se aprende; la obra sin oficio sale mediocre.
 
-No es un problema de capacidad - es que el orden de lo que importa vive repartido entre documentos que se pisan. No hay un lugar único que diga *cuál de todas las piezas importa más*. Este NORTH.md intenta responderlo, y la respuesta corta es incómoda: **en el Horizonte 0, el proyecto más importante no es ninguno de la constelación - es conseguir trabajo.** Los proyectos son el medio, no el fin.
-
-Eso está bien. Pero conviene tenerlo escrito para no confundir actividad con progreso.
+Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está dormante, y el que está activo (construir) no factura todavía. Eso está bien por un trimestre. Conviene tenerlo escrito para no confundir actividad con progreso.
 
 </details>
 
@@ -148,16 +120,16 @@ Eso está bien. Pero conviene tenerlo escrito para no confundir actividad con pr
 
 ## Decisiones abiertas (que este documento NO cierra)
 
-1. **`kanam-story` + `kanam-studio` (DECIDIDO: son uno):** falta el plan de consolidación - dirección del merge, qué repo queda, y cómo se preserva el recorrido de cada uno. Hoy el trabajo narrativo está repartido en `kanam-writer`, `kanam-story-bible`, `kanam-worldbuilding`.
-2. **`kanam-fixer`:** alcance sin definir. Es lo que desbloquea el ancla formal del pilar *Accesibilidad*.
-3. **`kanam-skills` público:** desactualizado y con referencias personales a sanitizar. Regla: contenido **genérico**, sin mención al trabajo propio ni identidades.
-4. **La métrica del Horizonte 1:** "usuarios reales" es vago. Falta el número concreto (¿10 descargas? ¿1 issue externo?).
-5. **Respaldo de `~/projects`:** 135 archivos `.knowledge/` viven solo en disco, sin respaldo en git (decisión diferida, 2026-09-27).
+1. **`kanam-fixer`:** alcance sin definir. Es lo que desbloquea el ancla formal del pilar *Accesibilidad* en ADR-001.
+2. **La métrica del H1:** "usuarios reales" es vago. Falta el número concreto.
+3. **`soporteml-v4`:** encuadre sin cerrar (facturar vs uso propio) y la pregunta de 4 generaciones: ¿por qué esta vez tendrá usuarios?
+4. **Respaldo de `~/projects`:** los `.knowledge/` viven solo en disco, sin respaldo en git.
+5. **Ecosistema:** decisión de memoria (6 caminos solapados) y de seguridad (guardspine vs ClawSec) - ver `docs/ecosystem/DECISIONS.md`.
 
 ---
 
 ## Notas de creación
 
 - Creado 2026-09-14, en la sesión donde Gonzo preguntó "¿cuál era el objetivo, el para qué de este proyecto?".
-- **Reconstruido 2026-10-06** contra fuentes reales. Motivo: la versión del 09-14 describía una constelación en ubicaciones obsoletas y un Horizonte 0 cumplido que nunca se cumplió. Fuentes de esta reconstrucción: `docs/ROADMAP.md`, `docs/APUESTAS.md`, ADRs del workspace (001, 068, 073-075, 079, 090), `~/projects/*/.knowledge/`, `docs/entrevistas/job-search-tracker.md`, `memory/memory.db`.
-- Principio: no inventar. Lo que este documento afirma sobre un proyecto sale de su BRIEF/ROADMAP real o del filesystem. Las aspiraciones están marcadas como tales (Horizontes 1 y 2).
+- **Reconstruido 2026-10-06** contra las últimas dos semanas de trabajo real. Motivo: la versión previa describía una constelación de productos narrativos y experimentos que ya no son el eje. Fuentes: dailies 2026-09-22 a 2026-10-06, `docs/APUESTAS.md`, ADRs del workspace, `~/projects/*/.knowledge/`, `docs/studies/` (`design/`, `narrative-engineering/`), `docs/stories/`.
+- Principio: no inventar. Lo que este documento afirma sobre un proyecto sale de su BRIEF/ROADMAP real o del daily donde se trabajó. Las aspiraciones están marcadas como tales (Horizontes 1 y 2).
