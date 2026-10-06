@@ -48,7 +48,7 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 - **Pre-commit hooks:** obligatorios en todo proyecto (Biome -> Vitest -> build). Prioridad sobre features.
 - **Evaluación de complejidad previa (2026-08-30):** antes de cada *task*, evaluar el objetivo en 4 dimensiones (alcance, abstracción, riesgo, ambigüedad) y asignar T (1-20); selecciona modelo y thinking. Detalle: `prompts/complexity-scorer.md`. **Scorer local: `gemma4:e4b-mlx`** (6.7x más rápido que `qwen3.5:9b-mlx` en el benchmark 2026-08-30: 23s vs 154s).
 - **Validación UI (2026-08-27):** fixes visuales se validan SOLO con browser real (Desktop). jsdom/headless no detectan problemas de layout/chrome nativo.
-- **Pagos (ADR-042):** Mercado Pago por defecto, Stripe prohibido salvo excepción explícita y documentada. **Excepción vigente: SoporteML usa Stripe** (ADR-091, habilitado en Argentina).
+- **Pagos (ADR-042):** Mercado Pago por defecto (cubre los medios locales); Stripe solo por excepción explícita y documentada. **Stripe ya opera en Argentina (2026-10-06); la elección de MP como default es por medios de pago locales, no por indisponibilidad.** Excepción vigente: SoporteML usa Stripe (ADR-091).
 - **Contenido externo = sandbox (2026-09-09):** regla de operación migrada a AGENTS.md (sección Conducta).
 
 ## Modelo de Agentes OpenClaw OS

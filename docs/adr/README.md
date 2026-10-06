@@ -47,7 +47,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-039 | [Changesets - cuando usarlos y como (release de librerias)](./ADR-039-changesets-cuando-y-como.md) | workspace |
 | ADR-040 | [Seleccion de Modelos por Tipo de Tarea](./ADR-040-modelos-seleccion-por-tarea.md) | workspace |
 | ADR-041 | [Motor LLM del Sistema - GLM-5.3-Flash](./ADR-041-motor-llm-glm-5.3-flash.md) | workspace |
-| ADR-042 | [Mercado Pago como Proveedor de Pagos (Nunca Stripe)](./ADR-042-mercado-pago-pagos-latam.md) | workspace |
+| ADR-042 | [Mercado Pago como Proveedor de Pagos por Defecto (Stripe por excepcion)](./ADR-042-mercado-pago-pagos-latam.md) | workspace |
 | ADR-043 | [Complexity-Driven Pipeline (Orquestación por T-Score)](./ADR-043-complexity-driven-pipeline.md) | workspace |
 | ADR-044 | [Methodology Audit - Marco de 8 Fases como Lente de Auditoría](./ADR-044-methodology-audit-framework.md) | workspace |
 | ADR-045 | [Motor del Pipeline A/B - DeepSeek V4.1 Flash](./ADR-045-motor-pipeline-deepseek-v4.1-flash.md) (superseded por ADR-046) | workspace |
