@@ -4,6 +4,23 @@ Registro de cambios estructurales del workspace. No incluye cambios de skills (v
 
 ---
 
+## [2026-10-06] - SoporteML v4 cerrado; el producto sigue por la version funcional de Lovable con cobro por Stripe
+
+### Added
+- **`docs/adr/ADR-091-soporteml-v4-cierre-stripe.md`:** cierra SoporteML v4 (supera el greenfield de ADR-068) y registra que el producto sigue por la version funcional de Lovable (v1), ahora con **cobro por Stripe** habilitado en Argentina. Incluye la excepcion de pagos a ADR-042 y los pendientes abiertos (Fase 4 - salir de Lovable; pregunta de demanda). Indice `docs/adr/README.md` actualizado.
+
+### Changed
+- **`docs/adr/ADR-042`:** status y decision actualizados a "Mercado Pago por defecto, Stripe solo por excepcion"; nueva seccion **Excepcion otorgada (2026-10-06)** para SoporteML. La regla general no cambia.
+- **`MEMORY.md`:** entrada de SoporteML reescrita (v4 cerrado; sigue por Lovable v1 con Stripe); regla de pagos actualizada con la excepcion vigente.
+- **`AGENTS.md`:** regla de pagos ajustada (excepcion SoporteML/Stripe).
+- **`docs/APUESTAS.md`:** apuesta 2 pasa de `soporteml-v4` a `soporteml` (version funcional de Lovable) con Stripe operativo.
+- **`docs/NORTH.md`**, **`docs/ROADMAP.md`**, **`memory/user-profile.md`:** referencias a `soporteml-v4` actualizadas al estado nuevo.
+- **DB (`memory/memory.db`, tabla `learnings`):** leccion durable agregada (categoria `proyectos`).
+
+### Verified
+- `check-adr-integrity.py` (91 ADRs), `check-refs.py`: OK.
+- El cambio a Stripe ya asomaba en superficies de CV (2026-10-01) sin haberse propagado a las fuentes durables; este ADR cierra ese hueco.
+
 ## [2026-10-06] - Bootstrap bajo cap: ROADMAP y NORTH reconstruidos, AGENTS/MEMORY/USER trimados
 
 ### Fixed

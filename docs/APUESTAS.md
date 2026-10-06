@@ -21,7 +21,7 @@
 |---|---|---|---|
 | **Infraestructura** | Habilita lo demás. No es producto. | No | `langchain-starter` |
 | **Uso interno** | Mejora cómo trabajamos. Riesgo bajo. | No (valor = tiempo) | `kanam-insight`, `kanam-os` |
-| **Producto** | Alguien paga. Riesgo real de mercado. | Si | `soporteml-v4`, `kanam-fixer` |
+| **Producto** | Alguien paga. Riesgo real de mercado. | Si | `soporteml`, `kanam-fixer` |
 | **Personal** | Vale por sí mismo, no por facturar. | No | `kanam-story`, `kanam-studio` |
 
 ---
@@ -33,7 +33,7 @@
 | # | Apuesta | Capa | Capacidad que usa | Activo que ya existe | Quién paga |
 |---|---|---|---|---|---|
 | **1** | **kanam-insight** | Uso interno | RAG multi-fuente sobre `.knowledge/` | 12+ proyectos con ADRs, HANDOFF, STATUS | Nosotros (tiempo) |
-| **2** | **soporteml-v4** | Producto | RAG + agentes sobre KB | backend de v3 verificado, KB y autopilot ya en el MVP | Vendedores de MeLi |
+| **2** | **soporteml** (version funcional de Lovable) | Producto | RAG + agentes sobre KB | version funcional de Lovable con cobro por Stripe ya operativo | Vendedores de MeLi |
 | **3** | **kanam-fixer** | Producto | Agentes consultando el historial de anuncios | aserción sobre el anuncio real, ciclo 0.0.2 (MCP) abierto | Equipos con a11y en CI |
 | - | kanam-os | Uso interno | RAG + NL a SQL | `memory.db` con toda la memoria | Nosotros (tiempo) |
 | - | Servicio de KB a medida | Producto | `langchain-starter` generalizado | Fase 7 (template) no iniciada | Pymes con documentación |
@@ -43,7 +43,7 @@
 
 **1. kanam-insight.** Es la que mejor relación valor/riesgo tiene y la que valida la capacidad construida. Su propio BRIEF define el problema: *"Gonzo tiene ~12 proyectos activos. Cada uno tiene su `.knowledge/` con ADRs y decisiones. El problema: nadie cruza esa información. Patrones viven y mueren en silos."* Eso es RAG multi-fuente, y ya tenemos ingesta, chunking y retrieval funcionando: solo hay que apuntarlos a los `.knowledge/`. El "Pattern Radar" es retrieval + síntesis; el "Handoff Synthesizer" lo hacemos a mano hoy. Riesgo cero, valor inmediato, y mejora nuestro trabajo (el objetivo declarado).
 
-**2. soporteml-v4.** La apuesta comercial más sólida por un motivo frío: el MVP ya incluye bandeja, KB y autopilot, y el backend de v3 está verificado de punta a punta. Un copiloto que responde al comprador usando la KB del vendedor no es una feature nueva, es activar lo que ya está modelado. Mercado que paga, no solo tecnología.
+**2. soporteml.** Ya no es el greenfield v4 (cerrado, ADR-091): el producto avanza por la **version funcional de Lovable**, que ahora tiene **cobro por Stripe operativo** (excepcion documentada a ADR-042). Es el primer proyecto del ecosistema con billing real y no solo escrito. Mercado que paga, no solo tecnologia. Nota: el encuadre CRM+contable del ADR-068 queda superado; el proyecto sigue por v1.
 
 **3. kanam-fixer.** El diferenciador más defendible y el menos explotado como producto. La distinción técnica es real: axe-core mira atributos en el DOM; kanam-fixer mira **lo que el lector de pantalla efectivamente anuncia**. El ciclo 0.0.1 cerró con un hallazgo valioso (radix #4109: DOM correcto, tests unitarios verdes, anuncio ausente), algo que ninguna herramienta genérica detecta.
 

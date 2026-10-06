@@ -96,6 +96,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-088 | [El pipeline A/B tiene enforcement, no buena voluntad](./ADR-088-pipeline-ab-enforcement.md) | workspace |
 | ADR-089 | [Pre-filtro barato en el pipeline A/B (gemma4:cloud) con guard de falso negativo](./ADR-089-prefiltro-pipeline-ab.md) | workspace |
 | ADR-090 | [Política de niveles de pensamiento por agente y asignación de modelos por rol](./ADR-090-pensamiento-nivel-configuracion.md) | workspace |
+| ADR-091 | [SoporteML v4 se cierra; el producto sigue por la version funcional de Lovable con cobro por Stripe](./ADR-091-soporteml-v4-cierre-stripe.md) | soporteml |
 
 ## Formato
 

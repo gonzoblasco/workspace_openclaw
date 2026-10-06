@@ -124,7 +124,7 @@
 - **Fuentes vivas**: `~/projects/portfolio-strategy/ADR-001` (pilares + anclas), `docs/APUESTAS.md` (orden de apuestas, 2026-09-24), `memory/notes/portfolio-curation.md` (curaduría de presencia, 2026-09-21).
 - **Estado honesto**:
   - **Ancla en transición**: `kanam-fixer` (sucede a `a11y-fixer`, archivado). **Alcance SIN DEFINIR** - no asumir que hereda el rol del engine de fixes.
-  - **Apuestas priorizadas por Gonzo (09-24)**: 1) `kanam-insight` (uso interno), 2) `soporteml-v4` (producto, privado), 3) `kanam-fixer` (producto).
+  - **Apuestas priorizadas por Gonzo (09-24)**: 1) `kanam-insight` (uso interno), 2) `soporteml` (producto, privado; v4 cerrado 2026-10-06, sigue por la version funcional de Lovable con Stripe, ADR-091), 3) `kanam-fixer` (producto).
   - **Showcase (curaduría 09-21)**: `kanam-fixer`, `ai-developer-stack`, `kanam-skills`.
 - **Criterio de éxito**: una lista corta de proyectos "estrella" con su rol en el pitch, documentada y sin contradicciones entre ADR-001 y APUESTAS.
 - **Señal de listo**: el pilar *Accesibilidad* tiene ancla formal (hoy: `kanam-fixer` sin alcance definido).

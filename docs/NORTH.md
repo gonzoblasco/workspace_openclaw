@@ -29,7 +29,7 @@ Sin un norte escrito, cada bifurcación se siente igual de válida. En las últi
 | Capa | Qué es | Hoy |
 |---|---|---|
 | **1. El sistema** | El OS de trabajo: workspace multi-agente (4 roles + Crew), memoria DB-first, apps propias, pipeline A/B, skills, decisiones documentadas | En producción diaria |
-| **2. Las obras** | Lo que el sistema permite construir | `kanam-onwheels` (producto finito en curso), `kanam-os` (app), `kanam-insight`, `soporteml-v4` |
+| **2. Las obras** | Lo que el sistema permite construir | `kanam-onwheels` (producto finito en curso), `kanam-os` (app), `kanam-insight`, `soporteml` (version funcional de Lovable con cobro por Stripe) |
 | **3. El oficio** | Lo que atraviesa todo y lo hace valioso | a11y + IA como infraestructura + **diseño UI/UX** (el frente más nuevo y más declarado) |
 
 Kanam no "usa IA". Construye el sistema que hace posible usarla bien, y lo pone a producir obras concretas. El nombre viene del "segundo cerebro" original que Gonzo descartó en 2026 y que resucitó como `kanam-mind`; hoy nombra al ecosistema entero.
@@ -61,7 +61,7 @@ Tres frentes activos, todos verificados en las últimas dos semanas:
 ### Horizonte 2 - Kanam como plataforma (1-3 años)
 **Para qué:** que la infraestructura construida para uno mismo sirva para otros.
 
-La apuesta de fondo, ya nombrada en el BRIEF de `kanam-forge`: empaquetar el pipeline -stack opinado, memoria persistente, a11y integrada, multi-agente con review cruzado- para que otros construyan con él. Los candidatos comerciales están en `docs/APUESTAS.md`: `kanam-insight` (uso interno -> producto), `soporteml-v4` (producto privado), `kanam-fixer` (a11y en CI).
+La apuesta de fondo, ya nombrada en el BRIEF de `kanam-forge`: empaquetar el pipeline -stack opinado, memoria persistente, a11y integrada, multi-agente con review cruzado- para que otros construyan con él. Los candidatos comerciales están en `docs/APUESTAS.md`: `kanam-insight` (uso interno -> producto), `soporteml` (producto privado, version funcional de Lovable), `kanam-fixer` (a11y en CI).
 
 **Criterio de listo (H2):** alguien que no sos vos construye algo real con Kanam, y le sale mejor que sin Kanam.
 
@@ -122,7 +122,7 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 
 1. **`kanam-fixer`:** alcance sin definir. Es lo que desbloquea el ancla formal del pilar *Accesibilidad* en ADR-001.
 2. **La métrica del H1:** "usuarios reales" es vago. Falta el número concreto.
-3. **`soporteml-v4`:** encuadre sin cerrar (facturar vs uso propio) y la pregunta de 4 generaciones: ¿por qué esta vez tendrá usuarios?
+3. **`soporteml`:** v4 cerrado (ADR-091); el producto sigue por la version funcional de Lovable, ahora con cobro por Stripe. Queda la pregunta de 4 generaciones: ¿por qué esta vez tendrá usuarios?
 4. **Respaldo de `~/projects`:** los `.knowledge/` viven solo en disco, sin respaldo en git.
 5. **Ecosistema:** decisión de memoria (6 caminos solapados) y de seguridad (guardspine vs ClawSec) - ver `docs/ecosystem/DECISIONS.md`.
 
