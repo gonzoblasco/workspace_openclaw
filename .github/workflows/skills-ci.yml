@@ -39,6 +39,12 @@ jobs:
       - name: Syntax checks (bash + python)
         run: ./scripts/test-skills.sh
 
+      # Budget de bootstrap (ROADMAP 0.1): los archivos inyectados en cada
+      # arranque se truncan en silencio al superar su cap. Segunda barrera (el
+      # pre-commit se puede saltear con --no-verify).
+      - name: Bootstrap budget gate
+        run: python3 scripts/check-bootstrap-budget.py
+
       - name: Bash functional tests
         run: npx bats tests/bash/
 

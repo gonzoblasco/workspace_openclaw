@@ -40,26 +40,30 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 
 ## Capa 0 - Fundaciones (sostiene todo)
 
-### 0.1 Integridad del bootstrap 🟡 P0
+### 0.1 Integridad del bootstrap 🟢 P0
 - **Qué**: los archivos que OpenClaw inyecta en **cada arranque** de sesión (`AGENTS.md`, `MEMORY.md`, `USER.md`, `SOUL.md`, `IDENTITY.md`) tienen un cap de inyección. Lo que lo supera **se trunca en silencio**: el agente arranca sin esas reglas y no lo sabe.
 - **Corrección histórica (2026-10-06)**: el item anterior ("Estabilidad de la infraestructura (gateway)") partía de *"el gateway se reinicia solo bajo sesiones largas"*. El re-diagnóstico del 14/09 (leído contra los dumps y el código fuente) ya había mostrado que **no hay reinicios espontáneos**: los 19 registrados eran `source=cli`/`handoff`, es decir intencionales. El problema real nunca fue el reinicio; fue el truncado del bootstrap. La versión vieja mantuvo la hipótesis refutada durante tres semanas.
-- **Estado verificado 2026-10-06 (`wc -c`)**:
+- **Estado verificado 2026-10-06** (caracteres como los mide el runtime, unidades UTF-16 - no `wc -c`, que sobreestima en español por los acentos):
 
   | Archivo | Tamaño | Cap | Estado |
   |---|---|---|---|
-  | `AGENTS.md` | 20.656 | 20.000 | 🟡 **TRUNCADO** |
-  | `MEMORY.md` | 24.017 | 20.000 | 🟡 **TRUNCADO** |
-  | `USER.md` | 4.582 | 4.000 (fijo, no configurable) | 🟡 **TRUNCADO** |
-  | `SOUL.md` | 2.949 | - | 🟢 OK |
-  | `IDENTITY.md` | 3.295 | - | 🟢 OK |
+  | `AGENTS.md` | 18.798 | 20.000 | 🟢 +1.202 |
+  | `MEMORY.md` | 13.705 | 20.000 | 🟢 +6.295 |
+  | `USER.md` | 3.600 | 4.000 (fijo, no configurable) | 🟢 +400 |
+  | `SOUL.md` | 2.915 | 20.000 | 🟢 |
+  | `IDENTITY.md` | 3.243 | 20.000 | 🟢 |
+  | TOTAL | 42.261 | 60.000 | 🟢 |
 
-- **Por qué importa**: es la deuda más cara y la más invisible: se paga en cada arranque. `USER.md` ya se había resuelto el 14/09 (10.008 -> 3.986) y **regresó** a 4.582.
+- **Caps (fuente: código instalado `dist/bootstrap-*.mjs`, OpenClaw 2026.9.8)**: `DEFAULT_BOOTSTRAP_MAX_CHARS=2e4`, `USER_BOOTSTRAP_MAX_CHARS=4e3` (fijo), `DEFAULT_BOOTSTRAP_TOTAL_MAX_CHARS=6e4`. No hay override en `openclaw.json` (verificado).
+- **Enforcement (2026-10-06)**: `scripts/check-bootstrap-budget.py` mide los 5 archivos y falla si alguno supera su cap o el total. Cableado al pre-commit (sin condición) y al CI. Antes de esto el item era un falso verde: la regla estaba escrita y **nada la verificaba** (ningún check cubría el tamaño de los archivos inyectados).
+- **Por qué importa**: es la deuda más cara y la más invisible: se paga en cada arranque. `USER.md` ya se había resuelto el 14/09 (10.008 -> 3.986) y **regresó** a 4.582; una regla sin guarda se viola sola.
 - **Criterio de éxito**: los tres archivos por debajo de su cap.
-- **Señal de listo**: `wc -c AGENTS.md MEMORY.md USER.md` los muestra dentro del límite.
+- **Señal de listo**: `python3 scripts/check-bootstrap-budget.py` sale 0 (y el pre-commit no frena).
 - **Acciones**:
-  - [ ] Bajar `AGENTS.md` a <20.000 (el detalle ampliado va a `docs/AGENTS-DETALLE.md`).
-  - [ ] Bajar `MEMORY.md` a <20.000 (el detalle por proyecto va bajo `memory/` -que `memory_search` sí indexa-, no dentro del propio `MEMORY.md`).
-  - [ ] Bajar `USER.md` a <=4.000 (detalle a `memory/user-profile.md`).
+  - [x] Bajar `AGENTS.md` a <20.000 (el detalle ampliado va a `docs/AGENTS-DETALLE.md`).
+  - [x] Bajar `MEMORY.md` a <20.000 (el detalle por proyecto va bajo `memory/` -que `memory_search` sí indexa-, no dentro del propio `MEMORY.md`).
+  - [x] Bajar `USER.md` a <=4.000 (detalle a `memory/user-profile.md`; el entorno a `docs/SETUP.md`).
+  - [x] Guard que verifique el cap (`scripts/check-bootstrap-budget.py`, pre-commit + CI).
 - **Regla operativa (no es checkbox)**: un archivo de bootstrap no es documentación libre, es **contexto que se inyecta en cada turno**. Su detalle vive en `docs/` o `memory/`, nunca en el propio archivo. Al agregar a `AGENTS.md`/`MEMORY.md`, la regla es: ¿esto tiene que estar en cada arranque? Si no, va a un doc referenciado.
 
 ### 0.2 Higiene del workspace 🟢 P1
@@ -207,7 +211,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 
 | # | Item | Capa | Prioridad | Estado |
 |---|------|------|-----------|--------|
-| 1 | 0.1 Integridad del bootstrap | Fundaciones | P0 | 🟡 |
+| 1 | 0.1 Integridad del bootstrap | Fundaciones | P0 | 🟢 |
 | 2 | 2.3 Búsqueda laboral | Portfolio | P0 | 🔴 |
 | 3 | 2.1 Estrategia de proyectos | Portfolio | P0 | 🟡 |
 | 4 | 0.2 Higiene workspace | Fundaciones | P1 | 🟢 |

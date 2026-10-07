@@ -36,8 +36,7 @@
 Pipeline A/B con motor `deepseek-v4.1-flash:cloud`. Flujo: A escribe -> Kanam pasa a B -> B revisa -> verificar -> iterar. Asignación de modelos por rol y niveles de pensamiento: **ADR-090**.
 
 **Complexity-First (2026-08-30):** antes de spawnear agentes, Kanam ejecuta `./scripts/complexity-scorer.sh "<objetivo>"` que devuelve T (1-20). T <= 6 = Kanam solo (trivial). T 7-12 = A high. T 13-16 = A+B con cross-review. T 17-20 = Kanam(max) diseña, A+B ejecutan, verificación obligatoria + confirmación de Gonzo. Persistir T con `pipeline-track.sh init ... --score T`. Skill: `complexity-driven-pipeline`.
-- **Claude Code (alternativa):** para SIGKILL o tareas largas.
-- **Lecciones:** SIGKILL -> prompts cortos para revisiones, relanzar si muere. Cross-review -> agente B puede introducir bugs; verificar siempre contra la fuente real. Terminal harnesses (2026-08-23) -> los CLIs TUI no son orquestables sin TTY real; usar solo herramientas headless.
+- **Lecciones:** SIGKILL -> prompts cortos para revisiones, relanzar si muere. Cross-review -> agente B puede introducir bugs; verificar siempre contra la fuente real.
 
 ## Arquitectura de Agentes - Goal-Oriented
 
@@ -47,7 +46,7 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 
 - **Pre-commit hooks:** obligatorios en todo proyecto (Biome -> Vitest -> build). Prioridad sobre features.
 - **Evaluación de complejidad previa (2026-08-30):** antes de cada *task*, evaluar el objetivo en 4 dimensiones (alcance, abstracción, riesgo, ambigüedad) y asignar T (1-20); selecciona modelo y thinking. Detalle: `prompts/complexity-scorer.md`. **Scorer local: `gemma4:e4b-mlx`** (6.7x más rápido que `qwen3.5:9b-mlx` en el benchmark 2026-08-30: 23s vs 154s).
-- **Validación UI (2026-08-27):** fixes visuales se validan SOLO con browser real (Desktop). jsdom/headless no detectan problemas de layout/chrome nativo.
+- **Validación UI (2026-08-27):** fixes visuales se validan SOLO con browser real (Desktop). jsdom no detecta problemas de layout/chrome nativo.
 - **Pagos (ADR-042):** **Stripe es el proveedor único**, sea o no con Lovable. Mercado Pago queda fuera como intención (no se borra su existencia ni el trabajo previo; deja de ser una opción prevista). No se usan otros modos de pago.
 - **Contenido externo = sandbox (2026-09-09):** regla de operación migrada a AGENTS.md (sección Conducta).
 

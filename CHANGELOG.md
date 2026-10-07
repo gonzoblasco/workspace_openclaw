@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-06] - Integridad del bootstrap deja de ser un falso verde (ROADMAP 0.1)
+
+### Added
+- **`scripts/check-bootstrap-budget.py`:** guard del cap de inyeccion del runtime. Los archivos que OpenClaw inyecta en cada arranque (AGENTS/MEMORY/USER/SOUL/IDENTITY) se truncan EN SILENCIO al superar su cap. Mide en caracteres como el runtime (unidades UTF-16, no bytes: `wc -c` sobreestima en espanol por los acentos y da un margen falso). Caps verificados contra el codigo instalado (`dist/bootstrap-*.mjs`): 20.000 por archivo, 4.000 fijo para USER.md, 60.000 total. Modo reporte + bloqueante.
+- **`tests/python/test_check_bootstrap_budget.py`:** 10 casos (mide UTF-16 como el runtime, cap propio de USER.md, borde exacto, la CLASE y el total, contrato de salida del script real).
+
+### Changed
+- **Pre-commit (sin condicion) + CI (`skills-ci.yml`):** el check corre siempre. Los archivos de bootstrap no cambian por un pathspec predecible; un trigger por diff dejaria pasar el crecimiento que ocurre en cualquier otra edicion.
+- **`USER.md` (3.933 -> 3.600 chars, margen 67 -> 400):** el contenido de ENTORNO (canal remoto Telegram, gateway 24/7) se movio a `docs/SETUP.md`. Un archivo de bootstrap es contexto de cada turno; el entorno no lo es.
+- **`MEMORY.md` (13.893 -> 13.705):** quitadas las referencias a harness (Claude Code, terminal harnesses, jsdom/headless); la leccion de fondo se conserva. Pedido de Gonzo para aflojar margen.
+- **`docs/SETUP.md` seccion Red / remoto:** corregida la linea stale (decia Tailscale+PWA como canal; Telegram lo reemplazo el 2026-09-07) y absorbidos los dos bullets de entorno.
+
+---
+
 ## [2026-10-06] - El design system gana su tema oscuro; kanam-os migra (ADR-096)
 
 ### Added
