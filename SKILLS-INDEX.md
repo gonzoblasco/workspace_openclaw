@@ -22,13 +22,13 @@
 |---|---|
 | `skills/` (Core) | 27 |
 | `agents/kanam-dev/skills/` | 35 |
-| `agents/kanam-mind/skills/` | 7 |
+| `agents/kanam-mind/skills/` | 10 |
 | `agents/kanam-ops/skills/` | 4 |
 | `agents/kanam-studio/skills/` | 7 |
 | `agents/kanam-critic/skills/` | 1 |
 | `agents/kanam-planner/skills/` | 1 |
 | `agents/kanam-auditor/skills/` | 1 |
-| **Total activas** | **81** |
+| **Total activas** | **84** |
 
 > **El ciclo SDD (9 skills `hermes-*`) se movió del árbol del Core al de `kanam-dev` el 2026-09-29** (ADR-083).
 > Estaba en `skills/`, así que el Core veía el playbook de ingeniería - `hermes-builder` dice
@@ -167,10 +167,13 @@ implementación: vivía en el árbol del Core, que así lo podía ejecutar. El C
 | pr-reviewer | [hermes-pr-reviewer](agents/kanam-dev/skills/hermes-pr-reviewer/) | Revisión adversarial de un PR publicado, con experiencia de dominio |
 | release | [hermes-release](agents/kanam-dev/skills/hermes-release/) | Cierre del cambio: consistencia del diff, versionado, notas, archivado |
 
-### 3.3 kanam-mind - `agents/kanam-mind/skills/` (7)
+### 3.3 kanam-mind - `agents/kanam-mind/skills/` (10)
 
 | Skill | Qué hace |
 |---|---|
+| [research-brief-protocol](agents/kanam-mind/skills/research-brief-protocol/) | Formato obligatorio del brief: frame antes de buscar, stop criterion, etiquetas obs/inf/unk |
+| [source-verification-gate](agents/kanam-mind/skills/source-verification-gate/) | Puerta previa a escribir: bloquea toda afirmación sin fuente abierta y fecha chequeada |
+| [evidence-chain-audit](agents/kanam-mind/skills/evidence-chain-audit/) | Audita un artefacto terminado: cada cita debe sostener su conclusión y cada link resolver |
 | [knowledge-management](agents/kanam-mind/skills/knowledge-management/) | Gobernanza del conocimiento: learning signals, resolución de conflictos, DREAMS |
 | [memory-wiki-workflow](agents/kanam-mind/skills/memory-wiki-workflow/) | Capa analítica de memoria: entities con claims, dashboards y síntesis |
 | [engram-project-memory](agents/kanam-mind/skills/engram-project-memory/) | Memoria persistente de proyecto para agentes de pipeline vía MCP (ADR-052) |
