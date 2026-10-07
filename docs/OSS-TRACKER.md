@@ -7,8 +7,8 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 18 |
-| PRs mergeados | 8 |
+| PRs abiertos | 17 |
+| PRs mergeados | 9 |
 | PRs cerrados sin merge | 22 |
 | Colaboraciones no-codigo | 15 |
 | Repos con contribuciones | 22 |
@@ -83,7 +83,8 @@
 | **Contexto** | - | PR PROPIO MERGEADO 14/09 (commit 5d1ae52, 11:33 UTC) via merge queue - primer merge propio en carbon-design-system/ibm-products. Cierra issue #9864. Junto con #9869 (merge 10:27 UTC), ambas contribuciones ibm-products de la sesion del 09/09 entraron el mismo dia. Nota de proceso: el merge se detecto el 14/09 via oss-sync, ~1h despues; hubo que chequearlo, no llego aviso. |
 
 | **Issue** | [9839](https://github.com/carbon-design-system/ibm-products/issues/9839) | PR #9879 (2026-09-09). Datagrid sortable headers anunciados como toggle buttons: el boton sort en useSortableColumns.tsx seteaba aria-pressed (true/false), VoiceOver lo anuncia como toggle sin direccion. aria-sort ya existe en el th via getAriaSortValue (DatagridHeaderRow). Verificado que @carbon/react DataTable TableHeader NO usa aria-pressed (outlier de Datagrid). Fix: remover aria-pressed + helper getAriaPressedValue sin uso. Test de regresion: falla en main (aria-pressed=false presente), pasa con fix; suite Datagrid 47/48 (1 skipped pre-existente). T=6 trivial: Kanam solo, sin Agente A. Issue 25/08 (15 dias), sin asignar, sin PRs cruzados. |
-| **Nuestro PR** | [9879](https://github.com/carbon-design-system/ibm-products/pull/9879) | **open** |
+| **Nuestro PR** | [9879](https://github.com/carbon-design-system/ibm-products/pull/9879) | **merged** |
+| **Contexto** | - | PR PROPIO MERGEADO 2026-10-07 (08:53 UTC, merge commit e33f56ab) por amal-k-joy (maintainer). Cierra issue #9839. Ciclo 09/09 -> 07/10 (28 dias): 6 merges de main para mantenerse al dia (11/09, 14/09, 24/09, 01/10, 05/10) + 1 commit de formato (24/09, wrap prettier). 24 add / 11 del, 2 archivos. Todos los checks verdes al mergear. Segundo PR propio mergeado en ibm-products (el #9878 entro 14/09). |
 
 ### colinhacks/zod
 
