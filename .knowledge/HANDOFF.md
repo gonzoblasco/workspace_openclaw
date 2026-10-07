@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-06 21:49 GMT-3
+**Fecha:** 2026-10-06 23:55 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,27 +12,25 @@
 
 ## Que se hizo en esta sesion
 
-Sesion larga de gobernanza + capacidad nueva de cierre de sesion.
-
-1) ROADMAP y NORTH reconstruidos desde cero contra fuentes reales (tenian un falso verde de 3 semanas: oferta EIT que nunca existio + hipotesis de inestabilidad de gateway ya refutada). NORTH derivado del trabajo real de las ultimas dos semanas.
-2) Bootstrap bajo cap: AGENTS/MEMORY/USER se truncaban en silencio en cada arranque. Bajados a 18.955 / 13.857 / 3.976.
-3) SoporteML v4 CERRADO (ADR-091); sigue por la version funcional de Lovable con cobro por Stripe. Se queda en Lovable, sin pendientes.
-4) ADR-042 reescrito y renombrado a ADR-042-stripe-pagos.md: Stripe proveedor unico; Mercado Pago fuera como intencion.
-5) NUEVA CAPACIDAD: cada cierre de sesion genera/actualiza el HANDOFF del proyecto (o workspace) via scripts/session-handoff.py, ademas del informe en memory/. Plantilla del informe en memory/_templates/session-close.md. 'guardar' y 'cerrar' son el mismo disparador.
+Audit + refactor de gobernanza y "una sola ruta". (1) Auditoria de AGENTS.md/AGENTS-DETALLE.md/SETUP.md: reconciliadas contradicciones reales (.knowledge/ con dos definiciones opuestas; politica de modelos en 3 archivos/2 politicas; HEARTBEAT.md fantasma; API legacy cron(action:wake)), colapsados los dos bloques de modelo duplicados en AGENTS.md, sacados "Modelos" y "Skills publicas" de Git, corregidos 768->1024 dims y session-start.sh. (2) Rotacion automatizada: scripts/changelog-rotate.py (ventana 30 dias + archivo rodante docs/archive/CHANGELOG-archive.md, --check al pre-commit, rota al cierre) y scripts/dreams-rotate.py (DREAMS por mes; el plugin memory-core no tiene knob de retencion). ADR-092. (3) MindStudio registrado como propuesta de vendor evaluada en docs/ecosystem/DECISIONS.md; mindstudio_proposal.md y proposal.md (duplicado) eliminados. (4) Kanam OS Etapa 2: security-scan.py cableado al pre-commit (modo --staged scopeado a codigo de skills); regression_gate.py (no compilaba) y lifecycle_tracker.py (path absoluto) reparados; los 5 specs declaran su estado real. (5) EVOLUTION.md absorbido en docs/NORTH.md. (6) Reconciliacion de 4 mapas en 2: retirados APUESTAS.md y MAPA-PROXIMOS-PASOS.md; kanam-insight descontinuado; fijada "La ruta" en ROADMAP: T1 (OnWheels+design system+CPACC) -> T2 (caso de estudio+busqueda laboral) -> T3 (UNA apuesta comercial) -> D (sistema como soporte).
 
 ## Estado actual
 
-Todo pusheado a main; arbol limpio. Otra sesion en paralelo avanzo kanam-os y absorbio EVOLUTION into NORTH (ADRs 91->94). Gates: 94 ADRs indexados, 149 rutas OK.
+Gobernanza reconciliada: un norte (NORTH), un como (ROADMAP), una ruta secuenciada. Rotacion de CHANGELOG y DREAMS automatizada. security-scan cableado. EVOLUTION absorbido. APUESTAS/MAPA retirados; kanam-insight fuera.
 
 ## Proximos pasos
 
-1. Definir el alcance de kanam-fixer (desbloquea el ancla de a11y).
-2. Reactivar la busqueda laboral (tablero vacio) + CPACC (cierra 9/12).
-3. Respaldo de ~/projects (los .knowledge/ viven solo en disco).
+1. T1: OnWheels (falta el chat), design system, CPACC (examen dic). Sincronizar ~/projects a un repo (135 .knowledge sin respaldo, todo #61). Definir alcance de kanam-fixer.
 
 ## Decisiones y contexto que no debe perderse
 
-- Stripe es el proveedor unico de pagos (ADR-042). Los proyectos viven en ~/projects (ADR-075). Cerrar/guardar = mismo disparador. El HANDOFF se deriva del informe de cierre y se regenera cada cierre.
+- Una sola ruta de navegacion (NORTH=para que, ROADMAP=como+orden). APUESTAS/MAPA retirados. kanam-insight descontinuado. CHANGELOG=ventana 30d + archivo. DREAMS=mes en curso. security-scan ADOPTADO; skill-evals/lifecycle/regression = experimento no adoptado a proposito.
+
+## Archivos tocados
+
+```
+memory/2026-10-06.md
+```
 
 ## Como continuar
 

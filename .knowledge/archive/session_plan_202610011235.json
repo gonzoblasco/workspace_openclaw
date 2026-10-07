@@ -1,7 +1,7 @@
 {
   "session_id": "202610011235",
   "objective": "Creación de la Guía de Inicio Rápido del Crew",
-  "status": "active",
+  "status": "completed",
   "steps": [
     {
       "id": 1,
@@ -34,6 +34,7 @@
   ],
   "metadata": {
     "started_at": "2026-10-01T12:35:03.271853",
-    "last_update": "2026-10-01T12:37:37.712160"
+    "last_update": "2026-10-06T23:55:11.519465",
+    "closed_at": "2026-10-06T23:55:11.519465"
   }
 }
