@@ -101,6 +101,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-093 | [El plan de sesión como objeto persistente (session-planning-hooks se cablea)](./ADR-093-plan-de-sesion-persistente.md) | workspace |
 | ADR-094 | [Etapa 4 de Kanam OS: medir accesibilidad (a11y-scan), cablear tests/node, y cerrar el Tablero](./ADR-094-etapa-4-a11y-scan-tests-node-tablero.md) | workspace |
 | ADR-095 | [Re-evaluación de las decisiones de diseño: el contraste se verifica, el sistema existe](./ADR-095-reevaluacion-decisiones-diseno.md) | workspace |
+| ADR-096 | [kanam-os adopta el Kanam Design System (y el sistema gana su tema oscuro)](./ADR-096-kanam-os-adopta-design-system.md) | workspace |
 
 ## Formato
 

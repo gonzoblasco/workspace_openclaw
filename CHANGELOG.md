@@ -6,7 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-## [2026-10-06] - Re-evaluación de las decisiones de diseño: el contraste se verifica
+## [2026-10-06] - El design system gana su tema oscuro; kanam-os migra (ADR-096)
+
+### Added
+- **`design/tokens/themes/dark.tokens.json`:** tema oscuro del sistema base (el `kanam.css` base ES el claro). Paleta tomada del tema oscuro de kanam-os (probada), recalculada al piso WCAG. 11 pares verificados (text.primary 12.83:1, danger 7.50:1, brand 4.85:1).
+- **`tests/python/test_check_design_tokens.py`:** caso del tema oscuro (existe + cumple).
+
+### Changed
+- **`design/tokens/build-tokens.py` + `scripts/check-design-tokens.py`:** `dark` sumado al REGISTRY y al guard. El build genera 7 hojas (antes 5).
+- **`design/README.md`:** tabla de temas con `dark` + nota modo vs marca (el claro no necesita archivo: `kanam.css` = `:root`).
+
+### Delegado
+- **kanam-os migra a consumir `design/tokens/` (DEV, pipeline A/B).** Contrato en ADR-096: consume kanam.css + dark.css, sync en build (anti-drift), preserva el toggle server-side. Verificación del CORE sobre el repo real al cerrar.
+
+---
 
 ### Added
 - **ADR-095** (`docs/adr/ADR-095-reevaluacion-decisiones-diseno.md`): re-evaluación pedida por Gonzo ("lo que ya está hecho de decisiones de diseño deben ser revaluadas").

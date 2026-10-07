@@ -84,6 +84,17 @@ def test_real_system_passes():
 
 # --- la matriz declarada existe y tiene numeros, no prosa vacia ---
 
+def test_dark_theme_exists_and_passes():
+    """El tema oscuro (agregado 2026-10-06 para migrar kanam-os) existe y cumple."""
+    mod = load()
+    names = [n for n, *_ in mod.theme_contexts()]
+    assert "dark" in names, names
+    for name, prim, sem0, tover in mod.theme_contexts():
+        if name == "dark":
+            failures, _, _ = mod.check_theme(name, prim, sem0, tover)
+            assert failures == [], failures
+
+
 def test_base_declares_contrast():
     data = json.loads((ROOT / "design" / "tokens" / "kanam.tokens.json").read_text(encoding="utf-8"))
     assert "$contrast" in data, "el sistema base debe declarar su matriz (antes no lo hacia)"

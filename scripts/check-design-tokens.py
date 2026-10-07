@@ -121,7 +121,7 @@ def theme_contexts():
     prim = flatten(system.get("primitive", {}))
     sem0 = flatten(system.get("semantic", {}))
     out = [("kanam (base)", prim, sem0, {})]
-    for name in ("plaza", "terrario"):
+    for name in ("plaza", "terrario", "dark"):
         theme = load(TOKENS / "themes" / f"{name}.tokens.json")
         out.append((name, prim, sem0, flatten(theme.get("semantic", {}))))
     return out

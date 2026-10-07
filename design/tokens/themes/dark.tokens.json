@@ -1,0 +1,65 @@
+{
+  "$description": "TEMA DE MODO: DARK. Segundo modo del Kanam Design System (el base kanam.css es el modo claro). Sobreescribe SOLO la capa semantica. A diferencia de plaza/terrario (temas de MARCA), dark es el eje de MODO (oscuro/claro): el modo es ortogonal a la marca, y hoy comparten el atributo data-theme.",
+  "$meta": { "theme": "dark", "extends": "kanam.tokens.json", "use": "modo oscuro del sistema base", "updated": "2026-10-06" },
+
+  "semantic": {
+    "brand": {
+      "primary": "#4ea870",
+      "primaryHover": "#6ee7a0",
+      "primarySubtle": "#1c3a2b",
+      "secondary": "#a9b6b1",
+      "accent": "#fcd34d"
+    },
+    "text": {
+      "primary": "#f0f4f2",
+      "secondary": "#a9b6b1",
+      "muted": "#8ea39a",
+      "inverse": "#16211d",
+      "onBrand": "#062b1c",
+      "link": "#6ee7a0"
+    },
+    "surface": {
+      "base": "#222d29",
+      "card": "#2a3632",
+      "elevated": "#333f3b",
+      "sunken": "#1a2420",
+      "inverse": "#f0f4f2"
+    },
+    "border": {
+      "subtle": "#35423d",
+      "base": "#46544e",
+      "strong": "#7a8a82"
+    },
+    "state": {
+      "success": "#6ee7a0",
+      "successSubtle": "#16301f",
+      "warning": "#fcd34d",
+      "warningSubtle": "#33280a",
+      "danger": "#fca5a5",
+      "dangerSubtle": "#3a1e1e",
+      "info": "#7dd3fc",
+      "infoSubtle": "#0f2a3a"
+    },
+    "focus": {
+      "ring": "#6ee7a0",
+      "ringOffset": "#222d29",
+      "width": "{primitive.borderWidth.base}",
+      "offset": "2px"
+    }
+  },
+
+  "$contrast": {
+    "text.primary on surface.base": "12.83:1 AAA",
+    "text.secondary on surface.base": "6.79:1 AA",
+    "text.muted on surface.base": "5.32:1 AA",
+    "text.onBrand on brand.primary": "5.23:1 AA",
+    "text.link on surface.base": "9.22:1 AAA",
+    "state.danger on surface.base": "7.50:1 AAA",
+    "state.warning on surface.base": "9.87:1 AAA",
+    "state.success on surface.base": "9.22:1 AAA",
+    "state.info on surface.base": "8.54:1 AAA",
+    "brand.primary on surface.base": "4.85:1 AA",
+    "border.strong on surface.base": "3.92:1 AA"
+  },
+  "$contrastMeta": "Verificado por scripts/check-design-tokens.py. Paleta base tomada del tema oscuro de kanam-os (probado en uso real), recalculada al piso WCAG del sistema."
+}

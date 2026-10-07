@@ -101,8 +101,11 @@ que además corre el build una vez si el `dist/` no existe.
 | Tema | Para qué | Paleta base | Contraste mínimo |
 |---|---|---|---|
 | **Kanam** (base) | El sistema mismo, docs internas | Teal `#0d9488` | 4.5:1+ |
+| **Dark** (modo) | Modo oscuro del sistema base (kanam es el claro) | Verde `#4ea870` sobre `#222d29` | 4.85:1+ |
 | **Plaza** | Productos comerciales / seller-facing (Kanam Desk, SoporteML) | Cream `#FFF8EC` + Navy `#12294B` + Sun `#FFDD3A` | 4.9:1 (coral) / 13.5:1 (texto) |
 | **Terrario** | Herramientas internas / laboratorio (kanam-lab, dashboards) | Sand `#FAF9F5` + Verde `#3D7A4D` | 6.4:1 (primary) / 15.4:1 (texto) |
+
+> **Modo vs marca (2026-10-06):** `dark` es el eje de **modo** (oscuro/claro), no de marca; hoy comparte el atributo `data-theme` con Plaza/Terrario por simpleza. La base `kanam.css` en `:root` **es** el modo claro, así que una app que pone `data-theme="light"` cae al `:root` (no necesita `light.css`).
 
 Para agregar un tema: copiar `themes/plaza.tokens.json`, ajustar la capa semántica, agregarlo a la
 lista `THEMES` de `build-tokens.py`, correr el build, y documentar su matriz de contraste acá.

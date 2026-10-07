@@ -24,6 +24,10 @@ SYS = ROOT / "kanam.tokens.json"
 THEMES = [
     ("plaza", ROOT / "themes" / "plaza.tokens.json"),
     ("terrario", ROOT / "themes" / "terrario.tokens.json"),
+    # dark es el eje de MODO (oscuro/claro), no de marca: hoy comparte el
+    # atributo data-theme con plaza/terrario por simpleza. El sistema base
+    # kanam.css ES el modo claro.
+    ("dark", ROOT / "themes" / "dark.tokens.json"),
 ]
 
 REF = re.compile(r"\{([a-zA-Z0-9_.]+)\}")
