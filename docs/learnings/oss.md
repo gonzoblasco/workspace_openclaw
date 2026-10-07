@@ -408,3 +408,15 @@ COMPLEMENTO: el check requerido del ruleset puede seguir bloqueando el merge aun
 
 ---
 
+## Lecciones durables de la sesión
+
+ - Un documento de gobernanza dormido acumula falsos verdes; la revisión contra fuentes reales lo destapa. - El estado del encabezado miente; gana la evidencia. - Un `--` (guion doble) puede pasar por lista sin serlo. - Concurrencia de sesiones: verificar `git log -1 -- <archivo>` antes de editar gobernanza. <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+
+---
+
+## Leccion durable
+
+ Un documento de gobernanza que cita a otro puede contradecirlo sin que nada lo detecte: el detalle ampliado quedo en el modelo pre-ADR-075 y el bootstrap ya habia migrado. **Antes de citar una regla de un doc de gobernanza, verificar contra el ADR y el estado real en disco.** Y: si un bloque es generado por un script, el arreglo no es editar el bloque, es arreglar el generador (o el setting) - editar el bloque se revierte. <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+
+---
+

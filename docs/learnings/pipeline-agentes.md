@@ -233,3 +233,21 @@ Leccion: cuando una teoria externa coincide con una practica ya instalada, la te
 
 ---
 
+## Hallazgos Clave
+
+ 1. **Problema Universal de Thinking-Leakage**: Todos los modelos filtran su cadena de pensamiento (`Thinking...`) al output estándar, contaminando entregables y rompiendo la usabilidad en pipeline. Este es un problema del harness, no del modelo. 2. **Asignaciones de Alta Confianza (post-fix de thinking-leakage)**: - **dev**: `gpt-oss:120b-cloud` (reemplazando `glm-5.3-flash:cloud`) - Único modelo que entregó un hook completo y correcto en dev-02 - **auditor**: `deepseek-v4.1-flash:cloud` (reemp
+
+---
+
+## 2. Pitfalls operativos (lecciones durables)
+
+ - **Cambiar el modelo de `main` desde una sesion que corre sobre `main` bloquea el tool `openclaw`:** error `prepared model runtime plugin generation was superseded for .../agents/main/agent`. Se resuelve con restart del gateway (`/update` desde el chat). Para futuras ediciones de `main`: aplicar desde otra sesion o reiniciar despues. - **`managed-blocks.py`: el bloque de `AGENTS.md` lee la clave `model_by_agent`, NO `model.triple`.** Setear `model.triple` propaga a `docs/SETUP.md` pero deja `A
+
+---
+
+## ⚠️ Hallazgo operativo clave (durable)
+
+ **Los bloques MANAGED de `AGENTS.md` y `docs/SETUP.md` los genera `scripts/managed-blocks.py` desde la tabla `settings` de `memory.db`.** Editarlos a mano se revierte en el proximo `apply`. Y **cada archivo lee claves distintas**: - `AGENTS.md` :: bloque `model-operativo` -> lee el setting **`model_by_agent`**. - `docs/SETUP.md` :: bloque `model-triple` -> lee `model_primary`/`model_auxiliary`/`model_alternative`/`thinking_default`. - `docs/SETUP.md` :: bloque `model-pipeline-ab` -> lee `model_
+
+---
+

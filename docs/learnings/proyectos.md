@@ -156,3 +156,21 @@ REGLA QUE ME LLEVO: al arrancar una versión nueva, inventariar QUÉ TENÍA la a
 
 ---
 
+## SoporteML v4 se cierra; el producto sigue por la version funcional de Lovable con cobro por Stripe
+
+Decision de Gonzo (2026-10-06): se cierra el greenfield de SoporteML v4 (que ADR-068 habia planteado sobre v1, alcance CRM+contable). El producto sigue por la VERSION FUNCIONAL DE LOVABLE (v1), que ahora tiene COBRO POR STRIPE operativo, habilitado en Argentina. Es el primer proyecto del ecosistema con billing real (v1 tenia el billing escrito y jamas operativo). Stripe es la EXCEPCION documentada a ADR-042 (pagos: Mercado Pago por defecto, nunca Stripe salvo marca explicita de Gonzo) - la regla general no cambia. Registrado en ADR-091. Sigue vigente: SoporteML fuera de la narrativa publica / del CV y fuera de barridos de limpieza. Pendiente abierto: la 'Fase 4 - salir de Lovable' de v1 (arrastra dependencias de Lovable: auth, AI gateway, Supabase BaaS) y la pregunta de demanda de 4 generaciones.
+
+---
+
+## SoporteML: se queda en Lovable, sin pendientes abiertos (correccion a la leccion del cierre de v4)
+
+Correccion de Gonzo (2026-10-06), inmediatamente despues de registrar el cierre de v4: 'no deja nada abierto soporteml, no se saldra de lovable'. Es decir: (1) SoporteML no queda con NINGUN pendiente abierto; (2) la version NO migra a stack propio - la 'Fase 4 - salir de Lovable' de v1 NO se persigue. Las dependencias de Lovable (auth, AI gateway, Supabase BaaS) son el entorno elegido, no deuda a saldar. Corrige la clausula de pendientes de ADR-091 (que las listaba como abiertas). El producto avanza sobre la version funcional de Lovable con cobro por Stripe tal como esta.
+
+---
+
+## Pagos: Stripe es el proveedor unico reconocido; Mercado Pago queda fuera como intencion
+
+Decision de Gonzo (2026-10-06, tercera iteracion del dia sobre ADR-042): la regla de pagos del ecosistema es STRIPE COMO UNICO PROVEEDOR RECONOCIDO, sea o no un proyecto sobre Lovable. Razon: 'Stripe es el unico modo que puedo usar en Lovable... y no suelo usar modos de pagos'. Mercado Pago queda FUERA COMO INTENCION -no se elimina su existencia ni el registro historico (el billing de SoporteML v1 con MP sigue como historia), se elimina la intencion: deja de figurar como opcion fuerte, default o plan. No se reconocen otros proveedores. ADR-042 reescrito y renombrado a docs/adr/ADR-042-stripe-pagos.md. Supersede la version intermedia del mismo dia ('eleccion por proyecto') y la original ('Mercado Pago obligatorio, nunca Stripe').
+
+---
+

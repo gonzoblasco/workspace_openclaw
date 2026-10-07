@@ -629,3 +629,15 @@ Corolario de orden (pedido explicito de Gonzo): la skill del propio Laboratorio 
 
 ---
 
+## Pagos: el proveedor se elige por proyecto y se justifica (ADR-042 revisado)
+
+Correccion de Gonzo (2026-10-06): la regla de pagos 'Mercado Pago por defecto, Stripe solo por excepcion' LIMITABA a Stripe sin motivo. Hechos: (1) Stripe ya opera en Argentina - la premisa de indisponibilidad de ADR-042 dejo de ser cierta; (2) en LOVABLE, Stripe es la UNICA integracion de pago disponible, asi que cualquier proyecto Lovable cobra si o si con Stripe. Nueva regla: NO hay proveedor obligatorio en el ecosistema; cada proyecto elige y JUSTIFICA en su ADR/HANDOFF. Lovable -> Stripe (opcion natural del entorno, no excepcion). Fuera de Lovable -> proveedor a eleccion: Mercado Pago es una opcion fuerte (no la unica) por medios de pago locales (QR/Rapipago/PagoFacil/CBU/MODO) y moneda local; Stripe es igualmente valido. Otros (dLocal, PayU, MoR) validos con justificacion. Leccion de metodo: un default impuesto o una prohibicion transversal bloquea proyectos cuando el entorno cambia; preferir la decision justificada por proyecto al automatismo.
+
+---
+
+## Cierre de sesion con doble entregable: informe en memory/ + HANDOFF del proyecto
+
+'Guardar sesion' y 'cerrar sesion' son el mismo disparador. Desde 2026-10-06 cada cierre deja DOS entregables: (1) informe detallado en memory/YYYY-MM-DD.md (plantilla registrada en memory/_templates/session-close.md); (2) HANDOFF.md del proyecto en curso, generado por scripts/session-handoff.py en el .knowledge/ del proyecto (~/projects/<slug>/.knowledge/, ADR-075) o del workspace. El HANDOFF se DERIVA del informe de cierre (mismo resumen + estado + proximos pasos + decisiones + archivos tocados) para que cada proyecto se pueda continuar sin re-descubrir contexto. Lo orquesta skills/session-lifecycle/scripts/session-end.sh.
+
+---
+
