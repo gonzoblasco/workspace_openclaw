@@ -64,7 +64,7 @@ El sistema no se construyó de una: maduró por etapas, cada una habilitando la 
 
 Tres frentes activos, todos verificados en las últimas dos semanas:
 
-1. **`kanam-onwheels` - el primer producto "finito, final".** Palabras de Gonzo: *"busco ya lograr un producto finito, final, contigo... quiero poder darle a mi hermano Esteban el sitio completo"*. Sitio de un concesionario multi-marca con chatbot RAG que responde solo con evidencia citada, multi-concesionaria desde el diseño. Fase 1 en curso; Supabase conectado y verificado. Es el ancla de "producto terminado" del semestre.
+1. **`kanam-onwheels` - el primer producto "finito, final".** Palabras de Gonzo: *"busco ya lograr un producto finito, final, contigo... quiero poder darle a mi hermano Esteban el sitio completo"*. Sitio de un concesionario multi-marca con chatbot RAG que responde solo con evidencia citada, multi-concesionaria desde el diseño. **Estado (2026-10-06): catalogo publico + panel de aprobacion (SPEC-004/003) HECHOS y verificados** (e2e 11/11, schema 15/15, 112 tests); Supabase conectado y migrado. **Falta solo el chat RAG (SPEC-002)**, bloqueado por una decision de Gonzo (proveedor de embeddings + modelo/clave). Es el ancla de "producto terminado" del semestre.
 2. **`kanam-os` - ver la memoria como aplicación.** Pedido: *"quiero poder usarte como una aplicación"*. Fases 1-2 hechas (8 vistas + CRUD). Fase 3 (bloques managed) y Fase 4 (búsqueda semántica) pendientes. Es el sistema mirándose a sí mismo.
 3. **El oficio: diseño UI/UX.** Frente abierto por Gonzo el 2026-09-14 y con plan de estudio armado el 2026-10-05: *"entrenarme en el arte del diseño y la UI... que la estética importe SIEMPRE"*. Diagnóstico honesto del propio plan: **el problema no es información, es criterio** - falta el ojo, y eso se entrena mirando y juzgando, no leyendo. Cimiento: skill `design-direction`. **Los tokens y el design system propio YA EXISTEN** (`design/`, ADR-047; contraste verificado por ADR-095). Lo que queda es **aplicarlos** (adopción) y **empezar la semana 1** del plan de práctica (`studies/design/`).
 
@@ -97,7 +97,7 @@ Verificado contra los dailies 2026-09-22 a 2026-10-06. **Esto es el norte real, 
 | **Sistema multi-agente** | 4 roles (dev, mind, ops, studio) + Crew (critic, auditor, planner), ADR-073/074 | Operativo; pipeline A/B con enforcement (ADR-088) |
 | **Memoria** | `memory.db` (fuente de verdad) + `kanam-os` para verla; catálogo de memorias del ecosistema | DB-first estable; app Fases 1-2 |
 | **Modelos / pipeline** | Asignación por rol y nivel de pensamiento | ADR-090, aplicado y verificado en runtime |
-| **`kanam-onwheels`** | Producto finito para Esteban (concesionaria + chatbot RAG) | Fase 1 en curso; Supabase conectado |
+| **`kanam-onwheels`** | Producto finito para Esteban (concesionaria + chatbot RAG) | Catalogo + panel hechos y verificados; falta el chat RAG (bloqueado por decision de embeddings/modelo) |
 | **`kanam-os`** | App local para ver la memoria como fichas/tablas/grafos | Fases 1-2 entregadas |
 | **Diseño UI/UX** | El oficio: criterio visual, tokens, design system | Sistema **existe** (ADR-047/095, contraste verificado); falta adopción + práctica (`studies/design/`) |
 | **OSS a11y** | PRs en Adobe, IBM/Carbon, Meta, MUI | Continuo; 8 merges, PRs vivos |
