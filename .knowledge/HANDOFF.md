@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-06 19:11 GMT-3
+**Fecha:** 2026-10-06 21:49 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,35 +12,27 @@
 
 ## Que se hizo en esta sesion
 
-Gobernanza del sistema + nueva capacidad de cierre de sesion.
+Sesion larga de gobernanza + capacidad nueva de cierre de sesion.
 
-1) ROADMAP y NORTH reconstruidos desde cero contra fuentes reales (tenian un falso verde de 3 semanas: oferta EIT que nunca existio + hipotesis de inestabilidad de gateway ya refutada). NORTH reescrito contra las ultimas dos semanas reales.
-2) Bootstrap bajo cap: AGENTS/MEMORY/USER se truncaban en silencio en cada arranque (regresion). Bajados a 19.041 / ~14.0k / 3.976.
-3) SoporteML v4 CERRADO (ADR-091); el producto sigue por la version funcional de Lovable con cobro por Stripe. Se queda en Lovable, sin pendientes.
-4) ADR-042 reescrito y renombrado a ADR-042-stripe-pagos.md: Stripe como proveedor unico reconocido; Mercado Pago fuera como intencion.
-5) NUEVA CAPACIDAD: cada cierre de sesion ahora genera/actualiza el HANDOFF.md del proyecto (o del workspace) via scripts/session-handoff.py, ademas del informe en memory/. Plantilla del informe registrada en memory/_templates/session-close.md.
+1) ROADMAP y NORTH reconstruidos desde cero contra fuentes reales (tenian un falso verde de 3 semanas: oferta EIT que nunca existio + hipotesis de inestabilidad de gateway ya refutada). NORTH derivado del trabajo real de las ultimas dos semanas.
+2) Bootstrap bajo cap: AGENTS/MEMORY/USER se truncaban en silencio en cada arranque. Bajados a 18.955 / 13.857 / 3.976.
+3) SoporteML v4 CERRADO (ADR-091); sigue por la version funcional de Lovable con cobro por Stripe. Se queda en Lovable, sin pendientes.
+4) ADR-042 reescrito y renombrado a ADR-042-stripe-pagos.md: Stripe proveedor unico; Mercado Pago fuera como intencion.
+5) NUEVA CAPACIDAD: cada cierre de sesion genera/actualiza el HANDOFF del proyecto (o workspace) via scripts/session-handoff.py, ademas del informe en memory/. Plantilla del informe en memory/_templates/session-close.md. 'guardar' y 'cerrar' son el mismo disparador.
 
 ## Estado actual
 
-8 commits pusheados a main. Gates verdes (91 ADRs indexados, 147+ rutas OK, 0 guiones largos, bootstrap en cap).
+Todo pusheado a main; arbol limpio. Otra sesion en paralelo avanzo kanam-os y absorbio EVOLUTION into NORTH (ADRs 91->94). Gates: 94 ADRs indexados, 149 rutas OK.
 
 ## Proximos pasos
 
 1. Definir el alcance de kanam-fixer (desbloquea el ancla de a11y).
-2. Reactivar la busqueda laboral (tablero vacio) + CPACC.
-3. Respaldo de ~/projects (135 archivos .knowledge/ sin git).
+2. Reactivar la busqueda laboral (tablero vacio) + CPACC (cierra 9/12).
+3. Respaldo de ~/projects (los .knowledge/ viven solo en disco).
 
 ## Decisiones y contexto que no debe perderse
 
-- Stripe es el proveedor unico de pagos (ADR-042). Los proyectos viven en ~/projects (ADR-075). Cerrar/guardar son el mismo disparador. El HANDOFF se deriva del informe de cierre.
-
-## Archivos tocados
-
-```
-.knowledge/HANDOFF.md
-memory/memory.db
-skills/session-lifecycle/scripts/session-end.sh
-```
+- Stripe es el proveedor unico de pagos (ADR-042). Los proyectos viven en ~/projects (ADR-075). Cerrar/guardar = mismo disparador. El HANDOFF se deriva del informe de cierre y se regenera cada cierre.
 
 ## Como continuar
 
