@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-06] - Re-evaluación de las decisiones de diseño: el contraste se verifica
+
+### Added
+- **ADR-095** (`docs/adr/ADR-095-reevaluacion-decisiones-diseno.md`): re-evaluación pedida por Gonzo ("lo que ya está hecho de decisiones de diseño deben ser revaluadas").
+- **`scripts/check-design-tokens.py`:** mide el contraste WCAG de los tokens de cada tema contra el piso por rol (texto 4.5:1, componente 3:1; los bordes decorativos no se exigen). Modo reporte + `--check` bloqueante. Cableado al pre-commit (cambios en `design/`) y al CI.
+- **`tests/python/test_check_design_tokens.py`:** 8 casos (matemática WCAG, el guard puede fallar, bordes decorativos no son falso positivo, el sistema real pasa).
+
+### Fixed
+- **10 pares de tokens bajo el piso WCAG** en los 3 temas, corregidos preservando la identidad (un paso más oscuro del mismo tono, con primitivas existentes): el teal de marca como texto (3.74 -> 5.25), el ámbar de warning (3.45-3.64 -> 4.96-5.23), los `muted` de Plaza/Terrario (3.33-3.94 -> 5.23-5.69), el `info` de Terrario (4.32 -> 6.33).
+- **Matrices `$contrast`:** los números de Plaza/Terrario eran a mano y nunca medidos (decían "danger 4.9", el real era 4.70). Reemplazados por valores medidos; el sistema base ahora **declara la suya** (antes no existía).
+
+### Changed
+- **`design/README.md`, `ADR-047`, `DECISIONS.md` §2.8, `docs/NORTH.md`:** corregidas las afirmaciones falsas. El design system **ya existe** (`design/`, ADR-047 desde 2026-09-14) - el "paso 0" era un falso pendiente; la precondición del auditor de diseño ya se cumple. Lo que queda es **adopción** (kanam-os usa un tema paralelo) + práctica (`studies/design/`).
+- **Pre-commit + CI:** el cambio en `design/` regenera el `dist/` y corre el guard de contraste.
+
+---
+
 ## [2026-10-06] - Reconciliación: una sola ruta (APUESTAS + MAPA retirados, kanam-insight descontinuado)
 
 ### Removed

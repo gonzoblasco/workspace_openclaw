@@ -29,6 +29,12 @@ BOUNDARY_RELEVANT=$(echo "$CHANGED" | grep -qE '^(skills/|scripts/|agents/)' && 
 # nada la verificaba. Python puro (barato): corre ante cualquier cambio relevante.
 PACTO_RELEVANT=$(echo "$CHANGED" | grep -qE '^(scripts/|skills/|docs/|AGENTS\.md)' && echo 1 || echo 0)
 
+# Design system (2026-10-06). Disparador propio: los tokens viven en design/.
+# El build resuelve referencias y el guard mide contraste WCAG. El principio
+# "contraste verificado, no sentido" era falso (nada lo media); esto lo hace
+# verificable. Ver ADR-095.
+DESIGN_RELEVANT=$(echo "$CHANGED" | grep -qE '^design/' && echo 1 || echo 0)
+
 # --- Chequeos baratos: SIEMPRE que haya markdown staged ---
 # Por que: la regla del guion comun y las rutas citadas se cumplian solo
 # dentro de skills/ (test-skills.sh mira unicamente $SKILLS_DIR). Asi se
@@ -144,6 +150,13 @@ if [ "$PACTO_RELEVANT" = "1" ]; then
   # deben declarar el MISMO A/B, con A != B. Una deriva es un pacto con dos
   # verdades; el CORE puede citar la conveniente.
   python3 "${SCRIPT_DIR}/scripts/check-pipeline-enforcement.py" || exit 1
+fi
+
+if [ "$DESIGN_RELEVANT" = "1" ]; then
+  # Design system (ADR-095): regenerar el CSS (referencias resueltas) y verificar
+  # que los tokens cumplan su piso WCAG. Un cambio de token no entra en silencio.
+  python3 "${SCRIPT_DIR}/design/tokens/build-tokens.py" >/dev/null || exit 1
+  python3 "${SCRIPT_DIR}/scripts/check-design-tokens.py" --check || exit 1
 fi
 
 if [ "$SKILL_OR_SCRIPT_CHANGED" = "1" ]; then

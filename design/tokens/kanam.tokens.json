@@ -52,8 +52,8 @@
   "semantic": {
     "$description": "Capa de INTENCION. Es la que usan los componentes. Los temas de producto redefinen SOLO estas claves (intent over value), y asi el sistema escala a multi-marca sin reescribir componentes.",
     "brand": {
-      "primary": "{primitive.color.teal.600}",
-      "primaryHover": "{primitive.color.teal.700}",
+      "primary": "{primitive.color.teal.700}",
+      "primaryHover": "{primitive.color.teal.900}",
       "primarySubtle": "{primitive.color.teal.50}",
       "secondary": "{primitive.color.neutral.700}",
       "accent": "{primitive.color.amber.500}"
@@ -64,7 +64,7 @@
       "muted": "{primitive.color.neutral.500}",
       "inverse": "{primitive.color.neutral.0}",
       "onBrand": "{primitive.color.neutral.0}",
-      "link": "{primitive.color.teal.600}"
+      "link": "{primitive.color.teal.700}"
     },
     "surface": {
       "base": "{primitive.color.neutral.0}",
@@ -82,7 +82,7 @@
       "$description": "Semantica unica en todo el ecosistema: nunca se invierte. El estado nunca depende solo del color (siempre icono o texto).",
       "success": "{primitive.color.green.600}",
       "successSubtle": "#E8F5EE",
-      "warning": "{primitive.color.amber.500}",
+      "warning": "{primitive.color.amber.600}",
       "warningSubtle": "#FDF3E3",
       "danger": "{primitive.color.coral.500}",
       "dangerSubtle": "#FCEDEA",
@@ -114,5 +114,20 @@
       "stack-sm": "{primitive.space.2}", "stack-md": "{primitive.space.4}", "stack-lg": "{primitive.space.7}",
       "inline-sm": "{primitive.space.2}", "inline-md": "{primitive.space.4}"
     }
+  },
+
+  "$contrast": {
+    "$description": "Matriz de contraste del sistema base, VERIFICADA por scripts/check-design-tokens.py (2026-10-06). Antes no existia: el README afirmaba que cada tema la declara, y el base era la excepcion silenciosa.",
+    "text.primary on surface.base": "18.58:1 AAA",
+    "text.secondary on surface.base": "7.63:1 AAA",
+    "text.muted on surface.base": "4.80:1 AA",
+    "text.onBrand on brand.primary": "5.25:1 AA",
+    "text.link on surface.base": "5.25:1 AA",
+    "state.danger on surface.base": "4.96:1 AA",
+    "state.warning on surface.base": "5.23:1 AA",
+    "state.success on surface.base": "5.19:1 AA",
+    "state.info on surface.base": "4.55:1 AA",
+    "brand.primary on surface.base": "5.25:1 AA",
+    "border.strong on surface.base": "10.27:1 AAA"
   }
 }

@@ -67,6 +67,7 @@ referencia queda sin resolver. El `dist/` es generado: no se edita a mano.
 **Reglas operativas**
 - Ningún proyecto define colores hardcodeados si existe un token semántico equivalente.
 - Todo tema nuevo declara su matriz de contraste en el JSON (`$contrast`) y en `design/README.md`.
+- **Enforcement (2026-10-06, ADR-095):** el principio de contraste dejó de ser prosa. `scripts/check-design-tokens.py --check` mide cada par semántico contra su piso WCAG por rol, y corre en el pre-commit y el CI. La re-evaluación encontró que el principio #1 no tenía enforcement y que las matrices eran números a mano nunca medidos (10 pares bajo el piso, corregidos).
 - Componentes con ARIA/anuncio pasan por validación manual de screen reader (skill
   `a11y-at-validation`) antes de considerarse terminados.
 

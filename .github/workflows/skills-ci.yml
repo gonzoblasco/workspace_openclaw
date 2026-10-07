@@ -45,6 +45,13 @@ jobs:
       - name: Python functional tests
         run: pytest tests/python/
 
+      # Design system (ADR-095): regenerar el CSS de tokens y verificar contraste
+      # WCAG. El dist/ esta gitignored (generado), asi que CI lo construye.
+      - name: Design tokens (build + contrast gate)
+        run: |
+          python3 design/tokens/build-tokens.py
+          python3 scripts/check-design-tokens.py --check
+
       # Node functional tests (2026-10-06). Antes tests/node/ existia y NO corria
       # en ningun lado: solo bats y pytest estaban cableados. Incluye el
       # clasificador del gate de a11y (scripts/a11y-scan.mjs); el escaneo con

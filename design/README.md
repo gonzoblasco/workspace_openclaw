@@ -80,7 +80,8 @@ que además corre el build una vez si el `dist/` no existe.
 ## Principios no negociables
 
 1. **Contraste verificado, no sentido.** Todo par texto/fondo sale de un token medido: 4.5:1 mínimo
-   para cuerpo, 3:1 para texto grande. Cada tema documenta su matriz de contraste.
+   para cuerpo, 3:1 para texto grande. Cada tema documenta su matriz de contraste. **Verificado por
+   `scripts/check-design-tokens.py`** (2026-10-06, ADR-095): antes el principio era prosa sin enforcement.
 2. **El estado nunca depende solo del color.** Siempre icono o texto además del color.
 3. **Foco visible siempre.** Anillo de 2px en todo elemento interactivo (WCAG 2.2).
 4. **Semántica única de color.** verde = éxito, ámbar = atención, rojo = peligro. Nunca se invierte.
@@ -110,12 +111,15 @@ lista `THEMES` de `build-tokens.py`, correr el build, y documentar su matriz de 
 
 ## Verificación
 
-- **Contraste:** cada tema declara su matriz en el JSON (`$contrast`). Antes de publicar un tema,
-  comprobar cada par con un verificador WCAG (no a ojo).
+- **Contraste:** cada tema declara su matriz en el JSON (`$contrast`). **Se verifica automáticamente** con
+  `python3 scripts/check-design-tokens.py --check` (mide cada par semántico contra su piso WCAG por rol).
+  Corre en el pre-commit (ante cambios en `design/`) y en el CI. **2026-10-06:** antes eran números
+  escritos a mano y *nunca medidos* - la re-evaluación encontró 10 pares bajo el piso y los corrigió (ADR-095).
 - **Tokens sin resolver:** el build falla. No se commitea un `dist/` con referencias rotas.
 - **A11y en la implementación:** para componentes con ARIA/anuncio, la validación manual con
-  screen reader es obligatoria antes de dar por terminado (skill `a11y-at-validation`).
+  screen reader es obligatoria antes de dar por terminado (skill `a11y-at-validation`). Para medir una
+  página viva: `scripts/a11y-scan.mjs` (axe-core + playwright, ADR-094).
 
 ---
 
-_Última actualización: 2026-09-14 · Owner: Kanam · Institucionalizado en ADR-047._
+_Última actualización: 2026-10-06 (re-evaluación, ADR-095) · Owner: Kanam · Institucionalizado en ADR-047._

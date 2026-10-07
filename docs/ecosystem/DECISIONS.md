@@ -172,9 +172,9 @@ Hoy tenemos `skill_workshop` para **crear y actualizar** skills. **No tenemos na
 | 3 | **`design-audit`** | **Audita** contra el sistema generado |
 | 4 | **`axe-devtools`** | **Mide** accesibilidad - descartado por costo (ya tenemos cobertura; axe-core open source + la tool `browser` alcanza) |
 
-> **EJECUTADO (2026-10-06, ADR-094):** la pata de **medición** de accesibilidad ya existe como **`scripts/a11y-scan.mjs`** (axe-core OSS + playwright-core, sin suscripción). En su primera corrida encontró un bug real (`aria-allowed-attr` `critical`) en `kanam-os`. Las tres piezas de diseño (`kj-ui-ux-pro-max` -> `anti-slop-design` -> `design-audit`) siguen **pendientes**: la precondición (design system propio, paso 0) no está.
+> **EJECUTADO (2026-10-06, ADR-094):** la pata de **medición** de accesibilidad ya existe como **`scripts/a11y-scan.mjs`** (axe-core OSS + playwright-core, sin suscripción). En su primera corrida encontró un bug real (`aria-allowed-attr` `critical`) en `kanam-os`.
 
-> **Decisión pendiente:** adoptar las tres primeras, en ese orden. **El design system propio sigue siendo el paso 0** - `kj-ui-ux-pro-max` es la herramienta que lo produce.
+> **RESUELTO (2026-10-06, ADR-095): el design system YA EXISTE** (`design/`, ADR-047, desde 2026-09-14: tokens 3 capas + temas Plaza/Terrario + build + guard de contraste). El "paso 0" era un falso pendiente, y la precondición del auditor de diseño ("todo valor referencia tokens") **ya se cumple**. Lo que queda es **aplicarlo** (adopción: kanam-os usa un tema paralelo, hecho a mano). Las tres piezas de diseño (`kj-ui-ux-pro-max` -> `anti-slop-design` -> `design-audit`) siguen **pendientes de decisión**, ya sin el bloqueo que se creía.
 
 ---
 

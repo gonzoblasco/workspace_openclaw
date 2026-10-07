@@ -13,7 +13,7 @@
     "text": {
       "primary": "{primitive.color.navy.700}",
       "secondary": "#4A5568",
-      "muted": "#8A7F6B",
+      "muted": "#6B6253",
       "inverse": "{primitive.color.cream.100}",
       "onBrand": "{primitive.color.neutral.0}",
       "link": "{primitive.color.green.600}"
@@ -33,7 +33,7 @@
     "state": {
       "success": "{primitive.color.green.600}",
       "successSubtle": "#E8F5EE",
-      "warning": "{primitive.color.amber.500}",
+      "warning": "{primitive.color.amber.600}",
       "warningSubtle": "#FDF3E3",
       "danger": "{primitive.color.coral.500}",
       "dangerSubtle": "#FCEDEA",
@@ -49,10 +49,14 @@
   },
 
   "$contrast": {
-    "text.primary on surface.base": "13.5:1 AAA",
-    "sun on navy (accent)": "11.8:1 AAA",
-    "brand.primary (navy) on sun": "11.8:1 AAA",
-    "state.success on cream": "5.2:1 AA",
-    "state.danger on cream": "4.9:1 AA"
-  }
+    "text.primary on surface.base": "13.77:1 AAA",
+    "text.secondary on surface.base": "7.13:1 AAA",
+    "text.muted on surface.base": "5.69:1 AA",
+    "text.onBrand on brand.primary": "14.54:1 AAA",
+    "state.danger on surface.base": "4.70:1 AA",
+    "state.warning on surface.base": "4.96:1 AA",
+    "state.success on surface.base": "4.91:1 AA",
+    "brand.primary on surface.base": "13.77:1 AAA"
+  },
+  "$contrastMeta": "Verificado por scripts/check-design-tokens.py (2026-10-06). Antes eran numeros a mano nunca medidos (decian 'danger 4.9' y el real era 4.70)."
 }
