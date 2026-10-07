@@ -26,7 +26,9 @@
 | `agents/kanam-ops/skills/` | 4 |
 | `agents/kanam-studio/skills/` | 7 |
 | `agents/kanam-critic/skills/` | 1 |
-| **Total activas** | **79** |
+| `agents/kanam-planner/skills/` | 1 |
+| `agents/kanam-auditor/skills/` | 1 |
+| **Total activas** | **81** |
 
 > **El ciclo SDD (9 skills `hermes-*`) se movió del árbol del Core al de `kanam-dev` el 2026-09-29** (ADR-083).
 > Estaba en `skills/`, así que el Core veía el playbook de ingeniería - `hermes-builder` dice
@@ -204,6 +206,18 @@ implementación: vivía en el árbol del Core, que así lo podía ejecutar. El C
 | Skill | Qué hace |
 |---|---|
 | [sharp-adversarial-review](agents/kanam-critic/skills/sharp-adversarial-review/) | Presión adversarial con la rúbrica SHARP: puntúa 5 ejes con evidencia citable, emite VETO / Aprobado / ORO y devuelve los puntos de fricción obligatorios |
+
+### 3.7 kanam-planner - `agents/kanam-planner/skills/` (1)
+
+| Skill | Qué hace |
+|---|---|
+| [session-plan-orchestration](agents/kanam-planner/skills/session-plan-orchestration/) | Orquesta la tarea como plan persistente (`.knowledge/session_plan.json`): traza pasos, asigna roles en orden y evita la amnesia de sesión |
+
+### 3.8 kanam-auditor - `agents/kanam-auditor/skills/` (1)
+
+| Skill | Qué hace |
+|---|---|
+| [surface-alignment-audit](agents/kanam-auditor/skills/surface-alignment-audit/) | Audita la superficie contra el Design System: cruce de tokens, filtro Anti-Slop y contraste WCAG medido por rol |
 
 ---
 

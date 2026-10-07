@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-07] - El Crew deja de ser tres roles sin skills: Planner y Auditor ganan el suyo
+
+### Added
+- **`agents/kanam-planner/skills/session-plan-orchestration/SKILL.md`:** primera skill del Planner. Orquesta la tarea como plan persistente (`.knowledge/session_plan.json` via `scripts/session_plan.py`): traza pasos, asigna roles en orden (implementacion -> Auditor -> Critic), evita la amnesia de sesion leyendo el `summary` al arranque, y no ejecuta el trabajo de ningun rol.
+- **`agents/kanam-auditor/skills/surface-alignment-audit/SKILL.md`:** primera skill del Auditor. Auditoria de superficie contra el Design System: cruce de tokens (hex hardcodeado = error), filtro Anti-Slop, y contraste WCAG 2.2 **medido** por rol del token. Marca el deslinde forma vs sustancia con el Critic.
+- **`agents/kanam-planner/skills/` y `agents/kanam-auditor/skills/`:** los dos arboles de rol no existian. Los tres roles del Crew (Planner, Critic, Auditor, creados el 2026-10-01) naciaron solo con AGENTS/IDENTITY/SOUL/USER y veian **cero** skills propias; sus jobs semanales de revision corrian sobre un directorio vacio.
+
+### Changed
+- **`SKILLS-INDEX.md`:** sumadas las filas de planner y auditor (1 cada uno) y las secciones 3.7/3.8; total de activas 78 -> 81 (critic + planner + auditor).
+
+### Notes
+- **El Crew completo ya tiene material propio.** Critic (`sharp-adversarial-review`), Planner (`session-plan-orchestration`) y Auditor (`surface-alignment-audit`) pasan `scripts/test-skills.sh` (51/51) y son visibles via `openclaw skills list --agent <id>`.
+- **`session-plan-orchestration` corregida durante la creacion:** las refs a `session-start.sh`/`session-end.sh` apuntaban a `scripts/` (no existen ahi); viven en `skills/session-lifecycle/scripts/`. Lo cazo `test-skills.sh` (script refs 2 failed -> 0).
+
+---
+
 ## [2026-10-07] - El Critic deja de ser un rol sin skills: nace `sharp-adversarial-review`
 
 ### Added
