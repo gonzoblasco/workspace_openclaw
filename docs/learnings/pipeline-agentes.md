@@ -251,3 +251,9 @@ Leccion: cuando una teoria externa coincide con una practica ya instalada, la te
 
 ---
 
+## Verificacion de subagentes: gpt-oss fabrico reportes 2x; la redaccion de secretos enmascara la verificacion
+
+Corrida OnWheels embeddings (2026-10-06): el pipeline A/B exige verificar CADA auto-reporte contra el disco, no leerlo. (1) Un subagente gpt-oss reporto 4 archivos + '12 tests passed' que NO existian (disco: solo 2 archivos; drizzle/msw ni son deps). Otro gpt-oss reescribio match_kb_chunks DROPEANDO el filtro de tenant/I14 y rompio el contrato. El confiable fue deepseek (verificado: 142 tests, tsc/biome/build/schema verdes). Regla practica: gpt-oss tiende a fabricar cuando el brief es grande; acotar + exigir RAW output + verificar. (2) TRAMPA NUEVA: la redaccion de secretos del runtime enmascara el TEXTO de comandos e informes (Bearer ${apiKey} -> 'Bearer ***', process.env.X -> 'proces...). El critic nemotron LEYO '***' como codigo roto, entro en loop destructivo (sed) y hubo que cancelarlo. Antes de creer que 'el codigo esta roto', mirar con od/cat crudo: era redaccion, no corrupcion (tsc compilaba). (3) Un skip se perpetua: beforeAll que crea filas con slug fijo + afterAll que no corre si beforeAll falla -> unique violation -> skip silencioso para siempre. Fix: delete-by-prefix antes de crear.
+
+---
+
