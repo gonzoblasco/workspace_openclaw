@@ -25,7 +25,8 @@
 | `agents/kanam-mind/skills/` | 7 |
 | `agents/kanam-ops/skills/` | 4 |
 | `agents/kanam-studio/skills/` | 7 |
-| **Total activas** | **78** |
+| `agents/kanam-critic/skills/` | 1 |
+| **Total activas** | **79** |
 
 > **El ciclo SDD (9 skills `hermes-*`) se movió del árbol del Core al de `kanam-dev` el 2026-09-29** (ADR-083).
 > Estaba en `skills/`, así que el Core veía el playbook de ingeniería - `hermes-builder` dice
@@ -197,6 +198,12 @@ implementación: vivía en el árbol del Core, que así lo podía ejecutar. El C
 | [i18n-expert](agents/kanam-studio/skills/i18n-expert/) | i18n/l10n: setup, auditoría, reemplazo de strings, paridad de locales |
 | [cv-tailor](agents/kanam-studio/skills/cv-tailor/) | Optimiza CVs contra el JD: keywords, reescritura STAR, compatibilidad ATS |
 | [mock-interview-drill](agents/kanam-studio/skills/mock-interview-drill/) | Simulacros de entrevista: Behavioral (STAR), Technical, Case, con diagnóstico |
+
+### 3.6 kanam-critic - `agents/kanam-critic/skills/` (1)
+
+| Skill | Qué hace |
+|---|---|
+| [sharp-adversarial-review](agents/kanam-critic/skills/sharp-adversarial-review/) | Presión adversarial con la rúbrica SHARP: puntúa 5 ejes con evidencia citable, emite VETO / Aprobado / ORO y devuelve los puntos de fricción obligatorios |
 
 ---
 

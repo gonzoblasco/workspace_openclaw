@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-07] - El Critic deja de ser un rol sin skills: nace `sharp-adversarial-review`
+
+### Added
+- **`agents/kanam-critic/skills/sharp-adversarial-review/SKILL.md`:** primera skill del rol Critic. El ritual de presión adversarial con la rúbrica SHARP: cómo puntuar los 5 ejes (Sharpness, Horizon, Asymmetry, Resistance, Parsimony) con evidencia citable, el mapa de veredicto (VETO en `<= 18`, Aprobado, ORO en `>= 24`) y el entregable del VETO (puntos de fricción obligatorios). Presta de `skills/verification-gates` la guarda de verde falso y de `skills/trust-vocabulary-report` el contrato de evidencia; marca el deslinde sustancia vs forma con el Auditor.
+- **`agents/kanam-critic/skills/`:** el árbol de rol del Critic no existia. Su `workspaceDir` solo tenia AGENTS/IDENTITY/SOUL/USER, asi que el agente veia **cero** skills y su job semanal de revision corria sobre un directorio vacio.
+
+### Changed
+- **`SKILLS-INDEX.md`:** sumada la fila `agents/kanam-critic/skills/` (1) y la seccion 3.6; total de activas 78 -> 79.
+
+### Notes
+- **El job `skill-collection-review:kanam-critic` corria en error** (`Ls failed`): revisa el Skill Workshop del agente (`agent/workshop-skills/`), que estaba vacio. Con el arbol de rol ya en pie, el agente tiene material propio; el job queda sin bloqueo de arbol.
+
+---
+
 ## [2026-10-06] - kanam-fixer: el alcance estaba definido; el ROADMAP mentia desde hacia 3 semanas
 
 ### Fixed
