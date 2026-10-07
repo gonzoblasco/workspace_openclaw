@@ -45,7 +45,7 @@ El sistema no se construyó de una: maduró por etapas, cada una habilitando la 
 | **1. El Suelo** - sistemas de referencia | Design system (tokens semánticos + Anti-Slop), diccionario de entidades (`.knowledge/entities/`), rúbrica de gusto (SHARP) | ✅ Completada |
 | **2. El Ritmo** - ciclos de vida y gates | `security-scan` (pre-commit), session hooks (`session_plan.py`), skill evals, lifecycle tracker, regression control | 🟡 **Parcial:** 2 de 5 cableados (`security-scan` al pre-commit; session hooks a arranque/cierre). Los otros 3 quedan como experimentos **sin cablear a propósito**: no tienen qué medir todavía. Ver decisión abajo. |
 | **3. El Equipo** - Kanam's Crew | `critic` (sustancia), `auditor` (superficie), `planner` (gobierno), + la guía de inicio rápido | ✅ Completada |
-| **4. Expansión y refinamiento** | Módulo de especialistas, validación a11y técnica (`axe-core`), tablero de control del backlog | 🔄 En curso |
+| **4. Expansión y refinamiento** | Módulo de especialistas, validación a11y técnica (`axe-core`), tablero de control del backlog | 🟡 **Parcial:** a11y técnica **medida** (`a11y-scan`, ADR-094); Tablero **cerrado** (es `kanam-os /todos`); especialistas **diferidos a propósito** |
 
 **Metodología de evolución:**
 1. **No saltar etapas.** Un `critic` sin rúbrica SHARP es ruido. Un agente sin estándar no es un agente, es una suma de opiniones.

@@ -133,7 +133,7 @@ Mismo problema (Kanban visual), **sincronización invertida**:
 - **rdsthomas/mission-control** → **push** por webhook de GitHub. Datos en `tasks.json` versionado. Era Clawdbot.
 - **ClawDeck** → **pull** por API. El agente consulta su cola. Rails + PostgreSQL. Hosteado en cierre.
 
-> **Decisión pendiente:** ninguno es adoptable (uno es de era Clawdbot, el otro cierra), pero **el problema es real y nuestro**: nuestro TODO vive en `memory.db` y **no es visible**. Falta decidir si el backlog necesita una superficie visual propia y con qué modelo (push vs pull).
+> **RESUELTO (2026-10-06, ADR-094): la superficie visual del backlog ES `kanam-os` (vista `/todos`).** Modelo **pull**: la app lee `memory.db` read-only; la fuente de verdad sigue siendo la DB, no se muda a `tasks.json`. Ninguno de los dos repos evaluados se adopta; el problema que atacaban ya está cubierto por una app propia. Ver `docs/NORTH.md` (Etapa 4).
 
 ### 2.6 Ciclo de vida de skills: lo que NOS FALTA por completo
 
@@ -171,6 +171,8 @@ Hoy tenemos `skill_workshop` para **crear y actualizar** skills. **No tenemos na
 | 2 | **`anti-slop-design`** | **Evita** la estética genérica - va desde el día uno |
 | 3 | **`design-audit`** | **Audita** contra el sistema generado |
 | 4 | **`axe-devtools`** | **Mide** accesibilidad - descartado por costo (ya tenemos cobertura; axe-core open source + la tool `browser` alcanza) |
+
+> **EJECUTADO (2026-10-06, ADR-094):** la pata de **medición** de accesibilidad ya existe como **`scripts/a11y-scan.mjs`** (axe-core OSS + playwright-core, sin suscripción). En su primera corrida encontró un bug real (`aria-allowed-attr` `critical`) en `kanam-os`. Las tres piezas de diseño (`kj-ui-ux-pro-max` -> `anti-slop-design` -> `design-audit`) siguen **pendientes**: la precondición (design system propio, paso 0) no está.
 
 > **Decisión pendiente:** adoptar las tres primeras, en ese orden. **El design system propio sigue siendo el paso 0** - `kj-ui-ux-pro-max` es la herramienta que lo produce.
 

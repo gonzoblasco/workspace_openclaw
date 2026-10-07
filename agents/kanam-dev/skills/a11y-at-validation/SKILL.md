@@ -113,6 +113,16 @@ A custom element can set its role/state via `this.attachInternals().role = 'butt
 
 **Rule:** before treating an axe run as evidence, check coverage. On custom elements, if the component does not expose the protocol, the result is incomplete - **do not certify**. In **our** components that use ElementInternals, implement the protocol so audits/CI see the roles. For third-party content, automated a11y coverage of web components is a **declared limitation**, not a verdict.
 
+## Automated measurement (a11y-scan)
+
+Manual validation is for the *announcement*. For a fast **technical** pass over a live page, run `scripts/a11y-scan.mjs` (axe-core OSS + playwright-core, ADR-094):
+
+```bash
+node scripts/a11y-scan.mjs http://127.0.0.1:4317/todos --json
+```
+
+The scan covers what a machine can measure (roles, allowed ARIA attrs, contrast, labels). It does NOT replace manual AT validation: an axe run proves measurable failures, not that an announcement is correct - and on custom elements (`ElementInternals`) a clean run is incomplete coverage (see below). The classifier runs in CI; the live scan runs locally (CI has no chromium).
+
 ## Common errors
 
 - **Treating a green axe run on custom elements as evidence they are accessible.** Without the ElementInternals protocol, coverage is incomplete (see section above).

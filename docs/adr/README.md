@@ -99,6 +99,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-091 | [SoporteML v4 se cierra; el producto sigue por la version funcional de Lovable con cobro por Stripe](./ADR-091-soporteml-v4-cierre-stripe.md) | soporteml |
 | ADR-092 | [El CHANGELOG vive en una ventana activa de ~30 días, con rotación automatizada](./ADR-092-changelog-ventana-rotacion.md) | workspace |
 | ADR-093 | [El plan de sesión como objeto persistente (session-planning-hooks se cablea)](./ADR-093-plan-de-sesion-persistente.md) | workspace |
+| ADR-094 | [Etapa 4 de Kanam OS: medir accesibilidad (a11y-scan), cablear tests/node, y cerrar el Tablero](./ADR-094-etapa-4-a11y-scan-tests-node-tablero.md) | workspace |
 
 ## Formato
 

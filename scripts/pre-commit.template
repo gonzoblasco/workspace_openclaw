@@ -172,4 +172,11 @@ if [ "$SKILL_OR_SCRIPT_CHANGED" = "1" ]; then
   if command -v pytest >/dev/null 2>&1; then
     pytest "${SCRIPT_DIR}/tests/python" || exit 1
   fi
+
+  # Node functional tests (2026-10-06). Antes tests/node/ existia y NO corria en
+  # ningun lado (solo bats y pytest estaban cableados). El runner es el punto de
+  # entrada unico; cada *.test.js es autonomo y falla con exit != 0.
+  if command -v node >/dev/null 2>&1; then
+    "${SCRIPT_DIR}/tests/node/run.sh" || exit 1
+  fi
 fi

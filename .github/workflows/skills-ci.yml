@@ -45,6 +45,13 @@ jobs:
       - name: Python functional tests
         run: pytest tests/python/
 
+      # Node functional tests (2026-10-06). Antes tests/node/ existia y NO corria
+      # en ningun lado: solo bats y pytest estaban cableados. Incluye el
+      # clasificador del gate de a11y (scripts/a11y-scan.mjs); el escaneo con
+      # browser real es local (CI no tiene playwright/chromium).
+      - name: Node functional tests
+        run: ./tests/node/run.sh
+
       # Segunda barrera del boundary de a11y-at-validation. El pre-commit se
       # puede saltear con --no-verify; esto lo cubre en la superficie publica.
       # El rango se calcula por evento, y en push cubre TODOS los commits del

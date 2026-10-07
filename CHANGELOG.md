@@ -6,7 +6,21 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-## [2026-10-06] - El plan de sesión se cablea (Kanam OS Etapa 2: session-planning-hooks)
+## [2026-10-06] - Etapa 4 de Kanam OS: accesibilidad medida, tests/node cableados, Tablero cerrado
+
+### Added
+- **ADR-094** (`docs/adr/ADR-094-etapa-4-a11y-scan-tests-node-tablero.md`): cierra/reubica los tres componentes de la Etapa 4.
+- **`scripts/a11y-scan.mjs`:** mide accesibilidad real de una página viva con axe-core (OSS) + playwright-core, sin `axe-devtools` pago. Exit 2 si la infra (playwright/axe) no está: un gate que no puede correr no es un verde. El juicio (`classify`) es puro y testeable. **Primera corrida:** encontró `aria-allowed-attr` `critical` (`aria-pressed` sobre `<a href>`) en `kanam-os` `/todos`, `/fichas`, `/learnings` - bug real de accesibilidad.
+- **`tests/node/run.sh`:** runner de los tests Node del workspace (antes `tests/node/` no corría en ningún lado).
+- **`tests/node/a11y-scan.test.js`:** 8 casos del clasificador (umbral, impacto desconocido = peor caso, umbral inválido lanza).
+
+### Changed
+- **`tests/node/` cableado** al pre-commit (junto a bats y pytest) y al CI (nuevo step "Node functional tests").
+- **`docs/ecosystem/DECISIONS.md` §2.5:** el Tablero se cierra - la superficie visual del backlog **es** `kanam-os /todos` (modelo **pull**, fuente de verdad `memory.db`). Falso pendiente de 6 días.
+- **`docs/ecosystem/DECISIONS.md` §2.8:** la pata de **medición** a11y ya existe (`a11y-scan`).
+- **`docs/NORTH.md`:** Etapa 4 - a11y medida, Tablero cerrado, especialistas diferidos a propósito (el esqueleto Crew+SHARP ya está; los 13 roles del Academic System son dispersión).
+
+---
 
 ### Added
 - **ADR-093** (`docs/adr/ADR-093-plan-de-sesion-persistente.md`): el plan de sesión como objeto persistente del sistema. Cierra el hueco declarado en `docs/NORTH.md` (la Etapa 2 tenía cinco gates que nadie invocaba).
