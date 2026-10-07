@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-06] - Reconciliación: una sola ruta (APUESTAS + MAPA retirados, kanam-insight descontinuado)
+
+### Removed
+- **`docs/APUESTAS.md` y `docs/MAPA-PROXIMOS-PASOS.md` eliminados.** Cuatro documentos decían "qué sigue" y se contradecían (NORTH/ROADMAP/APUESTAS/MAPA, fechas 10-06/10-06/09-24/09-14). Quedan dos con roles distintos: `NORTH` (el para qué) y `ROADMAP` (el cómo y en qué orden). El MAPA estaba stale (hablaba de kanam-lab/kanam-studio como eje; NORTH ya los sacó). El contenido de producto de APUESTAS pasó a `ROADMAP.md` §2.1.
+- **`kanam-insight` descontinuado y fuera del roadmap.** No existe como proyecto (no está en `~/projects/`) y Gonzo confirmó que no recuerda haberlo querido. Fuera de NORTH, ROADMAP §2.1, MEMORY.md y el registro del proyecto.
+
+### Added
+- **`docs/ROADMAP.md` - "La ruta" (secuencia fijada).** Tramos T1 (OnWheels + design system + CPACC), T2 (caso de estudio + reactivar búsqueda laboral), T3 (UNA apuesta comercial), D (sistema como soporte). Resuelve la tensión: los tramos que facturan estaban fríos mientras los que no facturan consumían el tiempo.
+
+### Changed
+- **`docs/ROADMAP.md`:** §2.1 absorbe las apuestas de producto vivas (soporteml, kanam-fixer); la prioridad consolidada aclara que ordena por *importancia* y "La ruta" por *secuencia*.
+- **`docs/NORTH.md`, `docs/LANGCHAIN_STRATEGY.md`, `docs/adr/ADR-063`, `docs/adr/ADR-091`, `docs/adr/ADR-085`, `README.md`, `MEMORY.md`:** reapuntados para no citar los docs retirados. ADR-063 queda como registro histórico de la decisión de stack de kanam-insight (estado del sujeto: DESCONTINUADO).
+
 ## [2026-10-06] - Etapa 4 de Kanam OS: accesibilidad medida, tests/node cableados, Tablero cerrado
 
 ### Added

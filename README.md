@@ -24,7 +24,7 @@ Workspace de trabajo de Kanam sobre OpenClaw, que vive **solo en la Mac Mini** (
 | Contribuir a OSS | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Estrategia y reglas de PRs |
 | Cambios estructurales | [`CHANGELOG.md`](./CHANGELOG.md) | Registro histórico del workspace |
 | Registros de sesión (historia) | [`docs/records/`](./docs/records/) | Fotos inmutables de sesiones pasadas (ADR-084), no documentación viva |
-| Trabajo en curso y próximo | [`docs/ROADMAP.md`](./docs/ROADMAP.md), [`docs/MAPA-PROXIMOS-PASOS.md`](./docs/MAPA-PROXIMOS-PASOS.md), [`memory/todos.md`](./memory/todos.md) | Roadmap, pasos y pendientes |
+| Trabajo en curso y próximo | [`docs/ROADMAP.md`](./docs/ROADMAP.md), [`memory/todos.md`](./memory/todos.md) | Roadmap (capas + la ruta) y pendientes |
 | Operación del gateway | [`docs/gateway-operations.md`](./docs/gateway-operations.md) | Servicios y rutinas del gateway |
 
 ## Mapa de nivel 1

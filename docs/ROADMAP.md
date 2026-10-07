@@ -21,6 +21,23 @@
 
 ---
 
+## La ruta (secuencia fijada, 2026-10-06)
+
+Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero**, y gobierna la prioridad consolidada de abajo.
+
+| Tramo | Foco | Criterio de salida |
+|---|---|---|
+| **T1 - ahora → dic 2026** | **OnWheels** (obra finita) + **design system** (se aprende dentro de la obra) + **CPACC** (examen, fecha dura 9-dic) | OnWheels entregado a Esteban; examen CPACC rendido |
+| **T2 - ene → mar 2027** | OnWheels como **caso de estudio** + **reactivar la búsqueda laboral** | 1 proceso laboral nuevo avanzando (no de una oferta inexistente) |
+| **T3 - Q1 2027** | **UNA** apuesta comercial: `soporteml` (ya factura) o `kanam-fixer` (más defendible) - no las dos | Primer pago real, o descarte fundado |
+| **D - continuo** | El sistema como **soporte** (`kanam-os`, memoria, pipeline) - solo si sirve a T1/T2/T3 | No compite; habilita los tramos |
+
+**La tensión que esta secuencia resuelve:** los tramos que *facturan* (empleo, producto) estaban fríos mientras los que no facturan (construir, sistema) consumían el tiempo. T1 arranca por la obra terminable y la credencial; el retorno comercial va en T3, no ahora.
+
+**Regla de la ruta:** no se abre un frente nuevo (ni un noveno proyecto, ni un segundo producto comercial) hasta cerrar el tramo en curso. Lo que no entra, se anota en `memory/inbox.md`.
+
+---
+
 ## Capa 0 - Fundaciones (sostiene todo)
 
 ### 0.1 Integridad del bootstrap 🟡 P0
@@ -121,16 +138,18 @@
 ### 2.1 Estrategia de proyectos 🟡 P0
 - **Qué**: qué 2-3 proyectos sostienen el pitch "fullstack con IA como infraestructura" + el nicho a11y.
 - **Por qué**: sin esto, el pipeline optimiza lo equivocado. Dispersión = portfolio que no cuenta una historia.
-- **Fuentes vivas**: `~/projects/portfolio-strategy/ADR-001` (pilares + anclas), `docs/APUESTAS.md` (orden de apuestas, 2026-09-24), `memory/notes/portfolio-curation.md` (curaduría de presencia, 2026-09-21).
+- **Fuentes vivas**: `~/projects/portfolio-strategy/ADR-001` (pilares + anclas), `memory/notes/portfolio-curation.md` (curaduría de presencia, 2026-09-21).
 - **Estado honesto**:
   - **Ancla en transición**: `kanam-fixer` (sucede a `a11y-fixer`, archivado). **Alcance SIN DEFINIR** - no asumir que hereda el rol del engine de fixes.
-  - **Apuestas priorizadas por Gonzo (09-24)**: 1) `kanam-insight` (uso interno), 2) `soporteml` (producto, privado; v4 cerrado 2026-10-06, sigue por la version funcional de Lovable con Stripe, ADR-091), 3) `kanam-fixer` (producto).
+  - **Apuestas de producto vivas** (absorbidas de `APUESTAS.md`, retirado el 2026-10-06):
+    - **`soporteml`** (producto, privado): v4 cerrado (ADR-091); sigue por la version funcional de Lovable, con cobro por Stripe ya operativo. Primer proyecto con billing real.
+    - **`kanam-fixer`** (producto): diferenciador defendible (auditoría sobre lo que el lector de pantalla *anuncia*, no sobre atributos del DOM como axe-core).
   - **Showcase (curaduría 09-21)**: `kanam-fixer`, `ai-developer-stack`, `kanam-skills`.
-- **Criterio de éxito**: una lista corta de proyectos "estrella" con su rol en el pitch, documentada y sin contradicciones entre ADR-001 y APUESTAS.
+- **Criterio de éxito**: una lista corta de proyectos "estrella" con su rol en el pitch, sin contradicciones entre ADR-001 y este roadmap.
 - **Señal de listo**: el pilar *Accesibilidad* tiene ancla formal (hoy: `kanam-fixer` sin alcance definido).
 - **Acciones**:
   - [ ] **Definir el alcance de `kanam-fixer`** (qué resuelve, para quién) - es lo que desbloquea reasignar el ancla del pilar Accesibilidad.
-  - [ ] Reconciliar la lista de proyectos de `MEMORY.md` con `~/projects/` real (hay drift: la memoria lista `kanam-forge`, `kanam-mind`, `create-stack-next`, etc. que conviven con `kanam-story-bible`, `kanam-writer`, `kanam-worldbuilding`, `kanam-spec`, `kanam-spec-v2`, `kanam-os`, `ollama-visor`).
+  - [ ] Reconciliar la lista de proyectos de `MEMORY.md` con `~/projects/` real (hay drift: la memoria lista proyectos que no están en disco y viceversa).
 
 ### 2.2 Cadena OSS -> LinkedIn 🟡 P1
 - **Qué**: cada merge de a11y/agentic -> post. El patrón está definido (2026-08-25); falta la cadencia real.
@@ -183,6 +202,8 @@
 ---
 
 ## Prioridad consolidada
+
+> **Eje distinto de "La ruta".** Esta tabla ordena por *importancia*; la sección "La ruta" ordena por *secuencia* (qué va primero). Cuando discrepan, manda la secuencia: un P0 puede esperar su tramo.
 
 | # | Item | Capa | Prioridad | Estado |
 |---|------|------|-----------|--------|

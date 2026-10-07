@@ -1,9 +1,11 @@
 # ADR-063: kanam-insight en Python sobre LangChain, no en TypeScript con Bun
 
+> **Estado del sujeto: DESCONTINUADO (2026-10-06).** `kanam-insight` salió del roadmap: no existe como proyecto (no está en `~/projects/`) y Gonzo confirmó que no recuerda haberlo querido. Este ADR se conserva como **registro histórico** de la decisión de stack (Python+LangChain sobre el starter, en vez de TS+Bun), que reusa la capacidad de `langchain-starter`. Si algún día se retoma un motor de insights cross-`knowledge/`, esta es la decisión a revisar.
+
 **Fecha:** 2026-09-24
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
-**Origen:** arranque de la apuesta 1 (`docs/APUESTAS.md`). El spec de kanam-insight (2026-08-30) declaraba TS + Bun, pero quedó anterior a la capacidad construida.
+**Origen:** arranque de la que era la apuesta 1 (registro `APUESTAS.md`, retirado 2026-10-06). El spec de kanam-insight (2026-08-30) declaraba TS + Bun, pero quedó anterior a la capacidad construida.
 **Relacionado:** ADR-062 (vectores rechunk semántico), ADR-057 (embeddings BLOB), `LANGCHAIN_STRATEGY.md`
 
 ---
@@ -75,6 +77,6 @@ Precedente del propio workspace: la regla *"el precedente no es un motivo"* (202
 
 ## Referencias
 
-- `docs/APUESTAS.md` - por qué kanam-insight es la apuesta 1
+- `docs/ROADMAP.md` §2.1 - apuestas de producto vivas (kanam-insight salió)
 - ADR-062 - el chunking por unidad semántica que este proyecto reusa
 - `projects/kanam-insight/.knowledge/BRIEF.md` - spec actualizado a este stack

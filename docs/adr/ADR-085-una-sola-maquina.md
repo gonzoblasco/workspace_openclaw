@@ -65,7 +65,7 @@ La deriva concreta: la documentación siguió afirmando "compartido entre dos m�
 | `README.md`, `AGENTS.md`, `USER.md`, `MEMORY.md`, `docs/SETUP.md` | "dos máquinas / sincronizado" -> una máquina (Mac Mini) |
 | `docs/gateway-operations.md`, `.knowledge/BRIEF.md` | idem |
 | `docs/ROADMAP.md` | item 3.2 retirado |
-| `docs/MAPA-PROXIMOS-PASOS.md` | el código de `system-health-check` está en GitHub, no "en la Air" |
+| el viejo mapa de próximos pasos (retirado 2026-10-06; su contenido vivo pasó a `docs/ROADMAP.md`) | el código de `system-health-check` está en GitHub, no "en la Air" |
 | `docs/learnings/` | notas fechadas; el texto histórico se conserva |
 | `docs/adr/ADR-050`, `ADR-054` | nota: el argumento de sync era del escenario de dos máquinas |
 | `docs/machine-switch-protocol` (retirado) | eliminado (perdió su sujeto) |

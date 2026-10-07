@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-10-06 (reconstruido desde cero)
 **Estado:** Vivo. Fija el "para qué" de largo plazo.
-**Autor:** Kanam, a pedido de Gonzo. Reescrito contra el contexto real de **las últimas dos semanas** (dailies 2026-09-22 a 2026-10-06, `docs/APUESTAS.md`, ADRs, `~/projects/*/.knowledge/`) - no contra la memoria vieja.
+**Autor:** Kanam, a pedido de Gonzo. Reescrito contra el contexto real de **las últimas dos semanas** (dailies 2026-09-22 a 2026-10-06, `docs/ROADMAP.md`, ADRs, `~/projects/*/.knowledge/`) - no contra la memoria vieja.
 
 > **Nota de la reconstrucción (2026-10-06):** la versión anterior era del 2026-09-14 y quedó anclada a proyectos e intereses que ya no son el eje: `kanam-story`/`kanam-studio` como línea narrativa *de producto*, `kanam-solitaires`/`kanam-tetris` como experimentos de portfolio, `kanam-forge` como apuesta. Esos ya no son lo que se trabaja. El norte actual se armó leyendo qué se hizo de verdad en las últimas dos semanas. Lo viejo queda en git.
 
@@ -14,9 +14,10 @@ Tres documentos responden tres preguntas distintas:
 
 | Documento | Pregunta |
 |---|---|
-| `docs/ROADMAP.md` | **¿Cómo trabajamos?** (capas: fundaciones, pipeline, portfolio, ecosistema, crecimiento) |
-| `docs/APUESTAS.md` | **¿Qué construimos y en qué orden?** (apuestas de producto/herramienta) |
+| `docs/ROADMAP.md` | **¿Cómo trabajamos y en qué orden?** (capas + la ruta secuenciada) |
 | `docs/NORTH.md` (este) | **¿Qué queremos que exista y para qué?** |
+
+(El registro de apuestas era un doc aparte; se retiró el 2026-10-06 - su contenido de producto vive en `ROADMAP.md` §2.1. El viejo mapa de próximos pasos también se retiró: estaba stale.)
 
 Sin un norte escrito, cada bifurcación se siente igual de válida. En las últimas dos semanas se tocaron, en simultáneo: pipeline de agentes, Kanam OS, OnWheels, CPACC, diseño UI, narrativa, OSS y ecosistema OpenClaw. Ocho frentes defendibles. Este archivo ordena cuáles importan y por qué.
 
@@ -29,7 +30,7 @@ Sin un norte escrito, cada bifurcación se siente igual de válida. En las últi
 | Capa | Qué es | Hoy |
 |---|---|---|
 | **1. El sistema** | El OS de trabajo: workspace multi-agente (4 roles + Crew), memoria DB-first, apps propias, pipeline A/B, skills, decisiones documentadas | En producción diaria |
-| **2. Las obras** | Lo que el sistema permite construir | `kanam-onwheels` (producto finito en curso), `kanam-os` (app), `kanam-insight`, `soporteml` (version funcional de Lovable con cobro por Stripe) |
+| **2. Las obras** | Lo que el sistema permite construir | `kanam-onwheels` (producto finito en curso), `kanam-os` (app), `soporteml` (version funcional de Lovable con cobro por Stripe) |
 | **3. El oficio** | Lo que atraviesa todo y lo hace valioso | a11y + IA como infraestructura + **diseño UI/UX** (el frente más nuevo y más declarado) |
 
 Kanam no "usa IA". Construye el sistema que hace posible usarla bien, y lo pone a producir obras concretas. El nombre viene del "segundo cerebro" original que Gonzo descartó en 2026 y que resucitó como `kanam-mind`; hoy nombra al ecosistema entero.
@@ -81,7 +82,7 @@ Tres frentes activos, todos verificados en las últimas dos semanas:
 ### Horizonte 2 - Kanam como plataforma (1-3 años)
 **Para qué:** que la infraestructura construida para uno mismo sirva para otros.
 
-La apuesta de fondo, ya nombrada en el BRIEF de `kanam-forge`: empaquetar el pipeline -stack opinado, memoria persistente, a11y integrada, multi-agente con review cruzado- para que otros construyan con él. Los candidatos comerciales están en `docs/APUESTAS.md`: `kanam-insight` (uso interno -> producto), `soporteml` (producto privado, version funcional de Lovable), `kanam-fixer` (a11y en CI).
+La apuesta de fondo, ya nombrada en el BRIEF de `kanam-forge`: empaquetar el pipeline -stack opinado, memoria persistente, a11y integrada, multi-agente con review cruzado- para que otros construyan con él. Los candidatos comerciales vivos (ver `docs/ROADMAP.md` §2.1): `soporteml` (producto privado, version funcional de Lovable con Stripe), `kanam-fixer` (a11y en CI).
 
 **Criterio de listo (H2):** alguien que no sos vos construye algo real con Kanam, y le sale mejor que sin Kanam.
 
@@ -151,6 +152,6 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 ## Notas de creación
 
 - Creado 2026-09-14, en la sesión donde Gonzo preguntó "¿cuál era el objetivo, el para qué de este proyecto?".
-- **Reconstruido 2026-10-06** contra las últimas dos semanas de trabajo real. Motivo: la versión previa describía una constelación de productos narrativos y experimentos que ya no son el eje. Fuentes: dailies 2026-09-22 a 2026-10-06, `docs/APUESTAS.md`, ADRs del workspace, `~/projects/*/.knowledge/`, `docs/studies/` (`design/`, `narrative-engineering/`), `docs/stories/`.
+- **Reconstruido 2026-10-06** contra las últimas dos semanas de trabajo real. Motivo: la versión previa describía una constelación de productos narrativos y experimentos que ya no son el eje. Fuentes: dailies 2026-09-22 a 2026-10-06, `docs/ROADMAP.md`, ADRs del workspace, `~/projects/*/.knowledge/`, `docs/studies/` (`design/`, `narrative-engineering/`), `docs/stories/`.
 - **Absorbido `EVOLUTION.md` el 2026-10-06.** El blueprint de madurez de Kanam OS (etapas + metodología) pasó a la sección "El camino de madurez del sistema": un solo documento de norte, no dos. Las referencias de los agentes (`critic`, `planner`) se reapuntaron a este archivo.
 - Principio: no inventar. Lo que este documento afirma sobre un proyecto sale de su BRIEF/ROADMAP real o del daily donde se trabajó. Las aspiraciones están marcadas como tales (Horizontes 1 y 2).

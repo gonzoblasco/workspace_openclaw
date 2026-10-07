@@ -39,5 +39,5 @@ Esto es coherente con la medicion de ADR-068: v4 era una **poda** de v1, no una 
 3. **Migrar a stack propio (Fase 4 de v1).** Descartada: la version se queda en Lovable.
 
 ## Notas de mantenimiento
-- La propagacion del 2026-10-06 toco: `MEMORY.md`, `AGENTS.md`, `docs/APUESTAS.md`, `docs/NORTH.md`, `docs/ROADMAP.md`, `memory/user-profile.md`, `docs/adr/ADR-042` (revisado a eleccion por proyecto), este ADR, y la DB (`memory/memory.db`, tabla `learnings`).
+- La propagacion del 2026-10-06 toco: `MEMORY.md`, `AGENTS.md`, `docs/NORTH.md`, `docs/ROADMAP.md` (entonces tambien el registro de apuestas, hoy retirado), `memory/user-profile.md`, `docs/adr/ADR-042` (revisado a eleccion por proyecto), este ADR, y la DB (`memory/memory.db`, tabla `learnings`).
 - El cambio a Stripe ya habia asomado el 2026-10-01 en superficies de CV (`docs/entrevistas/mercadolibre-cards-nfc-aplicacion.md`) y en `DREAMS.md`, pero **no se habia propagado a las fuentes durables**. Este ADR cierra ese hueco.

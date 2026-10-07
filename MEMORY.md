@@ -71,7 +71,7 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 - **a11y-fixer:** ARCHIVADO (2026-09-14, decisión de Gonzo), v0.6.0. Su sucesor es `kanam-fixer`, proyecto NUEVO (no un renombre). Repo GitHub `isArchived=true` (verificado 2026-10-06).
 - **kanam-fixer:** PROYECTO NUEVO (2026-09-14). Alcance/propuesta de valor SIN DEFINIR - no asumir que hereda el rol de engine de fixes a11y. Antes de arrancar hay que resolver: relación con el código de a11y-fixer (heredar/portar/greenfield), lugar del pilar Accesibilidad en el portfolio (ADR-001 nombra a a11y-fixer como ancla -> requiere enmienda formal) y qué pasa con `a11y-playground`, que depende de a11y-fixer.
 - **a11y-playground:** capa visual de testing sobre a11y-fixer. **Dependencia en riesgo:** su base quedó archivada; definir si migra a kanam-fixer, se archiva o se sostiene sola.
-- **kanam-insight:** motor de insights/análisis transversal sobre los `.knowledge/`. Activo.
+- **kanam-insight:** DESCONTINUADO (2026-10-06, decisión de Gonzo). Era un motor de insights/análisis transversal sobre los `.knowledge/`; no existe como proyecto (no está en `~/projects/`) y salió del roadmap. Se conserva ADR-063 como registro de la decisión de stack.
 - **kanam-pulse:** monitor de salud del sistema. M1 en curso: extraer engine a `packages/core` (TS), 46 tests verdes, dashboard read-only. Pendiente: migración JS->TS del core mantener tests verdes + build.
 - **kanam-forge:** Lovable self-hosted. Fusionado con `create-with-ai`. Fase 1 completa.
 - **kanam-story / kanam-writer / kanam-story-bible / kanam-worldbuilding:** línea narrativa (co-writer de ficción, world-building). `kanam-story` + `kanam-studio` = UNO (decisión de Gonzo 2026-09-14); consolidación pendiente de plan.
@@ -83,7 +83,7 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 ## Repos Propios (no forks)
 
 ### Activos
-workspace_openclaw (Privado), kanam-onwheels (Privado), kanam-fixer, kanam-insight (Privado), kanam-pulse, kanam-story, kanam-mind, kanam-solitaires, kanam-forge, kanam-tetris, kanam-skills, ai-developer-stack, soporteml (Privado desde 2026-09-15, sacado del CV por Gonzo), soporteml-v4 (Privado), accessible-ui (Privado), quedamos (Privado).
+workspace_openclaw (Privado), kanam-onwheels (Privado), kanam-fixer, kanam-pulse, kanam-story, kanam-mind, kanam-solitaires, kanam-forge, kanam-tetris, kanam-skills, ai-developer-stack, soporteml (Privado desde 2026-09-15, sacado del CV por Gonzo), soporteml-v4 (Privado), accessible-ui (Privado), quedamos (Privado).
 - **Nota:** `kanam-lab`, `kanam-os`, `kanam-spec`, `kanam-spec-v2`, `ollama-visor` viven en `~/projects/` (git local o repo propio); verificar antes de asumir su estado de publicación.
 
 ### Archivados

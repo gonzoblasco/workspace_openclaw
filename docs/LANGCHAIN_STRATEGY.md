@@ -145,9 +145,9 @@ Es el mismo patrón que apareció tres veces en el día: documentación que decl
 
 ### Apuestas posibles (registro completo y orden)
 
-Las apuestas evaluadas, con su orden de prioridad y el razonamiento, viven en **`docs/APUESTAS.md`**. Ese es el registro durable; esta seccion solo lo referencia para no duplicar.
+Las apuestas de producto y su orden viven en el roadmap: **`docs/ROADMAP.md` §2.1** (absorbe el registro de apuestas que se retiró el 2026-10-06; `kanam-insight` se descontinuó y salió del roadmap). Esta seccion solo lo referencia para no duplicar.
 
-Orden confirmado por Gonzo (2026-09-24): **1. kanam-insight** (uso interno, valida la capacidad), **2. soporteml-v4** (producto, mercado que paga), **3. kanam-fixer** (producto, diferenciador defendible).
+Los candidatos comerciales vivos: **`soporteml`** (producto, mercado que paga; version funcional de Lovable con Stripe, ADR-091), **`kanam-fixer`** (producto, diferenciador defendible: auditoría sobre el anuncio real).
 
 > **Correccion (2026-09-24):** esta seccion titulaba antes una "primera apuesta comercial" centrada en una base de conocimiento de accesibilidad. Eso fue un error de encuadre: sugeria que era la unica o la principal apuesta, y ademas era la mas debil (un RAG sobre WCAG ya existe repetidas veces). El encuadre correcto del dominio a11y es auditoria sobre el anuncio real, que es `kanam-fixer`, no un chatbot de documentacion.
 
