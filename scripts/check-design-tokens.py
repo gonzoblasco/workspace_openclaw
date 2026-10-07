@@ -51,6 +51,10 @@ TEXT_PAIRS = [
     ("text.onBrand", "brand.primary", 4.5), ("text.link", "surface.base", 4.5),
     ("state.danger", "surface.base", 4.5), ("state.warning", "surface.base", 4.5),
     ("state.success", "surface.base", 4.5), ("state.info", "surface.base", 4.5),
+    # brand.primary tambien se usa como TEXTO de acento (chips, botones) sobre
+    # tarjetas/superficies elevadas, no solo como superficie. El hueco que dejo
+    # pasar la regresion de kanam-os (2026-10-06): solo se medía sobre surface.base.
+    ("brand.primary", "surface.card", 4.5), ("brand.primary", "surface.elevated", 4.5),
 ]
 GRAPHIC_PAIRS = [
     ("brand.primary", "surface.base", 3.0),   # superficie de control

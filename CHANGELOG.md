@@ -19,6 +19,10 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Delegado
 - **kanam-os migra a consumir `design/tokens/` (DEV, pipeline A/B).** Contrato en ADR-096: consume kanam.css + dark.css, sync en build (anti-drift), preserva el toggle server-side. Verificación del CORE sobre el repo real al cerrar.
 
+### Fixed
+- **Regresión detectada en la verificación:** `--k-brand-primary` del dark (`#4ea870`) daba 3.73-4.28:1 como texto sobre card/elevated (kanam-os lo usa así). Corregido a `#6ee7a0` (7-8:1). El guard medía brand solo sobre `surface.base` - **hueco cerrado**: ahora también sobre `card`/`elevated`.
+- **kanam-os:** la migración de A aliasaba tokens inventados (`--k-bg`, `--k-text`...); B la corrigió a los tokens reales + cargó los CSS + hookeó el sync a npm. Verificado por el CORE: build verde, ambos temas, 200, color-contrast limpio salvo `aria-pressed` (preexistente) y opacity en `/learnings` (preexistente).
+
 ---
 
 ### Added

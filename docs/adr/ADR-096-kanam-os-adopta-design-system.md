@@ -35,6 +35,16 @@ El trabajo de código lo ejecuta **DEV** (ADR-083). Contrato:
 
 ## Consecuencias
 
+### Corrección durante la verificación (2026-10-06, el mismo día)
+
+La verificación del CORE sobre el repo real **encontró una regresión** que el build no ve: `--k-brand-primary` del tema oscuro era `#4ea870`, que sobre `surface.card` da **4.28:1** y sobre `surface.elevated` **3.73:1** - y kanam-os lo usa como **texto de acento** (chips, botones). Corregido a `#6ee7a0` (8.13:1 / 7.10:1).
+
+**El hueco era del guard:** `check-design-tokens.py` medía `brand.primary` solo sobre `surface.base`, no sobre card/elevated. **Cerrado:** ahora mide `brand.primary` como texto sobre `surface.card` y `surface.elevated` (4.5:1). Lección: un guard que verifica un par por rol tiene que enumerar TODOS los pares de ese rol, no uno.
+
+Tras el fix: dark `/`, `/todos`, `/fichas` y light `/todos` sin `color-contrast`. Queda `/learnings` con 8 nodos por `opacity` en `.chip-n` (0.65) y `.filterbar-label` (0.7) - **preexistente** (el scan del 4317 original ya daba 8 nodos idénticos; `--muted` de la app no cambió). Registrado como TODO de kanam-os.
+
+### Generales
+
 - **Positivas:** kanam-os pasa a tener la identidad Kanam (no un tema propio); el sistema gana su modo oscuro, útil para toda app interna. La adopción del design system sube de 1 a 2 consumidores.
 - **Riesgo:** el acoplamiento kanam-os ↔ workspace (los tokens viven en el workspace). Se mitiga con el sync en build y el fallback versionado.
 - **Deuda:** si el sync es frágil, promover a un paquete/artefacto publicado. Se evalúa si aparece fricción real.

@@ -4,8 +4,8 @@
 
   "semantic": {
     "brand": {
-      "primary": "#4ea870",
-      "primaryHover": "#6ee7a0",
+      "primary": "#6ee7a0",
+      "primaryHover": "#8ff0b6",
       "primarySubtle": "#1c3a2b",
       "secondary": "#a9b6b1",
       "accent": "#fcd34d"
@@ -52,13 +52,15 @@
     "text.primary on surface.base": "12.83:1 AAA",
     "text.secondary on surface.base": "6.79:1 AA",
     "text.muted on surface.base": "5.32:1 AA",
-    "text.onBrand on brand.primary": "5.23:1 AA",
+    "text.onBrand on brand.primary": "9.93:1 AAA",
     "text.link on surface.base": "9.22:1 AAA",
+    "brand.primary as text on surface.card": "8.13:1 AAA",
+    "brand.primary as text on surface.elevated": "7.10:1 AAA",
     "state.danger on surface.base": "7.50:1 AAA",
     "state.warning on surface.base": "9.87:1 AAA",
     "state.success on surface.base": "9.22:1 AAA",
     "state.info on surface.base": "8.54:1 AAA",
-    "brand.primary on surface.base": "4.85:1 AA",
+    "brand.primary as bg vs surface.base": "9.22:1 AAA",
     "border.strong on surface.base": "3.92:1 AA"
   },
   "$contrastMeta": "Verificado por scripts/check-design-tokens.py. Paleta base tomada del tema oscuro de kanam-os (probado en uso real), recalculada al piso WCAG del sistema."
