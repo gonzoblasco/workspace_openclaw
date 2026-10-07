@@ -139,21 +139,24 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 
 ## Capa 2 - Portfolio (qué construimos)
 
-### 2.1 Estrategia de proyectos 🟡 P0
+### 2.1 Estrategia de proyectos 🟢 P0
 - **Qué**: qué 2-3 proyectos sostienen el pitch "fullstack con IA como infraestructura" + el nicho a11y.
 - **Por qué**: sin esto, el pipeline optimiza lo equivocado. Dispersión = portfolio que no cuenta una historia.
 - **Fuentes vivas**: `~/projects/portfolio-strategy/ADR-001` (pilares + anclas), `memory/notes/portfolio-curation.md` (curaduría de presencia, 2026-09-21).
-- **Estado honesto**:
-  - **Ancla en transición**: `kanam-fixer` (sucede a `a11y-fixer`, archivado). **Alcance SIN DEFINIR** - no asumir que hereda el rol del engine de fixes.
+- **CORRECCIÓN (2026-10-06)**: el item decía que `kanam-fixer` tenía **"alcance SIN DEFINIR"**. **Era falso.** El alcance se definió el 2026-09-14/15 (BRIEF + ROADMAP del proyecto, dirección confirmada por Gonzo) y el ciclo `0.0.1` **cerró con evidencia** el 2026-09-15. Lo confirma ADR-001 §6 ("los 4 pendientes cerrados... ancla candidata formalizada con alcance ya definido"). El ROADMAP arrastró el estado pre-definición durante tres semanas: otro falso pendiente, como el Tablero y el design system.
+- **Estado verificado 2026-10-06** (contra `~/projects/kanam-fixer` + GitHub + npm):
+  - **Ancla vigente**: `kanam-fixer` (sucede a `a11y-fixer`, archivado 2026-09-14). **Alcance DEFINIDO**: asercion sobre el **anuncio del lector de pantalla** (no sobre atributos del DOM), la misma asercion en dos planos (virtual en CI, real en local). **Greenfield** (no hereda el engine de `a11y-fixer`).
+  - **Ciclo `0.0.1` CERRADO** (2026-09-15); `0.0.2` abierto (MCP companion server, commit `f1f60fa`). Repo **público** `gonzoblasco/kanam-fixer` (isArchived=false), paquete npm **`kanam-fixer@0.0.2`** publicado. Último commit `262c004` (2026-09-17). Último push al repo 2026-09-26.
+  - **Limitación declarada (S3)**: el plano real (VoiceOver) no es verificable en esta máquina hasta que Guidepup soporte Darwin 27 ([issue #149](https://github.com/guidepup/guidepup/issues/149)). El valor del proyecto se invirtió hacia el **plano real como único juez** de la clase timing/viewport.
   - **Apuestas de producto vivas** (absorbidas de `APUESTAS.md`, retirado el 2026-10-06):
     - **`soporteml`** (producto, privado): v4 cerrado (ADR-091); sigue por la version funcional de Lovable, con cobro por Stripe ya operativo. Primer proyecto con billing real.
     - **`kanam-fixer`** (producto): diferenciador defendible (auditoría sobre lo que el lector de pantalla *anuncia*, no sobre atributos del DOM como axe-core).
   - **Showcase (curaduría 09-21)**: `kanam-fixer`, `ai-developer-stack`, `kanam-skills`.
 - **Criterio de éxito**: una lista corta de proyectos "estrella" con su rol en el pitch, sin contradicciones entre ADR-001 y este roadmap.
-- **Señal de listo**: el pilar *Accesibilidad* tiene ancla formal (hoy: `kanam-fixer` sin alcance definido).
+- **Señal de listo**: el pilar *Accesibilidad* tiene ancla formal. **✅ Cumplida** (ADR-001 §6: ancla formalizada en `kanam-fixer`). La validación de *impacto* del ancla sigue siendo el criterio de NORTH H1 (usuarios que no sean Gonzo), no la definición de alcance.
 - **Acciones**:
-  - [ ] **Definir el alcance de `kanam-fixer`** (qué resuelve, para quién) - es lo que desbloquea reasignar el ancla del pilar Accesibilidad.
-  - [ ] Reconciliar la lista de proyectos de `MEMORY.md` con `~/projects/` real (hay drift: la memoria lista proyectos que no están en disco y viceversa).
+  - [x] **Definir el alcance de `kanam-fixer`** - HECHO 2026-09-14/15 (BRIEF + ROADMAP, dirección confirmada por Gonzo).
+  - [x] Reconciliar la lista de proyectos de `MEMORY.md` con `~/projects/` real - MEDIDA 2026-10-06. Drift real hallado y corregido en `MEMORY.md`: (a) la lista no incluía repos vivos en GitHub (`kanam-minesweeper`, `kanam-sudoku`, `match3`, `system-health-check`, `catalogo-de-venta-de-coches`); (b) `kanam-insight` existe como repo (GitHub, no archivado) aunque el proyecto está descontinuado - la memoria lo decía "no existe como proyecto", que es correcto sobre su rol, no sobre el repo.
 
 ### 2.2 Cadena OSS -> LinkedIn 🟡 P1
 - **Qué**: cada merge de a11y/agentic -> post. El patrón está definido (2026-08-25); falta la cadencia real.
@@ -213,7 +216,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 |---|------|------|-----------|--------|
 | 1 | 0.1 Integridad del bootstrap | Fundaciones | P0 | 🟢 |
 | 2 | 2.3 Búsqueda laboral | Portfolio | P0 | 🔴 |
-| 3 | 2.1 Estrategia de proyectos | Portfolio | P0 | 🟡 |
+| 3 | 2.1 Estrategia de proyectos | Portfolio | P0 | 🟢 |
 | 4 | 0.2 Higiene workspace | Fundaciones | P1 | 🟢 |
 | 5 | 0.3 Consolidación memoria | Fundaciones | P1 | 🟢 |
 | 6 | 1.1 Pipeline A/B | Pipeline | P1 | 🟢 |

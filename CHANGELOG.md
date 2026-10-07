@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-06] - kanam-fixer: el alcance estaba definido; el ROADMAP mentia desde hacia 3 semanas
+
+### Fixed
+- **`docs/ROADMAP.md` §2.1 decia que `kanam-fixer` tenia "alcance SIN DEFINIR". Era FALSO.** El alcance se definio el 2026-09-14/15 (BRIEF + ROADMAP del proyecto, direccion confirmada por Gonzo) y el ciclo `0.0.1` cerro con evidencia ese mismo dia. Lo confirma `portfolio-strategy/ADR-001` §6. Otro falso pendiente (como el Tablero y el design system: gobernanza dormida acumulando estados viejos). Corregido: ancla formalizada, alcance definido, ciclo 0.0.1 cerrado / 0.0.2 abierto, npm `kanam-fixer@0.0.2`, repo publico. §2.1 pasa a 🟢.
+- **`docs/NORTH.md`** (decision abierta #1): mismo falso pendiente corregido. Lo que sigue abierto no es la *definicion* del alcance sino la *validacion de impacto* del ancla (criterio H1).
+- **`MEMORY.md`** (reconciliacion pedida por §2.1, medida contra `gh repo list`): sumados repos propios vivos que faltaban (`catalogo-de-venta-de-coches`, `create-stack`, `kanam-minesweeper`, `kanam-sudoku`, `match3`, `system-health-check`); aclarado que `kanam-forge` es fork (no propio) y que `kanam-insight` existe como repo (privado) aunque el proyecto esta descontinuado.
+
+### Changed
+- **`portfolio-strategy/.knowledge/ADR-001-portfolio-strategy.md`** (fuera del workspace): nueva seccion 8 que **verifica** el estado contra fuentes reales y cierra formalmente el pendiente de definicion de la seccion 6. El pilar Accesibilidad tiene ancla formal.
+
+---
+
 ## [2026-10-06] - Integridad del bootstrap deja de ser un falso verde (ROADMAP 0.1)
 
 ### Added

@@ -141,7 +141,7 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 
 ## Decisiones abiertas (que este documento NO cierra)
 
-1. **`kanam-fixer`:** alcance sin definir. Es lo que desbloquea el ancla formal del pilar *Accesibilidad* en ADR-001.
+1. **`kanam-fixer`:** alcance **DEFINIDO** (2026-09-14/15: asercion sobre el anuncio del lector de pantalla, virtual en CI / real en local). **Ya no es una decisión abierta.** El pilar *Accesibilidad* tiene ancla formal en ADR-001 §6. Lo que sigue abierto es la **validación de impacto** del ancla (usuarios que no sean Gonzo), que es el criterio del Horizonte 1, no la definición.
 2. **La métrica del H1:** "usuarios reales" es vago. Falta el número concreto.
 3. **`soporteml`:** v4 cerrado (ADR-091); el producto sigue por la version funcional de Lovable, con cobro por Stripe, y **se queda en Lovable** (no migra). Sin pendientes abiertos.
 4. **Respaldo de `~/projects`:** los `.knowledge/` viven solo en disco, sin respaldo en git.
