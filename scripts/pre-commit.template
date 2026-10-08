@@ -138,6 +138,15 @@ python3 "${SCRIPT_DIR}/scripts/check-content-dirs.py" || exit 1
 # (AGENTS/MEMORY/SOUL/IDENTITY), 4.000 (USER fijo), 60.000 total.
 python3 "${SCRIPT_DIR}/scripts/check-bootstrap-budget.py" || exit 1
 
+# Guard de roadmaps de rol (docs/ROADMAPS.md, 2026-10-07). SIN CONDICION, a
+# proposito: los ROADMAP.md de rol pueden aparecer o desaparecer por cualquier
+# edicion, no por un pathspec predecible. El 2026-10-07 se descubrio que 5 de 7
+# roles NO tenian roadmap y nada lo detectaba; una regla sin guarda se viola
+# sola (ADR-083). Verifica existencia, encabezado, secciones, marcador de
+# proyecto y COHERENCIA de version contra el indice. Python puro (lee 8
+# archivos): correrlo siempre es mas barato que dejar el agujero abierto.
+python3 "${SCRIPT_DIR}/scripts/check-roadmaps.py" || exit 1
+
 if [ "$BOUNDARY_RELEVANT" = "1" ]; then
   # Frontera de roles (ADR-083): el ciclo SDD no vive en el arbol del Core. El Core
   # tenia el playbook de ingenieria a la vista y lo ejecuto durante una sesion

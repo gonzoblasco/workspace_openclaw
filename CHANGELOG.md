@@ -1,8 +1,26 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 30 días** (corte: 2026-09-06). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 30 días** (corte: 2026-09-07). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
+
+---
+
+## [2026-10-07] - El Roadmap de Roadmaps: capa de gobierno de la madurez del Crew
+
+### Added
+- **`docs/ROADMAPS.md` (El Roadmap de Roadmaps):** el meta-roadmap del ecosistema de agentes. Indice unico del estado de madurez de los 7 roles (auditor, critic, dev, mind, ops, planner, studio), el camino de madurez M0-M5, la secuencia de escalada por dependencia (los gates de calidad primero) y las guardas de tracking. Premisa base: ausencia de `ROADMAP.md` = v0.1; meta de la ronda = v0.5 por rol; visión = v1.0.
+- **`docs/checklists/roadmap-authoring-guide.md`:** el estandar de como se escribe un roadmap de rol (7 secciones obligatorias + vocabulario de version). Codifica el patron que auditor y critic ya usaban de hecho.
+- **`scripts/check-roadmaps.py` + guard en el pre-commit:** verifica por rol la existencia de `agents/<rol>/ROADMAP.md`, su encabezado/version, sus secciones, el marcador de proyecto y la **coherencia de version** contra el indice. Nace porque el 2026-10-07 se descubrio que 5 de 7 roles no tenian roadmap y nada lo detectaba (ADR-083: una regla sin guarda se viola sola).
+- **`agents/<rol>/ROADMAP.md` para los 5 roles que no lo tenian** (dev, mind, ops, planner, studio), autorados por cada rol via `sessions_spawn` y verificados por el CORE contra el filesystem.
+
+### Changed
+- **`agents/kanam-auditor/ROADMAP.md` y `agents/kanam-critic/ROADMAP.md`:** alineados al estandar (encabezado formal, secciones 1-7, agregadas "Lo que rechace" y "Red lines y criterio de cierre" donde faltaban). Contenido previo intacto.
+- **`docs/checklists/roadmap-review-checklist.md`:** nueva seccion "Variante: revisar un ROADMAP de rol" (contra fuentes reales, con el guard como primer paso y la regla de que el archivo del rol gana sobre el indice).
+
+### Notes
+- **El ecosistema estaba, en el papel, 100% en v0.1 y solo 2 de 7 roles tenian mapa.** Ahora los 7 declaran su version y el camino a v0.5. Guard pasa 7/7.
+- **Secuencia fijada:** critic y auditor primero (son los jueces; escalarlos antes de construir sobre ellos), despues dev, luego ops/mind, y planner/studio al final.
 
 ---
 

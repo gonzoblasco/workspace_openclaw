@@ -64,4 +64,41 @@ La tabla del final debe coincidir con los encabezados de cada seccion. Si no coi
 - `docs/NORTH.md` - el "para que" de largo plazo. El ROADMAP no lo redefine.
 - `memory/memory.db` (`todos`, espejo `memory/todos.md`) - las tareas concretas y fechadas.
 - `docs/ROADMAP.md` - que decisiones tomamos y en que estado esta cada capa.
+- `docs/ROADMAPS.md` - el **Roadmap de Roadmaps**: el indice de madurez de los 7 roles.
+- `docs/checklists/roadmap-authoring-guide.md` - el estandar de formato de un roadmap de rol.
 - `docs/adr/` - las decisiones cerradas. Si un item del ROADMAP contradice un ADR, gana el ADR.
+
+---
+
+## Variante: revisar un ROADMAP de rol
+
+> Anadida 2026-10-07, junto con `docs/ROADMAPS.md`. Los roadmaps de rol (`agents/<rol>/ROADMAP.md`)
+> se revisan con la misma regla madre -contra fuentes reales- pero con un foco distinto: no
+> "que capa esta estable", sino **"la version declarada no miente"**.
+
+**Cuando correrla:** al cerrar una sesion que toco el roadmap de un rol, la tabla de `docs/ROADMAPS.md`,
+un cambio de capacidad del rol, o cuando el guard lo marque.
+
+### Pasos
+
+1. **Correr el guard (barato, primero):** `python3 scripts/check-roadmaps.py`. Verifica existencia,
+   encabezado, secciones, marcador de proyecto y **coherencia de version** contra el indice.
+   Si falla, ahi esta el trabajo.
+2. **Verificar el retrato (seccion 2):** cada fila de la tabla capacidad->estado se prueba contra
+   el filesystem, el codigo o el runtime del rol. Un `✅` sin fuente es un falso verde.
+3. **Verificar el salto de version:** si el rol declara una version nueva, su **criterio de listo**
+   tiene que estar cumplido con evidencia reproducible. Un numero editado no es un salto.
+4. **Reconciliar el indice:** la version del archivo del rol y la fila de la tabla en
+   `docs/ROADMAPS.md` deben coincidir. Cuando discrepan, **gana el archivo del rol** (la evidencia)
+   y se corrige el indice.
+5. **Cerrar:** actualizar `Ultima revision:` dentro del roadmap del rol, y dejar el delta en el daily.
+
+### Antipatrones propios de los roadmaps de rol
+
+- **Marcar verde por optimismo.** El retrato no es una promesa de lo que el rol hara: es un espejo
+  de lo que el rol **es hoy**, probado contra su arbol.
+- **Editar el numero sin ganarselo.** v0.1 es el default; cada salto pide su senal de listo.
+- **Dejar que el indice derive del archivo.** La tabla de `docs/ROADMAPS.md` no manda: es un espejo
+  que hay que corregir cuando el archivo cambia.
+- **Copiar el formato sin el criterio.** Las 7 secciones son el esqueleto; lo que vale es que cada
+  hito haya pasado por "¿esto desbloquea algo?".
