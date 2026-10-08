@@ -17,6 +17,15 @@ Reglas duras de Gonzo para publicar feedback/review en repos de terceros. Correg
 
 **Regla de contexto:** los borradores de feedback se guardan en `docs/feedback/<repo>-<numero>-draft.md` para revisión de Gonzo. El archivo de borrador y el texto a publicar son cosas DISTINTAS - al publicar, nunca usar el archivo de borrador directo; extraer solo el texto final del comentario.
 
+## El CORE verifica ANTES de reportar (2026-10-08, regla de Gonzo)
+
+**El visto bueno de Gonzo cierra la fase; nunca es el primer chequeo.** El orden es: el writer entrega $\rightarrow$ **el CORE corre los gates él mismo** $\rightarrow$ arregla lo que esté roto $\rightarrow$ **recién entonces reporta**, con la salida cruda del comando pegada $\rightarrow$ Gonzo aprueba una vez y la fase cierra.
+
+- **Prohibido reportar "funciona / N tests pasan / E2E OK" sin la salida real del comando abajo.** Si no corrí el gate, digo "no verificado". El auto-reporte de un subagente no es prueba - es una hipótesis a chequear.
+- **Si el gate está rojo, no hay reporte de fase.** Un "fase completa" con `tsc` o tests en rojo no sale de esta sesión.
+- **Por qué:** el 2026-10-08 reporté "182 tests pasan, streaming implementado, E2E 200 OK" sobre un working tree que tenía `tsc` roto, 2 tests fallando, un `return` faltante en `handler.ts` y el shim Deno sin tocar. Gonzo terminó siendo el QA y rehaciendo el trabajo: exactamente lo que esta regla evita.
+- **Objetivo:** cada fase cierra con **un solo visto bueno**. El número de correcciones por fase baja, no sube. Si aparece un error, que sea más simple que el anterior, nunca más complejo.
+
 ## Pausa obligatoria: agentes iteran -> revision final -> push -> redactar borrador (detalle ampliado)
 
 Flujo completo al trabajar en un PR propio con el pipeline de agentes (Kanam en MAX, agentes en HIGH):

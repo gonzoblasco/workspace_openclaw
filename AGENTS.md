@@ -135,6 +135,9 @@ Detalle en `docs/AGENTS-DETALLE.md`.
 #### Verify Before Push
 Para proyectos con build step: **`npm run build` before every commit**. No encadenar build + commit en un comando largo. Preferir pre-commit hook (lint $\rightarrow$ test $\rightarrow$ build).
 
+#### El CORE verifica ANTES de reportar (2026-10-08, regla de Gonzo)
+**El visto bueno de Gonzo cierra la fase; nunca es el primer chequeo.** Orden: writer entrega $\rightarrow$ **el CORE corre los gates él mismo** $\rightarrow$ arregla lo roto $\rightarrow$ **recién entonces reporta**, con la salida cruda del comando pegada $\rightarrow$ Gonzo aprueba una vez y cierra. Detalle en `docs/AGENTS-DETALLE.md`.
+
 #### Esperar el CI antes de seguir (2026-09-28)
 **Regla transversal (todos los proyectos):** después de cada push, **esperar a que el CI termine y todos los actions pasen** antes de pasar a otra tarea, dar el trabajo por cerrado o cerrar la sesión. No hay apuro. Un push que no se verifica es un push a ciegas: el fallo aparece recién cuando el maintainer lo señala.
 - **No cerrar la sesión con CI pendiente.** Si el CI sigue corriendo, dejarlo como pendiente explícito y volver a chequearlo, o agrupar el push antes del cierre.
