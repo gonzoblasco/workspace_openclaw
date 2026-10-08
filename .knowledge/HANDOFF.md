@@ -1,41 +1,49 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-06 23:55 GMT-3
+**Fecha:** 2026-10-07 23:13 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-10-06). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-10-06.md`.
+> HANDOFF generado en el cierre de sesion (2026-10-07). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-10-07.md`.
 
 ---
 
 ## Que se hizo en esta sesion
 
-Audit + refactor de gobernanza y "una sola ruta". (1) Auditoria de AGENTS.md/AGENTS-DETALLE.md/SETUP.md: reconciliadas contradicciones reales (.knowledge/ con dos definiciones opuestas; politica de modelos en 3 archivos/2 politicas; HEARTBEAT.md fantasma; API legacy cron(action:wake)), colapsados los dos bloques de modelo duplicados en AGENTS.md, sacados "Modelos" y "Skills publicas" de Git, corregidos 768->1024 dims y session-start.sh. (2) Rotacion automatizada: scripts/changelog-rotate.py (ventana 30 dias + archivo rodante docs/archive/CHANGELOG-archive.md, --check al pre-commit, rota al cierre) y scripts/dreams-rotate.py (DREAMS por mes; el plugin memory-core no tiene knob de retencion). ADR-092. (3) MindStudio registrado como propuesta de vendor evaluada en docs/ecosystem/DECISIONS.md; mindstudio_proposal.md y proposal.md (duplicado) eliminados. (4) Kanam OS Etapa 2: security-scan.py cableado al pre-commit (modo --staged scopeado a codigo de skills); regression_gate.py (no compilaba) y lifecycle_tracker.py (path absoluto) reparados; los 5 specs declaran su estado real. (5) EVOLUTION.md absorbido en docs/NORTH.md. (6) Reconciliacion de 4 mapas en 2: retirados APUESTAS.md y MAPA-PROXIMOS-PASOS.md; kanam-insight descontinuado; fijada "La ruta" en ROADMAP: T1 (OnWheels+design system+CPACC) -> T2 (caso de estudio+busqueda laboral) -> T3 (UNA apuesta comercial) -> D (sistema como soporte).
+Cierre de sesión solicitado: guardar sesión y poner en marcha los próximos pasos definidos (terminar A, CPACC, reactivar C). Se actualiza HANDOFF, se registra en memory/2026-10-07.md y se crea la plantilla session-close (ya estaba).
 
 ## Estado actual
 
-Gobernanza reconciliada: un norte (NORTH), un como (ROADMAP), una ruta secuenciada. Rotacion de CHANGELOG y DREAMS automatizada. security-scan cableado. EVOLUTION absorbido. APUESTAS/MAPA retirados; kanam-insight fuera.
+Todo en repo main está sync; gates verdes (94 ADRs, 149 rutas).
 
 ## Proximos pasos
 
-1. T1: OnWheels (falta el chat), design system, CPACC (examen dic). Sincronizar ~/projects a un repo (135 .knowledge sin respaldo, todo #61). Definir alcance de kanam-fixer.
+1. Priorizar A (kanam-onwheels). 2. Ejecutar CPACC antes del 9/12. 3. Reactivar C (búsqueda + OSS a11y) cuando B quede entregado.
 
 ## Decisiones y contexto que no debe perderse
 
-- Una sola ruta de navegacion (NORTH=para que, ROADMAP=como+orden). APUESTAS/MAPA retirados. kanam-insight descontinuado. CHANGELOG=ventana 30d + archivo. DREAMS=mes en curso. security-scan ADOPTADO; skill-evals/lifecycle/regression = experimento no adoptado a proposito.
+- Mantener la hoja de ruta de 5 paths y 3 horizontes, con A como foco inmediato y B en paralelo por su deadline.
 
 ## Archivos tocados
 
 ```
-memory/2026-10-06.md
+.github/workflows/skills-ci.yml
+.knowledge/HANDOFF.md
+agents/kanam-auditor/AGENTS.md
+agents/kanam-auditor/skills/surface-alignment-audit/SKILL.md
+agents/kanam-critic/SOUL.md
+agents/kanam-critic/skills/sharp-adversarial-review/SKILL.md
+docs/maturity-metrics.md
+memory/2026-10-07.md
+memory/memory.db
 ```
 
 ## Como continuar
 
 1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-10-06.md` para el informe completo de la sesion.
+2. Leer `memory/2026-10-07.md` para el informe completo de la sesion.
 3. Verificar el estado real antes de actuar (git, tests, la DB).
 
 ---
