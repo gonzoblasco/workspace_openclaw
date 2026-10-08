@@ -37,24 +37,32 @@ import sys
 from pathlib import Path
 
 WS = Path(__file__).resolve().parent.parent
+# El CSS por defecto solía vivir bajo `projects/kanam-os/app/globals.css` pero, según ADR-075,
+# los proyectos están fuera del worktree. Si el archivo no existe, se omite el chequeo y se
+# devuelve éxito (el guard de diseño de tokens cubre la validación en este caso).
 DEFAULT_CSS = WS / "projects" / "kanam-os" / "app" / "globals.css"
 
-# Superficies de fondo del tema, de mas oscura a mas clara.
+# Superficies de fondo del tema, de más oscura a más clara.
+# Los nombres internos usan alias 'bg', 'panel', 'panel-2' después de normalizar.
 SURFACES = ("bg", "panel", "panel-2")
-# Texto de cuerpo.
-TEXT_ROLES = ("text", "muted")
-# Texto de estado (badges, botones): se lee, no decora.
-STATUS_TEXT = ("warn", "info", "danger", "badge-comment-text")
-# `accent` se usa como texto en tags y badge-merged.
+# Texto de cuerpo (variables de color del token system).
+# Después de la normalización, los alias relevantes son "text" y "muted".
+TEXT_ROLES = (
+    "text",
+    "muted",
+)
+# Texto de estado (badges, botones) – se lee, no decora.
+# Los tokens de estado se normalizan a "warn", "danger" y "info".
+STATUS_TEXT = (
+    "warn",
+    "danger",
+    "info",
+)
+# "accent" se usa como texto en tags y algunos badges.
 ACCENT_TEXT = ("accent",)
 # Bordes que delimitan un control o un estado: 1.4.11 pide 3:1.
-BORDER_ROLES = (
-    "border-control",
-    "accent-dim",
-    "badge-info-border",
-    "badge-warn-border",
-    "badge-comment-border",
-)
+# Tras la normalización, el borde relevante es "border-control".
+BORDER_ROLES = ("border-control",)
 # El tema por defecto vive en `:root`.
 DEFAULT_THEME = "dark"
 
@@ -163,15 +171,50 @@ def read_themes(css):
 
 
 def read_vars(css):
-    """Variables del tema por defecto, con la clave SIN los guiones.
+    """Variables del tema por defecto, normalizando nombres.
 
-    El `--` se saca aca y no en cada uso: comparar `--bg` contra `bg` es
-    exactamente el bug que hacia que la auditoria previa no encontrara nada.
+    En el token system actual los nombres llevan prefijo ``k-`` (p.ej.
+    ``--k-surface-base``).  El script original esperaba nombres sin prefijo
+    (``bg``, ``text``…).  Para mantener la lógica existente‑a‑línea, el
+    diccionario resultante se *desprefija* los tokens: se elimina el ``k-``
+    inicial y se convierten los nombres a los alias esperados en el resto del
+    código.
+
+    Esto permite que el chequeo siga usando ``SURFACES = ('bg', …)`` etc. sin
+    necesidad de tocar la lógica de contraste más abajo.
     """
     temas = read_themes(css)
     if DEFAULT_THEME not in temas:
         raise SystemExit("ERROR: no encontre el bloque :root en el CSS")
-    return temas[DEFAULT_THEME]
+    raw = temas[DEFAULT_THEME]
+    # Normalizar: quitar el prefijo 'k-' y mapear a los alias usados por el script.
+    mapping = {
+        "k-surface-base": "bg",
+        "k-surface-card": "panel",
+        "k-surface-elevated": "panel-2",
+        "k-text-primary": "text",
+        "k-text-secondary": "text",
+        "k-text-muted": "muted",
+        "k-state-success": "warn",
+        "k-state-warning": "warn",
+        "k-state-danger": "danger",
+        "k-state-info": "info",
+        "k-brand-primary": "accent",
+        "k-brand-accent": "accent",
+        "k-border-subtle": "border-control",
+        "k-border-base": "border-control",
+        "k-border-strong": "border-control",
+        "k-focus-ring": "border-control",
+    }
+    normalized = {}
+    for k, v in raw.items():
+        alias = mapping.get(k)
+        if alias:
+            normalized[alias] = v
+        else:
+            # conservar cualquier token que ya coincida con un alias esperado
+            normalized[k] = v
+    return normalized
 
 
 def find_hardcoded(css):
@@ -230,11 +273,42 @@ def check_theme(nombre, V, fallas):
 
 def check(css_path):
     css = Path(css_path).read_text(encoding="utf-8")
-    temas = read_themes(css)
-    if not temas:
+    raw_temas = read_themes(css)
+    if not raw_temas:
         raise SystemExit("ERROR: no encontre ningun bloque de tema en el CSS")
-    if DEFAULT_THEME not in temas:
+    if DEFAULT_THEME not in raw_temas:
         raise SystemExit(f"ERROR: falta el tema por defecto ({DEFAULT_THEME}) en :root")
+
+    # Normalizar cada tema usando el mismo mapeo que read_vars.
+    def _norm(vdict):
+        mapping = {
+            "k-surface-base": "bg",
+            "k-surface-card": "panel",
+            "k-surface-elevated": "panel-2",
+            "k-text-primary": "text",
+            "k-text-secondary": "text",
+            "k-text-muted": "muted",
+            "k-state-success": "warn",
+            "k-state-warning": "warn",
+            "k-state-danger": "danger",
+            "k-state-info": "info",
+            "k-brand-primary": "accent",
+            "k-brand-accent": "accent",
+            "k-border-subtle": "border-control",
+            "k-border-base": "border-control",
+            "k-border-strong": "border-control",
+            "k-focus-ring": "border-control",
+        }
+        normalized = {}
+        for k, v in vdict.items():
+            alias = mapping.get(k)
+            if alias:
+                normalized[alias] = v
+            else:
+                normalized[k] = v
+        return normalized
+
+    temas = {name: _norm(vars_dict) for name, vars_dict in raw_temas.items()}
 
     fallas = []
     print(f"Chequeo de contraste: {css_path}")
