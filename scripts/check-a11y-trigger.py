@@ -93,14 +93,22 @@ LINE = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@")
 # De ahi la regla de fondo: solo el codigo que RENDERIZA puede cambiar lo que se
 # anuncia. Un script que imprime strings, un doc o un JSON no pueden. Filtrar
 # por extension es lo que separa "toca ARIA" de "menciona ARIA".
-SKIP_PATH_PREFIXES = ("tests/",)
+#
+# El segmento `tests` se busca en CUALQUIER nivel, no solo como prefijo raiz:
+# los arboles de rol viven en `agents/<rol>/skills/<skill>/tests/`, y ahi el
+# filtro por prefijo no llegaba. El gate bloqueaba sobre `tests/fixtures/*.html`
+# de las skills de auditoria (2026-10-07) - fixtures que no se embarcan y que
+# contienen los patrones ARIA como data de prueba. El propio gate ya declara
+# que solo lo que RENDERIZA puede cambiar un anuncio; esto cierra la brecha
+# entre esa intencion y el filtro.
+SKIP_PATH_PARTS = ("tests",)
 UI_EXTENSIONS = (".tsx", ".jsx", ".ts", ".js", ".mjs", ".cjs",
                  ".vue", ".svelte", ".astro", ".html")
 
 
 def is_skipped_path(path: str) -> bool:
     """Un camino fuera de la superficie de UI no puede afectar un anuncio."""
-    if path.startswith(SKIP_PATH_PREFIXES):
+    if any(part in SKIP_PATH_PARTS for part in path.split("/")):
         return True
     return not path.endswith(UI_EXTENSIONS)
 

@@ -21,7 +21,24 @@ CODE_EXTS = ('.py', '.js', '.cjs', '.mjs', '.sh')
 RISK_PATTERNS = {
     "HIGH": {
         "Shell Injection": [
-            r"os\.system\(", r"subprocess\.Popen\(.*shell=True", r"eval\(", r"exec\("
+            r"os\.system\(",
+            r"subprocess\.Popen\(.*shell=True",
+            r"eval\(",
+            # `exec(` a secas = el builtin de Python o un exec destructured de
+            # child_process. El lookbehind descarta `.exec(` de JS, que es
+            # `RegExp.prototype.exec` (un match de regex, no ejecuta nada).
+            # Encontrado 2026-10-07: 4 archivos legitimos de las skills de
+            # auditoria (color.js, tokens.js, comparator.js, enforcer.js)
+            # quedaban bloqueados como "Shell Injection HIGH" por usar
+            # `/patron/.exec(str)`.
+            r"(?<!\.)\bexec\(",
+            # `require('child_process').exec(...)` / `child_process.exec(...)`: el
+            # modulo seguido del metodo. Se permiten pocos caracteres en medio
+            # (los parentesis y la comilla del require). Un `.exec(` suelto sobre
+            # un objeto desconocido es ambiguo y NO se marca: ahi esta el falso
+            # positivo que este fix elimina.
+            r"child_process[^\n]{0,8}\.exec\(",
+            r"execSync\(",
         ],
         "Path Traversal": [
             r"\.\./\.\./", r"/etc/passwd", r"/etc/shadow", r"C:\\Windows\\"

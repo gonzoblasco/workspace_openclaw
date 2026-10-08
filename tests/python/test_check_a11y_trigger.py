@@ -110,8 +110,17 @@ def test_no_duplicate_when_line_matches_both_levels():
 # --- end-to-end: sin nada staged no hay nada que disparar ---
 
 def test_clean_tree_passes():
+    """Sin cambios de UI que disparar, el gate pasa.
+
+    Hermetico a proposito: se corre con un rango vacio (HEAD..HEAD) en vez del
+    staging ambiente. El modo staged leia lo que hubiera en el indice, asi que
+    cualquier cosa staged rompia este test - una barrera que dependia del estado
+    ambiente del que la corria (encontrado 2026-10-07, con las skills de auditor
+    staged).
+    """
     r = subprocess.run(
-        [sys.executable, str(GATE)], cwd=ROOT, capture_output=True, text=True
+        [sys.executable, str(GATE), "--range", "HEAD..HEAD"],
+        cwd=ROOT, capture_output=True, text=True,
     )
     assert r.returncode == 0, r.stdout + r.stderr
 
@@ -177,6 +186,32 @@ def test_tests_are_skipped():
     """Los tests no se embarcan y contienen los patrones como data de prueba."""
     mod = load()
     assert mod.is_skipped_path("tests/python/test_check_a11y_trigger.py")
+
+
+def test_nested_role_tests_are_skipped():
+    """Regresion 2026-10-07: `tests/` a cualquier profundidad, no solo la raiz.
+
+    Los arboles de rol viven en agents/<rol>/skills/<skill>/tests/. El filtro
+    por prefijo no los alcanzaba y el gate bloqueaba sobre fixtures HTML que no
+    se embarcan.
+    """
+    mod = load()
+    for p in (
+        "agents/kanam-auditor/skills/accessibility-oracle/tests/fixtures/accessible.html",
+        "agents/kanam-critic/tests/evidence-hunter/sandbox/page.html",
+        "skills/foo/tests/a.tsx",
+    ):
+        assert mod.is_skipped_path(p), p
+
+
+def test_non_test_html_is_still_scanned():
+    """El arreglo no debe volver ciego al gate: una app real sigue disparando."""
+    mod = load()
+    for p in (
+        "src/app/page.tsx",
+        "agents/kanam-auditor/skills/accessibility-oracle/src/oracle.js",
+    ):
+        assert not mod.is_skipped_path(p), p
 
 
 def test_gate_does_not_block_its_own_source():
