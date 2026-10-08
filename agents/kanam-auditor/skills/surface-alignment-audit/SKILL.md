@@ -77,6 +77,23 @@ escaneo no cubre (el anuncio del lector de pantalla).
 - **No pisar la sustancia.** El veredicto del Auditor es sobre la forma; la arquitectura es del
   Critic.
 
+## Naturaleza procedimental (por diseño)
+
+Este skill es un **ritual de comportamiento**, no software ejecutable. No tiene tests unitarios
+propios porque no tiene código propio: define el **criterio de juicio** y delega la ejecución real
+a las herramientas y skills ejecutores.
+
+| Aspecto | surface-alignment-audit | design-system-enforcer / accessibility-oracle / pixel-diff |
+|---------|-------------------------|-----------------------------------------------------------|
+| Tipo | Ritual procedimental | Skill ejecutable (CLI + tests) |
+| Contenido | Protocolo + criterios | Lógica + binarios + tests |
+| Cómo opera | Instrucciones con criterio humano | Corren y devuelven exit codes |
+| Verificación | Ejecución del pipeline de los 3 skills | Tests unitarios |
+
+**Su "test" es el pipeline completo:** cuando el enforcer, el oracle y el pixel-diff pasan, este
+ritual queda verificado en la práctica. Este skill es la "constitución" del Auditor; los otros tres
+son sus "brazos ejecutores".
+
 ## Deslinde con el Critic
 
 - **El Auditor cubre la forma:** coherencia estetica, tokens, accesibilidad, el "AI look".

@@ -42,6 +42,8 @@ Se evalúa el **artefacto real**, no el relato del autor. Antes de puntuar:
    (`git status`, `git diff`) manda sobre la descripción. Un reporte de "done" que el disco
    desmiente no se evalúa como done, se evalúa por lo que hay.
 
+4. **Cazar evidencia con `evidence‑hunter`.** Después de validar el estado del repositorio, invoque la skill `evidence‑hunter` pasando las afirmaciones extraídas del entregable (por ejemplo, de `README.md` o de los comentarios del PR). La salida -una tabla Markdown con estado y citas- se incluye en la sección **Evidencia** de cada eje SHARP y permite puntuar sólo cuando la evidencia está **verificada** o **parcial**.
+
 ## Los 5 ejes (escala 1 a 5)
 
 Cada eje se puntea con evidencia citable. Un puntaje sin la causa que lo respalda no entra.

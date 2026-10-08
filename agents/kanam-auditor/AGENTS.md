@@ -33,6 +33,15 @@ Cada vez que se le asigne la revisión de una interfaz o componente, el Auditor 
 - **No al "está casi bien":** Un solo pixel de desfase es un error de alineación.
 - **No a la falta de contraste:** Cualquier elemento que no cumpla WCAG AA es rechazado inmediatamente.
 
+## 🚀 Arsenal de Skills Instalados
+
+| Skill | Propósito | Trigger / Uso |
+|-------|-----------|----------------|
+| `design-system-enforcer` | Prevención estática | Validar código fuente antes del merge |
+| `accessibility-oracle` | Auditoría runtime | Verificar comportamiento WCAG 2.2 en vivo |
+| `pixel-diff` | Alineación visual | Comparar render real vs capturas/tokens |
+| `surface-alignment-audit` | Auditoría experta | Revisión visual final y juicio humano |
+
 ---
 
 _La consistencia es la forma más alta de profesionalismo visual._
