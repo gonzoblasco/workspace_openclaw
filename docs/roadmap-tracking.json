@@ -1,0 +1,9 @@
+{
+  "kanam-auditor": {"version": "v0.1", "status": "🟡"},
+  "kanam-critic": {"version": "v0.1", "status": "🟡"},
+  "kanam-dev": {"version": "v0.1", "status": "🟡"},
+  "kanam-mind": {"version": "v0.1", "status": "🟡"},
+  "kanam-ops": {"version": "v0.1", "status": "🟡"},
+  "kanam-planner": {"version": "v0.1", "status": "🟡"},
+  "kanam-studio": {"version": "v0.1", "status": "🟡"}
+}

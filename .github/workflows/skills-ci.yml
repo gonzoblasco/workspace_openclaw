@@ -48,6 +48,16 @@ jobs:
       - name: Bootstrap budget gate
         run: python3 scripts/check-bootstrap-budget.py
 
+      # ------------------------------------------------------------
+      # Roadmap version validation
+      # ------------------------------------------------------------
+      # El guard `check-roadmaps.py` asegura que cada ROADMAP.md exista, tenga la
+      # cabecera correcta y que la versión declarada coincida con la tabla de
+      # seguimiento (`docs/roadmap-tracking.json`). En CI no hay pre‑commit, así
+      # que este paso garantiza que cualquier push que rompa la coherencia falle.
+      - name: Roadmap version check
+        run: python3 scripts/check-roadmaps.py
+
       - name: Bash functional tests
         run: npx bats tests/bash/
 
