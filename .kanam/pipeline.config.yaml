@@ -1,0 +1,51 @@
+# .kanam/pipeline.config.yaml
+#
+# Config canónica del Surface Audit Pipeline para el repo workspace_openclaw.
+# Declara los tres stages (un skill por dimensión) y el gate de veredicto.
+#
+# Uso local:
+#   node agents/kanam-auditor/skills/surface-pipeline/bin/audit-surface \
+#     --config .kanam/pipeline.config.yaml
+#
+# Uso CI: .github/workflows/surface-audit.yml (usa --only para elegir stages
+# según lo que el runner pueda sostener: sin app levantada no corre el oracle,
+# sin capturas no corre pixel-diff).
+#
+# Las rutas son relativas a la RAÍZ del repo (el cwd desde el que corre el CLI).
+
+project:
+  name: "kanam-auditor"
+
+stages:
+  # 1. Código estático contra los tokens del Design System. No necesita red ni
+  #    browser: es el único stage que corre SIEMPRE.
+  - skill: design-system-enforcer
+    path: "agents/kanam-auditor/skills"
+    config: ".kanam/enforcer.config.yaml"
+
+  # 2. Accesibilidad runtime (Playwright + axe-core + teclado). Requiere una app
+  #    sirviendo en base_url; en CI se habilita solo si hay una URL publicada.
+  - skill: accessibility-oracle
+    base_url: "http://localhost:3000"
+    paths: ["/"]
+
+  # 3. Alineación visual render vs captura/tokens. Requiere capturas declaradas;
+  #    en CI se habilita solo si existen.
+  - skill: pixel-diff
+    mode: "comp"
+    design: "design/captures/home.png"
+    route: "/"
+
+# Qué bloquea y qué advierte. Cada entrada matchea por severidad
+# ('critical'|'warning') o por código estable de finding.
+gate:
+  block_on: ["critical", "accessibility-violation", "stage-error"]
+  warn_on: ["warning", "misaligned", "ai-look"]
+
+# Si un stage explota (skill roto o dependencia faltante): bloquear es lo honesto.
+# Silencio nunca es verde.
+on_stage_error: "block"
+
+output:
+  dir: "./reports/surface-audit"
+  formats: ["console", "html", "json"]

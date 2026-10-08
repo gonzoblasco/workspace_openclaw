@@ -1,0 +1,46 @@
+#!/usr/bin/env node
+
+/**
+ * Accessibility Oracle CLI
+ * Uso: npx a11y-oracle [options]
+ */
+
+const { program } = require('commander');
+const { AccessibilityOracle } = require('../src/oracle');
+const path = require('path');
+
+program
+  .name('a11y-oracle')
+  .description('Auditoría automatizada de accesibilidad WCAG 2.2')
+  .version('1.0.0')
+  .option('-c, --config <path>', 'Ruta al archivo de configuración', '.kanam/a11y-oracle.config.yaml')
+  .option('-u, --url <url>', 'URL base a auditar (override config)')
+  .option('-r, --route <route>', 'Ruta específica a auditar', '/')
+  .option('-f, --format <type>', 'Formato de salida (console|json|html|junit)', 'console')
+  .option('-o, --output <dir>', 'Directorio de reportes', './reports')
+  .option('--headless', 'Ejecutar en modo headless', true)
+  .option('--screenshot', 'Capturar screenshots de violaciones', true)
+  .parse();
+
+const options = program.opts();
+
+async function main() {
+  const oracle = new AccessibilityOracle({
+    configPath: path.resolve(process.cwd(), options.config),
+    baseUrl: options.url,
+    format: options.format,
+    outputDir: path.resolve(process.cwd(), options.output),
+    headless: options.headless,
+    screenshot: options.screenshot
+  });
+
+  const results = await oracle.run(options.route);
+  
+  console.log(results.report);
+  process.exit(results.failed ? 1 : 0);
+}
+
+main().catch(err => {
+  console.error('Error:', err.message);
+  process.exit(1);
+});

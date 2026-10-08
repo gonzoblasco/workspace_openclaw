@@ -1,0 +1,38 @@
+# .kanam/pixel-diff.specs.yaml
+#
+# Verdad visual declarada por el humano cuando no hay Figma.
+# Cada clave es el path (o basename) de una captura en design-captures/.
+# Generar con: pixel-diff --mode comp --design ./design-captures/home.png --interactive
+#
+specs:
+  "design-captures/home.png":
+    name: home
+    spacing:
+      padding_internal: "16px"
+      margin_between: "32px"
+    radius:
+      card: "16px"
+      button: "12px"
+    colors:
+      primary: "#0d9488"
+      background: "#ffffff"
+      text: "#111318"
+    typography:
+      title_size: "22px"
+      font_family: "Inter"
+
+  "design-captures/card.png":
+    name: card
+    spacing:
+      padding_internal: "16px"
+      margin_between: "24px"
+    radius:
+      card: "16px"
+      button: "12px"
+    colors:
+      primary: "#0d9488"
+      background: "#ffffff"
+      text: "#111318"
+    typography:
+      title_size: "22px"
+      font_family: "Inter"

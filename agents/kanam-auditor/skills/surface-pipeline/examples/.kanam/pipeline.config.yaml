@@ -1,0 +1,51 @@
+# .kanam/pipeline.config.yaml
+#
+# Configuración unificada del Surface Audit Pipeline.
+# Declara los stages (uno por skill), el gate de veredicto y la salida.
+
+project:
+  name: "kanam-core"
+
+# Rutas a los skills hermanos. Si se omiten, se asume que son vecinos de
+# surface-pipeline/ dentro de skills/. Override si están en otro lado.
+# skillPaths:
+#   design-system-enforcer: "../design-system-enforcer"
+#   accessibility-oracle: "../accessibility-oracle"
+#   pixel-diff: "../pixel-diff"
+
+stages:
+  # 1. Código estático contra tokens del Design System.
+  - skill: design-system-enforcer
+    path: "./src"
+    config: ".kanam/enforcer.config.yaml"
+    rules:
+      aiLookVeto: true
+
+  # 2. Accesibilidad runtime (Playwright + axe-core + teclado).
+  - skill: accessibility-oracle
+    base_url: "http://localhost:3000"
+    config: ".kanam/a11y-oracle.config.yaml"
+    paths: ["/", "/checkout"]
+
+  # 3. Alineación visual render vs spec/tokens.
+  - skill: pixel-diff
+    mode: "comp"
+    config: ".kanam/pixel-diff.config.yaml"
+    specs: ".kanam/pixel-diff.specs.yaml"
+    design: "./design-captures/home.png"
+    route: "/"
+    url: "http://localhost:3000"
+    # tokens: "./design/tokens"   # alternativa al modo comp
+
+# Qué bloquea y qué advierte en el veredicto final.
+# Cada entrada matchea por severidad ('critical'|'warning') o por código estable.
+gate:
+  block_on: ["critical", "accessibility-violation", "stage-error"]
+  warn_on: ["warning", "misaligned", "ai-look"]
+
+# Si un stage explota (ej. skill roto): 'block' (default) o 'warn'.
+on_stage_error: "block"
+
+output:
+  dir: "./reports"
+  formats: ["console", "html", "json"]

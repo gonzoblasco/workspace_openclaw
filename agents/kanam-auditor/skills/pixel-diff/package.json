@@ -1,0 +1,30 @@
+{
+  "name": "pixel-diff",
+  "version": "1.1.0",
+  "description": "Comparación real de desalineación visual entre especificación y render (Playwright + pixelmatch)",
+  "main": "src/pixel-diff.js",
+  "bin": {
+    "pixel-diff": "bin/pixel-diff"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "js-yaml": "^4.1.0",
+    "pixelmatch": "^5.3.0",
+    "playwright-core": "^1.64.0",
+    "pngjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "keywords": [
+    "design-system",
+    "visual-regression",
+    "pixel-diff",
+    "kanam"
+  ],
+  "author": "Kanam Auditor",
+  "license": "MIT"
+}

@@ -1,0 +1,48 @@
+# .kanam/pixel-diff.config.yaml
+project:
+  name: "kanam-example"
+
+sources:
+  # Capturas manuales como spec (fuente principal). Requieren specs declaradas
+  # en pixel-diff.specs.yaml (--interactive para generarlas).
+  - type: "comp"
+    path: "./design-captures/"
+    mapping:
+      "./design-captures/card.png": "/card"
+      "./design-captures/home.png": "/"
+      "./design-captures/checkout.png": "/checkout"
+
+  # Figma queda como placeholder hasta nuevo aviso (Fase 4 del roadmap).
+  # - type: "figma"
+  #   file_id: "ABC123"
+  #   page_id: "XYZ456"
+
+  # Tokens del Design System como fallback estructural (DTCG .json o .css).
+  - type: "design-system"
+    path: "./design/tokens"
+
+checks:
+  spacing_alignment: true
+  radius_consistency: true
+  color_accuracy: true
+  typography_scale: true
+
+thresholds:
+  spacing_tolerance: 1     # ±1px permitido
+  radius_tolerance: 0.5    # Radios deben ser exactos
+  color_delta_e: 2.3       # Diferencia perceptible mínima (CIEDE2000)
+  typography_scale: 0.1    # Escala tipográfica flexible
+
+# Captura (Playwright)
+viewport:
+  width: 1280
+  height: 800
+deviceScaleFactor: 1
+fullPage: false
+headless: true
+waitUntil: "networkidle"
+
+# Pixelmatch (comp: captura vs render; baseline: 1:1)
+imageDiff: true
+imageThreshold: 0.1    # 0 = estricto
+baseline_tolerance: 0  # ratio de píxeles permitido en baseline

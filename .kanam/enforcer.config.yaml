@@ -1,0 +1,26 @@
+# .kanam/enforcer.config.yaml
+#
+# Binding del Design System Enforcer para el repo workspace_openclaw.
+# El enforcer es agnóstico: acá se declara QUÉ design system valida y qué
+# excepciones tiene ESTE repo (whitelist de hex legítimos).
+#
+# Lo consumen:
+#   - el pre-commit (scripts/design-precommit.sh, vía husky)
+#   - el stage 1 del surface-pipeline en CI (.kanam/pipeline.config.yaml)
+
+project:
+  name: "kanam-auditor"
+  # Carpeta que contiene tokens.md (la fuente de verdad del Design System).
+  # Relativa a la raíz del repo; el adapter la resuelve con path.resolve().
+  design_system_path: "design"
+
+rules:
+  enforceTokens: true
+  blockHardcoded: true
+  aiLookVeto: true
+
+# Hex que este repo usa legítimamente fuera de tokens y que NO deben advertirse.
+# Vacío a propósito: la política es "si no es token, se sugiere token". Si un
+# valor legítimo empieza a dar ruido, se agrega acá y se documenta por qué.
+whitelist:
+  hex: []

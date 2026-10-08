@@ -1,0 +1,70 @@
+#!/usr/bin/env node
+
+/**
+ * Pixel Diff CLI
+ * Uso: npx pixel-diff --mode <comp|baseline|tokens> [options]
+ */
+
+const { program } = require('commander');
+const path = require('path');
+const { PixelDiff } = require('../src/pixel-diff');
+
+program
+  .name('pixel-diff')
+  .description('Comparación real de desalineación visual entre spec y render')
+  .version('1.1.0')
+  // Config / modo
+  .option('-c, --config <path>', 'Ruta al archivo de configuración', '.kanam/pixel-diff.config.yaml')
+  .option('-m, --mode <mode>', 'Modo de operación (comp|baseline|tokens)', 'comp')
+  .option('--specs <path>', 'Specs declaradas por captura (.yaml)', '.kanam/pixel-diff.specs.yaml')
+  .option('--tokens <path>', 'Fuente de tokens del Design System (.json DTCG o .css)')
+  // Fuentes
+  .option('-d, --design <path>', 'Captura de diseño (modo comp)')
+  .option('-b, --baseline <dir>', 'Directorio baseline (modo baseline)')
+  .option('--current <dir>', 'Directorio current (modo baseline)')
+  // Target
+  .option('-u, --url <url>', 'URL base a auditar', 'http://localhost:3000')
+  .option('-r, --route <route>', 'Ruta específica', '/')
+  .option('-s, --selector <css>', 'Selector del elemento a capturar (por defecto, viewport)')
+  .option('--interactive', 'Preguntar specs de la captura y persistirlas', false)
+  // Salida
+  .option('-f, --format <type>', 'Formato de salida (console|json|html)', 'console')
+  .option('-o, --output <dir>', 'Directorio de reportes', './reports')
+  .option('-t, --threshold <px>', 'Tolerancia de desfase en píxeles', '1')
+  .parse();
+
+const options = program.opts();
+
+async function main() {
+  const pixelDiff = new PixelDiff({
+    configPath: path.resolve(process.cwd(), options.config),
+    mode: options.mode,
+    format: options.format,
+    outputDir: path.resolve(process.cwd(), options.output),
+    threshold: parseFloat(options.threshold),
+    specPath: path.resolve(process.cwd(), options.specs)
+  });
+
+  const results = await pixelDiff.run({
+    designPath: options.design ? path.resolve(process.cwd(), options.design) : null,
+    baselineDir: options.baseline ? path.resolve(process.cwd(), options.baseline) : null,
+    currentDir: options.current ? path.resolve(process.cwd(), options.current) : null,
+    tokenSource: options.tokens ? path.resolve(process.cwd(), options.tokens) : null,
+    url: options.url,
+    route: options.route,
+    selector: options.selector || (pixelDiff.config.capture && pixelDiff.config.capture.selector),
+    interactive: options.interactive
+  });
+
+  console.log(results.report);
+  process.exit(results.shouldBlock || results.misaligned ? 1 : 0);
+}
+
+main().catch((err) => {
+  if (err.code === 'NO_SPEC') {
+    console.error(`\n❌ ${err.message}\n`);
+    process.exit(2);
+  }
+  console.error('Error:', err.message);
+  process.exit(1);
+});

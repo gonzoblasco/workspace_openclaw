@@ -1,0 +1,10 @@
+:root {
+  --k-space-4: 16px;
+  --k-space-6: 32px;
+  --k-radius-md: 12px;
+  --k-radius-lg: 16px;
+  --k-brand-primary: #0d9488;
+  --k-bg-surface: #ffffff;
+  --k-text-main: #111318;
+  --k-font-size-xl: 22px;
+}

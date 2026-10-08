@@ -1,0 +1,24 @@
+project:
+  name: "kanam-example"
+  base_url: "http://localhost:3000"
+
+paths:
+  - route: "/"
+    critical: true
+  - route: "/checkout"
+    critical: true
+    requires_auth: false
+  - route: "/settings"
+    critical: false
+
+rules:
+  contrast: "wcag22-aa"
+  keyboard_navigation: true
+  focus_visible: true
+  target_size: true
+  skip_rules: []
+
+report:
+  format: ["html", "json", "junit"]
+  screenshot_on_violation: true
+  video_record: false

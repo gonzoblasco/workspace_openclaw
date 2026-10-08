@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inaccessible Page</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      background: #8B5CF6;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .tiny-button {
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      font-size: 10px;
+    }
+
+    .no-focus:focus {
+      outline: none;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .modal.open {
+      display: block;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+
+    .overlay.open {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Página Inaccesible</h1>
+    
+    <form>
+      <div class="form-group">
+        <input type="text" placeholder="Nombre" required>
+      </div>
+
+      <div class="form-group">
+        <input type="email" placeholder="Email" required>
+      </div>
+
+      <button type="submit" class="no-focus">Enviar</button>
+    </form>
+
+    <button class="tiny-button" aria-label="Cerrar">X</button>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="modal" id="modal" role="dialog">
+      <h2>Modal sin foco atrapado</h2>
+      <p>Esta modal no cierra con Escape ni mantiene el foco.</p>
+      <button onclick="document.getElementById('modal').classList.remove('open'); document.getElementById('overlay').classList.remove('open');">Cerrar</button>
+    </div>
+
+    <button onclick="document.getElementById('modal').classList.add('open'); document.getElementById('overlay').classList.add('open');">Abrir Modal</button>
+  </div>
+
+  <script>
+    // No keyboard handler for modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        // Intentionally not closing modal
+      }
+    });
+  </script>
+</body>
+</html>
