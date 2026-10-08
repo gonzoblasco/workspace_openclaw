@@ -1,3 +1,7 @@
+---
+title: chaos-engineering
+description: TODO: add description
+---
 # chaos-engineering
 
 Probar la resiliencia de un sistema inyectando fallos controlados, midiendo cómo se degrada y si se recupera, antes de que el fallo ocurra en producción.

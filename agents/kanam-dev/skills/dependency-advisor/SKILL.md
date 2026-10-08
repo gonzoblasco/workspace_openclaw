@@ -1,3 +1,7 @@
+---
+title: dependency-advisor
+description: TODO: add description
+---
 # dependency-advisor
 
 Recomendar, evaluar y gestionar dependencias de un proyecto: qué librería elegir hoy, por qué, y cómo planificar su ciclo de vida y migración.

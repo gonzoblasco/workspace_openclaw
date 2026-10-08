@@ -1,3 +1,7 @@
+---
+title: performance-benchmark
+description: TODO: add description
+---
 # performance-benchmark
 
 Medir el rendimiento de un sistema con datos reproducibles: establecer una línea base, comparar tras un cambio y decidir con evidencia si la optimización sirvió.

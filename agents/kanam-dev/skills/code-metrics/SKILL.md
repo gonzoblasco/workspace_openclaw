@@ -1,3 +1,7 @@
+---
+title: code-metrics
+description: TODO: add description
+---
 # code-metrics
 
 Medir objetivamente la calidad y el tamaño del código con métricas verificables, y usar los números para decidir dónde intervenir.

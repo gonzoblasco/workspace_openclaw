@@ -1,3 +1,7 @@
+---
+title: compatibility-testing
+description: TODO: add description
+---
 # compatibility-testing
 
 Verificar que un cambio funciona en la matriz real de entornos objetivo: navegadores, motores, sistemas operativos y dispositivos, con evidencia por cada combinación.
