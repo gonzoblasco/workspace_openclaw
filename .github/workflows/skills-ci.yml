@@ -37,7 +37,10 @@ jobs:
           python3 -m pip install pytest certifi
 
       - name: Syntax checks (bash + python)
-        run: ./scripts/test-skills.sh
+        # --all: en CI no hay staging, asi que el scope por defecto (solo
+        # archivos staged) veria 0 archivos. Sin --all el script aborta; el
+        # barrido completo del arbol de skills es lo que cubre esta superficie.
+        run: ./scripts/test-skills.sh --all
 
       # Budget de bootstrap (ROADMAP 0.1): los archivos inyectados en cada
       # arranque se truncan en silencio al superar su cap. Segunda barrera (el

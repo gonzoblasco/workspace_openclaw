@@ -2,9 +2,10 @@
 # test-skills.sh - Skill validation suite
 #
 # Usage:
-#   ./scripts/test-skills.sh
+#   ./scripts/test-skills.sh            # scope: SOLO los archivos staged (git diff --cached)
+#   ./scripts/test-skills.sh --all      # scope: todo el arbol de skills en disco
 #   ./scripts/test-skills.sh --verbose
-#   ./scripts/test-skills.sh --quick     # solo sintaxis (bash/python), sin checks de contenido
+#   ./scripts/test-skills.sh --quick    # solo sintaxis (bash/python), sin checks de contenido
 #
 # Checks:
 #   A. Sintaxis: bash -n en skills/*/scripts/*.sh, py_compile en *.py
@@ -12,6 +13,20 @@
 #   C. Em dash: ningun SKILL.md usa U+2014/U+2013 (regla de oro del workspace)
 #   D. Scripts referenciados: todo scripts/foo.sh|py mencionado en SKILL.md existe
 #   E. Links a skills: todo enlace a skills/<name> apunta a una skill existente
+#
+# Scope (2026-10-07): por defecto el suite revisa SOLO los archivos staged del
+# commit en curso (`git diff --cached --name-only -z --diff-filter=ACMR`), no
+# todo el disco. Motivo: el pre-commit lo invoca en cada commit, y al escanear
+# el disco entero bloqueaba commits AJENOS por defectos que no tocaban:
+#   - los SKILL.md de playwright-core bajo node_modules/ (3 por copia instalada),
+#   - los arboles de skills de agentes todavia no trackeados (staged vacio).
+# El sintoma era commits sin relacion forzados a --no-verify. Un check que
+# bloquea por lo que no se commitea no es una guarda, es ruido.
+# `--all` reproduce el barrido completo (lo que corre el CI, donde no hay
+# staging). La segunda barrera en la superficie publica sigue siendo el CI.
+#
+# node_modules/ se poda del walk (`-prune`) en TODOS los checks, incluido el de
+# em dash: antes B/C/D/E no podaban y C fallaba contra el codigo de terceros.
 #
 # Exit codes: 0 todo ok, 1 hay fallos
 
@@ -38,13 +53,62 @@ else
 fi
 VERBOSE=0
 QUICK=0
+SCOPE_ALL=0
 
 for arg in "$@"; do
   case "$arg" in
     --verbose|-v) VERBOSE=1 ;;
     --quick|-q) QUICK=1 ;;
+    --all|-a) SCOPE_ALL=1 ;;
   esac
 done
+
+# --- SCOPING ---
+# Por defecto, solo los archivos staged que caen dentro de un SKILL_ROOT.
+# --all barre todo el disco (CI / auditoria manual).
+#
+# Guarda anti-verde-falso: en CI no hay staging, asi que el scope por defecto
+# veria 0 archivos y saldria en verde sin mirar nada. Si el entorno es CI
+# (`CI` seteado) y no se pidio --all, se aborta en vez de reportar un verde
+# hueco. Un gate que se puede convertir en no-op por omision es la misma clase
+# de falso verde que este workspace ya registro (Etapa 2: artefactos que
+# existen y nadie invoca).
+if [[ $SCOPE_ALL -eq 0 && -n "${CI:-}" ]]; then
+  echo "ABORT: CI debe invocar test-skills.sh --all (sin --all el scope staged seria 0 archivos)." >&2
+  exit 1
+fi
+#
+# Se usa NUL como separador (`-z` / `read -d ''`) para tolerar paths con
+# espacios; ademas se filtra por prefijo contra cada SKILL_ROOT real, asi que
+# un cambio en scripts/ (que dispara el hook) no mete archivos fuera del arbol
+# de skills en el scope.
+in_scope() {
+  local abs="$1" r
+  for r in "${SKILL_ROOTS[@]}"; do
+    [[ "$abs" == "$r/"* ]] && return 0
+  done
+  return 1
+}
+
+CANDIDATES=()
+if [[ $SCOPE_ALL -eq 1 ]]; then
+  while IFS= read -r -d '' f; do
+    CANDIDATES+=("$f")
+  done < <(find "${SKILL_ROOTS[@]}" -type d -name node_modules -prune -o -type f -print0 2>/dev/null || true)
+else
+  while IFS= read -r -d '' f; do
+    abs="${WORKSPACE_DIR}/${f}"
+    [[ -f "$abs" ]] || continue
+    in_scope "$abs" || continue
+    CANDIDATES+=("$abs")
+  done < <(git -C "$WORKSPACE_DIR" diff --cached --name-only -z --diff-filter=ACMR 2>/dev/null || true)
+fi
+
+if [[ $SCOPE_ALL -eq 1 ]]; then
+  echo "Scope: all skill tree on disk"
+else
+  echo "Scope: staged only (${#CANDIDATES[@]} file(s) under skill roots)"
+fi
 
 BASH_OK=0; BASH_FAIL=0
 PYTHON_OK=0; PYTHON_FAIL=0
@@ -99,30 +163,37 @@ ref_exists() {
   return 1
 }
 
-# --- A. Sintaxis bash/python ---
-while IFS= read -r -d '' file; do
-  if bash -n "$file" 2>/tmp/bash.err; then
-    BASH_OK=$((BASH_OK + 1))
-    note "✅ bash OK: $file"
-  else
-    BASH_FAIL=$((BASH_FAIL + 1))
-    echo "  ❌ bash FAIL: $file"
-    sed 's/^/      /' /tmp/bash.err
-    failures+=("$file")
-  fi
-done < <(find "${SKILL_ROOTS[@]}" -type f -name "*.sh" -not -path "*/node_modules/*" -print0)
+is_skill_md() { [[ "$(basename "$1")" == "SKILL.md" ]]; }
 
-while IFS= read -r -d '' file; do
-  if python3 -m py_compile "$file" 2>/tmp/python.err; then
-    PYTHON_OK=$((PYTHON_OK + 1))
-    note "✅ python OK: $file"
-  else
-    PYTHON_FAIL=$((PYTHON_FAIL + 1))
-    echo "  ❌ python FAIL: $file"
-    sed 's/^/      /' /tmp/python.err
-    failures+=("$file")
-  fi
-done < <(find "${SKILL_ROOTS[@]}" -type f -name "*.py" -not -path "*/node_modules/*" -print0)
+# --- A. Sintaxis bash/python ---
+# Los candidatos ya vienen podados de node_modules (find -prune) y scoped
+# (staged o --all); solo se filtra por extension.
+for file in "${CANDIDATES[@]+"${CANDIDATES[@]}"}"; do
+  case "$file" in
+    *.sh)
+      if bash -n "$file" 2>/tmp/bash.err; then
+        BASH_OK=$((BASH_OK + 1))
+        note "✅ bash OK: $file"
+      else
+        BASH_FAIL=$((BASH_FAIL + 1))
+        echo "  ❌ bash FAIL: $file"
+        sed 's/^/      /' /tmp/bash.err
+        failures+=("$file")
+      fi
+      ;;
+    *.py)
+      if python3 -m py_compile "$file" 2>/tmp/python.err; then
+        PYTHON_OK=$((PYTHON_OK + 1))
+        note "✅ python OK: $file"
+      else
+        PYTHON_FAIL=$((PYTHON_FAIL + 1))
+        echo "  ❌ python FAIL: $file"
+        sed 's/^/      /' /tmp/python.err
+        failures+=("$file")
+      fi
+      ;;
+  esac
+done
 
 rm -f /tmp/bash.err /tmp/python.err
 
@@ -130,7 +201,8 @@ rm -f /tmp/bash.err /tmp/python.err
 if [[ $QUICK -eq 0 ]]; then
 
   # --- B. Frontmatter ---
-  while IFS= read -r -d '' skmd; do
+  for skmd in "${CANDIDATES[@]+"${CANDIDATES[@]}"}"; do
+    is_skill_md "$skmd" || continue
     if head -1 "$skmd" | grep -q '^---$'; then
       FM_OK=$((FM_OK + 1))
     else
@@ -138,12 +210,15 @@ if [[ $QUICK -eq 0 ]]; then
       echo "  ❌ frontmatter FAIL (sin bloque ---): $skmd"
       failures+=("$skmd")
     fi
-  done < <(find "${SKILL_ROOTS[@]}" -name "SKILL.md" -print0)
+  done
 
   # --- C. Em dash (U+2014/U+2013) ---
   # Usa python3 (portable): grep -P no existe en BSD grep de macOS, lo que
   # daba falsos OK locales y fallos en CI Linux. Python detecta en ambos.
-  while IFS= read -r -d '' skmd; do
+  # El scope (staged por defecto) + el prune de node_modules es lo que evita
+  # que los guiones del codigo de playwright tumben un commit ajeno.
+  for skmd in "${CANDIDATES[@]+"${CANDIDATES[@]}"}"; do
+    is_skill_md "$skmd" || continue
     if python3 -c 'import sys; c=open(sys.argv[1],encoding="utf-8").read(); sys.exit(1 if ("\u2013" in c or "\u2014" in c) else 0)' "$skmd" 2>/dev/null; then
       DASH_OK=$((DASH_OK + 1))
     else
@@ -151,7 +226,7 @@ if [[ $QUICK -eq 0 ]]; then
       echo "  ❌ em dash FAIL (usar guion comun -): $skmd"
       failures+=("$skmd")
     fi
-  done < <(find "${SKILL_ROOTS[@]}" -name "SKILL.md" -print0)
+  done
 
   # --- D. Scripts referenciados existen ---
   # Resuelve tres patrones:
@@ -159,7 +234,8 @@ if [[ $QUICK -eq 0 ]]; then
   #   - cross-skill con prefijo: skills/<otra>/scripts/foo.sh
   #   - cross-skill sin prefijo: <otra-skill>/scripts/foo.sh
   # Excluye bloques de codigo (```) - ahi los scripts son ejemplos ilustrativos.
-  while IFS= read -r -d '' skmd; do
+  for skmd in "${CANDIDATES[@]+"${CANDIDATES[@]}"}"; do
+    is_skill_md "$skmd" || continue
     skill_dir="$(dirname "$skmd")"
     body=$(awk 'BEGIN{inblock=0} /^```/{inblock=!inblock; next} !inblock{print}' "$skmd")
     # relativos con ./ explicito
@@ -221,7 +297,7 @@ if [[ $QUICK -eq 0 ]]; then
         fi
       fi
     done < <(echo "$body" | grep -oE '[A-Za-z0-9_-]+/scripts/[A-Za-z0-9_./-]+\.(sh|py|mjs|js)' 2>/dev/null | sort -u || true)
-  done < <(find "${SKILL_ROOTS[@]}" -name "SKILL.md" -print0)
+  done
 
   # --- E. Links markdown relativos a skills existen ---
   # Resuelve el link relativo contra el directorio real del SKILL.md, que es
@@ -230,7 +306,8 @@ if [[ $QUICK -eq 0 ]]; then
   # ser `](../../agents/...)` y el check dejaba de verlos (verde sobre links
   # rotos). Resolver el path de verdad cubre ambas formas sin enumerarlas.
   # No matchea texto plano (paths en bloques de codigo, menciones sueltas).
-  while IFS= read -r -d '' skmd; do
+  for skmd in "${CANDIDATES[@]+"${CANDIDATES[@]}"}"; do
+    is_skill_md "$skmd" || continue
     skill_dir="$(dirname "$skmd")"
     while read -r ref; do
       [[ -z "$ref" ]] && continue
@@ -259,7 +336,7 @@ if [[ $QUICK -eq 0 ]]; then
         fi
       fi
     done < <(grep -oE '\]\(\.\./[^) ]+' "$skmd" 2>/dev/null | sed -E 's/^\]\(//' | sort -u || true)
-  done < <(find "${SKILL_ROOTS[@]}" -name "SKILL.md" -print0)
+  done
 
 fi
 

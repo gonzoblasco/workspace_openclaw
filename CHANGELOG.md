@@ -6,7 +6,25 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-## [2026-10-07] - El Roadmap de Roadmaps: capa de gobierno de la madurez del Crew
+## [2026-10-07] - El suite de skills deja de bloquear commits por archivos que no se commitean
+
+### Fixed
+- **`scripts/test-skills.sh`: el scope es ahora `git diff --cached` (staged), no el disco entero.** El pre-commit lo corre en cada commit y escaneaba todos los `SKILL.md` del disco, incluidos los `playwright-core` bajo `node_modules/` (3 por copia instalada) y los arboles de skills de agentes todavia no trackeados. Resultado: un commit que no tocaba nada de eso fallaba por em dashes ajenos y forzaba `--no-verify`. Reproducido 2026-10-07: `./scripts/test-skills.sh` reportaba 12 fallos de em dash, 0 de ellos en el commit.
+- **`scripts/test-skills.sh`: `node_modules/` se poda del walk en TODOS los checks.** Los checks A (sintaxis) ya podaban; B/C/D/E no, y C (em dash) fallaba contra el codigo de terceros. Ahora el `find` usa `-prune` una sola vez y el barrido es uniforme.
+
+### Added
+- **`scripts/test-skills.sh --all`:** barre todo el arbol de skills en disco (lo que corre el CI, donde no hay staging). Con la guarda de CI: si `CI` esta seteado y no se paso `--all`, el script **aborta** en vez de salir verde sobre 0 archivos.
+- **`tests/bash/test-skills-scope.bats` (5 tests):** prueba el scope staged, el prune de `node_modules`, el filtro de archivos fuera de los skill roots y el aborto en CI. Monta un arbol temporal con una copia del script real.
+
+### Changed
+- **`.github/workflows/skills-ci.yml`:** el step de sintaxis invoca `./scripts/test-skills.sh --all` (en CI no hay staging; el default veria 0 archivos).
+
+### Notes
+- **Verificacion (repro del pedido):** con un solo `docs/ROADMAP.md` staged, el hook corre y sale 0; con un `SKILL.md` staged bajo `skills/`, solo se revisa ese archivo. El barrido `--all` bajo de 12 a 6 fallos de em dash: los 6 restantes son SKILL.md reales de agentes (deuda de contenido preexistente, fuera de este commit).
+- **Pendiente registrado:** los 6 `SKILL.md` con em dash (4 en `agents/kanam-auditor/`, 2 en `agents/kanam-critic/`), de los cuales 5 son arboles untracked, siguen sin guion comun. Los caza `--all`/CI, no el hook sobre esos commits.
+
+---
+
 
 ### Added
 - **`docs/ROADMAPS.md` (El Roadmap de Roadmaps):** el meta-roadmap del ecosistema de agentes. Indice unico del estado de madurez de los 7 roles (auditor, critic, dev, mind, ops, planner, studio), el camino de madurez M0-M5, la secuencia de escalada por dependencia (los gates de calidad primero) y las guardas de tracking. Premisa base: ausencia de `ROADMAP.md` = v0.1; meta de la ronda = v0.5 por rol; visión = v1.0.
