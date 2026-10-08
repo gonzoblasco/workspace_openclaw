@@ -58,11 +58,11 @@ def norm_dashes(text: str) -> str:
     return text
 
 
-def git_output(*args: str) -> str:
+def git_output(*args: str, cwd: Optional[Path] = None) -> str:
     try:
         out = subprocess.run(
             ["git", *args],
-            cwd=WORKSPACE,
+            cwd=str(cwd or WORKSPACE),
             capture_output=True,
             text=True,
             check=False,
@@ -111,7 +111,9 @@ def build_handoff(args) -> str:
     date = args.date or datetime.now().strftime("%Y-%m-%d")
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
     branch = args.branch if args.branch and args.branch != "unknown" else git_output("branch", "--show-current") or "unknown"
-    repo = args.repo or git_output("remote", "get-url", "origin")
+    repo = args.repo or git_output(
+        "remote", "get-url", "origin", cwd=resolve_handoff_path(args.project, None).parent.parent
+    )
     repo = re.sub(r"^git@[^:]+:", "https://github.com/", repo or "")
     repo = re.sub(r"\.git$", "", repo or "")
 
