@@ -25,6 +25,8 @@ El movimiento no quedo registrado en ningun ADR, ni se actualizaron `AGENTS.md` 
 
 **La ubicacion de trabajo de los proyectos es `~/projects/<slug>/`, fuera del workspace.**
 
+> **SUPERSEDED por ADR-098 (2026-10-08): "Los proyectos vuelven al workspace, y `cwd` separa el hogar del agente de su zona de trabajo".** Los proyectos vuelven a `<workspace>/projects/` (dentro del árbol del gateway); `~/projects` pasa a ser un symlink a `~/.openclaw/workspace/projects`. El cuerpo de este ADR describe el estado de 2026-09-27 y se conserva como registro histórico. **Leer ADR-098 para el estado vigente.**
+
 - El codigo del proyecto y su `.knowledge/` conviven en `~/projects/<slug>/`.
 - **11 de los 32 proyectos** tienen su propio repo git en `~/projects/<slug>/.git`; la mayoria excluye su `.knowledge/` via `.git/info/exclude`.
 - El workspace (`~/.openclaw/workspace`) **deja de hospedar el arbol `projects/`**.
