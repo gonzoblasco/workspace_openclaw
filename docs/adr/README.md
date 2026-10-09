@@ -11,7 +11,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-003 | [Product Reset Phase Triggers](./ADR-003-product-reset-triggers.md) | kanam-workflow |
 | ADR-004 | [Growth Strategy Triggers](./ADR-004-growth-strategy-triggers.md) | kanam-workflow |
 | ADR-005 | [OSS Contribution Pipeline](./ADR-005-oss-contribution-pipeline.md) | kanam-workflow |
-| ADR-006 | [Capacidad Computacional - DeepSeek V4 Flash con Reasoning Maximum](./ADR-006-capacidad-computacional-deepseek.md) | kanam-workflow |
+| ADR-006 | [Capacidad Computacional - DeepSeek V4 Flash con Reasoning Maximum](./ADR-006-capacidad-computacional-deepseek.md) (superseded por ADR-040) | kanam-workflow |
 | ADR-007 | [Patrones de Agente Autonomo - Goal-Oriented Architecture](./ADR-007-patrones-agente-autonomo.md) | kanam-workflow |
 | ADR-008 | [Patron convergente](./ADR-008-patron-convergente.md) | ai-engineering-bootcamp |
 | ADR-009 | [Primitives, Conventions, Levers](./ADR-009-primitives-conventions-levers.md) | remix-book |
@@ -51,7 +51,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-043 | [Complexity-Driven Pipeline (Orquestación por T-Score)](./ADR-043-complexity-driven-pipeline.md) | workspace |
 | ADR-044 | [Methodology Audit - Marco de 8 Fases como Lente de Auditoría](./ADR-044-methodology-audit-framework.md) | workspace |
 | ADR-045 | [Motor del Pipeline A/B - DeepSeek V4.1 Flash](./ADR-045-motor-pipeline-deepseek-v4.1-flash.md) (superseded por ADR-046) | workspace |
-| ADR-046 | [Revert del Motor del Pipeline A/B - DeepSeek V4 Flash (por costo)](./ADR-046-motor-pipeline-revert-deepseek-v4-flash.md) | workspace |
+| ADR-046 | [Revert del Motor del Pipeline A/B - DeepSeek V4 Flash (por costo)](./ADR-046-motor-pipeline-revert-deepseek-v4-flash.md) (superseded por ADR-053) | workspace |
 | ADR-047 | [Kanam Design System como identidad transversal de todo producto](./ADR-047-kanam-design-system.md) | workspace |
 | ADR-048 | [Radix/shadcn como capa de UI - adopcion con criterio, no por precedente](./ADR-048-shadcn-radix-stack-ui.md) | workspace |
 | ADR-049 | [Claude Code como motor del pipeline A/B (Qwen Code a fallback)](./ADR-049-claude-code-motor-pipeline-ab.md) | workspace |

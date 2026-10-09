@@ -1,6 +1,6 @@
 # ADR-046: Revert del Motor del Pipeline A/B - DeepSeek V4 Flash (por costo)
 
-**Status:** Accepted (2026-09-11)
+**Status:** Superseded por ADR-053 (2026-09-22)
 **Deciders:** Gonzo / Kanam
 **Fecha:** 2026-09-11
 **Origen:** workspace (revert por costo, analisis de uso semanal de Ollama Cloud)

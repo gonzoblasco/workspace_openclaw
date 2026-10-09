@@ -1,7 +1,7 @@
 # ADR-075: Los proyectos viven en `~/projects`, fuera del worktree del workspace
 
 **Fecha:** 2026-09-27
-**Estado:** Aceptado
+**Estado:** Superseded por ADR-098 (2026-10-08)
 **Decisores:** Gonzo / Kanam
 **Origen:** sesion de recuperacion 2026-09-27 - el movimiento a `~/projects` no estaba documentado en ningun ADR y el workspace conservaba el arbol viejo como bajas sin commitear
 **Relacionado:** ADR-073 (arquitectura multi-agente), ADR-056 (guardas de gobernanza), ADR-066 (los guardias no leen codigo de proyecto)

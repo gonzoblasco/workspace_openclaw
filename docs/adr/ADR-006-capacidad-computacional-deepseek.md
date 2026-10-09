@@ -1,9 +1,11 @@
 # ADR-006: Capacidad Computacional Deepseek
 
-**Status:** Accepted (rev. 2026-07-28)  
+**Status:** Superseded por ADR-040 (2026-08-26)  
 **Deciders:** Gonzo / Kanam  
 **Fecha:** 2026-07-28  
 **Origen:** kanam-workflow
+
+> **SUPERSEDED por ADR-040 (2026-08-26).** Este ADR fue reemplazado por [ADR-040](./ADR-040-modelos-seleccion-por-tarea.md), que expande la seleccion a 8 modelos con criterio por tipo de tarea. Los datos tecnicos de este ADR (benchmarks, costos, brecha Flash vs Pro) siguen siendo correctos y se incorporan al ADR-040. **Leer ADR-040 para el estado vigente.**
 
 ## Decisión
 

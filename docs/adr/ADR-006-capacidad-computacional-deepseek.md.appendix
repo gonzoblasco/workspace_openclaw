@@ -1,4 +1,0 @@
-
----
-
-> **Nota (2026-08-26):** Este ADR fue reemplazado por [ADR-040](./ADR-040-modelos-seleccion-por-tarea.md), que expande la seleccion a 8 modelos con criterio por tipo de tarea. Los datos tecnicos de este ADR (benchmarks, costos, brecha Flash vs Pro) siguen siendo correctos y se incorporan al ADR-040.

@@ -29,6 +29,13 @@ BOUNDARY_RELEVANT=$(echo "$CHANGED" | grep -qE '^(skills/|scripts/|agents/)' && 
 # nada la verificaba. Python puro (barato): corre ante cualquier cambio relevante.
 PACTO_RELEVANT=$(echo "$CHANGED" | grep -qE '^(scripts/|skills/|docs/|AGENTS\.md)' && echo 1 || echo 0)
 
+# Grafo de supersede de ADRs (2026-10-09). Disparador propio, docs/adr/: una
+# relacion se declara o se rompe editando un ADR (.md) o dejando un sidecar
+# (no-.md). El trigger de markdown (MD_CHANGED) no veria el sidecar, que es justo
+# el caso que se cazo (el `.appendix` de ADR-006). Por eso mira el directorio, no
+# la extension.
+ADR_RELEVANT=$(echo "$CHANGED" | grep -qE '^docs/adr/' && echo 1 || echo 0)
+
 # Design system (2026-10-06). Disparador propio: los tokens viven en design/.
 # El build resuelve referencias y el guard mide contraste WCAG. El principio
 # "contraste verificado, no sentido" era falso (nada lo media); esto lo hace
@@ -169,6 +176,15 @@ if [ "$PACTO_RELEVANT" = "1" ]; then
   # deben declarar el MISMO A/B, con A != B. Una deriva es un pacto con dos
   # verdades; el CORE puede citar la conveniente.
   python3 "${SCRIPT_DIR}/scripts/check-pipeline-enforcement.py" || exit 1
+fi
+
+if [ "$ADR_RELEVANT" = "1" ]; then
+  # Grafo de supersede (2026-10-09): un ADR que declara superseder a otro exige que
+  # el reemplazado lo diga en su ESTADO. check-adr-integrity reconcilia indice vs
+  # disco (que el ADR se encuentre), no la DIRECCION de la relacion (que el pisado
+  # lo diga): un ADR "encontrable" pero "pisado" se lee como ley vigente. Y un
+  # archivo no-.md en docs/adr/ (sidecar) es invisible para todo lector y guard.
+  python3 "${SCRIPT_DIR}/scripts/check-adr-supersede.py" || exit 1
 fi
 
 if [ "$DESIGN_RELEVANT" = "1" ]; then
