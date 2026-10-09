@@ -42,9 +42,11 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
-# Proyectos - viven en ~/projects, FUERA del worktree (ADR-075, 2026-09-27).
-# El workspace ya no hospeda projects/ ni trackea .knowledge/ de proyectos.
-# Se ignora la ruta por si algo la recrea: no debe volver a entrar al repo.
+# Proyectos - AHORA viven DENTRO del workspace (revert de ADR-075, ver ADR-XXX).
+# El workspace hospeda projects/ como espacio comun de todos los agentes; el
+# Home llega via symlink (~/projects -> .openclaw/workspace/projects).
+# Se ignora la ruta porque cada proyecto tiene su PROPIO .git: sin esta regla,
+# git los absorberia como gitlinks/submodules implicitos. No trackear aca.
 /projects/
 
 # Editor
@@ -98,10 +100,6 @@ model-router.json
 DREAMS.md
 **/memory/.dreams/
 **/memory/dreaming/
-
-# projects_openclaw: repo agregado privado con el codigo fuente de todos los proyectos
-# (copia de projects/ sin .git ni node_modules). Vive aparte, no se versiona en el workspace.
-projects_openclaw/
 
 # Temp working files (recreation experiments, scratch)
 tmp/
