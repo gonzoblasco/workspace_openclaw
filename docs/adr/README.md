@@ -80,7 +80,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-072 | [Front-matter enforcement for SKILL.md files](./ADR-072-frontmatter-enforcement.md) | workspace |
 | ADR-073 | [Transicion a arquitectura de orquestacion multi-agente](./ADR-073-arquitectura-multi-agente.md) | workspace |
 | ADR-074 | [Protocolo de despacho y coordinacion multi-agente](./ADR-074-protocolo-despacho-multi-agente.md) | workspace |
-| ADR-075 | [Los proyectos viven en ~/projects, fuera del worktree](./ADR-075-proyectos-viven-en-home-projects.md) | workspace |
+| ADR-075 | [Los proyectos viven en ~/projects, fuera del worktree](./ADR-075-proyectos-viven-en-home-projects.md) (superseded por ADR-098) | workspace |
 | ADR-076 | [Ningun agente hereda un modelo local](./ADR-076-ningun-agente-hereda-modelo-local.md) | workspace |
 | ADR-077 | [Pipeline A/B asimetrico (ejecutor liviano, revisor grande)](./ADR-077-pipeline-ab-asimetrico.md) | workspace |
 | ADR-078 | [La salida de un sub-agente es un auto-reporte, no un hecho](./ADR-078-salida-subagente-auto-reporte.md) | workspace |
@@ -102,6 +102,8 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-094 | [Etapa 4 de Kanam OS: medir accesibilidad (a11y-scan), cablear tests/node, y cerrar el Tablero](./ADR-094-etapa-4-a11y-scan-tests-node-tablero.md) | workspace |
 | ADR-095 | [Re-evaluación de las decisiones de diseño: el contraste se verifica, el sistema existe](./ADR-095-reevaluacion-decisiones-diseno.md) | workspace |
 | ADR-096 | [kanam-os adopta el Kanam Design System (y el sistema gana su tema oscuro)](./ADR-096-kanam-os-adopta-design-system.md) | workspace |
+| ADR-097 | [Identidad visual de un juego - monocromo por patrones, monocanal de identificacion](./ADR-097-identidad-visual-juego-monocromo-patrones.md) | kanam-tetris |
+| ADR-098 | [Los proyectos vuelven al workspace, y `cwd` separa el hogar del agente de su zona de trabajo](./ADR-098-proyectos-vuelven-al-workspace-cwd.md) | workspace |
 
 ## Formato
 
