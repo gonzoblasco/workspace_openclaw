@@ -64,7 +64,30 @@ El owner lee el color en **tono / saturacion / luminosidad (HSL)**, no en hex. L
 
 ## Artefactos
 
-- Proyecto: `~/projects/kanam-tetris/` (Vite + React + TypeScript, Canvas 2D).
-- Paleta: 4 tonos DMG-01, misma linea de tono/saturacion, luminosidad variable.
-- Patrones: capa en el modelo de la pieza (no en el render), uno por tetromino.
-- Chrome: `design/tokens/dist/kanam.css` + `dark.css`.
+- Proyecto: `~/.openclaw/workspace/projects/kanam-tetris/` (**vanilla JS, modulos ES, cero dependencias, cero build**, Canvas 2D). *(Correccion 2026-10-09: una version previa de este ADR decia "Vite + React + TypeScript" - era falso, nunca tuvo build.)*
+- Paleta: 4 tonos DMG-01, misma linea de tono/saturacion, luminosidad variable (`render.js` -> `PALETTE`).
+- Patrones: en el modelo de la pieza (`core.js` -> `pattern` + `PATTERN_NAMES`), no en el render. Los 7 materiales: `lumber, cobble, brick, silk, sand, water, metal`.
+- Chrome: `design/tokens/dist/kanam.css` + `dark.css`, copiados a `styles/` del proyecto y mapeados en `styles/theme.css` (dark-first, `data-theme=dark`).
+
+## Estado de implementacion (2026-10-09)
+
+Las tres piezas de la decision estan **construidas y verificadas** (pipeline A/B, verificacion del CORE contra el repo real):
+
+| Unidad | Que | Commit | Tests |
+|---|---|---|---|
+| U1 | Materiales por pieza en el core + `PATTERN_NAMES` | `d4da40b` | 5 nuevos |
+| U2 | `render.js` monocromo GB, texturas de material, estampado determinista | `3555ac4` | 7 nuevos |
+| U3 | Chrome con tokens del DS, frontera por capa | `2b3c561` | contrato actualizado |
+
+**Total: 138 tests, 138 pass / 0 fail** (medido por el CORE, no por el auto-reporte de los agentes).
+
+**Hallazgos de la implementacion (valen como metodo):**
+- El **tono es decorativo de verdad**: hay 4 tonos para 7 piezas (repartidos ciclicamente). I/Z, O/J y T/L comparten tono y **solo se distinguen por su textura** - el invariante del ADR, probado.
+- El **estampado es determinista**: `drawSand` uso `Math.random` y hubo que reemplazarlo por un hash entero puro. Un material no parpadea; si el patron es el canal de identidad, tiene que ser estable frame a frame.
+- **El feedback especial no usa color**: el T-spin se distingue por ancho (4px vs 2.5) e intensidad (fill 0.10 vs 0.05, glow 20 vs 14), no por un hue propio.
+- **El auto-reporte de los agentes miente**: en las tres unidades el subagente reporto "listo/verde" y la verificacion del CORE encontro huecos (U1 sin tests, U2 con morado residual y arena parpadeante, U3 con 3 tests rojos y la `perspective` perdida). Sin verificar el repo real se habrian aceptado los tres.
+
+**Pendiente (fases C4/C5 del roadmap del proyecto):**
+- **C4 - Evaluar:** verificar que las 7 piezas se distinguen **sin color** (daltonismo, escala de grises).
+- **C5 - Extraer el metodo:** escribir como se diseña una identidad por material + silueta, reusable para otras obras.
+- **Deuda del sistema (sin cambio):** el DS sigue sin capa de "paleta de contenido".
