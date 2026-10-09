@@ -57,7 +57,7 @@ La reconciliación (hecha en esta sesión, **aditiva, cero pérdida**) comparó 
 ### 2. `cwd` separa el hogar del agente de su zona de trabajo
 
 **`workspace` = el hogar** (bootstrap, SOUL, IDENTITY, memoria, skills). Se queda donde está.
-**`cwd` = dónde trabajan las herramientas** (el repo). Apunta a `projects` dentro del workspace.
+**`cwd` = dónde trabajan las herramientas.** Apunta a `workspace/` (el padre que contiene `projects/` **y** `sandbox/`). Verificado empíricamente (2026-10-08): el alcance del `cwd` es **recursivo** sobre su árbol, no el path exacto - un agente con `cwd` en el workspace alcanza y escribe en las subcarpetas `projects/` y `sandbox/`. Esto permite el flujo `sandbox (incubadora) -> projects (lo que madura)` con un solo `cwd`.
 
 - **El hogar no se toca.** Un cambio de `workspace` a `projects` habría borrado el contexto de bootstrap del agente (su alma, memoria y skills viven ahí): el efecto colateral que esta decisión evita.
 - **`cwd` dentro del workspace** → el sandbox sigue activo. Sin "full access", sin `sandbox: off`.
@@ -65,7 +65,7 @@ La reconciliación (hecha en esta sesión, **aditiva, cero pérdida**) comparó 
 
 ### 3. La regla de asignación (por rol)
 
-- **Escriben código:** dev, ops → `cwd` a `workspace/projects`.
+- **Escriben código:** dev, ops → `cwd` a `workspace/` (el padre; el alcance recursivo cubre `projects/` y `sandbox/`).
 - **No escriben código de proyecto:** critic, auditor, planner, mind, studio, main → sin `cwd` (su hogar alcanza). Si un spawn puntual necesita un repo, se le pasa el working directory por sesión.
 
 Esta asignación es coherente con ADR-083 (el CORE no escribe código) y con ADR-090 (rol por agente).
@@ -93,6 +93,7 @@ Esta asignación es coherente con ADR-083 (el CORE no escribe código) y con ADR
 1. **Mover `workspace` de los agentes a `~/projects`.** Rechazada: le borra el contexto de bootstrap (AGENTS/SOUL/IDENTITY/memoria/skills viven en su workspace). Es el efecto colateral que `cwd` evita.
 2. **Clonar el proyecto dentro del sandbox del agente.** Rechazada: recrea la carpeta fantasma con contenido y viola la convención de que los proyectos viven en un lugar común.
 3. **`cwd` a `~/projects` (fuera del workspace).** Rechazada: es un "distinct working directory" y **exige apagar el sandbox** de cada agente. Traer los proyectos adentro evita ese costo.
+6. **`cwd` al `projects/` exacto (en vez del padre `workspace/`).** Rechazada: un solo `cwd` no cubriría las dos zonas (`projects/` + `sandbox/`) y rompería el flujo de madurez descrito por Gonzo. El `cwd` al padre da alcance recursivo a ambas, verificado empíricamente.
 4. **Symlink como mecanismo primario de los agentes.** Rechazada: los sandboxes rechazan escribir a través de symlinks. El symlink es solo la puerta cómoda del humano; los agentes usan el path real.
 5. **Borrar el residuo sin comparar.** Rechazada: había contenido único. Se comparó archivo por archivo primero.
 
