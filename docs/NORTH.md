@@ -111,7 +111,7 @@ Verificado contra los dailies 2026-09-22 a 2026-10-06. **Esto es el norte real, 
 ## Qué ya NO es el norte (para no volver a confundirse)
 
 - **`kanam-story` / `kanam-studio` como productos narrativos activos.** La ficción hoy vive como **literatura personal** (`docs/stories/`) y **estudio de método** (`studies/narrative-engineering/`), no como apuesta de producto. Hubo tres intentos fallidos de clonar Sudowrite; eso es señal de mercado, no de capacidad.
-- **`kanam-solitaires` / `kanam-tetris` como vidriera de portfolio.** Fueron bancos de prueba del pipeline; su valor ya se cobró.
+- **`kanam-solitaires` / `kanam-tetris` como vidriera de portfolio.** Fueron bancos de prueba del pipeline; su valor ya se cobró. **Reencuadre 2026-10-09:** `kanam-tetris` volvió a tener valor como **banco de pruebas del pipeline (A)** y **caso de método de identidad visual (C)** - NO como producto. Su roadmap de evolución vive en `projects/kanam-tetris/.knowledge/ROADMAP-TETRIS.md`. No cambia el norte: Tetris no es una obra.
 - **`kanam-forge` como apuesta vigente.** Último push 2026-08-30; sin actividad en la ventana.
 - **La "segunda máquina".** Retirada el 2026-09-29 (ADR-085): el workspace vive solo en la Mac Mini.
 

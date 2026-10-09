@@ -76,8 +76,9 @@ umbrawriter-v2/
 /clones/*/
 /clones/*/**
 
-# sandbox/: pruebas temporales y analisis aislado. NO se commitea.
-sandbox/
+# playground/: pruebas temporales y analisis aislado. NO se commitea.
+# (nombre 2026-10-09: antes 'sandbox/', renombrado para no confundir con 'sandbox.mode' del gateway)
+playground/
 
 # Session logs automaticos de OpenClaw (memory/YYYY-MM-DD-HHMM.md) - no se commitean.
 # Anclado a la raiz (un solo * no cruza /): archive/sessions/ SI se versiona.
