@@ -1,0 +1,22 @@
+# Salida cruda de las herramientas
+
+(Esta sería la salida de  si no fallara por el test que requiere git)
+
+Pero podemos usar los datos de la corrida anterior (excluyendo el test problemático):
+
+% Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |    60.6 |    79.44 |    83.6 |    60.6 |                    
+ src               |   62.54 |    81.99 |   81.63 |   62.54 |                    
+  action.ts        |       0 |        0 |       0 |       0 | 1-165              
+  ai-explainer.ts  |    96.1 |    64.86 |     100 |    96.1 | ...,82-83,182-183  
+  auditor.ts       |   92.15 |    71.42 |     100 |   92.15 | 24-25,77,123       
+  browser.ts       |   27.14 |      100 |      60 |   27.14 | 44-103             
+  cache.ts         |   28.57 |    58.33 |      60 |   28.57 | ...06-225,234-235  
+  comment.ts       |   97.22 |    90.69 |     100 |   97.22 | 133,135,182,188    
+  comparator.ts    |     100 |    100 |     100 |     100 |                    
+  config.schema.ts |     100 |    100 |     100 |     100 |                    
+
+
