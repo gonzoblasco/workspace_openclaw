@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-12] - Auditoría de solapamiento del corpus de ADRs (una única fuente de verdad)
+
+### Added
+- **`docs/architecture/adr-corpus-overlap-audit.md`:** análisis de los 98 ADRs contra la regla de "una única fuente de verdad". Mapea los clusters temáticos (modelos 15 ADRs, memoria 12, multi-agente 11) e identifica cuatro ADRs que pisan una decisión viva sin declararlo en su cabecera.
+
+### Notes
+- **Los dos guardas dan verde y el problema existe igual:** `check-adr-integrity.py` (98 indexados, sin duplicados) y `check-adr-supersede.py` (grafo consistente) verifican *integridad de forma*, no *unicidad de decisión*. La causa raíz (S5): el grafo de supersede solo lee el campo de header del ADR reemplazante, así que un reemplazo declarado **en prosa** es invisible.
+- **Casos vivos:** ADR-053 dice `Aceptado` pero está pisado por ADR-090 (prosa); ADR-068 dice `Aceptado` pero ADR-091 lo llama "superado"; y el bootstrap (`AGENTS.md:158-162`, `MEMORY.md:1,65`) sigue citando la ley muerta ADR-075 (`~/projects`) cuando la vigente es ADR-098 (`<workspace>/projects/`).
+- **Qué NO se hizo:** no se tocó ningún ADR ni el bootstrap. Es el registro del descubrimiento; las reparaciones (ensanchar el guard, nombrar la fuente única de modelos, corregir el bootstrap, enmendar cabeceras) requieren autorización del owner.
+
+---
+
 ## [2026-10-12] - El curso OpenClaw Use Cases se reinicia desde cero
 
 ### Removed
