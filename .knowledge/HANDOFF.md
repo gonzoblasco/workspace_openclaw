@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-12 03:05 GMT-3
+**Fecha:** 2026-10-12 03:31 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,24 +12,34 @@
 
 ## Que se hizo en esta sesion
 
-AUDITORIA DE LA CONVERSACION (3 dias, solo los cambios de ESTE hilo: commits d902cdfc35, 8a0293d07d, c92155e21d) + CIERRE. HALLAZGO 1 (grave, mio): el 'GLOBAL=aprobado (5/5)' que reporte el 2026-10-08 era un FALSO VERDE. El fix del caso 4 lo aplique sobre el archivo GENERADO (sandbox/case4_oro/tests/test_foo.py), que scaffold.py reescribe en cada corrida. Correr el lab desde cero (scaffold -> build -> hunter -> validate) devolvia GLOBAL=veto con caso4=parcial (pytest rc=2, error de import). Dos defectos reales, ambos en la FUENTE: (a) scaffold.py generaba 'from foo import foo' pero foo.py vive en la raiz del caso, no en tests/, asi que los casos trampa degeneraban en error de coleccion; ahora los tests insertan la raiz del caso en sys.path -> caso2 falla por su ASERCION rota (parcial real, rc=1) y caso4 pasa de verdad (rc=0). (b) detector_coverage forjaba la cadena 'coverage command not found' SOLO para satisfacer el regex de cases.py, aun con coverage instalado: convertia al detector en complice del falso verde. Ahora reporta la razon honesta y el patron de cases.py se amplio para aceptar la verdad. Verificado desde cero: GLOBAL=aprobado (5/5). Commit c92155e21d, pusheado, CI en curso. HALLAZGO 2 (preexistente, no mio): tests/python/test_contrast.py::test_fixture_no_deriva_del_css_real falla en local. Causa: el globals.css real de kanam-os ya NO define bloques --k-* inline (usa @import de ../public/kanam.css + dark.css), pero read_themes() solo mira los bloques del archivo dado -> devuelve [] -> set(real)!=set(fixture). Yo NO toque read_themes (verificado: git show 8a0293d07d no lo cambia). El test esta stale respecto de la arquitectura de tokens via @import. NO lo arregle: toca kanam-os/CI y excede esta conversacion. HALLAZGO 3 (preexistente, no mio): el sandbox del lab tenia un fix a mano identico que nunca vivio en scaffold.py; ahora muerto. HALLAZGO 4 (higiene): al commit d902cdfc35 arrastre 4 archivos de OTRA sesion (scripts/security-scan.py, check-a11y-trigger.py y sus tests) por un 'git add' no acotado. En una conversacion posterior ya se aclaró que el estado de git se separa de lo que se commitea. LECCION GLOBAL: un fix aplicado al ARTEFACTO GENERADO y no a su GENERADOR es un falso verde latente - verificar SIEMPRE re-generando desde la fuente, no sobre el archivo que quedo en disco. Y: un detector NO debe elegir su mensaje para satisfacer su propio test; el patrón se adapta a la verdad, no al revés. ESTADO FINAL: lab del critic verificado desde cero; gates OK (check-refs 152 rutas, check-roadmaps 7/7); CI de d902cdfc35/8a0293d07d verde. PENDIENTE: (1) decidir si el test de fixture se actualiza en kanam-os o se marca skip cuando el CSS usa @import; (2) seguir tramo 3 del meta-roadmap (critic/auditor a v0.5).
+AUDITORIA (solo los cambios de ESTA conversacion) + cierre, hecha con modelo grande. QUE HIZO ESTA CONVERSACION: nacio 2026-10-10 con un principio de Gonzo sobre higiene de git (git status confirma que paths estan staged; git diff --staged revisa el contenido exacto antes del commit) y una charla de roadmap para adoptarlo. Los primeros turnos los respondio un modelo chico y salieron con relleno, sin ejecutar. Hoy se rehizo como auditoria real contra el repo. HALLAZGO 1 (principal): esta conversacion NO produjo NINGUN cambio en el repo - solo comandos de lectura (git status/diff/log/reflog) y discusion. No hay archivos propios para commitear. El arbol sucio pertenece a OTRAS sesiones (accessibility-oracle, kanam-critic/ROADMAP.md, check-contrast.py, studies/openclaw-use-cases, lore_*, fichas_*, docs/PLAN-FASE-2.md, dailies 10/11). HALLAZGO 2 (concurrencia, NUEVO): durante la investigacion read-only el HEAD cambio SOLO 3 veces (ee49a3269f -> aba5c2d435 -> ae9007ed62) y el reflog mostro un commit creado y reseteado (49a9418b7f -> reset HEAD~1). Hay MULTIPLES sesiones dashboard vivas escribiendo el MISMO repo a la vez. Implicacion: el workspace es recurso compartido; un cierre debe commitear SOLO lo propio y no pelear con el indice. EL PRINCIPIO (lo que Gonzo queria adoptar): antes de commitear, dos preguntas - git status (que paths entran) + git diff --staged (que cambia adentro). Ya es practica: se inspecciona el estado y se ELIGE lo que se commitea (leccion del git add no acotado del 2026-10-12). PENDIENTE PROPIO: ninguno.
 
 ## Estado actual
 
-Lab del Critic: verificado desde cero (aprobado 5/5). Un falso verde propio detectado y corregido (c92155e21d, pusheado). Test de contraste: fallo preexistente, no mio, fuera de alcance.
+Esta conversacion no toco el repo. Arbol sucio = otras sesiones. Concurrencia confirmada (HEAD cambio solo 3 veces).
 
 ## Proximos pasos
 
-1) Resolver el test de fixture de contraste (kanam-os usa @import: read_themes no ve temas). 2) Tramo 3 del meta-roadmap: escalar critic y auditor a v0.5. 3) Committear skills untracked del auditor/critic cuando toque esa fase.
+1) Antes de commitear archivos ajenos, correr el gate de roadmaps (kanam-critic v0.2). 2) Seguir tramo 3 del meta-roadmap (critic/auditor a v0.5).
 
 ## Decisiones y contexto que no debe perderse
 
-- Regla nueva: la verificacion se corre RE-GENERANDO el artefacto desde su fuente, nunca sobre el archivo que quedo en disco. Un patrón de test se adapta a la razon honesta del detector; el detector NUNCA fabrica su mensaje para satisfacer su propio test.
+- El estado de git (git status) es informativo y se inspecciona; se commitea SOLO lo elegido (git diff --staged), nunca un add no acotado.
 
 ## Archivos tocados
 
 ```
+.gitignore
+.knowledge/HANDOFF.md
+agents/kanam-auditor/skills/accessibility-oracle/bin/a11y-oracle
+agents/kanam-auditor/skills/accessibility-oracle/src/oracle.js
+agents/kanam-critic/ROADMAP.md
+docs/roadmap-tracking.json
+memory/memory.db
+scripts/check-contrast.py
+scripts/check-roadmaps.py
 studies/openclaw-use-cases/INDEX.md
+tests/python/test_contrast.py
 ```
 
 ## Como continuar
