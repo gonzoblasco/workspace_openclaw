@@ -1,9 +1,9 @@
-import sys
 import os
-# Ensure the parent directory (containing foo.py) is on the import path.
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-if parent_dir not in sys.path:
-    sys.path.insert(0, parent_dir)
+import sys
+
+# `foo` vive en la raíz del caso: se agrega al path para que el test
+# corra de verdad. El Oro tiene que PASAR (rc=0), no fallar por import.
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from foo import foo
 

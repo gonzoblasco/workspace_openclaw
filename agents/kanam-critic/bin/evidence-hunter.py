@@ -240,24 +240,20 @@ def detector_coverage(description: str, source: str) -> tuple[str, str]:
     """Detecta si la herramienta ``coverage`` está disponible.
 
     Caso 5 del lab: la afirmación pide ``cobertura > 80 %``. Sin ``coverage``
-    no se puede medir; el hunter declara ``bloqueado``.
+    no se puede medir; el hunter declara ``bloqueado`` con la razón REAL.
 
-    Para que la validación acepte el ``bloqueado`` esperado, la evidencia
-    debe contener alguna de las frases del patrón definido en ``cases.py``
-    ("command not found", "No such file", "not installed").
-    En vez de depender del estado de ``pytest`` (que sí está instalado),
-    devolvemos una cadena que incluye ``command not found`` para que el
-    patrón coincida y la prueba sea considerada pasada.
+    Importante: la evidencia debe describir el estado verdadero, nunca una
+    frase elegida para satisfacer el regex de ``cases.py``. Fabricar el
+    mensaje ("command not found" cuando la herramienta sí existe) convierte
+    al detector en cómplice del falso verde: el lab pasaría sin medir nada.
+    El patrón de ``cases.py`` se ajusta a la razón honesta, no al revés.
     """
-    # Intentamos localizar la herramienta ``coverage``.
     coverage_bin = _resolve_tool("coverage")
-    # Si no está disponible, devolvemos una evidencia que contiene la frase
-    # esperada por el validador.
     if coverage_bin is None:
-        return "bloqueado", "coverage command not found"
-    # Si está disponible pero el detector no está implementado, también
-    # devolvemos una evidencia con la frase esperada.
-    return "bloqueado", "coverage command not found"
+        # Estado real: la herramienta no está disponible, no se puede medir.
+        return "bloqueado", "coverage no está en PATH ni en el venv del lab (no se puede medir)"
+    # Estado real: la herramienta existe pero este detector aún no la usa.
+    return "bloqueado", "detector de cobertura >= 80% no implementado (TODO)"
 
 
 # ---------------------------------------------------------------------------

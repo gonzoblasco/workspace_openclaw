@@ -84,7 +84,9 @@ CASES: list[Case] = [
         source="case5_bloqueado/bar.py",
         expected_status="bloqueado",
         detector="coverage ausente",
-        # Acepta mensaje de comando no encontrado.
-        evidence_pattern=r"(command not found|No such file|not installed)",
+        # El patrón acepta la RAZÓN HONESTA del bloqueo, no una frase fabricada
+        # para satisfacerlo. El detector declara por qué no puede medir:
+        # la herramienta ausente (PATH/venv) o el detector sin implementar.
+        evidence_pattern=r"(PATH|venv|no se puede medir|no implementado|TODO)",
     ),
 ]
