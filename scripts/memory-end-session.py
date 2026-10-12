@@ -21,6 +21,7 @@ Before writing, md-only sections are merged into the DB and the .md is backed up
 """
 
 import argparse
+import hashlib
 import shutil
 import sqlite3
 import os
@@ -56,37 +57,92 @@ def get_or_create_daily(conn, date):
     return row
 
 
-def build_session_block(project, summary, branch, tscores):
-    """Build the markdown session-end block to append."""
+SESSION_FP_PREFIX = "<!-- session-fp: "
+
+
+def session_fingerprint(project, summary, branch, tscores, session_id=""):
+    """Idempotency key for a save operation (B7).
+
+    A retry of the SAME save passes the same inputs -> same fingerprint -> it is
+    skipped. A genuinely different session (different summary/id) gets a different
+    fingerprint -> it is allowed even for the same project/date.
+    """
+    seed = "|".join([
+        (project or "").strip(),
+        (summary or "").strip(),
+        (branch or "").strip(),
+        (tscores or "").strip(),
+        (session_id or "").strip(),
+    ])
+    return hashlib.sha1(seed.encode("utf-8")).hexdigest()[:16]
+
+
+def build_session_block(project, summary, branch, tscores, heading=None, fingerprint=""):
+    """Build the markdown session-end block to append.
+
+    `heading` lets the caller pick a unique "## Session End - ..." title (B9), so
+    two distinct sessions on the same day do not share a heading (the export's
+    _dedupe_sections collapses same-heading sections, which would drop one).
+    """
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
-    block = f"""
-## Session End - {project}
-**End:** {now}
-**Summary:** {summary}
-**Branch:** {branch}
-"""
+    head = heading or f"## Session End - {project}"
+    lines = [f"## {head.lstrip('# ').strip()}", f"**End:** {now}",
+             f"**Summary:** {summary}", f"**Branch:** {branch}"]
     if tscores:
-        block += f"{tscores}\n"
-    return block
+        lines.append(tscores)
+    if fingerprint:
+        lines.append(f"{SESSION_FP_PREFIX}{fingerprint} -->")
+    return "\n" + "\n".join(lines) + "\n"
 
 
-def append_to_daily_db(conn, date, block, project):
-    """Append session block to daily_notes content in DB (source of truth), idempotent.
-    Avoids duplicating if the same project already has a Session End for this date."""
-    marker = f"## Session End - {project}"
+def _unique_session_heading(existing_content, project):
+    """Next free "## Session End - <project>" heading for the daily (B9).
+
+    The first session gets the base heading; later distinct sessions get
+    "... (2)", "... (3)", ... so their headings stay unique and the export's
+    section-dedupe does not collapse them into one.
+    """
+    lines = {ln.strip() for ln in (existing_content or "").split("\n")}
+    base = f"## Session End - {project}"
+    if base not in lines:
+        return base
+    k = 2
+    while f"{base} ({k})" in lines:
+        k += 1
+    return f"{base} ({k})"
+
+
+def _content_has_fingerprint(content, fingerprint):
+    return bool(fingerprint) and (SESSION_FP_PREFIX + fingerprint + " -->") in (content or "")
+
+
+def append_to_daily_db(conn, date, project, summary, branch, tscores, fingerprint=""):
+    """Append the session block to daily_notes content in DB (source of truth).
+
+    Idempotency (B7): if the SAME save was already recorded (same fingerprint), skip.
+    Distinct sessions (B9): a DIFFERENT session for the same project/date is allowed,
+    with a unique heading so the export's section-dedupe does not collapse it.
+
+    Returns (daily_id, inserted, reason).
+    """
     row = get_or_create_daily(conn, date)
-    # Match the marker on a WHOLE LINE, never as a substring: "## Session End - workspace"
-    # is a substring of "## Session End - workspace-general", so a plain `in` check
-    # silently blocked saves for the shorter slug (found 2026-09-15).
-    if row and any(ln.strip() == marker for ln in row["content"].split("\n")):
-        # Already recorded for this project/date - skip to avoid duplicate
-        return row["id"], False
+    existing = row["content"] if row else ""
+
+    # B7: exact retry of the same save -> no duplicate.
+    if _content_has_fingerprint(existing, fingerprint):
+        return (row["id"] if row else None), False, "duplicate"
+
+    # B9: a distinct session for the same project gets a unique heading so
+    # _dedupe_sections (which keeps only the first same-heading section) does not
+    # silently drop it on export.
+    heading = _unique_session_heading(existing, project)
+    block = build_session_block(project, summary, branch, tscores,
+                                heading=heading, fingerprint=fingerprint)
 
     if row:
-        new_content = row["content"] + block
         conn.execute(
             "UPDATE daily_notes SET content=? WHERE id=?",
-            (new_content, row["id"]),
+            (existing + block, row["id"]),
         )
         daily_id = row["id"]
     else:
@@ -96,7 +152,7 @@ def append_to_daily_db(conn, date, block, project):
         )
         daily_id = cur.lastrowid
     conn.commit()
-    return daily_id, True
+    return daily_id, True, heading
 
 
 def _strip_title(text, date):
@@ -304,7 +360,10 @@ def main():
     if not args.dedupe_only and (not args.project or not args.summary):
         parser.error("--project and --summary are required unless --dedupe-only is set")
 
-    block = build_session_block(args.project, args.summary, args.branch, args.tscore)
+    # B7: fingerprint de contenido -> reintento identico = skip; sesion distinta = permitida.
+    fingerprint = ""
+    if not args.dedupe_only:
+        fingerprint = session_fingerprint(args.project, args.summary, args.branch, args.tscore)
 
     # B6 (2026-10-12): varias sesiones cierran sobre el MISMO repo a la vez. El
     # reconcile (.md -> DB), el append y la exportacion (.md <- DB) son un ciclo
@@ -323,12 +382,16 @@ def main():
                 if dreport:
                     print(f"   [dedupe] {dreport}")
             if not args.dedupe_only:
-                daily_id, inserted = append_to_daily_db(conn, args.date, block, args.project)
+                daily_id, inserted, reason = append_to_daily_db(
+                    conn, args.date, args.project, args.summary, args.branch, args.tscore,
+                    fingerprint=fingerprint)
                 if inserted:
                     print(f"✅ Daily actualizado en DB (id={daily_id}) para {args.date}")
                     print(f"   Proyecto: {args.project}")
+                elif reason == "duplicate":
+                    print(f"ℹ️  Reintento identico de '{args.project}' en {args.date} - sin duplicar (fingerprint)")
                 else:
-                    print(f"ℹ️  Ya existe un Session End para '{args.project}' en {args.date} - sin duplicar")
+                    print(f"ℹ️  Sin cambios para '{args.project}' en {args.date}")
         finally:
             conn.close()
 
