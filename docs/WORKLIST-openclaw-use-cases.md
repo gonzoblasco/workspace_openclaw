@@ -8,6 +8,13 @@
 
 **Estado:** borrador para revisión de Gonzo. Ningún ítem está aprobado ni ejecutado.
 
+### Progreso de ejecución (2026-10-12)
+
+- **B6** (concurrencia multi-writer): ✅ **implementado** - `scripts/lockutil.py` + lock en `memory-end-session.py` / `session-handoff.py` (commit `39f792283b`).
+- **B7/B9** (idempotencia + dedup por sesión): ✅ **implementado** - fingerprint de contenido + heading único por sesión (commit `2c74061865`).
+- **A3** (`openclaw doctor`): ✅ **implementado** - integrado en `gateway-audit.sh` (commit `794727eae8`).
+- **A2** (allowlist de tools): 🔎 **revisado, SIN acción** (ver sección A2).
+
 ---
 
 ## A. Capacidades reales de OpenClaw poco aprovechadas
@@ -20,13 +27,12 @@
 - **Decisión propuesta:** evaluar 1 caso concreto (p. ej. "PR abierto en un repo vigilado → turno de triage") antes de habilitar `hooks.enabled`. Requiere definir `hooks.token` (Bearer) y allowlist de agentes.
 - **Prioridad:** media (exploratoria).
 
-### A2. Allowlist de herramientas por automation (`--tools`)
+### A2. Allowlist de herramientas por automation (`--tools`) - revisado, sin acción (2026-10-12)
 
-- **Qué es:** las automations aceptan `--tools exec,read` (o `--tools ""` para deshabilitar todo). "New jobs that can run tools always store an explicit tool policy."
-- **Evidencia:** docs de OpenClaw: automation/cron-jobs/payloads. En la config, **los agentes de rol no tienen política de tools explícita** (`kanam-dev/mind/ops/studio/critic/auditor/planner` → `tools: None`); solo `main` tiene `tools.profile: full`. Y la mayoría de las ~17 automations activas corren en sesión `isolated`.
-- **Por qué importa:** mínimo privilegio. Un job de diagnóstico no debería poder `exec` destructivo. El curso lo eleva a principio (L06).
-- **Decisión propuesta:** definir política de tools por agente (o por automation sensible), empezando por las que corren código (p. ej. `gateway-daily-audit`, `openclaw-backup-schedule`).
-- **Prioridad:** media-alta (seguridad).
+- **Qué es:** las automations aceptan `--tools exec,read` (o `--tools ""`). Mínimo privilegio.
+- **Relevo real (evidencia):** **todas** las automations que corren un turno de agente ya tienen `toolsAllow` explícito (pipeline-queue-watcher, langchain-starter-health-watch, gateway-daily-audit, las skill-collection-review por rol, moltbook-weekly-digest, cpacc-aplicacion-abre, Memory Dreaming). Las únicas sin `toolsAllow` son `openclaw-backup-scheduled` (kind=`command`: corre shell en el host, no invoca tools del modelo) y `heartbeat-main` (job system-owned). **No hay brecha real.**
+- **Sobre forzar un `tools.profile` a los agentes de rol:** se evaluó y **se descartó**: sus skills usan `browser`, `message`, `exec`, `edit`, `write`, `sessions_spawn`, `tts`. Un perfil estrecho (p. ej. `coding`, que **no** incluye `message`) rompería sus workflows. Los roles quedan sin perfil explícito (default = core unfiltered) a propósito.
+- **Decisión:** **no se cambia nada.** La brecha que el worklist suponía no existe; forzar perfiles sería un cambio riesgoso sin beneficio. Ítem cerrado.
 
 ### A3. `openclaw doctor` como motor de health-checks
 
