@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-12 03:44 GMT-3
+**Fecha:** 2026-10-12 03:47 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,18 +12,26 @@
 
 ## Que se hizo en esta sesion
 
-AUDITORIA DE ESTA CONVERSACION (2026-10-12, segundo pasaje con modelo grande, tras auditorias 02:45-03:35 de otros threads de esta sesion): (1) VERIFICACION DEL REPORTE AJENO - el commit f29250213e (03:35, otro thread) cerro lo que esta conversacion habia validado/abierto: critic ROADMAP a v0.2 (Hito 2.2 cumplido), oracle record_verdict.py + query_verdicts.py operative (probado en vivo: 2 veredictos consultables), lab evidence-hunter GLOBAL=aprobado (5/5) desde cero (regenere sandbox y corre full pipeline, EXIT=0), gate de roadmaps 7/7 OK (el bloqueo del pre-commit por drift v0.1/v0.2 quedo resuelto). (2) CORRECCION PROPIA: README.md del lab decia 'HOY: placeholder JSON; FUTURO: runner real' con el runner existente y verde desde el 2026-10-08 - actualizado al comando real. (3) HIGIENE: probe de prueba en verdicts.jsonl eliminado (el historial queda con solo los 2 veredictos reales). (4) Los veredictos auditados quedan registrados: roadmap 21/25 Aprobado (2026-10-07); verificacion CORE 21/25 Aprobado. NADA de esta conversacion queda pendiente en el repo. Deudas explicitas de la sesion (otros threads): deudas de kanam-tetris (3 tramas, 7 helpers muertos, TYPE_BY_COLOR), studies/L01-L03 sin clasificar en INDEX, lore_*/fichas_* sin destino.
+Auditoria de los cambios de ESTA conversacion (roadmap de roadmaps, 2026-10-07). Dos defectos propios encontrados y corregidos: (1) check-roadmaps.py index_versions() leia la columna equivocada (split [-3] = 'Estado verificado' en vez de la version); (2) la tabla de madurez de docs/ROADMAPS.md seguia diciendo 'falta / crear roadmap' para los 5 roles que ya tienen ROADMAP.md desde 2026-10-07.
+
+## Estado actual
+
+7/7 roles con ROADMAP.md. Guard check-roadmaps.py verifica existencia, forma, marcador y coherencia de version contra docs/ROADMAPS.md Y docs/roadmap-tracking.json; corre en pre-commit y en CI. Solo kanam-critic escalo a v0.2; el resto v0.1. Commit 3efc4db993.
+
+## Proximos pasos
+
+1. Escalar por dependencia (Tramo 3): critic y auditor primero, luego dev, despues ops/mind, planner/studio al final.
+2. Cerrar los pendientes del lab evidence-hunter del critic (G1-G3 del HANDOFF anterior) hasta GLOBAL=aprobado 5/5 verificado en disco.
+3. Verificar si el resto de las sesiones concurrentes de la madrugada dejaron algo sin commitear que sea mio.
+
+## Decisiones y contexto que no debe perderse
+
+- El indice de madurez (docs/ROADMAPS.md) y la tabla de seguimiento (docs/roadmap-tracking.json) son DOS vistas; cuando discrepan, gana el archivo del rol y se corrigen ambas. El guard hace cumplir esa coherencia. Una regla sin guarda se viola sola (ADR-083).
 
 ## Archivos tocados
 
 ```
 .knowledge/HANDOFF.md
-USER.md
-agents/kanam-critic/tests/evidence-hunter/README.md
-docs/ROADMAPS.md
-memory/2026-10-12.md
-memory/memory.db
-scripts/check-roadmaps.py
 studies/openclaw-use-cases/INDEX.md
 ```
 
