@@ -32,12 +32,13 @@
 | M4 · L18 | Detección de Inconsistencias en Documentación Técnica - `L18-inconsistencias-docs.md` | ✅ Completada |
 | M4 · L19 | Consolidación Automática de Bitácoras de Trabajo - `L19-consolidacion-bitacoras.md` | ✅ Completada |
 | M4 · L20 | Limpieza Selectiva de Registros de Contexto - `L20-limpieza-contexto.md` | ✅ Completada |
-| M5 · L21 | Desglose Estratégico de Tareas Complejas (teaser del curso) | ⏳ Próxima |
+| M5 · L21 | Desglose Estratégico de Tareas Complejas - `L21-desglose-tareas.md` | ✅ Completada |
+| M5 · L22 | Ejecución Consecutiva de Herramientas y Habilidades (teaser del curso) | ⏳ Próxima |
 | ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
 
-**Completadas:** 20 / 30.
+**Completadas:** 21 / 30.
 
-> ✅ **Módulo 1** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). ✅ **Módulo 3** (*Ingesta Dirigida por Eventos*, L11-L15). ✅ **Módulo 4** (*Gestión Proactiva del Workspace*, L16-L20). La Lección 21 abre el **Módulo 5: Encadenamiento en Bucle Agéntico**.
+> ✅ **Módulo 1** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). ✅ **Módulo 3** (*Ingesta Dirigida por Eventos*, L11-L15). ✅ **Módulo 4** (*Gestión Proactiva del Workspace*, L16-L20). **Módulo 5 en curso** (*Encadenamiento en Bucle Agéntico*): tras la L21 el propio curso indica *"4 lessons left"* → Módulo 5 = 5 lecciones (L21-L25).
 
 > ✅ **Módulo 1** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). ✅ **Módulo 3** (*Ingesta Dirigida por Eventos*, L11-L15). **Módulo 4 en curso** (*Gestión Proactiva del Workspace*): tras la L19 el propio curso indica *"1 lesson left"* → Módulo 4 = 5 lecciones (L16-L20).
 
@@ -50,8 +51,8 @@
 El curso declara **30 lecciones**. Confirmado por el material:
 
 - El nombre del Módulo 1: **Asistentes de Mensajería Contextuales**.
-- Tras la L20 el curso abre el **Módulo 5: Encadenamiento en Bucle Agéntico**, que arranca con *Desglose Estratégico de Tareas Complejas* (L21).
-- La Lección 21 anticipada: *Desglose Estratégico de Tareas Complejas*.
+- Tras la L21 el curso indica *"4 lessons left in Encadenamiento en Bucle Agéntico"* → el Módulo 5 tiene **5 lecciones** (L21-L25).
+- La Lección 22 anticipada: *Ejecución Consecutiva de Herramientas y Habilidades*.
 
 Los módulos 2-6 y las lecciones restantes **no se inventan**: se registran a medida que Gonzo comparte cada lección. El error del reinicio anterior fue fabricar un mapa de 6 módulos x 5 lecciones que no correspondía al curso.
 
