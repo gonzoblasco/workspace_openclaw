@@ -18,12 +18,13 @@
 | M1 · L04 | Generación Dinámica de Resúmenes de Conversaciones - `L04-resumenes-dinamicos.md` | ✅ Completada |
 | M1 · L05 | Derivación Segura de Mensajes a Operadores (Human-in-the-Loop) - `L05-handoff-operadores.md` | ✅ Completada |
 | M2 · L06 | Configuración de Tareas Periódicas con Cron - `L06-cron-tareas-periodicas.md` | ✅ Completada |
-| M2 · L07 | Monitorización del Sistema Mediante Heartbeats Periódicos (teaser del curso) | ⏳ Próxima |
+| M2 · L07 | Monitorización del Sistema Mediante Heartbeats Periódicos - `L07-heartbeats.md` | ✅ Completada |
+| M2 · L08 | Rutinas Nocturnas para Depurar Archivos Temporales (teaser del curso) | ⏳ Próxima |
 | ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
 
-**Completadas:** 6 / 30.
+**Completadas:** 7 / 30.
 
-> ✅ **Módulo 1 completo** (*Asistentes de Mensajería Contextuales*, L01-L05). **Módulo 2 en curso** (*Tareas Programadas y Rutinas Autónomas*): tras la L06 el propio curso indica *"4 lessons left"* → Módulo 2 = 5 lecciones (L06-L10).
+> ✅ **Módulo 1 completo** (*Asistentes de Mensajería Contextuales*, L01-L05). **Módulo 2 en curso** (*Tareas Programadas y Rutinas Autónomas*): tras la L07 el propio curso indica *"3 lessons left"* → Módulo 2 = 5 lecciones (L06-L10).
 
 ---
 
@@ -32,8 +33,8 @@
 El curso declara **30 lecciones**. Confirmado por el material:
 
 - El nombre del Módulo 1: **Asistentes de Mensajería Contextuales**.
-- Tras la L06 el curso indica *"4 lessons left in Tareas Programadas y Rutinas Autónomas"* → el Módulo 2 tiene **5 lecciones** (L06-L10).
-- La Lección 7 anticipada: *Monitorización del Sistema Mediante Heartbeats Periódicos*.
+- Tras la L07 el curso indica *"3 lessons left in Tareas Programadas y Rutinas Autónomas"* → el Módulo 2 tiene **5 lecciones** (L06-L10).
+- La Lección 8 anticipada: *Rutinas Nocturnas para Depurar Archivos Temporales*.
 
 Los módulos 2-6 y las lecciones restantes **no se inventan**: se registran a medida que Gonzo comparte cada lección. El error del reinicio anterior fue fabricar un mapa de 6 módulos x 5 lecciones que no correspondía al curso.
 
