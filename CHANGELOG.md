@@ -6,7 +6,21 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-## [2026-10-12] - ADRs de proyecto salen del corpus global (6a) y el guard de supersede deja de ser ciego al campo generico
+## [2026-10-12] - Reintroducida `debugging-and-error-recovery` en kanam-dev + SKILLS-INDEX sincronizado
+
+### Added
+- **`agents/kanam-dev/skills/debugging-and-error-recovery/SKILL.md`:** skill de depuración que cierra tres referencias colgantes (`ci-cd-and-automation:190`, `doubt-driven-development:229`, `observability-and-instrumentation:22` citaban una skill que no existía en ningún árbol). Destila el método de diagnóstico (localizar → reproducir → falsificar hipótesis → corregir causa → probar el fix Y el fix del fix) más nuestras reglas duras: reproducir antes de arreglar, el primer error del log es un síntoma, un verde sin casos corridos no es verde, no arreglar enmascarando, contrato de evidencia, y el caso dev-vs-prod. Escrita en la convención de sus hermanas (inglés, estilo addyosmani).
+
+### Changed
+- **`SKILLS-INDEX.md` sincronizado con el disco (estaba desfasado en 3 árboles y 8 filas).** Totales re-medidos contra el CLI: dev 35→43, critic 1→2, auditor 1→5, total 84→99. Ocho skills que ya existían en disco y en el CLI pero no tenían fila: siete en dev (`api-integration-test`, `chaos-engineering`, `code-metrics`, `compatibility-testing`, `dependency-advisor`, `performance-benchmark`, `threat-modeling`, todas del commit `a68e19d819`) más `debugging-and-error-recovery`; en critic, `evidence-hunter`; en auditor, las cuatro hermanas de `surface-alignment-audit`. Nota de conteo agregada: `find agents/*/skills -name SKILL.md` sobrecuenta por los `node_modules` de `playwright-core` en el auditor; la autoridad es el CLI (`source == openclaw-workspace`).
+
+### Notes
+- **Reintroducción, no alta nueva.** `debugging-and-error-recovery` figuraba en la sección 4 (Retiradas) desde la reestructuración del 2026-09-22, retirada junto con su colección de origen. Al reescribirla con nuestras reglas duras (no es la versión vieja) se reintegra al inventario; queda anotado en su fila.
+- **Contexto:** sale de la evaluación de `mergisi/awesome-openclaw-agents` (catálogo de 196 SOULs, no instalable). El único hueco sustantivo que apareció en el cotejo contra nuestra colección fue que tres skills citaban una skill de depuración ausente - un hueco propio, no una pieza faltante del repo externo.
+- **Verificación:** `check-refs.py SKILLS-INDEX.md` OK (100 rutas); `check-agent-skill-boundary.py` OK; `check_em_dash.py` OK en ambos archivos; totales por árbol re-contados contra el disco.
+
+---
+
 
 ### Changed
 - **Movidos `docs/adr/ADR-068` y `ADR-091` al proyecto `soporteml`** (`projects/soporteml/.knowledge/adr/ADR-0001-soporteml-greenfield-desde-v1.md` y `ADR-0002-soporteml-v4-cierre-stripe.md`). Regla 3 de ADR-067 y `docs/adr/README.md` ("sin referencias al proyecto que lo originó"): un ADR cuyo sujeto es un proyecto vive con el proyecto, no en el corpus global. Renumerados en la serie del proyecto, fila quitada del índice global (huecos [68, 91] intencionales), y consumidores repuntados: `ADR-042`, `docs/NORTH.md`, `docs/ROADMAP.md`, `docs/LANGCHAIN_STRATEGY.md`, `MEMORY.md`.

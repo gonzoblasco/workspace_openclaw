@@ -1,6 +1,6 @@
 # SKILLS-INDEX - Skills del workspace
 
-> Índice canónico del árbol de skills *git-tracked*. Verificado por última vez: **2026-09-29**.
+> Índice canónico del árbol de skills *git-tracked*. Verificado por última vez: **2026-10-12**.
 > Este archivo **no lleva su propio changelog**: cada cambio va a `CHANGELOG.md` y al historial de git.
 
 ---
@@ -21,21 +21,23 @@
 | Árbol | Activas |
 |---|---|
 | `skills/` (Core) | 27 |
-| `agents/kanam-dev/skills/` | 35 |
+| `agents/kanam-dev/skills/` | 43 |
 | `agents/kanam-mind/skills/` | 10 |
 | `agents/kanam-ops/skills/` | 4 |
 | `agents/kanam-studio/skills/` | 7 |
-| `agents/kanam-critic/skills/` | 1 |
+| `agents/kanam-critic/skills/` | 2 |
 | `agents/kanam-planner/skills/` | 1 |
-| `agents/kanam-auditor/skills/` | 1 |
-| **Total activas** | **84** |
+| `agents/kanam-auditor/skills/` | 5 |
+| **Total activas** | **99** |
 
 > **El ciclo SDD (9 skills `hermes-*`) se movió del árbol del Core al de `kanam-dev` el 2026-09-29** (ADR-083).
 > Estaba en `skills/`, así que el Core veía el playbook de ingeniería - `hermes-builder` dice
-> "implementation. Writes the change's code" - y lo ejecutó. Los totales por árbol cambiaron
-> (36→27 y 25→34); el total sigue 78 porque fueron movimientos, no altas ni bajas.
+> "implementation. Writes the change's code" - y lo ejecutó. En aquel corte los totales por árbol
+> pasaron de 36→27 (Core) y 25→34 (dev) sin cambiar el total: fueron movimientos, no altas ni bajas.
 
-Además hay **1 placeholder**: `agents/kanam-mind/skills/study-tracker/` (`user-invocable: false`). Existe en disco (79 `SKILL.md` en total) pero no es una skill activa: se conserva solo para resolver referencias legacy. No se cuenta ni se lista como fila.
+Además hay **1 placeholder**: `agents/kanam-mind/skills/study-tracker/` (`user-invocable: false`). El CLI lo lista igual (`source: openclaw-workspace`), así que está contado dentro de los 10 de `kanam-mind`; se conserva solo para resolver referencias legacy.
+
+> **Nota de conteo (2026-10-12).** El conteo por árbol es el del CLI (`source == openclaw-workspace`), no el de directorios: `agents/<rol>/skills/*/node_modules/**/SKILL.md` (los trae `playwright-core` en `kanam-auditor`) no entra. `find agents/*/skills -name SKILL.md` cuenta esos `node_modules` y sobrecuenta.
 
 ---
 
@@ -117,7 +119,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [superpowers](skills/superpowers/) | Workflow spec-first con TDD y ejecución por subagentes |
 | [self-improving-agent](skills/self-improving-agent/) | Captura aprendizajes, errores y correcciones en markdown para mejora continua |
 
-### 3.2 kanam-dev - `agents/kanam-dev/skills/` (35)
+### 3.2 kanam-dev - `agents/kanam-dev/skills/` (43)
 
 > Ciclo completo Define → Plan → Build → Verify → Review → Ship. Base: `addyosmani/agent-skills`; ⭐ = fusionada con capacidades propias de Kanam.
 
@@ -135,15 +137,23 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | Build | [design-direction](agents/kanam-dev/skills/design-direction/) | Dirección de arte antes de codear: las 4 preguntas (propósito, tono, restricciones, diferenciación), herramienta funcional vs pieza memorable, y el orden layout → tema → animación → código |
 | Build | [frontend-ui-engineering](agents/kanam-dev/skills/frontend-ui-engineering/) ⭐ | UI de producción accesible (WCAG 2.1 AA), responsive, design system |
 | Build | [api-and-interface-design](agents/kanam-dev/skills/api-and-interface-design/) | Contract-first, Hyrum's Law, One-Version Rule, error semantics |
+| Build | [api-integration-test](agents/kanam-dev/skills/api-integration-test/) | Contratos entre servicios end-to-end: esquema, flujos multi-servicio, error propagado |
+| Build | [debugging-and-error-recovery](agents/kanam-dev/skills/debugging-and-error-recovery/) | Del síntoma a la causa probada: localizar, reproducir, falsificar, probar el fix (y el fix del fix). **Reintroducida el 2026-10-12** |
 | Build | [openspec-pattern](agents/kanam-dev/skills/openspec-pattern/) | Contrato de intención antes del código, contra scope creep y deuda |
 | Build | [openspec](agents/kanam-dev/skills/openspec/) | CLI de OpenSpec: proposals, spec deltas, design, tasks, archive |
 | Verify | [browser-testing-with-devtools](agents/kanam-dev/skills/browser-testing-with-devtools/) | Chrome DevTools MCP: DOM, console, network, performance en vivo |
 | Verify | [cross-engine-css-measurement](agents/kanam-dev/skills/cross-engine-css-measurement/) | "Funciona en Chrome, falla en WebKit": causas aisladas con sondas mínimas |
 | Verify | [a11y-at-validation](agents/kanam-dev/skills/a11y-at-validation/) | Cuándo la validación manual con AT es obligatoria en OSS, y cómo documentarla |
+| Verify | [compatibility-testing](agents/kanam-dev/skills/compatibility-testing/) | Matriz real de entornos (motores, OS, dispositivos): evidencia por combinación, gate de CI |
+| Verify | [chaos-engineering](agents/kanam-dev/skills/chaos-engineering/) | Resiliencia por inyección controlada de fallos: hipótesis de estado estable, blast radius |
+| Verify | [code-metrics](agents/kanam-dev/skills/code-metrics/) | Métricas objetivas con umbral explícito: cobertura, complejidad, duplicación, hotspots |
 | Review | [security-and-hardening](agents/kanam-dev/skills/security-and-hardening/) | OWASP Top 10, auth patterns, secrets, límites del sistema |
+| Review | [threat-modeling](agents/kanam-dev/skills/threat-modeling/) | Modelado de amenazas: activos, actores, STRIDE/PASTA, scoring, mitigaciones |
 | Review | [performance-optimization](agents/kanam-dev/skills/performance-optimization/) | Measure-first, Core Web Vitals, profiling, bundle analysis |
+| Review | [performance-benchmark](agents/kanam-dev/skills/performance-benchmark/) | Benchmark reproducible: línea base, comparación tras el cambio, decisión con evidencia |
 | Ship | [git-workflow-and-versioning](agents/kanam-dev/skills/git-workflow-and-versioning/) | Trunk-based, commits atómicos, change sizing |
 | Ship | [ci-cd-and-automation](agents/kanam-dev/skills/ci-cd-and-automation/) | Shift Left, feature flags, pipelines con quality gates |
+| Ship | [dependency-advisor](agents/kanam-dev/skills/dependency-advisor/) | Dependencias: inventario, salud, riesgo/licencia, justificación y plan de migración |
 | Ship | [deprecation-and-migration](agents/kanam-dev/skills/deprecation-and-migration/) | Code-as-liability, deprecación obligatoria vs advisory, zombie code |
 | Ship | [documentation-and-adrs](agents/kanam-dev/skills/documentation-and-adrs/) | ADRs, API docs, docs inline: documentar el *why* |
 | Ship | [observability-and-instrumentation](agents/kanam-dev/skills/observability-and-instrumentation/) | Structured logging, RED metrics, OpenTelemetry, alertas por síntoma |
@@ -204,11 +214,12 @@ implementación: vivía en el árbol del Core, que así lo podía ejecutar. El C
 | [cv-tailor](agents/kanam-studio/skills/cv-tailor/) | Optimiza CVs contra el JD: keywords, reescritura STAR, compatibilidad ATS |
 | [mock-interview-drill](agents/kanam-studio/skills/mock-interview-drill/) | Simulacros de entrevista: Behavioral (STAR), Technical, Case, con diagnóstico |
 
-### 3.6 kanam-critic - `agents/kanam-critic/skills/` (1)
+### 3.6 kanam-critic - `agents/kanam-critic/skills/` (2)
 
 | Skill | Qué hace |
 |---|---|
 | [sharp-adversarial-review](agents/kanam-critic/skills/sharp-adversarial-review/) | Presión adversarial con la rúbrica SHARP: puntúa 5 ejes con evidencia citable, emite VETO / Aprobado / ORO y devuelve los puntos de fricción obligatorios |
+| [evidence-hunter](agents/kanam-critic/skills/evidence-hunter/) | Caza evidencia verificable en el repo para sustentar los ejes SHARP: convierte afirmaciones del autor en pruebas automáticas y arma la tabla de evidencia citada |
 
 ### 3.7 kanam-planner - `agents/kanam-planner/skills/` (1)
 
@@ -216,11 +227,15 @@ implementación: vivía en el árbol del Core, que así lo podía ejecutar. El C
 |---|---|
 | [session-plan-orchestration](agents/kanam-planner/skills/session-plan-orchestration/) | Orquesta la tarea como plan persistente (`.knowledge/session_plan.json`): traza pasos, asigna roles en orden y evita la amnesia de sesión |
 
-### 3.8 kanam-auditor - `agents/kanam-auditor/skills/` (1)
+### 3.8 kanam-auditor - `agents/kanam-auditor/skills/` (5)
 
 | Skill | Qué hace |
 |---|---|
 | [surface-alignment-audit](agents/kanam-auditor/skills/surface-alignment-audit/) | Audita la superficie contra el Design System: cruce de tokens, filtro Anti-Slop y contraste WCAG medido por rol |
+| [design-system-enforcer](agents/kanam-auditor/skills/design-system-enforcer/) | Guardián preventivo: valida componentes antes del merge contra los tokens declarados, detecta hardcode y veta el "AI Look" |
+| [accessibility-oracle](agents/kanam-auditor/skills/accessibility-oracle/) | Auditoría a11y en runtime: Playwright + axe-core, navegación por teclado, foco visible, con evidencia visual |
+| [pixel-diff](agents/kanam-auditor/skills/pixel-diff/) | Desalineación visual real vs especificación: el CSS contra los tokens y screenshots contra baseline de CI |
+| [surface-pipeline](agents/kanam-auditor/skills/surface-pipeline/) | Orquestador de la auditoría de superficie: corre las tres anteriores en secuencia y emite un único veredicto (APROBADO/ADVERTENCIA/RECHAZADO) |
 
 ---
 
