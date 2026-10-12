@@ -25,10 +25,11 @@
 | M3 · L11 | Recepción de Disparadores Externos vía Webhooks - `L11-webhooks.md` | ✅ Completada |
 | M3 · L12 | Extracción de Datos Críticos desde Notificaciones - `L12-extraccion-datos.md` | ✅ Completada |
 | M3 · L13 | Actualización Reactiva de Documentación Interna - `L13-docs-reactivos.md` | ✅ Completada |
-| M3 · L14 | Alertas Automatizadas Frente a Errores Críticos (teaser del curso) | ⏳ Próxima |
+| M3 · L14 | Alertas Automatizadas Frente a Errores Críticos - `L14-alertas-criticas.md` | ✅ Completada |
+| M3 · L15 | Creación Rápida de Tickets de Soporte (teaser del curso) | ⏳ Próxima |
 | ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
 
-**Completadas:** 13 / 30.
+**Completadas:** 14 / 30.
 
 > ✅ **Módulo 1 completo** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2 completo** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). **Módulo 3 en curso** (*Ingesta Dirigida por Eventos*): tras la L11 el propio curso indica *"4 lessons left"* → Módulo 3 = 5 lecciones (L11-L15).
 
@@ -39,8 +40,8 @@
 El curso declara **30 lecciones**. Confirmado por el material:
 
 - El nombre del Módulo 1: **Asistentes de Mensajería Contextuales**.
-- Tras la L13 el curso indica *"2 lessons left in Ingesta Dirigida por Eventos"* → el Módulo 3 tiene **5 lecciones** (L11-L15).
-- La Lección 14 anticipada: *Alertas Automatizadas Frente a Errores Críticos*.
+- Tras la L14 el curso indica *"1 lesson left in Ingesta Dirigida por Eventos"* → el Módulo 3 tiene **5 lecciones** (L11-L15).
+- La Lección 15 anticipada: *Creación Rápida de Tickets de Soporte*.
 
 Los módulos 2-6 y las lecciones restantes **no se inventan**: se registran a medida que Gonzo comparte cada lección. El error del reinicio anterior fue fabricar un mapa de 6 módulos x 5 lecciones que no correspondía al curso.
 
