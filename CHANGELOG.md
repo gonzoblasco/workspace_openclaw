@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-12] - Segundo eje de la auditoría de ADRs: alcance (un ADR de proyecto vive con el proyecto)
+
+### Added
+- **`docs/architecture/adr-corpus-overlap-audit.md` §6:** segundo eje del análisis, a pedido de Gonzo: *"aquellos relacionados con un proyecto en particular viva con el proyecto y no más en el scope global; los ADR no tienen por qué tener mención a proyectos específicos"*. Separa 6a (sujeto de proyecto → mudar al proyecto; 6 ADRs candidatos) de 6b (mención de evidencia → ~70 archivos) y 6c (no hay guard de alcance).
+
+### Notes
+- **La regla ya existe y se viola igual:** `docs/adr/README.md:110` ("sin referencias al proyecto que lo originó") y `ADR-067 §3` ("los ADRs de un proyecto viven en el repo del proyecto"). Ningún script la verifica. Precedente aplicado una sola vez: `ADR-048` se movió a `projects/kanam-lab/.knowledge/adr/0002-ui-framework-gradio.md` el 2026-09-22.
+- **Tensión registrada, sin barrer a ciegas:** el método del corpus se apoya en la evidencia (el caso real que motivó la decisión). ADR-067/078/088 citan proyectos como caso testigo; borrar la mención borra el *por qué*. Recomendación: aplicar 6a ya (concreto, ~6-8 mudanzas); 6b solo bajo una salida elegida por el owner (genericizar la evidencia vs acotar la regla como se acota el campo `Origen`).
+- **Nada movido ni editado:** sigue siendo el registro del descubrimiento.
+
+---
+
 ## [2026-10-12] - Auditoría de solapamiento del corpus de ADRs (una única fuente de verdad)
 
 ### Added

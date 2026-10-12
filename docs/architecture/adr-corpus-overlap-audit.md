@@ -120,7 +120,74 @@ Ordenada para que **cada paso cierre una clase de ambigüedad**, no un archivo s
 
 ---
 
-## 6. Registro
+## 6. Segundo eje - alcance: un ADR de proyecto vive con el proyecto (pedido 2026-10-12)
+
+Regla del owner: *"aquellos relacionados con un proyecto en particular viva con el proyecto y no más en el scope global; los ADR no tienen por qué tener mención a proyectos específicos."*
+
+**Esta regla ya está escrita, en dos lugares, y ninguno la verifica:**
+
+- `docs/adr/README.md:110` - *"Cada ADR sigue el formato estándar ... pero **sin referencias al proyecto que lo originó**"*.
+- `ADR-067 §3` - *"Un ADR de alcance de proyecto (stack, runtime, design tokens de esa app) pertenece al repo de esa app. El workspace aloja decisiones de alcance general. Mezclarlos es lo que produjo la confusión que originó este ADR."*
+
+**Precedente aplicado una sola vez:** en 2026-09-22 el `ADR-048` global ("UI de kanam-lab, mantener Gradio") colisionaba con otro 048; se movió a `projects/kanam-lab/.knowledge/adr/0002-ui-framework-gradio.md` y se renumeró. La nota del archivo movido lo dice literalmente. Ese es el procedimiento a repetir.
+
+Se parte en dos sub-reglas distintas, con tratamientos distintos:
+
+### 6a. Sujeto de proyecto → el ADR se muda al proyecto (concreto, pocos casos)
+
+Un ADR **cuyo sujeto es un proyecto** (gobierna la implementación de una app) no va en el corpus global.
+
+| ADR | Sujeto | Destino propuesto |
+|---|---|---|
+| **ADR-063** | kanam-insight (Python/LangChain) | `projects/kanam-insight/.knowledge/adr/` ⚠️ el árbol local no existe hoy |
+| **ADR-068** | SoporteML (greenfield v1) | `projects/soporteml/.knowledge/adr/` |
+| **ADR-091** | SoporteML (cierre v4) | `projects/soporteml/.knowledge/adr/` |
+| **ADR-096** | kanam-os adopta el DS | `projects/kanam-os/.knowledge/adr/` (la mitad global -el tema oscuro del sistema- se queda) |
+| **ADR-054** | kanam-os (app local sobre memory.db) | `projects/kanam-os/.knowledge/adr/` |
+| **ADR-094** | kanam-os (etapa 4) | `projects/kanam-os/.knowledge/adr/` |
+| **ADR-050** | ambiguo: nombra kanam-os pero gobierna la memoria del workspace | decidir (¿la memoria del sistema es global?) |
+| **ADR-079** | kanam-skills (repo) | repo de skills (archivado) - decidir |
+
+Los tres árboles de proyecto ya tienen su carpeta de ADRs (`kanam-lab/.knowledge/adr`, `kanam-spec/.knowledge/adr`, `kanam-fixer/docs/adr`, `kanam-onwheels/docs/adr`, `kanam-spec-v2/adrs`), así que el destino existe. Las mudanzas arrastran el **reindexado del corpus global** (renumerar/quitar filas), y las citas cruzadas `ADR-NNN` hacia esos números deben repuntar al ADR del proyecto.
+
+### 6b. Mención de proyecto como evidencia → masivo, y roza el método (ver tensión)
+
+El propio README lo declara ("sin referencias al proyecto que lo originó"), y se viola a escala. Conteo de menciones de slug de proyecto **en el cuerpo** (excluyendo `Origen`, que es trazabilidad permitida, y las fuentes de libro/estudio: `remix-book`, `testing-react-library`, `fullstack-graphql-react`, `react-18-design-patterns` - esas NO son proyectos):
+
+| ADR | Proyecto(s) citado(s) en el cuerpo | Veces |
+|---|---|---|
+| ADR-067 | soporteml | 13 |
+| ADR-096 | kanam-os | 12 |
+| ADR-066 | kanam-os | 11 |
+| ADR-098 | a11y-fixer, kanam-tetris, kanam-spec, kanam-os | 5 |
+| ADR-091 | soporteml | 7 |
+| ADR-063 | kanam-insight (+ langchain-starter) | 15 |
+| ADR-088 | ollama-visor | 3 |
+| ADR-084 | kanam-lab, kanam-story-bible | 4 |
+| ADR-083 | kanam-onwheels | 3 |
+| ADR-095 | kanam-os | 5 |
+| ADR-047/051 | kanam-lab | 4 / 2 |
+| ADR-037/042 | soporteml | 10 / 2 |
+| ... | (~70 archivos citan algún slug, la mayoría 1×) | |
+
+### Tensión a decidir (antes de barrer 70 archivos)
+
+**El método del corpus se apoya en la evidencia: el caso real que motivó la decisión.** ADR-067 (cita SoporteML como el caso testigo), ADR-078 (cita el auto-reporte falso), ADR-088 (cita `ollama-visor`, la sesión que motivó el enforcement) - todos *nombran el proyecto como prueba*. Borrar la mención borra la evidencia de por qué la regla nació.
+
+Hay dos salidas, y hay que elegir una:
+
+1. **Genericizar la evidencia:** reemplazar el nombre por la clase ("un proyecto del Crew", "una sesión de delegación"). Preserva la forma, pierde la trazabilidad.
+2. **Acotar la regla:** distinguir **sujeto** (lo que 7a mueve) de **cita de evidencia**, y permitir la cita como se permite hoy el campo `Origen`. Es explícitamente lo que el README ya hace con `Origen` ("solo trazabilidad").
+
+**Recomendación:** aplicar 7a (concreto, ~6-8 mudanzas) **ya**; y **7b solo bajo una de las dos salidas elegida por el owner**, porque un barrido de 70 archivos sin criterio falsifica evidencia. El costo de no decidirlo es un corpus que viola su propia regla declarada - pero un barrido a ciegas rompe más de lo que arregla.
+
+### 6c. Raíz: no hay guard de alcance
+
+Ningún script verifica que un ADR global no mencione un proyecto, ni que un ADR de sujeto-proyecto se haya mudado. Es el mismo agujero que S5 (relaciones de supersede solo en header), pero para el eje de alcance. Cerrar cualquiera de los dos sin el otro deja media regla sin enforcement.
+
+---
+
+## 7. Registro
 
 - **Evidencia base:** salida cruda de los dos guardas (sección 1) + lectura de los 98 headers y 15 cuerpos del cluster de modelos + grep de `~/projects` en `AGENTS.md`/`MEMORY.md`/`docs/`.
 - **Sin cambios al corpus:** este documento es el análisis; las reparaciones se ejecutan con autorización del owner.
