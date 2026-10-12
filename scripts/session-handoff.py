@@ -29,6 +29,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
+from lockutil import file_lock
+
 WORKSPACE = Path(__file__).resolve().parent.parent
 HOME = Path.home()
 
@@ -202,10 +204,15 @@ def main():
     content = build_handoff(args)
 
     target.parent.mkdir(parents=True, exist_ok=True)
-    existed = target.exists()
-    tmp = target.with_suffix(".md.tmp")
-    tmp.write_text(content, encoding="utf-8")
-    os.replace(tmp, target)
+    # B6 (2026-10-12): varias sesiones cierran sobre el MISMO repo; el HANDOFF es
+    # last-writer-wins. El lock serializa el ciclo (existed -> tmp -> replace) para
+    # que dos cierres simultaneos no se intercalen. `build_handoff` lee git; se
+    # mantiene fuera del lock (solo lectura) para minimizar la seccion critica.
+    with file_lock(target):
+        existed = target.exists()
+        tmp = target.with_suffix(".md.tmp")
+        tmp.write_text(content, encoding="utf-8")
+        os.replace(tmp, target)
 
     action = "actualizado" if existed else "creado"
     print(f"HANDOFF {action}: {target}")

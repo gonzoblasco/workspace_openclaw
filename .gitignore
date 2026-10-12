@@ -123,3 +123,6 @@ tmp-design/
 # que la auditoria del 2026-10-12 encontro en el propio cambio del 2026-10-07.
 /reports/
 agents/*/skills/*/reports/
+
+# Locks de escritura concurrente (lockutil.py, B6) - runtime, no se versiona
+.openclaw/locks/

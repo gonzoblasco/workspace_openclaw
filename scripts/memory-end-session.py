@@ -29,6 +29,8 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+from lockutil import file_lock
+
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
 WORKSPACE = Path(__file__).resolve().parent.parent
 
@@ -304,36 +306,44 @@ def main():
 
     block = build_session_block(args.project, args.summary, args.branch, args.tscore)
 
-    conn = db_connection()
-    try:
-        if not args.no_reconcile:
-            report = reconcile_md_into_db(conn, args.date)
-            if report:
-                print(f"   [guard] {report}")
-            dreport = dedupe_daily_db(conn, args.date)
-            if dreport:
-                print(f"   [dedupe] {dreport}")
-        if not args.dedupe_only:
-            daily_id, inserted = append_to_daily_db(conn, args.date, block, args.project)
-            if inserted:
-                print(f"✅ Daily actualizado en DB (id={daily_id}) para {args.date}")
-                print(f"   Proyecto: {args.project}")
-            else:
-                print(f"ℹ️  Ya existe un Session End para '{args.project}' en {args.date} - sin duplicar")
-    finally:
-        conn.close()
-
-    # Regenerate the .md as a view (optional but keeps humans able to read)
-    if not args.skip_export:
+    # B6 (2026-10-12): varias sesiones cierran sobre el MISMO repo a la vez. El
+    # reconcile (.md -> DB), el append y la exportacion (.md <- DB) son un ciclo
+    # leer-modificar-escribir sobre el daily; sin lock, dos cierres simultaneos
+    # se intercalan y una exportacion puede pisar la seccion de la otra. El lock
+    # es por el archivo de la DB (fuente de verdad del daily) y serializa el
+    # ciclo completo. `dedupe-only` tambien lo toma: reescribe el daily.
+    with file_lock(DB_PATH):
         conn = db_connection()
         try:
-            md_path = export_daily_to_md(conn, args.date)
-            if md_path:
-                print(f"   View .md regenerado: {md_path.relative_to(WORKSPACE)}")
+            if not args.no_reconcile:
+                report = reconcile_md_into_db(conn, args.date)
+                if report:
+                    print(f"   [guard] {report}")
+                dreport = dedupe_daily_db(conn, args.date)
+                if dreport:
+                    print(f"   [dedupe] {dreport}")
+            if not args.dedupe_only:
+                daily_id, inserted = append_to_daily_db(conn, args.date, block, args.project)
+                if inserted:
+                    print(f"✅ Daily actualizado en DB (id={daily_id}) para {args.date}")
+                    print(f"   Proyecto: {args.project}")
+                else:
+                    print(f"ℹ️  Ya existe un Session End para '{args.project}' en {args.date} - sin duplicar")
         finally:
             conn.close()
 
-    # Rebuild embeddings/topics from the DB-first daily (source of truth)
+        # Regenerate the .md as a view (optional but keeps humans able to read)
+        if not args.skip_export:
+            conn = db_connection()
+            try:
+                md_path = export_daily_to_md(conn, args.date)
+                if md_path:
+                    print(f"   View .md regenerado: {md_path.relative_to(WORKSPACE)}")
+            finally:
+                conn.close()
+
+    # Rebuild embeddings/topics from the DB-first daily (source of truth).
+    # Fuera del lock: no escribe el daily ni la DB de sesion.
     if not args.skip_catalog:
         run_catalog()
 
