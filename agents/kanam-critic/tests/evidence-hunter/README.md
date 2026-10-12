@@ -44,10 +44,8 @@ python3 tests/evidence-hunter/scaffold.py
 # 2. Construir el assertions.yaml (resuelve rutas absolutas del sandbox)
 python3 tests/evidence-hunter/build_assertions.py > /tmp/assertions.yaml
 
-# 3. Correr el hunter - HOY: placeholder JSON; FUTURO: runner real
-#    (TODO: implementar `bin/evidence-hunter.py` que aplique los detectores
-#     descritos en el SKILL.md y emita JSON con `details[]`).
-printf '{"details": []}\n' > /tmp/evidence.json
+# 3. Correr el hunter (runner real: bin/evidence-hunter.py)
+python3 bin/evidence-hunter.py /tmp/assertions.yaml > /tmp/evidence.json
 
 # 4. Validar la salida contra los esperados
 python3 tests/evidence-hunter/validate.py /tmp/evidence.json

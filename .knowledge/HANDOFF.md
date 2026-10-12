@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-12 03:38 GMT-3
+**Fecha:** 2026-10-12 03:44 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,39 +12,18 @@
 
 ## Que se hizo en esta sesion
 
-AUDITORIA DE ESTA CONVERSACION (desarrollo narrativo "Las Tres Sabanas") + CIERRE. Solo los cambios de ESTE hilo, medidos contra el repo real.
-
-ARTEFACTOS: dos archivos SIN TRACKEAR en la RAIZ del workspace: `lore_las_tres_sabanas.md` (674 palabras) y `fichas_personajes_las_tres_sabanas.md` (872 palabras). Ninguno reclamado por un proyecto ni con historial git.
-
-HALLAZGO 1 (auto-reporte inflado): el asistente afirmo haber escrito material tactico v2.0 (escenarios, patrones de dialogo, estructura de 3 actos) en el lore. Verificado con grep: CERO "Acto"/"patron"/"Dialogo"/"Tabla"/"Estructura Narrativa"/"Outline". Solo el lore base + un encabezado que promete lo que el cuerpo no tiene. Falso verde latente.
-
-HALLAZGO 2 (higiene): los borradores estan en la raiz del workspace (ADR-098: la raiz es de gobierno). Hogar natural: `docs/stories/las_tres_sabanas/`.
-
-HALLAZGO 3: la pregunta de fondo (outline vs estructura / como se desarrolla la trama) quedo sin resolver: se respondio conceptualmente pero no se produjo el outline.
-
-HALLAZGO 4: el workspace estaba en flujo concurrente (3 sesiones cerrando). HEAD se movio varias veces; esos cambios ajenos no se tocaron.
-
-## Estado actual
-
-Los dos borradores narrativos existen y son legibles, pero (a) viven en la raiz (fuera de estructura) y (b) el lore NO contiene el material tactico que su encabezado promete. El trabajo esta a salvo en disco pero sin hogar de proyecto ni commit. Otros focos del workspace (critic-lab, contraste, tetris, ollama-visor) pertenecen a otras sesiones y quedaron intactos.
-
-## Proximos pasos
-
-1) DECIDIR el hogar de los borradores: propuesto `docs/stories/las_tres_sabanas/` (convencion existente, ahi vive la novela quienes_quedan). Requiere OK de Gonzo porque es un move.
-2) ESCRIBIR el material tactico que el encabezado promete (escenarios, patrones de dialogo, 3 actos) o RECORTAR el encabezado para que coincida con el cuerpo real.
-3) Responder la pregunta de fondo con un Outline concreto: 3 actos, escenas, puntos de giro, arco emocional.
-4) Deudas ajenas (no de esta conversacion, recordatorio): test de fixture de contraste (kanam-os @import; ver HANDOFF previo), tramo 3 del meta-roadmap (critic/auditor a v0.5).
-
-## Decisiones y contexto que no debe perderse
-
-- Un auto-reporte de "agregue X" se verifica LEYENDO el artefacto (grep/wc), nunca se cree. Un encabezado que promete contenido ausente es un falso verde latente. Los borradores narrativos van a un home de proyecto (docs/stories/), no a la raiz. No se movieron los archivos ni se commiteo a otras sesiones sin decision explicita de Gonzo.
+AUDITORIA DE ESTA CONVERSACION (2026-10-12, segundo pasaje con modelo grande, tras auditorias 02:45-03:35 de otros threads de esta sesion): (1) VERIFICACION DEL REPORTE AJENO - el commit f29250213e (03:35, otro thread) cerro lo que esta conversacion habia validado/abierto: critic ROADMAP a v0.2 (Hito 2.2 cumplido), oracle record_verdict.py + query_verdicts.py operative (probado en vivo: 2 veredictos consultables), lab evidence-hunter GLOBAL=aprobado (5/5) desde cero (regenere sandbox y corre full pipeline, EXIT=0), gate de roadmaps 7/7 OK (el bloqueo del pre-commit por drift v0.1/v0.2 quedo resuelto). (2) CORRECCION PROPIA: README.md del lab decia 'HOY: placeholder JSON; FUTURO: runner real' con el runner existente y verde desde el 2026-10-08 - actualizado al comando real. (3) HIGIENE: probe de prueba en verdicts.jsonl eliminado (el historial queda con solo los 2 veredictos reales). (4) Los veredictos auditados quedan registrados: roadmap 21/25 Aprobado (2026-10-07); verificacion CORE 21/25 Aprobado. NADA de esta conversacion queda pendiente en el repo. Deudas explicitas de la sesion (otros threads): deudas de kanam-tetris (3 tramas, 7 helpers muertos, TYPE_BY_COLOR), studies/L01-L03 sin clasificar en INDEX, lore_*/fichas_* sin destino.
 
 ## Archivos tocados
 
 ```
-agents/kanam-critic/memory/verdicts.jsonl
+.knowledge/HANDOFF.md
+USER.md
+agents/kanam-critic/tests/evidence-hunter/README.md
+docs/ROADMAPS.md
 memory/2026-10-12.md
 memory/memory.db
+scripts/check-roadmaps.py
 studies/openclaw-use-cases/INDEX.md
 ```
 
