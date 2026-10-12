@@ -22,12 +22,13 @@
 | M2 · L08 | Rutinas Nocturnas para Depurar Archivos Temporales - `L08-rutinas-nocturnas.md` | ✅ Completada |
 | M2 · L09 | Recopilación Automática de Reportes Matutinos Diarios - `L09-reportes-matutinos.md` | ✅ Completada |
 | M2 · L10 | Auditorías Automáticas de Estado del Workspace - `L10-auditorias-workspace.md` | ✅ Completada |
-| M3 · L11 | Recepción de Disparadores Externos vía Webhooks (teaser del curso) | ⏳ Próxima |
+| M3 · L11 | Recepción de Disparadores Externos vía Webhooks - `L11-webhooks.md` | ✅ Completada |
+| M3 · L12 | Extracción de Datos Críticos desde Notificaciones (teaser del curso) | ⏳ Próxima |
 | ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
 
-**Completadas:** 10 / 30.
+**Completadas:** 11 / 30.
 
-> ✅ **Módulo 1 completo** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2 completo** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). La Lección 11 abre el **Módulo 3: Ingesta Dirigida por Eventos**.
+> ✅ **Módulo 1 completo** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2 completo** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). **Módulo 3 en curso** (*Ingesta Dirigida por Eventos*): tras la L11 el propio curso indica *"4 lessons left"* → Módulo 3 = 5 lecciones (L11-L15).
 
 ---
 
@@ -36,8 +37,8 @@
 El curso declara **30 lecciones**. Confirmado por el material:
 
 - El nombre del Módulo 1: **Asistentes de Mensajería Contextuales**.
-- Tras la L10 el curso abre el **Módulo 3: Ingesta Dirigida por Eventos**, que arranca con *Recepción de Disparadores Externos vía Webhooks* (L11).
-- La Lección 11 anticipada: *Recepción de Disparadores Externos vía Webhooks*.
+- Tras la L11 el curso indica *"4 lessons left in Ingesta Dirigida por Eventos"* → el Módulo 3 tiene **5 lecciones** (L11-L15).
+- La Lección 12 anticipada: *Extracción de Datos Críticos desde Notificaciones*.
 
 Los módulos 2-6 y las lecciones restantes **no se inventan**: se registran a medida que Gonzo comparte cada lección. El error del reinicio anterior fue fabricar un mapa de 6 módulos x 5 lecciones que no correspondía al curso.
 
