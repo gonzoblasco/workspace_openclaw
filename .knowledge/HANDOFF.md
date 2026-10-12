@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-12 03:47 GMT-3
+**Fecha:** 2026-10-12 03:49 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,26 +12,25 @@
 
 ## Que se hizo en esta sesion
 
-Auditoria de los cambios de ESTA conversacion (roadmap de roadmaps, 2026-10-07). Dos defectos propios encontrados y corregidos: (1) check-roadmaps.py index_versions() leia la columna equivocada (split [-3] = 'Estado verificado' en vez de la version); (2) la tabla de madurez de docs/ROADMAPS.md seguia diciendo 'falta / crear roadmap' para los 5 roles que ya tienen ROADMAP.md desde 2026-10-07.
+Auditoria de ESTA conversacion (migracion del curso OpenClase Use Cases de la grilla vieja a la estructura 6x5 en studies/openclaw-use-cases/) + cierre, medida contra el repo real. HALLAZGO 1 (MIO, corregido): los borradores citaban rutas inexistentes (docs/gateway/messaging-tools.md, docs/gateway/context-management.md, AGENTS-DETAILS.md) -> reemplazadas por rutas reales; check-refs --all OK (548 rutas). HALLAZGO 2 (corregido): drift de conteo 01/25 vs 01/30 en L01-autonomous-chat-response.md. HALLAZGO 3 (corregido): el INDEX decia '5/30 completado' y 'Lecciones Completadas' sobre borradores 'En curso' -> '0/5 completado, 3 en curso'. HALLAZGO 4 (ABIERTO): conviven 3 planes de modulos distintos (INDEX vs daily 10-10 vs L01-lesson-overview) y la numeracion nueva no mapea 1:1 con la vieja; que plan manda es decision de Gonzo. HALLAZGO 5 (corregido): 3 .md nuevos con em-dash que el hook habria bloqueado -> normalizados. FUERA DE ALCANCE (no tocado): lore_/fichas_las_tres_sabanas, dailies 10-10/10-11, agents/kanam-*, PLAN-FASE-2 (otras sesiones; hoy hubo cierres concurrentes sobre el mismo repo).
 
 ## Estado actual
 
-7/7 roles con ROADMAP.md. Guard check-roadmaps.py verifica existencia, forma, marcador y coherencia de version contra docs/ROADMAPS.md Y docs/roadmap-tracking.json; corre en pre-commit y en CI. Solo kanam-critic escalo a v0.2; el resto v0.1. Commit 3efc4db993.
+studies/openclaw-use-cases/: INDEX + 4 lecciones nuevas (L01-lesson-overview, L02-intent-detection, L03-contextual-wrangling, L01-autonomous-chat-response). Ref/count/em-dash corregidos y verificados. Los 5 archivos se commitean acotados por path.
 
 ## Proximos pasos
 
-1. Escalar por dependencia (Tramo 3): critic y auditor primero, luego dev, despues ops/mind, planner/studio al final.
-2. Cerrar los pendientes del lab evidence-hunter del critic (G1-G3 del HANDOFF anterior) hasta GLOBAL=aprobado 5/5 verificado en disco.
-3. Verificar si el resto de las sesiones concurrentes de la madrugada dejaron algo sin commitear que sea mio.
+1) Gonzo define que plan de modulos manda y se alinean los 3 (INDEX, daily 10-10, L01-lesson-overview). 2) Decidir si studies/ se versiona por completo o queda scratch. 3) Dailies 10-10/10-11 siguen untracked (otras sesiones).
 
 ## Decisiones y contexto que no debe perderse
 
-- El indice de madurez (docs/ROADMAPS.md) y la tabla de seguimiento (docs/roadmap-tracking.json) son DOS vistas; cuando discrepan, gana el archivo del rol y se corrigen ambas. El guard hace cumplir esa coherencia. Una regla sin guarda se viola sola (ADR-083).
+- Afirmaciones ancladas a artefactos verificables: una ruta citada debe existir (check-refs), un conteo se cuenta, y el plan de modulos debe ser uno solo.
 
 ## Archivos tocados
 
 ```
-.knowledge/HANDOFF.md
+memory/2026-10-12.md
+memory/memory.db
 studies/openclaw-use-cases/INDEX.md
 ```
 
