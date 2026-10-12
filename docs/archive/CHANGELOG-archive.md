@@ -4,6 +4,163 @@
 
 ---
 
+## [2026-09-11] - ADR-046: revert del motor del pipeline A/B a deepseek-v4-flash (por costo)
+
+### Added
+- **`docs/adr/ADR-046-motor-pipeline-revert-deepseek-v4-flash.md`:** el motor de los agentes A/B del pipeline vuelve a `deepseek-v4-flash:cloud`. Revierte ADR-045 (v4.1 como motor) por costo: medido en el uso semanal de Ollama Cloud, v4.1 consumia mas por request que v4 y glm (1.348 requests con la barra mas alta, contra 1.631 de v4 con la mas baja). v4.1 baja a fase de escalada para analisis complejo.
+- **Convencion `Status: Superseded`:** primer uso del campo en ADR-045 (antes ningun ADR lo usaba; los superseded se marcaban solo con nota al pie).
+
+### Changed
+- **`docs/adr/ADR-045`:** `Status: Accepted` -> `Superseded por ADR-046` + nota de actualizacion. Las reglas tecnicas sobre v4.1 (think:false en roles mecanicos, API /api/chat con stream:false) siguen vigentes solo al escalar a v4.1.
+- **`docs/adr/ADR-041`:** nota de actualizacion del 11/09 reapuntada de ADR-045 a ADR-046.
+- **`docs/adr/README.md`:** agregado ADR-046 al indice; ADR-045 marcado como superseded.
+- **`MEMORY.md`:** motor del pipeline = `deepseek-v4-flash:cloud` (ADR-046). Nueva leccion: nombres de modelo no intercambiables - `deepseek-v4-flash:cloud` resuelve en Ollama (motor del pipeline), `deepseek-v4-flash:0731` es solo del runtime de OpenClaw y NO resuelve en Ollama.
+- **`docs/pipeline/kanam-product-pipeline.md`:** nota de modelo actualizada con el revert por costo.
+- **`docs/learnings/pipeline-agentes.md`:** nota de actualizacion en la leccion de v4.1 - el valor del review por ejecucion y de la autoverificacion del motor no depende del modelo.
+
+### Fixed
+- **`model-router.json`: overrides sticky pineando v4.1.** El estado runtime del router tenia `overrides.code`, `overrides.review` y `overrides.pipeline_ab` en `deepseek-v4.1-flash:cloud` (seteados el 11/09 al promover v4.1 como motor). **Ese era el mecanismo real que forzaba v4.1 en el pipeline.** Reseteados los tres: el router vuelve a las rutas por defecto (v4-flash). Verificado con `model-router.sh list` (Overrides: ninguno).
+- **`model-router.json` agregado a `.gitignore`:** estado runtime del router (generado por `model-router.sh`), machine-local. Estaba sin trackear pero SIN regla de ignore.
+
+### Notas operativas
+- **Watcher `ds-v4.1-rollout-watcher` deshabilitado:** su proposito (avisar cuando v4.1 saliera del rollout) quedo cumplido el mismo dia y obsoleto por este ADR. Se deshabilito, no se borro.
+- **Sin cambios en `openclaw.json`:** el motor del pipeline no vive ahi. Se fija por el `--model` de la invocacion (Claude Code / Qwen Code) y por el router. El default de OpenClaw ya era v4-flash desde el revert de las 19:15.
+
+## [2026-09-11] - Unificacion del modelo de embeddings: todo el workspace a qwen3-embedding
+
+### Changed
+- **9 scripts alineados a `qwen3-embedding:0.6b` (1024 dims):** `memory-catalog-v2.py`, `memory-catalog.sh`, `memory-catalog-simple.sh`, `memory-topics.py`, `memory-search.py`, `skill-router.py`, `semantic-search.js`, `semantic-search-json.js`, `memory-reembed.py`. Antes usaban `nomic-embed-text:latest` (768 dims) mientras `openclaw.json` usaba qwen3: dos espacios vectoriales incomparables entre si.
+- **`memory-reembed.py` ahora detecta por dimension objetivo**: hace un probe del modelo y re-embebbea todo vector cuyo dim no coincida con el output real, en vez de solo cazar los fallbacks de 32 dims. Asi tambien sirve para migrar de modelo.
+- **Vectores migrados:** 207 filas re-embebidas (`learnings_enriquecido` 104 + `session_vectors` 103), todas a 1024 dims. Cero vectores de 32, cero de 768.
+
+### Fixed
+- **`memory-search.py` y `memory-topics.py` tenian el mismo bug de `requests`** que `memory-catalog-v2.py` (importaban `requests`, ausente en el python del sistema -> fallback silencioso a hash SHA-256). Pasados a `urllib.request`.
+- **`memory-catalog.sh` y `memory-catalog-simple.sh`**, mismo bug dentro de sus heredocs Python.
+- Queda **cero** uso de `requests` en `scripts/`.
+
+### Notes
+- Verificado end-to-end: catalogo completo 20/20 sin regenerar fallbacks, `memory-search.py` y `semantic-search*.js` devuelven texto y scores coherentes, `memory-topics.py --list` corre, y `skill-router.py` ahora resuelve por embedding real (no solo keyword).
+- **Documentacion alineada:** `AGENTS.md` (modelos locales, tabla de scripts), `skills/skill-router/SKILL.md` + su espejo en `.github/skills/`.
+- **Correccion de un error mio:** en el CHANGELOG anterior afirme que `nomic-embed-text` no estaba instalado. Si esta (768 dims). Y `qwen3-embedding:0.6b` es de **1024** dims, no 768.
+- Backups: `/tmp/db-before-qwen3.db` (pre-migracion), `/tmp/db-before-reembed.db`, `/tmp/db-before-catalog-fix.db`.
+
+---
+
+## [2026-09-11] - Fix raiz: el catalogo de memoria generaba vectores basura (requests ausente)
+
+### Fixed
+- **`scripts/memory-catalog-v2.py` > `get_embedding()`**: cada llamada caia al fallback SHA-256 de 32 dims, incluso con Ollama arriba. Causa: `import requests` dentro de la funcion - el python del sistema (`/usr/bin/python3`, 3.9.6) **no tiene `requests` instalado**, asi que la excepcion `ModuleNotFoundError` se tragaba silenciosamente y devolvia el hash. Por eso cada corrida del catalogo regeneraba vectores inutiles, y los centroides de categoria quedaban construidos sobre ruido.
+- **Fix:** reemplazar `requests` por `urllib.request` (stdlib, cero dependencias). Ademas, cuando el fallback se activa ahora imprime un aviso explicito a stderr indicando que el vector NO sirve para busqueda semantica y como repararlo.
+- **`scripts/memory-reembed.py` (nuevo)**: re-embebbea los vectores fallback existentes contra Ollama. Deliberadamente **no** tiene fallback: si el modelo falla, deja la fila intacta y la reporta, para no volver a escribir basura. Uso: `./scripts/memory-reembed.py [--dry-run] [--limit N]`.
+
+### Notes
+- Reparados **325 vectores fallback** (177 + 148 en dos pasadas: la primera corrida del catalogo intermedio regenero algunos antes del fix de raiz).
+- Estado final verificado: `learnings_enriquecido` 104/104 y `session_vectors` 103/103 en 768 dims, cero de 32. Re-correr el catalogo completo ya no regenera ninguno.
+- La busqueda semantica paso de devolver `text: ""` a devolver contenido y scores mas altos y coherentes (0.61 en a11y vs 0.58 previos sobre embeddings falsos).
+- Backups: `/tmp/db-before-reembed.db`.
+
+### Pendiente (no aplicado, requiere decision)
+- **Modelo de embeddings inconsistente en el workspace.** `scripts/memory-catalog-v2.py`, `memory-catalog-simple.sh` y `semantic-search*.js` usan `nomic-embed-text:latest` (**768** dims), pero `openclaw.json` (`memory.search.model` y `models.providers.ollama-local`) usa `qwen3-embedding:0.6b` (**1024** dims). Son dos espacios vectoriales distintos: las dos rutas de busqueda no son comparables. Alinear a uno solo.
+
+---
+
+## [2026-09-11] - Fix: memory-catalog-v2.py crasheaba por dimensiones mixtas de embeddings (+ chunk_text NULL)
+
+### Fixed
+- **`scripts/memory-catalog-v2.py` > `compute_category_centroids()`**: crasheaba con `IndexError: list index out of range` (linea 222) y el catalogo entero no corria. Causa: mezcla de dimensiones en `learnings_enriquecido`. 85 filas tenian vectores de **32 dims** (fallback SHA-256 del script, cuando Ollama no responde o se usa `use_ollama=False`) y 4 filas **768 dims** (modelo real). El loop inicializaba el centroide con la dimension del primer vector de la categoria y despues indexaba con la de los siguientes -> IndexError. `compute_topic_centroids()` ya tenia el guard; `compute_category_centroids()` no.
+- **Fix:** mismo guard que topic centroids (el vector de dimension distinta se omite y se cuenta), mas un aviso a stderr con el total omitido por categoria, para que la deuda de vectores viejos sea visible.
+- **`session_vectors` > `chunk_text` NULL**: el catalogo nunca escribia esa columna (el INSERT no la incluia) y la tabla creada por v2 no la tenia. Resultado: **108 de 108 filas con `chunk_text` NULL**, y la busqueda semantica devolvia matches con `text: ""`. Se agrego la columna al CREATE TABLE, una migracion `ALTER TABLE` para DBs viejas, y la columna al INSERT.
+
+### Notes
+- Verificado: catalogo completo 20/20, busqueda semantica devuelve texto real.
+- Backfill de historicos: 46 filas recuperadas desde `sessions_relacional.content_bare`. 5 filas quedaron fuera: 3 con `chunk_index` mas alla del contenido actual (vectores de texto que ya no existe) y 2 huerfanas de una sesion borrada -> eliminadas. `session_vectors` 108 -> 103, cero vacias, cero huerfanas.
+- **Deuda pendiente:** quedan 103 vectores de 32 dims (fallback) y 1 de 768. Los fallback no sirven para similitud semantica real. Re-embeddear con `qwen3-embedding:0.6b` (768) reincorporaria esas filas y mejoraria el ranking.
+- Backups: `/tmp/db-before-catalog-fix.db` (pre-fix) y `/tmp/db-before-chunktext-fix.db` (pre-chunk_text).
+
+## [2026-09-11] - Revert parcial de modelos: primary vuelve a deepseek-v4-flash
+
+### Changed
+- **`MEMORY.md` + `agents.defaults.model.primary`**: primary de `ollama-cloud/deepseek-v4.1-flash` a `ollama-cloud/deepseek-v4-flash:0731`. Motivo: uso semanal medido (v4.1 consume mas que GLM 5.3 Flash y v4 con menos requests; v4 el mas eficiente por request). Roles definidos con Gonzo: v4 = primary, glm-5.3-flash = fallback + vision, v4.1 = fase de escalada para analisis complejo (entre glm y Kimi K2.7 Code en costo). v4 deja de existir en unas semanas - a reevaluar entonces.
+
+## [2026-09-11] - kanam-tetris v0.3: refactor estructural + red de tests
+
+### Changed
+- **`projects/kanam-tetris/`**: el single-file de 901 líneas se parte en módulos ES sin build ni dependencias. `src/core.js` (530) queda puro -sin DOM, canvas, reloj ni storage-, con `step(deltaMs)` determinista y `rng` inyectable. `index.html` baja a 193 líneas y monta `src/main.js` como módulo.
+- **`projects/kanam-tetris/test/`**: red nueva con `node --test` nativo, cero dependencias. 33 tests: las reglas del core (los bugs que costaron dos ciclos de pipeline en v0.2) más el cableado del browser.
+- **`projects/kanam-tetris/package.json`** (nuevo): `type: module` y `npm test`.
+- **`projects/kanam-tetris/README.md`**: cómo correrlo (necesita `python3 -m http.server`, porque `file://` bloquea módulos ES), estructura de módulos y contrato del core.
+
+### Fixed
+- **`blur` registrado en `document` en vez de `window`**: `blur` no burbujea y el foco de ventana se dispara en `window`, así que el handler nunca corría. Con una flecha apretada, salir con Cmd+Tab dejaba el DAS vivo y la pieza seguía deslizándose. `attachInput` acepta `blurTarget` inyectable para que la costura sea testeable en Node.
+
+### Notas
+- Cero features nuevas: comportamiento observable idéntico a v0.2, con la excepción del fix de `blur`.
+- Verificado por mutación: reintroducir cada uno de los bugs históricos hace fallar el test que le corresponde. El guard de `clearing` en `rotate()` sobrevive la mutación porque es defensa en profundidad inalcanzable, no un agujero de cobertura.
+- Pendiente: validación visual en browser real (píxeles de canvas, rampa del flash, centrado de previews). El review comparó el código, no midió render.
+
+## [2026-09-11] - Trayectoria verificada de Gonzo en USER.md/MEMORY.md + voz-gonzo v2 (reglas 9-12)
+
+### Added
+- **`USER.md` > Trayectoria profesional (verificado)**: nueva seccion con las empresas, fechas y logros reales (Minutentag/EULAS 2016-2019, Super7ui 2020-2021 con 1 ano dedicado a a11y, EY 2021-2025 como referente enterprise), mas la lectura correcta para propuestas a11y y el unico gap real (certificacion IAAP). Antes esta data solo vivia en `memory/archive/2026-08-19-0951.md` y se perdia entre sesiones.
+- **`MEMORY.md`**: regla nueva - antes de afirmar algo sobre la trayectoria de Gonzo, buscar en memoria primero; marcar gaps solo con evidencia. Entrada de trayectoria en "Sobre Gonzo".
+- **`docs/voz-gonzo.md`**: 2 casos nuevos (EIT, en ingles) y 4 reglas consolidadas (9-12). Alcance extendido a ingles cuando el hilo es con un tercero en ingles.
+
+### Changed
+- **Skill `voz-gonzo`** (workshop): paso explicito de definir longitud antes de escribir y filtro de recorte que incluye preguntas que no bloquean el arranque. La version que se entrega es la mas corta que hace el trabajo, no la mas completa.
+- **`docs/entrevistas/`**: seguimiento de EIT/HTC/Disney + CV a11y unico (markdown + PDF generado con `scripts/pdf-tool.sh md2pdf`).
+
+## [2026-09-11] - Registro de voz de Gonzo (espanol) + skill viva `voz-gonzo`
+
+### Added
+- **`docs/voz-gonzo.md`**: registro vivo de como Gonzo se expresa en espanol. Estructura por caso (contexto, borrador Kanam, edicion final, que cambio, patron) + seccion "Reglas consolidadas" que la skill aplica por defecto. Primer caso: respuesta a rechazo de OpenSistemas (2026-09-11).
+- **Skill `voz-gonzo`** (`~/.openclaw/agents/main/agent/workshop-skills/voz-gonzo/`, creada via `skill_workshop`): redactar en espanol en nombre de Gonzo y aprender de cada edicion suya. 7 pasos: leer corpus -> identificar objetivo real (presente vs futuro) -> redactar -> entregar con variantes -> registrar la edicion -> consolidar solo si el patron cambio -> escanear guiones.
+
+### Notas
+- Alcance: interacciones en espanol (LinkedIn, mails, mensajes directos, entrevistas). Fuera de alcance: GitHub y repos (ingles, rige USER.md + AGENTS.md).
+- Reglas consolidadas iniciales: presente no futuro; alcance amplio; calido sin adornos; no exponer urgencia; sin numeros por escrito; cerrar con confianza; honestidad emocional medida; guion comun siempre.
+
+## [2026-09-11] - kanam-tetris v0.2: segundo ciclo del pipeline A/B con deepseek-v4.1-flash
+
+### Added
+- **`projects/kanam-tetris/index.html` (v0.2):** seis features nuevas sobre la base v0.1, implementadas por el Agente A (deepseek-v4.1-flash:cloud via Claude Code + gateway Ollama) y revisadas por el Agente B con un harness instrumentado:
+  - Hold piece (`C`), un hold por pieza clavada.
+  - Lock delay con cap de 15 resets (move reset, guideline SRS).
+  - DAS 170ms / ARR 50ms con re-step inmediato al cambiar de direccion.
+  - Flash de 180ms al limpiar lineas antes de removerlas.
+  - Pausa (`P`/`Esc`) con overlay.
+  - High score persistente en localStorage.
+- **`projects/kanam-tetris/.knowledge/BRIEF.md`:** alcance v0.2 documentado.
+
+### Fixed
+- **Guard de estado `clearing` (bug nuevo, alcanzable en juego normal):** durante el flash de limpieza la pieza ya clavada seguia siendo controlable. Mantener Espacio reseteaba el timer y congelaba la limpieza de linea indefinidamente; una flecha + Espacio estampaba bloques fantasma con score duplicado (invisible porque `draw()` suprime la pieza activa durante el flash). Guards agregados en `rotate()`, `move()`, `hardDrop()` y el keydown.
+- **Lookup de wall kicks CCW espejado (preexistente desde v0.1):** la tabla tenia las 8 filas direction-specific correctas, pero el indice leia la fila CW de la transicion inversa para rotacion antihoraria. Unificado a `${from}>${to}` para ambas direcciones.
+- **`holdUsed` reset movido a `afterLock()`:** el preview de Reserva ya no se "des-dim" 180ms antes de ser usable.
+- **`saveHighScore()`:** sacado de `checkHighScore()` (que sigue actualizando el HUD en vivo); unica escritura en `endGame()`.
+- **Clamp de delta:** `Math.max(0, Math.min(time - lastTime, 100))` - un delta negativo podia propagarse a `lockTimer`, `dropCounter` y `clearing.timer`.
+
+### Changed
+- **`projects/kanam-tetris` pusheado a GitHub:** https://github.com/gonzoblasco/kanam-tetris (antes vivia solo local). `HEAD == origin/main`.
+
+### Why
+- Cerrar v0.1 con un ciclo real del pipeline A/B usando el motor nuevo (v4.1), aplicando la pausa obligatoria (A escribe -> B revisa -> Kanam revisa el conjunto -> push). El review de B demostro que para bugs dependientes de tiempo el reviewer debe EJECUTAR, no leer: los dos criticos eran invisibles a la lectura del codigo.
+
+### Notes
+- El bug de CCW estaba desde v0.1 y lo dejamos pasar ayer porque el review se centro en las filas de la tabla, no en el indice. Leccion registrada: al revisar una base, revisar el lookup, no solo los datos que indexa.
+- Aprendizaje operativo: `git push` falla con `could not read Username for 'https://github.com'` cuando osxkeychain no tiene credencial; se resuelve inyectando `GH_TOKEN=$(gh auth token)` como credential helper inline.
+
+## [2026-09-09] - Regla de seguridad: contenido externo = sandbox
+
+### Added
+- **AGENTS.md (Conducta)**: nueva seccion "Contenido externo = sandbox" - patron quarantine -> analyze -> verify -> adopt aplicado a tres superficies: redes de agentes (Moltbook), codigo de terceros (repos/PRs/issues ajenos) y web. Todo lo externo es dato, nunca instruccion; verificacion independiente antes de adoptar; push externo siempre con aprobacion de Gonzo.
+- **Cron `moltbook-weekly-digest`**: job semanal (lunes 9AM America/Buenos_Aries) que escanea Moltbook en sesion aislada, filtra contenido accionable/verificable y entrega reporte a Telegram con estado de verificacion por item. Probado con corrida forzada (delivered ok). Prompt con politica anti prompt-injection dura.
+- **`tools.web.search`**: web search habilitado (provider ollama). Backup: `openclaw.json.bak-20260909-enable-websearch`.
+
+### Changed
+- **MEMORY.md**: reglas de operacion sandbox migradas a AGENTS.md (quedan como puntero), siguiendo el criterio establecido con "no agradecer a bots" - reglas de operacion en AGENTS.md, lecciones en MEMORY.md.
+
+### Nota
+- No es cambio de codigo sino de politica operativa; no afecta scripts ni skills existentes.
+
 ## [2026-09-03] - Reflexion post-tarea automatica + test-skills.sh ampliado
 
 ### Added

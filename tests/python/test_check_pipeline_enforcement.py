@@ -148,3 +148,66 @@ def test_inconsistent_prefilter_is_reported(tmp_path):
     )
     violations = mod.find_violations(tmp_path)
     assert any("pre-filtro" in v for v in violations), violations
+
+
+# --- Regresiones: el reporte de git NO es una violacion del pacto (2026-10-12) ---
+# El checker nacio para verificar el pacto A/B. Un workspace sucio (untracked,
+# cambios sin commitear) es INFORMATIVO: no rompe el pacto. Antes de este fix, un
+# arbol limpio devolvia exit 1 con la unica "violacion" = "Sin cambios detectables."
+
+
+def test_porcelain_parse_keeps_full_paths(mod=None):
+    """parse_porcelain devuelve el path completo, no truncado."""
+    mod = load()
+    out = (
+        " M scripts/check-pipeline-enforcement.py\n"
+        "M  memory/2026-10-09.md\n"
+        "?? lore_las_tres_sabanas.md\n"
+    )
+    entries = mod.parse_porcelain(out)
+    paths = [p for _, p in entries]
+    assert "scripts/check-pipeline-enforcement.py" in paths
+    assert "memory/2026-10-09.md" in paths
+    assert "lore_las_tres_sabanas.md" in paths
+    # Ningun path puede venir cortado por un offset fijo.
+    assert all(not p.startswith("cripts/") for p in paths)
+
+
+def test_dirty_workspace_is_not_a_pact_violation(tmp_path, monkeypatch):
+    """Un workspace con untracked NO es violacion: el check sigue en exit 0."""
+    import subprocess
+    mod = load()
+    clean_root(tmp_path, mod)
+
+    # Simula un `git status --porcelain` sucio sin depender de un repo real.
+    class _R:
+        stdout = "?? archivo_nuevo.md\n M scripts/model-router.sh\n"
+
+    monkeypatch.setattr(subprocess, "run", lambda *a, **k: _R())
+    assert mod.find_violations(tmp_path) == []
+    assert mod.main(["check", str(tmp_path)]) == 0
+
+
+def test_staged_report_marks_staged_and_untracked(tmp_path, monkeypatch):
+    """_git_staged_report separa staged de untracked y no los mezcla."""
+    import subprocess
+    mod = load()
+
+    class _R:
+        stdout = (
+            "M  memoria.md\n"          # staged
+            "?? nuevo.md\n"            # untracked
+        )
+
+    def _run(cmd, *a, **k):
+        if cmd[:3] == ["git", "status", "--porcelain"]:
+            return _R()
+        class _D:
+            stdout = ""
+        return _D()
+
+    monkeypatch.setattr(subprocess, "run", _run)
+    staged, report = mod._git_staged_report(tmp_path)
+    assert "memoria.md" in staged
+    assert "nuevo.md" not in staged
+    assert "Untracked" in report

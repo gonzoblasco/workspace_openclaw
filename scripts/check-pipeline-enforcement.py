@@ -92,6 +92,69 @@ def prefilter_in_blocks(root: Path) -> Optional[str]:
     return m.group(1) if m else None
 
 
+def parse_porcelain(output: str) -> List[Tuple[str, str]]:
+    """Parsea `git status --porcelain` (v1) -> lista de (status, path).
+
+    Formato porcelain v1: XY<space>PATH, donde XY son 2 chars de estado.
+    El path empieza en el indice 3. Si el path contiene caracteres especiales
+    git lo entrecomilla; desentrecomillamos para devolver el path real.
+    """
+    entries: List[Tuple[str, str]] = []
+    for line in output.splitlines():
+        if len(line) < 4:
+            continue
+        status = line[:2]
+        path = line[3:]
+        if path.startswith('"') and path.endswith('"'):
+            path = path[1:-1]
+        entries.append((status, path))
+    return entries
+
+
+def _git_staged_report(root: Path) -> Tuple[List[str], str]:
+    """Reporte informativo: que paths estan en staging y que cambio en cada uno.
+
+    Devuelve (staged_paths, report_text). Es INFORMATIVO: su resultado nunca se
+    cuenta como violacion del pacto A/B (un workspace sucio no rompe el pacto).
+    """
+    import subprocess
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=root, capture_output=True, text=True, timeout=5
+        )
+    except Exception as e:
+        return [], "No se pudo leer el estado de git: %s" % e
+
+    if not result.stdout.strip():
+        return [], "Workspace limpio: nada en staging."
+
+    entries = parse_porcelain(result.stdout)
+    # Staged = cambios ya agregados al index (columna X != ' ' y no untracked '??').
+    staged_paths = [p for status, p in entries
+                    if not status.startswith("?") and status[0] != " "]
+    untracked = [p for status, p in entries if status.startswith("?")]
+
+    lines = []
+    if staged_paths:
+        lines.append("Paths en staging (%d): %s" % (len(staged_paths), " | ".join(staged_paths)))
+        for path in staged_paths:
+            try:
+                d = subprocess.run(
+                    ["git", "diff", "--staged", "--", path],
+                    cwd=root, capture_output=True, text=True, timeout=3
+                )
+                if d.stdout.strip():
+                    lines.append("\n--- %s\n%s" % (path, d.stdout.rstrip()))
+            except Exception:
+                pass
+    else:
+        lines.append("Nada en staging.")
+    if untracked:
+        lines.append("Untracked (%d): %s" % (len(untracked), " | ".join(untracked)))
+
+    return staged_paths, "\n".join(lines)
+
 def models_in_skills(root: Path) -> Tuple[Optional[str], List[str]]:
     """Modelos citados en la skill de arbitraje del pipeline A/B."""
     text = _read(root / "skills" / "agent-orchestration-pipeline-model-arbitration" / "SKILL.md")
@@ -202,22 +265,26 @@ def main(argv: List[str]) -> int:
 
     violations = find_violations(root)
 
+    # Reporte informativo de git (no es una violacion del pacto).
+    _staged, git_report = _git_staged_report(root)
+
     if violations:
         print("PACTO DEL PIPELINE A/B VIOLADO (%d):" % len(violations))
         for v in violations:
             print("  - " + v)
         print()
-        print(
-            "El CORE delega con DOS agentes: A escribe con %s, B revisa con %s "
-            "(ADR-077/ADR-088). Consultar `scripts/model-router.sh model pipeline_ab`."
-            % (A_ROLE, B_ROLE)
-        )
+        print("El CORE delega con DOS agentes: A escribe con %s, B revisa con %s "
+              "(ADR-077/ADR-089). Consultar `scripts/model-router.sh model pipeline_ab`."
+              % (A_ROLE, B_ROLE))
         return 1
 
     print(
         "OK: pacto A/B consistente en router, managed-blocks, skill y ADR-077 "
         "(A=%s, B=%s, pre-filtro=%s, distintos)." % (A_ROLE, B_ROLE, PREFILTER)
     )
+    print()
+    print("Estado de git (informativo):")
+    print(git_report)
     return 0
 
 
