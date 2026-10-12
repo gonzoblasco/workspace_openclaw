@@ -14,12 +14,11 @@ el Nexus (conecta), el Anclaje Roto (sostiene el centro), la Variable Inestable
 
 ## Estado
 
-Borrador. El lore base esta escrito; **falta el material tactico** (escenarios,
-patrones de dialogo, estructura de 3 actos) y **falta el outline** (escaleta).
-El encabezado del lore promete ese material tactico, pero el cuerpo aun no lo
-contiene - no confiar en el encabezado hasta que coincida con el cuerpo.
+Borrador. El lore base **y el material tactico** estan escritos (escenarios
+modelados, patrones de dialogo, estructura de 3 actos, tablas de conflicto).
+**Falta el outline**: la escaleta de escenas en orden, derivada de la estructura.
 
 ## Proximos pasos
 
-1. Escribir el material tactico o recortar el encabezado para que coincida.
-2. Producir el outline: 3 actos, escenas, puntos de giro, arco emocional.
+1. Producir el outline: escaleta de escenas en orden, derivada de los 3 actos.
+2. Escribir el primer capitulo como prueba de voz.
