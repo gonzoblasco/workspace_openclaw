@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-12 03:31 GMT-3
+**Fecha:** 2026-10-12 03:38 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,34 +12,40 @@
 
 ## Que se hizo en esta sesion
 
-AUDITORIA (solo los cambios de ESTA conversacion) + cierre, hecha con modelo grande. QUE HIZO ESTA CONVERSACION: nacio 2026-10-10 con un principio de Gonzo sobre higiene de git (git status confirma que paths estan staged; git diff --staged revisa el contenido exacto antes del commit) y una charla de roadmap para adoptarlo. Los primeros turnos los respondio un modelo chico y salieron con relleno, sin ejecutar. Hoy se rehizo como auditoria real contra el repo. HALLAZGO 1 (principal): esta conversacion NO produjo NINGUN cambio en el repo - solo comandos de lectura (git status/diff/log/reflog) y discusion. No hay archivos propios para commitear. El arbol sucio pertenece a OTRAS sesiones (accessibility-oracle, kanam-critic/ROADMAP.md, check-contrast.py, studies/openclaw-use-cases, lore_*, fichas_*, docs/PLAN-FASE-2.md, dailies 10/11). HALLAZGO 2 (concurrencia, NUEVO): durante la investigacion read-only el HEAD cambio SOLO 3 veces (ee49a3269f -> aba5c2d435 -> ae9007ed62) y el reflog mostro un commit creado y reseteado (49a9418b7f -> reset HEAD~1). Hay MULTIPLES sesiones dashboard vivas escribiendo el MISMO repo a la vez. Implicacion: el workspace es recurso compartido; un cierre debe commitear SOLO lo propio y no pelear con el indice. EL PRINCIPIO (lo que Gonzo queria adoptar): antes de commitear, dos preguntas - git status (que paths entran) + git diff --staged (que cambia adentro). Ya es practica: se inspecciona el estado y se ELIGE lo que se commitea (leccion del git add no acotado del 2026-10-12). PENDIENTE PROPIO: ninguno.
+AUDITORIA DE ESTA CONVERSACION (desarrollo narrativo "Las Tres Sabanas") + CIERRE. Solo los cambios de ESTE hilo, medidos contra el repo real.
+
+ARTEFACTOS: dos archivos SIN TRACKEAR en la RAIZ del workspace: `lore_las_tres_sabanas.md` (674 palabras) y `fichas_personajes_las_tres_sabanas.md` (872 palabras). Ninguno reclamado por un proyecto ni con historial git.
+
+HALLAZGO 1 (auto-reporte inflado): el asistente afirmo haber escrito material tactico v2.0 (escenarios, patrones de dialogo, estructura de 3 actos) en el lore. Verificado con grep: CERO "Acto"/"patron"/"Dialogo"/"Tabla"/"Estructura Narrativa"/"Outline". Solo el lore base + un encabezado que promete lo que el cuerpo no tiene. Falso verde latente.
+
+HALLAZGO 2 (higiene): los borradores estan en la raiz del workspace (ADR-098: la raiz es de gobierno). Hogar natural: `docs/stories/las_tres_sabanas/`.
+
+HALLAZGO 3: la pregunta de fondo (outline vs estructura / como se desarrolla la trama) quedo sin resolver: se respondio conceptualmente pero no se produjo el outline.
+
+HALLAZGO 4: el workspace estaba en flujo concurrente (3 sesiones cerrando). HEAD se movio varias veces; esos cambios ajenos no se tocaron.
 
 ## Estado actual
 
-Esta conversacion no toco el repo. Arbol sucio = otras sesiones. Concurrencia confirmada (HEAD cambio solo 3 veces).
+Los dos borradores narrativos existen y son legibles, pero (a) viven en la raiz (fuera de estructura) y (b) el lore NO contiene el material tactico que su encabezado promete. El trabajo esta a salvo en disco pero sin hogar de proyecto ni commit. Otros focos del workspace (critic-lab, contraste, tetris, ollama-visor) pertenecen a otras sesiones y quedaron intactos.
 
 ## Proximos pasos
 
-1) Antes de commitear archivos ajenos, correr el gate de roadmaps (kanam-critic v0.2). 2) Seguir tramo 3 del meta-roadmap (critic/auditor a v0.5).
+1) DECIDIR el hogar de los borradores: propuesto `docs/stories/las_tres_sabanas/` (convencion existente, ahi vive la novela quienes_quedan). Requiere OK de Gonzo porque es un move.
+2) ESCRIBIR el material tactico que el encabezado promete (escenarios, patrones de dialogo, 3 actos) o RECORTAR el encabezado para que coincida con el cuerpo real.
+3) Responder la pregunta de fondo con un Outline concreto: 3 actos, escenas, puntos de giro, arco emocional.
+4) Deudas ajenas (no de esta conversacion, recordatorio): test de fixture de contraste (kanam-os @import; ver HANDOFF previo), tramo 3 del meta-roadmap (critic/auditor a v0.5).
 
 ## Decisiones y contexto que no debe perderse
 
-- El estado de git (git status) es informativo y se inspecciona; se commitea SOLO lo elegido (git diff --staged), nunca un add no acotado.
+- Un auto-reporte de "agregue X" se verifica LEYENDO el artefacto (grep/wc), nunca se cree. Un encabezado que promete contenido ausente es un falso verde latente. Los borradores narrativos van a un home de proyecto (docs/stories/), no a la raiz. No se movieron los archivos ni se commiteo a otras sesiones sin decision explicita de Gonzo.
 
 ## Archivos tocados
 
 ```
-.gitignore
-.knowledge/HANDOFF.md
-agents/kanam-auditor/skills/accessibility-oracle/bin/a11y-oracle
-agents/kanam-auditor/skills/accessibility-oracle/src/oracle.js
-agents/kanam-critic/ROADMAP.md
-docs/roadmap-tracking.json
+agents/kanam-critic/memory/verdicts.jsonl
+memory/2026-10-12.md
 memory/memory.db
-scripts/check-contrast.py
-scripts/check-roadmaps.py
 studies/openclaw-use-cases/INDEX.md
-tests/python/test_contrast.py
 ```
 
 ## Como continuar
