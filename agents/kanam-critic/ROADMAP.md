@@ -1,6 +1,6 @@
 # ROADMAP.md - Kanam Critic ⚖️
 
-**Versión actual:** v0.1
+**Versión actual:** v0.2
 **Objetivo de ronda:** v0.5
 **Visión:** v1.0 - El Estándar
 **Última revisión:** 2026-10-07

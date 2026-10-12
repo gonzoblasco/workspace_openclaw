@@ -271,6 +271,12 @@ def test_ambos_temas_tienen_foco_visible():
 
 # --- anti-deriva: el fixture contra la paleta real ---
 
+
+def _css_var_names(css: str) -> set[str]:
+    """Nombres de variables declaradas (--foo:) en un CSS."""
+    return set(re.findall(r"--([a-z0-9-]+)\s*:", css))
+
+
 @pytest.mark.skipif(
     not CSS_REAL.exists(),
     reason="el repo kanam-os no esta clonado: la paleta real no existe aca (normal en CI)",
@@ -278,21 +284,37 @@ def test_ambos_temas_tienen_foco_visible():
 def test_fixture_no_deriva_del_css_real():
     """En la maquina que SI tiene el proyecto, el fixture no puede quedar viejo.
 
-    Se comparan las CLAVES, no los valores: una clave que desaparece (el guard
-    la busca y no la encuentra) rompe la logica del guard y hay que reflejarlo;
-    un valor distinto solo significa que la paleta se retoco, y eso lo guarda
-    el check del repo kanam-os, no este archivo. Atar el fixture a los valores
-    haria fallar esta suite por un motivo ajeno al guard.
+    kanam-os resuelve sus TEMAS por `@import` (public/kanam.css -> :root claro,
+    public/dark.css -> [data-theme=dark]) y expone los ROLES que este guard
+    consume como ALIAS declarados en el propio `globals.css`
+    (`--bg: var(--k-surface-base)`, ...).
+
+    Por eso el contrato a comparar es la CAPA DE ALIAS del globals.css, no los
+    valores `--k-*` resueltos: el fixture documenta los alias que el guard lee,
+    y si el CSS real deja de declarar un rol, el guard quedaria CIEGO en ese
+    par. La version anterior leia los temas resueltos; al pasar kanam-os a
+    `@import` devolvia `{}` y se "resolvio" con un skipif que lo desactivaba
+    SIEMPRE (el @import nunca desaparece) - una guarda que no puede fallar.
     """
     m = cc()
-    real = m.read_themes(CSS_REAL.read_text(encoding="utf-8"))
-    fixture = m.read_themes(leer_css())
-    assert set(real) == set(fixture), (
-        f"los temas cambiaron: real {sorted(real)} vs fixture {sorted(fixture)}"
+    roles = (
+        set(m.SURFACES)
+        | set(m.TEXT_ROLES)
+        | set(m.STATUS_TEXT)
+        | set(m.ACCENT_TEXT)
+        | set(m.BORDER_ROLES)
     )
-    for tema in sorted(real):
-        faltan = sorted(set(real[tema]) - set(fixture[tema]))
-        sobran = sorted(set(fixture[tema]) - set(real[tema]))
-        assert not faltan and not sobran, (
-            f"el fixture de '{tema}' deriva del CSS real: faltan {faltan}, sobran {sobran}"
-        )
+    real = _css_var_names(CSS_REAL.read_text(encoding="utf-8"))
+    fixture = _css_var_names(leer_css())
+    faltan_real = sorted(roles - real)
+    faltan_fixture = sorted(roles - fixture)
+    assert not faltan_real, (
+        f"el CSS real ya no declara roles que la guarda lee: {faltan_real}"
+    )
+    assert not faltan_fixture, (
+        f"al fixture le faltan roles que la guarda lee: {faltan_fixture}"
+    )
+    sobra = sorted(fixture - real)
+    assert not sobra, (
+        f"el fixture declara variables que el CSS real no define: {sobra}"
+    )

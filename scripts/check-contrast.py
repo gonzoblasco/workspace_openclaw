@@ -157,8 +157,53 @@ def theme_of(selector):
     return DEFAULT_THEME if ":root" in selector else None
 
 
-def read_themes(css):
-    """Todos los temas del CSS: {nombre: {variable: hex}}."""
+def _resolve_imports(css: str, base_dir: Path) -> str:
+    """Resolve ``@import`` statements recursively.
+
+    The workspace's ``globals.css`` now only contains ``@import`` directives
+    that pull in the actual theme definitions from ``public/kanam.css`` and
+    ``public/dark.css``.  The original ``read_themes`` expected the theme blocks
+    to be present directly in the supplied CSS text, so the test ``test_fixture_no_deriva_del_css_real``
+    failed because the imported files were never read.
+
+    This helper parses ``@import`` statements of the form ``@import "path";``
+    or ``@import 'path'`` (both with optional trailing semicolon) and replaces
+    them with the contents of the referenced file.  The resolution is performed
+    recursively so that nested imports are also inlined.  If an import cannot be
+    resolved (e.g. file missing), the statement is removed – the guard will later
+    report an error if required variables are missing.
+    """
+    import_pattern = re.compile(r"@import\s+(?:\"([^\"]+)\"|\'([^\']+)\')\s*;?")
+    result = css
+    # Resolve imports iteratively to handle multiple statements.
+    while True:
+        match = import_pattern.search(result)
+        if not match:
+            break
+        # Prefer the quoted group that matched.
+        import_path = match.group(1) if match.group(1) is not None else match.group(2)
+        import_file = (base_dir / import_path).resolve()
+        # Guard against infinite loops by checking existence.
+        if import_file.is_file():
+            imported_css = import_file.read_text(encoding="utf-8")
+            # Recursively resolve imports inside the imported file.
+            imported_css = _resolve_imports(imported_css, import_file.parent)
+            # Replace the @import line with the imported CSS content.
+            result = result[: match.start()] + imported_css + result[match.end() :]
+        else:
+            # If the file does not exist, remove the import statement.
+            result = result[: match.start()] + result[match.end() :]
+    return result
+
+
+def read_themes(css: str) -> dict:
+    """Extract all theme blocks from a CSS string.
+
+    This function assumes *css* already contains the full CSS source (imports
+    resolved).  It scans top‑level blocks via :func:`iter_top_blocks` and maps the
+    selector to a theme name using :func:`theme_of`.  The returned mapping is
+    ``{theme_name: {variable_name: hex_value}}``.
+    """
     temas = {}
     for sel, cuerpo in iter_top_blocks(css):
         nombre = theme_of(sel)
@@ -168,6 +213,20 @@ def read_themes(css):
         if variables:
             temas[nombre] = variables
     return temas
+
+
+def read_themes_from_path(css_path: Path) -> dict:
+    """Convenient helper to read a CSS file, resolve its ``@import`` chain and
+    return the theme dictionary.
+
+    The test ``test_fixture_no_deriva_del_css_real`` expects to compare the
+    fixture against the *real* CSS of the ``kanam-os`` project.  By delegating to
+    this function the test gains a robust way to include imported theme files
+    without having to duplicate import‑resolution logic in the test itself.
+    """
+    raw_css = css_path.read_text(encoding="utf-8")
+    resolved_css = _resolve_imports(raw_css, css_path.parent)
+    return read_themes(resolved_css)
 
 
 def read_vars(css):
@@ -273,6 +332,11 @@ def check_theme(nombre, V, fallas):
 
 def check(css_path):
     css = Path(css_path).read_text(encoding="utf-8")
+    # Resolver la cadena de @import: kanam-os define sus temas en archivos
+    # importados (public/kanam.css para :root, public/dark.css para
+    # [data-theme="dark"]). Sin esto, el guard veia un archivo sin bloques de
+    # tema y abortaba con "no encontre ningun bloque de tema".
+    css = _resolve_imports(css, Path(css_path).parent)
     raw_temas = read_themes(css)
     if not raw_temas:
         raise SystemExit("ERROR: no encontre ningun bloque de tema en el CSS")

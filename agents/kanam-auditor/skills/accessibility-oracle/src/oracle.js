@@ -49,84 +49,173 @@ class AccessibilityOracle {
     }
   }
 
-  async run(route = '/') {
-    const browser = await chromium.launch({ headless: this.headless });
-    const context = await browser.newContext();
-    const page = await context.newPage();
+  /**
+   * Run the accessibility audit.
+   *
+   * If a `route` is explicitly provided, only that route is audited.
+   * If `route` is omitted or falsy, the method will iterate over all routes
+   * defined in the configuration (`this.config.paths`).
+   *
+   * The method aggregates results across routes and writes report files
+   * according to the `report.format` configuration (JSON, HTML). Files are
+   * placed in `this.outputDir` (default `./reports`). The console output is
+   * always printed (format `console`).
+   */
+  async run(route) {
+    // Helper that performs a single‑route audit and returns the raw result
+    const runSingle = async (singleRoute) => {
+      const browser = await chromium.launch({ headless: this.headless });
+      const context = await browser.newContext();
+      const page = await context.newPage();
 
-    const violations = [];
-    const warnings = [];
-    const passed = [];
+      const violations = [];
+      const warnings = [];
+      const passed = [];
 
-    const targetUrl = `${this.config.project.base_url}${route}`;
-    
-    console.log(`🔍 Auditing: ${targetUrl}`);
+      const targetUrl = `${this.config.project.base_url}${singleRoute}`;
+      console.log(`🔍 Auditing: ${targetUrl}`);
 
-    try {
-      await page.goto(targetUrl, { waitUntil: 'networkidle' });
+      try {
+        await page.goto(targetUrl, { waitUntil: 'networkidle' });
 
-      // 1. axe-core scan
-      const axeResults = await this.runAxeCheck(page);
-      
-      // 2. Keyboard navigation test
-      const keyboardResults = await this.runKeyboardCheck(page);
-      
-      // 3. Focus visible test
-      const focusResults = await this.runFocusVisibleCheck(page);
-      
-      // 4. Target size test
-      const targetSizeResults = await this.runTargetSizeCheck(page);
+        // 1. axe-core scan
+        const axeResults = await this.runAxeCheck(page);
+        // 2. Keyboard navigation test
+        const keyboardResults = await this.runKeyboardCheck(page);
+        // 3. Focus visible test
+        const focusResults = await this.runFocusVisibleCheck(page);
+        // 4. Target size test
+        const targetSizeResults = await this.runTargetSizeCheck(page);
 
-      // Aggregate results
-      const allViolations = [
-        ...axeResults.violations,
-        ...keyboardResults.violations,
-        ...focusResults.violations,
-        ...targetSizeResults.violations
-      ];
+        const allViolations = [
+          ...axeResults.violations,
+          ...keyboardResults.violations,
+          ...focusResults.violations,
+          ...targetSizeResults.violations
+        ];
+        const allWarnings = [
+          ...axeResults.warnings,
+          ...keyboardResults.warnings,
+          ...focusResults.warnings,
+          ...targetSizeResults.warnings
+        ];
 
-      const allWarnings = [
-        ...axeResults.warnings,
-        ...keyboardResults.warnings,
-        ...focusResults.warnings,
-        ...targetSizeResults.warnings
-      ];
+        if (allViolations.length === 0 && allWarnings.length === 0) {
+          passed.push({
+            route: singleRoute,
+            message: 'All accessibility checks passed'
+          });
+        } else {
+          violations.push(...allViolations);
+          warnings.push(...allWarnings);
+        }
 
-      if (allViolations.length === 0 && allWarnings.length === 0) {
-        passed.push({
-          route,
-          message: 'All accessibility checks passed'
+        // Capture screenshots for any violations if configured
+        if (this.screenshot && allViolations.length > 0) {
+          await this.captureViolationScreenshots(page, allViolations, singleRoute);
+        }
+      } catch (error) {
+        violations.push({
+          route: singleRoute,
+          rule: 'page-load',
+          message: `Failed to load page: ${error.message}`,
+          severity: 'critical'
         });
-      } else {
-        violations.push(...allViolations);
-        warnings.push(...allWarnings);
+      } finally {
+        await browser.close();
       }
 
-      // Generate screenshots for violations
-      if (this.screenshot && allViolations.length > 0) {
-        await this.captureViolationScreenshots(page, allViolations, route);
-      }
+      return {
+        route: singleRoute,
+        violations,
+        warnings,
+        passed,
+        report: this.generateReport(violations, warnings, passed),
+        failed: violations.length > 0
+      };
+    };
 
-    } catch (error) {
-      violations.push({
-        route,
-        rule: 'page-load',
-        message: `Failed to load page: ${error.message}`,
-        severity: 'critical'
-      });
-    } finally {
-      await browser.close();
+    // Determine the set of routes to process
+    let routesToRun;
+    if (route) {
+      routesToRun = [{ route }];
+    } else {
+      // Use the array defined in configuration. Fallback to root if missing.
+      routesToRun = (Array.isArray(this.config.paths) && this.config.paths.length > 0)
+        ? this.config.paths.map(p => ({ route: p.route }))
+        : [{ route: '/' }];
     }
 
-    return {
-      report: this.generateReport(violations, warnings, passed),
-      failed: violations.length > 0,
-      stats: {
-        routes: 1,
-        passed: passed.length,
-        violations: violations.length,
-        warnings: warnings.length
+    const perRouteResults = [];
+    const aggregatedViolations = [];
+    const aggregatedWarnings = [];
+    const aggregatedPassed = [];
+
+    for (const { route: r } of routesToRun) {
+      const result = await runSingle(r);
+      perRouteResults.push(result);
+      aggregatedViolations.push(...result.violations);
+      aggregatedWarnings.push(...result.warnings);
+      aggregatedPassed.push(...result.passed);
+    }
+
+    // Build a combined report for all routes
+    const combinedReport = this.generateReport(
+      aggregatedViolations,
+      aggregatedWarnings,
+      aggregatedPassed
+    );
+
+    // Ensure the output directory exists
+    if (!fs.existsSync(this.outputDir)) {
+      fs.mkdirSync(this.outputDir, { recursive: true });
+    }
+
+    // Write report files according to configuration (HTML / JSON)
+    const formats = Array.isArray(this.config.report.format)
+      ? this.config.report.format
+      : [];
+    for (const fmt of formats) {
+      if (fmt === 'json') {
+        const jsonPath = path.join(this.outputDir, 'report.json');
+        const jsonContent = JSON.stringify({
+          perRoute: perRouteResults,
+          aggregated: {
+            violations: aggregatedViolations,
+            warnings: aggregatedWarnings,
+            passed: aggregatedPassed,
+            stats: {
+              routes: routesToRun.length,
+              passed: aggregatedPassed.length,
+              violations: aggregatedViolations.length,
+              warnings: aggregatedWarnings.length
+            }
+          }
+        }, null, 2);
+        fs.writeFileSync(jsonPath, jsonContent, 'utf8');
+      } else if (fmt === 'html') {
+        const htmlPath = path.join(this.outputDir, 'report.html');
+        const escaped = combinedReport
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        const htmlContent = `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>Accessibility Report</title></head><body><pre>${escaped}</pre></body></html>`;
+        fs.writeFileSync(htmlPath, htmlContent, 'utf8');
       }
+    }
+
+    // Return the aggregated result (mirroring the original shape)
+    return {
+      report: combinedReport,
+      failed: aggregatedViolations.length > 0,
+      stats: {
+        routes: routesToRun.length,
+        passed: aggregatedPassed.length,
+        violations: aggregatedViolations.length,
+        warnings: aggregatedWarnings.length
+      },
+      perRoute: perRouteResults
     };
   }
 

@@ -15,7 +15,8 @@ program
   .version('1.0.0')
   .option('-c, --config <path>', 'Ruta al archivo de configuración', '.kanam/a11y-oracle.config.yaml')
   .option('-u, --url <url>', 'URL base a auditar (override config)')
-  .option('-r, --route <route>', 'Ruta específica a auditar', '/')
+  // No default for --route; if omitted the skill will iterate over all routes defined in the config
+  .option('-r, --route <route>', 'Ruta específica a auditar')
   .option('-f, --format <type>', 'Formato de salida (console|json|html|junit)', 'console')
   .option('-o, --output <dir>', 'Directorio de reportes', './reports')
   .option('--headless', 'Ejecutar en modo headless', true)
