@@ -49,21 +49,24 @@
 - **Decisión propuesta:** incorporar `openclaw doctor` a la rutina de mantenimiento (posiblemente en un cierre de sesión o un job semanal) en vez de escribir un auditor propio.
 - **Prioridad:** baja-media (quick win de descubrimiento).
 
-### A4. `contextPruning` + hard-clear
+### A4. `contextPruning` - habilitado (2026-10-12)
 
-- **Qué es:** poda nativa de resultados de tool (`agents.defaults.contextPruning.mode: "cache-ttl"`), con hard-clear que reemplaza el contenido por `[Old tool result content cleared]`.
-- **Evidencia:** docs de OpenClaw: concepts/session-pruning. En la config real: **`contextPruning: None` y `compaction: None`** (no configurados → defaults).
-- **Por qué importa:** mantener el contexto lean sin escribir un "limpiador de contexto" propio (que es lo que el curso propone, reinventado, en L20).
-- **Decisión propuesta:** revisar si conviene activar `mode: cache-ttl` explícitamente para sesiones largas.
-- **Prioridad:** baja (tuning).
+- **Qué es:** poda nativa de resultados de tool (`agents.defaults.contextPruning.mode: "cache-ttl"`); el hard-clear reemplaza el contenido por `[Old tool result content cleared]`.
+- **Estado (ejecutado):** `contextPruning: { mode: "cache-ttl", ttl: "5m" }` aplicado. **Off por defecto para providers no-Anthropic** -> en esta instalacion (Ollama) sin el knob no habia poda. Hot-applies sin reinicio; config valida. Backup en `/tmp/openclaw.json.bak-a4-*`.
+- **Por qué importa:** mantiene el contexto lean sin escribir un limpiador propio (lo que el curso reinventa en L20).
+- **Reversibilidad:** `mode: "off"` o restaurar backup.
 
-### A5. Hooks de ciclo de vida
+### A4-bis (descripcion original)
 
-- **Qué es:** eventos internos (`session:compact:before/after`, `agent:bootstrap`, `before_compaction`, etc.) que permiten interceptar etapas del ciclo.
-- **Evidencia:** docs de OpenClaw: concepts/agent-loop, docs de OpenClaw: plugins/hooks/reference. Config real: solo el hook `session-memory` (interno) está habilitado.
-- **Por qué importa:** automatizar mantenimiento (flush de memoria pre-compactación, etc.) sin escribir código ad-hoc.
-- **Decisión propuesta:** identificar 1-2 hooks útiles como automatización y evaluarlos.
-- **Prioridad:** baja (exploratoria).
+- **Qué es:** (mismo concepto). En la config real estaba en `None` (defaults).
+
+### A5. Hooks de ciclo de vida - `command-logger` habilitado (2026-10-12)
+
+- **Qué es:** eventos internos (`session:compact:before/after`, `command:*`, `gateway:startup`, `agent:bootstrap`, etc.) que permiten interceptar etapas del ciclo.
+- **Relevo real:** OpenClaw ya trae **5 hooks bundled** (todos `ready`): `boot-md`, `bootstrap-extra-files`, `command-logger`, `compaction-notifier`, `session-memory`. Antes, solo `session-memory` estaba habilitado.
+- **Estado (ejecutado):** **`command-logger` habilitado** - silencioso, escribe auditoria de comandos (`/new`, `/reset`, `/stop`) a `~/.openclaw/logs/commands.log` en JSONL (timestamp, action, sessionKey, senderId, source). Sin ruido al chat. El archivo se crea al primer comando emitido (aun vacio: no se emitio ninguno desde el enable). Hot-applies sin reinicio; config valida. Backup en `/tmp/openclaw.json.bak-a5-*`.
+- **No habilitado (evaluado):** `compaction-notifier` (envia avisos **visibles al chat** en cada compactacion) - se dejo apagado para no meter ruido en los canales; queda disponible si se quiere visibilidad de compactacion. `boot-md`/`bootstrap-extra-files` ya eran parte del arranque por otras vias.
+- **Reversibilidad:** `openclaw hooks disable command-logger` o restaurar backup.
 
 ---
 
