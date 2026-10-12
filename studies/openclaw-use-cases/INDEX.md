@@ -17,12 +17,13 @@
 | M1 · L03 | Configuración del Tono Asistido con SOUL.md - `L03-soul-tono.md` | ✅ Completada |
 | M1 · L04 | Generación Dinámica de Resúmenes de Conversaciones - `L04-resumenes-dinamicos.md` | ✅ Completada |
 | M1 · L05 | Derivación Segura de Mensajes a Operadores (Human-in-the-Loop) - `L05-handoff-operadores.md` | ✅ Completada |
-| M2 · L06 | Configuración de Tareas Periódicas con Cron (teaser del curso) | ⏳ Próxima |
+| M2 · L06 | Configuración de Tareas Periódicas con Cron - `L06-cron-tareas-periodicas.md` | ✅ Completada |
+| M2 · L07 | Monitorización del Sistema Mediante Heartbeats Periódicos (teaser del curso) | ⏳ Próxima |
 | ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
 
-**Completadas:** 5 / 30.
+**Completadas:** 6 / 30.
 
-> ✅ **Módulo 1 completo:** *Asistentes de Mensajería Contextuales* (L01-L05). La Lección 6 abre el **Módulo 2: Tareas Programadas y Rutinas Autónomas**.
+> ✅ **Módulo 1 completo** (*Asistentes de Mensajería Contextuales*, L01-L05). **Módulo 2 en curso** (*Tareas Programadas y Rutinas Autónomas*): tras la L06 el propio curso indica *"4 lessons left"* → Módulo 2 = 5 lecciones (L06-L10).
 
 ---
 
@@ -31,8 +32,8 @@
 El curso declara **30 lecciones**. Confirmado por el material:
 
 - El nombre del Módulo 1: **Asistentes de Mensajería Contextuales**.
-- Tras la L05 el curso abre el **Módulo 2: Tareas Programadas y Rutinas Autónomas**, que arranca con *Configuración de Tareas Periódicas con Cron* (L06).
-- La Lección 6 anticipada: *Configuración de Tareas Periódicas con Cron*.
+- Tras la L06 el curso indica *"4 lessons left in Tareas Programadas y Rutinas Autónomas"* → el Módulo 2 tiene **5 lecciones** (L06-L10).
+- La Lección 7 anticipada: *Monitorización del Sistema Mediante Heartbeats Periódicos*.
 
 Los módulos 2-6 y las lecciones restantes **no se inventan**: se registran a medida que Gonzo comparte cada lección. El error del reinicio anterior fue fabricar un mapa de 6 módulos x 5 lecciones que no correspondía al curso.
 
