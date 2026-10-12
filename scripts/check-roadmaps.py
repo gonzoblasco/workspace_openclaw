@@ -74,8 +74,14 @@ def index_versions(index_text: str) -> dict[str, str]:
         if not m_role:
             continue
         role = m_role.group(1)
-        # la primera version 'vX.Y' de la fila es la declarada
-        m_ver = re.search(r"\bv?\d+\.\d+\b", line.split("|")[-3] if line.count("|") >= 3 else line)
+        # La version declarada vive en la columna 'Versión declarada'. En una fila
+        # markdown de 5 columnas, split('|') da 7 partes; la version es el 4to campo
+        # desde el final ([-4]). El codigo original usaba [-3], que apunta a 'Estado
+        # verificado': parseaba la columna equivocada y solo funcionaba por el fallback
+        # de abajo (auditoria 2026-10-12). Se mantiene el fallback para filas con el
+        # formato viejo 'v0.1 (por defecto)'.
+        cols = line.split("|")
+        m_ver = re.search(r"\bv?\d+\.\d+\b", cols[-4]) if len(cols) >= 4 else None
         if not m_ver:
             m_ver = re.search(r"\bv?0\.\d+\b", line)
         if m_ver:

@@ -40,22 +40,22 @@ al día, y el índice de tracking sin drift entre lo declarado y lo real.
 
 ---
 
-## El mapa de madurez del ecosistema (hoy, 2026-10-07)
+## El mapa de madurez del ecosistema (hoy, 2026-10-12)
 
 | Rol | Roadmap | Versión declarada | Estado verificado | Próximo salto |
 |---|---|---|---|---|
 | **kanam-auditor** (UI/UX) | ✅ `agents/kanam-auditor/ROADMAP.md` | v0.1 | 🟡 3 skills sueltos; `pixel-diff` real, `oracle`/`enforcer` parciales | Fase 1 → consolidar arsenal |
 | **kanam-critic** (sustancia) | ✅ `agents/kanam-critic/ROADMAP.md` | v0.2 | 🟡 vara + ritual listos; sin memoria ni cierre | v0.5 "El Ojo" |
-| **kanam-planner** (orquestación) | ❌ falta | v0.1 (por defecto) | 🟡 1 skill (`session-plan-orchestration`) | crear roadmap |
-| **kanam-dev** (ingeniería) | ❌ falta | v0.1 (por defecto) | 🟡 38 skills; sin declaración de madurez | crear roadmap |
-| **kanam-mind** (conocimiento) | ❌ falta | v0.1 (por defecto) | 🟡 10 skills; memoria + investigación | crear roadmap |
-| **kanam-ops** (infraestructura) | ❌ falta | v0.1 (por defecto) | 🟡 4 skills; gateway + config | crear roadmap |
-| **kanam-studio** (comunicación) | ❌ falta | v0.1 (por defecto) | 🟡 7 skills; contenido + marca | crear roadmap |
+| **kanam-planner** (orquestación) | ✅ `agents/kanam-planner/ROADMAP.md` | v0.1 | 🟡 1 skill (`session-plan-orchestration`) | Tramo 3 (P2) |
+| **kanam-dev** (ingeniería) | ✅ `agents/kanam-dev/ROADMAP.md` | v0.1 | 🟡 38 skills; sin declaración de madurez | Tramo 3 (P0) |
+| **kanam-mind** (conocimiento) | ✅ `agents/kanam-mind/ROADMAP.md` | v0.1 | 🟡 10 skills; memoria + investigación | Tramo 3 (P1) |
+| **kanam-ops** (infraestructura) | ✅ `agents/kanam-ops/ROADMAP.md` | v0.1 | 🟡 4 skills; gateway + config | Tramo 3 (P1) |
+| **kanam-studio** (comunicación) | ✅ `agents/kanam-studio/ROADMAP.md` | v0.1 | 🟡 7 skills; contenido + marca | Tramo 3 (P2) |
 | **Kanam CORE** (orquestación raíz) | ✅ `docs/ROADMAP.md` | - | 🟢 roadmap del sistema (no de rol) | - |
 | **openclaw-agent** (bundled) | n/a | - | - | fuera de alcance |
 
-**Lectura:** 2 de 7 con roadmap. El ecosistema entero está, en el papel, en **v0.1**. La meta de
-esta ronda es **nivelar los 5 faltantes** y dejar el camino a **v0.5** trazado y trackeado.
+**Lectura:** 7 de 7 con roadmap (nivelación M1 cumplida; solo critic ya en v0.2). El ecosistema
+está en **v0.1** salvo critic. La meta de esta ronda es **escalar a v0.5** por dependencia (Tramo 3).
 
 ---
 
@@ -64,7 +64,7 @@ esta ronda es **nivelar los 5 faltantes** y dejar el camino a **v0.5** trazado y
 | Fase | Qué es | Estado | Criterio de listo |
 |---|---|---|---|
 | **M0 - Diagnóstico y estándar** | Corregir el falso reporte, fijar el formato y el vocabulario de versión | ✅ | `roadmap-authoring-guide.md` existe; el estado real de los 7 está medido |
-| **M1 - Nivelación** | Los 7 roles tienen `ROADMAP.md` a v0.1 con el formato estándar | 🟡 | 7/7 archivos existen, siguen las 7 secciones y declaran su versión |
+| **M1 - Nivelación** | Los 7 roles tienen `ROADMAP.md` con el formato estándar | ✅ | 7/7 archivos existen, siguen las 7 secciones y declaran su versión (guard `check-roadmaps.py` en verde) |
 | **M2 - Tracking vivo** | Índice único + checklist de revisión + registro de saltos | ⚪ | este documento lista los 7; el checklist corre sobre roadmaps de rol; hay registro de cambios de versión |
 | **M3 - Escalada a v0.5** | Cada rol cierra sus dependencias duras (memoria, verificación, autonomía) | ⚪ | los 7 declaran v0.5 con su señal de listo cumplida |
 | **M4 - Verificación externa** | Ningún salto se auto-reporta: se verifica contra el filesystem / el runtime | ⚪ | 0 saltos marcados sin evidencia reproducible |
