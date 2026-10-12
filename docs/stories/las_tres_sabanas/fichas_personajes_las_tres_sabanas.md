@@ -1,10 +1,12 @@
 # Fichas de Personaje - Las Tres Sábanas
 
-*Borrador 0.2 | Lore Base*
+*Borrador 0.3 | Lore Base*
+
+> **Canon (2026-10-12):** los tres arquetipos ya tienen nombre. **Néstor** (El Nexus), **Adán** (El Anclaje Roto), **Vera** (La Variable Inestable). Son **primos lejanos**: los une la sangre, ese algo que persiste aunque todo lo demás los distancie. El parentesco es el sustrato del sistema - no eligieron estar juntos, pero la sangre no los suelta.
 
 ---
 
-## El Nexus
+## Néstor (El Nexus)
 
 ### Perfil Básico
 - **Función:** Conectar y estabilizar el sistema
@@ -31,7 +33,7 @@ Al intentar conectar a los otros, el Nexus *debe* cargar la tensión entre ellos
 
 ---
 
-## El Anclaje Roto
+## Adán (El Anclaje Roto)
 
 ### Perfil Básico
 - **Función:** Mantener el centro fijo
@@ -58,7 +60,7 @@ Quien se mueve en torno al anclaje roto eventualmente lo rompe por exceso de pes
 
 ---
 
-## La Variable Inestable
+## Vera (La Variable Inestable)
 
 ### Perfil Básico
 - **Función:** Mover el sistema
@@ -86,6 +88,12 @@ La Variable Inestable *quiere* resolver, pero sabe que sus soluciones son siempr
 ---
 
 ## Dinámica Conjunta: Cómo se entretejen
+
+### El Vínculo de Sangre (Néstor, Adán, Vera)
+
+Los tres son primos lejanos. No comparten la infancia ni la casa, pero comparten la sangre, y la sangre es el único hilo que ninguno eligió cortar. El sistema no los une el afecto cotidiano: los une un parentesco que se hereda y no se decide. Por eso la distancia entre ellos nunca es total y la ruptura nunca es limpia. Se pueden odiar, se pueden herir, se pueden evitar durante años - y aun así vuelven a la misma mesa cuando uno de los tres llama, porque la sangre tira más fuerte que cualquier motivo para irse.
+
+Ese parentesco hace el sistema más cruel, no más amable: los obliga a seguir respondiendo por alguien a quien ya no querrían deberle nada.
 
 ### El Ciclo de Dependencia Mutua
 

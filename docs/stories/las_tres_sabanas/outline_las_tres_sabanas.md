@@ -6,7 +6,7 @@
 
 > **Qué es esto:** la escaleta de la trama, en orden. La estructura (personajes, reglas, tensiones) vive en el lore; acá está *cómo se desarrolla* esa estructura en escenas concretas. Cada escena declara quién la empuja, qué se rompe y qué cambia al salir. Si una escena no cambia nada, no entra.
 
-> **Nota de nombres:** los tres siguen como arquetipos (Nexus, Anclaje Roto, Variable Inestable). Ponerles nombres propios es una decisión aparte, todavía pendiente.
+> **Nota de nombres:** los tres personajes tienen nombre propio: **Néstor** (Nexus), **Adán** (Anclaje Roto), **Vera** (Variable Inestable). Son **primos lejanos**. En las escenas se los nombra por su nombre; el arquetipo queda como función, no como etiqueta.
 
 ---
 
@@ -192,8 +192,8 @@ Cada escena trae cuatro líneas fijas:
 
 ## Pendientes
 
-1. Nombres propios de los tres arquetipos (decisión de canon, no del outline).
-2. Escribir el primer capítulo (sugerido: E1, ya modelada) como prueba de voz.
-3. Definir extensión objetivo (novela corta vs. novela) para calibrar cuántas escenas reales tendrá cada acto.
+1. Escribir el primer capítulo (sugerido: E1, ya modelada) como prueba de voz.
+2. Definir extensión objetivo (novela corta vs. novela) para calibrar cuántas escenas reales tendrá cada acto.
+3. Definir el grado exacto del parentesco y la historia familiar previa a E1 (qué tan lejanos son los primos; quién crió a quién; cómo se conocieron).
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->

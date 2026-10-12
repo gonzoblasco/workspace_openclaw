@@ -66,7 +66,9 @@ El conflicto no se resuelve; migra. Si A sufre porque B actuó, el problema pasa
 
 ## Arquetipos Personales (Borrador 0.2)
 
-### 1. El Nexus
+> **Canon (2026-10-12):** **Néstor** = El Nexus · **Adán** = El Anclaje Roto · **Vera** = La Variable Inestable. Son **primos lejanos**: los une la sangre, ese algo que persiste aunque el sistema los distancie.
+
+### 1. Néstor (El Nexus)
 
 **Función:** Conectar y estabilizar  
 **Tensión:** Al unir, estira la cuerda hasta que algo cede.
@@ -77,7 +79,7 @@ El conflicto no se resuelve; migra. Si A sufre porque B actuó, el problema pasa
 
 ---
 
-### 2. El Anclaje Roto
+### 2. Adán (El Anclaje Roto)
 
 **Función:** Mantener el centro fijo  
 **Tensión:** Su inmovilidad es lo que permite que otros se muevan, pero esa misma rigidez es lo que eventualmente hará quebrar a todo alrededor.
@@ -88,7 +90,7 @@ El conflicto no se resuelve; migra. Si A sufre porque B actuó, el problema pasa
 
 ---
 
-### 3. La Variable Inestable
+### 3. Vera (La Variable Inestable)
 
 **Función:** Mover el sistema  
 **Tensión:** Su capacidad de moverse es la única forma de salvar al sistema, pero cada movimiento es un paso más hacia el colapso total.
