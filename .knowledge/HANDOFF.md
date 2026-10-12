@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-12 03:53 GMT-3
+**Fecha:** 2026-10-12 04:13 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,25 +12,37 @@
 
 ## Que se hizo en esta sesion
 
-Auditoria de ESTA conversacion (hilo de estudio del curso OpenClaw x roadmap.sh, key 58cf8135) + cierre, con modelo grande. En toda la conversacion las unicas tools fueron read/tool_search/skill_workshop list (read fallidos): NO hubo write/edit/commit -> este hilo NO cambio ningun archivo del repo. Se analizaron 5 lecciones del Module 1 (paradigma declarativo, inyeccion dinamica, tripode skills/tools/plugins, jerarquia de obediencia, Sentinel) en 3 capas.
+Reinicio del curso OpenClaw Use Cases a pedido de Gonzo. Se listo TODO lo que se estudia (4 tracks) y se advirtio que barrer todo arrastraba CPACC (examen nov/dic), narrative-engineering (3 casos) y el frente de diseno; Gonzo confirmo alcance 1: solo el curso. Borrado studies/openclaw-use-cases/ (10 archivos: INDEX + 9 lecciones de las dos grillas) porque acumulaba TRES planes de modulos contradictorios y numeracion inconsistente (/25 vs /30). studies/ sobrevive (design + narrative). Ningun gate rompe (check-refs/content-dirs/adr-integrity OK). ADR-086 actualizado (ya no apunta a la carpeta; la decision sigue vigente). CHANGELOG con el bloque del reinicio. NO tocado: narrative-engineering, design, cpacc, dailies 10-10/10-11.
 
 ## Estado actual
 
-Repo sin cambios propios de este hilo. El arbol sucio (studies/openclaw-use-cases/*, lore_*/fichas_*, dailies 10/10-10/11, HANDOFF) es de sesiones concurrentes.
+studies/openclaw-use-cases/ eliminado; el curso se rehace desde cero con UN solo plan. studies/ conserva design/ y narrative-engineering/. ADR-086 y CHANGELOG actualizados.
 
 ## Proximos pasos
 
-1) Decidir si studies/openclaw-use-cases/ se versiona. 2) Decidir si kanam-curriculum-audit (Workshop) queda como skill. 3) Cerrar deudas de tetris (tramas/funciones muertas).
+1) Escribir el plan unico del curso OpenClaw Use Cases antes de generar lecciones (definir modulos y numeracion de una vez). 2) Versionar studies/ de forma consistente (decidir si los tracks viven aca o en docs/). 3) Dailies 10-10/10-11 siguen untracked (otras sesiones).
 
 ## Decisiones y contexto que no debe perderse
 
-- Un hilo de estudio puede no dejar cambios en el repo; el cierre igual se registra (memoria), sin forzar commits.
+- Un curso a medio armar con tres planes contradictorios se rehace, no se reconcilia. Separar curso-a-medio-hacer de trabajo-con-resultado: CPACC tiene fecha de examen, narrative tiene casos cerrados.
 
 ## Archivos tocados
 
 ```
+CHANGELOG.md
+docs/adr/ADR-086-embudo-de-entrada-conversacional.md
 memory/2026-10-12.md
 memory/memory.db
+studies/openclaw-use-cases/INDEX.md
+studies/openclaw-use-cases/L01-autonomous-chat-response.md
+studies/openclaw-use-cases/L01-lesson-overview.md
+studies/openclaw-use-cases/L01-message-triage.md
+studies/openclaw-use-cases/L02-intent-detection.md
+studies/openclaw-use-cases/L02-query-routing.md
+studies/openclaw-use-cases/L03-contextual-drafting.md
+studies/openclaw-use-cases/L03-contextual-wrangling.md
+studies/openclaw-use-cases/L04-escalation-rules.md
+studies/openclaw-use-cases/L05-context-boundaries.md
 ```
 
 ## Como continuar

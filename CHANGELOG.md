@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-12] - El curso OpenClaw Use Cases se reinicia desde cero
+
+### Removed
+- **`studies/openclaw-use-cases/` (10 archivos):** INDEX + 9 lecciones (L01-L05 de la grilla vieja de 25, y L01-L03 de la migracion a 6 modulos). La carpeta acumulaba tres versiones del plan de modulos que no coincidian (INDEX vs daily 2026-10-10 vs `L01-lesson-overview.md`), ademas de numeracion inconsistente (`/25` vs `/30`). Decision de Gonzo (2026-10-12): borrar y rehacer el curso desde cero con un solo plan.
+
+### Changed
+- **`docs/adr/ADR-086-embudo-de-entrada-conversacional.md`:** la tabla de Implementacion y las Referencias ya no apuntan a `studies/openclaw-use-cases/` (retirado). La decision del ADR (el marco de los 5 patrones del embudo) sigue vigente; solo se retira el puntero al registro de estudio.
+
+### Notes
+- **Que NO se toco:** los otros tracks de estudio quedan intactos - `studies/narrative-engineering/` (3 casos completos, 4/4 ejes), `studies/design/` (plan abierto el 2026-09-14) y `docs/cpacc/` (semana 1 + meta de examen nov/dic). El pedido era reiniciar el curso de OpenClaw Use Cases, no barrer todo lo que se estudia.
+- **Recuperable:** todo estaba trackeado y pusheado; el borrado se recupera del historial de git si hiciera falta.
+- **Aprendizaje del Modulo 1 preservado:** los learnings derivados (`docs/learnings/pipeline-agentes.md`, `docs/learnings/metodologia.md`) y el ADR-086 viven fuera de la carpeta; no se pierden al reiniciar el curso.
+
+---
+
 ## [2026-10-12] - El gate del pacto A/B deja de mentir: el estado de git ya no es una violacion
 
 ### Fixed

@@ -94,14 +94,14 @@ El contexto se aísla por **identidad → canal → hilo**. Dos reglas duras:
 |---|---|
 | `docs/adr/ADR-086-*.md` | este ADR |
 | `docs/learnings/pipeline-agentes.md`, `docs/learnings/metodologia.md` | 3 learnings nuevos (marco del Módulo 1, TTL=heartbeat, método módulo→activos) |
-| `studies/openclaw-use-cases/` | registro de las lecciones L01-L05 + índice de progreso |
+| `studies/openclaw-use-cases/` | registro de las lecciones (retirado 2026-10-12; el curso se reinicia desde cero) |
 | `AGENTS.md` | sin cambio en esta fase (la regla dura de borradores ya está bajo "Ask first") |
 
 ---
 
 ## Referencias
 
-- Módulo 1 (lecciones 1-5) del curso "OpenClaw Use Cases" - registro en `studies/openclaw-use-cases/`
+- Módulo 1 del curso "OpenClaw Use Cases" - el registro en `studies/openclaw-use-cases/` se retiro (2026-10-12, curso reiniciado desde cero); la decision del ADR (el marco de los 5 patrones del embudo) sigue vigente
 - ADR-073 / ADR-074: arquitectura y despacho multi-agente (origen de la equivalencia con L2)
 - ADR-083: frontera de roles (el enrutamiento por Persona como enforcement)
 - ADR-084: registros de sesión (fundamento de la equivalencia con L5)
