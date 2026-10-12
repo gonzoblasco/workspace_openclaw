@@ -38,7 +38,8 @@
 | M5 · L24 | Recuperación Autónoma Frente a Respuestas Fallidas - `L24-recuperacion-autonoma.md` | ✅ Completada |
 | M5 · L25 | Generación de Entregables Finales Multi-Etapa - `L25-entregables-multietapa.md` | ✅ Completada |
 | M6 · L26 | Segmentación de Dominios entre Agentes Dedicados - `L26-segmentacion-dominios.md` | ✅ Completada |
-| M6 · L27 | Definición de Reglas Claras de Enrutamiento (teaser del curso) | ⏳ Próxima |
+| M6 · L27 | Definición de Reglas Claras de Enrutamiento - `L27-reglas-enrutamiento.md` | ✅ Completada |
+| M6 · L28 | Consulta Coordinada de Memorias Compartidas (teaser del curso) | ⏳ Próxima |
 | ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
 
 **Completadas:** 26 / 30.
@@ -58,8 +59,8 @@
 El curso declara **30 lecciones**. Confirmado por el material:
 
 - El nombre del Módulo 1: **Asistentes de Mensajería Contextuales**.
-- Tras la L25 el curso abre el **Módulo 6: Especialización y Coordinación Multiagente**, que arranca con *Segmentación de Dominios entre Agentes Dedicados* (L26).
-- La Lección 26 anticipada: *Segmentación de Dominios entre Agentes Dedicados*.
+- Tras la L27 el curso indica *"3 lessons left in Especialización y Coordinación Multiagente"* → el Módulo 6 tiene **5 lecciones** (L26-L30).
+- La Lección 28 anticipada: *Consulta Coordinada de Memorias Compartidas*.
 
 Los módulos 2-6 y las lecciones restantes **no se inventan**: se registran a medida que Gonzo comparte cada lección. El error del reinicio anterior fue fabricar un mapa de 6 módulos x 5 lecciones que no correspondía al curso.
 
