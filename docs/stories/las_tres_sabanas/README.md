@@ -9,16 +9,17 @@ el Nexus (conecta), el Anclaje Roto (sostiene el centro), la Variable Inestable
 
 ## Estructura
 
-- `lore_las_tres_sabanas.md` - reglas del juego (tension sistemica), arquetipos y dinamica.
+- `lore_las_tres_sabanas.md` - reglas del juego (tension sistemica), arquetipos, dinamica y material tactico (3 actos, escenarios, patrones de dialogo, tablas).
 - `fichas_personajes_las_tres_sabanas.md` - fichas de los tres personajes (deseo central, tension, inseguridad).
+- `outline_las_tres_sabanas.md` - escaleta de la trama en orden (17 escenas en 3 actos).
 
 ## Estado
 
-Borrador. El lore base **y el material tactico** estan escritos (escenarios
-modelados, patrones de dialogo, estructura de 3 actos, tablas de conflicto).
-**Falta el outline**: la escaleta de escenas en orden, derivada de la estructura.
+Borrador. Estructura y material tactico completos; outline completo (17 escenas).
+Falta el texto: escribir el primer capitulo como prueba de voz.
 
 ## Proximos pasos
 
-1. Producir el outline: escaleta de escenas en orden, derivada de los 3 actos.
-2. Escribir el primer capitulo como prueba de voz.
+1. Escribir el primer capitulo (sugerido: E1, ya modelada).
+2. Nombres propios de los tres arquetipos (decision de canon, no del outline).
+3. Definir extension objetivo (novela corta vs. novela).
