@@ -29,12 +29,13 @@
 | M3 · L15 | Creación Rápida de Tickets de Soporte - `L15-tickets-soporte.md` | ✅ Completada |
 | M4 · L16 | Sincronización Proactiva en Archivos de Memoria - `L16-sincronizacion-memoria.md` | ✅ Completada |
 | M4 · L17 | Estructuración de Notas en Directorios Temporales - `L17-notas-temporales.md` | ✅ Completada |
-| M4 · L18 | Detección de Inconsistencias en Documentación Técnica (teaser del curso) | ⏳ Próxima |
+| M4 · L18 | Detección de Inconsistencias en Documentación Técnica - `L18-inconsistencias-docs.md` | ✅ Completada |
+| M4 · L19 | Consolidación Automática de Bitácoras de Trabajo (teaser del curso) | ⏳ Próxima |
 | ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
 
-**Completadas:** 17 / 30.
+**Completadas:** 18 / 30.
 
-> ✅ **Módulo 1** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). ✅ **Módulo 3** (*Ingesta Dirigida por Eventos*, L11-L15). **Módulo 4 en curso** (*Gestión Proactiva del Workspace*): tras la L17 el propio curso indica *"3 lessons left"* → Módulo 4 = 5 lecciones (L16-L20).
+> ✅ **Módulo 1** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). ✅ **Módulo 3** (*Ingesta Dirigida por Eventos*, L11-L15). **Módulo 4 en curso** (*Gestión Proactiva del Workspace*): tras la L18 el propio curso indica *"2 lessons left"* → Módulo 4 = 5 lecciones (L16-L20).
 
 > ✅ **Módulo 1 completo** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2 completo** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). **Módulo 3 en curso** (*Ingesta Dirigida por Eventos*): tras la L11 el propio curso indica *"4 lessons left"* → Módulo 3 = 5 lecciones (L11-L15).
 
@@ -45,8 +46,8 @@
 El curso declara **30 lecciones**. Confirmado por el material:
 
 - El nombre del Módulo 1: **Asistentes de Mensajería Contextuales**.
-- Tras la L17 el curso indica *"3 lessons left in Gestión Proactiva del Workspace"* → el Módulo 4 tiene **5 lecciones** (L16-L20).
-- La Lección 18 anticipada: *Detección de Inconsistencias en Documentación Técnica*.
+- Tras la L18 el curso indica *"2 lessons left in Gestión Proactiva del Workspace"* → el Módulo 4 tiene **5 lecciones** (L16-L20).
+- La Lección 19 anticipada: *Consolidación Automática de Bitácoras de Trabajo*.
 
 Los módulos 2-6 y las lecciones restantes **no se inventan**: se registran a medida que Gonzo comparte cada lección. El error del reinicio anterior fue fabricar un mapa de 6 módulos x 5 lecciones que no correspondía al curso.
 
