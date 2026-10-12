@@ -13,8 +13,10 @@ Que verifica, por cada rol listado en REQUIRED_ROLES:
                    estandar; se tolera que el encabezado no sea '## ').
   4. MARCADOR    - cierra con la linea de proyecto del workspace.
   5. COHERENCIA  - la version declarada coincide con la fila del rol en la
-                   tabla "El mapa de madurez" de docs/ROADMAPS.md. Si el indice
-                   y el archivo no dicen lo mismo, hay drift.
+                   tabla "El mapa de madurez" de docs/ROADMAPS.md, Y con la
+                   fila del rol en docs/roadmap-tracking.json (la tabla de
+                   seguimiento que el CI nombra). Si cualquiera de las tres
+                   vistas no dicen lo mismo, hay drift.
 
 Uso:
   python3 scripts/check-roadmaps.py            # reporte legible, exit 1 si falla
@@ -24,6 +26,7 @@ Uso:
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
@@ -31,6 +34,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 
 ROADMAPS_INDEX = REPO / "docs" / "ROADMAPS.md"
+TRACKING_INDEX = REPO / "docs" / "roadmap-tracking.json"
 
 # Roles del ecosistema que DEBEN tener roadmap de rol. Kanam CORE (main) tiene
 # el suyo a nivel de sistema (docs/ROADMAP.md), no de rol; el agente bundled
@@ -79,6 +83,28 @@ def index_versions(index_text: str) -> dict[str, str]:
     return found
 
 
+def tracking_versions() -> dict[str, str]:
+    """{rol: version} desde docs/roadmap-tracking.json (la tabla de seguimiento).
+
+    El CI nombra este archivo como la tabla de seguimiento que el guard verifica.
+    Hasta el 2026-10-12 el guard no lo leia: verificaba solo contra la tabla de
+    docs/ROADMAPS.md, asi que el .json podia derivar en silencio (y derivo: decia
+    v0.1 para kanam-critic cuando la realidad ya era v0.2). Leerlo cierra la
+    promesa del comentario del CI y la brecha de la segunda verdad.
+    """
+    if not TRACKING_INDEX.exists():
+        return {}
+    try:
+        data = json.loads(TRACKING_INDEX.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return {}
+    out: dict[str, str] = {}
+    for role, meta in data.items():
+        if isinstance(meta, dict) and "version" in meta:
+            out[role] = str(meta["version"]).lstrip("v")
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quiet", action="store_true")
@@ -92,6 +118,14 @@ def main() -> int:
         ok = False
         lines.append(f"FALTA el indice {ROADMAPS_INDEX.relative_to(REPO)}")
     idx = index_versions(index_text)
+
+    tver = tracking_versions()
+    if not TRACKING_INDEX.exists():
+        ok = False
+        lines.append(f"FALTA la tabla de seguimiento {TRACKING_INDEX.relative_to(REPO)}")
+    elif not tver:
+        ok = False
+        lines.append(f"la tabla de seguimiento {TRACKING_INDEX.relative_to(REPO)} no parsea")
 
     for role in REQUIRED_ROLES:
         path = REPO / "agents" / role / "ROADMAP.md"
@@ -120,6 +154,12 @@ def main() -> int:
             if idx_ver and idx_ver != v_norm:
                 problems.append(
                     f"drift de version: archivo dice v{v_norm}, indice dice v{idx_ver}"
+                )
+            t_ver = tver.get(role)
+            if t_ver and t_ver != v_norm:
+                problems.append(
+                    f"drift vs tabla de seguimiento: archivo dice v{v_norm}, "
+                    f"roadmap-tracking.json dice v{t_ver}"
                 )
 
         if problems:

@@ -116,4 +116,10 @@ tmp-design/
 # violaciones a11y, diffs de pixel-diff). NO se versionan: son output de una
 # corrida contra una app concreta, no fuente. Los ejemplos declarados a mano
 # bajo examples/ si se versionan (son documentacion del formato de salida).
+#
+# `/reports/` (raiz) es el destino que declara `.kanam/pipeline.config.yaml`
+# (`output.dir: ./reports/surface-audit`, relativo a la raiz del repo). Sin esta
+# regla, correr el surface-pipeline creaba un /reports/ sin ignorar: el hueco
+# que la auditoria del 2026-10-12 encontro en el propio cambio del 2026-10-07.
+/reports/
 agents/*/skills/*/reports/
