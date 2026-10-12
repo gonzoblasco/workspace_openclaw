@@ -60,16 +60,18 @@ MD_CONTENT=$(git diff --cached --name-status -M | awk -F'\t' '
   { print $2 }
 ' | grep -E '\.md$' || true)
 
-# Excepcion explicita a la regla del guion comun: (1) la novela en
-# docs/stories/quienes_quedan/ usa la raya (U+2014) como raya de dialogo
+# Excepcion explicita a la regla del guion comun: (1) las novelas en
+# docs/stories/ usan la raya (U+2014) como raya de dialogo
 # (decision de Gonzo 2026-09-24, registrada en STYLE.md: "no corregir");
+# quienes_quedan desde entonces, las_tres_sabanas desde 2026-10-12 (misma
+# convencion, declarada en su STYLE.md);
 # (2) la historia congelada (docs/archive/ y memory/archive/, 2026-10-06) se
 # lee como se escribio - bloques rotados de CHANGELOG/DREAMS citan texto con
 # em dash y no se reescriben (misma politica que docs/records/, ADR-084).
 # El CI no chequea guiones; esto solo evita que el hook bloquee cada edicion.
 # ADR-082 retiro la regla del guion como obligacion; el aparato sigue y quien
 # la padezca decide si lo desarma.
-MD_EXEMPT='^docs/stories/quienes_quedan/|^docs/archive/|^memory/archive/'
+MD_EXEMPT='^docs/stories/quienes_quedan/|^docs/stories/las_tres_sabanas/|^docs/archive/|^memory/archive/'
 MD_RULE=$(echo "$MD_CONTENT" | grep -vE "$MD_EXEMPT" || true)
 
 if [ -n "$MD_CHANGED" ]; then

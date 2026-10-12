@@ -15,6 +15,8 @@ concentra la dependencia.
 - `fichas_personajes_las_tres_sabanas.md` - fichas de los tres primos (deseo central, tension, inseguridad).
 - `outline_las_tres_sabanas.md` - escaleta de la trama en orden (17 escenas en 3 actos).
 - `historia_familiar_las_tres_sabanas.md` - canon previo a E1: parentesco (primos segundos) e historia familiar.
+- `STYLE.md` - convenciones de escritura (raya en dialogo, POV rotativo, show-don't-tell).
+- `manuscript/capitulo_1.md` - borrador 1 del capitulo de apertura (escena E1).
 
 ## Canon
 
@@ -24,10 +26,12 @@ concentra la dependencia.
 
 ## Estado
 
-Borrador. Estructura y material tactico completos; outline completo (17 escenas).
-Falta el texto: escribir el primer capitulo como prueba de voz.
+Borrador. Estructura, material tactico, outline (17 escenas) e historia familiar
+completos. Primer capitulo escrito (borrador 1 de E1, POV Nestor).
+Falta: revision de voz y ritmo del capitulo, y el resto del manuscrito.
 
 ## Proximos pasos
 
-1. Escribir el primer capitulo (sugerido: E1, ya modelada).
-2. Definir extension objetivo (novela corta vs. novela).
+1. Revisar el capitulo 1 (voz, ritmo) y decidir si pasa a borrador 2.
+2. Definir extension objetivo (novela corta vs. novela) para calibrar escenas por acto.
+3. Seguir el manuscrito por el outline (E2 en adelante).
