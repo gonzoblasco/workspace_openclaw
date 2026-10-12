@@ -40,6 +40,12 @@ Los módulos 2-6 y las lecciones restantes **no se inventan**: se registran a me
 
 ---
 
+## Procedencia del material
+
+Las lecciones las **genera IA** (así funciona roadmap.sh). Patrón observado en las 7 primeras: **concepto/arquitectura correcta + detalles técnicos plausibles pero inventados** (comandos CLI, campos de config y APIs que no existen en OpenClaw real). Por eso cada ficha lleva una seccion **"Notas de verificacion (Kanam)"** que separa lo que mapea a la instalacion real de lo que es fachada pedagogica. Si una leccion viniera demasiado mal, se avisa a Gonzo para regenerarla (acuerdo 2026-10-12).
+
+---
+
 ## Convención de archivos
 
 - Un archivo por lección: `L<NN>-<slug>.md`.
