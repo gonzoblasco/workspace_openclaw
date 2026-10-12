@@ -41,10 +41,12 @@
 | M6 · L27 | Definición de Reglas Claras de Enrutamiento - `L27-reglas-enrutamiento.md` | ✅ Completada |
 | M6 · L28 | Consulta Coordinada de Memorias Compartidas - `L28-memorias-compartidas.md` | ✅ Completada |
 | M6 · L29 | Transferencia Limpia de Tareas entre Especialistas - `L29-transferencia-tareas.md` | ✅ Completada |
-| M6 · L30 | Supervisión Centralizada del Rendimiento Global (teaser del curso) | ⏳ Próxima |
-| ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
+| M6 · L30 | Supervisión Centralizada del Rendimiento Global - `L30-supervision-global.md` | ✅ Completada |
+| **FIN** | **Curso completo: 30/30 lecciones** | ✅ |
 
-**Completadas:** 26 / 30.
+**Completadas:** 30 / 30.
+
+> ✅ **Curso COMPLETO: 6 módulos, 30 lecciones.** Cada ficha lleva su sección "Notas de verificación (Kanam)".
 
 > ✅ **Módulos 1-5 completos.** **Módulo 6 en curso** (*Especialización y Coordinación Multiagente*): tras la L26 el propio curso indica *"4 lessons left"* → Módulo 6 = 5 lecciones (L26-L30).
 
