@@ -14,18 +14,25 @@
 - **B7/B9** (idempotencia + dedup por sesión): ✅ **implementado** - fingerprint de contenido + heading único por sesión (commit `2c74061865`).
 - **A3** (`openclaw doctor`): ✅ **implementado** - integrado en `gateway-audit.sh` (commit `794727eae8`).
 - **A2** (allowlist de tools): 🔎 **revisado, SIN acción** (ver sección A2).
+- **A1** (webhooks entrantes): ✅ **habilitado y probado** (loopback, token dedicado, allowlist `main`); smoke 200, negativos 401/401/400. Sin consumidor externo todavía.
 
 ---
 
 ## A. Capacidades reales de OpenClaw poco aprovechadas
 
-### A1. Webhooks entrantes (`hooks.*`) - hoy no los usamos
+### A1. Webhooks entrantes (`hooks.*`) - habilitado (2026-10-12)
 
 - **Qué es:** OpenClaw expone HTTP hooks para que un servicio externo **despierte** un turno de agente o dispare una acción, en vez de esperar el próximo tick de sondeo. Rutas reales: `POST /hooks/agent`, `POST /hooks/wake`, `POST /hooks/<name>` (mapped), sobre `127.0.0.1:18789`. Se habilitan con `hooks.enabled`, `hooks.token`, `hooks.path`, `hooks.mappings`.
-- **Evidencia:** docs de OpenClaw: automation/cron-jobs/webhooks; la config real tiene `hooks.internal` (hook interno `session-memory`) pero **`hooks.enabled` está ausente** (webhooks inbound **deshabilitados**). Hoy todo el scheduling corre por `automations`/heartbeat (sondeo).
-- **Por qué importa:** hay eventos externos (GitHub, Stripe, alertas de Datadog/Grafana, CI) que podrían disparar al agente **al instante** y no cada N minutos. El curso dedica el Módulo 3 entero (L11-L15) a este patrón.
-- **Decisión propuesta:** evaluar 1 caso concreto (p. ej. "PR abierto en un repo vigilado → turno de triage") antes de habilitar `hooks.enabled`. Requiere definir `hooks.token` (Bearer) y allowlist de agentes.
-- **Prioridad:** media (exploratoria).
+- **Estado (ejecutado):** `hooks` **habilitado** con token dedicado, `path: /hooks`, `allowedAgentIds: ["main"]`, `allowRequestSessionKey: false`. **Loopback-only** (el gateway escucha en `bind: loopback`, no expuesto a la red). `hooks` **hot-applies sin reinicio** (categoría Automation del hot-reload) -> no cortó la sesión.
+- **Verificación (smoke):** POST a `/hooks/agent` con token -> `200 {"ok":true}`; **sin token -> 401**; **token inválido -> 401**; **agente no permitido -> 400**. Autenticación y allowlist enforced.
+- **Seguridad:** token **dedicado** (no el token del gateway), generado con `secrets.token_urlsafe(32)`; se pasó por stdin al `config patch` (no entra a la lista de procesos). Backup del config en `/tmp/openclaw.json.bak-*`.
+- **Pendiente (exploratorio):** definir un **caso de uso concreto** (p. ej. "PR abierto en un repo vigilado -> turno de triage") antes de cablear un emisor externo. Hoy el hook está **habilitado y probado**, sin consumidor.
+- **Reversibilidad:** deshabilitar con `openclaw config patch` (`hooks.enabled: false`) o restaurar el backup.
+
+### A1-bis. Webhooks entrantes (descripción original)
+
+- **Qué es:** (mismo concepto). Rutas: `/hooks/agent`, `/hooks/wake`, `/hooks/<name>`; puerto `127.0.0.1:18789`.
+- **Por qué importa:** eventos externos (GitHub, Stripe, alertas) podrían disparar al agente al instante, no cada N min. El curso dedica el Módulo 3 (L11-L15) a esto.
 
 ### A2. Allowlist de herramientas por automation (`--tools`) - revisado, sin acción (2026-10-12)
 
