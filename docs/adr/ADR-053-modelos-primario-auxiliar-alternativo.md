@@ -1,7 +1,7 @@
 # ADR-053: Modelos primario, auxiliar y alternativo (thinking HIGH unificado)
 
 **Fecha:** 2026-09-22
-**Estado:** Aceptado
+**Estado:** Superseded por ADR-090 (2026-10-05) - la asignacion de modelos por rol reemplaza el trio primario/auxiliar/alternativo. Se conserva como registro de la decision a su fecha.
 **Decisores:** Gonzo (definicion explicita)
 **Origen:** workspace (definido por Gonzo el 2026-09-22; el config habia derivado por cambios sin registrar)
 **Relacionado:** ADR-040 (seleccion por tipo de tarea), ADR-041 (motor LLM GLM-5.3), ADR-045/046 (motor del pipeline), ADR-049 (Claude Code como motor A/B)

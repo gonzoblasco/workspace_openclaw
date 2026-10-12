@@ -1,6 +1,6 @@
 # ADR-041: Motor LLM del Sistema - GLM-5.3-Flash (Manual de Modelo)
 
-**Status:** Accepted (2026-08-29)
+**Status:** Superseded por ADR-045/046 (rol de motor) y ADR-090 (asignacion de modelos). La ficha de capacidades y la regla de cero parametros se conservan como referencia.
 **Deciders:** Gonzo / Kanam
 **Fecha:** 2026-08-29
 **Origen:** workspace (comparativa empirica de 5 modelos, 2026-08-29, prompt de arquitectura de agentes)

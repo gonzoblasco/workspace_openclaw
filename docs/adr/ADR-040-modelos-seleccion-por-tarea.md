@@ -1,6 +1,6 @@
 # ADR-040: Seleccion de Modelos por Tipo de Tarea
 
-**Status:** Accepted (2026-08-26)
+**Status:** Superseded por ADR-053 (default/utility/thinking) y ADR-090 (asignacion de modelos por rol). Los perfiles de personalidad y la metodologia de cata quedan como registro historico.
 **Deciders:** Gonzo / Kanam
 **Fecha:** 2026-08-26
 **Origen:** workspace (cata empirica 8 modelos, 2026-08-26)

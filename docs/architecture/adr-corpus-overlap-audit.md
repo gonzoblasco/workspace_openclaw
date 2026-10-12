@@ -60,15 +60,21 @@ El corpus de ADRs es **doc-only**: no hay tabla `adr` en `memory.db`, el archivo
 
 ### S1 (crítico) - Modelos: nueve ADRs para una decisión, y ninguno la posee entera
 
+**RESUELTO (2026-10-12).** La fuente única es **ADR-090** (política de thinking + asignación por rol), que ahora declara en su cabecera `**Supersede:**` a 053, 040 y 041. Los tres predecesores quedan con `Estado: Superseded` explícito. El bloque `model-operativo` de `AGENTS.md` se genera desde la tabla `settings` de la DB (`managed-blocks.py`) - una fuente, tres vistas.
+
+<details><summary>Diagnóstico original</summary>
+
 La cadena real es: `006 -> 040` (supersede OK) `-> 041` (cambia el default) `-> 045 -> 046 -> 053` (declara pisar secciones de 040), `->` y después **077, 087, 088, 089, 090** redefinen la asignación por rol y el thinking.
 
-- **ADR-053** (titular del tema: "Modelos primario, auxiliar y alternativo") sigue con **`Estado: Aceptado`**, pero su propio cuerpo dice, en la Actualización 2026-10-05: *"La distribucion primario/auxiliar/alternativo de este ADR quedo **superseded** por la distribucion por-agente del 2026-10-05"*.
-- **ADR-090** es la ley efectiva (política de thinking + asignación por rol, cata 2026-10-06), pero **no declara `Supersede:` a 053** - solo lo pone en `Relacionado` y adentro del cuerpo de 053.
-- **El guard no lo ve** porque la relación vive en prosa, no en el header del reemplazante.
-- **ADR-040** dice `Accepted` y gobierna "selección por tipo de tarea" con perfiles que ya no coinciden con la config; **ADR-041** idem ("motor del sistema") con updates sucesivos.
+- **ADR-053** seguía con **`Estado: Aceptado`**, pero su propio cuerpo dice, en la Actualización 2026-10-05: *"La distribucion primario/auxiliar/alternativo de este ADR quedo **superseded** por la distribucion por-agente del 2026-10-05"*.
+- **ADR-090** es la ley efectiva (política de thinking + asignación por rol, cata 2026-10-06), pero **no declaraba `Supersede:` a 053** - solo lo ponía en `Relacionado` y adentro del cuerpo de 053.
+- **El guard no lo veía** porque la relación vivía en prosa, no en el header del reemplazante.
+- **ADR-040** decía `Accepted` y gobernaba "selección por tipo de tarea" con perfiles que ya no coinciden con la config; **ADR-041** idem ("motor del sistema") con updates sucesivos.
 - **`AGENTS.md` resume la ley en un bloque `model-operativo`** que es la superficie que realmente leen CORE y subagentes. Ahí vive una **cuarta copia** de la verdad.
 
-**Por qué es grave:** un agente que cita "el ADR de modelos" puede citar 040, 041, 053 o 090 y obtener cuatro leyes distintas, todas con header verde.
+**Por qué era grave:** un agente que cite "el ADR de modelos" podía citar 040, 041, 053 o 090 y obtener cuatro leyes distintas, todas con header verde.
+
+</details>
 
 ### S2 (crítico) - Ubicación de proyectos: dos leyes vivas en simultáneo
 
@@ -84,14 +90,16 @@ La cadena real es: `006 -> 040` (supersede OK) `-> 041` (cambia el default) `-> 
 
 ### S3 (alto) - Estados falsos: la cabecera miente aunque el guard diga "consistente"
 
-| ADR | Header dice | La realidad dice | Declarado en |
-|---|---|---|---|
-| ADR-053 | `Aceptado` | pisado por 090 (2026-10-05) | prosa, cuerpo de 053 |
-| ADR-068 | `Aceptado (encuadre)` | "superado" por 091 (2026-10-06) | prosa, `Relacionado` de 091 |
-| ADR-040 | `Accepted` | secciones pisadas por 053 | header `Supersede:` de 053 (parcial, OK) pero el resto quedó viejo |
-| ADR-041 | `Accepted` | default reemplazado 2 veces | notas en el cuerpo |
+**RESUELTO (2026-10-12).** Las cuatro cabeceras quedaron enmendadas: ADR-053, ADR-040 y ADR-041 ahora dicen `Superseded`; ADR-068 salió del corpus (mudado al proyecto `soporteml`, 6a).
 
-**Por qué es grave:** el guard da verde sobre estos cuatro. El patrón "reemplazo declarado en prosa" es exactamente su punto ciego.
+| ADR | Antes decía | Ahora | Declarado en |
+|---|---|---|---|
+| ADR-053 | `Aceptado` | `Superseded por ADR-090 (2026-10-05)` | cabecera |
+| ADR-040 | `Accepted` | `Superseded por ADR-053 / ADR-090` | cabecera |
+| ADR-041 | `Accepted` | `Superseded por ADR-045/046 / ADR-090` | cabecera |
+| ADR-068 | `Aceptado (encuadre)` | movido al proyecto (`soporteml/ADR-0001`) | 6a |
+
+**Por qué era grave:** el guard daba verde sobre estos cuatro. El patrón "reemplazo declarado en prosa" era exactamente su punto ciego.
 
 ### S4 (medio) - SoporteML: 068 vs 091
 
@@ -99,7 +107,7 @@ La cadena real es: `006 -> 040` (supersede OK) `-> 041` (cambia el default) `-> 
 
 ### S5 (raíz) - El guard de supersede es ciego a las relaciones en prosa
 
-Los cuatro hallazgos anteriores comparten una causa: **el grafo de supersede solo lee el header del reemplazante**. Cualquier reemplazo declarado en prosa (o dentro del cuerpo del pisado) es invisible. Cerrar S5 convierte a los guardas de "integridad de forma" en guardas de "unicidad de decisión".
+**RESUELTO (2026-10-12).** `check-adr-supersede.py` ahora también lee el campo genérico `**Relacionado:**` cuando este declara un reemplazo total (contexto del citado con señal de reemplazo y sin señal de parcialidad). Cierra el punto ciego con 4 tests nuevos y un mutation test. Detalle en §5, paso 1.
 
 ---
 

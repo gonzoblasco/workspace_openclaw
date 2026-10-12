@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-12] - S1: la fuente unica de modelos es ADR-090 (cabeceras de 040/041/053 dejan de mentir)
+
+### Changed
+- **`ADR-090` declara `**Supersede:**` a ADR-053, ADR-040 y ADR-041.** Es la ley efectiva (pensamiento por agente + asignacion de modelos por rol, cata 2026-10-06); los tres predecesores ya no se leen como vigentes.
+- **Cabeceras enmendadas a `Superseded`:** ADR-053 (`Superseded por ADR-090 (2026-10-05)`), ADR-040 (`Superseded por ADR-053 / ADR-090`), ADR-041 (`Superseded por ADR-045/046 / ADR-090`). Antes decian `Aceptado`/`Accepted` mientras su propio cuerpo registraba el reemplazo.
+- **`docs/architecture/adr-corpus-overlap-audit.md`:** S1, S3 y S5 marcados RESUELTOS; el diagnostico original conservado en un `<details>`.
+
+### Notes
+- **Causa:** el cluster de modelos repartia la decision entre 15 ADRs y la cabecera de los predecesores no reflejaba el reemplazo, que vivia en prosa (cuerpo de 053). El guard ensanchado en el commit previo ahora cubre esa clase.
+- **Sin cambio de config:** la ley viva (`ADR-090`) ya coincidia con `openclaw.json` y con el bloque `model-operativo` de `AGENTS.md`; la reparacion es de cabeceras, no de runtime.
+- **Verificacion:** `check-adr-supersede.py` OK, `check-adr-integrity.py` OK (96 ADRs), 21 tests de los dos guardas en verde.
+- **Residual de S1 (no tocado):** 045/046 ya estaban `Superseded`; 049 (Claude Code como motor A/B) sigue `Aceptado` y es una decision de harness, no de asignacion de modelos - fuera del alcance de S1.
+
+---
+
 ## [2026-10-12] - Reintroducida `debugging-and-error-recovery` en kanam-dev + SKILLS-INDEX sincronizado
 
 ### Added
@@ -21,6 +36,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-12] - ADRs de proyecto salen del corpus global (6a) y el guard de supersede deja de ser ciego al campo generico
 
 ### Changed
 - **Movidos `docs/adr/ADR-068` y `ADR-091` al proyecto `soporteml`** (`projects/soporteml/.knowledge/adr/ADR-0001-soporteml-greenfield-desde-v1.md` y `ADR-0002-soporteml-v4-cierre-stripe.md`). Regla 3 de ADR-067 y `docs/adr/README.md` ("sin referencias al proyecto que lo originó"): un ADR cuyo sujeto es un proyecto vive con el proyecto, no en el corpus global. Renumerados en la serie del proyecto, fila quitada del índice global (huecos [68, 91] intencionales), y consumidores repuntados: `ADR-042`, `docs/NORTH.md`, `docs/ROADMAP.md`, `docs/LANGCHAIN_STRATEGY.md`, `MEMORY.md`.
@@ -36,7 +52,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-: alcance (un ADR de proyecto vive con el proyecto)
+## [2026-10-12] - Segundo eje de la auditoría de ADRs: alcance (un ADR de proyecto vive con el proyecto)
 
 ### Added
 - **`docs/architecture/adr-corpus-overlap-audit.md` §6:** segundo eje del análisis, a pedido de Gonzo: *"aquellos relacionados con un proyecto en particular viva con el proyecto y no más en el scope global; los ADR no tienen por qué tener mención a proyectos específicos"*. Separa 6a (sujeto de proyecto → mudar al proyecto; 6 ADRs candidatos) de 6b (mención de evidencia → ~70 archivos) y 6c (no hay guard de alcance).

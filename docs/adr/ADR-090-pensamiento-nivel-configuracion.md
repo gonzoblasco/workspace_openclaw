@@ -5,6 +5,7 @@
 **Decisores:** Gonzo / Kanam
 **Origen:** Sesión 2026-10-05 - detección de consumo desproporcionado por thinking alto universal. Actualización 2026-10-06: cata de modelos (6×6×4) y reasignación por rol.
 **Relacionado:** ADR-053 (modelos primario/auxiliar/alternativo), ADR-087 (cata por rol - modelos elegidos), ADR-088 (pipeline A/B enforcement), ADR-089 (pre-filtro A/B)
+**Supersede:** ADR-053 (trio primario/auxiliar/alternativo y thinking unificado), ADR-040 (seleccion/asignacion de modelos por tarea), ADR-041 (motor LLM del sistema)
 
 ---
 
