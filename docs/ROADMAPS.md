@@ -45,7 +45,7 @@ al día, y el índice de tracking sin drift entre lo declarado y lo real.
 | Rol | Roadmap | Versión declarada | Estado verificado | Próximo salto |
 |---|---|---|---|---|
 | **kanam-auditor** (UI/UX) | ✅ `agents/kanam-auditor/ROADMAP.md` | v0.1 | 🟡 3 skills sueltos; `pixel-diff` real, `oracle`/`enforcer` parciales | Fase 1 → consolidar arsenal |
-| **kanam-critic** (sustancia) | ✅ `agents/kanam-critic/ROADMAP.md` | v0.1 | 🟡 vara + ritual listos; sin memoria ni cierre | v0.2 "El Ojo" |
+| **kanam-critic** (sustancia) | ✅ `agents/kanam-critic/ROADMAP.md` | v0.2 | 🟡 vara + ritual listos; sin memoria ni cierre | v0.5 "El Ojo" |
 | **kanam-planner** (orquestación) | ❌ falta | v0.1 (por defecto) | 🟡 1 skill (`session-plan-orchestration`) | crear roadmap |
 | **kanam-dev** (ingeniería) | ❌ falta | v0.1 (por defecto) | 🟡 38 skills; sin declaración de madurez | crear roadmap |
 | **kanam-mind** (conocimiento) | ❌ falta | v0.1 (por defecto) | 🟡 10 skills; memoria + investigación | crear roadmap |
