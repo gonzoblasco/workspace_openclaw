@@ -34,12 +34,13 @@
 | M4 · L20 | Limpieza Selectiva de Registros de Contexto - `L20-limpieza-contexto.md` | ✅ Completada |
 | M5 · L21 | Desglose Estratégico de Tareas Complejas - `L21-desglose-tareas.md` | ✅ Completada |
 | M5 · L22 | Ejecución Consecutiva de Herramientas y Habilidades - `L22-ejecucion-consecutiva.md` | ✅ Completada |
-| M5 · L23 | Validación de Estados Intermedios en Bucles (teaser del curso) | ⏳ Próxima |
+| M5 · L23 | Validación de Estados Intermedios en Bucles - `L23-validacion-intermedia.md` | ✅ Completada |
+| M5 · L24 | Recuperación Autónoma Frente a Respuestas Fallidas (teaser del curso) | ⏳ Próxima |
 | ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
 
-**Completadas:** 22 / 30.
+**Completadas:** 23 / 30.
 
-> ✅ **Módulo 1** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). ✅ **Módulo 3** (*Ingesta Dirigida por Eventos*, L11-L15). ✅ **Módulo 4** (*Gestión Proactiva del Workspace*, L16-L20). **Módulo 5 en curso** (*Encadenamiento en Bucle Agéntico*): tras la L22 el propio curso indica *"3 lessons left"* → Módulo 5 = 5 lecciones (L21-L25).
+> ✅ **Módulo 1** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). ✅ **Módulo 3** (*Ingesta Dirigida por Eventos*, L11-L15). ✅ **Módulo 4** (*Gestión Proactiva del Workspace*, L16-L20). **Módulo 5 en curso** (*Encadenamiento en Bucle Agéntico*): tras la L23 el propio curso indica *"2 lessons left"* → Módulo 5 = 5 lecciones (L21-L25).
 
 > ✅ **Módulo 1** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). ✅ **Módulo 3** (*Ingesta Dirigida por Eventos*, L11-L15). **Módulo 4 en curso** (*Gestión Proactiva del Workspace*): tras la L19 el propio curso indica *"1 lesson left"* → Módulo 4 = 5 lecciones (L16-L20).
 
