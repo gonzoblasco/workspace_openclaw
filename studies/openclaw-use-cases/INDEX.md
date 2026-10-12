@@ -15,12 +15,13 @@
 | M1 · L01 | Respuestas Autónomas en Canales de Chat Activos - `L01-respuestas-autonomas.md` | ✅ Completada |
 | M1 · L02 | Filtrado Selectivo de Notificaciones y Menciones - `L02-filtrado-selectivo.md` | ✅ Completada |
 | M1 · L03 | Configuración del Tono Asistido con SOUL.md - `L03-soul-tono.md` | ✅ Completada |
-| M1 · L04 | Generación Dinámica de Resúmenes de Conversaciones (teaser del curso) | ⏳ Próxima |
+| M1 · L04 | Generación Dinámica de Resúmenes de Conversaciones - `L04-resumenes-dinamicos.md` | ✅ Completada |
+| M1 · L05 | Derivación Segura de Mensajes a Operadores (teaser del curso) | ⏳ Próxima |
 | ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
 
-**Completadas:** 3 / 30.
+**Completadas:** 4 / 30.
 
-> El propio curso confirma el avance: tras la L03 indica *"2 lessons left in Asistentes de Mensajería Contextuales"*, lo que fija a **Módulo 1 = 5 lecciones** (L01-L05).
+> El propio curso confirma el avance: tras la L04 indica *"1 lesson left in Asistentes de Mensajería Contextuales"*, lo que fija a **Módulo 1 = 5 lecciones** (L01-L05).
 
 ---
 
@@ -29,8 +30,8 @@
 El curso declara **30 lecciones**. Confirmado por el material:
 
 - El nombre del Módulo 1: **Asistentes de Mensajería Contextuales**.
-- Tras la L03 el curso indica *"2 lessons left in Asistentes de Mensajería Contextuales"* → el Módulo 1 tiene **5 lecciones** (L01-L05).
-- La Lección 4 anticipada: *Generación Dinámica de Resúmenes de Conversaciones*.
+- Tras la L04 el curso indica *"1 lesson left in Asistentes de Mensajería Contextuales"* → el Módulo 1 tiene **5 lecciones** (L01-L05).
+- La Lección 5 anticipada: *Derivación Segura de Mensajes a Operadores*.
 
 Los módulos 2-6 y las lecciones restantes **no se inventan**: se registran a medida que Gonzo comparte cada lección. El error del reinicio anterior fue fabricar un mapa de 6 módulos x 5 lecciones que no correspondía al curso.
 
