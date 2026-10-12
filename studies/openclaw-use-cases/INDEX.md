@@ -36,10 +36,11 @@
 | M5 · L22 | Ejecución Consecutiva de Herramientas y Habilidades - `L22-ejecucion-consecutiva.md` | ✅ Completada |
 | M5 · L23 | Validación de Estados Intermedios en Bucles - `L23-validacion-intermedia.md` | ✅ Completada |
 | M5 · L24 | Recuperación Autónoma Frente a Respuestas Fallidas - `L24-recuperacion-autonoma.md` | ✅ Completada |
-| M5 · L25 | Generación de Entregables Finales Multi-Etapa (teaser del curso) | ⏳ Próxima |
+| M5 · L25 | Generación de Entregables Finales Multi-Etapa - `L25-entregables-multietapa.md` | ✅ Completada |
+| M6 · L26 | Segmentación de Dominios entre Agentes Dedicados (teaser del curso) | ⏳ Próxima |
 | ... | (se completa con cada lección que pase Gonzo) | ❌ Pendiente |
 
-**Completadas:** 24 / 30.
+**Completadas:** 25 / 30.
 
 > ✅ **Módulo 1** (*Asistentes de Mensajería Contextuales*, L01-L05). ✅ **Módulo 2** (*Tareas Programadas y Rutinas Autónomas*, L06-L10). ✅ **Módulo 3** (*Ingesta Dirigida por Eventos*, L11-L15). ✅ **Módulo 4** (*Gestión Proactiva del Workspace*, L16-L20). **Módulo 5 en curso** (*Encadenamiento en Bucle Agéntico*): tras la L24 el propio curso indica *"1 lesson left"* → Módulo 5 = 5 lecciones (L21-L25).
 
@@ -54,8 +55,8 @@
 El curso declara **30 lecciones**. Confirmado por el material:
 
 - El nombre del Módulo 1: **Asistentes de Mensajería Contextuales**.
-- Tras la L22 el curso indica *"3 lessons left in Encadenamiento en Bucle Agéntico"* → el Módulo 5 tiene **5 lecciones** (L21-L25).
-- La Lección 23 anticipada: *Validación de Estados Intermedios en Bucles*.
+- Tras la L25 el curso abre el **Módulo 6: Especialización y Coordinación Multiagente**, que arranca con *Segmentación de Dominios entre Agentes Dedicados* (L26).
+- La Lección 26 anticipada: *Segmentación de Dominios entre Agentes Dedicados*.
 
 Los módulos 2-6 y las lecciones restantes **no se inventan**: se registran a medida que Gonzo comparte cada lección. El error del reinicio anterior fue fabricar un mapa de 6 módulos x 5 lecciones que no correspondía al curso.
 
