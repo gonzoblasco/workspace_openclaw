@@ -6,7 +6,23 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-## [2026-10-12] - Segundo eje de la auditoría de ADRs: alcance (un ADR de proyecto vive con el proyecto)
+## [2026-10-12] - ADRs de proyecto salen del corpus global (6a) y el guard de supersede deja de ser ciego al campo generico
+
+### Changed
+- **Movidos `docs/adr/ADR-068` y `ADR-091` al proyecto `soporteml`** (`projects/soporteml/.knowledge/adr/ADR-0001-soporteml-greenfield-desde-v1.md` y `ADR-0002-soporteml-v4-cierre-stripe.md`). Regla 3 de ADR-067 y `docs/adr/README.md` ("sin referencias al proyecto que lo originó"): un ADR cuyo sujeto es un proyecto vive con el proyecto, no en el corpus global. Renumerados en la serie del proyecto, fila quitada del índice global (huecos [68, 91] intencionales), y consumidores repuntados: `ADR-042`, `docs/NORTH.md`, `docs/ROADMAP.md`, `docs/LANGCHAIN_STRATEGY.md`, `MEMORY.md`.
+- **`scripts/check-adr-supersede.py`: el grafo ahora tambien lee el campo generico `**Relacionado:**`.** Antes solo miraba los campos dedicados (`Supersede`/`Revierte`/`Reemplaza`), asi que un reemplazo TOTAL declarado en el campo generico era invisible: ADR-098 (`ADR-075 (superseded)`) y ADR-091 (`ADR-068 (... superado)`) vivian solo ahi. La relacion se reconoce cuando el contexto del citado (el parentesis) trae señal de reemplazo y NO de parcialidad ("parcial", "apartado", "seccion", "lista", "historico").
+
+### Added
+- **`tests/python/test_check_adr_supersede.py`: 4 tests nuevos** del camino `Relacionado` (total exige marca; parcial no; sin señal se ignora; la señal debe estar en el contexto del citado). Probados en negativo: neutralizar la rama nueva hace fallar exactamente `test_relacionado_declares_total_replacement`; restaurado, 12/12 en verde.
+
+### Notes
+- **Por que no se movio todo:** los ADRs de sujeto `kanam-os` (054, 094, 096) quedan **bloqueados**: `projects/kanam-os/.knowledge/` esta git-ignored (`.git/info/exclude`), asi que mudarlos ahi los deja **sin historial** (peor que dejarlos). ADR-063 (kanam-insight) queda bloqueado: el repo existe en GitHub pero el arbol local no esta clonado. Criterio de destino que faltaba: un ADR de proyecto solo se muda a un arbol **versionado** (`git ls-files .knowledge`). Registrado en `docs/architecture/adr-corpus-overlap-audit.md` §6a.
+- **Verificacion:** `check-adr-integrity.py` OK (96 ADRs, huecos 68/91 informativos); `check-adr-supersede.py` OK; 21 tests de los dos guardas en verde; sin guiones largos en los archivos tocados.
+- **Residual (no resuelto en este cambio):** `docs/learnings/proyectos.md` (vista DB-first, ADR-065) cita ADR-068/091 y **ademas** esta desactualizado respecto de la DB (207 lecciones vs 225). Se deja como deuda aparte: regenerarlo mezcla 18 lecciones ajenas a esta mudanza.
+
+---
+
+: alcance (un ADR de proyecto vive con el proyecto)
 
 ### Added
 - **`docs/architecture/adr-corpus-overlap-audit.md` §6:** segundo eje del análisis, a pedido de Gonzo: *"aquellos relacionados con un proyecto en particular viva con el proyecto y no más en el scope global; los ADR no tienen por qué tener mención a proyectos específicos"*. Separa 6a (sujeto de proyecto → mudar al proyecto; 6 ADRs candidatos) de 6b (mención de evidencia → ~70 archivos) y 6c (no hay guard de alcance).

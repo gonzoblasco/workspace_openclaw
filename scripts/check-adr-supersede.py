@@ -27,12 +27,24 @@ Una relacion PARCIAL (un apartado, una seccion, una practica) no exige marca: no
 reemplaza la decision entera (ej. ADR-053 supersede la seccion de thinking de
 ADR-040, pero ADR-040 sigue gobernando la seleccion por tipo de tarea).
 
-FUENTE DE VERDAD DE LA RELACION. El campo de header del que REEMPLAZA
-(`**Supersede:**` / `**Revierte:**` / `**Reemplaza:**`): es donde un decisor declara
-"yo reemplazo a X", y la flecha apunta hacia afuera (al reemplazado). El aviso en el
-cuerpo del ADR reemplazado (un bloque `> SUPERSEDED por ADR-N`) NO se usa para
-construir el grafo, aunque exista: una nota en el cuerpo puede marcar un APARTADO y
-no la decision entera (ADR-040 tiene su seccion de thinking superseded por ADR-053 y
+FUENTE DE VERDAD DE LA RELACION. Los campos de header del que REEMPLAZA
+(`**Supersede:**` / `**Revierte:**` / `**Reemplaza:**`) Y ADEMAS el campo generico
+`**Relacionado:**` cuando este declara un reemplazo TOTAL: es donde un decisor
+dice "yo reemplazo a X", y la flecha apunta hacia afuera (al reemplazado).
+
+  Por que tambien `Relacionado`: verificado 2026-10-12 durante la auditoria de
+  solapamiento, dos reemplazos TOTALES vivian SOLO ahi y el guard no los veia -
+  ADR-098 (`ADR-075 (superseded)`) y ADR-091 (`ADR-068 (... superado)`). Un campo
+  generico que declara un reemplazo total es una relacion de primera clase; el
+  target tiene que estar marcado igual que si el origen hubiera usado un campo
+  dedicado. Solo cuenta si el contexto del ADR citado (el parentesis) trae una
+  señal de reemplazo y NO una de parcialidad: `ADR-084 (... reemplaza la lista de
+  directorios historicos)` y `ADR-053 (... superseded parcialmente)` son parciales
+  y no exigen marca.
+
+  El aviso en el CUERPO del ADR reemplazado (un bloque `> SUPERSEDED por ADR-N`) sigue
+  sin usarse para construir el grafo: una nota en el cuerpo puede marcar un APARTADO
+y no la decision entera (ADR-040 tiene su seccion de thinking superseded por ADR-053 y
 sigue gobernando la seleccion por tipo de tarea). Construir el grafo desde el cuerpo
 daria ese falso positivo, y ademas invertir la flecha es trivial de errar ahi
 (`superseded por ADR-N` significa N supersede a este, al reves de la frase). La
@@ -62,7 +74,22 @@ ADR_CITE = re.compile(r"ADR-(\d+)")
 # Campos de header donde A declara superseder a otros. El valor tiene que ser
 # una relacion TOTAL: si nombra un apartado/seccion/practica, es parcial.
 FULL_FIELDS = ("Supersede", "Revierte", "Reemplaza")
-PARTIAL_HINT = re.compile(r"parcial|apartado|seccion|practica|skill|docs/", re.I)
+
+# El campo generico `Relacionado` tambien puede declarar un reemplazo TOTAL, sin
+# ser un campo dedicado (casos reales ADR-098 -> ADR-075 y ADR-091 -> ADR-068).
+REL_FIELD = "Relacionado"
+REL_TOTAL = re.compile(r"superad|supersed|reemplaz|replaces", re.I)
+
+# Senal de parcialidad: si el contexto la trae, NO es reemplazo total. Cubre tanto
+# los campos dedicados ("el apartado de X", "la seccion de Y") como el generico
+# ("reemplaza la lista de directorios historicos", "superseded parcialmente").
+PARTIAL_HINT = re.compile(
+    r"parcial|apartado|seccion|practica|skill|docs/|lista|directorio|historic", re.I
+)
+
+# `ADR-NNN (contexto)` dentro de un campo generico: el parentesis es el contexto
+# que decide si la relacion es total o parcial.
+REL_ITEM = re.compile(r"ADR-(\d+)\s*\(([^)]*)\)")
 
 # "superseded por ADR-N" / "supersede a ADR-N" en el estado o el cuerpo.
 SUPERSEDED_BY_RE = re.compile(r"supersed(?:ed|e)\s*por\s*ADR-(\d+)", re.I)
@@ -97,6 +124,14 @@ def supersedes_others(text: str) -> Set[int]:
         val = _field_value(text, field)
         if val and not PARTIAL_HINT.search(val):
             out |= {int(n) for n in ADR_CITE.findall(val)}
+    # El campo generico tambien puede declarar un reemplazo total (contexto del
+    # parentesis sin señal de parcialidad).
+    rel = _field_value(text, REL_FIELD)
+    if rel:
+        for m in REL_ITEM.finditer(rel):
+            ctx = m.group(2)
+            if REL_TOTAL.search(ctx) and not PARTIAL_HINT.search(ctx):
+                out.add(int(m.group(1)))
     return out
 
 

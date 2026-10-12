@@ -126,6 +126,67 @@ def test_detects_sidecar(tmp_path):
     assert any("sidecar" in x for x in v), v
 
 
+# --- el campo generico `Relacionado` que declara un reemplazo TOTAL ---
+# Verificado 2026-10-12: dos supersedes totales vivian SOLO en `Relacionado` y el
+# guard los ignoraba (ADR-098 -> ADR-075 y ADR-091 -> ADR-068).
+
+def test_relacionado_declares_total_replacement(tmp_path):
+    """`**Relacionado:** ADR-001 (superseded)` es una relacion total: exige marca.
+
+    Es el caso ADR-098/ADR-091: el reemplazo se declara en el campo generico con la
+    señal en el parentesis, y el reemplazado (001) sigue 'Aceptado'.
+    """
+    mod = load()
+    adr = build_vault(tmp_path)
+    write_adr(adr, 1, "**Estado:** Aceptado\n")
+    write_adr(adr, 2, "**Estado:** Aceptado\n**Relacionado:** ADR-001 (superseded), ADR-003\n")
+    v = mod.find_violations(adr)
+    assert any("el estado de ADR-001" in x for x in v), v
+
+
+def test_relacionado_partial_does_not_require_mark(tmp_path):
+    """Un `Relacionado` con señal de PARCIALIDAD no exige marca en el target.
+
+    Es el caso ADR-056 -> ADR-084 ("reemplaza la lista de directorios historicos"):
+    reemplaza una practica, no la decision entera.
+    """
+    mod = load()
+    adr = build_vault(tmp_path)
+    write_adr(adr, 1, "**Estado:** Aceptado\n")
+    write_adr(
+        adr, 2,
+        "**Estado:** Aceptado\n**Relacionado:** ADR-001 (reemplaza la lista de directorios historicos)\n",
+    )
+    assert mod.find_violations(adr) == []
+
+
+def test_relacionado_without_signal_is_ignored(tmp_path):
+    """Un `Relacionado` sin señal de reemplazo es navegacion, no supersede."""
+    mod = load()
+    adr = build_vault(tmp_path)
+    write_adr(adr, 1, "**Estado:** Aceptado\n")
+    write_adr(adr, 2, "**Estado:** Aceptado\n**Relacionado:** ADR-001 (motor del pipeline)\n")
+    assert mod.find_violations(adr) == []
+
+
+def test_relacionado_generic_context_without_parens_ignored(tmp_path):
+    """La señal tiene que estar en el CONTEXTO del citado, no en cualquier parte.
+
+    Un `Relacionado` con la palabra "superseded" en otro item no convierte a todos
+    los citados en superseded.
+    """
+    mod = load()
+    adr = build_vault(tmp_path)
+    write_adr(adr, 1, "**Estado:** Aceptado\n")
+    write_adr(
+        adr, 2,
+        "**Estado:** Aceptado\n**Relacionado:** ADR-001 (motor del pipeline), ADR-003 (superseded)\n",
+    )
+    # ADR-003 no existe en el vault -> lo saltea integrity; ADR-001 no debe flaguearse.
+    v = mod.find_violations(adr)
+    assert not any("el estado de ADR-001" in x for x in v), v
+
+
 # --- end-to-end: el script real sobre el corpus real ---
 
 def test_passes_on_real_corpus():

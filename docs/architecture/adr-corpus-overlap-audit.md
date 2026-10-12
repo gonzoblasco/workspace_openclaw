@@ -137,18 +137,24 @@ Se parte en dos sub-reglas distintas, con tratamientos distintos:
 
 Un ADR **cuyo sujeto es un proyecto** (gobierna la implementación de una app) no va en el corpus global.
 
-| ADR | Sujeto | Destino propuesto |
-|---|---|---|
-| **ADR-063** | kanam-insight (Python/LangChain) | `projects/kanam-insight/.knowledge/adr/` ⚠️ el árbol local no existe hoy |
-| **ADR-068** | SoporteML (greenfield v1) | `projects/soporteml/.knowledge/adr/` |
-| **ADR-091** | SoporteML (cierre v4) | `projects/soporteml/.knowledge/adr/` |
-| **ADR-096** | kanam-os adopta el DS | `projects/kanam-os/.knowledge/adr/` (la mitad global -el tema oscuro del sistema- se queda) |
-| **ADR-054** | kanam-os (app local sobre memory.db) | `projects/kanam-os/.knowledge/adr/` |
-| **ADR-094** | kanam-os (etapa 4) | `projects/kanam-os/.knowledge/adr/` |
-| **ADR-050** | ambiguo: nombra kanam-os pero gobierna la memoria del workspace | decidir (¿la memoria del sistema es global?) |
-| **ADR-079** | kanam-skills (repo) | repo de skills (archivado) - decidir |
+**Estado de ejecución (2026-10-12):**
 
-Los tres árboles de proyecto ya tienen su carpeta de ADRs (`kanam-lab/.knowledge/adr`, `kanam-spec/.knowledge/adr`, `kanam-fixer/docs/adr`, `kanam-onwheels/docs/adr`, `kanam-spec-v2/adrs`), así que el destino existe. Las mudanzas arrastran el **reindexado del corpus global** (renumerar/quitar filas), y las citas cruzadas `ADR-NNN` hacia esos números deben repuntar al ADR del proyecto.
+| ADR | Sujeto | Destino | Estado |
+|---|---|---|---|
+| **ADR-068** | SoporteML (greenfield v1) | `projects/soporteml/.knowledge/adr/` (ADR-0001) | ✅ **movido** |
+| **ADR-091** | SoporteML (cierre v4) | `projects/soporteml/.knowledge/adr/` (ADR-0002) | ✅ **movido** |
+| **ADR-054** | kanam-os (app local sobre memory.db) | `projects/kanam-os/.knowledge/adr/` | ⛔ **bloqueado**: `.knowledge/` de kanam-os esta git-ignored (`.git/info/exclude`) → mudarlo ahi lo deja SIN historial (peor que dejarlo en el corpus) |
+| **ADR-094** | kanam-os (etapa 4) | `projects/kanam-os/.knowledge/adr/` | ⛔ **bloqueado** (misma razon) |
+| **ADR-096** | kanam-os adopta el DS | mitad al proyecto, la mitad global (tema oscuro + `check-design-tokens.py`) se queda | ⛔ **bloqueado + entrelazado** |
+| **ADR-063** | kanam-insight (Python/LangChain) | `projects/kanam-insight/.knowledge/adr/` | ⛔ **bloqueado**: el repo existe en GitHub (privado) pero el arbol local NO esta clonado |
+| **ADR-050** | ambiguo: nombra kanam-os pero gobierna la memoria del workspace | decidir (¿la memoria del sistema es global?) | ⏸️ decidir |
+| **ADR-079** | kanam-skills (repo archivado) | repo de skills (archivado) | ⏸️ decidir |
+
+**Criterio de destino (aprendido acá, y es la regla que faltaba):** un ADR de proyecto solo puede mudarse a un arbol **versionado**. La verificación es `git -C projects/<slug> ls-files .knowledge | wc -l` y `git -C projects/<slug> check-ignore .knowledge`. En este workspace esa convención es **inconsistente**: `soporteml` y `kanam-lab` trackean `.knowledge/`; `kanam-os`, `kanam-spec` y `kanam-fixer` lo tienen en `.git/info/exclude` (ignorado). Mover un ADR global a un arbol ignorado viola la regla que lo motiva (ADR-084: la memoria del proyecto viaja con el proyecto, versionada). Los tres casos de kanam-os quedan **bloqueados hasta que su árbol versione `.knowledge/`**.
+
+**Precedente aplicado:** en 2026-09-22 el `ADR-048` global colisionaba con otro 048; se movió a `projects/kanam-lab/.knowledge/adr/0002-ui-framework-gradio.md` y se renumeró. La mudanza de SoporteML siguió ese procedimiento: `git mv` de origen → renumerar en la serie del proyecto (0001/0002) → bajar la fila del índice global → repuntar los consumidores vivos (ADR-042, `NORTH.md`, `ROADMAP.md`, `LANGCHAIN_STRATEGY.md`, `MEMORY.md`).
+
+**Huecos de numeración [68, 91]:** delibidos (un reemplazo declarado que se muda deja un hueco a propósito; documentado en ADR-067).
 
 ### 6b. Mención de proyecto como evidencia → masivo, y roza el método (ver tensión)
 

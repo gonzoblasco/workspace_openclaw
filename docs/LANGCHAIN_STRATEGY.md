@@ -147,7 +147,7 @@ Es el mismo patrón que apareció tres veces en el día: documentación que decl
 
 Las apuestas de producto y su orden viven en el roadmap: **`docs/ROADMAP.md` §2.1** (absorbe el registro de apuestas que se retiró el 2026-10-06; `kanam-insight` se descontinuó y salió del roadmap). Esta seccion solo lo referencia para no duplicar.
 
-Los candidatos comerciales vivos: **`soporteml`** (producto, mercado que paga; version funcional de Lovable con Stripe, ADR-091), **`kanam-fixer`** (producto, diferenciador defendible: auditoría sobre el anuncio real).
+Los candidatos comerciales vivos: **`soporteml`** (producto, mercado que paga; version funcional de Lovable con Stripe, ADR-0002 del proyecto `soporteml`), **`kanam-fixer`** (producto, diferenciador defendible: auditoría sobre el anuncio real).
 
 > **Correccion (2026-09-24):** esta seccion titulaba antes una "primera apuesta comercial" centrada en una base de conocimiento de accesibilidad. Eso fue un error de encuadre: sugeria que era la unica o la principal apuesta, y ademas era la mas debil (un RAG sobre WCAG ya existe repetidas veces). El encuadre correcto del dominio a11y es auditoria sobre el anuncio real, que es `kanam-fixer`, no un chatbot de documentacion.
 

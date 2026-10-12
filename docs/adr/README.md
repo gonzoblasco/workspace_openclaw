@@ -73,7 +73,6 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-065 | [DB-first vs doc-only - que documentos viven en el ciclo de la DB y cuales no](./ADR-065-db-first-vs-doc-only.md) | workspace |
 | ADR-066 | [Los guardias del workspace no leen codigo de proyectos](./ADR-066-guardias-no-dependen-de-codigo-de-proyecto.md) | workspace |
 | ADR-067 | [Los ADRs del workspace no pertenecen a un proyecto - verificar el sujeto antes de borrar](./ADR-067-adrs-del-workspace-no-son-de-un-proyecto.md) | workspace |
-| ADR-068 | [La nueva generacion de SoporteML es greenfield y se basa en v1, no en v4](./ADR-068-nueva-generacion-soporteml-greenfield-desde-v1.md) | workspace |
 | ADR-069 | [Los datos de prueba no comparten base con los datos reales](./ADR-069-datos-de-prueba-no-comparten-base.md) | kanam-story-bible |
 | ADR-070 | [Todo estado recuperable expone su via de recuperacion](./ADR-070-estado-recuperable-expone-su-recuperacion.md) | kanam-story-bible |
 | ADR-071 | [Hyphen enforcement in markdown/spec files](./ADR-071-hyphen-enforcement.md) | workspace |
@@ -96,7 +95,6 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-088 | [El pipeline A/B tiene enforcement, no buena voluntad](./ADR-088-pipeline-ab-enforcement.md) | workspace |
 | ADR-089 | [Pre-filtro barato en el pipeline A/B (gemma4:cloud) con guard de falso negativo](./ADR-089-prefiltro-pipeline-ab.md) | workspace |
 | ADR-090 | [Política de niveles de pensamiento por agente y asignación de modelos por rol](./ADR-090-pensamiento-nivel-configuracion.md) | workspace |
-| ADR-091 | [SoporteML v4 se cierra; el producto sigue por la version funcional de Lovable con cobro por Stripe](./ADR-091-soporteml-v4-cierre-stripe.md) | soporteml |
 | ADR-092 | [El CHANGELOG vive en una ventana activa de ~30 días, con rotación automatizada](./ADR-092-changelog-ventana-rotacion.md) | workspace |
 | ADR-093 | [El plan de sesión como objeto persistente (session-planning-hooks se cablea)](./ADR-093-plan-de-sesion-persistente.md) | workspace |
 | ADR-094 | [Etapa 4 de Kanam OS: medir accesibilidad (a11y-scan), cablear tests/node, y cerrar el Tablero](./ADR-094-etapa-4-a11y-scan-tests-node-tablero.md) | workspace |

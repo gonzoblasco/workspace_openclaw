@@ -77,7 +77,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
   - [x] Regla de guion (em dash) cerrada (ADR-082).
   - [ ] **Sincronizar `~/projects` en un repo nuevo** (id en `todos`): 135 archivos `.knowledge/` viven solo en disco, sin respaldo en git. Decisión diferida a propósito el 2026-09-27; sigue abierta.
   - [ ] Decidir destino de `kanam-skills` público (desactualizado; ver `docs/NORTH.md`).
-- **Restricción cerrada (no es acción)**: `soporteml` y sus versiones no se tocan en barridos - decisión de ADR-001/ADR-068.
+- **Restricción cerrada (no es acción)**: `soporteml` y sus versiones no se tocan en barridos - decisión de ADR-001 de `portfolio-strategy` y del ADR-0001 del proyecto `soporteml`.
 
 ### 0.3 Consolidación de memoria 🟢 P1
 - **Qué**: `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables. El daily se escribe por `session-end.sh`/`scripts/memory-end-session.py`, no a mano.
@@ -149,7 +149,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
   - **Ciclo `0.0.1` CERRADO** (2026-09-15); `0.0.2` abierto (MCP companion server, commit `f1f60fa`). Repo **público** `gonzoblasco/kanam-fixer` (isArchived=false), paquete npm **`kanam-fixer@0.0.2`** publicado. Último commit `262c004` (2026-09-17). Último push al repo 2026-09-26.
   - **Limitación declarada (S3)**: el plano real (VoiceOver) no es verificable en esta máquina hasta que Guidepup soporte Darwin 27 ([issue #149](https://github.com/guidepup/guidepup/issues/149)). El valor del proyecto se invirtió hacia el **plano real como único juez** de la clase timing/viewport.
   - **Apuestas de producto vivas** (absorbidas de `APUESTAS.md`, retirado el 2026-10-06):
-    - **`soporteml`** (producto, privado): v4 cerrado (ADR-091); sigue por la version funcional de Lovable, con cobro por Stripe ya operativo. Primer proyecto con billing real.
+    - **`soporteml`** (producto, privado): v4 cerrado (ADR-0002 del proyecto `soporteml`); sigue por la version funcional de Lovable, con cobro por Stripe ya operativo. Primer proyecto con billing real.
     - **`kanam-fixer`** (producto): diferenciador defendible (auditoría sobre lo que el lector de pantalla *anuncia*, no sobre atributos del DOM como axe-core).
   - **Showcase (curaduría 09-21)**: `kanam-fixer`, `ai-developer-stack`, `kanam-skills`.
 - **Criterio de éxito**: una lista corta de proyectos "estrella" con su rol en el pitch, sin contradicciones entre ADR-001 y este roadmap.

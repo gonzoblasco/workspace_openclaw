@@ -37,7 +37,7 @@ Una version intermedia del mismo dia ("Stripe solo por excepcion") tambien quedo
 
 | Proyecto | Proveedor | Por que |
 |---|---|---|
-| **SoporteML** | **Stripe** | Version funcional sobre Lovable (unica integracion disponible) y cobro con Stripe ya operativo, habilitado en Argentina. Ver ADR-091. |
+| **SoporteML** | **Stripe** | Version funcional sobre Lovable (unica integracion disponible) y cobro con Stripe ya operativo, habilitado en Argentina. Ver el ADR del proyecto `soporteml` (`.knowledge/adr/ADR-0002`, antes 091 en el corpus global). |
 
 ## Alternativas
 
