@@ -9,7 +9,7 @@
 | Archivo | Qué es |
 |---|---|
 | [`01-dominio-1a-modelos.md`](./01-dominio-1a-modelos.md) | Ficha de estudio de 1A: los 7 modelos, fortalezas, debilidades y trampas de examen. |
-| [`02-flashcards.md`](./02-flashcards.md) | ~50 flashcards listas para Anki/Quizlet (definición, fortalezas/debilidades, conexiones, escenarios). |
+| [`02-flashcards.md`](./02-flashcards.md) | 38 flashcards listas para Anki/Quizlet (definición, fortalezas/debilidades, conexiones, escenarios). |
 | [`03-preguntas-practica.md`](./03-preguntas-practica.md) | 24 preguntas de práctica con respuestas y justificación desde el BoK. |
 | [`04-mapa-conocimiento.md`](./04-mapa-conocimiento.md) | Tabla "conocido / por aprender" por subdominio (entregable de la semana). |
 | [`05-logistica-examen.md`](./05-logistica-examen.md) | Estado verificado de la ventana de examen IAAP y qué falta confirmar. |
