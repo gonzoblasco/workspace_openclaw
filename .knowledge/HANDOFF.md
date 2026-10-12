@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-12 02:46 GMT-3
+**Fecha:** 2026-10-12 02:53 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,24 +12,24 @@
 
 ## Que se hizo en esta sesion
 
-Revision del gate del pacto A/B y auditoria de la conversacion. (1) El cambio al daily 2026-10-09 (-160/+8) no fue perdida de memoria: elimino dos bloques redundantes que duplicaban la misma auditoria de 7 skills y dejo un bloque limpio. (2) Se reviso y corrigio scripts/check-pipeline-enforcement.py: tenia 5 bugs (parseo con offset fijo line[18:] que truncaba paths; falso positivo grave que devolvia exit 1 en un workspace limpio contando el estado de git como violacion del pacto; verificacion de git duplicada con parseos divergentes; filtro muerto de untracked; mezcla de responsabilidades). Fix: helper testeable parse_porcelain() + _git_staged_report() que separa staged de untracked; el reporte de git es informativo y no afecta el exit code. 11/11 tests pasan (8 originales + 3 regresiones nuevas). E2E verificado sembrando un repo temporal.
+Auditoria de la conversacion (no de los 3 dias): solo 2 artefactos tocados en el hilo. (1) scripts/check-pipeline-enforcement.py + tests: corregido el falso positivo grave que devolvia exit 1 en un workspace limpio contando el estado de git como violacion del pacto A/B. Fix: parse_porcelain() testeable + _git_staged_report(); el reporte de git es informativo y no afecta el exit code. Verificado: 11/11 tests pasan, gate real EXIT=0. Commiteado en 768a61f6e6. (2) memory/2026-10-09.md: dedupe de dos bloques redundantes, sin perdida de memoria. Hallazgo de conducta: arrastre studies/openclaw-use-cases/ a la auditoria como si fuera mio; Gonzo lo corto - ese archivo no pertenece a esta conversacion. Verificado que nada de este hilo quedo pendiente. Ademas se dejo un HANDOFF dedicado en playground/raft_integration/HANDOFF.md sobre la red social Raft (que es, que se hizo, que falta).
+
+## Estado actual
+
+Workspace en main. Este hilo cerro limpio: el gate ya no miente (exit code depende solo del pacto A/B, git es informativo). playground/raft_integration/ con HANDOFF propio. Nada de esta conversacion quedo sin commitear.
 
 ## Proximos pasos
 
-1. Commitear scripts/check-pipeline-enforcement.py + tests/python/test_check_pipeline_enforcement.py + memory/2026-10-12.md (quedaron modificados sin commitear al cierre). 2. Cerrar la auditoria de skills: decidir retiro de las 4 skills fantasma (complexity-driven-pipeline, skill-router, verification-gates) y actualizar agent-orchestration-pipeline-model-arbitration (documenta deepseek-v4-flash:cloud retirado por Ollama el 2026-09-25).
+1) Retomar Raft solo via playground/raft_integration/HANDOFF.md (probar bridge contra cluster vivo, revisar config/snapshot, decidir go/no-go). 2) Los untracked del workspace (daily 10 y 11, lore/fichas de Las Tres Sabanas, studies/openclaw-use-cases/) son de otras sesiones: no tocarlos desde aca.
 
 ## Decisiones y contexto que no debe perderse
 
-- El estado de git es INFORMATIVO en check-pipeline-enforcement.py: nunca cuenta como violacion del pacto A/B. El exit code depende solo de la consistencia de las 4 fuentes del pacto.
+- Un workspace sucio NUNCA es violacion del pacto A/B: check-pipeline-enforcement.py reporta git como informativo. Regla de conducta reforzada: no arrastrar archivos de otras sesiones/areas (studies/) a una auditoria propia; si no estas trabajando en esa carpeta, no la auditas ni la commiteas. El gate debe PODER fallar: exit 0 limpio, exit 1 con el defecto sembrado.
 
 ## Archivos tocados
 
 ```
-memory/2026-10-09.md
-memory/memory.db
-scripts/check-pipeline-enforcement.py
 studies/openclaw-use-cases/INDEX.md
-tests/python/test_check_pipeline_enforcement.py
 ```
 
 ## Como continuar
