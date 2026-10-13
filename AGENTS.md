@@ -2,7 +2,10 @@
 
 Este archivo define **cómo me comporto como agente**. No es mi personalidad (SOUL.md), ni los datos de Gonzo (USER.md), ni mi memoria (MEMORY.md). Son las reglas de operación.
 
-> **Detalle ampliado:** secciones extensas (feedback OSS, pipeline, triple git, sanitización, cleanup, verify-before-push) viven en `docs/AGENTS-DETALLE.md`. AGENTS.md tiene las reglas esenciales.
+> **Reglas duras acá; el cómo procedural en `docs/`.**
+> - `docs/AGENTS-DETALLE.md`: feedback OSS, pausa obligatoria A/B, triple git, cleanup, verify-before-push, registro automatico.
+> - `docs/SETUP.md`: maquinas, modelos, scripts, memoria, red.
+> AGENTS.md debe quedar **bajo el cap de bootstrap** (20.000 chars): lo que sobra se trunca en silencio en cada arranque. Guarda: `scripts/check-bootstrap-budget.py`.
 
 ---
 
@@ -120,7 +123,7 @@ Valor está en comentar, revisar o ayudar a destrabar. **Antes de proponer un PR
 **Análisis:** leer SIEMPRE el hilo completo antes de actuar.
 
 #### Feedback en PRs/issues ajenos
-Detalle completo en `docs/AGENTS-DETALLE.md`. Reglas duras:
+Reglas duras (detalle en `docs/AGENTS-DETALLE.md`):
 0. **Antes de responder:** chequear contexto interno (memoria/sesiones por número de issue) y leer el hilo externo COMPLETO (body, reviews, todos los comments, estado actual). Nunca responder solo con el link compartido.
 0b. **Un ticket por vez (2026-09-14):** el análisis cubre SOLO ese ticket - ni estado de otros PRs del repo, ni comparaciones, ni "de paso". Referencia sí, sentencia no: citar otro ticket como trazabilidad, pero nunca concluir su estado sin verificación directa y pedido explícito (excepción: dependencia real - PR linked, blocker de CI).
 1. **Leer todo** antes de comentar. Sin repo, plantear como pregunta, no afirmación.
@@ -131,43 +134,30 @@ Detalle completo en `docs/AGENTS-DETALLE.md`. Reglas duras:
 6. **Dar siempre la URL** del ticket.
 7. **No agradecer a bots de review.** Responder directo a la sustancia con evidencia.
 
-#### Pausa obligatoria: iteran $\rightarrow$ revisión final $\rightarrow$ push $\rightarrow$ borrador
-Detalle en `docs/AGENTS-DETALLE.md`.
-1. Kanam planifica (MAX) $\rightarrow$ 2. Agente A escribe (HIGH) $\rightarrow$ 3. Agente B revisa (HIGH) $\rightarrow$ 4. Iterar alternando roles $\rightarrow$ 5. **Revisión final de Kanam (MAX)** analizando el conjunto $\rightarrow$ 6. Push $\rightarrow$ 7. Borrador.
-
-#### Verify Before Push
-Para proyectos con build step: **`npm run build` before every commit**. No encadenar build + commit en un comando largo. Preferir pre-commit hook (lint $\rightarrow$ test $\rightarrow$ build).
-
-#### El CORE verifica ANTES de reportar (2026-10-08, regla de Gonzo)
-**El visto bueno de Gonzo cierra la fase; nunca es el primer chequeo.** Orden: writer entrega $\rightarrow$ **el CORE corre los gates él mismo** $\rightarrow$ arregla lo roto $\rightarrow$ **recién entonces reporta**, con la salida cruda del comando pegada $\rightarrow$ Gonzo aprueba una vez y cierra. Detalle en `docs/AGENTS-DETALLE.md`.
-
-#### Esperar el CI antes de seguir (2026-09-28)
-**Regla transversal (todos los proyectos):** después de cada push, **esperar a que el CI termine y todos los actions pasen** antes de pasar a otra tarea, dar el trabajo por cerrado o cerrar la sesión. No hay apuro. Un push que no se verifica es un push a ciegas: el fallo aparece recién cuando el maintainer lo señala.
-- **No cerrar la sesión con CI pendiente.** Si el CI sigue corriendo, dejarlo como pendiente explícito y volver a chequearlo, o agrupar el push antes del cierre.
-- **Verificación obligatoria:** `gh pr checks <n> --repo <owner/repo>` debe quedar sin líneas que no sean `pass`. Un job `pending` no es verde.
-- Aplica a commits propios de workspace, proyectos y PRs OSS por igual.
+#### Pausa obligatoria y verificación antes de push
+- **Pausa obligatoria A/B:** Kanam planifica (MAX) → A escribe (HIGH) → B revisa (HIGH) → iterar → **revisión final de Kanam (MAX)** → push → borrador. Detalle en `docs/AGENTS-DETALLE.md`.
+- **Verify before push:** proyectos con build step → **`npm run build` antes de cada commit**; no encadenar build+commit en un comando largo; preferir pre-commit hook (lint → test → build).
+- **El CORE verifica ANTES de reportar (2026-10-08):** el visto bueno de Gonzo cierra la fase, nunca es el primer chequeo. El CORE corre los gates él mismo y reporta con la salida cruda pegada. Detalle en `docs/AGENTS-DETALLE.md`.
+- **Esperar el CI antes de seguir (2026-09-28):** tras cada push, esperar a que el CI termine y todos los actions pasen antes de cerrar la tarea o la sesión. Verificación: `gh pr checks <n> --repo <owner/repo>` sin líneas que no sean `pass`. Un job `pending` no es verde. Aplica a workspace, proyectos y PRs OSS por igual.
 
 #### Workspace Git
 Repo `workspace_openclaw`. Proyectos se sincronizan por separado.
-**Obligatorio:** Modificó config de workspace $\rightarrow$ commit + push al finalizar sesión.
+**Obligatorio:** Modificó config de workspace → commit + push al finalizar sesión.
 **CHANGELOG.md:** obligatorio para cada cambio estructural del workspace.
 **Sincronización:** Siempre `git pull --rebase` antes del push.
 **Datos locales (NO git):** `.env`, `*.db`, tokens. IRRECUPERABLES. Respaldar SIEMPRE antes de mover o limpiar un proyecto.
 
 ##### Skills Mirror & Públicas
-**Ambos apagados el 2026-09-28 (ADR-079):** el mirror `.github/skills/` **no existe** (y no se recrea) y la colección pública `kanam-skills` está **archivada en GitHub** (ya no se publica). Las skills viven en `skills/` y en `agents/<rol>/skills/`. La receta de sanitización y la prohibición de `--delete` quedan como registro en `docs/AGENTS-DETALLE.md` y ADR-079, por si alguna vez se retoma. Ver TODO #62.
+**Ambos apagados el 2026-09-28 (ADR-079):** el mirror `.github/skills/` **no existe** (y no se recrea) y la colección pública `kanam-skills` está **archivada en GitHub**. Las skills viven en `skills/` y en `agents/<rol>/skills/`. Receta de sanitización y prohibición de `--delete`: `docs/AGENTS-DETALLE.md` y ADR-079. Ver TODO #62.
 
 ### Estructura de Proyectos - Triple Git con `.knowledge/`
-Detalle en `docs/AGENTS-DETALLE.md` y **ADR-098** (los proyectos viven en `<workspace>/projects/`, dentro del árbol que el gateway gobierna).
+Detalle en `docs/AGENTS-DETALLE.md` y **ADR-098**. Resumen:
 - **Ubicación de trabajo:** `<workspace>/projects/<slug>/`. El humano llega por el symlink `~/projects -> <workspace>/projects`; **los agentes usan el path real** (los sandboxes rechazan escribir a través de symlinks).
-- **Workspace git:** `.gitignore` conserva la regla `/projects/`, pero el motivo se invirtió (ADR-098): no es "afuera del worktree" sino "adentro, y cada proyecto trae su propio `.git`" - sin esa regla git los absorbería como gitlinks/submódulos. El workspace no trackea el código ni el `.knowledge/` de los proyectos; la memoria de proyecto es **del proyecto y viaja con él**. El workspace no es responsable de esa memoria.
-- **`projects/` es una carpeta plana e ignorada al 100% por el workspace git** (regla `/projects/`). No tiene `.git` propio: cada proyecto es su propio repo, y la carpeta contenedora no es repo de nada.
-- **Proyecto git (`projects/<slug>/`):** trackea código **y `.knowledge/`** (la memoria del proyecto se versiona con el proyecto - corregido 2026-10-09; varios proyectos ya lo hacían). Fuente de verdad para trabajar.
+- **`projects/` es una carpeta plana, ignorada al 100% por el workspace git** (`/projects/`): no es repo de nada. Cada proyecto es su propio repo y **trackea código + su `.knowledge/`**: la memoria de proyecto **viaja con el proyecto**, nunca con el workspace (2026-10-13; ADR-098 apuntaba ahí, varios proyectos ya lo hacían y varios quedaron atrás - ver TODO de saneamiento). GitHub es la fuente; sin submódulos; los `.git/` viven dentro de cada proyecto.
 - **`cwd` (ADR-098):** los agentes que escriben código (dev, ops) tienen `cwd` en el workspace; el hogar del agente (bootstrap, memoria, skills) no se mueve.
-- **Sin submódulos.** GitHub es la fuente. Clonar bajo demanda. Los `.git/` de los proyectos viven dentro de `projects/<slug>/`, nunca se absorben en el workspace ni se commitean.
 
 ### Project Cleanup
-Al finalizar proyecto: 1. Push final $\rightarrow$ 2. Extraer ADRs generales $\rightarrow$ 3. Limpiar local (borrar node_modules, dejar `.knowledge/` y README) $\rightarrow$ 4. Push de limpieza $\rightarrow$ 5. Registro en daily.
+Al finalizar proyecto: 1. Push final → 2. Extraer ADRs generales → 3. Limpiar local (borrar node_modules, dejar `.knowledge/` y README) → 4. Push de limpieza → 5. Registro en daily.
 
 ### Reglas Operativas - Background & Procesos
 - **PTY:** interactivos (`pty: true`), batch (`pty: false`).
@@ -191,10 +181,9 @@ Workflows detallados en `skills/` (índice en `SKILLS-INDEX.md`). Referencias cl
 - [Scheduled tasks vs heartbeat](/automation#scheduled-tasks-cron-vs-heartbeat)
 - [Heartbeat](/gateway/heartbeat)
 
-
 ## Tools
 
-Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/SETUP.md`** el 2026-09-14, para bajar este archivo bajo el limite de bootstrap (20K chars). Consultar ese archivo para el detalle del setup.
+Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/SETUP.md`**. Consultar ese archivo para el detalle del setup.
 
 **Resumen operativo** (los subagentes solo reciben `AGENTS.md`, no `docs/SETUP.md` ni `MEMORY.md`):
 <!-- BEGIN MANAGED:model-operativo -->
@@ -217,4 +206,4 @@ Notas de entorno (maquinas, modelos, scripts, memoria, red) migradas a **`docs/S
 
 ---
 
-_Actualizado 2026-10-06. Las reglas duras viven acá; el detalle ampliado en `docs/AGENTS-DETALLE.md` y el setup en `docs/SETUP.md`._
+_Actualizado 2026-10-13. Las reglas duras viven acá; el detalle ampliado en `docs/AGENTS-DETALLE.md` y el setup en `docs/SETUP.md`._
