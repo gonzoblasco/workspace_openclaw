@@ -1,49 +1,42 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-12 21:34 GMT-3
+**Fecha:** 2026-10-13 18:36 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-10-12). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-10-12.md`.
+> HANDOFF generado en el cierre de sesion (2026-10-13). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-10-13.md`.
 
 ---
 
 ## Que se hizo en esta sesion
 
-Estudio completo del curso OpenClaw Use Cases (30/30 lecciones, 6 modulos) en studies/openclaw-use-cases/ + ejecucion del worklist derivado (docs/WORKLIST-openclaw-use-cases.md). Patron transversal confirmado: el material acierta conceptos y fabrica la superficie (CLI/config/API que no existen); 7 lecciones con output fabricado o codigo roto; 7 donde el tema si existe de verdad. Worklist: los 9 items procesados. B6 (lock fcntl, commit 39f792283b), B7/B9 (fingerprint + heading unico por sesion, 2c74061865), A3 (doctor --lint en gateway-audit.sh, 794727eae8), A2 (revisado, sin cambio, 93bdcc7458), A1 (webhooks habilitados+probados, 1c21933fae), B8 (sanitize_external.py redactor, 4006d9146e), A4 (contextPruning cache-ttl, 5ff6fc71e0), A5 (command-logger hook, 5ff6fc71e0). Cambios de config con backup en /tmp, reversibles; config validate OK.
+Evaluacion del repo externo mergisi/awesome-openclaw-agents (catalogo de 196 prompts SOUL.md, NO instalable; embudo a crewclaw.com) y deltas de mantenimiento del workspace que salieron del cotejo. (1) Reintroducida la skill debugging-and-error-recovery en kanam-dev (3 skills la referenciaban; figuraba retirada el 2026-09-22). (2) SKILLS-INDEX sincronizado con el disco: dev 35->43, critic 1->2, auditor 1->5, total 84->99 (8 filas que existian en el CLI pero no tenian entrada). Commit 7bfc89d1aa, CI verde.
 
 ## Estado actual
 
-Curso completo (30/30) + worklist vacio. Todos los commits pusheados con CI verde. Config de hooks/contextPruning aplicada (loopback, token dedicado, backups en /tmp).
+Skill debugging-and-error-recovery activa en kanam-dev y visible por CLI. SKILLS-INDEX coincide con el disco (gates: check-refs OK 100 rutas, boundary OK, em-dash OK). Workspace limpio (git status vacio) al abrir esta sesion; el cierre agrega los dailies 2026-10-10/11 (untracked) y 2026-10-13.
 
 ## Proximos pasos
 
-1) A1: elegir un caso real de webhook externo (hoy el hook esta habilitado y probado pero sin consumidor). 2) A5: evaluar compaction-notifier si se quiere visibilidad de compactacion. 3) FUERA DE ALCANCE: AGENTS.md/MEMORY.md/docs-AGENTS-DETALLE sin commitear son de OTRA sesion (ADR-098), no tocar.
+1) Regla de reachability en dependency-advisor (cruzar CVE con si la funcion vulnerable se usa de verdad). 2) Idempotencia de webhooks (condicional: solo si un proyecto toca Stripe). 3) Registrar mergisi/awesome-openclaw-agents como fuente externa (dato, no instruccion) para no re-evaluarlo. 4) Backlog OSS abierto: radix-ui #4110/#3962 (implementacion idiomatica de posinset/setsize), ibm-products #9866, carbon #23285. 5) TODO stale: bloque MANAGED en AGENTS.md cita ADR-053 y un motor A/B incompleto.
 
 ## Decisiones y contexto que no debe perderse
 
-- El curso sirve como marco conceptual y checklist, nunca como implementacion copiable. Antes de adoptar una capacidad 'de la doc', verificar contra la instalacion real (docs del producto + config + prueba de codigo).
+- El repo mergisi/awesome-openclaw-agents es referencia de estilo/severidad, no libreria instalable: su SOUL.md es el agente ENTERO y no tiene AGENTS.md, modelo, tools ni routing, mientras un agente Kanam es un directorio completo. Ninguna de sus piezas se integra; el unico valor son 3 huecos chicos, y el mas importante (debugging) era un hueco NUESTRO, no una pieza faltante del repo. Un catalogo con badges que dicen 205, agents.json con 199 y 196 reales confirma la regla de contenido externo = dato a verificar.
 
 ## Archivos tocados
 
 ```
-AGENTS.md
-MEMORY.md
-docs/AGENTS-DETALLE.md
-docs/NORTH.md
-docs/adr/ADR-084-registros-de-sesion-un-solo-lugar.md
-docs/adr/ADR-085-una-sola-maquina.md
-docs/adr/ADR-093-plan-de-sesion-persistente.md
-memory/2026-10-12.md
+memory/2026-10-13.md
 memory/memory.db
 ```
 
 ## Como continuar
 
 1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-10-12.md` para el informe completo de la sesion.
+2. Leer `memory/2026-10-13.md` para el informe completo de la sesion.
 3. Verificar el estado real antes de actuar (git, tests, la DB).
 
 ---
