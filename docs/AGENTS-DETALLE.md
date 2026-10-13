@@ -78,24 +78,24 @@ El error a evitar: tratar la marca como si fuera un dato personal. `Kanam` nombr
 
 ## Estructura de Proyectos - Triple Git (detalle ampliado)
 
-> **Actualizado 2026-10-06 al modelo ADR-075 (2026-09-27).** Hasta el 2026-09-26 los proyectos vivian en `workspace/projects/` y el workspace trackeaba su `.knowledge/`. Eso ya no es asi: los proyectos viven en `~/projects/`, fuera del worktree, y **el workspace ya no trackea nada de `projects/`** (ver ADR-075). Si encontrás texto que diga lo contrario, es deriva vieja.
+> **Actualizado 2026-10-12 al modelo ADR-098 (2026-10-08).** Los proyectos viven en `<workspace>/projects/`, **dentro** del árbol que el gateway gobierna; `~/projects` es un **symlink** a `<workspace>/projects` (el humano llega por ahí, los agentes usan el path real porque los sandboxes rechazan escribir a través de symlinks). El `.gitignore` conserva `/projects/`, pero el motivo se invirtió (no "afuera del worktree" sino "adentro, y cada proyecto trae su propio `.git`"). El workspace no trackea el código ni el `.knowledge/` de los proyectos. Modelo previo (2026-09-27 a 2026-10-08): los proyectos vivían en `~/projects/` como carpeta real, fuera del worktree (ADR-075, hoy superseded). Si encontrás texto que diga que viven "fuera del workspace", es deriva vieja.
 
-**Filosofía:** cada proyecto tiene su carpeta en `~/projects/<slug>/`, y el cruce de repos se resuelve en TRES capas git que conviven **fuera del worktree del workspace**:
+**Filosofía:** cada proyecto tiene su carpeta en `projects/<slug>/`, y el cruce de repos se resuelve en TRES capas git que conviven **dentro del workspace pero ignoradas por su git**:
 
 ```
-~/projects/<slug>/            (repo individual del proyecto: gonzoblasco/<slug>)
+projects/<slug>/              (repo individual del proyecto: gonzoblasco/<slug>)
 ├── .knowledge/               # memoria institucional (BRIEF, ADRs, STATUS, HANDOFF) - vive CON el proyecto
 ├── src/                      # código fuente (trackea el repo individual)
 └── .gitignore                # del proyecto (lo respeta su repo)
 
-~/projects/                   (repo agregado: projects_openclaw, PRIVADO - archivo de todo el código)
+projects/                     (repo agregado: projects_openclaw, PRIVADO - archivo de todo el código)
 └── <slug>/                   # copia plana del código (sin .git/, sin node_modules/.env/*.db)
 ```
 
 **Capas y responsabilidades:**
-- **Workspace git** (`workspace_openclaw`): **no trackea `projects/` ni `.knowledge/` de proyectos.** Su `.gitignore` tiene `/projects/` (ADR-075). La memoria de proyecto es del proyecto y viaja con él.
-- **Repo agregado** (`~/projects/` → `projects_openclaw`, privado): archiva el código fuente de los ~19 proyectos como archivos planos (sin `.git/`, sin node_modules/.env/*.db). Es el archivo "ver todo junto", NO la fuente de la verdad para trabajar. Sincroniza con `scripts/aggregate-sync.sh` (que resuelve `PROJECTS_DIR=${HOME}/projects`).
-- **Repo individual** (`~/projects/<slug>` → `gonzoblasco/<slug>`): la fuente de la verdad. Ahí viven commits, branches, PRs, push. Cada uno con su propio `.gitignore`; los que excluyen su `.knowledge/` lo hacen vía `.git/info/exclude`.
+- **Workspace git** (`workspace_openclaw`): **no trackea `projects/` ni `.knowledge/` de proyectos.** Su `.gitignore` tiene `/projects/` (ADR-098). La memoria de proyecto es del proyecto y viaja con él.
+- **Repo agregado** (`projects/` -> `projects_openclaw`, privado): archiva el código fuente de los ~19 proyectos como archivos planos (sin `.git/`, sin node_modules/.env/*.db). Es el archivo "ver todo junto", NO la fuente de la verdad para trabajar. Sincroniza con `scripts/aggregate-sync.sh` (que resuelve `PROJECTS_DIR=${HOME}/projects`, el symlink al path real).
+- **Repo individual** (`projects/<slug>` -> `gonzoblasco/<slug>`): la fuente de la verdad. Ahí viven commits, branches, PRs, push. Cada uno con su propio `.gitignore`; los que excluyen su `.knowledge/` lo hacen vía `.git/info/exclude`.
 
 **Reglas clave:**
 - **Los `.git/` de los subrepos se ignoran** en el agregado (`*/.git/`). Ese es el truco que evita los gitlinks: git desciende al contenido cuando el `.git/` está ignorado.
@@ -105,19 +105,19 @@ El error a evitar: tratar la marca como si fuera un dato personal. `Kanam` nombr
 
 **Flujo típico:**
 1. Nuevo producto → `./scripts/init-project.sh <slug>`
-   - Crea `~/projects/<slug>/.knowledge/` con BRIEF.md + STATUS.md
+   - Crea `projects/<slug>/.knowledge/` con BRIEF.md + STATUS.md
    - Crea repo privado en gh e inicializa el git del proyecto (excluye `.knowledge/` vía `.git/info/exclude`)
    - Registra el proyecto en el repo agregado (commit inicial de la carpeta)
-2. Go decision → scaffold en `~/projects/<slug>/` (repo individual, ignora `.knowledge/`)
-3. Desarrollo → actualizar `~/projects/<slug>/.knowledge/STATUS.md` con cada hito
+2. Go decision → scaffold en `projects/<slug>/` (repo individual, ignora `.knowledge/`)
+3. Desarrollo → actualizar `projects/<slug>/.knowledge/STATUS.md` con cada hito
 4. Commits: código + `.knowledge/` al repo del proyecto, cambios del archivo completo al agregado (`aggregate-sync.sh`)
 
-> **Nota de estado:** `init-project.sh` todavía resuelve `PROJECTS_DIR="${WORKSPACE_DIR}/projects"` (pre-ADR-075) y asume que commitea `.knowledge/` al workspace. **Deuda técnica:** alinearlo a `~/projects` como hizo `aggregate-sync.sh`.
+> **Nota de estado (actualizada 2026-10-12 al modelo ADR-098).** Bajo ADR-075, `init-project.sh` resolvia `PROJECTS_DIR="${WORKSPACE_DIR}/projects"` y la nota lo marcaba "deuda: alinearlo a `~/projects`". **Eso quedo invertido:** el path `${WORKSPACE_DIR}/projects` volvio a ser correcto (ADR-098), pero el script todavia **stagea `.knowledge/` como blob del workspace git** - y `/projects/` ahora esta en el `.gitignore` del workspace, asi que ese `git add` se ignora y el script aborta con "❌ .knowledge/ NO se pudo stagear". **Deuda real:** el modelo triple-git de `init-project.sh` (blob de `.knowledge/` en el workspace) contradice ADR-098; alinear el script al modelo vigente (la memoria del proyecto viaja en el repo del proyecto, no en el workspace) antes de usarlo para un proyecto nuevo.
 
-**Sin submódulos.** Los proyectos se clonan en `~/projects/<slug>/` bajo demanda (cuando se trabajan), no como submódulos. Si una carpeta de `~/projects/` no tiene repo en GitHub, se elimina.
+**Sin submódulos.** Los proyectos se clonan en `projects/<slug>/` bajo demanda (cuando se trabajan), no como submódulos. Si una carpeta de `projects/` no tiene repo en GitHub, se elimina.
 
 **Excepciones:**
-- Forks de terceros (TanStack/router, shadcn/ui, etc.) → viven en `forks/<slug>/`, carpeta ignorada AL 100% en el workspace (no existe como `~/projects/forks`). No llevan `.knowledge/` (no se modifica el `.gitignore` de proyectos ajenos). El repo del fork vive por si solo; la memoria de la sesion de contribucion va a `docs/` o `memory/` del workspace.
+- Forks de terceros (TanStack/router, shadcn/ui, etc.) → viven en `forks/<slug>/`, carpeta ignorada AL 100% en el workspace (no existe como `projects/forks`). No llevan `.knowledge/` (no se modifica el `.gitignore` de proyectos ajenos). El repo del fork vive por si solo; la memoria de la sesion de contribucion va a `docs/` o `memory/` del workspace.
 - Skills de OpenClaw → viven en `skills/` (Core) y `agents/<rol>/skills/` (rol) con su propio SKILL.md
 - Proyectos sin documentación completa → los archivos faltantes se documentan en HANDOFF.md en `.knowledge/` (que reemplazo al BRIEF)
 

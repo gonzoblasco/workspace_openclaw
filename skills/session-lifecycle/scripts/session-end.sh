@@ -50,7 +50,7 @@ fi
 # --- HANDOFF del proyecto (o del workspace) -------------------------------------
 # El destino lo resuelve scripts/session-handoff.py:
 #   workspace/sistema -> <workspace>/.knowledge/HANDOFF.md
-#   proyecto          -> ~/projects/<slug>/.knowledge/HANDOFF.md  (ADR-075)
+#   proyecto          -> <workspace>/projects/<slug>/.knowledge/HANDOFF.md  (ADR-098)
 HANDOFF_MSG=""
 if [[ -f "scripts/session-handoff.py" ]]; then
   HANDOFF_ARGS=(--project "$PROJECT" --summary "$SUMMARY" --branch "$BRANCH")

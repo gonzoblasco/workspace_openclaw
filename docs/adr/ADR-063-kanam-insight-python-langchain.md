@@ -1,6 +1,6 @@
 # ADR-063: kanam-insight en Python sobre LangChain, no en TypeScript con Bun
 
-> **Estado del sujeto: DESCONTINUADO (2026-10-06).** `kanam-insight` salió del roadmap: no existe como proyecto (no está en `~/projects/`) y Gonzo confirmó que no recuerda haberlo querido. Este ADR se conserva como **registro histórico** de la decisión de stack (Python+LangChain sobre el starter, en vez de TS+Bun), que reusa la capacidad de `langchain-starter`. Si algún día se retoma un motor de insights cross-`knowledge/`, esta es la decisión a revisar.
+> **Estado del sujeto: DESCONTINUADO (2026-10-06).** `kanam-insight` salió del roadmap: no existe como proyecto (no está en `projects/`) y Gonzo confirmó que no recuerda haberlo querido. Este ADR se conserva como **registro histórico** de la decisión de stack (Python+LangChain sobre el starter, en vez de TS+Bun), que reusa la capacidad de `langchain-starter`. Si algún día se retoma un motor de insights cross-`knowledge/`, esta es la decisión a revisar.
 
 **Fecha:** 2026-09-24
 **Estado:** Aceptado

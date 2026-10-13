@@ -33,7 +33,7 @@ La deriva concreta: la documentación siguió afirmando "compartido entre dos m�
 ### Lo que NO cambia
 
 - La Mac Mini sigue siendo el servidor 24/7 con Telegram y el gateway.
-- `git` y GitHub siguen siendo el respaldo; los proyectos siguen viviendo en `~/projects` (ADR-075).
+- `git` y GitHub siguen siendo el respaldo; los proyectos siguen viviendo en `projects/` dentro del workspace (ADR-098).
 - No se borra historia: los registros fechados (dailies, learnings, ADRs) se conservan; se les añade una nota de que el escenario cambió, en vez de reescribirlos.
 
 ---

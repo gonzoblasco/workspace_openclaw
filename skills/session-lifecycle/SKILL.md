@@ -85,7 +85,7 @@ If Gonzo says `"start session"`, `"brainstorming"`, `"I don't know which project
 
 **Dos entregables por cierre (2026-10-06):**
 1. **Informe detallado** en `memory/YYYY-MM-DD.md` (una seccion por sesion). Plantilla registrada en `memory/_templates/session-close.md`.
-2. **HANDOFF del proyecto en curso** (`scripts/session-handoff.py`), en el `.knowledge/` del proyecto o del workspace. Es el punto de entrada para continuar; se regenera en cada cierre. El destino lo resuelve el script (workspace -> `<workspace>/.knowledge/HANDOFF.md`; proyecto -> `~/projects/<slug>/.knowledge/HANDOFF.md`, ADR-075).
+2. **HANDOFF del proyecto en curso** (`scripts/session-handoff.py`), en el `.knowledge/` del proyecto o del workspace. Es el punto de entrada para continuar; se regenera en cada cierre. El destino lo resuelve el script (workspace -> `<workspace>/.knowledge/HANDOFF.md`; proyecto -> `<workspace>/projects/<slug>/.knowledge/HANDOFF.md`, ADR-098).
 
 El HANDOFF se **deriva del informe de cierre**: mismo resumen, mas estado actual, proximos pasos, decisiones y archivos tocados.
 - **Auto-cataloging + DB-first (2026-08-31):** when saving a session, `session-end.sh` (1) writes the summary **directly to `memory/memory.db`** (`daily_notes` table) as the source of truth via `scripts/memory-end-session.py`, (2) regenerates `memory/YYYY-MM-DD.md` as an **exported view** (regenerable with `export-all`), and (3) runs `scripts/memory-catalog-v2.py` to update embeddings/topics/learnings. With this, the DB is the source and the `.md` files become optional.
@@ -111,7 +111,7 @@ Scripts in `skills/session-lifecycle/scripts/`:
 |---|---|
 | `session-start.sh --project <name> --objective <obj>` | Loads the previous HANDOFF, runs the complexity-scorer on the objective, and creates/updates the daily log in `memory/YYYY-MM-DD.md`. Use at session start with a project. |
 | `session-end.sh --project <name> --summary <text> [--status ..] [--next-steps ..] [--decisions ..]` | Cierra la sesion: escribe el informe en la DB/`memory/` (DB-first) y genera/actualiza el HANDOFF del proyecto. Disparador: **"guardar sesion"** o **"cerrar sesion"** (son indistintos). |
-| `scripts/session-handoff.py --project <name> --summary <text> [...]` | Genera/actualiza el HANDOFF.md del proyecto en curso (o del workspace). Destino: `~/projects/<slug>/.knowledge/HANDOFF.md` (ADR-075); para el sistema, `<workspace>/.knowledge/HANDOFF.md`. |
+| `scripts/session-handoff.py --project <name> --summary <text> [...]` | Genera/actualiza el HANDOFF.md del proyecto en curso (o del workspace). Destino: `<workspace>/projects/<slug>/.knowledge/HANDOFF.md` (ADR-098); para el sistema, `<workspace>/.knowledge/HANDOFF.md`. |
 | `scripts/complexity-scorer.sh <objective>` | Evaluates complexity in 4 dimensions - T-score 1-20 + bucket + model + thinking + pipeline. Run automatically by `session-start.sh`. Skill: `complexity-driven-pipeline`. |
 
 If the session touches workspace skill scripts, run `npm test` before the final commit.

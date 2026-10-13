@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-10-06 (reconstruido desde cero)
 **Estado:** Vivo. Fija el "para qué" de largo plazo.
-**Autor:** Kanam, a pedido de Gonzo. Reescrito contra el contexto real de **las últimas dos semanas** (dailies 2026-09-22 a 2026-10-06, `docs/ROADMAP.md`, ADRs, `~/projects/*/.knowledge/`) - no contra la memoria vieja.
+**Autor:** Kanam, a pedido de Gonzo. Reescrito contra el contexto real de **las últimas dos semanas** (dailies 2026-09-22 a 2026-10-06, `docs/ROADMAP.md`, ADRs, `projects/*/.knowledge/`) - no contra la memoria vieja.
 
 > **Nota de la reconstrucción (2026-10-06):** la versión anterior era del 2026-09-14 y quedó anclada a proyectos e intereses que ya no son el eje: `kanam-story`/`kanam-studio` como línea narrativa *de producto*, `kanam-solitaires`/`kanam-tetris` como experimentos de portfolio, `kanam-forge` como apuesta. Esos ya no son lo que se trabaja. El norte actual se armó leyendo qué se hizo de verdad en las últimas dos semanas. Lo viejo queda en git.
 
@@ -144,7 +144,7 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 1. **`kanam-fixer`:** alcance **DEFINIDO** (2026-09-14/15: asercion sobre el anuncio del lector de pantalla, virtual en CI / real en local). **Ya no es una decisión abierta.** El pilar *Accesibilidad* tiene ancla formal en ADR-001 §6. Lo que sigue abierto es la **validación de impacto** del ancla (usuarios que no sean Gonzo), que es el criterio del Horizonte 1, no la definición.
 2. **La métrica del H1:** "usuarios reales" es vago. Falta el número concreto.
 3. **`soporteml`:** v4 cerrado (ADR-0002 del proyecto `soporteml`); el producto sigue por la version funcional de Lovable, con cobro por Stripe, y **se queda en Lovable** (no migra). Sin pendientes abiertos.
-4. **Respaldo de `~/projects`:** los `.knowledge/` viven solo en disco, sin respaldo en git.
+4. **Respaldo de `projects/`:** los `.knowledge/` que no viven en un repo de proyecto versionado quedan solo en disco, sin respaldo en git.
 5. **Ecosistema:** decisión de memoria (6 caminos solapados) y de seguridad (guardspine vs ClawSec) - ver `docs/ecosystem/DECISIONS.md`.
 
 ---
@@ -152,6 +152,6 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 ## Notas de creación
 
 - Creado 2026-09-14, en la sesión donde Gonzo preguntó "¿cuál era el objetivo, el para qué de este proyecto?".
-- **Reconstruido 2026-10-06** contra las últimas dos semanas de trabajo real. Motivo: la versión previa describía una constelación de productos narrativos y experimentos que ya no son el eje. Fuentes: dailies 2026-09-22 a 2026-10-06, `docs/ROADMAP.md`, ADRs del workspace, `~/projects/*/.knowledge/`, `docs/studies/` (`design/`, `narrative-engineering/`), `docs/stories/`.
+- **Reconstruido 2026-10-06** contra las últimas dos semanas de trabajo real. Motivo: la versión previa describía una constelación de productos narrativos y experimentos que ya no son el eje. Fuentes: dailies 2026-09-22 a 2026-10-06, `docs/ROADMAP.md`, ADRs del workspace, `projects/*/.knowledge/`, `docs/studies/` (`design/`, `narrative-engineering/`), `docs/stories/`.
 - **Absorbido `EVOLUTION.md` el 2026-10-06.** El blueprint de madurez de Kanam OS (etapas + metodología) pasó a la sección "El camino de madurez del sistema": un solo documento de norte, no dos. Las referencias de los agentes (`critic`, `planner`) se reapuntaron a este archivo.
 - Principio: no inventar. Lo que este documento afirma sobre un proyecto sale de su BRIEF/ROADMAP real o del daily donde se trabajó. Las aspiraciones están marcadas como tales (Horizontes 1 y 2).

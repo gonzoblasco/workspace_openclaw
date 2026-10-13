@@ -1,15 +1,16 @@
 #!/bin/bash
-# aggregate-sync.sh - Sync the aggregate repo (~/projects <-> projects_openclaw)
+# aggregate-sync.sh - Sync the aggregate repo (projects/ <-> projects_openclaw)
 #
-# The aggregate repo (~/projects) is the full-code archive of all projects.
+# The aggregate repo (projects/) is the full-code archive of all projects.
 # It is NOT the source of truth for working on a project (that is each
 # individual repo at gonzoblasco/<slug>). Keep it in sync explicitly.
 #
-# Note (ADR-075, 2026-09-27): projects moved from workspace/projects/ to
-# ~/projects, outside the workspace worktree. This script follows.
+# Note (ADR-098, 2026-10-08): projects live in <workspace>/projects/, inside the
+# gateway tree; ~/projects is a symlink to it (agents use the real path). ADR-075
+# (projects outside the worktree) is superseded. This script follows ADR-098.
 #
 # Usage:
-#   ./scripts/aggregate-sync.sh status          - show pending changes in ~/projects
+#   ./scripts/aggregate-sync.sh status          - show pending changes in projects/
 #   ./scripts/aggregate-sync.sh commit ["msg"]  - stage + commit all changes (default msg)
 #   ./scripts/aggregate-sync.sh push            - git pull --rebase + push
 #   ./scripts/aggregate-sync.sh sync ["msg"]    - status + commit + push (all in one)
@@ -26,7 +27,7 @@
 set -euo pipefail
 
 WORKSPACE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PROJECTS_DIR="${PROJECTS_DIR:-${HOME}/projects}"
+PROJECTS_DIR="${PROJECTS_DIR:-${WORKSPACE_DIR}/projects}"
 AGGREGATE_URL="https://github.com/gonzoblasco/projects_openclaw.git"
 DEFAULT_MSG="chore: sync aggregate repo (projects_openclaw)"
 

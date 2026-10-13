@@ -10,7 +10,7 @@ re-descubrir contexto.
 
 Destino:
   - workspace / sistema -> <workspace>/.knowledge/HANDOFF.md
-  - proyecto           -> ~/projects/<slug>/.knowledge/HANDOFF.md  (ADR-075)
+  - proyecto           -> <workspace>/projects/<slug>/.knowledge/HANDOFF.md  (ADR-098)
 
 Uso:
   scripts/session-handoff.py --project workspace --summary "..." \
@@ -46,7 +46,7 @@ WORKSPACE_ALIASES = {
     "system",
 }
 
-# Proyectos cuyo slug difiere del nombre de la carpeta en ~/projects.
+# Proyectos cuyo slug difiere del nombre de la carpeta en <workspace>/projects.
 PROJECT_DIR_OVERRIDES = {
     "onwheels": "kanam-onwheels",
     "kanam-onwheels": "kanam-onwheels",
@@ -81,7 +81,7 @@ def resolve_handoff_path(project: str, override: Optional[str]) -> Path:
     if key in WORKSPACE_ALIASES:
         return WORKSPACE / ".knowledge" / "HANDOFF.md"
     slug = PROJECT_DIR_OVERRIDES.get(key, project.strip())
-    return HOME / "projects" / slug / ".knowledge" / "HANDOFF.md"
+    return WORKSPACE / "projects" / slug / ".knowledge" / "HANDOFF.md"
 
 
 def bullet_block(text: str, numbered: bool = False) -> str:

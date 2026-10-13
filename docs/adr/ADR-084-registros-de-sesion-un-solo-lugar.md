@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** auditoria Nivel 2 del workspace; quedaron tres pendientes de decision (`docs/conversations/`, `docs/history/`, `scripts/ui-measure.mjs`)
-**Relacionado:** ADR-056 (guardas del pre-commit), ADR-073 (skills por rol), ADR-075 (proyectos en `~/projects`), ADR-083 (frontera de roles)
+**Relacionado:** ADR-056 (guardas del pre-commit), ADR-073 (skills por rol), ADR-098 (proyectos en `projects/`), ADR-083 (frontera de roles)
 
 ---
 

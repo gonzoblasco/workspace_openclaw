@@ -155,11 +155,12 @@ Repo `workspace_openclaw`. Proyectos se sincronizan por separado.
 **Ambos apagados el 2026-09-28 (ADR-079):** el mirror `.github/skills/` **no existe** (y no se recrea) y la colección pública `kanam-skills` está **archivada en GitHub** (ya no se publica). Las skills viven en `skills/` y en `agents/<rol>/skills/`. La receta de sanitización y la prohibición de `--delete` quedan como registro en `docs/AGENTS-DETALLE.md` y ADR-079, por si alguna vez se retoma. Ver TODO #62.
 
 ### Estructura de Proyectos - Triple Git con `.knowledge/`
-Detalle en `docs/AGENTS-DETALLE.md` y **ADR-075** (los proyectos viven en `~/projects`, fuera del worktree).
-- **Ubicación de trabajo:** `~/projects/<slug>/`. El workspace **no** hospeda el árbol `projects/`.
-- **Workspace git:** ya **no** trackea `.knowledge/` de proyectos. La memoria de proyecto es **del proyecto y viaja con él** (decision de Gonzo, 2026-09-27; ADR-075). El workspace no es responsable de esa memoria.
-- **Repo agregado (`~/projects/` → `projects_openclaw`, privado):** archiva el código fuente completo de los proyectos como archivos planos (ignora `*/.git/`, node_modules, .env, *.db). No es fuente de verdad para trabajar. Sincronizar con `scripts/aggregate-sync.sh`.
-- **Proyecto git (`~/projects/<slug>/`):** trackea código **y `.knowledge/`** (la memoria del proyecto se versiona con el proyecto - corregido 2026-10-09; varios proyectos ya lo hacían). Fuente de verdad para trabajar.
+Detalle en `docs/AGENTS-DETALLE.md` y **ADR-098** (los proyectos viven en `<workspace>/projects/`, dentro del árbol que el gateway gobierna).
+- **Ubicación de trabajo:** `<workspace>/projects/<slug>/`. El humano llega por el symlink `~/projects -> <workspace>/projects`; **los agentes usan el path real** (los sandboxes rechazan escribir a través de symlinks).
+- **Workspace git:** `.gitignore` conserva la regla `/projects/`, pero el motivo se invirtió (ADR-098): no es "afuera del worktree" sino "adentro, y cada proyecto trae su propio `.git`" - sin esa regla git los absorbería como gitlinks/submódulos. El workspace no trackea el código ni el `.knowledge/` de los proyectos; la memoria de proyecto es **del proyecto y viaja con él**. El workspace no es responsable de esa memoria.
+- **Repo agregado (`projects/` -> `projects_openclaw`, privado):** archiva el código fuente completo de los proyectos como archivos planos (ignora `*/.git/`, node_modules, .env, *.db). No es fuente de verdad para trabajar. Sincronizar con `scripts/aggregate-sync.sh`.
+- **Proyecto git (`projects/<slug>/`):** trackea código **y `.knowledge/`** (la memoria del proyecto se versiona con el proyecto - corregido 2026-10-09; varios proyectos ya lo hacían). Fuente de verdad para trabajar.
+- **`cwd` (ADR-098):** los agentes que escriben código (dev, ops) tienen `cwd` en el workspace; el hogar del agente (bootstrap, memoria, skills) no se mueve.
 - **Sin submódulos.** GitHub es la fuente. Clonar bajo demanda. Nunca commitear los `.git/` de subrepos en el agregado.
 
 ### Project Cleanup

@@ -40,7 +40,7 @@ El problema es la **amnesia de sesión**: el `AGENTS.md` del planner dice, textu
 
 4. **`close` es defensivo e idempotente.** Sale 0 **siempre** (sin plan, ya cerrado, o cerrado dos veces): el `session-end.sh` corre bajo `set -e`, y un exit != 0 abortaría el cierre completo. Es una regla dura del diseño, cubierta por test.
 
-5. **La deuda adyacente del mismo archivo se corrige de paso.** `session-start.sh` resolvía el HANDOFF en `projects/$PROJECT/.knowledge/` - la estructura **pre-ADR-075**, muerta desde 2026-09-26. Se alinea con `scripts/session-handoff.py` (workspace -> `.knowledge/` propio; proyecto -> `~/projects/<slug>/.knowledge/`).
+5. **La deuda adyacente del mismo archivo se corrige de paso.** `session-start.sh` resolvía el HANDOFF en `projects/$PROJECT/.knowledge/` - la estructura **pre-ADR-075**, muerta desde 2026-09-26. Se alinea con `scripts/session-handoff.py` (workspace -> `.knowledge/` propio; proyecto -> `<workspace>/projects/<slug>/.knowledge/`, ADR-098).
 
 ### Qué NO se adopta (y por qué, escrito)
 

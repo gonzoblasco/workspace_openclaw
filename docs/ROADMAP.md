@@ -70,12 +70,12 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Qué**: `git status` del workspace limpio y explicable; sin cruft, sin punteros desincronizados, sin archivos de sesión trackeados por error.
 - **Por qué**: un workspace que se entiende de una mirada reduce fricción al arrancar cada sesión.
 - **Señal de listo**: `git status --short` no muestra nada inesperado al abrir una sesión.
-- **Estado verificado 2026-10-06**: `git status` muestra solo `M memory/memory.db` y `M memory/todos.md` (cambios de sesión esperados). `projects/` hoy contiene **solo** `projects/workspace/.knowledge`; el resto de los proyectos se movió a `~/projects/` (ADR-075). `a11y-fixer` figura `isArchived: true` en GitHub.
+- **Estado verificado 2026-10-06**: `git status` muestra solo `M memory/memory.db` y `M memory/todos.md` (cambios de sesión esperados). `projects/` es el espacio común del workspace (ADR-098). `a11y-fixer` figura `isArchived: true` en GitHub.
 - **Acciones**:
-  - [x] Proyectos movidos a `~/projects/` (ADR-075, 2026-09-26). El workspace ya no los trackea.
+  - [x] Proyectos de vuelta en `<workspace>/projects/` (ADR-098, 2026-10-08; supersede ADR-075). El workspace no los trackea (`.gitignore` `/projects/`), pero son alcanzables por todos los agentes.
   - [x] `a11y-fixer` archivado en GitHub (`gh repo view --json isArchived` -> true).
   - [x] Regla de guion (em dash) cerrada (ADR-082).
-  - [ ] **Sincronizar `~/projects` en un repo nuevo** (id en `todos`): 135 archivos `.knowledge/` viven solo en disco, sin respaldo en git. Decisión diferida a propósito el 2026-09-27; sigue abierta.
+  - [ ] **Respaldo de `projects/` en un repo agregado** (id en `todos`): los `.knowledge/` que no viven en el repo de su proyecto viven solo en disco, sin respaldo en git. Decisión diferida a propósito el 2026-09-27; sigue abierta. **Ojo (2026-10-12):** `projects/.git` apunta hoy a `workspace_openclaw`, no a `projects_openclaw` (verificar antes de operar `aggregate-sync.sh`).
   - [ ] Decidir destino de `kanam-skills` público (desactualizado; ver `docs/NORTH.md`).
 - **Restricción cerrada (no es acción)**: `soporteml` y sus versiones no se tocan en barridos - decisión de ADR-001 de `portfolio-strategy` y del ADR-0001 del proyecto `soporteml`.
 
@@ -131,7 +131,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Por qué**: el valor está en la consistencia, no en la elección.
 - **Criterio de éxito**: se aplica siempre, no cuando lo recordamos.
 - **Señal de listo**: pre-commit hooks (lint -> test -> build) presentes en los proyectos activos; ADRs para decisiones nuevas.
-- **Estado**: auditoría 14/09 = **0 de 21** proyectos con hook. Re-verificar contra `~/projects/*`.
+- **Estado**: auditoría 14/09 = **0 de 21** proyectos con hook. Re-verificar contra `projects/*`.
 - **Acciones**:
   - [ ] Instalar pre-commit hooks en los proyectos activos. Regla: prioridad sobre features.
 
@@ -142,9 +142,9 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 ### 2.1 Estrategia de proyectos 🟢 P0
 - **Qué**: qué 2-3 proyectos sostienen el pitch "fullstack con IA como infraestructura" + el nicho a11y.
 - **Por qué**: sin esto, el pipeline optimiza lo equivocado. Dispersión = portfolio que no cuenta una historia.
-- **Fuentes vivas**: `~/projects/portfolio-strategy/ADR-001` (pilares + anclas), `memory/notes/portfolio-curation.md` (curaduría de presencia, 2026-09-21).
+- **Fuentes vivas**: `projects/portfolio-strategy/ADR-001` (pilares + anclas), `memory/notes/portfolio-curation.md` (curaduría de presencia, 2026-09-21).
 - **CORRECCIÓN (2026-10-06)**: el item decía que `kanam-fixer` tenía **"alcance SIN DEFINIR"**. **Era falso.** El alcance se definió el 2026-09-14/15 (BRIEF + ROADMAP del proyecto, dirección confirmada por Gonzo) y el ciclo `0.0.1` **cerró con evidencia** el 2026-09-15. Lo confirma ADR-001 §6 ("los 4 pendientes cerrados... ancla candidata formalizada con alcance ya definido"). El ROADMAP arrastró el estado pre-definición durante tres semanas: otro falso pendiente, como el Tablero y el design system.
-- **Estado verificado 2026-10-06** (contra `~/projects/kanam-fixer` + GitHub + npm):
+- **Estado verificado 2026-10-06** (contra `projects/kanam-fixer` + GitHub + npm):
   - **Ancla vigente**: `kanam-fixer` (sucede a `a11y-fixer`, archivado 2026-09-14). **Alcance DEFINIDO**: asercion sobre el **anuncio del lector de pantalla** (no sobre atributos del DOM), la misma asercion en dos planos (virtual en CI, real en local). **Greenfield** (no hereda el engine de `a11y-fixer`).
   - **Ciclo `0.0.1` CERRADO** (2026-09-15); `0.0.2` abierto (MCP companion server, commit `f1f60fa`). Repo **público** `gonzoblasco/kanam-fixer` (isArchived=false), paquete npm **`kanam-fixer@0.0.2`** publicado. Último commit `262c004` (2026-09-17). Último push al repo 2026-09-26.
   - **Limitación declarada (S3)**: el plano real (VoiceOver) no es verificable en esta máquina hasta que Guidepup soporte Darwin 27 ([issue #149](https://github.com/guidepup/guidepup/issues/149)). El valor del proyecto se invirtió hacia el **plano real como único juez** de la clase timing/viewport.
@@ -156,7 +156,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Señal de listo**: el pilar *Accesibilidad* tiene ancla formal. **✅ Cumplida** (ADR-001 §6: ancla formalizada en `kanam-fixer`). La validación de *impacto* del ancla sigue siendo el criterio de NORTH H1 (usuarios que no sean Gonzo), no la definición de alcance.
 - **Acciones**:
   - [x] **Definir el alcance de `kanam-fixer`** - HECHO 2026-09-14/15 (BRIEF + ROADMAP, dirección confirmada por Gonzo).
-  - [x] Reconciliar la lista de proyectos de `MEMORY.md` con `~/projects/` real - MEDIDA 2026-10-06. Drift real hallado y corregido en `MEMORY.md`: (a) la lista no incluía repos vivos en GitHub (`kanam-minesweeper`, `kanam-sudoku`, `match3`, `system-health-check`, `catalogo-de-venta-de-coches`); (b) `kanam-insight` existe como repo (GitHub, no archivado) aunque el proyecto está descontinuado - la memoria lo decía "no existe como proyecto", que es correcto sobre su rol, no sobre el repo.
+  - [x] Reconciliar la lista de proyectos de `MEMORY.md` con `projects/` real - MEDIDA 2026-10-06. Drift real hallado y corregido en `MEMORY.md`: (a) la lista no incluía repos vivos en GitHub (`kanam-minesweeper`, `kanam-sudoku`, `match3`, `system-health-check`, `catalogo-de-venta-de-coches`); (b) `kanam-insight` existe como repo (GitHub, no archivado) aunque el proyecto está descontinuado - la memoria lo decía "no existe como proyecto", que es correcto sobre su rol, no sobre el repo.
 
 ### 2.2 Cadena OSS -> LinkedIn 🟡 P1
 - **Qué**: cada merge de a11y/agentic -> post. El patrón está definido (2026-08-25); falta la cadencia real.
