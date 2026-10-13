@@ -23,6 +23,7 @@ de la ultima sesion (el historial completo vive en memory/ y en git).
 import argparse
 import os
 import re
+import shutil
 import subprocess
 import sys
 from datetime import datetime
@@ -82,6 +83,57 @@ def resolve_handoff_path(project: str, override: Optional[str]) -> Path:
         return WORKSPACE / ".knowledge" / "HANDOFF.md"
     slug = PROJECT_DIR_OVERRIDES.get(key, project.strip())
     return WORKSPACE / "projects" / slug / ".knowledge" / "HANDOFF.md"
+
+
+def session_line(summary: str, limit: int = 160) -> str:
+    """Primera linea no vacia del summary, recortada, como asunto de la sesion."""
+    for ln in summary.split("\n"):
+        ln = ln.strip()
+        if ln:
+            ln = norm_dashes(ln)
+            if len(ln) > limit:
+                ln = ln[: limit - 1].rstrip() + "\u2026"
+            return ln
+    return "(sin resumen)"
+
+
+def append_session_index(target: Path, project: str, ts: str, summary: str) -> Optional[Path]:
+    """C. Indice append-only de sesiones junto al HANDOFF (`SESSIONS.md`).
+
+    El HANDOFF es last-writer-wins por diseno (es "estado actual"); el indice
+    preserva la historia de cierres por proyecto sin depender de esa ultima
+    escritura. Append puro: nunca pisa filas previas. Corre DENTRO del lock del
+    HANDOFF para que el orden append <-> replace sea consistente entre cierres.
+    """
+    index = target.parent / "SESSIONS.md"
+    if not index.exists():
+        header = (
+            f"# SESSIONS - {project}\n\n"
+            "> Indice append-only de cierres de sesion. El HANDOFF.md es solo el "
+            "estado actual; esta lista es la historia (no se pisa).\n\n"
+        )
+        with index.open("w", encoding="utf-8") as fh:
+            fh.write(header)
+    line = f"- **{ts}** - {session_line(summary)}\n"
+    with index.open("a", encoding="utf-8") as fh:
+        fh.write(line)
+    return index
+
+
+def backup_previous(target: Path, ts: str) -> Optional[Path]:
+    """A. Guarda el HANDOFF anterior antes de pisarlo.
+
+    El segundo cierre del dia no pierde al primero: queda archivado en
+    `.knowledge/handoff-history/YYYY-MM-DD-HHMM-HANDOFF.md`. Se mantiene el
+    historial fuera del arbol de primer nivel para no ensuciar `.knowledge/`.
+    """
+    if not target.exists():
+        return None
+    hist = target.parent / "handoff-history"
+    hist.mkdir(parents=True, exist_ok=True)
+    dest = hist / f"{ts.replace(':', '').replace(' ', '-')}-HANDOFF.md"
+    shutil.copy2(target, dest)
+    return dest
 
 
 def bullet_block(text: str, numbered: bool = False) -> str:
@@ -204,12 +256,16 @@ def main():
     content = build_handoff(args)
 
     target.parent.mkdir(parents=True, exist_ok=True)
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M")
     # B6 (2026-10-12): varias sesiones cierran sobre el MISMO repo; el HANDOFF es
-    # last-writer-wins. El lock serializa el ciclo (existed -> tmp -> replace) para
-    # que dos cierres simultaneos no se intercalen. `build_handoff` lee git; se
-    # mantiene fuera del lock (solo lectura) para minimizar la seccion critica.
+    # last-writer-wins. El lock serializa el ciclo para que dos cierres simultaneos
+    # no se intercalen. A+C (2026-10-13): el mismo lock cubre el backup del HANDOFF
+    # previo (A) y el append al indice de sesiones (C), asi el orden
+    # backup -> index -> replace es consistente entre cierres concurrentes.
     with file_lock(target):
         existed = target.exists()
+        backup = backup_previous(target, ts) if existed else None
+        index = append_session_index(target, args.project, ts, args.summary)
         tmp = target.with_suffix(".md.tmp")
         tmp.write_text(content, encoding="utf-8")
         os.replace(tmp, target)
