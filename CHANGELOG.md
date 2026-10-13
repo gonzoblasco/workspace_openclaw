@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-13] - Cierre de sesion: el HANDOFF no puede perder una sesion (historial + indice)
+
+### Added
+- **`scripts/session-handoff.py` preserva el historial de cierres por proyecto.** El HANDOFF es last-writer-wins por diseno (es "estado actual"), asi que dos cierres sobre el mismo proyecto perdian el anterior. Ahora, dentro del mismo `file_lock` (B6): **(A)** el HANDOFF previo se respalda en `.knowledge/handoff-history/<YYYY-MM-DD-HHMM>-HANDOFF.md` antes de pisarlo; **(C)** cada cierre appendea una linea a `.knowledge/SESSIONS.md` (append-only, nunca pisa filas previas). El daily (DB) ya era append con fingerprint de sesion; el hueco estaba en el HANDOFF.
+
+### Added
+- **`tests/python/test_session_handoff.py` (3 tests):** primer cierre crea HANDOFF + indice sin historial; segundo cierre deja el HANDOFF nuevo, el anterior en `handoff-history/` y 2 filas en el indice; el indice es append puro (sin perder filas). Probados sobre `tmp_path`, nunca el workspace real.
+
+### Notes
+- **Por que:** pedido de Gonzo (2026-10-13): "tengo miedo cierre dos veces sesion en dos conversaciones distintas y se sobre escriban". El miedo era correcto en la forma: el HANDOFF pisa, el daily no. Se elige conservar el modelo mental del HANDOFF (estado actual) y blindar el historial por dos vias independientes, en lugar de convertir el HANDOFF en un documento acumulativo.
+- **Verificacion:** `py_compile` OK; 320 tests Python de la suite en verde; `check_em_dash` OK; test E2E en `/tmp` (dos cierres) con backup y append confirmados. Commits `f3ca0e6322` (script + tests); CI `Skill Scripts CI` #38473178779 success.
+
+---
+
 ## [2026-10-13] - `projects/` es una carpeta plana: se retira la capa "agregado" (y una afirmacion falsa mia)
 
 ### Removed
