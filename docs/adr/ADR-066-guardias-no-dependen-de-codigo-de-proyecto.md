@@ -19,7 +19,9 @@ FileNotFoundError: .../projects/kanam-os/app/globals.css
 El diagnostico completo, con evidencia:
 
 - **Verde local, rojo en CI.** En la maquina de desarrollo `projects/kanam-os/` esta clonado y el archivo existe. En CI el checkout solo trae lo versionado.
-- **El archivo no esta versionado a proposito.** `AGENTS.md` (triple git) y `.gitignore` establecen que el workspace trackea **solo** `projects/<slug>/.knowledge/`. El codigo de cada proyecto vive en su propio repo. Verificado: `git ls-files projects/kanam-os` devuelve unicamente los dos `.knowledge/`. El checkout de CI tiene el directorio vacio.
+- **El archivo no esta versionado a proposito.** `AGENTS.md` y `.gitignore` establecen que el workspace **no trackea el codigo de los proyectos**; el codigo de cada proyecto vive en su propio repo. Verificado: `git ls-files projects/kanam-os` devuelve unicamente los dos `.knowledge/`. El checkout de CI tiene el directorio vacio.
+
+> **Actualizacion 2026-10-13 (ADR-098):** el modelo evoluciono. Bajo ADR-098 el workspace **no trackea nada** bajo `projects/` (ni siquiera el `.knowledge/`, que ahora viaja en el repo del proyecto). La afirmacion original ("trackea solo `projects/<slug>/.knowledge/`") describe el modelo pre-ADR-098 y se conserva como registro. La decision de este ADR (un guard no depende de codigo de proyecto) **no cambia y sigue vigente**.
 - **El pre-commit hook no lo puede ver.** `scripts/pre-commit.template` corre `pytest` cuando cambian `scripts/` o `skills/`. Como localmente el archivo existe, el hook pasa siempre. Da **confianza falsa**: es el mismo patron que este workspace ya registro dos veces (una auditoria de contraste que comparaba claves `--` contra claves sin `--` y reportaba "0 fallas"; un check de refs que no veia la direccion inversa).
 - **Los commits que lo empujaron no tenian relacion.** Los 12 runs rojos se empujaron como `memory:`, `docs:` y `chore:`. Nadie corrio la suite porque "solo cambie documentacion".
 

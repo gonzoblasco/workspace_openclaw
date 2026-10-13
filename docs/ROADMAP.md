@@ -75,7 +75,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
   - [x] Proyectos de vuelta en `<workspace>/projects/` (ADR-098, 2026-10-08; supersede ADR-075). El workspace no los trackea (`.gitignore` `/projects/`), pero son alcanzables por todos los agentes.
   - [x] `a11y-fixer` archivado en GitHub (`gh repo view --json isArchived` -> true).
   - [x] Regla de guion (em dash) cerrada (ADR-082).
-  - [ ] **Respaldo de `projects/` en un repo agregado** (id en `todos`): los `.knowledge/` que no viven en el repo de su proyecto viven solo en disco, sin respaldo en git. Decisión diferida a propósito el 2026-09-27; sigue abierta. **Ojo (2026-10-12):** `projects/.git` apunta hoy a `workspace_openclaw`, no a `projects_openclaw` (verificar antes de operar `aggregate-sync.sh`).
+  - [ ] **`.knowledge/` sin respaldo en proyectos que no lo trackean** (id en `todos`): algunos proyectos propios excluyen su `.knowledge/` del repo individual (via `.git/info/exclude`), asi que esa memoria vive solo en disco. El respaldo es trackearla EN el repo del proyecto. *(Correccion 2026-10-13: `projects/` es una carpeta plana 100% ignorada, cada proyecto es su propio repo; NO hay repo agregado. La nota previa que decia que "`projects/.git` apunta a `workspace_openclaw`" era FALSA - `projects/` nunca tuvo `.git` propio; `git -C projects` resuelve al `.git` del workspace.)*
   - [ ] Decidir destino de `kanam-skills` público (desactualizado; ver `docs/NORTH.md`).
 - **Restricción cerrada (no es acción)**: `soporteml` y sus versiones no se tocan en barridos - decisión de ADR-001 de `portfolio-strategy` y del ADR-0001 del proyecto `soporteml`.
 

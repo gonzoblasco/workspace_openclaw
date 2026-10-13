@@ -1,88 +1,81 @@
-# Workspace triple-git pattern (updated 2026-09-02)
+# Workspace + projects git pattern (updated 2026-10-13, ADR-098)
 
-Observed on live projects: create-stack, kanam-mind, a11y-fixer. The template `init-project.sh` was rewritten on 2026-09-02 to match the real pattern AND the new aggregate repo.
+Two layers, not three. `projects/` is a flat container folder, ignored 100% by the
+workspace git; each `projects/<slug>/` is its own repo (source of truth), and it
+tracks its own `.knowledge/` - the memory travels with the project.
 
-## The three layers (2026-09-02+)
+## The two layers (2026-10-13+)
 
 ```
-workspace/                  -> workspace_openclaw   (our essence: memory, skills, docs, scripts)
-└── projects/               -> projects_openclaw    (aggregate: full source of all 20 projects, PRIVATE)
-    └── <slug>/             -> gonzoblasco/<slug>   (individual repo: source of truth for working)
-        ├── .knowledge/     # institutional memory - tracked ONLY by the workspace git
-        └── <code>          # tracked by the individual repo; mirrored by the aggregate
+workspace/                  -> workspace_openclaw   (memory, skills, docs, scripts)
+└── projects/               (flat container folder - NOT a repo; ignored by workspace git)
+    └── <slug>/             -> gonzoblasco/<slug>   (the project's own repo: source of truth)
+        ├── .knowledge/     # institutional memory - tracked by the project repo, travels with it
+        └── <code>          # tracked by the same project repo
 ```
 
-- **Workspace tracks `.knowledge/` as loose blobs** (mode `100644`), NOT as gitlink. Its root `.gitignore` has `/projects/*/.git/` so the embedded repos do not become gitlinks.
-- **Aggregate (projects/) tracks the full source as plain files.** Its root `.gitignore` has `*/.git/` (the trick that makes git descend into content instead of creating gitlinks), plus `PROYECTOS.md` and `.gitignore-template` (those belong to the workspace). It also has the root safety net (node_modules, .next, dist, .env, *.db).
-- **Individual project repo** keeps its own `.git`, history, branches, PRs. Its `.gitignore` is respected by both the aggregate and the workspace in subdirectories.
-- `.knowledge/` is NOT ignored in project `.gitignore` files (both workspace and project repo track it - double tracking, and the aggregate skips it where the project gitignore excludes it).
+- **Workspace git** (`workspace_openclaw`): its root `.gitignore` has `/projects/`,
+  so it ignores the whole container. It does NOT track project code or `.knowledge/`.
+- **Individual project repo** keeps its own `.git`, history, branches, PRs, and its
+  `.knowledge/`. It is the only source of truth.
+- **No aggregate layer.** The old private `projects_openclaw` aggregate (a flat mirror
+  of `projects/`) is retired and archived on GitHub. `scripts/aggregate-sync.sh` is a
+  stub that fails with the reason.
 - No `.gitmodules` anywhere (no submodules ever).
 
-## The gitlink-avoidance trick
+## Why `git -C projects ...` shows a remote
 
-Git refuses to descend into a directory that has a `.git/` (it becomes a gitlink/submodule-ish pointer). When the `.git/` is **ignored** by the parent repo's `.gitignore`, git treats the folder as plain content and descends. This is how:
-- workspace sees `projects/<slug>/.knowledge/` as blobs (its `.gitignore` ignores `/projects/*/.git/`),
-- aggregate sees `projects/<slug>/` full content (its `.gitignore` ignores `*/.git/`).
+`projects/` has **no `.git` of its own**. Running `git -C projects ...` walks up to the
+workspace `.git` and reports *its* remote (`workspace_openclaw`). That is expected - it
+is NOT evidence of an aggregate repo. Confirm a project is its own repo with:
+
+```bash
+[[ "$(git -C projects/<slug> rev-parse --show-toplevel)" == "$PWD/projects/<slug>" ]] && echo "own repo"
+```
 
 ## Verify
 
 ```bash
-# Aggregate: no gitlinks (all content as plain files)
-git -C projects ls-files -s | grep '^160000' || echo "no gitlinks"
+# Each project resolves to itself (own repo), not the workspace
+git -C projects/a11y-fixer rev-parse --show-toplevel    # .../projects/a11y-fixer
+git -C projects/a11y-fixer remote get-url origin         # gonzoblasco/a11y-fixer
 
-# Workspace: .knowledge tracked as blob, not gitlink
-git -C workspace ls-files --stage projects/a11y-fixer/.knowledge/
-
-# Both repos healthy and pointing at the right remotes
-git -C workspace remote get-url origin          # workspace_openclaw
-git -C projects remote get-url origin           # projects_openclaw
-git -C projects/a11y-fixer remote get-url origin # gonzoblasco/a11y-fixer
+# projects/ must NOT be a repo
+[ -e projects/.git ] && echo "WRONG: projects/ has .git" || echo "ok: flat folder"
 ```
 
-## Promote a folder to triple git (verified steps)
+## Create a project
+
+Use `scripts/init-project.sh <slug>` - it creates `projects/<slug>/` with its
+`.knowledge/` (BRIEF + STATUS), scaffolds the code, and initializes the project's own
+repo (creating the private GitHub repo if needed). Code and `.knowledge/` commit
+together to the project repo.
+
+## Promote an existing folder
 
 1. `git init && git branch -m main` in the project folder.
-2. Create project `.gitignore` WITHOUT ignoring `.knowledge/` (exclusion goes to `.git/info/exclude`).
+2. Project `.gitignore` may leave `.knowledge/` tracked (preferred) - the memory
+   travels with the project. Historical repos that exclude it do so via
+   `.git/info/exclude`; they still work but their memory is local-only.
 3. `gh repo create <owner>/<slug> --private --source=. --push`.
-4. Workspace tracks `.knowledge/` as blob (NOT `git submodule add`, NO `.gitmodules`).
-5. Register the folder in the aggregate: `git -C projects add <slug> && git -C projects commit` (needs `*/.git/` already ignored - it is, since 2026-09-02).
-6. **Order is critical** (workspace): the `.knowledge/` must be tracked in the workspace while the folder has NO `.git` in it, OR while `/projects/*/.git/` is ignored. If the internal `.git` exists and the `.gitignore` does not cover it, the workspace sees an embedded repo and refuses to track its contents (even with `-f`).
+4. No aggregate registration step (the layer is gone).
 
-Use `scripts/init-project.sh <slug>` - it does all of this.
+## Dangerous: `git reset --hard` inside a project
 
-## Sync the aggregate
-
-The aggregate is NOT automatic: a change inside `projects/<slug>/` is visible to both the individual repo and the aggregate. Keep it in sync with:
-
-```bash
-./scripts/aggregate-sync.sh status   # what changed
-./scripts/aggregate-sync.sh sync     # commit (default msg) + pull --rebase + push
-./scripts/aggregate-sync.sh check    # no gitlinks
-```
-
-Never push the aggregate from inside a project repo, never commit the `.git/` dirs, and never make `projects/` push to anything but `projects_openclaw` (the script refuses if the remote is wrong).
-
-## Dangerous: `git reset --hard` inside projects/
-
-Many project `.gitignore` files exclude their own `.knowledge/` (correct double-git). The aggregate respects that, so a `git reset --hard origin/main` in `projects/` DELETES those `.knowledge/` dirs from disk. They are committed in the workspace git - restore with:
-
-```bash
-cd workspace && git restore --worktree -- projects/
-```
+A project's `git reset --hard` only affects that project. There is no aggregate
+checkout that could wipe sibling `.knowledge/` dirs. Local uncommitted `.knowledge/`
+in a project that excludes it is at risk as with any repo - back it up first.
 
 ## Verified commands
 
 ```bash
-# State of a submodule/gitlink (should not exist anymore)
-git ls-files --stage projects/<slug>/
-
 # Archive a repo on GitHub (read-only afterward)
 gh repo archive <owner>/<repo> --yes
 
 # Check archive state of a repo
 gh repo view <owner>/<repo> --json isArchived
 
-# Undo a mistakenly created submodule/gitlink
+# Undo a mistakenly created submodule/gitlink in the workspace (should not happen)
 git rm --cached -f projects/<slug>
 git config --remove-section submodule.projects/<slug> 2>/dev/null || true
 rm -f .gitmodules
@@ -90,12 +83,17 @@ rm -f .gitmodules
 
 ## Audit classification (2026-08-28 reference, kept for history)
 
-- **BLOB(.knowledge) - correct pattern:** a11y-fixer, create-stack, kanam-forge, kanam-mind, kanam-solitaires, kanam-story, portfolio-strategy, quedamos, soporteml-v3, soporteml, ultimo-turno
-- **GITLINK (resolved 2026-09-02):** accessible-ui, ai-developer-stack, create-with-ai, soporteml-v4 - were gitlinks in the workspace index; cloned and converted to plain embedded repos (gitlinks removed from index, `.git/` ignored).
-- **REPO-PROPIO/other:** kanam-skills (standalone skills repo on GitHub, no .knowledge needed)
+- **BLOB(.knowledge) - historical pattern:** a11y-fixer, create-stack, kanam-forge,
+  kanam-mind, kanam-solitaires, kanam-story, portfolio-strategy, quedamos, soporteml-v3,
+  soporteml, ultimo-turno. (Under the current model the project repo tracks its own
+  `.knowledge/`; these predate that.)
+- **GITLINK (resolved 2026-09-02):** accessible-ui, ai-developer-stack, create-with-ai,
+  soporteml-v4 - were gitlinks in the workspace index; converted to plain embedded repos.
+- **REPO-PROPIO/other:** kanam-skills (standalone skills repo on GitHub).
 
 ## Findings to respect
 
 - Accessible-ui and create-with-ai: archived, do not touch.
 - SOPORTEML (v3/v4): closed decision (excluded from public portfolio), do not touch.
-- ai-developer-stack: `.knowledge` is a broken symlink in its GitHub repo (target dir missing locally and on GitHub). Live agent-skills project. Repair needs explicit user go-ahead.
+- ai-developer-stack: `.knowledge` is a broken symlink in its GitHub repo. Repair needs
+  explicit user go-ahead.

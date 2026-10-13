@@ -1,5 +1,5 @@
 #!/bin/bash
-# init-project.sh - Create a new project with triple-git structure
+# init-project.sh - Create a new project
 #
 # Usage:
 #   ./scripts/init-project.sh <slug> [--repo <url>]
@@ -8,31 +8,30 @@
 # If --repo is provided, uses that URL instead.
 # If the repo already exists on GitHub, asks how to proceed.
 #
-# Triple-git structure (2026-09-02):
-#   workspace/                 (repo: workspace_openclaw)
-#   `-- projects/              (repo agregado: projects_openclaw - archivo de todo el codigo)
-#       `-- <slug>/            (repo individual: gonzoblasco/<slug> - fuente de la verdad)
-#           `-- .knowledge/    (memoria institucional, SOLO workspace)
+# Model (ADR-098, 2026-10-08; clarified by Gonzo 2026-10-13):
+#   workspace/                 (repo: workspace_openclaw - ignores projects/ 100%)
+#   `-- projects/              (flat container folder - NOT a repo; ignored by the workspace git)
+#       `-- <slug>/            (the project's own git repo: gonzoblasco/<slug> - source of truth)
+#           `-- .knowledge/    (institutional memory - TRACKED BY THE PROJECT REPO, travels with it)
+#
+# There is NO aggregate repo layer (retired; `projects_openclaw` is archived).
 #
 # Creates:
 #   projects/<slug>/
-#   projects/<slug>/.knowledge/   (tracked by workspace git)
+#   projects/<slug>/.knowledge/   (tracked by the project's own repo)
 #   projects/<slug>/.knowledge/BRIEF.md
 #   projects/<slug>/.knowledge/STATUS.md
-#   projects/<slug>/.gitignore    (does NOT list .knowledge/ - exclusion lives in .git/info/exclude)
+#   projects/<slug>/.gitignore
 #   projects/<slug>/README.md
 #
 # Also:
-#   - Tracks .knowledge/ as a blob in the workspace git (BEFORE the project's own git init - see note below)
-#   - Initializes the project as its own git repo (excludes .knowledge/ via .git/info/exclude)
-#   - Pushes initial commit to its remote
-#   - Registers the folder in the aggregate repo (projects/ -> projects_openclaw)
+#   - Initializes the project as its own git repo (creates the remote if needed)
+#   - Commits code + .knowledge/ together and pushes to its remote
 
 set -euo pipefail
 
 WORKSPACE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECTS_DIR="${WORKSPACE_DIR}/projects"
-AGGREGATE_REPO="gonzoblasco/projects_openclaw"
 SLUG="${1:-}"
 REPO_URL=""
 
@@ -66,15 +65,6 @@ KNOWLEDGE_DIR="${PROJECT_DIR}/.knowledge"
 if [[ -d "$PROJECT_DIR" ]]; then
   echo "Error: Project already exists at ${PROJECT_DIR}"
   exit 1
-fi
-
-# Sanity: the aggregate repo must be the remote of projects/
-if [[ "$(git -C "$PROJECTS_DIR" remote get-url origin 2>/dev/null)" != *"projects_openclaw"* ]]; then
-  echo "Warning: projects/ is not pointing to ${AGGREGATE_REPO}. Aggregate registration will be skipped."
-  echo "  Fix with: git -C ${PROJECTS_DIR} remote set-url origin https://github.com/${AGGREGATE_REPO}.git"
-  AGGREGATE_OK=0
-else
-  AGGREGATE_OK=1
 fi
 
 echo "Creating project: ${SLUG}"
@@ -134,13 +124,10 @@ cat > "${KNOWLEDGE_DIR}/STATUS.md" << 'STATUS'
 STATUS
 
 # .gitignore (for the project's own git repo)
-# NOTE: .knowledge/ is NOT listed here on purpose. This .gitignore is also parsed
-# by the aggregate repo (projects/ -> projects_openclaw) and by the workspace git;
-# listing .knowledge/ would break workspace blob tracking (triple-git).
-# The project-local exclusion lives in .git/info/exclude instead.
+# .knowledge/ is NOT ignored: the project's memory travels with the project
+# (tracked by its own repo, ADR-098).
 cat > "${PROJECT_DIR}/.gitignore" << 'GITIGNORE'
 # Project .gitignore
-# .knowledge/ exclusion lives in .git/info/exclude (do not list it here)
 
 # Node
 node_modules/
@@ -182,26 +169,6 @@ echo "  ✅ Created .knowledge/STATUS.md"
 echo "  ✅ Created .gitignore"
 echo "  ✅ Created README.md"
 
-# Track .knowledge/ as a blob in the workspace git (NOT a submodule, NOT a gitlink).
-#
-# ORDER MATTERS: this must run BEFORE the project's own `git init`. Once
-# projects/<slug>/.git exists, the workspace repo treats the directory as an
-# embedded repository, and `git add projects/<slug>/.knowledge` stages NOTHING
-# (git exits 0 with no effect - silent failure). Seeding the index first makes
-# every later update to .knowledge/ work normally.
-# Verified 2026-09-22 (sandbox /tmp/gt3, /tmp/gt4): add-before-init works;
-# add-after-init fails regardless of .gitignore; existing tracked projects
-# (kanam-lab, langchain-starter, kanam-pulse) are unaffected.
-cd "${WORKSPACE_DIR}"
-git add "projects/${SLUG}/.knowledge"
-if git diff --cached --quiet -- "projects/${SLUG}/.knowledge"; then
-  echo "  ❌ .knowledge/ NO se pudo stagear en el workspace git."
-  echo "     Causa tipica: projects/${SLUG}/.git ya existe. Revisar ANTES de seguir."
-  exit 1
-fi
-git commit -q -m "feat(projects): add ${SLUG} project (.knowledge)"
-echo "  ✅ .knowledge/ tracked as blob in workspace (triple-git)"
-
 # Determine repo URL
 if [[ -z "$REPO_URL" ]]; then
   # Default: private repo on GitHub under gonzoblasco
@@ -214,13 +181,12 @@ echo "Checking if remote repo exists..."
 # Extract owner/repo from URL for gh check
 REPO_PATH=$(echo "$REPO_URL" | sed -E 's|https://github.com/||; s|git@github.com:||; s|\.git$||')
 
+cd "${PROJECT_DIR}"
+git init -q
+git branch -M main
+
 if gh repo view "$REPO_PATH" --json name &>/dev/null; then
   echo "  Repo already exists: ${REPO_PATH}"
-  echo "  Setting up project git from existing repo (triple-git, no submodule)..."
-  cd "${PROJECT_DIR}"
-  git init -q
-  git branch -M main
-  printf '\n# Triple-git: .knowledge/ belongs to the workspace git, never to this repo\n.knowledge/\n' >> .git/info/exclude
   git remote add origin "${REPO_URL}"
   git fetch -q origin
   git checkout -q main || git checkout -q -b main
@@ -228,48 +194,18 @@ if gh repo view "$REPO_PATH" --json name &>/dev/null; then
   if git diff --cached --quiet; then
     echo "  ℹ️  No changes to commit (already in sync with remote)"
   else
-    git commit -q -m "chore: init via init-project.sh (triple-git)"
+    git commit -q -m "chore: init via init-project.sh"
     git push -q -u origin main
     echo "  ✅ Pushed to ${REPO_URL}"
   fi
 else
   echo "  Repo does not exist yet. Creating private repo on GitHub..."
-
-  # Create private repo on GitHub (no --push yet; we init git first)
   gh repo create "${REPO_PATH}" --private
-
-  echo ""
-  echo "Setting up project git (triple-git, no submodule)..."
-
-  # Initialize the project's own git repo and push initial commit
-  cd "${PROJECT_DIR}"
-  git init -q
-  git branch -M main
-  # Triple-git: exclude .knowledge/ locally (NOT via .gitignore - workspace and aggregate parse it too)
-  printf '\n# Triple-git: .knowledge/ belongs to the workspace git, never to this repo\n.knowledge/\n' >> .git/info/exclude
   git remote add origin "${REPO_URL}"
   git add -A
   git commit -q -m "chore: initial scaffold"
-  git push -u origin main
-
+  git push -q -u origin main
   echo "  ✅ Private repo created at ${REPO_URL}"
-  echo "  ✅ Project git initialized and pushed"
-fi
-
-# Register in the aggregate repo
-if [[ "$AGGREGATE_OK" == "1" ]]; then
-  cd "${PROJECTS_DIR}"
-  git add "${SLUG}"
-  if git diff --cached --quiet; then
-    echo "  ℹ️  Aggregate repo: nothing new to commit for ${SLUG}"
-  else
-    git commit -q -m "feat: register ${SLUG} in aggregate repo"
-    echo "  ✅ ${SLUG} registered in aggregate repo (projects/ -> projects_openclaw)"
-    echo "  ℹ️  Remember to push the aggregate: ./scripts/aggregate-sync.sh push"
-  fi
-else
-  echo "  ⚠️  Aggregate repo not configured on projects/ - register manually:"
-  echo "     cd ${PROJECTS_DIR} && git add ${SLUG} && git commit && ./scripts/aggregate-sync.sh push"
 fi
 
 echo ""
@@ -277,6 +213,5 @@ echo "Next steps:"
 echo "  1. cd projects/${SLUG}"
 echo "  2. Start coding!"
 echo ""
-echo "Remember: .knowledge/ is tracked by workspace git (blob, triple-git)."
-echo "Project code is tracked by its own repo at ${REPO_URL}."
-echo "The aggregate repo (projects_openclaw) mirrors the folder for the full-code archive."
+echo "The project is its own git repo (code + .knowledge/ together)."
+echo "Source of truth: ${REPO_URL}"

@@ -42,11 +42,12 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
-# Proyectos - AHORA viven DENTRO del workspace (revert de ADR-075, ver ADR-XXX).
+# Proyectos - viven DENTRO del workspace (ADR-098, supersede ADR-075).
 # El workspace hospeda projects/ como espacio comun de todos los agentes; el
 # Home llega via symlink (~/projects -> .openclaw/workspace/projects).
-# Se ignora la ruta porque cada proyecto tiene su PROPIO .git: sin esta regla,
-# git los absorberia como gitlinks/submodules implicitos. No trackear aca.
+# Se ignora la ruta al 100%: projects/ es una carpeta plana (NO es repo); cada
+# proyecto es su propio .git. Sin esta regla, git absorberia los proyectos como
+# gitlinks/submodules implicitos. No trackear aca.
 /projects/
 
 # Editor

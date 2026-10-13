@@ -1,14 +1,19 @@
 #!/bin/bash
 # initial-setup.sh - One-shot setup for a fresh machine (laptop / new Mac)
 #
-# Brings the triple-git structure up to date:
+# Brings the workspace + projects up:
 #   1. Workspace  -> clone or update workspace_openclaw
-#   2. Aggregate  -> set up projects/ as a clone of projects_openclaw (PRIVATE)
+#   2. Container  -> ensure the flat `projects/` folder exists (NOT a repo)
 #   3. Sub-repos  -> clone every gonzoblasco/<slug> into projects/<slug>/
-#   4. Verify     -> gitlink check, subrepo count, remotes, clean status
+#   4. Verify     -> repo count, remotes, clean status
+#
+# Model (ADR-098; clarified by Gonzo 2026-10-13):
+#   `projects/` is a FLAT container folder, ignored 100% by the workspace git.
+#   Each `projects/<slug>/` is its OWN git repo (source of truth, with its own
+#   `.knowledge/`). There is NO aggregate repo layer (retired; the old
+#   `projects_openclaw` aggregate is archived).
 #
 # Safe & idempotent: re-running does nothing destructive. Nothing is deleted.
-# `.knowledge/` dirs are ALWAYS preserved (they belong to the workspace git).
 #
 # Usage:
 #   ./scripts/initial-setup.sh                     # full setup (default)
@@ -24,8 +29,6 @@ DO_PULL=0
 DRY_RUN=0
 WORKSPACE_DIR="${HOME}/.openclaw/workspace"
 GH_OWNER="gonzoblasco"
-AGGREGATE_REPO="projects_openclaw"
-AGGREGATE_URL="https://github.com/${GH_OWNER}/${AGGREGATE_REPO}.git"
 WORKSPACE_URL="https://github.com/${GH_OWNER}/workspace_openclaw.git"
 
 # --- arg parsing ---
@@ -63,7 +66,7 @@ fail() { printf '  ❌ %s\n' "$*"; }
 
 # --- preflight ---
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🌿 initial-setup.sh - triple-git machine setup"
+echo "🌿 initial-setup.sh - workspace + projects setup"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "Target workspace: ${WORKSPACE_DIR}"
@@ -116,76 +119,27 @@ setup_workspace() {
   WORKSPACE_FRESH="${WS_CLONED}"
 }
 
-# --- 2. aggregate (projects/ -> projects_openclaw) ---
-# projects/ holds .knowledge/ dirs from the workspace clone. The aggregate's
-# checkout could overwrite the ones it tracks, so preserve them all first
-# (same procedure verified on 2026-09-02 on the desktop).
-setup_aggregate() {
+# --- 2. container (projects/ is a flat folder, NOT a repo) ---
+setup_container() {
   echo ""
-  echo "=== 2. Aggregate repo (${PROJECTS_DIR} -> ${AGGREGATE_REPO}) ==="
-  if [[ "${DRY_RUN}" == "1" ]]; then
-    if [[ -d "${PROJECTS_DIR}/.git" ]]; then
-      info "Already a repo -> would verify remote + $([[ ${DO_PULL} == 1 ]] && echo pull || echo skip-pull)"
-    else
-      info "Would init + fetch + reset --hard to ${AGGREGATE_REPO}/main"
-      info "  (preserving all .knowledge/ dirs first)"
-    fi
-    return 0
+  echo "=== 2. Projects container (${PROJECTS_DIR}) ==="
+  if [[ -e "${PROJECTS_DIR}/.git" ]]; then
+    # Under ADR-098 projects/ must NOT be a repo. A .git here is leftover from
+    # the retired aggregate layer - report it, never delete without review.
+    fail "projects/ has a .git of its own - it must be a plain folder (ADR-098)."
+    fail "Inspect it manually before removing (could be the old aggregate checkout)."
+    return 1
   fi
-
-  if [[ -d "${PROJECTS_DIR}/.git" ]]; then
-    url=$(git -C "${PROJECTS_DIR}" remote get-url origin 2>/dev/null || echo "")
-    if [[ "${url}" != *"${AGGREGATE_REPO}"* ]]; then
-      fail "projects/ origin is ${url}, expected ${AGGREGATE_REPO}. Fix manually."
-      return 1
-    fi
-    ok "aggregate already set up (${url})"
-    [[ "${DO_PULL}" == "1" ]] && { git -C "${PROJECTS_DIR}" pull --rebase -q origin main; ok "aggregate pulled"; }
-    return 0
-  fi
-
   if [[ ! -d "${PROJECTS_DIR}" ]]; then
-    mkdir -p "${PROJECTS_DIR}"
-  fi
-
-  # Preserve workspace-owned content that the aggregate does not track
-  local tmp; tmp="$(mktemp -d)"
-  local preserved=0
-  for d in "${PROJECTS_DIR}"/*/; do
-    [[ -d "$d" ]] || continue
-    slug="$(basename "$d")"
-    if [[ -e "$d/.knowledge" ]]; then
-      mkdir -p "${tmp}/knowledge/${slug}"
-      mv "$d/.knowledge" "${tmp}/knowledge/${slug}/.knowledge"
-      preserved=1
+    if [[ "${DRY_RUN}" == "1" ]]; then
+      info "Would create the flat folder ${PROJECTS_DIR}"
+    else
+      mkdir -p "${PROJECTS_DIR}"
+      ok "flat projects/ folder ready (not a repo)"
     fi
-  done
-  if [[ -f "${PROJECTS_DIR}/PROYECTOS.md" ]]; then
-    mv "${PROJECTS_DIR}/PROYECTOS.md" "${tmp}/PROYECTOS.md"
+  else
+    ok "projects/ is a plain folder (correct)"
   fi
-  if [[ -f "${PROJECTS_DIR}/.gitignore-template" ]]; then
-    mv "${PROJECTS_DIR}/.gitignore-template" "${tmp}/.gitignore-template"
-  fi
-
-  git -C "${PROJECTS_DIR}" init -q -b main
-  git -C "${PROJECTS_DIR}" remote add origin "${AGGREGATE_URL}"
-  git -C "${PROJECTS_DIR}" fetch -q origin
-  git -C "${PROJECTS_DIR}" reset --hard -q origin/main
-
-  # Restore workspace-owned content. Copy the CONTENTS (trailing /. ) so the
-  # destination is a merge, never a nested .knowledge/.knowledge/.
-  if [[ -d "${tmp}/knowledge" ]]; then
-    for d in "${tmp}/knowledge"/*/; do
-      slug="$(basename "$d")"
-      mkdir -p "${PROJECTS_DIR}/${slug}/.knowledge"
-      cp -Rf "$d/.knowledge/." "${PROJECTS_DIR}/${slug}/.knowledge/" 2>/dev/null
-    done
-    rm -rf "${tmp}/knowledge"
-  fi
-  [[ -f "${tmp}/PROYECTOS.md" ]] && mv "${tmp}/PROYECTOS.md" "${PROJECTS_DIR}/PROYECTOS.md"
-  [[ -f "${tmp}/.gitignore-template" ]] && mv "${tmp}/.gitignore-template" "${PROJECTS_DIR}/.gitignore-template"
-  rm -rf "$tmp"
-  ok "aggregate cloned (${AGGREGATE_REPO}, all .knowledge/ preserved)"
 }
 
 # --- 3. individual repos ---
@@ -205,15 +159,11 @@ clone_preserving() {
   [[ -f "${dir}/README.md" ]] && { mv "${dir}/README.md" "${tmp}/README.md"; kept_readme=1; }
 
   if gh repo clone "${GH_OWNER}/${slug}" "${dir}" -- --quiet 2>"${tmp}/clone.err"; then
-    # .knowledge always comes back from the workspace (workspace version wins)
+    # If a local .knowledge existed, the on-disk local version wins over the
+    # repo's committed copy (it may carry unsynced memory).
     if [[ "${kept_k}" == "1" ]]; then
       rm -rf "${dir}/.knowledge"
       mv "${tmp}/.knowledge" "${dir}/.knowledge"
-    fi
-    # Same triple-git rule as the fallback: repos that do NOT track .knowledge
-    # in their history ignore it locally (the memory belongs to the workspace).
-    if ! git -C "${dir}" ls-files --error-unmatch .knowledge >/dev/null 2>&1; then
-      printf '\n# Triple-git: .knowledge/ belongs to the workspace git\n.knowledge/\n' >> "${dir}/.git/info/exclude"
     fi
     if [[ "${kept_readme}" == "1" ]]; then
       if [[ -f "${dir}/README.md" ]]; then
@@ -232,16 +182,14 @@ clone_preserving() {
     return 0
   fi
 
-  # Clone failed (usually: dir not empty because the aggregate checkout
-  # already contains the source). Fallback: give the folder its own .git
+  # Clone failed (dir not empty). Fallback: give the folder its own .git
   # (init + fetch + reset to the individual repo = source of truth).
   local reset_ok=0
   if git -C "${dir}" init -q -b main 2>/dev/null \
      && git -C "${dir}" remote add origin "https://github.com/${GH_OWNER}/${slug}.git" 2>/dev/null \
      && git -C "${dir}" fetch -q origin 2>"${tmp}/fetch.err"; then
-    # Reset may fail (worktree files the repo does not want to overwrite,
-    # e.g. .knowledge/ owned by the workspace). Try clean reset first, then
-    # with a stash of the offending files.
+    # Reset may fail (worktree files the repo does not want to overwrite).
+    # Try clean reset first, then with a stash of the offending files.
     if git -C "${dir}" reset --hard -q origin/main 2>/dev/null; then
       reset_ok=1
     elif git -C "${dir}" stash -q 2>/dev/null \
@@ -251,20 +199,15 @@ clone_preserving() {
     fi
   fi
   if [[ "${reset_ok}" == "1" ]]; then
-    # .knowledge: the workspace version wins over the repo's committed copy
+    # Local .knowledge wins over the repo's committed copy.
     if [[ "${kept_k}" == "1" ]]; then
       rm -rf "${dir}/.knowledge"
       mv "${tmp}/.knowledge" "${dir}/.knowledge"
     fi
-    # Repos that do NOT track .knowledge in their history should ignore it
-    # locally (triple-git rule: the memory belongs to the workspace).
-    if ! git -C "${dir}" ls-files --error-unmatch .knowledge >/dev/null 2>&1; then
-      printf '\n# Triple-git: .knowledge/ belongs to the workspace git\n.knowledge/\n' >> "${dir}/.git/info/exclude"
-    fi
     if [[ "${kept_readme}" == "1" ]]; then
       [[ ! -f "${dir}/README.md" ]] && mv "${tmp}/README.md" "${dir}/README.md" || rm -f "${tmp}/README.md"
     fi
-    echo "  ✅ ${slug}: git attached to existing source (from aggregate checkout)"
+    echo "  ✅ ${slug}: git attached to existing source"
     rm -rf "$tmp"
     return 0
   fi
@@ -296,12 +239,12 @@ setup_subrepos() {
       if is_in "${slug}" "${remote_repos[@]}"; then
         info "${slug}: would clone (preserving .knowledge/)"
       else
-        info "${slug}: no repo on GitHub (workspace memory only)"
+        info "${slug}: no repo on GitHub (local only)"
       fi
       continue
     fi
     if ! is_in "${slug}" "${remote_repos[@]}"; then
-      warn "${slug}: no repo on GitHub (workspace memory only)"
+      warn "${slug}: no repo on GitHub (local only)"
       continue
     fi
     clone_preserving "${slug}"
@@ -320,14 +263,12 @@ verify() {
       with_git=$((with_git + 1))
     fi
   done
-  ok "${with_git}/${total} projects have their own .git (rest are workspace-memory only)"
+  ok "${with_git}/${total} projects have their own .git"
 
-  if [[ -d "${PROJECTS_DIR}/.git" ]]; then
-    if git -C "${PROJECTS_DIR}" ls-files -s | grep -q '^160000'; then
-      fail "gitlinks detected in the aggregate repo. Run: ./scripts/aggregate-sync.sh check"
-    else
-      ok "aggregate: no gitlinks (all content tracked as plain files)"
-    fi
+  if [[ -e "${PROJECTS_DIR}/.git" ]]; then
+    fail "projects/ is a git repo - it must be a plain folder (ADR-098)."
+  else
+    ok "projects/ is a plain folder (no aggregate repo layer)"
   fi
 
   if [[ -d "${WORKSPACE_DIR}/.git" ]]; then
@@ -341,20 +282,13 @@ verify() {
 
   echo ""
   echo "  workspace -> $(git -C "${WORKSPACE_DIR}" remote get-url origin 2>/dev/null || echo '?')"
-  echo "  projects  -> $(git -C "${PROJECTS_DIR}" remote get-url origin 2>/dev/null || echo '?')"
+  echo "  projects  -> (flat folder; each <slug>/ is its own repo)"
 }
 
 # --- run ---
 setup_workspace
-setup_aggregate
+setup_container
 setup_subrepos
-
-# Guarantee: every .knowledge/ tracked by the workspace git matches its index.
-# (The aggregate checkout and the sub-repo resets may have restored repo
-# versions of the same files - the workspace memory wins.)
-if [[ -d "${WORKSPACE_DIR}/.git" ]]; then
-  git -C "${WORKSPACE_DIR}" restore --worktree -- projects/ >/dev/null 2>&1 || true
-fi
 
 verify
 
@@ -364,6 +298,6 @@ if [[ "${DRY_RUN}" == "1" ]]; then
   echo "🌿 dry-run complete - nothing changed. Re-run without --dry-run to apply."
 else
   echo "🌿 setup complete. All repos are in place."
-  echo "   Next: sync the aggregate anytime with ./scripts/aggregate-sync.sh sync"
+  echo "   Work with each project directly: git -C projects/<slug> ..."
 fi
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

@@ -6,6 +6,27 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-13] - `projects/` es una carpeta plana: se retira la capa "agregado" (y una afirmacion falsa mia)
+
+### Removed
+- **La capa "repo agregado" (`projects_openclaw`).** `scripts/aggregate-sync.sh` (root y copia de kanam-ops) pasa a **stub RETIRED** que falla con la razon; `init-project.sh` e `initial-setup.sh` dejan de registrar/armar el agregado. `docs/SETUP.md`, `AGENTS.md`, `docs/AGENTS-DETALLE.md`, la skill `workspace-portfolio-hygiene` (SKILL + reference) y `.gitignore` describen el modelo real.
+
+### Fixed
+- **Corregida una afirmacion falsa mia (2026-10-12):** anote en `docs/ROADMAP.md` que "`projects/.git` apunta hoy a `workspace_openclaw`". **Falso:** `projects/` nunca tuvo `.git` propio; `git -C projects` simplemente sube al `.git` del workspace y reporta *su* remote. Nota corregida en el lugar.
+
+### Changed
+- **Modelo de proyectos (confirmado por Gonzo 2026-10-13; consistente con ADR-098):** `projects/` es una carpeta contenedora plana, **ignorada 100%** por el workspace git; cada `projects/<slug>/` es **su propio repo** (incluye `.knowledge/`; la memoria viaja con el proyecto). No hay capa intermedia.
+- **`init-project.sh` reescrito:** crea el proyecto con su `.knowledge/` **trackeado en el repo del proyecto** (se elimino el modelo de "blob en el workspace git", que bajo `/projects/` ignorado abortaba el script) y elimina el registro en el agregado.
+- **`initial-setup.sh` reescrito:** el paso 2 pasa de "armar `projects/` como clon del agregado" a "asegurar la carpeta plana (NO un repo)"; `verify` reporta si `projects/` es un repo (error) y cuantos proyectos tienen su `.git` propio.
+- **`ADR-066`:** nota fechada (el modelo de tracking evoluciono; la decision del ADR no cambia). **`kanam-os-layers-evaluacion.md`** y la linea de scripts de `agents/kanam-ops/AGENTS.md`: "triple-git"/`aggregate-sync` -> modelo vigente.
+
+### Notes
+- **Verificacion:** `bash -n` OK en los 4 scripts; `check-adr-integrity.py` y `check-adr-supersede.py` OK (96 ADRs); `check-refs.py --all` OK (559 rutas); sin guiones largos.
+- **Retiro con motivo, no borrado silencioso (ADR-067 §4):** los scripts quedan como stub que nombra la razon; el repo `gonzoblasco/projects_openclaw` sigue archivado en GitHub.
+- **Deuda anotada:** `sanitize-skills.py` y `publish-skills.sh` todavia tratan `projects_openclaw` como un slug interno a sanear (inocuo); dejados por ser de la via de publicacion de skills (archivada, ADR-079).
+
+---
+
 ## [2026-10-12] - S1: la fuente unica de modelos es ADR-090 (cabeceras de 040/041/053 dejan de mentir)
 
 ### Changed

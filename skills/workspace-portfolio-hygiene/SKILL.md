@@ -18,22 +18,19 @@ Use when auditing `projects/*` for cleanliness, deciding what to archive, promot
 Make it executable in the ADR text with an explicit clause:
 > **DO NOT TOUCH**: this project is not modified, its fate is not re-decided, and it is not listed as a candidate in hygiene audits. The exclusion is closed.
 
-## Real triple-git pattern (2026-09-02, differs from the old init script)
+## Real projects pattern (updated 2026-10-13, ADR-098)
 
-Three layers coexist since 2026-09-02:
+`projects/` is a **flat container folder, ignored 100% by the workspace git**. Each `projects/<slug>/` is its **own git repo** (source of truth), and it tracks its own `.knowledge/` - the memory travels with the project.
 
-- **Workspace git** (`workspace_openclaw`): tracks `projects/**/.knowledge/` as loose blobs (mode `100644`). Root `.gitignore` ignores `/projects/*/.git/`.
-- **Aggregate git** (`projects/` -> `projects_openclaw`, PRIVATE): tracks the full source of all projects as plain files. Root `.gitignore` ignores `*/.git/` (the trick that avoids gitlinks) + node_modules/.env/*.db safety net + `PROYECTOS.md`/`.gitignore-template` (workspace files). It is the "see everything" archive, NOT the source of truth.
-- **Individual repo** (`gonzoblasco/<slug>`): source of truth for working. Own history, branches, PRs. Its `.gitignore` is respected by the aggregate and workspace.
+- **Workspace git** (`workspace_openclaw`): ignores `/projects/` entirely. It does NOT track project code or `.knowledge/`.
+- **Individual repo** (`projects/<slug>` -> `gonzoblasco/<slug>`): source of truth for working. Own history, branches, PRs, `.knowledge/` included.
+- **No aggregate layer.** The old `projects_openclaw` aggregate mirror is retired (archived on GitHub); `scripts/aggregate-sync.sh` is a stub that fails with the reason.
 
 Rules:
 - No `.gitmodules` anywhere (no submodules ever).
-- `.knowledge/` is NOT ignored in project `.gitignore` (exclusion lives in `.git/info/exclude`).
-- Never commit `.git/` dirs into the aggregate (would become gitlinks).
-- Sync the aggregate explicitly with `scripts/aggregate-sync.sh` (status|commit|push|sync|check). It refuses to run if `projects/` points to a remote other than `projects_openclaw`.
-- `git reset --hard` in `projects/` can delete `.knowledge/` dirs from disk (project gitignores exclude them) - restore with `git restore --worktree -- projects/` from the workspace.
-- Verify: `git ls-files --stage projects/<slug>/` shows `100644 .../HANDOFF.md` (blob), not `160000` (gitlink).
-- When adding a project folder to the aggregate, `git add <slug>/` on a dir that ALREADY has a `.git/` inside creates a gitlink (mode `160000`, one line) even though `*/.git/` is gitignored - the aggregate already has most projects as plain files because they were added before their `.git/` existed. To force flat-file tracking for a project that has `.git/`: `mv <slug>/.git /tmp/backup`, `git add <slug>/` (now resolves to individual blobs via the project's own `.gitignore`), verify `git ls-files -s <slug>/ | grep -c 160000` == 0, then `mv /tmp/backup <slug>/.git`. Confirm no node_modules/build output got staged. No `.knowledge/` to preserve for this case (the workspace repo tracks it and the project's `.git/` is restored before commit).
+- `projects/` has no `.git` of its own; `git -C projects ...` resolving to the workspace `.git` is expected (it walks up), not a project repo.
+- No cross-layer copying: nothing mirrors project code into another repo.
+- Verify a project repo resolves to itself: `[[ "$(git -C projects/<slug> rev-parse --show-toplevel)" == "$PWD/projects/<slug>" ]]`.
 - `scripts/initial-setup.sh` fails on machines that once used submodules: a project's `.git` there is a gitfile (a 47-byte file containing `gitdir: ...`, not a directory), and repos armed with `init+fetch+reset` have no upstream tracking. Recovery that works: detect repos by `[[ "$(git -C dir rev-parse --show-toplevel)" == "$dir" ]]` (covers dir + gitfile and avoids the false positive of resolving to the parent aggregate), and pull with explicit `git pull --rebase origin main` instead of relying on tracking. Local dirty changes (uncommitted source, `.knowledge/` the workspace owns) are respected - the script must never pull over or stash them. Before a real run, probe the existing machine with `--dry-run` to see which projects resolve as real repos vs "would clone" (memory-only).
 
 Old scripts (`init-project.sh` pre-2026-09-02) generated a `.gitignore` ignoring `.knowledge/` and registered submodules - that is obsolete; the script was rewritten.

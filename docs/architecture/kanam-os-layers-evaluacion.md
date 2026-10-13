@@ -109,7 +109,7 @@ Esta es la capa donde la propuesta aporta mas, y donde el diagnostico real es el
 
 | Elemento de la propuesta | Por que NO |
 |---|---|
-| Estructura monorepo `/apps/web`, `/apps/api`, `/apps/ai-worker` | Contradice el triple-git vigente (*"Sin submodulos. GitHub es la fuente"*). Kanam OS no es una app: es un workspace + repos independientes |
+| Estructura monorepo `/apps/web`, `/apps/api`, `/apps/ai-worker` | Contradice el modelo de proyectos vigente (ADR-098: *"Sin submodulos. GitHub es la fuente"*; cada proyecto es su propio repo). Kanam OS no es una app: es un workspace + repos independientes |
 | Migrar a Postgres + pgvector | Dependencia nueva sin problema que resuelva (regla 2026-09-14) |
 | Redis para cache/rate limit | Idem. A esta escala, un indice en SQLite cumple |
 | BullMQ / Celery / RabbitMQ | Tres dependencias de infra para un usuario |

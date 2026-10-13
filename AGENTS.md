@@ -158,10 +158,10 @@ Repo `workspace_openclaw`. Proyectos se sincronizan por separado.
 Detalle en `docs/AGENTS-DETALLE.md` y **ADR-098** (los proyectos viven en `<workspace>/projects/`, dentro del árbol que el gateway gobierna).
 - **Ubicación de trabajo:** `<workspace>/projects/<slug>/`. El humano llega por el symlink `~/projects -> <workspace>/projects`; **los agentes usan el path real** (los sandboxes rechazan escribir a través de symlinks).
 - **Workspace git:** `.gitignore` conserva la regla `/projects/`, pero el motivo se invirtió (ADR-098): no es "afuera del worktree" sino "adentro, y cada proyecto trae su propio `.git`" - sin esa regla git los absorbería como gitlinks/submódulos. El workspace no trackea el código ni el `.knowledge/` de los proyectos; la memoria de proyecto es **del proyecto y viaja con él**. El workspace no es responsable de esa memoria.
-- **Repo agregado (`projects/` -> `projects_openclaw`, privado):** archiva el código fuente completo de los proyectos como archivos planos (ignora `*/.git/`, node_modules, .env, *.db). No es fuente de verdad para trabajar. Sincronizar con `scripts/aggregate-sync.sh`.
+- **`projects/` es una carpeta plana e ignorada al 100% por el workspace git** (regla `/projects/`). No tiene `.git` propio: cada proyecto es su propio repo, y la carpeta contenedora no es repo de nada.
 - **Proyecto git (`projects/<slug>/`):** trackea código **y `.knowledge/`** (la memoria del proyecto se versiona con el proyecto - corregido 2026-10-09; varios proyectos ya lo hacían). Fuente de verdad para trabajar.
 - **`cwd` (ADR-098):** los agentes que escriben código (dev, ops) tienen `cwd` en el workspace; el hogar del agente (bootstrap, memoria, skills) no se mueve.
-- **Sin submódulos.** GitHub es la fuente. Clonar bajo demanda. Nunca commitear los `.git/` de subrepos en el agregado.
+- **Sin submódulos.** GitHub es la fuente. Clonar bajo demanda. Los `.git/` de los proyectos viven dentro de `projects/<slug>/`, nunca se absorben en el workspace ni se commitean.
 
 ### Project Cleanup
 Al finalizar proyecto: 1. Push final $\rightarrow$ 2. Extraer ADRs generales $\rightarrow$ 3. Limpiar local (borrar node_modules, dejar `.knowledge/` y README) $\rightarrow$ 4. Push de limpieza $\rightarrow$ 5. Registro en daily.
