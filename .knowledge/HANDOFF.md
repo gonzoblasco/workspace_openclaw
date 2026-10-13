@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-12 04:13 GMT-3
+**Fecha:** 2026-10-12 21:34 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,37 +12,32 @@
 
 ## Que se hizo en esta sesion
 
-Reinicio del curso OpenClaw Use Cases a pedido de Gonzo. Se listo TODO lo que se estudia (4 tracks) y se advirtio que barrer todo arrastraba CPACC (examen nov/dic), narrative-engineering (3 casos) y el frente de diseno; Gonzo confirmo alcance 1: solo el curso. Borrado studies/openclaw-use-cases/ (10 archivos: INDEX + 9 lecciones de las dos grillas) porque acumulaba TRES planes de modulos contradictorios y numeracion inconsistente (/25 vs /30). studies/ sobrevive (design + narrative). Ningun gate rompe (check-refs/content-dirs/adr-integrity OK). ADR-086 actualizado (ya no apunta a la carpeta; la decision sigue vigente). CHANGELOG con el bloque del reinicio. NO tocado: narrative-engineering, design, cpacc, dailies 10-10/10-11.
+Estudio completo del curso OpenClaw Use Cases (30/30 lecciones, 6 modulos) en studies/openclaw-use-cases/ + ejecucion del worklist derivado (docs/WORKLIST-openclaw-use-cases.md). Patron transversal confirmado: el material acierta conceptos y fabrica la superficie (CLI/config/API que no existen); 7 lecciones con output fabricado o codigo roto; 7 donde el tema si existe de verdad. Worklist: los 9 items procesados. B6 (lock fcntl, commit 39f792283b), B7/B9 (fingerprint + heading unico por sesion, 2c74061865), A3 (doctor --lint en gateway-audit.sh, 794727eae8), A2 (revisado, sin cambio, 93bdcc7458), A1 (webhooks habilitados+probados, 1c21933fae), B8 (sanitize_external.py redactor, 4006d9146e), A4 (contextPruning cache-ttl, 5ff6fc71e0), A5 (command-logger hook, 5ff6fc71e0). Cambios de config con backup en /tmp, reversibles; config validate OK.
 
 ## Estado actual
 
-studies/openclaw-use-cases/ eliminado; el curso se rehace desde cero con UN solo plan. studies/ conserva design/ y narrative-engineering/. ADR-086 y CHANGELOG actualizados.
+Curso completo (30/30) + worklist vacio. Todos los commits pusheados con CI verde. Config de hooks/contextPruning aplicada (loopback, token dedicado, backups en /tmp).
 
 ## Proximos pasos
 
-1) Escribir el plan unico del curso OpenClaw Use Cases antes de generar lecciones (definir modulos y numeracion de una vez). 2) Versionar studies/ de forma consistente (decidir si los tracks viven aca o en docs/). 3) Dailies 10-10/10-11 siguen untracked (otras sesiones).
+1) A1: elegir un caso real de webhook externo (hoy el hook esta habilitado y probado pero sin consumidor). 2) A5: evaluar compaction-notifier si se quiere visibilidad de compactacion. 3) FUERA DE ALCANCE: AGENTS.md/MEMORY.md/docs-AGENTS-DETALLE sin commitear son de OTRA sesion (ADR-098), no tocar.
 
 ## Decisiones y contexto que no debe perderse
 
-- Un curso a medio armar con tres planes contradictorios se rehace, no se reconcilia. Separar curso-a-medio-hacer de trabajo-con-resultado: CPACC tiene fecha de examen, narrative tiene casos cerrados.
+- El curso sirve como marco conceptual y checklist, nunca como implementacion copiable. Antes de adoptar una capacidad 'de la doc', verificar contra la instalacion real (docs del producto + config + prueba de codigo).
 
 ## Archivos tocados
 
 ```
-CHANGELOG.md
-docs/adr/ADR-086-embudo-de-entrada-conversacional.md
+AGENTS.md
+MEMORY.md
+docs/AGENTS-DETALLE.md
+docs/NORTH.md
+docs/adr/ADR-084-registros-de-sesion-un-solo-lugar.md
+docs/adr/ADR-085-una-sola-maquina.md
+docs/adr/ADR-093-plan-de-sesion-persistente.md
 memory/2026-10-12.md
 memory/memory.db
-studies/openclaw-use-cases/INDEX.md
-studies/openclaw-use-cases/L01-autonomous-chat-response.md
-studies/openclaw-use-cases/L01-lesson-overview.md
-studies/openclaw-use-cases/L01-message-triage.md
-studies/openclaw-use-cases/L02-intent-detection.md
-studies/openclaw-use-cases/L02-query-routing.md
-studies/openclaw-use-cases/L03-contextual-drafting.md
-studies/openclaw-use-cases/L03-contextual-wrangling.md
-studies/openclaw-use-cases/L04-escalation-rules.md
-studies/openclaw-use-cases/L05-context-boundaries.md
 ```
 
 ## Como continuar
