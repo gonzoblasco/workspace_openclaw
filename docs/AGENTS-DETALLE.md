@@ -2,6 +2,18 @@
 
 > Este archivo contiene el detalle operativo completo que se movió de AGENTS.md para mantenerlo bajo el límite de inyección de contexto (20K chars). AGENTS.md tiene las reglas esenciales; acá está el detalle ampliado. Si AGENTS.md referencia este archivo, consultarlo cuando se necesite el detalle.
 
+## Registro automático tras cada PR/ticket (2026-10-13, regla de Gonzo)
+
+**Cuando Gonzo pasa un link a un PR, issue, o su evento/comentario, se registra SIEMPRE en el daily, sin preguntar.** No es opcional y no se pregunta "¿registro?". El registro es la conducta por defecto.
+
+Receta:
+1. Leer el hilo externo COMPLETO (body, reviews, todos los comments, timeline del evento referenciado). Nunca responder solo con el link.
+2. Analizar el rol de Gonzo en el hilo y el desenlace.
+3. Cerrar con: `./scripts/memory-end-session.py --project "OSS / <repo> #<n>" --summary "..."` (DB-first; NUNCA editar `memory/YYYY-MM-DD.md` a mano).
+4. Si el cambio quedó en el workspace (ej. AGENTS.md), commit + push del workspace al finalizar.
+
+Casos que originaron la regla (2026-10-13): TanStack/router#7825 (fix upstream merged), vercel/ai#15704 + PR#17274 (cerrado por decisión de producto), facebook/astryx#5204 (superseded con crédito).
+
 ## Reglas de feedback en PRs/issues ajenos (detalle ampliado)
 
 Reglas duras de Gonzo para publicar feedback/review en repos de terceros. Corregidas 24/08 - no repetirlas.

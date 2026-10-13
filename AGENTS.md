@@ -111,6 +111,9 @@ La política vigente es **ADR-090** (niveles de pensamiento por agente y asignac
 - **GitHub = English only.** Commits, PRs, issues, comments - always English.
 - **Commits atómicos.** Uno por tarea/issue. Formato: `type(#issue): description`; sin issue asociado, `type: description` (omite el `(#issue)`).
 
+#### Registro automático tras cada PR/ticket (2026-10-13, regla de Gonzo)
+**PR/issue/evento que pase Gonzo: SIEMPRE se registra en el daily, sin preguntar.** Receta en `docs/AGENTS-DETALLE.md`.
+
 #### Colaboración OSS - NO es abrir PRs (2026-08-24)
 Valor está en comentar, revisar o ayudar a destrabar. **Antes de proponer un PR, preguntar:** ¿Hay trabajo en curso? ¿Qué aporta Gonzo sin duplicar? ¿El valor es un PR o una crítica con sustancia?
 **No pisar:** si alguien ya tiene PR o reclamó finding, NO abrir otro. Sumar sin pisar.
