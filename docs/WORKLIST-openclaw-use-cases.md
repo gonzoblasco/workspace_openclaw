@@ -113,8 +113,16 @@
 
 ## Cómo sigue
 
-- Este doc es **borrador para revisión**. Ningún ítem está aprobado.
-- Recomendación: arrancar por **B6 (concurrencia)**, que es el único con impacto inmediato y ya nos está costando. Los de la sección A son exploratorios/quick-wins.
-- Si se aprueba algún ítem, se convierte en tarea (TODO del workspace o automation), no se deja en este doc.
+**Estado (2026-10-14): worklist procesado.** Los ítems con accion concreta se ejecutaron (B6, B7/B9, A1, A3, A4, A5, B8) o se revisaron y descartaron con causa (A2). No hay tareas abiertas en este doc.
+
+### Disparadores (revisar SOLO si aparece la condición - no son tareas)
+
+- **A1 (webhooks externos):** el hook esta habilitado y probado, pero **sin consumidor**. Revisar solo si aparece una **fuente externa real** (ej. GitHub/Stripe/alerta) Y se decide **exponer el gateway** (hoy loopback-only). Mientras tanto: cerrado, dormido a proposito.
+- **pipeline-queue-watcher:** se evaluo convertir a `--on-exit`/`--stream`. **Descartado:** `on-exit` es un wrapper one-shot (no un vigilante de estado) y `stream` mete un proceso residente (que Gonzo prefiere que NO sea residente). El diseno actual (`--every 15m` + trigger read-only) **es el correcto**. No tocar.
+- **A5 compaction-notifier:** disponible si se quiere visibilidad de compactacion en el chat; hoy apagado para no meter ruido.
+
+### Regla derivada (durable)
+
+Antes de adoptar una capacidad "de la doc", **verificar la semantica real** contra la instalacion. En este worklist, dos propuestas propias (A2 allowlist, on-exit del watcher) se descartaron al contrastarlas: la brecha no existia / el mecanismo no encajaba. Documentar el descarte es parte del trabajo.
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->
