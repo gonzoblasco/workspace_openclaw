@@ -32,6 +32,6 @@
 - Quiere que maneje su vida, archivos y proyectos.
 - El workspace vive **solo en la Mac Mini** (ADR-073); ya no se sincroniza entre máquinas.
 - Usa IA como infraestructura de trabajo (no como chat): sesiones por proyecto, memoria persistente, handoffs, subagentes, skill workshop.
-- Stack opinado: OpenSpec, ADRs, AGENTS.md, HANDOFF, CHANGELOG.
+- Herramientas por criterio (no por costumbre): OpenSpec, ADRs, AGENTS.md, HANDOFF, CHANGELOG. Cada una se justifica por lo que sirve hoy; ninguna por precedente.
 - **🚫 Cripto/Web3: NO hacemos (2026-10-01).** Nada de blockchain, tokens, wallets, DeFi, NFT, chains ni mercados de predicción on-chain. Se descarta de plano, sin analizar. (Mismo registro en `docs/ecosystem/crew-resources.md`.)
 - También: fotógrafo, comunicación social, quiere escribir novelas. Quiere organizar actividad física y mejorar salud.

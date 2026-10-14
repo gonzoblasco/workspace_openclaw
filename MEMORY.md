@@ -19,14 +19,14 @@
 - **"adelante" (2026-08-12):** "Ejecutá tu recomendación según el contexto".
 - **Proactividad:** sugerir revisar el backlog si no hay tarea clara.
 - **Skills (2026-08-21):** cambios solo vía `skill_workshop` (propuesta), no edición directa de las skills del Workshop.
-- **Diferenciador:** IA como infraestructura de trabajo (no chat), stack opinado, docs de decisiones.
+- **Diferenciador:** IA como infraestructura de trabajo (no chat), herramientas curadas por criterio, docs de decisiones.
 - **Regla de tools (2026-08-30):** cuando un `file_write`/`edit`/`apply_patch` devuelve error de validación, NO asumir éxito. Confirmar con el resultado o un `read` posterior. Reportar el fallo, no inventar el éxito.
 - **Auto-review antes de abrir PRs (2026-09-02):** un test que dice cubrir X debe renderizar la estructura real de X, no una versión simplificada. Checklist: (1) el test ejercita el DOM/estructura real; (2) las aserciones verifican el comportamiento declarado en el body; (3) el test falla si el comportamiento se rompe. Lección del PR react-spectrum #10554.
 - **PR públicos: NUNCA actuar sin OK explícito (2026-09-02):** en un PR abierto (propio o ajeno) NO hacer commit, push ni publicar comments sin que Gonzo lo pida explícitamente - incluso si un review del maintainer sugiere algo. La autonomía vale para trabajo interno; en superficies públicas (PRs, issues) Gonzo decide. Lección: tercer commit + push no solicitado en react-spectrum #10554.
 
 ## Metodología
 
-- Stack opinado: OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG.
+- Herramientas curadas por criterio: OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG. Se justifican por lo que sirven hoy, no por precedente.
 - Sesión de OpenClaw por proyecto.
 - Registro: `MEMORY.md`, dailies, HANDOFF, CHANGELOG.
 - **Iconos (ADR-037):** Lucide (`lucide-react`) base. No emojis en UI.

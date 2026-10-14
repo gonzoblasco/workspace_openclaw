@@ -119,7 +119,7 @@ El entorno (máquinas, modelos, scripts, memoria, red) vive en **`docs/SETUP.md`
 
 - **Pre-commit:** lint (Biome) → test (Vitest) → build. Se omite con `SKIP_SIMPLE_GIT_HOOKS=1`.
 - **Iconos:** Lucide (`lucide-react`) en todos los proyectos; nunca emojis como iconografía.
-- **Stack opinado:** OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG.
+- **Herramientas por criterio:** OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG. Se adoptan por lo que sirven, no por venir del template.
 - **Pagos:** Stripe es el proveedor único (ADR-042), con o sin Lovable. Mercado Pago queda afuera. Mercado: Argentina / LATAM.
 - **Idioma por capa:** lo que se ve en GitHub va en inglés; los strings de UI, en español. Los `AGENTS.md`/`CLAUDE.md` de proyectos públicos en inglés (son superficie de portfolio); el workspace privado en español (es espacio de trabajo). Rige también para el CLAUDE.md espejo de cada proyecto. No hay beneficio técnico de idioma para el modelo: lo único que importa es la superficie.
 
