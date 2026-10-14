@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-14] - AGENTS.md reescrito de una sola pieza: 18.560 -> 12.300 chars
+
+### Changed
+- **`AGENTS.md` reescrito entero, no parchado.** Venia con injertos acumulados: secciones duplicadas por nombre (dos `### Added` bajo el mismo genero), bloques de modelo repetidos, fechas y anecdotas explicativas (`"Por que: el 2026-10-06 no abri 3 fichas..."`) metidas en el cuerpo del bootstrap, y jerarquia rota por `#### ` que hermanaba reglas de pesos dispares. Ahora es un texto corrido con cuatro secciones (Conducta, Sesion y memoria, Ingenieria, Referencias) + Tools + Desarrollo.
+- **Criterio de corte (declarado en el header):** una regla se queda si cambia una accion concreta y no se deriva de otro lado; el "como", el "por que" y la receta paso a paso van a `docs/AGENTS-DETALLE.md`. El archivo baja un 34% sin perder ninguna regla dura.
+- **Sin perdida, verificado por lista de 42 palabras clave** contra la version anterior: las 42 siguen presentes (la unica ausencia aparente, `atomicos`, era falsa: esta escrita con tilde, `atomicos`).
+
+### Fixed
+- **Reescritura literal, no refactor de fondo.** La regla `## 4. Referencias` se conserva (era una de las secciones vivas) y los dos bloques `<!-- BEGIN MANAGED -->` (modelo por agente, pipeline A/B) quedan intactos: los regenera `managed-blocks.py`, editarlos a mano habria roto el gate.
+
+### Notes
+- **Verificacion:** `check-bootstrap-budget.py` OK (AGENTS.md 12.300/20.000, margen +7.700; total 36.442/60.000); `check-refs.py --all` OK (552 rutas); `check-agent-skill-boundary.py` OK; `check_em_dash.py` OK; `managed-blocks.py check` OK.
+- **Deuda anotada:** el resto del nivel 1 (MEMORY.md, USER.md, SKILLS-INDEX.md, DREAMS.md, huerfanos) queda pendiente de la misma revision.
+
+---
+
 ## [2026-10-14] - CHANGELOG sale de la raiz y su ventana baja a 14 dias
 
 ### Changed
