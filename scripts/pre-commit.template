@@ -102,11 +102,11 @@ if [ -n "$MD_CHANGED" ]; then
   # 2) Rutas citadas: cada `docs/...` o `scripts/...` debe existir.
   python3 "${SCRIPT_DIR}/scripts/check-refs.py" --all || exit 1
 
-  # 3) CHANGELOG en ventana: el activo muestra solo los ultimos ~30 dias; lo
+  # 3) CHANGELOG en ventana: el activo (docs/CHANGELOG.md) muestra solo los ultimos ~14 dias; lo
   #    viejo vive archivado. Antes crecia sin control (310 KB al 2026-10-06).
-  #    Solo corre si el propio CHANGELOG.md esta staged: no bloquea commits
+  #    Solo corre si el propio docs/CHANGELOG.md esta staged: no bloquea commits
   #    ajenos por un archivo que nadie toco. El cierre de sesion rota solo.
-  if echo "$MD_CHANGED" | grep -q '^CHANGELOG\.md$'; then
+  if echo "$MD_CHANGED" | grep -q '^docs/CHANGELOG\.md$'; then
     python3 "${SCRIPT_DIR}/scripts/changelog-rotate.py" --check || exit 1
   fi
 

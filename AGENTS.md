@@ -143,7 +143,7 @@ Reglas duras (detalle en `docs/AGENTS-DETALLE.md`):
 #### Workspace Git
 Repo `workspace_openclaw`. Proyectos se sincronizan por separado.
 **Obligatorio:** Modificó config de workspace → commit + push al finalizar sesión.
-**CHANGELOG.md:** obligatorio para cada cambio estructural del workspace.
+**CHANGELOG (`docs/CHANGELOG.md`):** obligatorio para cada cambio estructural del workspace.
 **Sincronización:** Siempre `git pull --rebase` antes del push.
 **Datos locales (NO git):** `.env`, `*.db`, tokens. IRRECUPERABLES. Respaldar SIEMPRE antes de mover o limpiar un proyecto.
 

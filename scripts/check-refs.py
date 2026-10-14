@@ -85,6 +85,10 @@ def resolves(source: Path, target: str) -> bool:
 # (CHANGELOG, etc.); su texto cita rutas de la epoca - p.ej. un ADR que luego
 # se renombro - y no se reescribe. Misma politica que records/: la historia
 # congelada no es una promesa sobre el arbol actual.
+# `docs/CHANGELOG.md` (movido a docs/ el 2026-10-14) es el ACTIVO, no archivo:
+# su texto tambien cita rutas de la epoca y esta en rotacion permanente, asi que
+# se le da el mismo trato que al bloque rotado (no es una promesa sobre el arbol).
+SKIP_FILES = ("docs/CHANGELOG.md",)
 SKIP_DIRS = ("docs/records/", "docs/archive/")
 
 
@@ -116,6 +120,8 @@ def main():
         if not path.exists():
             continue
         rel_str = str(path.relative_to(ROOT))
+        if rel_str in SKIP_FILES:
+            continue
         if any(rel_str.startswith(d) for d in SKIP_DIRS):
             continue
         try:

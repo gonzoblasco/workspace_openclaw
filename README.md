@@ -22,7 +22,7 @@ Workspace de trabajo de Kanam sobre OpenClaw, que vive **solo en la Mac Mini** (
 | Decisiones de arquitectura | [`docs/adr/`](./docs/adr/) | ADRs aceptados (86 archivos) |
 | Skills disponibles | [`SKILLS-INDEX.md`](./SKILLS-INDEX.md) | Índice de las 78 skills activas |
 | Contribuir a OSS | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Estrategia y reglas de PRs |
-| Cambios estructurales | [`CHANGELOG.md`](./CHANGELOG.md) | Registro histórico del workspace |
+| Cambios estructurales | [`docs/CHANGELOG.md`](./docs/CHANGELOG.md) | Registro histórico del workspace |
 | Registros de sesión (historia) | [`docs/records/`](./docs/records/) | Fotos inmutables de sesiones pasadas (ADR-084), no documentación viva |
 | Trabajo en curso y próximo | [`docs/ROADMAP.md`](./docs/ROADMAP.md), [`memory/todos.md`](./memory/todos.md) | Roadmap (capas + la ruta) y pendientes |
 | Operación del gateway | [`docs/gateway-operations.md`](./docs/gateway-operations.md) | Servicios y rutinas del gateway |

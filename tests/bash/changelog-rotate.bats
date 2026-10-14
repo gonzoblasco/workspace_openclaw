@@ -15,7 +15,7 @@ teardown() {
 }
 
 seed() {
-  cat > "$ROOT/CHANGELOG.md" <<'EOF'
+  cat > "$ROOT/docs/CHANGELOG.md" <<'EOF'
 # CHANGELOG.md
 
 head
@@ -43,8 +43,8 @@ EOF
   seed
   run python3 "$SCRIPT" --today 2026-10-06 --root "$ROOT"
   [ "$status" -eq 0 ]
-  grep -q "body new" "$ROOT/CHANGELOG.md"
-  ! grep -q "body old" "$ROOT/CHANGELOG.md"
+  grep -q "body new" "$ROOT/docs/CHANGELOG.md"
+  ! grep -q "body old" "$ROOT/docs/CHANGELOG.md"
   grep -q "body old" "$ROOT/docs/archive/CHANGELOG-archive.md"
 }
 
@@ -66,10 +66,10 @@ EOF
 
 @test "changelog-rotate: --dry-run does not write" {
   seed
-  before=$(cat "$ROOT/CHANGELOG.md")
+  before=$(cat "$ROOT/docs/CHANGELOG.md")
   run python3 "$SCRIPT" --dry-run --today 2026-10-06 --root "$ROOT"
   [ "$status" -eq 0 ]
-  [ "$before" = "$(cat "$ROOT/CHANGELOG.md")" ]
+  [ "$before" = "$(cat "$ROOT/docs/CHANGELOG.md")" ]
   [ ! -f "$ROOT/docs/archive/CHANGELOG-archive.md" ]
 }
 

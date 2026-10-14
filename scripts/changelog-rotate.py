@@ -40,10 +40,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ACTIVE = ROOT / "CHANGELOG.md"
+ACTIVE = ROOT / "docs" / "CHANGELOG.md"
 ARCHIVE = ROOT / "docs" / "archive" / "CHANGELOG-archive.md"
 
-DEFAULT_DAYS = 30
+DEFAULT_DAYS = 14
 # `## [YYYY-MM-DD] - Titulo`. El ancla es el header con fecha entre corchetes.
 ENTRY = re.compile(r"^## \[(\d{4}-\d{2}-\d{2})\]")
 
@@ -147,7 +147,7 @@ def main(argv):
 
     if args.root:
         r = Path(args.root).resolve()
-        ACTIVE = r / "CHANGELOG.md"
+        ACTIVE = r / "docs" / "CHANGELOG.md"
         ARCHIVE = r / "docs" / "archive" / "CHANGELOG-archive.md"
 
     try:
