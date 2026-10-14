@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-14] - Level 1: README arreglado (5 datos stale) + huérfanos resueltos
+
+### Fixed
+- **`README.md` tenia 5 datos stale, todos corregidos contra el disco:** ADRs ("86" -> 96), skills activas ("78" -> 99), roles de agente ("4" -> 7), skills del Core ("36" -> 27) y una fila fantasma (`sandbox/`, carpeta que no existe). Un router de entrada que miente sobre el nivel 1 es peor que uno que no lista: ensena a no confiar.
+
+### Removed
+- **`crew_onboarding_guide.md` retirado (a Trash).** Guia de onboarding del Crew escrita el 2026-10-01; describia un equipo de tres roles (Planner, UI/UX Auditor, Critic) que hoy son siete, y un flujo ("Golden Path") con un umbral SHARP <=18 que quedo desactualizado. Refleja un estado del proyecto que ya no existe, no es un documento vivo, y solo aparece en `memory/archive/` como historia.
+
+### Notes
+- **Huérfanos verificados y descartados (no tocados):** `kanam-lab.db` (0 bytes, en la raiz; el proyecto `kanam-lab` tiene el suyo en su carpeta - este no es referenciado por nadie); `pipeline-state.json` (ya en `.gitignore`, estado local); `.DS_Store` y `.pytest_cache/` (ya ignorados). No hay nada que limpiar: la basura ya esta cubierta por el `.gitignore`.
+- **`DREAMS.md` verificado y sano:** rotacion mensual funcionando (`dreams-rotate.py --check` OK, 26 entradas activas de octubre, septiembre archivado en `memory/archive/dreaming/`). No se toca.
+- **Verificacion:** `check-refs.py --all` OK (552 rutas); `check-bootstrap-budget.py` OK; pre-commit completo en el commit.
+
+---
+
 ## [2026-10-14] - AGENTS.md reescrito de una sola pieza: 18.560 -> 12.300 chars
 
 ### Changed

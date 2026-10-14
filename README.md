@@ -19,8 +19,8 @@ Workspace de trabajo de Kanam sobre OpenClaw, que vive **solo en la Mac Mini** (
 | Perfil de Gonzo | [`USER.md`](./USER.md) | Preferencias y reglas de interacción |
 | Memoria de largo plazo | [`MEMORY.md`](./MEMORY.md) | Memorias curadas (solo main session) |
 | Mapa y contrato de la memoria | [`memory/README.md`](./memory/README.md) | Estructura de `memory/`, retención, tooling |
-| Decisiones de arquitectura | [`docs/adr/`](./docs/adr/) | ADRs aceptados (86 archivos) |
-| Skills disponibles | [`SKILLS-INDEX.md`](./SKILLS-INDEX.md) | Índice de las 78 skills activas |
+| Decisiones de arquitectura | [`docs/adr/`](./docs/adr/) | ADRs aceptados (96 archivos) |
+| Skills disponibles | [`SKILLS-INDEX.md`](./SKILLS-INDEX.md) | Índice de las 99 skills activas |
 | Contribuir a OSS | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Estrategia y reglas de PRs |
 | Cambios estructurales | [`docs/CHANGELOG.md`](./docs/CHANGELOG.md) | Registro histórico del workspace |
 | Registros de sesión (historia) | [`docs/records/`](./docs/records/) | Fotos inmutables de sesiones pasadas (ADR-084), no documentación viva |
@@ -31,8 +31,8 @@ Workspace de trabajo de Kanam sobre OpenClaw, que vive **solo en la Mac Mini** (
 
 | Ruta | Qué es |
 |---|---|
-| [`agents/`](./agents/) | Los 4 roles de agente (dev, mind, ops, studio), cada uno con su `AGENTS.md`, identidad, skills y plantillas |
-| [`skills/`](./skills/) | Skills activas del workspace (36) |
+| [`agents/`](./agents/) | Los 7 roles de agente (dev, mind, ops, studio, critic, auditor, planner), cada uno con su `AGENTS.md`, identidad, skills y plantillas |
+| [`skills/`](./skills/) | Skills activas del Core (27; el total del workspace, con los árboles de rol, es 99) |
 | [`docs/`](./docs/) | Documentación: ADRs, arquitectura, checklists, entrevistas, linkedin, pipeline, stories, cpacc, records, entre otras |
 | [`memory/`](./memory/) | Memoria: `memory.db` (fuente de verdad) + vistas `.md` + archivo |
 | [`scripts/`](./scripts/) | Tooling del workspace (memoria, refs, ADRs, pipeline, gateway) |
@@ -40,7 +40,6 @@ Workspace de trabajo de Kanam sobre OpenClaw, que vive **solo en la Mac Mini** (
 | [`design/`](./design/) | Tokens y assets de diseño |
 | [`media/`](./media/) | Media de entrada de sesiones |
 | [`prompts/`](./prompts/), [`tests/`](./tests/) | Prompts y suites de test (bash, node, python) |
-| `sandbox/` | Pruebas temporales aisladas (gitignored) |
 
 ### Carpetas invisibles
 
