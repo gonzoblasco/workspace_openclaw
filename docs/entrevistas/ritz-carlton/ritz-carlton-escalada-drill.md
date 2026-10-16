@@ -90,5 +90,5 @@ Pick 2-3, no more. They show seniority:
 - If they ask about salary: don't give a number first. Ask for their budgeted range. If pushed: "$95k-$105k, which is what a Principal with my profile is worth."
 
 **After the call:**
-- Log the result in `docs/entrevistas/ritz-carlton-retest-seguimiento.md`
+- Log the result in `docs/entrevistas/ritz-carlton/ritz-carlton-retest-seguimiento.md`
 - Tell me and I update the daily

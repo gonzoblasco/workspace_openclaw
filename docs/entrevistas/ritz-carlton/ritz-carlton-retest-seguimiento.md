@@ -243,7 +243,7 @@
 
 ## Material de preparacion
 
-- **Drill primera ronda (EN INGLES):** `docs/entrevistas/ritz-carlton-escalada-drill.md`
-- **Preparacion retest (referencia):** `docs/entrevistas/ritz-carlton-retest-preparacion.md`
-- **Cheatsheet JS:** `docs/entrevistas/ritz-carlton-retest-cheatsheet.md`
-- **Quick drill:** `docs/entrevistas/ritz-carlton-retest-quickdrill.md`
+- **Drill primera ronda (EN INGLES):** `docs/entrevistas/ritz-carlton/ritz-carlton-escalada-drill.md`
+- **Preparacion retest (referencia):** `docs/entrevistas/ritz-carlton/ritz-carlton-retest-preparacion.md`
+- **Cheatsheet JS:** `docs/entrevistas/ritz-carlton/ritz-carlton-retest-cheatsheet.md`
+- **Quick drill:** `docs/entrevistas/ritz-carlton/ritz-carlton-retest-quickdrill.md`

@@ -35,7 +35,7 @@ Cada item cae en exactamente una de estas categorias:
 - **Hooks / tooling:** listar `projects/*/.git/hooks/pre-commit` y buscar `simple-git-hooks` en los `package.json`.
 - **Infra / reinicios:** `wc -c AGENTS.md MEMORY.md` (limite bootstrap 20.000), `~/.openclaw/logs/gateway-restart.log`, `~/.openclaw/logs/stability/`.
 - **Proyectos / anclas:** `projects/*/.knowledge/ADR-*.md`, `docs/NORTH.md`.
-- **Busqueda laboral:** `docs/entrevistas/job-search-tracker.md` (unica tabla de procesos).
+- **Busqueda laboral:** `docs/entrevistas/_general/job-search-tracker.md` (unica tabla de procesos).
 - **Cadencia de posts:** `ls -1 docs/linkedin/` con fechas de modificacion.
 
 ### 4. Recalcular estados

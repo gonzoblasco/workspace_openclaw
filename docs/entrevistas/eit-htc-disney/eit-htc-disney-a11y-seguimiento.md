@@ -166,7 +166,7 @@ Llego el mismo JD por **Naveen Raj** (Talent Acquisition, E-IT Professionals Cor
 
 ### UPDATE 16:05 - CV a11y enviado + respuesta a Naveen
 
-- **CV a11y enviado a Parthasarathy** (PDF: `docs/entrevistas/Gonzalo_Blasco_Lead_Digital_Accessibility_Resume.pdf`). Merge de sus 3 CVs, adaptado al JD. Cobertura de keywords 41% -> 94,1%.
+- **CV a11y enviado a Parthasarathy** (PDF: `docs/entrevistas/eit-htc-disney/Gonzalo_Blasco_Lead_Digital_Accessibility_Resume.pdf`). Merge de sus 3 CVs, adaptado al JD. Cobertura de keywords 41% -> 94,1%.
 - **Naveen Raj respondido (16:06):** avisado de que ya esta en proceso con Parthasarathy. **Respuesta de Naveen (16:09):** "okay thank you / he is my team lead only, You can continue with him." -> **sin conflicto.** Parthasarathy es el team lead de Naveen; se sigue con el. No hay doble sumision.
 - **Hallazgo importante:** Gonzo tiene **Deque University Accessibility Specialist Program (2021)** (5 cursos). El JD pide "relevant regional certification" en Required; IAAP esta en Preferred. Puede cubrir el requisito sin IAAP - mencionado en el CV.
 - **Estado:** esperando novedades de Parthasarathy. Arranque acordado 01/10.
@@ -239,7 +239,7 @@ Responder con interes + las 2 preguntas bloqueantes. Liderar con la fuerza real:
 
 **Base:** el CV que se envio el 11/09 para este mismo proceso (`Gonzalo_Blasco_Lead_Digital_Accessibility_Resume.pdf` + `eit-cv-gonzalo-blasco-a11y.md`), no un CV generico.
 
-**Entregable:** `docs/entrevistas/Gonzalo_Blasco_Lead_Software_Engineer_Digital_Accessibility.docx` (13 KB, formato original del DOCX intacto - misma tipografia/colores, single-column, sin tablas, sin header/footer, sin em/en dash). Gonzo pidio explicitamente Word (no PDF).
+**Entregable:** `docs/entrevistas/eit-htc-disney/Gonzalo_Blasco_Lead_Software_Engineer_Digital_Accessibility.docx` (13 KB, formato original del DOCX intacto - misma tipografia/colores, single-column, sin tablas, sin header/footer, sin em/en dash). Gonzo pidio explicitamente Word (no PDF).
 
 ### Cobertura de keywords
 

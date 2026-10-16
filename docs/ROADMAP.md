@@ -169,7 +169,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
   - [ ] Flip `draft` -> publicado documentado en el archivo de cada post.
 
 ### 2.3 Búsqueda laboral 🔴 P0
-- **Qué**: procesos abiertos y su estado. **Fuente de verdad única**: `docs/entrevistas/job-search-tracker.md`.
+- **Qué**: procesos abiertos y su estado. **Fuente de verdad única**: `docs/entrevistas/_general/job-search-tracker.md`.
 - **Por qué**: es el objetivo activo del Horizonte 0 (`docs/NORTH.md`); situación económica urgente.
 - **CORRECCIÓN MAYOR (2026-10-06)**: la versión anterior de este ROADMAP afirmaba *"EIT/HTC/Disney - OFERTA ACEPTADA (11/09), USD 4.000/mes, arranque 01/10"*. **Era falso.** El tracker (actualizado al **2026-09-24**) dice: **EIT nunca tuvo oferta firme** (el rate lo aceptó el reclutador, el cliente jamás hizo call; era un bench req amplio). **No hay procesos abiertos: todos cerrados.** El estado 🟢 del item anterior era un falso verde de tres semanas.
 - **Criterio de éxito**: al menos un proceso avanza a oferta/onboarding.
