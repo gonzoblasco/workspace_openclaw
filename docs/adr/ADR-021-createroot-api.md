@@ -1,27 +1,27 @@
-# ADR-021: Createroot Api
+# ADR-021: createRoot API
 
-**Status:** Accepted
+**Estado:** Aceptado
 **Fecha:** 2026-08-05
-**Origen:** fullstack-graphql-react
-**Source:** Extracted from Full-Stack GraphQL + React book processing
-**Scope:** Global - all new React projects
+**Actualizado:** 2026-10-15
+**Decisores:** Gonzo / Kanam
+**Origen:** workspace (generalizado desde libro "Full-Stack GraphQL + React")
 
-## Context
+## Contexto
 
-`ReactDOM.render()` was the standard React entry point for years. It was deprecated in React 18 and removed in React 19.
+`ReactDOM.render()` fue el entry point estándar de React por años. Fue deprecado en React 18 y removido en React 19.
 
-## Decision
+## Decisión
 
-Always use `createRoot` from `react-dom/client` as the React entry point.
+Siempre usar `createRoot` de `react-dom/client` como entry point de React.
 
 ## Rationale
 
-- `ReactDOM.render` is removed in React 19 - code using it will not compile
-- `createRoot` enables React 18+ concurrent features (automatic batching, transitions, Suspense)
-- Supports `StrictMode` for development-time side-effect detection
-- Standard pattern in all modern React projects and frameworks (Next.js, Remix, Vite templates)
+- `ReactDOM.render` removido en React 19 - código que lo use no compila
+- `createRoot` habilita features concurrentes de React 18+ (automatic batching, transitions, Suspense)
+- Soporta `StrictMode` para detección de side-effects en desarrollo
+- Patrón estándar en todos los proyectos/frameworks modernos (Next.js, Remix, Vite templates)
 
-## Pattern
+## Patrón
 
 ```jsx
 import { StrictMode } from 'react';
@@ -35,13 +35,16 @@ createRoot(document.getElementById('root')).render(
 );
 ```
 
-## Consequences
+## Consecuencias
 
-- Import `createRoot` from `react-dom/client` (not `react-dom`)
-- Single `root.render()` call replaces `ReactDOM.render()`
-- `StrictMode` wrapping is recommended for development
+- Import `createRoot` desde `react-dom/client` (no `react-dom`)
+- Una sola llamada `root.render()` reemplaza `ReactDOM.render()`
+- `StrictMode` wrapping recomendado para desarrollo
 
-## References
+## Verificación en proyectos actuales
+- kanam-spec: `createRoot` en `src/main.tsx`
+- soporteml: `createRoot` en `src/main.tsx`
 
+## Referencias
 - https://react.dev/reference/react-dom/client/createRoot
-- ADR-013: Vite as Default Bundler Over webpack
+- [ADR-020](./ADR-020-vite-default-bundler.md): Vite como bundler por defecto

@@ -257,3 +257,51 @@ Corrida OnWheels embeddings (2026-10-06): el pipeline A/B exige verificar CADA a
 
 ---
 
+## Learning Progress: Fundamentals of Skills
+
+ - **Concept:** Distinction between Imperative (Scripts) and Declarative (Skills). - **Key Insights:** - **Flexibility:** Skills allow the LLM to handle variability in outputs that would break rigid scripts. *   **Cognitive Guardrails:** Skills provide a "safety boundary" (Intent, Protocol, Restrictions) for agent behavior. *   **Declarative Nature:** A Skill is a "desire" or "instruction set" interpreted by the LLM, not an executable script. *   **Thinking vs. Doing:** Scripts are procedural/st
+
+---
+
+## Key Concepts
+
+ - **Acting-Metaphor:** The Agent is the actor; the Skill is the script/costume provided just-in-time. - **Separation of Concerns:** YAML handles the Machine (metadata/index); Markdown handles the Brain (instructions). - **Just-in-Time Injection:** Only the relevant skill context is loaded into the prompt to save tokens and reduce noise. - **Escaping/Sanitization:** Identified the risk of `</skill>` tags being injected as data and the need for a sanitization layer during the Injection process.
+
+---
+
+## Learning Path: OpenClaw Roadmap
+
+ - **Methodology:** Three-layered approach (Theory, Logic, Practice). - **Focus:** Understanding the "Meta-physics" of OpenClaw-educating agent criteria rather than just programming hardcoded logic.
+
+---
+
+## Decisiones Estratégicas Clave
+
+ ✅ **Todos los modelos están incluidos en Pro** (incluidos los ultra potentes como mistral-large-3:675b) ✅ **Pago por consumo de GPU, no por tokens:** - Categoría 1 (30B-120B): Prácticamente infinitos en Cloud, pero limitados por contexto en OpenClaw ⚠️ - Categoría 2 ("Flash/Mid-tier"): **El punto dulce 🎯** - Categoría 3 (Premium): Hay que buscarle un uso específico... - Categoría 4 (Pro/Enterprise): Mirarlos de lejos ✅ **Evitar Tier 1 y Tier 4:** Limitaciones de contexto (Tier 1) y costos/overk
+
+---
+
+## 📌 Decisiones Clave Documentadas
+
+ 1. ✅ **Thinking unificado en HIGH** para todos los roles (ADR-053, no cambió) 2. ✅ **Primario:** `deepseek-v4.1-flash:cloud` (reemplaza v4-flash que se retiró) 3. ✅ **Auditor:** `nemotron-3-super:cloud` (validado por probe contra ultra) 4. ✅ **Critic:** `gpt-oss:120b:cloud` (reemplaza nemotron-super del config anterior, mejor para revisión profunda) 5. ✅ **Dev y Ops usan el mismo modelo (`glm-5.3-flash`):** Consistencia en seguridad, no se estiran en tareas críticas 6. ✅ **Kimi-k3 reservado:** 
+
+---
+
+## Nuevo dato clave (de Gonzo)
+
+ - **Todos los modelos cloud están incluidos en Ollama Pro** (sin límite de catálogo). - Son **por consumo de GPU, no por tokens** → categoría 1 (30-120B) prácticamente infinitos en Cloud. - **La limitación en OpenClaw es el contexto** (no el costo de acceso). - Categorización por Gonzo: - **Tier 1** (30-120B: gemma4 32.7B, gpt-oss 120B, nemotron-3-nano 30B): infinitos pero limitados por contexto en OpenClaw. - **Tier 2**: el "punto dulce" (deepseek-v4.1-flash, glm-5.3-flash, minimax-m2.7, mistr
+
+---
+
+## Reglas/lecciones confirmadas en esta conversacion (durables)
+
+ - **Los auto-reportes de subagentes MIENTEN**: 4 veces dijeron "listo/verde" siendo falso (U1 sin tests; U3 "142/0" con 3 rojos + perspective perdida; U5 TONE_BY_TYPE "eliminado" y seguia; U7 curva "completa" a medias - A murio y B completo). **SIEMPRE verificar el repo real** (`git status`, `npm test`, grep), nunca el reporte. - **"Test verde != funciona"**: el juego NO respondia a ninguna tecla con 138 tests verdes -> era un `</div>` HUERFANO en `index.html` (21 abre vs 22 cierra) que el nave
+
+---
+
+## Hallazgos clave:
+
+ 1. **Especificaciones confirmadas (ollama show):** - Nemotron 3 Super: ~120B params, 262K contexto, NVFP4, thinking: false/true - Nemotron 3 Ultra: **550B params**, 262K contexto, thinking: false/true - DeepSeek V4.1 Flash: ~763B params, 1M contexto, FP8, thinking: false/true 2. **Niveles de pensamiento:** Vía API directa SOLO `think=false` y `think=true` funcionan. Los niveles "low", "medium", "high", "max", "ultra" devuelven respuestas vacías (0 chars). Gonzo confirma que EN OPENCLAW sí funci
+
+---
+

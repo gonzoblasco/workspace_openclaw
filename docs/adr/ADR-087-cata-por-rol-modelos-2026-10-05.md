@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** Sesión 2026-10-05 - limpieza y rediseño de modelos, tras dos artículos externos (Stackademic, grahammiranda) que sugerían Nemotron 3 Ultra sobre MiniMax M3 por tamaño.
-**Relacionado:** ADR-053 (modelos primario/auxiliar/alternativo, superseded parcialmente), ADR-077 (pipeline A/B asimétrico), ADR-083 (frontera de roles), ADR-080 (modelo visual studio)
+**Relacionado:** ADR-090 (modelos por rol, que consolidó la asignación), ADR-077 (pipeline A/B asimétrico), ADR-083 (frontera de roles), ADR-080 (modelo visual studio)
 
 ---
 

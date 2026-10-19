@@ -1,33 +1,33 @@
-# ADR-025: Enfoque Iterativo Tooling
+# ADR-025: Enfoque Iterativo para Tooling
 
-**Status:** Accepted
+**Estado:** Aceptado
 **Fecha:** 2026-08-05
-**Origen:** react-18-design-patterns
-**Source:** React 18 Design Patterns - Chapter 1 (JavaScript fatigue section)
-**Scope:** Global - aplica a cualquier proyecto que adopte tooling del ecosistema JS
+**Actualizado:** 2026-10-15
+**Decisores:** Gonzo / Kanam
+**Origen:** workspace (generalizado desde libro "React 18 Design Patterns")
 
-## Context
+## Contexto
 
-Es común en el ecosistema JavaScript sentirse abrumado por la cantidad de herramientas disponibles: bundlers, transpiladores, linters, test runners, frameworks de estado, routers, etc. Esto se conoce como "JavaScript fatigue".
+Es común en el ecosistema JavaScript sentirse abrumado por la cantidad de herramientas: bundlers, transpiladores, linters, test runners, frameworks de estado, routers, etc. Esto se conoce como "JavaScript fatigue".
 
-El error más frecuente es querer resolver todo el stack de tooling antes de escribir una línea de código de la aplicación.
+El error más frecuente es querer resolver todo el stack de tooling antes de escribir código de la aplicación.
 
-## Decision
+## Decisión
 
 Adoptar un **enfoque iterativo** para incorporar tooling:
 
-1. **Arrancar con lo mínimo** que permita escribir y ver la aplicación funcionando.
-2. **Agregar tooling solo cuando el problema lo justifique** - no por moda, no por "vamos a necesitarlo después".
-3. **Cada herramienta debe resolver un problema real y actual** del proyecto, no uno hipotético.
+1. **Arrancar con lo mínimo** que permita escribir y ver la aplicación funcionando
+2. **Agregar tooling solo cuando el problema lo justifique** - no por moda, no por "vamos a necesitarlo después"
+3. **Cada herramienta debe resolver un problema real y actual** del proyecto, no uno hipotético
 
-## Consequences
+## Consecuencias
 
 - Menos configuración inicial, más tiempo en código de producto
 - Menos dependencias no utilizadas
-- Curva de aprendizaje más gradual para nuevos miembros del equipo
+- Curva de aprendizaje más gradual para nuevos miembros
 - Riesgo bajo: si una herramienta se necesita después, se agrega cuando el problema existe
 
-## Examples
+## Ejemplos
 
 - No instalar React Router hasta tener dos pantallas que navegar
 - No configurar estado global (Zustand, Redux) hasta que dos componentes hermanos necesiten compartir estado

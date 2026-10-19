@@ -1,26 +1,34 @@
-# ADR-014: Typescript For Tests
+# ADR-014: TypeScript en Archivos de Test
 
-**Status:** Accepted
+**Estado:** Aceptado
 **Fecha:** 2026-08-05
-**Origen:** Simplify Testing with React Testing Library (Packt)
+**Actualizado:** 2026-10-15
+**Decisores:** Gonzo / Kanam
+**Origen:** workspace (generalizado desde libro "Simplify Testing with React Testing Library")
 
-## Context
+## Contexto
 
-Many testing tutorials and books still use JavaScript for test files. Modern React development is predominantly TypeScript, and test files benefit from the same type safety.
+Muchos tutoriales y libros de testing aún usan JavaScript para archivos de test. El desarrollo React moderno es predominantemente TypeScript, y los archivos de test se benefician de la misma type safety.
 
-## Decision
+## Decisión
 
-All test files in new React projects should be TypeScript (.test.ts / .test.tsx).
+Todos los archivos de test en nuevos proyectos React/TypeScript deben ser **TypeScript** (`.test.ts` / `.test.tsx`).
 
-## Alternatives considered
+## Alternativas consideradas
+- **JavaScript con JSDoc:** Menos estricto, más difícil de mantener a escala
+- **JavaScript plano:** Más rápido de escribir pero pierde type safety
 
-- JavaScript with JSDoc: Less strict, harder to maintain at scale
-- Plain JavaScript: Faster to write but loses type safety
+## Consecuencias
 
-## Consequences
+- Mejor soporte IDE (autocomplete, refactoring, type checking)
+- Captura errores de tipos en compile-time antes de correr tests
+- Vitest maneja `.tsx` nativamente con cero configuración
+- Ligeramente más verboso pero la seguridad supera la verbosidad
+- Consistencia con el resto del codebase
 
-- Better IDE support (autocomplete, refactoring, type checking)
-- Catches type errors at compile time before tests run
-- Vitest handles .tsx natively with zero configuration
-- Slightly more verbose but the safety outweighs the verbosity
-- Consistent with the rest of the codebase
+## Verificación en proyectos actuales
+- kanam-spec: tests en `.test.ts` (node:test runner)
+- Proyectos React: tests en `.test.tsx` con Vitest
+
+## Referencias
+- [ADR-013](./ADR-013-vitest-over-jest.md): Vitest como test runner

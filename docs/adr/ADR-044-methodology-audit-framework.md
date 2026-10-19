@@ -13,7 +13,7 @@ Gonzo trajo un framework de adopción de IA en 8 fases, usado por consultoras pa
 
 La pregunta inicial fue si esto debía convertirse en workflow, pipeline, hook o lista de tareas. El riesgo de malinterpretarlo era real: forzarlo como pipeline (como el A/B o el complexity-driven) lo haría competir con mecanismos de ejecución que ya existen y funcionan, creando solapamiento y fricción en lugar de valor.
 
-El sistema ya tiene pipelines de ejecución sólidos (ADR-041 selección de modelo por tarea, ADR-043 complexity-driven pipeline). Lo que NO tiene es un mecanismo periódico para auditar sus propias metodologías: las skills nacen reactivas (de un incendio puntual), la gobernanza de procesos depende de memoria (a diferencia de la de código, que está en hooks), y no hay momento sistemático de pregunta "¿qué metodología está obsoleta, cuál falta, cuál dimensión descuidamos?".
+El sistema ya tiene pipelines de ejecución sólidos (ADR-043 complexity-driven pipeline). Lo que NO tiene es un mecanismo periódico para auditar sus propias metodologías: las skills nacen reactivas (de un incendio puntual), la gobernanza de procesos depende de memoria (a diferencia de la de código, que está en hooks), y no hay momento sistemático de pregunta "¿qué metodología está obsoleta, cuál falta, cuál dimensión descuidamos?".
 
 ## Decision
 
@@ -27,7 +27,7 @@ El sistema ya tiene pipelines de ejecución sólidos (ADR-041 selección de mode
 
 ### Qué NO es
 
-1. **NO reemplaza al pipeline A/B** (ADR-041/043): estos deciden CÓMO ejecutar una tarea (modelo, thinking, agentes). El framework decide CÓMO MADURAR las metodologías. Complementarios, planos distintos.
+1. **NO reemplaza al pipeline A/B** (ADR-043/077): estos deciden CÓMO ejecutar una tarea (modelo, thinking, agentes). El framework decide CÓMO MADURAR las metodologías. Complementarios, planos distintos.
 2. **NO es gate diario:** no se corre en cada sesión ni en cada tarea. Solo en guardado con toque metodológico, y en auditoría profunda.
 3. **NO es lista de tareas operativa:** no genera backlog de features ni de código. Genera deuda metodológica y acciones de madurez.
 
@@ -35,7 +35,7 @@ El sistema ya tiene pipelines de ejecución sólidos (ADR-041 selección de mode
 
 | Mecanismo | Pregunta que responde | Frecuencia |
 |---|---|---|
-| Pipeline A/B + complexity-driven (ADR-041/043) | ¿Cómo ejecuto esta tarea? | Por tarea |
+| Pipeline A/B + complexity-driven (ADR-043/077) | ¿Cómo ejecuto esta tarea? | Por tarea |
 | Skill workshop (propose) + post-task-reflection | ¿Qué aprendí y qué skill falta? | Por tarea/lección |
 | **Methodology Audit (este ADR)** | ¿El ecosistema de metodologías está sano? | Guardado con toque metodológico + trimestral |
 | Guardado de sesión (session-lifecycle) | ¿Quedó todo registrado? | Por sesión |
@@ -49,7 +49,7 @@ El sistema ya tiene pipelines de ejecución sólidos (ADR-041 selección de mode
 
 ## Alternativas
 
-- **Convertirlo en pipeline (rechazado):** competiría con ADR-041/043 en el plano de ejecución. Ya existen mecanismos buenos para eso; duplicar es fricción.
+- **Convertirlo en pipeline (rechazado):** competiría con ADR-043/077 en el plano de ejecución. Ya existen mecanismos buenos para eso; duplicar es fricción.
 - **Solo lista de tareas (rechazado):** perdería la función de diagnóstico. Una lista sin puntaje ni mapeo no destapa qué dimensión está descuidada.
 - **No hacer nada (rechazado):** los gaps detectados (skills reactivas, gobernanza de procesos sin automatizar, falta de auditoría periódica) son reales y no se cierran solos.
 

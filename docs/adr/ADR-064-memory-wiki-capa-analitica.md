@@ -17,7 +17,7 @@ El plugin `memory-wiki` (bundled, v2026.9.5) estaba **instalado pero deshabilita
 
 La skill `gateway-config` lo listaba como candidato legitimo a **activar** ("solo si una skill existente del workspace lo justifica, ej. `memory-wiki` con la skill `memory-wiki-workflow`"). El caso se cumplia: la skill existia.
 
-**El problema que ataca:** durante la auditoria de ADRs del 2026-09-22 se encontraron contradicciones **a mano**, una por una (ADR-040 excluia `minimax-m2.7` y el config lo corria; ADR-041 declaraba GLM y corria otra cosa; `AGENTS.md` decia thinking MAX y estaba en high). Detectar esa clase de divergencia entre lo documentado y el estado real de forma manual no escala y depende de que alguien sospeche.
+**El problema que ataca:** durante la auditoria de ADRs del 2026-09-22 se encontraron contradicciones **a mano**, una por una (una vieja política de modelos excluia `minimax-m2.7` y el config lo corria; otra declaraba GLM y corria otra cosa; `AGENTS.md` decia thinking MAX y estaba en high). Detectar esa clase de divergencia entre lo documentado y el estado real de forma manual no escala y depende de que alguien sospeche.
 
 ---
 

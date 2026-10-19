@@ -1,28 +1,28 @@
-# ADR-034: Server Components Estandar
+# ADR-034: Server Components como Estándar de SSR
 
-**Status:** Accepted
+**Estado:** Aceptado
 **Fecha:** 2026-08-05
-**Origen:** react-18-design-patterns
-**Source:** React 18 Design Patterns - Chapter 12 (Server-Side Rendering)
-**Scope:** Global - aplica a cualquier proyecto React con SSR
+**Actualizado:** 2026-10-15
+**Decisores:** Gonzo / Kanam
+**Origen:** workspace (generalizado desde libro "React 18 Design Patterns")
 
-## Context
+## Contexto
 
 El libro presenta SSR de dos formas:
 
 1. **Manual:** Express + webpack + Babel + `renderToString` + dehydration/hydration con `window.__DATA__`
 2. **Next.js Pages Router:** `getInitialProps` para data fetching en SSR
 
-Ambos enfoques son legacy. El manual requiere configurar webpack, Babel, Express, y manejar dehydration manualmente. Pages Router con `getInitialProps` esta deprecado desde Next.js 13 (2023).
+Ambos enfoques son legacy. El manual requiere configurar webpack, Babel, Express, y manejar dehydration manualmente. Pages Router con `getInitialProps` está deprecado desde Next.js 13 (2023).
 
-## Decision
+## Decisión
 
-Usar **Next.js App Router con Server Components** como estandar para SSR en proyectos nuevos. Los Server Components permiten:
+Usar **Next.js App Router con Server Components** como estándar para SSR en proyectos nuevos. Los Server Components permiten:
 
 - Data fetching directo en el componente (async component)
 - Zero JS enviado al cliente para componentes que solo renderizan en servidor
 - Streaming de HTML progresivo
-- Sin necesidad de hydration explicita
+- Sin necesidad de hydration explícita
 
 ### Ejemplo comparativo
 
@@ -69,16 +69,16 @@ async function Page() {
 1. **Simplicidad:** un componente async reemplaza Express route + renderToString + template + dehydration
 2. **Zero-config:** Next.js maneja webpack, Babel, SSR, y routing
 3. **Performance:** Server Components no agregan JS al bundle del cliente
-4. **Streaming:** el HTML se envia progresivamente, mejorando Time To First Byte
+4. **Streaming:** el HTML se envía progresivamente, mejorando Time To First Byte
 5. **Fetch nativo:** desde Node 18, no necesita `isomorphic-fetch`
 6. **React 19:** `use()` + Suspense + Server Components son el futuro de React
 
-## Consequences
+## Consecuencias
 
 - Proyectos nuevos con SSR usan Next.js App Router
 - Proyectos existentes con Pages Router migran gradualmente (Next.js soporta ambos)
-- SSR manual con Express solo se justifica para casos muy especificos (custom server, non-Next.js)
-- `getInitialProps` se considera deuda tecnica
+- SSR manual con Express solo se justifica para casos muy específicos (custom server, non-Next.js)
+- `getInitialProps` se considera deuda técnica
 
 ## Referencias
 
@@ -86,3 +86,4 @@ async function Page() {
 - React Server Components: https://react.dev/reference/rsc/server-components
 - Next.js Pages to App migration: https://nextjs.org/docs/app/building-your-application/upgrading/app-router-migration
 - React 19 Server Components: https://react.dev/blog/2024/12/05/react-19
+- [ADR-011](./ADR-011-nextjs-fullstack-platform.md): Next.js full-stack platform

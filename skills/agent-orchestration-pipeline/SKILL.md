@@ -28,7 +28,7 @@ claude -p "<tarea>" --model <tag o alias> \
 - **Aliases vs tags crudos:** los aliases (`claude-sonnet-5`) los resuelve el gateway `11435` (requiere Claude Desktop corriendo); contra el daemon `11434` fallan - ahi va el tag crudo (`deepseek-v4.1-flash:cloud`). `ollama launch claude` evita tener que elegir.
 - **Config persistente:** `~/.claude/settings.json` acepta un bloque `env` con `ANTHROPIC_BASE_URL` + `ANTHROPIC_AUTH_TOKEN` + `CLAUDE_CODE_MAX_CONTEXT_TOKENS`; no hace falta exportar en el shell. Un install global NO hereda la config del 3p.
 - `-p` = headless; `--dangerously-skip-permissions` = auto-aprueba tools (write, edit, shell) sin prompt.
-- Modelo: cualquiera de `ollama list`, elegido por tarea (ADR-040).
+- Modelo: cualquiera de `ollama list`, elegido por tarea (ADR-090).
 - El prompt (`-p`) lo redacta el ORQUESTADOR (Kanam), no el desarrollador.
 
 **Requisitos Claude Code:** >= 2.x (la 0.2.18 no maneja el bloque `{type:thinking}`), `~/.claude/settings.json` con `permissions.allow` (Edit, Write, Bash, Read), y tolerar los warnings `unrecognized_model` (ruido, no bloquean).

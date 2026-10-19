@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** pedido de Gonzo de "eliminar los ADRs que hagan referencia a definiciones tecnológicas" y "los que hagan referencia a versiones previas de SoporteML"
-**Relacionado:** ADR-001 (product-pipeline-integration), ADR-066 (guardias del workspace), ADR-048 (shadcn/Radix), ADR-037 (Lucide), ADR-036 (Turborepo/pnpm)
+**Relacionado:** ADR-001 (product-pipeline-integration), ADR-066 (guardias del workspace), ADR-048 (shadcn/Radix), ADR-037 (Lucide)
 
 ---
 
@@ -17,7 +17,7 @@ La orden describe un objeto que, verificado, **casi no existe**. La auditoria pr
 | Medición | Valor |
 |---|---|
 | ADRs en `docs/adr/` | **68** |
-| Citados por al menos otro archivo | 30+ (ADR-001 lo citan 36, ADR-040 18, ADR-037 11, ADR-048 10) |
+| Citados por al menos otro archivo | 30+ (ADR-001 lo citan 36, el entonces-ADR de modelos por tarea 18, ADR-037 11, ADR-048 10) |
 | **Con SoporteML como SUJETO** | **0** |
 | Que lo mencionan de pasada | 11 |
 | Que citan alguna tecnologia | 47 |
@@ -35,7 +35,6 @@ Borrar "los 47 que citan tecnologia" habria eliminado decisiones que hoy sostien
 
 - ADR-048 (shadcn/Radix) -> citado en **20** proyectos
 - ADR-037 (Lucide) -> **15**
-- ADR-036 (Turborepo/pnpm) -> **7**
 
 Ninguno de esos proyectos es SoporteML. Resetear un producto no justifica romper el ecosistema que lo hospeda.
 

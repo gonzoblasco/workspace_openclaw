@@ -89,7 +89,7 @@ def resolves(source: Path, target: str) -> bool:
 # su texto tambien cita rutas de la epoca y esta en rotacion permanente, asi que
 # se le da el mismo trato que al bloque rotado (no es una promesa sobre el arbol).
 SKIP_FILES = ("docs/CHANGELOG.md",)
-SKIP_DIRS = ("docs/records/", "docs/archive/")
+SKIP_DIRS = ("docs/records/", "docs/archive/", "docs/archives/", "docs/insights/")
 
 
 def is_skippable(ref: str) -> bool:

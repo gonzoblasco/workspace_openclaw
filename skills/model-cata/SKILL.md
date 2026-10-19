@@ -41,7 +41,7 @@ Un prompt debil hace catas inutiles. Requisitos minimos (si falta alguno, mejora
 
 ## Fase 5 - Decision y documentacion (el output)
 1. **Veredicto de roles:** motor (default), especialistas convocados, retirados - con por que de cada uno
-2. **ADR de motor** con manual del modelo ganador (plantilla en docs/adr/ADR-041): decision + regla de parametros + ficha de capacidades VERIFICADA (fuentes + fecha de consulta) + reglas de uso + riesgos/mitigaciones + rollback + pendientes con fechas
+2. **ADR de motor** con manual del modelo ganador: decision + regla de parametros + ficha de capacidades VERIFICADA (fuentes + fecha de consulta) + reglas de uso + riesgos/mitigaciones + rollback + pendientes con fechas
 3. **Purga del ecosistema en DOS capas:** lista estatica de provider + catalogo del picker (agents.defaults.models) explicito sin wildcards (los wildcards cuelan por descubrimiento dinamico) + fallback = el no-consumible (free, nunca auto)
 4. **Nombres literales del proveedor en config:** cero rebranding sin permiso (regla de Gonzo, 2026-08-29)
 5. **Docs sync:** TOOLS.md, MEMORY.md, CHANGELOG, daily + commit/push del workspace

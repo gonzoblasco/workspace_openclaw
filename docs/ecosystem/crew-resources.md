@@ -78,7 +78,7 @@ Filtrado de [mergisi/awesome-openclaw-agents](https://github.com/mergisi/awesome
 | **[Log Analyzer](https://github.com/mergisi/awesome-openclaw-agents/blob/main/agents/devops/log-analyzer/SOUL.md)** | Análisis de logs |
 | **[Infra Monitor](https://github.com/mergisi/awesome-openclaw-agents/blob/main/agents/devops/infra-monitor/SOUL.md)** | Monitoreo de infra |
 | **[Deploy Guardian](https://github.com/mergisi/awesome-openclaw-agents/blob/main/agents/devops/deploy-guardian/SOUL.md)** | Guardia de deploys |
-| **[Cost Optimizer](https://github.com/mergisi/awesome-openclaw-agents/blob/main/agents/devops/cost-optimizer/SOUL.md)** | Optimización de costos - alineado a ADR-053 |
+| **[Cost Optimizer](https://github.com/mergisi/awesome-openclaw-agents/blob/main/agents/devops/cost-optimizer/SOUL.md)** | Optimización de costos - alineado a ADR-090 |
 
 ### MIND / Datos
 
@@ -157,7 +157,7 @@ El repo trae un **sistema multi-agente completo para investigación** - es la im
 - **[Self Healing Server](https://github.com/TravisLeeeeee/awesome-openclaw-personas/tree/main/personas/devops/self-healing-server)** - detecta contenedores caídos/discos llenos y auto-remedia con backoff + log.
 - **[Incident Responder](https://github.com/TravisLeeeeee/awesome-openclaw-personas/tree/main/personas/devops/incident-responder)** - triage por severidad + post-mortems blameless.
 - **[Log Analyzer](https://github.com/TravisLeeeeee/awesome-openclaw-personas/tree/main/personas/devops/log-analyzer)** - clustering de errores para cortar ruido.
-- **[Cost Optimizer](https://github.com/TravisLeeeeee/awesome-openclaw-personas/tree/main/personas/devops/cost-optimizer)** - recursos idle + right-sizing (ADR-053).
+- **[Cost Optimizer](https://github.com/TravisLeeeeee/awesome-openclaw-personas/tree/main/personas/devops/cost-optimizer)** - recursos idle + right-sizing (ADR-090).
 
 ### 🔒 Security
 
@@ -501,7 +501,7 @@ Fuente: [Enderfga/claw-orchestrator](https://github.com/Enderfga/claw-orchestrat
 
 Esto es exactamente el problema de nuestra `verification-gates`. Y va más lejos: distingue **self-report (`ok`)** de **medición del runtime (`verified`)**. Es la implementación de "un auto-reporte de subagente no es un hecho", hecha infraestructura.
 
-**2. Run Ledger & Spend Caps - ADR-053 hecho mecánica**
+**2. Run Ledger & Spend Caps - ADR-090 hecho mecánica**
 Ledger JSONL durable: cada turno con engine, modelo, tokens, costo, duración. `maxBudgetUsd` **enforced por el runtime**, no por buena voluntad. Coherente con nuestro "no gastar recursos innecesarios".
 
 **3. Durable Run Kernel - nuestra pausa obligatoria, como grafo**
@@ -1634,7 +1634,7 @@ No es un reviewer: **es el guardián del *gusto*.** El propio repo marca la dist
 1. **El `critic` está en chino.** Todo el `SOUL.md` está escrito en chino (con el español/inglés entremezclado en frases de citas). **El contenido es excelente, pero hay que traducirlo y adaptarlo** para usarlo.
 2. **Es un sistema académico de papers** - arXiv, peer-review, Oral/Best Paper. **Nuestro caso es investigación de producto y de tools, no publicar papers.** El marco se adapta, pero **el tono academicista no calza directo.**
 3. **Es de `awesome-openclaw-personas`** - el repo **patrocinado por DeskClaw** (plataforma comercial). Ya lo marcamos en la ficha del repo.
-4. **Dice `anthropic/claude-sonnet-4-5`** como modelo - **de nuevo el sesgo a Claude.** Nuestros modelos son otros (ADR-053).
+4. **Dice `anthropic/claude-sonnet-4-5`** como modelo - **de nuevo el sesgo a Claude.** Nuestros modelos son otros (ADR-090).
 5. **13 roles son demasiados para nuestro caso.** El valor no está en copiar los 13, sino en **robar el esqueleto de tres** (planner/critic/writer) + el marco SHARP.
 6. **No verificado por nosotros.**
 

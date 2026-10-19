@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** evaluacion de arquitectura por capas (2026-09-15); Gonzo delego la regla en Kanam
-**Relacionado:** ADR-036 (Turborepo + pnpm monorepo)
+**Relacionado:** ADR-050 (memoria en SQLite), ADR-047 (Kanam Design System)
 
 ---
 
@@ -33,7 +33,7 @@ Se extrae **solo** cuando se cumplen TODAS estas condiciones:
 
 ### Forma cuando si toca
 
-- TS: un package de Turborepo/pnpm (monorepo ya estandar, ADR-036).
+- TS: un package interno del repo (si algun dia se adopta un monorepo, su estructura la define el proyecto).
 - Python: un paquete interno instalable, nunca un fork que viva fuera del repo.
 
 ---

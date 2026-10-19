@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** fase 3 de kanam-os; pedido de Gonzo - "hacer cambios globales sin tener que estar reconfigurando cada aplicacion y cada sesion"
-**Relacionado:** ADR-038 (learnings con mirror en DB), ADR-050 (memoria en SQLite), ADR-053 (modelos), ADR-054 (kanam-os como app local)
+**Relacionado:** ADR-038 (learnings con mirror en DB), ADR-050 (memoria en SQLite), ADR-054 (kanam-os como app local)
 
 ---
 
@@ -14,10 +14,10 @@ ADR-038 cerro una regla: **los documentos narrativos puros** (`MEMORY.md`, `AGEN
 
 Pero quedo un problema sin resolver, y Gonzo lo nombro con precision: **un valor global repetido en varios archivos se desincroniza solo**. Caso testigo encontrado mientras se construia esta fase:
 
-- `AGENTS.md` decia: primario `deepseek-v4.1-flash:cloud`, thinking `high` (ADR-053).
+- `AGENTS.md` decia: primario `deepseek-v4.1-flash:cloud`, thinking `high` (política de modelos vigente).
 - `docs/SETUP.md` decia: default `deepseek-v4-flash:cloud`, Kanam en thinking **`max`**, `thinkingDefault = "max"`.
 
-Las dos afirmaciones no pueden ser ciertas. El config real (`~/.openclaw/openclaw.json`: `thinkingDefault: "high"`, default `deepseek-v4.1-flash:cloud`) confirma que **`SETUP.md` estaba stale**, contradiciendo a ADR-053 desde que se escribio. Nadie lo noto porque nadie compara archivos a mano.
+Las dos afirmaciones no pueden ser ciertas. El config real (`~/.openclaw/openclaw.json`: `thinkingDefault: "high"`, default `deepseek-v4.1-flash:cloud`) confirma que **`SETUP.md` estaba stale**, contradiciendo la política de modelos vigente desde que se escribio. Nadie lo noto porque nadie compara archivos a mano.
 
 Ese es el problema: **no es que falte una DB, es que falta un mecanismo que haga imposible el drift.**
 
@@ -64,7 +64,7 @@ Un valor que aparece en 3 archivos y se contradice es un dato mal modelado; la p
 ### Positivas
 - **Un solo lugar para cada valor global.** Cambiar el modelo o el thinking es `set` + `apply`, no una caceria por archivos.
 - **El drift se vuelve detectable:** `managed-blocks.py check` reporta el desvio sin escribir nada.
-- **Ya pago:** al construir esto aparecio la contradiccion `SETUP.md` vs ADR-053. Se resolvio sin editar a mano: se inserto el bloque y la linea vieja se preservo marcada como historica.
+- **Ya pago:** al construir esto aparecio la contradiccion `SETUP.md` vs la política de modelos vigente. Se resolvio sin editar a mano: se inserto el bloque y la linea vieja se preservo marcada como historica.
 - **Sirve a lo que Gonzo pidio:** el cambio se propaga a `AGENTS.md`, `docs/SETUP.md` y (cuando se registren) los `.knowledge/` de cada proyecto, sin reconfigurar cada sesion.
 
 ### Negativas

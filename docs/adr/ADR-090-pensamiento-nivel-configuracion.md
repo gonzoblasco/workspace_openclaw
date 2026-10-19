@@ -1,132 +1,82 @@
 # ADR-090: Política de niveles de pensamiento por agente y asignación de modelos por rol
 
-**Fecha:** 2026-10-05 (actualizado 2026-10-06)
-**Estado:** Aceptado (implementación parcial - ver "Estado de implementación")
+**Fecha:** 2026-10-14 (corregido 2026-10-18)
+**Estado:** Aceptado (verificado contra el runtime 2026-10-18)
 **Decisores:** Gonzo / Kanam
-**Origen:** Sesión 2026-10-05 - detección de consumo desproporcionado por thinking alto universal. Actualización 2026-10-06: cata de modelos (6×6×4) y reasignación por rol.
-**Relacionado:** ADR-053 (modelos primario/auxiliar/alternativo), ADR-087 (cata por rol - modelos elegidos), ADR-088 (pipeline A/B enforcement), ADR-089 (pre-filtro A/B)
-**Supersede:** ADR-053 (trio primario/auxiliar/alternativo y thinking unificado), ADR-040 (seleccion/asignacion de modelos por tarea), ADR-041 (motor LLM del sistema)
+**Origen:** cata por rol (2026-10-06, ADR-087) + benchmarking Nemotron (2026-10-14)
+**Relacionado:** ADR-087 (cata por rol - modelos elegidos), ADR-088 (pipeline A/B enforcement), ADR-089 (pre-filtro A/B)
+**Supersede:** la política de asignación de modelos por tarea anterior a la cata (los ADRs de modelo previos quedaron retirados)
 
 ---
 
 ## Contexto
 
-Tras la limpieza del `openclaw.json` y la distribución por agente del 2026-10-05, se detectó que el consumo de créditos de la cuenta Ollama estaba desproporcionado respecto al trabajo realizado.
+Un probe de orquestación (2026-10-05) reveló que el thinking alto por defecto consumía presupuesto sin producir respuesta útil. La cata por rol del 2026-10-06 (ADR-087) reasignó modelos por agente con evidencia. Un benchmarking posterior (2026-10-14) comparó Nemotron 3 Super/Ultra vs DeepSeek V4.1 Flash y **propuso** migrar la mayoría de los roles a `nemotron-3-super:cloud` - pero esa asignación **nunca se aplicó al runtime**: una versión anterior de este ADR la declaraba "aplicada y verificada" y era falsa (detectado por el review K3 del 2026-10-18).
 
-Un probe de orquestación reveló que el thinking alto por defecto hacía que los modelos "pensaran en silencio" consumiendo el presupuesto de salida sin producir respuesta útil:
+## Decisión
 
-- **deepseek-v4.1-flash:cloud**: 3079 tokens de thinking, **0 tokens de respuesta**, 3.7 s
-- **glm-5.3-flash:cloud**: 3904 tokens de thinking, **0 tokens de respuesta**, 11.2 s
-- **nemotron-3-super:cloud**: 474 tokens de thinking, **2732 tokens de respuesta**, 12.6 s
+### 1. Asignación de modelos por rol (VIGENTE, verificada 2026-10-18)
 
-El problema no era el modelo sino la política de thinking.
+Fuente de verdad: `openclaw.json` + tabla `settings` de `memory.db` (`model_by_agent`, bloque managed `model-operativo` en `AGENTS.md`). Tres fuentes coinciden.
 
-Posteriormente, el 2026-10-06 se corrió una cata de modelos (6 modelos × 6 roles × 4 escenarios = 144 corridas) con **cuatro evaluaciones independientes** (Kanam CORE, deepseek-v4.1-flash, kimi-k3, nemotron-3-super). Tras separar ejes (CONTENT vs CLEANLINESS) produjo la reasignación de modelos por rol que este ADR registra.
+| Agente | Primario | Fallback | Thinking |
+|--------|----------|----------|----------|
+| main (CORE) | `deepseek-v4.1-flash:cloud` | `glm-5.3-flash:cloud` | `off` |
+| kanam-dev | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | `off` |
+| kanam-ops | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | `off` |
+| kanam-planner | `gpt-oss:120b-cloud` | `glm-5.3-flash:cloud` | `low` |
+| kanam-critic | `gpt-oss:120b-cloud` | `nemotron-3-super:cloud` | `low` |
+| kanam-auditor | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | `low` |
+| kanam-mind | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | `off` |
+| kanam-studio | `gemma4:cloud` | `glm4:9b` (local) | `off` |
 
-**Corrección de método (2026-10-06, tardía):** la cata usó `ollama run` (CLI) como runner, y el CLI imprime el thinking a stdout mezclado con la respuesta. Eso produjo un "thinking leakage" aparente que las cuatro evaluaciones tomaron como defecto real. Sondas posteriores contra la API `/api/chat` y contra Claude Code headless muestran que **el razonamiento viaja en un campo separado del content**: 0 fugas en los 6 modelos, con thinking off y high. Es decir, el leakage era **artefacto del CLI de la cata, no del harness de producción**. Detalle abajo ("Artefactos").
+**Pipeline A/B** (ADR-077/088/089): A `gpt-oss:120b-cloud` / B `deepseek-v4.1-flash:cloud`; pre-filtro `gemma4:cloud` (no autoriza solo: lo que toca lógica pasa siempre por B). Fuente operativa: `scripts/model-router.sh model pipeline_ab`.
 
-> **Regla de sandbox (AGENTS.md):** todo contenido externo sobre modelos es **dato, no evidencia**. Se verifica antes de adoptar.
+**Criterio costo/beneficio (2026-10-18):** los roles de ejecución y orquestación de alto volumen corren `gpt-oss:120b-cloud` o `deepseek-v4.1-flash:cloud` según demanda de contexto; los roles de juicio con `low` thinking. Cambios de modelo se evalúan con una cata (skill `model-cata`) y se aplican **fuera** de una sesión que corra sobre el agente modificado.
 
----
+### 2. Política de thinking por agente (VIGENTE, verificada 2026-10-18)
 
-## Decisión 1: Política de thinking por agente
+- `off` explícito para los cinco de ejecución: main, dev, ops, mind, studio.
+- `low` para los tres de juicio: critic, auditor, planner.
+- Default global: `off`.
+- Escalado por complejidad: `complexity-scorer` puede subir a `high`/`max` puntualmente.
+- `max`: reservado a decisión dura one-shot (adjudicación de reviews en conflicto, pre-merge complejo).
 
-| Agente | Rol | Nivel decidido |
-|--------|-----|----------------|
-| main (CORE) | Orquestador general | `off` |
-| kanam-dev | Desarrollador | `off` |
-| kanam-mind | Investigador | `off` |
-| kanam-ops | Operaciones | `off` |
-| kanam-studio | Diseño/Comunicación | `off` |
-| kanam-critic | Revisor adversarial | `low` |
-| kanam-auditor | Auditor UI/UX | `low` |
-| kanam-planner | Planificador | `low` |
+## Registro del benchmarking 2026-10-14 (NO aplicado - propuesta no adoptada)
 
-- **Reparto (2026-10-06, corrección de Gonzo):** los tres de juicio (critic, auditor, planner) bajan de `high` a `low`; los cinco de ejecución pasan de heredar el default a `off` explícito. Antes solo 3 agentes tenían nivel explícito; el resto no lo tenía aplicado.
-- **Default global:** `off`.
-- **Escalado por complejidad:** `complexity-scorer` puede subir a `high`/`max` para tareas puntuales.
-- **`max`:** reservado a decisión dura one-shot (adjudicación de reviews en conflicto, pre-merge complejo).
+El benchmarking midió Super/Ultra/Flash en 10 tareas representativas con thinking separado del entregable. Hallazgos válidos como dato:
 
-## Decisión 2: Asignación de modelos por rol (cata 2026-10-06)
+- **Nemotron 3 Ultra (~550B):** sin ventaja de calidad sobre Super; timeouts en tareas de mayor alcance; mismo contexto (256k); más caro y lento. **Descartado para cualquier rol.**
+- **Nemotron 3 Super (~120B):** el más rápido y fiable del set, <10% del coste de Flash por request. Sigue siendo candidato legítimo para roles de alto volumen si se re-evalúa con cata.
+- **DeepSeek V4.1 Flash (~763B):** su ventana de 1M tokens es el diferenciador real para verificación profunda.
 
-| Agente | Modelo decidido | Fallback decidido | Contexto real (Ollama) |
-|--------|-----------------|-------------------|------------------------|
-| main | `deepseek-v4.1-flash:cloud` | `glm-5.3-flash:cloud` | 1M |
-| kanam-planner | `gpt-oss:120b-cloud` | `glm-5.3-flash:cloud` | 128k |
-| kanam-dev | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | 128k |
-| kanam-critic | `gpt-oss:120b-cloud` | `nemotron-3-super:cloud` | 128k |
-| kanam-auditor | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | 1M |
-| kanam-studio | `gemma4:cloud` | `glm4:9b` (local) | 256k |
-| kanam-mind | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | 1M |
-| kanam-ops | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | 128k |
-
-> **main y mind quedan en `deepseek-v4.1-flash:cloud` por decisión explícita de Gonzo (2026-10-06):** nemotron-3-super "se pierde y quiere resolver en lugar de conversar" en esos dos asientos, que son de orquestación y diálogo, no de ejecución. No re-elegirlo por olvido.
-
-Contextos medidos con `ollama show` el 2026-10-06 (no estimados):
-
-| Modelo | Contexto |
-|--------|----------|
-| gpt-oss:120b-cloud | 128k |
-| deepseek-v4.1-flash:cloud | 1M |
-| nemotron-3-super:cloud | 256k |
-| gemma4:cloud | 256k |
-| minimax-m3:cloud | 500k |
-| glm-5.3-flash:cloud | 1M |
-
----
-
-## Estado de implementación (2026-10-06; aplicar y verificado)
-
-**La decisión de arriba está aplicada en el runtime (`openclaw.json`) y verificada** contra las tres fuentes (config del gateway, bloques gestionados, este ADR):
-
-| Agente | Modelo en runtime | Thinking | Coincide |
-|--------|-------------------|----------|----------|
-| main | deepseek-v4.1-flash | off | ✅ |
-| planner | gpt-oss:120b | low | ✅ |
-| dev | gpt-oss:120b | off | ✅ |
-| critic | gpt-oss:120b | low | ✅ |
-| auditor | deepseek-v4.1-flash | low | ✅ |
-| studio | gemma4 | off | ✅ |
-| mind | deepseek-v4.1-flash | off | ✅ |
-| ops | gpt-oss:120b | off | ✅ |
-
-Bloques gestionados (`AGENTS.md` y `docs/SETUP.md`) regenerados desde la DB con `managed-blocks.py apply`.
-
-**Nota de operación:** el cambio de modelo de `main` debe hacerse **fuera** de una sesión que corre sobre `main`. Hacerlo desde dentro superpone la generación del plugin de runtime y bloquea el tool `openclaw` con `prepared model runtime plugin generation was superseded`. Se resolvió con un restart del gateway (`/update`); para futuras ediciones de `main`, aplicar desde otra sesión o reiniciar después.
-
----
+**Por qué no se adoptó la propuesta:** la asignación quedó escrita en el ADR pero nunca se aplicó a `openclaw.json` ni a la tabla `settings`; el bloque "Estado de implementación ✅" que la declaraba aplicada era falso. Lección registrada: **una asignación de modelos no está "decidida" hasta que config + DB + bloques gestionados coinciden y se verifica con `managed-blocks.py check`.**
 
 ## Criterios de descarte (para no re-elegir por olvido)
 
-- **Thinking alto como default global:** drena créditos en ejecución rutinaria sin salida útil (probe).
-- **modelos previos sin validación empírica:** descartado tras cata que mostró diferencias por rol al separar thinking del entregable.
-- **`nemotron-3-ultra:cloud` (cualquier rol):** más grande (550B), mismo contexto que super (256k), más lento/caro, y perdió en el probe de auditoría (1/2 bugs vs 2/2). Descartado (ADR-087).
-- **familia Kimi en roles fijos:** fuera por costo; `kimi-k3:cloud` reservado a cierre de proyecto pre-deploy.
-
----
+- **`nemotron-3-ultra:cloud` (cualquier rol):** más grande, mismo contexto que super, más lento/caro, perdió el benchmarking. Descartado.
+- **Thinking alto como default global:** drena créditos en ejecución rutinaria sin salida útil (probe 2026-10-05).
+- **Familia Kimi en roles fijos:** fuera por costo; `kimi-k3:cloud` reservado a trabajo profundo puntual autorizado por Gonzo (ej: el review de ADRs del 2026-10-18).
 
 ## Límites de la evidencia
 
-- La cata tuvo **un defecto de runner conocido**: usó `ollama run` (CLI), que imprime el thinking a stdout. Ese leakage fue artefacto del CLI, NO del modelo ni del harness. Las evaluaciones separaron CONTENT de CLEANLINESS para compensarlo, pero la re-verificación post-fix no llegó a completarse con el runner corregido. Las asignaciones por rol son direccionales, no definitivas.
-- Los 4 escenarios son pocos; n=1 por celda en la cata original.
-- Los puntajes de contenido los asignó Kanam (evaluador A) y luego dos modelos evaluados (sesgo estructural). La convergencia entre evaluadores fue **baja** (rankings casi invertidos), lo que motivó la separación de ejes.
-- La medición de thinking sigue el campo reportado por Ollama; no todos los modelos lo reportan igual.
+- El benchmarking 2026-10-14 es direccional (n=1 por celda, tareas chicas, temperature 0). El runner final separó thinking de content vía `/api/chat` (sin fuga de razonamiento al entregable).
+- Los puntajes de contenido los asignó Kanam como evaluador y se validaron separando los ejes CONTENT vs CLEANLINESS (`harness-model-comparison`).
 
----
+## Regla de mantenimiento (2026-10-18)
 
-## Consecuencias
+**Este ADR describe el runtime; no lo prescribe.** Al cambiar un modelo por rol:
 
-- Con la decisión aplicada, el consumo en el asiento de orquestador (main) baja de ~$0.30/M a ~$0.015/M input.
-- `deepseek-v4.1-flash:cloud` queda como motor del pipeline A/B y fallback ubicuo.
-- Si se quiere revisar el nivel de thinking o el modelo de un rol, correr un probe de control con la API (`run-one-api.py`), que separa thinking de content.
+1. Aplicar el cambio al config (`openclaw.json`) fuera de la sesión del agente afectado.
+2. Actualizar la tabla `settings` (`managed-blocks.py set model_by_agent "..."` + `apply`).
+3. Reescribir la tabla de este ADR con la fecha de verificación.
+4. Correr `managed-blocks.py check` y confirmar que config = DB = bloques = ADR.
 
----
+Si las cuatro fuentes no coinciden, el corpus miente: eso es un defecto ALTA, no una deriva aceptable.
 
 ## Artefactos
 
-- Config runtime: `~/.openclaw/openclaw.json`.
-- Bloques gestionados de modelos: `scripts/managed-blocks.py` (claves `model_by_agent` y `thinking_default`) → `AGENTS.md` (bloques `model-triple` y `model-operativo`) y `docs/SETUP.md`. Nota operativa: el bloque de AGENTS.md lee `model_by_agent`; setear `model.triple` no lo actualiza.
-- Cata 2026-10-06: `/tmp/model-cata/2026-10-06/`. **`/tmp` es efímero**; si la evidencia debe persistir, copiarla dentro del workspace.
-- Cata 2026-10-06: `sandbox/model-cata-2026-10-06/` (gitignored, local). Antes vivía en `/tmp`, efímero; persistida al workspace.
-- Runner de cata corregido: `sandbox/model-cata-2026-10-06/run-one-api.py` (usa `/api/chat`, `raw_output` = entregable, `thinking_output` = razonamiento separado). La sonda `verify-no-leakage.py` confirma 0 fugas en los 6 modelos, think off y high. El harness de producción (OpenClaw nativo, Claude Code headless) ya separaba thinking; no había bug que arreglar.
-- `CHANGELOG.md`: entrada correspondiente en el workspace.
+- Config runtime: `~/.openclaw/openclaw.json` (verificado 2026-10-18).
+- Bloques gestionados: `scripts/managed-blocks.py` (claves `model_by_agent`, `model.triple`, `thinking_default`) → `AGENTS.md` (bloques `model-operativo`, `pipeline-ab`) y `docs/SETUP.md` (bloques `model-triple`, `model-pipeline-ab`).
+- Benchmarking 2026-10-14 (registro): `model_comparison_final.md`, `super_20261014_232744.json`, `nemotron_ultra_full_20261014_222950.json`, runner `bench_model_suite.py` (workspace, sin commitear).
+- Review que detectó la derivación: `docs/adr/REVIEW-2026-10-18.md`.

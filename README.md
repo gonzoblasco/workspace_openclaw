@@ -57,7 +57,7 @@ OpenClaw carga un subconjunto de archivos como *Project Context* en cada arranqu
 ## Contrato del worktree
 
 - **No se versiona:** `.env` y variantes, tokens, `*.db` (excepto `memory/memory.db`), `node_modules/`, memoria cruda de sesión, estado local de dreaming.
-- **Los proyectos viven en `<workspace>/projects/`**, dentro del árbol del gateway (ADR-098, que supersede ADR-075). Cada proyecto trae su propio `.git` y su `.knowledge/` viaja con él. `~/projects` es un **symlink** a `~/.openclaw/workspace/projects` (comodidad del humano; los agentes usan el path real). La regla `/projects/` del `.gitignore` se mantiene para que git no los absorba como gitlinks.
+- **Los proyectos viven en `<workspace>/projects/`**, dentro del árbol del gateway (ADR-098). Cada proyecto trae su propio `.git` y su `.knowledge/` viaja con él. `~/projects` es un **symlink** a `~/.openclaw/workspace/projects` (comodidad del humano; los agentes usan el path real). La regla `/projects/` del `.gitignore` se mantiene para que git no los absorba como gitlinks.
 - Un gitlink o submodule es **solo un puntero**: quitar la referencia nunca borra datos locales.
 
 ## Flujo de trabajo

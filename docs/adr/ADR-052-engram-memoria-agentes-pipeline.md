@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** evaluacion de gentlemanprogramming.com + gentle-ai (2026-09-22); auditoria de codigo en quarantine y pilot con Qwen Code
-**Relacionado:** ADR-050 (memoria SQLite local), ADR-049 (Claude Code motor del pipeline), ADR-045/046 (motor del pipeline)
+**Relacionado:** ADR-049 (Claude Code motor del pipeline), ADR-050 (memoria SQLite local)
 
 ---
 

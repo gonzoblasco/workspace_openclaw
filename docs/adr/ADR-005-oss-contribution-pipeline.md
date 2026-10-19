@@ -1,61 +1,59 @@
-# ADR-005: Oss Contribution Pipeline
+# ADR-005: OSS Contributions - Manual, Not Automated Pipeline
 
-**Status:** Accepted  
-**Deciders:** Gonzo / Kanam  
-**Fecha:** 2026-07-19  
+**Status:** Accepted
+**Deciders:** Gonzo / Kanam
+**Fecha:** 2026-07-19
+**Actualizado:** 2026-10-15
 **Origen:** kanam-workflow
 
 ## Decision
 
-Integrate `oss-contribute` pipeline (6 phases) as an automatic input to `profile-positioning` in the product pipeline, creating a feedback loop from community contributions back to internal product evaluation.
+Las contribuciones OSS son **actividad manual de Gonzo**, no un pipeline automatizado que alimente a `profile-positioning` (skill inexistente) ni a `product-orchestrator` (skill inexistente). No hay feedback loop automático.
 
-## Context
+## Contexto
 
-Gonzo's experience shows OSS contributions are significant visibility indicators:
-- PRs merge → potential employer interest increase
-- High engagement repos signal "real work" status
-- 22 open PRs currently create portfolio leverage without explicit job hunting
+El ADR original describía un pipeline OSS de 6 fases (Scout → Triage → Contribute → Amplify → Relate → Leverage) con integración automática via `kanam-pipeline --on-event PR_SUCCESS` disparando `profile-positioning` y `product-orchestrator`. Nada de eso existe:
 
-However, OSS contribution signals don't automatically translate to internal product evaluation. A maintained repo for BrainWeb or SoporteML could provide:
-- Natural fit validation ("gonzo works on similar problems")
-- Faster interview pipeline activation
-- Community endorsement leveraging existing work
+- ❌ `vibe-prospecting` skill - no existe en ningún directorio
+- ❌ `profile-positioning` skill - archivada/consolidada 2026-07, no existe
+- ❌ `product-orchestrator` skill - archivada/consolidada 2026-07, no existe
+- ❌ `kanam-pipeline --on-event` - comando ficticio
+- ❌ Pipeline OSS de 6 fases automatizado - ficción
 
-## Consequences
+## Realidad Actual (2026-10)
 
-1. **Automatic visibility loop**: Good OSS work → automatic profile-positioning re-evaluation
-2. **Strategic pivot points**: If high-engagement repo doesn't align, early reset saves time
-3. **Portfolio compound effect**: OSS activity becomes part of product positioning narrative
-4. **Reduced manual tracking**: OSS pipeline auto-feeds product eval without extra work
+| Actividad OSS | Cómo ocurre hoy |
+|---------------|------------------|
+| **Scout / Triage** | Gonzo busca repos manualmente (topics, good-first-issue, interés personal) |
+| **Contribute** | PR manual, review manual, merge manual |
+| **Amplify / Relate** | Gonzo comenta, comparte, conversa con maintainers - decisión personal |
+| **Leverage** | Gonzo decide si/ cuándo mencionar en perfil, portfolio, conversaciones |
 
-## Integration Pattern
+No hay tracking automático de PRs merged → no hay re-evaluación automática de nada.
 
-```bash
-# When OSS PR is accepted or merged:
-gh pr view <number> --json number,title,mergedAt
+## Por Qué No Automatizar Esto
 
-kanam-pipeline --on-event PR_SUCCESS \
-     --type OSS_CONTRIBUTION \
-     --action evaluate-profile-positioning \
-     --target brainweb-v2
+1. **Contexto de negocio irreproducible** - Qué repo vale la pena, qué maintainer relacionar, qué narrativa construir: decisiones humanas
+2. **Señal ruidosa** - Un PR merged en repo random ≠ señal de mercado para producto de Gonzo
+3. **Costo > beneficio** - Mantener un pipeline que scrapea GitHub, parsea PRs, evalúa "fit" y actualiza perfiles: overhead que no paga
+4. **Gonzo lo hace manual y bien** - 22+ PRs abiertos históricos demuestran que el proceso manual funciona
 
-# This triggers profile-positioning to audit impact:
-profile-positioning --analyze "OSS contribution: <repo>" \
-            --compare market-fit --output integration-report.md
+## Lo Que SÍ Existe Relacionado
 
-# If high engagement: Feed back to product-orchestrator for eval:
-kanam-pipeline --feed OSS_SIGNAL \
-     --target brainweb-v2 \
-     --action evaluate-with-profile-positioning
-```
+- `spec-discovery-creation` / `spec-draft-creation` - Generan specs desde ideas (pueden venir de insights OSS)
+- `product-definition-cycle` - Ciclo de definición que Gonzo dispara manualmente cuando hay señal real
+- ADRs del proyecto - Documentan decisiones incluyendo "insight came from OSS contribution to X"
 
-## Related
+## Referencias
 
-- `oss-contribute` skill: OSS pipeline foundation
-- `profile-positioning` skill: Market fit analysis
-- [ADR-001](./ADR-001-product-pipeline-integration.md): Product pipeline main entry point
+- [ADR-001](./ADR-001-product-pipeline-integration.md): Ciclo de definición (manual trigger)
+- [ADR-003](./ADR-003-product-reset-triggers.md): Grow/pivot = decisión manual del owner
+- `oss-contribution` skill (STUDIO, `agents/kanam-studio/skills/`): soporte a contribuciones OSS
+- `spec-discovery-creation` / `spec-draft-creation` (workshop del CORE) - Generan specs desde ideas (pueden venir de insights OSS)
+- `product-definition-cycle`: Gonzo dispara manualmente cuando hay señal real
+- ADRs: Documentan decisiones incluyendo insights OSS
+- `kanam-workflow` (origen histórico): Pipeline ficticio documentado para aprendizaje
 
 ---
 
-*Generated by Kanam Pipeline Team*  
-*Pipeline Version: 1.0*
+*Reescrito 2026-10-15: elimina pipeline OSS automatizado ficticio, skills inexistentes, comandos ficticios; refleja realidad: OSS = actividad manual del owner sin automatización*

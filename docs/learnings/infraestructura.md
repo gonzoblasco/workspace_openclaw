@@ -598,3 +598,9 @@ Verificado 2026-09-28, y es una regresion que introduje yo misma horas antes en 
 
 ---
 
+## Cierre de sesion con dos instancias en paralelo: mi bloque de cierre no aparecio en el daily
+
+El cierre de sesion (memory-end-session.py) es idempotente por (proyecto, fecha): si YA existe un '## Session End - <proyecto>' ese dia (de otra sesion paralela), tu bloque se descarta EN SILENCIO y parece exito. Fix: usar un label de proyecto descriptivo y unico (p.ej. 'workspace-<tema>') cuando hay sesiones concurrentes, y VERIFICAR que el bloque entro (grep del summary) antes de dar el cierre por hecho.
+
+---
+

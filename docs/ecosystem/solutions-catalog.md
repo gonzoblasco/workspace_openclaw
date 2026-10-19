@@ -176,7 +176,7 @@ Filtrado de [vincentkoc/awesome-openclaw](https://github.com/vincentkoc/awesome-
 ### 🟢 Observabilidad y Costos
 - **[bokonon23/clawdbot-cost-monitor](https://github.com/bokonon23/clawdbot-cost-monitor)**
   - **Necesidad:** Ver en qué se va el gasto de tokens.
-  - **Por qué nos sirve:** Coherente con ADR-053 ("no gastar recursos innecesarios").
+  - **Por qué nos sirve:** Coherente con ADR-090 ("no gastar recursos innecesarios").
 - **[crshdn/mission-control](https://github.com/crshdn/mission-control)** + **[clawdeckio/clawdeck](https://github.com/clawdeckio/clawdeck)**
   - **Necesidad:** Visibilidad de orquestación multi-agente.
   - **Por qué nos sirve:** Nuestro pipeline A/B y los spawns corren a ciegas. Un dashboard ayuda a debuggear.

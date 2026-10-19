@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo (definicion explicita)
 **Origen:** sesion 2026-09-29 - Gonzo: *"quiero quitar la regla de los guiones, creo ya tenemos una evolucion y una robustez para tener identidad propia, dejemos de perder tiempo y recursos revisando los guiones"*
-**Relacionado:** ADR-056 (guardas de gobernanza en el pre-commit), ADR-071 (hyphen enforcement)
+**Relacionado:** ADR-056 (guardas de gobernanza en el pre-commit)
 **Supersede:** la regla del guion comun en `USER.md`, `MEMORY.md`, `AGENTS.md`, `CONTRIBUTING.md` y los archivos de instruccion de los agentes
 
 ---
@@ -13,7 +13,7 @@
 
 La regla del guion comun (`-` siempre, nunca em dash U+2014 ni en dash U+2013) nacio de un error real: el 2026-08-22 se escapo un em dash en el body del PR astryx #5344 y Gonzo lo corrigio a mano. La leccion de entonces fue que una regla escrita en memoria no alcanza: hace falta un mecanismo. Ese mecanismo es `scripts/check_em_dash.py`, la seccion de `CONTRIBUTING.md` y el guard del pre-commit.
 
-En los meses siguientes la regla se consolido, se institucionalizo (ADR-056, ADR-071) y se le puso un techo de mantenimiento: 225 archivos historicos con guiones largos en `memory/`, exclusiones por rename, excepciones por proyecto (la novela) y un enforcer de portabilidad dudosa. La disciplina se sostuvo, pero el costo creciente es de mantenimiento del aparato, no del objetivo original.
+En los meses siguientes la regla se consolido y se institucionalizo (ADR-056) y se le puso un techo de mantenimiento: 225 archivos historicos con guiones largos en `memory/`, exclusiones por rename, excepciones por proyecto (la novela) y un enforcer de portabilidad dudosa. La disciplina se sostuvo, pero el costo creciente es de mantenimiento del aparato, no del objetivo original.
 
 ## Decision
 
@@ -37,5 +37,5 @@ En los meses siguientes la regla se consolido, se institucionalizo (ADR-056, ADR
 
 ## Notas
 
-* **No es una reversion de ADR-056/ADR-071 de un plumazo.** Esos ADRs describen guardas que hoy siguen existiendo en el codigo. Este ADR retira la *obligacion de estilo*, no la implementacion. Si mas adelante se desarman los scripts, corresponde un ADR que los supersede explicitamente.
+* **No es una reversion de ADR-056 de un plumazo.** Ese ADR describe guardas que hoy siguen existiendo en el codigo. Este ADR retira la *obligacion de estilo*, no la implementacion. Si mas adelante se desarman los scripts, corresponde un ADR que los supersede explicitamente.
 * **La excepcion de la novela** (`docs/stories/quienes_quedan/`, raya U+2014 como raya de dialogo) queda sin objeto como excepcion, pero no se toca el manuscrito.

@@ -1,10 +1,10 @@
-# ADR-038: Learnings con mirror en DB (categorías + consulta veloz)
+# ADR-038: Learnings con Mirror en DB (Categorías + Consulta Veloz)
 
-**Status:** Accepted
+**Estado:** Aceptado
 **Fecha:** 2026-08-23
+**Actualizado:** 2026-10-15
+**Decisores:** Gonzo / Kanam
 **Origen:** workspace
-**Scope:** Workspace - sistema de memoria (learnings)
-**Deciders:** Gonzo / Kanam
 
 ## Contexto
 
@@ -16,7 +16,7 @@ El workspace ya tiene un patrón establecido de "DB como fuente de verdad + mark
 
 **Anti-patrón a evitar:** un archivo monolítico que crece sin estructura, donde la consulta por tema es lenta y el conocimiento se pierde entre líneas.
 
-## Decision
+## Decisión
 
 Separar las lecciones por categoría en `docs/learnings/` y crear un mirror en la DB (`memory/memory.db`, tabla `learnings`) como **fuente de verdad**.
 

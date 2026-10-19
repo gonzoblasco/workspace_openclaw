@@ -2,10 +2,10 @@
 
 **Fecha:** 2026-09-28
 **Estado:** Aceptado
-**Decisores:** Gonzo (definicion explicita)
+**Decisores:** Gonzo / Kanam
 **Origen:** sesion 2026-09-28 - un job de automatizacion fallaba por un modelo local que ya no estaba instalado
-**Relacionado:** ADR-040 (seleccion por tarea), ADR-049 (Claude Code motor A/B), ADR-053 (primario/auxiliar/alternativo), ADR-077 (pipeline A/B asimetrico)
-**Supersede:** el apartado de `defaults.model` de ADR-053
+**Relacionado:** ADR-049 (Claude Code motor A/B), ADR-077 (pipeline A/B asimetrico), ADR-090 (la asignación de modelos por rol vigente, posterior a este ADR)
+**Supersede:** la parte de `defaults.model` de la política de modelos vigente en 2026-09-28 (hoy retirada)
 
 ---
 

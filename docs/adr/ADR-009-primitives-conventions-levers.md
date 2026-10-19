@@ -1,52 +1,78 @@
-# ADR-009: Primitives Conventions Levers
+# ADR-009: Primitives, Conventions, Levers - Framework de Análisis de Tecnologías
 
-**Status:** Aceptado
+**Status:** Accepted  
+**Deciders:** Gonzo / Kanam  
+**Fecha:** 2026-08-05  
+**Actualizado:** 2026-10-15  
 **Origen:** remix-book ADR-001
-**Fecha:** 2026-08-05
 
 ## Contexto
 
-Al evaluar una tecnologia nueva (framework, libreria, herramienta), es facil caer en analisis superficiales: "tiene X features", "es popular", "lo usa Y empresa". Falta un framework de analisis estructurado que permita comparar tecnologias en terminos de su filosofia de diseno, no solo su feature set.
+Al evaluar tecnología nueva (framework, librería, herramienta), es fácil caer en análisis superficiales: "tiene X features", "es popular", "lo usa Y empresa". Falta un framework estructurado que compare tecnologías por su **filosofía de diseño**, no solo feature set.
 
-## Decision
+## Decisión
 
-Adoptar el mental model de **Primitives, Conventions, Levers** como framework de analisis para evaluar cualquier tecnologia.
+Adoptar el mental model **Primitives, Conventions, Levers** como framework de análisis para evaluar cualquier tecnología.
 
-### Primitives
-Son las herramientas que la tecnologia expone para usar en codigo: funciones, hooks, componentes, tipos. Deben ser faciles de entender pero lo suficientemente composables para permitir logica de negocio compleja.
+---
 
-**Que buscar:**
-- Los primitives son abstracciones delgadas o cajas negras?
-- Siguen estandares existentes o inventan los suyos propios?
-- Son composables o te obligan a un solo camino?
+### 1. Primitives
+Herramientas que la tecnología expone para usar en código: funciones, hooks, componentes, tipos.
 
-### Conventions
-Son contratos entre la tecnologia y tu aplicacion: naming de archivos, estructura de carpetas, exports esperados. Reducen configuracion y boilerplate a cambio de seguir reglas predecibles.
+**Qué buscar:**
+- ¿Son abstracciones delgadas o cajas negras?
+- ¿Siguen estándares existentes o inventan los suyos?
+- ¿Son composables o obligan a un solo camino?
 
-**Que buscar:**
-- Las conventions son intuitivas o cripticas?
-- Se pueden sobrescribir cuando es necesario?
-- La tecnologia documenta claramente el contrato?
+### 2. Conventions
+Contratos entre la tecnología y tu app: naming de archivos, estructura de carpetas, exports esperados. Reducen configuración/boilerplate a cambio de reglas predecibles.
 
-### Levers
-Son opciones que la tecnologia te da para optimizar segun tus prioridades. No hay una talla unica - vos decidis que tradeoffs hacer.
+**Qué buscar:**
+- ¿Son intuitivas o crípticas?
+- ¿Se pueden sobrescribir cuando es necesario?
+- ¿La tecnología documenta claramente el contrato?
 
-**Que buscar:**
-- La tecnologia te deja elegir o decide por vos?
-- Los levers son explicitos o tenes que hacer workarounds?
-- Podes cambiar de opinion sin reescribir todo?
+### 3. Levers
+Opciones que la tecnología da para optimizar según tus prioridades. No hay talla única - vos decidís los tradeoffs.
+
+**Qué buscar:**
+- ¿Te deja elegir o decide por vos?
+- ¿Los levers son explícitos o requieren workarounds?
+- ¿Podés cambiar de opinión sin reescribir todo?
+
+---
 
 ## Consecuencias
 
-### Positivas
-- Framework de analysis portable a cualquier tecnologia (React, Vue, Svelte, Express, etc.).
-- Ayuda a identificar rapidamente si una tecnologia es opinionada en exceso o te da control.
-- Util para escribir ADRs y documentacion tecnica: podes categorizar features.
+| Positivas | Negativas |
+|-----------|-----------|
+| Framework portable a cualquier tech (React, Vue, Svelte, Express, etc.) | No todas las techs se mapean limpiamente a 3 categorías |
+| Identifica rápido si tech es opinionada en exceso o da control | Algunos features caen en múltiples categorías (ambiguo) |
+| Útil para ADRs y docs técnicas: categorizar features | |
 
-### Negativas
-- No todas las tecnologias se dejan mapear limpiamente a estas tres categorias.
-- Algunos features pueden caer en multiples categorias (ambiguo).
+## Aplicación en Workspace Actual (2026-10)
 
-## Notas
+| Tecnología | Primitives | Conventions | Levers |
+|------------|------------|-------------|--------|
+| **Biome** | `lint`, `format`, `check` | `biome.json` schema | `--apply`, `--unsafe`, formatter options |
+| **OpenSpec** | Frontmatter keys (`type`, `slug`, `status`) | `specs/` folder, `.md` extension | `status` transitions, custom fields |
+| **Vitest** | `test`, `expect`, `describe` | `*.test.ts`, `vitest.config.ts` | `run`, `ui`, `coverage`, `retry` |
+| **Lucide** | Icon components (`<Icon />`) | `lucide-react` import | `size`, `strokeWidth`, `absoluteStrokeWidth` |
+| **TanStack Query** | `useQuery`, `useMutation` | Query keys as arrays | `staleTime`, `gcTime`, `retry` |
 
-Este ADR se aplica al evaluar cualquier tecnologia futura. Es un patron de analisis, no una regla de implementacion.
+## Uso en ADRs
+
+Al escribir ADRs de adopción tecnológica, categorizar cada feature evaluada:
+- **Primitive** → ¿Nos da building blocks composables?
+- **Convention** → ¿Nos ahorra config o nos encierra?
+- **Lever** → ¿Nos deja elegir tradeoffs críticos?
+
+## Referencias
+
+- [ADR-008](./ADR-008-patron-convergente.md): Patrón convergente (evitar inercia)
+- [ADR-028](./ADR-028-biome-toolchain.md): Biome adopción (ejemplo aplicado)
+- [ADR-037](./ADR-037-lucide-iconos-base.md): Lucide adopción (ejemplo aplicado)
+
+---
+
+*Actualizado 2026-10-15: tabla de ejemplos con stack actual*

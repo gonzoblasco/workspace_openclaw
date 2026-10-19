@@ -60,7 +60,7 @@ Seis piezas que resuelven un hueco **real y actual** de nuestro setup. Ordenadas
 
 #### 3. Claw Orchestrator · `orquestación + verificación`
 - **Resuelve:** cuatro deudas de una. **Verification Plane** (un run sin contrato termina `unverified`, no `success`; y los tests del contrato no se pueden editar para pasar), **Run Ledger + spend caps**, **durable kernel con `human_gate` nativo**, y orquestación (council en worktrees, fan-out, autoloop, session handoff).
-- **Por qué fuerte:** es el enforcement de *nuestras* reglas ("no dar falso verde", ADR-053, pausa iterar→revisión→push) hecho infraestructura.
+- **Por qué fuerte:** es el enforcement de *nuestras* reglas ("no dar falso verde", ADR-090, pausa iterar→revisión→push) hecho infraestructura.
 - **Riesgo:** `install.sh` con `curl|bash` que reinicia el gateway; 78 tools; capa sobre capas (ya usamos Claude Code vía Ollama).
 - **Primer paso:** **NO instalar.** Leer `verification.md` y `workflow.md` como diseño y decidir si **reemplaza** el pipeline A/B o lo duplica.
 

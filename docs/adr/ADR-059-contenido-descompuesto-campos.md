@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** pedido de Gonzo - "todo el contenido es markdown o json, estaria bueno poder agregar muchos campos refactorizando el contenido"
-**Relacionado:** ADR-058 (taxonomia normalizada), ADR-057 (vectores en BLOB), ADR-029 (memoria en SQLite)
+**Relacionado:** ADR-058 (taxonomia normalizada), ADR-057 (vectores en BLOB), ADR-050 (memoria en SQLite)
 
 ---
 

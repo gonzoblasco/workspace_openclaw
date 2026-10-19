@@ -1,10 +1,10 @@
-# ADR-037: Lucide Iconos Base
+# ADR-037: Lucide como Iconos Base
 
-**Status:** Accepted
+**Estado:** Aceptado
 **Fecha:** 2026-08-17
-**Origen:** kanam-workflow
-**Scope:** Global - aplica a todos los proyectos (web, apps, dashboards)
-**Deciders:** Gonzo / Kanam
+**Actualizado:** 2026-10-15
+**Decisores:** Gonzo / Kanam
+**Origen:** workspace
 
 ## Contexto
 
@@ -14,7 +14,7 @@ En el mockup de identidad visual de SoporteML v4, se validó la dirección de di
 
 **Anti-patrón a evitar:** emojis como iconografía de producto. Se ven distintos según el SO, no son consistentes, no soportan estados (hover/active/focus), no escalan con el peso visual, y no se integran con el sistema de tokens.
 
-## Decision
+## Decisión
 
 Usar **Lucide** (`lucide-react` para React) como librería de iconos base en todos los proyectos.
 
@@ -70,14 +70,4 @@ import { Inbox, Zap, BarChart } from "lucide-react";
 
 - Lucide: https://lucide.dev
 - `lucide-react` en npm: https://www.npmjs.com/package/lucide-react
-- Ya usado en: Soporteml v1 (`projects/soporteml`), Soporteml v3 (`projects/soporteml-v3`), mockup de identidad V4 (ver nota abajo)
-
-## Nota (2026-09-22): ubicacion del mockup
-
-El mockup `projects/soporteml-v4/mockups/identidad-v4.html` **existio y fue validado por Gonzo**, pero **ya no esta en disco**: se commiteo en `b450ebda` (restart de soporteml-v4 con diseno premium) y se removio al limpiar el proyecto terminado, que borra el codigo y conserva solo `.knowledge/` (ver AGENTS.md, Project Cleanup). No es un artefacto que nunca se creo.
-
-La decision de identidad visual que ese mockup fundamento sigue registrada en `projects/soporteml-v4/.knowledge/ADR-001-identidad-visual.md`, que conserva los tokens CSS y la direccion de diseno. Si hace falta el archivo en si, recuperarlo con `git show b450ebda:projects/soporteml-v4/mockups/identidad-v4.html`.
-
-## Nota (2026-09-14)
-
-El punto 1 de "Por que Lucide" cita *el ecosistema shadcn/Radix*. En su momento era una referencia circular: este ADR admitia que la eleccion venia del template y la usaba igual como fundamento. Desde el **ADR-048** esa cita tiene respaldo real - la adopcion de Radix/shadcn quedo documentada como decision explicita, con reglas de uso y disparadores de revision.
+- [ADR-048](./ADR-048-shadcn-radix-stack-ui.md): Radix/shadcn adopción con criterio

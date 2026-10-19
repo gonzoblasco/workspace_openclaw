@@ -4,7 +4,9 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo (definicion explicita)
 **Origen:** sesion 2026-09-28 - Gonzo pidio usar el pipeline para ejecutar y revisar, con modelos distintos por rol
-**Relacionado:** ADR-049 (Claude Code como motor A/B), ADR-053 (modelos), ADR-076 (cloud primero)
+**Relacionado:** ADR-049 (Claude Code como motor A/B), ADR-076 (cloud primero), ADR-090 (modelos por rol, vigente)
+
+> **Nota 2026-10-18:** los modelos concretos citados abajo son históricos; la asignación vigente vive en ADR-090. La DECISIÓN de este ADR (asimetría: el revisor ve más que el ejecutor) sigue vigente.
 
 ---
 

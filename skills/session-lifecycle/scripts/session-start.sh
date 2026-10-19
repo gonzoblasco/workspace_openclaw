@@ -25,8 +25,8 @@ DATE=$(date '+%Y-%m-%d %H:%M')
 # --- HANDOFF del proyecto (o del workspace) ---
 # El destino sigue el modelo ADR-098: el workspace (o un alias suyo) usa su
 # propio .knowledge/; un proyecto vive en <workspace>/projects/<slug>/.knowledge/.
-# Antes resolvia "projects/$PROJECT/.knowledge" (pre-ADR-075) y luego el path
-# ~/projects (ADR-075, hoy superseded). Unificar con scripts/session-handoff.py.
+# Antes resolvia "projects/$PROJECT/.knowledge" (estructura vieja) y luego el path
+# ~/projects (superceded por ADR-098). Unificar con scripts/session-handoff.py.
 case "$(echo "$PROJECT" | tr '[:upper:]' '[:lower:]')" in
   workspace|workspace_openclaw|workspace-openclaw|main|core|kanam-core|sistema|system)
     HANDOFF_FILE=".knowledge/HANDOFF.md" ;;

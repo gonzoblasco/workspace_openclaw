@@ -641,3 +641,57 @@ Correccion de Gonzo (2026-10-06): la regla de pagos 'Mercado Pago por defecto, S
 
 ---
 
+## 3. Leccion transversal de la sesion (durable, 4ta vez)
+
+ **"Lo que un documento declara 'pendiente' hay que MEDIRLO antes de creerlo."** Aparecio 4 veces el 2026-10-06: el Tablero ("en curso" pero hecho), el design system ("paso 0 faltante" pero existe), el contraste ("verificado, no sentido" pero falso) y ahora `kanam-fixer` ("alcance sin definir" pero definido hace 3 semanas) + el ROADMAP §0.1 (tabla pre-fix). La gobernanza dormida acumula **falsos verdes y falsos pendientes por igual**. Antes de citar un estado de un doc de gobernanza: verificar c
+
+---
+
+## Se implementó HANDOFF automático + plantilla de cierre de sesión, y se confirmó la hoja de ruta de 5 paths con 3 horizontes. Además, se dejó visible el mapa en dashboard.
+
+session,hand off,roadmap
+
+---
+
+## Auditoría de contraste UI completada: script adaptado a tokens  y detectó falta de regla :focus-visible (fallo). Se registró corrección y quedó listo para integrar en CI.
+
+ui,contrast,audit
+
+---
+
+## Leccion (la mas importante del dia)
+
+ **El CORE cayo en exactamente el patron que paso todo el dia senalando del writer: reportar verificacion que no se corrio.** No alcanza con "verificar contra disco" como intencion; hay que CORRER el gate real y pegar la salida antes de decir "verde". Para un cambio de feature: nunca reportar exito sin (1) `git status` limpio o commit hecho, (2) salida cruda de `npm run verify`, (3) el `git log` con el commit. Si no hay evidencia pegada, no es un hecho.
+
+---
+
+## Hallazgos Clave - Auditoría Física Real
+
+ Se realizó una auditoría física de los scripts documentados en 7 skills principales del sistema: #### 🚨 CRÍTICO - Scripts que NO EXISTEN (promesa vacía) **`complexity-driven-pipeline`** (deuda operativa crítica): - Documenta `complexity-scorer.sh`, `complexity-parse.py`, `pipeline-track.sh` como dependencias esenciales - **Ningún script existe físicamente** - solo hay `SKILL.md` con documentación teórica completa - **Impacto:** Sin `complexity-scorer.sh` no hay arbitrado real de complejidad ant
+
+---
+
+## Lessons Learned
+
+ - Understanding that Skills are "interpreted" by the LLM from declarations, while Scripts are "executed" as procedural steps. - The importance of the **3-Layer Methodology** (Theory, Logic, Practice) for asimilating technical blueprints.
+
+---
+
+## Lecciones (globales)
+
+ 1. Un fix aplicado al ARTEFACTO GENERADO y no a su GENERADOR es un falso verde latente. Verificar SIEMPRE re-generando desde la fuente, nunca sobre el archivo que quedo en disco. 2. Un detector NO debe elegir su mensaje para satisfacer su propio test. El patron se adapta a la razon honesta del detector; el detector NUNCA fabrica evidencia.
+
+---
+
+## Lecciones durables (globales)
+
+ 1. **Una segunda fuente de verdad sin guarda deriva en silencio**, aunque el CI afirme que la verifica. El comentario que promete una verificacion es tan vinculante como la verificacion misma. 2. **Un fix de gate se valida adversarialmente**: no basta con que los tests pasen; hay que probar que el gate SIGUE cazando el ataque real que motivo su existencia (sembrar el caso y ver el exit 1). 3. **Match por segmento de path, no por substring**: `tests` a cualquier profundidad; `contest-widget.tsx`
+
+---
+
+## Lecciones registradas (commits pusheados, CI verde)
+
+ | Leccion | Archivo | Commit | |---|---|---| | M1 L01 Respuestas Autonomas en Canales Activos | `L01-respuestas-autonomas.md` | `46741f656a` | | M1 L02 Filtrado Selectivo de Notificaciones y Menciones | `L02-filtrado-selectivo.md` | `4e47cd8e34` | | M1 L03 Configuracion del Tono Asistido con SOUL.md | `L03-soul-tono.md` | `2e41b9fb03` | | M1 L04 Generacion Dinamica de Resumenes de Conversaciones | `L04-resumenes-dinamicos.md` | `be84c1b879` | Proxima: M1 L05 "Derivacion Segura de Mensajes a Ope
+
+---
+

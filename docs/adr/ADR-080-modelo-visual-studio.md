@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo (planteo el problema), Kanam CORE (cata y recomendacion)
 **Origen:** sesion 2026-09-28 - Gonzo: "STUDIO deberia correr con un modelo visual, no se cual es el ideal"
-**Relacionado:** ADR-053 (modelos primario/auxiliar/alternativo), ADR-076 (ningun agente hereda modelo local), `skills/model-cata`
+**Relacionado:** ADR-090 (modelos por rol), ADR-076 (ningun agente hereda modelo local), `skills/model-cata`
 
 ---
 
