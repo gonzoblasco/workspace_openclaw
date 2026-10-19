@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo (pedido explicito: "deepseek como principal pero con un pre-filtro con gemma4:cloud")
 **Origen:** Sesion 2026-10-05 - tras la cata del rol B (local vs cloud), Gonzo pidio optimizar el consumo de Ollama Cloud sin bajar la calidad del review.
-**Relacionado:** ADR-077 (pipeline A/B asimetrico), ADR-088 (su enforcement), ADR-087 (cata por rol)
+**Relacionado:** ADR-077 (pipeline A/B asimetrico), ADR-088 (su enforcement), la cata por rol (`docs/ecosystem/cata-por-rol-modelos-2026-10-05.md
 
 ---
 

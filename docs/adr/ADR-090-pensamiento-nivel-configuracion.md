@@ -3,15 +3,15 @@
 **Fecha:** 2026-10-14 (corregido 2026-10-18)
 **Estado:** Aceptado (verificado contra el runtime 2026-10-18)
 **Decisores:** Gonzo / Kanam
-**Origen:** cata por rol (2026-10-06, ADR-087) + benchmarking Nemotron (2026-10-14)
-**Relacionado:** ADR-087 (cata por rol - modelos elegidos), ADR-088 (pipeline A/B enforcement), ADR-089 (pre-filtro A/B)
+**Origen:** cata por rol (2026-10-06, `docs/ecosystem/cata-por-rol-modelos-2026-10-05.md + benchmarking Nemotron (2026-10-14)
+**Relacionado:** la cata por rol (evidencia en `docs/ecosystem/`), ADR-088 (pipeline A/B enforcement), ADR-089 (pre-filtro A/B)
 **Supersede:** la política de asignación de modelos por tarea anterior a la cata (los ADRs de modelo previos quedaron retirados)
 
 ---
 
 ## Contexto
 
-Un probe de orquestación (2026-10-05) reveló que el thinking alto por defecto consumía presupuesto sin producir respuesta útil. La cata por rol del 2026-10-06 (ADR-087) reasignó modelos por agente con evidencia. Un benchmarking posterior (2026-10-14) comparó Nemotron 3 Super/Ultra vs DeepSeek V4.1 Flash y **propuso** migrar la mayoría de los roles a `nemotron-3-super:cloud` - pero esa asignación **nunca se aplicó al runtime**: una versión anterior de este ADR la declaraba "aplicada y verificada" y era falsa (detectado por el review K3 del 2026-10-18).
+Un probe de orquestación (2026-10-05) reveló que el thinking alto por defecto consumía presupuesto sin producir respuesta útil. La cata por rol del 2026-10-06 reasignó modelos por agente con evidencia. Un benchmarking posterior (2026-10-14) comparó Nemotron 3 Super/Ultra vs DeepSeek V4.1 Flash y **propuso** migrar la mayoría de los roles a `nemotron-3-super:cloud` - pero esa asignación **nunca se aplicó al runtime**: una versión anterior de este ADR la declaraba "aplicada y verificada" y era falsa (detectado por el review K3 del 2026-10-18).
 
 ## Decisión
 
@@ -79,4 +79,4 @@ Si las cuatro fuentes no coinciden, el corpus miente: eso es un defecto ALTA, no
 - Config runtime: `~/.openclaw/openclaw.json` (verificado 2026-10-18).
 - Bloques gestionados: `scripts/managed-blocks.py` (claves `model_by_agent`, `model.triple`, `thinking_default`) → `AGENTS.md` (bloques `model-operativo`, `pipeline-ab`) y `docs/SETUP.md` (bloques `model-triple`, `model-pipeline-ab`).
 - Benchmarking 2026-10-14 (registro): `model_comparison_final.md`, `super_20261014_232744.json`, `nemotron_ultra_full_20261014_222950.json`, runner `bench_model_suite.py` (workspace, sin commitear).
-- Review que detectó la derivación: `docs/adr/REVIEW-2026-10-18.md`.
+- Review que detectó la derivación: `docs/records/2026-10-18-review-profundo-adrs.md`.

@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** workspace (hipotesis de Gonzo: "los ADR van en direccion opuesta, de los documentos a la DB"; verificada contra el esquema real de `memory.db`)
-**Relacionado:** ADR-050 (memoria en SQLite local), ADR-038 (learnings con mirror en DB), ADR-064 (memory-wiki)
+**Relacionado:** ADR-050 (memoria en SQLite local), ADR-038 (learnings con mirror en DB), la decisión de memory-wiki (`docs/ecosystem/memory-wiki-capa-analitica.md`)
 
 ---
 
@@ -46,7 +46,7 @@ El archivo **es** la fuente de verdad. No hay tabla, no hay export, no hay recon
 
 Antes de buscar un dato, decidir si es DB-first o doc-only:
 - **DB-first** -> consultar por la DB (o el `export-*` que la regenera).
-- **Doc-only** -> leer el archivo. Si se quiere consulta semantica, el camino es **ingesta explicita** (`openclaw wiki ingest`, ADR-064), **nunca** asumir que un `export-*` lo va a regenerar.
+- **Doc-only** -> leer el archivo. Si se quiere consulta semantica, el camino es **ingesta explicita** (`openclaw wiki ingest`, decisión de memory-wiki en `docs/ecosystem/`), **nunca** asumir que un `export-*` lo va a regenerar.
 
 > **Nota:** la descripcion operativa de la regla vive en `docs/SETUP.md` (seccion "Regla: DB-first vs doc-only"). Este ADR registra la **decision** y su fundamento; el SETUP es la referencia de uso diario. No duplicar el contenido: si cambia, actualizar SETUP y dejar aca solo el porque.
 
@@ -57,14 +57,14 @@ Antes de buscar un dato, decidir si es DB-first o doc-only:
 ### Positivas
 - Nadie va a intentar "catalogar los ADR en la DB" creyendo que falta un paso: la respuesta y el motivo quedan registrados.
 - Explica por que la auditoria de ADRs se hace leyendo archivos y no consultando la DB.
-- Da el fundamento de por que el wiki (ADR-064) es el camino para consultar los ADR: no es una capa decorativa, es el unico puente hacia consulta semantica para un corpus doc-only.
+- Da el fundamento de por que el wiki (decisión en `docs/ecosystem/`) es el camino para consultar los ADR: no es una capa decorativa, es el unico puente hacia consulta semantica para un corpus doc-only.
 
 ### Negativas
 - Los documentos doc-only dependen de disciplina manual: no hay un chequeo automatico que detecte si un doc narrativo quedo desactualizado contra la realidad. Es justamente lo que la capa de claims del wiki puede cubrir si se ingestan (aunque su deteccion hoy es opt-in por ingesta, no automatica).
 
 ### Lo que queda fuera del alcance
 - **No** se propone migrar los docs narrativos a la DB. El analisis de ADR-050 (SQLite local, umbral de migracion) sigue vigente y nada de esto lo cambia.
-- **No** se propone indexar `memory/` ni `docs/entrevistas/` en el wiki: contienen datos personales (ver politica de ingesta en ADR-064).
+- **No** se propone indexar `memory/` ni `docs/entrevistas/` en el wiki: contienen datos personales (ver politica de ingesta en `docs/ecosystem/memory-wiki-capa-analitica.md`).
 
 ---
 

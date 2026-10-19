@@ -137,7 +137,7 @@ de revalidación agregada abajo.
 - Claude Code emite warnings cosméticos por modelos custom (`unrecognized_model`); son ruido, no bloquean.
 
 ### Regla de actualización
-- **Este ADR es la fuente de la verdad.** Cualquier doc/skill que describa el motor del pipeline se actualiza para reflejarlo cuando se toque ese archivo. Si mañana el estándar vuelve a cambiar, se escribe ADR-052+ (supersede a este), no se edita la práctica por debajo del ADR.
+- **Este ADR es la fuente de la verdad.** Cualquier doc/skill que describa el motor del pipeline se actualiza para reflejarlo cuando se toque ese archivo. Si mañana el estándar vuelve a cambiar, se escribe un ADR nuevo que lo supersedea, no se edita la práctica por debajo del ADR.
 
 ### Consecuencia: Claude Code ignora AGENTS.md (verificado empíricamente 2026-09-15)
 
