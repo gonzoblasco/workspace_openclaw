@@ -67,7 +67,7 @@ Esta es la capa donde la propuesta aporta mas, y donde el diagnostico real es el
 
 | Componente propuesto | Estado real | Veredicto |
 |---|---|---|
-| Proveedores (OpenAI/Anthropic/local) | Config OpenClaw + `model-router.json` + `model-router.sh` | **Ya existe, y es mas rico que la propuesta** (ruteo por tipo de tarea + overrides sticky + ADR-040/041/046) |
+| Proveedores (OpenAI/Anthropic/local) | Config OpenClaw + `model-router.json` + `model-router.sh` | **Ya existe, y es mas rico que la propuesta** (ruteo por tipo de tarea + overrides sticky + ADR-090) |
 | Prompts versionados | `prompts/` con 1 archivo; el resto embebido en skills y AGENTS.md | **GAP REAL PARCIAL** |
 | RAG / Vector DB | SQLite + `qwen3-embedding:0.6b` 1024 dims + busqueda coseno + clustering K-means (`memory-topics.py`) | **Ya existe.** Falta ingesta de fuentes externas (solo ingesta dailies) |
 | Tools / function calling | Catalogo nativo de OpenClaw | **Ya existe** |
@@ -130,7 +130,7 @@ Gateway de OpenClaw  [YA EXISTE]  <- BFF real: auth, sessions, tools, approval
         │
         ▼
 Capa de Orquestacion IA  [EXISTE, DESAGREGADA -> CONSOLIDAR]
-  ├─ Proveedores ......... model-router.json + ADR-040/041/046   [OK]
+  ├─ Proveedores ......... model-router.json + ADR-090   [OK]
   ├─ Prompts versionados . prompts/ (1 archivo) -> [CONSTRUIR]
   ├─ RAG ................. SQLite + qwen3-embedding              [OK]
   │                        + ingesta externa -> [CONSTRUIR]

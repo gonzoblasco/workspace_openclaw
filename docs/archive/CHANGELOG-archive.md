@@ -4,6 +4,108 @@
 
 ---
 
+## [2026-10-01] - Ecosistema OpenClaw: ronda de análisis de 29 repos + criterios de filtrado
+
+### Added
+- **`docs/ecosystem/`** (carpeta nueva, 3 capas):
+  - **`DECISIONS.md`** - consolidado ejecutivo. Candidatos reales, solapamientos a resolver, patrones a adoptar sin instalar, descartes con razón, y movimiento recomendado.
+  - **`crew-resources.md`** - ficha de detalle de los 29 repos analizados (en dos tandas).
+  - **`solutions-catalog.md`** - catálogo de casos de uso por problema.
+- **Regla dura: cripto/Web3 = fuera** (registrada en `USER.md` y en `crew-resources.md`).
+
+### Changed
+- **`USER.md`:** nueva preferencia de fondo - 🚫 cripto/Web3 no se hace (blockchain, tokens, wallets, DeFi, NFT, chains, mercados on-chain).
+
+### Notes
+- **Método:** cada repo se lee en dos capas - *implementación* (¿lo instalamos?) y *diseño* (¿qué aprendemos?). Descartar el repo no descarta la lección.
+- **Hallazgo principal (1ra tanda):** el core de OpenClaw está más completo de lo que pensábamos. Dos repos (MCP adapter y MCP server) resultaron **redundantes**: el core ya expone y consume MCP nativo (`openclaw mcp add` / `openclaw mcp serve`). Regla nueva: **verificar qué hace el core antes de sumar tooling externo.**
+- **Hallazgo transversal (1ra tanda):** tres candidatos distintos (Claw Orchestrator, MemoV, ClawSec) resuelven el mismo problema de fondo - trazar, verificar y proteger lo que hizo el agente. Es el hueco real del setup.
+- **2da tanda (9 repos):** context-sync (MCP, memoria de codebase), Open Amnesia (memoria desde trazas crudas, local-first), planning-with-files (planificación persistente). Descartados: Supermemory (cloud - el descarte más claro), y cinco dashboards de tercero que compiten con el Control UI (vibeclaw, Studio, ClawDeck, Autensa, mission-control rdsthomas).
+- **Hallazgo transversal (2da tanda):** el ecosistema **no tiene formato canónico de memoria** - cinco bases SQLite paralelas contadas en dos tandas, cada herramienta la suya. **El que defina un formato interoperable gana**; conviene adoptar el **formato** antes que la herramienta.
+- **Patrón repetido (2da tanda), ya del ecosistema y no anécdota:** memoria por **hooks de turno** (4 repos), comando **`doctor`** (4 repos), **ledger/checkpoint de agente** (3 repos).
+- **Aporte más transferible de la 2da tanda:** `determinism-before-LLM` (Open Amnesia) - normalizar, filtrar y deduplicar **antes** de cualquier paso de LLM. *"Data consistency beats prompt cleverness."*
+- **Hallazgo que nos toca directo:** una **sesión compartida entre tareas degrada al agente hasta atascarlo** (bug documentado de Autensa v2.5.0). Confirma nuestra sesión-por-tarea. Y nuestro backlog vive en `memory.db` y **no es visible** (deuda real, §2.5 de DECISIONS).
+- **Profundización (2026-10-01, tarde):** se abrieron los **5 conjuntos que habían quedado solo como directorio** en la primera parte (deuda reconocida: se catalogó el repo, no el ítem). Hallazgos:
+  - **`design-audit`** (jdrhyne) - rol auditor de diseño; sus 8 reglas destilan el criterio que no teníamos. **Precondición: el design system (no lo tenemos).**
+  - **`knowledge-graph`** (jdrhyne) - memoria **sin base de datos nueva** (2 archivos de texto, cero infraestructura, reconoce `memory/YYYY-MM-DD.md` y `MEMORY.md`). **Redefine la decisión de §2.1: quizá no haya que elegir motor, sino agregar esta capa.**
+  - **Suite `aeon`** (Bankr) - **el hueco más grande de las dos rondas:** ciclo de vida de skills (auditar/evaluar/reparar/evolucionar). Tenemos `skill_workshop` para crear, nada más.
+  - **Cluster de diseño** (VoltAgent) - `anti-slop-design` (previene la estética genérica) + `kj-ui-ux-pro-max` (**genera los tokens que `design-audit` necesita**). `axe-devtools` descartado por costo.
+  - **Academic Multi-Agent System** (13 roles) - el patrón Factory ya construido; el **`critic`** (rúbrica SHARP) es el rol de gusto adversarial que nos falta.
+- **`DECISIONS.md` ampliado:** nuevas secciones §2.6 (ciclo de vida de skills - hueco propio), §2.7 (los dos roles ausentes), §2.8 (pipeline de diseño con orden). Movimiento recomendado reordenado: **el design system pasó a ser el paso 0**.
+- **Regla de oro de la profundización:** *lo que falta no es una herramienta más, son tres roles y un sistema de tokens.*
+- **Pendiente abierto:** decidir el eje de memoria (`DECISIONS.md` §2.1) - ahora con **seis** candidatos, no cuatro. Es lo que desbloquea el resto.
+
+### Fixed
+- **`DECISIONS.md` §2.4 (error propio corregido):** `clawdeck` estaba listado como alternativa de **observabilidad** a Crabwalk, cuando es un **Kanban** (no un monitor). Se movió a §2.5 ("el backlog como objeto visible").
+
+---
+
+## [2026-09-30] - ADR-086: el embudo de entrada conversacional (Módulo 1 de OpenClaw Use Cases)
+
+### Added
+- **`docs/adr/ADR-086-embudo-de-entrada-conversacional.md`:** marco de referencia para el comportamiento del agente frente a canales externos. Fija cinco patrones secuenciales - triaje determinista antes de razonar (L1), especialización por Persona (L2), borradores con rationale en vez de envío directo (L3), escalación como entrega de mando y no como alerta (L4), y límites de contexto con filtro determinista previo al semántico (L5).
+- **3 learnings nuevos en `memory.db`:** el marco de los 5 patrones (`pipeline-agentes`), la equivalencia del TTL de la L5 con el heartbeat y los scripts de sesión (`pipeline-agentes`), y el método de estudio por módulo con cierre en Laboratorio de Activos (`metodologia`). Exportados a `docs/learnings/`.
+- **`studies/openclaw-use-cases/`:** registro del curso (índice de progreso + L01-L05), en español.
+
+### Notes
+- **El ADR nombra una práctica que ya existía:** L2 = los agentes `kanam-dev/ops/mind/studio` y la frontera de roles (ADR-083); L4 = el handoff al humano; L5 = heartbeat + registros de sesión (ADR-084). El aporte no es infraestructura nueva sino el marco que explica por qué esas piezas están separadas.
+- **Regla accionable:** el filtro por identidad es determinista y va ANTES de cualquier búsqueda semántica. El orden inverso es una fuga de datos.
+- **Fuera de alcance:** el agente no tiene acceso a las cuentas personales de Gonzo (Gmail, iCloud). El ADR describe seguridad para cuando esos conectores existan, no los habilita.
+- **Método acordado con Gonzo:** el estudio se procesa por módulo, y la skill del propio Laboratorio de Activos se escribirá al final, después de practicarlo al menos una vez.
+
+---
+
+
+
+### Added
+- **Supabase conectado y migrado:** proyecto `lpvtjipxzxpxygeobixn.supabase.co` (Postgres 17.6) con **7 migraciones aplicadas y verificadas**: 17 tablas, **0 sin RLS**, 36 policies, extension `vector`, y las 3 funciones publicas. Las migraciones quedan registradas en `supabase_migrations.schema_migrations`, asi que un `supabase db push` futuro no las repite.
+- **`scripts/db-apply.mjs`:** dry-run real (aplica dentro de una transaccion y hace ROLLBACK) y `--apply`. El dry-run prueba que las migraciones corren limpias contra el proyecto real **sin dejar rastro** antes de aplicarlas.
+- **`scripts/check-env.mjs`:** reporta que variables faltan o estan mal formadas **sin imprimir nunca un valor**, y marca riesgo si un secreto lleva prefijo `NEXT_PUBLIC_`.
+- **Guarda del seed (ADR-069):** `supabase/seed/dev.sql` es data de PRUEBA y ahora **se niega a correr** sin un opt-in explicito (`onwheels.allow_seed=yes`). Verificado en ambos sentidos. El seed no se aplico a Supabase: los datos de prueba no comparten base con un proyecto real.
+- **Check 14** en `tests/sql/invariants.sql`: guarda de regresion para la fuga de policies. El suite paso de 13 a **14/14 checks**.
+
+### Fixed
+- **FUGA DE SEGURIDAD en el catalogo compartido, encontrada verificando contra el proyecto real (no por un test que fallara).** Las policies eran `to authenticated using (state <> 'discarded')` sobre `spec` y `using (true)` sobre `model`: **cualquier usuario autenticado podia leer las specs scrapeadas SIN aprobar y los modelos en borrador**. Contradecia `docs/data-model.md` seccion 9 y dejaba sin sustento la invariante I9 (el corazon del producto: nada se publica sin aprobacion humana).
+  - **Demostrado antes de arreglar:** como usuario autenticado cualquiera, 1 spec propuesta y 1 modelo en borrador visibles.
+  - **Despues del arreglo:** 0 y 0, con las 23 specs aprobadas y los 5 modelos publicados todavia legibles.
+  - La concesionaria **si** necesita ver el modelo que esta enriqueciendo, asi que la policy de `model` ahora permite publicado **o** el borrador alcanzado por su propio `enrichment_run` (el esquema ya tenia el dato para responderlo).
+- **Un artefacto de redaccion en `.env.development.local`:** la herramienta de escritura redacto la contrasena y dejo un `***` literal, lo que tumbo el catalogo de desarrollo. Detectado probando la pagina en vivo. Corregido.
+
+### Notes
+- **Totales verificados:** 111 tests, lint, typecheck y build en verde; `verify-schema.sh` 14/14.
+- **La base de Supabase esta vacia a proposito.** Vacia no es roto: el catalogo en modo produccion muestra el estado vacio honesto, sin error.
+- **Leccion del hallazgo:** los tests cubrian lo que se habia pensado probar. La fuga vivia en una policy que nadie habia probado nunca. Verificar el esquema real encontro lo que el suite no buscaba.
+- **IPv6:** el host directo de la base tiene solo registro AAAA. Funciona desde esta maquina; el Session Pooler queda como alternativa documentada.
+
+---
+
+
+### Changed
+- **El proyecto `retail-vehiculos` pasa a llamarse `Kanam OnWheels`.** Nombre definido por Gonzo; es **temporal**: el sitio publico tomara el nombre del cliente. Slug `kanam-onwheels`, ruta `~/projects/kanam-onwheels/`. Registrado en **`ADR-0009`** del proyecto. El nombre del producto no se filtra a la marca visible del concesionario.
+- **`MEMORY.md`:** la entrada del proyecto refleja las cuatro etapas cerradas mas el estado real del desarrollo, el stack decidido y los bloqueos.
+
+### Added
+- **Repo privado `github.com/gonzoblasco/kanam-onwheels`** creado y pusheado (57 archivos, `main` sincronizado). Auditoria previa al push: **cero secretos** en el arbol remoto (`.env.local` ignorado por `.gitignore`, `.knowledge/` excluido por `.git/info/exclude`). Es el repo que Supabase pide para el setup.
+- **Investigacion del MCP de Supabase** (paquete oficial `@supabase/mcp-server-supabase`, endpoint `https://mcp.supabase.com/mcp` con OAuth): recomendado para administrar tablas, config y consultas, **con `read_only=true` y `project_ref`** fijado en la URL para acotar el alcance. Los secretos se cargan por el prompt enmascarado, nunca en el chat.
+- **Camino de migraciones definido:** `supabase link --project-ref` + `supabase db push --dry-run` (revision) + `supabase db push` (aplicacion). El CLI `supabase` 2.118 ya existe via `npx`; no hace falta el MCP para las migraciones y es menos superficie de riesgo.
+- **Desarrollo de Fase 1 iniciado, con evidencia en cada pieza:**
+  - **Esquema de base:** 6 migraciones (tenancy, catalogo compartido, stock, ingesta, conocimiento/chat/publico, y la unificacion del estado de ficha). **13/13 checks de invariantes en verde contra un Postgres real desde cero** (`scripts/verify-schema.sh`, contenedor descartable).
+  - **Base de desarrollo persistente:** `scripts/dev-db.sh` (Docker + volumen, puerto 55433) con seed realista en `supabase/seed/dev.sql`.
+  - **Nucleo de enriquecimiento:** normalizacion de unidades (kW→hp metrico, cm→mm, lb→kg, y los separadores decimales es/en), registro de extractores por dominio (Pierer, BRP, Segway, generico) y orquestador con **errores tipados** (nunca lista vacia como exito).
+  - **Catalogo publico:** server-rendered (indexable, con Open Graph por unidad), filtros que viven en la URL, es-AR, estados vacios honestos y 404.
+- **`scripts/visual-check.mjs`:** validacion visual con Playwright sobre el servidor de desarrollo (el navegador del gateway bloquea localhost por politica SSRF). 12 capturas, dos viewports.
+
+### Fixed
+- **Dos fuentes de verdad para el estado de la ficha tecnica.** La ficha de unidad calculaba "parcial/completa" con un umbral propio del componente, mientras el catalogo lo derivaba en SQL. Encontrado por **revision visual**. Se extrajo `model_spec_state()`: **la base es la unica definicion**.
+- **Un bug real de unidades, encontrado por los tests:** el normalizador devolvia la unidad de origen en vez de la canonica (`96 cm` no llegaba a `960 mm`), lo que habria roto el filtro por cilindrada en silencio.
+
+### Notes
+- **Totales verificados:** 111 tests (6 archivos), typecheck, lint y build en verde.
+- **Bloqueos reales declarados:** el panel necesita Supabase Auth; el chat necesita proveedor de embeddings y clave de modelo. Ninguno esta contratado, asi que esas dos piezas no se reportan como terminadas.
+- Los ADRs del proyecto viven en `docs/adr/` del repo del proyecto, no en el workspace (ADR-067).
+
+---
+
 ## [2026-09-29] - ADR-083: el CORE orquesta y no escribe codigo (la regla pasa a estar verificada)
 
 ### Added
