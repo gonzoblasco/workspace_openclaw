@@ -153,7 +153,7 @@ def create_schema():
     ''')
     
     # Los vectores de learnings viven en la propia tabla `learnings` desde
-    # ADR-058 (la tabla gemela `learnings_enriquecido` duplicaba el 94% del texto).
+    # ADR-057 (fase taxonomia; antes ADR-058: la tabla gemela `learnings_enriquecido` duplicaba el 94% del texto).
     
     # Create indexes
     conn.execute('CREATE INDEX IF NOT EXISTS idx_sessions_date ON sessions_relacional(date)')
@@ -247,7 +247,7 @@ def catalog_memory():
                     VALUES (?, ?, 0.7)
                 ''', (session_id, topic_id))
             
-            # Process learnings if present. Desde ADR-058 el vector vive en la
+            # Process learnings if present. Desde ADR-057 (fase 2) el vector vive en la
             # misma fila de learnings, asi que la seccion solo aporta la
             # categoria cuando la fila todavia no la tiene.
             learning_sections = re.findall(r'###\s+(.+?)\n\n(.*?)(?=###|$)', content)

@@ -4,7 +4,7 @@
 **Estado:** Aceptado
 **Decisores:** Gonzo / Kanam
 **Origen:** workspace (25 runs de CI en rojo el 2026-09-24; el log lo compartio Gonzo)
-**Relacionado:** ADR-065 (DB-first vs doc-only), ADR-062 (vectores), regla de triple git en `AGENTS.md`
+**Relacionado:** ADR-065 (DB-first vs doc-only), ADR-057 (data-layer de memory.db, fase vectores), regla de triple git en `AGENTS.md`
 
 ---
 

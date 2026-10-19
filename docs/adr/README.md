@@ -52,12 +52,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-050 | [La memoria de Kanam OS sigue en SQLite local - umbral de migracion a Postgres/Supabase](./ADR-050-memoria-sqlite-local-umbral-migracion.md) | La memoria en SQLite local + los umbrales que justificarían migrar |
 | ADR-055 | [Bloques managed - settings de la DB propagados a documentos de identidad](./ADR-055-bloques-managed-settings-db.md) | Los valores globales viven una vez (settings de la DB → bloques managed) |
 | ADR-065 | [DB-first vs doc-only - que documentos viven en el ciclo de la DB y cuales no](./ADR-065-db-first-vs-doc-only.md) | Qué documentos entran al ciclo DB-first y cuáles son doc-only |
-| ADR-057 | [Embeddings en BLOB float32, no JSON de texto](./ADR-057-embeddings-blob-float32.md) | Implementación: embeddings en BLOB float32, no JSON |
-| ADR-058 | [Taxonomia normalizada, tabla gemela absorbida y una FK espuria](./ADR-058-taxonomia-normalizada-fk-espuria.md) | Implementación: taxonomía normalizada de tags/categorías |
-| ADR-059 | [Contenido markdown descompuesto en campos consultables](./ADR-059-contenido-descompuesto-campos.md) | Implementación: contenido descompuesto en campos consultables (offsets) |
-| ADR-060 | [Foreign keys activas en todas las conexiones](./ADR-060-foreign-keys-activas.md) | Implementación: FKs activas por conexión (pragma) |
-| ADR-061 | [Campos interpretados con revision, y un eje por columna](./ADR-061-campos-interpretados-con-revision.md) | Implementación: campos interpretados con revisión; un eje por columna |
-| ADR-062 | [Vectores re-cortados por unidad semantica, sin duplicar el texto](./ADR-062-vectores-rechunk-semantico.md) | Implementación: vectores cortados por unidad semántica, sin duplicar texto |
+| ADR-057 | [El data-layer de memory.db - refactor integral en seis fases](./ADR-057-data-layer-memory-db-refactor-integral.md) | La campaña completa del data-layer: BLOB embeddings, taxonomía, contenido consultable, FKs activas, un eje por columna, rechunk semántico (absorbe 058-062) |
 
 ### Kanam OS (el visor)
 | ADR | Decide |
@@ -76,8 +71,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 |---|---|
 | ADR-011 | [Next.js como Plataforma Full-Stack por Defecto](./ADR-011-nextjs-fullstack-platform.md) | Next.js full-stack por defecto (web media complejidad) |
 | ADR-012 | [Supabase como BaaS por Defecto](./ADR-012-supabase-baas.md) | Supabase como BaaS por defecto |
-| ADR-013 | [Vitest como Test Runner por Defecto](./ADR-013-vitest-over-jest.md) | Vitest como test runner por defecto |
-| ADR-014 | [TypeScript en Archivos de Test](./ADR-014-typescript-for-tests.md) | TypeScript en los archivos de test |
+| ADR-013 | [El stack de testing - Vitest con TypeScript](./ADR-013-vitest-typescript-testing.md) | Vitest como runner + TypeScript en los tests (una decisión, dos caras; absorbe el viejo ADR de TS-tests) |
 | ADR-015 | [Data Fetching con TanStack Query](./ADR-015-data-fetching-tanstack-query.md) | TanStack Query para data fetching en cliente |
 | ADR-017 | [Hooks Sobre Hocs](./ADR-017-hooks-sobre-hocs.md) | Hooks como mecanismo de compartir lógica (HOCs legacy) |
 | ADR-020 | [Vite Default Bundler](./ADR-020-vite-default-bundler.md) | Vite como bundler por defecto |

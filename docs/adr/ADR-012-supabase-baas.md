@@ -47,4 +47,4 @@ Opción recomendada para proyectos que ya usan Next.js/Vercel y necesitan Postgr
 ## Referencias
 - [ADR-011](./ADR-011-nextjs-fullstack-platform.md): Plataforma full-stack
 - [ADR-050](./ADR-050-memoria-sqlite-local-umbral-migracion.md): Memoria local vs migración a Postgres/Supabase
-- [ADR-057](./ADR-057-embeddings-blob-float32.md): Embeddings en BLOB float32
+- [ADR-057](./ADR-057-data-layer-memory-db-refactor-integral.md): El data-layer de memory.db (fase 1: embeddings en BLOB float32)
