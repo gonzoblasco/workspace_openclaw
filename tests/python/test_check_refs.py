@@ -117,14 +117,16 @@ def test_reports_a_broken_ref(tmp_path):
 def test_skips_historic_records():
     """Una ruta rota en `docs/records/` NO debe reportarse: es historia.
 
-    ADR-084 consolido `docs/conversations/` y `docs/history/` (y el viejo
-    `docs/archives/`) en `docs/records/`. SKIP_DIRS debe nombrar el directorio
-    que EXISTE: la lista vieja todavia nombraba `docs/archives/`, que ya no
-    estaba en disco, o sea una entrada muerta en el propio gate.
+    ADR-084 consolido `docs/conversations/` y `docs/history/` en `docs/records/`.
+    `docs/archives/` volvio a existir en disco (2026-10-18: sesiones historicas
+    rearchivadas) y `docs/insights/` es analisis fechado; los dos entran a
+    SKIP_DIRS con la misma politica: la historia congelada no es una promesa
+    sobre el arbol actual (ADR-056, ADR-084).
     """
     mod = load()
     assert any("docs/records/" in d for d in mod.SKIP_DIRS)
-    assert not any("docs/archives/" in d for d in mod.SKIP_DIRS)
+    assert any("docs/archives/" in d for d in mod.SKIP_DIRS)
+    assert any("docs/insights/" in d for d in mod.SKIP_DIRS)
 
 
 # --- links markdown: la clase de pudricion que motiva la extension (2026-09-26) ---
