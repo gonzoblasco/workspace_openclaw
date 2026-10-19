@@ -86,7 +86,7 @@ La integración de LangChain en el ecosistema de OpenClaw no busca reemplazar la
 
 ## 5. Deuda técnica detectada (auditoría 2026-09-24)
 
-Gap entre "funciona" y "sirve como herramienta". Estado **al cierre del 2026-09-24** (los items de la deuda base se cerraron ese día):
+Gap entre "funciona" y "sirve como herramienta". Estado **re-verificado contra el disco el 2026-10-19** (la primera versión de esta tabla se escribió el 2026-09-24 y arrastraba cifras no medidas; ver §5c).
 
 | Item | Estado | Por qué importa |
 |---|---|---|
@@ -95,9 +95,9 @@ Gap entre "funciona" y "sirve como herramienta". Estado **al cierre del 2026-09-
 | Repo git | ✅ **CERRADO:** `gonzoblasco/langchain-starter` (era "no existe") | Sin repo no hay portabilidad, ni CI, ni entrega. |
 | `README.md` | ✅ **CERRADO:** 4.371 bytes (eran 8) | Superficie del proyecto. |
 | `.env.example` | ✅ **CERRADO:** contrato de config (era vacío) | Sin contrato no se sabe qué configurar. |
-| Tests | ✅ **CERRADO:** 10 tests en el starter + 18 en kanam-insight | Verificados por mutación: romper una propiedad hace fallar su test. |
-| **Base de conocimiento** | ❌ **ABIERTO:** 10 chunks de 1 solo documento | Sigue siendo demo, no herramienta. Es la Fase 5.2. |
-| **`kanam-insight` sin `requirements.txt` propio** | ❌ **ABIERTO** (hallazgo de esta auditoría) | Depende del venv del starter. Como repo independiente **no se puede reproducir solo**: clonarlo y correr `pip install` no alcanza. |
+| Tests | ✅ **CERRADO:** 10 tests en el starter, verificados el 2026-10-19 (`10 passed`) | Verificados por mutación: romper una propiedad hace fallar su test. |
+| **Base de conocimiento** | ❌ **ABIERTO:** **10 embeddings de 1 solo documento** (medido 2026-10-19) | Sigue siendo demo, no herramienta. Es la Fase 5.2, que **no** está hecha. |
+| `kanam-insight` | ⚪ **NO APLICA:** proyecto descontinuado y retirado del roadmap | La fila anterior lo daba por vivo y le atribuía 18 tests y una deuda de `requirements.txt`. No existe en `projects/`. |
 | Secretos | ⚪ **NO APLICA hoy:** todo local via Ollama | No hay API keys que gestionar. Se integra cuando aparezca el primer proveedor cloud. |
 
 ---
@@ -114,18 +114,46 @@ Es el mismo patrón que apareció tres veces en el día: documentación que decl
 
 ---
 
+## 5c. Re-verificación 2026-10-19: la deriva seguía viva
+
+La auditoría del 2026-09-24 corrigió la sección 2 (stack) y marcó fases, pero **no midió las cifras**. Al decidir el alcance de LangChain (ADR-099) se corrió el documento contra el disco y aparecieron tres afirmaciones que nunca fueron ciertas:
+
+| Afirmación | Medido el 2026-10-19 |
+|---|---|
+| Scanner de 3 fuentes (proyectos + `docs/` + `skills/`) | **No existe.** `projects/langchain-starter/scripts/store.py` recibe rutas por argumento; ningún script recorre fuentes. |
+| 4423 vectores sobre 445 archivos | **10 embeddings**, de un único documento. `config/chroma_db/chroma.sqlite3` sin modificar desde el 2026-09-24 18:39. |
+| 25 tests en `kanam-insight` | El proyecto está **descontinuado** y no existe en `projects/`. El starter tiene 10 tests (`10 passed`, verificado hoy). |
+
+Comando de verificación reproducible:
+
+```bash
+python3 - <<'PY'
+import sqlite3
+c=sqlite3.connect('file:config/chroma_db/chroma.sqlite3?mode=ro',uri=True)
+for (name,) in c.execute('select name from collections'):
+    cid=c.execute('select id from collections where name=?',(name,)).fetchone()[0]
+    n=c.execute('select count(*) from embeddings e join segments s on e.segment_id=s.id where s.collection=?',(cid,)).fetchone()[0]
+    print(name, n)
+PY
+```
+
+**El patrón se repite:** la lección de §5b se aplicó al documento pero no a sus números. Una sección que dice "medido" sin un comando que lo reproduzca es una afirmación más, no una medición. Por eso arriba queda el comando.
+
+**Consecuencia operativa (ADR-099):** el starter es un esqueleto verificado (RAG, ReAct, API, servicio) con corpus de demo. Se usa como referencia de implementación, no como base de conocimiento, hasta que la Fase 5.2 esté realmente hecha.
+
+---
+
 ## 6. Plan de acción (Fases 5-7: de herramienta interna a producto)
 
 ### Fase 5: Solidez y uso real
 **Objetivo:** Que el servicio deje de ser una demo y pase a usarse todos los días.
 - [x] **5.1 Cerrar deuda de base:** `requirements.txt` con versiones pinneadas ✅, Python 3.12 ✅ (2026-09-24), repo git ✅, README real ✅, `.env.example` ✅. **Deuda base cerrada.**
-- [x] **5.2 Ingesta real de conocimiento:** ✅ HECHO (2026-09-24). El scanner ahora cubre **3 fuentes: proyectos + `docs/` + `skills/`** (eran 122 archivos, son 445). Índice: **4423 vectores** (eran 1243).
-  - Los **dailies y las sesiones ya los cubría `memory.db`** (1144 secciones `daily` + 843 `session`), asi que no se duplicaron: el criterio de exito "preguntar algo de una sesion pasada" ya estaba cumplido por esa via.
-  - Se indexa lo que faltaba de verdad: los docs estrategicos (`docs/`) y las skills.
-  - Excluidos: `docs/insights/` (reportes del propio detector: ruido auto-referencial y quedan vencidos) y `docs/archives/` (historico).
-  - **Criterio verificado:** el radar ahora cruza las tres fuentes y trae cruces que antes eran imposibles. Ejemplo real: SQLite local con BLOB float32 (`docs/ADR-057`) vs Postgres con ivfflat (`soporteml-v3`) para el mismo problema de vectores, resuelto distinto segun escala.
-- [x] **5.3 Red de seguridad:** ✅ HECHO (2026-09-24): 10 tests en el starter (chunking, overlap, prompt anti-alucinacion, `/health`, endpoints, RAG end-to-end) + 25 en kanam-insight. Verificados por mutacion.
-- **Hito:** ✅ CUMPLIDO (2026-09-24) - el servicio responde preguntas reales sobre nuestro propio historial, con cita de fuente, y es reproducible en otra maquina. **Fase 5 cerrada.**
+- [ ] **5.2 Ingesta real de conocimiento:** ❌ **NO EJECUTADO** (corregido 2026-10-19). Esta entrada declaraba un scanner de **3 fuentes** (proyectos + `docs/` + `skills/`) con **4423 vectores sobre 445 archivos**. Medido contra el disco: **no existe tal scanner** (`store.py` recibe rutas por argumento, una por una) y el índice tiene **10 embeddings de un único documento**. `chroma.sqlite3` sin modificar desde el 2026-09-24 18:39.
+  - Lo que sí es cierto: `memory.db` cubre dailies y sesiones (1144 secciones `daily` + 843 `session`), así que "preguntar algo de una sesión pasada" funciona por esa vía, no por Chroma.
+  - Lo que falta de verdad: indexar `docs/` y `skills/` en el vector store del starter. Es la Fase 5.2 real, y sigue abierta.
+  - El criterio de éxito sigue siendo el mismo y no se movió: el servicio tiene que responder sobre las tres fuentes. Hoy responde sobre una.
+- [x] **5.3 Red de seguridad:** ✅ HECHO (2026-09-24, verificado 2026-10-19): 10 tests en el starter (chunking, overlap, prompt anti-alucinacion, `/health`, endpoints, RAG end-to-end). Verificados por mutacion. *(La entrada anterior sumaba "25 en kanam-insight": ese proyecto está descontinuado y los tests no existen.)*
+- **Hito:** ❌ **NO CUMPLIDO** (revisado 2026-10-19). El servicio responde sobre **un** documento, no sobre "nuestro propio historial": eso lo resuelve `memory.db`, no el starter. **La Fase 5 no está cerrada.**
 
 ### Fase 6: Producto multi-cliente
 **Objetivo:** Pasar de "una base de conocimiento" a "varias, aisladas, con acceso controlado".
