@@ -71,7 +71,7 @@ MD_CONTENT=$(git diff --cached --name-status -M | awk -F'\t' '
 # El CI no chequea guiones; esto solo evita que el hook bloquee cada edicion.
 # ADR-082 retiro la regla del guion como obligacion; el aparato sigue y quien
 # la padezca decide si lo desarma.
-MD_EXEMPT='^docs/stories/quienes_quedan/|^docs/stories/las_tres_sabanas/|^docs/archive/|^memory/archive/'
+MD_EXEMPT='^docs/stories/quienes_quedan/|^docs/stories/las_tres_sabanas/|^docs/archive/|^docs/archives/|^memory/archive/'
 MD_RULE=$(echo "$MD_CONTENT" | grep -vE "$MD_EXEMPT" || true)
 
 if [ -n "$MD_CHANGED" ]; then
