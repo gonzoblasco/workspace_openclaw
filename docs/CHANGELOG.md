@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-19] - ADR-099: LangChain como capa de ejecución, no orquestador
+
+### Added
+- **`docs/adr/ADR-099-langchain-capa-de-ejecucion.md`.** Cierra el backlog #80 con una decisión de frontera: OpenClaw orquesta (sesiones, subagentes, pipeline A/B, memoria, scheduling); LangChain ejecuta flujos dentro de un proyecto (cadenas con estado tipado, RAG, grafos, streaming HTTP). Incluye los cuatro disparadores que justifican usarlo, los cuatro casos donde no aplica, y las reglas de frontera (proceso separado, venv propio, sin acople por dependencias).
+- **Índice de ADRs actualizado** (`### Herramientas transversales`), con la marca de grupo conceptual contra 073/074/083.
+
+### Notes
+- **Hallazgo medido, no declarado:** `docs/LANGCHAIN_STRATEGY.md` afirma un índice de **4.423 vectores sobre 445 archivos**; el disco tiene **10 embeddings de 1 documento** y `chroma.sqlite3` sin modificar desde el 2026-09-24. También declara un scanner de 3 fuentes que no existe (`store.py` recibe rutas por argumento) y 25 tests de `kanam-insight`, proyecto descontinuado. La corrección del documento va como todo #81, no como efecto colateral del ADR.
+- **Verificación:** `check-adr-integrity.py` OK (54 ADRs, todos indexados, sin refs rotas); `check-refs.py --all` OK (520 rutas). Servicio del starter verificado vivo (`/health` 200).
+
+---
+
 ## [2026-10-14] - Level 1: README arreglado (5 datos stale) + huérfanos resueltos
 
 ### Fixed

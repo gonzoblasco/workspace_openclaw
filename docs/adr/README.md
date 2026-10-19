@@ -28,6 +28,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-078 | [La salida de un sub-agente es un auto-reporte, no un hecho](./ADR-078-salida-subagente-auto-reporte.md) | La salida de un sub-agente es un auto-reporte; el padre verifica el repo |
 | ADR-086 | [El embudo de entrada conversacional - triaje, personas, borradores, escalación y límites de contexto](./ADR-086-embudo-de-entrada-conversacional.md) | Embudo de entrada conversacional (triaje, borradores, escalación, límites) |
 | ADR-093 | [El plan de sesión como objeto persistente (session-planning-hooks se cablea)](./ADR-093-plan-de-sesion-persistente.md) | El plan de sesión como objeto persistente (cableado a hooks) |
+| ADR-099 | [LangChain es la capa de ejecución de flujos, no el orquestador](./ADR-099-langchain-capa-de-ejecucion.md) | ⚠️ Arquitectura de agentes (con 073/074/083) - LangChain ejecuta flujos dentro de un proyecto; el gateway sigue orquestando |
 
 ### Pipeline A/B (un objeto, seis caras: leer el grupo antes de tocar)
 | ADR | Cara que decide |
