@@ -75,7 +75,6 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-015 | [Data Fetching con TanStack Query](./ADR-015-data-fetching-tanstack-query.md) | TanStack Query para data fetching en cliente |
 | ADR-017 | [Hooks Sobre Hocs](./ADR-017-hooks-sobre-hocs.md) | Hooks como mecanismo de compartir lógica (HOCs legacy) |
 | ADR-020 | [Vite Default Bundler](./ADR-020-vite-default-bundler.md) | Vite como bundler por defecto |
-| ADR-021 | [createRoot API](./ADR-021-createroot-api.md) | createRoot como entry point de React |
 | ADR-025 | [Enfoque Iterativo para Tooling](./ADR-025-enfoque-iterativo-tooling.md) | Tooling se adopta iterativo (YAGNI), no por anticipación |
 | ADR-028 | [Biome Toolchain](./ADR-028-biome-toolchain.md) | Biome como toolchain unificado (lint+format+imports) |
 | ADR-034 | [Server Components como Estándar de SSR](./ADR-034-server-components-estandar.md) | Server Components / App Router como estándar de SSR |
