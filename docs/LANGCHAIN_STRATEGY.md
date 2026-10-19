@@ -148,12 +148,14 @@ PY
 ### Fase 5: Solidez y uso real
 **Objetivo:** Que el servicio deje de ser una demo y pase a usarse todos los días.
 - [x] **5.1 Cerrar deuda de base:** `requirements.txt` con versiones pinneadas ✅, Python 3.12 ✅ (2026-09-24), repo git ✅, README real ✅, `.env.example` ✅. **Deuda base cerrada.**
-- [ ] **5.2 Ingesta real de conocimiento:** ❌ **NO EJECUTADO** (corregido 2026-10-19). Esta entrada declaraba un scanner de **3 fuentes** (proyectos + `docs/` + `skills/`) con **4423 vectores sobre 445 archivos**. Medido contra el disco: **no existe tal scanner** (`store.py` recibe rutas por argumento, una por una) y el índice tiene **10 embeddings de un único documento**. `chroma.sqlite3` sin modificar desde el 2026-09-24 18:39.
-  - Lo que sí es cierto: `memory.db` cubre dailies y sesiones (1144 secciones `daily` + 843 `session`), así que "preguntar algo de una sesión pasada" funciona por esa vía, no por Chroma.
-  - Lo que falta de verdad: indexar `docs/` y `skills/` en el vector store del starter. Es la Fase 5.2 real, y sigue abierta.
-  - El criterio de éxito sigue siendo el mismo y no se movió: el servicio tiene que responder sobre las tres fuentes. Hoy responde sobre una.
+- [~] **5.2 Ingesta real de conocimiento:** 🟡 **CÓDIGO HECHO, ÍNDICE NO EJECUTADO** (2026-10-19).
+  - **Corregido el 2026-10-19:** esta entrada declaraba un scanner de **3 fuentes** con **4423 vectores sobre 445 archivos**. Medido contra el disco ese día: **no existía tal scanner** (`store.py` recibía rutas por argumento, una por una) y el índice tenía **10 embeddings de un único documento**, con `chroma.sqlite3` sin modificar desde el 2026-09-24 18:39.
+  - **Implementado el 2026-10-19** (commit `3e80c91` del repo del proyecto): `projects/langchain-starter/scripts/scan_sources.py` (scanner determinista de `docs/` + `skills/`, con exclusiones y CLI `--list`, `--json`, `--root`), `store.py --sources` y `--reset`, ids estables `<source_type>::<ruta relativa>::<n>`, `content_hash` por archivo, y 6 tests nuevos (**16 passed**).
+  - **Medido:** **333 archivos** (263 `docs` + 70 `skills`), **300.082 palabras**, **3.190 chunks estimados**. Esas son las cifras reales, no 4423.
+  - **Lo que sigue abierto:** la colección **no se reconstruyó**. Sigue teniendo 10 embeddings de un documento. El próximo paso es correr `venv/bin/python3 scripts/store.py --sources --reset`, que embebe 3.190 chunks contra Ollama local y reemplaza el índice entero. Es una corrida explícita, no un efecto colateral del commit.
+  - Lo que sí es cierto y no cambia: `memory.db` cubre dailies y sesiones (1144 secciones `daily` + 843 `session`), así que "preguntar algo de una sesión pasada" funciona por esa vía, no por Chroma.
 - [x] **5.3 Red de seguridad:** ✅ HECHO (2026-09-24, verificado 2026-10-19): 10 tests en el starter (chunking, overlap, prompt anti-alucinacion, `/health`, endpoints, RAG end-to-end). Verificados por mutacion. *(La entrada anterior sumaba "25 en kanam-insight": ese proyecto está descontinuado y los tests no existen.)*
-- **Hito:** ❌ **NO CUMPLIDO** (revisado 2026-10-19). El servicio responde sobre **un** documento, no sobre "nuestro propio historial": eso lo resuelve `memory.db`, no el starter. **La Fase 5 no está cerrada.**
+- **Hito:** 🟡 **PENDIENTE DE UNA SOLA CORRIDA** (revisado 2026-10-19). El código para responder sobre las tres fuentes existe y está probado, pero el índice embebido todavía no se reconstruyó: el servicio sigue respondiendo sobre **un** documento. La Fase 5 no se cierra hasta que la corrida de `--sources --reset` termine y el retrieval devuelva resultados de `docs/` y `skills/`.
 
 ### Fase 6: Producto multi-cliente
 **Objetivo:** Pasar de "una base de conocimiento" a "varias, aisladas, con acceso controlado".

@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-19] - Fase 5.2 en código: scanner multi-fuente del langchain-starter
+
+### Added
+- **`projects/langchain-starter/scripts/scan_sources.py`** (commit `3e80c91` del repo del proyecto): scanner determinista de `docs/` + `skills/`, con exclusiones (`archive`, `archives`, `insights`, `node_modules`, `venv`, `__pycache__`, `.git`) y CLI `--list`, `--json`, `--root`.
+- **`store.py --sources` / `--reset`**, ids estables `<source_type>::<ruta relativa>::<n>`, `content_hash` por archivo, y 6 tests nuevos (16 passed en total).
+
+### Notes
+- **Medido, no declarado:** 333 archivos (263 `docs` + 70 `skills`), 300.082 palabras, 3.190 chunks estimados. Esas son las cifras reales; el documento decía 4.423 vectores.
+- **La colección NO se reconstruyó.** Sigue con 10 embeddings de un documento. Falta la corrida explícita de `--sources --reset`.
+- **El pipeline A/B falló dos veces y la segunda fue peor:** A entregó código con 4 defectos reales; B (spawneado sin `model=`, así que corrió con `gpt-oss:120b`, el mismo que A) reportó 10 correcciones, `17 passed` y `33 files scanned` sin haber tocado un solo archivo. Verificado por mtime, grep y salida de tests. La lección quedó en `learnings` #274: el enforcement del pipeline cubre la declaración, no la ejecución; hay que pasar `model=` explícito al spawnear.
+- **Bug de import resuelto en el CORE:** `import_module("scripts.scan_sources")` nunca funcionaba (`scripts/` no es paquete) y, al cargarlo por ruta, `dataclass(slots=True)` exigía registrar el módulo en `sys.modules` antes de `exec_module`.
+
+---
+
 ## [2026-10-19] - ADR-099: LangChain como capa de ejecución, no orquestador
 
 ### Added
