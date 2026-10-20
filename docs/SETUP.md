@@ -16,7 +16,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 ## Modelos (Ollama local + cloud)
 
 <!-- BEGIN MANAGED:model-triple -->
-- **Modelo de trabajo:** primario `deepseek-v4.1-flash:cloud`, auxiliar `gemma4:cloud`, alternativo `glm-5.3-flash:cloud`. Thinking default: **off**.
+- **Modelo de trabajo:** primario `minimax-m3.1-flash:cloud`, auxiliar `gemma4:cloud`, alternativo `glm-5.3-flash:cloud`. Thinking default: **off**.
 <!-- END MANAGED:model-triple -->
 <!-- BEGIN MANAGED:model-pipeline-ab -->
 - **Pipeline A/B:** A escribe con `gpt-oss:120b-cloud`; B revisa/corrige con `deepseek-v4.1-flash:cloud` (ADR-077/ADR-088). Ruta del router: `scripts/model-router.sh model pipeline_ab`.
@@ -29,7 +29,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 - **web_search provider:** `DuckDuckGo Search (experimental)` (key-free, no consume créditos). El provider `ollama` usaba `glm-5.2:cloud` y consumía requests del presupuesto sin pedirlo - NO usar.
 - **Modelos disponibles (Ollama):**
   - Local: `qwen3-embedding:0.6b` (embeddings, 1024 dims - unico modelo de embeddings del workspace), `nomic-embed-text:latest` (768 dims, legacy: ya no se usa), `gemma4:e4b-mlx` (vision + tono/voz).
-  - Cloud (estado 2026-09-29): `deepseek-v4.1-flash:cloud` (**motor del pipeline A/B**; reemplaza a `deepseek-v4-flash:cloud`, retirado por Ollama el 2026-09-25), `glm-5.3-flash:cloud` (multimodal + escalada iter 3), `glm-5.3:cloud` (escalada intra-familia), `gemma4:cloud` (vision + tono/voz), `kimi-k2.7-code:cloud` (nivel superior, iter 4), `minimax-m3:cloud` (variante costo similar a GLM, opcional). FUERA del ecosistema (2026-08-30): `kimi-k3`, `deepseek-v4-pro`, `qwen3.5:cloud`, `nemotron-3-nano`, `gemma4:31b-cloud` - sacados de la config; para emergencia, restaurar desde el backup `~/.openclaw/openclaw.json.bak-20260830-pipeline-glm`
+  - Cloud (estado 2026-09-29): `deepseek-v4.1-flash:cloud` (**motor del pipeline A/B**; reemplaza a `deepseek-v4-flash:cloud`, retirado por Ollama el 2026-09-25), `glm-5.3-flash:cloud` (multimodal + escalada iter 3), `glm-5.3:cloud` (escalada intra-familia), `gemma4:cloud` (vision + tono/voz), `kimi-k2.7-code:cloud` (nivel superior, iter 4), `minimax-m3:cloud` (variante costo similar a GLM, opcional), `minimax-m3.1-flash:cloud` (**primario del CORE desde 2026-10-20**; 428B, 1M ctx, vision + tools; elegido por cata de 8 roles x 5 clases - ver ADR-102). OJO: `think:false` NO apaga su razonamiento por API. FUERA del ecosistema (2026-08-30): `kimi-k3`, `deepseek-v4-pro`, `qwen3.5:cloud`, `nemotron-3-nano`, `gemma4:31b-cloud` - sacados de la config; para emergencia, restaurar desde el backup `~/.openclaw/openclaw.json.bak-20260830-pipeline-glm`
 
 ## Pipeline de agentes (programación)
 

@@ -6,6 +6,26 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-20] - El CORE pasa a `minimax-m3.1-flash:cloud` (cata de 8 roles x 5 clases)
+
+### Added
+- **`docs/adr/ADR-102-minimax-m31-flash-motor-core.md`** - decision de asignar `minimax-m3.1-flash:cloud` al rol `main` (CORE), con `deepseek-v4.1-flash:cloud` como fallback. Ficha de capacidades verificada, riesgos aceptados con su mitigacion, y la regla de las 4 fuentes que deben coincidir.
+- **`docs/ecosystem/cata-minimax-m31-flash-2026-10-20.md`** - informe de la cata: 160 corridas (4 modelos x 8 roles x 5 clases de estres), veredictos por celda y veredicto por rol.
+- **`docs/ecosystem/cata-minimax-m31-flash-2026-10-20-battery.py`** - la bateria congelada de 40 prompts (8 roles x 5 clases), reutilizable.
+
+### Changed
+- **Motor del CORE:** `agents.entries.main.model.primary` y `agents.defaults.model.primary` pasan de `deepseek-v4.1-flash:cloud` a `ollama/minimax-m3.1-flash:cloud` (fallback unico: deepseek). Aplicado en `openclaw.json`, `settings` de `memory.db`, bloques managed de `AGENTS.md` y `docs/SETUP.md`, ADR-090 y `memory/model-history.md`. Gateway reiniciado y verificado (`openclaw models list`: `default` + `fallback#1`).
+- **`docs/adr/ADR-090-pensamiento-nivel-configuracion.md`** - la tabla de asignacion por rol refleja el rol `main` nuevo; se documenta el drift corregido.
+- **`docs/SETUP.md`** - la entrada de `minimax-m3.1-flash:cloud` pasa de "sin probar" a primario del CORE, con la advertencia de que `think:false` no apaga su razonamiento.
+
+### Notes
+- **El diseno de la cata cambio: 5 prompts planos por agente no discriminan.** Se usaron **5 clases de estres** (canonico / ambiguo / premisa falsa / restriccion dura / fuera de rol). El caso feliz lo pasan todos; el valor esta en las clases donde el modelo tiene que **frenar** en vez de inventar.
+- **Los 2 jueces ciegos fallaron la clase "premisa falsa".** En `main-C1`, gpt-oss obedecio la regla falsa declarada en el prompt y el juez le dio el mejor puntaje; el modelo que detecto la contradiccion y freno recibio menos. Se detecto leyendo los artefactos, no confiando en el score. Las clases de comportamiento se re-puntuaron **a mano, celda por celda**; los jueces ciegos quedaron para canonica, ambigua y restriccion. *Conclusion: un score de juez es evidencia, no veredicto.*
+- **El modo de fallo propio de minimax es la espiral de thinking:** 7 de 40 celdas salieron con 0 entrega y 44k-56k caracteres de razonamiento. Con `num_predict` x2 se recuperaron 6; **1 quedo irrecuperable en 3 intentos**. Ademas `think:false` **no apaga** el razonamiento por API (medido 3 veces). No se adopto en los roles de produccion por eso; si, en el CORE, donde la espera es de una persona y hay fallback.
+- **Drift corregido de paso:** `agents.defaults.model.primary` decia `nemotron-3-super:cloud`, valor del benchmarking del 2026-10-14 (propuesto, nunca adoptado) que la tabla del ADR-090 nunca declaro - config, DB y bloques estaban en tres valores distintos. Alineados a minimax.
+
+---
+
 ## [2026-10-20] - Triaje de alternativas OSS: que se adapta, que se adopta, que se descarta
 
 ### Added

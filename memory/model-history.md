@@ -5,6 +5,16 @@
 > pensamiento y asignación por agente) y **ADR-076** (ningún agente hereda modelo local).
 > Lo que sigue se conserva para no perder la trazabilidad de por qué se llegó al estado actual.
 
+## Motor del CORE a `minimax-m3.1-flash:cloud` (2026-10-20)
+
+**Tema:** el CORE (`main`) deja de correr con `deepseek-v4.1-flash:cloud`.
+**Decisión:** `agents.entries.main.model.primary` y `agents.defaults.model.primary` pasan a `ollama/minimax-m3.1-flash:cloud`, con `ollama/deepseek-v4.1-flash:cloud` como unico fallback. Los demas roles no cambian. Fundamento: **ADR-102**; evidencia: `docs/ecosystem/cata-minimax-m31-flash-2026-10-20.md`.
+**Criterio:** cata de 8 roles x 5 clases de estres (160 corridas, 2 jueces ciegos + re-puntuacion manual de las clases de comportamiento). En el rol `main` minimax saco 8.9 contra 7.8 del motor anterior, con 17 wins absolutos sobre 40 celdas.
+**Por que el CORE y no otro rol:** el CORE orquesta; su latencia no esta en una ruta critica con otro agente esperando. Los roles de generacion (dev, critic, studio) si la tienen, y alli minimax no supera al titular por margen que lo justifique.
+**Riesgos aceptados:** (1) espiral de thinking - 7 de 40 celdas salieron sin entrega en la primera pasada, 6 se recuperaron con `num_predict` x2 y 1 quedo irrecuperable; (2) latencia 35x el mas rapido; (3) `think:false` NO apaga su razonamiento por API (medido 3 veces: 463/134/193 chars) - el thinking es always-on y se factura como output.
+**Costo:** no se midio; hasta el 2026-10-22 23:59 el modelo es gratis en Ollama Cloud. Decision de Gonzo: "igual nunca usamos el precio".
+**Drift corregido en el mismo cambio:** `agents.defaults.model.primary` decia `nemotron-3-super:cloud`, valor que venia del benchmarking del 2026-10-14 (propuesto, nunca adoptado) y que la tabla del ADR-090 nunca declaro. Config, DB y bloques estaban en tres valores distintos; alineados a minimax.
+
 ## Decisión de motor LLM (2026-08-30)
 
 **Tema:** Consolidación de motor de trabajo para el pipeline A/B.

@@ -39,12 +39,14 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-088 | [El pipeline A/B tiene enforcement, no buena voluntad](./ADR-088-pipeline-ab-enforcement.md) | EL ENFORCEMENT: el pacto A/B está verificado mecánicamente |
 | ADR-089 | [Pre-filtro barato en el pipeline A/B (gemma4:cloud) con guard de falso negativo](./ADR-089-prefiltro-pipeline-ab.md) | EL PRE-FILTRO: gemma4 triagea, pero no autoriza solo |
 | ADR-090 | [Política de niveles de pensamiento por agente y asignación de modelos por rol](./ADR-090-pensamiento-nivel-configuracion.md) | LOS MODELOS Y NIVEL DE THINKING por rol (política vigente, verificada contra runtime) |
+| ADR-102 | [minimax-m3.1-flash:cloud como motor del CORE (main)](./ADR-102-minimax-m31-flash-motor-core.md) | ⚠️ Modelos LLM (con 076/090) - el CORE pasa a minimax-m3.1-flash por cata de 8 roles x 5 clases |
 
 ### Modelos LLM (política de asignación)
 | ADR | Decide |
 |---|---|
 | ADR-076 | [Ningun agente hereda un modelo local (cloud primero, locales como ultimo recurso)](./ADR-076-ningun-agente-hereda-modelo-local.md) | Ningún agente hereda un modelo local (cloud primero); primary+fallbacks explícitos |
 | ADR-090 | [Política de niveles de pensamiento por agente y asignación de modelos por rol](./ADR-090-pensamiento-nivel-configuracion.md) | ⚠️ Pipeline A/B (con 043/049/077/088/089) - asignación vigente de modelos por rol |
+| ADR-102 | [minimax-m3.1-flash:cloud como motor del CORE (main)](./ADR-102-minimax-m31-flash-motor-core.md) | ⚠️ Modelos LLM (con 076/090) - reasignación del rol `main` a minimax-m3.1-flash:cloud |
 
 ### Memoria y datos (una arquitectura, distintas caras)
 | ADR | Cara que decide |
