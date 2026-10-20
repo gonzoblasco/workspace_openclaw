@@ -26,7 +26,6 @@ Senior full stack engineer with 10+ years building and shipping production web a
 05/2025 - Present | Remote
 
 - Built and shipped SoporteML, an AI-powered multi-tenant CRM for Mercado Libre sellers, covering the full stack: React + Vite + TypeScript frontend, Supabase (PostgreSQL, Auth, Realtime, Edge Functions, RLS) backend, webhook-driven Stripe billing and REST integrations.
-- Built accessibility-auditor, an automated auditing platform (Next.js App Router, TypeScript, Prisma, Supabase PostgreSQL, Tailwind) that runs axe-core through Playwright, produces weighted scores, impact-level reports and PDF export.
 - Work daily with AI-assisted development tools (Cursor, Claude Code, Copilot) as the default way of building and shipping; used the same workflow to ramp onto Python and backend tooling.
 - Contribute fixes and reviews to open source React component libraries and frontend frameworks.
 

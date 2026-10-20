@@ -25,7 +25,6 @@ Senior frontend engineer with 10+ years building and scaling production interfac
 05/2025 - Present | Remote
 
 - Built and shipped SoporteML, an AI-powered multi-tenant CRM for Mercado Libre sellers (React, Vite, TypeScript, Supabase Edge Functions, Stripe billing), covering frontend, integrations and webhook-driven billing.
-- Built accessibility-auditor, an automated auditing platform that runs axe-core through Playwright and produces weighted scores, impact-level reports and PDF export.
 - Contribute fixes and reviews to open source React component libraries and frontend frameworks.
 
 ### EY (Ernst & Young) - Senior Frontend Engineer, Accessibility Lead

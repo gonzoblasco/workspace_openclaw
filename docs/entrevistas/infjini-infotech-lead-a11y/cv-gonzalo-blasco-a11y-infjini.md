@@ -29,7 +29,6 @@ Building and shipping full-stack products as an AI-augmented generalist. Treat A
 
 - Launched SoporteML - soporteml.com - AI-powered multi-tenant CRM for Mercado Libre sellers. Unified inbox for all questions, RAG-based reply suggestions (pgvector + OpenAI embeddings), Autopilot with confidence guardrails, multi-company and team roles, billing via Stripe. Stack: React, Vite, TypeScript, Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions).
 - Architected AI Engineering OS on OpenClaw - portable system of reusable skill workflows, agent toolkits, and engineering playbooks. Includes OSS contribution pipeline (CONTRIBUTING.md, Handoff system, PR registry), daily memory, and docs loaded on demand. Enables consistent shipping across multiple codebases with AI as infrastructure, not just autocomplete. Share workflows and tooling across teams to raise the floor on how much one developer can credibly own.
-- Built accessibility-auditor, an automated WCAG auditing platform that runs axe-core via Playwright and produces weighted scores, impact-level reports and PDF export.
 - Contribute accessibility work to open source design systems.
 - Internal AI Solutions for Pro Motors (www.pro-motors.com.ar).
 
@@ -53,7 +52,7 @@ Contracted by Super7ui to lead the accessibility remediation audit for Warner Br
 - Used Axe to systematically identify and document WCAG violations across key user flows.
 - Produced full remediation documentation - proposed solutions, implementation guidance, and developer-ready specifications.
 - Completed Deque University accessibility certification during the engagement.
-- Led accessibility remediation audit across 3 major streaming platforms, identifying and resolving 200+ WCAG violations.
+- Identified and resolved 200+ WCAG violations across the platform.
 - Established accessibility testing pipeline using axe-core + Playwright, integrated into CI/CD.
 
 ### Minutentag - Frontend Developer, Accessibility Owner
@@ -66,7 +65,7 @@ Grew from junior to accessibility owner and mentor across three major US fashion
 - Built and maintained critical user flows with consistent focus on semantic structure, keyboard navigation, and screen reader compatibility.
 - Worked on the migration of legacy jQuery/Handlebars interfaces to React, Sass, and modern HTML5 standards.
 - Ran A/B experiments in production using Adobe Target to test new features and designs across live user segments.
-- Mentored a junior developer - recognized by direct supervisor (Product Leader, Amazon Music) for fast delivery and strong team collaboration.
+- Mentored a junior developer - recognized by direct supervisor for fast delivery and strong team collaboration.
 - Architected and built micro frontend architecture serving 2M+ monthly active users.
 - Developed shared component library used across 5 product teams.
 - Implemented A/B testing infrastructure powering data-driven product decisions.

@@ -42,8 +42,6 @@ Astryx and MUI.
 - Built kanam-fixer, an automated accessibility engine that maps a browser DOM node back to its exact source
   line in a TypeScript codebase, then applies and re-verifies fixes in a scan-fix-scan loop. This is direct
   DOM-to-code tracing, the same reasoning used when judging whether rendered output matches its source.
-- Built accessibility-auditor, a WCAG auditing platform that runs axe-core through Playwright, produces
-  weighted scores (0-100), reports findings by impact level and exports to PDF.
 - Complete structured evaluation work: code analysis for best practices and time/space efficiency, comparison
   of competing model responses, and DOM/HTML parsing exercises (extracting and reconstructing structured data
   from a published HTML document).

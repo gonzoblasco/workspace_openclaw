@@ -50,7 +50,6 @@ Digital accessibility engineer with 9+ years in frontend engineering and roughly
 05/2025 - Present | Remote
 
 - Built and shipped SoporteML, an AI-powered multi-tenant CRM for Mercado Libre sellers (React, Vite, TypeScript, Supabase, Edge Functions, Mercado Pago billing).
-- Built accessibility-auditor, an automated WCAG auditing platform that runs axe-core via Playwright and produces weighted scores, impact-level reports and PDF export.
 - Contribute accessibility work to open source design systems.
 
 ## CERTIFICATIONS
@@ -70,6 +69,5 @@ Digital accessibility engineer with 9+ years in frontend engineering and roughly
 
 ## SELECTED PROJECTS
 
-- **accessibility-auditor** - github.com/gonzoblasco/accessibility-auditor - Automated WCAG auditing platform. Runs axe-core audits via Playwright, calculates weighted accessibility scores (0-100), generates reports by impact level (Critical, Serious, Moderate, Minor), tracks historical audit data per URL, supports public shareable report URLs and exports to PDF. Stack: Next.js App Router, TypeScript, Prisma, Supabase PostgreSQL, Tailwind CSS.
 - **soporteml** - github.com/gonzoblasco/soporteml - AI-powered multi-tenant CRM for Mercado Libre sellers. Unified inbox, RAG-powered reply suggestions (pgvector + OpenAI embeddings), autopilot with confidence guardrails and Mercado Pago billing. Stack: React, Vite, TypeScript, Supabase (PostgreSQL, Auth, Realtime, Edge Functions, RLS).
 - **@gonzoblasco/create-stack** - github.com/gonzoblasco/create-stack - Opinionated scaffolder for full-stack apps (Next.js 15, React 19, TypeScript strict, Biome, Vitest, Playwright). Published on npm.
