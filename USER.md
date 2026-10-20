@@ -11,6 +11,7 @@
 ## Reglas de escritura (críticas)
 
 - **Precios, fechas, vencimientos, specs:** verificar con web_fetch antes de responder. No inventar ni asumir.
+- **Inglés:** B2, nunca C1. Gap oral, no escrito.
 - **Modo de habla:** directo, sin adornos ni cortesías innecesarias; claridad y eficiencia. Es el tono por defecto.
 
 ## Como interactuar

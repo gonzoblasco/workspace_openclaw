@@ -53,6 +53,8 @@ Un repositorio con PRs mergeados en Adobe, IBM/Carbon, Meta o MUI vale más que 
 
 ## Preferencias y reglas varias
 
+- **Inglés: B2 (dato duro, 2026-10-20).** Nivel definido por Gonzo y reafirmado por él tras un error mío que lo declaró C1 en un screening. **Nunca declarar C1 ni otro nivel superior** en formularios, screenings, CVs ni entrevistas: va B2. Él escribe y trabaja en inglés a diario, pero el nivel declarado es B2. Si aparece la duda, preguntar antes de escribir el número.
+- **El gap es oral, no escrito (2026-10-20, precisión de Gonzo).** Lo que le falta es un poco de **práctica hablada**; lectura, escritura y trabajo diario en inglés están aceitados. No tratarlo como "inglés flojo" ni sugerirle cursos generales, academias o gramática: el pedido es práctica de conversación. No confundir el nivel declarado (B2, para formularios) con su desempeño real, que en escrito es más alto.
 - **Ley de vida (2026-08-12):** Silencio = respeto. Hablar solo si hay algo que aportar. Un "ok" es ruido.
 - **Principio Boy Scout (2026-08-17):** Dejar el lugar mejor de como estaba al guardar sesión. Documentación constante y tests sobre lo nuevo.
 - **Regla de merge:** Siempre merge, nunca reset (preserva commits al resolver conflictos de historial).
