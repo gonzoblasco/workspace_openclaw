@@ -40,11 +40,32 @@ La distinción que hace viable todo lo demás:
 
 ### 2. Dueño único: `memory/career-facts.md`
 
-Vive bajo `memory/` porque `memory_search` indexa `memory/` y no `docs/`: el dato tiene que ser recuperable al escribir. Contiene un bloque ```facts``` legible por máquina y la prosa que explica cómo contarlo.
+Vive bajo `memory/` porque `memory_search` indexa `memory/` y no `docs/`: el dato tiene que ser recuperable al escribir.
+
+**No es una lista de hechos duros: es el corpus completo.** Gonzo lo pidió explícito el mismo día: "podemos ahí poner todo lo que yo haya hecho o dejado de hacer, y luego según el perfil agarramos los datos que sirvan para tal o cual puesto... toda la verdad absoluta que viva junta".
+
+Contiene, en este orden:
+
+| Sección | Qué guarda |
+|---|---|
+| Bloque ```facts``` | Los valores que el gate compara, legibles por máquina |
+| §1 Identidad y contacto | Nombre, ubicación, teléfono, email, LinkedIn, GitHub |
+| §2 Trayectoria | Los cuatro roles y **qué hizo en cada uno**, con el detalle que un CV recorta |
+| §3 Educación y formación | Deque como programa, formación continua, y **lo que falta relevar** |
+| §4 Certificaciones | Qué tiene, qué no, y cómo se escribe cada una |
+| §5 Open source | PRs mergeados, colaboración sin merge propio, cerrados y qué enseñaron, en curso |
+| §6 Años | Cada categoría y **por qué se dice así** |
+| §7 Idiomas | B2 y el gap oral |
+| §8 Proyectos propios | Estado de cada uno, incluidos los archivados |
+| §9 Lo que NO se hace | Decisiones cerradas, para que un CV nuevo no las reintroduzca |
+| §10 Perfiles | Qué selecciona cada perfil del mismo corpus |
+| §11 Falta relevar | Lo que no está documentado y no se debe inventar |
+
+**El corpus es la verdad; el perfil es un filtro.** Esa es la distinción que lo hace escalable: agregar un hecho es barato (se escribe una vez, en el corpus), y agregar un perfil es elegir del corpus, no reescribirlo.
 
 Es **doc-only** (ADR-065): no hay tabla en `memory.db` ni export. Un hecho se cambia editando el archivo, y se propaga a los CVs en la misma sesión.
 
-`memory/user-profile.md` deja de declarar años, fechas y títulos: guarda la **lectura** de esos hechos y los cita.
+`memory/user-profile.md` deja de declarar años, fechas, títulos y trayectoria: guarda la **lectura** de esos hechos y los cita.
 
 ### 3. Enforcement: `scripts/check-cv-facts.py`
 
@@ -78,6 +99,8 @@ Se implementa en dos capas:
 ### Negativas
 - Escribir un CV ahora exige pasar por `career-facts.md`. Es la fricción que evita el drift.
 - El check de años depende de la frase que sigue al número. Un "N years" sin categoría reconocible no se juzga: el gate elige no adivinar antes que producir falsos positivos.
+- **El corpus crece y hay que mantenerlo.** Un hecho que se agrega al corpus pero no se propaga a ningún CV es deuda silenciosa; el gate solo ve lo que el CV declara, no lo que el corpus olvidó usar.
+- **Riesgo de la "verdad absoluta":** el corpus incluye huecos y decisiones de no hacer. Eso es deliberado (un corpus solo de victorias no se puede auditar), pero exige disciplina para que un perfil no los mezcle con la narrativa de venta.
 
 ### Decisión cerrada: accesibilidad no lleva número (2026-10-20)
 

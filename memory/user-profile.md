@@ -8,17 +8,21 @@
 
 ---
 
-## Trayectoria profesional (verificado)
+## Trayectoria: como contarla
 
-- **EY** (Sep 2021 - May 2025) - consultora internacional. Referente de accesibilidad del equipo: validó y corrigió 50+ componentes de una librería empresarial a WCAG, y fue parte del equipo que construyó una plataforma de inteligencia financiera. Nivel senior.
-- **Super7ui** (Ago 2020 - May 2021) - consultora de medios digitales. En una plataforma de streaming global remedió 200+ problemas de accesibilidad probados con lectores de pantalla e implementó pruebas automáticas de a11y.
-- **Minutentag / EULAS** (Feb 2016 - Nov 2019) - agencia de e-commerce para marcas de EE.UU. Desarrolló y mantuvo flujos de compra (checkout, carrito), participó de la migración a React y mejoró un sitio con 2M+ usuarios mensuales. Accesibilidad desde el inicio.
+> **Los hechos (empresas, fechas, titulos, que se hizo en cada rol) viven en
+> `memory/career-facts.md`, seccion 2.** Aca queda solo la LECTURA: que significa cada rol
+> para una propuesta, y que no decir.
 
-**Lectura para propuestas a11y:** a11y NO es un hilo secundario - es continua desde 2016 y en dos roles fue la funcion central. Los anos exactos, las fechas y los titulos por rol los declara `memory/career-facts.md`; aca va solo como contarlo:
-- **Super7ui:** rol dedicado a accesibilidad. 200+ fixes probados con lectores de pantalla + pruebas automaticas de a11y. Cuenta como ano entero de a11y engineering.
-- **EY:** referente de a11y del equipo, 50+ componentes enterprise a WCAG. Enterprise.
-- **Minutentag/EULAS:** a11y parte sustantiva del rol; crecio de junior a referente de accesibilidad.
-- **No sumar el backend PHP 2001-2008** al total ni usarlo como headline: es backend (no a11y) y hay gap 2008-2016. Solo defendible como amplitud ante audiencia que no pregunte por el gap: decidir por audiencia.
+**a11y NO es un hilo secundario** - es continuo desde 2016 y en dos roles fue la funcion
+central. La aritmetica no da un numero redondo que se sostenga (ver corpus, 6.2), asi que se
+cuenta por roles:
+- **Super7ui:** rol dedicado. 200+ fixes probados con lectores de pantalla + pruebas
+  automaticas. Cuenta como ano entero de a11y engineering.
+- **EY:** referente del equipo, 50+ componentes enterprise a WCAG.
+- **Minutentag/EULAS:** a11y parte sustantiva del rol; crecio de junior a referente.
+- **No marcar la a11y como "reciente"** ni marcar JAWS como gap.
+
 - **Años, backend, IA y nombre del rol:** su dueno es `memory/career-facts.md` (sección Años y Roles). Aca no se copian. Los tres datos que más se inflan por error, y que ese archivo fija: IA y backend desde 05/2025 (~1 año y medio, nunca 3 ni 4), y el rol se llama **freelance**, nunca "Independent" ni "Founder".
 - **SoporteML - regla vigente (2026-10-20, decisión de Gonzo):** producto propio bajo el rol **Freelancer (05/2025-presente)**, con **Pro Motors como primer cliente** (`pro-motors.com.ar`, integración MeLi real). **SÍ va al CV y a las propuestas laborales.** Sigue fuera del portfolio público (repo privado) y no se propone como ancla de la estrategia de proyectos. **Derogadas:** la regla 2026-09-14 ("fuera de la narrativa pública… no proponerlo como ancla") y el arrastre 2026-10-06 ("fuera del CV"). Contexto de producto: v4 cerrado, sigue por la versión funcional de Lovable (v1) con **Stripe** habilitado en Argentina (ADR-091 / ADR-0002 de `soporteml`).
 - **Pilar Accesibilidad - en transicion (2026-09-14):** `a11y-fixer` **quedo archivado** por decision de Gonzo, y su sucesor es **`kanam-fixer`, un proyecto NUEVO** (no un renombre). El alcance de kanam-fixer esta **sin definir**: no asumir que hereda el rol de engine de fixes de a11y. Mientras eso no se defina, el pilar Accesibilidad **no tiene ancla formal** - `ADR-001` todavia nombra a `a11y-fixer` como ancla, asi que requiere enmienda explicita (los ADR no se reescriben en silencio). Los otros dos anclas siguen firmes: kanam-forge y kanam-pulse. Todo en DB id=54.
