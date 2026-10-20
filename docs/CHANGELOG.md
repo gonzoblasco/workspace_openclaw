@@ -6,7 +6,18 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-## [2026-10-19] - Fase 5.2 en código: scanner multi-fuente del langchain-starter
+## [2026-10-19] - Los commits de cierre ya no se llevan el indice ajeno
+
+### Added
+- **`scripts/session-commit.sh`** - commitea SOLO las rutas nombradas despues de `--`. `git commit` sin pathspec commitea el indice entero, incluidas las rutas que otra sesion dejo staged; el pathspec es lo unico que lo aisla.
+- **`scripts/with-lock.py`** - wrapper de shell sobre `flock` para scripts bash (macOS no trae `flock(1)`). Espera el lock por defecto; `--timeout` lo vuelve fail-fast con exit 75.
+- **Tests:** `tests/python/test_session_commit.py` (reproduce el caso del 18/10 sobre un repo descartable) y `tests/python/test_with_lock.py` (exclusion, cola, fail-fast, liberacion).
+
+### Notes
+- **El incidente:** el 2026-10-18 un cierre dejo 13 archivos staged y otra sesion se los llevo en su commit de ADRs. No hubo conflicto ni aviso: el indice es estado global del repo.
+- **`lockutil.py` ya existia** (2026-10-12) y protege escrituras a `memory.db` y `HANDOFF.md`, pero no el indice de git. Lo que faltaba era el pathspec, no otro lock.
+- **Medido:** con el wrapper, `a.txt` staged por otra sesion sigue staged y fuera del commit (test `test_commits_only_named_paths`). Sin el wrapper, viajaba.
+
 
 ### Added
 - **`projects/langchain-starter/scripts/scan_sources.py`** (commit `3e80c91` del repo del proyecto): scanner determinista de `docs/` + `skills/`, con exclusiones (`archive`, `archives`, `insights`, `node_modules`, `venv`, `__pycache__`, `.git`) y CLI `--list`, `--json`, `--root`.
