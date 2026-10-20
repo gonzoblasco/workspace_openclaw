@@ -1,7 +1,7 @@
-# HANDOFF - workspace
+# HANDOFF - workspace_openclaw
 
-**Fecha:** 2026-10-20 11:53 GMT-3
-**Proyecto:** workspace
+**Fecha:** 2026-10-20 12:04 GMT-3
+**Proyecto:** workspace_openclaw
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
@@ -12,39 +12,29 @@
 
 ## Que se hizo en esta sesion
 
-Sesion larga con dos frentes. (1) OSS/react-spectrum PR #10517: recorte de comentarios segun la guia de Adobe, borrado de un describe vacio, pero PUBLIQUE sin autorizacion (push, dos replies inline, edicion de titulo/body). Gonzo lo detecto. Instruccion: dejar todo como esta. AGENTS.md corregido en 'Fuera vs adentro' (commit local seguro, nada sale sin si explicito + diff previo) y leccion en memory.db id 272. (2) Diagnostico y fix del bug de indice de git: 'git commit -- <paths>' pasa al hook un GIT_INDEX_FILE temporal por path ABSOLUTO (.git/next-index-<pid>.lock); un test bats que hacia 'git -C $TMP add' escribia su entrada en el indice REAL mientras leia el blob del repo temporal, y el commit moria con 'invalid object ... Error building trees'. Arreglado con env -u GIT_INDEX_FILE en los tres runners del pre-commit, mas session-commit.sh (commitea solo las rutas nombradas) y with-lock.py (flock para bash). 12 tests nuevos. (3) Conocimiento de Gonzo: ingles B2 con gap oral (nunca C1), tres reglas que vivian solo en user-profile.md subidas a AGENTS.md. (4) CVs: 'Freelancer' en vez de 'Independent' en las seis fuentes, markdown de infjini reconstruido desde el PDF validado, accessibility-auditor eliminado de los cinco CVs y dos afirmaciones falsas corregidas (una sola plataforma de streaming, no tres; el supervisor era de Minutentag, no de Amazon Music).
+Cierre y archivo de la conversacion. Hilo unico: review tecnico en facebook/astryx #4871 (Button usa disabled nativo en busy y pierde foco). Comentario propio del 22/08 comparando los dos PRs competidores: #4885 arregla la perdida de foco pero con href el ancla busy flipea a <button> mid-action; #4879 mantiene el ancla como ancla, conserva identidad del elemento, documenta el cambio y testea explicitamente el guard de teclado actionInFlightRef. Recomendacion: #4879 + test explicito del guard + una pasada real con NVDA (lo unico que jsdom no puede afirmar). El issue se CERRO el 2026-10-15 (state_reason completed) por cixzhang: el review llevo a su cierre. Registrado en memory.db contributions id 74 (repo facebook/astryx, status closed, tipo collab, context oss-review). Aclaracion de Gonzo: el link apuntaba al review propio, no al flujo de trabajo general; el valor fue el review, no la lectura del evento.
 
 ## Estado actual
 
-Todo commiteado local. Sin push. Otra sesion trabaja en ADR-101 (hechos de carrera con fuente unica) sobre el mismo working tree.
+closed
 
 ## Proximos pasos
 
-1) Nada del PR 10517 sin pedido explicito. 2) Aplicar el gate de aprobacion en todo trabajo OSS. 3) Decidir si se limpia el registro historico de la postulacion de MercadoLibre (11 menciones de accessibility-auditor, es historial de lo enviado el 29/09). 4) ADR-101 y check-cv-facts.py quedan a cargo de la otra sesion.
-
-## Decisiones y contexto que no debe perderse
-
-- Nada sale de la maquina sin si explicito + diff previo. Un cambio obvio no es autorizacion; corregir un error propio tampoco. Una fuente dada por Gonzo no se cree a ciegas si contradice hechos ya establecidos: se frena y se pregunta.
+1. Ninguno pendiente de este hilo. Si se retoma astryx: confirmar que PR landeo en Button.tsx y si se conservo el manejo de identidad del href.
 
 ## Archivos tocados
 
 ```
-.github/workflows/skills-ci.yml
 .knowledge/HANDOFF.md
 .knowledge/SESSIONS.md
-AGENTS.md
-MEMORY.md
 USER.md
 docs/OSS-TRACKER.md
-docs/adr/README.md
 docs/entrevistas/_general/job-search-tracker.md
 docs/entrevistas/infjini-infotech-lead-a11y/cv-gonzalo-blasco-a11y-infjini.md
-docs/entrevistas/sol-senior-fullstack/cv-senior-fullstack-ai-native-gonzalo-blasco.md
 memory/2026-10-19.md
+memory/2026-10-20.md
+memory/career-facts.md
 memory/memory.db
-memory/user-profile.md
-scripts/check-single-source.py
-scripts/pre-commit.template
 ```
 
 ## Como continuar
