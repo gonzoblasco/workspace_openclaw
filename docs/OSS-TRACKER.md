@@ -7,10 +7,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 17 |
-| PRs mergeados | 9 |
+| PRs abiertos | 15 |
+| PRs mergeados | 11 |
 | PRs cerrados sin merge | 22 |
-| Colaboraciones no-codigo | 15 |
+| Colaboraciones no-codigo | 16 |
 | Repos con contribuciones | 22 |
 
 ## PR Registry
@@ -57,7 +57,7 @@
 | **Nuestro PR** | [#10487]() | **closed** |
 
 | **Issue** | [#10220](https://github.com/adobe/react-spectrum/issues/10220) | fix(react-aria): only announce combobox section changes to VoiceOver |
-| **Nuestro PR** | [#10503](https://github.com/adobe/react-spectrum/pull/10503) | **waiting_review** |
+| **Nuestro PR** | [#10503](https://github.com/adobe/react-spectrum/pull/10503) | **merged** |
 | **Contexto** | - | Gate del announcement effect a solo cambios de seccion. Maintainer LFDanLu dio luz verde 24/08. 30/09 (verificado contra GitHub): snowystinger (MEMBER) APPROVED sobre head cef4985; reviewDecision REVIEW_REQUIRED, sin reviewers pedidos formalmente; 0 threads abiertos. CI: test-ssr y test-ssr-16/17/18 en FAIL por bug de caniuse-lite en la allowlist de scripts/setupTests.js (matchea literal 6 months old; el warning paso a 7 months old) -> NO es del cambio: el mismo job test ssr falla en main (57c56b8). Resto de jobs verde. Decision: esperar que arreglen main. |
 
 | **Issue** | [https://github.com/adobe/react-spectrum/issues/9687](a11y) | fix: expose input styling on RAC Checkbox and Radio (inputClassName/inputStyle) |
@@ -72,7 +72,7 @@
 | Eslabón | Link | Detalle |
 |---------|------|---------|
 | **Issue** | - | ComposedModal: add aria-describedby prop support. Agosto, sin review. |
-| **Nuestro PR** | [#22887]() | **open** |
+| **Nuestro PR** | [#22887]() | **merged** |
 
 ### carbon-design-system/ibm-products
 
@@ -305,4 +305,5 @@
 | facebook/astryx | [#3654](https://github.com/facebook/astryx/issues/3654) | COLABORACION NO-CODIGO. Contrast tokens WCAG: el diagnostico de Gonzo (PR #4022) fue la base; PR #3677 de otro autor quedo CLOSED sin merge pero el trabajo influyo. El #4022 de Gonzo CERRADO 28/08 por ownership (issue #3654 asignado a @rubyycheung, programa #4475) - aprobado 2x por cixzhang pero cerrado por coordinacion a11y+design. |
 | facebook/astryx | [#3349](https://github.com/facebook/astryx/issues/3349) | COLABORACION NO-CODIGO. RFC InfoTip: unico feedback sustantivo (16/07). Argumento Option A (standalone InfoTip) sobre B, propuse patron toggletip (tap abre, Escape/2do tap cierra) y aria-describedby al elemento explicado, ofreci implementacion/tests. ISSUE CERRADO 01/09 como COMPLETED por rubyycheung: #3355 (merged 08/07) implemento InfoTip en lab con button+aria-label+hover/focus+Escape; #5248 (merged 21/08) agrego touchTrigger=tap (tap abre/cierra); #4408 (AKnassa, cerrado sin merge) aporto el diagnostico de tap que entro via #5248. Option A y comportamiento toggletip coincidieron con lo implementado; aria-describedby NO se implemento. PR #3355 se mergeo 8 dias ANTES del comment, sin causalidad directa. |
 | facebook/astryx | [#4777](https://github.com/facebook/astryx/issues/4777) | COLABORACION NO-CODIGO. Avatar status a11y: ISSUE CERRADO 02/09 como FIXED por cixzhang con CREDITO EXPLICITO a Gonzo: 'the parent-reads-child framing is what made this fixable, and the follow-up discussion about the interactive <a>/<button> branches shaped the answer'. Fix en main via #5034 (cixzhang, merged 22/08): AvatarStatusDot reporta label via ref compartido en commit phase (sin render extra, sin API change, sin breaking change). Tests cubren el ejemplo del issue (wrapper arbitrario, nesting depth, decorative avatar). Nota: label cae en commit phase, SSR lleva el nombre plano hasta hydration. Aportes de Gonzo: comment 07/08 (3 opciones, empuje a opcion 3 con spike AT), comment 10/08 (sibling del root en vez de role=group para ramas interactivas - la forma que se implemento). |
+| facebook/astryx | [4871](https://github.com/facebook/astryx/issues/4871) | Review tecnico en issue #4871 (Button usa disabled nativo en busy y pierde foco). Comentario comparando los dos PRs competidores: #4885 arregla la perdida de foco pero con href el ancla busy flipea a <button> mid-action (identidad de elemento cambiada); #4879 mantiene el ancla como ancla, conserva identidad del elemento, documenta el cambio y testea explicitamente el guard de teclado. Recomendacion: #4879 + test explicito del guard actionInFlightRef + una pasada real con NVDA (lo unico que jsdom no puede afirmar). El issue quedo CERRADO el 2026-10-15 (state_reason: completed) por cixzhang: el review llevo a su cierre. |
 | vercel/next.js | [73474](https://github.com/vercel/next.js/issues/73474) | Comentario de diagnostico (16/07) en issue de Loading.tsx/Suspense que no funcionan en 2do load. Separo 3 escenarios confluidos: A) Antivirus/proxy (Kaspersky cachea text/html y text/x-component), B) Streaming roto en prod por reverse proxy (X-Accel-Buffering), C) await antes de Suspense como clue de flush de boundaries sin async work en el parent. CERRADO 02/09 por marcoshernanz como 'downstream response buffering, not a Next.js failure' - confirma el diagnostico A/B. Mi comentario estructuro el analisis que el maintainer valido al cerrar. |

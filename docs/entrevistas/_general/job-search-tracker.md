@@ -1,12 +1,27 @@
 # Job Search Tracker
 
-> **Estado 2026-09-24: no hay procesos abiertos. Todos cerrados.**
+> **Estado 2026-10-20: 2 procesos vivos.** Staffy/Pfizer (nuevo, 20/10) e Infjini (abierto 16/10).
 >
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
 
 ## Procesos activos
 
-Ninguno.
+| Empresa | Puesto | Contacto | Tarifa | Estado 2026-10-20 |
+|---|---|---|---|---|
+| Staffy (cliente no confirmado) | AI Software Engineer (1976) | Julieta Costa | USD 30-35/h, min 160h/mes | Screening respondido. Call de 30 min pendiente de coordinar. |
+| Infjini Inc | Lead Software Engineer - Digital Accessibility | Siraj Shaik | USD 22/h all-inclusive, 1 año | Esperando respuesta desde 16/10. |
+
+### Notas Staffy (2026-10-20)
+
+- JD: https://jobs.wearestaffy.com/positions/ai-software-engineer-1976
+- **Discrepancia inicial:** Julieta describió React/TS/Next/Node/AWS/CI-CD; el JD pide Vue/Nuxt, PHP y Python profesionales, Figma avanzado, prototipado con v0/Bolt/Lovable, spec-driven (GitHub Spec Kit / Open Spec). Ella aclaró: PHP y Python son **AND/OR** (basta uno), y nombro **EY Motif** y **OpenSpec** - leyó el CV.
+- **Preguntas comerciales sin responder, para la call:** cliente final, quién es Pfizer en la cadena, si es producto o prototipado descartable, modalidad de facturación de las 160h.
+- CV: `docs/entrevistas/staffy-ai-software-engineer/` (docx + pdf).
+
+### Notas Infjini (2026-10-16)
+
+- Oferta aceptada para avanzar. CV en `docs/entrevistas/infjini-infotech-lead-a11y/`.
+- Precedente: es el mismo req que EIT/HTC/Disney (bench amplio). No insistir.
 
 ## Historial / cerrados
 
