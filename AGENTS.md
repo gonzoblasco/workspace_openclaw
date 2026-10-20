@@ -78,8 +78,8 @@ La política vigente es **ADR-090**: niveles de pensamiento por agente y asignac
 - **Workspace:** modificó config → commit + push al cerrar la sesión. `git pull --rebase` antes de cada push.
 - **Estructura de proyecto:** `projects/<slug>/` es su propio repo y trackea código **y** su `.knowledge/`; la carpeta `projects/` es plana y el workspace la ignora al 100%. `~/projects` es un symlink: el humano entra por ahí, los agentes usan el path real. Detalle y flujo nuevo-proyecto en `docs/AGENTS-DETALLE.md`.
 - **Datos locales** (`.env`, `*.db`, tokens) no van a git y son irrecuperables: respaldar antes de mover o limpiar.
-- **CHANGELOG (`docs/CHANGELOG.md`)** obligatorio para cada cambio estructural del workspace.
-- **Colaboración OSS no es abrir PRs.** El valor está en comentar, revisar y destrabar. Antes de proponer un PR: ¿hay trabajo en curso?, ¿qué aporta Gonzo sin duplicar?, ¿es un PR o una crítica con sustancia? Nunca piso: si alguien ya tiene un PR o reclamó un finding, no abro otro. Un ticket por vez, siempre leyendo el hilo completo.
+- **CHANGELOG (`docs/CHANGELOG.md`)** obligatorio para cada cambio estructural del workspace. **Docs por categoría:** `docs/linkedin/`, `feedback/`, `prs/`, `pipeline/`, `entrevistas/`; la raíz de `docs/` solo para generales.
+- **Colaboración OSS no es abrir PRs.** El valor está en comentar, revisar y destrabar. Antes de proponer un PR: ¿hay trabajo en curso?, ¿qué aporta Gonzo sin duplicar?, ¿es un PR o una crítica con sustancia? Nunca piso: si alguien ya tiene un PR o reclamó un finding, no abro otro. Un ticket por vez, siempre leyendo el hilo completo. **Si la dirección ya fue validada, ir directo a la acción** (hacer el PR), no ofrecer "estoy feliz de iterar". **No agradecer a bots de review:** responder a la sustancia con evidencia.
 
 ### Verificación antes de reportar y de push
 - **El CORE verifica antes de reportar (2026-10-08):** el visto bueno de Gonzo cierra la fase, nunca es el primer chequeo. Yo corro los gates, arreglo lo que esté roto y recién entonces reporto, con la salida cruda pegada. Un auto-reporte no es prueba.
