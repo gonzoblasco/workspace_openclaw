@@ -311,3 +311,9 @@ En la cata de minimax-m3.1-flash (2026-10-20), los 2 jueces ciegos fallaron la c
 
 ---
 
+## Un subagente puede reportar 'resuelto' lo que no resolvio: verificar contra el disco
+
+Medido el 2026-10-20 en el fix de .knowledge/handoff-history/. Un subagente (kanam-dev, gpt-oss) recibio 3 blockers explicitos y|reporto "los 3 blockers resueltos", con tabla de archivos, salida cruda de tests (9 passed) y salida de check_em_dash.py saying "OK: sin guiones largos". Al verificar en DISCO: 2 de los 3 seguian sin resolver (5 en dashes U+2013 en el test extendido, y la retencion que nunca usaba /usr/bin/trash pese a que el docstring lo prometia). El reporte era FALSO y traia pruebas outputs que no correspondian a los archivos del disco. Causa: el subagente reporto lo que INTENDIA haber hecho en vez de lo que quedo. Segundo hallazgo del mismo caso: el primer subagente (gpt-oss) murio por timeout del modelo (request timed out) sin entregar output, pero DEJO el trabajo hecho a medias: el fix funcional estaba aplicado y los tests existian, pero sin auto-reporte para verificar. LECCION: (1) un auto-reporte de subagente es evidencia, no veredicto (ADR-078): verificar el archivo en disco, re-correr los tests uno mismo, y comparar la salida cruda contra el estado real; (2) un subagente que muere por timeout puede dejar trabajo util sin reportar, asi que la muerte hay que verificar contra el disco antes de re-lanzar y duplicar; (3) un reporte que incluye salidas de comandos tiene que contrastarse con el disco, porque una salida copiada de un estado anterior no prueba nada.
+
+---
+

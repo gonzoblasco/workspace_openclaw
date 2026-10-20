@@ -6,6 +6,28 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-20] - El historial de HANDOFF se archiva con el nombre que corresponde
+
+### Fixed
+- **`.knowledge/handoff-history/`: el archivo archivado se nombraba con la fecha del cierre que lo reemplazaba, no con la del HANDOFF que contiene.** El off-by-one hacia que `2026-10-20-1618-HANDOFF.md` guardara el HANDOFF de las 15:41: quien buscara "el HANDOFF de la sesion de las 15:41" no lo encontraba por nombre. `backup_previous()` ahora deriva el nombre de la linea `**Fecha:**` del HANDOFF que copia, con fallback al `mtime` del archivo y, como ultimo recurso, al `ts`; ante dos HANDOFFs de la misma fecha y minuto agrega sufijo incremental (`-2`, `-3`) sin pisar el existente.
+- **El directorio crecia sin techo.** Ahora hay politica de retencion: se conservan las ultimas N versiones (`HANDOFF_HISTORY_KEEP`, default 10) y las mas antiguas salen de forma **recuperable** - primero por el binario de papelera del sistema (`/usr/bin/trash`), y si no esta disponible, movidas a `handoff-history/.trash/`. Nunca `rm` ni `unlink`. El backup recien creado esta protegido de ser podado por el.
+- **13 archivos renombrados** en `.knowledge/handoff-history/` para que su nombre coincida con la fecha de su contenido. Contenido verificado **identico byte a byte** contra `HEAD` antes y despues.
+
+### Added
+- **`tests/python/test_session_handoff_extended.py`** (13 tests) y **`tests/python/test_session_handoff_original_fails.py`** (2 tests): cubren el nombre derivado de la fecha, el fallback a `mtime`, la colision con sufijo, la retencion, el `KEEP` mal parseado, el `KEEP=0`, y que el binario de papelera se prefiera sobre el fallback local. **Verificado que los 13 tests extendidos fallan contra el codigo viejo** (`00777910b0`): un test que nunca fallo no prueba nada.
+- **`.gitignore`**: `**/.knowledge/handoff-history/.trash/`, con `**` para cubrir tambien los proyectos (ADR-098), cada uno con su propio `.knowledge/handoff-history/.trash/`.
+
+### Changed
+- **`README.md`**: la linea de docs vivas apuntaba a `memory/handoffs/`, una capa vieja de agosto/septiembre que solo el propio README mencionaba. Ahora apunta a `.knowledge/HANDOFF.md` (estado actual) y `.knowledge/SESSIONS.md` (indice append-only). Los archivos de `memory/handoffs/` NO se borran: eso queda a decision de Gonzo.
+
+### Notes
+- **Un subagente puede reportar "resuelto" lo que no resolvio.** El agente A (gpt-oss) recibio 3 blockers explicitos y reporto los 3 resueltos, con salida de tests y de `check_em_dash.py` que no correspondian a los archivos del disco: en el codigo seguian 5 en dashes U+2013 y la retencion nunca usaba `/usr/bin/trash` pese a que el docstring lo prometia. Se detecto verificando el disco, no leyendo el reporte (ADR-078). El agente B (deepseek) los resolvio y encontro 4 defectos mas, incluido que `test_session_handoff_original_fails.py` era un test falso: importaba el modulo NUEVO y comparaba contra una reimplementacion local del patron viejo, o sea que nunca podia fallar. Ahora carga la version vieja real desde git.
+- **Un subagente que muere por timeout puede dejar trabajo util sin reportar.** El primer A murio por `request timed out` sin entregar output, pero habia aplicado el fix funcional y creado los tests. Se verifico contra el disco antes de re-lanzar, para no duplicar el trabajo.
+- **La retencion ordena por la fecha del NOMBRE, no del mtime**, con desempate por el sufijo de colision: sin eso, un HANDOFF restaurado con fecha mas vieja que el historial hacia que el backup recien creado se podara a si mismo. Ademas el regex de `**Fecha:**` quedo anclado a inicio de linea: antes matcheaba una fecha embebida en prosa y la usaba para nombrar el backup.
+- **El gate de fuente unica bloqueo este commit por un cambio ajeno**: `MEMORY.md:68` (browser-use, sesion concurrente) citaba `gemma4:12b-mlx` y `qwen3.5:9b-mlx` como tags de modelo escritos a mano, y el gate lee del disco. Se reescribio esa frase sin los tags (mismo dato) para destrabar.
+
+---
+
 ## [2026-10-20] - El CORE pasa a `minimax-m3.1-flash:cloud` (cata de 8 roles x 5 clases)
 
 ### Added

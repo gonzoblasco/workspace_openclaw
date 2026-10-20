@@ -28,12 +28,30 @@ import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 
 from lockutil import file_lock
 
 WORKSPACE = Path(__file__).resolve().parent.parent
 HOME = Path.home()
+
+# Nombre de backup aceptado en handoff-history: YYYY-MM-DD-HHMM[-N]-HANDOFF.md.
+BACKUP_NAME_RE = re.compile(
+    r"^(?P<date>[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{4})(?:-(?P<seq>[0-9]+))?-HANDOFF\.md$"
+)
+
+# Linea de fecha del HANDOFF. Anclada al inicio de linea para no tomar una fecha
+# incrustada en prosa, en un ejemplo o en un bloque de codigo.
+FECHA_RE = re.compile(
+    r"^\*\*Fecha:\*\*[ \t]*([0-9]{4}-[0-9]{2}-[0-9]{2})[ \t]+([0-9]{2}:[0-9]{2})(?![0-9])",
+    re.MULTILINE,
+)
+
+# Binario de papelera del sistema. Se puede overridear con
+# HANDOFF_HISTORY_TRASH_BIN (cadena vacia = no intentar el binario y usar el
+# fallback local). Es lo que usan los tests para no mandar archivos reales a
+# ~/.Trash.
+TRASH_BIN = "/usr/bin/trash"
 
 # Aliases que apuntan al HANDOFF del workspace (el sistema mismo).
 WORKSPACE_ALIASES = {
@@ -120,19 +138,162 @@ def append_session_index(target: Path, project: str, ts: str, summary: str) -> O
     return index
 
 
+def _fecha_from_handoff(target: Path) -> Optional[datetime]:
+    """Devuelve la fecha de la linea ``**Fecha:**`` del HANDOFF, o None."""
+    try:
+        content = target.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return None
+    m = FECHA_RE.search(content)
+    if not m:
+        return None
+    try:
+        return datetime.strptime(f"{m.group(1)} {m.group(2)}", "%Y-%m-%d %H:%M")
+    except ValueError:
+        return None
+
+
+def _backup_sort_key(path: Path):
+    """Clave de orden de un backup: (fecha del nombre, sufijo de colision).
+
+    El nombre puede ser ``YYYY-MM-DD-HHMM-HANDOFF.md`` o llevar sufijo
+    ``-2``, ``-3``: el regex extrae la fecha base en ambos casos y el sufijo
+    desempata para que el mas nuevo de una misma fecha quede primero.
+    """
+    m = BACKUP_NAME_RE.match(path.name)
+    if not m:
+        return (datetime.min, 0)
+    try:
+        dt = datetime.strptime(m.group("date"), "%Y-%m-%d-%H%M")
+    except ValueError:
+        return (datetime.min, 0)
+    seq = int(m.group("seq") or 1)
+    return (dt, seq)
+
+
+def _trash_bin() -> Optional[str]:
+    """Binario de papelera a usar, o None si hay que caer al fallback local.
+
+    ``HANDOFF_HISTORY_TRASH_BIN`` permite forzar el comportamiento: si esta
+    definida y vacia, nunca se invoca el binario del sistema (los tests lo usan
+    para no mandar archivos reales a ``~/.Trash``).
+    """
+    override = os.getenv("HANDOFF_HISTORY_TRASH_BIN")
+    if override is not None:
+        override = override.strip()
+        return override or None
+    if os.path.isfile(TRASH_BIN) and os.access(TRASH_BIN, os.X_OK):
+        return TRASH_BIN
+    return None
+
+
+def _discard_backup(path: Path, hist: Path) -> None:
+    """Saca un backup del historial de forma recuperable. Nunca borra.
+
+    Primero intenta el binario de papelera del sistema; si no esta disponible
+    (o falla), lo mueve a ``handoff-history/.trash/``. En ambos casos el archivo
+    queda recuperable: no se usa ``rm`` ni ``unlink`` en ningun camino.
+    """
+    bin_path = _trash_bin()
+    if bin_path:
+        try:
+            res = subprocess.run(
+                [bin_path, str(path)], capture_output=True, text=True, check=False
+            )
+            if res.returncode == 0 and not path.exists():
+                return
+        except Exception:
+            pass
+    trash_dir = hist / ".trash"
+    trash_dir.mkdir(parents=True, exist_ok=True)
+    dest = trash_dir / path.name
+    suffix = 2
+    while dest.exists():
+        dest = trash_dir / f"{path.stem}-{suffix}{path.suffix}"
+        suffix += 1
+    path.rename(dest)
+
+
 def backup_previous(target: Path, ts: str) -> Optional[Path]:
     """A. Guarda el HANDOFF anterior antes de pisarlo.
 
     El segundo cierre del dia no pierde al primero: queda archivado en
-    `.knowledge/handoff-history/YYYY-MM-DD-HHMM-HANDOFF.md`. Se mantiene el
-    historial fuera del arbol de primer nivel para no ensuciar `.knowledge/`.
+    ``.knowledge/handoff-history/YYYY-MM-DD-HHMM-HANDOFF.md``. Se mantiene el
+    historial fuera del arbol de primer nivel para no ensuciar ``.knowledge/``.
+
+    Reglas:
+    - El nombre del archivo archivado se deriva de la fecha del HANDOFF que se
+      copia (la linea ``**Fecha:** YYYY-MM-DD HH:MM``, al inicio de linea), no
+      del timestamp ``ts`` del cierre que lo reemplaza.
+    - Si esa linea falta o no parsea, se usa el ``mtime`` del archivo; si
+      tampoco se puede obtener, el ``ts`` recibido; como ultimo recurso, ahora.
+    - Si el destino ya existe (misma fecha y minuto), se agrega un sufijo
+      incremental ``-2``, ``-3``... sin sobrescribir nada.
+    - Retencion: se conservan los ultimos ``N`` backups, con ``N`` tomado de
+      ``HANDOFF_HISTORY_KEEP`` (default 10; un valor no entero cae al default y
+      un valor negativo se trata como 0). El backup recien creado nunca se poda.
+      Los descartados van al binario ``/usr/bin/trash`` si esta disponible; si
+      no, a ``handoff-history/.trash/``. Nunca se borran de forma irreversible.
     """
     if not target.exists():
         return None
+
+    # ---------------------------------------------------------------------
+    # Determinar la fecha a usar para el nombre del backup.
+    # ---------------------------------------------------------------------
+    date_dt = _fecha_from_handoff(target)
+    if date_dt is None:
+        try:
+            date_dt = datetime.fromtimestamp(target.stat().st_mtime)
+        except OSError:
+            date_dt = None
+    if date_dt is None:
+        try:
+            date_dt = datetime.strptime(ts, "%Y-%m-%d %H:%M")
+        except ValueError:
+            date_dt = datetime.now()
+
+    # ---------------------------------------------------------------------
+    # Construir nombre del archivo de backup.
+    # ---------------------------------------------------------------------
     hist = target.parent / "handoff-history"
     hist.mkdir(parents=True, exist_ok=True)
-    dest = hist / f"{ts.replace(':', '').replace(' ', '-')}-HANDOFF.md"
+
+    stem = date_dt.strftime("%Y-%m-%d-%H%M")
+    dest = hist / f"{stem}-HANDOFF.md"
+    suffix = 2
+    while dest.exists():
+        dest = hist / f"{stem}-{suffix}-HANDOFF.md"
+        suffix += 1
+
     shutil.copy2(target, dest)
+
+    # ---------------------------------------------------------------------
+    # Politica de retencion: mantener solo N backups, contando el recien creado.
+    # ---------------------------------------------------------------------
+    keep_str = os.getenv("HANDOFF_HISTORY_KEEP", "10")
+    try:
+        keep = int(keep_str)
+    except (TypeError, ValueError):
+        keep = 10
+    if keep < 0:
+        keep = 0
+
+    all_backups = [
+        p for p in hist.iterdir() if p.is_file() and BACKUP_NAME_RE.match(p.name)
+    ]
+    to_remove: List[Path] = []
+    if len(all_backups) > keep:
+        ordered = sorted(all_backups, key=_backup_sort_key, reverse=True)
+        survivors = ordered[:keep]
+        if dest not in survivors:
+            # El backup recien creado sobrevive a su propia poda.
+            survivors = survivors[: max(keep - 1, 0)] + [dest]
+        to_remove = [p for p in ordered if p not in survivors]
+
+    for old in to_remove:
+        _discard_backup(old, hist)
+
     return dest
 
 

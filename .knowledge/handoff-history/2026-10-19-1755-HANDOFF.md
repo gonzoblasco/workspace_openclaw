@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-19 00:25 GMT-3
+**Fecha:** 2026-10-19 17:55 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,24 +12,25 @@
 
 ## Que se hizo en esta sesion
 
-Cierre final de la auditoria integral del corpus de ADRs (2026-10-15 a 2026-10-19). Resultado: corpus de ~97 ADRs con ruido reducido a 60 leyes transversales verificadas + 5 decisiones no-numeradas en docs/ecosystem/ + 5 ADRs de proyecto en sus repos (kanam-os x3, kanam-tetris x1). 28 ADRs jubilados (trash), ~100 referencias colgantes reparadas. Review profundo K3 (kanam-critic) veto y los 2 hallazgos ALTA quedaron resueltos: ADR-090 reescrito con runtime real verificado (config+DB+bloques coinciden), skills del ciclo mapeadas al sistema multiagente real. Criterio de frontera establecido y reusable: numerado=ley transversal, no-numerado=decision de herramienta/rol, de proyecto=repo del proyecto. Artefactos de benchmarking a playground/. Historia (archives, handoff-history, infjini) trackeada y exenta de gates. 6 commits pusheados, los 4 CI verdes. Guards: adr-integrity OK (60), adr-supersede OK, refs 528 OK, design-tokens OK.
+PR #130040 (hermes-agent, cherry-picks de commits propios de contraste a11y). Comentario nuevo de dancingmadkefka con 4 caminos; verifique los 3 primeros contra main (scaffold fade 2.58:1, alias de mutedForeground en styles.css:434, outlines 1.07-1.15:1) y el cuarto desarmo el argumento central del PR: el test composita contra seeds, no contra superficies pintadas. Re-medido: piso de AA es alpha 0.632 (no 0.656), asi que 0.68/0.68 nunca fue forzado; 0.70/0.64 pasa AA con escalon de 4.6-5.7 L*. Aparte: CI rojo por perfectionist/sort-imports en text-contrast.test.ts. Verificado que es omision propia y NO drift (regla activa 2026-08-24, plugin pinneado 5.10.0, config sin cambios); reproducido con el stack exacto y arreglado. Push de 06bf298a a fork gonzoblasco:fix/a11y-text-contrast (PR #93836, ese si propio), cherry-pick probado limpio contra bb/38072-text-contrast-aa. Comentario publicado en #130040 con instrucciones de cherry-pick. Error propio: postie un ping-test publico para probar el endpoint REST; borrado en el acto. CI de 93836 en action_required (gate de fork PR), no verde ni destrabable desde aca.
 
 ## Estado actual
 
-Corpus ADRs healthy y cerrado. Workspace limpio (0 pendientes). Sistema describe la realidad.
+Comentario publicado y commit 06bf298a pusheado. PR #93836 esperando aprobacion de workflows por un maintainer (action_required). Trade-off tertiary/quaternary de #130040 sin resolver, es decision de eles.
 
 ## Proximos pasos
 
-1) TODO #79: alinear .knowledge/ de kanam-os, langchain-starter, kanam-fixer, kanam-spec (deuda de ADR-098, mecanica, delegable a DEV). 2) aria-pressed bug a11y de kanam-os (todo del proyecto). 3) Retomar producto: soporteml y kanam-onwheels.
+1. Cuando NousResearch apruebe los workflows de #93836, verificar que el lint pase en su entorno. 2. Ofrecido follow-up del scaffold fade (2.58:1 en github light) desde fork propio, sin depender de ramas ajenas. 3. Si #130040 avanza, el argumento de 0.70/0.64 esta sobre la mesa con medicion reproducible.
 
 ## Decisiones y contexto que no debe perderse
 
-- ADR-090 = politica vigente de modelos (distribucion 2026-10-06; benchmarking Nemotron no-aplicado queda como registro). Jubilar = eliminar (no archivar). Huecos de numeracion intencionales. Skills de producto viven en workshop del CORE; implementacion en agents/<rol>/skills.
+- El piso de AA se mide contra superficies PINTADAS (seed + neutral mix + popover 96%), no contra seeds: 0.632 vs 0.656. Medir contra el fondo equivocado fabrica un trade-off que no existe. Regla reforzada por Gonzo: los PRs ajenos no se tocan, se propone con evidencia y se deja el fix como cherry-pick.
 
 ## Archivos tocados
 
 ```
-docs/CHANGELOG.md
+memory/2026-10-19.md
+memory/memory.db
 ```
 
 ## Como continuar

@@ -66,7 +66,7 @@ OpenClaw carga un subconjunto de archivos como *Project Context* en cada arranqu
 - **`git pull --rebase` antes de cada push.**
 - **Esperar el CI** y que todos los checks pasen antes de dar algo por cerrado.
 - **Pre-commit hooks:** enforcer de guion, `check-refs.py` (rutas y links vivos), `check-adr-integrity.py`. Omitir con `SKIP_SIMPLE_GIT_HOOKS=1`.
-- **Docs vivas:** CHANGELOG para cambios estructurales, daily en `memory/`, handoffs en `memory/handoffs/`.
+- **Docs vivas:** CHANGELOG para cambios estructurales, daily en `memory/`, handoffs en `.knowledge/HANDOFF.md` y el índice en `.knowledge/SESSIONS.md`.
 
 ## Máquinas
 
