@@ -22,12 +22,15 @@ Digital accessibility engineer with 9+ years in frontend engineering and 6+ year
 
 ## PROFESSIONAL EXPERIENCE
 
-### Independent - Founder and AI Systems Builder
+### Freelancer & Accessibility Expert
 **05/2025 - Present | Remote**
 
-- Built and shipped SoporteML, an AI-powered multi-tenant CRM for Mercado Libre sellers (React, Vite, TypeScript, Supabase, Edge Functions, Mercado Pago billing).
+- Building and shipping full-stack products as an AI-augmented generalist. Treat AI as core tooling to own work end-to-end, from ambiguous problem to deployed and tested software.
+- Launched SoporteML - soporteml.com - AI-powered multi-tenant CRM for Mercado Libre sellers. Unified inbox for all questions, RAG-based reply suggestions (pgvector + OpenAI embeddings), Autopilot with confidence guardrails, multi-company and team roles, billing via Stripe. Stack: React, Vite, TypeScript, Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions).
+- Architected AI Engineering OS on OpenClaw - portable system of reusable skill workflows, agent toolkits, and engineering playbooks. Includes OSS contribution pipeline (CONTRIBUTING.md, handoff system, PR registry), daily memory, and docs loaded on demand. Enables consistent shipping across multiple codebases with AI as infrastructure, not just autocomplete. Shares workflows and tooling across teams to raise the floor on how much one developer can credibly own.
 - Built accessibility-auditor, an automated WCAG auditing platform that runs axe-core via Playwright and produces weighted scores, impact-level reports and PDF export.
 - Contribute accessibility work to open source design systems.
+- Internal AI Solutions for Pro Motors (www.pro-motors.com.ar).
 
 ### EY (Ernst & Young) - Senior Frontend Engineer, Accessibility Lead
 **09/2021 - 05/2025 | Hybrid**

@@ -46,7 +46,7 @@ Digital accessibility engineer with 9+ years in frontend engineering and roughly
 - Led migration of legacy jQuery/Handlebars interfaces to React, Sass and HTML5 for a platform serving 2M+ monthly active users.
 - Mentored a junior developer and ran A/B experiments in production with Adobe Target, working in agile squads alongside design and product.
 
-### Independent - Founder and AI Systems Builder
+### Freelancer & Accessibility Expert
 05/2025 - Present | Remote
 
 - Built and shipped SoporteML, an AI-powered multi-tenant CRM for Mercado Libre sellers (React, Vite, TypeScript, Supabase, Edge Functions, Mercado Pago billing).

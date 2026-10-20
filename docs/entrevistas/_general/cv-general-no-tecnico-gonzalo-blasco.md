@@ -16,26 +16,26 @@ Profesional con más de 10 años de experiencia en entornos corporativos y empre
 
 ### EXPERIENCIA LABORAL
 
-**Independiente / Emprendedor** | 2025 – Presente
+**Freelancer** | 2025 - Presente
 
 - Creación y gestión integral de servicios digitales para clientes del sector e-commerce.
 - Administración de cobros, facturación y atención directa al cliente.
 - Resolución de incidencias técnicas y operativas.
 
-**EY (Ernst & Young)** | 2021 – 2025
+**EY (Ernst & Young)** | 2021 - 2025
 
 - Liderazgo de equipo técnico para el desarrollo de plataformas digitales.
 - Coordinación de proyectos entre equipos de Estados Unidos e India.
 - Análisis de requerimientos, redacción de documentación técnica y control de calidad de los entregables.
 - Capacitación y guía a nuevos integrantes del equipo.
 
-**Super7UI (Contratista)** | 2020 – 2021
+**Super7UI (Contratista)** | 2020 - 2021
 
 - Auditoría y mejora de procesos en plataformas de streaming globales (Warner Bros).
 - Elaboración de informes detallados de errores y seguimiento de su resolución.
 - Validación de calidad y experiencia de usuario.
 
-**Minutentag** | 2016 – 2019
+**Minutentag** | 2016 - 2019
 
 - Implementación y mantenimiento de flujos de venta online para marcas de moda de Estados Unidos.
 - Análisis de datos de comportamiento de usuarios para optimizar las ventas.

@@ -22,7 +22,7 @@ Senior full stack engineer with 10+ years building and shipping production web a
 
 ## PROFESSIONAL EXPERIENCE
 
-### Independent - Founder and Full Stack Engineer
+### Freelancer & Full Stack Engineer
 05/2025 - Present | Remote
 
 - Built and shipped SoporteML, an AI-powered multi-tenant CRM for Mercado Libre sellers, covering the full stack: React + Vite + TypeScript frontend, Supabase (PostgreSQL, Auth, Realtime, Edge Functions, RLS) backend, webhook-driven Stripe billing and REST integrations.

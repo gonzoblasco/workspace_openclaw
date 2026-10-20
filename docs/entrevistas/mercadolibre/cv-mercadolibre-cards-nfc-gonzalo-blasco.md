@@ -21,7 +21,7 @@ Senior frontend engineer with 10+ years building and scaling production interfac
 
 ## PROFESSIONAL EXPERIENCE
 
-### Independent - Founder and Frontend Engineer
+### Freelancer & Frontend Engineer
 05/2025 - Present | Remote
 
 - Built and shipped SoporteML, an AI-powered multi-tenant CRM for Mercado Libre sellers (React, Vite, TypeScript, Supabase Edge Functions, Stripe billing), covering frontend, integrations and webhook-driven billing.

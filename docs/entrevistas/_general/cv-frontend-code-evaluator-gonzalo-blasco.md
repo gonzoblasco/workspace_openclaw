@@ -36,7 +36,7 @@ Astryx and MUI.
 
 ## PROFESSIONAL EXPERIENCE
 
-### Independent - Founder and Software Engineer
+### Freelancer & Software Engineer
 05/2025 - Present | Remote
 
 - Built kanam-fixer, an automated accessibility engine that maps a browser DOM node back to its exact source
