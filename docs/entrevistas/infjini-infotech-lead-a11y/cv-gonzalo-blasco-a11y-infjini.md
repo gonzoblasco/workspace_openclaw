@@ -25,9 +25,10 @@ Digital accessibility engineer with 9+ years in frontend engineering and 6+ year
 ### Freelancer & Accessibility Expert
 **05/2025 - Present | Remote**
 
-- Building and shipping full-stack products as an AI-augmented generalist. Treat AI as core tooling to own work end-to-end, from ambiguous problem to deployed and tested software.
+Building and shipping full-stack products as an AI-augmented generalist. Treat AI as core tooling to own work end-to-end, from ambiguous problem to deployed and tested software.
+
 - Launched SoporteML - soporteml.com - AI-powered multi-tenant CRM for Mercado Libre sellers. Unified inbox for all questions, RAG-based reply suggestions (pgvector + OpenAI embeddings), Autopilot with confidence guardrails, multi-company and team roles, billing via Stripe. Stack: React, Vite, TypeScript, Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions).
-- Architected AI Engineering OS on OpenClaw - portable system of reusable skill workflows, agent toolkits, and engineering playbooks. Includes OSS contribution pipeline (CONTRIBUTING.md, handoff system, PR registry), daily memory, and docs loaded on demand. Enables consistent shipping across multiple codebases with AI as infrastructure, not just autocomplete. Shares workflows and tooling across teams to raise the floor on how much one developer can credibly own.
+- Architected AI Engineering OS on OpenClaw - portable system of reusable skill workflows, agent toolkits, and engineering playbooks. Includes OSS contribution pipeline (CONTRIBUTING.md, Handoff system, PR registry), daily memory, and docs loaded on demand. Enables consistent shipping across multiple codebases with AI as infrastructure, not just autocomplete. Share workflows and tooling across teams to raise the floor on how much one developer can credibly own.
 - Built accessibility-auditor, an automated WCAG auditing platform that runs axe-core via Playwright and produces weighted scores, impact-level reports and PDF export.
 - Contribute accessibility work to open source design systems.
 - Internal AI Solutions for Pro Motors (www.pro-motors.com.ar).
@@ -35,8 +36,10 @@ Digital accessibility engineer with 9+ years in frontend engineering and 6+ year
 ### EY (Ernst & Young) - Senior Frontend Engineer, Accessibility Lead
 **09/2021 - 05/2025 | Hybrid**
 
+Led accessibility engineering and frontend development across multiple enterprise projects, serving as the team's accessibility reference throughout.
+
 - Owned WCAG 2.2 AA compliance for EY Motif, an enterprise React component library consumed across client and internal products: audited and remediated 50+ components covering keyboard navigation, screen reader support, focus management and color contrast, using Axe DevTools, Lighthouse, JAWS and NVDA.
-- Served as accessibility reference across projects: reviewed Figma designs before implementation to catch compliance issues early, defined component-level standards and annotations, and wrote technical accessibility requirements with component guidance and code examples for UI stories.
+- Served as accessibility reference across projects: reviewed Storybooks components and designs before implementation to catch compliance issues early, defined component-level standards and annotations, and wrote technical accessibility requirements with component guidance and code examples for UI stories.
 - Tracked and prioritized accessibility defects by WCAG impact in Jira, and provided code remediation guidance to developers in sprint.
 - Recruited into a cross-regional, matrixed team (US / India) specifically for accessibility expertise; worked across multiple phases of the SDLC in parallel within agile squads.
 - Led a team of 3 engineers building an AI-powered financial intelligence platform in Next.js, delivering fully accessible interfaces from architecture to production.
@@ -44,19 +47,29 @@ Digital accessibility engineer with 9+ years in frontend engineering and 6+ year
 ### Super7UI - Accessibility Engineer (Contractor)
 **08/2020 - 05/2021 | Remote**
 
-- Led the accessibility remediation audit for Warner Bros. Screeners (WBTVD), a private streaming platform used by global distributors to review WB content and trailers.
-- Validated and expanded a prior third-party audit (Applause), testing each reported issue across NVDA, VoiceOver and TalkBack; identified and documented 200+ WCAG violations.
-- Authored full remediation documentation: proposed solutions, implementation guidance and developer-ready specifications for core user journeys.
-- Built an automated accessibility testing pipeline with axe-core and Playwright integrated into CI/CD, preventing non-compliant code from merging.
+Contracted by Super7ui to lead the accessibility remediation audit for Warner Bros. Screeners (WBTVD) - a private streaming platform used by global distributors to review WB content, trailers, and promotional material.
+
+- Validated and expanded a prior third-party audit (Applause), testing each reported issue across multiple assistive technologies: NVDA, VoiceOver, and TalkBack.
+- Used Axe to systematically identify and document WCAG violations across key user flows.
+- Produced full remediation documentation - proposed solutions, implementation guidance, and developer-ready specifications.
+- Completed Deque University accessibility certification during the engagement.
+- Led accessibility remediation audit across 3 major streaming platforms, identifying and resolving 200+ WCAG violations.
+- Established accessibility testing pipeline using axe-core + Playwright, integrated into CI/CD.
 
 ### Minutentag - Frontend Developer, Accessibility Owner
 **02/2016 - 11/2019 | Hybrid**
 
-- Grew from junior developer to accessibility owner for three major US fashion brands (Ann Taylor, LOFT, Lou & Grey, Ascena Retail Group).
-- Took ownership of accessibility at month three and self-taught WCAG compliance through hands-on testing on physical iOS and Android devices.
-- Implemented accessibility coverage across e-commerce flows (Checkout, Cart, Quick View), including dynamic aria-live regions for real-time cart notifications.
-- Led migration of legacy jQuery/Handlebars interfaces to React, Sass and HTML5 for a platform serving 2M+ monthly active users.
-- Mentored a junior developer and ran A/B experiments in production with Adobe Target, working in agile squads alongside design and product.
+Grew from junior to accessibility owner and mentor across three major US fashion brands - Ann Taylor, LOFT, and Lou & Grey.
+
+- Volunteered to own accessibility at month three when no one else stepped up - self-taught WCAG compliance through hands-on testing with physical iOS and Android devices before dedicated tooling was standard practice.
+- Implemented full accessibility coverage across all e-commerce flows including Checkout, Cart, and Quick View - including dynamic aria-live regions for real-time cart notifications, ensuring screen reader users received immediate feedback on state changes.
+- Built and maintained critical user flows with consistent focus on semantic structure, keyboard navigation, and screen reader compatibility.
+- Worked on the migration of legacy jQuery/Handlebars interfaces to React, Sass, and modern HTML5 standards.
+- Ran A/B experiments in production using Adobe Target to test new features and designs across live user segments.
+- Mentored a junior developer - recognized by direct supervisor (Product Leader, Amazon Music) for fast delivery and strong team collaboration.
+- Architected and built micro frontend architecture serving 2M+ monthly active users.
+- Developed shared component library used across 5 product teams.
+- Implemented A/B testing infrastructure powering data-driven product decisions.
 
 ## CERTIFICATIONS
 
@@ -67,12 +80,6 @@ Digital accessibility engineer with 9+ years in frontend engineering and 6+ year
 - Semantic Structure and Navigation (04/2021)
 - IAAP Certification Quick Guide (04/2021)
 - Images, SVG and Canvas (06/2021)
-
-## SELECTED PROJECTS
-
-- **a11y-fixer** - [github.com/gonzoblasco/a11y-fixer](https://github.com/gonzoblasco/a11y-fixer) - Accessibility audit bot for GitHub PRs. Runs axe-core via Playwright and posts structured PR comments. No SaaS lock-in.
-- **accessible-ui** - [github.com/gonzoblasco/accessible-ui](https://github.com/gonzoblasco/accessible-ui) - A headless accessible component library built with React and TypeScript.
-- **@gonzoblasco/create-stack** - [github.com/gonzoblasco/create-stack](https://github.com/gonzoblasco/create-stack) - Opinionated scaffolder for full-stack apps (Next.js 15, React 19, TypeScript strict, Biome, Vitest, Playwright). Published on npm.
 
 ## OSS PARTICIPATIONS - MERGED PRs
 
