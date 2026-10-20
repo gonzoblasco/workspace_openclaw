@@ -31,5 +31,17 @@ antes (25s vs 30s del server) el container caia a unhealthy con un 503
 "Unhealthy: LLM probe failed" aunque el server respondiera bien. Un 503 aislado
 es timeout transitorio, no caida: reintentar antes de diagnosticar.
 
+4) Modo plain-diff (--diff-file / --stdin): no necesita token de GitHub ni URL de PR,
+y es la via para probar la CLI nativa. Corriendo el comando DESDE el repo que contiene
+los archivos, PR-Agent los lee del disco y aplica el diff en reversa para reconstruir la
+version base: con base y head completos el modelo tiene contexto real del archivo, no
+solo los hunks. Los flags --output / --json-output tienen que ir ANTES del comando, o el
+CLI imprime el help y no ejecuta nada.
+
+5) Un hunk con el conteo de lineas mal escrito (a mano) revienta unidiff con PatchSet
+error, y el CLI tambien imprime el help en vez de fallar claro. Generar el diff con
+git diff, no escribirlo a mano. Diagnostico: si el CLI imprime el help, el error real
+esta arriba en el log (capturar head, no tail).
+
 ---
 
