@@ -1,0 +1,11 @@
+Session archived on 2026-10-20. Full transcript is retained in system logs.
+
+Daily report: memory/2026-10-20.md (session blocks from 13:45 to 20:18).
+HANDOFF: .knowledge/HANDOFF.md (regenerated 2026-10-20 20:18 GMT-3).
+Session index: .knowledge/SESSIONS.md (append-only, one line per close).
+Last commit: 7b7d50a612.
+
+Scope of the session: alta de minimax-m3.1-flash:cloud en OpenClaw y cata formal de
+8 roles x 5 clases de estres (160 corridas) que lo dejo como motor del CORE (ADR-102);
+despues, fix del off-by-one de nombres en .knowledge/handoff-history/ (commit db42eb80bd)
+y el cierre de sesion (a3bdc5e6ec, 7b7d50a612).
