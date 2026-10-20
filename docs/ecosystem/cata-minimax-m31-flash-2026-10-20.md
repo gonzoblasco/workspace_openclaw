@@ -102,23 +102,59 @@ donde más importaba, es un buen motor de orquestación. Su coste por latencia n
 la ruta crítica del CORE (el que espera es Gonzo, no un pipeline). Los roles de
 generación (dev, critic, studio) quedan como están.
 
-## Costo
+## Costo: consumo MEDIDO (el precio no se midio, y no importa)
 
-No se pudo verificar el precio de `minimax-m3.1-flash:cloud` en `ollama.com/pricing`
-(la página no expone tabla en HTML estático). **Pendiente con fecha:** confirmar por
-1M tokens antes de asignarlo al CORE; la Fase 4 de la skill (costo real) no cierra hoy.
-Asumiendo el patrón cloud estándar de Ollama, el thinking se factura como output y
-minimax piensa 3× más que deepseek: **el costo por turn podría ser mayor que deepseek
-aun con modelo "flash"**. A confirmar.
+**El precio no se pudo verificar:** `ollama.com/pricing` no expone tabla en HTML
+estatico. Decision de Gonzo: "hasta el 22 a las 23.59 M3.1 Flash sera gratis... igual
+nunca usamos el precio". Con el costo en cero, la objecion no aplica en esta ventana.
+
+**Pero el CONSUMO si se puede medir, y estaba medido en los registros:** cada corrida
+guarda `eval_count` (output tokens). Se verifico que `eval_count` **incluye el
+reasonamiento**: con content+thinking la densidad da 4.3-4.5 chars/token (coherente
+con ~4 chars/token); con content solo daria 1.31 chars/token, imposible. O sea: **el
+thinking se factura como output**, y el `eval_count` ya lo cuenta.
+
+**Y el input es identico para los 4 modelos** (mismo prompt verbatim), asi que todo el
+delta de consumo es 100% output/thinking.
+
+| Modelo | 40 celdas (out tokens) | 33 celdas limpias | coste del fallo (7 celdas) | latencia mediana |
+|---|---|---|---|---|
+| minimax-m3.1-flash | **220.818** | 110.558 | **110.260** | 77,0s |
+| deepseek-v4.1-flash | 56.747 | 37.503 | 19.244 | 13,9s |
+| gpt-oss:120b | 11.304 | 7.392 | 3.912 | 3,2s |
+| gemma4 | 5.860 | 3.869 | 1.991 | 5,3s |
+
+**Ratios medidos (minimax / deepseek):**
+- output tokens, 40 celdas: **3,89x**
+- output tokens, 33 celdas limpias (sin el sesgo del retry): **2,95x**
+- latencia mediana: **5,5x** (35x contra el mas rapido por celda, gpt-oss)
+- contra gpt-oss: **19,5x** en output tokens
+
+**El dato que mas pesa no es el ratio: es donde se va el gasto.** Las 7 celdas donde
+minimax fallo por espiral de thinking consumieron **110.260 output tokens**, es decir
+**294% de todo lo que consumio deepseek en 33 celdas limpias**. El consumo real de
+minimax esta dominado por el modo de fallo, no por su razonamiento normal.
+
+**Correccion de una version anterior de este informe:** la primera redaccion de esta
+seccion decia "minimax piensa 3x mas... el costo por turn podria ser mayor", una
+inferencia sobre caracteres de thinking **sin medir el consumo**, con un pendiente
+para confirmar el precio. El consumo estaba disponible en los registros y no se uso.
+Ahora la seccion dice lo medido, y la inferencia quedo reemplazada por el numero.
+
+**Lo que NO se puede afirmar:** el precio por 1M tokens de minimax frente a deepseek.
+No hay fuente primaria consultada. (El unico "20x" que existe en el workspace es de
+otra sesion y otro modelo: `memory/2026-10-05.md`, nemotron-3-super vs deepseek en
+input, $0.015 vs $0.30/M. No es minimax ni es de esta cata.)
 
 ## Pendientes con fecha
 
-- **K3 como juez** (Gonzo, cuándo tenga quote): los 160 registros ya guardan `prompt`,
-  `content`, `thinking` separados - no hay que re-correr nada para evaluarlo.
-- Confirmar precio real (`ollama.com/pricing` o API de créditos) - antes de cambiar
-  el primario.
-- Si se asigna al CORE: cata de validación en tareas reales (2 semanas de uso) antes
-  de cerrar el rol.
+- **Cata de validacion en 2 semanas de uso real** del CORE con minimax (corte 2026-11-03).
+- **Reevaluar el balance de consumo** si termina la gratuidad del modelo (2026-10-23):
+  el ratio medido de output tokens es 3,89x contra deepseek, y 2,95x sin el sesgo del
+  retry. El precio por 1M sigue sin fuente primaria consultada.
+- **K3 como juez:** cancelada por Gonzo (costo de recursos desmedido). Los 160 registros
+  guardan `prompt`, `content`, `thinking` y `eval_count` separados por celda y modelo:
+  reevaluarlos no requiere re-correr nada.
 
 ## Archivos
 

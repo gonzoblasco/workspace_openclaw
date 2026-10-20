@@ -84,15 +84,36 @@ pagarlo por debajo.
    (`deepseek-v4.1-flash:cloud`) cubre el caso. *Vigilancia:* si aparecen vacios en
    el CORE, el sintoma es thinking quemado, no logica.
 
-2. **Latencia.** Mediana 77s por celda contra 3-14s de los titulares; 35x el mas
-   rapido en el computo agregado de la cata.
+2. **Latencia.** Mediana 77s por celda contra 13,9s de deepseek (5,5x) y 3,2s de
+   gpt-oss (24x). En el computo agregado de la cata (suma de los 40 turnos) minimax
+   sumo 4.327s contra 124s del mas rapido por celda: 35x.
    *Mitigacion:* aceptada por rol (el CORE espera a la persona, no a un pipeline).
 
-3. **Costo.** No se midio: `ollama.com/pricing` no expone tabla en HTML estatico.
-   Gonzo: "hasta el 22 a las 23.59 M3.1 Flash sera gratis, no preocuparse por el
-   precio; igual nunca usamos el precio". Con el costo en cero, la objecion no aplica
-   en esta ventana. *Pendiente:* reevaluar si la gratuidad termina y el rol se
-   mantiene.
+3. **Costo: consumo MEDIDO, precio NO medido.** El precio por 1M tokens no se pudo
+   verificar (`ollama.com/pricing` no expone tabla en HTML estatico) y Gonzo decidio
+   que no es un factor ("hasta el 22 a las 23.59 M3.1 Flash sera gratis... igual nunca
+   usamos el precio"). Pero el **consumo si se midio**, porque cada corrida guardaba
+   `eval_count` (output tokens). Se verifico que `eval_count` incluye el
+   razonamiento: con content+thinking la densidad da 4,3-4,5 chars/token (coherente
+   con ~4); con content solo daria 1,31 chars/token, imposible. **El thinking se
+   factura como output.** Y como el input fue identico para los 4 modelos (mismo
+   prompt verbatim), todo el delta es output/thinking.
+
+   | Modelo | 40 celdas | 33 limpias | coste del fallo (7 celdas) | latencia |
+   |---|---|---|---|---|
+   | minimax-m3.1-flash | **220.818** | 110.558 | **110.260** | 77,0s |
+   | deepseek-v4.1-flash | 56.747 | 37.503 | 19.244 | 13,9s |
+   | gpt-oss:120b | 11.304 | 7.392 | 3.912 | 3,2s |
+   | gemma4 | 5.860 | 3.869 | 1.991 | 5,3s |
+
+   Ratios minimax/deepseek: **3,89x** en output tokens (40 celdas), **2,95x** en las
+   33 limpias (sin el sesgo del retry), 5,5x en latencia, 19,5x contra gpt-oss.
+   **El dato que mas pesa: las 7 celdas fallidas consumieron 110.260 output tokens =
+   294% de todo lo que consumio deepseek en 33 celdas limpias.** El gasto de minimax
+   esta dominado por su modo de fallo, no por su razonamiento normal.
+   *Mitigacion:* con el costo en cero hasta el 2026-10-22 no aplica; despues, el
+   consumo a vigilar es el de los thinking quemados, no el promedio.
+   *Pendiente:* reevaluar si la gratuidad termina y el rol se mantiene (2026-10-23).
 
 ## Regla de mantenimiento (misma que ADR-090)
 
@@ -137,11 +158,13 @@ El judge's score es evidencia, no veredicto.
 
 - **Re-cata con K3 como juez:** cancelada por Gonzo (2026-10-20) - costo de recursos
   desmedido para el beneficio. Los 160 registros quedan disponibles si se decide
-  revertir.
+  revertir: guardan `prompt`, `content`, `thinking` y `eval_count` separados, asi que
+  reevaluarlos no requiere re-correr nada.
 - **Validacion en uso real:** 2 semanas de uso del CORE con minimax antes de dar el
   rol por cerrado. Fecha de corte: 2026-11-03.
 - **Costo real:** reevaluar si la gratuidad hasta el 2026-10-22 23:59 cambia el
-  balance. Fecha: 2026-10-23.
+  balance. Fecha: 2026-10-23. Con el consumo ya medido (3,89x de output tokens contra
+  deepseek), lo que falta es el precio por 1M de cada uno, no una estimacion.
 
 ## Artefactos
 
