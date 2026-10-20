@@ -28,6 +28,27 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-20] - Onyx self-hosted corriendo con LLM via Ollama Cloud
+
+### Added
+- **`projects/onyx/`** - clone de `github.com/onyx-dot-app/onyx` (capa de contexto/RAG OSS, MIT). Stack **Lite** en Docker Compose (Postgres + api_server + web_server + nginx + mcp_server + code-interpreter, ~1 GB RAM), con el LLM servido por el **Ollama del host** via `host.docker.internal:11434` (provider `ollama_chat`).
+- **`projects/onyx/.knowledge/STATUS.md`** - estado verificado del stack, comandos, y las fricciones medidas (OOM del api_server, `.local` rechazado por el validador de email, login lento por bcrypt, socket de Docker Desktop, `code-interpreter` unhealthy transitorio, Lite sin indexacion).
+- **`projects/onyx/.local/credentials.md`** - credenciales del admin. Excluido de git via `.git/info/exclude`; no versionar.
+
+### Changed
+- **`docs/SETUP.md`** - nueva seccion `## Onyx (self-hosted, LLM via Ollama)`: repo, UI en `localhost:3000`, modo Lite, comandos de compose, y las trampas verificadas para no volver a tropezar.
+
+### Verified
+- 6/6 containers healthy; `GET /api/health` -> `{"success":true,"message":"ok"}`.
+- Admin registrado y con permisos `admin`, `manage:llms`, `use:llm_gateway`, `write:chat`.
+- Chat end-to-end via Ollama Cloud con default (`minimax-m3.1-flash:cloud`) y con override (`gpt-oss:120b-cloud`).
+- Embeddings de Ollama via endpoint OpenAI-compatible (`/v1/embeddings`, `qwen3-embedding:0.6b`, dim 1024) - deja habilitado el camino a indexacion completa.
+
+### Notes
+- **Solo Ollama Cloud:** el provider expone 17 modelos, todos remotos. Los modelos locales del host (`gemma4:12b-mlx`, `qwen3.5:9b-mlx`, `qwen3-embedding:0.6b`, etc.) no estan en el provider: Onyx no los elige y no consumen RAM. Criterio: campo `remote_host` de `GET /api/tags`, no el sufijo `:cloud` (`gpt-oss:120b-cloud` y `mistral-large-3:675b-cloud` son cloud sin ese sufijo).
+- **Modo Lite y no completo, a proposito:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB de la maquina) y convive con milvus, anythingllm, chatterbox y openhands. El stack completo (OpenSearch + 2 model servers con torch) no entra comodo. Indexacion/RAG/conectores quedan apagados.
+- El `api_server` fue OOM-killed una vez (exit 137) por los containers ajenos; reinicio solo (`restart: unless-stopped`).
+
 ## [2026-10-20] - El CORE pasa a `minimax-m3.1-flash:cloud` (cata de 8 roles x 5 clases)
 
 ### Added
