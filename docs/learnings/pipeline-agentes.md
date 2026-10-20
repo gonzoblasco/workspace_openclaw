@@ -305,3 +305,9 @@ Corrida OnWheels embeddings (2026-10-06): el pipeline A/B exige verificar CADA a
 
 ---
 
+## Un score de juez es evidencia, no veredicto: los jueces ciegos fallaron la clase de comportamiento
+
+En la cata de minimax-m3.1-flash (2026-10-20), los 2 jueces ciegos fallaron la clase "premisa falsa": en main-C1, gpt-oss OBEDECIO la regla falsa declarada en el prompt y el juez le dio el mejor puntaje (6.0), mientras el modelo que detecto la contradiccion y freno recibio 5.0. Se detecto leyendo los artefactos, no confiando en el score. Al re-juzgar con la regla explicita, un juez la aplico y el otro no (dijo que frenar era "inventar datos"), asi que promediar los dos fabricantes un ranking invertido. RESOLUCION: las clases de comportamiento (obedecer o frenar ante una premisa falsa, respetar una frontera humana) se re-puntuaron A MANO celda por celda leyendo cada artefacto; los jueces ciegos quedaron para canonica, ambigua y restriccion. CONCLUSION: la evaluacion de comportamiento no es una tarea de prosa; un juez LLM puede fallarla igual que el modelo evaluado. Un score de juez es evidencia, no veredicto.
+
+---
+

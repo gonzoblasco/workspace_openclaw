@@ -695,3 +695,9 @@ ui,contrast,audit
 
 ---
 
+## Una objecion economica se contesta con el campo medido, no con una inferencia
+
+Gonzo objeto la seccion de costo del informe de la cata: afirmaba una consecuencia economica ("minimax piensa 3x mas, el costo por turn podria ser mayor") sin haber medido el consumo, y senalo que el unico "20x" de precio del workspace era de otra sesion y otro modelo (nemotron vs deepseek). Verificado: el "20x" no estaba en nada escrito en esa cata, pero la observacion de fondo era correcta Y el dato para contestarla estaba disponible desde el principio: cada corrida guardaba eval_count (output tokens). Se verifico que eval_count incluye el razonamiento (con content+thinking la densidad da 4,3-4,5 chars/token, coherente con ~4; con content solo daria 1,31, imposible) y que el input fue identico para los 4 modelos, asi que todo el delta es output/thinking. MEDIDO: minimax/deepseek = 3,89x output tokens (2,95x sin el sesgo del retry) y 5,5x latencia. Y el dato que mas pesa: las 7 celdas donde minimax fallo por espiral de thinking consumieron 110.260 output tokens = 294% de todo lo que consumio deepseek en 33 celdas limpias; el gasto esta dominado por el modo de fallo, no por el razonamiento normal. LECCION: cuando una afirmacion economica es challenged, el numero esta en los registros: mirar el campo antes de pedir opinion o de dejar un pendiente. Y una segunda: en esta seccion del daily el .md es la FUENTE y la DB se regenera desde el, asi que editar la DB directo se pierde en el reconcile siguiente (me paso: lo perdi una vez y lo rehice editando el .md y propagando con memory-end-session.py --dedupe-only).
+
+---
+
