@@ -204,12 +204,30 @@ def test_nested_role_tests_are_skipped():
         assert mod.is_skipped_path(p), p
 
 
+def test_docs_are_skipped():
+    """Regresion 2026-10-20: `docs/` es documentacion, no superficie de UI.
+
+    El CV de Staffy describe un PR sobre `aria-posinset` real. El gate leyo esa
+    linea como un cambio de componente y bloqueo el commit primero y el CI del
+    push despues. Un CV se abre en un navegador, pero no se navega con un lector
+    de pantalla esperando un contrato de widget: renderiza texto, no interfaz.
+    """
+    mod = load()
+    for p in (
+        "docs/entrevistas/staffy-ai-software-engineer/cv-ai-software-engineer-staffy.html",
+        "docs/test-assets/pr-10517-probes/probe.html",
+        "docs/index.html",
+    ):
+        assert mod.is_skipped_path(p), p
+
+
 def test_non_test_html_is_still_scanned():
     """El arreglo no debe volver ciego al gate: una app real sigue disparando."""
     mod = load()
     for p in (
         "src/app/page.tsx",
         "agents/kanam-auditor/skills/accessibility-oracle/src/oracle.js",
+        "b.html",
     ):
         assert not mod.is_skipped_path(p), p
 

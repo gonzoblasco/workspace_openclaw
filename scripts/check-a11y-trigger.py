@@ -101,7 +101,17 @@ LINE = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@")
 # contienen los patrones ARIA como data de prueba. El propio gate ya declara
 # que solo lo que RENDERIZA puede cambiar un anuncio; esto cierra la brecha
 # entre esa intencion y el filtro.
-SKIP_PATH_PARTS = ("tests",)
+# El segmento `docs` tambien se excluye, y por la MISMA razon que `tests`: un
+# documento no se renderiza como UI de producto. `docs/` guarda CVs, informes y
+# assets de prueba; el `.html` de un CV se abre en un navegador, pero nadie lo
+# navega con un lector de pantalla esperando un contrato de widget. Sin esta
+# exclusion, decir "aria-posinset" en un CV bloqueaba el commit y, peor, el CI
+# del push: la linea 87 del CV de Staffy cuenta un PR sobre posinset real y el
+# gate la leyo como un cambio de componente (2026-10-20).
+#
+# La regla de fondo no cambia: solo el codigo que RENDERIZA puede cambiar lo que
+# se anuncia. Un CV renderiza texto, no una interfaz.
+SKIP_PATH_PARTS = ("tests", "docs")
 UI_EXTENSIONS = (".tsx", ".jsx", ".ts", ".js", ".mjs", ".cjs",
                  ".vue", ".svelte", ".astro", ".html")
 
