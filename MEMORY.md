@@ -27,14 +27,14 @@
 
 ## Metodología
 
-- Herramientas curadas por criterio: OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG. Se justifican por lo que sirven hoy, no por precedente.
+- Herramientas curadas por criterio y reglas de ingeniería: **`AGENTS.md`**. Acá no se repiten.
 - Sesión de OpenClaw por proyecto.
 - Registro: `MEMORY.md`, dailies, HANDOFF, CHANGELOG.
-- **Iconos (ADR-037):** Lucide (`lucide-react`) base. No emojis en UI.
+- Reglas de ingeniería (iconos, UI, pagos, pre-commit): **viven en `AGENTS.md`**; acá no se repiten.
 
 ## Pipeline de Programación (ESTÁNDAR)
 
-Pipeline A/B con motor `deepseek-v4.1-flash:cloud`. Flujo: A escribe -> Kanam pasa a B -> B revisa -> verificar -> iterar. Asignación de modelos por rol y niveles de pensamiento: **ADR-090**.
+Pipeline A/B de dos agentes: A escribe, B revisa, el CORE verifica e itera. Los modelos y los niveles de pensamiento **no se escriben acá**: los declara el bloque managed de `AGENTS.md` desde `memory.db`, y el fundamento está en **ADR-090**.
 
 **Complexity-First (2026-08-30):** antes de spawnear agentes, Kanam ejecuta `./scripts/complexity-scorer.sh "<objetivo>"` que devuelve T (1-20). T <= 6 = Kanam solo (trivial). T 7-12 = A high. T 13-16 = A+B con cross-review. T 17-20 = Kanam(max) diseña, A+B ejecutan, verificación obligatoria + confirmación de Gonzo. Persistir T con `pipeline-track.sh init ... --score T`. Skill: `complexity-driven-pipeline`.
 - **Lecciones:** SIGKILL -> prompts cortos para revisiones, relanzar si muere. Cross-review -> agente B puede introducir bugs; verificar siempre contra la fuente real.
@@ -45,11 +45,9 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 
 ## Reglas de Ingeniería
 
-- **Pre-commit hooks:** obligatorios en todo proyecto (Biome -> Vitest -> build). Prioridad sobre features.
-- **Evaluación de complejidad previa (2026-08-30):** antes de cada *task*, evaluar el objetivo en 4 dimensiones (alcance, abstracción, riesgo, ambigüedad) y asignar T (1-20); selecciona modelo y thinking. Detalle: `prompts/complexity-scorer.md`. **Scorer local: `gemma4:e4b-mlx`** (6.7x más rápido que `qwen3.5:9b-mlx` en el benchmark 2026-08-30: 23s vs 154s).
-- **Validación UI (2026-08-27):** fixes visuales se validan SOLO con browser real (Desktop). jsdom no detecta problemas de layout/chrome nativo.
-- **Pagos (ADR-042):** **Stripe es el proveedor único**, sea o no con Lovable. Mercado Pago queda fuera como intención (no se borra su existencia ni el trabajo previo; deja de ser una opción prevista). No se usan otros modos de pago.
-- **Contenido externo = sandbox (2026-09-09):** regla de operación migrada a AGENTS.md (sección Conducta).
+> Las reglas operativas (pre-commit, iconos, validación UI, pagos, contenido externo) viven en `AGENTS.md`. Acá queda solo lo que es hecho del entorno, no regla de conducta.
+
+- **Evaluación de complejidad previa (2026-08-30):** antes de cada *task*, evaluar el objetivo en 4 dimensiones (alcance, abstracción, riesgo, ambigüedad) y asignar T (1-20); selecciona modelo y thinking. Detalle: `prompts/complexity-scorer.md`. **Scorer local: `gemma4:e4b-mlx`** (6.7x más rápido que el scorer anterior de 9B en el benchmark 2026-08-30: 23s vs 154s).
 
 ## Modelo de Agentes OpenClaw OS
 
@@ -65,8 +63,8 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 
 ## Proyectos (memoria de cada uno en `<workspace>/projects/<slug>/.knowledge/`, ADR-098)
 
-- **Regla (2026-08-28):** NO proponer SoporteML en estrategia de proyectos. **Matizada (2026-09-24):** el proyecto se reabrió por pedido de Gonzo (ADR-0001 del proyecto `soporteml`). La regla sigue aplicando a la **narrativa pública** y a los barridos de limpieza; ya no prohíbe trabajarlo.
-- **SoporteML (2026-10-06):** **v4 CERRADO** (ADR-0002 del proyecto `soporteml`). El producto sigue por la **versión funcional de Lovable (v1)**, que ahora tiene **cobro por Stripe** habilitado en Argentina. **Se queda en Lovable** (no migra a stack propio). Sigue **fuera de la narrativa pública / del CV** y fuera de barridos automáticos. Sin pendientes abiertos. Ver ADR-0002 de `soporteml`.
+- **SoporteML - regla vigente (2026-10-20, decisión de Gonzo):** producto propio bajo el rol **Freelancer (05/2025-presente)**, con **Pro Motors como primer cliente** (`pro-motors.com.ar`, integración MeLi real verificada: `meliUserId 48316325`). **SÍ va al CV y a las propuestas laborales.** Sigue fuera del portfolio público de GitHub (repo privado) y no se propone como ancla de la estrategia de proyectos ni en barridos de limpieza. **Derogadas:** la regla 2026-08-28 ("no proponerlo") y la matización 2026-09-24 ("sigue fuera de la narrativa pública"). <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+- **SoporteML (2026-10-06):** **v4 CERRADO** (ADR-0002 del proyecto `soporteml`). El producto sigue por la **versión funcional de Lovable (v1)**, que ahora tiene **cobro por Stripe** habilitado en Argentina. **Se queda en Lovable** (no migra a stack propio). Fuera de barridos automáticos. **Sobre el CV: derogado el 2026-10-20** - ahora SÍ va al CV (ver regla vigente arriba). Sin pendientes abiertos. Ver ADR-0002 de `soporteml`.
 - **Kanam OnWheels (2026-09-29):** sitio de concesionario oficial multi-marca (KTM, Husqvarna, Can-Am, Sea-Doo, Ski-Doo, Segway) con chatbot RAG que responde **solo con evidencia citada**. **Discovery, specs, knowledge y diseño cerrados; Fase 1 EN CURSO.** Destino: regalo para el local de Esteban (el hermano), sin billing. **Stack (ADR-0001):** Next.js 16 App Router (no Vite SPA: el catálogo debe ser indexable), backend Supabase (Postgres + RLS + Edge Functions + pgvector). **Decisiones centrales:** `model`/`spec` = catálogo COMPARTIDO (sin `company_id`), `unit` es del local; cola de sugerencias; embeddings externos dimensión 1536; máquina de estados explícita (publicar es un acto humano). **Verificado:** migraciones con checks de invariantes contra Postgres real (`projects/kanam-onwheels/scripts/verify-schema.sh`); catálogo público server-rendered, es-AR y SEO; 111 tests, lint, typecheck y build en verde; **Supabase conectado** (`lpvtjipxzxpxygeobixn.supabase.co`, Postgres 17.6, 17 tablas, 0 sin RLS, 36 policies). Base **vacía de datos a propósito** (el seed es data de PRUEBA; se niega a correr sin opt-in, ADR-069). **Hallazgo de seguridad corregido:** la policy del catálogo compartido dejaba leer specs sin aprobar y modelos en borrador; demostrado antes (1 y 1 visibles) y cerrado después (0 y 0), con guarda permanente (check 14 del suite). **Bloqueos reales:** falta construir el panel (Auth disponible); el chat necesita proveedor de embeddings + clave de modelo. **Repo:** `github.com/gonzoblasco/kanam-onwheels` (PRIVADO). <!-- project: github.com/gonzoblasco/workspace_openclaw -->
 - **a11y-fixer:** ARCHIVADO (2026-09-14, decisión de Gonzo), v0.6.0. Su sucesor es `kanam-fixer`, proyecto NUEVO (no un renombre). Repo GitHub `isArchived=true` (verificado 2026-10-06).
 - **kanam-fixer:** PROYECTO NUEVO (2026-09-14). Alcance/propuesta de valor SIN DEFINIR - no asumir que hereda el rol de engine de fixes a11y. Antes de arrancar hay que resolver: relación con el código de a11y-fixer (heredar/portar/greenfield), lugar del pilar Accesibilidad en el portfolio (ADR-001 nombra a a11y-fixer como ancla -> requiere enmienda formal) y qué pasa con `a11y-playground`, que depende de a11y-fixer.
@@ -83,9 +81,11 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 ## Repos Propios (no forks)
 
 ### Activos
-workspace_openclaw (Privado), kanam-onwheels (Privado), kanam-fixer, kanam-pulse, kanam-story, kanam-mind, kanam-solitaires, kanam-forge, kanam-tetris, kanam-skills, ai-developer-stack, soporteml (Privado desde 2026-09-15, sacado del CV por Gonzo), soporteml-v4 (Privado), accessible-ui (Privado), quedamos (Privado).
+workspace_openclaw (Privado), kanam-onwheels (Privado), kanam-fixer, kanam-pulse, kanam-story, kanam-mind, kanam-solitaires, kanam-forge, kanam-tetris, kanam-skills, ai-developer-stack, soporteml (Privado desde 2026-09-15; SÍ va al CV como Freelance, regla 2026-10-20), soporteml-v4 (Privado), accessible-ui (Privado), quedamos (Privado).
 - **Nota:** `kanam-lab`, `kanam-os`, `kanam-spec`, `kanam-spec-v2`, `ollama-visor` viven en `projects/` (git local o repo propio); verificar antes de asumir su estado de publicación.
 - **Reconciliación (2026-10-06, contra `gh repo list`):** repos propios **vivos** (no forks) fuera de las listas de arriba: `catalogo-de-venta-de-coches`, `create-stack` (repo del paquete `@gonzoblasco/create-stack`), `kanam-minesweeper`, `kanam-sudoku`, `match3`, `system-health-check`. Aclaraciones: `kanam-forge` es un **fork** (de Lovable), no un repo propio; `kanam-skills` es **archivado** (ADR-079) aunque figure arriba. La lista histórica de abajo no se reescribe entera: queda como deuda menor.
 
 ### Archivados
-soporteml-v3 (Privado), ai-engineering-bootcamp, hyatt-copilot-agent (Privado), ensulugar, cabala, health-tracker, umbrawriter (Privado), a11y-fixer (2026-09-14, reemplazado por kanam-fixer), create-with-ai.
+soporteml-v3 (Privado), ai-engineering-bootcamp, hyatt-copilot-agent (Privado), ensulugar, cabala, health-tracker, umbrawriter (Privado), a11y-fixer (2026-09-14, reemplazado por kanam-fixer), create-with-ai, **accessibility-auditor (ARCHIVADO 2026-10-20, decisión explícita de Gonzo: "no quiero volver a oír de él")**.
+
+- **accessibility-auditor - regla dura (2026-10-20):** NO mencionarlo en CVs, portfolios, propuestas ni narrativa pública. Ya no resuelve en GitHub (`Could not resolve to a Repository`, verificado 2026-10-20) y no existe en `projects/`. **Quedó referenciado en CVs viejos** (`docs/entrevistas/sol-senior-fullstack/`, `infjini-infotech-lead-a11y/`, `mercadolibre/`, `eit-htc-disney/`, `_general/`): esos archivos son material histórico, no se corrigen retroactivamente, pero **ningún CV nuevo lo incluye**. Para demostrar el mismo eje a11y + tooling, usar los PRs mergeados (Adobe / IBM Carbon / Meta Astryx / MUI) y Super7UI/Warner Bros. <!-- project: github.com/gonzoblasco/workspace_openclaw -->

@@ -147,6 +147,15 @@ python3 "${SCRIPT_DIR}/scripts/check-content-dirs.py" || exit 1
 # (AGENTS/MEMORY/SOUL/IDENTITY), 4.000 (USER fijo), 60.000 total.
 python3 "${SCRIPT_DIR}/scripts/check-bootstrap-budget.py" || exit 1
 
+# Guard de fuente unica (ADR-100, 2026-10-20). SIN CONDICION, a proposito: la
+# duplicacion que este gate caza nace de una edicion en CUALQUIER archivo
+# normativo, no de un pathspec predecible. El caso testigo no fue un cambio
+# grande: fue una linea de estado agregada a MEMORY.md que ya vivia en
+# AGENTS.md, y un bloque de modelos en SETUP.md que se declaraba vigente y
+# superseded en la misma frase. Python puro (lee ~9 archivos): correrlo siempre
+# es mas barato que descubrir la contradiccion en la sesion siguiente.
+python3 "${SCRIPT_DIR}/scripts/check-single-source.py" || exit 1
+
 # Guard de roadmaps de rol (docs/ROADMAPS.md, 2026-10-07). SIN CONDICION, a
 # proposito: los ROADMAP.md de rol pueden aparecer o desaparecer por cualquier
 # edicion, no por un pathspec predecible. El 2026-10-07 se descubrio que 5 de 7

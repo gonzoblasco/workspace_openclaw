@@ -1,8 +1,30 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-05). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-06). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
+
+---
+
+## [2026-10-20] - Fuente unica: un dato, un dueno, y un gate que lo verifica
+
+### Added
+- **`scripts/check-single-source.py`** - gate que caza la segunda copia de una regla entre archivos normativos (similitud Jaccard >= 0.55 sobre lineas de >=60 chars) y los tags de modelo escritos a mano fuera de un bloque `MANAGED`. Corre sin condicion en pre-commit y CI.
+- **`tests/python/test_check_single_source.py`** - 11 tests. Cada uno siembra el defecto en un arbol falso; el ultimo exige que el gate distinga el caso limpio del sucio.
+- **`docs/adr/ADR-100-fuente-unica-de-la-verdad.md`** - dueno declarado por familia de dato, y el porque de que la segunda copia sea un bug.
+- **`AGENTS.md` seccion 0 - Fuente unica:** tabla de dueno por dato, en el unico archivo que **todos** los subagentes reciben.
+
+### Changed
+- **`MEMORY.md`** dejo de repetir iconos, pagos, pre-commit, validacion UI y herramientas: los cita desde `AGENTS.md`. La linea de pipeline A/B ya no declara un motor a mano.
+- **`docs/ROADMAP.md`** perdio la tabla de 8 roles con modelo y fallback: mide estado, no declara asignaciones. Tambien dejo de redefinir `memory.db` y el estado de `soporteml`.
+- **`docs/SETUP.md`** perdio el bloque "Modelo de trabajo (2026-08-30)" que se declaraba vigente y `SUPERSEDED` en la misma frase; queda el historial en `memory/model-history.md`.
+- **`docs/NORTH.md`** deja el estado de `soporteml` a `MEMORY.md`.
+- **`AGENTS.md`** cita skills reales: reemplaza `knowledge-management`, `incremental-implementation`, `background-execution` y `a11y-at-validation`, que **no existian en ningun arbol**, por `session-lifecycle`, `complexity-driven-pipeline`, `agent-orchestration-pipeline`, `verification-gates` y `engineering-governance`.
+
+### Notes
+- **El diagnostico:** no eran "demasiados md" (1.859), era que ningun archivo tenia dueno de un dato y ningun gate verificaba afirmaciones, solo rutas. Primera corrida del gate: **5 copias y 16 tags a mano** sobre un arbol que todos los demas gates daban verde.
+- **El caso mas caro:** 4 skills citadas como "las mas usadas" que no existian. `check-refs.py` no las veia porque eran backticks sin `scripts/` ni `docs/`.
+- **Sin excepcion por conveniencia:** "el subagente solo recibe AGENTS.md" era la excusa que habia duplicado los modelos en cuatro archivos. Si un dato tiene que estar ahi, ese es su dueno y los demas lo citan.
 
 ---
 
@@ -589,50 +611,5 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Verificación:** el script delega y corre (`bash agents/kanam-dev/scripts/validate-spec.sh <dir>`); el original queda recuperable en `git HEAD` y su copia `.bak-share-20261005` es redundante con git (se retira).
 - **Origen:** cambio de una sesión previa del día quedó sin commitear en el árbol (mtime 12:24); se documenta el rationale y se registra acá.
 - Sin commit: el Core verifica primero (ADR-078).
-
----
-
-## [2026-10-05] - Skill nueva `design-direction`: dirección de arte antes de escribir código
-
-### Added
-- **`agents/kanam-dev/skills/design-direction/`** (kanam-dev 34 → 35): cubre el hueco entre decidir qué construir (spec, `openspec-pattern`) y cómo implementarlo (`frontend-ui-engineering`). Cuatro bloques:
-  - Las 4 preguntas antes de codear (propósito, tono, restricciones, diferenciación). Regla: la clave es la **intencionalidad**, no la intensidad - un minimalismo refinado y un maximalista bold son igualmente válidos si son decisiones.
-  - La distinción de contexto: **herramienta funcional** (dashboard, form, tabla densa: la neutralidad ES la decisión, fuentes de sistema/Inter correctas) vs **pieza memorable** (landing, portfolio, marca: la neutralidad es pereza, pareja display/body). Primero preguntar qué es, después elegir tipografía.
-  - El orden de las 4 fases de pensamiento: layout → tema → animación → código, enlazado a `incremental-implementation` (el cómo) y `frontend-ui-engineering` (la ejecución).
-  - La regla de intencionalidad: "la ausencia de look malo no es un look bueno" - evitar el look IA no alcanza, hay que comprometerse con una dirección.
-  - Anclaje al stack real: tokens semánticos (`--primary`, `--muted`, `--border`), Lucide para iconografía (nunca emojis), CSS Modules como vía de estilado, loop cerrado con `a11y-at-validation`.
-- Origen: `docs/specs/design-direction-spec.md` (análisis de 3 skills externas de diseño traidas por Gonzo). Nada se importó ni instaló: el criterio se reescribió para este workspace y su stack.
-
-### Changed
-- **`frontend-ui-engineering/SKILL.md`:** 1 sola línea de contexto al inicio de "Design Thinking Before Code": asume dirección existente y deriva UI sin dirección a `design-direction`. Nada más cambió en esa skill.
-- **`SKILLS-INDEX.md`:** fila nueva en §3.2 y conteo de kanam-dev 34 → 35 (línea 24).
-
-### Notes
-- **Grupo Build, no Define:** no es definición de requerimientos (eso es Define); su output alimenta directamente a `frontend-ui-engineering` dentro del mismo ciclo, así que la fila va inmediatamente antes de esa skill.
-- **Verificación real:** `check-agent-skill-boundary.py` OK, `check-refs.py` OK (145 rutas), `test-skills.sh` completo OK (80 SKILL.md: frontmatter, em dash, refs, links), `check_em_dash.py` OK sobre los 4 archivos, y grep del stack de las skills externas: 1 línea única (rechazo explícito de Tailwind/Shadcn/Radix, con la excepción del spec §6.3: rechazo, no adopción; 0 líneas de Flowbite/cdn/unpkg).
-- Sin commit: el Core verifica primero (ADR-078).
-- **Heredado, fuera de alcance:** la fila "Total activas" (78) ya traía una inconsistencia antes de este cambio (la suma de los encabezados daba 79): re-medir con `openclaw skills list` en la próxima pasada completa. Los follow-ups del spec §9 quedan abiertos: ADR de Radix/shadcn, WCAG 2.1 vs 2.2, regla transform/opacity.
-
----
-
-## [2026-10-05] - Rediseño de modelos: distribución por agente (2026-10-05)
-
-### Changed
-- **`openclaw.json`:** limpieza completa de modelos - defaults (primary `ollama/glm-5.3-flash:cloud`, utilityModel y `defaults.models` solo glm) + 8 agentes con primary/fallbacks explícitos:
-  - main glm-5.3-flash:cloud · dev deepseek-v4.1-flash:cloud · auditor nemotron-3-super:cloud · critic gpt-oss:120b-cloud · planner minimax-m3:cloud · mind deepseek-v4.1-flash:cloud · ops glm-5.3-flash:cloud · studio gemma4:cloud.
-  - Fallbacks: glm-5.3-flash universal; ops/studio caen a glm4:9b local.
-  - Eliminados ~27 fallbacks huérfanos del agente `main` (locales inexistentes, rutas hf.co/...) - causa del "configured (not in catalog)".
-
-### Changed (docs)
-- **`AGENTS.md`:** sección de modelos operativos + bloque managed `model-triple` actualizados a la distribución por agente (supersede ADR-053).
-- **`docs/adr/ADR-053`:** sección "Actualización 2026-10-05" que registra el supersede sin borrar el histórico.
-- **Pipeline A/B (sin cambios, verificado):** ADR-077 + skill `agent-orchestration-pipeline` ya definían la pareja asimétrica vigente (A `gpt-oss:120b-cloud` escribe / B `deepseek-v4.1-flash:cloud` 1M revisa).
-
-### Notes
-- Backup pre-cambio: `~/.openclaw/openclaw.json.bak-20261005-models`.
-- Probe de fallbacks studio: `glm4:9b` aprobado (7.9s local); DavidAU GLM-4.7 mod descartado (29GB, 62% CPU, hangs).
-- Rev. 01:22 - canje deepseek/glm: main/defaults pasan a `deepseek-v4.1-flash:cloud` (chat común, 6.5s vs 19.8s; glm consume muchos más recursos); dev y ops toman `glm-5.3-flash:cloud`. Fallbacks: deepseek para dev/ops/auditor, glm para main/planner. AGENTS.md y ADR-053 alineados.
-- **Cata por rol (ADR-087):** 7 roles x 2 modelos + probe especifico de auditor. La distribucion queda **validada** (4 roles con ganador claro, 3 empates). `nemotron-3-ultra` descartado para auditor (550B, mismo contexto 256k, mas lento y perdio en calidad vs super). utilityModel fijado en `gemma4:cloud` (el mas liviano: 0.5s / 12 tokens en la cata; tareas cortas como titulos, narracion y recaps); defaults.models alineado; drift re-baselineado.
-- Evidencia de latencia previa (cata 2026-09-28): deepseek 6.5s · gemma4 1.9s · glm-5.3-flash 19.8s.
 
 ---

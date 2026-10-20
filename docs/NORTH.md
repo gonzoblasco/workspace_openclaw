@@ -143,7 +143,7 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 
 1. **`kanam-fixer`:** alcance **DEFINIDO** (2026-09-14/15: asercion sobre el anuncio del lector de pantalla, virtual en CI / real en local). **Ya no es una decisión abierta.** El pilar *Accesibilidad* tiene ancla formal en ADR-001 §6. Lo que sigue abierto es la **validación de impacto** del ancla (usuarios que no sean Gonzo), que es el criterio del Horizonte 1, no la definición.
 2. **La métrica del H1:** "usuarios reales" es vago. Falta el número concreto.
-3. **`soporteml`:** v4 cerrado (ADR-0002 del proyecto `soporteml`); el producto sigue por la version funcional de Lovable, con cobro por Stripe, y **se queda en Lovable** (no migra). Sin pendientes abiertos.
+3. **`soporteml`:** cerrada. El estado vigente vive en `MEMORY.md`; NORTH no lo repite.
 4. **Respaldo de `projects/`:** los `.knowledge/` que no viven en un repo de proyecto versionado quedan solo en disco, sin respaldo en git.
 5. **Ecosistema:** decisión de memoria (6 caminos solapados) y de seguridad (guardspine vs ClawSec) - ver `docs/ecosystem/DECISIONS.md`.
 

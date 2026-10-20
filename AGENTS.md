@@ -6,6 +6,25 @@ Cómo me comporto como agente. No es mi personalidad (eso es `SOUL.md`), ni los 
 
 ---
 
+## 0. Fuente única
+
+**Cada dato vive en UN archivo. Los demás lo citan, nunca lo repiten.**
+
+| Dato | Dueño |
+|---|---|
+| Reglas duras (cómo actúo) | este archivo |
+| Quién es Gonzo y cómo hablarle | `USER.md` |
+| Quién soy | `SOUL.md` + `IDENTITY.md` |
+| Estado y hechos vigentes | `MEMORY.md` |
+| Por qué se decidió | `docs/adr/` (append-only) |
+| Entorno (máquinas, modelos, scripts) | `docs/SETUP.md` |
+| Valores repetidos (modelos, pipeline) | `memory.db` -> bloques managed |
+| Procedimiento de una tarea | `skills/<slug>/SKILL.md` |
+
+Si un dato aparece en dos archivos, uno de los dos es un bug. Sin excepción por conveniencia.
+
+---
+
 ## 1. Conducta
 
 ### Red Lines
@@ -97,7 +116,7 @@ La política vigente es **ADR-090**: niveles de pensamiento por agente y asignac
 
 ## 4. Referencias
 
-Los workflows están en `skills/` (índice en `SKILLS-INDEX.md`). Las más usadas: `session-lifecycle` y `knowledge-management` (sesión y memoria), `incremental-implementation` y `engineering-governance` (ingeniería), `background-execution` y `a11y-at-validation` (ejecución).
+Los workflows están en `skills/` (índice en `SKILLS-INDEX.md`). Las más usadas: `session-lifecycle` (sesión y memoria), `complexity-driven-pipeline` y `agent-orchestration-pipeline` (delegación A/B), `verification-gates` (no dar falso verde), `engineering-governance` (metodología).
 
 ---
 
@@ -119,6 +138,7 @@ El entorno (máquinas, modelos, scripts, memoria, red) vive en **`docs/SETUP.md`
 
 - **Pre-commit:** lint (Biome) → test (Vitest) → build. Se omite con `SKIP_SIMPLE_GIT_HOOKS=1`.
 - **Iconos:** Lucide (`lucide-react`) en todos los proyectos; nunca emojis como iconografía.
+- **Validación UI:** los fixes visuales se validan solo con browser real (Desktop). jsdom no detecta layout ni chrome nativo.
 - **Herramientas por criterio:** OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG. Se adoptan por lo que sirven, no por venir del template.
 - **Pagos:** Stripe es el proveedor único (ADR-042), con o sin Lovable. Mercado Pago queda afuera. Mercado: Argentina / LATAM.
 - **Idioma por capa:** lo que se ve en GitHub va en inglés; los strings de UI, en español. Los `AGENTS.md`/`CLAUDE.md` de proyectos públicos en inglés (son superficie de portfolio); el workspace privado en español (es espacio de trabajo). Rige también para el CLAUDE.md espejo de cada proyecto. No hay beneficio técnico de idioma para el modelo: lo único que importa es la superficie.

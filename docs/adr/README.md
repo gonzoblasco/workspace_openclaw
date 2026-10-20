@@ -109,6 +109,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-069 | [los datos de prueba no comparten base con los datos reales](./ADR-069-datos-de-prueba-no-comparten-base.md) | Los datos de prueba no comparten base con los reales |
 | ADR-070 | [todo estado recuperable expone su via de recuperacion](./ADR-070-estado-recuperable-expone-su-recuperacion.md) | Estado recuperable = entrega su vía de recuperación en el mismo cambio |
 | ADR-098 | [Los proyectos vuelven al workspace, y `cwd` separa el hogar del agente de su zona de trabajo](./ADR-098-proyectos-vuelven-al-workspace-cwd.md) | Proyectos en `<workspace>/projects/`; `cwd` separa hogar del agente de su zona de trabajo |
+| ADR-100 | [Fuente única de la verdad - un dato, un dueño, y un gate que lo verifica](./ADR-100-fuente-unica-de-la-verdad.md) | ⚠️ Duplicación de reglas: dueño por familia de dato + `check-single-source.py` (obligatorio leer antes de agregar un dato a otro archivo) |
 
 ## Decisiones específicas (no numeradas)
 

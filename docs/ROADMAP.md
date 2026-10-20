@@ -80,7 +80,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Restricción cerrada (no es acción)**: `soporteml` y sus versiones no se tocan en barridos - decisión de ADR-001 de `portfolio-strategy` y del ADR-0001 del proyecto `soporteml`.
 
 ### 0.3 Consolidación de memoria 🟢 P1
-- **Qué**: `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables. El daily se escribe por `session-end.sh`/`scripts/memory-end-session.py`, no a mano.
+- **Qué**: `memory.db` es la fuente de verdad de la memoria (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables. La regla vive en `AGENTS.md`; acá solo se mide su estado. El daily se escribe por `session-end.sh`/`scripts/memory-end-session.py`, no a mano.
 - **Por qué**: la memoria es el sistema de continuidad; si se llena de ruido o se desincroniza de la DB, deja de ser útil.
 - **Señal de listo**: al retomar, el daily del día anterior responde "dónde estábamos" sin re-descubrir; `.md` y DB coinciden.
 - **Estado**: flujo DB-first operativo. Reconcile `.md`->DB antes del export (commit `d9e964e`).
@@ -93,7 +93,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 ## Capa 1 - Pipeline de ejecución (cómo trabajamos)
 
 ### 1.1 Pipeline A/B 🟢 P1
-- **Qué**: A escribe (`gpt-oss:120b-cloud`), B revisa/corrige (`deepseek-v4.1-flash:cloud`), pre-filtro `gemma4:cloud` (triage). El CORE redacta los prompts y **verifica el repo**, pero su verificación **no reemplaza** al revisor B.
+- **Qué**: dos agentes en cadena, A escribe y B revisa/corrige, con pre-filtro de triage. Los modelos concretos los declara el bloque managed de `AGENTS.md`; acá no se copian. El CORE redacta los prompts y verifica el repo, pero su verificación no reemplaza al revisor B.
 - **Por qué**: es la arquitectura de calidad del sistema; sin enforcement se degrada a "un agente que dice que revisó".
 - **Criterio de éxito**: el gate `scripts/check-pipeline-enforcement.py` pasa; el pipeline se usa por defecto, no por recordatorio.
 - **Señal de listo**: 5+ sesiones con A/B aplicado y verificado sin excepción manual.
@@ -105,20 +105,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 ### 1.2 Ruteo y política de modelos 🟢 P1
 - **Qué**: un modelo por rol, con fallback y nivel de pensamiento. Decisión viva en **ADR-090** (2026-10-06).
 - **Por qué**: el modelo correcto por tarea ahorra tiempo y presupuesto; el incorrecto lo quema (ver el caso del "thinking alto universal" que vaciaba el output).
-- **Asignación vigente (ADR-090, aplicada y verificada en runtime)**:
-
-  | Rol | Modelo | Fallback | Thinking |
-  |---|---|---|---|
-  | main | `deepseek-v4.1-flash:cloud` | `glm-5.3-flash:cloud` | off |
-  | mind | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | off |
-  | dev | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | off |
-  | ops | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | off |
-  | studio | `gemma4:cloud` | `glm4:9b` local | off |
-  | critic | `gpt-oss:120b-cloud` | `nemotron-3-super:cloud` | low |
-  | auditor | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | low |
-  | planner | `gpt-oss:120b-cloud` | `glm-5.3-flash:cloud` | low |
-
-  `kimi-k3:cloud` queda reservado al review previo al deploy.
+- **Asignación vigente:** la declara el bloque managed de `AGENTS.md` (fuente: `memory.db`, tabla `settings`). Acá no se copia: una tabla de modelos en dos archivos se desincroniza sola, que es exactamente lo que pasó hasta el 2026-10-20.
 - **Nota de método (2026-10-06)**: la cata que decidió esto tenía un defecto de harness (runner por CLI que mezclaba thinking con el entregable, inflando un "leakage" que era artefacto del CLI, no de producción). El ADR-090 lo declara explícitamente. Para futuras catas: usar la API, no el CLI.
 - **Criterio de éxito**: el router elige el modelo correcto sin intervención manual en tareas estándar.
 - **Señal de listo**: 0 casos de "este modelo no sirvió para esto" en una semana de tareas rutinarias.
@@ -149,7 +136,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
   - **Ciclo `0.0.1` CERRADO** (2026-09-15); `0.0.2` abierto (MCP companion server, commit `f1f60fa`). Repo **público** `gonzoblasco/kanam-fixer` (isArchived=false), paquete npm **`kanam-fixer@0.0.2`** publicado. Último commit `262c004` (2026-09-17). Último push al repo 2026-09-26.
   - **Limitación declarada (S3)**: el plano real (VoiceOver) no es verificable en esta máquina hasta que Guidepup soporte Darwin 27 ([issue #149](https://github.com/guidepup/guidepup/issues/149)). El valor del proyecto se invirtió hacia el **plano real como único juez** de la clase timing/viewport.
   - **Apuestas de producto vivas** (absorbidas de `APUESTAS.md`, retirado el 2026-10-06):
-    - **`soporteml`** (producto, privado): v4 cerrado (ADR-0002 del proyecto `soporteml`); sigue por la version funcional de Lovable, con cobro por Stripe ya operativo. Primer proyecto con billing real.
+    - **`soporteml`** (producto, privado): sin pendientes abiertos. Estado vigente en `MEMORY.md`; este documento no lo repite.
     - **`kanam-fixer`** (producto): diferenciador defendible (auditoría sobre lo que el lector de pantalla *anuncia*, no sobre atributos del DOM como axe-core).
   - **Showcase (curaduría 09-21)**: `kanam-fixer`, `ai-developer-stack`, `kanam-skills`.
 - **Criterio de éxito**: una lista corta de proyectos "estrella" con su rol en el pitch, sin contradicciones entre ADR-001 y este roadmap.

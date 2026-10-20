@@ -48,6 +48,13 @@ jobs:
       - name: Bootstrap budget gate
         run: python3 scripts/check-bootstrap-budget.py
 
+      # Fuente unica (ADR-100): un dato, un dueno. Una regla repetida en dos
+      # archivos normativos, o un tag de modelo escrito a mano fuera de su
+      # bloque managed, se detecta aca. Sin este paso la unica barrera seria el
+      # pre-commit, que se saltea con --no-verify.
+      - name: Single source gate
+        run: python3 scripts/check-single-source.py
+
       # ------------------------------------------------------------
       # Roadmap version validation
       # ------------------------------------------------------------

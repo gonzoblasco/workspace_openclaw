@@ -24,7 +24,7 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 
 > Los valores de arriba los mantiene `scripts/managed-blocks.py` desde la tabla `settings` de `memory.db`. Para cambiarlos: `managed-blocks.py set <key> <value>` y despues `apply`. No editar a mano.
 
-- **Modelo de trabajo (2026-08-30, historico):** Default de OpenClaw: `deepseek-v4-flash:cloud` (revert 2026-08-30, decisión explícita de Gonzo: la diferencia de calidad vs GLM 5.3 Flash es muchísima). Kanam en thinking **max**; agentes A/B del pipeline en **high** con `deepseek-v4-flash:cloud` (motor hoy: `deepseek-v4.1-flash:cloud`; v4-flash se retiro el 2026-09-25). **SUPERSEDED:** esta politica de niveles quedo reemplazada por **ADR-090** (2026-10-06): thinking global `off`, `low` para los roles de juicio, `high`/`max` solo por escalado puntual del complexity-scorer. Lo de arriba se conserva como historia; el valor vigente esta en el bloque managed de arriba.
+- **Historial de motor y niveles:** `memory/model-history.md`. La política vigente es **ADR-090** y el bloque managed de arriba; nada en este archivo la reemplaza.
 - **GLM-5.3-Flash (2026-08-29):** ex "ox-alpha". Multimodal nativo (imagen/video/PDF), ~1M contexto. Fue el motor del sistema hasta la consolidación de modelos por rol (hoy **ADR-090**); su ficha de capacidades ya no rige.
 - **web_search provider:** `DuckDuckGo Search (experimental)` (key-free, no consume créditos). El provider `ollama` usaba `glm-5.2:cloud` y consumía requests del presupuesto sin pedirlo - NO usar.
 - **Modelos disponibles (Ollama):**
@@ -74,14 +74,14 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/pipeline-track.sh` | Estado durable del pipeline A/B: init/start/review/done/status/resume/note. Sobrevive a SIGKILL/restarts (crash recovery). Portado del concepto Pipeline Architect. Acepta `--score T` en init (integrado con complexity-scorer) |
 | `scripts/complexity-scorer.sh` | Evalua objetivo en 4 dimensiones (A/B/C/D), devuelve T-score 1-20 + bucket + modelo + thinking. Prueba gemma4:e4b-mlx local primero (6.7x mas rapido que qwen3.5), luego fallbacks cloud. `--score T` para forzar. T>=17 requiere confirmacion de Gonzo. Cablea complexity-driven-pipeline. Parser externo: `scripts/complexity-parse.py`. Integrado en `skills/session-lifecycle/scripts/session-start.sh` (corre al iniciar sesion y persiste T en el log) |
 | `scripts/pdf-tool.sh` | Toolkit PDF/OCR local: text, info, pages, search, ocr (tesseract), pdfimages, md2pdf (exportar MD a PDF). 100% local. Requiere poppler + tesseract + npx (brew). Portado de la familia PDF/OCR de ClawHub |
-| `scripts/model-router.sh` | Router de modelo Ollama por tipo de tarea (code/review/long/cheap/writing/pipeline_ab) + overrides sticky. Pipeline A/B asimétrico (ADR-077): A `gpt-oss:120b-cloud` / B `deepseek-v4.1-flash:cloud`; pre-filtro `gemma4:cloud` (ADR-089). Consulta `model <tipo>` para decidir el `--model`. Portado del concepto ToggleLogic sin licencia |
+| `scripts/model-router.sh` | Router de modelo Ollama por tipo de tarea (code/review/long/cheap/writing/pipeline_ab) + overrides sticky. La asignación A/B vigente la declara el bloque managed de `AGENTS.md`; el fundamento es ADR-077/ADR-089. Consulta `model <tipo>` para decidir el `--model`. Portado del concepto ToggleLogic sin licencia |
 | `scripts/task-notify.sh` | Notificacion desktop macOS cuando un agente termina tarea. Uso en pipeline A/B. Portado del concepto Task Notifier |
 | `scripts/pre-commit.template` | Template de pre-commit hooks (lint → test → build) |
 | `scripts/test-skills.sh` | Verifica que las skills estén bien formadas |
 
 ## Memoria (SQLite + espejos)
 
-- **Fuente de verdad:** `memory/memory.db` (tablas: `daily_notes`, `todos`, `inbox`, `contributions`).
+- **Fuente de verdad:** la declara `AGENTS.md` (sección Tools); acá solo se listan los espejos.
 - **Busqueda semantica (2026-08-30):** `session_vectors` con embeddings reales de Ollama (**1024 dims**, `qwen3-embedding:0.6b`) + `chunk_text`. Usar `scripts/semantic-search-json.js` para recuperar sesiones por significado. Re-catalogar con `scripts/memory-catalog-simple.sh` si se agregan dailies nuevos.
 - **Espejos MD** (regenerar con `./scripts/memory-db.sh export-all`):
   - `memory/todos.md` ← tabla todos
