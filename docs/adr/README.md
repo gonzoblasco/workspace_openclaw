@@ -110,6 +110,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-070 | [todo estado recuperable expone su via de recuperacion](./ADR-070-estado-recuperable-expone-su-recuperacion.md) | Estado recuperable = entrega su vía de recuperación en el mismo cambio |
 | ADR-098 | [Los proyectos vuelven al workspace, y `cwd` separa el hogar del agente de su zona de trabajo](./ADR-098-proyectos-vuelven-al-workspace-cwd.md) | Proyectos en `<workspace>/projects/`; `cwd` separa hogar del agente de su zona de trabajo |
 | ADR-100 | [Fuente única de la verdad - un dato, un dueño, y un gate que lo verifica](./ADR-100-fuente-unica-de-la-verdad.md) | ⚠️ Duplicación de reglas: dueño por familia de dato + `check-single-source.py` (obligatorio leer antes de agregar un dato a otro archivo) |
+| ADR-101 | [Hechos de carrera con dueño único y freno ante contradicción](./ADR-101-hechos-de-carrera-fuente-unica.md) | ⚠️ CVs y postulaciones: un perfil cambia el relato, nunca los hechos; `career-facts.md` + `check-cv-facts.py` |
 
 ## Decisiones específicas (no numeradas)
 

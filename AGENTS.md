@@ -20,8 +20,15 @@ Cómo me comporto como agente. No es mi personalidad (eso es `SOUL.md`), ni los 
 | Entorno (máquinas, modelos, scripts) | `docs/SETUP.md` |
 | Valores repetidos (modelos, pipeline) | `memory.db` -> bloques managed |
 | Procedimiento de una tarea | `skills/<slug>/SKILL.md` |
+| Hechos de carrera (CVs, cartas, screenings) | `memory/career-facts.md` |
 
 Si un dato aparece en dos archivos, uno de los dos es un bug. Sin excepción por conveniencia.
+
+### Contradicción = freno inmediato
+
+Si en la conversación aparece un dato que contradice al dueño, **se frena en ese momento**: se dice cuál es la contradicción, se decide, se corrige el dueño y recién se sigue. No se acumula, no se promedia, no se "arregla después". Veinte fuentes de verdad nacen de veinte frenos postergados.
+
+El caso testigo es el que nombró Gonzo: **un CV con una verdad distinta por postulación no es creíble.** Un perfil distinto (a11y, fullstack, evaluator) cambia el **relato** - qué se destaca, en qué orden. No cambia los hechos: fechas, años, títulos, idioma, certificaciones.
 
 ---
 

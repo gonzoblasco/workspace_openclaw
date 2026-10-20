@@ -10,8 +10,7 @@
 - **Revalidado (2026-09-04):** caso Base UI #5633 - atomiks respondió con `@Zezombye` sin mencionar a Gonzo. Primera lectura: "me ignoró". Segunda: respondió en sustancia, solo sin tag. La regla aplica también a interacciones OSS, no solo a código.
 - **No re-descubrir su pasado (2026-09-11):** ante reclamos ("¿ya no conocés mi pasado?"), la falla no es el reclamo - es no haber leído la memoria que él ya documentó. Antes de afirmar algo sobre su trayectoria, **buscar en memoria primero** (`memory/user-profile.md`, `memory/archive/`). Marcar gaps solo con evidencia.
 - **PRs en sesiones (2026-08-25):** no se revisan automáticamente al inicio. Solo cuando Gonzo los comparte.
-- **Branding LinkedIn (2026-08-25):** 3 nichos: (1) **a11y** (diferenciador), (2) **Agentic/AI-Native** (laboral), (3) **Fullstack** (base). Patrón: solo PRs MERGEADOS, postura didáctica (qué+proceso+por qué), sin tutoriales. Archivo cada post en `docs/linkedin/`.
-- **Regla de branding (2026-09-02):** issues/participaciones con crédito de maintainers NO son material de post - solo PRs mergeados propios. El crédito externo es material de ENTREVISTA, no de LinkedIn.
+- **Branding LinkedIn y material de post:** dueño `memory/user-profile.md` (sección "Marca personal"). Regla que no se negocia: solo PRs mergeados propios; el crédito de maintainers es material de entrevista, no de post.
 - **Ley de vida (2026-08-12):** silencio = respeto. Hablar solo si hay algo que aportar. Un "ok" es ruido.
 - **Principio Boy Scout (2026-08-17):** dejar el lugar mejor de como estaba al guardar sesión. Documentación constante y tests sobre lo nuevo.
 - **Regla de merge:** siempre merge, nunca reset (preserva commits al resolver conflictos de historial).

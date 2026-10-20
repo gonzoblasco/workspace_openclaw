@@ -55,6 +55,12 @@ jobs:
       - name: Single source gate
         run: python3 scripts/check-single-source.py
 
+      # Hechos de carrera (ADR-101): los CVs citan un dueno unico. Caza anos,
+      # idioma, fechas, contacto y certificaciones que no coinciden, y FRENA si
+      # hay una decision pendiente sin resolver.
+      - name: CV facts gate
+        run: python3 scripts/check-cv-facts.py
+
       # ------------------------------------------------------------
       # Roadmap version validation
       # ------------------------------------------------------------

@@ -10,8 +10,7 @@ Núñez, Buenos Aires, Argentina | Remote (LATAM) | Full-time or part-time, flex
 Frontend engineer with 10+ years building and reviewing production interfaces, and a strong background in
 judging whether code is correct, not just renderable. I read HTML, CSS and JavaScript to tell the difference
 between a layout that is genuinely correct and one that only looks correct at a single viewport, and I back
-every verdict with concrete evidence from DevTools. I spent roughly 5 years with accessibility as the core of
-the role, which is exactly the skill of reading structure (ARIA, landmarks, heading hierarchy) that code
+every verdict with concrete evidence from DevTools. Accessibility was the core of the role at Super7UI and EY, which is exactly the skill of reading structure (ARIA, landmarks, heading hierarchy) that code
 evaluation depends on. I also complete structured code-review and preference-comparison tasks, and I write
 professional English findings, proven by merged pull requests into Adobe React Spectrum, IBM Carbon, Meta
 Astryx and MUI.

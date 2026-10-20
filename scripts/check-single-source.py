@@ -53,6 +53,11 @@ NORMATIVE = [
     "docs/SETUP.md",
     "docs/NORTH.md",
     "docs/ROADMAP.md",
+    # El perfil y los hechos de carrera entraron al alcance el 2026-10-20: al
+    # medirlos se encontro que MEMORY.md y user-profile.md tenian 13 reglas
+    # identicas. Un dueno fuera del gate es un dueno que nadie verifica.
+    "memory/career-facts.md",
+    "memory/user-profile.md",
 ]
 
 # Duplicaciones legitimas: el mismo texto en dos lugares por una razon escrita.

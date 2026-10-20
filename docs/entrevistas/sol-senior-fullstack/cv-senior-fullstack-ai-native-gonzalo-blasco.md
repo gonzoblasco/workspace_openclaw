@@ -7,7 +7,7 @@ Núñez, Buenos Aires, Argentina | Remote (LATAM), aligned to US EST core hours
 
 ## PROFESSIONAL SUMMARY
 
-Senior full stack engineer with 10+ years building and shipping production web applications, and 5+ years working AI-first: AI-assisted development is how I work every day, not a side experiment. I move between frontend (React, Next.js, TypeScript) and backend (Node, PostgreSQL, REST APIs, Edge Functions) with equal footing, and I have led full stack migrations from legacy stacks to modern React applications for platforms serving 2M+ monthly active users. I pair hands-on delivery with technical leadership: mentoring engineers, running code review, and coaching teams in-sprint. Python is part of my current AI-assisted toolset and I ramp fast onto new stacks; React and the JS/TS full stack are my home ground. Digital accessibility (WCAG) is a lasting differentiator: the habit of reading structure and semantics that raises the quality of the whole stack.
+Senior full stack engineer with 10+ years building and shipping production web applications, working AI-first since 2025: AI-assisted development is how I work every day, not a side experiment. Frontend is my home ground (React, Next.js, TypeScript), with hands-on backend work in Node, PostgreSQL, REST APIs and Edge Functions since 2025, and I have led full stack migrations from legacy stacks to modern React applications for platforms serving 2M+ monthly active users. I pair hands-on delivery with technical leadership: mentoring engineers, running code review, and coaching teams in-sprint. Python is part of my current AI-assisted toolset and I ramp fast onto new stacks; React and the JS/TS full stack are my home ground. Digital accessibility (WCAG) is a lasting differentiator: the habit of reading structure and semantics that raises the quality of the whole stack.
 
 ## CORE SKILLS
 
@@ -76,7 +76,7 @@ Senior full stack engineer with 10+ years building and shipping production web a
 ## LANGUAGES
 
 - **Spanish** - Native.
-- **English** - Advanced written, intermediate spoken. I work comfortably in English day to day: documentation, code review, async written communication and technical reading. For live meetings I'm functional and keep improving in the spoken format.
+- **English** - B2. Written work is my strongest channel: documentation, code review, async communication and technical reading, every day. For live meetings I am functional and improving the spoken format.
 
 ## CERTIFICATIONS
 

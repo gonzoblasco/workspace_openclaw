@@ -6,6 +6,34 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-20] - Hechos de carrera: un dueno, y freno ante contradiccion
+
+### Added
+- **`memory/career-facts.md`** - dueno unico de fechas, anos, titulos por rol, idioma, certificaciones y contacto. Bloque ```facts``` legible por maquina + la prosa de como contarlo. Un perfil cambia el relato; nunca los hechos.
+- **`scripts/check-cv-facts.py`** - gate que compara los 5 CVs contra el dueno: anos por categoria, nivel de idioma, contacto, fechas de rol, certificaciones. Corre sin condicion en pre-commit y CI.
+- **`tests/python/test_check_cv_facts.py`** - 17 tests, cada uno siembra el defecto en un arbol falso.
+- **`docs/adr/ADR-101-hechos-de-carrera-fuente-unica.md`** - la decision, y la regla de freno implementada.
+- **`AGENTS.md` seccion 0:** el reparto suma `memory/career-facts.md`, y con el la regla **contradiccion = freno inmediato**: se nombra, se decide y se corrige el dueno en el momento. El caso testigo es el de Gonzo: un CV con una verdad distinta por postulacion no es creible.
+
+### Changed
+- **CV senior fullstack:** `5+ years working AI-first` -> `working AI-first since 2025`, y `backend ... with equal footing` -> `frontend is my home ground ..., with hands-on backend work since 2025`. Corrige dos inflaciones del mismo CV: la IA y el backend son del período freelance (~1 año y medio), no de 5 años, y el split es 70/30, no "equal footing".
+- **CV de a11y:** `9+ years` -> `10+ years` (la regla dura), y `6+ years in enterprise digital accessibility` -> nombra los roles (Super7UI + EY). **Accesibilidad ya no declara un numero**: la aritmetica de las fechas canonicas da 4.42 anos de funcion central y 5.83 contando el freelance, asi que cualquier redondo obliga a quedar corto o inflar.
+- **CV de a11y:** `Completed Deque University accessibility certification` -> `program`. Es un programa de cursos, no una credencial: el gap real es IAAP, y un reclutador lo verifica en el registro.
+- **CV de code evaluator:** `roughly 5 years with accessibility` -> nombra los roles. Dos formas de contar el mismo hecho son dos verdades.
+- **CV senior fullstack:** `Advanced written, intermediate spoken` -> `B2`, conservando que el escrito es el canal fuerte. "Advanced" se lee como C1 y la regla dura lo prohibe.
+- **`memory/user-profile.md`:** 83 -> 69 lineas. Tenia **13 reglas identicas** a `MEMORY.md`; ahora guarda el perfil (trayectoria, diferenciador, estilo) y cita al dueno.
+- **`MEMORY.md`:** las reglas de branding pasan a citar `memory/user-profile.md`, que tiene la version completa.
+- **`scripts/check-single-source.py`:** `memory/career-facts.md` y `memory/user-profile.md` entran al alcance. Un dato de carrera fuera del gate es un dato que nadie verifica.
+
+### Notes
+- **Medido antes de tocar:** los 5 CVs vivos tenian 3 verdades distintas sobre la misma persona. Primera corrida del gate: 3 contradicciones reales (anos, Deque, ingles) y 1 decision pendiente de aritmetica.
+- **El gate se frena, no se saltea:** un hecho con `pending: N` bloquea el commit aunque todo lo demas este verde. Una contradiccion sin decidir no entra al repo "para arreglarla despues".
+- **El gate tiene que poder fallar:** al renombrar la clave de a11y, la primera version reporto OK sin chequear nada. Ese falso verde se cazo mirando los matches y no el exit code, y quedo un test que lo cubre.
+- **La regla de freno funciono sobre mi propio trabajo:** al escribir `ai_years: 5` en el dueno, el diff de `memory/user-profile.md` mostro la correccion de Gonzo del mismo dia (IA desde 05/2025, ~1 ano y medio, nunca 3). Eran dos verdades, una de cada lado. Se freno, se corrigio el dueno y se propago al CV - que es exactamente el caso que la regla existe para atajar.
+- **Un CV no se arregla con un numero mas chico:** la salida no fue cambiar 6 por 5 o 5 por 1, fue sacar el numero y nombrar los hechos. Un redondo se desmonta con una resta; "auditoria de Warner Bros. Screeners, 50+ componentes en EY" no.
+
+---
+
 ## [2026-10-20] - Fuente unica: un dato, un dueno, y un gate que lo verifica
 
 ### Added

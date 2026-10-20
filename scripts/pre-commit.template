@@ -156,6 +156,15 @@ python3 "${SCRIPT_DIR}/scripts/check-bootstrap-budget.py" || exit 1
 # es mas barato que descubrir la contradiccion en la sesion siguiente.
 python3 "${SCRIPT_DIR}/scripts/check-single-source.py" || exit 1
 
+# Guard de hechos de carrera (ADR-101, 2026-10-20). SIN CONDICION: un CV se
+# escribe desde cualquier carpeta y el hecho duro (anos, idioma, fechas,
+# certificaciones) no tiene por que tocarse para que el CV derive. Medido el
+# 2026-10-20: 5 CVs vivos con 3 verdades distintas sobre la misma persona
+# (9+ vs 10+ anios, 6+ vs ~5 de a11y, "Advanced" contra una regla de B2).
+# Tambien FRENA un hecho marcado `pending`: una contradiccion sin decidir no se
+# commitea para arreglarla despues.
+python3 "${SCRIPT_DIR}/scripts/check-cv-facts.py" || exit 1
+
 # Guard de roadmaps de rol (docs/ROADMAPS.md, 2026-10-07). SIN CONDICION, a
 # proposito: los ROADMAP.md de rol pueden aparecer o desaparecer por cualquier
 # edicion, no por un pathspec predecible. El 2026-10-07 se descubrio que 5 de 7

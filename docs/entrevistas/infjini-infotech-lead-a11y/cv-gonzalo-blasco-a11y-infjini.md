@@ -8,7 +8,7 @@ Núñez, Buenos Aires, Argentina | Remote (LATAM), aligned to US EST core hours
 
 ## PROFESSIONAL SUMMARY
 
-Digital accessibility engineer with 9+ years in frontend engineering and 6+ years in enterprise digital accessibility engineering, including 3+ years operating across multiple concurrent SDLC phases in matrixed, cross-regional organizations. Owned WCAG 2.2 AA compliance for EY Motif, an enterprise React design system used across client and internal products, and led the Warner Bros. Screeners remediation audit, validating 200+ WCAG violations with NVDA, VoiceOver and TalkBack. Expert in HTML, CSS, JavaScript and WAI-ARIA Authoring Practices; strong in Figma design review and accessibility annotations; deep knowledge of WCAG 2.2 A/AA and AAA guidance plus emerging legislation (EAA, ACA). Deque University Accessibility Specialist (2021). Strong in design review, in-sprint developer coaching and code remediation guidance for web, iOS and Android.
+Digital accessibility engineer with 10+ years in frontend engineering, leading accessibility at Super7UI (Warner Bros. Screeners remediation) and EY (enterprise design system), including 3+ years operating across multiple concurrent SDLC phases in matrixed, cross-regional organizations. Owned WCAG 2.2 AA compliance for EY Motif, an enterprise React design system used across client and internal products, and led the Warner Bros. Screeners remediation audit, validating 200+ WCAG violations with NVDA, VoiceOver and TalkBack. Expert in HTML, CSS, JavaScript and WAI-ARIA Authoring Practices; strong in Figma design review and accessibility annotations; deep knowledge of WCAG 2.2 A/AA and AAA guidance plus emerging legislation (EAA, ACA). Deque University Accessibility Specialist (2021). Strong in design review, in-sprint developer coaching and code remediation guidance for web, iOS and Android.
 
 ## SKILLS
 
@@ -51,7 +51,7 @@ Contracted by Super7ui to lead the accessibility remediation audit for Warner Br
 - Validated and expanded a prior third-party audit (Applause), testing each reported issue across multiple assistive technologies: NVDA, VoiceOver, and TalkBack.
 - Used Axe to systematically identify and document WCAG violations across key user flows.
 - Produced full remediation documentation - proposed solutions, implementation guidance, and developer-ready specifications.
-- Completed Deque University accessibility certification during the engagement.
+- Completed the Deque University Accessibility Specialist program during the engagement.
 - Identified and resolved 200+ WCAG violations across the platform.
 - Established accessibility testing pipeline using axe-core + Playwright, integrated into CI/CD.
 
