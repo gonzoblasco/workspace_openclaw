@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-20] - Triaje de alternativas OSS: que se adapta, que se adopta, que se descarta
+
+### Added
+- **`studies/oss-alternatives-triage.md`** - triaje de los 14 repos de una lista viral de "open-source AI alternatives", con los 16 repos verificados uno por uno contra la API de GitHub (stars, licencia, actividad) y cruzados contra el ecosistema propio (OSS-TRACKER, ADRs, `model-router.sh`, OnWheels, kanam-lab).
+- **`studies/README.md`** - indice del directorio: estaba desactualizado, describia solo los estudios narrativos y no mencionaba `openclaw-use-cases/`.
+
+### Notes
+- **La lista acierta las estrellas pero no las licencias.** Tres de los "alternativos" son MIT **con directorio comercial aparte** (`litellm/enterprise/`, `onyx/ee/`, y `bolt.diy` apoyado en WebContainers, con condiciones comerciales propias). "Open source" no es "adaptable": el core es libre, la parte que uno quiere no.
+- **Cuatro repos cambiaron de dueño** (`sst/opencode` -> `anomalyco/opencode`, `comfyanonymous/ComfyUI` -> `Comfy-Org/ComfyUI`, `All-Hands-AI/OpenHands` -> `OpenHands/OpenHands`, `qodo-ai/pr-agent` -> `The-PR-Agent/pr-agent`). Un enlace de la lista esta roto; el proyecto sigue vivo.
+- **La fila "Perplexity -> Vane" es correcta:** `ItzCrazyKns/Vane` es el descendiente vivo de Perplexica (37.5k, MIT, Ollama + SearxNG + citas).
+- **La conclusion no es "adoptar clones":** tres de los catorce ya son el stack propio (Ollama es el runtime, OpenCode compite con OpenClaw, Milvus/AnythingLLM duplican pgvector y Mini-RAG). Los que aportan de verdad son **LiteLLM** (adoptar: falta el lado "hacia cualquier proveedor" del model-router), **PR-Agent** (adoptar: segunda opinion sobre los 15 PRs abiertos) y **Vane** (estudiar el patron de evidencia citada que OnWheels ya exige).
+- **Dos afirmaciones propias se corrigieron contra la fuente antes de quedar escritas:** AnythingLLM esta vivo y al dia (`v1.18.0`, 13-oct-2026), y la clausula restrictiva de Open WebUI es de **branding** (no de uso comercial) y se dispara con mas de 50 usuarios en 30 dias. La primera version del estudio afirmaba ambas al reves.
+- **Criterio:** un estudio verifica contra la fuente, no resume de segunda mano. Lo que no se pudo confirmar no entra.
+
+---
+
 ## [2026-10-20] - Hechos de carrera: un dueno, y freno ante contradiccion
 
 ### Added
