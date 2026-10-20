@@ -24,5 +24,12 @@ cargar RAM local; host.docker.internal:11434 desde el container. Y el clone por
 git deja los archivos en 600, que el container (UID 10001) no puede leer: hay
 que chmod a+rX antes de build.
 
+3) Los presupuestos de timeout del health probe tienen que estar escalonados:
+server (mosaico.health_timeout_seconds) > cliente HTTP > timeout del healthcheck
+de Docker. Medido: el probe tardo hasta 17s bajo carga; con el cliente cortando
+antes (25s vs 30s del server) el container caia a unhealthy con un 503
+"Unhealthy: LLM probe failed" aunque el server respondiera bien. Un 503 aislado
+es timeout transitorio, no caida: reintentar antes de diagnosticar.
+
 ---
 
