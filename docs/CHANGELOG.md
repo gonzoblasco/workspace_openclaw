@@ -6,6 +6,25 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-20] - Registro vivo de herramientas IA restaurado, con Cline adentro
+
+### Added
+- **Registro de herramientas IA (de vuelta, y como corresponde).** `scripts/ai-toolbox.py` (list/status/health/up/down/restart/catalog), la vista humana `docs/tools/REGISTRY.md` y la skill `ai-toolbox` (user-invocable). El estado sale de `docker compose ls`, `docker ps` y una sonda HTTP real: la tabla declara COMO se levanta, nunca SI corre. 11 herramientas registradas (Ollama, Onyx, browser-use, PR-Agent, AnythingLLM, LiteLLM, Milvus, Vane, opencode, OpenHands, Cline).
+- **Cline como herramienta registrada.** Clone shallow de `github.com/cline/cline` en `projects/cline` (main @ `0870796`), configurado con el provider `ollama` de Ollama del host y corriendo el Hub dashboard en `http://127.0.0.1:8787` (el chat del agente esta en `/chat`). Wrapper propio `scripts/cline-tool.sh` (`up`, `down`, `status`, `run --cwd <dir> "<prompt>"`, `logs`) porque Cline son DOS procesos: el dashboard (`:8787`, UI) y el daemon del hub (`:25466`, quien ejecuta las sesiones).
+- **Ficha de Cline en `docs/SETUP.md`** con su toolchain (Bun 1.4.2), su provider (API nativa `/api/chat`, no `/v1`) y las trampas medidas.
+
+### Fixed
+- **El registro de herramientas existio y fue borrado por scope, no por mala idea.** El commit `3387a58f65` (trabajo de Onyx) lo elimino con el motivo textual *"no es de Onyx"*, y un test fragil que afirmaba `Path(compose).exists()` sobre rutas absolutas de la Mac Mini rompio el CI (378 tests pasaron y ese fallo). El defecto era del TEST, no del registro.
+- **El test que rompio el CI ahora afirma FORMAS, no existencia.** Un compose puede no estar instalado en la maquina que corre el test y el registro seguir siendo correcto: lo que la tabla declara es COMO se levanta, y el estado real lo decide la sonda. El test verifica que la declaracion sea coherente (ruta absoluta, nombre de compose) y que toda entrada tenga un camino para levantarse.
+- **Contradiccion en `MEMORY.md`:** decia que el inventario de herramientas estaba en `scripts/onyx-tool.py list`, subcomando que ese script NO tiene (sus opciones son status/up/down/restart/logs/provider/chat/json). Ese registro nunca existio. Apunta ahora al dueno real: `scripts/ai-toolbox.py` + la skill `ai-toolbox` + `docs/tools/REGISTRY.md`.
+
+### Notes
+- **Cline: el workspace del chat no es el `WORKSPACE_ROOT`.** Sale de la sesion mas reciente que el Hub conoce (`apps/cline-hub/src/server/providers.ts:38`): si ya hay sesiones, su cwd gana. Para cambiar de proyecto hay que borrar las sesiones y reiniciar.
+- **Cline: `ENOENT: posix_spawn '/bin/bash'` no significa que falte el shell.** El shell existe; lo que falta es el cwd de la sesion (un `posix_spawn` con cwd inexistente reporta ENOENT). El agente lo interpreta como "no hay shell" y deja de usar la terminal.
+- **Cline corre nativo, no en Docker.** El build exige Bun 1.4.2 y parches de dependencias (`patches/ollama-ai-provider-v2@4.0.1.patch`), y el daemon del hub es un proceso nativo. El aislamiento se logra con `CLINE_DIR` + `--cwd`: la config real del usuario (`~/.cline`, con su sesion OAuth) no se toca.
+
+---
+
 ## [2026-10-20] - PR-Agent con Ollama: instalado, evaluado contra verdad de base humana y con veredicto negativo
 
 ### Added

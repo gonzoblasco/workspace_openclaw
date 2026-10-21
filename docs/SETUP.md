@@ -66,6 +66,9 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/aggregate-sync.sh` | **RETIRADO (2026-10-13, ADR-098):** sincronizaba el repo agregado `projects_openclaw`, que no existe. `projects/` es carpeta plana ignorada; no hay capa agregada. |
 | `scripts/initial-setup.sh` | Setup one-shot para maquina nueva (laptop/Mac nuevo): clona workspace + clona/attacha los subrepos en `projects/<slug>/` + verifica. **Deuda (2026-10-13):** su paso 2 todavia arma `projects/` como clon del agregado `projects_openclaw` (retirado, ADR-098); alinear al modelo sin capa agregada. |
 | `scripts/oss-tracker.js` | Tracker de contribuciones OSS |
+| `scripts/onyx-tool.py` | Onyx: `status` (sonda HTTP real), `up`, `down` (conserva volumenes), `restart`, `logs`, `provider`, `chat` (prueba de ida y vuelta al LLM), `json` |
+| `scripts/cline-tool.sh` | Cline: `up` (dashboard + daemon, idempotente), `down`, `status` (puertos + salud HTTP), `run --cwd <dir> "<prompt>"` (turno headless), `logs` |
+| `scripts/ai-toolbox.py` | Registro vivo de las herramientas IA de la maquina: `list` (estado real), `list --json`, `status <id>`, `health`, `up/down/restart <id>`, `catalog --write/--check`. Ver skill `ai-toolbox` |
 | `scripts/pr-dashboard.sh` | Dashboard de PRs (para el batch check del ritual de inicio de sesión) |
 | `scripts/github-pr-risk.sh` | Detector de risk signals de un PR (schema/auth/deps/API/secrets) + preguntas de review. Uso bajo demanda en el cross-review del pipeline. Portado del plugin github-workflow. Solo lectura |
 | `scripts/safe-fetch.sh` | URL pre-flight check local antes de web_fetch: esquema https, typosquatting de dominios confiables, payload prompt injection. Exit: 0 ALLOW / 1 DENY / 2 CAUTION. Portado del concepto PreClick, 100% local |
@@ -145,6 +148,29 @@ La memoria del workspace tiene **dos clases de superficie**, y confundirlas llev
   - `api_server` fue OOM-killed una vez (exit 137) por los containers ajenos: reinicia solo (`restart: unless-stopped`).
   - El tag de un modelo **no dice si es cloud**: el sufijo `:cloud` no alcanza (`gpt-oss:120b-cloud` y `mistral-large-3:675b-cloud` son cloud sin el). La fuente de verdad es el campo `remote_host` de `GET /api/tags`.
 - **Lo que falta:** indexacion/RAG/conectores apagados en Lite. Para activarlos: embeddings por `litellm` contra el endpoint OpenAI-compatible de Ollama (`/v1/embeddings`, verificado con `qwen3-embedding:0.6b`, dim 1024) + stack completo con Redis y OpenSearch.
+
+## Cline (agente de codigo open source) - 2026-10-20
+
+- **Repo:** `projects/cline` (clone shallow de `github.com/cline/cline`, `main` @ `0870796`). Es upstream: no se commitea ni se pushea. Lo propio va en `projects/cline/LOCAL-SETUP.md`.
+- **Que es:** agente de codigo con tres superficies: CLI (`cline`), Hub dashboard (web) y SDK. El dashboard es la UI; el daemon del hub ejecuta las sesiones.
+- **Toolchain:** **Bun 1.4.2** (el repo prohibe npm/yarn/pnpm). `build:sdk` es obligatorio: los paquetes del SDK se referencian entre si por `dist/`, sin condition `development`.
+- **Provider:** `ollama` contra `http://localhost:11434` (API **nativa** `/api/chat`, no `/v1`: el path OpenAI-compatible ignora `options.num_ctx` y todo modelo cargaria con 4096 tokens). Modelo por defecto `minimax-m3.1-flash:cloud`.
+- **UI:** http://127.0.0.1:8787 - dashboard. **El chat del agente esta en `/chat`**, no en la home (`/` es el monitor del hub y no tiene composer).
+- **Script:** `scripts/cline-tool.sh` (`up`, `down`, `status`, `run --cwd <dir> "<prompt>"`, `logs`).
+  ```bash
+  ./scripts/cline-tool.sh up          # dashboard + daemon (idempotente)
+  ./scripts/cline-tool.sh status      # puertos, salud HTTP, config, workspace
+  ./scripts/cline-tool.sh down        # parar (conserva config y sesiones)
+  ./scripts/cline-tool.sh run --cwd <dir> "<prompt>"   # un turno headless
+  ```
+- **Config aislada:** `CLINE_DIR=projects/cline/.cline-local`. La config real del usuario (`~/.cline`, con su sesion OAuth de Cline) **no se toca**.
+- **Registro:** entrada `cline` en `scripts/ai-toolbox.py` + ficha en `docs/tools/REGISTRY.md`.
+- **Trampas verificadas (no volver a tropezar):**
+  - Son **DOS procesos**: el dashboard (`:8787`, UI) y el daemon del hub (`:25466`, quien ejecuta las sesiones). Parar el dashboard no para el daemon.
+  - El workspace del chat **no** sale de `WORKSPACE_ROOT` sino de la sesion mas reciente que el Hub conoce (`apps/cline-hub/src/server/providers.ts:38`). Si ya hay sesiones, su cwd gana. Para cambiar de proyecto: borrar las sesiones (UI: Sessions -> eliminar) y reiniciar.
+  - `ENOENT: posix_spawn '/bin/bash'` **no** significa que falte el shell: `/bin/bash` existe. Lo que falta es el **cwd** de la sesion (un `posix_spawn` con cwd inexistente reporta ENOENT). El agente lo interpreta como "no hay shell" y deja de usar la terminal.
+  - Las tools se auto-aprueban por default (`autoApproveTools` en `true`): el agente ejecuta comandos sin preguntar.
+  - Los modelos descubiertos en Ollama vienen sin `contextWindow`, asi que Cline usa su default de **32768** (`OLLAMA_DEFAULT_CONTEXT_WINDOW`).
 
 ## Red / remoto
 

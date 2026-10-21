@@ -20,7 +20,7 @@
 
 | Árbol | Activas |
 |---|---|
-| `skills/` (Core) | 27 |
+| `skills/` (Core) | 28 |
 | `agents/kanam-dev/skills/` | 43 |
 | `agents/kanam-mind/skills/` | 10 |
 | `agents/kanam-ops/skills/` | 4 |
@@ -87,7 +87,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 
 ## 3. Inventario
 
-### 3.1 Core - `skills/` (27)
+### 3.1 Core - `skills/` (28)
 
 | Skill | Qué hace |
 |---|---|
@@ -113,6 +113,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [supabase-assistant](skills/supabase-assistant/) | Supabase vía MCP: schemas, queries, tipos, migraciones, logs |
 | [sql-insight](skills/sql-insight/) | NL a SQL, optimización e interpretación de EXPLAIN (SQLite y PostgreSQL) |
 | [pdf-tool](skills/pdf-tool/) | PDFs local: leer (texto, metadata, OCR) y generar. 100% local (poppler + tesseract) |
+| [ai-toolbox](skills/ai-toolbox/) | Registro vivo de las herramientas IA de la maquina: que hay, que corre y como se levanta |
 | [word-docx](skills/word-docx/) | Crear, inspeccionar y editar DOCX: estilos, numeración, tracked changes, tablas, secciones |
 | [cleanmymac-maintenance](skills/cleanmymac-maintenance/) | Mantenimiento con CleanMyMac CLI disparado por frases naturales |
 | [deslop](skills/deslop/) | Limpia código AI slop de un branch antes del PR |
