@@ -1,6 +1,6 @@
 # Job Search Tracker
 
-> **Estado 2026-10-21: 1 proceso vivo (Infjini).** Staffy/Pfizer **cerrado 20/10** por filtro de inglés C1 conversacional.
+> **Estado 2026-10-21: 1 proceso vivo (Infjini).** Staffy/Pfizer **cerrado 20/10** y Sol Bisio **cerrado 21/10**, ambos por el mismo filtro de inglés C1 conversacional. Plan de inglés C1 en curso (CUI).
 >
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
 
@@ -8,7 +8,7 @@
 
 | Empresa | Puesto | Contacto | Tarifa | Estado 2026-10-21 |
 |---|---|---|---|---|
-| Infjini Inc | Lead Software Engineer - Digital Accessibility | Siraj Shaik | USD 22/h all-inclusive, 1 año | **Desenlace del screening del 19/10 sin registrar en memoria.** Confirmar con Gonzo. |
+| Infjini Inc | Lead Software Engineer - Digital Accessibility | Siraj Shaik | USD 22/h all-inclusive, 1 año | **ABIERTO (confirmado por Gonzo el 21/10).** El screening con Siraj ya se hizo y el proceso sigue vivo. Es el único proceso activo. Riesgo: 9-5 ET con comunicación en inglés, misma clase que los dos cerrados por C1. |
 
 ### Notas Staffy (2026-10-20) - PROCESO CERRADO
 
@@ -18,11 +18,21 @@
 - **Lo que sí se ganó:** contacto con una reclutadora que leyó el CV y dijo "your technical background is very strong". La relación queda para futuros procesos.
 - **Aprendizaje reutilizable:** para roles LATAM con comunicación diaria en inglés con clientes US, **preguntar por el nivel de inglés requerido en el PRIMER mensaje**. Es la variable que más rápido descarta y la que más caro cuesta descubrir tarde. El filtro de idioma no se negocia con el CV: se negocia con la pregunta.
 
-### Notas Infjini (2026-10-16) - **SIN DESENLACE REGISTRADO**
+### Notas Infjini (2026-10-16) - **ABIERTO**
 
 - Oferta aceptada para avanzar. CV en `docs/entrevistas/infjini-infotech-lead-a11y/`.
-- Screening con Siraj confirmado para el **lunes 19/10, 11:00 hora México (14:00 ART) por Teams**. Los dailies del 19, 20 y 21 de octubre **no registran el resultado**: no hay nota, ni en `memory/2026-10-19.md` ni en `2026-10-20.md` ni en la DB. **Riesgo concreto:** es un puesto 9-5 ET con comunicación en inglés, de la misma clase que el de Staffy. Si ahí exigen C1 conversacional, aplica el mismo filtro. Confirmar el desenlace con Gonzo antes de invertir tiempo de preparación.
+- **Estado real (confirmado por Gonzo el 21/10):** el screening con Siraj **ya se hizo** y el proceso **sigue abierto**. Es el único proceso vivo. (El desenlace no había quedado registrado en los dailies: la sesión no se guardó.)
+- **Riesgo a vigilar:** es un puesto 9-5 ET con comunicación diaria en inglés, **misma clase que los dos cerrados por el filtro de C1 conversacional** (Staffy y Sol). Si Siraj tiene el mismo criterio, aplica el mismo filtro.
+- **Acción sugerida:** en la próxima call, preguntar de entrada el nivel de inglés conversacional que exige el cliente. Es la pregunta de costo cero que más rápido descarta.
 - Precedente: es el mismo req que EIT/HTC/Disney (bench amplio). No insistir.
+
+### Plan de inglés C1 (decisión de Gonzo, 2026-10-21)
+
+A raíz de los dos cierres por C1 conversacional, Gonzo se anota en el **CUI (Centro Universitario de Idiomas, UBA)** para la capacitación de C1 y su certificación, **mientras tanto sigue buscando**.
+
+- **Plan completo con instrumentos, costos y fechas:** `studies/english/README.md`
+- **Plazo a no perder:** la inscripción al examen **CUI-ING C1** cierra el **viernes 30 de octubre de 2026** (mesa del **6 de noviembre**, $140.000, online con oral por Zoom). Fuentes de `cui.edu.ar` leídas el 2026-10-21; **verificar en el centro antes de pagar**.
+- **Declarado hasta que exista el certificado: B2.** Un C1 de papel que no se sostiene en una call es peor que un B2 honesto.
 
 ## Historial / cerrados
 

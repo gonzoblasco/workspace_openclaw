@@ -249,9 +249,18 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
 - **Español: nativo.**
 - **Inglés: B2.** Dato duro, definido por Gonzo y reafirmado tras un error que lo declaró C1.
   **Nunca** C1, C2, "fluent", "bilingual" ni "Advanced" en formularios, screenings, CVs o
-  entrevistas.
+  entrevistas. **Se actualiza a C1 solo cuando exista el certificado en la mano**: un C1 de papel
+  que no se sostiene en una call es peor que un B2 honesto.
 - **El gap es oral, no escrito.** Lectura, escritura y trabajo diario están aceitados; falta
   práctica hablada. No ofrecerle cursos generales, academias ni gramática.
+- **Plan vigente (decisión de Gonzo, 2026-10-21):** a raíz de dos procesos cerrados por el mismo
+  filtro de **C1 conversacional** (Staffy 20/10, Sol 21/10). Gonzo se anota en el **CUI (Centro
+  Universitario de Idiomas, UBA)** para la capacitación de C1 y su certificación, **mientras tanto
+  sigue buscando**. Instrumentos, costos, fechas y el riesgo de la mesa del 6/11 están en
+  `studies/english/README.md` (con fuentes de `cui.edu.ar` leídas el 2026-10-21).
+- **Regla de proceso que sale de los 2 casos:** en el **primer mensaje** de cualquier proceso
+  LATAM remoto, preguntar el **nivel de inglés conversacional que exige el cliente**. El filtro
+  apareció al final en ambos casos, cuando ya se había armado CV, screening y prep de call.
 
 ---
 

@@ -25,7 +25,7 @@
 
 ## Estado actual
 
-- **Búsqueda laboral (2026-10-21):** 1 proceso vivo (Infjini - Lead a11y, USD 22/h). Staffy/Pfizer **cerrado el 20/10** por filtro de C1 conversacional. Histórico: `docs/entrevistas/_general/job-search-tracker.md`.
+- **Búsqueda laboral (2026-10-21):** 1 proceso vivo (Infjini - Lead a11y, USD 22/h). Staffy (20/10) y Sol (21/10) cerrados por filtro de C1 conversacional. Plan de inglés C1 en curso (CUI). Tracker: `docs/entrevistas/_general/job-search-tracker.md`.
 - **OSS:** 9 PRs mergeados en Adobe (react-spectrum), IBM/Carbon (ibm-products), Meta (astryx, x4) y MUI (material-ui + base-ui). Detalle: `docs/OSS-TRACKER.md`.
 
 ## Contexto
