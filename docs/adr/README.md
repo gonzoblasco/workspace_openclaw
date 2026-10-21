@@ -86,7 +86,8 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR | Decide |
 |---|---|
 | ADR-037 | [Lucide como Iconos Base](./ADR-037-lucide-iconos-base.md) | ⚠️ Diseño (con 047/048) - Lucide como iconos base |
-| ADR-042 | [Stripe como proveedor de pagos unico reconocido](./ADR-042-stripe-pagos.md) | Stripe como único proveedor de pagos reconocido |
+| ADR-042 | [Stripe como proveedor de pagos unico reconocido](./ADR-042-stripe-pagos.md) | ~~Stripe como único proveedor reconocido~~ ⚠️ **SUPERSEDED por ADR-103** (la premisa "Stripe opera en Argentina" era falsa) |
+| ADR-103 | [Stripe no opera en Argentina - Mercado Pago vuelve a ser proveedor válido](./ADR-103-stripe-no-opera-argentina.md) | ⚠️ Pagos (supersede 042) - el proveedor se elige por **país del comprador**: AR = Mercado Pago; fuera de AR = Stripe; Lovable = Stripe |
 | ADR-092 | [El CHANGELOG vive en una ventana activa de ~30 días, con rotación automatizada](./ADR-092-changelog-ventana-rotacion.md) | CHANGELOG en ventana de 30 días con rotación automatizada |
 
 ### Gobernanza e higiene del workspace

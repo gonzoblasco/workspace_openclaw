@@ -131,7 +131,7 @@ escrito**, a cambio de no arrastrar dos stacks incompatibles y dos modelos de da
 |---|---|---|---|
 | C1 | **D4 de OnWheels: regalo para el local de Esteban, sin billing** (`docs/adr/`, `architecture.md`) | "Revender como paquete cerrado" exige billing y multi-dealer | **RESUELTA** (§7 D1): Esteban es tenant 0, el paquete es comercial. D4 queda derogada para el producto nuevo y vigente solo para OnWheels dormido. |
 | C2 | **kanam-query es greenfield e independiente, "bajo ningún concepto relacionado a SoporteML"** (corrección explícita de Gonzo, 2026-10-21 00:24, en su BRIEF) | Integrar todo pone a los dos en el mismo producto | **RESUELTA** (§7 D3): ambos quedan dormidos. El producto nuevo es greenfield y no hereda de ninguno. La restricción de Gonzo se cumple por partida doble: no hay relación, hay producto distinto. |
-| C3 | **ADR-042: Stripe es el proveedor único** | Nada que ver con este doc; se respeta | Vigente |
+| C3 | **ADR-042: Stripe es el proveedor único** | Este producto le vende a dealers argentinos, en pesos | **RESUELTA por ADR-103**: Stripe **no permite abrir cuenta de comercio en Argentina** (verificado). Mercado Pago vuelve a ser proveedor válido, y es el del producto. ADR-042 queda superseded. |
 | C4 | `soporteml/README.md` dice *"EL-1 Billing migrado de Stripe → Mercado Pago Preapproval ✅"* y `PLAN.md` dice *"Billing MP - nunca operativo"* | El código real tiene **solo** `stripe-*` (3 funciones), ninguna dependencia de mercadopago, y `mp_webhook_events` en migraciones | **Dos verdades en el mismo repo.** El README miente sobre el estado del billing |
 
 C4 se corrige con una línea, pero es el caso testigo de la regla de fuente única: si el README de un
@@ -177,10 +177,22 @@ es que cada etapa deje algo en uso.
 
 **Cierran:** no hay fusión de código, no hay comparación de stacks, no hay "cuál de los dos productos sigue". El paquete es un producto nuevo, con Esteban como primer cliente.
 
+### Decisiones de la segunda ronda (2026-10-21, 14:07-14:26)
+
+| # | Decisión | Resuelto |
+|---|---|---|
+| **D7** | Nombre | **OnWheels** (§9). Sin prefijo `kanam-`. |
+| **D8** | Precio | **USD 80-200 por plan**; se define **solo el de 80** ahora, premium abierto. **Ningún precio es final** (§10). |
+| **D9** | Cobro | **Mercado Pago** (ADR-103). Stripe deja de ser proveedor único. |
+| **D10** | Dominios | **`.com.ar` primero, `.io` después.** **No se registran todavía**: recién cuando haya algo que mostrar (landing). |
+| **D11** | Hosting | **Hostinger como referido**, no revendedor. Máquina: **KVM 2 actual**; KVM 4 se evalúa cuando el producto lo pida (§11.2). |
+| **D12** | Ritmo | **Sin apuro.** Side project de largo plazo, en paralelo a la búsqueda laboral y al TOEFL (§12). |
+
 **Abren (bloqueante para el discovery, no para empezar a escribir):**
-- **El nombre.** No hay marca. El producto nuevo necesita un slug para el repo y un nombre para el dominio raíz de la capa gratuita.
-- **El precio de la mensualidad** y qué separa exactamente gratis de pago. Sin esto no hay entitlements.
-- **Quién registra el dominio:** ¿el cliente trae su `.com` o el paquete lo compra y lo revende? Cambia el modelo de billing (suscripción sola vs suscripción + reventa de dominio con markup).
+- **El precio final del plan de 80** y qué separa exactamente gratis de pago. Depende del costo por
+  consulta de IA, que se mide en la Fase 0.
+- **La política de ajuste de precio** (el cobro es en ARS, el precio se piensa en USD).
+- **Quién registra el dominio:** confirmado **el cliente** (referido). Falta el paso a paso publicado.
 
 ---
 
@@ -287,6 +299,7 @@ razones que no son estéticas:
 | `onwheels.com` | **TOMADO desde 1997** | Verisign RDAP: registrado 1997-12-31, registrador **Tucows**, *client transfer prohibited*, vence **2026-12-30**, sin sitio activo (HTTP 000) |
 | `onwheels.app` | TOMADO desde 2023 | Google RDAP: registrado 2023-02-17, vence 2027-02-17, resuelve a `85.208.21.159` |
 | `onwheels.dev` | TOMADO desde 2022 | Google RDAP: registrado 2022-07-07, vence 2027-07-07, *client delete prohibited* |
+| `onwheels.ai` | **TOMADO desde 2026-01-17** | `whois -h whois.nic.ai`: registrador **GoDaddy**, registrante **Domains By Proxy** (privacidad), vence **2028-01-17**, los **cuatro** candados de cliente (delete/renew/transfer/update). Sin sitio: pagina de parking de GoDaddy (HTTP 200, titulo = el dominio, cero contenido) |
 | `getonwheels.com` | LIBRE | Verisign: "No match for domain" |
 | `onwheelscloud.com`, `myonwheels.com` | LIBRE | Verisign: "No match for domain" |
 
@@ -300,16 +313,28 @@ comprar `onwheels.com`: está registrado desde 1997 por un tercero con candado d
 recuperarlo es una negociación, no una compra, y no es un problema que este proyecto tenga que resolver
 para arrancar.
 
+**Sobre el `.ai` (verificado 2026-10-21):** esta **tomado desde enero de 2026**, con proxy de privacidad y
+los cuatro candados; lo que se ve es una pagina de parking de GoDaddy. No es una compra, es una
+negociacion con un tenedor que lo registro hace nueve meses. Y el precio del TLD no ayuda: **USD 180 por
+anio con minimo de 2 anios en el primer registro (`USD 360`)**, contra **ARS 8.500 (~USD 5,5)** del
+`.com.ar` y **USD 50** del `.io`. Es 33 veces el costo del dominio real por una senal de "startup de IA"
+que el comprador del producto -un concesionario argentino- no lee ni valora. **No se persigue.**
+Si algun dia hace falta cobertura internacional, `.io` a USD 50 cumple la misma funcion a un cuarto del
+precio.
+
 **Riesgo de marca a futuro:** `onwheels.com` es de un tercero. Con el producto en Argentina y Esteban
 como tenant 0 no es un bloqueante hoy, pero es una razón más para no salir a vender afuera con este
 nombre sin resolverlo antes.
 
 ---
 
-## 10. Precio: 150-250 USD, con el benchmark real al lado
+## 10. Precio: 80-200 USD por plan, sin precio final todavía
 
-**Decisión:** entre **USD 150 y 250/mes** por sitio durante el PoC. Capa gratuita limitada + trial de
-15 días con subdominio, con límites en MeLi y en IA.
+**Decisión (corregida 2026-10-21):** la banda es **USD 80 a 200/mes según el plan**. Se define **solo el
+plan de 80** para el arranque; un **plan premium** queda abierto para más adelante. **Ningún precio es
+final**: son tentativos y no se publican hasta cerrar la Fase 0.
+
+Capa gratuita limitada + trial de 15 días con subdominio, con límites en MeLi y en IA.
 
 ### El argumento del 10% es bueno, pero no es el que cierra
 
@@ -318,8 +343,9 @@ alguien que ya quiere comprar**. No es un argumento de venta: un dealer no compa
 sueldo, compara con lo que gana o deja de perder. El argumento real, y es verificable:
 
 - **Un vehículo vendido** en este vertical (motos, cuatris, náutica) tiene un margen que en la mayoría
-  de los casos supera los USD 1.800 - el año entero de suscripción a USD 150. **Una unidad extra al año
-  paga el producto.** Ese es el número que va en la landing, no el del sueldo.
+  de los casos supera los USD 1.800 - **casi dos años** de suscripción al plan de USD 80, o uno al
+  premium de 200. **Una unidad extra al año paga el producto con margen.** Ese es el número que va en la
+  landing, no el del sueldo.
 - **`sales_percent_increase`** -la métrica que MeLi calcula sola cuando el vendedor baja el tiempo de
   respuesta- es la palanca directa: el producto mejora la métrica con la que MeLi rankea. Eso es valor
   medible por el propio marketplace, no una promesa nuestra.
@@ -333,14 +359,32 @@ sueldo, compara con lo que gana o deja de perder. El argumento real, y es verifi
 | Impulso | 79.999 | ≈ 52 |
 | Escala | 244.999 | ≈ 159 |
 
-**Lectura honesta:** USD 150-250 pone el producto **en la banda del plan más alto del líder local**, y
-es 3 a 5 veces el plan medio. Eso se sostiene **solo** si hace algo que Tiendanube no hace: publicar y
-responder en Mercado Libre sobre un catálogo de vehículos. Si se vende como "una tienda online más", el
-precio es indefendible y el cliente se va a Tiendanube por 52 dólares.
+**Lectura honesta, con el 80 delante:** el plan de USD 80 es **4,4 veces** el plan de entrada de
+Tiendanube (18) y **1,5 veces su plan medio** (52). Y el premium de 200 queda por encima del plan más
+alto del líder local (159). Eso se sostiene **solo** si el producto hace algo que Tiendanube no hace:
+publicar y responder en Mercado Libre sobre un catálogo de vehículos.
 
-**Traducción operativa:** el precio alto obliga a que **el canal MeLi esté en el plan pago y funcione**.
+El 80 no es un precio "barato": es cuatro veces la entrada del líder. Es defendible porque el
+benchmark no es una tienda online - es **lo que el dealer deja de perder** en consultas sin responder.
+Si se vende como "una tienda online más", el cliente tiene razón y se va por 18 dólares.
+
+**Traducción operativa:** el diferencial obliga a que **el canal MeLi esté en el plan pago y funcione**.
 Es la razón por la que §8.2 excluye MeLi de la capa gratuita: si el diferenciador se regala, no queda
 producto que vender.
+
+### El plan de 80, en concreto
+
+| Qué incluye | Límite propuesto |
+|---|---|
+| Sitio con dominio propio | 1 |
+| Catálogo | hasta ~80 unidades activas |
+| Canal MeLi | publicar + responder preguntas |
+| IA | N consultas/mes (a calibrar en Fase 0) |
+| Cuentas | 1 profesional + 1 operador |
+
+**Un aviso sobre el 80:** a ese precio el plan base no puede incluir IA ilimitada. Tiendanube cobra 18
+por su plan de entrada y **cobra aparte cada conversación de IA** (ARS 400 la más cara, ARS 190 la más
+barata). Es el modelo a copiar: el precio bajo compra el sistema, la IA se mide.
 
 ### Lo que el precio todavía no cubre, y hay que medir en la Fase 0
 
@@ -349,12 +393,46 @@ producto que vender.
 | Consultas al modelo (chat RAG) | **desconocido** | tokens por consulta y consultas por sitio/mes → costo real por tenant. Sin este número el margen es una suposición |
 | Embeddings de la KB | desconocido | ídem, con el tamaño típico de catálogo de un dealer |
 | Cuota de MeLi | **no es costo, es techo** | llamadas por tenant/mes, para saber cuántos sitios entran con la app central (D6) |
-| Infra (VPS) | conocido (§11) | USD 13-29/mes, fijo, no por tenant |
+| Infra (VPS) | conocido (§11) | USD 15-29/mes al renovar, fijo, no por tenant |
 
 **Regla que no se negocia:** el plan pago no se publica con precio final hasta tener el costo por
-consulta medido. USD 150 con IA ilimitada puede ser margen negativo si el chat se usa mucho. La salida
-es un **límite de consultas por plan** (como hace Tiendanube con "usos de IA": 30 / 150 / ilimitado), no
-un precio más alto.
+consulta medido. A **USD 80** el margen es mucho más fino que a 150, así que el límite de consultas no es
+una buena práctica: es la condición para que el plan exista. La salida es un **límite de consultas por
+plan** (como hace Tiendanube con "usos de IA": 30 / 150 / ilimitado), nunca un precio más alto con uso
+ilimitado.
+
+---
+
+## 10 bis. Cobro: Mercado Pago, y por qué Stripe no podía serlo
+
+**Decisión:** **Mercado Pago** es el proveedor del producto. Stripe deja de ser el proveedor único del
+ecosistema (**ADR-103**, que supersede ADR-042).
+
+Esto no es una preferencia estética: **Stripe no permite abrir una cuenta de comercio a una empresa
+argentina.** Verificado el 2026-10-21 en `stripe.com/global` (Argentina: 0 ocurrencias; Brasil y México
+sí figuran) y en tres fuentes independientes. El ADR-042 se había escrito sobre la premisa contraria, y
+esa premisa era falsa.
+
+**Los argumentos a favor de Mercado Pago, en orden de peso real:**
+
+1. **Cobra en pesos, con merchant account local.** La factura cierra y no hay sociedad en el exterior.
+2. **Suscripciones nativas** (`preapproval` + planes): cobro recurrente en ARS, reintentos automáticos,
+   período de prueba y prorrateo - verificado en su documentación.
+3. **Medios que el cliente ya usa**: dinero en cuenta, tarjeta de crédito y débito, Rapipago y Pago
+   Fácil. Para un concesionario del interior, eso es conversión real, no una casilla más.
+4. **Canal comercial**: el vertical es de contactos directos (el local de Esteban, el de la hermana, la
+   zona). Un proveedor que el cliente ya tiene instalado en el teléfono elimina una fricción de la
+   venta.
+
+**El costo que hay que asumir y escribir:** el precio está pensado en USD y se cobra en ARS. Sin una
+**política de ajuste periódico** el margen se licúa solo. Tiendanube publica un ajuste trimestral
+(enero, abril, julio, octubre) y lo pone en sus términos; el producto necesita lo mismo, con la
+periodicidad que se decida.
+
+**Cómo queda el modelo de datos:** igual que con Stripe, con `provider` como dato:
+`account.plan`, `billing_provider` (`mercadopago` | `stripe`), `external_customer_id`,
+`external_subscription_id`, `subscription_status`. Cero `if provider == ...` en la lógica de features.
+Eso permite sumar Stripe el día que haya un cliente fuera de Argentina sin tocar el dominio.
 
 ---
 
@@ -379,7 +457,7 @@ afiliado, además, es ingreso que no requiere cambiar una línea de código.
 nombre del cliente. Si el flujo tiene que ser "el cliente pone su tarjeta y el dominio aparece solo", eso
 es reventa, con las obligaciones de arriba.
 
-### 11.2 El VPS: precios verificados, y una ambigüedad que hay que resolver antes
+### 11.2 El VPS: hay uno vivo (KVM 2), y la contradicción quedó resuelta
 
 **Hostinger hoy** (plan a 24 meses, promoción vigente, verificado 2026-10-21):
 
@@ -397,12 +475,50 @@ Todos incluyen backups semanales, firewall, API pública y dominio gratis por un
 segundo worker. **KVM 4 (4 vCPU / 16 GB / USD 28,99 al renovar)** es el punto de entrada realista. Y ojo
 con el número: **8,79 es introductorio**, no el costo del año 3.
 
-**La ambigüedad que bloquea:** `docs/learnings/infraestructura.md` (2026-09-06) registra que "el VPS se
-dio de baja" tras el incidente del modelo caro, y `memory/inbox.md` dice que hay **n8n corriendo en un
-VPS de Hostinger**. No hay host en `~/.ssh/config` ni acceso verificado desde esta máquina. Antes de
-decidir "usamos el VPS que ya tengo" hay que confirmar **cuál es, si sigue vivo, qué corre hoy y qué
-comparte**. Reutilizarlo **no es gratis**: si ya hospeda cosas, el producto comparte destino y
-superficie de ataque con ellas.
+**Contradicción, resuelta por Gonzo el 2026-10-21:** `docs/learnings/infraestructura.md` (2026-09-06)
+registraba que "el VPS se dio de baja" tras el incidente del modelo caro. **No es así**: el VPS existe,
+es un **KVM 2**, y hoy solo corre **n8n sin uso** - la máquina está esperando que se le asigne algo. La
+entrada de learnings se corrigió (el hecho vigente es lo que dijo el dueño, no lo que se dedujo de una
+sesión vieja).
+
+**Consecuencia práctica:** no hay que comprar nada para arrancar. Y el riesgo cambia de forma: ya no es
+"¿existe la máquina?", es **"el producto comparte destino con las automatizaciones"**. Dos cargas en el
+mismo host significan que un `docker compose down` de una tumba la otra, y que el día que n8n tenga un
+workflow pesado, el catálogo de un dealer paga la cuenta.
+
+**La decisión, en orden:** el **KVM 2 actual sirve para la Fase 0 y la Fase 1** (un sitio, un dealer,
+volumen de prueba). Cuando entre el segundo dealer -o cuando n8n empiece a hacer trabajo real- se separa:
+o el producto sube a KVM 4 y n8n se queda en el 2, o se compra un segundo KVM 4 y cada carga vive en su
+máquina. **Separar por máquina es más barato que compartir y depurar.**
+
+### 11.3 n8n: se puede usar, con una condición que hay que respetar
+
+Gonzo propuso darle un uso a n8n. **Sí se puede, y la licencia lo permite** - pero el límite es
+específico y conviene tenerlo claro antes de diseñar nada alrededor:
+
+| Uso | ¿Permitido bajo Sustainable Use License? |
+|---|---|
+| Automatizaciones internas del negocio | **Sí** |
+| n8n como motor invisible detrás del producto (solo el backend habla con él) | **Sí** |
+| Que un cliente nuestro **construya o edite** workflows, aunque sea por una UI propia, API o agente | **No** |
+| White-label de n8n, o forkearlo para lanzar un producto de automatización | **No** |
+
+Verificado en la FAQ oficial de n8n (2026-10-21). El test no es si el cliente *ve* n8n: es **quién
+controla la lógica**. Un workflow que nosotros escribimos y el cliente solo dispara, entra. Un
+"constructor de automatizaciones" para el dealer, no.
+
+**Para este producto la conclusión es simple:** n8n puede servir como **pegamento interno** (avisos,
+sincronizaciones, jobs de mantenimiento), nunca como la función que el dealer configura. El canal MeLi,
+que es el corazón del producto, **no** va en n8n: va en el código, con tests y con los estados
+explícitos que exige el camino de envío.
+
+### 11.4 LangChain: qué lugar tiene (y cuál no)
+
+LangChain ya está decidido como **capa de ejecución de flujos dentro de un proyecto, no como
+orquestador** (ADR-099), y hoy corre en el Mac Mini con ChromaDB local y LaunchAgent. Para OnWheels su
+lugar natural es el **RAG del chat** - el mismo patrón que ya está probado - no la capa web ni el canal.
+Poner LangChain en el VPS tiene sentido recién cuando el chat atienda a más de un dealer y convenga
+separar la inferencia del host que sirve la web.
 
 **Y la regla del 2026-09-06 sigue vigente:** cualquier instancia nueva se audita por *fallbacks de
 modelo* antes de correr nada. Este producto no necesita gateway de agentes - y esa es la mejor razón

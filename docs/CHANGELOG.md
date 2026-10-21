@@ -15,7 +15,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **`MEMORY.md`: OnWheels y kanam-query pasan a DORMIDOS.** Sus entradas se reescribieron (no se anidaron: `MEMORY.md` estaba a 130 caracteres del cap). La nueva entrada canónica es **"Paquete dealer"**.
 - **D4 de OnWheels (regalo a Esteban, sin billing) queda derogada para el producto nuevo.** Esteban es ahora el **tenant 0** del paquete comercial; D4 sigue vigente sólo para el repo dormido.
 - **El producto nuevo se llama OnWheels.** Se descarta el prefijo `kanam-` (marca de autor, no de producto) y se reusa un nombre que ya existía, en vez de inventar marca.
-- **Precio definido: USD 150-250/mes por sitio**, capa gratuita limitada + trial de 15 días. MeLi e IA quedan **fuera** de lo gratuito.
+- **Precio definido: USD 150-250/mes por sitio** _(corregido a 80-200 en la tercera ronda del mismo día)_, capa gratuita limitada + trial de 15 días. MeLi e IA quedan **fuera** de lo gratuito.
 
 ### Verified
 - **Los nombres del pedido no existen:** `grep -ril "kanam[-_ ]?(store|cars|market)"` sobre el workspace → 0; `gh repo list gonzoblasco --limit 200` → ninguno; `MEMORY.md` → ninguna entrada. La dispersión real son tres repos con nombres distintos, no tres marcas.
@@ -30,9 +30,19 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **`onwheels.com.ar` está LIBRE** (`whois -h whois.nic.ar`). Alta/renovación/transferencia: **ARS 8.500** cada una (tabla de `nic.ar/es/dominios/aranceles`).
 - **`onwheels.com` está TOMADO desde 1997** (registrador Tucows, *client transfer prohibited*, vence 2026-12-30, sin sitio activo). `onwheels.app` y `onwheels.dev` también tomados. `onwheels.io`, `getonwheels.com`, `onwheelscloud.com`, `myonwheels.com` libres.
 - **Hostinger: KVM 4 (4 vCPU/16 GB) sale USD 12,99 intro y USD 28,99 al renovar.** KVM 2 (8 GB) queda corto para Postgres + worker + Next + proxy en una máquina. El valor promocional no es el costo real.
-- **Benchmark de precio:** Tiendanube en Argentina cobra ARS 27.999 / 79.999 / 244.999 (≈ USD 18 / 52 / 159). USD 150-250 pone el producto en la banda del plan más alto del líder local - defendible sólo por el canal MeLi.
+- **Benchmark de precio:** Tiendanube en Argentina cobra ARS 27.999 / 79.999 / 244.999 (≈ USD 18 / 52 / 159). USD 150-250 pone el producto en la banda del plan más alto del líder local - defendible sólo por el canal MeLi _(cifra reemplazada: ver tercera ronda)_.
 - **Hostinger tiene afiliados Y reseller master agreement, y son figuras distintas:** revender un dominio pone al paquete como responsable ante el cliente. Recomendación: referido, no reventa.
 - **Contradicción abierta:** `docs/learnings/infraestructura.md` dice que el VPS de Hostinger "se dio de baja" (2026-09-06) y `memory/inbox.md` #1 dice que hay n8n corriendo ahí. Sin host en `~/.ssh/config` ni acceso verificado. Registrado como bloqueante en el doc, sin resolver.
+
+### Changed (tercera ronda, 2026-10-21 14:26)
+- **ADR-103 nuevo: Stripe no opera en Argentina.** El ADR-042 declaraba a Stripe como proveedor único apoyado en la premisa *"Stripe ya opera en Argentina (integración reciente)"*. **Esa premisa es falsa.** Verificado: `stripe.com/global` no lista a Argentina (0 ocurrencias; Brasil y México sí), y tres fuentes independientes lo confirman (startglobal, getpaidatlas chequeado 2026-10-20, lupapago auditoría 2026-08-23: *"No hay merchant account local en Arg"*). Lo que existe es cobro cross-border vía entidad extranjera. **Mercado Pago vuelve a ser proveedor válido y pasa a ser el del producto.** ADR-042 marcado SUPERSEDED y entradas del índice actualizadas.
+- **Precio corregido: USD 80-200 por plan**, no 150-250. Se define sólo el de 80; premium abierto; ningún precio es final.
+- **Contradicción del VPS resuelta:** el VPS de Hostinger **existe** (KVM 2, sólo con n8n sin uso). Lo que se dio de baja en 2026-09-06 fue el OpenClaw que corría ahí, no la máquina. Corregida la entrada de `docs/learnings/infraestructura.md` con la lección de segundo orden ("se dio de baja X" ≠ "se dio de baja la máquina donde vivía X").
+- **n8n y LangChain acotados en el doc:** n8n puede usarse como pegamento interno (la SUL lo permite), nunca como función que el dealer configura; el canal MeLi va en código. LangChain queda como RAG del chat (ADR-099), no como capa web ni canal.
+
+### Verified (tercera ronda)
+- **Mercado Pago tiene suscripciones nativas** (`preapproval` + planes): cobro recurrente en **ARS**, reintentos automáticos, período de prueba, prorrateo. Medios: dinero en cuenta, tarjeta crédito/débito, Rapipago, Pago Fácil. `currency_id` en los ejemplos de la doc: `ARS`.
+- **Licencia de n8n (Sustainable Use License), leída en su FAQ oficial:** permitido como motor invisible detrás del producto si sólo el backend habla con él; **prohibido** que un cliente construya o edite workflows, incluso por UI propia, API o agente. El test es quién controla la lógica, no quién ve la interfaz.
 
 ---
 
@@ -69,7 +79,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Notes
 - **Plan:** Fase 0 (spike tecnico) **bloqueante** antes de elegir stack, porque el riesgo #1 es de acceso a la API, no tecnico. Despues, 5 fases con **criterio de salida comprobable** (3-7 condiciones booleanas cada una, atadas a un test o artefacto). Total estimado 41-52 dias de trabajo concentrado de 1 dev (6 h efectivas/dia), re-calibrable al cerrar Fase 0. No es un compromiso de fecha.
-- **Decisiones de producto tomadas por defecto en el plan:** revision humana obligatoria en V1 (el riesgo real es el baneo a nivel de **app compartida**, no "riesgo regulatorio"), **sin PII del comprador** (solo `buyer_id`; el producto no necesita email ni telefono), `tenant_id` + RLS desde la **primera** migracion, envelope encryption de tokens por tenant (no `.env` cifrado), `job_queue` en Postgres en vez de cola administrada, y Stripe como unico proveedor (ADR-042; Mercado Pago queda afuera).
+- **Decisiones de producto tomadas por defecto en el plan:** revision humana obligatoria en V1 (el riesgo real es el baneo a nivel de **app compartida**, no "riesgo regulatorio"), **sin PII del comprador** (solo `buyer_id`; el producto no necesita email ni telefono), `tenant_id` + RLS desde la **primera** migracion, envelope encryption de tokens por tenant (no `.env` cifrado), `job_queue` en Postgres en vez de cola administrada, y Stripe como unico proveedor (ADR-042; Mercado Pago queda afuera) _- regla vigente entonces, superseded por ADR-103 el 2026-10-21_.
 - **Pendientes de Gonzo:** 5 decisiones de encuadre (publico objetivo, modo de respuesta, app de MeLi propia vs compartida, nombre -que sigue siendo temporal-, modelo de cobro) + aprobar la decision "sin PII" y leer los ToS de MeLi sobre datos de preguntas.
 
 ---
