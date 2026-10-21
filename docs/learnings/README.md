@@ -18,9 +18,10 @@ Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde
 - **[debugging](./debugging.md)** - 6 lecciones
 - **[docker](./docker.md)** - 4 lecciones
 - **[evaluacion](./evaluacion.md)** - 2 lecciones
-- **[infraestructura](./infraestructura.md)** - 55 lecciones
+- **[infraestructura](./infraestructura.md)** - 56 lecciones
 - **[integracion](./integracion.md)** - 2 lecciones
 - **[metodologia](./metodologia.md)** - 82 lecciones
+- **[ollama](./ollama.md)** - 1 lecciones
 - **[oss](./oss.md)** - 33 lecciones
 - **[pipeline](./pipeline.md)** - 1 lecciones
 - **[pipeline-agentes](./pipeline-agentes.md)** - 37 lecciones
@@ -30,4 +31,4 @@ Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde
 
 ## Total
 
-244 lecciones en total.
+246 lecciones en total.

@@ -604,3 +604,10 @@ El cierre de sesion (memory-end-session.py) es idempotente por (proyecto, fecha)
 
 ---
 
+## 2026-10-21 - Heartbeat (main) sin scratch = 600s de timeout en cada tick
+
+Los heartbeats de 'main' (cadencia 2h, activeHours 08:00-23:00) ###
+en error con 'cron: job execution timed out' (600260ms, el tope = cadencia acotada a 600s) cuando el monitor scratch estaba vacio (scratch=null). Sin checklist, el turno heartbeat se va por las ramas: lee docs de openclaw, historia de sesiones, configs de modelo y backlog, y el tick muere por timeout en vez de responder NO_REPLY. ### La corregir: checklist acotado en el monitor scratch del job (openclaw automations scratch <jobId> --set), con limite explicito de tiempo (90s), max 2 comandos por punto, prohibicion de leer docs/web, y regla 'si nada requiere atencion: NO_REPLY'. ### El sintoma que delata: 'consecutiveErrors' sube y 'cron-in-progress' aparece en el historial de runs (el tick anterior seguia vivo cuando llego el siguiente). ### Regla: el scratch del monitor es lo que hace el heartbeat barato; sin el, el heartbeat es una sesion completa disfrazada.
+
+---
+
