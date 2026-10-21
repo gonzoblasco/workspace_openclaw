@@ -9,7 +9,19 @@ Carpeta de trabajo del proceso. Índice:
 | Archivo | Qué es | Estado |
 |---|---|---|
 | `analisis-fiscal-neto.md` | Cuánto valen realmente USD 5.000/mes brutos en Argentina como contractor (monotributo, Factura E, costos no cubiertos) | Hecho y verificado contra fuentes oficiales (21/10/2026) |
-| `revision-adversarial.md` | Encaje JD↔corpus, hallazgos por severidad, veredicto accionable y texto para la call | En curso |
+| `revision-adversarial.md` | Encaje JD↔corpus, hallazgos por severidad, veredicto accionable y texto para la call | Hecho (con correcciones del CORE) |
+| `cv-senior-frontend-growth-gonzalo-blasco.md` (+ `.pdf`) | CV en inglés, una página, orientado al JD | **ENVIADO 21/10.** Markdown + PDF + `cv-style.css` reusable |
+| `guion-call-21-10.md` | Texto listo para enviar a David y las 4 preguntas de la call | Hecho - **aún no enviado** (se mandará el CV primero, según decisión de Gonzo) |
+
+---
+
+## Estado: esperando a David
+
+- **21/10, 13:3x** - Gonzo envió el **CV de una página tal cual** (decisión propia: "ya veremos qué respuesta tiene").
+- David **se desconectó**: sin respuesta al momento del cierre de la sesión.
+- **Próximo paso esperado:** respuesta de David y, con ella, la call informativa de 10-15 min.
+- **Si David pide la call:** el guion de `guion-call-21-10.md` tiene las 4 preguntas (idioma por la operación, alcance del contrato, PTO, educational allowance). La del idioma va apoyada en el "B2+ in the JD" y **no** pregunta "¿exige C1?" - preguntar eso es el auto-sabotaje del caso Staffy.
+- **Si David responde en días:** la regla del tracker es no insistir más de una vez por proceso.
 
 ---
 

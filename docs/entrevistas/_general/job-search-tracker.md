@@ -8,7 +8,7 @@
 
 | Empresa | Puesto | Contacto | Tarifa | Estado 2026-10-21 |
 |---|---|---|---|---|
-| **TEAM International** (cliente **tempo.io**) | Senior Frontend Developer (Growth) | David Sanin Valencia | USD 5.000/mes fijos (≈ USD 31,25/h a 160 h) | **NUEVO, 21/10.** Pitch "English Advance"; el JD dice **B2+**. Gonzo declaró B2 + plan C1 y David no respondió el punto. Call informativa de 10-15 min pendiente. Análisis fiscal: **neto ≈ USD 4.140-4.270/mes** (≈ USD 25,9-26,7/h) - ver `docs/entrevistas/team-international-tempo/analisis-fiscal-neto.md`. **Escala por encima de Infjini, empate con Staffy.** Ojo: es fijo por mes, no por hora: a 45-50 h/semana el valor/hora cae por debajo de Infjini. |
+| **TEAM International** (cliente **tempo.io**) | Senior Frontend Developer (Growth) | David Sanin Valencia | USD 5.000/mes fijos (≈ USD 31,25/h a 160 h) | **CV ENVIADO 21/10 (13:3x).** Pitch "English Advance"; el JD dice **B2+**. Gonzo declaró B2 + plan C1 y David no respondió el punto. **CV de una página enviado tal cual** (ver `docs/entrevistas/team-international-tempo/`). David se desconectó: **sin respuesta aún, esperando.** Call informativa de 10-15 min pendiente. Análisis fiscal: **neto ≈ USD 4.140-4.270/mes** (≈ USD 25,9-26,7/h). **Escala por encima de Infjini, empate con Staffy.** Ojo: es fijo por mes, no por hora: a 45-50 h/semana el valor/hora cae por debajo de Infjini. |
 | Infjini Inc | Lead Software Engineer - Digital Accessibility | Siraj Shaik | USD 22/h all-inclusive, 1 año | **ABIERTO (confirmado por Gonzo el 21/10).** El screening con Siraj ya se hizo y el proceso sigue vivo. Riesgo: 9-5 ET con comunicación en inglés, misma clase que los dos cerrados por C1. |
 
 ### Notas Staffy (2026-10-20) - PROCESO CERRADO
