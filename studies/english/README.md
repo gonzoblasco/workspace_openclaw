@@ -47,14 +47,43 @@ Examen integral, 4 partes, escala **MCER** (la que usa el filtro), aprobado por 
 | Precio (curso) | 1 pago **$334.944** (general) / **$301.449** (precio UBA) · 3 pagos $118.202 · 6 pagos $62.054 |
 | Examen | Evalúa las 4 habilidades, incluida la oral |
 
+#### Datos verificados del examen TOEFL iBT (21/10/2026)
+
+| Dato | Valor |
+|---|---|
+| Inscripción en Argentina | **US$250** (ETS fees-by-location, leído 14/10/2026), se paga en dólares |
+| Reagendar | US$69. Reserva express (dentro de 7 días) US$49 |
+| Cancelar con 4 días de antelación | 50% de devolución; después, nada |
+| Score report extra por institución | US$29 |
+| Revisión de Speaking / Writing | US$80 (uno) / US$160 (ambos) |
+| Home Edition | Disponible en Argentina, con proctor humano, 4 días por semana |
+| Validez del score | **2 años** (política ETS) |
+| Aceptación | 12.500+ instituciones en 150+ países |
+
+**Escala 1 a 6 (desde el 21 de enero de 2026).** El informe ahora trae **tres cosas a la vez**:
+el nivel CEFR, los puntajes 1-6 en pasos de 0,5, y el equivalente 0-120 comparable (por 2 años).
+
+| CEFR | 1-6 |
+|---|---|
+| C2 | 6 |
+| **C1** | **5 - 5,5** |
+| B2 | 4 - 4,5 |
+| B1 | 3 - 3,5 |
+
+- Un 5 en **cualquier sección** equivale a C1 en esa sección.
+- 5 global equivale a 95-106 en la escala vieja; ETS recomienda a las instituciones que exigían 100 fijar el band 5.
+- 29-30 en Reading = probablemente C2.
+
 ### Mi lectura
 
 **El CUI-ING C1 sirve mejor para el bloqueo actual**, por dos razones concretas:
 
-1. **Habla el idioma del filtro.** Un certificado que dice "C1" en escala MCER lo lee un reclutador LATAM de un vistazo. Un TOEFL es un número 0-120 que se usa sobre todo para admisión universitaria y visa; para "¿tenés C1?" hay que traducirlo.
-2. **Cuesta 2,4 veces menos** ($140.000 vs $334.944) y **evalúa oral en entrevista individual**, que es justo lo que hay que demostrar.
+1. **Habla el idioma del filtro.** Un certificado que dice "C1" en escala MCER lo lee un reclutador LATAM de un vistazo. Y **el TOEFL ahora también lo dice**: desde enero de 2026 el informe trae el nivel CEFR explícito, asi que ya no hay que traducir un número 0-120. Los dos caminos dicen "C1" en el papel.
+2. **Cuesta 2,4 veces menos** ($140.000 vs $334.944 + US$250 del examen) y **evalúa oral en entrevista individual**, que es justo lo que hay que demostrar.
 
-El TOEFL tiene una ventaja que el CUI-ING C1 no: **reconocimiento internacional más amplio** (visa, universidades, Cancillería). Si el objetivo de largo plazo es el exterior, o si el filtro de algún cliente es específicamente TOEFL, el camino B gana.
+El TOEFL tiene una ventaja que el CUI-ING C1 no: **reconocimiento internacional más amplio** (visa, universidades, Cancillería) y **es el examen que pide cualquier cliente que diga "TOEFL" en el JD**. Si el objetivo de largo plazo es el exterior, o si algún cliente filtra específicamente por TOEFL, el camino B gana.
+
+> **Ojo con el calendario del TOEFL:** el curso arranca en **marzo y agosto**. Un examen en enero-febrero de 2027 seria con preparacion propia, no con el curso. Cambridge C1 Advanced (intensivos de 60hs, o 2 cuatrimestres) queda como tercera via, no la primera.
 
 > **Los datos de arriba son de `cui.edu.ar`, leídos el 2026-10-21.** Antes de pagar, **verificar en el centro**: las mesas y los precios cambian por año. Fuente: `https://cui.edu.ar/certificacion-cui-ing` y `https://cui.edu.ar/examenes-internacionales`.
 
@@ -111,3 +140,18 @@ También aplica como **pregunta de screening**, no solo al inicio: si filtran po
 - `docs/entrevistas/_general/job-search-tracker.md` - estado de los procesos
 - `docs/entrevistas/sol-senior-fullstack/sol-seguimiento.md` - el cierre de Sol
 - `docs/learnings/evaluacion.md` - "el filtro de idioma no se negocia con el CV: se negocia con la pregunta"
+
+### Fuentes (leidas 2026-10-21)
+
+| Dato | Fuente |
+|---|---|
+| CUI-ING C1: estructura, duración, bandas, mesa del 6/11, $140.000 | `https://cui.edu.ar/certificacion-cui-ing` (CUI) |
+| Precios de preparación de exámenes internacionales (TOEFL, Cambridge C1 Advanced, IELTS) | `https://cui.edu.ar/valores_cursos_lista.php?curso=4` (CUI) |
+| Escala TOEFL 1-6, equivalencia CEFR, 5 = 95-106 en escala vieja | `https://www.ets.org/toefl/institutions/ibt/score-scale-update.html` (ETS, oficial) |
+| TOEFL iBT en Argentina: US$250, reschedule, reviews, score reports | `https://www.ets.org/toefl/test-takers/ibt/register/fees.html` (ETS, oficial) |
+| Validez del score TOEFL (2 años) | `https://www.etsglobal.org/us/en/help-center/score-validity/how-long-score-valid-for` (ETS, oficial) |
+| Home Edition disponible en Argentina | `https://www.ets.org/toefl/test-takers/ibt/where-to-test/country-list.html` (ETS, oficial) |
+| Cambridge C1 Advanced: 4 papers, certificado sin vencimiento | `https://support.cambridgeenglish.org/hc/en-gb/articles/202838296-How-long-are-my-results-certificate-valid-for` (Cambridge, oficial) |
+| Cambridge C1 Advanced: arancel BAOC USD 350 (antes 365) | `https://baoc.com.ar/producto/c1-advanced-cae-bsas-interior/` (BAOC) - **verificar antes de budgeting** |
+
+> **Los precios y las mesas cambian por año.** Antes de pagar, verificar en el centro y en ETS.
