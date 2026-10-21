@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-20] - Chatterbox TTS servido con la API de Ollama: implementado, verificado y borrado
+
+### Added
+- **Learning transversal #286 (`docs/learnings/integracion.md`): "Ollama como proveedor != modelo local".** En los 5 pedidos de la sesion (opencode, browser-use, milvus, PR-Agent, Chatterbox) Gonzo aclaro lo mismo: *"no hace falta que use los modelos locales, me referia a que corra desde Ollama"*. "Desde Ollama" es el **proveedor**, no el modelo: da igual local o cloud, ambos llegan por la misma API. La leccion operativa es que, cuando el pedido dice "configurarlo con X", la primera pregunta a responder es *que componente tiene que hablar con X* (contrato de endpoint), no *que modelo corre*.
+- **Server TTS con Chatterbox y la forma de la API de Ollama** (`POST /v1/audio/speech`, contrato OpenAI), verificado end-to-end con el codigo real de OpenClaw (`buildOpenAISpeechProvider().synthesize()` -> `isConfigured: true`, `AUDIO OK: 230428 bytes | wav | 24000 Hz | ch 1`). Smoke test 8/8, soak de 30 requests sin crash, 5 concurrentes OK. **Se borro completo a pedido de Gonzo** (ver "Removed").
+
+### Removed
+- **Todo el rastro de Chatterbox**: 2 servicios launchd, 2 plists, el proyecto `projects/chatterbox-ollama/` (1.3 GB, 15 commits), la cache `~/.cache/chatterbox-ollama/` (2.5 GB: pesos GGUF + build + source de llama.cpp), la imagen Docker (2.6 GB) y su volume, los modelos Ollama `chatterbox-test` (9.6 GB) y `mannix/kokoro:82m` (189 MB), la seccion `tts` de `openclaw.json` y 6 WAV de prueba. Se uso `trash` para lo reversible; los 5 GB de pesos GGUF e imagen Docker no pasan por la Trash.
+
+### Fixed
+- **9 referencias obsoletas** que quedaban en el workspace y quedaron falsas tras el borrado: `memory/2026-10-20.md` (3), `docs/SETUP.md` (1), `docs/CHANGELOG.md` (1), `projects/onyx/.knowledge/STATUS.md` (2), `projects/milvus-ollama/README.md` (1) listaban `chatterbox` como container vivo en la maquina, y 2 listaban los modelos `kokoro` y `chatterbox-test` entre los locales de Ollama. Se conservaron 2 referencias que siguen siendo verdaderas: el registro historico de un `exit 137` de otra sesion y el triaje de alternativas OSS (que evalua el upstream, no la instalacion).
+
+### Notes
+- **Ollama stock 0.40.6 no puede servir un TTS**: `/v1/audio/speech` -> 404 y `/api/chat` con un modelo TTS -> `"does not support chat"`. xOllama (fork con motores de medios) si sirve TTS, pero su sidecar `audiocpp` no conoce Chatterbox (`unsupported family: chatterbox_turbo`; cubre Kokoro/Supertonic/KittenTTS/OuteTTS). Chatterbox no esta en llama.cpp master ni en el catalogo de xOllama: solo existe como **PR sin mergear** (`ngxson/llama.cpp#107`).
+- **Docker no era viable en esta maquina, medido**: Docker Desktop tiene 7.748 GiB de limite y ~3.4 GiB ya los ocupaban 12 contenedores de otros proyectos; el TTS necesita ~4 GB de pesos -> OOM kill (`ExitCode=137, OOMKilled=true`). Nativamente hay 24 GB de RAM unificada y ademas MPS, que Docker Desktop no puede exponer al contenedor.
+- **Un subagente reporto "the build succeeds" y era falso** (fallaba con 15 errores de compilacion). Los 7 bugs reales: lineas con prefijo `+` y `sampling.h` faltante; `common_sampler_init(model, ...)` y `params_.hostname`; faltaban `llama_backend_init`/`llama_numa_init`/`n_parallel*=2`/`kv_unified`; **el de fondo**: `llama_init` era un `unique_ptr` local dentro de `init()`, asi que al salir se liberaba model y context y quedaban punteros colgantes -> SIGSEGV; KV cache sucia entre requests; `Content-Type` duplicado que hacia fallar a los clientes OpenAI-compatible; y JSON malformado en los paths de error (`R"({\"error\":...})"` emite backslashes literales).
+
 ## [2026-10-20] - El historial de HANDOFF se archiva con el nombre que corresponde
 
 ### Fixed
@@ -46,7 +63,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Notes
 - **Solo Ollama Cloud:** el provider expone 17 modelos, todos remotos. Los modelos locales del host (`gemma4:12b-mlx`, `qwen3.5:9b-mlx`, `qwen3-embedding:0.6b`, etc.) no estan en el provider: Onyx no los elige y no consumen RAM. Criterio: campo `remote_host` de `GET /api/tags`, no el sufijo `:cloud` (`gpt-oss:120b-cloud` y `mistral-large-3:675b-cloud` son cloud sin ese sufijo).
-- **Modo Lite y no completo, a proposito:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB de la maquina) y convive con milvus, anythingllm, chatterbox y openhands. El stack completo (OpenSearch + 2 model servers con torch) no entra comodo. Indexacion/RAG/conectores quedan apagados.
+- **Modo Lite y no completo, a proposito:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB de la maquina) y convive con milvus, anythingllm y openhands. El stack completo (OpenSearch + 2 model servers con torch) no entra comodo. Indexacion/RAG/conectores quedan apagados.
 - El `api_server` fue OOM-killed una vez (exit 137) por los containers ajenos; reinicio solo (`restart: unless-stopped`).
 
 ## [2026-10-20] - El CORE pasa a `minimax-m3.1-flash:cloud` (cata de 8 roles x 5 clases)

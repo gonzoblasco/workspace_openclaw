@@ -125,7 +125,7 @@ La memoria del workspace tiene **dos clases de superficie**, y confundirlas llev
 - **Repo:** `projects/onyx` (clone de `github.com/onyx-dot-app/onyx`). UI: **http://localhost:3000**.
 - **Que es:** capa de contexto/RAG de Onyx (OSS, MIT). Chat, agents, MCP server, sandbox de codigo.
 - **Modo:** **Lite** (`docker-compose.onyx-lite.yml`) - solo Postgres + api_server + web_server + nginx + mcp_server + code-interpreter. **~1 GB RAM.** Sin OpenSearch, sin Redis, sin model servers.
-- **Por que Lite:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB de la maquina) y convive con milvus, anythingllm, chatterbox y openhands. El stack completo (OpenSearch heap 2 GB + 2 model servers con torch) no entra comodo.
+- **Por que Lite:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB de la maquina) y convive con milvus, anythingllm y openhands. El stack completo (OpenSearch heap 2 GB + 2 model servers con torch) no entra comodo.
 - **LLM:** provider `ollama_chat` con `api_base=http://host.docker.internal:11434` - apunta al **Ollama del host**, no a un container. Default: `minimax-m3.1-flash:cloud`.
 - **Solo Ollama Cloud:** el provider expone **17 modelos, todos cloud** (`Ollama Cloud`, id=1). Los modelos locales del host (`gemma4:12b-mlx`, `qwen3.5:9b-mlx`, `qwen3-embedding:0.6b`, etc.) **no** estan en el provider, asi que Onyx no los elige y no consumen RAM. Ojo: el sufijo `:cloud` no es criterio suficiente (`gpt-oss:120b-cloud` y `mistral-large-3:675b-cloud` son cloud sin ese sufijo); la fuente de verdad es el campo `remote_host` de `GET /api/tags`.
 - **Comandos:**

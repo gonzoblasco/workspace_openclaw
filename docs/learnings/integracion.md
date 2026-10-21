@@ -45,3 +45,9 @@ esta arriba en el log (capturar head, no tail).
 
 ---
 
+## Ollama como proveedor != modelo local: leer el pedido antes de elegir el modelo
+
+/tmp/learning_ollama.md
+
+---
+
