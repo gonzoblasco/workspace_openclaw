@@ -32,6 +32,20 @@ proyecto (eso es `projects/<slug>/.knowledge/`), estado de git (eso es `git stat
 
 ## How to use it
 
+Hay un alias en `~/.zshrc` para no escribir la ruta entera:
+
+```bash
+toolbox list              # todo con estado real
+toolbox status vane       # detalle de una (con rutas y sonda)
+toolbox up vane           # levantar
+toolbox down vane         # parar (conserva volumenes)
+toolbox restart vane      # reiniciar
+toolbox health            # sondas HTTP de todas
+```
+
+El alias apunta al script del workspace (por eso funciona desde cualquier cwd) y
+equivale a:
+
 ```bash
 ./scripts/ai-toolbox.py list              # todo con estado real
 ./scripts/ai-toolbox.py list --json       # lo mismo, para maquinas
@@ -75,6 +89,11 @@ El dashboard queda en http://127.0.0.1:8787 y **el chat del agente en `/chat`**
    HTTP es la que prueba.
 3. Si la sonda falla pero el container esta arriba, el problema es interno del
    servicio (ver las trampas de `docs/tools/REGISTRY.md`), no el arranque.
+
+**Vane es el ejemplo de referencia:** `toolbox up vane` lo levanta en
+http://localhost:3005 y `toolbox down vane` lo para conservando los datos
+(`data/` y `uploads/` son bind mounts). El compose vive en
+`projects/vane/docker-compose.yml` y el script lo encuentra solo.
 
 ### "Que apps tengo"
 

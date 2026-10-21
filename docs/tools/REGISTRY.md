@@ -184,9 +184,14 @@ declarado a mano es COMO se levanta cada cosa.
   web con indices locales.
 - **Repo:** `projects/vane`. Imagen `vane-local:ollama`.
 - **UI:** http://localhost:3005 (el 3000 lo tiene onyx-nginx).
-- **Como se levanta:** `cd ~/projects/vane && docker compose up -d`
+- **Como se levanta:** `toolbox up vane` (alias del registro de herramientas; equivalente a `cd ~/projects/vane && docker compose up -d`)
+- **Como se para:** `toolbox down vane` (conserva los datos: `data/` y `uploads/` son bind mounts)
 - **Nota:** SearxNG corre dentro del mismo container (entrypoint, puerto 8080
   interno).
+- **Trampa:** el clasificador de Vane pone `skipSearch: true` en preguntas de
+  conocimiento general: en ese caso NO busca y devuelve respuesta sin fuentes.
+  Es diseno, no bug; para ver el pipeline de busqueda usar consultas que
+  requieran informacion actual.
 
 ### opencode (id: `opencode`)
 
