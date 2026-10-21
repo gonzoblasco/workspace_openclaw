@@ -319,7 +319,16 @@ Medido el 2026-10-20 en el fix de .knowledge/handoff-history/. Un subagente (kan
 
 ## Prueba end-to-end: PASS (2 veces, incluida la re-verificación tras corregir la clave)
 
- `test_e2e.py` (pymilvus 3.0.2): colección con campo VARCHAR + `Function(TEXTEMBEDDING, params={"provider":"openai","model_name":"qwen3-embedding:0.6b"})` → insertar **texto crudo** (Milvus vectoriza vía Ollama) → search (la query también se vectoriza) → **rank correcto** ("Python…" primero) → vectores de 1024 dims guardados → **diff máximo contra el embedding crudo de Ollama = 0.000000** (mismo vector, sin aproximación) → borra la colección. **Los 7 reinicios del container NO fueron bug de Milv
+**NOTA (2026-10-20, tarde): Milvus fue descartado y desinstalado.** La decisión y todo el detalle están en `docs/ecosystem/milvus-decision.md`. Este learning se conserva por los **hallazgos técnicos**, que son reutilizables con cualquier stack que hable la API OpenAI-compatible; el `test_e2e.py` ya no existe.
+
+`test_e2e.py` (pymilvus 3.0.2): colección con campo VARCHAR + `Function(TEXTEMBEDDING, params={"provider":"openai","model_name":"qwen3-embedding:0.6b"})` → insertar **texto crudo** (Milvus vectoriza vía Ollama) → search (la query también se vectoriza) → **rank correcto** ("Python…" primero) → vectores de 1024 dims guardados → **diff máximo contra el embedding crudo de Ollama = 0.000000** (mismo vector, sin aproximación) → borra la colección.
+
+**Los 7 reinicios del container NO fueron bug de Milvus: fue el WAL del etcd embebido corrupto** por los SIGKILLs previos (`0.tmp` de 64 MB a medias), que dejaba al server en loop con `panic: etcdserver: leader changed`. Fix: borrar `volumes/milvus/etcd` y arrancar (los datos vectoriales viven en `rdb_data` y no se pierden; las colecciones registradas en etcd sí). La causa raíz de los reinicios fue la **saturación del host**: otras sesiones corrían `docker build` en paralelo (load average >15) y Docker solo tiene ~7.7 GB de los 24 GB de RAM.
+
+Dos trampas que no son de Milvus y que sí se generalizan:
+
+- **Una clave de config inexistente se ignora en silencio.** `common.cache.memoryLimit` no existe en el `milvus.yaml` de 3.0.3 (la real es `queryNode.cache.memoryLimit`), y Milvus acepta el valor sin quejarse. Un config que no aplica no es un config que funciona.
+- **Un vectorstore que "anda" no es un producto.** La integracion funciono a la primera y el benchmark dio `0.000000` contra el embedding crudo: la capacidad ya estaba cubierta por SQLite+embeddings, ChromaDB y pgvector. Instalar y verificar no es adoptar: la pregunta es qué problema concreto resuelve.
 
 ---
 

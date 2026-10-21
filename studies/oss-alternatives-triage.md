@@ -79,7 +79,7 @@ Detalle en la sección 4, en orden de retorno.
 | `ollama/ollama` (MIT, 184k) | **Ya lo tenés.** Es tu runtime. No hay nada que adaptar. |
 | `anomalyco/opencode` (MIT, 218.7k) | Agente de terminal. OpenClaw ya sos vos. Competidor directo, no componente. |
 | `OpenHands/OpenHands` (MIT, 91.4k) | Sandbox de agente de código en Docker. Es una plataforma pesada, no una pieza. |
-| `milvus-io/milvus` (Apache-2.0, 46.4k) | Vector DB distribuida a escala de millones. **Vos tenés pgvector** en OnWheels (Supabase) y SQLite+embeddings en kanam-lab. Escala de Google, no tuya. |
+| `milvus-io/milvus` (Apache-2.0, 46.4k) | Vector DB distribuida a escala de millones. **Vos tenés pgvector** en OnWheels (Supabase) y SQLite+embeddings en kanam-lab. Escala de Google, no tuya. **CONFIRMADO 2026-10-20:** se evaluo la instalacion real (v3.0.3 con embeddings de Ollama, end-to-end verificado) y se borro. El veredicto era correcto: la capacidad ya estaba, la complejidad no. Decision: `docs/ecosystem/milvus-decision.md`. |
 | `comfyanonymous/ComfyUI` → `Comfy-Org/ComfyUI` (GPL-3.0) | GPL-3.0 no entra en producto cerrado. Además es infra de imagen/video, ortogonal a tu trabajo. |
 | `resemble-ai/chatterbox` (MIT código, 27.1k) | TTS local. **Último release: v0.1.2 de junio 2025** (hace 16 meses, sin release nuevo). Además clonar voz tiene implicancias de consentimiento. Ortogonal a tu a11y + fullstack. |
 | `stackblitz-labs/bolt.diy` (MIT, 20k) | WebContainers con licencia comercial. Además ya tenés `kanam-forge` (fork de Lovable) - solapamiento directo. |

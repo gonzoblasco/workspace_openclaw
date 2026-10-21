@@ -23,7 +23,6 @@
 | browser-use | `browser-use` | docker (stdio, bajo demanda) | - | bajo demanda |
 | AnythingLLM | `anythingllm` | docker compose | 3001 | corriendo |
 | LiteLLM | `litellm` | docker compose | 4000 | corriendo |
-| Milvus | `milvus` | docker compose (standalone embebido) | 19530 | corriendo |
 | Vane | `vane` | docker compose | 3005 | corriendo |
 | opencode | `opencode` | docker compose | 4096 | corriendo |
 | OpenHands | `openhands` | docker compose | 8000 | corriendo |
@@ -63,7 +62,7 @@ declarado a mano es COMO se levanta cada cosa.
   `host.docker.internal:11434`.
 - **Como se consulta el LLM desde Docker:** `http://host.docker.internal:11434`
   (endpoint nativo) o `http://host.docker.internal:11434/v1` (OpenAI-compatible,
-  que es el que usan Milvus, LiteLLM y los embeddings).
+  que es el que usan LiteLLM y los embeddings).
 - **Trampa:** el sufijo `:cloud` del tag NO dice si el modelo es remoto. La
   fuente de verdad es el campo `remote_host` de `GET /api/tags`.
 - **Trampa:** para el loop agentico (structured output) los modelos cloud
@@ -85,7 +84,7 @@ declarado a mano es COMO se levanta cada cosa.
   mcp_server, code-interpreter), ~1 GB RAM. Sin OpenSearch, sin Redis, sin model
   servers, sin object store. Postgres hace de cache, file store y auth backend.
 - **Por que Lite:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB
-  de la maquina) y conviven milvus, anythingllm, litellm, opencode, vane,
+  de la maquina) y conviven anythingllm, litellm, opencode, vane,
   openhands y browser-use. El stack completo (OpenSearch con heap de
   2 GB + 2 model servers con torch) no entra comodo.
 - **LLM:** provider `ollama_chat` con `api_base=http://host.docker.internal:11434`.
@@ -151,17 +150,6 @@ declarado a mano es COMO se levanta cada cosa.
   workspace); el compose y `config.yaml` en `~/experiments/litellm-ollama/`.
 - **Como se levanta:** `cd ~/experiments/litellm-ollama && docker compose up -d`
 - **Perfil `local`:** construye la imagen desde el clon local.
-
-### Milvus (id: `milvus`)
-
-- **Que es:** base vectorial. Embeddings via el endpoint OpenAI-compatible de
-  Ollama (`/v1/embeddings`).
-- **Repo:** `projects/milvus-ollama`.
-- **Modo standalone embebido:** etcd y storage dentro del mismo container, en
-  vez del compose de 3 servicios. Motivo: con ~7.7 GB de RAM asignados y 12+
-  containers, el stack de 3 servicios moria con exit 80 por timeouts de etcd.
-- **Puertos:** `19530` (gRPC, pymilvus), `9091` (health/metrics), `2379` (etcd).
-- **Como se levanta:** `cd ~/projects/milvus-ollama && docker compose up -d`
 
 ### Vane (id: `vane`)
 

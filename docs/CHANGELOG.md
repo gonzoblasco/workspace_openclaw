@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-20] - Milvus: evaluado, funcionando y descartado (instalacion borrada)
+
+### Removed
+- **Milvus completo fuera del stack (decision de Gonzo: "no lo usaremos, es demasiado para nosotros").** Se borro la instalacion entera: los containers `milvus-standalone` y `milvus-attu`, la red `milvus-ollama_default`, las imagenes `milvusdb/milvus:v3.0.3` (2.25 GB), `zilliz/attu:latest` (511 MB), `quay.io/coreos/etcd:v3.5.25` (89 MB) y `milvusdb/minio:RELEASE.2024-12-18T13-15-44Z` (233 MB), mas `projects/milvus` (clon shallow) y `projects/milvus-ollama` (compose + config + scripts). Los dos directorios de proyecto se movieron con `trash` (reversibles desde `~/.Trash`), no con `rm`.
+- **La entrada `milvus` del registro de herramientas** (`scripts/ai-toolbox.py`, `docs/tools/REGISTRY.md`, `skills/ai-toolbox/SKILL.md`): declaraba un compose que ya no existia y un estado ("corriendo") que era falso. La tabla quedo con 10 herramientas. Tambien se corrigieron las dos menciones en prosa que lo enumeraban entre los containers convivientes y los que usan la API OpenAI-compatible de Ollama.
+- **El veredicto del triage OSS quedo confirmado, no re-litigado.** `studies/oss-alternatives-triage.md` ya ponia a Milvus en tier 3 ("escala de Google, no tuya"); ahora dice que se evaluo la instalacion real y el veredicto era correcto.
+
+### Added
+- **`docs/ecosystem/milvus-decision.md`** - decision completa: contexto, lo que se verifico end-to-end, las 7 trampas tecnicas de la integracion (incluidas dos que no son de Milvus: que Ollama no puede correr Milvus como app, y que el etcd embebido se corrompe con SIGKILLs), razones del descarte, que se borro y que se queda. Queda como **evidencia de la decision**, no como guia de uso.
+
+### Notes
+- **El motivo del descarte NO fue la dificultad de configurarlo.** La integracion con Ollama funciono a la primera y quedo verificada con diff maximo `0.000000` contra el embedding crudo del host. El motivo es que la capacidad ya estaba cubierta (SQLite+embeddings en `memory-search.py`, ChromaDB en `langchain-starter`, pgvector en `soporteml`) y la complejidad de una base distribuida no se justifica sin volumen real.
+- **El learning tecnico sobrevive a la herramienta.** Quedan en el ADR: que Milvus 3.x no tiene provider "ollama" pero el provider `openai` funciona contra `/v1/embeddings`; que la URL del provider sale solo de la config del server y no de los params de la funcion; y que la clave de cache es `queryNode.cache.memoryLimit` (la entrada `common.cache.*` no existe en 3.0.3 y se ignora **en silencio**).
+- **Ollama no puede correr Milvus como app (verificado contra la fuente).** `ollama launch` solo lanza agentes de codigo (claude, codex, opencode, hermes, droid, cline, qwen): la lista es cerrada. La doc completa de Ollama (247 KB) tiene **0 menciones de "milvus"** y `ollama.com/apps` devuelve 404.
+
+---
+
 ## [2026-10-20] - Registro vivo de herramientas IA restaurado, con Cline adentro
 
 ### Added

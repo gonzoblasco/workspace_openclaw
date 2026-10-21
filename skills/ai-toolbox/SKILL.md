@@ -8,7 +8,7 @@ metadata:
     - registry
     - ollama
     - docker
-description: "Registro vivo de las herramientas IA instaladas en la maquina (Onyx, browser-use, AnythingLLM, LiteLLM, Milvus, Vane, opencode, OpenHands, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
+description: "Registro vivo de las herramientas IA instaladas en la maquina (Onyx, browser-use, AnythingLLM, LiteLLM, Vane, opencode, OpenHands, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
 user-invocable: true
 ---
 
@@ -45,7 +45,7 @@ proyecto (eso es `projects/<slug>/.knowledge/`), estado de git (eso es `git stat
 
 ### IDs validos
 
-`ollama`, `onyx`, `browser-use`, `anythingllm`, `litellm`, `milvus`,
+`ollama`, `onyx`, `browser-use`, `anythingllm`, `litellm`,
 `vane`, `opencode`, `openhands`, `cline`.
 
 ### Cuando la herramienta es Cline
