@@ -20,7 +20,7 @@
 
 | Árbol | Activas |
 |---|---|
-| `skills/` (Core) | 28 |
+| `skills/` (Core) | 27 |
 | `agents/kanam-dev/skills/` | 43 |
 | `agents/kanam-mind/skills/` | 10 |
 | `agents/kanam-ops/skills/` | 4 |
@@ -28,7 +28,7 @@
 | `agents/kanam-critic/skills/` | 2 |
 | `agents/kanam-planner/skills/` | 1 |
 | `agents/kanam-auditor/skills/` | 5 |
-| **Total activas** | **100** |
+| **Total activas** | **99** |
 
 > **El ciclo SDD (9 skills `hermes-*`) se movió del árbol del Core al de `kanam-dev` el 2026-09-29** (ADR-083).
 > Estaba en `skills/`, así que el Core veía el playbook de ingeniería - `hermes-builder` dice
@@ -87,7 +87,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 
 ## 3. Inventario
 
-### 3.1 Core - `skills/` (28)
+### 3.1 Core - `skills/` (27)
 
 | Skill | Qué hace |
 |---|---|
@@ -112,7 +112,6 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [github](skills/github/) | Operaciones con `gh` + GitHub MCP: PRs, issues, CI, reviews, notificaciones |
 | [supabase-assistant](skills/supabase-assistant/) | Supabase vía MCP: schemas, queries, tipos, migraciones, logs |
 | [sql-insight](skills/sql-insight/) | NL a SQL, optimización e interpretación de EXPLAIN (SQLite y PostgreSQL) |
-| [ai-toolbox](skills/ai-toolbox/) | Registro vivo de las herramientas IA instaladas (Onyx, browser-use, PR-Agent, AnythingLLM, LiteLLM, Milvus, Vane, opencode, OpenHands, Ollama): que hay, que corre y como se levanta, con estado real de Docker y sondas HTTP |
 | [pdf-tool](skills/pdf-tool/) | PDFs local: leer (texto, metadata, OCR) y generar. 100% local (poppler + tesseract) |
 | [word-docx](skills/word-docx/) | Crear, inspeccionar y editar DOCX: estilos, numeración, tracked changes, tablas, secciones |
 | [cleanmymac-maintenance](skills/cleanmymac-maintenance/) | Mantenimiento con CleanMyMac CLI disparado por frases naturales |
