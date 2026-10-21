@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-20 21:07 GMT-3
+**Fecha:** 2026-10-20 22:21 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,33 +12,19 @@
 
 ## Que se hizo en esta sesion
 
-Chatterbox TTS servido con la API de Ollama: se implemento, se verifico (8/8 smoke, end-to-end con el codigo real de OpenClaw) y **se borro completo a pedido de Gonzo**. Aprendizaje transversal: 'configurarlo con Ollama' = el proveedor es Ollama (local o cloud), no 'usar un modelo local'.
+PR-Agent descartado: evaluado contra verdad de base humana (no dio), borrado completo (proyecto, imagen Docker, red, venv, secrets) y registrado el no-uso en MEMORY.md, CHANGELOG y el triage OSS para que no se vuelva a proponer
 
 ## Estado actual
 
-Todo el rastro de Chatterbox eliminado: servicios launchd, plists, proyecto (1.3G), cache (2.5G), imagen+volume Docker, modelos Ollama (9.6G + 189M), seccion tts de openclaw.json y 6 WAV de prueba. 7 archivos que lo listaban como vivo corregidos. 2 referencias legitimas conservadas. Config del gateway revalidada.
+Limpieza completa. PR-Agent no queda en la maquina: sin container, sin imagen, sin red, sin directorio, sin copia en el Trash. Registro de herramientas con 10 entradas (tabla regenerada, catalog --check al dia, 15 tests en verde). La evidencia queda en docs/evaluacion/pr-agent-2026-10-20.md. Para revisar o redactar PRs, la alternativa es Claude Code, ya instalado y ya ruteado por Ollama.
 
 ## Proximos pasos
 
-1. Nada pendiente: el encargo esta cancelado por decision de Gonzo. Si vuelve a pedirlo, el camino esta documentado en el chat de la sesion 2026-10-20: recompilar el POC de llama.cpp (PR #107, rama pascal/poc-chatterbox), endpoint POST /v1/audio/speech, y apuntar tts.providers.openai.baseUrl al server local. Ojo: Docker no sirve en esta maquina por OOM (7.7 GiB de limite, 3.4 ya usados por 12 contenedores ajenos) -> nativo, que ademas tiene MPS.
+1. Ninguno pendiente de esta sesion. La alternativa para PRs (Claude Code via Ollama) ya esta instalada y verificada; no requiere accion.
 
 ## Decisiones y contexto que no debe perderse
 
-1) Docker descartado por OOM medido (ExitCode=137); nativo con MPS. 2) 'servir desde Ollama' = contrato de endpoint /v1/audio/speech, no eleccion de modelo. 3) El TTS de Chatterbox no existe como release: solo hay un PR sin mergear, y su sidecar de xOllama no lo soporta. 4) Se borro con 'trash' lo reversible, pero los 5G de pesos/imagen Docker no pasan por la Trash: no hay vuelta atras.
-
-## Archivos tocados
-
-```
-MEMORY.md
-docs/CHANGELOG.md
-docs/SETUP.md
-docs/learnings/README.md
-docs/learnings/docker.md
-docs/learnings/pipeline-agentes.md
-memory/2026-10-19.md
-memory/2026-10-20.md
-memory/memory.db
-```
+- Decision de Gonzo (2026-10-20): 'no le veo beneficio, eliminemos pr agents completo, limpiamos todo lo que haya creado, registremos que no se usara'. El registro del no-uso quedo en tres lugares: la entrada de MEMORY.md (que se inyecta en cada arranque), el banner del doc de evaluacion, y la fila del triage OSS que antes lo recomendaba. El learning de integracion se reescribio como leccion generica de libreria (decodeo @json de Dynaconf, budget de los modelos de razonamiento) porque esas dos valen mas alla del proyecto descartado.
 
 ## Como continuar
 
