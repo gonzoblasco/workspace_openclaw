@@ -358,12 +358,12 @@ carrito, pagos y logística; por 80 este producto da **sitio propio con dominio,
 vehículos, publicación en Mercado Libre, ingesta y respuesta de consultas, y un chat que responde con
 evidencia citada**. Son productos distintos que se parecen en la palabra "tienda".
 
-| Plan | ARS/mes | USD/mes (1 USD = 1.550 ARS) |
+| Plan | ARS/mes | USD/mes (1 USD = 1.545 ARS, dólar oficial) |
 |---|---|---|
 | Inicial | gratis | - |
-| Esencial | 27.999 | 18,06 |
-| Impulso | 79.999 | 51,61 |
-| Escala | 244.999 | 158,06 |
+| Esencial | 27.999 | 18,12 |
+| Impulso | 79.999 | 51,78 |
+| Escala | 244.999 | 158,58 |
 
 **Lo que el benchmark sí dice, y hay que escucharlo:** el mercado argentino tiene un techo de
 percepción instalado. Un dealer que ya paga 18 por una tienda va a preguntar por qué esto cuesta 80. La
@@ -443,13 +443,13 @@ modelo de datos ya lo soporta sin tocar el dominio:
 
 ### El costo que hay que escribir: precio en USD, cobro en ARS
 
-**Tipo de cambio de referencia del proyecto: 1 USD = 1.550 ARS** (dato de Gonzo, 2026-10-21). Con eso:
+**Tipo de cambio de referencia del proyecto: 1 USD = 1.545 ARS, dólar oficial** (dato de Gonzo, 2026-10-21). Con eso:
 
 | Concepto | ARS | USD |
 |---|---|---|
-| Dominio `.com.ar` (alta y renovación) | 8.500 | **5,48** |
-| Plan de entrada (precio del producto) | 124.000 | **80** |
-| Plan premium (techo de la banda) | 310.000 | **200** |
+| Dominio `.com.ar` (alta y renovación) | 8.500 | **5,50** |
+| Plan de entrada (precio del producto) | 123.600 | **80** |
+| Plan premium (techo de la banda) | 309.000 | **200** |
 
 Sin una **política de ajuste periódico** el margen se licúa solo. Tiendanube publica un ajuste
 trimestral (enero, abril, julio, octubre) y lo pone en sus términos: el producto necesita lo mismo, con
