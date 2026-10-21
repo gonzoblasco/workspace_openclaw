@@ -28,6 +28,7 @@
 
 | Empresa | Puesto | Fecha contacto | Cierre | Motivo |
 |---|---|---|---|---|
+| Sol Bisio (cliente sin nombre) | Senior Full Stack Developer (AI-first) | 2026-10-14 | **cerrado 21/10** | El cliente exige **C1 conversacional sí o sí** para esa posición; el CV declara B2 y no pudieron avanzar. No es rechazo de perfil: Sol dijo que mandó toda la info y que te tiene presente para próximas búsquedas Full Stack. Detalle en `docs/entrevistas/sol-senior-fullstack/sol-seguimiento.md`. Relanzar sin filtro de C1 cuando llegue. |
 | EIT/HTC (cliente Disney) | Lead Software Engineer Digital Accessibility | 2026-09-11 | **cerrado 24/09** | Nunca hubo oferta firme: el rate lo aceptó el reclutador, el cliente jamás hizo call. Cierre del vendor: "we will update if they want to schedule call" (23/09). El mismo req lo publica Infojini: era bench amplio, no búsqueda urgente. No volver a escribir. Palanca que queda: CPACC antes del 30/11 si quiere retomar el hilo con un entregable. |
 | Wigou | AI-Native Software Engineering | 2026-08-31 | **cerrado 24/09** | Meet con Andrés Abraham (COO) el 02/09, sin feedback concreto. Tres semanas sin contacto. Cerrado por la propia regla del 02/09 ("si no hay novedad en ~1 semana, cerrado"). |
 | OpenSistemas | AI-Native (colaboración freelance) | proceso previo | **cerrado 11/09** | Avanzaron con otro candidato, después de la entrevista técnica del 03/09 con Fernando. |
