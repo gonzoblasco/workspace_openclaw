@@ -1,45 +1,71 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-20 23:13 GMT-3
+**Fecha:** 2026-10-21 00:01 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-10-20). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-10-20.md`.
+> HANDOFF generado en el cierre de sesion (2026-10-21). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-10-21.md`.
 
 ---
 
 ## Que se hizo en esta sesion
 
-Milvus 3.0.3 + Ollama: clonado, configurado, verificado end-to-end y DESCARTA﻿DO por decision de Gonzo. Se borro todo (containers, red, imagenes por ~3 GB, projects/milvus y projects/milvus-ollama con trash) y se registro el porque en docs/ecosystem/milvus-decision.md (commit 9f1fc96cf8, pre-commit 15 PASS / 0 FAIL). La integracion funciono a la primera: embeddings server-side de Milvus via el provider openai contra el endpoint OpenAI-compatible de Ollama del host (qwen3-embedding:0.6b, 1024 dims), verificado con diff maximo 0.000000 contra el embedding crudo del host. El descarte no fue por dificultad de configurarlo sino por sobreingenieria: la capacidad ya estaba cubierta por SQLite+embeddings en scripts/memory-search.py, ChromaDB en projects/langchain-starter y pgvector en projects/soporteml. Hallazgos verificados que sobreviven a la herramienta: Milvus 3.x no tiene provider ollama (el openai si funciona contra /v1/embeddings); la URL del provider sale solo de function.textEmbedding.providers.openai.url en user.yaml y no de los params de la funcion; la clave de cache real es queryNode.cache.memoryLimit (common.cache.* no existe en 3.0.3 y se ignora en silencio); el etcd embebido se corrompe con SIGKILLs y entra en loop con panic leader changed (fix: borrar volumes/milvus/etcd); Ollama NO puede correr Milvus como app (ollama launch solo lanza agentes de codigo, la doc completa de 247 KB tiene 0 menciones de milvus, ollama.com/apps da 404). Ademas se limpio el registro de herramientas IA (entrada milvus fuera de scripts/ai-toolbox.py, docs/tools/REGISTRY.md y skills/ai-toolbox/SKILL.md: declaraba un compose borrado y estado corriendo falso) y se confirmo el veredicto de tier 3 del triage OSS con la evidencia nueva. Se repararon dos learnings con contenido roto en la DB: el 286 apuntaba a /tmp/learning_ollama.md (contenido efimero) y el 284 estaba truncado a 500 caracteres a media palabra. Se creo el learning transversal 290 "Instalar y verificar no es adoptar".
+Deploy de AnythingLLM v1.18.0 con Ollama en Docker, verificado end-to-end y endurecido.
+
+**Que se hizo:**
+- Repo clonado en ~/projects/anything-llm (HEAD feb0ebe8, 2026-10-19), solo lectura. Imagen oficial prebuilt mintplexlabs/anythingllm (arm64) en vez de compilar desde fuente.
+- Deploy aislado en ~/anythingllm-data/ (compose + .env + storage/), fuera del workspace. Contenedor en 127.0.0.1:3001 (solo loopback).
+- Ollama como PROVEEDOR: LLM `minimax-m3.1-flash:cloud` (cloud servido por la API de Ollama, con tools+thinking+vision), embeddings `qwen3-embedding:0.6b` (local), vector store LanceDB.
+- Verificado end-to-end: chat real (respondio 'Azul', model minimax-m3.1-flash:cloud, provider OllamaAILLM) y RAG real (documento subido, vectorizado, y respuesta con sources score 0.67).
+- Hardening aplicado tras revision adversarial: AUTH_TOKEN + JWT_SECRET (API paso de 200 abierto a 401), DISABLE_TELEMETRY, DISABLE_SWAGGER_DOCS, OLLAMA_MODEL_TOKEN_LIMIT 32768 -> 131072, OLLAMA_EMBEDDING_BATCH_SIZE 1 -> 8, mounts de collector/hotdir y collector/outputs, compose sin `version:` obsoleto.
+- Servidor parado con `docker compose stop` (datos intactos: 480K, anythingllm.db sano).
+
+**Hallazgos y trampas (importantes para retomar):**
+- El subagente que edito el .env trunco el SIG_KEY (copio la forma redactada). Si el container hubiera arrancado asi, la base quedaba ilegible. Detectado comparando contra el backup .env.bak.20261020-173023, restaurado y verificado identico (64 chars).
+- El .env lo REESCRIBE la app (dumpENV) cuando se guardan settings desde la UI. Orden obligatorio: down -> editar .env -> up. AUTH_TOKEN/JWT_SECRET/SIG_KEY/SIG_SALT estan en protectedKeys y sobreviven, pero el archivo se reordena.
+- CORS reflectivo sigue activo (Access-Control-Allow-Origin refleja cualquier Origin), pero el vector real quedo cerrado por el AUTH_TOKEN (401 sin credencial).
+- El health check que registraba ai-toolbox apuntaba a /api/health, endpoint que NO existe en AnythingLLM. Corregido a /api/ping.
+- Single-user mode: no hay pantalla de onboarding (markOnboarded.js marca completo al detectar LLM_PROVIDER). La password es el AUTH_TOKEN.
+- Falla intermitente 'too many concurrent requests' del cloud de Ollama cuando el RAG dispara embedding de query y completion a la vez. Reintentar funciona.
+
+**Estado final:** contenedor detenido, datos persistidos, ~/anythingllm-data/README.md con credenciales y trampas, docs/tools/REGISTRY.md y MEMORY.md actualizados.
 
 ## Estado actual
 
-El stack de herramientas IA quedo en 10 entradas (Ollama, Onyx, browser-use, AnythingLLM, LiteLLM, Vane, opencode, OpenHands, Cline, y el resto). Milvus ya no esta. El repo projects/milvus (clon shallow del upstream) y projects/milvus-ollama (compose + config + scripts) se movieron a la papelera con trash, reversibles desde ~/.Trash. Backups en /tmp/milvus-retiro/ (compose, user.yaml, test_e2e.py, README) y /tmp/milvus-etcd-backup-224137.tgz. Docker quedo con 0 rastros: sin containers, sin imagenes, sin red, sin volumenes de Milvus. El resto del stack sigue sano: onyx, vane, anythingllm, litellm_ollama, openhands-canvas, opencode, ollama nativo.
+AnythingLLM desplegado, verificado y endurecido en ~/anythingllm-data/. Contenedor parado (docker compose stop), datos intactos. LLM minimax-m3.1-flash:cloud via Ollama, embeddings qwen3-embedding:0.6b local, LanceDB. Password = AUTH_TOKEN del .env. Levantar: cd ~/anythingllm-data && docker compose up -d
 
 ## Proximos pasos
 
-1. El learning transversal 290 quedo registrado en la DB y las vistas de docs/learnings/ se regeneraron (244 lecciones en total). La idea: instalar y verificar no es adoptar; el benchmark dice si funciona, no si lo necesitamos, y re-litigar un descarte exige un hecho nuevo (volumen real), no curiosidad. Proximo paso natural: elegir UN proyecto de producto y cerrarlo con un flujo end-to-end que un cliente real pueda usar, en vez de sumar infraestructura. El vectorstore ya esta cubierto y no es el cuello de botella.
+- Levantar cuando haga falta: `cd ~/anythingllm-data && docker compose up -d` (o `python3 scripts/ai-toolbox.py up anythingllm` desde el workspace)
+- Opcional: cambiar el AUTH_TOKEN por algo mas memorable que Gonzo pueda tipear sin mirar (no se hizo sin que lo elija)
+- Opcional: backup programado del directorio storage/ (datos + .env con SIG_KEY/SIG_SALT)
+- Opcional: documentar en un .knowledge/ propio si el deploy deja de ser una tool mas del inventario
 
 ## Decisiones y contexto que no debe perderse
 
-- Decision de Gonzo: "no lo usaremos, es demasiado para nosotros" - Milvus queda fuera del stack, no se adopta, no se integra, no se mantiene. Motivo registrado: no fue la dificultad de configurarlo (funciono a la primera, verificado end-to-end) sino que la capacidad ya estaba cubierta en tres lugares del workspace y la complejidad de una base de datos distribuida no se justifica sin volumen real. Se maintains el criterio de re-litigacion: solo vuelve si el volumen real hace doler la alternativa actual. Precedente de formato: mismo patron que el descarte de PR-Agent (evaluado con verdad de base y juez, decidido con el dato, borrado y documentado). Ademas: se aplico trash y no rm a los directorios de proyecto, y se committeo sin push pendiente de OK explicito.
+- Decisiones tomadas por Gonzo: (1) usar Docker para no ensuciar el host; (2) Ollama como PROVEEDOR, no necesariamente con modelos locales - el LLM es cloud servido por la API de Ollama. El deploy quedo aislado en ~/anythingllm-data/ (fuera del workspace), no en projects/.
 
 ## Archivos tocados
 
 ```
-docs/learnings/README.md
-docs/learnings/integracion.md
-docs/learnings/metodologia.md
-docs/learnings/pipeline-agentes.md
+.knowledge/HANDOFF.md
+.knowledge/SESSIONS.md
+.knowledge/handoff-history/2026-10-20-1201-HANDOFF.md
+MEMORY.md
+docs/CHANGELOG.md
+docs/archive/CHANGELOG-archive.md
+docs/tools/REGISTRY.md
+memory/2026-10-20.md
 memory/memory.db
+scripts/ai-toolbox.py
 ```
 
 ## Como continuar
 
 1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-10-20.md` para el informe completo de la sesion.
+2. Leer `memory/2026-10-21.md` para el informe completo de la sesion.
 3. Verificar el estado real antes de actuar (git, tests, la DB).
 
 ---

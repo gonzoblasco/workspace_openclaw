@@ -61,6 +61,7 @@ Objetivos claros + restricciones explícitas, feedback loops rápidos, logging c
 - **Search:** `DuckDuckGo Search (experimental)` (key-free).
 - **Onyx (2026-10-20):** RAG de equipo en `projects/onyx`, Docker modo Lite, LLM via Ollama del host. UI `localhost:3000`, script `scripts/onyx-tool.py`, detalle en su `.knowledge/STATUS.md`. <!-- project: github.com/gonzoblasco/workspace_openclaw -->
 - **Herramientas IA instaladas (2026-10-20):** inventario de las 11 herramientas IA en la Mac (Ollama nativo como motor comun, Onyx, browser-use, PR-Agent, AnythingLLM, LiteLLM, Milvus, Vane, opencode, OpenHands, Cline). Dueno del estado: `scripts/ai-toolbox.py` (list/status/health/up/down) + skill `ai-toolbox`; vista humana y prosa en `docs/tools/REGISTRY.md`. Cline tiene wrapper propio `scripts/cline-tool.sh` (dashboard :8787, chat en `/chat`). <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+- **AnythingLLM (2026-10-20):** desplegado y verificado en Docker con Ollama como proveedor. Datos/config en `~/anythingllm-data/` (fuera del workspace), repo upstream en `~/projects/anything-llm` (solo lectura). UI `localhost:3001`, LLM cloud via la API de Ollama del host, embeddings locales, vector store LanceDB. Chat y RAG verificados end-to-end. Single-user: la password es el `AUTH_TOKEN` del `.env`. Modelos, credenciales y trampas en `docs/tools/REGISTRY.md` (seccion AnythingLLM). <!-- project: github.com/gonzoblasco/workspace_openclaw -->
 
 ## Proyectos (memoria de cada uno en `<workspace>/projects/<slug>/.knowledge/`, ADR-098)
 

@@ -57,6 +57,7 @@ MD_CHANGED=$(echo "$CHANGED" | grep -E '\.md$' || true)
 # corriendo si hay cualquier MD staged.
 MD_CONTENT=$(git diff --cached --name-status -M | awk -F'\t' '
   $1 ~ /^R/ { if ($1 != "R100") print $3; next }
+  $1 ~ /^D/ { next }
   { print $2 }
 ' | grep -E '\.md$' || true)
 
@@ -126,6 +127,24 @@ fi
 if [ -n "$CHANGED" ]; then
   python3 "${SCRIPT_DIR}/scripts/check-a11y-trigger.py" || exit 1
 fi
+
+# Guard de fuente unica (ADR-100, 2026-10-20). SIN CONDICION, a proposito: la
+# duplicacion que este gate caza nace de una edicion en CUALQUIER archivo
+# normativo, no de un pathspec predecible. El caso testigo no fue un cambio
+# grande: fue una linea de estado agregada a MEMORY.md que ya vivia en
+# AGENTS.md, y un bloque de modelos en SETUP.md que se declaraba vigente y
+# superseded en la misma frase. Python puro (lee ~9 archivos): correrlo siempre
+# es mas barato que descubrir la contradiccion en la sesion siguiente.
+python3 "${SCRIPT_DIR}/scripts/check-single-source.py" || exit 1
+
+# Guard de hechos de carrera (ADR-101, 2026-10-20). SIN CONDICION: un CV se
+# escribe desde cualquier carpeta y el hecho duro (anos, idioma, fechas,
+# certificaciones) no tiene por que tocarse para que el CV derive. Medido el
+# 2026-10-20: 5 CVs vivos con 3 verdades distintas sobre la misma persona
+# (9+ vs 10+ anios, 6+ vs ~5 de a11y, "Advanced" contra una regla de B2).
+# Tambien FRENA un hecho marcado `pending`: una contradiccion sin decidir no se
+# commitea para arreglarla despues.
+python3 "${SCRIPT_DIR}/scripts/check-cv-facts.py" || exit 1
 
 # Guard de directorios de contenido (2026-09-30). SIN CONDICION, a proposito.
 # Lo que detecta - un directorio de contenido que desaparece - es INVISIBLE a los

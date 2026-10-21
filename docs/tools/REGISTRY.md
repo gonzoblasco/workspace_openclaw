@@ -138,8 +138,35 @@ declarado a mano es COMO se levanta cada cosa.
   embeddings.
 - **Datos y config:** `~/anythingllm-data/` (fuera del workspace). El repo
   upstream esta en `~/projects/anything-llm` (solo lectura).
-- **UI:** http://localhost:3001
+- **UI:** http://localhost:3001 (solo loopback, no expuesto en la LAN)
 - **Como se levanta:** `cd ~/anythingllm-data && docker compose up -d`
+- **Como se para:** `docker compose stop` (conserva los datos; `storage/` es
+  bind mount).
+- **Health:** `/api/ping` (NO `/api/health` - ese endpoint no existe).
+- **Credenciales:** single-user mode, la password es el `AUTH_TOKEN` del
+  `.env` de `~/anythingllm-data/`. El mismo valor sirve para el login del
+  browser y para la API. **No hay** pantalla de onboarding: el legacy patch de
+  `markOnboarded.js` la marca como completa al detectar `LLM_PROVIDER` en el
+  env, asi que entra directo a la app.
+- **LLM:** `minimax-m3.1-flash:cloud` (cloud servido por la API de Ollama;
+  el contenedor no aloja pesos ni usa GPU). `OLLAMA_MODEL_TOKEN_LIMIT=131072`
+  de 1.000.000 disponibles.
+- **Embeddings:** `qwen3-embedding:0.6b`, local en el host. Vector store
+  LanceDB en `storage/lancedb/`.
+- **Trampa:** el `.env` lo **reescribe** la app cuando se guardan settings
+  desde la UI (`dumpENV`), reordenando el archivo. `AUTH_TOKEN`, `JWT_SECRET`,
+  `SIG_KEY` y `SIG_SALT` estan en la lista de claves protegidas y sobreviven,
+  pero si edita el `.env` a mano: primero `docker compose down`, despues
+  edita, despues `up`. Si no, la app pisa tus cambios.
+- **Trampa:** `SIG_KEY` / `SIG_SALT` cifran los datos. Si se pierden, la base
+  queda ilegible. Hay un backup en `~/anythingllm-data/.env.bak.*`.
+- **Trampa:** `GET /api/env-dump` reescribe el `.env` en disco. Con
+  `AUTH_TOKEN` seteado responde 401, pero el endpoint sigue montado.
+- **Trampa:** `docker compose down` NO borra datos (bind mount). Para resetear
+  hay que hacer `down` + `trash storage/` + `up`, en ese orden: con la app
+  corriendo, SQLite y LanceDB recrean archivos a medio borrar.
+- **Ollama:** debe estar corriendo en el host (`ollama serve`, `0.0.0.0:11434`).
+  Desde el container se alcanza via `host.docker.internal:11434`.
 
 ### LiteLLM (id: `litellm`)
 

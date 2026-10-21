@@ -4,6 +4,305 @@
 
 ---
 
+## [2026-10-06] - kanam-fixer: el alcance estaba definido; el ROADMAP mentia desde hacia 3 semanas
+
+### Fixed
+- **`docs/ROADMAP.md` §2.1 decia que `kanam-fixer` tenia "alcance SIN DEFINIR". Era FALSO.** El alcance se definio el 2026-09-14/15 (BRIEF + ROADMAP del proyecto, direccion confirmada por Gonzo) y el ciclo `0.0.1` cerro con evidencia ese mismo dia. Lo confirma `portfolio-strategy/ADR-001` §6. Otro falso pendiente (como el Tablero y el design system: gobernanza dormida acumulando estados viejos). Corregido: ancla formalizada, alcance definido, ciclo 0.0.1 cerrado / 0.0.2 abierto, npm `kanam-fixer@0.0.2`, repo publico. §2.1 pasa a 🟢.
+- **`docs/NORTH.md`** (decision abierta #1): mismo falso pendiente corregido. Lo que sigue abierto no es la *definicion* del alcance sino la *validacion de impacto* del ancla (criterio H1).
+- **`MEMORY.md`** (reconciliacion pedida por §2.1, medida contra `gh repo list`): sumados repos propios vivos que faltaban (`catalogo-de-venta-de-coches`, `create-stack`, `kanam-minesweeper`, `kanam-sudoku`, `match3`, `system-health-check`); aclarado que `kanam-forge` es fork (no propio) y que `kanam-insight` existe como repo (privado) aunque el proyecto esta descontinuado.
+
+### Changed
+- **`portfolio-strategy/.knowledge/ADR-001-portfolio-strategy.md`** (fuera del workspace): nueva seccion 8 que **verifica** el estado contra fuentes reales y cierra formalmente el pendiente de definicion de la seccion 6. El pilar Accesibilidad tiene ancla formal.
+
+---
+
+## [2026-10-06] - Integridad del bootstrap deja de ser un falso verde (ROADMAP 0.1)
+
+### Added
+- **`scripts/check-bootstrap-budget.py`:** guard del cap de inyeccion del runtime. Los archivos que OpenClaw inyecta en cada arranque (AGENTS/MEMORY/USER/SOUL/IDENTITY) se truncan EN SILENCIO al superar su cap. Mide en caracteres como el runtime (unidades UTF-16, no bytes: `wc -c` sobreestima en espanol por los acentos y da un margen falso). Caps verificados contra el codigo instalado (`dist/bootstrap-*.mjs`): 20.000 por archivo, 4.000 fijo para USER.md, 60.000 total. Modo reporte + bloqueante.
+- **`tests/python/test_check_bootstrap_budget.py`:** 10 casos (mide UTF-16 como el runtime, cap propio de USER.md, borde exacto, la CLASE y el total, contrato de salida del script real).
+
+### Changed
+- **Pre-commit (sin condicion) + CI (`skills-ci.yml`):** el check corre siempre. Los archivos de bootstrap no cambian por un pathspec predecible; un trigger por diff dejaria pasar el crecimiento que ocurre en cualquier otra edicion.
+- **`USER.md` (3.933 -> 3.600 chars, margen 67 -> 400):** el contenido de ENTORNO (canal remoto Telegram, gateway 24/7) se movio a `docs/SETUP.md`. Un archivo de bootstrap es contexto de cada turno; el entorno no lo es.
+- **`MEMORY.md` (13.893 -> 13.705):** quitadas las referencias a harness (Claude Code, terminal harnesses, jsdom/headless); la leccion de fondo se conserva. Pedido de Gonzo para aflojar margen.
+- **`docs/SETUP.md` seccion Red / remoto:** corregida la linea stale (decia Tailscale+PWA como canal; Telegram lo reemplazo el 2026-09-07) y absorbidos los dos bullets de entorno.
+
+---
+
+## [2026-10-06] - El design system gana su tema oscuro; kanam-os migra (ADR-096)
+
+### Added
+- **`design/tokens/themes/dark.tokens.json`:** tema oscuro del sistema base (el `kanam.css` base ES el claro). Paleta tomada del tema oscuro de kanam-os (probada), recalculada al piso WCAG. 11 pares verificados (text.primary 12.83:1, danger 7.50:1, brand 4.85:1).
+- **`tests/python/test_check_design_tokens.py`:** caso del tema oscuro (existe + cumple).
+
+### Changed
+- **`design/tokens/build-tokens.py` + `scripts/check-design-tokens.py`:** `dark` sumado al REGISTRY y al guard. El build genera 7 hojas (antes 5).
+- **`design/README.md`:** tabla de temas con `dark` + nota modo vs marca (el claro no necesita archivo: `kanam.css` = `:root`).
+
+### Delegado
+- **kanam-os migra a consumir `design/tokens/` (DEV, pipeline A/B).** Contrato en ADR-096: consume kanam.css + dark.css, sync en build (anti-drift), preserva el toggle server-side. Verificación del CORE sobre el repo real al cerrar.
+
+### Fixed
+- **Regresión detectada en la verificación:** `--k-brand-primary` del dark (`#4ea870`) daba 3.73-4.28:1 como texto sobre card/elevated (kanam-os lo usa así). Corregido a `#6ee7a0` (7-8:1). El guard medía brand solo sobre `surface.base` - **hueco cerrado**: ahora también sobre `card`/`elevated`.
+- **kanam-os:** la migración de A aliasaba tokens inventados (`--k-bg`, `--k-text`...); B la corrigió a los tokens reales + cargó los CSS + hookeó el sync a npm. Verificado por el CORE: build verde, ambos temas, 200, color-contrast limpio salvo `aria-pressed` (preexistente) y opacity en `/learnings` (preexistente).
+
+---
+
+### Added
+- **ADR-095** (`docs/adr/ADR-095-reevaluacion-decisiones-diseno.md`): re-evaluación pedida por Gonzo ("lo que ya está hecho de decisiones de diseño deben ser revaluadas").
+- **`scripts/check-design-tokens.py`:** mide el contraste WCAG de los tokens de cada tema contra el piso por rol (texto 4.5:1, componente 3:1; los bordes decorativos no se exigen). Modo reporte + `--check` bloqueante. Cableado al pre-commit (cambios en `design/`) y al CI.
+- **`tests/python/test_check_design_tokens.py`:** 8 casos (matemática WCAG, el guard puede fallar, bordes decorativos no son falso positivo, el sistema real pasa).
+
+### Fixed
+- **10 pares de tokens bajo el piso WCAG** en los 3 temas, corregidos preservando la identidad (un paso más oscuro del mismo tono, con primitivas existentes): el teal de marca como texto (3.74 -> 5.25), el ámbar de warning (3.45-3.64 -> 4.96-5.23), los `muted` de Plaza/Terrario (3.33-3.94 -> 5.23-5.69), el `info` de Terrario (4.32 -> 6.33).
+- **Matrices `$contrast`:** los números de Plaza/Terrario eran a mano y nunca medidos (decían "danger 4.9", el real era 4.70). Reemplazados por valores medidos; el sistema base ahora **declara la suya** (antes no existía).
+
+### Changed
+- **`design/README.md`, `ADR-047`, `DECISIONS.md` §2.8, `docs/NORTH.md`:** corregidas las afirmaciones falsas. El design system **ya existe** (`design/`, ADR-047 desde 2026-09-14) - el "paso 0" era un falso pendiente; la precondición del auditor de diseño ya se cumple. Lo que queda es **adopción** (kanam-os usa un tema paralelo) + práctica (`studies/design/`).
+- **Pre-commit + CI:** el cambio en `design/` regenera el `dist/` y corre el guard de contraste.
+
+---
+
+## [2026-10-06] - Reconciliación: una sola ruta (APUESTAS + MAPA retirados, kanam-insight descontinuado)
+
+### Removed
+- **`docs/APUESTAS.md` y `docs/MAPA-PROXIMOS-PASOS.md` eliminados.** Cuatro documentos decían "qué sigue" y se contradecían (NORTH/ROADMAP/APUESTAS/MAPA, fechas 10-06/10-06/09-24/09-14). Quedan dos con roles distintos: `NORTH` (el para qué) y `ROADMAP` (el cómo y en qué orden). El MAPA estaba stale (hablaba de kanam-lab/kanam-studio como eje; NORTH ya los sacó). El contenido de producto de APUESTAS pasó a `ROADMAP.md` §2.1.
+- **`kanam-insight` descontinuado y fuera del roadmap.** No existe como proyecto (no está en `~/projects/`) y Gonzo confirmó que no recuerda haberlo querido. Fuera de NORTH, ROADMAP §2.1, MEMORY.md y el registro del proyecto.
+
+### Added
+- **`docs/ROADMAP.md` - "La ruta" (secuencia fijada).** Tramos T1 (OnWheels + design system + CPACC), T2 (caso de estudio + reactivar búsqueda laboral), T3 (UNA apuesta comercial), D (sistema como soporte). Resuelve la tensión: los tramos que facturan estaban fríos mientras los que no facturan consumían el tiempo.
+
+### Changed
+- **`docs/ROADMAP.md`:** §2.1 absorbe las apuestas de producto vivas (soporteml, kanam-fixer); la prioridad consolidada aclara que ordena por *importancia* y "La ruta" por *secuencia*.
+- **`docs/NORTH.md`, `docs/LANGCHAIN_STRATEGY.md`, `docs/adr/ADR-063`, `docs/adr/ADR-091`, `docs/adr/ADR-085`, `README.md`, `MEMORY.md`:** reapuntados para no citar los docs retirados. ADR-063 queda como registro histórico de la decisión de stack de kanam-insight (estado del sujeto: DESCONTINUADO).
+
+## [2026-10-06] - Etapa 4 de Kanam OS: accesibilidad medida, tests/node cableados, Tablero cerrado
+
+### Added
+- **ADR-094** (`docs/adr/ADR-094-etapa-4-a11y-scan-tests-node-tablero.md`): cierra/reubica los tres componentes de la Etapa 4.
+- **`scripts/a11y-scan.mjs`:** mide accesibilidad real de una página viva con axe-core (OSS) + playwright-core, sin `axe-devtools` pago. Exit 2 si la infra (playwright/axe) no está: un gate que no puede correr no es un verde. El juicio (`classify`) es puro y testeable. **Primera corrida:** encontró `aria-allowed-attr` `critical` (`aria-pressed` sobre `<a href>`) en `kanam-os` `/todos`, `/fichas`, `/learnings` - bug real de accesibilidad.
+- **`tests/node/run.sh`:** runner de los tests Node del workspace (antes `tests/node/` no corría en ningún lado).
+- **`tests/node/a11y-scan.test.js`:** 8 casos del clasificador (umbral, impacto desconocido = peor caso, umbral inválido lanza).
+
+### Changed
+- **`tests/node/` cableado** al pre-commit (junto a bats y pytest) y al CI (nuevo step "Node functional tests").
+- **`docs/ecosystem/DECISIONS.md` §2.5:** el Tablero se cierra - la superficie visual del backlog **es** `kanam-os /todos` (modelo **pull**, fuente de verdad `memory.db`). Falso pendiente de 6 días.
+- **`docs/ecosystem/DECISIONS.md` §2.8:** la pata de **medición** a11y ya existe (`a11y-scan`).
+- **`docs/NORTH.md`:** Etapa 4 - a11y medida, Tablero cerrado, especialistas diferidos a propósito (el esqueleto Crew+SHARP ya está; los 13 roles del Academic System son dispersión).
+
+---
+
+### Added
+- **ADR-093** (`docs/adr/ADR-093-plan-de-sesion-persistente.md`): el plan de sesión como objeto persistente del sistema. Cierra el hueco declarado en `docs/NORTH.md` (la Etapa 2 tenía cinco gates que nadie invocaba).
+- **`scripts/session_plan.py close`:** marca el plan `completed` y lo archiva en `.knowledge/archive/session_plan_<id>.json`. Defensivo e idempotente (sale 0 siempre: el cierre corre bajo `set -e`).
+- **`tests/python/test_session_plan.py`:** 5 casos (path portable/sobrescribible, init, close+archivo, idempotencia, exit code del CLI).
+
+### Changed
+- **`scripts/session_plan.py` portable:** el path, antes clavado a `/Users/gonzoblasco/...`, ahora se deriva del script y es sobrescribible con `SESSION_PLAN_PATH`. El plan se muda de la raíz (`.session_plan.json`) a `.knowledge/session_plan.json`.
+- **`session-start.sh`:** hook de arranque. Si hay un plan activo, lo presenta antes de scorear/buscar memoria ("retomando: estábamos en el paso X"). Elimina la amnesia de sesión que el `AGENTS.md` del planner ya prohibía y nada garantizaba.
+- **`session-end.sh`:** hook de cierre. Cierra y archiva el plan.
+- **`session-start.sh` (path obsoleto):** el HANDOFF se resolvía en `projects/$PROJECT/.knowledge/` - estructura **pre-ADR-075**, muerta desde 2026-09-26. Se alinea con `scripts/session-handoff.py` (workspace -> `.knowledge/` propio; proyecto -> `~/projects/<slug>/.knowledge/`).
+
+### Docs
+- **`docs/session-planning-hooks.md`:** estado `PARCIAL` -> `ADOPTADO`.
+- **`docs/NORTH.md`:** Etapa 2 actualizada (2 de 5 gates cableados; los 3 restantes sin cablear a propósito, con motivo).
+
+---
+
+### Changed
+- **`EVOLUTION.md` eliminado; su contenido vive en `docs/NORTH.md`.** El blueprint de madurez de Kanam OS (etapas + metodología) pasó a la nueva sección "El camino de madurez del sistema". Había tres documentos diciendo "hacia dónde va Kanam" (`NORTH`, `EVOLUTION`, capa 4 del `ROADMAP`): ahora hay uno. Refs de agentes reapuntadas: `agents/kanam-critic/AGENTS.md` y `agents/kanam-planner/AGENTS.md` (leían `EVOLUTION.md`); entity `.knowledge/entities/projects/kanam_os.md` actualizado.
+- **Los 5 specs de Kanam OS Etapa 2 documentan su estado real.** No eran huérfanos: son las specs de implementaciones vivas que nadie cableó.
+  - `docs/security-scan-spec.md` -> **ADOPTADO**: cableado al pre-commit.
+  - `docs/skill-evals-spec.md`, `docs/skill-lifecycle-tracker.md`, `docs/regression-control-spec.md` -> **EXPERIMENTO NO ADOPTADO** (implementación existe, nada la invoca).
+  - `docs/session-planning-hooks.md` -> **PARCIAL** (el `AGENTS.md` del planner la referencia; no hay hook automático).
+
+### Added
+- **`scripts/security-scan.py --staged`:** modo gate que escanea **solo el código ejecutable staged bajo un árbol de skills** (`skills/`, `agents/<rol>/skills/`). El modo original sobre `scripts/` daba falsos positivos sobre código propio (se marca a sí mismo por citar `/etc/passwd` como patrón, los triggers `.js` por usar `exec(`, `test-skills.sh` por navegar `./../..`); `--staged` los evita por scope.
+- **Pre-commit (hook + template):** corre `security-scan.py --staged` ante cambios de `skills/` o `agents/` - el caso real de "skill de afuera".
+
+### Fixed
+- **`scripts/regression_gate.py` no compilaba:** un bloque ` ``` ` de markdown al EOF, una flecha rota en un f-string y un path absoluto `/Users/...`. Reparado.
+- **`scripts/lifecycle_tracker.py`:** path absoluto `/Users/...` hardcodeado. Ahora deriva del propio script.
+
+### Removed
+- **`EVOLUTION.md`** (contenido absorbido en `docs/NORTH.md`).
+
+## [2026-10-06] - Dream Diary en rotación mensual (DREAMS)
+
+### Added
+- **`scripts/dreams-rotate.py`:** mantiene `DREAMS.md` en el mes en curso; los meses anteriores se archivan por mes en `memory/archive/dreaming/DREAMS-YYYY-MM.md`. Idempotente, solo toca el contenido entre los marcadores del diary del plugin (deja el bloque `Deep Sleep` intacto), una entrada sin fecha no se archiva. `--check`, `--dry-run`, `--today`, `--root` (tests).
+- **`tests/bash/dreams-rotate.bats`:** 7 casos (drift, rota, marcadores intactos, idempotencia, `--check` limpio, `--dry-run`, fecha inválida).
+
+### Changed
+- **`skills/session-lifecycle/scripts/session-end.sh`:** rota DREAMS en cada cierre, junto con el CHANGELOG. Sin gate en pre-commit porque `DREAMS.md` está gitignored (estado local del plugin).
+
+## [2026-10-06] - CHANGELOG con ventana de 30 días y rotación automatizada (ADR-092)
+
+### Added
+- **`scripts/changelog-rotate.py`:** mantiene `CHANGELOG.md` en una ventana activa de ~30 días; lo viejo se archiva en `docs/archive/CHANGELOG-archive.md`. Idempotente, ordena por fecha descendente, regenera los headers. `--check` (exit 1 si hay drift), `--dry-run`, `--days N`, `--today` (tests).
+- **`tests/python/test_changelog_rotate.py`:** 8 casos (split, ventana, idempotencia, acumulación sin duplicados, orden, exit codes de `--check`, `--dry-run` no escribe, fecha inválida).
+
+### Changed
+- **`.git/hooks/pre-commit` + `scripts/pre-commit.template`:** nuevo check (solo si `CHANGELOG.md` está staged) que corre `changelog-rotate.py --check` y falla si el activo está desfasado.
+- **`skills/session-lifecycle/scripts/session-end.sh`:** rota el CHANGELOG en cada cierre de sesión, para que la ventana nunca quede vieja.
+- **`docs/archive/CHANGELOG-pre-2026-09.md` → `docs/archive/CHANGELOG-archive.md`:** el archivo pasa a ser rodante único (lo mantiene el script), no un snapshot con nombre de fecha.
+- **`memory/2026-10-06.md`:** la entrada de gobernanza de esta sesión (análisis + reconciliación de AGENTS.md/AGENTS-DETALLE.md/SETUP.md), que había quedado sin commitear.
+
+### Fixed
+- **`docs/archive/` agregado a `SKIP_DIRS` de `check-refs.py` y a `MD_EXEMPT` del hook:** la historia congelada cita rutas de la época (un ADR luego renombrado) y conserva guiones largos; no se reescribe (política de ADR-084/ADR-082, igual que `docs/records/`).
+- **`mindstudio_proposal.md` eliminado:** propuesta de vendor sin refs en markdown trackeado ni valor durable (Gonzo, 2026-10-06).
+
+### Removed
+- **`proposal.md`** (duplicado byte-idéntico de `mindstudio_proposal.md`) y **`mindstudio_proposal.md`**.
+
+## [2026-10-06] - Refactor de gobernanza: AGENTS.md, AGENTS-DETALLE.md y SETUP.md reconciliados
+
+### Fixed
+- **Contradicción `.knowledge/` resuelta.** `docs/AGENTS-DETALLE.md` decía que el workspace `trackea projects/**/.knowledge/` (modelo pre-ADR-075) mientras `AGENTS.md` decía lo contrario. Se reescribió la sección "Triple Git" completa al modelo ADR-075: proyectos en `~/projects/`, workspace sin `projects/` ni `.knowledge/`, agregado vía `aggregate-sync.sh`. Anotada la deuda de `init-project.sh` (todavía resuelve `PROJECTS_DIR=workspace/projects`).
+- **`HEARTBEAT.md` fantasma.** `AGENTS.md` mandaba "editar `HEARTBEAT.md`"; ese archivo no existe (git log: `182635ee2b`, 2026-10-04). Reemplazado por el estado real: checklist silencioso vía `automations`, mapa en `docs/gateway-operations.md`.
+- **Referencia a API legacy.** `cron(action: wake, ...)` → `automations(action: "wake", ...)` (la sintaxis vigente).
+- **`nomic-embed-text` 768 dims → 1024 dims.** `docs/SETUP.md` decía que la búsqueda semántica usa embeddings de 768 dims; los scripts usan `qwen3-embedding:0.6b` (1024 dims). El `768` de los scripts es `n_context`/truncado, no la dimensionalidad.
+- **`scripts/session-start.sh` roto en `SETUP.md`** → `skills/session-lifecycle/scripts/session-start.sh`.
+
+### Changed
+- **Bloques de modelo duplicados colapsados.** `AGENTS.md` tenía DOS bloques MANAGED con el mismo contenido (`model-triple` y `model-operativo`). Se eliminó `model-triple` de `AGENTS.md`; queda un único bloque (`model-operativo`). `managed-blocks.py`: entrada `model-triple` de `AGENTS.md` removida del REGISTRY. `docs/SETUP.md` conserva su `model-triple` (mide los modelos primario/auxiliar/alternativo, ejes distintos).
+- **`AGENTS.md`: "Modelos y razonamiento" fuera de `Git & Commits`.** Esa sección y "Skills Mirror & Públicas" colgaban de `Git & Commits` sin ser git. Modelos pasó a `## 3. Ingeniería`; el bloque de skills públicas (archivado 2026-09-28) se comprimió a un párrafo con puntero al detalle.
+- **Política de modelos unificada.** `AGENTS.md` ahora cita **ADR-090** como fuente de modelo+thinking y explicita que supersede ADR-053 y las secciones de modelo/thinking de ADR-040. `docs/SETUP.md` y `docs/AGENTS-DETALLE.md` marcaron ADR-040 como histórico y apuntan a ADR-090.
+- **Red Lines y "External vs Internal" en español.** El propio archivo declara que el workspace privado va en español; eran las últimas líneas en inglés.
+- **`type(#issue)` sin issue definido.** Se aclaró: sin ticket, `type: description`.
+- **Formato `type(#issue)`:** documentado el caso sin issue asociado.
+- **Fechas de cierre** de `AGENTS.md` y `docs/SETUP.md` actualizadas al 2026-10-06.
+
+### Added
+- **`AGENTS.md`: margen recuperado.** Bajó de 19.542 a ~18.955 chars (límite bootstrap 20K): el colapso de bloques y la compresión de la receta de skills devolvieron holgura.
+
+### Fixed (seed)
+- **`managed-blocks.py` DEFAULTS.** `thinking_default: high` → `off` (ADR-090) y `model_by_agent` alineado al ADR-090 (antes tenía la distribución pre-cata de 2026-10-05: `planner minimax-m3`, `dev/ops glm-5.3-flash`). Es semilla: la DB ya estaba correcta; faltaba el fallback.
+- **`tests/python/test_managed_blocks.py`** actualizado al nuevo default (`thinking_default == "off"`).
+
+### Verified
+- `managed-blocks.py apply` idempotente (4 bloques "al dia"); `pytest` no corre en esta máquina (no instalado), bats sí.
+- Gates del pre-commit en verde: `check-refs` (489 rutas), `check-adr-integrity` (91 ADRs), `check-pipeline-enforcement` (pacto A/B consistente), `check-agent-skill-boundary`, `check-content-dirs`.
+- `AGENTS.md`: bloques MANAGED restantes = `model-operativo` y `pipeline-ab`.
+
+## [2026-10-06] - Cierre de sesion con HANDOFF del proyecto + plantilla del informe
+
+### Added
+- **`scripts/session-handoff.py`:** genera/actualiza el `HANDOFF.md` del proyecto en curso (o del workspace) al cerrar sesion. Destino: `~/projects/<slug>/.knowledge/HANDOFF.md` (ADR-075); para el sistema, `<workspace>/.knowledge/HANDOFF.md`. Deriva el HANDOFF del informe de cierre (resumen + estado + proximos pasos + decisiones + archivos tocados). Normaliza guiones largos.
+- **`memory/_templates/session-close.md`:** plantilla del informe detallado de cierre de sesion (el formato de `memory/YYYY-MM-DD.md` que Gonzo pidio registrar).
+
+### Changed
+- **`skills/session-lifecycle/scripts/session-end.sh`:** reescrito. Acepta `--status`, `--next-steps`, `--decisions`; el HANDOFF lo genera `session-handoff.py` en el destino correcto (el bloque viejo apuntaba a `projects/<slug>/.knowledge` y quedo obsoleto con ADR-075). Ahora el cierre deja **dos entregables**: informe en `memory/` + HANDOFF del proyecto.
+- **`skills/session-lifecycle/SKILL.md`** y **`AGENTS.md`:** documentado el doble entregable y que **"guardar sesion" y "cerrar sesion" son el mismo disparador**.
+- **`memory/README.md`:** plantilla `session-close.md` registrada.
+
+### Verified
+- `session-end.sh` probado end-to-end: genera HANDOFF del workspace y escribe el informe en la DB.
+
+## [2026-10-06] - Pagos: Stripe como proveedor unico reconocido (ADR-042 superseded de nuevo)
+
+### Changed
+- **`docs/adr/ADR-042`:** reescrito y **renombrado** a `ADR-042-stripe-pagos.md` (el slug ya no dice `mercado-pago`). **Stripe es el proveedor de pagos unico reconocido del ecosistema**, sea o no un proyecto sobre Lovable. Mercado Pago queda **fuera como intencion** (no se borra su existencia ni el trabajo previo; deja de figurar como opcion prevista). No se reconocen otros proveedores. Supersede la version intermedia de la misma fecha ("eleccion por proyecto") y la original ("Mercado Pago obligatorio").
+- **`docs/adr/README.md`:** fila 042 actualizada al titulo nuevo + slug nuevo.
+- **`MEMORY.md`, `AGENTS.md`:** regla de pagos simplificada a "Stripe es el proveedor unico".
+- **`docs/adr/ADR-091`:** punto 3 de la decision alineado (Stripe deja de ser "excepcion"; es el proveedor reconocido).
+- **`docs/APUESTAS.md`:** nota de SoporteML ajustada.
+- **DB (`memory/memory.db`, tabla `learnings`):** leccion durable agregada.
+
+### Verified
+- `check-adr-integrity.py` (91 ADRs), `check-refs.py`: OK. `git mv` conserva la historia del archivo.
+
+## [2026-10-06] - SoporteML v4 cerrado; el producto sigue por la version funcional de Lovable con cobro por Stripe
+
+### Added
+- **`docs/adr/ADR-091-soporteml-v4-cierre-stripe.md`:** cierra SoporteML v4 (supera el greenfield de ADR-068) y registra que el producto sigue por la version funcional de Lovable (v1), ahora con **cobro por Stripe** habilitado en Argentina. Decision de alcance cerrada: **la version se queda en Lovable** (no migra a stack propio); sin pendientes abiertos. Indice `docs/adr/README.md` actualizado.
+
+### Changed
+- **`docs/adr/ADR-042`:** reescrito. Deja de ser "Mercado Pago obligatorio, Stripe por excepcion": ahora **el proveedor se elige por proyecto y se justifica**. Lovable -> Stripe (unica integracion de la plataforma); fuera de Lovable, Mercado Pago es opcion fuerte (no unica) y Stripe tambien es valido. La regla deja de limitar Stripe.
+- **`docs/adr/ADR-091`:** la clausula de pagos pasa de "excepcion" a "opcion natural del entorno (Lovable)".
+- **`docs/adr/ADR-042` (previo, misma fecha):** titulo/estado ajustados; nota de que Argentina ya opera con Stripe.
+- **`MEMORY.md`:** entrada de SoporteML reescrita (v4 cerrado; sigue por Lovable v1 con Stripe); regla de pagos actualizada (eleccion por proyecto).
+- **`AGENTS.md`:** regla de pagos ajustada (eleccion por proyecto; Lovable -> Stripe).
+- **`docs/APUESTAS.md`:** apuesta 2 pasa de `soporteml-v4` a `soporteml` (version funcional de Lovable) con Stripe operativo.
+- **`docs/NORTH.md`**, **`docs/ROADMAP.md`**, **`memory/user-profile.md`:** referencias a `soporteml-v4` actualizadas al estado nuevo.
+- **DB (`memory/memory.db`, tabla `learnings`):** leccion durable agregada (categoria `proyectos`).
+
+### Verified
+- `check-adr-integrity.py` (91 ADRs), `check-refs.py`: OK.
+- El cambio a Stripe ya asomaba en superficies de CV (2026-10-01) sin haberse propagado a las fuentes durables; este ADR cierra ese hueco.
+
+## [2026-10-06] - Bootstrap bajo cap: ROADMAP y NORTH reconstruidos, AGENTS/MEMORY/USER trimados
+
+### Fixed
+- **Bootstrap truncado (regresión):** `AGENTS.md` (20.656), `MEMORY.md` (24.017) y `USER.md` (4.582) estaban **sobre su cap de inyección** (20.000 / 20.000 / 4.000 fijo) y se descartaba contenido en silencio en cada arranque. Ahora: `AGENTS.md` 19.041, `MEMORY.md` 14.062, `USER.md` 3.976. `SOUL.md` e `IDENTITY.md` ya estaban OK.
+- **`USER.md`:** corregido doble guion (`--`) que debía ser lista; compactado sin perder reglas.
+
+### Changed
+- **`docs/ROADMAP.md`:** reconstruido desde cero contra fuentes reales. Se quitó la hipótesis ya refutada de "inestabilidad del gateway" (no hay reinicios espontáneos; el problema real era el truncado del bootstrap) y el falso verde de búsqueda laboral ("oferta aceptada" que nunca existió). Se agregó la capa *Ecosistema* (análisis de 20 repos, 2026-10-01) y el item 0.1 *Integridad del bootstrap*.
+- **`docs/NORTH.md`:** reconstruido. Ubicaciones de proyectos corregidas a `~/projects/` (ADR-075), Horizonte 0 rearmado sobre el estado real (sin procesos abiertos), constelación actualizada (`kanam-onwheels`, `kanam-spec`, `ollama-visor`, etc.) y orden de apuestas de `docs/APUESTAS.md`.
+- **`MEMORY.md`:** destilado. Historial de decisiones de modelo/engine movido a `memory/model-history.md`; entradas de proyecto comprimidas a lo vigente con puntero a `~/projects/<slug>/.knowledge/`; agregado `kanam-onwheels`; corregida la regla de modelos (hoy ADR-090, no ADR-053).
+- **`AGENTS.md`:** comprimidas las secciones de Frontera de roles, Feedback en PRs y sandbox sin perder reglas; bloque de razonamiento actualizado a ADR-090.
+
+### Added
+- **`memory/model-history.md`:** archivo del historial de decisiones de motor/modelo (2026-08 a 2026-09), movido fuera de `MEMORY.md` para bajar el bootstrap.
+
+### Verified
+- `wc -c` de los 5 archivos de bootstrap: los tres grandes dentro de cap.
+- `managed-blocks.py check`: sin drift. `check-refs.py` (147 rutas), `check-content-dirs.py` (10), `check-adr-integrity.py` (90 ADRs): OK.
+
+## [2026-10-06] - Cata persistida y "thinking leakage" re-diagnosticado como artefacto del CLI
+
+### Changed
+- **`sandbox/model-cata-2026-10-06/`:** la cata de modelos (6 modelos × 6 roles × 4 escenarios, 144 corridas + 4 evaluaciones cross) se copió de `/tmp` (efímero) al workspace. `sandbox/` está gitignored: sobrevive reboot sin inflar el repo.
+- **`docs/adr/ADR-090-pensamiento-nivel-configuracion.md`:** corregida la narrativa del "thinking leakage". No era defecto del harness de producción sino **artefacto del runner de la cata** (`ollama run`, que imprime el thinking a stdout mezclado con la respuesta).
+
+### Added
+- **`sandbox/model-cata-2026-10-06/run-one-api.py`:** runner de cata corregido. Llama a `POST /api/chat` y guarda el entregable en `raw_output` y el razonamiento en `thinking_output`, en campos separados. Reemplaza el `run-one.sh`/`run-one-safe.py` basados en CLI.
+- **`sandbox/model-cata-2026-10-06/verify-no-leakage.py`:** sonda que verifica la separación thinking/content.
+
+### Verified
+- **Sonda `verify-no-leakage.py`:** 6 modelos × {think off, think high} → **0 fugas**. El campo `thinking` de la API llega poblado y separado del `content`; con `think:false` el thinking viene vacío.
+- **Claude Code headless** (`claude -p --model deepseek-v4.1-flash:cloud`): output limpio, sin fuga. Es el motor estándar del pipeline A/B (ADR-049) y ya separaba el razonamiento.
+- **Conclusión:** no había bug de producción que arreglar. Lo útil era persistir la evidencia y corregir la narrativa. El fix real para futuras catas es usar la API, no el CLI.
+
+---
+
+## [2026-10-06] - ADR-090 corregido: decisión de modelos por rol vs estado real del runtime
+
+### Changed
+- **`docs/adr/ADR-090-pensamiento-nivel-configuracion.md`:** reescrito. El documento estaba desactualizado y contenía una **ref cruzada rota** (citaba `ADR-210`, que no existe) que dejaba el corpus ADR desreconciliado (`check-adr-integrity.py` fallaba). Ahora:
+  - Registra la decisión de thinking por agente y la asignación de modelos por rol surgida de la cata 2026-10-06.
+  - Separa explícitamente **decisión** de **estado de implementación**: el runtime (`openclaw.json`) no coincide con la decisión en 6 de 8 agentes.
+  - Reemplaza context windows estimados por contextos **medidos** con `ollama show` (gpt-oss 128k, deepseek 1M, nemotron 256k, gemma4 256k, minimax 500k, glm-5.3 1M).
+  - Documenta los límites reales: cata con defecto de harness, n=1 por celda, evaluadores con sesgo estructural, re-verificación post-fix sin completar.
+- **`docs/adr/README.md`:** título del índice alineado al nuevo alcance del ADR.
+- **`ADR-090-*.md.backup`:** a la papelera (redundante con git).
+
+### Notes
+- **Por qué:** el ADR afirmaba cambios de modelo que nunca se aplicaron al runtime; un ADR que miente es peor que no tenerlo (regla de corpus ADR + README).
+- **Verificación:** `check-adr-integrity.py` → `OK: 90 ADRs, todos indexados, sin duplicados ni refs rotas`.
+
+### Changed (corrección 2026-10-06, decisión de Gonzo)
+- **Decisión de modelos corregida:** `main` y `kanam-mind` NO van a nemotron-3-super ("se pierde y quiere resolver en lugar de conversar" en asientos de orquestación/diálogo); quedan en `deepseek-v4.1-flash:cloud`. El resto de la asignación por rol se mantiene.
+- **Thinking corregido:** los tres de juicio (`kanam-critic`, `kanam-auditor`, `kanam-planner`) bajan de `high` a `low`; los cinco de ejecución (`main`, `kanam-dev`, `kanam-mind`, `kanam-ops`, `kanam-studio`) pasan a `off` explícito. Default global `off`.
+- **Runtime aplicado y verificado:** los 8 agentes en `~/.openclaw/openclaw.json` coinciden con la decisión (model.primary, fallbacks, thinkingDefault), vía el tool `openclaw`, sin editar el JSON a mano.
+- **Bloques gestionados regenerados:** corregido el uso de `managed-blocks.py` (el bloque de AGENTS.md lee `model_by_agent`, no `model.triple`); `AGENTS.md` y `docs/SETUP.md` alineados con el runtime.
+- **ADR-090:** decisión y estado de implementación actualizados; se documenta que cambiar el modelo de `main` desde una sesión que corre sobre `main` bloquea el tool (`prepared model runtime plugin generation was superseded`) y se resuelve con restart.
+
+---
+
+### Changed
+- **`agents/kanam-dev/scripts/validate-spec.sh`:** deja de ser un validador propio y **delega** en el validador compartido de la skill (`~/.agents/skills/spec-driven-development/scripts/validate-spec.sh`). Pasa a recibir el directorio de specs como argumento (default `./specs`) y a ejecutar el compartido vía `exec`. Fallback explícito con `exit 2` si el compartido no existe.
+
+### Notes
+- **Por qué:** la versión propia chequeaba **forma, no sustancia** (daba `exit 0` sobre una spec con el Brief vacío, sin Status y con placeholders de plantilla sin completar). Dos validadores con criterios distintos es peor que uno malo: el mismo archivo pasa en uno y falla en el otro, y no se sabe a cuál creer.
+- **Verificación:** el script delega y corre (`bash agents/kanam-dev/scripts/validate-spec.sh <dir>`); el original queda recuperable en `git HEAD` y su copia `.bak-share-20261005` es redundante con git (se retira).
+- **Origen:** cambio de una sesión previa del día quedó sin commitear en el árbol (mtime 12:24); se documenta el rationale y se registra acá.
+- Sin commit: el Core verifica primero (ADR-078).
+
+---
+
 ## [2026-10-05] - Skill nueva `design-direction`: dirección de arte antes de escribir código
 
 ### Added
