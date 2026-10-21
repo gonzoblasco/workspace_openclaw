@@ -128,6 +128,11 @@ Qué hizo:
   Gonzo confirmó. **No hay evidencia de que haya construido la infraestructura** de experimentación
   del equipo: ese claim se sacó de los CVs (ver §11, punto 2). Si alguna vez Gonzo confirma que
   la implementó, se agrega acá primero y después vuelve a los CVs.
+- **Implementación de los experimentos (2019, temporada final):** las variantes se implementaban
+  **escribiendo código directo en JavaScript nativo como snippets**, que se probaban contra
+  usuarios reales. Detalle confirmado por Gonzo el 21/10/2026. **Alcance:** implementación
+  *client-side* de las variantes, no construcción de la plataforma de experimentación ni
+  configuración de la herramienta. Es escritura de la prueba, no de la infraestructura.
 
 ### 2.5 Antes de 2016 - backend PHP, 2001 a 2008
 
@@ -374,8 +379,12 @@ Lo que el corpus todavía no tiene y no se debe inventar:
    confirma, van a §2.4 primero y después vuelven al CV (ADR-101).
    **Lo que ya está resuelto y no vuelve a ser pregunta:** la primera mitad de este punto, el uso
    de la herramienta de experimentación del equipo en 2019, está confirmado por Gonzo y
-   registrado en §2.4. El claim de haber construido la infraestructura de experimentación **no**
-   está confirmado, y ese bullet se sacó del markdown del CV de Infjini.
+   registrado en §2.4 (incluyendo el detalle de implementar las variantes con snippets en
+   JavaScript nativo, confirmado el 21/10/2026). El claim de haber construido la infraestructura
+   de experimentación **no** está confirmado, y ese bullet se sacó del markdown del CV de Infjini.
+   **Lo que sigue abierto:** (a) si Gonzo construyó la arquitectura de micro frontends y la
+   biblioteca de componentes compartida, y (b) el alcance de su rol en la librería (¿la construyó
+   entero, la mantenía, o la consumía?).
 3. **Fechas exactas de inicio y fin del PHP 2001-2008**: hay años, no meses.
 4. **Nombres de clientes o empleadores bajo NDA**, si los hubiera.
 4. **Referencias laborales**: quién puede hablar de su trabajo en EY o Super7UI.

@@ -11,6 +11,12 @@ en dailies históricos y `.knowledge/`; esos registros **no se reescriben** (son
 - `cv-general-no-tecnico-gonzalo-blasco.md` (+ `.pdf`)
 - `cv-frontend-code-evaluator-gonzalo-blasco.md` (+ `_Resume.pdf`)
 
+## `team-international-tempo/` - Senior Frontend Developer (Growth), cliente tempo.io - **ACTIVO**
+- `cv-senior-frontend-growth-gonzalo-blasco.md` (+ `.pdf`) - CV en inglés, una página, orientado al JD.
+- `analisis-fiscal-neto.md` - cuánto valen los USD 5.000 brutos como contractor en Argentina.
+- `revision-adversarial.md` - encaje JD↔corpus, hallazgos por severidad, veredicto accionable.
+- `guion-call-21-10.md` - texto listo para enviar a David y las 4 preguntas de la call.
+
 ## `sol-senior-fullstack/` - Senior Full Stack (AI-first, vía Sol) - **ACTIVO**
 - `cv-senior-fullstack-ai-native-gonzalo-blasco.md` - CV en inglés, orientado al JD.
 - `sol-star-prep-2026-10-16.md` - prep STAR (4 competencias, ES/EN) para la call.

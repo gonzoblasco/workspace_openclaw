@@ -1,0 +1,127 @@
+/* Hoja de vida - A4, una pagina, tipografia compacta y legible.
+   Objetivo: que quepa en 1-2 paginas y se lea en pantalla. Sin color de marca:
+   imprime bien en blanco y negro y lo lee un ATS sinParsear CSS. */
+
+@page {
+  size: A4;
+  margin: 8mm 10mm 7mm 10mm;
+}
+
+body {
+  font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 8.1pt;
+  line-height: 1.17;
+  color: #111;
+  margin: 0;
+}
+
+h1 {
+  font-size: 15.5pt;
+  font-weight: 700;
+  margin: 0 0 0.5pt 0;
+  letter-spacing: -0.2pt;
+}
+
+h1 + p {
+  margin: 0 0 0.5pt 0;
+  font-size: 9.4pt;
+  font-weight: 600;
+  color: #222;
+}
+
+h1 ~ p {
+  margin: 0 0 3pt 0;
+  font-size: 8.6pt;
+  color: #333;
+}
+
+h2 {
+  font-size: 8.3pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6pt;
+  color: #333;
+  border-bottom: 0.6pt solid #999;
+  padding-bottom: 0.8pt;
+  margin: 4pt 0 2.2pt 0;
+  break-after: avoid;
+}
+
+p {
+  margin: 0 0 3pt 0;
+}
+
+ul {
+  margin: 0 0 2.5pt 0;
+  padding-left: 11pt;
+}
+
+li {
+  margin: 0 0 0.7pt 0;
+}
+
+li::marker {
+  color: #888;
+}
+
+strong {
+  font-weight: 650;
+}
+
+em {
+  font-style: italic;
+  color: #333;
+}
+
+code {
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 8.6pt;
+  background: #f2f2f2;
+  padding: 0 1.5pt;
+  border-radius: 1.5pt;
+}
+
+hr {
+  border: none;
+  border-top: 0.6pt solid #ccc;
+  margin: 6pt 0;
+}
+
+blockquote {
+  margin: 4pt 0;
+  padding-left: 8pt;
+  border-left: 2pt solid #bbb;
+  color: #444;
+}
+
+/* Los encabezados de rol (### o **Empresa | Rol | fechas**) van en una linea
+   propia, con la fecha alineada a la derecha. */
+h3 {
+  font-size: 8.9pt;
+  font-weight: 700;
+  margin: 3.5pt 0 0.8pt 0;
+  break-after: avoid;
+}
+
+h3 + p em {
+  font-style: normal;
+  font-weight: 600;
+  color: #555;
+}
+
+a {
+  color: #111;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8.6pt;
+}
+
+th, td {
+  text-align: left;
+  padding: 1.5pt 3pt;
+  border-bottom: 0.4pt solid #ddd;
+}

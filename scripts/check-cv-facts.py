@@ -131,7 +131,9 @@ UNBACKED_CLAIMS = {
     "funnel": ("funnel", "analisis de funnel"),
     "conversion": ("conversion", "optimizacion de conversion", "activacion, retencion"),
     "observability": ("observability", "datadog", "new relic", "sentry"),
-    "java/kotlin": ("java", "kotlin"),
+    # "java" tiene que ser la palabra completa: "JavaScript" matchea "java" y
+    # disparaba el aviso en cada CV que lista JavaScript. Verificado 2026-10-21.
+    "java/kotlin": (r"\bjava\b", r"\bkotlin\b"),
 }
 
 # Terminos que aparecen en la seccion de requisitos del propio CV, no en un
@@ -356,7 +358,7 @@ def unbacked_claims(root: Path, facts: dict):
     if m:
         section = m.group(1).lower()
         for claim, needles in UNBACKED_CLAIMS.items():
-            if any(n in section for n in needles):
+            if any(re.search(n, section) for n in needles):
                 unresolved.add(claim)
     out = []
     for cv in cvs(root):
@@ -368,14 +370,14 @@ def unbacked_claims(root: Path, facts: dict):
             if any(marker in low for marker in SKIP_SECTIONS):
                 continue
             for claim, needles in UNBACKED_CLAIMS.items():
-                if not any(n in low for n in needles):
+                if not any(re.search(n, low) for n in needles):
                     continue
                 # ¿El dueno registra este hecho?
                 if claim in unresolved:
                     # esta en "Falta relevar": el dueno lo declara desconocido.
                     out.append((cv.name, n, claim, line.strip()[:110]))
                     break
-                if any(n in corpus for n in needles):
+                if any(re.search(n, corpus) for n in needles):
                     continue
                 out.append((cv.name, n, claim, line.strip()[:110]))
                 break
