@@ -90,6 +90,21 @@ El dashboard queda en http://127.0.0.1:8787 y **el chat del agente en `/chat`**
 3. Si la sonda falla pero el container esta arriba, el problema es interno del
    servicio (ver las trampas de `docs/tools/REGISTRY.md`), no el arranque.
 
+**`up` ya responde las dos preguntas que importan:** dice el **puerto**, la
+**URL** donde abrirla, y el resultado de la **sonda** (con reintentos, porque
+un servicio recien arrancado tarda). Si la sonda no llega a responder, avisa
+`AUN NO RESPONDE` en vez de fingir que todo bien:
+
+```
+==> up Vane
+Container vane Started
+  puerto: 3005
+  url:    http://localhost:3005
+  sonda:  http://localhost:3005/ -> HTTP 200 (ok)
+```
+
+`down` dice donde quedo parado y que los datos quedan.
+
 **Vane es el ejemplo de referencia:** `toolbox up vane` lo levanta en
 http://localhost:3005 y `toolbox down vane` lo para conservando los datos
 (`data/` y `uploads/` son bind mounts). El compose vive en

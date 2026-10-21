@@ -39,7 +39,9 @@ import json
 import os
 import subprocess
 import sys
+import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -316,6 +318,55 @@ def probe_health(tool: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     }
 
 
+def service_url(tool: Dict[str, Any]) -> Optional[str]:
+    """URL base donde el usuario abre la herramienta. None si no expone UI.
+
+    Se deriva de la sonda (que ya declara host y puerto) o del puerto. El path
+    se descarta: la sonda puede estar en /api/health mientras la UI vive en /.
+    """
+    health = tool.get("health")
+    if health:
+        parsed = urllib.parse.urlsplit(health[0])
+        if parsed.scheme and parsed.netloc:
+            return f"{parsed.scheme}://{parsed.netloc}"
+    port = tool.get("port")
+    if port:
+        return f"http://localhost:{port}"
+    return None
+
+
+def wait_for_health(
+    tool: Dict[str, Any], attempts: int = 12, delay: float = 2.5
+) -> Optional[Dict[str, Any]]:
+    """Sonda con reintentos: un servicio recien arrancado tarda en responder.
+
+    'corriendo' del container no es 'sirviendo': la sonda HTTP es la que
+    prueba. Por eso `up` no termina hasta que la sonda responde (o se rinde).
+    """
+    last: Optional[Dict[str, Any]] = None
+    for i in range(attempts):
+        last = probe_health(tool)
+        if last and last.get("ok"):
+            return last
+        if i < attempts - 1:
+            time.sleep(delay)
+    return last
+
+
+def report_started(tool: Dict[str, Any]) -> None:
+    """Dice DONDE queda la herramienta y si de verdad esta sirviendo."""
+    url = service_url(tool)
+    if url:
+        print(f"  puerto: {tool['port'] if tool.get('port') else '-'}")
+        print(f"  url:    {url}")
+    probe = wait_for_health(tool)
+    if not probe:
+        return
+    code = probe["code"] if probe["code"] is not None else probe["detail"]
+    mark = "ok" if probe["ok"] else "AUN NO RESPONDE"
+    print(f"  sonda:  {probe['url']} -> HTTP {code} ({mark})")
+
+
 def _installed(tool: Dict[str, Any]) -> bool:
     """Si la herramienta esta instalada en esta maquina.
 
@@ -415,6 +466,8 @@ def do_up(tool: Dict[str, Any]) -> int:
     if tool["kind"] == "native":
         code, out = run(tool["up"], timeout=60)
         print(out.strip() or ("abierto" if code == 0 else "fallo"))
+        if code == 0:
+            report_started(tool)
         return code
     if tool["kind"] == "mcp":
         print(
@@ -424,6 +477,8 @@ def do_up(tool: Dict[str, Any]) -> int:
         return 0
     code, out = run(compose_cmd(tool, "up", ["-d"]), timeout=600)
     print(out.strip()[-2000:])
+    if code == 0:
+        report_started(tool)
     return code
 
 
@@ -431,6 +486,10 @@ def do_down(tool: Dict[str, Any]) -> int:
     if tool["kind"] == "native":
         code, out = run(tool["down"], timeout=60)
         print(out.strip() or ("detenido" if code == 0 else "fallo"))
+        if code == 0:
+            url = service_url(tool)
+            if url:
+                print(f"  detenido en {url} (los datos quedan)")
         return code
     if tool["kind"] == "mcp":
         print(f"{tool['name']} no tiene proceso que parar: se lanza por sesion.")
@@ -438,6 +497,10 @@ def do_down(tool: Dict[str, Any]) -> int:
     # stop y no down: conserva los containers y los volumenes.
     code, out = run(compose_cmd(tool, "stop", []), timeout=300)
     print(out.strip()[-2000:])
+    if code == 0:
+        url = service_url(tool)
+        if url:
+            print(f"  detenido en {url} (los datos quedan)")
     return code
 
 

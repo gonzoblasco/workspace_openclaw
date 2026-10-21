@@ -344,3 +344,136 @@ def test_ids_no_vacio():
     ids = r.stdout.split()
     assert "onyx" in ids
     assert len(ids) == len(set(ids))
+
+
+# --------------------------------------------------------------------------
+# 5. `up` dice DONDE queda la herramienta y comprueba que de verdad sirva.
+#    Pedido real de Gonzo: "no me dice en que puerto esta corriendo".
+# --------------------------------------------------------------------------
+def test_service_url_se_deriva_de_la_sonda_sin_path():
+    """La URL de la UI no es la de la sonda: /api/health vive en otra ruta."""
+    mod = load()
+    tool = {
+        "id": "x",
+        "name": "X",
+        "kind": "docker",
+        "runtime": "docker compose",
+        "port": 3005,
+        "compose": [],
+        "health": ("http://localhost:3005/api/health", [200]),
+    }
+    assert mod.service_url(tool) == "http://localhost:3005"
+
+
+def test_service_url_cae_al_puerto_cuando_no_hay_sonda():
+    mod = load()
+    tool = {
+        "id": "x",
+        "name": "X",
+        "kind": "docker",
+        "runtime": "docker compose",
+        "port": 3005,
+        "compose": [],
+        "health": None,
+    }
+    assert mod.service_url(tool) == "http://localhost:3005"
+
+
+def test_service_url_none_sin_puerto_ni_sonda():
+    mod = load()
+    tool = {
+        "id": "x",
+        "name": "X",
+        "kind": "mcp",
+        "runtime": "bajo demanda",
+        "port": None,
+        "compose": [],
+        "health": None,
+    }
+    assert mod.service_url(tool) is None
+
+
+def test_report_started_imprime_puerto_url_y_sonda(capsys, monkeypatch):
+    """`up` tiene que decir el puerto, la URL y el estado real de la sonda."""
+    mod = load()
+    monkeypatch.setattr(
+        mod,
+        "wait_for_health",
+        lambda tool, **kw: {
+            "url": "http://localhost:3005/",
+            "code": 200,
+            "ok": True,
+            "detail": None,
+        },
+    )
+    tool = {
+        "id": "vane",
+        "name": "Vane",
+        "kind": "docker",
+        "runtime": "docker compose",
+        "port": 3005,
+        "compose": [],
+        "health": ("http://localhost:3005/", [200]),
+    }
+    mod.report_started(tool)
+    out = capsys.readouterr().out
+    assert "3005" in out, f"no dice el puerto: {out}"
+    assert "http://localhost:3005" in out, f"no dice la url: {out}"
+    assert "HTTP 200" in out, f"no dice el estado de la sonda: {out}"
+
+
+def test_report_started_avisa_cuando_la_sonda_no_responde(capsys, monkeypatch):
+    """Si la sonda no responde, lo dice: 'corriendo' no es 'sirviendo'."""
+    mod = load()
+    monkeypatch.setattr(
+        mod,
+        "wait_for_health",
+        lambda tool, **kw: {
+            "url": "http://localhost:3005/",
+            "code": None,
+            "ok": False,
+            "detail": "ConnectionRefusedError",
+        },
+    )
+    tool = {
+        "id": "vane",
+        "name": "Vane",
+        "kind": "docker",
+        "runtime": "docker compose",
+        "port": 3005,
+        "compose": [],
+        "health": ("http://localhost:3005/", [200]),
+    }
+    mod.report_started(tool)
+    out = capsys.readouterr().out
+    assert "AUN NO RESPONDE" in out, f"no advierte que no responde: {out}"
+
+
+def test_wait_for_health_reintenta_hasta_que_responde(monkeypatch):
+    """Un servicio recien arrancado tarda: la sonda se reintenta."""
+    mod = load()
+    monkeypatch.setattr(mod.time, "sleep", lambda s: None)
+    calls = {"n": 0}
+
+    def fake_probe(tool):
+        calls["n"] += 1
+        return {
+            "url": "http://x/",
+            "code": 200 if calls["n"] >= 3 else None,
+            "ok": calls["n"] >= 3,
+            "detail": None if calls["n"] >= 3 else "ConnectionRefusedError",
+        }
+
+    monkeypatch.setattr(mod, "probe_health", fake_probe)
+    tool = {
+        "id": "x",
+        "name": "X",
+        "kind": "docker",
+        "runtime": "docker compose",
+        "port": 1,
+        "compose": [],
+        "health": ("http://x/", [200]),
+    }
+    result = mod.wait_for_health(tool, attempts=5, delay=0)
+    assert result["ok"] is True
+    assert calls["n"] == 3, f"no reintento: {calls['n']} intentos"
