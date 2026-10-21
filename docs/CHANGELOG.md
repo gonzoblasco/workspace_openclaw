@@ -6,6 +6,24 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-21] - kanam-query: veredicto y planificacion de un producto greenfield (el analisis de origen era una expansion RAG)
+
+### Added
+- **`projects/kanam-query/`** (nuevo, greenfield, sin codigo todavia). `README.md`, `PROPUESTA.md` (veredicto + planificacion por fases) y `.knowledge/` con `EVIDENCIA-VERIFICADA.md` (brief con todo verificado contra disco y contra la documentacion oficial de Mercado Libre) y `REVISION-ADVERSARIAL.md` (28 hallazgos: 7 criticos, 11 altos, 10 medios).
+- **Veredicto sobre el analisis de referencia: no es una especificacion, es un checklist.** El documento de 11 secciones que sirvio de insumos salio de una **expansion RAG de AnythingLLM sobre un documento semilla de 33 palabras** (`kanam-prueba.md` en `~/anythingllm-data/storage/documents/`). Los "datos duros" (USD 42.000, `KA-2026-X99`, "Elena Vazquez") vienen del seed; las 5 arquitecturas comparadas, el cronograma de 12 semanas, el modelo de datos de 14 tablas y el desglose de presupuesto los invento el modelo. Como **catalogo de requisitos de una integracion con MeLi** acierta en ~80% (idempotencia, dedup, outbox, DLQ, RLS, auditoria, rate limiter compartido, reconciliacion).
+- **API de Mercado Libre verificada contra la documentacion oficial** (2026-10-21), y el plan corregido con lo que el analisis no vio: (a) `api_version=4` es **obligatorio** - sin el vuelve la estructura vieja y se pierde `answer.status`; (b) la **cuota de rate limit es por Client ID**, o sea compartida por todos los tenants, y eso fija el **techo de negocio** del producto (no lo fija la demanda); (c) el permiso funcional que corresponde es **"Comunicacion pre y postventa"** (acceso a `questions`) - los scopes `read_questions`/`write_answers` que el analisis mencionaba **no existen**; (d) existe `GET /users/$ID/questions/response_time` con **`sales_percent_increase`**: el % de ventas que se gana bajando el tiempo de respuesta, que es la metrica por la que un vendedor paga; (e) limite de 2.000 caracteres al responder; (f) MeLi borra sola las preguntas sin responder de mas de 7 meses; (g) **MeLi no tiene sandbox** (las pruebas son contra cuentas reales); (h) MeLi publico un **MCP server oficial** (`mcp.mercadolibre.com/mcp`).
+
+### Changed
+- **Encuadre corregido a mitad de sesion:** la primera version del trabajo asumio que `kanam-query` continuaba el proyecto anterior; Gonzo lo aclaro y el encargo se rehizo desde cero. `kanam-query` es **greenfield e independiente**; del proyecto anterior solo se toma el catalogo de "errores a no repetir" (13 errores de integracion MeLi, cada uno mapeado a un requisito verificable con su test y su fase), como contexto de ingenieria, no como base de codigo.
+- **Aprendizaje durable registrado** en `docs/learnings/metodologia.md`: *un documento largo y estructurado no prueba que alguien lo escribio* - antes de discutir el contenido de un analisis, verificar su origen (storage del workspace RAG, `wordCount` del documento indexado) y hacer `grep` de sus identificadores en el sistema propio.
+
+### Notes
+- **Plan:** Fase 0 (spike tecnico) **bloqueante** antes de elegir stack, porque el riesgo #1 es de acceso a la API, no tecnico. Despues, 5 fases con **criterio de salida comprobable** (3-7 condiciones booleanas cada una, atadas a un test o artefacto). Total estimado 41-52 dias de trabajo concentrado de 1 dev (6 h efectivas/dia), re-calibrable al cerrar Fase 0. No es un compromiso de fecha.
+- **Decisiones de producto tomadas por defecto en el plan:** revision humana obligatoria en V1 (el riesgo real es el baneo a nivel de **app compartida**, no "riesgo regulatorio"), **sin PII del comprador** (solo `buyer_id`; el producto no necesita email ni telefono), `tenant_id` + RLS desde la **primera** migracion, envelope encryption de tokens por tenant (no `.env` cifrado), `job_queue` en Postgres en vez de cola administrada, y Stripe como unico proveedor (ADR-042; Mercado Pago queda afuera).
+- **Pendientes de Gonzo:** 5 decisiones de encuadre (publico objetivo, modo de respuesta, app de MeLi propia vs compartida, nombre -que sigue siendo temporal-, modelo de cobro) + aprobar la decision "sin PII" y leer los ToS de MeLi sobre datos de preguntas.
+
+---
+
 ## [2026-10-21] - Vane con Ollama: desplegado, verificado end-to-end y con dos bugs upstream arreglados
 
 ### Added

@@ -725,3 +725,21 @@ Casos del mismo dia y mismo patron: PR-Agent (evaluado con verdad de base, desca
 
 ---
 
+
+---
+
+## Un documento que parece un analisis puede ser una expansion RAG: verificar el origen antes de discutir su contenido
+
+**2026-10-21 · kanam-query.** Gonzo pego un documento de 11 secciones ("Propuesta de arquitectura: SaaS para consultas sobre publicaciones de Mercado Libre") con 5 arquitecturas comparadas, modelo de datos de 14 tablas, cronograma de 12 semanas y presupuesto de USD 42.000. Preguntó si tenía lógica.
+
+**Lo que la conversación NO mostraba: el documento no lo había escrito nadie.** Salió de **AnythingLLM con RAG** (el deploy del 2026-10-20), cuyo único documento indexado era un `.md` de prueba de **33 palabras** ("El identificador de proyecto KA-2026-X99 corresponde al módulo de facturación. La responsable del proyecto es Elena Vázquez... El presupuesto asignado fue de 42.000 dólares para el trimestre"). 33 palabras de entrada, ~4000 de salida. Los "datos duros" venían del seed; las 5 arquitecturas, los plazos y el desglose de presupuesto los inventó el modelo.
+
+**La lección es el método, no el caso:**
+1. **Un documento largo y estructurado no prueba que alguien lo escribió**: el RAG expande un seed mínimo a un documento con forma de documento, y la forma convence. Antes de discutir el contenido, **buscá el origen**: el directorio de storage del workspace RAG, el nombre del documento indexado, su `wordCount`. `wordCount: 33` con un output de 4000 palabras es la señal.
+2. **Un texto que menciona un ID de proyecto, una persona y un presupuesto es suspecto por definición** si esos tres datos no aparecen en ningún lado de tu propio sistema. Antes: `grep` del identificador, del nombre y del número en el workspace y en la DB. Acá, "KA-2026-X99" y "Elena Vázquez" no existían en ningún archivo salvo la nota del daily que documentaba el test de RAG.
+3. **Igual tenía valor**: como *checklist* de requisitos de una integración con MeLi, acertaba en ~80% (idempotencia, dedup, outbox, DLQ, RLS, auditoría, rate limiter compartido). No servía como especificación. **El veredicto correcto no es "esto es basura": es "esto es un checklist, no una especificación, y hay que corregirlo contra la API real".**
+4. **Lo que el análisis no vio importó más que lo que dijo**: contra la documentación oficial de Mercado Libre, faltaban (a) `api_version=4` obligatorio - sin él se pierde `answer.status`; (b) que la **cuota de rate limit es por Client ID**, o sea compartida por todos los tenants, lo que fija el techo de negocio del producto; (c) que el permiso funcional se llama "Comunicación pre y postventa" y **no existen** los scopes `read_questions`/`write_answers` que el modelo había inventado; (d) el endpoint `response_time` con `sales_percent_increase`, que es la métrica por la que un vendedor paga. Un checklist sin corregir contra la fuente oficial es un checklist con errores.
+5. **El pipeline A/B también sirve para esto**: A redactó sobre el brief; B revisó con 28 hallazgos (7 críticos). El CORE verificó contra el disco. 16 de 20 pistas confirmadas, 1 refutada. Sin el revisor, el borrador habría salido con la fila que ofrecía reusar una app que no debía tocarse, `RLS` en la fase 4, y una cabecera `X-RateLimit-Remaining` que nadie documentó.
+6. **Cuidado con el arrangement por precedencia**: el primer borrador proposals asumía que el producto nuevo heredaba el stack del anterior. La regla de `USER.md` ("el precedente no es un motivo") es exactamente para esto.
+
+<!-- project: github.com/gonzoblasco/workspace_openclaw -->
