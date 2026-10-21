@@ -25,17 +25,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-## [2026-10-20] - PR-Agent con Ollama: instalado, evaluado contra verdad de base humana y con veredicto negativo
+## [2026-10-20] - PR-Agent con Ollama: instalado, evaluado contra verdad de base humana y **descartado**
 
 ### Added
-- **`docs/evaluacion/pr-agent-2026-10-20.md`** - evaluacion completa de PR-Agent (The-PR-Agent/pr-agent v0.48.0) corriendo con modelos servidos por Ollama: que es (bot CLI/backend, no app ni marketplace), setup de la CLI nativa y de la variante Docker, medicion de calidad del review contra PRs publicos con revisiones humans como verdad de base, comparacion contra Claude Code para redactar descripciones de PR, las 8 trampas tecnicas verificadas y la metodologia reutilizable.
+- **`docs/evaluacion/pr-agent-2026-10-20.md`** - evaluacion completa de PR-Agent (The-PR-Agent/pr-agent v0.48.0) corriendo con modelos servidos por Ollama: que es (bot CLI/backend, no app ni marketplace), setup de la CLI nativa y de la variante Docker, medicion de calidad del review contra PRs publicos con revisiones humans como verdad de base, comparacion contra Claude Code para redactar descripciones de PR, las 8 trampas tecnicas verificadas y la metodologia reutilizable. Se conserva como **evidencia de la decision**, no como guia de uso.
 - **Learning #288 (`docs/learnings/evaluacion.md`)** - "PR-Agent no sirve para redactar PRs: contra Claude Code con el mismo modelo pierde en contenido y rompe el formato".
+- **Learning #279 reescrito (`docs/learnings/integracion.md`)** - las dos trampas que se conocieron quedan como leccion **generica de libreria** (el decodeo `@json` de Dynaconf que se pierde al reconstruir una seccion desde el entorno, y el budget de salida de los modelos de razonamiento que devuelve `content:""` sin error). Valen para cualquier integracion LiteLLM + Ollama, no solo para el proyecto que las origino.
+
+### Removed
+- **PR-Agent completo (decision de Gonzo: "no le veo beneficio, eliminemos pr agents completo")**: el proyecto `projects/pr-agent` (506 MB, v0.48.0), la imagen Docker `pr-agent-ollama:local` (1.33 GB), la red `local_default`, el venv, los secrets (`.secrets.toml` nativo y de Docker) y el server A2A. **Borrado con `trash`**, asi que es reversible desde `~/.Trash/pr-agent`.
+- **La entrada de PR-Agent del registro de herramientas** (`scripts/ai-toolbox.py`, `skills/ai-toolbox/SKILL.md`, `docs/tools/REGISTRY.md`): se quito la entrada de la tabla de datos y su seccion de prosa; la tabla se regenero con `ai-toolbox.py catalog --write`. Quedan 10 herramientas.
+- **La recomendacion de adoptar PR-Agent del triage OSS** (`studies/oss-alternatives-triage.md`): pasa a **DESCARTADO** con el veredicto, para que no se vuelva a proponer.
 
 ### Changed
-- **Entrada de `MEMORY.md` de pr-agent** - pasa a ser la via **CLI nativa** (uv + `.venv/bin/pr-agent`, config en `projects/pr-agent/pr_agent/settings/.secrets.toml`, corre sin env vars) con la variante Docker como secundaria. Se le agrega el veredicto de la evaluacion y el puntero al doc. Se acorto la linea para volver a estar bajo el cap de bootstrap (20967 -> 18574 chars de 20000).
-
-### Security
-- **`config.publish_output` NO es host-only en PR-Agent**: un `.pr_agent.toml` del repo revisado podria poner `publish_output=true` y publicar en GitHub pese al `false` del host. Cerrado con `use_repo_settings_file = false`, que el repo tampoco puede pisar.
+- **Entrada de `MEMORY.md` de pr-agent** - ahora registra el **descarte**: no se va a usar, no volver a proponerlo ni a instalarlo, con el puntero a la evidencia y la alternativa (Claude Code, ya instalado y ya ruteado por Ollama). La linea se mantiene corta para no exceder el cap de bootstrap (17825 chars de 20000).
 
 ## [2026-10-20] - Chatterbox TTS servido con la API de Ollama: implementado, verificado y borrado
 

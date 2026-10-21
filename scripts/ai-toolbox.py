@@ -108,19 +108,6 @@ TOOLS: List[Dict[str, Any]] = [
         "note": "No tiene puerto propio: OpenClaw lo lanza con docker run por el MCP registrado.",
     },
     {
-        "id": "pr-agent",
-        "name": "PR-Agent",
-        "what": "Review y mejora de diffs. CLI nativa en el host (via principal) + server A2A en Docker.",
-        "kind": "docker",
-        "runtime": "docker (A2A) + CLI nativa",
-        "port": 8900,
-        "compose": [_p(PROJECTS / "pr-agent" / "local" / "docker-compose.yml")],
-        "health": ("http://127.0.0.1:8900/health", [200, 401]),
-        "up": None,
-        "down": None,
-        "note": "La CLI nativa (projects/pr-agent/local/pr-agent) no necesita Docker.",
-    },
-    {
         "id": "anythingllm",
         "name": "AnythingLLM",
         "what": "Chat con documentos. RAG basico con Ollama como LLM y como embeddings.",
@@ -252,10 +239,10 @@ def compose_projects() -> List[Dict[str, str]]:
 
     Se empareja por ARCHIVO, no por el `name:` del compose: la mayoria de estos
     compose no declaran `name:`, y el nombre del proyecto lo deriva Docker del
-    directorio (por eso pr-agent es "local" y opencode es "docker"). Buscar el
-    `name:` en el archivo daba 6 herramientas como "apagado" mientras estaban
-    corriendo. La fuente de verdad es `docker compose ls`, que ya sabe el
-    emparejamiento.
+    directorio (por eso opencode es "docker" y litellm-ollama es "litellm-ollama").
+    Buscar el `name:` en el archivo daba 6 herramientas como "apagado" mientras
+    estaban corriendo. La fuente de verdad es `docker compose ls`, que ya sabe
+    el emparejamiento.
     """
     code, out = run(["docker", "compose", "ls", "--format", "json"], timeout=30)
     if code != 0:

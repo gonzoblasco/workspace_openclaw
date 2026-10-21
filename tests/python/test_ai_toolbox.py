@@ -12,8 +12,8 @@ inventario se usa para decidir que apagar.
 
 Propiedades criticas:
   1. El emparejamiento de un stack es por ARCHIVO de compose, no por `name:`.
-  2. Los codigos HTTP que cuentan como "vivo" son POR HERRAMIENTA (un 401 de
-     pr-agent es vivo; un 502 de openhands es caido).
+  2. Los codigos HTTP que cuentan como "vivo" son POR HERRAMIENTA (un 401
+     de una herramienta con auth es vivo; un 502 de openhands es caido).
   3. La vista de docs/tools/REGISTRY.md se puede regenerar y verificar.
   4. La tabla de herramientas declara una sonda y un compose por entrada.
 

@@ -60,7 +60,7 @@ Detalle en la sección 4, en orden de retorno.
 | Repo | Qué es | Por qué entra |
 |---|---|---|
 | `BerriAI/litellm` (MIT core, 61.7k) | Gateway multi-proveedor compatible con la API de OpenAI | Te falta la mitad de tu stack multi-modelo: ruteás **dentro** de Ollama, esto rutea **hacia** cualquier proveedor. |
-| `The-PR-Agent/pr-agent` (MIT, 13.5k) | Reviewer de PR por comandos (`/review`, `/improve`, `/ask`) | Ya tenés 15 PRs abiertos y 22 cerrados sin merge. Reviewer automático con **tus** modelos. |
+| `The-PR-Agent/pr-agent` (MIT, 13.5k) | Reviewer de PR por comandos (`/review`, `/improve`, `/ask`) | **DESCARTADO (2026-10-20):** se instalo y se evaluo con verdad de base humana, y no dio. Ver `docs/evaluacion/pr-agent-2026-10-20.md`. |
 | `ItzCrazyKns/Vane` (MIT, 37.5k) | Motor de respuestas con citas (ex-Perplexica) | El patrón de búsqueda→evidencia citada es lo que le falta a tu `web_search` y a OnWheels. |
 
 ### TIER 2 - vistazo de 1 hora, valor marginal (4)
@@ -95,10 +95,14 @@ Tu `model-router.sh` rutea **dentro de Ollama**. LiteLLM te da la otra mitad: un
 - virtual keys + budgets por proyecto (OnWheels usa su propio proveedor de embeddings; acá le resolvés el mismo problema)
 - **logging de costos** (te falta paradimensionar el costo de los agentes A/B)
 
-Además: **PR-Agent usa LiteLLM**, así que el mismo proxy sirve para tu gateway y para el reviewer de PRs.
+Además: **PR-Agent usa LiteLLM**, así que el mismo proxy sirve para tu gateway. (PR-Agent se descarto despues: ver la fila de la tabla.)
 
-### Segundo: `The-PR-Agent/pr-agent` (adoptar para tu flujo OSS)
-Con LiteLLM + Ollama, `pr-agent` puede revisar tus PRs en repos ajenos. Tu OSS-TRACKER muestra **15 PRs abiertos y 22 cerrados sin merge** - hay trabajo real ahí para el que un reviewer automático da señal. Y de paso, contribuís OSS: un PR abierto con un review automático propio es exactamente el tipo de collaboration que el AGENTS.md pide (comentar, revisar, destrabar) sin pisar a nadie.
+### Segundo: `The-PR-Agent/pr-agent` (adoptar para tu flujo OSS) - **DESCARTADO**
+La propuesta original era: con LiteLLM + Ollama, `pr-agent` puede revisar tus PRs en repos ajenos, y el OSS-TRACKER muestra **15 PRs abiertos y 22 cerrados sin merge** donde un reviewer automatico podria dar señal.
+
+**Se instalo, se configuro con Ollama y se evaluo el 2026-10-20. No dio.** Contra PRs publicos con revisiones humans como verdad de base, el review automatico dio 0 hallazgos, 5 falsos positivos y veredictos de **1/10, 0/10 y 0/10**; ningun modelo (3 cloud + 1 local) encuentra el bug central. Para redactar descripciones de PR quedo muy por debajo de Claude Code con el mismo modelo (0 de 5 hechos clave vs 5 de 5). Se borro todo (proyecto, imagen Docker, red) por decision de Gonzo. Evidencia completa en `docs/evaluacion/pr-agent-2026-10-20.md`.
+
+**Consecuencia para este triage:** no volver a proponer PR-Agent. Para revisar PRs, el reviewer automatico no aporta; para redactarlos, usar Claude Code (ya instalado, ya ruteado por Ollama).
 
 ### Tercero: `ItzCrazyKns/Vane` (estudiar el patrón)
 No lo adoptes: es una app completa que no vas a mantener. **Estudiá el patrón** de: SearxNG → scraping → chunking → prompt con citas → respuesta con fuentes trazables. Ese patrón es el que le falta a tu `web_search` actual y es el que OnWheels ya exige (evidencia citada).

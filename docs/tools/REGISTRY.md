@@ -19,16 +19,15 @@
 | Herramienta | ID | Runtime | Puerto | Estado |
 |---|---|---|---|---|
 | Ollama | `ollama` | nativo (host) | 11434 | corriendo |
-| Onyx | `onyx` | docker compose (Lite: 6 servicios) | 3000 | apagado |
+| Onyx | `onyx` | docker compose (Lite: 6 servicios) | 3000 | corriendo |
 | browser-use | `browser-use` | docker (stdio, bajo demanda) | - | bajo demanda |
-| PR-Agent | `pr-agent` | docker (A2A) + CLI nativa | 8900 | corriendo |
 | AnythingLLM | `anythingllm` | docker compose | 3001 | corriendo |
 | LiteLLM | `litellm` | docker compose | 4000 | corriendo |
 | Milvus | `milvus` | docker compose (standalone embebido) | 19530 | corriendo |
 | Vane | `vane` | docker compose | 3005 | corriendo |
 | opencode | `opencode` | docker compose | 4096 | corriendo |
 | OpenHands | `openhands` | docker compose | 8000 | corriendo |
-| Cline | `cline` | nativo (host, Bun 1.4.2) | 8787 | corriendo |
+| Cline | `cline` | nativo (host, Bun 1.4.2) | 8787 | apagado |
 <!-- END:ai-toolbox-table -->
 
 ---
@@ -87,7 +86,7 @@ declarado a mano es COMO se levanta cada cosa.
   servers, sin object store. Postgres hace de cache, file store y auth backend.
 - **Por que Lite:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB
   de la maquina) y conviven milvus, anythingllm, litellm, opencode, vane,
-  openhands, pr-agent y browser-use. El stack completo (OpenSearch con heap de
+  openhands y browser-use. El stack completo (OpenSearch con heap de
   2 GB + 2 model servers con torch) no entra comodo.
 - **LLM:** provider `ollama_chat` con `api_base=http://host.docker.internal:11434`.
   **Solo modelos cloud** (17 visibles), default `minimax-m3.1-flash:cloud`. Los
@@ -133,33 +132,6 @@ declarado a mano es COMO se levanta cada cosa.
   container no puede leer `/app` -> `ModuleNotFoundError`. Fix en el host
   (`chmod -R a+rX`) y rebuild.
 - **Detalle:** `projects/browser-use/README-LOCAL.md`.
-
-### PR-Agent (id: `pr-agent`)
-
-- **Que es:** review y mejora de diffs de codigo.
-- **Dos vias:**
-  - **CLI nativa (la principal):** en el host, sin Docker. Wrapper
-    `projects/pr-agent/local/pr-agent {review|ask|describe|improve} <diff>`.
-    Venv en `projects/pr-agent/.venv` (Python 3.12.14). Config en
-    `pr_agent/settings/.secrets.toml` (gitignored, `chmod 600`).
-  - **Server A2A 1.0 (secundaria):** Docker, `127.0.0.1:8900`, con bearer auth.
-    `local/demo.sh` corre los 4 verbos con un diff real, sin tocar GitHub.
-- **Modelos:** `ollama/gpt-oss:120b-cloud` con fallback
-  `ollama/minimax-m3.1-flash:cloud` (proxy de Ollama: no descarga modelo ni usa
-  RAM local). `api_base` = `http://localhost:11434` en nativo,
-  `host.docker.internal:11434` en Docker.
-- **Trampas:**
-  - `--output` / `--json-output` van **antes** del comando, o el CLI imprime
-    el help.
-  - Un hunk con el conteo de lineas mal escrito revienta `unidiff` y tambien
-    imprime el help -> generar el diff con `git diff`, no a mano.
-  - El bearer del server NO puede ir por env var (Dynaconf pierde el decodeo
-    `@json`): va por TOML.
-  - Los modelos de razonamiento gastan el presupuesto en el bloque
-    `reasoning`; con `max_tokens` chico devuelven `content:""` sin error visible.
-- **Publicacion apagada** (`publish_output=false`): renderiza pero no escribe en
-  GitHub.
-- **Detalle:** `projects/pr-agent/local/README.md`.
 
 ### AnythingLLM (id: `anythingllm`)
 

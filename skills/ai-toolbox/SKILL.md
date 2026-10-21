@@ -8,7 +8,7 @@ metadata:
     - registry
     - ollama
     - docker
-description: "Registro vivo de las herramientas IA instaladas en la maquina (Onyx, browser-use, PR-Agent, AnythingLLM, LiteLLM, Milvus, Vane, opencode, OpenHands, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
+description: "Registro vivo de las herramientas IA instaladas en la maquina (Onyx, browser-use, AnythingLLM, LiteLLM, Milvus, Vane, opencode, OpenHands, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
 user-invocable: true
 ---
 
@@ -45,7 +45,7 @@ proyecto (eso es `projects/<slug>/.knowledge/`), estado de git (eso es `git stat
 
 ### IDs validos
 
-`ollama`, `onyx`, `browser-use`, `pr-agent`, `anythingllm`, `litellm`, `milvus`,
+`ollama`, `onyx`, `browser-use`, `anythingllm`, `litellm`, `milvus`,
 `vane`, `opencode`, `openhands`, `cline`.
 
 ### Cuando la herramienta es Cline
@@ -102,9 +102,9 @@ que no tienen ficha, **eso se reporta**: es una herramienta nueva sin registrar.
 - **`down` hace `stop`, no `down` de compose.** Conserva containers y
   volumenes. Borrar volumenes es otra operacion, y requiere OK explicito.
 - **Emparejamiento por ARCHIVO de compose.** Docker deriva el nombre del
-  proyecto del directorio, no del `name:` (por eso pr-agent es `local` y
-  opencode es `docker`). El script empareja por archivo; si se agrega una
-  herramienta, el compose tiene que existir en la ruta declarada.
+  proyecto del directorio, no del `name:` (por eso opencode es `docker` y
+  litellm-ollama es `litellm-ollama`). El script empareja por archivo; si se
+  agrega una herramienta, el compose tiene que existir en la ruta declarada.
 - **La vista de `docs/tools/REGISTRY.md` se regenera con `catalog --write`.**
   Editarla a mano la desincroniza; `catalog --check` lo detecta.
 - **browser-use no tiene proceso propio:** lo lanza OpenClaw por sesion como
