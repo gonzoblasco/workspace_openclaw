@@ -20,13 +20,14 @@ Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde
 - **[evaluacion](./evaluacion.md)** - 2 lecciones
 - **[infraestructura](./infraestructura.md)** - 55 lecciones
 - **[integracion](./integracion.md)** - 2 lecciones
-- **[metodologia](./metodologia.md)** - 81 lecciones
+- **[metodologia](./metodologia.md)** - 82 lecciones
 - **[oss](./oss.md)** - 33 lecciones
 - **[pipeline](./pipeline.md)** - 1 lecciones
 - **[pipeline-agentes](./pipeline-agentes.md)** - 37 lecciones
 - **[proyectos](./proyectos.md)** - 12 lecciones
 - **[skills](./skills.md)** - 1 lecciones
+- **[vite](./vite.md)** - 1 lecciones
 
 ## Total
 
-242 lecciones en total.
+244 lecciones en total.

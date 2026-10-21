@@ -26,7 +26,13 @@ es el modelo consumiendo el budget antes de responder. Con max_tokens holgado
 
 ## Ollama como proveedor != modelo local: leer el pedido antes de elegir el modelo
 
-/tmp/learning_ollama.md
+## Ollama como proveedor != modelo local: leer el pedido antes de elegir el modelo
+
+En varios pedidos de clon+configurar de la sesion del 2026-10-20 (opencode, browser-use, milvus, PR-Agent, Chatterbox), Gonzo aclaro la misma cosa: "no hace falta que use los modelos locales, me referia a que corra desde Ollama". El "desde Ollama" no significa "modelo local": significa que el **proveedor** es Ollama, da igual si el modelo concreto es local o cloud servido por Ollama, porque ambos llegan por la misma API (OpenAI-compatible en /v1, nativa en /api/chat). Interpretarlo como "usa un LLM local" tira la sesion hacia donde no va: se instalan modelos locales, se eligen GPU o no, y se pierde el punto.
+
+Corolario: cuando el pedido dice "configurarlo con X", la pregunta que hay que responder primero es **"¿que componente tiene que hablar con X?"**, no "¿que modelo corre?". Si la respuesta es "el server habla con el daemon por la API de X", el modelo se elige despues y es un parametro.
+
+Concreto en el caso Chatterbox: la aclaracion cambio el encargo de "armar un server que consulte a un LLM local" a "que el TTS se sirva con la forma de la API de Ollama" (POST /v1/audio/speech), que es un contrato de endpoint, no una eleccion de modelo.
 
 ---
 

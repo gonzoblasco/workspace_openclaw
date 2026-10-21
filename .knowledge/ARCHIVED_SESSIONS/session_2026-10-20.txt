@@ -1,17 +1,19 @@
 Session archived on 2026-10-20. Full transcript is retained in system logs.
 
-Daily report: memory/2026-10-20.md (session blocks from 11:52 to 21:54).
-HANDOFF: .knowledge/HANDOFF.md (regenerated 2026-10-20 21:07 GMT-3).
+Daily report: memory/2026-10-20.md (session blocks from 11:52 to 23:13).
+HANDOFF: .knowledge/HANDOFF.md (regenerated 2026-10-20 23:13 GMT-3).
 Project HANDOFF: projects/onyx/.knowledge/HANDOFF.md (2026-10-20 21:54 GMT-3).
 Session index: .knowledge/SESSIONS.md (append-only, one line per close).
-Last commit: db65c4d324.
+Last commit: 9f1fc96cf8.
 
 Scope of the session: alta de minimax-m3.1-flash:cloud en OpenClaw y cata formal de
 8 roles x 5 clases de estres (160 corridas) que lo deja como motor del CORE (ADR-102);
 fix del off-by-one de nombres en .knowledge/handoff-history/ (commit db42eb80bd);
 PR-Agent nativo con la CLI y luego evaluado contra Claude Code con el mismo modelo
 (medido, no supuesto); Chatterbox TTS con la API de Ollama (verificado y borrado a
-pedido de Gonzo); y Onyx self-hosted, que abrio y cerro el dia.
+pedido de Gonzo); Onyx self-hosted, que abrio y cerro el dia; kanam-sudoku revivido y
+verificado con navegador real; y el bloque final de herramientas IA, donde Milvus
+sufrio exactamente el mismo destino que PR-Agent y Chatterbox.
 
 Onyx (proyecto propio, su historia vive en projects/onyx/.knowledge/): clone de
 onyx-dot-app/onyx en modo Lite (6 servicios, ~1 GB RAM) con el Ollama del host
@@ -19,10 +21,29 @@ como provider y solo modelos cloud. Se escribio scripts/onyx-tool.py para
 levantarlo y verificarlo (status/up/down/provider/chat) con 14 tests. El server
 quedo cerrado al final, con los volumenes conservados.
 
+El patron de las ultimas horas (PR-Agent, Chatterbox, Milvus): tres herramientas
+evaluadas con verdad de base, dos de ellas verificadas end-to-end y funcionamiento
+real, y las tres descartadas y borradas. Milvus (v3.0.3) fue el caso mas completo:
+la integracion con Ollama (embeddings server-side via el provider openai contra
+/v1/embeddings) funciono a la primera y se verifico con diff maximo 0.000000 contra
+el embedding crudo del host. El descarte no fue por dificultad de configurarlo, sino
+porque la capacidad ya estaba cubierta por SQLite+embeddings, ChromaDB y pgvector.
+Quedo registrado en docs/ecosystem/milvus-decision.md y el learning transversal 290
+("Instalar y verificar no es adoptar") lo convierte en criterio general, no en
+anecdota de una sesion. El triage OSS ya lo habia descartado en tier 3 con el
+veredicto textual "escala de Google, no tuya": no se re-litigo, se confirmo.
+
 Dos correcciones propias de esta sesion, ambas de la misma clase: un test que
 afirmaba la EXISTENCIA de una ruta de la maquina de Gonzo rompio el CI de main
 dos veces (el CI corre en Linux, en un checkout distinto, y projects/ esta
 ignorado por .gitignore). Los tests de ahora afirman FORMAS de configuracion,
 nunca rutas del host. La segunda: un stage con git update-index y un hash
-preparadio no tomo la version del working tree, y por eso MEMORY.md quedo
+preparado no tomo la version del working tree, y por eso MEMORY.md quedo
 citando archivos ya borrados.
+
+Nota de alcance: el daily de este dia es unusually largo (16 bloques de Session End,
+multiples sesiones concurrentes). El rango real de bloques va de 11:52 a 23:13. Dos
+learnings quedaron con contenido roto en la DB y se repararon al cerrar: el 286
+apuntaba a /tmp/learning_ollama.md (contenido efimero) y el 284 estaba truncado a
+500 caracteres a media palabra. La DB (memory/memory.db) es la fuente de verdad y
+los .md son vistas regenerables: el daily se reescribio desde la DB al cerrar.

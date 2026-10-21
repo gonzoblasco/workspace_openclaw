@@ -701,3 +701,27 @@ Gonzo objeto la seccion de costo del informe de la cata: afirmaba una consecuenc
 
 ---
 
+## Instalar y verificar no es adoptar: el benchmark dice si funciona, no si lo necesitamos
+
+Instalar y verificar no es adoptar: el benchmark dice si funciona, no si lo necesitamos.
+
+El 2026-10-20 la integracion de Milvus 3.0.3 con Ollama funciono a la primera y se verifico end-to-end: insertar texto crudo, Milvus lo vectorizaba llamando a Ollama del host, la query tambien se vectorizaba, el rank fue correcto y el vector guardado era identico (diff max 0.000000) al embedding crudo del host. End-to-end PASS, dos veces. Y aun asi se descarto y se borro todo.
+
+Por que: la capacidad ya estaba cubierta en tres lugares (SQLite+embeddings en `scripts/memory-search.py`, ChromaDB en `projects/langchain-starter`, pgvector en `projects/soporteml`). Un vectorstore mas no agregaba capacidad: agregaba ceremonia (etcd embebido, WAL que se corrompe con SIGKILLs, claves de config que se ignoran en silencio, modo embebido vs compose de 3 servicios).
+
+**La trampa:** cuando algo funciona, la sensacion de "listo, esto ya va" es enganosa. "Funciona" y "lo necesitamos" son dos preguntas distintas, y la segunda es la que decide. Un benchmark exitoso prueba la capacidad de la herramienta, no la necesidad de adoptarla.
+
+Corolario 1 - **para re-litigar un descarte hace falta un hecho nuevo, no curiosidad.** El triage OSS ya habia puesto a Milvus en tier 3 con el veredicto textual "escala de Google, no tuya". Adoptarlo despues re-litigaba una decision ya tomada sin que hubiera cambiado nada. El criterio de re-litigacion: volumen real que haga doler la alternativa actual. La curiosidad tecnica es un motivo para PROBAR, no para ADOPTAR.
+
+Corolario 2 - **el binomio "funciona / no funciona" no es el criterio de adopcion.** El criterio es "resuelve un problema que no resolviamos antes". Un proyecto puede estar impecable y aun asi sobrar.
+
+Corolario 3 - **el motivo del descarte tiene que quedar escrito, porque el proximo va a tropezar con lo mismo.** Aqui el motivo NO fue la dificultad: la integracion funciono a la primera. Fue el exceso de complejidad frente a una capacidad ya cubierta. Distinguir esos dos motivos importa: si hubiera sido "es muy dificil", el learning seria sobre dificultad; es sobre sobreingenieria.
+
+Corolario 4 - **la aclaracion de Gonzo sobre "desde Ollama" aplica a todo el Patron.** Cuando el pedido dice "configurarlo con X", la pregunta que hay que responder primero es **que componente tiene que hablar con X** (contrato de endpoint), no que modelo corre. Ver learning #286.
+
+**El reverso, para no ser unilateral:** el criterio no es "es complejo" (eso vetoa de mas) ni "ya lo tenemos" (eso es un precedente, no un argumento). Si un dia Milvus - o cualquier vectorstore distribuido - hace doler la alternativa actual por volumen real, se adopta sin culpa. El learning #288 y el descarte de PR-Agent son el mismo patron: verificar con verdad de base y juez, y decidir con el dato.
+
+Casos del mismo dia y mismo patron: PR-Agent (evaluado con verdad de base, descartado), Milvus (evaluado end-to-end, descartado), Onyx en modo Lite (decidido no completo por el presupuesto de RAM de Docker).
+
+---
+

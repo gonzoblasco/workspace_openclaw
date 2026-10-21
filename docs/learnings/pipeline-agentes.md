@@ -319,6 +319,8 @@ Medido el 2026-10-20 en el fix de .knowledge/handoff-history/. Un subagente (kan
 
 ## Prueba end-to-end: PASS (2 veces, incluida la re-verificación tras corregir la clave)
 
+## Prueba end-to-end: PASS (2 veces, incluida la re-verificación tras corregir la clave)
+
 **NOTA (2026-10-20, tarde): Milvus fue descartado y desinstalado.** La decisión y todo el detalle están en `docs/ecosystem/milvus-decision.md`. Este learning se conserva por los **hallazgos técnicos**, que son reutilizables con cualquier stack que hable la API OpenAI-compatible; el `test_e2e.py` ya no existe.
 
 `test_e2e.py` (pymilvus 3.0.2): colección con campo VARCHAR + `Function(TEXTEMBEDDING, params={"provider":"openai","model_name":"qwen3-embedding:0.6b"})` → insertar **texto crudo** (Milvus vectoriza vía Ollama) → search (la query también se vectoriza) → **rank correcto** ("Python…" primero) → vectores de 1024 dims guardados → **diff máximo contra el embedding crudo de Ollama = 0.000000** (mismo vector, sin aproximación) → borra la colección.

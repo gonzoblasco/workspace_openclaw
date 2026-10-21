@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-20 22:35 GMT-3
+**Fecha:** 2026-10-20 23:13 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,19 +12,29 @@
 
 ## Que se hizo en esta sesion
 
-PR-Agent descartado por decision de Gonzo, borrado completo y verificado: sweep final de Docker da 0 en containers, images, volumes, networks y build cache; temporales de test eliminados; maquina sin ningun rastro de PR-Agent
+Milvus 3.0.3 + Ollama: clonado, configurado, verificado end-to-end y DESCARTA﻿DO por decision de Gonzo. Se borro todo (containers, red, imagenes por ~3 GB, projects/milvus y projects/milvus-ollama con trash) y se registro el porque en docs/ecosystem/milvus-decision.md (commit 9f1fc96cf8, pre-commit 15 PASS / 0 FAIL). La integracion funciono a la primera: embeddings server-side de Milvus via el provider openai contra el endpoint OpenAI-compatible de Ollama del host (qwen3-embedding:0.6b, 1024 dims), verificado con diff maximo 0.000000 contra el embedding crudo del host. El descarte no fue por dificultad de configurarlo sino por sobreingenieria: la capacidad ya estaba cubierta por SQLite+embeddings en scripts/memory-search.py, ChromaDB en projects/langchain-starter y pgvector en projects/soporteml. Hallazgos verificados que sobreviven a la herramienta: Milvus 3.x no tiene provider ollama (el openai si funciona contra /v1/embeddings); la URL del provider sale solo de function.textEmbedding.providers.openai.url en user.yaml y no de los params de la funcion; la clave de cache real es queryNode.cache.memoryLimit (common.cache.* no existe en 3.0.3 y se ignora en silencio); el etcd embebido se corrompe con SIGKILLs y entra en loop con panic leader changed (fix: borrar volumes/milvus/etcd); Ollama NO puede correr Milvus como app (ollama launch solo lanza agentes de codigo, la doc completa de 247 KB tiene 0 menciones de milvus, ollama.com/apps da 404). Ademas se limpio el registro de herramientas IA (entrada milvus fuera de scripts/ai-toolbox.py, docs/tools/REGISTRY.md y skills/ai-toolbox/SKILL.md: declaraba un compose borrado y estado corriendo falso) y se confirmo el veredicto de tier 3 del triage OSS con la evidencia nueva. Se repararon dos learnings con contenido roto en la DB: el 286 apuntaba a /tmp/learning_ollama.md (contenido efimero) y el 284 estaba truncado a 500 caracteres a media palabra. Se creo el learning transversal 290 "Instalar y verificar no es adoptar".
 
 ## Estado actual
 
-Limpieza completa y verificada. PR-Agent no queda en la maquina: 0 containers, 0 images, 0 volumes, 0 networks, 0 compose project 'local', 0 entradas de build cache con el comando de su Dockerfile. El directorio (506 MB) y la copia del Trash fueron purgados; los temporales de test (272 KB) tambien. Los 4 volumenes anonimos creados hoy son de otros proyectos (Cline/Onyx: .pnpm, @ai-sdk, profiles) y las 2 imagenes dangling son de BusyBox (chequeo de buildx), no de pr-agent. Ollama no quedo con ningun modelo nuevo (los 4 locales son del 4-oct y el 8-sep). Registro de herramientas con 10 entradas, tabla regenerada y verificada (catalog --check al dia, 15 tests en verde).
+El stack de herramientas IA quedo en 10 entradas (Ollama, Onyx, browser-use, AnythingLLM, LiteLLM, Vane, opencode, OpenHands, Cline, y el resto). Milvus ya no esta. El repo projects/milvus (clon shallow del upstream) y projects/milvus-ollama (compose + config + scripts) se movieron a la papelera con trash, reversibles desde ~/.Trash. Backups en /tmp/milvus-retiro/ (compose, user.yaml, test_e2e.py, README) y /tmp/milvus-etcd-backup-224137.tgz. Docker quedo con 0 rastros: sin containers, sin imagenes, sin red, sin volumenes de Milvus. El resto del stack sigue sano: onyx, vane, anythingllm, litellm_ollama, openhands-canvas, opencode, ollama nativo.
 
 ## Proximos pasos
 
-1. Ninguno pendiente. La alternativa para revisar o redactar PRs es Claude Code, ya instalado y ya ruteado por Ollama via ANTHROPIC_BASE_URL; no requiere accion.
+1. El learning transversal 290 quedo registrado en la DB y las vistas de docs/learnings/ se regeneraron (244 lecciones en total). La idea: instalar y verificar no es adoptar; el benchmark dice si funciona, no si lo necesitamos, y re-litigar un descarte exige un hecho nuevo (volumen real), no curiosidad. Proximo paso natural: elegir UN proyecto de producto y cerrarlo con un flujo end-to-end que un cliente real pueda usar, en vez de sumar infraestructura. El vectorstore ya esta cubierto y no es el cuello de botella.
 
 ## Decisiones y contexto que no debe perderse
 
-- Decision de Gonzo (2026-10-20): 'no le veo beneficio, eliminemos pr agents completo, limpiamos todo lo que haya creado, registremos que no se usara'. El no-uso quedo registrado en tres lugares, para que la sesion que lo vuelva a proponer lo lea al arrancar: la entrada de MEMORY.md (inyectada en cada arranque), el banner del doc de evaluacion, y la fila del triage OSS que antes lo recomendaba. La evidencia (docs/evaluacion/pr-agent-2026-10-20.md) se conserva; la herramienta no. El learning de integracion quedo reescrito como leccion generica de libreria (decodeo @json de Dynaconf, budget de los modelos de razonamiento), porque esas dos valen para cualquier integracion LiteLLM + Ollama.
+- Decision de Gonzo: "no lo usaremos, es demasiado para nosotros" - Milvus queda fuera del stack, no se adopta, no se integra, no se mantiene. Motivo registrado: no fue la dificultad de configurarlo (funciono a la primera, verificado end-to-end) sino que la capacidad ya estaba cubierta en tres lugares del workspace y la complejidad de una base de datos distribuida no se justifica sin volumen real. Se maintains el criterio de re-litigacion: solo vuelve si el volumen real hace doler la alternativa actual. Precedente de formato: mismo patron que el descarte de PR-Agent (evaluado con verdad de base y juez, decidido con el dato, borrado y documentado). Ademas: se aplico trash y no rm a los directorios de proyecto, y se committeo sin push pendiente de OK explicito.
+
+## Archivos tocados
+
+```
+docs/learnings/README.md
+docs/learnings/integracion.md
+docs/learnings/metodologia.md
+docs/learnings/pipeline-agentes.md
+memory/memory.db
+```
 
 ## Como continuar
 
