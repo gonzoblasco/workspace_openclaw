@@ -4,7 +4,7 @@
 
 > **Por qué existe (2026-10-21).** Dos procesos cayeron por el mismo filtro en dos días: **Staffy/Pfizer (20/10, USD 30-35/h)** y **Sol Bisio (21/10, USD 5.600/mes)**. En ambos, el cliente exige **C1 conversacional** y el CV declara B2. No es rechazo de perfil: en los dos casos la reclutadora dijo que el background técnico era fuerte. Es un filtro de **idioma**.
 >
-> Decisión de Gonzo (2026-10-21): anotarse en el **CUI (Centro Universitario de Idiomas, UBA)** para la capacitación de C1 y el certificado correspondiente, **mientras tanto seguir buscando**.
+> **Decisión de Gonzo (2026-10-21):** cursar el **C1 completo en el CUI (Centro Universitario de Idiomas, UBA)** - **dos meses** - y **después** rendir el examen para obtener el certificado C1. El **TOEFL queda para el año que entra**. **Mientras tanto, seguir buscando.**
 
 ---
 
@@ -20,48 +20,55 @@
 
 ---
 
-## 2. El instrumento: dos opciones, no la misma
+## 2. El camino elegido: curso C1 (2 meses) y después el examen
 
-El filtro dice **"C1 conversacional"**. Hay dos caminos en el CUI y **no son equivalentes**.
+El orden importa. Primero la **habilidad**, después el **papel**. Es la diferencia entre un C1 que se sostiene en una call y un C1 de papel que mueve el rechazo más lejos y lo hace más caro.
 
-### Opción A - Certificación CUI-ING C1 (propia del CUI)
+### Etapa 1 - El curso C1 (2 meses)
 
-Examen integral, 4 partes, escala **MCER** (la que usa el filtro), aprobado por la UBA. Incluye **entrevista oral individual de 15 minutos**: es exactamente la habilidad que falta.
+Ciclo de **Intensivos de Primavera 2026 (período 7)**: 15 clases de 3 horas, dos veces por semana.
 
 | Dato | Valor |
 |---|---|
-| Mesa de examen | **Viernes 6 de noviembre de 2026** |
-| Inscripción | **hasta el viernes 30 de octubre de 2026** |
-| Publicación de resultados | miércoles 11 de noviembre de 2026 |
-| Derecho a examen | **$140.000** |
-| Formato | 100% online: 2h30 de escrito (partes 1-3) + 15 min de oral por Zoom, con supervisión electrónica. Requiere cámara y micrófono |
+| Inicio | **lunes 26 de octubre de 2026** |
+| Fin | **21 o 23 de diciembre de 2026** (según el día de cursada) |
+| Carga | 15 clases x 3 h, 2 veces por semana |
+| **Inscripción** | **del 7 al 22 de octubre de 2026** |
+
+> **La inscripción cierra el 22 de octubre: es el plazo vivo.** La mesa de examen del 30/10 ya no es el deadline, porque el examen viene **después** del curso.
+
+**Alternativa si se pierde ese plazo:** **Trimestrales de Noviembre 2026/2027 (período 77)**, 23 clases de 2 h, del **25/11/2026 al 24/2/2027** (3 meses en vez de 2), inscripción **del 5 al 19 de noviembre de 2026**. Arranca 1 mes después pero con el triple de horas de clase.
+
+**Antes de inscribirse:** hacer la **prueba de nivel** en el CUI. El nivel del curso depende de ella (los niveles altos van del 11 - Ciclo de Perfeccionamiento - al 15 - Especialización). **Confirmar en el centro qué nivel corresponde a C1 y qué nivel es el punto de entrada** para el ciclo completo.
+
+### Etapa 2 - El examen CUI-ING C1
+
+| Dato | Valor |
+|---|---|
+| Estructura | 4 partes: comprensión auditiva, comprensión lectora, producción escrita, producción oral |
+| Duración | 2h30 de escrito (partes 1-3) + **15 min de oral en entrevista individual** |
+| Formato | 100% online, con supervisión electrónica. Requiere cámara y micrófono |
 | Bandas | Aprobado 60-75% · Aprobado con Mérito 76-85% · Aprobado Distinguido >86% |
-| Validez | Informe digital con **código QR único** que otorga validez |
+| Calificación | Informe digital con **código QR único** que otorga validez |
+| Derecho a examen | **$140.000** |
 
-### Opción B - TOEFL (preparación + examen ETS)
+**Lo que hay que confirmar en el centro** (no está publicado en la web):
+1. **Qué mesas hay en 2027.** La única mesa publicada es la del **6 de noviembre de 2026** (inscripción hasta el 30/10) - con el curso terminando el 23/12, esa mesa llega demasiado tarde. El examen caería en el **primer trimestre de 2027**.
+2. **Si hay que ser alumno del CUI** para rendir el examen, y si el curso que se está cursando habilita la inscripción.
+3. **La periodicidad de las mesas** (si es mensual, trimestral o semestral).
+
+### Etapa 3 - TOEFL (2027)
+
+Queda para el año que entra. Sirve para el reconocimiento internacional amplio (visa, universidades, Cancillería) y para el cliente que pida TOEFL en el JD.
 
 | Dato | Valor |
 |---|---|
-| Curso preparatorio | 1 cuatrimestre, 1 clase semanal de 3h. Inicia **2 veces al año (marzo y agosto)** + intensivos de verano de 4 o 6 semanas |
-| Requisito de inscripción | Alumno CUI: **nivel 10 aprobado**. Nuevo alumno: **nivel 11** en la prueba de nivel |
+| Curso preparatorio | 1 cuatrimestre, 1 clase semanal de 3 h. Inicia **2 veces al año (marzo y agosto)** + intensivos de verano de 4 o 6 semanas |
+| Requisito | Alumno CUI: **nivel 10 aprobado**. Nuevo alumno: **nivel 11** en la prueba de nivel |
 | Precio (curso) | 1 pago **$334.944** (general) / **$301.449** (precio UBA) · 3 pagos $118.202 · 6 pagos $62.054 |
-| Examen | Evalúa las 4 habilidades, incluida la oral |
+| Examen | Inscripción en Argentina **US$250** (se paga en dólares) |
 
-#### Datos verificados del examen TOEFL iBT (21/10/2026)
-
-| Dato | Valor |
-|---|---|
-| Inscripción en Argentina | **US$250** (ETS fees-by-location, leído 14/10/2026), se paga en dólares |
-| Reagendar | US$69. Reserva express (dentro de 7 días) US$49 |
-| Cancelar con 4 días de antelación | 50% de devolución; después, nada |
-| Score report extra por institución | US$29 |
-| Revisión de Speaking / Writing | US$80 (uno) / US$160 (ambos) |
-| Home Edition | Disponible en Argentina, con proctor humano, 4 días por semana |
-| Validez del score | **2 años** (política ETS) |
-| Aceptación | 12.500+ instituciones en 150+ países |
-
-**Escala 1 a 6 (desde el 21 de enero de 2026).** El informe ahora trae **tres cosas a la vez**:
-el nivel CEFR, los puntajes 1-6 en pasos de 0,5, y el equivalente 0-120 comparable (por 2 años).
+**Escala 1 a 6 (desde el 21 de enero de 2026).** El informe ahora trae **tres cosas a la vez**: el nivel CEFR, los puntajes 1-6 en pasos de 0,5, y el equivalente 0-120 comparable (por 2 años).
 
 | CEFR | 1-6 |
 |---|---|
@@ -72,37 +79,25 @@ el nivel CEFR, los puntajes 1-6 en pasos de 0,5, y el equivalente 0-120 comparab
 
 - Un 5 en **cualquier sección** equivale a C1 en esa sección.
 - 5 global equivale a 95-106 en la escala vieja; ETS recomienda a las instituciones que exigían 100 fijar el band 5.
-- 29-30 en Reading = probablemente C2.
+- El score tiene **2 años de validez**.
 
-### Mi lectura
+> **Ojo con el calendario del TOEFL:** el curso arranca en **marzo y agosto**. Un examen en enero-febrero de 2027 sería con preparación propia, no con el curso.
 
-**El CUI-ING C1 sirve mejor para el bloqueo actual**, por dos razones concretas:
+### Por qué el CUI-ING C1 y no el TOEFL ahora
 
-1. **Habla el idioma del filtro.** Un certificado que dice "C1" en escala MCER lo lee un reclutador LATAM de un vistazo. Y **el TOEFL ahora también lo dice**: desde enero de 2026 el informe trae el nivel CEFR explícito, asi que ya no hay que traducir un número 0-120. Los dos caminos dicen "C1" en el papel.
-2. **Cuesta 2,4 veces menos** ($140.000 vs $334.944 + US$250 del examen) y **evalúa oral en entrevista individual**, que es justo lo que hay que demostrar.
-
-El TOEFL tiene una ventaja que el CUI-ING C1 no: **reconocimiento internacional más amplio** (visa, universidades, Cancillería) y **es el examen que pide cualquier cliente que diga "TOEFL" en el JD**. Si el objetivo de largo plazo es el exterior, o si algún cliente filtra específicamente por TOEFL, el camino B gana.
-
-> **Ojo con el calendario del TOEFL:** el curso arranca en **marzo y agosto**. Un examen en enero-febrero de 2027 seria con preparacion propia, no con el curso. Cambridge C1 Advanced (intensivos de 60hs, o 2 cuatrimestres) queda como tercera via, no la primera.
-
-> **Los datos de arriba son de `cui.edu.ar`, leídos el 2026-10-21.** Antes de pagar, **verificar en el centro**: las mesas y los precios cambian por año. Fuente: `https://cui.edu.ar/certificacion-cui-ing` y `https://cui.edu.ar/examenes-internacionales`.
+1. **Habla el idioma del filtro.** Un certificado que dice "C1" en escala MCER lo lee un reclutador LATAM de un vistazo. Y **el TOEFL ahora también lo dice** (CEFR explícito desde enero 2026), así que ya no hay que traducir un número 0-120. Los dos dicen "C1" en el papel.
+2. **Cuesta 2,4 veces menos** ($140.000 vs $334.944 + US$250) y **evalúa oral en entrevista individual**, que es justo lo que hay que demostrar.
+3. **El curso es el mismo**: el examen CUI-ING C1 evalúa oral de la misma forma que el TOEFL, pero sin el costo de una preparación adicional.
 
 ---
 
-## 3. El riesgo honesto de la mesa del 6 de noviembre
+## 3. El riesgo honesto (y por qué 2 meses es la decisión correcta)
 
-Del 21 de octubre al 6 de noviembre hay **16 días**. Para B2 oral → C1 oral conversacional, eso es **muy poco**. Mi lectura:
+La mesa del 6 de noviembre **no era alcanzable**: de hoy a esa fecha había 16 días, y la parte escrita la puede sacar (es su fuerte real), pero **la entrevista oral de 15 minutos no se prepara en 16 días**.
 
-- La **parte escrita la puede sacar**: lectura, escritura y comprensión auditiva son su fuerte real, y 2h30 es tiempo de sobra.
-- La **entrevista oral de 15 minutos es la que no se puede preparar en 16 días** sin hours de práctica deliberada. Es el riesgo real de esa mesa.
+**Cursar dos meses completos resuelve exactamente eso:** el oral deja de ser el punto débil y pasa a ser el que más se trabaja. Con el curso detrás, el examen es una evaluación, no una apuesta.
 
-**Qué propongo (elegí una):**
-
-1. **Inscribirse al 6 de noviembre igual.** Cuesta $140.000, mide el punto real de partida, y el resultado es un número concreto que orienta el resto del plan. Si el oral no alcanza, el próximo intento con 4-6 meses de preparación detrás ya está. El certificado que sale en noviembre igual sirve para destrabar el filtro de CV.
-2. **Esperar a una mesa posterior y usar el tiempo para practicar.** Más lento para el papel, más sólido para la habilidad.
-3. **Hacer el curso TOEFL de marzo/agosto** (cuatrimestre, 1 clase semanal de 3h) y rendir el examen al final. Es el camino más largo pero el que más construye.
-
-Mientras tanto, **en paralelo**: el curso de niveles del CUI, para trabajar el oral y para llegar al nivel 10/11 que el TOEFL exige como prerrequisito. Si se quiere además la certificación internacional, la preparación de **Cambridge C1 Advanced** (30 clases intensivas desde agosto, o 2 cuatrimestres desde marzo; requiere nivel 14 como alumno CUI) es una tercera vía, no la primera.
+**El riesgo que queda, y es real:** entre el 23/12 y la mesa de 2027 hay un receso. Ese tiempo es el que hay que usar para **mantener la práctica hablada**, que es lo que se pierde. Un curso de dos meses sin práctica después es una meseta, no un avance.
 
 ---
 
@@ -126,12 +121,26 @@ También aplica como **pregunta de screening**, no solo al inicio: si filtran po
 
 ---
 
-## 6. Próximos pasos
+## 6. Cronograma
 
-1. **Decidir la opción de instrumento** (A, B o 3) y la fecha de inscripción.
-2. **Inscribirse antes del 30 de octubre** si va la opción A.
-3. **Hacer la prueba de nivel** en el CUI si va el camino TOEFL (determina el nivel 11 o 15+ y qué curso corresponde).
-4. **Registrar la mesa elegida y la fecha** en este archivo y en `docs/entrevistas/_general/job-search-tracker.md`.
+| Cuándo | Qué |
+|---|---|
+| **hasta el 22/10/2026** | **Inscribirse al intensivo C1 (período 7)**. Inscribirse **hoy o mañana** si es posible |
+| **26/10/2026** | Arranca el curso (15 clases x 3 h) |
+| **21-23/12/2026** | Fin del curso |
+| **Q1 2027** | Mesa del examen CUI-ING C1 (a confirmar con el centro) |
+| **durante y después del curso** | Práctica hablada deliberada: es lo que no se negocia |
+| **2027** | TOEFL, si hace falta el reconocimiento internacional |
+| **en paralelo, todo el tiempo** | Seguir postulando, con la pregunta del §4 en el primer mensaje |
+
+---
+
+## 7. Próximos pasos
+
+1. **Inscribirse al curso C1 antes del 22/10** (o al trimestral de noviembre, del 5 al 19/11).
+2. **Hacer la prueba de nivel** del CUI y **confirmar qué nivel es C1** y cuál es el punto de entrada al ciclo.
+3. **Confirmar con el centro:** mesas de examen de 2027, si el curso habilita la inscripción al examen, y el precio del curso de inglés (no está publicado en la web; el que está publicado es el de preparación de exámenes internacionales).
+4. **Registrar la fecha de inscripción real** en este archivo y en `docs/entrevistas/_general/job-search-tracker.md`.
 5. **Seguir postulando en paralelo** con la regla de la sección 4.
 
 ## Referencias
@@ -141,11 +150,13 @@ También aplica como **pregunta de screening**, no solo al inicio: si filtran po
 - `docs/entrevistas/sol-senior-fullstack/sol-seguimiento.md` - el cierre de Sol
 - `docs/learnings/evaluacion.md` - "el filtro de idioma no se negocia con el CV: se negocia con la pregunta"
 
-### Fuentes (leidas 2026-10-21)
+### Fuentes (leídas 2026-10-21)
 
 | Dato | Fuente |
 |---|---|
+| Calendario de cursos: períodos, fechas de inicio/fin, ventanas de inscripción | `https://cui.edu.ar/calendario-academico` (CUI) |
 | CUI-ING C1: estructura, duración, bandas, mesa del 6/11, $140.000 | `https://cui.edu.ar/certificacion-cui-ing` (CUI) |
+| Niveles de inglés (Ciclo de Consolidación / Perfeccionamiento / Especialización) | `https://cui.edu.ar/cursos-horarios` (CUI) |
 | Precios de preparación de exámenes internacionales (TOEFL, Cambridge C1 Advanced, IELTS) | `https://cui.edu.ar/valores_cursos_lista.php?curso=4` (CUI) |
 | Escala TOEFL 1-6, equivalencia CEFR, 5 = 95-106 en escala vieja | `https://www.ets.org/toefl/institutions/ibt/score-scale-update.html` (ETS, oficial) |
 | TOEFL iBT en Argentina: US$250, reschedule, reviews, score reports | `https://www.ets.org/toefl/test-takers/ibt/register/fees.html` (ETS, oficial) |

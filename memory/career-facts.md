@@ -283,10 +283,12 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
 - **El gap es oral, no escrito.** Lectura, escritura y trabajo diario están aceitados; falta
   práctica hablada. No ofrecerle cursos generales, academias ni gramática.
 - **Plan vigente (decisión de Gonzo, 2026-10-21):** a raíz de dos procesos cerrados por el mismo
-  filtro de **C1 conversacional** (Staffy 20/10, Sol 21/10). Gonzo se anota en el **CUI (Centro
-  Universitario de Idiomas, UBA)** para la capacitación de C1 y su certificación, **mientras tanto
-  sigue buscando**. Instrumentos, costos, fechas y el riesgo de la mesa del 6/11 están en
-  `studies/english/README.md` (con fuentes de `cui.edu.ar` leídas el 2026-10-21).
+  filtro de **C1 conversacional** (Staffy 20/10, Sol 21/10), Gonzo **cursa el C1 completo en el
+  CUI (Centro Universitario de Idiomas, UBA) durante dos meses** y **después** rinde el examen
+  **CUI-ING C1** ($140.000). El **TOEFL queda para 2027**. **Mientras tanto, sigue buscando.**
+  Calendario, costos, fuentes y el plazo de inscripción al curso están en
+  `studies/english/README.md` (leído el 2026-10-21; el plazo vivo era la inscripción al curso,
+  no la del examen).
 - **Regla de proceso que sale de los 2 casos:** en el **primer mensaje** de cualquier proceso
   LATAM remoto, preguntar el **nivel de inglés conversacional que exige el cliente**. El filtro
   apareció al final en ambos casos, cuando ya se había armado CV, screening y prep de call.
