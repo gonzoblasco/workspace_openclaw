@@ -218,3 +218,55 @@ def test_gate_distinguishes_clean_from_dirty(tmp_path):
     assert mod.main([str(tmp_path)]) == 0
     seed(tmp_path, cv=CLEAN_CV.replace("10+ years", "9+ years"))
     assert mod.main([str(tmp_path)]) == 1
+
+
+# --- claims sin respaldo (control 8, 2026-10-21) ---
+#
+# El caso que motivó el control: los bullets de A/B testing estaban en 4 CVs y
+# NO en el dueno. El gate pasaba en verde porque compara contra el dueno lo
+# que el dueno TIENE, no lo que el dueno NO tiene. Un hecho puede entrar a un
+# CV por una puerta que no pasa por el corpus, y ahi no habia control.
+
+def test_unbacked_ab_testing_claim_is_flagged(tmp_path):
+    mod = load()
+    seed(tmp_path, cv=CLEAN_CV + "\n- Ran A/B experiments in production using Adobe Target.\n")
+    w = mod.unbacked_claims(tmp_path, mod.parse_facts(tmp_path))
+    assert any("a/b testing" in x[2] for x in w)
+
+
+def test_claim_backed_by_corpus_is_not_flagged(tmp_path):
+    mod = load()
+    facts = FACTS + "\nEn Minutentag corrio experimentos A/B testing con Adobe Target.\n"
+    seed(tmp_path, facts=facts, cv=CLEAN_CV + "\n- Ran A/B experiments in production using Adobe Target.\n")
+    w = mod.unbacked_claims(tmp_path, mod.parse_facts(tmp_path))
+    assert not any("a/b testing" in x[2] for x in w)
+
+
+def test_claim_mentioned_only_in_falta_revelar_is_still_flagged(tmp_path):
+    # Anotar la duda en el dueno NO convierte el pendiente en hecho. Sin esto,
+    # "A/B testing: PENDIENTE DE RESOLVER" en la seccion 11 hacia invisible
+    # el aviso y el control：一个 hecho desconocido se confundia con uno
+    # registrado.
+    mod = load()
+    facts = FACTS + "\n## 11. Falta relevar\n\n2. **A/B testing:** PENDIENTE DE RESOLVER.\n"
+    seed(tmp_path, facts=facts, cv=CLEAN_CV + "\n- Ran A/B experiments in production using Adobe Target.\n")
+    w = mod.unbacked_claims(tmp_path, mod.parse_facts(tmp_path))
+    assert any("a/b testing" in x[2] for x in w)
+
+
+def test_unbacked_claim_warns_but_does_not_block(tmp_path):
+    # El aviso no frena: el dueno puede estar incompleto y la decision de
+    # ampliarlo o sacar el claim es de Gonzo.
+    mod = load()
+    seed(tmp_path, cv=CLEAN_CV + "\n- Ran A/B experiments in production using Adobe Target.\n")
+    assert mod.main([str(tmp_path)]) == 0
+
+
+def test_cv_with_prefix_in_middle_is_covered(tmp_path):
+    # "eit-cv-gonzalo-blasco-a11y.md": el glob `cv-*.md` no lo veia, y tenia
+    # los dos errores que el gate existe para cazar (9+ anios, y un numero de
+    # anios de accesibilidad). Verificado 2026-10-21.
+    mod = load()
+    seed(tmp_path, cv=CLEAN_CV.replace("10+ years", "9+ years"), name="eit-cv-gonzalo-blasco.md")
+    v = mod.check_cv(tmp_path / "docs/entrevistas/proceso/eit-cv-gonzalo-blasco.md", mod.parse_facts(tmp_path))
+    assert any("total_years" in x[2] for x in v)

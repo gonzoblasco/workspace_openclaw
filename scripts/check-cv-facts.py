@@ -29,6 +29,17 @@ Que verifica:
   6. CERTIFICACION: no se declara una credencial IAAP que no existe.
   7. PENDIENTES: un hecho marcado `pending` en el dueno FRENA el commit. Una
      contradiccion sin decidir no se commitea "para arreglarla despues".
+  8. CLAIMS SIN RESPALDO (2026-10-21): un bullet de experiencia que el dueno
+     no registra se AVISA. No frena: el dueno puede estar incompleto, y el
+     aviso es la señal de que hay que扩充 el dueno o sacar el claim.
+
+Por que 8 (medido el 2026-10-21, no es teorico): los bullets de A/B testing
+("Ran A/B experiments in production using Adobe Target", "Implemented A/B
+testing infrastructure") estaban en 4 CVs y NO en el dueno. El gate pasaba en
+verde: no compara contra el dueno lo que el dueno NO tiene. Un hecho puede
+entrar a un CV por una puerta que no pasa por el corpus, y ahi no hay control.
+Este control cierra esa puerta: avisa, y con eso la decision (ampliar el dueno
+o sacar el claim) es de Gonzo, no del gate.
 
 Uso:
     check-cv-facts.py [root]
@@ -100,6 +111,34 @@ YEAR_CATEGORIES = [
 
 ENGLISH_LINE = re.compile(r"english|ingl[eé]s", re.IGNORECASE)
 
+# --- Claims de experiencia sin respaldo (control 8) ---
+#
+# Hechos que el dueno tiene que registrar para que un CV pueda declararlos.
+# Si un CV afirma uno de estos y el dueno no lo contiene, se AVISA.
+#
+# NO frena. El dueno puede estar incompleto (y a veces esta): lo que hace el
+# gate es poner el claim en la mesa, para que la decision de ampliar el dueno
+# o de sacar el claim sea explicita. Un gate que frena obligaria a elegir entre
+# perder informacion real o agregar al dueno sin pensar.
+#
+# El criterio de "esta en el dueno" es la presencia del termino en el archivo
+# del corpus, no una coincidencia exacta: el dueno cuenta la historia con sus
+# palabras y la del CV es otra redaccion del mismo hecho.
+UNBACKED_CLAIMS = {
+    "a/b testing": ("experimentacion", "a/b testing", "adobe target", "a/b experiments"),
+    "analytics": ("analytics", "instrumentacion de analytics", "engagement metrics"),
+    "feature flags": ("feature flag",),
+    "funnel": ("funnel", "analisis de funnel"),
+    "conversion": ("conversion", "optimizacion de conversion", "activacion, retencion"),
+    "observability": ("observability", "datadog", "new relic", "sentry"),
+    "java/kotlin": ("java", "kotlin"),
+}
+
+# Terminos que aparecen en la seccion de requisitos del propio CV, no en un
+# claim de experiencia. "A/B testing" en la linea de "Requirements" no es una
+# afirmacion sobre lo que Gonzo hizo.
+SKIP_SECTIONS = ("requirement", "nice to have", "requirement:", "qualifications", "about the role")
+
 # Encabezado de un rol. Los CVs usan `### Empresa - Titulo`; el bloque de fechas
 # viene en la linea siguiente. Solo aca se declaran periodos.
 ROLE_HEADING = re.compile(r"^\s*(###|\*\*)", re.IGNORECASE)
@@ -128,7 +167,18 @@ def cvs(root: Path):
     base = root / CV_DIR
     if not base.exists():
         return []
-    return sorted(p for p in base.rglob("cv-*.md"))
+    # Los CVs no usan un unico nombre: conviven "cv-frontend-code-evaluator-...md"
+    # y "eit-cv-gonzalo-blasco-a11y.md". Un glob que solo ancle al principio se
+    # pierde los que llevan el prefijo adelante: el CV de EIT/HTC tiene el
+    # bullet de A/B testing y ningun control lo miraba. Verificado 2026-10-21.
+    # Se toma cualquier .md cuyo nombre contenga el token "cv" como parte de
+    # una palabra, separado por guiones o al inicio.
+    out = []
+    for p in base.rglob("*.md"):
+        parts = re.split(r"[-_]", p.stem.lower())
+        if "cv" in parts:
+            out.append(p)
+    return sorted(out)
 
 
 def declared_level(line: str):
@@ -289,6 +339,49 @@ def check_cv(path: Path, facts: dict):
     return violations
 
 
+def unbacked_claims(root: Path, facts: dict):
+    """Claims de experiencia en CVs que el dueno no registra. (avisos)"""
+    corpus_path = root / FACTS_FILE
+    if not corpus_path.exists():
+        return []
+    raw = corpus_path.read_text(encoding="utf-8")
+    corpus = raw.lower()
+    # Una mencion en la seccion "Falta relevar" NO es un hecho registrado: es
+    # un hecho declarado desconocido. Si el dueno dice "A/B testing: PENDIENTE
+    # DE RESOLVER", el claim sigue sin respaldo y el aviso tiene que seguir
+    # apareciendo. Sin esto, anotar la duda en el dueno la hacia invisible
+    # para el control: el pendiente se confundia con el hecho.
+    unresolved = set()
+    m = re.search(r"##\s*11\.\s*Falta relevar(.*?)(?=\n##\s|\Z)", raw, re.DOTALL)
+    if m:
+        section = m.group(1).lower()
+        for claim, needles in UNBACKED_CLAIMS.items():
+            if any(n in section for n in needles):
+                unresolved.add(claim)
+    out = []
+    for cv in cvs(root):
+        text = cv.read_text(encoding="utf-8")
+        for n, line in enumerate(text.splitlines(), 1):
+            low = line.lower()
+            if not low.strip().startswith("-"):
+                continue
+            if any(marker in low for marker in SKIP_SECTIONS):
+                continue
+            for claim, needles in UNBACKED_CLAIMS.items():
+                if not any(n in low for n in needles):
+                    continue
+                # ¿El dueno registra este hecho?
+                if claim in unresolved:
+                    # esta en "Falta relevar": el dueno lo declara desconocido.
+                    out.append((cv.name, n, claim, line.strip()[:110]))
+                    break
+                if any(n in corpus for n in needles):
+                    continue
+                out.append((cv.name, n, claim, line.strip()[:110]))
+                break
+    return out
+
+
 def pending_facts(facts: dict):
     """Hechos marcados como decision pendiente."""
     out = []
@@ -313,8 +406,9 @@ def main(argv=None):
         violations.extend(check_cv(cv, facts))
 
     pending = pending_facts(facts)
+    warnings = unbacked_claims(root, facts)
 
-    if not violations and not pending:
+    if not violations and not pending and not warnings:
         print(f"OK: {len(cvs(root))} CVs coinciden con {FACTS_FILE}.")
         return 0
 
@@ -336,7 +430,18 @@ def main(argv=None):
             "se decide ahora, se corrige el dueno y se propaga. (AGENTS.md, seccion 0)"
         )
 
-    return 1
+    if warnings:
+        print(f"AVISOS - CLAIMS SIN RESPALDO EN EL DUENO ({len(warnings)}):\n")
+        for name, n, claim, line in warnings:
+            print(f"  {name}:{n}  '{claim}' no esta en {FACTS_FILE}")
+            print(f"      {line}")
+        print(
+            "\nEstos bullets no frenan el commit, pero el dueno tiene que registrar el\n"
+            "hecho o el CV tiene que sacarlo. Si el hecho es real, va al dueno PRIMERO\n"
+            "(ADR-101: el corpus es la verdad, el perfil es un filtro).\n"
+        )
+
+    return 1 if (violations or pending) else 0
 
 
 if __name__ == "__main__":

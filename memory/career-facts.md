@@ -131,17 +131,46 @@ que no vaya a preguntar por el gap. Decidir por audiencia, nunca por defecto.
 
 ## 3. Educación y formación
 
-- **Formación continua en accesibilidad digital y calidad de software.** No hay título
-  universitario registrado en el corpus.
+- **Formación continua en accesibilidad digital y calidad de software.**
 - **Deque University - Accessibility Specialist Program (2021).** Programa de cursos, NO una
   credencial profesional. Cursos: Accessibility Fundamentals, Designing an Accessible User
   Experience, Semantic Structure and Navigation, Images/SVG/Canvas, IAAP Certification Quick Guide.
   **`IAAP Certification Quick Guide` es el nombre de un curso.** No insinúa estar certificado.
 - **`ai-engineering-bootcamp`:** curso propio completado 10/10, archivado.
 
-> **Falta relevar:** si hubo estudios formales (universitarios o terciarios), hoy no están
-> documentados. No inventar ni inferir. Preguntar antes de escribir cualquier línea de educación
-> en un CV.
+### Estudios formales: registrados y contradictorios (resuelto el 21/10/2026)
+
+Hasta el 21/10/2026 esta sección decía "no hay título universitario registrado" y la lista de
+"falta relevar" daba los estudios formales por inexistentes. **Eso era incorrecto: los estudios
+están registrados, en tres fuentes que no coinciden entre sí.** La contradicción no se resuelve
+por deducción - hay que preguntársela a Gonzo.
+
+| Fuente | Qué registra |
+|---|---|
+| `memory/2026-10-14.md` | "Universidad de Palermo - Ing. en Informática (2001-2002, **dropped**); carrera validada por el" |
+| CVs enviados (Infjini, EIT/HTC, Sol) | Sección EDUCATION: "Digital House - React (2018)" y "Universidad Argentina de la Empresa - Diseño Gráfico (2003-2004)" |
+| `memory/archive/sessions/2026-08-19-0951.md` | Listado original: 6 universidades (Palermo 2001-2002 y 2018-2019, Universidad Adventista del Plata 2010-2011, Universidad del Cine 2006-2009, Universidad Argentina de la Empresa 2003-2004) + Digital House 2018 (terciario) |
+
+**Lo que se sabe y lo que no:**
+
+- **Digital House (2018, React)** es un bootcamp: formación real y en React. **No es un título
+  universitario.** Es defendible como "formación", nunca como degree.
+- **Universidad de Palermo, Ing. en Informática (2001-2002)**: incompleta ("dropped"). **Un año de
+  ingeniería no cierra un "Degree in Computer Science".** Es defendible como "studied Computer
+  Science at X (incomplete)", nunca como degree.
+- **UADE, Diseño Gráfico (2003-2004)**: completo, pero **no es Computer Science ni "related
+  studies"** en el sentido que un equipo de engineering lee.
+- **El corpus NO tiene un título universitario completo.** Eso es lo verificado. Lo que hay son
+ ortiums registros parciales contradictorios.
+
+**Consecuencia operativa:** cuando un JD exige explícitamente *"Degree in Computer Science,
+Software Engineering, or related studies"* (como el de TEAM International / tempo.io del 21/10),
+**la respuesta honesta es que no hay título completo.** No inventar, nostalar "dropped" como si
+fuera título, y no llamar "bootcamp" a un degree. Preguntar a Gonzo cómo lo declara y llevar la
+línea exacta que él valide.
+
+> **Falta relevar (restante):** por qué se abandonó la carrera de Palermo (2001-2002), y si existe
+> algún título o certificación de CS que no esté en esta lista.
 
 ---
 
@@ -320,7 +349,17 @@ primero. Un CV no puede ser la fuente de un hecho nuevo.
 
 Lo que el corpus todavía no tiene y no se debe inventar:
 
-1. **Estudios formales** (universitario / terciario / secundario): sin registro.
-2. **Fechas exactas de inicio y fin del PHP 2001-2008**: hay años, no meses.
-3. **Nombres de clientes o empleadores bajo NDA**, si los hubiera.
+1. **Estudios formales:** **resuelto el 21/10/2026** - ver §3. No hay título universitario
+   completo; hay registros parciales contradictorios (Digital House 2018, UADE Diseño Gráfico
+   2003-2004, Palermo Ing. en Informática 2001-2002 incompleta) que hay que confirmar con Gonzo
+   antes de escribir cualquier línea de educación. **Lo que queda abierto:** el motivo de haber
+   abandonado la carrera de Palermo, y si hay algún título o certificación de CS fuera de la lista.
+2. **A/B testing / experimentación (Minutentag):** dos bullets ("Ran A/B experiments in production
+   using Adobe Target..." e "Implemented A/B testing infrastructure...") aparecen en 4 CVs
+   (Infjini, MercadoLibre, Sol, EIT/HTC) pero **no están en este corpus**, y el CV de agosto 2026
+   que originó el de Infjini **no los tenía**. Son reales o no, y si son reales, hasta dónde
+   (implementar vs. usar la infraestructura del equipo). **PENDIENTE DE RESOLVER CON GONZO** antes
+   de volver a declararlos en cualquier CV. Ver `docs/entrevistas/team-international-tempo/guion-call-21-10.md`.
+3. **Fechas exactas de inicio y fin del PHP 2001-2008**: hay años, no meses.
+4. **Nombres de clientes o empleadores bajo NDA**, si los hubiera.
 4. **Referencias laborales**: quién puede hablar de su trabajo en EY o Super7UI.

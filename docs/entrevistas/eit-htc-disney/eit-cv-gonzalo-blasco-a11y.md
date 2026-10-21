@@ -7,7 +7,7 @@ Núñez, Buenos Aires, Argentina | Remote (LATAM), aligned to US EST core hours
 
 ## PROFESSIONAL SUMMARY
 
-Digital accessibility engineer with 9+ years in frontend engineering and roughly 5 years with accessibility as the core of the role. Owned WCAG 2.2 AA compliance for EY Motif, an enterprise React design system used across client and internal products, and led the Warner Bros. Screeners remediation audit, validating 200+ WCAG violations with NVDA, VoiceOver and TalkBack. Deque University Accessibility Specialist (2021). Strong in design review, in-sprint developer support and code remediation guidance for web, iOS and Android, working in agile squads across parallel workstreams.
+Digital accessibility engineer with 10+ years in frontend engineering and accessibility as a continuous thread since 2016, starting at Minutentag/EULAS across the Ascena Retail brands (Ann Taylor, LOFT and Lou & Grey). Enterprise accessibility since 2020: led the Warner Bros. Screeners remediation audit at Super7UI (200+ WCAG violations validated with NVDA, VoiceOver and TalkBack) and owned WCAG 2.2 AA compliance for EY Motif, an enterprise React design system used across client and internal products, as the team's accessibility reference. 3+ years operating across multiple concurrent SDLC phases in matrixed, cross-regional organizations. Deque University Accessibility Specialist (2021). Strong in design review, in-sprint developer support and code remediation guidance for web, iOS and Android, working in agile squads across parallel workstreams.
 
 ## CORE COMPETENCIES
 

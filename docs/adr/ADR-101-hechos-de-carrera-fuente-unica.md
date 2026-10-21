@@ -79,6 +79,13 @@ Corre **sin condición** en pre-commit y CI. Verifica, contra el bloque `facts`:
 | Fechas de rol | El periodo del encabezado, con la precisión que el CV declare |
 | Certificación | "Deque = certification" o una credencial IAAP inexistente |
 | **Pendientes** | Un hecho marcado `pending` **frena el commit** |
+| **Claims sin respaldo** (2026-10-21) | Un bullet de experiencia que el corpus **no registra** se **avisa**. No frena: el corpus puede estar incompleto y la decisión es de Gonzo. |
+
+**El control 8 cierra una puerta que los otros siete no cubrían.** Los checks 1-7 comparan contra lo que el corpus **tiene**. Un hecho puede entrar a un CV por una puerta que no pasa por el corpus, y ahí no había nada que lo viera. Medido el 2026-10-21: los bullets de A/B testing estaban en 4 CVs y no en el corpus; el gate pasaba en verde. Ese control avisa, y con eso la decisión -ampliar el corpus o sacar el claim- queda en manos de quien decide, no del gate.
+
+Detalle que el control tiene que respetar: **una mención en §11 "Falta relevar" no es un hecho registrado**, es un hecho declarado desconocido. Anotar "A/B testing: pendiente de resolver" en §11 hace que el aviso **siga apareciendo**; si no, el pendiente se confundía con el hecho y el control se apagaba solo. Hay un test que lo fija (`test_claim_mentioned_only_in_falta_revelar_is_still_flagged`).
+
+**Cobertura de archivos.** El gate toma los `.md` cuyo nombre tiene `cv` como token separado por guiones (`cv-frontend-code-evaluator-…md`, `eit-cv-gonzalo-blasco-a11y.md`). El patrón `cv-*.md` se perdía los que llevan el prefijo adelante - y el CV de EIT/HTC, que se envió el 11/09, estaba fuera del control desde que el gate existe. Al ampliarlo aparecieron los dos errores que el gate fue creado para cazar: "9+ years" (contra 10+) y "roughly 5 years with accessibility" (un número de años de accesibilidad, que no se declara nunca).
 
 ### 4. La regla de freno (la parte que Gonzo pidió explícitamente)
 
