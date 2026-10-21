@@ -6,6 +6,26 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-21] - Vane con Ollama: desplegado, verificado end-to-end y con dos bugs upstream arreglados
+
+### Added
+- **Vane (motor de busqueda con IA, MIT) corriendo en Docker con Ollama como proveedor.** Repo upstream clonado en `projects/vane` (ItzCrazyKns/Vane v1.12.2), imagen local `vane-local:ollama` (3.05 GB) construida desde fuente. **Puerto 3005 en el host:** el 3000 ya lo tenia `onyx-nginx` (mapea a su :80). Provider `ollama` (la API nativa de Vane, no la OpenAI-compatible) apuntando al Ollama del host en `http://host.docker.internal:11434`, con SearxNG embebido en el mismo container (`:8080`) para cero setup. Bind mounts de `data/` y `uploads/` para poder inspeccionar y preconfigurar `config.json` sin entrar al container.
+- **Verificado end-to-end, no inferido:** busqueda real con **51 fuentes citadas** y respuesta en espanol (62 s), `/api/providers` con los 21 modelos que expone el Ollama del host, `/api/suggestions` (5 sugerencias), `/api/discover`, y el container `healthy` con **0 reinicios**. La UI se valido por HTTP (HTML servido, endpoints OK), **no visualmente**: el browser estaba bloqueado por policy en esa sesion.
+- **Configuracion y hallazgos documentados** en `projects/vane/.knowledge/` (`BRIEF.md`, `STATUS.md`, `HANDOFF.md`) y el servicio registrado en el inventario vivo (`scripts/ai-toolbox.py` + `docs/tools/REGISTRY.md`).
+
+### Fixed
+- **El `Dockerfile` upstream rompe el build por drift de versiones.** El stage final hace `RUN yarn add playwright` **sin `yarn.lock` a mano** (solo se copiaron `public/`, `.next/static` y `.next/standalone`), asi que yarn re-resuelve todo a la ultima semver y sube `next` de **16.2.2** (la fijada en `yarn.lock`, con la que se construyo la app) a **16.4.2**. La 16.4.2 exige `.next/server/preview-props.json`, un manifest que la 16.2.2 no genera (no tiene la constante `PREVIEW_PROPS_MANIFEST`): `ENOENT` y **crash loop** del container. Arreglo: `COPY --from=builder` de `playwright` y `playwright-core` (la version exacta del lockfile) y llamar al CLI directo (`node ./node_modules/playwright/cli.js install`). Regla general: **en el stage final nunca agregar dependencias; copiar las que el builder ya instalo con el lockfile.**
+- **El healthcheck quedaba `unhealthy` con la app funcionando.** El `server.js` de Next standalone hace `process.env.HOSTNAME || '0.0.0.0'`, y en Docker `HOSTNAME` vale el **ID del container**: Next bindeaba al hostname en vez de a `0.0.0.0` y la sonda contra `localhost:3000` fallaba con `exit=7` (connection refused). Arreglo: `HOSTNAME: '0.0.0.0'` en el `environment` del compose.
+- **`MEMORY.md` repetia el inventario de herramientas (11, con PR-Agent y Milvus, ya descartados).** Ahora cita al dueno del dato (`scripts/ai-toolbox.py`) en vez de repetir una lista que puede envejecer mal. Gate de fuente unica (`scripts/check-single-source.py`) en verde.
+
+### Notes
+- **"Usar Ollama" = el provider es Ollama, no que el modelo sea local** (aclara Gonzo). El provider `ollama` de Vane habla la API nativa (`/api/tags` + `/api/chat`); los modelos que el host expone incluyen los `:cloud` y los locales en MLX.
+- **Las embeddings cloud fallan:** `POST /api/embed` contra un modelo `:cloud` devuelve `unauthorized`. El embedding operativo es `qwen3-embedding:0.6b` (local); el chat probado fue `gpt-oss:120b-cloud`. Criterio fiable para distinguir cloud de local: el campo `remote_host` de `GET /api/tags`, no el sufijo del tag.
+- **El clasificador de Vane pone `skipSearch: true`** cuando la pregunta se responde con conocimiento general (ej. "que es HTTP y en que puerto"): en ese caso no busca y devuelve respuesta sin fuentes. **Es diseno, no bug**; para ver el pipeline de busqueda hay que usar consultas que requieran informacion actual.
+- **Ruido esperado en los logs:** SearxNG loggea warnings de motores bloqueados (`duckduckgo` con CAPTCHA, `bing news`, `wolframalpha` sin API key, `brave`, `wikipedia`). **No afectan la busqueda:** una consulta normal devolvio 43 resultados en SearxNG y 51 fuentes en Vane.
+
+---
+
 ## [2026-10-20] - AnythingLLM con Ollama: desplegado, verificado end-to-end y endurecido
 
 ### Added
