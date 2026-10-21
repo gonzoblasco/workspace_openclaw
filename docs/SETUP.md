@@ -120,31 +120,14 @@ La memoria del workspace tiene **dos clases de superficie**, y confundirlas llev
 - **Comandos:** `engram doctor` (health check), `engram search`, `engram tui`, `engram projects list`.
 - **Skill:** proposal `engram-project-memory-20260922-aebbba7411` pendiente de apply.
 
-## Onyx (self-hosted, LLM via Ollama) - 2026-10-20
+## Herramientas IA instaladas - 2026-10-20
 
-- **Repo:** `projects/onyx` (clone de `github.com/onyx-dot-app/onyx`). UI: **http://localhost:3000**.
-- **Que es:** capa de contexto/RAG de Onyx (OSS, MIT). Chat, agents, MCP server, sandbox de codigo.
-- **Modo:** **Lite** (`docker-compose.onyx-lite.yml`) - solo Postgres + api_server + web_server + nginx + mcp_server + code-interpreter. **~1 GB RAM.** Sin OpenSearch, sin Redis, sin model servers.
-- **Por que Lite:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB de la maquina) y convive con milvus, anythingllm y openhands. El stack completo (OpenSearch heap 2 GB + 2 model servers con torch) no entra comodo.
-- **LLM:** provider `ollama_chat` con `api_base=http://host.docker.internal:11434` - apunta al **Ollama del host**, no a un container. Default: `minimax-m3.1-flash:cloud`.
-- **Solo Ollama Cloud:** el provider expone **17 modelos, todos cloud** (`Ollama Cloud`, id=1). Los modelos locales del host (`gemma4:12b-mlx`, `qwen3.5:9b-mlx`, `qwen3-embedding:0.6b`, etc.) **no** estan en el provider, asi que Onyx no los elige y no consumen RAM. Ojo: el sufijo `:cloud` no es criterio suficiente (`gpt-oss:120b-cloud` y `mistral-large-3:675b-cloud` son cloud sin ese sufijo); la fuente de verdad es el campo `remote_host` de `GET /api/tags`.
-- **Comandos:**
-  ```bash
-  cd ~/projects/onyx/deployment/docker_compose
-  docker compose -f docker-compose.yml -f docker-compose.onyx-lite.yml up -d   # levantar
-  docker compose -f docker-compose.yml -f docker-compose.onyx-lite.yml ps      # estado
-  docker compose -f docker-compose.yml -f docker-compose.onyx-lite.yml logs -f api_server
-  docker compose -f docker-compose.yml -f docker-compose.onyx-lite.yml down    # parar
-  ```
-- **Credenciales:** `projects/onyx/.local/credentials.md` (excluido de git, NO versionar).
-- **Estado y fricciones medidas:** `projects/onyx/.knowledge/STATUS.md`.
-- **Trampas verificadas (no volver a tropezar):**
-  - El email de registro **no puede usar dominio `.local`** (`email_validator` lo rechaza -> 422). Usar `gonzo@gonzoblasco.com`.
-  - El **login tarda 15-80 s** (bcrypt con la CPU de Docker saturada): los timeouts cortos cortan un login que si iba a completarse.
-  - `DOCKER_SOCK_PATH=/Users/gonzoblasco/.docker/run/docker.sock` en `.env` (en macOS no existe `/var/run/docker.sock`).
-  - `code-interpreter` puede marcar `unhealthy` por timeout del `docker image inspect` con el daemon saturado: se recupera solo.
-  - `api_server` fue OOM-killed una vez (exit 137) por los containers ajenos: reinicia solo (`restart: unless-stopped`).
-- **Lo que falta:** indexacion/RAG/conectores apagados en Lite. Para activarlos: embeddings por `litellm` contra el endpoint OpenAI-compatible de Ollama (`/v1/embeddings`, verificado con `qwen3-embedding:0.6b`, dim 1024) + stack completo con Redis y OpenSearch.
+- **Registro:** `docs/tools/REGISTRY.md` (vista humana) + `scripts/ai-toolbox.py` (dueno de los datos y del estado real). Skill: `ai-toolbox`.
+- **Como se consulta:** `./scripts/ai-toolbox.py list` (que hay y que corre), `status <id>`, `up|down|restart <id>`.
+- **Que hay:** Ollama (nativo, motor LLM), Onyx, browser-use, PR-Agent, AnythingLLM, LiteLLM, Milvus, Vane, opencode, OpenHands.
+- **Ollama es el motor comun:** todos los stacks lo consumen via `host.docker.internal:11434` (nativo) o `:11434/v1` (OpenAI-compatible, para embeddings y proxies). El catalogo de modelos que hay instalados vive mas abajo en este archivo.
+- **Onyx** (`projects/onyx`): capa de contexto/RAG de equipo. UI en **http://localhost:3000**, modo **Lite** (6 servicios, ~1 GB RAM) porque Docker Desktop tiene **8 GB asignados** y conviven 8 stacks mas. LLM via provider `ollama_chat` con **solo modelos cloud** (17 visibles, default `minimax-m3.1-flash:cloud`). Detalle, trampas y credenciales: `projects/onyx/.knowledge/STATUS.md` y `projects/onyx/.local/credentials.md` (excluido de git).
+- **Trampas que se repiten:** el sufijo `:cloud` del tag NO dice si el modelo es remoto (la fuente es el campo `remote_host` de `GET /api/tags`); un `Up` de container no es "sirviendo" (la sonda HTTP es la que prueba); con 8 GB de RAM asignados, cualquier stack que sume OpenSearch o model servers compite por el mismo presupuesto.
 
 ## Red / remoto
 

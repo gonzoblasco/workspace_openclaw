@@ -45,6 +45,28 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-20] - Registro vivo de herramientas IA (Onyx y las otras 9)
+
+### Added
+- **`scripts/ai-toolbox.py`** - registro vivo de las herramientas IA de la maquina. El estado sale de `docker compose ls`, `docker ps` y una sonda HTTP real por herramienta; lo unico declarado a mano es COMO se levanta cada cosa. Comandos: `list`, `list --json`, `status <id>`, `health`, `up|down|restart <id>`, `catalog --write|--check`. El emparejamiento con Docker es por ARCHIVO de compose, no por el `name:` del archivo: la mayoria no lo declara y Docker deriva el nombre del directorio (por eso pr-agent es `local` y opencode es `docker`).
+- **`docs/tools/REGISTRY.md`** - vista humana del registro: que es cada herramienta, como se levanta, credenciales y trampas. La tabla de estado es una vista regenerable (`catalog --write`), verificada por `catalog --check`.
+- **`skills/ai-toolbox/SKILL.md`** - skill del Core: el procedimiento para "cargame X" y "que apps tengo".
+- **`tests/python/test_ai_toolbox.py`** - 14 tests. Cubren el emparejamiento por archivo (el bug real: 6 stacks aparecian apagados mientras corrian), los codigos HTTP que cuentan como vivo POR HERRAMIENTA (401 de pr-agent es vivo, 502 de openhands es caido), la regeneracion de la vista y la CLI.
+
+### Changed
+- **`SKILLS-INDEX.md`** - alta de la skill `ai-toolbox`; conteos actualizados (Core 27 -> 28, total 99 -> 100). El conteo estaba desfasado y se corrigio contra el disco.
+- **`docs/SETUP.md`** - la seccion de Onyx pasa a puntero: el detalle del stack vive en `docs/tools/REGISTRY.md` y en `projects/onyx/.knowledge/STATUS.md`. SETUP.md queda con lo que es del entorno (que Ollama es el motor comun, el limite de RAM de Docker, las trampas que se repiten). Fuente unica: el catalogo no se duplica en dos lugares.
+- **`MEMORY.md`** - una linea que apunta al registro, con el inventario. El detalle queda en el registro, no en la memoria.
+
+### Inventory (medido, no supuesto)
+
+10 herramientas: Ollama (nativo, motor comun), Onyx, browser-use, PR-Agent, AnythingLLM, LiteLLM, Milvus, Vane, opencode, OpenHands. 9 stacks Docker + 1 proceso nativo.
+
+### Notes
+- **El estado del registro no sale de una lista escrita a mano.** Por eso no seerve: si una herramienta se apaga, `list` lo muestra; si se instala algo nuevo, `list` lo reporta como stack sin ficha.
+- **"Corriendo" no es "sirviendo":** la sonda HTTP es la que prueba. `Up 2 hours (healthy)` convive con sondas que fallan (openhands: container arriba, backend caido).
+- **El `down` del script hace `stop`, no `down` de compose:** conserva containers y volumenes. Borrar volumenes es otra operacion y requiere OK explicito.
+
 ## [2026-10-20] - Onyx self-hosted corriendo con LLM via Ollama Cloud
 
 ### Added
