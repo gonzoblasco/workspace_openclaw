@@ -6,6 +6,36 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-21] - Paquete dealer: un producto único, tres repos dormidos y el modelo WordPress.com
+
+### Added
+- **`docs/ecosystem/CONSOLIDACION-PRODUCTO-DEALER.md`** - análisis que cierra el pedido de Gonzo ("basta de kanam store, kanam cars, kanam market; un único producto revendible como paquete cerrado"). Contiene el inventario verificado de los tres repos, el mapa de seis capacidades con lo que hay que construir de cero, las 6 decisiones cerradas, y el modelo de distribución estilo WordPress.com (`account` / `site` / `membership`).
+
+### Changed
+- **`MEMORY.md`: OnWheels y kanam-query pasan a DORMIDOS.** Sus entradas se reescribieron (no se anidaron: `MEMORY.md` estaba a 130 caracteres del cap). La nueva entrada canónica es **"Paquete dealer"**.
+- **D4 de OnWheels (regalo a Esteban, sin billing) queda derogada para el producto nuevo.** Esteban es ahora el **tenant 0** del paquete comercial; D4 sigue vigente sólo para el repo dormido.
+- **El producto nuevo se llama OnWheels.** Se descarta el prefijo `kanam-` (marca de autor, no de producto) y se reusa un nombre que ya existía, en vez de inventar marca.
+- **Precio definido: USD 150-250/mes por sitio**, capa gratuita limitada + trial de 15 días. MeLi e IA quedan **fuera** de lo gratuito.
+
+### Verified
+- **Los nombres del pedido no existen:** `grep -ril "kanam[-_ ]?(store|cars|market)"` sobre el workspace → 0; `gh repo list gonzoblasco --limit 200` → ninguno; `MEMORY.md` → ninguna entrada. La dispersión real son tres repos con nombres distintos, no tres marcas.
+- **`soporteml` y `kanam-query` son el mismo producto:** uno tiene 19.037 LOC y 25 Edge Functions, el otro 0 LOC y una spec. Y son complementarios con OnWheels: SoporteML no tiene un solo `POST /items` (sólo lee items ajenos), OnWheels no tiene una línea de MeLi.
+- **El documento adjunto es idéntico al ya analizado hoy** (`diff` byte a byte contra `pasted-text-1792597850483`), así que se reusa el veredicto de `VEREDICTO-CONECTOR-MELI.md` en vez de reanalizarlo.
+- **`soporteml/README.md` miente sobre el billing:** dice "EL-1 migrado de Stripe → Mercado Pago ✅" y `PLAN.md` dice "MP nunca operativo". El código real tiene sólo 3 funciones `stripe-*` y cero dependencias de mercadopago. Registrado como C4 en el documento; no se corrige (el repo está dormido).
+
+### Fixed
+- **`MEMORY.md` volvió a quedar bajo el cap con margen:** 19.326/20.000 (+674) tras reescribir dos entradas largas en vez de agregar una cuarta. `USER.md` sigue en 3.823/4.000.
+
+### Verified (segunda ronda, 2026-10-21 14:10)
+- **`onwheels.com.ar` está LIBRE** (`whois -h whois.nic.ar`). Alta/renovación/transferencia: **ARS 8.500** cada una (tabla de `nic.ar/es/dominios/aranceles`).
+- **`onwheels.com` está TOMADO desde 1997** (registrador Tucows, *client transfer prohibited*, vence 2026-12-30, sin sitio activo). `onwheels.app` y `onwheels.dev` también tomados. `onwheels.io`, `getonwheels.com`, `onwheelscloud.com`, `myonwheels.com` libres.
+- **Hostinger: KVM 4 (4 vCPU/16 GB) sale USD 12,99 intro y USD 28,99 al renovar.** KVM 2 (8 GB) queda corto para Postgres + worker + Next + proxy en una máquina. El valor promocional no es el costo real.
+- **Benchmark de precio:** Tiendanube en Argentina cobra ARS 27.999 / 79.999 / 244.999 (≈ USD 18 / 52 / 159). USD 150-250 pone el producto en la banda del plan más alto del líder local - defendible sólo por el canal MeLi.
+- **Hostinger tiene afiliados Y reseller master agreement, y son figuras distintas:** revender un dominio pone al paquete como responsable ante el cliente. Recomendación: referido, no reventa.
+- **Contradicción abierta:** `docs/learnings/infraestructura.md` dice que el VPS de Hostinger "se dio de baja" (2026-09-06) y `memory/inbox.md` #1 dice que hay n8n corriendo ahí. Sin host en `~/.ssh/config` ni acceso verificado. Registrado como bloqueante en el doc, sin resolver.
+
+---
+
 ## [2026-10-21] - TEAM International / tempo.io: nueva propuesta laboral, neto real y un hole en el gate de hechos
 
 ### Added
