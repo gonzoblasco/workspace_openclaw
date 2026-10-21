@@ -68,3 +68,9 @@ la barra de calidad de una descripcion de PR la pone Claude Code, no una persona
 
 ---
 
+## El filtro de idioma no se negocia con el CV: se negocia con la pregunta
+
+Staffy/Pfizer (2026-10-20): el screening se cerro en la etapa final por C1 conversacional, un requisito que el JD NO declaraba y que el pitch inicial de la reclutadora tampoco menciono. Preguntar por el nivel de ingles requerido en el PRIMER mensaje de un proceso LATAM con comunicacion diaria en ingles con clientes US: es la variable que mas rapido descarta y la que mas caro cuesta descubrir tarde. La honestidad sobre el nivel oral (B2 hablado, C1 escrito) no alcanza ante un filtro real de C1 conversacional: Writing C1 no compensa, son evaluaciones distintas.
+
+---
+

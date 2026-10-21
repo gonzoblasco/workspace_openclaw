@@ -17,7 +17,7 @@ Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde
 - **[bootstrap](./bootstrap.md)** - 1 lecciones
 - **[debugging](./debugging.md)** - 6 lecciones
 - **[docker](./docker.md)** - 4 lecciones
-- **[evaluacion](./evaluacion.md)** - 2 lecciones
+- **[evaluacion](./evaluacion.md)** - 3 lecciones
 - **[infraestructura](./infraestructura.md)** - 56 lecciones
 - **[integracion](./integracion.md)** - 2 lecciones
 - **[metodologia](./metodologia.md)** - 82 lecciones
@@ -31,4 +31,4 @@ Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde
 
 ## Total
 
-246 lecciones en total.
+247 lecciones en total.

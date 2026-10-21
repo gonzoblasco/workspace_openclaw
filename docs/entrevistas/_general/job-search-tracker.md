@@ -1,26 +1,27 @@
 # Job Search Tracker
 
-> **Estado 2026-10-20: 2 procesos vivos.** Staffy/Pfizer (nuevo, 20/10) e Infjini (abierto 16/10).
+> **Estado 2026-10-21: 1 proceso vivo (Infjini).** Staffy/Pfizer **cerrado 20/10** por filtro de inglés C1 conversacional.
 >
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
 
 ## Procesos activos
 
-| Empresa | Puesto | Contacto | Tarifa | Estado 2026-10-20 |
+| Empresa | Puesto | Contacto | Tarifa | Estado 2026-10-21 |
 |---|---|---|---|---|
-| Staffy (cliente no confirmado) | AI Software Engineer (1976) | Julieta Costa | USD 30-35/h, min 160h/mes | Screening respondido. Call de 30 min pendiente de coordinar. |
-| Infjini Inc | Lead Software Engineer - Digital Accessibility | Siraj Shaik | USD 22/h all-inclusive, 1 año | Esperando respuesta desde 16/10. |
+| Infjini Inc | Lead Software Engineer - Digital Accessibility | Siraj Shaik | USD 22/h all-inclusive, 1 año | **Desenlace del screening del 19/10 sin registrar en memoria.** Confirmar con Gonzo. |
 
-### Notas Staffy (2026-10-20)
+### Notas Staffy (2026-10-20) - PROCESO CERRADO
 
 - JD: https://jobs.wearestaffy.com/positions/ai-software-engineer-1976
-- **Discrepancia inicial:** Julieta describió React/TS/Next/Node/AWS/CI-CD; el JD pide Vue/Nuxt, PHP y Python profesionales, Figma avanzado, prototipado con v0/Bolt/Lovable, spec-driven (GitHub Spec Kit / Open Spec). Ella aclaró: PHP y Python son **AND/OR** (basta uno), y nombro **EY Motif** y **OpenSpec** - leyó el CV.
-- **Preguntas comerciales sin responder, para la call:** cliente final, quién es Pfizer en la cadena, si es producto o prototipado descartable, modalidad de facturación de las 160h.
-- CV: `docs/entrevistas/staffy-ai-software-engineer/` (docx + pdf).
+- **Desenlace (20/10, 17:42 ART):** Julieta propuso call de 30 min para el 21/10 y planteo el nivel de inglés. Al contestarle con honestidad (hablado B2, escrito C1, "a little rusty"), ella confirmó que **C1 conversacional es requisito clave** del rol (entrevista y comunicación diaria con clientes en US y Canadá) y cerró el proceso: *"Given what you've shared about your current speaking level, I think it would be best not to move forward with this opportunity at this stage."* Dejó puerta abierta para oportunidades futuras.
+- **Causa raíz:** el filtro de idioma se filtró al final del screening, no al principio. El JD no lo declaraba y el pitch inicial de Julieta no lo mencionaba. Con un puesto de 30-35/h, la pregunta "¿el cliente exige C1 conversacional?" era la que define el proceso, y tenía que llegar antes.
+- **Lo que sí se ganó:** contacto con una reclutadora que leyó el CV y dijo "your technical background is very strong". La relación queda para futuros procesos.
+- **Aprendizaje reutilizable:** para roles LATAM con comunicación diaria en inglés con clientes US, **preguntar por el nivel de inglés requerido en el PRIMER mensaje**. Es la variable que más rápido descarta y la que más caro cuesta descubrir tarde. El filtro de idioma no se negocia con el CV: se negocia con la pregunta.
 
-### Notas Infjini (2026-10-16)
+### Notas Infjini (2026-10-16) - **SIN DESENLACE REGISTRADO**
 
 - Oferta aceptada para avanzar. CV en `docs/entrevistas/infjini-infotech-lead-a11y/`.
+- Screening con Siraj confirmado para el **lunes 19/10, 11:00 hora México (14:00 ART) por Teams**. Los dailies del 19, 20 y 21 de octubre **no registran el resultado**: no hay nota, ni en `memory/2026-10-19.md` ni en `2026-10-20.md` ni en la DB. **Riesgo concreto:** es un puesto 9-5 ET con comunicación en inglés, de la misma clase que el de Staffy. Si ahí exigen C1 conversacional, aplica el mismo filtro. Confirmar el desenlace con Gonzo antes de invertir tiempo de preparación.
 - Precedente: es el mismo req que EIT/HTC/Disney (bench amplio). No insistir.
 
 ## Historial / cerrados

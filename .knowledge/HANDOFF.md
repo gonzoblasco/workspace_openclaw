@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-21 00:01 GMT-3
+**Fecha:** 2026-10-21 12:27 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,54 +12,25 @@
 
 ## Que se hizo en esta sesion
 
-Deploy de AnythingLLM v1.18.0 con Ollama en Docker, verificado end-to-end y endurecido.
-
-**Que se hizo:**
-- Repo clonado en ~/projects/anything-llm (HEAD feb0ebe8, 2026-10-19), solo lectura. Imagen oficial prebuilt mintplexlabs/anythingllm (arm64) en vez de compilar desde fuente.
-- Deploy aislado en ~/anythingllm-data/ (compose + .env + storage/), fuera del workspace. Contenedor en 127.0.0.1:3001 (solo loopback).
-- Ollama como PROVEEDOR: LLM `minimax-m3.1-flash:cloud` (cloud servido por la API de Ollama, con tools+thinking+vision), embeddings `qwen3-embedding:0.6b` (local), vector store LanceDB.
-- Verificado end-to-end: chat real (respondio 'Azul', model minimax-m3.1-flash:cloud, provider OllamaAILLM) y RAG real (documento subido, vectorizado, y respuesta con sources score 0.67).
-- Hardening aplicado tras revision adversarial: AUTH_TOKEN + JWT_SECRET (API paso de 200 abierto a 401), DISABLE_TELEMETRY, DISABLE_SWAGGER_DOCS, OLLAMA_MODEL_TOKEN_LIMIT 32768 -> 131072, OLLAMA_EMBEDDING_BATCH_SIZE 1 -> 8, mounts de collector/hotdir y collector/outputs, compose sin `version:` obsoleto.
-- Servidor parado con `docker compose stop` (datos intactos: 480K, anythingllm.db sano).
-
-**Hallazgos y trampas (importantes para retomar):**
-- El subagente que edito el .env trunco el SIG_KEY (copio la forma redactada). Si el container hubiera arrancado asi, la base quedaba ilegible. Detectado comparando contra el backup .env.bak.20261020-173023, restaurado y verificado identico (64 chars).
-- El .env lo REESCRIBE la app (dumpENV) cuando se guardan settings desde la UI. Orden obligatorio: down -> editar .env -> up. AUTH_TOKEN/JWT_SECRET/SIG_KEY/SIG_SALT estan en protectedKeys y sobreviven, pero el archivo se reordena.
-- CORS reflectivo sigue activo (Access-Control-Allow-Origin refleja cualquier Origin), pero el vector real quedo cerrado por el AUTH_TOKEN (401 sin credencial).
-- El health check que registraba ai-toolbox apuntaba a /api/health, endpoint que NO existe en AnythingLLM. Corregido a /api/ping.
-- Single-user mode: no hay pantalla de onboarding (markOnboarded.js marca completo al detectar LLM_PROVIDER). La password es el AUTH_TOKEN.
-- Falla intermitente 'too many concurrent requests' del cloud de Ollama cuando el RAG dispara embedding de query y completion a la vez. Reintentar funciona.
-
-**Estado final:** contenedor detenido, datos persistidos, ~/anythingllm-data/README.md con credenciales y trampas, docs/tools/REGISTRY.md y MEMORY.md actualizados.
+Staffy/Pfizer CERRADO por filtro de ingles C1 conversacional. Julieta Costa ofrecio call de 30 min para el 21/10 y planteo el nivel de ingles; Gonzo respondio con honestidad (hablado B2, escrito C1, 'a little rusty'). Ella confirmo que C1 conversacional es requisito clave (entrevista y comunicacion diaria con clientes US/Canada) y cerro: 'Given what you've shared about your current speaking level, I think it would be best not to move forward with this opportunity at this stage'. Dejo puerta abierta para oportunidades futuras y dijo que el background tecnico es muy fuerte. CAUSA RAIZ: el filtro de idioma se filtro al FINAL del screening, no al principio: el JD no lo declaraba y el pitch inicial de Julieta no lo mencionaba. APRENDIZAJE REUTILIZABLE: para roles LATAM con comunicacion diaria en ingles con clientes US, preguntar por el nivel de ingles requerido en el PRIMER mensaje. El filtro de idioma no se negocia con el CV: se negocia con la pregunta. Tracker actualizado (Staffy a historiales, 1 proceso vivo) y USER.md con 3787/4000 chars. ALERTA DE RIESGO: el screening de Infjini con Siraj era el lunes 19/10 a las 14:00 ART y NO hay desenlace registrado en los dailies del 19, 20 ni 21 ni en la DB: es un puesto 9-5 ET con comunicacion en ingles, misma clase que el de Staffy, asi que puede aplicar el mismo filtro. Queda pendiente confirmar con Gonzo.
 
 ## Estado actual
 
-AnythingLLM desplegado, verificado y endurecido en ~/anythingllm-data/. Contenedor parado (docker compose stop), datos intactos. LLM minimax-m3.1-flash:cloud via Ollama, embeddings qwen3-embedding:0.6b local, LanceDB. Password = AUTH_TOKEN del .env. Levantar: cd ~/anythingllm-data && docker compose up -d
+Un solo proceso vivo: Infjini (USD 22/h), sin desenlace registrado del screening del 19/10. Staffy cerrado. Tracker y USER.md actualizados. Cambios sin commitear.
 
 ## Proximos pasos
 
-- Levantar cuando haga falta: `cd ~/anythingllm-data && docker compose up -d` (o `python3 scripts/ai-toolbox.py up anythingllm` desde el workspace)
-- Opcional: cambiar el AUTH_TOKEN por algo mas memorable que Gonzo pueda tipear sin mirar (no se hizo sin que lo elija)
-- Opcional: backup programado del directorio storage/ (datos + .env con SIG_KEY/SIG_SALT)
-- Opcional: documentar en un .knowledge/ propio si el deploy deja de ser una tool mas del inventario
+1) Confirmar con Gonzo como termino el screening de Infjini del 19/10 (no hay registro). 2) Si Infjini pide presentacion oral en ingles, aplicar el mismo filtro C1 que cerro Staffy: decidir si se sostiene o se cierra antes de invertir tiempo de preparacion. 3) En el proximo proceso LATAM con comunicacion diaria en ingles con clientes US, preguntar el nivel de ingles requerido en el PRIMER mensaje, antes de invertir en CV y screening. 4) Commitear tracker + USER.md.
 
 ## Decisiones y contexto que no debe perderse
 
-- Decisiones tomadas por Gonzo: (1) usar Docker para no ensuciar el host; (2) Ollama como PROVEEDOR, no necesariamente con modelos locales - el LLM es cloud servido por la API de Ollama. El deploy quedo aislado en ~/anythingllm-data/ (fuera del workspace), no en projects/.
+- Ingles declarado B2, nunca C1: el proceso de Staffy lo uso como filtro real, no nominal. La honestidad sobre el nivel oral es lo que evita una call fallida; el costo fue perder el proceso, el beneficio es no descubrirlo tarde. La escritura en C1 no compensa un filtro de C1 conversacional: son evaluaciones distintas.
 
 ## Archivos tocados
 
 ```
-.knowledge/HANDOFF.md
-.knowledge/SESSIONS.md
-.knowledge/handoff-history/2026-10-20-1201-HANDOFF.md
-MEMORY.md
-docs/CHANGELOG.md
-docs/archive/CHANGELOG-archive.md
-docs/tools/REGISTRY.md
-memory/2026-10-20.md
-memory/memory.db
-scripts/ai-toolbox.py
+USER.md
+docs/entrevistas/_general/job-search-tracker.md
 ```
 
 ## Como continuar
