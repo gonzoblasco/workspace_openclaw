@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-20] - PR-Agent con Ollama: instalado, evaluado contra verdad de base humana y con veredicto negativo
+
+### Added
+- **`docs/evaluacion/pr-agent-2026-10-20.md`** - evaluacion completa de PR-Agent (The-PR-Agent/pr-agent v0.48.0) corriendo con modelos servidos por Ollama: que es (bot CLI/backend, no app ni marketplace), setup de la CLI nativa y de la variante Docker, medicion de calidad del review contra PRs publicos con revisiones humans como verdad de base, comparacion contra Claude Code para redactar descripciones de PR, las 8 trampas tecnicas verificadas y la metodologia reutilizable.
+- **Learning #288 (`docs/learnings/evaluacion.md`)** - "PR-Agent no sirve para redactar PRs: contra Claude Code con el mismo modelo pierde en contenido y rompe el formato".
+
+### Changed
+- **Entrada de `MEMORY.md` de pr-agent** - pasa a ser la via **CLI nativa** (uv + `.venv/bin/pr-agent`, config en `projects/pr-agent/pr_agent/settings/.secrets.toml`, corre sin env vars) con la variante Docker como secundaria. Se le agrega el veredicto de la evaluacion y el puntero al doc. Se acorto la linea para volver a estar bajo el cap de bootstrap (20967 -> 18574 chars de 20000).
+
+### Security
+- **`config.publish_output` NO es host-only en PR-Agent**: un `.pr_agent.toml` del repo revisado podria poner `publish_output=true` y publicar en GitHub pese al `false` del host. Cerrado con `use_repo_settings_file = false`, que el repo tampoco puede pisar.
+
 ## [2026-10-20] - Chatterbox TTS servido con la API de Ollama: implementado, verificado y borrado
 
 ### Added
