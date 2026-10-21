@@ -1,7 +1,6 @@
 # ADR-042: Stripe como proveedor de pagos unico reconocido
 
-**Status:** ⚠️ **SUPERSEDED (2026-10-21) por [ADR-103](./ADR-103-stripe-no-opera-argentina.md)** - la premisa "Stripe ya opera en Argentina" era **falsa**; el proveedor vuelve a elegirse por país del comprador. Se conserva entero como registro del error y de su corrección.
-**Vigente antes:** Accepted (2026-08-29) - revisado a fondo 2026-10-06
+**Status:** Accepted (2026-08-29) - revisado a fondo 2026-10-06
 **Deciders:** Gonzo / Kanam
 **Fecha:** 2026-08-29
 **Origen:** workspace (regla operativa fijada por Gonzo, 2026-08-29; revisada varias veces el 2026-10-06)

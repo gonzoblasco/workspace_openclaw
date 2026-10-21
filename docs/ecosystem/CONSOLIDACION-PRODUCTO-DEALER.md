@@ -131,7 +131,7 @@ escrito**, a cambio de no arrastrar dos stacks incompatibles y dos modelos de da
 |---|---|---|---|
 | C1 | **D4 de OnWheels: regalo para el local de Esteban, sin billing** (`docs/adr/`, `architecture.md`) | "Revender como paquete cerrado" exige billing y multi-dealer | **RESUELTA** (§7 D1): Esteban es tenant 0, el paquete es comercial. D4 queda derogada para el producto nuevo y vigente solo para OnWheels dormido. |
 | C2 | **kanam-query es greenfield e independiente, "bajo ningún concepto relacionado a SoporteML"** (corrección explícita de Gonzo, 2026-10-21 00:24, en su BRIEF) | Integrar todo pone a los dos en el mismo producto | **RESUELTA** (§7 D3): ambos quedan dormidos. El producto nuevo es greenfield y no hereda de ninguno. La restricción de Gonzo se cumple por partida doble: no hay relación, hay producto distinto. |
-| C3 | **ADR-042: Stripe es el proveedor único** | Este producto le vende a dealers argentinos, en pesos | **RESUELTA por ADR-103**: Stripe **no permite abrir cuenta de comercio en Argentina** (verificado). Mercado Pago vuelve a ser proveedor válido, y es el del producto. ADR-042 queda superseded. |
+| C3 | **ADR-042: Stripe es el proveedor único reconocido** | Este producto le vende a dealers argentinos, en pesos | **RESUELTA sin tocar ADR-042**: su punto 2 ya permite que un proyecto evalúe otro proveedor y lo registre. OnWheels usa **Mercado Pago** y lo registra en §10 bis. Stripe sigue vigente y **sí opera en Argentina** (Gonzo tiene cuenta; error mío corregido). |
 | C4 | `soporteml/README.md` dice *"EL-1 Billing migrado de Stripe → Mercado Pago Preapproval ✅"* y `PLAN.md` dice *"Billing MP - nunca operativo"* | El código real tiene **solo** `stripe-*` (3 funciones), ninguna dependencia de mercadopago, y `mp_webhook_events` en migraciones | **Dos verdades en el mismo repo.** El README miente sobre el estado del billing |
 
 C4 se corrige con una línea, pero es el caso testigo de la regla de fuente única: si el README de un
@@ -183,7 +183,7 @@ es que cada etapa deje algo en uso.
 |---|---|---|
 | **D7** | Nombre | **OnWheels** (§9). Sin prefijo `kanam-`. |
 | **D8** | Precio | **USD 80-200 por plan**; se define **solo el de 80** ahora, premium abierto. **Ningún precio es final** (§10). |
-| **D9** | Cobro | **Mercado Pago** (ADR-103). Stripe deja de ser proveedor único. |
+| **D9** | Cobro | **Mercado Pago** para este producto, registrado al amparo del punto 2 de ADR-042. Stripe sigue siendo el proveedor reconocido del ecosistema y **funciona en Argentina**. |
 | **D10** | Dominios | **`.com.ar` primero, `.io` después.** **No se registran todavía**: recién cuando haya algo que mostrar (landing). |
 | **D11** | Hosting | **Hostinger como referido**, no revendedor. Máquina: **KVM 2 actual**; KVM 4 se evalúa cuando el producto lo pida (§11.2). |
 | **D12** | Ritmo | **Sin apuro.** Side project de largo plazo, en paralelo a la búsqueda laboral y al TOEFL (§12). |
@@ -350,41 +350,40 @@ sueldo, compara con lo que gana o deja de perder. El argumento real, y es verifi
   respuesta- es la palanca directa: el producto mejora la métrica con la que MeLi rankea. Eso es valor
   medible por el propio marketplace, no una promesa nuestra.
 
-### Benchmark verificado (Tiendanube, 2026-10-21)
+### El benchmark de Tiendanube: sirve, pero no como comparación directa
 
-| Plan | ARS/mes | ≈ USD/mes |
+Tiendanube es la referencia de precio más cercana del mercado, pero **no vende lo mismo**, y comparar
+línea a línea sería deshonesto en las dos direcciones. Por 18 dólares Tiendanube da un marketplace con
+carrito, pagos y logística; por 80 este producto da **sitio propio con dominio, hosting, catálogo de
+vehículos, publicación en Mercado Libre, ingesta y respuesta de consultas, y un chat que responde con
+evidencia citada**. Son productos distintos que se parecen en la palabra "tienda".
+
+| Plan | ARS/mes | USD/mes (1 USD = 1.550 ARS) |
 |---|---|---|
 | Inicial | gratis | - |
-| Esencial | 27.999 | ≈ 18 |
-| Impulso | 79.999 | ≈ 52 |
-| Escala | 244.999 | ≈ 159 |
+| Esencial | 27.999 | 18,06 |
+| Impulso | 79.999 | 51,61 |
+| Escala | 244.999 | 158,06 |
 
-**Lectura honesta, con el 80 delante:** el plan de USD 80 es **4,4 veces** el plan de entrada de
-Tiendanube (18) y **1,5 veces su plan medio** (52). Y el premium de 200 queda por encima del plan más
-alto del líder local (159). Eso se sostiene **solo** si el producto hace algo que Tiendanube no hace:
-publicar y responder en Mercado Libre sobre un catálogo de vehículos.
+**Lo que el benchmark sí dice, y hay que escucharlo:** el mercado argentino tiene un techo de
+percepción instalado. Un dealer que ya paga 18 por una tienda va a preguntar por qué esto cuesta 80. La
+respuesta no es "porque hacemos más cosas" - eso lo dice cualquiera. La respuesta es el número de
+arriba: **una unidad extra vendida al año paga la suscripción**, y el canal MeLi es lo que la produce.
 
-El 80 no es un precio "barato": es cuatro veces la entrada del líder. Es defendible porque el
-benchmark no es una tienda online - es **lo que el dealer deja de perder** en consultas sin responder.
-Si se vende como "una tienda online más", el cliente tiene razón y se va por 18 dólares.
+**Lo que no se sostiene:** venderlo como "una tienda online mejor". Si el discurso es ese, el cliente
+tiene razón y se va por 18 dólares. El producto no compite con Tiendanube: compite con **el dealer
+contestando consultas a mano**.
 
-**Traducción operativa:** el diferencial obliga a que **el canal MeLi esté en el plan pago y funcione**.
-Es la razón por la que §8.2 excluye MeLi de la capa gratuita: si el diferenciador se regala, no queda
-producto que vender.
+### Sobre la IA: "la necesaria", no "ilimitada"
 
-### El plan de 80, en concreto
+El plan no promete IA ilimitada - promete **la IA necesaria para operar el sitio**: responder las
+consultas del catálogo y armar borradores de respuesta. Es un volumen acotado por la naturaleza del
+negocio (un dealer de vehículos no recibe miles de consultas por día), no un consumo sin techo.
 
-| Qué incluye | Límite propuesto |
-|---|---|
-| Sitio con dominio propio | 1 |
-| Catálogo | hasta ~80 unidades activas |
-| Canal MeLi | publicar + responder preguntas |
-| IA | N consultas/mes (a calibrar en Fase 0) |
-| Cuentas | 1 profesional + 1 operador |
-
-**Un aviso sobre el 80:** a ese precio el plan base no puede incluir IA ilimitada. Tiendanube cobra 18
-por su plan de entrada y **cobra aparte cada conversación de IA** (ARS 400 la más cara, ARS 190 la más
-barata). Es el modelo a copiar: el precio bajo compra el sistema, la IA se mide.
+Lo que sí hay que medir antes de publicar el precio es **cuánto cuesta una consulta real**: tokens de
+entrada (contexto del catálogo) + tokens de salida + embeddings de la base de conocimiento. Sin ese
+número, "la IA necesaria" es una expresión de deseo. Se mide en la Fase 0 con el catálogo de Esteban,
+que es el caso real.
 
 ### Lo que el precio todavía no cubre, y hay que medir en la Fase 0
 
@@ -396,43 +395,65 @@ barata). Es el modelo a copiar: el precio bajo compra el sistema, la IA se mide.
 | Infra (VPS) | conocido (§11) | USD 15-29/mes al renovar, fijo, no por tenant |
 
 **Regla que no se negocia:** el plan pago no se publica con precio final hasta tener el costo por
-consulta medido. A **USD 80** el margen es mucho más fino que a 150, así que el límite de consultas no es
-una buena práctica: es la condición para que el plan exista. La salida es un **límite de consultas por
-plan** (como hace Tiendanube con "usos de IA": 30 / 150 / ilimitado), nunca un precio más alto con uso
-ilimitado.
+consulta medido. A **USD 80** el margen es fino: saber ese número no es una buena práctica, es la
+condición para que el plan exista.
 
 ---
 
-## 10 bis. Cobro: Mercado Pago, y por qué Stripe no podía serlo
+## 10 bis. Cobro: Mercado Pago, porque el comprador es argentino
 
-**Decisión:** **Mercado Pago** es el proveedor del producto. Stripe deja de ser el proveedor único del
-ecosistema (**ADR-103**, que supersede ADR-042).
+**Decisión:** el producto cobra con **Mercado Pago**.
 
-Esto no es una preferencia estética: **Stripe no permite abrir una cuenta de comercio a una empresa
-argentina.** Verificado el 2026-10-21 en `stripe.com/global` (Argentina: 0 ocurrencias; Brasil y México
-sí figuran) y en tres fuentes independientes. El ADR-042 se había escrito sobre la premisa contraria, y
-esa premisa era falsa.
+**Y esto no necesita un ADR nuevo.** El **ADR-042** ya lo permite explícitamente en su punto 2: *"Si en
+el futuro un proyecto necesita otro [proveedor], se evalúa y se decide ahí (y se registra)"*. Stripe
+sigue siendo el proveedor reconocido del ecosistema; OnWheels evalúa, decide y **registra acá** su
+excepción. Eso es exactamente lo que la regla pide, y no hace falta tocar el ADR global.
 
-**Los argumentos a favor de Mercado Pago, en orden de peso real:**
+### Corrección de un error mío (2026-10-21, 15:19)
 
-1. **Cobra en pesos, con merchant account local.** La factura cierra y no hay sociedad en el exterior.
-2. **Suscripciones nativas** (`preapproval` + planes): cobro recurrente en ARS, reintentos automáticos,
-   período de prueba y prorrateo - verificado en su documentación.
-3. **Medios que el cliente ya usa**: dinero en cuenta, tarjeta de crédito y débito, Rapipago y Pago
-   Fácil. Para un concesionario del interior, eso es conversión real, no una casilla más.
-4. **Canal comercial**: el vertical es de contactos directos (el local de Esteban, el de la hermana, la
-   zona). Un proveedor que el cliente ya tiene instalado en el teléfono elimina una fricción de la
-   venta.
+Escribí un ADR-103 declarando que Stripe no opera en Argentina, a partir de que `stripe.com/global` no
+lista a Argentina. **Estaba equivocada, y el ADR ya está borrado.** Gonzo **abrió una cuenta de Stripe en
+Argentina**: el hecho del dueño vale más que mi lectura de una página de marketing. Lo que el workspace
+ya tenía registrado el 2026-10-06 apunta en la misma dirección (Stripe sumó Argentina en su changelog
+público del 2026-03-25, y SoporteML cobra con Stripe operativo desde Lovable).
 
-**El costo que hay que asumir y escribir:** el precio está pensado en USD y se cobra en ARS. Sin una
-**política de ajuste periódico** el margen se licúa solo. Tiendanube publica un ajuste trimestral
-(enero, abril, julio, octubre) y lo pone en sus términos; el producto necesita lo mismo, con la
-periodicidad que se decida.
+**La lección, que sí vale la pena guardar:** `stripe.com/global` es la página de disponibilidad
+comercial, no el listado de países donde se puede abrir una cuenta. Confundir una con otra me llevó a
+escribir un ADR sobre una premisa falsa y a contradecir un hecho verificado seis semanas antes. **Antes
+de declarar que una capacidad no existe, se pregunta a quien ya la usa.**
 
-**Cómo queda el modelo de datos:** igual que con Stripe, con `provider` como dato:
+### Por qué Mercado Pago igual, aunque Stripe funcione
+
+Los argumentos no son de disponibilidad, son de mercado:
+
+1. **Cobra en pesos con factura local.** El dealer paga en ARS y el comprobante cierra sin vueltas
+   cambiarias.
+2. **Suscripciones nativas** (`preapproval` + planes): recurrente en ARS, reintentos automáticos,
+   período de prueba, prorrateo. Verificado en su documentación.
+3. **Los medios que el cliente ya usa**: dinero en cuenta, tarjeta de crédito y débito, **Rapipago y
+   Pago Fácil**. Para un concesionario del interior, eso es conversión real.
+4. **Canal comercial directo**: el vertical se vende por contactos (el local de Esteban, el de la
+   hermana, la zona). Un proveedor que el cliente ya tiene en el teléfono elimina un paso de la venta.
+
+Stripe queda disponible como **segundo camino** el día que haya un cliente fuera de Argentina. El
+modelo de datos ya lo soporta sin tocar el dominio:
+
 `account.plan`, `billing_provider` (`mercadopago` | `stripe`), `external_customer_id`,
 `external_subscription_id`, `subscription_status`. Cero `if provider == ...` en la lógica de features.
-Eso permite sumar Stripe el día que haya un cliente fuera de Argentina sin tocar el dominio.
+
+### El costo que hay que escribir: precio en USD, cobro en ARS
+
+**Tipo de cambio de referencia del proyecto: 1 USD = 1.550 ARS** (dato de Gonzo, 2026-10-21). Con eso:
+
+| Concepto | ARS | USD |
+|---|---|---|
+| Dominio `.com.ar` (alta y renovación) | 8.500 | **5,48** |
+| Plan de entrada (precio del producto) | 124.000 | **80** |
+| Plan premium (techo de la banda) | 310.000 | **200** |
+
+Sin una **política de ajuste periódico** el margen se licúa solo. Tiendanube publica un ajuste
+trimestral (enero, abril, julio, octubre) y lo pone en sus términos: el producto necesita lo mismo, con
+la periodicidad que se decida.
 
 ---
 
@@ -507,10 +528,18 @@ Verificado en la FAQ oficial de n8n (2026-10-21). El test no es si el cliente *v
 controla la lógica**. Un workflow que nosotros escribimos y el cliente solo dispara, entra. Un
 "constructor de automatizaciones" para el dealer, no.
 
-**Para este producto la conclusión es simple:** n8n puede servir como **pegamento interno** (avisos,
-sincronizaciones, jobs de mantenimiento), nunca como la función que el dealer configura. El canal MeLi,
-que es el corazón del producto, **no** va en n8n: va en el código, con tests y con los estados
-explícitos que exige el camino de envío.
+**Para este producto, con la corrección de Gonzo:** n8n **sí puede gestionar el webhook** - recibir la
+notificación de MeLi, validar el payload y encolar el trabajo. Eso es exactamente el caso que la licencia
+permite: "solo tu backend habla con n8n, el usuario final no configura workflows". Y es una buena
+decisión de costo: la parte que más se rompe y más se cambia (parsear un payload que MeLi modifica, sumar
+un tipo de evento nuevo) queda en un lugar editable sin deploy.
+
+**La línea que sí no conviene cruzar está en el otro extremo del flujo:** el **envío de la respuesta**
+(`POST /answers`) va en código, con idempotencia por pregunta, máquina de estados (`queued` → `sending` →
+`confirmed`) y reconciliación del estado huérfano. No porque la licencia lo prohíba, sino porque ahí un
+error no se ve en un log: le llega duplicado a un comprador real y penaliza al dealer.
+
+Resumen de la frontera: **n8n recibe y encola; el código decide y envía.**
 
 ### 11.4 LangChain: qué lugar tiene (y cuál no)
 
