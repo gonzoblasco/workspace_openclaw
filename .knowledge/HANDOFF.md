@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-21 13:03 GMT-3
+**Fecha:** 2026-10-21 13:13 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,24 +12,26 @@
 
 ## Que se hizo en esta sesion
 
-Cierre de proceso Sol Bisio + verificacion/corregccion del plan de ingles C1. (1) SOL BISIO CERRADO 21/10: el cliente (sin nombre) exige C1 conversacional para esa posicion y el CV declara B2; Sol dijo que mando toda la info y que me tiene presente para proximas Full Stack. NO es rechazo de perfil tecnico. Archivos: docs/entrevistas/sol-senior-fullstack/sol-seguimiento.md (cronologia, causa, reglas que se sostienen, lectura estrategica, datos verificados del examen) + fila Sol en el tracker (cerrados, con condicion de relanzar sin filtro de C1). (2) SEGUNDO CIERRE POR MISMA CAUSA: Staffy (20/10, USD 30-35/h) ya estaba registrado por el mismo filtro C1 conversacional (commit 86c0203742). Dos cierres en dos dias, roles distintos. LECCION DE PROCESO: para roles LATAM con comunicacion diaria en ingles con clientes US, preguntar el nivel de ingles requerido en el PRIMER mensaje - el filtro aparece al final, cuando ya se armo CV, screening y prep de call. Con Sol esa pregunta estaba disponible el 14/10. (3) DATOS DUROS VERIFICADOS: Cambridge C1 Advanced = 4 papers, score = promedio de 5 component scores, el certificado NO caduca (valid indefinitely, Cambridge support 20/10/2026), arancel BAOC USD 350 (antes 365, verificar antes de budgeting). (4) CORRECCION DE FONDO al plan de ingles (studies/english/README.md, commit b7977a0690): la sesion paralela con Julieta afirmaba que 'un TOEFL es un numero 0-120 que hay que traducir' para responder 'tenes C1?'. Eso dejo de ser cierto en enero de 2026: ETS paso a escala 1-6 alineada con CEFR y el informe trae el nivel CEFR explicito, asi que AMBOS instrumentos dicen C1 en el papel. Agregados los datos verificados del TOEFL iBT (inscripcion US en Argentina, reschedule US, express US, cancelacion 50% con 4 dias, score report extra US, review Speaking/Writing US/US, Home Edition disponible en AR, validez 2 anos, aceptacion 12.500+ instituciones) + tabla de equivalencia CEFR (C1 = 5-5,5) + tabla de fuentes. (5) B2 SIGUE SIENDO EL DATO DURO: no se declaro C1 en ningun lado (gate check-cv-facts en verde, 5 CVs OK). Un C1 de papel que no se sostiene en una call es PEOR que un B2 honesto: mueve el rechazo mas lejos y lo hace mas caro. Commits 7a7c63a4cf, 50f5fbc603 y b7977a0690, los tres pusheados a main. Gates: check-refs OK (577 rutas), check-cv-facts OK (5 CVs), check-single-source OK, check-em-dash OK, check-bootstrap-budget OK.
+Propuesta laboral TEAM International / tempo.io (Sr Frontend Developer Growth, USD 5.000/mes contractor) analizada completa: analisis fiscal del neto real, revision adversarial del fit contra el corpus, guion de la call y actualizacion del tracker. Hallazgo central: el JD pide B2+ (no C1 como Staffy y Sol), asi que el patron de cierre por idioma NO se repite de forma identica, pero el pitch de David decia 'English Advance' y eso sigue siendo el riesgo #1. Neto real calculado contra fuentes oficiales: USD 4.140-4.270/mes (USD 25,9-26,7/h) - empate tecnico con Staffy, +18-21% contra Infjini, con el riesgo real en las horas (fijo por mes, no por hora). Al revisar el fit se destapo un HOLE en el gate de hechos: los bullets de A/B testing estaban en 4 CVs y no en el corpus, y el gate pasaba en verde porque compara contra lo que el corpus TIENE, no contra lo que NO tiene. Se agrego el control 8 (claims sin respaldo = aviso, no freno) con 5 tests, se corrigio que el CV de EIT/HTC estaba fuera del control desde el 20/10 (tenia 9+ years y un numero de anios de accesibilidad), y se registro en el corpus que los estudios formales no estaban 'sin registro' sino registrados en tres fuentes contradictorias. Commit 985441aacc, pusheado a main.
 
 ## Estado actual
 
-Cierre de Sol registrado (docs/entrevistas/sol-senior-fullstack/sol-seguimiento.md + tracker). Plan de ingles C1 en CUI con instrumentos y costos verificados (studies/english/README.md). B2 sigue siendo el dato duro en career-facts.md §7. Quedo pendiente de la sesion paralela: proceso TEAM International/tempo.io (carpeta sin commitear, con analisis fiscal y revision adversarial en curso) y su fila en el tracker.
+Proceso TEAM/tempo abierto y en evaluacion: call informativa de 10-15 min pendiente. 2 procesos vivos (Infjini, TEAM). 2 preguntas abiertas para Gonzo que bloquean el CV: origen de los bullets de A/B testing y como declarar Educacion (este JD si pide degree).
 
 ## Proximos pasos
 
-1) Inscribirse al examen CUI-ING C1 antes del 30/10 (mesa viernes 6/11, .000) - la inscripcion vence en 9 dias. 2) En paralelo, seguir postulando y aplicar la regla: preguntar el nivel de ingles conversacional en el PRIMER mensaje. 3) Practica de oral: el gap real es oral, no escrito - el material propio (PRs, ADRs) sirve mejor que un curso general. 4) Resolver los 2 puntos abiertos del proceso TEAM International/tempo.io (lo tiene abierto la sesion paralela): verdad de los bullets de A/B testing en career-facts.md y que formacion se declara (el JD exige degree en CS/SE). 5) Infjini sigue vivo (9-5 ET, comunicacion en ingles): misma clase de riesgo C1, preguntar el nivel en la primera call.
+1) Responder a David hoy con el texto de docs/entrevistas/team-international-tempo/guion-call-21-10.md (pregunta de idioma por la operacion + PTO + horas + educational allowance). 2) Resolver con Gonzo el origen de A/B testing: si es real va al corpus PRIMERO, si no sale de los 4 CVs. 3) Resolver con Gonzo como declarar Educacion para un JD que exige degree. 4) Mandar el CV solo si el idioma queda descartado como filtro; el cv-frontend-code-evaluator es el mas seguro (no declara A/B testing). 5) Preguntar al contador por la retencion del 10% sobre exportacion de servicios (no verificada) y por la retencion del 10% de exportacion, y tramitar el certificado MiPyME. 6) Verificar si TEAM paga el PTO a contractors: si no, el neto cae a ~USD 3.810/mes.
 
 ## Decisiones y contexto que no debe perderse
 
-- B2 es el dato duro hasta que exista el certificado en la mano; nunca C1 de papel. Cambridge C1 Advanced produce el papel que no caduca; el TOEFL ahora tambien declara CEFR explicito, asi que ambos sirven y el CUI-ING C1 es mas barato y evalua oral en entrevista individual. La regla de proceso (preguntar el nivel de ingles en el primer mensaje) sale de 2 casos y aplica a todo proceso LATAM remoto.
+- Se corrigio el mensaje propuesto por el revisor adversarial: preguntar directamente '¿el cliente exige C1 conversacional?' es auto-sabotaje (es el caso Staffy provocado a mano). La redaccion final ancla la pregunta en el 'B2+ in the JD' de ellos y pide el detalle operativo (cuanto ingles hablado a diario con Tempo). Se resolvio tambien que el gate de hechosdebia AMPLIARSE a un aviso por claims sin respaldo, no frenarlos: el corpus puede estar incompleto y esa decision es de Gonzo.
 
 ## Archivos tocados
 
 ```
-docs/entrevistas/_general/job-search-tracker.md
+memory/memory.db
+memory/todos.md
+studies/english/README.md
 ```
 
 ## Como continuar
