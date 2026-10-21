@@ -300,8 +300,9 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
   CUI (Centro Universitario de Idiomas, UBA) durante dos meses** y **después** rinde el examen
   **CUI-ING C1** ($140.000). El **TOEFL queda para 2027**. **Mientras tanto, sigue buscando.**
   Calendario, costos, fuentes y el plazo de inscripción al curso están en
-  `studies/english/README.md` (leído el 2026-10-21; el plazo vivo era la inscripción al curso,
-  no la del examen).
+  `studies/english/README.md` (leído el 2026-10-21). **Las fechas concretas del curso y de la mesa
+  de examen están pendientes de confirmar con el centro**: ese documento separa lo verificado de
+  lo supuesto. Lo que no es supuesto: dos meses de curso y después el examen, no al revés.
 - **Regla de proceso que sale de los 2 casos:** en el **primer mensaje** de cualquier proceso
   LATAM remoto, preguntar el **nivel de inglés conversacional que exige el cliente**. El filtro
   apareció al final en ambos casos, cuando ya se había armado CV, screening y prep de call.
