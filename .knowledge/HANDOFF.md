@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-21 13:13 GMT-3
+**Fecha:** 2026-10-21 13:33 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,26 +12,24 @@
 
 ## Que se hizo en esta sesion
 
-Propuesta laboral TEAM International / tempo.io (Sr Frontend Developer Growth, USD 5.000/mes contractor) analizada completa: analisis fiscal del neto real, revision adversarial del fit contra el corpus, guion de la call y actualizacion del tracker. Hallazgo central: el JD pide B2+ (no C1 como Staffy y Sol), asi que el patron de cierre por idioma NO se repite de forma identica, pero el pitch de David decia 'English Advance' y eso sigue siendo el riesgo #1. Neto real calculado contra fuentes oficiales: USD 4.140-4.270/mes (USD 25,9-26,7/h) - empate tecnico con Staffy, +18-21% contra Infjini, con el riesgo real en las horas (fijo por mes, no por hora). Al revisar el fit se destapo un HOLE en el gate de hechos: los bullets de A/B testing estaban en 4 CVs y no en el corpus, y el gate pasaba en verde porque compara contra lo que el corpus TIENE, no contra lo que NO tiene. Se agrego el control 8 (claims sin respaldo = aviso, no freno) con 5 tests, se corrigio que el CV de EIT/HTC estaba fuera del control desde el 20/10 (tenia 9+ years y un numero de anios de accesibilidad), y se registro en el corpus que los estudios formales no estaban 'sin registro' sino registrados en tres fuentes contradictorias. Commit 985441aacc, pusheado a main.
+Resolucion del pendiente de A/B testing (confirmado por Gonzo) + propagacion al corpus. GONZO CONFIRMO: en 2019, en su paso por Minutentag/EULAS, trabaJo con Adobe Target. HECHO AL DUENO PRIMERO (ADR-101): el hecho quedo registrado en memory/career-facts.md §2.4 (experimentacion en produccion con Adobe Target, experimentos sobre features y disenos contra segmentos de usuarios en vivo, en squads agiles junto a diseno y producto). Con eso, los 5 CVs que declaraban 'ran A/B experiments in production with Adobe Target' (Infjini, MercadoLibre, Sol, EIT/HTC, Staffy) quedan respaldados. MATIZ QUE SE RESPETO: lo que Gonzo confirmo es USAR la herramienta y participar de los experimentos, NO construir la infraestructura. El bullet 'Implemented A/B testing infrastructure powering data-driven product decisions' NO esta confirmado, asi que se SACO del markdown del CV de Infjini. Verificado que ese bullet nunca salio a la calle: no estaba en los DOCX ni PDF que se mandaron. PENDIENTE NUEVO registrado como TODO: los bullets 'Architected and built micro frontend architecture serving 2M+ monthly active users' y 'Developed shared component library used across 5 product teams' (mismo markdown de Infjini, tampoco en los DOCX) - el corpus dice 'participo de la migracion a React' y 'mejoro un sitio con 2M+ usuarios mensuales', sin atribuirle la arquitectura ni las bibliotecas. Si los confirma van al corpus primero; si no, salen del markdown. El control 8 del gate (claims sin respaldo = aviso, no freno, agregado por la sesion paralela en 985441aacc) fue lo que cazo esto: el gate comparaba contra lo que el corpus TIENE, no contra lo que NO tiene, y por eso pasaba en verde con un claim sin sostén. Gate check-cv-facts: OK 6 CVs. check-refs: OK 580 rutas. em-dash: OK.
 
 ## Estado actual
 
-Proceso TEAM/tempo abierto y en evaluacion: call informativa de 10-15 min pendiente. 2 procesos vivos (Infjini, TEAM). 2 preguntas abiertas para Gonzo que bloquean el CV: origen de los bullets de A/B testing y como declarar Educacion (este JD si pide degree).
+A/B testing resuelto: hecho en el corpus (§2.4) y propagado a los 5 CVs. Claim de 'implementar la infraestructura' sacado del markdown de Infjini (nunca salio a la calle). 2 procesos laborales vivos: Infjini (USD 22/h) y TEAM International/tempo.io (USD 5.000/mes, neto real ~USD 4.140-4.270/mes). Plan de ingles C1 en CUI: curso de 2 meses, inscripcion antes del 22/10/2026.
 
 ## Proximos pasos
 
-1) Responder a David hoy con el texto de docs/entrevistas/team-international-tempo/guion-call-21-10.md (pregunta de idioma por la operacion + PTO + horas + educational allowance). 2) Resolver con Gonzo el origen de A/B testing: si es real va al corpus PRIMERO, si no sale de los 4 CVs. 3) Resolver con Gonzo como declarar Educacion para un JD que exige degree. 4) Mandar el CV solo si el idioma queda descartado como filtro; el cv-frontend-code-evaluator es el mas seguro (no declara A/B testing). 5) Preguntar al contador por la retencion del 10% sobre exportacion de servicios (no verificada) y por la retencion del 10% de exportacion, y tramitar el certificado MiPyME. 6) Verificar si TEAM paga el PTO a contractors: si no, el neto cae a ~USD 3.810/mes.
+1) URGENTE: inscribirse al curso de ingles C1 del CUI antes del 22/10 (inscripcion al examen del 30/10 ya no aplica: el examen va despues del curso, Q1 2027). Antes: prueba de nivel. 2) Responder a David (TEAM/tempo) hoy con docs/entrevistas/team-international-tempo/guion-call-21-10.md. 3) Resolver con Gonzo como declarar Educacion para un JD que exige degree en CS. 4) TODO abierto: confirmar los 2 bullets de micro frontends / component library del markdown de Infjini (ya esta en la DB de todos). 5) Infjini: confirmar avance con Siraj (9-5 ET, comunicacion en ingles: preguntar el nivel de C1 en la primera call). 6) Preguntar al contador por la retencion del 10% sobre exportacion de servicios y tramitar el certificado MiPyME; verificar si TEAM paga el PTO a contractors (si no, el neto cae a ~USD 3.810/mes).
 
 ## Decisiones y contexto que no debe perderse
 
-- Se corrigio el mensaje propuesto por el revisor adversarial: preguntar directamente '¿el cliente exige C1 conversacional?' es auto-sabotaje (es el caso Staffy provocado a mano). La redaccion final ancla la pregunta en el 'B2+ in the JD' de ellos y pide el detalle operativo (cuanto ingles hablado a diario con Tempo). Se resolvio tambien que el gate de hechosdebia AMPLIARSE a un aviso por claims sin respaldo, no frenarlos: el corpus puede estar incompleto y esa decision es de Gonzo.
+- ADR-101 se respeta en orden: el corpus es la verdad y el perfil es un filtro. Un claim se declara solo si el dueno lo registra. Uso de la herramienta (Adobe Target, 2019) = real; construccion de la infraestructura = no confirmado y por lo tanto fuera. B2 sigue siendo el dato duro de idioma hasta que exista el certificado en la mano.
 
 ## Archivos tocados
 
 ```
 memory/memory.db
-memory/todos.md
-studies/english/README.md
 ```
 
 ## Como continuar
