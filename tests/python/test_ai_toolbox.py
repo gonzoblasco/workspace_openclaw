@@ -92,7 +92,12 @@ def run_script(args, cwd=None, env_extra=None):
 # --------------------------------------------------------------------------
 def test_tiene_entradas_basicas():
     mod = load()
-    assert len(mod.TOOLS) >= 10, "faltan herramientas en la tabla"
+    # NO se afirma un NUMERO de herramientas: el registro cambia (una
+    # herramienta se descarto, se sumo, se borro) y un conteo fijo rompe el
+    # CI sin que nadie haya roto nada. Lo que importa es que el registro
+    # NO este vacio y que las herramientas CORE esten. El mismo criterio
+    # que rompio el CI dos veces con rutas del host (ver CHANGELOG 2026-10-20).
+    assert mod.TOOLS, "el registro de herramientas esta vacio"
     ids = [t["id"] for t in mod.TOOLS]
     assert len(ids) == len(set(ids)), "hay ids repetidos"
     for t in mod.TOOLS:
@@ -100,6 +105,13 @@ def test_tiene_entradas_basicas():
         assert t.get("what"), f"{t['id']} sin descripcion"
         assert t.get("runtime"), f"{t['id']} sin runtime"
         assert t.get("note"), f"{t['id']} sin nota"
+
+
+def test_las_herramientas_core_estan():
+    """El nucleo del stack. Si algo falta, es un bug real, no un cambio de catalogo."""
+    mod = load()
+    for hid in ("ollama", "onyx", "browser-use", "anythingllm", "litellm"):
+        assert hid in mod.BY_ID, f"falta la herramienta core '{hid}'"
 
 
 def test_ollama_esta_y_es_nativo():
