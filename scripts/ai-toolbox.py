@@ -66,6 +66,19 @@ def _p(*parts: str) -> str:
 # --------------------------------------------------------------------------
 TOOLS: List[Dict[str, Any]] = [
     {
+        "id": "ollama",
+        "name": "Ollama",
+        "what": "Motor LLM. Nativo del host. Sirve los modelos :cloud por proxy y los locales en MLX.",
+        "kind": "native",
+        "runtime": "nativo (host)",
+        "port": 11434,
+        "compose": None,
+        "health": ("http://127.0.0.1:11434/api/tags", [200]),
+        "up": ["open", "-a", "Ollama"],
+        "down": ["osascript", "-e", 'quit app "Ollama"'],
+        "note": "Todos los stacks de abajo lo consumen via host.docker.internal:11434.",
+    },
+    {
         "id": "onyx",
         "name": "Onyx",
         "what": "Capa de contexto/RAG de equipo: chat, agents, MCP server y sandbox de codigo.",

@@ -21,9 +21,9 @@
 | Ollama | `ollama` | nativo (host) | 11434 | corriendo |
 | Onyx | `onyx` | docker compose (Lite: 6 servicios) | 3000 | corriendo |
 | browser-use | `browser-use` | docker (stdio, bajo demanda) | - | bajo demanda |
-| AnythingLLM | `anythingllm` | docker compose | 3001 | corriendo |
+| AnythingLLM | `anythingllm` | docker compose | 3001 | apagado |
 | LiteLLM | `litellm` | docker compose | 4000 | corriendo |
-| Vane | `vane` | docker compose | 3005 | corriendo |
+| Vane | `vane` | docker compose | 3005 | apagado |
 | opencode | `opencode` | docker compose | 4096 | corriendo |
 | OpenHands | `openhands` | docker compose | 8000 | corriendo |
 | Cline | `cline` | nativo (host, Bun 1.4.2) | 8787 | apagado |
