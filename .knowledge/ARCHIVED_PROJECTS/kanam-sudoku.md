@@ -1,5 +1,13 @@
 # Archived Project: kanam-sudoku
 
+> **REVIVIDO (2026-10-20).** Este archivo describe el estado del 2026-09-26, cuando
+> el proyecto se dio por archivado. **Ya no esta archivado:** Gonzo pidio un sudoku
+> local con 3 niveles de dificultad y se recupero el repo, que ya cumplia el
+> pedido. Vive de nuevo en `projects/kanam-sudoku`, con el repo publico
+> `github.com/gonzoblasco/kanam-sudoku` y el commit `a34d88c` (e2e con
+> navegador real + estado verificado). La fuente vigente del estado del proyecto
+> es `projects/kanam-sudoku/.knowledge/STATUS.md`, no este archivo.
+
 ## Summary
 This was a test project created on 2026-09-26, a Sudoku web app built with Vite, pure JavaScript, and no runtime dependencies (only dev dependencies for build). The repository was public at https://github.com/gonzoblasco/kanam-sudoku. Initial commit `784c9bd` created the scaffold, and further work was done in units U1‑U8.
 
