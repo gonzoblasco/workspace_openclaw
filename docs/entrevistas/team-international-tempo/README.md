@@ -10,18 +10,34 @@ Carpeta de trabajo del proceso. Índice:
 |---|---|---|
 | `analisis-fiscal-neto.md` | Cuánto valen realmente USD 5.000/mes brutos en Argentina como contractor (monotributo, Factura E, costos no cubiertos) | Hecho y verificado contra fuentes oficiales (21/10/2026) |
 | `revision-adversarial.md` | Encaje JD↔corpus, hallazgos por severidad, veredicto accionable y texto para la call | Hecho (con correcciones del CORE) |
+| `producto-y-rol-growth.md` | Qué es Tempo hoy, qué hace un Frontend Dev (Growth), stack probable, preguntas esperadas y para qué hacer | Hecho (investigación con fuentes, 21/10/2026) |
+| `prep-tecnica-growth.md` | Prep técnica: 13 preguntas con respuesta en inglés, historia de A/B testing, argumento transferible, 30/60/90, checklist | Hecho (revisado por el CORE) |
 | `cv-senior-frontend-growth-gonzalo-blasco.md` (+ `.pdf`) | CV en inglés, una página, orientado al JD | **ENVIADO 21/10.** Markdown + PDF + `cv-style.css` reusable |
-| `guion-call-21-10.md` | Texto listo para enviar a David y las 4 preguntas de la call | Hecho - **aún no enviado** (se mandará el CV primero, según decisión de Gonzo) |
+| `guion-call-21-10.md` | Texto listo para enviar a David y las 4 preguntas de la call | Hecho - **aún no enviado** (el CV fue primero, por decisión de Gonzo) |
 
 ---
 
-## Estado: esperando a David
+## Estado: entrevista agendada
 
 - **21/10, 13:3x** - Gonzo envió el **CV de una página tal cual** (decisión propia: "ya veremos qué respuesta tiene").
-- David **se desconectó**: sin respuesta al momento del cierre de la sesión.
-- **Próximo paso esperado:** respuesta de David y, con ella, la call informativa de 10-15 min.
-- **Si David pide la call:** el guion de `guion-call-21-10.md` tiene las 4 preguntas (idioma por la operación, alcance del contrato, PTO, educational allowance). La del idioma va apoyada en el "B2+ in the JD" y **no** pregunta "¿exige C1?" - preguntar eso es el auto-sabotaje del caso Staffy.
-- **Si David responde en días:** la regla del tracker es no insistir más de una vez por proceso.
+- **21/10, 14:14** - **Entrevista agendada: lunes 26/10/2026, 10:00 ART** (= 09:00 EST, en horario de US). David se había desconectado tras el envío; el CV fue lo que reabrió el proceso.
+- **Sin confirmar qué paso del proceso es** (call informativa con David / entrevista con el Frontend professional de TEAM / test / entrevista con cliente).
+
+### Tres hallazgos de la investigación que cambian la preparación
+
+1. **El aviso público del puesto NO menciona A/B testing, feature flags ni analytics.** Dice: *"develop some of our flagship products - Tempo Timesheets, Capacity Planner and Financial Manager for Jira Cloud"*, con requisitos genéricos de TS+React. O el JD que te pasó TEAM es una versión ampliada, o es otro req con el mismo título (Tempo postea el mismo rol en varias geos). **Llevá tu JD impreso y preguntá cuál es la versión vigente.**
+2. **El CSP de Forge bloquea los SDKs de analytics en el frontend.** Las apps corren en iframe y la CSP por defecto no permite scripts de orígenes externos (Google Analytics, Sentry): los eventos tienen que salir por `invoke()` al backend, con egress permissions declaradas. **Instrumentar no es copy-paste: es diseñar el pipeline de eventos.** Confirmado en docs de Atlassian. Es la pregunta de poder: muy pocos candidatos pueden hacerla.
+3. **El growth de Tempo es "seat utilization" dentro de la instancia de Jira del cliente**, no adquisición de usuarios: la licencia se ata al tamaño de la licencia de Jira. La métrica que mueve el negocio es cuántos asientos usan y cuántos módulos se adjuntan.
+
+### Si David pide la call informativa
+
+El guion de `guion-call-21-10.md` tiene las 4 preguntas (idioma por la operación, alcance del contrato, PTO, educational allowance). La del idioma va apoyada en el "B2+ in the JD" y **no** pregunta "¿exige C1?" - preguntar eso es el auto-sabotaje del caso Staffy.
+
+### Cosas que NO quedaron confirmadas
+
+- **El inicio del curso del CUI:** depende de la prueba de nivel del 21/10. Hay ciclos que arrancan el 26/10 (inscripción 7-22/10) y otros en noviembre (inscripción 5-19/11). El guion a David dice "this month", sin fecha.
+- **Qué herramientas de analytics y feature flags usan en Tempo:** cero evidencia pública. Preguntalo, no lo supongas.
+
 
 ---
 

@@ -43,7 +43,7 @@ excusa y pedí el detalle operativo.
 >
 > On my side: my written English is strong (documentation, code review, async work is where I am
 > most comfortable) and my spoken is solid B2 - upper intermediate. I am starting an advanced
-> English course at the CUI on October 26, and the C1 certification exam comes in 2027.
+> English course at the CUI this month, and the C1 certification exam comes in 2027.
 > ```
 
 **Por qué esta redacción y no otra:**
@@ -61,7 +61,7 @@ excusa y pedí el detalle operativo.
 - **No pide C1 ni menciona el certificado.** Preguntar el nivel de inglés no te deja marcado como
   "el del inglés débil" si lo presentás como logística.
 - **Cierra con la disponibilidad, no con la urgencia** (regla 4 de la voz): "I am starting an
-  advanced English course at the CUI on October 26" informa, no pide.
+  advanced English course at the CUI" informa, no pide.
 
 **Alternativa (más corta, para un chat de LinkedIn):**
 
@@ -71,7 +71,7 @@ excusa y pedí el detalle operativo.
 > Before we set up the call, one thing I want to be clear about: my written English is strong
 > (documentation, code review, async work is where I am strongest) and my spoken is solid B2,
 > which matches the B2+ in the JD. I am starting an advanced English course at the CUI on
-> October 26, and the C1 certification exam comes in 2027.
+> this month, and the C1 certification exam comes in 2027.
 >
 > Is B2+ the level you work with for this role, and how much of the daily work with Tempo is
 > spoken English?
@@ -108,7 +108,7 @@ ningún lado del contrato. Es la pregunta que más cambia el número y la más b
 
 > ```
 > * The educational allowance - I am starting an advanced English course at the CUI (Centro
->   Universitario de Idiomas) on October 26, and the certification exam comes in 2027. Would
+>   Universitario de Idiomas) this month, and the certification exam comes in 2027. Would
 >   courses like that be an approved use of the allowance? I saw the 65% threshold and the 12-month
 >   commitment clause, so I want to understand it before committing to anything.
 > ```
@@ -119,9 +119,13 @@ el umbral**, así que la cláusula de permanencia es un riesgo real si lo usás.
 comprometerte antes de saber si el proceso avanza** - si el idioma te cierra el proceso, firmaste
 un compromiso de 12 meses a cambio de nada.
 
-**Dato vigente (21/10):** Gonzo arranca el curso C1 del CUI el **26 de octubre** (2 meses, hasta el
-21/12) y el examen queda para **2027**. El TOEFL también para 2027. La inscripción al curso cierra
-el **22 de octubre** - ese es el plazo vivo, no la mesa de examen. Ver `studies/english/README.md`.
+**Estado real (21/10):** el inicio del curso **no está confirmado**. El calendario del CUI publica
+varios ciclos posibles y **cuál es el "C1 completo" depende de la prueba de nivel**, que Gonzo
+hace esta tarde (21/10). Lo que sí está verificado en la web del CUI: hay ciclos de 15 clases x 3 h
+que arrancan el 26/10, con inscripción del 7 al 22/10, y ciclos trimestrales de noviembre con
+inscripción del 5 al 19/11. **El examen queda para 2027** (la mesa del 6/11 es demasiado temprana si
+el curso termina en diciembre) y el TOEFL también para 2027. El plazo vivo es la inscripción al
+ciclo, y de cuál depende de lo que salga de la prueba de nivel. Ver `studies/english/README.md`.
 
 ---
 
