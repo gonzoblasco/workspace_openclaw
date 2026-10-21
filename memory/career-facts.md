@@ -120,6 +120,14 @@ Qué hizo:
   carrito).
 - Participó de la **migración a React** y mejoró un sitio con **2M+ usuarios mensuales**.
 - **Accesibilidad desde el inicio**: creció de junior a referente de accesibilidad del equipo.
+- **Experimentación en producción (2019):** trabajó con **Adobe Target** para correr experimentos
+  A/B sobre features y diseños contra segmentos de usuarios en vivo, dentro de squads ágiles
+  junto a diseño y producto. Hecho confirmado por Gonzo el 21/10/2026 (la duda estaba abierta en
+  §11: los CVs declaraban esto desde agosto 2026 sin que estuviera en el corpus).
+  **Alcance:** esto es **usar la herramienta y participar de los experimentos**, que es lo que
+  Gonzo confirmó. **No hay evidencia de que haya construido la infraestructura** de experimentación
+  del equipo: ese claim se sacó de los CVs (ver §11, punto 2). Si alguna vez Gonzo confirma que
+  la implementó, se agrega acá primero y después vuelve a los CVs.
 
 ### 2.5 Antes de 2016 - backend PHP, 2001 a 2008
 
@@ -356,12 +364,18 @@ Lo que el corpus todavía no tiene y no se debe inventar:
    2003-2004, Palermo Ing. en Informática 2001-2002 incompleta) que hay que confirmar con Gonzo
    antes de escribir cualquier línea de educación. **Lo que queda abierto:** el motivo de haber
    abandonado la carrera de Palermo, y si hay algún título o certificación de CS fuera de la lista.
-2. **A/B testing / experimentación (Minutentag):** dos bullets ("Ran A/B experiments in production
-   using Adobe Target..." e "Implemented A/B testing infrastructure...") aparecen en 4 CVs
-   (Infjini, MercadoLibre, Sol, EIT/HTC) pero **no están en este corpus**, y el CV de agosto 2026
-   que originó el de Infjini **no los tenía**. Son reales o no, y si son reales, hasta dónde
-   (implementar vs. usar la infraestructura del equipo). **PENDIENTE DE RESOLVER CON GONZO** antes
-   de volver a declararlos en cualquier CV. Ver `docs/entrevistas/team-international-tempo/guion-call-21-10.md`.
+2. **Arquitectura de micro frontends y biblioteca de componentes (Minutentag):** **PENDIENTE DE
+   RESOLVER CON GONZO.** El markdown del CV de Infjini declara que Gonzo "architect and built"
+   la arquitectura de micro frontends para 2M+ usuarios mensuales y que desarrolló una biblioteca
+   de componentes compartida por 5 equipos de producto. **El corpus no lo registra**: dice que
+   *participó* de la migración a React y que mejoró un sitio con 2M+ usuarios mensuales, sin
+   atribuirle la arquitectura ni las bibliotecas. Esos dos bullets **no están en los DOCX ni PDF
+   que se mandaron**, solo en el markdown fuente. Si no los confirma, salen del markdown; si los
+   confirma, van a §2.4 primero y después vuelven al CV (ADR-101).
+   **Lo que ya está resuelto y no vuelve a ser pregunta:** la primera mitad de este punto, el uso
+   de la herramienta de experimentación del equipo en 2019, está confirmado por Gonzo y
+   registrado en §2.4. El claim de haber construido la infraestructura de experimentación **no**
+   está confirmado, y ese bullet se sacó del markdown del CV de Infjini.
 3. **Fechas exactas de inicio y fin del PHP 2001-2008**: hay años, no meses.
 4. **Nombres de clientes o empleadores bajo NDA**, si los hubiera.
 4. **Referencias laborales**: quién puede hablar de su trabajo en EY o Super7UI.

@@ -68,7 +68,6 @@ Grew from junior to accessibility owner and mentor across three major US fashion
 - Mentored a junior developer - recognized by direct supervisor for fast delivery and strong team collaboration.
 - Architected and built micro frontend architecture serving 2M+ monthly active users.
 - Developed shared component library used across 5 product teams.
-- Implemented A/B testing infrastructure powering data-driven product decisions.
 
 ## CERTIFICATIONS
 

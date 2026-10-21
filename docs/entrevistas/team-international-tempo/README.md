@@ -46,5 +46,16 @@ Carpeta de trabajo del proceso. Índice:
 
 ## Preguntas abiertas para Gonzo
 
-- **A/B testing:** los bullets "Ran A/B experiments in production using Adobe Target" e "Implemented A/B testing infrastructure" aparecen en 3 CVs pero **no están en `memory/career-facts.md`**, y el CV de agosto 2026 que los originó **no los tenía**. ¿Son hechos reales de Minutentag? Hay que resolverlo antes de mandar cualquier CV con esos bullets.
+- **~~A/B testing~~ - RESUELTO 21/10/2026.** Gonzo confirma que en 2019, en Minutentag, **trabajó
+  con Adobe Target** corriendo experimentos sobre features y diseños en producción, en squads
+  ágiles con diseño y producto. El hecho ya está en el corpus (`memory/career-facts.md` §2.4) y
+  los 5 CVs que lo declaraban quedan respaldados. **Lo que NO está confirmado es el claim de
+  haber construido la infraestructura de experimentación**: ese bullet ("Implemented A/B testing
+  infrastructure powering data-driven product decisions") se sacó del markdown del CV de
+  Infjini. No estaba en los DOCX/PDF que se mandaron, así que no salió a la calle.
+  **Pendiente real que queda:** "Architected and built micro frontend architecture serving 2M+
+  monthly active users" y "Developed shared component library used across 5 product teams"
+  (markdown del CV de Infjini, tampoco en los DOCX). El corpus dice *participó de la migración a
+  React* y *mejoró un sitio con 2M+ usuarios mensuales*, sin atribuirle la arquitectura. Si no
+  los confirma, salen del markdown.
 - **Educación:** el JD exige *"Degree in Computer Science, Software Engineering, or related studies"*. El corpus dice que no hay título registrado; los CVs llevan Digital House + UADE Diseño Gráfico; el 14/10 Gonzo.validó "Universidad de Palermo - Ing. en Informática (2001-2002, dropped)". ¿Qué se declara acá?
