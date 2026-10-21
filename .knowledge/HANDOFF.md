@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-21 13:33 GMT-3
+**Fecha:** 2026-10-21 13:39 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,25 +12,19 @@
 
 ## Que se hizo en esta sesion
 
-Resolucion del pendiente de A/B testing (confirmado por Gonzo) + propagacion al corpus. GONZO CONFIRMO: en 2019, en su paso por Minutentag/EULAS, trabaJo con Adobe Target. HECHO AL DUENO PRIMERO (ADR-101): el hecho quedo registrado en memory/career-facts.md §2.4 (experimentacion en produccion con Adobe Target, experimentos sobre features y disenos contra segmentos de usuarios en vivo, en squads agiles junto a diseno y producto). Con eso, los 5 CVs que declaraban 'ran A/B experiments in production with Adobe Target' (Infjini, MercadoLibre, Sol, EIT/HTC, Staffy) quedan respaldados. MATIZ QUE SE RESPETO: lo que Gonzo confirmo es USAR la herramienta y participar de los experimentos, NO construir la infraestructura. El bullet 'Implemented A/B testing infrastructure powering data-driven product decisions' NO esta confirmado, asi que se SACO del markdown del CV de Infjini. Verificado que ese bullet nunca salio a la calle: no estaba en los DOCX ni PDF que se mandaron. PENDIENTE NUEVO registrado como TODO: los bullets 'Architected and built micro frontend architecture serving 2M+ monthly active users' y 'Developed shared component library used across 5 product teams' (mismo markdown de Infjini, tampoco en los DOCX) - el corpus dice 'participo de la migracion a React' y 'mejoro un sitio con 2M+ usuarios mensuales', sin atribuirle la arquitectura ni las bibliotecas. Si los confirma van al corpus primero; si no, salen del markdown. El control 8 del gate (claims sin respaldo = aviso, no freno, agregado por la sesion paralela en 985441aacc) fue lo que cazo esto: el gate comparaba contra lo que el corpus TIENE, no contra lo que NO tiene, y por eso pasaba en verde con un claim sin sostén. Gate check-cv-facts: OK 6 CVs. check-refs: OK 580 rutas. em-dash: OK.
+Cierre de la sesion del proceso TEAM International / tempo.io. (1) A/B TESTING RESUELTO por Gonzo: en la temporada final de 2019 en Minutentag/EULAS uso Adobe Target para correr experimentos A/B, implementando las variantes como snippets de JavaScript nativo probados contra usuarios reales. Quedo registrado en el corpus (career-facts.md §2.4) CON ese alcance: implementar las variantes client-side, NO construir la infraestructura de experimentacion ni configurar la herramienta. El claim 'Implemented A/B testing infrastructure powering data-driven product decisions' quedo SIN confirmar y salio de los 4 CVs (Infjini, MercadoLibre, Sol, EIT/HTC). (2) CV OPTIMIZADO entregado: una pagina A4, markdown + PDF + cv-style.css reusable, en docs/entrevistas/team-international-tempo/. El subagente STUDIO redacto una version con relleno de folleto en el summary ('scalable frontend architectures', 'proven track record') y metio dos bullets SIN respaldo que el corpus tiene pendientes (arquitectura de micro frontends y shared component library para 5 equipos): ambos salieron del CV. El summary se reescribio alrededor de ownership y evidencia (11 PRs mergeados, WCAG 2.2 AA en 50+ componentes, pipeline de a11y que frena el merge, AI-first con sistema propio, delivery end-to-end). Se agrego el bullet de A/B testing con el alcance confirmado. (3) GATE: se fijo un falso positivo del control 8 (el needle 'java' matcheaba 'JavaScript' y avisaba en cada CV que lista JavaScript): ahora es regex de palabra completa (\bjava\b, \bkotlin\b) y el matching paso a re.search. (4) DECISION DE GONZO: enviar el CV de una pagina tal cual, sin esperar la call informativa, y ver que responde. David se desconecto: sin respuesta al momento del cierre. Tracker y README del proceso actualizados con el estado de espera. Commits 970af3332f y da1473bd32, CI en verde, pusheados a main.
 
 ## Estado actual
 
-A/B testing resuelto: hecho en el corpus (§2.4) y propagado a los 5 CVs. Claim de 'implementar la infraestructura' sacado del markdown de Infjini (nunca salio a la calle). 2 procesos laborales vivos: Infjini (USD 22/h) y TEAM International/tempo.io (USD 5.000/mes, neto real ~USD 4.140-4.270/mes). Plan de ingles C1 en CUI: curso de 2 meses, inscripcion antes del 22/10/2026.
+2 procesos vivos: Infjini y TEAM/tempo.io. En TEAM, CV enviado el 21/10 y esperando respuesta de David (se desconecto). Sin call informativa aun. Quedan abiertas 2 decisiones de Gonzo: (a) como declarar Educacion para un JD que exige degree en CS/afin (no hay titulo completo; el CV declara Digital House + UADE + Deque), y (b) el alcance del rol en la libreria de componentes de Minutentag, que sigue pendiente en el corpus. Ademas sigue abierto el plazo del 22/10 para la inscripcion al curso C1 del CUI.
 
 ## Proximos pasos
 
-1) URGENTE: inscribirse al curso de ingles C1 del CUI antes del 22/10 (inscripcion al examen del 30/10 ya no aplica: el examen va despues del curso, Q1 2027). Antes: prueba de nivel. 2) Responder a David (TEAM/tempo) hoy con docs/entrevistas/team-international-tempo/guion-call-21-10.md. 3) Resolver con Gonzo como declarar Educacion para un JD que exige degree en CS. 4) TODO abierto: confirmar los 2 bullets de micro frontends / component library del markdown de Infjini (ya esta en la DB de todos). 5) Infjini: confirmar avance con Siraj (9-5 ET, comunicacion en ingles: preguntar el nivel de C1 en la primera call). 6) Preguntar al contador por la retencion del 10% sobre exportacion de servicios y tramitar el certificado MiPyME; verificar si TEAM paga el PTO a contractors (si no, el neto cae a ~USD 3.810/mes).
+1) Esperar la respuesta de David. Si pide la call, usar el guion de guion-call-21-10.md (4 preguntas: idioma por la operacion apoyada en el 'B2+ in the JD', alcance del contrato/horas, PTO, educational allowance). (2) Si responde en dias: no insistir mas de una vez por proceso (regla del tracker). (3) Resolver con Gonzo la declaracion de Educacion antes de cualquier CV que pida degree. (4) Resolver el alcance del rol en la libreria de componentes de Minutentag (confirmado o sale de los CVs). (5) Consultar al contador por la retencion del 10% sobre exportacion de servicios (no verificada, ~USD 500/mes) y tramitar el certificado MiPyME para eximir el derecho de exportacion. (6) Verificar si TEAM paga el PTO a contractors: si no, el neto cae de ~USD 4.140 a ~USD 3.810/mes. (7) Antes del 22/10: prueba de nivel en el CUI e inscripcion al ciclo de curso.
 
 ## Decisiones y contexto que no debe perderse
 
-- ADR-101 se respeta en orden: el corpus es la verdad y el perfil es un filtro. Un claim se declara solo si el dueno lo registra. Uso de la herramienta (Adobe Target, 2019) = real; construccion de la infraestructura = no confirmado y por lo tanto fuera. B2 sigue siendo el dato duro de idioma hasta que exista el certificado en la mano.
-
-## Archivos tocados
-
-```
-memory/memory.db
-```
+- SeLearning registrada: un claim de experiencia que el redactor mete sin respaldo (micro frontends, shared component library) es exactamente el failure mode que el control 8 del gate esta para cazar, y aparece en CVs nuevos. La regla quedo: si el corpus no lo tiene, primero la pregunta a Gonzo, despues el corpus, despues el CV. Y sobre el A/B testing: la distincion util para el growth role NO es 'experimento' vs 'no experimento' sino 'uso la herramienta e implemento las variantes' vs 'construyo la infraestructura' - que es la distincion que un hiring manager de growth va a interrogar.
 
 ## Como continuar
 
