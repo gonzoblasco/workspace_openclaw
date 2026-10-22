@@ -23,10 +23,11 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Changed
 - **El gate esta en el pre-commit, pero SOLO en modo post** (valida los posts staged). El modo auditoria **no** se conecta a proposito: con el backlog medido (5 drafts vencidos, 2 merges sin post) bloquearia TODO commit del workspace. Un guard que bloquea todo es una pared, no un guard.
-- **La spec `docs/specs/oss-linkedin-chain-spec.md`** pasa a "Fase 0 HECHA". El diagnostico se corrijo con lo que el gate revelo y no con mi estimacion: **5** drafts (no 4), **1** post con `Status: PUBLICADO` (no 2), **4** posts sin campo `Status`, y los headers inconsistentes (4 en espanol, 3 en ingles).
+- **La spec `docs/specs/oss-linkedin-chain-spec.md`** pasa a "Fase 0 HECHA", y su diagnostico se corrige: el cuello de botella **no era la aprobacion**, era que la publicacion no ocurre. El diagnostico se corrijo con lo que el gate revelo y no con mi estimacion: **5** drafts (no 4), **1** post con `Status: PUBLICADO` (no 2), **4** posts sin campo `Status`, y los headers inconsistentes (4 en espanol, 3 en ingles).
 
 ### Measured
 - El gate de cierre, en el estado real: **5 drafts vencidos** (4 de 21 dias, 1 de 15), **2 merges elegibles sin post**, **1 solo post con `Status: PUBLICADO`** de 10. El ROADMAP 2.2 pide 3+ publicados.
+- **El OK no era el cuello de botella** (Gonzo, 2026-10-22): los 5 drafts ya tenian el OK y se publicaron a mano, pero **el `Status:` de ninguno se volteo**. O sea, la falla real es que **la publicacion no la dispara nadie y el archivo no registra la verdad** - el mismo defecto que la skill ya habia documentado el 2026-09-14 con el post de #9878. Por eso el gate no presume la causa: dice las dos (falta publicar, o se publico y el archivo miente).
 - De los 11 merges mergeados: **10 son de a11y y 1 de CI**. **Ninguno del nicho agentic ni del fullstack**: de los 3 nichos de branding, solo el a11y tiene material propio.
 
 ### Gates

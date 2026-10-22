@@ -26,7 +26,10 @@ Que verifica:
   5. PATRONES: las 6 categorias del `anti-ai` original, como ADVERTENCIA con conteo.
 
   MODO AUDIT (por defecto), el gate de CIERRE de la cadena:
-  6. DRAFTS VENCIDOS: un post en `draft` que lleva mas de N dias esperando.
+  6. DRAFTS VENCIDOS: un post en `draft` que lleva mas de N dias sin publicarse. El gate NO presume
+     por que esta ahi: puede ser que falte publicarlo, o que se publico a mano y el `Status:` no se
+     volteo (el caso real del 2026-10-22: 5 drafts con el OK ya dado, publicados a mano, `Status:` sin
+     tocar). Los dos son el mismo defecto: **el archivo no registra la verdad**.
   7. MERGES ELEGIBLES SIN POST: un PR mergeado propio (la DB `contributions` es la fuente) que no
      tiene post. Esto es lo que el ROADMAP 2.2 mide como "1 post por merge dentro de la semana".
 
@@ -259,8 +262,10 @@ def audit_chain(stale_days: int, root: Path = None) -> list[str]:
         age = (now - mtime).days
         if age >= stale_days:
             problems.append(
-                f"Draft vencido: {p.name} lleva {age} dias esperando publicacion "
-                f"(umbral: {stale_days} dias)."
+                f"Draft vencido: {p.name} lleva {age} dias sin publicarse "
+                f"(umbral: {stale_days} dias). Si ya se publico a mano, el `Status:` de este "
+                f"archivo esta mintiendo: voltea a `PUBLICADO <fecha>`. Si no se publico, "
+                f"decidir: publicar o archivar."
             )
 
     # 7. Merges elegibles sin post.

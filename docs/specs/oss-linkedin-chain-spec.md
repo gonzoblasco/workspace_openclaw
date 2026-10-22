@@ -39,7 +39,7 @@ funcione sola".
 
 | # | Hecho medido | Fuente |
 |---|---|---|
-| 1 | **5 drafts esperando OK** (4 desde el 2026-10-01, 1 desde el 2026-10-07). Ninguno se publico | `stat` de `docs/linkedin/*.md` |
+| 1 | **5 drafts sin publicar** (4 desde el 2026-10-01, 1 desde el 2026-10-07). **El OK ya estaba dado** (Gonzo, 2026-10-22): no se publicaron, a mano, y el `Status:` nunca se volteo. O sea: el cuello de botella **no es la aprobacion, es que la publicacion no ocurre** y el archivo no registra la verdad | `stat` de `docs/linkedin/*.md` + confirmacion de Gonzo |
 | 2 | **2 merges sin post**: `adobe/react-spectrum #10503` y `carbon-design-system/carbon #22887`. Los dos son **a11y**, o sea material valido por la regla | `gh api` + DB `contributions` |
 | 3 | **1 de 10 posts tiene `Status: PUBLICADO`** (`astryx-5419.md`). Los otros: 5 drafts y **4 sin campo `Status`** (que no se sabe si son publicados o no - el archivo miente). El ROADMAP 2.2 pide 3+ publicados y "1 post por merge dentro de la semana" | `docs/linkedin/` |
 | 3b | **11 PRs mergeados distintos** en la DB (12 filas, con un duplicado): 10 de a11y + 1 de CI. **Ninguno del nicho agentic ni del fullstack** | `memory.db` tabla `contributions` + titulos via `gh api` |
@@ -58,9 +58,11 @@ funcione sola".
 El paso 7 dice "commit and push" y el paso 8 dice "flipear el status a publicado". Pero un post
 publicado **en LinkedIn** no es un commit: es una accion externa. Y el primer dia que un post quedo
 publicado y su archivo seguia diciendo `draft para revision de Gonzo` (verificado por la propia skill
-el 2026-09-14), el archivo se quedo mintiendo. **Cuatro drafts llevan tres semanas esperando un OK
-que el flujo no pide de forma explicita.** Ese es el cuello de botella, y no lo arregla un grafo
-mas inteligente: lo arregla un gate que exija la publicacion y su registro.
+el 2026-09-14), el archivo se quedo mintiendo. **Y el caso se repitio el 2026-10-22, con otro
+alcance:** Gonzo dio el OK de los 5 drafts y los publico a mano, y **el `Status:` de ninguno se
+volteo**. No es que falte aprobacion: es que la publicacion no la dispara nadie y el archivo no
+registra la verdad. Ese es el cuello de botella, y no lo arregla un grafo mas inteligente: lo
+arregla un gate que exija la publicacion y su registro.
 
 **Y hay una ironia util:** los dos merges sin post (#10503, #22887) son **los dos unicos casos
 documentados de post publicado con exito**. O sea, el material mas valioso ya se identifico, se
@@ -201,7 +203,7 @@ exactamente en el paso 3 (leer la historia) y el paso 5 (escribir).
 
 - [ ] Los 2 merges a11y sin post tienen archivo, con el shape de `astryx-5419.md` y pasan `scripts/check-linkedin-pipeline.py --post`
 - [ ] Los 4 posts sin campo `Status` declaran su estado real (publicado o draft) - un archivo que no dice si se publico es un archivo que miente
-- [ ] El gate de cierre existe y corre, y detecta el caso de los 4 drafts actuales
+- [ ] El gate de cierre existe y corre, y detecta el caso de los 5 drafts actuales (abandonados, con el OK ya dado)
 - [ ] La skill de MIND no apunta a un gate inexistente ni a un archivo equivocado
 - [ ] **Un post nuevo recorre el grafo de punta a punta**, y se puede mostrar el estado reanudable
 - [ ] El grafo **nunca** publica: el paso de publicacion queda esperando OK de Gonzo
