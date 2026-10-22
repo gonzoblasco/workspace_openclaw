@@ -13,17 +13,19 @@
 
 ## Post (versión borrador)
 
-I just got a PR merged into **React Spectrum** that fixes a subtle **VoiceOver** bug in the `ComboBox` component. The issue (#10220) was that VoiceOver on Apple devices would announce only the item name when navigating, losing richer native details such as the selected state, role, and item count.
+I just got a PR merged into **React Spectrum** that fixes a subtle **VoiceOver** bug in the `ComboBox` component. The issue (#10220) was that VoiceOver on Apple devices would announce only the item name when navigating, losing richer native details such as the selected state, role, and item count. 🌿
 
-**What happened?** The `useComboBox` hook emitted a live-region announcement for every focused-item change. Modern VoiceOver already provides per-item details natively, so the live region overwrote that native speech, resulting in a degraded experience for screen-reader users.
+**What happened?** The `useComboBox` hook emitted a live-region announcement for every focused-item change. Modern VoiceOver already provides per-item details natively, so the live region overwrote that native speech - a degraded experience for screen-reader users.
 
 **How we solved it.** We gated the manual announcement so it only fires when the focus moves into a *new section* - a point where VoiceOver is silent and the section title + option count are not announced natively. Arrowing within the same section now lets VoiceOver handle the announcement, restoring the richer native feedback.
 
-**Why it matters.** This change preserves the full semantic context for users of VoiceOver, ensuring they hear not just the item name but also its selection state and grouping. It keeps the announcement semantically correct instead of merely louder, and it removes the degraded experience that the live region was creating for VoiceOver users.
+The counterintuitive part: the fix was to announce *less*. The live region existed to add information, and it was the thing destroying information.
 
-The review process was the interesting part. I had updated the combobox tests to assert that per-item navigation no longer triggers a manual announcement, and the maintainer pushed back twice: the first version of those assertions was, in their words, the same thing as `not.toHaveBeenCalled` dressed up differently, and the second round of feedback asked whether those tests covered anything other tests did not cover. The resolution was to **drop the tests entirely** - once the announcement moved to section changes, there was nothing left for them to assert. The suite now passes **259 tests** (218 in `@adobe/react-spectrum` and 41 in `react-aria-components`).
+**The review process was the interesting part.** I had updated the combobox tests to assert that per-item navigation no longer triggers a manual announcement, and the maintainer pushed back twice: my first version was, in their words, the same thing as `not.toHaveBeenCalled` dressed up differently, and the second round asked whether those tests covered anything other tests did not. The resolution was to **drop the tests entirely** - once the announcement moved to section changes, there was nothing left for them to assert. The suite now passes **259 tests** (218 in `@adobe/react-spectrum` and 41 in `react-aria-components`).
 
-**PR:** https://github.com/adobe/react-spectrum/pull/10503
+PR: https://github.com/adobe/react-spectrum/pull/10503
+
+I'm not stopping there - I've got a follow-up in review aligning the screen reader focus indicator with Checkbox and Radio.
 
 #accessibility #a11y #reactjs #typescript #opensource #frontendengineering #uiux #screenreader #webdev #componentlibrary #reactspectrum #frontend
 

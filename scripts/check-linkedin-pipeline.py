@@ -129,17 +129,27 @@ INVISIBLE_GLYPHS = {
 
 
 def _post_body(text: str) -> str:
-    """El contenido publicable: lo que va despues del header, sin las notas para Gonzo.
+    """El contenido publicable: el bloque que va entre el header y la siguiente seccion H2.
 
-    El post canonico tiene tres bloques (header / post / notas). Solo el del medio se publica.
+    Un post tiene tres bloques: header / post / notas (mas la "anatomia del estilo" en algunos).
+    Solo el del medio se publica en LinkedIn; los demas son material de trabajo para Gonzo.
+
+    **Bug corregido el 2026-10-22:** la version anterior cortaba solo en "## Notas", asi que la
+    seccion "anatomia del estilo" (6 puntos de formato, material de trabajo) terminaba dentro del
+    body y inflaba el conteo de palabras en ~80. El corte correcto es: desde el heading del post
+    hasta el PROXIMO heading H2, sea cual sea.
     """
-    # Recorta desde "## Notas" si existe: esas notas son para Gonzo, no para LinkedIn.
-    text = re.split(r"^##\s+(Notas|Notes|Notas para Gonzo)", text, maxsplit=1, flags=re.M)[0]
-    # Si hay un bloque "## Post" o "## Draft", tomalo desde ahi.
-    m = re.search(r"^##\s+(Post|Draft|Post \(.*?\))", text, flags=re.M)
-    if m:
-        text = text[m.end():]
-    return text
+    m = re.search(r"^##\s+(Post|Draft|Notas|Por qu[eé].*)", text, flags=re.M)
+    if not m:
+        return text
+    # El heading del post puede traer un parentesis: "## Post (version borrador)".
+    fin_linea = text.find("\n", m.start())
+    cuerpo = text[fin_linea + 1:] if fin_linea != -1 else ""
+    # Corta en el proximo H2.
+    siguiente = re.search(r"^##\s+", cuerpo, flags=re.M)
+    if siguiente:
+        cuerpo = cuerpo[:siguiente.start()]
+    return cuerpo
 
 
 def _header(text: str) -> str:

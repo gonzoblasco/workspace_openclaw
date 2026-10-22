@@ -13,21 +13,21 @@
 
 ## Post (versión borrador)
 
-I just merged a PR into **Carbon Design System** that adds native support for the `aria-describedby` prop on the `ComposedModal` component. The change closes #21342, a known accessibility gap where screen-reader users could not programmatically associate a description with a modal dialog.
+I just merged a PR into **Carbon Design System** that adds native support for the `aria-describedby` prop on the `ComposedModal` component. The change closes #21342, a known accessibility gap where screen-reader users could not programmatically associate a description with a modal dialog. 🌿
 
-**What was missing?** The modal component previously only forwarded `aria-labelledby`. Without `aria-describedby`, developers could not provide a concise, contextual description for the dialog, leaving assistive technology users without crucial information about the modal’s purpose.
+**What was missing?** The modal only forwarded `aria-labelledby`. Without `aria-describedby`, developers could not give the dialog a concise, contextual description, and assistive technology users got the title with nothing about what the modal was for.
 
-**How we fixed it.** We introduced a new optional prop `aria-describedby` and wired it through the component so that when the `enable-dialog-element` feature flag is active the attribute lands on the native `<dialog>` element; otherwise it falls back to the `<div role="dialog">` container. The implementation adds a single line change (`+63 -1`) and updates the TypeScript definitions accordingly.
+**How we fixed it.** A new optional `aria-describedby` prop, wired through so that when the `enable-dialog-element` feature flag is on the attribute lands on the native `<dialog>` element, and otherwise falls back to the `div[role="dialog"]` container.
 
-**Why it matters.** Providing an accessible description allows screen readers to announce a brief, contextual message when a modal opens, improving the overall usability for users with visual impairments. It closes a gap that assistive technology users were living with, and it strengthens the library’s a11y posture.
+**The review process was the interesting part.** The maintainer pushed back on three things, and the first one is the one I keep coming back to: my first test referenced a `description-modal-id` element **without rendering it**, so it asserted the attribute was present on the dialog but proved nothing about whether the description actually existed in the page. The fix was to render the element alongside the modal. The other two were about not leaking implementation details - a reference to the internal `cds--modal-container` class in a comment, and documenting the new prop properly instead of leaving it implicit.
 
-**Friction point in review.** The maintainer pushed back on three things, and the first one is the interesting one: my first test referenced a `description-modal-id` element **without rendering it**, so it asserted the attribute was present on the dialog but proved nothing about whether the description actually existed in the page. The fix was to render the element alongside the modal. The other two were about not leaking implementation details - a reference to the internal `cds--modal-container` class in a comment, and a note to document the new prop properly instead of leaving it implicit.
+And then the maintainer asked whether the review comments had actually been addressed, when some of them had not. That was worth hearing.
 
-The third round is the one I keep coming back to: the maintainer asked whether the review comments had actually been addressed, and the honest answer was that some had not. That was worth hearing.
+The PR landed with a test that renders the description element and asserts the attribute reaches the native `<dialog>` when the flag is on, plus the `div[role="dialog"]` fallback. The merge commit was `1709742020a4de25264060216ee8b7349581d9f1`, on 12 Oct 2026.
 
-The PR landed with a test that renders the description element and asserts the attribute reaches the native `<dialog>` when `enable-dialog-element` is on, plus the `div[role=dialog]` fallback. The merge commit `1709742020a4de25264060216ee8b7349581d9f1` landed on 12 Oct 2026.
+If your dialog has a title but no description, that is a gap your users cannot see either.
 
-**PR:** https://github.com/carbon-design-system/carbon/pull/22887
+PR: https://github.com/carbon-design-system/carbon/pull/22887
 
 #accessibility #a11y #carbon #designsystem #reactjs #typescript #opensource #frontendengineering #uiux #screenreader #frontend
 
