@@ -6,6 +6,29 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-22] - Research OpenClaw + LangChain: preservado, verificado claim por claim, y 3 afirmaciones del research refutadas
+
+### Added
+- **`docs/research/2026-10-22-langchain-career-workflows.original.md`** - el research externo (604 lineas, 74 fuentes) preservado con sus `<citation>` inline. Venia como texto pegado en media transitorio (`~/.openclaw/media/inbound/`), que se borra: sin esto se perdia. Unica normalizacion: 4 em dash (U+2014) -> guion comun, porque el gate de publicacion (`scripts/check_em_dash.py`) los prohibe; el contenido, el orden y la corrupcion CJK estan intactos.
+- **`docs/research/2026-10-22-langchain-career-workflows.md`** - version legible (sin las citations inline) con la **corrupcion medida y marcada**: 5 puntos con CJK intercalado (`para**利亚** desarrollo`, `métricas y**没人**?lecciones`, `el entrevistador**继** conversational`, `puede**实际上** generarse`, `y**的资料** de carrera`), 1 marcador `[WIRE?]` y 1 fragmento JSON5 roto en 3.2 (`id: "career-mentor"][name: "Career Mentor"`). 2 URLs citadas dan 404 (`langsmith/deployment-sdk`, `oss/python/langchain/langserve`).
+- **`docs/research/2026-10-22-verificacion-claims.md`** - los 26 claims clasificados por veredicto, con la fuente que los sostiene. 13 VERDADERO, 5 PARCIAL, 3 FALSO, 1 NO DOCUMENTADO.
+
+### Changed
+- **La regla de lectura del research, fijada por Gonzo:** un ADR nuestro no es dogma - pero un ADR registra **el estado real de este stack**, y ese estado no lo invalida un documento externo. Cada claim se clasifica por naturaleza: **hecho tecnico** (gana la fuente citada) / **hecho sobre nuestras restricciones** (gana el ADR, porque describe lo que existe aca) / **valor** (se decide, no se hereda). Verificacion con 2 agentes independientes, uno por lado del stack, mas medicion propia en disco. **0 afirmaciones aceptadas por autoridad.**
+
+### Fixed (3 afirmaciones del research refutadas contra la fuente)
+- **"Las mutaciones del registro MCP requieren el Gateway detenido"** - FALSO. `cli/mcp/registry.md`: *"these commands only read or write OpenClaw config"*. No hay tal requisito; el CLI escribe config directo.
+- **`OPENCLAW_DISABLE_CRON_HOST_EXECUTION=1`** - NO EXISTE. 0 resultados en todo `docs/` y 0 en el binario instalado. Inventado.
+- **"LangSmith self-hosted" como opcion local** - es un **add-on Enterprise** con license key, Kubernetes, Postgres, Redis y ClickHouse (minimos: 16GB RAM / 4 CPUs). No es OSS ni SaaS-only: es enterprise.
+
+### Medido (lo que cambia el plan)
+- **La via local existe y es mas barata que la que propone el research.** `mcp<2` (FastMCP 1.30.0, servidor MCP stdio propio) resuelve con los pines del starter **intactos** - 0 conflictos (`uv pip compile`: `mcp==1.30.0` + `langgraph==0.6.11` + `langgraph-checkpoint==2.1.2` + `fastapi==0.128.8`). Sin Postgres, sin `LANGGRAPH_CLOUD_LICENSE_KEY`, sin LangSmith. El research senala el patron correcto (MCP para flujos acotados) pero lo implementa con la capa mas pesada disponible. Con `langgraph-api` tambien resuelve sin conflicto (`langgraph-api==0.4.48`), pero pide Postgres + Redis + verificacion de licencia para un flujo acotado. El endpoint `/mcp` existe: medido en el wheel real (`langgraph_api/api/mcp.py:495`).
+- **El gap real no es "un mentor": es un drill de ingles.** `job-search-tracker.md` registra **Staffy/Pfizer y Sol cerrados ambos por el mismo filtro de C1 conversacional**, con plan C1 en curso (CUI) y `studies/english/` vacio. El §4.1 del research ("evaluar la respuesta y ajustar el siguiente paso") es un drill. Y la infraestructura alrededor ya existe: `career-facts.md` (ADR-101), `check-cv-facts.py`, `revision-adversarial.md` (que es la estrategia WRITE->SELECT->COMPRESS->ISOLATE del §4.3, escrita a mano), `study-asset-lab`, `automations`.
+- **`deepagents` 0.7.30 rompe el pin** (`langchain>=1.4.6` vs `langchain==0.3.30` del starter) y **`create_react_agent` esta deprecado en `langgraph` 1.x** (hoy 1.2.16; nuestro pin 0.6.11 lo tiene vigente). No actualizar el pin de `langgraph` como efecto colateral.
+
+### Relacionado
+ADR-099 (LangChain como capa de ejecucion), ADR-103 (LiteLLM se descarta), ADR-101 (corpus unico de carrera), ADR-100 (fuente unica), ADR-083 (frontera de roles).
+
 ## [2026-10-22] - Busqueda activa: el giro a empresas de producto, 3 CVs de perfil AI-native y dos bugs del gate de hechos
 
 ### Added
