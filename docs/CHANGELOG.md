@@ -53,6 +53,16 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **IA: "la necesaria", no "ilimitada".** Corregido por Gonzo. El plan cubre responder consultas del catálogo y armar borradores; el número a medir en Fase 0 es el costo real por consulta (tokens in + out + embeddings).
 - **n8n sí puede gestionar el webhook de MeLi.** Corregido por Gonzo y sostenido por la SUL: n8n recibe, valida y encola; el **envío** (`POST /answers`) va en código con idempotencia y máquina de estados, porque ahí un error le llega duplicado a un comprador real.
 
+### Added (quinta ronda, 2026-10-21 22:18) - roadmap de OnWheels
+
+- **`projects/onwheels/` (repo git local, sin remoto):** proyecto nuevo con `README.md`, `.knowledge/ROADMAP.md` (347 lineas) y `.knowledge/STATUS.md`. El workspace ignora `projects/` al 100% (ADR-098), asi que el proyecto tiene su propio `.git`.
+- **El roadmap se organiza por USO, no por feature:** la unidad de cada fase es "algo que alguien use", con criterio de salida comprobable. Es la defensa contra el riesgo real de este proyecto, que no es el alcance sino **que nunca se termine** (side project sin fecha, sin usuario esperando, sin presion externa).
+- **F0-F6:** spike de MeLi (3-5d, bloqueante) -> control plane + landing (5-8d) -> catalogo de Esteban (6-10d) -> publicar en MeLi (6-9d) -> responder preguntas (6-9d) -> cobrar con Mercado Pago (4-6d) -> escalar (abierto, se dispara con el segundo dealer que paga). Cada fase con su criterio de salida en checkboxes y 10 riesgos con mitigacion concreta.
+- **Hallazgo de User Products incorporado al roadmap** (verificado en la doc oficial de MeLi el 2026-10-21): el contrato de publicacion depende del tag `user_product_seller`; con el, **no se puede enviar el array `variations`**, el `title` no debe enviarse y `condition` esta deprecado (`item_condition` dentro de `attributes`). Un dealer de vehiculos es el caso exacto que User Products viene a resolver. Por eso la pregunta va en **F0 y no en F3**: el publicador no se puede escribir sin saber que modelo aplica.
+- **"Lo que NO entra, y por que"** escrito explicitamente (auto-respuesta, PII, panel de workflows, sincronizacion bidireccional, micro-frontends), cada uno con su motivo.
+- **`memory/onwheels-producto.md`:** el detalle largo del producto (precio, dominios, hosting, n8n, User Products, lo que queda fuera). Saca el peso de `MEMORY.md`, que estaba a 297 del cap.
+
+
 ---
 
 ## [2026-10-21] - TEAM International / tempo.io: nueva propuesta laboral, neto real y un hole en el gate de hechos
