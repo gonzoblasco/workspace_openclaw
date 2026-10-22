@@ -66,7 +66,13 @@ El multi-tenant (darle una key y un budget a cada cliente/proyecto) queda como *
 - El multi-tenant queda sin resolver (re-evaluar cuando haya un cliente real).
 - Si en el futuro hace falta exponer un endpoint OpenAI-compatible con budgets, hay que reconstruirlo (o elegir otro proxy) desde cero. El costo de reconstruir es bajo: un gateway de este tipo es un `if` con reintentos.
 
-**Sobre la caché de build:** `docker buildx du` seguía reportando 32,52 GB de build cache **compartida** (`Shared: true`) con las capas base de los otros 22 proyectos del host. Docker la marca como `Reclaimable: 0B` y `docker builder prune --all` no libera nada. **No se forzó el borrado**: reclaimar esas capas rompería el cache de los demás proyectos. La cache queda como está, y es la lesson: el costo real del build fallido no fue el caché, fue el tiempo y la saturación del host.
+**Sobre la caché de build (medido 2026-10-22 13:45, corregido):** `docker buildx du` reporta 32,52 GB de build cache en total, pero **eso no es de LiteLLM**. El desglose real: 77 registros, de los cuales solo **3 tienen marca LiteLLM** (16 kB + 41 kB + **21 MB**, el mayor). El resto es caché de builds anteriores del host (Vane, browseruse, Onyx, openhands, chatterbox). 13 registros son `Shared: true`; los demás son `Private` (31,24 GB). Ninguno es `Mutable` y Docker los marca a todos `Reclaimable: false` con `Reclaimable: 0B`.
+
+**Por qué `prune` no libera nada:** el builder de Docker Desktop corre dentro de la VM con **executor `containerd`** (`docker buildx inspect` → `org.mobyproject.buildkit.worker.executor: containerd`). Con ese driver, `buildx prune` / `builder prune` no gestionan el garbage collection del content store: el espacio vive en `/var/lib/docker` de la VM (medido: **31,0 GB**), no en el registro de buildkit. Probados y devuelven `0B`: `buildx prune --all --force`, `builder prune --all --force`, `buildx prune --filter "unused-for=30m"`.
+
+**No se forzó el borrado.** El bloque más grande recuperable es la imagen `vane-builder:local` (**10,66 GB únicos, 0 containers**), de un build anterior de Vane. **Decisión de Gonzo (2026-10-22): Vane se usa, no se limpia.** Queda como candidato a limpiar solo cuando Gonzo lo autorice. Lo que sí se puede liberar sin tocar nada vivo es `docker image prune -a`, que requiere OK explícito.
+
+*Lesson:* el costo real del build fallido de LiteLLM no fue el caché (21 MB) ni el disco: fue el **tiempo y la saturación del host** (dos compilaciones Rust compitiendo con `milvus` en loop de reinicio).
 
 ## Evidencia
 

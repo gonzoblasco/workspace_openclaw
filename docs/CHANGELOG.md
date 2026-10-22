@@ -23,7 +23,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Verified
 - **Ningún componente propio usaba LiteLLM:** `grep -rni litellm` sobre el workspace → sólo menciones en dailies; `~/.openclaw/openclaw.json` → 0 referencias. El gateway de OpenClaw llama directo a Ollama.
 - **Lo que el stack propio ya cubría:** `model_list`/routing (`model-router.sh` + ADR-090), retry/fallback/balanceo (pipeline A/B, ADR-077/088/089), virtual keys y spend (`memory.db`), guardrails (`AGENTS.md` + pre-commit), dashboard (`docs/`). Lo único ausente era multi-tenant.
-- **La caché de build de 32,52 GB NO se reclamó:** `docker buildx du` la marca `Shared: true` (capas base compartidas con los otros 22 proyectos del host) y `Reclaimable: 0B`; `docker builder prune --all` no libera nada. Reclamarla rompería el cache de los demás proyectos.
+- **La caché de build: los 32,52 GB NO son de LiteLLM** _(medido 2026-10-22 13:45)_. `docker buildx du` reporta 32,52 GB en total, pero solo **3 registros (21 MB el mayor) tienen marca LiteLLM**; el resto es caché de builds anteriores del host (Vane, browseruse, Onyx, openhands, chatterbox). El `prune` devuelve `0B` porque el builder de Docker Desktop usa **executor `containerd`**: el espacio vive en `/var/lib/docker` de la VM (31,0 GB medidos), no en el registro de buildkit. **No se forzó el borrado.** Bloque recuperable más grande: `vane-builder:local` (10,66 GB únicos, 0 containers) - **decisión de Gonzo: Vane se usa, no se limpia**. Liberarlo requiere `docker image prune -a` con OK explícito.
 - **Integridad:** `check-adr-integrity.py` → 58 ADRs, todos indexados, sin refs rotas. `check-single-source.py` → OK.
 
 ---
