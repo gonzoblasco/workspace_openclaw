@@ -77,8 +77,18 @@ YEARS_RE = re.compile(r"(\d+)\s*\+?\s*(?:years?|años?|anos?)", re.IGNORECASE)
 # "and 6" dentro de la frase del primero, y el segundo claim desaparecia: el
 # gate reportaba OK sobre la linea que mas lo necesita. Cazado 2026-10-20
 # mirando los matches, no el exit code.
+#
+# El numero puede ser DECIMAL (2026-10-22): "1.5 years building AI-native
+# products" es un hecho valido y no contradice al dueno (ai_years: 1, que es
+# la calibracion interna de "desde 05/2025"). Antes el patron `(\d+)` cortaba
+# en el punto y leia "5 years building AI-native products": una violacion
+# FALSA en los tres CVs de AI-native (2026-10-22). Con decimal, la
+# comparacion se hace contra el dueno con tolerancia: un decimal cerca del
+# entero del dueno es el mismo hecho redondeado ("1.5" ~ 1), no una
+# contradiccion. Un decimal lejos (por ejemplo "3.5" contra ai_years: 1) si
+# se reporta.
 YEARS_CLAIM = re.compile(
-    r"(\d+)\s*\+?\s*(?:years?|años?|anos?)\s+(?:of\s+|in\s+|as\s+|building\s+|working\s+|with\s+)?([a-z ,/'-]{0,60})",
+    r"(\d+(?:\.\d+)?)\s*\+?\s*(?:years?|años?|anos?)\s+(?:of\s+|in\s+|as\s+|building\s+|working\s+|with\s+)?([a-z ,/'-]{0,60})",
     re.IGNORECASE,
 )
 
@@ -141,11 +151,47 @@ UNBACKED_CLAIMS = {
 # afirmacion sobre lo que Gonzo hizo.
 SKIP_SECTIONS = ("requirement", "nice to have", "requirement:", "qualifications", "about the role")
 
+# Secciones del CV que NO son un claim de experiencia (2026-10-22).
+#
+# "## Notes / gaps" lista los requisitos del JD que NO se pueden cubrir, y
+# "## Keyword map" mapea requisito -> seccion. En las dos, la palabra
+# "feature flags" o "5+ years" aparece como REQUERIDO DEL PUESTO o como
+# DECLARACION DE VACIO, no como afirmacion sobre lo que Gonzo hizo. El gate
+# las leia como claims y reportaba contradicciones falsas: en el CV de Mural
+# marcaba "5+ years building production software" (que en realidad era una
+# fila del keyword map que resumia el headline) y los gaps honestos
+# declarados como si fueran fraude.
+#
+# El control 8 (claims sin respaldo) se saltea estas secciones por la misma
+# razon: no hay claim que respaldar, hay un gap declarado.
+GAP_SECTIONS = re.compile(
+    r"^\s*#{1,6}\s*(?:notes|gaps|notes\s*/\s*gaps|keyword\s*map|keywords?\s*map|"
+    r"coverage|pendientes?|to\s*confirm)\b",
+    re.IGNORECASE,
+)
+
 # Encabezado de un rol. Los CVs usan `### Empresa - Titulo`; el bloque de fechas
 # viene en la linea siguiente. Solo aca se declaran periodos.
 ROLE_HEADING = re.compile(r"^\s*(###|\*\*)", re.IGNORECASE)
 # Un extremo de periodo: MM/YYYY o solo YYYY. "Present"/"Presente" no es fecha.
 ROLE_DATE = re.compile(r"(?:\d{2}/)?\d{4}")
+
+
+def _years_agree(got: float, want: float) -> bool:
+    """Dos decimales de años son el MISMO hecho que el entero del dueño.
+
+    El dueño guarda `ai_years: 1` como calibración interna de "desde 05/2025"
+    (que en la práctica son ~1,5 años, y así lo dice §6.3 del corpus). Un CV
+    que declara "1.5 years building AI-native products" NO contradice al
+    dueño: es el mismo hecho con más precisión. Lo que sí contradice es un
+    decimal lejos del entero (por ejemplo "3.5" contra `ai_years: 1`), y eso
+    se reporta.
+
+    La tolerancia es 0.75: suficiente para absorber el redondeo entre "~1 año
+    de calibración interna" y "1,5 años reales", y lo bastante ajustada para
+    que "3.5" o "2" no pasen como el mismo hecho que "1".
+    """
+    return abs(got - want) <= 0.75
 
 
 def parse_facts(root: Path):
@@ -196,6 +242,20 @@ def declared_level(line: str):
     return best
 
 
+def _in_gap_section(lines, n) -> bool:
+    """¿La linea n esta dentro de una seccion de gaps / keyword map?
+
+    Esas secciones citan los REQUISITOS DEL PUESTO (que no son hechos de
+    Gonzo) y declaran los vacios. Juzgarlas con las reglas de los claims
+    produce contradicciones falsas. Ver GAP_SECTIONS.
+    """
+    for i in range(n - 1, -1, -1):
+        line = lines[i]
+        if line.startswith("#"):
+            return bool(GAP_SECTIONS.match(line))
+    return False
+
+
 def check_cv(path: Path, facts: dict):
     """(violaciones, pendientes) de un CV."""
     text = path.read_text(encoding="utf-8")
@@ -211,8 +271,10 @@ def check_cv(path: Path, facts: dict):
     # cuando la frase no cayo en otra categoria, para no marcar el headline del
     # total por mencionar a11y de paso.
     for n, line in enumerate(lines, 1):
+        if _in_gap_section(lines, n):
+            continue
         for m in YEARS_CLAIM.finditer(line):
-            got = int(m.group(1))
+            got = float(m.group(1))
             phrase = m.group(2)
             matched = None
             for key, pattern in YEAR_CATEGORIES:
@@ -221,12 +283,12 @@ def check_cv(path: Path, facts: dict):
                     break
             if matched:
                 want = facts.get(matched)
-                if want and got != int(want):
+                if want and not _years_agree(got, float(want)):
                     violations.append(
                         (
                             name,
                             n,
-                            f"declara {got} anios de {matched}, el dueno dice {want}",
+                            f"declara {got:g} anios de {matched}, el dueno dice {want}",
                             line.strip()[:110],
                         )
                     )
@@ -363,11 +425,18 @@ def unbacked_claims(root: Path, facts: dict):
     out = []
     for cv in cvs(root):
         text = cv.read_text(encoding="utf-8")
-        for n, line in enumerate(text.splitlines(), 1):
+        lines = text.splitlines()
+        for n, line in enumerate(lines, 1):
             low = line.lower()
             if not low.strip().startswith("-"):
                 continue
             if any(marker in low for marker in SKIP_SECTIONS):
+                continue
+            # Las secciones de gaps y keyword map citan requisitos del JD, no
+            # claims de Gonzo. Sin este salto, un gap honesto ("feature flags
+            # - not part of my experience") se reportaba como claim sin
+            # respaldo: el gate marcaba la honestidad como fraude.
+            if _in_gap_section(lines, n):
                 continue
             for claim, needles in UNBACKED_CLAIMS.items():
                 if not any(re.search(n, low) for n in needles):

@@ -43,7 +43,7 @@ Digital accessibility engineer with 10+ years in frontend engineering and access
 - Grew from junior developer to accessibility owner for three major US fashion brands (Ann Taylor, LOFT, Lou & Grey, Ascena Retail Group).
 - Took ownership of accessibility at month three and self-taught WCAG compliance through hands-on testing on physical iOS and Android devices.
 - Implemented accessibility coverage across e-commerce flows (Checkout, Cart, Quick View), including dynamic aria-live regions for real-time cart notifications.
-- Led migration of legacy jQuery/Handlebars interfaces to React, Sass and HTML5 for a platform serving 2M+ monthly active users.
+- Contributed to migrating legacy interfaces to React and HTML5 for a platform serving 2M+ monthly active users.
 - Mentored a junior developer and ran A/B experiments in production with Adobe Target, working in agile squads alongside design and product.
 
 ### Freelancer & Accessibility Expert

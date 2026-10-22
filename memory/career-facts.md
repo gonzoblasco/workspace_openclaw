@@ -64,8 +64,31 @@ Qué hizo:
   Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions). v4 cerrado; el producto sigue por la
   versión funcional de Lovable. **Pro Motors como primer cliente** (`pro-motors.com.ar`,
   integración MeLi real).
+- **Design system propio de SoporteML** (verificado 2026-10-22 sobre el repo): sistema de tokens
+  semánticos (color, tipografía, spacing, radius, sombras, focus-ring, estados), escala tipográfica,
+  paleta y mapa token→componente, documentado en `projects/soporteml/.knowledge/UI-DESIGN-SKILL.md`
+  y aplicado con Tailwind en `projects/soporteml/tailwind.config.ts`. Reglas WCAG AA como criterio
+  del sistema. **Es trabajo propio de diseño de sistema, no consumo de uno ajeno.**
 - **AI Engineering OS sobre OpenClaw** - sistema propio de trabajo con IA: sesiones por proyecto,
-  memoria persistente, handoffs, subagentes, skills, pipeline de contribución OSS.
+  memoria persistente, handoffs, subagentes, skills, pipeline de contribución OSS. El método de
+  trabajo con material de terceros es **quarantine → analyze → verify → adopt** (ver AGENTS.md):
+  nada de lo que entra del exterior se adopta sin verificarse.
+- **Servidor MCP propio** (verificado 2026-10-22 sobre `projects/kanam-fixer/`): el proyecto
+  `kanam-fixer` expone un **MCP companion server** con dos tools, que permite a un agente consultar
+  qué anuncia un lector de pantalla para un fragmento de HTML. Habla MCP sobre stdio: cualquier
+  cliente MCP-aware (Claude Code, el tool gateway de OpenClaw) lo lanza como subproceso. **Lo
+  construyó y lo mantiene Gonzo.** Documentado en `projects/kanam-fixer/README.md` y ADR-0003 del
+  proyecto.
+- **Herramientas de IA en el flujo diario** (verificado 2026-10-22 sobre los repos del workspace):
+  Claude Code y Codex como motores de agentes headless en tareas largas, y el stack propio de
+  OpenClaw (subagentes, memoria, skills) como sistema de trabajo. Lovable como herramienta de
+  prototipo rápido (SoporteML v4). No se declara "Cursor" ni "GitHub Copilot" porque el corpus no
+  los registra como uso propio.
+- **PROHIBIDO declarar "computer-use" o "agentes de computer-use".** El 2026-08-27 un subagente
+  se desvió a CuaDriver (computer-use) en una tarea que no lo requería y **Gonzo lo bloqueó**, y el
+  proceso se relanzó sin computer-use (`memory/archive/dailies/2026-08-27.md:66`). No hay ninguna
+  experiencia en computer-use que declarar. Los flujos agénticos que sí existen son de **subagentes
+  con contexto acotado sobre codigo** (AI Engineering OS), no de agentes que manejan una pantalla.
 - **Contribuciones OSS continuas** a design systems (ver §5).
 - **Soluciones internas de IA para Pro Motors.**
 
@@ -86,8 +109,16 @@ Qué hizo:
 - **Referente de accesibilidad del equipo** en varios proyectos: revisaba componentes de Storybook
   y diseños **antes** de implementar, definía estándares y anotaciones a nivel componente, y
   escribía requisitos técnicos de accesibilidad con guía de código para las historias de UI.
-- **Defectos de accesibilidad priorizados por impacto WCAG** en Jira, con guía de remediación a
-  desarrolladores en sprint.
+  **Herramientas:** Figma (revisión de diseño), Axe DevTools, Lighthouse, Storybook, Jira.
+  **Conocimiento de ARIA:** WAI-ARIA Authoring Practices y el cableado de `role`, `state` y
+  `property` en componentes propios - es el trabajo de los 11 PRs mergeados de §5.1, que son
+  precisamente correcciones de semántica ARIA.
+  **Toolset de código (verificado 2026-10-22 sobre los repos del workspace):** TypeScript, React,
+  Vitest, Playwright, Biome, Tailwind, Storybook, Zod.
+- **Mentoría y guía en sprint:** "coaching" a desarrolladores dentro de sus ramas y guía de
+  remediación a desarrolladores en sprint. **No** es un programa de mentoría formal: no hay un
+  corpus de "a quién mentoreaste y por cuánto tiempo". En los CVs, escribir *developer guidance* /
+  *coaching*, no *mentorship*.
 - **Equipo matricial cross-regional (US / India)**, varias fases del SDLC en paralelo dentro de
   squads ágiles.
 - **Lideró un equipo de 3 ingenieros** construyendo una plataforma de inteligencia financiera con
@@ -116,8 +147,7 @@ Qué hizo:
 
 Qué hizo:
 
-- Agencia de e-commerce para marcas de EE.UU. Desarrolló y mantuvo **flujos de compra** (checkout,
-  carrito).
+- Agencia de e-commerce para marcas de EE.UU.: **Ascena Retail Group**, con los sitios de **Ann Taylor, LOFT y Lou & Grey** (tres marcas). Registrado 2026-10-20 en `memory/2026-10-20.md` (decisión de Gonzo sobre la trayectoria de a11y desde 2016).
 - Participó de la **migración a React** y mejoró un sitio con **2M+ usuarios mensuales**.
 - **Accesibilidad desde el inicio**: creció de junior a referente de accesibilidad del equipo.
 - **Experimentación en producción (2019):** trabajó con **Adobe Target** para correr experimentos
@@ -128,6 +158,9 @@ Qué hizo:
   Gonzo confirmó. **No hay evidencia de que haya construido la infraestructura** de experimentación
   del equipo: ese claim se sacó de los CVs (ver §11, punto 2). Si alguna vez Gonzo confirma que
   la implementó, se agrega acá primero y después vuelve a los CVs.
+  **Cantidad de experimentos:** el corpus **no registra un número**. Un CV que diga "20+ A/B
+  experiments" inventaría la cifra (sacado 2026-10-22 de los CVs de Mural). La redacción
+  defendible es "ran A/B experiments in production", sin cantidad.
 - **Implementación de los experimentos (2019, temporada final):** las variantes se implementaban
   **escribiendo código directo en JavaScript nativo como snippets**, que se probaban contra
   usuarios reales. Detalle confirmado por Gonzo el 21/10/2026. **Alcance:** implementación
@@ -355,6 +388,7 @@ Todos parten del mismo corpus. Cambia el énfasis, nunca el hecho.
 | **Frontend / code evaluator** | Frontend engineer | Lectura de estructura (ARIA, landmarks, headings), reviews con evidencia, Playwright/Vitest | Producto propio | Pruebas de que revisa código real |
 | **No técnico** | Perfil de gestión y operaciones | Coordinación, clientes internacionales, atención al detalle, procesos | Stack, siglas | Los mismos 10+ años y el mismo Deque |
 | **Agentic / AI-native** | AI-first engineer | Sistema propio de trabajo, subagentes, memoria persistente, skills | Historia pre-2025 | IA desde 2025, nunca antes |
+| **AI-native frontend** (agregado 2026-10-22) | AI-first Frontend Engineer | React/TS + design systems + a11y + IA en el flujo; AI Engineering OS, método quarantine→verify→adopt, 11 PRs mergeados | Detalle de auditorías WCAG, backend | Años totales 10+, IA desde 2025, B2, Deque como programa |
 
 **Regla del filtro:** si un perfil necesita un hecho que no está en este archivo, se agrega acá
 primero. Un CV no puede ser la fuente de un hecho nuevo.

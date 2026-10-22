@@ -1,0 +1,22 @@
+Asunto: UX Expert - Software - Mercado Pago
+
+Vi la vacante de UX Expert - Software en Mercado Pago y me llamó la atención el foco híbrido del rol: transformar decisiones de diseño en código de producción y, en el sentido inverso, usar el código como fuente de verdad para construir prototipos funcionales.
+
+Ese camino es el que vengo haciendo desde el lado de la ingeniería. En EY era el referente de accesibilidad del equipo: revisaba componentes de Storybook y diseños de Figma antes de implementarlos, definía estándares y anotaciones a nivel componente, y escribía los requisitos técnicos de accesibilidad con guía de código para las historias de UI, para que el diseño no se degradara al pasarlo a producción. Hoy construyo y mantengo el design system de mis propios productos: tokens semánticos, escala tipográfica y el mapa token-componente, con las reglas WCAG AA como criterio del sistema. Y vengo del mismo dominio que el rol: SoporteML, el CRM con IA que construí para vendedores de Mercado Libre.
+
+En los últimos 1,5 años vengo construyendo productos AI-native de punta a punta, incluidos flujos agénticos: subagentes con contexto acotado y un paso de verificación antes de que la salida llegue al usuario. Ahí el método que uso es simple y estricto: nada entra sin leerse, analizarse y verificarse. También mantengo un servidor MCP propio que expone a un agente lo que anuncia un lector de pantalla sobre un fragmento de HTML.
+
+Me interesa especialmente el trabajo de convertir prototipos funcionales en experiencias finales usando componentes y restricciones reales del codebase, que es donde más aprendí.
+
+¿Podrían compartir cómo están trabajando hoy los flujos AI-native y el design system interno? ¿Y cómo se define el reparto entre diseño e ingeniería en el rol?
+
+---
+## Notas internas para Gonzo
+
+- **Verificable contra `memory/career-facts.md`:** la revision de disenos antes de implementar con requisitos tecnicos y guia de codigo esta en §2.2 (con las herramientas: Figma, Storybook, Axe, Lighthouse, Jira). El design system propio con tokens y componentes, en §2.1 (SoporteML) y §10. El metodo quarantine -> analyze -> verify -> adopt, en §2.1. **Los agentes de computer-use NO estan en el corpus** y no se declaran: el 27/08 Gonzo bloqueo justamente un desvio a esa herramienta. La cronologia de la IA (desde 05/2025) es la unica cifra que aparece, y es un hecho del corpus, no un reclamo de a11y.
+- **Por que este mensaje va en espanol:** el JD esta en espanol, la sede es Buenos Aires, modalidad hibrida, y el equipo es local. Un mensaje en ingles para un puesto local se lee como que estas aplicando en cualquier lado.
+- **Por que NO lleva la pregunta de nivel de ingles:** es un puesto en Argentina, con equipos locales. Preguntar "que nivel de ingles necesita el rol" en un proceso local no aporta y proyecta una duda que no hace falta. A diferencia de RYZ y Mural, aca la variable de idioma no esta en juego. Si en la conversacion surge la necesidad de colaborar con equipos regionales en ingles, ahi se responde con honestidad (B2) si se pregunta.
+- **El riesgo real de este rol no es el idioma:** es que el puesto es **mas de diseno que de ingenieria**. El JD pide "dominio en diseño de experiencia de usuario, diseño de interacción y diseño de producto". Mi perfil es el inverso: ingenieria con sensibilidad de diseno. El mensaje lo asume en vez de disimularlo, y engancha con las dos partes que si tengo (traducir diseno a codigo, y prototipos funcionales).
+- **Respuesta que te haria abandonar:** que el rol es de diseno de producto con ownership del sistema de diseno, o que esperan un perfil de diseno senior (Figma avanzado, research, prototipado de alto nivel). Ahi tu encaje es parcial y el techo del rol es de diseno, no de ingenieria. Eso puede estar bien, pero conviene saberlo antes de invertir.
+- **Second opportunity, mismo rol:** el JD tiene en su seccion de requisitos la parte de "experiencia con software para negocios, herramientas para sellers o plataformas SaaS es un diferencial". Ahi SoporteML (CRM para vendedores de Mercado Libre) es un match casi literal, y es el mismo dominio del cliente. Eso es un hook que el mensaje no exprime del todo - si querés, la segunda version lo sube.
+- **Longitud:** 246 palabras. Mas largo que los otros dos porque el rol pide demostrar dos caras (diseno e ingenieria) y porque cada afirmacion tiene que estar respaldada.

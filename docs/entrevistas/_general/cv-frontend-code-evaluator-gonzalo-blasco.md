@@ -74,7 +74,7 @@ Astryx and MUI.
 
 - Worked on legacy Ascena Retail Group sites (Ann Taylor, LOFT, Lou & Grey) built with jQuery and Handlebars,
   including float-based and table-based layouts, maintaining and extending the existing markup and styles.
-- Led migration of legacy jQuery/Handlebars interfaces to React, Sass and HTML5 for a platform serving 2M+
+- Contributed to migrating legacy interfaces to React and HTML5 for a platform serving 2M+
   monthly active users, preserving layout fidelity across breakpoints.
 - Took ownership of accessibility at month three and self-taught WCAG compliance through hands-on testing on
   physical iOS and Android devices.

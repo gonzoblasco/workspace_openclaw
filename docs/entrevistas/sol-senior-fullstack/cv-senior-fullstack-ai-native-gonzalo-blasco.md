@@ -49,7 +49,7 @@ Senior full stack engineer with 10+ years building and shipping production web a
 ### Minutentag - Frontend Developer
 02/2016 - 11/2019 | Hybrid
 
-- Led the migration of legacy jQuery and Handlebars interfaces to React, Sass and HTML5 for a platform serving 2M+ monthly active users, preserving layout fidelity across breakpoints.
+- Contributed to migrating legacy interfaces to React and HTML5 for a platform serving 2M+ monthly active users, preserving layout fidelity across breakpoints.
 - Implemented and maintained e-commerce flows (Checkout, Cart, Quick View) for three US fashion brands (Ann Taylor, LOFT, Lou & Grey), including dynamic aria-live regions for real-time cart notifications.
 - Mentored a junior developer and ran A/B experiments in production with Adobe Target, working in agile squads alongside design and product.
 - Worked with Bitbucket and Jira in an agile team, including CI/CD workflows.

@@ -29,7 +29,7 @@ FACTS = """# Hechos
 total_years: 10
 a11y_years_internal: 5
 a11y_claim: roles
-ai_years: 5
+ai_years: 1
 sdlc_years: 3
 english: B2
 contact_phone: +54 11 4937 4656
@@ -39,6 +39,15 @@ contact_github: github.com/gonzoblasco
 role_ey: 09/2021 - 05/2025
 pending: 0
 ```
+
+# `ai_years: 1` es el valor del DUENO (memory/career-facts.md, bloque facts),
+# no el `5` que este fixture tenia antes. El 5 era el valor viejo: ADR-101
+# registro que el dueno se escribio con 5 y que Gonzo lo corrigio a 1 cuando
+# establecio que la IA para desarrollo arranca en 05/2025 (~1,5 anos, nunca 3
+# ni 5). Dejar `5` aca era una SEGUNDA VERDAD: el fixture del test y el
+# dueno real contaban cosas distintas, y por eso el caso decimal de abajo
+# ("1.5 years building AI-native products") se reportaba como violacion
+# contra un dueno que ya no existe. Alineado 2026-10-22.
 """
 
 CLEAN_CV = """# GONZALO BLASCO
@@ -131,6 +140,48 @@ def test_sdlc_years_is_a_real_category(tmp_path):
     seed(tmp_path, cv=CLEAN_CV.replace("leading accessibility at", "8+ years across SDLC phases, leading accessibility at"))
     v = mod.check_cv(tmp_path / "docs/entrevistas/proceso/cv-test.md", mod.parse_facts(tmp_path))
     assert any("sdlc_years" in x[2] for x in v)
+
+
+def test_decimal_years_are_not_misread_as_the_integer_tail(tmp_path):
+    # Bug real (2026-10-22): "1.5 years building AI-native products" se leia
+    # como "5 years building..." porque el patron `(\d+)` cortaba en el punto.
+    # El gate reportaba una violacion FALSA en los tres CVs de AI-native.
+    mod = load()
+    seed(
+        tmp_path,
+        cv=CLEAN_CV.replace(
+            "Engineer with 10+ years building production software, leading accessibility at Super7UI and EY.",
+            "Engineer with 10+ years building production software, including 1.5 years building AI-native products.",
+        ),
+    )
+    v = mod.check_cv(tmp_path / "docs/entrevistas/proceso/cv-test.md", mod.parse_facts(tmp_path))
+    assert not any("ai_years" in x[2] for x in v), (
+        "1.5 anios de IA es el mismo hecho que ai_years: 1 (calibracion interna), no una contradiccion"
+    )
+
+
+def test_decimal_years_far_from_owner_are_caught(tmp_path):
+    # La tolerancia del decimal NO debe tragarse una contradiccion real:
+    # "3.5 years" de IA contra ai_years: 1 es un hecho distinto.
+    mod = load()
+    seed(
+        tmp_path,
+        cv=CLEAN_CV.replace(
+            "Engineer with 10+ years building production software, leading accessibility at Super7UI and EY.",
+            "Engineer with 10+ years building production software, including 3.5 years building AI-native products.",
+        ),
+    )
+    v = mod.check_cv(tmp_path / "docs/entrevistas/proceso/cv-test.md", mod.parse_facts(tmp_path))
+    assert any("ai_years" in x[2] for x in v)
+
+
+def test_total_years_decimal_is_still_judged(tmp_path):
+    # "9.5 years" de desarrollo total contra total_years: 10 sigue siendo un
+    # redondeo legitimo; "9 years" no.
+    mod = load()
+    seed(tmp_path, cv=CLEAN_CV.replace("10+ years", "9.5 years"))
+    v = mod.check_cv(tmp_path / "docs/entrevistas/proceso/cv-test.md", mod.parse_facts(tmp_path))
+    assert not any("total_years" in x[2] for x in v)
 
 
 # --- idioma ---
@@ -230,6 +281,40 @@ def test_gate_distinguishes_clean_from_dirty(tmp_path):
 def test_unbacked_ab_testing_claim_is_flagged(tmp_path):
     mod = load()
     seed(tmp_path, cv=CLEAN_CV + "\n- Ran A/B experiments in production using Adobe Target.\n")
+    w = mod.unbacked_claims(tmp_path, mod.parse_facts(tmp_path))
+    assert any("a/b testing" in x[2] for x in w)
+
+
+def test_gap_section_is_not_judged_as_a_claim(tmp_path):
+    # Bug real (2026-10-22): los CVs de AI-native traen una seccion
+    # "## Notes / gaps" que declara los requisitos del JD que NO se cubren
+    # ("Feature flags - not part of my experience"). El gate leia esa honestidad
+    # como un claim sin respaldo: marcaba la declaracion de vacio como fraude.
+    mod = load()
+    cv = CLEAN_CV + "\n## Notes / gaps\n\n- **Feature flags** - not part of my experience.\n"
+    seed(tmp_path, cv=cv)
+    w = mod.unbacked_claims(tmp_path, mod.parse_facts(tmp_path))
+    assert not any("feature flags" in x[2] for x in w)
+
+
+def test_gap_section_years_are_not_judged(tmp_path):
+    # Mismo bug, control 1-2: una fila del "## Keyword map" que resume el
+    # headline ("5+ years building production software | Professional Summary")
+    # se leia como un claim de años y producia una contradiccion FALSA
+    # (declaraba 5 años de total_years contra el 10 del dueno).
+    mod = load()
+    cv = CLEAN_CV + "\n## Keyword map\n\n| Requirement | Where |\n|---|---|\n| 5+ years building production software | Summary |\n"
+    seed(tmp_path, cv=cv)
+    v = mod.check_cv(tmp_path / "docs/entrevistas/proceso/cv-test.md", mod.parse_facts(tmp_path))
+    assert not any("total_years" in x[2] for x in v)
+
+
+def test_claim_outside_gap_section_is_still_flagged(tmp_path):
+    # El salto por seccion de gaps NO puede tragarse un claim real que este
+    # en la seccion de experiencia.
+    mod = load()
+    cv = CLEAN_CV + "\n## Notes / gaps\n\n- **Feature flags** - not part of my experience.\n\n## Experience\n\n- Ran A/B experiments in production with Adobe Target.\n"
+    seed(tmp_path, cv=cv)
     w = mod.unbacked_claims(tmp_path, mod.parse_facts(tmp_path))
     assert any("a/b testing" in x[2] for x in w)
 
