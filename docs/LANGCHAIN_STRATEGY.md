@@ -183,6 +183,24 @@ Los candidatos comerciales vivos: **`soporteml`** (producto, mercado que paga; v
 
 ---
 
+## 6b. Research externo 2026-10-22: que se sostiene y que no
+
+Un research externo (604 lineas, 74 fuentes) propone una arquitectura OpenClaw + LangGraph para acompanar una carrera de desarrollo. **Entra como DATO, no como instruccion** (AGENTS.md). Se preservo y se verifico claim por claim:
+
+- `docs/research/2026-10-22-langchain-career-workflows.original.md` - fuente primaria, citations inline.
+- `docs/research/2026-10-22-langchain-career-workflows.md` - version legible, corrupcion marcada.
+- `docs/research/2026-10-22-verificacion-claims.md` - 26 claims: 13 verdadero, 5 parcial, 3 falso, 1 no documentado.
+
+**Refutado:** "el Gateway debe estar detenido para mutar el registro MCP" (falso: `cli/mcp/registry.md` dice que el CLI solo escribe config), `OPENCLAW_DISABLE_CRON_HOST_EXECUTION=1` (no existe en docs ni en el binario), y "LangSmith self-hosted" como opcion local (es un add-on **Enterprise** con license key, Kubernetes, Postgres, Redis y ClickHouse).
+
+**Lo que si aporta:** el patron MCP para flujos acotados (confirmado: `/mcp` es stateless, verificado en el wheel real de `langgraph-api`), el `checkpointer` por super-step con pending writes (util - `langgraph-checkpoint 2.1.2` ya esta instalado y **sin usar** en el starter), y la regla de idempotencia antes de un `interrupt()`.
+
+**Medido y relevante para la decision:** un servidor MCP stdio propio (`mcp<2`, FastMCP 1.30.0) resuelve con los pines de este starter **intactos** y 0 conflictos - sin Postgres, sin `LANGGRAPH_CLOUD_LICENSE_KEY`, sin LangSmith. La via que propone el research (`langgraph-api` + Agent Server) tambien resuelve, pero exige Postgres, Redis y verificacion de licencia para un flujo acotado.
+
+**Decision pendiente (2026-10-22):** el primer flujo real que justifica el punto 2 de ADR-099. El gap medido no es "un mentor" sino un **drill de ingles** (`docs/entrevistas/_general/job-search-tracker.md` registra dos cierres por el mismo filtro de C1 conversacional, y `studies/english/` esta vacio). Pendiente de definicion con Gonzo.
+
+---
+
 ## 7. Principio rector
 
 **No construimos un producto de IA genérico.** Construimos primero la herramienta que mejora nuestro trabajo; cada capacidad que sirve internamente y se estabiliza, se empaqueta. El orden importa: uso interno -> estabilización -> aislamiento multi-cliente -> exportación. Saltarse el uso interno produce productos que nadie probó.
