@@ -4,6 +4,40 @@
 >
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
 
+## Vacantes preparadas (2026-10-22) - CV y mensaje listos, NO enviados
+
+> Busqueda activa (no a proposito de postulaciones). Barrido de a11yjobs, LinkedIn guest API,
+> vacantesdigitales, remotive, himalayas, remoteok, jobicy, arbeitnow, getonbrd, landing.jobs y
+> boards de Greenhouse/Ashby + 10Pearls, Svitla, Infojini, FullStack, Blacksmith.
+> **Hallazgo:** el mercado de accesibilidad activo es casi entero US-only, y los avisos que
+> filtran "LATAM" son casi todos el mismo bench de recruiters ya visto (Infojini, E-IT, FullStack:
+> el mismo req de Disney/HTC). Lo nuevo son vacantes de front-end con a11y en empresas de producto.
+> **Regla operativa que sale del relevamiento:** apuntar a empresas de producto con su propio
+> equipo, no a nearshore-agencies que reasignan el tiempo a clientes US. En agencies el idioma es
+> un filtro de elegibilidad; en producto es ruido de fondo.
+
+| Empresa | Puesto | Ubicacion | Por que | Riesgo #1 | Estado |
+|---|---|---|---|---|---|
+| **RYZ Labs** | AI-First Frontend Software Engineer | Remoto US+LATAM | El JD pide "AI coding tools en el flujo de trabajo diario" + design systems + UI polish: es el perfil "AI-native frontend" del corpus | **Idioma conversacional** (el JD no declara nivel) | CV (2 pag) + mensaje en `docs/entrevistas/_general/outreach-2026-10-22/ryz.md`. **Esperando OK de Gonzo** |
+| **Mural** | Senior Software Engineer, Growth & Engagement | Argentina | React/TS + ownership end-to-end + experimentos A/B reales (Adobe Target, Minutentag 2019) | **Idioma**: el JD pide feature flags/analytics/event pipelines, que no tenes (declarados como gap en el CV) | CV (2 pag) + mensaje en `outreach-2026-10-22/mural.md`. **Esperando OK** |
+| **Mercado Pago (ML)** | UX Expert - Software | Buenos Aires, hibrido | Diseno↔ingenieria (revision de disenos antes de implementar + requisitos con guia de codigo, en EY) + design system propio + SoporteML (CRM para vendedores de MeLi, el mismo dominio) | **No es el idioma: es que el puesto es mas de diseno que de ingenieria** | CV (2 pag) + mensaje en espanol en `outreach-2026-10-22/mercadopago.md`. **Esperando OK** |
+
+**El mensaje de idioma NO aplica a los tres por igual:** en RYZ y Mural va al final del primer
+mensaje (el filtro de Staffy/Sol se filtro tarde y caro). En Mercado Pago no se pregunta: es un
+puesto local, con equipos locales, y la pregunta proyectaria una duda que no hace falta.
+
+**Gaps declarados, no escondidos:** los tres CVs traen una seccion "Notes / gaps" con lo que el
+JD pide y no se cubre. En Mural eso es deliberado: un gap declarado se discute, un gap callado se
+descubre tarde. En el archivo que se posta esas secciones quedan excluidas (el CV son 2 paginas,
+no 3); el mapa completo esta en el `.md` fuente.
+
+**CVs de apoyo (sin preparar):** Bluelight (React Engineer, Remote LATAM, 23/09), Makai Labs
+(Senior Next.js, 29/09), Nortal (Lead Frontend React, WFH, 09/10), Google (Senior Frontend
+Remoto LATAM - pide "ingles avanzado" explicito: es un test del filtro, no una opcion segura).
+Descartados: GraceMark (pide 10+ anos y es 100% remote within Mexico), FOURSYS (QA de a11y, te
+encasilla en testing), Blacksmith (pide portfolio de diseno en Figma), Speria y Profound (diseno,
+no ingenieria), Infojini (ya es tu proceso vivo).
+
 ## Procesos activos
 
 | Empresa | Puesto | Contacto | Tarifa | Estado 2026-10-21 |
