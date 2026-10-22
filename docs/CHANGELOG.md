@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-22] - ADR-099 enmendado contra el disco, y el drift sacado de sus artefactos
+
+### Changed
+- **ADR-099 enmendado** (`Actualizado: 2026-10-22`): accion 2 **cerrada** (la correccion de las tres afirmaciones falsas de `LANGCHAIN_STRATEGY.md` se hizo el 2026-10-19; re-verificada hoy), seccion 5 **re-medida** contra el disco, accion 4 nueva, y seccion "Revision 2026-10-22" con el research verificado.
+- **Drift sacado de los tres artefactos de LangChain** (revision de la sesion a pedido de Gonzo: *"aca estamos hablando de langchain y su integracion"*). El ADR-099 decia que "el candidato medido es un drill de ingles": reemplazado por el estado real (la via tecnica esta medida; **el caso de uso es decision de producto, no de arquitectura**). `LANGCHAIN_STRATEGY.md` derivaba al mismo lugar: reemplazado por la referencia a la verificacion. Y la seccion C2 de `verificacion-claims.md` hablaba del gap de ingles en vez del hallazgo de integracion: reescrita como **el §4.1 del research duplica memoria y scheduler que ya existen** (frontera de la seccion 3 del ADR). En la tabla de workflows, §4.1 y §4.5 pasan de "reconstruir como drill" a **"fuera de alcance"**. Tambien se corrigio un `prohibits` que se habia colado en el ADR.
+
+### Measured (ADR-099 seccion 5, re-medido hoy)
+- Documento de estrategia corregido contra el disco: **CUMPLE** (ya no declara 4.423 vectores).
+- Indice con documentos de mas de una fuente: **NO CUMPLE** - la coleccion `starter_knowledge` sigue con **10 embeddings de un solo documento**, `chroma.sqlite3` sin modificar desde el 2026-10-19 13:54.
+- Numero de chunks reproducible con un comando documentado: el **comando existe** (`scan_sources.py --list`, hoy reporta **372 archivos**, era 333) pero **la corrida de indexado no se hizo** (`store.py --sources --reset` pendiente, accion 4 del ADR). El servicio (`127.0.0.1:8100`) sigue sano y el watchdog de launchd sigue activo.
+
+### Gates
+`check-single-source.py` OK · `check_em_dash.py` OK en los 3 archivos tocados.
+
 ## [2026-10-22] - Research OpenClaw + LangChain: preservado, verificado claim por claim, y 3 afirmaciones del research refutadas
 
 ### Added

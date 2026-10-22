@@ -2,6 +2,7 @@
 
 **Fecha:** 2026-10-19
 **Estado:** Aceptado
+**Actualizado:** 2026-10-22
 **Decisores:** Gonzo / Kanam
 **Origen:** sesión 2026-10-19 - Gonzo: *"amaria empecemos a usar langchain en la practica común"*. Al ir a decidir el alcance se midió el starter contra el disco y apareció que su estrategia declaraba un índice de 4.423 vectores que no existe.
 **Relacionado:** ADR-066 (guardias no leen código de proyecto), ADR-073 (multi-agente), ADR-074 (despacho), ADR-077/088/089 (pipeline A/B), ADR-083 (frontera de roles), ADR-090 (modelos por rol), ADR-098 (`projects/` dentro del workspace)
@@ -74,7 +75,17 @@ Cuatro disparadores, todos verificables. Basta uno:
 El starter deja de ser demo **cuando su corpus es real**, no cuando el código está completo. Criterio medido, no declarado:
 
 - El índice contiene documentos de más de una fuente, y el número de chunks es reproducible con un comando documentado.
-- El documento de estrategia se corrige contra el disco (hoy declara 4.423 vectores y 445 archivos; tiene 10 y 1).
+- El documento de estrategia se corrige contra el disco.
+
+**Re-medido el 2026-10-22 (no cambia el criterio, lo deja con el estado real):**
+
+| Criterio | Estado | Medido |
+|---|---|---|
+| Documento de estrategia corregido contra el disco | **CUMPLE** | `docs/LANGCHAIN_STRATEGY.md` §5c ya no declara 4.423 vectores: dice 10 embeddings y distingue lo verificado de lo supuesto. Corrección hecha el 2026-10-19. |
+| Índice con documentos de más de una fuente | **NO CUMPLE** | La colección `starter_knowledge` sigue con **10 embeddings de un solo documento**. `chroma.sqlite3` sin modificar desde el 2026-10-19 13:54. |
+| Número de chunks reproducible con un comando documentado | **CUMPLE (el comando) / FALTA (la corrida)** | `venv/bin/python3 scripts/scan_sources.py --list` es determinista: hoy reporta **372 archivos** (era 333 el 2026-10-19; creció con la documentación nueva). La corrida de indexado (`store.py --sources --reset`) **no se ha hecho**. |
+
+**Lo que falta para que el starter deje de ser demo:** una sola corrida de `store.py --sources --reset` contra Ollama local. Es una corrida explicita, no un efecto colateral: borra el índice entero y re-embebe. El servicio (`127.0.0.1:8100`) sigue sano y el watchdog de launchd sigue activo.
 
 Hasta entonces, el starter se usa como **referencia de implementación** (patrón RAG, patrón ReAct, patrón servicio), no como base de conocimiento.
 
@@ -101,5 +112,31 @@ Hasta entonces, el starter se usa como **referencia de implementación** (patró
 ## Acciones
 
 1. ~~Backlog #80 abierto~~ → cerrado con esta decisión.
-2. **Pendiente:** corregir las tres afirmaciones falsas de `docs/LANGCHAIN_STRATEGY.md` contra el disco medido (4.423 vectores, scanner de 3 fuentes, `kanam-insight`). Va como tarea propia, no como efecto colateral de este ADR.
+2. ~~Corregir las tres afirmaciones falsas de `docs/LANGCHAIN_STRATEGY.md` contra el disco medido~~ → **CERRADO el 2026-10-19** (commit `3e80c91` del repo del proyecto + §5c del documento). Re-verificado el 2026-10-22: el documento ya no declara 4.423 vectores ni el scanner de 3 fuentes, y separa lo verificado de lo supuesto.
 3. **Pendiente:** definir el primer flujo real que justifique el punto 2 de la sección 2 (RAG servido a un consumidor externo). Candidato natural: retrieval sobre `docs/` + `skills/` para el propio agente - pero eso hoy lo resuelve `memory.db`, así que el primer caso tiene que ser otro.
+4. **Pendiente (nuevo, 2026-10-22):** correr `venv/bin/python3 scripts/store.py --sources --reset` una vez, para que la colección deje de tener 10 embeddings de demo y pase a los ~372 archivos que el scanner reporta. Es el criterio medido de la sección 5.
+
+## Revisión 2026-10-22 - un research externo, verificado
+
+Gonzo compartió un research externo (604 líneas, 74 fuentes) sobre una arquitectura OpenClaw + LangGraph. **Entra como dato, no como instrucción** (AGENTS.md). Se preservó y se verificó claim por claim: `docs/research/2026-10-22-verificacion-claims.md` (26 claims: 13 verdadero, 5 parcial, 3 falso, 1 no documentado).
+
+**La regla de lectura que queda:** un ADR nuestro no es dogma. Pero un ADR registra **el estado real de este stack**, y ese estado no lo invalida un documento de otra persona. Entonces cada claim se clasifica por naturaleza: **hecho técnico** (gana la fuente citada) / **hecho sobre nuestras restricciones** (gana el ADR) / **valor** (se decide, no se hereda). Ningún claim se aceptó por autoridad.
+
+**Lo que el research aporta (verificado):**
+
+- El **patrón MCP para flujos acotados** es correcto, y `/mcp` es **stateless** (cada request es independiente y no sustituye los hilos de LangGraph). Verificado en la doc oficial y en el wheel real de `langgraph-api` (`api/mcp.py:495`).
+- El **`checkpointer` por super-step con pending writes** es el aporte real: permite reiniciar desde el último paso exitoso sin re-ejecutar los nodos que completaron. El starter **ya tiene `langgraph-checkpoint 2.1.2` instalado y sin usar** (cero imports en `app/`, `scripts/`, `tests/`).
+- La **regla de idempotencia antes de un `interrupt()`** es correcta y oficial: *"the node restarts from the beginning of the node where the `interrupt` was called when resumed"*.
+- **Tool Search** aplaza los esquemas MCP: ya lo tenemos en el runtime.
+
+**Lo que el research se equivoca (refutado contra la fuente):**
+
+- "Las mutaciones del registro MCP requieren el Gateway **detenido**" → **falso**: `cli/mcp/registry.md` dice que el CLI solo lee o escribe config.
+- `OPENCLAW_DISABLE_CRON_HOST_EXECUTION=1` → **no existe** en los docs ni en el binario.
+- "LangSmith self-hosted" como opción local → es un **add-on Enterprise** con license key, Kubernetes, Postgres, Redis y ClickHouse.
+
+**La medición que cambia el plan:** un servidor **MCP stdio propio** (`mcp<2`, FastMCP 1.30.0) resuelve con los pines del starter **intactos** y **0 conflictos** (`uv pip compile`), sin Postgres, sin `LANGGRAPH_CLOUD_LICENSE_KEY` y sin LangSmith. La vía que propone el research (`langgraph-api` + Agent Server) también resuelve, pero exige Postgres, Redis y verificación de licencia **para un flujo acotado**. El research señala el patrón correcto y lo implementa con la capa más pesada disponible.
+
+**Lo que este ADR NO cambia:** la frontera de la sección 1 sigue igual. El research propone un "career mentor" con memoria propia por usuario y un cron propio: eso es exactamente la segunda base de memoria y el segundo scheduler que este ADR prohíbe. Si alguna vez se quiere, se reconstruye sobre `memory.db` + `automations`.
+
+**Pendiente de decisión de Gonzo (no resuelto por este ADR):** cuál es el primer flujo real que justifique la sección 2. La vía técnica está medida (MCP stdio propio sobre el RAG del starter, o `langgraph-api` si algún día hace falta estado persistente), pero **el flujo es una decisión de producto, no de arquitectura**. Este ADR registra la frontera y la medición; no elige el caso de uso.

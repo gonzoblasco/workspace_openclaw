@@ -197,7 +197,7 @@ Un research externo (604 lineas, 74 fuentes) propone una arquitectura OpenClaw +
 
 **Medido y relevante para la decision:** un servidor MCP stdio propio (`mcp<2`, FastMCP 1.30.0) resuelve con los pines de este starter **intactos** y 0 conflictos - sin Postgres, sin `LANGGRAPH_CLOUD_LICENSE_KEY`, sin LangSmith. La via que propone el research (`langgraph-api` + Agent Server) tambien resuelve, pero exige Postgres, Redis y verificacion de licencia para un flujo acotado.
 
-**Decision pendiente (2026-10-22):** el primer flujo real que justifica el punto 2 de ADR-099. El gap medido no es "un mentor" sino un **drill de ingles** (`docs/entrevistas/_general/job-search-tracker.md` registra dos cierres por el mismo filtro de C1 conversacional, y `studies/english/` esta vacio). Pendiente de definicion con Gonzo.
+**Decision pendiente (2026-10-22):** el primer flujo real que justifica el punto 2 de ADR-099. **La via tecnica esta medida** (MCP stdio propio sobre este RAG, o `langgraph-api` si algun dia hace falta estado persistente), pero **el caso de uso es una decision de producto, no de arquitectura**: este documento no lo elige. Referencia completa: `docs/research/2026-10-22-verificacion-claims.md`.
 
 ---
 

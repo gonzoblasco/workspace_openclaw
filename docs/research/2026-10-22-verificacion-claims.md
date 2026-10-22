@@ -80,16 +80,15 @@ La alternativa que nadie propone en el research, medida en esta maquina:
 
 El research senala el patron correcto (MCP para flujos acotados) pero lo implementa con la capa mas pesada disponible. Con `langgraph-api` la resolucion tambien funciona sin conflicto (`langgraph-api==0.4.48` con los pines del starter), pero **arranca el server, pide Postgres, y arrastra la verificacion de licencia**.
 
-### C2. El gap real no es "un mentor" - es un drill de ingles
+### C2. El §4.1 del research duplica orquestacion y memoria que ya existen
 
-El research propone el `career_mentor` (§4.1) como el primer producto, con memoria por usuario y cron propio. Medido contra el estado real:
+El research propone un `career_mentor` (§4.1) como primer producto, con **memoria por usuario dentro del flujo** y **cron propio**. Contra la frontera de ADR-099:
 
-- `docs/entrevistas/_general/job-search-tracker.md`: **Staffy/Pfizer y Sol cerrados ambos por el mismo filtro de ingles C1 conversacional.** Plan de C1 en curso (CUI, UBA).
-- `studies/english/` esta **vacio** salvo el README.
-- El research propone *"evaluar la respuesta y ajustar el siguiente paso"* (§4.1 punto 6) - eso es un drill, no un mentor.
-- **La infraestructura de surrounding ya existe:** `career-facts.md` (corpus unico, ADR-101), `check-cv-facts.py` (gate), `revision-adversarial.md` (el revisor con severidad/evidencia/veredicto - que es la estrategia WRITE->SELECT->COMPRESS->ISOLATE del research §4.3, escrita a mano), `study-asset-lab` (registrar leccion), `automations` (el daily).
+- **Memoria por usuario dentro del grafo** = una segunda base de memoria. La seccion 3 de ADR-099 lo prohibe: el retrieval puede consultar `memory.db`, pero la escritura y la verdad siguen siendo suyas. Lo que ya existe: `memory.db` (daily, todos, learnings), `career-facts.md` (corpus con dueno unico, ADR-101) y `memory-search.py`.
+- **Cron de LangGraph** = un segundo scheduler. Lo que ya existe: `automations` (heartbeat, cron, wakes), con historial de runs y estado.
+- **El patron de revision del §4.3** (WRITE -> SELECT -> COMPRESS -> ISOLATE) **ya esta escrito a mano** en `pr-review-response` + `verification-gates` + la revision adversarial que se usa en `docs/entrevistas/`.
 
-**Conclusión:** el research reimplementa un mentor que ya tenemos disperso. Lo que falta es el **drill**, y el primer caso de prueba es concreto: la call del **lunes 26/10 con David** (TEAM International / tempo.io, agendada 10:00 ART).
+**Consecuencia para la integracion:** los workflows del §4 del research **no compiten por el lugar de LangChain**; compiten por lugares que ya estan ocupados. Lo que el research aporta de verdad es la **capa de ejecucion con estado** (seccion 1 de ADR-099), no la orquestacion ni la memoria.
 
 ### C3. El research tiene un bug de version y una dependencia que rompe los pines
 
@@ -102,11 +101,11 @@ El research propone el `career_mentor` (§4.1) como el primer producto, con memo
 
 | Workflow | Valor real | Veredicto | Donde vive en el stack |
 |---|---|---|---|
-| §4.1 Mentor diario | Alto, pero mal especificado | **Reconstruir como drill de ingles** | `studies/english/` + RAG del starter + `automations` + `memory.db` |
+| §4.1 Mentor diario | Duplica infraestructura existente | **Fuera de alcance** (memoria propia + cron propio, prohibido por ADR-099 §3) | seria `memory.db` + `automations` |
 | §4.2 Tutor del repositorio | Alto (RAG de codigo real) | **Encaja** (disparador 2 de ADR-099) | falta indexacion de codigo con tree-sitter; el chunker canonico NO da linea/funcion (claim 13) |
 | §4.3 Revisor de codigo / PRs | Alto | **Encaja, con matiz** | ya existe manual (`pr-review-response` + `revision-adversarial.md`); el grafo con `interrupt()` es la mejora, no el punto de partida |
 | §4.4 Proyectos de portafolio | Medio | **Duplica** | `spec-driven-development` + pipeline A/B + `projects/<slug>/` ya lo hacen |
-| §4.5 Simulador de entrevistas | Medio | **Reconstruir como drill** | depende del mismo motor que §4.1 |
+| §4.5 Simulador de entrevistas | Medio | **Fuera de alcance** por la misma razon que §4.1 | depende del mismo motor |
 | §4.6 Analizador de ofertas | Alto | **Encaja** | `career-facts.md` + `job-search-tracker.md` + `check-cv-facts.py` ya son el corpus; falta el RAG |
 | §4.7 Depuracion e incidentes | Alto | **Encaja** (disparador 1/4 de ADR-099) | el `checkpointer` por super-step es el aporte real; `langgraph-checkpoint 2.1.2` ya esta instalado y **sin usar** (0 imports en `app/`, `scripts/`, `tests/`) |
 | §4.8 Coach de contribuciones OSS | Medio | **Encaja, choca con AGENTS.md** | el skill `github` ya cubre la parte OSS; la parte de escritura choca con la regla de "nada sale sin OK" |
