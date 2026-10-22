@@ -14,15 +14,15 @@ El server.js de Next.js standalone hace `process.env.HOSTNAME || '0.0.0.0'`. En 
 
 ---
 
-## bolt.diy: el SSR corre bajo workerd, no Node - Docker no alcanza al host
-
-bolt.diy usa cloudflare({ viteEnvironment: { name: 'ssr' } }) en vite.config.ts: el runtime del servidor es el binario workerd, no Node. Dentro de un contenedor workerd NO logra salir a la red del gateway de Docker (error propio: 'Network connection lost', mientras Node dariá 'fetch failed'). Descartes: no es DNS (resuelve 192.168.65.254 + fdc4:f303:9324::254), no es IPv6 (ENETUNREACH, pero IPv4 cruda tampoco funciona), no es CORS (Ollama responde Access-Control-Allow-Origin OK). En macOS workerd alcanza 127.0.0.1 sin problema, asi que el modo nativo funciona. Ademas: la imagen prebuilt upstream (ghcr.io/stackblitz-labs/bolt.diy) muere con 'vite: not found', y el target production del Dockerfile tiene el mismo bug porque 'pnpm prune --prod' se lleva vite (que es devDependency) mientras el CMD arranca 'vite preview'. <!-- project: github.com/gonzoblasco/workspace_openclaw -->
-
----
-
 ## Onyx: para exponer solo Ollama Cloud, el criterio es remote_host, no el tag
 
 En Onyx (onyx-dot-app/onyx), el provider LLM "Ollama" no distingue cloud de local: el endpoint /api/admin/llm/ollama/available-models devuelve TODO lo que expone el daemon, y el sufijo ":cloud" del tag NO es criterio suficiente (gpt-oss:120b-cloud y mistral-large-3:675b-cloud son cloud sin ese sufijo, y nemotron-3-nano:30b-cloud tambien). La fuente de verdad es el campo remote_host de GET /api/tags en el daemon. Para exponer solo cloud hay que filtrar por ese campo al construir model_configurations del provider. El filtro por sufijo deja pasar o deja fuera modelos segun como se nombren, y el error es silencioso: el chat sigue funcionando y uno cree que esta todo bien.
+
+---
+
+## El prompt del writer de Vane Filtraba el razonamiento del modelo a la respuesta final
+
+Salida real de Vane (chat b140e38e, 2026-10-21) filtro el monologo interno del modelo dentro de la respuesta final: 'We need sentence citations. The last clause Chinese accidental-avoid', un fragmento en chino, y palabras pegadas ('bidireccionalconflictiva', 'laarchitecture', 'unainterpretacion', 'utilizando'): 12 ocurrencias. CAUSA: el writer prompt (src/lib/prompts/search/writer.ts) exigia 'every sentence must include at least one citation, even when inferred' SIN ninguna regla sobre que no puede contener la salida; bajo esa presion el modelo narra sus decisiones de citacion. FIX: seccion 'Output hygiene' (solo la respuesta final, un solo idioma, sin palabras pegadas, sin anglicismos cuando hay palabra espanola, corregir defectos en silencio, omitir en vez de inventar) + aclarar que la cita se pega al hecho y nunca es clausula propia. VERIFICADO por A/B con la misma query y el mismo historial: 12 leaks antes, 0 despues, 50 fuentes. REGLA GENERAL: cuando un modelo se filtra a si mismo, la causa suele estar en el prompt que lo presiona, no en el modelo.
 
 ---
 

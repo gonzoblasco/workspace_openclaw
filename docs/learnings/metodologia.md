@@ -725,3 +725,9 @@ Casos del mismo dia y mismo patron: PR-Agent (evaluado con verdad de base, desca
 
 ---
 
+## Leccion de redaccion (la mas transferible del dia)
+
+ **Preguntar por la operacion, no por la etiqueta.** El revisor adversarial propuso como mensaje a David: *"could you please confirm the required English proficiency... does the client require a conversational C1?"*. **Eso es exactamente el auto-sabotaje que hay que evitar**: preguntar "¿el cliente exige C1?" con esas palabras clasifica al candidato como el que se autoexcluye, destruye la opcion y no da informacion a cambio. Es el caso Staffy provocado a mano. La redaccion que si funciona, y que
+
+---
+
