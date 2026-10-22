@@ -39,9 +39,9 @@ funcione sola".
 
 | # | Hecho medido | Fuente |
 |---|---|---|
-| 1 | **4 drafts esperando OK desde el 2026-10-01** (el 2026-10-07 el ultimo). Ninguno se publico | `stat` de `docs/linkedin/*.md` |
+| 1 | **5 drafts esperando OK** (4 desde el 2026-10-01, 1 desde el 2026-10-07). Ninguno se publico | `stat` de `docs/linkedin/*.md` |
 | 2 | **2 merges sin post**: `adobe/react-spectrum #10503` y `carbon-design-system/carbon #22887`. Los dos son **a11y**, o sea material valido por la regla | `gh api` + DB `contributions` |
-| 3 | **2 de 10 posts publicados.** El ROADMAP 2.2 pide 3+ publicados y "1 post por merge dentro de la semana" | `docs/linkedin/` |
+| 3 | **1 de 10 posts tiene `Status: PUBLICADO`** (`astryx-5419.md`). Los otros: 5 drafts y **4 sin campo `Status`** (que no se sabe si son publicados o no - el archivo miente). El ROADMAP 2.2 pide 3+ publicados y "1 post por merge dentro de la semana" | `docs/linkedin/` |
 | 3b | **11 PRs mergeados distintos** en la DB (12 filas, con un duplicado): 10 de a11y + 1 de CI. **Ninguno del nicho agentic ni del fullstack** | `memory.db` tabla `contributions` + titulos via `gh api` |
 | 4 | **El gate obligatorio del paso 6 esta muerto.** La skill exige el "anti-ai pass" de `skills/anti-ai`. **Ese directorio no existe**: se elimino en la reestructuracion del 2026-09-22 (16 stubs vacios eliminados, entre ellos `anti-ai`). El paso 6 es inejecutable tal como esta escrito | `ls skills/anti-ai` + `memory/2026-09-22.md` |
 | 5 | **La regla de branding apunta a un lugar equivocado.** La skill dice que la politica de los 3 nichos vive en `MEMORY.md`. **`MEMORY.md` tiene 0 menciones de "nicho"**; la regla real esta en `memory/user-profile.md:47` | `grep -c` |
@@ -49,6 +49,7 @@ funcione sola".
 | 7 | **El post canonico se autodescribe.** `astryx-5419.md` tiene una seccion "anatomia del estilo" de 6 puntos + "notas para futuros posts". **Esa es la spec del formato** - no hace falta inventarla | `docs/linkedin/astryx-5419.md` |
 | 8 | **`content-serializer` tambien se referencia y no existe** (linea 41 de la skill). Referencia muerta secundaria | `find` en todos los workshops |
 | 9 | La skill tiene `disable-model-invocation: true` | su frontmatter |
+| 10 | **Los headers de los 10 posts son inconsistentes**: 4 en espanol (`Nicho`/`Proyecto`), 3 en ingles (`Niche`/`Project`), 4 sin `Status`. El shape que declara la skill (paso 5) no es el que任何一个 tiene | `docs/linkedin/*.md` |
 
 ### El hallazgo de fondo
 
@@ -108,21 +109,32 @@ LangGraph en absoluto**: es arreglar los tres gates rotos, que son gratis.
 
 ## 4. Alcance
 
-### Fase 0 - Cerrar los gates rotos (SIN LangGraph, sin proyecto nuevo)
+### Fase 0 - Cerrar los gates rotos (SIN LangGraph, sin proyecto nuevo) - **HECHA el 2026-10-22**
 
-Esto es lo que desbloquea la cadena hoy, y son tres fixes:
+Esto es lo que desbloquea la cadena hoy, y son cuatro fixes:
 
-| # | Fix | Que estaba roto | Como se verifica |
-|---|---|---|---|
-| 0.1 | **Decidir que se hace con el gate "anti-ai"** | El paso 6 de la skill exige un gate que no existe | La skill dice que gate se corre. Si no hay equivalente, se dice explicitamente y se sustituye por uno real |
-| 0.2 | **Corregir el puntero de la politica** | La skill dice `MEMORY.md`; la regla esta en `memory/user-profile.md:47` | La skill apunta al lugar real |
-| 0.3 | **Escribir los 2 posts que faltan** (#10503, #22887) | 2 merges a11y sin material | Los 2 archivos existen con el shape de `astryx-5419.md` y pasan el gate de guiones |
+| # | Fix | Que estaba roto | Como se verifica | Estado |
+|---|---|---|---|---|
+| 0.1 | **Restituir el gate "anti-ai"** | El paso 6 de la skill exigia un gate que no existe | `scripts/check-linkedin-pipeline.py` con las reglas del `anti-ai` original recuperadas del historial (commit c0182f17) | **HECHO** |
+| 0.2 | **Corregir el puntero de la politica** | La skill decia `MEMORY.md`; la regla esta en `memory/user-profile.md:47` | La skill apunta al lugar real | **HECHO** |
+| 0.3 | **Escribir los 2 posts que faltan** (#10503, #22887) | 2 merges a11y sin material | Los 2 archivos existen con el shape de `astryx-5419.md` y pasan el gate | **HECHO** |
+| 0.4 | **Un gate de "publicado" verificable** | Nada detectaba un draft abandonado | `scripts/check-linkedin-pipeline.py` en modo auditoria | **HECHO** |
 
-Y un cuarto, que es el que mas valor tiene y el que menos trabajo da:
+**Lo que el gate nuevo caza, y el gate viejo no:**
 
-| # | Fix | Por que |
+| Regla | Que caza | Por que |
 |---|---|---|
-| 0.4 | **Un gate de "publicado" verificable**: un script que recorra `docs/linkedin/*.md` y falle si hay un `Status: draft` con mas de N dias, o si un merge elegible no tiene post | El cuello de botella medido son 4 drafts de 3 semanas. Un recordatorio en prosa no lo evita; un gate sí |
+| Em dash / en dash | U+2014, U+2013 | La regla dura de Gonzo |
+| **Guiones invisibles** | U+2011 (guion no separable), U+202F (espacio angosto), U+00A0 | **Medido el 2026-10-22: los 2 posts que escribio el subagente traian 10 y 9 U+2011 + 8 U+202F. `check_em_dash.py` NO los caza (solo mira U+2014/U+2013). Los 10 posts canonicos tienen CERO.** Son el mismo defecto que el em dash: se ven bien y no lo estan |
+| Header | `Status` y `Nicho`/`Niche` obligatorios, y el link al PR | Sin `Status` no se sabe si se publico. Sin el PR el post no es trazable al merge |
+| Idioma | El cuerpo publicable va en ingles | Hay 2 posts vivos enteramente en espanol |
+| Longitud | 250-350 palabras (la ventana del canonico) | AVISA, no bloquea |
+| Estilo | Las 6 categorias del `anti-ai` original | AVISA, no bloquea: son senales, no hechos. Un gate que reprima al canonico esta roto |
+| **Cierre** | Draft vencido (>14 dias) y merge elegible sin post | El cuello de botella real |
+
+**El gate esta conectado al pre-commit, pero SOLO en modo post** (valida los posts staged). El modo auditoria **no** se conecta a proposito: con el backlog medido (5 drafts vencidos, 2 merges sin post) bloquearia TODO commit del workspace, y un guard que bloquea todo es una pared, no un guard.
+
+**El script tiene 19 tests** (`tests/python/test_check_linkedin_pipeline.py`), cada uno siembra un arbol falso. El ultimo exige que el gate distinga el arbol limpio del sucio.
 
 **Nota de alcance:** 0.1 a 0.4 **no son trabajo de LangChain**. Son trabajo de MIND (su propia skill) y
 de un script del workspace. Se documentan aca porque son el **prerrequisito** de que la cadena valga
@@ -164,7 +176,7 @@ adversarial que se usa en `docs/entrevistas/` tiene exactamente esa forma (sever
 veredicto accionable), y `pr-review-response` cubre el caso de PR.
 
 Lo que el research **no vio**, y es lo que esta spec propone: **el cuello de botella de la cadena
-OSS->LinkedIn no es la redaccion, es el cierre.** 4 drafts de tres semanas y 2 merges a11y sin
+OSS->LinkedIn no es la redaccion, es el cierre.** 5 drafts de tres semanas y 2 merges a11y sin
 material no son un problema de capacidad de escritura.
 
 Y el aporte tecnico real del research que **si** se sostiene: el `checkpointer` por super-step con
@@ -187,7 +199,8 @@ exactamente en el paso 3 (leer la historia) y el paso 5 (escribir).
 
 ## 7. Criterio de exito
 
-- [ ] Los 2 merges a11y sin post tienen archivo, con el shape de `astryx-5419.md` y el gate de guiones en OK
+- [ ] Los 2 merges a11y sin post tienen archivo, con el shape de `astryx-5419.md` y pasan `scripts/check-linkedin-pipeline.py --post`
+- [ ] Los 4 posts sin campo `Status` declaran su estado real (publicado o draft) - un archivo que no dice si se publico es un archivo que miente
 - [ ] El gate de cierre existe y corre, y detecta el caso de los 4 drafts actuales
 - [ ] La skill de MIND no apunta a un gate inexistente ni a un archivo equivocado
 - [ ] **Un post nuevo recorre el grafo de punta a punta**, y se puede mostrar el estado reanudable
@@ -201,6 +214,13 @@ exactamente en el paso 3 (leer la historia) y el paso 5 (escribir).
 - El post canonico (la spec del formato): `docs/linkedin/astryx-5419.md`
 - La regla de branding (3 nichos): `memory/user-profile.md:47` - **no** `MEMORY.md`
 - La cadena en el roadmap: `docs/ROADMAP.md` §2.2
+- La frontera de capa: `docs/adr/ADR-099-langchain-capa-de-ejecucion.md` (secciones 1, 2, 3 y 4)
+- La frontera de rol: `docs/adr/ADR-083-frontera-de-roles-core-no-escribe-codigo.md`
+- El research verificado: `docs/research/2026-10-22-verificacion-claims.md`
+- El otro workflow documentado (sin implementar): `projects/onwheels/.knowledge/ROADMAP.md` §F2.R
+
+<!-- project: github.com/gonzoblasco/workspace_openclaw -->
+roadmap: `docs/ROADMAP.md` §2.2
 - La frontera de capa: `docs/adr/ADR-099-langchain-capa-de-ejecucion.md` (secciones 1, 2, 3 y 4)
 - La frontera de rol: `docs/adr/ADR-083-frontera-de-roles-core-no-escribe-codigo.md`
 - El research verificado: `docs/research/2026-10-22-verificacion-claims.md`

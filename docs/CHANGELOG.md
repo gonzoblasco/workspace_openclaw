@@ -6,6 +6,32 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-22] - La cadena OSS -> LinkedIn: gate restituido, 2 posts escritos, y 3 gates rotos cerrados
+
+### Added
+- **`scripts/check-linkedin-pipeline.py`** - el gate de la cadena, que **no existia**. La skill `linkedin-merge-post` (workshop de MIND) exige en su paso 6 "clear both publish gates", y uno de los dos era el "anti-ai pass" de `skills/anti-ai`: esa skill **no existe** (eliminada el 2026-09-22, ya era placeholder). El paso 6 era inejecutable y la cadena -una de las tres acciones del ROADMAP 2.2- no tenia gate. **Las reglas no estan inventadas: son las 6 categorias del `anti-ai` original, recuperadas del historial** (commit c0182f17, via `git show`), convertidas en chequeos automaticos.
+- **`tests/python/test_check_linkedin_pipeline.py`** - 19 tests. Cada uno siembra un arbol falso; el ultimo exige que el gate distinga el arbol limpio del sucio.
+- **`docs/linkedin/react-spectrum-combobox-announce.md`** y **`docs/linkedin/carbon-composedmodal-describedby.md`** - los 2 posts que faltaban (11 merges mergeados en la DB, 9 con post). Nicho a11y en los dos, que es lo que el material sostiene.
+
+### Fixed
+- **El gate de guiones largo no caza los guiones invisibles.** `check_em_dash.py` solo mira U+2014 y U+2013. Los 2 posts que escribio el subagente traian **10 y 9 guiones no separables (U+2011) y 8 espacios angostos (U+202F)**: invisibles al leer, presentes en el archivo. Los 10 posts canonicos tienen CERO de estos. El gate nuevo los caza, con el mismo criterio que el em dash: se ven bien y no lo estan.
+- **Un error de hecho en el post de react-spectrum.** Decia que "we updated the test suite to assert that per-item navigation no longer triggers a manual announcement". El diff real **BORRA** esos tests: el maintainer los pidio eliminar dos veces ("the same thing as `not.toHaveBeenCalled`, just dressed up differently" / "we can just drop these tests"). El post ahora cuenta esa historia, que es mejor que la que se habia escrito.
+- **El post de carbon atribuiu a Gonzo cosas que no son suyas** (un test "Storybook-driven" que en realidad es de React Testing Library, y un paso de friccion redigido en segunda persona que no ocurre en el PR). Corregido contra los comments inline reales de `adamalston` y el diff final.
+- **Una cita a WCAG 2.1 SC 1.3.1 que ni el PR ni el issue sostienen.** Retirada de los 2 posts: lo que queda es lo que el PR sostiene.
+- **3 referencias rotas en la skill `linkedin-merge-post`**: el gate "anti-ai" (inexistente), el puntero de la politica de branding (`MEMORY.md` -> `memory/user-profile.md` linea 47, que es donde vive) y `skills/content-serializer` (inexistente). **El paso 6 ahora es ejecutable.**
+- **Los 2 posts quedaron en `agents/kanam-mind/docs/linkedin/`** en vez de `docs/linkedin/`, que es el dueno (la skill lo dice: "write the draft to `docs/linkedin/<repo-short>-<topic-or-pr>.md`"). Movidos.
+
+### Changed
+- **El gate esta en el pre-commit, pero SOLO en modo post** (valida los posts staged). El modo auditoria **no** se conecta a proposito: con el backlog medido (5 drafts vencidos, 2 merges sin post) bloquearia TODO commit del workspace. Un guard que bloquea todo es una pared, no un guard.
+- **La spec `docs/specs/oss-linkedin-chain-spec.md`** pasa a "Fase 0 HECHA". El diagnostico se corrijo con lo que el gate revelo y no con mi estimacion: **5** drafts (no 4), **1** post con `Status: PUBLICADO` (no 2), **4** posts sin campo `Status`, y los headers inconsistentes (4 en espanol, 3 en ingles).
+
+### Measured
+- El gate de cierre, en el estado real: **5 drafts vencidos** (4 de 21 dias, 1 de 15), **2 merges elegibles sin post**, **1 solo post con `Status: PUBLICADO`** de 10. El ROADMAP 2.2 pide 3+ publicados.
+- De los 11 merges mergeados: **10 son de a11y y 1 de CI**. **Ninguno del nicho agentic ni del fullstack**: de los 3 nichos de branding, solo el a11y tiene material propio.
+
+### Gates
+`pytest tests/python` completo en verde · `check_em_dash.py` OK · `check-single-source.py` OK · `check-bootstrap-budget.py` OK.
+
 ## [2026-10-22] - ADR-099 enmendado contra el disco, y el drift sacado de sus artefactos
 
 ### Changed

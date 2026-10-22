@@ -200,6 +200,31 @@ if [ "$BOUNDARY_RELEVANT" = "1" ]; then
   python3 "${SCRIPT_DIR}/scripts/check-agent-skill-boundary.py" || exit 1
 fi
 
+# Gate de la cadena OSS -> LinkedIn (2026-10-22). Disparador PROPIO: solo corren
+# los posts STAGED en docs/linkedin/. El modo auditoria de este script NO se
+# conecta a proposito: el backlog medido (5 drafts vencidos, 2 merges sin post)
+# bloquearia TODO commit del workspace, y un guard que bloquea todo no es un
+# guard, es una pared. La auditoria de cierre se corre a mano, o por
+# automatizacion, cuando el backlog este limpio.
+#
+# Por que este gate existia y faltaba: la skill `linkedin-merge-post` (workshop de
+# MIND) exige en su paso 6 "clear both publish gates", uno de los cuales era el
+# "anti-ai pass" de `skills/anti-ai` - skill que NO existe (eliminada el
+# 2026-09-22, ya era placeholder). El paso 6 era inejecutable. Este script
+# restituye el gate con las reglas ORIGINALES de ese `anti-ai`, recuperadas del
+# historial (commit c0182f17), no inventadas.
+if echo "$CHANGED" | grep -q '^docs/linkedin/'; then
+  LINKEDIN_BAD=0
+  for f in $(echo "$CHANGED" | grep '^docs/linkedin/.*\.md$'); do
+    if ! git show ":$f" 2>/dev/null | python3 "${SCRIPT_DIR}/scripts/check-linkedin-pipeline.py" --post - >/dev/null 2>&1; then
+      echo "  post de LinkedIn que no pasa el gate: $f"
+      git show ":$f" | python3 "${SCRIPT_DIR}/scripts/check-linkedin-pipeline.py" --post - 2>&1 | sed 's/^/    /'
+      LINKEDIN_BAD=1
+    fi
+  done
+  [ "$LINKEDIN_BAD" = "1" ] && { echo "ABORT: el post tiene que pasar el gate de la cadena."; exit 1; }
+fi
+
 # Gate de seguridad del codigo de skills (2026-10-06). Se instalan skills de
 # afuera; el codigo ejecutable que entra bajo un arbol de skills se escanea
 # antes de commitear. --staged esta SCOPEADO a codigo de skills: el codigo
