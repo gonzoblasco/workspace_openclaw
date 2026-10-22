@@ -4,6 +4,72 @@
 
 ---
 
+## [2026-10-07] - El suite de skills deja de bloquear commits por archivos que no se commitean
+
+### Fixed
+- **`scripts/test-skills.sh`: el scope es ahora `git diff --cached` (staged), no el disco entero.** El pre-commit lo corre en cada commit y escaneaba todos los `SKILL.md` del disco, incluidos los `playwright-core` bajo `node_modules/` (3 por copia instalada) y los arboles de skills de agentes todavia no trackeados. Resultado: un commit que no tocaba nada de eso fallaba por em dashes ajenos y forzaba `--no-verify`. Reproducido 2026-10-07: `./scripts/test-skills.sh` reportaba 12 fallos de em dash, 0 de ellos en el commit.
+- **`scripts/test-skills.sh`: `node_modules/` se poda del walk en TODOS los checks.** Los checks A (sintaxis) ya podaban; B/C/D/E no, y C (em dash) fallaba contra el codigo de terceros. Ahora el `find` usa `-prune` una sola vez y el barrido es uniforme.
+
+### Added
+- **`scripts/test-skills.sh --all`:** barre todo el arbol de skills en disco (lo que corre el CI, donde no hay staging). Con la guarda de CI: si `CI` esta seteado y no se paso `--all`, el script **aborta** en vez de salir verde sobre 0 archivos.
+- **`tests/bash/test-skills-scope.bats` (5 tests):** prueba el scope staged, el prune de `node_modules`, el filtro de archivos fuera de los skill roots y el aborto en CI. Monta un arbol temporal con una copia del script real.
+
+### Changed
+- **`.github/workflows/skills-ci.yml`:** el step de sintaxis invoca `./scripts/test-skills.sh --all` (en CI no hay staging; el default veria 0 archivos).
+
+### Notes
+- **Verificacion (repro del pedido):** con un solo `docs/ROADMAP.md` staged, el hook corre y sale 0; con un `SKILL.md` staged bajo `skills/`, solo se revisa ese archivo. El barrido `--all` bajo de 12 a 6 fallos de em dash: los 6 restantes son SKILL.md reales de agentes (deuda de contenido preexistente, fuera de este commit).
+- **Pendiente registrado:** los 6 `SKILL.md` con em dash (4 en `agents/kanam-auditor/`, 2 en `agents/kanam-critic/`), de los cuales 5 son arboles untracked, siguen sin guion comun. Los caza `--all`/CI, no el hook sobre esos commits.
+
+---
+
+
+### Added
+- **`docs/ROADMAPS.md` (El Roadmap de Roadmaps):** el meta-roadmap del ecosistema de agentes. Indice unico del estado de madurez de los 7 roles (auditor, critic, dev, mind, ops, planner, studio), el camino de madurez M0-M5, la secuencia de escalada por dependencia (los gates de calidad primero) y las guardas de tracking. Premisa base: ausencia de `ROADMAP.md` = v0.1; meta de la ronda = v0.5 por rol; visión = v1.0.
+- **`docs/checklists/roadmap-authoring-guide.md`:** el estandar de como se escribe un roadmap de rol (7 secciones obligatorias + vocabulario de version). Codifica el patron que auditor y critic ya usaban de hecho.
+- **`scripts/check-roadmaps.py` + guard en el pre-commit:** verifica por rol la existencia de `agents/<rol>/ROADMAP.md`, su encabezado/version, sus secciones, el marcador de proyecto y la **coherencia de version** contra el indice. Nace porque el 2026-10-07 se descubrio que 5 de 7 roles no tenian roadmap y nada lo detectaba (ADR-083: una regla sin guarda se viola sola).
+- **`agents/<rol>/ROADMAP.md` para los 5 roles que no lo tenian** (dev, mind, ops, planner, studio), autorados por cada rol via `sessions_spawn` y verificados por el CORE contra el filesystem.
+
+### Changed
+- **`agents/kanam-auditor/ROADMAP.md` y `agents/kanam-critic/ROADMAP.md`:** alineados al estandar (encabezado formal, secciones 1-7, agregadas "Lo que rechace" y "Red lines y criterio de cierre" donde faltaban). Contenido previo intacto.
+- **`docs/checklists/roadmap-review-checklist.md`:** nueva seccion "Variante: revisar un ROADMAP de rol" (contra fuentes reales, con el guard como primer paso y la regla de que el archivo del rol gana sobre el indice).
+
+### Notes
+- **El ecosistema estaba, en el papel, 100% en v0.1 y solo 2 de 7 roles tenian mapa.** Ahora los 7 declaran su version y el camino a v0.5. Guard pasa 7/7.
+- **Secuencia fijada:** critic y auditor primero (son los jueces; escalarlos antes de construir sobre ellos), despues dev, luego ops/mind, y planner/studio al final.
+
+---
+
+## [2026-10-07] - El Crew deja de ser tres roles sin skills: Planner y Auditor ganan el suyo
+
+### Added
+- **`agents/kanam-planner/skills/session-plan-orchestration/SKILL.md`:** primera skill del Planner. Orquesta la tarea como plan persistente (`.knowledge/session_plan.json` via `scripts/session_plan.py`): traza pasos, asigna roles en orden (implementacion -> Auditor -> Critic), evita la amnesia de sesion leyendo el `summary` al arranque, y no ejecuta el trabajo de ningun rol.
+- **`agents/kanam-auditor/skills/surface-alignment-audit/SKILL.md`:** primera skill del Auditor. Auditoria de superficie contra el Design System: cruce de tokens (hex hardcodeado = error), filtro Anti-Slop, y contraste WCAG 2.2 **medido** por rol del token. Marca el deslinde forma vs sustancia con el Critic.
+- **`agents/kanam-planner/skills/` y `agents/kanam-auditor/skills/`:** los dos arboles de rol no existian. Los tres roles del Crew (Planner, Critic, Auditor, creados el 2026-10-01) naciaron solo con AGENTS/IDENTITY/SOUL/USER y veian **cero** skills propias; sus jobs semanales de revision corrian sobre un directorio vacio.
+
+### Changed
+- **`SKILLS-INDEX.md`:** sumadas las filas de planner y auditor (1 cada uno) y las secciones 3.7/3.8; total de activas 78 -> 81 (critic + planner + auditor).
+
+### Notes
+- **El Crew completo ya tiene material propio.** Critic (`sharp-adversarial-review`), Planner (`session-plan-orchestration`) y Auditor (`surface-alignment-audit`) pasan `scripts/test-skills.sh` (51/51) y son visibles via `openclaw skills list --agent <id>`.
+- **`session-plan-orchestration` corregida durante la creacion:** las refs a `session-start.sh`/`session-end.sh` apuntaban a `scripts/` (no existen ahi); viven en `skills/session-lifecycle/scripts/`. Lo cazo `test-skills.sh` (script refs 2 failed -> 0).
+
+---
+
+## [2026-10-07] - El Critic deja de ser un rol sin skills: nace `sharp-adversarial-review`
+
+### Added
+- **`agents/kanam-critic/skills/sharp-adversarial-review/SKILL.md`:** primera skill del rol Critic. El ritual de presión adversarial con la rúbrica SHARP: cómo puntuar los 5 ejes (Sharpness, Horizon, Asymmetry, Resistance, Parsimony) con evidencia citable, el mapa de veredicto (VETO en `<= 18`, Aprobado, ORO en `>= 24`) y el entregable del VETO (puntos de fricción obligatorios). Presta de `skills/verification-gates` la guarda de verde falso y de `skills/trust-vocabulary-report` el contrato de evidencia; marca el deslinde sustancia vs forma con el Auditor.
+- **`agents/kanam-critic/skills/`:** el árbol de rol del Critic no existia. Su `workspaceDir` solo tenia AGENTS/IDENTITY/SOUL/USER, asi que el agente veia **cero** skills y su job semanal de revision corria sobre un directorio vacio.
+
+### Changed
+- **`SKILLS-INDEX.md`:** sumada la fila `agents/kanam-critic/skills/` (1) y la seccion 3.6; total de activas 78 -> 79.
+
+### Notes
+- **El job `skill-collection-review:kanam-critic` corria en error** (`Ls failed`): revisa el Skill Workshop del agente (`agent/workshop-skills/`), que estaba vacio. Con el arbol de rol ya en pie, el agente tiene material propio; el job queda sin bloqueo de arbol.
+
+---
+
 ## [2026-10-06] - kanam-fixer: el alcance estaba definido; el ROADMAP mentia desde hacia 3 semanas
 
 ### Fixed

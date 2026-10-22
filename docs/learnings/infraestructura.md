@@ -611,3 +611,9 @@ en error con 'cron: job execution timed out' (600260ms, el tope = cadencia acota
 
 ---
 
+## LiteLLM: un playground puede funcionar sin ser adoptable
+
+**Leccion (2026-10-22, sesion LiteLLM + Ollama):** el nombre de una herramienta define el modelo mental con el que se la lee por primera vez. "LiteLLM" suena a modelo mejor o a "una IA que crea IAs"; es un proxy (traduce formato OpenAI al de cada proveedor y aplica gobernanza: virtual keys, budgets, spend, routing con retry/fallback). No entrena, no afina, no crea agentes ni skills. Un playground puede ser util sin ser adoptable: el server funciono y las 7 pruebas end-to-end pasaron, y aun asi no lo era - lo que un gateway aporta de verdad es multi-tenancy (una key y un presupuesto por cliente), no inteligencia. Si el problema es "hablar con varios modelos", el stack propio ya lo resuelve (ADR-090 + pipeline A/B). Verificacion pratica: antes de adoptar un proxy, grep del stack para ver quien lo usaria de verdad. Aqui: 0 componentes propios, solo una dependencia potencial en Onyx, y era opcional.
+
+---
+

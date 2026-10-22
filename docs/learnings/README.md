@@ -18,7 +18,7 @@ Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde
 - **[debugging](./debugging.md)** - 6 lecciones
 - **[docker](./docker.md)** - 4 lecciones
 - **[evaluacion](./evaluacion.md)** - 3 lecciones
-- **[infraestructura](./infraestructura.md)** - 56 lecciones
+- **[infraestructura](./infraestructura.md)** - 57 lecciones
 - **[integracion](./integracion.md)** - 2 lecciones
 - **[metodologia](./metodologia.md)** - 83 lecciones
 - **[oss](./oss.md)** - 33 lecciones
@@ -29,4 +29,4 @@ Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde
 
 ## Total
 
-246 lecciones en total.
+247 lecciones en total.

@@ -11,6 +11,10 @@
 #   ./scripts/memory-db.sh add-contribution <repo> <pr> <pr_url> <status> "<detail>" [context] [issue] [issue_url] [tier] [tipo]
 #     - registra una contribucion OSS en la DB (tipo default 'pr'; 'collab' para no-codigo)
 #   ./scripts/memory-db.sh add-todo "texto" [proyecto] - agrega un todo
+#   ./scripts/memory-db.sh edit-todo <id> "texto"    - reescribe el texto de un todo
+#   ./scripts/memory-db.sh done-todo <id>            - marca un todo como hecho
+#   ./scripts/memory-db.sh reopen-todo <id>          - reabre un todo
+#   ./scripts/memory-db.sh set-todo-priority <id> <high|medium|low> - cambia la prioridad
 #   ./scripts/memory-db.sh add-inbox "idea"       - agrega una idea al inbox
 #   ./scripts/memory-db.sh learnings [categoria]  - lista lecciones (opcional filtro por categoria)
 #   ./scripts/memory-db.sh add-learning <cat> "<titulo>" "<contenido>" [tags] - agrega una leccion
@@ -319,6 +323,22 @@ case "$1" in
     echo "Todo $id -> prioridad $prio."
     "$0" export-todos > /dev/null
     ;;
+  edit-todo)
+    # Firma: edit-todo <id> "texto" - reescribe el texto de un todo y regenera el .md
+    id="$2"; text="$3"
+    if [ -z "$id" ] || [ -z "$text" ]; then
+      echo "Error: falta el id o el texto." >&2
+      echo "Uso: $0 edit-todo <id> \"texto\"" >&2
+      exit 1
+    fi
+    n=$(db "UPDATE todos SET text='$(sql_escape "$text")' WHERE id='$(sql_escape "$id")'; SELECT changes();")
+    if [ "$n" = "0" ]; then
+      echo "Error: no existe un todo con id $id." >&2
+      exit 1
+    fi
+    echo "Todo $id reescrito."
+    "$0" export-todos > /dev/null
+    ;;
   update-ficha)
     # Firma: update-ficha <id> [--title <t>] [--tags <a,b>]
     # Solo toca campos pasados. Los tags se normalizan a JSON array.
@@ -470,6 +490,6 @@ case "$1" in
     echo "docs/learnings/ regenerado desde la DB."
     ;;
   *)
-    echo "Uso: $0 {export-daily|export-all|export-oss|export-todos|export-inbox|stats|todos|inbox|contributions|add-todo|add-inbox|add-contribution|learnings|add-learning|export-learnings|catalog|search|topics|recent}"
+    echo "Uso: $0 {export-daily|export-all|export-oss|export-todos|export-inbox|stats|todos|inbox|contributions|add-todo|edit-todo|done-todo|reopen-todo|set-todo-priority|add-inbox|add-contribution|learnings|add-learning|export-learnings|catalog|search|topics|recent}"
     ;;
 esac
