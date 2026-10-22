@@ -1,6 +1,6 @@
 # Job Search Tracker
 
-> **Estado 2026-10-21: 2 procesos vivos (Infjini, TEAM International/tempo.io).** Staffy/Pfizer **cerrado 20/10** y Sol Bisio **cerrado 21/10**, ambos por el mismo filtro de inglés C1 conversacional. Plan de inglés C1 en curso (CUI).
+> **Estado 2026-10-22: 2 procesos vivos (Infjini, TEAM International/tempo.io).** Staffy/Pfizer **cerrado 20/10** y Sol Bisio **cerrado 21/10**, ambos por el mismo filtro de inglés C1 conversacional. **Plan de inglés (cambiado el 2026-10-22): B2 intensivo en el CUI, dos meses, arranca el 26/10/2026** - desoxidar y mejorar la base; el examen CUI-ING C1 y el TOEFL quedan para despues.
 >
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
 

@@ -107,25 +107,25 @@ ningún lado del contrato. Es la pregunta que más cambia el número y la más b
 ### 4. El educational allowance (la oportunidad disfrazada de trampa)
 
 > ```
-> * The educational allowance - I am starting an advanced English course at the CUI (Centro
+> * The educational allowance - I am starting an intensive English course at the CUI (Centro
 >   Universitario de Idiomas) this month, and the certification exam comes in 2027. Would
 >   courses like that be an approved use of the allowance? I saw the 65% threshold and the 12-month
 >   commitment clause, so I want to understand it before committing to anything.
 > ```
 
 **Por qué importa:** USD 400/año con aprobación previa de HR. Si superás el 65% (USD 260) te atás
-a 12 meses. El curso C1 del CUI cuesta alrededor de USD 140 y el examen USD 140: **estás justo en
-el umbral**, así que la cláusula de permanencia es un riesgo real si lo usás. La clave es **no
-comprometerte antes de saber si el proceso avanza** - si el idioma te cierra el proceso, firmaste
-un compromiso de 12 meses a cambio de nada.
+a 12 meses. El curso del CUI y el examen están **cerca del umbral**: **estás justo en el límite**,
+así que la cláusula de permanencia es un riesgo real si lo usás. La clave es **no comprometerte
+antes de saber si el proceso avanza** - si el idioma te cierra el proceso, firmaste un compromiso
+de 12 meses a cambio de nada.
 
-**Estado real (21/10):** el inicio del curso **no está confirmado**. El calendario del CUI publica
-varios ciclos posibles y **cuál es el "C1 completo" depende de la prueba de nivel**, que Gonzo
-hace esta tarde (21/10). Lo que sí está verificado en la web del CUI: hay ciclos de 15 clases x 3 h
-que arrancan el 26/10, con inscripción del 7 al 22/10, y ciclos trimestrales de noviembre con
-inscripción del 5 al 19/11. **El examen queda para 2027** (la mesa del 6/11 es demasiado temprana si
-el curso termina en diciembre) y el TOEFL también para 2027. El plazo vivo es la inscripción al
-ciclo, y de cuál depende de lo que salga de la prueba de nivel. Ver `studies/english/README.md`.
+**Estado real (22/10):** Gonzo **se inscribió en el B2 intensivo del CUI** (dos meses, **arranca
+el lunes 26/10/2026**). El examen CUI-ING C1 y el TOEFL quedan para 2027. **El precio exacto del
+curso todavía no está confirmado con el centro** (la web del CUI publica el precio de la preparación
+de exámenes internacionales, no el de los cursos por nivel) - de ahí la duda sobre el umbral.
+Sobre la education allowance, el argumento se sostiene: el curso ya arrancó, así que el gasto es
+real y encaja en "approved use"; lo que hay que confirmar con HR es el **costo total** (curso +
+examen) contra el umbral del 65%. Ver `studies/english/README.md`.
 
 ---
 

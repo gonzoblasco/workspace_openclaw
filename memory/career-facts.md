@@ -328,14 +328,16 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
   que no se sostiene en una call es peor que un B2 honesto.
 - **El gap es oral, no escrito.** Lectura, escritura y trabajo diario están aceitados; falta
   práctica hablada. No ofrecerle cursos generales, academias ni gramática.
-- **Plan vigente (decisión de Gonzo, 2026-10-21):** a raíz de dos procesos cerrados por el mismo
-  filtro de **C1 conversacional** (Staffy 20/10, Sol 21/10), Gonzo **cursa el C1 completo en el
-  CUI (Centro Universitario de Idiomas, UBA) durante dos meses** y **después** rinde el examen
-  **CUI-ING C1** ($140.000). El **TOEFL queda para 2027**. **Mientras tanto, sigue buscando.**
-  Calendario, costos, fuentes y el plazo de inscripción al curso están en
-  `studies/english/README.md` (leído el 2026-10-21). **Las fechas concretas del curso y de la mesa
-  de examen están pendientes de confirmar con el centro**: ese documento separa lo verificado de
-  lo supuesto. Lo que no es supuesto: dos meses de curso y después el examen, no al revés.
+- **Plan vigente (decisión de Gonzo, 2026-10-22):** Gonzo **se anotó en el CUI (Centro Universitario
+  de Idiomas, UBA) en el curso B2 INTENSIVO de dos meses, que arranca el lunes 26/10/2026**. El
+  objetivo declarado es **desoxidar y mejorar la base**, sin credencial de por medio: el nivel declarado sigue
+  siendo B2 y el gap sigue siendo oral. **El examen CUI-ING C1 y el TOEFL quedan para después**
+  (TOEFL, 2027). **Mientras tanto, sigue buscando.**
+  Esto **corrige** el plan del 2026-10-21, que era cursar el C1 completo y después el examen:
+  la decisión de fondo del 2026-10-22 es **B2 intensivo primero**, porque el nivel que Gonzo
+  declara y el nivel que el CUI certifica son el mismo, y subir la base oral es lo que destraba
+  el filtro de C1 conversacional. Calendario, costos y fuentes están en `studies/english/README.md`.
+  **Lo que no es supuesto: B2 intensivo, dos meses, arranca el 26/10/2026.**
 - **Regla de proceso que sale de los 2 casos:** en el **primer mensaje** de cualquier proceso
   LATAM remoto, preguntar el **nivel de inglés conversacional que exige el cliente**. El filtro
   apareció al final en ambos casos, cuando ya se había armado CV, screening y prep de call.

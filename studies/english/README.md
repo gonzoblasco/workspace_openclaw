@@ -1,12 +1,14 @@
-# Plan de inglés - de B2 oral a C1 conversacional
+# Plan de inglés - B2 oral, con el C1 conversacional como destino
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->
 
 > **Por qué existe (2026-10-21).** Dos procesos cayeron por el mismo filtro en dos días: **Staffy/Pfizer (20/10, USD 30-35/h)** y **Sol Bisio (21/10, USD 5.600/mes)**. En ambos, el cliente exige **C1 conversacional** y el CV declara B2. No es rechazo de perfil: en los dos casos la reclutadora dijo que el background técnico era fuerte. Es un filtro de **idioma**.
 >
-> **Decisión de Gonzo (2026-10-21):** cursar el **C1 completo en el CUI (Centro Universitario de Idiomas, UBA)** - **dos meses** - y **después** rendir el examen para obtener el certificado C1. El **TOEFL queda para el año que entra**. **Mientras tanto, seguir buscando.**
+> **Decisión vigente (Gonzo, 2026-10-22):** **B2 INTENSIVO en el CUI (Centro Universitario de Idiomas, UBA)**, **dos meses**, **arranca el lunes 26/10/2026**. El objetivo declarado es **desoxidar y mejorar la base**. **El examen CUI-ING C1 y el TOEFL quedan para después** (TOEFL, 2027). **Mientras tanto, seguir buscando.**
 >
-> **Estado de certeza de este documento (2026-10-21):** los **datos de la sección 2** están leídos de `cui.edu.ar` y son verificables. Los **datos de la sección 3** son **supuestos** que se confirman con el centro **esta tarde**: hasta entonces, el plan no afirma fechas cerradas. La sección 2 es lo que Gonzo va a preguntar.
+> **Qué cambió respecto del plan del 2026-10-21:** aquel decía "cursar el C1 completo y después rendir el examen". Este dice **B2 intensivo primero**. La razón: el nivel que Gonzo declara (B2) y el nivel que el CUI certifica son **el mismo**, así que cursar B2 **es** trabajar el nivel real, no un escalón menos. Y el gap es **oral**: la base oral es lo que se desoxida. El C1 sigue siendo el destino, pero deja de ser el primer paso.
+>
+> **Estado de certeza de este documento:** los **datos de la sección 2** están leídos de `cui.edu.ar` (2026-10-21) y son verificables. Los **datos de la sección 3** son **supuestos** pendientes de confirmar con el centro. La sección 2 es lo que Gonzo va a preguntar. **Lo que ya NO es supuesto: B2 intensivo, dos meses, arranque el 26/10/2026.**
 
 ---
 
@@ -35,9 +37,11 @@
 
 ---
 
-## 2. El camino elegido: curso C1 (2 meses) y después el examen
+## 2. El camino elegido: B2 intensivo (2 meses), el C1 después
 
 El orden importa. Primero la **habilidad**, después el **papel**. Es la diferencia entre un C1 que se sostiene en una call y un C1 de papel que mueve el rechazo más lejos y lo hace más caro.
+
+**Con el plan del 2026-10-22, el curso es B2 intensivo** (26/10/2026 al 21-23/12/2026, 15 clases x 3 h, 2 veces por semana) y el examen CUI-ING C1 queda **después**, para 2027. La sección 2.1 sigue siendo la fuente de los datos verificados del CUI: lo que cambió es **qué ciclo se cursa**, no los precios ni el formato del examen.
 
 ### 2.1 Lo que dice la web del CUI (verificado el 2026-10-21)
 
@@ -63,7 +67,7 @@ Es **el mismo C1 que en todos lados**: escala **MCER**, y evalúa las cuatro hab
 | Trimestrales de Noviembre 2026/2027 (per. 77) | 25/11/2026 al 24/2/2027 | 23 clases x 2 h | del 5 al 19 de noviembre de 2026 |
 | Intensivos de Primavera (variantes de día) | 26/10 al 22/12 · 27/10 al 22/12 · 28/10 al 16/12 | 15 clases x 3 h | ídem |
 
-**Lo que dice el calendario** es que esos ciclos existen con esas fechas. **Lo que NO sabemos** es cuál de ellos es el "C1 completo" que se va a cursar: eso depende de la **prueba de nivel** y de a qué nivel corresponde C1 en la numeración del CUI (los niveles altos van del 11 - Ciclo de Perfeccionamiento - al 15 - Especialización).
+**Lo que dice el calendario** es que esos ciclos existen con esas fechas. El ciclo que se cursa es el **B2 intensivo del 26/10/2026 al 21-23/12/2026** (15 clases x 3 h, 2 veces por semana), que es exactamente el "Intensivos de Primavera 2026 (per. 7)" del calendario. Lo que **sigue sin saberse** es **qué nivel sigue después de B2** y cuántos meses lleva cada uno hasta C1: eso depende de la numeración del CUI (los niveles altos van del 11 - Ciclo de Perfeccionamiento - al 15 - Especialización).
 
 #### 2.1.3 Preparación de exámenes internacionales (el camino TOEFL)
 
@@ -101,7 +105,7 @@ Es **el mismo C1 que en todos lados**: escala **MCER**, y evalúa las cuatro hab
 
 **Lo que NO sabemos y estamos suponiendo:**
 
-1. **Qué ciclo de curso es exactamente "el C1 completo".** El calendario del CUI publica ciclos con fechas, pero no dice cuál corresponde a C1 ni desde qué nivel se entra. Depende de la **prueba de nivel** y de la numeración de niveles del CUI (11 = Perfeccionamiento, 15 = Especialización).
+1. **Qué nivel sigue después de B2, y cuántos meses hasta C1.** El calendario del CUI publica ciclos con fechas, pero no dice qué nivel corresponde a cada uno ni desde qué nivel se entra. Depende de la **numeración de niveles del CUI** (11 = Perfeccionamiento, 15 = Especialización) y de si el B2 intensivo habilita el siguiente nivel o hay que hacer una prueba.
 2. **Qué precio tiene el curso de inglés.** La web publica el precio de la *preparación de exámenes internacionales* (TOEFL, Cambridge), no el de los cursos de nivel. **No hay que budgeting con $140.000: eso es el derecho de examen, no el curso.**
 3. **Qué mesas de examen hay después.** La única publicada es la del **6 de noviembre de 2026** (inscripción hasta el 30/10). Si el curso termina en diciembre, esa mesa llega tarde y el examen caería en 2027 - **cuál mesa, no está publicado**.
 4. **Si hay que ser alumno del CUI** para rendir el examen, y si el curso habilita la inscripción.
@@ -109,13 +113,15 @@ Es **el mismo C1 que en todos lados**: escala **MCER**, y evalúa las cuatro hab
 
 **Por qué el plan no se apura con esas fechas:** la decisión de fondo no depende de la mesa. Dos meses de curso te dan el oral, que es el gap real; el examen después es consecuencia. Si la mesa cae en enero o en marzo, el certificado sale igual - cambia cuándo, no el camino.
 
-**Lo que sí es de la decisión, y no es supuesto:** cursar el C1 completo (2 meses) y después el examen; el TOEFL en 2027; seguir buscando mientras tanto; declarar B2 hasta que haya certificado en la mano.
+**Lo que sí es de la decisión, y no es supuesto:** cursar **B2 intensivo** (2 meses, arranque 26/10/2026) y **después** el examen; el TOEFL en 2027; seguir buscando mientras tanto; declarar B2 hasta que haya certificado en la mano.
 
 ---
 
 ## 4. El riesgo honesto (y por qué 2 meses es la decisión correcta)
 
 **El riesgo que sí se puede afirmar:** una mesa de examen a 16 días (la del 6/11) no alcanzaba para preparar una entrevista oral de 15 minutos. La parte escrita la puede sacar - es su fuerte real - pero el oral no se prepara en dos semanas. **Cursar dos meses completos ataca exactamente eso:** el oral deja de ser el punto débil y pasa a ser el que más se trabaja. Con el curso detrás, el examen es una evaluación, no una apuesta.
+
+**Lo que el plan del 2026-10-22 agrega:** cursar **B2** en vez de C1 **baja el riesgo y sube el retorno**, porque el nivel que Gonzo declara es B2 y el gap (oral) se trabaja igual. Declarar B2 mientras se cursa B2 es coherente; antes se declaraba B2 mientras se cursaba C1, que era una tensión real entre el papel y la práctica.
 
 **El riesgo que queda, y depende de la mesa:** si el examen cae meses después del fin del curso, hay un receso en el medio. Ese tiempo es el que hay que usar para **mantener la práctica hablada**, que es lo que se pierde. Un curso de dos meses sin práctica después es una meseta, no un avance. Cuánto receso haya depende de la mesa que se confirme.
 
@@ -135,7 +141,7 @@ También aplica como **pregunta de screening**, no solo al inicio: si filtran po
 
 ## 6. La regla que sostiene todo
 
-- **B2 es lo que se declara** hasta que exista certificado. Un C1 de papel que no se sostiene en una call es **peor** que un B2 honesto: mueve el rechazo más lejos y lo hace más caro.
+- **B2 es lo que se declara** hasta que exista certificado. Un C1 de papel que no se sostiene en una call es **peor** que un B2 honesto: mueve el rechazo más lejos y lo hace más caro. Con el plan del 2026-10-22 (cursar B2 intensivo) el certificado llega **cuando la capacidad ya esta ahi**: el examen y la practica van alineados.
 - **El gap es oral, no escrito.** No ofrecer ni sugerir cursos de gramática ni inglés general: no atacan el problema.
 - Cuando el certificado exista, se actualiza `memory/career-facts.md` §7 **primero** (es el dueño) y después se propaga a los CVs. Nunca al revés.
 
@@ -145,17 +151,19 @@ También aplica como **pregunta de screening**, no solo al inicio: si filtran po
 
 | Cuándo | Qué | Estado |
 |---|---|---|
-| **antes de que cierre la inscripción al ciclo** | Inscripción al curso de C1 | **La fecha exacta se confirma esta tarde** |
-| **durante el curso (~2 meses)** | Práctica hablada deliberada: es lo que no se negocia | Decidido |
+| **lunes 26/10/2026** | Arranca el **B2 intensivo** en el CUI (15 clases x 3 h, 2 veces por semana) | **Decidido e inscripto** |
+| **durante el curso (~2 meses, hasta el 21-23/12/2026)** | Práctica hablada deliberada: es lo que no se negocia | Decidido |
 | **después del curso** | Mesa del examen CUI-ING C1 | **Por confirmar** (depende de las mesas de 2027) |
 | **2027** | TOEFL, si hace falta el reconocimiento internacional | Decidido |
 | **en paralelo, todo el tiempo** | Seguir postulando, con la pregunta del §5 en el primer mensaje | Decidido |
 
 ---
 
-## 8. Preguntas para el centro (esta tarde)
+## 8. Preguntas para el centro
 
-1. **¿Qué nivel del CUI es "C1"?** ¿Desde qué nivel se entra? ¿Cuántos niveles hay y cuántos meses lleva cada uno?
+Las de la inscription quedaron respondidas (ya se esta inscripto en B2 intensivo). Las que siguen son las del **camino posterior**:
+
+1. **¿Qué nivel del CUI sigue después de B2?** ¿Cuántos niveles hay y cuántos meses lleva cada uno hasta C1?
 2. **¿Cuál es el precio del curso de inglés** (no el de preparación de exámenes)? ¿Con descuento UBA? ¿Se paga en cuotas?
 3. **¿Qué Inspectura de examen hay después de noviembre?** ¿Cada cuánto? ¿Cuándo se publica el calendario 2027?
 4. **¿Se puede rendir el examen sin haber terminado el curso?**
@@ -166,9 +174,9 @@ También aplica como **pregunta de screening**, no solo al inicio: si filtran po
 
 ## 9. Próximos pasos
 
-1. **Confirmar las 6 preguntas del §8** con el centro (llamar al 5353-3000 o consultar en persona).
-2. **Inscribirse al ciclo de C1** con la fecha y el nivel confirmados.
-3. **Registrar la fecha real de inscripción y el nivel** en este archivo, en `memory/career-facts.md` §7 y en `docs/entrevistas/_general/job-search-tracker.md`.
+1. **Inscribirse al ciclo de B2 intensivo** - **hecho el 2026-10-22**, arranque el **26/10/2026**.
+2. **Confirmar las 6 preguntas del §8** con el centro (llamar al 5353-3000 o consultar en persona), para el camino posterior al curso.
+3. **Registrar la fecha real de inscripción y el nivel** - **hecho** en este archivo, en `memory/career-facts.md` §7 (dueño del dato) y en `docs/entrevistas/_general/job-search-tracker.md`.
 4. **Seguir postulando en paralelo** con la regla de la sección 5.
 
 ## Referencias
