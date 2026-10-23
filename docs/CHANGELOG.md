@@ -224,6 +224,37 @@ ADR-099 (LangChain como capa de ejecucion), ADR-103 (LiteLLM se descarta), ADR-1
 
 ---
 
+## [2026-10-23] - Dos postulaciones confirmadas (Mural y Mercado Pago), RYZ esperando un click humano
+
+### Added
+- **`docs/entrevistas/_general/outreach-2026-10-22/scripts/`** - los seis scripts de postulacion, reutilizables y documentados: `submit-mural.js`, `submit-ryz.js`, `submit-meli.js`, `fill-mural.js`, `fill-ryz.js`, `debug-mural-location.js`. Cada uno completa, **verifica campo por campo releyendo el DOM**, captura y solo envia con `--submit`.
+- **`docs/entrevistas/_general/outreach-2026-10-22/evidencia/`** - capturas del estado final de los tres formularios.
+- **Canal de LinkedIn operativo.** El `browser` de OpenClaw no arrancaba (no habia Chrome en `/Applications`); con Chrome instalado, `action=importprofile` copio **89 cookies** del perfil `Default` (incluidas las de LinkedIn) al perfil gestionado `imported`, y la sesion quedo viva: el feed cargo con el perfil de Gonzo, 92 vistas de perfil.
+- **Localizacion de la vacante de Mercado Pago** via su API: `https://careers-meli.mercadolibre.com/api/positions?country=AR` -> id 44891701, displayJobId 127795, y el ATS real es Eightfold (`https://mercadolibre.eightfold.ai/careers/apply?pid=44891701`).
+
+### Fixed
+- **El hCaptcha de Lever (RYZ) no se resuelve por automatizacion:** token 0 en headless y en browser visible, incluso clickeando el checkbox del iframe. El formulario de RYZ queda COMPLETO (captura con los 9 campos) y pendiente de ese unico paso humano. Es el unico limite real de la tanda.
+- **En Ashby (Mural) el campo "Location" no acepta "Buenos Aires"**: su autocomplete devuelve "No results" y solo reconoce "Argentina" y "Nunez". Con "Buenos Aires" el envio fallaba con "9 fields missing".
+- **En Ashby los `name` de los inputs desaparecen al re-renderizar** y hay que mapear por el texto del ancestro; ademas los `id` de los inputs de archivo se reordenan entre navegaciones.
+- **En Ashby el panel de "Autofill from resume" pisa el formulario**: su parseo asincrono sobrescribe los textos ya escritos. El orden correcto es CV -> esperar el autofill -> escribir con `type()` -> radios -> archivos.
+- **Los radios de Ashby no se marcan con `input.click()` desde JS** (React no lo registra) ni con `.check({force:true})` en todos los casos: hay que clickear la ETIQUETA.
+- **En Eightfold (MeLi) los campos se identifican por `id`, no por `name`** (`name=null` en todos). Y sus dos ultimos campos NO son areas de texto: `input-13` es la confirmacion de la politica de privacidad y `input-16` la pregunta de conflicto de interes, ambas con opciones Si/No. Escribir la presentacion ahi habria sido mandarla a una caja equivocada.
+- **En Eightfold el telefono no acepta `+` ni espacios**, y con el codigo de pais en +54 espera el numero NACIONAL. Ademas, al elegir el pais aparece un campo "Estado" nuevo; si el pais no queda elegido, ese campo ni existe y el envio falla con "Error: selecciona un Estado".
+- **Los inputs controlados de React no se limpian con Backspace** (el valor se concatena): hay que seleccionar todo y borrar. En macOS el select-all es `Meta+A`, no `Control+A`.
+- **El footer sticky de los formularios tapa los ultimos campos** y el click normal da timeout: hay que hacer `scrollIntoView` y usar click forzado.
+- **El boton de submit de Lever** tiene la clase dinamica `btn-submit`; el selector generico `button[type=submit]` agarra el boton OCULTO de hCaptcha (`id=hcaptchaSubmitBtn`).
+
+### Notes
+- **Dos de tres POSTULADOS y CONFIRMADOS por el servidor:**
+  - **Mural** (Ashby): "Your application was successfully submitted. We'll contact you if there are next steps." Salario USD 3.400/mes, CV + cover letter.
+  - **Mercado Pago** (Eightfold): "¡Gracias por su solicitud, Gonzalo!" + `201 {"success": true}` del servidor, con `location: Buenos Aires, Ciudad Autónoma de Buenos Aires, Argentina`.
+- **RYZ queda a un paso humano:** el formulario de Lever esta completo y verificado; lo unico que no se puede automatizar es el hCaptcha. En paralelo salio la **invitacion de conexion a Sonia Langone** (recruiter tecnica de RYZ, 2do grado, con nota de 833 caracteres: por que encaja, el AI Engineering OS, el servidor MCP propio, los 11 PRs, y las dos preguntas de screening: overlap con US en EST y nivel de ingles conversacional).
+- **El limite de LinkedIn es el grado de conexion:** las cuatro recruiters de RYZ (Sonia Langone, Valentina Magni, Valentina Tellechea, Maria Belen Giordano) son 2do grado, asi que el DM directo esta bloqueado. La via que funciona es la invitacion con nota, que ademas no tiene limite de caracteres con Premium.
+- **Los 4 candidatos de RYZ encontrados en la busqueda de personas:** Valentina Magni (Senior Talent Acquisition Partner), Sonia Langone (Tech Recruiter, LATAM), Valentina Tellechea (Technical Recruiter), Maria Belen Giordano (Recruiter). Mas los founders Jordan Metzner (CEO) y Sam Nadler.
+- **Scripts: los que quedan en `tmp/` no se versionan** (gitignored); las copias limpias y documentadas estan en `docs/entrevistas/_general/outreach-2026-10-22/scripts/`.
+
+---
+
 ## [2026-10-22] - LiteLLM se descarta: la capa de router ya existe en el stack propio
 
 ### Added

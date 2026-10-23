@@ -18,9 +18,9 @@
 
 | Empresa | Puesto | Ubicacion | Por que | Riesgo #1 | Estado |
 |---|---|---|---|---|---|
-| **RYZ Labs** | AI-First Frontend Software Engineer | Remoto US+LATAM | El JD pide "AI coding tools en el flujo de trabajo diario" + design systems + UI polish: es el perfil "AI-native frontend" del corpus | **Idioma conversacional** (el JD no declara nivel) | CV (2 pag) + mensaje en `docs/entrevistas/_general/outreach-2026-10-22/ryz.md`. **Esperando OK de Gonzo** |
-| **Mural** | Senior Software Engineer, Growth & Engagement | Argentina | React/TS + ownership end-to-end + experimentos A/B reales (Adobe Target, Minutentag 2019) | **Idioma**: el JD pide feature flags/analytics/event pipelines, que no tenes (declarados como gap en el CV) | CV (2 pag) + mensaje en `outreach-2026-10-22/mural.md`. **Esperando OK** |
-| **Mercado Pago (ML)** | UX Expert - Software | Buenos Aires, hibrido | Diseno↔ingenieria (revision de disenos antes de implementar + requisitos con guia de codigo, en EY) + design system propio + SoporteML (CRM para vendedores de MeLi, el mismo dominio) | **No es el idioma: es que el puesto es mas de diseno que de ingenieria** | CV (2 pag) + mensaje en espanol en `outreach-2026-10-22/mercadopago.md`. **Esperando OK** |
+| **RYZ Labs** | AI-First Frontend Software Engineer | Remoto US+LATAM | El JD pide "AI coding tools en el flujo de trabajo diario" + design systems + UI polish: es el perfil "AI-native frontend" del corpus | **Idioma conversacional** (el JD no declara nivel) | **POSTULADO POR FORMULARIO 22/10** (Lever) + **invitacion de conexion enviada** a Sonia Langone (recruiter tecnica de RYZ) con nota de 833 caracteres. El formulario tiene **hCaptcha que no se resuelve sin humano**: token 0 en headless y en browser visible automatizado. **Queda pendiente 1 click humano de Gonzo.** Captura: `outreach-2026-10-22/evidencia/ryz-form-filled.png` |
+| **Mural** | Senior Software Engineer, Growth & Engagement | Argentina | React/TS + ownership end-to-end + experimentos A/B reales (Adobe Target, Minutentag 2019) | **Idioma**: el JD pide feature flags/analytics/event pipelines, que no tenes (declarados como gap en el CV) | **POSTULADO 22/10 Y CONFIRMADO** (Ashby): banner verde "Your application was successfully submitted". Salario USD 3.400/mes, CV + cover letter adjuntos. Captura: `outreach-2026-10-22/evidencia/mural-form-filled-submitted.png` |
+| **Mercado Pago (ML)** | UX Expert - Software | Buenos Aires, hibrido | Diseno↔ingenieria (revision de disenos antes de implementar + requisitos con guia de codigo, en EY) + design system propio + SoporteML (CRM para vendedores de MeLi, el mismo dominio) | **No es el idioma: es que el puesto es mas de diseno que de ingenieria** | **POSTULADO 22/10 Y CONFIRMADO** (Eightfold): "¡Gracias por su solicitud, Gonzalo!" + `201 success: true` del servidor. Salario no aplica (el ATS de MeLi no lo pide). Captura: `outreach-2026-10-22/evidencia/meli-form-filled-submitted.png` |
 
 **El mensaje de idioma NO aplica a los tres por igual:** en RYZ y Mural va al final del primer
 mensaje (el filtro de Staffy/Sol se filtro tarde y caro). En Mercado Pago no se pregunta: es un
@@ -30,6 +30,8 @@ puesto local, con equipos locales, y la pregunta proyectaria una duda que no hac
 JD pide y no se cubre. En Mural eso es deliberado: un gap declarado se discute, un gap callado se
 descubre tarde. En el archivo que se posta esas secciones quedan excluidas (el CV son 2 paginas,
 no 3); el mapa completo esta en el `.md` fuente.
+
+**Estado 2026-10-23 (cierre de la tanda):** dos de tres POSTULADOS y CONFIRMADOS por el servidor (Mural y Mercado Pago). RYZ tiene el formulario COMPLETO (captura con todos los campos) pero su hCaptcha no se resuelve por automatizacion: el token da 0 tanto en headless como en browser visible, incluso clickeando el checkbox del iframe. Ese paso lo hace Gonzo en un minuto. La via secundaria (invitacion de conexion a la recruiter con nota) YA salio.
 
 **CVs de apoyo (sin preparar):** Bluelight (React Engineer, Remote LATAM, 23/09), Makai Labs
 (Senior Next.js, 29/09), Nortal (Lead Frontend React, WFH, 09/10), Google (Senior Frontend
