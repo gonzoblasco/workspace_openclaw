@@ -7,7 +7,7 @@
 
 | Métrica | Valor |
 |---------|-------|
-| PRs abiertos | 15 |
+| PRs abiertos | 16 |
 | PRs mergeados | 11 |
 | PRs cerrados sin merge | 22 |
 | Colaboraciones no-codigo | 16 |
@@ -127,6 +127,10 @@
 | **Issue** | [#5476](https://github.com/facebook/astryx/issues/5476) | MERGED 26/08. TreeList forward BaseProps: aria-label/aria-labelledby al <ul role=tree>, header visible gana, role despues del rest. Bug a11y: tree sin header no podia nombrarse. |
 | **Nuestro PR** | [#5493](https://github.com/facebook/astryx/pull/5493) | **merged** |
 | **Contexto** | - | Abierto 25/08. 3 reviews de cixzhang (2 CHANGES_REQUESTED + 1 APPROVED): acotar a TreeList (List va en #5288), aria-label al ul no al div, header visible gana sobre caller aria-labelledby. Merge 26/08. Es a11y -> dispara post LinkedIn nicho a11y. |
+
+| **Issue** | - | ANALISIS de PR ajeno (22/10): PR de cixzhang, 10 archivos +254 -84, CERO reviews humanos (solo astracat-bot). El bot dejo 5 hallazgos; el del lint (ref sin sufijo Ref) ya esta corregido (ownRegionTimersRef) y el CI esta verde. QUEDA VIVO: (1) el PR promete que el viewport es el unico owner, pero el binding por defecto renderiza <ToastViewport isTopLayer={false}> fuera de modal, que es la unica config que sigue usando el canal compartido - y el spec AST-086 FR10 dice que un owner rehosteado usa sus PROPIOS contenedores; o sea la config que ningun test ejercita es justo la que roza la spec. (2) el exclusion en StatusMessage.a11y.renders.tsx:109 nombra 'el canal del ToastViewport montado arriba' como owner, pero ese binding no monta ningun canal propio. VERIFICADO contra el spec (AST-086 FR10, lineas 94-107) y contra el diff del PR. Material de post por la regla del 2026-10-22: trazable + detalle con criterio. Pendiente: publicar el comentario en el PR. COMENTARIO PUBLICADO 22/10 22:21 ART: https://github.com/facebook/astryx/pull/7871#issuecomment-6355088125 (via REST: `gh pr comment` falla por OAuth App access restrictions de la org facebook; con `env -u GH_TOKEN gh api -X POST repos/facebook/astryx/issues/7871/comments` funciona - el workaround que ya documenta el skill github-pr-followup). |
+| **Nuestro PR** | [#7871](https://github.com/facebook/astryx/pull/7871) | **open** |
+| **Contexto** | - | oss-review |
 
 ### facebook/docusaurus
 
