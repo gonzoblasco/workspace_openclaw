@@ -1,5 +1,6 @@
 # LinkedIn Post: aria-orientation en los role owners (base-ui)
 
+**Status:** PUBLICADO 24/08/2026
 **Nicho:** a11y (diferenciador)
 **Proyecto:** mui/base-ui
 **PR:** #5551
@@ -7,7 +8,7 @@
 
 ---
 
-## Draft
+## Post (version publicada)
 
 El error de accesibilidad más difícil de detectar no es el que rompe el screen reader, sino el que lo confunde con información inválida.
 
@@ -30,3 +31,10 @@ La accesibilidad no es solo "poner un aria-label". Es entender el **contrato ARI
 Cuando la accesibilidad se trata como una disciplina de ingeniería (con tests de regresión, validación de roles y revisión de pares), los bugs sutiles como este se detectan antes de llegar a producción.
 
 #Accessibility #ARIA #WCAG #OpenSource #FrontendEngineering
+
+
+PR: https://github.com/mui/base-ui/pull/5551
+
+---
+
+*Nota de estado: La fecha de publicacion no quedo registrada. La que se anota es la del merge del PR (#5551, 24/08/2026). Publicacion registrada por Gonzo el 2026-10-22; el `Status:` no existia en el archivo.*

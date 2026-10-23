@@ -4,7 +4,7 @@
 **Project:** carbon-design-system/ibm-products
 **PR:** #9879 (merged 2026-10-07, commit e33f56ab) | Issue: #9839
 **Date:** 2026-10-07
-**Status:** draft para revision de Gonzo
+**Status:** PUBLICADO 07/10/2026
 **Idioma:** ingles
 
 ---
@@ -33,3 +33,7 @@ If a component announces a control as something it is not, the fix is usually no
 PR: https://github.com/carbon-design-system/ibm-products/pull/9879
 
 #accessibility #a11y #aria #screenreaders #datagrid #wcag #opensource #reactjs #frontendengineering #inclusivedesign
+
+---
+
+*Nota de estado: La fecha de publicacion no quedo registrada. La que se anota es la del merge del PR (#9879, 07/10/2026), que es la mejor evidencia disponible. Publicacion registrada por Gonzo el 2026-10-22; el `Status:` no se habia volteado.*

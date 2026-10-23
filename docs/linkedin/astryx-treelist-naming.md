@@ -1,5 +1,6 @@
 # LinkedIn Post: TreeList sin nombre (astryx)
 
+**Status:** PUBLICADO 26/08/2026
 **Nicho:** a11y (diferenciador)
 **Proyecto:** facebook/astryx
 **PR:** #5493
@@ -7,7 +8,7 @@
 
 ---
 
-## Draft
+## Post (version publicada)
 
 Un árbol sin nombre es un árbol invisible para el screen reader.
 
@@ -28,3 +29,10 @@ Este es un ejemplo clásico de por qué la accesibilidad no es un "checkbox" al 
 La accesibilidad es una propiedad del diseño del componente, no un parche. Cuando el naming (cómo se identifica un elemento) se diseña desde el inicio, los bugs como este no existen.
 
 #Accessibility #ARIA #WCAG #OpenSource #ComponentDesign
+
+
+PR: https://github.com/facebook/astryx/pull/5493
+
+---
+
+*Nota de estado: La fecha de publicacion no quedo registrada. La que se anota es la del merge del PR (#5493, 26/08/2026). Publicacion registrada por Gonzo el 2026-10-22; el `Status:` no existia en el archivo.*

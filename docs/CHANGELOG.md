@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-22] - Los 12 posts con Status real: el numero de drafts vs publicados corregido
+
+### Changed
+- **Los 5 drafts que el gate marcaba quedan como `PUBLICADO`**, y los 4 que no tenian campo `Status` tambien. **Los 12 posts de `docs/linkedin/` declaran su estado real.** El gate de cierre pasa de "5 drafts vencidos" a **0**.
+- **La fecha de cada post es la mejor evidencia disponible, y se dice cual es.** Con evidencia directa: `astryx-4605` (24/08, el daily anota que Gonzo corrigio el post al postearlo) y `ibm-products-createfullpage-focus` (14/09, el daily cuenta que Darren Denham comento el post, o que ya estaba vivo). Sin evidencia registrada: los demas usan la del merge o del redactado, y la nota del archivo lo dice. **No se invento un dia de publicacion.**
+- **2 referencias rotas corregidas en el post canonico** (`astryx-5419.md`): apuntaban a `MEMORY.md` para la politica de los 3 nichos, que en realidad vive en `memory/user-profile.md` linea 47.
+- **Headers incompletos completados**: `astryx-4605.md` y `oss-2026-08-24.md` no declaraban `Nicho`, y sus titulos decian "(draft)" con el post ya publicado.
+
+### Fixed (dos bugs de diseno del gate, encontrados por el gate mismo contra la cadena real)
+- **El idioma no puede fallar en un post ya publicado.** La regla "el post va en ingles" es de PUBLICACION, no de archivo: en un post publicado el idioma es un HECHO y el gate no puede cambiar lo que ya salio. **Ahora AVISA en lo publicado y FALLA en lo borrador**, que es donde todavia se puede corregir. Lo detecto el gate contra 2 posts reales de la cadena, publicados en espanol.
+- **El link al PR solo se exige si el header declara un PR.** Un post sobre material propio (un refactor de proyecto) no tiene merge que citar, y exigirlo era un falso positivo. Lo pidio el gate a un post de proyecto propio.
+- 4 tests nuevos para estas dos reglas (23 en total).
+
 ## [2026-10-22] - Los 2 posts nuevos publicados: Status volteado y archivo sincronizado con lo que quedo en vivo
 
 ### Changed

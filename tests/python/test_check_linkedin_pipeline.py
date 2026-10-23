@@ -300,6 +300,46 @@ def test_draft_status_warns_without_blocking(tmp_path):
     assert any("draft" in w.lower() for w in warnings)
 
 
+def test_spanish_post_that_is_already_published_only_warns(tmp_path):
+    # Correccion de diseno (2026-10-22): la regla "el post va en ingles" es de PUBLICACION, no de
+    # archivo. En un post ya publicado el idioma es un HECHO: el gate no puede cambiar lo que ya
+    # salio. Lo detecto el gate contra 2 posts reales de la cadena, publicados en espanol.
+    mod = load()
+    post = SPANISH_POST.replace("**Status:** draft para revision de Gonzo", "**Status:** PUBLICADO 24/08/2026")
+    path = seed(tmp_path, post=post)
+    problems, warnings = mod.check_post(path, 14)
+    assert not problems, problems
+    assert any("espanol" in w or "español" in w for w in warnings)
+
+
+def test_spanish_draft_still_fails(tmp_path):
+    # En un borrador si se puede corregir: ahi FALLA.
+    mod = load()
+    path = seed(tmp_path, post=SPANISH_POST)
+    problems, _ = mod.check_post(path, 14)
+    assert any("espanol" in p or "español" in p for p in problems), problems
+
+
+def test_pr_link_required_only_when_header_declares_a_pr(tmp_path):
+    # Un post sobre material propio (un refactor de un proyecto) no tiene merge que citar, y
+    # exigirle un link seria un falso positivo. El gate lo pidio a un post de proyecto propio.
+    mod = load()
+    post = CLEAN_POST.replace("**PR:** #4605\n", "").replace(
+        "PR: https://github.com/facebook/astryx/pull/4605", ""
+    )
+    path = seed(tmp_path, post=post)
+    problems, _ = mod.check_post(path, 14)
+    assert not any("PR" in p for p in problems), problems
+
+
+def test_pr_link_required_when_header_declares_a_pr(tmp_path):
+    mod = load()
+    post = CLEAN_POST.replace("PR: https://github.com/facebook/astryx/pull/4605", "")
+    path = seed(tmp_path, post=post)
+    problems, _ = mod.check_post(path, 14)
+    assert any("PR" in p for p in problems), problems
+
+
 # --- el gate de cierre ---
 
 def test_audit_detects_stale_draft(tmp_path):

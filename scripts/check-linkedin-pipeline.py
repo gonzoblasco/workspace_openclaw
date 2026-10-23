@@ -176,6 +176,7 @@ def check_post(path: Path, stale_days: int) -> tuple[list[str], list[str]]:
 
     header = _header(text)
     body = _post_body(text)
+    publicado = bool(re.search(r"\*\*Status:\*\*\s*PUBLICADO", header, flags=re.I))
 
     # 1. Guiones largos. Innegociable (regla de Gonzo).
     em = text.count(EM_DASH)
@@ -200,21 +201,35 @@ def check_post(path: Path, stale_days: int) -> tuple[list[str], list[str]]:
         if not re.search(pattern, header):
             problems.append(f"El header no declara el campo '{field}'.")
 
-    # 2b. El PR tiene que estar citado: sin el link no hay trazabilidad del merge.
-    if not re.search(r"pull/\d+", body):
+    # 2b. El PR tiene que estar citado, SI el header declara un PR. Un post sobre material
+    # propio (un refactor de un proyecto, por ejemplo) no tiene merge que citar, y exigirle un
+    # link seria un falso positivo. (Correccion de diseno del 2026-10-22: el gate lo pidio a un
+    # post de proyecto propio y no a un merge.)
+    declara_pr = bool(re.search(r"\*\*PR:?\*\*", header)) or bool(
+        re.search(r"\*\*Project:?\*\*", header)
+    )
+    if not re.search(r"pull/\d+", body) and declara_pr:
         problems.append(
             "El cuerpo no cita el PR (falta un link '.../pull/<n>'). Sin el, el post no es "
             "trazable al merge que lo origina."
         )
 
     # 3. Idioma: el cuerpo publicable va en ingles.
+    # Correccion de diseno (2026-10-22): la regla "el post va en ingles" es de PUBLICACION, no
+    # de archivo. En un post ya publicado el idioma es un HECHO: el gate no puede cambiar lo que
+    # ya salio, asi que AVISA. En un borrador FALLA, porque ahi si todavia se puede corregir.
+    # (Lo detecto el gate contra 2 posts reales de la cadena, publicados en espanol.)
     spanish_markers = len(re.findall(r"\b(el|la|los|las|de|que|para|con|una|por)\b", body.lower()))
     english_words = len(re.findall(r"\b[a-zA-Z]+\b", body))
     if english_words and spanish_markers / max(english_words, 1) > 0.12:
-        problems.append(
+        msg = (
             f"El cuerpo parece estar en espanol ({spanish_markers} marcadores / {english_words} "
             f"palabras). El post publicable va en ingles; el reporte a Gonzo, en espanol."
         )
+        if publicado:
+            warnings.append(msg + " (post ya publicado: se registra, no se bloquea)")
+        else:
+            problems.append(msg)
 
     # 4. Longitud.
     words = len(re.findall(r"\b[a-zA-Z][a-zA-Z'-]*\b", body))

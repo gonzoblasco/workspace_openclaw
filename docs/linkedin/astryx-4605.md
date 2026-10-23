@@ -1,6 +1,7 @@
-# LinkedIn Post - astryx #4605 (draft)
+# LinkedIn Post - astryx #4605
 
-**Status:** draft para revisión de Gonzo
+**Status:** PUBLICADO 24/08/2026
+**Nicho:** a11y
 **Idioma:** inglés
 **Tono:** historia de dev, natural, no corporativo
 
@@ -37,3 +38,7 @@ If you build UI, go check your breadcrumbs. If the current item is only distingu
   - Issue: https://github.com/facebook/astryx/issues/4421
 - **Opcional:** taggear a astryx / Facebook Open Source si querés más alcance.
 - **Ajuste de tono:** si lo querés más corto o más técnico, decime y lo reescribo.
+
+---
+
+*Nota de estado: La fecha de publicacion esta registrada: el daily del 2026-08-24 anota que Gonzo corrigio el post al postear el #4605. Publicacion registrada por Gonzo el 2026-10-22; el `Status:` no se habia volteado.*

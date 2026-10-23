@@ -1,4 +1,4 @@
-# LinkedIn Post - react-spectrum #10503 (DRAFT)
+# LinkedIn Post - react-spectrum #10503
 
 **Status:** PUBLICADO 22/10/2026
 **Publicado en:** https://www.linkedin.com/posts/gonzalo-blasco_accessibility-a11y-reactjs-share-7519181950881009664-elvt/

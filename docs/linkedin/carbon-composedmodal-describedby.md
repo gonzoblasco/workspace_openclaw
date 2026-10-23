@@ -1,4 +1,4 @@
-# LinkedIn Post - carbon #22887 (DRAFT)
+# LinkedIn Post - carbon #22887
 
 **Status:** PUBLICADO 22/10/2026
 **Publicado en:** https://www.linkedin.com/posts/gonzalo-blasco_accessibility-a11y-carbon-share-7519182890929160192-QjBO/

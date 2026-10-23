@@ -4,7 +4,7 @@
 **Project:** carbon-design-system/ibm-products
 **PR:** #9878 (merged 2026-09-14, commit 5d1ae52) | Issue: #9864
 **Date:** 2026-09-14
-**Status:** draft para revision de Gonzo
+**Status:** PUBLICADO 14/09/2026
 **Idioma:** ingles
 
 ---
@@ -37,3 +37,7 @@ If you have a focus helper that decides "which container is visible" by looking 
 PR: https://github.com/carbon-design-system/ibm-products/pull/9878
 
 #accessibility #a11y #keyboardnavigation #focusmanagement #wcag #opensource #reactjs #frontendengineering #inclusivedesign
+
+---
+
+*Nota de estado: La fecha de publicacion esta registrada: el daily del 2026-09-14 cuenta que Darren Denham comento este post, o que ya estaba vivo. Publicacion registrada por Gonzo el 2026-10-22; el `Status:` no se habia volteado.*

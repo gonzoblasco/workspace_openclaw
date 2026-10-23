@@ -1,5 +1,6 @@
 # LinkedIn Post: global aria-posinset across menu sections (react-spectrum)
 
+**Status:** PUBLICADO 09/09/2026
 **Niche:** a11y (differentiator)
 **Project:** adobe/react-spectrum
 **PR:** #10554 (merged 2026-09-09 by yihuiliao)
@@ -7,7 +8,7 @@
 
 ---
 
-## Draft
+## Post (version publicada)
 
 Not every accessibility bug breaks something visibly. Some just disappear from the test suite one day, and nobody notices.
 
@@ -36,3 +37,7 @@ The final version renders each section through the real hook (`useMenuSection`),
 An accessibility test is only as good as the structure it exercises. If the setup simplifies the DOM down to a flat list, a green test is decoration. The rule I took away: the test must render the real component structure, fail when the behavior breaks, and verify exactly what the PR claims.
 
 #Accessibility #ARIA #Testing #OpenSource #FrontendEngineering
+
+---
+
+*Nota de estado: La fecha de publicacion no quedo registrada. La que se anota es la del merge del PR (#10554, 09/09/2026). Publicacion registrada por Gonzo el 2026-10-22; el `Status:` no existia en el archivo.*

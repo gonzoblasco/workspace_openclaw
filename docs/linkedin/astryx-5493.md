@@ -1,6 +1,6 @@
-# LinkedIn Post - astryx #5493 (DRAFT)
+# LinkedIn Post - astryx #5493
 
-**Status:** BORRADOR (no publicado)
+**Status:** PUBLICADO 26/08/2026
 **Idioma:** inglés
 **Tono:** pedagógico con sustancia - historia técnica con el qué + el proceso + el porqué. **NO es tutorial paso a paso.**
 **Nicho:** a11y
@@ -8,7 +8,7 @@
 
 ---
 
-## Post (borrador)
+## Post (version publicada)
 
 I said in my last post that I had a follow-up in review fixing the same class of dropped accessibility attributes in `List` / `TreeList`. It just landed in **astryx**. 🌿
 
@@ -44,3 +44,7 @@ PR: https://github.com/facebook/astryx/pull/5493
 ## Pendientes
 - [ ] Revisar el texto final con Gonzo antes de publicar.
 - [ ] Publicar en LinkedIn.
+
+---
+
+*Nota de estado: La fecha de publicacion no quedo registrada. La que se anota es la del merge del PR (#5493, 26/08/2026), que es la mejor evidencia disponible. Publicacion registrada por Gonzo el 2026-10-22; el `Status:` no se habia volteado.*
