@@ -312,6 +312,27 @@ def test_spanish_post_that_is_already_published_only_warns(tmp_path):
     assert any("espanol" in w or "español" in w for w in warnings)
 
 
+def test_a11y_post_in_spanish_fails_when_draft(tmp_path):
+    # Regla del 2026-10-22: el idioma del post lo decide la MATERIA. Todo lo que sea a11y va en
+    # ingles; todo lo demas, en espanol. Un post a11y en espanol no es estilo: es la regla rota.
+    mod = load()
+    post = SPANISH_POST  # ya es del nicho a11y
+    path = seed(tmp_path, post=post)
+    problems, _ = mod.check_post(path, 14)
+    assert any("a11y" in p and "ingles" in p for p in problems), problems
+
+
+def test_non_a11y_post_in_spanish_is_expected(tmp_path):
+    # Al reves: un post que NO es a11y, en espanol, es lo que la regla pide. No puede fallar.
+    mod = load()
+    post = SPANISH_POST.replace("**Nicho:** a11y", "**Nicho:** Agentic / AI-Native")
+    path = seed(tmp_path, post=post)
+    problems, _ = mod.check_post(path, 14)
+    # El mensaje de la rama "no es a11y" menciona "a11y" al decir que NO lo es, asi que el
+    # assert tiene que ser especifico: la regla rota es "es del nicho a11y y va en ingles".
+    assert not any("es del nicho a11y y la regla dice" in p for p in problems), problems
+
+
 def test_spanish_draft_still_fails(tmp_path):
     # En un borrador si se puede corregir: ahi FALLA.
     mod = load()

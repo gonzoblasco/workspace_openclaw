@@ -224,12 +224,27 @@ def check_post(path: Path, stale_days: int) -> tuple[list[str], list[str]]:
     if english_words and spanish_markers / max(english_words, 1) > 0.12:
         msg = (
             f"El cuerpo parece estar en espanol ({spanish_markers} marcadores / {english_words} "
-            f"palabras). El post publicable va en ingles; el reporte a Gonzo, en espanol."
+            f"palabras)."
         )
-        if publicado:
-            warnings.append(msg + " (post ya publicado: se registra, no se bloquea)")
+        # Regla del 2026-10-22: el idioma del post lo decide la MATERIA. Todo lo que sea a11y
+        # va en ingles; todo lo demas, en espanol. Un post a11y en espanol no es un problema de
+        # estilo: es la regla rota.
+        es_a11y = bool(re.search(r"\*\*(Nicho|Niche):\*\*\s*a11y", header, flags=re.I))
+        if es_a11y:
+            msg += (
+                " El post es del nicho a11y y la regla dice que a11y va en ingles. "
+                "Si el post ya se publico, se registra; si es borrador, hay que corregirlo."
+            )
+            if publicado:
+                warnings.append(msg)
+            else:
+                problems.append(msg)
         else:
-            problems.append(msg)
+            msg += " El post no es del nicho a11y, asi que en espanol es lo esperado."
+            if publicado:
+                warnings.append(msg + " (post ya publicado: se registra, no se bloquea)")
+            else:
+                problems.append(msg)
 
     # 4. Longitud.
     words = len(re.findall(r"\b[a-zA-Z][a-zA-Z'-]*\b", body))

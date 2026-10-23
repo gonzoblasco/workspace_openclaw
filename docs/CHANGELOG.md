@@ -6,6 +6,16 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-22] - El idioma del post lo decide la materia: a11y en ingles, el resto en espanol
+
+### Changed
+- **Correccion de la regla de idioma** (Gonzo, 2026-10-22): la separacion es por **MATERIA**, no por tipo de aporte. **Todo lo que sea a11y va en ingles** - sin excepcion, aunque el aporte sea a producto propio, porque compite en un mercado US-only. **Todo lo que sea de otra materia va en espanol**, siempre que se pueda instructar de algun modo (que el lector local lo entienda sin contexto previo). La pregunta que lo resuelve: **¿es a11y?** Si es, ingles; si no, espanol. Lo que va al repo - review, comentario, PR - va **siempre en ingles**. El dueno: `memory/user-profile.md`, y la skill de MIND.
+- **El gate distingue los dos casos de español**: un post **a11y en español** es la regla rota (FALLA si es borrador, AVISA si ya se publico); un post **no-a11y en español** es lo esperado y no puede fallar. 2 tests nuevos (27 en total).
+- **Medido:** los 2 posts a11y en español de la cadena (`astryx-treelist-naming.md` y `base-ui-aria-orientation.md`) quedan señalados por el gate. Ademas son **material duplicado**: ambos cubren PRs que ya tienen post en ingles (`astryx-5493.md` y `oss-2026-08-24.md`), y la regla de un post por merge los excluye.
+
+### Added
+- **Registro de la contribucion en `memory.db`** (id 75): analisis del PR `facebook/astryx#7871` (de cixzhang, 10 archivos +254 -84, cero reviews humanos). El bot dejo 5 hallazgos; el del lint ya esta corregido, pero **queda vivo uno verificable**: el PR borra los dos stories `toast-*-card-mounted` - los unicos que montaban un `<Toast>` sin viewport propio - y el unico test que agrega ejercita solo el caso top-layer, mientras el exclusion nuevo nombra como owner "the ToastViewport announcement channel bound above", que es justo la config que no se ejercita y que roza `AST-086` FR10. Verificado contra el spec (FR10) y contra el diff.
+
 ## [2026-10-22] - La regla de branding se abre: el review pasa a ser material de post
 
 ### Changed
