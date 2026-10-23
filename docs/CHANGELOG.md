@@ -197,6 +197,33 @@ ADR-099 (LangChain como capa de ejecucion), ADR-103 (LiteLLM se descarta), ADR-1
 
 ---
 
+## [2026-10-23] - Postulaciones RYZ y Mural: formularios listos (sin enviar) y limpieza de huellas de IA
+
+### Added
+- **Formularios de postulacion de RYZ Labs y Mural completados y verificados** _(scripts en `tmp/job-search-2026-10-22/`, capturas en `docs/entrevistas/_general/outreach-2026-10-22/`)_. El browser de OpenClaw no arranca (no hay Chrome en `/Applications`), asi que se maneja con **Chrome for Testing de Playwright** via Playwright: `projects/a11y-fixer/node_modules/playwright` con `executablePath` explicito.
+  - **RYZ (Lever):** CV subido y parseado ("Success!"), nombre, email, telefono, ubicacion geolocalizada, empresa, **salario USD 3.200/mes**, **Upper Intermediate**, e informacion adicional. Captura: `ryz-form-filled.png`.
+  - **Mural (Ashby):** CV y **cover letter** en sus slots correctos, 6 campos de texto, **salario USD 3.400/mes**. El **reCAPTCHA se resuelve solo** (token de 2.382 chars, modo invisible). Captura: `mural-form-filled.png`.
+  - **Cover letter de Mural** (`cover-letters/cover-letter-mural.md`): 292 palabras de cuerpo. El angulo es el **servidor MCP propio** (que responde a un requisito explicito del JD), los **experimentos A/B reales** con Adobe Target, y los gaps declarados en una frase.
+- **Scripts reutilizables de postulacion:** `tmp/job-search-2026-10-22/fill-ryz.js` y `fill-mural.js`. Ambos completan, **verifican campo por campo releyendo el DOM**, toman captura y solo envian con `--submit`. El envio sigue siendo una decision explicita de Gonzo.
+
+### Fixed
+- **La cover letter traia 12 guiones no separables (U+2011) y un en-dash:** el residuo tipografico de una salida de modelo, que es exactamente la clase de huella que Gonzo pidio evitar. Normalizados a guion comun y apostrofe recta (`scripts/check_em_dash.py` da verde). Tambien se fueron el cierre formulaico "I look forward to contributing" y el conector "Additionally".
+- **La cover letter decia "the design systems you list"** cuando el JD de Mural **no lista design systems** (verificado: 0 coincidencias), y "user insights", que no esta en el corpus. Y repetia el MCP en dos parrafos. Corregido.
+- **El parser automatico de Lever pisa el nombre:** al subir el CV, Lever pone "Freelance" en el campo Full name (toma la empresa del CV). Los scripts lo sobreescriben despues de que el parser asiente, y el dry run lo verifica.
+- **El input de ubicacion de Lever queda visiblemente vacio** con `fill()` y con click en la opcion: React re-renderiza y borra el valor, aunque el hidden `selectedLocation` quede bien. **El unico metodo que deja el campo visible es el humano: teclear, `ArrowDown`, `Enter`.** Verificado con captura en los tres caminos.
+- **El campo de salario de Lever tiene dos inputs** con la misma etiqueta (uno hidden, `baseTemplate`, y el real visible). Agarrar el hidden hace fallar el `fill()` con timeout de 30s. Se toma el visible por `name*="[field0]"`.
+- **Los archivos se cruzaban en Ashby:** el cover letter iba al slot del CV. Ashby renderiza tres inputs de archivo (subida del CV sin `name`, `_systemfield_resume`, y el de Cover Letter con UUID) y **los reordena**. Se mapean por `name`, no por indice ni por label (el ancestro con texto mas cercano es "First and Last Name").
+- **Los radios de nivel de ingles de Lever no son `<select>`:** son radio con `value` = texto de la opcion ("Upper Intermediate"). Se eligen por `value`, no por etiqueta.
+
+### Notes
+- **No hay trampas de deteccion de IA en los formularios.** Solo los captchas estandar: hCaptcha en Lever (que NO se resuelve solo: token 0 en headless y en browser visible) y reCAPTCHA en Ashby (que si se resuelve solo, modo invisible). El riesgo real de rechazo es el **spam filter por contenido**, que se mitiga con los gaps declarados y el cero-slop.
+- **El navegador no tiene sesion de LinkedIn.** El perfil `Chrome for Testing` tiene cookies (`li_at`, `JSESSIONID`) pero al copiar el perfil a un directorio temporal las cookies no sobreviven (WAL). El unico Chrome corriendo tiene el login, pero no expone puerto CDP. Para un DM por LinkedIn haria falta loguearse de nuevo en un perfil que Playwright pueda abrir.
+- **El `--submit` de RYZ es el unico con captcha sin resolver.** hCaptcha en modo invisible suele generar el token en el momento del submit; eso solo se puede comprobar enviando. Por eso el submit sigue siendo paso manual y con OK.
+- **Salarios decididos con datos, no con intuicion:** USD 3.200/mes en RYZ (banda estimada USD 82.600-153.400/ano) y USD 3.400/mes en Mural. Para Mural, la banda que publica un agregador es **estadounidense** (USD 105.054-131.317/ano) aunque el puesto es "Argentina Remote": la referencia real es el dato de empleados (Levels.fyi, L2 en Greater Buenos Aires: ARS 54,3M de compensacion total anual = **USD 2.963/mes** al cambio del 23/10 de 1.527,85). Pedir 3.400 es coherente con el seniority real y con la banda, sin pelear contra el techo de 5K que fijo Gonzo.
+- **Pendiente:** enviar (requiere OK explicito), y el canal de LinkedIn, que sigue siendo el unico que no puedo operar.
+
+---
+
 ## [2026-10-22] - LiteLLM se descarta: la capa de router ya existe en el stack propio
 
 ### Added
