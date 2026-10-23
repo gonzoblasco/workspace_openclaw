@@ -6,6 +6,24 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-23] - Radar de oportunidades OSS: PRs y reviews por separado, con lo que NO es oportunidad
+
+### Added
+- **`docs/prs/oportunidades-2026-10-23.md`** - busqueda de material de post en repos de 1er y 2do nivel, con **PRs y reviews por separado**, verificada contra la API de GitHub (comments, assignees, y los PRs que referencian cada issue via timeline). Criterio de tier explicito (1er nivel >9k stars; 2do nivel o sub-marca donde ya hay contribucion propia). Vive en `docs/prs/` y **no** en `docs/linkedin/`: ese directorio es el de los posts, y el gate de la cadena los valida como posts.
+- **La accion mas barata, medida:** las 2 PRs propias de `t3-oss/create-t3-app` (**#2243** y **#2240**) estan paradas desde julio con **0 review comments**. No es "waiting for review" del maintainer: es trabajo en curso sin contraparte.
+- **4 issues a11y LIBRES en `mui/material-ui`** (#49444 CardActionArea, #49445 AppBar, #49446 SpeedDial, #49447 ImageList): 0 comentarios, sin assignee, **sin ningun PR que los referencie**, y con el scope escrito en el issue (axe tests + `<Componente>/accessibility.md` + `pnpm a11y:scorecard`). El repo ya tiene 12 `accessibility.md` de componentes que dan la plantilla.
+- **5 candidatas a review con sustancia** (PRs a11y sin ningun review de humano): `adobe/react-spectrum#10803`, `mui/base-ui#6047`, `radix-ui/primitives#4222` y `#4227`, `facebook/astryx#7906`.
+- **Tambien lo que NO es oportunidad**, porque la regla de "nunca piso" lo exige: los 5 issues de `facebook/astryx` (uno con 10 PRs que lo referencian), `adobe/react-spectrum#9556` (4 PRs), `mui/base-ui#5519` (2 PRs), `mui/material-ui#49511` (asignado a un autor).
+
+### Measured (lo que contradice el plan)
+- **El tier 2 de a11y NO tiene backlog de issues abiertos.** `carbon-design-system/ibm-products`, `vercel/ai`, `tanstack/router`, `colinhacks/zod` y `payloadcms/payload` dan **0** con label `accessibility`. Y `carbon-design-system/carbon` **no tiene ese label**: usa labels granulares por tecnologia de asistencia (`a11y: JAWS` 56, `a11y: VoiceOver` 33, `a11y: NVDA` 2, `a11y: high contrast mode` 3, `a11y: TalkBack` 0). **Consecuencia:** en tier 2 la oportunidad es destrabar lo propio y revisar donde hay volumen sin review (`shuding/nextra`: 47 PRs abiertas / 45 sin actividad; `t3-oss/create-t3-app`: 53 / 49) - no "encontrar un issue de a11y".
+- **Endurecer el gate con `Proyecto`, `PR`, `Fecha` e `Idioma` romperia 8 de los 10 posts vivos, incluido el canonico** (`astryx-5419.md`). El gate hoy exige solo `Status` y `Nicho`, a proposito: el proyecto se deduce del link del PR, que si es obligatorio, y un gate que reprima al canonico esta roto. **Queda como decision de Gonzo, con la migracion de los posts existentes como condicion previa** - no se aplica sobre posts que no lo cumplen.
+
+### Changed
+- **`docs/ROADMAP.md` seccion 2.2** - las acciones pasan a llevar lo medido: el radar con sus cuatro acciones concretas, el hallazgo de que el tier 2 de a11y esta vacio, y la pregunta del gate con su condicion.
+
+---
+
 ## [2026-10-22] - El idioma del post lo decide la materia: a11y en ingles, el resto en espanol
 
 ### Changed
