@@ -144,8 +144,20 @@ algo, pero no dependen de esta spec.
 
 ### Fase 1 - El grafo (recien ahi, y con la justificacion medida)
 
-**Precondicion para empezar:** la Fase 0 esta hecha y hay al menos **un post nuevo** que haya pasado
-por el grafo de punta a punta. Sin eso, el grafo es un modelo de un proceso que nunca corrio.
+**Precondicion para empezar:** la Fase 0 esta hecha y **el proceso ya se valido a mano** - no hace
+falta que el grafo haya corrido (seria circular: el grafo no puede precederse a si mismo).
+
+**Proceso validado el 2026-10-22**, con los 2 posts nuevos:
+`react-spectrum #10503` y `carbon #22887` recorrieron el ciclo completo - hechos verificados con `gh`
+(el PR, el issue, los reviews, los comments inline y el diff), redaccion del draft, los gates en OK,
+publicacion por Gonzo y `Status:` volteado con la URL. **El grafo automatiza un proceso que ya
+funciona**: ese es su riesgo y su limite. Automatizar algo que nunca corrio produce un modelo; esto
+tiene dos corrida reales de referencia.
+
+**Riesgo que queda, y es el que el grafo tiene que ganarse:** el proceso manual tardo **una sesion
+entera** (2 subagentes, ~3 Revisiones de verificacion, 3 correcciones de hechos, un bug del gate
+encontrado y corregido). Si el grafo no reduce eso, es ceremonia. **La metrica de la Fase 1 es el
+tiempo y el numero de correcciones humanas, no la cantidad de nodos.**
 
 | pieza | decision | estado |
 |---|---|---|
