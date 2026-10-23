@@ -240,11 +240,13 @@ def check_post(path: Path, stale_days: int) -> tuple[list[str], list[str]]:
             else:
                 problems.append(msg)
         else:
-            msg += " El post no es del nicho a11y, asi que en espanol es lo esperado."
-            if publicado:
-                warnings.append(msg + " (post ya publicado: se registra, no se bloquea)")
-            else:
-                problems.append(msg)
+            # Post que NO es de a11y, en espanol: es exactamente lo que la regla pide
+            # (2026-10-22: "todo lo que sea a11y va en ingles; todo lo demas, en espanol").
+            # Bug corregido el 2026-10-22: esto caia en `problems` y hacia fallar al gate, o sea
+            # que el gate IMPEDIA los posts no-a11y en espanol. Detectado por la revision
+            # adversarial del grafo (H6). Un gate que prohibe lo que la regla manda es un
+            # gate roto.
+            warnings.append(msg + " (post no-a11y en espanol: es lo esperado, no bloquea)")
 
     # 4. Longitud.
     words = len(re.findall(r"\b[a-zA-Z][a-zA-Z'-]*\b", body))
