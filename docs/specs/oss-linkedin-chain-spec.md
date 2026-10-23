@@ -161,13 +161,30 @@ tiempo y el numero de correcciones humanas, no la cantidad de nodos.**
 
 | pieza | decision | estado |
 |---|---|---|
-| Donde vive | `projects/oss-post-graph/` (repo propio, venv propio). **ADR-099 §4**: proceso separado, venv y `requirements.txt` pineados, sin acople por dependencias | Abierta |
+| Donde vive | `projects/oss-post-graph/` (repo `gonzoblasco/oss-post-graph`, privado). **ADR-099 §4**: proceso separado, venv y `requirements.txt` pineados, sin acople por dependencias | **Hecho** |
 | Como se invoca | **MCP stdio** (`mcp<2`, FastMCP 1.30.0) - medido: resuelve con los pines de `langchain-starter` intactos, 0 conflictos, sin Postgres, sin `LANGGRAPH_CLOUD_LICENSE_KEY`, sin LangSmith. El mismo patron que ya usa `browser-use` | **Medido** |
 | Checkpointer | `langgraph-checkpoint-sqlite` - medido: resuelve con `langgraph 0.6.11` + `langgraph-checkpoint 2.1.2`, 0 conflictos. `langgraph-checkpoint 2.1.2` ya esta instalado y sin usar en `langchain-starter` | **Medido** |
-| Modelo de los pasos | Ollama local via `langchain-ollama`, como el starter | Abierta |
-| Estado tipado | `TypedDict` por paso. Los **hechos del PR se escriben a disco** (markdown o JSON), no al modelo: el grafo Orquesta, la verdad vive en el archivo | Abierta |
-| Aprobacion | `interrupt()` antes de "publicar". Idempotente: el nodo de escritura se puede re-ejecutar | Abierta |
+| Modelo de los pasos | Ollama local via `langchain-ollama`, como el starter. El LLM es inyectable (`FAKE_LLM` en los tests) | **Hecho** |
+| Estado tipado | `TypedDict` por paso. Los **hechos del PR se escriben a disco** (markdown o JSON), no al modelo: el grafo Orquesta, la verdad vive en el archivo | **Hecho** |
+| Aprobacion | `interrupt()` antes de "publicar". Idempotente: el nodo de escritura se puede re-ejecutar. El `Status:` se vueltea a `PUBLICADO <fecha>` | **Hecho** (verificado por test) |
 | Que NO hace | No publica en LinkedIn. No decide el nicho (lo decide MIND). No inventa hechos (los lee de `gh`) | **Firme** |
+
+**Estado real al 2026-10-22 (medido, no declarado):** la Fase 1 esta **implementada y verificada** en
+`projects/oss-post-graph` (commit `dab14a2`). `venv/bin/python -m pytest -q` -> **9 passed**. Smoke real
+por stdio con un cliente MCP: las 3 herramientas (`preparar_post`, `estado_run`, `aprobar_post`)
+responden. **La primera implementacion declaro "100% verde" y no lo estaba** (los tests ni colectaban):
+el CORE lo detecto corriendolos, y **7 bugs** se corrigieron y verificaron uno por uno.
+
+**Lo que la implementacion dejo en claro y la spec no decia:**
+- El gate corre **despues** de escribir el borrador: si falla, el archivo invalido **ya esta** en
+  `docs/linkedin/`. Revisar si el gate deberia correr sobre un temporal.
+- El prompt de `draft` no le pasa el post canonico al LLM: le dice "follow the same tone" sin
+  mostrarlo.
+- La conexion SQLite se abre dentro de `build_graph()`, o sea una por llamada.
+
+**Pendiente:** la revision adversarial (rol B) define si el grafo automatiza el proceso de MIND o lo
+duplica con pasos extra. Esa es la pregunta de fondo de la fase, y la respuesta decide si sigue en pie.
+
 
 ### Lo que NO entra (y por que)
 
