@@ -128,6 +128,11 @@ const ADDITIONAL =
   console.log("\n=== FORMULARIO COMPLETO ===");
   estado.forEach((e) => console.log(`  ${e.label.padEnd(44)} ${JSON.stringify(e.val)}`));
 
+  // Evidencia: captura del formulario completo.
+  const shot = "/Users/gonzoblasco/.openclaw/workspace/tmp/job-search-2026-10-22/ryz-manual-ready.png";
+  await page.screenshot({ path: shot, fullPage: true });
+  console.log("captura:", shot);
+
   console.log("\n" + "=".repeat(64));
   console.log("  FALTA UN CLICK HUMANO (no se puede automatizar):");
   console.log("  1) el hCaptcha de Lever (si aparece, resolvelo)");
@@ -135,9 +140,13 @@ const ADDITIONAL =
   console.log("  Esta ventana queda ABIERTA. No cierres el navegador.");
   console.log("=".repeat(64) + "\n");
 
-  // no se cierra el navegador: queda en pantalla
   await page.bringToFront();
-  process.exit(0);
+
+  // El proceso NO termina: si node sale, Playwright mata el navegador hijo y
+  // la ventana se cierra. Se queda vivo hasta que Gonzo cierre el navegador
+  // (o se corte el proceso).
+  console.log("esperando (la ventana queda abierta). Ctrl+C para cortar.");
+  setInterval(() => {}, 60000);
 })().catch((e) => {
   console.log("ERR", e.message.slice(0, 300));
   process.exit(1);
