@@ -44,6 +44,27 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **El link al PR solo se exige si el header declara un PR.** Un post sobre material propio (un refactor de proyecto) no tiene merge que citar, y exigirlo era un falso positivo. Lo pidio el gate a un post de proyecto propio.
 - 4 tests nuevos para estas dos reglas (23 en total).
 
+## [2026-10-22] - La revision adversarial veta el grafo OSS->LinkedIn (12/25) y encuentra un bug en el gate
+
+### Fixed
+- **El gate del workspace IMPEDIA los posts no-a11y en espanol** (hallazgo H6 de la revision adversarial). La rama del post en espanol caia en `problems` y hacia fallar al gate, cuando la regla del 2026-10-22 dice justo lo contrario: *"todo lo que sea a11y va en ingles; todo lo demas, en espanol"*. Un gate que prohibe lo que la regla manda es un gate roto. Ahora la rama no-a11y **avisa y no bloquea**; la rama a11y-en-espanol sigue fallando (esa si es la regla rota). 27 tests del gate en verde.
+
+### Added
+- **`projects/oss-post-graph/`** (repo `gonzoblasco/oss-post-graph`, privado): el grafo de la cadena OSS -> LinkedIn, Fase 1 de `docs/specs/oss-linkedin-chain-spec.md`. 5 nodos (facts -> evidence -> draft -> gates -> approval), MCP stdio, checkpointer SQLite, Ollama local. Sin Postgres, sin `LANGGRAPH_CLOUD_LICENSE_KEY`, sin LangSmith.
+- **El STATUS del proyecto registra el VETO 12/25** con los 9 P0 verificados por el CORE y la leccion de metodo: *un test que usa un fake tiene que existir al lado de la misma prueba con el camino real*.
+
+### Measured
+- La implementacion inicial declaro "100% verde" y **no lo estaba**: los tests ni colectaban (import de `FakeListLLM` inexistente). **7 bugs** corregidos y verificados uno por uno; despues, la revision adversarial veto la version siguiente (12/25) con 16 hallazgos, 9 de ellos P0/P1.
+- **El mas grave: el nodo `draft` crashea con el modelo real** (`prompt | ChatOllama` devuelve un `AIMessage`, que no tiene `.strip()`). Los 9 tests usaban `FakeListLLM`, que devuelve `str`. El camino de produccion **nunca corrio de punta a punta**.
+- **El modelo no recibia ningun hecho**: la evidencia eran nombres de archivo. Una post con "47 new tests" y "12.000 sesiones" **paso el gate con exit 0**.
+- **El gate y el grafo se contradecian en el idioma**: el gate rechazaba los posts no-a11y en espanol, o sea que **el grafo solo podia producir posts de a11y** - dos de los tres nichos de branding quedaban fuera por construccion.
+- Smoke real por stdio con cliente MCP: las 3 herramientas (`preparar_post`, `estado_run`, `aprobar_post`) responden.
+
+### La pregunta de fondo (rol B, sin filtro)
+> El grafo no automatiza el proceso de MIND: lo duplica con pasos extra y le quita el criterio. Lo unico que aporta de verdad es estado reanudable. Lo caro eran el criterio, la verificacion y la redaccion, y el grafo no toca ninguno de los tres.
+
+**Lo que lo haria valer la pena:** que el grafo le entregue a MIND el material ya verificado y citado (hechos con links, diff recortado, friccion del review) y el `thread_id` para reanudar, y **no** redactar.
+
 ## [2026-10-22] - Los 2 posts nuevos publicados: Status volteado y archivo sincronizado con lo que quedo en vivo
 
 ### Changed
