@@ -328,6 +328,56 @@ def audit_chain(stale_days: int, root: Path = None) -> list[str]:
     return problems
 
 
+def audit_contributions(root: Path = None) -> list[str]:
+    """Contribuciones con resultado atribuible que ningun post cubre. AVISA, no falla.
+
+    Regla de branding del 2026-10-22: un review o una colaboracion ES material de post
+    cuando cumple 3 condiciones: (1) trazable a un PR/issue real, (2) hubo un cambio
+    atribuible, (3) hay un detalle tecnico con criterio. La tercera es un juicio del
+    dueno, no del gate: por eso esto avisa y no bloquea.
+
+    Filtra lo que NO es material de post por regla: el credito del fix que llego a main
+    via PR de otro autor es evidencia de proceso (material de entrevista), no de LinkedIn.
+    """
+    root = Path(root) if root is not None else ROOT
+    db_path = root / "memory" / "memory.db"
+    posts_dir = root / "docs" / "linkedin"
+    if not db_path.exists() or not posts_dir.exists():
+        return []
+
+    try:
+        con = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+        contribs = con.execute(
+            "select repo, pr, detail from contributions where status in ('comment','collab')"
+        ).fetchall()
+    except sqlite3.Error:
+        return []
+
+    corpus = "\n".join(p.read_text(encoding="utf-8") for p in sorted(posts_dir.glob("*.md")))
+
+    candidatos = []
+    for repo, pr, detail in contribs:
+        num = (pr or "").lstrip("#")
+        if not num:
+            continue
+        d = detail or ""
+        if re.search(r"via PR de otro autor|PR de otro autor", d, flags=re.I):
+            continue  # el fix es de otro: evidencia de proceso, no de post
+        if not re.search(r"adopto|se adopto|incorpora|mergeo|MERGED|destrab|rescato", d, flags=re.I):
+            continue  # sin cambio atribuible explicito, no es candidato
+        if not re.search(rf"(pull/{num}\b|#{num}\b)", corpus):
+            candidatos.append(f"{repo}#{num}")
+
+    if not candidatos:
+        return []
+    return [
+        f"Contribuciones con resultado atribuible sin post ({len(candidatos)}): "
+        f"{', '.join(sorted(candidatos))}. Cumplen la regla nueva del 2026-10-22: revisar si "
+        f"cumplen las 3 condiciones (trazable, cambio atribuible, detalle con criterio) y "
+        f"merecen un post."
+    ]
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Gate de la cadena OSS -> LinkedIn.")
     ap.add_argument("--post", help="Archivo de post a validar (el gate de publicacion).")
@@ -369,6 +419,9 @@ def main() -> int:
                 print(f"  - {p}")
         else:
             print("  OK: ningun draft vencido, ningun merge elegible sin post.")
+
+        for w in audit_contributions(ROOT):
+            print(f"\nAVISA (no bloquea):\n  - {w}")
 
     return 1 if problems else 0
 

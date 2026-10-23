@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-22] - La regla de branding se abre: el review pasa a ser material de post
+
+### Changed
+- **La regla de branding del 2026-09-02 ("solo PRs mergeados propios") queda reemplazada** (decision de Gonzo, 2026-10-22). El material de post es **todo lo que tenga resultado atribuible y trazable**. **Un review, comentario o colaboracion es material de post** cuando cumple 3 condiciones: (1) trazable a un PR/issue real con link; (2) hubo un **cambio atribuible** - el autor ajusto el codigo por ese input, se destrabo un CI, se rescato un test de regresion, o el PR llego a su cierre; (3) hay un **detalle tecnico con criterio**. El credito de un maintainer **por si solo** sigue sin ser material de post (es material de entrevista). El dueno esta en `memory/user-profile.md` (seccion "Marca personal y alcance"), no en un ADR.
+- **El idioma del post se decide por el TIPO DE APORTE**, no caso por caso: un aporte a open source (PR mergeado, review, colaboracion en repo publico) lleva post en **ingles** (su audiencia es la misma que lee el repo, y el material a11y compite en un mercado US-only); un aporte a producto o sistema propio puede llevar post en **español**, segun el mercado al que apunta. Lo que va al repo - review, comentario, PR - va **siempre en ingles**.
+- **Los nichos dejan de ser una lista cerrada** (a11y / Agentic / Fullstack). Lo que define un nicho es que haya material propio con resultado atribuible, y se pueden sumar (componentes, build y estado, libros/estudio).
+- **La skill `linkedin-merge-post` (workshop de MIND)** deja de decir "own merges only" y pasa a "one post per attributable outcome", con las 3 condiciones explicitas.
+
+### Added
+- **`scripts/check-linkedin-pipeline.py`**: nueva funcion `audit_contributions()` - **AVISA** (no bloquea) de las contribuciones con resultado atribuible que ningun post cubre. Filtra lo que por regla no es material de post (el fix que llego a main via PR de otro autor: es evidencia de proceso, material de entrevista). 2 tests nuevos (25 en total).
+- **Medido:** el gate encontro **1 contribucion con resultado atribuible sin post**: `carbon-design-system/ibm-products#9869` - el review que fue el primer comentario,Finding 2 senales reales, con el autor ajustando el diff 11 h despues, y del que salio el post de #9878 (el segundo contacto de Darren Denham).
+
+### Gates
+`pytest tests/python` completo en verde (25 tests del gate) · em-dash OK · single-source OK.
+
 ## [2026-10-22] - Los 12 posts con Status real: el numero de drafts vs publicados corregido
 
 ### Changed

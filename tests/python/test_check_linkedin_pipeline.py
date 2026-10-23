@@ -382,6 +382,64 @@ def test_audit_of_clean_chain_passes(tmp_path):
     assert not problems, problems
 
 
+def test_audit_reports_contributions_with_attributable_outcome(tmp_path):
+    # Regla de branding del 2026-10-22: un review o colaboracion ES material de post cuando
+    # tiene cambio atribuible. El gate lo AVISA (no falla): la 3ra condicion -detalle con
+    # criterio- es un juicio del dueno, no del script.
+    mod = load()
+    root = tmp_path
+    (root / "docs" / "linkedin").mkdir(parents=True, exist_ok=True)
+    (root / "memory").mkdir(parents=True, exist_ok=True)
+    (root / "docs" / "linkedin" / "post.md").write_text(CLEAN_POST, encoding="utf-8")
+
+    db = root / "memory" / "memory.db"
+    con = sqlite3.connect(db)
+    con.execute(
+        "create table contributions (id integer primary key autoincrement, repo text not null, "
+        "issue text, issue_url text, pr text, pr_url text, status text not null default 'open', "
+        "detail text, context text, tier text, created_at text, updated_at text, "
+        "tipo text not null default 'pr')"
+    )
+    con.execute(
+        "insert into contributions (repo, pr, status, detail, tipo) values (?, ?, ?, ?, 'pr')",
+        ("carbon-design-system/ibm-products", "9869", "comment",
+         "Review de PR ajeno: el autor incorporo nuestra pregunta 1 y el PR se MERGED."),
+    )
+    con.commit()
+    con.close()
+
+    avisos = mod.audit_contributions(root)
+    assert avisos and "9869" in avisos[0], avisos
+
+
+def test_audit_ignores_contribution_whose_fix_came_from_another_author(tmp_path):
+    # El credito del fix que llega a main via PR de otro autor es material de ENTREVISTA
+    # (evidencia de proceso), no de LinkedIn. No es candidato.
+    mod = load()
+    root = tmp_path
+    (root / "docs" / "linkedin").mkdir(parents=True, exist_ok=True)
+    (root / "memory").mkdir(parents=True, exist_ok=True)
+    (root / "docs" / "linkedin" / "post.md").write_text(CLEAN_POST, encoding="utf-8")
+
+    db = root / "memory" / "memory.db"
+    con = sqlite3.connect(db)
+    con.execute(
+        "create table contributions (id integer primary key autoincrement, repo text not null, "
+        "issue text, issue_url text, pr text, pr_url text, status text not null default 'open', "
+        "detail text, context text, tier text, created_at text, updated_at text, "
+        "tipo text not null default 'pr')"
+    )
+    con.execute(
+        "insert into contributions (repo, pr, status, detail, tipo) values (?, ?, ?, ?, 'pr')",
+        ("facebook/astryx", "#5107", "collab",
+         "El fix llego a main via PR de otro autor (merged)."),
+    )
+    con.commit()
+    con.close()
+
+    assert not mod.audit_contributions(root)
+
+
 # --- el final: distinguir el arbol limpio del sucio ---
 
 def test_dirty_tree_fails_and_clean_tree_passes(tmp_path):
