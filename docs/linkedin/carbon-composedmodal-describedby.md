@@ -1,6 +1,7 @@
 # LinkedIn Post - carbon #22887 (DRAFT)
 
-**Status:** draft para revision de Gonzo
+**Status:** PUBLICADO 22/10/2026
+**Publicado en:** https://www.linkedin.com/posts/gonzalo-blasco_accessibility-a11y-carbon-share-7519182890929160192-QjBO/
 **Idioma:** inglés
 **Tono:** pedagógico con sustancia - historia técnica con el qué + el proceso + el porqué. **NO es tutorial paso a paso.**
 **Rol:** estilo de marca de Gonzo para posts de LinkedIn (la politica de los 3 nichos vive en `memory/user-profile.md` linea 47).
@@ -19,11 +20,11 @@ I just merged a PR into **Carbon Design System** that adds native support for th
 
 **How we fixed it.** A new optional `aria-describedby` prop, wired through so that when the `enable-dialog-element` feature flag is on the attribute lands on the native `<dialog>` element, and otherwise falls back to the `div[role="dialog"]` container.
 
-**The review process was the interesting part.** The maintainer pushed back on three things, and the first one is the one I keep coming back to: my first test referenced a `description-modal-id` element **without rendering it**, so it asserted the attribute was present on the dialog but proved nothing about whether the description actually existed in the page. The fix was to render the element alongside the modal. The other two were about not leaking implementation details - a reference to the internal `cds--modal-container` class in a comment, and documenting the new prop properly instead of leaving it implicit.
+**The review process was the interesting part.** The maintainer pushed back on three things, and the first one is the one I keep coming back to: my first test referenced a `description-modal-id` element without rendering it, so it asserted the attribute was present on the dialog but proved nothing about whether the description actually existed in the page. The fix was to render the element alongside the modal. The other two were about not leaking implementation details - a reference to the internal `cds--modal-container` class in a comment, and documenting the new prop properly instead of leaving it implicit.
 
 And then the maintainer asked whether the review comments had actually been addressed, when some of them had not. That was worth hearing.
 
-The PR landed with a test that renders the description element and asserts the attribute reaches the native `<dialog>` when the flag is on, plus the `div[role="dialog"]` fallback. The merge commit was `1709742020a4de25264060216ee8b7349581d9f1`, on 12 Oct 2026.
+The PR landed with a test that renders the description element and asserts the attribute reaches the native `<dialog>` when the flag is on, plus the `div[role="dialog"]` fallback.
 
 If your dialog has a title but no description, that is a gap your users cannot see either.
 

@@ -6,6 +6,17 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-22] - Los 2 posts nuevos publicados: Status volteado y archivo sincronizado con lo que quedo en vivo
+
+### Changed
+- **`docs/linkedin/react-spectrum-combobox-announce.md` y `docs/linkedin/carbon-composedmodal-describedby.md`**: `Status:` a `PUBLICADO 22/10/2026` + la URL real del post. Es el paso 8 de la skill, y es lo que evita que el archivo mienta: un post vivo con su archivo diciendo "draft" es el defecto que la skill ya documento el 2026-09-14.
+- **El post de carbon estaba editado despues de publicarse**: se removio la frase con el merge commit (`1709742020a4de25264060216ee8b7349581d9f1`, 12 Oct 2026). El archivo ahora refleja **exactamente** lo que quedo en vivo, no la version que se publico. Verificado fragmento por fragmento contra el post publico.
+- **La fecha de publicacion es 22/10/2026**, la del post. No se registro la hora: LinkedIn solo expone un valor relativo ("16m", "20m") y un timestamp inventado seria un dato falso en el archivo.
+
+### Measured
+- **Los 2 merges que faltaban tienen post y estan publicados.** La cadena pasa de "2 merges elegibles sin post" a **0**, y de **1** post con `Status: PUBLICADO` a **3**.
+- Quedan **5 drafts** que el gate de cierre sigue marcando (21 dias, 21, 21, 15 y 21). Para cada uno la accion es una de dos: si se publico a mano, voltear el `Status:`; si no, publicar o archivar. El gate no presume cual: dice las dos.
+
 ## [2026-10-22] - La cadena OSS -> LinkedIn: gate restituido, 2 posts escritos, y 3 gates rotos cerrados
 
 ### Added

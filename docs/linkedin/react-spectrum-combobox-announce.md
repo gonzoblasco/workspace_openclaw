@@ -1,6 +1,7 @@
 # LinkedIn Post - react-spectrum #10503 (DRAFT)
 
-**Status:** draft para revision de Gonzo
+**Status:** PUBLICADO 22/10/2026
+**Publicado en:** https://www.linkedin.com/posts/gonzalo-blasco_accessibility-a11y-reactjs-share-7519181950881009664-elvt/
 **Idioma:** inglés
 **Tono:** pedagógico con sustancia - historia técnica con el qué + el proceso + el porqué. **NO es tutorial paso a paso.**
 **Rol:** estilo de marca de Gonzo para posts de LinkedIn (la politica de los 3 nichos vive en `memory/user-profile.md` linea 47).
