@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-24] - kanam-sudoku-iphone: proyecto nuevo desde cero, con la dificultad definida por tecnica
+
+### Added
+- **`projects/kanam-sudoku-iphone/`** - sudoku 9x9 **mobile-first para iPhone** (PWA instalable, offline, teclado numerico en pantalla, 3 dificultades), pedido por Gonzo con la instruccion explicita de **no usar los proyectos actuales**. Repo publico previsto (`gonzoblasco/kanam-sudoku-iphone`) en GitHub Pages.
+- **Ciclo de definicion cerrado** con los artefactos estandar: 6 specs (`.knowledge/specs/SPEC-001..006`, checker del workspace en exit 0), `KNOWLEDGE.md`, `docs/architecture.md` (contratos, alternativas descartadas, tabla de trazabilidad), `docs/CONTEXT.md` (glosario con sinonimos rechazados), `docs/data-model.md`, 6 ADRs, `AGENTS.md`/`CLAUDE.md` del proyecto y CI + deploy.
+- **Decisiones de negocio de Gonzo (2026-10-24):** hosting = GitHub Pages desde repo **publico**; dificultad = **por tecnica de resolucion** (no por cantidad de celdas vacias); instalacion = **PWA completa** (manifest + service worker).
+- **Decisiones tecnicas propias:** TypeScript + Vite con **cero dependencias de runtime** y una **unica convencion de mascara** (`bit (d-1)`) - el problema exacto que sufrio el motor previo, que tenia `1 << (d-1)` y `1 << d` conviviendo. Estado en un unico `GameState` con historial de mutaciones, para que deshacer, notas y guardado se agreguen **sin reescribir el nucleo** (el pedido lo exigia explicitamente).
+
+### Measured
+- **La trazabilidad se verifica con grep, no se afirma**: las 17 capacidades (`C1`..`C17`) y las 6 specs aparecen en la tabla de `docs/architecture.md`. Las 7 capacidades fuera de v1 estan nombradas como fuera, no omitidas.
+- **El stack se verifico contra la maquina, no contra la suposicion**: Node 26.8.1 corre TypeScript con type stripping nativo (`node --test` descubre y corre tests `.ts` sin paso de build), y Playwright-core + Chromium headless ya estan instalados para el e2e en viewport de iPhone.
+
+### Changed
+- **`MEMORY.md`** - entrada del proyecto en la seccion de repos activos, con la instruccion de "desde cero" y las tres decisiones de Gonzo, para que nadie lo confunda con el `kanam-sudoku` v1 (que queda intacto y es de escritorio).
+
+---
+
 ## [2026-10-23] - Radar de oportunidades OSS: PRs y reviews por separado, con lo que NO es oportunidad
 
 ### Added
