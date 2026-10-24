@@ -28,6 +28,15 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Verificacion final**: 73/73 tests, `tsc --noEmit` limpio, 4 e2e en Chromium a 390x844 (27/27, 34/34, 61/61, 11/11), contraste AA en los 9 pares de color de ambos temas, axe-core con 0 violaciones, y **una sola convencion de mascara** en todo el arbol.
 - **CI corregido**: `tsc` resolvia los tipos de Node desde el `node_modules` del workspace padre, asi que pasaba local y fallaba en CI. `@types/node` es ahora devDependency del proyecto.
 
+### Added (2026-10-24, evening) - sistema de notas
+- **`kanam-sudoku-iphone`: notas por celda** (capacidad C12, que la v1 dejo fuera de alcance; pedida por Gonzo despues de la publicacion). **Modo notas** (el teclado marca candidatos en vez de escribir valores), **candidatos automaticos** ("Auto") y **limpieza** de anotaciones, con la grilla 3x3 clasica en la celda.
+- **La decision que la hace coherente: una nota no es una jugada.** No cambia el valor de una celda y **no entra al historial de deshacer** (ADR-0007). Por eso su API (`setNote`, `toggleNote`) esta separada de `apply` desde el primer dia, y `apply` sigue siendo el unico camino de escritura del valor.
+- **Los candidatos automaticos salen del mismo motor que las tecnicas** (`core/candidates.ts`): una nota automatica nunca ofrece un digito que el motor ya descarto.
+- **El valor de una celda y sus notas son informacion distinta**: viven en elementos separados (`.cell-value` y `.note-grid`). Una celda con valor **oculta** sus notas, y al borrar el valor **vuelven**.
+- **Fue la primera prueba real de ADR-0004**: la capacidad entro entera y **el nucleo (`core/`, `state/state.ts`) no cambio de forma**, porque el estado ya tenia `notes` y su API desde el primer dia. La promesa de "deshacer, notas y guardado se agregan sin reescribir el nucleo" quedo demostrada, no declarada.
+- Verificado: `npm test` **91/91** (11 suites), `e2e.notes` **40/40**, y los otros cuatro e2e siguen verdes (27/34/61/11). Contraste AA del color de notas en ambos temas (8.86:1 claro, 12.12:1 oscuro). Bundle: 23.8 kB -> 26.8 kB (8.76 kB gzip).
+- Spec nueva (`SPEC-007-notas.md`), ADR nuevo (`ADR-0007-notas-no-son-jugadas.md`) y reconciliacion de los artefactos que el cambio de alcance deja obsoletos: BRIEF, `docs/architecture.md` (tabla de trazabilidad), `docs/data-model.md` (`CellView.notes`), `docs/CONTEXT.md` (glosario: "modo notas" y "digitos legales") y el indice de ADRs.
+
 ---
 
 ## [2026-10-23] - Radar de oportunidades OSS: PRs y reviews por separado, con lo que NO es oportunidad
