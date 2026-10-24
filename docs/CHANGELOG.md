@@ -21,6 +21,13 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Changed
 - **`MEMORY.md`** - entrada del proyecto en la seccion de repos activos, con la instruccion de "desde cero" y las tres decisiones de Gonzo, para que nadie lo confunda con el `kanam-sudoku` v1 (que queda intacto y es de escritorio).
 
+### Published (2026-10-24, evening)
+- **Repo publico**: `gonzoblasco/kanam-sudoku-iphone` -> **https://gonzoblasco.github.io/kanam-sudoku-iphone/**. CI y deploy verdes; el sitio desplegado verificado en Chromium real (81 celdas, escritura funcionando, 0 errores de consola).
+- **Revision B del pipeline A/B**: 18 bugs reales encontrados y corregidos. El grave: **el tablero estaba transpuesto** (filas y columnas invertidas) y **ningun test lo veia**, porque todos los e2e median geometria y ninguno comparaba el valor de una celda contra el dato del motor. Otros: la region `aria-live` visible (faltaba `.sr-only`), el teclado fuera del layout pedido, tres tecnicas con deducciones falsas (`x_wing` eliminaba el digito de su propio patron), semillas correlacionadas en el generador, `matched:false` reportando el nivel con el cap pedido, `undo` roto tras el tope del historial, el cronometro sin pausar en background, la partida ganada quedandose guardada, y el service worker precacheando su propio `sw.js`.
+- **El tablero se hizo fluido**: nueve celdas de 44px necesitan 396px y el viewport de referencia tiene 390px. Con el tablero fijo se perdia la ultima columna (y en un iPhone SE, una columna entera). Ahora es `min(100%, 396px)` y la celda es un noveno de la fila con base porcentual: medido, 390px -> 43.33px, 375px -> 41.66px, 430px -> 44px exactos, sin solape. **La spec, el e2e y el `AGENTS.md` del proyecto quedaron reconciliados con la aritmetica.**
+- **Verificacion final**: 73/73 tests, `tsc --noEmit` limpio, 4 e2e en Chromium a 390x844 (27/27, 34/34, 61/61, 11/11), contraste AA en los 9 pares de color de ambos temas, axe-core con 0 violaciones, y **una sola convencion de mascara** en todo el arbol.
+- **CI corregido**: `tsc` resolvia los tipos de Node desde el `node_modules` del workspace padre, asi que pasaba local y fallaba en CI. `@types/node` es ahora devDependency del proyecto.
+
 ---
 
 ## [2026-10-23] - Radar de oportunidades OSS: PRs y reviews por separado, con lo que NO es oportunidad
