@@ -87,11 +87,12 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 
 ## 3. Inventario
 
-### 3.1 Core - `skills/` (28)
+### 3.1 Core - `skills/` (29)
 
 | Skill | Qué hace |
 |---|---|
 | [session-lifecycle](skills/session-lifecycle/) | Ciclo de sesión completo: inicio, cierre, WAL, handoff. Reemplaza 4 skills de sesión |
+| [job-application](skills/job-application/) | Busqueda y postulacion laboral: descubre vacantes, arma el CV contra el JD, llena el formulario del ATS (Lever/Ashby/Eightfold) y verifica el envio. Deja el submit para Gonzo |
 | [engineering-governance](skills/engineering-governance/) | Evolución continua del AI Engineering OS: auditoría de workflows, consolidación de learnings, mejoras sistémicas |
 | [compaction-domain-aware](skills/compaction-domain-aware/) | Compactación con conciencia de dominio: tiers de prioridad (Tier 0-4) para decidir qué preservar |
 | [complexity-driven-pipeline](skills/complexity-driven-pipeline/) | Orquestación complexity-first: scorer antes de spawnear agentes A/B; decide modelo, thinking level y profundidad |

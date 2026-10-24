@@ -244,6 +244,37 @@ ADR-099 (LangChain como capa de ejecucion), ADR-103 (LiteLLM se descarta), ADR-1
 
 ---
 
+## [2026-10-23] - La postulacion laboral deja de ser una odisea: skill + adaptadores por ATS
+
+### Added
+- **`skills/job-application/`** - la skill del flujo, con el knowledge de los tres ATS capturado una vez. Estructura: `SKILL.md` (el flujo: descubrir -> tailored -> aplicar -> verificar -> trackear), `references/ats-playbook.md` (las particularidades de cada ATS, con la evidencia y la fecha), `references/outreach.md` (mensajes y preguntas de screening), `scripts/` (find-jobs, apply y un adaptador por ATS).
+- **`docs/adr/ADR-104-busqueda-laboral-proceso-factorizado.md`** - por que existe: el trabajo de hoy no fueron tres postulaciones, fueron **once hallazgos** sobre interfaces de terceros, todos verificados y todos caros de rediscover. La misma logica que ADR-101 para los hechos: si cada postulacion re-descubre que `fill()` no funciona, hay dos verdades sobre como se llena un formulario.
+- **`scripts/find-jobs.mjs`** - discovery multi-board. La API de MeLi resulto la mejor fuente: 886 vacantes paginables, contra las 12 del listado.
+- **Tres adaptadores** (`scripts/ats/{lever,ashby,eightfold}.mjs`) con una interfaz comun: `fill()` (rellena, no envia) y `submit()` (envia y lee el **veredicto del servidor**).
+- **`tests/node/job-application.test.js`** - 7 tests de las funciones puras, incluido uno que prueba que el test puede fallar (leccion de check-contrast.py).
+
+### Fixed
+Once bugs del codigo de la tanda, revisados y corregidos por el CORE (bucket `low`: A escribe -> Kanam revisa). Todos verificados con una corrida end-to-end real contra el formulario de Mercado Pago:
+1. **`pickOption` nunca encontraba la opcion**: destructuraba `{ text }` pero recibia `{ text: "" }` como primer argumento y el matcher como segundo, asi que la regexp compilaba contra la cadena "undefined".
+2. **El listener de `response` se registraba DESPUES del click de submit**: la respuesta del servidor ya habia llegado y el **veredicto salia siempre vacio**. Era el bug mas grave: sin veredicto no hay prueba del envio.
+3. **`verifyFields(page, [])` con array vacio**: el gate "no enviar si hay divergentes" era un no-op. Podia mandar un formulario con los campos sin registrar en React.
+4. **`newContext()` sobre CDP** crea un contexto NUEVO, sin las cookies de la sesion real: el browser del usuario se abria sin su sesion de LinkedIn.
+5. **`browser.close()` sobre un browser conectado por CDP cierra el Chrome del usuario.** Ahora solo se cierra la pestana que abrio el script.
+6. **`chromium.launch()` sin `executablePath`** buscaba el binario de la cache de Playwright (1228), que no esta en la maquina (solo hay 1243): "Executable doesn't exist".
+7. **La API de MeLi devolvia `name` (no `title`), `positionUrl` relativo (no `applyUrl`) y `standardizedLocations`**: cada vacante salia con titulo vacio y url nula, y el filtro las eliminaba todas.
+8. **La API devuelve 12 por pagina de 886** (con `num=100`, 100): sin paginar el radar no veia nada.
+9. **El filtro por titulo era un `includes` plano**: "UX" matcheaba "a**UX**iliar" y devolvia una vacante que no era la buscada.
+10. **El codigo de pais y el pais estaban al reves** en Eightfold (`input-7` es el prefijo del telefono, `input-10` el pais): el telefono quedaba sin prefijo y el pais nunca se elegia.
+11. **El scope del listbox no es el id del combobox**: el popup se renderiza en un portal, con otro id (`aria-controls` apunta a el). Buscando dentro de `#input-7` no se encontraba nada, y el fallback podia elegir la opcion de OTRO desplegable: **el codigo de pais termino escrito en el campo de email**.
+
+### Notes
+- **El `ok: true` era un falso positivo y ahora hay que ganarlo.** El reporte de `apply.mjs` decia "ok" con el CV sin adjuntar, porque `filled`/`missing` volvian VACIOS de los adaptadores. Ahora cada adaptador declara sus selectores, el orquestador verifica DOM contra estado de React, y el CV se verifica con lo unico verificable antes del envio (que el input exista y se le haya pasado el archivo). El CV real se prueba con la respuesta del servidor: Eightfold **consume** el archivo del input y su widget no re-pinta el nombre, asi que `input.files.length` da 0 siempre.
+- **La prueba end-to-end es la que encuentra los bugs; el test unitario no.** Los 7 tests pasan en verde mientras el formulario quedaba sin pais, sin codigo y con el codigo de pais en el email. Se ve en la captura, no en el exit code. Por eso el flujo deja evidencia (screenshot) de cada corrida.
+- **El captcha sigue mandando en la arquitectura (ADR-104).** `real-browser.mjs` se conecta al Chrome real del usuario por CDP cuando hay captcha, y el envio lo hace la persona: un captcha detecta el **contexto**, no los intentos.
+- **Pendiente de verificar con una corrida real:** los adaptadores de Lever y Ashby no se probaron end-to-end (Lever tiene captcha; Ashby necesita el orden del autofill). El de Eightfold si, con la pantalla de Mercado Pago.
+
+---
+
 ## [2026-10-23] - Dos postulaciones confirmadas (Mural y Mercado Pago), RYZ esperando un click humano
 
 ### Added
