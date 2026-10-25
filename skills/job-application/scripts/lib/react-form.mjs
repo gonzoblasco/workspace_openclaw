@@ -182,7 +182,15 @@ export async function verifyFields(page, selectors) {
   const divergentes = [];
   const noVerificables = [];
   for (const sel of selectors) {
-    const loc = page.locator(sel);
+    const loc = page.locator(sel).first();
+    // BUG CORREGIDO 2026-10-25: si el selector no existe (el puesto no pide
+    // ese campo), `locator.evaluate` daba TIMEOUT de 30s y reventaba toda la
+    // corrida. Un campo que no esta NO es un campo roto: se cuenta como
+    // "no verificable" y se sigue.
+    if ((await loc.count()) === 0) {
+      noVerificables.push({ selector: sel, dom: "(el campo no existe en este formulario)" });
+      continue;
+    }
     const dom = await loc.inputValue().catch(() => "");
     const react = await loc.evaluate((el) => {
       const t = el._valueTracker;

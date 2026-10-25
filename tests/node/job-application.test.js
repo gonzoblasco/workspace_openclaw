@@ -58,6 +58,11 @@ class FakeLocator {
   async count() {
     return 1;
   }
+  // Playwright tiene .first() y el codigo lo usa: el fake tiene que
+  // imitarlo, o verifyFields reventaba en los tests.
+  first() {
+    return this;
+  }
 }
 
 // Un locator SIN _valueTracker: los forms que no son React (Lever) no lo
@@ -74,6 +79,11 @@ class FakeLocatorSinTracker {
   }
   async count() {
     return 1;
+  }
+  // Playwright tiene .first() y el codigo lo usa: el fake tiene que
+  // imitarlo, o verifyFields reventaba en los tests.
+  first() {
+    return this;
   }
 }
 
