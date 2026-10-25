@@ -18,10 +18,10 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Measured
 - **La cuota no es proporcional a los tokens**, asi que el px/request hay que leerlo del panel y no derivarlo del consumo. Medido en los transcripts del workspace (7 dias): `glm-5.3-flash:cloud` corre con 274k de cacheRead por turno (mas que minimax con 240k) y aun asi consume 0,29 px/req. Por eso el mix de modelos no se deduce de los tokens.
-- **El riesgo de cuota de minimax no es el overhead del 25%, es la espiral de thinking** (7 de 40 celdas con 0 entrega en la cata, 44k-56k caracteres de razonamiento): una espiral de 50k tokens quema cuota de 5-10 turnos normales sin entregar nada, y eso no se ve en la barra.
+- **El riesgo grande de cuota de minimax era la espiral de thinking** (7 de 40 celdas con 0 entrega en la cata, 44k-56k caracteres de razonamiento): una espiral de 50k tokens quema cuota de 5-10 turnos normales sin entregar nada, y eso no se ve en la barra. **Medido y descartado en uso real** (ver Pending).
 
 ### Pending
-- **Requests quemados por hora** (thinking sin entrega): es el unico numero que puede revertir la decision, porque un request quemado multiplica por 5-10 el consumo de cuota de un turno normal. Medir sobre los transcripts con el thinking separado.
+- **Requests quemados por hora: RESUELTO 2026-10-25.** Medido sobre los transcripts desde el 2026-10-20 (cuando minimax paso a ser default): **0,33% en minimax** (18 de 5.425 turnos) contra 0,22% en deepseek. Un turno cuenta como quemado si no tiene texto **ni** tool calls. Los 18 quemados consumieron **0 output tokens** (12 fueron `LLM idle timeout (120s)`, no razonamiento quemado), o sea **no gastaron cuota de output**. La espiral de thinking de la cata **no se materializo en uso real**: el riesgo grande queda descartado como factor y la decision queda sin condiciones.
 
 ## [2026-10-24] - kanam-sudoku-iphone: proyecto nuevo desde cero, con la dificultad definida por tecnica
 

@@ -190,6 +190,44 @@ pagarlo por debajo.
 balance, y requiere medirla sobre los transcripts con el campo de thinking
 separado.
 
+**MEDIDO 2026-10-25 (tasa de requests quemados).** Recorrido de los transcripts del
+workspace desde el 2026-10-20 (cuando minimax paso a ser default del CORE). Un
+turno cuenta como "quema**do**" si no tiene texto **ni** tool calls (con tool calls
+el turno es legitimo). Resultado:
+
+| Modelo | Turnos | Quemados | % | Causa |
+|---|---|---|---|---|
+| `minimax-m3.1-flash:cloud` | 5.425 | 18 | **0,33%** | 12 idle timeout (120s), 6 otros (timeout, 429 concurrencia, db locked) |
+| `deepseek-v4.1-flash:cloud` | 895 | 2 | 0,22% | 2 idle timeout |
+| `glm-5.3-flash:cloud` | 170 | 1 | 0,59% | 1 idle timeout |
+
+**La espiral de thinking no se materializo en uso real:** 0,33% de quemados en
+minimax, contra 0,22% de deepseek. Y de los 18 casos, **12 son `LLM idle timeout
+(120s)`** (el modelo no contesta en 120s), no razonamiento quemado: los 18 turnos
+quemados consumieron **0 output tokens**, o sea **no gastaron cuota de output**.
+Ninguno es el modo de fallo de la cata (44k-56k caracteres de razonamiento con 0
+entrega).
+
+**Consecuencia para la decision:** el riesgo de cuota de minimax queda **medido y
+descartado como factor**. El overhead de 1,25x por request (4 px de 820 = 0,5% de
+la cuota semanal) no se multiplica por espirales: no hay espirales. **Se mantiene
+minimax, sin condiciones.** El pendiente de "requests quemados por hora" queda
+cerrado con este dato.
+
+**Aparte: 429 del plan legacy, historicos.** En los transcripts aparecen 30
+errores 429 del propio Ollama Cloud ("you (gonzo_blasco) have reached your session
+/ weekly usage limit"), **ninguno de la semana de minimax**: 20 de septiembre, 2
+del 12/10 y el mas reciente del 20/10 19h. Desde que minimax es el default no se
+registro ningun 429 de cuota. Como la barra se resetea cada ~21h, estos picos
+historicos son los que muestran que el limite de cuota es real pero no que lo
+alcanzaste con minimax.
+
+**Estado final de la revision: se mantiene minimax, sin condiciones.** El overhead
+de 1,25x por request esta medido (4 px de 820 px = 0,5% de la cuota semanal) y el
+riesgo grande (espiral de thinking) quedo medido y descartado (0,33% de quemados,
+sin output gastado). No queda ningun pendiente que pueda revertir la decision
+salvo la validacion general de uso real con corte 2026-11-03.
+
 **Correccion de encuadre (2026-10-24):** el planteo original de la cata
 trataba "costo" como precio por token y concluyo que no importaba porque el
 modelo era gratis hasta el 2026-10-22. Con el plan legacy la unidad correcta es
@@ -248,10 +286,13 @@ El judge's score es evidencia, no veredicto.
   Cloud (ver "Revision 2026-10-24" y el punto 3 de Riesgos): el delta minimax/
   deepseek es 1,25x por request pero 0,5% de la cuota semanal en absoluto, contra
   una calidad medida de 8,9 vs 7,8 en el rol `main`. **Se mantiene minimax.**
-- **Requests quemados por hora (nuevo, 2026-10-24):** medir la tasa de requests
-  con thinking quemado (0 entrega) por hora. Es el unico numero que puede
-  revertir la decision, porque un request quemado quema cuota de 5-10 turnos
-  normales. Requiere medir sobre los transcripts con el thinking separado.
+- **Requests quemados por hora: RESUELTO 2026-10-25.** Medido sobre los transcripts
+  desde el 2026-10-20: **0,33% en minimax (18 de 5.425)** contra 0,22% en deepseek. Y
+  los 18 quemados consumieron **0 output tokens** (12 fueron idle timeout de 120s, no
+  razonamiento quemado), o sea **no gastaron cuota de output**. La espiral de
+  thinking de la cata **no se materializo en uso real**. El riesgo de cuota queda
+  descartado como factor: se mantiene minimax, sin condiciones. Detalle en la
+  seccion "Revision 2026-10-24".
 
 ## Artefactos
 
