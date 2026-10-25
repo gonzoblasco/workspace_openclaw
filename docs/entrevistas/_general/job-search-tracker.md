@@ -4,7 +4,7 @@
 >
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
 
-## Vacantes preparadas (2026-10-22) - CV y mensaje listos, NO enviados
+## Vacantes de la tanda 2026-10-22 - las TRES POSTULADAS y CONFIRMADAS
 
 > Busqueda activa (no a proposito de postulaciones). Barrido de a11yjobs, LinkedIn guest API,
 > vacantesdigitales, remotive, himalayas, remoteok, jobicy, arbeitnow, getonbrd, landing.jobs y
