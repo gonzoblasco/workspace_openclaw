@@ -4,6 +4,31 @@
 >
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
 
+## Radar 2026-10-25 - 43 candidatos, 32 verificados contra el posting real
+
+> Barrido con `find-jobs.mjs` (5 fuentes: LinkedIn guest API, remotive, arbeitnow,
+> jobicy, himalayas) + la API de MeLi (866 vacantes). Cada candidato se leyo contra su
+> posting real para separar **empresa de producto** de **nearshore-agency**: la regla sale
+> de la evidencia del 22-10 (los dos cierres por C1 fueron en agencies, donde el idioma
+> es filtro de elegibilidad; en producto es ruido de fondo).
+
+| Empresa | Puesto | Ubicacion | Canal | Riesgo #1 | Estado |
+|---|---|---|---|---|---|
+| **Backblaze** | AI Workflow Engineer \| LATAM | Remote Argentina (tambien CO/CR/MX) | Greenhouse `job-boards.greenhouse.io/backblaze/jobs/5287532008` | **Idioma: NO declarado en el posting** (0 menciones). El rol pide construir workflows con IA, prompt layers, agentes livianos, RAG e integraciones: encaja con el AI Engineering OS | **CANDIDATO #1.** Producto real: IPO en Nasdaq, 500K+ clientes, 175+ paises. Es el puesto que mejor calza con el perfil "AI-native" del corpus |
+| **XBOW** | Software Engineer - AI Systems | **Remote Argentina** (confirmado en `secondaryLocations`) | Ashby `jobs.ashbyhq.com/xbowcareers/304f9f4e-.../application` | **Idioma: no declarado.** El posting pide prompting, orquestacion y TypeScript en produccion | **CANDIDATO #2.** Producto real: fundada por el creador de GitHub Copilot, respaldada por Sequoia. Yahoo un bounty de #1 en HackerOne. **Sin rango salarial publicado** |
+| Prex | Software Engineer - AI Solutions | Argentina | A confirmar (carreras SPA) | Pedir Rust + Python, MCP, agentes autonomos con sandboxing | **Candidato #3.** Fintech con 6M+ usuarios. El JD pide MCP explicitamente y control de agentes autonomos: es el posting que mas calza con el kanam-fixer |
+| Medallia | Senior AI Systems Engineer | Buenos Aires | A confirmar | **Es un puesto de IT/automation interna**, no de producto: el angulo del corpus no es el que busca | Descartado por encaje |
+| Zaigo | Senior Forward Deployed Engineer, AI Transformation | Argentina (equipo en LATAM, base NY) | A confirmar | **Es agencia/consultoria**: "production engineering inside someone else's company" | Descartado por la regla |
+| Oowlish, Proxify, Fusionhit, Talent Connect, EPAM, Nortal, Fullstack, Marvik, AlixPartners | varios | Argentina | varios | **Agencies**: "collaborate with premier clients" / "serve clients" | Descartados |
+
+> **XBOW ya tiene el formulario probado**: el adaptador de Ashby, que antes solo servia
+> para Mural, se generalizo (los `name` son UUIDs por puesto, y las opciones de
+> autorizacion y patrocinio a veces son BOTONES y no inputs de radio). Verificado
+> end-to-end: `ok: true`, 3 campos + 2 opciones + CV.
+>
+> **XBOW pide tres preguntas abiertas** ("why are you interested", "describe a recent
+> project", "how did you hear about us") que necesitan tu voz, no se rellenan solas.
+
 ## Vacantes de la tanda 2026-10-22 - las TRES POSTULADAS y CONFIRMADAS
 
 > Busqueda activa (no a proposito de postulaciones). Barrido de a11yjobs, LinkedIn guest API,
