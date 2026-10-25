@@ -60,6 +60,32 @@ class FakeLocator {
   }
 }
 
+// Un locator SIN _valueTracker: los forms que no son React (Lever) no lo
+// tienen. El gate tiene que distinguir "no verificable" de "divergente".
+class FakeLocatorSinTracker {
+  constructor(dom) {
+    this._dom = dom;
+  }
+  async inputValue() {
+    return this._dom;
+  }
+  async evaluate(fn) {
+    return fn({}); // sin _valueTracker
+  }
+  async count() {
+    return 1;
+  }
+}
+
+class FakePageSinTracker {
+  constructor(map) {
+    this.map = map;
+  }
+  locator(sel) {
+    return new FakeLocatorSinTracker(this.map[sel] || '');
+  }
+}
+
 class FakePage {
   constructor(map) {
     this.map = map; // selector -> {dom,react}
@@ -96,6 +122,31 @@ setTimeout(() => {
     report('verifyFields detects divergencias', div.length === 1 && div[0].selector === '#phone');
   }).catch((e) => {
     console.error('verifyFields error', e);
+    process.exitCode = 1;
+  });
+
+  // ==== verifyFields: form NO-React (Lever) ==== //
+  // BUG CORREGIDO 2026-10-25: los inputs de Lever no tienen
+  // _valueTracker. El gate comparaba el DOM contra "" y reportaba
+  // divergencia en TODOS los campos, con el formulario impecable: un falso
+  // positivo que hacia parecer roto lo que funcionaba.
+  const fakePageSinTracker = new FakePageSinTracker({
+    '#name': 'Gonzalo Blasco',
+    '#salary': '3200',
+  });
+  verifyFields(fakePageSinTracker, ['#name', '#salary']).then((div) => {
+    report(
+      'verifyFields: sin tracker NO reporta divergencia',
+      div.length === 0,
+      JSON.stringify(div)
+    );
+    report(
+      'verifyFields: sin tracker queda como no verificable',
+      (div.noVerificables || []).length === 2,
+      JSON.stringify(div.noVerificables)
+    );
+  }).catch((e) => {
+    console.error('verifyFields (sin tracker) error', e);
     process.exitCode = 1;
   });
 

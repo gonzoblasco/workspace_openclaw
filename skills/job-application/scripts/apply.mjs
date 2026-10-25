@@ -92,9 +92,12 @@ async function main() {
   // con los campos sin registrar en React. Ahora cada adaptador declara
   // sus selectores (fieldSelectors) y se verifican contra el estado real.
   const selectors = fillResult.fieldSelectors || [];
-  const divergentes = selectors.length
-    ? await verifyFields(page, selectors)
-    : [];
+  const divergentes = selectors.length ? await verifyFields(page, selectors) : [];
+  // "No verificable" NO es lo mismo que "divergente": un form que no es
+  // React (Lever) no tiene _valueTracker, asi que el DOM es la unica
+  // evidencia. Se reporta aparte, para que el lector sepa que la
+  // verificacion fue parcial y por que.
+  const noVerificables = divergentes.noVerificables || [];
   if (!selectors.length) {
     console.log(
       "[WARN] el adaptador no declaro fieldSelectors: la verificacion DOM-vs-React no pudo correr."
@@ -108,8 +111,10 @@ async function main() {
     filled: fillResult.filled || [],
     missing,
     divergentes,
+    noVerificables,
     captcha,
     notes: fillResult.notes || [],
+    radios: fillResult.radios || null,
     verdict: null,
     evidence: "",
   };

@@ -128,6 +128,31 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-25] - Los tres ATS verificados end-to-end: Ashby, Lever y Eightfold probados de verdad
+
+### Fixed
+Probar los adaptadores de Lever y Ashby (los dos que faltaban) encontro cuatro bugs mas, y uno era el peor de todos: **el gate de "no enviar si hay divergencias" era un no-op en Ashby y un falso positivo en Lever.**
+
+1. **Ashby: el formulario no hidrata con `domcontentloaded`** (0 inputs; hidrata ~2s despues). Y el bug de gallina y huevo: la espera de 12s por el parseo del CV estaba DENTRO del `if` que encuentra el input de CV, pero ese input solo existe despues de hidratar. Sin CV no habia espera, y los textos se escribian contra un formulario vacio: **el reporte decia "5 campos faltantes" con la pagina llena**. Ahora hay un `waitForSelector` al principio, que no depende de nada opcional.
+2. **Ashby: los radios no se verificaban.** Se hacia click y se asumia que habia funcionado. Ahora se lee que opcion quedo marcada en cada grupo, por el texto de su etiqueta. El gatelv2immediate dio `ok: false` con los radios BIEN marcados, por un bug del propio gate: truncaba el `name` del grupo con `split("_")`, y el nombre de Ashby es `<uuid>_e7e51cb6-...`: al truncar, "veteran_status" se confundia con "eeoc_veteran_status". Se busca por fragmento sobre el name completo.
+3. **Lever: los inputs NO tienen `_valueTracker`** (no es un form React). El gate comparaba el valor del DOM contra `""` y reportaba divergencia en TODOS los campos, con el formulario impecable: **un falso positivo que hacia parecer roto lo que funcionaba**. Ahora distingue tres estados: divergente (hay tracker y difieren), no verificable (no hay tracker: el DOM es la unica evidencia) y ok. Los no verificables se reportan aparte, para que la verificacion parcial sea visible.
+4. **Lever: el pitch se perdia.** El campo "Do you want to include additional information?" (donde va el AI Engineering OS, el servidor MCP y los 11 PRs) se llenaba con `answers.coverLetterText`, que es la cover letter - un archivo. En Lever la cover letter no se sube: es texto. El campo quedaba VACIO y el reporte lo daba por bien. Ahora usa la clave semantica `additionalInfo`.
+
+### Added
+- **Verificacion de radios en los dos adaptadores que no la tenian** (Ashby y Lever): no alcanza con que el click no tirara error, hay que leer que opcion quedo marcada.
+- **Dos tests nuevos** para el falso positivo de los forms no-React (`verifyFields` con un input sin tracker: no reporta divergencia, y queda como "no verificable").
+- **Evidencia de las tres corridas** en `docs/entrevistas/_general/outreach-2026-10-22/evidencia/`: `ashby-form-filled.png`, `ryz-form-filled.png`, `meli-form-filled-submitted.png`.
+
+### Notes
+- **Los tres adaptadores quedan probados end-to-end contra los formularios reales:**
+  - **Eightfold** (Mercado Pago): 6 campos + 4 desplegables + CV, `ok: true`, 0 divergentes.
+  - **Ashby** (Mural): 5 campos + 5 radios verificados + CV + cover letter, `ok: true`, 0 divergentes.
+  - **Lever** (RYZ): 6 campos + radio de ingles verificado + CV + pitch, `ok: true`, `captcha: true` (el unico que queda pendiente de un humano, y es el hCaptcha de siempre).
+- **El captcha de Lever se reporta como `captcha: true` y NO se intenta resolver.** Es el comportamiento correcto segun ADR-104: un captcha detecta el contexto, no los intentos.
+- **Una leccion que se repite y que queda escrita: el `ok: true` de un gate no es prueba de nada si el gate no verifica lo que dice verificar.** El gate de radios de Ashby daba `ok` sin mirar los radios; el de Lever daba divergencia en un formulario impecable. Los dos se detectaron mirando la CAPTURA, no leyendo el codigo ni el exit code.
+
+---
+
 ## [2026-10-25] - El radar de vacantes deja de romperse en silencio
 
 ### Added

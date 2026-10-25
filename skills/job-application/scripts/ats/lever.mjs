@@ -69,10 +69,17 @@ export default {
       if (r) r.click();
     }, answers.englishLevel);
 
-    // Información adicional.
+    // Informacion adicional. Es un campo OPCIONAL de Lever pero es donde va
+    // el pitch (el AI Engineering OS, el servidor MCP propio, los 11 PRs):
+    // sin el, la postulacion es un CV sin argumento.
+    // BUG CORREGIDO 2026-10-25: se usaba `answers.coverLetterText` para
+    // esto, que es la cover letter (un archivo). En Lever la cover letter
+    // no se sube: es texto. Con la clave equivocada el campo quedaba
+    // VACIO y el reporte lo daba por bien.
     const add = page.locator('textarea[name*="[field2]"]').first();
-    if ((await add.count()) > 0 && answers.coverLetterText) {
-      await fillText(page, add, answers.coverLetterText);
+    const additional = answers.additionalInfo || answers.coverLetterText || "";
+    if ((await add.count()) > 0 && additional) {
+      await fillText(page, add, additional);
     }
 
     // BUG CORREGIDO 2026-10-23: filled/missing vacios (mismo bug que en
@@ -97,7 +104,32 @@ export default {
       if (v && v.trim()) filled.push(sel);
       else missing.push(sel);
     }
-    return { ok: missing.length === 0, filled, missing, fieldSelectors, evidence: "", notes: [] };
+    // Verificacion del radio de nivel de ingles (obligatorio en Lever).
+    // No alcanza con que el click no tirara error: se lee que opcion quedo
+    // marcada.
+    const english = await page.evaluate(() => {
+      const r = document.querySelector('input[type="radio"]:checked');
+      if (!r) return null;
+      const lab = r.closest("label") || document.querySelector(`label[for="${r.id}"]`);
+      return (lab ? lab.textContent : r.value).replace(/\s+/g, " ").trim().slice(0, 40);
+    });
+    if (!english) {
+      missing.push("nivel de ingles (radio sin marcar)");
+    } else if (answers.englishLevel && !english.startsWith(answers.englishLevel.slice(0, 12))) {
+      missing.push(
+        `nivel de ingles: quedo "${english}" y se pidio "${answers.englishLevel}"`
+      );
+    }
+
+    return {
+      ok: missing.length === 0,
+      filled,
+      missing,
+      fieldSelectors,
+      evidence: "",
+      notes: [],
+      radios: english ? { englishLevel: english } : null,
+    };
   },
   /**
    * Envía el formulario y lee el veredicto del servidor.

@@ -16,6 +16,25 @@ export default {
     }
   },
   async fill(page, { answers, files }) {
+    // 0) ESPERAR A QUE HIDRATE EL FORMULARIO.
+    //
+    // BUG CORREGIDO 2026-10-25 (descubierto probando este adaptador): con
+    // `domcontentloaded` el DOM de Ashby tiene 0 inputs: el formulario se
+    // hidrata ~2s despues. Y el bug de gallina y huevo era que la espera
+    // de 12s por el parseo del CV estaba DENTRO del `if` que encuentra el
+    // input de CV - pero ese input solo existe despues de hidratar. Sin
+    // CV no habia espera, y los textos se escribian contra un formulario
+    // vacio: el reporte decia "5 campos faltantes" con la pagina llena.
+    //
+    // La espera va ACAS, antes de todo, y no depende de nada opcional.
+    try {
+      await page.waitForSelector('input[name="_systemfield_name"]', { timeout: 20000 });
+    } catch (e) {
+      throw new Error(
+        "el formulario de Ashby no hidrato en 20s (no aparecio el campo de nombre)"
+      );
+    }
+
     // 1) Subir CV al panel de autofill (desencadena reCAPTCHA invisible).
     const cvInputHandle = await page.evaluateHandle(() => {
       const ins = [...document.querySelectorAll('input[type="file"]')];
@@ -34,6 +53,10 @@ export default {
       await cvEl.setInputFiles(files.resume);
       // esperar al parseo del CV (aprox 12 s).
       await page.waitForTimeout(12000);
+    } else {
+      // Sin panel de autofill: no hay parseo que esperar, pero el
+      // formulario ya hidrato (por el waitForSelector de arriba).
+      await page.waitForTimeout(1500);
     }
 
     // 2) Rellenar textos por name usando type().
@@ -125,7 +148,49 @@ export default {
       if (v && v.trim()) filled.push(sel);
       else missing.push(sel);
     }
-    return { ok: missing.length === 0, filled, missing, fieldSelectors, evidence: "", notes: [] };
+    // Verificacion de los radios: no alcanza con que el click "no tirara
+    // error". Se lee que opcion quedo marcada en cada grupo, por el texto
+    // de su etiqueta. Es la unica forma de saber que se marco la que
+    // correspondia y no otra del mismo grupo.
+    const radios = await page.evaluate(() => {
+      const out = {};
+      document.querySelectorAll('input[type="radio"]').forEach((r) => {
+        if (!r.checked) return;
+        const lab = r.closest("label") || document.querySelector(`label[for="${r.id}"]`);
+        const txt = (lab ? lab.textContent : r.value).replace(/\s+/g, " ").trim().slice(0, 50);
+        // El name COMPLETO del grupo: Ashby le antepone el id del
+        // formulario ("<uuid>_e7e51cb6-...") y truncarlo"_"-hacia que
+        // "veteran_status" se confundiera con "eeoc_veteran_status" y el
+        // gate creyera que faltaba un radio que estaba bien.
+        out[r.name || "(sin name)"] = txt;
+      });
+      return out;
+    });
+    // Se busca el grupo por el fragmento que aparece en el name completo.
+    const radioEsperados = [
+      ["_e7e51cb6-", "Yes"],
+      ["_b3a08088-", "No"],
+      ["eeoc_gender", "Decline to self-identify"],
+      ["eeoc_race", "Decline to self-identify"],
+      ["eeoc_veteran_status", "I decline to self-identify for protected veteran status"],
+    ];
+    const radiosOk = radioEsperados.every(([k, v]) => {
+      const marcado = Object.entries(radios).find(([g]) => g.includes(k));
+      return marcado && marcado[1].startsWith(v.slice(0, 18));
+    });
+    if (!radiosOk) {
+      missing.push("radios: alguna pregunta de opcion multiple quedo sin marcar como se pedia");
+    }
+
+    return {
+      ok: missing.length === 0,
+      filled,
+      missing,
+      fieldSelectors,
+      evidence: "",
+      radios,
+      notes: [],
+    };
   },
   async submit(page) {
     // BUG CORREGIDO 2026-10-23: el listener se registraba DESPUES del click

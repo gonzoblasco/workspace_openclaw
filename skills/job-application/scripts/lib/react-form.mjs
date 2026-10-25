@@ -180,17 +180,38 @@ export function reactValue(el) {
  */
 export async function verifyFields(page, selectors) {
   const divergentes = [];
+  const noVerificables = [];
   for (const sel of selectors) {
     const loc = page.locator(sel);
     const dom = await loc.inputValue().catch(() => "");
     const react = await loc.evaluate((el) => {
       const t = el._valueTracker;
-      return t && typeof t.getValue === "function" ? String(t.getValue()) : "";
+      return t && typeof t.getValue === "function" ? String(t.getValue()) : null;
     });
+    // BUG CORREGIDO 2026-10-25: los inputs de LEVER no tienen
+    // `_valueTracker` (no es un form React). El gate comparaba el valor del
+    // DOM contra "" y daba divergencia en TODOS los campos, con el formulario
+    // impecable: un falso positivo que hacia parecer roto lo que funcionaba.
+    //
+    // Lo que se puede afirmar con honestidad:
+    //   - hay tracker y difieren  -> DIVERGENTE (el server no lo va a ver)
+    //   - no hay tracker          -> NO VERIFICABLE (el DOM es la unica
+    //                                evidencia; no se puede afirmar nada)
+    //   - hay tracker y coinciden -> OK
+    if (react === null) {
+      noVerificables.push({ selector: sel, dom });
+      continue;
+    }
     if (dom !== react) {
       divergentes.push({ selector: sel, dom, react });
     }
   }
+  // `noVerificables` viaja en la propiedad del array, para que el
+  // orquestador distinga "no se pudo verificar" de "esta mal".
+  Object.defineProperty(divergentes, "noVerificables", {
+    value: noVerificables,
+    enumerable: false,
+  });
   return divergentes;
 }
 
