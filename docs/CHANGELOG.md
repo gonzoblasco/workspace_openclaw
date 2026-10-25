@@ -37,6 +37,13 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - Verificado: `npm test` **91/91** (11 suites), `e2e.notes` **40/40**, y los otros cuatro e2e siguen verdes (27/34/61/11). Contraste AA del color de notas en ambos temas (8.86:1 claro, 12.12:1 oscuro). Bundle: 23.8 kB -> 26.8 kB (8.76 kB gzip).
 - Spec nueva (`SPEC-007-notas.md`), ADR nuevo (`ADR-0007-notas-no-son-jugadas.md`) y reconciliacion de los artefactos que el cambio de alcance deja obsoletos: BRIEF, `docs/architecture.md` (tabla de trazabilidad), `docs/data-model.md` (`CellView.notes`), `docs/CONTEXT.md` (glosario: "modo notas" y "digitos legales") y el indice de ADRs.
 
+### Changed (2026-10-25) - rediseno visual de `kanam-sudoku-iphone`, decidido midiendo
+- **El problema real**: el tablero era una planilla con formato condicional. Cuatro colores sin relacion para los cuatro contextos de resaltado (fila roja, columna verde, bloque azul, mismo-numero amarillo), que en modo oscuro se volvian barro; cero acento; menu generico; notas a 8px ilegibles.
+- **Se debatieron tres propuestas con tres agentes** y **se midieron, no se discutieron**: se escribio `scripts/palette-check.mjs` (ratios WCAG desde la paleta) y `scripts/theme-lab.mjs` (renderiza cada propuesta como PNG a 390x844). **Dos de las tres propuestas fallaban AA en la linea de la grilla**: declaraban 8.53:1 y 2.2:1, medidas dieron **1.57:1** y **1.52:1** (una habia copiado el ratio del texto secundario). La tercera proponia notas de 8px, el mismo defecto que se queria corregir.
+- **La sintesis que se implemento**: **un solo matiz (teal) en cuatro pasos de intensidad** en vez de cuatro colores, cada contexto con un canal que no es color. Papel calido (`#faf7f2`) y tinta calida (`#14120f`): el blanco y el negro puros son un error en una app que se mira de noche. El acento marca la seleccion y la regla bajo el titulo, nada mas; el conflicto es el unico otro color saturado. Cifras tabulares en el tablero. Las teclas se hunden al pulsar (`scale(0.96)`). "Borrar" pasa a ser mas chico y atenuado.
+- **Bug de especificidad corregido**: el boton "Notas" activo quedaba transparente porque la regla base le ganaba a la regla de presionado. Verificado con `getComputedStyle` tras la transicion.
+- Verificado: 91/91 tests, typecheck limpio, build ok (CSS 6.13 kB, 1.91 kB gzip), e2e 27/27 + 34/34 + 61/61 + 11/11 + 40/40, **todos los pares AA en ambos temas**, incluidos los cuatro tintes de resaltado compuestos sobre el fondo.
+
 ---
 
 ## [2026-10-23] - Radar de oportunidades OSS: PRs y reviews por separado, con lo que NO es oportunidad
