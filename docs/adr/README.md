@@ -30,7 +30,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-093 | [El plan de sesión como objeto persistente (session-planning-hooks se cablea)](./ADR-093-plan-de-sesion-persistente.md) | El plan de sesión como objeto persistente (cableado a hooks) |
 | ADR-099 | [LangChain es la capa de ejecución de flujos, no el orquestador](./ADR-099-langchain-capa-de-ejecucion.md) | ⚠️ Arquitectura de agentes (con 073/074/083) - LangChain ejecuta flujos dentro de un proyecto; el gateway sigue orquestando |
 
-### Pipeline A/B (un objeto, seis caras: leer el grupo antes de tocar)
+### Pipeline A/B (un objeto, siete caras: leer el grupo antes de tocar)
 | ADR | Cara que decide |
 |---|---|
 | ADR-043 | [Complexity-Driven Pipeline (Orquestación por T-Score)](./ADR-043-complexity-driven-pipeline.md) | CUÁNDO y con qué profundidad corre el pipeline (T-score 1-20) |
@@ -40,6 +40,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-089 | [Pre-filtro barato en el pipeline A/B (gemma4:cloud) con guard de falso negativo](./ADR-089-prefiltro-pipeline-ab.md) | EL PRE-FILTRO: gemma4 triagea, pero no autoriza solo |
 | ADR-090 | [Política de niveles de pensamiento por agente y asignación de modelos por rol](./ADR-090-pensamiento-nivel-configuracion.md) | LOS MODELOS Y NIVEL DE THINKING por rol (política vigente, verificada contra runtime) |
 | ADR-102 | [minimax-m3.1-flash:cloud como motor del CORE (main)](./ADR-102-minimax-m31-flash-motor-core.md) | ⚠️ Modelos LLM (con 076/090) - el CORE pasa a minimax-m3.1-flash por cata de 8 roles x 5 clases |
+| ADR-105 | [El pipeline pasa de A/B a A/B/C: el tercer agente es la red de tests](./ADR-105-pipeline-abc-tercer-agente-red-de-tests.md) | EL TERCER ROL: C escribe la red de regresión (minimax); el rework vuelve a A, con la condición de que todo finding de B se convierta en un test de C |
 
 ### Modelos LLM (política de asignación)
 | ADR | Decide |

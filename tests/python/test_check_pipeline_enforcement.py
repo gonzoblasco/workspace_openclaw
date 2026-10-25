@@ -33,24 +33,30 @@ def clean_root(tmp_path, mod):
     (tmp_path / "docs" / "adr").mkdir(parents=True, exist_ok=True)
 
     (tmp_path / "scripts" / "model-router.sh").write_text(
-        'ROUTES=\'{"routes": {"pipeline_ab": "%s / %s", "pipeline_ab_prefilter": "%s"}}\'\n'
-        % (mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
+        'ROUTES=\'{"routes": {"pipeline_ab": "%s / %s", "pipeline_abc": "%s / %s / %s", "pipeline_ab_prefilter": "%s"}}\'\n'
+        % (mod.A_ROLE, mod.B_ROLE, mod.A_ROLE, mod.B_ROLE, mod.C_ROLE, mod.PREFILTER),
         encoding="utf-8",
     )
     (tmp_path / "scripts" / "managed-blocks.py").write_text(
         'DEFAULTS = {\n'
         '    "model_pipeline_a": "%s",\n'
         '    "model_pipeline_b": "%s",\n'
+        '    "model_pipeline_c": "%s",\n'
         '    "model_pipeline_prefilter": "%s",\n'
-        '}\n' % (mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
+        '}\n' % (mod.A_ROLE, mod.B_ROLE, mod.C_ROLE, mod.PREFILTER),
         encoding="utf-8",
     )
     (tmp_path / "skills" / "agent-orchestration-pipeline-model-arbitration" / "SKILL.md").write_text(
-        "A usa `%s` y B usa `%s`.\n" % (mod.A_ROLE, mod.B_ROLE),
+        "A usa `%s` y B usa `%s` y C usa `%s`.\n" % (mod.A_ROLE, mod.B_ROLE, mod.C_ROLE),
         encoding="utf-8",
     )
     (tmp_path / "docs" / "adr" / "ADR-077-pipeline-ab-asimetrico.md").write_text(
         "pipeline_ab -> %s / %s\n" % (mod.A_ROLE, mod.B_ROLE),
+        encoding="utf-8",
+    )
+    # ADR-105 for ABC
+    (tmp_path / "docs" / "adr" / "ADR-105-pipeline-abc.md").write_text(
+        "pipeline_abc -> %s / %s / %s\n" % (mod.A_ROLE, mod.B_ROLE, mod.C_ROLE),
         encoding="utf-8",
     )
     return tmp_path
@@ -211,3 +217,111 @@ def test_staged_report_marks_staged_and_untracked(tmp_path, monkeypatch):
     assert "memoria.md" in staged
     assert "nuevo.md" not in staged
     assert "Untracked" in report
+
+# New ABC pact tests ---------------------------------------------------------
+
+def test_missing_router_abc_route_is_reported(tmp_path):
+    """Router lacks pipeline_abc route."""
+    mod = load()
+    clean_root(tmp_path, mod)
+    # Remove pipeline_abc from router
+    (tmp_path / "scripts" / "model-router.sh").write_text(
+        'ROUTES=\'{"routes": {"pipeline_ab": "%s / %s", "pipeline_ab_prefilter": "%s"}}\'\n'
+        % (mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
+        encoding="utf-8",
+    )
+    violations = mod.find_violations(tmp_path)
+    assert any("pipeline_abc" in v for v in violations), violations
+
+def test_router_abc_incomplete_models_is_reported(tmp_path):
+    """Router declares pipeline_abc with only two models."""
+    mod = load()
+    clean_root(tmp_path, mod)
+    (tmp_path / "scripts" / "model-router.sh").write_text(
+        'ROUTES=\'{"routes": {"pipeline_abc": "%s / %s", "pipeline_ab": "%s / %s", "pipeline_ab_prefilter": "%s"}}\'\n'
+        % (mod.A_ROLE, mod.B_ROLE, mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
+        encoding="utf-8",
+    )
+    violations = mod.find_violations(tmp_path)
+    assert any("pipeline_abc" in v and "solo dos modelos" in v for v in violations), violations
+
+def test_missing_model_pipeline_c_in_blocks(tmp_path):
+    mod = load()
+    clean_root(tmp_path, mod)
+    # Remove model_pipeline_c from managed-blocks defaults
+    (tmp_path / "scripts" / "managed-blocks.py").write_text(
+        'DEFAULTS = {\n'
+        '    "model_pipeline_a": "%s",\n'
+        '    "model_pipeline_b": "%s",\n'
+        '    "model_pipeline_prefilter": "%s",\n'
+        '}\n' % (mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
+        encoding="utf-8",
+    )
+    violations = mod.find_violations(tmp_path)
+    assert any("model_pipeline_c" in v for v in violations), violations
+
+def test_skill_not_naming_c_is_reported(tmp_path):
+    mod = load()
+    clean_root(tmp_path, mod)
+    (tmp_path / "skills" / "agent-orchestration-pipeline-model-arbitration" / "SKILL.md").write_text(
+        "A usa `%s` y B usa `%s`.\n" % (mod.A_ROLE, mod.B_ROLE),
+        encoding="utf-8",
+    )
+    violations = mod.find_violations(tmp_path)
+    assert any("skill de arbitraje" in v and "C" in v for v in violations), violations
+
+def test_adr_105_missing_models_is_reported(tmp_path):
+    mod = load()
+    clean_root(tmp_path, mod)
+    # Remove ADR-105 file
+    (tmp_path / "docs" / "adr" / "ADR-105-pipeline-abc.md").unlink()
+    violations = mod.find_violations(tmp_path)
+    assert any("ADR-105" in v for v in violations), violations
+
+def test_router_c_vs_blocks_c_mismatch_is_reported(tmp_path):
+    mod = load()
+    clean_root(tmp_path, mod)
+    # Change C in router to different value
+    (tmp_path / "scripts" / "model-router.sh").write_text(
+        'ROUTES=\'{"routes": {"pipeline_abc": "%s / %s / glm-5.3-flash:cloud", "pipeline_ab": "%s / %s", "pipeline_ab_prefilter": "%s"}}\'\n'
+        % (mod.A_ROLE, mod.B_ROLE, mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
+        encoding="utf-8",
+    )
+    violations = mod.find_violations(tmp_path)
+    assert any("modelo C" in v and "distinto" in v for v in violations), violations
+
+def test_asymmetry_a_equals_c_is_reported(tmp_path):
+    mod = load()
+    clean_root(tmp_path, mod)
+    # Set C equal to A in router
+    (tmp_path / "scripts" / "model-router.sh").write_text(
+        'ROUTES=\'{"routes": {"pipeline_abc": "%s / %s / %s", "pipeline_ab": "%s / %s", "pipeline_ab_prefilter": "%s"}}\'\n'
+        % (mod.A_ROLE, mod.B_ROLE, mod.A_ROLE, mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
+        encoding="utf-8",
+    )
+    violations = mod.find_violations(tmp_path)
+    assert any("C" in v and "igual" in v for v in violations), violations
+
+def test_asymmetry_b_equals_c_is_reported(tmp_path):
+    mod = load()
+    clean_root(tmp_path, mod)
+    # Set C equal to B in router
+    (tmp_path / "scripts" / "model-router.sh").write_text(
+        'ROUTES=\'{"routes": {"pipeline_abc": "%s / %s / %s", "pipeline_ab": "%s / %s", "pipeline_ab_prefilter": "%s"}}\'\n'
+        % (mod.A_ROLE, mod.B_ROLE, mod.B_ROLE, mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
+        encoding="utf-8",
+    )
+    violations = mod.find_violations(tmp_path)
+    assert any("C" in v and "igual" in v for v in violations), violations
+
+def test_router_models_not_canonical_is_reported(tmp_path):
+    mod = load()
+    clean_root(tmp_path, mod)
+    # Change router to non-canonical models
+    (tmp_path / "scripts" / "model-router.sh").write_text(
+        'ROUTES=\'{"routes": {"pipeline_abc": "glm-5.3-flash:cloud / deepseek-v4.1-flash:cloud / minimax-m3.1-flash:cloud", "pipeline_ab": "%s / %s", "pipeline_ab_prefilter": "%s"}}\'\n'
+        % (mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
+        encoding="utf-8",
+    )
+    violations = mod.find_violations(tmp_path)
+    assert any("pipeline_abc" in v and "canon" in v for v in violations), violations

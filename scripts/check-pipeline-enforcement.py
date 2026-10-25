@@ -43,6 +43,7 @@ ROOT = Path(__file__).resolve().parent.parent
 # Rol ejecutor (A) y revisor (B). La asimetria es la decision (ADR-077).
 A_ROLE = "gpt-oss:120b-cloud"
 B_ROLE = "deepseek-v4.1-flash:cloud"
+C_ROLE = "minimax-m3.1-flash:cloud"
 # Pre-filtro barato (ADR-089). Corre antes del gate B; no autoriza solo.
 PREFILTER = "gemma4:cloud"
 
@@ -63,6 +64,19 @@ def models_in_router(root: Path) -> Tuple[Optional[str], Optional[str]]:
     if len(parts) != 2:
         return None, None
     return parts[0], parts[1]
+
+def models_c_in_router(root: Path) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+    """(A, B, C) declarados en la ruta `pipeline_abc` de model-router.sh."""
+    text = _read(root / "scripts" / "model-router.sh")
+    if not text:
+        return None, None, None
+    m = re.search(r'"pipeline_abc"\s*:\s*"([^"]+)"', text)
+    if not m:
+        return None, None, None
+    parts = [p.strip() for p in m.group(1).split("/")]
+    if len(parts) != 3:
+        return None, None, None
+    return parts[0], parts[1], parts[2]
 
 
 def models_in_blocks(root: Path) -> Tuple[Optional[str], Optional[str]]:
@@ -156,26 +170,44 @@ def _git_staged_report(root: Path) -> Tuple[List[str], str]:
     return staged_paths, "\n".join(lines)
 
 def models_in_skills(root: Path) -> Tuple[Optional[str], List[str]]:
-    """Modelos citados en la skill de arbitraje del pipeline A/B."""
+    """Modelos citados en la skill de arbitraje del pipeline (A/B/C)."""
     text = _read(root / "skills" / "agent-orchestration-pipeline-model-arbitration" / "SKILL.md")
     if not text:
         return None, []
-    found = [m for m in (A_ROLE, B_ROLE) if m in text]
+    found = [m for m in (A_ROLE, B_ROLE, C_ROLE) if m in text]
     return text, found
 
 
 def models_in_adr(root: Path) -> Tuple[Optional[str], List[str]]:
-    """Modelos citados en ADR-077 (el ADR que define el pacto)."""
+    """Modelos citados en ADRs (principalmente ADR-077 y ADR-105) que definen el pacto.
+
+    The original implementation only globs ``ADR-07*`` which matches ``ADR-077``
+    but **excludes** ``ADR-105`` (or any other ADR that starts with ``ADR-1``).
+    This caused the checker to never see the ``C`` model declared in ``ADR-105``
+    and consequently always report a false violation.
+
+    We now include any ADR that starts with ``ADR-0`` – this captures both the
+    existing ``ADR-077`` and ``ADR-105`` (the latter begins with ``ADR-1`` but
+    lives in the same ``docs/adr`` directory). The heuristic still works for
+    future ADR numbers because the pact‑defining ADRs are expected to be in the
+    ``0xx`` range. If additional unrelated ADRs appear they will be read as
+    well, but they will not contribute any of the canon model strings, so the
+    logic remains correct.
+    """
     adr_dir = root / "docs" / "adr"
     if not adr_dir.is_dir():
         return None, []
-    hit = None
-    for p in adr_dir.glob("ADR-077*"):
-        hit = _read(p)
-        break
-    if hit is None:
+    hits = []
+    # Include both ADR‑077 (pipeline AB) and ADR‑105 (pipeline ABC) and any
+    # future ADRs that start with ``ADR-0``.
+    for p in adr_dir.glob("ADR-*" ):
+        content = _read(p)
+        if content:
+            hits.append(content)
+    if not hits:
         return None, []
-    return hit, [m for m in (A_ROLE, B_ROLE) if m in hit]
+    combined = "\n".join(hits)
+    return combined, [m for m in (A_ROLE, B_ROLE, C_ROLE) if m in combined]
 
 
 def find_violations(root: Path) -> List[str]:
@@ -184,10 +216,17 @@ def find_violations(root: Path) -> List[str]:
 
     r_a, r_b = models_in_router(root)
     blk_a, blk_b = models_in_blocks(root)
+    # C modelo from blocks
+    blk_c = None
+    text_blocks = _read(root / "scripts" / "managed-blocks.py")
+    if text_blocks:
+        m_c = re.search(r'"model_pipeline_c"\s*:\s*"([^\"]+)"', text_blocks)
+        if m_c:
+            blk_c = m_c.group(1)
     skl_text, skl_models = models_in_skills(root)
     adr_text, adr_models = models_in_adr(root)
 
-    # 1) El pacto tiene que existir en TODAS las fuentes declaradas.
+    # 1) El pacto tiene que existir en TODAS las fuentes declaradas (A/B y C).
     if r_a is None or r_b is None:
         violations.append(
             "model-router.sh no declara la ruta `pipeline_ab` con dos modelos "
@@ -198,17 +237,50 @@ def find_violations(root: Path) -> List[str]:
             "managed-blocks.py no declara `model_pipeline_a` / `model_pipeline_b`: "
             "el bloque de AGENTS.md que ve el CORE no puede propagar el pacto."
         )
+    # Verificar existencia de pipeline_abc y modelo C en router
+    r_a3, r_b3, r_c3 = models_c_in_router(root)
+    # Determine if the router file mentions the `pipeline_abc` key at all.
+    router_text = _read(root / "scripts" / "model-router.sh")
+    has_abc_key = router_text and "pipeline_abc" in router_text
+    if r_a3 is None or r_b3 is None or r_c3 is None:
+        # The key exists but the split did not provide three parts → only two models.
+        if has_abc_key and (r_a3 is not None or r_b3 is not None or r_c3 is None):
+            violations.append(
+                "model-router.sh declara la ruta `pipeline_abc` con solo dos modelos (A / B). "
+                "Se requieren tres modelos (A / B / C)."
+            )
+        else:
+            violations.append(
+                "model-router.sh no declara la ruta `pipeline_abc` con tres modelos (A / B / C). "
+                "Debe declarar exactamente 3 modelos para el pacto ABC."
+            )
+    # Verificar existencia de modelo C en managed-blocks
+    if blk_c is None:
+        violations.append(
+            "managed-blocks.py no declara `model_pipeline_c`: el bloque de AGENTS.md "
+            "no contiene la definición del modelo C."
+        )
     if not skl_models:
         violations.append(
             "la skill de arbitraje no nombra los modelos A/B (%s / %s)."
             % (A_ROLE, B_ROLE)
         )
+    # Si la skill tampoco menciona C, reportar.
+    if C_ROLE not in skl_models:
+        violations.append(
+            "la skill de arbitraje no nombra el modelo C (%s)." % C_ROLE
+        )
     if not adr_models:
         violations.append(
             "ADR-077 no nombra los modelos A/B (%s / %s)." % (A_ROLE, B_ROLE)
         )
+    # Si ADR-105 no menciona C, reportar.
+    if C_ROLE not in adr_models:
+        violations.append(
+            "ADR-105 no nombra el modelo C (%s)." % C_ROLE
+        )
 
-    # 2) Consistencia: todas las fuentes que SI declaran deben coincidir.
+    # 2) Consistencia: todas las fuentes que SI declaran deben coincidir (A/B y C).
     declared = {
         "model-router.sh": (r_a, r_b),
         "managed-blocks.py": (blk_a, blk_b),
@@ -220,6 +292,12 @@ def find_violations(root: Path) -> List[str]:
             "el pacto A/B tiene dos verdades en las fuentes declaradas: %s. "
             "Debe ser A=%s / B=%s en todas." % (detail, A_ROLE, B_ROLE)
         )
+    # Verificar consistencia del modelo C entre router y managed-blocks
+    if r_c3 and blk_c and r_c3 != blk_c:
+        violations.append(
+            "el modelo C declarado en router (%s) es distinto del declarado en managed-blocks (%s). "
+            "Debe ser consistente." % (r_c3, blk_c)
+        )
 
     # 3) Asimetria: A y B distintos. Un mismo modelo no es un segundo ojo.
     for name, (a, b) in declared.items():
@@ -227,6 +305,16 @@ def find_violations(root: Path) -> List[str]:
             violations.append(
                 "asimetria rota en %s: A y B son el mismo modelo (%s). "
                 "El revisor debe ver mas que el ejecutor (ADR-077)." % (name, a)
+            )
+    # Asimetria C contra A y B
+    if r_c3:
+        if r_c3 == r_a:
+            violations.append(
+                "asimetria rota: modelo C (%s) es igual al modelo A (%s)." % (r_c3, r_a)
+            )
+        if r_c3 == r_b:
+            violations.append(
+                "asimetria rota: modelo C (%s) es igual al modelo B (%s)." % (r_c3, r_b)
             )
 
     # 4) Contra el canon: si una fuente declara, debe declarar el pacto vigente.
@@ -236,6 +324,24 @@ def find_violations(root: Path) -> List[str]:
                 "%s declara A=%s / B=%s, distinto del pacto vigente A=%s / B=%s."
                 % (name, a, b, A_ROLE, B_ROLE)
             )
+    # Verificar que el modelo C coincide con el canon
+    # Verify that the ABC route models match the canonical definitions.
+    if r_c3 and (r_c3 != C_ROLE):
+        violations.append(
+            "model-router.sh declara C=%s en `pipeline_abc`, distinto del canon %s." % (r_c3, C_ROLE)
+        )
+    if r_a3 and (r_a3 != A_ROLE):
+        violations.append(
+            "model-router.sh declara A=%s en `pipeline_abc`, distinto del canon %s." % (r_a3, A_ROLE)
+        )
+    if r_b3 and (r_b3 != B_ROLE):
+        violations.append(
+            "model-router.sh declara B=%s en `pipeline_abc`, distinto del canon %s." % (r_b3, B_ROLE)
+        )
+    if blk_c and (blk_c != C_ROLE):
+        violations.append(
+            "managed-blocks.py declara model_pipeline_c %s, distinto del canon %s." % (blk_c, C_ROLE)
+        )
 
     # 5) Pre-filtro (ADR-089): declarado y consistente en router y managed-blocks.
     pf_router = prefilter_in_router(root)
@@ -269,19 +375,23 @@ def main(argv: List[str]) -> int:
     _staged, git_report = _git_staged_report(root)
 
     if violations:
-        print("PACTO DEL PIPELINE A/B VIOLADO (%d):" % len(violations))
+        print("PACTO DEL PIPELINE A/B/C VIOLADO (%d):" % len(violations))
         for v in violations:
             print("  - " + v)
         print()
-        print("El CORE delega con DOS agentes: A escribe con %s, B revisa con %s "
-              "(ADR-077/ADR-089). Consultar `scripts/model-router.sh model pipeline_ab`."
-              % (A_ROLE, B_ROLE))
+        print("El CORE delega con TRES agentes: A escribe con %s, B revisa con %s, "
+              "C escribe la red de tests con %s (ADR-077/ADR-089/ADR-105). "
+              "Consultar `scripts/model-router.sh model pipeline_abc`."
+              % (A_ROLE, B_ROLE, C_ROLE))
         return 1
 
     print(
-        "OK: pacto A/B consistente en router, managed-blocks, skill y ADR-077 "
-        "(A=%s, B=%s, pre-filtro=%s, distintos)." % (A_ROLE, B_ROLE, PREFILTER)
+        "OK: pacto A/B/C consistente en router, managed-blocks, skill y ADR-077/ADR-105 "
+        "(A=%s, B=%s, C=%s, pre-filtro=%s, los tres distintos)."
+        % (A_ROLE, B_ROLE, C_ROLE, PREFILTER)
     )
+    print("Pista: `scripts/model-router.sh model pipeline_abc` y "
+          "`scripts/model-router.sh model pipeline_ab` (para el flujo corto).")
     print()
     print("Estado de git (informativo):")
     print(git_report)

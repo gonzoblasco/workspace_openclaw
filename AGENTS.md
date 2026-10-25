@@ -137,6 +137,9 @@ El entorno (máquinas, modelos, scripts, memoria, red) vive en **`docs/SETUP.md`
 <!-- BEGIN MANAGED:pipeline-ab -->
 - **Pipeline A/B (ADR-077/ADR-088/ADR-089):** al delegar, el CORE spawnea DOS agentes distintos, nunca uno: **A escribe** con `gpt-oss:120b-cloud` y **B revisa/corrige** con `deepseek-v4.1-flash:cloud`. **Pre-filtro** `gemma4:cloud` corre primero (triage ~1s) pero **NO autoriza solo**: lo que toca logica/semantica pasa SIEMPRE por B. Los prompts los redacta el CORE (no el rol). El CORE verifica el repo, pero su verificacion **NO reemplaza** al revisor B. Fuente de verdad: `./scripts/model-router.sh model pipeline_ab`; gate: `scripts/check-pipeline-enforcement.py`.
 <!-- END MANAGED:pipeline-ab -->
+<!-- BEGIN MANAGED:pipeline-abc -->
+- **Pipeline A/B/C (ADR-077/ADR-088/ADR-089):** al delegar, el CORE spawnea TRES agentes: **A escribe** con `gpt-oss:120b-cloud`, **B revisa/corrige** con `deepseek-v4.1-flash:cloud`, **C escribe la red de tests de regresión** con `minimax-m3.1-flash:cloud`. **Pre-filtro** `gemma4:cloud` corre primero (triage ~1s) pero **NO autoriza solo**; el gate es `scripts/check-pipeline-enforcement.py`.
+<!-- END MANAGED:pipeline-abc -->
 - **Memoria:** `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables.
 - **Scripts clave:** `scripts/complexity-scorer.sh` (T-score antes de spawnear agentes), `scripts/pipeline-track.sh` (estado durable del pipeline).
 - **Máquinas:** solo la **Mac Mini** (corre el gateway; el workspace vive acá, ADR-073). `git pull --rebase` antes de cada push.

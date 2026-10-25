@@ -21,6 +21,9 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 <!-- BEGIN MANAGED:model-pipeline-ab -->
 - **Pipeline A/B:** A escribe con `gpt-oss:120b-cloud`; B revisa/corrige con `deepseek-v4.1-flash:cloud` (ADR-077/ADR-088). Ruta del router: `scripts/model-router.sh model pipeline_ab`.
 <!-- END MANAGED:model-pipeline-ab -->
+<!-- BEGIN MANAGED:model-pipeline-abc -->
+- **Pipeline A/B/C:** A escribe con `gpt-oss:120b-cloud`; B revisa/corrige con `deepseek-v4.1-flash:cloud`; C escribe la red de tests de regresión con `minimax-m3.1-flash:cloud`. Ruta del router: `scripts/model-router.sh model pipeline_abc`.
+<!-- END MANAGED:model-pipeline-abc -->
 
 > Los valores de arriba los mantiene `scripts/managed-blocks.py` desde la tabla `settings` de `memory.db`. Para cambiarlos: `managed-blocks.py set <key> <value>` y despues `apply`. No editar a mano.
 

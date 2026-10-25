@@ -56,6 +56,27 @@ Si un agente con `glm-5.3-flash:cloud` corre sin escribir nada (working tree lim
 
 ## Asignacion por rol en el pipeline
 
+### El pacto A/B/C (ADR-105)
+
+El pipeline tiene tres roles con modelos **distintos entre si** (verificado por `scripts/check-pipeline-enforcement.py`):
+
+| Rol | Modelo | Que hace |
+|---|---|---|
+| **A** (escribe) | `gpt-oss:120b-cloud` | Implementa la unidad desde el spec |
+| **B** (revisa y corrige) | `deepseek-v4.1-flash:cloud` | Revision adversarial: encuentra defects reales, escribe la evidencia y corrige. No relaja asserts |
+| **C** (red de tests) | `minimax-m3.1-flash:cloud` | Escribe los tests de regresion que faltan y los valida por mutacion |
+| Pre-filtro | `gemma4:cloud` | Triage antes del gate B. **NO autoriza solo** |
+
+Flujo: pre-filtro -> A -> B -> (A corrige con el reporte de B) -> C.
+
+**Regla del rework:** cuando B reporta un defecto, **A corrige el codigo y C testea el defecto**. Todo finding de B tiene que terminar como un test de C: si nadie lo testea, el bug vuelve. Se midio que sin esa regla el rework de A cubrio 7 de 9 findings y uno se perdio dos veces.
+
+**C no es un revisor:** su alcance es la red de regresion, no el juicio sobre el diseno. B no se reemplaza.
+
+La ruta `pipeline_ab` se conserva para cuando la red de regresion no aporta (cambios mecanicos, docs, scripts de un solo uso). Fuente de verdad: `scripts/model-router.sh model pipeline_abc`.
+
+### Asignacion por paso (arbitraje operativo)
+
 | Paso | Modelo |
 |---|---|
 | Agente A escribe feature simple / refactor mecanico | `deepseek-v4.1-flash:cloud` |
@@ -63,6 +84,8 @@ Si un agente con `glm-5.3-flash:cloud` corre sin escribir nada (working tree lim
 | Agente A genera interpretacion de imagen / UI / screenshot | `glm-5.3-flash:cloud` |
 | Agente B revisa cambios triviales | `deepseek-v4.1-flash:cloud` |
 | Agente B revisa cambios complejos / debug / arquitectura | Flash → Flash mejorado → `glm-5.3-flash:cloud` |
+| Agente C escribe la red de tests de regresion | `minimax-m3.1-flash:cloud` |
+| Revision de artefacto grande / contexto de 1M | `beam:cloud` (ADR-105): 3.1x menos tokens de razonamiento y clava el needle a 233k donde `minimax` falla |
 | Orquestador verifica contra API/spec / fuente real | `deepseek-v4.1-flash:cloud` |
 | Nivel superior (si GLM no alcanza) | `kimi-k2.7-code:cloud` |
 

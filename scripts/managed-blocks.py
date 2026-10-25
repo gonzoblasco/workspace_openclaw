@@ -57,6 +57,7 @@ DEFAULTS = {
     # lo verifica contra el codigo real.
     "model_pipeline_a": "gpt-oss:120b-cloud",
     "model_pipeline_b": "deepseek-v4.1-flash:cloud",
+    "model_pipeline_c": "minimax-m3.1-flash:cloud",
     # Pre-filtro barato del pipeline A/B (ADR-089): triage rapido antes del gate
     # deepseek. NO autoriza solo (tiene un falso negativo medido en defectos
     # semanticos); lo que toca logica pasa siempre por deepseek.
@@ -106,6 +107,18 @@ REGISTRY = [
             "Los prompts los redacta el CORE (no el rol). El CORE verifica el repo, pero su verificacion "
             "**NO reemplaza** al revisor B. Fuente de verdad: `./scripts/model-router.sh model pipeline_ab`; "
             "gate: `scripts/check-pipeline-enforcement.py`."
+        ),
+    },
+    {
+        # Regla del pipeline A/B/C (ADR-077/ADR-088/ADR-089). Añadido para el nuevo rol C.
+        "file": "AGENTS.md",
+        "key": "pipeline-abc",
+        "template": (
+            "- **Pipeline A/B/C (ADR-077/ADR-088/ADR-089):** al delegar, el CORE spawnea TRES agentes: "
+            "**A escribe** con `{model_pipeline_a}`, **B revisa/corrige** con `{model_pipeline_b}`, "
+            "**C escribe la red de tests de regresión** con `{model_pipeline_c}`. "
+            "**Pre-filtro** `{model_pipeline_prefilter}` corre primero (triage ~1s) pero **NO autoriza solo**; "
+            "el gate es `scripts/check-pipeline-enforcement.py`."
         ),
     },
     {
