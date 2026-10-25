@@ -9,8 +9,9 @@
 import lever from "../ats/lever.mjs";
 import ashby from "../ats/ashby.mjs";
 import eightfold from "../ats/eightfold.mjs";
+import greenhouse from "../ats/greenhouse.mjs";
 
-export const ADAPTERS = { lever, ashby, eightfold };
+export const ADAPTERS = { lever, ashby, eightfold, greenhouse };
 
 /**
  * Detecta automáticamente cuál adaptador corresponde a una URL dada.
@@ -22,6 +23,7 @@ export function detectAdapter(url) {
   if (lever.matches(url)) return "lever";
   if (ashby.matches(url)) return "ashby";
   if (eightfold.matches(url)) return "eightfold";
+  if (greenhouse.matches(url)) return "greenhouse";
   return null;
 }
 

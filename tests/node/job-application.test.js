@@ -26,6 +26,7 @@ async function importMjs(rel) {
 
 let reactValue, verifyFields, detectAdapter;
 let matchesCountry, isRemoteAnywhere, parseLinkedinCards, filterJobs, listOf;
+let greenhouse, semanticAnswer;
 
 (async () => {
   const { reactValue: rv, verifyFields: vf } = await importMjs('skills/job-application/scripts/lib/react-form.mjs');
@@ -33,6 +34,9 @@ let matchesCountry, isRemoteAnywhere, parseLinkedinCards, filterJobs, listOf;
   verifyFields = vf;
   const { detectAdapter: da } = await importMjs('skills/job-application/scripts/lib/ats.mjs');
   detectAdapter = da;
+  const gh = await importMjs('skills/job-application/scripts/ats/greenhouse.mjs');
+  greenhouse = gh.default;
+  semanticAnswer = gh.semanticAnswer;
   const disc = await importMjs('skills/job-application/scripts/lib/discovery.mjs');
   matchesCountry = disc.matchesCountry;
   isRemoteAnywhere = disc.isRemoteAnywhere;
@@ -159,6 +163,62 @@ setTimeout(() => {
     console.error('verifyFields (sin tracker) error', e);
     process.exitCode = 1;
   });
+
+  // ==== GREENHOUSE (cuarto ATS) ==== //
+  // MEDIDO 2026-10-25: los `name` de Greenhouse son semanticos y estables
+  // (first_name, email, candidate-location), y las preguntas especificas
+  // del puesto se resuelven por la etiqueta visible (su `name` es un id
+  // numerico que cambia en cada posting).
+  report(
+    'greenhouse: detecta job-boards.greenhouse.io',
+    greenhouse.matches('https://job-boards.greenhouse.io/backblaze/jobs/5287532008') === true
+  );
+  report(
+    'greenhouse: detecta boards.greenhouse.io',
+    greenhouse.matches('https://boards.greenhouse.io/empresa/jobs/123') === true
+  );
+  report(
+    'greenhouse: NO matchea lever',
+    greenhouse.matches('https://jobs.lever.co/X/apply') === false
+  );
+  report(
+    'detectAdapter greenhouse',
+    detectAdapter('https://job-boards.greenhouse.io/backblaze/jobs/5287532008') === 'greenhouse'
+  );
+
+  // El mapeo de respuestas por INTENCION: el texto de la pregunta cambia
+  // entre postings, pero la intencion es la misma. Es lo que hace que el
+  // archivo de respuestas sobreviva a un cambio de redaccion del portal.
+  const ans = {
+    city: 'Buenos Aires',
+    salary: '3400',
+    linkedin: 'linkedin.com/in/gonzalo-blasco',
+    website: 'https://gonzoblasco.dev',
+  };
+  report(
+    'semanticAnswer: ciudad',
+    semanticAnswer('What city do you reside in?', ans) === 'Buenos Aires'
+  );
+  report(
+    'semanticAnswer:変 redaccion de la ciudad',
+    semanticAnswer('Where are you based?', ans) === 'Buenos Aires'
+  );
+  report(
+    'semanticAnswer: salario',
+    semanticAnswer('What is your desired salary? Please include currency', ans) === '3400'
+  );
+  report(
+    'semanticAnswer: linkedin',
+    semanticAnswer('LinkedIn Profile', ans) === 'linkedin.com/in/gonzalo-blasco'
+  );
+  report(
+    'semanticAnswer: website',
+    semanticAnswer('Website', ans) === 'https://gonzoblasco.dev'
+  );
+  report(
+    'semanticAnswer: una pregunta sin intencion no inventa',
+    semanticAnswer('Do you have a pet?', ans) === null
+  );
 
   // ==== detectAdapter ==== //
   const leverUrl = 'https://jobs.lever.co/RyzLabs/34d126be-b8fa-4291-8bc4-924031455850/apply';

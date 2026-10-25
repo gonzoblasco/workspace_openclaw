@@ -98,12 +98,22 @@ export async function pickOption(page, locator, matcher, scopeSelector) {
         const cb = document.querySelector(scopeSel);
         const controls = cb && cb.getAttribute("aria-controls");
         if (controls) {
-          // los ids de React vienen como ":r5:" -> el id real es "r5"
+          // los ids de React vienen como ":r5:" -> el id real es "r5".
+          // Greenhouse usa otro formato: "react-select-question_<id>-listbox".
           const clean = controls.replace(/^:|:$/g, "");
           scope = document.getElementById(clean) || document.querySelector(`[id="${clean}"]`);
         }
+        // BUG CORREGIDO 2026-10-25: si el scopeSelector apuntaba al
+        // COMBOBOX (y no al listbox), el scope encontrado era el input, que
+        // no contiene las opciones (el listbox esta en un portal), y la
+        // busqueda no encontraba nunca la opcion. Ahora, si el scope no
+        // tiene opciones, se busca el listbox por el `aria-controls` del
+        // combobox, y si tampoco, el ultimo listbox visible.
+        if (scope) {
+          const tieneOpciones = scope.querySelector('[role="option"], li, [class*="option"]');
+          if (!tieneOpciones) scope = null;
+        }
         if (!scope) {
-          // Ultimo listbox visible: el que se acaba de abrir.
           const lbs = [...document.querySelectorAll('[role="listbox"]')].filter((o) => {
             const r = o.getBoundingClientRect();
             return r.width > 0 && r.height > 0;
@@ -178,6 +188,34 @@ export function reactValue(el) {
  * @param {Array<string>} selectors   Lista de selectores CSS a inspeccionar.
  * @returns {Promise<Array<object>>}   Arreglo con los campos divergentes.
  */
+/**
+ * Elige una opcion de un react-select por TECLADO: type -> ArrowDown ->
+ * Enter.
+ *
+ * POR QUE (2026-10-25, medido en el react-select de la pregunta de pais de
+ * Backblaze): el click sintetico en la opcion NO la selecciona. El listbox
+ * se cierra (aria-expanded pasa a false) pero el input queda VACIO: es
+ * react-select, y su handler de seleccion esta atado al mousedown, no al
+ * click. El click real de Playwright tampoco alcanza.
+ *
+ * La via de teclado (lo que hace un humano) si funciona: escribir para
+ * filtrar, ArrowDown para llegar a la opcion, Enter para elegir. Es el
+ * mismo camino que ya funciona en el autocomplete de ubicacion de Lever.
+ */
+export async function selectByKeyboard(page, locator, value) {
+  await locator.click().catch(() => {});
+  await page.waitForTimeout(500);
+  await locator.press("Backspace").catch(() => {});
+  await locator.type(value, { delay: 60 }).catch(() => {});
+  await page.waitForTimeout(1800);
+  await page.keyboard.press("ArrowDown").catch(() => {});
+  await page.waitForTimeout(400);
+  await page.keyboard.press("Enter").catch(() => {});
+  await page.waitForTimeout(700);
+  const got = await locator.inputValue().catch(() => "");
+  return got;
+}
+
 export async function verifyFields(page, selectors) {
   const divergentes = [];
   const noVerificables = [];
