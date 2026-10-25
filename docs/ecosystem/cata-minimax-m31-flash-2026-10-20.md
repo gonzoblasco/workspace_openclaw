@@ -149,9 +149,14 @@ input, $0.015 vs $0.30/M. No es minimax ni es de esta cata.)
 ## Pendientes con fecha
 
 - **Cata de validacion en 2 semanas de uso real** del CORE con minimax (corte 2026-11-03).
-- **Reevaluar el balance de consumo** si termina la gratuidad del modelo (2026-10-23):
-  el ratio medido de output tokens es 3,89x contra deepseek, y 2,95x sin el sesgo del
-  retry. El precio por 1M sigue sin fuente primaria consultada.
+- **Reevaluar el balance de consumo: RESUELTO 2026-10-24.** La gratuidad termino el
+  2026-10-22, pero la unidad correcta no es el precio por token sino la **cuota de
+  GPU de Ollama Cloud** (plan legacy: barra de uso semanal con reset, no creditos).
+  Medido sobre el panel: minimax 0,066 px de cuota por request contra 0,053 de
+  deepseek (**1,25x**, el "20-30% superior" confirmado), pero **4 px de 820 = 0,5%
+  de la cuota semanal** en absoluto, contra la calidad medida de 8,9 vs 7,8 en el rol
+  `main`. **Se mantiene minimax.** Decision y datos: ADR-102, seccion "Revision
+  2026-10-24".
 - **K3 como juez:** cancelada por Gonzo (costo de recursos desmedido). Los 160 registros
   guardan `prompt`, `content`, `thinking` y `eval_count` separados por celda y modelo:
   reevaluarlos no requiere re-correr nada.

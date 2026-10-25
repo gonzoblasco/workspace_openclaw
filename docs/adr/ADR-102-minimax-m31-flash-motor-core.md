@@ -1,7 +1,7 @@
 # ADR-102: `minimax-m3.1-flash:cloud` como motor del CORE (main)
 
-**Fecha:** 2026-10-20
-**Estado:** Aceptado (aplicado al runtime 2026-10-20, verificado)
+**Fecha:** 2026-10-20 (revisado 2026-10-24: costo reevaluado como **cuota**, decision de mantener minimax, sin cambio de config)
+**Estado:** Aceptado (aplicado al runtime 2026-10-20, verificado; revisado 2026-10-24 sin cambios de runtime)
 **Decisores:** Gonzo / Kanam
 **Origen:** cata de 8 roles x 5 clases de estres (`docs/ecosystem/cata-minimax-m31-flash-2026-10-20.md`)
 **Relacionado:** ADR-090 (asignacion de modelos por rol), ADR-077/088/089 (pipeline A/B), ADR-076 (ningun agente hereda modelo local)
@@ -89,15 +89,52 @@ pagarlo por debajo.
    sumo 4.327s contra 124s del mas rapido por celda: 35x.
    *Mitigacion:* aceptada por rol (el CORE espera a la persona, no a un pipeline).
 
-3. **Costo: consumo MEDIDO, precio NO medido.** El precio por 1M tokens no se pudo
-   verificar (`ollama.com/pricing` no expone tabla en HTML estatico) y Gonzo decidio
-   que no es un factor ("hasta el 22 a las 23.59 M3.1 Flash sera gratis... igual nunca
-   usamos el precio"). Pero el **consumo si se midio**, porque cada corrida guardaba
-   `eval_count` (output tokens). Se verifico que `eval_count` incluye el
-   razonamiento: con content+thinking la densidad da 4,3-4,5 chars/token (coherente
-   con ~4); con content solo daria 1,31 chars/token, imposible. **El thinking se
-   factura como output.** Y como el input fue identico para los 4 modelos (mismo
-   prompt verbatim), todo el delta es output/thinking.
+3. **Cuota: MEDIDA (2026-10-24).** El "costo" relevante NO es el precio por token sino
+   la **cuota de GPU de Ollama Cloud**: el plan legacy no tiene creditos, tiene
+   **tasa de uso** (barra de uso semanal con reset). "Barato" = cuánta cuota deja
+   gastar, no cuánta plata cuesta. (Correccion 2026-10-24: la cata y la primera
+   redaccion de este ADR trataron el costo como dinero, cuando lo que decide es
+   cuota.)
+
+   **Precios de referencia (verificados 2026-10-24 en `ollama.com/pricing`):**
+
+   | Modelo | Input /1M | Cached input /1M | Output /1M |
+   |---|---|---|---|
+   | `minimax-m3.1-flash` | $0.15 | $0.015 | $0.60 |
+   | `deepseek-v4.1-flash` (pico) | $0.30 | $0.006 | $1.20 |
+   | `deepseek-v4.1-flash` (off-peak) | $0.15 | $0.003 | $0.60 |
+   | `glm-5.3-flash` | $0.15 | $0.03 | $0.50 |
+   | `gpt-oss:120b` | $0.15 | $0.014 | $0.60 |
+
+   Off-peak = fuera de 12:00-18:00 UTC en dias habiles y todo el fin de semana. O sea
+   que **fuera de ese horario minimax y deepseek tienen el mismo precio de output**:
+   ahi el 25% de consumo extra de minimax no se compensa con precio.
+
+   **Cuota real medida (panel de Ollama Cloud, 2026-10-24; barra medida en pixeles
+   sobre capturas, track = 820 px, usado = 485 px = 59%, consistente con el 60,4%
+   que reporta el panel):**
+
+   | Segmento | Modelo | Requests | Px de cuota | % del consumo | Cuota por request |
+   |---|---|---|---|---|---|
+   | Celeste | `glm-5.3-flash` | 559 | 163 | 33,6% | 0,29 px/req |
+   | Violeta | `deepseek-v4.1-flash:1017` | 2.684 | 142 | 29,3% | 0,053 px/req |
+   | Rojo | `minimax-m3.1-flash` | 2.201 | 146 | 30,1% | **0,066 px/req** |
+   | Oscuro + verde | resto | - | 34 | 7,0% | - |
+
+   **El delta minimax/deepseek de cuota es de 1,25x** (0,066 vs 0,053 px/req): el
+   "20-30% superior" que se intuia, confirmado en la unidad que importa. Pero **en
+   absoluto son 4 px de 820: 0,5% de la cuota semanal**. Cambiar el default de
+   minimax a deepseek para "ahorrar cuota" compra 0,5% y cuesta la calidad medida
+   del rol `main` (8,9 contra 7,8).
+
+   *Nota de unidad:* la cuota **no es proporcional a los tokens**. Medido en los
+   transcripts del workspace, `glm-5.3-flash:cloud` corre con 274k de cacheRead por
+   turno (mas que minimax con 240k) y aun asi consume 0,29 px/req. Por eso el
+   px/request hay que leerlo del panel, no derivarlo de los tokens.
+
+   *Dato lateral (GLM):* con 559 requests se come un tercio de la cuota, 5,5x mas
+   cuota por request que deepseek. Queda registrado como **dato**, no como
+   accion: la decision de este ADR es sobre el rol `main`, no sobre el mix.
 
    | Modelo | 40 celdas | 33 limpias | coste del fallo (7 celdas) | latencia |
    |---|---|---|---|---|
@@ -113,7 +150,51 @@ pagarlo por debajo.
    esta dominado por su modo de fallo, no por su razonamiento normal.
    *Mitigacion:* con el costo en cero hasta el 2026-10-22 no aplica; despues, el
    consumo a vigilar es el de los thinking quemados, no el promedio.
-   *Pendiente:* reevaluar si la gratuidad termina y el rol se mantiene (2026-10-23).
+   *Resuelto 2026-10-24:* ver el punto 3 y la seccion "Revision 2026-10-24".
+
+   **Consumo de tokens por turno (medido en los transcripts del workspace, ventana
+   de 7 dias al 2026-10-24; `input` + `output` + `cacheRead` por turno):**
+
+   | Modelo | Turnos | in/turn | out/turn | cacheRead/turn |
+   |---|---|---|---|---|
+   | `minimax-m3.1-flash:cloud` | 5.425 | 4.151 | 289 | 240.413 |
+   | `deepseek-v4.1-flash:cloud` | 1.410 | 5.167 | 306 | 139.903 |
+   | `glm-5.3-flash:cloud` | 470 | 7.337 | 129 | 274.009 |
+
+   Ojo: esto **no** es la cuota (ver punto 3). Sirve para entender de donde sale el
+   gasto de thinking, no para decidir el default.
+
+## Revision 2026-10-24: se mantiene minimax como default del CORE
+
+**Pregunta planteada por Gonzo:** con minimax gastando 1,25x la cuota de deepseek
+(0,066 vs 0,053 px/req), conviene sacrificar cuota por la calidad de minimax
+(8,9 vs 7,8 en el rol `main`), o volver al motor previo por costo/beneficio?
+
+**Respuesta: se mantiene minimax.** Razon:
+
+1. **El delta absoluto es 4 px de 820 px = 0,5% de la cuota semanal.** No es un
+   trade-off, es un ruido. El uso real del CORE ya esta en minimax (2.201 requests
+   en la semana del panel) sin que la cuota se haya trabado.
+2. **La calidad que se sacrifica esta medida** (cata de 8 roles x 5 clases de
+   estres, 160 corridas): 8,9 contra 7,8 en `main`, con 17 wins absolutos sobre 40
+   celdas. El trabajo de los ultimos dias (arquitectura, kanam-sudoku-iphone desde
+   cero) salio de ahi.
+3. **El riesgo real de cuota de minimax no es el overhead del 25%, es la espiral de
+   thinking** (7 de 40 celdas en la cata con 0 entrega, 44k-56k caracteres de
+   razonamiento). Una espiral de 50k tokens es un request que quema cuota de 5-10
+   turnos normales sin entregar nada, y eso **no se ve en la barra**: hay que
+   medirlo como requests sin entrega por hora.
+
+**Lo que NO se midio y queda como pendiente:** la tasa de requests quemados
+(thinking sin entrega) por hora. Es el unico numero que puede cambiar el
+balance, y requiere medirla sobre los transcripts con el campo de thinking
+separado.
+
+**Correccion de encuadre (2026-10-24):** el planteo original de la cata
+trataba "costo" como precio por token y concluyo que no importaba porque el
+modelo era gratis hasta el 2026-10-22. Con el plan legacy la unidad correcta es
+**cuota**, y la pregunta correcta no es "que modelo es mas barato" sino "que modelo
+deja hacer mas trabajo antes de agotar la cuota".
 
 ## Regla de mantenimiento (misma que ADR-090)
 
@@ -162,9 +243,15 @@ El judge's score es evidencia, no veredicto.
   reevaluarlos no requiere re-correr nada.
 - **Validacion en uso real:** 2 semanas de uso del CORE con minimax antes de dar el
   rol por cerrado. Fecha de corte: 2026-11-03.
-- **Costo real:** reevaluar si la gratuidad hasta el 2026-10-22 23:59 cambia el
-  balance. Fecha: 2026-10-23. Con el consumo ya medido (3,89x de output tokens contra
-  deepseek), lo que falta es el precio por 1M de cada uno, no una estimacion.
+- **Costo real: RESUELTO 2026-10-24.** La gratuidad termino el 2026-10-22 y la
+  pregunta de costo/beneficio se respondio con la cuota medida del panel de Ollama
+  Cloud (ver "Revision 2026-10-24" y el punto 3 de Riesgos): el delta minimax/
+  deepseek es 1,25x por request pero 0,5% de la cuota semanal en absoluto, contra
+  una calidad medida de 8,9 vs 7,8 en el rol `main`. **Se mantiene minimax.**
+- **Requests quemados por hora (nuevo, 2026-10-24):** medir la tasa de requests
+  con thinking quemado (0 entrega) por hora. Es el unico numero que puede
+  revertir la decision, porque un request quemado quema cuota de 5-10 turnos
+  normales. Requiere medir sobre los transcripts con el thinking separado.
 
 ## Artefactos
 

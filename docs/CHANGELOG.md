@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-25] - El costo de un modelo en Ollama Cloud no es plata: es cuota
+
+### Changed
+- **`docs/adr/ADR-102-minimax-m31-flash-motor-core.md`** - revisado en el sitio, sin crear un ADR nuevo (evitar deuda tecnica: una decision revisada no ensancha la serie). El pendiente vencido del 2026-10-23 ("reevaluar si la gratuidad termina") queda **resuelto**: la gratuidad si termino, pero la unidad correcta no es el precio por token.
+- **La unidad correcta es la cuota de GPU de Ollama Cloud.** El plan legacy no tiene creditos de $60/mes: tiene **tasa de uso** (barra semanal con reset). "Barato" = cuanta cuota deja gastar, no cuanta plata cuesta. La cata del 2026-10-20 y la primera redaccion del ADR trataron el costo como dinero, y por eso el balance quedo sin decidir.
+- **Precios de referencia verificados** el 2026-10-24 en `ollama.com/pricing` (la pagina si expone la tabla, en HTML estatico, aunque la cata no la encontro): minimax output $0,60/1M; deepseek-v4.1-flash $1,20 en pico y **$0,60 en off-peak** (fuera de 12:00-18:00 UTC en habiles y todo el fin de semana), glm-5.3-flash $0,50, gpt-oss $0,60. Fuera del horario pico, minimax y deepseek cuestan lo mismo por token de output.
+- **Cuota medida sobre el panel de Ollama Cloud** (barra medida en pixeles sobre las capturas, track = 820 px, usado = 485 px = 59%, consistente con el 60,4% que reporta el panel): `glm-5.3-flash` 559 requests = 163 px (33,6% de la cuota, 0,29 px/req); `deepseek-v4.1-flash` 2.684 requests = 142 px (0,053 px/req); `minimax-m3.1-flash` 2.201 requests = 146 px (**0,066 px/req**). El "20-30% superior" queda confirmado como **1,25x por request**, pero en absoluto son **4 px de 820: 0,5% de la cuota semanal**.
+- **Decision: se mantiene `minimax-m3.1-flash:cloud` como default del CORE.** Cambiar a deepseek para "ahorrar cuota" compra 0,5% y paga con la calidad medida del rol `main` (8,9 vs 7,8 en la cata de 8 roles x 5 clases de estres). El uso real ya esta en minimax sin que la cuota se trabe.
+- **`docs/ecosystem/cata-minimax-m31-flash-2026-10-20.md`** - el pendiente de reevaluacion de consumo pasa de "precio sin fuente primaria" a la decision tomada, con la referencia al ADR-102.
+
+### Measured
+- **La cuota no es proporcional a los tokens**, asi que el px/request hay que leerlo del panel y no derivarlo del consumo. Medido en los transcripts del workspace (7 dias): `glm-5.3-flash:cloud` corre con 274k de cacheRead por turno (mas que minimax con 240k) y aun asi consume 0,29 px/req. Por eso el mix de modelos no se deduce de los tokens.
+- **El riesgo de cuota de minimax no es el overhead del 25%, es la espiral de thinking** (7 de 40 celdas con 0 entrega en la cata, 44k-56k caracteres de razonamiento): una espiral de 50k tokens quema cuota de 5-10 turnos normales sin entregar nada, y eso no se ve en la barra.
+
+### Pending
+- **Requests quemados por hora** (thinking sin entrega): es el unico numero que puede revertir la decision, porque un request quemado multiplica por 5-10 el consumo de cuota de un turno normal. Medir sobre los transcripts con el thinking separado.
+
 ## [2026-10-24] - kanam-sudoku-iphone: proyecto nuevo desde cero, con la dificultad definida por tecnica
 
 ### Added
