@@ -192,3 +192,27 @@ elegibilidad.
 
 **Corolario operativo:** apuntar a empresas de producto con su propio equipo, no a nearshore-agencies
 que reasignan tu tiempo a clientes US.
+
+### El discovery se rompe callado (2026-10-25)
+
+El radar deja de encontrar vacantes y **no dice por que**: un 0 legitimo (no hay nada
+publicado) y un 0 por fuente rota se ven igual. Ese dia fueron cinco bugs encadenados, y
+la unica defensa es que las funciones puras vivan en `scripts/lib/discovery.mjs` y tengan tests.
+
+Los cinco, para que el proximo que se rompa no lose de nuevo:
+
+| Bug | Sintoma | Regla |
+|---|---|---|
+| **Argumentos en el orden equivocado** | `src.url(country, start)` cuando el primer parametro es la *query*: se buscaban las vacantes de "AR" en vez de "frontend" | Firma uniforme en todas las fuentes: `url(query, start, country)` |
+| **LinkedIn cambio la clase del markup** | `result-card__full-card-link` ya no existe: ahora es `base-card__full-link` dentro de un `div.base-card`. La fuente devolvia CERO y nadie lo notaba | El parser extrae titulo, empresa y ubicacion (no solo la URL). Si el titulo queda vacio, la tarjeta se descarta |
+| **El filtro de pais era un `includes`** | "ar" matcheaba "**Ar**kansas": Bentonville, Arkansas, Estados Unidos pasaba el filtro de Argentina | Match por palabra entera, con mapa de codigo -> nombre de pais |
+| **Las remotas "Worldwide" se descartaban** | Una vacante remota global es justamente una oportunidad LATAM, y el filtro por pais la mataba | `isRemoteAnywhere`: si es remota y su ubicacion no es de un pais concreto, entra |
+| **LinkedIn recibe el codigo, no el nombre** | Se pasaba `location=AR` y la busqueda daba cero | `countryName()` traduce el codigo al nombre antes de armar la URL |
+
+**Y uno mas, de los tests:** la concatenacion de la ubicacion dejaba `", "` cuando ambos
+campos estaban vacios, y eso **no esta vacio**: la vacante se descartaba. Una vacante sin
+ubicacion no se descarta nunca (descartar por un dato ausente es perderla entera).
+
+**Lo que hay que mirar cuando el radar se calla:** la linea `fuentes: ...` que imprime el
+script dice cuales respondieron. Si dice una que no esperabas, esa es la rota. Y si dice
+todas pero no hay resultados, el problema esta en el filtro, no en las fuentes.

@@ -128,6 +128,29 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-25] - El radar de vacantes deja de romperse en silencio
+
+### Added
+- **`skills/job-application/scripts/lib/discovery.mjs`** - las funciones PURAS del discovery (parseo de LinkedIn, filtro por query/pais/remoto, mapa de codigos de pais), extraidas del script que hace la red **para que queden testeadas**.
+- **Cuatro fuentes de job boards mas** (`remotive`, `arbeitnow`, `jobicy`, `himalayas`), cada una **medida contra su API antes de agregarla** (no se agrega una fuente que no responde). El radar consulta las cinco en paralelo y **reporta cuales respondieron y cuales fallaron**.
+- **20 tests nuevos** del discovery (27 en total en la suite del skill), que cubren los cinco bugs de abajo y el caso de un markup que vuelve al formato viejo.
+
+### Fixed
+El radar de vacantes dejo de encontrar nada el 2026-10-25, y la causa NO fue que no hubiera vacantes: fueron **cinco bugs encadenados, cada uno invisible desde afuera** (un radar mudo parece "no hay nada"). Ademas, uno lo encontrado un test nuevo:
+1. **Argumentos en el orden equivocado**: `src.url(country, start)` cuando el primer parametro de cada fuente es la QUERY. Se buscaban las vacantes de "AR" en vez de "frontend". La firma ahora es uniforme: `url(query, start, country)`.
+2. **LinkedIn cambio la clase del markup**: `result-card__full-card-link` ya no existe, ahora es `base-card__full-link` dentro de un `div.base-card`. La fuente devolvia CERO y nadie lo notaba. El parser ahora extrae titulo, empresa y ubicacion, y descarta la tarjeta si el titulo queda vacio.
+3. **El filtro de pais era un `includes` plano**: "ar" matcheaba "**Ar**kansas", y Bentonville, Arkansas, Estados Unidos pasaba el filtro de Argentina. Ahora es match por palabra entera, con un mapa de codigo -> nombre de pais.
+4. **Las vacantes remotas "Worldwide" se descartaban**: son justamente las oportunidades LATAM, que es lo que mejor rindio. Ahora entran.
+5. **LinkedIn recibe el nombre del pais, no el codigo**: se pasaba `location=AR` y la busqueda daba cero.
+6. **La concatenacion de la ubicacion dejaba `", "`** cuando ambos campos estaban vacios, y eso no esta vacio: la vacante se descartaba. Una vacante sin ubicacion no se descarta nunca.
+
+### Notes
+- **El aprendizaje de fondo, y el motivo de la lib separada: un scraper sin tests es un scraper que se rompe callado.** La regla de una regla: lo que decide QUE se devuelve va en una lib pura con tests; lo que hace la red queda en el script. Cuando un sitio cambie su markup o sus parametros, el fallo sale en la suite y no en el silencio.
+- **El script ahora imprime que fuentes respondieron** (`fuentes: linkedin, remotive, ...`). Es la primera cosa que hay que mirar cuando el radar se calla: si dice una que no esperabas, esa es la rota; si dice todas y no hay resultados, el problema esta en el filtro.
+- **Verificado end-to-end**: el radar devuelve vacantes reales de las 5 fuentes, en ingles y en espanol, incluyendo la de RYZ Labs. 27 tests en verde.
+
+---
+
 ## [2026-10-23] - La postulacion laboral deja de ser una odisea: skill + adaptadores por ATS
 
 ### Added
