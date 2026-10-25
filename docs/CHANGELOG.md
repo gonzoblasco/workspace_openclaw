@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-08). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-10). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
 
@@ -61,6 +61,115 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Changed
 - **`docs/ROADMAP.md` seccion 2.2** - las acciones pasan a llevar lo medido: el radar con sus cuatro acciones concretas, el hallazgo de que el tier 2 de a11y esta vacio, y la pregunta del gate con su condicion.
+
+---
+
+## [2026-10-23] - Postulaciones RYZ y Mural: formularios listos (sin enviar) y limpieza de huellas de IA
+
+### Added
+- **Formularios de postulacion de RYZ Labs y Mural completados y verificados** _(scripts en `tmp/job-search-2026-10-22/`, capturas en `docs/entrevistas/_general/outreach-2026-10-22/`)_. El browser de OpenClaw no arranca (no hay Chrome en `/Applications`), asi que se maneja con **Chrome for Testing de Playwright** via Playwright: `projects/a11y-fixer/node_modules/playwright` con `executablePath` explicito.
+  - **RYZ (Lever):** CV subido y parseado ("Success!"), nombre, email, telefono, ubicacion geolocalizada, empresa, **salario USD 3.200/mes**, **Upper Intermediate**, e informacion adicional. Captura: `ryz-form-filled.png`.
+  - **Mural (Ashby):** CV y **cover letter** en sus slots correctos, 6 campos de texto, **salario USD 3.400/mes**. El **reCAPTCHA se resuelve solo** (token de 2.382 chars, modo invisible). Captura: `mural-form-filled.png`.
+  - **Cover letter de Mural** (`cover-letters/cover-letter-mural.md`): 292 palabras de cuerpo. El angulo es el **servidor MCP propio** (que responde a un requisito explicito del JD), los **experimentos A/B reales** con Adobe Target, y los gaps declarados en una frase.
+- **Scripts reutilizables de postulacion:** `tmp/job-search-2026-10-22/fill-ryz.js` y `fill-mural.js`. Ambos completan, **verifican campo por campo releyendo el DOM**, toman captura y solo envian con `--submit`. El envio sigue siendo una decision explicita de Gonzo.
+
+### Fixed
+- **La cover letter traia 12 guiones no separables (U+2011) y un en-dash:** el residuo tipografico de una salida de modelo, que es exactamente la clase de huella que Gonzo pidio evitar. Normalizados a guion comun y apostrofe recta (`scripts/check_em_dash.py` da verde). Tambien se fueron el cierre formulaico "I look forward to contributing" y el conector "Additionally".
+- **La cover letter decia "the design systems you list"** cuando el JD de Mural **no lista design systems** (verificado: 0 coincidencias), y "user insights", que no esta en el corpus. Y repetia el MCP en dos parrafos. Corregido.
+- **El parser automatico de Lever pisa el nombre:** al subir el CV, Lever pone "Freelance" en el campo Full name (toma la empresa del CV). Los scripts lo sobreescriben despues de que el parser asiente, y el dry run lo verifica.
+- **El input de ubicacion de Lever queda visiblemente vacio** con `fill()` y con click en la opcion: React re-renderiza y borra el valor, aunque el hidden `selectedLocation` quede bien. **El unico metodo que deja el campo visible es el humano: teclear, `ArrowDown`, `Enter`.** Verificado con captura en los tres caminos.
+- **El campo de salario de Lever tiene dos inputs** con la misma etiqueta (uno hidden, `baseTemplate`, y el real visible). Agarrar el hidden hace fallar el `fill()` con timeout de 30s. Se toma el visible por `name*="[field0]"`.
+- **Los archivos se cruzaban en Ashby:** el cover letter iba al slot del CV. Ashby renderiza tres inputs de archivo (subida del CV sin `name`, `_systemfield_resume`, y el de Cover Letter con UUID) y **los reordena**. Se mapean por `name`, no por indice ni por label (el ancestro con texto mas cercano es "First and Last Name").
+- **Los radios de nivel de ingles de Lever no son `<select>`:** son radio con `value` = texto de la opcion ("Upper Intermediate"). Se eligen por `value`, no por etiqueta.
+
+### Notes
+- **No hay trampas de deteccion de IA en los formularios.** Solo los captchas estandar: hCaptcha en Lever (que NO se resuelve solo: token 0 en headless y en browser visible) y reCAPTCHA en Ashby (que si se resuelve solo, modo invisible). El riesgo real de rechazo es el **spam filter por contenido**, que se mitiga con los gaps declarados y el cero-slop.
+- **El navegador no tiene sesion de LinkedIn.** El perfil `Chrome for Testing` tiene cookies (`li_at`, `JSESSIONID`) pero al copiar el perfil a un directorio temporal las cookies no sobreviven (WAL). El unico Chrome corriendo tiene el login, pero no expone puerto CDP. Para un DM por LinkedIn haria falta loguearse de nuevo en un perfil que Playwright pueda abrir.
+- **El `--submit` de RYZ es el unico con captcha sin resolver.** hCaptcha en modo invisible suele generar el token en el momento del submit; eso solo se puede comprobar enviando. Por eso el submit sigue siendo paso manual y con OK.
+- **Salarios decididos con datos, no con intuicion:** USD 3.200/mes en RYZ (banda estimada USD 82.600-153.400/ano) y USD 3.400/mes en Mural. Para Mural, la banda que publica un agregador es **estadounidense** (USD 105.054-131.317/ano) aunque el puesto es "Argentina Remote": la referencia real es el dato de empleados (Levels.fyi, L2 en Greater Buenos Aires: ARS 54,3M de compensacion total anual = **USD 2.963/mes** al cambio del 23/10 de 1.527,85). Pedir 3.400 es coherente con el seniority real y con la banda, sin pelear contra el techo de 5K que fijo Gonzo.
+- **Pendiente:** enviar (requiere OK explicito), y el canal de LinkedIn, que sigue siendo el unico que no puedo operar.
+
+---
+
+## [2026-10-23] - Cierre de la tanda: las TRES postulaciones confirmadas
+
+### Added
+- **Las tres postulaciones quedaron confirmadas por el servidor:**
+  - **Mural** (Ashby): "Your application was successfully submitted. We'll contact you if there are next steps." Salario USD 3.400/mes, CV + cover letter.
+  - **Mercado Pago** (Eightfold): "¡Gracias por su solicitud, Gonzalo!" + `201 {"success": true}`. Vacante id 44891701 (displayJobId 127795), localizada via `careers-meli.mercadolibre.com/api/positions?country=AR`.
+  - **RYZ Labs** (Lever): enviado desde Safari, **sin hCaptcha**. Salario USD 3.200/mes, nivel Upper Intermediate.
+- **Invitacion de conexion enviada a Sonia Langone** (recruiter tecnica de RYZ, 2do grado) con nota de 833 caracteres: por que encaja, el AI Engineering OS, el servidor MCP propio, los 11 PRs mergeados, y las dos preguntas de screening (overlap con US en EST, y nivel de ingles conversacional). Es la via que ademas abre la conversacion.
+- **`docs/entrevistas/_general/outreach-2026-10-22/scripts/`** - los seis scripts de postulacion, reutilizables y comentados con el por que de cada workaround; mas `ryz-cdp.js` (conexion por CDP al Chrome real) y `ryz-manual.js`.
+
+### Fixed
+- **El hCaptcha de Lever no lo puede resolver un navegador automatizado, y el problema lo causo el propio intento de automatizarlo.** El token daba 0 en Chrome de Playwright (`navigator.webdriver: true`) y en el perfil `imported` del browser de OpenClaw (`--headless=new`, "HeadlessChrome" en el User-Agent). Se probaron todas las variantes (click en el checkbox del iframe, click de mouse real, browser visible, 60s de espera): nada. En Safari, sin tocar el captcha, el envio salio directo. El aprendizaje quedo en `docs/learnings/metodologia.md`: **ante un captcha, cambiar de navegador; no insistir con el mismo**. Y antes de pedirle a una persona que resuelva algo a mano, verificar que el contexto que se le pasa no este marcado: el "fallo" de la persona suele ser el fallo del instrumento.
+- **Relanzar el perfil `imported` de OpenClaw visible** (mismo `user-data-dir`, con la sesion de LinkedIn, sin `--headless`): con el flag headless el perfil servia solo para el scraping de LinkedIn, pero cualquier formulario con captcha lo rechazaba.
+
+### Notes
+- **El aprendizaje operativo mas general de la tanda:** en formularios de React, `fill()` de Playwright deja el valor en el DOM pero NO actualiza el estado interno (`_valueTracker`). El servidor ve "9 fields missing" con los campos visiblemente llenos. Lo que funciono: teclear con `type()`, `Meta+A` para limpiar (en macOS, no `Control+A`), clicks de mouse sobre coordenadas para los desplegables, y click en la ETIQUETA para los radios. Todo documentado en los scripts.
+- **El buscador de vacantes de MeLi** (`api/positions?country=AR`) es mucho mas reliable que el listado del portal: 866 vacantes paginadas y filtrables, contra 12 en la primera pagina del HTML.
+
+---
+
+## [2026-10-23] - La postulacion laboral deja de ser una odisea: skill + adaptadores por ATS
+
+### Added
+- **`skills/job-application/`** - la skill del flujo, con el knowledge de los tres ATS capturado una vez. Estructura: `SKILL.md` (el flujo: descubrir -> tailored -> aplicar -> verificar -> trackear), `references/ats-playbook.md` (las particularidades de cada ATS, con la evidencia y la fecha), `references/outreach.md` (mensajes y preguntas de screening), `scripts/` (find-jobs, apply y un adaptador por ATS).
+- **`docs/adr/ADR-104-busqueda-laboral-proceso-factorizado.md`** - por que existe: el trabajo de hoy no fueron tres postulaciones, fueron **once hallazgos** sobre interfaces de terceros, todos verificados y todos caros de rediscover. La misma logica que ADR-101 para los hechos: si cada postulacion re-descubre que `fill()` no funciona, hay dos verdades sobre como se llena un formulario.
+- **`scripts/find-jobs.mjs`** - discovery multi-board. La API de MeLi resulto la mejor fuente: 886 vacantes paginables, contra las 12 del listado.
+- **Tres adaptadores** (`scripts/ats/{lever,ashby,eightfold}.mjs`) con una interfaz comun: `fill()` (rellena, no envia) y `submit()` (envia y lee el **veredicto del servidor**).
+- **`tests/node/job-application.test.js`** - 7 tests de las funciones puras, incluido uno que prueba que el test puede fallar (leccion de check-contrast.py).
+
+### Fixed
+Once bugs del codigo de la tanda, revisados y corregidos por el CORE (bucket `low`: A escribe -> Kanam revisa). Todos verificados con una corrida end-to-end real contra el formulario de Mercado Pago:
+1. **`pickOption` nunca encontraba la opcion**: destructuraba `{ text }` pero recibia `{ text: "" }` como primer argumento y el matcher como segundo, asi que la regexp compilaba contra la cadena "undefined".
+2. **El listener de `response` se registraba DESPUES del click de submit**: la respuesta del servidor ya habia llegado y el **veredicto salia siempre vacio**. Era el bug mas grave: sin veredicto no hay prueba del envio.
+3. **`verifyFields(page, [])` con array vacio**: el gate "no enviar si hay divergentes" era un no-op. Podia mandar un formulario con los campos sin registrar en React.
+4. **`newContext()` sobre CDP** crea un contexto NUEVO, sin las cookies de la sesion real: el browser del usuario se abria sin su sesion de LinkedIn.
+5. **`browser.close()` sobre un browser conectado por CDP cierra el Chrome del usuario.** Ahora solo se cierra la pestana que abrio el script.
+6. **`chromium.launch()` sin `executablePath`** buscaba el binario de la cache de Playwright (1228), que no esta en la maquina (solo hay 1243): "Executable doesn't exist".
+7. **La API de MeLi devolvia `name` (no `title`), `positionUrl` relativo (no `applyUrl`) y `standardizedLocations`**: cada vacante salia con titulo vacio y url nula, y el filtro las eliminaba todas.
+8. **La API devuelve 12 por pagina de 886** (con `num=100`, 100): sin paginar el radar no veia nada.
+9. **El filtro por titulo era un `includes` plano**: "UX" matcheaba "a**UX**iliar" y devolvia una vacante que no era la buscada.
+10. **El codigo de pais y el pais estaban al reves** en Eightfold (`input-7` es el prefijo del telefono, `input-10` el pais): el telefono quedaba sin prefijo y el pais nunca se elegia.
+11. **El scope del listbox no es el id del combobox**: el popup se renderiza en un portal, con otro id (`aria-controls` apunta a el). Buscando dentro de `#input-7` no se encontraba nada, y el fallback podia elegir la opcion de OTRO desplegable: **el codigo de pais termino escrito en el campo de email**.
+
+### Notes
+- **El `ok: true` era un falso positivo y ahora hay que ganarlo.** El reporte de `apply.mjs` decia "ok" con el CV sin adjuntar, porque `filled`/`missing` volvian VACIOS de los adaptadores. Ahora cada adaptador declara sus selectores, el orquestador verifica DOM contra estado de React, y el CV se verifica con lo unico verificable antes del envio (que el input exista y se le haya pasado el archivo). El CV real se prueba con la respuesta del servidor: Eightfold **consume** el archivo del input y su widget no re-pinta el nombre, asi que `input.files.length` da 0 siempre.
+- **La prueba end-to-end es la que encuentra los bugs; el test unitario no.** Los 7 tests pasan en verde mientras el formulario quedaba sin pais, sin codigo y con el codigo de pais en el email. Se ve en la captura, no en el exit code. Por eso el flujo deja evidencia (screenshot) de cada corrida.
+- **El captcha sigue mandando en la arquitectura (ADR-104).** `real-browser.mjs` se conecta al Chrome real del usuario por CDP cuando hay captcha, y el envio lo hace la persona: un captcha detecta el **contexto**, no los intentos.
+- **Pendiente de verificar con una corrida real:** los adaptadores de Lever y Ashby no se probaron end-to-end (Lever tiene captcha; Ashby necesita el orden del autofill). El de Eightfold si, con la pantalla de Mercado Pago.
+
+---
+
+## [2026-10-23] - Dos postulaciones confirmadas (Mural y Mercado Pago), RYZ esperando un click humano
+
+### Added
+- **`docs/entrevistas/_general/outreach-2026-10-22/scripts/`** - los seis scripts de postulacion, reutilizables y documentados: `submit-mural.js`, `submit-ryz.js`, `submit-meli.js`, `fill-mural.js`, `fill-ryz.js`, `debug-mural-location.js`. Cada uno completa, **verifica campo por campo releyendo el DOM**, captura y solo envia con `--submit`.
+- **`docs/entrevistas/_general/outreach-2026-10-22/evidencia/`** - capturas del estado final de los tres formularios.
+- **Canal de LinkedIn operativo.** El `browser` de OpenClaw no arrancaba (no habia Chrome en `/Applications`); con Chrome instalado, `action=importprofile` copio **89 cookies** del perfil `Default` (incluidas las de LinkedIn) al perfil gestionado `imported`, y la sesion quedo viva: el feed cargo con el perfil de Gonzo, 92 vistas de perfil.
+- **Localizacion de la vacante de Mercado Pago** via su API: `https://careers-meli.mercadolibre.com/api/positions?country=AR` -> id 44891701, displayJobId 127795, y el ATS real es Eightfold (`https://mercadolibre.eightfold.ai/careers/apply?pid=44891701`).
+
+### Fixed
+- **El hCaptcha de Lever (RYZ) no se resuelve por automatizacion:** token 0 en headless y en browser visible, incluso clickeando el checkbox del iframe. El formulario de RYZ queda COMPLETO (captura con los 9 campos) y pendiente de ese unico paso humano. Es el unico limite real de la tanda.
+- **En Ashby (Mural) el campo "Location" no acepta "Buenos Aires"**: su autocomplete devuelve "No results" y solo reconoce "Argentina" y "Nunez". Con "Buenos Aires" el envio fallaba con "9 fields missing".
+- **En Ashby los `name` de los inputs desaparecen al re-renderizar** y hay que mapear por el texto del ancestro; ademas los `id` de los inputs de archivo se reordenan entre navegaciones.
+- **En Ashby el panel de "Autofill from resume" pisa el formulario**: su parseo asincrono sobrescribe los textos ya escritos. El orden correcto es CV -> esperar el autofill -> escribir con `type()` -> radios -> archivos.
+- **Los radios de Ashby no se marcan con `input.click()` desde JS** (React no lo registra) ni con `.check({force:true})` en todos los casos: hay que clickear la ETIQUETA.
+- **En Eightfold (MeLi) los campos se identifican por `id`, no por `name`** (`name=null` en todos). Y sus dos ultimos campos NO son areas de texto: `input-13` es la confirmacion de la politica de privacidad y `input-16` la pregunta de conflicto de interes, ambas con opciones Si/No. Escribir la presentacion ahi habria sido mandarla a una caja equivocada.
+- **En Eightfold el telefono no acepta `+` ni espacios**, y con el codigo de pais en +54 espera el numero NACIONAL. Ademas, al elegir el pais aparece un campo "Estado" nuevo; si el pais no queda elegido, ese campo ni existe y el envio falla con "Error: selecciona un Estado".
+- **Los inputs controlados de React no se limpian con Backspace** (el valor se concatena): hay que seleccionar todo y borrar. En macOS el select-all es `Meta+A`, no `Control+A`.
+- **El footer sticky de los formularios tapa los ultimos campos** y el click normal da timeout: hay que hacer `scrollIntoView` y usar click forzado.
+- **El boton de submit de Lever** tiene la clase dinamica `btn-submit`; el selector generico `button[type=submit]` agarra el boton OCULTO de hCaptcha (`id=hcaptchaSubmitBtn`).
+
+### Notes
+- **Dos de tres POSTULADOS y CONFIRMADOS por el servidor:**
+  - **Mural** (Ashby): "Your application was successfully submitted. We'll contact you if there are next steps." Salario USD 3.400/mes, CV + cover letter.
+  - **Mercado Pago** (Eightfold): "¡Gracias por su solicitud, Gonzalo!" + `201 {"success": true}` del servidor, con `location: Buenos Aires, Ciudad Autónoma de Buenos Aires, Argentina`.
+- **RYZ queda a un paso humano:** el formulario de Lever esta completo y verificado; lo unico que no se puede automatizar es el hCaptcha. En paralelo salio la **invitacion de conexion a Sonia Langone** (recruiter tecnica de RYZ, 2do grado, con nota de 833 caracteres: por que encaja, el AI Engineering OS, el servidor MCP propio, los 11 PRs, y las dos preguntas de screening: overlap con US en EST y nivel de ingles conversacional).
+- **El limite de LinkedIn es el grado de conexion:** las cuatro recruiters de RYZ (Sonia Langone, Valentina Magni, Valentina Tellechea, Maria Belen Giordano) son 2do grado, asi que el DM directo esta bloqueado. La via que funciona es la invitacion con nota, que ademas no tiene limite de caracteres con Premium.
+- **Los 4 candidatos de RYZ encontrados en la busqueda de personas:** Valentina Magni (Senior Talent Acquisition Partner), Sonia Langone (Tech Recruiter, LATAM), Valentina Tellechea (Technical Recruiter), Maria Belen Giordano (Recruiter). Mas los founders Jordan Metzner (CEO) y Sam Nadler.
+- **Scripts: los que quedan en `tmp/` no se versionan** (gitignored); las copias limpias y documentadas estan en `docs/entrevistas/_general/outreach-2026-10-22/scripts/`.
 
 ---
 
@@ -234,115 +343,6 @@ ADR-099 (LangChain como capa de ejecucion), ADR-103 (LiteLLM se descarta), ADR-1
 - **La pregunta de idioma NO aplica a todos los procesos.** En un puesto local (Mercado Pago, Buenos Aires hibrido) no se pregunta: no hay filtro que descubrir y la pregunta proyecta una duda que no hace falta. En RYZ y Mural si, y es la primera pregunta por costo.
 - **Pendientes de Gonzo:** (a) enviar los mensajes y(postular) los CVs - nada sale sin su OK; (b) en Mural, el rol es de Growth con el mismo perfil de riesgo de idioma; (c) en Mercado Pago, el riesgo real no es el idioma sino que el puesto es **mas de diseno que de ingenieria**: conviene enterarse antes de invertir.
 - **El corpus quedo ampliado** (§2.1 herramientas de IA, §2.2 herramientas y toolset, §2.4 la prohibicion del numero de experimentos, §10 el perfil nuevo). Sin cambios en los hechos que ya estaban: ni anos, ni idioma, ni certificaciones, ni fechas de roles.
-
----
-
-## [2026-10-23] - Postulaciones RYZ y Mural: formularios listos (sin enviar) y limpieza de huellas de IA
-
-### Added
-- **Formularios de postulacion de RYZ Labs y Mural completados y verificados** _(scripts en `tmp/job-search-2026-10-22/`, capturas en `docs/entrevistas/_general/outreach-2026-10-22/`)_. El browser de OpenClaw no arranca (no hay Chrome en `/Applications`), asi que se maneja con **Chrome for Testing de Playwright** via Playwright: `projects/a11y-fixer/node_modules/playwright` con `executablePath` explicito.
-  - **RYZ (Lever):** CV subido y parseado ("Success!"), nombre, email, telefono, ubicacion geolocalizada, empresa, **salario USD 3.200/mes**, **Upper Intermediate**, e informacion adicional. Captura: `ryz-form-filled.png`.
-  - **Mural (Ashby):** CV y **cover letter** en sus slots correctos, 6 campos de texto, **salario USD 3.400/mes**. El **reCAPTCHA se resuelve solo** (token de 2.382 chars, modo invisible). Captura: `mural-form-filled.png`.
-  - **Cover letter de Mural** (`cover-letters/cover-letter-mural.md`): 292 palabras de cuerpo. El angulo es el **servidor MCP propio** (que responde a un requisito explicito del JD), los **experimentos A/B reales** con Adobe Target, y los gaps declarados en una frase.
-- **Scripts reutilizables de postulacion:** `tmp/job-search-2026-10-22/fill-ryz.js` y `fill-mural.js`. Ambos completan, **verifican campo por campo releyendo el DOM**, toman captura y solo envian con `--submit`. El envio sigue siendo una decision explicita de Gonzo.
-
-### Fixed
-- **La cover letter traia 12 guiones no separables (U+2011) y un en-dash:** el residuo tipografico de una salida de modelo, que es exactamente la clase de huella que Gonzo pidio evitar. Normalizados a guion comun y apostrofe recta (`scripts/check_em_dash.py` da verde). Tambien se fueron el cierre formulaico "I look forward to contributing" y el conector "Additionally".
-- **La cover letter decia "the design systems you list"** cuando el JD de Mural **no lista design systems** (verificado: 0 coincidencias), y "user insights", que no esta en el corpus. Y repetia el MCP en dos parrafos. Corregido.
-- **El parser automatico de Lever pisa el nombre:** al subir el CV, Lever pone "Freelance" en el campo Full name (toma la empresa del CV). Los scripts lo sobreescriben despues de que el parser asiente, y el dry run lo verifica.
-- **El input de ubicacion de Lever queda visiblemente vacio** con `fill()` y con click en la opcion: React re-renderiza y borra el valor, aunque el hidden `selectedLocation` quede bien. **El unico metodo que deja el campo visible es el humano: teclear, `ArrowDown`, `Enter`.** Verificado con captura en los tres caminos.
-- **El campo de salario de Lever tiene dos inputs** con la misma etiqueta (uno hidden, `baseTemplate`, y el real visible). Agarrar el hidden hace fallar el `fill()` con timeout de 30s. Se toma el visible por `name*="[field0]"`.
-- **Los archivos se cruzaban en Ashby:** el cover letter iba al slot del CV. Ashby renderiza tres inputs de archivo (subida del CV sin `name`, `_systemfield_resume`, y el de Cover Letter con UUID) y **los reordena**. Se mapean por `name`, no por indice ni por label (el ancestro con texto mas cercano es "First and Last Name").
-- **Los radios de nivel de ingles de Lever no son `<select>`:** son radio con `value` = texto de la opcion ("Upper Intermediate"). Se eligen por `value`, no por etiqueta.
-
-### Notes
-- **No hay trampas de deteccion de IA en los formularios.** Solo los captchas estandar: hCaptcha en Lever (que NO se resuelve solo: token 0 en headless y en browser visible) y reCAPTCHA en Ashby (que si se resuelve solo, modo invisible). El riesgo real de rechazo es el **spam filter por contenido**, que se mitiga con los gaps declarados y el cero-slop.
-- **El navegador no tiene sesion de LinkedIn.** El perfil `Chrome for Testing` tiene cookies (`li_at`, `JSESSIONID`) pero al copiar el perfil a un directorio temporal las cookies no sobreviven (WAL). El unico Chrome corriendo tiene el login, pero no expone puerto CDP. Para un DM por LinkedIn haria falta loguearse de nuevo en un perfil que Playwright pueda abrir.
-- **El `--submit` de RYZ es el unico con captcha sin resolver.** hCaptcha en modo invisible suele generar el token en el momento del submit; eso solo se puede comprobar enviando. Por eso el submit sigue siendo paso manual y con OK.
-- **Salarios decididos con datos, no con intuicion:** USD 3.200/mes en RYZ (banda estimada USD 82.600-153.400/ano) y USD 3.400/mes en Mural. Para Mural, la banda que publica un agregador es **estadounidense** (USD 105.054-131.317/ano) aunque el puesto es "Argentina Remote": la referencia real es el dato de empleados (Levels.fyi, L2 en Greater Buenos Aires: ARS 54,3M de compensacion total anual = **USD 2.963/mes** al cambio del 23/10 de 1.527,85). Pedir 3.400 es coherente con el seniority real y con la banda, sin pelear contra el techo de 5K que fijo Gonzo.
-- **Pendiente:** enviar (requiere OK explicito), y el canal de LinkedIn, que sigue siendo el unico que no puedo operar.
-
----
-
-## [2026-10-23] - Cierre de la tanda: las TRES postulaciones confirmadas
-
-### Added
-- **Las tres postulaciones quedaron confirmadas por el servidor:**
-  - **Mural** (Ashby): "Your application was successfully submitted. We'll contact you if there are next steps." Salario USD 3.400/mes, CV + cover letter.
-  - **Mercado Pago** (Eightfold): "¡Gracias por su solicitud, Gonzalo!" + `201 {"success": true}`. Vacante id 44891701 (displayJobId 127795), localizada via `careers-meli.mercadolibre.com/api/positions?country=AR`.
-  - **RYZ Labs** (Lever): enviado desde Safari, **sin hCaptcha**. Salario USD 3.200/mes, nivel Upper Intermediate.
-- **Invitacion de conexion enviada a Sonia Langone** (recruiter tecnica de RYZ, 2do grado) con nota de 833 caracteres: por que encaja, el AI Engineering OS, el servidor MCP propio, los 11 PRs mergeados, y las dos preguntas de screening (overlap con US en EST, y nivel de ingles conversacional). Es la via que ademas abre la conversacion.
-- **`docs/entrevistas/_general/outreach-2026-10-22/scripts/`** - los seis scripts de postulacion, reutilizables y comentados con el por que de cada workaround; mas `ryz-cdp.js` (conexion por CDP al Chrome real) y `ryz-manual.js`.
-
-### Fixed
-- **El hCaptcha de Lever no lo puede resolver un navegador automatizado, y el problema lo causo el propio intento de automatizarlo.** El token daba 0 en Chrome de Playwright (`navigator.webdriver: true`) y en el perfil `imported` del browser de OpenClaw (`--headless=new`, "HeadlessChrome" en el User-Agent). Se probaron todas las variantes (click en el checkbox del iframe, click de mouse real, browser visible, 60s de espera): nada. En Safari, sin tocar el captcha, el envio salio directo. El aprendizaje quedo en `docs/learnings/metodologia.md`: **ante un captcha, cambiar de navegador; no insistir con el mismo**. Y antes de pedirle a una persona que resuelva algo a mano, verificar que el contexto que se le pasa no este marcado: el "fallo" de la persona suele ser el fallo del instrumento.
-- **Relanzar el perfil `imported` de OpenClaw visible** (mismo `user-data-dir`, con la sesion de LinkedIn, sin `--headless`): con el flag headless el perfil servia solo para el scraping de LinkedIn, pero cualquier formulario con captcha lo rechazaba.
-
-### Notes
-- **El aprendizaje operativo mas general de la tanda:** en formularios de React, `fill()` de Playwright deja el valor en el DOM pero NO actualiza el estado interno (`_valueTracker`). El servidor ve "9 fields missing" con los campos visiblemente llenos. Lo que funciono: teclear con `type()`, `Meta+A` para limpiar (en macOS, no `Control+A`), clicks de mouse sobre coordenadas para los desplegables, y click en la ETIQUETA para los radios. Todo documentado en los scripts.
-- **El buscador de vacantes de MeLi** (`api/positions?country=AR`) es mucho mas reliable que el listado del portal: 866 vacantes paginadas y filtrables, contra 12 en la primera pagina del HTML.
-
----
-
-## [2026-10-23] - La postulacion laboral deja de ser una odisea: skill + adaptadores por ATS
-
-### Added
-- **`skills/job-application/`** - la skill del flujo, con el knowledge de los tres ATS capturado una vez. Estructura: `SKILL.md` (el flujo: descubrir -> tailored -> aplicar -> verificar -> trackear), `references/ats-playbook.md` (las particularidades de cada ATS, con la evidencia y la fecha), `references/outreach.md` (mensajes y preguntas de screening), `scripts/` (find-jobs, apply y un adaptador por ATS).
-- **`docs/adr/ADR-104-busqueda-laboral-proceso-factorizado.md`** - por que existe: el trabajo de hoy no fueron tres postulaciones, fueron **once hallazgos** sobre interfaces de terceros, todos verificados y todos caros de rediscover. La misma logica que ADR-101 para los hechos: si cada postulacion re-descubre que `fill()` no funciona, hay dos verdades sobre como se llena un formulario.
-- **`scripts/find-jobs.mjs`** - discovery multi-board. La API de MeLi resulto la mejor fuente: 886 vacantes paginables, contra las 12 del listado.
-- **Tres adaptadores** (`scripts/ats/{lever,ashby,eightfold}.mjs`) con una interfaz comun: `fill()` (rellena, no envia) y `submit()` (envia y lee el **veredicto del servidor**).
-- **`tests/node/job-application.test.js`** - 7 tests de las funciones puras, incluido uno que prueba que el test puede fallar (leccion de check-contrast.py).
-
-### Fixed
-Once bugs del codigo de la tanda, revisados y corregidos por el CORE (bucket `low`: A escribe -> Kanam revisa). Todos verificados con una corrida end-to-end real contra el formulario de Mercado Pago:
-1. **`pickOption` nunca encontraba la opcion**: destructuraba `{ text }` pero recibia `{ text: "" }` como primer argumento y el matcher como segundo, asi que la regexp compilaba contra la cadena "undefined".
-2. **El listener de `response` se registraba DESPUES del click de submit**: la respuesta del servidor ya habia llegado y el **veredicto salia siempre vacio**. Era el bug mas grave: sin veredicto no hay prueba del envio.
-3. **`verifyFields(page, [])` con array vacio**: el gate "no enviar si hay divergentes" era un no-op. Podia mandar un formulario con los campos sin registrar en React.
-4. **`newContext()` sobre CDP** crea un contexto NUEVO, sin las cookies de la sesion real: el browser del usuario se abria sin su sesion de LinkedIn.
-5. **`browser.close()` sobre un browser conectado por CDP cierra el Chrome del usuario.** Ahora solo se cierra la pestana que abrio el script.
-6. **`chromium.launch()` sin `executablePath`** buscaba el binario de la cache de Playwright (1228), que no esta en la maquina (solo hay 1243): "Executable doesn't exist".
-7. **La API de MeLi devolvia `name` (no `title`), `positionUrl` relativo (no `applyUrl`) y `standardizedLocations`**: cada vacante salia con titulo vacio y url nula, y el filtro las eliminaba todas.
-8. **La API devuelve 12 por pagina de 886** (con `num=100`, 100): sin paginar el radar no veia nada.
-9. **El filtro por titulo era un `includes` plano**: "UX" matcheaba "a**UX**iliar" y devolvia una vacante que no era la buscada.
-10. **El codigo de pais y el pais estaban al reves** en Eightfold (`input-7` es el prefijo del telefono, `input-10` el pais): el telefono quedaba sin prefijo y el pais nunca se elegia.
-11. **El scope del listbox no es el id del combobox**: el popup se renderiza en un portal, con otro id (`aria-controls` apunta a el). Buscando dentro de `#input-7` no se encontraba nada, y el fallback podia elegir la opcion de OTRO desplegable: **el codigo de pais termino escrito en el campo de email**.
-
-### Notes
-- **El `ok: true` era un falso positivo y ahora hay que ganarlo.** El reporte de `apply.mjs` decia "ok" con el CV sin adjuntar, porque `filled`/`missing` volvian VACIOS de los adaptadores. Ahora cada adaptador declara sus selectores, el orquestador verifica DOM contra estado de React, y el CV se verifica con lo unico verificable antes del envio (que el input exista y se le haya pasado el archivo). El CV real se prueba con la respuesta del servidor: Eightfold **consume** el archivo del input y su widget no re-pinta el nombre, asi que `input.files.length` da 0 siempre.
-- **La prueba end-to-end es la que encuentra los bugs; el test unitario no.** Los 7 tests pasan en verde mientras el formulario quedaba sin pais, sin codigo y con el codigo de pais en el email. Se ve en la captura, no en el exit code. Por eso el flujo deja evidencia (screenshot) de cada corrida.
-- **El captcha sigue mandando en la arquitectura (ADR-104).** `real-browser.mjs` se conecta al Chrome real del usuario por CDP cuando hay captcha, y el envio lo hace la persona: un captcha detecta el **contexto**, no los intentos.
-- **Pendiente de verificar con una corrida real:** los adaptadores de Lever y Ashby no se probaron end-to-end (Lever tiene captcha; Ashby necesita el orden del autofill). El de Eightfold si, con la pantalla de Mercado Pago.
-
----
-
-## [2026-10-23] - Dos postulaciones confirmadas (Mural y Mercado Pago), RYZ esperando un click humano
-
-### Added
-- **`docs/entrevistas/_general/outreach-2026-10-22/scripts/`** - los seis scripts de postulacion, reutilizables y documentados: `submit-mural.js`, `submit-ryz.js`, `submit-meli.js`, `fill-mural.js`, `fill-ryz.js`, `debug-mural-location.js`. Cada uno completa, **verifica campo por campo releyendo el DOM**, captura y solo envia con `--submit`.
-- **`docs/entrevistas/_general/outreach-2026-10-22/evidencia/`** - capturas del estado final de los tres formularios.
-- **Canal de LinkedIn operativo.** El `browser` de OpenClaw no arrancaba (no habia Chrome en `/Applications`); con Chrome instalado, `action=importprofile` copio **89 cookies** del perfil `Default` (incluidas las de LinkedIn) al perfil gestionado `imported`, y la sesion quedo viva: el feed cargo con el perfil de Gonzo, 92 vistas de perfil.
-- **Localizacion de la vacante de Mercado Pago** via su API: `https://careers-meli.mercadolibre.com/api/positions?country=AR` -> id 44891701, displayJobId 127795, y el ATS real es Eightfold (`https://mercadolibre.eightfold.ai/careers/apply?pid=44891701`).
-
-### Fixed
-- **El hCaptcha de Lever (RYZ) no se resuelve por automatizacion:** token 0 en headless y en browser visible, incluso clickeando el checkbox del iframe. El formulario de RYZ queda COMPLETO (captura con los 9 campos) y pendiente de ese unico paso humano. Es el unico limite real de la tanda.
-- **En Ashby (Mural) el campo "Location" no acepta "Buenos Aires"**: su autocomplete devuelve "No results" y solo reconoce "Argentina" y "Nunez". Con "Buenos Aires" el envio fallaba con "9 fields missing".
-- **En Ashby los `name` de los inputs desaparecen al re-renderizar** y hay que mapear por el texto del ancestro; ademas los `id` de los inputs de archivo se reordenan entre navegaciones.
-- **En Ashby el panel de "Autofill from resume" pisa el formulario**: su parseo asincrono sobrescribe los textos ya escritos. El orden correcto es CV -> esperar el autofill -> escribir con `type()` -> radios -> archivos.
-- **Los radios de Ashby no se marcan con `input.click()` desde JS** (React no lo registra) ni con `.check({force:true})` en todos los casos: hay que clickear la ETIQUETA.
-- **En Eightfold (MeLi) los campos se identifican por `id`, no por `name`** (`name=null` en todos). Y sus dos ultimos campos NO son areas de texto: `input-13` es la confirmacion de la politica de privacidad y `input-16` la pregunta de conflicto de interes, ambas con opciones Si/No. Escribir la presentacion ahi habria sido mandarla a una caja equivocada.
-- **En Eightfold el telefono no acepta `+` ni espacios**, y con el codigo de pais en +54 espera el numero NACIONAL. Ademas, al elegir el pais aparece un campo "Estado" nuevo; si el pais no queda elegido, ese campo ni existe y el envio falla con "Error: selecciona un Estado".
-- **Los inputs controlados de React no se limpian con Backspace** (el valor se concatena): hay que seleccionar todo y borrar. En macOS el select-all es `Meta+A`, no `Control+A`.
-- **El footer sticky de los formularios tapa los ultimos campos** y el click normal da timeout: hay que hacer `scrollIntoView` y usar click forzado.
-- **El boton de submit de Lever** tiene la clase dinamica `btn-submit`; el selector generico `button[type=submit]` agarra el boton OCULTO de hCaptcha (`id=hcaptchaSubmitBtn`).
-
-### Notes
-- **Dos de tres POSTULADOS y CONFIRMADOS por el servidor:**
-  - **Mural** (Ashby): "Your application was successfully submitted. We'll contact you if there are next steps." Salario USD 3.400/mes, CV + cover letter.
-  - **Mercado Pago** (Eightfold): "¡Gracias por su solicitud, Gonzalo!" + `201 {"success": true}` del servidor, con `location: Buenos Aires, Ciudad Autónoma de Buenos Aires, Argentina`.
-- **RYZ queda a un paso humano:** el formulario de Lever esta completo y verificado; lo unico que no se puede automatizar es el hCaptcha. En paralelo salio la **invitacion de conexion a Sonia Langone** (recruiter tecnica de RYZ, 2do grado, con nota de 833 caracteres: por que encaja, el AI Engineering OS, el servidor MCP propio, los 11 PRs, y las dos preguntas de screening: overlap con US en EST y nivel de ingles conversacional).
-- **El limite de LinkedIn es el grado de conexion:** las cuatro recruiters de RYZ (Sonia Langone, Valentina Magni, Valentina Tellechea, Maria Belen Giordano) son 2do grado, asi que el DM directo esta bloqueado. La via que funciona es la invitacion con nota, que ademas no tiene limite de caracteres con Premium.
-- **Los 4 candidatos de RYZ encontrados en la busqueda de personas:** Valentina Magni (Senior Talent Acquisition Partner), Sonia Langone (Tech Recruiter, LATAM), Valentina Tellechea (Technical Recruiter), Maria Belen Giordano (Recruiter). Mas los founders Jordan Metzner (CEO) y Sam Nadler.
-- **Scripts: los que quedan en `tmp/` no se versionan** (gitignored); las copias limpias y documentadas estan en `docs/entrevistas/_general/outreach-2026-10-22/scripts/`.
 
 ---
 
