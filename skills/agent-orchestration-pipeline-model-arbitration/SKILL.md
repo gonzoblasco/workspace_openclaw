@@ -62,12 +62,14 @@ El pipeline tiene tres roles con modelos **distintos entre si** (verificado por 
 
 | Rol | Modelo | Que hace |
 |---|---|---|
-| **A** (escribe) | `gpt-oss:120b-cloud` | Implementa la unidad desde el spec |
-| **B** (revisa y corrige) | `deepseek-v4.1-flash:cloud` | Revision adversarial: encuentra defects reales, escribe la evidencia y corrige. No relaja asserts |
+| **A** (escribe y corrige) | `gpt-oss:120b-cloud` | Implementa la unidad desde el spec. **Unico autorizado a modificar el codigo de produccion.** Cuando B reporta un defecto, A lo corrige |
+| **B** (solo revisa) | `deepseek-v4.1-flash:cloud` | Revision adversarial. **No edita produccion**: escribe la evidencia ejecutable de cada defecto en archivos `probe_*.py` y entrega el reporte. Es el profesor que devuelve el trabajo con las correcciones indicadas |
 | **C** (red de tests) | `minimax-m3.1-flash:cloud` | Escribe los tests de regresion que faltan y los valida por mutacion |
 | Pre-filtro | `gemma4:cloud` | Triage antes del gate B. **NO autoriza solo** |
 
-Flujo: pre-filtro -> A -> B -> (A corrige con el reporte de B) -> C.
+Flujo: pre-filtro -> A -> B (solo reporta) -> A (corrige) -> C (testea).
+
+**La frontera: solo A toca el codigo de produccion.** B aporta el juicio y la prueba, C aporta la red, A aporta el cambio. Medido: B encuentra MAS cuando no edita (10 findings vs 9) porque editarlo distrae de reportar.
 
 **Regla del rework:** cuando B reporta un defecto, **A corrige el codigo y C testea el defecto**. Todo finding de B tiene que terminar como un test de C: si nadie lo testea, el bug vuelve. Se midio que sin esa regla el rework de A cubrio 7 de 9 findings y uno se perdio dos veces.
 

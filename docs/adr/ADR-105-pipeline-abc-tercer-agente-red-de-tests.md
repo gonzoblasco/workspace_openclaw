@@ -68,16 +68,31 @@ A cubrio 7 de los 9 findings de B. El que se le escapo -`filter_by_date` descart
 
 ```
 pipeline_abc -> gpt-oss:120b-cloud / deepseek-v4.1-flash:cloud / minimax-m3.1-flash:cloud
-                 ^ A (escribe)          ^ B (revisa y corrige)        ^ C (red de tests)
+                 ^ A (escribe y corrige)   ^ B (solo revisa)          ^ C (red de tests)
 ```
 
 ### 1. Que hace cada rol
 
-- **A (escribe):** implementa la unidad desde el spec. No decide el modelo: lo decide el CORE.
-- **B (revisa y corrige):** revision adversarial. Busca defects reales, escribe la evidencia que los demuestra (un test o un script que falla) y corrige con cambios quirurgicos. **No relaja asserts.**
+- **A (escribe y corrige):** implementa la unidad desde el spec. Es el **unico autorizado a modificar el codigo de produccion**. Cuando B reporta un defecto, A lo corrige. No decide el modelo: lo decide el CORE.
+- **B (solo revisa):** revision adversarial. Busca defects reales y escribe la **evidencia ejecutable** de cada uno (un probe o un test que falla) en **archivos nuevos**. **No edita el codigo de produccion**: su unico entregable es el reporte. Es el profesor que devuelve el trabajo practico con las correcciones indicadas, no el que las aplica.
 - **C (red de tests):** escribe los tests que faltan para que el invariante no se rompa mas. Valida sus propios tests **por mutacion**: aplica una mutacion concreta del codigo, muestra que su test falla, y que vuelve a pasar al revertir.
 
-### 2. El rework vuelve a A, con una condicion
+La frontera es deliberada y es la que pide Gonzo: **solo A toca el codigo de produccion.** B aporta el juicio y la prueba; C aporta la red; A aporta el cambio.
+
+### 2. Por que B no edita: medido, no asumido
+
+Se corrio la cadena completa con B **prohibido de editar produccion** (solo puede crear `probe_*.py` y el reporte) sobre el mismo artefacto con los mismos 4 bugs sembrados:
+
+| | B revisa y corrige | B solo revisa (puro) |
+|---|---|---|
+| Findings reportados | 9 | **10** |
+| `reports.py` tocado por B | si (40 lineas) | **no** (md5 identico al sembrado) |
+| Recall final del codigo | 4/4 | **4/4** |
+| Tests finales | 21 (A+B) | **43** (A + B probes + C) |
+
+**B encuentra MAS cuando no edita** (10 vs 9). Editar lo Distrae: cuando B corrijo, dejo de reportar hallazgos (el de `datetime` en `filter_by_date` no aparecio). Con B limitado a reportar, la lista de defectos es mas completa y el codigo de produccion queda intacto hasta que A actue.
+
+### 3. El rework vuelve a A, con una condicion
 
 Cuando B reporta un defecto, **A corrige** (no B). El rework se midio y da el mismo recall (4/4) con +50% de requests.
 
@@ -85,19 +100,21 @@ Cuando B reporta un defecto, **A corrige** (no B). El rework se midio y da el mi
 
 Es decir: **A corrige el codigo, C testea el defecto.** Si B reporto un bug y nadie lo testea, ese bug vuelve.
 
-### 3. C no reemplaza a B, y el pre-filtro no autoriza solo
+En la cadena pura, A corrigio 7 de los 10 defectos (los 3 restantes eran sobre la calidad de los tests) y dejo explicitamente los 3 pendientes para C, con el detalle de por que el test original no aforcia nada. El reparto de trabajo se respeta sin superposicion.
+
+### 4. C no reemplaza a B, y el pre-filtro no autoriza solo
 
 C escribe tests sobre codigo ya revisado por B. **No es un revisor**: su alcance es la red de regresion, no el juicio sobre el diseno. La asimetria del pacto se mantiene: A != B, B != C, A != C. Pedir "otro ojo" con el mismo modelo no es un segundo ojo (ADR-077).
 
-El pre-filtro barato (`gemma4:cloud`, ADR-089) corre antes del gate B y **NO autoriza solo**: lo que toca logica o semantica pasa SIEMPRE por B. Con el ABC, la cadena completa es pre-filtro -> A -> B -> (A corrige) -> C.
+El pre-filtro barato (`gemma4:cloud`, ADR-089) corre antes del gate B y **NO autoriza solo**: lo que toca logica o semantica pasa SIEMPRE por B. Con el ABC, la cadena completa es pre-filtro -> A -> B (solo reporta) -> A (corrige) -> C (testea).
 
-### 4. Enforcement
+### 5. Enforcement
 
 El pacto ABC tiene el mismo tratamiento mecanico que el A/B (ADR-088): `scripts/check-pipeline-enforcement.py` verifica que la ruta `pipeline_abc` declare los tres modelos, que las fuentes sean consistentes entre si, que los tres sean **distintos entre si**, y que coincidan con el canon. Los tests del gate **siembran cada defecto** en arboles falsos y exigen que el check lo distinga de un arbol limpio.
 
 La ruta `pipeline_ab` **se conserva**: el ABC agrega un rol, no reemplaza el pacto. Para trabajo donde la red de regresion no aporta (cambios mecanicos, docs, scripts de un solo uso), A/B alcanza.
 
-### 5. Donde queda `beam:cloud`
+### 6. Donde queda `beam:cloud`
 
 **No entra al pipeline.** Los tres datos lo descartan:
 
@@ -107,7 +124,7 @@ La ruta `pipeline_ab` **se conserva**: el ABC agrega un rol, no reemplaza el pac
 
 Su lugar es donde el cuello de botella real es **tokens de razonamiento y contexto**, no requests: revision de artefactos grandes, analisis de codebase, contexto de 1M. Es un modelo de tarea, no un rol del pipeline.
 
-### 6. El limite de requests es compartido y es un presupuesto
+### 7. El limite de requests es compartido y es un presupuesto
 
 El 429 de Ollama Cloud es **por cuenta**. Un pipeline de tres agentes multiplica las requests por unidad de trabajo (el rework agrega un 50%). Con concurrencia alta (20 en vuelo) el limite castiga fuerte. La concurrencia efectiva del pipeline tiene que quedar en el rango 2-6, donde no hubo un solo 429.
 

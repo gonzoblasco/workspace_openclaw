@@ -101,7 +101,7 @@ REGISTRY = [
         "key": "pipeline-ab",
         "template": (
             "- **Pipeline A/B (ADR-077/ADR-088/ADR-089):** al delegar, el CORE spawnea DOS agentes "
-            "distintos, nunca uno: **A escribe** con `{model_pipeline_a}` y **B revisa/corrige** "
+            "distintos, nunca uno: **A escribe y corrige** con `{model_pipeline_a}` y **B solo revisa** "
             "con `{model_pipeline_b}`. **Pre-filtro** `{model_pipeline_prefilter}` corre primero "
             "(triage ~1s) pero **NO autoriza solo**: lo que toca logica/semantica pasa SIEMPRE por B. "
             "Los prompts los redacta el CORE (no el rol). El CORE verifica el repo, pero su verificacion "
@@ -115,7 +115,8 @@ REGISTRY = [
         "key": "pipeline-abc",
         "template": (
             "- **Pipeline A/B/C (ADR-077/ADR-088/ADR-089):** al delegar, el CORE spawnea TRES agentes: "
-            "**A escribe** con `{model_pipeline_a}`, **B revisa/corrige** con `{model_pipeline_b}`, "
+            "**A escribe y corrige** con `{model_pipeline_a}`, **B solo revisa** "
+            "con `{model_pipeline_b}`, "
             "**C escribe la red de tests de regresión** con `{model_pipeline_c}`. "
             "**Pre-filtro** `{model_pipeline_prefilter}` corre primero (triage ~1s) pero **NO autoriza solo**; "
             "el gate es `scripts/check-pipeline-enforcement.py`."
@@ -134,7 +135,7 @@ REGISTRY = [
         "file": "docs/SETUP.md",
         "key": "model-pipeline-ab",
         "template": (
-            "- **Pipeline A/B:** A escribe con `{model_pipeline_a}`; B revisa/corrige con "
+            "- **Pipeline A/B:** A escribe y corrige con `{model_pipeline_a}`; B solo revisa con "
             "`{model_pipeline_b}` (ADR-077/ADR-088). Ruta del router: "
             "`scripts/model-router.sh model pipeline_ab`."
         ),
