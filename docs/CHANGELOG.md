@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-11). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-12). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
 
@@ -43,6 +43,54 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Pending
 - **Requests quemados por hora: RESUELTO 2026-10-25.** Medido sobre los transcripts desde el 2026-10-20 (cuando minimax paso a ser default): **0,33% en minimax** (18 de 5.425 turnos) contra 0,22% en deepseek. Un turno cuenta como quemado si no tiene texto **ni** tool calls. Los 18 quemados consumieron **0 output tokens** (12 fueron `LLM idle timeout (120s)`, no razonamiento quemado), o sea **no gastaron cuota de output**. La espiral de thinking de la cata **no se materializo en uso real**: el riesgo grande queda descartado como factor y la decision queda sin condiciones.
+
+## [2026-10-25] - Los tres ATS verificados end-to-end: Ashby, Lever y Eightfold probados de verdad
+
+### Fixed
+Probar los adaptadores de Lever y Ashby (los dos que faltaban) encontro cuatro bugs mas, y uno era el peor de todos: **el gate de "no enviar si hay divergencias" era un no-op en Ashby y un falso positivo en Lever.**
+
+1. **Ashby: el formulario no hidrata con `domcontentloaded`** (0 inputs; hidrata ~2s despues). Y el bug de gallina y huevo: la espera de 12s por el parseo del CV estaba DENTRO del `if` que encuentra el input de CV, pero ese input solo existe despues de hidratar. Sin CV no habia espera, y los textos se escribian contra un formulario vacio: **el reporte decia "5 campos faltantes" con la pagina llena**. Ahora hay un `waitForSelector` al principio, que no depende de nada opcional.
+2. **Ashby: los radios no se verificaban.** Se hacia click y se asumia que habia funcionado. Ahora se lee que opcion quedo marcada en cada grupo, por el texto de su etiqueta. El gatelv2immediate dio `ok: false` con los radios BIEN marcados, por un bug del propio gate: truncaba el `name` del grupo con `split("_")`, y el nombre de Ashby es `<uuid>_e7e51cb6-...`: al truncar, "veteran_status" se confundia con "eeoc_veteran_status". Se busca por fragmento sobre el name completo.
+3. **Lever: los inputs NO tienen `_valueTracker`** (no es un form React). El gate comparaba el valor del DOM contra `""` y reportaba divergencia en TODOS los campos, con el formulario impecable: **un falso positivo que hacia parecer roto lo que funcionaba**. Ahora distingue tres estados: divergente (hay tracker y difieren), no verificable (no hay tracker: el DOM es la unica evidencia) y ok. Los no verificables se reportan aparte, para que la verificacion parcial sea visible.
+4. **Lever: el pitch se perdia.** El campo "Do you want to include additional information?" (donde va el AI Engineering OS, el servidor MCP y los 11 PRs) se llenaba con `answers.coverLetterText`, que es la cover letter - un archivo. En Lever la cover letter no se sube: es texto. El campo quedaba VACIO y el reporte lo daba por bien. Ahora usa la clave semantica `additionalInfo`.
+
+### Added
+- **Verificacion de radios en los dos adaptadores que no la tenian** (Ashby y Lever): no alcanza con que el click no tirara error, hay que leer que opcion quedo marcada.
+- **Dos tests nuevos** para el falso positivo de los forms no-React (`verifyFields` con un input sin tracker: no reporta divergencia, y queda como "no verificable").
+- **Evidencia de las tres corridas** en `docs/entrevistas/_general/outreach-2026-10-22/evidencia/`: `ashby-form-filled.png`, `ryz-form-filled.png`, `meli-form-filled-submitted.png`.
+
+### Notes
+- **Los tres adaptadores quedan probados end-to-end contra los formularios reales:**
+  - **Eightfold** (Mercado Pago): 6 campos + 4 desplegables + CV, `ok: true`, 0 divergentes.
+  - **Ashby** (Mural): 5 campos + 5 radios verificados + CV + cover letter, `ok: true`, 0 divergentes.
+  - **Lever** (RYZ): 6 campos + radio de ingles verificado + CV + pitch, `ok: true`, `captcha: true` (el unico que queda pendiente de un humano, y es el hCaptcha de siempre).
+- **El captcha de Lever se reporta como `captcha: true` y NO se intenta resolver.** Es el comportamiento correcto segun ADR-104: un captcha detecta el contexto, no los intentos.
+- **Una leccion que se repite y que queda escrita: el `ok: true` de un gate no es prueba de nada si el gate no verifica lo que dice verificar.** El gate de radios de Ashby daba `ok` sin mirar los radios; el de Lever daba divergencia en un formulario impecable. Los dos se detectaron mirando la CAPTURA, no leyendo el codigo ni el exit code.
+
+---
+
+## [2026-10-25] - El radar de vacantes deja de romperse en silencio
+
+### Added
+- **`skills/job-application/scripts/lib/discovery.mjs`** - las funciones PURAS del discovery (parseo de LinkedIn, filtro por query/pais/remoto, mapa de codigos de pais), extraidas del script que hace la red **para que queden testeadas**.
+- **Cuatro fuentes de job boards mas** (`remotive`, `arbeitnow`, `jobicy`, `himalayas`), cada una **medida contra su API antes de agregarla** (no se agrega una fuente que no responde). El radar consulta las cinco en paralelo y **reporta cuales respondieron y cuales fallaron**.
+- **20 tests nuevos** del discovery (27 en total en la suite del skill), que cubren los cinco bugs de abajo y el caso de un markup que vuelve al formato viejo.
+
+### Fixed
+El radar de vacantes dejo de encontrar nada el 2026-10-25, y la causa NO fue que no hubiera vacantes: fueron **cinco bugs encadenados, cada uno invisible desde afuera** (un radar mudo parece "no hay nada"). Ademas, uno lo encontrado un test nuevo:
+1. **Argumentos en el orden equivocado**: `src.url(country, start)` cuando el primer parametro de cada fuente es la QUERY. Se buscaban las vacantes de "AR" en vez de "frontend". La firma ahora es uniforme: `url(query, start, country)`.
+2. **LinkedIn cambio la clase del markup**: `result-card__full-card-link` ya no existe, ahora es `base-card__full-link` dentro de un `div.base-card`. La fuente devolvia CERO y nadie lo notaba. El parser ahora extrae titulo, empresa y ubicacion, y descarta la tarjeta si el titulo queda vacio.
+3. **El filtro de pais era un `includes` plano**: "ar" matcheaba "**Ar**kansas", y Bentonville, Arkansas, Estados Unidos pasaba el filtro de Argentina. Ahora es match por palabra entera, con un mapa de codigo -> nombre de pais.
+4. **Las vacantes remotas "Worldwide" se descartaban**: son justamente las oportunidades LATAM, que es lo que mejor rindio. Ahora entran.
+5. **LinkedIn recibe el nombre del pais, no el codigo**: se pasaba `location=AR` y la busqueda daba cero.
+6. **La concatenacion de la ubicacion dejaba `", "`** cuando ambos campos estaban vacios, y eso no esta vacio: la vacante se descartaba. Una vacante sin ubicacion no se descarta nunca.
+
+### Notes
+- **El aprendizaje de fondo, y el motivo de la lib separada: un scraper sin tests es un scraper que se rompe callado.** La regla de una regla: lo que decide QUE se devuelve va en una lib pura con tests; lo que hace la red queda en el script. Cuando un sitio cambie su markup o sus parametros, el fallo sale en la suite y no en el silencio.
+- **El script ahora imprime que fuentes respondieron** (`fuentes: linkedin, remotive, ...`). Es la primera cosa que hay que mirar cuando el radar se calla: si dice una que no esperabas, esa es la rota; si dice todas y no hay resultados, el problema esta en el filtro.
+- **Verificado end-to-end**: el radar devuelve vacantes reales de las 5 fuentes, en ingles y en espanol, incluyendo la de RYZ Labs. 27 tests en verde.
+
+---
 
 ## [2026-10-24] - kanam-sudoku-iphone: proyecto nuevo desde cero, con la dificultad definida por tecnica
 
@@ -146,54 +194,6 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Notes
 - **El aprendizaje operativo mas general de la tanda:** en formularios de React, `fill()` de Playwright deja el valor en el DOM pero NO actualiza el estado interno (`_valueTracker`). El servidor ve "9 fields missing" con los campos visiblemente llenos. Lo que funciono: teclear con `type()`, `Meta+A` para limpiar (en macOS, no `Control+A`), clicks de mouse sobre coordenadas para los desplegables, y click en la ETIQUETA para los radios. Todo documentado en los scripts.
 - **El buscador de vacantes de MeLi** (`api/positions?country=AR`) es mucho mas reliable que el listado del portal: 866 vacantes paginadas y filtrables, contra 12 en la primera pagina del HTML.
-
----
-
-## [2026-10-25] - Los tres ATS verificados end-to-end: Ashby, Lever y Eightfold probados de verdad
-
-### Fixed
-Probar los adaptadores de Lever y Ashby (los dos que faltaban) encontro cuatro bugs mas, y uno era el peor de todos: **el gate de "no enviar si hay divergencias" era un no-op en Ashby y un falso positivo en Lever.**
-
-1. **Ashby: el formulario no hidrata con `domcontentloaded`** (0 inputs; hidrata ~2s despues). Y el bug de gallina y huevo: la espera de 12s por el parseo del CV estaba DENTRO del `if` que encuentra el input de CV, pero ese input solo existe despues de hidratar. Sin CV no habia espera, y los textos se escribian contra un formulario vacio: **el reporte decia "5 campos faltantes" con la pagina llena**. Ahora hay un `waitForSelector` al principio, que no depende de nada opcional.
-2. **Ashby: los radios no se verificaban.** Se hacia click y se asumia que habia funcionado. Ahora se lee que opcion quedo marcada en cada grupo, por el texto de su etiqueta. El gatelv2immediate dio `ok: false` con los radios BIEN marcados, por un bug del propio gate: truncaba el `name` del grupo con `split("_")`, y el nombre de Ashby es `<uuid>_e7e51cb6-...`: al truncar, "veteran_status" se confundia con "eeoc_veteran_status". Se busca por fragmento sobre el name completo.
-3. **Lever: los inputs NO tienen `_valueTracker`** (no es un form React). El gate comparaba el valor del DOM contra `""` y reportaba divergencia en TODOS los campos, con el formulario impecable: **un falso positivo que hacia parecer roto lo que funcionaba**. Ahora distingue tres estados: divergente (hay tracker y difieren), no verificable (no hay tracker: el DOM es la unica evidencia) y ok. Los no verificables se reportan aparte, para que la verificacion parcial sea visible.
-4. **Lever: el pitch se perdia.** El campo "Do you want to include additional information?" (donde va el AI Engineering OS, el servidor MCP y los 11 PRs) se llenaba con `answers.coverLetterText`, que es la cover letter - un archivo. En Lever la cover letter no se sube: es texto. El campo quedaba VACIO y el reporte lo daba por bien. Ahora usa la clave semantica `additionalInfo`.
-
-### Added
-- **Verificacion de radios en los dos adaptadores que no la tenian** (Ashby y Lever): no alcanza con que el click no tirara error, hay que leer que opcion quedo marcada.
-- **Dos tests nuevos** para el falso positivo de los forms no-React (`verifyFields` con un input sin tracker: no reporta divergencia, y queda como "no verificable").
-- **Evidencia de las tres corridas** en `docs/entrevistas/_general/outreach-2026-10-22/evidencia/`: `ashby-form-filled.png`, `ryz-form-filled.png`, `meli-form-filled-submitted.png`.
-
-### Notes
-- **Los tres adaptadores quedan probados end-to-end contra los formularios reales:**
-  - **Eightfold** (Mercado Pago): 6 campos + 4 desplegables + CV, `ok: true`, 0 divergentes.
-  - **Ashby** (Mural): 5 campos + 5 radios verificados + CV + cover letter, `ok: true`, 0 divergentes.
-  - **Lever** (RYZ): 6 campos + radio de ingles verificado + CV + pitch, `ok: true`, `captcha: true` (el unico que queda pendiente de un humano, y es el hCaptcha de siempre).
-- **El captcha de Lever se reporta como `captcha: true` y NO se intenta resolver.** Es el comportamiento correcto segun ADR-104: un captcha detecta el contexto, no los intentos.
-- **Una leccion que se repite y que queda escrita: el `ok: true` de un gate no es prueba de nada si el gate no verifica lo que dice verificar.** El gate de radios de Ashby daba `ok` sin mirar los radios; el de Lever daba divergencia en un formulario impecable. Los dos se detectaron mirando la CAPTURA, no leyendo el codigo ni el exit code.
-
----
-
-## [2026-10-25] - El radar de vacantes deja de romperse en silencio
-
-### Added
-- **`skills/job-application/scripts/lib/discovery.mjs`** - las funciones PURAS del discovery (parseo de LinkedIn, filtro por query/pais/remoto, mapa de codigos de pais), extraidas del script que hace la red **para que queden testeadas**.
-- **Cuatro fuentes de job boards mas** (`remotive`, `arbeitnow`, `jobicy`, `himalayas`), cada una **medida contra su API antes de agregarla** (no se agrega una fuente que no responde). El radar consulta las cinco en paralelo y **reporta cuales respondieron y cuales fallaron**.
-- **20 tests nuevos** del discovery (27 en total en la suite del skill), que cubren los cinco bugs de abajo y el caso de un markup que vuelve al formato viejo.
-
-### Fixed
-El radar de vacantes dejo de encontrar nada el 2026-10-25, y la causa NO fue que no hubiera vacantes: fueron **cinco bugs encadenados, cada uno invisible desde afuera** (un radar mudo parece "no hay nada"). Ademas, uno lo encontrado un test nuevo:
-1. **Argumentos en el orden equivocado**: `src.url(country, start)` cuando el primer parametro de cada fuente es la QUERY. Se buscaban las vacantes de "AR" en vez de "frontend". La firma ahora es uniforme: `url(query, start, country)`.
-2. **LinkedIn cambio la clase del markup**: `result-card__full-card-link` ya no existe, ahora es `base-card__full-link` dentro de un `div.base-card`. La fuente devolvia CERO y nadie lo notaba. El parser ahora extrae titulo, empresa y ubicacion, y descarta la tarjeta si el titulo queda vacio.
-3. **El filtro de pais era un `includes` plano**: "ar" matcheaba "**Ar**kansas", y Bentonville, Arkansas, Estados Unidos pasaba el filtro de Argentina. Ahora es match por palabra entera, con un mapa de codigo -> nombre de pais.
-4. **Las vacantes remotas "Worldwide" se descartaban**: son justamente las oportunidades LATAM, que es lo que mejor rindio. Ahora entran.
-5. **LinkedIn recibe el nombre del pais, no el codigo**: se pasaba `location=AR` y la busqueda daba cero.
-6. **La concatenacion de la ubicacion dejaba `", "`** cuando ambos campos estaban vacios, y eso no esta vacio: la vacante se descartaba. Una vacante sin ubicacion no se descarta nunca.
-
-### Notes
-- **El aprendizaje de fondo, y el motivo de la lib separada: un scraper sin tests es un scraper que se rompe callado.** La regla de una regla: lo que decide QUE se devuelve va en una lib pura con tests; lo que hace la red queda en el script. Cuando un sitio cambie su markup o sus parametros, el fallo sale en la suite y no en el silencio.
-- **El script ahora imprime que fuentes respondieron** (`fuentes: linkedin, remotive, ...`). Es la primera cosa que hay que mirar cuando el radar se calla: si dice una que no esperabas, esa es la rota; si dice todas y no hay resultados, el problema esta en el filtro.
-- **Verificado end-to-end**: el radar devuelve vacantes reales de las 5 fuentes, en ingles y en espanol, incluyendo la de RYZ Labs. 27 tests en verde.
 
 ---
 
