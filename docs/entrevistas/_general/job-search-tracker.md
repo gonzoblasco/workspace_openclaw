@@ -90,6 +90,49 @@ no ingenieria), Infojini (ya es tu proceso vivo).
 - **Acción sugerida:** en la próxima call, preguntar de entrada el nivel de inglés conversacional que exige el cliente. Es la pregunta de costo cero que más rápido descarta.
 - Precedente: es el mismo req que EIT/HTC/Disney (bench amplio). No insistir.
 
+### Recontacto por inglés a recruiters previos (26/10/2026) - **1 respuesta de 5**
+
+Gonzo mandó a las **cinco** personas con las que había hablado y que lo rebotaron por el filtro de
+idioma. A Sol en **español** (con ella habló todo en español); a Samarth, Parthasarathy, Siraj y
+Julieta en **inglés**.
+
+| Contacto | Proceso | Respuesta |
+|---|---|---|
+| **Samarth** (Ritz-Carlton) | cerrado 22/09 | **Respondió 26/10: "Sure thing, Gonzalo and All the Best"** |
+| Julieta Costa (Staffy/Pfizer) | cerrado 20/10 | sin respuesta al momento del cierre |
+| Sol Bisio (cliente sin nombre) | cerrado 21/10 | sin respuesta al momento del cierre (mensaje en español) |
+| Siraj Shaik (Infjini) | **ABIERTO - proceso vivo** | sin respuesta al momento del cierre |
+| Parthasarathy (EIT/HTC/Disney) | cerrado 24/09 | sin respuesta al momento del cierre |
+
+**Lo que significa la respuesta de Samarth:** "Sure thing" es **acuerdo de reencuentro**, no
+compromiso: no menciona puesto, ni fecha, ni acción concreta. Y hay un dato que cambia el
+contexto: **ese proceso NO cayó por el idioma.** La empresa (Ritz-Carlton Yacht Collection) nunca
+respondió después de la primera ronda del 02/09: ni feedback ni cierre. Cerró por la regla de los
+10 días, no por un filtro, y el propio documento de seguimiento lo dejó como **ABIERTO** el 11/09.
+O sea: **Samarth no te rebotó por el inglés; el silencio fue de la empresa.** El mensaje de
+recontacto le llegó a un recruiter que ya habia sido tu aliado (se tomó el 60% del assessment con
+humor, pidió el retest el mismo día, hizo check-in casual un domingo).
+**Consecuencia: el mensaje de "reevaluación de nivel" no era el que Samarth necesitaba** - a él
+le hacía falta que el proceso se reabriera por otro motivo (una vacante nueva para el rol de
+Principal Full Stack en BA, o la apertura de la oficina). La reevaluación de idioma le sirve para
+**otro** puesto, no para revivir ese. Si vuelve a escribir, el ángulo a ofrecer es disponibilidad
+y rol, no nivel de inglés.
+
+**Sobre Siraj (Infjini): el proceso estaba VIVO.** Mandarle "en un mes o dos hacemos una
+reevaluación de nivel" a un proceso abierto tiene un riesgo real: **se lee como que ya se está
+descalificando por adelantado**, cuando el filtro de ese proceso todavía no se filtró. La regla
+del tracker era "no insistir más de una vez por proceso" y ese proceso no estaba cerrado: se
+insistió sin cierre previo. **Acción: si Siraj contesta, el mensaje se aclara rápido** (que la
+reevaluación es para "otro proceso" y que el de Infjini sigue en pie).
+
+**Corrección de credibilidad que hay que aplicar en los próximos contactos:** el mensaje dice
+*"I'm retaking the course to regain my fluency"* y *"re-validate my B2 level"*. **El corpus no
+tiene certificado de B2 (§4 solo Deque) ni antecedente de un curso de inglés previo** (verificado
+por grep en todo el workspace). Ambas frases presuponen una acreditación o un curso anterior que
+no están registrados. **La forma verificable, igual de fuerte:** *"I started a B2 intensive
+course at the CUI (UBA) today - two months - and I plan to take the C1 certification exam next
+year."* Es literal lo que dice el corpus, y tiene el plus de que el curso empieza HOY.
+
 ### Plan de inglés C1 (decisión de Gonzo, 2026-10-21)
 
 A raíz de los dos cierres por C1 conversacional, Gonzo se anota en el **CUI (Centro Universitario de Idiomas, UBA)** para la capacitación de C1 y su certificación, **mientras tanto sigue buscando**.
@@ -106,7 +149,7 @@ A raíz de los dos cierres por C1 conversacional, Gonzo se anota en el **CUI (Ce
 | EIT/HTC (cliente Disney) | Lead Software Engineer Digital Accessibility | 2026-09-11 | **cerrado 24/09** | Nunca hubo oferta firme: el rate lo aceptó el reclutador, el cliente jamás hizo call. Cierre del vendor: "we will update if they want to schedule call" (23/09). El mismo req lo publica Infojini: era bench amplio, no búsqueda urgente. No volver a escribir. Palanca que queda: CPACC antes del 30/11 si quiere retomar el hilo con un entregable. |
 | Wigou | AI-Native Software Engineering | 2026-08-31 | **cerrado 24/09** | Meet con Andrés Abraham (COO) el 02/09, sin feedback concreto. Tres semanas sin contacto. Cerrado por la propia regla del 02/09 ("si no hay novedad en ~1 semana, cerrado"). |
 | OpenSistemas | AI-Native (colaboración freelance) | proceso previo | **cerrado 11/09** | Avanzaron con otro candidato, después de la entrevista técnica del 03/09 con Fernando. |
-| Cruceros / Ritz-Carlton (oficina BA) | (a definir) | 2026-08-24 | **cerrado 22/09** | Samarth "let me check with the manager" repetido x7. Test 69% -> re-test OK -> manager interview 02/09. Feedback "24-48h" incumplido. |
+| Cruceros / Ritz-Carlton (oficina BA) | Principal Full Stack Developer | 2026-08-24 | **cerrado 22/09 por la regla de +10 días, NO por idioma** | Test 69% -> re-test OK -> primera ronda 02/09 (30 min). La empresa **nunca respondió**: ni feedback ni cierre. El documento de seguimiento (`docs/entrevistas/ritz-carlton/ritz-carlton-retest-seguimiento.md`) lo dejó explícitamente como **ABIERTO** el 11/09 ("pese a no haber tenido una respuesta directa, aun no la demos por cerrada"). Cerró por la regla de los 10 días, no por un filtro. **Es el proceso que más Gonzo valoraba**: abrir la oficina de BA, ~USD 82k, 2 viajes a US por mes, y **directo en nómina del cliente** (no agency). **Samarth respondió el 26/10 al recontacto por inglés: "Sure thing, Gonzalo and All the Best".** |
 | Kake | (a definir) | 2026-09-10 | **cerrado 22/09** | Pidieron video asincrónico el 10/09; nunca se envió ni hubo contacto posterior. |
 | Koin Limited | AI Product Engineer (Next.js + Supabase) | 2026-09-09 | **cerrado 22/09** | Confirmación humana (Lyliana Padilla) y nada más. Stack match perfecto. Si escribe ella, reactivar. |
 | Aliancers | (a definir) | 2026-09-09 | **cerrado 22/09** | Solo auto-confirmación genérica. Nunca hubo señal humana. |
