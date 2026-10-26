@@ -8,6 +8,12 @@ set -euo pipefail
 JSON_OUT=false
 [[ "${1:-}" == "--json" ]] && JSON_OUT=true
 
+# El propio watcher no debe señalarse a sí mismo: si su último run quedó en
+# "error", el watchdog lo marca -> el trigger dispara -> el watcher vuelve a
+# mirar el mismo error. Ciclo cerrado que se sostuvo 2 días sin resolverse.
+# SELF_ID se puede sobreescribir por env para otros despliegues.
+SELF_ID="${SELF_ID:-0650e620-0eb1-4f20-a634-cf2482d8e153}"
+
 if ! command -v jq >/dev/null; then
   echo "ERROR: jq not found" >&2
   exit 2
@@ -20,13 +26,16 @@ if [[ -z "$RAW" ]]; then
 fi
 
 NOW_MS=$(( $(date +%s) * 1000 ))
-PROBLEMS="$(echo "$RAW" | jq -c --argjson now "$NOW_MS" '
+PROBLEMS="$(echo "$RAW" | jq -c --argjson now "$NOW_MS" --arg self "$SELF_ID" '
   .jobs[]
   | select(
+      (.id != $self)
+      and (
       ((.enabled // true) | not)
       or ((.status // "idle") == "error")
       or (((.state.nextRunAtMs // .nextRunAtMs // 0) != 0) and ((.state.nextRunAtMs // .nextRunAtMs) < ($now - 3600000)))
       or (((.state.nextRunAtMs // .nextRunAtMs // 0) == 0) and ((.schedule.kind // "") != ""))
+      )
     )
   | {id: (.declarationKey // .id), name, enabled: (.enabled // true), status: (.status // "unknown"), nextRunAtMs: (.state.nextRunAtMs // .nextRunAtMs), schedule: .schedule.kind}
 ')"
