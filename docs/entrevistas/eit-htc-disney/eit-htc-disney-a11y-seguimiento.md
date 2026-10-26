@@ -37,7 +37,7 @@ EIT (E-IT Professionals Corp): staffing, Livonia MI, fundada 1999, ~56-179 emple
 | **Certificacion** (required en el JD: "Relevant regional certification" - vago) / IAAP (preferred) | **PARCIAL.** No tiene IAAP (CPWA/WAS/CPACC) - esta en Preferred, no Required. **SI tiene Deque University Accessibility Specialist Program (2021)**, que puede entrar como la "regional certification" del required. Verificar. |
 | JAWS, VoiceOver, NVDA, Narrator, ZoomText | **MAYORIA CUMPLE.** JAWS (uso real, no esta en el CV - agregar), VoiceOver, NVDA, TalkBack. Narrator/ZoomText: no confirmado. |
 | HTML, CSS, JS, WAI-ARIA expert | Fuerte. Es su terreno. |
-| Figma + plugins de a11y, anotaciones | **CUMPLE (confirmado por Gonzo 15:56).** |
+| Figma + plugins de a11y, anotaciones | **NO CUMPLE (corregido el 26/10/2026).** La atribución previa a "confirmado por Gonzo 15:56" era **falsa**: Gonzo no usa Figma, la revisión de diseño era sobre **componentes en Storybook**. La tabla se reconstruye con lo que el corpus sí dice: **Storybook, anotaciones a nivel componente, revisión de componentes React antes de implementar** |
 | Axe, Lighthouse, ACR reporting (Evinced, AMP) | Axe/Axe DevTools si (confirmado). Lighthouse si. Evinced/AMP: no confirmado. |
 | 3+ anos matrixed / SDLC en paralelo | **CUMPLE (confirmado).** Equipo cross-regional US/India en EY, agile squads. |
 | Jira (defectos + priorizacion) | **CUMPLE (confirmado por Gonzo 15:56).** |

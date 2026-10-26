@@ -6,11 +6,11 @@ Núñez, Buenos Aires, Argentina | Híbrido Buenos Aires | +54 11 4937 4656 | go
 
 ## Perfil
 
-Ingeniero de software con más de 10 años de experiencia, los últimos 1,5 construyendo productos con IA. Trabajo en el medio entre diseño e ingeniería: leo Figma, escribo los requisitos técnicos que hacen que un diseño se implemente bien, y hago que el código y el diseño no se separen. React y TypeScript son el stack principal, con design systems y accesibilidad como estándar de calidad y no como un plus. Hoy construyo productos propios de punta a punta, incluidos flujos AI-native con agentes, y uno de ellos es SoporteML: un CRM con IA para vendedores de Mercado Libre, el mismo dominio de este rol.
+Ingeniero de software con más de 10 años de experiencia, los últimos 1,5 construyendo productos con IA. Trabajo en el medio entre diseño e ingeniería: reviso los componentes en Storybook antes de implementarlos, escribo los requisitos técnicos que hacen que un diseño se implemente bien, y hago que el código y el diseño no se separen. React y TypeScript son el stack principal, con design systems y accesibilidad como estándar de calidad y no como un plus. Hoy construyo productos propios de punta a punta, incluidos flujos AI-native con agentes, y uno de ellos es SoporteML: un CRM con IA para vendedores de Mercado Libre, el mismo dominio de este rol.
 
 ## Competencias
 
-- **Frontend:** React, TypeScript, JavaScript, Vite, Next.js, HTML5, CSS3, Tailwind, Storybook, arquitectura de componentes, design systems, design tokens, Figma, prototipado rápido.
+- **Frontend:** React, TypeScript, JavaScript, Vite, Next.js, HTML5, CSS3, Tailwind, Storybook, arquitectura de componentes, design systems, design tokens, prototipado rápido.
 - **Diseño a código:** revisión de diseño previa a la implementación, requisitos técnicos con guía de código para historias de UI, anotaciones a nivel componente, implementación fiel de los componentes del design system.
 - **IA aplicada al producto:** flujos agénticos con subagentes y skills (OpenClaw), RAG con pgvector, automatización de tareas de exploración y verificación del código generado antes de integrarlo.
 - **Accesibilidad (diferencial):** WCAG 2.2 AA, patrones ARIA (cableado de role, state y property), lectores de pantalla (JAWS, NVDA, VoiceOver, TalkBack), Axe DevTools, Lighthouse, validación de accesibilidad automatizada en CI.
@@ -31,7 +31,7 @@ Ingeniero de software con más de 10 años de experiencia, los últimos 1,5 cons
 *09/2021 - 05/2025 | Híbrido*
 
 - Lideré la accesibilidad de **EY Motif**, librería de componentes React enterprise consumida por productos de cliente e internos: remedie **50+ componentes** a WCAG 2.2 AA (navegación por teclado, soporte de lector de pantalla, manejo de foco, contraste), con Axe DevTools, Lighthouse, JAWS y NVDA.
-- Fui el referente de accesibilidad del equipo en varios proyectos: revisaba componentes de Storybook y diseños de **Figma antes de implementarlos**, definía estándares y anotaciones a nivel componente, y escribía requisitos técnicos de accesibilidad con guía de código para las historias de UI.
+- Fui el referente de accesibilidad del equipo en varios proyectos: revisaba componentes de Storybook **antes de implementarlos**, definía estándares y anotaciones a nivel componente, y escribía requisitos técnicos de accesibilidad con guía de código para las historias de UI.
 - Prioricé defectos de accesibilidad por impacto WCAG en Jira, con guía de remediación a desarrolladores dentro del sprint.
 - Lideré un equipo de 3 ingenieros construyendo una plataforma de inteligencia financiera con IA en Next.js, con interfaces accesibles de arquitectura a producción.
 - Trabajé en un equipo matricial cross-regional (US / India), con varias fases del SDLC en paralelo dentro de squads ágiles.

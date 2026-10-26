@@ -14,7 +14,7 @@ Digital accessibility engineer with 10+ years in frontend engineering and access
 - **Accessibility standards:** WCAG 2.2 A/AA, WCAG 2.2 AAA guidance, WAI-ARIA Authoring Practices, Section 508, accessibility conformance reporting, emerging legislation awareness (EAA, ACA).
 - **Assistive technology:** JAWS, NVDA, VoiceOver, TalkBack (screen reader testing across web, iOS and Android).
 - **Testing and tooling:** axe-core, Axe DevTools, Lighthouse, Playwright, manual and automated audits, accessibility gating in CI/CD.
-- **Design and delivery:** Figma design review and accessibility annotations, Jira defect tracking and impact prioritization, agile SDLC, technical requirements for UI stories.
+- **Design and delivery:** component design review in Storybook and accessibility annotations, Jira defect tracking and impact prioritization, agile SDLC, technical requirements for UI stories.
 - **Design systems and frontend:** React, Next.js, JavaScript, TypeScript, enterprise component libraries, micro-frontends, HTML, CSS, Sass.
 - **Collaboration and leadership:** design review with designers and architects, in-sprint coaching for developers, component guidance and code examples, technical documentation, strong written and verbal communication, teamwork in matrixed cross-regional teams (US / India), mentoring and technical leadership.
 
@@ -24,7 +24,7 @@ Digital accessibility engineer with 10+ years in frontend engineering and access
 09/2021 - 05/2025 | Hybrid
 
 - Owned WCAG 2.2 AA compliance for EY Motif, an enterprise React component library consumed across client and internal products: audited and remediated 50+ components covering keyboard navigation, screen reader support, focus management and color contrast.
-- Served as accessibility reference across projects: reviewed Figma designs before implementation to catch compliance issues early, defined component-level standards, and wrote technical accessibility requirements with component guidance and code examples for UI stories.
+- Served as accessibility reference across projects: reviewed Storybook components before implementation to catch compliance issues early, defined component-level standards, and wrote technical accessibility requirements with component guidance and code examples for UI stories.
 - Tracked and prioritized accessibility defects by WCAG impact, and provided code remediation guidance to developers in sprint.
 - Recruited into a cross-regional, matrixed team (US / India) specifically for accessibility expertise; worked across multiple phases of the SDLC in parallel within agile squads.
 - Led a team of 3 engineers building an AI-powered financial intelligence platform in Next.js, delivering fully accessible interfaces from architecture to production.

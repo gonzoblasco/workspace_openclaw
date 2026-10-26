@@ -6,11 +6,11 @@ Núñez, Buenos Aires, Argentina | Remote LATAM (aligned to US EST) | +54 11 493
 
 ## Professional Summary
 
-Frontend engineer with 10+ years building production web applications, and the last 1.5 years building AI-native products. React and TypeScript are the main stack, with design systems and accessibility treated as quality bars rather than polish. AI coding tools (Claude Code, Codex, and a personal agent stack) are part of the daily workflow, not an experiment: the AI Engineering OS I built runs on a strict quarantine → analyze → verify → adopt method, so generated code is audited before it lands. 11 merged pull requests in production component libraries. I read Figma, prototype quickly, and ship.
+Frontend engineer with 10+ years building production web applications, and the last 1.5 years building AI-native products. React and TypeScript are the main stack, with design systems and accessibility treated as quality bars rather than polish. AI coding tools (Claude Code, Codex, and a personal agent stack) are part of the daily workflow, not an experiment: the AI Engineering OS I built runs on a strict quarantine → analyze → verify → adopt method, so generated code is audited before it lands. 11 merged pull requests in production component libraries. I review components in Storybook before implementation, prototype quickly, and ship.
 
 ## Core Skills
 
-- **Frontend:** React, TypeScript, JavaScript, Vite, Next.js, HTML5, CSS3, Tailwind, Storybook, component architecture, design systems, design tokens, Figma, responsive layouts.
+- **Frontend:** React, TypeScript, JavaScript, Vite, Next.js, HTML5, CSS3, Tailwind, Storybook, component architecture, design systems, design tokens, responsive layouts.
 - **AI-augmented development:** AI coding agents in the daily loop (Claude Code, Codex), agent orchestration, prompt and context design, evaluating where AI tooling accelerates and where it silently breaks.
 - **Accessibility (differential):** WCAG 2.2 AA, ARIA patterns (role, state and property wiring), screen readers (JAWS, NVDA, VoiceOver, TalkBack), Axe DevTools, Lighthouse, automated accessibility gating in CI.
 - **Backend and data:** Node.js, REST APIs, Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions), pgvector, Stripe billing, webhooks.
@@ -29,7 +29,7 @@ Frontend engineer with 10+ years building production web applications, and the l
 *09/2021 - 05/2025 | Hybrid*
 
 - Led accessibility for **EY Motif**, an enterprise React component library consumed across client and internal products: remediated **50+ components** to WCAG 2.2 AA (keyboard navigation, screen reader support, focus management, contrast) with Axe DevTools, Lighthouse, JAWS and NVDA.
-- Served as the team's accessibility reference across projects: reviewed Storybook components and Figma designs **before** implementation, defined component-level standards and annotations, and wrote technical accessibility requirements with code guidance for UI stories.
+- Served as the team's accessibility reference across projects: reviewed Storybook components **before** implementation, defined component-level standards and annotations, and wrote technical accessibility requirements with code guidance for UI stories.
 - Prioritized accessibility defects by WCAG impact in Jira, with remediation guidance to developers inside the sprint.
 - Led a team of 3 engineers building an AI-powered financial intelligence platform in Next.js, with accessible interfaces from architecture to production.
 - Worked in a matrixed, cross-regional team (US / India) across multiple SDLC phases in parallel within agile squads.
@@ -84,7 +84,7 @@ Merged fixes in production component libraries and design systems, each reviewed
 | AI-native products | Freelancer (SoporteML, Pro Motors) |
 | UI polish and user experience | Professional Summary, EY design review before implementation |
 | Design systems and component libraries | EY Motif, the 11 merged PRs |
-| Figma collaboration | EY (reviewed Figma designs before implementation) |
+| Design review | EY (reviewed components in Storybook before implementation) |
 | Rapid prototyping | Freelancer (prototype to shipped product) |
 | UI polish and eye for detail | EY design review; PRs with ARIA-level detail |
 | Startups, fast-moving teams | Freelancer: own product, first client, full cycle |

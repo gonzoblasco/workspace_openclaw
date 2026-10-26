@@ -14,7 +14,7 @@ Senior frontend engineer with 10+ years building and scaling production interfac
 - **Architecture:** component architecture, application lifecycle, SSR, design systems, micro-frontends, SOLID, clean code.
 - **Testing and quality:** Jest, React Testing Library, Playwright, Vitest, axe-core, automated quality gates in CI/CD.
 - **Frontend-backend integration:** webhooks, REST API integrations, Supabase Edge Functions, Stripe billing.
-- **Tooling and workflow:** Git, Jira, Figma, Biome, CI/CD pipelines, agile SDLC.
+- **Tooling and workflow:** Git, Jira, Biome, CI/CD pipelines, agile SDLC.
 - **Code review and mentoring:** review of pull requests and diffs, best practices, guidance and code examples for teammates.
 - **Accessibility (differential):** WCAG 2.2 A/AA, WAI-ARIA Authoring Practices, screen readers (JAWS, NVDA, VoiceOver, TalkBack).
 - **Collaboration:** cross-regional matrixed teams (US / India), proactive communication with product and UX.
@@ -32,7 +32,7 @@ Senior frontend engineer with 10+ years building and scaling production interfac
 
 - Built and maintained EY Motif, an enterprise React component library (design system) consumed across client and internal products: 50+ components covering keyboard navigation, focus management, screen reader support and color contrast.
 - Led a team of 3 engineers building an AI-powered financial intelligence platform in Next.js, delivering fully accessible interfaces from architecture to production.
-- Reviewed Figma designs before implementation and wrote technical requirements with component guidance and code examples for UI stories.
+- Reviewed components in Storybook before implementation and wrote technical requirements with component guidance and code examples for UI stories.
 - Provided code remediation guidance inside developers' branches, and tracked and prioritized defects by impact in Jira.
 - Recruited into a cross-regional, matrixed team (US / India) for frontend and accessibility expertise, working across multiple SDLC phases in parallel within agile squads.
 

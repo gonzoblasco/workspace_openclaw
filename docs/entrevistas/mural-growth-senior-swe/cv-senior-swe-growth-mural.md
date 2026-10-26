@@ -10,7 +10,7 @@ Software engineer with 10+ years building production software and the last 1.5 y
 
 ## Core Skills
 
-- **Frontend:** React, TypeScript, JavaScript, Vite, Next.js, HTML5, CSS3, Tailwind, Storybook, component architecture, design systems, Figma, responsive layouts.
+- **Frontend:** React, TypeScript, JavaScript, Vite, Next.js, HTML5, CSS3, Tailwind, Storybook, component architecture, design systems, responsive layouts.
 - **Experimentation:** A/B testing in production (Adobe Target), variant implementation as client-side JavaScript.
 - **AI-augmented development:** AI coding agents in the daily loop (Claude Code, Codex), agent orchestration, evaluating where AI tooling accelerates and where it silently breaks.
 - **Backend and data:** Node.js, REST APIs, Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions), pgvector, Stripe billing, webhooks.
@@ -31,7 +31,7 @@ Software engineer with 10+ years building production software and the last 1.5 y
 *09/2021 - 05/2025 | Hybrid*
 
 - Led accessibility for **EY Motif**, an enterprise React component library consumed across client and internal products: remediated **50+ components** to WCAG 2.2 AA (keyboard navigation, screen reader support, focus management, contrast) with Axe DevTools, Lighthouse, JAWS and NVDA.
-- Served as the team's accessibility reference across projects: reviewed Storybook components and Figma designs **before** implementation, defined component-level standards, and wrote technical requirements with code guidance for UI stories.
+- Served as the team's accessibility reference across projects: reviewed Storybook components **before** implementation, defined component-level standards, and wrote technical requirements with code guidance for UI stories.
 - Prioritized accessibility defects by WCAG impact in Jira, with remediation guidance to developers inside the sprint.
 - Led a team of 3 engineers building an AI-powered financial intelligence platform in Next.js, with accessible interfaces from architecture to production.
 - Worked in a matrixed, cross-regional team (US / India) across multiple SDLC phases in parallel within agile squads.

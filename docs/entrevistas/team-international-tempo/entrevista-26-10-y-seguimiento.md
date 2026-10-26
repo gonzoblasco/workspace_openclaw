@@ -69,7 +69,7 @@ en pie.
 2. **La exigencia es sobre la fluidez al "discutir y explicar temas técnicos"** (literal de David).
    No es un tema de acento ni de horario: es **poder sostener una conversación técnica en vivo y
    explicar decisiones**. Y eso es exactamente lo que Gonzo ya hace bien (en EY escribía los
-   requisitos técnicos de accesibilidad con ejemplos de código, y revisaba diseños en Figma antes
+   requisitos técnicos de accesibilidad con ejemplos de código, y revisaba los componentes en Storybook antes
    de implementar). **El gap es oral, pero la habilidad que el cliente pide - explicar decisiones
    técnicas - es su fuerte, no su debilidad.** Ese es el ángulo para la reevaluación.
 

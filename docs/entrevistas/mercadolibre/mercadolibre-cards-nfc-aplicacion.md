@@ -49,7 +49,7 @@ Escala: calificar (Expert/Proficient/Beginner). Completar descripcion solo donde
 
 #### Accessibility Standards
 `Ultima vez: EY (2021-2025)`
-> Accessibility standards are the core of my technical practice. At EY (2021-2025), I owned WCAG 2.2 AA compliance for EY Motif, an enterprise React component library: I defined component-level standards and annotations, wrote technical accessibility requirements for UI stories, and reviewed Figma designs against the standards before implementation. I work fluently with WCAG 2.2 A/AA and AAA guidance, WAI-ARIA Authoring Practices, Section 508 and emerging legislation (EAA, ACA), and I have applied them across web, iOS and Android. Earlier, at Super7UI (2020-2021), I led the accessibility audit for Warner Bros. Screeners, documenting 200+ WCAG violations with reproduction steps. I hold the Deque University Accessibility Specialist certification (2021), and I contribute standards-aligned fixes to open source design systems (Adobe React Spectrum, MUI, Meta Astryx, IBM Carbon).
+> Accessibility standards are the core of my technical practice. At EY (2021-2025), I owned WCAG 2.2 AA compliance for EY Motif, an enterprise React component library: I defined component-level standards and annotations, wrote technical accessibility requirements for UI stories, and reviewed components in Storybook against the standards before implementation. I work fluently with WCAG 2.2 A/AA and AAA guidance, WAI-ARIA Authoring Practices, Section 508 and emerging legislation (EAA, ACA), and I have applied them across web, iOS and Android. Earlier, at Super7UI (2020-2021), I led the accessibility audit for Warner Bros. Screeners, documenting 200+ WCAG violations with reproduction steps. I hold the Deque University Accessibility Specialist certification (2021), and I contribute standards-aligned fixes to open source design systems (Adobe React Spectrum, MUI, Meta Astryx, IBM Carbon).
 
 #### WCAG 2.0
 `Ultima vez: EY (2021-2025)`
@@ -89,7 +89,7 @@ Escala: calificar (Expert/Proficient/Beginner). Completar descripcion solo donde
 
 #### Design Review
 `Ultima vez: EY (2021-2025)`
-> Design review is part of how I work before code is written. At EY (2021-2025), I reviewed Figma designs before implementation to catch structural and compliance issues early, and I wrote technical requirements with component guidance and code examples for UI stories. That review covered semantics, focus order, color contrast and component contracts, so problems were caught at design time instead of in QA. Independently (2025-Present), I bring the same lens to my products and to open source: my contributions to component libraries (Adobe React Spectrum, MUI, Meta Astryx, IBM Carbon) require reasoning about intended interaction and semantics against the component API, which is design review applied to code. I also write component-level annotations so designers and developers share the same contract.
+> Design review is part of how I work before code is written. At EY (2021-2025), I reviewed components in Storybook before implementation to catch structural and compliance issues early, and I wrote technical requirements with component guidance and code examples for UI stories. That review covered semantics, focus order, color contrast and component contracts, so problems were caught at design time instead of in QA. Independently (2025-Present), I bring the same lens to my products and to open source: my contributions to component libraries (Adobe React Spectrum, MUI, Meta Astryx, IBM Carbon) require reasoning about intended interaction and semantics against the component API, which is design review applied to code. I also write component-level annotations so designers and developers share the same contract.
 
 #### Semantics
 `Ultima vez: EY (2021-2025)`
@@ -165,7 +165,7 @@ Escala: calificar (Expert/Proficient/Beginner). Completar descripcion solo donde
 
 #### Technical Requirements
 `Ultima vez: EY (2021-2025)`
-> Writing technical requirements is how I translate design and business needs into something developers can implement. At EY (2021-2025), I wrote technical accessibility requirements for UI stories with component guidance and code examples, defining component-level standards and annotations so designers and developers shared the same contract and compliance issues were caught before code. I reviewed Figma designs before implementation and turned them into concrete requirements covering semantics, focus order, keyboard interaction and color contrast. At Super7UI (2020-2021), I authored developer-ready specifications and implementation guidance for the core user journeys of Warner Bros. Screeners, covering 200+ documented issues with reproduction steps and proposed solutions. Independently (2025-Present), I apply the same discipline in my own projects and open source work, where each change starts from a clear expected behavior before implementation.
+> Writing technical requirements is how I translate design and business needs into something developers can implement. At EY (2021-2025), I wrote technical accessibility requirements for UI stories with component guidance and code examples, defining component-level standards and annotations so designers and developers shared the same contract and compliance issues were caught before code. I reviewed components in Storybook before implementation and turned them into concrete requirements covering semantics, focus order, keyboard interaction and color contrast. At Super7UI (2020-2021), I authored developer-ready specifications and implementation guidance for the core user journeys of Warner Bros. Screeners, covering 200+ documented issues with reproduction steps and proposed solutions. Independently (2025-Present), I apply the same discipline in my own projects and open source work, where each change starts from a clear expected behavior before implementation.
 
 #### PostgreSQL
 `Ultima vez: Independent (05/2025 - Present)`
@@ -185,7 +185,7 @@ Escala: calificar (Expert/Proficient/Beginner). Completar descripcion solo donde
 
 ### Solo calificar (sin descripcion)
 
-Soft skills y de proceso: Collaboration, Teamwork, Communication, Proactive Communication, Leadership, Coaching, Stakeholder Management, Prioritization, Defect Tracking, Compliance, Standardization and Compliance, SDLC, Agile SDLC, Agile, Migration, E-commerce, Implementation, Reporting, Billing, User Interface, User Experience, User Journey Mapping, Layouting, Breakpoint, Keyboarding, Figma, Material UI, SVG, Adobe Target, jQuery, Bot Framework, Tool Making.
+Soft skills y de proceso: Collaboration, Teamwork, Communication, Proactive Communication, Leadership, Coaching, Stakeholder Management, Prioritization, Defect Tracking, Compliance, Standardization and Compliance, SDLC, Agile SDLC, Agile, Migration, E-commerce, Implementation, Reporting, Billing, User Interface, User Experience, User Journey Mapping, Layouting, Breakpoint, Keyboarding, Material UI, SVG, Adobe Target, jQuery, Bot Framework, Tool Making.
 
 ### Borrar (ruido del taxonomy)
 

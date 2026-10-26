@@ -22,7 +22,7 @@ an incomplete specification and writing the specification myself.
 - **Architecture & State:** REST APIs, PostgreSQL, Supabase (RLS, Edge Functions), Node.js.
 - **AI-First Development:** Custom AI Engineering OS (persistent memory, subagents, skills), AI-assisted workflows.
 - **Quality & Accessibility:** WCAG 2.2 A/AA, WAI-ARIA, Playwright, axe-core, Lighthouse, Screen readers (JAWS, NVDA, VoiceOver, TalkBack).
-- **Tools & Process:** Git, Storybook, Figma, Jira, CI/CD, Technical Specification Writing, Code Review.
+- **Tools & Process:** Git, Storybook, Jira, CI/CD, Technical Specification Writing, Code Review.
 
 ## Experience
 
@@ -36,7 +36,7 @@ an incomplete specification and writing the specification myself.
 **EY (Ernst & Young)** | 09/2021 - 05/2025 | Hybrid
 *Senior Frontend Engineer, Accessibility Lead*
 - Owned WCAG 2.2 AA compliance for EY Motif (Enterprise React component library), auditing and remediating 50+ components using Axe DevTools, Lighthouse, JAWS, and NVDA.
-- Reviewed components in Storybook and Figma designs with the design team *before* implementation, then wrote the technical accessibility requirements, component-level annotations and code-guidance examples the developers worked from - the spec was mine, not a ticket I was handed.
+- Reviewed components in Storybook with the design team *before* implementation, then wrote the technical accessibility requirements, component-level annotations and code-guidance examples the developers worked from - the spec was mine, not a ticket I was handed.
 - Managed accessibility defects in Jira based on WCAG impact, providing direct remediation guidance to developers within their feature branches.
 - Partnered with design and product on the library, where I was the team's reference point for accessibility decisions across client and internal products.
 - Integrated into a cross-regional matrix team (US/India), contributing across all SDLC phases within agile squads.

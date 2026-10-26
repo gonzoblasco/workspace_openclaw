@@ -16,7 +16,7 @@ Senior full stack engineer with 10+ years building and shipping production web a
 - **Languages:** TypeScript / JavaScript (primary), Python (working proficiency, AI-assisted), SQL.
 - **Testing and quality:** Jest, React Testing Library, Playwright, Vitest, axe-core, automated quality gates in CI/CD, SOLID, clean code.
 - **Cloud and DevOps:** Azure (Super7UI, EY), Docker, CI/CD pipelines, Git.
-- **Tools and workflow:** Bitbucket, Jira, Figma, Biome, agile SDLC.
+- **Tools and workflow:** Bitbucket, Jira, Biome, agile SDLC.
 - **Leadership and collaboration:** code review of PRs and diffs, mentoring and in-sprint coaching, technical requirements and documentation, cross-regional matrixed teams (US / India), proactive communication with product and UX.
 - **Accessibility (differential):** WCAG 2.2 A/AA, WAI-ARIA Authoring Practices, screen readers (JAWS, NVDA, VoiceOver, TalkBack).
 
@@ -35,7 +35,7 @@ Senior full stack engineer with 10+ years building and shipping production web a
 - Led a team of 3 engineers building an AI-powered financial intelligence platform in Next.js, delivering it end to end from architecture to production.
 - Built and maintained EY Motif, an enterprise React component library (design system) consumed across client and internal products: 50+ components covering keyboard navigation, focus management and color contrast.
 - Delivered full stack work integrating frontend with backend services and APIs, working across multiple SDLC phases in parallel within agile squads.
-- Reviewed Figma designs before implementation and wrote technical requirements with component guidance and code examples for UI stories; tracked and prioritized defects in Jira.
+- Reviewed components in Storybook before implementation and wrote technical requirements with component guidance and code examples for UI stories; tracked and prioritized defects in Jira.
 - Mentored and coached engineers in-sprint, providing code remediation guidance directly inside their branches; recruited into a cross-regional, matrixed team (US / India).
 - Worked with Azure services as part of the delivery stack.
 

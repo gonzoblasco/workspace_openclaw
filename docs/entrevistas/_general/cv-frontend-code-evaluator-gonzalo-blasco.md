@@ -20,7 +20,7 @@ Astryx and MUI.
 - **Code and layout evaluation:** reading HTML/CSS/JS to assess correctness, semantic structure, flexbox, CSS
   grid, media queries, and legacy layout models including float and table-based layouts. DevTools as muscle
   memory for inspecting DOM, styles and computed layout.
-- **Visual fidelity:** pixel-level review of rendered UI against design intent, including Figma design review
+- **Visual fidelity:** pixel-level review of rendered UI against design intent, including component design review
   and writing component-level implementation specs before code is written.
 - **Accessibility as a structural lens:** WCAG 2.2 A/AA, WAI-ARIA Authoring Practices, ARIA, landmarks, heading
   hierarchy, keyboard navigation, focus management, color contrast.
@@ -51,7 +51,7 @@ Astryx and MUI.
 - Owned WCAG 2.2 AA compliance for EY Motif, an enterprise React component library consumed across client and
   internal products: audited and remediated 50+ components covering keyboard navigation, screen reader support,
   focus management and color contrast.
-- Reviewed Figma designs before implementation to catch structural and compliance issues early, and wrote
+- Reviewed components in Storybook before implementation to catch structural and compliance issues early, and wrote
   technical requirements with component guidance and code examples for UI stories.
 - Tracked and prioritized accessibility defects by WCAG impact and provided code remediation guidance to
   developers in sprint, working directly inside their branches.

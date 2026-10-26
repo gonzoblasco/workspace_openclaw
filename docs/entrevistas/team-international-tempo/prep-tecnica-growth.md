@@ -21,7 +21,7 @@ defendible.
 |---|---|
 | A/B testing en producción (Minutentag 2019, Adobe Target, variantes como snippets de JS nativo contra usuarios reales) | Feature flags como plataforma (ninguna) |
 | Hacer que una calidad blanda se vuelva medible y exigible en el pipeline (WCAG 2.2 AA, 50+ componentes, axe-core + Playwright en CI que frena el merge) | Instrumentación de eventos de analytics (ninguna) |
-| Escribir la especificación técnica antes de implementar (requisitos de accesibilidad con ejemplos de código, anotaciones a nivel componente, revisiones de Figma y Storybook antes del desarrollo) | Análisis de funnel, activación/retención/conversión (ninguno) |
+| Escribir la especificación técnica antes de implementar (requisitos de accesibilidad con ejemplos de código, anotaciones a nivel componente, revisiones de componentes en Storybook antes del desarrollo) | Análisis de funnel, activación/retención/conversión (ninguno) |
 | Métricas de contenido: 2M+ usuarios mensuales, 200+ violaciones resueltas, 50+ componentes auditados | MDE, power analysis, experimentos multivariantes con volumen estadístico (ninguno) |
 | AI-first real: sistema propio con agentes y memoria persistente, CRM con IA end-to-end en producción | - |
 
@@ -161,7 +161,7 @@ nombrar LaunchDarkly como si lo hubieras usado.
 
 > At EY (Sep 2021 - May 2025) I was recruited into a cross-regional matrix team, US and India, and
 > worked across several SDLC phases in parallel. With design, I reviewed components in Storybook
-> and designs in Figma *before* implementation, then wrote the requirements and the code guidance.
+> in Storybook *before* implementation, then wrote the requirements and the code guidance.
 > I wrote technical accessibility requirements with code examples, because the spec was mine to
 > write, not a ticket someone handed me. With QA, the acceptance criteria were automatable, so
 > they went into the pipeline. I also worked with technical writers on the documentation for

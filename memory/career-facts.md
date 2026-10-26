@@ -106,10 +106,13 @@ Qué hizo:
 - **EY Motif**, librería de componentes React enterprise consumida por productos de cliente e
   internos: auditó y remedió **50+ componentes** a WCAG 2.2 AA (navegación por teclado, soporte de
   lector de pantalla, manejo de foco, contraste), con Axe DevTools, Lighthouse, JAWS y NVDA.
-- **Referente de accesibilidad del equipo** en varios proyectos: revisaba componentes de Storybook
-  y diseños **antes** de implementar, definía estándares y anotaciones a nivel componente, y
-  escribía requisitos técnicos de accesibilidad con guía de código para las historias de UI.
-  **Herramientas:** Figma (revisión de diseño), Axe DevTools, Lighthouse, Storybook, Jira.
+- **Referente de accesibilidad del equipo** en varios proyectos: revisaba componentes de
+  **Storybook (React)** **antes** de implementar, definía estándares y anotaciones a nivel
+  componente, y escribía requisitos técnicos de accesibilidad con guía de código para las
+  historias de UI.
+  **Herramientas:** Storybook (revisión de componentes en React), Axe DevTools, Lighthouse, Jira.
+  **NO usa Figma** (corrección de Gonzo, 26/10/2026): la revisión de diseño era sobre los
+  componentes en Storybook, no sobre Figma. Figma salió de los CVs el 26/10/2026.
   **Conocimiento de ARIA:** WAI-ARIA Authoring Practices y el cableado de `role`, `state` y
   `property` en componentes propios - es el trabajo de los 11 PRs mergeados de §5.1, que son
   precisamente correcciones de semántica ARIA.

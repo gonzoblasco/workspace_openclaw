@@ -38,7 +38,7 @@
 - **Hook:** "what caught my attention is the premise that AI coding tools are part of the daily workflow rather than something bolted on".
 - **Hecho:** el AI Engineering OS con el metodo quarantine -> analyze -> verify -> adopt.
 - **Diferenciador:** los 11 PRs mergeados, y el hecho de que el output del metodo es codigo que llega a produccion con review de maintainers.
-- **Segunda linea de confianza:** "I also read Figma, review designs before implementation, and treat WCAG 2.2 AA as a release criterion".
+- **Segunda linea de confianza:** "I also review components in Storybook before implementation, and treat WCAG 2.2 AA as a release criterion".
 - **Preguntas:** overlap con US en EST (primera), nivel de ingles conversacional (ultima).
 - **Idioma del mensaje:** ingles.
 
