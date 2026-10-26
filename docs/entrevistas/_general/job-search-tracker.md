@@ -124,7 +124,7 @@ no ingenieria), Infojini (ya es tu proceso vivo).
 - **Roadmap.sh Pro como material**: curso de a11y (16 lecciones en 4 modulos: focus architecture, ARIA dinamica, verificacion AT cross-platform, operaciones de accesibilidad enterprise) leido **en voz alta**; la Lección 1.1 (focus trap) ya esta al 3/5.
 - **Mock interviews en ingles**: es lo que ataca el gap real (explicar decisiones tecnicas en vivo). El curso solo no alcanza.
 
-### Recontacto por inglés a recruiters previos (26/10/2026) - **3 respuestas de 5**
+### Recontacto por inglés a recruiters previos (26/10/2026) - **4 respuestas de 5** (3 aceptan el reencuentro, 1 responde "on hold")
 
 Gonzo mandó a las **cinco** personas con las que había hablado y que lo rebotaron por el filtro de
 idioma. A Sol en **español** (con ella habló todo en español); a Samarth, Parthasarathy, Siraj y
@@ -136,7 +136,7 @@ Julieta en **inglés**.
 | **Julieta Costa** (Staffy/Pfizer) | cerrado 20/10 | **Respondió 26/10: "Hi, Gonzalo. Of course :) Best!"** - acepta el reencuentro. El gate real lo ponía **Pfizer** (cliente), no ella |
 | **Siraj Shaik** (Infjini) | **ABIERTO** | **Respondió 26/10 con contenido: "estudiá inglés para cuando me presente a Disney"** - el idioma bloquea la presentación al cliente, no el proceso |
 | Sol Bisio (cliente sin nombre) | cerrado 21/10 | sin respuesta al momento del cierre (mensaje en español) |
-| Parthasarathy (EIT/HTC/Disney) | cerrado 24/09 | sin respuesta al momento del cierre |
+| **Parthasarathy** (EIT/HTC/Disney) | cerrado 24/09 | **Respondió 26/10 13:36: "Great. We will update you if we have response. Position is on hold it seems"** - No menciona el inglés ni la reevaluación: es un "te avisamos si hay novedades" + "la posición está en pausa". **Lo que dice es que la POSICIÓN está en pausa** (el req de Disney, en el canal de EIT). **Lo que NO dice es por qué ni si el candidato queda en pie** - eso no está registrado y no se afirma. |
 
 **Lo que significa la respuesta de Samarth:** "Sure thing" es **acuerdo de reencuentro**, no
 compromiso: no menciona puesto, ni fecha, ni acción concreta. Y **nunca dijo por qué se había
@@ -161,6 +161,21 @@ espera con condición, no cerrado. (Corrección a la lectura del 26/10 al mediod
 supuesto que el filtro de este proceso todavía no se había filtrado. **Sí se había filtrado**, y
 el propio Siraj lo dijo. El mensaje de recontacto no propuesta nada que chocara: coincidía con lo
 que él ya pensaba.)
+
+**Cuarta respuesta: Parthasarathy (EIT/HTC/Disney), 26/10 13:36 - "Great. We will update you if we have response. Position is on hold it seems."**
+Es la única de las cuatro que **no engancha con la reevaluación**: su respuesta no menciona el
+inglés ni la capacitación, y su contenido es "te avisamos si hay novedades" + "la posición está en
+pausa". **Lo verificable es que la POSICIÓN del req de Disney está en pausa en el canal de EIT.**
+Lo que **no** está registrado (y no se afirma): por qué está en pausa, ni si el candidato queda en
+pie en ese canal, ni si el "Great" es un rechazo o un acknowledgment. **Un "Great" seguido de "on
+hold" no es una señal unívoca: puede ser cortesía o puede ser un no.**
+**Por qué importa: EIT e Infojini son DOS sub-vendors del MISMO req** (cadena Disney -> HTC ->
+sub-vendor), y no se conocen entre sí. El req está "on hold" en EIT y **vivo, con entrevista en
+noviembre, en Infojini**. Un mismo puesto puede estar pausado en un canal y vivo en el otro, y eso
+explica por qué el tracker los tenía en estados distintos.
+**Acción: no preguntar nada a Parthasarathy** (la regla del proceso sigue siendo no insistir), pero
+**ese dato se cruza con Siraj**: si el req estuviera en pausa a nivel de cliente (Disney/HTC),
+afectaría a los dos. El que puede confirmarlo es Siraj, y él tiene la entrevista en noviembre.
 
 **Lo que muestra el patrón de las 3 respuestas (Samarth, Julieta, Siraj):** en los tres casos, el
 **intermediario no es quien pone la barra de idioma** - la pone el cliente final (Pfizer, Disney,
