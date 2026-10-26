@@ -140,6 +140,16 @@ REGISTRY = [
             "`scripts/model-router.sh model pipeline_ab`."
         ),
     },
+    {
+        "file": "docs/SETUP.md",
+        "key": "model-pipeline-abc",
+        "template": (
+            "- **Pipeline A/B/C:** A escribe y corrige con `{model_pipeline_a}`; B solo revisa con "
+            "`{model_pipeline_b}`; C escribe la red de tests de regresión con `{model_pipeline_c}` "
+            "(ADR-077/ADR-088/ADR-105). Ruta del router: "
+            "`scripts/model-router.sh model pipeline_abc`."
+        ),
+    },
 ]
 
 
