@@ -105,18 +105,19 @@ Julieta en **inglés**.
 | Parthasarathy (EIT/HTC/Disney) | cerrado 24/09 | sin respuesta al momento del cierre |
 
 **Lo que significa la respuesta de Samarth:** "Sure thing" es **acuerdo de reencuentro**, no
-compromiso: no menciona puesto, ni fecha, ni acción concreta. Y hay un dato que cambia el
-contexto: **ese proceso NO cayó por el idioma.** La empresa (Ritz-Carlton Yacht Collection) nunca
-respondió después de la primera ronda del 02/09: ni feedback ni cierre. Cerró por la regla de los
-10 días, no por un filtro, y el propio documento de seguimiento lo dejó como **ABIERTO** el 11/09.
-O sea: **Samarth no te rebotó por el inglés; el silencio fue de la empresa.** El mensaje de
-recontacto le llegó a un recruiter que ya habia sido tu aliado (se tomó el 60% del assessment con
-humor, pidió el retest el mismo día, hizo check-in casual un domingo).
-**Consecuencia: el mensaje de "reevaluación de nivel" no era el que Samarth necesitaba** - a él
-le hacía falta que el proceso se reabriera por otro motivo (una vacante nueva para el rol de
-Principal Full Stack en BA, o la apertura de la oficina). La reevaluación de idioma le sirve para
-**otro** puesto, no para revivir ese. Si vuelve a escribir, el ángulo a ofrecer es disponibilidad
-y rol, no nivel de inglés.
+compromiso: no menciona puesto, ni fecha, ni acción concreta. Y **nunca dijo por qué se había
+cerrado el proceso** (ver la fila de Ritz-Carlton: el motivo del silencio de la empresa no está
+registrado; hay dos hipótesis y ninguna verificada). Lo que sí sabemos: **no fue un rechazo** -
+no hubo feedback ni decisión, y el proceso estaba explícitamente ABIERTO el 11/09. Cerró por la
+regla de los 10 días.
+**Consecuencia práctica: el mensaje de "reevaluación de nivel" no era exactamente lo que Samarth
+necesitaba.** A él lo que le hacía falta es que el proceso se reabriera por otro motivo (una
+vacante nueva para Principal Full Stack en BA, o que la apertura de la oficina se activara). La
+reevaluación de idioma le sirve para **otro** puesto. Si vuelve a escribir, el ángulo a ofrecer
+es **disponibilidad y rol**, no nivel de inglés: preguntarle si el rol sigue abierto y si hay
+algo nuevo del lado del cliente. El mensaje de idioma ya está enviado y no hizo daño (la relación
+quedó tibia y viva, que era el objetivo), pero **no esperes que él lo lea como "reabre el proceso
+de Ritz"**.
 
 **Sobre Siraj (Infjini): el proceso estaba VIVO.** Mandarle "en un mes o dos hacemos una
 reevaluación de nivel" a un proceso abierto tiene un riesgo real: **se lee como que ya se está
@@ -149,7 +150,7 @@ A raíz de los dos cierres por C1 conversacional, Gonzo se anota en el **CUI (Ce
 | EIT/HTC (cliente Disney) | Lead Software Engineer Digital Accessibility | 2026-09-11 | **cerrado 24/09** | Nunca hubo oferta firme: el rate lo aceptó el reclutador, el cliente jamás hizo call. Cierre del vendor: "we will update if they want to schedule call" (23/09). El mismo req lo publica Infojini: era bench amplio, no búsqueda urgente. No volver a escribir. Palanca que queda: CPACC antes del 30/11 si quiere retomar el hilo con un entregable. |
 | Wigou | AI-Native Software Engineering | 2026-08-31 | **cerrado 24/09** | Meet con Andrés Abraham (COO) el 02/09, sin feedback concreto. Tres semanas sin contacto. Cerrado por la propia regla del 02/09 ("si no hay novedad en ~1 semana, cerrado"). |
 | OpenSistemas | AI-Native (colaboración freelance) | proceso previo | **cerrado 11/09** | Avanzaron con otro candidato, después de la entrevista técnica del 03/09 con Fernando. |
-| Cruceros / Ritz-Carlton (oficina BA) | Principal Full Stack Developer | 2026-08-24 | **cerrado 22/09 por la regla de +10 días, NO por idioma** | Test 69% -> re-test OK -> primera ronda 02/09 (30 min). La empresa **nunca respondió**: ni feedback ni cierre. El documento de seguimiento (`docs/entrevistas/ritz-carlton/ritz-carlton-retest-seguimiento.md`) lo dejó explícitamente como **ABIERTO** el 11/09 ("pese a no haber tenido una respuesta directa, aun no la demos por cerrada"). Cerró por la regla de los 10 días, no por un filtro. **Es el proceso que más Gonzo valoraba**: abrir la oficina de BA, ~USD 82k, 2 viajes a US por mes, y **directo en nómina del cliente** (no agency). **Samarth respondió el 26/10 al recontacto por inglés: "Sure thing, Gonzalo and All the Best".** |
+| Cruceros / Ritz-Carlton (oficina BA) | Principal Full Stack Developer | 2026-08-24 | **cerrado 22/09 por la regla de +10 días. Motivo del cierre NO SABIDO** | Lo que consta: test 69% -> re-test OK -> primera ronda con la empresa 02/09 (30 min) -> **silencio de la empresa**: ni feedback ni decisión. El documento de seguimiento (`docs/entrevistas/ritz-carlton/ritz-carlton-retest-seguimiento.md`) lo dejó explícitamente como **ABIERTO** el 11/09 ("pese a no haber tenido una respuesta directa, aun no la demos por cerrada"). Cerró por la regla de los 10 días, **no por un rechazo**. **El motivo concreto del silencio nunca se registró: hay dos hipótesis y ninguna verificada** - (a) el idioma (en una ronda de hiring en inglés y un puesto Principal Full Stack para una apertura de oficina en BA, es plausible), (b) el cliente reordenó prioridades, o el rol se cubrió con otra persona. Lo que NO hay: "Samarth dijo let me check with the manager x7" ni "feedback 24-48h incumplido" - **esas dos frases estaban en este tracker sin fuente y se sacaron el 26/10** (ver `git log -S`). **Es el proceso que más Gonzo valoraba**: abrir la oficina de BA, ~USD 82k, 2 viajes a US por mes, **directo en nómina del cliente** (no agency). **Samarth respondió el 26/10 al recontacto por idioma: "Sure thing, Gonzalo and All the Best"** - y **nunca dijo por qué se había cerrado**. |
 | Kake | (a definir) | 2026-09-10 | **cerrado 22/09** | Pidieron video asincrónico el 10/09; nunca se envió ni hubo contacto posterior. |
 | Koin Limited | AI Product Engineer (Next.js + Supabase) | 2026-09-09 | **cerrado 22/09** | Confirmación humana (Lyliana Padilla) y nada más. Stack match perfecto. Si escribe ella, reactivar. |
 | Aliancers | (a definir) | 2026-09-09 | **cerrado 22/09** | Solo auto-confirmación genérica. Nunca hubo señal humana. |
