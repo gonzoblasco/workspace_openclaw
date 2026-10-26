@@ -109,13 +109,20 @@ no ingenieria), Infojini (ya es tu proceso vivo).
 
 **Conclusión operativa: el curso NO resuelve la entrevista de noviembre.** Con 1-2 semanas no se cambia un nivel oral. La preparación de la entrevista tiene que ser **específica y oral**: mock interviews de a11y en inglés, no curso general. El B2 intensivo del CUI sirve para el plano de fondo (fin de diciembre) y para la reevaluacion de TEAM, no para esto.
 
-**Riesgo de lectura del mensaje de Gonzo:** el orden fue Siraj propone fechas -> Gonzo pide "hope it's the second week". Eso puede leerse como "todavia no estoy listo" y abrir una pregunta sobre la readiness. Siraj respondio "yes / Yeah!" sin Guillermo nada: **el mensaje quedo en ambiguo, y la ventana sigue siendo 1ra O 2da semana.** Si hay que fijar, hay que fijar.
+**Lectura del mensaje de Gonzo (confirmada por Gonzo, 26/10):** el "yes" de Siraj fue a "hope it's the second week" y el "Yeah!" a "still in the run". La ventana quedo en **la 2da semana de noviembre** segun la lectura de Gonzo, pero **sin confirmacion explicita de Siraj**: el mensaje quedo en ambiguo y la ventana sigue siendo "1ra O 2da" hasta que el invite llegue.
+
+**Decision de Gonzo (26/10): NO re-preguntar lo de la certificacion.** Siraj ya sabe de los examenos: Gonzo lo declaro el 19/10 ("course completion certificates, not IAAP credentials, CPACC next window, certification in January") y Siraj respondio "I am going to check this with my manager". **No se repite ni se invade.** Lo que faltaba en el proceso era el ingles, y eso fue lo unico que se agarro. Queda como dato de que el gate se consulta con el manager, sin gestion activa.
 
 **Pendientes concretos:**
-1. **Fijar la fecha y el formato** con Siraj: 1ra vs 2da semana, duracion, quien entrevista (recruiter de HTC? hiring manager de Disney? cliente final?), y si es screen o tecnica.
-2. **Re-preguntar el gate de certificacion** ("relevant regional certification" en Required de la JD): Siraj lo chequeaba con su manager el 19/10 y **no hay respuesta registrada**. Es el mismo gate que en EIT/HTC aparece como bloqueo tardio. No dejarlo flotando hasta la semana previa.
-3. **Preparar la entrevista en ingles speaking**, no solo escrita. Las 4 historias ancla: react-spectrum #10503, EY Motif, Warner Bros 200+ violations, liderazgo de equipo de 3.
-4. **Dejar asentado por mail** (no solo WhatsApp) la fecha y el formato. El negocio va por mail.
+1. **Esperar el invite.** Cuando llegue, se confirma el dia exacto y el formato (duracion, quien entrevista: recruiter de HTC, hiring manager de Disney o cliente final; screen o tecnica). No se insiste antes.
+2. **Preparar la entrevista en ingles speaking**, no solo escrita. Las 4 historias ancla: react-spectrum #10503, EY Motif, Warner Bros 200+ violations, liderazgo de equipo de 3.
+3. **Dejar asentado por mail** (no solo WhatsApp) la fecha y el formato. El negocio va por mail.
+
+**El plan de ingles de Gonzo para la segunda semana de noviembre (26/10):**
+- **B2 intensivo del CUI (UBA): 6 horas de clase por semana**, ya en curso desde el 26/10. Para la 2da semana de noviembre (9-13/11) lleva **3 semanas de clases**.
+- **Practica conversacional con gente afuera (en un bar), a pedido de su hermana.** El reel que compartio (instagram.com/reel/Dep4YBruByu/) no se pudo leer: Instagram devuelve el HTML vacio a un fetch sin sesion, asi que el contenido no esta verificado. Las citas clasicas de intercambio de idiomas en Buenos Aires que si se verificaron: **Spanglish Exchange BA** (Rabieta bar, Palermo; jueves y viernes 19hs, sabado 20hs; chats rotativos de 5 minutos por idioma, ~2h por sesion), **Gringo Tuesdays** (martes 19hs a 3hs, el intercambio mas grande de Latam), **Mundo Lingo BA** (The Flags Place, 6.552 miembros), **Mate Club de Conversacion** (Rabieta bar, sabados 18hs).
+- **Roadmap.sh Pro como material**: curso de a11y (16 lecciones en 4 modulos: focus architecture, ARIA dinamica, verificacion AT cross-platform, operaciones de accesibilidad enterprise) leido **en voz alta**; la Lección 1.1 (focus trap) ya esta al 3/5.
+- **Mock interviews en ingles**: es lo que ataca el gap real (explicar decisiones tecnicas en vivo). El curso solo no alcanza.
 
 ### Recontacto por inglés a recruiters previos (26/10/2026) - **3 respuestas de 5**
 
