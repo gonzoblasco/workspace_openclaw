@@ -338,9 +338,31 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
   declara y el nivel que el CUI certifica son el mismo, y subir la base oral es lo que destraba
   el filtro de C1 conversacional. Calendario, costos y fuentes están en `studies/english/README.md`.
   **Lo que no es supuesto: B2 intensivo, dos meses, arranca el 26/10/2026.**
-- **Regla de proceso que sale de los 2 casos:** en el **primer mensaje** de cualquier proceso
+- **Regla de proceso que sale de los 3 casos:** en el **primer mensaje** de cualquier proceso
   LATAM remoto, preguntar el **nivel de inglés conversacional que exige el cliente**. El filtro
-  apareció al final en ambos casos, cuando ya se había armado CV, screening y prep de call.
+  apareció al final en ambos casos cerrados (Staffy 20/10, Sol 21/10), cuando ya se había armado
+  CV, screening y prep de call.
+- **Tercer caso, y el primero que NO cierra (TEAM International / tempo.io, 26/10/2026):** en la
+  entrevista el recruiter dijo que le encantaba el perfil técnico y que el bloqueo era el **nivel
+  de inglés conversacional (C1), "como a todos los demás"**. Gonzo ya había propuesto el curso de
+  inglés y una reevaluación en 1-2 meses; David aceptó: habla con el cliente (Tempo) para
+  continuar, y si no puede, **reevaluación para ese u otro proyecto**. **Compromiso de
+  reevaluación, no cierre.**
+  **La variante nueva del patrón: el nivel exigido NO coincide con el del JD.** El JD pedía
+  **B2+** y el requisito real del cliente es **C1 conversacional**. En una **agency** (nearshore)
+  el idioma no es un requisito del rol sino una **condición de elegibilidad** que impone el
+  cliente, y por eso el recruiter no decide: tiene que hablar con el cliente.
+  **Consecuencia operativa: un JD no es un contrato de elegibilidad cuando el cliente es una
+  agency.** La pregunta del nivel de inglés es la que descubre eso, y por eso va en el primer
+  mensaje.
+- **Lo que NO se afirma (regla de credibilidad):** Gonzo no tiene certificado de B2 registrado en
+  el corpus (§4 solo tiene Deque) ni antecedente de un curso de inglés previo. Los mensajes a
+  recruiters que rebotaron por el idioma **no** deben decir "I'm retaking the course" ni
+  "re-validate my B2 level": presuponen una acreditación o un curso anterior que no están
+  registrados. **La forma verificable y igual de fuerte:** "I started a B2 intensive course at
+  the CUI (UBA) today, two months, and I plan to take the C1 certification exam next year." -
+  eso es exactamente lo que dice el corpus. En un proceso donde el idioma es el filtro, la
+  credibilidad es lo único que no se negocia, y un recruiter repregunta fechas.
 
 ---
 
