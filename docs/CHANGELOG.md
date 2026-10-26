@@ -6,6 +6,27 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-26] - El pipeline pasa de A/B a A/B/C: un tercer agente que escribe la red de tests
+
+### Changed
+- **El pipeline tiene tres roles con modelos distintos entre si** (ADR-105): A escribe con `gpt-oss:120b-cloud`, B revisa con `deepseek-v4.1-flash:cloud`, C escribe la red de tests de regresion con `minimax-m3.1-flash:cloud`. El gate `scripts/check-pipeline-enforcement.py` verifica la ruta `pipeline_abc`, la consistencia entre fuentes, que los tres sean **distintos entre si** y que coincidan con el canon.
+- **Solo A toca el codigo de produccion.** B no edita: escribe la evidencia ejecutable de cada defecto en archivos `probe_*.py` y entrega el reporte. Medido: B encuentra **mas** cuando no edita (10 findings vs 9), porque editarlo lo distrae de reportar. El rework vuelve a A, con la condicion de que todo finding de B termine como un test de C.
+- **`scripts/model-router.sh`** - ruta `pipeline_abc`. La ruta `pipeline_ab` se conserva para trabajo donde la red de regresion no aporta.
+- **`scripts/managed-blocks.py`** - setting `model_pipeline_c`; bloques `pipeline-abc` (AGENTS.md) y `model-pipeline-abc` (SETUP.md), que estaba huerfano en SETUP.md y por eso nadie mantenia.
+- **`skills/agent-orchestration-pipeline-model-arbitration/SKILL.md`** - el pacto ABC y el reparto de trabajo, con la regla del rework.
+
+### Added
+- **`bench/`** - harness reproducible: el head-to-head de revisores con `GROUND_TRUTH.md`, `seed_bugs.py` y `verify_recall.py`; el pipeline ABC sobre 3 casos extremos (cache concurrente, bisiestos, token bucket); y el caso de rework. Con ground truth, el recall se mide contra verdad y no contra opinion.
+
+### Measured
+- **El slot B se decide por recall, no por velocidad.** Sobre el mismo artefacto con 4 bugs sembrados: `deepseek` 4/4 con 9 hallazgos, `minimax` 4/4 con 10, `beam:cloud` 3/4 con 3 y **se auto-aprobo con un defecto vivo**. beam es 3,5x mas rapido pero es la velocidad de no mirar.
+- **El rework de A da el mismo recall que B corrigiendo directo (4/4) pero cubre 7 de 9 findings**, y el que se le escapo tampoco quedo como test: se perdio dos veces. Sin la regla "todo finding de B termina como un test de C", el hallazgo vuelve.
+- **El 429 de Ollama Cloud es por cuenta, no por modelo**: saturar un modelo hace fallar a los otros (28/40 y 27/40). Cambiar de modelo no abre presupuesto. La concurrencia efectiva tiene que quedar en 2-6; a 20 en vuelo falla el 70%.
+- **`beam:cloud` queda fuera del pipeline** (recall 3/4 como revisor, sin ahorro de requests como pre-filtro: 478 tokens de eval contra 18 de `gemma4`, misma accuracy) y entra como modelo de contexto largo: clavo el needle a 233k tokens donde `minimax` falla con HTTP 500 a 140k.
+
+### Pending
+- **Dos ambiguedades del spec sin resolver** (las dejo visibles, son decisiones de contrato): el borde del TTL ("mas viejo que ttl_seconds" admite edad exactamente `ttl`, el codigo usa la ventana estricta) y la copia superficial del cache (copia la lista pero comparte los dicts internos).
+
 ## [2026-10-25] - El costo de un modelo en Ollama Cloud no es plata: es cuota
 
 ### Changed
