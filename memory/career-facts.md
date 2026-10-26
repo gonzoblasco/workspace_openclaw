@@ -349,12 +349,14 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
   pool y reevalúa cuando Gonzo esté más cómodo con el idioma. **Dos capas, dos estados: la
   posición se cae, la relación no.** El mismo David lo había adelantado en la entrevista
   ("reevaluación para ese u otro proyecto").
-  **El dato que generaliza la regla:** el filtro no es "clientes US", es **clientes o equipos no
-  angloparlantes** (Pfizer, Disney, Tempo). Y la exigencia no es de acento ni de horario: es
-  **poder sostener una conversación técnica en vivo y explicar decisiones** - que es la habilidad
-  que Gonzo ya tiene (en EY escribía los requisitos técnicos de accesibilidad con ejemplos de
-  código y revisaba diseños antes de implementar). **El gap de idioma es oral; la habilidad que el
-  cliente pide no es su gap.**
+  **El dato que generaliza la regla:** el filtro no depende de la geografía del cliente. El equipo
+  de Tempo estaba en Europa, y el de Pfizer en US, y el de Disney en US, y la exigencia es la
+  misma: **poder sostener una conversación técnica en vivo y explicar decisiones** - no es de
+  acento, ni de horario, ni de lengua materna (Reikiavik, sede de Tempo, es lingua franca en
+  inglés). La regla que sirve: **roles que exigen comunicación técnica fluida en inglés** - y esa
+  habilidad ya la tiene Gonzo (en EY escribía los requisitos técnicos de accesibilidad con
+  ejemplos de código y revisaba diseños antes de implementar). **El gap de idioma es oral; la
+  habilidad que el cliente pide no es su gap.**
 - **Tercer caso (Infjini / Disney, 26/10/2026):** en la
   entrevista el recruiter dijo que le encantaba el perfil técnico y que el bloqueo era el **nivel
   de inglés conversacional (C1), "como a todos los demás"**. Gonzo ya había propuesto el curso de

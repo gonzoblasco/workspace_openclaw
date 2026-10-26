@@ -58,8 +58,14 @@ en pie.
 
 1. **El equipo del cliente está en EUROPA, no en US.** La investigación había dado a Tempo con
    sede en Boston, y el tracker asumía "clientes US". El equipo que entrevista y que trabaja
-   directamente con la persona está en Europa. **Esto generaliza la regla del filtro de idioma**:
-   no es "clientes US" sino "**clientes o equipos no angloparlantes**" (Pfizer, Disney, Tempo).
+   directamente con la persona está en Europa.
+   **Corrección posterior (26/10, a pedido de Gonzo: "Europa puede ser Inglaterra"):** "Europa"
+   **no prueba que el equipo no sea angloparlante** - el caso de Tempo lo desarma, porque su sede
+   de Reikiavik es un país donde el inglés es lingua franca. **La geografia no predice nada:** lo
+   que el cliente de Tempo exigía es lo mismo que el de Pfizer (US) o el de Disney: **fluidez
+   técnica para discutir y explicar**, sin relación con la lengua materna del equipo. La regla
+   útil no dice "clientes US" ni "no angloparlantes", sino **"roles que exigen comunicación
+   técnica fluida en inglés"**.
 2. **La exigencia es sobre la fluidez al "discutir y explicar temas técnicos"** (literal de David).
    No es un tema de acento ni de horario: es **poder sostener una conversación técnica en vivo y
    explicar decisiones**. Y eso es exactamente lo que Gonzo ya hace bien (en EY escribía los
