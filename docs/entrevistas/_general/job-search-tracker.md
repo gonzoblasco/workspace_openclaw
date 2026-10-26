@@ -1,6 +1,6 @@
 # Job Search Tracker
 
-> **Estado 2026-10-26: 2 procesos vivos (Infjini, TEAM International).** Staffy/Pfizer **cerrado 20/10** y Sol Bisio **cerrado 21/10**, ambos por el filtro de inglés C1 conversacional. **TEAM: la posición de Tempo CERRÓ 26/10, pero la relación con TEAM NO** - David mantiene el perfil en el talent pool y reevalúa cuando mejore el inglés. **Infjini: el idioma bloquea la presentación a Disney, no el proceso.** **Plan de inglés: B2 intensivo en el CUI, dos meses (26/10-21/12/2026)** - desoxidar y mejorar la base; el examen CUI-ING C1 y el TOEFL quedan para después.
+> **Estado 2026-10-26: 2 procesos vivos (Infjini, TEAM International).** Staffy/Pfizer **cerrado 20/10** y Sol Bisio **cerrado 21/10**, ambos por el filtro de inglés C1 conversacional. **TEAM: la posición de Tempo CERRÓ 26/10, pero la relación con TEAM NO** - David mantiene el perfil en el talent pool y reevalúa cuando mejore el inglés. **Infjini: DISNEY ENTREVISTA EN NOVIEMBRE** (1ra o 2da semana, confirmada por Siraj el 26/10) - el idioma dejó de bloquear la presentación y pasó a ser el riesgo de la entrevista misma. **Plan de inglés: B2 intensivo en el CUI, dos meses (26/10-21/12/2026)** - desoxidar y mejorar la base; el examen CUI-ING C1 y el TOEFL quedan para después.
 >
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
 
@@ -72,7 +72,7 @@ no ingenieria), Infojini (ya es tu proceso vivo).
 | Empresa | Puesto | Contacto | Tarifa | Estado 2026-10-21 |
 |---|---|---|---|---|
 | **TEAM International** (cliente **tempo.io**) | Senior Frontend Developer (Growth) | David Sanin Valencia | USD 5.000/mes fijos (≈ USD 31,25/h a 160 h) | **POSICIÓN DE TEMPO CERRADA 26/10; LA RELACIÓN CON TEAM SIGUE VIVA.** El Delivery Manager de Tempo pidió más nivel de inglés: **el equipo del cliente que entrevista y trabaja con la persona está en Europa**, y es exigente con la fluidez **al discutir y explicar temas técnicos**. David: *"no avanzar con tu perfil para esta posición en particular"*; el nivel técnico *"es muy bueno"* y la decisión es de idioma. **Lo mantiene en el talent pool** y reevalúa cuando Gonzo esté más cómodo con el idioma. **Dos capas, dos estados: Tempo cierra la posición; TEAM mantiene la relación y la vía de reevaluación (1-2 meses).** Antes: el perfil técnico le gustó ("le encanta mi perfil"), el bloqueo fue el **nivel de inglés conversacional**, y David había aceptado en dos vías (hablar con Tempo, o reevaluación para ese u otro proyecto). **El JD dice B2+ y el requisito real es C1**: en una agency el idioma es **condición de elegibilidad**, no requisito del rol. **Dato nuevo y relevante: el equipo del cliente está en Europa, no en US** - por eso el tracker necesita la regla ampliada. Referencia temporal: el B2 intensivo del CUI termina el 21-23/12/2026. Análisis fiscal (de la oferta que no prosperó): **neto ≈ USD 4.140-4.270/mes**. Detalle: `docs/entrevistas/team-international-tempo/entrevista-26-10-y-seguimiento.md`. |
-| **Infjini Inc** (cadena **Disney -> HTC -> Infojini**) | Lead Software Engineer - Digital Accessibility | Siraj Shaik | **USD 24/h** all-inclusive (piso era 22; Gonzo pidió 25 y aceptó 24 el 19/10), 1 año | **ABIERTO, pero con el filtro de idioma YA CONFIRMADO (26/10).** Screening hecho (19/10) con feedback técnico positivo (*"technically you are excellent"*), **RTR firmado el 19/10 a USD 24/h**, y el único feedback negativo fue **fluidez en inglés hablado** (no escrita). **Arranque acordado: 1-2 semanas luego de la confirmación.** **Siraj le dijo que estudie inglés para cuando se presente a Disney**: el idioma bloquea la presentación al cliente, no el proceso. Es el **mismo req que EIT/HTC/Disney**, que se cerró 24/09. **Único proceso vivo con próximo paso concreto.** No es un cierre: es una espera con condición. **Pendiente de la re-presentación: el gate de "relevant regional certification" (la JD lo lista en Required) - el mismo gate que en EIT/HTC apareció como bloqueo tardío, con Siraj chequeándolo con su manager.** <!-- project: github.com/gonzoblasco/workspace_openclaw --> |
+| **Infjini Inc** (cadena **Disney -> HTC -> Infojini**) | Lead Software Engineer - Digital Accessibility | Siraj Shaik | **USD 24/h** all-inclusive (piso era 22; Gonzo pidió 25 y aceptó 24 el 19/10), 1 año | **ABIERTO, CON ENTREVISTA EN NOVIEMBRE.** Screening hecho (19/10) con feedback técnico positivo (*"technically you are excellent"*), **RTR firmado el 19/10 a USD 24/h**, y el único feedback negativo fue **fluidez en ingles hablado** (no escrita). **26/10: Siraj confirma que el cliente (Disney) va a entrevistar en la 1ra o 2da semana de noviembre** - el idioma dejó de bloquear la presentación y pasó a ser el riesgo de la entrevista. **Arranque acordado: 1-2 semanas luego de la confirmación.** Es el **mismo req que EIT/HTC/Disney**, que se cerró 24/09. **Único proceso vivo con próximo paso concreto y fecha.** Pendientes: fijar la fecha exacta y el formato, re-preguntar el gate de "relevant regional certification" (la JD lo lista en Required; Siraj lo chequeaba con su manager el 19/10 y no hay respuesta registrada), y asentar la fecha por mail.|
 
 ### Notas Staffy (2026-10-20) - PROCESO CERRADO
 
@@ -89,6 +89,33 @@ no ingenieria), Infojini (ya es tu proceso vivo).
 - **Riesgo a vigilar:** es un puesto 9-5 ET con comunicación diaria en inglés, **misma clase que los dos cerrados por el filtro de C1 conversacional** (Staffy y Sol). Si Siraj tiene el mismo criterio, aplica el mismo filtro.
 - **Acción sugerida:** en la próxima call, preguntar de entrada el nivel de inglés conversacional que exige el cliente. Es la pregunta de costo cero que más rápido descarta.
 - Precedente: es el mismo req que EIT/HTC/Disney (bench amplio). No insistir.
+
+### Infjini - ENTREVISTA CON DISNEY EN NOVIEMBRE (WhatsApp 26/10, 12:30-12:34)
+
+> **Siraj 12:30:58** "We got an update that client is going to conduct interviews in 1st or 2nd week of November."
+> **Siraj 12:31:41** "Thank you for working on english."
+> **Gonzo 12:32:29** "Hope it's the second week so I'd already had a couple of hours in.."
+> **Gonzo 12:33:39** "So I'm still in the run…. Great… Keep me posted…"
+> **Siraj 12:34:02** "yes" / 12:34:07 "Yeah!"
+
+**Lo que cambia: el gate de idioma NO bloquea la presentacion.** El cliente (Disney) **va a entrevistar en la 1ra o 2da semana de noviembre**. El idioma dejo de ser condicion para la presentacion y paso a ser el riesgo de la propia entrevista. El proceso deja de ser "espera con condicion" y pasa a ser **"entrevista agendada en ventana cerrada"**.
+
+**Riesgo de timing (el calculo que hay que hacer):**
+
+| Si entrevista en | Fecha | Horas de curso B2 (arrancó 26/10) | Inglés real |
+|---|---|---|---|
+| 1ra semana | ~2-6/11 | ~1 semana | **B2 de hoy, sin cambio** |
+| 2da semana | ~9-13/11 | ~2 semanas | B2 + desoxidacion marginal |
+
+**Conclusión operativa: el curso NO resuelve la entrevista de noviembre.** Con 1-2 semanas no se cambia un nivel oral. La preparación de la entrevista tiene que ser **específica y oral**: mock interviews de a11y en inglés, no curso general. El B2 intensivo del CUI sirve para el plano de fondo (fin de diciembre) y para la reevaluacion de TEAM, no para esto.
+
+**Riesgo de lectura del mensaje de Gonzo:** el orden fue Siraj propone fechas -> Gonzo pide "hope it's the second week". Eso puede leerse como "todavia no estoy listo" y abrir una pregunta sobre la readiness. Siraj respondio "yes / Yeah!" sin Guillermo nada: **el mensaje quedo en ambiguo, y la ventana sigue siendo 1ra O 2da semana.** Si hay que fijar, hay que fijar.
+
+**Pendientes concretos:**
+1. **Fijar la fecha y el formato** con Siraj: 1ra vs 2da semana, duracion, quien entrevista (recruiter de HTC? hiring manager de Disney? cliente final?), y si es screen o tecnica.
+2. **Re-preguntar el gate de certificacion** ("relevant regional certification" en Required de la JD): Siraj lo chequeaba con su manager el 19/10 y **no hay respuesta registrada**. Es el mismo gate que en EIT/HTC aparece como bloqueo tardio. No dejarlo flotando hasta la semana previa.
+3. **Preparar la entrevista en ingles speaking**, no solo escrita. Las 4 historias ancla: react-spectrum #10503, EY Motif, Warner Bros 200+ violations, liderazgo de equipo de 3.
+4. **Dejar asentado por mail** (no solo WhatsApp) la fecha y el formato. El negocio va por mail.
 
 ### Recontacto por inglés a recruiters previos (26/10/2026) - **3 respuestas de 5**
 
