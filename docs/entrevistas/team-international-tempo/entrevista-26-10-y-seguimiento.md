@@ -30,11 +30,54 @@ Eso es un **compromiso de reevaluación con fecha de referencia**, no un cierre.
 
 ---
 
+## Feedback del cliente (26/10/2026, mensaje de David)
+
+> *"Hablé con el Delivery Manager y me comentó que para esta posición el cliente está buscando un
+> nivel de inglés más avanzado. Las personas del lado del cliente que estarán participando en las
+> entrevistas y trabajando directamente con la persona seleccionada están ubicadas en Europa, por lo
+> que son bastante exigentes con la fluidez en inglés, especialmente al momento de discutir y
+> explicar temas técnicos. Por esta razón, me recomendó no avanzar con tu perfil para esta
+> posición en particular. Quiero resaltar que tu nivel técnico es muy bueno y que esta decisión
+> está relacionada principalmente con el nivel de inglés requerido para este proyecto específico.
+> De todas formas, me gustaría mantener tu perfil en nuestro talent pool para futuras
+> oportunidades. [...] Cuando te sientas más cómodo con el idioma, no dudes en escribirme y con
+> gusto revisaremos nuevas oportunidades para ti."*
+
+### Dos capas, dos estados - no es un cierre
+
+| Capa | Estado |
+|---|---|
+| **Tempo** (la posición) | **CERRADA.** El Delivery Manager recomendó no avanzar con el perfil para esta posición. |
+| **TEAM** (la agencia) | **ABIERTA.** Perfil en el talent pool + reevaluación cuando Gonzo esté más cómodo con el idioma. |
+
+**Esto es exactamente lo que David había adelantado en la entrevista** ("si no, reevaluación para
+ese u otro proyecto"). La posición se cayó, la relación no. La reevaluación de 1-2 meses queda
+en pie.
+
+### Los dos datos nuevos del mensaje
+
+1. **El equipo del cliente está en EUROPA, no en US.** La investigación había dado a Tempo con
+   sede en Boston, y el tracker asumía "clientes US". El equipo que entrevista y que trabaja
+   directamente con la persona está en Europa. **Esto generaliza la regla del filtro de idioma**:
+   no es "clientes US" sino "**clientes o equipos no angloparlantes**" (Pfizer, Disney, Tempo).
+2. **La exigencia es sobre la fluidez al "discutir y explicar temas técnicos"** (literal de David).
+   No es un tema de acento ni de horario: es **poder sostener una conversación técnica en vivo y
+   explicar decisiones**. Y eso es exactamente lo que Gonzo ya hace bien (en EY escribía los
+   requisitos técnicos de accesibilidad con ejemplos de código, y revisaba diseños en Figma antes
+   de implementar). **El gap es oral, pero la habilidad que el cliente pide - explicar decisiones
+   técnicas - es su fuerte, no su debilidad.** Ese es el ángulo para la reevaluación.
+
 ## Estado
 
-- **Proceso: ABIERTO, condicional a la reevaluación.**
-- **Referencia temporal:** el B2 intensivo del CUI termina el **21 o 23 de diciembre de 2026**. La reevaluación que pidió David ("en uno o dos meses") cae exactamente en el fin del curso. **Ese es el momento natural para pedirla.**
-- **Idioma declarado: B2.** Sin cambios hasta que exista certificado en la mano (`memory/career-facts.md` §7).
+- **Posición de Tempo: CERRADA 26/10.** **Relación con TEAM: VIVA** (talent pool + reevaluación).
+- **Referencia temporal:** el B2 intensivo del CUI termina el **21 o 23 de diciembre de 2026**. La
+  reevaluación ("en uno o dos meses") cae exactamente en el fin del curso. **Ese es el momento
+  natural para escribirle.**
+- **Idioma declarado: B2.** Sin cambios hasta que exista certificado en la mano
+  (`memory/career-facts.md` §7).
+- **No insistir antes.** La regla del tracker: energía de follow-up solo si ellos escriben. David
+  dijo explícitamente "cuando te sientas más cómodo con el idioma, no dudes en escribirme" - o
+  sea, la pelota está en su campo, pero con una ventana concreta.
 
 ## Qué hay que hacer
 

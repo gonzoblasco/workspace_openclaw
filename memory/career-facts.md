@@ -342,7 +342,20 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
   LATAM remoto, preguntar el **nivel de inglés conversacional que exige el cliente**. El filtro
   apareció al final en ambos casos cerrados (Staffy 20/10, Sol 21/10), cuando ya se había armado
   CV, screening y prep de call.
-- **Tercer caso, y el primero que NO cierra (TEAM International / tempo.io, 26/10/2026):** en la
+- **Cuarto caso (TEAM International / tempo.io, 26/10/2026):** la posición de Tempo **cerró** (el
+  Delivery Manager recomendó no avanzar: el equipo del cliente que entrevista y trabaja con la
+  persona **está en Europa** y es exigente con la fluidez **"al discutir y explicar temas
+  técnicos"**), pero **la relación con TEAM sigue viva**: David mantiene el perfil en el talent
+  pool y reevalúa cuando Gonzo esté más cómodo con el idioma. **Dos capas, dos estados: la
+  posición se cae, la relación no.** El mismo David lo había adelantado en la entrevista
+  ("reevaluación para ese u otro proyecto").
+  **El dato que generaliza la regla:** el filtro no es "clientes US", es **clientes o equipos no
+  angloparlantes** (Pfizer, Disney, Tempo). Y la exigencia no es de acento ni de horario: es
+  **poder sostener una conversación técnica en vivo y explicar decisiones** - que es la habilidad
+  que Gonzo ya tiene (en EY escribía los requisitos técnicos de accesibilidad con ejemplos de
+  código y revisaba diseños antes de implementar). **El gap de idioma es oral; la habilidad que el
+  cliente pide no es su gap.**
+- **Tercer caso (Infjini / Disney, 26/10/2026):** en la
   entrevista el recruiter dijo que le encantaba el perfil técnico y que el bloqueo era el **nivel
   de inglés conversacional (C1), "como a todos los demás"**. Gonzo ya había propuesto el curso de
   inglés y una reevaluación en 1-2 meses; David aceptó: habla con el cliente (Tempo) para
