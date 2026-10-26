@@ -72,7 +72,7 @@ no ingenieria), Infojini (ya es tu proceso vivo).
 | Empresa | Puesto | Contacto | Tarifa | Estado 2026-10-21 |
 |---|---|---|---|---|
 | **TEAM International** (cliente **tempo.io**) | Senior Frontend Developer (Growth) | David Sanin Valencia | USD 5.000/mes fijos (≈ USD 31,25/h a 160 h) | **ENTREVISTA HECHA 26/10. REEVALUACIÓN PROMETIDA - NO CERRADO.** El perfil técnico le gustó ("le encanta mi perfil"); el bloqueo fue el **nivel de inglés conversacional** (C1, "como a todos los demás"). Gonzo proponía antes de la entrevista: arranca el curso hoy y reevaluación en 1-2 meses. **David aceptó en dos vías:** (a) habla con el cliente (Tempo) para continuar, (b) si no, reevaluación para ese u otro proyecto. **Es la tercera vez que aparece el filtro de idioma, y la primera que NO cierra.** El JD dice B2+ pero el requisito real del cliente es C1: en una agency el idioma es **condición de elegibilidad**, no requisito del rol. Referencia temporal: el B2 intensivo del CUI termina el 21-23/12/2026 - ese es el momento de pedir la reevaluación. Análisis fiscal: **neto ≈ USD 4.140-4.270/mes**. Detalle: `docs/entrevistas/team-international-tempo/entrevista-26-10-y-seguimiento.md`. |
-| Infjini Inc | Lead Software Engineer - Digital Accessibility | Siraj Shaik | USD 22/h all-inclusive, 1 año | **ABIERTO (confirmado por Gonzo el 21/10).** El screening con Siraj ya se hizo y el proceso sigue vivo. Riesgo: 9-5 ET con comunicación en inglés, misma clase que los dos cerrados por C1. |
+| Infjini Inc | Lead Software Engineer - Digital Accessibility | Siraj Shaik | USD 22/h all-inclusive, 1 año | **ABIERTO, pero con el filtro de idioma YA CONFIRMADO (26/10).** El screening se hizo (16/10) y el proceso sigue vivo. **Siraj le dijo que estudie inglés para cuando se presente a Disney**: el idioma bloquea la presentación al cliente, no el proceso. Es el **mismo req que EIT/HTC/Disney** (cadena Disney -> HTC -> sub-vendor). **Es la única de las 3 respuestas con un próximo paso concreto.** No es un cierre: es una espera con condición. |
 
 ### Notas Staffy (2026-10-20) - PROCESO CERRADO
 
@@ -90,7 +90,7 @@ no ingenieria), Infojini (ya es tu proceso vivo).
 - **Acción sugerida:** en la próxima call, preguntar de entrada el nivel de inglés conversacional que exige el cliente. Es la pregunta de costo cero que más rápido descarta.
 - Precedente: es el mismo req que EIT/HTC/Disney (bench amplio). No insistir.
 
-### Recontacto por inglés a recruiters previos (26/10/2026) - **1 respuesta de 5**
+### Recontacto por inglés a recruiters previos (26/10/2026) - **3 respuestas de 5**
 
 Gonzo mandó a las **cinco** personas con las que había hablado y que lo rebotaron por el filtro de
 idioma. A Sol en **español** (con ella habló todo en español); a Samarth, Parthasarathy, Siraj y
@@ -99,9 +99,9 @@ Julieta en **inglés**.
 | Contacto | Proceso | Respuesta |
 |---|---|---|
 | **Samarth** (Ritz-Carlton) | cerrado 22/09 | **Respondió 26/10: "Sure thing, Gonzalo and All the Best"** |
-| Julieta Costa (Staffy/Pfizer) | cerrado 20/10 | sin respuesta al momento del cierre |
+| **Julieta Costa** (Staffy/Pfizer) | cerrado 20/10 | **Respondió 26/10: "Hi, Gonzalo. Of course :) Best!"** - acepta el reencuentro. El gate real lo ponía **Pfizer** (cliente), no ella |
+| **Siraj Shaik** (Infjini) | **ABIERTO** | **Respondió 26/10 con contenido: "estudiá inglés para cuando me presente a Disney"** - el idioma bloquea la presentación al cliente, no el proceso |
 | Sol Bisio (cliente sin nombre) | cerrado 21/10 | sin respuesta al momento del cierre (mensaje en español) |
-| Siraj Shaik (Infjini) | **ABIERTO - proceso vivo** | sin respuesta al momento del cierre |
 | Parthasarathy (EIT/HTC/Disney) | cerrado 24/09 | sin respuesta al momento del cierre |
 
 **Lo que significa la respuesta de Samarth:** "Sure thing" es **acuerdo de reencuentro**, no
@@ -111,7 +111,8 @@ registrado; hay dos hipótesis y ninguna verificada). Lo que sí sabemos: **no f
 no hubo feedback ni decisión, y el proceso estaba explícitamente ABIERTO el 11/09. Cerró por la
 regla de los 10 días.
 **Consecuencia práctica: el mensaje de "reevaluación de nivel" no era exactamente lo que Samarth
-necesitaba.** A él lo que le hacía falta es que el proceso se reabriera por otro motivo (una
+necesitaba.** (Aun así no hizo daño: los tres que respondieron aceptan el reencuentro sin
+objeciones.) A él lo que le hacía falta es que el proceso se reabriera por otro motivo (una
 vacante nueva para Principal Full Stack en BA, o que la apertura de la oficina se activara). La
 reevaluación de idioma le sirve para **otro** puesto. Si vuelve a escribir, el ángulo a ofrecer
 es **disponibilidad y rol**, no nivel de inglés: preguntarle si el rol sigue abierto y si hay
@@ -119,12 +120,20 @@ algo nuevo del lado del cliente. El mensaje de idioma ya está enviado y no hizo
 quedó tibia y viva, que era el objetivo), pero **no esperes que él lo lea como "reabre el proceso
 de Ritz"**.
 
-**Sobre Siraj (Infjini): el proceso estaba VIVO.** Mandarle "en un mes o dos hacemos una
-reevaluación de nivel" a un proceso abierto tiene un riesgo real: **se lee como que ya se está
-descalificando por adelantado**, cuando el filtro de ese proceso todavía no se filtró. La regla
-del tracker era "no insistir más de una vez por proceso" y ese proceso no estaba cerrado: se
-insistió sin cierre previo. **Acción: si Siraj contesta, el mensaje se aclara rápido** (que la
-reevaluación es para "otro proceso" y que el de Infjini sigue en pie).
+**Sobre Siraj (Infjini): el proceso estaba VIVO, y el filtro de idioma YA se había filtrado.**
+El 26/10 Siraj respondió: **"estudiá inglés para cuando me presente a Disney"**. O sea, el
+idioma no bloquea el proceso: bloquea **la presentación al cliente**. El proceso queda en
+espera con condición, no cerrado. (Corrección a la lectura del 26/10 al mediodía: se había
+supuesto que el filtro de este proceso todavía no se había filtrado. **Sí se había filtrado**, y
+el propio Siraj lo dijo. El mensaje de recontacto no propuesta nada que chocara: coincidía con lo
+que él ya pensaba.)
+
+**Lo que muestra el patrón de las 3 respuestas (Samarth, Julieta, Siraj):** en los tres casos, el
+**intermediario no es quien pone la barra de idioma** - la pone el cliente final (Pfizer, Disney,
+el cliente de Samarth). El recontacto reabre la puerta **en el intermediario**, que es donde se
+decide si hay otro req que encaje. El gate real se levanta con el inglés, que es lo que ya está en
+curso. **Por eso el mensaje no era una súplica: era unanotification de que el cuello de botella se
+estaba destrabando.**
 
 **Corrección de credibilidad que hay que aplicar en los próximos contactos:** el mensaje dice
 *"I'm retaking the course to regain my fluency"* y *"re-validate my B2 level"*. **El corpus no
