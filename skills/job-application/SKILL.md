@@ -9,15 +9,20 @@ metadata:
     - cv
     - ats
     - busqueda-laboral
-description: "Flujo completo de busqueda y postulacion: descubre vacantes, arma el CV contra el JD, llena el formulario del ATS y verifica el envio. Deja el submit para Gonzo."
+description: "Flujo completo de busqueda y postulacion: descubre vacantes, arma el CV contra el JD, llena el formulario del ATS y verifica el envio. Envia con tu OK, nunca sin."
 user-invocable: true
 ---
 
 # Workflow: Job Application
 
 > **El comando que Gonzo quiere:** "busca puestos y aplica".
-> Lo que hace: descubre vacantes que encajen, prepara el CV y el mensaje, deja el formulario del ATS listo y verificado, y **se detiene antes de enviar**.
-> Lo que **no** hace: enviar sin su OK. Ese límite no es una limitación, es el diseño (ADR-104).
+> Lo que hace: descubre vacantes que encajen, prepara el CV y el mensaje, deja el formulario del ATS listo y verificado, y envia cuando le das el OK.
+> Lo que **no** hace: enviar **sin** tu OK. Ese limite no es una limitacion, es el diseno (ADR-104).
+>
+> **Aclaracion (2026-10-27):** el limite es "con tu OK", **no** "nunca envia". El flujo
+> **si** envia, y lo ha hecho: `6c24187b9d` registro las TRES postulaciones confirmadas
+> por el servidor (Mural/Ashby, Mercado Pago/Eightfold, RYZ/Lever). Lo que exige el OK
+> es el envio, no el relleno del formulario.
 
 ## Cuándo usarlo
 

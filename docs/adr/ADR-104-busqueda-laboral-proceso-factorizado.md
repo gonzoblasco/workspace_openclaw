@@ -40,7 +40,7 @@ skills/job-application/
 ├── SKILL.md                  el flujo: descubrir -> tailored -> aplicar -> verificar -> trackear
 ├── scripts/
 │   ├── find-jobs.mjs         descubrimiento multi-board
-│   ├── apply.mjs             orquestador: llena, verifica, deja el submit al humano
+│   ├── apply.mjs             orquestador: llena, verifica, envia con el OK de Gonzo
 │   ├── ats/{lever,ashby,eightfold}.mjs   adaptadores por ATS
 │   └── lib/{react-form,real-browser,captcha}.mjs   los workarounds, uno por archivo
 ├── references/
