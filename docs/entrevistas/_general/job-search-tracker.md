@@ -1,6 +1,6 @@
 # Job Search Tracker
 
-> **Estado 2026-10-26: 2 procesos vivos (Infjini, TEAM International).** Staffy/Pfizer **cerrado 20/10** y Sol Bisio **cerrado 21/10**, ambos por el filtro de inglés C1 conversacional. **TEAM: la posición de Tempo CERRÓ 26/10, pero la relación con TEAM NO** - David mantiene el perfil en el talent pool y reevalúa cuando mejore el inglés. **Infjini: DISNEY ENTREVISTA EN NOVIEMBRE** (1ra o 2da semana, confirmada por Siraj el 26/10) - el idioma dejó de bloquear la presentación y pasó a ser el riesgo de la entrevista misma. **Plan de inglés: B2 intensivo en el CUI, dos meses (26/10-21/12/2026)** - desoxidar y mejorar la base; el examen CUI-ING C1 y el TOEFL quedan para después.
+> **Estado 2026-10-27: 2 procesos vivos (Infjini/Disney con entrevista en noviembre, TEAM International con reevaluación prometida).** Los 5 contactos recontactados por el filtro de inglés respondieron (5/5) y 2 tienen próximo paso con fecha. Staffy/Pfizer **cerrado 20/10** y Sol Bisio **cerrado 21/10**, ambos por el filtro de inglés C1 conversacional. **TEAM: la posición de Tempo CERRÓ 26/10, pero la relación con TEAM NO** - David mantiene el perfil en el talent pool y reevalúa cuando mejore el inglés. **Infjini: DISNEY ENTREVISTA EN NOVIEMBRE** (1ra o 2da semana, confirmada por Siraj el 26/10) - el idioma dejó de bloquear la presentación y pasó a ser el riesgo de la entrevista misma. **Plan de inglés: B2 intensivo en el CUI, dos meses (26/10-21/12/2026)** - desoxidar y mejorar la base; el examen CUI-ING C1 y el TOEFL quedan para después.
 >
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
 
@@ -124,7 +124,7 @@ no ingenieria), Infojini (ya es tu proceso vivo).
 - **Roadmap.sh Pro como material**: curso de a11y (16 lecciones en 4 modulos: focus architecture, ARIA dinamica, verificacion AT cross-platform, operaciones de accesibilidad enterprise) leido **en voz alta**; la Lección 1.1 (focus trap) ya esta al 3/5.
 - **Mock interviews en ingles**: es lo que ataca el gap real (explicar decisiones tecnicas en vivo). El curso solo no alcanza.
 
-### Recontacto por inglés a recruiters previos (26/10/2026) - **4 respuestas de 5** (3 aceptan el reencuentro, 1 responde "on hold")
+### Recontacto por inglés a recruiters previos (26/10/2026) - **5 respuestas de 5** (cerrado el 27/10)
 
 Gonzo mandó a las **cinco** personas con las que había hablado y que lo rebotaron por el filtro de
 idioma. A Sol en **español** (con ella habló todo en español); a Samarth, Parthasarathy, Siraj y
@@ -135,7 +135,7 @@ Julieta en **inglés**.
 | **Samarth** (Ritz-Carlton) | cerrado 22/09 | **Respondió 26/10: "Sure thing, Gonzalo and All the Best"** |
 | **Julieta Costa** (Staffy/Pfizer) | cerrado 20/10 | **Respondió 26/10: "Hi, Gonzalo. Of course :) Best!"** - acepta el reencuentro. El gate real lo ponía **Pfizer** (cliente), no ella |
 | **Siraj Shaik** (Infjini) | **ABIERTO** | **Respondió 26/10 con contenido: "estudiá inglés para cuando me presente a Disney"** - el idioma bloquea la presentación al cliente, no el proceso |
-| Sol Bisio (cliente sin nombre) | cerrado 21/10 | sin respuesta al momento del cierre (mensaje en español) |
+| **Sol Bisio** (cliente sin nombre) | cerrado 21/10 | **Respondió 27/10 08:48: "¡Qué bueno que hayas arrancado las clases para reforzar tu inglés! Sí, por supuesto! Podemos volver a hablar en uno o dos meses y ver cómo venís con el idioma y qué oportunidades hay disponibles en ese momento. Muchos éxitos con las clases y seguimos en contacto!"** - acepta el reencuentro y abre la vía del **req de Full Stack** (USD 5.600/mes) para cuando haya nivel |
 | **Parthasarathy** (EIT/HTC/Disney) | cerrado 24/09 | **Respondió 26/10 13:36: "Great. We will update you if we have response. Position is on hold it seems"** - No menciona el inglés ni la reevaluación: es un "te avisamos si hay novedades" + "la posición está en pausa". **Lo que dice es que la POSICIÓN está en pausa** (el req de Disney, en el canal de EIT). **Lo que NO dice es por qué ni si el candidato queda en pie** - eso no está registrado y no se afirma. |
 
 **Lo que significa la respuesta de Samarth:** "Sure thing" es **acuerdo de reencuentro**, no
@@ -161,6 +161,25 @@ espera con condición, no cerrado. (Corrección a la lectura del 26/10 al mediod
 supuesto que el filtro de este proceso todavía no se había filtrado. **Sí se había filtrado**, y
 el propio Siraj lo dijo. El mensaje de recontacto no propuesta nada que chocara: coincidía con lo
 que él ya pensaba.)
+
+### Resultado final: 5 de 5 respondieron (26-27/10/2026)
+
+| Contacto | Proceso | Respuesta | Que abre |
+|---|---|---|---|
+| **Samarth** | Ritz-Carlton (cerrado 22/09) | "Sure thing, Gonzalo and All the Best" | reencuentro; el puesto (~USD 82k, 2 viajes a US/mes) nunca dio feedback |
+| **Julieta Costa** | Staffy/Pfizer (cerrado 20/10) | "Of course :) Best!" | reencuentro; el gate lo ponía **Pfizer** (cliente) |
+| **Siraj Shaik** | Infjini/Disney (**vivo**) | "estudiá inglés para cuando me presente a Disney" | **entrevista en la 1ra o 2da semana de noviembre**; el idioma pasó de bloquear la presentación a ser el riesgo de la entrevista |
+| **Parthasarathy** | EIT/HTC/Disney (cerrado 24/09) | "We will update you if we have response. Position is on hold it seems" | la **posición** del req está en pausa en el canal de EIT (el mismo req vive en Infojini) |
+| **Sol Bisio** | cliente sin nombre (cerrado 21/10) | "Qué bueno que hayas arrancado las clases... Podemos volver a hablar en uno o dos meses y ver... qué oportunidades hay disponibles" | reencuentro + vía del **req Full Stack a USD 5.600/mes** |
+
+**Lo que pasó, en una frase:** de 5 procesos cerrados por el mismo motivo (filtro de inglés
+conversacional), **5 aceptaron volver a mirar el perfil** y dos de ellos tienen **próximo paso con
+fecha**. Ninguno lo había hecho solo: el factor común fue que Gonzo **no se quedó con el no**.
+
+**Por qué funcionó (lo que se puede repetir):** el mensaje **no pidió reconsideration**. Dijo
+"estoy arrancando el curso de inglés hoy" y ofreció reevaluar. Eso cambia la naturaleza de la
+conversación: no es un individuo rogando que le den una oportunidad, es alguien que **está
+resolviendo el bloqueante y avisa**. La respuesta natural a eso no es un no.
 
 **Cuarta respuesta: Parthasarathy (EIT/HTC/Disney), 26/10 13:36 - "Great. We will update you if we have response. Position is on hold it seems."**
 Es la única de las cuatro que **no engancha con la reevaluación**: su respuesta no menciona el
@@ -204,7 +223,7 @@ A raíz de los dos cierres por C1 conversacional, Gonzo se anota en el **CUI (Ce
 
 | Empresa | Puesto | Fecha contacto | Cierre | Motivo |
 |---|---|---|---|---|
-| Sol Bisio (cliente sin nombre) | Senior Full Stack Developer (AI-first) | 2026-10-14 | **cerrado 21/10** | El cliente exige **C1 conversacional sí o sí** para esa posición; el CV declara B2 y no pudieron avanzar. No es rechazo de perfil: Sol dijo que mandó toda la info y que te tiene presente para próximas búsquedas Full Stack. Detalle en `docs/entrevistas/sol-senior-fullstack/sol-seguimiento.md`. Relanzar sin filtro de C1 cuando llegue. |
+| Sol Bisio (cliente sin nombre) | Senior Full Stack Developer (AI-first) | 2026-10-14 | **cerrado 21/10 → REABIERTO 27/10** | El cliente exige **C1 conversacional sí o sí** para esa posición; el CV declara B2 y no pudieron avanzar. No es rechazo de perfil: Sol dijo que mandó toda la info y que te tiene presente para próximas búsquedas Full Stack. **27/10: Sol responde al recontacto de inglés y reabre explícitamente** ("podemos volver a hablar en uno o dos meses y ver... qué oportunidades hay disponibles"). Es el req **Full Stack a USD 5.600/mes**, el mejor pagado de todos. Detalle en `docs/entrevistas/sol-senior-fullstack/sol-seguimiento.md`. |
 | EIT/HTC (cliente Disney) | Lead Software Engineer Digital Accessibility | 2026-09-11 | **cerrado 24/09** | Nunca hubo oferta firme: el rate lo aceptó el reclutador, el cliente jamás hizo call. Cierre del vendor: "we will update if they want to schedule call" (23/09). El mismo req lo publica Infojini: era bench amplio, no búsqueda urgente. No volver a escribir. Palanca que queda: CPACC antes del 30/11 si quiere retomar el hilo con un entregable. |
 | Wigou | AI-Native Software Engineering | 2026-08-31 | **cerrado 24/09** | Meet con Andrés Abraham (COO) el 02/09, sin feedback concreto. Tres semanas sin contacto. Cerrado por la propia regla del 02/09 ("si no hay novedad en ~1 semana, cerrado"). |
 | OpenSistemas | AI-Native (colaboración freelance) | proceso previo | **cerrado 11/09** | Avanzaron con otro candidato, después de la entrevista técnica del 03/09 con Fernando. |

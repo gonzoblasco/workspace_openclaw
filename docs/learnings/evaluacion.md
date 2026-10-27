@@ -152,6 +152,71 @@ que estar verificado.**
 
 ---
 
+## No te quedes con el no: recontactá con hechos, no con excusas (26-27/10/2026)
+
+**El caso de prueba.** Cinco procesos cerrados en cuatro días por el mismo motivo: **filtro de
+inglés conversacional (C1)**.
+
+| Proceso | Cierre | Qué dijo el recruiter al cierre |
+|---|---|---|
+| Staffy / Pfizer (20/10) | cerrado | *"I think it would be best not to move forward at this stage."* |
+| Sol Bisio (21/10) | cerrado | *"El cliente necesita sí o sí un C1 conversacional"* |
+| EIT / HTC / Disney (24/09) | cerrado | *"We will update if they want to schedule call"* |
+| Ritz-Carlton (22/09) | cerrado por la regla de los 10 días | la empresa nunca respondió |
+| TEAM / tempo.io (26/10) | posición cerrada | *"The position is on hold"* (el gate lo puso el cliente, en Europa) |
+
+**El 26/10, Gonzo recontactó a los cinco con un mensaje corto** que decía tres cosas: que
+arrancaba clases de inglés **ese mismo día**, que preguntaba si en **uno o dos meses** podían
+**reevaluar**, y que el objetivo era revalidar B2 y después el C1. A Sol, en español (con ella se
+había hablado todo en español).
+
+**Resultado: 5 de 5 respondieron, y dos tienen próximo paso con fecha.**
+
+| Contacto | Respuesta | Qué abre |
+|---|---|---|
+| Samarth | "Sure thing, Gonzalo and All the Best" | reencuentro (el puesto de ~USD 82k nunca dio feedback) |
+| Julieta Costa | "Of course :) Best!" | reencuentro (el gate lo ponía Pfizer, el cliente) |
+| Siraj Shaik | "estudiá inglés para cuando me presente a Disney" | **entrevista en la 1ra o 2da semana de noviembre** |
+| Parthasarathy | "We will update you if we have response. Position is on hold it seems" | la **posición** del req está en pausa en el canal de EIT (el mismo req vive en Infojini) |
+| Sol Bisio | "Qué bueno que hayas arrancado las clases... Podemos volver a hablar en uno o dos meses y ver... qué oportunidades hay disponibles" | reencuentro + vía del **req Full Stack a USD 5.600/mes** |
+
+**Por qué funcionó - la mecánica, no la suerte:**
+
+1. **El mensaje NO pidió reconsideration.** No decía "reconsideren mi candidatura" ni "denme una
+   oportunidad". Decía **"estoy resolviendo el bloqueante y les aviso"**. Eso cambia la naturaleza
+   de la conversación: deja de ser un individuo rogando y pasa a ser alguien que **está haciendo
+   algo concreto sobre la causa del no**. La respuesta natural a eso no es otro no.
+2. **Aportó una fecha, no un pedido.** "En uno o dos meses" + un curso que empieza HOY es
+   verificable. Un pedido sin fecha no se puede cumplir.
+3. **Fue corto y no se excusó.** ~100 palabras, sin explicar de más, sin disculparse, sin
+   mencionar el nivel declarable. Cero riesgo de humiliation.
+4. **Fue por el intermediario, no al cliente.** El que puede matchearte contra otro req es el
+   recruiter, y en los 5 casos la barra la puso el cliente final (Pfizer, Disney, Tempo, el
+   cliente de Samarth). **Recontactar al intermediario es lo correcto**: es el único que puede
+   reabrir la puerta cuando el filtro caiga.
+5. **El idioma se atacó con un hecho, no con una promesa.** "Empiezo el curso hoy" es un hecho
+   verificable; "voy a mejorar mi inglés" es una promesa. Los recruiters respondieron al hecho.
+
+**Lo que hay que corregir del mensaje usado (registrado aparte):** decía *"I'm retaking the course"*
+y *"re-validate my B2 level"*, que presuponen un curso previo y un certificado de B2 que **el
+corpus no tiene** (§4 solo tiene Deque). En un proceso donde el idioma es el filtro, la
+credibilidad es lo único que no se negocia, y un recruiter repregunta fechas. **La forma
+verificable, igual de fuerte:** *"I started a B2 intensive course at the CUI (UBA) today - two
+months - and I plan to take the C1 certification exam next year."*
+
+**La regla general, que aplica más allá del inglés:**
+
+> **Un cierre por un bloqueo objetivo (idioma, certificación, disponibilidad) no es un no al
+> perfil: es un no a una condición. Si la condición es resoluble y estás resolviéndola, el
+> circuito correcto es avisar, con fecha y con hecho - una sola vez, y volver al trabajo.**
+
+La segunda parte importa: **una vez y volver al trabajo.** Insistir sobre un no consume el capital
+de la relación. El tracker lo tiene como regla ("energía de follow-up solo si ellos escriben,
+máximo un reclamo por proceso") y este caso la confirma: después del mensaje no se volvió a
+insistir con nadie, y ninguno de los cinco cerró la puerta.
+
+---
+
 ## El filtro de idioma no se negocia con el CV: se negocia con la pregunta
 
 **La regla (origen Staffy/Pfizer 2026-10-20, ampliada 2026-10-26 con 4 casos):** preguntar por el nivel de ingles requerido en el PRIMER mensaje de un proceso LATAM con comunicacion diaria en ingles. Es la variable que mas rapido descarta y la que mas caro cuesta descubrir tarde. La honestidad sobre el nivel oral (B2 hablado, C1 escrito) no alcanza ante un filtro real de C1 conversacional: Writing C1 no compensa, son evaluaciones distintas.
