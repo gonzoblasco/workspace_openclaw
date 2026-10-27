@@ -15,18 +15,19 @@ Segun el tipo de tarea, abrir el archivo de esa categoria. Consulta rapida desde
 
 - **[a11y](./a11y.md)** - 7 lecciones
 - **[bootstrap](./bootstrap.md)** - 1 lecciones
-- **[debugging](./debugging.md)** - 6 lecciones
+- **[debugging](./debugging.md)** - 7 lecciones
 - **[docker](./docker.md)** - 4 lecciones
-- **[evaluacion](./evaluacion.md)** - 3 lecciones
+- **[evaluacion](./evaluacion.md)** - 7 lecciones
 - **[infraestructura](./infraestructura.md)** - 57 lecciones
 - **[integracion](./integracion.md)** - 2 lecciones
-- **[metodologia](./metodologia.md)** - 83 lecciones
+- **[metodologia](./metodologia.md)** - 85 lecciones
 - **[oss](./oss.md)** - 33 lecciones
 - **[pipeline](./pipeline.md)** - 1 lecciones
 - **[pipeline-agentes](./pipeline-agentes.md)** - 37 lecciones
 - **[proyectos](./proyectos.md)** - 12 lecciones
 - **[skills](./skills.md)** - 1 lecciones
+- **[testing](./testing.md)** - 1 lecciones
 
 ## Total
 
-247 lecciones en total.
+255 lecciones en total.

@@ -64,3 +64,23 @@ Corolario de verificacion: los tests que fallan al cambiar el contrato son utile
 
 ---
 
+## Moderno Diffusion: dos fallas propias - el harness mataba la app, y un DELETE massivo borro 9 lecciones reales
+
+Dos fallas propias de las ultimas horas con Moderno Diffusion (2026-10-27), generalizables a cualquier trabajo con un harness de ejecucion.
+
+Lesson - "la app crashea" era mi harness, no la app:
+- Diagnostico: el log de Electron mostraba `stateeee` (guardado de posicion de ventana) y CERO eventos de crash. Un SIGKILL no dispara `process.on('exit')`. Conclusion: el proceso lo estaba matando mi propio `exec`, porque al terminar el shell mataba el grupo de procesos completo.
+- Regla: cuando un proceso "muere solo" sin traza, sospechar primero del harness. Senal concreta: un handler de salida que nunca se ejecuta mas un log que muestra actividad normal hasta el corte = muerte por senal, no crash. Solucion: lanzar la app como servicio independiente (setsid / nohup) para que sobreviva al cierre del shell que la lanzo.
+- Fallo mio: perdi una horaonga de debugging persiguiendo un crash inexistente porque la primera hipotesis ("crash de Electron") era la mas familiar y no descarte la alternativa que el codigo permitia descartar.
+
+Lesson - borrar en la DB de memoria sin leer el esquema destruyo 9 lecciones reales:
+- La tabla `learnings` guarda la leccion en la columna `title`, no en `content`. `content` esta vacia en las 249 filas. Ejecute un DELETE buscando `content IS NULL OR length(content)<5` creyendo que detectaba entradas vacias: borro 9 lecciones TICAS, incluida una sobre OAuth/PAT de GitHub.
+- Recuperacion: la copia previa de `memory.db` permitio restaurar las 9 con INSERT por id, y un script de verificacion fila por fila confirmo 0 diferencias contra la copia.
+- Regla: ANTES de un DELETE masivo sobre la DB, leer el esquema (`PRAGMA table_info`) y hacer una copia. Un `SELECT` de conteo no alcanza: hay que ver la forma de la fila, no el numero. Y verificar el restaurado con una comparacion fila a fila contra la copia, no con un count.
+- Regla relacionada (ya estaba en AGENTS.md y la ignore): preferir `trash` antes que `rm`, y sobre todo no usar SQL destructivo como atajo de limpieza.
+
+Lesson - el repositorio clonado era el unico hogar de cambios no publicados:
+- El branch `fix/macos-arm64-stability` (3 commits) nunca se pusheo: el remoto es el repo de Jose y no habia OK explicito para publicar. Al descartar el proyecto, esos commits se perdieron con el repo. Regla: un trabajo que no se publico no tiene existencia durable; el precio de no publicar (o de descartar) es el trabajo completo, no solo el tiempo.
+
+---
+

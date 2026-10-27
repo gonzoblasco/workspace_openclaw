@@ -241,8 +241,6 @@ Deuda derivada: no existe ADR de adopcion de shadcn/Radix en todo el workspace (
 
 
 
-**Tags:** sesion
-
 ---
 
 ## Sesion 2026-09-15: 6 todos cerrados. Patron repetido 3 veces (#43, #42, #44): los todos describian problemas cuya premisa ya no existia (bug ya arreglado, commit inexistente, migracion ya hecha). En #54 la racha incluyo accion publica (npm publish) - la regla de credenciales por terminal de Gonzo funciona. Hallazgo propio: publish-skills.sh --check comparaba workspace crudo vs publico sanitizado, mintiendo con 8 falsos positivos permanentes que escondian drift real
@@ -731,6 +729,9 @@ Casos del mismo dia y mismo patron: PR-Agent (evaluado con verdad de base, desca
 
 ---
 
+## Reevaluacion del default del CORE (minimax vs deepseek) sobre el costo de un modelo en Ollama Cloud
+
+En Ollama Cloud con plan legacy, 'barato' significa CUOTA de GPU (barra de uso semanal con reset), no plata: el plan no tiene creditos. Cuando Gonzo dice 'consumo', pregunta de la cuota, no del precio por token. Y medir la cuota hay que hacerlo sobre la barra del panel en pixeles, no derivarla de los tokens: no es proporcional (GLM corre con mas cacheRead por turno y aun asi consume 5,5x mas cuota por request). Ademas, el gasto de un modelo se decide por lo que falla, no por el promedio: los 18 requests quemados de minimax (0,33%) consumieron 0 output tokens, mientras la cata sintetica exaggeraba el fallo a 7 de 40 celdas.
 
 ---
 
@@ -741,3 +742,6 @@ Casos del mismo dia y mismo patron: PR-Agent (evaluado con verdad de base, desca
 **Lesson:** el muro no era el captcha sino el **contexto** que yo habia marcado al intentar automatizarlo. Un captcha no es un obstaculo que se resuelva con mas intentos: es un detector de contexto. Ante uno, la unica via es **cambiar de navegador** (o dejar que lo resuelva una persona en un navegador que no este marcado), no insistir con el mismo. Y antes de pedirle a alguien que resuelva algo a mano, verificar que el contexto que le pasaste no esta marcado: el "fallo" de la persona suele ser el fallo del instrumento.
 
 **Corolario operativo:** los formularios con captcha conviene resolverlos SIEMPRE en un browser real del usuario (Safari o Chrome sin flags de automatizacion), no en un browser que lance el agente. Automatizar el relleno esta bien; automatizar el captcha convierte el problema en insoluble.
+
+---
+

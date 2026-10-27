@@ -68,6 +68,36 @@ la barra de calidad de una descripcion de PR la pone Claude Code, no una persona
 
 ---
 
+## El filtro de idioma no se negocia con el CV: se negocia con la pregunta
+
+Staffy/Pfizer (2026-10-20): el screening se cerro en la etapa final por C1 conversacional, un requisito que el JD NO declaraba y que el pitch inicial de la reclutadora tampoco menciono. Preguntar por el nivel de ingles requerido en el PRIMER mensaje de un proceso LATAM con comunicacion diaria en ingles con clientes US: es la variable que mas rapido descarta y la que mas caro cuesta descubrir tarde. La honestidad sobre el nivel oral (B2 hablado, C1 escrito) no alcanza ante un filtro real de C1 conversacional: Writing C1 no compensa, son evaluaciones distintas.
+
+---
+
+## Moderno Diffusion: el repo publico no es el producto, y con mascaras la identidad si se conserva
+
+Conclusion de la evaluacion de Moderno Diffusion (repo publico Breacorp/Moderno-Diffusion), 2026-10-27. Se descarto el proyecto: no se va a usar.
+
+Conclusion - el repo publico NO es el producto, y por eso no sirve como base:
+- El motor nativo arm64 (Metal/Neural Engine) NO esta en el repo. `core/` esta en .gitignore. No hay dylib ni binario `moderno_backend`.
+- El repo publico solo tiene el fallback por CPU en Python (~5 s/paso sobre un modelo de 2.44 GB). El producto real usa MPS.
+- Estado del repo: un solo commit, sin tests, sin CI. Es un prototipo, no un proyecto mantenible.
+- El modelo `Moderno Diffusion Fast 0.1` (.tdict, 2.44 GB) esta en HuggingFace con 0 downloads y 0 likes, creado el 15/10/2026. Se publico sin adopcion.
+
+Conclusion - las limitaciones al usar imagenes como base, paraselo a Jose:
+1. Sin mascara, `input_image_strength` es un compromiso de suma cero: o el prompt aplica y la persona se regenera (otra persona, otra cara), o la cara se conserva y nada cambia. Medido: strength 0.35-0.40 con 16 pasos = la ropa cambia Y la cara se regenera; strength 0.45-0.75 = la cara intacta y el prompt no aplica. No existe un valor intermedio que haga las dos cosas.
+2. Con mascara, la identidad SI se mantiene de forma absoluta: `face_diff` = 0.29 sobre 255 (indistinguible, pixel a pixel) en las 7 corridas. El presupuesto de denoise se gasta solo dentro de la zona enmascarada, y el rostro nunca entra al sistema. Medido sobre 7 corridas con mascara, con el rostro preservado en todas.
+3. La obediencia al prompt DENTRO de la zona repintada es el limitante real, no la identidad. Pedir "camisa de cuero roja" funciono (la camisa bordo paso a textura de cuero, cara intacta). Pedir "impermeable amarillo" casi no cambio nada. El modelo prefiere reinterpretar la textura existente antes que inventar un color ausente del contexto.
+4. La mascara tiene dos trampas que hacen fallar el primer intento en silencio:
+   - Polaridad INVERTIDA: en esta app, BLANCO en la mascara = se repinta, NEGRO = se preserva. Al reves de lo intuitivo. El propio plugin lo confirma con el comentario "repaint white keep black".
+   - La mascara se reescala junto con la imagen de entrada. Sin `force_use_given_size`, la entrada baja a 512 del lado mayor y la mascara deja de coincidir con los pixeles sobre los que fue dibujada.
+5. Resolucion: el backend debe limitar el lienzo a 512x768. Una foto de 3264x4912 (la nativa de un celular) hace que el UNet reserve activaciones proporcionales a los pixeles, agote la memoria y muera sin traza.
+6. Installacion en Apple Silicon: `tensorflow==2.10.0` no tiene ruedas arm64 (la mas antigua es 2.13.0), asi que el `pip install` falla al resolver. Ademas `PIL.Image.ANTIALIAS` fue eliminado en Pillow 10 y `image_preprocess.py` lo usaba, lo que hacia fallar cualquier img2img/inpainting con `AttributeError`.
+
+Conclusion de producto: para usar imagenes como base con identidad estable, la UNICA via de esta app es la mascara. Sin mascara, es regeneracion, no edicion. Y aun con mascara, el prompt manda solo sobre la textura, no sobre el color.
+
+---
+
 ## Cuando el motivo de un cierre no está registrado, no lo completes
 
 **26/10/2026 (TEAM/tempo + recontacto a recruiters).** Al registrar la respuesta de Samarth
@@ -216,27 +246,6 @@ La segunda parte importa: **una vez y volver al trabajo.** Insistir sobre un no 
 de la relación. El tracker lo tiene como regla ("energía de follow-up solo si ellos escriben,
 máximo un reclamo por proceso") y este caso la confirma: después del mensaje no se volvió a
 insistir con nadie, y ninguno de los cinco cerró la puerta.
-
----
-
-## El filtro de idioma no se negocia con el CV: se negocia con la pregunta
-
-**La regla (origen Staffy/Pfizer 2026-10-20, ampliada 2026-10-26 con 4 casos):** preguntar por el nivel de ingles requerido en el PRIMER mensaje de un proceso LATAM con comunicacion diaria en ingles. Es la variable que mas rapido descarta y la que mas caro cuesta descubrir tarde. La honestidad sobre el nivel oral (B2 hablado, C1 escrito) no alcanza ante un filtro real de C1 conversacional: Writing C1 no compensa, son evaluaciones distintas.
-
-**Ampliacion del 26/10: el filtro no es "clientes US", es clientes NO ANGLOPARLANTES.** Los cuatro casos, con quien ponia la barra:
-
-| Caso | Quien pone la barra | Idioma |
-|---|---|---|
-| Staffy / Pfizer (20/10) | el cliente (Pfizer) | C1 conversacional, comunicacion diaria con US y Canada |
-| Sol Bisio (21/10) | el cliente sin nombre | C1 conversacional "si o si" |
-| Infjini / Disney (26/10) | el cliente (Disney) | el idioma bloquea la presentacion, no el proceso |
-| **TEAM / tempo.io (26/10)** | **el cliente (Tempo), y el equipo esta en EUROPA** | "bastante exigentes con la fluidez en ingles, **especialmente al momento de discutir y explicar temas tecnicos**" |
-
-**Las dos correcciones que traen los casos 3 y 4:**
-1. **El filtro es el cliente, nunca el intermediario.** En los cuatro, el recruiter/intermediario (Julieta, Sol, Siraj, David) no es quien pone la barra: la pone el cliente final. Consecuencia: **recontactar al intermediario es lo correcto**, porque es el que puede matchearte contra otro req. Y el "gate" se levanta solo con el ingles en curso.
-2. **El equipo del cliente puede estar en Europa**, y ahi la exigencia no es el acento sino la **fluidez para discutir y explicar temas tecnicos** (texto literal de David, 26/10). Eso es un recorte distinto al de "clientes US": no es un موضوع de horario ni de acento, es **de poder sostener una conversacion tecnica en vivo y explicar decisiones**. Por eso la regla no dice "clientes US" sino **"comunicacion diaria en ingles con clientes o equipos no angloparlantes"**.
-
-**El dato que mas ayuda a preparar:** el cliente de TEMPO exijo fluidez **"al discutir y explicar temas tecnicos"**, que es exactamente lo que Gonzo ya hace en su trabajo real (en EY escribia los requisitos tecnicos de accesibilidad con ejemplos de codigo y revenia disenos antes de implementar). El gap de idioma es oral, pero **la habilidad pedida - explicar decisiones tecnicas - es su fuerte, no su gap**.
 
 ---
 

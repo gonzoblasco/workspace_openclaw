@@ -449,8 +449,6 @@ CAUSA RAIZ del drift 12-14 y de la pisada del 14/09. Hay dos problemas distintos
 
 
 
-**Tags:** triple-git,infraestructura,git-hooks
-
 ---
 
 ## Clon local de proyectos corrupto: remote apunta a workspace_openclaw, solo .knowledge, sin src/
@@ -500,8 +498,6 @@ Create venvs and projects in their FINAL location from the start; moving a venv 
 ## server de desarrollo bindeado a 0.0.0.0: Next dev expone la LAN sin token
 
 
-
-**Tags:** learnings
 
 ---
 
