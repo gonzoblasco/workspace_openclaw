@@ -6,6 +6,14 @@
 
 ## Radar 2026-10-25 - 43 candidatos, 32 verificados contra el posting real
 
+> **Decision de Gonzo (2026-10-27): NO se postula a mas puestos desde esta tanda.** El
+> radar se deja como esta, con los tres candidatos verificados, para cuando vuelva el
+> momento. No es un cierre de los procesos: los que ya se postaron (Mural, Mercado Pago,
+> RYZ) siguen su curso con el tracker como fuente. Es una decision de ritmo, no de umbral.
+> Lo que queda abierto y en manos de Gonzo: el hCaptcha de RYZ (sale en Safari sin tocar
+> nada) y las tres respuestas abiertas de XBOW.
+
+
 > Barrido con `find-jobs.mjs` (5 fuentes: LinkedIn guest API, remotive, arbeitnow,
 > jobicy, himalayas) + la API de MeLi (866 vacantes). Cada candidato se leyo contra su
 > posting real para separar **empresa de producto** de **nearshore-agency**: la regla sale
