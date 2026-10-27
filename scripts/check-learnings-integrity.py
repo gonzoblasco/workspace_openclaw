@@ -74,18 +74,27 @@ CATALOG_TRUNCATION = 500
 
 # Fila con el cuerpo truncado en 2026-10-27: el resto del texto no existe en
 # ninguna parte (ni DB, ni corpus de sesiones, ni historia de los .md). Se
-# acepta el deuda de forma explicita para no bloquear el gate por siempre.
+# acepta la deuda de forma explicita para no bloquear el gate por siempre.
 # Reconstruirla requiere volver a la sesion original.
+# Las 20 recuperables se repararon con scripts/repair-learnings-taxonomy.py.
 ACCEPTED_TRUNCATED = {
-    155, 156, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175,
-    176, 177, 178, 183, 186, 190, 191, 192, 193, 194, 195, 196, 197, 198,
-    199, 200, 201, 202, 203, 204, 205, 206, 207,
+    156, 165, 166, 167, 170, 173, 174, 236, 246, 258, 260, 265, 269, 271,
 }
+
+# Filas con un cuerpo valido pero minimo (menos de MIN_CONTENT_CHARS). No son
+# perdida: son esqueletos. Aviso, no falla.
+ACCEPTED_SLIM = {254, 255}
 
 
 def collect(conn):
-    """Devuelve (problemas, filas) con los defectos por fila."""
+    """Devuelve (problemas, avisos) con los defectos por fila.
+
+    Separa lo que es PERDIDA (bloquea) de lo que es RUIDO HISTORICO (avisa).
+    Un gate que reporta 169 filas no se lee y no se respeta: solo frena la
+    tabla cuando el dato no esta donde debe.
+    """
     problemas = []
+    avisos = []
 
     for lid, cat, title, content, tags in conn.execute(
         "SELECT id, category, title, content, tags FROM learnings"
@@ -94,6 +103,7 @@ def collect(conn):
         tags = tags or ""
         title = title or ""
         found = []
+        suave = []
 
         # C1: el cuerpo esta en `tags`.
         if not content.strip() and len(tags.strip()) >= MIN_CONTENT_CHARS:
@@ -103,7 +113,10 @@ def collect(conn):
         if not content.strip() and len(title.strip()) >= MIN_CONTENT_CHARS:
             found.append(("C2_cuerpo_en_title", "el cuerpo esta en la columna title"))
 
-        # C3: prosa en `tags` (no es un vocabulario controlado).
+        # C3: prosa en `tags` (no es un vocabulario controlado). En la practica
+        # historica esto es el FRAGMENTO DEL TITULO, que `migrate-learnings.py`
+        # derivaba con `title.split(" - ")[-1]`. No es perdida: el titulo
+        # sigue en su columna. Es aviso.
         if tags.strip():
             prosa = [
                 t.strip()
@@ -111,11 +124,12 @@ def collect(conn):
                 if t.strip() and not VALID_TAG.match(t.strip())
             ]
             if prosa:
-                found.append(
+                suave.append(
                     ("C3_prosa_en_tags", "tags tiene %d valor(es) que no son tags" % len(prosa))
                 )
 
-        # C4: tags en la columna que nunca llegaron a la junction.
+        # C4: tags en la columna que nunca llegaron a la junction. El export
+        # lee SOLO la junction: los tags no aparecen en ninguna vista.
         reales = [t.strip() for t in tags.split(",") if t.strip() and VALID_TAG.match(t.strip())]
         if reales:
             junction = conn.execute(
@@ -134,22 +148,25 @@ def collect(conn):
                 ("C5_contenido_truncado", "content truncado a %d chars" % CATALOG_TRUNCATION)
             )
 
-        # Titulo desproporcionado (C2 con contenido presente).
+        # Titulo desproporcionado: el titulo es largo pero DESCRIPTIVO y el
+        # cuerpo esta bien. No es perdida. Es aviso.
         if content.strip() and len(title.strip()) > MAX_TITLE_CHARS:
-            found.append(
+            suave.append(
                 ("C2_titulo_desproporcionado", "title de %d chars" % len(title.strip()))
             )
 
-        # Cuerpo demasiado corto para ser una leccion.
-        if content.strip() and len(content.strip()) < MIN_CONTENT_CHARS:
-            found.append(
+        # Cuerpo demasiado corto para ser una leccion. Aviso, no falla.
+        if content.strip() and len(content.strip()) < MIN_CONTENT_CHARS and lid not in ACCEPTED_SLIM:
+            suave.append(
                 ("C6_cuerpo_escuelto", "content de %d chars" % len(content.strip()))
             )
 
         if found:
             problemas.append((lid, cat, title[:70].replace("\n", " "), found))
+        elif suave:
+            avisos.append((lid, cat, title[:70].replace("\n", " "), suave))
 
-    return problemas
+    return problemas, avisos
 
 
 def main():
@@ -161,33 +178,42 @@ def main():
 
     conn = sqlite3.connect("file:%s?mode=ro" % DB, uri=True)
     try:
-        problemas = collect(conn)
+        problemas, avisos = collect(conn)
         total = conn.execute("SELECT count(*) FROM learnings").fetchone()[0]
     finally:
         conn.close()
 
     if report:
         print("Tabla learnings: %s filas" % total)
-        if not problemas:
-            print("Sin defectos de integridad.")
-            return 0
         por_clase = {}
         for _lid, _cat, _title, found in problemas:
             for code, _msg in found:
                 por_clase[code] = por_clase.get(code, 0) + 1
-        print("\nDefectos por clase:")
+        print("\nPERDIDAS (bloquean el gate): %s filas" % len(problemas))
+        if not por_clase:
+            print("  ninguna")
         for code in sorted(por_clase):
             print("  %-28s %s filas" % (code, por_clase[code]))
-        print("\nDetalle:")
         for lid, cat, title, found in problemas:
-            codes = ", ".join(c for c, _ in found)
             print("  id=%-4s %-14s %s" % (lid, cat, title))
             for code, msg in found:
                 print("        %-28s %s" % (code, msg))
+
+        por_clase_a = {}
+        for _lid, _cat, _title, found in avisos:
+            for code, _msg in found:
+                por_clase_a[code] = por_clase_a.get(code, 0) + 1
+        print("\nAVISOS (no bloquean): %s filas" % len(avisos))
+        if not por_clase_a:
+            print("  ninguno")
+        for code in sorted(por_clase_a):
+            print("  %-28s %s filas" % (code, por_clase_a[code]))
         return 0
 
     if not problemas:
         print("OK: %s learnings, cuerpo y tags en su columna." % total)
+        if avisos:
+            print("  (%d filas con avisos historicos, no bloquean)" % len(avisos))
         return 0
 
     por_clase = {}
@@ -195,7 +221,7 @@ def main():
         for code, _msg in found:
             por_clase[code] = por_clase.get(code, 0) + 1
 
-    print("FALLA: la tabla learnings tiene %d filas con defectos de integridad:" % len(problemas))
+    print("FALLA: la tabla learnings tiene %d filas con perdida de datos:" % len(problemas))
     for code in sorted(por_clase):
         print("  %-28s %s filas" % (code, por_clase[code]))
     print("")
@@ -208,6 +234,8 @@ def main():
         print("  ... y %d mas (--report para el detalle)" % (len(problemas) - 20))
     print("")
     print("El cuerpo de una leccion va en `content` y el titulo en `title`.")
+    print("Reparacion: scripts/repair-learnings-body.py (C1/C2),")
+    print("            scripts/repair-learnings-taxonomy.py (C4/C5)")
     print("Detalle: python3 scripts/check-learnings-integrity.py --report")
     return 1
 

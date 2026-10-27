@@ -20,6 +20,8 @@ POR QUÉ NO LO VI: verifiqué que el comando terminara y leí el conteo, pero no
 
 REGLA QUE ME LLEVO: cuando un proceso reporta un resultado agregado, verificar el ORDEN DE MAGNITUD esperado antes de reportarlo. Si el scanner dice N archivos y el índice dice M vectores, contrastar contra una cuenta independiente (chunks que el scanner generaría). Un índice que aborta a la mitad no avisa: reporta lo que alcanzó a escribir.
 
+**Tags:** verificacion,autoevaluacion,chromadb,indices-vectoriales,reporte-de-resultados
+
 ---
 
 ## Cuando medir contradice la teoria: desborde por position:absolute sin ancestro posicionado
@@ -31,6 +33,8 @@ Cuando la medicion contradice la teoria, no hay que insistir con la teoria: hay 
 Regla: para encontrar un desborde horizontal, filtrar los elementos que pasan el viewport EXCLUYENDO los que tienen un ancestro que recorta (`overflow-x: auto|hidden|scroll`). Si esa lista queda vacia y el documento igual desborda, el culpable es un descendiente `position: absolute|fixed` sin ancestro posicionado. Un solo `position: relative` en el contenedor lo resuelve.
 
 Corolario: una heuristica de "elementos que desbordan" sin el filtro de recorte devuelve falsos positivos (todo lo que vive dentro de un scroller) y hace imposible ver la causa.
+
+**Tags:** layout,css
 
 ---
 
@@ -44,6 +48,8 @@ Regla: el espaciado entre hijos de un contenedor sale del CONTENEDOR (`display: 
 
 Verificacion: medir el gap antes y despues (0.0px -> 24px) sobre la UI viva. Un cambio de CSS sin medicion antes/despues no prueba que arreglo.
 
+**Tags:** layout,spacing
+
 ---
 
 ## Un mock de test desactualizado esconde el bug que el test busca
@@ -56,11 +62,13 @@ Dos lecciones:
 
 Corolario de verificacion: los tests que fallan al cambiar el contrato son utiles, pero solo si se lee POR QUE fallan. Si se los hubiera "arreglado" solo actualizando los mocks, el crash por forma invalida quedaba en el codigo.
 
+**Tags:** mocks,contrato
+
 ---
 
 ## LECCIONES DURABLES DE ESTA SESIÓN
 
- 1. **Los tests encontraron un bug real de unidades.** El normalizador devolvía la unidad **de origen** (`cm`, `l`, `lb`) en vez de la canónica: `96 cm` no llegaba a `960 mm`. Sin los tests, el filtro por cilindrada y el comparador habrían quedado inservibles **en silencio**. Moraleja: normalizar unidades es donde se esconden los bugs silenciosos. 2. **La revisión visual encontró DOS FUENTES DE VERDAD.** La ficha de unidad calculaba "Ficha técnica parcial" con un umbral propio del componente (`s
+1. **Los tests encontraron un bug real de unidades.** El normalizador devolvía la unidad **de origen** (`cm`, `l`, `lb`) en vez de la canónica: `96 cm` no llegaba a `960 mm`. Sin los tests, el filtro por cilindrada y el comparador habrían quedado inservibles **en silencio**. Moraleja: normalizar unidades es donde se esconden los bugs silenciosos. 2. **La revisión visual encontró DOS FUENTES DE VERDAD.** La ficha de unidad calculaba "Ficha técnica parcial" con un umbral propio del componente (`specs.length < 8`), mientras `public_catalog` lo derivaba en SQL. Dos reglas para lo mismo, que tarde o temprano se contradicen. Se extrajo `model_spec_state()` (migración 6): **la base es la única definición**. **Ningún test lo agarraba - solo mirar la pantalla.** Validar visualmente los sitios de marca es tan obligatorio como el build. 3. **El constraint atrapó un error en mi propio seed.** Cargué specs de texto sin `value_text` y el `check` del esquema lo rechazó. El esquema defiende lo que dice defender. 4. **El esquema no puede confiar en que los roles existan.** En Postgres pelado hay que stubear `auth.users`, `auth.uid()` y los roles `anon`/`authenticated`/`service_role` **ANTES** de las migraciones (las policies los referencian). Y hay que replicar los **grants** que Supabase da por defecto, porque allí RLS es lo que restringe, no la ausencia de permisos: si no, el test de aislamiento mide la cosa equivocada. 5. **El navegador del gateway bloquea localhost por política SSRF** (`browser navigation blocked by policy`). La validación visual se hace con **Playwright headless** (`scripts/visual-check.mjs`, 12 capturas / 2 viewports). Las capturas deben copiarse a un directorio permitido (`~/.openclaw/workspace/tmp/`) para poder verlas con `view_image` - `/tmp` no está permitido. 6. **Servidores en background:** el patrón `(cmd &)` y `nohup ... & disown` **mueren al terminar el comando**. Lo que funciona es el modo `background: true` del propio `exec`. 7. **El build no debe depender de datos vivos.** `getCatalogGateway()` no lanza: si no hay backend configurado, devuelve un gateway que **falla al usarse**, así el build y el render funcionan y las páginas muestran su estado de error honesto en vez de romper el build. 8. **El hook del pre-commit valida rutas citadas en markdown.** Citar `projects/kanam-onwheels/scripts/verify-schema.sh` (del proyecto) en `MEMORY.md` (del workspace) lo detecta como ruta rota. **Regla: calificar con `~/projects/<slug>/` toda ruta de código de proyecto.**
 
 ---
 
@@ -81,6 +89,32 @@ Lesson - borrar en la DB de memoria sin leer el esquema destruyo 9 lecciones rea
 
 Lesson - el repositorio clonado era el unico hogar de cambios no publicados:
 - El branch `fix/macos-arm64-stability` (3 commits) nunca se pusheo: el remoto es el repo de Jose y no habia OK explicito para publicar. Al descartar el proyecto, esos commits se perdieron con el repo. Regla: un trabajo que no se publico no tiene existencia durable; el precio de no publicar (o de descartar) es el trabajo completo, no solo el tiempo.
+
+**Tags:** memoria,harness,debugging,trash
+
+---
+
+## Auditoria de la tabla learnings: el cuerpo de la leccion no tiene un lugar fijo, y el truncado del catalogo era una decision
+
+Auditoria de la tabla `learnings` (2026-10-27), hecha porque un DELETE mio borro 9 lecciones reales. No fue un error puntual: son 4 defectos estructurales que el esquema permitia y nada impedia.
+
+Defecto 1 - el cuerpo de la leccion no tiene un lugar fijo. Hay filas donde esta en `content` (lo normal), en `title` y en `tags`. El export a docs/learnings/*.md lee el cuerpo de `content` y el titulo de `title`, asi que las otras dos clases se veian como seccion vacia y nadie lo notaba. Origen: `migrate-learnings.py` derivaba los tags del titulo, y la absorcion de la tabla gemela (commit 0518cdf3f3) descarto la prosa de `tags` asumiendo que era "el titulo duplicado". Suposicion falsa: en 5 filas la prosa era el CUERPO.
+
+Defecto 2 - `add-learning` escribia en la columna `tags` y nunca en la junction `learning_tags`, que es lo UNICO que lee el export. 79 filas con tags reales que no aparecian en ninguna vista. Todo lo agregado por ese comando desde la taxonomia normalizado quedo invisible.
+
+Defecto 3 - `memory-catalog-v2.py` cortaba el cuerpo a 500 chars con el mismo valor que usaba para el embedding: `content_text = learning.get("content","")[:500]`. 34 filas quedaron con el cuerpo a la mitad. 20 eran recuperables del corpus (`sessions_relacional.content_bare` / `daily_notes.content`, buscando el fragmento del MEDIO, no el prefijo) y se recuperaron; 14 no existen en ningun lado.
+
+Defecto 4 - el truncado del catalogo no era un error de codigo, era una decision: el tope de 500 chars es del embedding, y se aplicaba tambien al dato guardado. La regla que sale: un tope de la API no es un tope del dato.
+
+Reglas que salen, generales:
+1. ANTES de un DELETE masivo sobre la DB, leer el esquema (`PRAGMA table_info`) y hacer una copia. Un SELECT de conteo no alcanza: hay que ver la FORMA de la fila. La tabla `learnings` guarda la leccion en `title` y deja `content` vacio en las filas viejas: leer el codigo de escritura (`memory-db.sh add-learning`) es mas seguro que inferir del promedio de una columna.
+2. Un guard que reporta 169 filas no se lee y no se respeta. El gate nuevo separa PERDIDA (bloquea: el cuerpo no esta donde debe) de RUIDO HISTORICO (avisa: prosa en tags, titulo largo). Con el recalibrado: 0 perdidas, 70 avisos.
+3. Cuando el codigo y los datos discrepan, el codigo es la fuente. Para reconstruir como se genero una fila, leer el extractor (`extract_learnings` acumula lineas hasta el proximo `###` y las une con ESPACIOS) en vez de inventar un corte. Con un corte inventado, una leccion de 500 chars salia como una de 72.174.
+4. Verificar el efecto, no la intention: "movimos el cuerpo a content" hay que comprobarlo con un diff de la vista exportada, no con un UPDATE que dijo exito.
+
+Resultado de la auditoria: 9 cuerpos recuperados (5 de `tags`, 4 de `title`), 20 truncadas recuperadas del corpus, 79 filas con los tags repoblados en la junction. Los .mdunque stingieron +15.912 chars de cuerpo que estaba perdido. Causas raiz corregidas: `add-learning` escribe en la junction, y el catalogo ya no trunca el cuerpo (el tope de 500 queda solo para el embedding). Gate nuevo: `scripts/check-learnings-integrity.py`, en el pre-commit.
+
+**Tags:** memoria,db,schema,integridad,guard
 
 ---
 

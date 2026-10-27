@@ -576,7 +576,16 @@ def catalog_memory():
             if not learning.get("content"):
                 continue
             title = learning.get("title", "")
-            content_text = learning.get("content", "")[:500]
+            # El cuerpo se guarda COMPLETO. Antes se truncaba a 500 chars con
+            # el mismo valor que se usaba para el embedding, y asi 34 lecciones
+            # quedaron con el cuerpo cortado a la mitad sin ninguna copia del
+            # resto (medido: ninguna era recuperable del corpus). El embedding
+            # si tiene un tope (es lo que la API acepta), pero ese tope no
+            # aplica al dato guardado. Ver scripts/check-learnings-integrity.py,
+            # clase C5.
+            content_text = learning.get("content", "")
+            # Tope SOLO para el embedding, no para lo que se guarda.
+            embed_text = content_text[:500]
 
             # Skip if a learning with this title already exists
             exists = c.execute(
@@ -586,9 +595,9 @@ def catalog_memory():
                 continue
 
             # Categorize using embeddings (with keyword fallback)
-            category = categorize_learning(title + " " + content_text)
+            category = categorize_learning(title + " " + embed_text)
 
-            learning_embedding = get_embedding(content_text)
+            learning_embedding = get_embedding(embed_text)
             c.execute(
                 """INSERT INTO learnings
                    (category, title, content, tags, learning_vector, created_at, updated_at)

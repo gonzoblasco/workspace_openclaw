@@ -327,9 +327,9 @@ El check de em dash con grep -P daba falso OK local (exit 2 enmascarado) y rompi
 
 ---
 
-## El token OAuth de OpenClaw (gho_) esta bloqueado para escritura en orgs con OAuth App access restrictions (shadcn-ui, radix-ui, facebook, TanStack, adobe, mui, vercel...). Solucion: PAT clasico en el store de secrets + secret egress proxy (secrets.egressProxy.enabled=true + allowedHosts=[api.github.com, github.com]). El proxy inyecta sentinel + HTTPS_PROXY + CA bundle en exec de gateway; gh (Go) no respeta SSL_CERT_FILE en macOS, usar curl con el CA bundle del proxy. Config aplicada 03/09.
+## El token OAuth de OpenClaw (gho_) esta bloqueado para escritura en orgs con OAuth App access restrictions (shadcn-ui, ra
 
-
+El token OAuth de OpenClaw (gho_) esta bloqueado para escritura en orgs con OAuth App access restrictions (shadcn-ui, radix-ui, facebook, TanStack, adobe, mui, vercel...). Solucion: PAT clasico en el store de secrets + secret egress proxy (secrets.egressProxy.enabled=true + allowedHosts=[api.github.com, github.com]). El proxy inyecta sentinel + HTTPS_PROXY + CA bundle en exec de gateway; gh (Go) no respeta SSL_CERT_FILE en macOS, usar curl con el CA bundle del proxy. Config aplicada 03/09.
 
 ---
 
@@ -441,13 +441,21 @@ CAUSA RAIZ del drift 12-14 y de la pisada del 14/09. Hay dos problemas distintos
 
 ## num_predict chico trunca la salida estructurada con thinking activo
 
+Patron repetido (2026-09-13/14, minimo 4 apariciones): al pedir salida estructurada (JSON) a un modelo con thinking activo, un num_predict chico se lo come el razonamiento y la respuesta llega truncada o vacia.
 
+Sintomas vistos: content vacio (deepseek, qwen3.5:cloud), y 'Unterminated string starting at...' al parsear el JSON del juez (Fase 5 de kanam-lab).
+
+Arreglo verificado: subir num_predict (220 -> 600 en el juez) Y agregar un parser de respaldo por regex que extraiga el campo critico del texto crudo aunque el JSON este incompleto. Doble red: JSON estricto cuando llega completo, regex cuando llega cortado. Tras el fix: 3/3 corridas consistentes.
+
+Regla: toda salida estructurada de un modelo con thinking necesita presupuesto amplio y un fallback tolerante a truncamiento. Si el proceso escribe en la DB en paralelo al catalog, puede fallar por lock: verificar que la fila quedo, no confiar en el mensaje de exito.
 
 ---
 
 ## Hooks de git en proyecto nuevo: git init antes de instalar, o se pisa el hook del workspace
 
+Hooks de git en proyecto nuevo: git init antes de instalar, o se pisa el hook del workspace
 
+**Tags:** triple-git,infraestructura,git-hooks
 
 ---
 
@@ -485,19 +493,62 @@ Create venvs and projects in their FINAL location from the start; moving a venv 
 
 ## git add sobre .knowledge de un repo anidado: el orden importa (falla silenciosa)
 
+Sintoma: `git add projects/<slug>/.knowledge` no stagea nada y **sale con codigo 0**. No hay error, no hay warning. El script que lo invoca cree que funciono y commitea vacio.
 
+Causa: si `projects/<slug>/.git` ya existe, el repo del workspace ve ese directorio como **embedded repository**. Git no desciende al `.knowledge/` y el add no tiene efecto.
+
+Verificado en sandbox (/tmp/gt3, /tmp/gt4) el 2026-09-22:
+- add **antes** del `git init` del proyecto -> funciona.
+- add **despues** del `git init` -> falla, y **no importa el patron de .gitignore** (se probaron tres variantes, todas fallan).
+- Una vez que el indice tiene el .knowledge seedeado, los updates posteriores funcionan normal aunque el `.git` del proyecto exista.
+
+Fix aplicado en `scripts/init-project.sh`: mover el `git add/commit` del `.knowledge` a **antes** del init del proyecto + guard que falla ruidoso (`git diff --cached --quiet` -> exit 1) en vez de imprimir un check falso.
+
+Workaround para un proyecto ya creado con el bug: mover el `.git` temporalmente, stagear el `.knowledge`, devolver el `.git`. Fue el que se uso para kanam-os.
+
+Leccion de metodo: cuando un comando de git "funciona" sin output, verificar con `git ls-files` o `git diff --cached --quiet`, no con el exit code.
 
 ---
 
 ## La verificacion que miente: exit 1 dentro de un pipe y word-splitting de zsh
 
+Dos bugs de la misma clase, los dos encontrados al construir el CRUD de kanam-os (2026-09-22). La clase: **una verificacion que da verde sin haber verificado nada**.
 
+**1. exit 1 dentro de un pipe no propaga.** El guard era:
+
+```bash
+sqlite3 "$DB" "UPDATE ...; SELECT changes();" | { read -r n; if [ "$n" = "0" ]; then exit 1; fi; }
+```
+
+El `exit 1` corre en el **subshell** del lado derecho del pipe, no en el shell principal. El script imprime el error y **sale con exit 0**. La UI habria mostrado "ok" sobre una operacion que no hizo nada. Fix: sacar el pipe y capturar con `n=$(sqlite3 ...)`, que deja el `exit 1` en el shell principal. Leccion de bash: para propagar el codigo de salida, la decision tiene que tomarse fuera del pipe.
+
+**2. zsh no hace word-splitting sobre variables sin comillas.** El test que valide los guards era:
+
+```bash
+for cmd in "done-todo 999999" ...; do ./scripts/memory-db.sh $cmd; done
+```
+
+En zsh (no en bash) `$cmd` viaja como **un solo argumento**: "done-todo 999999". El script no matchea ningun case, cae al `*)` de usage y sale 0. Resultado: el test reportaba `exit=0` para **todos** los casos, incluido el que yo ya habia verificado a mano con `exit=1`. Un falso verde perfecto. Fix: pasar los argumentos separados (`./script done-todo 999999`) o usar bash.
+
+**Como se detecto cada uno:** el 1 con el test de `execFile` (el mecanismo real que usa la app), que reporto honestamente que un id inexistente no fallaba. El 2 comparando una corrida directa (exit=1) contra el loop (exit=0) - cuando dos mediciones del mismo hecho discrepan, la medicion es el bug.
+
+**Regla general:** cuando un comando "funciona" sin output, verificar el EFECTO (`git ls-files`, `git diff --cached`, el contenido de la DB), nunca el exit code ni la ausencia de error. Y desconfiar del propio test antes que del codigo: si la medicion y el hecho no coinciden, revisar la medicion primero.
 
 ---
 
 ## server de desarrollo bindeado a 0.0.0.0: Next dev expone la LAN sin token
 
+Caso kanam-os (2026-09-22). `next dev` **default es `--hostname 0.0.0.0`** (todas las interfaces), no loopback. Verificado: `curl http://192.168.100.7:4317/` devolvia **200**.
 
+Por que importa aca y no en un proyecto cualquiera: kanam-os **lee y escribe la memoria de Kanam OS** (fichas, learnings, TODOs, DB de 12 MB) y tiene botones de escritura. Cualquier dispositivo en la red local - invitados, IoT, la TV - podia leer y **modificar** la memoria, sin autenticacion.
+
+La confusion que lo hizo facil de pasar por alto: **el portal SI tiene token** (`?openclaw_portal=...`, 401 sin el), y el listener del portal esta bien bindeado a 127.0.0.1. Pero el **puerto directo del server (4317) no tiene token**, y el portal solo protege el suyo (55149). Proteger el proxy no protege el puerto de atras.
+
+Fix: `--hostname 127.0.0.1` en los scripts dev/start de package.json. El portal sigue funcionando (mismo host) y la LAN queda cerrada (verificado: 000).
+
+Regla general: para cualquier app local que sirva **datos privados o de escritura**, bindear explicitamente a loopback. Un portal con token no alcanza si el server tambien escucha en la LAN.
+
+**Tags:** learnings
 
 ---
 
@@ -538,6 +589,8 @@ Reproducido igual en headless Y en Chrome real con ventana. **No hay bug de scro
 
 **Regla:** antes de reportar un bug de layout/anclaje, re-medir esperando al menos un frame (`requestAnimationFrame` x2 o ~50ms). Un desvio medido sincronicamente no es evidencia suficiente.
 
+**Tags:** layout,debugging,anchor-positioning,measurement,scroll,false-positive
+
 ---
 
 ## Monorepo: npm ci --workspace <pkg> puede dejar deps sin hoistear y romper la suite
@@ -554,6 +607,8 @@ ANTE UNA SUITE QUE FALLA POR UN MODULO NO DECLARADO EN EL PAQUETE BAJO PRUEBA: r
 
 NOTA DE PROCESO: se reporto el fallo como ambiental recien despues de probarlo (install completo -> verde). Declarar "es del entorno" sin la contraprueba habria sido una excusa, no un diagnostico.
 
+**Tags:** verificacion,monorepo,npm,hoisting,install
+
 ---
 
 ## Nunca consultar la DB vectorial mientras el indexador escribe: corrompe el HNSW (segfault)
@@ -568,11 +623,15 @@ REGLA QUE ME LLEVO: nunca abrir la base mientras el indexador escribe. Para moni
 
 DETALLE ÚTIL: el log estaba vacío porque Python bufferiza stdout cuando redirige a archivo. Se soluciona con `python3 -u`.
 
+**Tags:** concurrencia,chromadb,hnsw,indexado,segfault,python-buffering
+
 ---
 
 ## Un registro stale que sobrevive al refresh: la guarda que impide reparar el workspaceDir
 
 Verificado 2026-09-28. `openclaw plugins registry` corre, reporta exito y el registro SIGUE en state=stale, con differences vacio y los 62 manifiestos coincidiendo. La causa es un desacuerdo de workspaceDir: persistido /Users/gonzoblasco/.openclaw/workspace/agents/kanam-dev contra actual /Users/gonzoblasco/.openclaw/workspace. El registro vive en la tabla config_machine_state (clave plugins.installedIndex) de ~/.openclaw/state/openclaw.sqlite, campo index.workspaceDir. Cadena: resolvePluginControlPlaneWorkspace -> tryResolveAmbientOwnerAgentId -> defaults.systemAgent.agentId ('main') resuelve BIEN el valor correcto, pero canRefreshPersistedPolicyState exige reason === 'policy-changed' y ademas corta si hay mismatch, mientras el refresh se dispara como 'source-changed'. Por eso reescribe el resto (generatedAtMs avanza) y no el scope. Conclusion: no reportar 'registro reparado' por la salida del refresh cuando state sigue stale; el sintoma de los jobs se apaga, el flag no. No lo repara doctor, ni flags de scope (solo --json y --refresh), ni la herramienta openclaw. Borrar la fila no sirve: no se regenera sola, pero el proximo comando la reescribe con el mismo valor malo.
+
+**Tags:** registro,gateway,diagnostico,plugins,stale
 
 ---
 
@@ -580,11 +639,15 @@ Verificado 2026-09-28. `openclaw plugins registry` corre, reporta exito y el reg
 
 Verificado 2026-09-28. Politica del owner: 'estamos priorizando los modelos en la nube... los locales son solo para cuando no hay salida'. Estado roto encontrado: agents.defaults.model.primary = ollama/gemma4:26b, modelo LOCAL y DESINSTALADO. El mecanismo no obvio: un agente SIN bloque model no se queda sin modelo, HEREDA el default. Por eso kanam-mind y kanam-studio (los dos unicos sin model explicito) eran los dos unicos montados sobre un modelo local inexistente, y esa era la causa real de 'prepared model runtime owner was not published' y de los timeouts en model-call-started (gateway-jobs-watcher acumulo 15 fallos). Corregido: defaults + los 4 especialistas en ollama/gpt-oss:120b-cloud, main en ollama/deepseek-v4.1-flash:cloud; fallbacks 27 -> 13 con los cloud primero y los locales INSTALADOS al final. Verificado forzando la corrida de los jobs sin esperar schedule: ambos pasaron a ok. Regla: un modelo citado en el config que no aparece en ollama list no puede ser primary ni fallback.
 
+**Tags:** agentes,config,modelos,cloud
+
 ---
 
 ## El scope del registro de plugins lo fija el ORDEN de agents.entries, no systemAgent.agentId
 
 Verificado 2026-09-28 con un experimento A/B/A aprobado por el owner. Sintoma: los triggers de automatizacion fallan con 'Plugin runtime changed' y el registro persistido queda stale con un desacuerdo de scope (persistido .../workspace/agents/kanam-dev vs correcto .../workspace, con differences vacio y los 62 manifiestos coincidiendo). Mecanismo aparente (bug): resolvePluginControlPlaneWorkspace -> tryResolveAmbientOwnerAgentId SI prefiere agents.defaults.systemAgent.agentId (configurado en main, correcto), pero el indice persistido seguia al PRIMER entry del roster. Prueba: con orden kanam-dev,...,main el resultado es stale + kanam-dev; con main primero es fresh + /workspace; revertido al original vuelve a stale + kanam-dev. Fix: main PRIMERO en agents.entries. Verificado estable (releido 20s despues, sigue fresh) y confirmado en el consumidor: langchain-starter-health-watch paso de error (15:04) a ok (16:04). No requiere restart. No reparable por refresh (guarda canRefreshPersistedPolicyState exige reason=policy-changed, el refresh corre source-changed), ni por doctor, ni borrando la fila. Regla al sumar agentes: main no se mueve de la primera posicion.
+
+**Tags:** registro,gateway,plugins,automatizaciones,multi-agente
 
 ---
 
@@ -592,11 +655,15 @@ Verificado 2026-09-28 con un experimento A/B/A aprobado por el owner. Sintoma: l
 
 Verificado 2026-09-28, y es una regresion que introduje yo misma horas antes en ADR-076. Al fijar agents.entries.<rol>.model = { primary: 'ollama/gpt-oss:120b-cloud' } SIN la clave fallbacks, el runtime NO hereda agents.defaults.model.fallbacks: la pisa y deja al agente sin ningun fallback. Lo detecto doctor, no yo: 'agents.entries.kanam-ops.model is { primary: ... }, a object with no explicit "fallbacks" key. At runtime this clobbers agents.defaults.model.fallbacks, leaving the agent with no fallbacks.' Afecto a kanam-dev, kanam-mind y kanam-ops. Fix: declarar SIEMPRE la pareja primary + fallbacks (o fallbacks: [] para deshabilitar a proposito). Es el mismo tipo de error que el ADR venia a arreglar -un agente con modelo fragil- reintroducido por la via opuesta. Regla: un primary explicito no hereda fallbacks, los reemplaza; al fijar un modelo por agente, verificar la pareja completa. Cerrar el ciclo con doctor, no con la lectura del JSON.
 
+**Tags:** agentes,config,modelos,regresion,doctor
+
 ---
 
 ## Cierre de sesion con dos instancias en paralelo: mi bloque de cierre no aparecio en el daily
 
 El cierre de sesion (memory-end-session.py) es idempotente por (proyecto, fecha): si YA existe un '## Session End - <proyecto>' ese dia (de otra sesion paralela), tu bloque se descarta EN SILENCIO y parece exito. Fix: usar un label de proyecto descriptivo y unico (p.ej. 'workspace-<tema>') cuando hay sesiones concurrentes, y VERIFICAR que el bloque entro (grep del summary) antes de dar el cierre por hecho.
+
+**Tags:** config,reflexion-post-tarea
 
 ---
 
@@ -610,6 +677,8 @@ en error con 'cron: job execution timed out' (600260ms, el tope = cadencia acota
 ## LiteLLM: un playground puede funcionar sin ser adoptable
 
 **Leccion (2026-10-22, sesion LiteLLM + Ollama):** el nombre de una herramienta define el modelo mental con el que se la lee por primera vez. "LiteLLM" suena a modelo mejor o a "una IA que crea IAs"; es un proxy (traduce formato OpenAI al de cada proveedor y aplica gobernanza: virtual keys, budgets, spend, routing con retry/fallback). No entrena, no afina, no crea agentes ni skills. Un playground puede ser util sin ser adoptable: el server funciono y las 7 pruebas end-to-end pasaron, y aun asi no lo era - lo que un gateway aporta de verdad es multi-tenancy (una key y un presupuesto por cliente), no inteligencia. Si el problema es "hablar con varios modelos", el stack propio ya lo resuelve (ADR-090 + pipeline A/B). Verificacion pratica: antes de adoptar un proxy, grep del stack para ver quien lo usaria de verdad. Aqui: 0 componentes propios, solo una dependencia potencial en Onyx, y era opcional.
+
+**Tags:** gateway,adopcion,litellm,proxy,multi-tenancy
 
 ---
 

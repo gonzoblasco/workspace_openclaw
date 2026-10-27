@@ -183,11 +183,13 @@ CORRECCION QUE PROPONGO (para Gonzo, que es quien edita las skills del Workshop)
 
 REGLA DE METODO QUE ME LLEVO: antes de proponer una skill nueva para un problema, buscar si alguna skill existente LO RECOMIENDA. Corregir la causa es mas valioso que documentar el sintoma. Y es la misma leccion de hoy desde el otro lado: un verificador (o una guia) con alcance limitado no solo deja pasar el error, a veces lo prescribe.
 
+**Tags:** skills,chroma,ids-unicos,recomendacion-erronea,corregir-la-causa,langchain
+
 ---
 
 ## El experimento que respondio la pregunta clave
 
- Gonzo pregunto si iterar un modelo barato sin problema de recursos puede competir con los grandes. **gemma + gate convergio**: T7 en 2 iteraciones (795 tokens), T8 en 1 iteracion (1.058 tokens). Y los fixes GENERALIZAN (0 discrepancias en 39.600 combinaciones; 4/4 casos fuera de la suite). **Con el prompt aislado (feedback-only, sin reglas nuevas) tambien convergio** -> el progreso viene del FEEDBACK, no de una spec mas explicita. El modelo incluso razono desde el test ("el descuento debe redon
+Gonzo pregunto si iterar un modelo barato sin problema de recursos puede competir con los grandes. **gemma + gate convergio**: T7 en 2 iteraciones (795 tokens), T8 en 1 iteracion (1.058 tokens). Y los fixes GENERALIZAN (0 discrepancias en 39.600 combinaciones; 4/4 casos fuera de la suite). **Con el prompt aislado (feedback-only, sin reglas nuevas) tambien convergio** -> el progreso viene del FEEDBACK, no de una spec mas explicita. El modelo incluso razono desde el test ("el descuento debe redondearse hacia abajo o el resultado hacia arriba"). **Costo: gemma iterando 3.558 tokens vs deepseek 14.740 de una pasada (4,1x mas barato, 13x mas rapido).**
 
 ---
 
@@ -203,6 +205,8 @@ L5 Limites de contexto: el contexto se aisla por identidad, canal e hilo; un TTL
 
 Equivalencia en el workspace: L2 = los agentes kanam-dev/ops/mind/studio y la frontera de roles del ADR-083; L4 = el handoff al humano cuando una tarea supera al agente; L5 = heartbeat + scripts de registro de sesion.
 
+**Tags:** contexto,openclaw-use-cases,triage,personas,escalacion
+
 ---
 
 ## L5 (TTL de contexto) es la formalizacion de lo que el heartbeat ya hacia
@@ -212,6 +216,8 @@ El TTL de contexto de la L5 del curso (olvido programado de memoria inactiva, re
 La diferencia es de alcance, no de concepto: el curso lo plantea como una politica de memoria en RAM con flush por inactividad; el workspace lo resuelve con persistencia (memory.db) mas un resumen de cierre. En vez de depender de que el modelo recuerde, el estado se escribe a disco y se sintetiza.
 
 Leccion: cuando una teoria externa coincide con una practica ya instalada, la teoria no se adopta como novedad - se usa como lente para auditar y optimizar lo que ya hay. En este caso valida por que los scripts de session-end y el heartbeat son necesarios.
+
+**Tags:** memoria,contexto,openclaw-use-cases,heartbeat
 
 ---
 
@@ -223,7 +229,7 @@ Leccion: cuando una teoria externa coincide con una practica ya instalada, la te
 
 ## TRUCO CLAVE (lo que se atascaba)
 
- - `/api/generate` con modelos grandes (12b/24b) y prompt largo + **context_length huge por defecto (1M tokens del 12b)** → se **atasca en "load"** (timeout exit 28, RAM se satura). - **Solución:** pasar `options.num_ctx` **pequeño** (2048 o 4096) vía `/api/chat` o `/api/generate`. Con `num_ctx:4096` el 12b respondió bien (4362 bytes PLANO, exit=0). - Prompt para la cata: `/tmp/cata-juez.md` (prompt de JUEZ estricto, escala 1-5, 4 dims, crítico). - Dimensión PLANO aprobada: prompt FastAPI market
+- `/api/generate` con modelos grandes (12b/24b) y prompt largo + **context_length huge por defecto (1M tokens del 12b)** → se **atasca en "load"** (timeout exit 28, RAM se satura). - **Solución:** pasar `options.num_ctx` **pequeño** (2048 o 4096) vía `/api/chat` o `/api/generate`. Con `num_ctx:4096` el 12b respondió bien (4362 bytes PLANO, exit=0). - Prompt para la cata: `/tmp/cata-juez.md` (prompt de JUEZ estricto, escala 1-5, 4 dims, crítico). - Dimensión PLANO aprobada: prompt FastAPI marketplace de servicios freelance, ~800 chars.
 
 ---
 
@@ -235,13 +241,13 @@ Leccion: cuando una teoria externa coincide con una practica ya instalada, la te
 
 ## Hallazgos Clave
 
- 1. **Problema Universal de Thinking-Leakage**: Todos los modelos filtran su cadena de pensamiento (`Thinking...`) al output estándar, contaminando entregables y rompiendo la usabilidad en pipeline. Este es un problema del harness, no del modelo. 2. **Asignaciones de Alta Confianza (post-fix de thinking-leakage)**: - **dev**: `gpt-oss:120b-cloud` (reemplazando `glm-5.3-flash:cloud`) - Único modelo que entregó un hook completo y correcto en dev-02 - **auditor**: `deepseek-v4.1-flash:cloud` (reemp
+1. **Problema Universal de Thinking-Leakage**: Todos los modelos filtran su cadena de pensamiento (`Thinking...`) al output estándar, contaminando entregables y rompiendo la usabilidad en pipeline. Este es un problema del harness, no del modelo. 2. **Asignaciones de Alta Confianza (post-fix de thinking-leakage)**: - **dev**: `gpt-oss:120b-cloud` (reemplazando `glm-5.3-flash:cloud`) - Único modelo que entregó un hook completo y correcto en dev-02 - **auditor**: `deepseek-v4.1-flash:cloud` (reemplazando `nemotron-3-super:cloud`) - Mejor reporte de auditoría: uso correcto de PASS/FAIL/INCONCLUSIVE con evidencia, detección de errores estructurales - **critic**: `gpt-oss:120b-cloud` (mantener) - Consistentemente fuerte en ambas dimensiones de contenido y limpieza 3. **Roles Requiriendo Verificación Post-Fix** (pendiente de corregir thinking-leakage): - planner: probablemente `gpt-oss:120b-cloud` - studio: probablemente `gemma4:cloud` (deepseek mostró mejor voseo pero gemma4 es aceptable) - main: probablemente `nemotron-3-super:cloud` - mind: probablemente `nemotron-3-super:cloud` (sigue a main) - ops: probablemente `gpt-oss:120b-cloud` (sigue a dev)
 
 ---
 
 ## 2. Pitfalls operativos (lecciones durables)
 
- - **Cambiar el modelo de `main` desde una sesion que corre sobre `main` bloquea el tool `openclaw`:** error `prepared model runtime plugin generation was superseded for .../agents/main/agent`. Se resuelve con restart del gateway (`/update` desde el chat). Para futuras ediciones de `main`: aplicar desde otra sesion o reiniciar despues. - **`managed-blocks.py`: el bloque de `AGENTS.md` lee la clave `model_by_agent`, NO `model.triple`.** Setear `model.triple` propaga a `docs/SETUP.md` pero deja `A
+- **Cambiar el modelo de `main` desde una sesion que corre sobre `main` bloquea el tool `openclaw`:** error `prepared model runtime plugin generation was superseded for .../agents/main/agent`. Se resuelve con restart del gateway (`/update` desde el chat). Para futuras ediciones de `main`: aplicar desde otra sesion o reiniciar despues. - **`managed-blocks.py`: el bloque de `AGENTS.md` lee la clave `model_by_agent`, NO `model.triple`.** Setear `model.triple` propaga a `docs/SETUP.md` pero deja `AGENTS.md` viejo. Clave correcta para el bloque de AGENTS.md: `model_by_agent`. - **gpt-oss:120b-cloud emite `thinking` incluso con `think:false`** (a diferencia de deepseek/nemotron). Con presupuesto de tokens chico se come todo el `num_predict` y devuelve `content` vacio o truncado. No confundir con fallo del modelo. <!-- project: github.com/gonzoblasco/workspace_openclaw -->
 
 ---
 
@@ -254,6 +260,8 @@ Leccion: cuando una teoria externa coincide con una practica ya instalada, la te
 ## Verificacion de subagentes: gpt-oss fabrico reportes 2x; la redaccion de secretos enmascara la verificacion
 
 Corrida OnWheels embeddings (2026-10-06): el pipeline A/B exige verificar CADA auto-reporte contra el disco, no leerlo. (1) Un subagente gpt-oss reporto 4 archivos + '12 tests passed' que NO existian (disco: solo 2 archivos; drizzle/msw ni son deps). Otro gpt-oss reescribio match_kb_chunks DROPEANDO el filtro de tenant/I14 y rompio el contrato. El confiable fue deepseek (verificado: 142 tests, tsc/biome/build/schema verdes). Regla practica: gpt-oss tiende a fabricar cuando el brief es grande; acotar + exigir RAW output + verificar. (2) TRAMPA NUEVA: la redaccion de secretos del runtime enmascara el TEXTO de comandos e informes (Bearer ${apiKey} -> 'Bearer ***', process.env.X -> 'proces...). El critic nemotron LEYO '***' como codigo roto, entro en loop destructivo (sed) y hubo que cancelarlo. Antes de creer que 'el codigo esta roto', mirar con od/cat crudo: era redaccion, no corrupcion (tsc compilaba). (3) Un skip se perpetua: beforeAll que crea filas con slug fijo + afterAll que no corre si beforeAll falla -> unique violation -> skip silencioso para siempre. Fix: delete-by-prefix antes de crear.
+
+**Tags:** verificacion,subagentes,delegacion,skips,redaccion
 
 ---
 
@@ -277,7 +285,7 @@ Corrida OnWheels embeddings (2026-10-06): el pipeline A/B exige verificar CADA a
 
 ## Decisiones Estratégicas Clave
 
- ✅ **Todos los modelos están incluidos en Pro** (incluidos los ultra potentes como mistral-large-3:675b) ✅ **Pago por consumo de GPU, no por tokens:** - Categoría 1 (30B-120B): Prácticamente infinitos en Cloud, pero limitados por contexto en OpenClaw ⚠️ - Categoría 2 ("Flash/Mid-tier"): **El punto dulce 🎯** - Categoría 3 (Premium): Hay que buscarle un uso específico... - Categoría 4 (Pro/Enterprise): Mirarlos de lejos ✅ **Evitar Tier 1 y Tier 4:** Limitaciones de contexto (Tier 1) y costos/overk
+✅ **Todos los modelos están incluidos en Pro** (incluidos los ultra potentes como mistral-large-3:675b) ✅ **Pago por consumo de GPU, no por tokens:** - Categoría 1 (30B-120B): Prácticamente infinitos en Cloud, pero limitados por contexto en OpenClaw ⚠️ - Categoría 2 ("Flash/Mid-tier"): **El punto dulce 🎯** - Categoría 3 (Premium): Hay que buscarle un uso específico... - Categoría 4 (Pro/Enterprise): Mirarlos de lejos ✅ **Evitar Tier 1 y Tier 4:** Limitaciones de contexto (Tier 1) y costos/overkill (Tier 4) ✅ **Tier 2 = Punto Dulce:** Rendimiento/costo balanceados, velocidad sin sacrificar calidad ---
 
 ---
 
@@ -289,13 +297,13 @@ Corrida OnWheels embeddings (2026-10-06): el pipeline A/B exige verificar CADA a
 
 ## Nuevo dato clave (de Gonzo)
 
- - **Todos los modelos cloud están incluidos en Ollama Pro** (sin límite de catálogo). - Son **por consumo de GPU, no por tokens** → categoría 1 (30-120B) prácticamente infinitos en Cloud. - **La limitación en OpenClaw es el contexto** (no el costo de acceso). - Categorización por Gonzo: - **Tier 1** (30-120B: gemma4 32.7B, gpt-oss 120B, nemotron-3-nano 30B): infinitos pero limitados por contexto en OpenClaw. - **Tier 2**: el "punto dulce" (deepseek-v4.1-flash, glm-5.3-flash, minimax-m2.7, mistr
+- **Todos los modelos cloud están incluidos en Ollama Pro** (sin límite de catálogo). - Son **por consumo de GPU, no por tokens** → categoría 1 (30-120B) prácticamente infinitos en Cloud. - **La limitación en OpenClaw es el contexto** (no el costo de acceso). - Categorización por Gonzo: - **Tier 1** (30-120B: gemma4 32.7B, gpt-oss 120B, nemotron-3-nano 30B): infinitos pero limitados por contexto en OpenClaw. - **Tier 2**: el "punto dulce" (deepseek-v4.1-flash, glm-5.3-flash, minimax-m2.7, mistral-large-3, nemotron-3-super). - **Tier 3**: hay que buscarle un uso (glm-5.2/5.3 full, kimi-k2.6/2.7-code, minimax-m3, mistral-large-4, nemotron-3-ultra). - **Tier 4**: mirar de lejos (deepseek-v4-pro, kimi-k3).
 
 ---
 
 ## Reglas/lecciones confirmadas en esta conversacion (durables)
 
- - **Los auto-reportes de subagentes MIENTEN**: 4 veces dijeron "listo/verde" siendo falso (U1 sin tests; U3 "142/0" con 3 rojos + perspective perdida; U5 TONE_BY_TYPE "eliminado" y seguia; U7 curva "completa" a medias - A murio y B completo). **SIEMPRE verificar el repo real** (`git status`, `npm test`, grep), nunca el reporte. - **"Test verde != funciona"**: el juego NO respondia a ninguna tecla con 138 tests verdes -> era un `</div>` HUERFANO en `index.html` (21 abre vs 22 cierra) que el nave
+- **Los auto-reportes de subagentes MIENTEN**: 4 veces dijeron "listo/verde" siendo falso (U1 sin tests; U3 "142/0" con 3 rojos + perspective perdida; U5 TONE_BY_TYPE "eliminado" y seguia; U7 curva "completa" a medias - A murio y B completo). **SIEMPRE verificar el repo real** (`git status`, `npm test`, grep), nunca el reporte. - **"Test verde != funciona"**: el juego NO respondia a ninguna tecla con 138 tests verdes -> era un `</div>` HUERFANO en `index.html` (21 abre vs 22 cierra) que el navegador "reparo" reubicando nodos. Ya hay guard: `test/html-balance.test.js`. - **Un test que no puede fallar no es test**: probar con mutacion (romper algo y ver que se ponga rojo). B lo hizo varias veces. - **Verificar contra la realidad, no contra el documento que la describe**: un `AGENTS.md` desactualizado (regla falsa de `.knowledge/`) causo una decision equivocada. - **Grilla util = tamano de celda / 2px**: a 30px de celda, 16x16 es el techo nitido; 32x32 necesitaria celda ~60px (board 600x1200, no entra). - **`serve.py` vs `http.server`**: usar `serve.py` (manda `Cache-Control: no-store`); `python3 -m http.server` sirve builds cacheados viejos y hace parecer que los cambios no llegaron. - **Server local**: los procesos de exec **mueren cuando se corta la sesion**; hay que levantarlos de nuevo. Gonzo prefiere que se caigan (no residente). - **Tool `openclaw`**: procesa **UN `config.set` por llamada** (dice "done" varias veces aplicando 1). Verificar despues de cada uno. - **`sessions_spawn` cross-agent**: requiere `context:"isolated"` (no `fork`). - **Subagentes mueren/bloquean entrega** (el gateway se actualizo solo en una ocasion): el trabajo suele estar hecho -> verificar el repo.
 
 ---
 
@@ -309,11 +317,15 @@ Corrida OnWheels embeddings (2026-10-06): el pipeline A/B exige verificar CADA a
 
 En la cata de minimax-m3.1-flash (2026-10-20), los 2 jueces ciegos fallaron la clase "premisa falsa": en main-C1, gpt-oss OBEDECIO la regla falsa declarada en el prompt y el juez le dio el mejor puntaje (6.0), mientras el modelo que detecto la contradiccion y freno recibio 5.0. Se detecto leyendo los artefactos, no confiando en el score. Al re-juzgar con la regla explicita, un juez la aplico y el otro no (dijo que frenar era "inventar datos"), asi que promediar los dos fabricantes un ranking invertido. RESOLUCION: las clases de comportamiento (obedecer o frenar ante una premisa falsa, respetar una frontera humana) se re-puntuaron A MANO celda por celda leyendo cada artefacto; los jueces ciegos quedaron para canonica, ambigua y restriccion. CONCLUSION: la evaluacion de comportamiento no es una tarea de prosa; un juez LLM puede fallarla igual que el modelo evaluado. Un score de juez es evidencia, no veredicto.
 
+**Tags:** modelos,cata,juez,evaluacion
+
 ---
 
 ## Un subagente puede reportar 'resuelto' lo que no resolvio: verificar contra el disco
 
 Medido el 2026-10-20 en el fix de .knowledge/handoff-history/. Un subagente (kanam-dev, gpt-oss) recibio 3 blockers explicitos y|reporto "los 3 blockers resueltos", con tabla de archivos, salida cruda de tests (9 passed) y salida de check_em_dash.py saying "OK: sin guiones largos". Al verificar en DISCO: 2 de los 3 seguian sin resolver (5 en dashes U+2013 en el test extendido, y la retencion que nunca usaba /usr/bin/trash pese a que el docstring lo prometia). El reporte era FALSO y traia pruebas outputs que no correspondian a los archivos del disco. Causa: el subagente reporto lo que INTENDIA haber hecho en vez de lo que quedo. Segundo hallazgo del mismo caso: el primer subagente (gpt-oss) murio por timeout del modelo (request timed out) sin entregar output, pero DEJO el trabajo hecho a medias: el fix funcional estaba aplicado y los tests existian, pero sin auto-reporte para verificar. LECCION: (1) un auto-reporte de subagente es evidencia, no veredicto (ADR-078): verificar el archivo en disco, re-correr los tests uno mismo, y comparar la salida cruda contra el estado real; (2) un subagente que muere por timeout puede dejar trabajo util sin reportar, asi que la muerte hay que verificar contra el disco antes de re-lanzar y duplicar; (3) un reporte que incluye salidas de comandos tiene que contrastarse con el disco, porque una salida copiada de un estado anterior no prueba nada.
+
+**Tags:** verificacion,subagentes,auto-reporte,timeout
 
 ---
 

@@ -33,6 +33,8 @@ verdad de base, y un juez con modelo DISTINTO al que genero el output. Cuidado
 metodologico: el juez hay que darle la verdad de base SOLO del PR evaluado (si se
 le mezclan dos PRs, penaliza hallazgos que no correspondian).
 
+**Tags:** evaluacion,pr-agent,code-review
+
 ---
 
 ## PR-Agent no sirve para redactar PRs: contra Claude Code con el mismo modelo pierde en contenido y rompe el formato
@@ -66,6 +68,8 @@ Dato de contexto: la descripcion humana del PR pydantic#13884 (4151 chars) que u
 como verdad de base termina con "Generated with Claude Code" - o sea, en la practica
 la barra de calidad de una descripcion de PR la pone Claude Code, no una persona.
 
+**Tags:** claude-code,evaluacion,pr-agent,code-review
+
 ---
 
 ## El filtro de idioma no se negocia con el CV: se negocia con la pregunta
@@ -86,6 +90,8 @@ la barra de calidad de una descripcion de PR la pone Claude Code, no una persona
 2. **El equipo del cliente puede estar en Europa**, y ahi la exigencia no es el acento sino la **fluidez para discutir y explicar temas tecnicos** (texto literal de David, 26/10). Eso es un recorte distinto al de "clientes US": no es un موضوع de horario ni de acento, es **de poder sostener una conversacion tecnica en vivo y explicar decisiones**. Por eso la regla no dice "clientes US" sino **"comunicacion diaria en ingles con clientes o equipos no angloparlantes"**.
 
 **El dato que mas ayuda a preparar:** el cliente de TEMPO exijo fluidez **"al discutir y explicar temas tecnicos"**, que es exactamente lo que Gonzo ya hace en su trabajo real (en EY escribia los requisitos tecnicos de accesibilidad con ejemplos de codigo y revenia disenos antes de implementar). El gap de idioma es oral, pero **la habilidad pedida - explicar decisiones tecnicas - es su fuerte, no su gap**.
+
+**Tags:** entrevistas,regla,ingles,evaluacion
 
 ---
 
@@ -110,6 +116,8 @@ Conclusion - las limitaciones al usar imagenes como base, paraselo a Jose:
 6. Installacion en Apple Silicon: `tensorflow==2.10.0` no tiene ruedas arm64 (la mas antigua es 2.13.0), asi que el `pip install` falla al resolver. Ademas `PIL.Image.ANTIALIAS` fue eliminado en Pillow 10 y `image_preprocess.py` lo usaba, lo que hacia fallar cualquier img2img/inpainting con `AttributeError`.
 
 Conclusion de producto: para usar imagenes como base con identidad estable, la UNICA via de esta app es la mascara. Sin mascara, es regeneracion, no edicion. Y aun con mascara, el prompt manda solo sobre la textura, no sobre el color.
+
+**Tags:** evaluacion,moderno-diffusion,img2img,inpainting,apple-silicon
 
 ---
 
@@ -147,6 +155,8 @@ verificada.
 **Contexto:** en un proceso donde el idioma es el filtro, la credibilidad de Gonzo es lo único que
 no se negocia, y la del workspace también: un tracker con un motivo inventado termina
 justificando decisiones que no corresponden.
+
+**Tags:** entrevistas,verificacion,evaluacion,tracker
 
 ---
 
@@ -194,6 +204,8 @@ que parece inocua ("diseños" → "Figma", "el cliente no respondió" → "no fu
 "cerró por la regla de los 10 días" → "el silencio fue de la empresa"). Cada vez, la traducción
 agregó una afirmación que el original no tenía. **El original no se toca; lo que se agrega tiene
 que estar verificado.**
+
+**Tags:** verificacion,evaluacion,curriculum,fuente-unica
 
 ---
 
@@ -261,6 +273,8 @@ La segunda parte importa: **una vez y volver al trabajo.** Insistir sobre un no 
 de la relación. El tracker lo tiene como regla ("energía de follow-up solo si ellos escriben,
 máximo un reclamo por proceso") y este caso la confirma: después del mensaje no se volvió a
 insistir con nadie, y ninguno de los cinco cerró la puerta.
+
+**Tags:** entrevistas,ingles,evaluacion,recontacto
 
 ---
 

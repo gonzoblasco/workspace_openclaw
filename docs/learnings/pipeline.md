@@ -14,5 +14,7 @@ Causa raíz de la corrida B: se spawneó kanam-critic sin override de modelo y s
 
 Lección: (1) el enforcement del pipeline cubre la declaración, no la ejecución: hay que pasar model= explícito al spawnear. (2) Un modelo que reporta sin escribir archivos produce un auto-reporte indistinguible de trabajo hecho si el padre no mide el disco. La verificación tiene que ser mtime + grep del fix + salida de test, nunca el texto del reporte.
 
+**Tags:** verificacion,pipeline,auto-reporte
+
 ---
 

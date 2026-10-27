@@ -131,15 +131,15 @@ En astryx #4690, el draft de feedback del 24/08 (defendia drop ARIA contra el tr
 
 ---
 
-## Definido en ADR = resuelto, no se vuelve a preguntar. Si un ADR dice que un proyecto queda EXCLUIDO o ARCHIVADO, eso queda definido: no se lista como 'candidato a decidir' en auditorías de higiene ni se vuelve a preguntar su destino. El ADR es la autoridad. Fallo propio: al auditar soporteml-v4 (excluido en ADR-001), lo listé como a decidir en vez de darlo por resuelto.
+## Definido en ADR = resuelto, no se vuelve a preguntar.
 
-
+Definido en ADR = resuelto, no se vuelve a preguntar. Si un ADR dice que un proyecto queda EXCLUIDO o ARCHIVADO, eso queda definido: no se lista como 'candidato a decidir' en auditorías de higiene ni se vuelve a preguntar su destino. El ADR es la autoridad. Fallo propio: al auditar soporteml-v4 (excluido en ADR-001), lo listé como a decidir en vez de darlo por resuelto.
 
 ---
 
-## Cuando un recruiter dice 'test de logica', confirmar SIEMPRE si es psicotecnico (secuencias, patrones, silogismos) o logica de programacion (JS: promises/event loop, callbacks, IIFE, algoritmos). Son cosas Muy distintas. Fallo: el 27/08 Steven dijo 'test de logica 15 min min 70%' y preparamos psicotecnico, pero el examen real era JavaScript tecnico (saque 60, reintento lunes). En procesos tecnicos, asumir que 'logica' = fundamentos de programacion salvo que confirmen lo contrario.
+## Cuando un recruiter dice 'test de logica', confirmar SIEMPRE si es psicotecnico (secuencias, patrones, silogismos) o log
 
-
+Cuando un recruiter dice 'test de logica', confirmar SIEMPRE si es psicotecnico (secuencias, patrones, silogismos) o logica de programacion (JS: promises/event loop, callbacks, IIFE, algoritmos). Son cosas Muy distintas. Fallo: el 27/08 Steven dijo 'test de logica 15 min min 70%' y preparamos psicotecnico, pero el examen real era JavaScript tecnico (saque 60, reintento lunes). En procesos tecnicos, asumir que 'logica' = fundamentos de programacion salvo que confirmen lo contrario.
 
 ---
 
@@ -239,7 +239,13 @@ Deuda derivada: no existe ADR de adopcion de shadcn/Radix en todo el workspace (
 
 ## No puede = no puede con ESTE harness
 
+Duelo atoi 2026-09-14: el MISMO qwen3.8:27b-mlx que daba HTTP 500 (OOM Metal) como agente de OpenClaw, paso 24/24 via API directa, y en Claude Code headless respondio todos los requests con 200.
 
+Leccion: cuando un componente falla, el limite suele estar en el contexto completo (harness, sesion, memoria), no en el componente aislado. Antes de concluir 'X no puede', aislar la variable: probar el mismo X en otro harness. La atribucion correcta es 'X no puede CON esto', que es actionable, no 'X no puede', que cierra la puerta.
+
+Caso concreto: el error fue intentar el 27B como agente OpenClaw (sesion pesada: AGENTS+USER+SOUL+runtime+historial supera los 24GB junto a los 18GB de pesos). Con contexto liviano (Claude Code, API directa) entra sin problema.
+
+**Tags:** sesion
 
 ---
 
@@ -269,7 +275,7 @@ El todo 40 (kanam-studio world-building / Slice 5) parecia pendiente (texto pisa
 
 ## Lecciones
 
- - Un test que dice cubrir estructura debe renderizar la estructura real - el flatten era un atajo que invalidaba el propósito del test. - Los keys de colección de react-stately son compuestos (`$.0`) - no hardcodear ids en aserciones, resolver relacionalmente. - React valida DOM nesting en tests (li dentro de li) - el setup de react-spectrum falla el test en console.error. - **Auto-review antes de abrir PRs (regla durable, MEMORY.md):** el test debe ejercitar la estructura real que dice cubrir.
+- Un test que dice cubrir estructura debe renderizar la estructura real - el flatten era un atajo que invalidaba el propósito del test. - Los keys de colección de react-stately son compuestos (`$.0`) - no hardcodear ids en aserciones, resolver relacionalmente. - React valida DOM nesting en tests (li dentro de li) - el setup de react-spectrum falla el test en console.error. - **Auto-review antes de abrir PRs (regla durable, MEMORY.md):** el test debe ejercitar la estructura real que dice cubrir. Este PR se abrió con un test que flatteneaba las secciones - snowystinger lo detectó en segundos. Iterar localmente hasta que el test sea fiel, no abrir y esperar el review.
 
 ---
 
@@ -289,7 +295,7 @@ El modelo puede cambiarse a mitad de sesion: el runtime del contexto de arranque
 
 ## Post-cierre (22:32): propuesta de skill model-cata + leccion de glitch-words
 
- - **Analisis de skills nuevas:** la cata de modelos (procedimiento repetido 2 veces: 26/08 y 29/08) es candidata real. Creada propuesta pendiente `model-cata-20260830-0a6ac57901` via skill_workshop (trigger, prompt discriminador, rubrica de agudeza, costo real, ADR manual, purga en dos capas, anti-patrones). Pendiente de aprobacion de Gonzo para aplicar. - Candidata #2 observada (no propuesta): fusion cross-machine de dailies + ancestry-verify de submodulos. Esperar segundo caso antes de skill.
+- **Analisis de skills nuevas:** la cata de modelos (procedimiento repetido 2 veces: 26/08 y 29/08) es candidata real. Creada propuesta pendiente `model-cata-20260830-0a6ac57901` via skill_workshop (trigger, prompt discriminador, rubrica de agudeza, costo real, ADR manual, purga en dos capas, anti-patrones). Pendiente de aprobacion de Gonzo para aplicar. - Candidata #2 observada (no propuesta): fusion cross-machine de dailies + ancestry-verify de submodulos. Esperar segundo caso antes de skill. - **Leccion DB #5 (glitch-words):** 3 glitches de palabras garrafales en outputs largos esta noche. Regla: artefactos permanentes se releven palabra por palabra antes de persistir.
 
 ---
 
@@ -343,6 +349,8 @@ El idioma no es opcional ni cosmetico, y ya hay regla escrita en `AGENTS.md` ("R
 
 **Por que pasa:** es una falla de atencion, no de conocimiento (la regla ya existia). El riesgo crece cuando el texto es largo y se genera en un solo pase, o cuando se cambia de contexto entre capas (publicar en ingles en GitHub y despues reportar en espanol).
 
+**Tags:** comunicacion,regla,idioma,atencion,espanol,ingles,gonzo
+
 ---
 
 ## Un artefacto ausente puede estar movido o removido en cleanup, no nunca creado
@@ -352,6 +360,8 @@ Al auditar deuda documental, "el archivo no esta" tiene TRES causas distintas qu
 Verificado 2026-09-24: el reporte "3 artefactos prometidos y ausentes" era FALSO. LEARNINGS.md y METHODOLOGY-AUDIT.md existian pero mal ubicados (un commit previo movio 4 docs a docs/ y dejo 4 atras: movimiento incompleto), y el mockup de ADR-037 existio y se borro al limpiar el proyecto terminado. Crearlos de nuevo habria duplicado dos archivos vivos y dejado sin tocar el bug real que causaba el mal ubicamiento: dos scripts apuntando a docs/ mientras los archivos estaban en la raiz.
 
 Procedimiento antes de declarar ausente: git log --diff-filter=D (fue borrado?), git log --all -- <path> (existio alguna vez?), y buscar el nombre en todo el arbol. Distinguir "movido" y "removido en cleanup" de "nunca creado" evita trabajo duplicado y deja a la vista el bug de fondo.
+
+**Tags:** git,auditoria,documentacion,artefactos
 
 ---
 
@@ -364,6 +374,8 @@ Verificado 2026-09-24 con los detectores de memory-wiki: tras activar el plugin 
 Precedente en el mismo workspace: la auditoria de contraste de kanam-os comparaba claves con -- contra claves sin -- y reportaba "0 fallas" sobre un CSS con 9 pares. Un chequeo que no puede fallar no verifica nada. Y un test que nace ciego reproduce el bug que previene (el que renombraba focus-visible a focus-visible-x, que contiene el original como substring y el check seguia viendolo).
 
 Practica: por cada detector o guardia nuevo, escribir el caso sembrado que lo hace fallar, y correrlo. Si no se puede sembrar el defecto, el chequeo esta mal diseñado, no es que no haya defectos.
+
+**Tags:** testing,validacion,guardias,detectores
 
 ---
 
@@ -381,6 +393,8 @@ Reglas que salen de esto:
 
 Corolario para skills del Workshop: la via es la herramienta (read -> prepare_patch -> patch), que ademas valida contra la ultima lectura y por eso DETECTA la carrera en vez de pisarla en silencio.
 
+**Tags:** concurrencia,edicion,workshop,archivos-compartidos
+
 ---
 
 ## Trampa de medicion: $? tras un pipe mide head, no el script
@@ -392,6 +406,8 @@ Caso real (2026-09-24, cierre de hermes-agent #93838): medi el exit code de `che
 REGLA: para medir el exit code de un comando, no encadenarlo a un pipe. O se redirige a archivo y se mide (`cmd > out 2>&1; echo $?`), o se usa `${PIPESTATUS[0]}` en bash.
 
 POR QUE IMPORTA MAS QUE UN BUG: el numero falso era comodo (confirmaba que "el checker no sirve como gate" y justificaba leer el texto a mano). Un resultado que valida lo que uno ya sospechaba pasa sin revision. Es el mismo patron que el workspace ya registro dos veces: un chequeo que da confianza falsa. Un numero medido asi no es evidencia.
+
+**Tags:** medicion,exit-code,shell,falsa-confianza
 
 ---
 
@@ -409,6 +425,8 @@ REGLA DE ORO (AGENTS.md): "Definido en ADR = resuelto, no se vuelve a preguntar.
 
 REGLA PRACTICA: antes de proponer un guard, script o test en un area, grepear el indice de ADRs por esa area (`grep -il "<area>" docs/adr/*.md`) y leer la decision vigente COMPLETA. Si la decision ya cubre el caso, la propuesta se retira; reabrirla requiere evidencia nueva y disruptiva, y eso es decision de Gonzo, no mia.
 
+**Tags:** gobernanza,adr,regla-de-oro,autoevaluacion,propuesta
+
 ---
 
 ## Verificar la premisa ANTES de ejecutar una orden de borrado (0 de 68 ADRs tenian el sujeto que se creia)
@@ -425,6 +443,8 @@ REGLA QUE ME LLEVO: antes de ejecutar una orden de borrado, verificar la premisa
 
 DATO ÚTIL: `grep -l` sobre el título distingue "es el sujeto" de "solo lo cita". Y contar las referencias externas por ADR (`grep -rl ADR-NNN fuera de su archivo`) mide el blast radius antes de tocar.
 
+**Tags:** gobernanza,auditoria,adr,borrado,blast-radius,premisas
+
 ---
 
 ## Un test mio paso en verde con el codigo mutado: la asercion no discriminaba (marcas markdown)
@@ -439,6 +459,8 @@ REGLA QUE ME LLEVO: al escribir una asercion sobre texto, verificar QUE EL VALOR
 
 PATRON GENERAL: es la cuarta vez en el dia que un paso de VERIFICACION atrapa algo (spec vencido, requirements.txt vacio, overlap faltante, este). Verificar no es un tramite final: es la etapa que produce los hallazgos.
 
+**Tags:** verificacion,tests,mutation-testing,aserciones,confianza-falsa
+
 ---
 
 ## Construimos un detector de deuda ciego a su propio documento (alcance del verificador)
@@ -450,6 +472,8 @@ LA CAUSA RAIZ - y esto es lo que importa: el documento vivia en la RAIZ del work
 REGLA QUE ME LLEVO: al construir un verificador, preguntar "¿que queda FUERA de mi alcance?" y revisar si ahi vive justo lo que mas importa. Un verificador con alcance limitado da falsa sensacion de cobertura: escaneaba 26 proyectos y no veia su propio documento.
 
 CONTEXTO MAS AMPLIO: ese dia el mismo patron aparecio TRES veces (docs de proyecto, docs de workspace, y los ADRs de v4). Documentacion que declara un estado vencido, sin nada que lo verifique. Las tres veces lo encontro una persona preguntando, no una herramienta.
+
+**Tags:** documentacion,alcance,verificadores,falsa-cobertura,deriva,debt-detector
 
 ---
 
@@ -463,6 +487,8 @@ Regla: un mecanismo que produce estado recuperable se entrega junto con su via d
 
 Segundo corolario, en datos: el estado `aplicado` de un candidato se habia vuelto un booleano almacenado, y como no existia "desaplicar", un candidato marcado de mas quedaba bloqueado para siempre. Se resolvio DERIVANDO el estado de la fuente de verdad (que fichas apuntan al job) en vez de agregar la operacion inversa. Un estado derivable no necesita inverso. Ver ADR-070.
 
+**Tags:** adr-070,recuperacion
+
 ---
 
 ## Un script de verificacion apunto a datos reales y los destruyo (ADR-069)
@@ -474,6 +500,8 @@ Segundo efecto del mismo problema: los scripts de smoke y seed dejan sus mundos 
 Regla: un script que escribe no toca un mundo que no creo el mismo. Crea su propio mundo, registra el id que le devuelve la API, y limpia por ESE id, nunca por heuristica sobre titulos o contenido. Limpiar por titulo (`WHERE title LIKE '...'`) puede borrar datos reales con ese titulo.
 
 Y la leccion de proceso: cuando el usuario reporta un sintoma, primero hay que preguntarse si lo causamos nosotros. Yo asumi un bug del producto durante varios turnos; era mi dano. Verificar el propio historial de acciones antes de diagnosticar.
+
+**Tags:** adr-069,datos-prueba
 
 ---
 
@@ -493,11 +521,15 @@ El working tree tenia studies/narrative-engineering/ revertido: el caso 02 (Batm
 
 Verificado 2026-09-28. Dos jobs de automatizacion (pipeline-queue-watcher, langchain-starter-health-watch) quedaron en ok a las 11:54 tras un refresh del registro de plugins, y VOLVIERON a error a las 11:57 y 12:06 despues de comandos de inspeccion posteriores. Cada comando de `plugins` cambia el runtime de plugins e invalida el contexto con el que se evalua un trigger ya registrado. Consecuencias: (a) los 'hallazgos del watcher' que se me pidio corregir eran el EFECTO de mi propia investigacion, no un problema latente del sistema; (b) agrupar los comandos de plugins en una sola pasada y no repetirlos despues del refresh; (c) un ok obtenido justo despues de un comando NO prueba estabilidad - la prueba es un ok sin tocar el runtime, en la corrida programada; (d) antes de escalar un fallo como hallazgo, verificar el orden temporal contra la hora de los propios comandos.
 
+**Tags:** diagnostico,metodo,plugins,runtime,automatizaciones
+
 ---
 
 ## Un sub-agente escribe relativo a SU workspace, y el runtime no valida semantica
 
 Verificado 2026-09-28, tres veces en una sesion. (1) Rutas: un sub-agente resuelve rutas relativas contra SU PROPIO workspace, no el compartido. Con el brief diciendo 'agents/kanam-ops/reports/x.md', kanam-ops escribio en 'agents/kanam-ops/agents/kanam-ops/reports/x.md'; kanam-dev escribio 'scripts/verify-delegation.sh' en 'agents/kanam-dev/scripts/'. El hijo que recibio ruta ABSOLUTA (kanam-mind) acerto. Regla: toda ruta de escritura en un brief va absoluta. (2) Semantica: status=done significa que el proceso termino limpio, NO que haya producido el resultado. Medido: '43 specs importados' (eran 83), '9 skills' (eran 0), un JSON de evidencia inventado con campos inexistentes, y una suite con set -e que se auto-abortaba en el test 2 de 5. Regla: el padre reproduce la verificacion y reporta la salida cruda, no la interpretacion del hijo. (3) Un sub-agente no puede crear sub-agents (sessions_spawn no esta disponible para el); briefearlo es briefear una tarea imposible y el hijo improvisa para cerrar en done.
+
+**Tags:** verificacion,metodo,subagentes,delegacion
 
 ---
 
@@ -505,11 +537,15 @@ Verificado 2026-09-28, tres veces en una sesion. (1) Rutas: un sub-agente resuel
 
 Verificado 2026-09-28. Reporte que el modelo GLM-5.3-Flash 'se cuelga con prompts largos' y lo deje escrito en un ADR. Al re-medir sin presuponer la causa: 7 tamanos de prompt (455 B a 150 KB) respondieron OK en 3-4s cada uno, dos modelos distintos OK, y una tarea que exige la herramienta Bash ejecuto, listo y razono correctamente. Lo que habia pasado: los dos intentos originales terminaron por SIGTERM, y el SIGTERM lo di yo misma con pkill tras esperar unos minutos. No habia cuelgue: habia una prueba que yo cortaba y a la que le atribuia el fallo. Regla: si una prueba se corta, el resultado es 'no concluyente', NUNCA 'colgado'. Antes de reportar un defecto, verificar quien termino el proceso (exit code, SIGTERM propio) y no confundir 'deje de esperar' con 'el proceso fallo'. El unico fallo real y reproducible en esa familia es qwen3.5:cloud con exit status 1.
 
+**Tags:** claude-code,diagnostico,metodo,atribucion
+
 ---
 
 ## La DB de estado usa WAL: copiar solo el .sqlite lee estado viejo y fabrica contradicciones falsas
 
 Verificado 2026-09-28. La DB ~/.openclaw/state/openclaw.sqlite usa journal_mode=wal. Copiar solo el archivo .sqlite NO incluye los cambios pendientes del -wal, asi que se lee una version vieja del dato. En esta sesion eso produjo una contradiccion aparente entre el CLI (que decia state=fresh, workspaceDir=/workspace) y mi copia de la DB (que decia stale, kanam-dev): el CLI leia el WAL, mi copia no. Pase un rato largo tratando de explicar una contradiccion que habia fabricado yo mismo copiando mal. Copia correcta: cp state/openclaw.sqlite /tmp/r.sqlite; cp state/openclaw.sqlite-wal /tmp/r.sqlite-wal; cp state/openclaw.sqlite-shm /tmp/r.sqlite-shm. Regla: antes de declarar que dos fuentes se contradicen, verificar que ambas lean la misma version del dato. Un -wal no copiado es un falso desacuerdo, y perseguirlo quema ciclos. El CLI sqlite3 esta bloqueado sobre el state dir; la copia completa en /tmp se lee sin problema.
+
+**Tags:** sqlite,wal,gateway,diagnostico,metodo
 
 ---
 
@@ -517,11 +553,13 @@ Verificado 2026-09-28. La DB ~/.openclaw/state/openclaw.sqlite usa journal_mode=
 
 Verificado 2026-09-29, y es una autocorreccion de un ADR que yo misma escribi el dia antes. En ADR-081 afirme: 'el scope del registro lo fija el orden de agents.entries, por eso los triggers fallaban; fix: main primero'. El A/B/A que corri SI probo el primer eslabon (orden -> state del registro, reproducible). Lo que NO probe fue el segundo: que ese desvio causara el fallo de los jobs. Diez horas despues los datos lo desmintieron: el gateway reescribio el config a las 23:29-23:30 (config.write en logs/config-audit.jsonl, sin actor de agente, claves en orden alfabetico), el registro volvio a stale con persisted=agents/kanam-dev... y los 3 jobs hicieron 0 errores en 31 corridas. O sea: el registro puede estar stale con los jobs sanos, y 'main primero' ni siquiera persiste (el gateway reordena). El experimento que faltaba era trivial: revertir el orden Y ver el sintoma. Regla: cuando una hipotesis tiene dos eslabones, hay que probar el segundo explicitamente; confirmar el primer eslabon no autoriza a reportar el segundo. Una correlacion reproducible no es una cadena causal verificada. Ver ADR-081 (marcado parcialmente refutado).
 
+**Tags:** adr,metodo,plugins,atribucion,causalidad
+
 ---
 
 ## Lecciones de metodo (transversales)
 
- 1. **Un modelo barato + gate puede igualar a uno caro**, y el limite es la calidad de la SEÑAL, no el tamaño del modelo. El loop converge tan lejos como el gate. 2. **La rotacion sin gate no agrega y degrada.** Cada paso tiene que ver el gate y hacer algo distinto (escribir/revisar/corregir/arquitectura), nunca "mejorar" a ciegas. 3. **Verificar el control, no asumirlo.** El observador de red demostro que harnesses y modelos mienten sobre que modelo/thinking usan. `ollama show` y el log del pro
+1. **Un modelo barato + gate puede igualar a uno caro**, y el limite es la calidad de la SEÑAL, no el tamaño del modelo. El loop converge tan lejos como el gate. 2. **La rotacion sin gate no agrega y degrada.** Cada paso tiene que ver el gate y hacer algo distinto (escribir/revisar/corregir/arquitectura), nunca "mejorar" a ciegas. 3. **Verificar el control, no asumirlo.** El observador de red demostro que harnesses y modelos mienten sobre que modelo/thinking usan. `ollama show` y el log del proxy son la unica verdad. 4. **Validar el test del test antes de medir.** Mis propias suites tenian 3 bugs (expectativas que no sumaban k, atributo `table` no pedido, limite de slots ambiguo) y un falso positivo (marcaba `int()` de un docstring). Sin esa validacion, todo eso habria entrado al veredicto como defecto de los modelos.
 
 ---
 
@@ -538,6 +576,8 @@ Verificado 2026-09-29, y es una autocorreccion de un ADR que yo misma escribi el
 **PATRON:** misma familia que "un detector de deuda ciego a su propio documento" - el verificador era ciego a su archivo mas importante. Tercera vez que el patron aparece (alcance limitado, skip de clase, lista de archivos incompleta). La pregunta no es "el check pasa?", es "que queda FUERA del check?".
 
 **VERIFICACION:** test que fijaba la conducta vieja (`test_directory_link_is_skipped`) reemplazado por `test_directory_link_is_checked` + `test_reports_a_broken_directory_link` + `test_skills_index_is_scanned`. Sembrar el defecto (un link a directorio inexistente) hace fallar el checker: probado. 21/21 en verde.
+
+**Tags:** verificacion,falso-verde,check-refs,scope,skip
 
 ---
 
@@ -556,11 +596,15 @@ Verificacion propuesta: un test que fije la lista de directorios de contenido de
 
 Corolario de proceso: al commitear trabajo propio tras una sesion ajena de "limpieza", comparar `git status` con la expectativa - 256 borrados en el working tree fue la senal de que un directorio entero habia desaparecido, y se leyo como "migracion in-flight" en vez de como perdida.
 
+**Tags:** git,borrado,falso-verde,check-refs,guarda
+
 ---
 
 ## Resuelto el pendiente del thinking bajo goose: goose 1.52 reconoce GOOSE_THINKING_EFFORT/gooseThinkingEffort (off/low/medium/high/max) pero NO lo transmite al provider (medido con observador de red: effort=- en env var, config.yaml, provider openai-compatible y ollama nativo). Solucion: proxy propio (sandbox/cata-agentes/injector.py) que inyecta reasoning_effort en /v1/chat/completions y think en /api/chat. Verificado: con effort=high respuesta 946 bytes, con effort=max 2841 bytes (el knob llega al modelo).
 
 Un harness puede exponer un knob y no pasarlo: hay que medir el payload real, no confiar en la opcion de config. El proxy propio es la ruta cuando el harness no coopera.
+
+**Tags:** reflexion-post-tarea,research
 
 ---
 
@@ -568,17 +612,21 @@ Un harness puede exponer un knob y no pasarlo: hay que medir el payload real, no
 
 Un dato de calendario heredado se verifica contra la fuente oficial antes de anclarlo; el handbook derivaba a la web y el fetch automatizado estaba bloqueado (403), asi que la verificacion requirio input humano. Anclar un plan a una fecha no verificada propaga el error a todo el cronograma.
 
+**Tags:** reflexion-post-tarea,research
+
 ---
 
 ## Gonzo pidio el parrafo de descripcion de una skill (User Interface) para cargar en un formulario ATS. Entregue el parrafo pero ademas edite docs/entrevistas/mercadolibre-cards-nfc-aplicacion.md y el job-search-tracker.md sin que lo pidiera. Gonzo corrigio: 'solo debias darme el parrafo... deshaz lo ultimop'.
 
 Cuando Gonzo pide UN artefacto puntual (un parrafo, un texto, una respuesta), entregar SOLO eso. No acompanar con ediciones a archivos, trackers, daily notes o commits que no fueron pedidos. El impulso de 'aprovechar y dejar todo consistente' es exactamente lo que rompe el limite: el pedido define el alcance de la accion, no la oportunidad que veo de mejorarlo. Si detecto que conviene actualizar otra cosa, se ofrece, no se ejecuta. Regla de alcance: request = scope de write.
 
+**Tags:** reflexion-post-tarea,other
+
 ---
 
 ## Durable: leccion de metodo (correccion de Gonzo)
 
- - **Solo el parrafo pedido = solo el parrafo.** En la carga de skills del ATS de Mercado Libre, cuando Gonzo pidio el parrafo de una skill, ademas edite el archivo de postulacion y el job-search-tracker sin que lo pidiera. Correccion textual: "que acabas de hacer? solo debias darme el parrafo… deshaz lo ultimo". Revertido. Regla: cuando el pedido es un entregable puntual (un parrafo, un texto), responder con ESE entregable; no tocar otros archivos ni trackers salvo pedido explicito. Vale doble 
+- **Solo el parrafo pedido = solo el parrafo.** En la carga de skills del ATS de Mercado Libre, cuando Gonzo pidio el parrafo de una skill, ademas edite el archivo de postulacion y el job-search-tracker sin que lo pidiera. Correccion textual: "que acabas de hacer? solo debias darme el parrafo… deshaz lo ultimo". Revertido. Regla: cuando el pedido es un entregable puntual (un parrafo, un texto), responder con ESE entregable; no tocar otros archivos ni trackers salvo pedido explicito. Vale doble cuando el archivo es la fuente de verdad (trackers, dailies, DB). <!-- project: github.com/gonzoblasco/workspace_openclaw --> - Consecuencia practica: pedir permiso antes de persistir trabajo (yo lo pregunte al final de la sesion sobre registrar este learning; la pregunta quedo sin responder).
 
 ---
 
@@ -609,6 +657,8 @@ caso 5 no fue mentira deliberada: corto la salida en la linea que le convenia. A
 exigir "salida cruda", pedir el comando COMPLETO y su exit code, no un extracto.
 Y al reportar vos, no resumas un gate: pega el bloque.
 
+**Tags:** subagentes,verification,delegation
+
 ---
 
 ## Estudiar por modulo y cerrar con activos, no leccion por leccion
@@ -618,6 +668,8 @@ Regla de Gonzo (2026-09-30): el estudio de un curso se procesa por MODULO, no po
 Por que funciona: la sintetizacion conecta los puntos entre lecciones (el triaje solo sirve junto al enrutamiento y la escalacion), y pasar la teoria a practica es lo que fija el aprendizaje. Leccion por leccion produce apuntes fragmentados; modulo por modulo produce un sistema.
 
 Corolario de orden (pedido explicito de Gonzo): la skill del propio Laboratorio de Activos se escribe AL FINAL, despues de haberlo practicado al menos una vez. La practica define la skill; una skill escrita antes de la practica es una cascara vacia.
+
+**Tags:** openclaw-use-cases
 
 ---
 
@@ -631,23 +683,29 @@ Corolario de orden (pedido explicito de Gonzo): la skill del propio Laboratorio 
 
 Correccion de Gonzo (2026-10-06): la regla de pagos 'Mercado Pago por defecto, Stripe solo por excepcion' LIMITABA a Stripe sin motivo. Hechos: (1) Stripe ya opera en Argentina - la premisa de indisponibilidad de ADR-042 dejo de ser cierta; (2) en LOVABLE, Stripe es la UNICA integracion de pago disponible, asi que cualquier proyecto Lovable cobra si o si con Stripe. Nueva regla: NO hay proveedor obligatorio en el ecosistema; cada proyecto elige y JUSTIFICA en su ADR/HANDOFF. Lovable -> Stripe (opcion natural del entorno, no excepcion). Fuera de Lovable -> proveedor a eleccion: Mercado Pago es una opcion fuerte (no la unica) por medios de pago locales (QR/Rapipago/PagoFacil/CBU/MODO) y moneda local; Stripe es igualmente valido. Otros (dLocal, PayU, MoR) validos con justificacion. Leccion de metodo: un default impuesto o una prohibicion transversal bloquea proyectos cuando el entorno cambia; preferir la decision justificada por proyecto al automatismo.
 
+**Tags:** stripe,pagos,lovable,decision,mercado-pago,adr-042
+
 ---
 
 ## Cierre de sesion con doble entregable: informe en memory/ + HANDOFF del proyecto
 
 'Guardar sesion' y 'cerrar sesion' son el mismo disparador. Desde 2026-10-06 cada cierre deja DOS entregables: (1) informe detallado en memory/YYYY-MM-DD.md (plantilla registrada en memory/_templates/session-close.md); (2) HANDOFF.md del proyecto en curso, generado por scripts/session-handoff.py en el .knowledge/ del proyecto (~/projects/<slug>/.knowledge/, ADR-075) o del workspace. El HANDOFF se DERIVA del informe de cierre (mismo resumen + estado + proximos pasos + decisiones + archivos tocados) para que cada proyecto se pueda continuar sin re-descubrir contexto. Lo orquesta skills/session-lifecycle/scripts/session-end.sh.
 
+**Tags:** proceso,sesion,handoff,cierre,session-lifecycle
+
 ---
 
 ## 3. Leccion transversal de la sesion (durable, 4ta vez)
 
- **"Lo que un documento declara 'pendiente' hay que MEDIRLO antes de creerlo."** Aparecio 4 veces el 2026-10-06: el Tablero ("en curso" pero hecho), el design system ("paso 0 faltante" pero existe), el contraste ("verificado, no sentido" pero falso) y ahora `kanam-fixer` ("alcance sin definir" pero definido hace 3 semanas) + el ROADMAP §0.1 (tabla pre-fix). La gobernanza dormida acumula **falsos verdes y falsos pendientes por igual**. Antes de citar un estado de un doc de gobernanza: verificar c
+**"Lo que un documento declara 'pendiente' hay que MEDIRLO antes de creerlo."** Aparecio 4 veces el 2026-10-06: el Tablero ("en curso" pero hecho), el design system ("paso 0 faltante" pero existe), el contraste ("verificado, no sentido" pero falso) y ahora `kanam-fixer` ("alcance sin definir" pero definido hace 3 semanas) + el ROADMAP §0.1 (tabla pre-fix). La gobernanza dormida acumula **falsos verdes y falsos pendientes por igual**. Antes de citar un estado de un doc de gobernanza: verificar contra ADR + disco. Y **una regla sin guarda se viola sola** (USER.md se arreglo y regreso; 0.1 no tenia ningun check que lo cubriera). <!-- project: github.com/gonzoblasco/workspace_openclaw -->
 
 ---
 
 ## Se implementó HANDOFF automático + plantilla de cierre de sesión, y se confirmó la hoja de ruta de 5 paths con 3 horizontes. Además, se dejó visible el mapa en dashboard.
 
 session,hand off,roadmap
+
+**Tags:** 2
 
 ---
 
@@ -689,13 +747,15 @@ ui,contrast,audit
 
 ## Lecciones registradas (commits pusheados, CI verde)
 
- | Leccion | Archivo | Commit | |---|---|---| | M1 L01 Respuestas Autonomas en Canales Activos | `L01-respuestas-autonomas.md` | `46741f656a` | | M1 L02 Filtrado Selectivo de Notificaciones y Menciones | `L02-filtrado-selectivo.md` | `4e47cd8e34` | | M1 L03 Configuracion del Tono Asistido con SOUL.md | `L03-soul-tono.md` | `2e41b9fb03` | | M1 L04 Generacion Dinamica de Resumenes de Conversaciones | `L04-resumenes-dinamicos.md` | `be84c1b879` | Proxima: M1 L05 "Derivacion Segura de Mensajes a Ope
+| Leccion | Archivo | Commit | |---|---|---| | M1 L01 Respuestas Autonomas en Canales Activos | `L01-respuestas-autonomas.md` | `46741f656a` | | M1 L02 Filtrado Selectivo de Notificaciones y Menciones | `L02-filtrado-selectivo.md` | `4e47cd8e34` | | M1 L03 Configuracion del Tono Asistido con SOUL.md | `L03-soul-tono.md` | `2e41b9fb03` | | M1 L04 Generacion Dinamica de Resumenes de Conversaciones | `L04-resumenes-dinamicos.md` | `be84c1b879` | Proxima: M1 L05 "Derivacion Segura de Mensajes a Operadores" (teaser del propio curso).
 
 ---
 
 ## Una objecion economica se contesta con el campo medido, no con una inferencia
 
 Gonzo objeto la seccion de costo del informe de la cata: afirmaba una consecuencia economica ("minimax piensa 3x mas, el costo por turn podria ser mayor") sin haber medido el consumo, y senalo que el unico "20x" de precio del workspace era de otra sesion y otro modelo (nemotron vs deepseek). Verificado: el "20x" no estaba en nada escrito en esa cata, pero la observacion de fondo era correcta Y el dato para contestarla estaba disponible desde el principio: cada corrida guardaba eval_count (output tokens). Se verifico que eval_count incluye el razonamiento (con content+thinking la densidad da 4,3-4,5 chars/token, coherente con ~4; con content solo daria 1,31, imposible) y que el input fue identico para los 4 modelos, asi que todo el delta es output/thinking. MEDIDO: minimax/deepseek = 3,89x output tokens (2,95x sin el sesgo del retry) y 5,5x latencia. Y el dato que mas pesa: las 7 celdas donde minimax fallo por espiral de thinking consumieron 110.260 output tokens = 294% de todo lo que consumio deepseek en 33 celdas limpias; el gasto esta dominado por el modo de fallo, no por el razonamiento normal. LECCION: cuando una afirmacion economica es challenged, el numero esta en los registros: mirar el campo antes de pedir opinion o de dejar un pendiente. Y una segunda: en esta seccion del daily el .md es la FUENTE y la DB se regenera desde el, asi que editar la DB directo se pierde en el reconcile siguiente (me paso: lo perdi una vez y lo rehice editando el .md y propagando con memory-end-session.py --dedupe-only).
+
+**Tags:** modelos,memoria,costo,cata,consumo
 
 ---
 
@@ -721,17 +781,21 @@ Corolario 4 - **la aclaracion de Gonzo sobre "desde Ollama" aplica a todo el Pat
 
 Casos del mismo dia y mismo patron: PR-Agent (evaluado con verdad de base, descartado), Milvus (evaluado end-to-end, descartado), Onyx en modo Lite (decidido no completo por el presupuesto de RAM de Docker).
 
+**Tags:** triage,decision,adopcion,benchmark,sobreingenieria,vectorstore,evidencia
+
 ---
 
 ## Leccion de redaccion (la mas transferible del dia)
 
- **Preguntar por la operacion, no por la etiqueta.** El revisor adversarial propuso como mensaje a David: *"could you please confirm the required English proficiency... does the client require a conversational C1?"*. **Eso es exactamente el auto-sabotaje que hay que evitar**: preguntar "¿el cliente exige C1?" con esas palabras clasifica al candidato como el que se autoexcluye, destruye la opcion y no da informacion a cambio. Es el caso Staffy provocado a mano. La redaccion que si funciona, y que
+**Preguntar por la operacion, no por la etiqueta.** El revisor adversarial propuso como mensaje a David: *"could you please confirm the required English proficiency... does the client require a conversational C1?"*. **Eso es exactamente el auto-sabotaje que hay que evitar**: preguntar "¿el cliente exige C1?" con esas palabras clasifica al candidato como el que se autoexcluye, destruye la opcion y no da informacion a cambio. Es el caso Staffy provocado a mano. La redaccion que si funciona, y que esta en `docs/entrevistas/team-international-tempo/guion-call-21-10.md`: 1. **Anclar en el documento de ellos, no en tu declaracion:** "the B2+ in the JD matches where I am right now". Si el filtro real fuera C1, ellos se contradicen y tienen que decirlo. 2. **Invertir el marco:** "I want to be upfront about my level rather than find out later" no es una disculpa, es alguien que no quiere hacer perder tiempo a nadie. 3. **Preguntar por la operacion que decide el proceso:** "how much of the day-to-day is spoken English with the client, versus async written work?" - el riesgo no esta en la call de 10 min, esta en la comunicacion diaria. 4. **Cerrar con un hecho, no con una urgencia:** "I am starting an advanced English course at the CUI on October 26" informa, no pide. Regla general: **el filtro de idioma no se negocia con el CV: se negocia con la pregunta. Y la pregunta no se formula sobre la etiqueta que temes, sino sobre la operacion que el filtro tiene que sostener.**
 
 ---
 
 ## Reevaluacion del default del CORE (minimax vs deepseek) sobre el costo de un modelo en Ollama Cloud
 
 En Ollama Cloud con plan legacy, 'barato' significa CUOTA de GPU (barra de uso semanal con reset), no plata: el plan no tiene creditos. Cuando Gonzo dice 'consumo', pregunta de la cuota, no del precio por token. Y medir la cuota hay que hacerlo sobre la barra del panel en pixeles, no derivarla de los tokens: no es proporcional (GLM corre con mas cacheRead por turno y aun asi consume 5,5x mas cuota por request). Ademas, el gasto de un modelo se decide por lo que falla, no por el promedio: los 18 requests quemados de minimax (0,33%) consumieron 0 output tokens, mientras la cata sintetica exaggeraba el fallo a 7 de 40 celdas.
+
+**Tags:** reflexion-post-tarea,research
 
 ---
 
@@ -742,6 +806,22 @@ En Ollama Cloud con plan legacy, 'barato' significa CUOTA de GPU (barra de uso s
 **Lesson:** el muro no era el captcha sino el **contexto** que yo habia marcado al intentar automatizarlo. Un captcha no es un obstaculo que se resuelva con mas intentos: es un detector de contexto. Ante uno, la unica via es **cambiar de navegador** (o dejar que lo resuelva una persona en un navegador que no este marcado), no insistir con el mismo. Y antes de pedirle a alguien que resuelva algo a mano, verificar que el contexto que le pasaste no esta marcado: el "fallo" de la persona suele ser el fallo del instrumento.
 
 **Corolario operativo:** los formularios con captcha conviene resolverlos SIEMPRE en un browser real del usuario (Safari o Chrome sin flags de automatizacion), no en un browser que lance el agente. Automatizar el relleno esta bien; automatizar el captcha convierte el problema en insoluble.
+
+**Tags:** contexto,verificacion,metodologia,captcha
+
+---
+
+## Verificar la palabra de Gonzo contra el commit, no contra la lectura de un doc
+
+Cuando Gonzo afirma un hecho sobre su propio trabajo, el primer movimiento es BUSCAR EL COMMIT, no argumentar ni parafrasear un documento.
+
+Error del 2026-10-27, dos veces en la misma tarde: lei `skills/job-application/SKILL.md`, que decia "deja el submit al humano", y afirme que el flujo de postulaciones NUNCA envia. El repo tenia `6c24187b9d` "cierre de la tanda - las TRES postulaciones confirmadas": Mural, Mercado Pago y RYZ, confirmadas por el servidor. Lo correcto era "envia con tu OK", no "no envia".
+
+El mecanismo del error es siempre el mismo: generalizo una LINEA de un documento a un HECHO del mundo. Un documento describe una intencion; el repo muestra lo que ocurrio. La regla de `memory/user-profile.md` "verificar antes de descartar" (2026-09-13) cubria el caso de contradecir; faltaba el caso simetrico, que es el de CONFIRMAR algo que el propio Gonzo dice.
+
+Corolario: "el SKILL.md dice que no envia" NO es "no envio". Y cuando Gonzo dice "ya lo hemos hecho", la respuesta es buscar el commit, no discutir. Si aparece, se corrige el registro (el doc, no solo el chat) y se sigue.
+
+Corolario de correccion: cuando el error queda escrito en un archivo normativo, se corrige el archivo. Un chat que se corrige y un doc que no, divergen; y el doc es el que se relee.
 
 ---
 

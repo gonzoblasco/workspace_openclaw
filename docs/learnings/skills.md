@@ -12,5 +12,7 @@ Medicion (2026-10-19) sobre las 27 skills del workspace, contando menciones de r
 
 Criterio de corte: el acople NO es un defecto per se; una skill de workspace DEBE nombrar sus scripts. El acople solo importa para las que se publican o se comparten con otro agente/framework. Regla practica: antes de publicar o sincronizar una skill, correr este conteo y reescribir el encabezado en terminos de resultado ("produce X") en lugar de comando/path, y asi pasa de COUPLED a PORTABLE sin perder utilidad local.
 
+**Tags:** skills,auditoria,portabilidad
+
 ---
 

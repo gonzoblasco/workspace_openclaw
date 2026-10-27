@@ -138,7 +138,7 @@
 
 ## Documentacion formal del estudio (learning-tracker)
 
- - Creados los 3 artifacts del skill learning-tracker (modo entrevista): - `study/openclaw-ai-in-production/PLAN-MAESTRO.md` (Capa 1): 13 niveles agrupados en 3 partes, niveles criticos (4 Identity, 5 PBAC, 8 Observability, 9 Self-correcting), gamificacion. - `study/openclaw-ai-in-production/nivel-1-gateway.md` (Capa 2): artifact Nivel 1 con los 6 topics del Cap 1 (vocabulario con nombre + practica + verificacion). - `study/openclaw-ai-in-production/PROGRESO.md` (Capa 3): tabla de progreso, XP, 
+- Creados los 3 artifacts del skill learning-tracker (modo entrevista): - `study/openclaw-ai-in-production/PLAN-MAESTRO.md` (Capa 1): 13 niveles agrupados en 3 partes, niveles criticos (4 Identity, 5 PBAC, 8 Observability, 9 Self-correcting), gamificacion. - `study/openclaw-ai-in-production/nivel-1-gateway.md` (Capa 2): artifact Nivel 1 con los 6 topics del Cap 1 (vocabulario con nombre + practica + verificacion). - `study/openclaw-ai-in-production/PROGRESO.md` (Capa 3): tabla de progreso, XP, streak. - Metodo: dos pasadas (mapa sin XP -> dominio con XP). Cap 1 mapeado (XP 0). - Skills relevantes: learning-tracker (estructura de estudio) > study-tracker (liviana) > technical-book-processor (libros cap por cap). ---
 
 ---
 
@@ -154,11 +154,15 @@ SEGUNDO HALLAZGO (precedente fabricado, materializado en archivos): v4 copió lo
 
 REGLA QUE ME LLEVO: al arrancar una versión nueva, inventariar QUÉ TENÍA la anterior y POR QUÉ SE ABANDONÓ, antes de diseñar. Si el motivo del abandono fue "la UI es sosa", eso no justifica perder features. Y la pregunta de demanda (¿alguien lo usa y vuelve?) va ANTES del stack, no después.
 
+**Tags:** soporteml,generaciones,precedente-fabricado,demanda,alcance,greenfield
+
 ---
 
 ## SoporteML v4 se cierra; el producto sigue por la version funcional de Lovable con cobro por Stripe
 
 Decision de Gonzo (2026-10-06): se cierra el greenfield de SoporteML v4 (que ADR-068 habia planteado sobre v1, alcance CRM+contable). El producto sigue por la VERSION FUNCIONAL DE LOVABLE (v1), que ahora tiene COBRO POR STRIPE operativo, habilitado en Argentina. Es el primer proyecto del ecosistema con billing real (v1 tenia el billing escrito y jamas operativo). Stripe es la EXCEPCION documentada a ADR-042 (pagos: Mercado Pago por defecto, nunca Stripe salvo marca explicita de Gonzo) - la regla general no cambia. Registrado en ADR-091. Sigue vigente: SoporteML fuera de la narrativa publica / del CV y fuera de barridos de limpieza. Pendiente abierto: la 'Fase 4 - salir de Lovable' de v1 (arrastra dependencias de Lovable: auth, AI gateway, Supabase BaaS) y la pregunta de demanda de 4 generaciones.
+
+**Tags:** soporteml,stripe,pagos,v4,lovable,adr-091
 
 ---
 
@@ -166,11 +170,15 @@ Decision de Gonzo (2026-10-06): se cierra el greenfield de SoporteML v4 (que ADR
 
 Correccion de Gonzo (2026-10-06), inmediatamente despues de registrar el cierre de v4: 'no deja nada abierto soporteml, no se saldra de lovable'. Es decir: (1) SoporteML no queda con NINGUN pendiente abierto; (2) la version NO migra a stack propio - la 'Fase 4 - salir de Lovable' de v1 NO se persigue. Las dependencias de Lovable (auth, AI gateway, Supabase BaaS) son el entorno elegido, no deuda a saldar. Corrige la clausula de pendientes de ADR-091 (que las listaba como abiertas). El producto avanza sobre la version funcional de Lovable con cobro por Stripe tal como esta.
 
+**Tags:** soporteml,v4,lovable,adr-091,decision
+
 ---
 
 ## Pagos: Stripe es el proveedor unico reconocido; Mercado Pago queda fuera como intencion
 
 Decision de Gonzo (2026-10-06, tercera iteracion del dia sobre ADR-042): la regla de pagos del ecosistema es STRIPE COMO UNICO PROVEEDOR RECONOCIDO, sea o no un proyecto sobre Lovable. Razon: 'Stripe es el unico modo que puedo usar en Lovable... y no suelo usar modos de pagos'. Mercado Pago queda FUERA COMO INTENCION -no se elimina su existencia ni el registro historico (el billing de SoporteML v1 con MP sigue como historia), se elimina la intencion: deja de figurar como opcion fuerte, default o plan. No se reconocen otros proveedores. ADR-042 reescrito y renombrado a docs/adr/ADR-042-stripe-pagos.md. Supersede la version intermedia del mismo dia ('eleccion por proyecto') y la original ('Mercado Pago obligatorio, nunca Stripe').
+
+**Tags:** soporteml,stripe,pagos,mercado-pago,adr-042
 
 ---
 

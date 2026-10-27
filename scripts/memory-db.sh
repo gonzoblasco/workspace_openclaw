@@ -413,8 +413,29 @@ case "$1" in
     cat_esc=$(sql_escape "$cat")
     title_esc=$(sql_escape "$title")
     content_esc=$(sql_escape "$content")
-    tags_esc=$(sql_escape "$tags")
-    db "INSERT INTO learnings (category, title, content, tags) VALUES ('$cat_esc', '$title_esc', '$content_esc', '$tags_esc');"
+    # Solo tokens validos en la columna. La prosa en `tags` fue el sintoma de
+    # que el cuerpo terminara ahi (clase C1 del guard de integridad).
+    tags_clean=$(printf '%s' "$tags" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -E '^[a-z0-9._-]+$' | paste -sd, -)
+    tags_esc=$(sql_escape "$tags_clean")
+    # Una sola invocacion: `db` abre un proceso sqlite3 nuevo cada vez, asi que
+    # last_insert_rowid() en una llamada aparte devuelve 0 y viola la FK.
+    # La tabla temporal conserva el id dentro de la MISMA sesion.
+    sql="INSERT INTO learnings (category, title, content, tags) VALUES ('$cat_esc', '$title_esc', '$content_esc', '$tags_esc');
+CREATE TEMP TABLE _nid AS SELECT last_insert_rowid() AS id;"
+    for t in $(printf '%s' "$tags_clean" | tr ',' '\n' | grep -v '^$'); do
+        tag_esc=$(sql_escape "$t")
+        sql="$sql
+INSERT OR IGNORE INTO tags (name) VALUES ('$tag_esc');
+INSERT OR IGNORE INTO learning_tags (learning_id, tag_id) SELECT (SELECT id FROM _nid), id FROM tags WHERE name='$tag_esc';"
+    done
+    sql="$sql
+DROP TABLE _nid;"
+    db "$sql"
+    # Los tags tienen que existir en la JUNCTION (learning_tags), no solo en la
+    # columna: el export a docs/learnings/*.md lee la junction, no la columna.
+    # Antes esto no pasaba y toda leccion agregada por este comando quedaba
+    # sin tags en cualquier vista (medido: 79 filas). Ver
+    # scripts/check-learnings-integrity.py, clase C4.
     echo "Leccion agregada (categoria: $cat)."
     ;;
   export-learnings)

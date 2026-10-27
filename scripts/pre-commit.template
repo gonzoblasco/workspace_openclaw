@@ -166,6 +166,18 @@ python3 "${SCRIPT_DIR}/scripts/check-content-dirs.py" || exit 1
 # (AGENTS/MEMORY/SOUL/IDENTITY), 4.000 (USER fijo), 60.000 total.
 python3 "${SCRIPT_DIR}/scripts/check-bootstrap-budget.py" || exit 1
 
+# Guard de integridad de la tabla learnings (2026-10-27). SIN CONDICION, a
+# proposito: la tabla se modifica desde memory-db.sh add-learning, desde
+# memory-catalog-v2.py y desde las migraciones, y el dano NO aparece en el
+# diff. Caso testigo: yo borre 9 lecciones REALES con un DELETE que buscaba
+# `content` vacio, porque el cuerpo de la leccion esta en `content`... salvo
+# en las filas donde alguien lo habia dejado en `title` o en `tags`. El
+# export a docs/learnings/*.md lee el cuerpo de `content`, asi que esas
+# lecciones se veian como seccion vacia y nadie lo notaba.
+# El gate separa PERDIDA (bloquea) de RUIDO HISTORICO (avisa): un guard que
+# reporta 169 filas no se lee y no se respeta.
+python3 "${SCRIPT_DIR}/scripts/check-learnings-integrity.py" || exit 1
+
 # Guard de fuente unica (ADR-100, 2026-10-20). SIN CONDICION, a proposito: la
 # duplicacion que este gate caza nace de una edicion en CUALQUIER archivo
 # normativo, no de un pathspec predecible. El caso testigo no fue un cambio

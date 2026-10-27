@@ -22,6 +22,8 @@ tokens en el bloque `reasoning`. Con max_tokens chico devuelven `content:""` y
 es el modelo consumiendo el budget antes de responder. Con max_tokens holgado
 (16000) responden bien. Sintoma: respuesta vacia sin excepcion.
 
+**Tags:** docker,ollama,pr-agent,dynaconf
+
 ---
 
 ## Ollama como proveedor != modelo local: leer el pedido antes de elegir el modelo
@@ -33,6 +35,8 @@ En varios pedidos de clon+configurar de la sesion del 2026-10-20 (opencode, brow
 Corolario: cuando el pedido dice "configurarlo con X", la pregunta que hay que responder primero es **"¿que componente tiene que hablar con X?"**, no "¿que modelo corre?". Si la respuesta es "el server habla con el daemon por la API de X", el modelo se elige despues y es un parametro.
 
 Concreto en el caso Chatterbox: la aclaracion cambio el encargo de "armar un server que consulte a un LLM local" a "que el TTS se sirva con la forma de la API de Ollama" (POST /v1/audio/speech), que es un contrato de endpoint, no una eleccion de modelo.
+
+**Tags:** ollama,contrato,proveedor,clarificacion,pedido
 
 ---
 
