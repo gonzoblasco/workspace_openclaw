@@ -78,7 +78,8 @@ Restricciones que no se negocian, y que verifica `scripts/check-cv-facts.py`:
 | Un solo headline de años: 10+ | ADR-101, dueño único de los hechos |
 | **Ningún número de años de accesibilidad** | La aritmética da 4,42 de función central: cualquier redondo obliga a elegir entre quedar corto o inflar |
 | Inglés **B2**, nunca "fluent"/"Advanced"/"C1" | La regla dura del corpus. Declarar más es comprar una conversación que se cae sola |
-| Sin título universitario, sin "IAAP certified" | No existen. Deque es un **programa** (2021), no una credencial |
+| Sin título universitario, sin "IAAP certified" | No existen. Deque es un **programa** (2021), no una credencial. **Ninguna de las 4 universidades se completó** (ver `references/educacion.md`) |
+| Toda carrera listada lleva su marca `(incomplete)` | Sin la marca, **se lee como título obtenido**. Lo verifica el control 9 del gate |
 | Roles y fechas canónicas | Freelancer 05/2025-, EY 09/2021-05/2025, Super7UI 08/2020-05/2021, Minutentag 02/2016-11/2019 |
 | El perfil es un **filtro**, nunca una verdad nueva | Un perfil cambia el relato, no los hechos |
 
@@ -88,6 +89,13 @@ El perfil a11y puro existe y es válido para los avisos de accesibilidad de empr
 
 El **mensaje de primer contacto** va en `references/outreach.md`: 130-200 palabras, hook específico
 del JD, un hecho real, el diferenciador, y las preguntas de screening con la del idioma al final.
+
+**Qué va en la sección EDUCATION no se decide en cada postulación:** va en
+`references/educacion.md`, que tiene la tabla **verificable contra el posting** (qué declarar
+cuando el JD no menciona educación / pide degree / pide certificación / es de diseño). El criterio
+es el requisito del JD, no una impresión. En resumen: `Digital House` + `UADE (incomplete)` como
+línea base, y la línea de `Universidad de Palermo (incomplete)` **únicamente** cuando el JD pide
+degree en Computer Science o afín, porque es la única que toca CS.
 
 ### Fase 3 - Aplicar
 
@@ -161,6 +169,7 @@ skills/job-application/
 ├── SKILL.md
 ├── references/
 │   ├── ats-playbook.md    particularidades de cada ATS (con fecha y evidencia)
+│   ├── educacion.md       qué va en EDUCATION según qué pide el JD (tabla de decisión)
 │   └── outreach.md        plantillas de mensaje y preguntas de screening
 └── scripts/
     ├── find-jobs.mjs      discovery multi-board

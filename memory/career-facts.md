@@ -245,10 +245,16 @@ carrera se completó.**
   fuera título, y no llamar "bootcamp" a un degree. **Lo que SÍ es defendible** es la línea de
   UP como "studied Computer Science at Universidad de Palermo (incomplete)" - que además tiene
   más peso para un JD de CS que UADE, FUC o UAP.
-- **Lo que sí va en un CV** (y ya está en 5 de ellos): Digital House + UADE. FUC, UAP y UP **no se
-  declaran** salvo que el JD pida algo específico o Gonzo lo pida: no aportan al perfil y suman
-  ruido. **Gonzo: "no suelo comentar Universidad del Cine o UAP ya que no aportan a nuestro
-  perfil... luego vemos cuáles van según el puesto"** - la selección por puesto es suya.
+- **Lo que sí va en un CV:** la **tabla de decisión está en
+  `skills/job-application/references/educacion.md`**, y es **criterio verificable contra el
+  posting**, no un juicio por postulación (Gonzo, 27/10/2026: *"esto tú debes ayudarme a decidir
+  cuándo va o no según el puesto al que me presento"*). Resumen: **línea base** = Digital House +
+  UADE con marca `(incomplete)`; **la línea de UP (Ingeniería en Informática, incomplete) solo
+  cuando el JD pide degree en Computer Science o afín**, porque es la única que toca CS; Deque
+  cuando el JD pide certificación relevante; FUC y UAP solo en roles de video o comunicación
+  respectivamente, y hoy no hay ninguno. **FUC y UAP no van en ningún posting que tenemos.**
+- **La marca `(incomplete)` es obligatoria** en toda carrera listada: sin ella la línea **se lee
+  como título obtenido**, y eso es mentir sobre un hecho duro. El gate lo verifica (control 9).
 - **Ojo con la implicancia de "abandonada":** listar una carrera en una sección EDUCATION sin
   marcar que quedó incompleta **se lee como título obtenido**. Por eso los CVs que declaran UADE
   llevan el "(incomplete)" explícito, y el gate lo verifica (control 9).
