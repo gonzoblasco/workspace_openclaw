@@ -4,6 +4,8 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
 
+---
+
 ## [2026-10-27] - OnWheels queda EN CURSO: roadmap F0-F6, registro como proyecto activo y un bug de atribucion en el HANDOFF
 
 ### Added
@@ -15,6 +17,24 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **`scripts/session-handoff.py`: el override `onwheels` -> `kanam-onwheels` mandaba el HANDOFF al repo DORMIDO.** Existia desde junio, cuando el proyecto se llamaba asi. Con el producto nuevo en `projects/onwheels/` (greenfield del 21/10) y el repo viejo declarado dormido (decision D4), el HANDOFF de la sesion iba a parar al `.knowledge/` del proyecto que ya no se trabaja. No habria dado error (los dos directorios existen): el error era de atribucion silenciosa. Corregido y **verificado por la funcion real**: `resolve_handoff_path('onwheels', None)` devuelve ahora `projects/onwheels/.knowledge/HANDOFF.md`. Tests de `tests/python/test_session_handoff*.py`: 16 passed.
 - **Fila 311 de `learnings` eliminada** (la creo mi propia llamada mal parseada de `add-learning --help`: categoria `--help`, cuerpo vacio). Borrada **por id exacto**, nunca con un WHERE amplio: el gate `check-learnings-integrity.py` existe porque un DELETE anterior mio borro 9 lecciones reales. Gate despues: OK, 258 learnings.
 
+
+---
+
+## [2026-10-27] - La tabla `learnings` no tenia un lugar fijo para el cuerpo de la leccion: 4 defectos, un gate y 25.231 chars recuperados
+
+### Fixed
+- **El cuerpo de la leccion no tiene un lugar fijo en `learnings`.** Hay filas donde esta en `content` (lo normal), en `title` y en `tags`. El export a `docs/learnings/*.md` lee el cuerpo de `content` y el titulo de `title`, asi que las otras dos clases se veian como seccion vacia y nadie lo notaba. Origen: `migrate-learnings.py` derivaba los tags del titulo, y la absorcion de la tabla gemela (commit `0518cdf3f3`) descarto la prosa de `tags` **asumiendo que era "el titulo duplicado"** - suposicion falsa: en 5 filas la prosa era el CUERPO. Reparados: 9 cuerpos recuperados (5 de `tags`, 4 de `title`).
+- **`memory-db.sh add-learning` escribia en la columna `tags` y nunca en la junction `learning_tags`**, que es lo UNICO que lee el export: 79 filas con tags reales que no aparecian en ninguna vista. Todo lo agregado por ese comando desde la taxonomia normalizada quedo invisible. Ahora escribe en la junction, en una sola invocacion SQL (`last_insert_rowid()` en un proceso sqlite3 separado devolvia 0 y violaba la FK).
+- **`memory-catalog-v2.py` cortaba el cuerpo a 500 chars** con el mismo valor que usaba para el embedding (`content_text = learning.get("content","")[:500]`): 34 filas a la mitad. El tope de 500 chars es de la API, no del dato. Ahora el tope queda solo para el embedding y el cuerpo se guarda completo. 20 truncadas se recuperaron del corpus (`sessions_relacional.content_bare` / `daily_notes.content`, buscando el fragmento del **MEDIO**, no el prefijo: el prefijo truncado es identico al original); 14 no existen en ningun lado y quedan como deuda aceptada.
+- **4 lecciones que existian solo en los `.md` y que la regeneracion iba a borrar**, y la version larga (2.399 chars, 4 casos con tabla) de la leccion del filtro de idioma, que la DB guardaba truncada a 565 chars. Devueltas a la DB, que es la fuente de verdad.
+
+### Added
+- **`scripts/check-learnings-integrity.py`** - gate de la tabla, en el pre-commit SIN CONDICION (la tabla se modifica desde `add-learning`, desde el catalogo y desde las migraciones, y el dano no aparece en el diff). Separa **PERDIDA** (bloquea: el cuerpo no esta donde debe) de **RUIDO HISTORICO** (avisa: prosa en `tags`, titulo largo): con el recalibrado, 0 perdidas y 70 avisos. La primera version reportaba 169 filas y era inutil - un guard que reporta todo no se lee y no se respeta. Probado sembrando el defecto: bloquea con exit 1.
+- **`scripts/repair-learnings-body.py`** (C1/C2) y **`scripts/repair-learnings-taxonomy.py`** (C4/C5) - reparacion idempotente, con `--dry` y `--db` para correrla contra una copia antes de la real.
+
+### Measured
+- **+25.231 chars de cuerpo recuperado** en `docs/learnings/` que estaba perdido y no se veia en ninguna vista (9 cuerpos + 20 truncadas + los tags repoblados en 79 filas).
+- **9 lecciones reales destruidas por un DELETE mio** (asumi que el cuerpo vivia en `content`). Restauradas desde copia y verificadas **fila por fila** con 0 diferencias contra la copia.
 
 ---
 
