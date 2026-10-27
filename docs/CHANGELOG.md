@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-27] - Vane se queda: research verificado en vivo, 5 commits locales a salvo y bajo demanda
+
+### Added
+- **`gonzoblasco/vane` (repo PRIVADO)**: el fork local de Vane con los **5 commits que nunca se pushearon** (el fix del writer prompt que hacia filtrar el monologo del modelo a la respuesta final, el `Dockerfile` con Next.js pineado y bind a `0.0.0.0`, el preconfig de Ollama, y la memoria `.knowledge/`). Antes apuntaba `origin` al upstream de un tercero: un `git push` ahi habria publicado trabajo nuestro en el repo de otro. Ahora `origin` es el fork privado y `upstream` queda como referencia.
+- **El clon local era shallow** (cortado en `348feca`, sin padre local), y por eso el primer push fue rechazado con `did not receive expected object`. Resuelto con `git fetch --unshallow upstream master`: la historia completa (1.014 commits) queda en el remoto.
+- **Research verificado en vivo** (no solo por logs): `POST /api/search` con `minimax-m3.1-flash:cloud` -> **HTTP 200 en 45,7 s**, respuesta en espanol con **8 fuentes citadas y trazables** sobre el protocolo MCP. El servicio funciona y hace good research (decision de Gonzo: "vane me gusta, hace buenos researches").
+
+### Changed
+- **Vane pasa a BAJO DEMANDA.** Es de uso episodic: se enciende para hacer un research y se apaga. Con ~45 s por research, dejarlo prendido sin buscar nada no tiene sentido (medido: **0 requests en 7 dias**). A diferencia de las demas, su `down` es real (`docker compose down`): elimina container y red, y no vuelve sola. Costo: ~340 MB de RAM, 7 s de arranque en frio.
+- El triage OSS (`studies/oss-alternatives-triage.md`) decía *"No lo adoptes: es una app completa que no vas a mantener"*. **Eso ya no es la decision vigente**: Vane esta en uso y produce trabajo real. La nota queda como el analisis de ese momento; la decision actual es que se queda.
+
+### Fixed
+- **El registro no distinguia "apagado" de "apagado a proposito"** para Vane, que quedaria apagado por defecto. Ahora muestra `bajo demanda` con la instruccion de como levantarlo, igual que `browser-use-ui`.
+
+---
+
 ## [2026-10-27] - `browser-use-ui` pasa a bajo demanda: el registro distingue "apagada a proposito" de "caida"
 
 ### Added

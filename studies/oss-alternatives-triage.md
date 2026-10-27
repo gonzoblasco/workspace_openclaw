@@ -105,7 +105,9 @@ La propuesta original era: con LiteLLM + Ollama, `pr-agent` puede revisar tus PR
 **Consecuencia para este triage:** no volver a proponer PR-Agent. Para revisar PRs, el reviewer automatico no aporta; para redactarlos, usar Claude Code (ya instalado, ya ruteado por Ollama).
 
 ### Tercero: `ItzCrazyKns/Vane` (estudiar el patrón)
-No lo adoptes: es una app completa que no vas a mantener. **Estudiá el patrón** de: SearxNG → scraping → chunking → prompt con citas → respuesta con fuentes trazables. Ese patrón es el que le falta a tu `web_search` actual y es el que OnWheels ya exige (evidencia citada).
+No lo adoptes: es una app completa que no vas a mantener. **Estudiá el patrón** de: SearxNG → scraping → chunking → prompt con citas → respuesta con fuentes trazables. Ese patrón es el que le falta a tu `web_search` actual y es el que 
+
+> **Actualizado 2026-10-27: esta conclusion quedo SUPERADA.** Vane **si se quedo** en el stack y esta en uso: es la herramienta de research del workspace (decision de Gonzo: *"vane me gusta, hace buenos researches"*). Hay 3 chats reales de trabajo, uno de ellos produjo el analisis que derivó en OnWheels, y el fix del writer prompt (que hacia filtrar el monologo del modelo a la respuesta final) quedo como learning. Vive en `projects/vane` con fork privado `gonzoblasco/vane` y **bajo demanda**: se enciende para hacer un research y se apaga. El patron que se queria extraer (busqueda → evidencia citada) **ya esta en OnWheels** (`src/lib/chat/evidence.ts` + `answer.ts`), que es el producto: el motor propio, no una app entera que mantener.OnWheels ya exige (evidencia citada).
 
 **Menor, pero muy barato de leer:** `zilliztech/claude-context` (MIT) - indexación de codebase con embeddings + MCP. Si querés que los agentes A y B consulten el código del repo como contexto, esto es el patrón.
 

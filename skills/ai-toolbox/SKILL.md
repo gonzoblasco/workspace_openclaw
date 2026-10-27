@@ -71,6 +71,9 @@ prueba apagada es el estado normal.
 - `browser-use` (el MCP): la lanza OpenClaw por sesion, no tiene container fijo.
 - `browser-use-ui` (la consola web en `:8090`): apagada por defecto desde el
   2026-10-27 (decision de Gonzo: es para probar, no de uso continuo).
+- `vane` (el motor de research en `:3005`): apagado por defecto desde el
+  2026-10-27. Es de uso episodic: se enciende para hacer un research (tarda
+  ~45 s) y se apaga.
 
 Para estas, `down` es **real**: hace `docker compose down` (elimina container y
 red), no `stop`. Es la unica forma de que no vuelva en el proximo reinicio de

@@ -120,7 +120,8 @@ TOOLS: List[Dict[str, Any]] = [
         "health": ("http://localhost:3005/", [200]),
         "up": None,
         "down": None,
-        "note": "Puerto propio: no comparte con nadie.",
+        "on_demand": True,
+        "note": "Bajo demanda: se levanta con 'toolbox up vane'. A los 45 s por research se lo deja encendido mientras se usa y se baja al terminar.",
     },
     {
         "id": "opencode",

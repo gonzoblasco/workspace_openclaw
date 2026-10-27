@@ -117,17 +117,34 @@ declarado a mano es COMO se levanta cada cosa.
 ### Vane (id: `vane`)
 
 - **Que es:** motor de busqueda con respuestas citadas. Privacy-first: combina
-  web con indices locales.
-- **Repo:** `projects/vane`. Imagen `vane-local:ollama`.
+  web con indices locales. **Es la herramienta de research del stack**: hace
+  busqueda real, scrapea, y devuelve una respuesta en espanol con las fuentes
+  citadas y trazables.
+- **Repo:** `projects/vane` (fork privado `gonzoblasco/vane`, upstream
+  `ItzCrazyKns/Vane`). Imagen `vane-local:ollama`.
 - **UI:** http://localhost:3005.
 - **Como se levanta:** `toolbox up vane` (alias del registro de herramientas; equivalente a `cd ~/projects/vane && docker compose up -d`)
 - **Como se para:** `toolbox down vane` (conserva los datos: `data/` y `uploads/` son bind mounts)
+- **Estado por defecto: BAJO DEMANDA** (decision de Gonzo, 2026-10-27). Es de
+  uso episodic: se enciende para hacer un research y se apaga. A los ~45 s por
+  research, dejarlo prendido sin buscar nada no tiene sentido. Para las
+  herramientas bajo demanda, `down` es real (`docker compose down`): elimina
+  container y red, y no vuelve sola.
+- **Costo:** ~340 MB de RAM, 7 s de arranque en frio.
 - **Nota:** SearxNG corre dentro del mismo container (entrypoint, puerto 8080
   interno).
 - **Trampa:** el clasificador de Vane pone `skipSearch: true` en preguntas de
   conocimiento general: en ese caso NO busca y devuelve respuesta sin fuentes.
   Es diseno, no bug; para ver el pipeline de busqueda usar consultas que
   requieran informacion actual.
+- **Trampa:** el clon local es **shallow** (cortado en `348feca`). Para pushear
+  la historia completa hay que hacer `git fetch --unshallow upstream master`
+  primero: sin eso, GitHub rechaza el push por objetos faltantes.
+- **Trabajo local propio (5 commits, nunca pusheados al upstream):** el fix del
+  writer prompt (que hacia filtrar el monologo interno del modelo a la
+  respuesta final), el `Dockerfile` con Next.js pineado y bind a `0.0.0.0`, el
+  script de preconfig de Ollama, y la memoria `.knowledge/`. Todo eso vive en
+  `gonzoblasco/vane` (privado).
 
 ### opencode (id: `opencode`)
 
