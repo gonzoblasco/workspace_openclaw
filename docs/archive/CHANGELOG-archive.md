@@ -4,6 +4,108 @@
 
 ---
 
+## [2026-10-12] - S1: la fuente unica de modelos es ADR-090 (cabeceras de 040/041/053 dejan de mentir)
+
+### Changed
+- **`ADR-090` declara `**Supersede:**` a ADR-053, ADR-040 y ADR-041.** Es la ley efectiva (pensamiento por agente + asignacion de modelos por rol, cata 2026-10-06); los tres predecesores ya no se leen como vigentes.
+- **Cabeceras enmendadas a `Superseded`:** ADR-053 (`Superseded por ADR-090 (2026-10-05)`), ADR-040 (`Superseded por ADR-053 / ADR-090`), ADR-041 (`Superseded por ADR-045/046 / ADR-090`). Antes decian `Aceptado`/`Accepted` mientras su propio cuerpo registraba el reemplazo.
+- **`docs/architecture/adr-corpus-overlap-audit.md`:** S1, S3 y S5 marcados RESUELTOS; el diagnostico original conservado en un `<details>`.
+
+### Notes
+- **Causa:** el cluster de modelos repartia la decision entre 15 ADRs y la cabecera de los predecesores no reflejaba el reemplazo, que vivia en prosa (cuerpo de 053). El guard ensanchado en el commit previo ahora cubre esa clase.
+- **Sin cambio de config:** la ley viva (`ADR-090`) ya coincidia con `openclaw.json` y con el bloque `model-operativo` de `AGENTS.md`; la reparacion es de cabeceras, no de runtime.
+- **Verificacion:** `check-adr-supersede.py` OK, `check-adr-integrity.py` OK (96 ADRs), 21 tests de los dos guardas en verde.
+- **Residual de S1 (no tocado):** 045/046 ya estaban `Superseded`; 049 (Claude Code como motor A/B) sigue `Aceptado` y es una decision de harness, no de asignacion de modelos - fuera del alcance de S1.
+
+---
+
+## [2026-10-12] - Reintroducida `debugging-and-error-recovery` en kanam-dev + SKILLS-INDEX sincronizado
+
+### Added
+- **`agents/kanam-dev/skills/debugging-and-error-recovery/SKILL.md`:** skill de depuración que cierra tres referencias colgantes (`ci-cd-and-automation:190`, `doubt-driven-development:229`, `observability-and-instrumentation:22` citaban una skill que no existía en ningún árbol). Destila el método de diagnóstico (localizar → reproducir → falsificar hipótesis → corregir causa → probar el fix Y el fix del fix) más nuestras reglas duras: reproducir antes de arreglar, el primer error del log es un síntoma, un verde sin casos corridos no es verde, no arreglar enmascarando, contrato de evidencia, y el caso dev-vs-prod. Escrita en la convención de sus hermanas (inglés, estilo addyosmani).
+
+### Changed
+- **`SKILLS-INDEX.md` sincronizado con el disco (estaba desfasado en 3 árboles y 8 filas).** Totales re-medidos contra el CLI: dev 35→43, critic 1→2, auditor 1→5, total 84→99. Ocho skills que ya existían en disco y en el CLI pero no tenían fila: siete en dev (`api-integration-test`, `chaos-engineering`, `code-metrics`, `compatibility-testing`, `dependency-advisor`, `performance-benchmark`, `threat-modeling`, todas del commit `a68e19d819`) más `debugging-and-error-recovery`; en critic, `evidence-hunter`; en auditor, las cuatro hermanas de `surface-alignment-audit`. Nota de conteo agregada: `find agents/*/skills -name SKILL.md` sobrecuenta por los `node_modules` de `playwright-core` en el auditor; la autoridad es el CLI (`source == openclaw-workspace`).
+
+### Notes
+- **Reintroducción, no alta nueva.** `debugging-and-error-recovery` figuraba en la sección 4 (Retiradas) desde la reestructuración del 2026-09-22, retirada junto con su colección de origen. Al reescribirla con nuestras reglas duras (no es la versión vieja) se reintegra al inventario; queda anotado en su fila.
+- **Contexto:** sale de la evaluación de `mergisi/awesome-openclaw-agents` (catálogo de 196 SOULs, no instalable). El único hueco sustantivo que apareció en el cotejo contra nuestra colección fue que tres skills citaban una skill de depuración ausente - un hueco propio, no una pieza faltante del repo externo.
+- **Verificación:** `check-refs.py SKILLS-INDEX.md` OK (100 rutas); `check-agent-skill-boundary.py` OK; `check_em_dash.py` OK en ambos archivos; totales por árbol re-contados contra el disco.
+
+---
+
+## [2026-10-12] - ADRs de proyecto salen del corpus global (6a) y el guard de supersede deja de ser ciego al campo generico
+
+### Changed
+- **Movidos `docs/adr/ADR-068` y `ADR-091` al proyecto `soporteml`** (`projects/soporteml/.knowledge/adr/ADR-0001-soporteml-greenfield-desde-v1.md` y `ADR-0002-soporteml-v4-cierre-stripe.md`). Regla 3 de ADR-067 y `docs/adr/README.md` ("sin referencias al proyecto que lo originó"): un ADR cuyo sujeto es un proyecto vive con el proyecto, no en el corpus global. Renumerados en la serie del proyecto, fila quitada del índice global (huecos [68, 91] intencionales), y consumidores repuntados: `ADR-042`, `docs/NORTH.md`, `docs/ROADMAP.md`, `docs/LANGCHAIN_STRATEGY.md`, `MEMORY.md`.
+- **`scripts/check-adr-supersede.py`: el grafo ahora tambien lee el campo generico `**Relacionado:**`.** Antes solo miraba los campos dedicados (`Supersede`/`Revierte`/`Reemplaza`), asi que un reemplazo TOTAL declarado en el campo generico era invisible: ADR-098 (`ADR-075 (superseded)`) y ADR-091 (`ADR-068 (... superado)`) vivian solo ahi. La relacion se reconoce cuando el contexto del citado (el parentesis) trae señal de reemplazo y NO de parcialidad ("parcial", "apartado", "seccion", "lista", "historico").
+
+### Added
+- **`tests/python/test_check_adr_supersede.py`: 4 tests nuevos** del camino `Relacionado` (total exige marca; parcial no; sin señal se ignora; la señal debe estar en el contexto del citado). Probados en negativo: neutralizar la rama nueva hace fallar exactamente `test_relacionado_declares_total_replacement`; restaurado, 12/12 en verde.
+
+### Notes
+- **Por que no se movio todo:** los ADRs de sujeto `kanam-os` (054, 094, 096) quedan **bloqueados**: `projects/kanam-os/.knowledge/` esta git-ignored (`.git/info/exclude`), asi que mudarlos ahi los deja **sin historial** (peor que dejarlos). ADR-063 (kanam-insight) queda bloqueado: el repo existe en GitHub pero el arbol local no esta clonado. Criterio de destino que faltaba: un ADR de proyecto solo se muda a un arbol **versionado** (`git ls-files .knowledge`). Registrado en `docs/architecture/adr-corpus-overlap-audit.md` §6a.
+- **Verificacion:** `check-adr-integrity.py` OK (96 ADRs, huecos 68/91 informativos); `check-adr-supersede.py` OK; 21 tests de los dos guardas en verde; sin guiones largos en los archivos tocados.
+- **Residual (no resuelto en este cambio):** `docs/learnings/proyectos.md` (vista DB-first, ADR-065) cita ADR-068/091 y **ademas** esta desactualizado respecto de la DB (207 lecciones vs 225). Se deja como deuda aparte: regenerarlo mezcla 18 lecciones ajenas a esta mudanza.
+
+---
+
+## [2026-10-12] - Segundo eje de la auditoría de ADRs: alcance (un ADR de proyecto vive con el proyecto)
+
+### Added
+- **`docs/architecture/adr-corpus-overlap-audit.md` §6:** segundo eje del análisis, a pedido de Gonzo: *"aquellos relacionados con un proyecto en particular viva con el proyecto y no más en el scope global; los ADR no tienen por qué tener mención a proyectos específicos"*. Separa 6a (sujeto de proyecto → mudar al proyecto; 6 ADRs candidatos) de 6b (mención de evidencia → ~70 archivos) y 6c (no hay guard de alcance).
+
+### Notes
+- **La regla ya existe y se viola igual:** `docs/adr/README.md:110` ("sin referencias al proyecto que lo originó") y `ADR-067 §3` ("los ADRs de un proyecto viven en el repo del proyecto"). Ningún script la verifica. Precedente aplicado una sola vez: `ADR-048` se movió a `projects/kanam-lab/.knowledge/adr/0002-ui-framework-gradio.md` el 2026-09-22.
+- **Tensión registrada, sin barrer a ciegas:** el método del corpus se apoya en la evidencia (el caso real que motivó la decisión). ADR-067/078/088 citan proyectos como caso testigo; borrar la mención borra el *por qué*. Recomendación: aplicar 6a ya (concreto, ~6-8 mudanzas); 6b solo bajo una salida elegida por el owner (genericizar la evidencia vs acotar la regla como se acota el campo `Origen`).
+- **Nada movido ni editado:** sigue siendo el registro del descubrimiento.
+
+---
+
+## [2026-10-12] - Auditoría de solapamiento del corpus de ADRs (una única fuente de verdad)
+
+### Added
+- **`docs/architecture/adr-corpus-overlap-audit.md`:** análisis de los 98 ADRs contra la regla de "una única fuente de verdad". Mapea los clusters temáticos (modelos 15 ADRs, memoria 12, multi-agente 11) e identifica cuatro ADRs que pisan una decisión viva sin declararlo en su cabecera.
+
+### Notes
+- **Los dos guardas dan verde y el problema existe igual:** `check-adr-integrity.py` (98 indexados, sin duplicados) y `check-adr-supersede.py` (grafo consistente) verifican *integridad de forma*, no *unicidad de decisión*. La causa raíz (S5): el grafo de supersede solo lee el campo de header del ADR reemplazante, así que un reemplazo declarado **en prosa** es invisible.
+- **Casos vivos:** ADR-053 dice `Aceptado` pero está pisado por ADR-090 (prosa); ADR-068 dice `Aceptado` pero ADR-091 lo llama "superado"; y el bootstrap (`AGENTS.md:158-162`, `MEMORY.md:1,65`) sigue citando la ley muerta ADR-075 (`~/projects`) cuando la vigente es ADR-098 (`<workspace>/projects/`).
+- **Qué NO se hizo:** no se tocó ningún ADR ni el bootstrap. Es el registro del descubrimiento; las reparaciones (ensanchar el guard, nombrar la fuente única de modelos, corregir el bootstrap, enmendar cabeceras) requieren autorización del owner.
+
+---
+
+## [2026-10-12] - El curso OpenClaw Use Cases se reinicia desde cero
+
+### Removed
+- **`studies/openclaw-use-cases/` (10 archivos):** INDEX + 9 lecciones (L01-L05 de la grilla vieja de 25, y L01-L03 de la migracion a 6 modulos). La carpeta acumulaba tres versiones del plan de modulos que no coincidian (INDEX vs daily 2026-10-10 vs `L01-lesson-overview.md`), ademas de numeracion inconsistente (`/25` vs `/30`). Decision de Gonzo (2026-10-12): borrar y rehacer el curso desde cero con un solo plan.
+
+### Changed
+- **`docs/adr/ADR-086-embudo-de-entrada-conversacional.md`:** la tabla de Implementacion y las Referencias ya no apuntan a `studies/openclaw-use-cases/` (retirado). La decision del ADR (el marco de los 5 patrones del embudo) sigue vigente; solo se retira el puntero al registro de estudio.
+
+### Notes
+- **Que NO se toco:** los otros tracks de estudio quedan intactos - `studies/narrative-engineering/` (3 casos completos, 4/4 ejes), `studies/design/` (plan abierto el 2026-09-14) y `docs/cpacc/` (semana 1 + meta de examen nov/dic). El pedido era reiniciar el curso de OpenClaw Use Cases, no barrer todo lo que se estudia.
+- **Recuperable:** todo estaba trackeado y pusheado; el borrado se recupera del historial de git si hiciera falta.
+- **Aprendizaje del Modulo 1 preservado:** los learnings derivados (`docs/learnings/pipeline-agentes.md`, `docs/learnings/metodologia.md`) y el ADR-086 viven fuera de la carpeta; no se pierden al reiniciar el curso.
+
+---
+
+## [2026-10-12] - El gate del pacto A/B deja de mentir: el estado de git ya no es una violacion
+
+### Fixed
+- **`scripts/check-pipeline-enforcement.py`: 5 bugs introducidos al agregarle la "verificacion de git".** (1) El parseo de `git status --porcelain` usaba un offset fijo `line[18:]` y `split()[1]`, y truncaba los paths (`9.md` en vez de `memory/2026-10-09.md`). (2) **Falso positivo grave:** un workspace limpio devolvia `exit 1` con la unica "violacion" = "Sin cambios detectables" - el estado de git se contaba como violacion del pacto A/B. (3) La verificacion de git estaba implementada **dos veces** (`_get_staged_paths_and_diff` y `find_violations`) con parseos divergentes. (4) Filtro muerto: `staged_files` filtraba los `??` pero nunca se usaba. (5) Mezcla de responsabilidades: `git status` es informativo, no rompe el pacto.
+
+### Changed
+- **Una sola fuente de git:** helper testeable `parse_porcelain()` (usa `line[3:]` correcto y desentrecomilla) + `_git_staged_report()`, que separa staged de untracked y devuelve `(paths, reporte)`. El reporte de git se imprime aparte en `main()` y **no cuenta como violacion**; el `exit code` depende solo de la consistencia de las 4 fuentes del pacto. Se elimino el bloque duplicado de `find_violations()`.
+
+### Added
+- **`tests/python/test_check_pipeline_enforcement.py`: 3 regresiones nuevas** (de 8 a 11 tests) que cubren exactamente estos bugs: parseo sin truncar, workspace sucio != violacion del pacto, y staged vs untracked separados.
+
+### Notes
+- **Verificacion:** `py_compile` OK; `11/11` tests pasan. E2E real sembrando un repo temporal: pacto consistente -> `OK` exit 0; deriva de modelo en `managed-blocks.py` -> caza 2 violaciones ("dos verdades" + "distinto del canon") exit 1. Sin el fix, el mismo repo daba un falso "VIOLADO" sobre un workspace limpio.
+- **Leccion (reafirma ADR-083):** un guard que no puede distinguir limpio de sucio no es un guard. La verificacion de git se agrego al chequeo del pacto sin separar "informar" de "invalidar", y el resultado fue un gate que rompia commits por ruido.
+
+---
+
 ## [2026-10-07] - El suite de skills deja de bloquear commits por archivos que no se commitean
 
 ### Fixed
