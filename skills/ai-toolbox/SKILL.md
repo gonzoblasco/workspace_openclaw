@@ -8,7 +8,7 @@ metadata:
     - registry
     - ollama
     - docker
-description: "Registro vivo de las herramientas IA instaladas en la maquina (Onyx, browser-use, AnythingLLM, LiteLLM, Vane, opencode, OpenHands, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
+description: "Registro vivo de las herramientas IA instaladas en la maquina (Onyx, browser-use, LiteLLM, Vane, opencode, OpenHands, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
 user-invocable: true
 ---
 
@@ -59,7 +59,7 @@ equivale a:
 
 ### IDs validos
 
-`ollama`, `onyx`, `browser-use`, `anythingllm`, `litellm`,
+`ollama`, `onyx`, `browser-use`, `litellm`,
 `vane`, `opencode`, `openhands`, `cline`.
 
 ### Cuando la herramienta es Cline

@@ -21,12 +21,15 @@
 | Ollama | `ollama` | nativo (host) | 11434 | corriendo |
 | Onyx | `onyx` | docker compose (Lite: 6 servicios) | 3000 | corriendo |
 | browser-use | `browser-use` | docker (stdio, bajo demanda) | - | bajo demanda |
-| AnythingLLM | `anythingllm` | docker compose | 3001 | apagado |
-| LiteLLM | `litellm` | docker compose | 4000 | corriendo |
-| Vane | `vane` | docker compose | 3005 | apagado |
+| LiteLLM | `litellm` | docker compose | 4000 | no instalado |
+| Vane | `vane` | docker compose | 3005 | corriendo |
 | opencode | `opencode` | docker compose | 4096 | corriendo |
 | OpenHands | `openhands` | docker compose | 8000 | corriendo |
 | Cline | `cline` | nativo (host, Bun 1.4.2) | 8787 | apagado |
+
+Stacks de compose corriendo que no tienen ficha:
+
+- `browser-use-ui` (running(1))
 <!-- END:ai-toolbox-table -->
 
 ---
@@ -84,7 +87,7 @@ declarado a mano es COMO se levanta cada cosa.
   mcp_server, code-interpreter), ~1 GB RAM. Sin OpenSearch, sin Redis, sin model
   servers, sin object store. Postgres hace de cache, file store y auth backend.
 - **Por que Lite:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB
-  de la maquina) y conviven anythingllm, litellm, opencode, vane,
+  de la maquina) y conviven litellm, opencode, vane,
   openhands y browser-use. El stack completo (OpenSearch con heap de
   2 GB + 2 model servers con torch) no entra comodo.
 - **LLM:** provider `ollama_chat` con `api_base=http://host.docker.internal:11434`.
@@ -131,42 +134,6 @@ declarado a mano es COMO se levanta cada cosa.
   container no puede leer `/app` -> `ModuleNotFoundError`. Fix en el host
   (`chmod -R a+rX`) y rebuild.
 - **Detalle:** `projects/browser-use/README-LOCAL.md`.
-
-### AnythingLLM (id: `anythingllm`)
-
-- **Que es:** chat con documentos. RAG basico con Ollama como LLM y como
-  embeddings.
-- **Datos y config:** `~/anythingllm-data/` (fuera del workspace). El repo
-  upstream esta en `~/projects/anything-llm` (solo lectura).
-- **UI:** http://localhost:3001 (solo loopback, no expuesto en la LAN)
-- **Como se levanta:** `cd ~/anythingllm-data && docker compose up -d`
-- **Como se para:** `docker compose stop` (conserva los datos; `storage/` es
-  bind mount).
-- **Health:** `/api/ping` (NO `/api/health` - ese endpoint no existe).
-- **Credenciales:** single-user mode, la password es el `AUTH_TOKEN` del
-  `.env` de `~/anythingllm-data/`. El mismo valor sirve para el login del
-  browser y para la API. **No hay** pantalla de onboarding: el legacy patch de
-  `markOnboarded.js` la marca como completa al detectar `LLM_PROVIDER` en el
-  env, asi que entra directo a la app.
-- **LLM:** `minimax-m3.1-flash:cloud` (cloud servido por la API de Ollama;
-  el contenedor no aloja pesos ni usa GPU). `OLLAMA_MODEL_TOKEN_LIMIT=131072`
-  de 1.000.000 disponibles.
-- **Embeddings:** `qwen3-embedding:0.6b`, local en el host. Vector store
-  LanceDB en `storage/lancedb/`.
-- **Trampa:** el `.env` lo **reescribe** la app cuando se guardan settings
-  desde la UI (`dumpENV`), reordenando el archivo. `AUTH_TOKEN`, `JWT_SECRET`,
-  `SIG_KEY` y `SIG_SALT` estan en la lista de claves protegidas y sobreviven,
-  pero si edita el `.env` a mano: primero `docker compose down`, despues
-  edita, despues `up`. Si no, la app pisa tus cambios.
-- **Trampa:** `SIG_KEY` / `SIG_SALT` cifran los datos. Si se pierden, la base
-  queda ilegible. Hay un backup en `~/anythingllm-data/.env.bak.*`.
-- **Trampa:** `GET /api/env-dump` reescribe el `.env` en disco. Con
-  `AUTH_TOKEN` seteado responde 401, pero el endpoint sigue montado.
-- **Trampa:** `docker compose down` NO borra datos (bind mount). Para resetear
-  hay que hacer `down` + `trash storage/` + `up`, en ese orden: con la app
-  corriendo, SQLite y LanceDB recrean archivos a medio borrar.
-- **Ollama:** debe estar corriendo en el host (`ollama serve`, `0.0.0.0:11434`).
-  Desde el container se alcanza via `host.docker.internal:11434`.
 
 ### LiteLLM (id: `litellm`)
 

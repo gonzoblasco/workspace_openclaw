@@ -110,7 +110,7 @@ def test_tiene_entradas_basicas():
 def test_las_herramientas_core_estan():
     """El nucleo del stack. Si algo falta, es un bug real, no un cambio de catalogo."""
     mod = load()
-    for hid in ("ollama", "onyx", "browser-use", "anythingllm", "litellm"):
+    for hid in ("ollama", "onyx", "browser-use", "litellm"):
         assert hid in mod.BY_ID, f"falta la herramienta core '{hid}'"
 
 
