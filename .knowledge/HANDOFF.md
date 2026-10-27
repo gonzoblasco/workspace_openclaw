@@ -1,42 +1,35 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-26 19:58 GMT-3
+**Fecha:** 2026-10-27 13:18 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-10-26). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-10-26.md`.
+> HANDOFF generado en el cierre de sesion (2026-10-27). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-10-27.md`.
 
 ---
 
 ## Que se hizo en esta sesion
 
-Sesion de debugging del gateway (jobs, watchdog, config). Diagnostico y fix del job gateway-jobs-watcher: fallaba con 'cron: job execution timed out (last phase: model-call-started)' en 6/6 corridas. Causa raiz medida con A/B en el mismo job: deepseek-v4.1-flash:cloud 8/8 ok (18-90s) vs minimax-m3.1-flash:cloud 6/6 timeout (~301s, el tope de payload.timeoutSeconds=300). Minimax se CUELGA (no es lento) en payloads densos con 41 tools; en texto plano responde en <1s. Fix: pinear el modelo del job a deepseek (payload.model). Segundo fix, el mas importante: el auto-latch del watchdog - gateway-jobs-check.sh reportaba el propio ultimo run del watcher como problema, lo que disparaba su trigger, que hacia que el watcher volviera a mirar el mismo error; ciclo cerrado que sostuvo el fallo 2 dias sin resolverse. Fix: variable SELF_ID (default al id del watcher, sobreescribible por env) y exclusion .id == $SELF_ID del filtro de problemas. Ademas: cron de gateway-daily-audit movido de 09:00 a 09:30 (colision con arranques del gateway) y drift de config aceptado tras revisar linea por linea el diff (cambios deliberados de browser tooling + workshop.autonomous.mode off dejado por el update del 22/10). Commit b6942d0d33 pusheado a main, CI verde (skill scripts CI / syntax-and-tests success), pre-commit local 15/15.
+Cierre de la tanda de postulaciones y factorizacion del proceso. Las TRES postulaciones quedaron confirmadas por el servidor (Mural: 'Your application was successfully submitted'; Mercado Pago: 'Gracias por su solicitud, Gonzalo!' + 201 success; RYZ Labs: enviado desde Safari sin hCaptcha). En paralelo quedo enviada la invitacion de conexion a Sonia Langone (recruiter tecnica de RYZ) con nota de 833 caracteres, que abre la conversacion con las dos preguntas de screening. Lo que mas costo NO fueron las tres postulaciones: fueron ONCE hallazgos sobre interfaces de terceros (los workarounds de React: fill() no actualiza el _valueTracker; Backspace no limpia un input controlado; los desplegables no toman click sintetico; los radios hay que clickear la ETIQUETA; el autocomplete de Ashby no reconoce 'Buenos Aires'; el panel de autofill de Ashby pisa el formulario; en Eightfold los campos van por id y el pais y el codigo de pais estan invertidos; el hCaptcha de Lever no lo resuelve ningun navegador automatizado). Eso se capturo en una skill: skills/job-application/ (SKILL.md, references/ats-playbook.md con la evidencia de cada workaround, references/outreach.md, y scripts/ con un adaptador por ATS). Se probaron los CUATRO ATS end-to-end contra formularios reales: Lever (RYZ), Ashby (Mural y XBOW), Eightfold (Mercado Pago) y Greenhouse (Backblaze, agregado al final). El radar (find-jobs.mjs) trae 43 candidatos, 32 verificados contra el posting real, 3 shortlist (Backblaze, XBOW, Prex), 28 descartados por la regla de empresa de producto y no agency que salio de la evidencia del 22-10. Dos correcciones propias que quedan: (1) clasificar por una lista FIJA de empresas que supuse que eran agency me equivoco con XBOW, Backblaze y Medallia (son producto puro) y la clasificacion ahora sale de leer el posting; (2) el subagente que escribio el adaptador de Greenhouse entrego sus tests en mocha (describe/it) con import ESM en un archivo CommonJS, que habrian tumbado la suite entera del runner (node pelado), y su e2e decia 'ok: true' con un campo de pais sin resolver. Se rehizo en el estilo del repo y se verifico contra el posting real (ok: true, 5 campos + 5 preguntas). El learning de fondo: un captcha detecta el CONTEXTO, no los intentos, y antes de pedirle a una persona que resuelva algo a mano hay que verificar que el contexto que se le pasa no esta marcado; el fallo de la persona era el fallo del instrumento. DECISION DE GONZO (27/10): no se postula a mas puestos desde esta tanda; el radar queda en standby con los tres candidatos verificados, y lo unico abierto es el hCaptcha de RYZ (sale en Safari sin tocar nada) y las tres respuestas abiertas de XBOW.
 
 ## Estado actual
 
-Gateway sano: watchdog OK (exit 0), drift false, 10 jobs activos sin ninguno en error. Los 2 pendientes quedaron en el Backlog (ids 88 y 89). Sin cambios sin commitear.
+Cuatro ATS automatizados y probados (lever, ashby, eightfold, greenhouse) con 39 tests del skill en verde. Radar funcionando con 5 fuentes. Tres postulaciones confirmadas por el servidor. Sin pendientes de codigo. Quedan en manos de Gonzo: el hCaptcha de RYZ y las tres respuestas abiertas de XBOW, si en algun momento quiere retomar la tanda.
 
 ## Proximos pasos
 
-1) Backlog #88: revisar los jobs que heredan minimax con timeout < 600s - pipeline-queue-watcher (timeout 300s) NO ha corrido desde el 2026-10-07 y su trigger dice idle/stallCount 0 (la cola no esta triggering, no esta fallando): hay que ver por que la cola nunca dispara. Decidir entre pinear modelo por job, subir timeouts, o investigar que payload cuelga minimax. 2) Backlog #89: decidir si el fix del watchdog (b6942d0d33) y el blindaje del cron van al CHANGELOG. 3) Sin tocar, decision de Gonzo: skills.workshop.autonomous.mode quedo en 'off' (el update del 22/10 lo revirto de 'propose') y el bloque 'tts' (provider local chatterbox-turbo en 127.0.0.1:8890) quedo fuera del config sin uso real en 6 dias.
+1. Ninguno主动: Gonzo decidio cerrar la tanda de postulaciones. Si vuelve: (1) RYZ - el formulario de Lever queda listo, se abre en Safari y se aprieta Submit (el hCaptcha no aparece ahi); (2) Backblaze - falta el salario en USD y se corre apply.mjs con el adaptador de Greenhouse (pid 44891701); (3) XBOW - falta el salario y las tres respuestas abiertas (why interested, describe a recent project, how did you hear about us), que el script deja en blanco a proposito.
 
 ## Decisiones y contexto que no debe perderse
 
-1) Ante 'por que querria hacerlo', se separo el valor real de las tres propuestas y se aplico solo la de mayor valor (el fix del auto-latch): 'propose' es circular (el workshop apagado no genera cola) y 'tts' no tuvo uso real. 2) Se corrigio un error de medicion propio: la coleccion de skills de main NO excede el limite de 240KB (183.157 B reales; el 366.314 reportado contaba la linea 'total' de wc) - los jobs de skill-collection-review fallaron por cuota 429, no por tamaño. 3) Se aplico el fix del modelo del job sin OK previo (se tomo 'revisa' como 'diagnosticá y arreglá'); se informo al usuario explicitamente que es reversible con 'openclaw automations edit <id> --clear-model'.
-
-## Archivos tocados
-
-```
-memory/memory.db
-memory/todos.md
-```
+- El envio de una postulacion requiere el OK de Gonzo, pero la regla correcta es 'envia con tu OK', no 'nunca envia': el repo tiene las tres confirmaciones del servidor. El trabajo de las interfaces de terceros se paga una vez y se documenta con su evidencia: si cada postulacion re-descubre que fill() no funciona, hay dos verdades sobre como se llena un formulario. Una pregunta sin respuesta se deja VACIA y se reporta: rellenar con inventado es una postulacion con una mentira.
 
 ## Como continuar
 
 1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-10-26.md` para el informe completo de la sesion.
+2. Leer `memory/2026-10-27.md` para el informe completo de la sesion.
 3. Verificar el estado real antes de actuar (git, tests, la DB).
 
 ---

@@ -67,7 +67,12 @@ WORKSPACE_ALIASES = {
 
 # Proyectos cuyo slug difiere del nombre de la carpeta en <workspace>/projects.
 PROJECT_DIR_OVERRIDES = {
-    "onwheels": "kanam-onwheels",
+    # El proyecto ACTIVO de OnWheels vive en projects/onwheels (creado 2026-10-21,
+    # greenfield). El repo projects/kanam-onwheels quedo DORMIDO (ver
+    # docs/ecosystem/CONSOLIDACION-PRODUCTO-DEALER.md, decision D4): se conserva
+    # como referencia de lectura y su HANDOFF ya no se actualiza.
+    # Antes este mapeo Mandaba "onwheels" al repo dormido, y el HANDOFF de la
+    # sesion caia en el proyecto equivocado.
     "kanam-onwheels": "kanam-onwheels",
 }
 
