@@ -19,9 +19,7 @@
 | Herramienta | ID | Runtime | Puerto | Estado |
 |---|---|---|---|---|
 | Ollama | `ollama` | nativo (host) | 11434 | corriendo |
-| Onyx | `onyx` | docker compose (Lite: 6 servicios) | 3000 | corriendo |
 | browser-use | `browser-use` | docker (stdio, bajo demanda) | - | bajo demanda |
-| LiteLLM | `litellm` | docker compose | 4000 | no instalado |
 | Vane | `vane` | docker compose | 3005 | corriendo |
 | opencode | `opencode` | docker compose | 4096 | corriendo |
 | OpenHands | `openhands` | docker compose | 8000 | corriendo |
@@ -39,11 +37,11 @@ Stacks de compose corriendo que no tienen ficha:
 ```bash
 ./scripts/ai-toolbox.py list              # todo con estado real
 ./scripts/ai-toolbox.py list --json       # lo mismo, para maquinas
-./scripts/ai-toolbox.py status onyx       # detalle de una
+./scripts/ai-toolbox.py status vane        # detalle de una
 ./scripts/ai-toolbox.py health            # sondas HTTP de todas
-./scripts/ai-toolbox.py up onyx           # levantar
-./scripts/ai-toolbox.py down onyx         # parar (conserva volumenes)
-./scripts/ai-toolbox.py restart onyx      # reiniciar
+./scripts/ai-toolbox.py up vane           # levantar
+./scripts/ai-toolbox.py down vane         # parar (conserva volumenes)
+./scripts/ai-toolbox.py restart vane      # reiniciar
 ./scripts/ai-toolbox.py catalog --check   # verificar que la vista no seerve
 ```
 
@@ -65,55 +63,11 @@ declarado a mano es COMO se levanta cada cosa.
   `host.docker.internal:11434`.
 - **Como se consulta el LLM desde Docker:** `http://host.docker.internal:11434`
   (endpoint nativo) o `http://host.docker.internal:11434/v1` (OpenAI-compatible,
-  que es el que usan LiteLLM y los embeddings).
+  que es el que usan los clientes OpenAI-compatible y los embeddings).
 - **Trampa:** el sufijo `:cloud` del tag NO dice si el modelo es remoto. La
   fuente de verdad es el campo `remote_host` de `GET /api/tags`.
 - **Trampa:** para el loop agentico (structured output) los modelos cloud
   devuelven prosa en vez de JSON. Ver la nota de browser-use.
-
-### Onyx (id: `onyx`)
-
-- **Que es:** capa de contexto/RAG de equipo (OSS, MIT). Chat con memoria,
-  agents, MCP server y sandbox de codigo. Conecta 50+ fuentes (GitHub, Slack,
-  Google Drive, etc.) para indexarlas.
-- **Repo:** `projects/onyx` (clone de `github.com/onyx-dot-app/onyx`).
-- **UI:** http://localhost:3000
-- **Como se levanta:**
-  ```bash
-  cd ~/projects/onyx/deployment/docker_compose
-  docker compose -f docker-compose.yml -f docker-compose.onyx-lite.yml up -d
-  ```
-- **Modo Lite:** 6 servicios (api_server, web_server, nginx, relational_db,
-  mcp_server, code-interpreter), ~1 GB RAM. Sin OpenSearch, sin Redis, sin model
-  servers, sin object store. Postgres hace de cache, file store y auth backend.
-- **Por que Lite:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB
-  de la maquina) y conviven litellm, opencode, vane,
-  openhands y browser-use. El stack completo (OpenSearch con heap de
-  2 GB + 2 model servers con torch) no entra comodo.
-- **LLM:** provider `ollama_chat` con `api_base=http://host.docker.internal:11434`.
-  **Solo modelos cloud** (17 visibles), default `minimax-m3.1-flash:cloud`. Los
-  modelos locales del host no estan en el provider: Onyx no los elige y no
-  consumen RAM.
-- **Como se para:** `docker compose -f docker-compose.yml -f docker-compose.onyx-lite.yml stop`.
-- **Credenciales:** `projects/onyx/.local/credentials.md` (excluido de git).
-- **Lo que NO tiene:** indexacion/RAG/conectores apagados en Lite.
-  `DISABLE_VECTOR_DB=true`. Para activarlos hace falta el stack completo
-  (Redis + OpenSearch) y embeddings configurados: Onyx no tiene provider
-  `ollama` para embeddings, asi que va por `litellm` contra el endpoint
-  OpenAI-compatible de Ollama (verificado con `qwen3-embedding:0.6b`, dim 1024).
-- **Trampas verificadas:**
-  - El email de registro **no puede usar dominio `.local`**: el validador de
-    `email_validator` lo rechaza (dominio reservado) y `/api/auth/register`
-    devuelve 422. Usar un dominio real.
-  - El **login tarda 15-80 s** (bcrypt con la CPU de Docker saturada). Un
-    timeout corto corta un login que si iba a completarse.
-  - `DOCKER_SOCK_PATH` debe apuntar al socket de Docker Desktop
-    (`~/.docker/run/docker.sock`): en macOS no existe `/var/run/docker.sock`.
-  - El `api_server` puede ser OOM-killed (exit 137) con muchos containers
-    ajenos arriba. Reinicia solo (`restart: unless-stopped`).
-  - `code-interpreter` puede marcar `unhealthy` por timeout del
-    `docker image inspect` con el daemon saturado. Se recupera solo.
-- **Detalle completo:** `projects/onyx/.knowledge/STATUS.md`.
 
 ### browser-use (id: `browser-use`)
 
@@ -135,22 +89,12 @@ declarado a mano es COMO se levanta cada cosa.
   (`chmod -R a+rX`) y rebuild.
 - **Detalle:** `projects/browser-use/README-LOCAL.md`.
 
-### LiteLLM (id: `litellm`)
-
-- **Que es:** proxy OpenAI-compatible que sirve modelos del daemon Ollama del
-  host. Un solo lugar donde expose el LLM para varios clientes.
-- **Puerto:** `4000`. Health: `/health/liveliness`.
-- **Repo:** clon de BerriAI/litellm en `~/experiments/litellm` (fuera del
-  workspace); el compose y `config.yaml` en `~/experiments/litellm-ollama/`.
-- **Como se levanta:** `cd ~/experiments/litellm-ollama && docker compose up -d`
-- **Perfil `local`:** construye la imagen desde el clon local.
-
 ### Vane (id: `vane`)
 
 - **Que es:** motor de busqueda con respuestas citadas. Privacy-first: combina
   web con indices locales.
 - **Repo:** `projects/vane`. Imagen `vane-local:ollama`.
-- **UI:** http://localhost:3005 (el 3000 lo tiene onyx-nginx).
+- **UI:** http://localhost:3005.
 - **Como se levanta:** `toolbox up vane` (alias del registro de herramientas; equivalente a `cd ~/projects/vane && docker compose up -d`)
 - **Como se para:** `toolbox down vane` (conserva los datos: `data/` y `uploads/` son bind mounts)
 - **Nota:** SearxNG corre dentro del mismo container (entrypoint, puerto 8080

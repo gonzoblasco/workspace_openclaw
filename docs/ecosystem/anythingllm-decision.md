@@ -55,7 +55,7 @@ reescribe sola.
 | Skill del registro | `skills/ai-toolbox/SKILL.md` (descripcion + IDs validos) |
 | Entrada de memoria curada | `MEMORY.md` |
 | Dos todos moot (token a cambiar, backup a programar) | `memory.db` (84, 85 -> done) |
-| Menciones en contexto operativo | `projects/onyx/.knowledge/STATUS.md` |
+| Menciones en contexto operativo | `projects/onyx/.knowledge/STATUS.md` (eliminado con Onyx el 2026-10-27) |
 
 **No se toco** (son registros historicos de lo que paso, no estado vivo):
 

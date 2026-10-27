@@ -110,7 +110,7 @@ def test_tiene_entradas_basicas():
 def test_las_herramientas_core_estan():
     """El nucleo del stack. Si algo falta, es un bug real, no un cambio de catalogo."""
     mod = load()
-    for hid in ("ollama", "onyx", "browser-use", "litellm"):
+    for hid in ("ollama", "browser-use", "vane"):
         assert hid in mod.BY_ID, f"falta la herramienta core '{hid}'"
 
 
@@ -121,13 +121,24 @@ def test_ollama_esta_y_es_nativo():
     assert mod.BY_ID["ollama"]["port"] == 11434
 
 
-def test_onyx_esta_con_sonda_y_compose():
+def test_vane_esta_con_sonda_y_compose():
     mod = load()
-    onyx = mod.BY_ID.get("onyx")
-    assert onyx is not None, "onyx no esta en la tabla"
-    assert onyx["port"] == 3000
-    assert onyx["compose"], "onyx sin compose"
-    assert onyx["health"], "onyx sin sonda de salud"
+    vane = mod.BY_ID.get("vane")
+    assert vane is not None, "vane no esta en la tabla"
+    assert vane["port"] == 3005
+    assert vane["compose"], "vane sin compose"
+    assert vane["health"], "vane sin sonda de salud"
+
+
+def test_las_retiradas_no_estan_en_el_catalogo():
+    """Onyx (2026-10-27) y LiteLLM (2026-10-22) se retiraron del stack.
+
+    Que no reaparezcan es parte del contrato: una entrada que vuelve sola
+    reinstala el stack en el proximo `up`.
+    """
+    mod = load()
+    for hid in ("onyx", "litellm"):
+        assert hid not in mod.BY_ID, f"la herramienta retirada '{hid}' volvio al catalogo"
 
 
 def test_cada_herramienta_docker_declara_un_compose():
@@ -321,7 +332,7 @@ def test_list_json_devuelve_todas_las_herramientas():
     assert r.returncode == 0, r.stderr
     data = json.loads(r.stdout)
     ids = {d["id"] for d in data}
-    assert "onyx" in ids
+    assert "vane" in ids
     assert "ollama" in ids
 
 
@@ -335,14 +346,14 @@ def test_health_sale_con_codigo_de_salida():
     r = run_script(["health"])
     # Puede ser 1 si alguna sonda falla: lo importante es que responde.
     assert r.returncode in (0, 1)
-    assert "onyx" in r.stdout
+    assert "vane" in r.stdout
 
 
 def test_ids_no_vacio():
     r = run_script(["ids"])
     assert r.returncode == 0
     ids = r.stdout.split()
-    assert "onyx" in ids
+    assert "vane" in ids
     assert len(ids) == len(set(ids))
 
 

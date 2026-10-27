@@ -69,7 +69,6 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 | `scripts/aggregate-sync.sh` | **RETIRADO (2026-10-13, ADR-098):** sincronizaba el repo agregado `projects_openclaw`, que no existe. `projects/` es carpeta plana ignorada; no hay capa agregada. |
 | `scripts/initial-setup.sh` | Setup one-shot para maquina nueva (laptop/Mac nuevo): clona workspace + clona/attacha los subrepos en `projects/<slug>/` + verifica. **Deuda (2026-10-13):** su paso 2 todavia arma `projects/` como clon del agregado `projects_openclaw` (retirado, ADR-098); alinear al modelo sin capa agregada. |
 | `scripts/oss-tracker.js` | Tracker de contribuciones OSS |
-| `scripts/onyx-tool.py` | Onyx: `status` (sonda HTTP real), `up`, `down` (conserva volumenes), `restart`, `logs`, `provider`, `chat` (prueba de ida y vuelta al LLM), `json` |
 | `scripts/cline-tool.sh` | Cline: `up` (dashboard + daemon, idempotente), `down`, `status` (puertos + salud HTTP), `run --cwd <dir> "<prompt>"` (turno headless), `logs` |
 | `scripts/ai-toolbox.py` | Registro vivo de las herramientas IA de la maquina: `list` (estado real), `list --json`, `status <id>`, `health`, `up/down/restart <id>`, `catalog --write/--check`. Ver skill `ai-toolbox` |
 | `scripts/pr-dashboard.sh` | Dashboard de PRs (para el batch check del ritual de inicio de sesión) |
@@ -125,32 +124,6 @@ La memoria del workspace tiene **dos clases de superficie**, y confundirlas llev
 - **Politica sync:** workspace NUNCA commitea `.engram/`; proyectos con equipo decide por ADR.
 - **Comandos:** `engram doctor` (health check), `engram search`, `engram tui`, `engram projects list`.
 - **Skill:** proposal `engram-project-memory-20260922-aebbba7411` pendiente de apply.
-
-## Onyx (self-hosted, LLM via Ollama) - 2026-10-20
-
-- **Repo:** `projects/onyx` (clone de `github.com/onyx-dot-app/onyx`). UI: **http://localhost:3000**.
-- **Que es:** capa de contexto/RAG de equipo (OSS, MIT). Chat con memoria, agents, MCP server y sandbox de codigo.
-- **Script:** `scripts/onyx-tool.py` (status, up, down, restart, logs, provider, chat).
-  ```bash
-  ./scripts/onyx-tool.py status      # estado real (sonda HTTP, no del container)
-  ./scripts/onyx-tool.py up          # levantar (modo Lite)
-  ./scripts/onyx-tool.py down        # parar (conserva volumenes)
-  ./scripts/onyx-tool.py provider    # provider y modelo default
-  ./scripts/onyx-tool.py chat        # prueba de ida y vuelta al LLM
-  ```
-- **Modo Lite:** 6 servicios (api_server, web_server, nginx, relational_db, mcp_server, code-interpreter), **~1 GB RAM**. Sin OpenSearch, sin Redis, sin model servers: Postgres hace de cache, file store y auth backend.
-- **Por que Lite:** Docker Desktop tiene **8 GB de RAM asignados** (no los 24 GB de la maquina) y conviven otros stacks. El stack completo (OpenSearch con heap de 2 GB + 2 model servers con torch) no entra comodo. Un `docker compose up` a secas levanta el stack completo: hay que usar el script o los dos `-f` en orden.
-- **LLM:** provider `ollama_chat` con `api_base=http://host.docker.internal:11434` (el Ollama del host, no un container). **Solo modelos cloud** (17 visibles), default `minimax-m3.1-flash:cloud`. Los modelos locales del host no estan en el provider: Onyx no los elige y no consumen RAM.
-- **Credenciales:** `projects/onyx/.local/credentials.md` (excluido de git, NO versionar).
-- **Estado y fricciones medidas:** `projects/onyx/.knowledge/STATUS.md`.
-- **Trampas verificadas (no volver a tropezar):**
-  - El email de registro **no puede usar dominio `.local`** (`email_validator` lo rechaza -> 422). Usar un dominio real.
-  - El **login tarda 15-80 s** (bcrypt con la CPU de Docker saturada): los timeouts cortos cortan un login que si iba a completarse.
-  - `DOCKER_SOCK_PATH=/Users/gonzoblasco/.docker/run/docker.sock` en `.env` (en macOS no existe `/var/run/docker.sock`).
-  - `code-interpreter` puede marcar `unhealthy` por timeout del `docker image inspect` con el daemon saturado: se recupera solo.
-  - `api_server` fue OOM-killed una vez (exit 137) por los containers ajenos: reinicia solo (`restart: unless-stopped`).
-  - El tag de un modelo **no dice si es cloud**: el sufijo `:cloud` no alcanza (`gpt-oss:120b-cloud` y `mistral-large-3:675b-cloud` son cloud sin el). La fuente de verdad es el campo `remote_host` de `GET /api/tags`.
-- **Lo que falta:** indexacion/RAG/conectores apagados en Lite. Para activarlos: embeddings por `litellm` contra el endpoint OpenAI-compatible de Ollama (`/v1/embeddings`, verificado con `qwen3-embedding:0.6b`, dim 1024) + stack completo con Redis y OpenSearch.
 
 ## Cline (agente de codigo open source) - 2026-10-20
 

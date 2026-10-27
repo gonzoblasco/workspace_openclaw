@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-27] - Onyx y LiteLLM fuera del stack: 32,4 GB liberados y el registro que moria
+
+### Removed
+- **Onyx eliminado por completo** (decision de Gonzo). **No estaba descartado: estaba apagado sin decision y habia vuelto solo.** Los 6 servicios tienen `restart: unless-stopped`, y esa politica ignora un `docker compose stop` manual: el reinicio de Docker Desktop del 2026-10-26 12:39:40 los levanto a todos en el mismo segundo (junto con vane, opencode y openhands). Para que no vuelva hace falta `down`, no `stop`. Uso real medido antes de borrar: **0 documentos indexados**, 0 requests al API server en 24 h, y las 1740 peticiones al nginx en 7 dias fueron **todas** `/api/health` de la sonda del toolbox. Eliminado: 6 contenedores + red, 4 volumenes (77 MB), 4 imagenes (~5,7 GB), repo clonado `projects/onyx` (138 MB) y `scripts/onyx-tool.py` a la papelera. Puerto 3000 liberado. El todo #82 (activar RAG) se cerro **sin objeto**: exigia el stack completo (Redis + OpenSearch + model servers) que no entra en los 8 GB de Docker Desktop, y la capacidad de RAG ya estaba cubierta por `scripts/memory-search.py`, `projects/langchain-starter` (ChromaDB) y `projects/soporteml` (pgvector).
+- **LiteLLM: la entrada del catalogo era el ultimo resto.** La instalacion ya no existia (ADR-103, 2026-10-22: no habia imagen, ni compose, ni el directorio `~/experiments`). Quedaba vivo solo en el registro, que lo hacia figurar como "no instalado" y no como descartado.
+- **6 contenedores MCP de browser-use huerfanos** detenidos: cada sesion lanza uno con `docker run --rm` y el runtime no lo baja al terminar. Todos estaban anclados por el supervisor del gateway, pero de sesiones ya cerradas (solo una sesion activa: esta). El de esta sesion quedo vivo.
+
+### Fixed
+- **El registro vivo moria por omision, no por decision.** `scripts/ai-toolbox.py` (entradas `onyx` y `litellm`) + la prosa de `docs/tools/REGISTRY.md` + la descripcion y la lista de IDs de la skill `ai-toolbox` + los tests que afirmaban esas herramientas como "nucleo del stack". La tabla de `REGISTRY.md` se **regenero** con `catalog --write` (editarla a mano la desincroniza del generador); la prosa se edito a mano. El test `test_las_herramientas_core_estan` ahora afirma `ollama`, `browser-use` y `vane`, y se agrego `test_las_retiradas_no_estan_en_el_catalogo`: una entrada que vuelve sola reinstala el stack en el proximo `up`.
+- **`MEMORY.md` y `docs/SETUP.md` dejaban Onyx como si estuviera vivo.** La entrada curada de memoria y la seccion completa de SETUP (repo, script, modo Lite, trampas verificadas) se eliminaron; la `projects/` del triage paso de 30 a 29 carpetas en el todo #83 (reescrito, no cerrado: la tarea sigue viva).
+- **`docker image prune -a` y `docker builder prune -a`:** 12,97 GB de imagenes sin uso y 19,43 GB de cache de build. La imagen `vane-builder:local` (10,66 GB, sin containers) tambien se fue: la imagen que Vane usa en runtime (`vane-local:ollama`) es distinta y sigue en pie, verificado con HTTP 200 en `:3005`.
+
+### Added
+- **`docs/ecosystem/onyx-decision.md`** - la decision completa: por que no se resucita, que se elimino, que se conservo, y los 4 aprendizajes. El mas transferible: **`stop` no desactiva la politica de restart** (la firma del diagnostico es "varios stacks arrancando en el mismo segundo"), y **"apagado" y "descartado" son clases distintas**: un descarte tiene documento de decision y limpieza; un apagado sin documento es la clase que el owner decide.
+
+---
+
 ## [2026-10-27] - OnWheels queda EN CURSO: roadmap F0-F6, registro como proyecto activo y un bug de atribucion en el HANDOFF
 
 ### Added

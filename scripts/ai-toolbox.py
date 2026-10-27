@@ -6,6 +6,8 @@ POR QUE EXISTE (2026-10-20). Gonzo tiene stacks de IA corriendo en la Mac Mini
 y el inventario vivia en el chat: cada vez que preguntaba "cuales apps tengo"
 habia que re-derivar la respuesta mirando `docker ps`. Peor: una lista escrita a
 mano seerve. Onyx estaba instalado y funcionando, y no estaba en ningun registro.
+(Anotacion historica: Onyx se retiro del stack el 2026-10-27; el ejemplo sigue
+valiendo como el motivo de existir de este registro.)
 
 QUE RESUELVE. Un unico lugar que responde tres preguntas:
   1. QUE HAY INSTALADO (la tabla TOOLS, con como se levanta cada cosa).
@@ -81,22 +83,6 @@ TOOLS: List[Dict[str, Any]] = [
         "note": "Todos los stacks de abajo lo consumen via host.docker.internal:11434.",
     },
     {
-        "id": "onyx",
-        "name": "Onyx",
-        "what": "Capa de contexto/RAG de equipo: chat, agents, MCP server y sandbox de codigo.",
-        "kind": "docker",
-        "runtime": "docker compose (Lite: 6 servicios)",
-        "port": 3000,
-        "compose": [
-            _p(PROJECTS / "onyx" / "deployment" / "docker_compose" / "docker-compose.yml"),
-            _p(PROJECTS / "onyx" / "deployment" / "docker_compose" / "docker-compose.onyx-lite.yml"),
-        ],
-        "health": ("http://localhost:3000/api/health", [200]),
-        "up": None,
-        "down": None,
-        "note": "LLM via provider ollama_chat apuntando al Ollama del host. Solo modelos cloud.",
-    },
-    {
         "id": "browser-use",
         "name": "browser-use",
         "what": "Agente de navegacion web. Se expone como server MCP (16 tools) para OpenClaw.",
@@ -110,19 +96,6 @@ TOOLS: List[Dict[str, Any]] = [
         "note": "No tiene puerto propio: OpenClaw lo lanza con docker run por el MCP registrado.",
     },
     {
-        "id": "litellm",
-        "name": "LiteLLM",
-        "what": "Proxy OpenAI-compatible que sirve modelos del daemon Ollama del host.",
-        "kind": "docker",
-        "runtime": "docker compose",
-        "port": 4000,
-        "compose": [_p(HOME / "experiments" / "litellm-ollama" / "docker-compose.yml")],
-        "health": ("http://localhost:4000/health/liveliness", [200]),
-        "up": None,
-        "down": None,
-        "note": "Clon del repo BerriAI/litellm en ~/experiments/litellm (fuera del workspace).",
-    },
-    {
         "id": "vane",
         "name": "Vane",
         "what": "Motor de busqueda con respuestas citadas. Privacy-first, web + local.",
@@ -133,7 +106,7 @@ TOOLS: List[Dict[str, Any]] = [
         "health": ("http://localhost:3005/", [200]),
         "up": None,
         "down": None,
-        "note": "El puerto 3000 lo tiene onyx-nginx; por eso Vane usa 3005.",
+        "note": "Puerto propio: no comparte con nadie.",
     },
     {
         "id": "opencode",
@@ -215,7 +188,7 @@ def compose_projects() -> List[Dict[str, str]]:
 
     Se empareja por ARCHIVO, no por el `name:` del compose: la mayoria de estos
     compose no declaran `name:`, y el nombre del proyecto lo deriva Docker del
-    directorio (por eso opencode es "docker" y litellm-ollama es "litellm-ollama").
+    directorio (por eso opencode es "docker" y openhands es "openhands").
     Buscar el `name:` en el archivo daba 6 herramientas como "apagado" mientras
     estaban corriendo. La fuente de verdad es `docker compose ls`, que ya sabe
     el emparejamiento.

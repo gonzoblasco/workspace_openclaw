@@ -8,7 +8,7 @@ metadata:
     - registry
     - ollama
     - docker
-description: "Registro vivo de las herramientas IA instaladas en la maquina (Onyx, browser-use, LiteLLM, Vane, opencode, OpenHands, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
+description: "Registro vivo de las herramientas IA instaladas en la maquina (browser-use, Vane, opencode, OpenHands, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
 user-invocable: true
 ---
 
@@ -49,18 +49,17 @@ equivale a:
 ```bash
 ./scripts/ai-toolbox.py list              # todo con estado real
 ./scripts/ai-toolbox.py list --json       # lo mismo, para maquinas
-./scripts/ai-toolbox.py status onyx       # detalle de una (con rutas y sonda)
+./scripts/ai-toolbox.py status vane        # detalle de una (con rutas y sonda)
 ./scripts/ai-toolbox.py health            # sondas HTTP de todas
-./scripts/ai-toolbox.py up onyx           # levantar
-./scripts/ai-toolbox.py down onyx         # parar (conserva volumenes)
-./scripts/ai-toolbox.py restart onyx      # reiniciar
+./scripts/ai-toolbox.py up vane           # levantar
+./scripts/ai-toolbox.py down vane         # parar (conserva volumenes)
+./scripts/ai-toolbox.py restart vane      # reiniciar
 ./scripts/ai-toolbox.py catalog --check   # verificar que la vista no seerve
 ```
 
 ### IDs validos
 
-`ollama`, `onyx`, `browser-use`, `litellm`,
-`vane`, `opencode`, `openhands`, `cline`.
+`ollama`, `browser-use`, `vane`, `opencode`, `openhands`, `cline`.
 
 ### Cuando la herramienta es Cline
 
@@ -137,7 +136,7 @@ que no tienen ficha, **eso se reporta**: es una herramienta nueva sin registrar.
   volumenes. Borrar volumenes es otra operacion, y requiere OK explicito.
 - **Emparejamiento por ARCHIVO de compose.** Docker deriva el nombre del
   proyecto del directorio, no del `name:` (por eso opencode es `docker` y
-  litellm-ollama es `litellm-ollama`). El script empareja por archivo; si se
+  openhands es `openhands`). El script empareja por archivo; si se
   agrega una herramienta, el compose tiene que existir en la ruta declarada.
 - **La vista de `docs/tools/REGISTRY.md` se regenera con `catalog --write`.**
   Editarla a mano la desincroniza; `catalog --check` lo detecta.
