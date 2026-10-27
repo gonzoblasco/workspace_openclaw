@@ -68,7 +68,7 @@ Fixes mergeados en librerías de componentes y design systems de producción, ca
 ## Idiomas
 
 - Español - nativo
-- Inglés - B2 (lectura y escritura cómodas; el inglés hablado es mi área de desarrollo actual)
+- Inglés - B2+ (lectura y escritura cómodas; el inglés hablado es mi área de desarrollo actual)
 
 ## Notas / vacíos
 

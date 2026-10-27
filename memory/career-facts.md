@@ -22,7 +22,7 @@ a11y_claim: roles
 ai_years: 1
 backend_years_internal: 1
 sdlc_years: 3
-english: B2
+english: B2+
 spanish: native
 contact_phone: +54 11 4937 4656
 contact_email: gonzoblasco@icloud.com
@@ -44,7 +44,7 @@ pending: 0
 - **Nombre:** Gonzalo Blasco. Se lo llama Gonzo, Gonza o Gonzalo.
 - **Ubicación:** Núñez, Buenos Aires, Argentina (GMT-3). Remoto LATAM, alineado a US EST.
 - **Contacto:** `+54 11 4937 4656` · `gonzoblasco@icloud.com` · `linkedin.com/in/gonzalo-blasco` · `github.com/gonzoblasco`.
-- **Idiomas:** español nativo; **inglés B2** (dato duro, ver §7).
+- **Idiomas:** español nativo; **inglés B2+** (dato duro, ver §7).
 
 ---
 
@@ -210,11 +210,15 @@ que no coincidían entre sí, y la contradicción se resolvió preguntándoselo 
 
 | Período | Institución | Carrera | Estado |
 |---|---|---|---|
-| 2001-2002 | Universidad de Palermo (UP) | Ingeniería en Informática | **incompleta ("dropped")** |
-| 2003-2004 | Universidad Argentina de la Empresa (UADE) | Diseño Gráfico | completa |
-| 2006-2009 | Universidad del Cine (FUC) | Montaje cinematográfico | completa. **Gonzo: "esta creo no la puse en ninguno"** |
-| 2010-2012 | Universidad Adventista del Plata (UAP) | Comunicación Social | completa |
+| 2001-2002 | Universidad de Palermo (UP) | Ingeniería en Informática | **abandonada** |
+| 2003-2004 | Universidad Argentina de la Empresa (UADE) | Diseño Gráfico | **abandonada** |
+| 2006-2009 | Universidad del Cine (FUC) | Montaje cinematográfico | **abandonada**. Gonzo: "esta creo no la puse en ninguno" |
+| 2010-2012 | Universidad Adventista del Plata (UAP) | Comunicación Social | **abandonada** |
 | 2018 | Digital House (terciario) | React | bootcamp |
+
+**Todas fueron abandonadas.** Gonzo, 27/10/2026: *"UADE tampoco la completé... todas fueron
+abandonadas, no tengo título universitario"*. **No hay ni un título universitario, y ninguna
+carrera se completó.**
 
 **Dos precisiones sobre lo que quedó afuera y por qué:**
 
@@ -228,10 +232,11 @@ que no coincidían entre sí, y la contradicción se resolvió preguntándoselo 
 
 **Lo verificado, y es lo que gobierna:**
 
-- **El corpus NO tiene un título universitario completo en Computer Science ni en áreas
-  relacionadas.** La UP fue un año de ingeniería inconcluso. UADE (Diseño Gráfico), FUC (Montaje
-  cinematográfico) y UAP (Comunicación Social) son títulos completos, pero **no son CS ni "related
-  studies"** en el sentido que un equipo de engineering lee.
+- **NO hay título universitario: ninguna carrera se completó.** UP (Ing. en Informática),
+  UADE (Diseño Gráfico), FUC (Montaje cinematográfico) y UAP (Comunicación Social) fueron
+  **abandonadas todas**. La UP fue un año de ingeniería inconcluso; las otras tres tampoco
+  llegaron al título. **Y aunque hubieran llegado, ninguna es CS ni "related studies"** en el
+  sentido que un equipo de engineering lee.
 - **Digital House (2018, React)** es un bootcamp: formación real y en React. **No es un título
   universitario.** Es defendible como "formación", nunca como degree.
 - **Consecuencia operativa:** cuando un JD exige *"Degree in Computer Science, Software
@@ -242,7 +247,11 @@ que no coincidían entre sí, y la contradicción se resolvió preguntándoselo 
   más peso para un JD de CS que UADE, FUC o UAP.
 - **Lo que sí va en un CV** (y ya está en 5 de ellos): Digital House + UADE. FUC, UAP y UP **no se
   declaran** salvo que el JD pida algo específico o Gonzo lo pida: no aportan al perfil y suman
-  ruido.
+  ruido. **Gonzo: "no suelo comentar Universidad del Cine o UAP ya que no aportan a nuestro
+  perfil... luego vemos cuáles van según el puesto"** - la selección por puesto es suya.
+- **Ojo con la implicancia de "abandonada":** listar una carrera en una sección EDUCATION sin
+  marcar que quedó incompleta **se lee como título obtenido**. Por eso los CVs que declaran UADE
+  llevan el "(incomplete)" explícito, y el gate lo verifica (control 9).
 
 ### Formación continua: sí, y es parte de la historia
 
@@ -360,19 +369,23 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
 ## 7. Idiomas
 
 - **Español: nativo.**
-- **Inglés: B2.** Dato duro, definido por Gonzo y reafirmado tras un error que lo declaró C1.
+- **Inglés: B2+.** Dato duro, definido por Gonzo y reafirmado tras un error que lo declaró C1.
+  **Subió de B2 a B2+ el 27/10/2026**, cuando el CUI corrigió el nivel del curso por un error de
+  inscripción (lo había anotado en B1+). **El '+' es confianza en el nivel, no un nivel CEFR
+  distinto**: a efectos de gate, B2+ se normaliza a B2 (ver `scripts/check-cv-facts.py`,
+  `normalize_level`).
   **Nunca** C1, C2, "fluent", "bilingual" ni "Advanced" en formularios, screenings, CVs o
   entrevistas. **Se actualiza a C1 solo cuando exista el certificado en la mano**: un C1 de papel
-  que no se sostiene en una call es peor que un B2 honesto.
+  que no se sostiene en una call es peor que un B2+ honesto.
 - **El gap es oral, no escrito.** Lectura, escritura y trabajo diario están aceitados; falta
   práctica hablada. No ofrecerle cursos generales, academias ni gramática.
 - **Plan vigente (decisión de Gonzo, 2026-10-22):** Gonzo **se anotó en el CUI (Centro Universitario
-  de Idiomas, UBA) en el curso B2+ INTENSIVO de dos meses, que arranca el lunes 26/10/2026**. El
+  de Idiomas, UBA) en el curso B2+ INTENSIVO de dos meses, martes y jueves de 10 a 13 h por Zoom, que arranca el martes 27/10/2026**. El
   objetivo declarado es **desoxidar y mejorar la base**, sin credencial de por medio: el nivel declarado sigue
-  siendo B2 y el gap sigue siendo oral. **El examen CUI-ING C1 y el TOEFL quedan para después**
+  siendo B2+ y el gap sigue siendo oral. **El examen CUI-ING C1 y el TOEFL quedan para después**
   (TOEFL, 2027). **Mientras tanto, sigue buscando.**
   Esto **corrige** el plan del 2026-10-21, que era cursar el C1 completo y después el examen:
-  la decisión de fondo del 2026-10-22 es **B2 intensivo primero**, porque el nivel que Gonzo
+  la decisión de fondo del 2026-10-22 es **B2+ intensivo primero**, porque el nivel que Gonzo
   declara y el nivel que el CUI certifica son el mismo, y subir la base oral es lo que destraba
   el filtro de C1 conversacional. Calendario, costos y fuentes están en `studies/english/README.md`.
   **Lo que no es supuesto: B2+ intensivo, dos meses, arranca el 26/10/2026.**
@@ -380,19 +393,19 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
   error de inscripción y quedó anotado en **B1+**, y lo corrigieron en el momento. **Horario:
   martes y jueves de 10 a 13 h, por Zoom.** La carga es la misma que se planificó (2 clases x 3 h
   por semana), así que **no cambia el diagnóstico sobre la entrevista de noviembre** (3 semanas de
-  clases para el 9-13/11). **Lo que esto no cambia: el nivel declarado sigue siendo B2** - anotarse
+  clases para el 9-13/11). **Lo que esto no cambia: el nivel declarado sigue siendo B2+** - anotarse
   en un curso no sube el nivel declarado, y el CUI-ING C1 sigue siendo el examen del 2027.
 - **Situación al 27/10/2026 (actualización de Gonzo):** el curso **ya arrancó** (26/10). Los
   5 recruiters recontactados por el tema del inglés respondieron (5/5) y **2 tienen próximo paso
   con fecha concreta: solo Siraj/Disney (entrevista en la 1ra o 2da semana de noviembre)**. Los
   otros 3 aceptaron "volver a hablar en uno o dos meses" o "te avisamos", que **no es una fecha
   ni una promesa de puesto** (ver `docs/entrevistas/_general/job-search-tracker.md`).
-  **Lo que se declara ante terceros mientras tanto: B2.** El nivel sube cuando el nivel real sube.
+  **Lo que se declara ante terceros mientras tanto: B2+.** El nivel sube cuando el nivel real sube.
   **Advertencia de credibilidad (registrada el 27/10):** el mensaje de recontacto decía *"I'm
   retaking the course"* y *"re-validate my B2 level"*, que presuponen un curso previo y un
   certificado de B2 que **este corpus no tiene** (§4 solo tiene Deque). Si un recruiter
   repregunta fechas, no hay respuesta. **La forma verificable y con el mismo impacto:** *"I started
-  a B2 intensive course at the CUI (UBA) today - two months - and I plan to take the C1
+  a B2+ intensive course at the CUI (UBA) today - two months - and I plan to take the C1
   certification exam next year."*
 - **Regla de proceso que sale de los 3 casos:** en el **primer mensaje** de cualquier proceso
   LATAM remoto, preguntar el **nivel de inglés conversacional que exige el cliente**. El filtro
@@ -430,7 +443,7 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
   el corpus (§4 solo tiene Deque) ni antecedente de un curso de inglés previo. Los mensajes a
   recruiters que rebotaron por el idioma **no** deben decir "I'm retaking the course" ni
   "re-validate my B2 level": presuponen una acreditación o un curso anterior que no están
-  registrados. **La forma verificable y igual de fuerte:** "I started a B2 intensive course at
+  registrados. **La forma verificable y igual de fuerte:** "I started a B2+ intensive course at
   the CUI (UBA) today, two months, and I plan to take the C1 certification exam next year." -
   eso es exactamente lo que dice el corpus. En un proceso donde el idioma es el filtro, la
   credibilidad es lo único que no se negocia, y un recruiter repregunta fechas.

@@ -65,7 +65,7 @@ Digital accessibility engineer with 10+ years in frontend engineering and access
 ## EDUCATION
 
 - **Digital House** - React (2018)
-- **Universidad Argentina de la Empresa** - Diseño Gráfico (2003 - 2004)
+- **Universidad Argentina de la Empresa** - Diseño Gráfico (2003 - 2004, incomplete)
 
 ## SELECTED PROJECTS
 

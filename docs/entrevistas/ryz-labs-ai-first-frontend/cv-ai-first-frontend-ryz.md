@@ -73,7 +73,7 @@ Merged fixes in production component libraries and design systems, each reviewed
 ## Languages
 
 - Spanish - native
-- English - B2 (professional working proficiency; reading and writing are comfortable, spoken English is my current development area)
+- English - B2+ (professional working proficiency; reading and writing are comfortable, spoken English is my current development area)
 
 ## Keyword map
 

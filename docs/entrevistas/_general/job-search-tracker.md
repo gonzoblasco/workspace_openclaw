@@ -127,7 +127,13 @@ no ingenieria), Infojini (ya es tu proceso vivo).
 3. **Dejar asentado por mail** (no solo WhatsApp) la fecha y el formato. El negocio va por mail.
 
 **El plan de ingles de Gonzo para la segunda semana de noviembre (26/10):**
-- **B2+ intensivo del CUI (UBA): dos clases de 3 horas por semana (6h/semana), martes y jueves de 10 a 13 h por Zoom**, en curso desde el **27/10** (corregido el mismo día: la inscripción inicial lo había dejado en **B1+** y le cambiaron el ciclo). Para la 2da semana de noviembre (9-13/11) lleva **6 clases**, no 3. **Ojo con el choque de horario: 2 de esas clases (10/11 y 12/11) caen dentro de la ventana de la entrevista** - si Disney agenda para esa semana, hay que mover la clase o coordinar con el CUI.
+- **B2+ intensivo del CUI (UBA): dos clases de 3 horas por semana (6h/semana), martes y jueves de 10 a 13 h por Zoom**, en curso desde el **27/10** (corregido el mismo día: la inscripción inicial lo había dejado en **B1+** y le cambiaron el ciclo). Para la 2da semana de noviembre (9-13/11) lleva **6 clases**, no 3. **Choque de horario con la ventana de la entrevista:** de las 6 clases contadas, el **10/11 no existe**: es
+**feriado en CABA y Córdoba** por la visita del Papa León XIV (Decreto 1103/2026, Boletín Oficial del
+28/09/2026; feriados del 8 al 11 de noviembre). En CABA también el **9/11** es feriado nacional y
+el **11/11** feriado en Provincia de Buenos Aires. **Clases reales hasta el 13/11: 5** (27/10, 29/10,
+3/11, 5/11, 12/11), y **una sola** cae dentro de la ventana de la entrevista: la del **jueves 12/11**.
+**No hay que mover nada salvo que la entrevista caiga exactamente ese día;** en ese caso se coordina
+con el CUI.
 - **Practica conversacional con gente afuera (en un bar), a pedido de su hermana: GRINGO TUESDAYS** (martes 19hs a 3hs, el intercambio de idiomas mas grande de Latam; el reel que compartio es de este grupo). El reel que compartio (instagram.com/reel/Dep4YBruByu/) no se pudo leer: Instagram devuelve el HTML vacio a un fetch sin sesion, asi que el contenido no esta verificado. Las citas clasicas de intercambio de idiomas en Buenos Aires que si se verificaron: **Gringo Tuesdays** (martes 19hs a 3hs, el intercambio mas grande de Latam - **ELECCION DE GONZO**), **Spanglish Exchange BA** (Rabieta bar, Palermo; jueves y viernes 19hs, sabado 20hs; chats rotativos de 5 minutos por idioma, ~2h por sesion), **Mundo Lingo BA** (The Flags Place, 6.552 miembros), **Mate Club de Conversacion** (Rabieta bar, sabados 18hs).
 - **Roadmap.sh Pro como material**: curso de a11y (16 lecciones en 4 modulos: focus architecture, ARIA dinamica, verificacion AT cross-platform, operaciones de accesibilidad enterprise) leido **en voz alta**; la Lección 1.1 (focus trap) ya esta al 3/5.
 - **Mock interviews en ingles**: es lo que ataca el gap real (explicar decisiones tecnicas en vivo). El curso solo no alcanza.

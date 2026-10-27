@@ -347,6 +347,57 @@ def test_unbacked_claim_warns_but_does_not_block(tmp_path):
     assert mod.main([str(tmp_path)]) == 0
 
 
+# --- nivel B2+ y educacion incompleta (2026-10-27) ---
+
+def test_plus_in_level_does_not_silence_the_english_check(tmp_path):
+    # El corpus paso a 'B2+' y `owner in LEVELS` daba False: el control de
+    # idioma se apagaba en silencio y cualquier CV podia declarar C1 sin que
+    # nadie lo frenara. Un control que se desactiva por un typo es peor que no
+    # tener control: da verde falso.
+    mod = load()
+    facts = FACTS.replace("english: B2", "english: B2+")
+    seed(tmp_path, facts=facts, cv=CLEAN_CV + "\n- **English** - C1.\n")
+    v = mod.check_cv(tmp_path / "docs/entrevistas/proceso/cv-test.md", mod.parse_facts(tmp_path))
+    assert any("ingles" in x[2] for x in v)
+
+
+def test_b2_plus_normalizes_to_b2(tmp_path):
+    mod = load()
+    assert mod.normalize_level("B2+") == "B2"
+    assert mod.normalize_level("b2 ") == "B2"
+    assert mod.normalize_level("C1") == "C1"
+
+
+def test_degree_without_incomplete_mark_is_flagged(tmp_path):
+    # Las 4 universidades fueron abandonadas: listar una sin marcarlo se lee
+    # como titulo obtenido.
+    mod = load()
+    cv = CLEAN_CV + "\n- **Universidad Argentina de la Empresa** - Diseno Grafico (2003-2004)\n"
+    seed(tmp_path, cv=cv)
+    v = mod.check_cv(tmp_path / "docs/entrevistas/proceso/cv-test.md", mod.parse_facts(tmp_path))
+    assert any("incomplete" in x[2] for x in v)
+
+
+def test_degree_with_incomplete_mark_is_fine(tmp_path):
+    mod = load()
+    cv = CLEAN_CV + "\n- **Universidad Argentina de la Empresa** - Diseno Grafico (2003-2004, incomplete)\n"
+    seed(tmp_path, cv=cv)
+    v = mod.check_cv(tmp_path / "docs/entrevistas/proceso/cv-test.md", mod.parse_facts(tmp_path))
+    assert not any("incomplete" in x[2] for x in v)
+
+
+def test_completed_courses_are_not_flagged(tmp_path):
+    # Digital House y Deque SI se completaron: declararlos es correcto.
+    mod = load()
+    cv = CLEAN_CV + (
+        "\n- **Digital House** - React (2018)\n"
+        "- **Deque University** - Accessibility Specialist Program (2021)\n"
+    )
+    seed(tmp_path, cv=cv)
+    v = mod.check_cv(tmp_path / "docs/entrevistas/proceso/cv-test.md", mod.parse_facts(tmp_path))
+    assert not any("incomplete" in x[2] for x in v)
+
+
 def test_cv_with_prefix_in_middle_is_covered(tmp_path):
     # "eit-cv-gonzalo-blasco-a11y.md": el glob `cv-*.md` no lo veia, y tenia
     # los dos errores que el gate existe para cazar (9+ anios, y un numero de

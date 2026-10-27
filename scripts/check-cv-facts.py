@@ -58,6 +58,17 @@ CV_DIR = "docs/entrevistas"
 
 # Nivel CEFR ordenado. Un CV nunca declara por encima del nivel del dueno.
 LEVELS = {"A1": 1, "A2": 2, "B1": 3, "B2": 4, "C1": 5, "C2": 6}
+
+
+def normalize_level(value):
+    """'B2+' -> 'B2'. El '+' NO cambia el nivel CEFR: es confianza, no nivel.
+
+    POR QUE (2026-10-27): el corpus paso a 'B2+' y el gate se apagó en silencio.
+    `owner in LEVELS` daba False para 'B2+', el control de idioma se saltea y
+    cualquier CV podia declarar C1 sin que nadie lo frenara. Un control que se
+    desactiva por un typo es peor que no tener control: da verde falso.
+    """
+    return value.strip().upper().rstrip("+")
 # Frases que se leen como un nivel CEFR aunque no lo nombren.
 LEVEL_WORDS = {
     "fluent": 5,
@@ -120,6 +131,25 @@ YEAR_CATEGORIES = [
 # en el headline de cada CV.
 
 ENGLISH_LINE = re.compile(r"english|ingl[eé]s", re.IGNORECASE)
+
+# Control 9 (educacion): SOLO las universidades. Las 4 fueron abandonadas (ninguna
+# completada), asi que listarlas sin marcar "incomplete" se lee como titulo
+# obtenido. Digital House, Deque, Platzi y el bootcamp SI se completaron: no
+# entran, y declararlos es correcto.
+# "Deque University" es un programa de CURSOS (completo), no una carrera: se
+# excluye por nombre, porque el patron general matchea "University".
+INSTITUTION_RE = re.compile(
+    r"universidad de palermo|universidad argentina de la empresa|"
+    r"universidad del cine|universidad adventista|adventista del plata|"
+    r"\bup\b.*palermo|\buade\b|\bfuc\b|\buap\b",
+    re.IGNORECASE,
+)
+# Marcas de que la carrera quedo incompleta. Si esta, la linea NO se marca.
+INCOMPLETE_MARK = re.compile(
+    r"incomplete|incompleta|incomplet[oa]|dropped|abandonad|\bnot completed\b|"
+    r"sin completar|en curso",
+    re.IGNORECASE,
+)
 
 # --- Claims de experiencia sin respaldo (control 8) ---
 #
@@ -304,8 +334,9 @@ def check_cv(path: Path, facts: dict):
 
     # 3) Idioma: nunca por encima del nivel del dueno.
     owner = facts.get("english")
-    if owner and owner in LEVELS:
-        ceiling = LEVELS[owner]
+    owner_key = normalize_level(owner) if owner else None
+    if owner and owner_key in LEVELS:
+        ceiling = LEVELS[owner_key]
         for n, line in enumerate(lines, 1):
             if not ENGLISH_LINE.search(line):
                 continue
@@ -384,6 +415,27 @@ def check_cv(path: Path, facts: dict):
                         (name, n, f"fechas de {label}: falta {want_ep}", line.strip()[:110])
                     )
             break
+
+    # 6b) Educacion: una carrera listada sin marcar que quedo incompleta SE LEE COMO
+    # TITULO OBTENIDO. Medido el 2026-10-27: las 4 universidades fueron abandonadas
+    # (ninguna completada) y 5 CVs listaban "UADE - Diseno Grafico (2003-2004)" sin
+    # marca de incompleta. A un recruiting leer eso es un titulo. Se avisa.
+    for n, line in enumerate(lines, 1):
+        low = line.lower()
+        if not low.strip().startswith("-"):
+            continue
+        if not INSTITUTION_RE.search(line):
+            continue
+        if INCOMPLETE_MARK.search(line):
+            continue
+        violations.append(
+            (
+                name,
+                n,
+                "carrera listada sin marcar 'incomplete': se lee como titulo obtenido",
+                line.strip()[:110],
+            )
+        )
 
     # 6) Certificacion: no declarar una credencial que no existe.
     # OJO: "IAAP Certification Quick Guide" es el NOMBRE de un curso de Deque,

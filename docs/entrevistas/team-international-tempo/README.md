@@ -57,7 +57,7 @@ El guion de `guion-call-21-10.md` tiene las 4 preguntas (idioma por la operació
 ## Estado
 
 - **21/10, 12:16** - David escribe por LinkedIn. Pitch: *"Sr Frontend Developer, English Advance. Payment in USD / Great Benefits."*
-- **21/10, 12:21** - Gonzo responde: declara inglés upper-intermediate (B2), dice que se anota en un centro de idiomas para C1 + TOEFL, y que no quiere perder la oportunidad por eso.
+- **21/10, 12:21** - Gonzo responde: declara inglés upper-intermediate (B2), dice que se anota en un centro de idiomas para C1 + TOEFL, y que no quiere perder la oportunidad por eso. **Corrección 27/10: el nivel es B2+ (el CUI se lo corrigió el 27/10, tras un error de inscripción en B1+).**
 - **21/10, 12:30** - David responde con el JD, la Benefits Policy, el salario, la modalidad y el proceso de 4 pasos. **No responde el nivel de inglés requerido.**
 - **21/10, 12:33** - Gonzo: *"dale gracias. dame un rato que leo todo bien en detalle y te digo cómo seguiríamos? con respecto al nivel de inglés, es válido lo que te dije?"*. **Sin respuesta aún.**
 

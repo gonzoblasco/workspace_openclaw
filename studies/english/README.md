@@ -12,8 +12,9 @@
 > miércoles, arranque 26/10) era de un ciclo que no le correspondía. La **carga es la misma**
 > (2 clases x 3 h por semana, 15 clases), así que **no cambia el diagnóstico sobre la entrevista
 > de noviembre**: para el 9-13/11 lleva 7 clases, no 3.
-> **Lo que no cambia: el nivel declarado sigue siendo B2.** Anotarse en un curso no sube el nivel
-> declarado, y el CUI-ING C1 sigue siendo el examen de 2027.
+> **Nivel declarado: B2+** (corregido por Gonzo el 27/10/2026). Es el nivel que el CUI le
+> certificó al inscribirlo y el que declara en sus CVs. **El CUI-ING C1 sigue siendo el examen de
+> 2027** y el destino de la línea.
 >
 > **Qué cambió respecto del plan del 2026-10-21:** aquel decía "cursar el C1 completo y después rendir el examen". Este dice **B2 intensivo primero**. La razón: el nivel que Gonzo declara (B2) y el nivel que el CUI certifica son **el mismo**, así que cursar B2 **es** trabajar el nivel real, no un escalón menos. Y el gap es **oral**: la base oral es lo que se desoxida. El C1 sigue siendo el destino, pero deja de ser el primer paso.
 >

@@ -76,7 +76,7 @@ Senior full stack engineer with 10+ years building and shipping production web a
 ## LANGUAGES
 
 - **Spanish** - Native.
-- **English** - B2. Written work is my strongest channel: documentation, code review, async communication and technical reading, every day. For live meetings I am functional and improving the spoken format.
+- **English** - B2+. Written work is my strongest channel: documentation, code review, async communication and technical reading, every day. For live meetings I am functional and improving the spoken format.
 
 ## CERTIFICATIONS
 
@@ -90,4 +90,4 @@ Senior full stack engineer with 10+ years building and shipping production web a
 ## EDUCATION
 
 - **Digital House** - React (2018)
-- **Universidad Argentina de la Empresa** - Diseño Gráfico (2003 - 2004)
+- **Universidad Argentina de la Empresa** - Diseño Gráfico (2003 - 2004, incomplete)

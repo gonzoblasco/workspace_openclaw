@@ -33,7 +33,8 @@ esa posición**, no del mercado (ver `career-facts.md` §7).
 
 ## Reglas que se sostienen
 
-- **B2 es el dato duro.** Nunca declarar C1 en formularios, screenings, CVs ni entrevistas
+- **B2+ es el dato duro** (era B2 hasta el 27/10/2026, cuando el CUI corrigió el nivel tras un
+  error de inscripción). Nunca declarar C1 en formularios, screenings, CVs ni entrevistas
   hasta que sea real y esté respaldado por un certificado. Un certificado sin nivel real es
   fraude de CV y se sostiene solo hasta la primera call.
 - **El gap es oral, no escrito.** El escrito está probado: 11 PRs mergeados en repos
@@ -65,7 +66,7 @@ esa posición**, no del mercado (ver `career-facts.md` §7).
 - **Confirmar el desenlace de Infjini** (screening del 19/10, sin registro). Es el único
   proceso vivo y es de la misma clase de riesgo: si exigen C1 conversacional, aplica el
   mismo filtro. Decisión de Gonzo: no insistir con Siraj.
-- Level-up de inglés oral B2 → C1 conversacional: método, carga horaria y costo. El plan
+- Level-up de inglés oral B2+ → C1 conversacional: método, carga horaria y costo. El plan
   general de inglés no está escrito; `career-facts.md` §7 deja la decisión abierta.
 - **Cambridge C1 Advanced (datos verificados):** 4 papers (Reading & Use of English, Writing,
   Listening, Speaking). El score es el promedio de 5 component scores (4 papers + overall).
