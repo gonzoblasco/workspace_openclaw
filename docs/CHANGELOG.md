@@ -4,6 +4,18 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
 
+## [2026-10-27] - OnWheels queda EN CURSO: roadmap F0-F6, registro como proyecto activo y un bug de atribucion en el HANDOFF
+
+### Added
+- **OnWheels registrado como proyecto activo y en curso:** `session-context` (`.data/session-context.db`, estado **Active**, con goal, stack y constraints) + `projects/AUDIT.md` como ACTIVO + repo git local en `projects/onwheels/`. `session-context:resume onwheels` es ahora el punto de entrada para retomar.
+- **HANDOFF propio del proyecto** en `projects/onwheels/.knowledge/HANDOFF.md`, con su `SESSIONS.md` append-only. Primer cierre para este proyecto.
+- **Learning 312 en la DB** (`scripts/memory-db.sh add-learning`, no a mano en el markdown): un cierre de sesion puede escribir el HANDOFF en el proyecto equivocado cuando un override de slug quedo viejo.
+
+### Fixed
+- **`scripts/session-handoff.py`: el override `onwheels` -> `kanam-onwheels` mandaba el HANDOFF al repo DORMIDO.** Existia desde junio, cuando el proyecto se llamaba asi. Con el producto nuevo en `projects/onwheels/` (greenfield del 21/10) y el repo viejo declarado dormido (decision D4), el HANDOFF de la sesion iba a parar al `.knowledge/` del proyecto que ya no se trabaja. No habria dado error (los dos directorios existen): el error era de atribucion silenciosa. Corregido y **verificado por la funcion real**: `resolve_handoff_path('onwheels', None)` devuelve ahora `projects/onwheels/.knowledge/HANDOFF.md`. Tests de `tests/python/test_session_handoff*.py`: 16 passed.
+- **Fila 311 de `learnings` eliminada** (la creo mi propia llamada mal parseada de `add-learning --help`: categoria `--help`, cuerpo vacio). Borrada **por id exacto**, nunca con un WHERE amplio: el gate `check-learnings-integrity.py` existe porque un DELETE anterior mio borro 9 lecciones reales. Gate despues: OK, 258 learnings.
+
+
 ---
 
 ## [2026-10-26] - El pipeline pasa de A/B a A/B/C: un tercer agente que escribe la red de tests
@@ -533,6 +545,7 @@ ADR-099 (LangChain como capa de ejecucion), ADR-103 (LiteLLM se descarta), ADR-1
 - **Este JD no es el patrón Staffy/Sol, pero el filtro sigue siendo el riesgo #1.** El JD declara **B2+** (ellos declararon el nivel) contra "C1 conversacional sí o sí" de los dos cierres recientes; y el proceso empieza con una call informativa de 10-15 min, lo que hace que el idioma se pueda filtrar temprano y no tarde. Pero el pitch inicial de David decía "English Advance", que contradice el "B2+" del JD: alguien escribió "Advance" sin que el JD lo pida, que es exactamente el patrón que en Staffy y Sol se filtró al final. **La pregunta del idioma no se negocia con el CV: se negocia con la pregunta** - y la redacción del guion va por la operación (cuánto inglés hablado a diario con Tempo) apoyada en el JD, no por "¿el cliente exige C1?": preguntar C1 con esas palabras es auto-sabotaje, es el caso Staffy provocado a mano.
 
 ---
+
 ## [2026-10-21] - kanam-query: veredicto y planificacion de un producto greenfield (el analisis de origen era una expansion RAG)
 
 ### Added

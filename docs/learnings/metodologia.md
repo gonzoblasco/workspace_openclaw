@@ -843,3 +843,21 @@ TRAMPA OPERATIVA (la que costo el trabajo): docs/learnings/*.md se REGENERAN des
 
 ---
 
+## Un cierre de sesion puede escribir el HANDOFF en el proyecto equivocado si un override de slug quedo viejo (caso OnWheels, 2026-10-27)
+
+Un cierre de sesion puede escribir el HANDOFF en el proyecto equivocado si un override de slug quedo viejo (caso OnWheels, 2026-10-27)
+
+Al cerrar la sesion de OnWheels (producto nuevo, 2026-10-21) el destino del HANDOFF lo resolvia `scripts/session-handoff.py` con un mapa de overrides de slug: `PROJECT_DIR_OVERRIDES = {"onwheels": "kanam-onwheels"}`. Ese mapeo existia porque el proyecto se llamaba `kanam-onwheels`. Cuando el producto nuevo se creo en `projects/onwheels/` (greenfield, 2026-10-21) y el repo viejo quedo DORMIDO, el override seguia mandando `onwheels` al repo dormido: el HANDOFF de la sesion del proyecto activo iba a parar al `.knowledge/` del repo que ya no se trabaja. No habria pasado nada visible (los dos directorios existen), y el error habria sido de Attribution silenciosa: el HANDOFF de un proyecto en el archivo de otro.
+
+METODO (lo que importa, no el caso):
+1. El destino de un artefacto generado NO se asume por nombre: se resuelve con la misma funcion que usa el script, y se verifica el path resuelto antes de escribir. `resolve_handoff_path('onwheels', None)` tiene que devolver el path del proyecto activo.
+2. Cuando un proyecto cambia de nombre, de carpeta o de estado (activo -> dormido), hay que revisar los MAPAS que lo nombran: overrides de slug, aliases, entradas de configuracion y listas de proyectos. Un override deprecado no da error: manda a otro lado, y ahi el error se descubre tarde.
+3. La senal de que el bug existia estaba en el propio codigo: el override apuntaba a un repo que la decision D4 de la consolidacion declaraba DORMIDO. Regla: cuando un artefacto declara un destino, contrastarlo contra las decisiones vigentes, no solo contra el codigo.
+4. Un `git log` del archivo revela cuando se escribio el override y con que motivo: `git log -S "PROJECT_DIR_OVERRIDES"` mostro que venia de un commit de junio, cuando el proyecto se llamaba asi. Los overrides se escriben una vez y nunca se actualizan.
+
+TRAMPA OPERATIVA: `sqlite3` no puede abrir la DB del workspace cuando el proceso corre bajo el state dir de OpenClaw ("external sqlite3 cannot open databases under the active OpenClaw state directory"). Para leer, se copia a `/tmp` y se consulta la copia. Y para escribir, hay que ir por el script (`scripts/memory-db.sh add-learning <cat> "<titulo>" "<contenido>" [tags]`) o por python con `sqlite3.connect` + `PRAGMA foreign_keys = ON`, NUNCA con un DELETE de WHERE amplio: el gate `check-learnings-integrity.py` existe porque un DELETE mio anterior borro 9 lecciones reales al asumir que el cuerpo vivia en `content` (en 5 filas vivia en `tags` y en 3 en `title`). Para borrar una fila: verificar su contenido exacto, borrar por id, y correr el gate despues.
+
+**Tags:** atribucion,handoff,sesion-lifecycle,overrides,sql
+
+---
+
