@@ -15,7 +15,7 @@ Digital accessibility engineer with 10+ years in frontend engineering and access
 - **Assistive technology:** JAWS, NVDA, VoiceOver, TalkBack (screen reader testing across web, iOS and Android).
 - **Testing and tooling:** axe-core, Axe DevTools, Lighthouse, Playwright, manual and automated audits, accessibility gating in CI/CD.
 - **Design and delivery:** component design review in Storybook and accessibility annotations, Jira defect tracking and impact prioritization, agile SDLC, technical requirements for UI stories.
-- **Design systems and frontend:** React, Next.js, JavaScript, TypeScript, enterprise component libraries, micro-frontends, HTML, CSS, Sass.
+- **Design systems and frontend:** React, Next.js, JavaScript, TypeScript, enterprise component libraries, HTML, CSS, Sass.
 - **Collaboration and leadership:** design review with designers and architects, in-sprint coaching for developers, component guidance and code examples, technical documentation, strong written and verbal communication, teamwork in matrixed cross-regional teams (US / India), mentoring and technical leadership.
 
 ## PROFESSIONAL EXPERIENCE

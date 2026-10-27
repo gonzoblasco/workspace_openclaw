@@ -135,7 +135,7 @@ Julieta en **inglés**.
 | **Samarth** (Ritz-Carlton) | cerrado 22/09 | **Respondió 26/10: "Sure thing, Gonzalo and All the Best"** |
 | **Julieta Costa** (Staffy/Pfizer) | cerrado 20/10 | **Respondió 26/10: "Hi, Gonzalo. Of course :) Best!"** - acepta el reencuentro. El gate real lo ponía **Pfizer** (cliente), no ella |
 | **Siraj Shaik** (Infjini) | **ABIERTO** | **Respondió 26/10 con contenido: "estudiá inglés para cuando me presente a Disney"** - el idioma bloquea la presentación al cliente, no el proceso |
-| **Sol Bisio** (cliente sin nombre) | cerrado 21/10 | **Respondió 27/10 08:48: "¡Qué bueno que hayas arrancado las clases para reforzar tu inglés! Sí, por supuesto! Podemos volver a hablar en uno o dos meses y ver cómo venís con el idioma y qué oportunidades hay disponibles en ese momento. Muchos éxitos con las clases y seguimos en contacto!"** - acepta el reencuentro y abre la vía del **req de Full Stack** (USD 5.600/mes) para cuando haya nivel |
+| **Sol Bisio** (cliente sin nombre) | cerrado 21/10 | **Respondió 27/10 08:48: "¡Qué bueno que hayas arrancado las clases para reforzar tu inglés! Sí, por supuesto! Podemos volver a hablar en uno o dos meses y ver cómo venís con el idioma y qué oportunidades hay disponibles en ese momento. Muchos éxitos con las clases y seguimos en contacto!"** - acepta el reencuentro. **Ojo con la lectura: NO reabre el req de Full Stack** (USD 5.600/mes) - es un **"vemos en el momento"**, sin fecha y sin puesto comprometido. |
 | **Parthasarathy** (EIT/HTC/Disney) | cerrado 24/09 | **Respondió 26/10 13:36: "Great. We will update you if we have response. Position is on hold it seems"** - No menciona el inglés ni la reevaluación: es un "te avisamos si hay novedades" + "la posición está en pausa". **Lo que dice es que la POSICIÓN está en pausa** (el req de Disney, en el canal de EIT). **Lo que NO dice es por qué ni si el candidato queda en pie** - eso no está registrado y no se afirma. |
 
 **Lo que significa la respuesta de Samarth:** "Sure thing" es **acuerdo de reencuentro**, no
@@ -173,8 +173,13 @@ que él ya pensaba.)
 | **Sol Bisio** | cliente sin nombre (cerrado 21/10) | "Qué bueno que hayas arrancado las clases... Podemos volver a hablar en uno o dos meses y ver... qué oportunidades hay disponibles" | reencuentro + vía del **req Full Stack a USD 5.600/mes** |
 
 **Lo que pasó, en una frase:** de 5 procesos cerrados por el mismo motivo (filtro de inglés
-conversacional), **5 aceptaron volver a mirar el perfil** y dos de ellos tienen **próximo paso con
-fecha**. Ninguno lo había hecho solo: el factor común fue que Gonzo **no se quedó con el no**.
+conversacional), **5 respondieron y ninguno cerró la puerta**. **Solo uno tiene fecha concreta:
+Siraj/Disney (entrevista en la 1ra o 2da semana de noviembre).** Los otros cuatro aceptaron
+"volvemos a hablar en uno o dos meses" o "te avisamos": es una **puerta abierta sin fecha**, no
+un compromiso. Sol mismo lo dijo así: *"podemos volver a hablar en uno o dos meses y ver... qué
+oportunidades hay disponibles"* - o sea **"vemos en el momento"**, **no la reapertura del puesto
+de Full Stack**. Ninguno lo había hecho solo: el factor común fue que Gonzo **no se quedó con el
+no**.
 
 **Por qué funcionó (lo que se puede repetir):** el mensaje **no pidió reconsideration**. Dijo
 "estoy arrancando el curso de inglés hoy" y ofreció reevaluar. Eso cambia la naturaleza de la

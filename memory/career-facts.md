@@ -106,6 +106,12 @@ Qué hizo:
 - **EY Motif**, librería de componentes React enterprise consumida por productos de cliente e
   internos: auditó y remedió **50+ componentes** a WCAG 2.2 AA (navegación por teclado, soporte de
   lector de pantalla, manejo de foco, contraste), con Axe DevTools, Lighthouse, JAWS y NVDA.
+  **La librería de componentes es EY Motif, NO Minutentag** (corrección de Gonzo, 27/10/2026): en
+  Minutentag nunca trabajó sobre una librería de componentes. Lo que sí hizo en Minutentag fue
+  revisar componentes en **Storybook** y escribir requisitos técnicos de accesibilidad. **Lo que
+  NO está confirmado en ningún lado, ni en EY:** haber *construido* la librería, o haberla
+  distribuido a "5 equipos de producto". El corpus sostiene **auditar, remediar, definir
+  estándares y escribir los requisitos** - no "desarrollar la librería".
 - **Referente de accesibilidad del equipo** en varios proyectos: revisaba componentes de
   **Storybook (React)** **antes** de implementar, definía estándares y anotaciones a nivel
   componente, y escribía requisitos técnicos de accesibilidad con guía de código para las
@@ -153,6 +159,13 @@ Qué hizo:
 - Agencia de e-commerce para marcas de EE.UU.: **Ascena Retail Group**, con los sitios de **Ann Taylor, LOFT y Lou & Grey** (tres marcas). Registrado 2026-10-20 en `memory/2026-10-20.md` (decisión de Gonzo sobre la trayectoria de a11y desde 2016).
 - Participó de la **migración a React** y mejoró un sitio con **2M+ usuarios mensuales**.
 - **Accesibilidad desde el inicio**: creció de junior a referente de accesibilidad del equipo.
+  **Lo que NO hizo en Minutentag** (corrección de Gonzo, 27/10/2026): **no trabajó sobre una
+  librería de componentes** (esa fue EY Motif) **ni sobre una arquitectura de micro-frontends**.
+  Los dos bullets *"Architected and built micro frontend architecture serving 2M+ monthly active
+  users"* y *"Developed shared component library used across 5 product teams"* sequitaron de los
+  CVs: no tienen respaldo y el primero le era falso. Lo que sí queda del corpus sobre Minutentag
+  es la migración a React, los 2M+ usuarios mensuales, la accesibilidad desde el inicio, los
+  experimentos con Adobe Target y la implementación de variantes en JS nativo.
 - **Experimentación en producción (2019):** trabajó con **Adobe Target** para correr experimentos
   A/B sobre features y diseños contra segmentos de usuarios en vivo, dentro de squads ágiles
   junto a diseño y producto. Hecho confirmado por Gonzo el 21/10/2026 (la duda estaba abierta en
@@ -341,6 +354,18 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
   declara y el nivel que el CUI certifica son el mismo, y subir la base oral es lo que destraba
   el filtro de C1 conversacional. Calendario, costos y fuentes están en `studies/english/README.md`.
   **Lo que no es supuesto: B2 intensivo, dos meses, arranca el 26/10/2026.**
+- **Situación al 27/10/2026 (actualización de Gonzo):** el curso **ya arrancó** (26/10). Los
+  5 recruiters recontactados por el tema del inglés respondieron (5/5) y **2 tienen próximo paso
+  con fecha concreta: solo Siraj/Disney (entrevista en la 1ra o 2da semana de noviembre)**. Los
+  otros 3 aceptaron "volver a hablar en uno o dos meses" o "te avisamos", que **no es una fecha
+  ni una promesa de puesto** (ver `docs/entrevistas/_general/job-search-tracker.md`).
+  **Lo que se declara ante terceros mientras tanto: B2.** El nivel sube cuando el nivel real sube.
+  **Advertencia de credibilidad (registrada el 27/10):** el mensaje de recontacto decía *"I'm
+  retaking the course"* y *"re-validate my B2 level"*, que presuponen un curso previo y un
+  certificado de B2 que **este corpus no tiene** (§4 solo tiene Deque). Si un recruiter
+  repregunta fechas, no hay respuesta. **La forma verificable y con el mismo impacto:** *"I started
+  a B2 intensive course at the CUI (UBA) today - two months - and I plan to take the C1
+  certification exam next year."*
 - **Regla de proceso que sale de los 3 casos:** en el **primer mensaje** de cualquier proceso
   LATAM remoto, preguntar el **nivel de inglés conversacional que exige el cliente**. El filtro
   apareció al final en ambos casos cerrados (Staffy 20/10, Sol 21/10), cuando ya se había armado

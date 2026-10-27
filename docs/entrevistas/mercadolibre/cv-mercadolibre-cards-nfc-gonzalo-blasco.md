@@ -11,7 +11,7 @@ Senior frontend engineer with 10+ years building and scaling production interfac
 ## CORE SKILLS
 
 - **Languages and frameworks:** React, Next.js (SSR), TypeScript, JavaScript (ES6+), HTML5, CSS3, Sass.
-- **Architecture:** component architecture, application lifecycle, SSR, design systems, micro-frontends, SOLID, clean code.
+- **Architecture:** component architecture, application lifecycle, SSR, design systems, SOLID, clean code.
 - **Testing and quality:** Jest, React Testing Library, Playwright, Vitest, axe-core, automated quality gates in CI/CD.
 - **Frontend-backend integration:** webhooks, REST API integrations, Supabase Edge Functions, Stripe billing.
 - **Tooling and workflow:** Git, Jira, Biome, CI/CD pipelines, agile SDLC.

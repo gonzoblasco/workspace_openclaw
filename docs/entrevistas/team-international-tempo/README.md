@@ -81,8 +81,10 @@ El guion de `guion-call-21-10.md` tiene las 4 preguntas (idioma por la operació
   haber construido la infraestructura de experimentación**: ese bullet ("Implemented A/B testing
   infrastructure powering data-driven product decisions") se sacó del markdown del CV de
   Infjini. No estaba en los DOCX/PDF que se mandaron, así que no salió a la calle.
-  **Pendiente real que queda:** "Architected and built micro frontend architecture serving 2M+
-  monthly active users" y "Developed shared component library used across 5 product teams"
+  **Pendiente RESUELTO (27/10/2026):** los bullets "Architected and built micro frontend
+  architecture serving 2M+ monthly active users" y "Developed shared component library used across
+  5 product teams" no tienen respaldo. Gonzo aclaró que **la librería de componentes fue EY Motif,
+  nunca Minutentag**. Salieron de todos los CVs y de los PDF/DOCX regenerados.
   (markdown del CV de Infjini, tampoco en los DOCX). El corpus dice *participó de la migración a
   React* y *mejoró un sitio con 2M+ usuarios mensuales*, sin atribuirle la arquitectura. Si no
   los confirma, salen del markdown.

@@ -11,7 +11,7 @@ Senior full stack engineer with 10+ years building and shipping production web a
 
 ## CORE SKILLS
 
-- **Frontend:** React, Next.js (SSR), TypeScript, JavaScript (ES6+), HTML5, CSS3, Sass, component architecture, design systems, micro-frontends.
+- **Frontend:** React, Next.js (SSR), TypeScript, JavaScript (ES6+), HTML5, CSS3, Sass, component architecture, design systems.
 - **Backend and data:** Node.js, REST API integrations, webhooks, Supabase (PostgreSQL, Auth, Realtime, Edge Functions, RLS), SQL (PostgreSQL primary; MSSQL working knowledge), Stripe billing.
 - **Languages:** TypeScript / JavaScript (primary), Python (working proficiency, AI-assisted), SQL.
 - **Testing and quality:** Jest, React Testing Library, Playwright, Vitest, axe-core, automated quality gates in CI/CD, SOLID, clean code.

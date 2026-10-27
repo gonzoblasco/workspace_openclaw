@@ -170,7 +170,9 @@ arrancaba clases de inglés **ese mismo día**, que preguntaba si en **uno o dos
 **reevaluar**, y que el objetivo era revalidar B2 y después el C1. A Sol, en español (con ella se
 había hablado todo en español).
 
-**Resultado: 5 de 5 respondieron, y dos tienen próximo paso con fecha.**
+**Resultado: 5 de 5 respondieron y ninguno cerró la puerta. Solo UNO tiene fecha concreta
+(Siraj/Disney, 1ra o 2da semana de noviembre); los otros cuatro aceptaron "volvemos a hablar en uno
+o dos meses" o "te avisamos" - que es puerta abierta sin fecha.**
 
 | Contacto | Respuesta | Qué abre |
 |---|---|---|
@@ -178,7 +180,7 @@ había hablado todo en español).
 | Julieta Costa | "Of course :) Best!" | reencuentro (el gate lo ponía Pfizer, el cliente) |
 | Siraj Shaik | "estudiá inglés para cuando me presente a Disney" | **entrevista en la 1ra o 2da semana de noviembre** |
 | Parthasarathy | "We will update you if we have response. Position is on hold it seems" | la **posición** del req está en pausa en el canal de EIT (el mismo req vive en Infojini) |
-| Sol Bisio | "Qué bueno que hayas arrancado las clases... Podemos volver a hablar en uno o dos meses y ver... qué oportunidades hay disponibles" | reencuentro + vía del **req Full Stack a USD 5.600/mes** |
+| Sol Bisio | "Qué bueno que hayas arrancado las clases... Podemos volver a hablar en uno o dos meses y ver... qué oportunidades hay disponibles" | reencuentro. **No reabre el req de Full Stack**: es un "vemos en el momento", sin fecha |
 
 **Por qué funcionó - la mecánica, no la suerte:**
 

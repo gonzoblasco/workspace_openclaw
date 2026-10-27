@@ -16,7 +16,7 @@ Digital accessibility engineer with 10+ years in frontend engineering and access
 - **Assistive technology:** JAWS, NVDA, VoiceOver, TalkBack, Narrator, ZoomText - screen reader and magnification testing across web, iOS and Android.
 - **Testing and tooling:** Axe DevTools, axe-core, Lighthouse, Playwright, browser accessibility extensions, automated and manual audits, accessibility gating in CI/CD.
 - **Design and delivery:** component design review in Storybook, accessibility plugins and annotations, Jira defect tracking and WCAG impact prioritization, agile SDLC, technical accessibility requirements for UI stories.
-- **Design systems and frontend:** React, Next.js, JavaScript, TypeScript, HTML, CSS, Sass, enterprise component libraries, micro-frontends, design system governance.
+- **Design systems and frontend:** React, Next.js, JavaScript, TypeScript, HTML, CSS, Sass, enterprise component libraries, design system governance.
 - **Collaboration and leadership:** design review with designers and architects, in-sprint coaching for developers, component guidance and code examples, technical documentation and technical writing, excellent written and verbal communication, best practices and process standardization, teamwork in matrixed cross-regional teams (US / India), mentoring and technical leadership.
 - **Delivery and stakeholder management:** proactive communication with peers, leadership and program/product stakeholders, risk and impact thinking, driving outcomes and moving stalled work forward, rapid context switching across concurrent workstreams, partnering with stakeholders on a path forward while enforcing standards.
 
@@ -66,8 +66,6 @@ Grew from junior to accessibility owner and mentor across three major US fashion
 - Worked on the migration of legacy jQuery/Handlebars interfaces to React, Sass, and modern HTML5 standards.
 - Ran A/B experiments in production using Adobe Target to test new features and designs across live user segments.
 - Mentored a junior developer - recognized by direct supervisor for fast delivery and strong team collaboration.
-- Architected and built micro frontend architecture serving 2M+ monthly active users.
-- Developed shared component library used across 5 product teams.
 
 ## CERTIFICATIONS
 
