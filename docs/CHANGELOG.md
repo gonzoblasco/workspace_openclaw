@@ -533,7 +533,7 @@ ADR-099 (LangChain como capa de ejecucion), ADR-103 (LiteLLM se descarta), ADR-1
 - **Este JD no es el patrón Staffy/Sol, pero el filtro sigue siendo el riesgo #1.** El JD declara **B2+** (ellos declararon el nivel) contra "C1 conversacional sí o sí" de los dos cierres recientes; y el proceso empieza con una call informativa de 10-15 min, lo que hace que el idioma se pueda filtrar temprano y no tarde. Pero el pitch inicial de David decía "English Advance", que contradice el "B2+" del JD: alguien escribió "Advance" sin que el JD lo pida, que es exactamente el patrón que en Staffy y Sol se filtró al final. **La pregunta del idioma no se negocia con el CV: se negocia con la pregunta** - y la redacción del guion va por la operación (cuánto inglés hablado a diario con Tempo) apoyada en el JD, no por "¿el cliente exige C1?": preguntar C1 con esas palabras es auto-sabotaje, es el caso Staffy provocado a mano.
 
 ---
-
+## [2026-10-21] - kanam-query: veredicto y planificacion de un producto greenfield (el analisis de origen era una expansion RAG)
 
 ### Added
 - **`projects/kanam-query/`** (nuevo, greenfield, sin codigo todavia). `README.md`, `PROPUESTA.md` (veredicto + planificacion por fases) y `.knowledge/` con `EVIDENCIA-VERIFICADA.md` (brief con todo verificado contra disco y contra la documentacion oficial de Mercado Libre) y `REVISION-ADVERSARIAL.md` (28 hallazgos: 7 criticos, 11 altos, 10 medios).

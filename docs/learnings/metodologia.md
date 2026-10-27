@@ -825,3 +825,21 @@ Corolario de correccion: cuando el error queda escrito en un archivo normativo, 
 
 ---
 
+## Un documento largo y estructurado no prueba que alguien lo escribio: verificar el origen antes de discutir el contenido (caso kanam-query, 2026-10-21)
+
+Gonzo pego un documento de 11 secciones (5 arquitecturas comparadas, modelo de datos de 14 tablas, cronograma de 12 semanas, presupuesto USD 42.000) y pregunto si tenia logica. No lo habia escrito nadie: salio de AnythingLLM con RAG, cuyo unico documento indexado era un .md de prueba de 33 palabras ('El identificador de proyecto KA-2026-X99 corresponde al modulo de facturacion. La responsable del proyecto es Elena Vazquez... El presupuesto asignado fue de 42.000 dolares para el trimestre'). 33 palabras de entrada, ~4000 de salida: los 'datos duros' venían del seed y las arquitecturas, los plazos y el desglose de presupuesto los invento el modelo.
+
+METODO (lo que importa, no el caso):
+1. Un documento largo y estructurado NO prueba que alguien lo escribio: el RAG expande un seed minimo a algo con forma de documento, y la forma convence. Antes de discutir el contenido, buscar el ORIGEN: el storage del workspace RAG, el nombre del documento indexado y su wordCount. wordCount 33 con output de 4000 palabras es la señal.
+2. Un texto que menciona un ID de proyecto, una persona y un presupuesto es suspecto por definicion si esos tres datos no aparecen en ningun lado del sistema propio. Verificar con grep del identificador, del nombre y del numero en el workspace y en la DB, ANTES de discutirlo.
+3. Igual tenia valor: como checklist de requisitos de una integracion con MeLi acertaba en ~80% (idempotencia, dedup, outbox, DLQ, RLS, auditoria, rate limiter compartido, reconciliacion). El veredicto correcto no es 'esto es basura': es 'es un checklist, no una especificacion, y hay que corregirlo contra la API real'.
+4. Lo que el analisis NO vio importo mas que lo que dijo: contra la doc oficial de MeLi faltaban (a) api_version=4 obligatorio (sin el se pierde answer.status), (b) la cuota de rate limit es por Client ID, compartida por todos los tenants, y fija el techo de negocio del producto, (c) el permiso funcional se llama 'Comunicacion pre y postventa' y NO existen los scopes read_questions/write_answers, (d) response_time con sales_percent_increase, que es la metrica por la que un vendedor paga. Un checklist sin corregir contra la fuente oficial es un checklist con errores.
+5. El pipeline A/B sirve para esto tambien: A redacto sobre el brief, B reviso con 28 hallazgos (7 criticos, 11 altos, 10 medios) y el CORE verifico contra el disco (16 de 20 pistas confirmadas, 1 refutada). Sin revisor, el borrador habria salido con una fila que ofrecia reusar una app que no debia tocarse, RLS en la fase 4, y una cabecera X-RateLimit-Remaining que nadie documento.
+6. Cuidado con el arrangement por precedencia: el primer borrador asumia que el producto nuevo heredaba el stack del anterior. La regla de USER.md ('el precedente no es un motivo') es exactamente para esto.
+
+TRAMPA OPERATIVA (la que costo el trabajo): docs/learnings/*.md se REGENERAN desde la tabla learnings de memory/memory.db con './scripts/memory-db.sh export-learnings'. Editar el .md a mano parece funcionar y el pre-commit lo acepta, pero la proxima regeneracion lo borra silenciosamente. Hay que escribir la leccion en la DB (add-learning), no en el markdown. <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+
+**Tags:** verificacion,db-first,learnings,rag,alucinacion,origen,anythingllm,mercado-libre
+
+---
+
