@@ -90,4 +90,31 @@ Medido contra el server real (contenedor real, pagina real), 2026-10-27:
 
 ---
 
+## Cuando hay que levantar la CONSOLA (browser-use-ui)
+
+Esta skill habla del **MCP de OpenClaw**, que el gateway lanza por sesion con
+`docker run --rm`: no hay nada que encender ni que apagar. La consola web
+(`browser-use-ui`, puerto 8090) es **otra superficie** y esta **apagada por
+defecto** (decision de Gonzo, 2026-10-27): es una herramienta de prueba, no de
+uso continuo.
+
+**Cuando levantarla:** solo cuando Gonzo pide probarla, revisarla o usarla a
+mano. Si pide "revisar algo en el navegador" en el sentido de *yo* navegue y lea,
+eso lo resuelve este MCP, sin la consola.
+
+```bash
+toolbox up browser-use-ui     # levanta y espera la sonda /api/health
+toolbox down browser-use-ui   # la apaga de verdad (elimina container y red)
+```
+
+**Regla de no dejar basura:** si la levantaste para una prueba, bajala al
+terminar. Su `restart` es `no`, asi que una vez apagada no vuelve sola, pero
+deja ~190 MB de RAM tomados mientras tanto.
+
+**Cuidado con confundirlas:** las dos usan la imagen `browseruse:local`. Apagar
+la consola **no** rompe este MCP (verificado: `browser_navigate` funciona con
+la consola apagada).
+
+---
+
 *Este documento sigue la convención de los skills transversales (`pdf-tool`, `sql-insight`).*

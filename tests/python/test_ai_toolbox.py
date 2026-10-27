@@ -277,6 +277,88 @@ def test_herramienta_sin_stack_registrado_queda_apagada(tmp_path, monkeypatch):
     assert state["status"] in ("apagado", "no instalado")
 
 
+def test_herramienta_bajo_demanda_apagada_no_parece_como_falla(tmp_path, monkeypatch):
+    """Una herramienta bajo demanda apagada es el estado NORMAL, no una caida.
+
+    Sin esto, un `list` mostra "apagado" y no se distingue de un servicio que
+    deberia estar vivo y no lo esta.
+    """
+    mod = load()
+    stub, state_file = write_stub(
+        tmp_path,
+        {"projects": [], "containers": {}},
+    )
+    monkeypatch.setenv("PATH", f"{tmp_path}:{os.environ['PATH']}")
+    monkeypatch.setenv("STUB_STATE", str(state_file))
+    tool = {
+        "id": "bd",
+        "name": "Bajo demanda",
+        "kind": "docker",
+        "runtime": "docker compose",
+        "port": 1,
+        "compose": [str(tmp_path / "nada.yml")],
+        "health": None,
+        "on_demand": True,
+    }
+    original = mod.TOOLS
+    try:
+        mod.TOOLS = [tool]
+        mod.BY_ID = {"bd": tool}
+        state = mod.tool_state(tool)
+    finally:
+        mod.TOOLS = original
+    assert state["status"] == "bajo demanda"
+    assert "up" in state["detail"]
+
+
+def test_bajo_demanda_hace_down_real_y_no_stop(tmp_path, monkeypatch):
+    """`down` de una bajo demanda tiene que ser `docker compose down`.
+
+    `stop` deja la politica de restart intacta: la herramienta vuelve sola en el
+    proximo reinicio de Docker. Para una bajo demanda, `down` es lo unico que
+    la deja apagada de verdad.
+    """
+    mod = load()
+    calls = []
+    monkeypatch.setattr(mod, "run", lambda cmd, timeout=60: (calls.append(cmd), (0, ""))[1])
+    tool = {
+        "id": "bd",
+        "name": "Bajo demanda",
+        "kind": "docker",
+        "runtime": "docker compose",
+        "port": 1,
+        "compose": [str(tmp_path / "c.yml")],
+        "health": None,
+        "on_demand": True,
+    }
+    mod.do_down(tool)
+    assert calls, "no se ejecuto ningun comando"
+    assert "down" in calls[0], f"se esperaba 'down', se ejecuto: {calls[0]}"
+    assert "stop" not in calls[0], f"se ejecuto 'stop' en vez de 'down': {calls[0]}"
+
+
+def test_down_normal_conserva_la_politica_de_restart(tmp_path, monkeypatch):
+    """Una herramienta normal sigue usando `stop`: conserva containers y volumenes.
+
+    El `down` real es solo para las bajo demanda, que son las que se apagan
+    de verdad.
+    """
+    mod = load()
+    calls = []
+    monkeypatch.setattr(mod, "run", lambda cmd, timeout=60: (calls.append(cmd), (0, ""))[1])
+    tool = {
+        "id": "normal",
+        "name": "Normal",
+        "kind": "docker",
+        "runtime": "docker compose",
+        "port": 1,
+        "compose": [str(tmp_path / "c.yml")],
+        "health": None,
+    }
+    mod.do_down(tool)
+    assert calls and "stop" in calls[0], f"se esperaba 'stop', se ejecuto: {calls}"
+
+
 # --------------------------------------------------------------------------
 # 3. La vista de docs/tools/REGISTRY.md se regenera y se verifica.
 # --------------------------------------------------------------------------

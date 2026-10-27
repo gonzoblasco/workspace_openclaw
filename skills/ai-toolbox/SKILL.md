@@ -59,7 +59,22 @@ equivale a:
 
 ### IDs validos
 
-`ollama`, `browser-use`, `vane`, `opencode`, `openhands`, `cline`.
+`ollama`, `browser-use`, `browser-use-ui`, `vane`, `opencode`, `openhands`, `cline`.
+
+### Cuando la herramienta es BAJO DEMANDA
+
+Una herramienta con `on_demand` esta **apagada a proposito**: su estado aparece
+como `bajo demanda`, no como `apagado` ni como caida. La diferencia importa: un
+servicio que deberia estar vivo y no lo esta es un bug; una herramienta de
+prueba apagada es el estado normal.
+
+- `browser-use` (el MCP): la lanza OpenClaw por sesion, no tiene container fijo.
+- `browser-use-ui` (la consola web en `:8090`): apagada por defecto desde el
+  2026-10-27 (decision de Gonzo: es para probar, no de uso continuo).
+
+Para estas, `down` es **real**: hace `docker compose down` (elimina container y
+red), no `stop`. Es la unica forma de que no vuelva en el proximo reinicio de
+Docker, y su `restart: no` garantiza que no se levanta sola.
 
 ### Cuando la herramienta es Cline
 
@@ -142,6 +157,10 @@ que no tienen ficha, **eso se reporta**: es una herramienta nueva sin registrar.
   Editarla a mano la desincroniza; `catalog --check` lo detecta.
 - **browser-use no tiene proceso propio:** lo lanza OpenClaw por sesion como
   server MCP. `up`/`down` no aplican.
+- **`browser-use` y `browser-use-ui` usan la MISMA imagen, y no son lo mismo:**
+  la primera es el MCP que el gateway lanza por sesion; la segunda es la consola
+  web que corre en su propio container y habla MCP con un `browser-use --mcp`
+  anidado. Apagar la consola **no** rompe el MCP (verificado).
 - **Cline corre en DOS procesos:** el dashboard (`:8787`) es la UI y el daemon
   del hub (`:25466`) es quien ejecuta las sesiones. Parar el dashboard no para
   el daemon: `cline-tool.sh down` para los dos.

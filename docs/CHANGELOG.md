@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-27] - `browser-use-ui` pasa a bajo demanda: el registro distingue "apagada a proposito" de "caida"
+
+### Added
+- **`browser-use-ui` tiene ficha propia en el registro de herramientas** (estaba=listada como "stack de compose corriendo sin ficha"). Decision de Gonzo: es una herramienta de **prueba** (para pilotar el agente a mano en el navegador), no de uso continuo, asi que **queda apagada por defecto**. Antes ocupaba ~190 MB de RAM encendida sin uso.
+- **El estado "bajo demanda" es una clase propia en el registro.** Apagada a proposito se muestra como `bajo demanda` con la instruccion de como levantarla, y NO como `apagado`: un servicio que deberia estar vivo y no lo esta es un bug, una herramienta de prueba apagada es el estado normal. `browser-use` (el MCP que el gateway lanza por sesion) ya usaba ese estado, asi que ahora las dos superficeres de browser usan la misma palabra y se distinguen a simple vista.
+- **Documentado CUANDO levantar la consola**, que era el punto que pediste: en la skill `browser-tool` (seccion "Cuando hay que levantar la CONSOLA"), en la skill `ai-toolbox` (seccion "Cuando la herramienta es BAJO DEMANDA"), en la ficha de `docs/tools/REGISTRY.md` y en el `README.md` del proyecto. La regla: se levanta solo cuando Gonzo pide probarla o usarla a mano; si pide que *yo* revise algo en el navegador, lo resuelve el MCP, sin la consola. Y si la levantaste para una prueba, la bajas al terminar.
+- **Tests nuevos** (`tests/python/test_ai_toolbox.py`): una herramienta bajo demanda apagada no se reporta como caida; su `down` es `docker compose down` y no `stop`; y una herramienta normal sigue usando `stop` (conserva containers y volumenes).
+
+### Fixed
+- **`toolbox down` hacia `stop` para TODO, y `stop` no apaga: la herramienta vuelve sola en el proximo reinicio de Docker.** Es el mismo mecanismo que resucito a Onyx (ver la entrada anterior). Para las herramientas **bajo demanda** el `down` ahora es real: `docker compose down` (elimina container y red). Su `restart: no` garantiza que no se levanta sola. El volumen del perfil de Chromium (`browseruse-data`) se conserva: los datos quedan.
+- **`browser-use` y `browser-use-ui` no eran la misma cosa, pero se confundian con facilidad:** usan la MISMA imagen `browseruse:local` (3,16 GB) con dos superficies distintas. `browser-use` es el agente, que el gateway expone como MCP y lanza por sesion con `docker run --rm` (no tiene container fijo). `browser-use-ui` es la consola web que corre en su propio container y habla MCP con un `browser-use --mcp` anidado dentro (modo `BROWSER_USE_UI_MCP_MODE=local`, para no depender del socket de Docker). **Apagar la consola no rompe el MCP**: verificado navegando a example.com con la consola apagada. La ficha de REGISTRY y la trampa de la skill `ai-toolbox` lo dejan escrito.
+
+---
+
 ## [2026-10-27] - Onyx y LiteLLM fuera del stack: 32,4 GB liberados y el registro que moria
 
 ### Removed

@@ -96,6 +96,20 @@ TOOLS: List[Dict[str, Any]] = [
         "note": "No tiene puerto propio: OpenClaw lo lanza con docker run por el MCP registrado.",
     },
     {
+        "id": "browser-use-ui",
+        "name": "browser-use UI",
+        "what": "Consola web para pilotar a mano el agente de browser-use.",
+        "kind": "docker",
+        "runtime": "docker compose",
+        "port": 8090,
+        "compose": [_p(PROJECTS / "browser-use-ui" / "docker-compose.yml")],
+        "health": ("http://localhost:8090/api/health", [200]),
+        "up": None,
+        "down": None,
+        "on_demand": True,
+        "note": "Bajo demanda: se levanta con 'toolbox up browser-use-ui'. Es DISTINTO del MCP de OpenClaw (este lo lanza el gateway por sesion, con su propio container).",
+    },
+    {
         "id": "vane",
         "name": "Vane",
         "what": "Motor de busqueda con respuestas citadas. Privacy-first, web + local.",
@@ -376,6 +390,12 @@ def tool_state(tool: Dict[str, Any]) -> Dict[str, Any]:
 
     cont = container_state(tool)
     if cont is None:
+        if tool.get("on_demand"):
+            # Una herramienta bajo demanda esta APAGADA por diseno, no caida:
+            # asi se distingue de un servicio que deberia estar vivo y no lo esta.
+            state["status"] = "bajo demanda"
+            state["detail"] = "apagada a proposito: 'toolbox up " + tool["id"] + "'"
+            return state
         state["status"] = "apagado" if state["installed"] else "no instalado"
         state["detail"] = "sin container" if state["installed"] else "falta el compose"
         return state
@@ -455,6 +475,17 @@ def do_down(tool: Dict[str, Any]) -> int:
         print(f"{tool['name']} no tiene proceso que parar: se lanza por sesion.")
         return 0
     # stop y no down: conserva los containers y los volumenes.
+    # Para una herramienta BAJO DEMANDA el down es real: se va el container y
+    # queda apagada de verdad (su restart policy es "no" y no vuelve sola).
+    if tool.get("on_demand"):
+        code, out = run(compose_cmd(tool, "down", []), timeout=300)
+        print(out.strip()[-2000:])
+        if code == 0:
+            url = service_url(tool)
+            if url:
+                print(f"  apagada en {url} (los datos quedan)")
+            print("  para volver: toolbox up " + tool["id"])
+        return code
     code, out = run(compose_cmd(tool, "stop", []), timeout=300)
     print(out.strip()[-2000:])
     if code == 0:

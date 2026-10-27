@@ -20,14 +20,11 @@
 |---|---|---|---|---|
 | Ollama | `ollama` | nativo (host) | 11434 | corriendo |
 | browser-use | `browser-use` | docker (stdio, bajo demanda) | - | bajo demanda |
+| browser-use UI | `browser-use-ui` | docker compose | 8090 | bajo demanda |
 | Vane | `vane` | docker compose | 3005 | corriendo |
 | opencode | `opencode` | docker compose | 4096 | corriendo |
 | OpenHands | `openhands` | docker compose | 8000 | corriendo |
 | Cline | `cline` | nativo (host, Bun 1.4.2) | 8787 | apagado |
-
-Stacks de compose corriendo que no tienen ficha:
-
-- `browser-use-ui` (running(1))
 <!-- END:ai-toolbox-table -->
 
 ---
@@ -88,6 +85,34 @@ declarado a mano es COMO se levanta cada cosa.
   container no puede leer `/app` -> `ModuleNotFoundError`. Fix en el host
   (`chmod -R a+rX`) y rebuild.
 - **Detalle:** `projects/browser-use/README-LOCAL.md`.
+
+### browser-use UI (id: `browser-use-ui`)
+
+- **Que es:** consola web para pilotar a mano el agente de browser-use. Escribis una
+  tarea en castellano, el agente navega un Chromium headless real y ves los pasos,
+  el screenshot y la respuesta final. La UI **no implementa el agente**: habla MCP
+  con `browser-use --mcp` y muestra lo que devuelve.
+- **Repo:** `projects/browser-use-ui`. Compose propio con la imagen `browseruse:local`.
+- **UI:** http://localhost:8090 (loopback). Health: `/api/health` ->
+  `{"ok":true,"mcp_connected":true,...}`.
+- **Como se levanta:** `toolbox up browser-use-ui` (o `make up` dentro del repo).
+- **Como se para:** `toolbox down browser-use-ui`. A diferencia de las otras
+  herramientas del stack, aqui el `down` es **real**: elimina el container y la red
+  (su `restart` es `no`, asi que no vuelve sola). El volumen `browseruse-data`
+  (el perfil de Chromium) se conserva.
+- **Estado por defecto: APAGADA, bajo demanda.** Decision de Gonzo (2026-10-27): es
+  una herramienta de prueba, no de uso continuo. Encenderla cuesta ~190 MB de RAM.
+- **Relacion con `browser-use` (la de arriba): la MISMA imagen, dos superficies.**
+  `browser-use` es la libreria/agente; el MCP que usa OpenClaw lo lanza el gateway
+  por sesion con `docker run --rm` (no tiene container fijo). `browser-use-ui` es la
+  consola humana que corre en su propio container y habla MCP con un `browser-use
+  --mcp` anidado dentro (modo `BROWSER_USE_UI_MCP_MODE=local`, para no depender del
+  socket de Docker). **Apagar la UI no afecta al MCP de OpenClaw**: se verifica
+  navigating con `browser_navigate` con la UI apagada.
+- **Trampa:** el perfil de Chromium NO se puede compartir entre dos containers
+  (locks `SingletonLock`): por eso el compose usa un volumen nombrado propio y el
+  MCP de OpenClaw usa volumenes anonimos. No unirlos.
+- **Detalle:** `projects/browser-use-ui/README.md` y su `.knowledge/HANDOFF.md`.
 
 ### Vane (id: `vane`)
 
