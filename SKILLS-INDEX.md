@@ -20,7 +20,7 @@
 
 | Árbol | Activas |
 |---|---|
-| `skills/` (Core) | 28 |
+| `skills/` (Core) | 30 |
 | `agents/kanam-dev/skills/` | 43 |
 | `agents/kanam-mind/skills/` | 10 |
 | `agents/kanam-ops/skills/` | 4 |
@@ -104,6 +104,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [trust-vocabulary-report](skills/trust-vocabulary-report/) | Reportar trabajo delegado sin inflarlo: niveles de confianza por etapa |
 | [checkmate](skills/checkmate/) | Loop goal → ejecución → verificación con worker + judge |
 | [skill-router](skills/skill-router/) | Sugiere qué skill usar para una tarea (keywords + embeddings locales) |
+| [browser-tool](skills/browser-tool/) | Conduce el MCP browser-use con la tool más barata que resuelva el task (navegar, leer, clickear) y sus trampas medidas |
 | [find-skills](skills/find-skills-skill/) | Busca y descubre skills de OpenClaw en ClawHub y otras fuentes |
 | [skill-collection-maintenance](skills/skill-collection-maintenance/) | Diagnostica el cron semanal de revisión y elimina skills limpiamente |
 | [publish-skills](skills/publish-skills/) | ARCHIVADA. Historial de cómo se publicaba la colección al repo público |
