@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-27 13:18 GMT-3
+**Fecha:** 2026-10-27 13:21 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -20,11 +20,23 @@ Cuatro ATS automatizados y probados (lever, ashby, eightfold, greenhouse) con 39
 
 ## Proximos pasos
 
-1. Ninguno主动: Gonzo decidio cerrar la tanda de postulaciones. Si vuelve: (1) RYZ - el formulario de Lever queda listo, se abre en Safari y se aprieta Submit (el hCaptcha no aparece ahi); (2) Backblaze - falta el salario en USD y se corre apply.mjs con el adaptador de Greenhouse (pid 44891701); (3) XBOW - falta el salario y las tres respuestas abiertas (why interested, describe a recent project, how did you hear about us), que el script deja en blanco a proposito.
+1. Ninguno activo: Gonzo decidio cerrar la tanda de postulaciones. Si vuelve: (1) RYZ - el formulario de Lever queda listo, se abre en Safari y se aprieta Submit (el hCaptcha no aparece ahi); (2) Backblaze - falta el salario en USD y se corre apply.mjs con el adaptador de Greenhouse (pid 44891701); (3) XBOW - falta el salario y las tres respuestas abiertas (why interested, describe a recent project, how did you hear about us), que el script deja en blanco a proposito.
 
 ## Decisiones y contexto que no debe perderse
 
 - El envio de una postulacion requiere el OK de Gonzo, pero la regla correcta es 'envia con tu OK', no 'nunca envia': el repo tiene las tres confirmaciones del servidor. El trabajo de las interfaces de terceros se paga una vez y se documenta con su evidencia: si cada postulacion re-descubre que fill() no funciona, hay dos verdades sobre como se llena un formulario. Una pregunta sin respuesta se deja VACIA y se reporta: rellenar con inventado es una postulacion con una mentira.
+
+## Archivos tocados
+
+```
+.knowledge/HANDOFF.md
+.knowledge/SESSIONS.md
+.knowledge/handoff-history/2026-10-21-1256-HANDOFF.md
+docs/learnings/README.md
+docs/learnings/metodologia.md
+docs/learnings/oss.md
+memory/memory.db
+```
 
 ## Como continuar
 
