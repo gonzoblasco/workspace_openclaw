@@ -4,11 +4,20 @@
 
 > **Por qué existe (2026-10-21).** Dos procesos cayeron por el mismo filtro en dos días: **Staffy/Pfizer (20/10, USD 30-35/h)** y **Sol Bisio (21/10, USD 5.600/mes)**. En ambos, el cliente exige **C1 conversacional** y el CV declara B2. No es rechazo de perfil: en los dos casos la reclutadora dijo que el background técnico era fuerte. Es un filtro de **idioma**.
 >
-> **Decisión vigente (Gonzo, 2026-10-22):** **B2 INTENSIVO en el CUI (Centro Universitario de Idiomas, UBA)**, **dos meses**, **arranca el lunes 26/10/2026**. El objetivo declarado es **desoxidar y mejorar la base**. **El examen CUI-ING C1 y el TOEFL quedan para después** (TOEFL, 2027). **Mientras tanto, seguir buscando.**
+> **Decisión vigente (Gonzo, 2026-10-22, corregida el 27/10):** **B2+ INTENSIVO en el CUI (Centro Universitario de Idiomas, UBA)**, **dos meses**, **martes y jueves de 10 a 13 h por Zoom**, desde el **martes 27/10/2026**. El objetivo declarado es **desoxidar y mejorar la base**. **El examen CUI-ING C1 y el TOEFL quedan para después** (TOEFL, 2027). **Mientras tanto, seguir buscando.**
+>
+> **Corrección del 27/10/2026 (Gonzo, desde la clase):** hubo un **error de inscripción** y quedó
+> anotado en **B1+**, que no era su nivel. El CUI **lo corrigió en el momento** y lo pasó al ciclo
+> **B2+**, con el horario de **martes y jueves de 10 a 13 h por Zoom**. El plan inicial (lunes y
+> miércoles, arranque 26/10) era de un ciclo que no le correspondía. La **carga es la misma**
+> (2 clases x 3 h por semana, 15 clases), así que **no cambia el diagnóstico sobre la entrevista
+> de noviembre**: para el 9-13/11 lleva 7 clases, no 3.
+> **Lo que no cambia: el nivel declarado sigue siendo B2.** Anotarse en un curso no sube el nivel
+> declarado, y el CUI-ING C1 sigue siendo el examen de 2027.
 >
 > **Qué cambió respecto del plan del 2026-10-21:** aquel decía "cursar el C1 completo y después rendir el examen". Este dice **B2 intensivo primero**. La razón: el nivel que Gonzo declara (B2) y el nivel que el CUI certifica son **el mismo**, así que cursar B2 **es** trabajar el nivel real, no un escalón menos. Y el gap es **oral**: la base oral es lo que se desoxida. El C1 sigue siendo el destino, pero deja de ser el primer paso.
 >
-> **Estado de certeza de este documento:** los **datos de la sección 2** están leídos de `cui.edu.ar` (2026-10-21) y son verificables. Los **datos de la sección 3** son **supuestos** pendientes de confirmar con el centro. La sección 2 es lo que Gonzo va a preguntar. **Lo que ya NO es supuesto: B2 intensivo, dos meses, arranque el 26/10/2026.**
+> **Estado de certeza de este documento:** los **datos de la sección 2** están leídos de `cui.edu.ar` (2026-10-21) y son verificables. Los **datos de la sección 3** son **supuestos** pendientes de confirmar con el centro. La sección 2 es lo que Gonzo va a preguntar. **Lo que ya NO es supuesto: B2+ intensivo, dos meses, martes y jueves de 10 a 13 h por Zoom, desde el 27/10/2026.**
 
 ---
 
@@ -67,7 +76,7 @@ Es **el mismo C1 que en todos lados**: escala **MCER**, y evalúa las cuatro hab
 | Trimestrales de Noviembre 2026/2027 (per. 77) | 25/11/2026 al 24/2/2027 | 23 clases x 2 h | del 5 al 19 de noviembre de 2026 |
 | Intensivos de Primavera (variantes de día) | 26/10 al 22/12 · 27/10 al 22/12 · 28/10 al 16/12 | 15 clases x 3 h | ídem |
 
-**Lo que dice el calendario** es que esos ciclos existen con esas fechas. El ciclo que se cursa es el **B2 intensivo del 26/10/2026 al 21-23/12/2026** (15 clases x 3 h, 2 veces por semana), que es exactamente el "Intensivos de Primavera 2026 (per. 7)" del calendario. Lo que **sigue sin saberse** es **qué nivel sigue después de B2** y cuántos meses lleva cada uno hasta C1: eso depende de la numeración del CUI (los niveles altos van del 11 - Ciclo de Perfeccionamiento - al 15 - Especialización).
+**Lo que dice el calendario** es que esos ciclos existen con esas fechas. El ciclo que se cursa es el de **martes y jueves, del 27/10/2026 al 22/12/2026** (15 clases x 3 h, 2 veces por semana), que es la variante "Intensivos Martes y Jueves" del calendario (27/10 al 22/12). Lo que **sigue sin saberse** es **qué nivel sigue después de B2** y cuántos meses lleva cada uno hasta C1: eso depende de la numeración del CUI (los niveles altos van del 11 - Ciclo de Perfeccionamiento - al 15 - Especialización).
 
 #### 2.1.3 Preparación de exámenes internacionales (el camino TOEFL)
 
@@ -151,8 +160,8 @@ También aplica como **pregunta de screening**, no solo al inicio: si filtran po
 
 | Cuándo | Qué | Estado |
 |---|---|---|
-| **lunes 26/10/2026** | Arranca el **B2 intensivo** en el CUI (15 clases x 3 h, 2 veces por semana) | **Decidido e inscripto** |
-| **durante el curso (~2 meses, hasta el 21-23/12/2026)** | Práctica hablada deliberada: es lo que no se negocia | Decidido |
+| **martes 27/10/2026** | Arranca el **B2+ intensivo** en el CUI (15 clases x 3 h, martes y jueves de 10 a 13 h por Zoom) | **En curso desde el 27/10/2026** (corregido el mismo día: la inscripción inicial lo había dejado en B1+) |
+| **durante el curso (~2 meses, hasta el 22/12/2026)** | Práctica hablada deliberada: es lo que no se negocia | Decidido |
 | **después del curso** | Mesa del examen CUI-ING C1 | **Por confirmar** (depende de las mesas de 2027) |
 | **2027** | TOEFL, si hace falta el reconocimiento internacional | Decidido |
 | **en paralelo, todo el tiempo** | Seguir postulando, con la pregunta del §5 en el primer mensaje | Decidido |

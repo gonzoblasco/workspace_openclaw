@@ -200,39 +200,61 @@ que no vaya a preguntar por el gap. Decidir por audiencia, nunca por defecto.
   **`IAAP Certification Quick Guide` es el nombre de un curso.** No insinúa estar certificado.
 - **`ai-engineering-bootcamp`:** curso propio completado 10/10, archivado.
 
-### Estudios formales: registrados y contradictorios (resuelto el 21/10/2026)
+### Estudios formales (relevados por Gonzo el 27/10/2026)
 
-Hasta el 21/10/2026 esta sección decía "no hay título universitario registrado" y la lista de
-"falta relevar" daba los estudios formales por inexistentes. **Eso era incorrecto: los estudios
-están registrados, en tres fuentes que no coinciden entre sí.** La contradicción no se resuelve
-por deducción - hay que preguntársela a Gonzo.
+**Antes esta sección decía "no hay título universitario registrado", y la lista de "falta relevar"
+daba los estudios por inexistentes. Era incorrecto.** Los estudios están registrados, en fuentes
+que no coincidían entre sí, y la contradicción se resolvió preguntándoselo a Gonzo el 27/10/2026.
 
-| Fuente | Qué registra |
-|---|---|
-| `memory/2026-10-14.md` | "Universidad de Palermo - Ing. en Informática (2001-2002, **dropped**); carrera validada por el" |
-| CVs enviados (Infjini, EIT/HTC, Sol) | Sección EDUCATION: "Digital House - React (2018)" y "Universidad Argentina de la Empresa - Diseño Gráfico (2003-2004)" |
-| `memory/archive/sessions/2026-08-19-0951.md` | Listado original: 6 universidades (Palermo 2001-2002 y 2018-2019, Universidad Adventista del Plata 2010-2011, Universidad del Cine 2006-2009, Universidad Argentina de la Empresa 2003-2004) + Digital House 2018 (terciario) |
+**El relevamiento, textual de Gonzo (27/10/2026):**
 
-**Lo que se sabe y lo que no:**
+| Período | Institución | Carrera | Estado |
+|---|---|---|---|
+| 2001-2002 | Universidad de Palermo (UP) | Ingeniería en Informática | **incompleta ("dropped")** |
+| 2003-2004 | Universidad Argentina de la Empresa (UADE) | Diseño Gráfico | completa |
+| 2006-2009 | Universidad del Cine (FUC) | Montaje cinematográfico | completa. **Gonzo: "esta creo no la puse en ninguno"** |
+| 2010-2012 | Universidad Adventista del Plata (UAP) | Comunicación Social | completa |
+| 2018 | Digital House (terciario) | React | bootcamp |
 
+**Dos precisiones sobre lo que quedó afuera y por qué:**
+
+- **El listado de "agosto 2026" no era evidencia.** La sesión del 19/08 copió seis universidades de
+  un perfil que Gonzo había pegado, y esa misma sesión lo dice textual: *"No verifiqué los datos
+  personales ni los rangos de educación - los copié del perfil que me pasaste, pero las fechas... las
+  asumí como estaban."* En ese listado además figuraba **Palermo 2018-2019, que Gonzo no menciona**
+  en su relevamiento: queda como registro dudoso, no como hecho.
+- **FUC (2006-2009) y UAP (2010-2012) nunca salieron a la calle:** no están en ningún CV, PDF ni
+  DOCX. Lo único que salió fue **Digital House** y **UADE**.
+
+**Lo verificado, y es lo que gobierna:**
+
+- **El corpus NO tiene un título universitario completo en Computer Science ni en áreas
+  relacionadas.** La UP fue un año de ingeniería inconcluso. UADE (Diseño Gráfico), FUC (Montaje
+  cinematográfico) y UAP (Comunicación Social) son títulos completos, pero **no son CS ni "related
+  studies"** en el sentido que un equipo de engineering lee.
 - **Digital House (2018, React)** es un bootcamp: formación real y en React. **No es un título
   universitario.** Es defendible como "formación", nunca como degree.
-- **Universidad de Palermo, Ing. en Informática (2001-2002)**: incompleta ("dropped"). **Un año de
-  ingeniería no cierra un "Degree in Computer Science".** Es defendible como "studied Computer
-  Science at X (incomplete)", nunca como degree.
-- **UADE, Diseño Gráfico (2003-2004)**: completo, pero **no es Computer Science ni "related
-  studies"** en el sentido que un equipo de engineering lee.
-- **El corpus NO tiene un título universitario completo.** Eso es lo verificado. Lo que hay son
- ortiums registros parciales contradictorios.
+- **Consecuencia operativa:** cuando un JD exige *"Degree in Computer Science, Software
+  Engineering, or related studies"* (como el de TEAM International / tempo.io del 21/10), **la
+  respuesta honesta es que no hay título completo.** No inventar, no presentar "dropped" como si
+  fuera título, y no llamar "bootcamp" a un degree. **Lo que SÍ es defendible** es la línea de
+  UP como "studied Computer Science at Universidad de Palermo (incomplete)" - que además tiene
+  más peso para un JD de CS que UADE, FUC o UAP.
+- **Lo que sí va en un CV** (y ya está en 5 de ellos): Digital House + UADE. FUC, UAP y UP **no se
+  declaran** salvo que el JD pida algo específico o Gonzo lo pida: no aportan al perfil y suman
+  ruido.
 
-**Consecuencia operativa:** cuando un JD exige explícitamente *"Degree in Computer Science,
-Software Engineering, or related studies"* (como el de TEAM International / tempo.io del 21/10),
-**la respuesta honesta es que no hay título completo.** No inventar, nostalar "dropped" como si
-fuera título, y no llamar "bootcamp" a un degree. Preguntar a Gonzo cómo lo declara y llevar la
-línea exacta que él valide.
+### Formación continua: sí, y es parte de la historia
 
-> **Falta relevar (restante):** por qué se abandonó la carrera de Palermo (2001-2002), y si existe
-> algún título o certificación de CS que no esté en esta lista.
+**Gonzo (27/10/2026): "hice muchos cursos durante mi carrera".** La sección ya decía "formación
+continua en accesibilidad digital y calidad de software"; ahora queda el detalle: **Platzi** y
+**Deque University** (2021, ya detallado en §4), **entre otros, muchos más**. Los cursos de
+Platzi no están enumerados uno por uno: **no se inventan** - cuando se declaren, van con el nombre
+real del curso.
+
+> **Lo que falta precisar (no urgente):** la lista de cursos de Platzi y de otras plataformas, con
+> nombre y año, si en algún momento se decide declararlos en un CV. El corpus registra la
+> existencia de la formación continua; el detalle queda pendiente.
 
 ---
 
@@ -345,7 +367,7 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
 - **El gap es oral, no escrito.** Lectura, escritura y trabajo diario están aceitados; falta
   práctica hablada. No ofrecerle cursos generales, academias ni gramática.
 - **Plan vigente (decisión de Gonzo, 2026-10-22):** Gonzo **se anotó en el CUI (Centro Universitario
-  de Idiomas, UBA) en el curso B2 INTENSIVO de dos meses, que arranca el lunes 26/10/2026**. El
+  de Idiomas, UBA) en el curso B2+ INTENSIVO de dos meses, que arranca el lunes 26/10/2026**. El
   objetivo declarado es **desoxidar y mejorar la base**, sin credencial de por medio: el nivel declarado sigue
   siendo B2 y el gap sigue siendo oral. **El examen CUI-ING C1 y el TOEFL quedan para después**
   (TOEFL, 2027). **Mientras tanto, sigue buscando.**
@@ -353,7 +375,13 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
   la decisión de fondo del 2026-10-22 es **B2 intensivo primero**, porque el nivel que Gonzo
   declara y el nivel que el CUI certifica son el mismo, y subir la base oral es lo que destraba
   el filtro de C1 conversacional. Calendario, costos y fuentes están en `studies/english/README.md`.
-  **Lo que no es supuesto: B2 intensivo, dos meses, arranca el 26/10/2026.**
+  **Lo que no es supuesto: B2+ intensivo, dos meses, arranca el 26/10/2026.**
+- **Corrección del 27/10/2026 (Gonzo, desde la clase):** el curso es **B2+**, no B2: hubo un
+  error de inscripción y quedó anotado en **B1+**, y lo corrigieron en el momento. **Horario:
+  martes y jueves de 10 a 13 h, por Zoom.** La carga es la misma que se planificó (2 clases x 3 h
+  por semana), así que **no cambia el diagnóstico sobre la entrevista de noviembre** (3 semanas de
+  clases para el 9-13/11). **Lo que esto no cambia: el nivel declarado sigue siendo B2** - anotarse
+  en un curso no sube el nivel declarado, y el CUI-ING C1 sigue siendo el examen del 2027.
 - **Situación al 27/10/2026 (actualización de Gonzo):** el curso **ya arrancó** (26/10). Los
   5 recruiters recontactados por el tema del inglés respondieron (5/5) y **2 tienen próximo paso
   con fecha concreta: solo Siraj/Disney (entrevista en la 1ra o 2da semana de noviembre)**. Los
