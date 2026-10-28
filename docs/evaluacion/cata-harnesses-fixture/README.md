@@ -17,7 +17,7 @@ y la que mas se pierde.
 |---|---|
 | `tasks.json` | Las 3 tareas con su prompt, su corpus y sus **asserts ocultos**. |
 | `suite.py` | El evaluador: corre los asserts contra un entregable. |
-| `validate_suite.py` | La validacion en las TRES direcciones. |
+| `validate_suite.py` | La validacion en las CUATRO direcciones. |
 | `check_results_merge.py` | Verifica que el runner **MERGEa** `results.json` y no lo sobrescribe. |
 | `run-local-1task.sh` | El driver de la fase local (4 locales x 3 harnesses x 1 tarea), con sus trampas documentadas. |
 | `reference/` | La respuesta correcta de cada tarea, escrita a mano. |
@@ -59,6 +59,16 @@ direcciones es lo que atrapa los dos defectos PROPIOS que teve esta suite:
    daba 6/12 sin informe, y minimax+OpenHands/T3 daba 6/12. Se agrego una
    **tercera direccion** de validacion (el vacio tiene que dar 0) y la suite
    ahora puntua 0 a un entregable vacio.
+4. (2026-10-28) El chat no es el entregable. Cada prompt termina con "el
+   informe es el unico entregable: escribilo en `.context/informe.md`", pero la
+   suite y el juez caian a `output` (el texto de la conversacion) cuando no
+   habia archivo. Medido: nova-2b daba 8/10 y 4/10 con el fallback y 0/10 y
+   0/10 sin el (respondio en el chat y no escribio el archivo). Se agrego una
+   **cuarta direccion** de validacion: una celda sin archivo no tiene cuerpo, y
+   por lo tanto vale 0. La direccion mira la **seleccion** del cuerpo (el
+   archivo), no el contenido: un archivo con los hechos correctos tiene que
+   seguir valiendo 10/10. Ademas el validador falla si alguien reintroduce el
+   fallback a `output`.
 
 Sin la validacion, la suite habria reportado un defecto inexistente - que es
 exactamente el error que el skill de cata ya documenta en 2026-09-30.

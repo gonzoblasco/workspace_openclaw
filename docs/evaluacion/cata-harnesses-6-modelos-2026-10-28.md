@@ -9,7 +9,7 @@ de cada corrida) + verdad de base de la suite oculta.
 
 > Documento 1 (solo deepseek): `docs/evaluacion/cata-harnesses-2026-10-27.md`.
 > Documento 2 (3 modelos): `docs/evaluacion/cata-harnesses-3-modelos-2026-10-28.md`.
-> **Este documento los reemplaza**: 6 modelos, y ademas corrige tres bugs de
+> **Este documento los reemplaza**: 6 modelos, y ademas corrige cuatro bugs de
 > medicion PROPIOS que inflaban los puntajes del documento 2.
 
 ---
@@ -147,11 +147,11 @@ El juez coincide con la verdad de base en los extremos: OpenHands con minimax
 (0.00) y con nemotron (4.83) son los peores, y son los que no entregan.
 gemma4+opencode (6.00) es el peor de gemma4, y es el que no entrega.
 
-## 6. Los tres bugs PROPIOS que inflaban los puntajes
+## 6. Los cuatro bugs PROPIOS que inflaban los puntajes
 
 **Los cuento porque corrigieron los numeros del documento de 3 modelos, y porque
 son el tipo de error que el repo ya registro antes: medir mal y creerle.**
-Todos tres tienen numero, no son suspicions.
+Todos cuatro tienen numero, no son suspicions.
 
 ### 6.1 El fallback del runner se llevaba el INPUT de la tarea como entregable
 
@@ -186,7 +186,8 @@ no entrego nada se llevaba **6/12 en T3 solo por callar**.
 
 Ahora un entregable vacio vale **0**, y se agrego una **tercera direccion** de
 validacion de la suite (referencia 3/3 PASS, defectuosa 0/3 PASS, **vacio 0/0**)
-para que el cambio no pueda volver a romper la suite en silencio.
+para que el cambio no pueda volver a romper la suite en silencio. La **cuarta**
+direccion (6.5) valida que el chat no cuente como entregable.
 
 ### 6.3 El juez ciego se caia y dejaba la tanda sin juzgar
 
@@ -213,6 +214,36 @@ su `results.json`. Las corridas nuevas (minimax, gemma4, glm-5.3) escriben
 solo `model_expected`. Con lo cual esos tres modelos no asociaban ningun
 artefacto y sus 9 entregables quedaban en **0ch**. Ahora lee `model` con
 fallback a `model_expected`, y cubre los 6 modelos en su mapa canonico.
+
+### 6.5 El chat no era el entregable: la suite caia al texto de la respuesta
+
+El quarto bug, encontrado en la fase local. Cada prompt de la cata termina con
+"**el informe es el unico entregable: escribilo en `.context/informe.md`**".
+Pero `suite.py` y `judge.py` caian a `output` (el texto del chat) cuando no
+habia archivo archivado: `body = r.get("deliverable") or r.get("output")`.
+
+Un modelo que **responde en el chat sin escribir el archivo** se puntuaba como
+si hubiera entregado.
+
+| Celda | Puntaje que decia | Real |
+|---|---|---|
+| `nova-2b:latest` / T1 claude | 8/10 | **0/10** (respondio en el chat, no escribio el archivo) |
+| `nova-2b:latest` / T1 opencode | 4/10 | **0/10** (idem) |
+| `gpt-oss:120b-cloud` / T3 opencode | 9/12 | **0/12** (idem) |
+
+Los tres tenian el **informe completo en la conversacion** y ningun archivo. Es
+la misma trampa que 6.1, por el otro lado: ahi el input de la tarea se leia
+como el entregable; aca el chat se leia como el entregable.
+
+**No movio los numeros de los 6 cloud**, y eso es lo que confirma que la regla
+era correcta y no un ajuste a conveniencia: sus celdas sin archivo tienen
+tambien `output` vacio (ya valian 0). Solo cambio lo que debia cambiar.
+
+La suite ahora se valida en **cuatro direcciones**: referencia 3/3, defectuosa
+0/3, vacio 0/0, y **chat sin archivo 0/0**. La cuarta mira la *seleccion* del
+cuerpo (el archivo), no el contenido: un archivo con los hechos correctos tiene
+que seguir valiendo 10/10. Y el validador **falla si alguien reintroduce el
+fallback**, para que no pueda volver en silencio.
 
 ## 7. Veredicto
 
@@ -248,18 +279,21 @@ entregar. Si hay que elegir un modelo nuevo, es este.
 
 - **La fase local (4 modelos GGUF x 3 harnesses x 1 tarea).** Arrancada y en
   curso al cierre de este documento; `nova-2b:latest` quedo sellado **sin
-  ningun entregable** (0 celdas de 3). Los locales son GGUF en CPU y tardan
+  ningun entregable** (0 celdas de 3 con archivo). Los locales son GGUF en CPU y tardan
   10-20 min por celda. **Este documento no dice nada de ellos**: su ausencia
   es una ausencia, no un 0. La pregunta que responde la fase local es "el
   harness aguanta un modelo lento?", y con un solo modelo por harness y una
   sola tarea no da para mas.
   - Lo que si se midio de `nova-2b:latest` (2b, el mas chico): **0 de 3
-    celdas entrego informe**, y los tres fallos son del harness contra ese
-    modelo, no del modelo:
+    celdas escribio el entregable**, y los tres fallos son del harness contra
+    ese modelo, no del modelo:
     - **Claude Code**: `[claude-code:unrecognized_model]` - el nombre
       `hf.co/ModernoTech/nova-2b:latest` no lo reconoce (el probe si
-      funciono, la corrida de T1 no).
-    - **opencode**: 12 eventos y 0 entregable.
+      funciono, la corrida de T1 no). En T1 **respondio en el chat** con un
+      informe completo, pero **no escribio** `.context/informe.md`: por eso su
+      celda vale **0/10** y no 8/10 (ver 6.5).
+    - **opencode**: 12 eventos y 0 entregable (tambien respondio en el chat,
+      sin escribir el archivo): **0/10**.
     - **OpenHands**: `execution_status: error` con **0 acciones**.
     - Es decir: **un modelo de 2B no sirve como vara de los tres harnesses**,
       porque los tres fallan antes de poder medir de verdad.
@@ -295,8 +329,7 @@ entregar. Si hay que elegir un modelo nuevo, es este.
 6. **Un assert que castiga una afirmacion falsa premia el silencio.** Los
    `not_contains` pasan por omision en un cuerpo vacio. "Sin entregable" tiene
    que valer 0, y la suite tiene que validarse en una **tercera direccion**
-   (el vacio) para que la regla no se rompa en silencio.
-7. **El instrumento tambien se rompe, y hay que mirar sus errores.** Un `int()`
+   (el vacio) para que la regla no se rompa en silencio.7. **El instrumento tambien se rompe, y hay que mirar sus errores.** Un `int()`
    en el juez dejo 9 celdas sin juzgar sin avisar. Un parser de JSON demasiado
    estricto dejo 1 celda en 0. **Un 0 en una cata tiene que poder ser un bug del
    instrumento, no solo un 0 del modelo.**
@@ -304,6 +337,18 @@ entregar. Si hay que elegir un modelo nuevo, es este.
    en `docs/evaluacion/cata-harnesses-fixture/`: sus asserts se corrigieron a
    mano dos veces y con la tercera correccion (el vacio) una tercera. Un assert
    corregido sin poder revalidarlo es volver a medir mal.
+9. **El entregable es el archivo, no la respuesta.** Los dos extremos del
+   mismo error: el input de la tarea leido como informe (6.1) y el informe del
+   chat leido como entregable (6.5). Los dos inflan puntajes y los dos se
+   venen cuando el modelo **responde bien y no entrega**: hay que leer el
+   archivo, no el tamano ni el texto de la conversacion.
+10. **Un driver que corre un harness por invocacion borra celdas.** Cada
+    proceso de runner reescribia `results.json` con solo sus filas, asi que la
+    ultima invocacion se comia las anteriores: un modelo quedo con 1 de 3
+    celdas, y las dos perdidas si se habian ejecutado. Los artefactos y los
+    raw eran acumulativos, asi que la perdida solo se veia al comparar el
+    numero de filas con el de celdas esperadas. **El estado de una cata se
+    cuenta por filas, no por artefactos.**
 
 ## Related
 
@@ -311,7 +356,7 @@ entregar. Si hay que elegir un modelo nuevo, es este.
 - `external-candidate-evaluation` - el marco de "el marco de dos opciones del
   articulo no describe nuestro stack".
 - `docs/evaluacion/cata-harnesses-fixture/` - la suite oculta y su validacion
-  en las TRES direcciones (reproducible sin `/tmp`).
+  en las CUATRO direcciones (reproducible sin `/tmp`).
 - `docs/evaluacion/cata-harnesses-2026-10-27.md` - la cata de deepseek sola, y
   por que su conclusion era incompleta.
 - `docs/evaluacion/cata-harnesses-3-modelos-2026-10-28.md` - la version de 3
