@@ -22,7 +22,7 @@ Caso testigo, medido antes de escribir este gate:
   - `SKILLS-INDEX.md` listaba 70+ skills retiradas; decia "(27)" y el arbol
     tenia 27, pero las secciones de rol arrastraban fantasmas.
 
-Que verifica (dos clases, ambas baratas):
+Que verifica (tres clases, todas baratas):
   1. REPETICION LITERAL - una linea normativa (>= MIN_CHARS) que aparece en dos
      archivos normativos con similitud >= THRESHOLD es una segunda copia. Se
      permite solo lo declarado en ALLOW (pares archivo-archivo o regex).
@@ -30,6 +30,16 @@ Que verifica (dos clases, ambas baratas):
      propagan a los bloques MANAGED. Un tag de modelo escrito a mano en un
      archivo normativo es una copia que el propagador no puede corregir.
      Dueno: AGENTS.md y docs/SETUP.md, y solo entre marcadores MANAGED.
+  3. ROL FUERA DE CASA - la clase que el gate 2 NO veia. `docs/SETUP.md` es
+     dueno del CATALOGO (que modelos existen), y esa exencion era de archivo
+     entero: por ahi se colo una linea que ademas afirmaba el ROL de un modelo
+     ("primario del CORE"), que es un dato distinto, propagado por los bloques
+     MANAGED. Una afirmacion de rol escrita a mano se desincroniza sola: paso
+     el 2026-10-28, cuando SETUP.md seguia diciendo que minimax era el primario
+     del CORE despues del swap, y ningun gate chisto.
+     Regla: un tag de modelo junto a vocabulario de ROL de OpenClaw, fuera de
+     marcadores MANAGED, es una copia. El catalogo (que existe) no nombra roles;
+     el rol se cita desde el bloque o no se escribe.
 
 Salida: exit 0 si no hay segundas copias, 1 si las hay.
 """
@@ -86,6 +96,16 @@ MODEL_OWNERS = {
 # Marca explicita para una linea que cita un modelo como HISTORIA (benchmark,
 # decision superada). Sin la marca, el gate la trata como copia viva.
 HISTORY_MARK = "<!-- modelo: historico -->"
+
+# Vocabulario que convierte una mencion de modelo en una AFIRMACION DE ROL: nombra
+# al SUJETO al que se asigna. "por defecto" queda afuera a proposito: lo usa la
+# config de herramientas de terceros (cline, browser-use), que es otro sujeto y
+# no lo propaga managed-blocks. Un "por defecto" del propio gateway si importa,
+# y ese caso lo cubre `agents.defaults`.
+ROLE_SUBJECT = re.compile(
+    r"\bCORE\b|main/defaults|por agente|\bagents\.defaults\b|\bdefaults de agente\b",
+    re.I,
+)
 MODEL_FREE_FILES = (
     "docs/adr/",
     "memory/",          # historial: registro de decisiones pasadas
@@ -194,12 +214,41 @@ def find_stray_models(root: Path):
     return stray
 
 
+def find_stray_roles(root: Path):
+    """Afirmaciones de ROL de un modelo escritas a mano fuera de MANAGED.
+
+    Distinto de `find_stray_models`: alli el dueno del archivo esta exento
+    (SETUP.md es dueno del catalogo). Aca la exencion NO aplica, porque el dato
+    es de otra clase: que un modelo exista es catalogo; que sea el primario de
+    un agente es asignacion, y eso solo lo propaga managed-blocks.
+    """
+    stray = []
+    for rel in NORMATIVE:
+        path = root / rel
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        spans = managed_spans(text)
+        for n, line in enumerate(text.splitlines(), 1):
+            if not MODEL_TAG.search(line):
+                continue
+            if not ROLE_SUBJECT.search(line):
+                continue
+            if HISTORY_MARK in line:
+                continue
+            if any(a <= n <= b for a, b in spans):
+                continue
+            stray.append((rel, n, line.strip()))
+    return stray
+
+
 def main(argv=None):
     root = ROOT if argv is None else Path(argv[0])
     dups = find_duplicates(root)
     stray = find_stray_models(root)
+    stray_roles = find_stray_roles(root)
 
-    if not dups and not stray:
+    if not dups and not stray and not stray_roles:
         print("OK: un dato, un dueno. Sin segundas copias en los archivos normativos.")
         return 0
 
@@ -218,6 +267,16 @@ def main(argv=None):
             print(f"  {rel}:{n}  {', '.join(tags)}")
         print("\nLos tags de modelo se declaran en `memory.db` y se propagan con")
         print("`scripts/managed-blocks.py apply`. A mano se desincronizan solos.")
+
+    if stray_roles:
+        print(f"ROLES DE MODELO ESCRITOS A MANO ({len(stray_roles)}):\n")
+        for rel, n, line in stray_roles:
+            print(f"  {rel}:{n}")
+            print(f"         {line[:120]}\n")
+        print("El catalogo dice que modelos existen; el ROL de cada uno lo declara")
+        print("`memory.db` y lo propaga `scripts/managed-blocks.py apply`. Una")
+        print("afirmacion de rol a mano no la corrige el propagador: se cita el")
+        print("bloque MANAGED, o no se escribe.")
 
     return 1
 

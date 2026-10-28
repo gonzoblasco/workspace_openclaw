@@ -134,6 +134,78 @@ def test_historic_dirs_are_not_scanned(tmp_path):
     assert mod.find_stray_models(tmp_path) == []
 
 
+# --- roles de modelo: la clase que el gate de tags no veia ---
+
+def test_manual_role_claim_is_caught(tmp_path):
+    """El caso testigo: SETUP.md afirmaba que minimax era primario del CORE en
+    prosa libre, fuera de los bloques, y el gate de tags la dejaba pasar porque
+    SETUP.md esta exento como dueno del catalogo."""
+    mod = load()
+    seed(
+        tmp_path,
+        "docs/SETUP.md",
+        "- Cloud: `minimax-m3.1-flash:cloud` (**primario del CORE desde 2026-10-20**).\n",
+    )
+    stray = mod.find_stray_roles(tmp_path)
+    assert len(stray) == 1
+    assert stray[0][0] == "docs/SETUP.md"
+
+
+def test_role_inside_managed_block_is_allowed(tmp_path):
+    """Dentro del bloque es la copia legitima: el propagador la corrige."""
+    mod = load()
+    seed(
+        tmp_path,
+        "docs/SETUP.md",
+        "<!-- BEGIN MANAGED:model-triple -->\n"
+        "- Primario `deepseek-v4.1-flash:cloud` para el CORE.\n"
+        "<!-- END MANAGED:model-triple -->\n",
+    )
+    assert mod.find_stray_roles(tmp_path) == []
+
+
+def test_catalog_line_without_role_subject_is_allowed(tmp_path):
+    """El catalogo dice que existe; no nombra a quien se asigna."""
+    mod = load()
+    seed(
+        tmp_path,
+        "docs/SETUP.md",
+        "- Cloud: `deepseek-v4.1-flash:cloud` (1M ctx), `gemma4:cloud` (vision).\n",
+    )
+    assert mod.find_stray_roles(tmp_path) == []
+
+
+def test_tool_default_is_not_a_role_claim(tmp_path):
+    """`por defecto` de una herramienta de terceros es otro sujeto, no la asignacion."""
+    mod = load()
+    seed(
+        tmp_path,
+        "docs/SETUP.md",
+        "- Provider cline: modelo por defecto `deepseek-v4.1-flash:cloud`.\n",
+    )
+    assert mod.find_stray_roles(tmp_path) == []
+
+
+def test_role_claim_respects_history_mark(tmp_path):
+    mod = load()
+    seed(
+        tmp_path,
+        "MEMORY.md",
+        "- Se movio el CORE a `minimax-m3.1-flash:cloud` el 2026-10-20. "
+        + mod.HISTORY_MARK
+        + "\n",
+    )
+    assert mod.find_stray_roles(tmp_path) == []
+
+
+def test_exit_code_fails_on_a_stray_role(tmp_path):
+    mod = load()
+    seed(tmp_path, "AGENTS.md", "- Unico: nada que repetir en el arbol.\n")
+    assert mod.main([str(tmp_path)]) == 0
+    seed(tmp_path, "docs/SETUP.md", "- `gemma4:cloud` es el primario del CORE.\n")
+    assert mod.main([str(tmp_path)]) == 1
+
+
 # --- el gate distingue limpio de sucio ---
 
 def test_exit_code_distinguishes_clean_from_dirty(tmp_path):
