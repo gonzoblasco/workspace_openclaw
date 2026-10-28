@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-10-28 18:10 GMT-3
+**Fecha:** 2026-10-28 19:23 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -12,27 +12,19 @@
 
 ## Que se hizo en esta sesion
 
-Junie descartado por gate de hardware (M4/24GB vs M5/64GB). Via Ollama verificada para reapertura.
+Swap deepseek/minimax en CORE y defaults (ADR-107 supersede ADR-102), correccion de la fuente unica y dos gates nuevos
 
 ## Estado actual
 
-Decision registrada en MEMORY.md y en el daily. Workshop de skills disparando de mas. Cuota Ollama en 429.
+Runtime: main y defaults en deepseek-v4.1-flash:cloud con fallback minimax-m3.1-flash. Pipeline A/B intacto (A gpt-oss, B deepseek, pre-filtro gemma4). utilityModel gemma4. Seis commits locales listos para push.
 
 ## Proximos pasos
 
-1) Decidir sobre skills.workshop.autonomous.mode. 2) Resolver la cuota 429. 3) Terminar la config de JetBrains AI Assistant.
+1. Pushear y esperar CI. Confirmar el ahorro de cuota al cierre de la semana. Borrar la clave muerta model.triple de settings si Gonzo lo aprueba.
 
 ## Decisiones y contexto que no debe perderse
 
-- Junie no se usa: hardware, no merito.
-
-## Archivos tocados
-
-```
-MEMORY.md
-memory/2026-10-28.md
-memory/memory.db
-```
+- ADR-107 supersede ADR-102: el ahorro se mide en cuota por sesion, no por request (el 0,5% de la revision del 24 subestimo el peso del CORE). Un ADR no es la verdad vigente: manda el dueno del dato y el Estado del ADR. ADRs no vigentes llevan sufijo -archived, verificado por gate en las dos direcciones.
 
 ## Como continuar
 
