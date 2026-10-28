@@ -1,8 +1,91 @@
 # Job Search Tracker
 
-> **Estado 2026-10-27: 2 procesos vivos (Infjini/Disney con entrevista en noviembre, TEAM International con reevaluación prometida).** Los 5 contactos recontactados por el filtro de inglés respondieron (5/5); **solo uno tiene fecha concreta** (la entrevista de Disney). Staffy/Pfizer **cerrado 20/10** y Sol Bisio **cerrado 21/10**, ambos por el filtro de inglés C1 conversacional. **TEAM: la posición de Tempo CERRÓ 26/10, pero la relación con TEAM NO** - David mantiene el perfil en el talent pool y reevalúa cuando mejore el inglés. **Infjini: DISNEY ENTREVISTA EN NOVIEMBRE** (1ra o 2da semana, confirmada por Siraj el 26/10) - el idioma dejó de bloquear la presentación y pasó a ser el riesgo de la entrevista misma. **Plan de inglés: B2+ intensivo en el CUI, dos meses, martes y jueves de 10 a 13 h por Zoom (desde el 27/10 hasta el 22/12)** - desoxidar y mejorar la base; el examen CUI-ING C1 y el TOEFL quedan para después.
+> **Estado 2026-10-28: 3 procesos vivos (Mercor/Project Odin nuevo, Infjini/Disney con entrevista en noviembre, TEAM International con reevaluación prometida).** Los 5 contactos recontactados por el filtro de inglés respondieron (5/5); **solo uno tiene fecha concreta** (la entrevista de Disney). Staffy/Pfizer **cerrado 20/10** y Sol Bisio **cerrado 21/10**, ambos por el filtro de inglés C1 conversacional. **TEAM: la posición de Tempo CERRÓ 26/10, pero la relación con TEAM NO** - David mantiene el perfil en el talent pool y reevalúa cuando mejore el inglés. **Infjini: DISNEY ENTREVISTA EN NOVIEMBRE** (1ra o 2da semana, confirmada por Siraj el 26/10) - el idioma dejó de bloquear la presentación y pasó a ser el riesgo de la entrevista misma. **Plan de inglés: B2+ intensivo en el CUI, dos meses, martes y jueves de 10 a 13 h por Zoom (desde el 27/10 hasta el 22/12)** - desoxidar y mejorar la base; el examen CUI-ING C1 y el TOEFL quedan para después.
+>
+> **Mercor/Project Odin (28/10): AO EXCEPCIÓN A LA REGLA DE RITMO.** No salió del radar ni de un postulado: entró por un **mail directo** de Chloe Chee (Growth team de Mercor, persona verificada) y Gonzo se anotó en el formulario de interés ese mismo día. Es el único proceso con **entrevista con IA de 3 minutos** en vez de con recruiter humano, y el único cuyo pago **depende del inglés hablado** en el momento exacto. Por eso va aparte, con su propia carpeta: `docs/entrevistas/mercor-project-odin/`.
 >
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
+
+## Mercor - Project Odin (Software Developers, Must own MacBook) - INICIADO 28/10/2026
+
+> **Entrada por mail directo, verificada.** No es una postulación de radar: es una invitación de Growth.
+> Veredicto de veracidad del mail: **legitimo con reservas** (persona real, proyecto real, form real y
+> sin pedir datos peligrosos; pero el link de confirmacion no esta linkeado desde ningun sitio oficial
+> y el SPF de mercor.com solo autoriza Google aunque Mercor usa SES desde mail.mercor.com).
+> **Por eso la postulacion va por `work.mercor.com`, no por el link del mail.**
+
+| Empresa | Puesto | Ubicacion | Canal | Riesgo #1 | Estado |
+|---|---|---|---|---|---|
+| **Mercor** | Software Developers (Must own MacBook) - Project Odin | Remoto global, **Argentina soportada** (Stripe Connect) | `work.mercor.com` → Explore → Apply Now | **Ingles B2+ hablado vs "excellent verbal communication" del JD**, en una **entrevista con IA de 3 minutos**. Es el gap que define el resultado. | **MAIL RECIBIDO Y FORM COMPLETADO 28/10** (Gonzo). **CV LISTO: markdown + DOCX + PDF en `docs/entrevistas/mercor-project-odin/` (2 paginas, texto extraible, gate OK).** Falta: crear cuenta en `work.mercor.com` con `gonzoblasco@gmail.com`, subir el PDF, tomar la Practice Interview y postular al listing. |
+
+**El CV paso por el pipeline A/B completo (ADR-077):** A redactó (STUDIO, gpt-oss:120b), B reviso adversarial
+(CRITIC, deepseek-v4.1-flash) y el CORE aplico los fixes. **Lo que B encontro y el gate NO caza** (el gate
+solo compara contra el corpus; no mideAgainst el JD ni el ATS):
+- **Las PRs iban en tabla markdown**, y Mercor prohibe explicitamente tablas en la subida ("avoid images, tables,
+  or complex designs"). Ahora son bullets.
+- **35 guiones U+2011 (non-breaking hyphen) y 35 U+202F (narrow no-break space)**: el ATS busca "multi-tenant"
+  con guion ASCII y no matcheaba. Normalizados.
+- **`---` renderizado como parrafo visible** en el PDF. Eliminado.
+- **"Lead accessibility"** (presente) por un rol terminado: corregido a "Led".
+- **El Summary ponia "macOS" y "narrating" como tesis** sin sostenerlas con un hecho, y repetia "macOS" dos
+  veces en la misma oracion (lectura de keyword stuffing). Reescrito.
+- **"Managed a team of 3"** por "Led" (el corpus dice *lidero*), y "financial-insights" por "financial intelligence".
+- **El design system propio de SoporteML no estaba nombrado** (el corpus lo registra: tokens semanticos, mapa
+  token→componente, WCAG AA como criterio del sistema). Agregado.
+- **El CV cerraba con la limitacion** ("spoken English is my current development area") y ahora cierra con la
+  evidencia escrita + el curso, sin cambiar el nivel declarado.
+- **El keyword map minimizaba la posicion propia**: decompensado por "2-3 years" a "10+ years vs. los 2-3 que
+  pide el JD".
+
+**El gate NO es suficiente para un CV de US:** pasa, y aun asi el CV era/subible. El gate compara contra el
+corpus; no mide contra el JD, ni contra las guidelines de subida de Mercor, ni contra el parseo del ATS. Para
+un posting a US, **el veredicto real es el del revisor B + las verificaciones propias del CORE** (pdftotext,
+pdfinfo, grep de unicode y de tablas).
+
+**Dos hallazgos de hardware que cambian el plan:**
+- **La entrevista es en la MacBook Air M2, NO en el Mac mini.** El Mac mini (Mac16,10, M4) **no tiene camara ni
+  microfono** (`SPCameraDataType` vacio; `SPAudioDataType` solo lista salidas). El nodo de OpenClaw del Mac mini
+  tambien reporta `camera: false`, `microphone: false`. Sin eso no hay entrevista: la IA te ve y te escucha.
+- **La app de tracking es Workpuls** (antes Insightful), NO esta instalada. Requisito macOS 11+ (tenes 27.2).
+  Solo hace falta con contrato activo; la asignacion de proyecto tarda 12-24 h. **Toma screenshots periodicos de
+  la pantalla mientras el timer corre**: es parte del modelo del proyecto, pero conviene saberlo antes de
+  clockear con material de clientes abierto.
+
+**El email de la cuenta es `gonzoblasco@gmail.com`** (ahi llego la invitacion y el formulario lo pedia), pero
+**el CV va con `gonzoblasco@icloud.com`**: es el dueno del dato de contacto en el corpus (`contact_email`) y el
+gate lo exige. Las otras tres postulaciones vivas (Mural, Mercado Pago, RYZ) ya van con icloud.
+
+**Pendiente de definicion con Gonzo (no bloquea):** el hueco de **9 meses entre 11/2019 (Minutentag) y 08/2020
+(Super7UI)**. El corpus no lo registra, asi que el CV no lo inventa (ADR-101). La respuesta de una frase para la
+repregunta ya esta en el pack de entrevista (T7). Si ese periodo tuvo trabajo real, el hecho va al corpus
+primero y despues al CV.
+
+**Por que este listing y no los otros dos de Odin:** hay tres ("Computer Power Users and Automation
+Builders", "Software Developers (Must own MacBook)", "STEM Researchers - MSc/PhD"), todos a $50-60/hr
+con el mismo requisito de hardware. Se elige **Software Developers** porque:
+- el corpus no registra Shortcuts, AppleScript, Raycast, Alfred, Keyboard Maestro, Automator, Zapier ni
+  Make (cero menciones en `memory/career-facts.md`): el listing de "Computer Power Users" pide
+  **"experience building automations with tools such as..."** y eso no lo puede respaldar;
+- el listing de "STEM Researchers" exige **MSc/PhD en curso o conseguido** - no aplica (corpus §3);
+- "Software Developers" pide **"2-3 years of professional coding experience"** (rama que se cumple) +
+  herramientas de desarrollo de macOS (VS Code, Terminal, Git, package managers: todo verificado en
+  uso real) + "ability to clearly explain your reasoning while you work" (que es literalmente lo que
+  el corpus sostiene).
+
+**Lo que el corpus no tiene y el JD pide:** "Bachelors from a prestigious institution". Ninguna de las
+cuatro universidades se completo (corpus §3). Se cumple por la rama de los 2-3 anos de experiencia y se
+declara `Universidad de Palermo - Ingenieria en Informatica (2001-2002, incomplete)`. Gap declarado, no
+oculto.
+
+**La app de tracking es Workpuls** (antes Insightful), NO esta instalada. Requisito macOS 11+ (tenes
+27.2). Solo hace falta cuando hay contrato activo; la asignacion de proyecto tarda 12-24 h. **Ojo:
+toma screenshots periodicos de la pantalla mientras el timer corre** - es parte del modelo de trabajo
+del proyecto, pero conviene saberlo antes de clockear con material de clientes abierto.
+
+**Proceso de la postulacion (documentado en la carpeta del proceso):**
+`docs/entrevistas/mercor-project-odin/brief.md` (brief de redaccion) ·
+`docs/entrevistas/mercor-project-odin/pack-entrevista.md` (pack de preparacion para la AI interview) ·
+`docs/entrevistas/mercor-project-odin/cv-mercor-software-developer.md` (el CV, en armado)
 
 ## Radar 2026-10-25 - 43 candidatos, 32 verificados contra el posting real
 

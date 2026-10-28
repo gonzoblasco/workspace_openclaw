@@ -91,6 +91,16 @@ Qué hizo:
   con contexto acotado sobre codigo** (AI Engineering OS), no de agentes que manejan una pantalla.
 - **Contribuciones OSS continuas** a design systems (ver §5).
 - **Soluciones internas de IA para Pro Motors.**
+- **Tooling de desarrollo diario en macOS** (verificado 2026-10-28 sobre el workspace y la
+  máquina): **VS Code** como editor (`.vscode/settings.json` con permisos de terminal y `gh`),
+  **Terminal / shell (zsh)**, **Git**, **Docker**, y **npm / pnpm / bun** como package managers
+  (los `package.json` de los proyectos declaran `packageManager`: `bun@1.4.2` y `npm@10.5.0`).
+  **CI en GitHub Actions** (workflows de CI propios en proyectos activos, ej. `kanam-pulse`).
+  Node.js v26, TypeScript, Playwright, Vitest, Biome. **Xcode no está registrado como
+  herramienta de uso propio** y no se declara. Este bloque existe porque el listing de Mercor
+  "Software Developers (Must own MacBook)" pide explícitamente *"everyday developer tools on
+  macOS such as VS Code, Xcode, Terminal, Git, and package managers"*: el corpus tenía el stack
+  de código pero no el de herramientas de escritorio.
 
 Es el mismo período en que empezó a usar IA para desarrollo (ver §6.1) y el backend de producción
 (ver §6.2). No son años distintos.

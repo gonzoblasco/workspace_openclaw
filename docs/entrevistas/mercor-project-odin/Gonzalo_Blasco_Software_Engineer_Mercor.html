@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10pt; color: #1a1a1a; line-height: 1.28; margin: 0; }
+  h1 { font-size: 19pt; margin: 0 0 2pt 0; letter-spacing: 0.5pt; }
+  .role { font-size: 10.5pt; color: #333; margin: 0 0 5pt 0; font-weight: 600; }
+  .contact { font-size: 8.5pt; color: #444; margin: 0 0 11pt 0; }
+  h2 { font-size: 10pt; text-transform: uppercase; letter-spacing: 1pt; border-bottom: 1.2pt solid #1a1a1a; padding-bottom: 2pt; margin: 11pt 0 6pt 0; }
+  h3 { font-size: 10pt; margin: 8pt 0 1pt 0; }
+  .meta { font-size: 8.5pt; color: #555; font-style: italic; margin: 0 0 4pt 0; }
+  ul { margin: 2pt 0 2pt 0; padding-left: 14pt; }
+  li { margin-bottom: 2.5pt; }
+  p { margin: 0 0 6pt 0; }
+  .skills p { margin: 0 0 4pt 0; }
+  .label { font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; margin: 4pt 0 8pt 0; font-size: 9pt; }
+  th { text-align: left; border-bottom: 1pt solid #1a1a1a; padding: 2pt 4pt 2pt 0; }
+  td { border-bottom: 0.5pt solid #ddd; padding: 2pt 4pt 2pt 0; vertical-align: top; }
+  /* Las URLs y el email NO se parten: si el guion bajo cae al final de linea,
+     el extractor de texto del ATS lo come y "linkedin.com/in/gonzalo-blasco"
+     se lee "linkedin.com/in/gonzaloblasco" - un contacto roto en el archivo
+     que el sistema lee, no en el que el humano ve. Verificado 2026-10-22 con
+     pdftotext: la URL se partia y el guion desaparecia. */
+  .nb { white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<h1>Gonzalo Blasco</h1>
+<p class="role"><b>Senior Software Engineer (10+ years)</b> | Remote LATAM (aligned to US EST) | +54 11 4937 4656 | <span class="nb">gonzoblasco@icloud.com</span> | <span class="nb">linkedin.com/in/gonzalo-blasco</span> | <span class="nb">github.com/gonzoblasco</p></span>
+<h2>Professional Summary</h2>
+<p>Software engineer with <b>10+ years</b> of end-to-end production experience, working daily on macOS with VS Code, Terminal, Git, npm/pnpm/bun, Docker, and CI in GitHub Actions. Proficient in JavaScript, TypeScript, React, and Next.js. Explains the reasoning behind each decision, through code review, in-sprint developer guidance, and written specs. Shipped AI-native products and accessibility fixes with WCAG 2.2 AA as a system criterion rather than a final check. 11 merged pull requests in production component libraries.</p>
+<h2>Core Skills</h2>
+<ul>
+<li><b>Languages &amp; Frameworks:</b> JavaScript, TypeScript, React, Next.js, Vite, HTML5, CSS3, Tailwind CSS</li>
+<li><b>Developer Tools:</b> VS Code, Terminal, Git, npm/pnpm/bun, Docker, CI/CD pipelines (GitHub Actions, Playwright, and Vitest)</li>
+<li><b>AI-augmented workflow:</b> Claude Code, Codex, OpenClaw AI-Engineering OS (quarantine -&gt; analyze -&gt; verify -&gt; adopt)</li>
+<li><b>Accessibility (quality bar):</b> WCAG 2.2 AA, ARIA patterns, screen-reader testing (NVDA, VoiceOver, JAWS), Axe DevTools, Lighthouse</li>
+<li><b>Backend &amp; Data:</b> Node.js, Supabase (PostgreSQL, Auth, RLS, Edge Functions), pgvector, Stripe billing integration</li>
+<li><b>Open-source contribution:</b> 11 merged PRs in major component libraries (React Spectrum, Carbon, MUI, Facebook astryx)</li>
+</ul>
+<h2>Professional Experience</h2>
+<h3>Freelancer - Software Engineer</h3>
+<p><i>05/2025 - Present | Remote</i></p>
+<ul>
+<li>Built <b>SoporteML</b>, an AI-powered multi-tenant CRM for Mercado Libre sellers (React + Vite + TypeScript front-end; Supabase back-end; RAG-based reply suggestions with pgvector; Stripe billing). Delivered the first production client <b>Pro Motors</b>.</li>
+<li>Designed SoporteML&#x27;s design system: semantic tokens (color, type, spacing, radius, shadows, focus ring), a token-to-component map, and WCAG AA rules applied at the system level.</li>
+<li>Created <b>AI Engineering OS</b> on OpenClaw: per-project sessions, persistent memory, sub-agents, skill orchestration, and a strict quarantine -&gt; analyze -&gt; verify -&gt; adopt pipeline for all external code.</li>
+<li>Day-to-day environment: macOS on Apple Silicon, VS Code, Terminal (zsh), Git, and npm/pnpm/bun across all projects; CI on GitHub Actions.</li>
+<li>End-to-end product ownership: problem framing, implementation, testing, and production deployment.</li>
+</ul>
+<h3>EY (Ernst &amp; Young) - Senior Frontend Engineer, Accessibility Lead</h3>
+<p><i>09/2021-05/2025 | Hybrid</i></p>
+<ul>
+<li>Led accessibility for <b>EY Motif</b>, an enterprise React component library; remediated <b>50+ components</b> to WCAG 2.2 AA using Axe, Lighthouse, JAWS, and NVDA.</li>
+<li>Reviewed components in Storybook before implementation, defined component-level accessibility standards, and authored technical requirements with code examples.</li>
+<li>Coached developers inside their branches and guided remediation in-sprint, explaining what the WCAG failure was and why the fix worked, with code examples against the component in Storybook.</li>
+<li>Led a team of 3 engineers building an AI-powered financial intelligence platform in Next.js, from accessible interfaces to production.</li>
+</ul>
+<h3>Super7UI - Accessibility Engineer (Contractor)</h3>
+<p><i>08/2020 - 05/2021 | Remote</i></p>
+<ul>
+<li>Audited and remediated <b>Warner Bros. Screeners</b> streaming platform, fixing <b>200+ WCAG violations</b> across NVDA, VoiceOver, and TalkBack. Validated and expanded a prior third-party audit (Applause) by reproducing each issue in NVDA, VoiceOver, and TalkBack. Produced developer-ready remediation documentation (proposed solutions, implementation guidance, and specifications) and established an axe-core + Playwright testing pipeline in CI/CD.</li>
+</ul>
+<h3>Minutentag - Frontend Developer, Accessibility Owner</h3>
+<p><i>02/2016 - 11/2019 | Hybrid</i></p>
+<ul>
+<li>Migrated legacy e-commerce sites (Ann Taylor, LOFT, Lou &amp; Grey) to React, supporting <b>2M+ monthly active users</b>.</li>
+<li>Reviewed components in Storybook (React) and wrote technical accessibility requirements; grew from junior to team accessibility reference.</li>
+<li>Ran <b>A/B experiments in production</b> with Adobe Target, implementing variant code as JavaScript snippets.</li>
+</ul>
+<h2>Open Source - Merged Pull Requests</h2>
+<p>Eleven merged PRs in production component libraries, each reviewed and shipped by maintainers. These are fixes to someone else&#x27;s code, not greenfield work.</p>
+<ul>
+<li><b>adobe/react-spectrum</b> #10503 - Gated the ComboBox live-region announcement to section changes; it was overwriting VoiceOver&#x27;s native per-item announcement.</li>
+<li><b>adobe/react-spectrum</b> #10554 - Regression test (test-only) for <code>aria-posinset</code> across sections.</li>
+<li><b>carbon-design-system/carbon</b> #22887 - Added explicit <code>aria-describedby</code> support to <code>ComposedModal</code>, on both the native <code>&lt;dialog&gt;</code> and the <code>div[role=&quot;dialog&quot;]</code> path.</li>
+<li><b>carbon-design-system/ibm-products</b> #9878 - Implemented <code>CreateFullPage</code> (issue #9864).</li>
+<li><b>carbon-design-system/ibm-products</b> #9879 - Fixed Datagrid (issue #9839).</li>
+<li><b>facebook/astryx</b> #4605 - Added a non-chromatic indicator (font-weight) to the current breadcrumb item; color alone was the only cue (WCAG 1.4.1).</li>
+<li><b>facebook/astryx</b> #4914 - Fixed <code>build-storybook</code> &quot;no merge base&quot; failures on old PRs (shallow clone); fallback to a two-point diff.</li>
+<li><b>facebook/astryx</b> #5419 - Fixed HoverCard with a label exposing as a dialog popup: <code>aria-haspopup=dialog</code>, <code>aria-controls</code> gated on open, <code>aria-expanded</code> kept in sync.</li>
+<li><b>facebook/astryx</b> #5493 - Forwarded <code>aria-label</code>/<code>aria-labelledby</code> to the underlying <code>ul[role=&quot;tree&quot;]</code>; a tree without a header could not be named.</li>
+<li><b>mui/base-ui</b> #5551 - Moved <code>aria-orientation</code> to the role owners; the grid role does not support it.</li>
+<li><b>mui/material-ui</b> #49003 - Kept carousel links in hidden slides out of the focus order (WCAG 4.1.2).</li>
+</ul>
+<h2>Education</h2>
+<ul>
+<li><b>Universidad de Palermo - Ingenieria en Informatica / Computer Science Engineering (2001-2002, incomplete)</b></li>
+<li><b>Digital House - React (2018)</b></li>
+<li><b>Universidad Argentina de la Empresa - Graphic Design (2003-2004, incomplete)</b></li>
+</ul>
+<h2>Certifications</h2>
+<ul>
+<li><b>Deque University - Accessibility Specialist Program (2021)</b></li>
+</ul>
+<h2>Languages</h2>
+<ul>
+<li>Spanish - native</li>
+<li>English - B2+ (professional working proficiency). Reading and writing are comfortable: I write technical requirements, PR descriptions, and specs in English daily. Spoken English is my current development area, and I am in an intensive B2+ course.</li>
+</ul>
+
+</body>
+</html>
