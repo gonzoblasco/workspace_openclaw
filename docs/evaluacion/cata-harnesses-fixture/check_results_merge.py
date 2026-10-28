@@ -55,6 +55,15 @@ def check_source(src: str) -> list[str]:
                 "el runner calcula `merged` pero no lo escribe: la lista "
                 "mergeada se descarta"
             )
+    # Trampa del bind mount de Docker (opencode): el container puede ver un
+    # inode viejo de `_cata/` y `opencode` muere con ENOENT de cwd. Sin el
+    # guardia, la celda se pierde sin gastar inferencia.
+    if "container_puede_entrar" not in src:
+        problems.append(
+            "falta el guardia del bind mount de opencode "
+            "(`container_puede_entrar`): si el container ve un inode viejo de "
+            "_cata/, opencode muere con ENOENT de cwd y la celda se pierde"
+        )
     return problems
 
 
@@ -109,6 +118,7 @@ def main() -> int:
     print("MERGE DEL RESULTS: OK")
     print("  las filas de las celdas anteriores sobreviven a la siguiente invocacion")
     print("  un re-run de la misma celda reemplaza la fila, no la duplica")
+    print("  el guardia del bind mount de opencode esta presente")
     return 0
 
 
