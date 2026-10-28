@@ -1,16 +1,37 @@
-# Cata de harnesses x 6 modelos: ningun harness gana siempre, y Claude Code nunca queda ultimo
+# Cata de harnesses x 10 modelos: ningun harness gana siempre, Claude Code nunca queda ultimo, y ningun local cierra una celda
 
-**Fecha:** 2026-10-28 (la tanda cloud arranco el 2026-10-27 23:30)
+**Fecha:** 2026-10-28 (la tanda cloud arranco el 2026-10-27 23:30; la local cerro el 2026-10-28 18:50)
 **Pregunta de Gonzo:** con Claude Code instalado y ruteado a Ollama (ADR-049), ¿hace
 falta alguno de los otros coding agents (Cline, opencode, OpenHands), o se pueden retirar?
 **Diseno:** `harness-model-comparison` (la variable que NO se mide, congelada DENTRO
 de cada corrida) + verdad de base de la suite oculta.
-**Runner:** `playground/cata-harnesses-2026-10-27/` · **Artefactos:** `/tmp/cata-harnesses/`
+**Runner:** `docs/evaluacion/cata-harnesses-fixture/` (versionado) · **Artefactos:** `/tmp/cata-harnesses/`
+**Alcance:** 10 modelos x 3 harnesses. Los **6 cloud con las 3 tareas** (54 celdas);
+los **4 locales con 1 tarea (T1)** (12 celdas). Total esperado: 66 celdas.
 
 > Documento 1 (solo deepseek): `docs/evaluacion/cata-harnesses-2026-10-27.md`.
 > Documento 2 (3 modelos): `docs/evaluacion/cata-harnesses-3-modelos-2026-10-28.md`.
-> **Este documento los reemplaza**: 6 modelos, y ademas corrige cuatro bugs de
-> medicion PROPIOS que inflaban los puntajes del documento 2.
+> **Este documento los reemplaza**: 10 modelos, y ademas corrige cinco bugs de
+> medicion PROPIOS que inflaban los puntajes de los documentos 1 y 2.
+
+---
+
+## 0. El dato primero: los locales no miden al harness
+
+**Ninguna de las 12 celdas locales escribio el entregable.** Salvo
+`gemma4:12b-mlx` con Claude Code (1 de 3), los 4 modelos GGUF en CPU
+**no cierran ni una celda**: 0 de 12 con archivo en `.context/informe.md`.
+
+Eso **no significa que el harness sea peor con un modelo lento**. Significa que
+un modelo local chico **no llega a completar la tarea** antes de que se corte
+el turno, el stream o el timeout. La pregunta que la fase local venia a
+responder ("el harness aguanta un modelo lento?") **no se pudo responder**: no
+hay ningun caso donde el modelo lento haya entregado y el harness haya fallado.
+Lo unico que hay es el modelo no entregando, y los tres harnesses fallando
+distinto frente a eso.
+
+**El veredicto de §7 se apoya SOLO en los 6 cloud.** Los locales entran al
+informe como ausencia medida, no como 0 del harness.
 
 ---
 
@@ -35,7 +56,8 @@ de 30/30 con el modelo correcto.
 
 ## 2. La matriz completa (verdad de base: asserts de la suite oculta)
 
-Cada modelo: 3 tareas x 3 harnesses. Cada celda: asserts pasados/total.
+Los cloud: 3 tareas x 3 harnesses (max 30 asserts por celda).
+Los locales: **solo T1** (max 10 asserts por celda).
 
 | Modelo | claude | opencode | openhands | TOTAL |
 |---|---|---|---|---|
@@ -45,6 +67,27 @@ Cada modelo: 3 tareas x 3 harnesses. Cada celda: asserts pasados/total.
 | `nemotron-3-super:cloud` | 26/30 | **29/30** | 15/30 | 70/90 |
 | `gemma4:cloud` | **27/30** | 16/30 | **27/30** | 70/90 |
 | `minimax-m3.1-flash:cloud` | 29/30 | **30/30** | 0/30 | 59/90 |
+| `gemma4:12b-mlx` (local) | **9/10** | 0/10 | 0/10 | 9/30* |
+| `hf.co/ModernoTech/nova-2b:latest` (local) | 0/10 | 0/10 | 0/10 | 0/30* |
+| `ornith-1.5:9b` (local) | 0/10 | 0/10 | 0/10 | 0/30* |
+| `qwen3.5:9b-mlx` (local) | **sin medir** | **sin medir** | **sin medir** | **sin medir** |
+
+\* En los locales el TOTAL es sobre 30 porque la fase local corre **una sola
+tarea**: no son comparables con el /90 de los cloud.
+
+**`qwen3.5:9b-mlx` no se pudo medir** y no es un 0: sus tres filas de T1 se
+escribieron **sin control ni entregable**, con dos errores distintos de
+infraestructura:
+
+- `claude`: no escribio el archivo (respondio en el chat).
+- `opencode`: `OpenAI Chat stream ended without finish_reason`.
+- `openhands`: `URLError: [Errno 61] Connection refused` - **Docker Desktop no
+  arranco** (`Docker Desktop is unable to start`) y OpenHands es un container.
+  Sin Docker no hay forma de remedir esa celda en esta tanda.
+
+El driver habia **sellado** el modelo porque conto 3 filas. Las filas existian;
+el control no. **El sello cuenta filas y no verifica que la fila tenga control
+OK**: es una trampa nueva, y la anoto en §9.11.
 
 **Ranking de harnesses POR MODELO (el ranking se invierte):**
 
@@ -87,11 +130,23 @@ que es **casualidad del modelo, no igualdad de los harnesses**.
    minimax-m3.1-flash:cloud     claude=11/12  opencode=12/12  openhands=0/12
    gemma4:cloud                 claude=10/12  opencode=10/12  openhands=10/12
    glm-5.3-flash:cloud          claude=11/12  opencode=11/12  openhands=12/12
+
+-- T1 locales (10 asserts; solo T1 por decision de alcance) --
+   gemma4:12b-mlx               claude=9/10   opencode=0/10   openhands=0/10
+   hf.co/ModernoTech/nova-2b    claude=0/10   opencode=0/10   openhands=0/10
+   ornith-1.5:9b                claude=0/10   opencode=0/10   openhands=0/10
+   qwen3.5:9b-mlx               (sin medir)   (sin medir)     (sin medir)
 ```
 
 **T3 (gobernanza de ADRs) es la que separa a los harnesses.** Es la tarea con mas
 asserts (12) y la que exige explorar 60 documentos: ahi esta el loop agentico, y
 ahi OpenHands con minimax se queda sin turno (0/12 tres veces seguidas).
+
+**En T1 los locales casi no se distinguen de los cloud:** 5 de los 6 cloud
+sacan 10/10 en T1, y el unico local que entrega
+(`gemma4:12b-mlx`/claude) saca **9/10**. La diferencia aparece en el **tiempo**,
+no en el asserts: 953 s contra 43 s de `gemma4:cloud`. **Un local no compra
+calidad en T1; la paga en reloj.**
 
 ## 4. Costo (los 3 harnesses, las 3 tareas, por modelo)
 
@@ -120,12 +175,36 @@ gemma4:cloud                 openhands       97     533055     15240      37    
 glm-5.3-flash:cloud          claude         432     159491     42950       3      0      24180ch
 glm-5.3-flash:cloud          opencode       532     110401     81483      22     22      33316ch
 glm-5.3-flash:cloud          openhands       588    1289017     57763      52     58      32350ch
+
+--- locales (solo T1) ---
+nova-2b:latest               claude         296      32043      5951       1      0          0ch
+nova-2b:latest               opencode        92       5799      2881       4      4          0ch
+nova-2b:latest               openhands      120          0         0       0      0          0ch
+ornith-1.5:9b                claude        3600          0         0       1      0          0ch
+ornith-1.5:9b                opencode      1548      36524      6896      24     24          0ch
+ornith-1.5:9b                openhands     3608     615332     15817      24     23          0ch
+gemma4:12b-mlx               claude         953      56354      2072       1      0       1591ch
+gemma4:12b-mlx               opencode       844      20078      8612      17     17          0ch
+gemma4:12b-mlx               openhands     2768      58888      1503       8      7          0ch
+qwen3.5:9b-mlx               claude        3114      36701      1402       1      0       6036ch
+qwen3.5:9b-mlx               opencode      1709      49289     12319      18     18          0ch
+qwen3.5:9b-mlx               openhands        0          0         0       0      0          0ch
 ```
 
 **Claude Code hace 3 turnos en los 6 modelos.** Explora por dentro (una sola
 llamada con el resultado) y no reenvia el contexto. OpenHands reenvia todo en
 cada turno (52-93 turnos) y consume **1,3M-2,7M de tokens de entrada**: entre
 **5x y 8x** lo de Claude Code. Es su patron, no el modelo.
+
+**En los locales el patron se repite y el reloj explota.** `ornith-1.5:9b`
+llego a **3600 s y 3608 s** con claude y openhands: exactamente el
+`CATA_TIMEOUT`. `qwen3.5:9b-mlx` tardo **3114 s** con claude. Ninguno de esos
+turnos entrego. **El unico archivo que produjo un local en toda la fase son
+1.591ch de `gemma4:12b-mlx`/claude, en 953 s.** Un cloud hace lo mismo en 43 s.
+
+Ojo con `qwen3.5:9b-mlx`/claude: muestra 6.036ch de "entregable" pero su celda
+vale **sin medir**. Ese texto es `output` (el chat), no el archivo; es
+justamente el caso 6.5, que la suite ya no cuenta.
 
 **El costo NO explica la calidad**: minimax dio 60.936ch de entregable con
 opencode (el mejor celda de la cata) y 0ch con OpenHands. El volumen de tokens
@@ -146,6 +225,12 @@ consiguio 29/30, y openhands consumio 1.289.017 para los mismos 30/30.
 El juez coincide con la verdad de base en los extremos: OpenHands con minimax
 (0.00) y con nemotron (4.83) son los peores, y son los que no entregan.
 gemma4+opencode (6.00) es el peor de gemma4, y es el que no entrega.
+
+**El juez solo pudo puntuar 1 de las 12 celdas locales**: `gemma4:12b-mlx`/
+claude, con **9.50 / 9.50** - el puntaje mas alto de juez de toda la cata.
+Cuando un local entrega, **entrega bien**. El problema no es la calidad del
+texto: es que no llega a escribirlo. Las otras 11 celdas locales quedan sin
+puntaje de juez porque no hay cuerpo que juzgar.
 
 ## 6. Los cuatro bugs PROPIOS que inflaban los puntajes
 
@@ -255,6 +340,7 @@ fallback**, para que no pueda volver en silencio.
 | **opencode** | **Se queda, bajo demanda.** | Gana 2 de 6 (nemotron 29/30, minimax 30/30). Consume mucho menos que OpenHands. Pero queda ultimo en gpt-oss y gemma4. |
 | **OpenHands** | **Se queda, bajo demanda.** | Es el unico que llega a 30/30 con **3** modelos (deepseek, gpt-oss, glm-5.3). Aporta la UI web. A cambio: 5-8x los tokens de entrada, y colapsa con minimax (0/30) y nemotron (15/30). |
 | **Cline** | **FUERA (ya lo estaba)** | Su clon fue borrado del disco; el registro ya lo dice "no instalado". |
+| **Modelos locales GGUF** | **No son vara de harness.** | 11 de 12 celdas sin entregable y 3600 s de timeout. La unica que entrego (gemma4:12b-mlx/claude) lo hizo bien (9/10, juez 9.50) pero en 953 s contra 43 s del cloud. Sirven para probar el harness, no para decidirlo. |
 
 ### El modelo que se confirma
 
@@ -277,26 +363,36 @@ entregar. Si hay que elegir un modelo nuevo, es este.
 
 ## 8. Lo que NO se midio
 
-- **La fase local (4 modelos GGUF x 3 harnesses x 1 tarea).** Arrancada y en
-  curso al cierre de este documento; `nova-2b:latest` quedo sellado **sin
-  ningun entregable** (0 celdas de 3 con archivo). Los locales son GGUF en CPU y tardan
-  10-20 min por celda. **Este documento no dice nada de ellos**: su ausencia
-  es una ausencia, no un 0. La pregunta que responde la fase local es "el
-  harness aguanta un modelo lento?", y con un solo modelo por harness y una
-  sola tarea no da para mas.
-  - Lo que si se midio de `nova-2b:latest` (2b, el mas chico): **0 de 3
-    celdas escribio el entregable**, y los tres fallos son del harness contra
-    ese modelo, no del modelo:
-    - **Claude Code**: `[claude-code:unrecognized_model]` - el nombre
-      `hf.co/ModernoTech/nova-2b:latest` no lo reconoce (el probe si
-      funciono, la corrida de T1 no). En T1 **respondio en el chat** con un
-      informe completo, pero **no escribio** `.context/informe.md`: por eso su
-      celda vale **0/10** y no 8/10 (ver 6.5).
-    - **opencode**: 12 eventos y 0 entregable (tambien respondio en el chat,
-      sin escribir el archivo): **0/10**.
-    - **OpenHands**: `execution_status: error` con **0 acciones**.
-    - Es decir: **un modelo de 2B no sirve como vara de los tres harnesses**,
-      porque los tres fallan antes de poder medir de verdad.
+- **`qwen3.5:9b-mlx`: 3 celdas SIN MEDIR, no 0.** Es el unico hueco del alcance
+  de 66 celdas (65 medidas). Las tres filas de T1 se escribieron sin control ni
+  entregable; `openhands` ademas no pudo correr porque **Docker Desktop no
+  arranca** (`Docker Desktop is unable to start`) y OpenHands es un container.
+  Sin Docker no habia forma de remedirla en esta tanda. **La celda queda
+  declarada como ausente y no entra en ningun promedio ni veredicto.**
+- **La fase local no responde la pregunta que vino a responder.** Las 12 celdas
+  locales existen como filas, pero **11 de 12 no tienen entregable**: los
+  modelos GGUF en CPU no completan T1 antes del timeout (3600 s en el caso de
+  `ornith-1.5:9b`). No hay un solo caso de "modelo lento entrega y el harness
+  falla", asi que **no se puede concluir nada sobre la tolerancia de cada
+  harness a un modelo lento**. Lo unico comparable es
+  `gemma4:12b-mlx`/claude: 9/10 en 953 s, contra 10/10 en 43 s del mismo modelo
+  en cloud.
+- **Por que se corto la fase local la primera vez.** El driver murio entre la
+  celda de `opencode` y `openhands` de `qwen3.5:9b-mlx`, **sin liberar el lock**
+  (quedo `.local-driver.lock` con pid huerfano) y sin escribir las 3 filas.
+  Al reanudar, el driver releyo lo que habia, conto 3 filas y **sello el modelo
+  sin verificar `control_ok`**. Ver §9.11.
+- **`nova-2b:latest` (2b, el mas chico)**: **0 de 3 celdas escribio el
+  entregable**, y los tres fallos son del harness contra ese modelo:
+  - **Claude Code**: `[claude-code:unrecognized_model]` - el nombre
+    `hf.co/ModernoTech/nova-2b:latest` no lo reconoce. En T1 **respondio en el
+    chat** con un informe completo, pero **no escribio** `.context/informe.md`:
+    por eso su celda vale **0/10** y no 8/10 (ver 6.5).
+  - **opencode**: 4 turnos, 4 tools, 0 entregable (respondio en el chat): **0/10**.
+  - **OpenHands**: `execution_status: error` con **0 acciones**.
+  - Es decir: **un modelo de 2B no sirve como vara de los tres harnesses.**
+- **`ornith-1.5:9b` y `qwen3.5:9b-mlx` tampoco sirven como vara**: los tres
+  harnesses fallan antes de que el modelo entregue. No distinguen harnesses.
 - **Cline**: no existe en disco. Sin reclonar no hay cata de 4.
 - **Una sola corrida por celda**: no hay varianza medida. Los fallos de §8 (los
   que no entregan) son reproducibles, pero los pases no tienen barra de error.
@@ -349,6 +445,22 @@ entregar. Si hay que elegir un modelo nuevo, es este.
     raw eran acumulativos, asi que la perdida solo se veia al comparar el
     numero de filas con el de celdas esperadas. **El estado de una cata se
     cuenta por filas, no por artefactos.**
+11. **El sello de "ya medido" no puede contar filas sin mirar el control.**
+    La trampa 2 del driver dice "si tiene 3 filas, se sella". `qwen3.5:9b-mlx`
+    tenia 3 filas y **ninguna con `control_ok=True` ni entregable**: las tres
+    las escribio un runner que murio (stream cortado) o que no tenia Docker.
+    El driver las conto, sello, y en la reanudacion el modelo se salteo con un
+    "ya tiene sus 3 celdas". **Se sello la ausencia como si fuera medicion.**
+    El sello tiene que exigir **3 filas con `control_ok` verdadero**, no 3 filas
+    a secas; si no, un modelo que falla por infraestructura queda inmortalizado
+    como un 0 legitimo. Es la version local de §9.7: un 0 puede ser un bug del
+    instrumento.
+12. **Un modelo local que no entrega no mide al harness.** 11 de 12 celdas
+    locales quedaron en 0 por falta de archivo, y aun asi los tres harnesses
+    "puntuaron". Si el criterio fuera "quien saca mas", el informe concluiria
+    que los tres harnesses son malos con locales, cuando el que no llega es el
+    modelo. **Una celda sin entregable se reporta como ausencia medida, no como
+    0 del harness**, y no entra en el ranking.
 
 ## Related
 
