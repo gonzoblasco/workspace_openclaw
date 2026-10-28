@@ -57,16 +57,21 @@ need() {   # need <id> <container> <url> <codigos_aceptados...>
 echo "== preflight: harnesses en Docker =="
 rc=0
 
-# opencode: puerto 4096, health en /health
-need opencode opencode http://localhost:4096/health 200 || rc=1
+# opencode y OpenHands fueron ELIMINADOS el 2026-10-28 (ver ADR-106).
+# La cata queda con un solo harness: Claude Code (CLI host). No hay
+# containers que sondear. Si se reintroduce un harness en Docker, hay que
+# volver a agregar su sonda `need <id> <container> <url> <status>` aca y su
+# rama de catalogo de modelos mas abajo.
+echo "  ningun harness en Docker (Claude Code es CLI host)"
 
-# openhands: puerto 8000, la raiz redirige (308)
-need openhands openhands-canvas http://localhost:8000/ 200 301 302 307 308 || rc=1
-
-# Los modelos tienen que EXISTIR en el catalogo de opencode. El container
-# puede estar sano y aun asi no resolver un modelo: el catalogo de providers
-# se carga despues del arranque. Con el catalogo incompleto, el control
-# falla por infra y se pierden 9 celdas por modelo sin que se note.
+# Los modelos tienen que EXISTIR en el catalogo del harness en Docker. El
+# container puede estar sano y aun asi no resolver un modelo: el catalogo de
+# providers se carga despues del arranque. Con el catalogo incompleto, el
+# control falla por infra y se pierden 9 celdas por modelo sin que se note.
+#
+# Desde el 2026-10-28 (ADR-106) no queda ningun harness en Docker: opencode y
+# OpenHands fueron eliminados. El bloque se conserva inerte, guardado por la
+# existencia del container, para que reintroducir opencode no borre esta logica.
 if [ "${#MODELS[@]}" -gt 0 ] && docker ps --format '{{.Names}}' | grep -qx opencode; then
   for m in "${MODELS[@]}"; do
     slug="ollama/$m"
@@ -85,6 +90,8 @@ if [ "${#MODELS[@]}" -gt 0 ] && docker ps --format '{{.Names}}' | grep -qx openc
       rc=1
     fi
   done
+else
+  echo "  catalogo de modelos: sin harness Docker que consultar"
 fi
 
 if [ "$rc" -ne 0 ]; then

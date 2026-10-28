@@ -1,0 +1,73 @@
+# OpenHands "Agent Canvas" (main @ e70151c) + Ollama como proveedor de LLM
+#
+# Imagen oficial all-in-one: agent-server (Python SDK 1.56.0) + automation + frontend.
+# Verificada en el registry: ghcr.io/openhands/agent-canvas:1.28.1 (arm64).
+#
+# Levantar:  docker compose -f docker-compose.ollama.yml up -d
+# Ver logs:   docker compose -f docker-compose.ollama.yml logs -f
+# Bajar:      docker compose -f docker-compose.ollama.yml down
+
+services:
+  agent-canvas:
+    image: ghcr.io/openhands/agent-canvas:1.28.1
+    container_name: openhands-canvas
+    restart: unless-stopped
+
+    # Solo loopback del host: el agente ejecuta comandos, el puerto no se expone a la LAN.
+    ports:
+      - "127.0.0.1:8000:8000"
+
+    environment:
+      # --- Sesión / auth ---------------------------------------------------
+      # Sin esto el entrypoint genera y persiste una key en ~/.openhands/agent-canvas/api-key.txt
+      # y el frontend la pide en pantalla (modo público). La inyectamos para
+      # que el navegador entre directo y el PATCH de settings funcione sin fricción.
+      LOCAL_BACKEND_API_KEY: "${OH_LOCAL_BACKEND_API_KEY:-openhands-local-dev}"
+      # Publica la key embebida en el HTML: solo seguro con el puerto en loopback (arriba).
+      AGENT_CANVAS_ALLOW_LAN_SESSION_KEY: "true"
+
+      # --- Ollama como proveedor de LLM -----------------------------------
+      # El contenedor no ve el loopback del host: necesita host.docker.internal.
+      # (Ollama escucha en *:11434, verificado con lsof.)
+      #
+      # OJO: la config del LLM NO se setea por env var. El Config del
+      # agent-server no tiene campo "llm"; la config vive en el settings store
+      # (settings.json) y se escribe por API: PATCH /api/settings con
+      # agent_settings_diff.llm. Ver scripts/configure-ollama.sh.
+      OLLAMA_HOST: "http://host.docker.internal:11434"
+
+      # --- Sandbox ---------------------------------------------------------
+      # "docker" = cada conversación corre en su propio contenedor.
+      # Requiere que el agent-server tenga acceso al socket de Docker.
+      # "local" = ejecuta en el filesystem del contenedor (más simple para probar).
+      OH_CONVERSATION_RUNTIME: "${OH_CONVERSATION_RUNTIME:-local}"
+
+      # --- Varios ----------------------------------------------------------
+      OH_ENABLE_BROWSER: "false"     # sin browser: el sandbox no lo trae en esta imagen
+      OH_SUPPRESS_BANNER: "1"
+      LOG_JSON: "true"
+
+    volumes:
+      # Estado persistente: conversations, settings (LLM profiles), keys, DB de automation.
+      - "${HOME}/.openhands:/home/openhands/.openhands"
+      # Workspace por defecto del agente.
+      # OJO: el SDK usa el path RELATIVO "workspace/project" (ver
+      # agent_server/config.py → workspace_path, y el DEFAULT_WORKING_DIR del
+      # frontend). Dentro del contenedor el cwd es "/", así que el path real es
+      # /workspace/project — no /home/openhands/workspace/project.
+      - "${HOME}/openhands-sandbox:/workspace/project"
+      # NO se monta /var/run/docker.sock: con conversation_runtime=local el
+      # agente no necesita hablar con Docker, y sin el socket el container no
+      # puede tocar los containers del host. Se agrega solo si se pasa a
+      # OH_CONVERSATION_RUNTIME=docker (ver README-OLLAMA.md).
+
+    extra_hosts:
+      # Resuelve host.docker.internal aunque en Docker Desktop no esté en /etc/hosts.
+      - "host.docker.internal:host-gateway"
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s

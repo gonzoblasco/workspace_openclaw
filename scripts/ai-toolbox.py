@@ -124,34 +124,6 @@ TOOLS: List[Dict[str, Any]] = [
         "note": "Bajo demanda: se levanta con 'toolbox up vane'. A los 45 s por research se lo deja encendido mientras se usa y se baja al terminar.",
     },
     {
-        "id": "opencode",
-        "name": "opencode",
-        "what": "Servidor de agente de codigo. Sesiones, DB y logs persistidos.",
-        "kind": "docker",
-        "runtime": "docker compose",
-        "port": 4096,
-        "compose": [_p(PROJECTS / "opencode" / "docker" / "docker-compose.yml")],
-        "health": ("http://localhost:4096/health", [200]),
-        "up": None,
-        "down": None,
-        "on_demand": True,
-        "note": "Bajo demanda: 'toolbox up opencode'. La cata del 2026-10-27 lo midio: acierta igual que Claude Code con el mismo modelo, y es el de menor consumo de tokens de entrada.",
-    },
-    {
-        "id": "openhands",
-        "name": "OpenHands",
-        "what": "Agent Canvas: agente que ejecuta tareas con su propia interfaz web.",
-        "kind": "docker",
-        "runtime": "docker compose",
-        "port": 8000,
-        "compose": [_p(PROJECTS / "openhands" / "docker-compose.ollama.yml")],
-        "health": ("http://localhost:8000/", [200, 301, 302, 307, 308]),
-        "up": None,
-        "down": None,
-        "on_demand": True,
-        "note": "Bajo demanda: 'toolbox up openhands'. Agente con UI web propia: es lo unico del stack que permite pilotar el agente a mano. La cata del 2026-10-27 lo midio: acierta 30/30 pero consume 8x los tokens de entrada de Claude Code (reenvia todo el contexto cada turno).",
-    },
-    {
         "id": "cline",
         "name": "Cline",
         "what": "Agente de codigo open source. CLI + Hub dashboard. Usa el provider ollama.",
@@ -205,7 +177,8 @@ def compose_projects() -> List[Dict[str, str]]:
 
     Se empareja por ARCHIVO, no por el `name:` del compose: la mayoria de estos
     compose no declaran `name:`, y el nombre del proyecto lo deriva Docker del
-    directorio (por eso opencode es "docker" y openhands es "openhands").
+    directorio (por eso un stack sale como "docker" si el compose vive en
+    docker/).
     Buscar el `name:` en el archivo daba 6 herramientas como "apagado" mientras
     estaban corriendo. La fuente de verdad es `docker compose ls`, que ya sabe
     el emparejamiento.

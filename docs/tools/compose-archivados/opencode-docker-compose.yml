@@ -1,0 +1,45 @@
+# opencode (built from this repo) + Ollama as the model provider.
+#
+#   docker compose -f docker/docker-compose.yml up -d
+#   docker compose -f docker/docker-compose.yml logs -f
+#
+# The container talks to the Ollama daemon running on the macOS host through
+# host.docker.internal:11434 (Docker Desktop resolves it automatically).
+services:
+  opencode:
+    build:
+      context: ..
+      dockerfile: docker/opencode-ollama.Dockerfile
+    image: opencode-local:dev
+    container_name: opencode
+    command: ["serve", "--port", "4096", "--hostname", "0.0.0.0"]
+    ports:
+      # Bound to localhost: the server is password protected, but there is no
+      # reason to expose it to the LAN.
+      - "127.0.0.1:4096:4096"
+    environment:
+      # Stable password: without it the server generates a random one on every
+      # boot and you would have to read it from the logs each time.
+      OPENCODE_SERVER_PASSWORD: ${OPENCODE_SERVER_PASSWORD:-opencode-local-dev}
+      OPENCODE_SERVER_USERNAME: ${OPENCODE_SERVER_USERNAME:-opencode}
+      # Explicit config file: the provider block points Ollama at the host daemon.
+      OPENCODE_CONFIG: /root/.config/opencode/opencode.json
+      # Persist sessions, DB and logs across restarts.
+      OPENCODE_CONFIG_DIR: /root/.config/opencode
+      XDG_DATA_HOME: /root/.local/share
+      XDG_STATE_HOME: /root/.local/state
+      XDG_CACHE_HOME: /root/.cache
+    volumes:
+      - ./config/opencode.json:/root/.config/opencode/opencode.json:ro
+      - opencode-data:/root/.local/share
+      - opencode-state:/root/.local/state
+      # Scratch workspace for opencode to work on.
+      - ./workspace:/workspace
+    extra_hosts:
+      # Lets the container reach the host's Ollama daemon by name.
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+volumes:
+  opencode-data:
+  opencode-state:

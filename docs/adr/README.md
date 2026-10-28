@@ -41,6 +41,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-090 | [Política de niveles de pensamiento por agente y asignación de modelos por rol](./ADR-090-pensamiento-nivel-configuracion.md) | LOS MODELOS Y NIVEL DE THINKING por rol (política vigente, verificada contra runtime) |
 | ADR-102 | [minimax-m3.1-flash:cloud como motor del CORE (main)](./ADR-102-minimax-m31-flash-motor-core.md) | ⚠️ Modelos LLM (con 076/090) - el CORE pasa a minimax-m3.1-flash por cata de 8 roles x 5 clases |
 | ADR-105 | [El pipeline pasa de A/B a A/B/C: el tercer agente es la red de tests](./ADR-105-pipeline-abc-tercer-agente-red-de-tests.md) | EL TERCER ROL: C escribe la red de regresión (minimax); el rework vuelve a A, con la condición de que todo finding de B se convierta en un test de C |
+| ADR-106 | [Se retiran opencode y OpenHands; Claude Code queda como único harness](./ADR-106-retiro-opencode-y-openhands.md) | ⚠️ Herramientas transversales (con 104/105) - el criterio es "el que responda bien siempre", no el mejor promedio |
 
 ### Modelos LLM (política de asignación)
 | ADR | Decide |

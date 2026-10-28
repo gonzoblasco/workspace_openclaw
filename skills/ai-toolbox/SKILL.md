@@ -8,7 +8,7 @@ metadata:
     - registry
     - ollama
     - docker
-description: "Registro vivo de las herramientas IA instaladas en la maquina (browser-use, Vane, opencode, OpenHands, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
+description: "Registro vivo de las herramientas IA instaladas en la maquina (browser-use, Vane, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
 user-invocable: true
 ---
 
@@ -59,7 +59,7 @@ equivale a:
 
 ### IDs validos
 
-`ollama`, `browser-use`, `browser-use-ui`, `vane`, `opencode`, `openhands`, `cline`.
+`ollama`, `browser-use`, `browser-use-ui`, `vane`, `cline`.
 
 ### Cuando la herramienta es BAJO DEMANDA
 
@@ -153,8 +153,9 @@ que no tienen ficha, **eso se reporta**: es una herramienta nueva sin registrar.
 - **`down` hace `stop`, no `down` de compose.** Conserva containers y
   volumenes. Borrar volumenes es otra operacion, y requiere OK explicito.
 - **Emparejamiento por ARCHIVO de compose.** Docker deriva el nombre del
-  proyecto del directorio, no del `name:` (por eso opencode es `docker` y
-  openhands es `openhands`). El script empareja por archivo; si se
+  proyecto del directorio, no del `name:` del compose (por eso un stack sale
+  como `docker` si su compose vive en `docker/`). El script empareja por
+  archivo; si se
   agrega una herramienta, el compose tiene que existir en la ruta declarada.
 - **La vista de `docs/tools/REGISTRY.md` se regenera con `catalog --write`.**
   Editarla a mano la desincroniza; `catalog --check` lo detecta.

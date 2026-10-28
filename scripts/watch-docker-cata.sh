@@ -13,7 +13,10 @@
 # TRAMPA QUE YA MORDIÓ (2026-10-28 11:00): la fase cloud termina, la fase
 # local arranca un minuto despues, y en ese hueco el watcher vio "Docker
 # abierto + nada corriendo" y aviso. La fase local SI necesita Docker
-# (opencode y openhands corren en contenedores). Por eso el watcher no se
+# (opencode y openhands corrian en contenedores; AMBOS FUERON ELIMINADOS el
+# 2026-10-28, ver ADR-106, asi que hoy la cata no necesita Docker en absoluto.
+# El watcher se mantiene por si se reintroduce un harness en Docker). Por eso
+# el watcher no se
 # conforma con mirar procesos: mira el ESTADO de la cata. La fase local sella
 # cada modelo con LOCAL-DONE; si faltan sellos, la cata NO termino.
 set -uo pipefail

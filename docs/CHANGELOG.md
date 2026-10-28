@@ -6,6 +6,29 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-28] - Se retiran opencode y OpenHands; Claude Code queda como único harness
+
+### Removed
+- **opencode y OpenHands eliminados del stack** (ADR-106). Containers (`opencode`, `openhands-canvas`), imágenes (`opencode-local:dev` 343 MB y `ghcr.io/openhands/agent-canvas:1.28.1` 5,4 GB), volúmenes (`docker_opencode-data`, `docker_opencode-state`) y los proyectos `projects/opencode` (635 MB) y `projects/openhands` (76 MB), estos últimos a la papelera. **~6,3 GB recuperados.**
+- `scripts/ai-toolbox.py`: entradas `opencode` y `openhands` borradas del registro (eran las líneas 127-152). `python3 scripts/ai-toolbox.py` devuelve ahora 5 herramientas.
+- `docs/tools/REGISTRY.md`: filas de la tabla y las dos fichas completas reemplazadas por una sección `### opencode y OpenHands - ELIMINADOS (2026-10-28)`.
+- `skills/ai-toolbox/SKILL.md`: `opencode` y `openhands` fuera de la descripción, de la lista de ids y del ejemplo de emparejamiento por archivo.
+
+### Added
+- **`docs/adr/ADR-106-retiro-opencode-y-openhands.md`** - la decisión con la matriz que la sostiene. El criterio no es el promedio ni el techo: es **la celda más baja**. opencode y OpenHands tienen celdas en 0 absoluto; Claude Code nunca bajó de 16/30 y nunca quedó último (0 de 6 modelos).
+- **`docs/tools/compose-archivados/`** - los dos compose (`opencode-docker-compose.yml`, `openhands-docker-compose.ollama.yml`) guardados antes de borrar. Reintroducir cualquiera de los dos no exige reescribir su configuración.
+
+### Fixed
+- **`scripts/preflight-cata.sh` dejaba de funcionar sin los containers.** Las sondas `need opencode ...` y `need openhands ...` fallaban con "No such container". Reemplazadas por una línea informativa; el bloque de catálogo de modelos queda inerte, guardado por `docker ps | grep -qx opencode`, con un `else` que informa que no hay harness Docker que consultar. Sintaxis validada con `bash -n`.
+- `scripts/watch-docker-cata.sh`: el comentario que justificaba mirar el estado de la cata decía que la fase local necesitaba Docker. Ahora aclara que eso era cierto hasta el retiro y que hoy la cata no necesita Docker en absoluto.
+
+### Notes
+- **La fase local de la cata se cortó por decisión de Gonzo** antes de la última celda de `qwen3.5:9b-mlx`. Quedan 3 sellos `LOCAL-DONE` en disco (nova-2b, ornith, gemma4:12b-mlx), reanudables, pero retomar esa fase exige reintroducir un harness en Docker.
+- **`vane` se bajó por error y se volvió a levantar**: el `docker stop` incluía `vane`, que no estaba en el pedido. Restaurado en el mismo turno, `Up (healthy)`.
+- Validadores de ADR en verde tras el alta: `check-adr-integrity.py` → `OK: 61 ADRs, todos indexados, sin duplicados ni refs rotas`; `check-adr-supersede.py` → `OK`.
+
+---
+
 ## [2026-10-28] - Cata con 3 modelos: el ranking de harnesses depende del modelo
 
 ### Added
