@@ -1,7 +1,7 @@
 # ADR-102: `minimax-m3.1-flash:cloud` como motor del CORE (main)
 
 **Fecha:** 2026-10-20 (revisado 2026-10-24: costo reevaluado como **cuota**, decision de mantener minimax, sin cambio de config)
-**Estado:** Aceptado (aplicado al runtime 2026-10-20, verificado; revisado 2026-10-24 sin cambios de runtime)
+**Estado:** **Superseded por ADR-107** (2026-10-28: `deepseek-v4.1-flash:cloud` vuelve a primario del CORE y defaults, minimax queda alternativo). Aplicado al runtime 2026-10-20, verificado; revisado 2026-10-24 sin cambios de runtime. La ficha de capacidades y los riesgos 1-2 siguen vigentes como medición del modelo.
 **Decisores:** Gonzo / Kanam
 **Origen:** cata de 8 roles x 5 clases de estres (`docs/ecosystem/cata-minimax-m31-flash-2026-10-20.md`)
 **Relacionado:** ADR-090 (asignacion de modelos por rol), ADR-077/088/089 (pipeline A/B), ADR-076 (ningun agente hereda modelo local)

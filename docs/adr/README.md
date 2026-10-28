@@ -39,7 +39,8 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-088 | [El pipeline A/B tiene enforcement, no buena voluntad](./ADR-088-pipeline-ab-enforcement.md) | EL ENFORCEMENT: el pacto A/B está verificado mecánicamente |
 | ADR-089 | [Pre-filtro barato en el pipeline A/B (gemma4:cloud) con guard de falso negativo](./ADR-089-prefiltro-pipeline-ab.md) | EL PRE-FILTRO: gemma4 triagea, pero no autoriza solo |
 | ADR-090 | [Política de niveles de pensamiento por agente y asignación de modelos por rol](./ADR-090-pensamiento-nivel-configuracion.md) | LOS MODELOS Y NIVEL DE THINKING por rol (política vigente, verificada contra runtime) |
-| ADR-102 | [minimax-m3.1-flash:cloud como motor del CORE (main)](./ADR-102-minimax-m31-flash-motor-core.md) | ⚠️ Modelos LLM (con 076/090) - el CORE pasa a minimax-m3.1-flash por cata de 8 roles x 5 clases |
+| ADR-102 | [minimax-m3.1-flash:cloud como motor del CORE (main)](./ADR-102-minimax-m31-flash-motor-core.md) | ⚠️ Modelos LLM (con 076/090/107) - el CORE pasó a minimax-m3.1-flash por cata de 8 roles x 5 clases (**superseded por ADR-107**) |
+| ADR-107 | [Swap deepseek/minimax en CORE y defaults por ahorro de recursos](./ADR-107-swap-deepseek-minimax-ahorro-recursos.md) | ⚠️ Modelos LLM (con 076/090) - deepseek-v4.1-flash vuelve a primario del CORE y defaults; minimax queda alternativo; gemma4 sigue Helper; el pipeline no cambia |
 | ADR-105 | [El pipeline pasa de A/B a A/B/C: el tercer agente es la red de tests](./ADR-105-pipeline-abc-tercer-agente-red-de-tests.md) | EL TERCER ROL: C escribe la red de regresión (minimax); el rework vuelve a A, con la condición de que todo finding de B se convierta en un test de C |
 | ADR-106 | [Se retiran opencode y OpenHands; Claude Code queda como único harness](./ADR-106-retiro-opencode-y-openhands.md) | ⚠️ Herramientas transversales (con 104/105) - el criterio es "el que responda bien siempre", no el mejor promedio |
 
@@ -48,7 +49,8 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 |---|---|
 | ADR-076 | [Ningun agente hereda un modelo local (cloud primero, locales como ultimo recurso)](./ADR-076-ningun-agente-hereda-modelo-local.md) | Ningún agente hereda un modelo local (cloud primero); primary+fallbacks explícitos |
 | ADR-090 | [Política de niveles de pensamiento por agente y asignación de modelos por rol](./ADR-090-pensamiento-nivel-configuracion.md) | ⚠️ Pipeline A/B (con 043/049/077/088/089) - asignación vigente de modelos por rol |
-| ADR-102 | [minimax-m3.1-flash:cloud como motor del CORE (main)](./ADR-102-minimax-m31-flash-motor-core.md) | ⚠️ Modelos LLM (con 076/090) - reasignación del rol `main` a minimax-m3.1-flash:cloud |
+| ADR-102 | [minimax-m3.1-flash:cloud como motor del CORE (main)](./ADR-102-minimax-m31-flash-motor-core.md) | ⚠️ Modelos LLM (con 076/090/107) - reasignación del rol `main` a minimax-m3.1-flash:cloud (**superseded por ADR-107**) |
+| ADR-107 | [Swap deepseek/minimax en CORE y defaults por ahorro de recursos](./ADR-107-swap-deepseek-minimax-ahorro-recursos.md) | ⚠️ Modelos LLM (con 076/090) - `main` y los defaults vuelven a `deepseek-v4.1-flash:cloud`; minimax pasa a fallback; el pipeline A/B queda intacto |
 | ADR-103 | [LiteLLM se descarta - la capa de router ya existe en el stack propio](./ADR-103-litellm-se-descarta.md) | ⚠️ Modelos LLM (con 076/090) - no se adopta un gateway LLM: el routing, budgets y guardrails ya están en el stack; queda el multi-tenant como deuda |
 | ADR-104 | [La búsqueda laboral como proceso factorizado, no como odisea por puesto](./ADR-104-busqueda-laboral-proceso-factorizado.md) | La postulación es un skill con adaptadores por ATS: el know-how de formularios de terceros se paga una vez, y el envío siempre queda para Gonzo |
 

@@ -6,6 +6,28 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-28] - Swap deepseek/minimax: deepseek vuelve a primario del CORE, minimax queda alternativo
+
+### Changed
+- **`deepseek-v4.1-flash:cloud` vuelve a ser primario de `main` y de `agents.defaults`; `minimax-m3.1-flash:cloud` pasa a fallback/alternativo** (ADR-107, supersede ADR-102). Motivo: el ahorro medido en uso real es de **~20% de cuota**, no el 0,5% que estimó la revisión de ADR-102 (que leyó el delta por request, no el peso del CORE sobre los turnos).
+- `agents.defaults.utilityModel` queda en `gemma4:cloud` (el Helper, sin cambio). El pipeline A/B no se toca: A `gpt-oss:120b-cloud`, B `deepseek-v4.1-flash:cloud` (revisor), pre-filtro `gemma4:cloud`.
+- Los otros siete agentes (dev, ops, auditor, critic, planner, mind, studio) no cambian: diff contra backup muestra **un solo agente modificado** (`main`).
+
+### Added
+- **`docs/adr/ADR-107-swap-deepseek-minimax-ahorro-recursos.md`** - la decisión, con la corrección de la unidad de medida (cuota de GPU por sesión, no por request), la tabla antes/después, y la verificación del runtime vivo.
+- `ADR-102` marcado **Superseded por ADR-107** en su estado y en las dos filas del índice (`docs/adr/README.md`); su ficha de capacidades y riesgos 1-2 siguen vigentes como medición del modelo.
+
+### Fixed
+- Bloques managed re-aplicados para que la prosa no quede mintiendo: `model_primary` y `model_alternative` (`minimax-m3.1-flash:cloud`) seteados, `model_triple`/`model_by_agent` regenerados → `AGENTS.md` línea 150 y `docs/SETUP.md` línea 19 con los modelos nuevos. Segunda corrida de `apply` = "al día".
+- `gateway-config-drift.sh --accept` corrido tras el cambio intencional → `no config drift`.
+
+### Notes
+- Aplicado con `config patch --file` (`Applied 5 config update(s)`, `Config valid`), backup previo en `/tmp/openclaw.json.bak-20261028-185246`. Alerta `size-drop-vs-last-good` del observador: artefacto del patch, el archivo no perdió ninguna ruta de config (verificado por diff de claves).
+- `doctor` reporta `minimax-m3.1-flash:cloud` como "not in the local model catalog": esperado, es cloud y resuelve por `ollama show`.
+- Queda pendiente confirmar el ahorro al cierre de la ventana semanal de cuota de Ollama.
+
+---
+
 ## [2026-10-28] - Se retiran opencode y OpenHands; Claude Code queda como único harness
 
 ### Removed
