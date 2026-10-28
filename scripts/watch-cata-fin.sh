@@ -14,7 +14,7 @@ OUT="/tmp/cata-harnesses"
 SEALLO="$OUT/CATA-DONE"
 
 # 1. La tanda sigue corriendo?
-if pgrep -f "run-cloud-3.sh|run-sweep-9.sh|run-all.sh" > /dev/null 2>&1; then
+if pgrep -f "run-cloud-3.sh|run-sweep-9.sh|run-all.sh|run-local-1task.sh|chain-local.sh" > /dev/null 2>&1; then
   echo '{"fire": false, "reason": "la tanda sigue en curso"}'
   exit 0
 fi
