@@ -55,6 +55,14 @@ invisible para todo lector y todo guard: ni el indice lo lista, ni check-refs lo
 escanea, ni check-adr-integrity lo ve. Si lleva contenido de un ADR (una nota de
 supersede, un anexo), tiene que vivir en el ADR, no al lado.
 
+TERCERA REGLA - SUFIJO `-archived`. El estado dice si la decision rige; el nombre
+del archivo lo dice tambien, para quien mira un `ls` o un `grep` de rutas. Un ADR
+cuyo estado NO es `Aceptado`/`Accepted` (`Superseded`, `ARCHIVADO`, `Rechazado`)
+tiene que llamarse `ADR-NNN-slug-archived.md`. La inversa tambien: un archivo con
+el sufijo y el estado `Aceptado` es una mentira en la otra direccion -quien lo ve
+por nombre lo saltea, y sigue gobernando-. Un `Aceptado` con un apartado superseded
+NO lleva sufijo: sigue gobernando su materia.
+
 Uso:
     check-adr-supersede.py
 Salida: exit 0 si el grafo es consistente, 1 si hay un superseded sin marcar o un sidecar.
@@ -70,6 +78,14 @@ ADR_DIR = ROOT / "docs" / "adr"
 
 FILE_RE = re.compile(r"^ADR-(\d+)-.+\.md$")
 ADR_CITE = re.compile(r"ADR-(\d+)")
+
+# Sufijo que marca un ADR fuera del espacio de decision (convencion en
+# docs/adr/README.md, "Nombre del archivo").
+ARCHIVED_SUFFIX = "-archived"
+
+# Estados que SI rigen. Cualquier otro (`Superseded`, `ARCHIVADO`, `Rechazado`)
+# exige el sufijo en el nombre.
+ACCEPTED_STATUS = re.compile(r"^\s*(aceptado|accepted)\b", re.I)
 
 # Campos de header donde A declara superseder a otros. El valor tiene que ser
 # una relacion TOTAL: si nombra un apartado/seccion/practica, es parcial.
@@ -110,6 +126,15 @@ def declared_status(text: str) -> str:
 
 def status_marks_superseded(text: str) -> bool:
     return bool(re.search(r"supersed", declared_status(text), re.I))
+
+
+def is_accepted(text: str) -> bool:
+    """True si el estado declara que la decision sigue rigiendo."""
+    return bool(ACCEPTED_STATUS.match(declared_status(text)))
+
+
+def has_archived_suffix(p: Path) -> bool:
+    return p.stem.endswith(ARCHIVED_SUFFIX)
 
 
 def _field_value(text: str, field: str):
@@ -164,6 +189,24 @@ def find_violations(adr_dir: Path = ADR_DIR) -> List[str]:
                 "sidecar invisible: %s (un archivo no-.md en docs/adr/ no lo ve "
                 "ningun lector ni guard; su contenido debe vivir en el ADR)"
                 % p.name
+            )
+
+    # Tercera regla: el nombre tiene que acompanar al estado.
+    for n, p in sorted(files.items()):
+        accepted = is_accepted(text[n])
+        suffixed = has_archived_suffix(p)
+        if accepted and suffixed:
+            violations.append(
+                "ADR-%03d: el archivo lleva el sufijo `-archived` pero su estado es "
+                "'%s'. Quien lo ve por nombre lo saltea y la decision sigue rigiendo: "
+                "sacar el sufijo o corregir el estado."
+                % (n, declared_status(text[n]) or "(vacio)")
+            )
+        elif not accepted and not suffixed:
+            violations.append(
+                "ADR-%03d: su estado es '%s' pero el archivo no lleva el sufijo "
+                "`-archived`. Renombrar con `git mv` a %s-archived.md."
+                % (n, declared_status(text[n]) or "(vacio)", p.stem)
             )
 
     return violations

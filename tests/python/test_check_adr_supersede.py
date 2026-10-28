@@ -16,6 +16,7 @@ Cada test SIEMBRA el defecto en un corpus falso en tmp_path: un chequeo que solo
 corre contra el corpus real limpio no esta probado (puede reportar OK sin mirar).
 """
 import importlib.util
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -31,8 +32,21 @@ def load():
     return mod
 
 
-def write_adr(adr_dir, num, body):
-    p = adr_dir / f"ADR-{num:03d}-test-{num}.md"
+def write_adr(adr_dir, num, body, archived=None):
+    """Siembra un ADR en el vault falso.
+
+    `archived=None` deriva el sufijo del cuerpo, para que los tests que no
+    hablan del nombre no tengan que declararlo. Un test que SIEMBRA el defecto
+    del nombre pasa `archived` explicito.
+    """
+    if archived is None:
+        m = re.search(r"^\*\*(?:Estado|Status):\*\*\s*(.+)$", body, re.M)
+        accepted = bool(m) and bool(re.match(r"^\s*(aceptado|accepted)\b", m.group(1), re.I))
+        archived = not accepted
+    stem = f"ADR-{num:03d}-test-{num}"
+    if archived:
+        stem += "-archived"
+    p = adr_dir / f"{stem}.md"
     p.write_text(body, encoding="utf-8")
     return p
 
@@ -188,6 +202,55 @@ def test_relacionado_generic_context_without_parens_ignored(tmp_path):
 
 
 # --- end-to-end: el script real sobre el corpus real ---
+
+# --- tercera regla: el sufijo `-archived` acompana al estado ---
+
+def test_detects_archived_status_without_suffix(tmp_path):
+    """Un ADR superseded que conserva el nombre viejo se lee como vigente en un `ls`."""
+    mod = load()
+    adr = build_vault(tmp_path)
+    write_adr(adr, 1, "**Estado:** Superseded por ADR-002\n", archived=False)
+    write_adr(adr, 2, "**Estado:** Aceptado\n")
+    v = mod.find_violations(adr)
+    assert any("no lleva el sufijo" in x and "ADR-001" in x for x in v), v
+
+
+def test_detects_suffix_on_an_accepted_adr(tmp_path):
+    """La mentira inversa: con sufijo pero Aceptado. Quien lo ve por nombre lo saltea."""
+    mod = load()
+    adr = build_vault(tmp_path)
+    write_adr(adr, 1, "**Estado:** Aceptado\n", archived=True)
+    v = mod.find_violations(adr)
+    assert any("lleva el sufijo" in x and "ADR-001" in x for x in v), v
+
+
+def test_archived_suffix_satisfies_the_rule(tmp_path):
+    """El contrapeso: estado no-Aceptado CON sufijo no reporta nada."""
+    mod = load()
+    adr = build_vault(tmp_path)
+    write_adr(adr, 1, "**Estado:** Superseded por ADR-002\n", archived=True)
+    write_adr(adr, 2, "**Estado:** Aceptado\n")
+    assert mod.find_violations(adr) == []
+
+
+def test_partial_supersede_keeps_its_name(tmp_path):
+    """Un `Aceptado` con un apartado superseded sigue gobernando: sin sufijo."""
+    mod = load()
+    adr = build_vault(tmp_path)
+    write_adr(adr, 40, "**Status:** Accepted\n", archived=False)
+    write_adr(adr, 53, "**Estado:** Aceptado\n**Supersede:** la seccion de thinking de ADR-040\n")
+    assert mod.find_violations(adr) == []
+
+
+def test_archived_suffix_tolerated_by_integrity():
+    """El sufijo no rompe el matcheo del nombre: los guards deben seguir viendo el ADR."""
+    spec = importlib.util.spec_from_file_location(
+        "check_adr_integrity", ROOT / "scripts" / "check-adr-integrity.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert mod.FILE_RE.match("ADR-102-minimax-m31-flash-motor-core-archived.md")
+
 
 def test_passes_on_real_corpus():
     r = subprocess.run(

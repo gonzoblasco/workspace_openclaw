@@ -6,6 +6,17 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-28] - ADR no vigentes llevan sufijo `-archived` en el nombre del archivo
+
+### Changed
+- **Convención de nombre para ADRs que ya no rigen: sufijo `-archived`.** Todo ADR cuyo `Estado` no sea `Aceptado`/`Accepted` (`Superseded`, `ARCHIVADO`, `Rechazado`) lleva `-archived` antes de la extensión. El número y la cita no cambian (`ADR-NNN`), el archivo no se mueve de directorio, y el renombre va con `git mv` en el mismo commit que el cambio de estado. Documentado en `docs/adr/README.md`, sección "Nombre del archivo".
+- `docs/adr/ADR-102-minimax-m31-flash-motor-core.md` → `ADR-102-minimax-m31-flash-motor-core-archived.md` (único ADR no vigente del corpus: 62 en total, 61 `Aceptado`). Links del índice actualizados.
+
+### Added
+- **`check-adr-supersede.py` tercera regla: el nombre acompaña al estado, en las dos direcciones.** Falla si un ADR no vigente conserva el nombre viejo, y también si un ADR `Aceptado` lleva el sufijo (quien lo ve por nombre lo saltea y la decisión sigue rigiendo). Un `Aceptado` con un apartado superseded **no** lleva sufijo: sigue gobernando su materia.
+- 5 tests nuevos que siembran el defecto en un corpus falso: estado sin sufijo, sufijo sobre `Aceptado`, contrapeso correcto, supersede parcial que conserva el nombre, y el sufijo tolerado por el matcheo de `check-adr-integrity.py`.
+- Skill `adr-archiving` actualizado: paso de renombre con `git mv` y la regla de que el sufijo es parte del mecanismo, no un adorno.
+
 ## [2026-10-28] - Swap deepseek/minimax: deepseek vuelve a primario del CORE, minimax queda alternativo
 
 ### Changed
