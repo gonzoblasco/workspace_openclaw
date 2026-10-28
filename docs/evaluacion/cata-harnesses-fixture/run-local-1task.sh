@@ -39,6 +39,12 @@
 #     Los artefactos son acumulativos y sobreviven a una corrida perdida;
 #     las filas son lo que la suite y el informe necesitan.
 #
+#  4. LOCK: el driver se toma un lock con flock. Sin el, un watchdog que
+#     relanza el driver cada 5 minutos puede arrancar una SEGUNDA tanda en
+#     paralelo si la primera esta entre modelos (la ventana sin runner.py).
+#     Las dos tandas miden las mismas celdas al mismo tiempo y se pisan los
+#     results.json y los artefactos.
+#
 # NO OLVIDAR: NO cerrar Docker durante la fase local (opencode y OpenHands son
 # containers). Al terminar, cerrar Docker Desktop para devolver los 7,7 GB
 # de memoria wired.
@@ -58,6 +64,39 @@ LOCALES=(
 TAREAS="T1"
 
 slug() { echo "$1" | tr ':/' '__'; }
+
+# Trampa 4: LOCK. Un watchdog que relanza el driver cada 5 minutos puede
+# arrancar una segunda tanda en paralelo si la primera esta entre modelos (la
+# ventana sin runner.py). Con el lock, la segunda tanda espera en vez de medir
+# las mismas celdas al mismo tiempo.
+#
+# OJO: macOS no trae flock. Se usa mkdir, que es atomico en POSIX: el que lo
+# crea gana, el otro espera. Si el lock es viejo (el driver murio sin
+# limpiarlo), se libera por edad.
+LOCK="$OUT/.local-driver.lock"
+LOCK_MAX_AGE=21600   # 6 h: un driver que dura mas se considera vivo
+esperar_lock() {
+  local i
+  for i in $(seq 1 120); do
+    if mkdir "$LOCK" 2>/dev/null; then
+      echo $$ > "$LOCK/pid" 2>/dev/null
+      return 0
+    fi
+    # Lock viejo: el driver que lo tomo murio sin limpiarlo.
+    if [ -d "$LOCK" ]; then
+      local edad=$(( $(date +%s) - $(stat -f %m "$LOCK" 2>/dev/null || echo 0) ))
+      if [ "$edad" -gt "$LOCK_MAX_AGE" ]; then
+        rm -rf "$LOCK"
+        continue
+      fi
+    fi
+    sleep 5
+  done
+  return 1
+}
+esperar_lock || { echo "no se pudo tomar el lock del driver local"; exit 1; }
+# Liberar el lock al salir, para que el proximo watchdog no espere 6 h.
+trap 'rm -rf "$LOCK"' EXIT
 
 # Cuantas FILAS de T1 tiene la medicion de un modelo.
 n_filas() {
