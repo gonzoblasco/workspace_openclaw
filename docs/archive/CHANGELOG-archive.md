@@ -4,6 +4,41 @@
 
 ---
 
+## [2026-10-13] - Cierre de sesion: el HANDOFF no puede perder una sesion (historial + indice)
+
+### Added
+- **`scripts/session-handoff.py` preserva el historial de cierres por proyecto.** El HANDOFF es last-writer-wins por diseno (es "estado actual"), asi que dos cierres sobre el mismo proyecto perdian el anterior. Ahora, dentro del mismo `file_lock` (B6): **(A)** el HANDOFF previo se respalda en `.knowledge/handoff-history/<YYYY-MM-DD-HHMM>-HANDOFF.md` antes de pisarlo; **(C)** cada cierre appendea una linea a `.knowledge/SESSIONS.md` (append-only, nunca pisa filas previas). El daily (DB) ya era append con fingerprint de sesion; el hueco estaba en el HANDOFF.
+
+### Added
+- **`tests/python/test_session_handoff.py` (3 tests):** primer cierre crea HANDOFF + indice sin historial; segundo cierre deja el HANDOFF nuevo, el anterior en `handoff-history/` y 2 filas en el indice; el indice es append puro (sin perder filas). Probados sobre `tmp_path`, nunca el workspace real.
+
+### Notes
+- **Por que:** pedido de Gonzo (2026-10-13): "tengo miedo cierre dos veces sesion en dos conversaciones distintas y se sobre escriban". El miedo era correcto en la forma: el HANDOFF pisa, el daily no. Se elige conservar el modelo mental del HANDOFF (estado actual) y blindar el historial por dos vias independientes, en lugar de convertir el HANDOFF en un documento acumulativo.
+- **Verificacion:** `py_compile` OK; 320 tests Python de la suite en verde; `check_em_dash` OK; test E2E en `/tmp` (dos cierres) con backup y append confirmados. Commits `f3ca0e6322` (script + tests); CI `Skill Scripts CI` #38473178779 success.
+
+---
+
+## [2026-10-13] - `projects/` es una carpeta plana: se retira la capa "agregado" (y una afirmacion falsa mia)
+
+### Removed
+- **La capa "repo agregado" (`projects_openclaw`).** `scripts/aggregate-sync.sh` (root y copia de kanam-ops) pasa a **stub RETIRED** que falla con la razon; `init-project.sh` e `initial-setup.sh` dejan de registrar/armar el agregado. `docs/SETUP.md`, `AGENTS.md`, `docs/AGENTS-DETALLE.md`, la skill `workspace-portfolio-hygiene` (SKILL + reference) y `.gitignore` describen el modelo real.
+
+### Fixed
+- **Corregida una afirmacion falsa mia (2026-10-12):** anote en `docs/ROADMAP.md` que "`projects/.git` apunta hoy a `workspace_openclaw`". **Falso:** `projects/` nunca tuvo `.git` propio; `git -C projects` simplemente sube al `.git` del workspace y reporta *su* remote. Nota corregida en el lugar.
+
+### Changed
+- **Modelo de proyectos (confirmado por Gonzo 2026-10-13; consistente con ADR-098):** `projects/` es una carpeta contenedora plana, **ignorada 100%** por el workspace git; cada `projects/<slug>/` es **su propio repo** (incluye `.knowledge/`; la memoria viaja con el proyecto). No hay capa intermedia.
+- **`init-project.sh` reescrito:** crea el proyecto con su `.knowledge/` **trackeado en el repo del proyecto** (se elimino el modelo de "blob en el workspace git", que bajo `/projects/` ignorado abortaba el script) y elimina el registro en el agregado.
+- **`initial-setup.sh` reescrito:** el paso 2 pasa de "armar `projects/` como clon del agregado" a "asegurar la carpeta plana (NO un repo)"; `verify` reporta si `projects/` es un repo (error) y cuantos proyectos tienen su `.git` propio.
+- **`ADR-066`:** nota fechada (el modelo de tracking evoluciono; la decision del ADR no cambia). **`kanam-os-layers-evaluacion.md`** y la linea de scripts de `agents/kanam-ops/AGENTS.md`: "triple-git"/`aggregate-sync` -> modelo vigente.
+
+### Notes
+- **Verificacion:** `bash -n` OK en los 4 scripts; `check-adr-integrity.py` y `check-adr-supersede.py` OK (96 ADRs); `check-refs.py --all` OK (559 rutas); sin guiones largos.
+- **Retiro con motivo, no borrado silencioso (ADR-067 §4):** los scripts quedan como stub que nombra la razon; el repo `gonzoblasco/projects_openclaw` sigue archivado en GitHub.
+- **Deuda anotada:** `sanitize-skills.py` y `publish-skills.sh` todavia tratan `projects_openclaw` como un slug interno a sanear (inocuo); dejados por ser de la via de publicacion de skills (archivada, ADR-079).
+
+---
+
 ## [2026-10-12] - S1: la fuente unica de modelos es ADR-090 (cabeceras de 040/041/053 dejan de mentir)
 
 ### Changed

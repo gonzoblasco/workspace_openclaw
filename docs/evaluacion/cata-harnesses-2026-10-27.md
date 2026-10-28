@@ -11,6 +11,16 @@ verdad de base de la suite oculta (no prosa de juez).
 **Runner:** `playground/cata-harnesses-2026-10-27/runner.py`
 **Artefactos crudos:** `/tmp/cata-harnesses/` (results.json, suite.json, judge.json)
 
+> **AMPLIACION (2026-10-28): este documento esta SUPERADO en su conclusion.**
+> La cata de UN solo modelo no puede separar el harness del modelo. Con
+> `gpt-oss:120b-cloud` y `nemotron-3-super:cloud` (27 corridas mas), el ranking
+> de harnesses **se invierte** y aparecieron dos fallos reales de harness
+> (nemotron+OpenHands agota las iteraciones y no entrega; gpt-oss+opencode
+> muere sin `finish_reason`). Ademas, un bug PROPIO del runner (el corpus se
+> preparaba un nivel mas arriba de donde opencode trabaja) invalido las
+> celdas de opencode de este documento: fueron re-ejecutadas.
+> **Ver `docs/evaluacion/cata-harnesses-3-modelos-2026-10-28.md`.**
+
 ---
 
 ## 1. El control se verifico antes de medir

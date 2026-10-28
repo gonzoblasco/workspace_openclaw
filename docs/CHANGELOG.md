@@ -1,8 +1,34 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-13). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-14). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
+
+---
+
+## [2026-10-28] - Cata con 3 modelos: el ranking de harnesses depende del modelo
+
+### Added
+- **`docs/evaluacion/cata-harnesses-3-modelos-2026-10-28.md`** - la ampliacion pedida: `gpt-oss:120b-cloud` y `nemotron-3-super:cloud` sobre los mismos 3 harnesses y las mismas 3 tareas. **27 corridas, todas con el control verificado.** Cambia la conclusion de la cata de deepseek sola.
+- **El ranking de harnesses se INVIERTE entre modelos.** Con gpt-oss gana OpenHands (30/30) y opencode queda ultimo (23/30); con nemotron-super gana opencode (29/30) y OpenHands queda ultimo (21/30). Con deepseek los tres empatan 30/30. **Claude Code es el mas estable: nunca queda ultimo y nunca colapsa** (2o con dos modelos, empate con el tercero).
+- **Un solo modelo no separa el harness del modelo.** El "empate" de la cata de deepseek (90/90 los tres) no era "los harnesses son iguales": era que ese modelo no discriminaba. La unidad de decision real es **harness + modelo**, no el harness.
+- **Jueces cruzados:** cada modelo juzga a los otros dos, y `judge.py` **aborta** si el juez coincide con el modelo candidato (un juez que es candidato se auto-prefiere y el ranking seria falso).
+- `playground/cata-harnesses-2026-10-27/` - el runner, paramerizado por modelo (`CATA_MODEL`, `CATA_OUT`), mas `consolidate.py` (reconstruye las 27 filas desde los artefactos), `recover-meta.py` (recupera metadatos del log) y `analyze.py` (el cruce modelo x harness).
+
+### Fixed
+- **BUG PROPIO que invalido las celdas de opencode de la primera tanda.** El compose de opencode monta `./workspace:/workspace` desde `docker/`, asi que el agente trabaja en `docker/workspace/workspace/_cata` y el runner preparaba el corpus en `docker/workspace/_cata`: **un nivel de diferencia, y el agente no via la tarea.** Se manifesto como 5 caracteres con el texto "PROBE" (el artefacto del probe de control) y como un ratio inventado (4.38:1 sobre `#ffffff`, un color que no existe en el tema dark). Sin revisar el entregable, "gpt-oss/opencode = 1/10" habria entrado al informe como un defecto del harness. **Corregido y las 9 celdas de opencode re-ejecutadas** (con el fix, opencode+deepseek sigue dando 30/30).
+- **Un re-run de UNA sola celda SOBREESCRIBE `results.json` y pierde los metadatos de los otros harnesses.** Los artefactos son acumulativos: `consolidate.py` reconstruye desde ahi, y `recover-meta.py` completa desde el log de la corrida.
+
+### Measured
+- **Fallo real: `nemotron-3-super` + OpenHands agota las iteraciones y no entrega.** T3 termino en error con 0 caracteres tras 30 acciones de exploracion, y se REPRODUCE en una segunda corrida. Sin leer el log de acciones, "6/12" parece que el modelo no entendio la tarea: habia gastado el turno explorando. Es un fallo de infraestructura disfrazado de tarea dificil.
+- **Fallo real: `gpt-oss` + opencode muere sin `finish_reason`** (`OpenAI Chat stream ended without finish_reason`) en 2 de 3 celdas. Es del harness contra ese modelo: con deepseek y con nemotron no lo hace.
+- **El costo de OpenHands es su patron de contexto, no su modelo:** 5,5x a 8,0x los tokens de entrada de Claude Code en los tres modelos (reenvia todo el contexto cada turno: 59-80 turnos contra 3 de Claude Code). **Claude Code es el de menor consumo de tokens de entrada en los tres modelos.**
+- **El juez ciego coincide con la verdad de base en los extremos** (OpenHands con nemotron 4.83 es el peor y es el que no entrega; opencode con nemotron 9.33 es el mejor y es el que mas acierta): la prosa y el pass/fail dicen lo mismo.
+- **Se confirma el descarte de `nemotron-3-ultra`** (ADR-090: mas grande, mismo contexto que super, mas lento y mas caro, perdio el benchmarking). Se midio con `nemotron-3-super`.
+
+### Changed
+- **El veredicto operativo se precisa:** no se retira nada (los tres harnesses aciertan 30/30 con su mejor modelo), pero **que harness usar depende del modelo**. Default: Claude Code (el mas estable y el mas barato en tokens de entrada). opencode y OpenHands quedan bajo demanda, cada uno con su pairing: opencode con nemotron-super (29/30) y OpenHands con gpt-oss o deepseek (30/30) mas la UI web.
+- **El documento de la cata de deepseek (`cata-harnesses-2026-10-27.md`) queda marcado como SUPERADO en su conclusion**, con el puntero al de 3 modelos.
 
 ---
 
@@ -991,40 +1017,5 @@ ADR-099 (LangChain como capa de ejecucion), ADR-103 (LiteLLM se descarta), ADR-1
 ### Notes
 - **Verificacion:** `py_compile` OK en los 2 scripts; suite Python 320/320 en verde; `changelog-rotate.py --check` OK (30 activas, 175 archivadas, corte 2026-09-30); `check-refs.py --all` OK (565 rutas).
 - **Hallazgo del diagnostico:** la rotacion NO estaba rota (mi primera hipotesis fue erronea); el archivo estaba correcto *segun su politica*. El problema real era la politica (ventana demasiado generosa) + la ubicacion (raiz).
-
----
-
-## [2026-10-13] - Cierre de sesion: el HANDOFF no puede perder una sesion (historial + indice)
-
-### Added
-- **`scripts/session-handoff.py` preserva el historial de cierres por proyecto.** El HANDOFF es last-writer-wins por diseno (es "estado actual"), asi que dos cierres sobre el mismo proyecto perdian el anterior. Ahora, dentro del mismo `file_lock` (B6): **(A)** el HANDOFF previo se respalda en `.knowledge/handoff-history/<YYYY-MM-DD-HHMM>-HANDOFF.md` antes de pisarlo; **(C)** cada cierre appendea una linea a `.knowledge/SESSIONS.md` (append-only, nunca pisa filas previas). El daily (DB) ya era append con fingerprint de sesion; el hueco estaba en el HANDOFF.
-
-### Added
-- **`tests/python/test_session_handoff.py` (3 tests):** primer cierre crea HANDOFF + indice sin historial; segundo cierre deja el HANDOFF nuevo, el anterior en `handoff-history/` y 2 filas en el indice; el indice es append puro (sin perder filas). Probados sobre `tmp_path`, nunca el workspace real.
-
-### Notes
-- **Por que:** pedido de Gonzo (2026-10-13): "tengo miedo cierre dos veces sesion en dos conversaciones distintas y se sobre escriban". El miedo era correcto en la forma: el HANDOFF pisa, el daily no. Se elige conservar el modelo mental del HANDOFF (estado actual) y blindar el historial por dos vias independientes, en lugar de convertir el HANDOFF en un documento acumulativo.
-- **Verificacion:** `py_compile` OK; 320 tests Python de la suite en verde; `check_em_dash` OK; test E2E en `/tmp` (dos cierres) con backup y append confirmados. Commits `f3ca0e6322` (script + tests); CI `Skill Scripts CI` #38473178779 success.
-
----
-
-## [2026-10-13] - `projects/` es una carpeta plana: se retira la capa "agregado" (y una afirmacion falsa mia)
-
-### Removed
-- **La capa "repo agregado" (`projects_openclaw`).** `scripts/aggregate-sync.sh` (root y copia de kanam-ops) pasa a **stub RETIRED** que falla con la razon; `init-project.sh` e `initial-setup.sh` dejan de registrar/armar el agregado. `docs/SETUP.md`, `AGENTS.md`, `docs/AGENTS-DETALLE.md`, la skill `workspace-portfolio-hygiene` (SKILL + reference) y `.gitignore` describen el modelo real.
-
-### Fixed
-- **Corregida una afirmacion falsa mia (2026-10-12):** anote en `docs/ROADMAP.md` que "`projects/.git` apunta hoy a `workspace_openclaw`". **Falso:** `projects/` nunca tuvo `.git` propio; `git -C projects` simplemente sube al `.git` del workspace y reporta *su* remote. Nota corregida en el lugar.
-
-### Changed
-- **Modelo de proyectos (confirmado por Gonzo 2026-10-13; consistente con ADR-098):** `projects/` es una carpeta contenedora plana, **ignorada 100%** por el workspace git; cada `projects/<slug>/` es **su propio repo** (incluye `.knowledge/`; la memoria viaja con el proyecto). No hay capa intermedia.
-- **`init-project.sh` reescrito:** crea el proyecto con su `.knowledge/` **trackeado en el repo del proyecto** (se elimino el modelo de "blob en el workspace git", que bajo `/projects/` ignorado abortaba el script) y elimina el registro en el agregado.
-- **`initial-setup.sh` reescrito:** el paso 2 pasa de "armar `projects/` como clon del agregado" a "asegurar la carpeta plana (NO un repo)"; `verify` reporta si `projects/` es un repo (error) y cuantos proyectos tienen su `.git` propio.
-- **`ADR-066`:** nota fechada (el modelo de tracking evoluciono; la decision del ADR no cambia). **`kanam-os-layers-evaluacion.md`** y la linea de scripts de `agents/kanam-ops/AGENTS.md`: "triple-git"/`aggregate-sync` -> modelo vigente.
-
-### Notes
-- **Verificacion:** `bash -n` OK en los 4 scripts; `check-adr-integrity.py` y `check-adr-supersede.py` OK (96 ADRs); `check-refs.py --all` OK (559 rutas); sin guiones largos.
-- **Retiro con motivo, no borrado silencioso (ADR-067 §4):** los scripts quedan como stub que nombra la razon; el repo `gonzoblasco/projects_openclaw` sigue archivado en GitHub.
-- **Deuda anotada:** `sanitize-skills.py` y `publish-skills.sh` todavia tratan `projects_openclaw` como un slug interno a sanear (inocuo); dejados por ser de la via de publicacion de skills (archivada, ADR-079).
 
 ---
