@@ -9,12 +9,20 @@
 # REGLA: dispara si Docker esta abierto Y hay evidencia de que hubo cata Y no
 # hay ninguna corrida en curso. No depende de un marcador de fin: si la sesion
 # muere a mitad de camino, el aviso sigue siendo valido.
+#
+# TRAMPA QUE YA MORDIÓ (2026-10-28 11:00): la fase cloud termina, la fase
+# local arranca un minuto despues, y en ese hueco el watcher vio "Docker
+# abierto + nada corriendo" y aviso. La fase local SI necesita Docker
+# (opencode y openhands corren en contenedores). Por eso el watcher no se
+# conforma con mirar procesos: mira el ESTADO de la cata. La fase local sella
+# cada modelo con LOCAL-DONE; si faltan sellos, la cata NO termino.
 set -uo pipefail
 
-OUT="/tmp/cata-harnesses"
-CATA_DIR="/Users/gonzoblasco/.openclaw/workspace/playground/cata-harnesses-2026-10-27"
-STAMP="/tmp/cata-harnesses/.docker-alert-stamp"
+OUT="${CATA_OUT:-/tmp/cata-harnesses}"
+CATA_DIR="${CATA_DIR_OVERRIDE:-/Users/gonzoblasco/.openclaw/workspace/playground/cata-harnesses-2026-10-27}"
+STAMP="${CATA_OUT:-/tmp/cata-harnesses}/.docker-alert-stamp"
 COOLDOWN=3600   # segundos entre avisos (1 hora)
+GRACE=5400      # 90 min: hueco maximo que se tolera sin sello ni driver vivo
 
 # 1. Docker abierto?
 if ! pgrep -f "Docker.app" > /dev/null 2>&1; then
@@ -51,9 +59,104 @@ if runner_vivo; then
 fi
 
 # 3b. El driver de la tanda esta vivo (puede estar entre modelos, sin runner).
-if pgrep -f "run-sweep-9\.sh|run-cloud-3\.sh|run-all\.sh" > /dev/null 2>&1; then
+# OJO: pgrep -f matchea cualquier linea de comando que MENCIONE el nombre,
+# incluyendo los wrappers "zsh -f -c ... run-local-1task.sh" de mis propios
+# comandos de diagnostico. Por eso se descartan los comandos con " -c ".
+driver_vivo() {
+  local pids p cmd
+  pids=$(pgrep -f "run-sweep-9\.sh|run-cloud-3\.sh|run-all\.sh|run-local-1task\.sh|chain-local\.sh" 2>/dev/null)
+  [ -z "$pids" ] && return 1
+  for p in $pids; do
+    [ "$p" = "$$" ] && continue
+    cmd=$(ps -o command= -p "$p" 2>/dev/null)
+    case "$cmd" in
+      *" -c "*) continue ;;
+    esac
+    return 0
+  done
+  return 1
+}
+
+if driver_vivo; then
   rm -f "$STAMP"
   echo '{"fire": false, "reason": "la tanda sigue en curso"}'
+  exit 0
+fi
+
+# 3c. El driver puede haberse lanzado con otro nombre: se busca cualquier
+# proceso con cwd en la cata que sea un script o el runner.
+driver_por_cwd() {
+  local pids p cmd
+  pids=$(pgrep -f "\.sh" 2>/dev/null)
+  [ -z "$pids" ] && return 1
+  for p in $pids; do
+    if lsof -a -p "$p" -d cwd -Fn 2>/dev/null | grep -qx "n$CATA_DIR"; then
+      cmd=$(ps -o command= -p "$p" 2>/dev/null)
+      case "$cmd" in
+        *" -c "*) continue ;;
+        *runner.py*|*run-*.sh|*chain-*.sh) return 0 ;;
+      esac
+    fi
+  done
+  return 1
+}
+
+if driver_por_cwd; then
+  rm -f "$STAMP"
+  echo '{"fire": false, "reason": "la tanda sigue en curso (driver por cwd)"}'
+  exit 0
+fi
+
+# 3d. ESTADO de la cata: la fase local sella cada modelo con LOCAL-DONE.
+# Si faltan sellos, la cata NO termino -> Docker hace falta todavia.
+# Los slugs se leen del propio driver para no duplicar la lista a mano.
+slugs_locales() {
+  local f="$CATA_DIR/run-local-1task.sh" line
+  [ -f "$f" ] || return 0
+  awk '/^LOCALES=\(/,/\)/' "$f" | sed -n 's/.*"\(.*\)".*/\1/p' | while IFS= read -r line; do
+    printf '%s\n' "$(printf '%s' "$line" | tr ':/' '__')"
+  done
+}
+
+TOTAL=0
+SELLADOS=0
+PENDIENTES=""
+while IFS= read -r s; do
+  [ -z "$s" ] && continue
+  TOTAL=$((TOTAL + 1))
+  if [ -f "$OUT/$s/LOCAL-DONE" ]; then
+    SELLADOS=$((SELLADOS + 1))
+  else
+    PENDIENTES="$PENDIENTES $s"
+  fi
+done < <(slugs_locales)
+
+if [ "$TOTAL" -gt 0 ] && [ "$SELLADOS" -lt "$TOTAL" ]; then
+  # Fase local incompleta. Solo se avisa si ademas lleva mucho tiempo MUERTA
+  # (nada cambio en /tmp/cata-harnesses desde hace mas de GRACE).
+  # OJO: en macOS (BSD find) no existe -newermt; se usa -mmin.
+  # El sello propio se excluye: si no, escribirlo lo convertiria en
+  # "actividad reciente" y el aviso nunca volveria a disparar.
+  ULTIMO=$(find "$OUT" -type f -mmin -$((GRACE / 60)) ! -name ".docker-alert-stamp" 2>/dev/null | head -1)
+  if [ -n "$ULTIMO" ]; then
+    rm -f "$STAMP"
+    echo "{\"fire\": false, \"reason\": \"fase local incompleta ($SELLADOS/$TOTAL) pero hay actividad reciente\"}"
+    exit 0
+  fi
+  MSG="La fase LOCAL de la cata de harnesses quedo incompleta ($SELLADOS/$TOTAL modelos sellados, pendientes:$PENDIENTES) y no hay ninguna corrida en curso desde hace mas de $((GRACE / 60)) min. Docker Desktop sigue ABIERTO y reserva 7,7 GB de los 24 GB del host como memoria wired. Cerralo con: osascript -e 'quit app \"Docker\"'  (o pedile a Kanam que lo cierre)."
+  NOW=$(date +%s)
+  if [ -f "$STAMP" ]; then
+    LAST=$(cat "$STAMP" 2>/dev/null || echo 0)
+    if [ "$((NOW - LAST))" -lt "$COOLDOWN" ]; then
+      echo '{"fire": false, "reason": "ya se aviso hace poco (cooldown)"}'
+      exit 0
+    fi
+  fi
+  echo "$NOW" > "$STAMP"
+  python3 - "$MSG" <<'PY'
+import json, sys
+print(json.dumps({"fire": True, "message": sys.argv[1]}))
+PY
   exit 0
 fi
 
