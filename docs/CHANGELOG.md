@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-28] - El gate de fuente única caza roles de modelo escritos a mano
+
+### Added
+- **Tercera clase de chequeo en `check-single-source.py`: `find_stray_roles`.** Un tag de modelo junto a vocabulario de rol de OpenClaw (`CORE`, `main/defaults`, `por agente`, `agents.defaults`) escrito **fuera** de un bloque MANAGED es una copia que el propagador no puede corregir. El sustrato: `MODEL_OWNERS` exime a `docs/SETUP.md` **de archivo entero** porque es dueño del catálogo, y por esa grieta se colaba una afirmación de *rol*, que es otro dato.
+- 6 tests nuevos que siembran el defecto: rol a mano, rol dentro del bloque (permitido), catálogo sin sujeto de rol (permitido), `por defecto` de una herramienta de terceros (otro sujeto, permitido), historia marcada, y el exit code.
+
+### Fixed
+- **`docs/SETUP.md:35` afirmaba "primario del CORE" y "alternativo/fallback del CORE" en prosa libre.** Esa línea mintió durante el swap de esta misma sesión: se corrigieron los bloques MANAGED y esta quedó diciendo lo viejo. Ahora el catálogo dice **qué modelo existe y con qué capacidades**, y remite a los bloques para los roles.
+- **`docs/SETUP.md:133` estaba stale desde antes y ningún gate lo veía:** decía que cline usa `minimax-m3.1-flash:cloud`. Verificado contra `~/.cline/data/globalState.json` (`actModeOllamaModelId` y `planModeOllamaModelId`): corre `deepseek-v4.1-flash:cloud`. Corregido con la fuente y la fecha.
+- `ROLE_SUBJECT` no incluye `por defecto` a propósito: es el vocabulario de las configs de terceros (cline, browser-use), que tienen otro sujeto y no pasan por managed-blocks.
+
+### Notes
+- El gate nuevo marcó **una** de las dos líneas que mentían. La segunda (cline) la encontró la lectura contra la fuente real, no el gate: un regex no distingue "modelo por defecto de una herramienta" de "modelo por defecto del gateway". Queda como límite conocido y documentado en el código.
+
+---
+
 ## [2026-10-28] - ADR no vigentes llevan sufijo `-archived` en el nombre del archivo
 
 ### Changed
