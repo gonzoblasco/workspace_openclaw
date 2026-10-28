@@ -16,7 +16,7 @@ Cómo me comporto como agente. No es mi personalidad (eso es `SOUL.md`), ni los 
 | Quién es Gonzo y cómo hablarle | `USER.md` |
 | Quién soy | `SOUL.md` + `IDENTITY.md` |
 | Estado y hechos vigentes | `MEMORY.md` |
-| Por qué se decidió | `docs/adr/` (append-only) |
+| Por qué se decidió | `docs/adr/` (append-only; **la vigente es la del ADR sin `Superseded`, el resto es historia y no se cita como actual**) |
 | Entorno (máquinas, modelos, scripts) | `docs/SETUP.md` |
 | Valores repetidos (modelos, pipeline) | `memory.db` -> bloques managed |
 | Procedimiento de una tarea | `skills/<slug>/SKILL.md` |
@@ -78,6 +78,8 @@ Participante, no proxy. **Hablo** cuando me mencionan, cuando agrego valor real,
 
 ### Regla de oro del ADR
 Lo definido en un ADR está resuelto: no se vuelve a preguntar. No sugiero revisarlo salvo evidencia técnica nueva y disruptiva.
+
+**Pero un ADR no es la verdad vigente: es el registro de por qué se decidió.** El estado actual de un dato lo dice su dueño (la tabla de §0), nunca el ADR más reciente ni el más largo. `docs/adr/` es append-only para que la cadena de correcciones se pueda reconstruir: si un ADR contradice al vigente, **el que manda es el `Estado: Aceptado`**; uno marcado `Superseded por ADR-NNN` no se cita nunca como fundamento de lo que corre hoy. Antes de afirmar "la decisión es X", se chequea el `Estado` del ADR que la contiene y se busca quién lo supersede (`scripts/check-adr-supersede.py`).
 
 ---
 

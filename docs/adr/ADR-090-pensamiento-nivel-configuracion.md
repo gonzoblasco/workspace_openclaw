@@ -1,10 +1,10 @@
 # ADR-090: Política de niveles de pensamiento por agente y asignación de modelos por rol
 
-**Fecha:** 2026-10-14 (corregido 2026-10-18; rol `main` reasignado 2026-10-20 por ADR-102)
-**Estado:** Aceptado (verificado contra el runtime 2026-10-18; re-verificado 2026-10-20 tras ADR-102)
+**Fecha:** 2026-10-14 (corregido 2026-10-18; rol `main` reasignado 2026-10-20 por ADR-102; reasignado otra vez 2026-10-28 por ADR-107)
+**Estado:** Aceptado (verificado contra el runtime 2026-10-28 tras ADR-107)
 **Decisores:** Gonzo / Kanam
 **Origen:** cata por rol (2026-10-06, `docs/ecosystem/cata-por-rol-modelos-2026-10-05.md + benchmarking Nemotron (2026-10-14)
-**Relacionado:** la cata por rol (evidencia en `docs/ecosystem/`), ADR-088 (pipeline A/B enforcement), ADR-089 (pre-filtro A/B), **ADR-102 (motor del CORE a minimax-m3.1-flash)**
+**Relacionado:** la cata por rol (evidencia en `docs/ecosystem/`), ADR-088 (pipeline A/B enforcement), ADR-089 (pre-filtro A/B), **ADR-107 (swap deepseek/minimax en CORE y defaults, vigente)**
 **Supersede:** la política de asignación de modelos por tarea anterior a la cata (los ADRs de modelo previos quedaron retirados)
 
 ---
@@ -15,17 +15,17 @@ Un probe de orquestación (2026-10-05) reveló que el thinking alto por defecto 
 
 ## Decisión
 
-### 1. Asignación de modelos por rol (VIGENTE, verificada 2026-10-20)
+### 1. Asignación de modelos por rol (VIGENTE, verificada 2026-10-28)
 
 Fuente de verdad: `openclaw.json` + tabla `settings` de `memory.db` (`model_by_agent`, bloque managed `model-operativo` en `AGENTS.md`). Tres fuentes coinciden.
 
-**Cambio del 2026-10-20 (ADR-102):** el rol `main` (CORE) y los defaults de agente pasan a `minimax-m3.1-flash:cloud` con fallback `deepseek-v4.1-flash:cloud`. Decidido por cata de 8 roles x 5 clases de estrés (160 corridas, `docs/ecosystem/cata-minimax-m31-flash-2026-10-20.md`): en el rol `main` minimax sacó 8.9 contra 7.8 del motor anterior. Los demas roles no cambian.
+**Cambio del 2026-10-28 (ADR-107):** el rol `main` (CORE) y los defaults de agente vuelven a `deepseek-v4.1-flash:cloud` con fallback `minimax-m3.1-flash:cloud`. Motivo: ahorro medido de ~20% de cuota en uso real. ADR-102 (minimax en el CORE) queda **superseded**; la cata que lo fundó (8.9 vs 7.8 en `main`) sigue siendo la medición del modelo, pero dejó de justificar la asignación.
 
-**Drift corregido el 2026-10-20:** `agents.defaults.model.primary` decía `nemotron-3-super:cloud`, modelo que la tabla de este ADR nunca declaro (venia del benchmarking del 14/10 que no se adopto). Config, DB y bloques quedaban en tres valores distintos. Alineado a `minimax-m3.1-flash:cloud`.
+**Drift corregido el 2026-10-20:** `agents.defaults.model.primary` decía `nemotron-3-super:cloud`, modelo que la tabla de este ADR nunca declaro (venia del benchmarking del 14/10 que no se adopto). Config, DB y bloques quedaban en tres valores distintos. Alineado en ese momento a `minimax-m3.1-flash:cloud`.
 
 | Agente | Primario | Fallback | Thinking |
 |--------|----------|----------|----------|
-| main (CORE) | `minimax-m3.1-flash:cloud` (desde 2026-10-20, ADR-102) | `deepseek-v4.1-flash:cloud` | `off` |
+| main (CORE) | `deepseek-v4.1-flash:cloud` (desde 2026-10-28, ADR-107) | `minimax-m3.1-flash:cloud` | `off` |
 | kanam-dev | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | `off` |
 | kanam-ops | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | `off` |
 | kanam-planner | `gpt-oss:120b-cloud` | `glm-5.3-flash:cloud` | `low` |
