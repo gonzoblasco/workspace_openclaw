@@ -74,7 +74,7 @@ facturación.
   outside went into the codebase without being read and verified first."*
   Eso no es "usé AI": es un **método**. Es exactamente lo que un AI lab quiere evaluar.
 
-### T2. "Tell me about a hard bug you solved" (el que más筛查 filtra)
+### T2. "Tell me about a hard bug you solved" (el que más filtra)
 Tenés dos buenos y son distintos entre sí. Elegí según lo que te salga más natural:
 - **Opción A (producto):** el sistema multi-tenant / RAG / Autopilot de SoporteML. Debug de
   concurrency en Supabase, RLS, o el guardarraíl de confianza del Autopilot.
@@ -204,6 +204,21 @@ Reglas prácticas para ese inglés:
 
 ### Workpuls (la app de tracking) - NO la tenés
 
+- **La app se llama Workpuls** (antes Insightful). Se baja de `https://app.insightful.io/#/token/download`
+- **Requisito: macOS 11+**, y vos tenés macOS 27.2. Va.
+- **No hace falta instalarla para la entrevista.** Solo hace falta cuando tenés contrato activo.
+  Bajala cuando te la pidan (la asignación de proyecto tarda **12-24 h** después del onboarding).
+- **Cuidado con esto:** Insightful/Workpuls **toma screenshots periódicos mientras el timer
+  corre**. Sobre tu Mac, eso significa que **queda registro de lo que hacés en pantalla durante
+  las horas pagadas**. Es parte del modelo del trabajo, pero conviene que lo sepas: si tenés
+  clientes o material confidencial abierto, cerralo antes de clockear. El propio listing dice que
+  el trabajo no involucrará información confidencial de empleadores o clientes.
+- Solo podés clockear en **un dispositivo a la vez**. Si cambiás de máquina: deslogueate y cerrá
+  la app, o las horas no se registran y no te las pagan.
+- **Internet estable, siempre.** Offline no trackea.
+- Espacio en disco: te quedan 107 Gi. Las grabaciones de pantalla y las copias de video pesan.
+  No es un problema ahora, pero no dejes que se te llene durante un mes de trabajo.
+
 ### Decisiones tomadas (28/10)
 
 #### El email de la cuenta: `gonzoblasco@gmail.com`
@@ -248,38 +263,25 @@ forma literal, no teórica:
    "Practice Interview" gratis de Mercor hace, pero con feedback.
 2. **Después:** debrief. Si me pasás las preguntas que te hicieron (las de la Practice son
    gratis y no se comparten con empresas) y cómo respondiste, te digo qué funcionó y qué no.
-3. **Durante:** vos, solo, con el esqueleto de 6 respuestas en una nota. Eso es preparación, no
+3. **Durante:** vos, solo, con el esqueleto de 7 respuestas en una nota. Eso es preparación, no
    composición: permitido, y es lo único que además funciona.
 
 **La versión que sí funciona y es legal:** vos contame en inglés cómo responderías, yo te doy
 feedback. El ensayo es tuyo; la corrección es mía. Esa frontera la respeta la policy y te deja
 mucho mejor parado en la entrevista real.
-- **La app se llama Workpuls** (antes Insightful). Se baja de `https://app.insightful.io/#/token/download`
-- **Requisito: macOS 11+**, y vos tenés macOS 27.2. Va.
-- **No hace falta instalarla para la entrevista.** Solo hace falta cuando tenés contrato activo.
-  Bajala cuando te la pidan (la asignación de proyecto tarda **12-24 h** después del onboarding).
-- **Cuidado con esto:** Insightful/Workpuls **toma screenshots periódicos mientras el timer
-  corre**. Sobre tu Mac, eso significa que **queda registro de lo que hacés en pantalla durante
-  las horas pagadas**. Es parte del modelo del trabajo, pero conviene que lo sepas: si tenés
-  clientes o material confidencial abierto, cerralo antes de clockear. El propio listing dice que
-  el trabajo no involucrará información confidencial de empleadores o clientes.
-- Solo podés clockear en **un dispositivo a la vez**. Si cambiás de máquina: deslogueate y cerrá
-  la app, o las horas no se registran y no te las pagan.
-- **Internet estable, siempre.** Offline no trackea.
-- Espacio en disco: te quedan 107 Gi. Las grabaciones de pantalla y las copias de video pesan.
-  No es un problema ahora, pero no dejes que se te llene durante un mes de trabajo.
 
 ## 6. Tu plan, en orden
 
-1. **Hoy:** creá la cuenta en `work.mercor.com` con **`gonzoblasco@icloud.com`**
-   (el mismo del CV). Verificá el mail.
+1. **Hoy:** creá la cuenta en `work.mercor.com` con **`gonzoblasco@gmail.com`** (el email donde
+   llegó la invitación). El CV va con `gonzoblasco@icloud.com`: son dos correos distintos y
+   está bien. Verificá el mail.
 2. **Hoy:** subí el CV (PDF, texto, 1-2 páginas, <2 MB) en Profile → Résumé.
 3. **Hoy:** tomá la **Practice Interview**. Es gratis y no cuenta. Tomala 2 o 3 veces. Sirve para
    dos cosas: calibrar tu inglés hablado y ver cómo la IA formula las preguntas.
    **Anotá textualmente las preguntas que te haga.** Eso te dice qué preparar.
-4. **Mañana:** prepará las 6 respuestas de arriba con tus palabras, en voz alta, cronometradas
+4. **Mañana:** prepará las 7 respuestas de arriba con tus palabras, en voz alta, cronometradas
    (30-45 segundos cada una).
-5. **Cuando tengas el CV:** postulá al listing desde `work.mercor.com` → Explore → *Software
+5. **Cuando tengas el PDF subido:** postulá al listing desde `work.mercor.com` → Explore → *Software
    Developers (Must own MacBook)* → Apply Now.
 6. **Después de la postulación:** el paso siguiente es un **assessment pago** ("Complete a brief
    paid assessment"). Cuando te lo asignen, avisame y lo armamos.
@@ -289,7 +291,7 @@ mucho mejor parado en la entrevista real.
 - **$50-$60/hr** en el listing (el mail decía $40-$150/hr: el rango amplio es marketing; el real
   del listing es $50-60). Contrato hourly, part-time 10-20 h/semana.
 - **Pagos semanales** (miércoles) por Stripe o Wise. Argentina está soportada con **Stripe
-  Connect**, así que cobrás en USD. Vas a necesitar على cuenta en Stripe; preparate para el
+  Connect**, así que cobrás en USD. Vas a necesitar una cuenta en Stripe; preparate para el
   onboarding fiscal (alta como contractor, y revisar cómo declarás).
 - **Contrato como contractor independiente**, sin W-2. En Argentina eso significa que vos gestionás
   los impuestos de esa ingreso: es un gasto deducible, pero la carga real es tuya.
