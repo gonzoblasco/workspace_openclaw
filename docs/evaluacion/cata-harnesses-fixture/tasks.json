@@ -1,0 +1,69 @@
+[
+  {
+    "id": "T1",
+    "title": "Contraste WCAG AA: por que muted falla sobre panel-2 en el tema dark",
+    "prompt": "Sos un agente de analisis de accesibilidad. Trabajo en un repositorio de codigo web.\n\nEn el directorio actual hay:\n  - `.context/tarea-1-check-contrast.txt`: la salida REAL del checker de contraste que se ejecuto sobre el proyecto.\n  - `projects/kanam-os/app/globals.css`: el CSS del proyecto.\n  - `projects/kanam-os/public/dark.css` y `projects/kanam-os/public/kanam.css`: los archivos de temas.\n  - `scripts/check-contrast.py`: el codigo del checker.\n\nTu tarea:\n1. De la salida del checker, determina que fallo de contraste fallo: el par de color de texto y color de fondo, el ratio calculado y el umbral que exige WCAG 2.1 AA para texto normal.\n2. Explica POR QUE ese par falla y los demas no. Para eso segui la cadena de variables CSS: `--muted` y `--panel-2` no son colores finales, son alias de otras variables. Decí cuales son sus valores reales en el tema dark, de que archivo salen, y como los definiste. Eso se lee en los archivos de tema, no en la salida del checker.\n3. Fijate si el tema light tiene el mismo problema o no, y por que.\n4. Escribi un informe en `.context/informe.md` (en el directorio actual) que contenga: el fallo, el ratio, el umbral, la cadena de variables con sus valores y archivos de origen, y la comparacion entre temas.\n\nNo modifiques ningun archivo del repositorio. El informe es el unico entregable: escribilo en `.context/informe.md`.",
+    "corpus": [
+      "@.context/tarea-1-check-contrast.txt",
+      "projects/kanam-os/app/globals.css",
+      "projects/kanam-os/public",
+      "scripts/check-contrast.py"
+    ],
+    "asserts": [
+      {"kind": "contains", "value": "muted"},
+      {"kind": "contains", "value": "panel-2"},
+      {"kind": "number_lt", "value": "4.5"},
+      {"kind": "number_gt", "value": "4.0"},
+      {"kind": "regex", "value": "(falla|incumple|no cumple|por debajo|menor que)"},
+      {"kind": "contains", "value": "dark"},
+      {"kind": "contains", "value": "a9b6b1"},
+      {"kind": "contains", "value": "333f3b"},
+      {"kind": "regex", "value": "(k-text-secondary|k-surface-elevated)"},
+      {"kind": "not_contains", "value": "cumple con el umbral"}
+    ]
+  },
+  {
+    "id": "T2",
+    "title": "Auditoria de la cadena de publicacion: que contribution queda sin post",
+    "prompt": "Sos un agente de auditoria de contenido. Trabajo en un repositorio con una cadena de publicacion de articulos.\n\nEn el directorio actual hay:\n  - `.context/tarea-2-check-linkedin.txt`: la salida REAL del auditor de la cadena.\n  - `docs/linkedin/`: los articulos ya publicados (archivos .md).\n  - `scripts/check-linkedin-pipeline.py`: el codigo del auditor.\n\nTu tarea:\n1. De la salida del auditor, determina el estado de la cadena: hay borradores vencidos (drafts sin publicar que superan el limite de dias) o no hay? Hay advertencias de contribuciones con resultado atribuible que aun no tienen post? Son bloqueantes o solo avisos?\n2. Para la contribucion que el auditor marca como pendiente, verifica TUU MISMO si de verdad no hay ningun post que la mencione. Ojo: hay articulos publicados que hablan del mismo proyecto upstream, pero eso NO es lo mismo que citar ESTA contribucion. Busca el identificador exacto (numero de PR) en el cuerpo de los articulos, no por tema. El informe tiene que decir, en numero, cuantos articulos revisaste y cuantas menciones del identificador exacto encontraste.\n3. Leé el codigo del auditor y explica de donde sale la regla que decide que una contribucion es 'atribuible', y que condiciones debe cumplir un post para contar como tal.\n4. Escribi un informe en `.context/informe.md` (en el directorio actual) con: el estado de la cadena, la identificacion exacta de la contribucion pendiente (con su identificador completo), la evidencia de que no esta citada, y las condiciones que debe cumplir el post.\n\nNo modifiques ningun archivo del repositorio. El informe es el unico entregable: escribilo en `.context/informe.md`.",
+    "corpus": [
+      "@.context/tarea-2-check-linkedin.txt",
+      "docs/linkedin",
+      "scripts/check-linkedin-pipeline.py"
+    ],
+    "asserts": [
+      {"kind": "contains", "value": "9869"},
+      {"kind": "contains", "value": "carbon-design-system/ibm-products"},
+      {"kind": "regex", "value": "(avisa|aviso|advertencia|no bloquea|no es bloqueante)"},
+      {"kind": "regex", "value": "(ningun draft|ningún draft|no hay drafts|sin drafts|0 drafts|no hay borradores)"},
+      {"kind": "regex", "value": "(0|cero)\\s*\\**\\s*(menciones|veces|apariciones|citas)"},
+      {"kind": "regex", "value": "(no (aparece|hay|figura|cita)|nunca (aparece|se cita|lo cita)|no esta citad[oa]|sin (menciones|veces))"},
+      {"kind": "regex", "value": "(trazable|atribuible)"},
+      {"kind": "regex", "value": "(criterio|detalle)"}
+    ]
+  },
+  {
+    "id": "T3",
+    "title": "Integridad del corpus de ADRs: indice contra disco",
+    "prompt": "Sos un agente de gobernanza de decisiones tecnicas. Trabajo en un repositorio con un corpus de ADRs (Architecture Decision Records).\n\nEn el directorio actual hay:\n  - `docs/adr/`: todos los ADRs mas el README que los indexa.\n  - `scripts/check-adr-integrity.py` y `scripts/check-adr-supersede.py`: el codigo de los validadores del corpus.\n\nTu tarea (verificalo vos mismo, con los archivos, no de memoria):\n1. Cuenta cuantos ADRs hay realmente en el directorio `docs/adr/`, distinguiendo los ADRs del archivo README que los indexa. El informe tiene que dar ese numero.\n2. Cruza el indice (`docs/adr/README.md`) contra los archivos del disco: esta cada ADR en el indice? hay alguno en disco que falte en el indice? hay alguna entrada del indice que apunte a un archivo que no existe? hay numeros de ADR duplicados?\n3. Revisa los dos validadores y determina que reglas aplican, en particular la de las relaciones de supersede: un ADR que fue superado por otro, tiene que estar marcado como `Superseded` en su cabecera. Busca en todos los ADR un documento que este en ese estado. Si no hay ninguno, el informe tiene que decirlo explicitamente: no hay ningun ADR superseded en el corpus. Si hay alguno, mostrar la evidencia en dos lugares: su cabecera y la fila del indice.\n4. Explica que significan los huecos de numeracion que el validador de integridad reporta: son un defecto del corpus o son informacion esperable? Justificalo mirando el indice.\n5. Escribi un informe en `.context/informe.md` (en el directorio actual) con: la cuenta real de ADRs, el resultado del cruce indice contra disco, la evidencia del ADR superseded (o la aclaracion explicita de que no hay ninguno), y la lectura de los huecos de numeracion.\n\nNo modifiques ningun archivo del repositorio. El informe es el unico entregable: escribilo en `.context/informe.md`.",
+    "corpus": [
+      "docs/adr",
+      "scripts/check-adr-integrity.py",
+      "scripts/check-adr-supersede.py"
+    ],
+    "asserts": [
+      {"kind": "regex", "value": "60\\s*(ADRs|ADR|adrs|decisiones|documentos|registros)"},
+      {"kind": "regex", "value": "(ADRs|ADR|decisiones|documentos|registros)[^\\n]{0,20}\\b60\\b"},
+      {"kind": "regex", "value": "(todos indexados|sin duplicados|sin refs rotas|no hay refs rotas|ninguna ref rota|estan todos indexados)"},
+      {"kind": "regex", "value": "no hay (ningun|ningún|nada)?[^\\n]{0,40}superseded"},
+      {"kind": "regex", "value": "(cero|0|nunca|ningun|ningún)[^\\n]{0,40}superseded"},
+      {"kind": "regex", "value": "(informativ|no es un defecto|no es defecto|esperable|no es un error|no implica problema)"},
+      {"kind": "not_contains", "value": "1 ADR roto"},
+      {"kind": "not_contains", "value": "ref rota en el indice"},
+      {"kind": "not_contains", "value": "3 ADR superseded"},
+      {"kind": "not_contains", "value": "superseded que no estan marcados"},
+      {"kind": "not_contains", "value": "hay un ADR duplicado"},
+      {"kind": "not_contains", "value": "es un defecto del corpus"}
+    ]
+  }
+]

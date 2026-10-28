@@ -1,0 +1,177 @@
+{
+ "reference": [
+  {
+   "task_id": "T1",
+   "passed": 10,
+   "total": 10,
+   "all_pass": true,
+   "failed": [],
+   "file": "/Users/gonzoblasco/.openclaw/workspace/docs/evaluacion/cata-harnesses-fixture/reference/T1.md"
+  },
+  {
+   "task_id": "T2",
+   "passed": 8,
+   "total": 8,
+   "all_pass": true,
+   "failed": [],
+   "file": "/Users/gonzoblasco/.openclaw/workspace/docs/evaluacion/cata-harnesses-fixture/reference/T2.md"
+  },
+  {
+   "task_id": "T3",
+   "passed": 12,
+   "total": 12,
+   "all_pass": true,
+   "failed": [],
+   "file": "/Users/gonzoblasco/.openclaw/workspace/docs/evaluacion/cata-harnesses-fixture/reference/T3.md"
+  }
+ ],
+ "broken": [
+  {
+   "task_id": "T1",
+   "passed": 6,
+   "total": 10,
+   "all_pass": false,
+   "failed": [
+    {
+     "detail": "regex '(falla|incumple|no cumple|por debajo|menor que)'",
+     "assert": {
+      "kind": "regex",
+      "value": "(falla|incumple|no cumple|por debajo|menor que)"
+     }
+    },
+    {
+     "detail": "contains 'a9b6b1'",
+     "assert": {
+      "kind": "contains",
+      "value": "a9b6b1"
+     }
+    },
+    {
+     "detail": "contains '333f3b'",
+     "assert": {
+      "kind": "contains",
+      "value": "333f3b"
+     }
+    },
+    {
+     "detail": "not_contains 'cumple con el umbral'",
+     "assert": {
+      "kind": "not_contains",
+      "value": "cumple con el umbral"
+     }
+    }
+   ],
+   "file": "/Users/gonzoblasco/.openclaw/workspace/docs/evaluacion/cata-harnesses-fixture/broken/T1.md"
+  },
+  {
+   "task_id": "T2",
+   "passed": 5,
+   "total": 8,
+   "all_pass": false,
+   "failed": [
+    {
+     "detail": "regex '(ningun draft|ning\u00fan draft|no hay drafts|sin drafts|0 drafts|no hay borradores)'",
+     "assert": {
+      "kind": "regex",
+      "value": "(ningun draft|ning\u00fan draft|no hay drafts|sin drafts|0 drafts|no hay borradores)"
+     }
+    },
+    {
+     "detail": "regex '(0|cero)\\\\s*\\\\**\\\\s*(menciones|veces|apariciones|citas)'",
+     "assert": {
+      "kind": "regex",
+      "value": "(0|cero)\\s*\\**\\s*(menciones|veces|apariciones|citas)"
+     }
+    },
+    {
+     "detail": "regex '(no (aparece|hay|figura|cita)|nunca (aparece|se cita|lo cita)|no esta citad[oa]|sin (menciones|veces))'",
+     "assert": {
+      "kind": "regex",
+      "value": "(no (aparece|hay|figura|cita)|nunca (aparece|se cita|lo cita)|no esta citad[oa]|sin (menciones|veces))"
+     }
+    }
+   ],
+   "file": "/Users/gonzoblasco/.openclaw/workspace/docs/evaluacion/cata-harnesses-fixture/broken/T2.md"
+  },
+  {
+   "task_id": "T3",
+   "passed": 2,
+   "total": 12,
+   "all_pass": false,
+   "failed": [
+    {
+     "detail": "regex '60\\\\s*(ADRs|ADR|adrs|decisiones|documentos|registros)'",
+     "assert": {
+      "kind": "regex",
+      "value": "60\\s*(ADRs|ADR|adrs|decisiones|documentos|registros)"
+     }
+    },
+    {
+     "detail": "regex '(ADRs|ADR|decisiones|documentos|registros)[^\\\\n]{0,20}\\\\b60\\\\b'",
+     "assert": {
+      "kind": "regex",
+      "value": "(ADRs|ADR|decisiones|documentos|registros)[^\\n]{0,20}\\b60\\b"
+     }
+    },
+    {
+     "detail": "regex '(todos indexados|sin duplicados|sin refs rotas|no hay refs rotas|ninguna ref rota|estan todos indexados)'",
+     "assert": {
+      "kind": "regex",
+      "value": "(todos indexados|sin duplicados|sin refs rotas|no hay refs rotas|ninguna ref rota|estan todos indexados)"
+     }
+    },
+    {
+     "detail": "regex 'no hay (ningun|ning\u00fan|nada)?[^\\\\n]{0,40}superseded'",
+     "assert": {
+      "kind": "regex",
+      "value": "no hay (ningun|ning\u00fan|nada)?[^\\n]{0,40}superseded"
+     }
+    },
+    {
+     "detail": "regex '(cero|0|nunca|ningun|ning\u00fan)[^\\\\n]{0,40}superseded'",
+     "assert": {
+      "kind": "regex",
+      "value": "(cero|0|nunca|ningun|ning\u00fan)[^\\n]{0,40}superseded"
+     }
+    },
+    {
+     "detail": "regex '(informativ|no es un defecto|no es defecto|esperable|no es un error|no implica problema)'",
+     "assert": {
+      "kind": "regex",
+      "value": "(informativ|no es un defecto|no es defecto|esperable|no es un error|no implica problema)"
+     }
+    },
+    {
+     "detail": "not_contains '1 ADR roto'",
+     "assert": {
+      "kind": "not_contains",
+      "value": "1 ADR roto"
+     }
+    },
+    {
+     "detail": "not_contains 'ref rota en el indice'",
+     "assert": {
+      "kind": "not_contains",
+      "value": "ref rota en el indice"
+     }
+    },
+    {
+     "detail": "not_contains '3 ADR superseded'",
+     "assert": {
+      "kind": "not_contains",
+      "value": "3 ADR superseded"
+     }
+    },
+    {
+     "detail": "not_contains 'superseded que no estan marcados'",
+     "assert": {
+      "kind": "not_contains",
+      "value": "superseded que no estan marcados"
+     }
+    }
+   ],
+   "file": "/Users/gonzoblasco/.openclaw/workspace/docs/evaluacion/cata-harnesses-fixture/broken/T3.md"
+  }
+ ],
+ "ok": true
+}
