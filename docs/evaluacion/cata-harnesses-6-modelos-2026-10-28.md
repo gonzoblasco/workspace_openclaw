@@ -253,6 +253,16 @@ entregar. Si hay que elegir un modelo nuevo, es este.
   es una ausencia, no un 0. La pregunta que responde la fase local es "el
   harness aguanta un modelo lento?", y con un solo modelo por harness y una
   sola tarea no da para mas.
+  - Lo que si se midio de `nova-2b:latest` (2b, el mas chico): **0 de 3
+    celdas entrego informe**, y los tres fallos son del harness contra ese
+    modelo, no del modelo:
+    - **Claude Code**: `[claude-code:unrecognized_model]` - el nombre
+      `hf.co/ModernoTech/nova-2b:latest` no lo reconoce (el probe si
+      funciono, la corrida de T1 no).
+    - **opencode**: 12 eventos y 0 entregable.
+    - **OpenHands**: `execution_status: error` con **0 acciones**.
+    - Es decir: **un modelo de 2B no sirve como vara de los tres harnesses**,
+      porque los tres fallan antes de poder medir de verdad.
 - **Cline**: no existe en disco. Sin reclonar no hay cata de 4.
 - **Una sola corrida por celda**: no hay varianza medida. Los fallos de §8 (los
   que no entregan) son reproducibles, pero los pases no tienen barra de error.
