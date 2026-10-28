@@ -28,13 +28,9 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
-# En el fixture, las tareas viven en el MISMO directorio: el fixture tiene que
-# poder usarse standalone, sin depender de /tmp ni de una corrida previa.
-HERE = Path(__file__).resolve().parent
 MODEL = os.environ.get("CATA_MODEL", "deepseek-v4.1-flash:cloud")
 _SLUG = MODEL.replace(":", "__").replace("/", "__")
 OUT = Path(os.environ.get("CATA_OUT", f"/tmp/cata-harnesses/{_SLUG}"))
-TASKS_PATH = Path(os.environ.get("CATA_TASKS", str(HERE / "tasks.json")))
 
 
 def normalize(text: str) -> str:
@@ -76,13 +72,13 @@ def eval_assert(a: Dict[str, Any], body: str) -> Dict[str, Any]:
 
 
 def eval_task(task_id: str, body: str) -> Dict[str, Any]:
-    tasks = json.loads(TASKS_PATH.read_text())
+    tasks = json.loads((OUT / "tasks.json").read_text())
     task = next((t for t in tasks if t["id"] == task_id), None)
     if not task:
         return {"error": f"tarea desconocida: {task_id}"}
     # Sin entregable no hay nada que puntuar.
     #
-    # POR QUE: los asserts "not_contains" PASSAN por omision (no afirmar
+    # POR QUE: los asserts "not_contains" PASSAN por omision (no affirmar
     # "hay un ADR roto" es cierto de un informe vacio). Una celda que no
     # entrego nada se llevaba 6/12 en T3 solo por callar. Medido:
     # nemotron+openhands/T3 (sin informe) daba 6/12 y minimax+openhands/T3
@@ -114,7 +110,21 @@ def main() -> int:
     results = json.loads((OUT / "results.json").read_text())
     table: List[Dict[str, Any]] = []
     for r in results:
-        body = r.get("deliverable") or r.get("output") or ""
+        # SOLO el archivo. El prompt de cada tarea dice explicitamente "el
+        # informe es el unico entregable: escribilo en `.context/informe.md`",
+        # asi que un modelo que responde en el chat SIN escribir ese archivo
+        # NO entrego nada: tiene que valer 0.
+        #
+        # POR QUE se saco el fallback a `output` (el texto del chat): con el,
+        # una celda que no escribio el archivo se puntuaba igual. Medido en
+        # la fase local: nova-2b daba 8/10 (claude) y 4/10 (opencode) con el
+        # fallback y 0/10 y 0/10 sin el, porque en los dos casos el modelo
+        # escribio el informe en el chat y no en el archivo. El 0 de "no
+        # escribio el entregable" se estaba camuflando de nota.
+        #
+        # El unico caso donde el chat cuenta es el INPUT de la tarea, y ese
+        # ya se repara aparte (deliverable_fuente=corpus_input).
+        body = r.get("deliverable") or ""
         ev = eval_task(r["task_id"], body)
         table.append(
             {

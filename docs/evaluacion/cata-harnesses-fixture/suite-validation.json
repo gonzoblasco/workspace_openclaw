@@ -190,5 +190,23 @@
    "ok": true
   }
  ],
+ "chat_sin_archivo": [
+  {
+   "task_id": "T1",
+   "passed": 0,
+   "ok": true
+  },
+  {
+   "task_id": "T2",
+   "passed": 0,
+   "ok": true
+  },
+  {
+   "task_id": "T3",
+   "passed": 0,
+   "ok": true
+  }
+ ],
+ "fallback_output_ausente": true,
  "ok": true
 }
