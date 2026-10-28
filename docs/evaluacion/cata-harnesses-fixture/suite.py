@@ -80,6 +80,25 @@ def eval_task(task_id: str, body: str) -> Dict[str, Any]:
     task = next((t for t in tasks if t["id"] == task_id), None)
     if not task:
         return {"error": f"tarea desconocida: {task_id}"}
+    # Sin entregable no hay nada que puntuar.
+    #
+    # POR QUE: los asserts "not_contains" PASSAN por omision (no afirmar
+    # "hay un ADR roto" es cierto de un informe vacio). Una celda que no
+    # entrego nada se llevaba 6/12 en T3 solo por callar. Medido:
+    # nemotron+openhands/T3 (sin informe) daba 6/12 y minimax+openhands/T3
+    # daba 6/12. Callar no es acertar: un entregable vacio vale 0.
+    if not (body or "").strip():
+        results = [
+            {"assert": a, "ok": False, "detail": "sin entregable"}
+            for a in task.get("asserts", [])
+        ]
+        return {
+            "task_id": task_id,
+            "passed": 0,
+            "total": len(results),
+            "all_pass": False,
+            "results": results,
+        }
     results = [eval_assert(a, body) for a in task.get("asserts", [])]
     passed = sum(1 for r in results if r["ok"])
     return {

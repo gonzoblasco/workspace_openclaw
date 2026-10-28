@@ -8,6 +8,11 @@ contra una version deliberadamente defectuosa tiene que dar FAIL.
 
 Granularidad: una TAREA pasa si pasan TODOS sus asserts. La referencia tiene
 que dar 3/3 tareas PASS y la version defectuosa 0/3.
+
+TERCERA DIRECCION (2026-10-28): el entregable VACIO tiene que dar 0. Sin esto,
+los asserts "not_contains" PASSAN por omision y una celda que no entrego nada
+se llevaba 6/12 en T3 solo por callar. Medido: nemotron+openhands/T3 daba
+6/12 sin informe, y minimax+openhands/T3 daba 6/12.
 """
 from __future__ import annotations
 
@@ -18,7 +23,7 @@ from typing import Any, Dict, List
 
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE))
-from suite import eval_assert  # noqa: E402
+from suite import eval_assert, eval_task  # noqa: E402
 
 TASKS = json.loads((HERE / "tasks.json").read_text())
 
@@ -64,15 +69,29 @@ def main() -> int:
         for f in r.get("failed", []):
             print(f"      fallo: {f['detail']}  <- {f['assert']}")
 
+    # Tercera direccion: sin entregable, 0 puntos. Callar no es acertar.
+    print("\n=== VACIO (debe dar 0/0 en las 3 tareas) ===")
+    vacio_ok = True
+    vacio = []
+    for task in TASKS:
+        ev = eval_task(task["id"], "")
+        ok = ev.get("passed") == 0
+        vacio_ok = vacio_ok and ok
+        vacio.append({"task_id": task["id"], "passed": ev.get("passed"), "ok": ok})
+        print(f"  {task['id']}: {ev.get('passed')}/{ev.get('total')} {'OK' if ok else 'FALLA'}")
+
     ref_tasks = sum(1 for r in ref if r["all_pass"])
     bad_tasks = sum(1 for r in bad if r["all_pass"])
     n = len(TASKS)
-    ok = ref_tasks == n and bad_tasks == 0
+    ok = ref_tasks == n and bad_tasks == 0 and vacio_ok
     print(f"\nreferencia: {ref_tasks}/{n} tareas PASS")
     print(f"defectuosa: {bad_tasks}/{n} tareas PASS")
+    print(f"vacio: {'todas dan 0' if vacio_ok else 'FALLA'}")
     print("VALIDACION:", "OK - la suite discrimina en las dos direcciones" if ok else "FALLA")
     (HERE / "suite-validation.json").write_text(
-        json.dumps({"reference": ref, "broken": bad, "ok": ok}, indent=1, default=str)
+        json.dumps(
+            {"reference": ref, "broken": bad, "vacio": vacio, "ok": ok}, indent=1, default=str
+        )
     )
     return 0 if ok else 1
 

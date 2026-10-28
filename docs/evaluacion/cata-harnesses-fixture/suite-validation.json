@@ -173,5 +173,22 @@
    "file": "/Users/gonzoblasco/.openclaw/workspace/docs/evaluacion/cata-harnesses-fixture/broken/T3.md"
   }
  ],
+ "vacio": [
+  {
+   "task_id": "T1",
+   "passed": 0,
+   "ok": true
+  },
+  {
+   "task_id": "T2",
+   "passed": 0,
+   "ok": true
+  },
+  {
+   "task_id": "T3",
+   "passed": 0,
+   "ok": true
+  }
+ ],
  "ok": true
 }

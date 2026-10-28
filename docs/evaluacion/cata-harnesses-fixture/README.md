@@ -17,14 +17,14 @@ y la que mas se pierde.
 |---|---|
 | `tasks.json` | Las 3 tareas con su prompt, su corpus y sus **asserts ocultos**. |
 | `suite.py` | El evaluador: corre los asserts contra un entregable. |
-| `validate_suite.py` | La validacion en las DOS direcciones. |
+| `validate_suite.py` | La validacion en las TRES direcciones. |
 | `reference/` | La respuesta correcta de cada tarea, escrita a mano. |
 | `broken/` | La version deliberadamente defectuosa de cada tarea. |
 
 ## Uso
 
-Validar que la suite sigue discriminando (debe dar 3/3 PASS la referencia y
-0/3 PASS la defectuosa):
+Validar que la suite sigue discriminando (debe dar 3/3 PASS la referencia,
+0/3 PASS la defectuosa y 0 en las tres tareas para el entregable vacio):
 
 ```bash
 cd docs/evaluacion/cata-harnesses-fixture
@@ -51,6 +51,12 @@ direcciones es lo que atrapa los dos defectos PROPIOS que teve esta suite:
    y de OpenHands, y habria hecho creer que el corpus de ADRs estaba roto.
 2. Otro assert era tan laxo que la version defectuosa pasaba. Endurecido hasta
    que la discriminacion fue 3/3 vs 0/3.
+3. (2026-10-28) Los asserts `not_contains` PASSAN por omision: no afirmar "hay
+   un ADR roto" es cierto de un informe **vacio**. Una celda que no entrego
+   nada se llevaba 6/12 en T3 solo por callar. Medido: nemotron+OpenHands/T3
+   daba 6/12 sin informe, y minimax+OpenHands/T3 daba 6/12. Se agrego una
+   **tercera direccion** de validacion (el vacio tiene que dar 0) y la suite
+   ahora puntua 0 a un entregable vacio.
 
 Sin la validacion, la suite habria reportado un defecto inexistente - que es
 exactamente el error que el skill de cata ya documenta en 2026-09-30.
