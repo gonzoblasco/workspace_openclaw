@@ -18,6 +18,8 @@ y la que mas se pierde.
 | `tasks.json` | Las 3 tareas con su prompt, su corpus y sus **asserts ocultos**. |
 | `suite.py` | El evaluador: corre los asserts contra un entregable. |
 | `validate_suite.py` | La validacion en las TRES direcciones. |
+| `check_results_merge.py` | Verifica que el runner **MERGEa** `results.json` y no lo sobrescribe. |
+| `run-local-1task.sh` | El driver de la fase local (4 locales x 3 harnesses x 1 tarea), con sus trampas documentadas. |
 | `reference/` | La respuesta correcta de cada tarea, escrita a mano. |
 | `broken/` | La version deliberadamente defectuosa de cada tarea. |
 
