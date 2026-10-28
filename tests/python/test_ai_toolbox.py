@@ -311,6 +311,63 @@ def test_herramienta_bajo_demanda_apagada_no_parece_como_falla(tmp_path, monkeyp
     assert "up" in state["detail"]
 
 
+def test_nativa_sin_instalacion_dice_no_instalado(tmp_path, monkeypatch):
+    """Una nativa cuyo clon no esta NO puede decir 'apagado'.
+
+    'apagado' significa que deberia estar corriendo y no esta. Una herramienta
+    cuya instalacion no esta en el disco es 'no instalado': son clases distintas
+    y confundirlas hace que un clon borrado parezca una falla.
+    """
+    mod = load()
+    stub, state_file = write_stub(tmp_path, {"projects": [], "containers": {}})
+    monkeypatch.setenv("PATH", f"{tmp_path}:{os.environ['PATH']}")
+    monkeypatch.setenv("STUB_STATE", str(state_file))
+    tool = {
+        "id": "nat",
+        "name": "Nativa",
+        "kind": "native",
+        "runtime": "nativo",
+        "port": 1,
+        "compose": None,
+        "paths": [str(tmp_path / "no-existe")],
+        "health": None,
+    }
+    original = mod.TOOLS
+    try:
+        mod.TOOLS = [tool]
+        mod.BY_ID = {"nat": tool}
+        state = mod.tool_state(tool)
+    finally:
+        mod.TOOLS = original
+    assert state["status"] == "no instalado"
+    assert "falta" in state["detail"]
+
+
+def test_nativa_sin_paths_no_se_declara_no_instalada(tmp_path, monkeypatch):
+    """Sin `paths` no se puede afirmar que no este instalada (Ollama es una app)."""
+    mod = load()
+    stub, state_file = write_stub(tmp_path, {"projects": [], "containers": {}})
+    monkeypatch.setenv("PATH", f"{tmp_path}:{os.environ['PATH']}")
+    monkeypatch.setenv("STUB_STATE", str(state_file))
+    tool = {
+        "id": "nat",
+        "name": "Nativa",
+        "kind": "native",
+        "runtime": "nativo",
+        "port": 1,
+        "compose": None,
+        "health": None,
+    }
+    original = mod.TOOLS
+    try:
+        mod.TOOLS = [tool]
+        mod.BY_ID = {"nat": tool}
+        state = mod.tool_state(tool)
+    finally:
+        mod.TOOLS = original
+    assert state["status"] != "no instalado"
+
+
 def test_bajo_demanda_hace_down_real_y_no_stop(tmp_path, monkeypatch):
     """`down` de una bajo demanda tiene que ser `docker compose down`.
 

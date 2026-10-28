@@ -21,10 +21,10 @@
 | Ollama | `ollama` | nativo (host) | 11434 | corriendo |
 | browser-use | `browser-use` | docker (stdio, bajo demanda) | - | bajo demanda |
 | browser-use UI | `browser-use-ui` | docker compose | 8090 | bajo demanda |
-| Vane | `vane` | docker compose | 3005 | corriendo |
+| Vane | `vane` | docker compose | 3005 | bajo demanda |
 | opencode | `opencode` | docker compose | 4096 | corriendo |
 | OpenHands | `openhands` | docker compose | 8000 | corriendo |
-| Cline | `cline` | nativo (host, Bun 1.4.2) | 8787 | apagado |
+| Cline | `cline` | nativo (host, Bun 1.4.2) | 8787 | no instalado |
 <!-- END:ai-toolbox-table -->
 
 ---
@@ -151,7 +151,17 @@ declarado a mano es COMO se levanta cada cosa.
 - **Que es:** servidor de agente de codigo, con sesiones, DB y logs persistidos.
 - **Repo:** `projects/opencode`. Imagen `opencode-local:dev` (build local).
 - **UI/API:** http://localhost:4096 (loopback, con usuario y password).
-- **Como se levanta:** `cd ~/projects/opencode && docker compose -f docker/docker-compose.yml up -d`
+- **Como se levanta:** `toolbox up opencode` (o `cd ~/projects/opencode && docker compose -f docker/docker-compose.yml up -d`)
+- **Estado por defecto: BAJO DEMANDA** (decision de Gonzo, 2026-10-27). Medido en
+  la cata de harnesses: acierta igual que Claude Code con el mismo modelo, y es
+  el de menor consumo de tokens de entrada. Para estas herramientas, `down` es
+  real (`docker compose down`): elimina container y red, y no vuelve sola.
+- **Medido (cata 2026-10-27):** 27/27 asserts de la suite oculta, 286 s en 3
+  tareas, 271 k tokens de entrada (el menor de los tres).
+- **Trampa:** la API HTTP **parte** el sufijo `:cloud` del modelo y lo rechaza
+  (`Model unavailable`). El override por request tampoco funciona: siempre gana
+  el `model` del config. Para pinear el modelo hay que ir por el CLI:
+  `opencode run --model ollama/<modelo>`.
 
 ### OpenHands (id: `openhands`)
 
@@ -161,7 +171,22 @@ declarado a mano es COMO se levanta cada cosa.
   `ghcr.io/openhands/agent-canvas:1.28.1` (arm64).
 - **UI:** http://localhost:8000 (loopback). El backend interno escucha en 18000;
   el 8000 es el proxy estatico.
-- **Como se levanta:** `cd ~/projects/openhands && docker compose -f docker-compose.ollama.yml up -d`
+- **Como se levanta:** `toolbox up openhands` (o `cd ~/projects/openhands && docker compose -f docker-compose.ollama.yml up -d`)
+- **Estado por defecto: BAJO DEMANDA** (decision de Gonzo, 2026-10-27). Es lo
+  unico del stack con UI web para pilotar el agente a mano, asi que no se retira:
+  se deja apagado hasta que se lo use. `down` es real (`docker compose down`).
+- **Medido (cata 2026-10-27):** 30/30 asserts, el entregable mas completo de los
+  tres, pero **8,0x los tokens de entrada** y 2,0x el tiempo de Claude Code: su
+  agente reenvia todo el contexto en cada turno (29, 16 y 28 turnos).
+- **Trampa:** el modelo NO se configura por env var: se setea con
+  `PATCH /api/settings` (`ollama_chat/<modelo>`) y **el backend no re-aplica el
+  settings store sin reiniciar el container** (`/v1/models` devuelve `[]` aunque
+  el JSON este escrito). El repo de openhands trae su propio script de configuracion
+  para eso.
+- **Trampa:** la via real de una conversacion es `POST /api/conversations` (exige
+  `workspace: {working_dir, kind}` y `agent_settings.llm`) + `POST
+  /api/conversations/{id}/events`. El `/v1/chat/completions` del OpenAPI no
+  responde en el puerto 8000.
 - **Auth:** sin `LOCAL_BACKEND_API_KEY` el entrypoint genera una key aleatoria
   que hay que leer de los logs. El compose la define, asi que la sesion entra
   directo. Solo es seguro con el puerto en loopback.

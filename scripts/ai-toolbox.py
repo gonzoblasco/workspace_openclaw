@@ -134,7 +134,8 @@ TOOLS: List[Dict[str, Any]] = [
         "health": ("http://localhost:4096/health", [200]),
         "up": None,
         "down": None,
-        "note": "Build local (opencode-local:dev). Puerto en loopback, con usuario y password.",
+        "on_demand": True,
+        "note": "Bajo demanda: 'toolbox up opencode'. La cata del 2026-10-27 lo midio: acierta igual que Claude Code con el mismo modelo, y es el de menor consumo de tokens de entrada.",
     },
     {
         "id": "openhands",
@@ -147,7 +148,8 @@ TOOLS: List[Dict[str, Any]] = [
         "health": ("http://localhost:8000/", [200, 301, 302, 307, 308]),
         "up": None,
         "down": None,
-        "note": "Su backend interno escucha en 18000; el 8000 es el proxy estatico.",
+        "on_demand": True,
+        "note": "Bajo demanda: 'toolbox up openhands'. Agente con UI web propia: es lo unico del stack que permite pilotar el agente a mano. La cata del 2026-10-27 lo midio: acierta 30/30 pero consume 8x los tokens de entrada de Claude Code (reenvia todo el contexto cada turno).",
     },
     {
         "id": "cline",
@@ -164,7 +166,7 @@ TOOLS: List[Dict[str, Any]] = [
         "health": ("http://127.0.0.1:8787/health", [200]),
         "up": ["bash", str(WORKSPACE / "scripts" / "cline-tool.sh"), "up"],
         "down": ["bash", str(WORKSPACE / "scripts" / "cline-tool.sh"), "down"],
-        "note": "El dashboard (8787) es la UI; el daemon del hub (25466) ejecuta las sesiones.",
+        "note": "NO INSTALADO: el clon (projects/cline) fue borrado del disco. El wrapper sigue en el workspace pero no puede funcionar sin el repo. Para reinstalarlo hay que reclonar github.com/cline/cline (toolchain Bun 1.4.2, ya instalado).",
     },
 ]
 
@@ -368,6 +370,19 @@ def tool_state(tool: Dict[str, Any]) -> Dict[str, Any]:
         "detail": "",
     }
     if tool["kind"] == "native":
+        # Si la herramienta DECLARA paths y no estan, el estado es 'no
+        # instalado', no 'apagado': apagado seria una falla. Sin `paths` no se
+        # puede afirmar nada (Ollama es una app del sistema, no un repo).
+        paths = list(tool.get("paths") or [])
+        if paths and not state["installed"]:
+            missing = [p for p in paths if not Path(p).exists()]
+            state["status"] = "no instalado"
+            state["detail"] = (
+                "falta: " + ", ".join(Path(m).name for m in missing[:2])
+                if missing
+                else "la instalacion no esta en el disco"
+            )
+            return state
         probe = probe_health(tool)
         if probe and probe["ok"]:
             state["status"] = "corriendo"

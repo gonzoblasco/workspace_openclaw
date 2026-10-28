@@ -6,6 +6,28 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-10-27] - Cata de harnesses: los tres aciertan igual, y OpenHands consume 8x los tokens
+
+### Added
+- **`docs/evaluacion/cata-harnesses-2026-10-27.md`** - la cata completa: Claude Code vs opencode vs OpenHands con el **mismo modelo** (`deepseek-v4.1-flash:cloud`), 3 tareas de casos REALES del workspace con suite oculta, y veredicto por harness. Runner en `playground/cata-harnesses-2026-10-27/` (runner, suite, juez, validacion de la suite en dos direcciones).
+- **9/9 corridas con el control verificado.** El control (que el modelo viaje) se comprueba ANTES de medir, con evidencia por harness: `modelUsage` de Claude Code, `model` de la sesion de opencode, `stats.usage_to_metrics.model_name` de OpenHands. Sin esto la cata habria comparado tres modelos distintos.
+
+### Changed
+- **opencode y OpenHands pasan a BAJO DEMANDA** en el registro de herramientas (misma mecanica que `browser-use-ui` y `vane`: estado propio + `down` real). No se retiran: la cata mostro que aciertan igual que Claude Code (27/27 y 30/30 asserts). Lo que cambia es que no quedan prendidos sin uso: opencode lleva **0 sesiones** en 32 dias.
+- **El veredicto cambia la pregunta original:** con Claude Code solo no se pierde calidad (los tres aciertan 90/90), se pierde la **UI web** de OpenHands y el segundo cliente de opencode. La conclusion correcta no es "retirar" sino "cambiar el estado por defecto".
+
+### Fixed
+- **El registro declaraba Cline instalado con un path inexistente.** Su clon (`projects/cline`) fue borrado del disco, pero la entrada lo listaba como instalado y el wrapper `scripts/cline-tool.sh` apuntaba a un repo vacio (no puede funcionar). Ahora el estado dice **"no instalado"**, con el motivo y como reinstalarlo. Se agrego la clase al calculo de estado: una nativa que declara `paths` y no los tiene dice "no instalado", NO "apagado" (apagado es una falla; no instalado es otra cosa). Test nuevo que lo fija.
+- **Trampas de invocacion de la cata, documentadas para no volver a tropezar:** (1) la API HTTP de opencode **parte** el sufijo `:cloud` y rechaza el modelo, y el override por request se ignora (siempre gana el `model` del config): hay que ir por el CLI; (2) OpenHands NO se configura por env var sino con `PATCH /api/settings` (`ollama_chat/<modelo>`), y **el backend no re-aplica el settings store sin reiniciar el container** (`/v1/models` devuelve `[]` aunque el JSON este escrito); (3) su via real es `POST /api/conversations` + `POST .../events`, no `/v1/chat/completions`; (4) sus eventos son `action`/`observation`, no `llm_message` para las tool calls.
+
+### Measured
+- **La verdad de base NO separa a nadie: 90/90 asserts.** Los tres harnesses pasaron todo, con el mismo modelo y las mismas tareas.
+- **El costo si separa.** Totales de 3 corridas: Claude Code 236 s / 337.787 tokens in / 44.843 out; opencode 286 s / 271.156 / 55.859; **OpenHands 482 s / 2.703.821 in / 124.212 out**. OpenHands consume **8,0x los tokens de entrada** y **2,0x el tiempo**: la causa es su patron (reenvia todo el contexto en cada turno: 29, 16 y 28 turnos contra 1 de Claude Code), no el modelo.
+- **La suite oculta se valido en las DOS direcciones** (referencia correcta 3/3 PASS, version defectuosa 0/3 PASS). Eso destapo **dos defectos PROPIOS**: un assert de T3 exigia un ADR superseded que **no existe** (los 60 estan en `Aceptado`/`Rechazado`: el ADR-067 esta `Aceptado`), lo que habria castigado la respuesta correcta; y otro assert era tan laxo que la version defectuosa pasaba. Sin esa validacion, la suite habria reportado un defectuo inexistente.
+- **Correccion de diseno que la fairness exigio:** los tres harnesses NO ven el repo igual (opencode corre en Alpine **sin python3, node, jq ni git**). Si las tareas exigieran ejecutar un script, la cata habria medido la IMAGEN DOCKER y no el harness. Por eso la ejecucion de los checkers se pre-computa una vez y su salida va a un corpus **identico para los tres**; las tareas son de lectura y analisis.
+
+---
+
 ## [2026-10-27] - Vane se queda: research verificado en vivo, 5 commits locales a salvo y bajo demanda
 
 ### Added
