@@ -4,6 +4,53 @@
 
 ---
 
+## [2026-10-14] - Level 1: README arreglado (5 datos stale) + huérfanos resueltos
+
+### Fixed
+- **`README.md` tenia 5 datos stale, todos corregidos contra el disco:** ADRs ("86" -> 96), skills activas ("78" -> 99), roles de agente ("4" -> 7), skills del Core ("36" -> 27) y una fila fantasma (`sandbox/`, carpeta que no existe). Un router de entrada que miente sobre el nivel 1 es peor que uno que no lista: ensena a no confiar.
+
+### Removed
+- **`crew_onboarding_guide.md` retirado (a Trash).** Guia de onboarding del Crew escrita el 2026-10-01; describia un equipo de tres roles (Planner, UI/UX Auditor, Critic) que hoy son siete, y un flujo ("Golden Path") con un umbral SHARP <=18 que quedo desactualizado. Refleja un estado del proyecto que ya no existe, no es un documento vivo, y solo aparece en `memory/archive/` como historia.
+
+### Notes
+- **Huérfanos verificados y descartados (no tocados):** `kanam-lab.db` (0 bytes, en la raiz; el proyecto `kanam-lab` tiene el suyo en su carpeta - este no es referenciado por nadie); `pipeline-state.json` (ya en `.gitignore`, estado local); `.DS_Store` y `.pytest_cache/` (ya ignorados). No hay nada que limpiar: la basura ya esta cubierta por el `.gitignore`.
+- **`DREAMS.md` verificado y sano:** rotacion mensual funcionando (`dreams-rotate.py --check` OK, 26 entradas activas de octubre, septiembre archivado en `memory/archive/dreaming/`). No se toca.
+- **Verificacion:** `check-refs.py --all` OK (552 rutas); `check-bootstrap-budget.py` OK; pre-commit completo en el commit.
+
+---
+
+## [2026-10-14] - AGENTS.md reescrito de una sola pieza: 18.560 -> 12.300 chars
+
+### Changed
+- **`AGENTS.md` reescrito entero, no parchado.** Venia con injertos acumulados: secciones duplicadas por nombre (dos `### Added` bajo el mismo genero), bloques de modelo repetidos, fechas y anecdotas explicativas (`"Por que: el 2026-10-06 no abri 3 fichas..."`) metidas en el cuerpo del bootstrap, y jerarquia rota por `#### ` que hermanaba reglas de pesos dispares. Ahora es un texto corrido con cuatro secciones (Conducta, Sesion y memoria, Ingenieria, Referencias) + Tools + Desarrollo.
+- **Criterio de corte (declarado en el header):** una regla se queda si cambia una accion concreta y no se deriva de otro lado; el "como", el "por que" y la receta paso a paso van a `docs/AGENTS-DETALLE.md`. El archivo baja un 34% sin perder ninguna regla dura.
+- **Sin perdida, verificado por lista de 42 palabras clave** contra la version anterior: las 42 siguen presentes (la unica ausencia aparente, `atomicos`, era falsa: esta escrita con tilde, `atomicos`).
+
+### Fixed
+- **Reescritura literal, no refactor de fondo.** La regla `## 4. Referencias` se conserva (era una de las secciones vivas) y los dos bloques `<!-- BEGIN MANAGED -->` (modelo por agente, pipeline A/B) quedan intactos: los regenera `managed-blocks.py`, editarlos a mano habria roto el gate.
+
+### Notes
+- **Verificacion:** `check-bootstrap-budget.py` OK (AGENTS.md 12.300/20.000, margen +7.700; total 36.442/60.000); `check-refs.py --all` OK (552 rutas); `check-agent-skill-boundary.py` OK; `check_em_dash.py` OK; `managed-blocks.py check` OK.
+- **Deuda anotada:** el resto del nivel 1 (MEMORY.md, USER.md, SKILLS-INDEX.md, DREAMS.md, huerfanos) queda pendiente de la misma revision.
+
+---
+
+## [2026-10-14] - CHANGELOG sale de la raiz y su ventana baja a 14 dias
+
+### Changed
+- **`CHANGELOG.md` se muda a `docs/CHANGELOG.md`.** Es un derivado regenerable (historia rotada), no nucleo de personalidad: no debe ocupar el nivel mas caro de bootstrap. La raiz del workspace queda mas limpia.
+- **Ventana activa de 30 -> 14 dias** (`DEFAULT_DAYS` en `scripts/changelog-rotate.py`). El ritmo real del workspace metia 117 entradas / 268 KB en 30 dias; 14 dias deja el activo en ~30 entradas (~74 KB).
+- **Refs actualizadas:** `AGENTS.md` (Workspace Git), `README.md` (tabla de entrada), `docs/SETUP.md` (fila del script) y `scripts/pre-commit.template` (trigger de staged de `docs/CHANGELOG.md`).
+
+### Fixed
+- **`scripts/check-refs.py` deja de escanear `docs/CHANGELOG.md`.** Al mudarlo a `docs/`, `--all` (`docs/**/*.md`) empezo a tratarlo como documento vivo y reportaba 11 refs de la epoca (APUESTAS/MAPA retirados, ADRs renombrados). El CHANGELOG esta en rotacion permanente: misma politica que su bloque archivado (`docs/archive/`), se lee como se escribio. Nuevo `SKIP_FILES`.
+
+### Notes
+- **Verificacion:** `py_compile` OK en los 2 scripts; suite Python 320/320 en verde; `changelog-rotate.py --check` OK (30 activas, 175 archivadas, corte 2026-09-30); `check-refs.py --all` OK (565 rutas).
+- **Hallazgo del diagnostico:** la rotacion NO estaba rota (mi primera hipotesis fue erronea); el archivo estaba correcto *segun su politica*. El problema real era la politica (ventana demasiado generosa) + la ubicacion (raiz).
+
+---
+
 ## [2026-10-13] - Cierre de sesion: el HANDOFF no puede perder una sesion (historial + indice)
 
 ### Added
