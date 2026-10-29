@@ -590,21 +590,40 @@ usa".** Si la etapa 1 no la usa Esteban, la etapa 2 no se empieza.
 
 ## Trazabilidad
 
-- Inventario y LOC: `find`/`wc` sobre `projects/kanam-onwheels/src` y `projects/soporteml/src`.
-- Tablas y functions: `projects/*/supabase/migrations`, `projects/soporteml/supabase/functions/`.
-- Ausencia de MeLi en OnWheels: `grep -ril "mercadolibre\|meli" src supabase` → 0.
-- Ausencia de publicación en SoporteML: `grep "api.mercadolibre.com"` → solo GET/answers/oauth.
-- Documento adjunto idéntico: `diff` contra `media/inbound/pasted-text-1792597850483-...txt`.
-- Evidencia de MeLi (cuota por Client ID, `api_version=4`, estados): `projects/kanam-query/.knowledge/EVIDENCIA-VERIFICADA.md`.
-- Veredicto previo del mismo documento: `projects/kanam-onwheels/.knowledge/VEREDICTO-CONECTOR-MELI.md`.
-- Destino D4 y schema de OnWheels: `projects/kanam-onwheels/docs/ADR*`, `supabase/migrations/`.
+> **Estado de las fuentes locales: no recuperables.** Todas las citas a archivos de
+> `projects/` apuntan a repos borrados del disco el 2026-10-28
+> (`kanam-onwheels`, `soporteml`, `kanam-query`). Ninguna de esas copias locales está en git,
+> así que lo que se midió sobre ellas no se puede re-abrir. Las afirmaciones numéricas de esta
+> sección quedan como **medición del 2026-10-21 sobre repos hoy inexistentes**, no como
+> evidencia verificable. El código de `kanam-onwheels` y `soporteml` sigue en GitHub; el de
+> `kanam-query` nunca existió (era una spec). La evidencia técnica de MeLi **se re-verifica
+> contra la doc oficial en F0** (decisión D3), no se cita como fundamento heredado.
+
+### Fuentes locales (no recuperables, medición del 2026-10-21)
+
+- Inventario y LOC: `find`/`wc` sobre `kanam-onwheels/src` y `soporteml/src` - **fuentes borradas**.
+  Los repos siguen en GitHub: `gonzoblasco/kanam-onwheels`, `gonzoblasco/soporteml`.
+- Tablas y functions: `supabase/migrations`, `soporteml/supabase/functions/` - **fuentes borradas**.
+- Ausencia de MeLi en OnWheels: `grep -ril "mercadolibre\|meli" src supabase` → 0 - **re-verificable
+  clonando `gonzoblasco/kanam-onwheels`**.
+- Ausencia de publicación en SoporteML: `grep "api.mercadolibre.com"` → solo GET/answers/oauth -
+  **re-verificable clonando `gonzoblasco/soporteml`**.
+- Documento adjunto idéntico: `diff` contra `media/inbound/pasted-text-...txt` - **archivo no
+  recuperable**; el hecho queda registrado sin su prueba.
+- Veredicto previo del mismo documento: `kanam-onwheels/.knowledge/VEREDICTO-CONECTOR-MELI.md` -
+  **se perdió**: nunca se versionó, ni en el repo ni en el workspace.
+- Destino D4 y schema de OnWheels: `kanam-onwheels/docs/ADR*`, `supabase/migrations/` -
+  **fuentes borradas**; recuperables clonando el repo.
+
+### Fuentes externas (verificadas el 2026-10-21, vigencia a confirmar)
 
 - Nombres del pedido inexistentes: `grep` sobre workspace, `gh repo list --limit 200`, `MEMORY.md` → 0.
 - Dominios: `whois -h whois.nic.ar` (com.ar), Verisign RDAP (`.com`), Google Registry RDAP (`.app`, `.dev`), Identity Digital RDAP (`.io`), `dig NS`.
 - Precio `.com.ar`: `nic.ar/es/dominios/aranceles` (alta/renovación/transferencia ARS 8.500).
 - Precios VPS: `hostinger.com/pricing/vps-hosting` (leído 2026-10-21; el valor de renovación está en la misma tarjeta).
+- VPS previo: `docs/learnings/infraestructura.md` (2026-09-06) y `memory/inbox.md` #1 - **contradicción sin resolver**, ver §11.2.
+
 - Benchmark de precio: `tiendanube.com/planes-y-precios` (leído 2026-10-21).
 - Afiliado vs reseller: `hostinger.com/affiliates` y `hostinger.com/legal/reseller-master-agreement`.
-- VPS previo: `docs/learnings/infraestructura.md` (2026-09-06) y `memory/inbox.md` #1 - **contradicción sin resolver**, ver §11.2.
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->
