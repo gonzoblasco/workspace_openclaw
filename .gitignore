@@ -60,10 +60,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Repo embebido - tiene su propio repo, no trackear
-umbrawriter-v2
-umbrawriter-v2/
-
 # Forks de terceros: repos ajenos donde se contribuye (TanStack, shadcn, etc.)
 # Se ignoran AL 100% - no llevan .knowledge/ (no se modifica el .gitignore de proyectos ajenos).
 # El repo del fork vive por si solo; la memoria de la sesion va a docs/ o memory/.
@@ -76,6 +72,11 @@ umbrawriter-v2/
 /clones/*
 /clones/*/
 /clones/*/**
+
+# _workbench/: proyectos propios SIN copia remota todavia (pendientes de repo en GitHub).
+# No se mezclan con projects/ para no dar por respaldado lo que no lo esta.
+/_workbench/
+/_workbench/*/
 
 # playground/: pruebas temporales y analisis aislado. NO se commitea.
 # (nombre 2026-10-09: antes 'sandbox/', renombrado para no confundir con 'sandbox.mode' del gateway)
