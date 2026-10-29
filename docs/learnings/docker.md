@@ -34,3 +34,11 @@ Salida real de Vane (chat b140e38e, 2026-10-21) filtro el monologo interno del m
 
 ---
 
+## Un watcher que miente es peor que un watcher que no existe: el pgrep por ruta no matchea un worker con cwd
+
+El 2026-10-28 el watcher de la cata de harnesses (scripts/watch-docker-cata.sh) dio un FALSO POSITIVO: aviso 'la cata ya no tiene corridas y Docker sigue abierto' mientras la cata estaba corriendo y sana. La causa: el patron pgrep -f 'cata-harnesses-2026-10-27/runner.py' nunca matchea, porque el runner se lanza como 'python runner.py' con cwd en el directorio de la cata, y pgrep -f matchea contra el argv, no contra el cwd. El pgrep devolvia vacio, el watcher concl 'no hay corridas' y disparaba. QUE HACER: (1) el patron del pgrep tiene que ser el NOMBRE del script ('runner\.py'), y la pertenencia se resuelve por el cwd del proceso con 'lsof -a -p <pid> -d cwd -Fn | grep -qx n<dir esperado>'. (2) Un pgrep que devuelve vacio NO prueba que el trabajo termino: prueba que el patron esta mal. (3) Probar el watcher en las DOS ramas: con el trabajo vivo (no debe disparar) y con un stub que simula Docker abierto y sin trabajo (debe disparar). (4) El aviso se repitio cada 7 minutos: un watcher sin cooldown es ruido, se agrego un sello de 1 hora que se borra cuando Docker se cierra o arranca la cata.
+
+**Tags:** docker,verificacion,cata,watcher,pgrep,cwd,falso-positivo,cooldown
+
+---
+

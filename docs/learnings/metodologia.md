@@ -861,3 +861,11 @@ TRAMPA OPERATIVA: `sqlite3` no puede abrir la DB del workspace cuando el proceso
 
 ---
 
+## El modo de aprobacion es una variable a fijar en toda comparacion de harnesses (2026-10-28)
+
+Tanda de prueba de harnesses con un prompt abierto ('estoy probando y midiendo tu poder... que podemos hacer?') sobre deepseek-v4.1-flash. Cline sorprendio: en vez de enumerar capacidades propuso un demo y lo construyo (3 sub-agentes con presets que fallaron todos por auth, fallback a spawn_agent con el provider de la sesion, integracion y verificacion con Playwright). Quedo ~/agent-demo con 17 modelos de API con sourceUrl y 3 marcados unverified a proposito. Pero el resultado estaba contaminado: Cline corre con --auto-approve true por defecto (la ayuda del CLI lo declara: 'Set tool auto-approval for all tools (default: true)'), OMP con always-ask por defecto, OpenCode sin --auto pide permiso, y ollama launch NO pasa ninguna bandera de aprobacion a ningun harness (qwen.go solo agrega --model). Qwen Code se descarto por 'trabado - paraba por cada paso' cuando su ApprovalMode default es literalmente 'Require approval for file edits or shell commands': un prompt por edicion y por comando. No fue capacidad, fue politica. METODO: antes de comparar harnesses, fijar la perilla de aprobacion a un valor comun (todos always-ask o todos yolo) y anotarla en la tabla, igual que el modelo y el nivel de thinking. Un harness con luz verde actua; uno que pide permiso describe. Medir sin fijar eso mide permisos, no capacidad.
+
+**Tags:** harness,metodologia,comparacion,aprobacion
+
+---
+
