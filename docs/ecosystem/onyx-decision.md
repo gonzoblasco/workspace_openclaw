@@ -62,7 +62,7 @@ RAG/contexto ya estaba cubierta en tres lugares del stack propio **antes** de es
 | Pieza | Stack | Estado |
 |---|---|---|
 | `scripts/memory-search.py` | SQLite + embeddings + cosine similarity | andando, con la memoria real del workspace |
-| `projects/langchain-starter` | LangChain + ChromaDB | andando |
+| `projects/langchain-starter` | LangChain + ChromaDB | andando entonces; retirado el 2026-10-28 |
 | `projects/soporteml` | pgvector | andando |
 
 Onyx era un cuarto motor de lo mismo, el mas caro en RAM y el mas fragile en datos (Postgres

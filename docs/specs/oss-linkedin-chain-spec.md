@@ -79,7 +79,8 @@ redacto y se publico. Lo que no se cierro fue el **registro**: el post de #5419 
   archivo markdown, sin tipar. Con un `TypedDict` (`MergeFacts`, `NicheDecision`, `DraftPost`,
   `PublishState`) cada paso declara que consume y que produce, y un paso mal formado falla en el borde.
 - **Reanudacion**: el paso 3 (leer la historia del PR) y el paso 5 (redactar) son los caros. Con
-  `langgraph-checkpoint` (ya instalado y **sin usar** en `langchain-starter`, ADR-099) el grafo
+  `langgraph-checkpoint` (ya instalado y **sin usar** en `langchain-starter`, ADR-099; el proyecto se
+  retiro del disco el 2026-10-28, el paquete queda como referencia del repo privado) el grafo
   retoma del ultimo super-step correcto en vez de re-leer todo.
 - **`interrupt()` para la aprobacion**: el paso 6/7 es exactamente el caso de uso - el grafo se
   detiene, espera el OK de Gonzo, y **reanuda con el mismo `thread_id`**. La idempotencia que exige

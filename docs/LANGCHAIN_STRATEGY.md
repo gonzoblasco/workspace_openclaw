@@ -1,5 +1,12 @@
 # LANGCHAIN STRATEGY: Integration with OpenClaw Ecosystem
 
+> **Estado del proyecto (2026-10-28): `projects/langchain-starter` fue retirado del disco.**
+> El codigo sigue en el repo privado `gonzoblasco/langchain-starter`. Las fases de abajo se leen
+> como registro de lo que se construyo y se verifico entonces, no como servicios activos: el
+> servicio en `127.0.0.1:8100`, su LaunchAgent, su watchdog y la automation de alerta ya no existen.
+> Lo que sigue vigente es ADR-099 (LangChain como capa de ejecucion) y el patron RAG como referencia
+> de implementacion a clonar desde el repo.
+
 ## 1. Manifiesto Estratégico
 
 ### Visión
@@ -68,7 +75,7 @@ La integración de LangChain en el ecosistema de OpenClaw no busca reemplazar la
 **Objetivo:** Pasar de una cadena lineal a un agente autónomo y desplegado.
 - [x] **4.1 Tool-Calling:** `projects/langchain-starter/scripts/agent.py` con LangGraph ReAct: `search_knowledge` (RAG) + `word_count`. Verificado: decide tools en paralelo y sintetiza.
 - [x] **4.2 Despliegue:** RESUELTO por **LaunchAgent nativo** (decision de Gonzo 2026-09-22): Docker descartado para el Mac Mini, `Dockerfile` queda escrito para futuro. Incluye `service.sh` (start/stop/restart/status via launchctl) y `watchdog.sh`.
-- [x] **4.3 Observabilidad:** Doble capa: (a) watchdog launchd cada 60s que recupera el servicio salvo apagado intencional (marcador `.intentional-stop`); (b) automation OpenClaw `langchain-starter-health-alert` cada 30 min que avisa por Telegram solo si el watchdog no pudo recuperar.
+- [x] **4.3 Observabilidad:** Doble capa (ambas **retiradas** el 2026-10-28 junto con el proyecto): (a) watchdog launchd cada 60s que recuperaba el servicio salvo apagado intencional (marcador `.intentional-stop`); (b) automation OpenClaw `langchain-starter-health-watch` cada 30 min que avisaba por Telegram solo si el watchdog no pudo recuperar. Se retiro el job del gateway (`openclaw automations rm`) tras confirmar que seguia alertando por un servicio que ya no existia.
 - **Hito:** CUMPLIDO (salvo contenedor) - agente con tools + servicio autorreparable + monitoreo.
 
 ---

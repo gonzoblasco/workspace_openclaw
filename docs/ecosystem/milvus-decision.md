@@ -19,7 +19,7 @@ El workspace ya tenia busqueda semantica funcionando **antes** de este experimen
 | Pieza | Stack | Estado |
 |---|---|---|
 | `scripts/memory-search.py` | SQLite + `qwen3-embedding` + cosine similarity a mano | andando, con la memoria real del workspace |
-| `projects/langchain-starter` | LangChain + ChromaDB local, RAG completo con FastAPI | andando |
+| `projects/langchain-starter` | LangChain + ChromaDB local, RAG completo con FastAPI | andando entonces; retirado el 2026-10-28 (repo privado en GitHub) |
 | `projects/soporteml` | pgvector (Supabase) | andando |
 
 Ademas, el triage OSS ya habia colocado a Milvus en **tier 3 - no para adaptar**, con el
@@ -125,7 +125,7 @@ haga doler Chroma o SQLite, no la anticipacion de ese volumen.
 
 | Alternativa | Estado | Nota |
 |---|---|---|
-| Quedarse con ChromaDB (`langchain-starter`) | **Activo** | Lo que hay hoy. Suficiente para el volumen real. |
+| Quedarse con ChromaDB (`langchain-starter`) | **Retirado** (2026-10-28) | Era la opcion del stack, no ya la vigente: el proyecto salio del disco, el repo privado sigue en GitHub. Con el retiro, el vectorstore del workspace queda en SQLite+embeddings y pgvector. |
 | pgvector (Supabase, `soporteml`) | **Activo** | Ya en uso. Postgres con vectores, sin un stack mas. |
 | SQLite + cosine a mano (`memory-search.py`) | **Activo** | Lo que usa la memoria del workspace. Sin dependencia. |
 | Milvus | **Descartado** | Este documento. |

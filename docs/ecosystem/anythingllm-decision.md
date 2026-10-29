@@ -39,7 +39,7 @@ eliminar todo rastro y archivos huerfanos"*.
 No se resucita: el valor estaba en el RAG sobre documentos reales, y no habia documentos reales.
 La capacidad de busqueda semantica del workspace ya estaba cubierta en tres lugares antes de
 esta prueba (`scripts/memory-search.py` con SQLite + embeddings, `projects/langchain-starter` con
-ChromaDB, `projects/soporteml` con pgvector). AnythingLLM era el cuarto, y el mas fragile: datos
+ChromaDB - retirado del disco el 2026-10-28, repo privado en GitHub -, `projects/soporteml` con pgvector). AnythingLLM era el cuarto, y el mas fragile: datos
 en un bind mount fuera del repo, sin backup, con claves de cifrado en un `.env` que la app
 reescribe sola.
 

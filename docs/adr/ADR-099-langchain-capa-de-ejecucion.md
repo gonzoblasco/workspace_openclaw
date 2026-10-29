@@ -13,6 +13,13 @@
 
 `projects/langchain-starter` existe desde el 2026-09-24, completo y corriendo como servicio permanente (`127.0.0.1:8100`, LaunchAgent + watchdog, verificado hoy: `/health` responde 200). `docs/LANGCHAIN_STRATEGY.md` lo presenta como la base de las herramientas internas del ecosistema, con siete fases planificadas.
 
+> **Actualización 2026-10-28 (no cambia la decisión, cambia el estado).** El starter se **retiro del disco**
+> en la limpieza de `projects/` (21 -> 3). El codigo sigue en el repo privado `gonzoblasco/langchain-starter`.
+> Se descargaron su LaunchAgent, su watchdog y la automation de salud del gateway. Lo que este ADR
+> decide, **LangChain es la capa de ejecucion de un flujo, no el orquestador**, sigue vigente y no
+depende de que el starter exista: el patron RAG queda como referencia de implementacion a clonar
+> desde el repo, y el primer flujo real sigue siendo la decision pendiente de la seccion 2.
+
 Lo que nunca se decidió fue **qué capa ocupa**. La pregunta quedó abierta desde el principio y se resolvía por inercia: el starter tiene un agente ReAct, y OpenClaw también tiene agentes, así que ambos parecían competir por el mismo lugar.
 
 ### Lo medido hoy contra el disco
