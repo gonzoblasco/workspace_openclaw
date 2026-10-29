@@ -44,6 +44,12 @@ pending: 0
 - **Nombre:** Gonzalo Blasco. Se lo llama Gonzo, Gonza o Gonzalo.
 - **Ubicación:** Núñez, Buenos Aires, Argentina (GMT-3). Remoto LATAM, alineado a US EST.
 - **Contacto:** `+54 11 4937 4656` · `gonzoblasco@icloud.com` · `linkedin.com/in/gonzalo-blasco` · `github.com/gonzoblasco`.
+- **CUIT / CUIL:** `23-30407673-9` (el mismo número cumple las dos funciones). Es el identificador
+  fiscal que va como **Foreign Tax Identifying Number (FTI)** en formularios de no-residente (W-8BEN).
+  Registrado 2026-10-29 al firmar el W-8BEN de Mercor.
+- **Email secundario:** `gonzoblasco@gmail.com`. Lo usa para registrarse en plataformas donde la
+  invitación llegó a esa casilla (ej. cuenta de Mercor). El email de contacto de los CVs sigue
+  siendo el de icloud, que es el `contact_email` de arriba.
 - **Idiomas:** español nativo; **inglés B2+** (dato duro, ver §7).
 
 ---

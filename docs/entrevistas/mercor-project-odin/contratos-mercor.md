@@ -90,10 +90,29 @@ responsibility for determining the method, details and means of performing the S
 ## Datos del contrato
 
 - Puesto: **Odin - Writer**
-- Tarifa: **$40/h base**. El mail de Chloe dice *"expect total project compensation to be
-  $40-75/hour plus bonuses"* - el rango alto llega por bonuses (tiers de +35% a +85%;
-  $40 x 1,85 = $74, que cierra con el techo del mail).
-- Cap: **3 h/semana**.
-- Jurisdicción: Delaware, arbitraje JAMS. Para $40/h el arbitraje es prohibitivo, así que
+- Tarifa base contractual: **$40/h** (Offer Letter).
+- **Lo que realmente cobrás: el tier multiplica la base.** Fuente: mail de bienvenida a Odin.
+
+| Tier | % de la base | Tarifa sobre $40 | Horas permitidas |
+|---|---|---|---|
+| Writer (inicial) | **137,5 %** | **$55/h** | hasta 60 h/semana |
+| Super Writer | **187,5 %** | **$75/h** | hasta 80 h/semana |
+| Throttled Writer | 100 % | $40/h | hasta 40 h/semana |
+
+- **El "Weekly Cap: 3 hours" del certificado NO es un límite de trabajo.** El mail lo aclara
+  textualmente: *"The 3-hour cap is not a time limit. It's only how many setup hours are paid
+  hourly."* O sea: 3 h de **setup pagas**, y el trabajo real va aparte, hasta 60 h/semana.
+- Bono de onboarding: **$150 al enviar la primera tarea + $250 al aprobarla** (= $400), más las
+  3 h de setup. Efectivo ~$80-120/h en la primera tarea.
+- Gate real: **aprobar la primera tarea** habilita más horas y más tareas.
+- Jurisdicción: Delaware, arbitraje JAMS. Para montos chicos el arbitraje es prohibitivo, así que
   la protección real es no entrar en conflicto: guardar registros de horas y aprobaciones.
 - Start date: 29/10/2026.
+
+## Corrección de un cálculo previo (29/10)
+
+En la primera lectura del certificado de contratista se concluyó que el cap era 3 h/semana y que
+el techo eran ~$520/mes. **Era falso, y por un factor de ~10.** El certificado dice *"Hours
+allowed: Up to 3 hrs/wk"* pero el mail de bienvenida reinterpreta ese número como horas de
+**setup pago**, no como límite de trabajo. Con el tier de 137,5 % y 20 h/semana, el ingreso real
+ronda **$4.400/mes**, y sube con el tier de Super Writer.
