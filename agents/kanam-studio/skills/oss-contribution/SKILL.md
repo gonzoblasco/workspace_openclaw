@@ -60,6 +60,8 @@ Besides tracking PRs, **periodically review the issues where we already commente
 
 **Lesson (shadcn #11125):** doing the technical analysis in the issue **before** sending the PR (validating the approach with another contributor) makes the PR come out clean and with the root cause already agreed upon. The issue is the place to converge; the PR is the execution.
 
+**Lesson (astryx #3335, 2026-10-29):** a follow-up comment on an issue we already joined is an **evidence claim**, not an opinion piece. The whole practice for that is in `references/evidence-first-followup.md` - read it before drafting. Short version: a follow-up that only agrees with someone adds nothing; the one that lands states what the code says, at line level, or asks the one question the code cannot answer.
+
 ## PR search rules
 
 - When Gonzo asks to see a PR by number + repo, search directly in that repo with `gh pr view <n> --repo <org/repo>`
