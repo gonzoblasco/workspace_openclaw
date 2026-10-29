@@ -42,18 +42,28 @@ If the change falls in the "only manually verifiable" column of the table, AT va
 
 ### 2. Run manual validation
 
-0. **If the repo has layout tests in a real browser (`.browser.test.*` with vitest), run them first** - it is the automatable evidence maintainers ask for (Adobe explicitly asked for it). In react-spectrum: `yarn vitest run --config=vitest.browser.config.ts --project=chromium-desktop <file>` and `--project=firefox-desktop`. Requires `npx playwright install chromium firefox` the first time. A layout test measures the bounding box of the hidden input against the visible component (what jsdom cannot validate) and is proof that the SR focus ring matches the visual. Document the matrix (browser x result) in the PR.
+0. **Automate the announcement plane first with kanam-fixer** - it answers "what does the reader say" for a snippet of HTML, so the manual pass starts from a measured sequence instead of a guess. It is an MCP tool (`kanam-fixer__read_announcements` and `kanam-fixer__assert_announcement`), or the CLI `node dist/mcp-cli.js` from `projects/kanam-fixer`.
 
-1. Start the local storybook/playground pointing at the PR branch (workspace build, not main).
-2. Enable the system AT:
+   Pass the HTML and read the phrases; every result carries the reader matrix (`reader`, `version`, `os`) because an announcement is only valid against that matrix.
+
+   **Write the assertion from what the reader says, never from the attributes.** The virtual reader adds words that cannot be inferred from the DOM: `not selected`, `position 1, set size 3`, `orientated vertically`, `end of document`.
+
+   **When the assertion fails but the attributes are correct, the assertion is wrong, not the component.** Rewrite it against the real announcement. A green attribute test at that point proves nothing.
+
+   **Hard limit: the virtual plane is jsdom, so it does not catch timing races** between mount and announcement - the exact class of the #4109 golden case. A passing kanam-fixer run does NOT replace VoiceOver for timing, roving focus or `aria-activedescendant`. Say so in the PR: "announcement sequence verified on the virtual plane; timing verified manually with VoiceOver".
+
+1. **If the repo has layout tests in a real browser (`.browser.test.*` with vitest), run them first** - it is the automatable evidence maintainers ask for (Adobe explicitly asked for it). In react-spectrum: `yarn vitest run --config=vitest.browser.config.ts --project=chromium-desktop <file>` and `--project=firefox-desktop`. Requires `npx playwright install chromium firefox` the first time. A layout test measures the bounding box of the hidden input against the visible component (what jsdom cannot validate) and is proof that the SR focus ring matches the visual. Document the matrix (browser x result) in the PR.
+
+2. Start the local storybook/playground pointing at the PR branch (workspace build, not main).
+3. Enable the system AT:
    - macOS: VoiceOver with **Cmd + F5**.
    - Enable **captions/live captions** (System Preferences -> Accessibility -> VoiceOver -> Verbosity -> Use captions) to visually confirm the announced phrase.
-3. Test the edge cases, not just the happy path:
+4. Test the edge cases, not just the happy path:
    - Without a preselected value (the first option is usually the broken case).
    - With a preselected value.
    - With grouping (Select.Group) if applicable.
    - "Clear"/placeholder option (empty value) - usually intentional, see step 3.
-4. Record in a table what was expected vs what was announced, and whether the captions confirm it.
+5. Record in a table what was expected vs what was announced, and whether the captions confirm it. Where kanam-fixer already measured a case, start the row from its output and confirm it against the real reader.
 
 ### 3. If a finding is detected: check whether it is intentional or a bug
 
@@ -113,6 +123,19 @@ A custom element can set its role/state via `this.attachInternals().role = 'butt
 
 **Rule:** before treating an axe run as evidence, check coverage. On custom elements, if the component does not expose the protocol, the result is incomplete - **do not certify**. In **our** components that use ElementInternals, implement the protocol so audits/CI see the roles. For third-party content, automated a11y coverage of web components is a **declared limitation**, not a verdict.
 
+## Automated measurement of the announcement (kanam-fixer)
+
+`a11y-scan` measures attributes. Announcements need a different tool: **kanam-fixer** walks HTML with a virtual screen reader and returns the phrases in order, plus the matrix they are valid against.
+
+```bash
+cd path/to/kanam-fixer && npm run build
+echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"read_announcements","arguments":{"html":"<div role=\"group\" aria-label=\"Channels\"><button aria-pressed=\"true\">Email</button></div>"}}}' | node dist/mcp-cli.js
+```
+
+In an agent session it is cheaper as an MCP tool call. Both tools return `phrases` and `matrix`; `assert_announcement` also returns `passed`, `expected` and `announced`.
+
+What it catches (measured 2026-10-28): attributes and composition that change the announcement. What it does NOT catch: timing races (jsdom has no mount race), roving focus and `aria-activedescendant` behaviour. Both remain manual.
+
 ## Automated measurement (a11y-scan)
 
 Manual validation is for the *announcement*. For a fast **technical** pass over a live page, run `scripts/a11y-scan.mjs` (axe-core OSS + playwright-core, ADR-094):
@@ -127,6 +150,8 @@ The scan covers what a machine can measure (roles, allowed ARIA attrs, contrast,
 
 - **Treating a green axe run on custom elements as evidence they are accessible.** Without the ElementInternals protocol, coverage is incomplete (see section above).
 - **Considering an a11y PR finished with only green unit tests.** Tests verify attributes, not announcements.
+- **Copying the ARIA attributes into a kanam-fixer assertion as if they were the announcement.** The reader's phrasing differs from the DOM; write what it actually says.
+- **Treating a green kanam-fixer run as proof the announcement is correct.** It proves the sequence on the virtual plane only; timing still needs a real reader.
 - **Proposing to change a component before verifying whether the behavior is intentional.** Risk of a PR that breaks the primitive's contract.
 - **Posting a comment on your own issue starting with "Thanks for opening this".** That phrase is for thanking someone else who reported; it is absurd when you opened the issue yourself. Start directly with the analysis.
 - **Submitting a design PR without consensus.** Design changes to a mature primitive require prior discussion with maintainers, not a unilateral PR.
@@ -134,6 +159,8 @@ The scan covers what a machine can measure (roles, allowed ARIA attrs, contrast,
 ## Closing checklist
 
 - [ ] Does the change touch announcement/role/interaction? -> manual validation done.
+- [ ] Did I run kanam-fixer on the announcement and write the assertion from its output, not from the attributes?
+- [ ] Does the PR state which plane verified what (virtual for sequence, VoiceOver for timing)?
 - [ ] Did I test the edge cases (no preselection, placeholder, groups)?
 - [ ] Do captions confirm the announced phrase?
 - [ ] Did I verify whether a finding is intentional (guards/comments/patterns) before touching the component?
