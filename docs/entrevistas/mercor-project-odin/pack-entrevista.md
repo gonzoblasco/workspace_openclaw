@@ -35,6 +35,24 @@
 
 Mercor es explícito y la infra es de detección:
 
+> **Corrección 2026-10-29, con el manual oficial del proyecto (AI Usage Guidelines).**
+> Lo que sigue es la política general de Mercor; el manual de Odin es más específico y
+> **permite Gemini antes de grabar**. Cuando el manual y la política general difieren en detalle,
+> manda el manual del proyecto.
+
+### Las reglas del proyecto (manual AI Usage Guidelines)
+
+| PROHIBIDO siempre | PERMITIDO solo ANTES de grabar |
+|---|---|
+| **Generar las ideas de la tarea con IA** - "Task ideas must be entirely your own" | **Gemini únicamente**. Ninguna otra herramienta de IA |
+| **Cualquier IA durante la grabación**: ni prompts, ni conversar, ni generar, ni resumir mientras está en pantalla | **Generar input files**: datasets dummy, videos mock, fotos, documentos |
+| | **Brainstorming aid**: como partner para pensar tus ideas, no para pensar por vos |
+
+**La distinción que ordena todo:** la IA puede ayudarte a *pensar* y a *fabricar inputs*; no puede
+pensar por vos ni estar presente en la grabación. La idea tiene que ser tuya.
+
+### La regla general de Mercor (para todo lo demás)
+
 | Permitido | PROHIBIDO |
 |---|---|
 | Corrección de gramática y dicción | Que un LLM **escriba** la respuesta |
@@ -220,6 +238,87 @@ Reglas prácticas para ese inglés:
   No es un problema ahora, pero no dejes que se te llene durante un mes de trabajo.
 
 ### Decisiones tomadas (28/10)
+
+#### La regla de oro del Goal: Write Once, Use Everywhere
+
+**El mismo texto exacto, pegado literal en cuatro lugares.** No reescrito: **copiado y pegado**.
+
+| # | Dónde | Campo |
+|---|---|---|
+| 1 | Tu idea inicial (Slack / Studio) | Goal of your proposal |
+| 2 | `Metadata.rff` | Request |
+| 3 | Documento de intro | Task Description |
+| 4 | `TaskRecorder` | Task Description |
+
+Si lo reescribís en cada lugar aunque diga lo mismo, lo leen como inconsistencia. El manual lo
+llama *"the golden rule of the goal"* y es lo primero que un auditor compara.
+
+#### Contenido con licencia (para los input files)
+
+- **Solo CC0 o Public Domain**, verificados para uso comercial y machine learning.
+- **Royalty-free NO alcanza**: *"royalty-free alone does not establish its right to use for
+  Project Odin"*.
+- **Evitar**: marcas de agua, símbolos ©, avisos de propiedad, licencias poco claras, material
+  de pago o restringido.
+
+Aplica a todo lo que aparezca en la grabación: imágenes, videos, datasets, documentos de input.
+
+#### PII: qué NO puede aparecer en la grabación
+
+Fuente: PII & Project Protection (manual oficial). Dos categorías, y la segunda es la que sorprende.
+
+**Datos privados (PII)**: emails personales, teléfonos, direcciones, IDs, biométricos,
+**MAC addresses**, **tu nombre completo**, info de cuenta, cualquier dato personal.
+
+**Info del proyecto**: **Mercor, Project Odin, la página de Studio, las Writer Guidelines, o
+cualquier material del proyecto**.
+
+**Consecuencia práctica:** el propio handbook está marcado "PII EXPOSED". **Tampoco puedo tener
+estas guías abiertas en pantalla mientras grabás**, ni el Slack, ni Studio, ni nada que diga
+"Mercor".
+
+Los lugares donde más se filtra sin darse cuenta: el nombre de usuario de la Mac en la barra de
+menú, el avatar en la esquina, el nombre del perfil del navegador, y la barra de título de
+Finder o VS Code.
+
+#### El escritorio antes de grabar (UI Diversity)
+
+La Mac con settings default **descalifica**. Requisitos:
+
+- **Modo oscuro** (no claro).
+- **Dock a la izquierda o a la derecha, nunca abajo.**
+- Fondo **no-default** (no Tahoe Day).
+- Tema con highlight propio (el ejemplo: Purple + highlight amarillo).
+- **Cursor en tamaño y color default.**
+- Iconos de app oscuros si se puede.
+
+#### Ventanas
+
+| GOOD | BAD |
+|---|---|
+| Una ventana activa, limpia | Menu bar, clock o dock ocultos |
+| Ventanas grandes y legibles | Full-screen mode |
+| Minimizar lo no usado | Ventanas flotantes chicas |
+| Side-by-side cuando hace falta | **Overlap del 25 % o más por más de 6 segundos** |
+
+#### La estructura de la grabación (cheat sheet)
+
+| Fase | Regla |
+|---|---|
+| **Antes** | Accessibility Inspector corriendo con ventana cerrada y Dock dot visible; TaskRecorder con description y apps correctos; ventanas no usadas cerradas |
+| **START** | **Menos de 20 segundos**. Mostrás el Goal, minimizás TaskRecorder, decís *"I will be beginning my task soon. Here is the workflow I have in mind."*, y ocultás el Goal |
+| **DURING** | Cada acción con **WHAT / WHERE / WHY** en una frase. Cursor sobre el control. Anunciá los atajos |
+| **FINISH** | Mostrás el archivo guardado y confirmás el resultado. **Epílogo: 3 min, máximo 4** (resultado, decisiones, desafíos, mejoras). Anunciás que terminaste y pará |
+
+#### Navegador: Chrome con Okta Browser Plugin, no Firefox
+
+El manual pide instalar el **Okta Browser Plugin** como extensión de **Chrome** (buscar en Chrome
+Web Store, pinnear, loguearse). Eso cambia lo que habíamos decidido antes: el navegador de
+grabación va a tener una extensión visible de Okta.
+
+**Entonces: Chrome dedicado a Mercor, con el plugin de Okta**, separado del Chrome personal.
+No Firefox. La separación se mantiene (perfil de Chrome sin cuenta personal), pero el navegador
+es Chrome.
 
 #### El email de la cuenta: `gonzoblasco@gmail.com`
 
