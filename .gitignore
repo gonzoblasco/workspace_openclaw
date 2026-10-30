@@ -133,3 +133,6 @@ agents/*/skills/*/reports/
 
 # Locks de escritura concurrente (lockutil.py, B6) - runtime, no se versiona
 .openclaw/locks/
+
+# Large PDFs (Mercor handbook: 26MB)
+docs/entrevistas/**/*.pdf

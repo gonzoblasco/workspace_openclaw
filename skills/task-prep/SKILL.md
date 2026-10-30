@@ -14,12 +14,41 @@ user-invocable: true
 
 # Workflow: Task Prep (grabaciones narradas para Mercor)
 
-> **Estado 2026-10-29: en construccion.** Lo verificado hasta ahora esta abajo. Lo que falta
-> esta marcado en §9 y no se inventa.
+> **Fuente de verdad: `Project Odin Writer Handbook`** (135 paginas), archivado en
+> `docs/entrevistas/mercor-project-odin/`. El handbook es la biblia: si esta skill y el handbook
+> difieren, **gana el handbook** y se corrige la skill. El texto extraido vive en
+> `handbook.txt` al lado del PDF.
 >
 > **Que hace esta skill:** prepara una tarea para grabarla. **No la ejecuta y no ayuda durante la
 > grabacion.** La linea es contractual y de proyecto: la IA puede ayudar a *pensar* antes, nunca a
 > producir mientras se graba.
+
+## 0b. Que es el puesto (no deducirlo del titulo)
+
+**Odin Writer no es "escribir textos" y no es "programar".** El handbook lo define asi:
+
+> *"You will record your computer screen while completing professional tasks across several
+> domains, narrating what you are doing, where you are doing it, and why."*
+
+**18 dominios**, y se elige uno segun la expertise real:
+
+| Dominio | Abrev. | | Dominio | Abrev. |
+|---|---|---|---|---|
+| Architecture | ARCH | | Finance | FIN |
+| Audio & Music Production | AUD | | Marketing; Sales & Biz Dev | GTM |
+| Consulting & Business Ops; Product Mgmt | BUSI | | Healthcare & Life Sciences | HLS |
+| Design (Graphic / UX / UI) | DES | | HR & People Ops | HR |
+| **Data Science & Analytics; Software & AI/ML Eng.** | **DSD** | | Photography | IMG |
+| Education | EDU | | IT Support | IT |
+| Engineering (Non-Software) | ENG | | Legal | LAW |
+| Research & Academia | RNA | | Content & Writing | TEXT |
+| Animation & VFX | VFX | | Video | VID |
+
+**La primera tarea va en el dominio con evidencia mas fuerte.** El perfil de Gonzo cae en **DSD**
+(10+ anos, React/TS, 11 PRs, accesibilidad). TEXT, DES y BUSI son alternativas validas si una idea
+de otro dominio es mejor, pero no como primera.
+
+**No hay webcam ni filmacion de la persona.** Solo pantalla.
 
 ## Cuando usarlo
 

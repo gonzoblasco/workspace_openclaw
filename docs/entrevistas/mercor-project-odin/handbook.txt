@@ -1,0 +1,5116 @@
+⚡Odin⚡
+Welcome to Project
+
+LAST UPDATED: Oct 30, 2026
+
+Confidentiality
+All Odin project information and materials are confidential. This includes the project
+name, client identity, nature of the work and your involvement, along with this handbook,
+task instructions, recordings, screenshots and any other project files.
+Use project materials only for authorized project work. Share them only through approved
+project channels with people authorized to access them. Do not post, publish, sell or share
+them externally, including in videos, on social media or websites, or in external group chats.
+Do not confirm or deny guesses about the project or client, even if someone appears to
+know the details already.
+
+How the Odin Writer Handbook is structured
+Use the tabs below to find each part of the workflow.
+Section
+
+Goal
+
+01. Welcome to Odin
+
+This page- Project Introduction, general overview.
+
+02. Change log
+
+Check here for updates to the guidance.
+
+03. Setup & Access
+
+Tools, settings, software- everything you’ll need to
+get working.
+
+04. Expectations
+
+Pay policies, task limits, LLM use, PII requirements.
+
+05. Task Guidelines
+
+Everything you need to know about task workflows
+and idea guidelines.
+
+06. Narration Guidelines
+
+How to narrate effectively, and guidelines for audio.
+
+07. Workflow
+
+The full workflow- all steps to complete your task.
+
+08. Review
+
+What happens after you submit your task.
+
+09. Examples
+
+Some examples from various parts of the process.
+
+10. Additional Info
+
+More information that can help- read as you require it.
+
+What is Odin?
+
+Your Role
+You will record your computer screen while completing professional tasks across several
+domains, narrating what you are doing, where you are doing it, and why.
+During each task, you will:
+●​ Plan and prepare the task
+●​ Record and narrate the workflow
+●​ Validate and upload the required files
+No webcam or filming yourself is required.
+
+Domains
+You will complete your tasks based on workflows in these domains:
+Domain
+
+Abbreviation
+
+Architecture
+
+ARCH
+
+Audio & Music Production
+
+AUD
+
+Consulting & Business Operations; Product Management
+
+BUSI
+
+Design (Graphic / UX / UI)
+
+DES
+
+Data Science & Analytics; Software & AI/ML Engineering
+
+DSD
+
+Education
+
+EDU
+
+Engineering (Non-Software)
+
+ENG
+
+Finance
+
+FIN
+
+Marketing;
+Sales & Biz Dev
+
+GTM
+
+Healthcare & Life Sciences
+
+HLS
+
+HR & People Ops
+
+HR
+
+Photography
+
+IMG
+
+IT Support
+
+IT
+
+Legal
+
+LAW
+
+Research & Academia
+
+RNA
+
+Content & Writing
+
+TEXT
+
+Animation & VFX
+
+VFX
+
+Video
+
+VID
+
+Changelog
+This section records dated guideline changes. Older entries may describe
+superseded processes; follow the current instructions in this handbook.
+PLEASE REVIEW THIS REGULARLY so you are always working with the most
+up-to-date information.
+Date
+Oct 30, 2026
+
+Changes
+
+🟩 Clarified the Metadata.rtf workflow: download and check
+
+Studio’s generated draft, verify it against your recording, and
+upload the final file in Metadata.rtf Upload.
+
+🟩 From October 29, 2026 (PT), new writer onboarding offers
+
+total $400 across Tasks 1–4, with all-three-task Trial awards
+and no stacking. Future writer bonus campaigns are
+Production-only. See Expectations & Pay for the
+breakdown.*
+
+*Earlier onboarding offers keep their original amounts, eligibility,
+deadlines and permitted bonus stacking.
+Oct 29, 2026
+
+🟩 Added Windows to the list of restricted apps (through VM or
+remote connection)
+🟩 Named sources that are not OK for downloaded content
+(Canva library and templates, Pixabay, Pexels, Unsplash,
+Template.net and other stock sites), and clarified that
+copying text from websites into your task is not allowed.
+
+🟩 Clarified that Submit for Review stays blocked until every
+
+Major finding in BOTH AutoQC checks (Files & Recording
+and Narration) is fixed or disputed.
+
+🟩 Added Loom video link on how to install and setup
+TaskRecorder in Setup & access.
+🟩 Review limit is now 3 per task - if you already have a task
+
+with 3 reviews but not its 4th, submit your final revision by
+October 30th, 11:59 PM PT
+
+🟩 NEW: Writers can escalate a review decision they believe is
+wrong from the task page in Studio. See 08. Review ›
+Escalating a review. Escalations don't count toward the
+3-review limit.
+
+Date
+Oct 28, 2026
+
+Changes
+
+🟩 PII: a username in a Finder, save-dialog or Terminal path is
+only a problem if it shows your full name. A first name or
+generic username (/Users/jane, /Users/recorder) is fine.
+
+🟩 Payment and role-change now links to the consolidated Odin:
+Pay & Role Requests form. Use it for payment or bonus
+disputes, role/hour-cap/access issues, and requests to move
+to a lower role.
+
+Oct 26, 2026
+
+🟩 Clarified that tasks will be sent back if wrong windows are
+visible in the recording.
+
+Oct 25, 2026
+
+🟩 Pay dashboard is now live.
+🟩 Tiers are now reviewed daily after 3 newly resolved tasks.
+🟩 Clarified that first task $250 payment is received when task is
+approved, new trial hours are unlocked when task reaches
+Approved.
+
+🟩 Clarified that mandatory training sessions can be paid, while
+optional office hours are not.
+
+Oct 22, 2026
+
+🟩 Chrome and Safari are fully allowed apps.
+🟩 TextEdit is banned. It is only permitted for creating
+metadata.rtf.
+
+Oct 19, 2026
+
+🟩 3 apps are suggested but not required.
+🟩 Goal document should be closed or minimized after intro.
+🟩 Reimbursements considered on a case by case basis.
+🟩 Chrome profile setup replaced with Firefox.
+🟩 For help, ask Loki first, and technical issues now go to
+#odin--helpdesk.
+🟩 You no longer need a separate recorder account - you may
+
+use any account so long as the recording is free of any PII or
+copyrighted material.
+
+🟩 NEW - Epilogue narration requirements: All task ideas
+
+originally approved at or after Oct 19, 2026 6PM PT must
+include an epilogue narration (target: 3-4 mins; maximum:
+4:00; longer epilogues may be sent back) which serves as a
+brief reflection of the work. See here for more details
+
+🟩Writer recording guidance remains 15:00 to 50:59 total,
+
+including intro and epilogue. Reviewers may accept
+recordings up to 54:59; this acceptance tolerance does not
+raise the writer planning target.
+
+Date
+Oct 17, 2026
+
+Changes
+
+🟩 Only Major AutoQC flags block submission; Minor flags are
+
+advice. File-only issues need a corrected upload, not a
+re-record. An approved idea moves the same Studio task to
+In Progress. Unlisted apps can be entered using Other.
+
+🟩 Logging into apps with your mercor.expert account or a new
+anonymised account is acceptable
+
+Oct 15, 2026
+
+Oct 8, 2026
+Oct 3, 2026
+
+🟩 Loki idea-generation support was added.
+🟩 Updated restricted apps list.
+🟩 Idea proposals moved from the Odin Dashboard to Studio.
+🟩 Earlier workflow: idea approval automatically created a task.
+
+This process is superseded; continue in the same approved
+Studio task.
+
+Oct 2, 2026
+
+🟩 Removed the rule on claiming 2 tasks at a time.
+🟩 The approved Goal must match the Task Description in
+TaskRecorder and the Request in Metadata.rtf.
+
+Oct 2, 2026
+
+🟩 Historical task-length limit: 15:00–45:59. The current writer
+
+planning range is 15:00–50:59; reviewer acceptance extends
+to 54:59.
+
+Oct 1, 2026
+
+🟩 Earlier workflow required idea approval in the Odin
+
+Dashboard before recording. That process is superseded:
+propose ideas in Studio, continue in the same approved
+task, and copy only its approved Goal into TaskRecorder, the
+opening document and Metadata.rtf Request.
+
+Sep 29, 2026
+
+🟩 Updated to Odin & Loki
+
+Getting Set Up
+
+🎯 After this phase, you will:
+
+• Understand the steps to get set up
+• Have access to all of the tools you’ll need for Project Odin
+• Know how to set up your desktop for recording
+
+Tools
+You will need to complete several steps to get access to all of the tools required to
+work on Project Odin. In this section you will set up or gain access to:
+Tool
+
+Used for
+
+Okta
+
+Access to Slack, Studio
+
+Slack
+
+All project communications and announcements
+
+Studio
+
+Uploading your videos and completing tasks
+
+Insightful
+
+Time tracking, so you get paid
+
+Task recorder
+
+Recording your workflow videos
+
+Xcode and Accessibility Inspector
+
+More detailed screen information for your videos
+
+MacOS Setup
+
+To ensure the right settings for this project
+
+Desktop Setup
+
+To make sure you record the right things and avoid
+sharing private info
+
+⚠ Never use a VPN
+
+It is strictly prohibited to use a VPN while working on Project Odin. Checks happen
+automatically, and contracts will be terminated without notice if a VPN is detected
+while working. This is for project security, and is non-negotiable.
+
+Okta
+The Okta Dashboard is accessed by logging in to your account at
+work.mercor.com, using your personal email and password.
+●​ Click ‘Home’ on the left toolbar, then ‘Contracts’. Find and click your Odin
+contract.
+●​ Scroll to ‘Tools & Integrations’, find Okta, and click the Dashboard link.
+
+●​ When prompted to add a verification method, use the Passkey option, and
+set one up for your account by following the steps.
+
+●​ You will be taken to the Okta dashboard where you can access your Slack
+app, Studio, and your Google Workspace Mail which will display your
+mercor.expert account.
+
+●​ To access project documentation, you must be logged in to a browser using
+your mercor.expert account.
+●​ Once you have logged in to Okta, you can do this by setting up a new
+Google profile, pasting in your mercor.expert email address, and clicking
+next- it will login with the SSO.
+
+💡
+
+Okta issues
+
+For access issues not covered in this guide, please email support@mercor.com.
+
+Slack
+Click the Slack Enterprise tile on Okta to launch Slack. It is used for all project
+communication and you must check it regularly.
+●​ You will be added automatically to all of the required channels. A few key
+ones:
+Channel
+
+Used for
+
+#odin--announcements
+
+Important project announcements. Check it regularly!
+
+#odin--helpdesk
+
+For any technical, tasking, onboarding, or general
+questions. Tag @Maven in your post.
+
+#odin--ideation
+
+For ideas on how to get started on your task. Tag
+@Maven in your post.
+
+💡
+
+Who is Maven?
+
+Maven is our helpful information bot! Tag her in helpdesk or ideation channels, and she
+can answer questions, and help with ideas. Always tag Maven in these channels- we
+have thousands of questions per day, and she is your best option for getting quick help!
+
+Studio
+You can access Studio by clicking on the Studio tile on the Okta dashboard.
+●​ Studio is where you will create your tasks and upload your workflow videos.
+See more on how to do this in the Workflow section.
+
+Insightful
+Insightful is the program used to track your time, and you must download the
+Workpuls app, and use it only for eligible hourly-paid work within your stage
+allowance or weekly limit. Keep it off for tasks retaining per-task pay and first-task
+work after the three paid setup hours.
+
+●​ Once your contract is active, download the Workpuls desktop app from the
+Insightful download page. Full details on Insightful installation and use can
+be found here.
+●​ Sign in using Continue with SSO and your @mercor.expert email. Choose
+Odin and start the Glowstone-Odin - Task timer. Keep Insightful minimized,
+and press ‘stop’ when you finish, take a break, wait for a response or switch
+away from project work. If tracking stops or your approved hours run out,
+pause hourly-paid work and report it to @Maven in #odin--helpdesk.
+●​ Use this timer for eligible hourly-paid work. More details on pay can be
+found here.
+
+●​ Untracked hours cannot be paid back- so ensure you hit ‘play’ during
+eligible hourly-paid work, and ‘stop’ when you finish.
+●​ Ensure you only track time when you are actively working, according to the
+table below.
+⚠ Unauthorized Time
+
+You may only track time when you are actively working. Excess idle time, or time spent
+on non-project work, is considered fraudulent and will be deducted. You may be
+offboarded from the project if this occurs- only track time while working.
+
+✅Ok to Track
+
+❌ Do not track
+
+Reading project material and completing
+onboarding
+
+Sitting idle or waiting for access to tooling
+
+Required kickoff/training calls or their recordings,
+required project training and approved office
+hours, within your approved hour allowance.
+
+Resolving non-blocking personal tech issues
+
+Preparing files and apps for your workflow video
+
+Working for a non-Odin project
+
+Recording the workflow video
+
+Chit-chatting with other experts or excessive time
+scrolling Slack in case something is posted
+
+Working on tasks within Studio, and making
+required task edits
+
+Breaks, social media, unrelated websites, personal
+tasks
+
+Actively participating in necessary project Slack
+discussions
+
+Optional office hours or other optional calls
+Waiting for Maven or another AI tool to return an
+answer, or waiting for new tasks or attendees
+without an authorized paid duty.
+
+⚠ Be aware of the limits
+
+Depending on what stage of the project you’re in, you will have different hour limits. Be
+aware of these, and do not track time outside of the allowed hours. See more details in
+the Pay Policy section.
+
+TaskRecorder
+You will need to download and install TaskRecorder2.4.4 onto your Mac.
+Watch this short video on how to download TaskRecorder for more information.
+
+If you’ve used TaskRecorder before:
+●​ Quit TaskRecorder if it’s open (press ⌘Q).
+●​ Delete any old TaskRecorder .dmg files, usually found in your Downloads
+folder.
+●​ Don’t delete your recordings or exports.
+Download the right version for your Mac:
+●​ If you work on an Apple Silicon M-Series Mac: TaskRecorder2.4.4.dmg
+●​ If you work on an Intel Mac: TaskRecorder2.4.4-Intel.dmg
+
+💡
+
+Which Mac do I have?
+
+To see if you are using an Intel or Silicon M-Series, simply click the Apple Menu and
+select ‘About this Mac’. Processor information can be found there.
+Install:
+●​ Double-click the downloaded file to open it. A window will appear showing
+the TaskRecorder icon.
+●​ Drag the TaskRecorder icon into your Applications folder.
+●​ If asked whether to replace an existing version, choose Replace.
+
+Set up:
+●​ Open TaskRecorder from the Applications Folder.
+
+●​ If you get a pop up saying Apple could not verify the software, select Done,
+then go to System Settings > Privacy & Security and click ‘Open Anyway’.
+
+●​ If the warning says the app is damaged, or contains malware/will damage
+your computer, do not bypass- share the exact warning in #odin--helpdesk.
+●​ Authenticate and confirm you want to open the application.
+
+Grant permissions and open:
+●​ Grant TaskRecorder access to Accessibility, Screen Recording, and
+Microphone.
+
+●​ Confirm permissions show green check marks in TaskRecorder.
+
+●​ Run a short test recording to check the video and microphone work as
+expected.
+
+Xcode and Accessibility Inspector
+You will need to download and install Xcode, in order to access and use the
+Accessibility Inspector. Accessibility Inspector will need to run while you’re
+working, but Xcode can be closed.
+Download Xcode:
+●​ Search and install Xcode from the App Store.
+
+●​ For macOS 26.6 or lower, find the specific version you need by checking
+here, and find that version on the Apple Developer More Downloads page.
+○​ Sign in with your Apple ID, and accept the Apple Developer
+Agreement.
+Set up Accessibility Inspector:
+●​ Open Xcode from Applications, and go through the initial setup.
+●​ In the dock, right click Xcode > Open Developer Tool > Accessibility
+Inspector.
+
+●​ Once Accessibility Inspector opens, close its window by clicking the red
+button in the top-left corner of the window.
+
+●​ Don’t click the yellow button (minimize), and don’t quit the app (⌘Q). The
+app needs to keep running in the background.
+●​ Check that the Accessibility Inspector icon (a blue magnifying glass) is still
+in the Dock at the bottom of the screen, with a small dot underneath it. The
+dot means it’s still running.
+
+MacOS Setup and Requirements
+The following setup is a technical requirement before you can proceed.
+Mac Hardware Requirements:
+
+●​ Processor: Apple M-series (M1 or newer) or Intel. MacBook Neo (Apple A18
+Pro) is not supported for Odin.
+●​ macOS: Version 15 or newer (Sequoia)
+●​ Memory: 16GB RAM or more preferred (8GB works, but can struggle with
+TaskRecorder)
+●​ Display: Built-in laptop preferred- avoid recording on an external 4K/5K
+monitor.
+●​ Disk Space: 35GB free disk space for a 20-minute task.
+●​ Connectivity: Stable, high-speed internet connection is required for
+uploading the large recording files
+Required Mac Settings:
+●​ System language must be set to English.
+●​ Clock must be configured to display seconds. Go to System Settings >
+Menu Bar > Clock Options and toggle ‘Display the time with seconds’ to on.
+
+●​ Dock needs to be set to the left/right, not the bottom. Go to System Settings
+> Desktop & Dock and click the dropdown menu with ‘Bottom’. Select ‘Left’
+or ‘Right’.
+●​ Ensure ‘Automatically hide and show the dock’ is toggled off.
+●​ Ensure ‘Show indicators for open applications’ is toggled on.
+
+Desktop Setup for Recording
+We have strict requirements on Project Odin for how your desktop should be set
+up, to ensure data is captured correctly, and to ensure no personally identifiable
+information (PII) makes it into the recording.
+⚠ Follow these requirements exactly!
+
+Please ensure you follow all of these requirements. Your task will not be approved, and
+will require re-recording, if PII or other items/windows are visible in the recording.
+
+💡
+
+Prefer a separate account?
+
+If you would prefer to use a completely separate user account on your Mac to do this
+work, that is allowed. See Appendix for details on how to do this.
+
+Clear your Desktop:
+●​ Click your Desktop, press ⌘ + A to select everything, then right click the
+selection and choose New Folder with Selection. Name the folder Desktop
+items.
+●​ Drag the Desktop items folder into your Documents folder, so your Desktop
+is empty.
+●​ Remove all Widgets from your desktop by clicking System Settings >
+Desktop & Dock > Widgets, and then untick ‘Show Widgets: On Desktop’.
+Use built-in wallpaper:
+●​ Click System Settings > Wallpaper and choose any Apple built-in wallpaper.
+Do not use personal photos.
+Set up Do Not Disturb:
+●​ You must set Do Not Disturb when you are recording to ensure your task is
+not interrupted by dings, reminders, etc.
+●​ Open System Settings > Focus > Do Not Disturb.
+●​ Under ‘Allowed Notifications’, set ‘People’ and ‘Apps’ to ‘None’.
+●​ Turn ‘Intelligent Breakthrough & Silencing off (‘Time Sensitive Notifications’
+on older macOS).
+
+Use a fresh browser:
+●​ Your browser is often where PII leaks- suggestions in the address bar,
+saved bookmarks, Google avatar, etc.
+●​ To avoid this, create a new Chrome or Safari profile to use only when
+recording, or use a new browser you have no history on.
+●​ When first launched, hit ‘Skip’ if it offers to import from another browser, or
+prompts you to sign in to a browser account.
+Rename your Mac:
+●​ Re-name your Mac to remove your name or other PII.
+●​ Go to System Settings > General > About and change the name field.
+●​ In System Settings > General > Sharing > Local hostname, edit and set it to
+match.
+
+Quit unneeded apps:
+●​ Before recording, quit every app you don’t need with ⌘ + Q. Press ⌘ + Tab
+- only your task apps and the recorder should appear.
+●​ When recording, don't click the Downloads stack in the Dock during a
+recording, as it previews your recent downloads. Open Finder > Downloads
+instead.
+Do a test recording:
+●​ Run a short recording, switch between apps, use the browser.
+●​ Watch it back and check for anything that might flag PII. Fix it before you
+begin.
+
+Expectations
+
+🎯 After this phase, you will:
+
+• Understand the general Project Expectations
+• Understand the pay policy
+• Know how to protect your personal information
+• Understand the copyright rules
+• Know the LLM usage policy
+
+Project Expectations
+Generally, we expect contributors to aim for one task per day to be completed
+after onboarding. Aim to complete onboarding as quickly as possible.
+
+Pay Policy
+The hourly model began October 21, 2026 at 12:00 a.m. Pacific. Your contract will
+determine your base rate.
+For eligible hourly-paid tasks, time tracked within your stage allowance or weekly
+limit is paid, including edits, send-backs and work on tasks that are not approved.
+A task does not need to reach Ready for Delivery for that time to be paid. Idle or
+off-project time, and hours above your limit, are not paid.
+Only time tracked in Insightful can be paid; untracked time can’t be added later.
+Time tracked while you were on a per-task contract is not paid hourly; that work is
+paid per task.
+
+Payment schedule
+Payments for tasks that retain the old per-task terms follow the regular payment
+schedule. Under the hourly model:
+●​ Hourly pay is sent every Wednesday for the previous week (Saturday to
+Friday, India time).
+
+●​ Per-task pay is issued in a weekly batch.
+●​ Tier bonuses are normally paid the Wednesday after the corresponding
+hourly pay, but may arrive earlier, including with the hourly payment. Tier
+bonuses are the amount paid above the base hourly rate in your contract.
+●​ First payout: Verification may add 3-5 business days.
+●​ Possible delays: Bank holidays, processing schedules, and bank cutoffs
+may delay settlements.
+
+Payment providers
+●​ Stripe: The primary payment platform for ongoing contributors. After
+accepting a job offer, follow the instructions to create your payout account.
+●​ Wise: Generally used for one-time payments, contributors who have not
+completed Stripe onboarding, or contributors whose bank accounts are in
+countries Stripe does not support. You don't need a Mercor account to
+receive payment through Wise. Follow the instructions to set up Wise.
+
+Writer Pay and Phases
+Writing is broken into three phases- Onboarding, Trial, and Production. You will
+move through each phase in order. For more details, watch the Odin Pay Video
+(Part 1: Onboarding and Part 2: Pay after onboarding) or review the Pay Slidedeck.
+These may show the earlier onboarding offer. If you started onboarding on or after
+October 29, 2026 (PT), the onboarding awards below apply to you instead.*
+
+Onboarding (+ Task 1)
+Up to 3 setup hours total are paid at your base rate. For new writer onboardings
+from October 29, 2026 (PT), Task 1 earns:*
+●​ $50 on submission.
+●​ $100 on approval (Review Approved, QC Approved, Quality Review A or
+Ready for Delivery), subject to pay-run conditions.
+The new offer does not stack with other writer bonuses. Future writer bonus
+campaigns are for Production writers only.
+*Earlier onboarding offers keep their original amounts, eligibility, deadlines and
+permitted bonus stacking.
+The 3-hour setup allowance does not renew weekly.
+
+●​ If your 3 hours are finished, you should still complete your first task to earn
+your Task 1 submission and approval awards.
+●​ Hitting the 3-hour cap doesn’t stop you from earning either one. Just
+continue without the timer.
+
+Trial (+ Tasks 2, 3 and 4)
+When your first task reaches Review Approved, you move into the Trial phase.
+●​ You will have 12 hours as a starting allowance.
+●​ Each task that reaches Review Approved automatically adds 3 hours to your
+Insightful timer. If the allowance reaches 0, you will need to continue
+without further hourly pay until you receive another Approval.
+●​ Trial hours are paid at your contract’s base hourly rate, with no tier bonus.
+Time worked while your balance is at 0 is not paid hourly, and top-ups are
+not available. If your balance looks wrong, pause hourly-paid work and ask
+@Maven to check it.
+●​ After 3 Trial tasks (Tasks 2, 3 and 4) reach Review Approved, you move to
+Production as a Writer. Rejected tasks do not count.
+Under the October 29, 2026 (PT) offer, Tasks 2, 3 and 4 earn:*
+●​ $100 once all three are submitted.
+●​ Another $150 once all three are approved, completing Trial.
+Each award pays once for the group, not per task. No partial payments. Total
+onboarding awards across Tasks 1–4: $400.
+*Earlier onboarding offers keep their original amounts, eligibility, deadlines and
+permitted bonus stacking.
+You can have up to 3 open tasks. New writers’ tasks receive priority in review;
+there is no guaranteed turnaround time.
+
+Production Tiers and Limits
+●​ In Production, writers are broken into tiers based on their efficiency
+(primarily, hours it takes per task), and the pay and hours available are
+directly tied to your tier.
+●​ Tier reviews run every 24 hours at 11:30 a.m. Pacific Time (10:30 a.m. from
+November 1), and each tier applies to the whole 24-hour period between
+reviews. You will be given a warning if your efficiency has dropped and
+you’re at risk of being moved to a lower tier.
+○​ Persistently low efficiency may lead to offboarding.
+
+●​ The limits in the table below are firm- there are no exceptions or additional
+hours available, and you must work within these limits.
+Tier
+
+What is it?
+
+Pay*
+
+Hours
+
+Open Tasks
+
+Throttled Writer
+
+Lowest efficiency writers
+
+$40/hour
+
+Up to 40h/week
+
+Up to 3
+
+Writer
+
+Mid efficiency writers
+
+$55/hour
+
+Up to 60h/week
+
+Up to 5
+
+Super Writer
+
+Highest efficiency writers
+
+$75/hour
+
+Up to 80h/week
+
+Up to 10
+
+*Pay values here assume a base rate of $40/hour. If your contract states differently, your
+tiered pay will change accordingly. Additional pay above the $40/hour base for Writers
+($15/hour for a total of $55/hour) and Super Writers (+$35/hour for a total of $75/hour) is
+
+💡
+
+considered a ‘Tier Bonus’.
+
+’Open’ Tasks
+
+An open task is anything you are currently working on. This includes anything in
+progress or currently awaiting approval. Tasks which are marked Review Approved,
+Ready For Delivery (RFD), RFD - Minor, or are rejected are considered closed.
+
+Odin Dashboard
+You can view details about your pay in the ‘My Pay’ section of the Odin
+Dashboard.
+●​ View hours and pay for each week, or an estimate if it has not yet been
+processed.
+●​ View any bonuses you’ve qualified for, with its status, and a link to the
+announcement.
+●​ You can see your current tier and the associated tier bonus.
+●​ If something is missing or looks wrong, report it on the dashboard, through
+the pay issues form.
+
+💡
+
+Tier or hour limit looks wrong
+
+If your starting tier or hour limit appears inconsistent with your past qualifying tasks,
+please tag @Maven in #odin--helpdesk with your mercor.expert email and the relevant
+Studio task link so we can check your assignment.
+
+Pay questions
+My contract shows $40/hour. How do tier bonuses affect my pay?
+Your contract shows your base hourly rate before any tier bonus. In Production,
+Writer adds 37.5% of your base rate and Super Writer adds 87.5%. With a
+$40/hour base, that is $15 or $35 extra per eligible hour, for totals of $55 or $75. If
+your current contract has a different base rate, apply the same percentages to
+that rate.
+Tier bonuses apply to eligible hours at your applicable tier within your weekly limit;
+task approval is not required. Paying the additional amount as a bonus lets your
+tier pay change without a new contract each time. This structure also applies if
+your previous contract showed a higher rate.
+
+Do I need to wait for an Insightful invitation before tracking paid work?
+No. Once your contract is active, download the Workpuls desktop app from the
+Insightful download page and sign in with Continue with SSO using your
+@mercor.expert email. Select Odin and the Glowstone-Odin - Task timer for
+eligible hourly-paid work. Follow Setup & access → Insightful for the full tracking
+instructions.
+
+Are my logged hours reviewed before payment?
+Yes. Mercor reviews logged hours as part of each weekly pay cycle before
+processing payment. Idle or off-project time may be removed. Log only eligible
+active Odin work within your applicable allowance or cap. To challenge removed
+hours, follow Disputes.
+
+Personally Identifiable Information (PII)
+It is really important on Project Odin to keep all personal information private, and
+ensure nothing is leaked into the recording that shouldn’t be there.
+Similarly, confidential project information must also not be shared in the recording.
+⚠ PII must not leak into your tasks!
+
+Tasks will never be approved if private or non-public personal information is included
+in the recording. This video provides insight on where personal information sometimes
+slips into recordings. Note: the video flags a Terminal username that isn't a full name.
+A username is only PII if it shows your full name.
+
+✅ Ok to include
+
+❌ Not ok to include
+
+Your @mercor.expert email and account name
+
+Other real account or identification numbers
+
+Public figures or public profiles
+
+Mac addresses, or a Mac serial number + an IPv6
+address
+
+Mentioning Mercor or Project Odin aloud
+
+Showing any Project Odin tools or documents
+
+Obviously fake names, emails, and phone
+numbers (John Smith, JohnSmith@example.com,
+123-456-7890)
+
+Personal emails, home addresses or phone
+numbers of real people
+
+Your first name
+
+Personal photos or biometrics
+
+There are several places PII can slip in, and recordings which include them will
+need to be re-done. Pay particular attention to:
+●​ App profile corners. Your name or photo in the top-right account area of
+PowerPoint, Word, Google Docs, Sheets or Slides, or your browser's profile
+button.
+●​ Usernames in paths. Your full name in the Finder sidebar, a window title, a
+save or export dialog (/Users/janesmith/...), or the Terminal prompt. A
+first name or generic username (/Users/jane, /Users/recorder) is fine.
+
+●​ Logged-in accounts. Your personal email or profile photo in Chrome, Gmail,
+Google Drive or any web app.
+●​ Autofill and history. Your name or email in search suggestions, recent-file
+lists, or notification previews.
+
+💡
+
+Use a new browser
+
+It is highly recommended you use a new profile in your browser, or a completely new
+browser altogether, to do your recordings. This prevents any history, autofill, or logged in
+accounts from catching you out.
+
+Also ensure no Project Odin tools or documents ever show on screen. Keep the
+following out of the recording:
+●​ The Project Odin Writer Guidelines or other project-administration
+documents.
+●​ Mercor Studio at any point, including the Studio icon, a Studio URL, or any
+task, instruction or review page.
+●​ Insightful (Workpuls) at any point; it should only run in the background.
+●​ Odin Slack, including the workspace or any Odin Slack URL.
+
+Licensed Content and Copyrights
+Any images, videos or other downloaded content which you use or upload for
+your task must be CC0 or Public Domain. Royalty-free on its own is not enough.
+For SWE/ML/DS tasks, public GitHub repositories are fine. Prefer these licenses:
+●​ CC0, PDDL, ODC-by, Apache 2.0, BSD, MIT, Public Domain
+You must always check that the source terms permit commercial use.
+●​ Licenses are typically found in the repository root or in README.md, under
+names like LICENSE.md/LICENSE.txt or COPYING.txt.
+Do not use content that contains:
+●​ A visible creator watermark (except Gemini- this watermark is allowed)
+●​ A copyright symbol or ownership notice
+●​ Unverified or unclear licensing
+
+●​ Paywalled or otherwise restricted material
+●​ Private repositories
+These sources are not OK, even if an item is labeled free or royalty-free:
+●​ Canva library and templates
+●​ Pixabay
+●​ Pexels
+●​ Unsplash
+●​ Template.net
+●​ Other stock image, video or template sites
+If you are visiting websites for research or context (for example, reading
+documentation or looking up reference data), you do not need to worry about the
+copyright rules.
+Copying text from websites into your task is not allowed.
+
+LLM Use
+●​ The only LLM allowed on this project is Gemini. All others are prohibited.
+Continue to use Maven for project support and idea guidance as instructed
+in Setup & access.
+●​ You may use LLM generated content for your tasks, but it must be created
+before you begin recording.
+●​ Do not discuss on the recording how the file was generated, or use Gemini
+to create additional content during recording.
+
+Detailed LLM use cases
+
+Use Case
+
+Status
+
+Rule
+
+Standard Google Search
+results
+
+Allowed
+
+Use search results normally
+
+Opening a static link shown
+in Google AI Overview,
+including under Show more
+
+Allowed
+
+Do not interact with the AI
+Overview
+
+Use Case
+
+Status
+
+Rule
+
+Selecting Ask anything in
+Google AI Overview
+
+Not allowed
+
+This begins an AI interaction
+
+Using AI Mode, Gemini,
+ChatGPT, Claude, or another
+conversational assistant
+
+Not allowed
+
+Do not prompt, chat, ask
+follow-up questions,
+generate, or summarize
+
+Using AI to generate task
+content during recording
+
+Not allowed
+
+Task content must be
+created manually through
+the recorded professional
+workflow
+
+Using an AI-powered feature
+for substantive task work
+
+Not allowed
+
+The feature cannot make
+meaningful task decisions or
+create the deliverable
+
+Using ordinary built-in
+functionality that is not
+presented as AI
+
+May be allowed
+
+It must involve no prompting,
+conversation, generation, or
+summarization
+
+Running software that
+contains an AI or ML
+component
+
+Conditionally allowed
+
+It must be part of normal
+software validation and
+cannot act as an assistant
+that completes the task
+
+When an AI feature is built in
+There may be cases where part of your workflow has a feature which uses AI/ML
+to perform part of the task work- for example, Photoshop subject identification
+may have AI tooling.
+How to handle:
+●​ If the feature is not presented as AI, involves no prompting/generative AI,
+and only performs incidental quality cleanup rather than substantive task
+work, it may be acceptable.
+●​ For SWE tasks, writers may use code that includes an AI/ML component
+(such as building foundation models). Running the code may be acceptable
+only if it is part of normal SWE validation and not being used as an external
+assistant to complete the task.
+
+Task Guidelines
+
+🎯 After this phase, you will:
+
+• Understand the general task workflow rules
+• Understand requirements around app usage
+• Be clear on what good task variety looks like
+
+Workflow Guidelines
+Each workflow you record should reflect realistic professional work for someone
+in your professional domain. It should:
+●​ Demonstrate meaningful expertise and judgment.
+●​ Show the entire workflow to produce a clear final deliverable.
+●​ Require the use of at least one app (ideally 2-3) which meaningfully
+contributes to the output.
+●​ Be mostly mouse-driven to assist with the recording and narrative.
+●​ Take between 15:00 - 50:59 minutes to complete, including a short intro and
+final epilogue summary.
+●​ Have variety, where each task workflow you produce is meaningfully
+different from the others you have done.
+
+🎨
+📊
+🏢
+
+Some quick workflow examples:
+Healthcare / Medicine: Review de-identified patient education materials,
+compare them with clinic guidance, and create an updated handout.
+Engineering / Data: Clean and compare a permitted dataset, create clear
+charts, and prepare a short findings report for a stakeholder.
+Architecture: Update a room layout from a client brief, check the dimensions
+and circulation, and export a labeled plan for review.
+A strong recording shows how a professional thinks, makes decisions, and verifies
+their work.
+Do not pad the recording with unnecessary actions or waiting, and do not keep
+tinkering after the task is complete. Check the output before you stop: it must be
+
+accurate, readable, professionally formatted and usable. Minor writing errors are
+acceptable only if they do not change the meaning or the result. Unless an
+announced exception applies, the main app should do most of the work.
+
+💡
+
+Task complexity
+
+Tasks may be simple, but must still be realistic, demonstrate your domain expertise and
+fit naturally within 15:00–50:59; do not pad the recording.
+
+App Usage
+There are a few rules on app use.
+
+●​Check App Eligibility and Limited Use before choosing apps. Follow the
+listed restrictions and exceptions for banned or limited-use apps. Apps in
+the alternatives-preferred category are allowed.
+●​ Ensure the apps you’re using allow commercial use, especially if it is a trial
+or free version.
+●​ You must use at least one app; 2-3 is preferred, and they should all
+contribute meaningfully to the workflow to count.
+
+💡
+
+We do allow writers to use paid apps, and get reimbursed for their use, according
+to the below rules:
+●​ Writers must have at least one approved task before they are eligible.
+●​ Reimbursement up to $50 USD per writer for every rolling 30 day period
+(including tax).
+●​ You must submit your task which includes meaningful use of the app
+before the reimbursement can be claimed.
+●​ Annual/lifetime plans and bundles must be approved separately.
+●​ Submit your claim using this form.
+
+Meaningful contributions
+
+Use your discretion when deciding which apps count. Apps that are simply running but
+not used directly for the task (e.g., Insightful), or which are only opened or used very
+briefly, do not count. The document app which you will use to describe the task does not
+
+count, unless you use it again for actual task work. Repeated use of an app still counts as
+one app. Finder does not count. List web apps themselves, not the browser you used to
+reach them; a browser counts only when it does substantive task work. Keep Studio’s
+approved Apps list consistent with TaskRecorder’s Used Apps and the apps described in
+Metadata.rtf. TaskRecorder’s Task Description and Metadata.rtf’s Request contain only
+the exact approved Goal.
+
+Task Variety
+Different tasks can use the same apps- but there must be variety in the tasks you
+submit. Each task should contain a meaningfully different workflow.
+
+✅ Good Variety
+
+❌ Bad Variety
+
+A different professional objective
+
+Changing only the title or client
+
+A new decision, constraint, or evaluation
+criteria
+
+Changing only the browser, colours, or file format
+
+A different method, calculation, or
+specialist feature used
+
+Changing only the data set, but the workflow is
+the same
+
+How information flows between different
+apps
+
+Replacing the app with a different one that
+performs the same function
+
+The final deliverable is different or is
+verified differently
+
+Changing only details like the company name
+
+Between tasks, you must also change the Desktop appearance by altering at least
+one of the following (but more is better!):
+●​ Screen resolution
+●​ Light or dark mode
+●​ Wallpaper (a built-in one other than your macOS version’s default; on
+macOS 15 the default is Sequoia Sunset)
+●​ Dock size
+●​ Accent color, sidebar icon size, or an in-app theme
+●​ Moving the Dock does not count as a UI change.
+
+Mouse cursor size and colour should remain the same, and ensure you follow the
+other set up guidelines in the Desktop Setup section.
+
+Narration Guidelines
+
+🎯 After this phase, you will:
+
+• Know how to properly narrate your workflows
+• Know how to use the mouse effectively for teaching
+• Learn how to handle mistakes and what the audio standards are
+
+Audio Quality
+It is extremely important that the tasks you create have excellent audio quality.
+Always:
+●​ Record in a quiet environment where you will not be interrupted.
+●​ Ensure there is no background noise that can be heard on your recording.
+●​ Speak at a consistent volume.
+●​ Ensure your voice is clear and not muffled.
+
+Core Narration Standards
+For each workflow you record, you will need to adhere to several key standards.
+Your workflow recording and narration should demonstrate how you think, make
+decisions, use your tools, and produce a usable result.
+Quality
+
+What It Means
+
+Excellent Audio
+
+Each workflow recording should have excellent audio
+quality. Always ensure you are working in a quiet,
+private place, and you speak clearly.
+
+Natural
+
+Work and narrate as you normally would when
+demonstrating a professional process.
+
+Complete
+
+Show the full workflow through completion and saving of
+the final deliverables.
+
+Quality
+
+What It Means
+
+Mostly Mouse-Driven
+
+Use visible application controls whenever practical.
+Avoid long typing-only sections and excessive keyboard
+shortcuts.
+
+Professional
+
+Apply meaningful expertise, methods, standards,
+calculations, or decision-making.
+
+Deliberate
+
+Work at a natural pace and allow actions to finish before
+continuing. Do not rush through the task.
+
+Appropriate
+
+Do not display sexually explicit, graphically violent,
+hateful, discriminatory, or otherwise prohibited content.
+
+Manage Windows Clearly
+Keep one clear active window, or arrange only the task-relevant windows you
+need side by side. Other task apps may remain open, but minimize them when you
+don't need them for the current step. Minor window overlap alone is not an error
+and does not require edits or a re-record. Keep the content being worked on
+visible.
+Window management resources:
+●​ Video for an example of good window management
+●​ Video for How to use window tiling
+●​ Video for moving and arranging app windows
+
+✅ Do
+
+❌ Do not
+
+Keep the menu bar, clock, and dock visible
+
+Show any unrelated apps, PII, or any project
+documentation
+
+Keep active windows large and easy to
+read
+
+Use small floating windows surrounded by
+unused desktop space
+
+Rearrange or minimize a window if it
+becomes covered
+
+Obscure or overlap a working window
+
+Use ordinary Fill for one active window
+
+Use full screen
+
+Arrange relevant windows side by side
+when both are needed
+
+Stack or overlap your windows
+
+●​ Temporary pop-ups or dialogs within the same app may overlap while you
+are actively using them. Close them afterward.
+
+Mouse Movement and Typing
+The cursor should guide the viewer’s attention and make each action easy to
+follow. Move naturally, pause before acting, and point to the content you are
+discussing.
+
+✅ Good Example
+
+❌ Bad Example
+
+The cursor moves naturally,
+shows what is being
+discussed, and makes the
+next action clear.
+
+The cursor moves too
+quickly and distracts the
+viewer from the task.
+
+When practical:
+●​ Point to text, buttons, icons, or interface areas as you discuss or use them.
+●​ Trace along text or an area when it helps direct attention.
+●​ Pause briefly over a useful control so its tooltip or preview can appear.
+●​ Scan the relevant toolbar or panel naturally when locating a tool.
+●​ Use visible interface controls instead of relying only on keyboard shortcuts.
+●​ Clicks should be deliberate and unrushed; pause about 1 second after every
+click.
+
+💡
+
+Be deliberate
+
+Move, Pause, Point, and then Act. Do not move too quickly, or with a lot of distracting
+motion.
+
+Limit Typing Time
+Typing is expected, and the cursor may remain still while you type. But it should
+not dominate the recording.
+Follow these limits:
+●​ Maximum of 25% of the total recording can be spent typing.
+○​ For any Coding or Content & Writing tasks, this level is 35%.
+
+●​ Maximum of 45 seconds of continuous typing time.
+Tips for typing:
+●​ Break longer entries into shorter segments.
+●​ Between typing segments, review what you entered, use the cursor to point
+out important details, format the content, test the result, or complete
+another meaningful action.
+
+Narration Guidance
+⚠ Audio Quality is of utmost importance!
+
+It is extremely important that your recording has high quality sound. Always record in
+a quiet place with limited background noise.
+
+You should always speak like a professional who is teaching a colleague that
+cannot see your screen.
+Narrate your thought process and meaningful actions, including:
+●​ What you are analyzing, changing or deciding.
+●​ Mouse movements, clicks, and scrolling.
+●​ Why you selected a method, setting, or value.
+●​ What happened after the action and how you verified the result.
+●​ Any keyboard shortcuts used.
+
+●​ If an action fails, explain what happened, make one deliberate correction,
+and confirm the corrected result.
+⚠ Speaking frequently is not enough
+
+A listener should be able to identify the exact app and control, understand the purpose
+of the action, follow the workflow in the correct order, and hear the confirmed result
+without seeing the screen.
+
+Use What, Where, and Why
+For each meaningful step, say what you are doing, identify the control and where
+it is on screen, and explain the purpose or result when it is not obvious.
+Keep your cursor on the correct place on the screen while you are narrating the
+navigation, to ensure they match.
+Element
+
+Purpose
+
+What
+
+The action you are taking
+
+Where
+
+The exact app, control, file, value, or interface
+location
+
+Why
+
+The purpose or what happens after the action,
+when it is not obvious
+Example: ❝ I’ll click
+the Title 2 (What) at
+the top of the page
+(Where) to open the
+Headings Dropdown
+Menu (Why), then
+select Subtitles
+(What) from the
+dropdown list
+(Where) to change
+the text to the subtitle
+headings format
+(Why). ❞
+
+Be detailed and name the target
+Avoid vague references such as “this”, “that”, or “here”. Identify each item clearly
+before or while interacting with it, and ensure you move your cursor to match your
+narration.
+
+❌ Avoid
+
+✅ Use Instead
+
+I’ll click this button
+
+I’ll select the blue Export button in the
+top-right corner
+
+❌ Avoid
+
+✅ Use Instead
+
+I’m changing that value
+
+I’m changing the font size, which is
+currently set to 12
+
+I’ll click the right-side button
+
+I’ll select Plotly’s camera icon
+
+I’ll place that up there
+
+I’ll click, hold, and drag the title to the
+upper center of the Preview
+
+It’s saved
+
+Article.pdf is now saved in the Desktop
+folder
+
+⚠ Unlabeled icon?
+
+For an unlabeled icon, name its app or panel, function, or visible symbol. Identify
+visual assets by their subject or filename, not only by position or color.
+For some more detail, see the Narration Examples.
+
+Audio Standards and Mistakes
+You must make sure your narration and audio follow the project standards.
+
+✅ Good
+
+❌ Not ok
+
+Describes What/Where during the action,
+and Why for important or non-obvious
+decisions.
+
+Does not describe all actions, or is too
+vague to identify What, Where, or the
+result.
+
+Follows the video; the cursor points,
+hovers, and guides attention.
+
+Narration mismatches the video action.
+
+The voiceover is clear, coherent,
+understandable, and professional.
+
+An audio pause exceeds 60 seconds.
+Aim for gaps of 45 seconds or less.
+
+The narration is free of sustained or
+distracting background noise.
+
+The narration cannot be understood
+on first listen without replaying or
+guessing.
+
+✅ Good
+
+❌ Not ok
+
+Announces every keyboard shortcut before
+or as it is used.
+
+Uses keyboard shortcuts without
+verbal explanation.
+
+Narration, including anything read aloud,
+deliverables, webpages and app menus are
+all in English.
+
+Audio includes private or non-public
+PII or profanity.
+
+Mistakes
+Small slips are normal! If you mistype, misclick or open the wrong menu now and
+then, notice it, say what you are fixing, fix it, check the fix and carry on.
+Restart only if:
+●​ Searching, guessing, undoing or redoing starts to take over the recording.
+●​ An error changes the final result and you cannot fix it on screen.
+●​ There are frequent errors which break the flow of the task.
+
+💡
+
+Mistakes happen
+
+Do what you can to avoid mistakes, but minor errors that you can correct and continue
+do not require re-recording.
+Before you start, think through how you will do each step. Do not learn the software by
+trial and error as you go!
+
+Review the Audio
+Before submitting, review the recording to confirm that:
+​ Narration is audible near the beginning, middle, and end.
+​ The narration matches the actions shown.
+​ Aim for audio gaps of 45 seconds or less. A gap over 60 seconds fails.
+​ Actions, decisions, and results are explained clearly.
+​ Keep narration clear, coherent and understandable on first listen, without replaying
+or guessing. Avoid sustained or distracting background sound that covers your
+narration.
+
+​ No private information or profanity.
+​ Every keyboard shortcut is announced.
+
+Review Workflow
+
+🎯 After this phase, you will:
+
+• Know what happens to your task after you submit it
+• Know how to handle revisions
+
+After Submission
+After your task is submitted in Studio, it has several routes it can take.
+●​ Full review queue
+●​ Quick review queue
+●​ Directly to Review Approved
+Any of these states can still be selected for a QC check. If a task comes back to
+you automatically for edits, read the feedback and address it.
+
+Task Status
+After submission for review, your task can move through several different
+statuses.
+Status
+
+Action needed?
+
+What it means
+
+Ready for review
+
+No
+
+Task is waiting for a reviewer.
+
+In Review
+
+No
+
+Task is actively being reviewed.
+
+Needs Edits
+
+Yes
+
+The task needs to be fixed and resubmitted.
+
+Approved (Probation),
+or Waiting for Audit
+
+No
+
+A reviewer on Probation has made a decision
+and an auditor must confirm it. This does not
+mean the task was approved: a send-back or
+rejection by a probation reviewer shows the
+same status. You cannot edit the task while it is
+here, and there is nothing for you to do.
+
+Status
+
+Action needed?
+
+What it means
+
+Review Approved
+
+No
+
+The task has passed its review route- either by a
+reviewer or automatically.
+
+Awaiting Final QC
+
+No
+
+The task has been randomly selected for
+additional QC and is being held until it passes.
+
+QC Approved
+
+No
+
+The task has passed QC and is waiting to move
+to Ready for Delivery.
+
+Ready for Delivery
+
+No
+
+The task has cleared all required checks,
+including QC if sampled.
+
+RFD - Minor/Under
+Quality Review
+
+No
+
+The task is in a quality re-review, not final
+approval, but it already counts as a qualifying
+task for hours. It may move to RFD, be returned
+for fixes or be archived. Keep working on new
+tasks while you wait.
+
+Rejected
+
+No
+
+The task is unusable within its approved scope
+and cannot be fixed through edits. An invalid
+task concept is an example. Do not attempt or
+resubmit the same task.
+
+If your task needs edits, you should review the feedback within the task and make
+the required changes.
+●​ Changes may require re-recording, file/metadata fixes, clarification or a
+combination.
+●​ Fix within the same task, and then click Submit for Review again (not ‘Revise
+Idea’). If you think the review decision was wrong, see Escalating a review
+before resubmitting.
+●​ If the task is a green ‘Needs Edits’ status and you cannot edit or submit, it is
+still awaiting further checks. Just wait until it turns yellow and you can edit.
+You can track your task status in the My Tasks tab of the Dashboard in Studio.
+
+Escalating a review
+If you think a review decision on your task was wrong or unfair, you can escalate it
+from the task page in Studio. Someone from the QC or Support team will check
+your evidence and post a response on the task.
+Escalating doesn't change your task's status. The task stays with you while the
+escalation is open. An escalation is not a review, so it doesn't count toward your
+3-review limit.
+This is different from disputing an AutoQC finding. You dispute AutoQC findings
+before you submit; you escalate a reviewer's decision after your task comes
+back to you.
+
+When you can escalate
+You can escalate when your task is back with you after a review or QC send-back.
+That means it's in In Progress or Needs QC Revision.
+Only escalate a review that has actually happened. If you escalate a first draft that
+hasn't been reviewed yet, it will be closed as invalid.​
+​
+
+Only escalate when you have a real, evidence-based reason to think the review
+was wrong. Repeatedly escalating with false or misleading information may
+affect your standing on the project.
+
+How to escalate
+1.​ On the task page, scroll to the end of Creating your task. Below Before you
+submit you'll find the Review escalation section.
+2.​ In Why are you escalating?, say which review decision you disagree with
+and why. Be specific and include timestamps or links as evidence.
+3.​ Tick Escalate this review. You can't tick it until you've written your note.
+4.​ Stop there and don't resubmit. Wait for a response.
+Example note: "The reviewer failed check 2 for window overlap, but the only
+overlap is at 04:12–04:15, which is 3 seconds…"
+
+While your escalation is open
+●​ Your note is locked once the Escalate this review box is ticked.
+●​ To edit your note or withdraw the escalation, untick the box. To escalate
+again, edit the note and tick the box again.
+
+When you get a response
+The response appears in Escalation resolution on your task, and the Escalate this
+review box will be unticked. It starts with one of these outcomes:
+●​ Upheld: the original review stands. Make the edits you were asked for, then
+resubmit.
+●​ Overturned: the review decision was wrong. Resubmit as the resolution
+tells you, often unchanged. The next reviewer will see the resolution.
+●​ Invalid: there was nothing to escalate, e.g. the task hadn't been reviewed
+yet. Follow the instructions in the resolution.
+You must resubmit your task yourself in every case. A resolution doesn't move
+your task forward on its own.
+If you still disagree after the response, you can edit your note and tick Escalate
+this review again.
+
+Review Limits
+Each task has a maximum of 3 total reviews.
+●​ This includes the initial submission, which will be review 1.
+●​ You can revise and resubmit up to 2 additional times for review.
+●​ After review 3, if the task is not approved, it will be rejected and discarded.
+●​ If you have a task in progress with 3 or more reviews, your final revision
+must be submitted by Friday, October 30 at 11:59 p.m. PT for its final
+review.
+○​ If further changes are needed, it will be discarded.
+○​ The 3-review limit is effective October 29, 2026 at 5:30 p.m. PT. A
+task already at or beyond 4 reviews still receives its final review if it is
+waiting in the queue after the deadline. You need to submit by the
+deadline; you do not need approval by then.
+⚠ Important
+
+Address all feedback before resubmitting. Each resubmission counts as another
+review attempt, so do not submit a partial fix while leaving other issues unresolved. If
+feedback is unclear, bring your task link and specific questions to the 24/7 Writer Q&A
+before re-recording.
+
+Tasking Workflow
+
+🎯 After this phase, you will:
+
+• Know all of the steps for planning and creating your tasks
+• Understand how to create your recording and files
+• Know how to put everything into Studio
+• Know how to handle AutoQC issues
+
+Quick Reference Steps
+Step
+
+Description
+
+Task Planning
+
+Think of an idea and make a plan
+
+Submit your Idea
+
+Submit your idea on Studio
+
+Prepare your Task
+
+Get your task set up on Studio
+
+Prepare for Recording
+
+Get everything ready for your recording
+
+Record your Video
+
+Complete the actual recording
+
+Stop and Archive
+
+Finish the recording and check all the files
+
+Upload to Studio
+
+Upload the required files into your task
+
+Run AutoQC
+
+Automated checks on your recording and files
+
+Final Checks and Submission
+
+Last things to check before you submit
+
+💡
+
+Workflow Checklists
+
+Use the Workflow checklist alongside the steps below.
+
+Task Planning
+
+The first step is to plan your task. You can brainstorm using the #odin--ideation
+channel and tagging @Maven.
+
+Ideation
+The first step will be to identify:
+●​ The purpose of the task, and who the stakeholders are.
+●​ What apps you would need to use to complete it.
+●​ What other inputs, files, or documents you would need, and how you will
+find/create them.
+●​ Any licensing or copyright issues you may encounter.
+
+Submit your Idea
+When you are ready to start your first task, navigate to Studio using the Okta
+dashboard, described in the Setup phase. Create new tasks in Odin Production
+Full Workflow. Finish an existing in-progress Core task in Odin Production Core; do
+not recreate it to switch worlds. Check the selected world in the top-right corner.
+This is what you’ll see. Click the ‘Create task’ button.
+
+This will launch a new task for you. There is a lot of helpful information and videos
+in the task to walk you through the process.
+●​ Scroll to section 1.0 Create your idea and fill the ‘Describe your Idea’
+section.
+●​ This will include:
+○​ Domain/Role- The field the task comes from, and who would do it.
+○​ Goal- The desired outcome of someone executing this task, and who
+will use the resulting work product.
+
+○​ Starting materials- Describe what files, data, or materials you will
+use, and where they have come from.
+○​ Steps- A rough outline of how you will do the work, naming the app
+you use for each step.
+○​ Deliverable- What will be produced by the work conducted, and how
+a reviewer can check that it is complete. This refers to the work
+product being recorded, not the recording itself.
+
+●​ Write your idea in your own words. Do not copy and paste text from Maven,
+Gemini or any other AI tool directly into ‘Describe your Idea’. You can use
+Maven to brainstorm, but the idea you submit must reflect your own plan
+and domain expertise.
+●​ Select the apps you will use from the drop-down list. If an app is not listed,
+select Other at the end of the Apps list and enter its exact name. Follow the
+categories and usage conditions in App Eligibility and Limited Use.
+●​ Submit your idea by clicking the button.
+●​ The task will be passed to the review team, who will check your work and
+either return it to you for edits or approve the idea.
+
+●​ If your plan changes materially, you should submit a new idea by clicking
+‘Revise Idea’ at the bottom of the task.
+●​ Prepare any inputs before recording. Use self-created or synthetic files,
+AI-generated files that meet the LLM Use rules, or verified
+CC0/public-domain downloads. Public GitHub repositories for SWE/ML/DS
+tasks must follow Licensed Content and Copyrights.
+○​ Keep in mind requirements about how/when to use LLMs, and
+protecting PII.
+
+Prepare your Task
+When your plan is approved, your task in Studio will move from ‘Idea Draft’ to ‘Idea
+Approved: Confirm Tech Setup’. Continue working in the same task – only create a
+new one when you are ready to start from scratch.
+
+○​ For tasks whose idea was approved before Oct 27, 2026 (5:45 PM PT), your task
+will say ‘In Progress’ when you are ready to begin recording.
+○​ For all other tasks, your task will first say ‘Idea Approved: Confirm Tech Setup’.
+Complete the tech setup checklist in section 2 and click ‘Continue to recording’.
+Your task will then say ‘Idea Approved: Start Recording’ when you are ready to
+begin recording.
+
+Prepare Metadata.rtf
+After completing tech setup and selecting Continue to recording, open Upload
+task files (Studio) > Task files. Download the file from Metadata.rtf draft as your
+starting point. It is generated from your approved idea and still needs your review.
+If no draft is available, download the Metadata.rtf Template and complete it
+instead.
+
+Download the generated file from Metadata.rtf draft, check and edit it, then upload your final file
+in Metadata.rtf Upload below. A generated draft alone does not complete the final upload.
+
+Before recording, check that Request contains only the exact approved Goal from
+Describe your idea. Use that same Goal in TaskRecorder’s Task Description and
+your opening Goal document. Review the draft’s Topology and numbered Task
+Description against your planned workflow. Do this preparation outside the
+recording; do not show Metadata.rtf during the recording.
+
+Prepare for Recording
+Recording pre-checks
+First, review this checklist to ensure you are ready to record:
+Item
+
+To do
+
+Accessibility Inspector
+
+CRITICAL: Keep Accessibility Inspector running
+throughout the recording. Close only its window with
+the red button; do not quit the app. A dot must remain
+beneath its Dock icon.
+
+TaskRecorder
+
+TaskRecorder 2.4.4 is open, all three permissions are
+green, the microphone is on, and the correct display is
+selected.
+
+Item
+
+To do
+
+Display
+
+The resolution matches Studio, the dock is on the left
+or right, the clock displays seconds in the menu bar,
+and the cursor uses its default appearance.
+
+System
+
+The Mac is connected to power and has enough free
+storage.
+
+Privacy
+
+Personal accounts, notifications, recent files, and
+private information are hidden.
+
+Project Materials
+
+Close or Minimize Studio, Slack, the Writer Guidelines,
+or anything showing Mercor or Project Odin.
+
+Unused Software
+
+Quit unused apps and unnecessary background
+utilities before starting. Close unused browser tabs
+and pause nonessential sync or downloads. Keep
+TaskRecorder and Accessibility Inspector running.
+
+Task Apps
+
+Fully launch every task app, finish startup dialogs, log
+in and wait for loading to complete. Open the required
+files or workspaces, position each window, then
+minimize every app. Do not perform any task work yet.
+Never launch or set up an app after Start Recording.
+
+Input Files
+
+Have input files ready to use.
+
+Opening Doc
+
+Open a document containing only the Goal section of
+your approval text in Word or Google Docs, or another
+allowed app. It is the only window visible behind the
+TaskRecorder. Do not show the Approval ID or the rest
+of the approval text. DO NOT use Notes.app or
+TextEdit.app.
+
+Prefill TaskRecorder Fields
+Add the Task Description, and apps used, to your TaskRecorder session before
+beginning.
+
+●​ Paste only the Goal section of your approved idea (Studio > Describe your
+idea), exactly as approved. Do not include the Approval ID, app list or other
+idea sections.
+●​ The app list must match the list in your approved Studio task exactly.
+⚠ Important
+
+The Task Description (Goal) and Used Apps must be correct before recording. Missing
+or mismatched information may cause a task to be rejected.
+
+Prepare your audio
+Before recording, ensure your audio is working:
+●​ Check your microphone in TaskRecorder in the top-right menu bar.
+●​ Say a short test sentence and confirm the volume bar on the left (green)
+rises.
+
+💡
+
+●​ Do not switch, disconnect, or reconnect input or output devices while
+recording.
+●​ When available, use headphones with a dedicated microphone for better
+sound quality.
+
+Make note!
+
+For audio or video tasks that will feature audio playback, TaskRecorder does not capture
+internal system audio stream. Audio will only be captured by TaskRecorder if played
+aloud and picked up by your microphone.
+
+Record your Video
+Every video will follow the same format:
+●​ Introduce the workflow
+●​ Record all steps
+●​ Summarize with the Epilogue
+
+When you’re ready to begin, start with your Task Description (Goal) on the screen
+behind the TaskRecorder, and click ‘Start Recording’.
+
+●​ Immediately minimize the TaskRecorder software once you hit start.
+
+Introducing the workflow
+Your first action will be to introduce your task.
+●​ Leave the Task Description (Goal) document window visible for a few
+seconds and say:
+○​ “I will be beginning my task soon. Here is the workflow I have in
+mind.”
+●​ Keep the introduction narration under 20 seconds.
+●​ DO NOT read or explain the full Task Description (Goal).
+●​ Minimize or close the Task Description (Goal) document.
+
+Completing the workflow
+You will then complete the professional workflow while following all of the
+Recording Expectations.
+
+Epilogue Narration
+When you have finished your workflow, you will end with an Epilogue Narration.
+●​ This should be 3-4 minutes long, with 4:00 being the maximum.
+●​ Mouse activity is not required during this section.
+●​ Provide a brief summary of your work, including if the task was completed,
+and any relevant reflections or highlights to mention.
+●​ Consider some of these possible questions:
+○​ Completion and outcome: How did you verify the successful
+completion of the task? Were there any limitations?
+○​ Approach and key decision: What was your overall approach? Why
+did you choose this approach?
+○​ Challenges and problem solving: What was the most difficult,
+ambiguous, or unexpected part? Did you encounter any errors or
+need to change your approach? How did you resolve the issue?
+○​ Quality assessment: How would you evaluate the quality of your final
+result? Are there any weaknesses or potential issues with the result?
+○​ Reflection and improvement: If you were to do the task again, what
+would you do differently? If you had additional time, what would you
+improve or verify?
+
+💡
+
+Epilogue
+
+What is one important principle, consideration, or common mistake that someone less
+experienced might overlook when performing this type of task?
+
+Stop and Archive
+While TaskRecorder is still recording, save all required artifacts and final outputs.
+Then stop the recording as follows.
+●​ Bring TaskRecorder to the front, then click the Stop Recording button.
+
+●​ Do not quit TaskRecorder while it processes the recording.
+●​ Continue only after TaskRecorder displays ‘Idle’.
+○​ Status will move through Stopping -> Archiving -> Idle.
+●​ Click the Show Recordings button and locate the newest timestamped
+recording folder.
+
+Validate the Output
+Locate the corresponding/newest recording_TIMESTAMP.zip and open the
+recording_TIMESTAMP folder.
+
+⇩
+
+⚠ Important
+
+DO NOT re-name, delete or modify the recording files.
+
+●​ Open video.mp4 in QuickTime and check the beginning, middle, and end.
+●​ Confirm the following:
+○​ It is the correct, complete attempt
+○​ The picture is usable
+○​ Narration and any task-relevant audio are audible
+○​ The recording has no corruption or unexpected truncation.
+
+File Verification
+Check the rest of the recording_TIMESTAMP folder to ensure everything is
+complete.
+●​ Confirm that it contains the screenshots folder (PNG files), video.mp4,
+frames.jsonl, ax.jsonl, input.jsonl, processes.jsonl, recording.log and
+metadata.json. The archive’s metadata.json is separate from the
+Metadata.rtf you complete and upload to Studio.
+
+●​ Do not move these files- they all belong to this task only.
+●​ Open the screenshot folder and check there are a suitable number of
+screenshots, by dividing the total number of PNG screenshots by the video
+duration in seconds.
+
+✅ OK
+
+●​ A 15-minute recording should contain
+more than 450 screenshots.
+●​ More than 0.5 per recording second.
+●​ Healthy captures often contain many
+more.
+
+❌BAD
+
+●​
+●​
+●​
+●​
+
+Only a few screenshots were saved
+Fewer than 0.5 per recording second.
+Do not submit.
+Follow steps in the FAQ to
+troubleshoot.
+
+Organize Output
+To continue in Studio, you will need to have all of your files and outputs organized
+and ready.
+Deliverables
+●​ Create a new folder called ‘Deliverables’, and put all relevant files inside.
+●​ Websites you only visit for research or context during the task (e.g., reading
+documentation, looking up reference data) are not input files.
+
+Deliverable file type
+
+What it is
+
+Naming
+convention
+
+Inputs
+
+Any original starting files you
+prepared in advance.
+
+‘input 1’, ‘input
+2’, etc.
+
+Intermediate Artifacts
+
+Any files downloaded during
+recording, intermediate deliverables,
+or work-in-progress artifacts
+created during the task.
+
+‘artifact 1’,
+‘artifact 2’, etc.
+
+Final outputs
+
+The final product you produced.
+
+‘final output 1’,
+‘final output 2’,
+etc.
+
+●​ Zip the Deliverables folder as Deliverables.zip. Keep Metadata.rtf,
+video.mp4 and the TaskRecorder archive outside it; upload each separately
+in its designated Studio field.
+Metadata.rtf
+●​ After recording, check and edit the Metadata.rtf you prepared from the
+generated draft or fallback template. The generated draft is a starting point,
+not your final submission. Verify all three sections against the completed
+recording:
+○​ Topology: List every app visit in chronological order, repeating an
+app each time you return to it. Use only LOOKUP, CREATE, or
+MODIFY to identify the action for each visit to each app.
+○​ Request: Paste the same Goal text you entered in TaskRecorder. It
+must match TaskRecorder exactly.
+○​ Task Description: Write a numbered, high-level outline of the main
+task steps, naming the apps, key methods, and final deliverable. The
+steps must accurately describe the workflow you recorded and
+remain consistent with your approved task.
+Save the checked file as Metadata.rtf in Rich Text Format (.rtf), then upload it to
+Metadata.rtf Upload. The file in Metadata.rtf draft does not satisfy this required
+final upload. Keep Metadata.rtf outside Deliverables.zip.
+
+Upload to Studio
+After completing the previous steps, you’re ready to continue in Section 3 of your
+Task in Studio.
+●​ Fill out what inputs and files you will use, and where they came from.
+
+●​ Upload video.mp4, Deliverables.zip and the original unmodified
+recording_TIMESTAMP.zip in their designated Studio fields. Upload your
+checked final Metadata.rtf in Metadata.rtf Upload. Confirm all four uploads
+are attached before running the required AutoQC checks.
+
+Run AutoQC
+After your files have been uploaded, there are 2 Automated QC checks to run:
+●​ Files & Recording- Your uploads (video.mp4, Deliverables.zip, Task
+Recorder zip, Metadata.rtf) and your screen recording.
+●​ Narration- Your voiceover.
+
+NOTE: Submit for Review unlocks only when every Major finding in Automated
+Checks (1 of 2): Files & Recording AND Automated Checks (2 of 2): Narration is
+
+fixed or disputed (with a written reason). For more information, watch this short
+video on how to run AutoQC.
+
+💡
+
+AutoQC dimensions
+
+For a more detailed description of exactly what the AutoQC checks are for, see the
+section on AutoQC!
+
+Responding to flags
+Flags can be Major or Minor, and all should be read and considered before
+submitting.
+
+Result
+
+What it means
+
+Blocks Submit?
+
+What to do
+
+Pass
+
+No problem
+found.
+
+No
+
+Nothing.
+
+Major fail
+
+A required rule
+isn't met.
+
+Yes
+
+Fix it and re-run, or Dispute
+that finding with a written
+reason. A dispute without a
+reason stays blocked.
+
+Minor fail
+
+An automated
+check reported an
+issue that does
+not block
+submission.
+
+No
+
+It does not block submission.
+Read the finding and address
+any actual breach of writer
+requirements; the reviewer
+may still require edits.
+
+Neutral
+
+The check
+couldn't decide
+(often the analysis
+isn't ready).
+
+No
+
+Wait for the required
+analysis. Neutral is not a
+pass. Do not repeatedly start
+new runs.
+
+If you believe any of the AutoQC flags have merit, you should fix the issue, and
+re-run the AutoQC. Do not choose ‘re-run failing’ here.
+●​ Re-record only for genuine recording issues- never edit the video.
+If you do not believe the AutoQC flags are reasonable, you should dispute them.
+●​ Click the ‘Dispute’ flag under the specific finding and add your justification.
+Typing in the notes box does not count as a dispute.
+●​ State why they are wrong, and justify why you are disputing the issue. Add
+a timestamp.
+If you see "Run limit reached, no new run", do not re-record solely to bypass the
+limit. Correct any genuine file or recording issue, dispute an incorrect finding, or
+ask #odin--helpdesk with the task link and exact error. Re-record only when the
+recording itself needs correction.
+
+Final Checks and Submission
+
+●​ After your AutoQC checks are done, you will do manual checks in Studio.
+Only check a box once you have verified it.
+
+●​ You will also do checks for PII to ensure this guidance has been followed.
+
+●​ You will need to check the Final Confirmation box. Do only after every Major
+AutoQC flag has been fixed or disputed and every manual check has been
+completed.
+
+●​ Add any Final Notes that you would like to convey to the Reviewer.
+○​ For AI-generated inputs: Enter AI-generated before recording.
+○​ For non-AI inputs: Provide the original source URL if applicable.
+●​ Click Submit for Review.
+
+Examples
+Section
+
+Goal
+
+Golden Examples
+
+Some full task examples.
+
+Narration Examples
+
+Examples of how to do proper narration.
+
+Idea Examples
+
+Some example ideas.
+
+🏅Golden Examples🏅
+
+Use the Golden Examples to study professional workflow and narration standards.
+●​
+●​
+●​
+●​
+●​
+
+Finance
+Design
+Audio & Music
+Animation & VFX
+Software & AI/ML Engineering
+
+1. Finance
+Task Description
+I am an Account Receivable personnel at a company in the UK and have been tasked with
+adding a new vendor to our ERP system and creating a Purchase Order (PO) tracking workflow
+for our Accounting team to manage POs better. I will begin by adding missing information onto a
+sample PO on the Pages app, then transfer the vendor details, and PO line items onto our ERP
+system on Microsoft Dynamics 365 Business Central, and finally create a PO tracking workflow
+on Monday.com. I will verify the flow is complete by running the same at the end of its creation
+and check if the status updates as per the trigger, and deliver the final PO raised on Microsoft
+Dynamics 365 Business Central and the PO workflow from Monday.com to my team.
+Apps Used
+●​ Monday.com
+●​ Microsoft Dynamics 365 Business Central
+●​ Pages
+Video: Full task recording (44:19)
+
+2. Design
+Task Description
+I am a Content Creator preparing aspects of a new podcast. Using OBS Studio, I will setup
+different scenes for different aspects of the podcast such as pre-show and screen-share, which
+will involve the import of some images. The final deliverables will be the export of the scenes
+created in OBS.
+Apps Used
+●​ OBS Studio
+Video: Full task recording (24:44)
+
+3. Audio & Music
+Task Description
+I am a film score composer and I’m working on the underlying theme for a heroic end credit
+sequence. I will use Logic Pro in the second phase (P2) of the execution to compose a string
+accompaniment for the piano top melody created in phase one (PI). I will also establish a
+chordal sequence (I - vi - IV - V) to define the passage. The final deliverable will be a stereo
+export of the complete Logic Pro session.
+Apps Used
+●​ Logic Pro
+Video: Full task recording (22:58)
+
+4. Animation & VFX
+Task Description
+You are a 3D Modeler tasked with cleaning up the textures of a photogrammetry model for use
+in Unreal Engine. Use Adobe Substance 3D Painter to bake the provided high poly model onto
+the provided low poly model, apply the provided photogrammetry diffuse texture, clean up
+artifacts on the texture, add a powdery finish to the popcorn and add red and white striped
+packaging textures to the popcorn box. Export the texture maps appropriate for use in Unreal
+Engine.
+Apps Used
+●​ Substance 3D Painter
+Video: Full task recording (40:59)
+
+5. Software & AI/ML Engineering
+Task Description
+As an iOS app developer I want to create a distinctive visual identity for a simple Music Player
+app. Use SF Symbols as independent visual components, and compose them as separate
+layers in Icon Composer. Build & refine the multi-layered icon in Icon Composer and integrate
+the resulting icon into a SwiftUI Music Player app in Xcode. Deliver the layered icon and Xcode
+project; verify that the app builds successfully and the icon is correctly integrated.
+Apps Used
+●​
+●​
+●​
+●​
+
+Device Hub
+Xcode
+SF Symbols
+Icon Composer
+
+Video: Full task recording (28:37)
+
+Narration Examples
+1. Finance: calculate the purchase-order total
+Source video at 11:45
+
+●​ “Now I need to figure out what the total order value is.” [What] [Why]
+
+●​ “I can do that by adding this £12,474 amount to the £62,370.” [What] [Why]
+●​ “I'm going to left-click on the plus sign in Calculator, then enter six, two, three,
+seven, zero.” [What] [Where]
+●​ “I'll click equals at the bottom-right of the Calculator.” [What] [Where]
+●​ “The final value is £74,844, exactly what it should be per the contract.” [What]
+[Why]
+
+2. Typography: narrow the anatomy list to eight terms
+Source video at 00:48
+
+●​ “I'm only going to show the eight I think are most important in this presentation.”
+[What] [Why]
+●​ “I'll drag from just after Shoulder up to just below Counter.” [What] [Where]
+●​ “On the right-hand side, I'll click the strikethrough text option.” [What] [Where]
+●​ “I'll select Leading and click strikethrough, then select from Stroke up to Stem and
+do the same.” [What] [Where]
+●​ “That should leave me with eight.” [What]
+
+3. Audio and music: set the string-track level
+Source video at 06:20
+
+●​ “We've properly loaded our additional string track.” [What]
+●​ “Just to the lower right of Authentic Strings is its volume slider.” [Where]
+●​ “These string patches tend to be very loud, so I'll click the volume slider.” [What]
+[Why]
+●​ “I'll move it left to about minus 10 dB, which is a good place to start.” [What] [Why]
+
+4. VFX: give the printed ink a slight height
+Source video at 30:55
+
+●​ “I'll navigate down to Height.” [What] [Where]
+●​ “The red ink on a cardboard box forms a slightly raised layer.” [Why]
+●​ “I'll go to the black-and-white gradient bar under Height and click the zero in its
+text box.” [What] [Where]
+●​ “I'll type 0.01 for an ever-so-slight height difference and press Enter.” [What] [Why]
+
+5. Software: apply the exported app icon
+Source video at 24:11
+
+●​ “I'll click General on the right side of the Project Navigator.” [What] [Where]
+●​ “I'll drag the scrollbar down until I see App Icons and Launch Screen.” [What]
+[Where]
+●​ “In that section, I'll click the App Icon field, type AppIcon without a space, and
+press Enter.” [What] [Where]
+●​ “This applies the icon we exported to the app.” [What] [Why]
+
+Idea Examples
+Domain / Role: Chemical engineer, process safety
+Goal: As a chemical engineer, investigate an uncontrolled exothermic temperature spike during
+an industrial polymer curing cycle. DBeaver will query a local SQLite reactor database,
+aggregating thermal sensor logs to extract the precise timeline of the thermal runaway. Visual
+Studio Code will be used to modify the reactor's Python control script, lowering the catalyst
+injection thresholds to prevent future thermal breaches. Mimestream will draft and format an
+urgent process-safety notification, attaching the SQL temperature logs and updated script,
+dispatched directly to the plant operations manager.
+Starting materials: Starting from scratch
+Steps (with the apps for each):
+●​ DBeaver: query a local SQLite reactor database and aggregate the thermal sensor logs
+to extract the precise timeline of the thermal runaway.
+
+●​ Visual Studio Code: modify the reactor's Python control script, lowering the catalyst
+injection thresholds to prevent future thermal breaches.
+●​ Mimestream: draft and format an urgent process-safety notification, attaching the SQL
+temperature logs and updated script.
+Deliverables:
+●​ A finalized chemical safety audit containing the DBeaver thermal anomaly dataset
+(exothermic_spike_timeline.csv)
+●​ The corrected VS Code automation script (catalyst_injection_controller.py)
+●​ The dispatched Mimestream safety alert (operations_manager_warning_sent.eml)
+Domain / Role: Data analyst supporting a facility engineer
+Goal: I am a data analyst supporting a facility engineer who has to decide whether a harmonic
+filter installed on a factory feeder is good enough to keep. Using synthetic current waveforms
+sampled at 10 kHz before and after the filter was installed, I will compute the FFT spectrum of
+each waveform, measure the amplitudes of the 50 Hz fundamental and its odd harmonics up to
+the 13th, calculate total harmonic distortion, generate a one-page PDF report with the two
+spectra, check each harmonic against its limit in a spreadsheet, and annotate the report with the
+distortion result and a keep or replace decision.
+Starting materials: Using existing material
+What is already available?: Two synthetic CSV files of current samples (one second
+each at 10 kHz, before and after the filter) and a small Python helper module with the
+FFT and plotting functions. All are AI-generated before recording.
+Steps (with the apps for each):
+●​ Jupyter Notebook: compute each waveform's FFT spectrum, harmonic amplitudes and
+total harmonic distortion.
+●​ Google Sheets: check each harmonic against its limit and record a keep or replace
+decision.
+●​ Skim: annotate the PDF report with the distortion result and the decision.
+Deliverables
+●​ The executed notebook (.ipynb), the harmonic amplitude table (.csv)
+●​ The spreadsheet with the per-harmonic limit check
+●​ The decision downloaded as .xlsx, and the one-page PDF report annotated in Skim
+
+Additional Info
+Use the tabs below for troubleshooting, writer tips, app restrictions, checklists,
+AutoQC, FAQs and common mistakes.
+
+Known Technical Issues
+System Audio Issues
+Changing your audio input or output during a recording may prevent narration from being
+captured. Choose and test your audio setup before recording. Do not switch, disconnect or
+reconnect input or output devices while recording.
+
+TaskRecorder Technical Issues
+
+⚠️ A few troubleshooting tips - if you see the following errors popping out:
+[Zero or very few screenshots, empty recordings, unreadable/cut-off videos] Follow
+Capture-failure recovery in the FAQ.
+
+[Daemon is not ready] It means a background program (daemon) could not be initiated.
+Terminate the TaskRecorder app and restart again
+If you need to share logs in #odin--helpdesk, logs will be inside each recording’s folder
+(archive) as recording.log
+1.​ Make sure Xcode is installed and Accessibility Inspector is running. Close the
+Accessibility Inspector window with the red button, but do not quit or yellow-minimize the
+app. Its blue Dock icon must keep a dot below it.
+2.​ For missing TaskRecorder permissions, follow Reset TaskRecorder permissions in the
+FAQ.
+3.​ There is no separate macOS screenshot switch to enable. Verify TaskRecorder’s Screen
+Recording and Accessibility permissions instead.
+
+Specific Error
+
+For an OTA or Google sign-in prompt, follow Recorder sign-in recovery in the FAQ. Use
+TaskRecorder2.4.4.dmg for Apple Silicon or TaskRecorder2.4.4-Intel.dmg for Intel.
+
+Microphone meter moves, but the recording has no audio
+Restart the Mac, close unnecessary apps and retry; reinstall if needed. Check the saved video’s
+audio. If it is still broken, bring the exact symptoms to tech support. These steps are not a
+guaranteed fix.
+
+Tips from Experienced Writers
+Based on top-writer survey responses, October 2026. We'll update this as more tips come in.
+Completing your first task? Task sent back? Recording needs revisions? Sourced from
+writers who now get tasks approved on first submission, these tips below walk you through how
+to prep effectively at each stage so that you can save your future self from re-recording.
+Revisions and send-backs are normal. Even top writers had lots of them at the start: "You will
+likely fail the first three attempts." Don't get frustrated. Once you get into the swing of things,
+"the payments and bonuses make it 100% worth it."
+
+Mindset
+●​ Create and submit your own first task idea in Studio. Wait for idea approval before
+recording. You learn fastest by doing.
+●​ Don't get frustrated. Practice makes perfect, and once you get into the swing of things,
+"the payments and bonuses make it 100% worth it."
+●​ The guidelines are clear but detailed. Read them fully once, then come back to them
+when unsure.
+
+1. Stuck on Finding a Good Idea?
+Do this
+
+​Identify a few apps that you regularly use and check that none of them are banned on the Restricted App List.
+​Brainstorm 5 potential task ideas related to those apps, leveraging your work experience and domain
+expertise. Work with what you already know.
+​Iterate on your ideas with @Maven in the Slack channel odin--ideation. Give it your constraints and the apps
+you know, and ask for realistic single-app or cross-app workflows a client or expert would do. If the
+suggestions don't fit, explain what needs to change and ask for revised ideas. Write your final idea in your
+own words.
+​If you are completing your first task, select a workflow you are deeply familiar with or that you would feel
+comfortable teaching to a colleague. Submit your own idea in Studio and wait for approval before you record.
+You learn fastest by doing.
+​Test-drive your idea once before committing to it. If it's doable, go for it.
+
+FAQ
+
+Is it okay to use the same apps across my submitted tasks?
+Yes. Many top writers build their tasks around a set of apps that multiple, diverse workflows can be built from.
+Once those apps are configured to be PII compliant, future tasks that utilize them will require less pre-recording
+set-up.
+
+2. Submitting Your Task in Studio?
+Do this
+
+​Write the goal and steps as you plan to perform
+them.
+​Once your idea is approved: the Studio
+Prompt/Description is your source of truth for the
+remainder of your tasking workflow.
+​Plan to record soon after receiving approval while
+the details are fresh in mind.
+
+PLAN · 5–10 min
+
+Watch out for
+
+●​ REMEDY any differences in goal wording among
+your Studio Goal, Task Recorder Description, your
+opening Goal document, and the Metadata.rtf
+Request.
+●​ NOTE that the Metadata.rtf Topology must list your
+app visits in the order they actually happen in the
+recording.
+
+FAQ
+
+Why was my task returned for a goal mismatch?
+The approved Goal from Studio must be identical in three places: (1) the Task Description in Task Recorder, (2)
+your opening Goal document, and (3) the Request in Metadata.rtf. Small wording differences can get a task
+returned. If the wrong Goal appears in your recording (your opening Goal document), you will need to re-record. A
+wrong Request in Metadata.rtf can be fixed by correcting the file and replacing it in Metadata.rtf Upload.
+
+3. Unsure How to Set Up Notes?
+
+Do this
+
+​Make one folder per task. If you use separate admin and recording accounts, create it on your admin account
+and give your recording account read/write access to the folder and its files. This avoids permission errors
+when saving.
+​Copy only the Goal section from Studio, exactly as written (no Approval ID, edits or leftovers from your last
+task), into the Task Description in Task Recorder, your opening Goal document and the Request in
+Metadata.rtf.
+​Use Gemini to generate the input material the task works from, such as a reference document or sample data,
+using fictional but realistic names and details.
+​Get to know your input files thoroughly, then highlight the talking points you want to mention from those
+documents.
+​Write out anything you will need to type during the task, such as formulas, code or search terms, ahead of
+time.
+​Keep your step list, talking points and prepared inputs in an accessible place that will not be on your recording
+window: the Steps box in the Recording Guide, on paper, your phone or a second monitor.
+Metadata.rtf, before you record
+
+Start with the generated file in Studio’s Metadata.rtf draft field. Download it and check its Request against the
+exact approved Goal before copying that Goal into TaskRecorder and your opening document. If no draft is
+available, use the template link.
+​Task Description: Write a numbered, high-level outline of the main task steps, naming the apps, key methods
+and final deliverable.
+​Topology: List each app visit in chronological order, repeating an app each time you return to it, and label
+each visit LOOKUP, CREATE or MODIFY. After recording: Update it if your app visits changed.
+After recording, check both Topology and the numbered Task Description against what you actually did. Save the
+corrected file as Metadata.rtf and upload it in Metadata.rtf Upload; the generated draft is not the final upload.
+FAQ
+
+Can I use Gemini to prepare?
+Yes, but only Gemini. All other AI tools are prohibited. After your idea has been approved in Studio, consider using
+Gemini to generate your input files and reference documents before you record, never on camera. Write
+"AI-generated before recording" in Final Notes when you submit.
+Should I write a full script?
+No. Keep a short chronological list of key steps and talking points. Your narration will come naturally from what
+you are simultaneously demoing on screen.
+
+4. Struggling with PII Compliance?
+
+PREPARE · before every recording
+
+One-time setup
+
+PII that gets flagged most often
+
+●​ Watch the Odin: How to Avoid PII and Copyright Issues video before
+your first recording.
+●​ Create a dedicated dummy account or use your Mercor expert email
+account. Then sign in to every app you will use with it.
+●​ Remove any profile photos from the accounts and apps you will
+record with.
+●​ Keep your desktop free of personal files.
+
+●​ Small profile pictures in the corner
+of apps and browsers.
+●​ Names and email addresses in
+account menus, sender fields and
+browser tab titles.
+●​ Finder or File Explorer windows or
+files left open behind your main
+app.
+●​ Browser history or autocomplete
+in the address bar.
+
+Before every recording
+
+●​ Close every window irrelevant to the task.
+●​ Use a guest browser profile or a private window.
+●​ In a browser, pin any tab that shows your email or account name
+(such as an inbox). A pinned tab shows only the site icon.
+●​ Open your input files and minimize them, so you don't have to
+search for them or type file paths and web addresses on screen.
+●​ Take a screenshot of each app screen you will use and ask Gemini
+to help assess PII compliance. Use the Gemini PII check prompt
+below.
+
+Gemini PII Check Prompt
+Upload a screenshot of each app screen you will use. While Gemini can help provide direction, be
+diligent about manually reviewing what it has flagged as PII.
+You are a PII auditor. Before I record, check this screenshot for anything that could identify me or another real person:
+names, email addresses, usernames, profile pictures or initials, file paths (e.g. /Users/name/), browser tabs, the address
+bar, bookmarks, chat or notification previews, background windows, desktop icons and menu bar items. Ignore Project
+Odin, Studio and Mercor references and approved test accounts.
+
+✅
+
+Return the screenshot with a numbered red box around each item, then a matching numbered list saying what each item
+is, where it is and how to fix it (close, switch or pin). If you find nothing, reply only: "
+No PII detected. Screen is clear to
+record."
+
+5. Having Difficulty Narrating?
+Before you press record
+
+​Watch What is Good Narration? or the Golden
+Examples videos.
+​Fill in the Recording Guide before every recording.
+Top writers reuse the same checklist and process
+for every task.
+​ Once you feel comfortable with the task
+sequence, you can focus on explaining where
+and why.
+​Plan for narration time. One top writer found that
+10–20 minutes of hands-on work can become a
+30+ minute recording once narrated.
+​Practice a 3-minute section of your task out loud
+without recording, making sure your narration
+includes what, where and why. View it as a short
+warm-up for the official recording.
+​ Consider using an off-screen timer on your
+phone or a second monitor to get a sense of
+your speaking pace.
+Epilogue formula
+
+1.​ Summarize the process and the overall outcome.
+2.​ Describe any problems and how you resolved
+them. If something was not resolved, explain its
+impact.
+3.​ Confirm the final deliverable (file name and
+location) and that the task is complete.
+
+RECORD · 15:00–50:59, incl. intro and epilogue
+
+Narration habits
+
+●​ Don't rush. As one top writer put it, "There is no
+harm in taking 5 seconds to organize your
+thoughts."
+●​ Treat narration as part of the task. Narration is
+where most early send-backs come from, so it isn't
+an extra.
+●​ Assume the listener can't see your screen.
+Remember the Eyes-Closed Test as you explain the
+what, where and why of each step.
+●​ Click with purpose. Narrate every click and scroll,
+and use your cursor movement as the cue to speak.
+●​ Watch the clock. If you are nearing the 50-minute
+mark, keep narrating every step but be intentional
+about speaking concisely to stay within the
+recording limit.
+●​ Name files as you go. Save outputs as, for example,
+"final output 1" to avoid having to rename them later.
+●​ Keep the intro short. In under 20 seconds, say only
+"I will be beginning my task soon. Here is the
+workflow I have in mind." Do not read the Goal
+aloud.
+●​ Keep the epilogue short. Aim for 3–4 minutes (4:00
+maximum).
+
+FAQ
+
+What if something goes wrong during the recording?
+●​ If it is a significant mistake that alters the final output, stop and restart with a fresh attempt.
+●​ Small slips are normal. Continue recording but address the situation. Say what you are fixing, fix it, check
+the fix, and carry on. For example, if a menu option has moved, narrate that and show the alternative.
+Mention this mistake again in the epilogue.
+
+👇
+
+We’re compiling the daily tips we send out via #odin--announcements
+so you can refer to them at anytime! Scroll down for the daily tips
+10/28 Tip: 5 tips to avoid re-recording your task!
+Most re-records come down to a handful of avoidable issues. These tips come from writers who
+now get tasks approved on first submission.
+A few minutes of prep at each stage can save you from recording the whole task again.
+1. Keep the Goal identical in all three places
+●​ Copy only the Goal section from Studio, exactly as written, into (1) the Task Description
+in Task Recorder, (2) your opening Goal document, and (3) the Request in Metadata.rtf.
+●​ No Approval ID, no edits, no leftover text from your last task.
+●​ Check for wording differences before recording. If the wrong Goal appears in the
+recording, the recording needs correcting. If only the Request in Metadata.rtf is wrong,
+correct the file and replace it in Metadata.rtf Upload; that file-only issue does not require
+re-recording.
+2. Run a PII check before you press record
+●​ Close every window you aren't using for this task, including Finder or File Explorer
+windows behind your main app.
+●​ Keep your desktop free of personal files. Check your Downloads or Recents folders if
+Finder will be displayed during recording.
+●​ Consider screenshotting each app screen you'll use and ask Gemini to flag anything
+personal
+Copy-pasteable prompt: You are a PII auditor. Before I record, check this
+screenshot for anything that could identify me or another real person:
+names, email addresses, usernames, profile pictures or initials, file
+paths (e.g. /Users/name/), browser tabs, the address bar, bookmarks,
+chat or notification previews, background windows, desktop icons and
+menu bar items. Ignore Project Odin, Studio and Mercor references and
+approved test accounts.
+Return the screenshot with a numbered red box around each item, then a
+matching numbered list saying what each item is, where it is and how
+to fix it (close, switch or pin). If you find nothing, reply only:
+":white_check_mark: No PII detected. Screen is clear to record."
+3. Stick to apps you already use, and reuse them
+●​ Build tasks around 2 or 3 apps you work in regularly (check they're not on the Restricted
+App List).
+
+●​ Once those apps are configured to be PII compliant, future tasks that utilize them will
+require less pre-recording set-up.
+4. Narrate the what and the where for every click
+●​ Assume the listener can't see your screen. Say what you're clicking, where it is, and why
+that step matters.
+●​ The "where" is the part most often missed. Slow down, use your cursor movement as the
+cue to speak, and name what you're clicking (e.g., the yellow minimize button in the top
+left corner).
+●​ If something goes wrong mid-recording, say what happened and what you're trying
+instead, then mention it again in your epilogue.
+5. Check length and files before you upload
+●​ Your recording must be between 15:00 and 50:59 including intro and epilogue, so keep a
+visible timer running off-screen.
+●​ Before uploading, confirm the goal matches in all three places, your deliverables are
+present and named correctly, and you've grabbed the most recent recording from Show
+recordings in Task Recorder.
+Please look here for additional tips from experienced writers on tasking for Project Odin!
+Still ideating? Work through your task ideas with @Maven in #odin--ideation before you start
+
+10/29 Tip: Two minutes of prep saves a 45-minute re-record
+A fellow writer recorded their pre-recording checklist, including the mistake that cost
+them a full re-record: forgetting to update the Goal in TaskRecorder. Watch it here:
+https://www.loom.com/share/efdd9afbedde42889ff81333b39d822b
+Before you press Record:
+• Machine: plugged in, 35 GB free, Do Not Disturb on, quiet room or headset.
+• Screen: no personal accounts or files, Accessibility Inspector running, non-default wallpaper,
+Dock left or right, clock showing seconds, TaskRecorder showing three checkmarks.
+• Apps: open every task app and minimise it. Close everything else except Accessibility
+Inspector and Workpuls.
+• TaskRecorder: Repaste the approved Goal from Studio and add every app you listed there,
+nothing else.
+The TaskRecorder step is the one nobody can fix for you later. A recording with the
+wrong Goal or app list is a re-record, so make it a habit.
+
+App Eligibility and Limited Use
+Chrome and Safari are permitted.
+We're seeing a lot of recording issues when writers use Excel with TaskRecorder. To avoid
+problems with your recordings, we recommend using an alternative like Google Sheets.
+
+Banned for new work
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+
+Godot
+VSCodium
+Inkscape
+GIMP
+Blender
+MATLAB
+Sublime Text
+Photoshop
+Ableton Live / Live
+ZBrush
+Grammarly
+Microsoft Whiteboard
+Adobe Bridge
+Adobe Animate
+Unreal Editor
+Telegram
+KNIME
+Reactotron
+Craft
+LiquidText
+Media Encoder
+Sublime Merge
+Vital
+Twinmotion
+KNIME Analytics Platform
+Figma
+Adobe Lightroom
+Autodesk FBX Review
+Defold
+KiCad
+OpenVSP
+anatomyapp
+FL Studio / FruitLoops Studio
+GameMaker
+LTspice
+Parallels Desktop
+
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+
+UCSF Chimera
+VMD
+Wolfram Mathematica
+Substance 3D Stager
+Sticky Notepad
+Penpot
+MohrPlotter
+JASP
+Windows
+TextExpander
+TextEdit: permitted only for creating or editing Metadata.rtf
+
+Allowed for minimal use
+Project operating rule: minimal use means less than 20% of the task. Workpuls/Insightful and
+Splashtop Streamer remain background-only, and app-specific supporting-use limits still apply.
+●​ iTerm: minimal use only.
+●​ Workpuls / Insightful: background or toolbar only; do not actively use it or show its
+window during recording.
+●​ Splashtop Streamer: background only; do not actively use it during the task.
+●​ RecipeKeeper: only when needed for minimal supporting use; do not use as the main
+application.
+●​ drawBook: only when needed for minimal supporting use; do not use as the main
+application.
+●​ Milanote: only when needed for minimal supporting use; do not use as the main
+application.
+
+Allowed, but prefer alternatives when practical
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+●​
+
+Excel
+Preview
+LibreOffice
+Freeform
+Stickies
+Calendar
+Terminal
+Canva
+Numbers
+Reminders
+Simplenote
+
+Before recording
+Check the current app status and use apps that contribute meaningfully to the task. Safari,
+Chrome and Firefox are allowed.
+
+Apps absent from the restricted list need no separate app approval. Follow the current app
+categories and usage conditions, and record only after the idea is approved. Licensing and all
+other quality checks still apply.
+
+Workflow Checklist
+Return to Workflow!
+This is the most important document in this manual: Please check off every item before
+submitting, this checklist will help you be most successful quickly!
+Quick reference: Odin Writer Cheat Sheet (PDF)
+
+Before Recording (Task Plan)
+​ Workpuls/Insightful: Insightful/Workpuls is running and minimized during active
+hourly-paid Odin work. Keep it off for eligible tasks retaining old per-task terms (see 04.
+Expectations > Pay Policy).
+​ Metadata preparation: Download Metadata.rtf draft. If no draft is available, use the
+template link Studio provides. Check that its Request, TaskRecorder’s Task Description
+and your opening Goal document contain only the exact approved Goal. TaskRecorder’s
+Used Apps must match the approved app list. Review the planned Topology and
+numbered Task Description before recording.
+​ Input Files: Prepare any inputs before recording. Use self-created or synthetic files,
+AI-generated files that meet the LLM Use rules, or verified CC0/public-domain
+downloads. Public GitHub repositories for SWE/ML/DS tasks must follow Licensed
+Content and Copyrights. Keep inputs free of private or non-public personal information.
+​ Input Provenance: In Final Notes, record actual non-AI source URLs or exactly
+“AI-generated before recording”; complete Source of Data when applicable.
+
+Before Recording (Prepare)
+​ Storage and Power: The Mac is connected to power and has enough free storage for the
+complete recording and archives.
+​ Clean Workspace: Hide personal accounts, notifications, recent files, and private
+information; close project materials before recording. Before you hit record, check the
+top-right account corner of every app you will use, your browser profile button, and your
+Finder sidebar for your name, photo or email.
+​ Focus Mode: Get into Do Not Disturb or “Focus mode” to avoid any notifications.
+​ Minimal Background Noise: Make sure you are recording in a quiet environment.
+​ Accessibility Inspector: Accessibility Inspector is running with its window closed.
+​ UI Diversity: Change at least one per recording; more is better: wallpaper, light or dark
+mode, accent color, Dock size, sidebar icon size, screen resolution, or an in-app theme.
+​ Mouse cursor: Mouse cursor size & color must stay default.
+
+​ Recording Settings: The selected display and resolution match Studio; TaskRecorder
+permissions are green, and the microphone is on.
+​ Dock Visibility: Keep the Dock visible and set it to left or right, not bottom. Automatically
+hide is off and indicators for open apps are on.
+​ Clock Seconds: Seconds are displayed on the menu bar clock.
+​ Open Apps: Fully launch every task app, finish startup dialogs, log in and wait for
+loading, open required files/workspaces, position each window, then minimize the apps
+before recording. Do not launch or set up apps after Start Recording.
+​ Background Apps: Quit unused apps, calls, and unnecessary background utilities; keep
+TaskRecorder and Accessibility Inspector running.
+​ Workpuls/Insightful: Minimize the Insightful window.
+​ Task Description (Goal): Open the approved Goal document behind the TaskRecorder
+window.
+​ Prefill TR: Paste the approved Goal and genuine used apps in TaskRecorder.
+
+During Recording (Record and Validate)
+​ Minimize TR: Immediately minimize TaskRecorder after clicking Start Recording.
+​ Continuous Recording: Use one uninterrupted recording from Start Recording through
+the saved final output and Stop Recording.
+​ Brief Intro: In under 20s, say the intro sentence, minimize or close Task Description
+(Goal), and begin.
+​ Recording Length: Plan for a recording, including the short intro and epilogue, that is at
+least 15 minutes and no more than 50:59 minutes (15:00-50:59).
+​ Narration: Narrate continuously: identify what and where, and explain why for important
+or non-obvious decisions; avoid vague “here” and “this”. Narration, deliverables,
+webpages and app menus must all be in English.
+​ Audio Quality: Speech is clear and synchronized with the screen; narration and any
+task-relevant audio are audible.
+​ Audio Gap: Aim for no single silent gap over 45 seconds. A 46-60 second gap is
+nonblocking feedback; a gap over 60 seconds fails.
+​ No Profanity: No profanity in narration or shown in recording.
+​ No AI Use During Recording: Show no AI interaction or policy-violating content
+​ No PII: Show no private or non-public PII or project references; follow the documented
+public GitHub and research-author exceptions.
+
+​ Mouse Activity: Use the cursor naturally as a teaching pointer. Inactivity is handled as a
+qualitative delivery callout, not a numeric acceptance cutoff; the closing epilogue may be
+still.
+​ Teaching Pointer: Point to what you describe, move naturally, and allow about one
+second around completed clicks so viewers can follow.
+​ Limited Typing: Keep the workflow mouse-driven and avoid long typing blocks
+​ Keyboard Shortcuts: Use visible mouse actions when practical; explain every necessary
+keyboard shortcut as you use it.
+​ Window Management: Keep one ordinary task window clear or arrange task windows
+side by side.
+​ Keep TR Minimized: Minimize TaskRecorder immediately after clicking Start Recording.
+Restore it only to click Stop Recording.
+
+After Recording (Upload and Submit)
+​ Final Output Quality: Complete and save the promised output, then check that it is
+accurate, readable, and professionally usable.
+​ Recording Archive: The archive contains the screenshots folder (PNG files), video.mp4,
+frames.jsonl, ax.jsonl, input.jsonl, processes.jsonl, recording.log and metadata.json; the
+archive, video, and task files belong to the same attempt.
+​ Video integrity: Check the beginning, middle, and end for the correct complete task,
+usable picture, and audible narration.
+​ Final metadata check: Verify Metadata.rtf against the completed recording. Topology lists
+actual app visits in chronological order using LOOKUP, CREATE or MODIFY, repeating
+apps when you return to them. Task Description gives the numbered main steps, apps,
+methods and final deliverable. Request remains the exact approved Goal.
+​ All files uploaded: Upload the unmodified recording_TIMESTAMP.zip, the separate
+video.mp4 and Deliverables.zip to Studio. Upload the checked final Metadata.rtf in
+Metadata.rtf Upload. A file in Metadata.rtf draft alone does not complete this upload.
+​ Deliverables Save: Label every input, intermediate artifact, and final output
+clearly, preserving the correct file extensions.
+​ Separate Uploads: Keep Metadata.rtf, video.mp4 and the original unmodified
+recording_TIMESTAMP.zip outside Deliverables.zip. Upload each in its
+designated Studio field; final metadata belongs in Metadata.rtf Upload.
+​ Deliverables Zip: All task inputs, intermediate artifacts, and final outputs are
+included in Deliverables.zip.
+
+​ Archive Readability: Open Deliverables.zip and verify that every required input,
+intermediate artifact, and final output is present and readable.
+
+How AutoQC works
+Checks marked Blocks submit must pass or be disputed with a written reason before
+submission for BOTH Automated checks. Advice and reference items do not block
+submission. Complete the writer checklist before submitting.
+●​ Automated checks (1 of 2): files & recording. Your files, Metadata.rtf and the recording
+analysis. The recording part fills in about 10 minutes after upload.
+●​ Automated checks (2 of 2): narration. Reads what you did and said. Runs about 10
+minutes after the file checks.
+If you have trouble understanding the feedback from AutoQC, ask Maven to help you find and
+review the relevant guidelines section by posting in #odin--helpdesk.
+
+Upload checks (files and Metadata.rtf)
+All upload checks below block submission. Most file issues can be fixed by correcting and
+re-uploading the file, without a new recording.
+Flag
+
+What it means
+
+Quick fix
+
+Task Recorder zip is uploaded
+and is a zip
+
+recording.zip is missing or isn't
+a real .zip.
+
+Upload the zip TaskRecorder
+exported, unchanged.
+
+Screen recording is uploaded
+as an .mp4
+
+No .mp4 screen recording is
+uploaded.
+
+Upload video.mp4 from the
+TaskRecorder export.
+
+Deliverables.zip is uploaded
+and is a zip
+
+deliverables.zip is missing,
+empty or not a real .zip.
+
+Zip your input, artifact and final
+output files and upload the
+.zip.
+
+Deliverables.zip has at least
+one file
+
+The zip is empty (__MACOSX
+and .DS_Store don't count).
+
+Re-zip with your files inside.
+
+Metadata.rtf is uploaded and is
+an RTF
+
+Metadata.rtf is missing or isn't
+a real RTF.
+
+Check and edit the generated
+draft or completed template,
+save it from TextEdit as Rich
+Text (.rtf), and upload it in
+Metadata.rtf Upload. A file
+attached only to Metadata.rtf
+draft does not satisfy this
+check. On Windows, a .rtf that
+shows as a Word document is
+fine.
+
+Flag
+
+What it means
+
+Quick fix
+
+recording.zip has all recording
+files
+
+One of ax.jsonl, frames.jsonl,
+input.jsonl, recording.log,
+metadata.json is missing.
+
+Upload the original
+TaskRecorder zip. Don't unzip,
+edit or re-zip it.
+
+recording.zip has screenshots
+
+No screenshots in the zip.
+
+Same as above: upload the
+original export.
+
+The MP4 opens and has a
+video track
+
+The video won't open.
+
+Check that the original
+video.mp4 opens locally and
+reaches the end. Upload an
+intact copy. If the original is
+unreadable, record the task
+again; do not edit the
+recording.
+
+Deliverables named input N /
+artifact N / final output N
+
+A file or folder does not follow
+the required input N, artifact N
+or final output N naming, or no
+final output is included.
+
+Use lowercase labels and
+extensions, one space before
+a number starting at 1, and no
+extra words after the number.
+Place files at the ZIP root or
+inside one Deliverables folder.
+A multi-file output may use a
+folder named final output 1.
+Re-zip, upload and rerun the
+check.
+
+Final outputs saved during the
+recording
+
+Every final output was saved
+more than 30 minutes before
+the recording started, so it
+wasn't made on camera.
+
+At least one final output must
+be made during the recording.
+Zip the files you saved during
+the recording. If the work was
+done before, record again.
+
+Video is 15:00 to 54:59
+
+The video is under 15 minutes
+or over 54:59.
+
+Plan for 15:00–50:59,
+including the introduction and
+epilogue. Do not trim or edit
+the recording.
+
+Metadata.rtf follows the
+guidelines
+
+The filename, Topology
+actions, numbered Task
+Description or template
+cleanup is incorrect, or
+Request differs substantially
+from the Goal text read from
+TaskRecorder.
+
+Correct the listed issues in
+your final Metadata.rtf and
+replace the file in Metadata.rtf
+Upload. A generated draft can
+still need corrections. Copy
+only the Goal section of your
+approved idea (Studio >
+Describe your idea) into
+
+Flag
+
+What it means
+
+Quick fix
+Request, exactly as approved;
+use the same Goal in
+TaskRecorder and the opening
+document. See 07. Workflow >
+Organize Output >
+Metadata.rtf.
+
+Recording checks (how you recorded)
+These use the recording analysis, captured activity and audio. Read the finding before acting: a
+file or analysis problem may need a corrected upload or support, while a genuine recording
+defect may require a new uninterrupted recording.
+Flag
+
+Submission effect
+
+What it means
+
+What to do
+
+Recording analysis
+available
+
+Blocks submit
+
+The automatic
+recording analysis has
+not finished. This is
+not a verdict that the
+recording is defective.
+
+Reload after about 10
+minutes. If analysis
+has not finished after
+30 minutes, rerun
+Upload checks. Do
+not launch repeated
+runs while one is
+active. If it remains
+stuck, ask
+#odin--helpdesk with
+the task link and
+status.
+
+No window covers
+another for more than
+30 s
+
+Blocks submit
+
+A window covered
+more than about 25%
+of another for over 30
+seconds.
+
+Keep the working
+content visible;
+minimize unused
+windows or arrange
+them side by side.
+Check the reported
+timestamps and
+dispute a false finding
+with a written reason.
+
+- Reminder: Popup
+windows of the same
+app count as window
+overlap!
+Window overlap was
+checked automatically
+
+Advice
+
+Automatic
+window-overlap
+measurement was
+unavailable; a
+
+No file fix is required
+solely for this warning.
+Keep the work on the
+recorded display and
+provide useful
+
+Flag
+
+Submission effect
+
+What it means
+
+What to do
+
+reviewer needs to
+check the video.
+
+timestamps for the
+reviewer.
+
+Your work stayed on
+the recorded screen
+
+Advice
+
+Some clicks or work
+may have happened
+on a display the
+recording did not
+capture.
+
+Review the listed
+times and keep all
+task work on the
+recorded screen. The
+reviewer checks the
+video; this warning
+does not block
+submission.
+
+The Dock is in view at
+the start and end
+
+Blocks submit
+
+The Dock was hidden
+or off screen at the
+beginning or end.
+
+Keep the Dock visible
+at the start and end.
+
+Mouse inactivity
+
+Blocks submit
+
+The mouse remained
+still for more than 90
+seconds. Typing alone
+counts as still.
+
+Check the reported
+timestamps. If the
+finding is incorrect,
+dispute it with a
+specific reason and
+timestamp. Use the
+cursor naturally to
+guide the viewer; do
+not add artificial
+mouse movement.
+
+Mouse still for 45 to
+90 s three or more
+times
+
+Advice
+
+There are at least
+three still stretches of
+45–90 seconds. A
+stretch over 90
+seconds is handled by
+the blocking check.
+
+Use the cursor
+naturally to guide the
+viewer during the
+workflow. This advice
+does not block
+submission.
+
+Typing within the limit
+for this kind of task
+
+Blocks submit
+
+Typing exceeds 35%
+for Coding or Content
+& Writing, or 25% for
+other tasks. Exactly
+the applicable limit
+passes. An analytical
+report or memo is not
+automatically Content
+& Writing.
+
+Keep the work
+mouse-driven and
+treat the percentage
+as an upper bound. If
+AutoQC chose the
+wrong task category,
+dispute it with
+evidence of the actual
+work.
+
+Flag
+
+Submission effect
+
+What it means
+
+What to do
+
+No banned apps used
+
+Blocks submit
+
+A banned app was in
+front for 10 seconds
+or more.
+
+Check the Restricted
+apps tab and the
+applicable effective
+date. Banned apps
+must not be shown or
+used; the automatic
+threshold is not
+permission for shorter
+use. Dispute a wrong
+app classification with
+timestamps.
+
+Background-only apps
+stay in the
+background
+
+Blocks submit
+
+Workpuls/Insightful or
+Splashtop Streamer
+was in front for 10
+seconds or more.
+
+Keep these apps in
+the background. Do
+not open their
+windows during
+recording.
+
+Limited-use apps
+under 20% of the
+video
+
+Blocks submit
+
+A limited-use app was
+in front for 20% of the
+recording or more.
+
+Keep limited-use apps
+below 20% of the task
+and follow any
+app-specific
+supporting-use
+condition.
+
+Narration can be
+followed at normal
+speed
+
+Advice
+
+More than 10% of the
+recording was
+narrated faster than
+220 words per minute.
+
+Speak clearly enough
+to follow on first listen.
+This speed warning
+does not block
+submission.
+
+No silence in the
+narration over 60 s
+
+Blocks submit
+
+A measured silent
+stretch exceeds 60
+seconds.
+
+Aim for gaps of 45
+seconds or less. For a
+genuine recording
+defect, re-record in
+one uninterrupted
+take; do not trim the
+video.
+
+Background noise
+affects 40% of the
+narration or less
+
+Blocks submit
+
+Noise made more
+than 40% of the
+narration hard to hear.
+
+Use a quieter setting
+or a suitable
+microphone. Check
+the audio before the
+next full recording.
+
+Flag
+
+Submission effect
+
+What it means
+
+What to do
+
+Task Recorder zip
+cannot be read:
+upload the original zip
+again
+
+Blocks submit
+
+The recording archive
+is missing,
+unavailable, corrupt or
+encrypted.
+
+Upload the original
+unmodified,
+unencrypted
+TaskRecorder ZIP
+again and rerun
+recording analysis. If
+the original cannot be
+opened, ask support
+before changing it.
+Wrong-screen or
+capture-gap warnings
+are handled
+separately.
+
+Narration could not be
+read: check the MP4
+and upload it again
+
+Blocks submit
+
+Recording analysis
+could not generate a
+usable transcript from
+the uploaded MP4.
+
+Check that the original
+MP4 plays with
+audible narration,
+upload it again and
+rerun recording
+analysis. If the original
+audio is unusable,
+re-record in one
+uninterrupted take.
+
+Setup and start-of-video checks
+Complete these setup checks before recording. Check reported issues against your recording
+and dispute incorrect findings with evidence.
+Clock seconds, Accessibility Inspector running, the opening Goal document and both Used
+Apps checks block submission. The TaskRecorder-description and Inspector-window checks are
+advice.
+Flag
+
+Submission effect
+
+What it means
+
+What to do
+
+At least one UI
+element changed from
+the macOS default
+
+Blocks submit
+
+No permitted UI
+appearance change
+was detected. Change
+at least one permitted
+UI element and make
+sure it is visible in the
+recording.
+
+Change at least one
+permitted UI element
+and record the setting
+accurately in Studio. If
+a visible change was
+missed, dispute with a
+screenshot
+timestamp. Wallpaper
+is not mandatory.
+
+Flag
+
+Submission effect
+
+What it means
+
+What to do
+
+Task description takes
+120 seconds or less
+
+Blocks submit
+
+The introduction
+lasted more than 120
+seconds.
+
+Keep the introduction
+under 20 seconds.
+Say only the required
+opening sentence,
+then minimize or close
+the Goal document
+and start the task. Do
+not read the full Goal
+aloud.
+
+TaskRecorder's Used
+Apps list names at
+least one of the task's
+apps
+
+Blocks submit
+
+The list contains apps,
+but none matches the
+approved task's app
+list. A blank list is
+handled by the next
+check.
+
+Use the recording for
+this task and fill Used
+Apps with its
+approved apps before
+recording.
+
+TaskRecorder's Used
+Apps list covers every
+app the task uses
+
+Blocks submit
+
+Used Apps is empty
+or omits an app in the
+approved list.
+Equivalent spellings
+and common
+abbreviations count
+as matches.
+
+Include every
+approved task app in
+TaskRecorder before
+recording. Keep the
+app lists consistent.
+
+Task description
+document shown at
+the start
+
+Blocks submit
+
+None of the first five
+screenshots shows a
+document stating this
+task. TaskRecorder's
+own box, input data, a
+blank document or a
+different task do not
+count.
+
+Show only the
+approved Goal in an
+opening document, for
+example in Microsoft
+Word or Google Docs.
+Do not use Notes.app,
+TextEdit or
+Metadata.rtf, and do
+not show the other
+idea sections.
+
+TaskRecorder shows
+an accurate task
+description
+
+Advice
+
+The TaskRecorder
+box is empty or
+describes another
+task.
+
+Before recording,
+paste only the Goal
+section of your
+approved idea (Studio
+> Describe your idea)
+into TaskRecorder's
+Task Description box,
+exactly as approved.
+
+Flag
+
+Submission effect
+
+What it means
+
+What to do
+
+Menu-bar clock shows
+seconds
+
+Blocks submit
+
+The start screenshots
+do not show the
+menu-bar clock
+changing every
+second.
+
+Enable Display the
+time with seconds in
+the macOS clock
+settings before
+recording.
+
+Accessibility Inspector
+is open the whole time
+
+Blocks submit
+
+Accessibility Inspector
+was not running for
+part or all of the
+recording.
+
+Open it before
+recording, close only
+its window with the
+red button, and leave
+the app running.
+
+Accessibility Inspector
+window not shown
+
+Advice
+
+The Inspector window
+appeared on screen.
+The first-task
+allowance still applies.
+
+Close only the
+Inspector window with
+the red button while
+keeping the app
+running; do not quit it.
+
+Narration checks (what you said and did)
+AutoQC may miss evidence shown in your recording. Narration coverage counts actions that
+change the document or file: editing, formatting, moving content, saving or exporting.
+Navigation-only clicks, selections with no change, app/window switching, scrolling, window
+movement and recording setup are excluded. Spoken words must provide at least two of What,
+Where and Why for at least 70% of counted actions. Where requires both the specific element
+and its screen location; visible text alone does not count as spoken narration. Continue to
+narrate every meaningful step, including navigation. Missing or unreliable analysis may produce
+Neutral rather than a verdict on the recording.
+Flag
+
+Submission effect
+
+What it means
+
+What to do
+
+What/where/why:
+counted actions
+
+Reference only
+
+Lists the actions used
+in the narration score
+and whether each has
+spoken What, Where
+and Why. It does not
+fail or block
+submission.
+
+Use the timestamps
+and counts to
+understand the scored
+finding. A missing or
+unreliable analysis
+can make this item
+Neutral.
+
+Narration says the
+what, where and why
+for 70% of actions
+
+Blocks submit
+
+Fewer than 70% of
+counted actions have
+the What, Where and
+Why in the spoken
+
+Say the action, name
+the specific element
+and its screen
+location, and explain
+
+Flag
+
+Submission effect
+
+What it means
+
+What to do
+
+narration. At least
+70% passes.
+
+the purpose or result.
+Dispute incorrect
+counts with
+timestamps. To check
+again, use Run full
+AutoQC, not Rerun
+failing.
+
+Task: core parts and
+evidence
+
+Reference only
+
+Lists the task's
+promised inputs, main
+steps, checks, outputs
+and deliverable
+elements, with
+evidence from the
+recording. It does not
+fail or block
+submission.
+
+Use the list and
+timestamps to
+understand the
+task-coverage
+findings. Missing or
+unreliable analysis
+can make it Neutral.
+
+Recording does no
+major work the task
+doesn't state
+
+Blocks submit
+
+The recording
+performs a substantial
+action outside the
+described task.
+Normal supporting
+steps, small detours,
+extra checks and a
+different order do not
+fail this check. Missing
+or pre-made work is
+handled by the advice
+check.
+
+Stay within the
+approved task. If the
+flagged action is part
+of the described work,
+dispute with the
+approved text and
+timestamps; do not
+change the task
+description to fit the
+recording.
+
+Recording shows
+every part of the
+described task
+
+Advice
+
+A major promised
+step, output, check or
+deliverable has no
+evidence, or work
+promised on camera
+appears pre-made.
+Small missing details
+and unconfirmed
+saves/exports are not
+enough to fail this
+check.
+
+Show the promised
+work on camera. If the
+logs could not confirm
+a step, give the
+reviewer the video
+timestamp; that
+uncertainty alone
+does not require
+re-recording.
+Nonblocking advice
+does not waive
+task-completeness
+requirements.
+
+To check again after a narration flag, use Run full AutoQC (not Rerun failing) so the action
+counts and task evidence are rebuilt together. Never edit the video or transcript, splice in an
+extra clip, or change the approved task to fit the recording.
+
+Common messages and known quirks
+You see
+
+What's going on
+
+What to do
+
+"Your screen recording is still
+being analysed"
+
+The recording analysis hasn't
+finished. Several screen
+checks show Neutral until it
+does.
+
+Follow the steps under
+Recording analysis available
+above.
+
+"Upload checks are stale"
+when you submit
+
+The checks ran on an earlier
+upload.
+
+Run full AutoQC after your last
+file change, then submit.
+
+"Run limit reached, no new
+run"
+
+AutoQC already ran on this
+recording as many times as
+allowed.
+
+If only a file needs correction,
+upload it and follow the current
+rerun guidance. Do not
+re-record solely to bypass a
+run limit. Dispute an incorrect
+finding or ask #odin--helpdesk
+with the task link and exact
+error.
+
+Narration flags a problem your
+new recording doesn't have
+(for example, "too short")
+
+It may have judged the
+recording you replaced, if it
+ran before the new analysis
+was ready.
+
+Wait for the narration card to
+refresh after your new upload,
+then run full AutoQC.
+
+Narration counts look wrong or
+stale
+
+Results may still refer to an
+earlier upload or incomplete
+analysis.
+
+Wait for analysis of the latest
+upload, then use Run full
+AutoQC to rebuild the counts.
+Dispute a count that remains
+wrong with specific
+timestamps.
+
+A flag asks you to show
+something already on screen
+
+AutoQC may miss evidence
+shown in your recording.
+
+Give the timestamp and
+explain what the video shows.
+Dispute a blocking false
+finding; for advice, add the
+evidence for the reviewer.
+
+A new flag on work that
+passed before
+
+AutoQC is updated from time
+to time, so results can change.
+
+Run full AutoQC to see the
+current result. If you think an
+older rule should apply, ask in
+
+You see
+
+What's going on
+
+What to do
+#odin--helpdesk before
+recording again.
+
+A UI-diversity flag appears
+despite changing a permitted
+UI element
+
+Any permitted UI change can
+satisfy this requirement;
+changing the wallpaper is not
+mandatory.
+
+Check that your permitted UI
+change is visible and recorded
+accurately in Studio. If the flag
+is wrong, dispute it with a
+written reason.
+
+Only advice or reference
+findings remain
+
+These findings do not block
+submission. Other current
+required checks may still block
+it.
+
+Review the remaining advice
+and correct any issues with
+your task. Submit once Studio
+permits and you have
+completed the writer checklist.
+
+Still stuck? Post in #odin--helpdesk with your task link and a screenshot of the flag (no
+passwords or personal info).
+
+Writer FAQ
+1.​General Understanding
+What am I actually doing in this project?
+You plan, record, validate and submit realistic professional workflows that someone in your field
+would perform, on your Mac. Each recording shows the complete workflow, narrated, and ends
+with a saved deliverable.
+
+Am I being evaluated on how well I do the task?
+Yes. Quality is essential, and the task itself must be distinct, realistic and within your domain of
+expertise. It should demonstrate authentic professional expertise through deliberate execution,
+clear narration and a complete deliverable. Ask yourself: "Can your friend with no domain
+expertise complete this task?" If yes, choose a task that better uses your domain skills. Review
+05. Task Guidelines and Common mistakes, and tag @Maven in #odin--ideation if you are
+unsure.
+
+Which version of the guidelines applies to my task?
+The guidelines in effect when you submit. If guidance changes while you're recording, you get a
+short allowance of one to two hours. This doesn't apply to tasks you've already submitted.
+Changes are announced in #odin--announcements and logged in the 02. Changelog. Earlier
+onboarding offers keep their original amounts, eligibility, deadlines and permitted bonus
+stacking.
+
+2.​Onboarding
+Where do I complete writer onboarding and start my first task?
+Onboarding happens inside your first task in Studio.
+•​
+
+Open Studio from Okta and select Odin Production Full Workflow, then + Create Task.
+
+•​
+
+Complete the onboarding and idea fields, then submit your idea.
+
+•​
+
+Wait for approval before recording, then continue in the same task.
+
+If you can't see the Full Workflow world or the Create Task button, check your latest Odin
+contract under work.mercor.com → Home → Contracts. If it still doesn't work, post the exact
+error in #odin--helpdesk. Don't recreate tasks or repeat onboarding.
+
+The TaskRecorder download link says I need to request access. Who
+approves it?
+
+No one needs to approve it. Open the link while signed in to Google with your @mercor.expert
+account (an incognito window can help). If it still won't open, download the installer from the
+TaskRecorder announcement in #odin--announcements.
+
+When will my task be reviewed?
+New writers’ tasks receive priority in review; there is no guaranteed turnaround. Track status
+and comments in Studio. Do not contact individual reviewers or create duplicate submissions.
+Open-task limits by stage and tier
+Check the entire task before submission
+For a delayed review, missing feedback or a disputed decision, follow the question with that title
+under Getting Help. Include the task link and time waiting; no completion time or changed
+outcome is guaranteed.
+
+I need more time to complete onboarding. What should I do?
+Complete onboarding before beginning your first task. Start tasking only when the phase is
+open and you are ready to follow the full guidelines.
+
+Can I use a VPN?
+No. VPN use is strictly prohibited and may lead to contract termination without notice. Turn off
+any VPN, proxy or iCloud Private Relay before signing in to Mercor, Okta, Studio or the Odin
+dashboard.
+
+Can I create an iCloud account or Apple ID for a task?
+No. Choose tasks that don't need iCloud. Creating an account asks for a phone number, which
+would expose personal information.
+
+3.​Tasks
+How does app reimbursement work?
+The $50 USD cap is shared across all apps per writer per rolling 30 days, including tax; there
+are no exceptions. Ordinary eligible purchases do not need pre-purchase sign-off. Claim with
+the receipt after you submit a complete task that meaningfully uses the app; that task does not
+need to be approved first, but you must already have at least one approved task. Purchases
+made before the policy was announced are not eligible. Annual or lifetime plans and bundles
+need separate approval and still count toward the cap. You may use your own licensed copy if it
+was activated before recording and no name, email or license detail appears on screen.
+
+Do the new app restrictions apply to a task I already started?
+The app restrictions apply to new work started on or after October 16, 2026 at 18:08 PDT. Work
+already underway before then is protected; it will not be discarded, restarted or rejected only
+because of the update. Ideas or tasks previously rejected for an app that is now allowed may be
+
+reconsidered, subject to all other checks. If an older Studio label or a copied list disagrees, use
+the Restricted apps tab in this handbook. Banned apps must not be opened, shown or used in
+new recordings.
+
+‘Your task plan’ is empty in Studio, or TaskRecorder still shows my last
+task. What do I do?
+If ‘Your task plan’ is empty, you can still record and submit. Use the Goal from your approved
+idea in ‘Describe your idea’ and complete the required fields, Metadata.rtf, files and recording
+setup. For each new task, replace any TaskRecorder details left from the previous task with the
+current approved Goal and app list. Never paste a link, file path or document URL in place of
+the description; input source URLs belong in Final Notes.
+
+Studio generated Metadata.rtf. Do I still need to upload it?
+Yes. Download the file from Metadata.rtf draft, check and edit it, and upload your final file in
+Metadata.rtf Upload. Before recording, verify that Request contains only the exact approved
+Goal used in TaskRecorder and your opening document. After recording, make sure Topology
+and the numbered Task Description accurately reflect the recording. The generated draft does
+not replace your required final upload.
+
+What if there is no Metadata.rtf draft?
+If no draft is available, download the Metadata.rtf Template and complete the same three
+sections. Use your approved idea as the source, verify the final file against your recording, and
+upload it in Metadata.rtf Upload.
+​
+
+Recording
+Can I pause a recording?
+No. There is no pause function.
+If you need to stop:
+●​
+●​
+
+End the recording
+Start a new uninterrupted recording of the same approved task.
+
+When should I continue or restart after a mistake?
+Correct small mistakes on screen, narrate and check the fix, then continue. Restart if an error
+changes the final result and cannot be fixed on screen, or repeated searching, guessing,
+undoing, redoing or errors disrupt the workflow. Use one uninterrupted recording; do not trim or
+edit it.
+
+Can I use a built-in AI feature in an app?
+Do not show an AI tool, interaction or branding; the Gemini watermark on an eligible prepared
+input is the only exception. If an ordinary built-in feature is permitted, narrate the action and its
+result without describing it as AI. If you are unsure whether a feature is permitted, ask in
+#odin--helpdesk before using it.
+
+If I re‑record the same task multiple times, which version gets reviewed?
+Follow Which recording should I upload after multiple attempts? below.
+
+Can I watch my recordings?
+Yes—follow the recording-validation checklist before uploading.
+
+How do I know my submission is complete, and what happens next?
+Your submission is complete once the required files and fields are saved and you select Submit
+for Review. Check the resulting status in Studio: Routing may send it to full review, Quick
+Review or Review Approved. Submission is not final approval. Follow 08. Review → After
+Submission for the next action, and Review Limits for resubmissions.
+
+How do I correct feedback, replace an upload or resubmit a QC revision?
+Open the same task and read Feedback plus Reviewer/Auditor comments. Correct a file-only
+issue by replacing the affected upload when its field is editable; rerun the required AutoQC
+checks after changes. Re-record only when the recording itself needs fixing, not merely
+because the status says Needs Edits. Complete the fields and resubmit that task. If feedback,
+file controls or resubmission are missing or locked, report the task link, current status and
+screenshot in #odin--helpdesk. Wait for clarification before resubmitting unchanged.
+
+Is it okay to redo a task if I think it’s bad?
+For recording problems, follow the mistake and restart guidance. For file-only issues, follow the
+feedback and upload-correction steps.
+
+Accounts & Privacy
+What should my computer look like if I have successfully completed the
+account and Task Recorder setup?
+●​
+●​
+●​
+●​
+●​
+
+Hours, minutes & seconds in the clock on the menu bar
+Dock positioned to left or right side
+At least one permitted UI element changed; wallpaper is one option.
+Accessibility Inspector running in the dock
+Opening note with the Goal (not Notes.app or TextEdit) ready behind TaskRecorder
+
+●​
+TaskRecorder 2.4.4 open and populated with the same Task Description (Goal) as the
+opening note, as well as all apps that will be used in the task
+●​
+All apps launched, preprepared files ready and everything minimized in the dock.
+Note: in the below example you can also see further customization as it has dark mode enabled.
+
+​What is the difference between my Mercor expert email and the OTA
+accounts?
+​
+Your Mercor expert email account is used to access
+●​
+●​
+
+Mercor resources
+onboarding documents.​
+
+​
+Assigned OTA accounts are retired. Use your @mercor.expert account or a new anonymised
+account for task-app sign-in. Okta and the dashboard use your personal work.mercor.com
+email. TaskRecorder 2.4.4 has no sign-in.
+●​
+TaskRecorder 2.4.4 does not require an OTA login; assigned OTA accounts are retired
+and are not required for task apps
+●​
+Used to log into Google services (Gmail, Drive etc) during tasks.​
+
+What are the PII edge cases?
+Someone else’s full name on its own, with nothing that narrows it down, is allowed; an email that
+identifies a person and a company is not. For example, Sandy Jones and
+sandyjones@example.com are allowed, but sandyjones@walmart.com is not. IP addresses and
+a Mac serial number on its own are allowed; a Mac serial number together with an IPv6 address
+is a send-back. MAC addresses are never allowed.
+
+Task Recorder Device and System Requirements
+​
+
+What if my Mac is lost, stolen or broken?
+Writer recordings require a supported physical Mac running macOS 15 or newer. Pause
+recording and ask in #odin--helpdesk about your contract while arranging a replacement.
+Include your expected time away and when you may resume. Keep follow-up in the same
+thread and ask for escalation if unresolved. Whether the contract can remain active requires a
+case-specific answer; do not assume you must offboard and reapply or that continued access is
+guaranteed.
+
+How can I check whether my Mac is Intel or Apple Silicon?
+●​
+
+Click the Apple menu → “About This Mac” to see the chip type (Intel, M1/M2/M3, etc)
+
+How do I share my Mac specifications if support asks for them?
+●​
+Open the Apple menu → “About This Mac”
+●​
+Take a screenshot showing your Mac model, chip type (for example, M2), and macOS
+version (for example, 15.x or newer).
+●​
+Tag @Maven in #odin--helpdesk and attach this screenshot. If the answer remains
+unresolved, ask for escalation in the same thread, following the support route in Contacts.
+
+Do longer or heavier recordings need more than the listed hardware?
+Yes. Longer or graphic-heavy recordings need more than 35GB of free disk space. Resolution,
+graphic complexity, open apps and motion all affect how long you can safely record. Visually
+demanding tasks may need 24GB RAM or more. Avoid recording at native 4K/5K resolution.
+
+TaskRecorder Installation
+Why is macOS required for TaskRecorder?
+Project Odin aims to capture real, native macOS desktop workflows. The recordings must reflect
+how users actually interact with macOS applications, menus, system behaviors, and shortcuts.
+Because of this:
+●​
+
+Tasks must be completed on a real Mac
+
+●​
+●​
+
+TaskRecorder must run directly on a compatible physical Mac
+Browser-based Mac environments are not used for this part of the project
+
+The client cannot accept recordings created outside native macOS environments for
+TaskRecorder tasks.
+
+Do I need to uninstall the old versions?
+●​
+If an older TaskRecorder is already installed, first remove TaskRecorder from Privacy &
+Security > Screen Recording and > Accessibility (select it and click -), move the old app from
+Applications to the Bin, then install the new version and grant all three permissions again.
+
+I can’t install TaskRecorder; the install fails
+Restart your computer and try again.
+
+TaskRecorder shows an old or unclickable login button. What should I do?
+Follow Recorder sign-in recovery below.
+
+How do I reset TaskRecorder permissions?
+In System Settings → Privacy & Security, enable TaskRecorder under Accessibility, Screen
+Recording and Microphone. If a permission is missing or will not stay enabled:
+●​
+●​
+●​
+
+Select TaskRecorder in the affected permission panel and click − to remove it.
+Click +, add the installed TaskRecorder from Applications and toggle it on.
+Fully quit and reopen TaskRecorder.
+
+If still blocked, tag @Maven in #odin--helpdesk with a screenshot of the affected permission
+panel.
+
+I deleted TaskRecorder to reinstall, but it still appears in permissions.
+MacOS may keep the permission entry even after deleting the app. Therefore, removing
+permissions separately before uninstalling the app is recommended.
+
+How do I confirm I’m fully ready?
+Do one short test recording:
+●​
+Select the intended display and test the permitted apps, critical dialogs and audio
+actions you expect to use.
+●​
+Bring TaskRecorder to the front, click Stop Recording, and wait through Stopping →
+Archiving → Idle.
+●​
+Click Show Recordings, or use Finder → Go → Go to Folder and open
+~/Library/Application Support/TaskRecorder/recordings.
+●​
+Confirm the automatic recording_TIMESTAMP.zip exists and keep it unchanged.
+●​
+In the new recording folder, confirm screenshots/ contains PNG files at more than 0.5
+per second.
+
+●​
+Play video.mp4 through the end; check audible narration near the beginning and end,
+plus any required app playback.
+●​
+Confirm frames.jsonl, ax.jsonl, input.jsonl, processes.jsonl and recording.log are present.
+
+TaskRecorder Accounts and Browsers
+TaskRecorder shows an old login button or a Google sign-in screen. What
+should I do?
+●​
+Quit every running copy of TaskRecorder (⌘Q).
+●​
+Download the correct TaskRecorder 2.4.4 installer from 03. Setup & access >
+TaskRecorder: TaskRecorder2.4.4.dmg for Apple Silicon or TaskRecorder2.4.4-Intel.dmg for
+Intel. Version 2.4.3 and earlier installers are obsolete.
+●​
+Install it in Applications, choose Replace if prompted, and reopen from Applications.
+Remove obsolete app copies and old DMGs, but keep all recordings and exports.
+●​
+Enable Accessibility, Screen Recording and Microphone permissions, then reopen
+TaskRecorder. Version 2.4.4 requires no OTA or Google sign-in; keep your task-app privacy
+setup.
+​
+If the prompt remains, tag @Maven in #odin--helpdesk with the exact downloaded filename,
+error and a redacted screenshot. If unresolved, ask for escalation in the same thread, following
+Contacts.
+
+TaskRecorder Stopping & Uploading
+How do I stop recording?
+Bring TaskRecorder to the front and click Stop Recording. Command + Shift + 9 does not stop
+the current version of TaskRecorder.
+
+Where are my recordings saved?
+TaskRecorder stores each recording temporarily in the hidden folder:
+~/Library/Application Support/TaskRecorder/recordings
+You can open this folder by clicking “Show Recordings” in TaskRecorder.
+When opened, the archive contains:
+●​
+●​
+●​
+
+screenshots/ containing PNG files
+video.mp4
+frames.jsonl, ax.jsonl, input.jsonl, processes.jsonl and recording.log
+
+Important: If you haven’t run a recording yet, you may not see the output folder structure.
+
+Which recording should I upload after multiple attempts?
+Each attempt creates a timestamped local folder and an automatic recording_TIMESTAMP.zip.
+Upload only the final verified attempt’s original ZIP; older .tar.gz archives are not accepted.
+Select it by timestamp and do not rename or edit it. Keep the raw folder and earlier attempts
+until you have verified that all required contents are uploaded to Studio. Then delete obsolete
+attempts, empty Trash and check free storage before recording again.
+
+Can I watch my recordings before uploading?
+●​
+Yes. And you should.
+●​
+To validate a copy, confirm video.mp4 opens and reaches the end, screenshots/ contains
+PNG files, there are hundreds of screenshots, and the JSONL files exist at the archive root.
+Listen near the beginning, middle, and final minute to confirm narration continues. For
+audio-production tasks, verify narration and required app playback separately. If playback
+appears delayed or out of sync, check the local video.mp4 in QuickTime before deciding the
+recording is defective. Do not rename, edit, unzip, or manually recreate the original
+recording_TIMESTAMP.zip.
+●​
+Check for issues like missing narration, visible private or non-public personal
+information, or a TaskRecorder/Insightful overlay at the wrong time.
+​
+If these defects are present, re-record. Do not trim or edit the TaskRecorder archive. If unsure,
+tag @Maven in #odin--helpdesk and follow Contacts.
+
+TaskRecorder Errors & Troubleshooting
+What if permissions won’t turn green?
+Follow Reset TaskRecorder permissions above.
+
+What if the app behaves differently than the guide?
+Stop and tag @Maven in #odin--helpdesk. Include the app version, current step, expected
+result, actual result and a screenshot; do not guess or improvise.
+
+What if video.mp4 is unreadable, ends early, or TaskRecorder crashes?
+●​
+Do not submit the defective archive. Close calls, screen sharing, computer-control
+agents, unused complex browser tabs, large Finder folders and large unused documents. Fully
+quit and reopen TaskRecorder and Accessibility Inspector. Reboot after a zero-screenshot,
+unreadable-video, severe or repeated failure.
+​
+●​
+Make one short control recording and check video.mp4 and screenshots before
+recording the task again. If the test fails or the issue persists, upload the failed archive for
+
+support and tag @Maven in #odin--helpdesk with its link. Verify the task recording’s video.mp4
+and screenshots before submission.
+​
+
+What if I get an empty recording or very few screenshots?
+●​
+A large or busy accessibility tree can delay capture and block later screenshots. Follow
+Capture-failure recovery above.
+
+My last recording had no audio, or TaskRecorder will not launch. What do I
+do?
+If a previous recording lost audio, make a short control recording with the built-in microphone
+before starting another full task. If TaskRecorder bounces, freezes or never opens a window
+after the official install and ‘Open Anyway’ steps, reopen the installed copy from Applications,
+not from the mounted DMG. If it still fails, post your Mac chip, macOS version, the exact
+downloaded filename, what happens and a redacted screenshot in #odin--helpdesk, or join the
+24/7 tech-support call. A launch freeze is not the same as a Google-account password error. Do
+not disable macOS security protections or run commands from unverified sources.
+
+Getting Help
+Where do I report a technical problem or broken Insightful tracking?
+For technical or tracking problems, follow How do I contact support? below.
+Pause hourly work while accurate tracking is broken. A genuinely exhausted allowance follows
+the separate stage rules under “What happens when I reach my hours or open-task limit?”
+There is no guaranteed technical-support response time; an unresolved bot reply does not
+establish that a human received or resolved the case.
+
+When should I ask for help?
+Ask for help if you are unsure whether a recording is valid, think private data may have been
+recorded, or feel stuck or confused. Follow How do I contact support? below.
+
+Where do I report a delayed review, missing feedback or a disputed
+decision?
+Check the task's status and Feedback/Reviewer/Auditor comments first. Wait for idea approval
+before recording. To dispute a review decision on a submitted task, use Review escalation on
+the task page (see Escalating a review), not #odin--helpdesk. Use #odin--ideation for idea
+rejections and #odin--helpdesk for delays or missing feedback. Keep follow-ups in the same
+thread and tag @Maven. If unresolved or guidance conflicts, ask for EPM escalation there. Do
+not create duplicate submissions or contact individual reviewers. No response time or changed
+decision is guaranteed.
+
+How do I contact support?
+Tag @Maven in #odin--helpdesk for onboarding, setup, apps, recording, uploads, AutoQC,
+contract, tier or allowance questions; use #odin--ideation for task ideas. For missing pay or
+bonuses, follow My pay or bonus has not arrived. What do I do? Okta or Slack access problems
+go to support@mercor.com. Include your Task ID, current step, exact error, affected app,
+expected and actual results, and a redacted screenshot. Keep follow-ups in the same thread
+and ask for escalation there if unresolved or guidance conflicts. Do not DM individual reviewers
+or EPMs unless specifically asked.
+
+Unfortunately, I won’t be able to work on the project, how do I get
+offboarded?
+If you go to https://work.mercor.com/maven, you can do a self-service project off-boarding. It
+only takes a moment, just ask to be removed from the Odin project and Maven will create a link
+for you. We are sorry to see you go and hope to work with you again soon on another project.
+
+How do I request a lower role?
+Use the Pay & role request form. Reviewers can request Writer; QC specialists and auditors can
+request Reviewer or Writer. The form does not accept promotion requests; Writer promotions
+are automatic based on performance. Continue in your current role until the team confirms
+approval, start date, pay and contract terms, access and what happens to unfinished tasks.
+
+What do AutoQC flags mean, and when must I fix, dispute or re-record?
+AutoQC findings are not an overall task-quality score. Resolve every current finding that blocks
+submission. Advice and reference findings do not themselves block submission, but a real
+breach of writer requirements can still require edits. Neutral or pending analysis is not a pass;
+check the uploads and stated analysis status.
+For an incorrect flag, give a written dispute with timestamps. The reviewer assesses it; a dispute
+does not guarantee approval. Correct files or metadata and rerun the required checks for
+file-only issues. Re-record only for a real recording defect; do not edit the recording or re-record
+solely to bypass a run limit. Mouse inactivity alone is not a send-back or re-record reason.
+Report a remaining submission block in #odin--helpdesk with the task link and exact error.
+
+AutoQC is stuck and I have a deadline. What do I do?
+Post in #odin--helpdesk first. If a deadline is at risk, screenshot your upload time and the waiting
+status, and send them with your task ID through the Pay & role request form.
+
+Status and review questions
+Does ‘Idea Approved: Start Recording’ mean I can record?
+Yes. ‘Idea Approved: Start Recording’ means your idea was approved. Continue in the same
+Studio task and record.
+
+Where do I finish an existing Core task, and what if a task disappears?
+Finish an existing in-progress Core task in Odin Production Core. Create new tasks in Odin
+Production Full Workflow; do not recreate existing work just to change worlds. Core and Full
+Workflow have different submission paths. If a task is missing, clear filters and check its original
+world and My Tasks using the task ID/title. If still missing, post its link or prior approval in your
+existing #odin--helpdesk thread and ask for EPM escalation. Wait for that check before creating
+a replacement. A missing task in one view does not prove deletion, rejection or reassignment,
+and no restoration time is guaranteed.
+
+What do the idea statuses in Studio mean?
+In Studio, choose Odin Production Full Workflow in the world dropdown, then open Dashboards
+and My tasks. Idea Draft means it is not submitted yet. Checking Idea means an automatic
+check is running, usually a few minutes. Idea Returned means it was sent back, with the
+feedback under the Submit Idea button. Idea Needs Review means a person is checking it, so
+do not record yet. In Progress means it is approved and you can record. If a task says it needs
+attention from you, the next step is yours.
+
+What do the task statuses after submission mean?
+Task statuses after submission: see 08. Review → After Submission.
+
+What happens when I reach my hours or open-task limit?
+Onboarding has three paid setup hours total; you may finish the first task afterward under its
+fixed-payment terms. For writers in Onboarding, the first task reaching Review Approved
+unlocks Trial’s initial 12-hour allowance. Wait until the allowance appears in Insightful before
+starting the next hourly-paid task. After three Trial tasks reach Review Approved, you enter
+Production as a Writer; rejected tasks do not count toward those three approvals.
+During Trial, each qualifying task adds three paid hours to your allowance. Review Approved,
+QC Approved, RFD - Minor (Quality Review A) and Ready for Delivery qualify, including earlier
+tasks. Each task counts once, even if it passes through multiple qualifying statuses; hours
+update automatically. You do not need to wait for RFD solely to earn hours. Your first-task
+approval payment follows your onboarding offer and the approval/pay-run conditions below. Tier
+efficiency still uses Ready for Delivery.
+If Trial genuinely reaches zero, finish the current task without further hourly pay and wait for
+earned hours before resuming hourly-paid work. Production weekly caps are firm: 40 hours for
+Throttled Writer, 60 for Writer and 80 for Super Writer. You can check your weekly cap in your
+contract tab. Open-task limits are three in Trial/Throttled Writer, five for Writer and ten for Super
+Writer. Tasks awaiting approval count as open; rejected tasks do not. Follow the limits even if
+Studio permits more. For a wrong balance or missing earned hours, pause hourly work and
+report timer details and task links in #odin--helpdesk.
+
+Where do I start under the hourly amendment?
+Existing writers with no past qualifying task start in Onboarding; those with at least one start as
+Writer. Super Writer requires verified qualifying performance. New writers whose first Odin
+contract starts on or after October 21, 2026 at 12:00 a.m. Pacific start in Onboarding. They can
+skip the lookup. You can check your starting tier in the starting-tier lookup with your
+mercor.expert account; it is a starting snapshot, not your current ‘My pay’ tier.
+
+How do I accept the hourly amendment?
+Open work.mercor.com → Home → Contracts and review your latest Odin contract and
+accepted amendments. Contractual role and Studio access can update at different times. The
+hourly writer model does not require becoming a reviewer. Do not treat a Maven role claim as
+confirmation of your assignment.
+All Odin writers must move to the hourly-pay model. Accept your amendment within 48 hours of
+receiving it; declining or missing the deadline pauses your Odin contract. If it is missing, you
+declined by mistake or need it resent, tag @Maven in #odin--helpdesk with your mercor.expert
+email. Writers who were already hourly must accept their amendment to reactivate; task-paid
+writers may continue until it arrives. If you have already been offboarded, you do not need to
+accept it; if you accepted it by accident, ask Maven to offboard you.
+
+Which older tasks retained per-task terms, and what was the submission
+deadline?
+A task retained its prior agreed rate if it had reached Idea Approved: Start Recording or a later
+review stage by October 21, 2026 at 12:00 a.m. Pacific, and its completed task and video were
+submitted using Submit for Review by October 24 at 11:59 p.m. Pacific, including the one-time
+24-hour grace period. On-time submissions retain those terms even when later edits are
+requested. Keep Insightful off for work paid under protected per-task terms. Later submissions
+require an individual payment review; any move to hourly pay must be communicated with
+timing instructions before further work. This is a historical transition rule, not a reopened
+deadline.
+
+When does a tier review apply to me?
+Your tier is only reviewed once you have at least 3 newly resolved tasks. Unfinished tasks count
+toward tier assessment only once approved or rejected. Only tasks that reach Ready for
+Delivery count as approved output for efficiency. If your efficiency drops, you get a warning and
+time to improve before your tier changes.
+
+Which onboarding offer applies to me?
+New writer onboardings from October 29, 2026 (PT) can earn $400 across Tasks 1–4:*
+●​ Task 1: $50 on submission and $100 on approval.
+●​ Tasks 2–4: $100 only once all three are submitted; another $150 only once all three are
+approved, completing Trial.
+
+Group awards pay once each, not per task; no partial payments. This offer does not stack with
+other writer bonuses. Future writer bonus campaigns are Production-only.
+*Earlier onboarding offers keep their original amounts, eligibility, deadlines and permitted bonus
+stacking.
+If you started onboarding before October 29, 2026 (PT), your earlier offer applies. Under the
+earlier $150-submission/$250-approval offer, you must not have received onboarding or
+first-task bonuses. Earlier Review Approved tasks alone do not disqualify you. Resubmissions
+and later approvals do not pay a milestone again.
+Setup allows up to 3 paid hours total, not weekly. Task 1 itself is not hourly-paid; Trial hours
+follow their separate allowance.
+Approval means Review Approved, QC Approved, Quality Review A or Ready for Delivery. The
+task must still qualify when the pay run is prepared; Quality Review A requires 24 hours in that
+status. Tasks in QC check, quality re-review or sent back wait for a later run once eligible again.
+These approval/pay-run rules also cover eligible older per-task pay, Double Pay and Super
+Boost. Tier reviews and efficiency still use Ready for Delivery.
+
+I started onboarding before October 29, 2026. Which onboarding offer
+applies to me?
+Your earlier offer. The October 29, 2026 (PT) onboarding offer applies only to new writers who
+start onboarding on or after that date. If you started before October 29, 2026 (PT), your original
+offer keeps its original amounts, eligibility, deadlines and any bonus stacking it allowed. Under
+the earlier $150-submission/$250-approval offer, you must not have already received an
+onboarding or first-task bonus, and resubmissions and later approvals do not pay a milestone
+again.
+
+I was told my first task pays $400 ($150 + $250). Is that still true?
+It depends on when you started onboarding. If you started before October 29, 2026 (PT), your
+earlier offer still applies, including the $150-submission/$250-approval first-task offer if that is
+what you were given. If you started on or after October 29, 2026 (PT), your first task earns up to
+$150, and the rest of the $400 comes from Tasks 2, 3 and 4 (see the next question).*
+*Earlier onboarding offers keep their original amounts, eligibility, deadlines and permitted bonus
+stacking.
+
+Under the October 29, 2026 offer, is the full $400 paid on my first task?
+No. For new writers who start onboarding on or after October 29, 2026 (PT), the $400 is spread
+across your first four tasks:*
+●​ Task 1 earns up to $150: $50 when you submit it, plus $100 when it is approved.
+●​ Tasks 2, 3 and 4 earn the remaining $250 as a group: $100 once all three have been
+submitted, plus another $150 once all three have been approved, which completes Trial.
+
+*Earlier onboarding offers keep their original amounts, eligibility, deadlines and permitted bonus
+stacking.
+
+Under the October 29, 2026 offer, I’ve submitted or had approved one or
+two of Tasks 2, 3 and 4. Do I get part of the award?
+No. The $100 submission award is paid only once all three of Tasks 2, 3 and 4 have been
+submitted. Submitting one or two does not qualify. The $150 approval award is paid only once
+all three have been approved, completing Trial. One or two approvals do not qualify. Each
+award is paid once for the whole group of three, not per task. There are no partial payments.*
+*Earlier onboarding offers keep their original amounts, eligibility, deadlines and permitted bonus
+stacking.
+
+Does the October 29, 2026 onboarding offer stack with other writer
+bonuses?
+No. For new writers who start onboarding on or after October 29, 2026 (PT), the onboarding
+offer does not stack with any other writer bonus. Future writer bonus campaigns are for
+Production writers only. If you started onboarding before October 29, 2026 (PT) and your offer
+allowed stacking, those original terms still apply.*
+*Earlier onboarding offers keep their original amounts, eligibility, deadlines and permitted bonus
+stacking.
+
+My pay or bonus has not arrived. What do I do?
+For a missing or incorrect My pay dashboard entry, use the Pay & role request form with your
+@mercor.expert account without waiting two pay cycles. The two-cycle wait below applies to an
+expected payment or bonus that has not arrived.
+Bonuses are issued after their window closes and eligibility checks are done.
+If expected pay or a bonus has not arrived after two pay cycles, submit the Pay & role request
+form with your mercor.expert account; the stated response time is 2 business days. Include
+Project Odin, your expert email, the affected dates, your contract rate, tracked hours and the
+task or offer links. Keep the offer, your submission history and timestamped screenshots. The
+Pay Dashboard alone does not establish entitlement; check Stripe or Wise and any verification
+emails. To dispute removed hours, use Disputes. Use the form for missing pay, not Slack
+comments or DMs; use #odin--helpdesk for tier or allowance errors.
+Submit the payment form once. Hourly pay is processed Wednesday for the prior
+Saturday–Friday week in India time. Tier bonuses normally follow on the Wednesday after the
+corresponding hourly pay, but may arrive earlier, including with that payment. Bank arrival is not
+guaranteed on processing day. Earlier onboarding offers keep their original amounts, eligibility,
+deadlines and permitted bonus stacking. Historical weekly boosts retain their original terms.
+
+Why does my task show as approved by me?
+Automatic approval can be logged under the submitter’s name. This does not mean you
+reviewed your own task. It can still be selected for final QC.
+
+Can I claim a task marked Unclaimed or Available to claim?
+No. Please do not claim tasks marked Unclaimed or Available to claim. Create and submit your
+own idea instead: open Studio, select Odin Production Full Workflow, then Create Task.
+
+Are tasks reviewed on weekends?
+Yes. The reviewer team spans time zones, so tasks are picked up throughout the week.
+Turnaround depends on queue depth rather than the day, though it can be slower at weekends,
+on holidays and at quieter hours. There is no guaranteed order, so a newer task can be picked
+up before an older one. Ready for Review means it is queued and there is nothing for you to do.
+
+Can I change my idea after it is approved?
+Once an idea is approved, its description and its app list are both locked. If your plan changes
+materially, select Revise idea: the task returns to Idea Returned, where you can update
+Describe your idea and Apps before selecting Resubmit idea, and you should wait for the new
+approval before you record. Revise idea is only available in Odin Production Full Workflow. You
+can find the ‘Revise Idea’ button in the left-side pane on Studio - please scroll down to see it. A
+greyed-out card headed “Your original idea” is there for reference only and does not affect your
+review or QC result. Always record against the newest approved revision. Do not create a
+duplicate task.
+A pending change request does not replace the existing approval. If the revised idea is flagged
+against your own earlier task, share both links and the exact flag in #odin--ideation and have the
+comparison checked before creating another copy. Rejection alone does not guarantee that a
+resubmission avoids duplicate detection. Use #odin--helpdesk for a submitted-task technical
+block.
+
+How should I label and package my deliverable files?
+Include original starting files as input 1, input 2, and so on; downloaded or intermediate files as
+artifact 1, artifact 2; and the finished products as final output 1, final output 2, with their proper
+extensions. Websites visited only for research or context are not input files and do not need to
+be packaged.
+
+Do I need an input file if I create the task from scratch?
+No. A task created from scratch does not need an input file. Deliverables.zip must include any
+actual starting files used, intermediate artifacts and at least one clear final output, correctly
+labeled and readable.
+
+What if the app cannot produce a normal deliverable file?
+When the app cannot produce a normal deliverable file, a screenshot or another readable
+output format can be acceptable. Include evidence of the completed form or submission and
+any actual starting files used.
+
+More setup and access questions
+Step 7 of onboarding won’t let me continue after I download TaskRecorder
+(‘wait 15 seconds’). What now?
+Onboarding is now fully in Studio. Open Studio, go to Project Odin, and click + Create Task;
+follow the onboarding instructions in that task. The Vercel dashboard is no longer required, and
+any onboarding already completed there is saved. If a download step is still blocked, tag Maven
+in #odin--helpdesk with a screenshot. Onboarding practice ZIP uploads are no longer required.
+Studio onboarding update.
+
+The link to the new recorder version says I need to request access, and I
+already did. Who approves it?
+No one needs to approve it. Open the Drive link while signed in to Google with your
+@mercor.expert account (an incognito window helps). If it still won’t open, download the installer
+attached to the TaskRecorder announcement in #odin--announcements.
+
+Can I work on Odin with an Intel Mac?
+Yes. The Intel build of TaskRecorder 2.4.4 is available to everyone on an Intel Mac. Download
+TaskRecorder2.4.4-Intel.dmg from the Intel announcement in #odin--announcements, install it
+into Applications and enable Accessibility, Screen Recording and Microphone. It requires
+macOS 15 or newer; if your Mac cannot run macOS 15 there is currently no older build and no
+alternative. macOS will probably say it cannot verify the app, which is expected: choose Done,
+then open System Settings, Privacy and Security, and select Open Anyway. Make a short test
+recording and check the saved audio, video and screenshots before starting a full task. Report
+problems in the Intel announcement thread with your Mac model, processor, macOS version
+and the exact error.
+
+Can I use a VPN while working on Odin?
+No. VPN use while working on Odin is strictly prohibited. If a VPN is detected while you are
+working, your contract will be terminated without notice. Turn off VPNs, proxies and iCloud
+Private Relay before signing in to Mercor, Okta, Studio or the Odin dashboard.
+
+Do I need an Apple ID in my Recorder user to install Xcode?
+No. Install Xcode in your regular macOS user, where your App Store sign-in already exists.
+Apps install system-wide, so Xcode is then available from the Applications folder in the
+Recorder user. Set the Recorder user up as an admin with no iCloud account and keep
+
+personal accounts out of it; your name, Apple ID and other personal details must never appear
+in a recording.
+
+Accessibility Inspector will not run, or I cannot enable TaskRecorder
+permissions. What do I do?
+In your Recorder user, check that it is an Administrator under System Settings → Users and
+Groups. If Accessibility Inspector is greyed out, open Xcode from Applications and finish its
+first-launch setup, then open the Inspector through Xcode → Open Developer Tool or Spotlight.
+Close only the Inspector window with the red button. For TaskRecorder permissions, follow
+Reset TaskRecorder permissions.
+
+What must I eject from my Desktop before recording?
+Eject any mounted TaskRecorder disk image. Nothing in the recording should show references
+to Odin, Mercor or TaskRecorder, and a leftover installer image is one of the most common
+slips. TaskRecorder and Insightful icons in the Dock are fine; keep Insightful minimised and
+never open its window during a recording.
+
+TaskRecorder will not open after installation
+For TaskRecorder launch problems, follow the launch-failure steps above. If macOS says the
+app is damaged or contains malware, follow the do-not-bypass instructions in Setup & access
+→ TaskRecorder.
+
+Where can I see who my Pod Lead is?
+Pods ended on October 18, so there are no Pod Leads. Use the routes under How do I contact
+support? for onboarding and other questions.
+
+Where do I ask if I think private information appeared in my recording?
+Don't submit it. Tag Maven in #odin--helpdesk with your task ID and the timestamp, but never
+repeat the private details themselves. Watch the recording through to check for yourself as well.
+If private information did appear, even briefly, re-record the task from the beginning. Please
+don't DM individual reviewers or EPMs.
+
+Common Mistakes
+Item
+
+Explanation
+
+Task Description
+
+Use the friend-with-no-domain-expertise test to
+choose a task that uses your skills. The Task
+Description (Goal) should briefly explain your
+role, the apps and key methods, and the
+intended result; it does not need to fill a page.
+
+Task Recorder Version
+
+You must use the current version of Task
+Recorder and not an older one from past
+phases.
+
+Frame loss (TR)
+
+Missing PNGs or low PNG count (<0.5 per
+second of recording). We must have all the
+data required for the client.
+
+Restricted app
+
+Do not use an app on the banned list at
+https://odin-mercor1.vercel.app/validated-apps,
+including by entering it under Other in Studio.
+Ignore stale 'restricted' labels in Studio; Word,
+PowerPoint, Premiere Pro and Illustrator are
+allowed.
+
+UI Diversity
+
+Each recording must change at least one UI
+element (wallpaper, light or dark mode, accent
+color, Dock size, sidebar icon size, screen
+resolution, or an in-app theme); more is better.
+
+Dock
+
+Dock should be on the left or right and not
+minimized. Dock should not be at the bottom of
+the screen.
+
+Menu bar clock
+
+Seconds must be displayed on the menu bar
+clock.
+
+No Setup/Introduction
+
+Task description (Goal) document must be
+displayed at the beginning of the video and
+intro narration should not last longer than 20
+seconds.
+
+Accessibility Inspector
+
+Accessibility Inspector not running during the
+video.
+
+Item
+
+Explanation
+
+Task length
+
+Total video length: Plan recording length,
+including the short intro and epilogue, to be at
+least 15 minutes and no more than 50:59
+minutes (15:00-50:59).
+
+Narration below the target
+
+Narration does not clearly describe What and
+Where for each meaningful step.
+
+Profanity
+
+Profanity must not be in narration or shown in
+recording
+
+Silence gap
+
+A single audio silence gap over 60 seconds
+fails. Gaps of 46-60 seconds receive
+nonblocking feedback; aim for gaps of 45
+seconds or less.
+
+AI usage
+
+Any generative AI in video.​
+Only ordinary built-in functionality not presented
+as AI is permitted; do not prompt, converse,
+generate or summarize task content with AI
+during recording.​
+AI may prepare inputs before recording. At first
+use, explain the prepared file's contents,
+purpose and CC0 or public domain status
+without naming an AI tool or inventing a source.
+Put “AI-generated before recording” in Studio
+Final Notes.
+
+PII
+
+Private or non-public personal information must
+not be visible or audible. Examples of
+exceptions are public GitHub user
+information/emails and author
+information/emails in public research papers;
+these do not permit unrelated private
+information.
+
+Project references
+
+Keep Mercor, Project Odin, Studio and other
+project materials out of view. TaskRecorder
+may appear only for the required Start
+Recording and Stop Recording actions;
+minimize it immediately after starting.
+
+Copyright
+
+Do not use paywalled, watermarked (except the
+Gemini watermark on an eligible prepared
+
+Item
+
+Explanation
+input) or unclear-rights content, or anything
+from the Canva library or templates, Pixabay,
+Pexels, Unsplash, Template.net or other stock
+sites. Check the original source for
+CC0/public-domain or equivalent permission
+and terms permitting AI-training use; a search
+filter alone is not sufficient. Do not copy text
+from websites into your task.
+
+Input files (if applicable)
+
+Include all input files in Deliverables.zip. In
+Studio Final Notes, provide each non-AI source
+URL or exactly “AI-generated before recording”
+for AI-created inputs; complete Source of Data
+when applicable as well.
+
+Window Management
+
+Keep working windows readable and minimize
+unused overlaps. Minor window overlap alone
+is not an error and does not require edits or a
+re-record. Keep the content being worked on
+visible. Temporary dialogs or pop-ups within the
+same app may overlap while actively used;
+close them afterward.
+
+Mouse inactivity
+
+Use the cursor naturally as a teaching pointer.
+Mouse inactivity is recorded as a qualitative
+delivery callout with useful timestamps; it is not
+graded and does not cause rejection or
+rerecording on its own. The closing epilogue
+may be still. Keep the separate
+continuous-typing limit.
+
+Excessive typing
+
+Typing should not take up too much of video
+length
+
+Deliverable File missing from the .zip
+
+The deliverable must contain a final output file
+in the Deliverables.zip.
+If input files, intermediate artifacts, or multiple
+final outputs exist in the task, all of them must
+be present in the Deliverables.zip.
+
+Metadata visibility
+
+Metadata.rtf window should not be shown in the
+recording
+
+Item
+
+Explanation
+
+Workpuls/Insightful
+
+Workpuls/Insightful window can not be opened
+in the recording (it is allowed minimized in the
+Dock)
+
+Create a Recorder Mac User (Optional)
+Use a separate macOS account for all project recordings. This prevents personal information,
+accounts, notifications, and unrelated project content from appearing in your recording.
+1.​ Open System Settings.
+
+2.​ Go to Users & Groups.
+
+3.​ Click Add User.
+
+4.​ Create an Administrator user and use a neutral account name such as Recorder. Do not
+use a real name.​
+
+If you use a separate Recorder account, also do the following:
+1.​ Sign out of your personal account and sign in to the Recorder account. Complete the
+initial setup without connecting an iCloud account.
+2.​ Download the TaskRecorder installer on your regular account and move its DMG to
+/Users/Shared. Then, in the Recorder account, open /Users/Shared and install it from
+there.
+3.​ Follow 03. Setup & access > Desktop Setup for Recording (wallpaper, Do Not Disturb,
+fresh browser and Mac name) in the Recorder account. Its Desktop will already be
+empty.
+4.​ Keep Studio, Slack, the Writer Guidelines, and other project material in your regular
+account.
+
+Pause and Decide: Self administered quiz questions!
+Q: Which recording meets the standard?
+
+❝ Recording B
+meets the standard. Fictional information, verified CC0 content, and
+Google Search without interacting with generative AI. ❞
+
+A small mistake is handled deliberately
+Q: Which recording meets the standard?
+
+❝ Recording B
+meets the standard. Professional methods are applied, a meaningful
+different workflow is demonstrated, and one small mistake is handled deliberately. ❞
+
+Pause and Decide
+Q: Which recording meets the standard?
+
+❝ Recording A
+meets the standard. Each app contributes meaningfully to a connected
+professional workflow through research, analysis, and stakeholder communication. ❞
+
+Pause and Decide
+Q: Which recording meets the standard?
+
+❝ Recording A
+meets the standard. The total typing time is 25% or less for a non-coding
+task, and every typing segment stays under 45 seconds. ❞
+
+Pause and Decide
+Q: Which recording meets the standard?
+
+❝ Recording A
+meets the standard. The narration identifies the app and location, explains
+the purpose, confirms the result, and announces the keyboard shortcut. ❞
+
+
