@@ -2,8 +2,8 @@
 
 **Fecha:** 2026-10-27
 **Estado:** Cerrado. Se elimino todo rastro: contenedor, imagen, repo upstream y las entradas del stack.
-**Decisores:** Gonzo ("lo he matado, no le encontré so real... hay que eliminar todo rastro y archivos huerfanos")
-**Origen:** Revision de pendientes (2026-10-27), donde se discovered que el directorio de datos ya no existia.
+**Decisores:** Gonzo ("lo he matado, no le encontre nada real... hay que eliminar todo rastro y archivos huerfanos")
+**Origen:** Revision de pendientes (2026-10-27), donde se descubrio que el directorio de datos ya no existia.
 **Relacionado:** `studies/oss-alternatives-triage.md` (tier 3, "no meter Milvus ni AnythingLLM: duplican lo que ya tenes"), `docs/ecosystem/milvus-decision.md` (mismo patron de descarte), `docs/learnings/metodologia.md` (el caso RAG del 2026-10-21)
 
 ---
