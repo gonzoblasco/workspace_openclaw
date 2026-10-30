@@ -14,23 +14,22 @@ user-invocable: true
 
 # Workflow: Task Prep (grabaciones narradas para Mercor)
 
-> **Fuente de verdad: `Project Odin Writer Handbook`** (135 paginas), archivado en
-> `docs/entrevistas/mercor-project-odin/`. El handbook es la biblia: si esta skill y el handbook
-> difieren, **gana el handbook** y se corrige la skill. El texto extraido vive en
-> `handbook.txt` al lado del PDF.
+> **Fuente de verdad:** `Project Odin Writer Handbook` (135 paginas) y la transcripcion de
+> `Project Odin - First Task Orientation`, ambos en `docs/entrevistas/mercor-project-odin/`.
+> Si esta skill y el handbook difieren, **gana el handbook** y se corrige la skill.
 >
-> **Que hace esta skill:** prepara una tarea para grabarla. **No la ejecuta y no ayuda durante la
-> grabacion.** La linea es contractual y de proyecto: la IA puede ayudar a *pensar* antes, nunca a
-> producir mientras se graba.
+> **Que hace:** prepara una tarea para grabarla. **No la ejecuta y no ayuda durante la
+> grabacion.** La IA puede ayudar a *pensar* antes, nunca a producir mientras se graba.
 
-## 0b. Que es el puesto (no deducirlo del titulo)
-
-**Odin Writer no es "escribir textos" y no es "programar".** El handbook lo define asi:
+## 0. Que es el puesto
 
 > *"You will record your computer screen while completing professional tasks across several
 > domains, narrating what you are doing, where you are doing it, and why."*
 
-**18 dominios**, y se elige uno segun la expertise real:
+Tres actividades por tarea: **planificar y preparar → grabar y narrar → validar y subir**.
+**No hay webcam ni filmacion de la persona.** Solo pantalla.
+
+### Los 18 dominios
 
 | Dominio | Abrev. | | Dominio | Abrev. |
 |---|---|---|---|---|
@@ -45,177 +44,222 @@ user-invocable: true
 | Animation & VFX | VFX | | Video | VID |
 
 **La primera tarea va en el dominio con evidencia mas fuerte.** El perfil de Gonzo cae en **DSD**
-(10+ anos, React/TS, 11 PRs, accesibilidad). TEXT, DES y BUSI son alternativas validas si una idea
-de otro dominio es mejor, pero no como primera.
+(10+ anos, React/TS, 11 PRs, accesibilidad). IMG, VID y TEXT son secundarios defendibles.
 
-**No hay webcam ni filmacion de la persona.** Solo pantalla.
+## 0b. La regla de la IA
 
-## Cuando usarlo
-
-- "preparame la tarea de Odin"
-- "voy a grabar, arma el plan"
-- "que tarea propongo"
-
-## 0. La regla que ordena todo
-
-**Antes sí, durante no.**
-
-| Momento | Que se puede | Que no |
+| Momento | Permitido | Prohibido |
 |---|---|---|
-| Antes de grabar | **Gemini unicamente**, para input files y brainstorming. Investigacion, docs, notas | Generar las ideas de la tarea con IA (*"Task ideas must be entirely your own"*) |
-| Durante la grabacion | Nada. Vos, la pantalla y el microfono | Cualquier IA en pantalla: ni prompt, ni conversar, ni generar, ni resumir |
-| Despues | Debrief: que funciono, que quedo flojo | - |
+| **Antes** | **Gemini unicamente**: preparar input files, brainstorming. Watermark de Gemini permitido | **Generar las ideas de la tarea** con IA. Otros watermarks |
+| **Durante** | Nada | Mostrar o interactuar con herramientas de IA; generar o revisar el contenido |
+| **Despues** | Debrief | - |
 
-**El riesgo real no es la sancion: es contaminar el dato.** El modelo aprende de lo que ve. Si te ve
-usando un LLM, aprende eso.
+**El motivo no es la deteccion: es contaminar el dato.** Si el modelo ve un LLM resolviendo, aprende
+eso. Y el razonamiento grabado tiene que ser del que graba.
 
-## 1. Criterio de seleccion de la tarea
+## 1. Criterio de seleccion
 
-Una tarea sirve si cumple **los siete**:
+### El test del amigo (el filtro principal)
 
-1. **Objetivo claro** en una frase.
-2. **Inicio y fin definidos** (sabés cuando terminó, sin dudar).
-3. **Secuencia con sentido**: pasos que se encadenan, no acciones sueltas.
-4. **Resultado verificable**: un test que pasa, un archivo que existe, un numero que cambio.
-5. **2 o 3 apps como maximo**, todas aprobadas en la propuesta.
-6. **Cero datos privados** ni del proyecto (ver §6).
+> *"Ask yourself: 'Can your friend with no domain expertise complete this task?' If yes, choose a
+> task that better uses your domain skills."*
+
+### Los criterios
+
+1. **Dominio real**: usa el conocimiento y el juicio de un experto del dominio elegido.
+2. **Objetivo claro** en una frase.
+3. **Resultado util y verificable**: un test que pasa, un archivo que existe, un numero que cambio.
+4. **Complejidad por decisiones, no por pasos**: *"Complexity comes from the decisions you make,
+   not from adding extra steps."*
+5. **Duracion**: **15 a 20 minutos** para la primera tarea. *"Shorter tasks are easier to get right
+   in one recording take."* Si tiene muchos pasos, **se puede partir en dos tareas**.
+6. **Apps**: **3 preferidas cuando aportan**; menos (incluso una) si la tarea es lo bastante
+   compleja. *"Opening extra apps does not establish complexity."*
 7. **Idea propia**, no generada por IA.
 
-**Para la primera tarea: simple y conocido.** Un bug acotado con test que falla y test que pasa.
-No un refactor grande: en 25 minutos de narracion no se puede contar bien y el rubric castiga la
-complejidad, no la premia.
+**Para la primera: simple y conocido.** Un bug acotado con test que falla y test que pasa.
 
-## 2. Investigacion previa (la parte que evita el silencio)
+## 2. La propuesta: cinco campos
 
-Antes de grabar, con la investigacion hecha, respondé:
+El formulario de Studio pide, literal:
 
-- **Que API / funcion / sintaxis** voy a usar, y **en que doc** esta (URL exacta).
-- **Que comando** voy a correr y **que salida** espero.
-- **Cuales son los 2 o 3 puntos de decision** de la tarea, y que opcion elijo en cada uno con el
-  WHY: por que esa y no la otra.
-- **Que NO voy a tocar**, para no salirme del scope durante la toma.
+```
+Domain / Role:
+Goal:
+Starting materials:
+Steps (with the apps for each):
+Deliverable:
+```
 
-**La investigacion se hace ANTES y en otra maquina si hace falta.** Durante la grabacion no hay
-consultas: hay ejecucion narrrada.
+- **Starting materials**: de cero o con material existente. Si hay inputs, se preparan **antes** y
+  cumplen privacidad, licencia y disclosure.
+- **Steps**: cada paso con la app donde ocurre.
+- **Deliverable**: el resultado concreto que queda.
 
-## 3. El guion de narracion
+**Esperar la aprobacion antes de grabar.** Si el plan cambia de forma material, pedir el cambio y
+esperar otra aprobacion.
 
-Usar el glosario: `docs/glosarios/glosario-narracion-mercor.md`. Lo esencial:
+## 3. Los TRES lugares del Goal
 
-**Cada accion, en una frase con tres partes:**
-
-> *"I am opening the filter... in the Status column header... to show overdue invoices."*
-
-| | |
-|---|---|
-| **WHAT** | que hago |
-| **WHERE** | donde en pantalla |
-| **WHY** | para que (esta es la que demuestra razonamiento) |
-
-- Al cambiar de paso: **"Step 2: I'll now..."**
-- Cursor **sobre** el control que nombro.
-- Atajos: **anunciarlos** antes o mientras ("I'm pressing Command + Shift + 4 to take a screenshot").
-
-## 4. Los cuatro lugares del Goal (regla de oro)
-
-**El mismo texto exacto, copiado y pegado. No reescrito.**
+Una vez aprobada la idea, Studio **llena solo** el idea completo y cambia el estado a
+**In progress**. De ahi se copia **solo la seccion Goal, palabra por palabra**, a **tres** lugares:
 
 | # | Donde |
 |---|---|
-| 1 | Idea inicial (Slack / Studio) |
-| 2 | `Metadata.rff` → campo Request |
-| 3 | Documento de intro → Task Description |
-| 4 | `TaskRecorder` → Task Description |
+| 1 | `TaskRecorder` |
+| 2 | El documento de apertura (opening document) |
+| 3 | Seccion **Request** de `metadata.rtf` |
 
-Si lo reescribis en cada lugar, aunque diga lo mismo, se lee como inconsistencia.
+**No se reescribe: se copia.** El cuarto lugar (la propuesta) ya lo completo Studio.
 
-## 5. La estructura de la grabacion
+### metadata.rtf: apps en orden de uso
 
-| Fase | Regla |
+> *"List each app in the order you use it, **listing an app again each time you return to it**."*
+
+Si vas VS Code → Terminal → VS Code, la lista es: VS Code, Terminal, VS Code. No se agrupa.
+
+## 4. Narrar: WHAT / WHERE / WHY
+
+**Cada accion, en una frase:**
+
+> *"I'll click the blue export button in the top right corner to save the report."*
+
+| Parte | Pregunta |
 |---|---|
-| **Antes** | Accessibility Inspector corriendo con ventana cerrada y Dock dot visible; TaskRecorder con description y apps correctos; ventanas no usadas cerradas |
-| **START** | **menos de 20 segundos**. Mostrar el Goal, minimizar TaskRecorder, decir exactamente *"I will be beginning my task soon. Here is the workflow I have in mind."*, ocultar el Goal. **No leerlo ni explicarlo** |
-| **DURING** | WHAT / WHERE / WHY en cada accion. Cursor sobre el control. Atajos anunciados |
-| **FINISH** | Mostrar el archivo guardado, explicar los chequeos, confirmar el resultado. **Epilogo: 3 min objetivo, maximo 4** (resultado, decisiones, desafios, mejoras). Anunciar que termino y parar |
+| **WHAT** | que hago |
+| **WHERE** | donde en pantalla |
+| **WHY** | para que |
 
-## 6. Entorno: lo que invalida una toma
+- Al cambiar de paso: *"Step 2: I'll now..."*
+- **Nombrar los controles** que se usan.
+- Explicar la decision detras de cada paso significativo.
+- **Cursor para señalar**, movimiento deliberado.
+- *"As though teaching a colleague."* Ese es el tono.
+
+El glosario completo de frases: `docs/glosarios/glosario-narracion-mercor.md`.
+
+## 5. La grabacion, paso a paso
+
+### Antes de grabar
+
+1. **Preparar archivos y entorno.**
+2. **Lanzar las apps, terminar el sign-in y la carga, abrir los archivos requeridos**, y
+   **minimizar las apps**. Nada de logins en camara.
+3. **Ocultar informacion privada**: pestañas personales, emails, notificaciones.
+4. **Dejar solo el documento del Goal visible**, detras de TaskRecorder.
+5. **Ocultar el approval ID.**
+
+### Arranque (menos de 20 segundos)
+
+1. Empezar a grabar.
+2. **Minimizar TaskRecorder.**
+3. Decir: *"I will be beginning my task soon. Here is the workflow I have in mind."*
+4. **Minimizar o cerrar el documento del Goal**, traer las apps, empezar.
+
+### Durante
+
+- **Una sola toma** ("record the complete task in one take").
+- Narracion durante todo el recorrido.
+- **Nunca mas de 45 s** de: tipeo continuo, inactividad del mouse o silencio de audio.
+  Si una entrada de texto es larga, cortarla en secciones y despues revisar, señalar, explicar.
+- **Menu bar, clock y dock visibles.** Sin full-screen. Sin ventanas apiladas.
+- Ventanas: una clara activa, o lado a lado. Los dialogos temporales de la misma app pueden
+  superponerse mientras se usan, y se cierran al terminar.
+
+## 6. Apps: las cuatro categorias
+
+| Categoria | Regla |
+|---|---|
+| **Banned** | No se puede usar para trabajo nuevo. No abrir, ni mostrar, ni usar |
+| **Limited use** | **Regla del 20 %**: no mas del 20 % del tiempo, y condiciones mas estrictas (ej. solo en background) |
+| **Alternatives preferred** | Permitidas, pero hay preferida |
+| **Unrestricted** | Sin aprobacion ni entrada en catalogo |
+
+- **Firefox es preferido** para navegar. Chrome y Safari estan permitidos.
+- Si una app no aparece en Studio: elegir **Other** y escribir el nombre exacto. La idea igual
+  necesita aprobacion.
+- **Excel de escritorio rompe TaskRecorder**: usar Google Sheets, o Excel en el navegador.
+- **Windows en VM (Parallels, VMware, CrossOver) esta prohibido.**
+- **VPN, proxy e iCloud Private Relay prohibidos.** La VPN puede terminar el contrato sin aviso.
+- **No crear Apple ID ni iCloud** para una tarea: pide telefono, expone datos.
+
+## 7. Lo que invalida una toma
 
 ### PII: datos privados
-Emails personales, telefonos, direcciones, IDs, biometricos, **MAC addresses**, **nombre
-completo**, info de cuenta.
+Emails personales, telefonos, direcciones, IDs, biometricos, MAC addresses, nombre completo, info
+de cuenta.
 
 ### PII: info del proyecto
-**Mercor, Project Odin, la pagina de Studio, las Writer Guidelines**, o cualquier material del
-proyecto. El propio handbook esta marcado "PII EXPOSED": **no tenerlo abierto mientras se graba**.
+**Mercor, Project Odin, Studio, el handbook, las guidelines**, cualquier material del proyecto. El
+propio handbook esta marcado "PII EXPOSED": **no tenerlo abierto mientras se graba.**
 
-**Donde se filtra sin darse cuenta:** nombre de usuario de la Mac en la barra de menu, avatar de la
-esquina, nombre del perfil del navegador, barra de titulo de Finder o VS Code.
+**Donde se filtra sin darse cuenta:** nombre de usuario del SO en la barra de menu, avatar,
+nombre del perfil del navegador, barra de titulo de Finder o VS Code.
 
-### UI Diversity: el escritorio no puede parecer una Mac nueva
-| NO | SI |
+### Escritorio
+- **Modo oscuro**, **Dock a la izquierda o derecha** (nunca abajo), fondo no-default,
+  **cursor default**.
+- Ventanas grandes y legibles. Sin full-screen. Sin menu bar/dock ocultos.
+- **Overlap del 25 % o mas por mas de 6 segundos**: invalida.
+
+### Audio
+Silencio maximo **45 s**. Pausa ideal menos de 30 s. Sin ruido de fondo que tape la voz.
+
+### Contenido con licencia
+Solo **CC0 o Public Domain** verificados para uso comercial y ML. **Royalty-free no alcanza.**
+Sin marcas de agua (excepto Gemini en inputs), sin ©, sin ownership notice.
+
+## 8. Al terminar: los cuatro archivos y AutoQC
+
+| Archivo | Nota |
 |---|---|
-| Fondo default (Tahoe Day) | Fondo no-default |
-| Modo claro | **Modo oscuro** |
-| **Dock abajo** | **Dock a la izquierda o derecha** |
-| Tema automatico, highlight azul | Tema propio (ej. Purple + highlight amarillo) |
-| Cursor cambiado | **Cursor default, siempre** |
+| `video.mp4` | La grabacion, una sola toma |
+| **zip original de TaskRecorder** | **Intacto**, sin re-zipear |
+| `deliverables.zip` | Los archivos producidos |
+| `metadata.rtf` | En su **propio campo**, separado |
 
-### Ventanas
-| GOOD | BAD |
-|---|---|
-| Una ventana activa, limpia | Menu bar, clock o dock ocultos |
-| Ventanas grandes y legibles | Full-screen mode |
-| Minimizar lo no usado | Ventanas flotantes chicas |
-| Side-by-side si hace falta | **Overlap del 25 % o mas por mas de 6 segundos** |
+- **Correr los dos checks de AutoQC.**
+- **Arreglar o disputar cada major flag** antes de enviar. Los minor son consejo y no bloquean;
+  arreglarlos cuando sea practico.
+- **Inspeccionar la seccion marcada** antes de decidir que corregir. Un problema de archivo puede
+  necesitar una subida corregida.
 
-### Silencio y ruido
-- Silencio maximo: **45 s**. Pausa ideal: **menos de 30 s**.
-- Ruido de fondo que tape la voz: invalida.
-- Rambling y filler: prohibidos.
+## 9. Entorno de trabajo
 
-### Contenido con licencia (input files)
-- Solo **CC0 o Public Domain**, verificados para uso comercial y ML.
-- **Royalty-free no alcanza.**
-- Evitar: marcas de agua, ©, ownership notice, licencias poco claras, material pago.
-
-## 7. Entorno de trabajo
-
-- **`~/odin-work/`** - fuera del workspace, en el perfil limpio. Nunca dentro del repo: es material
-  del proyecto y no se mezcla con el workspace personal.
+- **`~/odin-work/`** fuera del workspace, en el perfil limpio. Nunca dentro del repo: es material
+  del proyecto y no se mezcla con el codebase propio (CIIAA §2(c)).
 - **Perfil de usuario limpio** en la Mac, con el idioma en **ingles**.
-- **Chrome dedicado a Mercor con el Okta Browser Plugin** (el manual lo pide como extension de
-  Chrome; no Firefox).
-- Nada de repos propios ni herramientas propias en la grabacion: activa la licencia perpetua de
-  §2(c) del CIIAA.
+- **Navegador dedicado a Mercor**: Firefox (preferido por el manual), con Okta cuando haga falta.
 
-## 8. Antes de grabar: checklist
+## 10. Antes de grabar: checklist
 
-- [ ] La tarea cumple los 7 criterios de §1.
-- [ ] La investigacion esta hecha y los 3 puntos de decision definidos.
-- [ ] El Goal es **identico** en los cuatro lugares.
-- [ ] El proyecto vive en `~/odin-work/`, sin nada del workspace.
+- [ ] Pasa el **test del amigo**.
+- [ ] Dominio declarado correctamente.
+- [ ] Duracion estimada: 15-20 min.
+- [ ] Apps en la categoria correcta (ninguna banned).
+- [ ] Investigacion hecha y los puntos de decision definidos.
+- [ ] `~/odin-work/` sin nada del workspace propio.
+- [ ] Apps lanzadas, sign-in terminado, archivos abiertos, apps minimizadas.
+- [ ] Approval ID oculto.
+- [ ] Solo el documento del Goal visible, detras de TaskRecorder.
 - [ ] Escritorio: modo oscuro, Dock a un costado, fondo propio, cursor default.
-- [ ] Ventanas cerradas, ninguna superpuesta mas de 6 s.
-- [ ] Chrome con Okta, sin cuenta personal, sin el handbook abierto.
+- [ ] Sin VPN, sin Private Relay, sin Excel de escritorio.
 - [ ] UI en ingles.
 - [ ] Ensayo de 3 minutos en voz alta **sin grabar**.
-- [ ] TaskRecorder con description y apps correctos.
+- [ ] Goal identico en los **tres** lugares.
 
-## 9. Pendiente (no inventar)
+## 11. Pendiente (no inventar)
 
-Lo que falta verificar antes de completar la skill:
-
-1. **TaskRecorder**: captura ventana o pantalla completa? como maneja el audio?
-2. **`Metadata.rff`**: formato exacto y campos obligatorios.
-3. **Los numeros de tier y bonus** en el handbook (hoy solo esta lo del mail de bienvenida).
-4. **Reviewer feedback**: que rechazan con mas frecuencia.
-5. **Duracion objetivo de la tarea** (el ejemplo de ExpertWoka dice 25 min + 3 de epilogo, pero es
-   de terceros, no del manual).
-6. **Certn vs Zinc**: si algun proyecto acepta Certn, el check es de 5-7 dias habiles.
+1. **Los numeros de tier y bonus** en el handbook: leidos el 30/10. Confirmar contra el Odin
+   Dashboard cuando se habilite (el owner no tiene "My Pay" todavia).
+2. **Reviewer feedback**: que rechazan con mas frecuencia (la seccion 08 del handbook).
+3. **Limites de tareas abiertas por fase**: Onboarding, Trial (12 h, +3 h por aprobacion),
+   Production (Writer 60 h/sem, 5 abiertas).
+4. **La regla exacta del 20 %** para apps de limited use.
 
 ## Archivos
 
-- `docs/glosarios/glosario-narracion-mercor.md` - frases y criterios de narracion (fuente de §3).
-- `docs/entrevistas/mercor-project-odin/` - el proceso: contratos, pack, brief, CV.
-- `docs/entrevistas/mercor-project-odin/evidencia/manual/` - el manual oficial del proyecto
-  (9 slides + `odin-writer-cheat-sheet.pdf`). **Es la fuente primaria de esta skill.**
+- `docs/entrevistas/mercor-project-odin/Project Odin Writer Handbook.pdf` (+ `handbook.txt`)
+- `docs/entrevistas/mercor-project-odin/orientacion-transcripcion.md`
+- `docs/entrevistas/mercor-project-odin/evidencia/manual/` (9 slides + cheat sheet)
+- `docs/glosarios/glosario-narracion-mercor.md` (frases y criterios de narracion)

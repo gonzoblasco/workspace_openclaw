@@ -1,0 +1,3 @@
+# Raw screen recordings stay local (each ~30-80MB); only derived text is committed.
+*.mp4
+*.mov
