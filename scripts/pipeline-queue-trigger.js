@@ -14,11 +14,16 @@
 // detenido. Las huerfanas y el estado ilegible si son señales duras.
 const W = '/Users/gonzoblasco/.openclaw/workspace';
 
+// Un estado AUSENTE no es un error: pipeline-queue.sh lo trata como cola
+// vacia (read_state devuelve {"fase":"","units":[]}), y el archivo es
+// mutable/untracked, asi que se limpia al cerrar una fase. Solo un archivo
+// presente pero ilegible es estado roto. Se emite MISSING<<1>> cuando no hay
+// archivo, para que el trigger no confunda `jq: No such file` con corrupcion.
 const cmd = [
   'cd ' + W,
   'o=$(bash scripts/pipeline-queue.sh orphans 2>&1); orc=$?',
-  "s=$(jq -c '.units // [] | map({n:.name,s:.state,a:(.attempts//0)})' pipeline-state.json 2>&1); src=$?",
-  "printf 'ORPH<<%s>>|%s\\nSTATE<<%s>>|%s\\n' \"$o\" \"$orc\" \"$s\" \"$src\"",
+  'if [ -f pipeline-state.json ]; then m=0; s=$(jq -c \'.units // [] | map({n:.name,s:.state,a:(.attempts//0)})\' pipeline-state.json 2>&1); src=$?; else m=1; s="[]"; src=0; fi',
+  "printf 'ORPH<<%s>>|%s\\nSTATE<<%s>>|%s\\nMISSING<<%s>>\\n' \"$o\" \"$orc\" \"$s\" \"$src\" \"$m\"",
 ].join('; ');
 
 const r = await exec({ command: cmd });
@@ -32,6 +37,10 @@ function grab(tag) {
 
 const orph = grab('ORPH');
 const st = grab('STATE');
+// MISSING<<1>> = no hay pipeline-state.json. El script ya devuelve `[]` en ese
+// caso; se lee aca para no depender del formato del bloque y para separar
+// "ausente" de "ilegible" en el mensaje de error.
+const missing = grab('MISSING').text === '1';
 
 let units = [];
 let parseError = false;
@@ -49,6 +58,9 @@ try {
 }
 
 // rc 2 en orphans = estado corrupto (require_valid_state aborta asi).
+// Archivo ausente NO es roto: el script lo trata como cola vacia, y el archivo
+// se limpia al cerrar una fase. Con `missing` ya validado (st.rc === 0 y
+// st.text === '[]'), cualquier rc != 0 es corrupcion real.
 const stateBroken = parseError || orph.rc === 2 || st.rc !== 0 || execRc !== 0 ||
   /^Estado corrupto|^Error:/.test(orph.text);
 
@@ -87,7 +99,9 @@ if (stateBroken) {
   return json({
     fire: true,
     message:
-      'ERROR: no se pudo leer el estado de la cola del pipeline.\n' +
+      'ERROR: no se pudo leer el estado de la cola del pipeline' +
+      (missing ? ' (archivo ausente, no corrupto).' : '.') +
+      '\n' +
       'orphans: ' + (orph.text || '(vacio)').slice(0, 300) + '\n' +
       'jq: ' + (st.text || '(vacio)').slice(0, 300) + '\n' +
       'exit codes: exec=' + execRc + ' orphans=' + orph.rc + ' jq=' + st.rc,
