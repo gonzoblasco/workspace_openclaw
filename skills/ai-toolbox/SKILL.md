@@ -8,7 +8,7 @@ metadata:
     - registry
     - ollama
     - docker
-description: "Registro vivo de las herramientas IA instaladas en la maquina (browser-use, Vane, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
+description: "Registro vivo de las herramientas IA instaladas en la maquina (Vane, Cline + Ollama). Responde que hay instalado, que esta corriendo ahora, y como se levanta cada cosa, consultando Docker y sondas HTTP reales."
 user-invocable: true
 ---
 
@@ -59,7 +59,7 @@ equivale a:
 
 ### IDs validos
 
-`ollama`, `browser-use`, `browser-use-ui`, `vane`, `cline`.
+`ollama`, `vane`, `cline`.
 
 ### Cuando la herramienta es BAJO DEMANDA
 
@@ -68,9 +68,6 @@ como `bajo demanda`, no como `apagado` ni como caida. La diferencia importa: un
 servicio que deberia estar vivo y no lo esta es un bug; una herramienta de
 prueba apagada es el estado normal.
 
-- `browser-use` (el MCP): la lanza OpenClaw por sesion, no tiene container fijo.
-- `browser-use-ui` (la consola web en `:8090`): apagada por defecto desde el
-  2026-10-27 (decision de Gonzo: es para probar, no de uso continuo).
 - `vane` (el motor de research en `:3005`): apagado por defecto desde el
   2026-10-27. Es de uso episodic: se enciende para hacer un research (tarda
   ~45 s) y se apaga.
@@ -159,12 +156,6 @@ que no tienen ficha, **eso se reporta**: es una herramienta nueva sin registrar.
   agrega una herramienta, el compose tiene que existir en la ruta declarada.
 - **La vista de `docs/tools/REGISTRY.md` se regenera con `catalog --write`.**
   Editarla a mano la desincroniza; `catalog --check` lo detecta.
-- **browser-use no tiene proceso propio:** lo lanza OpenClaw por sesion como
-  server MCP. `up`/`down` no aplican.
-- **`browser-use` y `browser-use-ui` usan la MISMA imagen, y no son lo mismo:**
-  la primera es el MCP que el gateway lanza por sesion; la segunda es la consola
-  web que corre en su propio container y habla MCP con un `browser-use --mcp`
-  anidado. Apagar la consola **no** rompe el MCP (verificado).
 - **Cline corre en DOS procesos:** el dashboard (`:8787`) es la UI y el daemon
   del hub (`:25466`) es quien ejecuta las sesiones. Parar el dashboard no para
   el daemon: `cline-tool.sh down` para los dos.

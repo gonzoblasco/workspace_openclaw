@@ -19,8 +19,6 @@
 | Herramienta | ID | Runtime | Puerto | Estado |
 |---|---|---|---|---|
 | Ollama | `ollama` | nativo (host) | 11434 | corriendo |
-| browser-use | `browser-use` | docker (stdio, bajo demanda) | - | desregistrado |
-| browser-use UI | `browser-use-ui` | docker compose | 8090 | bajo demanda |
 | Vane | `vane` | docker compose | 3005 | bajo demanda |
 | Cline | `cline` | nativo (host, Bun 1.4.2) | 8787 | no instalado |
 <!-- END:ai-toolbox-table -->
@@ -62,60 +60,8 @@ declarado a mano es COMO se levanta cada cosa.
 - **Trampa:** el sufijo `:cloud` del tag NO dice si el modelo es remoto. La
   fuente de verdad es el campo `remote_host` de `GET /api/tags`.
 - **Trampa:** para el loop agentico (structured output) los modelos cloud
-  devuelven prosa en vez de JSON. Ver la nota de browser-use.
-
-### browser-use (id: `browser-use`)
-
-- **Estado 2026-11-02: DESREGISTRADO de OpenClaw.** Ya no vive en
-  `mcp.servers.browser-use`: Gonzo decidio sacarlo porque obligaba a tener
-  Docker Desktop arriba, y la VM de Docker reserva ~7,7 GB wired de los 24 GB
-  del host. La imagen y el repo siguen intactos; volver a registrarlo es
-  re-agregar el bloque del config (el `todo` #91 tiene los args exactos y el
-  backup). **Alternativa sin Docker:** el plugin `browser` nativo de OpenClaw.
-- **Que es:** agente de navegacion web. Se expone como **server MCP** (16 tools).
-- **Repo:** `projects/browser-use`. Imagen `browseruse:local` (3.0 GB, Chromium
-  incluido).
-- **Como se levantaba:** no tiene proceso propio: lo lanzaba OpenClaw por sesion
-  con `docker run` (configurado en `~/.openclaw/openclaw.json`). El compose
-  existe para correr el CLI a mano.
-- **Trampa (la importante):** los modelos `:cloud` de Ollama **ignoran el JSON
-  Schema** y devuelven prosa, asi que el Agent no parsea acciones. Para el loop
-  agentico hace falta un modelo **local** (`gemma4:12b-mlx` o `qwen3.5:9b-mlx`).
-  Las tools directas del MCP no usan LLM y funcionan con cualquiera.
-- **Trampa:** `Agent` pisa el timeout del cliente LLM con su default de 75 s.
-  Con un modelo local hay que pasar `llm_timeout` explicito.
-- **Trampa:** el clone en macOS deja archivos `0600` y el usuario no-root del
-  container no puede leer `/app` -> `ModuleNotFoundError`. Fix en el host
-  (`chmod -R a+rX`) y rebuild.
-- **Detalle:** `projects/browser-use/README-LOCAL.md`.
-
-### browser-use UI (id: `browser-use-ui`)
-
-- **Que es:** consola web para pilotar a mano el agente de browser-use. Escribis una
-  tarea en castellano, el agente navega un Chromium headless real y ves los pasos,
-  el screenshot y la respuesta final. La UI **no implementa el agente**: habla MCP
-  con `browser-use --mcp` y muestra lo que devuelve.
-- **Repo:** `projects/browser-use-ui`. Compose propio con la imagen `browseruse:local`.
-- **UI:** http://localhost:8090 (loopback). Health: `/api/health` ->
-  `{"ok":true,"mcp_connected":true,...}`.
-- **Como se levanta:** `toolbox up browser-use-ui` (o `make up` dentro del repo).
-- **Como se para:** `toolbox down browser-use-ui`. A diferencia de las otras
-  herramientas del stack, aqui el `down` es **real**: elimina el container y la red
-  (su `restart` es `no`, asi que no vuelve sola). El volumen `browseruse-data`
-  (el perfil de Chromium) se conserva.
-- **Estado por defecto: APAGADA, bajo demanda.** Decision de Gonzo (2026-10-27): es
-  una herramienta de prueba, no de uso continuo. Encenderla cuesta ~190 MB de RAM.
-- **Relacion con `browser-use` (la de arriba): la MISMA imagen, dos superficies.**
-  `browser-use` es la libreria/agente; el MCP que usa OpenClaw lo lanza el gateway
-  por sesion con `docker run --rm` (no tiene container fijo). `browser-use-ui` es la
-  consola humana que corre en su propio container y habla MCP con un `browser-use
-  --mcp` anidado dentro (modo `BROWSER_USE_UI_MCP_MODE=local`, para no depender del
-  socket de Docker). **Apagar la UI no afecta al MCP de OpenClaw**: se verifica
-  navigating con `browser_navigate` con la UI apagada.
-- **Trampa:** el perfil de Chromium NO se puede compartir entre dos containers
-  (locks `SingletonLock`): por eso el compose usa un volumen nombrado propio y el
-  MCP de OpenClaw usa volumenes anonimos. No unirlos.
-- **Detalle:** `projects/browser-use-ui/README.md` y su `.knowledge/HANDOFF.md`.
+  devuelven prosa en vez de JSON. Lo medimos con browser-use (2026-10-26); la
+  herramienta ya no esta, la trampa del modelo sigue.
 
 ### Vane (id: `vane`)
 

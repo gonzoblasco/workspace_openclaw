@@ -110,8 +110,25 @@ def test_tiene_entradas_basicas():
 def test_las_herramientas_core_estan():
     """El nucleo del stack. Si algo falta, es un bug real, no un cambio de catalogo."""
     mod = load()
-    for hid in ("ollama", "browser-use", "vane"):
+    for hid in ("ollama", "vane"):
         assert hid in mod.BY_ID, f"falta la herramienta core '{hid}'"
+
+
+def test_browser_use_no_esta_y_no_quedan_ramas_muertas():
+    """browser-use salio del stack el 2026-11-02: ni la entrada ni el codigo.
+
+    Se borro de verdad, no se desregistro: la imagen y los repos no existian.
+    La tabla no puede listar una herramienta que no se puede levantar, y el
+    codigo no puede conservar ramas para un `kind` que ya no tiene entradas.
+    """
+    mod = load()
+    ids = [t["id"] for t in mod.TOOLS]
+    assert "browser-use" not in ids, "browser-use volvio a la tabla"
+    assert "browser-use-ui" not in ids, "browser-use-ui volvio a la tabla"
+    assert not any(t["kind"] == "mcp" for t in mod.TOOLS), (
+        "quedan entradas kind=mcp: browser-use era la unica, si vuelve el kind "
+        "hay que devolver tambien sus ramas en ai-toolbox.py"
+    )
 
 
 def test_ollama_esta_y_es_nativo():
@@ -181,8 +198,6 @@ def test_cada_herramienta_declara_como_se_levanta():
         elif t["kind"] == "native":
             assert t.get("up"), f"{t['id']} nativo sin comando `up`"
             assert t.get("down"), f"{t['id']} nativo sin comando `down`"
-        elif t["kind"] == "mcp":
-            assert t.get("compose"), f"{t['id']} MCP sin compose"
         else:
             raise AssertionError(f"{t['id']} con kind desconocido: {t['kind']}")
 
@@ -534,8 +549,8 @@ def test_service_url_none_sin_puerto_ni_sonda():
     tool = {
         "id": "x",
         "name": "X",
-        "kind": "mcp",
-        "runtime": "bajo demanda",
+        "kind": "docker",
+        "runtime": "docker compose",
         "port": None,
         "compose": [],
         "health": None,

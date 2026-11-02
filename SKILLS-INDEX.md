@@ -1,6 +1,6 @@
 # SKILLS-INDEX - Skills del workspace
 
-> Índice canónico del árbol de skills *git-tracked*. Verificado por última vez: **2026-10-12**.
+> Índice canónico del árbol de skills *git-tracked*. Verificado por última vez: **2026-11-02**.
 > Este archivo **no lleva su propio changelog**: cada cambio va a `CHANGELOG.md` y al historial de git.
 
 ---
@@ -28,7 +28,7 @@
 | `agents/kanam-critic/skills/` | 2 |
 | `agents/kanam-planner/skills/` | 1 |
 | `agents/kanam-auditor/skills/` | 5 |
-| **Total activas** | **99** |
+| **Total activas** | **102** |
 
 > **El ciclo SDD (9 skills `hermes-*`) se movió del árbol del Core al de `kanam-dev` el 2026-09-29** (ADR-083).
 > Estaba en `skills/`, así que el Core veía el playbook de ingeniería - `hermes-builder` dice
@@ -104,7 +104,6 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [trust-vocabulary-report](skills/trust-vocabulary-report/) | Reportar trabajo delegado sin inflarlo: niveles de confianza por etapa |
 | [checkmate](skills/checkmate/) | Loop goal → ejecución → verificación con worker + judge |
 | [skill-router](skills/skill-router/) | Sugiere qué skill usar para una tarea (keywords + embeddings locales) |
-| [browser-tool](skills/browser-tool/) | Conduce el MCP browser-use con la tool más barata que resuelva el task (navegar, leer, clickear) y sus trampas medidas |
 | [find-skills](skills/find-skills-skill/) | Busca y descubre skills de OpenClaw en ClawHub y otras fuentes |
 | [skill-collection-maintenance](skills/skill-collection-maintenance/) | Diagnostica el cron semanal de revisión y elimina skills limpiamente |
 | [publish-skills](skills/publish-skills/) | ARCHIVADA. Historial de cómo se publicaba la colección al repo público |

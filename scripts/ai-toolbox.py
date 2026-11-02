@@ -83,38 +83,6 @@ TOOLS: List[Dict[str, Any]] = [
         "note": "Todos los stacks de abajo lo consumen via host.docker.internal:11434.",
     },
     {
-        "id": "browser-use",
-        "name": "browser-use",
-        "what": "Agente de navegacion web. Se expone como server MCP (16 tools) para OpenClaw.",
-        "kind": "mcp",
-        "runtime": "docker (stdio, bajo demanda)",
-        "port": None,
-        "compose": [_p(PROJECTS / "browser-use" / "docker-compose.yml")],
-        "health": None,
-        "up": None,
-        "down": None,
-        "note": "No tiene puerto propio: OpenClaw lo lanza con docker run por el MCP registrado.",
-        # 2026-11-02: sacado de mcp.servers de OpenClaw por pedido de Gonzo.
-        # Docker Desktop reserva ~7,7 GB wired de 24 GB; la imagen y el repo
-        # quedan intactos. Re-registrar = re-agregar el bloque al config
-        # (args exactos y backup en el todo #91 de memory.db).
-        "removed_from_openclaw": True,
-    },
-    {
-        "id": "browser-use-ui",
-        "name": "browser-use UI",
-        "what": "Consola web para pilotar a mano el agente de browser-use.",
-        "kind": "docker",
-        "runtime": "docker compose",
-        "port": 8090,
-        "compose": [_p(PROJECTS / "browser-use-ui" / "docker-compose.yml")],
-        "health": ("http://localhost:8090/api/health", [200]),
-        "up": None,
-        "down": None,
-        "on_demand": True,
-        "note": "Bajo demanda: se levanta con 'toolbox up browser-use-ui'. Es DISTINTO del MCP de OpenClaw (este lo lanza el gateway por sesion, con su propio container).",
-    },
-    {
         "id": "vane",
         "name": "Vane",
         "what": "Motor de busqueda con respuestas citadas. Privacy-first, web + local.",
@@ -372,40 +340,6 @@ def tool_state(tool: Dict[str, Any]) -> Dict[str, Any]:
             state["status"] = "desconocido"
         return state
 
-    if tool["kind"] == "mcp":
-        # No hay puerto: el server MCP lo lanza OpenClaw bajo demanda.
-        image = tool["compose"][0] if tool["compose"] else ""
-        image_name = image.split("/")[-1] if image else ""
-        # OJO: si el daemon de Docker esta apagado, `docker image inspect` falla
-        # aunque la imagen exista. Distinguir "no hay imagen" de "no puedo mirar"
-        # es obligatorio: si no, el registro miente en la direccion mas costosa
-        # (dice que falta algo que esta).
-        daemon_up = run(["docker", "info"], timeout=10)[0] == 0
-        has_image = bool(
-            daemon_up and run(["docker", "image", "inspect", "browseruse:local"])[0] == 0
-        )
-        state["installed"] = has_image
-        if tool.get("removed_from_openclaw"):
-            # La imagen puede estar: lo que no existe es el registro en el gateway.
-            state["status"] = "desregistrado"
-            if not daemon_up:
-                state["detail"] = (
-                    "fuera de mcp.servers de OpenClaw; Docker apagado, imagen no verificable"
-                )
-            elif has_image:
-                state["detail"] = (
-                    "fuera de mcp.servers de OpenClaw (imagen presente; re-registrar para usar)"
-                )
-            else:
-                state["detail"] = "fuera de mcp.servers de OpenClaw y sin imagen"
-            return state
-        state["status"] = "bajo demanda" if has_image else "no instalado"
-        if daemon_up:
-            state["detail"] = "MCP stdio: lo lanza OpenClaw por sesion" if has_image else ""
-        else:
-            state["detail"] = "Docker apagado: estado real no verificable"
-        return state
-
     cont = container_state(tool)
     if cont is None:
         if tool.get("on_demand"):
@@ -467,12 +401,6 @@ def do_up(tool: Dict[str, Any]) -> int:
         if code == 0:
             report_started(tool)
         return code
-    if tool["kind"] == "mcp":
-        print(
-            f"{tool['name']} corre bajo demanda: lo lanza OpenClaw como server MCP\n"
-            f"  (imagen: browseruse:local, MCP registrado en openclaw.json)"
-        )
-        return 0
     code, out = run(compose_cmd(tool, "up", ["-d"]), timeout=600)
     print(out.strip()[-2000:])
     if code == 0:
@@ -489,9 +417,6 @@ def do_down(tool: Dict[str, Any]) -> int:
             if url:
                 print(f"  detenido en {url} (los datos quedan)")
         return code
-    if tool["kind"] == "mcp":
-        print(f"{tool['name']} no tiene proceso que parar: se lanza por sesion.")
-        return 0
     # stop y no down: conserva los containers y los volumenes.
     # Para una herramienta BAJO DEMANDA el down es real: se va el container y
     # queda apagada de verdad (su restart policy es "no" y no vuelve sola).
@@ -517,9 +442,6 @@ def do_restart(tool: Dict[str, Any]) -> int:
     if tool["kind"] == "native":
         do_down(tool)
         return do_up(tool)
-    if tool["kind"] == "mcp":
-        print(f"{tool['name']} no tiene proceso que reiniciar.")
-        return 0
     code, out = run(compose_cmd(tool, "restart", []), timeout=300)
     print(out.strip()[-2000:])
     return code
