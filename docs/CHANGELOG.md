@@ -6,6 +6,27 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-02] - Ollama deja de ser punto único de falla; browser-use sale del gateway
+
+### Added
+- **`scripts/ollama-keepalive.sh` + `~/Library/LaunchAgents/com.ollama.serve.plist`.** Watchdog cada 30 s sobre `127.0.0.1:11434/api/version`: si el server no responde, levanta `ollama serve` y espera hasta 60 s. No arranca un segundo server cuando Ollama.app ya tiene el puerto (health check primero). Probado en el puerto libre 11555: detectó la caída, levantó el server, respondió, y se limpió al morir el padre.
+  - **Sustrato:** el 2026-11-02 Ollama estuvo muerto de **10:07 a 11:49** (1 h 42 m). Con el cayeron los tres niveles de la cadena -`deepseek-v4.1-flash:cloud`, `gemma4:12b-mlx`, `minimax-m3.1-flash:cloud`- porque **todos** salen por `127.0.0.1:11434`. De ahí el error engañoso: *"deepseek cloud: fetch failed | ECONNREFUSED"*. 43 `ECONNREFUSED` en el log de ese día.
+  - **Lección:** un fallback que comparte transporte con el primario no es un fallback. El failover era cosmético: 7 intentos × 3 modelos, 60-90 s por turno, mismo error.
+
+### Removed
+- **`mcp.servers.browser-use` fuera de `openclaw.json`.** Decisión de Gonzo: Docker Desktop reserva ~7,7 GB wired de los 24 GB del host, y el MCP obligaba a tenerlo arriba. Imagen (`browseruse:local`) y repo (`projects/browser-use`) intactos; re-registrar es re-agregar el bloque. Alternativa sin Docker: el plugin `browser` nativo. Los args exactos, el `toolFilter` y el backup quedan en el todo #91 de `memory.db`.
+  - Dejó de reintentar en cada arranque: el último `failed to start server "browser-use"` es de 11:54:35, el mismo segundo en que el hot reload aplicó el cambio.
+
+### Fixed
+- **`ai-toolbox.py` mentía sobre browser-use con Docker apagado.** `kind: "mcp"` resolvía `docker image inspect` y, si el daemon estaba caído, reportaba **"no instalado"** - indistinguible de "la imagen no existe". El registro no puede fallar en la dirección más costosa: decir que falta algo que está. Ahora sondea `docker info` primero y reporta **"imagen no verificable"**. Además el nuevo flag `removed_from_openclaw` da el estado **`desregistrado`**, distinto de `bajo demanda`: una herramienta puede estar instalada y aun así no estar enchufada al gateway.
+- `docs/tools/REGISTRY.md` regenerado (`catalog --write`, `--check` al día) y con la prosa de la ficha actualizada con el estado del 2026-11-02.
+
+### Notes
+- El update 2026.10.5 → 2026.10.9 sigue fallando (`global-install-failed`); queda pendiente para `/update` desde el chat, no se relanza desde acá.
+- Hallazgo sin tocar: `agent:main` DB en 2,2 GB y la sesión `agent:main:main` en 568k/1.0m tokens (54%).
+
+---
+
 ## [2026-10-28] - El gate de fuente única caza roles de modelo escritos a mano
 
 ### Added

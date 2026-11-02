@@ -19,7 +19,7 @@
 | Herramienta | ID | Runtime | Puerto | Estado |
 |---|---|---|---|---|
 | Ollama | `ollama` | nativo (host) | 11434 | corriendo |
-| browser-use | `browser-use` | docker (stdio, bajo demanda) | - | bajo demanda |
+| browser-use | `browser-use` | docker (stdio, bajo demanda) | - | desregistrado |
 | browser-use UI | `browser-use-ui` | docker compose | 8090 | bajo demanda |
 | Vane | `vane` | docker compose | 3005 | bajo demanda |
 | Cline | `cline` | nativo (host, Bun 1.4.2) | 8787 | no instalado |
@@ -66,11 +66,16 @@ declarado a mano es COMO se levanta cada cosa.
 
 ### browser-use (id: `browser-use`)
 
-- **Que es:** agente de navegacion web. Se expone como **server MCP** (16 tools)
-  registrado en OpenClaw como `mcp.servers.browser-use`.
+- **Estado 2026-11-02: DESREGISTRADO de OpenClaw.** Ya no vive en
+  `mcp.servers.browser-use`: Gonzo decidio sacarlo porque obligaba a tener
+  Docker Desktop arriba, y la VM de Docker reserva ~7,7 GB wired de los 24 GB
+  del host. La imagen y el repo siguen intactos; volver a registrarlo es
+  re-agregar el bloque del config (el `todo` #91 tiene los args exactos y el
+  backup). **Alternativa sin Docker:** el plugin `browser` nativo de OpenClaw.
+- **Que es:** agente de navegacion web. Se expone como **server MCP** (16 tools).
 - **Repo:** `projects/browser-use`. Imagen `browseruse:local` (3.0 GB, Chromium
   incluido).
-- **Como se levanta:** no tiene proceso propio: lo lanza OpenClaw por sesion
+- **Como se levantaba:** no tiene proceso propio: lo lanzaba OpenClaw por sesion
   con `docker run` (configurado en `~/.openclaw/openclaw.json`). El compose
   existe para correr el CLI a mano.
 - **Trampa (la importante):** los modelos `:cloud` de Ollama **ignoran el JSON

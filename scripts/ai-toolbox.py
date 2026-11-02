@@ -94,6 +94,11 @@ TOOLS: List[Dict[str, Any]] = [
         "up": None,
         "down": None,
         "note": "No tiene puerto propio: OpenClaw lo lanza con docker run por el MCP registrado.",
+        # 2026-11-02: sacado de mcp.servers de OpenClaw por pedido de Gonzo.
+        # Docker Desktop reserva ~7,7 GB wired de 24 GB; la imagen y el repo
+        # quedan intactos. Re-registrar = re-agregar el bloque al config
+        # (args exactos y backup en el todo #91 de memory.db).
+        "removed_from_openclaw": True,
     },
     {
         "id": "browser-use-ui",
@@ -371,10 +376,34 @@ def tool_state(tool: Dict[str, Any]) -> Dict[str, Any]:
         # No hay puerto: el server MCP lo lanza OpenClaw bajo demanda.
         image = tool["compose"][0] if tool["compose"] else ""
         image_name = image.split("/")[-1] if image else ""
-        has_image = bool(run(["docker", "image", "inspect", "browseruse:local"])[0] == 0)
+        # OJO: si el daemon de Docker esta apagado, `docker image inspect` falla
+        # aunque la imagen exista. Distinguir "no hay imagen" de "no puedo mirar"
+        # es obligatorio: si no, el registro miente en la direccion mas costosa
+        # (dice que falta algo que esta).
+        daemon_up = run(["docker", "info"], timeout=10)[0] == 0
+        has_image = bool(
+            daemon_up and run(["docker", "image", "inspect", "browseruse:local"])[0] == 0
+        )
         state["installed"] = has_image
+        if tool.get("removed_from_openclaw"):
+            # La imagen puede estar: lo que no existe es el registro en el gateway.
+            state["status"] = "desregistrado"
+            if not daemon_up:
+                state["detail"] = (
+                    "fuera de mcp.servers de OpenClaw; Docker apagado, imagen no verificable"
+                )
+            elif has_image:
+                state["detail"] = (
+                    "fuera de mcp.servers de OpenClaw (imagen presente; re-registrar para usar)"
+                )
+            else:
+                state["detail"] = "fuera de mcp.servers de OpenClaw y sin imagen"
+            return state
         state["status"] = "bajo demanda" if has_image else "no instalado"
-        state["detail"] = "MCP stdio: lo lanza OpenClaw por sesion" if has_image else ""
+        if daemon_up:
+            state["detail"] = "MCP stdio: lo lanza OpenClaw por sesion" if has_image else ""
+        else:
+            state["detail"] = "Docker apagado: estado real no verificable"
         return state
 
     cont = container_state(tool)
