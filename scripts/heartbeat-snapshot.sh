@@ -20,10 +20,37 @@ openclaw sessions list --json --agent "$AGENT" --limit all 2>/dev/null \
     done
 
 # 2) Documentos en curso
-cp -r "$HOME/.openclaw/workspace/memory" "$BASE/" 2>/dev/null || true
-cp -r "$HOME/.openclaw/workspace/docs"   "$BASE/" 2>/dev/null || true
+#
+# rsync y no `cp -r`: `cp -r` no lee .gitignore, asi que copiaba enteros los
+# videos de docs/entrevistas/mercor-project-odin (108 MB de grabaciones
+# confidenciales de Mercor, gitignored a proposito) en CADA snapshot. Con 12
+# snapshots/dia eso son ~1,3 GB/dia de material que ya vive en el disco y que
+# ademas nunca debe salir del workspace.
+#
+# Se excluye:
+#   *.mp4 / *.mov       grabaciones crudas; su texto derivado si se copia
+#   *.pre-rechunk       residuo de rechunk-vectors.py: un backup de DB que
+#                       solo sirve durante la migracion que ya termino
+#   Odin ... Handbook   el PDF de 25 MB del manual; su texto completo vive en
+#                       handbook.txt (27.738 palabras, mismo contenido)
+rsync -a \
+  --exclude='*.mp4' \
+  --exclude='*.mov' \
+  --exclude='*.pre-rechunk' \
+  --exclude='Project Odin Writer Handbook.pdf' \
+  "$HOME/.openclaw/workspace/memory/" "$BASE/memory/" 2>/dev/null || true
+rsync -a \
+  --exclude='*.mp4' \
+  --exclude='*.mov' \
+  --exclude='*.pre-rechunk' \
+  --exclude='Project Odin Writer Handbook.pdf' \
+  "$HOME/.openclaw/workspace/docs/" "$BASE/docs/" 2>/dev/null || true
 
-# 3) Retencion: snapshots con mas de 7 dias
-find "$HOME/.openclaw/backups" -maxdepth 1 -type d -name 'heartbeat-*' -mtime +7 -exec rm -rf {} + 2>/dev/null || true
+# 3) Retencion: snapshots con mas de 48 horas
+#
+# Era 7 dias, pero 7 dias x 12 snapshots x ~69 MB no entraba en disco. El
+# proposito del snapshot es poder retomar una sesion reciente; 48 horas
+# cubren ese caso y dejan el backup en ~1,6 GB.
+find "$HOME/.openclaw/backups" -maxdepth 1 -type d -name 'heartbeat-*' -mtime +2 -exec rm -rf {} + 2>/dev/null || true
 
 echo "$BASE"
