@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-03] - La papelera versionada deja de serlo
+
+### Removed
+- **46 archivos borrados del indice.** Gonzo los habia borrado del disco: `.knowledge/ARCHIVED_PROJECTS/` (2), `.knowledge/ARCHIVED_SESSIONS/` (2) y `.trash/` (42). Se verifico que **nada unico se pierde**: las sesiones archivadas duplican `docs/archives/sesiones/` (el archivo vivo), y el contenido de `kanam-sudoku.md` sobrevive en `docs/insights/2026-10-28-ensenanzas-sudoku.md` y en el CHANGELOG. Los `.trash/` son backups del residuo del `2026-10-08`, ya reconciliados aditivamente.
+
+### Fixed
+- **`/.trash/` agregado al `.gitignore`.** El ignore existente cubria `**/.knowledge/handoff-history/.trash/` (la papelera interna de cada `.knowledge/`), pero **no** la de la raiz. Por eso 42 archivos de backup del residuo de octubre quedaron commiteados y reaparecieron como bajas cinco semanas despues. Una papelera versionada es deuda que se paga sola.
+
+### Notes
+- **Verificado antes de borrar:** `check-refs --all` OK con 685 rutas (nada citado apunta a esas rutas). Las menciones en `memory/` y `docs/archives/` son registros historicos de lo que se archivo en su momento, no dependencias.
+- **Error propio durante la verificacion:** para probar que los archivos eran recuperables corri `git checkout -- .knowledge/ARCHIVED_PROJECTS`, que **restauro** dos archivos que Gonzo ya habia borrado. Se revirtio de inmediato (vuelto a `trash`) y se le informo antes de seguir. Un `git checkout` de comprobacion **escribe**: no es lectura.
+
+---
+
 ## [2026-11-03] - El HANDOFF va al `.knowledge/` del sujeto, este donde este
 
 ### Fixed
