@@ -148,6 +148,17 @@ Qué hizo:
   squads ágiles.
 - **Lideró un equipo de 3 ingenieros** construyendo una plataforma de inteligencia financiera con
   IA en Next.js, con interfaces accesibles de arquitectura a producción.
+  **SSR:** ese Next.js es el origen documentado del trabajo con **SSR** (renderizado en servidor).
+  Alcance: es un hecho de EY, no de los proyectos propios, y así se declara.
+- **Jest + React Testing Library en producción (confirmado por Gonzo, 2026-11-03):** *"esto sí en
+  todos lados"*. No es un rol ni un período: es tooling transversal a su carrera. Se declara como
+  tal (Core Skills / Quality), sin atribuirlo a un empleador específico.
+- **Azure DevOps como herramienta diaria (confirmado por Gonzo, 2026-11-03):** *"DevOps a diario...
+  pipelines... tickets y stories"*. Alcance: **pipelines de CI/CD, gestión de tickets y
+  user stories** en Azure DevOps. **NO cubre Azure Static Web Apps** ni hosting del frontend en
+  Azure: eso no está confirmado y no se declara.
+- **Redux y React Query (confirmado por Gonzo, 2026-11-03):** *"Redux y React Query sí"*. Manejo de
+  estado y data-fetching con ambos, en producción. **Zustand NO está confirmado**: no se declara.
 
 ### 2.3 Super7UI - 08/2020 a 05/2021
 
