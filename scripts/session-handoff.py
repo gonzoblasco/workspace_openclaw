@@ -131,6 +131,25 @@ def _container_dirs(name: str) -> List[Path]:
     ]
 
 
+def _reject_traversal(path: Path, what: str) -> None:
+    """Rechaza un destino que se salga del arbol del workspace.
+
+    Un slug con separadores (`"OSS / astryx (meta/astryx #3335)"`) hacia que
+    `WORKSPACE / "projects" / slug` se convirtiera en un arbol anidado que
+    `mkdir(parents=True)` creaba sin avisar: el 2026-10-29 quedo
+    `projects/OSS / astryx (meta/astryx #3335)/.knowledge/` en vez del
+    `.knowledge/` del proyecto. Un `..` hacia lo mismo, pero hacia afuera.
+    """
+    resolved = path.expanduser().resolve()
+    try:
+        resolved.relative_to(WORKSPACE.resolve())
+    except ValueError:
+        raise ValueError(
+            f"{what} apunta fuera del workspace ({resolved}). Pasar un destino "
+            "dentro del arbol del workspace."
+        ) from None
+
+
 def resolve_handoff_path(project: str, override: Optional[str]) -> Path:
     """Resuelve el `.knowledge/` del sujeto, este donde este.
 
@@ -142,12 +161,20 @@ def resolve_handoff_path(project: str, override: Optional[str]) -> Path:
     para no romper llamadas con slugs que todavia no tienen carpeta.
     """
     if override:
-        return Path(override).expanduser() / "HANDOFF.md"
+        dest = Path(override).expanduser()
+        _reject_traversal(dest, "el destino de --handoff-dir")
+        return dest / "HANDOFF.md"
     raw = project.strip()
     key = raw.lower()
     if key in WORKSPACE_ALIASES:
         return WORKSPACE / ".knowledge" / "HANDOFF.md"
     slug = PROJECT_DIR_OVERRIDES.get(key, project.strip())
+    if "/" in slug or "\\" in slug or slug in (".", ".."):
+        raise ValueError(
+            f"El slug '{project}' no es un nombre de carpeta: contiene separadores "
+            "de ruta o '..'. Usar el slug real del proyecto (sin barras) o pasar "
+            "--handoff-dir con la carpeta ya existente."
+        )
 
     matches = _container_dirs(slug)
     if len(matches) > 1:
@@ -160,6 +187,7 @@ def resolve_handoff_path(project: str, override: Optional[str]) -> Path:
         return matches[0] / ".knowledge" / "HANDOFF.md"
 
     return WORKSPACE / "projects" / slug / ".knowledge" / "HANDOFF.md"
+
 
 def session_line(summary: str, limit: int = 160) -> str:
     """Primera linea no vacia del summary, recortada, como asunto de la sesion."""

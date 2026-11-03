@@ -15,6 +15,11 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Added
 - **9 tests de regresion** en `tests/python/test_session_handoff.py`: resolucion en `projects/`, `forks/`, `_workbench/` y `clones/`; fallo ante slug ambiguo; carpeta con espacio final; slug sin carpeta; prioridad del `--handoff-dir`; y el alias `workspace` siguendo al HANDOFF global.
+- **Guarda contra slugs con separadores de ruta.** Un slug como `"OSS / astryx (meta/astryx #3335)"` se anidaba en `projects/` y `mkdir(parents=True)` creaba el arbol sin avisar. Ahora se rechaza con el nombre del proyecto en el mensaje. `--handoff-dir` tambien se valida contra el arbol del workspace. 4 tests mas.
+
+### Fixed (rescatado)
+- **`projects/OSS / astryx (meta/astryx #3335)/` era un arbol fantasma, no un typo de carpeta.** Contenia el HANDOFF y el SESSIONS del follow-up de astryx #3335 del 2026-10-29 (analisis de TabMenu, comentario 6499306768). Se movieron a **`projects/astryx/.knowledge/`** y la cadena vacia `OSS / astryx (meta/` se mando a la papelera con `trash`. No habia `projects/astryx` ni `clones/astryx` previos: el contenido solo existia ahi.
+- **El mismo slug aparecio antes:** `memory` del 2026-10-13 registra un cierre con `"OSS / astryx PR #5204"`. No era un caso aislado, era un patron que el script aceptaba.
 
 ### Notes
 - **El defecto estaba documentado y sin corregir:** `session-close-handoff` ya avisaba que `resolve_handoff_path` "solo busca en `projects/`" y pedia resolver el destino a mano con `--handoff-dir`. El workaround evitaba el arbol fantasma pero dejaba el bug intacto y dependia de que el agente se acordara. Ahora la skill puede pedir la verificacion como control, no como unico remedio.

@@ -196,3 +196,50 @@ def test_resolve_alias_de_workspace_sigue_yendo_al_global(tmp_path, monkeypatch)
     path = session_handoff.resolve_handoff_path("workspace", None)
 
     assert path == tmp_path / ".knowledge" / "HANDOFF.md"
+
+
+# ---------------------------------------------------------------------------
+# Guarda de traversal (2026-11-03): un slug con barras creaba un arbol anidado.
+# El 2026-10-29 quedo `projects/OSS / astryx (meta/astryx #3335)/.knowledge/`
+# porque el cierre recibio el titulo de la sesion como si fuera un slug.
+# ---------------------------------------------------------------------------
+def test_resolve_rechaza_slug_con_barras(tmp_path, monkeypatch):
+    _fake_workspace(tmp_path, monkeypatch, {"projects": []})
+
+    try:
+        session_handoff.resolve_handoff_path("OSS / astryx (meta/astryx #3335)", None)
+    except ValueError as exc:
+        assert "separadores" in str(exc)
+    else:  # pragma: no cover - el contrato es fallar
+        raise AssertionError("un slug con barras debe rechazarse, no crear el arbol")
+
+
+def test_resolve_rechaza_dot_dot(tmp_path, monkeypatch):
+    _fake_workspace(tmp_path, monkeypatch, {"projects": []})
+
+    for bad in ("../fuera", "..", "."):
+        try:
+            session_handoff.resolve_handoff_path(bad, None)
+        except ValueError:
+            continue
+        raise AssertionError(f"el slug {bad!r} debe rechazarse")
+
+
+def test_resolve_rechaza_override_fuera_del_workspace(tmp_path, monkeypatch):
+    _fake_workspace(tmp_path, monkeypatch, {"projects": []})
+    fuera = tmp_path.parent / "afuera"
+
+    try:
+        session_handoff.resolve_handoff_path("alfa", str(fuera))
+    except ValueError as exc:
+        assert "fuera del workspace" in str(exc)
+    else:  # pragma: no cover
+        raise AssertionError("--handoff-dir fuera del workspace debe rechazarse")
+
+
+def test_resolve_slug_astryx_ahora_es_carpeta_real(tmp_path, monkeypatch):
+    """El proyecto rescatado el 2026-11-03 vive en projects/astryx."""
+    ws = _fake_workspace(tmp_path, monkeypatch, {"projects": ["astryx"]})
+    path = session_handoff.resolve_handoff_path("astryx", None)
+
+    assert path == ws / "projects" / "astryx" / ".knowledge" / "HANDOFF.md"
