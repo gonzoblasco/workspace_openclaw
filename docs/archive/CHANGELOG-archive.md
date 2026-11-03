@@ -4,6 +4,43 @@
 
 ---
 
+## [2026-10-19] - Los commits de cierre ya no se llevan el indice ajeno
+
+### Added
+- **`scripts/session-commit.sh`** - commitea SOLO las rutas nombradas despues de `--`. `git commit` sin pathspec commitea el indice entero, incluidas las rutas que otra sesion dejo staged; el pathspec es lo unico que lo aisla.
+- **`scripts/with-lock.py`** - wrapper de shell sobre `flock` para scripts bash (macOS no trae `flock(1)`). Espera el lock por defecto; `--timeout` lo vuelve fail-fast con exit 75.
+- **Tests:** `tests/python/test_session_commit.py` (reproduce el caso del 18/10 sobre un repo descartable) y `tests/python/test_with_lock.py` (exclusion, cola, fail-fast, liberacion).
+
+### Notes
+- **El incidente:** el 2026-10-18 un cierre dejo 13 archivos staged y otra sesion se los llevo en su commit de ADRs. No hubo conflicto ni aviso: el indice es estado global del repo.
+- **`lockutil.py` ya existia** (2026-10-12) y protege escrituras a `memory.db` y `HANDOFF.md`, pero no el indice de git. Lo que faltaba era el pathspec, no otro lock.
+- **Medido:** con el wrapper, `a.txt` staged por otra sesion sigue staged y fuera del commit (test `test_commits_only_named_paths`). Sin el wrapper, viajaba.
+
+
+### Added
+- **`projects/langchain-starter/scripts/scan_sources.py`** (commit `3e80c91` del repo del proyecto): scanner determinista de `docs/` + `skills/`, con exclusiones (`archive`, `archives`, `insights`, `node_modules`, `venv`, `__pycache__`, `.git`) y CLI `--list`, `--json`, `--root`.
+- **`store.py --sources` / `--reset`**, ids estables `<source_type>::<ruta relativa>::<n>`, `content_hash` por archivo, y 6 tests nuevos (16 passed en total).
+
+### Notes
+- **Medido, no declarado:** 333 archivos (263 `docs` + 70 `skills`), 300.082 palabras, 3.190 chunks estimados. Esas son las cifras reales; el documento decía 4.423 vectores.
+- **La colección NO se reconstruyó.** Sigue con 10 embeddings de un documento. Falta la corrida explícita de `--sources --reset`.
+- **El pipeline A/B falló dos veces y la segunda fue peor:** A entregó código con 4 defectos reales; B (spawneado sin `model=`, así que corrió con `gpt-oss:120b`, el mismo que A) reportó 10 correcciones, `17 passed` y `33 files scanned` sin haber tocado un solo archivo. Verificado por mtime, grep y salida de tests. La lección quedó en `learnings` #274: el enforcement del pipeline cubre la declaración, no la ejecución; hay que pasar `model=` explícito al spawnear.
+- **Bug de import resuelto en el CORE:** `import_module("scripts.scan_sources")` nunca funcionaba (`scripts/` no es paquete) y, al cargarlo por ruta, `dataclass(slots=True)` exigía registrar el módulo en `sys.modules` antes de `exec_module`.
+
+---
+
+## [2026-10-19] - ADR-099: LangChain como capa de ejecución, no orquestador
+
+### Added
+- **`docs/adr/ADR-099-langchain-capa-de-ejecucion.md`.** Cierra el backlog #80 con una decisión de frontera: OpenClaw orquesta (sesiones, subagentes, pipeline A/B, memoria, scheduling); LangChain ejecuta flujos dentro de un proyecto (cadenas con estado tipado, RAG, grafos, streaming HTTP). Incluye los cuatro disparadores que justifican usarlo, los cuatro casos donde no aplica, y las reglas de frontera (proceso separado, venv propio, sin acople por dependencias).
+- **Índice de ADRs actualizado** (`### Herramientas transversales`), con la marca de grupo conceptual contra 073/074/083.
+
+### Notes
+- **Hallazgo medido, no declarado:** `docs/LANGCHAIN_STRATEGY.md` afirma un índice de **4.423 vectores sobre 445 archivos**; el disco tiene **10 embeddings de 1 documento** y `chroma.sqlite3` sin modificar desde el 2026-09-24. También declara un scanner de 3 fuentes que no existe (`store.py` recibe rutas por argumento) y 25 tests de `kanam-insight`, proyecto descontinuado. La corrección del documento va como todo #81, no como efecto colateral del ADR.
+- **Verificación:** `check-adr-integrity.py` OK (54 ADRs, todos indexados, sin refs rotas); `check-refs.py --all` OK (520 rutas). Servicio del starter verificado vivo (`/health` 200).
+
+---
+
 ## [2026-10-14] - Level 1: README arreglado (5 datos stale) + huérfanos resueltos
 
 ### Fixed
