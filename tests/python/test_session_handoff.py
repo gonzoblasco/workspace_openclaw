@@ -103,3 +103,96 @@ def test_index_is_append_only(tmp_path):
     for i in range(5):
         assert f"Sesion {i}" in index
     assert index.count("- **") == 5
+
+
+# ---------------------------------------------------------------------------
+# Resolucion del destino (2026-11-03): el sujeto no siempre vive en projects/.
+# Antes de este fix, un slug de `forks/` o `_workbench/` resolvia a
+# `projects/<slug>/.knowledge/`, el script creaba ese arbol inexistente y el
+# HANDOFF real quedaba sin actualizar, sin ningun error visible.
+# ---------------------------------------------------------------------------
+def _fake_workspace(tmp_path, monkeypatch, layout):
+    """Arma un workspace descartable con la estructura dada y apunta el modulo.
+
+    `layout` es un dict {contenedor: [nombres de carpeta]}.
+    """
+    for container, names in layout.items():
+        root = tmp_path / container
+        root.mkdir(parents=True, exist_ok=True)
+        for name in names:
+            (root / name).mkdir()
+    monkeypatch.setattr(session_handoff, "WORKSPACE", tmp_path)
+    return tmp_path
+
+
+def test_resolve_encuentra_proyecto_en_projects(tmp_path, monkeypatch):
+    _fake_workspace(tmp_path, monkeypatch, {"projects": ["alfa", "beta"]})
+    path = session_handoff.resolve_handoff_path("alfa", None)
+
+    assert path == tmp_path / "projects" / "alfa" / ".knowledge" / "HANDOFF.md"
+
+
+def test_resolve_encuentra_fork_fuera_de_projects(tmp_path, monkeypatch):
+    _fake_workspace(tmp_path, monkeypatch, {"projects": [], "forks": ["vane"]})
+    path = session_handoff.resolve_handoff_path("vane", None)
+
+    assert path == tmp_path / "forks" / "vane" / ".knowledge" / "HANDOFF.md"
+    # El bug: no debe inventar projects/vane.
+    assert not (tmp_path / "projects" / "vane").exists()
+
+
+def test_resolve_encuentra_workbench_fuera_de_projects(tmp_path, monkeypatch):
+    _fake_workspace(tmp_path, monkeypatch, {"_workbench": ["onwheels"]})
+    path = session_handoff.resolve_handoff_path("onwheels", None)
+
+    assert path == tmp_path / "_workbench" / "onwheels" / ".knowledge" / "HANDOFF.md"
+
+
+def test_resolve_encuentra_clon_fuera_de_projects(tmp_path, monkeypatch):
+    _fake_workspace(tmp_path, monkeypatch, {"clones": ["externo"]})
+    path = session_handoff.resolve_handoff_path("externo", None)
+
+    assert path == tmp_path / "clones" / "externo" / ".knowledge" / "HANDOFF.md"
+
+
+def test_resolve_prefiere_projects_sobre_otros_contenedores(tmp_path, monkeypatch):
+    """Si el mismo slug vive en projects/ y en forks/, manda projects/."""
+    _fake_workspace(tmp_path, monkeypatch, {"projects": ["gemelo"], "forks": ["gemelo"]})
+
+    try:
+        session_handoff.resolve_handoff_path("gemelo", None)
+    except ValueError as exc:
+        assert "mas de un contenedor" in str(exc)
+    else:  # pragma: no cover - el contrato es fallar, no elegir
+        raise AssertionError("un slug ambiguo debe fallar en vez de adivinar")
+
+
+def test_resolve_carpeta_con_espacio_final(tmp_path, monkeypatch):
+    """Un directorio que termina en espacio ('OSS ') tiene que resolverse."""
+    ws = _fake_workspace(tmp_path, monkeypatch, {"projects": ["OSS ", "otro"]})
+    path = session_handoff.resolve_handoff_path("OSS ", None)
+
+    assert path == ws / "projects" / "OSS " / ".knowledge" / "HANDOFF.md"
+
+
+def test_resolve_sin_carpeta_cae_al_comportamiento_historico(tmp_path, monkeypatch):
+    """Un slug sin carpeta todavia sigue apuntando a projects/<slug>."""
+    _fake_workspace(tmp_path, monkeypatch, {"projects": []})
+    path = session_handoff.resolve_handoff_path("todavia-no-existe", None)
+
+    assert path == tmp_path / "projects" / "todavia-no-existe" / ".knowledge" / "HANDOFF.md"
+
+
+def test_resolve_override_gana_sobre_la_busqueda(tmp_path, monkeypatch):
+    _fake_workspace(tmp_path, monkeypatch, {"forks": ["vane"]})
+    custom = tmp_path / "elegido"
+    path = session_handoff.resolve_handoff_path("vane", str(custom))
+
+    assert path == custom / "HANDOFF.md"
+
+
+def test_resolve_alias_de_workspace_sigue_yendo_al_global(tmp_path, monkeypatch):
+    _fake_workspace(tmp_path, monkeypatch, {"projects": ["workspace"]})
+    path = session_handoff.resolve_handoff_path("workspace", None)
+
+    assert path == tmp_path / ".knowledge" / "HANDOFF.md"

@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-03] - El HANDOFF va al `.knowledge/` del sujeto, este donde este
+
+### Fixed
+- **`scripts/session-handoff.py` resolvia todo slug contra `projects/`.** Si el proyecto vivia en `forks/`, `clones/` o `_workbench/`, `resolve_handoff_path()` devolvia `projects/<slug>/.knowledge/HANDOFF.md`: una ruta que no existia, que el script **creaba igual**, dejando el HANDOFF real sin actualizar y sin ningun error visible. Medido antes del fix: `--project vane` -> `projects/vane/` (real: `forks/vane/`), `--project onwheels` -> `projects/onwheels/` (real: `_workbench/onwheels/`).
+- **La busqueda ahora recorre `PROJECT_CONTAINERS`** (`projects`, `_workbench`, `forks`, `clones`) y devuelve el `.knowledge/` de la carpeta real. Un slug que existe en **mas de un** contenedor **falla con error explicito** en vez de elegir: adivinar es como se termina escribiendo el HANDOFF de un proyecto en el `.knowledge/` de otro. Sin carpeta en ningun contenedor se cae al comportamiento historico (`projects/<slug>`), para no romper slugs que todavia no se abrieron.
+- **Directorios con espacio final ya resuelven.** `projects/OSS ` (nombre real, con espacio) no se encontraba porque el slug se recortaba. La busqueda prueba **coincidencia exacta primero** y recien despues el nombre recortado, asi que `--project "OSS "` llega a la carpeta correcta y un slug prolijo (`OSS`) tambien.
+
+### Added
+- **9 tests de regresion** en `tests/python/test_session_handoff.py`: resolucion en `projects/`, `forks/`, `_workbench/` y `clones/`; fallo ante slug ambiguo; carpeta con espacio final; slug sin carpeta; prioridad del `--handoff-dir`; y el alias `workspace` siguendo al HANDOFF global.
+
+### Notes
+- **El defecto estaba documentado y sin corregir:** `session-close-handoff` ya avisaba que `resolve_handoff_path` "solo busca en `projects/`" y pedia resolver el destino a mano con `--handoff-dir`. El workaround evitaba el arbol fantasma pero dejaba el bug intacto y dependia de que el agente se acordara. Ahora la skill puede pedir la verificacion como control, no como unico remedio.
+- **Pendiente, no incluido aca:** el generador sigue **reescribiendo el HANDOFF entero**. Hoy el cierre del 2026-11-03 reemplazo los proximos pasos de onwheels (del 2026-10-29) por los del Expte. 15.533, perdiendo estado que seguia vigente. El merge por seccion con `<!-- vigente desde YYYY-MM-DD -->` queda como paso siguiente.
+
+---
+
 ## [2026-11-02] - Ollama deja de ser punto único de falla; browser-use sale del gateway
 
 ### Added

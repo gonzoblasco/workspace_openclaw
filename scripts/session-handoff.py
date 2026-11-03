@@ -65,6 +65,12 @@ WORKSPACE_ALIASES = {
     "system",
 }
 
+# Contenedores donde puede vivir un proyecto, en orden de busqueda. `projects/`
+# NO es el unico: un fork, un clon y un proyecto del banco de trabajo tienen su
+# propio `.knowledge/` y su HANDOFF tiene que caer ahi, no en un arbol fantasma
+# bajo `projects/` (bug corregido 2026-11-03).
+PROJECT_CONTAINERS = ("projects", "_workbench", "forks", "clones")
+
 # Proyectos cuyo slug difiere del nombre de la carpeta en <workspace>/projects.
 PROJECT_DIR_OVERRIDES = {
     # El proyecto ACTIVO de OnWheels vive en projects/onwheels (creado 2026-10-21,
@@ -98,15 +104,62 @@ def git_output(*args: str, cwd: Optional[Path] = None) -> str:
         return ""
 
 
+def _container_dirs(name: str) -> List[Path]:
+    """Carpetas reales de proyecto que se llaman `name` en cualquier contenedor.
+
+    Primero busca coincidencia **exacta**: hay directorios que terminaban en
+    espacio (`"OSS "`) y el slug recortado no los encontraba, asi que el cierre
+    escribia en una ruta inexistente. Solo si no hay ninguna exacta se compara
+    contra el nombre recortado, para que un slug prolijo (`OSS`) siga llegando a
+    una carpeta sucia sin que eso oculte el caso exacto.
+    """
+    entries_by_container = []
+    for container in PROJECT_CONTAINERS:
+        root = WORKSPACE / container
+        try:
+            entries = [e for e in root.iterdir() if e.is_dir()]
+        except OSError:
+            continue
+        entries_by_container.append(entries)
+
+    exact = [e for entries in entries_by_container for e in entries if e.name == name]
+    if exact:
+        return exact
+    normalized = name.strip()
+    return [
+        e for entries in entries_by_container for e in entries if e.name.strip() == normalized
+    ]
+
+
 def resolve_handoff_path(project: str, override: Optional[str]) -> Path:
+    """Resuelve el `.knowledge/` del sujeto, este donde este.
+
+    Orden: override -> alias de workspace -> carpeta real del proyecto en
+    `projects/`, `_workbench/`, `forks/` o `clones/`. Si el slug coincide con mas
+    de una carpeta se falla con error explicito: adivinar es como se termina
+    escribiendo el HANDOFF de un proyecto en el `.knowledge/` de otro. Si no
+    existe ninguna carpeta, se cae al comportamiento historico (`projects/<slug>`)
+    para no romper llamadas con slugs que todavia no tienen carpeta.
+    """
     if override:
         return Path(override).expanduser() / "HANDOFF.md"
-    key = project.strip().lower()
+    raw = project.strip()
+    key = raw.lower()
     if key in WORKSPACE_ALIASES:
         return WORKSPACE / ".knowledge" / "HANDOFF.md"
     slug = PROJECT_DIR_OVERRIDES.get(key, project.strip())
-    return WORKSPACE / "projects" / slug / ".knowledge" / "HANDOFF.md"
 
+    matches = _container_dirs(slug)
+    if len(matches) > 1:
+        rels = ", ".join(str(p.relative_to(WORKSPACE)) for p in matches)
+        raise ValueError(
+            f"El slug '{slug}' existe en mas de un contenedor ({rels}). "
+            "Pasar el destino real con --handoff-dir para desambiguar."
+        )
+    if len(matches) == 1:
+        return matches[0] / ".knowledge" / "HANDOFF.md"
+
+    return WORKSPACE / "projects" / slug / ".knowledge" / "HANDOFF.md"
 
 def session_line(summary: str, limit: int = 160) -> str:
     """Primera linea no vacia del summary, recortada, como asunto de la sesion."""
