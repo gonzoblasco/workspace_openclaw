@@ -33,6 +33,13 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **`.gitignore`:** `/oss/` y `/oss/*/` ignorados al 100%, como `forks/` y `clones/`.
 - **`docs/AGENTS-DETALLE.md`:** la receta de cierre del PR usa el slug de carpeta (`owner-repo`) y no el titulo del hilo; la excepcion de forks se corrige (decia que no llevan `.knowledge/`, pero `forks/vane/` tiene uno por ser un fork que se desarrolla); se documenta `oss/`.
 - **Skill `session-close-handoff`** (Workshop): destino `oss/`, regla del slug sin barras, y la verificacion de path pasa a ser control en vez de remedio del bug.
+- **`scripts/check-foreign-knowledge.py` + guarda pre-push en repos de terceros.** Gonzo: *"nunca subir el `.knowledge` a los repos OSS... el tema es no ensuciar lo ajeno"*. Instala un hook `pre-push` en cada repo de `forks/` y `clones/` que **rechaza** empujar cualquier ref con `.knowledge/` a un remote que no sea de `gonzoblasco`. El hook vive en `.git/hooks/` y **no se commitea**: el repo ajeno no se ensucia. Conectado al pre-commit (plantilla y hook vivo), sin condicion.
+
+### Notes (guarda de .knowledge ajeno)
+- **El riesgo estaba medido, no supuesto:** `forks/vane/` tiene **9 archivos `.knowledge/` trackeados** y un remote `upstream` a `ItzCrazyKns/Vane`. `upstream/master` tiene **0** archivos `.knowledge/`: todavia no se contamino, pero nada lo impedia. `_workbench/onwheels` tiene 6 trackeados y **no tiene remote**, asi que ahi no hay exposicion.
+- **Por que un hook y no un `.gitignore`:** agregar `.knowledge/` al `.gitignore` del fork modifica un archivo del repo ajeno - exactamente lo que se quiere evitar. Y borrar el `.knowledge/` del fork pierde la memoria del hilo. El hook no toca nada versionado.
+- **Por que `projects/` queda afuera:** son repos nuestros (bajo `gonzoblasco`); ahi el `.knowledge/` **es** el proyecto y va commiteado.
+- **8 tests** en `tests/python/test_check_foreign_knowledge.py`: deteccion de riesgo, instalacion ejecutable, repo limpio, rechazo en forma HTTPS y SSH de un remote ajeno, permiso en las dos formas de un remote propio, y paso libre cuando la rama no trae `.knowledge/`. El contrato se prueba invocando el hook con los argumentos y el stdin que git le pasa, no con un `git push` real (que depende de la red y de `insteadOf`).
 
 ### Notes
 - **El defecto estaba documentado y sin corregir:** `session-close-handoff` ya avisaba que `resolve_handoff_path` "solo busca en `projects/`" y pedia resolver el destino a mano con `--handoff-dir`. El workaround evitaba el arbol fantasma pero dejaba el bug intacto y dependia de que el agente se acordara. Ahora la skill puede pedir la verificacion como control, no como unico remedio.

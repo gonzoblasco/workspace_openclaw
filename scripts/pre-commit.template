@@ -205,6 +205,19 @@ python3 "${SCRIPT_DIR}/scripts/check-cv-facts.py" || exit 1
 # archivos): correrlo siempre es mas barato que dejar el agujero abierto.
 python3 "${SCRIPT_DIR}/scripts/check-roadmaps.py" || exit 1
 
+# Guarda de `.knowledge/` ajeno (2026-11-03, pedido de Gonzo: "no ensuciar lo
+# ajeno"). SIN CONDICION, a proposito: un fork o clon nuevo puede aparecer por
+# cualquier operacion y el hook pre-push de ESE repo es lo unico que impide que
+# su `.knowledge/` viaje a upstream. Un repo de terceros sin la guarda no da
+# error en ningun otro lado - el push sale y contamina. Python puro (stat y
+# `git remote`): correrlo siempre es mas barato que dejar el agujero abierto.
+if ! python3 "${SCRIPT_DIR}/scripts/check-foreign-knowledge.py"; then
+  echo ""
+  echo "  La guarda vive en .git/hooks del repo ajeno y no se commitea:"
+  echo "  instalala con scripts/check-foreign-knowledge.py --install"
+  exit 1
+fi
+
 if [ "$BOUNDARY_RELEVANT" = "1" ]; then
   # Frontera de roles (ADR-083): el ciclo SDD no vive en el arbol del Core. El Core
   # tenia el playbook de ingenieria a la vista y lo ejecuto durante una sesion
