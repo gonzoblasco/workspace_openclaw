@@ -74,7 +74,11 @@ WORKSPACE_ALIASES = {
 # `oss/<owner>-<repo>/.knowledge/`. No es codigo ni un repo nuestro: es el
 # registro del hilo (que se dijo, quien tiene la pelota). Vive aparte de
 # `forks/` porque el fork es codigo desechable y este registro lo sobrevive.
-PROJECT_CONTAINERS = ("projects", "_workbench", "forks", "clones", "oss")
+#
+# `services/` (2026-11-03) es un repo de terceros que CORRE como servicio
+# interno: no se le manda PR, se lo opera. Su `.knowledge/` es nuestro y va
+# trackeado en nuestro fork. Distinto de `forks/`, que existe para contribuir.
+PROJECT_CONTAINERS = ("projects", "_workbench", "forks", "clones", "oss", "services")
 
 # Proyectos cuyo slug difiere del nombre de la carpeta en <workspace>/projects.
 PROJECT_DIR_OVERRIDES = {

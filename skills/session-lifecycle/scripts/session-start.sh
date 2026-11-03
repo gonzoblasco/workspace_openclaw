@@ -27,7 +27,7 @@ DATE=$(date '+%Y-%m-%d %H:%M')
 # verdad: recorre projects/, _workbench/, forks/, clones/ y oss/ y encuentra la
 # carpeta real. Antes esta rama duplicaba el mapa en bash y solo conocia
 # projects/: una sesion de `vane` leia un HANDOFF inexistente y arrancaba fria
-# aunque el archivo real existiera en forks/vane/. (2026-11-03)
+# aunque el archivo real existiera en otra carpeta. (2026-11-03)
 # La raiz del workspace se deriva con git (el script vive dentro del repo), no
 # subiendo directorios a mano: el scanner de seguridad marca `../..` como
 # path traversal, y ademas git es la respuesta correcta si el arbol se mueve.

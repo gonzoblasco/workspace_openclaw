@@ -41,6 +41,23 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Por que `projects/` queda afuera:** son repos nuestros (bajo `gonzoblasco`); ahi el `.knowledge/` **es** el proyecto y va commiteado.
 - **8 tests** en `tests/python/test_check_foreign_knowledge.py`: deteccion de riesgo, instalacion ejecutable, repo limpio, rechazo en forma HTTPS y SSH de un remote ajeno, permiso en las dos formas de un remote propio, y paso libre cuando la rama no trae `.knowledge/`. El contrato se prueba invocando el hook con los argumentos y el stdin que git le pasa, no con un `git push` real (que depende de la red y de `insteadOf`).
 
+---
+
+## [2026-11-03] - `services/`: un servicio interno no es un fork
+
+### Changed
+- **`forks/vane` -> `services/vane`.** Vane corre como servicio interno: no se le manda PR, se lo opera. Estaba en `forks/`, donde la regla "no trackear `.knowledge/`" es correcta para un PR pero no aplica a un servicio, asi que el check necesitaba una **exencion** para dejarlo pasar.
+- **La exencion se elimino y se arreglo la clasificacion.** Una exencion es un olor a clasificacion equivocada: si un repo necesita una excepcion para cumplir una regla, el que esta mal es la carpeta, no la regla. `services/` es ahora el contenedor para repos de terceros que se **operan**, no se contribuyen.
+- **`check-foreign-knowledge.py` clasifica por PROPOSITO, no por origen del codigo:**
+  - `forks/` y `clones/` -> `.knowledge/` **no se trackea**: entra al diff del PR que revisa el maintainer. Se saca con `git rm -r --cached` y se oculta con `.git/info/exclude` (privado, no versionado: tocar el `.gitignore` del fork si ensucia el repo ajeno).
+  - `services/` -> `.knowledge/` **si se trackea**, en NUESTRO fork (`gonzoblasco/<servicio>`). El unico riesgo es un push al upstream, y eso lo cubre el hook pre-push.
+- **`session-handoff.py` y `.gitignore`:** `services` agregado a `PROJECT_CONTAINERS`; `/services/*` ignorado como `/forks/*` (es codigo, no registro).
+
+### Notes
+- **El `.knowledge/` de vane se verifico intacto** tras la mudanza: `git status` limpio, 9 archivos trackeados, remotes `origin` (gonzoblasco) y `upstream` (ItzCrazyKns). El hook pre-push ya estaba instalado y sigue vigente en la ruta nueva.
+- **Costo de la mudanza: ninguno.** `mv` preserva el repo entero (153M, historial, ramas, hooks, `.git/info/exclude`).
+- **16 tests** en `test_check_foreign_knowledge.py`, incluidos los cuatro nuevos del caso servicio: puede trackear `.knowledge` con guarda, es riesgo sin guarda, `--install` **no** lo destrackea, y en un fork **si** lo destrackea.
+
 ### Notes
 - **El defecto estaba documentado y sin corregir:** `session-close-handoff` ya avisaba que `resolve_handoff_path` "solo busca en `projects/`" y pedia resolver el destino a mano con `--handoff-dir`. El workaround evitaba el arbol fantasma pero dejaba el bug intacto y dependia de que el agente se acordara. Ahora la skill puede pedir la verificacion como control, no como unico remedio.
 - **Pendiente, no incluido aca:** el generador sigue **reescribiendo el HANDOFF entero**. Hoy el cierre del 2026-11-03 reemplazo los proximos pasos de onwheels (del 2026-10-29) por los del Expte. 15.533, perdiendo estado que seguia vigente. El merge por seccion con `<!-- vigente desde YYYY-MM-DD -->` queda como paso siguiente.

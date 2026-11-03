@@ -67,6 +67,14 @@ __pycache__/
 /forks/*/
 /forks/*/**
 
+# services/: repos de terceros que corren como SERVICIO INTERNO (vane, etc.).
+# No se les manda PR: se los opera. El codigo se ignora como forks/; la
+# diferencia es que su `.knowledge/` si se trackea, pero en SU repo
+# (gonzoblasco/<servicio>), no en el del upstream ni aca. (2026-11-03)
+/services/*
+/services/*/
+/services/*/**
+
 # clones/: repos de terceros con pull total (no forks especificos). NO se commitea.
 # La memoria/deliverables de la sesion van a docs/ o memory/ del workspace.
 /clones/*
