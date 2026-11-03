@@ -69,7 +69,12 @@ WORKSPACE_ALIASES = {
 # NO es el unico: un fork, un clon y un proyecto del banco de trabajo tienen su
 # propio `.knowledge/` y su HANDOFF tiene que caer ahi, no en un arbol fantasma
 # bajo `projects/` (bug corregido 2026-11-03).
-PROJECT_CONTAINERS = ("projects", "_workbench", "forks", "clones")
+#
+# `oss/` (2026-11-03) agrupa las contribuciones a repos ajenos:
+# `oss/<owner>-<repo>/.knowledge/`. No es codigo ni un repo nuestro: es el
+# registro del hilo (que se dijo, quien tiene la pelota). Vive aparte de
+# `forks/` porque el fork es codigo desechable y este registro lo sobrevive.
+PROJECT_CONTAINERS = ("projects", "_workbench", "forks", "clones", "oss")
 
 # Proyectos cuyo slug difiere del nombre de la carpeta en <workspace>/projects.
 PROJECT_DIR_OVERRIDES = {

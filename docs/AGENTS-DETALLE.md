@@ -9,7 +9,7 @@
 Receta:
 1. Leer el hilo externo COMPLETO (body, reviews, todos los comments, timeline del evento referenciado). Nunca responder solo con el link.
 2. Analizar el rol de Gonzo en el hilo y el desenlace.
-3. Cerrar con: `./scripts/memory-end-session.py --project "OSS / <repo> #<n>" --summary "..."` (DB-first; NUNCA editar `memory/YYYY-MM-DD.md` a mano).
+3. Cerrar con: `./skills/session-lifecycle/scripts/session-end.sh --project "<owner>-<repo>" --summary "..."` (DB-first; NUNCA editar `memory/YYYY-MM-DD.md` a mano). El `--project` es el slug de la **carpeta** (`oss/<owner>-<repo>/`), sin barras ni `#`: un slug con separadores creaba un arbol anidado (ver Excepciones). El numero del PR y el titulo del hilo van en el `--summary`, no en el slug.
 4. Si el cambio quedó en el workspace (ej. AGENTS.md), commit + push del workspace al finalizar.
 
 Casos que originaron la regla (2026-10-13): TanStack/router#7825 (fix upstream merged), vercel/ai#15704 + PR#17274 (cerrado por decisión de producto), facebook/astryx#5204 (superseded con crédito).
@@ -126,7 +126,8 @@ projects/                     (carpeta plana, ignorada al 100% por el workspace 
 **Sin submódulos.** Los proyectos se clonan en `projects/<slug>/` bajo demanda (cuando se trabajan), no como submódulos. Si una carpeta de `projects/` no tiene repo en GitHub, se elimina.
 
 **Excepciones:**
-- Forks de terceros (TanStack/router, shadcn/ui, etc.) → viven en `forks/<slug>/`, carpeta ignorada AL 100% en el workspace (no existe como `projects/forks`). No llevan `.knowledge/` (no se modifica el `.gitignore` de proyectos ajenos). El repo del fork vive por si solo; la memoria de la sesion de contribucion va a `docs/` o `memory/` del workspace.
+- Forks de terceros (TanStack/router, shadcn/ui, etc.) → viven en `forks/<slug>/`, carpeta ignorada AL 100% en el workspace (no existe como `projects/forks`). **Correccion 2026-11-03:** no llevan `.knowledge/` **nuevo** porque no se modifica el `.gitignore` de proyectos ajenos, pero `forks/vane/` ya tiene uno (BRIEF, STATUS, HANDOFF, SESSIONS, research) por ser un fork que se desarrolla, no solo un clon de lectura. Un fork que se trabaja conserva su memoria; el registro de la **contribucion** a un repo ajeno va a `oss/` (siguiente punto).
+- **Contribuciones a repos ajenos → `oss/<owner>-<repo>/.knowledge/`.** No es codigo ni un repo nuestro: es el registro del hilo (que se dijo, que quedo abierto, quien tiene la pelota) y sobrevive al clone. Vivia antes en `docs/` o `memory/`, o -peor- en un arbol fantasma creado con el titulo de la sesion como slug: el 2026-10-29 quedo `projects/OSS / astryx (meta/astryx #3335)/` porque `--project "OSS / astryx #3335"` tenia barras. `scripts/session-handoff.py` ahora resuelve `oss/` y **rechaza** slugs con separadores o `..`. La receta de cierre del §"Registro automatico" sigue usando un nombre descriptivo, pero el slug tiene que ser `owner-repo`.
 - Skills de OpenClaw → viven en `skills/` (Core) y `agents/<rol>/skills/` (rol) con su propio SKILL.md
 - Proyectos sin documentación completa → los archivos faltantes se documentan en HANDOFF.md en `.knowledge/` (que reemplazo al BRIEF)
 

@@ -18,8 +18,21 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Guarda contra slugs con separadores de ruta.** Un slug como `"OSS / astryx (meta/astryx #3335)"` se anidaba en `projects/` y `mkdir(parents=True)` creaba el arbol sin avisar. Ahora se rechaza con el nombre del proyecto en el mensaje. `--handoff-dir` tambien se valida contra el arbol del workspace. 4 tests mas.
 
 ### Fixed (rescatado)
-- **`projects/OSS / astryx (meta/astryx #3335)/` era un arbol fantasma, no un typo de carpeta.** Contenia el HANDOFF y el SESSIONS del follow-up de astryx #3335 del 2026-10-29 (analisis de TabMenu, comentario 6499306768). Se movieron a **`projects/astryx/.knowledge/`** y la cadena vacia `OSS / astryx (meta/` se mando a la papelera con `trash`. No habia `projects/astryx` ni `clones/astryx` previos: el contenido solo existia ahi.
+- **`projects/OSS / astryx (meta/astryx #3335)/` era un arbol fantasma, no un typo de carpeta.** Contenia el HANDOFF y el SESSIONS del follow-up de astryx #3335 del 2026-10-29 (analisis de TabMenu, comentario 6499306768). El contenido se rescato y hoy vive en **`oss/facebook-astryx/.knowledge/`**; la cadena vacia `OSS / astryx (meta/` se mando a la papelera con `trash`. No habia `projects/astryx` ni `clones/astryx` previos: el contenido solo existia ahi.
 - **El mismo slug aparecio antes:** `memory` del 2026-10-13 registra un cierre con `"OSS / astryx PR #5204"`. No era un caso aislado, era un patron que el script aceptaba.
+
+### Added (oss/)
+- **`oss/` - contenedor nuevo para contribuciones a repos ajenos.** `oss/<owner>-<repo>/.knowledge/` guarda HANDOFF, SESSIONS y (a futuro) `THREADS.md` con los hilos abiertos y quien tiene la pelota. No es codigo ni un repo nuestro: es memoria que **sobrevive al clone**. `forks/` y `clones/` son artefactos de codigo desechables; `projects/` se reserva para repos propios bajo `gonzoblasco/`.
+- **Por que no `forks/`:** un fork se clona, se rebasa y se descarta cuando el PR cierra. El registro de "que dije en #3335 y quien me debe respuesta" tiene que quedar despues de tirar el clone.
+- **Por que no `projects/`:** un proyecto tiene repo propio bajo `gonzoblasco/` (`oss-post-graph`, que suena a OSS pero es nuestro). Una contribucion a `facebook/astryx` no tiene repo nuestro, tiene un clon temporal.
+- **Por que `oss/` y no una cuarta carpeta caprichosa:** la receta de cierre de `docs/AGENTS-DETALLE.md` ya usaba el namespace `"OSS / <repo> #<n>"`; faltaba la carpeta que lo recibiera, y por eso el slug terminaba siendo un nombre con barras.
+
+### Changed
+- **`PROJECT_CONTAINERS` = `projects`, `_workbench`, `forks`, `clones`, `oss`.** Test nuevo de resolucion en `oss/`.
+- **`skills/session-lifecycle/scripts/session-start.sh` ya no duplica el mapa en bash.** Resolvia con un `case` que solo conocia `projects/`: una sesion de `vane` leia un HANDOFF inexistente y arrancaba fria aunque `forks/vane/.knowledge/HANDOFF.md` existiera. Ahora delega en `resolve_handoff_path` (una sola fuente de verdad) y cae al path historico si el slug es invalido, para no romper el arranque.
+- **`.gitignore`:** `/oss/` y `/oss/*/` ignorados al 100%, como `forks/` y `clones/`.
+- **`docs/AGENTS-DETALLE.md`:** la receta de cierre del PR usa el slug de carpeta (`owner-repo`) y no el titulo del hilo; la excepcion de forks se corrige (decia que no llevan `.knowledge/`, pero `forks/vane/` tiene uno por ser un fork que se desarrolla); se documenta `oss/`.
+- **Skill `session-close-handoff`** (Workshop): destino `oss/`, regla del slug sin barras, y la verificacion de path pasa a ser control en vez de remedio del bug.
 
 ### Notes
 - **El defecto estaba documentado y sin corregir:** `session-close-handoff` ya avisaba que `resolve_handoff_path` "solo busca en `projects/`" y pedia resolver el destino a mano con `--handoff-dir`. El workaround evitaba el arbol fantasma pero dejaba el bug intacto y dependia de que el agente se acordara. Ahora la skill puede pedir la verificacion como control, no como unico remedio.

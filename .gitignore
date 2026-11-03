@@ -78,6 +78,14 @@ __pycache__/
 /_workbench/
 /_workbench/*/
 
+# oss/: contribuciones a repos ajenos (facebook/astryx, TanStack/router, ...).
+# NO es codigo ni un repo nuestro: es el registro del hilo (que se dijo, quien
+# tiene la pelota, que sigue abierto) en .knowledge/ de cada `owner-repo`.
+# Vive aparte de forks/ porque el fork es codigo desechable y este registro lo
+# sobrevive: se borra el clone y el HANDOFF sigue ahi. (2026-11-03)
+/oss/
+/oss/*/
+
 # playground/: pruebas temporales y analisis aislado. NO se commitea.
 # (nombre 2026-10-09: antes 'sandbox/', renombrado para no confundir con 'sandbox.mode' del gateway)
 playground/

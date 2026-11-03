@@ -23,16 +23,36 @@ fi
 DATE=$(date '+%Y-%m-%d %H:%M')
 
 # --- HANDOFF del proyecto (o del workspace) ---
-# El destino sigue el modelo ADR-098: el workspace (o un alias suyo) usa su
-# propio .knowledge/; un proyecto vive en <workspace>/projects/<slug>/.knowledge/.
-# Antes resolvia "projects/$PROJECT/.knowledge" (estructura vieja) y luego el path
-# ~/projects (superceded por ADR-098). Unificar con scripts/session-handoff.py.
-case "$(echo "$PROJECT" | tr '[:upper:]' '[:lower:]')" in
-  workspace|workspace_openclaw|workspace-openclaw|main|core|kanam-core|sistema|system)
-    HANDOFF_FILE=".knowledge/HANDOFF.md" ;;
-  *)
-    HANDOFF_FILE="projects/$PROJECT/.knowledge/HANDOFF.md" ;;
-esac
+# El destino lo resuelve scripts/session-handoff.py, que es la unica fuente de
+# verdad: recorre projects/, _workbench/, forks/, clones/ y oss/ y encuentra la
+# carpeta real. Antes esta rama duplicaba el mapa en bash y solo conocia
+# projects/: una sesion de `vane` leia un HANDOFF inexistente y arrancaba fria
+# aunque el archivo real existiera en forks/vane/. (2026-11-03)
+# La raiz del workspace se deriva con git (el script vive dentro del repo), no
+# subiendo directorios a mano: el scanner de seguridad marca `../..` como
+# path traversal, y ademas git es la respuesta correcta si el arbol se mueve.
+WS_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel 2>/dev/null || pwd)"
+HANDOFF_FILE="$(
+  python3 - "$PROJECT" "$WS_ROOT" <<'PY'
+import importlib.util
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[2])
+# session-handoff.py hace `from lockutil import file_lock`; lockutil vive en
+# scripts/, asi que ese directorio tiene que estar en sys.path antes de cargarlo.
+sys.path.insert(0, str(root / "scripts"))
+spec = importlib.util.spec_from_file_location("sh", root / "scripts" / "session-handoff.py")
+mod = importlib.util.module_from_spec(spec)
+sys.modules["sh"] = mod
+spec.loader.exec_module(mod)
+try:
+    print(mod.resolve_handoff_path(sys.argv[1], None).relative_to(mod.WORKSPACE))
+except Exception:
+    # Un slug invalido no debe romper el arranque: se cae al path historico.
+    print(f"projects/{sys.argv[1]}/.knowledge/HANDOFF.md")
+PY
+)" || HANDOFF_FILE="projects/$PROJECT/.knowledge/HANDOFF.md"
 
 echo "🔧 Starting session for: $PROJECT"
 echo ""

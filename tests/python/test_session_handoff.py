@@ -155,6 +155,14 @@ def test_resolve_encuentra_clon_fuera_de_projects(tmp_path, monkeypatch):
     assert path == tmp_path / "clones" / "externo" / ".knowledge" / "HANDOFF.md"
 
 
+def test_resolve_encuentra_contribucion_oss(tmp_path, monkeypatch):
+    """Las contribuciones a repos ajenos viven en oss/<owner>-<repo>/."""
+    _fake_workspace(tmp_path, monkeypatch, {"oss": ["facebook-astryx"]})
+    path = session_handoff.resolve_handoff_path("facebook-astryx", None)
+
+    assert path == tmp_path / "oss" / "facebook-astryx" / ".knowledge" / "HANDOFF.md"
+
+
 def test_resolve_prefiere_projects_sobre_otros_contenedores(tmp_path, monkeypatch):
     """Si el mismo slug vive en projects/ y en forks/, manda projects/."""
     _fake_workspace(tmp_path, monkeypatch, {"projects": ["gemelo"], "forks": ["gemelo"]})
