@@ -44,7 +44,7 @@ END = "<!-- END MANAGED:{key} -->"
 DEFAULTS = {
     "model_primary": "deepseek-v4.1-flash:cloud",
     "model_auxiliary": "gemma4:cloud",
-    "model_alternative": "glm-5.3-flash:cloud",
+    "model_alternative": "minimax-m3.1-flash:cloud",
     # Nivel de pensamiento por defecto (ADR-090, 2026-10-06): `off`. Los agentes
     # de juicio (critic/auditor/planner) usan `low` y se setean por agente; el
     # default global es off. Seed, no verdad: la DB manda.
@@ -70,7 +70,7 @@ DEFAULTS = {
         "dev gpt-oss:120b-cloud (fallback deepseek) · ops gpt-oss:120b-cloud "
         "(fallback deepseek) · auditor deepseek-v4.1-flash:cloud (fallback gemma4) · "
         "critic gpt-oss:120b-cloud (fallback nemotron) · planner gpt-oss:120b-cloud "
-        "(fallback glm-5.3-flash) · mind deepseek-v4.1-flash:cloud (fallback gemma4) · "
+        "(fallback minimax-m3.1-flash) · mind deepseek-v4.1-flash:cloud (fallback gemma4) · "
         "studio gemma4:cloud (fallback glm4:9b local)"
     ),
 }

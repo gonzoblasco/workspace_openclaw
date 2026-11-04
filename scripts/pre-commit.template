@@ -89,15 +89,22 @@ if [ -n "$MD_CHANGED" ]; then
 
     # 1) Guion comun en el markdown que se esta por commitear (staged).
     #    Se le pasa el contenido staged, no el del disco: es lo que se commitea.
-    DASH_BAD=0
+    #
+    #    AVISO, NO VETO (2026-11-03, decision de Gonzo). ADR-082 ya habia retirado
+    #    la regla del guion como obligacion, pero el hook seguia abortando: el
+    #    aparato contradecia a la decision y trababa commits legitimos por
+    #    caracteres heredados. Ahora reporta y sigue; el que quiera guion comun lo
+    #    usa, y nadie queda bloqueado por un em dash que no edito.
+    #    El hyphen_enforcer de arriba se mantiene: normaliza en-dash en lo staged,
+    #    que es una correccion mecanica y reversible, no un bloqueo.
+    DASH_WARN=0
     for f in $MD_RULE; do
       if ! git show ":$f" 2>/dev/null | python3 "${SCRIPT_DIR}/scripts/check_em_dash.py" - >/dev/null 2>&1; then
-        echo "  guion largo en $f:"
-        git show ":$f" | python3 "${SCRIPT_DIR}/scripts/check_em_dash.py" - 2>&1 | sed 's/^/    /'
-        DASH_BAD=1
+        echo "  aviso: guion largo en $f (no bloquea)"
+        DASH_WARN=$((DASH_WARN + 1))
       fi
     done
-    [ "$DASH_BAD" = "1" ] && { echo "ABORT: guion comun (-) obligatorio."; exit 1; }
+    [ "$DASH_WARN" -gt 0 ] && echo "  ($DASH_WARN archivo(s) con guion largo; commit continua)"
   fi
 
   # 2) Rutas citadas: cada `docs/...` o `scripts/...` debe existir.

@@ -6,7 +6,18 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
-## [2026-11-03] - La papelera versionada deja de serlo
+## [2026-11-03] - El guion deja de ser veto y el planner cambia de fallback
+
+### Changed
+- **El pre-commit ya no aborta por guion largo: avisa y sigue.** ADR-082 habia retirado la regla del guion como obligacion, pero el hook seguia cortando con `ABORT: guion comun (-) obligatorio`. El aparato contradecia a la decision y trababa commits legitimos por caracteres heredados que nadie edito. Ahora imprime `aviso: guion largo en <archivo> (no bloquea)` y continua. `hyphen_enforcer.sh` se mantiene: normaliza en-dash en lo staged, que es correccion mecanica y reversible, no bloqueo. `check_em_dash.py` sigue intacto para quien quiera correrlo a mano.
+- **Fallback del planner: `glm-5.3-flash` -> `minimax-m3.1-flash`.** Era el modelo mas caro por request de la casa (0.292 px/req contra 0.053 del siguiente). Cambiado en las tres capas: `memory.db` (settings `model_by_agent`, `model_triple`, `model.triple`), `scripts/managed-blocks.py` (seed `model_alternative` y `model_by_agent`) y `openclaw.json` (`agents.entries.kanam-planner.model.fallbacks`).
+
+### Notes
+- **`minimax-m3.1-pro` no existe.** Se pidio ese id, pero el catalogo de Ollama solo tiene `minimax-m3:cloud`, `minimax-m3.1-flash:cloud` y `minimax-m2.7:cloud` (`-pro` da 404 en library y en search). Se uso `minimax-m3.1-flash:cloud`, que ademas era el valor que la DB ya tenia en `model_alternative`: la unica capa desalineada era la tabla por agente.
+- **Ollama dejo de escuchar en la LAN.** La app tenia `expose = 1` en su `db.sqlite`, que produce `OLLAMA_HOST=0.0.0.0`. Se puso en `0` y tras reiniciar el bind quedo en `127.0.0.1:11434` (verificado: LAN responde `000`, local `200`). El riesgo era real: `:cloud` respondia sin auth desde la red local con el firewall apagado.
+- **Verificado, no asumido:** `sh -n` sobre el hook, `check-single-source`, `check-bootstrap-budget` y `check-pipeline-enforcement` en `rc=0`, y una prueba aislada que confirma que un archivo con em dash ya no aborta el commit.
+
+---
 
 ### Removed
 - **46 archivos borrados del indice.** Gonzo los habia borrado del disco: `.knowledge/ARCHIVED_PROJECTS/` (2), `.knowledge/ARCHIVED_SESSIONS/` (2) y `.trash/` (42). Se verifico que **nada unico se pierde**: las sesiones archivadas duplican `docs/archives/sesiones/` (el archivo vivo), y el contenido de `kanam-sudoku.md` sobrevive en `docs/insights/2026-10-28-ensenanzas-sudoku.md` y en el CHANGELOG. Los `.trash/` son backups del residuo del `2026-10-08`, ya reconciliados aditivamente.
