@@ -75,7 +75,7 @@ DEFAULTS = {
         "dev gpt-oss:120b-cloud (fallback deepseek) · ops gpt-oss:120b-cloud "
         "(fallback deepseek) · auditor deepseek-v4.1-flash:cloud (fallback gemma4) · "
         "critic gpt-oss:120b-cloud (fallback nemotron) · planner gpt-oss:120b-cloud "
-        "(fallback minimax-m3.1-flash, despues gemma4:12b-mlx local) · mind deepseek-v4.1-flash:cloud (fallback gemma4) · "
+        "(fallback gemma4:cloud, despues gemma4:12b-mlx local) · mind deepseek-v4.1-flash:cloud (fallback gemma4) · "
         "studio gemma4:cloud (fallback glm4:9b local)"
     ),
 }
