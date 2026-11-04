@@ -32,7 +32,7 @@
 <p class="role"><b>Senior Frontend Engineer - React, Design Systems and Data UI</b></p>
 <p class="contact">Núñez, Buenos Aires, Argentina | Remote or Hybrid (Buenos Aires, GMT-3) | +54 11 4937 4656 | <span class="nb">gonzoblasco@icloud.com</span> | <span class="nb">linkedin.com/in/gonzalo-blasco</span> | <span class="nb">github.com/gonzoblasco</p></span>
 <h2>Professional Summary</h2>
-<p>Frontend engineer with <b>10+ years</b> building production web interfaces with React, TypeScript and HTML5/CSS3. I build reusable, tested React components and take <b>ownership</b> of the product from ambiguous requirement to production: component APIs, state and data-fetching layers, and the tests that keep them honest. Design systems are my home ground - I have audited and remediated <b>50+ components</b> of an enterprise React component library to WCAG 2.2 AA, and built a semantic token system for my own product. Daily tooling includes <b>Jest and React Testing Library</b> for unit tests, and <b>Azure DevOps</b> for pipelines, tickets and user stories. I integrate REST APIs of real complexity and care about accessible interfaces as a baseline, not a polish step. AI coding agents (Claude Code, Codex) are part of the daily loop under a strict quarantine → analyze → verify → adopt method. 11 merged pull requests in production component libraries.</p>
+<p>Frontend engineer with <b>10+ years</b> building production web interfaces with React, TypeScript and HTML5/CSS3. I build reusable, tested React components and take <b>ownership</b> of the product from ambiguous requirement to production: component APIs, state and data-fetching layers, and the tests that keep them honest. Design systems are my home ground - I have audited and remediated <b>50+ components</b> of an enterprise React component library to WCAG 2.2 AA, and built a semantic token system for my own product. Daily tooling includes <b>Jest and React Testing Library</b> for unit tests, and <b>Azure DevOps</b> for pipelines, tickets and user stories. I integrate REST APIs of real complexity and care about accessible interfaces as a baseline, not a polish step. AI coding agents (Claude Code, Codex) are part of the daily loop under a strict quarantine → analyze → verify → adopt method. Merged pull requests in the component libraries of Adobe, IBM Carbon, Meta, MUI, shadcn and TanStack, plus reviews and diagnosis that shaped fixes in other maintainers&#x27; PRs.</p>
 <h2>Core Skills</h2>
 <ul>
 <li><b>Frontend:</b> React, TypeScript, JavaScript, Next.js (SSR), Vite, HTML5, CSS3/SCSS, Tailwind, component architecture, design systems, design tokens, responsive layouts.</li>
@@ -47,7 +47,7 @@
 <h3>Freelancer - Software Engineer</h3>
 <p><i>05/2025 - Present | Remote</i></p>
 <ul>
-<li>Built <b>SoporteML</b>, an AI-powered multi-tenant CRM for Mercado Libre sellers: React + Vite + TypeScript frontend with a full <b>design system of semantic tokens</b> (color, typography, spacing, radius, shadows, focus ring, states), a typographic scale and an explicit token-to-component map applied through Tailwind - so every screen came from the same set of primitives instead of ad-hoc styles. WCAG AA rules were the system&#x27;s criterion, not a final check.</li>
+<li>Built a multi-tenant <b>design system of semantic tokens</b> (color, typography, spacing, radius, shadows, focus ring, states) for a production React + Vite + TypeScript application, with a typographic scale and an explicit token-to-component map applied through Tailwind - so every screen came from the same set of primitives instead of ad-hoc styles. WCAG AA rules were the system&#x27;s criterion, not a final check.</li>
 <li>Built the <b>chat interface for AI agents</b>: streaming conversation with a retrieval-backed assistant, confidence-gated replies, and the state layer that keeps a long conversation coherent under network failure and retries.</li>
 <li>Shipped the first production client, <b>Pro Motors</b> (pro-motors.com.ar), with a live Mercado Libre integration and webhook-driven billing (Stripe).</li>
 <li>Built an <b>AI Engineering OS</b> on OpenClaw: per-project sessions, persistent memory, handoffs, subagents and reusable skills. Its working method is quarantine → analyze → verify → adopt: nothing from outside enters the codebase without being read, analyzed and verified first.</li>
@@ -79,9 +79,10 @@
 <li>Grew from junior to the team&#x27;s accessibility owner.</li>
 <li>Ran <b>A/B experiments in production with Adobe Target</b> against live user segments on features and designs, inside agile squads alongside design and product, implementing the variants as JavaScript snippets.</li>
 </ul>
-<h2>Open Source - Merged Pull Requests</h2>
-<p>Merged fixes in production component libraries and design systems, each reviewed and shipped by maintainers.</p>
+<h2>Open Source</h2>
+<p><b>Authored - merged</b> in production component libraries and design systems of Adobe, IBM Carbon, Meta, MUI, shadcn and TanStack, each reviewed and shipped by maintainers.</p>
 <ul>
+<li><b>shadcn-ui/ui #11465</b> - Stopped the released tail spacer from re-anchoring after a manual scroll during an anchored stream.</li>
 <li><b>adobe/react-spectrum #10503</b> - Gated the ComboBox live-region announcement to section changes; it was overwriting the native per-item VoiceOver announcement.</li>
 <li><b>adobe/react-spectrum #10554</b> - Added a regression test for global <code>aria-posinset</code> across sections.</li>
 <li><b>carbon-design-system/carbon #22887</b> - Added explicit <code>aria-describedby</code> support to <code>ComposedModal</code>, across both the native <code>&lt;dialog&gt;</code> path and the <code>div[role=dialog]</code> path.</li>
@@ -94,10 +95,19 @@
 <li><b>mui/base-ui #5551</b> - Moved <code>aria-orientation</code> to the owners of the role; the grid role does not support it.</li>
 <li><b>mui/material-ui #49003</b> - Kept carousel links in hidden slides out of the focus order; WCAG 4.1.2 <code>aria-hidden-focus</code>.</li>
 </ul>
-<h2>Education and Certifications</h2>
+<p><b>Collaboration - merged through another author.</b> Reviews, diagnosis and implementation that shaped the fix.</p>
+<ul>
+<li><b>meta/astryx #5563, #5373, #5332, #5414, #4157</b> - Prop forwarding across BaseProps components, Popover fit and focus behavior, breadcrumb audit pass, syntax punctuation colour passing AA, and distinct shapes per avatar status variant.</li>
+<li><b>carbon-design-system/ibm-products #9869</b> - Corrected the Carbon layer hierarchy in Tearsheet, where the body was elevated instead of the container.</li>
+<li><b>TanStack/query #11036</b> - Resolved Suspense when query data is set programmatically.</li>
+<li><b>ariakit/ariakit #6810</b> - Fixed initially open sibling dialogs.</li>
+<li><b>NousResearch/hermes-agent #130041</b> - Grew shared icon buttons to 24px hit targets.</li>
+<li><b>openclaw/openclaw #127213, #126714</b> - Exposed the active split pane to assistive technology, and softened its visual indication.</li>
+</ul>
+<p><b>Engaged beyond own PRs.</b> Reviews and technical comments on issues and pull requests in maintained projects including vercel/next.js and Radix UI, where the diagnosis contributed to a fix authored by someone else.</p>
+<h2>Certifications and Training</h2>
 <ul>
 <li><b>Digital House - React (2018)</b></li>
-<li><b>UADE - Diseño Gráfico (2003-2004, incomplete)</b></li>
 <li><b>Deque University - Accessibility Specialist Program (2021)</b></li>
 </ul>
 <h2>Languages</h2>

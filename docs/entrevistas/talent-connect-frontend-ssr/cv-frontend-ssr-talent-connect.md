@@ -6,7 +6,7 @@ Núñez, Buenos Aires, Argentina | Remote or Hybrid (Buenos Aires, GMT-3) | +54 
 
 ## Professional Summary
 
-Frontend engineer with **10+ years** building production web interfaces with React, TypeScript and HTML5/CSS3. I build reusable, tested React components and take **ownership** of the product from ambiguous requirement to production: component APIs, state and data-fetching layers, and the tests that keep them honest. Design systems are my home ground - I have audited and remediated **50+ components** of an enterprise React component library to WCAG 2.2 AA, and built a semantic token system for my own product. Daily tooling includes **Jest and React Testing Library** for unit tests, and **Azure DevOps** for pipelines, tickets and user stories. I integrate REST APIs of real complexity and care about accessible interfaces as a baseline, not a polish step. AI coding agents (Claude Code, Codex) are part of the daily loop under a strict quarantine → analyze → verify → adopt method. 11 merged pull requests in production component libraries.
+Frontend engineer with **10+ years** building production web interfaces with React, TypeScript and HTML5/CSS3. I build reusable, tested React components and take **ownership** of the product from ambiguous requirement to production: component APIs, state and data-fetching layers, and the tests that keep them honest. Design systems are my home ground - I have audited and remediated **50+ components** of an enterprise React component library to WCAG 2.2 AA, and built a semantic token system for my own product. Daily tooling includes **Jest and React Testing Library** for unit tests, and **Azure DevOps** for pipelines, tickets and user stories. I integrate REST APIs of real complexity and care about accessible interfaces as a baseline, not a polish step. AI coding agents (Claude Code, Codex) are part of the daily loop under a strict quarantine → analyze → verify → adopt method. Merged pull requests in the component libraries of Adobe, IBM Carbon, Meta, MUI, shadcn and TanStack, plus reviews and diagnosis that shaped fixes in other maintainers' PRs.
 
 ## Core Skills
 
@@ -23,7 +23,7 @@ Frontend engineer with **10+ years** building production web interfaces with Rea
 ### Freelancer - Software Engineer
 *05/2025 - Present | Remote*
 
-- Built **SoporteML**, an AI-powered multi-tenant CRM for Mercado Libre sellers: React + Vite + TypeScript frontend with a full **design system of semantic tokens** (color, typography, spacing, radius, shadows, focus ring, states), a typographic scale and an explicit token-to-component map applied through Tailwind - so every screen came from the same set of primitives instead of ad-hoc styles. WCAG AA rules were the system's criterion, not a final check.
+- Built a multi-tenant **design system of semantic tokens** (color, typography, spacing, radius, shadows, focus ring, states) for a production React + Vite + TypeScript application, with a typographic scale and an explicit token-to-component map applied through Tailwind - so every screen came from the same set of primitives instead of ad-hoc styles. WCAG AA rules were the system's criterion, not a final check.
 - Built the **chat interface for AI agents**: streaming conversation with a retrieval-backed assistant, confidence-gated replies, and the state layer that keeps a long conversation coherent under network failure and retries.
 - Shipped the first production client, **Pro Motors** (pro-motors.com.ar), with a live Mercado Libre integration and webhook-driven billing (Stripe).
 - Built an **AI Engineering OS** on OpenClaw: per-project sessions, persistent memory, handoffs, subagents and reusable skills. Its working method is quarantine → analyze → verify → adopt: nothing from outside enters the codebase without being read, analyzed and verified first.
@@ -55,10 +55,11 @@ Frontend engineer with **10+ years** building production web interfaces with Rea
 - Grew from junior to the team's accessibility owner.
 - Ran **A/B experiments in production with Adobe Target** against live user segments on features and designs, inside agile squads alongside design and product, implementing the variants as JavaScript snippets.
 
-## Open Source - Merged Pull Requests
+## Open Source
 
-Merged fixes in production component libraries and design systems, each reviewed and shipped by maintainers.
+**Authored - merged** in production component libraries and design systems of Adobe, IBM Carbon, Meta, MUI, shadcn and TanStack, each reviewed and shipped by maintainers.
 
+- **shadcn-ui/ui #11465** - Stopped the released tail spacer from re-anchoring after a manual scroll during an anchored stream.
 - **adobe/react-spectrum #10503** - Gated the ComboBox live-region announcement to section changes; it was overwriting the native per-item VoiceOver announcement.
 - **adobe/react-spectrum #10554** - Added a regression test for global `aria-posinset` across sections.
 - **carbon-design-system/carbon #22887** - Added explicit `aria-describedby` support to `ComposedModal`, across both the native `<dialog>` path and the `div[role=dialog]` path.
@@ -71,10 +72,20 @@ Merged fixes in production component libraries and design systems, each reviewed
 - **mui/base-ui #5551** - Moved `aria-orientation` to the owners of the role; the grid role does not support it.
 - **mui/material-ui #49003** - Kept carousel links in hidden slides out of the focus order; WCAG 4.1.2 `aria-hidden-focus`.
 
-## Education and Certifications
+**Collaboration - merged through another author.** Reviews, diagnosis and implementation that shaped the fix.
+
+- **meta/astryx #5563, #5373, #5332, #5414, #4157** - Prop forwarding across BaseProps components, Popover fit and focus behavior, breadcrumb audit pass, syntax punctuation colour passing AA, and distinct shapes per avatar status variant.
+- **carbon-design-system/ibm-products #9869** - Corrected the Carbon layer hierarchy in Tearsheet, where the body was elevated instead of the container.
+- **TanStack/query #11036** - Resolved Suspense when query data is set programmatically.
+- **ariakit/ariakit #6810** - Fixed initially open sibling dialogs.
+- **NousResearch/hermes-agent #130041** - Grew shared icon buttons to 24px hit targets.
+- **openclaw/openclaw #127213, #126714** - Exposed the active split pane to assistive technology, and softened its visual indication.
+
+**Engaged beyond own PRs.** Reviews and technical comments on issues and pull requests in maintained projects including vercel/next.js and Radix UI, where the diagnosis contributed to a fix authored by someone else.
+
+## Certifications and Training
 
 - **Digital House - React (2018)**
-- **UADE - Diseño Gráfico (2003-2004, incomplete)**
 - **Deque University - Accessibility Specialist Program (2021)**
 
 ## Languages
@@ -95,18 +106,18 @@ Merged fixes in production component libraries and design systems, each reviewed
 | JD requirement | Where it is covered |
 |---|---|
 | React in production | Summary, Core Skills, every role since 2016 |
-| CSS3 / SCSS and HTML5 | Core Skills; SoporteML token system; Minutentag migration |
-| REST/GraphQL API integration | Freelancer (SoporteML APIs), Core Skills |
+| CSS3 / SCSS and HTML5 | Core Skills; design token system; Minutentag migration |
+| REST/GraphQL API integration | Freelancer (REST APIs), Core Skills |
 | Jest and React Testing Library | Core Skills; Minutentag unit tests; EY quality work |
 | Design implementation from Figma | **Not covered** - see Notes |
-| Reusable, tested React components | EY Motif, SoporteML design system, 11 merged PRs |
+| Reusable, tested React components | EY Motif, own design system with semantic tokens, merged PRs |
 | Dashboards and complex data visualization | Freelancer (CRM dashboards, agent chat), Core Skills |
-| Chat and AI agent interfaces | Freelancer (SoporteML agent chat) |
+| Chat and AI agent interfaces | Freelancer (agent chat interface) |
 | Design system, build and document | Freelancer (semantic tokens), EY Motif |
 | WCAG basic accessibility | Super7UI, EY Motif, the OSS fixes |
 | Ownership | Summary, Freelancer |
 | TypeScript | Core Skills, every role |
-| Component frameworks (MUI, AntD, Tailwind) | Tailwind (SoporteML); component-library work in OSS |
+| Component frameworks (MUI, AntD, Tailwind) | Tailwind in production; merged PRs in MUI and Carbon libraries |
 | State management (Redux, Zustand, React Query) | Core Skills (Redux, React Query) |
 | Azure DevOps | EY |
 | Playwright and Storybook | Super7UI (Playwright CI), EY (Storybook review) |
