@@ -65,12 +65,17 @@ DEFAULTS = {
     # Distribucion por agente (ADR-090, cata 2026-10-06). Vive en un setting para
     # que el bloque de AGENTS.md la conserve administrada en vez de un resumen
     # generico. Semilla alineada al ADR-090; la DB manda.
+    #
+    # Orden de fallback (2026-11-04, decision de Gonzo): primero la nube mientras
+    # haya cuota, y el local SOLO cuando no la haya. main tenia `gemma4:12b-mlx`
+    # antes de `minimax-m3.1-flash`, asi que un primario caido arrancaba el local
+    # aunque hubiera cuota de nube: al reves de la politica.
     "model_by_agent": (
-        "main/defaults deepseek-v4.1-flash:cloud (fallback glm-5.3-flash) · "
+        "main/defaults deepseek-v4.1-flash:cloud (fallback minimax-m3.1-flash, despues gemma4:12b-mlx local) · "
         "dev gpt-oss:120b-cloud (fallback deepseek) · ops gpt-oss:120b-cloud "
         "(fallback deepseek) · auditor deepseek-v4.1-flash:cloud (fallback gemma4) · "
         "critic gpt-oss:120b-cloud (fallback nemotron) · planner gpt-oss:120b-cloud "
-        "(fallback minimax-m3.1-flash) · mind deepseek-v4.1-flash:cloud (fallback gemma4) · "
+        "(fallback minimax-m3.1-flash, despues gemma4:12b-mlx local) · mind deepseek-v4.1-flash:cloud (fallback gemma4) · "
         "studio gemma4:cloud (fallback glm4:9b local)"
     ),
 }
