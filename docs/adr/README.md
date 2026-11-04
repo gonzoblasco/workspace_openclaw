@@ -62,6 +62,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-055 | [Bloques managed - settings de la DB propagados a documentos de identidad](./ADR-055-bloques-managed-settings-db.md) | Los valores globales viven una vez (settings de la DB → bloques managed) |
 | ADR-065 | [DB-first vs doc-only - que documentos viven en el ciclo de la DB y cuales no](./ADR-065-db-first-vs-doc-only.md) | Qué documentos entran al ciclo DB-first y cuáles son doc-only |
 | ADR-057 | [El data-layer de memory.db - refactor integral en seis fases](./ADR-057-data-layer-memory-db-refactor-integral.md) | La campaña completa del data-layer: BLOB embeddings, taxonomía, contenido consultable, FKs activas, un eje por columna, rechunk semántico (absorbe 058-062) |
+| ADR-108 | [El índice vectorial sale de memory.db - dato crudo versionado, embeddings locales](./ADR-108-indice-vectorial-fuera-de-memory-db.md) | `memory.db` versionada con el dato crudo (6,3 MB); `vectors.db` local y fuera de git (19 MB), regenerable con `memory-reembed.py` |
 
 ### Kanam OS (el visor)
 | ADR | Decide |

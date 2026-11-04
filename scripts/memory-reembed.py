@@ -43,6 +43,16 @@ decode_vector = _vu.decode
 encode_vector = _vu.encode
 
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
+
+# El indice vectorial vive en vectors.db (ADR-108). Re-embeber necesita el indice
+# adjunto; si falta, esta funcion es justamente la que lo tiene que crear, asi que
+# se abre SIN exigirlo y se adjunta solo si existe.
+_spec_db = _ilu.spec_from_file_location(
+    "db_connect", os.path.join(os.path.dirname(os.path.abspath(__file__)), "db-connect.py")
+)
+_dbc = _ilu.module_from_spec(_spec_db)
+_spec_db.loader.exec_module(_dbc)
+connect_db = _dbc.connect
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
 
@@ -84,7 +94,7 @@ def main():
         print("Nothing written. Fix Ollama/model first.", file=sys.stderr)
         sys.exit(1)
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = connect_db()
     c = conn.cursor()
 
     def stale(vec_json):
@@ -106,12 +116,12 @@ def main():
             targets.append(("learnings", "learning_vector", row_id, f"{title} {content}".strip()))
 
     for row_id, chunk_text in c.execute(
-        "SELECT id, chunk_text FROM session_vectors "
+        "SELECT id, chunk_text FROM idx.session_vectors "
         "WHERE query_vector IS NOT NULL AND chunk_text IS NOT NULL AND TRIM(chunk_text)!=''"
     ).fetchall():
-        vj = c.execute("SELECT query_vector FROM session_vectors WHERE id=?", (row_id,)).fetchone()[0]
+        vj = c.execute("SELECT query_vector FROM idx.session_vectors WHERE id=?", (row_id,)).fetchone()[0]
         if stale(vj):
-            targets.append(("session_vectors", "query_vector", row_id, chunk_text))
+            targets.append(("idx.session_vectors", "query_vector", row_id, chunk_text))
 
     if args.limit:
         targets = targets[: args.limit]
@@ -152,7 +162,7 @@ def main():
 
     # Post-run dimension report
     import collections
-    for table, column in (("learnings", "learning_vector"), ("session_vectors", "query_vector")):
+    for table, column in (("learnings", "learning_vector"), ("idx.session_vectors", "query_vector")):
         dims = collections.Counter()
         for (vj,) in c.execute(f"SELECT {column} FROM {table} WHERE {column} IS NOT NULL"):
             d = _vu.dims(vj)

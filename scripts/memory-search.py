@@ -39,6 +39,16 @@ _spec2.loader.exec_module(_cu)
 split_large = _cu.split_large
 strip_harness_header = _cu.strip_harness_header
 
+# El indice vectorial vive en vectors.db (ADR-108). Esta apertura adjunta `idx` y
+# aborta si falta: sin indice no hay busqueda, y una lista vacia se confunde con
+# "no hay resultados".
+_spec3 = _ilu.spec_from_file_location(
+    "db_connect", os.path.join(os.path.dirname(os.path.abspath(__file__)), "db-connect.py")
+)
+_dbc = _ilu.module_from_spec(_spec3)
+_spec3.loader.exec_module(_dbc)
+connect_db = _dbc.connect
+
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
@@ -103,7 +113,7 @@ def search(query, top_n=5):
 
     Devuelve los mejores de cada uno, marcados. Antes solo miraba fichas.
     """
-    conn = sqlite3.connect(DB_PATH)
+    conn = connect_db()
     c = conn.cursor()
 
     qv = get_embedding(query)
@@ -111,7 +121,7 @@ def search(query, top_n=5):
     # --- Nivel ficha ---
     scored = []
     for session_id, blob, chunk_idx, txt in c.execute(
-        "SELECT session_id, query_vector, chunk_index, chunk_text FROM session_vectors"
+        "SELECT session_id, query_vector, chunk_index, chunk_text FROM idx.session_vectors"
     ):
         vec = decode_vector(blob)
         if vec is None:
@@ -155,7 +165,7 @@ def search(query, top_n=5):
     # lo que evita duplicar 2.9 MB en una DB versionada.
     secs = []
     for sec_id, blob, ci in c.execute(
-        "SELECT section_id, query_vector, chunk_index FROM section_vectors"
+        "SELECT section_id, query_vector, chunk_index FROM idx.section_vectors"
     ):
         vec = decode_vector(blob)
         if vec is None:

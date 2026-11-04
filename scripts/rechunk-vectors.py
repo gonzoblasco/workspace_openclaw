@@ -51,6 +51,7 @@ Uso:
     rechunk-vectors.py --limit 10         # solo N fichas (para probar)
 """
 import argparse
+import importlib.util as _ilu_db
 import json
 import os
 import re
@@ -65,6 +66,15 @@ WS = Path(__file__).resolve().parent.parent
 DB = Path(os.environ.get("MEMORY_DB", WS / "memory" / "memory.db"))
 OLLAMA = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
+
+# El indice vectorial vive en vectors.db (ADR-108): esta apertura adjunta `idx`
+# y reescribe las tablas de vectores ahi, no en memory.db.
+_spec_db = _ilu_db.spec_from_file_location(
+    "db_connect", os.path.join(str(Path(__file__).resolve().parent), "db-connect.py")
+)
+_dbc = _ilu_db.module_from_spec(_spec_db)
+_spec_db.loader.exec_module(_dbc)
+connect_db = _dbc.connect
 
 # El corte de texto vive en chunk-util.py: memory-search.py usa el MISMO modulo,
 # asi el texto que muestra el buscador es exactamente el que se vectorizo.
@@ -81,7 +91,7 @@ def util():
 
 
 SCHEMA = """
-CREATE TABLE IF NOT EXISTS section_vectors (
+CREATE TABLE IF NOT EXISTS idx.section_vectors (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     section_id   INTEGER NOT NULL,     -- FK a sections
     chunk_index  INTEGER NOT NULL,     -- una seccion grande puede dar varios
@@ -90,7 +100,7 @@ CREATE TABLE IF NOT EXISTS section_vectors (
     UNIQUE (section_id, chunk_index),
     FOREIGN KEY(section_id) REFERENCES sections(id) ON DELETE CASCADE
 );
-CREATE INDEX IF NOT EXISTS idx_svec_section ON section_vectors(section_id);
+CREATE INDEX IF NOT EXISTS idx.idx_svec_section ON idx.section_vectors(section_id);
 """
 # NOTA: a proposito NO hay columna `chunk_text`.
 #
@@ -219,7 +229,7 @@ def run_sections(conn, dry_run, limit=None):
     if limit:
         filas = filas[:limit]
 
-    antes = conn.execute("SELECT count(*) FROM section_vectors").fetchone()[0]
+    antes = conn.execute("SELECT count(*) FROM idx.section_vectors").fetchone()[0]
     print(f"  secciones: {len(filas)}")
     print(f"  vectores de seccion antes: {antes}")
 
@@ -253,14 +263,14 @@ def run_sections(conn, dry_run, limit=None):
         print("  (dry-run: no se escribio)")
         return len(nuevos)
 
-    conn.execute("DELETE FROM section_vectors")
+    conn.execute("DELETE FROM idx.section_vectors")
     conn.executemany(
-        """INSERT INTO section_vectors (section_id, chunk_index, query_vector)
+        """INSERT INTO idx.section_vectors (section_id, chunk_index, query_vector)
            VALUES (?,?,?)""",
         nuevos,
     )
     conn.commit()
-    print(f"  vectores de seccion escritos: {conn.execute('SELECT count(*) FROM section_vectors').fetchone()[0]}")
+    print(f"  vectores de seccion escritos: {conn.execute('SELECT count(*) FROM idx.section_vectors').fetchone()[0]}")
     print(f"  tiempo: {time.time()-t0:.0f}s")
     return len(nuevos)
 
@@ -332,7 +342,7 @@ def run(conn, dry_run, limit=None):
     if limit:
         sesiones = sesiones[:limit]
 
-    antes = conn.execute("SELECT count(*) FROM session_vectors").fetchone()[0]
+    antes = conn.execute("SELECT count(*) FROM idx.session_vectors").fetchone()[0]
     print(f"  sesiones con unidades de tema: {len(sesiones)}")
     print(f"  vectores antes: {antes}")
 
@@ -370,13 +380,13 @@ def run(conn, dry_run, limit=None):
 
     conn.execute("DELETE FROM session_vectors")
     conn.executemany(
-        """INSERT INTO session_vectors
+        """INSERT INTO idx.session_vectors
            (session_id, query_vector, relevance_score, chunk_index, chunk_text, created_at)
            VALUES (?,?,0.0,?,?,datetime('now'))""",
         nuevos,
     )
     conn.commit()
-    print(f"  vectores escritos: {conn.execute('SELECT count(*) FROM session_vectors').fetchone()[0]}")
+    print(f"  vectores escritos: {conn.execute('SELECT count(*) FROM idx.session_vectors').fetchone()[0]}")
     print(f"  tiempo: {time.time()-t0:.0f}s")
     return total
 
@@ -393,7 +403,7 @@ def verify(conn):
     # internals de OpenClaw donde "session key" es un tema legitimo (medido: los
     # 10 chunks que el filtro amplio marcaba eran contenido real).
     n = conn.execute(
-        """SELECT count(*) FROM session_vectors
+        """SELECT count(*) FROM idx.session_vectors
            WHERE chunk_text LIKE '# Session:%'
               OR chunk_text LIKE '%- **Session Key**:%'"""
     ).fetchone()[0]
@@ -409,7 +419,7 @@ def verify(conn):
         for r in conn.execute("SELECT DISTINCT session_id FROM session_entries WHERE kind='tema'")
     }
     mal_sem = 0
-    for sid, t in conn.execute("SELECT session_id, chunk_text FROM session_vectors"):
+    for sid, t in conn.execute("SELECT session_id, chunk_text FROM idx.session_vectors"):
         if sid in con_ent and t and not t.startswith("## "):
             mal_sem += 1
     print(
@@ -419,7 +429,7 @@ def verify(conn):
 
     dims = set()
     vu = load_vector_util()
-    for (v,) in conn.execute("SELECT query_vector FROM session_vectors"):
+    for (v,) in conn.execute("SELECT query_vector FROM idx.session_vectors"):
         try:
             dims.add(len(vu.decode(v)))
         except Exception:
@@ -427,16 +437,16 @@ def verify(conn):
     print(f"  dimensiones (fichas): {dims} {'OK' if dims and max(dims) >= 128 else '!!'}")
 
     # Las mismas garantias para las secciones.
-    n_sec = conn.execute("SELECT count(*) FROM section_vectors").fetchone()[0]
+    n_sec = conn.execute("SELECT count(*) FROM idx.section_vectors").fetchone()[0]
     if n_sec:
         sin_titulo = conn.execute(
-            """SELECT count(*) FROM section_vectors WHERE chunk_text NOT LIKE '## %'"""
+            """SELECT count(*) FROM idx.section_vectors WHERE chunk_text NOT LIKE '## %'"""
         ).fetchone()[0]
         print(f"  secciones vectorizadas: {n_sec}")
         print(f"  chunks de seccion sin titulo al frente: {sin_titulo} {'OK' if sin_titulo == 0 else '!!'}")
         bad += 1 if sin_titulo else 0
         huerfanos = conn.execute(
-            """SELECT count(*) FROM section_vectors v LEFT JOIN sections s ON s.id=v.section_id
+            """SELECT count(*) FROM idx.section_vectors v LEFT JOIN sections s ON s.id=v.section_id
                WHERE s.id IS NULL"""
         ).fetchone()[0]
         print(f"  section_vectors huerfanos: {huerfanos} {'OK' if huerfanos == 0 else '!!'}")
@@ -466,7 +476,7 @@ def main():
         shutil.copy2(DB, backup)
         print(f"backup: {backup}")
 
-    conn = sqlite3.connect(DB)
+    conn = connect_db(DB)
     conn.execute("PRAGMA foreign_keys = ON")
     bad = 0
     try:

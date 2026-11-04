@@ -28,6 +28,13 @@ build/
 # Excepción: la DB de memoria del workspace SÍ se versiona (respaldo de la fuente de verdad, ADR-084/085)
 !memory/memory.db
 
+# El índice vectorial NO se versiona (ADR-108): es derivado y reconstruible.
+# Vive al lado de memory.db, local. Reconstruir: python3 scripts/memory-reembed.py --all
+memory/vectors.db
+memory/vectors.db-journal
+memory/vectors.db-wal
+memory/vectors.db-shm
+
 # Env files
 .env
 .env.local

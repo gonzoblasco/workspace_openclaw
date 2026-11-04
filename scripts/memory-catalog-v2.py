@@ -32,6 +32,15 @@ encode_vector = _vu.encode
 from datetime import datetime
 
 DB_PATH = os.environ.get("MEMORY_DB", "memory/memory.db")
+
+# El indice vectorial vive en vectors.db (ADR-108). Esta conexion adjunta `idx`;
+# si vectors.db falta, falla en vez de escribir vectores en el archivo equivocado.
+_spec_db = _ilu.spec_from_file_location(
+    "db_connect", os.path.join(os.path.dirname(os.path.abspath(__file__)), "db-connect.py")
+)
+_dbc = _ilu.module_from_spec(_spec_db)
+_spec_db.loader.exec_module(_dbc)
+connect_db = _dbc.connect
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE", "http://127.0.0.1:11434")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
 
@@ -101,14 +110,14 @@ def cosine_similarity(vec1, vec2):
 
 def compute_topic_centroids():
     """Compute average embedding (centroid) for each topic from existing sessions"""
-    conn = sqlite3.connect(DB_PATH)
+    conn = connect_db()
     conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
 
     rows = c.execute(
         """
         SELECT sv.session_id, sv.query_vector, t.name
-        FROM session_vectors sv
+        FROM idx.session_vectors sv
         JOIN topic_sessions ts ON sv.session_id = ts.session_id
         JOIN topics t ON ts.topic_id = t.id
         WHERE sv.chunk_index = 0
@@ -228,7 +237,7 @@ def extract_learnings(content):
 def compute_category_centroids(min_examples=5):
     """Compute average embedding (centroid) for each learning category.
     Only returns centroids for categories with >= min_examples (reliable signal)."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = connect_db()
     conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
     rows = c.execute(
@@ -321,7 +330,7 @@ def categorize_learning(learning_text, category_centroids=None):
 
 def create_schema():
     """Create database schema if not exists"""
-    conn = sqlite3.connect(DB_PATH)
+    conn = connect_db()
     conn.execute("PRAGMA foreign_keys = ON")
     c = conn.cursor()
 
@@ -346,7 +355,7 @@ def create_schema():
 
     c.execute(
         """
-        CREATE TABLE IF NOT EXISTS session_vectors (
+        CREATE TABLE IF NOT EXISTS idx.session_vectors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             session_id INTEGER NOT NULL,
             query_vector BLOB NOT NULL,
@@ -362,9 +371,9 @@ def create_schema():
     # Migration: older databases created session_vectors without chunk_text
     # (the column arrived later via memory-catalog-simple.sh). Without it,
     # semantic search returns matches with empty text.
-    sv_cols = {r[1] for r in c.execute("PRAGMA table_info(session_vectors)")}
+    sv_cols = {r[1] for r in c.execute("PRAGMA idx.table_info(session_vectors)")}
     if "chunk_text" not in sv_cols:
-        c.execute("ALTER TABLE session_vectors ADD COLUMN chunk_text TEXT")
+        c.execute("ALTER TABLE idx.session_vectors ADD COLUMN chunk_text TEXT")
 
     c.execute(
         """
@@ -421,7 +430,7 @@ def catalog_session(conn, content, date_str, detected_topics):
                 session_id,
             ),
         )
-        c.execute("DELETE FROM session_vectors WHERE session_id=?", (session_id,))
+        c.execute("DELETE FROM idx.session_vectors WHERE session_id=?", (session_id,))
     else:
         c.execute(
             """INSERT INTO sessions_relacional
@@ -541,7 +550,7 @@ def catalog_memory():
             chunk_embedding = get_embedding(chunk)
             relevance = TAG_THRESHOLD if (detected_topics and chunk_idx == 0) else 0.0
             c.execute(
-                """INSERT INTO session_vectors
+                """INSERT INTO idx.session_vectors
                    (session_id, query_vector, relevance_score, chunk_index, chunk_text, created_at)
                    VALUES (?, ?, ?, ?, ?, ?)""",
                 (
@@ -627,7 +636,7 @@ def catalog_memory():
     print("✅ Cataloging complete!\n")
     print("Database Summary:")
     print(f"   - sessions_relacional: {c.execute('SELECT COUNT(*) FROM sessions_relacional').fetchone()[0]}")
-    print(f"   - session_vectors: {c.execute('SELECT COUNT(*) FROM session_vectors').fetchone()[0]}")
+    print(f"   - session_vectors: {c.execute('SELECT COUNT(*) FROM idx.session_vectors').fetchone()[0]}")
     print(f"   - topics: {c.execute('SELECT COUNT(*) FROM topics').fetchone()[0]}")
     print(
         f"   - topic_sessions mappings: {c.execute('SELECT COUNT(*) FROM topic_sessions').fetchone()[0]}"
