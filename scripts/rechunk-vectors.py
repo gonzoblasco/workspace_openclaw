@@ -2,6 +2,12 @@
 """
 rechunk-vectors.py - Re-cortar los vectores por unidades semanticas (2026-09-23).
 
+ESTADO (2026-11-04): herramienta de REPARACION MANUAL, no parte del ciclo
+automatico. Se conserva porque rehace los chunks cuando cambia la estrategia de
+corte, y porque `chunk-util.py` -que comparte con `memory-search.py`- es la
+fuente unica del corte: si los dos divergieran, la busqueda mostraria texto que
+no es el que se vectorizo. Desde ADR-108 escribe en `memory/vectors.db` (idx).
+
 PROBLEMA MEDIDO
 
 Los 136 vectores de `session_vectors` se cortaron con una ventana CIEGA de 1500

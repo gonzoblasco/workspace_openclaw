@@ -1,6 +1,17 @@
 #!/usr/bin/env python3
 """
-migrate-vectors.py - Convierte los embeddings de memory.db de JSON a BLOB.
+migrate-vectors.py - Convierte los embeddings de memoria de JSON a BLOB.
+
+ESTADO (2026-11-04): herramienta de REPARACION MANUAL, no parte del ciclo
+automatico. Nadie la ejecuta desde session-end ni desde memory-db.sh, y eso es
+deliberado: su trabajo (la campana de 2026-09-22) ya esta hecho, y los 3295
+vectores actuales son BLOB float32. Se conserva porque si alguna vez entra un
+vector en JSON a `learnings.learning_vector`, este es el unico que lo arregla.
+Idempotente: correrla sobre datos sanos no escribe nada.
+
+Desde ADR-108 `session_vectors` vive en `memory/vectors.db`; esta herramienta
+adjunta `idx` y trabaja sobre las dos bases. Si vectors.db no existe, sigue
+sirviendo para `learnings`, que vive en memory.db.
 
 Contexto (medido 2026-09-22): el 77% de los 12 MB de memory.db eran vectores
 guardados como texto JSON. 1024 floats ocupaban ~22 KB en JSON y 4096 bytes en
@@ -37,10 +48,44 @@ DB = WS / "memory" / "memory.db"
 
 # (tabla, columna) con vectores que hay que convertir. Desde ADR-058 el vector
 # de learnings vive en `learnings`, no en la tabla gemela eliminada.
+# El indice vectorial vive en vectors.db desde ADR-108. `session_vectors` esta
+# ahi; `learnings.learning_vector` sigue en memory.db. La tabla de vectores se
+# resuelve EN TIEMPO DE EJECUCION (vector_tables): la herramienta tiene que servir
+# tanto sobre una DB unica (tests, historia) como sobre la separada (estado actual).
 VECTOR_COLS = [
     ("session_vectors", "query_vector"),
     ("learnings", "learning_vector"),
 ]
+
+
+def attach_vectors(conn):
+    """Adjunta vectors.db como `idx` si existe. Si no existe, la herramienta
+    sigue sirviendo para lo que viva en memory.db."""
+    import os
+    vp = os.environ.get("MEMORY_VECTORS_DB") or str(Path(DB).parent / "vectors.db")
+    if os.path.exists(vp):
+        conn.execute("ATTACH DATABASE ? AS idx", (vp,))
+    return os.path.exists(vp)
+
+
+def vector_tables(conn):
+    """Resuelve el nombre real de cada tabla de vectores.
+
+    Busca primero en `idx` (estado post ADR-108) y cae a `main` (DB unica). Asi la
+    herramienta funciona igual en los tests, en una DB historica y en el split.
+    """
+    schemas = {r[1] for r in conn.execute("PRAGMA database_list")}
+    out = []
+    for table, col in VECTOR_COLS:
+        if "idx" in schemas:
+            hit = conn.execute(
+                "SELECT 1 FROM idx.sqlite_master WHERE type='table' AND name=?", (table,)
+            ).fetchone()
+            if hit:
+                out.append((f"idx.{table}", col))
+                continue
+        out.append((table, col))
+    return out
 
 # El indice pesado y su reemplazo liviano.
 HEAVY_INDEX = "idx_learnings_vector"
@@ -75,7 +120,7 @@ def load_vector_util():
 def survey(conn, vu):
     """Foto del estado actual: cuantos JSON, cuantos BLOB, cuanto pesan."""
     out = {}
-    for table, col in VECTOR_COLS:
+    for table, col in vector_tables(conn):
         rows = conn.execute(f"SELECT id, {col} FROM {table} WHERE {col} IS NOT NULL").fetchall()
         as_json = sum(1 for _id, v in rows if vu.is_json(v))
         total = sum(len(v) if isinstance(v, str) else len(bytes(v)) for _id, v in rows)
@@ -87,7 +132,7 @@ def migrate(conn, vu, dry_run, drop_dead):
     report = []
 
     # --- 1. Vectores JSON -> BLOB ---
-    for table, col in VECTOR_COLS:
+    for table, col in vector_tables(conn):
         rows = conn.execute(f"SELECT id, {col} FROM {table} WHERE {col} IS NOT NULL").fetchall()
         converted = skipped = failed = 0
         before = after = 0
@@ -187,6 +232,7 @@ def main():
 
     size_before = DB.stat().st_size
     conn = sqlite3.connect(DB)
+    attach_vectors(conn)
     try:
         # Invariante correcto: la migracion no debe AGREGAR violaciones. Las que
         # ya existen son otro problema (foreign_keys=0, ver ADR) y se reportan
@@ -214,7 +260,7 @@ def main():
         # Verificacion post: invariantes de integridad.
         print("\nVerificacion:")
         bad = 0
-        for table, col in VECTOR_COLS:
+        for table, col in vector_tables(conn):
             rows = conn.execute(f"SELECT id, {col} FROM {table} WHERE {col} IS NOT NULL").fetchall()
             still_json = sum(1 for _id, v in rows if vu.is_json(v))
             dims = set()

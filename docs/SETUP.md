@@ -87,7 +87,8 @@ Notas específicas del entorno de Gonzo. Los detalles de los modelos/agentes en 
 ## Memoria (SQLite + espejos)
 
 - **Fuente de verdad:** la declara `AGENTS.md` (sección Tools); acá solo se listan los espejos.
-- **Busqueda semantica (2026-08-30):** `session_vectors` con embeddings reales de Ollama (**1024 dims**, `qwen3-embedding:0.6b`) + `chunk_text`. Usar `scripts/semantic-search-json.js` para recuperar sesiones por significado. Re-catalogar con `scripts/memory-catalog-simple.sh` si se agregan dailies nuevos.
+- **Busqueda semantica (2026-08-30):** `session_vectors` con embeddings reales de Ollama (**1024 dims**, `qwen3-embedding:0.6b`) + `chunk_text`. Usar `scripts/semantic-search-json.js` para recuperar sesiones por significado. Re-catalogar con `scripts/memory-catalog-v2.py` si se agregan dailies nuevos.
+- **Indice vectorial (ADR-108, 2026-11-04):** los vectores viven en `memory/vectors.db` (local, fuera de git, reconstruible con `scripts/memory-reembed.py`). `memory.db` guarda solo el dato crudo y sigue versionada.
 - **Espejos MD** (regenerar con `./scripts/memory-db.sh export-all`):
   - `memory/todos.md` ← tabla todos
   - `memory/inbox.md` ← tabla inbox

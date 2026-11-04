@@ -368,9 +368,9 @@ def create_schema():
     """
     )
 
-    # Migration: older databases created session_vectors without chunk_text
-    # (the column arrived later via memory-catalog-simple.sh). Without it,
-    # semantic search returns matches with empty text.
+    # Migration: older databases created session_vectors without chunk_text.
+    # The column arrived later, in a previous version of the catalog (removed
+    # 2026-11-04). Without it, semantic search returns matches with empty text.
     sv_cols = {r[1] for r in c.execute("PRAGMA idx.table_info(session_vectors)")}
     if "chunk_text" not in sv_cols:
         c.execute("ALTER TABLE idx.session_vectors ADD COLUMN chunk_text TEXT")
