@@ -1,0 +1,95 @@
+<style>
+body { font-family: -apple-system, "Helvetica Neue", Georgia, serif; max-width: 680px; margin: 0 auto; padding: 40px 24px; line-height: 1.65; color: #1d1f1e; font-size: 16px; }
+h1 { font-size: 2.1em; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 0.2em; }
+h2 { font-size: 1.35em; margin-top: 2em; border-bottom: 1px solid #e2e5e2; padding-bottom: 0.3em; }
+h3 { font-size: 1.1em; margin-top: 1.5em; }
+blockquote { border-left: 3px solid #2f6f4f; margin-left: 0; padding-left: 1em; color: #4a4f4c; font-style: italic; }
+table { border-collapse: collapse; width: 100%; margin: 1.4em 0; font-size: 0.92em; }
+th, td { border: 1px solid #d8dcd8; padding: 0.5em 0.7em; text-align: left; }
+th { background: #f4f6f4; font-weight: 600; }
+code { background: #f4f6f4; padding: 0.12em 0.35em; border-radius: 3px; font-size: 0.9em; }
+pre { background: #f7f8f7; border: 1px solid #e2e5e2; border-radius: 4px; padding: 1em; overflow-x: auto; font-size: 0.85em; line-height: 1.45; }
+pre code { background: none; padding: 0; }
+hr { border: none; border-top: 1px solid #e2e5e2; margin: 2.5em 0; }
+</style>
+
+# hf.co/ModernoTech/Nova-Coder:Q4_K_M — evaluacion interna
+
+**Fecha:** 2026-11-05
+**Veredicto:** NO ADOPTAR
+**Uso recomendado:** ninguno como modelo general; evaluable como especialista solo para codigo Python aislado bajo supervision
+
+## Ficha
+| Campo | Valor | Fuente |
+|---|---|---|
+| Modelo | hf.co/ModernoTech/Nova-Coder:Q4_K_M | declarado |
+| Contexto maximo | 163840 tokens | declarado |
+| Contexto de corrida | 32768 tokens | medido |
+| Quantizacion | Q4_K_M | declarado |
+| think | false | medido |
+| num_ctx efectivo | 32768 | medido |
+| num_predict | null (sin limite) | medido |
+| Temperatura | no especificada | NO_VERIFICABLE |
+| Fecha evaluacion | 2026-11-05 | medido |
+
+## Mediciones
+| Metrica | Valor medido | Valor declarado | Brecha |
+|---|---|---|---|
+| p1_funcion_simple: secs | 22.94 s | - | - |
+| p1_funcion_simple: tokens_out | 105 | - | - |
+| p1_funcion_simple: done | stop | - | - |
+| p2_explicacion: secs | 13.42 s | - | - |
+| p2_explicacion: tokens_out | 88 | - | - |
+| p3_debug: secs | 16.41 s | - | - |
+| p3_debug: tokens_out | 354 | - | - |
+| p4_refactor: secs | 22.38 s | - | - |
+| p4_refactor: tokens_out | 455 | - | - |
+| p5_complejo: secs | 33.46 s | - | - |
+| p5_complejo: tokens_out | 817 | - | - |
+| p6_trampa: secs | 62.29 s | - | - |
+| p6_trampa: tokens_out | 573 | - | - |
+| p7_local: secs | 14.80 s | - | - |
+| p7_local: tokens_out | 201 | - | - |
+| Contexto | 32768 | 163840 | -131072 tokens (80% debajo de declarado) |
+| Tasa CORRECTO | 3/7 (42.8%) | - | - |
+| Tasa FALSO | 3/7 (42.8%) | - | - |
+| Tasa INCOMPLETO | 1/7 (14.2%) | - | - |
+
+Si no hay valor declarado, la celda va vacia. Nunca se completa con estimaciones.
+
+## Prueba por prueba
+| Prueba | Veredicto | Severidad | Evidencia (cita) |
+|---|---|---|---|
+| p1_funcion_simple | CORRECTO | ninguna | `def es_par(n): return n % 2 == 0` |
+| p2_explicacion | FALSO | media | `Un context manager en Python es una herramienta que permite definir cómo un objeto debe ser utilizado con la sentencia "with"` — 0 marcas rioplatenses, ignora instruccion de registro |
+| p3_debug | CORRECTO | ninguna | `cantidad = i.get('cantidad', 0)  # Usamos 0 como valor por defecto` |
+| p4_refactor | INCOMPLETO | media | `return datetime.datetime.now()` sin `import datetime`; codigo no ejecutable tal cual |
+| p5_complejo | CORRECTO | ninguna | `if len(result) != len(packages): return None` — deteccion de ciclo correcta |
+| p6_trampa | FALSO | critica | `Con solo 3 servidores, no podrás formar una mayoría mayoría necesaria para seguir operando si uno de ellos falla` y `no deberías usar Raft o Paxos directamente` |
+| p7_local | FALSO | alta | `Esto podría deberse a varios problemas, como que el servicio de la base de datos no esté corriendo, el puerto esté incorrecto, o haya problemas de red` — 127.0.0.1 no implica red |
+
+## Modo de falla dominante
+`falso_seguro`: responde con confianza y contenido invertido
+
+Justificar con la cuenta: 2 de 7 pruebas son `falso_seguro` puro (p6_trampa, p7_local) con severidad alta/critica; si se incluye p2_explicacion como confianza sin cumplir instruccion, 3 de 7 pruebas.
+
+p6 es el caso definitorio: invierte la verdad tecnica (afirma que Raft/Paxos no toleran 1 fallo con 3 nodos cuando requieren mayoria de 2 y estan disenados exactamente para eso) y recomienda ZooKeeper como alternativa valida, con redaccion impecable.
+
+## Riesgos
+1. **Riesgo:** Desinformacion critica en sistemas distribuidos. p6 invierte quorum (3 nodos = mayoria 2). **Mitigacion:** sin mitigacion conocida en este modelo; bloquear uso para arquitectura/distribuidos.
+2. **Riesgo:** Diagnostico local incorrecto. p7 diluye causa real (servicio no escuchando en puerto local) con `problemas de red` en loopback. **Mitigacion:** no usar para troubleshooting de infra; requiere validacion humana.
+3. **Riesgo:** Codigo no ejecutable. p4 omite `import datetime`. **Mitigacion:** exigir ejecucion en sandbox antes de entregar.
+4. **Riesgo:** Incumplimiento de instruccion de formato/registro. p2 ignora rioplatense explicito. **Mitigacion:** sin mitigacion conocida; no usar donde el registro sea requisito.
+5. **Riesgo:** Correlacion inversa calidad-correccion: respuestas mas largas y seguras (p6: 573 tokens, 62.29 s; p5: 817 tokens) no predicen correccion. **Mitigacion:** no usar longitud/confianza como proxy de calidad.
+
+## Configuracion recomendada
+Modelo: `hf.co/ModernoTech/Nova-Coder:Q4_K_M`, think: `false`, num_ctx: `32768`, num_predict: `null`, temperatura: NO_VERIFICABLE.
+
+No funciona bien con ninguna configuracion para uso general: 42.8% CORRECTO y 1 fallo critico en conocimiento factual. Como especialista de codigo Python simple (p1, p3, p5) funciona con la configuracion medida, siempre con ejecucion y revision posterior.
+
+## Pendientes
+- Medir con `think: true` y con temperatura explicita (0.0 / 0.2 / 0.7) para verificar si p6/p7 persisten.
+- Medir latencia y tasa de acierto con contexto >32768 hasta 163840 declarado.
+- Medir p4 con ejecucion real en interprete (verificar NameError por falta de import).
+- Medir pruebas adicionales de sistemas distribuidos y networking local para confirmar sistematicidad de `falso_seguro`.
+- Medir cumplimiento de instrucciones de registro con prompt rioplatense reforzado.

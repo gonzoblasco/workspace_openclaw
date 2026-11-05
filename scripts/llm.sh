@@ -13,13 +13,27 @@
 #
 # Uso:
 #   llm.sh <tarea> [--template ARCHIVO] [--prompt TEXTO] [--var k=v]... [--json]
+#            [--num-ctx N] [--no-num-predict] [--model M] [--think LVL]
 #   llm.sh --list                      # tareas disponibles y por que ese modelo
 #   llm.sh <tarea> --show              # config resuelta, sin llamar al modelo
+#
+# Overrides para MEDIR, no para producir (2026-11-05):
+#   --num-ctx N        fija el contexto de la corrida. Sin este flag y sin
+#                      num_ctx en el registro, no se manda: Ollama usa el
+#                      default del modelo (que en un GGUF puede ser 163840 y
+#                      swap thrashing: 469s para un saludo).
+#   --no-num-predict   no manda num_predict: el modelo decide cuando cortar.
+#                      Necesario para medir calidad sin el techo artificial.
+#   --model M          pisa el modelo de la tarea (evaluar un modelo que no
+#                      tiene tarea propia todavia).
+#   --think LVL        pisa el nivel de thinking de la tarea.
+#   Con --json, la salida suma ctx, num_predict y done_reason utiles para medir.
 #
 # Ejemplos:
 #   llm.sh narrativa --template templates/cuento.md --var tema="estacion minera"
 #   llm.sh clasificacion --prompt "clasifica: arreglar el css del boton"
 #   llm.sh codigo --prompt "explica este error: EADDRINUSE" --json
+#   llm.sh codigo --prompt "di OK" --num-ctx 32768 --model gemma4:12b-mlx
 #
 # Salida por defecto: el texto del modelo, limpio.
 # Con --json: {text, model, think, task, tokens_in, tokens_out, secs, done}.
@@ -65,8 +79,12 @@ fi
 
 MODEL=$(jq -r --arg t "$TASK" '.tasks[$t].model' "$TASKS_FILE")
 THINK=$(jq -r --arg t "$TASK" '.tasks[$t].think' "$TASKS_FILE")
-NUM_PREDICT=$(jq -r --arg t "$TASK" '.tasks[$t].num_predict' "$TASKS_FILE")
+NUM_PREDICT=$(jq -r --arg t "$TASK" '.tasks[$t].num_predict | if . == null then "" else . end' "$TASKS_FILE")
 TEMP=$(jq -r --arg t "$TASK" '.tasks[$t].temperature' "$TASKS_FILE")
+# num_ctx es opcional: sin valor en el registro no se manda y Ollama usa su
+# default. Eso mantiene el comportamiento anterior intacto.
+NUM_CTX=$(jq -r --arg t "$TASK" '.tasks[$t].num_ctx // ""' "$TASKS_FILE")
+NO_NUM_PREDICT=0
 
 # ---------- flags ----------
 TEMPLATE=""; PROMPT=""; SHOW=0; JSON_OUT=0
@@ -79,15 +97,30 @@ while [ $# -gt 0 ]; do
     --var)      [ -n "${2:-}" ] || die 2 "--var necesita k=v";           VARS+=("$2");  shift 2 ;;
     --json)     JSON_OUT=1; shift ;;
     --show)     SHOW=1; shift ;;
+    --num-ctx)  [ -n "${2:-}" ] || die 2 "--num-ctx necesita un numero"; NUM_CTX="$2"; shift 2 ;;
+    --no-num-predict) NO_NUM_PREDICT=1; shift ;;
+    --model)    [ -n "${2:-}" ] || die 2 "--model necesita un nombre"; MODEL="$2"; shift 2 ;;
+    --think)    [ -n "${2:-}" ] || die 2 "--think necesita un nivel"; THINK="$2"; shift 2 ;;
     *) die 2 "flag desconocida: $1 (ver --help)" ;;
   esac
 done
+
+# --no-num-predict gana sobre lo que diga el registro.
+[ "$NO_NUM_PREDICT" = "1" ] && NUM_PREDICT=""
+
+# Un num_ctx que no es entero positivo es un error de uso, no un default silencioso.
+if [ -n "$NUM_CTX" ]; then
+  case "$NUM_CTX" in
+    ''|*[!0-9]*) die 2 "--num-ctx espera un entero positivo, recibi: $NUM_CTX" ;;
+  esac
+fi
 
 if [ "$SHOW" = "1" ]; then
   echo "tarea=$TASK"
   echo "model=$MODEL"
   echo "think=$THINK"
-  echo "num_predict=$NUM_PREDICT"
+  echo "num_predict=${NUM_PREDICT:-<modelo>}"
+  echo "num_ctx=${NUM_CTX:-<default del modelo>}"
   echo "temperature=$TEMP"
   exit 0
 fi
@@ -129,9 +162,9 @@ fi
 # ---------- la llamada ----------
 # 'think' viaja SIEMPRE explicito, con el tipo correcto (false o "low"/"medium"/"high").
 # Un script sin 'think' hereda el default del modelo: eso fue el bug medido el 2026-11-05.
-PAYLOAD=$(python3 - "$MODEL" "$THINK" "$NUM_PREDICT" "$TEMP" "$TEXT" <<'PY'
+PAYLOAD=$(python3 - "$MODEL" "$THINK" "$NUM_PREDICT" "$TEMP" "$TEXT" "$NUM_CTX" <<'PY'
 import json, sys
-model, think, npred, temp, text = sys.argv[1:6]
+model, think, npred, temp, text, nctx = sys.argv[1:7]
 
 def parse_think(v):
     if v in ("false", "False", "off", "0"): return False
@@ -139,12 +172,20 @@ def parse_think(v):
     if v in ("low", "medium", "high"): return v
     raise SystemExit("llm.sh: think invalido en el registro: " + v)
 
+opts = {"temperature": float(temp)}
+# num_predict vacio = el modelo corta cuando quiere (medicion de calidad).
+if npred not in ("", "null"):
+    opts["num_predict"] = int(npred)
+# num_ctx vacio = no se manda: Ollama usa el default del modelo (compatibilidad).
+if nctx not in ("", "null"):
+    opts["num_ctx"] = int(nctx)
+
 print(json.dumps({
     "model": model,
     "think": parse_think(think),
     "stream": False,
     "messages": [{"role": "user", "content": text}],
-    "options": {"temperature": float(temp), "num_predict": int(npred)},
+    "options": opts,
 }))
 PY
 ) || exit 4
@@ -166,16 +207,21 @@ fi
 
 # ---------- la salida ----------
 if [ "$JSON_OUT" = "1" ]; then
-  printf '%s' "$RESP" | jq --arg task "$TASK" --arg model "$MODEL" --arg think "$THINK" '
+  printf '%s' "$RESP" | jq --arg task "$TASK" --arg model "$MODEL" --arg think "$THINK" \
+       --arg nctx "${NUM_CTX:-}" --arg npred "${NUM_PREDICT:-}" '
     {
       text: (.message.content // ""),
       task: $task,
       model: $model,
       think: $think,
+      ctx: (if $nctx == "" then null else ($nctx | tonumber) end),
+      num_predict: (if $npred == "" then null else ($npred | tonumber) end),
       tokens_in: (.prompt_eval_count // 0),
       tokens_out: (.eval_count // 0),
+      load_secs: (((.load_duration // 0) / 1000000000) * 100 | round / 100),
       secs: (((.total_duration // 0) / 1000000000) * 100 | round / 100),
-      done: (.done_reason // "")
+      done: (.done_reason // ""),
+      thinking_chars: ((.message.thinking // "") | length)
     }'
 else
   printf '%s' "$RESP" | jq -r '.message.content // ""'

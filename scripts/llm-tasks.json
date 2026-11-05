@@ -77,6 +77,13 @@
       "num_predict": 12000,
       "temperature": 0.85,
       "why": "Etapa 2 del hibrido: redacta desde un outline dado. Sostiene la voz 2.500 palabras sin romperse. Temperatura alta porque la creatividad ya la aporto el outline; aca importa la prosa. num_predict 12000: el ritmo consume presupuesto; 9000 quedo corto en 1738 palabras."
+    },
+    "evaluacion": {
+      "model": "deepseek-v4.1-flash:cloud",
+      "think": false,
+      "num_predict": 8000,
+      "temperature": 0,
+      "why": "Evaluador B del pipeline model-review: lee las salidas CRUDAS del modelo evaluado y las puntua contra una fuente de verdad versionada. deepseek-v4.1-flash es el revisor del pipeline A/B. temperature 0: no inventa juicios. num_predict 8000: siete bloques de veredicto con evidencia citada; con menos se corta a mitad de la tabla."
     }
   }
 }
