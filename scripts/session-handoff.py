@@ -468,6 +468,19 @@ def build_handoff(args) -> str:
         parts.append(bullet_block(norm_dashes(args.decisions)))
         parts.append("")
 
+    # Los items declarados con --closed tienen que QUEDAR ESCRITOS. Antes solo
+    # se pasaban al validador de merge: el gate dejaba de frenar, pero la lista
+    # de cerrados no llegaba al archivo, asi que el cierre siguiente volvia a
+    # verlos como pendientes perdidos y frenaba otra vez. Un dato que se usa
+    # para autorizar una escritura y no se guarda es una validacion sin memoria.
+    closed = [norm_dashes(c.strip()) for c in getattr(args, "closed", []) if c and c.strip()]
+    if closed:
+        parts.append("## Cerrados en esta sesion")
+        parts.append("")
+        for item in closed:
+            parts.append(f"- {item}")
+        parts.append("")
+
     files = files_changed(args.files)
     if files:
         parts.append("## Archivos tocados")
