@@ -1,9 +1,9 @@
 # ADR-109: La familia Kimi sale de todo slot; auditoría de camino a Nemotron 3 Super, redacción con voz a Muse Spark Open, Gemma 4 como chat trivial con contexto completo
 
 **Fecha:** 2026-11-05
-**Estado:** Aceptado (decisión de Gonzo 2026-11-05; pendiente la cata de la auditoría de camino antes de fijar el slot)
+**Estado:** Aceptado (decisión de Gonzo 2026-11-05; catas corridas el mismo día: auditoría de camino **medida** y chat trivial **medido** con condición)
 **Decisores:** Gonzo (*"K3.1 Pro junto a K3 debe ser una excepción muy exclusiva... debo buscar con cual hacer la auditoría de camino que no sea deepseek para no usar el mismo cerebro que la creación, quiza podemos dejar nemotron-3-super... no suelo usar redacción con voz, estaria bueno, y con su poco uso creo que podemos usar muse-spark-open para ello... lo malo de gemma4 es que inventa, pero creo que si podemos pasarle el contexto completo en cada oportunidad se convierte en el mas barato de todos para charla trivial... que te parece medirlo para ello?"*) / Kanam
-**Origen:** panel de uso semanal del 2026-11-05 tras un día de uso real de `kimi-k3.1-pro`, contra la medición del 2026-11-04 en `docs/ecosystem/cata-catalogo-ollama-cloud-2026-11-04.md`
+**Origen:** panel de uso semanal del 2026-11-05 tras un día de uso real de `kimi-k3.1-pro`, contra la medición del 2026-11-04 en `docs/ecosystem/cata-catalogo-ollama-cloud-2026-11-04.md`. Las dos catas que este ADR dejó pendientes se corrieron el mismo día: `docs/ecosystem/cata-2026-11-05-auditoria-camino-y-gemma4.md`
 **Relacionado:** ADR-090 (asignación por rol), ADR-107 (deepseek en el CORE y defaults), ADR-077/088/089/105 (pipeline A/B/C), ADR-076 (ningún agente hereda modelo local)
 **Supersede:** la asignación de §6 de `cata-catalogo-ollama-cloud-2026-11-04.md` en los slots **auditoría de camino** y **redacción con voz** (de `kimi-k3.1-pro` a Nemotron 3 Super y Muse Spark Open). El resto de la cata sigue vigente como medición.
 
@@ -64,23 +64,36 @@ pipeline A/B/C. La familia Kimi queda como **excepción declarada**:
 **La regla que queda:** un modelo cuyo costo unitario es **> 20× el baseline** no puede ser
 slot. Un slot es una asignación recurrente; un slot caro se paga todas las veces.
 
-### 2. Auditoría de camino → `nemotron-3-super` (cata pendiente)
+### 2. Auditoría de camino → `muse-spark-open` (medido, no propuesto)
 
 La auditoría de camino **no puede ser deepseek**: se audita el camino de un agente que ejecuta
 en deepseek, y el mismo cerebro que ejecuta no puede además auditar sin sesgo de confianza.
 
-Candidatos: `nemotron-3-super` (medido en la cata de roles del 2026-10-05: **2/2 bugs reales en
-3,6 s, 440 tokens**, sin caer en la trampa; `ultra` descartado), `gpt-oss:120b` (el A del pipeline,
-ya en el rol `dev`) y `muse-spark-open` (2.648 tok, 4/4, 10,3 s).
+Se midieron tres modelos sobre tres recorridos: uno con un riesgo real (reporte sin verificar el
+repo, commit a ciegas, cierre sin daily) y **dos limpios**, donde el segundo es la trampa dura -el
+agente declara que no puede ver los checks y pide OK en vez de reportar "todo verde".
 
-**Ninguno de los tres fue medido en la tarea de auditoría de camino.** Antes de fijar el slot se
-corre un probe propio con tres recorridos reales -uno con un riesgo real conocido, uno con un
-riesgo falso (trampa) y uno limpio- y se mide lo que la auditoría de camino necesita:
-**(a)** si encuentra el riesgo real, **(b)** si se inventa el falso, **(c)** cuántas requests
-consume para hacerlo.
+| Modelo | A (riesgo real) | B (limpio) | C (limpio) | Veredicto |
+|---|---|---|---|---|
+| `nemotron-3-super` | 2/2 | falso positivo | **6 inventados** | descartado |
+| `gpt-oss:120b` | 3/3 | **4 inventados** | **5+ inventados** | descartado |
+| `muse-spark-open` | 3/3 | **0 reales** | **0 reales** | **elegido** |
 
-La propuesta es **`nemotron-3-super`** por costo y por su evidencia de auditoría de código, pero
-se ratifica con el probe, no por la analogía con el rol `auditor`.
+**El hallazgo que cambia el criterio:** los dos candidatos recomendados por evidencia vieja
+(Nemotron por la prueba de auditoría de *código*, gpt-oss por ser el A del pipeline) **fabrican
+riesgos en recorridos limpios**. Nemotron llegó a inventar *"posible exposición de credenciales"*
+en un recorrido donde el agente **pide** autorización en vez de tocar tokens. Un auditor con falso
+positivo crónico es inútil: su reporte limpio se ignora, y el ruidoso entrena a ignorar el reporte.
+
+**Condición operativa del slot:** el `num_predict` va especificado en el rol. En la primera
+corrida muse devolvió vacío con `num_predict=1200` y respondió completo con 2.000 (1.539 tokens,
+`done_reason: stop`). Un slot sin presupuesto de tokens falla en silencio, no con error.
+
+**Consecuencia cruzada:** muse queda en **dos** slots -auditoría de camino y redacción con voz-.
+Es el mismo modelo en dos tareas distintas, lo que rompe la asimetría de "no auditar con el mismo
+cerebro que crea" **sólo si comparten rol**: la redacción produce piezas de texto y la auditoría
+produce hallazgos sobre el camino de otro agente. Se acepta, y se revisa si alguna vez el propio
+muse audita un texto que muse escribió -ese caso necesita un tercero.
 
 ### 3. Redacción con voz → `muse-spark-open`
 
@@ -96,31 +109,45 @@ que cuesta 24× el baseline para un uso ocasional es exactamente el patrón que 
 **Consecuencia:** la redacción con voz pierde el último punto de calidad medido. Se acepta:
 es un uso poco frecuente y el delta no está medido en piezas reales (solo en T3).
 
-### 4. Gemma 4 como chat trivial con contexto completo (a medir)
+### 4. Gemma 4 como chat trivial: sí, bajo una condición de contexto (medido)
 
 **Hecho de entrada:** `gemma4:31b` con **2.083 requests es una línea de barra casi invisible** -
 el costo unitario más bajo del plan (`< 0,01 px/req`, más de **10× más barato** que deepseek por
-request). El problema no es el costo, es que **inventa** (evidencia medida: alucinó un defecto de
-contraste que daba 7,27:1, en el ADR de modelo visual de STUDIO).
+request). El problema no es el costo, es que **inventa**.
 
-**Hipótesis:** si se le pasa **el contexto completo en cada llamada** en vez de pedirle que
-complete huecos, la alucinación baja lo suficiente para charla trivial (acuse, ordenar, confirmar,
-preguntas de estado). Con 2.083 requests ya medidos, el ahorro de pasarlo a primario de lo trivial
-es real: el CORE en deepseek cuesta ~0,103 px/req; gemma4 ~0,007.
+**Lo medido, siete llamadas por modo, mismas preguntas, temperatura 0:**
 
-**Lo que falta medir, y es el punto - esto es una cata, no una decisión:**
+| Modo | Input (7) | Output | Total | Verdad |
+|---|---|---|---|---|
+| Contexto **completo** (580 tok/llamada) | 4.099 | 845 | 4.944 | **5/7 correctas, 0 falsos positivos** |
+| Contexto **parcial** (40 tok/llamada) | 319 | 1.293 | 1.612 | **0/7**: el CORE "es GPT-4o", ops es folleto, y **inventa dos veces fecha y hora enteras** de Tokio |
 
-1. **Ratio de alucinación con contexto completo** contra el mismo set de preguntas con contexto
-   parcial. La medición de STUDIO fue sobre un caso de análisis visual, no sobre charla.
-2. **Costo de mandar el contexto completo.** El ahorro por request se puede comer el beneficio si
-   el contexto es largo: gemma4 barato por token × contexto grande puede costar más que deepseek
-   con contexto chico. Se mide en **px por conversación**, no por request.
-3. **Qué es "charla trivial"** - el borde tiene que quedar escrito, o el slot se filtra a tareas
-   con consecuencia (verificar, decidir, escribir código).
+**La hipótesis de Gonzo se confirma en lo factual y falla en lo económico, y aun así gana.**
 
-**Mientras no esté medido, `utilityModel` sigue en `gemma4:cloud`** (donde ya corre: el Helper,
-los heartbeats, el pre-filtro, el scorer local) y el CORE sigue en deepseek. El slot de "chat
-trivial" no se crea hasta tener las tres mediciones.
+- **Factual: completo 5/7, parcial 0/7.** Con el dato en el prompt, gemma4 responde bien los ocho
+  roles, resiste la trampa de "¿cuál es el modelo de ops?" y no inventa nada.
+- **Económico: el contexto completo cuesta 3,1× las mismas llamadas** (4.944 vs 1.612 tokens): en
+  charla trivial la salida es corta y el input fijo de 580 tokens pasa a ser el costo dominante.
+- **Pero el parcial no es la opción barata: es la inservible.** Gasta 1,6k tokens fabricando
+  respuestas falsas que después hay que corregir, y corregir cuesta más que el ahorro.
+- **Contra el CORE, sigue ganando:** ~706 tok/llamada en un modelo **> 10× más barato por token**
+  que deepseek. El chat trivial de hoy va al CORE con contexto grande: pagar 706 tok baratos en vez
+  de ~100 tok caros es una mejora de orden de magnitud.
+
+**La condición, que es la decisión:**
+
+> **"Charla trivial" = toda llamada cuyo dato de respuesta ya está en el contexto entregado.**
+
+Si el dato no está en el prompt (verificar, analizar, auditar), no es chat trivial y gemma4 sigue
+sin servir: este probe no probó que dejara de inventar en *análisis*, solo que no inventa cuando el
+dato se le entrega. El caso que lo descartó en STUDIO -un defecto de contraste falso que medido
+daba 7,27:1- sigue vigente como límite.
+
+**Implementación:** el slot entra como primario de charla trivial cuando exista un borde
+verificable en el runtime (una ruta que no pueda recibir pedidos con consecuencia), con
+`num_ctx` que quepa el contexto completo y **sin recorte de contexto**. Hasta que ese borde exista
+en código, `utilityModel` sigue en `gemma4:cloud` y el CORE en deepseek: la medición autoriza el
+modelo, no una filtración de pedidos por palabra clave.
 
 ## Justificación
 
@@ -136,15 +163,20 @@ trivial" no se crea hasta tener las tres mediciones.
   debió entrar con la medición vieja.
 - **No se audita con el mismo cerebro que ejecuta.** Es la razón por la que deepseek no es
   candidato a la auditoría de camino, y por la que la cata tiene que ser propia.
+- **La recomendación vieja no sobrevivió a la trampa.** Nemotron venía recomendado por una prueba
+  de auditoría de *código* (2/2 bugs en 3,6 s) y gpt-oss por ser el A del pipeline. Ninguna de las
+  dos cosas dice nada sobre auditar un *camino*, y el probe lo mostró: los dos fabrican riesgos
+  donde no hay. La analogía entre auditorías era el error, no la elección del modelo.
 
 ## Riesgos y mitigaciones
 
 | Riesgo | Mitigación |
 |---|---|
-| `nemotron-3-super` no rinde en auditoría de camino (la cata de roles midió auditoría de *código*, no de camino) | Probe de tres recorridos antes de asignar; si falla, `muse-spark-open` o `gpt-oss:120b` |
-| `muse-spark-open` baja la calidad de redacción y se nota | Revertir a Kimi como **excepción con OK**, no como slot. El fallback barato ya existe |
-| Gemma 4 con contexto completo sigue inventando | El slot no se crea sin las tres mediciones; el CORE no se toca mientras |
-| El contexto completo sale más caro que deepseek con contexto chico | Medir por conversación; si no conviene, se descarta la hipótesis y queda documentado |
+| `muse-spark-open` sin `num_predict` explícito devuelve vacío | Presupuesto de tokens en el rol; verificado con 2.000 (1.539 tokens, `done_reason: stop`) |
+| Muse queda en dos slots (auditoría y redacción) y audita un texto que muse escribió | Si ocurre, ese caso necesita un tercero; el rol de redacción no audita y el de auditoría no redacta |
+| `muse-spark-open` baja la calidad de redacción y se nota | Revertir a Kimi como **excepción con OK**, no como slot |
+| Gemma 4 con contexto completo sigue inventando en análisis | El borde está escrito: chat trivial = el dato ya está en el contexto. Fuera de eso, no es chat trivial |
+| El contexto completo sale más caro que deepseek con contexto real (3-5k) | Medir con el contexto real del workspace; el punto de quiebre está calculado (706 tok en gemma4 vs ~2.000 tok de contexto del CORE) y hay que confirmarlo |
 | Volver a "elegir Kimi por olvido" | Este ADR es el criterio de descarte: > 20× baseline = no slot. `check-adr-supersede.py` vigila que la cata no lo contradiga sin supersede |
 
 ## Consecuencias
@@ -153,14 +185,16 @@ trivial" no se crea hasta tener las tres mediciones.
 entrada escrito (excepción declarada, no slot). Auditoría de camino con un cerebro distinto al
 de ejecución.
 
-**Lo que se acepta:** pérdida del único modelo que no se rebajó en T3 para redacción con voz.
-`nemotron-3-super` se propone por evidencia adyacente (auditoría de código) hasta que el probe
-propio confirme.
+**Lo que se acepta:** pérdida del único modelo que no se rebajó en T3 para redacción con voz, y
+que `nemotron-3-super` -el mejor auditor de *código* medido- queda descartado para auditar *camino*
+por falso positivo crónico. Es una lección que vale más que el slot: **la tarea define el modelo,
+no la familia del rol**.
 
 **Lo que no cambia:** CORE (`deepseek-v4.1-flash`), pipeline A/B/C, `utilityModel` (`gemma4:cloud`),
 los slots de dev/ops/auditor/critic/planner/mind/studio, ADR-107 y ADR-090.
 
-**Pendiente antes de cerrar:** correr el probe de auditoría de camino (nemotron vs gpt-oss vs
-muse, tres recorridos) y la cata de gemma4 con contexto completo (ratio de alucinación, px por
-conversación, definición de "charla trivial"). Hasta entonces el slot de auditoría de camino queda
-**propuesto, no aplicado**, y el de chat trivial **no existe**.
+**Pendiente, y es lo único:** `muse-spark-open` corrido sobre un cierre de sesión **real** del
+workspace, comparado contra lo que Kanam encontró a mano. El recorrido sintético prueba que no
+fabrica; falta probar que encuentra. Hasta esa prueba el slot de auditoría de camino queda
+**elegido, no aplicado**, y el de chat trivial **medido, no habilitado** (le falta el borde
+verificable en el runtime).

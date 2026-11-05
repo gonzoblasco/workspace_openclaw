@@ -10,8 +10,9 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Added
 - **ADR-109.** La familia Kimi (`kimi-k3.1-pro`, `kimi-k3`) no asigna ningún rol: queda como excepción declarada con OK de Gonzo, presupuesto previo y sin iteración. Criterio de descarte: un modelo que cuesta **> 20× el baseline** no puede ser slot.
-- **Auditoría de camino a `nemotron-3-super` (propuesto, no aplicado).** No se audita con el mismo cerebro que ejecuta, así que deepseek queda fuera. Antes de fijar el slot se corre un probe de tres recorridos (riesgo real, trampa, limpio) contra `gpt-oss:120b` y `muse-spark-open`.
-- **Redacción con voz a `muse-spark-open`.** Uso declarado raro; se paga en calidad de punta lo que se gana en no pensar el costo cada vez. Licencia verificada para uso interno.
+- **Auditoría de camino a `muse-spark-open` (medido).** Tres modelos sobre tres recorridos (un riesgo real, dos limpios): muse distinguió 3/3 y 0 falsos positivos; `nemotron-3-super` inventó 6 riesgos en el recorrido limpio y `gpt-oss:120b` entre 4 y 5. Descarte de los dos candidatos que recomendaba la evidencia vieja: la tarea define el modelo, no la familia del rol.
+- **Redacción con voz a `muse-spark-open`.** Uso declarado raro; se paga en calidad de punta lo que se gana en no pensar el costo cada vez. Licencia verificada para uso interno. Muse queda en dos slots (auditoría y redacción) con la condición de que ninguno haga la tarea del otro.
+- **`docs/ecosystem/cata-2026-11-05-auditoria-camino-y-gemma4.md`.** Las dos catas que el ADR dejó pendientes, con los números crudos y una sección explícita de lo que no prueban.
 
 ### Changed
 - **Las cuentas de la cata del 2026-11-04 se corrigen a la suba.** Con el panel del 2026-11-05: 10 requests de K3.1 Pro pesan más que 17 de K3; **1 req de K3.1 Pro ≈ 24-26× deepseek**, contra 14-22× medidos en sesión. El delta K3 vs K3.1 Pro no aparece en la barra, así que el swap entre ellos no compra nada.
@@ -19,7 +20,8 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Notes
 - **Medir, no estimar:** tercera corrección del mismo número, las tres hacia arriba. La unidad válida es la barra sobre uso real, no el px/req de una sesión.
-- **Pendiente:** catas de auditoría de camino y de `gemma4` con contexto completo como chat trivial (ratio de alucinación, px por conversación, definición escrita del borde). Ningún slot se crea antes de esas mediciones; `utilityModel` y el CORE no se tocan.
+- **`gemma4` como chat trivial: medido y gana, con condición.** Contexto completo 5/7 correctas y 0 falsos positivos; contexto parcial 0/7, con dos fechas y horas inventadas. El contexto completo cuesta 3,1× las mismas llamadas, pero en un modelo > 10× más barato por token sigue ganando contra el CORE en deepseek. **Borde escrito: chat trivial = el dato de respuesta ya está en el contexto entregado.** Fuera de eso, gemma4 sigue sirviendo para nada con consecuencia: no se probó que dejara de inventar en análisis.
+- **Pendiente:** muse sobre un cierre de sesión real (el sintético prueba que no fabrica, falta probar que encuentra) y el borde verificable en el runtime que habilite el slot de chat trivial. Ningún slot se aplica sin eso; `utilityModel` y el CORE no se tocan.
 - **Sin cambio:** pipeline A/B/C, slots de dev/ops/auditor/critic/planner/mind/studio, ADR-090 y ADR-107.
 
 ---
