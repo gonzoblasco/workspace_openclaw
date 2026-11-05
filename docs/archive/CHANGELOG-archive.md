@@ -4,6 +4,124 @@
 
 ---
 
+## [2026-10-21] - Paquete dealer: un producto único, tres repos dormidos y el modelo WordPress.com
+
+### Added
+- **`docs/ecosystem/CONSOLIDACION-PRODUCTO-DEALER.md`** - análisis que cierra el pedido de Gonzo ("basta de kanam store, kanam cars, kanam market; un único producto revendible como paquete cerrado"). Contiene el inventario verificado de los tres repos, el mapa de seis capacidades con lo que hay que construir de cero, las 6 decisiones cerradas, y el modelo de distribución estilo WordPress.com (`account` / `site` / `membership`).
+
+### Changed
+- **`MEMORY.md`: OnWheels y kanam-query pasan a DORMIDOS.** Sus entradas se reescribieron (no se anidaron: `MEMORY.md` estaba a 130 caracteres del cap). La nueva entrada canónica es **"Paquete dealer"**.
+- **D4 de OnWheels (regalo a Esteban, sin billing) queda derogada para el producto nuevo.** Esteban es ahora el **tenant 0** del paquete comercial; D4 sigue vigente sólo para el repo dormido.
+- **El producto nuevo se llama OnWheels.** Se descarta el prefijo `kanam-` (marca de autor, no de producto) y se reusa un nombre que ya existía, en vez de inventar marca.
+- **Precio definido: USD 150-250/mes por sitio** _(corregido a 80-200 en la tercera ronda del mismo día)_, capa gratuita limitada + trial de 15 días. MeLi e IA quedan **fuera** de lo gratuito.
+
+### Verified
+- **Los nombres del pedido no existen:** `grep -ril "kanam[-_ ]?(store|cars|market)"` sobre el workspace → 0; `gh repo list gonzoblasco --limit 200` → ninguno; `MEMORY.md` → ninguna entrada. La dispersión real son tres repos con nombres distintos, no tres marcas.
+- **`soporteml` y `kanam-query` son el mismo producto:** uno tiene 19.037 LOC y 25 Edge Functions, el otro 0 LOC y una spec. Y son complementarios con OnWheels: SoporteML no tiene un solo `POST /items` (sólo lee items ajenos), OnWheels no tiene una línea de MeLi.
+- **El documento adjunto es idéntico al ya analizado hoy** (`diff` byte a byte contra `pasted-text-1792597850483`), así que se reusa el veredicto de `VEREDICTO-CONECTOR-MELI.md` en vez de reanalizarlo.
+- **`soporteml/README.md` miente sobre el billing:** dice "EL-1 migrado de Stripe → Mercado Pago ✅" y `PLAN.md` dice "MP nunca operativo". El código real tiene sólo 3 funciones `stripe-*` y cero dependencias de mercadopago. Registrado como C4 en el documento; no se corrige (el repo está dormido).
+
+### Fixed
+- **`MEMORY.md` volvió a quedar bajo el cap con margen:** 19.326/20.000 (+674) tras reescribir dos entradas largas en vez de agregar una cuarta. `USER.md` sigue en 3.823/4.000.
+
+### Verified (segunda ronda, 2026-10-21 14:10)
+- **`onwheels.com.ar` está LIBRE** (`whois -h whois.nic.ar`). Alta/renovación/transferencia: **ARS 8.500** cada una (tabla de `nic.ar/es/dominios/aranceles`).
+- **`onwheels.com` está TOMADO desde 1997** (registrador Tucows, *client transfer prohibited*, vence 2026-12-30, sin sitio activo). `onwheels.app` y `onwheels.dev` también tomados. `onwheels.io`, `getonwheels.com`, `onwheelscloud.com`, `myonwheels.com` libres.
+- **Hostinger: KVM 4 (4 vCPU/16 GB) sale USD 12,99 intro y USD 28,99 al renovar.** KVM 2 (8 GB) queda corto para Postgres + worker + Next + proxy en una máquina. El valor promocional no es el costo real.
+- **Benchmark de precio:** Tiendanube en Argentina cobra ARS 27.999 / 79.999 / 244.999 (≈ USD 18 / 52 / 159). USD 150-250 pone el producto en la banda del plan más alto del líder local - defendible sólo por el canal MeLi _(cifra reemplazada: ver tercera ronda)_.
+- **Hostinger tiene afiliados Y reseller master agreement, y son figuras distintas:** revender un dominio pone al paquete como responsable ante el cliente. Recomendación: referido, no reventa.
+- **Contradicción abierta:** `docs/learnings/infraestructura.md` dice que el VPS de Hostinger "se dio de baja" (2026-09-06) y `memory/inbox.md` #1 dice que hay n8n corriendo ahí. Sin host en `~/.ssh/config` ni acceso verificado. Registrado como bloqueante en el doc, sin resolver.
+
+### Changed (tercera ronda, 2026-10-21 14:26)
+- ~~**ADR-103 nuevo: Stripe no opera en Argentina.**~~ **CORREGIDO Y REVERTIDO (15:19): ver "Cuarta ronda".** El ADR-042 declaraba a Stripe como proveedor único apoyado en la premisa *"Stripe ya opera en Argentina (integración reciente)"*. **Esa premisa es falsa.** Verificado: `stripe.com/global` no lista a Argentina (0 ocurrencias; Brasil y México sí), y tres fuentes independientes lo confirman (startglobal, getpaidatlas chequeado 2026-10-20, lupapago auditoría 2026-08-23: *"No hay merchant account local en Arg"*). Lo que existe es cobro cross-border vía entidad extranjera. **Mercado Pago vuelve a ser proveedor válido y pasa a ser el del producto.** ADR-042 marcado SUPERSEDED y entradas del índice actualizadas.
+- **Precio corregido: USD 80-200 por plan**, no 150-250. Se define sólo el de 80; premium abierto; ningún precio es final.
+- **Contradicción del VPS resuelta:** el VPS de Hostinger **existe** (KVM 2, sólo con n8n sin uso). Lo que se dio de baja en 2026-09-06 fue el OpenClaw que corría ahí, no la máquina. Corregida la entrada de `docs/learnings/infraestructura.md` con la lección de segundo orden ("se dio de baja X" ≠ "se dio de baja la máquina donde vivía X").
+- **n8n y LangChain acotados en el doc:** n8n puede usarse como pegamento interno (la SUL lo permite), nunca como función que el dealer configura; el canal MeLi va en código. LangChain queda como RAG del chat (ADR-099), no como capa web ni canal.
+
+### Verified (tercera ronda)
+- **Mercado Pago tiene suscripciones nativas** (`preapproval` + planes): cobro recurrente en **ARS**, reintentos automáticos, período de prueba, prorrateo. Medios: dinero en cuenta, tarjeta crédito/débito, Rapipago, Pago Fácil. `currency_id` en los ejemplos de la doc: `ARS`.
+- **Licencia de n8n (Sustainable Use License), leída en su FAQ oficial:** permitido como motor invisible detrás del producto si sólo el backend habla con él; **prohibido** que un cliente construya o edite workflows, incluso por UI propia, API o agente. El test es quién controla la lógica, no quién ve la interfaz.
+
+### Fixed (cuarta ronda, 2026-10-21 15:19) - un ADR escrito sobre una premisa falsa
+
+- **ADR-103 BORRADO. Su premisa era falsa.** Escribí que Stripe no permite abrir cuenta de comercio en Argentina a partir de que `stripe.com/global` no lista el país. **Gonzo abrió una cuenta de Stripe en Argentina.** `stripe.com/global` es la página de disponibilidad comercial, no el listado de países habilitados para operar: confundir una con otra me llevó a contradecir un hecho que el workspace ya tenía verificado el 2026-10-06 (Stripe sumó Argentina en su changelog del 2026-03-25; SoporteML cobra con Stripe operativo). **Lección: antes de declarar que una capacidad no existe, se pregunta a quien ya la usa, y se consulta el registro propio.** El ADR-042 quedó restaurado como vigente, y su fila del índice, sin marca de superseded.
+- **La decisión de cobro no necesitaba ADR global.** El propio ADR-042, punto 2, ya permite que un proyecto evalúe otro proveedor y lo registre. OnWheels usa **Mercado Pago** y eso vive en `docs/ecosystem/CONSOLIDACION-PRODUCTO-DEALER.md` §10 bis. Corregido el doc (3 referencias a ADR-103 eliminadas).
+- **Tipo de cambio de referencia fijado: 1 USD = 1.545 ARS, dólar oficial** (dato de Gonzo; corregido desde 1.550 tras su comentario). Todas las conversiones del doc recalculadas con esa tasa: `.com.ar` = USD 5,50; plan de 80 = ARS 123.600; premium de 200 = ARS 309.000; Tiendanube = USD 18,12 / 51,78 / 158,58.
+- **Comparación con Tiendanube reescrita.** No es comparable línea a línea: Tiendanube vende un marketplace con carrito y logística; este producto vende sitio con dominio, hosting, catálogo de vehículos, publicación en MeLi y un chat con evidencia. El benchmark se conserva como **techo de percepción del mercado**, no como lista de features.
+- **IA: "la necesaria", no "ilimitada".** Corregido por Gonzo. El plan cubre responder consultas del catálogo y armar borradores; el número a medir en Fase 0 es el costo real por consulta (tokens in + out + embeddings).
+- **n8n sí puede gestionar el webhook de MeLi.** Corregido por Gonzo y sostenido por la SUL: n8n recibe, valida y encola; el **envío** (`POST /answers`) va en código con idempotencia y máquina de estados, porque ahí un error le llega duplicado a un comprador real.
+
+### Added (quinta ronda, 2026-10-21 22:18) - roadmap de OnWheels
+
+- **`projects/onwheels/` (repo git local, sin remoto):** proyecto nuevo con `README.md`, `.knowledge/ROADMAP.md` (347 lineas) y `.knowledge/STATUS.md`. El workspace ignora `projects/` al 100% (ADR-098), asi que el proyecto tiene su propio `.git`.
+- **El roadmap se organiza por USO, no por feature:** la unidad de cada fase es "algo que alguien use", con criterio de salida comprobable. Es la defensa contra el riesgo real de este proyecto, que no es el alcance sino **que nunca se termine** (side project sin fecha, sin usuario esperando, sin presion externa).
+- **F0-F6:** spike de MeLi (3-5d, bloqueante) -> control plane + landing (5-8d) -> catalogo de Esteban (6-10d) -> publicar en MeLi (6-9d) -> responder preguntas (6-9d) -> cobrar con Mercado Pago (4-6d) -> escalar (abierto, se dispara con el segundo dealer que paga). Cada fase con su criterio de salida en checkboxes y 10 riesgos con mitigacion concreta.
+- **Hallazgo de User Products incorporado al roadmap** (verificado en la doc oficial de MeLi el 2026-10-21): el contrato de publicacion depende del tag `user_product_seller`; con el, **no se puede enviar el array `variations`**, el `title` no debe enviarse y `condition` esta deprecado (`item_condition` dentro de `attributes`). Un dealer de vehiculos es el caso exacto que User Products viene a resolver. Por eso la pregunta va en **F0 y no en F3**: el publicador no se puede escribir sin saber que modelo aplica.
+- **"Lo que NO entra, y por que"** escrito explicitamente (auto-respuesta, PII, panel de workflows, sincronizacion bidireccional, micro-frontends), cada uno con su motivo.
+- **`memory/onwheels-producto.md`:** el detalle largo del producto (precio, dominios, hosting, n8n, User Products, lo que queda fuera). Saca el peso de `MEMORY.md`, que estaba a 297 del cap.
+
+
+---
+
+## [2026-10-21] - TEAM International / tempo.io: nueva propuesta laboral, neto real y un hole en el gate de hechos
+
+### Added
+- **CV optimizado para el puesto:** `docs/entrevistas/team-international-tempo/cv-senior-frontend-growth-gonzalo-blasco.md` (+ `.pdf` de una pagina, con `cv-style.css` reusable). Angulo: ownership de calidad a escala enterprise (11 PRs mergeados, WCAG 2.2 AA en 50+ componentes, pipeline de a11y en CI) + metodo AI-first propio + delivery end-to-end en producto real. El summary se reescribio: la version de STUDIO era relleno de folleto ("scalable frontend architectures", "proven track record") sin evidencia.
+- **`docs/entrevistas/team-international-tempo/`** - proceso nuevo (Sr Frontend Developer (Growth), USD 5.000/mes, contractor full-time, cliente tempo.io). Tres artefactos: `README.md` (ficha de la oferta y cronología), `analisis-fiscal-neto.md` (cuánto valen los USD 5.000 brutos en Argentina) y `revision-adversarial.md` (encaje JD↔corpus, hallazgos por severidad, veredicto accionable), más `guion-call-21-10.md` (texto listo para enviar a David y las 4 preguntas de la call).
+- **Análisis fiscal del ingreso real como contractor.** USD 5.000/mes brutos = **≈ USD 4.140-4.270 netos** (≈ USD 25,9-26,7/h) a tipo de cambio minorista BCRA 1.545,01 (20/10/2026). Monotributo categoría J (servicios), cuota ARS 1.167.299,76/mes. **ART = ARS 0**: un monotributista sin empleados no se afilia a una ART para cubrirse a sí mismo (la Ley 24.557 obliga al empleador, no al contratista individual). Facturación al exterior = **Factura E** (verificado en ARCA), con exención de derechos de exportación si tiene certificado MiPyME vigente. Contra Staffy (USD 30-35/h) es un **empate técnico**, no una mejora; contra Infjini (USD 22/h) es +18% a +21% neto. **El riesgo real no es la tarifa: es fijo por mes, y a 45-50 h/semana el valor/hora cae a USD 21-22 netos.**
+- **Control 8 en `scripts/check-cv-facts.py`: claims de experiencia sin respaldo en el corpus.** Los checks 1-7 comparan contra lo que el corpus **tiene**; un hecho puede entrar a un CV por una puerta que no pasa por el corpus y ahí no había control. Ahora un bullet que el corpus no registra **se avisa** (no frena: la decisión de ampliar el corpus o sacar el claim es de Gonzo). 5 tests nuevos (22 en total, en verde).
+
+### Fixed
+- **Falso positivo del control 8:** el needle `"java"` matcheaba **"JavaScript"** y disparaba el aviso en cada CV que lista JavaScript. Ahora son regex de palabra completa (`\bjava\b`, `\bkotlin\b`) y el matching paso a `re.search`.
+- **Dos bullets sin respaldo en el CV de tempo:** "Architected and implemented a micro-frontend architecture" y "Developed a shared component library utilized by 5 different product teams" los metio el redactor, y son los claims que §11 tiene **pendientes de confirmar con Gonzo**. Salieron del CV y de Core Competencies. El "Mentored a junior developer" si es un hecho del corpus y se conservo.
+- **Un CV con los dos errores que el gate existe para cazar estaba fuera del control desde el 20/10.** El gate tomaba los CVs con el glob `cv-*.md`, que no ve los que llevan el prefijo adelante: `eit-cv-gonzalo-blasco-a11y.md`, que **se envió el 11/09** a E-IT. Al ampliar la cobertura aparecieron "9+ years" (contra el 10+ del corpus) y "roughly 5 years with accessibility" (un número de años de accesibilidad, que no se declara nunca). El headline se reescribió con la misma redacción que ya usa el CV de Infjini.
+- **Anotar una duda en el corpus apagaba el control.** La primera versión del check 8 daba por "registrado" cualquier claim mencionado en el corpus, así que anotar "A/B testing: pendiente de resolver" en §11 lo hacia invisible. Ahora una mención en §11 "Falta relevar" **sigue generando aviso**: un hecho declarado desconocido no es un hecho registrado. Hay un test que lo fija.
+- **`memory/career-facts.md` §3 y §11: los estudios formales no estaban "sin registro".** El corpus decía que no había título universitario y daba los estudios por inexistentes; en realidad están registrados en tres fuentes que no coinciden (el daily del 14/10 con "Palermo - Ing. en Informática, dropped, validada por Gonzo", los CVs con Digital House + UADE Diseño Gráfico, y la sesión de agosto 2026 con 6 universidades). La contradicción quedó registrada como contradicción, no resuelta por deducción: lo verificado es que **no hay título completo**, y qué se declara en un JD que lo exige es decisión de Gonzo.
+
+### Notes
+- **A/B testing: RESUELTO con Gonzo (21/10/2026).** Uso confirmado: en la temporada final de 2019 en Minutentag/EULAS corrio experimentos A/B con **Adobe Target**, implementando las variantes **como snippets de JavaScript nativo** probados contra usuarios reales. Queda registrado en el corpus §2.4 con ese alcance: **implementar las variantes (client-side), no construir la infraestructura de experimentacion** ni configurar la herramienta. El claim "Implemented A/B testing infrastructure powering data-driven product decisions" **no esta confirmado y sale de los CVs**; el bullet que queda en el CV de tempo declara el uso, con el detalle de los snippets, que es lo que Gonzo confirmo.
+- **Este JD no es el patrón Staffy/Sol, pero el filtro sigue siendo el riesgo #1.** El JD declara **B2+** (ellos declararon el nivel) contra "C1 conversacional sí o sí" de los dos cierres recientes; y el proceso empieza con una call informativa de 10-15 min, lo que hace que el idioma se pueda filtrar temprano y no tarde. Pero el pitch inicial de David decía "English Advance", que contradice el "B2+" del JD: alguien escribió "Advance" sin que el JD lo pida, que es exactamente el patrón que en Staffy y Sol se filtró al final. **La pregunta del idioma no se negocia con el CV: se negocia con la pregunta** - y la redacción del guion va por la operación (cuánto inglés hablado a diario con Tempo) apoyada en el JD, no por "¿el cliente exige C1?": preguntar C1 con esas palabras es auto-sabotaje, es el caso Staffy provocado a mano.
+
+---
+
+## [2026-10-21] - kanam-query: veredicto y planificacion de un producto greenfield (el analisis de origen era una expansion RAG)
+
+### Added
+- **`projects/kanam-query/`** (nuevo, greenfield, sin codigo todavia). `README.md`, `PROPUESTA.md` (veredicto + planificacion por fases) y `.knowledge/` con `EVIDENCIA-VERIFICADA.md` (brief con todo verificado contra disco y contra la documentacion oficial de Mercado Libre) y `REVISION-ADVERSARIAL.md` (28 hallazgos: 7 criticos, 11 altos, 10 medios).
+- **Veredicto sobre el analisis de referencia: no es una especificacion, es un checklist.** El documento de 11 secciones que sirvio de insumos salio de una **expansion RAG de AnythingLLM sobre un documento semilla de 33 palabras** (`kanam-prueba.md` en `~/anythingllm-data/storage/documents/`). Los "datos duros" (USD 42.000, `KA-2026-X99`, "Elena Vazquez") vienen del seed; las 5 arquitecturas comparadas, el cronograma de 12 semanas, el modelo de datos de 14 tablas y el desglose de presupuesto los invento el modelo. Como **catalogo de requisitos de una integracion con MeLi** acierta en ~80% (idempotencia, dedup, outbox, DLQ, RLS, auditoria, rate limiter compartido, reconciliacion).
+- **API de Mercado Libre verificada contra la documentacion oficial** (2026-10-21), y el plan corregido con lo que el analisis no vio: (a) `api_version=4` es **obligatorio** - sin el vuelve la estructura vieja y se pierde `answer.status`; (b) la **cuota de rate limit es por Client ID**, o sea compartida por todos los tenants, y eso fija el **techo de negocio** del producto (no lo fija la demanda); (c) el permiso funcional que corresponde es **"Comunicacion pre y postventa"** (acceso a `questions`) - los scopes `read_questions`/`write_answers` que el analisis mencionaba **no existen**; (d) existe `GET /users/$ID/questions/response_time` con **`sales_percent_increase`**: el % de ventas que se gana bajando el tiempo de respuesta, que es la metrica por la que un vendedor paga; (e) limite de 2.000 caracteres al responder; (f) MeLi borra sola las preguntas sin responder de mas de 7 meses; (g) **MeLi no tiene sandbox** (las pruebas son contra cuentas reales); (h) MeLi publico un **MCP server oficial** (`mcp.mercadolibre.com/mcp`).
+
+### Changed
+- **Encuadre corregido a mitad de sesion:** la primera version del trabajo asumio que `kanam-query` continuaba el proyecto anterior; Gonzo lo aclaro y el encargo se rehizo desde cero. `kanam-query` es **greenfield e independiente**; del proyecto anterior solo se toma el catalogo de "errores a no repetir" (13 errores de integracion MeLi, cada uno mapeado a un requisito verificable con su test y su fase), como contexto de ingenieria, no como base de codigo.
+- **Aprendizaje durable registrado** en `docs/learnings/metodologia.md`: *un documento largo y estructurado no prueba que alguien lo escribio* - antes de discutir el contenido de un analisis, verificar su origen (storage del workspace RAG, `wordCount` del documento indexado) y hacer `grep` de sus identificadores en el sistema propio.
+
+### Notes
+- **Plan:** Fase 0 (spike tecnico) **bloqueante** antes de elegir stack, porque el riesgo #1 es de acceso a la API, no tecnico. Despues, 5 fases con **criterio de salida comprobable** (3-7 condiciones booleanas cada una, atadas a un test o artefacto). Total estimado 41-52 dias de trabajo concentrado de 1 dev (6 h efectivas/dia), re-calibrable al cerrar Fase 0. No es un compromiso de fecha.
+- **Decisiones de producto tomadas por defecto en el plan:** revision humana obligatoria en V1 (el riesgo real es el baneo a nivel de **app compartida**, no "riesgo regulatorio"), **sin PII del comprador** (solo `buyer_id`; el producto no necesita email ni telefono), `tenant_id` + RLS desde la **primera** migracion, envelope encryption de tokens por tenant (no `.env` cifrado), `job_queue` en Postgres en vez de cola administrada, y Stripe como unico proveedor (ADR-042; Mercado Pago queda afuera) _- regla vigente entonces, superseded por ADR-103 el 2026-10-21_.
+- **Pendientes de Gonzo:** 5 decisiones de encuadre (publico objetivo, modo de respuesta, app de MeLi propia vs compartida, nombre -que sigue siendo temporal-, modelo de cobro) + aprobar la decision "sin PII" y leer los ToS de MeLi sobre datos de preguntas.
+
+---
+
+## [2026-10-21] - Vane con Ollama: desplegado, verificado end-to-end y con dos bugs upstream arreglados
+
+### Added
+- **Vane (motor de busqueda con IA, MIT) corriendo en Docker con Ollama como proveedor.** Repo upstream clonado en `projects/vane` (ItzCrazyKns/Vane v1.12.2), imagen local `vane-local:ollama` (3.05 GB) construida desde fuente. **Puerto 3005 en el host:** el 3000 ya lo tenia `onyx-nginx` (mapea a su :80). Provider `ollama` (la API nativa de Vane, no la OpenAI-compatible) apuntando al Ollama del host en `http://host.docker.internal:11434`, con SearxNG embebido en el mismo container (`:8080`) para cero setup. Bind mounts de `data/` y `uploads/` para poder inspeccionar y preconfigurar `config.json` sin entrar al container.
+- **Verificado end-to-end, no inferido:** busqueda real con **51 fuentes citadas** y respuesta en espanol (62 s), `/api/providers` con los 21 modelos que expone el Ollama del host, `/api/suggestions` (5 sugerencias), `/api/discover`, y el container `healthy` con **0 reinicios**. La UI se valido por HTTP (HTML servido, endpoints OK), **no visualmente**: el browser estaba bloqueado por policy en esa sesion.
+- **Configuracion y hallazgos documentados** en `projects/vane/.knowledge/` (`BRIEF.md`, `STATUS.md`, `HANDOFF.md`) y el servicio registrado en el inventario vivo (`scripts/ai-toolbox.py` + `docs/tools/REGISTRY.md`).
+
+### Fixed
+- **El `Dockerfile` upstream rompe el build por drift de versiones.** El stage final hace `RUN yarn add playwright` **sin `yarn.lock` a mano** (solo se copiaron `public/`, `.next/static` y `.next/standalone`), asi que yarn re-resuelve todo a la ultima semver y sube `next` de **16.2.2** (la fijada en `yarn.lock`, con la que se construyo la app) a **16.4.2**. La 16.4.2 exige `.next/server/preview-props.json`, un manifest que la 16.2.2 no genera (no tiene la constante `PREVIEW_PROPS_MANIFEST`): `ENOENT` y **crash loop** del container. Arreglo: `COPY --from=builder` de `playwright` y `playwright-core` (la version exacta del lockfile) y llamar al CLI directo (`node ./node_modules/playwright/cli.js install`). Regla general: **en el stage final nunca agregar dependencias; copiar las que el builder ya instalo con el lockfile.**
+- **El healthcheck quedaba `unhealthy` con la app funcionando.** El `server.js` de Next standalone hace `process.env.HOSTNAME || '0.0.0.0'`, y en Docker `HOSTNAME` vale el **ID del container**: Next bindeaba al hostname en vez de a `0.0.0.0` y la sonda contra `localhost:3000` fallaba con `exit=7` (connection refused). Arreglo: `HOSTNAME: '0.0.0.0'` en el `environment` del compose.
+- **`MEMORY.md` repetia el inventario de herramientas (11, con PR-Agent y Milvus, ya descartados).** Ahora cita al dueno del dato (`scripts/ai-toolbox.py`) en vez de repetir una lista que puede envejecer mal. Gate de fuente unica (`scripts/check-single-source.py`) en verde.
+
+### Notes
+- **"Usar Ollama" = el provider es Ollama, no que el modelo sea local** (aclara Gonzo). El provider `ollama` de Vane habla la API nativa (`/api/tags` + `/api/chat`); los modelos que el host expone incluyen los `:cloud` y los locales en MLX.
+- **Las embeddings cloud fallan:** `POST /api/embed` contra un modelo `:cloud` devuelve `unauthorized`. El embedding operativo es `qwen3-embedding:0.6b` (local); el chat probado fue `gpt-oss:120b-cloud`. Criterio fiable para distinguir cloud de local: el campo `remote_host` de `GET /api/tags`, no el sufijo del tag.
+- **El clasificador de Vane pone `skipSearch: true`** cuando la pregunta se responde con conocimiento general (ej. "que es HTTP y en que puerto"): en ese caso no busca y devuelve respuesta sin fuentes. **Es diseno, no bug**; para ver el pipeline de busqueda hay que usar consultas que requieran informacion actual.
+- **Ruido esperado en los logs:** SearxNG loggea warnings de motores bloqueados (`duckduckgo` con CAPTCHA, `bing news`, `wolframalpha` sin API key, `brave`, `wikipedia`). **No afectan la busqueda:** una consulta normal devolvio 43 resultados en SearxNG y 51 fuentes en Vane.
+
+---
+
 ## [2026-10-20] - AnythingLLM con Ollama: desplegado, verificado end-to-end y endurecido
 
 ### Added
