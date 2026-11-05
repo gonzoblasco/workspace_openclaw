@@ -1,7 +1,7 @@
 # ADR-090: Política de niveles de pensamiento por agente y asignación de modelos por rol
 
-**Fecha:** 2026-10-14 (corregido 2026-10-18; rol `main` reasignado 2026-10-20 por ADR-102; reasignado otra vez 2026-10-28 por ADR-107)
-**Estado:** Aceptado (verificado contra el runtime 2026-10-28 tras ADR-107)
+**Fecha:** 2026-10-14 (corregido 2026-10-18; rol `main` reasignado 2026-10-20 por ADR-102; reasignado otra vez 2026-10-28 por ADR-107; tabla corregida 2026-11-04)
+**Estado:** Aceptado (verificado contra el runtime 2026-11-04 tras la correccion de planner/studio)
 **Decisores:** Gonzo / Kanam
 **Origen:** cata por rol (2026-10-06, `docs/ecosystem/cata-por-rol-modelos-2026-10-05.md + benchmarking Nemotron (2026-10-14)
 **Relacionado:** la cata por rol (evidencia en `docs/ecosystem/`), ADR-088 (pipeline A/B enforcement), ADR-089 (pre-filtro A/B), **ADR-107 (swap deepseek/minimax en CORE y defaults, vigente)**
@@ -21,6 +21,15 @@ Fuente de verdad: `openclaw.json` + tabla `settings` de `memory.db` (`model_by_a
 
 **Cambio del 2026-10-28 (ADR-107):** el rol `main` (CORE) y los defaults de agente vuelven a `deepseek-v4.1-flash:cloud` con fallback `minimax-m3.1-flash:cloud`. Motivo: ahorro medido de ~20% de cuota en uso real. ADR-102 (minimax en el CORE) queda **superseded**; la cata que lo fundó (8.9 vs 7.8 en `main`) sigue siendo la medición del modelo, pero dejó de justificar la asignación.
 
+**Correccion del 2026-11-04 (decision de Gonzo):** dos filas de esta tabla no coincidian con el runtime y una contradecia al ADR de modelo visual de STUDIO.
+
+- **`studio` vuelve a `deepseek-v4.1-flash:cloud`.** Esta tabla lo tenia en `gemma4:cloud`, pero el ADR de modelo visual de STUDIO (`docs/ecosystem/studio-modelo-visual.md`, 2026-09-28, Estado Aceptado, nunca superseded) habia decidido lo contrario con evidencia: `gemma4` **alucino un defecto de contraste** que medido daba 7,27:1. Las dos fuentes vigentes decian cosas distintas sobre el mismo rol; se resuelve a favor de la decision con evidencia medida.
+- **Fallback de `studio`: `gemma4:12b-mlx` (local), no `glm-5.3-flash`.** El ADR de STUDIO pedia `glm-5.3-flash` para la pasada profunda, pero ese modelo cuesta **5,5x** deepseek por request (0,29 px/req medido). El fallback tiene que ser barato y existir en disco.
+- **Fallback de `planner`: `gemma4:12b-mlx` (local), no `glm-5.3-flash`.** Esta tabla declaraba `glm-5.3-flash` y la config tenia `gemma4:cloud`: drift que nadie habia reconciliado. Se alinea al modelo local que existe.
+- **`planner` conserva `gpt-oss:120b-cloud` como primario.** La cata del 2026-11-04 mostro que `deepseek` daba un umbral de cuota mas accionable, pero la diferencia no justifica mover un rol que funciona: se deja como estaba y se registra la medicion.
+
+Las tres fuentes (config, `settings` de la DB y bloque managed) coinciden tras la correccion. Ojo con la DB: la misma tabla vive bajo **tres** claves (`model_by_agent`, `model_triple`, `model.triple`) y corregir solo las conocidas deja una copia viva del valor viejo.
+
 **Drift corregido el 2026-10-20:** `agents.defaults.model.primary` decía `nemotron-3-super:cloud`, modelo que la tabla de este ADR nunca declaro (venia del benchmarking del 14/10 que no se adopto). Config, DB y bloques quedaban en tres valores distintos. Alineado en ese momento a `minimax-m3.1-flash:cloud`.
 
 | Agente | Primario | Fallback | Thinking |
@@ -28,11 +37,11 @@ Fuente de verdad: `openclaw.json` + tabla `settings` de `memory.db` (`model_by_a
 | main (CORE) | `deepseek-v4.1-flash:cloud` (desde 2026-10-28, ADR-107) | `minimax-m3.1-flash:cloud` | `off` |
 | kanam-dev | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | `off` |
 | kanam-ops | `gpt-oss:120b-cloud` | `deepseek-v4.1-flash:cloud` | `off` |
-| kanam-planner | `gpt-oss:120b-cloud` | `glm-5.3-flash:cloud` | `low` |
+| kanam-planner | `gpt-oss:120b-cloud` | `gemma4:12b-mlx` (local) | `low` |
 | kanam-critic | `gpt-oss:120b-cloud` | `nemotron-3-super:cloud` | `low` |
 | kanam-auditor | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | `low` |
 | kanam-mind | `deepseek-v4.1-flash:cloud` | `gemma4:cloud` | `off` |
-| kanam-studio | `gemma4:cloud` | `glm4:9b` (local) | `off` |
+| kanam-studio | `deepseek-v4.1-flash:cloud` | `gemma4:12b-mlx` (local) | `off` |
 
 **Pipeline A/B** (ADR-077/088/089): A `gpt-oss:120b-cloud` / B `deepseek-v4.1-flash:cloud`; pre-filtro `gemma4:cloud` (no autoriza solo: lo que toca lógica pasa siempre por B). Fuente operativa: `scripts/model-router.sh model pipeline_ab`.
 
