@@ -494,6 +494,51 @@ def build_handoff(args) -> str:
     return "\n".join(parts)
 
 
+def _load_merge_checker():
+    """Carga check-handoff-merge.py (el nombre tiene guiones, no es importable)."""
+    import importlib.util
+    path = Path(__file__).resolve().parent / "check-handoff-merge.py"
+    if not path.exists():
+        return None
+    spec = importlib.util.spec_from_file_location("handoff_merge_check", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def validate_merge_before_write(new_text: str, target: Path,
+                                closed: List[str]) -> Optional[str]:
+    """Devuelve un mensaje de error si el HANDOFF nuevo PISA pendientes heredados.
+
+    POR QUE EXISTE (2026-11-04). El gate vivia FUERA, en session-end.sh, y corria
+    DESPUES del os.replace: avisaba con el archivo ya mal escrito. Gonzo lo dijo
+    exacto: "esto es lo que queriamos evitar". Un gate que avisa despues de
+    destruir no previene, mitiga. Este corre ANTES: si hay perdidas no declaradas,
+    el archivo no se toca y el cierre falla.
+    """
+    checker = _load_merge_checker()
+    if checker is None:
+        return None  # fail-open explicito: sin checker no bloqueamos
+
+    prev = target if target.exists() else checker.pick_prev(target)
+    if prev is None or not prev.exists():
+        return None  # primer HANDOFF
+
+    res = checker.analyze(new_text, prev.read_text(), closed)
+    if res["ok"]:
+        return None
+
+    lines = [f"HANDOFF NO ESCRITO: el contenido nuevo pierde {len(res['missing'])} "
+             f"item(s) heredados de {prev.name}."]
+    for m in res["missing"]:
+        lines.append(f"  [{m['seccion']}] cov={m['cobertura']}  {m['item'][:110]}")
+    lines.append("")
+    lines.append("Fusiona el item en --next-steps/--decisions, declaralo en la seccion")
+    lines.append('CERRADOS del HANDOFF, o pasa --closed "<texto>" una vez por item.')
+    lines.append("Para forzar la escritura igual: --force-merge (queda registrado).")
+    return "\n".join(lines)
+
+
 def main():
     p = argparse.ArgumentParser(description="Genera/actualiza el HANDOFF del proyecto en curso")
     p.add_argument("--project", required=True, help="workspace|workspace_openclaw|main, o el slug del proyecto")
@@ -506,6 +551,10 @@ def main():
     p.add_argument("--repo", default="")
     p.add_argument("--date", default="")
     p.add_argument("--handoff-dir", dest="handoff_dir", default="", help="Override del directorio destino")
+    p.add_argument("--closed", action="append", default=[],
+                   help="Item heredado que se declara CERRADO (repetible)")
+    p.add_argument("--force-merge", dest="force_merge", action="store_true",
+                   help="Escribe aunque se pierdan heredados (queda como decision explicita)")
     args = p.parse_args()
 
     target = resolve_handoff_path(args.project, args.handoff_dir or None)
@@ -519,6 +568,19 @@ def main():
     # previo (A) y el append al indice de sesiones (C), asi el orden
     # backup -> index -> replace es consistente entre cierres concurrentes.
     with file_lock(target):
+        # GATE PREVIO A LA ESCRITURA (2026-11-04). Antes esto vivia en
+        # session-end.sh y corria DESPUES del os.replace: el HANDOFF ya estaba
+        # pisado y el aviso llegaba tarde. Ahora el cierre FALLA sin tocar el
+        # archivo, y el backup no se consume.
+        problem = validate_merge_before_write(content, target, args.closed)
+        if problem and not args.force_merge:
+            print(problem, file=sys.stderr)
+            return 3
+        if problem and args.force_merge:
+            print("AVISO: --force-merge activo; se escriben con perdidas declaradas:",
+                  file=sys.stderr)
+            print(problem, file=sys.stderr)
+
         existed = target.exists()
         backup = backup_previous(target, ts) if existed else None
         index = append_session_index(target, args.project, ts, args.summary)
