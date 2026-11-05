@@ -5,6 +5,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
 
 ---
+
 ## [2026-11-05] - Kimi sale de todo slot; el costo se mide en la barra, no en la sesión
 
 ### Added
