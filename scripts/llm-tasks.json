@@ -1,0 +1,54 @@
+{
+  "_comment": "Registro de tareas para scripts/llm.sh. Cada tarea fija modelo, think, num_predict y temperatura. Las decisiones salen de catas con fecha; no se cambia un valor sin medir. Ver docs/ecosystem/cata-2026-11-05-*.md",
+  "tasks": {
+    "narrativa": {
+      "model": "muse-spark-open:cloud",
+      "think": false,
+      "num_predict": 4000,
+      "temperature": 0.75,
+      "why": "Ganadora de la cata 2026-11-05: 9/9 limpio, 0 vacios en 6 corridas, el unico que no explica el miedo. Estable entre think=false y low."
+    },
+    "narrativa-alt": {
+      "model": "glm-5.3-flash:cloud",
+      "think": "low",
+      "num_predict": 4000,
+      "temperature": 0.75,
+      "why": "Con think=false devuelve el plan en ingles en vez del cuento (1762 palabras de plan, 0 de prosa). Con low: 41 chars de pensamiento y 309 palabras de prosa en 8s. El think es OBLIGATORIO."
+    },
+    "borrador-rapido": {
+      "model": "gpt-oss:120b-cloud",
+      "think": "low",
+      "num_predict": 4000,
+      "temperature": 0.75,
+      "why": "1.44 tok/palabra y 4s por escena: el mas economico de los que escriben bien. Con think=false y 4000 tokens gasta el presupuesto pensando y entrega vacio."
+    },
+    "redaccion-voz": {
+      "model": "muse-spark-open:cloud",
+      "think": false,
+      "num_predict": 3000,
+      "temperature": 0.7,
+      "why": "ADR-109 3: prosa que se sostiene sola. Kimi era el unico que no se rebajaba en T3 pero cuesta 24-26x deepseek."
+    },
+    "auditoria-camino": {
+      "model": "muse-spark-open:cloud",
+      "think": false,
+      "num_predict": 6000,
+      "temperature": 0,
+      "why": "Unico que distinguio 3/3 con 0 falsos positivos en recorridos limpios. num_predict 6000 es obligatorio: con 1200 devuelve vacio en silencio."
+    },
+    "clasificacion": {
+      "model": "gemma4:cloud",
+      "think": false,
+      "num_predict": 400,
+      "temperature": 0.1,
+      "why": "Tarea acotada con el dato en el prompt. No usar para nada donde el dato no este en el contexto: inventa."
+    },
+    "codigo": {
+      "model": "deepseek-v4.1-flash:cloud",
+      "think": false,
+      "num_predict": 4000,
+      "temperature": 0.1,
+      "why": "think=false OBLIGATORIO. Con 'low' gasta 8x (19.75 tok/palabra) y falla 1 de cada 3 prompts."
+    }
+  }
+}
