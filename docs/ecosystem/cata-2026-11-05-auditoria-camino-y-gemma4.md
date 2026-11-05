@@ -84,9 +84,68 @@ en el prompt (verificar, analizar, auditar), gemma4 sigue sin servir, y el borde
 
 Fuera de eso, no es chat trivial.
 
+**El criterio general, corregido tras la objeción de Gonzo del 2026-11-05:** la línea no separa
+"trivial" de "técnico", separa **"la salida se verifica contra algo" de "la salida se sostiene sola"**.
+Cuando se verifica -una afirmación sobre el repo, un hecho, un número-, inventar es un defecto.
+Cuando se sostiene sola -narrativa, redacción con voz, una idea de producto-, inventar es el trabajo.
+Las dos categorías aplican a cualquier modelo, y son las que hay que mirar antes de asignar un slot.
+
+**La objeción era válida y estaba mal explicada:** decir "inventar es un defecto" y al mismo tiempo
+darle a muse el slot de auditoría suena contradictorio. No lo es: en auditoría la salida de muse se
+verifica contra un recorrido que **ya ocurrió** -por eso ganó, porque no inventó-, y en la contraprueba
+del chat trivial se verificaba contra el estado del workspace -por eso perdió-. **Muse no cambió de
+naturaleza entre las dos pruebas; cambió el criterio con que se lo evaluaba.**
+
+
 ---
 
-## 3. Lo que esta cata NO prueba
+## 3. Contraprueba: ¿y `muse-spark-open` para lo trivial? (no)
+
+Mismas 7 preguntas, mismos dos modos, `num_predict=1500`.
+
+| Modelo / modo | Input | Output | Total (7) | Segundos | Correctas | Falsos positivos |
+|---|---|---|---|---|---|---|
+| `gemma4` completo | 4.099 | 845 | **4.944** | ~10 s | **5/7** | 0 |
+| `gemma4` parcial | 319 | 1.293 | 1.612 | ~9 s (con 1 fallo) | **0/7** | varios |
+| `muse` completo | 3.743 | **4.703** | 8.446 | **33,8 s** | **~6/7** | 0 |
+| `muse` parcial | 390 | 4.519 | 4.909 | 34,6 s | **~2/7** | **peor que gemma4** |
+
+**Muse con contexto completo acierta un poco más que gemma4, y es la única diferencia a su favor.**
+Ordena los 8 roles bien, resiste la trampa de ops, contesta Kimi con el ADR y en la hora de Tokio
+calculó el desfase correcto (UTC+9 vs UTC-3 = 12 h) en vez de inventar una fecha. Eso es mejor que
+gemma4, que en ese probe se quedó corta.
+
+**Y en todo lo demás pierde por goleada:**
+
+- **8.446 tokens contra 4.944.** El triple de salida que gemma4 para un acuse de "ok". Un modelo que
+  escribe 4.703 tokens para siete respuestas triviales no es un modelo de chat trivial: es un modelo
+  que redacta *todo*, incluidas las respuestas de una línea.
+- **34 s contra 10 s.** En charla trivial la latencia se siente: "ok" en 3 s es aceptable, "ok" en 6 s
+  con 372 tokens de salida es una espera para nada.
+- **Con contexto parcial es peor que gemma4**, y de una forma que da más vergüenza: preguntado por el
+  modelo del CORE contestó *"Soy Muse Spark, creado por Meta"*; preguntado por `kanam-ops` dijo que
+  no tenía información (honesto, pero inútil); y "¿kimi se queda o se va?" lo resolvió con **Kimi
+  Antonelli en Mercedes**. No inventó una hora como gemma4, pero inventó otro mundo entero.
+
+**La razón estructural, y es la que decide:** muse es un modelo de profundidad -auditoría, redacción
+con voz, análisis-, y se nota en la longitud de su salida. Para lo trivial el costo no es solo el
+token: es el modelo entero trabajando donde no hace falta. Gemma4, que es más chico y más directo,
+produce menos y cuesta menos en las dos dimensiones.
+
+**Contra el argumento de "ya está cargado, no sumo otro modelo":** muse ya es slot de auditoría y de
+redacción, así que sumarlo a chat trivial no agrega una familia. Pero un slot no se justifica por estar
+cargado, sino por ser el mejor para *esa* tarea, y el costo se paga por tarea. **Gemma4 sigue siendo el
+modelo del chat trivial.**
+
+**El único escenario donde muse trivial tendría sentido:** un único modelo para todo, con un solo
+prompt de sistema y un solo contexto, aceptando pagar 8,4k tokens por conversación. No es el modelo
+elegido en ningún slot hoy y el ADR-109 ya lo dejó fuera por costo (1 request ≈ 24-26× deepseek en la
+familia Kimi; muse no es de esa familia, pero 4.703 tokens de salida por siete llamadas cortas es el
+mismo problema en otra escala).
+
+---
+
+## 4. Lo que esta cata NO prueba
 
 - **`muse-spark-open` en auditoría de camino real** (no un recorrido sintético de seis pasos). El
   siguiente paso es correrlo sobre un cierre de sesión real del workspace y comparar contra lo que
@@ -97,3 +156,7 @@ Fuera de eso, no es chat trivial.
   por llamada; el punto de quiebre entre "más barato que deepseek" y "más caro" está en el mismo
   cálculo (706 tok en gemma4 vs ~2.000 tok de contexto del CORE) y hay que medirlo con el contexto
   real, no con este recorte.
+
+---
+
+
