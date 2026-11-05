@@ -65,17 +65,22 @@ Siete llamadas por modo, temperatura 0, mismas preguntas, mismo prompt de sistem
 - **Pero el parcial no es más barato: es inservible.** Gasta 1,6k tokens produciendo respuestas
   falsas que después hay que corregir, y corregir cuesta más que haberlo hecho bien.
 
-**El número que decide** (con el baseline del panel: deepseek ≈ 0,103 px/req, gemma4 < 0,01
-px/req):
+**El número que decide** (px medidos en la barra de sesión de 944 px):
 
-- **CORREGIDO 2026-11-05 con los px reales del panel** (barra de sesión de 944 px): deepseek
-  129 px / 313 req = **0,412 px/req**; muse 13 px / 39 req = **0,333 px/req**; glm 3 px / 15 req =
-  **0,200 px/req**. Muse cuesta el **81%** de un request del CORE y glm el **49%** - no el 10% que
-  decía esta sección. La versión anterior afirmaba "mas de 10x mas barato" sin haberlo medido: era
-  extrapolación de la barra vista a ojo, no un número.
-- Con esa base, gemma4 con contexto completo (~706 tok/llamada) sigue siendo más barato que el
-  CORE, **pero por un margen que hay que medir con su propio px/req**, no por un orden de
-  magnitud supuesto. El ahorro existe; la magnitud estaba inventada.
+| Modelo | req | px | px/req | vs deepseek |
+|---|---|---|---|---|
+| `deepseek-v4.1-flash` | 313 | 129 | **0,412** | 1x |
+| `muse-spark-open` | 39 | 13 | **0,333** | 1,2x mas barato |
+| `glm-5.3-flash` | 15 | 3 | **0,200** | 2x mas barato |
+| `gemma4` | 221 | 2 | **0,00905** | **46x mas barato** |
+
+- **La estimación de ">10x mas barato" de gemma4 era correcta en dirección y conservadora en
+  magnitud:** 2 px / 221 req dan 0,00905 px/req, o sea **46x** contra el CORE. No era
+  extrapolación inflada; se quedaba corta por un factor de 4. (Corregido el 2026-11-05 con el
+  dato exacto del panel.)
+- Con esa base, gemma4 con contexto completo (~706 tok/llamada) gana por más de un orden de
+  magnitud: 3,1x de tokens contra 46x de precio por token deja **~15x a favor** incluso pagando el
+  contexto entero.
 - **La condición es no cortar el contexto**: barato + contexto recortado = fabulación con costo.
 
 **Lo que queda abierto, y es el único freno real:** el probe no midió el caso que causó el

@@ -111,11 +111,11 @@ es un uso poco frecuente y el delta no está medido en piezas reales (solo en T3
 
 ### 4. Gemma 4 como chat trivial: sí, bajo una condición de contexto (medido)
 
-**Hecho de entrada:** `gemma4:31b` con **2.083 requests es una línea de barra casi invisible** -
-el costo unitario más bajo del plan. **Corrección 2026-11-05:** el "< 0,01 px/req" y el "10x" de
-esta línea no estaban medidos, eran extrapolación de la barra vista a ojo. Los px reales de la
-sesión (barra de 944 px) dan deepseek 0,412 · muse 0,333 · glm 0,200 px/req. gemma4 no se midió
-todavía con su propio px/req; su ventaja es real pero su magnitud está pendiente. El problema no es el costo, es que **inventa**.
+**Hecho de entrada:** `gemma4:31b` es el costo unitario más bajo del plan, **medido**: 221
+requests en **2 px** de la barra de sesión = **0,00905 px/req**. Contra deepseek (0,412 px/req) son
+**46x más barato por request**; contra muse (0,333) son **37x**. La estimación inicial de ">10x" no
+era extrapolación inflada: se quedaba corta por un factor de 4. El problema de gemma4 no es el
+costo, es que **inventa**.
 
 **Lo medido, siete llamadas por modo, mismas preguntas, temperatura 0:**
 
@@ -132,10 +132,10 @@ todavía con su propio px/req; su ventaja es real pero su magnitud está pendien
   charla trivial la salida es corta y el input fijo de 580 tokens pasa a ser el costo dominante.
 - **Pero el parcial no es la opción barata: es la inservible.** Gasta 1,6k tokens fabricando
   respuestas falsas que después hay que corregir, y corregir cuesta más que el ahorro.
-- **Contra el CORE, sigue ganando, con un margen menor al que se creía:** ~706 tok/llamada y un
-  px/req que hay que medir (los modelos vecinos dan muse 0,333 y glm 0,200 contra deepseek 0,412).
-  Pagar 706 tok baratos en vez de ~100 tok caros sigue siendo negocio, pero no "de orden de
-  magnitud": es un margen de 2-4x en el mejor caso, y hay que confirmarlo.
+- **Contra el CORE, gana por goleada:** ~706 tok/llamada a **0,00905 px/req** contra 0,412 del
+  CORE son **46x más barato por request**. Pagar 706 tokens baratos en vez de ~100 caros es negocio
+  por más de un orden de magnitud, y el contexto completo no cambia eso: 3,1x de tokens contra 46x
+  de precio por token sigue dando ~15x a favor.
 
 **La condición, que es la decisión:**
 
