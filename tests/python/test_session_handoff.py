@@ -251,3 +251,42 @@ def test_resolve_slug_astryx_ahora_es_carpeta_real(tmp_path, monkeypatch):
     path = session_handoff.resolve_handoff_path("astryx", None)
 
     assert path == ws / "projects" / "astryx" / ".knowledge" / "HANDOFF.md"
+
+
+# ---------------------------------------------------------------------------
+# `--closed` tiene que QUEDAR ESCRITO (2026-11-04).
+# Antes se pasaba solo al validador de merge: el gate dejaba de frenar, pero la
+# lista no llegaba al archivo, asi que el cierre siguiente volvia a ver esos
+# items como pendientes perdidos y frenaba otra vez. Un dato que autoriza una
+# escritura y no se guarda es una validacion sin memoria.
+# ---------------------------------------------------------------------------
+class _ArgsCerrados(_Args):
+    def __init__(self, summary, closed):
+        super().__init__(summary)
+        self.closed = closed
+
+
+def test_closed_se_escribe_en_el_handoff():
+    args = _ArgsCerrados("sesion de hoy", ["item uno", "item dos"])
+    text = session_handoff.build_handoff(args)
+
+    assert "## Cerrados en esta sesion" in text
+    assert "- item uno" in text
+    assert "- item dos" in text
+
+
+def test_sin_closed_no_aparece_la_seccion():
+    text = session_handoff.build_handoff(_ArgsCerrados("sesion de hoy", []))
+
+    assert "## Cerrados en esta sesion" not in text
+
+
+def test_closed_ignora_entradas_vacias_y_normaliza_guiones():
+    args = _ArgsCerrados("sesion", ["", "   ", "un item con \u2014 raya"])
+    text = session_handoff.build_handoff(args)
+
+    # La raya larga se normaliza a guion comun (regla del workspace).
+    assert "\u2014" not in text
+    assert "- un item con - raya" in text
+    # Las entradas vacias no generan bullets huerfanos.
+    assert "- \n" not in text

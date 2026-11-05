@@ -57,9 +57,17 @@ skill() {
 @test "test-skills: untracked SKILL.md with em dash is out of the default scope" {
   skill "skills/untracked-bad/SKILL.md" emdash
   run "$WS/scripts/test-skills.sh"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"Em dash:     0 ok, 0 failed"* ]]
-  [[ "$output" != *"untracked-bad"* ]]
+  # Cada asercion termina en `|| return 1`. En Bats una asercion intermedia que
+  # falla NO falla el test: solo cuenta el exit status del ULTIMO comando. Con
+  # `[[ ... ]]` sueltos, un test puede salir "ok" habiendo verificado nada.
+  # Se detecto el 2026-11-04: este test pasaba en local y fallaba en CI por el
+  # ultimo assert, mientras el del contador (roto desde que el em dash dejo de
+  # bloquear) nunca se evaluo. Un test que pasa por un assert ciego miente.
+  [ "$status" -eq 0 ] || return 1
+  # El formato vigente es "N ok, M aviso(s)": el em dash informa, no bloquea
+  # (regla del owner 2026-11-04: tipografia no es correccion).
+  [[ "$output" == *"Em dash:     0 ok, 0 aviso(s)"* ]] || return 1
+  [[ "$output" != *"untracked-bad"* ]] || return 1
 }
 
 @test "test-skills: staged SKILL.md with em dash warns but does not block" {
@@ -68,10 +76,10 @@ skill() {
   skill "skills/bad/SKILL.md" emdash
   git -C "$WS" add skills/bad/SKILL.md
   run "$WS/scripts/test-skills.sh"
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"no bloquea"* ]]
-  [[ "$output" == *"skills/bad/SKILL.md"* ]]
-  [[ "$output" != *"em dash FAIL"* ]]
+  [ "$status" -eq 0 ] || return 1
+  [[ "$output" == *"no bloquea"* ]] || return 1
+  [[ "$output" == *"skills/bad/SKILL.md"* ]] || return 1
+  [[ "$output" != *"em dash FAIL"* ]] || return 1
 }
 
 @test "test-skills: --all prunes node_modules" {
