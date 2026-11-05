@@ -75,12 +75,20 @@ skill() {
 }
 
 @test "test-skills: --all prunes node_modules" {
+  # Lo que este test prueba es el PRUNING, y la prueba es por AUSENCIA: si
+  # node_modules no se pruneara, el scan reportaria su SKILL.md con em dash y la
+  # ruta apareceria en el output. Ese es el assert que vale.
+  #
+  # Antes habia ademas un assert sobre el contador ("Em dash: 1 ok, 0 ..."). Se
+  # saco (2026-11-04): acoplaba el test de PRUNING al formato del reporte de
+  # EM DASH. Si manana cambia ese resumen, este test fallaba por un motivo que no
+  # tiene nada que ver con lo que dice probar. El contrato del em dash lo cubre
+  # el test de arriba, que si es suyo.
   skill "skills/ok/SKILL.md"
   skill "skills/dep/node_modules/third-party/SKILL.md" emdash
   run "$WS/scripts/test-skills.sh" --all
   [ "$status" -eq 0 ]
   [[ "$output" != *"node_modules"* ]]
-  [[ "$output" == *"Em dash:     1 ok, 0 aviso(s)"* ]]
 }
 
 @test "test-skills: staged path outside the skill roots is not scanned" {
