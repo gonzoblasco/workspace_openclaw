@@ -17,6 +17,11 @@
 # Uso:
 #   cuento.sh --genero terror --tema "..." [--minimo 2200] [--maximo 2600]
 #             [--out ARCHIVO] [--keep-outline] [--dry-run]
+#             [--outline-template RUTA]   # forzar plantilla de esqueleto
+#
+# Generos con plantilla propia: terror, cf, thriller-psicologico, highsmith.
+# Un genero sin plantilla propia usa outline-cuento.md: si el motor del genero es
+# distinto (no hay investigador, no hay fantasma), escribir el template primero.
 #
 # Salida por stdout: el cuento. El outline y las metricas van a stderr.
 #

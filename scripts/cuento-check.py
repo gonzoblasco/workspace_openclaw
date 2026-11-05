@@ -82,28 +82,30 @@ def nombres_propios(texto):
     return cands
 
 
-def hapax_detalles(cuento):
-    """Sustantivos concretos con modificador que aparecen UNA sola vez.
-
-    No es un veredicto: es la lista de candidatos a cabo suelto. Un detalle
-    sembrado para volver aparece dos veces como minimo (una al plantar, otra al
-    cobrar). Si aparece una sola, o es decoracion o es un olvido - y decidir cual
-    es trabajo de quien lee, no de un regex.
-    """
-    # frases sustantivas: 2-4 palabras con al menos un sustantivo "cosificable"
-    cands = {}
-    for m in re.finditer(r"\b([a-záéíóúñ]{4,})\s+(?:de\s+)?([a-záéíóúñ]{4,})\b", cuento):
-        frase = m.group(0)
-        cands[frase] = cands.get(frase, 0) + 1
-    return cands
-
-
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    # --genero puede ir en cualquier posicion: separar flags de valores antes de
+    # tomarlos. La version anterior filtraba solo los que empiezan con "--", asi
+    # que con "--genero X <outline> <cuento>" el valor X se colaba como primer
+    # path y el script explotaba con un traceback.
+    argvs = sys.argv[1:]
     genero = "default"
-    for i, a in enumerate(sys.argv):
-        if a == "--genero" and i + 1 < len(sys.argv):
-            genero = sys.argv[i + 1]
+    paths = []
+    i = 0
+    while i < len(argvs):
+        a = argvs[i]
+        if a == "--genero":
+            if i + 1 >= len(argvs):
+                print("cuento-check.py: --genero necesita un valor", file=sys.stderr)
+                return 2
+            genero = argvs[i + 1]
+            i += 2
+            continue
+        if a.startswith("--"):
+            i += 1  # flag desconocida: se ignora, no se toma como path
+            continue
+        paths.append(a)
+        i += 1
+    args = paths
     if len(args) < 2:
         print("uso: cuento-check.py <outline.md> <cuento.md> [--genero X]", file=sys.stderr)
         return 2

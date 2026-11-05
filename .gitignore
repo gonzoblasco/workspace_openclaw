@@ -166,3 +166,8 @@ agents/*/skills/*/reports/
 
 # Large PDFs (Mercor handbook: 26MB)
 docs/entrevistas/**/*.pdf
+
+# Artefactos de export generados para terceros (documentos para compartir, no
+# fuente del workspace). Se sacaron del indice el 2026-11-05 tras entrar en un
+# commit por un `git add -A`: son un proyecto paralelo del owner, no del repo.
+/exports/
