@@ -30,6 +30,8 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **La tesis del MoE ("solo activa parte de sus parámetros") no se sostiene en la factura.** Queda registrada como argumento del proveedor, no como propiedad medida.
 
 ### Fixed
+- **`bombe` no existe en español.** Aparecía tres veces en el cuento de Highsmith (por *bombilla* / el mate). Nadie lo detectó: ni el check ni yo al leerlo. Pasa a estar en la lista de defectos que ningún script caza.
+- **Ruptura de punto de vista en Highsmith.** Dos párrafos en primera persona dentro de un cuento en tercera, sin comillas ni raya: el lector no sabía quién hablaba. Corregidos a diálogo con raya. Regla nueva: si un párrafo empieza con yo/me/mí y no tiene raya, es diálogo mal formateado.
 - **El outline se truncaba con el template de thriller.** Con `num_predict=2500` se cortaba a mitad de la escena 1: el cuento salía sin revelación ni final. Subido a 6.000, y el wrapper **no corre la etapa 2 si faltan las secciones de cierre**.
 - **El ">10× más barato" era falso, en tres archivos.** Con los px reales del panel (barra de 944 px): deepseek 0,412 · muse 0,333 · glm 0,200 px/req. Muse cuesta el 81% de un request del CORE y glm el 49%, no el 10%. Era extrapolación de la barra vista a ojo. Corregido en ADR-109, en el doc de catas y acá, dejando la nota de que no estaba medido.
 - **Dos scripts llamaban modelos sin `think` y pagaban el razonamiento sin que se viera.** `complexity-scorer.sh`: 3,4 s y 626 tokens produciendo la misma respuesta de 25 caracteres que con `think:false` cuesta 0,4 s y **18 tokens** — 35× más caro en cada arranque de pipeline. `interpret-entries.py`, igual. Los dos corregidos con la medición en el comentario.

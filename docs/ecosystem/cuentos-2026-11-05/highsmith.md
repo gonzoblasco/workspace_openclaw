@@ -2,11 +2,11 @@ El lunes a las 8:20 el piso 3 de Mendoza 1200 olía a trapo húmedo y a café re
 
 Nélida, 58, ya estaba ahí, con los anteojos bajos y una pila de expedientes 2023 que le llegaban a la altura del termo. Llevaba 26 años en La Consolidada, sucursal Rosario, y la habían dejado a cargo del archivo porque la jefa de archivo estaba de licencia.
 
-Tato sacó su bombe mate, lo apoyó contra la mancha redonda que él mismo había dejado en la formica y miró de reojo el lomo del expediente 44.708-B, recién archivado. Era el siniestro de granizo del tambor del almacén de barrio, el que había tasado él mismo.
+Tato sacó su mate, lo apoyó contra la mancha redonda que él mismo había dejado en la formica y miró de reojo el lomo del expediente 44.708-B, recién archivado. Era el siniestro de granizo del tambor del almacén de barrio, el que había tasado él mismo.
 
 Nélida pasó una hoja y se frotó los ojos. Dijo que el cruce de pólizas le estaba aflojando la vista, que eran demasiados números para una planilla nueva. Tato sopló la yerba y contestó sin levantar la voz.
 
-Le dijo que el sistema ya cruzaba solo, que nadie leía nada de eso, que era un trabajo para cumplir. Mentira banal, de compañero, la primera piedra. Nélida asintió y siguió anotando, mientras Tato giraba el bombe entre los dedos y repetía para adentro su frase.
+Le dijo que el sistema ya cruzaba solo, que nadie leía nada de eso, que era un trabajo para cumplir. La primera piedra, dicha como se dicen las cosas entre compañeros. Nélida asintió y siguió anotando, mientras Tato giraba la bombilla entre los dedos y repetía para adentro su frase.
 
 *La empresa pierde más en cafés de gerencia por semana que lo que yo cobré en un año. No le robé a nadie: le cobré el descanso que no me dieron.*
 
@@ -48,11 +48,11 @@ Nélida lo miró fijo y le respondió que no se podía ir, que ella jubilaba en 
 
 La amistad se convirtió en correa involuntaria. Tato sonrió y le prometió que se quedaba, que lo iba a pensar mejor. Nélida le palmeó la mano y guardó la carpetita de tela bajo la silla.
 
-El lunes a las 14:15 Tato ya estaba saliendo del archivo cuando se cruzó con el practicante en el pasillo. El chico bajaba con una resma y le preguntó si había dejado algo en la fotocopiadora.
+El lunes a las 14:15 Tato ya estaba saliendo del archivo cuando se cruzó con el practicante en el pasillo. El chico bajaba con una resma y le preguntó si había dejado algo en la fotocopiadora, que había visto una hoja suelta en la bandeja y la puso con los formularios.
 
-La fotocopiadora estaba entre el archivo y la mesa de Nélida. Tato sintió el bolsillo del saco y tocó el formulario una sola vez, doblado, dentro de la manga. Dijo que sí, que un formulario se le había quedado chato, gracias, pibe.
+La fotocopiadora estaba entre el archivo y la mesa de Nélida. Tato sintió el bolsillo del saco y tocó el formulario una sola vez, doblado, dentro de la manga. Dijo que sí, que un formulario se le había quedado chato, y le preguntó al pibe en qué bandeja. El chico le señaló la de salida y se fue silbando.
 
-Mentita. Ahora el formulario estaba en el bolsillo de Tato, o así parecía. No había nadie más en el pasillo y el zumbido de la fotocopiadora tapaba todo. Siguió caminando sin mirar atrás.
+Y el formulario estaba en el bolsillo de Tato, o así parecía. No había nadie más en el pasillo y el zumbido de la fotocopiadora tapaba todo. Siguió caminando sin mirar atrás.
 
 Toda la escena fue eso: en qué manos estaba la hoja cuando cortó el capítulo. Tato la apretó contra el antebrazo y llegó a su escritorio con la camisa pegada a la espalda.
 
@@ -62,9 +62,9 @@ Tato había dejado la marca del crimen en el registro digital, que él no tocaba
 
 Nélida comparó la firma de la hoja con la del legajo digital y notó algo sutil, un trazo más apurado. Tato se encogió de hombros y le dijo que Sosa firmaba distinto cuando tenía apurado el reloj y que él lo iba a arreglar llamándolo.
 
-Mentira a quien lo estaba mirando arreglar la trampa frente a ella. Nélida lo miró largo y bajó la voz. Le dijo que si esto era lo que parecía —un cobro duplicado con mano—, ella tenía 26 años acá.
+Le dijo que lo arreglaba delante de ella, mirándola. Nélida lo miró largo y bajó la voz. Le dijo que si esto era lo que parecía —un cobro duplicado con mano—, ella tenía 26 años acá.
 
-A esta altura me daba lo mismo que fuera un chiste de Osvaldo o un fraude. Pero si era de alguien que yo conozco, mejor que ese alguien me avisara, porque si lo encontraba Buenos Aires, le pisaban el apellido completo.
+— A esta altura me da lo mismo si es un chiste de Osvaldo o un fraude —dijo, y le puso el termo delante—. Pero si es de alguien que yo conozco, mejor que ese alguien me avise. Porque si lo encuentra Buenos Aires, le pisan el apellido completo.
 
 Le dio la salida, con nombre implícito. Tato miró el mate y contestó que a veces pensaba en pedirse Córdoba. Nélida se rió y le dijo quedate, bozo, y le pidió el termo. La oportunidad fue real y no fue tomada.
 
@@ -78,9 +78,9 @@ Sosa firmó. Esta vez la firma coincidía con la segunda. Tato dobló la hoja y 
 
 El viernes a las 17:55 la oficina del piso 3 se vaciaba. Nélida, a un mes de jubilarse, había terminado la planilla con los duplicados, los dos expedientes incluidos. Dijo que el cruce de póliza era problema de auditoría central de Buenos Aires, no suyo.
 
-A mí me pagan por ordenar, no por policía, dijo mientras metía todo en un sobre grande. El sobre iba a Buenos Aires, donde la auditoría demoraba meses y nadie lo leía. Tato ganaba por burocracia. El objeto viajaba en el sobre.
+— A mí me pagan por ordenar, no por policía —dijo, mientras metía todo en un sobre grande. El sobre iba a Buenos Aires, donde la auditoría demoraba meses y nadie lo leía. Tato ganaba por burocracia, y la prueba viajaba en el sobre.
 
-Tato, en lugar de agradecer, le dijo que si quería jubilarse tranquila lo dejara así, que entregara lo que encontró, que quedara registro de su trabajo y la responsabilidad fuera de la empresa por tardarse. Mentira que la consolaba.
+Tato, en lugar de agradecer, le dijo que si quería jubilarse tranquila lo dejara así, que entregara lo que encontró, que quedara registro de su trabajo y la responsabilidad fuera de la empresa por tardarse. Y no lo dijo para consolarla.
 
 Y era verdad: la convenció de hacer exactamente lo que le convenía a él. Nélida cerró el sobre y lo selló con cinta. Tato empezó a dudar de su ojo; por primera vez en doce años midió con cinta métrica antes de decir un valor.
 
@@ -88,7 +88,7 @@ Cada mate compartido se había vuelto una operación. En las noches repasaba la 
 
 A las 18:20 de ese viernes Tato ordenaba los expedientes del mes para entregarlos como si nada. Entró la practicante con la valija de correo. En la mesa de Nélida ya no había mates, ni termo, ni carpetita de tela.
 
-Había un cartelito que decía JUBILADA. Tato dejó el bombe en el lugar vacío de la mesa y siguió armando la planilla para el mes próximo, donde el nombre de Nélida ya no figuraba. Afuera llovía.
+Había un cartelito que decía JUBILADA. Tato dejó el mate en el lugar vacío de la mesa y siguió armando la planilla para el mes próximo, donde el nombre de Nélida ya no figuraba. Afuera llovía.
 
 En Buenos Aires la planilla con los duplicados viajaba en un sobre dentro de una caja dentro de un depósito, y no había nadie que la abriera.
 

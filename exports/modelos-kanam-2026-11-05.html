@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Modelos que uso, y por qué</title>
+<style>
+  @page { size: A4; margin: 15mm 14mm 14mm 14mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: -apple-system, "Helvetica Neue", "Segoe UI", Inter, sans-serif;
+    font-size: 9.1pt; line-height: 1.45; color: #1c2420; margin: 0;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+  h1, h2, h3 { font-weight: 650; letter-spacing: -0.015em; margin: 0; }
+  code, .mono { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 8.2pt; }
+  p { margin: 0 0 6px; }
+  .muted { color: #6b7772; }
+
+  /* ---------- header ---------- */
+  header { border-bottom: 2.5px solid #1f6f4a; padding-bottom: 9px; margin-bottom: 12px; }
+  .eyebrow { font-size: 7.4pt; letter-spacing: .16em; text-transform: uppercase; color: #1f6f4a; font-weight: 700; }
+  h1 { font-size: 25pt; line-height: 1.06; margin: 5px 0 6px; }
+  .lede { font-size: 10.2pt; color: #3d4a45; max-width: 150mm; line-height: 1.42; }
+  .stamp { font-size: 7.6pt; color: #6b7772; margin-top: 8px; }
+
+  /* ---------- sections ---------- */
+  section { margin: 0 0 13px; }
+  tr { page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  h2 { font-size: 12.2pt; margin: 0 0 7px; padding-bottom: 3px; border-bottom: 1px solid #dfe5e1; }
+  h2 .num { color: #1f6f4a; font-variant-numeric: tabular-nums; margin-right: 6px; }
+  h3 { font-size: 9.6pt; margin: 9px 0 4px; }
+
+  /* ---------- tables ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 8.3pt; }
+  th { text-align: left; font-size: 7.2pt; text-transform: uppercase; letter-spacing: .07em;
+       color: #56635d; border-bottom: 1.2px solid #b9c4be; padding: 4px 5px 3px; font-weight: 700; }
+  td { padding: 4.2px 5px; border-bottom: 1px solid #e8ece9; vertical-align: top; }
+  tr:last-child td { border-bottom: 1px solid #cfd8d3; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .role { font-weight: 620; white-space: nowrap; }
+  .why { color: #46524d; }
+  .pill { display: inline-block; padding: 0.5px 5px; border-radius: 3px; font-size: 7.4pt;
+          font-family: "SF Mono", ui-monospace, Menlo, monospace; white-space: nowrap; }
+  .p-main { background: #e6f1eb; color: #145639; }
+  .p-fb { background: #f1f3f2; color: #56635d; }
+  .p-local { background: #fdf3e3; color: #8a5a12; }
+
+  /* ---------- rule cards ---------- */
+  .rules { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; }
+  .card { border: 1px solid #dde4e0; border-left: 3px solid #1f6f4a; border-radius: 3px;
+          padding: 7px 8px; background: #fbfcfb; page-break-inside: avoid; }
+  .card .k { font-size: 7.2pt; text-transform: uppercase; letter-spacing: .08em;
+             color: #1f6f4a; font-weight: 700; margin-bottom: 2px; }
+  .card .v { font-size: 8.4pt; line-height: 1.38; color: #2b3531; }
+
+  /* ---------- pipeline ---------- */
+  .pipe { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 6px 0 4px; }
+  .stage { min-width: 0; border: 1px solid #dde4e0; border-top: 2.5px solid #1f6f4a; border-radius: 3px; padding: 6px 7px; background: #fbfcfb; }
+  .stage .tag { font-size: 7pt; font-weight: 800; letter-spacing: .1em; color: #1f6f4a; }
+  .stage .m { font-family: "SF Mono", monospace; font-size: 8.1pt; font-weight: 600; margin-top: 1px; }
+  .stage .d { font-size: 7.7pt; color: #5b6862; line-height: 1.32; margin-top: 2px; }
+  .arrow { width: 17px; display: flex; align-items: center; justify-content: center;
+           color: #9aaba2; font-size: 12pt; }
+  .note { font-size: 7.9pt; color: #5b6862; margin-top: 4px; }
+
+  /* ---------- bars ---------- */
+  .bars { margin: 6px 0 3px; }
+  .bar-row { display: grid; grid-template-columns: 42mm 1fr 27mm; align-items: center; gap: 6px;
+             padding: 2.4px 0; font-size: 8.1pt; }
+  .bar-track { height: 9px; background: #eef1ef; border-radius: 2px; position: relative; }
+  .bar-fill { height: 100%; border-radius: 2px; background: #1f6f4a; }
+  .bar-fill.alt { background: #6f9b85; }
+  .bar-fill.low { background: #b9c9c0; }
+  .bar-val { text-align: right; font-variant-numeric: tabular-nums; font-size: 7.9pt; color: #3d4a45; white-space: nowrap; }
+
+  ul { margin: 3px 0 6px; padding-left: 15px; }
+  li { margin-bottom: 2.2px; }
+  .cols2 { column-count: 2; column-gap: 16px; }
+  .callout { border: 1px solid #dde4e0; background: #f7f9f8; border-radius: 3px;
+             padding: 7px 9px; margin: 7px 0 4px; font-size: 8.4pt; page-break-inside: avoid; }
+  .callout strong { color: #145639; }
+  footer { margin-top: 12px; padding-top: 6px; border-top: 1px solid #dfe5e1;
+           font-size: 7.3pt; color: #7d8984; display: flex; justify-content: space-between; }
+  .pb { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Sistema de agentes Kanam · política de modelos</div>
+  <h1>Modelos que uso, y por qué</h1>
+  <p class="lede">Ocho agentes, tres roles por pipeline y un registro de tareas. No hay un
+  “modelo bueno”: hay un modelo por trabajo, elegido con catas fechadas y medido sobre la barra
+  de cuota real. Esto es lo que corre hoy y la razón de cada casilla.</p>
+  <div class="stamp">Verificado contra el runtime el 5 de noviembre de 2026 · <span class="mono">openclaw.json</span> + ADR-090 / ADR-107 / ADR-109</div>
+</header>
+
+<section>
+  <h2><span class="num">01</span>La regla antes de la tabla</h2>
+  <div class="rules">
+    <div class="card">
+      <div class="k">Se elige por tarea</div>
+      <div class="v">El rol fija el primario; la tarea fija el modelo cuando la tarea tiene otra
+      vara (estructura ≠ prosa, revisar ≠ escribir).</div>
+    </div>
+    <div class="card">
+      <div class="k">Se mide, no se estima</div>
+      <div class="v">La unidad es la <b>barra del panel sobre uso real</b> (px por request), no el
+      costo de una sesión corta. Tres correcciones seguidas fueron todas hacia arriba.</div>
+    </div>
+    <div class="card">
+      <div class="k">&gt; 20× el baseline = no es slot</div>
+      <div class="v">Un slot se paga todas las veces. Lo que cuesta más de 20 veces el baseline
+      solo entra como excepción declarada, con OK y presupuesto previo.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">02</span>El pipeline: la asimetría es la decisión</h2>
+  <div class="pipe">
+    <div class="stage">
+      <div class="tag">A · EJECUTA</div>
+      <div class="m">gpt-oss:120b</div>
+      <div class="d">Escribe y corrige. Necesita velocidad y costo bajo para el primer borrador.</div>
+    </div>
+    <div class="stage">
+      <div class="tag">B · REVISA</div>
+      <div class="m">deepseek-v4.1-flash</div>
+      <div class="d">Revisa y decide. 1M de contexto: ve el código de A, el repo y las reglas.</div>
+    </div>
+    <div class="stage">
+      <div class="tag">C · RED DE TESTS</div>
+      <div class="m">minimax-m3.1-flash</div>
+      <div class="d">Escribe la suite de regresión: un test por hallazgo de B.</div>
+    </div>
+  </div>
+  <p class="note"><b>Pre-filtro</b> <span class="mono">gemma4:cloud</span> (~1 s): triage barato que
+  <b>no autoriza solo</b>. Medido: se le escapa estable el defecto semántico (una rama inalcanzable
+  que el build y los tests no ven), así que todo lo que toca lógica pasa por B.</p>
+  <div class="callout">
+    <strong>Por qué dos cerebros distintos:</strong> un review hecho con el mismo modelo que
+    ejecutó no fue “otro ojo”. Con A y B distintos, el review adversarial encontró 3 evasiones
+    reales que la suite del propio autor no cubría. Y en el caso del token bucket, A reportó
+    “el test está mal” en vez de esconderlo, B arbitró contra el spec y C corrigió solo ese
+    assert: la suite cerró verde sin tocar el código para satisfacer un test equivocado.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">03</span>Los ocho agentes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:19%">Agente</th>
+        <th style="width:24%">Primario</th>
+        <th style="width:19%">Fallback</th>
+        <th class="num" style="width:9%">Thinking</th>
+        <th>Por qué</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="role">main · CORE</td>
+        <td><span class="pill p-main">deepseek-v4.1-flash</span></td>
+        <td><span class="pill p-local">gemma4:12b</span> <span class="pill p-fb">minimax-m3.1</span></td>
+        <td class="num">off</td>
+        <td class="why">Mejor contenido medido en su rol (8,3) y 1M de contexto para verificar.
+        ADR-107: ~20% más económico que minimax en uso real; el thinking de minimax es
+        <i>always-on</i> y se factura como salida.</td>
+      </tr>
+      <tr>
+        <td class="role">kanam-dev</td>
+        <td><span class="pill p-main">gpt-oss:120b</span></td>
+        <td><span class="pill p-fb">deepseek-v4.1-flash</span></td>
+        <td class="num">off</td>
+        <td class="why">2.546 tok y 6 s por entrega: el más barato de los que escriben bien.
+        Es el agente A del pipeline.</td>
+      </tr>
+      <tr>
+        <td class="role">kanam-ops</td>
+        <td><span class="pill p-main">gpt-oss:120b</span></td>
+        <td><span class="pill p-fb">deepseek-v4.1-flash</span></td>
+        <td class="num">off</td>
+        <td class="why">Latencia 3 s contra 40 s de deepseek en una tarea de seguridad:
+        en infraestructura el reloj importa.</td>
+      </tr>
+      <tr>
+        <td class="role">kanam-planner</td>
+        <td><span class="pill p-main">gpt-oss:120b</span></td>
+        <td><span class="pill p-local">gemma4:12b</span></td>
+        <td class="num">low</td>
+        <td class="why">La cata favorecía a deepseek por umbral de cuota, pero el delta no
+        justifica mover un rol que funciona. Se deja y se registra la medición.</td>
+      </tr>
+      <tr>
+        <td class="role">kanam-critic</td>
+        <td><span class="pill p-main">gpt-oss:120b</span></td>
+        <td><span class="pill p-fb">nemotron-3-super</span></td>
+        <td class="num">low</td>
+        <td class="why">Juicio adversarial con thinking corto. Nemotron queda solo de red:
+        encontró 2/2 bugs de código en 3,6 s, pero fabrica riesgos en auditorías de camino.</td>
+      </tr>
+      <tr>
+        <td class="role">kanam-auditor</td>
+        <td><span class="pill p-main">muse-spark-open</span></td>
+        <td><span class="pill p-fb">deepseek-v4.1</span> <span class="pill p-fb">gemma4</span></td>
+        <td class="num">low</td>
+        <td class="why">Auditoría de camino: distinguió 3/3 con <b>0 falsos positivos</b> en
+        recorridos limpios; nemotron inventó 6 y gpt-oss entre 4 y 5. No audita con el mismo
+        cerebro que ejecuta.</td>
+      </tr>
+      <tr>
+        <td class="role">kanam-mind</td>
+        <td><span class="pill p-main">deepseek-v4.1-flash</span></td>
+        <td><span class="pill p-fb">gemma4:cloud</span></td>
+        <td class="num">off</td>
+        <td class="why">8,7 en su rol: el mejor medido para investigación y síntesis;
+        la ventana larga ayuda a leer corpus completo.</td>
+      </tr>
+      <tr>
+        <td class="role">kanam-studio</td>
+        <td><span class="pill p-main">deepseek-v4.1-flash</span></td>
+        <td><span class="pill p-local">gemma4:12b</span></td>
+        <td class="num">off</td>
+        <td class="why">Corrección del 2026-11-04: gemma4 <i>alucinó</i> un defecto de contraste
+        que medido daba 7,27:1. La decisión con evidencia medida gana sobre la tabla vieja.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="note"><b>Fallbacks locales:</b> <span class="mono">gemma4:12b-mlx</span> existe en disco
+  (7,7 GB) y es la última red si la nube cae. Nunca primario de un agente: ningún rol hereda
+  modelo local (ADR-076). <b>utilityModel</b> <span class="mono">gemma4:cloud</span> para trabajo
+  interno barato.</p>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Router por tipo de tarea</h2>
+  <table>
+    <thead>
+      <tr><th style="width:20%">Tipo</th><th style="width:30%">Modelo</th><th>Cuándo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="role mono">code</td><td><span class="pill p-main">deepseek-v4.1-flash</span></td><td class="why">Implementación y corrección. <span class="mono">think=false</span> obligatorio: con <span class="mono">low</span> gasta 8× y falla 1 de cada 3 prompts.</td></tr>
+      <tr><td class="role mono">review</td><td><span class="pill p-main">deepseek-v4.1-flash</span></td><td class="why">El gate que decide: mejor revisor medido (4/4 bugs sembrados, 9 hallazgos).</td></tr>
+      <tr><td class="role mono">long</td><td><span class="pill p-fb">glm-5.3-flash</span></td><td class="why">Contexto largo y síntesis. 1M de contexto. Ojo: cuesta ~2× deepseek por request.</td></tr>
+      <tr><td class="role mono">cheap</td><td><span class="pill p-local">gemma4:cloud</span></td><td class="why">Triage, clasificación, chat cuyo dato ya está en el prompt. <b>No</b> para análisis: inventa.</td></tr>
+      <tr><td class="role mono">writing</td><td><span class="pill p-fb">glm-5.3-flash</span></td><td class="why">Estructura y outline. <span class="mono">think=low</span>: con <span class="mono">false</span> devuelve el plan en inglés en vez del texto.</td></tr>
+      <tr><td class="role mono">pipeline_ab</td><td class="mono" style="font-size:7.9pt">gpt-oss:120b / deepseek-v4.1-flash</td><td class="why">A escribe, B decide (ADR-077/088).</td></tr>
+      <tr><td class="role mono">pipeline_abc</td><td class="mono" style="font-size:7.9pt">gpt-oss / deepseek / minimax</td><td class="why">Tercer agente: red de tests de regresión (ADR-105).</td></tr>
+      <tr><td class="role mono">prefilter</td><td><span class="pill p-local">gemma4:cloud</span></td><td class="why">Corre primero y barato; su veredicto no cierra nada.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Registro de tareas: <span class="mono">llm.sh</span></h3>
+  <p class="note" style="margin-bottom:5px">Cuando una skill tiene tareas distintas, un solo modelo
+  para todas es un error. El script toma la tarea como parámetro y de ahí salen modelo,
+  <span class="mono">think</span>, <span class="mono">num_predict</span> y temperatura, versionados
+  con la cata que los funda.</p>
+  <table>
+    <thead><tr><th style="width:22%">Tarea</th><th style="width:26%">Modelo</th><th>Por qué (medido)</th></tr></thead>
+    <tbody>
+      <tr><td class="role mono">narrativa</td><td><span class="pill p-fb">muse-spark-open</span></td><td class="why">Ganadora de la cata de ficción: 9/9 limpio, 0 vacíos en 6 corridas, el único que no explica el miedo.</td></tr>
+      <tr><td class="role mono">outline</td><td><span class="pill p-fb">glm-5.3-flash</span></td><td class="why">Encuentra la estructura; se cae en gramática a las 2.500 palabras por eso no redacta. <span class="mono">think=low</span>.</td></tr>
+      <tr><td class="role mono">redaccion</td><td><span class="pill p-fb">muse-spark-open</span></td><td class="why">Sostiene la voz 2.500 palabras sin romperse. Temp alta: la creatividad ya la aportó el outline.</td></tr>
+      <tr><td class="role mono">auditoria-camino</td><td><span class="pill p-fb">muse-spark-open</span></td><td class="why">3/3 con 0 falsos positivos. <span class="mono">num_predict=6000</span> es obligatorio: con 1200 devuelve vacío en silencio.</td></tr>
+      <tr><td class="role mono">clasificacion</td><td><span class="pill p-local">gemma4:cloud</span></td><td class="why">Tarea acotada con el dato en el prompt. 46× más barato por request.</td></tr>
+      <tr><td class="role mono">codigo</td><td><span class="pill p-main">deepseek-v4.1-flash</span></td><td class="why">Con <span class="mono">think=low</span> gasta 19,75 tok/palabra y falla 1 de cada 3. <span class="mono">think=false</span> o no se usa.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">05</span>Lo que cuesta: la barra, no la intuición</h2>
+  <p class="note" style="margin-bottom:4px">Costo por request medido sobre la barra del panel
+  (944 px de track). La unidad no es el token: es la cuota que efectivamente se paga.</p>
+  <div class="bars">
+    <div class="bar-row"><div class="mono">deepseek-v4.1-flash</div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><div class="bar-val">0,412 · 1×</div></div>
+    <div class="bar-row"><div class="mono">muse-spark-open</div><div class="bar-track"><div class="bar-fill alt" style="width:81%"></div></div><div class="bar-val">0,333 · 0,8×</div></div>
+    <div class="bar-row"><div class="mono">glm-5.3-flash</div><div class="bar-track"><div class="bar-fill alt" style="width:49%"></div></div><div class="bar-val">0,200 · 0,5×</div></div>
+    <div class="bar-row"><div class="mono">gemma4</div><div class="bar-track"><div class="bar-fill low" style="width:2.2%"></div></div><div class="bar-val">0,009 · 46× menos</div></div>
+  </div>
+  <div class="callout" style="border-left:3px solid #8a5a12">
+    <strong>Kimi queda fuera de todo slot.</strong> 10 requests de <span class="mono">kimi-k3.1-pro</span>
+    pesan más en la semana que 17 de <span class="mono">kimi-k3</span>: 1 request ≈ <b>24-26×
+    deepseek</b>. Queda solo como excepción declarada (cierre pre-deploy o tarea donde el fallo
+    cuesta más que un punto de cuota), con OK explícito y presupuesto antes de la llamada.
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">06</span>Thinking: se declara, nunca se hereda</h2>
+  <div class="rules">
+    <div class="card">
+      <div class="k">off</div>
+      <div class="v"><b>Ejecución</b> — main, dev, ops, mind, studio. Razonar no mejora el
+      entregable y se factura como salida.</div>
+    </div>
+    <div class="card">
+      <div class="k">low</div>
+      <div class="v"><b>Juicio</b> — critic, auditor, planner. Un margen de razonamiento antes de
+      decidir, sin espiral.</div>
+    </div>
+    <div class="card">
+      <div class="k">high / max</div>
+      <div class="v"><b>Por excepción</b> — el scorer de complejidad sube el nivel; <span class="mono">max</span>
+      queda para adjudicaciones duras one-shot.</div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:5px">El error que costó dos veredictos falsos: sin
+  <span class="mono">think</span> explícito, cada modelo hereda su default. <span class="mono">deepseek</span>
+  piensa; <span class="mono">glm</span> no escribe. Por eso toda llamada por script lleva el
+  parámetro puesto, y el scorer bajó de 3,4 s / 626 tokens a 0,4 s / 18 tokens por dar el mismo
+  resultado.</p>
+</section>
+
+<section>
+  <h2><span class="num">07</span>Descartados, y con qué criterio</h2>
+  <table>
+    <tbody>
+      <tr><td class="role" style="width:32%">nemotron-3-ultra</td><td class="why">Sin ventaja sobre Super, más lento y más caro, timeouts en tareas de alcance. Fuera de cualquier rol.</td></tr>
+      <tr><td class="role">nemotron-3-super como auditor</td><td class="why">Mejor auditor de <i>código</i> medido, pero inventó 6 riesgos en un recorrido limpio. Un auditor con falso positivo crónico entrena a ignorar sus reportes.</td></tr>
+      <tr><td class="role">glm-5.3-flash como default</td><td class="why">0,29 px/req = 5,5× deepseek, medido. Sirve para contexto largo y estructura, no como motor.</td></tr>
+      <tr><td class="role">gemma4 para análisis</td><td class="why">Con el dato completo en el prompt: 5/7 correctas y 0 inventos. Con contexto parcial: 0/7 e inventó dos fechas y horas enteras. Solo chat trivial.</td></tr>
+      <tr><td class="role">thinking alto por defecto</td><td class="why">Drena cuota en trabajo rutinario sin producir respuesta útil (probe 2026-10-05).</td></tr>
+      <tr><td class="role">mismo modelo en A y B</td><td class="why">No es un segundo ojo: valida el estilo de A. La asimetría es el punto del pipeline.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">08</span>Cómo sostengo esto</h2>
+  <ul class="cols2">
+    <li><b>Un dato, un dueño:</b> el runtime vive en <span class="mono">openclaw.json</span>; el
+    porqué, en los ADR; los bloques operativos se generan desde una sola clave.</li>
+    <li><b>Gate de consistencia:</b> <span class="mono">managed-blocks.py check</span> y
+    <span class="mono">check-pipeline-enforcement.py</span> fallan si config, DB y documentos
+    dejan de coincidir.</li>
+    <li><b>Ningún cambio sin cata:</b> un modelo nuevo entra con medición fechada, no con
+    “parece mejor”.</li>
+    <li><b>Nada se aplica “porque el ADR lo dice”:</b> si no está en el runtime, no está
+    aplicado; una asignación escrita y no aplicada es una mentira con formato.</li>
+  </ul>
+  <div class="callout">
+    <strong>Límites de la evidencia:</strong> varias catas son n=1 por celda, con tareas chicas y
+    temperatura 0: son direccionales, no un benchmark. El costo sale de leer la barra del panel
+    sobre uso real, que es más estable que cualquier estimación por token, pero sigue siendo una
+    lectura humana de una barra. Cuando el número se movió, se movió hacia arriba: las tres veces.
+  </div>
+</section>
+
+<footer>
+  <div>Kanam · sistema de agentes · 5 de noviembre de 2026</div>
+  <div>Fuente de verdad: <span class="mono">openclaw.json</span> · ADR-077/088/089/090/105/107/109</div>
+</footer>
+
+</body>
+</html>
