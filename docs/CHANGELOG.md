@@ -8,6 +8,10 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ## [2026-11-05] - Kimi sale de todo slot; el costo se mide en la barra, no en la sesión
 
 ### Added
+- **`cuento-check.py` con umbrales por género.** El mismo número no significa lo mismo en todos lados: el thriller de La Plata tiene promedio 26 palabras/párrafo y está bien (11 líneas de diálogo, beats procedurales); en terror sería metralleta. Perfiles `terror`, `thriller-psicologico`, `highsmith` y `default`, medidos sobre los cuentos del día.
+- **Detector de cabos sueltos.** Una persona presentada con un rasgo y nunca retomada es un error, no una ambigüedad. Encontró el caso que todas las demás métricas dejaron pasar: *"un residente joven que no le pidió documento"*, que insinuaba una suplantación y el cuento nunca retomó. Solo mira personas: con objetos daba 54 avisos de ruido.
+- **Detector de fuga de outline.** Si el metalenguaje del plan aparece en la prosa (*"El objeto viajaba en el sobre"*), el redactor narra con los nombres de las secciones. Caso real de Highsmith.
+- **`outline-highsmith.md` y `outline-thriller-psicologico.md`.** Son géneros distintos y no se resuelven con un adjetivo: el thriller psicológico necesita adversario humano con método repetible y asimetría de información; el método Highsmith no tiene investigador, el protagonista es el culpable, y la tensión es administrativa.
 - **ADR-109.** La familia Kimi (`kimi-k3.1-pro`, `kimi-k3`) no asigna ningún rol: queda como excepción declarada con OK de Gonzo, presupuesto previo y sin iteración. Criterio de descarte: un modelo que cuesta **> 20× el baseline** no puede ser slot.
 - **Auditoría de camino a `muse-spark-open` (medido).** Tres modelos sobre tres recorridos (un riesgo real, dos limpios): muse distinguió 3/3 y 0 falsos positivos; `nemotron-3-super` inventó 6 riesgos en el recorrido limpio y `gpt-oss:120b` entre 4 y 5. Descarte de los dos candidatos que recomendaba la evidencia vieja: la tarea define el modelo, no la familia del rol.
 - **Redacción con voz a `muse-spark-open`.** Uso declarado raro; se paga en calidad de punta lo que se gana en no pensar el costo cada vez. Licencia verificada para uso interno. Muse queda en dos slots (auditoría y redacción) con la condición de que ninguno haga la tarea del otro.
@@ -26,6 +30,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **La tesis del MoE ("solo activa parte de sus parámetros") no se sostiene en la factura.** Queda registrada como argumento del proveedor, no como propiedad medida.
 
 ### Fixed
+- **El outline se truncaba con el template de thriller.** Con `num_predict=2500` se cortaba a mitad de la escena 1: el cuento salía sin revelación ni final. Subido a 6.000, y el wrapper **no corre la etapa 2 si faltan las secciones de cierre**.
 - **El ">10× más barato" era falso, en tres archivos.** Con los px reales del panel (barra de 944 px): deepseek 0,412 · muse 0,333 · glm 0,200 px/req. Muse cuesta el 81% de un request del CORE y glm el 49%, no el 10%. Era extrapolación de la barra vista a ojo. Corregido en ADR-109, en el doc de catas y acá, dejando la nota de que no estaba medido.
 - **Dos scripts llamaban modelos sin `think` y pagaban el razonamiento sin que se viera.** `complexity-scorer.sh`: 3,4 s y 626 tokens produciendo la misma respuesta de 25 caracteres que con `think:false` cuesta 0,4 s y **18 tokens** — 35× más caro en cada arranque de pipeline. `interpret-entries.py`, igual. Los dos corregidos con la medición en el comentario.
 
