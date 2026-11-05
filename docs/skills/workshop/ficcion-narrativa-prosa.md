@@ -30,7 +30,8 @@ Si el pedido es narrar un hecho real del owner (un caso judicial, una historia f
    Una carpeta del disco con el mismo nombre del caso puede estar incompleta: contar y decirlo con el número. Si no aparecen, se le dice al owner qué buscó y dónde, en vez de concluir "no tengo el material".
 2. **Leer el lote entero antes de escribir una línea.** Ordenar los `.txt` por tamaño, leer los largos primero y el resto en barrido; descartar los que no son del caso (contratos laborales, CVs) por su contenido, no por el nombre del archivo.
 3. **Construir primero la cronología real** con fechas, actores y documentos (la de `legal-document-intake`). La fuente de la ficción es esa tabla, no el recuerdo.
-4. **Escribir reemplazando solo lo identificatorio:** nombres de personas, ciudades, juzgados, números de expediente. Si el owner pide cambiar el apellido de la contraparte, cambiarlo también en los documentos ya citados, no solo en el cuerpo narrativo. Lo demás —fechas internas, citas de informes, contradicciones, plazos— se conserva, porque los detalles verificables son lo que hace creíble la historia.
+4. **Escribir reemplazando solo lo identificatorio:** nombres de personas, ciudades, juzgados, números de expediente. **Cuando la historia es de la vida del owner, cambiar el nombre de la contraparte aunque el owner no lo pida, y aunque el expediente esté en la carpeta privada del caso:** el apellido real de la otra parte en una pieza que circula es un daño que no se deshace. Cambiarlo también en los documentos ya citados, no solo en el cuerpo narrativo. Lo demás —fechas internas, citas de informes, contradicciones, plazos— se conserva, porque los detalles verificables son lo que hace creíble la historia.
+4a. **No derivar el material del nombre de una carpeta ni de lo que el agente cree recordar.** Una carpeta del disco puede tener 48 archivos mientras el lote que el owner mandó por el chat tiene 74, y una sesión anterior puede haber dejado un daily con la cronología que hay que leer antes de preguntar. Si el owner dice que ya mandó algo, buscarlo en ese orden: el lote de `~/.openclaw/media/inbound/`, el daily de la fecha que nombra (`memory/YYYY-MM-DD.md`), y solo después el disco. Decirle "no tengo el material" sin haber hecho las tres búsquedas es el error que obliga al owner a repetir el pedido.
 4b. **Corregir la cronología con lo que el owner dicta, sin reinterpretarla.** El owner aporta hechos que no están en el lote (cuántas audiencias hubo, qué le dijo el juez, qué pasó antes del corte). Cada corrección se aplica literal: si dice "la última vez que lo vi fue el 25 de enero de 2020", esa es la fecha, y los hitos del relato se reordenan alrededor. No se agrega una escena que el owner no describió para justificar el dato nuevo.
 5. **Entregar la lista de qué es real y qué se inventó**, ítem por ítem, y pedir el dato que falte en vez de rellenarlo.
 
@@ -64,6 +65,16 @@ Un esqueleto cortado por presupuesto de tokens produce un cuento sin revelación
 
 - **Presupuesto del outline: 6.000 tokens.** Con 2.500 un template con sub-viñetas (thriller psicológico, 9 secciones) se cortó a mitad de la escena 1.
 - **Un cuento sin final no es un cuento con final flojo.** Si el check de secciones salta, no escribir la etapa 2 "igual" para completar el entregable.
+
+## Entregar el texto completo en el chat, no solo el archivo
+
+Cuando el owner pide una historia, espera leerla. Escribir el `.md` y resumir el resultado fuera del mensaje deja el pedido sin cumplir.
+
+1. Entregar el texto íntegro en el mensaje, con `---` entre escenas, y el archivo como respaldo.
+2. Poner después la tabla de real/inventado y las preguntas de datos faltantes.
+3. No recortar el texto en el chat "porque está en el archivo": el archivo es para volver, el chat es para leer.
+
+Check: el mensaje contiene todas las palabras del cuento; comparar el conteo del chat con `wc -w` del archivo.
 
 ## El ritmo se gobierna con números, no con adjetivos
 

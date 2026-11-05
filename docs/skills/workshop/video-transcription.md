@@ -14,6 +14,15 @@ ffmpeg -y -ss <segundo_donde_termina_el_ultimo_silencio> -i audio16.wav -ar 1600
 ```
 Check: la duracion del recorte coincide con lo que el owner dijo que duraba la conversacion util; si el recorte es casi todo el archivo, el umbral de silencio esta alto.
 
+**Corroborar la duracion con el owner antes de recortar, y medir el archivo con `ffprobe` antes de creer una duracion de memoria.** Un `.m4a` de 2 MB con bitrate ~66 kbps dura cuatro minutos; el owner puede describirlo como "apenas 4" cuando el habla empieza en el segundo 100 y lo que recuerda son los ultimos 143 s. Medir primero, y decir el numero medido en vez de repetir el estimado.
+```bash
+ffprobe -v error -show_entries format=duration,bit_rate -of default=noprint_wrappers=1 <audio>
+```
+Check: la duracion que se reporta sale de `ffprobe`, no de lo que dijo el owner ni del tamano del archivo.
+
+**Un recorte mal ubicado devuelve una transcripcion vacia o en bucle, y no es fallo del modelo.** Si `grep silence_end` muestra el ultimo silencio antes del final del archivo, el umbral `-35dB` esta por debajo del ruido de fondo y todo el archivo parece hablado; probar `-30dB` o mirar el `silence_start` mas largo en vez del ultimo `silence_end`.
+Check: el recorte tiene voz audible cuando se reproduce con `afplay` o el conteo de palabras sube respecto de la corrida completa.
+
 ## 1. Extraer el audio a WAV mono 16 kHz
 whisper requiere WAV mono 16 kHz; los mp4 traen audio comprimido.
 ```bash
