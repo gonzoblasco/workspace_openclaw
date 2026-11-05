@@ -98,7 +98,14 @@ def real_projects():
 def call_model(prompt, timeout=90):
     """Una llamada a Ollama. Devuelve el texto o None."""
     body = json.dumps(
-        {"model": MODEL, "prompt": prompt, "stream": False, "options": {"temperature": 0.1}}
+        {
+            "model": MODEL,
+            "prompt": prompt,
+            "stream": False,
+            # ADR-109: sin 'think' el default de deepseek es pensar (626 tok vs 18 medido).
+            "think": False,
+            "options": {"temperature": 0.1},
+        }
     ).encode()
     req = urllib.request.Request(
         f"{OLLAMA}/api/generate", data=body, headers={"Content-Type": "application/json"}

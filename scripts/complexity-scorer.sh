@@ -104,6 +104,9 @@ sys.stdout.write(json.dumps({
   'system': 'Return ONLY a JSON object: {\"A\":<1-5>,\"B\":<1-5>,\"C\":<1-5>,\"D\":<1-5>,\"justification\":\"<text>\"}. No prose.',
   'prompt': 'Score this objective. A=scope 1-5 (1=1file,5=multirepo). B=abstraction 1-5 (1=fix,5=arch). C=risk 1-5 (1=cosmetic,5=critical). D=ambiguity 1-5 (1=clear,5=vague). Return ONLY JSON.\n\nObjective: $OBJECTIVE',
   'stream': False,
+  # ADR-109: sin 'think' el default de deepseek es pensar. Medido 2026-11-05:
+  # 626 tokens y 3,4s con thinking, 18 tokens y 0,4s con think=false, misma respuesta.
+  'think': False,
   'options': {'temperature': 0.1, 'num_predict': 800, 'num_ctx': 4096}
 }))
 ")
