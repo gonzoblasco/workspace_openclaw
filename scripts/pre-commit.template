@@ -36,6 +36,13 @@ PACTO_RELEVANT=$(echo "$CHANGED" | grep -qE '^(scripts/|skills/|docs/|AGENTS\.md
 # la extension.
 ADR_RELEVANT=$(echo "$CHANGED" | grep -qE '^docs/adr/' && echo 1 || echo 0)
 
+# HANDOFF merge (2026-11-04). Disparador propio: cualquier HANDOFF staged bajo
+# `.knowledge/` puede haber PISADO pendientes heredados en vez de fusionarlos.
+# La regla estaba escrita en session-close-handoff paso 3 y se violo igual el
+# 2026-11-04 (se perdieron 8 pendientes de la sesion de las 16:10). Una regla
+# escrita y no verificada se viola sola: mismo defecto que ADR-077.
+HANDOFF_RELEVANT=$(echo "$CHANGED" | grep -qE '\.knowledge/HANDOFF\.md$' && echo 1 || echo 0)
+
 # Design system (2026-10-06). Disparador propio: los tokens viven en design/.
 # El build resuelve referencias y el guard mide contraste WCAG. El principio
 # "contraste verificado, no sentido" era falso (nada lo media); esto lo hace
@@ -265,6 +272,16 @@ fi
 # ./../..). Corre ante cambios de skills/ o agents/ (donde viven las skills).
 if [ "$BOUNDARY_RELEVANT" = "1" ]; then
   python3 "${SCRIPT_DIR}/scripts/security-scan.py" --staged || exit 1
+fi
+
+
+if [ "$HANDOFF_RELEVANT" = "1" ]; then
+  # El HANDOFF es el mapa de TODO lo pendiente del sujeto, no el acta de la
+  # ultima sesion. Si un pendiente o una decision del HANDOFF anterior desaparecio
+  # sin estar declarado en CERRADOS, el cierre lo borro por olvido.
+  for HO in $(echo "$CHANGED" | grep -E '\.knowledge/HANDOFF\.md$'); do
+    python3 "${SCRIPT_DIR}/scripts/check-handoff-merge.py" --new "$HO" || exit 1
+  done
 fi
 
 if [ "$PACTO_RELEVANT" = "1" ]; then

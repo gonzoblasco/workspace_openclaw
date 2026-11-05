@@ -10,7 +10,9 @@
 # Checks:
 #   A. Sintaxis: bash -n en skills/*/scripts/*.sh, py_compile en *.py
 #   B. Frontmatter: todo SKILL.md tiene name, description y metadata.category
-#   C. Em dash: ningun SKILL.md usa U+2014/U+2013 (regla de oro del workspace)
+#   C. Em dash: aviso. Se prefiere guion comun, pero U+2014/U+2013 NO bloquea
+#      (owner rule 2026-11-04: bloquear un commit por tipografia frena trabajo)
+#      y el resumen lo cuenta como 'avisos', no como failed.
 #   D. Scripts referenciados: todo scripts/foo.sh|py mencionado en SKILL.md existe
 #   E. Links a skills: todo enlace a skills/<name> apunta a una skill existente
 #
@@ -223,8 +225,10 @@ if [[ $QUICK -eq 0 ]]; then
       DASH_OK=$((DASH_OK + 1))
     else
       DASH_FAIL=$((DASH_FAIL + 1))
-      echo "  ❌ em dash FAIL (usar guion comun -): $skmd"
-      failures+=("$skmd")
+      # AVISO, no veto (owner rule 2026-11-04): el guion largo es estilo, no
+      # correccion. Bloquear un commit entero por tipografia detiene trabajo
+      # legitimo; el gate informa y el commit sigue.
+      echo "  ⚠️  em dash (guion largo, no bloquea): $skmd"
     fi
   done
 
@@ -347,7 +351,7 @@ echo "  Bash:      $BASH_OK passed, $BASH_FAIL failed"
 echo "  Python:    $PYTHON_OK passed, $PYTHON_FAIL failed"
 if [[ $QUICK -eq 0 ]]; then
   echo "  Frontmatter: $FM_OK ok, $FM_FAIL failed"
-  echo "  Em dash:     $DASH_OK ok, $DASH_FAIL failed"
+  echo "  Em dash:     $DASH_OK ok, $DASH_FAIL aviso(s)"
   echo "  Script refs: $REF_OK ok, $REF_FAIL failed"
   echo "  Skill links: $LINK_OK ok, $LINK_FAIL failed"
 fi

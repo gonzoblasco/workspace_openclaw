@@ -62,13 +62,16 @@ skill() {
   [[ "$output" != *"untracked-bad"* ]]
 }
 
-@test "test-skills: staged SKILL.md with em dash still fails" {
+@test "test-skills: staged SKILL.md with em dash warns but does not block" {
+  # Owner rule 2026-11-04: tipografia no es correccion. El gate informa y el
+  # commit sigue; bloquear por un guion largo detiene trabajo legitimo.
   skill "skills/bad/SKILL.md" emdash
   git -C "$WS" add skills/bad/SKILL.md
   run "$WS/scripts/test-skills.sh"
-  [ "$status" -eq 1 ]
-  [[ "$output" == *"em dash FAIL"* ]]
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"no bloquea"* ]]
   [[ "$output" == *"skills/bad/SKILL.md"* ]]
+  [[ "$output" != *"em dash FAIL"* ]]
 }
 
 @test "test-skills: --all prunes node_modules" {
@@ -77,7 +80,7 @@ skill() {
   run "$WS/scripts/test-skills.sh" --all
   [ "$status" -eq 0 ]
   [[ "$output" != *"node_modules"* ]]
-  [[ "$output" == *"Em dash:     1 ok, 0 failed"* ]]
+  [[ "$output" == *"Em dash:     1 ok, 0 aviso(s)"* ]]
 }
 
 @test "test-skills: staged path outside the skill roots is not scanned" {

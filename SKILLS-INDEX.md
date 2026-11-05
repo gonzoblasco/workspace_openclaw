@@ -101,6 +101,9 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [model-cata](skills/model-cata/) | Ritual de comparación de modelos LLM: mismo prompt, rúbrica crítica y decisión de motor en ADR |
 | [sdd-agent-loop](skills/sdd-agent-loop/) | Loop de agentes por etapas con gate humano |
 | [verification-gates](skills/verification-gates/) | Guardas que no dan falso verde: 0 casos corridos, SKIP vs OK, lector honesto |
+| [path-audit](skills/path-audit/) | Auditoría de CAMINO por hito de versión (0.5, 1.0): rumbo, próximo paso y afirmaciones no probadas. No lee código |
+| [regression-net](skills/regression-net/) | Pipeline C: convierte cada finding de B en un test y valida por mutación. Gate: toda mutación detectada |
+| [voz-gonzo](skills/voz-gonzo/) | Redacción con la voz de Gonzo desde `docs/voz-gonzo.md`, con gate de reglas prohibidas ejecutable |
 | [trust-vocabulary-report](skills/trust-vocabulary-report/) | Reportar trabajo delegado sin inflarlo: niveles de confianza por etapa |
 | [checkmate](skills/checkmate/) | Loop goal → ejecución → verificación con worker + judge |
 | [skill-router](skills/skill-router/) | Sugiere qué skill usar para una tarea (keywords + embeddings locales) |

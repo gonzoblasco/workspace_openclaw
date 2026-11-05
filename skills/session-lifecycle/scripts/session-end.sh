@@ -58,6 +58,20 @@ if [[ -f "scripts/session-handoff.py" ]]; then
   [[ -n "$NEXT_STEPS" ]] && HANDOFF_ARGS+=(--next-steps "$NEXT_STEPS")
   [[ -n "$DECISIONS" ]] && HANDOFF_ARGS+=(--decisions "$DECISIONS")
   HANDOFF_MSG=$(python3 scripts/session-handoff.py "${HANDOFF_ARGS[@]}") || HANDOFF_MSG="   ⚠️  HANDOFF no generado"
+
+  # Gate de FUSION (2026-11-04). El script sobrescribe el archivo entero: si los
+  # flags traen solo el tema de hoy, borra los pendientes heredados. Paso el 2026-11-04:
+  # se perdieron 8 pendientes de una sesion anterior. Si un pendiente desaparecio sin
+  # estar declarado en CERRADOS, esto lo dice ahora y no en la sesion siguiente.
+  HANDOFF_PATH=$(echo "$HANDOFF_MSG" | sed -nE 's/.*HANDOFF (creado|actualizado): //p')
+  if [[ -n "$HANDOFF_PATH" && -f "$HANDOFF_PATH" ]]; then
+    MERGE_OUT=$(python3 scripts/check-handoff-merge.py --new "$HANDOFF_PATH" 2>&1) || {
+      echo "   ⚠️  HANDOFF PISADO - pendientes heredados perdidos:"
+      echo "$MERGE_OUT" | sed 's/^/      /'
+      echo "      Corregir: fusionar los pendientes en --next-steps/--decisions,"
+      echo "      o declarar el cierre en la seccion CERRADOS del HANDOFF."
+    }
+  fi
 else
   HANDOFF_MSG="   ⚠️  scripts/session-handoff.py no encontrado - HANDOFF omitido"
 fi

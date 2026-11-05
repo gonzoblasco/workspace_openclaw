@@ -1,0 +1,106 @@
+{
+  "results": [
+    {
+      "model": "kimi-k3.1-pro:cloud",
+      "task": "T1",
+      "checks": {
+        "advierte_paralelismo": true,
+        "identifica_frente_caro": true,
+        "da_orden_por_dia": true,
+        "menciona_reset_o_margen": true
+      },
+      "hits": 4,
+      "of": 4,
+      "eval_count": 3776,
+      "elapsed_s": 47.2,
+      "thinking_chars": 11529,
+      "content": "{\n  \"plan_por_dia\": [\n    {\n      \"dia\": 1,\n      \"frentes\": [\"a\"],\n      \"por_que\": \"Definir alcance, implementar y hacer la primera tanda de tests en un bloque A/B/C con tope de requests. Es el frente más largo y conviene descubrir fallos temprano; mientras el pipeline corre, los otros frentes esperan.\"\n    },\n    {\n      \"dia\": 2,\n      \"frentes\": [\"a\"],\n      \"por_que\": \"Completar tests y corregir fallos de forma secuencial, con reintentos acotados y una reserva explícita de cuota para los otros frentes. Si se alcanza el tope asignado, se pausa el trabajo pesado hasta el reset.\"\n    },\n    {\n      \"dia\": 3,\n      \"frentes\": [\"b\"],\n      \"por_que\": \"Producir el caso de estudio con pocos requests: esquema, borrador de 4 páginas y una edición final. Se ejecuta con A/B/C detenido y sin abrir ciclos innecesarios de reescritura.\"\n    },\n    {\n      \"dia\": 4,\n      \"frentes\": [\"c\"],\n      \"por_que\": \"Preparar temas, preguntas y una simulación breve de entrevista, con consumo casi nulo. El día también sirve como buffer secuencial si (a) o (b) necesitan una corrección pendiente.\"\n    },\n    {\n      \"dia\": 5,\n      \"frentes\": [\"a\", \"b\", \"c\"],\n      \"por_que\": \"Con la cuota ya reseteada, hacer la corrida final de tests de (a) y cerrar cualquier ajuste de (b) y (c). Las tareas se encolan para revisión final; no se solapan con el pipeline A/B/C.\"\n    }\n  ],\n  \"advertencia_paralelismo\": \"No conviene lanzar (a), (b) y (c) juntas. Mientras A/B/C corre, ocupa los 3 slots y deja al CORE sin margen; agregar requests solo genera espera o 429 por cuenta, no por modelo, así que cambiar de modelo no lo resuelve. El paralelismo seguro es limitado: como máximo dos tareas livianas, por ejemplo (b)+(c), dejando un slot libre para el CORE; durante A/B/C no se lanza ningún otro frente.\",\n  \"riesgo_de_cuota\": \"(a) es el frente que puede agotar el 61,3% restante antes del reset: implementación, generación de tests, diagnóstico y ciclos de corrección multiplican requests. Un bucle de fallos o reintentos sin tope puede consumir toda la semana. Hay que presupuestar sus bloques, limitar reintentos y reservar cuota para (b); (b) cuesta poco y (c) casi nada.\",\n  \"orden_optimo\": [\"a\", \"b\", \"c\"]\n}"
+    },
+    {
+      "model": "kimi-k3.1-pro:cloud",
+      "task": "T2",
+      "checks": {
+        "marca_self_audit_circular": true,
+        "marca_regresiones_circulares": true,
+        "proximo_paso_cobrar": true,
+        "marca_tension_cobro": true
+      },
+      "hits": 4,
+      "of": 4,
+      "eval_count": 4452,
+      "elapsed_s": 58.2,
+      "thinking_chars": 14718,
+      "content": "{\n  \"buen_camino\": true,\n  \"justificacion\": \"Sí, como prototipo técnico local, no como producto validado. Hay ejecución concreta, controles básicos de abuso y una declaración razonablemente honesta de límites. También es correcto cambiar el foco de seguir construyendo a comprobar quién paga. Sin embargo, la evidencia presentada es interna: todavía no hay validación independiente de accesibilidad, operación en producción ni demanda comercial.\",\n  \"proximo_paso\": \"Hacer un piloto comercial acotado con desarrolladores que ya usan Cursor. Elegir un contenedor con Chromium persistente, desplegar únicamente el flujo de escaneo, conectar Stripe y vender solo lo construido, excluyendo o marcando explícitamente el PDF como pendiente. El objetivo debe ser conseguir uso externo y los primeros pagos, midiendo escaneos completados, uso del prompt y disposición a pagar, no agregar funciones. Antes de usar las cifras de reparación como argumento comercial, conviene someter una muestra de hallazgos y arreglos a revisión independiente y a pruebas con lectores de pantalla reales.\",\n  \"afirmaciones_no_probadas\": [\n    \"El self-audit de 100/100 A y 97/100 A no demuestra accesibilidad real: el mismo motor define, detecta y evalúa según sus propias reglas. Es una comprobación circular y no puede descubrir sus propios puntos ciegos.\",\n    \"El 95.8% de hallazgos cerrados, el 97/100 medio y los 0 regressions no están validados independientemente. Al reescanear con el mismo engine, solo se prueba que ese engine dejó de marcar hallazgos o no detectó regresiones dentro de su propia cobertura, no que la accesibilidad haya mejorado realmente.\",\n    \"La generalización del repair loop a otros sitios, modelos y tipos de problemas no queda probada sin revisar tamaño y selección de la muestra, casos fallidos, protocolo y resultados completos. Que intervengan tres familias de modelos no elimina ese límite.\",\n    \"El transcript de 39 frases no prueba lo que anuncian NVDA, JAWS o VoiceOver. El propio documento reconoce que el lector virtual es un proxy; por tanto, tampoco prueba por sí solo que los criterios Reader must announce se cumplan en lectores reales.\",\n    \"La revisión manual del escaneo de stripe.com puede respaldar esos hallazgos puntuales, pero no prueba precisión general, exhaustividad ni ausencia de falsos negativos. Un solo sitio tampoco establece que el score sea comparable o estable en la web real.\",\n    \"Los tests de SSRF y rate limiting prueban los casos incluidos, no la resistencia completa ante evasiones, redirecciones, resolución DNS, comportamiento del navegador o distribución de clientes en producción. Build limpio y 8/8 tests tampoco equivalen a preparación operativa.\",\n    \"Working end to end solo está sustentado para el flujo local de escaneo y reporte. No está probado el recorrido comercial completo: no hay despliegue, checkout devuelve 501 y falta al menos una prestación anunciada en el tier Agency.\",\n    \"La existencia de pricing y de un CLI no prueba que haya clientes dispuestos a pagar. Tampoco hay evidencia externa presentada de adopción, retención o valor económico para desarrolladores que usan Cursor.\",\n    \"La etiqueta verified, not assumed es una declaración del equipo, no una verificación externa. Sin revisar artefactos, logs, fixtures y el experimento citado, un auditor no puede dar esos resultados por reproducidos.\"\n  ],\n  \"riesgo_principal\": \"Confundir autoverificación con validación y convertir métricas circulares en promesas comerciales. Eso puede ocultar problemas reales de accesibilidad y dañar la credibilidad del producto, justo cuando la página de precios ya presenta una oferta que todavía no está desplegada ni puede cobrarse de punta a punta.\"\n}"
+    },
+    {
+      "model": "kimi-k3.1-pro:cloud",
+      "task": "T3",
+      "checks": {
+        "presente_no_futuro": true,
+        "confianza_con_filo": false,
+        "prohibidas_usadas": [],
+        "sin_prohibidas": true,
+        "tiene_vinetas_o_parrafos_cortos": true,
+        "largo_chars": 614,
+        "sin_servilismo": true
+      },
+      "hits": 4,
+      "of": 5,
+      "eval_count": 1386,
+      "elapsed_s": 15.5,
+      "thinking_chars": 4284,
+      "content": "Hola, [Nombre]. Me hubiera gustado otro resultado en el proceso para [rol]. Me sigue interesando trabajar con [Empresa], y creo que mi perfil puede aportar más allá de esa posición, especialmente por mi experiencia en [área] y [logro concreto].\n\nSi ahora tienen otro rol por cubrir o necesitan sumar a alguien con un esquema distinto —por proyecto, part-time o freelance—, quiero que me consideres.\n\n¿Hay alguna búsqueda abierta o necesidad puntual donde pueda encajar? Si me contás qué están priorizando, te digo con precisión qué puedo resolver. Si hay encaje, avancemos; si no, prefiero que me lo digas directo."
+    },
+    {
+      "model": "deepseek-v4.1-flash:cloud",
+      "task": "T1",
+      "checks": {
+        "advierte_paralelismo": true,
+        "identifica_frente_caro": true,
+        "da_orden_por_dia": true,
+        "menciona_reset_o_margen": true
+      },
+      "hits": 4,
+      "of": 4,
+      "eval_count": 6034,
+      "elapsed_s": 23.4,
+      "thinking_chars": 19228,
+      "content": "{\"plan_por_dia\":[{\"dia\":1,\"frentes\":[\"a\",\"c\"],\"por_que\":\"Arranco por el frente crítico y más caro: feature con tests en lotes pequeños, con máximo 2 requests concurrentes y 1 slot de reserva para reintentos. La entrevista técnica avanza en preparación humana y consultas puntuales, casi sin cuota.\"},{\"dia\":2,\"frentes\":[\"a\",\"b\"],\"por_que\":\"Sigo feature con implementación y tests incrementales, sin lanzar tres frentes a la vez. El caso de estudio es de bajo consumo: avanzo outline, fuentes y redacción en huecos, sin competir por los slots del pipeline.\"},{\"dia\":3,\"frentes\":[\"a\",\"c\"],\"por_que\":\"Día fuerte de feature: cierro tests principales y reviso fallos. Si hace falta pipeline A/B/C, lo corro aislado, sin otras requests durante esa ventana. Entrevista solo repaso de temas y preguntas, con consumo casi nulo.\"},{\"dia\":4,\"frentes\":[\"b\",\"c\"],\"por_que\":\"Bajo el consumo antes del reset: termino el caso de estudio de 4 páginas y hago simulación de entrevista. Feature solo correcciones mínimas e imprescindibles; no inicio un A/B/C completo que pueda comerse el margen.\"},{\"dia\":5,\"frentes\":[\"a\",\"c\"],\"por_que\":\"Con cuota fresca/reset, valido feature y tests finales en CI; el caso de estudio queda cerrado el día 4 y solo se revisa sin requests. Cierro con ensayo final de entrevista. Trabajo secuencial por ventanas, no los tres frentes a la vez.\"}],\"advertencia_paralelismo\":\"Paralelismo real: máximo 3 requests en vuelo y el 429 es por cuenta, no por modelo. No voy a correr los tres frentes juntos: el pipeline A/B/C ocupa los 3 slots y deja al CORE sin margen para reintentos, backoff ni otras tareas. Planifico con 1 slot de reserva casi siempre; si lanzo A/B/C, lo hago como bloque aislado y no simultáneo con b/c. Los frentes avanzan intercalados, no todo a la vez.\",\"riesgo_de_cuota\":\"El frente riesgoso es (a) feature con tests: genera muchos requests, reintentos y ejecuciones de CI, y puede comerse el 61,3% restante antes del reset. Por eso lo divido en lotes diarios, evito repetir pipelines completos y priorizo tests incrementales. Presupuesto orientativo: alrededor de 15% de la barra por día hasta el reset; si se acerca a 85-90% usado, corto requests de (a) hasta el reset. (b) caso de estudio es bajo costo y (c) entrevista casi nulo; no deben usar ventanas de alto consumo.\",\"orden_optimo\":[\"1. Feature+tests primero por ser crítico y de alto consumo, en lotes pequeños con máximo 2 requests concurrentes.\",\"2. Preparar entrevista y estructura del caso de estudio en huecos de bajo o nulo consumo, sin ocupar el tercer slot.\",\"3. Cerrar tests principales de feature antes del día 4, evitando pipeline A/B/C si puede agotar cuota.\",\"4. Día 4: bajar consumo, terminar caso de estudio y simulación de entrevista.\",\"5. Día 5: usar reset/cuota fresca para validación final de feature, CI, revisión del caso y ensayo final de entrevista.\"]}"
+    },
+    {
+      "model": "deepseek-v4.1-flash:cloud",
+      "task": "T2",
+      "checks": {
+        "marca_self_audit_circular": true,
+        "marca_regresiones_circulares": true,
+        "proximo_paso_cobrar": true,
+        "marca_tension_cobro": true
+      },
+      "hits": 4,
+      "of": 4,
+      "eval_count": 4057,
+      "elapsed_s": 18.2,
+      "thinking_chars": 13598,
+      "content": "{\"buen_camino\":true,\"justificacion\":\"Sí como prototipo técnico y con la dirección estratégica correcta: el equipo ya identificó que el próximo paso es 'quién paga', no agregar features. Pero no está listo para vender: el deploy no existe, Stripe no cobra y varias validaciones son circulares. La prioridad es convertir evidencia técnica en evidencia comercial independiente, no seguir puliendo el motor.\",\"proximo_paso\":\"No construir más features. Cerrar un camino mínimo de venta: elegir deploy con Chromium persistente (contenedor/VPS/Fly, no serverless), desplegar /api/scan, conectar Stripe Checkout real o deshabilitar/ocultar la página de precios hasta que cobre, y hacer 5-10 pilotos pagos o pre-pagos con developers que ya usan Cursor. Antes de vender Agency, quitar o marcar como roadmap PDF, crawl y accounts. Medir conversión y disposición a pagar, no más score interno.\",\"afirmaciones_no_probadas\":[\"'Self-audit: own landing 100/100 A; own report page 97/100 A': es circular. El mismo motor que define las reglas se evalúa a sí mismo; prueba ausencia de hallazgos según sus reglas, no accesibilidad real ni calidad independiente.\",\"'Repair loop measured: 97/100 mean, 95.8% of findings closed, 0 regressions': re-escaneado con el mismo engine. No prueba que lectores reales, auditores externos o usuarios cierren los problemas; es verificación circular y limitada a la muestra y modelos usados.\",\"'stripe.com ... findings verified by hand ... No false positives': verificación manual en un solo sitio; no generaliza a que el producto no tenga falsos positivos.\",\"'Screen-reader transcript: 39 phrases recorded': el propio documento admite que el virtual reader es un proxy; no prueba lo que anuncia un screen reader real ni que los acceptance criteria sean correctos.\",\"'Fix prompt with acceptance criteria / 12 steps generated': que se genere el prompt no prueba que sea model-agnostic ni que cierre hallazgos fuera del engine; el caso gpt-oss muestra lo contrario.\",\"'SSRF guard: all rejected': tests unitarios sobre los casos listados; no prueba ausencia de bypasses como DNS rebinding, redirects, proxies o IPv6 exóticas.\",\"'Rate limiting burst 3/min + 8/day per sha256 fingerprint, persisted': probado localmente con sqlite; no prueba resistencia a IP rotation, múltiples instancias, abuso distribuido o deploy real.\",\"'Bot-blocking handled': un caso 403 con mensaje amable; no cubre anti-bot general, captchas, login, JS obligatorio ni páginas que bloquean Chrome headless.\",\"'Build clean; tsc --noEmit clean; vitest 8/8 pass': prueban que compila y que esa suite pasa; no prueban seguridad, accesibilidad, calidad real ni readiness comercial.\",\"'No accounts. Quota is per IP fingerprint. Adequate until someone pays': es una suposición, no una medición; fingerprint es evitable y no equivale a identidad de cliente.\"],\"riesgo_principal\":\"Riesgo comercial y de confianza: la página de precios ya comunica tiers que no existen completamente (PDF, crawl, accounts) y el checkout devuelve 501, así que el producto puede parecer vendible sin poder cobrar. Sumado a la validación circular, el equipo puede sobreestimar qué tan listo está el producto antes de validar disposición a pagar.\"}"
+    },
+    {
+      "model": "deepseek-v4.1-flash:cloud",
+      "task": "T3",
+      "checks": {
+        "presente_no_futuro": true,
+        "confianza_con_filo": false,
+        "prohibidas_usadas": [],
+        "sin_prohibidas": true,
+        "tiene_vinetas_o_parrafos_cortos": true,
+        "largo_chars": 348,
+        "sin_servilismo": true
+      },
+      "hits": 4,
+      "of": 5,
+      "eval_count": 1336,
+      "elapsed_s": 7.8,
+      "thinking_chars": 4644,
+      "content": "Hola [Nombre],\nMe rechazaron para [rol] y me hubiera gustado otro resultado. No te escribo para insistir con ese puesto: quiero que me consideren para lo que necesiten cubrir ahora.\nPuede ser otro rol, un proyecto puntual o un esquema temporal/part-time donde mi experiencia sume. ¿Hay algo abierto hoy? Si hay, lo vemos en concreto; si no, dímelo."
+    }
+  ]
+}
