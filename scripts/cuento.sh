@@ -29,7 +29,21 @@ LLM="$SCRIPT_DIR/llm.sh"
 TPL="$SCRIPT_DIR/templates"
 CHECK="$SCRIPT_DIR/cuento-check.py"
 
-GENERO=""; TEMA=""; MINIMO=2200; MAXIMO=2600; OUT=""; KEEP=0; DRY=0
+GENERO=""; TEMA=""; MINIMO=2200; MAXIMO=2600; OUT=""; KEEP=0; DRY=0; TPL_OUT=""
+
+# Templates de outline por genero. El thriller psicologico no es terror con otro
+# nombre: necesita adversario humano con plan, asimetria de informacion y una
+# revelacion que se apoye en un objeto ya visto. Otro template, no otro adjetivo.
+outline_template() {
+  case "$1" in
+    terror)             echo "$TPL/outline-cuento.md" ;;
+    cf|ciencia-ficcion) echo "$TPL/outline-cuento.md" ;;
+    thriller-psicologico|psicologico)
+                        echo "$TPL/outline-thriller-psicologico.md" ;;
+    highsmith)          echo "$TPL/outline-highsmith.md" ;;
+    *)                  echo "$TPL/outline-cuento.md" ;;
+  esac
+}
 
 die() { echo "cuento.sh: $*" >&2; exit 2; }
 usage() { sed -n '2,28p' "$0" | sed 's/^# \{0,1\}//'; }
@@ -43,6 +57,7 @@ while [ $# -gt 0 ]; do
     --out)    OUT="${2:-}";    shift 2 ;;
     --keep-outline) KEEP=1; shift ;;
     --dry-run) DRY=1; shift ;;
+    --outline-template) TPL_OUT="${2:-}"; shift 2 ;;
     -h|--help) usage; exit 2 ;;
     *) die "flag desconocida: $1" ;;
   esac
@@ -51,11 +66,13 @@ done
 [ -z "$GENERO" ] && die "falta --genero (terror, cf, thriller, ...)"
 [ -z "$TEMA" ] && die "falta --tema"
 [ -x "$LLM" ] || die "no encuentro $LLM"
+[ -z "$TPL_OUT" ] && TPL_OUT=$(outline_template "$GENERO")
+[ -r "$TPL_OUT" ] || die "no encuentro el template de outline: $TPL_OUT"
 
 if [ "$DRY" = "1" ]; then
   echo "== etapa 1: outline (glm, think=low) ==" >&2
   "$LLM" outline --show >&2
-  echo "   template: $TPL/outline-cuento.md" >&2
+  echo "   template: $TPL_OUT" >&2
   echo "== etapa 2: redaccion (muse, think=false) ==" >&2
   "$LLM" redaccion --show >&2
   echo "   template: $TPL/redaccion-cuento.md" >&2
@@ -64,7 +81,7 @@ fi
 
 # ---------- etapa 1: el esqueleto ----------
 echo "cuento.sh: etapa 1 - esqueleto (glm, ~15s)" >&2
-ESQUELETO=$("$LLM" outline --template "$TPL/outline-cuento.md" \
+ESQUELETO=$("$LLM" outline --template "$TPL_OUT" \
   --var genero="$GENERO" --var minimo="$MINIMO" --var maximo="$MAXIMO" --var tema="$TEMA")
 
 if [ -z "$ESQUELETO" ]; then
@@ -73,6 +90,20 @@ if [ -z "$ESQUELETO" ]; then
 fi
 
 printf '%s\n' "$ESQUELETO" | sed 's/^/  [outline] /' >&2
+
+# Un esqueleto truncado produce un cuento sin revelacion ni final, y eso no se
+# nota mirando el texto: se nota mirando el esqueleto. Se exige que tenga las
+# secciones de cierre antes de gastar la etapa 2.
+SECCIONES_FALTANTES=""
+for s in "7." "8." "9."; do
+  printf '%s' "$ESQUELETO" | grep -qE "^#*[[:space:]]*\*?\*?$s" || SECCIONES_FALTANTES="$SECCIONES_FALTANTES $s"
+done
+if [ -n "$SECCIONES_FALTANTES" ]; then
+  echo "cuento.sh: el esqueleto no tiene las secciones de cierre:$SECCIONES_FALTANTES" >&2
+  echo "cuento.sh: se corto por presupuesto de tokens. No se corre la etapa 2: el cuento saldria sin final." >&2
+  echo "cuento.sh: subir num_predict de la tarea 'outline' (ver llm-tasks.json)." >&2
+  exit 4
+fi
 
 # ---------- etapa 2: la prosa ----------
 echo "cuento.sh: etapa 2 - redaccion (muse, ~20-40s)" >&2
@@ -92,7 +123,7 @@ fi
 if [ -x "$CHECK" ] || [ -f "$CHECK" ]; then
   printf '%s\n' "$ESQUELETO" > /tmp/cuento-outline.$$.md
   printf '%s\n' "$CUENTO" > /tmp/cuento-story.$$.md
-  python3 "$CHECK" /tmp/cuento-outline.$$.md /tmp/cuento-story.$$.md >&2
+  python3 "$CHECK" /tmp/cuento-outline.$$.md /tmp/cuento-story.$$.md --genero "$GENERO" >&2
   rm -f /tmp/cuento-outline.$$.md /tmp/cuento-story.$$.md
 fi
 
