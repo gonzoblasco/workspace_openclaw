@@ -68,10 +68,14 @@ Siete llamadas por modo, temperatura 0, mismas preguntas, mismo prompt de sistem
 **El número que decide** (con el baseline del panel: deepseek ≈ 0,103 px/req, gemma4 < 0,01
 px/req):
 
-- gemma4 con contexto completo: ~706 tok/llamada sobre un modelo **> 10× más barato por token**
-  que deepseek → **sigue siendo más barato que deepseek, incluso con el contexto completo**. El
-  chat trivial de hoy va al CORE en deepseek con contexto grande: pagar 706 tok baratos en vez de
-  ~100 tok caros es una mejora de orden de magnitud.
+- **CORREGIDO 2026-11-05 con los px reales del panel** (barra de sesión de 944 px): deepseek
+  129 px / 313 req = **0,412 px/req**; muse 13 px / 39 req = **0,333 px/req**; glm 3 px / 15 req =
+  **0,200 px/req**. Muse cuesta el **81%** de un request del CORE y glm el **49%** - no el 10% que
+  decía esta sección. La versión anterior afirmaba "mas de 10x mas barato" sin haberlo medido: era
+  extrapolación de la barra vista a ojo, no un número.
+- Con esa base, gemma4 con contexto completo (~706 tok/llamada) sigue siendo más barato que el
+  CORE, **pero por un margen que hay que medir con su propio px/req**, no por un orden de
+  magnitud supuesto. El ahorro existe; la magnitud estaba inventada.
 - **La condición es no cortar el contexto**: barato + contexto recortado = fabulación con costo.
 
 **Lo que queda abierto, y es el único freno real:** el probe no midió el caso que causó el

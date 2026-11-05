@@ -49,6 +49,34 @@
       "num_predict": 4000,
       "temperature": 0.1,
       "why": "think=false OBLIGATORIO. Con 'low' gasta 8x (19.75 tok/palabra) y falla 1 de cada 3 prompts."
+    },
+    "narrativa-larga": {
+      "model": "muse-spark-open:cloud",
+      "think": false,
+      "num_predict": 12000,
+      "temperature": 0.8,
+      "why": "Cuento largo (2.000-3.000 palabras). 9000 tokens cubre ~3.000 palabras con margen. Mismo modelo que 'narrativa', mas temperatura: en 400 palabras conviene el control; en 2.500 conviene la variacion."
+    },
+    "narrativa-larga-alt": {
+      "model": "glm-5.3-flash:cloud",
+      "think": "low",
+      "num_predict": 9000,
+      "temperature": 0.8,
+      "why": "Contraste contra muse en cuento largo. think='low' OBLIGATORIO: con false devuelve el plan en vez del cuento."
+    },
+    "outline": {
+      "model": "glm-5.3-flash:cloud",
+      "think": "low",
+      "num_predict": 2500,
+      "temperature": 0.7,
+      "why": "Etapa 1 del hibrido. glm encuentra la ESTRUCTURA: su foto-pegada-antes-del-evento fue la mejor idea de la sesion. think='low' obligatorio (con false planifica en vez de escribir). No se usa para redactar: se cae en gramatica a las 2.500 palabras."
+    },
+    "redaccion": {
+      "model": "muse-spark-open:cloud",
+      "think": false,
+      "num_predict": 12000,
+      "temperature": 0.85,
+      "why": "Etapa 2 del hibrido: redacta desde un outline dado. Sostiene la voz 2.500 palabras sin romperse. Temperatura alta porque la creatividad ya la aporto el outline; aca importa la prosa. num_predict 12000: el ritmo consume presupuesto; 9000 quedo corto en 1738 palabras."
     }
   }
 }

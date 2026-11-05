@@ -20,16 +20,28 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **La tesis del MoE ("solo activa parte de sus parámetros") no se sostiene en la factura.** Queda registrada como argumento del proveedor, no como propiedad medida.
 
 ### Added
+- **`scripts/cuento.sh` + `cuento-check.py`: cuento en dos etapas.** glm propone el esqueleto (`think=low`), muse lo redacta. Medido: glm tiene la mejor *estructura* (el cuaderno que prescribe, el antecesor registrado antes) y la peor *sintaxis* a 2.500 palabras (23 oraciones de más de 45 palabras, "pabellón liberio"); muse sostiene la voz y no se rompe, pero solo no encuentra un conflicto con consecuencias. Separar los trabajos usa lo mejor de cada uno.
+- **El ritmo se gobierna con números, no con adjetivos.** El template de redacción fija cantidad de párrafos, promedio y cuántos de una línea. Medido en el mismo esqueleto: sin la regla, 96 párrafos de 19 palabras (metralleta); con la regla, 40 de 43 (aire). Y la extensión sale de **más escenas**, no de estirar la prosa: el redactor comprime cada escena a ~200 palabras pase lo que pase, así que el outline pide 8-10 escenas a 280.
+- **`cuento-check.py`** mide fidelidad (nombres del esqueleto que no sobrevivieron), ritmo y etiquetas emocionales, y avisa. No frena: una omisión puede ser legítima.
+### Added
 - **`scripts/llm.sh` + `scripts/llm-tasks.json`.** El modelo correcto depende de la tarea, y una skill hereda *un* modelo para todas las suyas (STUDIO tiene prosa y i18n con el mismo cerebro). El script toma la tarea como parámetro y de ahí salen **modelo, `think`, `num_predict` y temperatura**, versionados en el registro con la cata que los funda. `--template` sustituye `{{variables}}`, `--json` devuelve el texto con tokens y segundos, y las variables sin valor **frenan con error** en vez de mandar un prompt roto. Cierra el error que costó dos veredictos falsos hoy: sin `think` explícito, cada modelo hereda su default.
 - **`scripts/templates/cuento.md`.** Primer template: género, palabras y tema por `--var`, con los requisitos que la cata midió como los que separan mostrar de explicar.
 - **`kanam-auditor` pasa a `muse-spark-open`** (fallbacks: deepseek, gemma4). Era la peor combinación medida: deepseek con `think=low`, que gasta 19,75 tok/palabra y falla 1 de cada 3.
+
+### Added
+- **`scripts/cuento.sh` - el pipeline de dos etapas.** GLM encuentra la estructura, muse la escribe. Medido el 2026-11-05 con tres cuentos de ~2.000 palabras sobre el mismo tema: glm solo da la mejor idea y la peor sintaxis (23 oraciones de +45 palabras, "pabellón liberio" ×4); muse solo da la mejor sintaxis y una estructura plana donde el personaje no decide. Las dos etapas juntas cuestan **0,533 px contra 0,412 de un solo request del CORE: 1,29×**.
+- **Regla de FIDELIDAD en `redaccion-cuento.md`.** Nombres, fechas, números y orden de escenas son los del esqueleto; si el outline dice *Joaquín Cáceres* no se escribe *Lautaro*. Verificado: muse respetó el elenco completo (Anselmo ×12, Ferreyra, San Eliseo, Elena). El script además lo chequea solo y avisa si un nombre del esqueleto no aparece en el cuento.
+- **Regla de RITMO calibrada.** La primera versión pedía "nunca dos párrafos largos seguidos" y produjo 96 párrafos de 19 palabras: metralleta. La calibrada pide **30-40 párrafos, promedio 45-70 palabras, 8-12 de una línea**. Resultado: 40 párrafos, promedio 43, racha máxima de 2 cortos seguidos.
+
+### Fixed
+- **El ">10× más barato" era falso, en tres archivos.** Con los px reales del panel (barra de 944 px): deepseek 0,412 · muse 0,333 · glm 0,200 px/req. Muse cuesta el 81% de un request del CORE y glm el 49%, no el 10%. Era extrapolación de la barra vista a ojo. Corregido en ADR-109, en el doc de catas y acá, dejando la nota de que no estaba medido.
 
 ### Fixed
 - **Dos scripts llamaban modelos sin `think` y pagaban el razonamiento sin que se viera.** `complexity-scorer.sh`: 3,4 s y 626 tokens produciendo la misma respuesta de 25 caracteres que con `think:false` cuesta 0,4 s y **18 tokens** — 35× más caro en cada arranque de pipeline. `interpret-entries.py`, igual. Los dos corregidos con la medición en el comentario.
 
 ### Notes
 - **Medir, no estimar:** tercera corrección del mismo número, las tres hacia arriba. La unidad válida es la barra sobre uso real, no el px/req de una sesión.
-- **`gemma4` como chat trivial: medido y gana, con condición.** Contexto completo 5/7 correctas y 0 falsos positivos; contexto parcial 0/7, con dos fechas y horas inventadas. El contexto completo cuesta 3,1× las mismas llamadas, pero en un modelo > 10× más barato por token sigue ganando contra el CORE en deepseek. **Borde escrito: chat trivial = el dato de respuesta ya está en el contexto entregado.** Fuera de eso, gemma4 sigue sirviendo para nada con consecuencia: no se probó que dejara de inventar en análisis.
+- **`gemma4` como chat trivial: medido y gana, con condición.** Contexto completo 5/7 correctas y 0 falsos positivos; contexto parcial 0/7, con dos fechas y horas inventadas. El contexto completo cuesta 3,1× las mismas llamadas, pero con un px/req propio que todavía falta medir sigue ganando contra el CORE. **Corregido el mismo día con los px reales del panel** (barra de 944 px): deepseek 0,412 · muse 0,333 · glm 0,200 px/req. El "10x más barato" de la versión anterior no estaba medido. **Borde escrito: chat trivial = el dato de respuesta ya está en el contexto entregado.** Fuera de eso, gemma4 sigue sirviendo para nada con consecuencia: no se probó que dejara de inventar en análisis.
 - **Pendiente:** muse sobre un cierre de sesión real (el sintético prueba que no fabrica, falta probar que encuentra) y el borde verificable en el runtime que habilite el slot de chat trivial. Ningún slot se aplica sin eso; `utilityModel` y el CORE no se tocan.
 - **Sin cambio:** pipeline A/B/C, slots de dev/ops/auditor/critic/planner/mind/studio, ADR-090 y ADR-107.
 

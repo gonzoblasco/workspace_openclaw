@@ -112,8 +112,10 @@ es un uso poco frecuente y el delta no está medido en piezas reales (solo en T3
 ### 4. Gemma 4 como chat trivial: sí, bajo una condición de contexto (medido)
 
 **Hecho de entrada:** `gemma4:31b` con **2.083 requests es una línea de barra casi invisible** -
-el costo unitario más bajo del plan (`< 0,01 px/req`, más de **10× más barato** que deepseek por
-request). El problema no es el costo, es que **inventa**.
+el costo unitario más bajo del plan. **Corrección 2026-11-05:** el "< 0,01 px/req" y el "10x" de
+esta línea no estaban medidos, eran extrapolación de la barra vista a ojo. Los px reales de la
+sesión (barra de 944 px) dan deepseek 0,412 · muse 0,333 · glm 0,200 px/req. gemma4 no se midió
+todavía con su propio px/req; su ventaja es real pero su magnitud está pendiente. El problema no es el costo, es que **inventa**.
 
 **Lo medido, siete llamadas por modo, mismas preguntas, temperatura 0:**
 
@@ -130,9 +132,10 @@ request). El problema no es el costo, es que **inventa**.
   charla trivial la salida es corta y el input fijo de 580 tokens pasa a ser el costo dominante.
 - **Pero el parcial no es la opción barata: es la inservible.** Gasta 1,6k tokens fabricando
   respuestas falsas que después hay que corregir, y corregir cuesta más que el ahorro.
-- **Contra el CORE, sigue ganando:** ~706 tok/llamada en un modelo **> 10× más barato por token**
-  que deepseek. El chat trivial de hoy va al CORE con contexto grande: pagar 706 tok baratos en vez
-  de ~100 tok caros es una mejora de orden de magnitud.
+- **Contra el CORE, sigue ganando, con un margen menor al que se creía:** ~706 tok/llamada y un
+  px/req que hay que medir (los modelos vecinos dan muse 0,333 y glm 0,200 contra deepseek 0,412).
+  Pagar 706 tok baratos en vez de ~100 tok caros sigue siendo negocio, pero no "de orden de
+  magnitud": es un margen de 2-4x en el mejor caso, y hay que confirmarlo.
 
 **La condición, que es la decisión:**
 
