@@ -9,6 +9,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ## [2026-11-06] - El Planner deja de ser un agente que hay que abrir a mano
 
 ### Added
+- **Pre-flight de OPS antes de tocar el sustrato (E3.3).** El CORE ya no aplica cambios de config, canales, plugins, automatizaciones ni credenciales: delega a `kanam-ops` y pide veredicto (APLICA / NO APLICA / APLICA CON CAMBIOS) con valor actual, valor resultante, qué más toca el patch y el backup que crearía, antes de escribir. Si es APLICA, OPS aplica con backup y al humano se le trae la evidencia real. Restart, borrado y cambio de producción siguen requiriendo OK explícito. Procedimiento: `docs/OPS-DISPATCH.md` §6-bis.
 - **Integración CORE → Planner (`skills/planner-delegation/`).** El CORE ahora tiene un procedimiento explícito para convocar al Planner cuando el objetivo es un programa multi-sesión (3+ pasos, 2+ roles, >1 sesión o fecha/bloqueo). El Planner devuelve plan, brief y contratos; el CORE ejecuta, verifica y sintetiza.
 - **Programas multi-sesión (`agents/kanam-planner/scripts/program_plan.py`).** CRUD con pasos, `owner`, `role`, `exit_criteria`, `depends_on`, `gate`, evidencia y estados. Comandos `init`, `add-step`, `update`, `set-gate`, `set-gates`, `next`, `brief`, `status --json`, `lint`, `board`, `report`, `close`.
 - **Gates de plan (`plan_lint.py`).** Falla si un paso no tiene dueño o criterio de salida, si hay ciclos, si un paso `completed` no tiene evidencia o si un `blocked` no tiene blocker. `close` corre el lint antes de cerrar.

@@ -73,6 +73,38 @@ Aprobar un restart, un borrado o un cambio de produccion es de Gonzo, aunque
 OPS tenga la capacidad tecnica para hacerlo. Delegar la tarea no delega la
 aprobacion.
 
+## 6-bis. Pre-flight obligatorio: OPS dictamina antes de escribir (E3.3)
+
+**Cuando:** antes de aplicar cualquier cambio sobre el sustrato (seccion 1):
+`openclaw.json`, canales, plugins, automatizaciones, credenciales. **No aplica**
+a codigo de aplicacion ni a contenido: eso es de DEV y STUDIO.
+
+**Como:** el CORE **no aplica**. Delega a OPS con `sessions_spawn(agentId:
+"kanam-ops")` y pide el **veredicto antes de escribir**. El pedido lleva, sin
+excepcion:
+
+1. **El cambio exacto**: ruta de config y valor destino.
+2. **El motivo**, en una linea.
+3. **Que haga dry-run**: `openclaw config patch --stdin --dry-run` o
+   `openclaw config get` del estado actual, segun corresponda (secciones 7 y 8).
+4. **Que responda con**: veredicto (**APLICA / NO APLICA / APLICA CON
+   CAMBIOS**), valor actual, valor resultante, que mas toca ese patch y el
+   backup que crearia.
+5. **Que no aplique nada**: solo evalua. La aplicacion la decide Gonzo.
+
+**Despues:** si el veredicto es APLICA, se vuelve a delegar a OPS para que
+aplique con backup (secciones 7 a 16), y a Gonzo se le trae **evidencia real**
+---`config get`, `status`, el job corriendo--- no la promesa. Un "quedo bien" de
+OPS sigue siendo un reporte, no una prueba (seccion 5).
+
+**Que NO cambia:** el limite de la seccion 6. Un restart, un borrado o un cambio
+de produccion necesita el **OK explicito de Gonzo aunque OPS diga APLICA**.
+Delegar no delega la aprobacion.
+
+**Por que existe:** OPS ya tiene E3.1 (canales), E3.2 (presupuesto) y E3.4
+(post-mortem) en produccion. E3.3 no se cierra escribiendo mas: se cierra
+usando el paso al menos una vez en un cambio real.
+
 ---
 
 # Procedimientos operativos
