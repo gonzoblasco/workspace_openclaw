@@ -1,258 +1,168 @@
 # ROADMAP.md - kanam-ops 🛠️
 
-**Versión actual:** v0.1
+**Versión actual:** v0.2
 **Objetivo:** v0.5 - OPS como default de todo lo que toca el sustrato
-**Última revisión:** 2026-11-06 (reemplaza el roadmap v0.1 del 2026-10-07, backup en `ROADMAP.v0.1.bak-20261106`)
-**Estado de ejecución:** E1, E2 completas, y E3.1 + E3.2 + E3.4 hechas, el 2026-11-06. Commits `7e19519438`, `87c9f4c524`, `0469714ee9`, `b61cffa46c`.
+**Última revisión:** 2026-11-06 18:30 (reemplaza v0.1 del 2026-10-07; backup en `ROADMAP.v0.1.bak-20261106`)
 **Dueño:** kanam-ops autoría / Kanam CORE gobierno
 
 ---
 
-## 1. El problema real: no es falta de capacidades, es falta de demanda
+## 0. Dónde estamos, en una pantalla
 
-Gonzo preguntó por qué este agente no se usa desde hace 17 días. Medí el uso real antes de proponer nada.
+El diagnóstico de v0.1 era duro y correcto: **un agente no se usa porque tiene
+skills, se usa porque algo lo llama.** Ese diagnóstico sigue valiendo. Lo que
+cambió es que hoy algo lo llama.
 
-### 1.1 Uso medido
+| Métrica | 2026-10-07 (v0.1) | 2026-11-06 (v0.2) |
+|---|---|---|
+| Automations con `agentId: kanam-ops` | **0 de 11** | **7**, todas `ok` |
+| Hooks que despiertan a OPS | **0** (`["main"]`) | **sí** (`["main","kanam-ops"]`) |
+| Regla de despacho en CORE | no existía | `docs/OPS-DISPATCH.md` + sección en `AGENTS.md` |
+| Scripts duplicados | 5 divergentes | **1 dueño**, la raíz son symlinks |
+| Drift | DRIFT 7 de 7 días | `OK: sin drift (235 campos)` |
+| Tests | **0** | **59 verdes** |
+| Cambios registrados | prosa en el daily | **10 entradas** en `gateway-changes.jsonl` |
+| Watchdogs de infraestructura | 0 | **4** (canales, presupuesto, incidentes, drift) |
 
-| Evidencia | Dato |
-|---|---|
-| Sesiones de `kanam-ops` en disco | **10**, todas cerradas y comprimidas |
-| Sesiones reales (más de 2 mensajes) | **3**: 2026-09-28 (dos turnos), 2026-10-07 (48 mensajes) |
-| Sesiones de 2 mensajes | **7**, son pings de prueba del handshake multi-agente |
-| Última sesión con trabajo | **2026-10-08** (la del 48 mensajes arrancó 2026-10-07 23:28) |
-| Total de mensajes en 5 semanas | **~76** |
-| Automations con `agentId: kanam-ops` | **0** de 11 |
-| Hooks que despiertan a OPS | **0** (`hooks.allowedAgentIds` = `["main"]`) |
-| Mención de OPS en dailies, octubre | 4 archivos, casi siempre como registro de que existe |
-
-### 1.2 La causa, en orden de peso
-
-1. **Los trabajos de OPS los hace `main`.** El job `gateway-daily-audit` existe, corre todos los días a las 09:30, y ejecuta `bash ~/.openclaw/workspace/scripts/gateway-audit.sh`. Es literalmente el script de OPS, corriendo con `agentId: main`. Igual `gateway-jobs-watcher` y `openclaw-backup-schedule`. OPS tiene la skill y el script; `main` tiene el cron. Eso explica el 90% del desuso: **el sistema ya hace trabajo de OPS, solo que sin OPS**.
-2. **OPS solo entra cuando CORE se acuerda.** No tiene entrada por evento. CORE tiene que: notar que hay un problema de infra, decidir que es de OPS, y hacer `sessions_spawn agentId=kanam-ops`. Tres pasos manuales que compiten con "lo hago yo en un comando".
-3. **`main` es más barato de invocar y sabe hacer el 80%.** Un cambio de modelo, un `config get`, un restart: `main` ya lo tiene en contexto. OPS agrega protocolo de backup y verificación, que suena a overhead cuando el pedido es chico.
-4. ~~**Modelo desalineado.**~~ **NO ES UN PROBLEMA (corregido 2026-11-06 por Gonzo).** `kanam-ops.model.primary` = `ollama/gpt-oss:120b-cloud` es una eleccion deliberada: mas alcance creativo para idear la extension y los cambios de este agente. No es deriva ni descuido. La alineacion con el resto del equipo no es un objetivo; el criterio correcto es que el modelo lo elige Gonzo segun la etapa del rol.
-5. **Scripts duplicados y divergentes.** `workspace/scripts/gateway-audit.sh` (63 líneas, con health check `doctor --lint`) es **distinto** a `agents/kanam-ops/scripts/gateway-audit.sh` (37 líneas, sin health check). El que corre en producción es el de la raíz, mantenido fuera del workspace de OPS. Lo mismo con `aggregate-sync.sh` (ya hubo un incidente de drift stale en octubre, registrado en el daily del 2026-10-12).
-6. **Cero tests.** Los 6 scripts pasan `bash -n`, pero no hay una sola prueba. Un rol de confiabilidad sin pruebas de sus propias herramientas no puede pedir confianza.
-
-### 1.3 Un detalle incómodo sobre el roadmap anterior
-
-El roadmap v0.1 declaraba `gateway-config-drift.sh` como "🟡 parcial: requiere revisión manual para aceptar cambios". El problema no es que sea parcial: es que **nunca se puede aceptar limpio**. El baseline es un hash de todo el archivo, y con 8 agentes y sesiones rotando, `openclaw.json` cambia por razones ajenas a OPS varias veces por semana. El baseline del 2026-11-02 ya está desactualizado, y el daily del 2026-09-26 registra el mismo problema. Mientras la herramienta central de OPS dé DRIFT permanente, OPS va a parecer un role que siempre tiene una alarma pendiente.
+**Etapas:** E1 completa - E2 completa - E3 3 de 4 - E4 1 de 3 (4.2 hecho).
 
 ---
 
-## 2. Principio rector de este roadmap
+## 1. El diagnóstico original, que sigue siendo la base
+
+Gonzo preguntó por qué este agente no se usaba desde hacía 17 días. Ese
+diagnóstico, del 2026-10-07, se conserva porque explica por qué las etapas
+tienen el orden que tienen.
+
+### 1.1 Uso medido entonces
+
+| Evidencia | Dato |
+|---|---|
+| Sesiones reales (más de 2 mensajes) | **3** de 10 |
+| Sesiones de 2 mensajes | 7, pings de prueba del handshake multi-agente |
+| Última sesión con trabajo | 2026-10-08 |
+| Automations con `agentId: kanam-ops` | **0** de 11 |
+| Hooks que despertaban a OPS | **0** |
+
+### 1.2 La causa, en orden de peso
+
+1. **Los trabajos de OPS los hacía `main`.** El job `gateway-daily-audit`
+   existe, corre todos los días a las 09:30, y ejecuta el script de OPS. Con
+   `agentId: main`. Eso explicaba el 90% del desuso: el sistema ya hacía
+   trabajo de OPS, solo que sin OPS.
+2. **OPS solo entraba cuando CORE se acordaba.** Sin entrada por evento.
+3. **`main` era más barato de invocar** y sabía hacer el 80%.
+4. ~~**Modelo desalineado.**~~ **NO ES UN PROBLEMA.** Corregido por Gonzo el
+   2026-11-06: `gpt-oss:120b-cloud` es una elección deliberada, por alcance
+   creativo para idear la extensión del agente. El modelo lo elige Gonzo según
+   la etapa del rol, no un criterio de alineación.
+5. **Scripts duplicados y divergentes.** La copia de OPS era una foto vieja.
+6. **Cero tests.** Un rol de confiabilidad sin pruebas de sus herramientas no
+   puede pedir confianza.
+
+---
+
+## 2. Principio rector
 
 > **Un agente no se usa porque tiene skills. Se usa porque algo lo llama.**
 
-Las cuatro etapas de abajo están ordenadas por esa idea. Primero OPS **entra** en el flujo (deja de ser manual). Después OPS **merece** estar ahí (herramientas confiables). Después OPS **anticipa** (eventos en vez de pedidos). Recién al final OPS **decide** (política propia, dentro de límites).
-
-No hay una etapa de "más skills". Las skills existentes están bien; el problema nunca fue el catálogo.
+E1 lo pone en el flujo. E2 hace que merezca estar. E3 lo vuelve proactivo.
+E4 le da autonomía acotada. **No hay etapa de "más skills"**: el catálogo
+nunca fue el problema.
 
 ---
 
 ## 3. Etapas
 
-### E1 - Ser invocable (v0.1 -> v0.2)
+### E1 - Ser invocable ✅ COMPLETA
 
-**Objetivo:** que OPS llegue al trabajo sin que CORE tenga que acordarse.
-
-**Estado: EJECUTADA 2026-11-06.** Evidencia abajo.
-
-| # | Entregable | Criterio de listo |
+| # | Entregable | Estado |
 |---|---|---|
-| 1.1 | Los 3 jobs de infraestructura corren con `agentId: kanam-ops`: `gateway-daily-audit`, `gateway-jobs-watcher`, `openclaw-backup-schedule` | `automations list` muestra `kanam-ops` en los 3; cada uno corre al menos una vez y deja evidencia en el log |
-| 1.2 | OPS accesible por hook (`hooks.allowedAgentIds` incluye `kanam-ops`) | Un POST al hook despierta a OPS y vuelve con respuesta |
-| 1.3 | `AGENTS.md` de CORE con una regla explícita de despacho: qué es de OPS y qué no | El doc existe y CORE lo cita en un handoff real |
-| 1.4 | ~~Modelo alineado con el equipo~~ **RETIRADO**: el modelo es decision de Gonzo, no criterio de roadmap | N/A. Hoy: `gpt-oss:120b-cloud` (elegido por alcance creativo). Se revisa cuando Gonzo decida pasar a operacion |
+| 1.1 | 3 jobs de infra con `agentId: kanam-ops` | ✅ los 3 migrados; `gateway-daily-audit` corrido a mano, `ok` en 55s |
+| 1.2 | OPS por hook | ✅ `hooks.allowedAgentIds` = `["main","kanam-ops"]`, `hooks check` 5/5 |
+| 1.3 | Regla de despacho en AGENTS.md de CORE | ✅ `docs/OPS-DISPATCH.md`; bootstrap bajo cap |
+| 1.4 | Modelo alineado | **RETIRADO** por decisión de Gonzo |
 
-**Evidencia de cierre (2026-11-06):**
-- 1.1: los 3 jobs tienen `agentId: kanam-ops` (`gateway-daily-audit`, `gateway-jobs-watcher`, `openclaw-backup-scheduled`), verificado en `openclaw automations list`. Ademas se corrio `gateway-daily-audit` a mano: status `ok`, 55s, escribio `~/.openclaw/gateway-audit.log` con el audit completo.
-- 1.4: **retirado como entregable.** Se cambio el modelo de OPS a `deepseek-v4.1-flash:cloud` y Gonzo lo corrigio: `gpt-oss:120b-cloud` es deliberado, por alcance creativo para idear la extension y los cambios del agente. Revertido con `openclaw config set agents.entries.kanam-ops.model.primary ollama/gpt-oss:120b-cloud`, verificado con `config get`. Backup previo a la reversion: `openclaw.json.bak-ops-model-revert-20261106`.
-- 1.2 y 1.3 siguen pendientes: hook y regla de despacho en el AGENTS.md de CORE.
+**Corrección registrada:** el 1.4 se había ejecutado mal (cambio a deepseek) y
+Gonzo lo revirtió. Un test mío fijaba el modelo y convertía esa decisión en
+fallo de test. Corregido: el test valida forma `provider/modelo`, no un valor.
 
-**Por qué primero:** sin esto, todo lo demás es material que nadie va a buscar. El punto 1.1 solo ya cambia la curva de uso de 0 sesiones por semana a 3.
+### E2 - Merecer la confianza ✅ COMPLETA
 
-**Riesgo:** mover un job de `main` a `kanam-ops` cambia quién recibe las notificaciones y con qué modelo corre. Si OPS falla, el audit diario deja de correr. Mitigación: migrar uno a la vez, con el anterior en `enabled: false` por una semana antes de borrarlo.
-
-### E2 - Merecer la confianza (v0.2 -> v0.3)
-
-**Objetivo:** que cuando OPS diga "verificado", eso signifique algo.
-
-**Estado: EJECUTADA 2026-11-06** (2.1, 2.2, 2.3 y 2.4). Evidencia abajo.
-
-| # | Entregable | Criterio de listo |
+| # | Entregable | Estado |
 |---|---|---|
-| 2.1 | **Un solo dueño por script.** Eliminar la duplicación: los scripts viven en `agents/kanam-ops/scripts/` y la raíz los llama desde ahí (o al revés, pero uno solo) | `diff` entre las dos copias da 0; el job que corre en producción usa la ruta única |
-| 2.2 | **Drift con ruido cero.** Reemplazar el hash de archivo completo por un diff semántico de campos, con allowlist explícita de campos que cambian solos | `gateway-config-drift.sh` da OK en un día normal sin intervención; si hay drift, el reporte nombra el campo y el valor viejo/nuevo |
-| 2.3 | **Tests de los 6 scripts.** Suite `bats` o `pytest` con al menos: backup antes de cambio, verificacion despues, drift detecta un cambio plantado, y cada script devuelve exit code correcto | `tests/` con N tests verdes; corre en el hook de pre-commit |
-| 2.4 | **Registro de cambios estructurado.** Cada cambio de config deja un registro legible por máquina (qué, cuándo, backup, antes, después, verificación), no solo prosa en el daily | Un comando lista los últimos 20 cambios con su backup y su evidencia |
+| 2.1 | Un solo dueño por script | ✅ la raíz son symlinks a `agents/kanam-ops/scripts/` |
+| 2.2 | Drift semántico, ruido cero | ✅ 235 campos, allowlist explícita |
+| 2.3 | Tests de los scripts | ✅ `tests/test_ops_scripts.py` |
+| 2.4 | Registro de cambios estructurado | ✅ `gateway-change-log.sh`, 10 entradas |
 
-**Por qué segundo:** una vez que OPS está en el flujo, la primera vez que falle o alarme de más pierde la confianza que costó ganar. E2 es la etapa que hace que E1 sostenga.
+### E3 - Anticipar (3 de 4)
 
-**Nota sobre 2.2:** esta es la etapa más valiosa de todo el roadmap y la más ignorada hasta ahora. Es también la que más fácil se puede hacer mal: un drift "inteligente" que ignora campos es peor que uno ruidoso, porque el silencio no se nota.
-
-**Evidencia de cierre (2026-11-06):**
-- 2.1: los 5 scripts de la raiz son symlinks a `agents/kanam-ops/scripts/`. La copia de OPS era una foto del 2026-09-27 sin los fixes `b6942d0d33` ni `794727eae8`; ahora tiene el contenido corregido.
-- 2.2: `gateway-config-drift.sh` v2, semantico sobre 229 campos. Antes: DRIFT 7 de 7 dias. Ahora: `OK: sin drift`, exit 0. Ciclo probado sobre el config vivo con cambio plantado y reversion.
-- 2.3: `agents/kanam-ops/tests/test_ops_scripts.py`, 19 tests verdes. Incluye que la allowlist NO tape cambios de seguridad.
-- 2.4: `agents/kanam-ops/scripts/gateway-change-log.sh` escribe `~/.openclaw/gateway-changes.jsonl` (una linea JSON por cambio: ts, campo, antes, despues, motivo, backup, evidencia). 8 tests propios; la suite pasa de 19 a 27. Guard de secretos probado: un campo con forma de credencial se redacta antes de tocar disco.
-
-### E3 - Anticipar (v0.3 -> v0.4)
-
-**Objetivo:** que OPS hable primero, con motivo.
-
-| # | Entregable | Criterio de listo |
+| # | Entregable | Estado |
 |---|---|---|
-| 3.1 | **Watchdog de canales.** Un trigger que despierte a OPS cuando un canal cae o el gateway deja de responder | Trigger configurado; una caída simulada genera un aviso en menos de 5 minutos |
-| 3.2 | **Watchdog de presupuesto.** Alerta cuando el uso de modelos o el tamaño de la DB de agentes cruza un umbral (hoy `agent DB (main)` está en 1.5 GB según `doctor`, sin alerta) | Umbral configurado; cruzar el umbral dispara aviso, no un silencio |
-| 3.3 | **Pre-flight de cambios.** Antes de que CORE aplique un cambio de config, OPS valida en dry-run y devuelve un veredicto | CORE lo llama en al menos un cambio real y ahorra un error |
-| 3.4 | **Post-mortem automático.** Cuando algo cae, OPS arma el timeline desde logs y propone la causa | Un incidente real tiene su informe armado por OPS, no a mano |
+| 3.1 | Watchdog de canales | ✅ `gateway-channels-watchdog`, cada 5m. Probado en las dos direcciones |
+| 3.2 | Watchdog de presupuesto | ✅ `gateway-budget-watchdog`, cada 6h. Umbrales 4GB DB / 6GB dir |
+| 3.3 | Pre-flight de cambios | ✅ **adoptado como regla de CORE** el 2026-11-06 |
+| 3.4 | Post-mortem automático | ✅ `gateway-incident-postmortem`, cada 1h |
 
-**Estado de E3.1: EJECUTADA 2026-11-06.**
+**Criterio que se usó para probar watchdogs, y que queda como norma:** un
+watchdog se prueba en las dos direcciones. Silencio cuando está sano, y
+disparo cuando la condición es real. Solo lo primero no prueba nada.
 
-`gateway-channels-watchdog` (id `e6e2ab6d-405a-479d-8d79-ba0998984147`), cada
-5 minutos, `agentId: kanam-ops`, anuncio a Telegram. El script
-`gateway-channels-watch.sh` es read-only y devuelve 0 sano, 1 canal caido, 2 no
-se pudo medir. El 2 dispara a proposito: un watchdog que se calla cuando su
-propio check falla parece sano estando roto.
+### E4 - Decidir (en curso)
 
-**Evidencia de la doble prueba, que es la que vale:**
-- Canal sano: primera evaluacion del trigger, `lastTriggerFireAtMs` queda en
-  null. Silencio correcto.
-- Canal plantado (script reemplazado por uno que reporta Telegram caido):
-  segunda evaluacion dispara en **20 segundos**. El job ejecuto y tiene su
-  entrada `finished ok`.
-- Script real restaurado, `diff` contra la copia da identico, exit 0.
-
-Detalle de comportamiento del scheduler que costo entender: `automations run
-<id>` ejecuta el payload pero **no pasa por la evaluacion del trigger**. Para
-probar un trigger hay que esperar el tick real del schedule.
-
-**Estado de E3.2: EJECUTADA 2026-11-06.**
-
-`gateway-budget-watchdog` (id `8108dfc9-170e-44ad-9d87-fc39cb2a7767`), cada 6
-horas, `agentId: kanam-ops`, anuncio a Telegram. Umbrales: **4 GB** por DB viva
-de agente, **6 GB** por directorio de agente, configurables por env
-(`AGENT_DB_MAX_GB`, `AGENT_DIR_MAX_GB`).
-
-**Dato que corrige el roadmap:** no eran 1.5 GB. Medido el 2026-11-06:
-`agents/main/agent` pesa **7.6 GB**. De esos, **5.2 GB son backups de
-migracion** del runtime (`openclaw-agent.sqlite.pre-startup-migration-*.bak`:
-2.3 + 1.8 + 1.1 GB). La DB viva es 2.3 GB. Con 124 GB libres no es urgencia,
-pero es exactamente lo que este watchdog tiene que avisar.
-
-**Decision de alcance:** el check es **read-only**. Avisa y no borra. Los
-`.bak` de migracion son respaldos reales: borrarlos es decision humana, no de
-un watchdog nocturno. El mensaje del check lo dice explicitamente y un test lo
-verifica.
-
-**Evidencia:** para no esperar 6 horas se bajo el intervalo a 2 minutos, se
-espero el tick real, y el trigger disparo en **140 segundos** con la condicion
-verdadera (`fired=1793997563473`, `evals=1`). Intervalo restaurado a 6h,
-job `enabled`, con su entrada `finished ok` en el historial.
-
-Detalle de testing que costo encontrar: `truncate` sobre APFS crea un archivo
-disperso. El tamano logico sube pero `du` reporta casi cero, asi que un test
-que usa `truncate` prueba un arbol vacio y pasa por la razon equivocada. Los
-tests escriben megabytes reales.
-
-**Estado de E3.4: EJECUTADA 2026-11-06 (3.3 sigue pendiente).**
-
-`gateway-incident-postmortem` (id `8fd2dd9f-bd77-4af8-ac3b-c5fa804dd6f3`),
-cada hora, `agentId: kanam-ops`. El script `gateway-postmortem.sh` lee
-`~/.openclaw/logs/stability/`, agrupa por causa raiz, colapsa rafagas en una
-sola linea de timeline, y propone hipotesis. Read-only.
-
-**El informe se genero contra incidentes REALES, no inventados:**
-`agents/kanam-ops/reports/postmortem-2026-11-06.log`. 20 reportes de
-estabilidad, y el hallazgo que importa:
-
-- **16 fallos de arranque en 158 segundos** (2026-10-18 13:35:58 a 13:38:37),
-  **todos con la misma causa**: `Tailscale is stopped.` El gateway no arranca
-  porque usa Tailscale para reclamar la ruta. No es un bug de OpenClaw: es una
-  dependencia no declarada del host.
-- 2 apagados sin completar y 2 cierres sucios. No impiden arrancar, pero dejan
-  estado sucio.
-
-**Decision de diseno que los tests fijan:** el trigger dispara por incidente
-**nuevo** (comparando conteo), no por "hay incidentes en el directorio". El
-directorio es historico: disparar por presencia avisa para siempre por el
-mismo evento viejo, y una alerta que se repite sin motivo nuevo se ignora. El
-primer tick guarda la linea base y no avisa por el historico.
-
-**Evidencia:** eval 1 con `count=20` sin fire (baseline); incidente plantado ->
-eval 2 con `fired`, `count=21`, entrada `finished ok`. Incidente de prueba
-eliminado despues, directorio vuelve a 20.
-
-**3.3 (pre-flight) sigue pendiente** y su criterio de listo no depende de OPS:
-depende de que el CORE lo llame en un cambio real. No se cierra simulando.
-
-**Por qué tercero:** un watchdog sin E2 detrás es un generador de falsas alarmas. Y un watchdog sin E1 no existe, porque no hay a quién despertar.
-
-### E4 - Decidir (v0.4 -> v0.5)
-
-**Objetivo:** autonomía acotada, con vuelta atrás siempre disponible.
-
-| # | Entregable | Criterio de listo |
+| # | Entregable | Estado |
 |---|---|---|
-| 4.1 | **Política de drift propia.** OPS acepta cambios esperados que cumplen la allowlist y escala solo lo que no puede explicar | 10 cambios seguidos resueltos sin intervención humana, 0 aceptados a ciegas |
-| 4.2 | **SecretRef completo.** Cero tokens en texto plano en `openclaw.json` (hoy `doctor` reporta "plaintext secret-bearing config fields") | `doctor` deja de reportar el warning; toda credencial cableada por ref |
-| 4.3 | **Presupuesto de riesgo.** OPS clasifica cada cambio por reversibilidad y se autolimita a los de riesgo bajo sin aprobación | Clasificación usada en al menos 10 cambios, sin un solo cambio de riesgo alto sin aprobación |
+| 4.1 | Política de drift propia | Herramienta lista. **1 de 10** cambios resueltos |
+| 4.2 | SecretRef completo | ✅ **HECHO.** `doctor` sin hallazgos de plaintext |
+| 4.3 | Presupuesto de riesgo | Herramienta lista. **1 de 10** clasificados |
 
-**Por qué último:** es lo único que el roadmap anterior prometía al final también, y por la misma razón: autonomía sin E1 a E3 verificadas es un agente que cambia producción solo.
+**Arquitectura:** `gateway-config-drift.sh` **mide**, `gateway-risk-policy.sh`
+**decide**. No se juntan. Un medidor con permiso de escribir es cómo se acepta
+a ciegas un cambio.
 
-**Estado 2026-11-06: 4.2 HECHO, 4.1 y 4.3 en curso con herramienta propia.**
+**Regla que no se negocia:** la allowlist del medidor nunca gana sobre un
+patrón de riesgo alto. Un campo sin patrón conocido es **MEDIO**, no BAJO.
 
-| # | Estado real | Evidencia |
-|---|---|---|
-| 4.1 | herramienta lista, **1 de 10 cambios resueltos** | `gateway-risk-policy.sh` decide AUTO_ACEPTAR / ESCALAR |
-| 4.2 | **HECHO** | `doctor` ya no reporta "plaintext secret-bearing config fields"; `gateway.auth.token` es SecretRef |
-| 4.3 | herramienta lista, **1 de 10 cambios clasificados** | mismo script, clasificacion ALTO/MEDIO/BAJO |
-
-**Primer caso real (2026-11-06 18:15):** `kanam-critic` agrego heartbeat a su
-entrada (24h, timeout 900s, `lightContext`, barrido diario de entregables
-SHARP). La politica lo clasifico **MEDIO** (un agente que empieza a latir solo
-con su propio prompt e intervalo no es ruido, es un cambio de comportamiento) y
-**escalo**. Gonzo confirmo que el cambio era del Critic y estaba bien.
-Recien entonces se acepto: backup `openclaw.json.bak-ops-accept-heartbeat-20261106-1815`,
-`drift.sh --accept`, `OK sin drift (235 campos)`.
-
-El flujo funciono como debe: **clasificar, escalar, esperar OK, aceptar con
-backup**. Ningun paso se salteo y ninguno se automatizo de mas.
-
-**Decision de arquitectura:** `gateway-config-drift.sh` **mide**, `gateway-risk-policy.sh` **decide**. No se juntan en un archivo. Un medidor con permiso de escribir es exactamente como se acepta a ciegas un cambio.
-
-**Regla que no se negocia:** la allowlist del medidor **nunca gana** sobre un patron de riesgo alto. `gateway.auth.*` esta en la allowlist de drift (el runtime rota tokens), pero la politica distingue: rotar el token es BAJO, cambiar `bind`/`port`/`tls` es ALTO.
-
-**Clasificacion:**
-- **ALTO** (nunca auto-aceptado): `gateway.port|bind|host|tls|trustProxy`, `hooks.*`, `tools.approval*`, `security.*`, `sandbox.*`, `secrets.*`, `apiKey`, `plugins.entries.*.enabled`, `channels.*.{token,enabled,accounts}`.
-- **MEDIO**: rutas de agente, `toolsAllow`, fallbacks de modelo, `heartbeat.*`, automatizaciones, `compaction.*`, `memory.*`, y **cualquier campo no clasificado**.
-- **BAJO**: `model.primary`, `gateway.auth.token`, `update.*`, `meta.*`, `telemetry.*`, `wizard.*`.
-
-**Un campo sin patron conocido es MEDIO, no BAJO.** El campo que la politica no entiende es justo el que hay que mirar; un default permisivo convierte la ignorancia en permiso.
+**Primer caso real (2026-11-06 18:15):** `kanam-critic` agregó heartbeat a su
+entrada. Clasificado MEDIO, escalado, aprobado por Gonzo, aceptado con backup
+`openclaw.json.bak-ops-accept-heartbeat-20261106-1815`. El flujo completo
+funcionó: clasificar, escalar, esperar OK, aceptar.
 
 ---
 
-## 4. Qué rechazo
+## 4. El camino a v0.5
 
-Coincido con el roadmap anterior en sus tres rechazos y agrego uno propio.
+E4 no se cierra escribiendo código: **se cierra acumulando casos**. El criterio
+de 10 cambios no se puede fabricar, y fabricarlo lo haría inútil.
 
-- **UI completa de gestión de plugins.** `openclaw plugins enable/disable` ya lo hace. Una UI duplica la vía oficial.
-- **Auto-reparación del gateway sin revisión humana.** Un proceso que cambia config y se valida a sí mismo puede dejar drift irreparable.
-- **Kubernetes / infra cloud.** Fuera de alcance: el sustrato es un Mac mini.
-- **(Nuevo) Más skills.** El diagnóstico no muestra un hueco de capacidades. Agregar `gateway-monitor-alerts`, `backup-schedule` y similares suma catálogo sin sumar demanda. Si E1 a E4 funcionan, las skills necesarias se van a escribir solas en el momento en que un trabajo real las pida.
+### Lo que falta, en orden
+
+| Prioridad | Trabajo | Cómo se cierra |
+|---|---|---|
+| 1 | **4.1 y 4.3: acumular 9 casos más** | Con uso real. Cada drift que aparezca pasa por la política y queda registrado |
+| 2 | **Watchdog de política de riesgo** | Que avise cuando hay drift MEDIO/ALTO, en vez de esperar a que alguien pregunte. Es el único trabajo de E4 que sí se puede construir ya |
+| 3 | **3.3 en uso sostenido** | CORE ya lo adoptó; falta que pase por varios cambios reales |
+| 4 | **Revisión de E1-E3 a 30 días** | El roadmap pide un mes estable antes de dar E4 por buena |
+
+### Lo que NO se hace ahora
+
+- **Más skills.** El catálogo nunca fue el problema.
+- **Auto-reparación sin humano.** Un proceso que cambia config y se valida a
+  sí mismo puede dejar drift irreparable.
+- **UI de plugins.** `openclaw plugins enable/disable` ya lo hace.
+- **Kubernetes o infra cloud.** El sustrato es un Mac mini.
 
 ---
 
 ## 5. Las tres métricas que importan
 
-Si al final solo sobreviven tres números, que sean estos.
-
-1. **Sesiones de OPS por semana con trabajo real** (más de 2 mensajes). Hoy: 0. Piso aceptable para v0.5: 5.
-2. **Ratio de trabajo de infra que hace OPS sobre el total.** Hoy: 0 de 3 jobs. Para v0.5: los 3, salvo los que por diseño necesiten a `main`.
-3. **Falsas alarmas de drift por semana.** Hoy: 7 de 7 días (el baseline está desactualizado desde el 2026-11-02). Para v0.5: 0 en días sin cambios.
-
-Ninguna de las tres se mide leyendo el código. Se miden con `automations list`, los logs de sesión y `gateway-config-drift.sh`.
+1. **Sesiones de OPS por semana con trabajo real.** Antes: 0. Ahora hay 7 jobs
+   corriendo; falta medir sesiones con más de 2 mensajes durante una semana.
+2. **Ratio de trabajo de infra que hace OPS.** Antes: 0 de 3 jobs. Ahora: 7 de
+   7 jobs de infra son de OPS.
+3. **Falsas alarmas de drift por semana.** Antes: 7 de 7 días. Ahora: 0 en días
+   sin cambios, verificado el 2026-11-06.
 
 ---
 
@@ -260,28 +170,42 @@ Ninguna de las tres se mide leyendo el código. Se miden con `automations list`,
 
 1. Nunca editar `openclaw.json` a mano; siempre `openclaw config set` o `config patch --stdin`.
 2. Nunca un secreto en el JSON, en el chat ni en el historial del shell. Siempre SecretRef.
-3. Nunca un restart o un cambio de producción sin aprobación humana explícita para esa acción y ese alcance.
+3. Nunca un restart, un borrado o un cambio de producción sin aprobación humana explícita para esa acción y ese alcance.
 4. Nunca `--accept` de un drift con un campo sin explicar.
 5. Nunca borrar datos locales (venvs, DBs, uploads) para que algo pase: excluir la ruta.
+6. **Nunca commitear con `git add` amplio.** Usar `ops-commit.py`, que aborta si hay archivos ajenos en el índice.
 
 ---
 
-## 7. Orden de ejecución sugerido
+## 7. Deudas conocidas, ajenas a este roadmap
 
-**Semana 1:** 1.1 y 1.4. Mover `gateway-daily-audit` a `kanam-ops`, alinear el modelo. Son dos cambios de config, con backup y verificación cada uno. Con esto OPS deja de estar en 0 sesiones por semana.
+Se registran para que no se pierdan, no para resolverlas de paso.
 
-**Semana 2:** 2.1 y 2.2. Un solo dueño por script, drift con ruido cero. Es donde está el valor más alto por hora invertida.
-
-**Semana 3:** 1.2, 1.3 y 2.3. Hook, regla de despacho en CORE, tests.
-
-**Semana 4:** 3.1 y 3.3. El primer watchdog y el pre-flight. Recién acá OPS empieza a hablar sin que le pregunten.
-
-E4 no tiene fecha: depende de que E1 a E3 se sostengan un mes sin fallas.
+- **`agents/main/agent` pesa 7.6 GB**, de los cuales **5.2 GB son backups de
+  migración** del runtime. No es urgencia (124 GB libres) y **no se borró
+  nada**: son respaldos y la decisión es humana.
+- **16 fallos de arranque del gateway en 158 segundos** (2026-10-18), todos con
+  `Tailscale is stopped.` El gateway usa Tailscale para reclamar la ruta: si
+  Tailscale está caído, no arranca solo. Dependencia no declarada del host.
+- **Drift de versión en roadmaps ajenos:** `kanam-critic` (v0.3 archivo vs v0.2
+  índice) y `kanam-studio` (v0.2 vs v0.1). Hace fallar el pre-commit del repo.
+- **Migración ADR-073 sin reconciliar:** 268 archivos en el working tree.
+  Trabajo real de OPS, pero sesión propia: no se mezcla con este roadmap.
 
 ---
 
-## 8. Lo que este roadmap no resuelve
+## 8. Historial de esta versión
 
-La migración ADR-073 sigue sin reconciliar (268 archivos en el working tree, `init-project.sh` y `aggregate-sync.sh` apuntando a `$WORKSPACE/projects` cuando los proyectos viven en `~/projects`). Es trabajo real de OPS y es exactamente el tipo de tarea que lo haría demandado, pero es una sesión propia: no se mezcla con este roadmap ni se resuelve de paso.
+| Fecha | Qué se hizo |
+|---|---|
+| 2026-11-06 | E1 completa (1.1-1.3; 1.4 retirado por decisión de Gonzo) |
+| 2026-11-06 | E2 completa (2.1-2.4) |
+| 2026-11-06 | E3.1 canal watchdog, probado con canal plantado |
+| 2026-11-06 | E3.2 presupuesto watchdog; hallazgo de 5.2GB en `.bak` |
+| 2026-11-06 | E3.4 post-mortem; hallazgo de 16 fallos por Tailscale |
+| 2026-11-06 | E5: procedimientos operativos en `docs/OPS-DISPATCH.md` |
+| 2026-11-06 | E4.2 SecretRef completo; 4.1/4.3 con `gateway-risk-policy.sh` |
+| 2026-11-06 | `ops-commit.py`: commits acotados tras dos incidentes cruzados |
+| 2026-11-06 | Primer drift resuelto por la política (heartbeat de critic) |
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->

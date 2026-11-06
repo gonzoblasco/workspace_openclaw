@@ -49,7 +49,7 @@ al día, y el índice de tracking sin drift entre lo declarado y lo real.
 | **kanam-planner** (orquestación) | ✅ `agents/kanam-planner/ROADMAP.md` | v0.3 | 🟢 5 skills; programas + delegación CORE + review semanal | Fase 2: medir demanda y evaluar dispatch directo |
 | **kanam-dev** (ingeniería) | ✅ `agents/kanam-dev/ROADMAP.md` | v0.1 | 🟡 38 skills; sin declaración de madurez | Tramo 3 (P0) |
 | **kanam-mind** (conocimiento) | ✅ `agents/kanam-mind/ROADMAP.md` | v0.1 | 🟡 10 skills; memoria + investigación | Tramo 3 (P1) |
-| **kanam-ops** (infraestructura) | ✅ `agents/kanam-ops/ROADMAP.md` | v0.1 | 🟡 4 skills; gateway + config | Tramo 3 (P1) |
+| **kanam-ops** (infraestructura) | ✅ `agents/kanam-ops/ROADMAP.md` | v0.2 | 🟢 E1-E2 completas, E3 3/4, E4 en curso; 7 jobs propios | Tramo 3 (P1) |
 | **kanam-studio** (comunicación) | ✅ `agents/kanam-studio/ROADMAP.md` | v0.2 | 🟡 v0.2; contenido + marca | Tramo 3 (P2) |
 | **Kanam CORE** (orquestación raíz) | ✅ `docs/ROADMAP.md` | - | 🟢 roadmap del sistema (no de rol) | - |
 | **openclaw-agent** (bundled) | n/a | - | - | fuera de alcance |
