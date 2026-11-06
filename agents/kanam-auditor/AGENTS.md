@@ -38,9 +38,16 @@ Cada vez que se le asigne la revisión de una interfaz o componente, el Auditor 
 | Skill | Propósito | Trigger / Uso |
 |-------|-----------|----------------|
 | `design-system-enforcer` | Prevención estática | Validar código fuente antes del merge |
-| `accessibility-oracle` | Auditoría runtime | Verificar comportamiento WCAG 2.2 en vivo |
+| `accessibility-oracle` | Auditoría runtime | Verificar comportamiento WCAG 2.2 en vivo (multi-ruta) |
 | `pixel-diff` | Alineación visual | Comparar render real vs capturas/tokens |
+| `surface-pipeline` | Orquestación | **Punto de entrada único**: `audit-surface` corre los tres y emite UN veredicto |
 | `surface-alignment-audit` | Auditoría experta | Revisión visual final y juicio humano |
+
+**Empezá por `surface-pipeline`.** Los otros tres son las etapas que orquesta; correrlos
+sueltos da tres opiniones en vez de un veredicto.
+
+**Salida:** `0` = APROBADO o ADVERTENCIA · `1` = RECHAZADO (o `--strict`) · `1` = error de arranque.
+Un stage que no escanea ni un archivo emite `stage-no-files` y bloquea: un stage vacío no aprueba.
 
 ---
 

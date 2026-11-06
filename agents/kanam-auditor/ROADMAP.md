@@ -17,14 +17,18 @@
 
 | Skill | Tests | Madurez | Realidad (verificada en código) |
 |-------|-------|---------|----------------------------------|
-| `design-system-enforcer` | 5/5 ✅ | 🟡 MVP | **Regex a nivel línea, no AST.** `scss-parser`/`typescript` están en deps pero no se usan para walkear. Veto AI-look implementado con `includes()` + `parseInt` (`border-radius > 8px`, `padding > 16px`). Sin modo `--fix`. |
-| `accessibility-oracle` | 2/2 ✅ | 🟡 MVP | **Sustancia real** (Playwright + axe-core de verdad). Brechas: reporte `html`/`json` declarado en config pero **solo emite a consola** (no escribe archivo); recorre **una sola ruta**, no el `paths[]`. |
-| `pixel-diff` | 20/20 ✅ | 🟢 Real | **Captura y diff reales.** Playwright (`capture.js`) captura el render y extrae geometría computada; `reality.js` muestrea color de los píxeles del PNG; `comparator.js` compara px + ΔE CIEDE2000 real; `image.js` hace diff binario con `pixelmatch`. Modos `comp`/`baseline`/`tokens` operativos. Specs declaradas + resolución de tokens DTCG/CSS. Figma sigue como placeholder que falla explícito (no inventa). |
+| `design-system-enforcer` | 7/7 ✅ | 🟡 MVP | **Regex a nivel línea, no AST.** `scss-parser`/`typescript` están en deps pero no se usan para walkear. Veto AI-look con `includes()` + `parseInt`. Tiene `exclude` (necesario: sin él se auto-reporta). Sin modo `--fix`. |
+| `accessibility-oracle` | 2/2 ✅ | 🟢 Real | **Sustancia real** (Playwright + axe-core). **Corregido 2026-11-06:** sí itera `config.paths[]` (`src/oracle.js:150-235`) y sí escribe `report.json` + `report.html` en `outputDir`. Brechas reales: sin cálculo de ratio de contraste propio, sin auth. |
+| `pixel-diff` | 20/20 ✅ | 🟢 Real | Captura y diff reales (Playwright + ΔE CIEDE2000 + `pixelmatch`). Modos `comp`/`baseline`/`tokens` operativos. Figma sigue como placeholder que falla explícito. |
+| `surface-pipeline` | 12/12 ✅ | 🟢 Real | **Corregido 2026-11-06:** no fabrica veredictos; corre y emite HTML+JSON. El riesgo de falso verde se movió al *target* y ya está tapado con el guard `stage-no-files`. |
 | `surface-alignment-audit` | - | 🟢 Completo (procedimental) | Ritual humano documentado, sin código. |
 
 **Problema actual:** los tres skills ejecutables funcionan **en aislamiento**. No hay pipeline unificado, no hay CI, y `pixel-diff` opera en modo simulado (no captura screenshots reales). Un pipeline construido sobre estos skills hoy devolvería **veredictos fabricados** - exactamente el falso verde que el checklist de roadmap existe para evitar.
 
-**Honestidad de versión:** lo que me falta es la orquestación con evidencia reproducible -un pipeline que no fabrique veredictos- y eso es exactamente lo que me hace v0.1.
+**Honestidad de versión:** la orquestación existe y no fabrica veredictos desde el
+2026-11-06, pero no corre todavía sobre ningún PR de producto: los repos de producto
+viven fuera de este workspace. Eso es lo que me sigue haciendo v0.1 — no el código,
+la falta de un consumidor automático.
 
 **Nota de autoría (2026-10-07):** no hay evidencia en el repo (commits, metadatos, comentarios) sobre con qué modelo LLM se generaron estas skills. La atribución a Kimi-K3 que circuló en sesión **no está documentada**; no citarla como hecho.
 
