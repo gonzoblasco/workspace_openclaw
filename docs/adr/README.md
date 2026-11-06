@@ -77,6 +77,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-047 | [Kanam Design System como identidad transversal de todo producto](./ADR-047-kanam-design-system.md) | El Kanam Design System como identidad transversal (tokens, temas, contraste) |
 | ADR-048 | [Radix/shadcn como capa de UI - adopcion con criterio, no por precedente](./ADR-048-shadcn-radix-stack-ui.md) | Radix/shadcn como capa de UI, con criterio explícito y disparadores de revisión |
 | ADR-037 | [Lucide como Iconos Base](./ADR-037-lucide-iconos-base.md) | Lucide como librería de iconos; nunca emojis como iconografía |
+| ADR-111 | [Frontera de accesibilidad: medir, decidir y orquestar](./ADR-111-frontera-a11y-medir-decidir-orquestar.md) | Tres capas con dueño distinto: medición (`oracle` / `a11y-scan.mjs`), política (`check-a11y-trigger.py`) y orquestación (`audit-surface`); un solo orquestador emite veredicto |
 
 ### Stack de frontend
 | ADR | Decide |

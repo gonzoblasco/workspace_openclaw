@@ -1,46 +1,63 @@
 # .kanam/pipeline.config.yaml
 #
 # Config canónica del Surface Audit Pipeline para el repo workspace_openclaw.
-# Declara los tres stages (un skill por dimensión) y el gate de veredicto.
+# Declara los stages (un skill por dimensión) y el gate de veredicto.
 #
-# Uso local:
+# Uso local desde la RAÍZ del repo (las rutas de los stages son relativas al cwd):
 #   node agents/kanam-auditor/skills/surface-pipeline/bin/audit-surface \
-#     --config .kanam/pipeline.config.yaml
+#     --config .kanam/pipeline.config.yaml --only design-system-enforcer
 #
-# Uso CI: .github/workflows/surface-audit.yml (usa --only para elegir stages
-# según lo que el runner pueda sostener: sin app levantada no corre el oracle,
-# sin capturas no corre pixel-diff).
+# Contrato de salida (verificado contra bin/audit-surface y src/verdict.js):
+#   0 = APROBADO (sin findings bloqueantes) o ADVERTENCIA (sin --strict)
+#   1 = RECHAZADO (al menos un finding bloqueante) o ADVERTENCIA con --strict
+#   1 = error de configuración/arranque del pipeline
+#   Nota: un stage que explota bloquea (on_stage_error: block) → exit 1.
+#   No existe un exit 2 propio: el 2 de a11y-scan.mjs es de esa herramienta,
+#   no del pipeline. Si se necesita distinguir "infra rota" de "producto roto",
+#   se hará cuando haya un consumidor que lo requiera.
 #
-# Las rutas son relativas a la RAÍZ del repo (el cwd desde el que corre el CLI).
+# CI: .github/workflows/surface-audit.yml corre SOLO el stage estático
+# (--only design-system-enforcer): no necesita browser ni app levantada.
 
 project:
-  name: "kanam-auditor"
+  name: "workspace_openclaw"
 
 stages:
   # 1. Código estático contra los tokens del Design System. No necesita red ni
   #    browser: es el único stage que corre SIEMPRE.
+  #
+  #    Target: la superficie real del repo. Hoy el único producto con frontend
+  #    vivo es projects/preflight (Next.js: app/ + components/ + globals.css).
+  #    Antes apuntaba a agents/kanam-auditor/skills, o sea que el pipeline se
+  #    auditaba a sí mismo: señal cero sobre producto real.
   - skill: design-system-enforcer
-    path: "agents/kanam-auditor/skills"
+    path: "projects/preflight/src"
     config: ".kanam/enforcer.config.yaml"
 
-  # 2. Accesibilidad runtime (Playwright + axe-core + teclado). Requiere una app
-  #    sirviendo en base_url; en CI se habilita solo si hay una URL publicada.
+  # 2. Accesibilidad runtime (Playwright + axe-core + teclado). Requiere la app
+  #    sirviendo en base_url. Se habilita con `--only accessibility-oracle`
+  #    cuando hay una app levantada; en CI no corre.
+  #
+  #    Medición vs política (ADR-111): este stage MIDE. Cuándo se exige
+  #    validación manual con AT lo decide scripts/check-a11y-trigger.py.
   - skill: accessibility-oracle
     base_url: "http://localhost:3000"
     paths: ["/"]
 
-  # 3. Alineación visual render vs captura/tokens. Requiere capturas declaradas;
-  #    en CI se habilita solo si existen.
-  - skill: pixel-diff
-    mode: "comp"
-    design: "design/captures/home.png"
-    route: "/"
+  # 3. Alineación visual render vs captura/tokens. Requiere capturas declaradas.
+  #    DESHABILITADO por defecto: no hay baseline todavía (Flujo C, C.2).
+  #    Sin baseline, un pixel-diff no mide regresión: mide una opinión.
+  #    Habilitar cuando exista .kanam/baselines/<producto>/.
+  # - skill: pixel-diff
+  #   mode: "comp"
+  #   design: ".kanam/baselines/preflight/home.png"
+  #   route: "/"
 
 # Qué bloquea y qué advierte. Cada entrada matchea por severidad
 # ('critical'|'warning') o por código estable de finding.
 gate:
   block_on: ["critical", "accessibility-violation", "stage-error"]
-  warn_on: ["warning", "misaligned", "ai-look"]
+  warn_on: ["warning", "misaligned", "ai-look", "hardcoded-value"]
 
 # Si un stage explota (skill roto o dependencia faltante): bloquear es lo honesto.
 # Silencio nunca es verde.

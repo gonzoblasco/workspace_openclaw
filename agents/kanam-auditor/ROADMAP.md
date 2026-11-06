@@ -28,6 +28,16 @@
 
 **Nota de autoría (2026-10-07):** no hay evidencia en el repo (commits, metadatos, comentarios) sobre con qué modelo LLM se generaron estas skills. La atribución a Kimi-K3 que circuló en sesión **no está documentada**; no citarla como hecho.
 
+### Corrección de retrato (2026-11-06, reverificado contra código y runtime)
+
+Dos filas de arriba quedaron viejas. No se borran: se corrigen con fecha, porque un retrato que no se actualiza es el mismo problema que el roadmap-foto que este documento rechaza.
+
+| Skill | Antes (2026-10-07) | Verificado (2026-11-06) |
+|---|---|---|
+| `accessibility-oracle` | "solo consola; una sola ruta" | **Falso hoy.** `run()` itera `config.paths[]` cuando no se pasa `--route` y escribe `report.json` + `report.html` en `outputDir` (`src/oracle.js:150-235`). Sigue faltando cálculo de contraste propio y auth. |
+| `pixel-diff` | 20/20 ✅ | 20/20 ✅ **solo con el browser correcto**. Fallaba 2/20 en este host porque `chromium_headless_shell-1248` no estaba instalado (el `npx playwright` global bajaba la 1254, que no es la que pide `playwright-core@1.64.0`). Se instaló con `node node_modules/playwright-core/cli.js install chromium-headless-shell`. |
+| `surface-pipeline` | "devuelve veredictos fabricados" | **Corre y emite veredicto real** con `report.html` + `report.json` (`bin/audit-surface`, verificado 2026-11-06). El riesgo de verde fabricado se movió al **target**: la config apuntaba a `agents/kanam-auditor/skills`, o sea que se auditaba a sí mismo. |
+
 ---
 
 ## 🎯 Visión: v1.0 - "El Auditor Autónomo"
@@ -202,6 +212,66 @@ jobs:
 **Entregable Fase 5:** auditor que no solo detecta, sino que **aconseja** con base en datos.
 
 ---
+
+## 🧭 Plan v0.2 — "Cañería antes que arsenal" (propuesto 2026-11-06)
+
+> **La versión no sube.** Este plan no gana v0.2: la gana cuando los tres flujos corran y se
+> verifiquen. El diagnóstico que lo originó: no faltan skills, falta cañería. Cuatro CLIs
+> funcionando, desconectados entre sí y de un flujo de trabajo real.
+>
+> Regla de oro del plan: **no se agrega ningún skill nuevo hasta que los tres flujos corran.**
+
+### Diagnóstico medido (2026-11-06)
+
+| Pieza | Estado | Evidencia |
+|---|---|---|
+| `design-enforcer` CLI | 🟢 | 5/5 tests |
+| `accessibility-oracle` CLI | 🟢 | 2/2 tests, multi-ruta + reportes |
+| `pixel-diff` CLI | 🟢 | 20/20 tras instalar el browser correcto |
+| `audit-surface` | 🟢 | emite HTML+JSON con veredicto |
+| `.kanam/pipeline.config.yaml` | 🟡→🟢 | **corregido**: apuntaba a sí mismo; ahora a `projects/preflight/src` |
+| `.github/workflows/surface-audit.yml` | 🔴→🟢 | **no existía** aunque la config lo citaba; creado 2026-11-06 |
+| A11y | 🟠→🟢 | dos caminos compitiendo; borde definido en **ADR-111** |
+
+### Fase 0 — Cerrar la grieta ✅ (2026-11-06)
+
+- [x] **0.1** Browser correcto para `pixel-diff` → 20/20 (no era un bug de código: era la revisión 1248 vs 1254).
+- [x] **0.2** Borde de a11y definido: **ADR-111** — medición (`oracle` / `a11y-scan.mjs`) ≠ política (`check-a11y-trigger.py`) ≠ orquestación (`audit-surface`). Se revisó la recomendación inicial: `oracle` **no** absorbe a `a11y-scan.mjs`, porque eso metería Playwright en la lane de CI que hoy corre con cero dependencias.
+- [x] **0.3** Target real: `projects/preflight/src` (único producto con frontend vivo: Next.js, `app/` + `components/` + `globals.css`).
+- [x] **0.4** Contrato de exit documentado en la config y verificado contra `bin/audit-surface`: `0` = aprobado/advertencia, `1` = rechazado o `--strict`, `1` = error de arranque.
+
+**Primer veredicto real sobre producto real:** `ADVERTENCIA — 0 bloqueantes, 31 advertencias` (31 hex hardcodeados en `preflight/src/globals.css` y `ScanForm.tsx`).
+
+### Flujo A — "El Portero" (PR Gate) 🚧
+
+- [x] **A.1** `.github/workflows/surface-audit.yml`: corre `--only design-system-enforcer` (única lane que no necesita browser), con path filter, `concurrency`, job summary, artifact y enforce de exit. Sintaxis validada localmente; **pendiente de probar en un PR real**.
+- [x] **A.2** PR comment bot con marcador `<!-- surface-audit -->`: un comentario que se **actualiza**, no se multiplica.
+- [ ] **A.3** Verificar el path filter contra un PR real (no dispara en docs, sí en `**/*.css`).
+- [ ] **A.4** Medir tiempo hasta el comentario (`<3 min` es el criterio).
+
+### Flujo B — "El Compañero" (Dev Loop) ⚪
+
+- [ ] **B.1** Pre-commit fast lane: solo `design-enforcer` sobre staged, presupuesto **<2s p95**.
+- [ ] **B.2** `audit-surface --watch` sin browser.
+- [ ] **B.3** `--fix` **solo** con mapeo hex→token 1:1 verificable, `--dry-run` por defecto. El rechazo original (sin AST) sigue vigente para el caso heurístico.
+
+### Flujo C — "El Arquitecto" (Cadencia) ⚪
+
+- [ ] **C.1** Onboarding de 3 productos (hoy solo `preflight` tiene frontend real: `abya-yala` y `kanam-fixer` no tienen `.tsx/.jsx/.css`).
+- [ ] **C.2** Baseline de capturas en `.kanam/baselines/<producto>/`. Sin baseline, `pixel-diff` mide una opinión.
+- [ ] **C.3** Enganchar `scripts/check-audit-due.py` (ya existe) al pipeline: hito cruzado → auditoría completa → `.knowledge/AUDIT.md`.
+- [ ] **C.4** Score de superficie por producto. Recién con C.1-C.3 hay datos.
+
+### Lo que este plan NO hace
+
+| Rechazado | Razón |
+|---|---|
+| Cualquier skill nueva | Cuatro skills con la cañería rota = cinco problemas |
+| Figma | Sin `file_id`/token sigue siendo placeholder |
+| `--fix` con AST | Requiere parser JSX/TSX real; primero regex acotada y medir falsos positivos |
+| Dashboard | Sin historial es decoración |
+| Un tercer medidor de a11y | El problema era el borde, no la cantidad (ADR-111) |
+| Subir a v0.2 ahora | Los flujos no corrieron todavía. La versión se gana |
 
 ## 📊 Resumen visual del roadmap
 

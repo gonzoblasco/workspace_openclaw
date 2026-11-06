@@ -1,0 +1,201 @@
+name: Surface Audit
+
+# Portero de superficie (Roadmap v0.2, Flujo A).
+#
+# Qué hace: corre el stage estático del Surface Audit Pipeline sobre los PRs que
+# tocan superficie, publica el veredicto como comentario único (se actualiza, no
+# se multiplica) y falla el check si hay findings bloqueantes.
+#
+# Qué NO hace (a propósito):
+#   - No corre accessibility-oracle ni pixel-diff: el runner no tiene app
+#     levantada ni baseline de capturas. Un stage que no puede medir no se
+#     simula (red line del ROADMAP: el pipeline no fabrica verde).
+#   - No comenta si el PR no toca superficie (path filter). Ruido = te apagan.
+
+on:
+  pull_request:
+    paths:
+      - '**/*.css'
+      - '**/*.scss'
+      - '**/*.sass'
+      - '**/*.less'
+      - '**/*.tsx'
+      - '**/*.jsx'
+      - '**/*.vue'
+      - '**/*.svelte'
+      - '**/*.html'
+      - 'design/**'
+      - 'agents/kanam-auditor/skills/**'
+      - '.kanam/**'
+      - '.github/workflows/surface-audit.yml'
+
+concurrency:
+  group: surface-audit-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  surface:
+    name: Surface Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Solo las dependencias de los dos skills que corren en CI. El pipeline no
+      # necesita Playwright en esta lane: instalarlo acá costaría ~100MB por PR.
+      - name: Install skill dependencies
+        run: |
+          npm ci --prefix agents/kanam-auditor/skills/surface-pipeline
+          npm ci --prefix agents/kanam-auditor/skills/design-system-enforcer
+
+      - name: Run surface audit (static stage)
+        id: audit
+        # Sin `set -e`: un exit 1 es un veredicto (RECHAZADO), no un error del
+        # workflow. El fallo del check se decide más abajo, con el exit real.
+        run: |
+          set +e
+          node agents/kanam-auditor/skills/surface-pipeline/bin/audit-surface \
+            --config .kanam/pipeline.config.yaml \
+            --only design-system-enforcer \
+            --format json \
+            --output ./reports/surface-audit
+          CODE=$?
+          echo "exit_code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "SURFACE_EXIT=$CODE" >> "$GITHUB_ENV"
+          exit 0
+
+      - name: Publish job summary
+        if: always()
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const root = 'reports/surface-audit';
+          if (!fs.existsSync(root)) {
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '## 🎨 Surface Audit\n\nNo se emitió reporte.\n');
+            process.exit(0);
+          }
+          const dirs = fs.readdirSync(root).filter((d) => d.startsWith('audit-')).sort();
+          const latest = dirs[dirs.length - 1];
+          const file = path.join(root, latest, 'report.json');
+          if (!fs.existsSync(file)) {
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '## 🎨 Surface Audit\n\nNo se emitió report.json.\n');
+            process.exit(0);
+          }
+          const r = JSON.parse(fs.readFileSync(file, 'utf8'));
+          const icon = r.verdict === 'APROBADO' ? '✅' : r.verdict === 'ADVERTENCIA' ? '⚠️' : '❌';
+          const lines = [];
+          lines.push(`## ${icon} Surface Audit — ${r.verdict}`);
+          lines.push('');
+          lines.push(`| Bloqueantes | Advertencias | Total |`);
+          lines.push(`|---:|---:|---:|`);
+          lines.push(`| ${r.counts.blocking} | ${r.counts.warnings} | ${r.counts.total} |`);
+          lines.push('');
+          const rows = (r.blocking || []).concat(r.warnings || []).slice(0, 20);
+          if (rows.length) {
+            lines.push(`| Severidad | Archivo | Línea | Hallazgo |`);
+            lines.push(`|---|---|---:|---|`);
+            for (const f of rows) {
+              const msg = String(f.message || '').replace(/\|/g, '\\|').slice(0, 140);
+              lines.push(`| ${f.severity} | \`${f.file || '-'}\` | ${f.line ?? '-'} | ${msg} |`);
+            }
+            if ((r.blocking || []).length + (r.warnings || []).length > rows.length) {
+              lines.push('');
+              lines.push(`_Mostrando ${rows.length} de ${r.counts.total}. Reporte completo en el artifact._`);
+            }
+          }
+          lines.push('');
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join('\n') + '\n');
+          NODE
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surface-audit-report
+          path: reports/surface-audit/
+          retention-days: 14
+
+      - name: Comment on PR
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          SURFACE_EXIT: ${{ env.SURFACE_EXIT }}
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const marker = '<!-- surface-audit -->';
+
+            const readReport = () => {
+              const root = 'reports/surface-audit';
+              if (!fs.existsSync(root)) return null;
+              const dirs = fs.readdirSync(root).filter(d => d.startsWith('audit-')).sort();
+              if (!dirs.length) return null;
+              const file = path.join(root, dirs[dirs.length - 1], 'report.json');
+              return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null;
+            };
+
+            const r = readReport();
+            let body;
+            if (!r) {
+              body = `${marker}\n## ❌ Surface Audit — no pudo emitir veredicto\n\nEl pipeline no generó reporte (exit ${process.env.SURFACE_EXIT}). Revisar los logs del job: un stage roto bloquea por diseño.`;
+            } else {
+              const icon = r.verdict === 'APROBADO' ? '✅' : r.verdict === 'ADVERTENCIA' ? '⚠️' : '❌';
+              const rows = (r.blocking || []).concat(r.warnings || []).slice(0, 10);
+              const table = rows.length
+                ? ['| Severidad | Archivo | Línea | Hallazgo |', '|---|---|---:|---|']
+                    .concat(rows.map(f => `| ${f.severity} | \`${f.file || '-'}\` | ${f.line ?? '-'} | ${String(f.message || '').replace(/\|/g, '\\|').slice(0, 120)} |`))
+                    .join('\n')
+                : '_Sin hallazgos._';
+              body = [
+                marker,
+                `## ${icon} Surface Audit — ${r.verdict}`,
+                '',
+                `**${r.counts.blocking}** bloqueantes · **${r.counts.warnings}** advertencias · **${r.counts.total}** total`,
+                '',
+                table,
+                '',
+                `<sub>Reporte completo: artifact \`surface-audit-report\`. Config: \`.kanam/pipeline.config.yaml\`. Criterio: \`design/tokens.md\` + WCAG 2.2 AA.</sub>`
+              ].join('\n');
+            }
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+
+            // Un PR desde un fork corre con token de solo lectura: el comentario
+            // es un extra, no el veredicto. Si falla, se avisa y NO se enmascara
+            // el resultado del audit (que se enforcea en el step siguiente).
+            try {
+              const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number, per_page: 100 });
+              const existing = comments.find(c => c.body && c.body.startsWith(marker));
+
+              if (existing) {
+                await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+              } else {
+                await github.rest.issues.createComment({ owner, repo, issue_number, body });
+              }
+            } catch (err) {
+              core.warning(`No se pudo comentar en el PR (${err.status || 'sin status'}): ${err.message}. El veredicto igual se aplica por el check.`);
+            }
+
+      - name: Enforce verdict
+        if: always()
+        run: |
+          echo "Surface Audit exit: ${SURFACE_EXIT}"
+          if [ "${SURFACE_EXIT}" = "1" ]; then
+            echo "::error::Surface Audit RECHAZADO — hay findings bloqueantes."
+            exit 1
+          fi
+          if [ "${SURFACE_EXIT}" != "0" ]; then
+            echo "::error::Surface Audit no pudo correr (exit ${SURFACE_EXIT})."
+            exit 1
+          fi
