@@ -114,6 +114,11 @@ def audit(path: str, roots: list[str], offline: bool, skip: set[str]) -> Report:
     rep = Report(os.path.abspath(path), datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
     in_fence = False
     seen_links: dict[str, tuple] = {}
+    # Un roadmap es un mapa de madurez, no un brief: su "verdad" son las tablas contra el
+    # filesystem. Se audita el formato (links/citas/fechas), no el etiquetado por oracion.
+    is_roadmap = os.path.basename(path).upper() == "ROADMAP.MD"
+    if is_roadmap:
+        skip = set(skip) | {"labels"}
 
     for n, raw in enumerate(lines, start=1):
         line = raw.rstrip()
