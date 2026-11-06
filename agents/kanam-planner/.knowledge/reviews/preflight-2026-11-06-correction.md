@@ -69,3 +69,18 @@ leer el código. La regla queda escrita en `program-orchestration`: **cada afirm
 el estado actual cita `archivo:línea` y el commit/snapshot que se leyó; si no se pudo
 verificar, se marca como supuesto y se agrega un paso de verificación.** El plan no se
 dispatcha sobre supuestos.
+
+## Decisión sobre el modelo (feedback de Preflight, 2026-11-06)
+
+**No se cambia `gpt-oss:120b-cloud`.** El Planner razonó bien la secuencia, el gate y el
+criterio de aborto; lo mejor del plan salió de ahí. Falló al afirmar detalles del código
+que no abrió (`--no-sandbox`, el 429 pre-fix).
+
+**El fix va en el brief/contrato, no en el modelo.** La opción elegida es la primera del
+backlog de Preflight: exigir que cada afirmación sobre el código cite `archivo:línea` o se
+marque como supuesta. Un modelo más caro con el mismo brief cometería el mismo error, solo
+más rápido.
+
+Implementación: `program-orchestration` y `planner-delegation` ya exigen esa regla; el
+brief del CORE debe pasarla explícitamente y no aceptar un plan que afirme estado sin
+fuente.
