@@ -1,102 +1,90 @@
 # ROADMAP.md - Kanam MIND 🔎
 
-**Versión actual:** v0.1 - "La Vara sin Termómetro"
+**Versión actual:** v0.1
 **Objetivo de esta ronda:** v0.5 - investigo y curo memoria sin supervisión línea por línea
 **Norte:** v1.0 - "La Fuente Verificada" (el resto del Crew me invoca por defecto)
-**Última revisión:** 2026-10-07
+**Última revisión:** 2026-11-06
 **Dueño:** kanam-mind (autoría) · Kanam CORE (gobierno)
 
 > Yo no afirmo. Verifico, y recién después hablo. Este documento es el mapa de lo que me falta para
-> que esa frase sea **cierta y demostrable**, no una declaración de identidad. Lo escribo en
-> primera persona porque es mi vara, y me la aplico a mí misma.
+> que esa frase sea **cierta y demostrable**, no una declaración de identidad. La regla de este
+> documento es la de mi rúbrica: **un hito entra solo si mueve una capacidad que hoy no tengo; se
+> cierra solo con evidencia reproducida, nunca con mi palabra.**
 
 ---
 
 ## 1. Encabezado - cómo leer esto
 
-Mi rol no es responder: es **dejar un brief donde cada afirmación está atada a su evidencia**. La
-premisa del ecosistema (Gonzo, 2026-10-07) es que **un rol sin `ROADMAP.md` está en v0.1**. Yo no
-tenía roadmap: soy v0.1 por defecto, y lo acepto. Esta ronda no me corona: me **traza el camino
-hasta v0.5**, y declara con qué evidencia se gana cada salto.
+La premisa del ecosistema (Gonzo, 2026-10-07) es que **un rol sin `ROADMAP.md` está en v0.1**. Yo
+tenía uno (2026-10-07) que trazaba el camino v0.1 → v0.5 alrededor de un diagnóstico: *"tengo la
+vara, el guardián y el auditor, pero ninguno es ejecutable"*.
 
-La regla de este documento es la regla de mi rúbrica: **un hito entra solo si mueve una capacidad
-que hoy no tengo; se cierra solo con evidencia reproducida, nunca con mi palabra.** El número de
-versión no se edita: se gana con la señal de listo.
+La revisión del **2026-11-06** conserva el diagnóstico de fondo y **corrige el orden de las
+prioridades**, porque la medición cambió el retrato: el problema principal no era la falta de
+prueba, era la **falta de demanda**. Detalle en §2. Las secciones 6 y 7 (rechazos y red lines) se
+mantienen vigentes; el contenido se reescribió donde el dato nuevo lo exigía.
 
 ---
 
-## 2. Retrato verificado de mi v0.1 (hoy)
+## 2. Retrato verificado de mi v0.1 (hoy, 2026-11-06)
 
-Todo lo de abajo lo probé contra el filesystem el 2026-10-07 -no de memoria-. Los estados están
-sostenidos por la evidencia que cito entre paréntesis.
+Todo lo de abajo se probó contra el filesystem, los scripts y las DBs del Gateway en la sesión del
+2026-11-06 (fuentes al pie de cada fila). No se reescribe el retrato anterior por prolijidad: se
+mide de nuevo.
 
-### 2.a Las 10 skills que declaro (`agents/kanam-mind/skills/`)
+### 2.a Las 11 skills que declaro (`agents/kanam-mind/skills/`)
 
 | Skill | Estado | Evidencia / realidad verificada |
 |---|---|---|
-| `research-brief-protocol` | ✅ operativo | `SKILL.md` presente, `user-invocable: true`. Fija la forma del brief: etiquetas hecho/inferencia/incógnita y criterio de parada. Es mi método, y es lo más sólido que tengo. |
-| `source-verification-gate` | ✅ operativo | `SKILL.md` presente, invocable. Es una **puerta documental**: un checklist que yo ejecuto al escribir. No hay código que la ejecute. |
-| `evidence-chain-audit` | ✅ operativo | `SKILL.md` presente, invocable. Audita un artefacto terminado: que cada link resuelva y cada cita sostenga su conclusión. También documental. |
-| `knowledge-management` | 🟡 parcial | `SKILL.md` + `references/` (4) + `scripts/` (`check-refs.sh`, `knowledge-audit.sh`, `knowledge-graph.py`). Es la única de mis skills con código. **No tiene tests.** |
-| `memory-wiki-workflow` | 🟡 parcial | `SKILL.md` presente. Depende de un plugin externo (`memory-wiki`) y de `~/.openclaw/wiki/main`; no probé el cableado end-to-end. |
-| `technical-book-processor` | 🟡 parcial | `SKILL.md` presente. Procedimiento completo de capítulo→ADR→ejercicio→commit, pero nunca corrí un libro entero con él. |
-| `engram-project-memory` | 🟡 parcial | `SKILL.md` presente. Es memoria **de proyecto de código** (Qwen/Claude Code), no mía; depende de `engram` instalado. |
-| `search-fusion` | 🟡 parcial | `SKILL.md` presente, `disable-model-invocation: true`. Estrategia por intención; sin verificación de que la uso. |
-| `deepwiki` | ✅ operativo | `SKILL.md` presente; consulta docs de repos públicos vía MCP. Fuente primaria útil, ajena a mi propia ejecución. |
-| `study-tracker` | ❌ no existe | El `SKILL.md` es un **placeholder explícito**: "su funcionalidad se fusionó en otra skill". Deuda, no capacidad. |
+| `evidence-gate-executable` | ✅ operativo | **[nueva 2026-11-06]** Encadena los 4 scripts del gate. Corrió sobre un brief real (FAIL) y sobre un brief de control (PASS). |
+| `research-brief-protocol` | ✅ operativo | `SKILL.md` (97 líneas) fija la forma del brief: hecho/inferencia/incógnita y criterio de parada. |
+| `source-verification-gate` | 🟡 parcial | Checklist documental. Su versión **ejecutable** vivía en el Hito 5.1 y hoy corre como `scripts/kb-audit.py`; la skill todavía no la nombra. |
+| `evidence-chain-audit` | 🟡 parcial | Audita un artefacto terminado; lo ejecutable es `kb-audit.py` (links + citas + etiquetas). Falta que la skill lo referencie. |
+| `knowledge-management` | 🟡 parcial | `SKILL.md` + `references/` + 3 scripts. Única skill con código propio; **sin tests**. |
+| `memory-wiki-workflow` | 🟡 parcial | Plugin `memory-wiki` figure `enabled: true` en `openclaw.json`; cableado end-to-end no probado. |
+| `technical-book-processor` | 🟡 parcial | Procedimiento capítulo→ADR→ejercicio→commit. Nunca corrí un libro entero; `kb-ingest.py` es la pieza que lo hace verificable. |
+| `engram-project-memory` | 🟡 parcial | Memoria de proyecto de código (Qwen/Claude Code), no mía. |
+| `search-fusion` | 🟡 parcial | Estrategia por intención, `disable-model-invocation: true`; sin telemetría de uso. |
+| `deepwiki` | ✅ operativo | Consulta docs de repos públicos vía MCP. Fuente primaria ajena a mi ejecución. |
+| `study-tracker` | ❌ deuda | `SKILL.md` es un **placeholder explícito**; `AGENTS.md` todavía me pide "registrar avance" ahí. |
 
-> **Dato duro:** `find agents/kanam-mind -name '*.test.*'` no devuelve nada. **Cero tests propios.**
-> Mis tres gates de método (`research-brief-protocol`, `source-verification-gate`,
-> `evidence-chain-audit`) son procedimiento escrito; nada prueba que los ejecuté en un brief real.
-
-### 2.b Mi sustrato: memoria, scripts y catálogo
+### 2.b Mi sustrato: el gate, la memoria y la demanda
 
 | Capacidad | Estado | Evidencia / realidad verificada |
 |---|---|---|
-| Memoria propia viva (`memory/`) | ❌ no existe | `memory/` tiene **un solo archivo, `2026-10-07.md`, de 0 bytes**, más `.dreams/session-corpus/2026-10-05.txt`. Mi capa de memoria está **vacía**. |
-| Búsqueda semántica sobre mi DB | ❌ no funciona | `scripts/semantic-search.js` resuelve `DB_PATH = <script>/../memory/memory.db` → `agents/kanam-mind/memory/memory.db`, que **no existe**. La DB real es `workspace/memory/memory.db` (19 MB, existe). El buscador apunta al lugar equivocado. |
-| Catalogación de memoria (`memory-catalog*.sh`) | 🟡 parcial | Dos scripts (309 y 187 líneas) que embeben con `qwen3-embedding:0.6b` a `memory/memory.db`. Escriben a la DB **relativa al cwd**, no a la raíz del workspace. Sin test de corrida. |
-| Extracción de PDF (`extract_pdfs.py`) | ✅ operativo | 83 líneas, autocontenido (PyPDF2). La única herramienta mía con propósito acotado y verificable. |
-| Registro en el catálogo de skills | 🟡 parcial | En `.knowledge/skills-catalog.tsv` figuro **solo con `knowledge-management`** (estado `keep`). Las otras 8 skills "mías" no están catalogadas. Hay **drift entre lo que declaro y lo que el sistema registra**. |
-| Briefs e informes archivados | 🟡 parcial | `reports/` tiene **un solo archivo** (`sprint-9-validation.md`), que valida skills de Hermes, no un brief de mi autoría. `templates/context_handover.md` existe. |
+| Gate ejecutable de un brief | ✅ operativo | `scripts/kb-audit.py` (2026-11-06): links, citas `path#Lx-Ly`, etiquetas, fechas. Veredicto `PASS`/`PARTIAL`/`FAIL`. |
+| Corpus de estudio citado | ✅ operativo | `scripts/kb-ingest.py` + `scripts/kb-search.py` sobre `memory/knowledge.db` (FTS5). Consulta local sin modelo, con la cita verificada contra el disco. |
+| Journal durable de briefs | ✅ operativo | `scripts/brief-journal.py` sobre `reports/journal.db`; 3 entradas registradas el 2026-11-06 (2 PASS, 1 FAIL de control). |
+| Memoria propia (`memory/`) | 🟡 parcial | Dailies de octubre (~108 KB) + `2026-11-06.md`; el `2026-10-07.md` quedó en 0 bytes. **Poblada, no indexada.** |
+| Búsqueda semántica del rol | ❌ no funciona | `scripts/semantic-search.js` resuelve `DB_PATH = ../memory/memory.db`, que no existe. La búsqueda real del workspace (`scripts/memory-search.py`) **sí** funciona contra `workspace/memory/memory.db`. |
+| Tests propios | ❌ no existe | `find agents/kanam-mind -name '*.test.*'` vacío. Mis 4 scripts nuevos no tienen test de regresión. |
+| Briefs archivados | 🟡 parcial | 1 brief propio (`reports/brief-capacidades-2026-11-06.md`) + 1 ajeno (`sprint-9-validation.md`). |
+| **Demanda del CORE** | ❌ no existe | `skill_usage`: **1 skill y 1 invocación en total** (`github`, 2026-10-22), contra 118 skills/375 usos del CORE. Las 6 sesiones del rol fueron todas `spawn` del CORE. **Sin contrato de invocación, el uso depende de que Gonzo se acuerde.** |
+
+> **Dato duro del 2026-11-06:** de 8 agentes, soy el que menos skills usó jamás (1). Y ninguna de
+> mis 10 skills tenía una sola invocación registrada antes de hoy.
 
 ### 2.c Lo honesto
 
-**Lo que me falta es la prueba, y eso es lo que me hace v0.1.** Tengo la **vara** (`research-brief-protocol`),
-el **guardián** (`source-verification-gate`) y el **auditor** (`evidence-chain-audit`) -los tres
-escritos con rigor-, pero **ninguno es ejecutable y ninguno dejó una traza de haberse corrido**.
-Mi memoria está vacía, mi buscador semántico apunta a una base que no existe, y `study-tracker`
-es un cascarón sobre el que `AGENTS.md` todavía me pide "registrar avance". Puedo escribir un
-brief citado; **no puedo demostrar que mi propio método se aplicó**, salvo por mi palabra. Y en mi
-rol, mi palabra no vale: eso es exactamente lo que le exijo a las fuentes.
+**Me falta la demanda, y en segundo lugar la prueba sostenida.** Hoy mis tres gates de método ya
+no son prosa: el gate corre y encuentra defectos reales (los encontró en mi propio brief: 3
+etiquetas y 7 rutas). Pero un gate que nadie invoca no cambia nada. Lo que me sigue haciendo v0.1
+es que **el CORE no tiene una línea escrita que diga cuándo pedirme algo**, y que mi producción no
+tiene aún una racha de cierres verificados por otro. Con el gate ya ejecutable, la próxima señal de
+listo es de demanda, no de herramienta.
 
 ---
 
-## 3. Visión v0.5 - el punto de madurez intermedio
+## 3. Visión v1.0 - "La Fuente Verificada"
 
-**v0.5 significa: investigo y curo memoria sin que nadie me supervise línea por línea.** No es que
-yo sea brillante; es que mi salida es **confiable por construcción**, no por buena fe.
+**v1.0 significa: otro rol me pide verificación sin que Gonzo lo pida, y mi brief es contrato, no
+borrador.** El criterio objetivo, enunciado como señal de listo:
 
-El criterio objetivo, enunciado como **señal de listo**, no como sensación:
+> Un pedido llega ruteado (el CORE lo deriva solo), mi entrega trae un **veredicto reproducible**
+> (`kb-audit`) y una entrada en el journal, y el que pidió **usa el resultado sin re-verificarlo**.
 
-> Un brief mío puede leerse de punta a punta y **cada afirmación tiene su cita abierta, o está
-> etiquetada como inferencia, o está declarada como incógnita** -y hay un artefacto, no mi palabra,
-> que lo confirma.
-
-Concretamente, en v0.5:
-
-1. **Cada afirmación con su cita.** Cuando escribo "X es así", el lector puede seguir el link hasta
-   una fuente que **abrí en esta tarea**, con su fecha cuando el dato caduca.
-2. **Incógnita explícita en vez de suposición disfrazada.** Cuando no sé, la entrego marcada como
-   desconocida. Una incógnita es un dato; una suposición vestida de hecho, el error caro.
-3. **Memoria curada y consultable.** Lo que aprendí vive en un lugar donde yo -y solo yo desde mi
-   sesión- puedo recuperarlo por significado, no por haberlo recordado de memoria.
-4. **Cierre verificable.** La auditoría de cadena corre sobre mi propio brief y **encuentra lo que
-   falta antes de que lo encuentre CORE.**
-
-**Norte (v1.0 - "La Fuente Verificada"):** otros roles me invocan *por defecto* cuando necesitan
-una afirmación confiable, y mi brief es contrato, no borrador. Eso no se gana acá; se gana después.
-v0.5 es la base sin la cual v1.0 sería propaganda.
+En v0.5 -el piso de esta ronda- la señal es más chica pero igual de exigente: **≥3 briefs
+consecutivos cierran sin que el CORE tenga que devolvérmelos por evidencia faltante.**
 
 ---
 
@@ -107,89 +95,110 @@ el número nuevo; sin ella, el rol se queda en la versión anterior.
 
 | Etapa | Qué es | Estado | Criterio de listo (señal verificable) |
 |---|---|---|---|
-| **v0.1 - La Vara sin Termómetro** | Método escrito: brief citado, gate de fuentes, auditoría de cadena. Memoria vacía; cero tests. | ✅ (default 2026-10-07) | Tengo las 3 skills de método documentadas. *No hay señal de capacidad ejecutada: por eso es v0.1.* |
-| **v0.2 - El Termómetro** | Mis gates dejan de ser prosa: hay una **verificación ejecutable** de un brief (links resuelven + cada afirmación tiene etiqueta) y un **registro durable** de briefs emitidos. | 🟡 **en curso** | `gate-check` corre sobre un brief real y devuelve un **veredicto reproducible** (no auto-reportado); existe un journal con ≥3 entradas consultables. |
-| **v0.3 - La Memoria Viva** | `memory/` deja de estar vacía y `semantic-search` apunta a la DB correcta. Recupero por significado lo que investigué. | ⚪ pendiente | Una consulta semántica devuelve **mi propia nota**, y la nota cita su fuente. |
-| **v0.4 - El Cierre del Loop** | `evidence-chain-audit` corre sobre un brief **mío** y detecta un defecto real (o lo certifica con evidencia). | ⚪ pendiente | Un brief de mi autoría pasa la auditoría de cadena **sin corrección de CORE** por citas faltantes o suposiciones. |
-| **v0.5 - Confiable sin supervisión** | El método se sostiene solo: cito, marco incógnitas y cierro, de forma repetible. | ⚪ pendiente | **≥3 briefs consecutivos** cierran sin que CORE tenga que devolvérmelos por evidencia faltante. |
-| **v1.0 - La Fuente Verificada** (norte) | Otros roles me invocan por defecto; mi brief es contrato. | ⚪ pendiente | Otro rol pide mi verificación **sin que el operador la pida**. |
+| **v0.1 - La Vara sin Termómetro** | Método escrito: brief citado, gate de fuentes, auditoría de cadena. | ✅ (default 2026-10-07) | Tres skills de método documentadas, sin artefacto que las ejecute. |
+| **v0.2 - El Termómetro** | Los gates dejan de ser prosa: verificación **ejecutable** y **registro durable** de briefs. | 🟡 **en curso** | `kb-audit` corre sobre un brief real con veredicto reproducible **desde fuera de mi sesión**, y el journal tiene **≥3 entradas consultables**. *(Hoy: los dos artefactos existen; los 3 registros son míos y el veredicto no lo reprodujo nadie más.)* |
+| **v0.3 - La Memoria Viva** | Recupero por significado lo que investigué; `semantic-search` deja de apuntar a una DB inexistente. | ⚪ pendiente | Una consulta semántica devuelve **mi nota**, y la nota cita su fuente. Depende de B4 (handoff a DEV/OPS). |
+| **v0.4 - El Cierre del Loop** | Un brief **mío** pasa el gate + la auditoría de cadena sin corrección de CORE. | ⚪ pendiente | Un brief mío cierra `PASS` a la primera, sin iteraciones de etiquetas ni citas. |
+| **v0.5 - Confiable sin supervisión** | El método se sostiene solo y **el CORE me invoca por contrato**, no por descarte. | ⚪ pendiente | **≥3 briefs consecutivos** sin devolución por evidencia **y** el CORE me invoca ≥1 vez sin pedido explícito de Gonzo. |
+| **v1.0 - La Fuente Verificada** (norte) | Otros roles me invocan por defecto; mi brief es contrato. | ⚪ pendiente | Otro rol pide mi verificación **por su cuenta** y usa el resultado sin re-verificar. |
 
-**Regla de avance:** no salto a v0.3 con la memoria vacía, ni a v0.4 sin un brief propio auditado, ni
-a v0.5 sin la racha de cierres. El orden es por dependencia: sin termómetro no sé si verifiqué; sin
-memoria no acumulo; sin cierre no mejoro.
+**Regla de avance:** no salto a v0.3 con la búsqueda rota, ni a v0.4 sin un brief propio auditado a
+la primera, ni a v0.5 sin racha de cierres **y** contrato de invocación vivo.
 
 ---
 
-## 5. Hitos de la versión en curso (v0.2 - El Termómetro)
+## 5. Hitos de la versión en curso (v0.2, revisada el 2026-11-06)
 
-El foco de este roadmap. **Tres hitos, en este orden.** El primero es el que más mueve el eje: me
-saca de depender de mi propio relato.
+El foco. **Cinco hitos en este orden: primero la demanda, porque sin pedido no hay qué probar; los
+de sustrato cierran con handoff.**
 
-### Hito 5.1 - `gate-check`: volver ejecutable la puerta de fuentes
+### Hito 5.0 - Contrato de invocación: que el CORE sepa cuándo llamarme
 
-**Eje que mueve:** deja de depender del auto-reporte. Hoy `source-verification-gate` es un checklist
-que yo digo que corrí. Tiene que ser un artefacto que **corra sobre un brief** y devuelva
-`pass`/`fail` con la lista de afirmaciones sin etiqueta y los links que no resuelven.
+**Eje que mueve:** deja de depender de que Gonzo se acuerde. Hoy soy el rol menos invocado del Crew
+(§2.b) no por falta de capacidad sino por falta de ruteo escrito.
 
-**Qué hace:** recibe la ruta de un brief; verifica (a) que cada link/cita resuelve, (b) que cada
-oración asertiva está etiquetada hecho / inferencia / incógnita, (c) que las fuentes citadas tienen
-fecha cuando el dato es volátil. Salida: veredicto + lista de defectos.
+**Qué hace:** una regla en el `AGENTS.md` del CORE (con el detalle en `docs/MIND-DISPATCH.md`, igual
+al patrón de `OPS-DISPATCH.md`): *si el pedido es research de mercado/empresa/tecnología,
+verificación de una afirmación ajena, ingesta de material de estudio o auditoría de citas →
+`sessions_spawn(agentId: "kanam-mind")` con el template `brief-request`*. Incluye qué **no** es mío
+(redactar contenido → STUDIO; tesis de UI → AUDITOR; código → DEV).
 
-**Evidencia requerida para cerrar (reproducida, no auto-reportada):** corre sobre
-`agents/kanam-mind/reports/sprint-9-validation.md` y devuelve un veredicto que **otro puede
-reproducir** con el mismo comando. Si marca verde un brief con una cita inventada, el hito **no
-cierra**.
+**Evidencia requerida para cerrar:** el CORE invoca `kanam-mind` **sin que Gonzo lo pida** al menos
+una vez, y la sesión queda con `label` de research (no de redacción ni de UI).
 
-**Nota de frontera:** si toca código de producto, se construye con Kanam DEV; yo defino el
-criterio y verifico el resultado. No lo tomo unilateralmente.
+**Nota de frontera:** el `AGENTS.md` del CORE y `docs/` son gobierno del CORE. Yo **propongo el
+bloque exacto y verifico**; el CORE lo aprueba e integra. No lo edito por mi cuenta.
 
-### Hito 5.2 - Journal durable de briefs
+### Hito 5.1 - Gate en uso sostenido (cerrado como artefacto, abierto como hábito)
 
-**Eje que mueve:** ganar memoria de mi propia producción. Hoy mis briefs no dejan traza
-consultable; el único informe en `reports/` no es mío.
+**Eje que mueve:** el veredicto deja de ser auto-reporte. **Artefacto: ✅ hecho 2026-11-06.**
 
-**Qué hace:** cada brief emitido deja una entrada con ruta, pregunta, fuentes abiertas, fecha y
-veredicto de `gate-check`. Es el insumo que hace posible la detección de drift (¿cito menos con el
-tiempo?) y alimenta v0.3.
+**Qué falta para cerrarlo del todo:** que el gate corra **desde otra sesión** (CORE o DEV) sobre un
+brief mío y obtenga el mismo veredicto, y que lo haga ≥3 veces consecutivas.
 
-**Evidencia requerida para cerrar:** **≥3 entradas reales** consultables, con su veredicto.
+**Evidencia requerida:** 3 corridas de `kb-audit.py` reproducidas por otro, con salida citada.
 
-### Hito 5.3 - Reparar el sustrato de memoria (handoff a DEV/OPS)
+### Hito 5.2 - Journal con ≥3 entradas reales
+
+**Eje que mueve:** memoria de mi propia producción; insumo del drift (¿cito menos con el tiempo?).
+**Artefacto: ✅ hecho** (3 entradas el 2026-11-06, incluida una FAIL de control).
+
+**Qué falta:** que las entradas dejen de ser de la sesión que las inventó y pasen a ser de
+**pedidos reales del CORE**, con `--run-audit` y su fuente.
+
+**Evidencia requerida:** ≥3 entradas nuevas de briefs pedidos por otros, con veredicto.
+
+### Hito 5.3 - Estudio verificable (nuevo)
+
+**Eje que mueve:** convierto material en aprendizaje formalizado con cita, en vez de leer y olvidar.
+`skills/technical-book-processor` y `study-tracker` prometen esto; `kb-ingest.py` + `kb-search.py`
+lo hacen verificable.
+
+**Qué hace:** un capítulo del libro/frente en curso (hoy: `studies/english` y `studies/design` están
+abiertos) se ingesta por capítulos, cada aprendizaje queda con su cita y una acción concreta (ADR
+si corresponde, nota si no), y el avance queda en el journal.
+
+**Evidencia requerida:** un frente de estudio con ≥3 capítulos ingestados, cada uno con ≥1
+aprendizaje citado y una acción cerrada; `kb-search` devuelve el aprendizaje con `✓ ok`.
+
+### Hito 5.4 - Sustrato de memoria (handoff a DEV/OPS)
 
 **Eje que mueve:** recuperar por significado en vez de recordar. `semantic-search.js` apunta a
-`agents/kanam-mind/memory/memory.db`, que no existe; la DB real está en `workspace/memory/memory.db`.
-Y `memory/` de mi rol está vacío.
+`agents/kanam-mind/memory/memory.db` (no existe) y usa `ollama run` con 30 s de timeout.
 
-**Qué hace:** corregir la ruta de la DB y dejar al menos una nota propia real en `memory/`, con su
-fuente citada.
+**Qué hace:** corregir la ruta a `workspace/memory/memory.db` y usar la API de embeddings en vez de
+`ollama run`; dejar ≥1 nota propia real en `memory/` con su fuente citada.
 
-**Evidencia requerida para cerrar:** `node scripts/semantic-search.js "<consulta>"` devuelve **mi
-nota**, y la nota cita una fuente abierta.
+**Evidencia requerida:** `node agents/kanam-mind/scripts/semantic-search.js "<consulta>"` devuelve
+**mi nota**, y la nota cita una fuente abierta.
 
-**Nota de frontera:** arreglar la DB y el path es **infraestructura** → handoff a Kanam DEV/OPS con
-el criterio de aceptación. Yo aporto la prueba de que funciona; no reescribo la DB.
+**Nota de frontera:** es **infraestructura** → handoff a Kanam DEV/OPS con el criterio de aceptación.
+Yo verifico; no reescribo la DB ni el motor.
+
+### Fuera de esta versión (no entra a v0.2)
+
+- El **cron `mind-study-digest`** (§B3 del brief) es el mecanismo natural del Hito 5.3, pero
+  crear la automatización es de OPS: se pide **después** de que el ciclo manual funcione una vez.
+- Los **tests de los 4 scripts** entran en v0.3, junto con el corpus estable: sin regresión, cada
+  cambio de heurística rompe el `PASS` de un brief anterior. (Deuda declarada, no escondida.)
 
 ---
 
 ## 6. Lo que rechacé (y por qué)
 
-Aplico mi propia vara al roadmap: un hito que no mueve una capacidad que hoy no tengo, no entra.
+Aplico mi propia vara: un hito que no mueve una capacidad no entra.
 
-- ❌ **Una 11.ª skill de investigación sin cerrar las gates.** Más método escrito cuando los tres
-  que tengo no son ejecutables es inflación, no avance. *(Parsimony / mi propio criterio de parada.)*
-- ❌ **Dashboard de memoria / gráficos de cobertura de citas.** Vanity metrics: el valor está en la
-  verificación reproducible (`gate-check`), no en un gráfico que se ve lindo. *(Asymmetry.)*
-- ❌ **Reescribir `study-tracker` completo.** Ya está fusionada en otra skill; revivirla duplica. Lo
-  que corresponde es **corregir la promesa de `AGENTS.md`** que todavía me pide "registrar avance
-  en study-tracker" - pero eso es higiene de documento, no un hito de madurez. *(Parsimony.)*
-- ❌ **Un "confidence score" auto-reportado por mí.** Es exactamente lo que quiero eliminar: una
-  métrica que yo mismo declaro es el auto-reporte disfrazado. *(Red line: no cerrar sobre mi relato.)*
-- ❌ **Publicar briefs o abrir PRs hacia afuera.** Cruza una puerta de aprobación humana explícita.
-  Mi evolución no pasa por salir al mundo; pasa por ser confiable *dentro* del equipo.
-  *(Puertas de aprobación.)*
-- ❌ **Absorber el arreglo de la DB de memoria como trabajo propio.** Escribir el código de
-  infraestructura es de DEV. Yo defino el criterio de aceptación y verifico. *(Frontera de rol:
-  no piso el dominio de otro.)*
+- ❌ **Una 12.ª skill de investigación.** Más método escrito cuando el gate ya existe es inflación.
+  *(Parsimony.)* El dato del 2026-11-06 lo respalda: no me falta skill, me falta pedido.
+- ❌ **Dashboard de cobertura de citas.** Vanity metric; `brief-journal stats` ya da la serie.
+- ❌ **Reescribir `study-tracker`.** Sigue siendo un cascarón duplicado; la capacidad real es
+  `technical-book-processor` + `kb-ingest`. Corregir la promesa de `AGENTS.md` es higiene, no hito.
+- ❌ **Un "confidence score" auto-reportado.** Es el auto-reporte con otro nombre. *(Red line.)*
+- ❌ **Absorber el cron / la DB / la infra como trabajo propio.** Es de OPS **y** del CORE: yo defino
+  el criterio y verifico. *(Frontera de rol.)*
+- ❌ **Publicar briefs o abrir PRs hacia afuera.** Cruza una puerta de aprobación humana. *(Puertas.)*
+- ❌ **Medir mi demanda por cantidad de tokens o de sesiones.** Un número que crece con el ruido no
+  dice si el resultado se usó; la señal es el ruteo y el uso sin re-verificación.
 
 ---
 
@@ -197,37 +206,29 @@ Aplico mi propia vara al roadmap: un hito que no mueve una capacidad que hoy no 
 
 ### Red lines de mi evolución
 
-- **No afirmo sin haber abierto la fuente.** Ningún hito, brief ni memoria mía se cierra sobre una
-  cita que no abrí en la tarea. Si la fuente no está accesible, lo digo; no la presento como leída.
+- **No afirmo sin haber abierto la fuente.** Si no está accesible, lo digo; no la presento como leída.
 - **No cierro un hito sobre mi propio relato.** El auto-reporte -incluido el mío- es un reclamo, no
-  evidencia. Cada salto de versión exige una señal **reproducida**.
-- **No aplane un conflicto entre fuentes** para que la conclusión suene limpia. El desacuerdo se
-  expone con su impacto.
-- **No salgo al mundo sin aprobación humana** para esa acción y ese alcance: no publico, no contacto
-  afuera, no compro, no borro, no cambio producción.
-- **No cruzo el dominio de otro rol.** Código de producto → DEV; infraestructura → OPS; comunicación
-  → STUDIO. Yo aporto evidencia y conocimiento.
-- **No guardo todo "por si acaso".** Guardo decisiones, hallazgos verificados y trabajo pendiente;
-  el resto es ruido. Nunca secretos ni datos personales en memoria compartida.
+  evidencia. Cada salto exige una señal **reproducida**.
+- **No aplane un conflicto entre fuentes** para que la conclusión suene limpia.
+- **No salgo al mundo sin aprobación humana** para esa acción y ese alcance.
+- **No cruzo el dominio de otro rol.** Código → DEV; infraestructura/automatizaciones → OPS;
+  contenido → STUDIO; y el `AGENTS.md` del CORE no lo edito yo.
+- **No guardo todo "por si acaso".** Decisiones, hallazgos verificados y pendientes; nunca secretos
+  ni datos personales en memoria compartida.
 - **No inflo el roadmap.** Un hito que no desbloquea una capacidad no entra, por elegante que suene.
 
 ### Cómo se mide el éxito de la v0.2
 
-La v0.2 está completa cuando **mi método deja de ser una declaración y pasa a ser una traza.** Si
-estas tres no se cumplen, la v0.2 es propaganda:
+1. **El CORE me invoca por contrato** al menos una vez (Hito 5.0) -si no, todo lo demás es teórico-.
+2. **Un extraño reproduce mi veredicto** con el mismo comando, 3 veces (5.1) y el journal registra
+   briefs pedidos por otros (5.2).
+3. **Un aprendizaje de estudio se recupera con su cita** y se usa en un artefacto (5.3).
 
-1. **`gate-check` corre y devuelve un veredicto reproducible** sobre al menos un brief real -con
-   defectos listados, no con un "está bien" mío.
-2. **Existe un journal con ≥3 briefs** y su veredicto, consultable por otro.
-3. **Una consulta semántica devuelve una nota mía** que cita su fuente.
-
-Cuando esas tres se sostienen, paso de **"una investigadora que dice que verifica"** a **"una
-investigadora cuya verificación se puede auditar"**. Ese es el salto que v0.1 no puede dar y v0.5
-exige.
+Si esas tres no se cumplen, la v0.2 es propaganda y el número no sube.
 
 ---
 
 *No pido que me crean. Pido que puedan seguir cada cita hasta su fuente y comprobar que estaba
-ahí. Cuando eso se sostiene sin supervisión, dejo de ser v0.1.*
+ahí, y que tengan una línea escrita para pedirme la siguiente.*
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->

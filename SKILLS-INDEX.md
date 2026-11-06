@@ -22,20 +22,20 @@
 |---|---|
 | `skills/` (Core) | 34 |
 | `agents/kanam-dev/skills/` | 43 |
-| `agents/kanam-mind/skills/` | 10 |
+| `agents/kanam-mind/skills/` | 11 |
 | `agents/kanam-ops/skills/` | 4 |
 | `agents/kanam-studio/skills/` | 7 |
 | `agents/kanam-critic/skills/` | 2 |
 | `agents/kanam-planner/skills/` | 5 |
 | `agents/kanam-auditor/skills/` | 5 |
-| **Total activas** | **110** |
+| **Total activas** | **111** |
 
 > **El ciclo SDD (9 skills `hermes-*`) se movió del árbol del Core al de `kanam-dev` el 2026-09-29** (ADR-083).
 > Estaba en `skills/`, así que el Core veía el playbook de ingeniería - `hermes-builder` dice
 > "implementation. Writes the change's code" - y lo ejecutó. En aquel corte los totales por árbol
 > pasaron de 36→27 (Core) y 25→34 (dev) sin cambiar el total: fueron movimientos, no altas ni bajas.
 
-Además hay **1 placeholder**: `agents/kanam-mind/skills/study-tracker/` (`user-invocable: false`). El CLI lo lista igual (`source: openclaw-workspace`), así que está contado dentro de los 10 de `kanam-mind`; se conserva solo para resolver referencias legacy.
+Además hay **1 placeholder**: `agents/kanam-mind/skills/study-tracker/` (`user-invocable: false`). El CLI lo lista igual (`source: openclaw-workspace`), así que está contado dentro de los 11 de `kanam-mind`; se conserva solo para resolver referencias legacy.
 
 > **Nota de conteo (2026-10-12).** El conteo por árbol es el del CLI (`source == openclaw-workspace`), no el de directorios: `agents/<rol>/skills/*/node_modules/**/SKILL.md` (los trae `playwright-core` en `kanam-auditor`) no entra. `find agents/*/skills -name SKILL.md` cuenta esos `node_modules` y sobrecuenta.
 
@@ -184,10 +184,11 @@ implementación: vivía en el árbol del Core, que así lo podía ejecutar. El C
 | pr-reviewer | [hermes-pr-reviewer](agents/kanam-dev/skills/hermes-pr-reviewer/) | Revisión adversarial de un PR publicado, con experiencia de dominio |
 | release | [hermes-release](agents/kanam-dev/skills/hermes-release/) | Cierre del cambio: consistencia del diff, versionado, notas, archivado |
 
-### 3.3 kanam-mind - `agents/kanam-mind/skills/` (10)
+### 3.3 kanam-mind - `agents/kanam-mind/skills/` (11)
 
 | Skill | Qué hace |
 |---|---|
+| [evidence-gate-executable](agents/kanam-mind/skills/evidence-gate-executable/) | Encadena el gate ejecutable: `kb-audit`, `kb-ingest`/`kb-search` y `brief-journal` (veredicto reproducible, cita verificada) |
 | [research-brief-protocol](agents/kanam-mind/skills/research-brief-protocol/) | Formato obligatorio del brief: frame antes de buscar, stop criterion, etiquetas obs/inf/unk |
 | [source-verification-gate](agents/kanam-mind/skills/source-verification-gate/) | Puerta previa a escribir: bloquea toda afirmación sin fuente abierta y fecha chequeada |
 | [evidence-chain-audit](agents/kanam-mind/skills/evidence-chain-audit/) | Audita un artefacto terminado: cada cita debe sostener su conclusión y cada link resolver |
