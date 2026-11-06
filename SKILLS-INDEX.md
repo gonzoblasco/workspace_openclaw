@@ -21,7 +21,7 @@
 | Árbol | Activas |
 |---|---|
 | `skills/` (Core) | 34 |
-| `agents/kanam-dev/skills/` | 43 |
+| `agents/kanam-dev/skills/` | 44 |
 | `agents/kanam-mind/skills/` | 11 |
 | `agents/kanam-ops/skills/` | 4 |
 | `agents/kanam-studio/skills/` | 7 |
@@ -126,7 +126,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [planner-delegation](skills/planner-delegation/) | Cómo llama el CORE al Planner: cuándo un objetivo es programa, prompt, entregable y verificación del plan antes de ejecutar |
 | [task-prep](skills/task-prep/) | Prepara una tarea de grabación de pantalla (Mercor/Odin) antes de grabar: criterio, investigación, guion y checklist |
 
-### 3.2 kanam-dev - `agents/kanam-dev/skills/` (43)
+### 3.2 kanam-dev - `agents/kanam-dev/skills/` (44)
 
 > Ciclo completo Define → Plan → Build → Verify → Review → Ship. Base: `addyosmani/agent-skills`; ⭐ = fusionada con capacidades propias de Kanam.
 
@@ -166,6 +166,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | Ship | [observability-and-instrumentation](agents/kanam-dev/skills/observability-and-instrumentation/) | Structured logging, RED metrics, OpenTelemetry, alertas por síntoma |
 | Ship | [shipping-and-launch](agents/kanam-dev/skills/shipping-and-launch/) | Checklists pre-launch, feature flag lifecycle, rollouts, rollback |
 | Ship | [project-closure](agents/kanam-dev/skills/project-closure/) | Cierre de proyecto: decisión, aprendizaje y estado en ADR + DB + skill |
+| Ship | [kanam-dev-surface](agents/kanam-dev/skills/kanam-dev-surface/) | La superficie del pipeline: intake que falla antes de leer código, plantillas por tipo de tarea, estaciones con exit codes honestos y handoff que no cierra sin evidencia |
 
 **Hermes SDD** - el ciclo de desarrollo por etapas, importado de `mcabreradev/hermes-sdd-agency`
 el 2026-09-28 y **movido aquí desde `skills/` el 2026-09-29** (ADR-083). Es el playbook de
