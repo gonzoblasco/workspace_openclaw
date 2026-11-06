@@ -61,13 +61,12 @@ class TestDispatch(unittest.TestCase):
         self.assertEqual(proc.returncode, 2)
         self.assertIn("stack", proc.stdout)
 
-    def test_docs_without_docs_sync_is_exit_two(self):
-        # Si docs-sync no existe todavia, el despachador NO puede devolver 0.
-        if (HERE / "docs-sync.py").exists():
-            self.skipTest("docs-sync.py ya existe; este caso aplica solo a F0")
+    def test_docs_delegates_to_docs_sync(self):
+        # F1 ya existe: el despachador debe delegar y propagar su exit code.
+        # Un /tmp sin docs da exit 2 (no se pudo medir), nunca 0.
         proc = self.run_cli("docs", "/tmp")
         self.assertEqual(proc.returncode, 2)
-        self.assertIn("docs-sync", proc.stdout)
+        self.assertIn("INFRA", proc.stdout)
 
     def test_a11y_without_target_is_exit_two(self):
         proc = self.run_cli("a11y")

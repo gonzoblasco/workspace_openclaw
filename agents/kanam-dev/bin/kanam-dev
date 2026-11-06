@@ -102,7 +102,7 @@ def cmd_help(argv: list[str]) -> int:
     say("  audit <dir>                       S5  -> build + test (por stack)")
     say("  a11y <url|archivo.html>           S5  -> scripts/a11y-scan.mjs")
     say("  review <owner/repo> <pr>          S6  -> scripts/github-pr-risk.sh")
-    say("  docs <dir> [--check]              S5  -> bin/docs-sync.py")
+    say("  docs <dir> [--check]              S5  -> bin/docs_sync.py")
     say("  status <dir>                      --  -> estado del working tree")
     say("  help                              --  -> esta pantalla")
     say("")
@@ -238,14 +238,21 @@ def cmd_docs(argv: list[str]) -> int:
     target = Path(argv[0]).resolve()
     if not need(target, "directorio"):
         return EXIT_INFRA
-    sync = HERE / "docs-sync.py"
+    sync = HERE / "docs_sync.py"
     if not sync.exists():
-        verdict("INFRA", "docs-sync.py no implementado todavia (F1)")
+        verdict("INFRA", "docs_sync.py no encontrado")
         return EXIT_INFRA
     cmd = [sys.executable, str(sync), str(target)]
     if "--check" in argv[1:]:
         cmd.append("--check")
-    return run(cmd)
+    code = run(cmd)
+    if code == 2:
+        verdict("INFRA", "docs-sync no pudo medir")
+    elif code == 1:
+        verdict("FALLA", "docs-sync encontro desalineaciones")
+    else:
+        verdict("OK", "documentacion alineada")
+    return code
 
 
 def cmd_intake(argv: list[str]) -> int:
