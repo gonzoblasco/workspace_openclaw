@@ -309,6 +309,52 @@ bash agents/kanam-ops/scripts/gateway-change-log.sh verify
 bash agents/kanam-ops/scripts/gateway-change-log.sh list --limit 10
 ```
 
+## 17. Commitear sin llevarse trabajo ajeno
+
+El repo lo comparten siete agentes sobre un working tree comun. Un `git add`
+amplio se lleva archivos de otro. Paso dos veces el 2026-11-06 en ambas
+direcciones.
+
+Por eso OPS commitea con su propia herramienta, no a mano:
+
+```
+python3 agents/kanam-ops/scripts/ops-commit.py            # dry run
+python3 agents/kanam-ops/scripts/ops-commit.py --apply -m "..."
+```
+
+Qué garantiza:
+
+- Descubre **solo** las rutas de `agents/kanam-ops/`.
+- Si hay algo ajeno en el indice, **aborta y no lo desetapea**. Desetapear el
+  trabajo de otro agente es otra forma de romperle el commit.
+- Rechaza `.db`, `.env`, claves, aunque vivan dentro de la carpeta de OPS.
+- Dry-run por defecto. Verifica el indice despues del `add` y saca lo que se
+  haya colado.
+
+Lo que **no** resuelve: un commit de otro agente que se lleve archivos de OPS.
+Eso solo se evita desde el otro lado. Si pasa, el contenido sobrevive pero el
+mensaje no describe lo que el commit toca, y se dice en el daily.
+
+## 18. Clasificar un drift por riesgo
+
+`gateway-config-drift.sh` **mide**; `gateway-risk-policy.sh` **decide**. No se
+juntan: un medidor con permiso de escribir es como se acepta a ciegas.
+
+```
+bash agents/kanam-ops/scripts/gateway-risk-policy.sh          # informe
+bash agents/kanam-ops/scripts/gateway-risk-policy.sh --json   # maquina
+```
+
+Exit 0 significa que todo lo pendiente es riesgo BAJO y reversible: OPS puede
+aceptar el baseline solo, con registro. Exit 1 significa escalar.
+
+**La allowlist del medidor nunca gana sobre un patron de riesgo alto.** Un
+campo permitido por drift que tambien sea de riesgo alto se clasifica ALTO.
+El silencio del medidor no es permiso de la politica.
+
+**Un campo sin patron conocido es MEDIO, no BAJO.** El campo que la politica no
+entiende es justo el que hay que mirar.
+
 ---
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->
