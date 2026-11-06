@@ -27,6 +27,7 @@ SCRIPTS = OPS / "scripts"
 DRIFT = SCRIPTS / "gateway-config-drift.sh"
 JOBS = SCRIPTS / "gateway-jobs-check.sh"
 AUDIT = SCRIPTS / "gateway-audit.sh"
+CHANGELOG = SCRIPTS / "gateway-change-log.sh"
 
 
 def run(script, *args, home=None, timeout=120):
@@ -289,6 +290,93 @@ class TestSingleOwner(unittest.TestCase):
                 self.assertTrue(target.exists(), f"{name} symlink roto")
 
 
+class TestChangeLog(unittest.TestCase):
+    """gateway-change-log.sh: registro de cambios legible por maquina (E2.4)."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="ops-changelog-"))
+        self.log = self.tmp / "changes.jsonl"
+        self.env = {"GATEWAY_CHANGES_LOG": str(self.log)}
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def run_log(self, *args, timeout=60):
+        env = dict(os.environ)
+        env.update(self.env)
+        return subprocess.run(
+            ["bash", str(CHANGELOG), *args],
+            capture_output=True, text=True, env=env, timeout=timeout,
+        )
+
+    def entries(self):
+        if not self.log.exists():
+            return []
+        return [json.loads(l) for l in self.log.read_text().splitlines() if l.strip()]
+
+    def test_record_writes_one_entry(self):
+        r = self.run_log(
+            "record", "--field", "agents.entries.x.model.primary",
+            "--before", "a", "--after", "b", "--reason", "test",
+            "--backup", "x.bak", "--evidence", "corrido",
+        )
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        e = self.entries()
+        self.assertEqual(len(e), 1)
+        self.assertEqual(e[0]["field"], "agents.entries.x.model.primary")
+        self.assertEqual(e[0]["before"], "a")
+        self.assertEqual(e[0]["after"], "b")
+
+    def test_record_without_before_does_not_invent_it(self):
+        """Un registro que adivina el valor viejo es peor que uno vacio."""
+        self.run_log("record", "--field", "algo.campo", "--after", "nuevo")
+        e = self.entries()[0]
+        self.assertEqual(e["before"], "no medido")
+
+    def test_missing_field_is_error(self):
+        r = self.run_log("record", "--before", "a")
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertEqual(self.entries(), [])
+
+    def test_secret_guard_redacts_values(self):
+        """Un token jamas debe quedar en el log en claro."""
+        self.run_log(
+            "record", "--field", "gateway.auth.token",
+            "--before", "secretoViejo123", "--after", "secretoNuevo456",
+        )
+        raw = self.log.read_text()
+        self.assertNotIn("secretoViejo123", raw)
+        self.assertNotIn("secretoNuevo456", raw)
+        self.assertIn("REDACTADO", raw)
+
+    def test_list_total_counts_all_entries(self):
+        """Bug real (2026-11-06): el total usaba la salida filtrada, no el archivo."""
+        for i in range(3):
+            self.run_log("record", "--field", f"campo.{i}", "--after", str(i))
+        r = self.run_log("list", "--limit", "1")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("3 en total", r.stdout, r.stdout)
+
+    def test_verify_passes_on_wellformed_log(self):
+        self.run_log("record", "--field", "a.b", "--after", "c")
+        r = self.run_log("verify")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("OK", r.stdout)
+
+    def test_verify_catches_missing_fields(self):
+        """Si alguien escribe una linea a mano incompleta, debe fallar."""
+        self.log.write_text(json.dumps({"ts": "x", "field": "y"}) + "\n")
+        r = self.run_log("verify")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("faltan campos", r.stdout)
+
+    def test_verify_catches_invalid_json(self):
+        self.log.write_text("{ no es json\n")
+        r = self.run_log("verify")
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("JSON invalido", r.stdout)
+
+
 class TestRealConfigSanity(unittest.TestCase):
     """Read-only contra el config vivo. Nunca escribe."""
 
@@ -301,15 +389,21 @@ class TestRealConfigSanity(unittest.TestCase):
         self.assertIn("agents", data)
 
     def test_ops_agent_entry_exists(self):
+        """El modelo NO se fija aca a proposito.
+
+        Un test que exige un modelo concreto convierte una decision de Gonzo
+        (gpt-oss por alcance creativo) en un fallo de test. Lo que importa es
+        que la entrada exista y que su modelo sea un string no vacio con forma
+        provider/modelo. El modelo vigente lo manda el dueño del dato, no un test.
+        """
         if not self.REAL.exists():
             self.skipTest("no hay config real")
         data = json.loads(self.REAL.read_text())
         entries = data.get("agents", {}).get("entries", {})
         self.assertIn("kanam-ops", entries)
-        self.assertEqual(
-            entries["kanam-ops"].get("model", {}).get("primary"),
-            "ollama/deepseek-v4.1-flash:cloud",
-        )
+        primary = entries["kanam-ops"].get("model", {}).get("primary", "")
+        self.assertTrue(primary, "kanam-ops sin modelo primary")
+        self.assertIn("/", primary, f"modelo con forma inesperada: {primary}")
 
 
 if __name__ == "__main__":

@@ -30,7 +30,7 @@ Gonzo preguntó por qué este agente no se usa desde hace 17 días. Medí el uso
 1. **Los trabajos de OPS los hace `main`.** El job `gateway-daily-audit` existe, corre todos los días a las 09:30, y ejecuta `bash ~/.openclaw/workspace/scripts/gateway-audit.sh`. Es literalmente el script de OPS, corriendo con `agentId: main`. Igual `gateway-jobs-watcher` y `openclaw-backup-schedule`. OPS tiene la skill y el script; `main` tiene el cron. Eso explica el 90% del desuso: **el sistema ya hace trabajo de OPS, solo que sin OPS**.
 2. **OPS solo entra cuando CORE se acuerda.** No tiene entrada por evento. CORE tiene que: notar que hay un problema de infra, decidir que es de OPS, y hacer `sessions_spawn agentId=kanam-ops`. Tres pasos manuales que compiten con "lo hago yo en un comando".
 3. **`main` es más barato de invocar y sabe hacer el 80%.** Un cambio de modelo, un `config get`, un restart: `main` ya lo tiene en contexto. OPS agrega protocolo de backup y verificación, que suena a overhead cuando el pedido es chico.
-4. **Modelo desalineado.** `kanam-ops.model.primary` es `ollama/gpt-oss:120b-cloud`. `main`, `kanam-dev`, `kanam-mind`, `kanam-studio` usan `deepseek-v4.1-flash:cloud`. OPS corre en un modelo distinto al resto del equipo, sin una razón medida registrada.
+4. ~~**Modelo desalineado.**~~ **NO ES UN PROBLEMA (corregido 2026-11-06 por Gonzo).** `kanam-ops.model.primary` = `ollama/gpt-oss:120b-cloud` es una eleccion deliberada: mas alcance creativo para idear la extension y los cambios de este agente. No es deriva ni descuido. La alineacion con el resto del equipo no es un objetivo; el criterio correcto es que el modelo lo elige Gonzo segun la etapa del rol.
 5. **Scripts duplicados y divergentes.** `workspace/scripts/gateway-audit.sh` (63 líneas, con health check `doctor --lint`) es **distinto** a `agents/kanam-ops/scripts/gateway-audit.sh` (37 líneas, sin health check). El que corre en producción es el de la raíz, mantenido fuera del workspace de OPS. Lo mismo con `aggregate-sync.sh` (ya hubo un incidente de drift stale en octubre, registrado en el daily del 2026-10-12).
 6. **Cero tests.** Los 6 scripts pasan `bash -n`, pero no hay una sola prueba. Un rol de confiabilidad sin pruebas de sus propias herramientas no puede pedir confianza.
 
@@ -63,11 +63,11 @@ No hay una etapa de "más skills". Las skills existentes están bien; el problem
 | 1.1 | Los 3 jobs de infraestructura corren con `agentId: kanam-ops`: `gateway-daily-audit`, `gateway-jobs-watcher`, `openclaw-backup-schedule` | `automations list` muestra `kanam-ops` en los 3; cada uno corre al menos una vez y deja evidencia en el log |
 | 1.2 | OPS accesible por hook (`hooks.allowedAgentIds` incluye `kanam-ops`) | Un POST al hook despierta a OPS y vuelve con respuesta |
 | 1.3 | `AGENTS.md` de CORE con una regla explícita de despacho: qué es de OPS y qué no | El doc existe y CORE lo cita en un handoff real |
-| 1.4 | Modelo de OPS alineado con el equipo | `config get agents.entries.kanam-ops.model.primary` = `deepseek-v4.1-flash:cloud`, con fallback a `gpt-oss:120b-cloud` |
+| 1.4 | ~~Modelo alineado con el equipo~~ **RETIRADO**: el modelo es decision de Gonzo, no criterio de roadmap | N/A. Hoy: `gpt-oss:120b-cloud` (elegido por alcance creativo). Se revisa cuando Gonzo decida pasar a operacion |
 
 **Evidencia de cierre (2026-11-06):**
 - 1.1: los 3 jobs tienen `agentId: kanam-ops` (`gateway-daily-audit`, `gateway-jobs-watcher`, `openclaw-backup-scheduled`), verificado en `openclaw automations list`. Ademas se corrio `gateway-daily-audit` a mano: status `ok`, 55s, escribio `~/.openclaw/gateway-audit.log` con el audit completo.
-- 1.4: `agents.entries.kanam-ops.model.primary` = `ollama/deepseek-v4.1-flash:cloud`. Backup: `openclaw.json.bak-ops-invocable-20261106`.
+- 1.4: **retirado como entregable.** Se cambio el modelo de OPS a `deepseek-v4.1-flash:cloud` y Gonzo lo corrigio: `gpt-oss:120b-cloud` es deliberado, por alcance creativo para idear la extension y los cambios del agente. Revertido con `openclaw config set agents.entries.kanam-ops.model.primary ollama/gpt-oss:120b-cloud`, verificado con `config get`. Backup previo a la reversion: `openclaw.json.bak-ops-model-revert-20261106`.
 - 1.2 y 1.3 siguen pendientes: hook y regla de despacho en el AGENTS.md de CORE.
 
 **Por qué primero:** sin esto, todo lo demás es material que nadie va a buscar. El punto 1.1 solo ya cambia la curva de uso de 0 sesiones por semana a 3.
