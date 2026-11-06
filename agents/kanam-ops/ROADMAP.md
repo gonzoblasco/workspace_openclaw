@@ -201,6 +201,25 @@ depende de que el CORE lo llame en un cambio real. No se cierra simulando.
 
 **Por qué último:** es lo único que el roadmap anterior prometía al final también, y por la misma razón: autonomía sin E1 a E3 verificadas es un agente que cambia producción solo.
 
+**Estado 2026-11-06: 4.2 HECHO, 4.1 y 4.3 en curso con herramienta propia.**
+
+| # | Estado real | Evidencia |
+|---|---|---|
+| 4.1 | herramienta lista, criterio de 10 cambios pendiente | `gateway-risk-policy.sh` decide AUTO_ACEPTAR / ESCALAR |
+| 4.2 | **HECHO** | `doctor` ya no reporta "plaintext secret-bearing config fields"; `gateway.auth.token` es SecretRef |
+| 4.3 | herramienta lista, criterio de 10 cambios pendiente | mismo script, clasificacion ALTO/MEDIO/BAJO |
+
+**Decision de arquitectura:** `gateway-config-drift.sh` **mide**, `gateway-risk-policy.sh` **decide**. No se juntan en un archivo. Un medidor con permiso de escribir es exactamente como se acepta a ciegas un cambio.
+
+**Regla que no se negocia:** la allowlist del medidor **nunca gana** sobre un patron de riesgo alto. `gateway.auth.*` esta en la allowlist de drift (el runtime rota tokens), pero la politica distingue: rotar el token es BAJO, cambiar `bind`/`port`/`tls` es ALTO.
+
+**Clasificacion:**
+- **ALTO** (nunca auto-aceptado): `gateway.port|bind|host|tls|trustProxy`, `hooks.*`, `tools.approval*`, `security.*`, `sandbox.*`, `secrets.*`, `apiKey`, `plugins.entries.*.enabled`, `channels.*.{token,enabled,accounts}`.
+- **MEDIO**: rutas de agente, `toolsAllow`, fallbacks de modelo, `heartbeat.*`, automatizaciones, `compaction.*`, `memory.*`, y **cualquier campo no clasificado**.
+- **BAJO**: `model.primary`, `gateway.auth.token`, `update.*`, `meta.*`, `telemetry.*`, `wizard.*`.
+
+**Un campo sin patron conocido es MEDIO, no BAJO.** El campo que la politica no entiende es justo el que hay que mirar; un default permisivo convierte la ignorancia en permiso.
+
 ---
 
 ## 4. Qué rechazo

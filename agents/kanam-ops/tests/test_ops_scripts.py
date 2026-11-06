@@ -31,6 +31,7 @@ CHANGELOG = SCRIPTS / "gateway-change-log.sh"
 CHANNELS_WATCH = SCRIPTS / "gateway-channels-watch.sh"
 BUDGET_WATCH = SCRIPTS / "gateway-budget-watch.sh"
 POSTMORTEM = SCRIPTS / "gateway-postmortem.sh"
+RISK_POLICY = SCRIPTS / "gateway-risk-policy.sh"
 
 
 def run(script, *args, home=None, timeout=120):
@@ -638,6 +639,123 @@ class TestPostmortem(unittest.TestCase):
         r = self.run_pm("--since", "1d")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn("Sin incidentes", r.stdout)
+
+
+class TestRiskPolicy(unittest.TestCase):
+    """gateway-risk-policy.sh: presupuesto de riesgo (E4.1 + E4.3).
+
+    La regla que mas importa: la allowlist del medidor NUNCA gana sobre un
+    patron de riesgo alto. Si eso se rompe, OPS acepta solo un cambio que
+    deja el gateway sin arrancar.
+    """
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="ops-risk-"))
+        self.config = self.tmp / "openclaw.json"
+        self.baseline = self.tmp / "baseline.tsv"
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def setup(self, base: dict, current: dict):
+        """base = estado aceptado; current = config vivo."""
+        self.config.write_text(json.dumps(current))
+        self.baseline.write_text(self.flatten(base))
+
+    @staticmethod
+    def flatten(node, prefix=""):
+        lines = []
+        if isinstance(node, dict):
+            if not node:
+                lines.append("%s\t{}" % prefix)
+            for k, v in node.items():
+                lines.append(TestRiskPolicy.flatten(v, f"{prefix}.{k}" if prefix else k))
+        elif isinstance(node, list):
+            canon = sorted(node, key=lambda x: json.dumps(x, sort_keys=True))
+            lines.append("%s\t%s" % (prefix, json.dumps(canon, sort_keys=True)))
+        else:
+            lines.append("%s\t%s" % (prefix, json.dumps(node, sort_keys=True)))
+        return "\n".join(l for l in lines if l) + "\n"
+
+    def run_policy(self, *args, timeout=90):
+        env = dict(os.environ)
+        env["OPENCLAW_CONFIG"] = str(self.config)
+        env["OPENCLAW_BASELINE"] = str(self.baseline)
+        return subprocess.run(
+            ["bash", str(RISK_POLICY), *args],
+            capture_output=True, text=True, env=env, timeout=timeout,
+        )
+
+    def test_no_drift_exits_zero(self):
+        same = {"gateway": {"port": 18789}}
+        self.setup(same, same)
+        r = self.run_policy()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("SIN DRIFT", r.stdout)
+
+    def test_low_risk_model_change_is_auto_acceptable(self):
+        self.setup(
+            {"agents": {"entries": {"kanam-ops": {"model": {"primary": "a/uno"}}}}},
+            {"agents": {"entries": {"kanam-ops": {"model": {"primary": "a/dos"}}}}},
+        )
+        r = self.run_policy()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("AUTO_ACEPTAR", r.stdout)
+        self.assertIn("BAJO", r.stdout)
+
+    def test_high_risk_hook_change_escalates(self):
+        self.setup({"hooks": {"allowedAgentIds": ["main"]}},
+                   {"hooks": {"allowedAgentIds": ["main", "kanam-ops"]}})
+        r = self.run_policy()
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("ESCALAR", r.stdout)
+        self.assertIn("ALTO", r.stdout)
+
+    def test_allowlist_never_wins_over_high_risk(self):
+        """Rotar un token es BAJO; cambiar el bind es ALTO. Los dos son gateway.*"""
+        self.setup({"gateway": {"auth": {"token": "viejo"}}},
+                   {"gateway": {"auth": {"token": "nuevo"}}})
+        r = self.run_policy()
+        self.assertIn("AUTO_ACEPTAR", r.stdout, r.stdout)
+
+        # bind NO es rotacion: cambia quien puede alcanzar el gateway.
+        self.setup({"gateway": {"bind": "loopback"}},
+                   {"gateway": {"bind": "0.0.0.0"}})
+        r = self.run_policy()
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("ALTO", r.stdout)
+
+    def test_unknown_field_is_not_low_by_default(self):
+        """Un campo que la politica no entiende es justo el que hay que mirar."""
+        self.setup({"raro": {"campo": 1}}, {"raro": {"campo": 2}})
+        r = self.run_policy()
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("no clasificado", r.stdout)
+
+    def test_agent_name_with_hyphen_is_classified(self):
+        """Bug real: \\w no incluye el guion de kanam-critic."""
+        self.setup(
+            {"agents": {"entries": {"kanam-critic": {"heartbeat": {"every": "1h"}}}}},
+            {"agents": {"entries": {"kanam-critic": {"heartbeat": {"every": "24h"}}}}},
+        )
+        r = self.run_policy()
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertNotIn("no clasificado", r.stdout)
+        self.assertIn("latir solo", r.stdout)
+
+    def test_missing_baseline_is_error_not_silence(self):
+        self.config.write_text(json.dumps({"a": 1}))
+        r = self.run_policy()
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+
+    def test_json_output_is_parseable(self):
+        self.setup({"gateway": {"port": 1}}, {"gateway": {"port": 2}})
+        r = self.run_policy("--json")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        data = json.loads(r.stdout)
+        self.assertEqual(data["verdict"], "ESCALAR")
+        self.assertEqual(data["counts"]["ALTO"], 1)
+        self.assertTrue(data["rule"])
 
 
 class TestRealConfigSanity(unittest.TestCase):
