@@ -32,8 +32,8 @@
 
 | Hecho | Evidencia |
 |---|---|
-| Veredictos reales del agente | `memory/verdicts.jsonl`: `kanam-critic-kit-v0.3` = VETO 12/25 (primer juicio) y `kanam-critic-kit-v0.3-r4` = **Aprobado 19/25** (S4 H4 A4 R4 P3, vigente). 2 filas ANULADAS (r2, r3) con motivo escrito. Los 2 previos eran fixtures de test |
-| Fricciones | `memory/frictions.jsonl`: 9 registradas, 6 absorbidas (F1-F6) y 3 abiertas (F7 consolidacion de scripts, F8 modelo del juez, F9 tasa de absorcion) |
+| Veredictos reales del agente | `memory/verdicts.jsonl`: 3 validos - `kanam-critic-kit-v0.3` = VETO 12/25 (primer juicio), `kanam-critic-kit-v0.3-r4` = **Aprobado 19/25** (kit, vigente), `docs-ROADMAP-madurez` = **VETO 15/25** (trabajo ajeno al Critic, sujeto elegido por Gonzo). 2 filas ANULADAS (r2, r3) con motivo escrito. Los 2 previos eran fixtures de test |
+| Fricciones | `memory/frictions.jsonl`: 14 registradas, 6 absorbidas (F1-F6) y 8 abiertas (F7 consolidacion de scripts, F8 modelo del juez, F9 tasa de absorcion, F10-F14 sobre `docs/ROADMAP.md`) |
 | Kit en verde | `python3 agents/kanam-critic/bin/check-kit.py` -> `GLOBAL=aprobado (17/17)` |
 | Skills registradas | `.knowledge/skills-catalog.tsv` lista `evidence-hunter` y `sharp-adversarial-review` |
 | Disparadores | `agents.entries.kanam-critic.heartbeat` (24h) + automatizacion `critic-sweep-weekly` (lunes 18:00 ART, delivery por telegram) |
