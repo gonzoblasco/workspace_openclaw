@@ -171,3 +171,9 @@ docs/entrevistas/**/*.pdf
 # fuente del workspace). Se sacaron del indice el 2026-11-05 tras entrar en un
 # commit por un `git add -A`: son un proyecto paralelo del owner, no del repo.
 /exports/
+
+# media/out/: output generado por corridas locales de generacion de imagenes
+# (sweeps de parametros, pruebas de LoRA, referencias). Es scratch de una sesion,
+# no fuente ni documentacion: 9MB de PNG que entrarian por un `git add -A`.
+# Las imagenes que SI documentan algo van a media/ o al proyecto que las usa.
+/media/out/
