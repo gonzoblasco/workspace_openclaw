@@ -1,0 +1,219 @@
+{
+  "slug": "skill-router-improvement",
+  "title": "Skill Router: del 20% al 100% del catálogo",
+  "objective": "Que el CORE elija la skill correcta entre las 173 que expone el runtime (hoy elige entre 34) y que el catálogo deje de crecer con redundancia: router leyendo el catálogo del CLI, gate de solapamiento en el pre-commit, y un capability-index que responde 'tenes X?' con evidencia.",
+  "status": "active",
+  "owner": "gonzalo",
+  "created_at": "2026-11-06T21:30:00+00:00",
+  "updated_at": "2026-11-06T21:43:35+00:00",
+  "gates": [
+    "auditor"
+  ],
+  "metadata": {
+    "complexity": "T=17 (high)",
+    "root_cause": "scripts/skill-router.py:27-28 hardcodea SKILLS_DIR a ~/.openclaw/workspace/skills y load_skills() itera os.listdir de ese unico directorio.",
+    "measured_baseline": "8 tareas reales probadas el 2026-11-06: 8/8 fallaron el top-1. 'escribir un ADR'->model-review; 'verificar contraste UI'->complexity-driven-pipeline; 'cargar un PDF'->word-docx; 'postularme a una vacante'->skill-router; 'guardar sesion'->compaction-domain-aware; 'aplicar a una oferta' NO sugiere career-claim-provenance.",
+    "catalog_source": "openclaw skills list --agent main --json = 173 (workshop 75, bundled 34, workspace 34, managed 17, personal 7, extra 4, custodian 2).",
+    "constraint": "Un solo indice semantico. qwen3-embedding:0.6b ya se usa en skill-router.py:31 y memory.db ya tiene embeddings."
+  },
+  "steps": [
+    {
+      "id": 0,
+      "task": "Colapso de pipeline: unificar fuente de verdad (editar, no agregar)",
+      "role": "core",
+      "owner": "main",
+      "status": "completed",
+      "exit_criteria": "universo limpio (paso 0 ya aplicado): scripts/check-skill-overlap.py compara descripciones de frontmatter con el embedding ya instalado y reporta pares por encima de umbral configurable; corre con --all y con scope staged; el umbral se documenta con los pares sospechosos actuales (checkmate/verification-gates, deslop/tech-docs) clasificados como esperados o no; NO bloquea el commit por defecto.",
+      "depends_on": [],
+      "gate": null,
+      "write_paths": [
+        "docs/adr/ADR-049-claude-code-motor-pipeline-ab.md",
+        "skills/agent-orchestration-pipeline/SKILL.md",
+        "skills/agent-orchestration-pipeline-model-arbitration/"
+      ],
+      "evidence": [
+        "ADR-049 superseded por ADR-088; renombrado a -archived; check-adr-supersede OK; check-single-source OK; skills/agent-orchestration-pipeline-model-arbitration trashed; SKILL.md agent-orchestration-pipeline editado"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 1,
+      "created_at": "2026-11-06T21:45:00+00:00",
+      "updated_at": "2026-11-06T21:43:35+00:00",
+      "started_at": "2026-11-06T21:43:35+00:00",
+      "completed_at": "2026-11-06T21:43:35+00:00",
+      "session_ref": "this-session"
+    },
+    {
+      "id": 1,
+      "task": "Router leyendo el catalogo del CLI en vez de un directorio hardcodeado",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "scripts/skill-router.py ya no contiene SKILLS_DIR como fuente de verdad; load_skills() obtiene el catalogo de 'openclaw skills list --agent <id> --json' con fallback al walk de disco si el CLI falla; --list muestra >=170 skills con su source; los 8 casos de la baseline se re-corren y se registran en el commit como evidencia antes/despues; sintaxis OK bajo scripts/test-skills.sh.",
+      "depends_on": [],
+      "gate": null,
+      "write_paths": [
+        "scripts/skill-router.py",
+        "skills/skill-router/SKILL.md"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-06T21:30:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 2,
+      "task": "Regresion del router con casos medibles (incluye el caso testigo de career-claim-provenance)",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Existe un runner de regresion del router con al menos 10 queries y su skill esperada en top-3; incluye 'aplicar a una oferta'->career-claim-provenance y los 8 casos de la baseline; corre en verde desde una sola invocacion y devuelve exit != 0 si algun caso sale del top-3.",
+      "depends_on": [
+        1
+      ],
+      "gate": null,
+      "write_paths": [
+        "scripts/",
+        "tests/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-06T21:30:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 3,
+      "task": "Gate de solapamiento entre skills",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "universo limpio (paso 0 ya aplicado): scripts/check-skill-overlap.py compara descripciones de frontmatter con el embedding ya instalado y reporta pares por encima de umbral configurable; corre con --all y con scope staged; el umbral se documenta con los pares sospechosos actuales (checkmate/verification-gates, deslop/tech-docs) clasificados como esperados o no; NO bloquea el commit por defecto.",
+      "depends_on": [
+        1
+      ],
+      "gate": null,
+      "write_paths": [
+        "scripts/check-skill-overlap.py"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-06T21:30:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 4,
+      "task": "Cablear el gate de solapamiento al pre-commit con disparador propio",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "universo limpio (paso 0 ya aplicado): scripts/check-skill-overlap.py compara descripciones de frontmatter con el embedding ya instalado y reporta pares por encima de umbral configurable; corre con --all y con scope staged; el umbral se documenta con los pares sospechosos actuales (checkmate/verification-gates, deslop/tech-docs) clasificados como esperados o no; NO bloquea el commit por defecto.",
+      "depends_on": [
+        3
+      ],
+      "gate": null,
+      "write_paths": [
+        ".git/hooks/pre-commit",
+        "scripts/pre-commit.template"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-06T21:30:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 5,
+      "task": "Skill capability-index: 'tenes X?' con evidencia",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Existe skills/capability-index/SKILL.md con frontmatter completo (name, description, metadata.category); su procedimiento consulta el catalogo del router y responde en cuatro estados: existe / existe en rol Y / no existe + alternativa mas cercana / ambiguo; cada respuesta cita la ruta del SKILL.md; no inventa skills (verificado contra el CLI, no contra memoria).",
+      "depends_on": [
+        1,
+        2
+      ],
+      "gate": null,
+      "write_paths": [
+        "skills/capability-index/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-06T21:30:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 6,
+      "task": "Docs: SKILLS-INDEX, CHANGELOG y ADR de scope del router",
+      "role": "core",
+      "owner": "main",
+      "status": "pending",
+      "exit_criteria": "SKILLS-INDEX.md §1 refleja el nuevo alcance del router (que ve, con que autoridad) y el conteo se re-mide con el CLI, no se hereda; docs/CHANGELOG.md registra el cambio estructural; existe un ADR con Estado: Aceptado que decide el alcance del router (CLI como fuente, un solo indice semantico, sin vector DB) y pasa scripts/check-adr-supersede.py y check-single-source.py.",
+      "depends_on": [
+        5
+      ],
+      "gate": null,
+      "write_paths": [
+        "SKILLS-INDEX.md",
+        "docs/CHANGELOG.md",
+        "docs/adr/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-06T21:30:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 7,
+      "task": "Gate Auditor: verificar el resultado medido, no el reporte",
+      "role": "auditor",
+      "owner": "kanam-auditor",
+      "status": "pending",
+      "exit_criteria": "universo limpio (paso 0 ya aplicado): scripts/check-skill-overlap.py compara descripciones de frontmatter con el embedding ya instalado y reporta pares por encima de umbral configurable; corre con --all y con scope staged; el umbral se documenta con los pares sospechosos actuales (checkmate/verification-gates, deslop/tech-docs) clasificados como esperados o no; NO bloquea el commit por defecto.",
+      "depends_on": [
+        4,
+        5,
+        6
+      ],
+      "gate": "auditor",
+      "write_paths": [],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-06T21:30:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    }
+  ]
+}

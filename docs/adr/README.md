@@ -35,7 +35,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR | Cara que decide |
 |---|---|
 | ADR-043 | [Complexity-Driven Pipeline (Orquestación por T-Score)](./ADR-043-complexity-driven-pipeline.md) | CUÁNDO y con qué profundidad corre el pipeline (T-score 1-20) |
-| ADR-049 | [Claude Code como Motor del Pipeline A/B (Qwen Code a Fallback)](./ADR-049-claude-code-motor-pipeline-ab.md) | EN QUÉ HARNESS corren los agentes (Claude Code; Qwen fallback) |
+| ADR-049 | [Claude Code como Motor del Pipeline A/B (Qwen Code a Fallback)](./ADR-049-claude-code-motor-pipeline-ab-archived.md) | SUPERSEDED por ADR-088: EN QUÉ HARNESS corrían los agentes (hoy sessions_spawn con los modelos del managed block) |
 | ADR-077 | [Pipeline A/B asimetrico (ejecutor liviano, revisor grande)](./ADR-077-pipeline-ab-asimetrico.md) | LA FORMA: asimetría - el revisor ve más que el ejecutor |
 | ADR-088 | [El pipeline A/B tiene enforcement, no buena voluntad](./ADR-088-pipeline-ab-enforcement.md) | EL ENFORCEMENT: el pacto A/B está verificado mecánicamente |
 | ADR-089 | [Pre-filtro barato en el pipeline A/B (gemma4:cloud) con guard de falso negativo](./ADR-089-prefiltro-pipeline-ab.md) | EL PRE-FILTRO: gemma4 triagea, pero no autoriza solo |

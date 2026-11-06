@@ -74,7 +74,7 @@ Eso responde a "creí que serías parte integrada": la integración faltante no 
 | **Intake** | `AGENTS.md` §3 | No menciona al Planner | Regla dura: programa → CORE llama al Planner antes de ejecutar |
 | **Arranque de sesión** | `skills/session-lifecycle/scripts/session-start.sh` | Imprime el plan de sesión del CORE | Además imprime el brief de programas activos del Planner |
 | **Complejidad** | `skills/complexity-driven-pipeline/SKILL.md` | Calcula T y decide A/B/C | Si el objetivo es programa, deriva al Planner antes de dividir unidades |
-| **Delegación A/B/C** | `skills/agent-orchestration-pipeline/SKILL.md` | El CORE escribe prompts y spawnea | El Planner entrega contratos; el CORE adapta el prompt y spawnea |
+| **Delegación A/B/C** | `skills/complexity-driven-pipeline/SKILL.md` | El CORE escribe prompts y spawnea | El Planner entrega contratos; el CORE adapta el prompt y spawnea |
 | **Estado intra-paso** | `scripts/pipeline-track.sh` | Estado de unidades A/B | Se mantiene: es el estado *dentro* de un paso, no el programa |
 | **Plan de sesión** | `scripts/session_plan.py` | Plan de la sesión actual | Se mantiene: es estado de la sesión, no del programa |
 | **Cierre de sesión** | `skills/session-lifecycle/scripts/session-end.sh` | Cierra el plan de sesión | Si hubo programa, el CORE actualiza el paso/evidencia antes de cerrar |
@@ -196,7 +196,7 @@ Un plan del Planner afirmó que Chromium corría con `--no-sandbox` sin leer `sr
 - `agents/kanam-planner/skills/crew-dispatch/SKILL.md` — contratos.
 - `agents/kanam-planner/skills/plan-review/SKILL.md` — review semanal.
 - `skills/complexity-driven-pipeline/SKILL.md` — scorer.
-- `skills/agent-orchestration-pipeline/SKILL.md` — pipeline A/B/C.
+- `skills/complexity-driven-pipeline/SKILL.md` — pipeline A/B/C.
 - `skills/session-lifecycle/SKILL.md` — arranque y cierre.
 
 ---

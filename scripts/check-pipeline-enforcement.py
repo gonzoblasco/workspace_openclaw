@@ -223,7 +223,7 @@ def find_violations(root: Path) -> List[str]:
         m_c = re.search(r'"model_pipeline_c"\s*:\s*"([^\"]+)"', text_blocks)
         if m_c:
             blk_c = m_c.group(1)
-    skl_text, skl_models = models_in_skills(root)
+    skl_text, skl_models = None, []    # arbitraje skill eliminada (2026-11-06): modelos viven en model-router.sh + managed blocks.
     adr_text, adr_models = models_in_adr(root)
 
     # 1) El pacto tiene que existir en TODAS las fuentes declaradas (A/B y C).
@@ -259,16 +259,6 @@ def find_violations(root: Path) -> List[str]:
         violations.append(
             "managed-blocks.py no declara `model_pipeline_c`: el bloque de AGENTS.md "
             "no contiene la definición del modelo C."
-        )
-    if not skl_models:
-        violations.append(
-            "la skill de arbitraje no nombra los modelos A/B (%s / %s)."
-            % (A_ROLE, B_ROLE)
-        )
-    # Si la skill tampoco menciona C, reportar.
-    if C_ROLE not in skl_models:
-        violations.append(
-            "la skill de arbitraje no nombra el modelo C (%s)." % C_ROLE
         )
     if not adr_models:
         violations.append(

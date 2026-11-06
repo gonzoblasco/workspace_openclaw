@@ -99,7 +99,7 @@ Cierre: A y B revisan el conjunto + orquestador hace release
 
 **Modelo de razonamiento:** la política vigente es **ADR-090** (niveles de pensamiento por agente y asignación de modelo por rol). El resumen operativo está en `AGENTS.md` § Tools; la fuente de verdad del pacto A/B es `scripts/model-router.sh model pipeline_ab`. Default automático: cada vez que se pida escribir código, usar el pipeline A/B sin pedirlo. El flujo corre de corrido: análisis → A escribe → B revisa → iterar → revisión final → push → borrador del PR.
 
-**Skill:** [`agent-orchestration-pipeline`](./skills/agent-orchestration-pipeline/SKILL.md) - roles, reglas de oro, templates de prompt, checklist de cierre.
+**Skill:** supersedido — el pipeline vigente vive en `complexity-driven-pipeline` + `planner-delegation` + `verification-gates`. Ver ADR-088 y managed block `#model-operativo` de AGENTS.md.
 
 **Validado:** kanam-story Fase 3 (U1-U8, 189 tests, release v0.7.0). El cross-review atrapo un bug real (sync corria antes de regenerar) que el orquestador no detecto en su revision.
 

@@ -159,7 +159,7 @@ La política vigente es **ADR-090**: niveles de pensamiento por agente y asignac
 
 ## 4. Referencias
 
-Los workflows están en `skills/` (índice en `SKILLS-INDEX.md`). Las más usadas: `session-lifecycle` (sesión y memoria), `complexity-driven-pipeline` y `agent-orchestration-pipeline` (delegación A/B), `verification-gates` (no dar falso verde), `engineering-governance` (metodología).
+Los workflows están en `skills/` (índice en `SKILLS-INDEX.md`). Las más usadas: `session-lifecycle` (sesión y memoria), `complexity-driven-pipeline` (scorer A/B/C), `planner-delegation` (multi-sesion), `verification-gates` (no dar falso verde), `engineering-governance` (metodología).
 
 ---
 

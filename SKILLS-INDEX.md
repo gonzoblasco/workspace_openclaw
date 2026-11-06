@@ -96,8 +96,6 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [engineering-governance](skills/engineering-governance/) | Evolución continua del AI Engineering OS: auditoría de workflows, consolidación de learnings, mejoras sistémicas |
 | [compaction-domain-aware](skills/compaction-domain-aware/) | Compactación con conciencia de dominio: tiers de prioridad (Tier 0-4) para decidir qué preservar |
 | [complexity-driven-pipeline](skills/complexity-driven-pipeline/) | Orquestación complexity-first: scorer antes de spawnear agentes A/B; decide modelo, thinking level y profundidad |
-| [agent-orchestration-pipeline](skills/agent-orchestration-pipeline/) | Orquesta agentes A/B en cadena con cross-review multi-ronda (Claude Code estándar; Qwen Code fallback) |
-| [agent-orchestration-pipeline-model-arbitration](skills/agent-orchestration-pipeline-model-arbitration/) | Elige el modelo por paso del pipeline A/B según costo y calidad |
 | [model-cata](skills/model-cata/) | Ritual de comparación de modelos LLM: mismo prompt, rúbrica crítica y decisión de motor en ADR |
 | [sdd-agent-loop](skills/sdd-agent-loop/) | Loop de agentes por etapas con gate humano |
 | [verification-gates](skills/verification-gates/) | Guardas que no dan falso verde: 0 casos corridos, SKIP vs OK, lector honesto |
