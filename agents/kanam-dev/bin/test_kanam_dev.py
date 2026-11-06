@@ -12,6 +12,7 @@ subcomando registrado, y que un subcomando desconocido no devuelva verde.
 """
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 import unittest
@@ -38,7 +39,7 @@ class TestDispatch(unittest.TestCase):
     def test_help_lists_every_registered_subcommand(self):
         proc = self.run_cli("help")
         self.assertEqual(proc.returncode, 0)
-        for name in ("intake", "audit", "a11y", "review", "docs", "status", "help"):
+        for name in ("intake", "audit", "a11y", "review", "docs", "handoff", "status", "help"):
             self.assertIn(name, proc.stdout)
 
     def test_no_args_shows_help_and_exits_zero(self):
@@ -80,6 +81,29 @@ class TestDispatch(unittest.TestCase):
         proc = self.run_cli("intake", "--text", "Objetivo: x")
         # --text no es posicional de intake aqui: debe fallar por uso, no por 0.
         self.assertIn(proc.returncode, (1, 2))
+
+    def test_handoff_without_args_is_exit_two(self):
+        proc = self.run_cli("handoff")
+        self.assertEqual(proc.returncode, 2)
+
+    def test_handoff_validates_its_own_template(self):
+        template = self.run_cli("handoff", "--template")
+        self.assertEqual(template.returncode, 0, template.stdout + template.stderr)
+        out = Path("/tmp/kd-handoff-template.json")
+        # Con --template el stdout es JSON puro: el veredicto va a stderr para
+        # que el archivo escrito sea parseable sin cirugia.
+        json.loads(template.stdout)
+        out.write_text(template.stdout, encoding="utf-8")
+        proc = self.run_cli("handoff", str(out))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK", proc.stdout)
+
+    def test_handoff_invalid_is_exit_one(self):
+        bad = Path("/tmp/kd-bad-handoff.json")
+        bad.write_text('{"summary": "x", "status": "completo", "artifact": "a"}', encoding="utf-8")
+        proc = self.run_cli("handoff", str(bad))
+        self.assertEqual(proc.returncode, 1)
+        self.assertIn("FALLA", proc.stdout)
 
     def test_status_on_non_git_dir_is_zero_not_infra(self):
         proc = self.run_cli("status", "/tmp")

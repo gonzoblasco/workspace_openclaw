@@ -103,6 +103,8 @@ def cmd_help(argv: list[str]) -> int:
     say("  a11y <url|archivo.html>           S5  -> scripts/a11y-scan.mjs")
     say("  review <owner/repo> <pr>          S6  -> scripts/github-pr-risk.sh")
     say("  docs <dir> [--check]              S5  -> bin/docs_sync.py")
+    say("  handoff <archivo.json>            S7  -> bin/handoff_gate.py")
+    say("  handoff --template                S7  -> esqueleto de handoff")
     say("  status <dir>                      --  -> estado del working tree")
     say("  help                              --  -> esta pantalla")
     say("")
@@ -255,6 +257,28 @@ def cmd_docs(argv: list[str]) -> int:
     return code
 
 
+def cmd_handoff(argv: list[str]) -> int:
+    """Valida el contrato S7. Sin archivo y sin --template, es exit 2."""
+    gate = HERE / "handoff_gate.py"
+    if not need(gate, "handoff_gate.py"):
+        return EXIT_INFRA
+    code = run([sys.executable, str(gate), *argv])
+    # Con --template el stdout es el handoff y se escribe a un archivo: no se le
+    # puede pegar una linea de veredicto encima, o el JSON queda corrupto para
+    # el paso siguiente del pipeline. El veredicto va a stderr.
+    if "--template" in argv:
+        stream = sys.stderr
+    else:
+        stream = sys.stdout
+    if code == 2:
+        print("[INFRA] handoff no se pudo leer", file=stream)
+    elif code == 1:
+        print("[FALLA] handoff invalido: falta un campo o hay una contradiccion", file=stream)
+    else:
+        print("[OK] handoff valido", file=stream)
+    return code
+
+
 def cmd_intake(argv: list[str]) -> int:
     if not argv:
         verdict("USO", "intake <archivo> [--template T]")
@@ -272,6 +296,7 @@ COMMANDS = {
     "a11y": cmd_a11y,
     "review": cmd_review,
     "docs": cmd_docs,
+    "handoff": cmd_handoff,
     "intake": cmd_intake,
 }
 
