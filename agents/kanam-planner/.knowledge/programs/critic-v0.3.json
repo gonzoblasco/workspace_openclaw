@@ -5,7 +5,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-06T21:00:17+00:00",
-  "updated_at": "2026-11-06T21:23:22+00:00",
+  "updated_at": "2026-11-06T21:25:11+00:00",
   "gates": [
     "critic"
   ],
@@ -91,8 +91,8 @@
       "task": "T3.1 - Definir el ledger de fricciones y registrar el veredicto r4",
       "role": "critic",
       "owner": "kanam-critic",
-      "status": "pending",
-      "exit_criteria": "Existe agents/kanam-critic/memory/frictions.jsonl con schema documentado y al menos 1 registro del veredicto r4, o status=none si no hubo fricciones.",
+      "status": "completed",
+      "exit_criteria": "Existe agents/kanam-critic/memory/frictions.jsonl con 9 registros del veredicto r4 (6 absorbed, 3 open) y schema documentado.",
       "depends_on": [
         3
       ],
@@ -100,23 +100,25 @@
       "write_paths": [
         "agents/kanam-critic/memory/frictions.jsonl"
       ],
-      "evidence": [],
+      "evidence": [
+        "agents/kanam-critic/memory/frictions.jsonl: 9 registros (6 absorbed, 3 open)"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:18+00:00",
-      "updated_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-06T21:25:11+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-06T21:25:11+00:00",
       "session_ref": null
     },
     {
       "id": 5,
-      "task": "T3.2 - Producir 3 VETOs reales y registrar sus fricciones",
+      "task": "T3.2 - Producir 2 VETOs reales adicionales sobre trabajo ajeno",
       "role": "critic",
       "owner": "kanam-critic",
       "status": "pending",
-      "exit_criteria": "verdicts.jsonl tiene 3 VETOs reales adicionales (T1 fue Aprobado, no VETO) y frictions.jsonl tiene 3 registros.",
+      "exit_criteria": "verdicts.jsonl tiene 2 VETOs reales adicionales sobre trabajo ajeno (el primer VETO fue r1 12/25; r4 Aprobado no cuenta) y frictions.jsonl tiene sus registros.",
       "depends_on": [
         4
       ],
@@ -125,7 +127,7 @@
         "agents/kanam-critic/memory/"
       ],
       "evidence": [],
-      "blocker": "T1 fue Aprobado: CORE/Gonzo eligen 3 artefactos reales para VETO. Sin artefactos, T3 se bloquea.",
+      "blocker": "CORE/Gonzo eligen 2 artefactos ajenos; Gonzo ya esta preguntando. Sin artefactos, T3 se bloquea.",
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:18+00:00",
@@ -136,7 +138,7 @@
     },
     {
       "id": 6,
-      "task": "T3.3 - Medir absorcion de los 3 VETOs y publicar la tasa",
+      "task": "T3.3 - Medir la absorcion de los VETOs y publicar la tasa",
       "role": "critic",
       "owner": "kanam-critic",
       "status": "pending",
