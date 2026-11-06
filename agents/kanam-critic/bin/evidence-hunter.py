@@ -200,12 +200,53 @@ def detector_pytest(description: str, source: str) -> tuple[str, str]:
     return "bloqueado", f"pytest rc inesperado {proc.returncode}: {proc.stderr[:200]}"
 
 
+TOKEN_SHAPE = re.compile(r"[A-Za-z][A-Za-z0-9]*(?:[-_][A-Za-z0-9]+)+")
+
+
+def _extract_token(description: str) -> tuple[str | None, str]:
+    """Devuelve (token, razon) del token que la descripcion afirma.
+
+    Regla: solo se considera lo que sigue a la palabra 'token' y solo si tiene
+    FORMA de token (kebab-case o snake_case con separador). Si hay mas de un
+    candidato, es ambiguo: no se elige uno a dedo (elegir seria fabricar
+    evidencia). Medido el 2026-11-06: la asercion "El kit usa el token de
+    diseño kana-critical en sus estilos" devolvia `verificado` con la cita
+    `bin/record_verdict.py` porque el detector tomaba la preposicion 'de' y
+    la encontraba en cualquier lado del repo.
+    """
+    cands: list[str] = []
+    for line in description.splitlines():
+        low = line.lower()
+        idx = low.find("token")
+        if idx == -1:
+            continue
+        tail = line[idx + len("token"):]
+        cands.extend(TOKEN_SHAPE.findall(tail))
+    uniq = list(dict.fromkeys(cands))
+    if not uniq:
+        return None, ("el texto tras 'token' no contiene un token con forma "
+                      "(se espera kebab-case o snake_case, tipo 'color-primary'); "
+                      "no se puede verificar")
+    if len(uniq) > 1:
+        return None, (f"la asercion menciona {len(uniq)} tokens posibles "
+                      f"({', '.join(uniq)}); es ambigua y no se puede verificar")
+    return uniq[0], ""
+
+
 def detector_rg_token(description: str, source: str) -> tuple[str, str]:
     """Detecta si un token mencionado en la descripción aparece en un archivo de estilos.
 
     Estrategia:
-      1. Extrae la primera palabra queparece token (kebab-case, snake_case o
-         'algo-similar' entre comillas) de la descripción.
+      1. Extrae el token: la palabra que sigue a 'token', SOLO si tiene forma de token
+         (kebab-case o snake_case con separador, tipo `color-primary`). Si lo que sigue
+         a 'token' es una palabra comun ("el token **de** diseño ..."), NO hay token
+         que verificar: el detector declara `bloqueado` con la razón real. Antes este
+         detector tomaba cualquier palabra (incluso 'de'), la buscaba con rg y
+         devolvía `verificado` si la palabra aparecia en cualquier lado del repo: un
+         verificado fabricado. Medido el 2026-11-06 con la aserción "El kit usa el
+         token de diseño kana-critical": devolvio `verificado` con la cita
+         `bin/record_verdict.py`, cuando lo unico que habia encontrado era la
+         preposición 'de'.
       2. Si `rg` está en PATH, lo usa. Si no, hace fallback a `grep -R`.
       3. Si no encuentra el token → auto-reportado.
       4. Si lo encuentra → verificado con la ruta de la primera coincidencia.
@@ -214,11 +255,9 @@ def detector_rg_token(description: str, source: str) -> tuple[str, str]:
     if not src.exists():
         return "auto-reportado", f"source no existe: {source}"
 
-    # Extraer token candidato: primera secuencia kebab/snake después de "token".
-    m = re.search(r"token\s+([a-z][a-z0-9_-]+)", description, re.IGNORECASE)
-    if not m:
-        return "bloqueado", "no se pudo extraer un token de la descripción"
-    token = m.group(1)
+    token, reason = _extract_token(description)
+    if token is None:
+        return "bloqueado", reason
 
     rg_bin = _resolve_tool("rg")
     grep_bin = _resolve_tool("grep")

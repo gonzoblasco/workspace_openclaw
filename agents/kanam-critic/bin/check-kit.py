@@ -17,9 +17,12 @@ QUE VERIFICA (todo con evidencia, no con opinion):
   4. Evidencia: el lab `evidence-hunter` corre y da GLOBAL=aprobado (5/5).
   5. Registro durable: `memory/verdicts.jsonl` existe y tiene al menos un
      veredicto REAL (no fixture de test).
-  6. Disparadores: el agente tiene al menos un disparador configurado
+  6. Respaldo: cada veredicto real tiene fila en el ledger Y reporte publicado
+     con citas (`bin/verify-verdict.py`). Un veredicto reportado y no registrado
+     NO existe.
+  7. Disparadores: el agente tiene al menos un disparador configurado
      (heartbeat por agente o automatizacion programada).
-  7. Presupuesto de bootstrap: los archivos del agente entran bajo el cap de
+  8. Presupuesto de bootstrap: los archivos del agente entran bajo el cap de
      inyeccion (20.000 por archivo, 4.000 para USER.md, 60.000 total).
 
 Uso:
@@ -153,6 +156,24 @@ def check_verdicts() -> list[dict]:
              "evidence": f"{real} real(es), {fixtures} fixture(s)"}]
 
 
+def check_verdict_backing() -> list[dict]:
+    """Un veredicto no existe hasta que tiene fila Y reporte con citas (ADR del guard)."""
+    guard = AGENT_DIR / "bin" / "verify-verdict.py"
+    if not guard.exists():
+        return [{"check": "veredictos con respaldo (verify-verdict.py)", "status": "rojo",
+                 "evidence": "falta bin/verify-verdict.py"}]
+    r = subprocess.run([sys.executable, str(guard)], capture_output=True, text=True, timeout=120)
+    tail = [l for l in r.stdout.splitlines() if l.startswith("GLOBAL=")]
+    status = "verde" if r.returncode == 0 and tail and "aprobado" in tail[0] else "rojo"
+    detail = tail[0] if tail else r.stdout.strip().splitlines()[-1][:120]
+    if r.returncode != 0:
+        reds = [l for l in r.stdout.splitlines() if l.startswith("ROJO")]
+        if reds:
+            detail = reds[0][:140]
+    return [{"check": "veredictos con respaldo (verify-verdict.py)", "status": status,
+             "evidence": detail}]
+
+
 def check_triggers() -> list[dict]:
     rows = []
     cfg = Path.home() / ".openclaw" / "openclaw.json"
@@ -190,7 +211,7 @@ def main() -> int:
     as_json = "--json" in sys.argv
     rows: list[dict] = []
     for fn in (check_identity, check_catalog, check_promises, check_lab,
-               check_verdicts, check_triggers, check_budget):
+               check_verdicts, check_verdict_backing, check_triggers, check_budget):
         rows.extend(fn())
     red = [r for r in rows if r["status"] != "verde"]
     if as_json:

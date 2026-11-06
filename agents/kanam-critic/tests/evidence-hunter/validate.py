@@ -124,7 +124,8 @@ def evaluate() -> int:
 
     print()
     if all_pass:
-        print("GLOBAL=aprobado  (5/5 casos en estado y cita esperados)")
+        n = len(cases.CASES)
+        print(f"GLOBAL=aprobado  ({n}/{n} casos en estado y cita esperados)")
         return 0
     print("GLOBAL=veto      (al menos un caso NO coincide)")
     return 1

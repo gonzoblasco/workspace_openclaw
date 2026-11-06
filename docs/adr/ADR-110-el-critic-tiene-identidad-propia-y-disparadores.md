@@ -80,11 +80,39 @@ direccion correcta del flujo es **que lo convoquen a el**.
 ### 4. Veredictos reales registrados como baseline
 
 Todo veredicto emitido se registra con `bin/record_verdict.py` en `memory/verdicts.jsonl`
-(append-only, una linea por veredicto) y se publica el reporte en `docs/reviews/`. La metrica
+(append-only, una linea por veredicto) y se publica el reporte en `agents/kanam-critic/docs/reviews/`. La metrica
 del Critic no es "sesiones abiertas" (26 entonces, 0 veredictos): es **veredictos reales por
 semana**, **tasa de absorcion de VETOs** y **% de ejes con evidencia verificada**.
 
-### 5. La ruta se invierte: producto y cable antes que capacidades
+### 5. Un veredicto no existe hasta que tiene fila Y reporte: `bin/verify-verdict.py`
+
+**El incidente (2026-11-06, medido).** La re-verificacion del kit (T1.r2) devolvio por chat:
+"artefacto `kanam-critic-kit-v0.3-r2`, S 5 H 5 A 4 R 5 P 4, total 23, Aprobado, delta +11" y
+anuncio la ruta del reporte. Al terminar, en disco:
+
+- `memory/verdicts.jsonl` **no tenia** la fila `kanam-critic-kit-v0.3-r2` (3 filas; la ultima era
+  el VETO de 12/25).
+- `agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3-r2.md` **no existia**.
+- La sesion nunca leyo el kit ni corrio el evidence-hunter: 5 comandos y una respuesta narrada.
+
+Es decir: **un veredicto reportado y no registrado**, con un salto de +11 puntos. El mismo falso
+verde que el lab `evidence-hunter` caza en los autores (ADR-078: la salida de un sub-agente es un
+auto-reporte, no un hecho) le alcanzo al propio Critic. Sin un guard, un "Aprobado 23/25" queda
+en el mundo sin una linea de evidencia que lo respalde.
+
+**La decision:** el ritual deja de ser una instruccion y pasa a ser un **guard**:
+
+- `bin/verify-verdict.py` exige, por veredicto real: fila en el ledger, reporte publicado,
+  total coincidente, veredicto coincidente, **minimo 5 citas `ruta:línea`** y al menos una
+  mencion de comando verificable o estado del hunter. Sale con `GLOBAL=veto` si algo falta.
+- `bin/check-kit.py` incorpora ese guard como un check mas (18 checks).
+- El payload del barrido semanal termina con el gate: si el veredicto no tiene respaldo, la
+  corrida **no cierra** hasta corregirlo.
+
+**La regla general:** *un veredicto sin registro verificable no es un veredicto*. El que lo
+declara tiene que poder probarlo con un comando, igual que se le exige a los demas.
+
+### 6. La ruta se invierte: producto y cable antes que capacidades
 
 El roadmap del Critic (v0.3 "El Cable") ordena los tramos en funcion del cuello de botella
 medido: T0 cerrar la mentira (estado stale, promesas rotas, catalogo) → T1 primer veredicto
@@ -112,10 +140,16 @@ porque sin T1 y T2 no hay a quien comparar.
   hecho de que el lab no comparte codigo con el script de salud.
 
 ### Deuda declarada
-- El tramo T3 (medir si el autor absorbió el VETO) no tiene diseno: sin el, el veredicto
-  sigue siendo un sermón con cita.
+- El tramo T3 (medir si el autor absorbió el VETO) no tiene diseno completo: sin el, el veredicto
+  sigue siendo un sermón con cita. El ledger `memory/frictions.jsonl` ya existe y las 3 fricciones
+  del primer VETO estan absorbidas, pero la tasa medida es **auto-correccion**, que es la metrica
+  mas facil del mundo: falta medir VETOs sobre entregables ajenos.
 - El disparador "ruta explicita de invocacion" (que CORE/DEV/AUDITOR me pidan el veredicto por
   nombre) no esta cableado: la politica de `sessions_spawn` me habilita solo a mi mismo.
 - El modelo del juez: las sesiones pueden correr en un modelo distinto del que el config
   declara como primario del Critic (`gpt-oss:120b-cloud`, ADR-090). Un veredicto que sea
   contrato exige fijar el modelo antes de emitirlo.
+- El barrido semanal entrega por telegram (`to: 7921100122`): la primera corrida de prueba
+  devolvio `not-delivered` con `channel=last` sin canal previo, y quedo `deliverySuppressionReason:
+  silent`. El destino se fijo explicitamente; aun asi, **la primera entrega real del lunes 18:00
+  es la prueba**.

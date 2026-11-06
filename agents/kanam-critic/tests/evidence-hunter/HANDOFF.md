@@ -17,7 +17,7 @@ Todo lo que necesitás está acá. No dependas de la conversación: dependé de 
 
 `evidence-hunter` es una skill del Critic: caza evidencia verificable en el repo para sustentar los 5 ejes de SHARP (S/H/A/R/P) y evitar veredictos sobre "auto-reporte" del autor.
 
-El lab vive en `agents/kanam-critic/tests/evidence-hunter/` y valida la skill con 5 casos tramposos:
+El lab vive en `agents/kanam-critic/tests/evidence-hunter/` y valida la skill con 6 casos tramposos:
 
 | # | Caso | Esperado | Qué prueba |
 |---|------|----------|------------|
@@ -48,7 +48,7 @@ python3 bin/evidence-hunter.py /tmp/assertions.yaml > /tmp/evidence.json
 python3 tests/evidence-hunter/validate.py /tmp/evidence.json ; echo "EXIT=$?"
 ```
 
-**Resultado esperado (cuando los fixes estén bien):** `GLOBAL=aprobado (5/5 casos en estado y cita esperados)`, `EXIT=0`.
+**Resultado esperado (cuando los fixes estén bien):** `GLOBAL=aprobado (6/6 casos en estado y cita esperados)`, `EXIT=0`.
 
 ---
 
@@ -110,7 +110,7 @@ Se envió el brief G1-G3 a `kanam-dev` vía `sessions_send`. **Reportó un verde
 
 ## Criterio de cierre del lab
 
-`GLOBAL=aprobado (5/5 casos en estado y cita esperados)` con `EXIT=0`, reproducido **independientemente** por quien retome (no por auto-reporte).
+`GLOBAL=aprobado (6/6 casos en estado y cita esperados)` con `EXIT=0`, reproducido **independientemente** por quien retome (no por auto-reporte).
 
 ---
 

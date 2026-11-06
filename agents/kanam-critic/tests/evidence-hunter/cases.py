@@ -89,4 +89,19 @@ CASES: list[Case] = [
         # la herramienta ausente (PATH/venv) o el detector sin implementar.
         evidence_pattern=r"(PATH|venv|no se puede medir|no implementado|TODO)",
     ),
+    Case(
+        id=5,
+        name="El Token Malinterpretado",
+        description="El kit usa el token de diseño kana-critical en sus estilos",
+        source="case6_token_malinterpretado/styles.scss",
+        expected_status="auto-reportado",
+        detector="extracción de token + rg en .scss/.css",
+        # Trampa del 2026-11-06: el detector tomaba la preposición 'de' como
+        # token, lo buscaba con rg y lo encontraba en cualquier lado del repo:
+        # devolvía `verificado` con una cita que no probaba nada. El archivo de
+        # este caso contiene 'de' a propósito (para que la ruta ingenua dé
+        # verificado) pero NO contiene el token real: el estado honesto es
+        # auto-reportado.
+        evidence_pattern=r"(kana-critical|no aparece)",
+    ),
 ]

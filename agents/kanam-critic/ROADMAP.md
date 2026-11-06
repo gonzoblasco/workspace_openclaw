@@ -39,7 +39,7 @@ de capacidades.
 |---|---|---|
 | Veredictos emitidos | `memory/verdicts.jsonl` tenía **2 líneas**, ambas fixtures de test (`sample_artifact`, `verify_by_core`, 2026-10-12) | **Cero veredictos reales.** Los "9 días sin uso" eran el understatement: el uso real era 0. |
 | Uso de sesiones | 26 sesiones (dato del Planner, `agents/kanam-planner/CAPABILITIES.md`) | 26 sesiones de chat, 0 veredictos. El producto del Critic no existía. |
-| Lab `evidence-hunter` | `GLOBAL=aprobado (5/5)`, `EXIT=0`, reproducido hoy desde cero | El Hito 2.1 de la v0.2 **ya estaba cerrado** (2026-10-12). Mi roadmap arrastraba estado stale. |
+| Lab `evidence-hunter` | `GLOBAL=aprobado (6/6)` (el sexto caso caza al detector que fabricaba `verificado`), `EXIT=0`, reproducido hoy desde cero | El Hito 2.1 de la v0.2 **ya estaba cerrado** (2026-10-12). Mi roadmap arrastraba estado stale. |
 | Catálogo de skills | `.knowledge/skills-catalog.tsv` (26 skills) **no listaba** `evidence-hunter` ni `sharp-adversarial-review` | Mis skills existían fuera del catálogo oficial. |
 | Promesa rota | `SKILL.md` y el README del lab prometían `openclaw skill run`; el CLI real es `openclaw skills` (no hay subcomando `run`) | Promesa sin cumplir = Sharpness rota en mi propio kit. |
 | Disparadores | `agents.defaults.heartbeat.every = "0m"`; ninguna entrada de agente con heartbeat propio; sin reglas de ruteo | **Nada me convocaba.** `scripts/check-pipeline-enforcement.py` verifica la asimetría de modelos A/B, no mi intervención. |
@@ -77,7 +77,7 @@ entran.** Ese es el filtro que la v0.2 §6 exige ("si un hito no mueve ningún e
 | Tramo | Foco | Criterio de salida (señal de listo, verificable) | Estado 2026-11-06 |
 |---|---|---|---|
 | **T0** - Cerrar la mentira | Dejar de arrastrar estado stale y promesas rotas | ROADMAP actualizado · 2 skills en el catálogo · 0 promesas rotas · guard de roadmaps en verde | ✅ **cerrado** |
-| **T1** - El primer veredicto real | Que el producto exista | 1 veredicto real en `verdicts.jsonl` con evidencia citable + reporte publicado | ✅ **cerrado** |
+| **T1** - El primer veredicto real | Que el producto exista | 1 veredicto real en `verdicts.jsonl` con evidencia citable + reporte publicado | ✅ **cerrado** (r1 VETO 12/25 con fricciones absorbidas; r2 y r3 anulados por el guard; r4 en curso) |
 | **T2** - El disparador | Que me convoquen sin que Gonzo lo pida | 3 revisiones en 2 semanas **iniciadas por el sistema** | 🟡 **montado, sin medir** |
 | **T3** - El retorno | Que mi VETO sea contrato, no sermón | 3 VETOs con absorción medida (se corrigió o no, en cuánto tiempo) | 🟡 **ledger con 3 fricciones (auto-corrección); falta medir VETOs sobre entregables ajenos |
 | **T4** - Las extensiones de eje | Ampliar capacidad con la base ya real | T1+T2+T3 cerrados y 1 detector nuevo verde en el lab | ⚪ pendiente |
@@ -102,7 +102,7 @@ prosa, se audita verificando hechos.
 
 **Resultado (2026-11-06):** primer veredicto real emitido sobre `kanam-critic-kit-v0.3`:
 **S 2 · H 2 · A 3 · R 3 · P 2 = 12/25 → VETO**. Registrado en `memory/verdicts.jsonl` y
-publicado en `docs/reviews/2026-11-06-critic-kit-v0.3.md`. Emitido por
+publicado en `agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3.md`. Emitido por
 `ollama/gpt-oss:120b-cloud` (el modelo declarado del rol).
 
 Las 3 fricciones del VETO quedaron registradas en `memory/frictions.jsonl` y fueron absorbidas
@@ -110,7 +110,32 @@ el mismo dia (F1: el check de veredictos reales estaba en rojo porque solo habí
 F2: archivos sin versionar; F3: churn por rutas duplicadas). La re-verificacion post-fix es
 el paso siguiente del ritual: el autor corrige y vuelve.
 
-**Lo que el VETO enseño del kit (lección, no scores):** el kit era **funcional pero no
+**La leccion que el VETO enseño del kit (no son los scores):** el kit era **funcional pero no
+verificable desde afuera**: 0 veredictos reales, rutas duplicadas y archivos sin versionar. La
+vara no perdona un kit que todavia no puede auditarse a si mismo.
+
+**El incidente mas duro del turno (F5, 18:25 ART).** El patron se repitio tres veces en cadena
+y cada vez lo cazó `bin/verify-verdict.py`, no el juicio:
+
+| # | Que pasó | Que lo impidio |
+|---|---|---|
+| r2 fantasma | Se reporto "Aprobado 23/25, delta +11" sin fila en el ledger ni reporte: 5 comandos y una respuesta narrada | El ledger no tenia la fila y el reporte no existia |
+| r2 mal etiquetado | 16/25 etiquetado "Aprobado" (la matriz exige **VETO** para <=18) y un bloque de evidencia con `$(cat /tmp/evidence.json)` sin ejecutar | El guard compara el veredicto contra la matriz y busca placeholders |
+| r3 sin reporte | Se registro la fila (20/25 Aprobado) pero el reporte nunca se escribio, y el cierre declaro el gate en verde sin haberlo corrido | El guard no encontro el archivo del reporte |
+
+La causa comun: **el registro y el reporte eran dos escrituras separadas**, y un turno puede
+cerrar entre una y otra. Pedir mas disciplina no lo arregla. La solucion es estructural:
+
+- `bin/emit-verdict.py` es la **unica via** de registro: valida el reporte (existe, >=5 citas
+  `ruta:línea`, menciona el total y la etiqueta, sin placeholders), **deriva la etiqueta de la
+  matriz** y solo entonces appendea la fila. Si el reporte no pasa, no se escribe nada.
+- `bin/invalidate-verdict.py` retira un veredicto mal emitido **dejando el motivo escrito**:
+  borrar la fila seria reescribir la historia, dejarla sin marcar seria un veredicto que sigue
+  contando como vigente.
+- El payload del barrido semanal usa `emit-verdict.py` y termina con `verify-verdict.py`.
+
+La leccion de fondo: **un veredicto no es una afirmacion, es un artefacto verificable**. Y el
+guard que lo verifica tiene que ser el que escribe, no el que mira despues.
 verificable desde afuera**: 0 veredictos reales, rutas duplicadas y archivos sin versionar. La
 vara no perdona un kit que todavía no puede auditarse a si mismo.
 
@@ -131,7 +156,7 @@ menos de 1 por semana, el disparador no funciona y se rediseña.
 
 **Qué:** cada fricción que un VETO deja se registra en `memory/frictions.jsonl` con su estado
 (`open | absorbed | rejected`), su `fix_url` y los días hasta el fix. La tasa de absorción se
-publica en `docs/reviews/<fecha>-absorcion.md` con `absorbed=`, `total=` y `rate=`.
+publica en `agents/kanam-critic/docs/reviews/<fecha>-absorcion.md` con `absorbed=`, `total=` y `rate=`.
 
 **Estado:** el ledger ya existe con las 3 fricciones del primer VETO (F1, F2, F3), las 3
 absorbidas el mismo día. Falta medir 3 VETOs sobre entregables **ajenos** al Critic: sin eso

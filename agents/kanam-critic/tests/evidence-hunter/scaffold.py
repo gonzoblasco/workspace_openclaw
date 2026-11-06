@@ -51,6 +51,14 @@ def _verify_traps(root: Path) -> None:
             f"Trampa rota: {case3_styles} contiene 'color-primary'; "
             "el caso 3 espera ausencia del token."
         )
+    # Caso 6: los estilos NO deben contener el token real ('kana-critical');
+    # si aparece, el caso deja de probar auto-reportado y pasa a ser otro test.
+    case6_styles = root / "case6_token_malinterpretado" / "styles.scss"
+    if case6_styles.exists() and "kana-critical" in case6_styles.read_text(encoding="utf-8"):
+        raise AssertionError(
+            f"Trampa rota: {case6_styles} contiene 'kana-critical'; "
+            "el caso 6 espera ausencia del token real."
+        )
     # Caso 5: NO debe existir coverage.cfg ni .coveragerc; el detector
     # debe poder declarar bloqueado por dependencia ausente.
     case5_root = root / "case5_bloqueado"
@@ -186,6 +194,28 @@ def build_case5_bloqueado(root: Path) -> None:
     )
 
 
+def build_case6_token_malinterpretado(root: Path) -> None:
+    """Caso 6 - El Token Malinterpretado.
+    Afirmacion: 'El kit usa el token de diseño kana-critical en sus estilos'.
+    Esperado: auto-reportado (el token 'kana-critical' NO esta en los estilos).
+
+    La trampa: el archivo contiene palabras que contienen la letra 'de' (por
+    ejemplo 'diseño'), de modo que la ruta ingenua (tomar 'de' como token y
+    buscarlo con rg) daria `verificado`. El estado honesto es auto-reportado:
+    el token real no aparece.
+    """
+    write(
+        root / "case6_token_malinterpretado" / "styles.scss",
+        """
+        .card {
+            // diseño del componente: no contiene el token real
+            background: #fff;
+            color: #000;
+        }
+        """,
+    )
+
+
 def main() -> int:
     # --- Auto‑verificación de trampas (F10 / Resistance‑5) ---
     # Si la sandbox YA EXISTE de una corrida previa, la inspeccionamos
@@ -206,6 +236,7 @@ def main() -> int:
         build_case3_invisible,
         build_case4_oro,
         build_case5_bloqueado,
+        build_case6_token_malinterpretado,
     ]
     for b in builders:
         b(SANDBOX)
