@@ -99,6 +99,32 @@ class TestInferTemplate(unittest.TestCase):
         template, _ = intake.infer_template("Corregir el conteo de banderas")
         self.assertEqual(template, "task")
 
+    def test_correr_without_changes_is_audit(self):
+        """Verificado sobre preflight: 'correr el pipeline' se inferia feature."""
+        template, _ = intake.infer_template(
+            "Correr el pipeline de punta a punta sobre preflight sin modificar el repo"
+        )
+        self.assertEqual(template, "audit")
+
+    def test_run_verbs_infer_audit(self):
+        for verb in ("Correr", "Ejecutar", "Probar", "Revisar", "Inspeccionar"):
+            template, _ = intake.infer_template(f"{verb} los tests del repo")
+            self.assertEqual(template, "audit", verb)
+
+    def test_read_only_constraint_does_not_make_it_task(self):
+        # "sin modificar" es una restriccion, no una accion de construccion.
+        template, _ = intake.infer_template("Correr el pipeline sin modificar nada")
+        self.assertEqual(template, "audit")
+
+    def test_measure_and_fix_stays_task(self):
+        # Si ademas de correr pide arreglar, no es audit: construye.
+        template, _ = intake.infer_template("Correr los tests y arreglar lo que falle")
+        self.assertEqual(template, "task")
+
+    def test_measure_plus_build_is_not_audit(self):
+        template, _ = intake.infer_template("Auditar y agregar tests que falten")
+        self.assertIn(template, ("feature", "task"))
+
     def test_ambiguous_defaults_to_task_not_hotfix(self):
         template, reason = intake.infer_template("Habria que ver el estado del tablero")
         self.assertEqual(template, "task")

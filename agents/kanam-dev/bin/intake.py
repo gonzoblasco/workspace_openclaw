@@ -101,13 +101,38 @@ def missing_fields(fields: dict[str, str]) -> list[str]:
 
 _URGENT = re.compile(r"\b(urgente|roto en produccion|produccion caida|hotfix|p0)\b", re.IGNORECASE)
 _TINY_SCOPE = re.compile(r"\b(un archivo|una linea|una funci[oó]n|puntual)\b", re.IGNORECASE)
-_MEASURE = re.compile(r"\b(medir|medici[oó]n|diagn[oó]stico|auditar|auditor[ií]a|investigar|analizar)\b", re.IGNORECASE)
+# Verbos de "correr y observar" tambien son medicion. Faltaban: un pedido de
+# "correr el pipeline sobre este repo" se clasificaba como feature porque
+# "correr" no estaba en ninguna regla. Verificado sobre preflight, 2026-11-06.
+_MEASURE = re.compile(
+    r"\b(medir|medici[oó]n|diagn[oó]stico|auditar|auditor[ií]a|investigar|analizar"
+    r"|correr|ejecutar|probar|verificar|revisar|inspeccionar|explorar)\b",
+    re.IGNORECASE,
+)
+
+# Verbos de accion que indican que el pedido de medir tambien construye. Sin
+# esto, "correr el pipeline y arreglar lo que aparezca" caeria en audit.
+#
+# OJO: "sin modificar", "no tocar", "solo lectura" son RESTRICCIONES, no
+# acciones. Incluir `modificar` como hint de construccion clasificaba un pedido
+# de solo lectura como task. Verificado sobre preflight, 2026-11-06.
+_BUILD_HINT = re.compile(
+    r"\b(implementar|construir|escribir|crear|agregar|arreglar|corregir|refactorizar)\b"
+    r"|\bmodificar\b(?!\s+(?:nada|el\s+repo|los\s+archivos))",
+    re.IGNORECASE,
+)
+
+# Restricciones explicitas de solo lectura: no son acciones, refuerzan audit.
+_READ_ONLY = re.compile(
+    r"\b(sin\s+(?:modificar|cambiar|tocar|agregar)|no\s+(?:modificar|cambiar|tocar|agregar)"
+    r"|solo\s+lectura|solo\s+medir|sin\s+cambios)",
+    re.IGNORECASE,
+)
 _DOCS = re.compile(r"\b(documentaci[oó]n|readme|adr|guia|gu[ií]a|changelog|docs)\b", re.IGNORECASE)
 _NEW_THING = re.compile(r"\b(nueva?|nuevo|agregar|implementar|crear)\b", re.IGNORECASE)
 _CHANGE = re.compile(r"\b(cambiar|modificar|refactorizar|corregir|arreglar|fix)\b", re.IGNORECASE)
 
-# Palabras que sugieren que un pedido de "medir" en realidad pide construir.
-_BUILD_HINT = re.compile(r"\b(implementar|construir|escribir|crear|agregar)\b", re.IGNORECASE)
+
 
 
 def infer_template(text: str) -> tuple[str, str]:
@@ -123,6 +148,13 @@ def infer_template(text: str) -> tuple[str, str]:
     """
     if _URGENT.search(text) and _TINY_SCOPE.search(text):
         return "hotfix", "senal de urgencia y alcance chico declarado"
+
+    # Una restriccion explicita de solo lectura gana sobre cualquier verbo de
+    # accion suelto en el texto. El intake de preflight decia "correr ... sin
+    # modificar el repo; no agregar cambios": el "agregar" pertenece a la
+    # restriccion (no agregar), no a la tarea. Se evalua antes de docs/measure.
+    if _READ_ONLY.search(text) and _MEASURE.search(text):
+        return "audit", "pide correr o medir y declara explicitamente que no cambia nada"
 
     if _DOCS.search(text) and not _BUILD_HINT.search(text):
         return "docs", "nombra documentacion y no pide construir codigo"
