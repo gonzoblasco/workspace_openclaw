@@ -28,8 +28,9 @@ Postulacion a Revelo enviada el 2026-11-06. Sin respuesta aun. La tarifa USD 30 
 ## Archivos tocados
 
 ```
-agents/kanam-ops/ROADMAP.md
-memory/2026-11-06.md
+memory/2026-11-06.md (informe de la sesion)
+memory/memory.db (daily_notes id=157)
+docs/entrevistas/revelo-game-implementation/HANDOFF.md
 ```
 
 ## Como continuar
