@@ -8,6 +8,7 @@ context-aware-delegation	internalize	session	unknown	36	1	0	0	Context transfer c
 context-slimmer	candidate	session	unknown	37	1	0	0	Specialized context optimization; retain until usage evidence
 dev-workflow-orchestrator	candidate	orchestration	unknown	97	1	0	0	Pipeline router overlaps with agent-workflow
 engineering-governance	keep	governance	false	375	13	6	5	Canonical OS evolution workflow
+evidence-hunter	keep	core-workflow	true	108	1	0	3	Detector de evidencia verificable para los ejes SHARP; lab propio en verde (5/5) verificado 2026-11-06
 execution-agent	keep	orchestration	true	170	4	3	0	Autonomous implementation entry point
 governance-agent	candidate	orchestration	true	165	1	0	0	Agent wrapper over engineering-governance
 failure-memory	keep	governance	unknown	39	1	0	0	Evidence-based recurring failure learning
@@ -23,4 +24,5 @@ quality-gate	candidate	core-workflow	unknown	90	1	0	0	Parallel validator+tester 
 review-quality	candidate	core-workflow	false	102	8	2	4	Legacy/consolidated workflow wrapper; compare with canonical review standard
 session-context	keep	session	false	185	9	0	0	0	Persistent per-project context backed by SQLite
 session-lifecycle	keep	session	false	244	7	2	3	0	Canonical session lifecycle workflow
+sharp-adversarial-review	keep	core-workflow	true	136	1	0	5	Estandar de revision de sustancia del Critic; veredicto VETO/Aprobado/ORO con evidencia citable
 task-execution	candidate	core-workflow	false	118	6	2	2	Base execution workflow inherited by execution-agent

@@ -29,6 +29,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-086 | [El embudo de entrada conversacional - triaje, personas, borradores, escalación y límites de contexto](./ADR-086-embudo-de-entrada-conversacional.md) | Embudo de entrada conversacional (triaje, borradores, escalación, límites) |
 | ADR-093 | [El plan de sesión como objeto persistente (session-planning-hooks se cablea)](./ADR-093-plan-de-sesion-persistente.md) | El plan de sesión como objeto persistente (cableado a hooks) |
 | ADR-099 | [LangChain es la capa de ejecución de flujos, no el orquestador](./ADR-099-langchain-capa-de-ejecucion.md) | ⚠️ Arquitectura de agentes (con 073/074/083) - LangChain ejecuta flujos dentro de un proyecto; el gateway sigue orquestando |
+| ADR-110 | [El Critic tiene identidad propia y disparadores propios](./ADR-110-el-critic-tiene-identidad-propia-y-disparadores.md) | ⚠️ Arquitectura de agentes (con 073/083/088) - el sujeto del veredicto es el agente mismo; kit autoverificado (`check-kit.py`), heartbeat diario y barrido semanal con veredicto |
 
 ### Pipeline A/B (un objeto, siete caras: leer el grupo antes de tocar)
 | ADR | Cara que decide |

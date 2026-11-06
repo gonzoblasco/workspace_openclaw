@@ -75,10 +75,24 @@ La skill `sharp‑adversarial‑review` debe:
 
 ## Ejemplo de uso en pipeline
 
+La skill es una **procedimiento de agente**, no un subcomando del CLI. El CLI de OpenClaw
+(`openclaw skills`) sirve para **descubrirla y verificarla**, no para ejecutarla:
+
 ```bash
-# Ejecutar la skill (se usa el CLI interno de OpenClaw)
-openclaw skill run evidence-hunter --input assertions.yaml > evidence.json
+# Verificar que la skill esta visible y lista para este agente
+openclaw skills list --agent kanam-critic | grep evidence-hunter
+openclaw skills check --agent kanam-critic
+
+# Ejecutar el runner (si el detector es el que produce la evidencia)
+python3 agents/kanam-critic/bin/evidence-hunter.py assertions.yaml > evidence.json
+
+# Validar la salida contra los casos canonicos del lab
+python3 agents/kanam-critic/tests/evidence-hunter/validate.py evidence.json
 ```
+
+**Nota (2026-11-06):** hasta esta version la skill prometia `openclaw skill run evidence-hunter`;
+ese comando no existe (el CLI real es `openclaw skills`, sin subcomando `run`). Promesa rota
+promesa incumplida. Corregido contra `openclaw skills --help`.
 
 ## Dependencias
 

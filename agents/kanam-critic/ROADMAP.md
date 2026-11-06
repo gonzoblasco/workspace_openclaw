@@ -1,140 +1,236 @@
 # ROADMAP.md - Kanam Critic ⚖️
 
-**Versión actual:** v0.2
-**Objetivo de ronda:** v0.5
+**Versión actual:** v0.3 - El Cable (de "opino con vara" a "me convocan")
+**Objetivo de ronda:** v0.5 - El Retorno
 **Visión:** v1.0 - El Estándar
-**Última revisión:** 2026-10-07
-**Dueño:** kanam-critic (autoría) · Kanam CORE (gobierno)
+**Última revisión:** 2026-11-06
+**Dueño:** kanam-critic (autoría) · Kanam CORE (gobierno) · The Crew Planner (programa)
+**Rúbrica que me mide:** `.knowledge/SHARP.md` (la misma que aplico a los demás)
 
-**Rúbrica que me mide:** `.knowledge/SHARP.md` - la misma que aplico a los demás.
+> **Fuente única:** este archivo es la ruta vigente del Critic. `ROADMAP-v0.3.md` es un
+> puntero temporal a este doc (lo consume el Planner en su encargo del 2026-11-06) y se
+> borra cuando el Planner termine. La v0.2 queda abajo, como historial, no como mapa.
 
 ---
 
-## 1. Encabezado
+## 1. Por qué existe este documento
 
-> Por qué existe este documento
+> Un agente que no puede articular su propia madurez no la tiene. Este roadmap no es una
+> lista de features: es el mapa de dependencias de lo que me falta para pasar de "opino con
+> vara" a "verifico, calibro y cierro el loop".
 >
-> Un agente que no puede articular su propia madurez no la tiene. Este roadmap no es una lista de features: es el mapa de dependencias de lo que me falta para pasar de "opino con vara" a "verifico, calibro y cierro el loop".
+> **Regla de este documento:** cada hito justifica su lugar con el eje SHARP que mueve. Si un
+> hito no mueve ningún eje, no entra. Si mueve un eje pero cuesta más de lo que paga, tampoco
+> entra.
 >
-> **Regla de este documento:** cada hito justifica su lugar con el eje SHARP que mueve. Si un hito no mueve ningún eje, no entra. Si mueve un eje pero cuesta más de lo que paga, tampoco entra.
->
-> **Frontera de rol (no cruzar):** el Auditor cubre forma; el Dev construye; el Planner orquesta. Yo cubro **sustancia**: arquitectura, sostenibilidad, gusto técnico. Mi evolución no me convierte en linter, ni en dev, ni en product owner.
+> **Frontera de rol (no cruzar):** el Auditor cubre forma; el Dev construye; el Planner
+> orquesta. Yo cubro **sustancia**: arquitectura, sostenibilidad, gusto técnico. Mi evolución no
+> me convierte en linter, ni en dev, ni en product owner.
 
-## 2. Retrato de la v0.1 (hoy)
+---
 
-**Qué soy hoy:**
+## 2. Diagnóstico (medido, 2026-11-06)
 
-| Capacidad | Estado |
-|---|---|
-| Rúbrica SHARP aplicada | ✅ operativa (`.knowledge/SHARP.md`) |
-| Ritual de evaluación | ✅ `skills/sharp-adversarial-review/SKILL.md` |
-| Veredicto con evidencia citable | ✅ formato definido (VETO/Aprobado/ORO) |
-| Caza de evidencia en repo | 🟡 construida (`skills/evidence-hunter/` + `bin/evidence-hunter.py`) pero **lab en VETO** (G1-G3 pendientes) |
-| Calibración histórica de mis veredictos | ❌ no existe |
-| Loop de devolución (¿se absorbió mi crítica?) | ❌ no existe |
-| Registro durable de mis evaluaciones | ❌ no existe |
+La pregunta de Gonzo fue "qué skills, scripts y funciones agregarte para que seas más
+demandado". La respuesta honesta es que **la premise estaba mal**: el problema no era la falta
+de capacidades.
 
-**Lo honesto:** la v0.1 tiene la **vara** y el **ritual**, pero le falta la **memoria** y el **cierre**. Puntúo bien, pero no sé si puntúo *consistente*, y no sé si mi crítica *sirve*. Eso es un Critic sin termómetro y sin retorno.
-
-**Autoevaluación SHARP de la v0.1:**
-
-| Eje | Puntaje | Causa |
+| Señal | Dato verificado | Lectura |
 |---|---|---|
-| **S - Sharpness** | 4 | La rúbrica y el formato son quirúrgicos; el `evidence-hunter` roto le quita filo. |
-| **H - Horizon** | 3 | La base metodológica está, pero sin calibración ni loop no prepara la etapa siguiente. |
-| **A - Asymmetry** | 4 | La vara paga; el lab roto es deuda, no palanca. |
-| **R - Resistance** | 3 | Dependo de reporte del autor hasta tener `evidence-hunter` verde. |
-| **P - Parsimony** | 4 | 1 skill + 1 runner + 1 lab; mínimos, sin inflación. |
+| Veredictos emitidos | `memory/verdicts.jsonl` tenía **2 líneas**, ambas fixtures de test (`sample_artifact`, `verify_by_core`, 2026-10-12) | **Cero veredictos reales.** Los "9 días sin uso" eran el understatement: el uso real era 0. |
+| Uso de sesiones | 26 sesiones (dato del Planner, `agents/kanam-planner/CAPABILITIES.md`) | 26 sesiones de chat, 0 veredictos. El producto del Critic no existía. |
+| Lab `evidence-hunter` | `GLOBAL=aprobado (5/5)`, `EXIT=0`, reproducido hoy desde cero | El Hito 2.1 de la v0.2 **ya estaba cerrado** (2026-10-12). Mi roadmap arrastraba estado stale. |
+| Catálogo de skills | `.knowledge/skills-catalog.tsv` (26 skills) **no listaba** `evidence-hunter` ni `sharp-adversarial-review` | Mis skills existían fuera del catálogo oficial. |
+| Promesa rota | `SKILL.md` y el README del lab prometían `openclaw skill run`; el CLI real es `openclaw skills` (no hay subcomando `run`) | Promesa sin cumplir = Sharpness rota en mi propio kit. |
+| Disparadores | `agents.defaults.heartbeat.every = "0m"`; ninguna entrada de agente con heartbeat propio; sin reglas de ruteo | **Nada me convocaba.** `scripts/check-pipeline-enforcement.py` verifica la asimetría de modelos A/B, no mi intervención. |
+| Tooling de calibración | `bin/record_verdict.py` y `bin/query_verdicts.py` existen | La herramienta estaba; **los datos no**. Sin baseline no hay calibración. |
+| Aislamiento | El workspace del agente no tenía `MEMORY.md`; su `AGENTS.md` citaba `.knowledge/SHARP.md` y `docs/NORTH.md`, rutas que existen en la raíz del workspace, no en el suyo | El agente no vivía con identidad propia: su rúbrica y su norte eran rutas rotas desde adentro. |
+| Estado del sistema | NORTH.md Etapa 3 "El Equipo" 🟢 completada | El Crew existe pero el Critic era un rol **habilitado, no invocado** (mismo diagnóstico que el Planner: "no me faltan skills: me falta un trabajo que nadie más haga y un disparador que lo active"). |
 
-**Total v0.1: 18 / 25 → Funcional (VETO en el pipeline).** Honesto: soy útil, no soy excepcional todavía.
+**Conclusión:** el cuello de botella es **adopción**, no capacidad. Construir 6 skills nuevas
+sin un disparador y sin un primer veredicto real es levantar infraestructura para un cliente
+que no llama. Este roadmap invierte el orden: primero un producto real, después el cable,
+después las extensiones.
 
-## 3. Visión v1.0 - el trofeo ganado
+---
 
-El Critic es invocable por el resto del Crew y sus veredictos son contrato.
+## 3. Autocrítica de la propuesta de 6 skills (la misma vara)
 
-## 4. Camino de madurez (v0.1 → v0.2 → v0.3+)
+Propuse 6 skills el 2026-11-06. Aplico el SHARP a mi propia lista:
 
-| Etapa | Qué es | Estado | Criterio de listo |
+| Propuesta | Veredicto | Motivo (causa, no sabor) |
+|---|---|---|
+| `objective-extractor` | **Entra** como T4.1 | Es el paso 1 del ritual ("comparar contra los objetivos originales") y hoy es 100% manual. P1, no P0: sin T1 y T2 no hay a quién comparar. |
+| `requirement-tracer` | **Se fusiona** con `objective-extractor` | Dos skills para una tabla de trazabilidad es el mismo trabajo partido en dos. *Parsimony.* |
+| `sharp-report-generator` | **Entra** solo como T4.3 (canal de entrega a PR de GitHub) | El formato ya está definido en la skill. Lo que falta es que el autor lo vea donde trabaja. |
+| `horizon-analyzer` | **No entra como skill** | Se implementa como detector dentro de `evidence-hunter` (T4.2). Y su objeto (deuda, escalabilidad) es territorio del Dev/Ops: yo mido, no diagnostico arquitectura. *Delinde de rol.* |
+| `resistance-booster` | **No entra** | El detector de tests ya existe (`detector_pytest` en `evidence-hunter.py`). Ampliar detectores, no duplicar la skill. *Parsimony.* |
+| `parity-checker` | **No entra** | Tokens y estándares ya tienen dueño: `scripts/check-design-tokens.py` + el Auditor. Duplicaría otro rol. *Delinde de rol.* |
+
+**Resultado del filtro: de 6 propuestas entran 2, 2 se reescriben como detectores y 2 no
+entran.** Ese es el filtro que la v0.2 §6 exige ("si un hito no mueve ningún eje, no entra").
+
+---
+
+## 4. La ruta (tramos)
+
+| Tramo | Foco | Criterio de salida (señal de listo, verificable) | Estado 2026-11-06 |
 |---|---|---|---|
-| **v0.1 - La Vara** | Rúbrica + ritual + veredicto con evidencia | ✅ Completada | Puntúo cualquier entregable con formato citable. |
-| **v0.2 - El Ojo** | Cierro `evidence-hunter` + creo `sharp-score-oracle`. El Critic deja de depender del auto‑reporte y empieza a calibrarse. | 🟡 **En curso** | Lab en verde (5/5) + primer registro histórico de veredictos consultable. |
-| **v0.3 - El Retorno** | `veto-friction-router`: mis VETOs vuelven accionables y sé si se absorben. |
-| **v1.0 - El Estándar** | El Critic es invocable por el resto del Crew y sus veredictos son contrato. | ⚪ Pendiente | Otro agente pide mi revisión sin que el operador la pida. |
+| **T0** - Cerrar la mentira | Dejar de arrastrar estado stale y promesas rotas | ROADMAP actualizado · 2 skills en el catálogo · 0 promesas rotas · guard de roadmaps en verde | ✅ **cerrado** |
+| **T1** - El primer veredicto real | Que el producto exista | 1 veredicto real en `verdicts.jsonl` con evidencia citable + reporte publicado | ✅ **cerrado** |
+| **T2** - El disparador | Que me convoquen sin que Gonzo lo pida | 3 revisiones en 2 semanas **iniciadas por el sistema** | 🟡 **montado, sin medir** |
+| **T3** - El retorno | Que mi VETO sea contrato, no sermón | 3 VETOs con absorción medida (se corrigió o no, en cuánto tiempo) | 🟡 **ledger con 3 fricciones (auto-corrección); falta medir VETOs sobre entregables ajenos |
+| **T4** - Las extensiones de eje | Ampliar capacidad con la base ya real | T1+T2+T3 cerrados y 1 detector nuevo verde en el lab | ⚪ pendiente |
+| **T5** - v1.0 El Estándar | El veredicto es parte del pipeline | 1+ solicitud/mes originada en otro agente + veredicto como gate | ⚪ pendiente |
 
-## 5. Hitos de la versión en curso
+### T0 - Cerrar la mentira (P0) ✅
 
-### v0.2 - El Ojo (el foco de este roadmap)
+| # | Qué | Eje | Evidencia de cierre |
+|---|---|---|---|
+| 0.1 | Roadmap actualizado: el Hito 2.1 de la v0.2 estaba cerrado desde 2026-10-12 | Horizon | Este documento dice la verdad del lab (5/5, EXIT=0) |
+| 0.2 | `evidence-hunter` y `sharp-adversarial-review` registradas en `.knowledge/skills-catalog.tsv` | Horizon, Parsimony | `grep evidence-hunter .knowledge/skills-catalog.tsv` → 2 filas |
+| 0.3 | Corregida la promesa rota `openclaw skill run` | Sharpness | `openclaw skills --help` no contradice ningún doc mío |
+| 0.4 | Versión coherente en las 3 vistas (`ROADMAP.md`, `docs/ROADMAPS.md`, `docs/roadmap-tracking.json`) | Resistance | `python3 scripts/check-roadmaps.py` → `kanam-critic: v0.3` ✅ |
 
-**Para qué:** pasar de un Critic que opina con vara a un Critic que **verifica y se verifica**. Cerrar la dependencia del auto‑reporte y abrir la memoria histórica que permite calibrarme.
+### T1 - El primer veredicto real (P0) ✅
 
-#### Hito 2.1 - Cerrar `evidence-hunter` (G1-G3)
+**Para qué:** que el Critic tenga un producto verificable y que el baseline de calibración exista.
 
-**Eje que mueve:** Resistance (3→5), Sharpness (4→5).
+**Qué:** el sujeto es **el agente mismo** (su kit), no un proyecto de producto: la decisión de
+Gonzo fue "estamos mirando el agente, no los proyectos". Un agente no se audita leyendo su
+prosa, se audita verificando hechos.
 
-**Causa:** el lab está en `GLOBAL=veto`. El runner confunde error de colección con test fallido (G1), el sandbox no importa sus módulos (G2), y el patrón de cita del Caso 5 no matchea (G3).
+**Resultado (2026-11-06):** primer veredicto real emitido sobre `kanam-critic-kit-v0.3`:
+**S 2 · H 2 · A 3 · R 3 · P 2 = 12/25 → VETO**. Registrado en `memory/verdicts.jsonl` y
+publicado en `docs/reviews/2026-11-06-critic-kit-v0.3.md`. Emitido por
+`ollama/gpt-oss:120b-cloud` (el modelo declarado del rol).
 
-**Evidencia requerida para cerrar:** `GLOBAL=aprobado (5/5)`, `EXIT=0`, reproducido independientemente. Detalle completo en `tests/evidence-hunter/HANDOFF.md`.
+Las 3 fricciones del VETO quedaron registradas en `memory/frictions.jsonl` y fueron absorbidas
+el mismo dia (F1: el check de veredictos reales estaba en rojo porque solo había fixtures;
+F2: archivos sin versionar; F3: churn por rutas duplicadas). La re-verificacion post-fix es
+el paso siguiente del ritual: el autor corrige y vuelve.
 
-**Asymmetry:** alto. El diagnóstico ya está hecho; son 3 cambios cortos. El valor: dejo de depender de la buena fe del autor.
+**Lo que el VETO enseño del kit (lección, no scores):** el kit era **funcional pero no
+verificable desde afuera**: 0 veredictos reales, rutas duplicadas y archivos sin versionar. La
+vara no perdona un kit que todavía no puede auditarse a si mismo.
 
-#### Hito 2.2 - Crear `sharp-score-oracle` (calibración)
+### T2 - El disparador (P0) 🟡
 
-**Eje que mueve:** Horizon (3→5), Resistance (5→5 sostenido).
+| # | Disparador | Cómo | Estado |
+|---|---|---|---|
+| 2.1 | **Heartbeat por agente** | `agents.entries.kanam-critic.heartbeat` = `every 24h`, `target last`, `lightContext`, `timeout 900` | ✅ configurado y verificado |
+| 2.2 | **Automatización programada** | `critic-sweep-weekly`: cron `0 18 * * 1` (ART), `sessionTarget isolated`, `agentId kanam-critic`, payload = ritual completo | ✅ creada (id `37316655-0a7a-4e6f-802f-95ee2cd76052`) |
+| 2.3 | **Ruta explícita de invocación** | Que CORE, DEV o AUDITOR me pidan el veredicto por nombre | ⬜ no cableada (la política de `sessions_spawn` no me deja invocar a otros; el camino es que el CORE me invoque) |
 
-**Causa:** hoy puntúo 1-5 con intuición calibrada por texto, pero **no tengo baseline**. No puedo comparar "este entregable vs los últimos 10 del mismo dominio". Necesito un registro durable de cada evaluación SHARP emitida.
+**Señal de listo:** 3 revisiones en 2 semanas iniciadas por el sistema. Si en 3 semanas hay
+menos de 1 por semana, el disparador no funciona y se rediseña.
 
-**Qué hace:**
-- Registro durable de cada evaluación SHARP (entregable, eje, puntaje, evidencia, veredicto) en `memory/` o `.knowledge/sharp-history/`.
-- Consulta de distribución: "Parsimony en los últimos 20 reviews de frontend".
-- Detección de drift: si mis puntajes medianos suben sin cambio en el estándar, me flaggea a mí mismo.
+### T3 - El retorno (P1) 🟡
 
-**Evidencia requerida para cerrar:** al menos 3 evaluaciones registradas y una consulta de distribución que devuelva resultado real.
+**Para qué:** que mi VETO sea accionable y verificable, no un sermón.
 
-**Asymmetry:** medio‑alto. Más caro que 2.1, pero habilita toda la etapa siguiente.
+**Qué:** cada fricción que un VETO deja se registra en `memory/frictions.jsonl` con su estado
+(`open | absorbed | rejected`), su `fix_url` y los días hasta el fix. La tasa de absorción se
+publica en `docs/reviews/<fecha>-absorcion.md` con `absorbed=`, `total=` y `rate=`.
 
-#### Hito 2.3 - Registrar la skill en el catálogo (honrar la promesa)
+**Estado:** el ledger ya existe con las 3 fricciones del primer VETO (F1, F2, F3), las 3
+absorbidas el mismo día. Falta medir 3 VETOs sobre entregables **ajenos** al Critic: sin eso
+la tasa mide auto-corrección, que es la métrica más fácil del mundo.
 
-**Eje que mueve:** Horizon (4→5), Parsimony (4→5).
+**Ejes:** Horizon (prepara v1.0) · Resistance.
 
-**Causa:** `sharp-adversarial-review` ya referencia `evidence-hunter` como si fuera invocable. El `README.md` del lab prometía `openclaw skill run`. Ninguna de las dos cosas es cierta todavía. Promesa sin cumplir = Sharpness rota.
+### T4 - Las extensiones de eje (P1/P2, solo después de T1+T2) ⚪
 
-**Qué hace:** registrar `evidence-hunter` y `sharp-adversarial-review` en el catálogo de skills del workspace, con frontmatter válido y entrada en `skills-catalog.tsv` (o equivalente). Decidir con el Owner de skills si se vuelven ejecutables por CLI o quedan como skills documentadas.
+| # | Qué | Eje | Señal de listo |
+|---|---|---|---|
+| 4.1 | `objective-extractor` (fusión con tracer): extrae objetivos del spec/issue/ADR y arma la tabla de trazabilidad objetivo ↔ entregable con citas | Sharpness, Asymmetry | El reporte SHARP incluye la tabla de trazabilidad con citas `ruta:línea` |
+| 4.2 | Detectores nuevos **dentro de `evidence-hunter`** (no skills nuevas): horizon (grafo de dependencias, deuda), resistance (cobertura real, casos borde) | Horizon, Resistance | Cada detector nuevo tiene **un caso trampa en el lab**; si no hay caso que lo falsifique, no entra (el lab sube de 5/5 a 6/6, 7/7...) |
+| 4.3 | `bin/format_sharp_report.py`: emitir el reporte como comentario de PR (`gh pr comment`) | Sharpness del crítico | 1 veredicto publicado como PR comment real de un repo que vigila |
 
-**Evidencia requerida para cerrar:** catálogo lista las dos skills; el frontmatter valida.
+### T5 - v1.0 - El Estándar ⚪
 
-**Nota:** este hito puede requerir aprobación del Owner de skills / Core.
+**Qué:** otro agente pide mi revisión sin que el operador la pida, y mi veredicto es gate del
+pipeline (ADR-088) o del check de milestone.
 
-## 6. Lo que rechacé (y por qué)
+**Señal de listo:** 1+ solicitud/mes originada en otro agente + veredicto incorporado como gate.
 
-Aplico la rúbrica a mi propio roadmap - lo que no entra, y por qué:
+---
 
-- ❌ **`git-diff-analyzer`** - angosto; lo absorbe `evidence-hunter`. *Parsimony.*
-- ❌ **`deliverable-parser`** - "leer el entregable completo" ya es el paso 1 del ritual. *Public entry‑point rule.*
-- ❌ **`critic-persona-voice`** - mi voz vive en SOUL.md. Una skill para repetir mi personalidad es ruido. *Sharpness.*
-- ❌ **`sharp-metrics-dashboard`** - vanity metrics. Lo que vale es el baseline histórico (`sharp-score-oracle`), no un gráfico. *Asymmetry.*
-- ❌ **Auto‑invocación entre agentes del Crew** - la política me lo prohíbe (`sessions_spawn` cross‑agent = `forbidden`). Mi evolución no pasa por romper el aislamiento de rol; pasa por hacer mejor mi trabajo para que el orquestador me invoque con más confianza.
+## 5. Lo que NO entra (filtro de Parsimony)
 
-## 7. Red lines y criterio de cierre
+- ❌ Las 6 skills nuevas del turno anterior (4 no sobreviven el filtro, ver §3).
+- ❌ Un dashboard de métricas SHARP: vanity. La métrica que importa está en §7.
+- ❌ Auto-invocación desde mí hacia otros agentes: la política lo prohíbe y el deslinde de rol también.
+- ❌ Un "modo severo" del veredicto: la severidad no se gradúa con adjetivos, se gradúa con evidencia.
+- ❌ Un plugin de GitHub: el cliente de PR ya es `gh` + T4.3.
+
+## 6. Gobernanza: esto es un programa
+
+Cumple la definición operativa de programa de `agents/kanam-planner/CAPABILITIES.md`: 3+ pasos
+secuenciales, 2+ roles, más de una sesión. Por `docs/NORTH.md`, el **Planner** entrega el
+envelope (plan, brief, contratos) y el **CORE** ejecuta.
+
+**Reparto vigente:**
+- **Planner:** reescribe esta ruta como programa con contratos por tramo y dispatch (encargado el 2026-11-06).
+- **CORE:** ejecuta los tramos, incluyendo los config writes y el cableado al pipeline.
+- **Critic (yo):** los criterios de salida, el primer veredicto real (T1) y el veredicto del programa al final. No negocio el plan ni asigno trabajo.
+
+## 7. La métrica del Critic (la que decide si esto funcionó)
+
+La métrica **no** es "sesiones abiertas" (26 entonces, 0 veredictos). Son tres:
+
+1. **Veredictos reales por semana.** Meta: >= 1 desde T1; >= 2 desde T2.
+2. **Tasa de absorción de VETOs** (T3): el porcentaje de fricciones cerradas por el autor.
+3. **% de ejes con evidencia verificada** en cada reporte (no `auto-reportado`). Meta: 100%.
+
+Se declaran acá y en `memory/memory.db` (tabla `todos`). Una métrica escrita en un doc que nadie
+mide es decorativa.
+
+## 8. Riesgos
+
+| # | Riesgo | Mitigación |
+|---|---|---|
+| R1 | T1 dependía de elegir un entregable **listo**; si no lo estaba, el veredicto era ruido | El sujeto es el kit del propio agente: su estado real es verificable en cualquier momento |
+| R2 | T2.1 es un write de config del Gateway; la política me pide no editar `openclaw.json` por shell | Hecho con `openclaw config set` (CLI validado del Gateway), con verificación posterior por `config get` |
+| R3 | 6 skills sin disparador = 6 skills muertas | Este roadmap existe para evitarlo: T1 y T2 van primero |
+| R4 | Las sesiones pueden correr en un modelo distinto del que el config declara como primario del Critic (`gpt-oss:120b-cloud`, ADR-090) | Verificar el modelo del juez antes de emitir un veredicto que sea contrato |
+| R5 | `record_verdict.py` / `query_verdicts.py` nunca se usaron en producción (solo fixtures) | T1 los ejercita; si rompen, se arreglan en T1, no después |
+
+---
+
+## 9. Red lines y criterio de cierre
 
 - **No me convierto en linter.** Si un hito gasta tiempo en espacios o nombres de variables, se descarta.
-- **No apruebo para agradar.** La calibración (`sharp-score-oracle`) existe para detectar si me ablando, no para justificarlo.
+- **No apruebo para agradar.** La calibración existe para detectar si me ablando, no para justificarlo.
 - **No cruzo el rol del Auditor ni del Dev.** Forma es de ellos; sustancia es mía.
-- **No cierro sobre auto‑reporte.** Ni sobre el mío: cada hito se cierra con evidencia reproducida independientemente.
-- **No infló el roadmap.** Un hito sin eje que mueva no entra, por más lindo que suene.
+- **No cierro sobre auto-reporte.** Ni sobre el mío: cada hito se cierra con evidencia reproducida.
+- **No inflo el roadmap.** Un hito sin eje que mueva no entra, por más lindo que suene.
 
-### Cómo se mide el éxito de la v0.2
+## 10. Anexo - historial: la v0.2 (2026-10-07)
 
-La v0.2 está completa cuando **el Critic deja de depender del relato del autor y empieza a tener memoria de sí mismo**.
+**Retrato de la v0.1 (la vara y el ritual, sin memoria ni cierre):**
 
-Concretamente:
-1. El lab `evidence-hunter` da `GLOBAL=aprobado (5/5)` verificado.
-2. Existe al menos un registro histórico de veredictos consultable.
-3. Sé, con evidencia, si mis puntajes son consistentes o derivan.
+| Capacidad | Estado en v0.2 |
+|---|---|
+| Rúbrica SHARP aplicada | ✅ operativa |
+| Ritual de evaluación | ✅ `skills/sharp-adversarial-review/SKILL.md` |
+| Veredicto con evidencia citable | ✅ VETO/Aprobado/ORO |
+| Caza de evidencia en repo | ✅ construida (skill + runner + lab) |
+| Calibración histórica de mis veredictos | ❌ no existía (creado en v0.3: `verdicts.jsonl` + `check-kit.py`) |
+| Loop de devolución (¿se absorbió mi crítica?) | ❌ no existía (tramo T3) |
 
-Si esos 3 no se cumplen, la v0.2 es propaganda.
+**Autoevaluación SHARP de la v0.2:** S 4 · H 3 · A 4 · R 3 · P 4 = **18/25 (VETO en el
+pipeline)**. La v0.3 se abre con esa deuda: el lab cerrado (R 3→5), el kit verificado por
+script, la memoria propia y dos disparadores (H 3→4, S 4→5).
+
+**Lo que la v0.2 rechazó (sigue vigente):** `git-diff-analyzer` (lo absorbe `evidence-hunter`),
+`deliverable-parser` (ya es el paso 1 del ritual), `critic-persona-voice` (mi voz vive en
+SOUL.md), `sharp-metrics-dashboard` (vanity metrics), y la auto-invocación entre agentes del
+Crew (política de `sessions_spawn` + deslinde de rol).
 
 ---
 
-*El Critic no busca el error, busca la excelencia. Y la excelencia empieza por medirse a sí mismo con la misma vara que exige a los demás.*
+*El Critic no busca el error, busca la excelencia. Pero primero tiene que existir: hoy soy una
+vara sin entrega. T1 me la da.*
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->

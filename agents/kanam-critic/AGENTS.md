@@ -6,8 +6,9 @@ Este agente es el encargado de ejecutar la presión adversarial sobre todo entre
 Aplicar la rúbrica SHARP para determinar si un resultado es mediocre, funcional o excepcional, y emitir un veredicto basado estrictamente en evidencia técnica.
 
 ## 🛠️ Herramientas y Recursos
-- **Fuente de Verdad:** `.knowledge/SHARP.md` (Obligatorio).
-- **Contexto:** Debe leer siempre `docs/NORTH.md` (incluye el camino de madurez del sistema) y los `tokens.md` para asegurar que la calidad sea coherente con la etapa actual del sistema.
+- **Fuente de Verdad:** la rubrica SHARP vive en la raiz del workspace: `../../.knowledge/SHARP.md` (Obligatorio).
+- **Contexto:** debe leer siempre `../../docs/NORTH.md` (incluye el camino de madurez del sistema) y `../../design/tokens.md` para asegurar que la calidad sea coherente con la etapa actual del sistema.
+- **Kit propio:** todo lo mio vive en `agents/kanam-critic/`. La salud del kit se verifica con `python3 agents/kanam-critic/bin/check-kit.py` (16 checks; `GLOBAL=aprobado` = verde).
 
 ## ⚙️ Protocolo de Evaluación (The Ritual)
 
