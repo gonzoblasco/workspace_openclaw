@@ -30,6 +30,7 @@ AUDIT = SCRIPTS / "gateway-audit.sh"
 CHANGELOG = SCRIPTS / "gateway-change-log.sh"
 CHANNELS_WATCH = SCRIPTS / "gateway-channels-watch.sh"
 BUDGET_WATCH = SCRIPTS / "gateway-budget-watch.sh"
+POSTMORTEM = SCRIPTS / "gateway-postmortem.sh"
 
 
 def run(script, *args, home=None, timeout=120):
@@ -547,6 +548,96 @@ class TestBudgetWatch(unittest.TestCase):
         self.make_agent("fat", sqlite_mb=100)
         r = self.run_budget(AGENT_DB_MAX_GB=0.05)
         self.assertIn("No borra nada", r.stdout)
+
+
+class TestPostmortem(unittest.TestCase):
+    """gateway-postmortem.sh: informe automatico de incidentes (E3.4)."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="ops-postmortem-"))
+        self.root = self.tmp / "stability"
+        self.root.mkdir()
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def write_report(self, name, reason, message=None, when="2026-10-18T13:35:58.206Z",
+                     pid=1234, uptime_ms=7355):
+        data = {
+            "version": 1,
+            "generatedAt": when,
+            "reason": reason,
+            "process": {"pid": pid, "platform": "darwin", "arch": "arm64",
+                        "node": "26.8.1", "uptimeMs": uptime_ms},
+            "error": {"message": message} if message else {},
+            "snapshot": {"events": [{"seq": 1}]},
+        }
+        (self.root / name).write_text(json.dumps(data))
+
+    def run_pm(self, *args, timeout=90):
+        env = dict(os.environ)
+        env["OPENCLAW_STABILITY_DIR"] = str(self.root)
+        return subprocess.run(
+            ["bash", str(POSTMORTEM), *args],
+            capture_output=True, text=True, env=env, timeout=timeout,
+        )
+
+    def test_no_incidents_says_so(self):
+        r = self.run_pm()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("Sin incidentes", r.stdout)
+
+    def test_groups_repeated_cause(self):
+        for i in range(3):
+            self.write_report(
+                f"r{i}.json", "gateway.startup_failed", "Tailscale is stopped.",
+                when=f"2026-10-18T13:35:5{i}.206Z",
+            )
+        r = self.run_pm()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("TOTAL: 3", r.stdout)
+        self.assertIn("3x  Tailscale is stopped.", r.stdout)
+
+    def test_burst_collapsed_into_one_timeline_line(self):
+        """16 fallos en 158s son UN evento, no 16 lineas."""
+        for i in range(4):
+            self.write_report(
+                f"r{i}.json", "gateway.startup_failed", "Tailscale is stopped.",
+                when=f"2026-10-18T13:35:{50 + i}.000Z",
+            )
+        r = self.run_pm()
+        self.assertIn("(3s, 4 veces)", r.stdout)
+
+    def test_unreadable_file_is_reported_not_skipped_silently(self):
+        (self.root / "broken.json").write_text("{ no es json")
+        self.write_report("ok.json", "gateway.startup_failed", "x")
+        r = self.run_pm()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("ILEGIBLES", r.stdout)
+        self.assertIn("broken.json", r.stdout)
+
+    def test_missing_dir_is_error(self):
+        env = dict(os.environ)
+        env["OPENCLAW_STABILITY_DIR"] = str(self.tmp / "nope")
+        r = subprocess.run(["bash", str(POSTMORTEM)], capture_output=True,
+                           text=True, env=env, timeout=60)
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+
+    def test_json_output_is_parseable(self):
+        self.write_report("a.json", "gateway.startup_failed", "Tailscale is stopped.")
+        r = self.run_pm("--json")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        data = json.loads(r.stdout)
+        self.assertEqual(data["total"], 1)
+        self.assertEqual(data["by_reason"]["gateway.startup_failed"], 1)
+        self.assertEqual(len(data["incidents"]), 1)
+
+    def test_since_filters_old_incidents(self):
+        self.write_report("old.json", "gateway.startup_failed", "Tailscale is stopped.",
+                          when="2020-01-01T00:00:00.000Z")
+        r = self.run_pm("--since", "1d")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("Sin incidentes", r.stdout)
 
 
 class TestRealConfigSanity(unittest.TestCase):

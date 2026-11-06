@@ -3,7 +3,7 @@
 **Versión actual:** v0.1
 **Objetivo:** v0.5 - OPS como default de todo lo que toca el sustrato
 **Última revisión:** 2026-11-06 (reemplaza el roadmap v0.1 del 2026-10-07, backup en `ROADMAP.v0.1.bak-20261106`)
-**Estado de ejecución:** E1, E2 completas, y E3.1 + E3.2 hechas, el 2026-11-06. Commits `7e19519438`, `87c9f4c524`, `0469714ee9`.
+**Estado de ejecución:** E1, E2 completas, y E3.1 + E3.2 + E3.4 hechas, el 2026-11-06. Commits `7e19519438`, `87c9f4c524`, `0469714ee9`, `b61cffa46c`.
 **Dueño:** kanam-ops autoría / Kanam CORE gobierno
 
 ---
@@ -155,6 +155,37 @@ Detalle de testing que costo encontrar: `truncate` sobre APFS crea un archivo
 disperso. El tamano logico sube pero `du` reporta casi cero, asi que un test
 que usa `truncate` prueba un arbol vacio y pasa por la razon equivocada. Los
 tests escriben megabytes reales.
+
+**Estado de E3.4: EJECUTADA 2026-11-06 (3.3 sigue pendiente).**
+
+`gateway-incident-postmortem` (id `8fd2dd9f-bd77-4af8-ac3b-c5fa804dd6f3`),
+cada hora, `agentId: kanam-ops`. El script `gateway-postmortem.sh` lee
+`~/.openclaw/logs/stability/`, agrupa por causa raiz, colapsa rafagas en una
+sola linea de timeline, y propone hipotesis. Read-only.
+
+**El informe se genero contra incidentes REALES, no inventados:**
+`agents/kanam-ops/reports/postmortem-2026-11-06.log`. 20 reportes de
+estabilidad, y el hallazgo que importa:
+
+- **16 fallos de arranque en 158 segundos** (2026-10-18 13:35:58 a 13:38:37),
+  **todos con la misma causa**: `Tailscale is stopped.` El gateway no arranca
+  porque usa Tailscale para reclamar la ruta. No es un bug de OpenClaw: es una
+  dependencia no declarada del host.
+- 2 apagados sin completar y 2 cierres sucios. No impiden arrancar, pero dejan
+  estado sucio.
+
+**Decision de diseno que los tests fijan:** el trigger dispara por incidente
+**nuevo** (comparando conteo), no por "hay incidentes en el directorio". El
+directorio es historico: disparar por presencia avisa para siempre por el
+mismo evento viejo, y una alerta que se repite sin motivo nuevo se ignora. El
+primer tick guarda la linea base y no avisa por el historico.
+
+**Evidencia:** eval 1 con `count=20` sin fire (baseline); incidente plantado ->
+eval 2 con `fired`, `count=21`, entrada `finished ok`. Incidente de prueba
+eliminado despues, directorio vuelve a 20.
+
+**3.3 (pre-flight) sigue pendiente** y su criterio de listo no depende de OPS:
+depende de que el CORE lo llame en un cambio real. No se cierra simulando.
 
 **Por qué tercero:** un watchdog sin E2 detrás es un generador de falsas alarmas. Y un watchdog sin E1 no existe, porque no hay a quién despertar.
 

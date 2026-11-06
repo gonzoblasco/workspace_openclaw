@@ -1,0 +1,55 @@
+POST-MORTEM de estabilidad del gateway
+Generado: 2026-11-06T20:43:17Z
+Fuente:   /Users/gonzoblasco/.openclaw/logs/stability
+Ventana:  todo
+
+TOTAL: 20 incidente(s)
+
+POR TIPO
+  gateway.restart_close_failed     1
+  gateway.startup_failed           16
+  gateway.stop_close_failed        1
+  gateway.stop_shutdown_timeout    2
+
+POR CAUSA RAIZ
+   16x  Tailscale is stopped.
+    2x  (sin mensaje)
+    2x  Gateway shutdown did not complete cleanly
+
+TIMELINE
+  2026-10-18T13:35:58.206Z .. 13:38:37Z (158s, 16 veces)
+    causa: Tailscale is stopped.
+    tipo:  gateway.startup_failed | pid 35963 | node 26.8.1
+    vivio: 7.4s antes de caer
+
+  2026-10-20T15:21:21.809Z
+    causa: (sin mensaje)
+    tipo:  gateway.stop_shutdown_timeout | pid 1422 | node 26.8.1
+    vivio: 178593.7s antes de caer
+  2026-10-20T18:29:03.690Z
+    causa: (sin mensaje)
+    tipo:  gateway.stop_shutdown_timeout | pid 1362 | node 26.8.1
+    vivio: 10951.5s antes de caer
+
+  2026-10-22T03:09:55.727Z
+    causa: Gateway shutdown did not complete cleanly
+    tipo:  gateway.stop_close_failed | pid 14933 | node 26.8.1
+    vivio: 117355.4s antes de caer
+  2026-10-28T21:41:02.718Z
+    causa: Gateway shutdown did not complete cleanly
+    tipo:  gateway.restart_close_failed | pid 880 | node 26.8.1
+    vivio: 205364.5s antes de caer
+
+HIPOTESIS
+  - 'Tailscale is stopped.' (16x): el gateway no arranca si Tailscale esta detenido
+    porque lo usa para reclamar la ruta. No es un bug de OpenClaw:
+    es una dependencia no declarada. Si Tailscale es opcional para
+    este host, conviene revisar la config de ruta; si no, el arranque
+    depende de que Tailscale este siempre arriba.
+  - Apagado que no completa: el proceso no cierra a tiempo.
+    Suele ser trabajo en vuelo (requests, streams, timers) que no
+    respeta el deadline. No impide arrancar, pero deja estado sucio.
+      (y 2x mas con la misma causa de apagado)
+
+Este informe es una lectura automatica de los reportes. No reemplaza
+la revision humana de un incidente con impacto en produccion.
