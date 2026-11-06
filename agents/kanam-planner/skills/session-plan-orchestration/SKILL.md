@@ -15,9 +15,12 @@ metadata:
 Ritual del Crew Planner. El Planner no ejecuta el trabajo: disena la ruta, asigna los roles y
 mantiene el estado visible. Su entregable es el plan, no el artefacto.
 
-La fuente de verdad es `scripts/session_plan.py` y el `.knowledge/session_plan.json` que escribe.
-El plan es un objeto vivo: cada paso tiene estado, dueno y criterio de salida. Un plan que no se
-actualiza es un deseo, no una estrategia.
+La fuente de verdad de la **sesión** es `scripts/session_plan.py` y el `.knowledge/session_plan.json` que escribe.
+En este workspace de rol, `scripts/session_plan.py` es un **wrapper** que delega en el script del
+workspace principal (`/Users/gonzoblasco/.openclaw/workspace/scripts/session_plan.py`) y fija
+`SESSION_PLAN_PATH` al plan del Planner. Asi el plan del rol no se mezcla con el plan del CORE.
+El plan de sesión es un objeto vivo; el **programa** multi-sesión vive en
+`.knowledge/programs/<slug>.json` y se opera con `program-orchestration`. Son capas distintas, no copias.
 
 ## Cuando usarla
 
@@ -32,7 +35,9 @@ sustancial con pasos secuenciales**. Un plan por cada tarea chica es burocracia,
 
 ## El plan como objeto persistente
 
-El plan vive en `<workspace>/.knowledge/session_plan.json` y es el **unico** estado de progreso.
+El plan de sesión vive en `<workspace>/.knowledge/session_plan.json` y es el estado de **esta sesión**.
+El estado del objetivo multi-sesión vive en `.knowledge/programs/<slug>.json` y es del programa.
+No son el mismo objeto: el plan de sesión se archiva al cerrar; el programa sigue vivo.
 Se opera por CLI:
 
 ```bash
@@ -42,9 +47,13 @@ python3 scripts/session_plan.py summary
 python3 scripts/session_plan.py close
 ```
 
-- **Arranque:** `skills/session-lifecycle/scripts/session-start.sh` imprime `summary` si hay un plan
-  activo, antes de scorear complejidad. Retomar es leer el plan, no adivinar.
-- **Cierre:** `skills/session-lifecycle/scripts/session-end.sh` llama a `close`, que marca
+- **Arranque:** el hook del workspace principal
+  (`/Users/gonzoblasco/.openclaw/workspace/skills/session-lifecycle/scripts/session-start.sh`)
+  imprime `summary` si hay un plan activo, antes de scorear complejidad. Retomar es leer el plan,
+  no adivinar. El hook del CORE usa el plan del CORE; el plan del Planner se lee con este wrapper.
+- **Cierre:** el hook del workspace principal
+  (`/Users/gonzoblasco/.openclaw/workspace/skills/session-lifecycle/scripts/session-end.sh`)
+  llama a `close`, que marca
   `completed` y **archiva** en `.knowledge/archive/session_plan_<id>.json`. El historial de
   intenciones sobrevive.
 - **`close` es defensivo e idempotente:** sale 0 siempre (sin plan, ya cerrado, cerrado dos
@@ -82,12 +91,18 @@ python3 scripts/session_plan.py close
 
 ## Referencias
 
-- Script y fuente de verdad: `scripts/session_plan.py`.
-- Arranque y cierre: `skills/session-lifecycle/scripts/session-start.sh`,
-  `skills/session-lifecycle/scripts/session-end.sh` (ADR-093).
-- Rubrica del Critic: `.knowledge/SHARP.md`, `agents/kanam-critic/skills/sharp-adversarial-review/`.
-- Design system del Auditor: `design/tokens.md`, `design/principles.md`.
-- Camino de madurez: `docs/NORTH.md`.
+- Script y fuente de verdad: `scripts/session_plan.py` (wrapper local del script principal).
+- Arranque y cierre del CORE:
+  `/Users/gonzoblasco/.openclaw/workspace/skills/session-lifecycle/scripts/session-start.sh`,
+  `/Users/gonzoblasco/.openclaw/workspace/skills/session-lifecycle/scripts/session-end.sh` (ADR-093).
+- Rubrica del Critic: `/Users/gonzoblasco/.openclaw/workspace/.knowledge/SHARP.md`,
+  `../kanam-critic/skills/sharp-adversarial-review/`.
+- Design system del Auditor: `/Users/gonzoblasco/.openclaw/workspace/design/tokens.md`,
+  `/Users/gonzoblasco/.openclaw/workspace/design/principles.md`.
+- Camino de madurez: `/Users/gonzoblasco/.openclaw/workspace/docs/NORTH.md`.
+
+> **Paths:** este workspace de rol no duplica los artefactos compartidos del workspace principal;
+> los referencia por ruta absoluta. El unico estado local es `.knowledge/session_plan.json`.
 
 ---
 

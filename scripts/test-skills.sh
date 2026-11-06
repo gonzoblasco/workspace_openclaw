@@ -152,6 +152,9 @@ ref_exists() {
   local ref="$1"
   [[ -f "$WORKSPACE_DIR/$ref" ]] && return 0
   [[ -f "$WORKSPACE_DIR/skills/$ref" ]] && return 0
+  # `workspace/scripts/...` calificado: el prefijo workspace/ es la raiz.
+  local ws_bare="${ref#workspace/}"
+  [[ -f "$WORKSPACE_DIR/$ws_bare" ]] && return 0
   # `skills/<x>/...` calificado: la skill puede vivir hoy en agents/<rol>/skills/.
   local bare="${ref#skills/}"
   [[ -f "$WORKSPACE_DIR/skills/$bare" ]] && return 0
@@ -160,6 +163,12 @@ ref_exists() {
     [[ -f "$candidate" ]] && return 0
   done
   for candidate in "$WORKSPACE_DIR"/agents/*/skills/"$ref"; do
+    [[ -f "$candidate" ]] && return 0
+  done
+  # Scripts de rol fuera de skills/: agents/<rol>/scripts/...
+  # El link puede venir calificado como <rol>/scripts/foo o agents/<rol>/scripts/foo.
+  [[ -f "$WORKSPACE_DIR/agents/$ref" ]] && return 0
+  for candidate in "$WORKSPACE_DIR"/agents/*/"$ref"; do
     [[ -f "$candidate" ]] && return 0
   done
   return 1
@@ -241,12 +250,16 @@ if [[ $QUICK -eq 0 ]]; then
   for skmd in "${CANDIDATES[@]+"${CANDIDATES[@]}"}"; do
     is_skill_md "$skmd" || continue
     skill_dir="$(dirname "$skmd")"
+    # Un skill de rol vive en agents/<rol>/skills/<skill>/; sus scripts pueden
+    # estar en agents/<rol>/scripts/. Un skill del Core vive en skills/<skill>/
+    # y su role_root resuelve a la raiz del workspace.
+    role_root="$(cd "$skill_dir/../.." 2>/dev/null && pwd || echo "$WORKSPACE_DIR")"
     body=$(awk 'BEGIN{inblock=0} /^```/{inblock=!inblock; next} !inblock{print}' "$skmd")
     # relativos con ./ explicito
     while read -r ref; do
       [[ -z "$ref" ]] && continue
       ref="${ref#./}"
-      if [[ -f "$skill_dir/$ref" || -f "$WORKSPACE_DIR/$ref" ]]; then
+      if [[ -f "$skill_dir/$ref" || -f "$WORKSPACE_DIR/$ref" || -f "$role_root/$ref" ]]; then
         REF_OK=$((REF_OK + 1))
       else
         REF_FAIL=$((REF_FAIL + 1))
@@ -257,7 +270,7 @@ if [[ $QUICK -eq 0 ]]; then
     # relativos sin ./ pero delimitados (inicio de linea, pipe de tabla, espacio)
     while read -r ref; do
       [[ -z "$ref" ]] && continue
-      if [[ -f "$skill_dir/$ref" || -f "$WORKSPACE_DIR/$ref" ]]; then
+      if [[ -f "$skill_dir/$ref" || -f "$WORKSPACE_DIR/$ref" || -f "$role_root/$ref" ]]; then
         REF_OK=$((REF_OK + 1))
       else
         REF_FAIL=$((REF_FAIL + 1))

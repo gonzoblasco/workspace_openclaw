@@ -15,6 +15,10 @@ disable-model-invocation: true
 
 > Complexity-first orchestration. Score before spawning.
 
+## Programas: Planner primero (2026-11-06)
+
+Si el objetivo cumple la definición de **programa** (3+ pasos secuenciales, 2+ roles, más de una sesión, o fecha/bloqueo externo), el CORE llama a `kanam-planner` **antes** de dividir unidades. El plan del Planner reemplaza la división ad-hoc; `pipeline-track.sh` sigue siendo el estado de las unidades A/B **dentro de cada paso**. El Planner no spawnea en Fase 1: entrega plan y contratos; el CORE ejecuta. Procedimiento: `skills/planner-delegation/SKILL.md`.
+
 ## Purpose
 
 Before any A/B pipeline task, Kanam runs the complexity scorer to decide: model, thinking level, and pipeline depth. This avoids over-engineering trivial tasks and under-engineering critical ones.

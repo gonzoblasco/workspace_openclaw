@@ -46,7 +46,7 @@ al día, y el índice de tracking sin drift entre lo declarado y lo real.
 |---|---|---|---|---|
 | **kanam-auditor** (UI/UX) | ✅ `agents/kanam-auditor/ROADMAP.md` | v0.1 | 🟡 3 skills sueltos; `pixel-diff` real, `oracle`/`enforcer` parciales | Fase 1 → consolidar arsenal |
 | **kanam-critic** (sustancia) | ✅ `agents/kanam-critic/ROADMAP.md` | v0.2 | 🟡 vara + ritual listos; sin memoria ni cierre | v0.5 "El Ojo" |
-| **kanam-planner** (orquestación) | ✅ `agents/kanam-planner/ROADMAP.md` | v0.1 | 🟡 1 skill (`session-plan-orchestration`) | Tramo 3 (P2) |
+| **kanam-planner** (orquestación) | ✅ `agents/kanam-planner/ROADMAP.md` | v0.3 | 🟢 5 skills; programas + delegación CORE + review semanal | Fase 2: medir demanda y evaluar dispatch directo |
 | **kanam-dev** (ingeniería) | ✅ `agents/kanam-dev/ROADMAP.md` | v0.1 | 🟡 38 skills; sin declaración de madurez | Tramo 3 (P0) |
 | **kanam-mind** (conocimiento) | ✅ `agents/kanam-mind/ROADMAP.md` | v0.1 | 🟡 10 skills; memoria + investigación | Tramo 3 (P1) |
 | **kanam-ops** (infraestructura) | ✅ `agents/kanam-ops/ROADMAP.md` | v0.1 | 🟡 4 skills; gateway + config | Tramo 3 (P1) |

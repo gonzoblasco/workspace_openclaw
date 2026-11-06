@@ -1,8 +1,35 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-22). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-23). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
+
+---
+
+## [2026-11-06] - El Planner deja de ser un agente que hay que abrir a mano
+
+### Added
+- **Integración CORE → Planner (`skills/planner-delegation/`).** El CORE ahora tiene un procedimiento explícito para convocar al Planner cuando el objetivo es un programa multi-sesión (3+ pasos, 2+ roles, >1 sesión o fecha/bloqueo). El Planner devuelve plan, brief y contratos; el CORE ejecuta, verifica y sintetiza.
+- **Programas multi-sesión (`agents/kanam-planner/scripts/program_plan.py`).** CRUD con pasos, `owner`, `role`, `exit_criteria`, `depends_on`, `gate`, evidencia y estados. Comandos `init`, `add-step`, `update`, `next`, `brief`, `status --json`, `lint`, `board`, `report`, `close`.
+- **Gates de plan (`plan_lint.py`).** Falla si un paso no tiene dueño o criterio de salida, si hay ciclos, si un paso `completed` no tiene evidencia o si un `blocked` no tiene blocker. `close` corre el lint antes de cerrar.
+- **Contratos de ejecución (`dispatch_contract.py`).** Genera agente, modelo, alcance, write paths, criterio de salida, evidencia y prompt listo para `sessions_spawn`.
+- **Capacidad del Crew (`crew_capacity.py`).** Foto de sesiones activas por agente para evitar spawns duplicados.
+- **Skills del Planner:** `program-orchestration`, `crew-dispatch`, `plan-playbooks`, `plan-review`.
+- **Brief de programas en arranque/cierre.** `session-start.sh` imprime programas activos; `session-end.sh` recuerda actualizar paso/evidencia y no cierra el programa con la sesión.
+- **Automations:** `planner-weekly-plan` (lunes 08:30) y `planner-weekly-review` (viernes 17:30), con entrega a Telegram.
+- **`docs/PLANNER-INTEGRATION.md`:** RACI, quién llama a quién, puntos de inserción en los pipelines y modos de falla.
+
+### Changed
+- **`AGENTS.md` §3:** regla dura de programas multi-sesión; el CORE spawnea al Planner antes de ejecutar y no por cada paso.
+- **`complexity-driven-pipeline` y `agent-orchestration-pipeline`:** el programa se planifica con el Planner; `pipeline-track.sh` sigue siendo el estado intra-paso.
+- **`session-lifecycle`:** brief de programas al inicio y actualización de paso/evidencia al cierre.
+- **`SKILLS-INDEX.md`:** Core 34, Planner 5, total 110 (medido con `openclaw skills list`).
+
+### Notes
+- **Sin cambios de config:** no se tocó routing, heartbeat, modelos ni `subagents.allowAgents`. En Fase 1 el Planner **no spawnea**: entrega contratos y el CORE ejecuta.
+- **Test de automation:** `planner-weekly-plan` corrió en modo force, respondió `Sin programas activos.` y entregó a Telegram (`deliveryStatus: delivered`).
+- **Tests:** `tests/python/test_program_plan.py` 5/5 (happy path, evidencia obligatoria, ciclos, cierre y contrato).
+- **Fase 2 condicionada a métrica:** dispatch directo del Planner, tool nativa `plan` y Crew Board visual solo si hay 3+ invocaciones por semana durante 3 semanas.
 
 ---
 
@@ -632,200 +659,5 @@ Once bugs del codigo de la tanda, revisados y corregidos por el CORE (bucket `lo
 - **El limite de LinkedIn es el grado de conexion:** las cuatro recruiters de RYZ (Sonia Langone, Valentina Magni, Valentina Tellechea, Maria Belen Giordano) son 2do grado, asi que el DM directo esta bloqueado. La via que funciona es la invitacion con nota, que ademas no tiene limite de caracteres con Premium.
 - **Los 4 candidatos de RYZ encontrados en la busqueda de personas:** Valentina Magni (Senior Talent Acquisition Partner), Sonia Langone (Tech Recruiter, LATAM), Valentina Tellechea (Technical Recruiter), Maria Belen Giordano (Recruiter). Mas los founders Jordan Metzner (CEO) y Sam Nadler.
 - **Scripts: los que quedan en `tmp/` no se versionan** (gitignored); las copias limpias y documentadas estan en `docs/entrevistas/_general/outreach-2026-10-22/scripts/`.
-
----
-
-## [2026-10-22] - El idioma del post lo decide la materia: a11y en ingles, el resto en espanol
-
-### Changed
-- **Correccion de la regla de idioma** (Gonzo, 2026-10-22): la separacion es por **MATERIA**, no por tipo de aporte. **Todo lo que sea a11y va en ingles** - sin excepcion, aunque el aporte sea a producto propio, porque compite en un mercado US-only. **Todo lo que sea de otra materia va en espanol**, siempre que se pueda instructar de algun modo (que el lector local lo entienda sin contexto previo). La pregunta que lo resuelve: **¿es a11y?** Si es, ingles; si no, espanol. Lo que va al repo - review, comentario, PR - va **siempre en ingles**. El dueno: `memory/user-profile.md`, y la skill de MIND.
-- **El gate distingue los dos casos de español**: un post **a11y en español** es la regla rota (FALLA si es borrador, AVISA si ya se publico); un post **no-a11y en español** es lo esperado y no puede fallar. 2 tests nuevos (27 en total).
-- **Medido:** los 2 posts a11y en español de la cadena (`astryx-treelist-naming.md` y `base-ui-aria-orientation.md`) quedan señalados por el gate. Ademas son **material duplicado**: ambos cubren PRs que ya tienen post en ingles (`astryx-5493.md` y `oss-2026-08-24.md`), y la regla de un post por merge los excluye.
-
-### Added
-- **Registro de la contribucion en `memory.db`** (id 75): analisis del PR `facebook/astryx#7871` (de cixzhang, 10 archivos +254 -84, cero reviews humanos). El bot dejo 5 hallazgos; el del lint ya esta corregido, pero **queda vivo uno verificable**: el PR borra los dos stories `toast-*-card-mounted` - los unicos que montaban un `<Toast>` sin viewport propio - y el unico test que agrega ejercita solo el caso top-layer, mientras el exclusion nuevo nombra como owner "the ToastViewport announcement channel bound above", que es justo la config que no se ejercita y que roza `AST-086` FR10. Verificado contra el spec (FR10) y contra el diff.
-
-## [2026-10-22] - La regla de branding se abre: el review pasa a ser material de post
-
-### Changed
-- **La regla de branding del 2026-09-02 ("solo PRs mergeados propios") queda reemplazada** (decision de Gonzo, 2026-10-22). El material de post es **todo lo que tenga resultado atribuible y trazable**. **Un review, comentario o colaboracion es material de post** cuando cumple 3 condiciones: (1) trazable a un PR/issue real con link; (2) hubo un **cambio atribuible** - el autor ajusto el codigo por ese input, se destrabo un CI, se rescato un test de regresion, o el PR llego a su cierre; (3) hay un **detalle tecnico con criterio**. El credito de un maintainer **por si solo** sigue sin ser material de post (es material de entrevista). El dueno esta en `memory/user-profile.md` (seccion "Marca personal y alcance"), no en un ADR.
-- **El idioma del post se decide por el TIPO DE APORTE**, no caso por caso: un aporte a open source (PR mergeado, review, colaboracion en repo publico) lleva post en **ingles** (su audiencia es la misma que lee el repo, y el material a11y compite en un mercado US-only); un aporte a producto o sistema propio puede llevar post en **español**, segun el mercado al que apunta. Lo que va al repo - review, comentario, PR - va **siempre en ingles**.
-- **Los nichos dejan de ser una lista cerrada** (a11y / Agentic / Fullstack). Lo que define un nicho es que haya material propio con resultado atribuible, y se pueden sumar (componentes, build y estado, libros/estudio).
-- **La skill `linkedin-merge-post` (workshop de MIND)** deja de decir "own merges only" y pasa a "one post per attributable outcome", con las 3 condiciones explicitas.
-
-### Added
-- **`scripts/check-linkedin-pipeline.py`**: nueva funcion `audit_contributions()` - **AVISA** (no bloquea) de las contribuciones con resultado atribuible que ningun post cubre. Filtra lo que por regla no es material de post (el fix que llego a main via PR de otro autor: es evidencia de proceso, material de entrevista). 2 tests nuevos (25 en total).
-- **Medido:** el gate encontro **1 contribucion con resultado atribuible sin post**: `carbon-design-system/ibm-products#9869` - el review que fue el primer comentario,Finding 2 senales reales, con el autor ajustando el diff 11 h despues, y del que salio el post de #9878 (el segundo contacto de Darren Denham).
-
-### Gates
-`pytest tests/python` completo en verde (25 tests del gate) · em-dash OK · single-source OK.
-
-## [2026-10-22] - Los 12 posts con Status real: el numero de drafts vs publicados corregido
-
-### Changed
-- **Los 5 drafts que el gate marcaba quedan como `PUBLICADO`**, y los 4 que no tenian campo `Status` tambien. **Los 12 posts de `docs/linkedin/` declaran su estado real.** El gate de cierre pasa de "5 drafts vencidos" a **0**.
-- **La fecha de cada post es la mejor evidencia disponible, y se dice cual es.** Con evidencia directa: `astryx-4605` (24/08, el daily anota que Gonzo corrigio el post al postearlo) y `ibm-products-createfullpage-focus` (14/09, el daily cuenta que Darren Denham comento el post, o que ya estaba vivo). Sin evidencia registrada: los demas usan la del merge o del redactado, y la nota del archivo lo dice. **No se invento un dia de publicacion.**
-- **2 referencias rotas corregidas en el post canonico** (`astryx-5419.md`): apuntaban a `MEMORY.md` para la politica de los 3 nichos, que en realidad vive en `memory/user-profile.md` linea 47.
-- **Headers incompletos completados**: `astryx-4605.md` y `oss-2026-08-24.md` no declaraban `Nicho`, y sus titulos decian "(draft)" con el post ya publicado.
-
-### Fixed (dos bugs de diseno del gate, encontrados por el gate mismo contra la cadena real)
-- **El idioma no puede fallar en un post ya publicado.** La regla "el post va en ingles" es de PUBLICACION, no de archivo: en un post publicado el idioma es un HECHO y el gate no puede cambiar lo que ya salio. **Ahora AVISA en lo publicado y FALLA en lo borrador**, que es donde todavia se puede corregir. Lo detecto el gate contra 2 posts reales de la cadena, publicados en espanol.
-- **El link al PR solo se exige si el header declara un PR.** Un post sobre material propio (un refactor de proyecto) no tiene merge que citar, y exigirlo era un falso positivo. Lo pidio el gate a un post de proyecto propio.
-- 4 tests nuevos para estas dos reglas (23 en total).
-
-## [2026-10-22] - La revision adversarial veta el grafo OSS->LinkedIn (12/25) y encuentra un bug en el gate
-
-### Fixed
-- **El gate del workspace IMPEDIA los posts no-a11y en espanol** (hallazgo H6 de la revision adversarial). La rama del post en espanol caia en `problems` y hacia fallar al gate, cuando la regla del 2026-10-22 dice justo lo contrario: *"todo lo que sea a11y va en ingles; todo lo demas, en espanol"*. Un gate que prohibe lo que la regla manda es un gate roto. Ahora la rama no-a11y **avisa y no bloquea**; la rama a11y-en-espanol sigue fallando (esa si es la regla rota). 27 tests del gate en verde.
-
-### Added
-- **`projects/oss-post-graph/`** (repo `gonzoblasco/oss-post-graph`, privado): el grafo de la cadena OSS -> LinkedIn, Fase 1 de `docs/specs/oss-linkedin-chain-spec.md`. 5 nodos (facts -> evidence -> draft -> gates -> approval), MCP stdio, checkpointer SQLite, Ollama local. Sin Postgres, sin `LANGGRAPH_CLOUD_LICENSE_KEY`, sin LangSmith.
-- **El STATUS del proyecto registra el VETO 12/25** con los 9 P0 verificados por el CORE y la leccion de metodo: *un test que usa un fake tiene que existir al lado de la misma prueba con el camino real*.
-
-### Measured
-- La implementacion inicial declaro "100% verde" y **no lo estaba**: los tests ni colectaban (import de `FakeListLLM` inexistente). **7 bugs** corregidos y verificados uno por uno; despues, la revision adversarial veto la version siguiente (12/25) con 16 hallazgos, 9 de ellos P0/P1.
-- **El mas grave: el nodo `draft` crashea con el modelo real** (`prompt | ChatOllama` devuelve un `AIMessage`, que no tiene `.strip()`). Los 9 tests usaban `FakeListLLM`, que devuelve `str`. El camino de produccion **nunca corrio de punta a punta**.
-- **El modelo no recibia ningun hecho**: la evidencia eran nombres de archivo. Una post con "47 new tests" y "12.000 sesiones" **paso el gate con exit 0**.
-- **El gate y el grafo se contradecian en el idioma**: el gate rechazaba los posts no-a11y en espanol, o sea que **el grafo solo podia producir posts de a11y** - dos de los tres nichos de branding quedaban fuera por construccion.
-- Smoke real por stdio con cliente MCP: las 3 herramientas (`preparar_post`, `estado_run`, `aprobar_post`) responden.
-
-### La pregunta de fondo (rol B, sin filtro)
-> El grafo no automatiza el proceso de MIND: lo duplica con pasos extra y le quita el criterio. Lo unico que aporta de verdad es estado reanudable. Lo caro eran el criterio, la verificacion y la redaccion, y el grafo no toca ninguno de los tres.
-
-**Lo que lo haria valer la pena:** que el grafo le entregue a MIND el material ya verificado y citado (hechos con links, diff recortado, friccion del review) y el `thread_id` para reanudar, y **no** redactar.
-
-## [2026-10-22] - Los 2 posts nuevos publicados: Status volteado y archivo sincronizado con lo que quedo en vivo
-
-### Changed
-- **`docs/linkedin/react-spectrum-combobox-announce.md` y `docs/linkedin/carbon-composedmodal-describedby.md`**: `Status:` a `PUBLICADO 22/10/2026` + la URL real del post. Es el paso 8 de la skill, y es lo que evita que el archivo mienta: un post vivo con su archivo diciendo "draft" es el defecto que la skill ya documento el 2026-09-14.
-- **El post de carbon estaba editado despues de publicarse**: se removio la frase con el merge commit (`1709742020a4de25264060216ee8b7349581d9f1`, 12 Oct 2026). El archivo ahora refleja **exactamente** lo que quedo en vivo, no la version que se publico. Verificado fragmento por fragmento contra el post publico.
-- **La fecha de publicacion es 22/10/2026**, la del post. No se registro la hora: LinkedIn solo expone un valor relativo ("16m", "20m") y un timestamp inventado seria un dato falso en el archivo.
-
-### Measured
-- **Los 2 merges que faltaban tienen post y estan publicados.** La cadena pasa de "2 merges elegibles sin post" a **0**, y de **1** post con `Status: PUBLICADO` a **3**.
-- Quedan **5 drafts** que el gate de cierre sigue marcando (21 dias, 21, 21, 15 y 21). Para cada uno la accion es una de dos: si se publico a mano, voltear el `Status:`; si no, publicar o archivar. El gate no presume cual: dice las dos.
-
-## [2026-10-22] - La cadena OSS -> LinkedIn: gate restituido, 2 posts escritos, y 3 gates rotos cerrados
-
-### Added
-- **`scripts/check-linkedin-pipeline.py`** - el gate de la cadena, que **no existia**. La skill `linkedin-merge-post` (workshop de MIND) exige en su paso 6 "clear both publish gates", y uno de los dos era el "anti-ai pass" de `skills/anti-ai`: esa skill **no existe** (eliminada el 2026-09-22, ya era placeholder). El paso 6 era inejecutable y la cadena -una de las tres acciones del ROADMAP 2.2- no tenia gate. **Las reglas no estan inventadas: son las 6 categorias del `anti-ai` original, recuperadas del historial** (commit c0182f17, via `git show`), convertidas en chequeos automaticos.
-- **`tests/python/test_check_linkedin_pipeline.py`** - 19 tests. Cada uno siembra un arbol falso; el ultimo exige que el gate distinga el arbol limpio del sucio.
-- **`docs/linkedin/react-spectrum-combobox-announce.md`** y **`docs/linkedin/carbon-composedmodal-describedby.md`** - los 2 posts que faltaban (11 merges mergeados en la DB, 9 con post). Nicho a11y en los dos, que es lo que el material sostiene.
-
-### Fixed
-- **El gate de guiones largo no caza los guiones invisibles.** `check_em_dash.py` solo mira U+2014 y U+2013. Los 2 posts que escribio el subagente traian **10 y 9 guiones no separables (U+2011) y 8 espacios angostos (U+202F)**: invisibles al leer, presentes en el archivo. Los 10 posts canonicos tienen CERO de estos. El gate nuevo los caza, con el mismo criterio que el em dash: se ven bien y no lo estan.
-- **Un error de hecho en el post de react-spectrum.** Decia que "we updated the test suite to assert that per-item navigation no longer triggers a manual announcement". El diff real **BORRA** esos tests: el maintainer los pidio eliminar dos veces ("the same thing as `not.toHaveBeenCalled`, just dressed up differently" / "we can just drop these tests"). El post ahora cuenta esa historia, que es mejor que la que se habia escrito.
-- **El post de carbon atribuiu a Gonzo cosas que no son suyas** (un test "Storybook-driven" que en realidad es de React Testing Library, y un paso de friccion redigido en segunda persona que no ocurre en el PR). Corregido contra los comments inline reales de `adamalston` y el diff final.
-- **Una cita a WCAG 2.1 SC 1.3.1 que ni el PR ni el issue sostienen.** Retirada de los 2 posts: lo que queda es lo que el PR sostiene.
-- **3 referencias rotas en la skill `linkedin-merge-post`**: el gate "anti-ai" (inexistente), el puntero de la politica de branding (`MEMORY.md` -> `memory/user-profile.md` linea 47, que es donde vive) y `skills/content-serializer` (inexistente). **El paso 6 ahora es ejecutable.**
-- **Los 2 posts quedaron en `agents/kanam-mind/docs/linkedin/`** en vez de `docs/linkedin/`, que es el dueno (la skill lo dice: "write the draft to `docs/linkedin/<repo-short>-<topic-or-pr>.md`"). Movidos.
-
-### Changed
-- **El gate esta en el pre-commit, pero SOLO en modo post** (valida los posts staged). El modo auditoria **no** se conecta a proposito: con el backlog medido (5 drafts vencidos, 2 merges sin post) bloquearia TODO commit del workspace. Un guard que bloquea todo es una pared, no un guard.
-- **La spec `docs/specs/oss-linkedin-chain-spec.md`** pasa a "Fase 0 HECHA", y su diagnostico se corrige: el cuello de botella **no era la aprobacion**, era que la publicacion no ocurre. El diagnostico se corrijo con lo que el gate revelo y no con mi estimacion: **5** drafts (no 4), **1** post con `Status: PUBLICADO` (no 2), **4** posts sin campo `Status`, y los headers inconsistentes (4 en espanol, 3 en ingles).
-
-### Measured
-- El gate de cierre, en el estado real: **5 drafts vencidos** (4 de 21 dias, 1 de 15), **2 merges elegibles sin post**, **1 solo post con `Status: PUBLICADO`** de 10. El ROADMAP 2.2 pide 3+ publicados.
-- **El OK no era el cuello de botella** (Gonzo, 2026-10-22): los 5 drafts ya tenian el OK y se publicaron a mano, pero **el `Status:` de ninguno se volteo**. O sea, la falla real es que **la publicacion no la dispara nadie y el archivo no registra la verdad** - el mismo defecto que la skill ya habia documentado el 2026-09-14 con el post de #9878. Por eso el gate no presume la causa: dice las dos (falta publicar, o se publico y el archivo miente).
-- De los 11 merges mergeados: **10 son de a11y y 1 de CI**. **Ninguno del nicho agentic ni del fullstack**: de los 3 nichos de branding, solo el a11y tiene material propio.
-
-### Gates
-`pytest tests/python` completo en verde · `check_em_dash.py` OK · `check-single-source.py` OK · `check-bootstrap-budget.py` OK.
-
-## [2026-10-22] - ADR-099 enmendado contra el disco, y el drift sacado de sus artefactos
-
-### Changed
-- **ADR-099 enmendado** (`Actualizado: 2026-10-22`): accion 2 **cerrada** (la correccion de las tres afirmaciones falsas de `LANGCHAIN_STRATEGY.md` se hizo el 2026-10-19; re-verificada hoy), seccion 5 **re-medida** contra el disco, accion 4 nueva, y seccion "Revision 2026-10-22" con el research verificado.
-- **Drift sacado de los tres artefactos de LangChain** (revision de la sesion a pedido de Gonzo: *"aca estamos hablando de langchain y su integracion"*). El ADR-099 decia que "el candidato medido es un drill de ingles": reemplazado por el estado real (la via tecnica esta medida; **el caso de uso es decision de producto, no de arquitectura**). `LANGCHAIN_STRATEGY.md` derivaba al mismo lugar: reemplazado por la referencia a la verificacion. Y la seccion C2 de `verificacion-claims.md` hablaba del gap de ingles en vez del hallazgo de integracion: reescrita como **el §4.1 del research duplica memoria y scheduler que ya existen** (frontera de la seccion 3 del ADR). En la tabla de workflows, §4.1 y §4.5 pasan de "reconstruir como drill" a **"fuera de alcance"**. Tambien se corrigio un `prohibits` que se habia colado en el ADR.
-
-### Measured (ADR-099 seccion 5, re-medido hoy)
-- Documento de estrategia corregido contra el disco: **CUMPLE** (ya no declara 4.423 vectores).
-- Indice con documentos de mas de una fuente: **NO CUMPLE** - la coleccion `starter_knowledge` sigue con **10 embeddings de un solo documento**, `chroma.sqlite3` sin modificar desde el 2026-10-19 13:54.
-- Numero de chunks reproducible con un comando documentado: el **comando existe** (`scan_sources.py --list`, hoy reporta **372 archivos**, era 333) pero **la corrida de indexado no se hizo** (`store.py --sources --reset` pendiente, accion 4 del ADR). El servicio (`127.0.0.1:8100`) sigue sano y el watchdog de launchd sigue activo.
-
-### Gates
-`check-single-source.py` OK · `check_em_dash.py` OK en los 3 archivos tocados.
-
-## [2026-10-22] - Research OpenClaw + LangChain: preservado, verificado claim por claim, y 3 afirmaciones del research refutadas
-
-### Added
-- **`docs/research/2026-10-22-langchain-career-workflows.original.md`** - el research externo (604 lineas, 74 fuentes) preservado con sus `<citation>` inline. Venia como texto pegado en media transitorio (`~/.openclaw/media/inbound/`), que se borra: sin esto se perdia. Unica normalizacion: 4 em dash (U+2014) -> guion comun, porque el gate de publicacion (`scripts/check_em_dash.py`) los prohibe; el contenido, el orden y la corrupcion CJK estan intactos.
-- **`docs/research/2026-10-22-langchain-career-workflows.md`** - version legible (sin las citations inline) con la **corrupcion medida y marcada**: 5 puntos con CJK intercalado (`para**利亚** desarrollo`, `métricas y**没人**?lecciones`, `el entrevistador**继** conversational`, `puede**实际上** generarse`, `y**的资料** de carrera`), 1 marcador `[WIRE?]` y 1 fragmento JSON5 roto en 3.2 (`id: "career-mentor"][name: "Career Mentor"`). 2 URLs citadas dan 404 (`langsmith/deployment-sdk`, `oss/python/langchain/langserve`).
-- **`docs/research/2026-10-22-verificacion-claims.md`** - los 26 claims clasificados por veredicto, con la fuente que los sostiene. 13 VERDADERO, 5 PARCIAL, 3 FALSO, 1 NO DOCUMENTADO.
-
-### Changed
-- **La regla de lectura del research, fijada por Gonzo:** un ADR nuestro no es dogma - pero un ADR registra **el estado real de este stack**, y ese estado no lo invalida un documento externo. Cada claim se clasifica por naturaleza: **hecho tecnico** (gana la fuente citada) / **hecho sobre nuestras restricciones** (gana el ADR, porque describe lo que existe aca) / **valor** (se decide, no se hereda). Verificacion con 2 agentes independientes, uno por lado del stack, mas medicion propia en disco. **0 afirmaciones aceptadas por autoridad.**
-
-### Fixed (3 afirmaciones del research refutadas contra la fuente)
-- **"Las mutaciones del registro MCP requieren el Gateway detenido"** - FALSO. `cli/mcp/registry.md`: *"these commands only read or write OpenClaw config"*. No hay tal requisito; el CLI escribe config directo.
-- **`OPENCLAW_DISABLE_CRON_HOST_EXECUTION=1`** - NO EXISTE. 0 resultados en todo `docs/` y 0 en el binario instalado. Inventado.
-- **"LangSmith self-hosted" como opcion local** - es un **add-on Enterprise** con license key, Kubernetes, Postgres, Redis y ClickHouse (minimos: 16GB RAM / 4 CPUs). No es OSS ni SaaS-only: es enterprise.
-
-### Medido (lo que cambia el plan)
-- **La via local existe y es mas barata que la que propone el research.** `mcp<2` (FastMCP 1.30.0, servidor MCP stdio propio) resuelve con los pines del starter **intactos** - 0 conflictos (`uv pip compile`: `mcp==1.30.0` + `langgraph==0.6.11` + `langgraph-checkpoint==2.1.2` + `fastapi==0.128.8`). Sin Postgres, sin `LANGGRAPH_CLOUD_LICENSE_KEY`, sin LangSmith. El research senala el patron correcto (MCP para flujos acotados) pero lo implementa con la capa mas pesada disponible. Con `langgraph-api` tambien resuelve sin conflicto (`langgraph-api==0.4.48`), pero pide Postgres + Redis + verificacion de licencia para un flujo acotado. El endpoint `/mcp` existe: medido en el wheel real (`langgraph_api/api/mcp.py:495`).
-- **El gap real no es "un mentor": es un drill de ingles.** `job-search-tracker.md` registra **Staffy/Pfizer y Sol cerrados ambos por el mismo filtro de C1 conversacional**, con plan C1 en curso (CUI) y `studies/english/` vacio. El §4.1 del research ("evaluar la respuesta y ajustar el siguiente paso") es un drill. Y la infraestructura alrededor ya existe: `career-facts.md` (ADR-101), `check-cv-facts.py`, `revision-adversarial.md` (que es la estrategia WRITE->SELECT->COMPRESS->ISOLATE del §4.3, escrita a mano), `study-asset-lab`, `automations`.
-- **`deepagents` 0.7.30 rompe el pin** (`langchain>=1.4.6` vs `langchain==0.3.30` del starter) y **`create_react_agent` esta deprecado en `langgraph` 1.x** (hoy 1.2.16; nuestro pin 0.6.11 lo tiene vigente). No actualizar el pin de `langgraph` como efecto colateral.
-
-### Relacionado
-ADR-099 (LangChain como capa de ejecucion), ADR-103 (LiteLLM se descarta), ADR-101 (corpus unico de carrera), ADR-100 (fuente unica), ADR-083 (frontera de roles).
-
-## [2026-10-22] - Busqueda activa: el giro a empresas de producto, 3 CVs de perfil AI-native y dos bugs del gate de hechos
-
-### Added
-- **Busqueda activa de vacantes (no a proposito de postulaciones).** Barrido de a11yjobs (208 avisos), LinkedIn guest API (AR + LATAM), vacantesdigitales (1000+), remotive, himalayas, remoteok, jobicy, arbeitnow, getonbrd, landing.jobs y boards directos de Greenhouse/Ashby (adobe, carbon, mui, figma, deque, evinced), ademas de 10Pearls, Svitla, Infojini, FullStack y Blacksmith. **Hallazgo:** el mercado activo de accesibilidad es casi entero US-only; los avisos que filtran "LATAM" son casi todos el mismo bench de recruiters (Infojini, E-IT, FullStack) que ya cerro con Disney/HTC. Lo que aparece, y es nuevo, son vacantes de front-end con a11y en empresas de producto reales.
-- **Tres CVs de un perfil NUEVO** (`## 10` del corpus: "AI-native frontend"), cada uno con su angle segun el JD: `docs/entrevistas/ryz-labs-ai-first-frontend/` (AI-First Frontend Software Engineer, RYZ Labs, remoto US+LATAM), `docs/entrevistas/mural-growth-senior-swe/` (Senior Software Engineer Growth & Engagement, Mural, Argentina) y `docs/entrevistas/mercadopago-ux-expert/` (UX Expert - Software, Mercado Pago, Buenos Aires hibrido). Cada carpeta lleva el `.md` fuente (la verdad), el `.html`, el `.docx` y el `.pdf` de 2 paginas. Los tres declaran sus gaps explicitamente en "Notes / gaps".
-- **`scripts/cv-md-to-html.py`** - conversor Markdown -> HTML con los estilos del CV de referencia (el de Staffy), para que todos los CVs del workspace compartan formato en vez de reescribir el HTML a mano en cada postulacion. Las secciones de trabajo ("Notes / gaps", "Keyword map") quedan excluidas por defecto del archivo que se posta: con ellas los CVs daban 3 paginas; sin ellas, 2. Reconoce las variantes en espanol.
-- **`scripts/build-cv-docs.sh`** - HTML -> DOCX + PDF, 100% local, sin pandoc ni LibreOffice (no hay ninguno en la maquina). El DOCX va por `textutil html -> rtf -> docx` porque el camino directo **pierde la negrita** (0 tags `<w:b/>` vs 3 con el paso por RTF). El PDF usa el `chrome-headless-shell` de Playwright, ya instalado: `cupsfilter` y `textutil` producen **0 bytes** con HTML y con RTF. El script **verifica** los outputs (no se fia del exit code) y reporta el conteo de paginas.
-- **Tres mensajes de primer contacto** en `tmp/job-search-2026-10-22/outreach/` (RYZ y Mural en ingles, Mercado Pago en espanol) + `primer-mensaje-plantilla.md` y `preguntas-de-screening.md`, con las preguntas ordenadas por costo y la regla de que la de idioma va al final.
-
-### Fixed
-- **El gate leia "1.5 years" como "5 years"** y reportaba una violacion FALSA en los tres CVs de AI-native: el patron `(\d+)` cortaba en el punto decimal. Ahora el numero puede ser decimal y la comparacion contra el dueno tolera el redondeo (0,75), asi que "1.5 years building AI-native products" se reconoce como el mismo hecho que `ai_years: 1` (la calibracion interna de "desde 05/2025"), mientras que "3.5 years" si se reporta. 3 tests nuevos.
-- **El gate marcaba la honestidad como fraude.** Las secciones "Notes / gaps" y "Keyword map" citan los requisitos del JD (no son hechos de Gonzo) y declaran los vacios, pero el gate las leia como claims: reportaba "feature flags no esta en el corpus" sobre un bullet que decia literalmente "feature flags: not part of my experience", y una contradiccion de años sobre una fila del mapa. Ahora las secciones de trabajo se saltan en los controles 1-2 y 8. 3 tests nuevos.
-- **El fixture de los tests era una segunda verdad:** declaraba `ai_years: 5`, el valor viejo que ADR-101 ya habia corregido a 1 en el dueno real. Alineado a 1, con el comentario de por que.
-- **La URL de LinkedIn se partia al final de linea y `pdftotext` comia el guion bajo:** el PDF se veia bien pero el ATS leia `linkedin.com/in/gonzaloblasco`. Las URLs y el email del CV ahora no se parten (`white-space: nowrap`).
-- **"20+ A/B experiments" era un numero inventado**, y ademas estaba atribuido al rol Freelancer cuando los experimentos fueron en Minutentag (2019). Salieron del CV y quedan prohibidos por el corpus (§2.4 registra que la cantidad de experimentos NO esta registrada).
-- **Herramientas no registradas en el corpus** (Tailwind, Jest, Copilot, Cursor, "prompt engineering", "quarantine -> analyze -> verify -> adopt") aparecian en los CVs sin estar en el dueno. Verificadas contra los repos del workspace y registradas en §2.1/§2.2 del corpus primero (ADR-101: el corpus es la verdad, el perfil es un filtro).
-
-### Fixed (revision adversarial, rol B)
-- **"Agentes de computer-use en produccion" - el claim mas grave de la tanda, y con evidencia en contra.** El CV de Mercado Pago declaraba flujos agénticos de computer-use. No hay ninguna experiencia asi: el **2026-08-27 un subagente se desvio a CuaDriver (computer-use) en una tarea que no lo requeria, Gonzo lo bloqueo y el proceso se relanzo sin computer-use** (`memory/archive/dailies/2026-08-27.md:66`). El corpus ahora lo dice explicitamente, con la prohibicion, para que no se repita.
-- **"Led the migration of legacy jQuery and Handlebars interfaces to React, Sass and HTML5" aparecia en 5 CVs, cuatro de ellos ya enviados.** El corpus dice "**Participó** de la migracion a React" (§2.4) y no registra jQuery, Handlebars ni Sass. La atribucion era una palabra de mas ("Led" vs "Participó") y el stack, inventado. Corregido en los 5 (los 3 nuevos, mas el de MeLi, el de Sol y el de EIT/HTC) y en el HTML del CV de Staffy, con su DOCX y PDF regenerados. **El mismo defecto estaba en CVs que ya se habian mandado: el gate no lo caza porque no compara atribucion de rol.**
-- **"Led EY Motif" atribuia la conduccion de la libreria.** El corpus dice que audito y remedio 50+ componentes y que fue el referente de accesibilidad del equipo, no que liderara la libreria. Ahora: "Led accessibility for EY Motif" (los 3 CVs).
-- **El design system propio de SoporteML no estaba en el corpus**, aunque existe (`projects/soporteml/tailwind.config.ts` + `UI-DESIGN-SKILL.md`, con tokens semanticos, escala tipografica y mapa token-componente). Registrado en §2.2 con la evidencia, y ahora los CVs pueden declararlo.
-- **El servidor MCP propio tampoco estaba en el corpus:** `projects/kanam-fixer/` expone un MCP companion server con dos tools que permite a un agente consultar que anuncia un lector de pantalla sobre un fragmento de HTML (ADR-0003 del proyecto). Registrado en §2.1. **Esto es un diferencial real para el JD de Mural, que pide MCP.**
-- **Atribucion cruzada de los experimentos A/B:** la version anterior ponia "ran 20+ A/B experiments with Adobe Target" **dentro del rol Freelancer**. Los experimentos fueron en Minutentag (2019). Ademas el corpus ahora prohibe explicitamente la cantidad, que nunca estuvo registrada.
-- **El mensaje de Mural no preguntaba el nivel de ingles, solo la frecuencia de colaboracion.** Un recruiter puede responder "bastante" sin revelar que exige C1, que es el filtro que cerro Staffy y Sol. Ahora pregunta las dos cosas.
-- **El mensaje de RYZ atribuia causalidad inventada:** "the output of that method is 11 merged pull requests" implicaba que los PRs los escribio la IA. Separado: el metodo y los PRs son dos hechos, no uno.
-- **El CV de RYZ declaraba cuatro gaps que su JD no pide** (feature flags, funnel, analytics, MongoDB): los del JD de Mural, copiados. Borrados, y reemplazados por dos requisitos que el JD de RYZ si pide y no figuraban (UI polish, startups).
-- **El CV de Mural sobre-declaraba en el primer parrafo lo que su propia seccion de gaps negaba** ("shipped, measured feature", "experiment analysis", "measure it with the client's real usage" vs. "I did not own the metrics"). Un recruiter de Growth lee la primera impresion y la correccion llega tarde.
-- **El CV de Mercado Pago copiaba sintagmas del JD a Competencias sin hecho detras** ("diseno de interaccion", "uso de modelos para generacion, revision y prueba de interfaces") y dos pantallas despues declaraba no tener diseno de producto. Ademas declaraba como vacio lo que el JD llama diferencial (SaaS para sellers), que es literalmente SoporteML.
-- **Terminos no registrados** ("WAI-ARIA Authoring Practices", "mentorship", "client support", "self-hosted agent stack") corregidos por su equivalente que el corpus sostiene, y registrados donde el hecho es real.
-
-### Notes
-- **El hallazgo de fondo que cambia la estrategia de busqueda:** los tres cierres recientes (Staffy 20/10, Sol 21/10, y el riesgo latente en Infjini) eran **agencies/nearshore con comunicacion diaria con clientes US**. Ahi el idioma es un filtro de *elegibilidad*. En empresas de producto con su propio equipo (RYZ, Mural, Mercado Pago) el ingles es requisito de lectura/escritura, no de call con clientes: el mismo B2 pasa. **Regla operativa: apuntar a empresas de producto, no a nearshore-agencies que reasignan tu tiempo a clientes.**
-- **La pregunta de idioma NO aplica a todos los procesos.** En un puesto local (Mercado Pago, Buenos Aires hibrido) no se pregunta: no hay filtro que descubrir y la pregunta proyecta una duda que no hace falta. En RYZ y Mural si, y es la primera pregunta por costo.
-- **Pendientes de Gonzo:** (a) enviar los mensajes y(postular) los CVs - nada sale sin su OK; (b) en Mural, el rol es de Growth con el mismo perfil de riesgo de idioma; (c) en Mercado Pago, el riesgo real no es el idioma sino que el puesto es **mas de diseno que de ingenieria**: conviene enterarse antes de invertir.
-- **El corpus quedo ampliado** (§2.1 herramientas de IA, §2.2 herramientas y toolset, §2.4 la prohibicion del numero de experimentos, §10 el perfil nuevo). Sin cambios en los hechos que ya estaban: ni anos, ni idioma, ni certificaciones, ni fechas de roles.
-
----
-
-## [2026-10-22] - LiteLLM se descarta: la capa de router ya existe en el stack propio
-
-### Added
-- **`docs/adr/ADR-103-litellm-se-descarta.md`** - decide **no adoptar LiteLLM** (proxy/gateway LLM). Registra qué es realmente (traduce formato OpenAI al de cada proveedor + gobernanza: virtual keys, budgets, spend, routing con fallback), por qué el nombre engaña, el mapeo contra el stack propio, la limpieza ejecutada y la deuda que queda (multi-tenant).
-- **`scripts/memory-db.sh`: comando `edit-todo <id> "texto"`** - reescribe el texto de un todo. Antes no había forma de corregir un todo sin borrarlo y recrearlo (perdía el id y la fecha de creación).
-
-### Changed
-- **Pendiente #82 (Onyx) reescrito:** el camino de embeddings ya no menciona LiteLLM. Queda directo contra `/v1/embeddings` de Ollama (`qwen3-embedding:0.6b`, dim 1024) con el provider `openai_compatible`. Onyx también acepta `ollama` directo: **el proxy era opcional, no necesario**.
-- **Lección registrada** en `docs/learnings/infraestructura.md`: *"LiteLLM: un playground puede funcionar sin ser adoptable"* - el server anduvo y las 7 pruebas end-to-end pasaron, y aun así no lo era.
-
-### Removed
-- **LiteLLM desinstalado por completo:** containers `litellm_ollama` + `litellm_ollama_db`, volumen `litellm_ollama_postgres_data` (70 MB) e imagen `ghcr.io/berriai/litellm:main-stable` (1,82 GB). Los directorios `~/experiments/litellm` (320 MB) y `~/experiments/litellm-ollama` quedaron en `trash` (recuperables).
-- **El build local desde el clon:** nunca se completó. Compila el crate Rust `litellm-python-bridge` (pyo3) y falló dos veces por `cannot allocate memory` (la VM de Docker tiene 8 GB asignados de 24 GB de host).
-
-### Verified
-- **Ningún componente propio usaba LiteLLM:** `grep -rni litellm` sobre el workspace → sólo menciones en dailies; `~/.openclaw/openclaw.json` → 0 referencias. El gateway de OpenClaw llama directo a Ollama.
-- **Lo que el stack propio ya cubría:** `model_list`/routing (`model-router.sh` + ADR-090), retry/fallback/balanceo (pipeline A/B, ADR-077/088/089), virtual keys y spend (`memory.db`), guardrails (`AGENTS.md` + pre-commit), dashboard (`docs/`). Lo único ausente era multi-tenant.
-- **La caché de build: los 32,52 GB NO son de LiteLLM** _(medido 2026-10-22 13:45)_. `docker buildx du` reporta 32,52 GB en total, pero solo **3 registros (21 MB el mayor) tienen marca LiteLLM**; el resto es caché de builds anteriores del host (Vane, browseruse, Onyx, openhands, chatterbox). El `prune` devuelve `0B` porque el builder de Docker Desktop usa **executor `containerd`**: el espacio vive en `/var/lib/docker` de la VM (31,0 GB medidos), no en el registro de buildkit. **No se forzó el borrado.** Bloque recuperable más grande: `vane-builder:local` (10,66 GB únicos, 0 containers) - **decisión de Gonzo: Vane se usa, no se limpia**. Liberarlo requiere `docker image prune -a` con OK explícito.
-- **Integridad:** `check-adr-integrity.py` → 58 ADRs, todos indexados, sin refs rotas. `check-single-source.py` → OK.
 
 ---

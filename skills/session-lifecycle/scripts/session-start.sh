@@ -73,6 +73,21 @@ if [[ -f "scripts/session_plan.py" ]] && command -v python3 >/dev/null 2>&1; the
   fi
 fi
 
+# --- Program brief: planes multi-sesion del Planner (2026-11-06) -------------
+# El plan de sesion dice en que estabamos; el programa dice donde esta el
+# objetivo a traves de las sesiones. Idempotente: sin programas, no imprime.
+PLANNER_PROGRAM_PLAN="agents/kanam-planner/scripts/program_plan.py"
+if [[ -f "$PLANNER_PROGRAM_PLAN" ]] && command -v python3 >/dev/null 2>&1; then
+  PROGRAM_BRIEF=$(python3 "$PLANNER_PROGRAM_PLAN" brief --quiet 2>/dev/null || true)
+  if [[ -n "$PROGRAM_BRIEF" ]]; then
+    echo "🗺️ Programas activos (Planner):"
+    echo "$PROGRAM_BRIEF"
+    echo ""
+    echo "---"
+    echo ""
+  fi
+fi
+
 # --- Complexity score (complexity-driven-pipeline, 2026-08-30) ---
 # Score the objective upfront so model/thinking/pipeline depth is decided
 # together before spawning any agent.

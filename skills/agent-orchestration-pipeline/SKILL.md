@@ -9,6 +9,8 @@ Orquestar multiples agentes implementadores con revision cruzada multi-ronda, co
 
 > **ESTANDAR DE TRABAJO (ADR-049, 2026-09-15):** la forma de programar de ahora en mas es este pipeline con **Claude Code (embebido en Claude Desktop 3p, >= 2.x) como el motor de los agentes A/B**, apuntando al gateway Ollama con el modelo dinamico. **Qwen Code queda como fallback o segundo par de ojos, no como estandar.** Kanam (orquestador) redacta las tareas, encadena los outputs (pasa el codigo de A a B), verifica y reporta. El desarrollador no escribe prompts de agentes - solo da la meta.
 
+> **Programas vs pipeline (2026-11-06):** si el objetivo es un **programa** multi-sesión (3+ pasos, 2+ roles, >1 sesión, fecha/bloqueo), el CORE llama primero a `kanam-planner` (`skills/planner-delegation/SKILL.md`). El Planner define pasos, dueños, criterios de salida y **contratos**; el CORE ejecuta el pipeline A/B/C por paso. `pipeline-track.sh` sigue siendo el estado **intra-paso**; el programa vive en `agents/kanam-planner/.knowledge/programs/`. No duplicar estado ni llamar al Planner por cada unidad.
+
 ## Motor: Claude Code via Ollama (estandar, ADR-049)
 
 Los agentes implementadores son instancias de **Claude Code** lanzadas por el orquestador, apuntando al gateway Ollama y usando los modelos locales/cloud de Ollama. Esto da acceso a los modelos sin APIs externas de pago.

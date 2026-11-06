@@ -1,6 +1,6 @@
 # SKILLS-INDEX - Skills del workspace
 
-> Índice canónico del árbol de skills *git-tracked*. Verificado por última vez: **2026-11-02**.
+> Índice canónico del árbol de skills *git-tracked*. Verificado por última vez: **2026-11-06**.
 > Este archivo **no lleva su propio changelog**: cada cambio va a `CHANGELOG.md` y al historial de git.
 
 ---
@@ -20,15 +20,15 @@
 
 | Árbol | Activas |
 |---|---|
-| `skills/` (Core) | 30 |
+| `skills/` (Core) | 34 |
 | `agents/kanam-dev/skills/` | 43 |
 | `agents/kanam-mind/skills/` | 10 |
 | `agents/kanam-ops/skills/` | 4 |
 | `agents/kanam-studio/skills/` | 7 |
 | `agents/kanam-critic/skills/` | 2 |
-| `agents/kanam-planner/skills/` | 1 |
+| `agents/kanam-planner/skills/` | 5 |
 | `agents/kanam-auditor/skills/` | 5 |
-| **Total activas** | **102** |
+| **Total activas** | **110** |
 
 > **El ciclo SDD (9 skills `hermes-*`) se movió del árbol del Core al de `kanam-dev` el 2026-09-29** (ADR-083).
 > Estaba en `skills/`, así que el Core veía el playbook de ingeniería - `hermes-builder` dice
@@ -87,7 +87,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 
 ## 3. Inventario
 
-### 3.1 Core - `skills/` (29)
+### 3.1 Core - `skills/` (34)
 
 | Skill | Qué hace |
 |---|---|
@@ -123,6 +123,8 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [deslop](skills/deslop/) | Limpia código AI slop de un branch antes del PR |
 | [superpowers](skills/superpowers/) | Workflow spec-first con TDD y ejecución por subagentes |
 | [self-improving-agent](skills/self-improving-agent/) | Captura aprendizajes, errores y correcciones en markdown para mejora continua |
+| [planner-delegation](skills/planner-delegation/) | Cómo llama el CORE al Planner: cuándo un objetivo es programa, prompt, entregable y verificación del plan antes de ejecutar |
+| [task-prep](skills/task-prep/) | Prepara una tarea de grabación de pantalla (Mercor/Odin) antes de grabar: criterio, investigación, guion y checklist |
 
 ### 3.2 kanam-dev - `agents/kanam-dev/skills/` (43)
 
@@ -226,11 +228,15 @@ implementación: vivía en el árbol del Core, que así lo podía ejecutar. El C
 | [sharp-adversarial-review](agents/kanam-critic/skills/sharp-adversarial-review/) | Presión adversarial con la rúbrica SHARP: puntúa 5 ejes con evidencia citable, emite VETO / Aprobado / ORO y devuelve los puntos de fricción obligatorios |
 | [evidence-hunter](agents/kanam-critic/skills/evidence-hunter/) | Caza evidencia verificable en el repo para sustentar los ejes SHARP: convierte afirmaciones del autor en pruebas automáticas y arma la tabla de evidencia citada |
 
-### 3.7 kanam-planner - `agents/kanam-planner/skills/` (1)
+### 3.7 kanam-planner - `agents/kanam-planner/skills/` (5)
 
 | Skill | Qué hace |
 |---|---|
 | [session-plan-orchestration](agents/kanam-planner/skills/session-plan-orchestration/) | Orquesta la tarea como plan persistente (`.knowledge/session_plan.json`): traza pasos, asigna roles en orden y evita la amnesia de sesión |
+| [program-orchestration](agents/kanam-planner/skills/program-orchestration/) | Convierte un objetivo multi-sesión en un programa con pasos, dueños, criterios de salida, dependencias y evidencia |
+| [crew-dispatch](agents/kanam-planner/skills/crew-dispatch/) | Convierte un paso en un contrato de ejecución (agente, modelo, alcance, evidencia); en Fase 1 el CORE ejecuta el spawn |
+| [plan-playbooks](agents/kanam-planner/skills/plan-playbooks/) | Biblioteca de planes recurrentes: feature delivery, OSS PR, evaluación de modelos, postulación y auditoría/incidente |
+| [plan-review](agents/kanam-planner/skills/plan-review/) | Review semanal y cierre de programa: progreso, bloqueos, estancados y top 3 de la semana |
 
 ### 3.8 kanam-auditor - `agents/kanam-auditor/skills/` (5)
 

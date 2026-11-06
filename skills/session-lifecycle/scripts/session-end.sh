@@ -140,6 +140,19 @@ if [[ -f "scripts/session_plan.py" ]] && command -v python3 >/dev/null 2>&1; the
   echo ""
 fi
 
+# --- Program reminder: el programa NO se cierra con la sesion (2026-11-06) ---
+# El plan de sesion se archiva; el programa multi-sesion sigue vivo. Si hay
+# programas activos, recordar actualizar paso/evidencia antes de cerrar.
+PLANNER_PROGRAM_PLAN="agents/kanam-planner/scripts/program_plan.py"
+if [[ -f "$PLANNER_PROGRAM_PLAN" ]] && command -v python3 >/dev/null 2>&1; then
+  PROGRAM_STATUS=$(python3 "$PLANNER_PROGRAM_PLAN" brief --quiet 2>/dev/null || true)
+  if [[ -n "$PROGRAM_STATUS" ]]; then
+    echo "🗺️ Programa(s) activo(s) — actualizá paso/evidencia antes de cerrar:"
+    echo "$PROGRAM_STATUS"
+    echo ""
+  fi
+fi
+
 # Reflection prompt
 # Post-task reflection (2026-09-03): automatic post-task reflection stage.
 # Complements the closing self-reflection: this one runs per task, not per session.
