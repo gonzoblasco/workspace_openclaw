@@ -100,6 +100,7 @@
 | `agents/kanam-mind/scripts/kb-ingest.py` | material de estudio → secciones citables en `memory/knowledge.db` (FTS5, idempotente, `--replace`, redacta secretos) | [obs] ingirió 3 secciones de un capítulo de prueba con citas `archivo#L1-L2` |
 | `agents/kanam-mind/scripts/kb-search.py` | consulta sin modelo, con **verificación de la cita** contra el disco | [obs] devolvió la sección correcta con `✓ ok`; `--stale` detecta fuente cambiada |
 | `agents/kanam-mind/scripts/brief-journal.py` | journal durable de briefs con veredicto y fuentes | listo para su primera entrada real |
+| `agents/kanam-mind/scripts/handoff-gate.py` | **[nuevo 2026-11-06]** gate en el **borde del pipeline**: `out` (artefacto con veredicto) e `in` (cada claim citado resuelve). Exit 1 como un test rojo | [obs] `out` dio PASS sobre este brief y FAIL sobre el control; `in` rechazó 2 claims sin archivo |
 | `agents/kanam-mind/skills/evidence-gate-executable/SKILL.md` | hace descubribles y encadenados los 4 scripts | escrito |
 
 [inf] Esto cierra los Hitos 5.1 y 5.2 del ROADMAP con artefacto, no con prosa: el "termómetro" existe y otro lo puede reproducir con el mismo comando.
@@ -112,7 +113,19 @@
 | B2 | **`brief-request` template** (estilo `agents/kanam-mind/templates/context_handover.md`): pregunta, criterio de parada, frescura, homes, fuentes obligatorias, presupuesto. | El pedido llega con forma, no como prompt suelto: menos ida y vuelta, menos "killed". | Un brief sale **sin que el CORE tenga que aclarar el pedido**. |
 | B3 | **Cron semanal `mind-study-digest`** (domingo): ingestar un capítulo del libro en curso, extraer 3 aprendizajes formalizados, actualizar `study-tracker`. | Le da a MIND una cadencia propia y produce material que el CORE puede citar. | 4 semanas corridas sin intervención; cada corrida deja ≥1 nota citada en `knowledge.db`. |
 | B4 | **Arreglar `semantic-search.js` (handoff a DEV/OPS)**: apuntar a `workspace/memory/memory.db` y usar embeddings por API en vez de `ollama run` (lento, 30 s timeout). | Cierra la deuda del Hito 5.3 con criterio de aceptación de MIND. | `node agents/kanam-mind/scripts/semantic-search.js "<q>"` devuelve una nota propia con cita. |
-| B5 | **Pipeline de "afirmación ajena"**: el CORE me pasa la afirmación de otro agente (Dev/Critic) y yo devuelvo veredicto con fuentes abiertas. | Convierte a MIND en gate de calidad que otros roles necesitan, no en servicio opcional. | Kanam DEV o Critic pide la verificación por su cuenta. |
+| B5 | **Verificación de afirmación ajena como gate de borde**, no como servicio a demanda: `handoff-gate.py in` rechaza un claim sin fuente que resuelva. | Convierte a MIND en un gate que el pipeline evalúa como un test, sin agregar un reviewer más. | Kanam DEV o Critic pasa sus claims por el gate **por su cuenta**.
+
+### B'. Workflow en vez de acumulación (pedido de Gonzo, 2026-11-06)
+
+[inf] Antes de sumar otra pieza, el borde del pipeline. El pipeline A/B/C de **código** ya existe y se vigila (`scripts/check-pipeline-enforcement.py` verifica que A y B sean modelos distintos). Lo que no tenía gate era la **evidencia**: las afirmaciones que entran y salen de un handoff. `handoff-gate.py` cubre los dos extremos y se integra donde ya hay un paso de verificación:
+
+| Punto del pipeline | Quién llama | Qué rechaza |
+|---|---|---|
+| Salida de un brief | `handoff-gate.py out --role kanam-mind --artifact <md> --strict` | artefacto con `FAIL` en `kb-audit` |
+| Entrada de un handoff | `handoff-gate.py in --handoff <json>` | claim sin `source`, o `source` que no resuelve |
+| Revisión de un agente B | el CORE, antes de aceptar el fix | "esto ya estaba resuelto" sin cita (lección `delegation-result-verification`, 2026-11-06) |
+
+[inf] Regla de diseño: un gate es más barato que un agente y no se puede convencer. Si el CORE quiere el gate en su pipeline, **es un cambio del CORE** (su `AGENTS.md` y su script de enforcement); MIND entrega el gate, el formato y la evidencia de que corre.
 
 ### C. Lo que rechacé (para no inflar el rol)
 

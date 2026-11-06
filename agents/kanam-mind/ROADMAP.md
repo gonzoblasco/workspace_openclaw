@@ -175,6 +175,25 @@ aprendizaje citado y una acción cerrada; `kb-search` devuelve el aprendizaje co
 **Nota de frontera:** es **infraestructura** → handoff a Kanam DEV/OPS con el criterio de aceptación.
 Yo verifico; no reescribo la DB ni el motor.
 
+### Hito 5.5 - El borde del pipeline: evidencia como test (nuevo, pedido de Gonzo)
+
+**Eje que mueve:** cierra la última costura del pipeline A/B/C. Ese pipeline verifica el **código**
+(modelos distintos + `check-pipeline-enforcement.py`), pero no verificaba las **afirmaciones**: un B
+puede decir "esto ya estaba resuelto" sin cita. Agregar un agente más repite el mismo criterio con
+el mismo modelo; un gate lo rechaza por contrato.
+
+**Qué hace (✅ artefacto 2026-11-06):** `scripts/handoff-gate.py` en dos extremos y un solo
+comando: `out` audita el artefacto antes de entregarlo, `in` verifica que cada claim traiga un
+`source` que resuelva (archivo#Lx-Ly o URL). Exit 1 es el mismo trato que un test rojo.
+
+**Evidencia requerida para cerrarlo:** el CORE lo llama en su propio flujo (antes de aceptar el
+fix de B o al recibir mi handoff) y **rechaza un claim real**. Hoy hay evidencia de que el gate
+funciona (`in` rechazó 2 claims sin archivo; `out` dio FAIL al control y PASS al brief); falta el
+uso desde el CORE.
+
+**Nota de frontera:** el `AGENTS.md` del CORE y su `check-pipeline-enforcement.py` son del CORE. Yo
+entrego el gate, el formato del handoff y la prueba de que corre.
+
 ### Fuera de esta versión (no entra a v0.2)
 
 - El **cron `mind-study-digest`** (§B3 del brief) es el mecanismo natural del Hito 5.3, pero
@@ -223,6 +242,7 @@ Aplico mi propia vara: un hito que no mueve una capacidad no entra.
 2. **Un extraño reproduce mi veredicto** con el mismo comando, 3 veces (5.1) y el journal registra
    briefs pedidos por otros (5.2).
 3. **Un aprendizaje de estudio se recupera con su cita** y se usa en un artefacto (5.3).
+4. **El gate de borde rechaza un claim real** en el flujo del CORE (5.5), no solo en mi prueba.
 
 Si esas tres no se cumplen, la v0.2 es propaganda y el número no sube.
 
