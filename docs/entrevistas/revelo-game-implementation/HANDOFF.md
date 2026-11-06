@@ -1,6 +1,6 @@
 # HANDOFF - revelo-game-implementation
 
-**Fecha:** 2026-11-06 11:33 GMT-3
+**Fecha:** 2026-11-06 16:07 GMT-3
 **Proyecto:** revelo-game-implementation
 **Branch:** main
 **Autor:** Kanam (CORE)
@@ -11,26 +11,25 @@
 
 ## Que se hizo en esta sesion
 
-Sesion de busqueda laboral: verificacion y postulacion a una propuesta de Revelo (AI Training Project - Game Implementation). Mail de profile-experts@revelo.com con formulario en links.revelo.com.br. VERIFICADO como legitimo: revelo.com con MX Google, SPF y DMARC p=reject; el link resuelve 302 -> revelojobs.typeform.com/to/QgZ6hSiH (workspace de Typeform de Revelo); campos del form benignos (nombre, email, pais, disponibilidad, experiencia en game dev); el bit.ly del mail lleva a reveloteam.notion.site. Se leyo la guia 'What to Expect from LLM Training Projects' via loadPageChunk de Notion (el HTML publico solo devuelve meta): pago solo por tarea aprobada, revision de 1 semana a 3 meses, tareas aisladas, asignacion por matching, recomiendan part-time. FORMULARIO ENVIADO por Gonzo. Se redacto la respuesta a 'describe your experience with game development' anclada al corpus (10+ anios, 5 juegos browser end to end, RTS en Godot con cola de ordenes/save-load/combate con tipos de dano/altura/cobertura/IA rival, y el workflow AI-native de dirigir agentes). CORRECCION DE GONZO: comparar Revelo contra Mercor por tarifa es invalido porque Odin pago 55/h efectivos y quedo en pausa sin una sola tarea paga; el eje correcto es tarifa x probabilidad de tareas. Se explico que es el entrenamiento de LLM (preentrenamiento, SFT, RLHF, RLVR, y por que se paga expertise de dominio).
+Verificacion de la propuesta de Revelo (AI Training, Game Implementation): legitima. Formulario Typeform enviado. Gonzo recibio y acepto el Terms of Service de REVELO TALENT CORP el 2026-11-06; la lectura del contrato y la copia del texto quedaron en docs/entrevistas/revelo-game-implementation/.
 
 ## Estado actual
 
-Postulacion a Revelo enviada el 2026-11-06. Sin respuesta aun. La tarifa USD 30 sigue sin unidad confirmada (hora vs tarea): preguntar al reclutador cuando responda. Mercor Odin sigue en pausa indeterminada desde el 2026-11-02.
+ToS aceptado. Sin tarea asignada y sin Form del proyecto: la tarifa USD 30 sigue sin unidad confirmada y el contrato no incluye precio. Nada que cobrar todavia.
 
 ## Proximos pasos
 
-1) Esperar respuesta de Revelo; si no hay novedad en ~7 dias, recontactar. 2) Completar el perfil de careers.revelo.com si el proceso avanza (es donde hacen el matching, no el Typeform). 3) Seguir empujando el canal senior/nearshore y el C1 oral: es lo que mueve el ingreso real.
+1) Al recibir la primera tarea, preguntar por mail si los USD 30 son por hora o por tarea. 2) Pedir el Form del proyecto (tarifa y criterios de revision). 3) Si sigue el proceso de Micro1 en paralelo, pedir por escrito que no hay conflicto bajo la clausula 2.3. 4) Guardar la copia del ToS para comparar si lo modifican a los 30 dias.
 
 ## Decisiones y contexto que no debe perderse
 
-- El veredicto de veracidad es sobre suplantacion, no sobre valor: Revelo es legitimo, pero el mercado de AI training no dio ingresos todavia (Mercor firmado y pausado en 4 dias). Aplicar por costo cero, no planificar ingreso sobre esto.
+- Aceptar el ToS: no hay fee, no hay exclusividad, no asigna invenciones fuera de los Servicios, salida con 30 dias. El riesgo no es legal sino de cobro: la clausula 3.1.1 condiciona el pago a la aprobacion del Cliente sin plazo.
 
 ## Archivos tocados
 
 ```
-memory/2026-11-06.md (informe de la sesion)
-memory/memory.db (daily_notes id=157)
-docs/entrevistas/revelo-game-implementation/HANDOFF.md
+memory/2026-11-06.md
+memory/memory.db
 ```
 
 ## Como continuar

@@ -1,0 +1,173 @@
+TERMS OF SERVICE
+
+SUMMARY TABLE
+
+Services (Section 2)	You shall provide specialized technology consultancy services to Revelo’s clients (the "Client"), on a work-for-hire basis.
+
+You must act in the best interests of Revelo and its Clients and avoid conflicts of interest and competition.	Services are performed remotely.
+
+You shall maintain diligence, loyalty, and confidentiality.
+Compensation and Payment Terms (Section 3)	Revelo shall compensate for the Services at the rate, conditions, and quality review requirements displayed and accepted by You through Revelo's platform for each individual project or task.
+
+Revelo reserves the right to withhold payment until You accumulate a minimum of USD 20.00. If not reached, payment will be rolled over to the next period.	YOUR PAYMENT IS SUBJECT TO THE CLIENT’S APPROVAL OF THE QUALITY OF THE DELIVERABLES, AND PAYMENT TIMING MAY DEPEND ON HOW LONG THE CLIENT REASONABLY TAKES TO REVIEW AND ACCEPT THE WORK.
+Term	Effective upon acceptance of the Terms of Service.	Remains in force until terminated in accordance with Section 7.
+Confidentiality (Section 5)	You shall use the Confidential Information solely for the purpose of performing the Services under this Agreement and shall not, under any circumstances, disclose such information to any third party without the prior written consent of Revelo or the Client.	Breach triggers a fine equal to 5 months of fees received before the breach + damages.
+Intellectual Property and Data Protection (Section 6)	ALL WORK PRODUCT, MODIFICATIONS, AND INTELLECTUAL PROPERTY BELONG EXCLUSIVELY TO THE CLIENT.
+
+You must comply with GDPR, CCPA, UK data protection laws, implement safeguards for personal data and report breaches immediately.	You must assign rights if requested.
+Disclaimer: This summary table is provided solely for convenience and reference purposes. It is not exhaustive and does not replace, modify, or override any of the provisions contained in this Agreement. The Service Provider acknowledges and agrees that they remain fully responsible for carefully reviewing and complying with all terms and conditions set forth herein, and that, in the event of any inconsistency, the provisions of the Agreement shall prevail.
+These Terms of Service ("Terms of Service") constitute a legally binding service agreement (“Agreement”) between You (the "Service Provider") and REVELO TALENT CORP (“Revelo”), a Delaware corporation with head offices at 66 West Flagler Street, Suite 900, Miami, FL 33130, the United States of America. By accessing or using this platform, You acknowledge and agree that: (i) these Terms contain the complete terms governing your provision of services to Revelo or its clients; (ii) any conflict between these Terms of Service and the Form shall be resolved in favor of the Form for service-specific details (e.g., pricing, scope), while these Terms of Service shall prevail for all other provisions; and (iii) Your use of the platform, including the provision of services, is conditioned upon acceptance of both these Terms of Service and the Form.
+
+Revelo reserves the right to periodically modify these Terms of Service upon written notice, and such modification shall automatically become effective thirty (30) days after such modification. In case You do not agree with a given modification to these Terms of Service, You shall notify Revelo within thirty (30) days as of receipt of the notice of the relevant modification. In the event You provide such written notice, your agreement will continue to be governed by the version of the Terms of Service prior to the relevant modification or, if Revelo chooses so, immediately terminates the Agreement.
+
+Upon your acceptance of these Terms of Service as described above, You automatically enter into the Agreement with Revelo, which shall be binding as per the terms below. This Agreement shall remain in full force and effect unless otherwise terminated pursuant to the provisions of Section 7 below.
+
+RECITALS:
+
+(i) Whereas Revelo sources, recruits, selects, and hires specialized technology experts that will provide services to its clients (“Clients”);
+
+(ii) Whereas You provide specialized technology services and has the required knowledge and experience and is able to provide its services to the Clients;
+
+(iii) Whereas You warrant not to have any legal or practical impediment preventing it to provide the services set forth in this Agreement to Revelo or its Clients, as described below;
+
+THEREFORE, the Parties agree as follows:
+
+1. DEFINITIONS
+
+   1.1. For the purposes of these Terms of Service, the terms and expressions in quotes listed below, when beginning with capital letters, whether in plural or singular, masculine or feminine form, shall have the following meanings:
+
+   “Agreement” means the service agreement entered into between You (the service provider) and Revelo through the acceptance of these Terms of Service.
+
+   “Client” means Revelo’s clients, for whom the Service shall be performed.
+
+   “Confidential Information” has the meaning defined in Section 5.1.1.
+
+   "Form" refers to the services form containing the service details, such as the rate, conditions, and quality review requirements, and other specific information.
+
+   “Intellectual Property” has the meaning defined in Section 6.1.1.
+
+   “Modifications” has the meaning defined in Section 6.1.2.
+
+   “Party” means, individually and indistinctly, Revelo and You, and “Parties” means Revelo and You together.
+
+   “Personal Data” has the meaning defined in Section 6.2.1 below.
+
+   “Revelo” means Revelo Talent Corp.
+
+   “Services” has the meaning defined in Section 2.1 below.
+
+   “Terms of Service” means this Terms of Service.
+
+   “You” means the service provider.
+
+2. SERVICES
+
+   2.1. You shall provide technology consultancy services on a work made for hire basis, according to the interests of the relevant Client (“Services”).
+
+   2.2. You hereby acknowledge and agree that the Services will be remotely provided by You to the Client.
+
+   2.3. While performing the Services, You acknowledge and agree that it shall at all times defend Revelo’s and the Client’s interests, including, whenever required, acting in good faith to avoid conflict of interests, mainly with regard to competitor’s clients/activities. In such regard and aiming at avoiding any form of competition against Revelo and/or the Client, You also agree that, in compliance with this Section 2, unless otherwise previously authorized in writing by Revelo and/or the Client, You shall not, regarding Revelo’s and the Client’s competitors: (i) render services that may affect, interfere or impair the Services or Revelo’s and/or the Client’s interests; and/or (ii) to clients whose interests are in conflict with Revelo’s and/or Client’s interests, generating possible damages to Revelo’s and or Client’s interests; (iii) develop, exploit, participate or carry on any activities which interfere in the performance of Your duties under this Agreement.
+
+   2.4. You acknowledge and agree that the provision of Yours Services requires diligence and loyalty, as well as a performance driven to the Client’s best interest. As such, You shall: (i) act in the Client’s best interest, (ii) fully disclose any information related to the Client’s business and interest or related to any opportunities that might interest it, (iii) not act in a manner that may be detrimental to Revelo’s and/or the Client’s business or interests, its opportunities or reputation, and (iv) not to use to your own benefit or to the benefit of third parties any information or opportunities related to Revelo’s and/or the Client’s business or interest that it became aware during the rendering of the Services.
+
+3. COMPENSATION AND PAYMENT TERMS
+
+3.1. Revelo shall compensate the Service Provider for the Services at the rate, conditions, and quality review requirements displayed and accepted by the Service Provider through Revelo's platform for each individual project or task. The Service Provider’s commencement of work on a project or task shall constitute automatic acceptance of the applicable rate, conditions, and quality review requirements for the Services performed under that project or task. Payment shall be processed by Revelo or one of Revelo’s payment providers (which, specifically for this purpose, will act as agent and on behalf and instructed by Revelo), upon presentation of the respective invoice, according to the following schedule:
+
+(i) In case of weekly payment terms: payment shall be made within 11 calendar days following the conclusion (Saturday) of the week in which the Services were reviewed and approved by Revelo (“Price”).
+
+(ii) In case of monthly payment terms: payment shall be made by the 5th business day of the month following the month in which the Services were provided (“Price”).
+
+3.1.1. The Service Provider acknowledges and agrees that payment for the Services is expressly conditioned upon the quality of the work performed. The quality of the Services shall be determined by the Client’s review and acceptance of the deliverables. Accordingly, the Service Provider accepts that the timing of payment may vary depending on the period reasonably required by the Client to confirm and approve the quality of the work, and no payment obligation shall arise until such approval has been duly granted to Revelo.
+
+3.1.2.	In the event that the final day of said period is not a business day, payment may be made on the first subsequent business day.
+
+3.1.3.	Revelo reserves the right to withhold payment until You accumulate a minimum of USD 20.00 (a twenty US dollars) in billable amounts, as specified in the time tracking process established between Revelo and You. In case You do not accumulate that minimum within a given period, payment will be made to You on the subsequent period in which the Services were provided, as long as You have reached the minimum amount specified here above.
+
+3.2. Revelo may, at its discretion, make additional payments to You as result of variables arising from the Services and in addition to the Price.
+
+3.3. You acknowledge that the Price includes taxes, costs, and expenses, direct or indirect, referring to the complete execution of the Services, including costs with labor, equipment, licenses, insurance, infrastructure, contributions, and other charges, in short, all costs and expenses to be incurred by You in the full performance of the Services.
+
+3.3.1.	Revelo may withhold certain amounts of the Price in connection with benefits and/or services provided by Revelo to You if expressly approved by You. The amount withheld according to this Section may be paid directly to the vendor.
+
+3.4. Any delay in the Price’s payment will result in the application of a 2% (two percent) fine on the unpaid amount, as well as a 1% (one percent) monthly interest.
+
+3.5. Each of the Parties shall bear the taxes, contributions, and withholdings accordingly with their respective responsibilities accruing over such payments as set forth by law.
+
+3.6. You will receive its payment by means of direct deposits into your bank account, the bank deposit itself being evidence of such payment.
+
+3.7. Revelo shall reimburse You for any reasonable prior approved and documented expense incurred on behalf of the Revelo and/or the Client and for the performance of the Services. Such reimbursement shall be made by Revelo upon delivery, by You, of receipts or other acceptable evidence of its expenses, in accordance with the applicable procedures.
+
+4. INDEMNIFICATION
+
+4.1. You hereby agree to indemnify and hold harmless Revelo, Client and its Affiliates from and against all losses, damages, costs, expenses, fines, liabilities, awards, obligations, payments, disbursements, monetary correction, interest in arrears and/or compensatory interests, expert fees, attorney fees, defeat’s fees and/or arbitrator fees, collateral and deposits, courts costs charges (administrative, judicial or arbitrational) or any other increases or penalties (collectively, “Losses”), arising from your intent or fault (including your partners, officers, representatives, agents and employees), provided that such acts have not been authorized in writing by the Revelo and/or by the Client.
+
+4.2. Revelo hereby agrees to indemnify and hold You harmless from and against all Losses incurred as a result of act, fact or omission of Revelo, provided that such Losses have not arisen from your imprudence, reckless, unskillfulness or malice.
+
+4.3. The Parties acknowledge and agree that the Client takes no responsibility and will not be liable for any act, action, or omission of any Party under this Agreement.
+
+5. CONFIDENTIALITY
+
+5.1. You will have access to the Confidential Information, as defined below. You shall not, while this Agreement remains in full force and effect and following the termination of this Agreement, disclose to third parties or remove hardcopies/electronic files and/or any Confidential Information from Revelo’s and the Client’s web servers and/or units nor use them for any purpose other than the execution of the Services, except for the hypothesis of item 5.2 below or if expressly authorized by Revelo and/or the Client. You shall, within three (3) business days following the termination of this Agreement, return to Revelo and/or to the Client, as applicable, or destroy, as per Revelo’s and/or Client’s request, any Confidential Information in its possession.
+
+5.1.1. “Confidential Information” means any and all information of whatever nature disclosed directly or indirectly by Revelo and/or by the Client to You, including any information relating to its business affairs, customers, suppliers, products and services, technical information and data, financial information, marketing information, analyses, documents, data, formulae, processes, designs, know-how, source code, object code, trade secrets and intellectual property rights which information is designated in writing to be confidential or proprietary, or which information would, under the circumstances, appear to a reasonable person to be confidential or proprietary.
+
+5.2. Confidential Information shall not include information that (i) is or becomes publicly known other than through any act or omission of the receiving Party; (ii)  was in the other Party's lawful possession before the disclosure; (iii) is lawfully disclosed to the receiving Party by a third party without restriction on disclosure; (iv) is required to be disclosed by any laws, by any court of competent jurisdiction or by any regulatory or administrative body; or (v) is independently developed by the receiving Party, which independent development can be shown by written evidence.
+
+5.3. The Parties acknowledge that Revelo takes comprehensive measures to keep its proprietary and Confidential Information confidential, and that the importance of such information results from its confidentiality, as it is the essence of Revelo’s business. Therefore, if You breaches any of its confidentiality obligations, You shall pay Revelo, as non-compensatory fine, an amount equal to the fees received by You in the five (5) months prior to the breach, notwithstanding the payment of any losses and damages suffered by Revelo as a consequence of Your failure to comply with its duties.
+
+6. INTELLECTUAL PROPERTY AND DATA PROTECTION
+
+Any and all Modifications and new Intellectual Property arising from the Services provided hereunder and developed by You will be the exclusive property of the Client. The amounts paid to You under this Agreement constitute full and complete remuneration for all Services rendered, including any and all assignments of intellectual property rights. Unless otherwise expressly agreed in writing, no additional compensation shall be owed for the transfer, assignment, or licensing of intellectual property rights arising from or in connection with the services provided hereunder. If requested by Revelo and/or by the Client, You shall expressly assign (and sign any document or contract to such end) to the Client all interest it has in any Modifications You make or other Intellectual Property You develop in connection with this Agreement. If You fail to execute any and all papers or documents to assign such Intellectual Property to Client within a reasonable timeframe, Revelo and/or Client shall execute, on behalf of You, any and all papers and documents to assign such Intellectual Property to Client.
+6.1.1.	For the purposes of this Agreement “Intellectual Property” means any and all of the following property in any jurisdiction throughout the world: (i) trademarks, service marks, trade names and service marks, including all applications and registrations, and the goodwill connected with the use of and symbolized by the foregoing; (ii) copyrights, including all applications and registrations related to the foregoing; (iii) trade secrets and confidential know-how; (iv) patents and patent applications, inventions and discoveries (whether patentable or not); (v) websites and internet domain name registrations; (vii) database rights, software, source codes, algorithms, proprietary interests/rights; and (viii) other Intellectual Property and related proprietary rights, interests and protections (including all rights to sue and recover and retain damages, costs and attorneys' fees for past, present, and future infringement, and any other rights relating to any of the foregoing).
+
+6.1.2.	For the purposes of this Agreement “Modifications” means any additions to, updates, improvements on, bug patches, new versions of, or other modifications to the Intellectual Property, made by either Party during this Agreement.
+
+6.2.	To the extent that the nature of the Services requires You to process Personal Data (as defined below), You will process all Personal Data in accordance with the applicable data protection laws, in special, the General Data Protection Regulation 2016/679 under European Union law (“GDPR”) on data protection and privacy, the California Consumer Privacy Act (“CCPA”) and data protection legislation of the United Kingdom (collectively, the “Data Protection Laws”).
+
+6.2.1.	For the purposes of this Section, “Personal Data” shall means any information relating to an identified or identifiable natural person (‘data subject’); an identifiable natural person is one who can be identified, directly or indirectly, in particular by reference to an identifier such as a name, an identification number, location data, an online identifier or to one or more factors specific to the physical, physiological, genetic, mental, economic, cultural or social identity of that natural person.
+
+6.2.2. You shall fully comply with any reasonable instructions from and on behalf of Revelo or the Client regarding the processing of that Personal Data. The Parties shall inform each other immediately of any suspected or confirmed Personal Data breaches or unauthorized or unlawful processing, loss, or destruction of, or damage to Personal Data processed by a Party in connection with the Services.
+
+6.2.3.	Without prejudice to the generality of this section relating to data protection, You shall: (i) fully cooperate with Revelo or Client in order to enable them to comply with their obligations under Data Protection Laws (including in relation to subject access requests, security, breach notifications, privacy impact assessments, consultations with supervisory authority or regulators); (ii) implement and maintain appropriate technical and organizational measures against unauthorized and unlawful processing of Personal Data and against accidental loss and destruction of or damage to Personal Data; (iii) process any Personal Data disclosed to You by or on behalf of Revelo or Client only for the purposes of providing the Services; and for the purposes for which that Personal Data was obtained and is processed by Revelo or Client; (iv) immediately provide such evidence of your compliance with your obligations under Data Protection Laws as Revelo or Client may reasonably request from time to time; and (v) upon notification by Revelo or Client, take all appropriate action to enable Revelo and/or Client to properly comply with any request from a data subject in relation to access to and/or rectification or erasure of Personal Data.
+
+6.2.4.	Furthermore, You authorize Revelo, its affiliates, subsidiaries and/or parent entity to process your Personal Data for the following purposes: (i) fulfill the Agreement; (ii) communication; (iii) controlling and internal processes; and (iv) payment processing. Revelo shall implement appropriate technical and organizational measures to ensure the security and confidentiality of your Personal Data processed under this Agreement.
+
+7. TERMINATION AND PENALTY CLAUSE
+
+7.1. The Parties may terminate this Agreement:
+   (i) without cause, at any time, upon thirty-day prior written notice. You may choose not to comply with the prior notice’s period by paying to Revelo the amount equivalent to the Price proportional to such period;
+
+   (ii) with cause by the Parties in case of default, breach of contract or violation to the obligations assumed by the other Party of any provisions of this Agreement (that may be remedied) not remedied within 5 (five) days from the date of receipt, by the defaulting Party, of notification describing the default, non-compliance, or breach of this Agreement;
+
+   (iii) with cause by Revelo if You fail to reasonably perform your assigned duties and/or in case of malpractice, fraud or willful misconduct. In this case, the termination of the Agreement shall take effect immediately from the date of receipt of notification, by You, in this regard;
+
+   (iv) with cause by You in case of Price payment’s delay for a period exceeding 30 (thirty) days. In this case, the termination of the Agreement shall take effect immediately from the date of receipt of notification, by Revelo and/or the Client, in this regard; and
+
+   (v) with cause by Revelo, if, prior to the rendering of the Services by You, the result of background checks regarding You is not satisfactory to Revelo, on a reasonable basis. In this case, the termination of the Agreement shall take effect immediately from the date of receipt of notification, by You, in this regard.
+
+7.2. Failure to comply with any section of this Agreement shall subject the defaulting Party to the payment of a non-compensatory fine, for breach of contract, to the innocent Party, in the amount equivalent to the Price, without prejudice to the innocent Party claiming damages.
+
+8. MISCELLANEOUS
+
+8.1. Relationship. You (your partners, agents, professionals, and employees) further recognize that: (a) are not and shall not be considered as an employee of Revelo and/or of Client and/or Affiliates, partner, or representative for any effective and therefore; (b) shall not be entitled to any labor rights during the Term. The execution of this Agreement does not entail the constitution of a partnership, joint venture, or association between the Parties and between any Party and the Client, nor a distributor agreement, agency, employment or any other relationship between Revelo, Client, and You, with the exception of the Services under this Agreement, at any heading for any purpose whatsoever.
+
+8.2. Assignment and Successors. Neither Party may not assign any of its rights or duties under this Agreement without the prior written consent of the other Party. The Parties agree that this Agreement shall be binding upon the Parties and their successors and shall insure to their benefit, that the Agreement is enforceable by the Parties and their successors. The Parties acknowledge and agree that any Party may assign its rights or duties under this Agreement to any legal entity controlled by it without prior consent of the other Party. In such a case, the assignment shall be informed in writing to the other Party within ten (10) days as from the date of the relevant assignment.
+
+8.3. Waiver. The Parties lawfully recognize that, except as otherwise provided herein: (a) the singular or partial performance, the nonperformance, the concession of a term, forbearance, or delay in connection with any right available to it hereunder and/or by law, shall neither operate as an amendment or waiver of such rights, nor shall it jeopardize the exercise thereof; (b) the waiver of any such rights shall not be valid unless granted in writing; and (c) the waiver of any right shall be construed restrictively and shall not be deemed as waiver of any other right conferred hereby to any of the Parties.
+
+8.4. Invalidity of Provisions. If for any reason, one of or more provisions herein are deemed or become invalid, illegal, null, or non-enforceable in any aspect, or if a court of competent jurisdiction finds any provision of this Agreement to be illegal, invalid or unenforceable, that provision shall be enforced to the maximum extent permissible so as to effect the intent of the Parties. In this case, the Parties shall negotiate in good faith the replacement of the illegal, invalid, or unenforceable provision. Each of the provisions contained in this Agreement is distinct and severable and a declaration of invalidity, illegality, or unenforceability of any such provision by a court of competent jurisdiction shall not affect any other provision thereof.
+
+8.5. Survival. Termination or expiration of this Agreement for any reason shall not release either Party from any liabilities or obligations set forth in Sections 5 and 6 of this Agreement.
+
+8.6. Communications. All notices, communications and authorizations in respect of this Agreement shall be properly given in writing, delivered by registered mail or by e-mail with evidence of receipt, or by means of electronic communication through Revelo’s Platform.
+
+8.7. Governing Law and Dispute Resolution. The Parties agree that this Agreement shall be governed by, and construed in accordance with, the laws of the State of New York. The Parties agree to submit to the exclusive jurisdiction of the courts of the State of New York, the settlement of any disputes or conflicts that may arise in connection with this Agreement.
+
+8.8. Headings. The inclusion of headings in this Agreement is for convenience of reference only and shall not affect the construction or interpretation hereof.
+
+8.9. Compliance. You shall not accept or request any commission, permission, gift, or any payment from current or prospect clients, suppliers, or competitors of Revelo and of the Client, with the exception of payments set forth under this Agreement (collectively, “Payment”). Any unsolicited Payment received by You (your partners, agents, and employees) shall be promptly returned and promptly informed to Revelo. Promotional gifts of small or non-commercial value shall not be considered “Payment” for the purposes of this section, and related doubts shall be clarified by understandings between the Parties. Furthermore, You (your partners, agents, and employees) shall not directly or indirectly provide any commission, allowance, gift or consideration whatsoever to any employee, governmental officer or official of any customer or potential customer, in order to influence such person to do business with, or to do or continue doing business with Revelo and with the Client.
+
+   8.9.1. You hereby declare to be aware of the policies, code, procedures, rules and regulations of the Revelo and its affiliates (collectively, “Policies”). In case of conflict between the Policies and the terms of this Agreement, this Agreement shall prevail. You shall endeavor its best efforts to perform Services being fully and solely liable for complying with the current legislation and Revelo’s Policies.
+
+8.10. Entire Agreement; Modifications. This Agreement constitutes the entire understanding between the Parties, and supersedes all prior agreements and negotiations, whether oral or written with respect to the subject matter hereof. No amendment, supplement, modification, waiver, or termination of this Agreement shall be binding unless in writing and executed by the Parties to this Agreement.
