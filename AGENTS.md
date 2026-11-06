@@ -56,6 +56,9 @@ Corolario operativo: cuando Gonzo dice "ya lo hemos hecho", la respuesta correct
 - **Preferir `trash` antes que `rm`.** Ante la duda, preguntar.
 - **Referencia no es proyecto:** un gitlink o submódulo es solo un puntero. Quitar la referencia quita el puntero, nunca la carpeta con datos locales (DB, `.env`, uploads). Respaldar esos datos **antes** de cualquier limpieza; un backup local no es opcional.
 
+### Trabajo de otra sesión: no se toca ni se ofrece tocar (regla de Gonzo, 2026-11-06)
+**Un archivo, carpeta o rama que no creé en ESTA sesión no se borra, no se mueve, no se commitea, no se "limpia" y tampoco se ofrece como opción.** Se ignora y se sigue. Preguntar "¿lo borro?" sobre trabajo ajeno ya es el error: convierte algo invisible en una decisión que él tiene que resolver. Si aparece en un `git status` o un `ls`, se lee como contexto y se deja donde está.
+
 ### Fuera vs adentro
 **Seguro:** leer, explorar, organizar, aprender; buscar en web, chequear calendarios; trabajar dentro del workspace; commitear **local**.
 **Nada sale sin un sí explícito de Gonzo.** Push, comentarios, respuestas inline, edición de título o body, issues, emails, tweets, releases: se prepara, **se muestra el diff completo** y se espera el OK. Un cambio que parece obvio, o que corrige un error mío anterior, no es autorización: es solo un candidato. Tampoco vale presentar como "borrador" algo ya publicado.
