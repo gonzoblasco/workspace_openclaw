@@ -1,91 +1,144 @@
 # ROADMAP.md - Kanam DEV 💻
 
-**Versión actual:** v0.1
+**Versión actual:** v0.2
 **Objetivo:** v0.5 - Autonomía operativa sin supervisión línea por línea
-**Última revisión:** 2026-10-07
+**Última revisión:** 2026-11-06
 **Dueño:** kanam-dev (autoría) · Kanam CORE (gobierno)
+
+<!-- project: github.com/gonzoblasco/workspace_openclaw -->
 
 ---
 
-## 2. Retrato verificado de la versión actual (v0.1)
+## 1. Por qué existe esta versión
 
-| Capacidad | Estado |
-|---|---|
-| **Ciclo Hermes (hermes‑architect, hermes‑builder, hermes‑discovery, hermes‑openspec, hermes‑planner, hermes‑pr‑reviewer, hermes‑qa, hermes‑release, hermes‑reviewer)** | 🟡 parcial - la documentación y los `SKILL.md` existen, pero la mayor parte del código de orquestación no está implementada ni testeada. |
-| **Desarrollo guiado por especificaciones (`spec‑driven‑development`, `openspec`, `openspec‑pattern`)** | ✅ operativo - skill presente, pruebas unitarias verdes y ejemplos de uso en la memoria. |
-| **Desarrollo basado en pruebas (`test‑driven‑development`)** | ✅ operativo - pruebas unitarias integradas en el workspace y ejecución verificable en CI. |
-| **Ingeniería de UI Frontend (`frontend‑ui‑engineering`, `design‑direction`)** | ✅ operativo - artefactos de UI, ejemplos de componentes y pruebas visuales presentes. |
-| **Documentación y ADRs (`documentation‑and‑adrs`, `idea‑refine`)** | ✅ operativo - guías y plantillas actualizadas, generación de ADRs en los flujos de trabajo. |
-| **CI/CD y automatización (`ci‑cd‑and‑automation`, `shipping‑and‑launch`)** | 🟡 parcial - los scripts de despliegue existen, pero falta integración completa con el repositorio y gating de PR. |
-| **Optimización de performance (`performance‑optimization`, `performance‑benchmark`)** | 🟡 parcial - documentación de benchmarks, pero pocos resultados medidos y sin pipeline de performance integrado. |
-| **Seguridad y hardening (`security‑and‑hardening`)** | 🟡 parcial - checklist disponible, pero no hay validaciones automáticas en CI. |
-| **Observabilidad e instrumentación (`observability‑and‑instrumentation`)** | ❌ no existe - no hay código ni pruebas que proporcionen métricas en tiempo real. |
-| **Gestión de dependencias (`dependency‑advisor`)** | 🟡 parcial - guía presente, pero falta un motor de resolución automática. |
-| **Cross‑engine CSS measurement (`cross‑engine‑css‑measurement`)** | 🟡 parcial - prototipo experimental sin pruebas de integración. |
+La v0.1 describía correctamente la visión pero tenía un problema medido: **el rol
+no se usaba**. El dueño lo dijo con un dato ("no se utiliza este agente hace 8
+horas") y el diagnóstico resultó otro que el esperado.
 
-**Honestidad:** lo que me falta para avanzar de v0.1 a v0.5 son principalmente la orquestación completa del ciclo Hermes, la integración de CI/CD con gating automático y un registro permanente de evidencias que cierre el bucle de retroalimentación.
+No faltaban skills (43 documentadas). Lo que faltaba era **superficie de
+invocación**: cada tarea arrancaba con "leete el brief, el SPEC y el repo", y ese
+costo era mayor que el de hacerla.
+
+La v0.2 es la versión que construyó esa superficie. No agregó conocimiento:
+empaquetó lo que ya sabía en comandos de una línea con contratos honestos.
+
+Regla que guio el corte: **si un pedido tarda más en explicarse que en
+ejecutarse, no se pide.**
+
+---
+
+## 2. Retrato verificado de la versión actual (v0.2)
+
+Medido, no afirmado. Cada fila tiene el comando que la prueba.
+
+| Capacidad | Estado | Evidencia |
+|---|---|---|
+| **Superficie del pipeline** (`bin/kanam-dev`, 8 subcomandos) | ✅ operativo | 15 tests. Un subcomando desconocido y un faltante de herramienta salen 2, nunca 0. |
+| **S1 intake con elección de plantilla** | ✅ operativo | 32 tests. Un pedido sin `verificacion` falla antes de leer código. |
+| **Runner que encadena estaciones** | ✅ operativo, probado en 2 repos reales | 17 tests. `--dry-run` y `--resume` desde la estación que falló. |
+| **S3/S4 slice-commit** | ✅ operativo | 19 tests. Dry run por defecto; `.env` y `*.db` bloquean el plan entero. |
+| **S5 docs-sync** | ✅ operativo, calibrado en 2 repos | 29 tests. Detecta conteos de tests, tokens, comandos y rutas desalineados. |
+| **S7 handoff gate** | ✅ operativo | 22 tests. Rechaza un `verified` con exit distinto de 0. |
+| **Skill `kanam-dev-surface`** | ✅ operativa | Registrada en `SKILLS-INDEX.md`, validación de skills sin fallos. |
+| **Contrato del pipeline** (`PIPELINE-CONTRACTS.md`) | ✅ escrito | 7 estaciones, 5 plantillas, 3 niveles de obligatoriedad. |
+| **Ciclo Hermes** (`hermes-*`, 9 skills) | 🟡 parcial | Documentación completa; la orquestación con estado entre etapas es el runner, que cubre el flujo pero no los hermes por nombre. |
+| **CI/CD con gating automático** | ❌ no existe | Ningún workflow ejecuta el pipeline en un PR. |
+| **Registro persistente de evidencias** | 🟡 parcial | `run.json` por corrida en disco; no hay base ni dashboard consultable. |
+| **Métricas de performance y seguridad automatizadas** | 🟡 parcial | Skills presentes; los scripts no están cableados a estaciones. |
+
+**Totales:** 134 tests, 0 fail, en 6 suites. Verificado al cierre de esta versión.
+
+**Honestidad:** lo que la v0.2 resuelve es la **invocación**. Lo que no resuelve
+es la **automatización del trabajo en sí**: `discovery`, `slice` y `build` siguen
+siendo manuales, con evidencia declarada obligatoria. Eso es deliberado, no deuda.
 
 ---
 
 ## 3. Visión v0.5 - Rol con autonomía completa
 
-En v0.5 **Kanam DEV** será capaz de:
+Un pedido entra, el pipeline decide qué estaciones aplican, las corre, y devuelve
+un handoff con evidencia reproducible. El humano aprueba las decisiones de
+producto, no las ejecuciones.
 
-- Tomar un brief, generar el **OpenSpec** completo, diseñar la arquitectura y planificar las tareas sin intervención humana.
-- Emitir **PRs pequeños** (un PR por cambio funcional) que describen exactamente lo que hacen y que pasan los tests con la razón correcta cuando fallan.
-- Ejecutar su propio **pipeline de verificación** (hermes‑qa) que produce evidencia reproducible (logs, screenshots, resultados de pruebas) y decide automáticamente si el PR se puede **mergear**.
-- Actualizar la documentación (ADRs, READMEs) de forma declarativa y vinculada al cambio, garantizando que la información nunca quede desactualizada.
-- Mantener un **registro de evidencias** en la memoria del workspace que permite auditorías posteriores sin volver a ejecutar el pipeline.
-
-En resumen, el rol no depende de que otro agente revise línea por línea; cada entrega está respaldada por pruebas y evidencia verificable.
+La diferencia con "autonomía" mal entendida: **el pipeline no reemplaza el
+criterio, lo hace verificable.** Un agente que escribe sin supervisión es el
+verde falso que la v1 de minesweeper ya pagó.
 
 ---
 
-## 4. Camino de madurez v0.1 → v0.5
+## 4. Camino de madurez
 
 | Etapa | Qué es | Estado | Criterio de listo (señal verificable) |
 |---|---|---|---|
-| **v0.1 - Presencia** | El rol existe, tiene `AGENTS.md`, `IDENTITY.md` y un catálogo de 38 skills documentadas. | ✅ completada | Todos los `SKILL.md` están presentes y listados en `skills/`. |
-| **v0.2 - Operatividad de skills** | Cada skill posee pruebas automáticas y pasa CI verde. | 🟡 en curso | CI muestra **100 % de tests verdes** para todas las skills y el catálogo contiene enlaces a los artefactos de prueba. |
-| **v0.3 - Ciclo Hermes integrado** | El flujo `openspec → hermes‑architect → hermes‑planner → hermes‑builder → hermes‑qa → hermes‑release` está totalmente conectado y ejecutable. | ⚪ pendiente | Un cambio de ejemplo pasa por todo el ciclo y genera un *release* sin intervención humana; se almacena evidencia en `memory/`. |
-| **v0.4 - CI/CD con gating automático** | Un *GitHub Action* ejecuta el ciclo Hermes en cada PR y bloquea merges que fallan cualquier etapa. | ⚪ pendiente | Acción `roadmap‑pipeline.yml` se ejecuta en *green* y marca el PR como **approved** sólo cuando todas las métricas (tests, SHARP, evidencias) están aprobadas. |
-| **v0.5 - Autonomía completa** | El rol entrega cambios desde el brief hasta el release con evidencia reproducible y sin supervisión línea por línea. | ⚪ pendiente | Demostración de *end‑to‑end* con al menos tres cambios diferentes que siguen todo el ciclo, se mergean automáticamente y se archivan sus evidencias en la memoria. |
+| **v0.1 - Presencia** | El rol existe con `AGENTS.md`, `IDENTITY.md` y catálogo de skills. | ✅ completada | Todos los `SKILL.md` presentes y listados. |
+| **v0.2 - Superficie de invocación** | El pipeline existe, encadena estaciones por plantilla y cierra con handoff verificado. | ✅ completada (2026-11-06) | 134 tests verdes; corridas reales sobre `kanam-fixer` y `preflight` con repo intacto. |
+| **v0.3 - Evidencia persistente** | Cada corrida deja un registro consultable, no un archivo suelto en `/tmp`. | ⚪ pendiente | Una corrida de hace una semana se puede auditar: qué plantilla, qué estaciones, qué salida por estación, sin abrir el `/tmp`. |
+| **v0.4 - Gating en CI** | Un workflow ejecuta `verify` y `docs --check` en cada PR y bloquea el merge si falla. | ⚪ pendiente | Un PR con un token desalineado o un test rojo no puede mergearse; el check aparece en verde cuando corresponde. |
+| **v0.5 - Entrega end-to-end** | Tres pedidos distintos recorren el pipeline completo y producen handoff aprobado sin que el humano corrija el proceso. | ⚪ pendiente | Tres corridas reales con `status: completo` en el handoff, sin intervención correctiva en el orden de estaciones. |
 
 ---
 
-## 5. Hitos de la versión en curso (v0.5) 
+## 5. Hitos de la versión en curso (v0.3)
 
 | Hito | Capacidad desbloqueada | Evidencia requerida para cerrar |
 |---|---|---|
-| **5.1 Catálogo de skills completo** | Visibilidad y descubrimiento de todas las 38 habilidades. | Archivo `skills‑catalog.tsv` actualizado y CI que muestra **todos los skills con tests verdes**. |
-| **5.2 Pipeline Hermes operativo** | Orquestación automática de especificación, diseño, planificación, implementación y QA. | Un *workflow* de ejemplo (`demo‑change/`) que finaliza en `hermes‑release` con artefacto `release‑v1.0.tar.gz` y logs accesibles. |
-| **5.3 Gating CI/CD** | PRs sólo pueden mergearse si pasan el pipeline completo. | GitHub Action `roadmap‑pipeline.yml` ejecutada en *green* y registro de `check‑run` que marca `approved`. |
-| **5.4 Registro persistente de evidencias** | Historial consultable de pruebas y métricas para auditoría. | Base `memory/evidences.db` con al menos 10 entradas y un dashboard HTML que muestra métricas de *SHARP* y *performance*. |
-| **5.5 Autogeneración de PRs** | El agente abre PRs a partir de un brief sin intervención. | PR creado por el agente (autor `kanam-dev[bot]`) que contiene el cambio completo y pasa los hitos 5.1‑5.4. |
+| **5.1 Registro persistente de corridas** | Auditar un trabajo de semanas atrás sin depender de `/tmp`. | Un `runs.db` (SQLite, sin dependencias) con: fecha, plantilla, estaciones, exit por estación, salida truncada y ruta del artefacto. El runner escribe ahí además del `run.json`. |
+| **5.2 Consulta del historial** | Responder "¿qué corrí esta semana?" y "¿qué falló más?". | `kanam-dev history [--last N] [--template T]` lee la base y devuelve una tabla. Test con base de fixture. |
+| **5.3 Retención y tamaño** | Que la base no crezca sin control. | Política explícita: N corridas o M días, con purga verificable. Sin política, la base se vuelve un depósito. |
+| **5.4 Medición de demanda** | Saber si la superficie se usa, con evidencia y no con impresión. | Conteo desde sesiones y memoria (no telemetría en el CLI): pedidos por semana que llegan a DEV sobre los que podrían. Una línea, revisada a las dos semanas. |
+| **5.5 Primera corrida completa real** | Probar el pipeline en un trabajo de verdad, no en un fixture. | Un cambio mío, chico, con `task`: intake completo, slice declarado, verify verde, handoff válido, commit. Registrado en 5.1. |
 
 ---
 
 ## 6. Lo que rechazo y por qué
 
-- **Convertirme en linter de estilo** - mi foco es *sustancia* (arquitectura, pruebas, documentación). Un linter pertenece al rol `kanam‑ops`.  
-- **Generar documentación sin referencia a código** - la regla de *documentación con criterio* exige que cada ADR o README responda a una pregunta concreta de un implementador; la documentación genérica es ruido.  
-- **Automatizar despliegues de producción sin revisión de QA** - el pipeline debe detenerse antes del despliegue si `hermes‑qa` falla; cualquier salto que evite esa barrera rompe la garantía de calidad.  
-- **Usar código externo sin evaluación de riesgos** - cualquier dependencia nueva debe pasar por `hermes‑pr‑reviewer` y `security‑and‑hardening`; aceptar librerías sin revisión violaría la línea de defensa. 
+- **Convertirme en linter de estilo.** Mi foco es sustancia: arquitectura,
+  pruebas, documentación. Un linter pertenece a `kanam-ops`.
+- **Agentes autónomos de código.** No tengo autorización para publicar ni
+  desplegar. El pipeline hace honestas las estaciones manuales, no las reemplaza.
+- **Telemetría dentro del CLI.** Agregar instrumentación a cada invocación suma
+  superficie de fallo y se puede falsificar con un cron. La demanda se mide desde
+  sesiones y memoria.
+- **Dependencias nuevas.** Nada de pyyaml, typer, click, rich. Argument parsing y
+  SQLite con stdlib, como el resto del pipeline.
+- **Más skills como respuesta a "no se usa".** Con 44 skills, sumar la 45 es la
+  respuesta equivocada. La próxima skill entra solo con un pedido real repetido
+  que no encaje en ninguna existente.
+- **Guiones largos como gate.** Retirado por decisión del dueño el 2026-11-06.
+  Queda como criterio de estilo opcional, no como barrera.
 
 ---
 
-## 7. Red lines + cómo se mide el éxito
+## 7. Red lines y cómo se mide el éxito
 
-**Red lines (líneas rojas):**
-1. No escribir código de producción ni modificar la lógica de negocio; solo diseño y facilito la entrega.  
-2. No cruzar el dominio de otros roles (no actuar como `kanam‑ops`, `kanam‑critic` o `kanam‑auditor`).  
-3. No aprobar cambios sin evidencia reproducible (tests verdes, SHARP score, screenshots). 
+**Red lines:**
+1. No publicar, desplegar ni borrar fuera del alcance autorizado sin aprobación
+   humana explícita para esa acción.
+2. No cruzar el dominio de otros roles (`kanam-ops`, `kanam-critic`,
+   `kanam-auditor`).
+3. No aprobar un trabajo sin la salida del comando que lo prueba. Un `verificado`
+   sin output es inválido y el handoff gate lo rechaza.
+4. No tocar datos locales (`.env`, `*.db`, `.venv`, `node_modules`) sin respaldo.
 
-**Criterios de éxito para v0.5 (tres condiciones concretas):**
-1. **Evidencia reproducible** - cada cambio aprobado almacena logs, resultados de pruebas y artefactos en `memory/`; una auditoría aleatoria reproduce el mismo veredicto.  
-2. **Gating automático en CI** - la acción `roadmap‑pipeline.yml` bloquea merges que no cumplan el *criterio de listo* del ciclo Hermes.  
-3. **Entrega end‑to‑end sin intervención humana** - al menos tres briefs diferentes generan PRs, pasan por el ciclo completo y se mergean automáticamente.
+**Cómo se mide el éxito de la v0.3 (tres condiciones):**
+1. **Auditabilidad:** una corrida de la semana pasada se puede reconstruir desde
+   la base sin abrir archivos temporales.
+2. **Uso real:** al menos una corrida completa de un cambio propio, registrada y
+   con handoff válido.
+3. **La base no crece sin control:** la retención tiene una prueba que la verifica.
+
+**Cómo se mide el éxito del rol, en general:** pedidos por semana que llegan a DEV
+sobre los que podrían llegarle. Si esa cifra no sube con la superficie ya
+construida, el diagnóstico estuvo mal y hay que cambiar el principio, no agregar
+fases.
 
 ---
 
-<!-- project: github.com/gonzoblasco/workspace_openclaw -->
+## 8. Referencias verificadas
+
+- `PIPELINE-CONTRACTS.md` - las 7 estaciones, 5 plantillas y la matriz de gates.
+- `ROADMAP-demand.md` - el diagnóstico que originó la v0.2 y por qué el cuello
+  era invocación y no conocimiento.
+- `skills/kanam-dev-surface/SKILL.md` - la superficie, con los errores ya
+  cometidos y cómo evitarlos.
+- `bin/` - los 6 scripts con sus tests.
