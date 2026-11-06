@@ -3,7 +3,7 @@
 **Versión actual:** v0.1
 **Objetivo:** v0.5 - OPS como default de todo lo que toca el sustrato
 **Última revisión:** 2026-11-06 (reemplaza el roadmap v0.1 del 2026-10-07, backup en `ROADMAP.v0.1.bak-20261106`)
-**Estado de ejecución:** E1, E2 completas y E3.1 hecha, el 2026-11-06. Commits `7e19519438`, `87c9f4c524`.
+**Estado de ejecución:** E1, E2 completas, y E3.1 + E3.2 hechas, el 2026-11-06. Commits `7e19519438`, `87c9f4c524`, `0469714ee9`.
 **Dueño:** kanam-ops autoría / Kanam CORE gobierno
 
 ---
@@ -127,6 +127,34 @@ propio check falla parece sano estando roto.
 Detalle de comportamiento del scheduler que costo entender: `automations run
 <id>` ejecuta el payload pero **no pasa por la evaluacion del trigger**. Para
 probar un trigger hay que esperar el tick real del schedule.
+
+**Estado de E3.2: EJECUTADA 2026-11-06.**
+
+`gateway-budget-watchdog` (id `8108dfc9-170e-44ad-9d87-fc39cb2a7767`), cada 6
+horas, `agentId: kanam-ops`, anuncio a Telegram. Umbrales: **4 GB** por DB viva
+de agente, **6 GB** por directorio de agente, configurables por env
+(`AGENT_DB_MAX_GB`, `AGENT_DIR_MAX_GB`).
+
+**Dato que corrige el roadmap:** no eran 1.5 GB. Medido el 2026-11-06:
+`agents/main/agent` pesa **7.6 GB**. De esos, **5.2 GB son backups de
+migracion** del runtime (`openclaw-agent.sqlite.pre-startup-migration-*.bak`:
+2.3 + 1.8 + 1.1 GB). La DB viva es 2.3 GB. Con 124 GB libres no es urgencia,
+pero es exactamente lo que este watchdog tiene que avisar.
+
+**Decision de alcance:** el check es **read-only**. Avisa y no borra. Los
+`.bak` de migracion son respaldos reales: borrarlos es decision humana, no de
+un watchdog nocturno. El mensaje del check lo dice explicitamente y un test lo
+verifica.
+
+**Evidencia:** para no esperar 6 horas se bajo el intervalo a 2 minutos, se
+espero el tick real, y el trigger disparo en **140 segundos** con la condicion
+verdadera (`fired=1793997563473`, `evals=1`). Intervalo restaurado a 6h,
+job `enabled`, con su entrada `finished ok` en el historial.
+
+Detalle de testing que costo encontrar: `truncate` sobre APFS crea un archivo
+disperso. El tamano logico sube pero `du` reporta casi cero, asi que un test
+que usa `truncate` prueba un arbol vacio y pasa por la razon equivocada. Los
+tests escriben megabytes reales.
 
 **Por qué tercero:** un watchdog sin E2 detrás es un generador de falsas alarmas. Y un watchdog sin E1 no existe, porque no hay a quién despertar.
 

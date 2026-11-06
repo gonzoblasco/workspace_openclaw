@@ -29,6 +29,7 @@ JOBS = SCRIPTS / "gateway-jobs-check.sh"
 AUDIT = SCRIPTS / "gateway-audit.sh"
 CHANGELOG = SCRIPTS / "gateway-change-log.sh"
 CHANNELS_WATCH = SCRIPTS / "gateway-channels-watch.sh"
+BUDGET_WATCH = SCRIPTS / "gateway-budget-watch.sh"
 
 
 def run(script, *args, home=None, timeout=120):
@@ -461,6 +462,91 @@ class TestChannelsWatch(unittest.TestCase):
         self.stub("Checking channel status...\n" + self.HEALTHY)
         r = self.run_watch()
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+
+class TestBudgetWatch(unittest.TestCase):
+    """gateway-budget-watch.sh: watchdog de disco por agente (E3.2).
+
+    Se construye un arbol de agentes falso con archivos del tamano justo
+    (sparse, via truncate) para no escribir gigabytes durante el test.
+    """
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="ops-budget-"))
+        self.root = self.tmp / "agents"
+        self.root.mkdir()
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def make_agent(self, name, sqlite_mb=0, extra_mb=0):
+        """Crea archivos con contenido REAL, no sparse.
+
+        En APFS `truncate` crea un archivo disperso: el tamano logico sube pero
+        los bloques asignados no, y `du` (que es lo que mide el script) reporta
+        casi cero. Escribir de verdad es mas lento pero es lo unico que prueba
+        el mismo camino que el sistema real.
+        """
+        adir = self.root / name / "agent"
+        adir.mkdir(parents=True)
+        chunk = b"\0" * (1024 * 1024)
+        if sqlite_mb:
+            f = adir / "openclaw-agent.sqlite"
+            with open(f, "wb") as fh:
+                for _ in range(sqlite_mb):
+                    fh.write(chunk)
+        if extra_mb:
+            f = adir / "backup.bak"
+            with open(f, "wb") as fh:
+                for _ in range(extra_mb):
+                    fh.write(chunk)
+        return adir
+
+    def run_budget(self, **env_over):
+        env = dict(os.environ)
+        env["OPENCLAW_AGENTS_ROOT"] = str(self.root)
+        env.setdefault("AGENT_DB_MAX_GB", "4")
+        env.setdefault("AGENT_DIR_MAX_GB", "6")
+        env.update({k: str(v) for k, v in env_over.items()})
+        return subprocess.run(
+            ["bash", str(BUDGET_WATCH)],
+            capture_output=True, text=True, env=env, timeout=120,
+        )
+
+    def test_small_agents_are_quiet(self):
+        self.make_agent("small", sqlite_mb=10, extra_mb=5)
+        r = self.run_budget()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(r.stdout.strip(), "")
+
+    def test_large_sqlite_fires(self):
+        self.make_agent("fat", sqlite_mb=100)
+        r = self.run_budget(AGENT_DB_MAX_GB=0.05)  # ~51MB
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("DB GRANDE", r.stdout)
+
+    def test_large_directory_fires_even_if_db_is_small(self):
+        """El caso real: 5.2GB de .bak de migracion junto a una DB normal."""
+        self.make_agent("bakfarm", sqlite_mb=10, extra_mb=200)
+        r = self.run_budget(AGENT_DB_MAX_GB=999, AGENT_DIR_MAX_GB=0.1)  # ~102MB
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("DIR GRANDE", r.stdout)
+
+    def test_missing_root_fires_not_silences(self):
+        env = dict(os.environ)
+        env["OPENCLAW_AGENTS_ROOT"] = str(self.tmp / "no-existe")
+        r = subprocess.run(
+            ["bash", str(BUDGET_WATCH)],
+            capture_output=True, text=True, env=env, timeout=60,
+        )
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertIn("No existe", r.stdout)
+
+    def test_says_it_does_not_delete(self):
+        """El mensaje debe dejar claro que no borra: es la garantia del check."""
+        self.make_agent("fat", sqlite_mb=100)
+        r = self.run_budget(AGENT_DB_MAX_GB=0.05)
+        self.assertIn("No borra nada", r.stdout)
 
 
 class TestRealConfigSanity(unittest.TestCase):
