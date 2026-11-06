@@ -130,6 +130,10 @@ La política vigente es **ADR-090**: niveles de pensamiento por agente y asignac
 - **PROHIBIDO `git add -A` y `git add .`.** Siempre rutas explícitas: `git add ruta/a.gd ruta/b.md`.
   Con más de una sesión viva, `-A` firma trabajo ajeno y lo mete en un commit con mi mensaje.
   Antes de commitear: listar lo que edité **en esta sesión** y stagear solo eso.
+  **El chequeo va ANTES, no en el `--stat`:** `git diff --cached --name-only` y comparar contra
+  lo que edité. El índice puede venir ya preparado por otra sesión, y `git commit` firma el
+  índice entero: cumplir la letra de esta regla con rutas explícitas no alcanza (pasó el
+  2026-11-06, commit `ae34e536f7`, cinco archivos de OPS bajo mi mensaje).
   Si al mirar el `--stat` aparece un archivo que no reconocés: `git reset --soft HEAD~1`, luego
   `git restore --staged <ajeno>` y recommitear solo lo propio. Pasó dos veces el 2026-11-06
   (se commiteó el ROADMAP de otra sesión de OPS). No hay tercera.
