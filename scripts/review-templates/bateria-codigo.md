@@ -55,7 +55,12 @@ Sin recursion (iterativo). O(n+m).
 ### p6_trampa
 Tengo 3 servidores y quiero tolerar la caida de 1 sin perder datos.
 Que consenso uso? Y por que NO deberia usar Raft en mi caso si solo tengo
-3 servidores? Responde concreto.
+3 servidores? Responde concreto, en un maximo de 150 palabras.
+
+La prueba mide CORRECCION DEL JUICIO, no capacidad de generar. Una respuesta
+larga y correcta vale igual de bien que una corta y correcta. Si el modelo
+piensa de mas y no llega a escribir, es un fallo de ENTREGA, no de criterio,
+y se reporta distinto.
 ==================================================================
 ### p7_local
 Un usuario argentino me dice que el sistema "no le anda". Le pedi el log y

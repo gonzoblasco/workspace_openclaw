@@ -45,6 +45,13 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TASKS_FILE="${LLM_TASKS_FILE:-$SCRIPT_DIR/llm-tasks.json}"
 OLLAMA_BASE="${OLLAMA_BASE:-http://127.0.0.1:11434}"
+# Tope por defecto 600s: un modelo sano no tarda mas. Configurable por si una
+# corrida legitima necesita mas.
+LLM_MAX_TIME="${LLM_MAX_TIME:-600}"
+
+# Tope duro adicional: si el modelo produce CERO tokens en este tiempo, no esta
+# razonando, esta trabado. Se corta antes que el tope general.
+LLM_STALL_TIME="${LLM_STALL_TIME:-180}"
 
 die() { echo "llm.sh: $*" >&2; exit "$1"; shift; }
 
@@ -190,8 +197,102 @@ print(json.dumps({
 PY
 ) || exit 4
 
-RESP=$(curl -s --max-time 900 "$OLLAMA_BASE/api/chat" \
-  -H "Content-Type: application/json" -d "$PAYLOAD")
+# --max-time corta la TRANSFERENCIA, no garantiza que el modelo dejo de generar:
+# el proceso puede seguir colgado. Se limita ademas con un tope externo, y se
+# distingue el timeout de la respuesta vacia. Medido 2026-11-05: un modelo en
+# Q2_K quedo generando sin devolver nada y el script no lo detecto.
+# Deteccion de estancamiento: se lanza curl con streaming y se corta si no llega
+# ningun token en LLM_STALL_TIME. Un modelo sano empieza a emitir en segundos;
+# 600s sin un solo token es un loop degenerado, no razonamiento. Medido
+# 2026-11-05: Qwen2.5-Coder-3B y Nova-Core se colgaron asi en la prueba de consenso.
+CURL_EXIT=0
+RESP=""
+
+# La llamada va en un proceso python aparte, en archivo temporal: hay que leer el
+# stream token a token para distinguir "tarda" de "se trabo". Un modelo sano
+# emite el primer token en segundos.
+_CHAT_PY=$(mktemp -t llmchat)
+cat > "$_CHAT_PY" <<'PYEOF'
+import json, sys, time, urllib.request
+
+base, payload_s, max_time, stall_time = sys.argv[1:5]
+max_time, stall_time = float(max_time), float(stall_time)
+payload = json.loads(payload_s)
+payload["stream"] = True
+data = json.dumps(payload).encode()
+
+req = urllib.request.Request(base + "/api/chat", data=data,
+                             headers={"Content-Type": "application/json"})
+t0 = time.time()
+content, thinking = [], []
+done = False
+last_token = t0
+eval_count = prompt_eval_count = 0
+load_ns = eval_ns = 0
+try:
+    with urllib.request.urlopen(req, timeout=max_time) as r:
+        for raw in r:
+            if time.time() - t0 > max_time:
+                print("llm.sh: TIMEOUT global", file=sys.stderr)
+                sys.exit(28)
+            line = raw.decode("utf-8", "replace").strip()
+            if not line:
+                continue
+            try:
+                obj = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            msg = obj.get("message") or {}
+            if msg.get("content"):
+                content.append(msg["content"])
+                last_token = time.time()
+            if msg.get("thinking"):
+                thinking.append(msg["thinking"])
+                last_token = time.time()
+            if obj.get("error"):
+                print(json.dumps({"error": obj["error"]}))
+                sys.exit(0)
+            if obj.get("done"):
+                done = True
+                eval_count = obj.get("eval_count", len(content))
+                prompt_eval_count = obj.get("prompt_eval_count", 0)
+                load_ns = obj.get("load_duration", 0)
+                eval_ns = obj.get("eval_duration", 0)
+                break
+            if time.time() - last_token > stall_time:
+                print("llm.sh: ESTANCADO: %.0fs sin emitir un token"
+                      % (time.time() - last_token), file=sys.stderr)
+                sys.exit(29)
+except Exception as e:
+    print("llm.sh: error de red: %s" % e, file=sys.stderr)
+    sys.exit(4)
+
+print(json.dumps({
+    "message": {"content": "".join(content), "thinking": "".join(thinking)},
+    "done": done,
+    "eval_count": eval_count,
+    "prompt_eval_count": prompt_eval_count,
+    "load_duration": load_ns,
+    "eval_duration": eval_ns,
+    "total_duration": int((time.time() - t0) * 1e9),
+}, ensure_ascii=False))
+PYEOF
+
+RESP=$(python3 "$_CHAT_PY" "$OLLAMA_BASE" "$PAYLOAD" "$LLM_MAX_TIME" "$LLM_STALL_TIME") || CURL_EXIT=$?
+rm -f "$_CHAT_PY"
+
+if [ "$CURL_EXIT" -eq 29 ]; then
+  echo "llm.sh: ESTANCADO en la tarea $TASK (modelo $MODEL)." >&2
+  echo "llm.sh: el modelo dejo de emitir tokens; no es lentitud, es traba." >&2
+  exit 5
+elif [ "$CURL_EXIT" -eq 28 ]; then
+  echo "llm.sh: TIMEOUT tras ${LLM_MAX_TIME}s (modelo $MODEL, tarea $TASK)." >&2
+  echo "llm.sh: el modelo no termino de generar. Revisar num_predict/num_ctx." >&2
+  exit 5
+elif [ "$CURL_EXIT" -ne 0 ]; then
+  echo "llm.sh: curl fallo con exit $CURL_EXIT (modelo $MODEL)" >&2
+  exit 4
+fi
 
 if [ -z "$RESP" ]; then
   echo "llm.sh: la API devolvio vacio (modelo $MODEL)" >&2

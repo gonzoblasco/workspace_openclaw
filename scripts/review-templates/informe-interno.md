@@ -20,12 +20,23 @@ Distinguir SIEMPRE la columna Fuente: `declarado` (lo que dice el fabricante o
 el GGUF), `medido` (lo que corrimos), `inferido` (lo que se deduce de lo anterior).
 
 ## Mediciones
-| Metrica | Valor medido | Valor declarado | Brecha |
 
-Si no hay valor declarado, la celda va vacia. Nunca se completa con estimaciones.
+Tres columnas como maximo, y ninguna con texto largo. La brecha entre lo medido
+y lo declarado va como parrafo debajo de la tabla, nunca como columna: una celda
+de 40 caracteres en la cuarta columna se aplasta a una letra por linea.
+
+| Prueba | Segundos | Tokens de salida |
+
+Debajo de la tabla, en prosa: el valor declarado, la diferencia, y que significa.
+Si no hay valor declarado, se omite la comparacion: nunca se completa con
+estimaciones.
 
 ## Prueba por prueba
-| Prueba | Veredicto | Severidad | Evidencia (cita) |
+
+Tabla de tres columnas. La evidencia NO va en la tabla: va como cita debajo,
+un parrafo por prueba. Una columna con una cita de 200 caracteres se aplasta.
+
+| Prueba | Veredicto | Severidad |
 
 ## Modo de falla dominante
 Cual es la forma tipica en que este modelo falla. Una de estas, o una combinacion:

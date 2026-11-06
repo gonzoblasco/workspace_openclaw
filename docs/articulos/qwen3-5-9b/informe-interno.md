@@ -18,38 +18,35 @@
 | fecha de evaluación | 2026-11-05 | medido |
 
 ## Mediciones
-| Metrica | Valor medido | Valor declarado | Brecha |
-|---|---|---|---|
-| p1_funcion_simple - secs | 7.82 s |  |  |
-| p1_funcion_simple - tokens_out | 38 |  |  |
-| p1_funcion_simple - load_secs | 4.52 s |  |  |
-| p2_explicacion - secs | 7.24 s |  |  |
-| p2_explicacion - tokens_out | 90 |  |  |
-| p3_debug - secs | 30.73 s |  |  |
-| p3_debug - tokens_out | 391 |  |  |
-| p4_refactor - secs | 99.03 s |  |  |
-| p4_refactor - tokens_out | 1283 |  |  |
-| p5_complejo - secs | 76.1 s |  |  |
-| p5_complejo - tokens_out | 1070 |  |  |
-| p6_trampa - secs | 29.06 s |  |  |
-| p6_trampa - tokens_out | 413 |  |  |
-| p7_local - secs | 4.74 s |  |  |
-| p7_local - tokens_out | 54 |  |  |
-| tasa de acierto | 5/7 (71.4%) |  |  |
-| tasa de falsos críticos/altos | 2/7 (28.6%) |  |  |
-| complejidad declarada p5 | O(N+M) |  |  |
-| complejidad medida p5 | O(N² + N·M) | O(N+M) | no cumple requisito declarado |
 
+| Prueba | Segundos | Tokens de salida |
+|---|---|---|
 ## Prueba por prueba
-| Prueba | Veredicto | Severidad | Evidencia (cita) |
-|---|---|---|---|
-| p1_funcion_simple | CORRECTO | ninguna | `return n % 2 == 0` |
-| p2_explicacion | CORRECTO | ninguna | "Lo usás para asegurar que archivos se cierren solos o conexiones se liberen sin tener que escribir código extra." |
-| p3_debug | CORRECTO | ninguna | "se intenta acceder a `i['cantidad']`. Sin embargo, el diccionario pasado como argumento solo tiene la clave `'precio'` y le falta la clave `'cantidad'`." |
-| p4_refactor | CORRECTO | ninguna | "pasaremos el objeto SMTP como argumento" / "Se añade un parámetro opcional `ahora`" |
-| p5_complejo | FALSO | alta | "El bucle `while queue` procesa cada nodo exactamente una vez. Dentro, iteramos sobre la lista de dependencias de ese nodo. En total, todas las aristas (dependencias) se visitan una sola vez en todo el proceso." |
-| p6_trampa | FALSO | crítica | "No deberías usar Raft porque **requiere una mayoría absoluta para tomar decisiones**, y con 3 servidores, la caída de 1 deja exactamente a la mitad del sistema fuera del quórum." / "Raft **se detiene inmediatamente**" |
-| p7_local | CORRECTO | ninguna | "verifica si el servicio de PostgreSQL está activo y reiniciado en tu máquina." |
+| Prueba | Veredicto | Severidad |
+|---|---|---|
+| p1_funcion_simple | CORRECTO | ninguna |
+| p2_explicacion | CORRECTO | ninguna |
+| p3_debug | CORRECTO | ninguna |
+| p4_refactor | CORRECTO | ninguna |
+| p5_complejo | FALSO | alta |
+| p6_trampa | FALSO | crítica |
+| p7_local | CORRECTO | ninguna |
+
+### Evidencia citada, prueba por prueba
+
+**p1_funcion_simple.** `return n % 2 == 0`
+
+**p2_explicacion.** "Lo usás para asegurar que archivos se cierren solos o conexiones se liberen sin tener que escribir código extra."
+
+**p3_debug.** "se intenta acceder a `i['cantidad']`. Sin embargo, el diccionario pasado como argumento solo tiene la clave `'precio'` y le falta la clave `'cantidad'`."
+
+**p4_refactor.** "pasaremos el objeto SMTP como argumento" / "Se añade un parámetro opcional `ahora`"
+
+**p5_complejo.** "El bucle `while queue` procesa cada nodo exactamente una vez. Dentro, iteramos sobre la lista de dependencias de ese nodo. En total, todas las aristas (dependencias) se visitan una sola vez en todo el proceso."
+
+**p6_trampa.** "No deberías usar Raft porque **requiere una mayoría absoluta para tomar decisiones**, y con 3 servidores, la caída de 1 deja exactamente a la mitad del sistema fuera del quórum." / "Raft **se detiene inmediatamente**"
+
+**p7_local.** "verifica si el servicio de PostgreSQL está activo y reiniciado en tu máquina."
 
 ## Modo de falla dominante
 **falso_seguro**

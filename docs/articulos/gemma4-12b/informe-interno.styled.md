@@ -5,11 +5,15 @@ h2 { font-size: 1.35em; margin-top: 2em; border-bottom: 1px solid #e2e5e2; paddi
 h3 { font-size: 1.1em; margin-top: 1.5em; }
 blockquote { border-left: 3px solid #2f6f4f; margin-left: 0; padding-left: 1em; color: #4a4f4c; font-style: italic; }
 table { border-collapse: collapse; width: 100%; margin: 1.4em 0; font-size: 0.92em; }
-th, td { border: 1px solid #d8dcd8; padding: 0.5em 0.7em; text-align: left; }
+th, td { border: 1px solid #d8dcd8; padding: 0.5em 0.7em; text-align: left; vertical-align: top; word-wrap: break-word; overflow-wrap: break-word; }
 th { background: #f4f6f4; font-weight: 600; }
-code { background: #f4f6f4; padding: 0.12em 0.35em; border-radius: 3px; font-size: 0.9em; }
+td:nth-child(1) { width: 40%; }
+td:nth-child(2) { width: 38%; }
+td:nth-child(3) { width: 22%; }
+code { background: #f4f6f4; padding: 0.12em 0.35em; border-radius: 3px; font-size: 0.9em; word-break: break-word; }
 pre { background: #f7f8f7; border: 1px solid #e2e5e2; border-radius: 4px; padding: 1em; overflow-x: auto; font-size: 0.85em; line-height: 1.45; }
 pre code { background: none; padding: 0; }
+img { max-width: 100%; height: auto; display: block; margin: 1.6em auto; }
 hr { border: none; border-top: 1px solid #e2e5e2; margin: 2.5em 0; }
 </style>
 
@@ -32,34 +36,35 @@ hr { border: none; border-top: 1px solid #e2e5e2; margin: 2.5em 0; }
 | Fecha evaluacion | 2026-11-05 | inferido |
 
 ## Mediciones
-| Metrica | Valor medido | Valor declarado | Brecha |
-|---|---|---|---|
-| Contexto (tokens) | 262144 | 262144 | 0 |
-| p1_funcion_simple - duracion | 13.05 s |  |  |
-| p1_funcion_simple - tokens_out | 233 |  |  |
-| p2_explicacion - duracion | 5.51 s |  |  |
-| p2_explicacion - tokens_out | 94 |  |  |
-| p3_debug - duracion | 12.92 s |  |  |
-| p3_debug - tokens_out | 320 |  |  |
-| p4_refactor - duracion | 31.57 s |  |  |
-| p4_refactor - tokens_out | 707 |  |  |
-| p5_complejo - duracion | 43.27 s |  |  |
-| p5_complejo - tokens_out | 926 |  |  |
-| p6_trampa - duracion | 23.06 s |  |  |
-| p6_trampa - tokens_out | 383 |  |  |
-| p7_local - duracion | 7.37 s |  |  |
-| p7_local - tokens_out | 153 |  |  |
 
+| Prueba | Segundos | Tokens de salida |
+|---|---|---|
 ## Prueba por prueba
-| Prueba | Veredicto | Severidad | Evidencia (cita) |
-|---|---|---|---|
-| p1_funcion_simple | CORRECTO | ninguna | "return n % 2 == 0" |
-| p2_explicacion | CORRECTO | ninguna | "Lo usás para manejar archivos, conexiones a bases de datos o bloqueos de hilos sin dejar basura tirada." |
-| p3_debug | CORRECTO | ninguna | "Para solucionarlo, debes usar el método `.get()`, que permite asignar un valor por defecto (en este caso `0`) si la llave no existe." |
-| p4_refactor | CORRECTO | ninguna | "def enviar_recordatorio(email, ahora=None, smtp_client=None):" |
-| p5_complejo | CORRECTO | ninguna | "utilizaremos el **Algoritmo de Kahn** para el ordenamiento topológico." |
-| p6_trampa | CORRECTO | ninguna | "Raft es perfectamente capaz de funcionar con 3 servidores y tolerar la caída de 1." |
-| p7_local | FALSO | alta | "Por favor, verificá si el servicio de la base de datos está encendido y funcionando correctamente." |
+| Prueba | Veredicto | Severidad |
+|---|---|---|
+| p1_funcion_simple | CORRECTO | ninguna |
+| p2_explicacion | CORRECTO | ninguna |
+| p3_debug | CORRECTO | ninguna |
+| p4_refactor | CORRECTO | ninguna |
+| p5_complejo | CORRECTO | ninguna |
+| p6_trampa | CORRECTO | ninguna |
+| p7_local | FALSO | alta |
+
+### Evidencia citada, prueba por prueba
+
+**p1_funcion_simple.** "return n % 2 == 0"
+
+**p2_explicacion.** "Lo usás para manejar archivos, conexiones a bases de datos o bloqueos de hilos sin dejar basura tirada."
+
+**p3_debug.** "Para solucionarlo, debes usar el método `.get()`, que permite asignar un valor por defecto (en este caso `0`) si la llave no existe."
+
+**p4_refactor.** "def enviar_recordatorio(email, ahora=None, smtp_client=None):"
+
+**p5_complejo.** "utilizaremos el **Algoritmo de Kahn** para el ordenamiento topológico."
+
+**p6_trampa.** "Raft es perfectamente capaz de funcionar con 3 servidores y tolerar la caída de 1."
+
+**p7_local.** "Por favor, verificá si el servicio de la base de datos está encendido y funcionando correctamente."
 
 ## Modo de falla dominante
 `no_aplica`

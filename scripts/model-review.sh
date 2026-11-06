@@ -31,6 +31,10 @@
 
 set -uo pipefail
 
+# Un Ctrl-C o un kill debe llevarse los curl hijos: sin esto quedan procesos
+# vivos generando y el usuario ve "esta corriendo" cuando ya se aborto.
+trap 'pkill -P $$ 2>/dev/null; exit 130' INT TERM
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LLM="$SCRIPT_DIR/llm.sh"
 OLLAMA_BASE="${OLLAMA_BASE:-http://127.0.0.1:11434}"
@@ -63,6 +67,12 @@ case "$SALIDA" in interna|publica|ambas) ;; *) echo "model-review.sh: --salida i
 BAT_FILE="$TPL/bateria-$BATERIA.md"
 VERDAD="$TPL/verdad-consenso.md"
 VERDAD2="$TPL/verdad-registro-diagnostico.md"
+
+# La fuente de verdad depende de la BATERIA, no del modelo: cada bateria tiene
+# sus pruebas y su tabla. Sin esto, un modelo chico se puntua con la vara de
+# consenso distribuido y todo queda NO_VERIFICABLE, que no mide nada.
+VERDAD_BAT="$TPL/verdad-$BATERIA.md"
+[ -r "$VERDAD_BAT" ] && VERDAD="$VERDAD_BAT" && VERDAD2="$TPL/verdad-registro-diagnostico.md"
 [ -r "$BAT_FILE" ] || { echo "model-review.sh: no existe la bateria: $BAT_FILE" >&2; exit 4; }
 
 OUT="${OUT:-/tmp/model-review-$BATERIA}"
@@ -115,15 +125,31 @@ while [ "$i" -lt "$N" ]; do
   jq -r ".[$i].prompt" "$OUT/pruebas.json" > "$OUT/prompt-$ID.txt"
 
   echo "model-review.sh: mide $ID ($((i+1))/$N)" >&2
-  if ! "$LLM" codigo --template "$OUT/prompt-$ID.txt" --model "$MODEL" \
-        --json "${CTX_ARG[@]}" "${NP_ARG[@]}" > "$OUT/resp-$ID.json" 2>"$OUT/err-$ID.txt"; then
+  LLM_RC=0
+  "$LLM" codigo --template "$OUT/prompt-$ID.txt" --model "$MODEL" \
+        --json "${CTX_ARG[@]}" "${NP_ARG[@]}" > "$OUT/resp-$ID.json" 2>"$OUT/err-$ID.txt" || LLM_RC=$?
+  if [ "$LLM_RC" -eq 5 ]; then
+    # Timeout: el modelo no termino de generar. No es "no entrego", es que no
+    # puede. Se registra distinto y NO se sigue midiendo las demas pruebas:
+    # una corrida que se cuelga en p5 se va a colgar igual en p6 y p7.
+    echo "model-review.sh: TIMEOUT en $ID. El modelo no termina de generar." >&2
+    echo "model-review.sh: corto la corrida; 1 de $N pruebas sin medir basta para invalidarla." >&2
+    jq -n --arg id "$ID" '{id:$id, timeout:true, text:"", secs:null}' > "$OUT/resp-$ID.json"
+    jq -c --arg id "$ID" '. + {id:$id}' "$OUT/resp-$ID.json" >> "$OUT/mediciones.jsonl"
+    echo "model-review.sh: CORRIDA INCOMPLETA. Artefactos parciales en $OUT" >&2
+    exit 5
+  fi
+  if [ "$LLM_RC" -ne 0 ]; then
     # Un modelo que no contesta no aborta la cata: se registra como NON DELIVERY
     # y la etapa B lo puntua como NO_ENTREGA.
     echo "model-review.sh: $ID no entrego ($(head -1 "$OUT/err-$ID.txt"))" >&2
     jq -n --arg id "$ID" '{id:$id, no_entrega:true, text:"", secs:null}' > "$OUT/resp-$ID.json"
   fi
 
-  jq --arg id "$ID" '. + {id:$id}' "$OUT/resp-$ID.json" >> "$OUT/mediciones.jsonl"
+  # -c: una linea por registro. Sin -c, jq escribe multinea y el .jsonl deja de
+  # ser JSONL: 7 registros ocupaban 105 lineas y cualquier consumidor (graficos,
+  # tablas) fallaba al parsear.
+  jq -c --arg id "$ID" '. + {id:$id}' "$OUT/resp-$ID.json" >> "$OUT/mediciones.jsonl"
 
   {
     echo ""
@@ -141,7 +167,7 @@ echo "model-review.sh: evalua con $EVALUADOR" >&2
   --var "modelo=$MODEL" --var "fecha=$FECHA" \
   --var "ctx_declarado=$(cat "$OUT/ctx-declarado.txt")" \
   --var "verdad_consenso=$(cat "$VERDAD")" \
-  --var "verdad_registro=$(cat "$VERDAD2")" \
+  --var "verdad_registro=$(cat "$VERDAD2" 2>/dev/null || echo 'no aplica a esta bateria')" \
   --var "salidas=$(cat "$OUT/salidas.txt")" \
   > "$OUT/veredicto.md" 2>"$OUT/err-evaluador.txt" || {
     echo "model-review.sh: fallo el evaluador (ver $OUT/err-evaluador.txt)" >&2; exit 4; }

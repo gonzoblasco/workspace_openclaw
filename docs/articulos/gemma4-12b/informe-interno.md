@@ -17,34 +17,35 @@
 | Fecha evaluacion | 2026-11-05 | inferido |
 
 ## Mediciones
-| Metrica | Valor medido | Valor declarado | Brecha |
-|---|---|---|---|
-| Contexto (tokens) | 262144 | 262144 | 0 |
-| p1_funcion_simple - duracion | 13.05 s |  |  |
-| p1_funcion_simple - tokens_out | 233 |  |  |
-| p2_explicacion - duracion | 5.51 s |  |  |
-| p2_explicacion - tokens_out | 94 |  |  |
-| p3_debug - duracion | 12.92 s |  |  |
-| p3_debug - tokens_out | 320 |  |  |
-| p4_refactor - duracion | 31.57 s |  |  |
-| p4_refactor - tokens_out | 707 |  |  |
-| p5_complejo - duracion | 43.27 s |  |  |
-| p5_complejo - tokens_out | 926 |  |  |
-| p6_trampa - duracion | 23.06 s |  |  |
-| p6_trampa - tokens_out | 383 |  |  |
-| p7_local - duracion | 7.37 s |  |  |
-| p7_local - tokens_out | 153 |  |  |
 
+| Prueba | Segundos | Tokens de salida |
+|---|---|---|
 ## Prueba por prueba
-| Prueba | Veredicto | Severidad | Evidencia (cita) |
-|---|---|---|---|
-| p1_funcion_simple | CORRECTO | ninguna | "return n % 2 == 0" |
-| p2_explicacion | CORRECTO | ninguna | "Lo usás para manejar archivos, conexiones a bases de datos o bloqueos de hilos sin dejar basura tirada." |
-| p3_debug | CORRECTO | ninguna | "Para solucionarlo, debes usar el método `.get()`, que permite asignar un valor por defecto (en este caso `0`) si la llave no existe." |
-| p4_refactor | CORRECTO | ninguna | "def enviar_recordatorio(email, ahora=None, smtp_client=None):" |
-| p5_complejo | CORRECTO | ninguna | "utilizaremos el **Algoritmo de Kahn** para el ordenamiento topológico." |
-| p6_trampa | CORRECTO | ninguna | "Raft es perfectamente capaz de funcionar con 3 servidores y tolerar la caída de 1." |
-| p7_local | FALSO | alta | "Por favor, verificá si el servicio de la base de datos está encendido y funcionando correctamente." |
+| Prueba | Veredicto | Severidad |
+|---|---|---|
+| p1_funcion_simple | CORRECTO | ninguna |
+| p2_explicacion | CORRECTO | ninguna |
+| p3_debug | CORRECTO | ninguna |
+| p4_refactor | CORRECTO | ninguna |
+| p5_complejo | CORRECTO | ninguna |
+| p6_trampa | CORRECTO | ninguna |
+| p7_local | FALSO | alta |
+
+### Evidencia citada, prueba por prueba
+
+**p1_funcion_simple.** "return n % 2 == 0"
+
+**p2_explicacion.** "Lo usás para manejar archivos, conexiones a bases de datos o bloqueos de hilos sin dejar basura tirada."
+
+**p3_debug.** "Para solucionarlo, debes usar el método `.get()`, que permite asignar un valor por defecto (en este caso `0`) si la llave no existe."
+
+**p4_refactor.** "def enviar_recordatorio(email, ahora=None, smtp_client=None):"
+
+**p5_complejo.** "utilizaremos el **Algoritmo de Kahn** para el ordenamiento topológico."
+
+**p6_trampa.** "Raft es perfectamente capaz de funcionar con 3 servidores y tolerar la caída de 1."
+
+**p7_local.** "Por favor, verificá si el servicio de la base de datos está encendido y funcionando correctamente."
 
 ## Modo de falla dominante
 `no_aplica`

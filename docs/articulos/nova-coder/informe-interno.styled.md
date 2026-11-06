@@ -5,11 +5,15 @@ h2 { font-size: 1.35em; margin-top: 2em; border-bottom: 1px solid #e2e5e2; paddi
 h3 { font-size: 1.1em; margin-top: 1.5em; }
 blockquote { border-left: 3px solid #2f6f4f; margin-left: 0; padding-left: 1em; color: #4a4f4c; font-style: italic; }
 table { border-collapse: collapse; width: 100%; margin: 1.4em 0; font-size: 0.92em; }
-th, td { border: 1px solid #d8dcd8; padding: 0.5em 0.7em; text-align: left; }
+th, td { border: 1px solid #d8dcd8; padding: 0.5em 0.7em; text-align: left; vertical-align: top; word-wrap: break-word; overflow-wrap: break-word; }
 th { background: #f4f6f4; font-weight: 600; }
-code { background: #f4f6f4; padding: 0.12em 0.35em; border-radius: 3px; font-size: 0.9em; }
+td:nth-child(1) { width: 40%; }
+td:nth-child(2) { width: 38%; }
+td:nth-child(3) { width: 22%; }
+code { background: #f4f6f4; padding: 0.12em 0.35em; border-radius: 3px; font-size: 0.9em; word-break: break-word; }
 pre { background: #f7f8f7; border: 1px solid #e2e5e2; border-radius: 4px; padding: 1em; overflow-x: auto; font-size: 0.85em; line-height: 1.45; }
 pre code { background: none; padding: 0; }
+img { max-width: 100%; height: auto; display: block; margin: 1.6em auto; }
 hr { border: none; border-top: 1px solid #e2e5e2; margin: 2.5em 0; }
 </style>
 
@@ -33,40 +37,50 @@ hr { border: none; border-top: 1px solid #e2e5e2; margin: 2.5em 0; }
 | Fecha evaluacion | 2026-11-05 | medido |
 
 ## Mediciones
-| Metrica | Valor medido | Valor declarado | Brecha |
-|---|---|---|---|
-| p1_funcion_simple: secs | 22.94 s | - | - |
-| p1_funcion_simple: tokens_out | 105 | - | - |
-| p1_funcion_simple: done | stop | - | - |
-| p2_explicacion: secs | 13.42 s | - | - |
-| p2_explicacion: tokens_out | 88 | - | - |
-| p3_debug: secs | 16.41 s | - | - |
-| p3_debug: tokens_out | 354 | - | - |
-| p4_refactor: secs | 22.38 s | - | - |
-| p4_refactor: tokens_out | 455 | - | - |
-| p5_complejo: secs | 33.46 s | - | - |
-| p5_complejo: tokens_out | 817 | - | - |
-| p6_trampa: secs | 62.29 s | - | - |
-| p6_trampa: tokens_out | 573 | - | - |
-| p7_local: secs | 14.80 s | - | - |
-| p7_local: tokens_out | 201 | - | - |
-| Contexto | 32768 | 163840 | -131072 tokens (80% debajo de declarado) |
-| Tasa CORRECTO | 3/7 (42.8%) | - | - |
-| Tasa FALSO | 3/7 (42.8%) | - | - |
-| Tasa INCOMPLETO | 1/7 (14.2%) | - | - |
+
+| Prueba | Segundos | Tokens de salida |
+|---|---|---|
+| p1_funcion_simple | 22.94 s | 105 |
+| p2_explicacion | 13.42 s | 88 |
+| p3_debug | 16.41 s | 354 |
+| p4_refactor | 22.38 s | 455 |
+| p5_complejo | 33.46 s | 817 |
+| p6_trampa | 62.29 s | 573 |
+| p7_local | 14.80 s | 201 |
+
+**Contexto:** 32768 tokens en la corrida; el modelo declara 163840. -131072 tokens (80% debajo de declarado)
+- **Tasa CORRECTO:** 3/7 (42.8%)
+- **Tasa FALSO:** 3/7 (42.8%)
+- **Tasa INCOMPLETO:** 1/7 (14.2%)
 
 Si no hay valor declarado, la celda va vacia. Nunca se completa con estimaciones.
 
 ## Prueba por prueba
-| Prueba | Veredicto | Severidad | Evidencia (cita) |
-|---|---|---|---|
-| p1_funcion_simple | CORRECTO | ninguna | `def es_par(n): return n % 2 == 0` |
-| p2_explicacion | FALSO | media | `Un context manager en Python es una herramienta que permite definir cómo un objeto debe ser utilizado con la sentencia "with"` — 0 marcas rioplatenses, ignora instruccion de registro |
-| p3_debug | CORRECTO | ninguna | `cantidad = i.get('cantidad', 0)  # Usamos 0 como valor por defecto` |
-| p4_refactor | INCOMPLETO | media | `return datetime.datetime.now()` sin `import datetime`; codigo no ejecutable tal cual |
-| p5_complejo | CORRECTO | ninguna | `if len(result) != len(packages): return None` — deteccion de ciclo correcta |
-| p6_trampa | FALSO | critica | `Con solo 3 servidores, no podrás formar una mayoría mayoría necesaria para seguir operando si uno de ellos falla` y `no deberías usar Raft o Paxos directamente` |
-| p7_local | FALSO | alta | `Esto podría deberse a varios problemas, como que el servicio de la base de datos no esté corriendo, el puerto esté incorrecto, o haya problemas de red` — 127.0.0.1 no implica red |
+| Prueba | Veredicto | Severidad |
+|---|---|---|
+| p1_funcion_simple | CORRECTO | ninguna |
+| p2_explicacion | FALSO | media |
+| p3_debug | CORRECTO | ninguna |
+| p4_refactor | INCOMPLETO | media |
+| p5_complejo | CORRECTO | ninguna |
+| p6_trampa | FALSO | critica |
+| p7_local | FALSO | alta |
+
+### Evidencia citada, prueba por prueba
+
+**p1_funcion_simple.** `def es_par(n): return n % 2 == 0`
+
+**p2_explicacion.** `Un context manager en Python es una herramienta que permite definir cómo un objeto debe ser utilizado con la sentencia "with"` — 0 marcas rioplatenses, ignora instruccion de registro
+
+**p3_debug.** `cantidad = i.get('cantidad', 0)  # Usamos 0 como valor por defecto`
+
+**p4_refactor.** `return datetime.datetime.now()` sin `import datetime`; codigo no ejecutable tal cual
+
+**p5_complejo.** `if len(result) != len(packages): return None` — deteccion de ciclo correcta
+
+**p6_trampa.** `Con solo 3 servidores, no podrás formar una mayoría mayoría necesaria para seguir operando si uno de ellos falla` y `no deberías usar Raft o Paxos directamente`
+
+**p7_local.** `Esto podría deberse a varios problemas, como que el servicio de la base de datos no esté corriendo, el puerto esté incorrecto, o haya problemas de red` — 127.0.0.1 no implica red
 
 ## Modo de falla dominante
 `falso_seguro`: responde con confianza y contenido invertido
