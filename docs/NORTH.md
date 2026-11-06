@@ -1,6 +1,6 @@
 # NORTH.md - El norte de Kanam
 
-**Fecha:** 2026-10-06 (reconstruido desde cero)
+**Fecha:** 2026-10-06 (reconstruido) · **Actualizado:** 2026-11-06 (Planner integrado al CORE)
 **Estado:** Vivo. Fija el "para qué" de largo plazo.
 **Autor:** Kanam, a pedido de Gonzo. Reescrito contra el contexto real de **las últimas dos semanas** (dailies 2026-09-22 a 2026-10-06, `docs/ROADMAP.md`, ADRs, `projects/*/.knowledge/`) - no contra la memoria vieja.
 
@@ -41,17 +41,19 @@ Kanam no "usa IA". Construye el sistema que hace posible usarla bien, y lo pone 
 
 El sistema no se construyó de una: maduró por etapas, cada una habilitando la siguiente. Es un **mapa de dependencias, no una lista de tareas**. (Absorbido de `EVOLUTION.md` el 2026-10-06.)
 
-| Etapa | Qué es | Estado (2026-10-06) |
+| Etapa | Qué es | Estado (última verificación) |
 |---|---|---|
 | **1. El Suelo** - sistemas de referencia | Design system (tokens semánticos + Anti-Slop), diccionario de entidades (`.knowledge/entities/`), rúbrica de gusto (SHARP) | ✅ Completada |
 | **2. El Ritmo** - ciclos de vida y gates | `security-scan` (pre-commit), session hooks (`session_plan.py`), skill evals, lifecycle tracker, regression control | 🟡 **Parcial:** 2 de 5 cableados (`security-scan` al pre-commit; session hooks a arranque/cierre). Los otros 3 quedan como experimentos **sin cablear a propósito**: no tienen qué medir todavía. Ver decisión abajo. |
-| **3. El Equipo** - Kanam's Crew | `critic` (sustancia), `auditor` (superficie), `planner` (gobierno), + la guía de inicio rápido | ✅ Completada |
+| **3. El Equipo** - Kanam's Crew | `critic` (sustancia), `auditor` (superficie), `planner` (gobierno), + la guía de inicio rápido | ✅ Completada y operativa: Planner integrado como servicio del CORE (2026-11-06), v0.3; programas multi-sesión y brief semanal |
 | **4. Expansión y refinamiento** | Módulo de especialistas, validación a11y técnica (`axe-core`), tablero de control del backlog | 🟡 **Parcial:** a11y técnica **medida** (`a11y-scan`, ADR-094); Tablero **cerrado** (es `kanam-os /todos`); especialistas **diferidos a propósito** |
 
 **Metodología de evolución:**
 1. **No saltar etapas.** Un `critic` sin rúbrica SHARP es ruido. Un agente sin estándar no es un agente, es una suma de opiniones.
 2. **Documentación como código.** Cada paso se registra en un ADR y se implementa como skill o script.
 3. **Validación real.** Una etapa se considera completada solo cuando el Core puede verificar el estándar de forma automatizada o semi-automatizada.
+
+> **Actualización 2026-11-06 — El Equipo se completa.** El Planner dejó de ser un agente que había que abrir a mano: el CORE lo convoca cuando el objetivo es un programa (3+ pasos, 2+ roles, >1 sesión o fecha/bloqueo). Fase 1: el Planner planifica y entrega contratos; el CORE ejecuta. Programa multi-sesión, brief semanal y auditoría de implementación. Detalle: `docs/PLANNER-INTEGRATION.md`, `agents/kanam-planner/CAPABILITIES.md`.
 
 > **Decisión abierta (Etapa 2):** de los cinco gates, **dos están cableados**: `security-scan` al pre-commit (el caso real: código de skills de afuera), y `session-planning-hooks` a arranque/cierre (ADR-093). Los otros tres - `skill-evals`, `lifecycle-tracker`, `regression-control` - quedan **sin cablear a propósito**: exigen un objeto que hoy no existe (`.eval.yaml` por skill, un baseline SHARP medido). Cablearlos sería un gate que no puede juzgar nada. Sus specs se conservan con su estado real; si el frente "ciclo de vida de skills" se retoma, ahí está el punto de partida.
 
@@ -90,11 +92,11 @@ La apuesta de fondo, ya nombrada en el BRIEF de `kanam-forge`: empaquetar el pip
 
 ## Los frentes vivos (lo que se trabajó de verdad en dos semanas)
 
-Verificado contra los dailies 2026-09-22 a 2026-10-06. **Esto es el norte real, no la aspiración.**
+Verificado contra los dailies 2026-09-22 a 2026-10-06; el frente multi-agente se actualizó al 2026-11-06. **Esto es el norte real, no la aspiración.**
 
-| Frente | Qué es | Estado (2026-10-06) |
+| Frente | Qué es | Estado (última verificación) |
 |---|---|---|
-| **Sistema multi-agente** | 4 roles (dev, mind, ops, studio) + Crew (critic, auditor, planner), ADR-073/074 | Operativo; pipeline A/B con enforcement (ADR-088) |
+| **Sistema multi-agente** | 4 roles (dev, mind, ops, studio) + Crew (critic, auditor, planner), ADR-073/074 | Operativo; pipeline A/B con enforcement (ADR-088). Planner integrado al CORE (v0.3): delegación automática, programas multi-sesión, brief semanal; Fase 1 sin dispatch directo. |
 | **Memoria** | `memory.db` (fuente de verdad) + `kanam-os` para verla; catálogo de memorias del ecosistema | DB-first estable; app Fases 1-2 |
 | **Modelos / pipeline** | Asignación por rol y nivel de pensamiento | ADR-090, aplicado y verificado en runtime |
 | **`kanam-onwheels`** | Producto finito para Esteban (concesionaria + chatbot RAG) | Catalogo + panel hechos y verificados; falta el chat RAG (bloqueado por decision de embeddings/modelo) |
@@ -154,4 +156,5 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 - Creado 2026-09-14, en la sesión donde Gonzo preguntó "¿cuál era el objetivo, el para qué de este proyecto?".
 - **Reconstruido 2026-10-06** contra las últimas dos semanas de trabajo real. Motivo: la versión previa describía una constelación de productos narrativos y experimentos que ya no son el eje. Fuentes: dailies 2026-09-22 a 2026-10-06, `docs/ROADMAP.md`, ADRs del workspace, `projects/*/.knowledge/`, `docs/studies/` (`design/`, `narrative-engineering/`), `docs/stories/`.
 - **Absorbido `EVOLUTION.md` el 2026-10-06.** El blueprint de madurez de Kanam OS (etapas + metodología) pasó a la sección "El camino de madurez del sistema": un solo documento de norte, no dos. Las referencias de los agentes (`critic`, `planner`) se reapuntaron a este archivo.
+- **Actualizado 2026-11-06.** El Planner se integró al CORE como servicio de planificación de programas (v0.3, Fase 1). El CORE lo convoca; el Planner devuelve plan, brief y contratos; el CORE ejecuta. La autonomía de dispatch (Fase 2) queda condicionada a 3+ invocaciones/semana durante 3 semanas.
 - Principio: no inventar. Lo que este documento afirma sobre un proyecto sale de su BRIEF/ROADMAP real o del daily donde se trabajó. Las aspiraciones están marcadas como tales (Horizontes 1 y 2).
