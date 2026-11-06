@@ -18,13 +18,13 @@
 
 ## 1. Gates: ¿cuáles aplican?
 
-| Gate | Aplica | Veredicto | Evidencia (1 línea) |
+| Gate | Aplica | Veredicto | Evidencia (1 línea, con el número medido) |
 |---|---|---|---|
 | Grayscale | ✅/❌ | ok / falla / n/a | |
 | Squint | ✅/❌ | ok / falla / n/a | |
-| Alignment count | ✅/❌ | ok (n líneas) / falla / n/a | |
+| Alignment count | ✅/❌ | ok (n ejes, cuáles) / falla / n/a | |
 | Spacing audit | ✅/❌ | ok / falla / n/a | |
-| Contrast | ✅/❌ | ok / falla / n/a | |
+| Contrast | ✅/❌ | ok (ratio y peor píxel) / falla / n/a | |
 | Single rank-1 | ✅/❌ | ok / falla / n/a | |
 
 > **Si un gate no aplica, decirlo y explicar por qué.** Correr un gate de pantalla sobre
@@ -56,3 +56,21 @@
 
 - **Tiempo usado:** [min]
 - **¿El ojo cambió?** [sí / un poco / no - y por qué]
+
+## 6. Evidencia visual (verificable)
+
+Renders del caso, generados con el script del frente (no a mano, no en un editor):
+
+| Render | Archivo | Cómo se generó |
+|---|---|---|
+| Color | `studies/design/casos/<prefijo>_view.png` | descarga directa de la og:image / captura propia |
+| Grayscale | `studies/design/casos/<prefijo>_gray.png` | `Image.convert("L")` |
+| Squint | `studies/design/casos/<prefijo>_squint.png` | resize a 1/12 y vuelta (bilinear) |
+
+```bash
+cd studies/design && python3 scripts/critica-renders.py --out casos --prefix <prefijo> <URL-o-archivo>
+```
+
+**Las mediciones se escriben con números, no con adjetivos.** El veredicto de `Contrast` lleva el ratio
+promedio **y** el peor píxel bajo el glifo: si el fondo no es uniforme (gradiente, glow, foto), el
+promedio miente y el peor píxel decide. El de `Alignment` lleva cuántos ejes hay y cuáles.

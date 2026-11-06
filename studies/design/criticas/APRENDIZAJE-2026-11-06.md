@@ -11,6 +11,7 @@
 |---|---|---|
 | Ficha de crítica · Linear | `studies/design/criticas/2026-11-06-linear-og.md` | `PASS` (`kb-audit`) |
 | Ficha de crítica · Stripe | `studies/design/criticas/2026-11-06-stripe-og.md` | `PASS` (`kb-audit`) |
+| Ficha de crítica · Raycast | `studies/design/criticas/2026-11-06-raycast-og.md` | `PASS` (`kb-audit` + `handoff-gate out`) |
 | Renders (color/gris/squint) de cada caso | `studies/design/casos/` | — |
 | Script de renders + medición | `studies/design/scripts/critica-renders.py` | corre; mide peor píxel |
 
@@ -31,6 +32,15 @@ grande. *(Medición reproducible: `studies/design/scripts/critica-renders.py`.)*
 declarado, no con el píxel real. La acción es de DEV (gate de contraste por muestreo), no mía: yo
 entrego la regla y la evidencia.
 
+**[obs] 3b. El gris no depende del tipo de pieza, sino de dónde termina el color.** Raycast y Stripe
+son el mismo formato (og con radial) y tienen veredictos opuestos de grayscale. La diferencia medible
+es que en Raycast el radial quedó fuera de la zona del texto, y en Stripe atravesó el wordmark.
+*(Ficha Raycast §1 y §4.)*
+
+**[obs] 3c. En una composición simétrica, un eje corrido pesa más que cinco en una grilla.** Raycast:
+tagline corrida **57 px** del centro del lienzo mientras el logo está a 10 px. Sobre un fondo
+simétrico el desvío se lee como error; en una grilla se lee como decisión. *(Ficha Raycast §1 y §3.)*
+
 **[inf] 4. Un `n/a` bien argumentado es criterio, no pereza.** Correr `single rank-1` sobre una
 og:image (sin CTA) da un veredicto falso. El acto de criterio es decir por qué no aplica y qué se
 miró en su lugar (el lockup como único protagonista).
@@ -39,10 +49,10 @@ miró en su lugar (el lockup como único protagonista).
 
 | Acción | Dueño | Estado |
 |---|---|---|
-| Agregar a `PLANTILLA-critica.md` el bloque de "evidencia visual reproducible" (renders + medición) | MIND (es un doc de estudio) | pendiente de aprobación: el plan de diseño declara la plantilla como su fuente |
+| Agregar a `PLANTILLA-critica.md` el bloque de "evidencia visual reproducible" (renders + medición) | MIND | **hecho 2026-11-06** (§6 de la plantilla + `alignment` con n de ejes y `contrast` con peor píxel) |
 | Registrar el aprendizaje 1-2 en `memory/memory.db` como learning de diseño | MIND | hecho en el cierre de sesión |
 | Proponer a DEV el gate de contraste por muestreo (aprendizaje 3) | MIND → DEV vía CORE | **no iniciado**: no contacto a DEV por mi cuenta |
-| Procesar 1 caso más (semana 1 pide 3 fichas) | MIND | pendiente |
+| Procesar 1 caso más (semana 1 pide 3 fichas) | MIND | **hecho**: tercer caso = Raycast |
 
 ## Incógnitas
 

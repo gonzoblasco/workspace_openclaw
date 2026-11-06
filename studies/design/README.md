@@ -117,10 +117,11 @@ Formato de ficha de crítica (por caso):
 ## 8. Estado
 
 - **2026-10-05:** plan creado. Cimientos (skills) listos. Pendiente: **empezar la semana 1**.
-- **2026-11-06 (Kanam MIND):** semana 1 en curso - **2 de 3 fichas** de crítica de repertorio
-  (`criticas/2026-11-06-linear-og.md`, `criticas/2026-11-06-stripe-og.md`), renders y medición de
+- **2026-11-06 (Kanam MIND):** **semana 1 cerrada** - 3 fichas de crítica de repertorio
+  (`criticas/2026-11-06-linear-og.md`, `-stripe-og.md`, `-raycast-og.md`), renders y medición de
   contraste reproducibles con `scripts/critica-renders.py`, y aprendizaje del día en
-  `criticas/APRENDIZAJE-2026-11-06.md`. Falta una ficha para cerrar la semana.
+  `criticas/APRENDIZAJE-2026-11-06.md`. La plantilla de crítica incorporó el bloque de evidencia
+  visual y la regla de medir con números. Próximo: semana 2 (tipografía - recrear un hero en 3 registros).
 
 ---
 _Armado 2026-10-05 al cerrar la auditoría de 19 skills de diseño. Fuente de verdad de este frente._
