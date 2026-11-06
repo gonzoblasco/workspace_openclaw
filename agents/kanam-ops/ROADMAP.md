@@ -205,9 +205,20 @@ depende de que el CORE lo llame en un cambio real. No se cierra simulando.
 
 | # | Estado real | Evidencia |
 |---|---|---|
-| 4.1 | herramienta lista, criterio de 10 cambios pendiente | `gateway-risk-policy.sh` decide AUTO_ACEPTAR / ESCALAR |
+| 4.1 | herramienta lista, **1 de 10 cambios resueltos** | `gateway-risk-policy.sh` decide AUTO_ACEPTAR / ESCALAR |
 | 4.2 | **HECHO** | `doctor` ya no reporta "plaintext secret-bearing config fields"; `gateway.auth.token` es SecretRef |
-| 4.3 | herramienta lista, criterio de 10 cambios pendiente | mismo script, clasificacion ALTO/MEDIO/BAJO |
+| 4.3 | herramienta lista, **1 de 10 cambios clasificados** | mismo script, clasificacion ALTO/MEDIO/BAJO |
+
+**Primer caso real (2026-11-06 18:15):** `kanam-critic` agrego heartbeat a su
+entrada (24h, timeout 900s, `lightContext`, barrido diario de entregables
+SHARP). La politica lo clasifico **MEDIO** (un agente que empieza a latir solo
+con su propio prompt e intervalo no es ruido, es un cambio de comportamiento) y
+**escalo**. Gonzo confirmo que el cambio era del Critic y estaba bien.
+Recien entonces se acepto: backup `openclaw.json.bak-ops-accept-heartbeat-20261106-1815`,
+`drift.sh --accept`, `OK sin drift (235 campos)`.
+
+El flujo funciono como debe: **clasificar, escalar, esperar OK, aceptar con
+backup**. Ningun paso se salteo y ninguno se automatizo de mas.
 
 **Decision de arquitectura:** `gateway-config-drift.sh` **mide**, `gateway-risk-policy.sh` **decide**. No se juntan en un archivo. Un medidor con permiso de escribir es exactamente como se acepta a ciegas un cambio.
 
