@@ -5,40 +5,42 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-06T21:00:17+00:00",
-  "updated_at": "2026-11-06T21:00:18+00:00",
+  "updated_at": "2026-11-06T21:23:22+00:00",
   "gates": [
     "critic"
   ],
   "steps": [
     {
       "id": 1,
-      "task": "T1.1 - Preparar snapshot del kit y verificar modelo del Critic",
+      "task": "T1.1 - Verificar snapshot y modelo del veredicto r4",
       "role": "core",
       "owner": "main",
-      "status": "pending",
-      "exit_criteria": "Existe agents/kanam-critic/docs/reviews/2026-11-06-kit-snapshot.md con manifiesto de skills, bin y tests; incluye la linea modelo=gpt-oss:120b-cloud; el directorio docs/reviews/ existe.",
+      "status": "completed",
+      "exit_criteria": "El reporte agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3-r4.md incluye la seccion Snapshot del kit evaluado y declara el modelo emisor; F8 queda registrado si el modelo no es gpt-oss:120b-cloud.",
       "depends_on": [],
       "gate": null,
       "write_paths": [
         "agents/kanam-critic/docs/reviews/"
       ],
-      "evidence": [],
+      "evidence": [
+        "agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3-r4.md: snapshot + nota F8"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:17+00:00",
-      "updated_at": "2026-11-06T21:00:17+00:00",
+      "updated_at": "2026-11-06T21:23:22+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-06T21:23:22+00:00",
       "session_ref": null
     },
     {
       "id": 2,
-      "task": "T1.2 - Ejecutar el ritual SHARP sobre kanam-critic-kit-v0.3",
+      "task": "T1.2 - Ejecutar el ritual SHARP sobre kanam-critic-kit-v0.3-r4",
       "role": "critic",
       "owner": "kanam-critic",
-      "status": "pending",
-      "exit_criteria": "memory/verdicts.jsonl tiene una linea nueva con artifact=kanam-critic-kit-v0.3, total 5-25, verdict VETO/Aprobado/ORO, timestamp >= 2026-11-06 y 5 ejes con evidencia citada; query_verdicts.py --artifact kanam-critic-kit-v0.3 devuelve 1 fila.",
+      "status": "completed",
+      "exit_criteria": "memory/verdicts.jsonl tiene la fila r4 con artifact=kanam-critic-kit-v0.3-r4, scores 4/4/4/4/3, total 19, verdict Aprobado; r2 y r3 quedaron invalidados con motivo; verify-verdict.py --artifact kanam-critic-kit-v0.3-r4 da GLOBAL=aprobado.",
       "depends_on": [
         1
       ],
@@ -46,23 +48,25 @@
       "write_paths": [
         "agents/kanam-critic/memory/verdicts.jsonl"
       ],
-      "evidence": [],
+      "evidence": [
+        "verdicts.jsonl r4 19/25 Aprobado; r2/r3 invalidados; verify-verdict.py GLOBAL=aprobado"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:17+00:00",
-      "updated_at": "2026-11-06T21:00:17+00:00",
+      "updated_at": "2026-11-06T21:23:22+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-06T21:23:22+00:00",
       "session_ref": null
     },
     {
       "id": 3,
-      "task": "T1.3 - Publicar el reporte del primer veredicto",
+      "task": "T1.3 - Publicar el reporte del veredicto r4",
       "role": "critic",
       "owner": "kanam-critic",
-      "status": "pending",
-      "exit_criteria": "Existe agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3.md con 5 secciones de eje, al menos 5 citas archivo:linea, veredicto y modelo; el reporte enlaza el veredicto registrado.",
+      "status": "completed",
+      "exit_criteria": "Existe agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3-r4.md con 5 secciones de eje, al menos 5 citas archivo:linea, 19/25 Aprobado y la nota de modelo F8; verify-verdict.py lo acepta.",
       "depends_on": [
         2
       ],
@@ -70,23 +74,25 @@
       "write_paths": [
         "agents/kanam-critic/docs/reviews/"
       ],
-      "evidence": [],
+      "evidence": [
+        "agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3-r4.md"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:17+00:00",
-      "updated_at": "2026-11-06T21:00:17+00:00",
+      "updated_at": "2026-11-06T21:23:22+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-06T21:23:22+00:00",
       "session_ref": null
     },
     {
       "id": 4,
-      "task": "T3.1 - Definir el ledger de fricciones y registrar el primer veredicto",
+      "task": "T3.1 - Definir el ledger de fricciones y registrar el veredicto r4",
       "role": "critic",
       "owner": "kanam-critic",
       "status": "pending",
-      "exit_criteria": "Existe agents/kanam-critic/memory/frictions.jsonl con schema documentado y al menos 1 registro del veredicto T1, o status=none si no hubo fricciones.",
+      "exit_criteria": "Existe agents/kanam-critic/memory/frictions.jsonl con schema documentado y al menos 1 registro del veredicto r4, o status=none si no hubo fricciones.",
       "depends_on": [
         3
       ],
@@ -110,7 +116,7 @@
       "role": "critic",
       "owner": "kanam-critic",
       "status": "pending",
-      "exit_criteria": "verdicts.jsonl tiene 3 VETOs reales (incluye T1 si es VETO; si no, 3 artefactos adicionales elegidos por CORE/Gonzo) y frictions.jsonl tiene 3 registros.",
+      "exit_criteria": "verdicts.jsonl tiene 3 VETOs reales adicionales (T1 fue Aprobado, no VETO) y frictions.jsonl tiene 3 registros.",
       "depends_on": [
         4
       ],
@@ -119,7 +125,7 @@
         "agents/kanam-critic/memory/"
       ],
       "evidence": [],
-      "blocker": null,
+      "blocker": "T1 fue Aprobado: CORE/Gonzo eligen 3 artefactos reales para VETO. Sin artefactos, T3 se bloquea.",
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:18+00:00",
@@ -130,7 +136,7 @@
     },
     {
       "id": 6,
-      "task": "T3.3 - Medir absorcion de VETOs y publicar la tasa",
+      "task": "T3.3 - Medir absorcion de los 3 VETOs y publicar la tasa",
       "role": "critic",
       "owner": "kanam-critic",
       "status": "pending",
@@ -279,13 +285,13 @@
       "role": "core",
       "owner": "main",
       "status": "pending",
-      "exit_criteria": "1+ solicitud/mes originada en otro agente y veredicto como gate; acta de aceptacion en docs/reviews/<fecha>-critic-v1.0.md firmada por CORE.",
+      "exit_criteria": "1+ solicitud/mes originada en otro agente y veredicto como gate; acta de aceptacion en agents/kanam-critic/docs/reviews/<fecha>-critic-v1.0.md firmada por CORE.",
       "depends_on": [
         11
       ],
       "gate": null,
       "write_paths": [
-        "docs/reviews/"
+        "agents/kanam-critic/docs/reviews/"
       ],
       "evidence": [],
       "blocker": null,

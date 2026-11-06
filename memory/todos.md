@@ -41,7 +41,7 @@
 - [ ] **[workspace]** (medium) ADR-109 pendiente: definir el borde verificable en el runtime que habilite el slot de chat trivial de gemma4
 - [ ] **[workspace]** (medium) Planner: exigir verificación de afirmaciones sobre el código. En el review de Preflight Etapa 2 (2026-11-06) afirmó dos cosas falsas: que scan.ts corre Chromium con --no-sandbox (solo pasa --disable-dev-shm-usage) y que probar el 11o scan daría 429 (mcp.ts nunca llama checkQuota). El razonamiento de secuencia y gate fue correcto; la falla es inventar detalle de implementación sin abrirlo. Opciones: (a) regla dura en el brief del CORE: 'cada afirmación sobre el código debe citar archivo:línea o marcarse como supuesta'; (b) skill propia de verificación para el planner; (c) recién después evaluar cambio de modelo — hoy gpt-oss:120b-cloud razona bien el plan y el fallo es de método, no de capacidad.
 - [ ] **[kanam-critic]** (medium) Critic T2.3/T5.1: contrato de invocacion cruzada al Critic (sessions_spawn permitido: allowed=kanam-critic) + veredicto como gate
-- [ ] **[kanam-critic]** (medium) Critic T3: ledger de fricciones (9 fricciones: 6 absorbidas, 3 abiertas) + 3 VETOs sobre entregables AJENOS al Critic + tasa de absorcion
+- [ ] **[kanam-critic]** (medium) Critic T3: ledger de fricciones + 3 VETOs adicionales + tasa de absorcion
 - [ ] **[kanam-critic]** (medium) Critic T4.1: objective-extractor con gate del Critic
 - [ ] **[kanam-critic]** (medium) Critic T4.2: detectores horizon, resistance y auto-reportado en evidence-hunter con caso trampa
 - [ ] **[kanam-critic]** (medium) Critic T4.3: format_sharp_report.py + 1 PR comment real
