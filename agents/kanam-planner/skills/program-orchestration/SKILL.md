@@ -66,6 +66,18 @@ python3 scripts/program_plan.py close <slug>
 
 ## El flujo
 
+0. **Grounding (obligatorio, 2026-11-06).** Antes de escribir un paso, leer el
+   **repositorio real** del proyecto, no solo sus documentos de gobierno. Los
+   docs dicen *qué* se quiere; el código dice *dónde* vive cada cosa. Cada
+   afirmación técnica del plan (rutas, archivos, tablas de datos, comandos)
+   debe citar el archivo que la respalda. **Lo que no se encontró en el repo se
+   marca `NUEVO` y se justifica como propuesta**, nunca se asume como existente.
+
+   Caso testigo (2026-11-06, ABYA YALA): el Planner leyó PLAN/HANDOFF/ROADMAP/
+   DEUDA/AUDITORIA —cinco documentos— y **cero archivos de código**. Planificó
+   sobre `src/data/civ_bonus.json` cuando las estadísticas viven como constantes
+   en `unit.gd` y `building.gd`. No fue alucinación: fue planificar sin mirar.
+
 1. **Intake.** Confirmar que el objetivo es programa. Si no, devolverlo al CORE.
 2. **Init.** Crear el programa con título, objetivo y gates.
 3. **Pasos.** Agregar pasos atómicos, cada uno con rol, dueño, criterio de salida y dependencias. Un paso es una unidad verificable, no una intención.
@@ -81,6 +93,13 @@ python3 scripts/program_plan.py close <slug>
 - **Sin dueño no hay paso.** `owner` y `role` son obligatorios.
 - **Sin criterio de salida no hay avance.** `exit_criteria` debe ser verificable por otra persona.
 - **Sin evidencia no hay `completed`.** La evidencia es un comando, un path, un diff o una salida.
+- **Toda ruta citada se verifica contra el repo.** Si el plan escribe
+  `src/data/x.json`, ese archivo tiene que existir o llevar `NUEVO` al lado.
+  Una ruta inventada convierte el plan en una trampa para quien lo ejecute.
+- **El plan ES el objeto persistente, no un documento.** Se crea con
+  `program_plan.py add-step` y vive en `.knowledge/programs/<slug>.json`. Un
+  plan en prosa no se puede consultar con `next`, no acumula evidencia y no se
+  puede auditar. Al CORE se le devuelve el **brief**, no el plan completo.
 - **No se salta Auditor/Critic** cuando el programa los declara como gate.
 - **No se duplica estado.** El programa vive en un solo JSON; `pipeline-track.sh` sigue siendo el estado intra-paso del pipeline A/B.
 - **No se sobre-planifica.** Si el objetivo no cumple la definición de programa, no se crea.

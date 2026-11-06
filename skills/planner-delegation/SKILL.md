@@ -63,6 +63,16 @@ El Planner corre en su workspace (`agents/kanam-planner`) y escribe el programa 
 
 ### 3. Prompt mínimo
 
+**No se improvisa el prompt.** Esta plantilla existe porque un prompt en prosa
+produce un plan en prosa. Caso testigo (2026-11-06, ABYA YALA): el CORE pidió
+*"devolvé el plan como texto estructurado"*, el Planner obedeció, y el
+resultado fueron 0 archivos de programa, 0 llamadas a `program_plan.py` y rutas
+inventadas. El Planner no falló solo: se le pidió el artefacto equivocado.
+
+Antes de lanzarlo, el CORE **lee el código del proyecto** (no solo los docs) y
+lo resume en `Contexto`: dónde viven las estadísticas, qué archivos existen y
+cuáles no. Sin eso, el Planner planifica a ciegas y rellena con su plantilla.
+
 ```text
 [Subagent Task] Programa: <titulo>
 
@@ -101,6 +111,9 @@ Criterios:
 - El próximo paso existe y sus dependencias están completas.
 - Los gates declarados tienen un paso de Auditor/Critic.
 - El brief se puede leer sin abrir el JSON.
+- **Cada ruta citada existe en el repo, o lleva `NUEVO` al lado.** Verificarlo
+  con `ls`/`test -e`, no de memoria. Un plan que menciona `src/data/x.json`
+  cuando ese directorio no existe es un plan que va a romper a quien lo ejecute.
 
 Si algo falla, devolvé el plan al Planner. **No ejecutes un plan inválido.**
 
