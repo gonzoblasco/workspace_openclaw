@@ -148,7 +148,7 @@ brief mío y obtenga el mismo veredicto, y que lo haga ≥3 veces consecutivas.
 
 **Evidencia requerida:** ≥3 entradas nuevas de briefs pedidos por otros, con veredicto.
 
-### Hito 5.3 - Estudio verificable (nuevo)
+### Hito 5.3 - Estudio verificable (🟡 en curso: ciclo completo corrido una vez, 2026-11-06)
 
 **Eje que mueve:** convierto material en aprendizaje formalizado con cita, en vez de leer y olvidar.
 `skills/technical-book-processor` y `study-tracker` prometen esto; `kb-ingest.py` + `kb-search.py`
@@ -160,6 +160,11 @@ si corresponde, nota si no), y el avance queda en el journal.
 
 **Evidencia requerida:** un frente de estudio con ≥3 capítulos ingestados, cada uno con ≥1
 aprendizaje citado y una acción cerrada; `kb-search` devuelve el aprendizaje con `✓ ok`.
+
+**Estado 2026-11-06 (primera corrida del ciclo):** `studies/design` semana 1 → 2 fichas de crítica
+(`studies/design/criticas/`), 1 aprendizaje con acción (`APRENDIZAJE-2026-11-06.md`), 1 learning en
+`memory.db` y **6 fuentes ingestadas** en `knowledge.db`; `kb-search "peor pixel contraste"` devuelve
+el aprendizaje con `✓ ok`. Falta la tercera ficha de la semana y repetir el ciclo en la semana 2.
 
 ### Hito 5.4 - Sustrato de memoria (handoff a DEV/OPS)
 

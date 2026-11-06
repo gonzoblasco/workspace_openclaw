@@ -127,6 +127,10 @@ def audit(path: str, roots: list[str], offline: bool, skip: set[str]) -> Report:
             continue
         if in_fence or line.strip().startswith("#") or "allowed:" in line.lower():
             continue
+        # Una cita del tipo (blockquote de metodologia, ej. "El por que falla nombra el principio")
+        # es instruccion del documento, no afirmacion sobre el mundo.
+        if line.lstrip().startswith(">"):
+            continue
 
         # 1. links
         if "links" not in skip:

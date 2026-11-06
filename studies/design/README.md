@@ -90,7 +90,9 @@ Al final de la semana 6: **evaluar** si el ojo cambió. Si no, revisar el métod
 ```
 studies/design/
   README.md            # este índice + estado
-  criticas/            # D1: fichas de crítica de repertorio
+  criticas/            # D1: fichas de crítica de repertorio (+ APRENDIZAJE-<fecha>.md)
+  casos/               # renders por caso: _view / _gray / _squint
+  scripts/             # critica-renders.py: renders + contraste por peor píxel
   recreaciones/        # D2/D3: versiones y decisiones
   redisenos/           # rediseños de UIs propias
 ```
@@ -115,6 +117,10 @@ Formato de ficha de crítica (por caso):
 ## 8. Estado
 
 - **2026-10-05:** plan creado. Cimientos (skills) listos. Pendiente: **empezar la semana 1**.
+- **2026-11-06 (Kanam MIND):** semana 1 en curso - **2 de 3 fichas** de crítica de repertorio
+  (`criticas/2026-11-06-linear-og.md`, `criticas/2026-11-06-stripe-og.md`), renders y medición de
+  contraste reproducibles con `scripts/critica-renders.py`, y aprendizaje del día en
+  `criticas/APRENDIZAJE-2026-11-06.md`. Falta una ficha para cerrar la semana.
 
 ---
 _Armado 2026-10-05 al cerrar la auditoría de 19 skills de diseño. Fuente de verdad de este frente._
