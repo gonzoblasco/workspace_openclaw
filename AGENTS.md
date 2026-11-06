@@ -121,6 +121,12 @@ La política vigente es **ADR-090**: niveles de pensamiento por agente y asignac
 ### Git y commits
 - **GitHub, siempre en inglés.** Commits, PRs, issues y comments.
 - **Commits atómicos,** uno por tarea. Formato `type(#issue): description`; sin issue, `type: description`.
+- **PROHIBIDO `git add -A` y `git add .`.** Siempre rutas explícitas: `git add ruta/a.gd ruta/b.md`.
+  Con más de una sesión viva, `-A` firma trabajo ajeno y lo mete en un commit con mi mensaje.
+  Antes de commitear: listar lo que edité **en esta sesión** y stagear solo eso.
+  Si al mirar el `--stat` aparece un archivo que no reconocés: `git reset --soft HEAD~1`, luego
+  `git restore --staged <ajeno>` y recommitear solo lo propio. Pasó dos veces el 2026-11-06
+  (se commiteó el ROADMAP de otra sesión de OPS). No hay tercera.
 - **Workspace:** modificó config → commit + push al cerrar la sesión. `git pull --rebase` antes de cada push.
 - **Estructura de proyecto:** `projects/<slug>/` es su propio repo y trackea código **y** su `.knowledge/`; la carpeta `projects/` es plana y el workspace la ignora al 100%. `~/projects` es un symlink: el humano entra por ahí, los agentes usan el path real. Detalle y flujo nuevo-proyecto en `docs/AGENTS-DETALLE.md`.
 - **Datos locales** (`.env`, `*.db`, tokens) no van a git y son irrecuperables: respaldar antes de mover o limpiar.
