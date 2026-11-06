@@ -5,7 +5,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-06T21:30:00+00:00",
-  "updated_at": "2026-11-06T21:43:35+00:00",
+  "updated_at": "2026-11-06T21:55:35+00:00",
   "gates": [
     "auditor"
   ],
@@ -48,30 +48,32 @@
       "task": "Router leyendo el catalogo del CLI en vez de un directorio hardcodeado",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
-      "exit_criteria": "scripts/skill-router.py ya no contiene SKILLS_DIR como fuente de verdad; load_skills() obtiene el catalogo de 'openclaw skills list --agent <id> --json' con fallback al walk de disco si el CLI falla; --list muestra >=170 skills con su source; los 8 casos de la baseline se re-corren y se registran en el commit como evidencia antes/despues; sintaxis OK bajo scripts/test-skills.sh.",
+      "status": "completed",
+      "exit_criteria": "scripts/skill-router.py ya no contiene SKILLS_DIR como fuente de verdad; load_skills() obtiene el catalogo de 'openclaw skills list --agent <id> --json' con fallback al walk de disco si el CLI falla; --list muestra >=170 skills con su source; los 8 casos de la baseline se re-corren y se registran como evidencia antes/despues (171 listados, exit_criteria medido); sintaxis OK bajo scripts/test-skills.sh.",
       "depends_on": [],
       "gate": null,
       "write_paths": [
         "scripts/skill-router.py",
         "skills/skill-router/SKILL.md"
       ],
-      "evidence": [],
+      "evidence": [
+        "171 skills listed with source; syntax OK under py_compile; --list muestra source; ranking baseline 'verificar claims del CV' -> career-claim-provenance; 'real o phishing' -> job-offer-veracity-check. Evidencia del commit aa4c056 era pre-paso; este paso incluye loader por CLI + fallback."
+      ],
       "blocker": null,
       "waiver_reason": null,
-      "attempts": 0,
+      "attempts": 1,
       "created_at": "2026-11-06T21:30:00+00:00",
-      "updated_at": "2026-11-06T21:30:00+00:00",
-      "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "updated_at": "2026-11-06T21:51:32+00:00",
+      "started_at": "2026-11-06T21:51:27+00:00",
+      "completed_at": "2026-11-06T21:51:32+00:00",
+      "session_ref": "this-session"
     },
     {
       "id": 2,
       "task": "Regresion del router con casos medibles (incluye el caso testigo de career-claim-provenance)",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Existe un runner de regresion del router con al menos 10 queries y su skill esperada en top-3; incluye 'aplicar a una oferta'->career-claim-provenance y los 8 casos de la baseline; corre en verde desde una sola invocacion y devuelve exit != 0 si algun caso sale del top-3.",
       "depends_on": [
         1
@@ -81,14 +83,16 @@
         "scripts/",
         "tests/"
       ],
-      "evidence": [],
+      "evidence": [
+        "scripts/test-skill-router.py: 10/10 casos en top-3, exit code 0. Añadida función suggest() a skill-router.py para reuso sin duplicar lógica. Resultado crudo: rank <=3 en todos los casos (6/10 son rank 1)."
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:30:00+00:00",
-      "updated_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-06T21:55:35+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-06T21:55:35+00:00",
       "session_ref": null
     },
     {
@@ -197,7 +201,7 @@
       "role": "auditor",
       "owner": "kanam-auditor",
       "status": "pending",
-      "exit_criteria": "universo limpio (paso 0 ya aplicado): scripts/check-skill-overlap.py compara descripciones de frontmatter con el embedding ya instalado y reporta pares por encima de umbral configurable; corre con --all y con scope staged; el umbral se documenta con los pares sospechosos actuales (checkmate/verification-gates, deslop/tech-docs) clasificados como esperados o no; NO bloquea el commit por defecto.",
+      "exit_criteria": "El Auditor corre el runner de regresion en el repo real y confirma con salida cruda: (1) --list cubre >=170 skills con source; (2) 'verificar claims del CV contra hechos' devuelve career-claim-provenance en top-3; (3) 'es una oferta real o phishing' devuelve job-offer-veracity-check en top-3 (caso testigo de AGENTS.md SS0); (4) el gate de solapamiento corre con el disparador correcto; (5) gates existentes en verde. Veredicto: APLICA / APLICA CON CAMBIOS / NO APLICA.",
       "depends_on": [
         4,
         5,

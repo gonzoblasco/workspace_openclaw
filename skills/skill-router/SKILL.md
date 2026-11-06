@@ -59,7 +59,7 @@ Suggest which skill to apply to a task, using local matching (keyword + embeddin
 ## Limits
 
 - Matching is not perfect: internal infrastructure tasks (e.g. "save session") may not match well. Use your own judgment - the router is a suggestion, not an authority.
-- It only scans the local `skills/` directory (not bundled plugin skills or external collections).
+- It now scans the runtime catalog (`openclaw skills list --agent <id> --json`), which includes bundled/plugin/workshop/managed/agents-skills (170+); it no longer walks a single hard-coded dir. Offline fallback: local `skills/`.
 - It needs the embedding endpoint running for semantic match (otherwise it falls back to keyword match only).
 
 ## Related
