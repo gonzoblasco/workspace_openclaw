@@ -92,7 +92,7 @@
       "role": "critic",
       "owner": "kanam-critic",
       "status": "completed",
-      "exit_criteria": "Existe agents/kanam-critic/memory/frictions.jsonl con 9 registros del veredicto r4 (6 absorbed, 3 open) y schema documentado.",
+      "exit_criteria": "Existe agents/kanam-critic/memory/frictions.jsonl con 14 registros (6 absorbed, 8 open) y schema documentado.",
       "depends_on": [
         3
       ],
@@ -101,7 +101,7 @@
         "agents/kanam-critic/memory/frictions.jsonl"
       ],
       "evidence": [
-        "agents/kanam-critic/memory/frictions.jsonl: 9 registros (6 absorbed, 3 open)"
+        "agents/kanam-critic/memory/frictions.jsonl: 14 registros (6 absorbed, 8 open)"
       ],
       "blocker": null,
       "waiver_reason": null,
@@ -114,11 +114,11 @@
     },
     {
       "id": 5,
-      "task": "T3.2 - Producir 2 VETOs reales adicionales sobre trabajo ajeno",
+      "task": "T3.2 - Producir el tercer VETO real sobre trabajo ajeno",
       "role": "critic",
       "owner": "kanam-critic",
       "status": "pending",
-      "exit_criteria": "verdicts.jsonl tiene 2 VETOs reales adicionales sobre trabajo ajeno (el primer VETO fue r1 12/25; r4 Aprobado no cuenta) y frictions.jsonl tiene sus registros.",
+      "exit_criteria": "verdicts.jsonl tiene 3 VETOs reales en total (r1 12/25, docs-ROADMAP 15/25 y 1 adicional ajeno) y frictions.jsonl tiene sus registros.",
       "depends_on": [
         4
       ],
@@ -127,7 +127,7 @@
         "agents/kanam-critic/memory/"
       ],
       "evidence": [],
-      "blocker": "CORE/Gonzo eligen 2 artefactos ajenos; Gonzo ya esta preguntando. Sin artefactos, T3 se bloquea.",
+      "blocker": "Falta 1 artefacto ajeno: Gonzo ya eligio docs-ROADMAP; CORE/Gonzo eligen el tercero. Sin artefacto, T3 se bloquea.",
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:18+00:00",

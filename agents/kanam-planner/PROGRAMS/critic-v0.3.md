@@ -22,7 +22,8 @@ Lo ya ejecutado se verifica, no se repite.
 | T2.1 - Heartbeat | Cerrado | `openclaw.json`: `agents.entries.kanam-critic.heartbeat` = every 24h, target last, lightContext true, timeout 900. |
 | T2.2 - `critic-sweep-weekly` | Cerrado | Job `37316655-0a7a-4e6f-802f-95ee2cd76052`: cron `0 18 * * 1`, tz America/Argentina/Buenos_Aires, isolated, agentId `kanam-critic`. Delivery explicito por Telegram; la corrida de prueba no entrego porque `channel=last` no tenia canal previo. El payload usa `emit-verdict.py` y termina con `verify-verdict.py`; no usa `record_verdict.py`. |
 | T1 - Primer veredicto real | Cerrado (con salvedad F8) | `verdicts.jsonl` r4: `kanam-critic-kit-v0.3-r4`, S4 H4 A4 R4 P3 = 19/25 Aprobado; registrado con `emit-verdict.py` y verificado con `verify-verdict.py`; r2 y r3 invalidados con motivo. F8: emitido por `minimax-m3.1-flash`, el rol declara `gpt-oss:120b-cloud`; el veredicto es provisional hasta reemitirlo con el modelo declarado. |
-| T3.1 - Ledger de fricciones | Cerrado | `agents/kanam-critic/memory/frictions.jsonl`: 9 registros (6 absorbed, 3 open). |
+| T1.b - Segundo veredicto real (trabajo ajeno) | Cerrado | `docs-ROADMAP-madurez` VETO 15/25 (S3 H3 A3 R2 P4); reporte `agents/kanam-critic/docs/reviews/2026-11-06-docs-ROADMAP-madurez.md`; 5 fricciones F10-F14; F8: emitido por `minimax-m3.1-flash`, provisional. |
+| T3.1 - Ledger de fricciones | Cerrado | `agents/kanam-critic/memory/frictions.jsonl`: 14 registros (6 absorbed, 8 open). |
 | `agents/kanam-critic/docs/reviews/` | Existe en el workspace del Critic | `agents/kanam-critic/docs/reviews/` contiene r2, r4 y el reporte inicial. El root `docs/reviews/` no se usa. |
 
 **Lectura:** T1 ya existe (r4, 19/25 Aprobado, con F8 provisional). El cuello de botella se mueve a T3: medir si el veredicto cambia algo.
@@ -37,7 +38,7 @@ Lo ya ejecutado se verifica, no se repite.
 | 2 | T1.2 | Ejecutar el ritual SHARP sobre `kanam-critic-kit-v0.3-r4` | critic | kanam-critic | `verdicts.jsonl` tiene la fila r4 con `artifact=kanam-critic-kit-v0.3-r4`, scores 4/4/4/4/3, total 19, veredicto Aprobado; r2 y r3 invalidados con motivo; `verify-verdict.py --artifact kanam-critic-kit-v0.3-r4` da `GLOBAL=aprobado`. | 1 | critic | F8: veredicto provisional hasta reemitir con el modelo declarado. |
 | 3 | T1.3 | Publicar el reporte del veredicto r4 | critic | kanam-critic | Existe `agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3-r4.md` con 5 secciones de eje, al menos 5 citas `archivo:linea`, 19/25 Aprobado y la nota de modelo F8; `verify-verdict.py` lo acepta. | 2 | critic | - |
 | 4 | T3.1 | Definir el ledger de fricciones y registrar el veredicto r4 | critic | kanam-critic | Existe `memory/frictions.jsonl` con schema documentado y al menos 1 registro del veredicto r4, o `status=none` si no hubo fricciones. | 3 | - | T1 debe producir al menos una friccion; si no, se registra `none`. |
-| 5 | T3.2 | Producir 2 VETOs reales adicionales sobre trabajo ajeno | critic | kanam-critic | `verdicts.jsonl` tiene 2 VETOs reales adicionales sobre trabajo ajeno (el primer VETO fue r1 12/25; r4 Aprobado no cuenta) y `frictions.jsonl` tiene sus registros. | 4 | critic | CORE/Gonzo eligen 2 artefactos ajenos; Gonzo ya esta preguntando. Sin artefactos, T3 se bloquea. |
+| 5 | T3.2 | Producir el tercer VETO real sobre trabajo ajeno | critic | kanam-critic | `verdicts.jsonl` tiene 3 VETOs reales en total (r1 12/25, docs-ROADMAP 15/25 y 1 adicional ajeno) y `frictions.jsonl` tiene sus registros. | 4 | critic | Falta 1 artefacto ajeno: Gonzo ya eligio docs-ROADMAP; CORE/Gonzo eligen el tercero. Sin artefacto, T3 se bloquea. |
 | 6 | T3.3 | Medir absorcion de VETOs y publicar la tasa | critic | kanam-critic | Existe `agents/kanam-critic/docs/reviews/<fecha>-absorcion.md` con `absorbed`, `total` y `rate`; cada friccion tiene `status` y `fix_url` o `rejected`. | 5 | critic | Los fixes pueden no existir; tasa 0 es valida, pero debe medirse. |
 | 7 | T4.1 | Implementar `objective-extractor` con gate del Critic | dev | kanam-dev | Existe `skills/objective-extractor/SKILL.md`; `openclaw skills list --agent kanam-critic` la muestra; el lab tiene un caso; el Critic emite veredicto Aprobado u ORO. | 6 | critic | T1-T3 cerrados. |
 | 8 | T4.2 | Agregar detectores horizon, resistance y auto-reportado a `evidence-hunter` | dev | kanam-dev | `evidence-hunter.py` tiene los detectores nuevos; el lab pasa `GLOBAL=aprobado (6/6 o mas)`; cada detector tiene un caso trampa. | 6 | critic | Lab 5/5 verde; T1-T3 cerrados. |
@@ -74,7 +75,7 @@ Lo ya ejecutado se verifica, no se repite.
 | Como se verifica | `grep -c '"status"'` >= 3; `python3 agents/kanam-critic/bin/query_verdicts.py | grep -c VETO` >= 3; `verify-verdict.py` da `GLOBAL=aprobado`; el reporte contiene `absorbed=`, `total=`, `rate=`. |
 | Senal de listo | 3 VETOs reales con `fix_url` o `rejected`; tasa numerica publicada. |
 | Dueño | Critic mide; CORE verifica fixes; Planner registra. |
-| Bloqueo | El primer VETO fue r1 12/25; r4 Aprobado no cuenta. CORE/Gonzo eligen 2 artefactos ajenos. Sin artefactos, T3 se bloquea; no se inventan VETOs. |
+| Bloqueo | VETOs reales: r1 12/25 y docs-ROADMAP 15/25. Falta 1 artefacto ajeno; lo eligen CORE/Gonzo. Sin artefacto, T3 se bloquea; no se inventan VETOs. |
 
 **Schema minimo de `frictions.jsonl`:**
 
@@ -116,7 +117,7 @@ Lo ya ejecutado se verifica, no se repite.
 | 2 | T1.2 | Critic | CORE | Veredicto en JSONL |
 | 3 | T1.3 | Critic | CORE | Reporte |
 | 4 | T3.1 | Critic | CORE | Ledger de fricciones |
-| 5 | T3.2 | Critic | CORE | 2 VETOs ajenos |
+| 5 | T3.2 | Critic | CORE | 1 VETO ajeno (tercero) |
 | 6 | T3.3 | Critic | CORE | Tasa de absorcion |
 | 7 | T4.1 | Dev | Critic + CORE | Skill `objective-extractor` |
 | 8 | T4.2 | Dev | Critic + CORE | Detectores + lab |
@@ -139,11 +140,11 @@ Lo ya ejecutado se verifica, no se repite.
 
 ## 5. Brief semanal (5 lineas)
 
-1. T0, T2 y T1 cerrados; T1 r4 = Aprobado 19/25 (S4 H4 A4 R4 P3), con F8 provisional por modelo.
-2. Proximo: T3.2 (2 VETOs ajenos) y T3.3 (absorcion).
+1. T0, T2 y T1 cerrados; veredictos reales: r4 Aprobado 19/25 y docs-ROADMAP VETO 15/25.
+2. Proximo: T3.2 (tercer VETO ajeno) y T3.3 (tasa de absorcion).
 3. T4 bloqueado por T3; T5/v1.0 bloqueado por politica CORE + 30 dias.
-4. Metricas: 1 veredicto real (r4); absorcion = sin datos; ejes con evidencia = 100% en r4.
-5. Decision: CORE/Gonzo eligen 2 artefactos ajenos para T3.2 (r1 12/25 ya cuenta; r4 Aprobado no).
+4. Metricas: 2 veredictos reales; fricciones 14 (6 absorbed, 8 open); F8 y F9 abiertos.
+5. Decision: Gonzo/CORE eligen el tercer artefacto ajeno; F8: reemitir con gpt-oss o cambiar el config del rol.
 
 ---
 
@@ -157,10 +158,10 @@ Lo ya ejecutado se verifica, no se repite.
 | R4 | Modelo del Critic distinto al declarado | T1.1 verifica el modelo; si no coincide, se registra F8 y el veredicto queda provisional. |
 | R5 | Tooling de veredictos nunca usado | T1 ejercita `emit-verdict.py` y `verify-verdict.py`; si rompen, se arreglan en T1. |
 | R6 | T2.2 no verificable desde el scope del Planner | CORE adjunta job ID, next run y last run de `critic-sweep-weekly`. |
-| R7 | T3 necesita 2 VETOs adicionales ajenos | El primer VETO es r1 12/25; CORE/Gonzo eligen 2 artefactos; no se inventan. |
+| R7 | T3 necesita 1 VETO ajeno mas | r1 12/25 y docs-ROADMAP 15/25 ya cuentan; CORE/Gonzo eligen el tercero; no se inventan. |
 | R8 | T5/v1.0 requiere politica y tiempo | CORE aprueba la invocacion cruzada; 30 dias de observacion. |
 
-**Tramo bloqueado hoy:** T5/v1.0. Razon: la invocacion cruzada y el veredicto como gate requieren una decision de politica de CORE y 30 dias de observacion; no se puede forzar antes de T1-T4. T3.2 queda condicionado a 2 VETOs adicionales sobre trabajo ajeno (r1 12/25 ya cuenta).
+**Tramo bloqueado hoy:** T5/v1.0. Razon: la invocacion cruzada y el veredicto como gate requieren una decision de politica de CORE y 30 dias de observacion; no se puede forzar antes de T1-T4. T3.2 queda condicionado a 1 VETO adicional sobre trabajo ajeno (r1 12/25 y docs-ROADMAP 15/25 ya cuentan).
 
 ---
 
