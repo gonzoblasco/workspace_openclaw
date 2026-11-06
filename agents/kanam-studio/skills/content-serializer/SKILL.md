@@ -40,39 +40,31 @@ The goal is not "posting for the sake of posting": it's building a series with a
 
 **When:** Always. Before writing any post, you must know **who is speaking**. It's your voice, not a generic ghostwriter's.
 
-### Your voice (Gonzo)
+### Where the voice lives
 
-- **Direct and honest, no beating around the bush.** You say what you think. You don't dress it up to sound more "professional" - honesty IS your professionalism.
-- **Sounds like a person, not a programming manual.** No corporate jargon or technical documentation tone. You write the way you talk.
-- **Real first person.** "I built", "I found a bug", "it cost me". Not "it is built", not "one finds".
-- **Loose and natural.** Short sentences. No filler. It should read like a dev telling a story, not like a press release.
-- **With opinions.** You have judgment and you show it. You prefer some things, find others boring, disagree. That makes you human and sets you apart.
-- **You document decisions, not just code.** You tell the "why", not only the "what I did". That's what positions you as senior.
+**Do not define the voice here.** The canonical source is `docs/voz-gonzo.md`
+in the workspace root. Read it before writing any post. It holds the
+consolidated rules, the recorded cases (draft / Gonzo's edit / what changed),
+and since 2026-11-06 it explicitly covers **public branding posts**.
 
-### Golden rule of tone
+What this skill adds is only the **modulation by post type** - the same voice
+at different temperatures:
 
-> **The voice is the foundation, but it's NOT rigid - it adapts to the occasion.**
+| Post type | How it sounds |
+|---|---|
+| Technical deep-dive | Direct, with evidence and measured numbers. Admitting your own bug adds credibility. |
+| Announcement / launch | Measured enthusiasm, zero hype. "I built this", not "Look at this INCREDIBLE project!". |
+| Opinion / stance | Claim with an edge, evidence, why it matters. No clickbait. |
+| Request / CTA | Direct and genuine. One clear question. No begging. |
 
-The personal brand tone is not a straitjacket. It modulates based on the post type:
-
-| Occasion | How your voice sounds |
-|---------|-------------------|
-| **Technical deep-dive** (how you solved X) | Direct, concrete, with evidence. Honesty about the bug you found is gold. |
-| **Announcement / launch** (the bootcamp, a release) | Measured enthusiasm, no fake hype. "I built this" instead of "Look at this INCREDIBLE project!". |
-| **Thought-leadership / opinion** (a lesson, a stance) | Provocative but without cheap clickbait. Claim + evidence + why it matters. |
-| **Request / CTA** (is it useful to you?, follow the series) | Direct and genuine. A single clear question, no begging. |
-
-**Hard tone rules (non-negotiable):**
-- **No "Great question!" or "I'd be happy to help!".** That fake chatbot warmth makes you sound like a bot.
-- **No "in this post I'm going to teach you...".** Tell it, don't announce it.
-- **Don't give yourself credit just for being you.** If something failed, say it. Technical vulnerability (I found a bug, I got it wrong) is your biggest credibility asset.
+If a rule here ever contradicts `docs/voz-gonzo.md`, **the canonical file wins**
+and this table gets fixed.
 
 ### Tone check before publishing
 
-Re-read the post and ask yourself:
 - [ ] Does it sound like Gonzo, or like a programming manual?
 - [ ] Is the lesson/opinion there, or only the "what I did"?
-- [ ] Is it adapted to the occasion (deep-dive vs announcement vs opinion), or is it all the same?
+- [ ] Is it adapted to the occasion (deep-dive vs announcement vs opinion)?
 
 ---
 

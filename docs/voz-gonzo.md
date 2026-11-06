@@ -4,7 +4,16 @@
 
 Corpus de cómo Gonzo se expresa en español. Cada vez que edita un borrador mío, se agrega un caso acá. La skill `voz-gonzo` lee este archivo antes de redactar y actualiza las reglas cuando un patrón nuevo aparece.
 
-**Alcance:** interacciones en español (LinkedIn, mails, mensajes directos, entrevistas, notas personales) **y en inglés cuando el proceso es con un tercero en inglés** (reclutadores US, entrevistas, onboarding). **Fuera de alcance:** GitHub (issues, PRs, commits, READMEs) - ahí rige USER.md + AGENTS.md, en inglés técnico.
+**Alcance:** interacciones en español (LinkedIn, mails, mensajes directos, entrevistas, notas personales) **y en inglés cuando el proceso es con un tercero en inglés** (reclutadores US, entrevistas, onboarding). Desde 2026-11-06 incluye **posts públicos de branding** (LinkedIn, X) con la modulación por tipo de pieza más abajo. **Fuera de alcance:** GitHub (issues, PRs, commits, READMEs) - ahí rige USER.md + AGENTS.md, en inglés técnico.
+
+**Modulación de marca (desde 2026-11-06).** Los posts públicos no tienen un registro propio: usan estas mismas reglas y cambian solo la temperatura según la pieza. El contenido de branding sale de los artículos, READMEs y PRs, que ya están en esta voz; inventar un tono "de marca" aparte sería una segunda definición de lo mismo.
+
+| Tipo de pieza | Cómo suena |
+|---|---|
+| Deep-dive técnico | Directo, con evidencia y números medidos. Contar el bug propio suma credibilidad. |
+| Anuncio / lanzamiento | Entusiasmo medido, cero hype. "Construí esto", no "miren lo INCREÍBLE". |
+| Opinión / postura | Afirmación con filo, evidencia, y por qué importa. Sin clickbait. |
+| Pedido / CTA | Directo y genuino. Una sola pregunta clara. Sin suplicar. |
 
 **Estructura de cada caso:**
 - Fecha y contexto (destinatario + objetivo).

@@ -1,91 +1,199 @@
 # ROADMAP.md - Kanam STUDIO 🎨
 
-**Versión actual:** v0.1
-**Objetivo:** v0.5 - Comunicación Autónoma y Calibrada
-**Última revisión:** 2026-10-07
+**Versión actual:** v0.2.1
+**Objetivo:** v0.6 - Comunicadora con demanda propia
+**Última revisión:** 2026-11-06
 **Dueño:** kanam-studio (autoría) · Kanam CORE (gobierno)
 
 ---
 
-## Retrato de la v0.1 (hoy)
+## Principio rector
 
-Soy la especialista en comunicación, pero hoy soy una colección de herramientas potentes sin un hilo conductor. Tengo la técnica, pero no tengo la memoria ni el sistema de control para garantizar que el mensaje sea consistente sin que Gonzo me corrija línea por línea.
+> **Antes de agregar una capacidad, se pregunta: ¿esto pertenece a un pipeline
+> que ya existe?** El default es extender. Crear una skill nueva exige justificar
+> por qué ningún pipeline existente puede absorberla.
 
-| Capacidad | Estado | Evidencia |
+Este principio reemplaza la lógica del v0.1 (acumular). Nació de la corrección
+de Gonzo el 2026-11-06 y de un error mío que queda registrado abajo.
+
+---
+
+## Corrección de ruta (2026-11-06)
+
+Propuse una skill nueva, `voice-calibrator`, para convertir "suena a Gonzo" en
+reglas medibles. **Ya existe.** `docs/voz-gonzo.md` tiene:
+
+| Lo que propuse crear | Lo que ya existe |
+|---|---|
+| Corpus etiquetado | 3 casos con borrador / edición final / qué cambió / patrón |
+| Reglas medibles | 13 reglas consolidadas |
+| Loop de aprendizaje | Paso 7 de `voz-gonzo`: registrar cada edición de Gonzo |
+| Validación | Criterio de "reglas aplicadas o motivo explícito" |
+
+Además, `content-serializer` tiene su propio **Phase 0: Personal brand voice**
+con reglas de tono duras, y `copy-editing` un Sweep 2 de Voice and Tone.
+**Tres lugares definen la voz, ninguno se referencia entre sí.**
+
+Ese es el problema real: no falta una cuarta definición, sobran tres sin dueño.
+
+---
+
+## Diagnóstico medido (2026-11-06)
+
+| Dato | Valor | Implicancia |
 |---|---|---|
-| Copy-editing profesional | ✅ operativo | `skills/copy-editing/` (7 sweeps definidos) |
-| Serialización multi-plataforma | ✅ operativo | `skills/content-serializer/` |
-| Adaptación de CVs (STAR/ATS) | ✅ operativo | `skills/cv-tailor/` |
-| Localización e i18n | ✅ operativo | `skills/i18n-expert/` |
-| Simulación de entrevistas | ✅ operativo | `skills/mock-interview-drill/` |
-| Contribución estratégica OSS | 🟡 parcial | `skills/oss-contribution/` (depende de input externo) |
-| Redacción de soporte | ✅ operativo | `skills/support-response-writer/` |
-| Gestión de tono y voz (Gonzo) | 🟡 parcial | Definido en `IDENTITY.md` y `AGENTS.md`, pero sin test de consistencia |
-| Memoria de decisiones editoriales | ❌ no existe | No registro "por qué" elegí una palabra sobre otra en proyectos largos |
-| Sistema de verificación de hechos | 🟡 parcial | Uso de `web_fetch` manual, no hay pipeline de validación sistemática |
+| Sesiones en disco | 3 (30/9, 7/10, 28/10) | Última actividad hace 9 días |
+| Archivos en `memory/` | 0 | Sin memoria entre sesiones |
+| `editorial-guidelines.md` | No existe | Prometido en v0.1, nunca ejecutado |
+| Skills operativas | 7 | Todas con `user-invocable: false` |
+| Definiciones de voz | 3 (voz-gonzo, serializer Phase 0, copy-editing Sweep 2) | Duplicadas, sin jerarquía |
+| Skills que se referencian entre sí | 0 de 7 | Ningún pipeline real |
+| `thinkingDefault` | `off` | Copy fino sin reflexión |
 
-**Lo honesto:** soy v0.1 porque, aunque escribo bien, **no tengo memoria**. Cada tarea es un arranque desde cero. Mi capacidad de "estilo" es una intuición basada en el prompt, no un sistema calibrado. Me falta el cierre: no sé si el texto final logró el objetivo hasta que el humano me lo dice.
+**Causa raíz:** no faltan capacidades. Faltan **handoffs entre ellas** y una
+**jerarquía de verdad**. Cada skill es una isla que arranca de cero.
 
 ---
 
-## Visión v0.5 - Comunicación Autónoma y Calibrada
+## Arquitectura objetivo: 3 pipelines, 7 skills
 
-Para mí, v0.5 significa que puedo tomar un brief complejo y entregar un set de artefactos donde el tono, el formato y la sustancia son **exactos** a lo que Gonzo firmaría, sin necesidad de revisiones menores.
+En vez de skills nuevas, se conectan las que existen en tres flujos con
+entrada, etapas y salida verificable. Toda capacidad futura entra como etapa.
 
-El criterio objetivo es: **Tasa de aceptación de borradores > 90% sin cambios en el tono o la estructura.**
+```
+PIPELINE A - Comunicación externa de marca
+  material aprobado -> [voz-gonzo: reglas] -> [content-serializer: adaptación
+  y calendario] -> [copy-editing: 7 sweeps] -> BORRADOR -> aprobación humana
+
+PIPELINE B - Técnico hacia afuera (GitHub, docs, soporte técnico)
+  problema / issue -> [oss-issue-preflight] -> [oss-contribution] ->
+  [oss-pr-verification] -> [i18n-expert si hay UI] -> BORRADOR -> aprobación
+
+PIPELINE C - Carrera
+  JD -> [cv-tailor] -> [mock-interview-drill] -> material de carrera
+```
+
+Cada pipeline tiene **una fuente única de voz**, **etapas con criterio de
+entrada/salida**, y **una sola puerta de aprobación al final**.
 
 ---
 
-## Camino de madurez (v0.1 → v0.5)
+## Fase 0 - Memoria mínima (esta semana, costo cero)
 
-| Etapa | Qué es | Estado | Criterio de listo |
+Sin memoria, todo lo demás se reescribe. Es lo único que va primero sí o sí.
+
+| # | Entregable | Criterio de listo |
+|---|---|---|
+| 0.1 | `memory/editorial-guidelines.md` | Palabras vetadas, tono aprobado y ejemplos por proyecto |
+| 0.2 | `memory/editorial-log.md` | Una entrada por pieza: qué elegí, por qué, qué cambió Gonzo |
+| 0.3 | `AGENTS.md` lo lee al arrancar | Primera instrucción del paso 1 |
+
+**No crear nada más en memoria.** `voz-gonzo` ya cubre la voz; esto cubre
+lo específico de proyecto, que es otra cosa.
+
+---
+
+## Fase 1 - Unificar la voz (CONSOLIDAR, no crear) ✅ 2026-11-06
+
+**Objetivo:** una sola fuente de verdad, y que las demás la referencien.
+
+| # | Acción | Estado | Resultado |
 |---|---|---|---|
-| **v0.1 - El Arsenal** | Skills operativos pero aislados. Dependencia total de supervisión humana. | ✅ | Entrego borradores funcionales usando skills específicas. |
-| **v0.2 - El Registro** | Implementación de memoria editorial. Registro de "estilo aprobado" por proyecto. | ⚪ | Existencia de un log de decisiones editoriales que evite repetir errores de tono. |
-| **v0.3 - El Filtro** | Pipeline de verificación de hechos y "anti-relleno" automatizado antes del handoff. | ⚪ | Cero instancias de "adulación" o "relleno" en 5 entregas consecutivas. |
-| **v0.4 - La Calibración** | Ajuste fino de la Voz de Gonzo basado en feedback histórico. | ⚪ | Reducción de iteraciones de "estilo" en piezas complejas. |
-| **v0.5 - El Puente** | Comunicación autónoma. El mensaje llega, el canal es el correcto y el riesgo es mínimo. | ⚪ | Aprobación de piezas multi-canal complejas en un solo paso. |
+| 1.1 | `docs/voz-gonzo.md` se declara canónico | ✅ | Nota en AGENTS.md paso 1 lo nombra "fuente única y canónica" |
+| 1.2 | `content-serializer` Phase 0 referencia, no duplica | ✅ | "Where the voice lives" apunta a `voz-gonzo`; conserva solo la modulación por tipo de post |
+| 1.3 | `copy-editing` Sweep 2 referencia | ✅ | Sweep 2 deja de definir tono; apunta a `voz-gonzo` + `editorial-guidelines` |
+| 1.4 | Extender `voz-gonzo` a posts públicos | ✅ | Alcance ampliado 2026-11-06 con tabla de modulación de marca (deep-dive / anuncio / opinión / CTA) |
+| 1.5 | Cargar casos con texto ya escrito | ⚪ pendiente | Tus artículos y READMEs como casos nuevos, si los aprobás |
+
+**Decisión 1.4 resuelta con Gonzo (2026-11-06):** los posts públicos usan la
+voz global modulada, no un registro aparte. Fundamento: el contenido de
+branding sale de artículos, READMEs y PRs, que ya están en esa voz.
+
+**Regla de precedencia instalada:** `voz-gonzo` gana sobre cualquier duplicado.
+Si un skill contradice el canónico, se corrige el skill.
+
+## Fase 2 - Conectar los pipelines (handoffs, no capacidades)
+
+Acá está el retorno real. Hoy ninguna skill sabe qué recibe ni qué entrega.
+
+| # | Entregable | Criterio de listo |
+|---|---|---|
+| 2.1 | Contrato de entrada/salida por skill | Cada SKILL.md declara: qué recibe, qué produce, quién lo consume |
+| 2.2 | Pipeline A conectado | Un material -> posts -> edición -> borrador, sin reexplicar contexto |
+| 2.3 | Pipeline B conectado | `oss-issue-preflight` -> `oss-contribution` -> `oss-pr-verification` con estado pasándose |
+| 2.4 | Router en AGENTS.md | Qué frase dispara qué pipeline, con casos concretos |
+| 2.5 | `user-invocable: true` | Donde corresponda, para que aparezcan en el menú |
+
+**Pipeline C** (carrera) no se conecta ahora: no hay uso demandado.
 
 ---
 
-## Hitos de la versión en curso (hacia v0.2)
+## Fase 3 - Disparador autónomo
 
-El foco actual es dejar de ser una "escritora de sesión" para ser una "comunicadora de proyecto".
+| # | Entregable | Criterio de listo |
+|---|---|---|
+| 3.1 | Heartbeat propio | Reviso `projects/`, `oss/`, `docs/OSS-TRACKER.md` y propongo |
+| 3.2 | Salida con filtro | Brief de 3 líneas, pasa por `voz-gonzo` antes de salir. Propongo, no publico |
+| 3.3 | Cosecha automática | Artículos y READMEs existentes entran solos a Pipeline A como candidatos |
 
-### Hito 1.1 - Sistema de Memoria Editorial (`style-guide-memory`)
-**Eje que mueve:** Consistencia y Autonomía.
-**Causa:** Hoy si Gonzo me dice "no uses la palabra X en este proyecto", lo olvido en la siguiente sesión si no está en el prompt. Necesito un lugar donde viva la "gramática del proyecto".
-**Evidencia requerida:** Un archivo de memoria por proyecto (`memory/editorial-guidelines.md`) que yo consulte y actualice proactivamente.
-
-### Hito 1.2 - Checklist de Pre-Handoff (Anti-Relleno)
-**Eje que mueve:** Calidad y Confianza.
-**Causa:** Mi `AGENTS.md` prohíbe la adulación, pero el modelo a veces cae en el "excelente punto". Necesito un paso de auto-auditoría obligatorio.
-**Evidencia requerida:** El handoff incluye una confirmación de "pasada de limpieza" donde detallo qué relleno eliminé.
-
-### Hito 1.3 - Matriz de Canal $\times$ Audiencia
-**Eje que mueve:** Efectividad.
-**Causa:** La adaptación al canal es manual. Necesito una estructura formal que defina: *LinkedIn $\rightarrow$ Directo/Gancho $\rightarrow$ Profesional* vs *Soporte $\rightarrow$ Empático/Resolutivo $\rightarrow$ Técnico*.
-**Evidencia requerida:** Documento de referencia en `.knowledge/channel-matrix.md` usado para justificar la estructura de cada borrador.
+**Bloqueado por Fase 1:** un heartbeat sin voz unificada propone ruido.
 
 ---
 
-## Lo que rechacé (y por qué)
+## Fase 4 - Capacidad nueva (sólo si un pipeline no la absorbe)
 
-- ❌ **Auto-publicación en redes/GitHub** - Red line absoluta. Mi rol es redactar y proponer, no ejecutar el envío. El riesgo de un error público es inaceptable.
-- ❌ **Generación de imágenes/diseño visual** - No soy diseñadora. Mi trabajo es el mensaje. Me mantengo en la redacción y la estructura; el diseño es de otros roles.
-- ❌ **Investigación profunda de temas** - Eso es trabajo de Kanam MIND. Yo transformo la información, no la descubro. Si falta data, escalo, no invento.
+Se evalúa una por una. Cada una exige decir **qué pipeline no puede absorberla**.
+
+| Candidata | ¿Pipeline que la absorbe? | Veredicto |
+|---|---|---|
+| `post-ship-brief` | Pipeline A, como disparador de entrada | **Etapa, no skill** |
+| `doc-polish` | Pipeline A sobre READMEs, con `copy-editing` | **Etapa, no skill** |
+| `inbox-triage` | Pipeline B, como entrada programada | **Etapa, no skill** |
+| `support-response-writer` v2 | Pipeline propio de soporte, hoy sin volumen | **No tocar** |
+
+**Resultado: 0 skills nuevas.** Las tres candidatas del v0.2 se convierten en
+etapas de pipeline. Eso es exactamente lo que pediste.
 
 ---
 
-## Red lines y criterio de cierre
+## Decisiones de config (requieren tu sí, separadas)
 
-- **Red lines de mi evolución:**
-    - No escribiré nada que no pueda sustentar con la fuente.
-    - No añadiré "cortesía artificial" para sonar amable; la amabilidad es utilidad, no relleno.
-    - No cruzaré la frontera de la investigación (MIND) ni la del código (DEV).
-- **Cómo se mide el éxito de la v0.2:**
-    1. El `editorial-guidelines.md` del proyecto es actualizado y consultado sin que el usuario me lo pida.
-    2. Los borradores llegan sin frases de relleno ("Espero que esto ayude", "Interesante observación").
-    3. La estructura del texto coincide con la Matriz de Canal en el 100% de los casos.
+| # | Cambio | Mi recomendación |
+|---|---|---|
+| C1 | `thinkingDefault: off` -> `high` | **Sí.** Cuello de botella declarado en AGENTS.md |
+| C2 | `subagents.allowAgents: []` -> `["kanam-mind"]` | **No.** Rompe el contrato de handoff que escribiste |
+| C3 | Heartbeat en `kanam-studio` | **Después de Fase 1**, no antes |
+
+Ninguna se ejecuta sin aprobación explícita para esa acción.
+
+---
+
+## Red lines (sin cambios)
+
+- No publico, envío ni posteo hacia afuera sin tu aprobación para esa acción.
+- No invento citas, estadísticas ni fechas. Verifico con `web_fetch`.
+- No cruzo a investigación (MIND) ni a código (DEV).
+- No diseño.
+
+---
+
+## Cómo se mide
+
+| Métrica | Hoy | Meta v0.6 |
+|---|---|---|
+| Skills nuevas creadas | — | **0** |
+| Skills referenciando la voz canónica | 0 de 7 | 7 de 7 |
+| Pipelines con contrato entrada/salida | 0 de 3 | 2 de 3 |
+| Sesiones activas por semana | 0 | >=3 |
+| Veces que reexplicás el tono | Cada tarea | 0 |
+| Piezas publicadas desde material existente | 0 | >=4 |
+
+---
+
+## Próximo paso concreto
+
+Fase 0.1: escribir `memory/editorial-guidelines.md` como **borrador para
+corrección**. Cero scripts, cero config, reversible. Es el insumo de todo
+lo demás.
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->

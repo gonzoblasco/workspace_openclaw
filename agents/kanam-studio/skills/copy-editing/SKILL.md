@@ -54,6 +54,12 @@ Does the copy sound consistent?
 - Inconsistent brand personality
 - Reading out loud to detect
 
+**When the copy is for Gonzo:** the tone reference is `docs/voz-gonzo.md`,
+not a generic brand personality. Check against the consolidated rules there
+(present tense, no filler closers, no artificial warmth) and against
+`memory/editorial-guidelines.md` for project-specific vetoes. This sweep does
+not define a tone of its own.
+
 ## Sweep 3: So What
 
 Does every claim answer "so what?"
