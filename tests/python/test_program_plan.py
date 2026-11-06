@@ -131,6 +131,21 @@ class ProgramPlanTest(unittest.TestCase):
         self.assertEqual(data["gates"], ["critic", "auditor"])
         self.assertEqual(data["steps"][0]["gate"], "critic")
 
+    def test_show_lists_all_steps(self):
+        self.init_program()
+        self.run_cmd(
+            "add-step", "demo", "Primer paso", "--role", "dev", "--exit", "A"
+        )
+        self.run_cmd(
+            "add-step", "demo", "Segundo paso", "--role", "dev", "--exit", "B"
+        )
+        result = self.run_cmd("show")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Primer paso", result.stdout)
+        self.assertIn("Segundo paso", result.stdout)
+        status = json.loads(self.run_cmd("status", "--json").stdout)
+        self.assertEqual(len(status["programs"][0]["steps"]), 2)
+
 
 if __name__ == "__main__":
     unittest.main()

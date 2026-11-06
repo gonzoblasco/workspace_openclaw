@@ -28,6 +28,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 ### Fixed
 - **Regla de verificación del Planner (caso Preflight, 2026-11-06).** Un plan afirmó que Chromium corría con `--no-sandbox` sin leer `src/lib/scan.ts:69`; era falso. Ahora `program-orchestration` y `planner-delegation` exigen que cada afirmación de estado cite `archivo:línea` y el commit/snapshot leído, o se marque como supuesto, con un paso 0 de verificación si no se pudo comprobar. El review del CORE señaló quota y cap de concurrencia ausentes; era correcto en el snapshot pre-fix, y el commit `289cb19` los agregó después. La lección es citar commit + archivo:línea, no solo el archivo actual.
 - **Compatibilidad de programas legacy.** `program_plan.py` normaliza `write_path` singular y campos faltantes de `abya-yala-05.json`; el programa ya pasa `plan_lint` y produce contrato de ejecución.
+- **Review semanal sin pasos inventados.** El primer run de `planner-weekly-review` (17:30) inventó los pasos #2 y #3 de Abya Yala porque el prompt usaba `board`/`status`, que no listan todos los pasos. Se agregó `program_plan.py show` y `status --json.steps`; el prompt del review ahora usa `show` y prohíbe inventar pasos. El run se repitió.
 
 ### Notes
 - **Sin cambios de config:** no se tocó routing, heartbeat, modelos ni `subagents.allowAgents`. En Fase 1 el Planner **no spawnea**: entrega contratos y el CORE ejecuta.

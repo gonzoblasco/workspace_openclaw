@@ -287,6 +287,31 @@ def cmd_update(args: argparse.Namespace) -> None:
     print(f"✅ Paso {args.step} de {args.slug} -> {args.status}")
 
 
+def cmd_show(args: argparse.Namespace) -> None:
+    """Muestra todos los pasos, no solo el proximo.
+
+    El review semanal necesita los titulos exactos para no inventar pasos.
+    """
+    programs = [load_program(args.slug)] if args.slug else [
+        p for p in all_programs() if p.get("status") == "active"
+    ]
+    if not programs:
+        print("Sin programas.")
+        return
+    for index, program in enumerate(programs):
+        if index:
+            print()
+        done, total = progress(program)
+        print(f"🗺️ {program['title']} [{program.get('status')}] — {done}/{total}")
+        for step in program.get("steps", []):
+            gate = f" gate={step['gate']}" if step.get("gate") else ""
+            print(
+                f"  #{step['id']} [{step['status']}] {step['task']} — {step['owner']}{gate}"
+            )
+            if step.get("blocker"):
+                print(f"      blocker: {step['blocker']}")
+
+
 def cmd_next(args: argparse.Namespace) -> None:
     program = load_program(args.slug)
     step = next_step(program)
@@ -368,6 +393,17 @@ def cmd_status(args: argparse.Namespace) -> None:
                 ],
                 "stale_steps": stale,
                 "counts": _step_counts(program),
+                "steps": [
+                    {
+                        "id": s["id"],
+                        "task": s["task"],
+                        "status": s["status"],
+                        "owner": s["owner"],
+                        "gate": s.get("gate"),
+                        "blocker": s.get("blocker"),
+                    }
+                    for s in program.get("steps", [])
+                ],
             }
         )
     if args.json:
@@ -658,6 +694,10 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--waiver-reason", default=None)
     p.add_argument("--force", action="store_true")
     p.set_defaults(func=cmd_update)
+
+    p = sub.add_parser("show", help="Mostrar todos los pasos de un programa (o de los activos).")
+    p.add_argument("slug", nargs="?")
+    p.set_defaults(func=cmd_show)
 
     p = sub.add_parser("next", help="Mostrar el proximo paso accionable.")
     p.add_argument("slug")
