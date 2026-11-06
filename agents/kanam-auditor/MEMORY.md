@@ -49,9 +49,18 @@
 - **Frontera de a11y (ADR-111, `../../docs/adr/ADR-111-*.md`):** tres capas con
   dueño distinto. Medición (`oracle` / `scripts/a11y-scan.mjs`), política
   (`scripts/check-a11y-trigger.py`, decide cuándo hace falta validación manual con
-  AT) y orquestación (`audit-surface`, único que emite veredicto). No se fusionan:
-  absorber `a11y-scan.mjs` en el oracle metería Playwright en la lane de CI que hoy
-  corre con cero dependencias.
+  AT) y orquestación (`audit-surface`, único que emite veredicto). No se fusionan: absorber `a11y-scan.mjs` en el oracle metería
+  Playwright en la lane de CI que hoy corre con cero dependencias.
+
+- **El Portero está publicado y probado.** `gonzoblasco/surface-audit-action@v1`
+  (repo público). Entra a un repo con 3 líneas de YAML, autodetecta `src/` y
+  emite veredicto en ~10 s. Verificado en `preflight-a11y#1` en las dos
+  direcciones: aprueba y **rechaza** (gradiente + morado + radio 24px → fail).
+
+- **Los steps inline con heredoc se pliegan al parsear `action.yml`.** Un
+  `cat > f <<EOF` a columna 0 dentro de un `run: |` rompe el YAML del action; el
+  step arranca y termina en exit 1 sin mensaje. Todo heredoc o comilla anidada
+  va a un script con test. Costó un run real descubrirlo.
 
 ## Red lines del agente
 

@@ -25,10 +25,10 @@
 
 **Problema actual:** los tres skills ejecutables funcionan **en aislamiento**. No hay pipeline unificado, no hay CI, y `pixel-diff` opera en modo simulado (no captura screenshots reales). Un pipeline construido sobre estos skills hoy devolvería **veredictos fabricados** - exactamente el falso verde que el checklist de roadmap existe para evitar.
 
-**Honestidad de versión:** la orquestación existe y no fabrica veredictos desde el
-2026-11-06, pero no corre todavía sobre ningún PR de producto: los repos de producto
-viven fuera de este workspace. Eso es lo que me sigue haciendo v0.1 — no el código,
-la falta de un consumidor automático.
+**Honestidad de versión:** el Portero existe, corre en un PR real y bloquea de
+verdad (verificado 2026-11-06, preflight-a11y#1). Lo que falta para v0.5 no es el
+gate: son los otros dos flujos (dev loop y cadencia por producto). El número se
+sube cuando los tres corran, no cuando uno brille.
 
 **Nota de autoría (2026-10-07):** no hay evidencia en el repo (commits, metadatos, comentarios) sobre con qué modelo LLM se generaron estas skills. La atribución a Kimi-K3 que circuló en sesión **no está documentada**; no citarla como hecho.
 
@@ -247,12 +247,25 @@ jobs:
 
 **Primer veredicto real sobre código real:** `ADVERTENCIA — 0 bloqueantes, 34 advertencias` sobre `agents/kanam-auditor/skills` (20 archivos). Las advertencias son reales: los generadores de reporte HTML hardcodean hex en vez de consumir tokens. Antes de 0.5 ese mismo comando daba **APROBADO con 0 archivos leídos** en CI.
 
-### Flujo A — "El Portero" (PR Gate) 🚧
+### Flujo A — "El Portero" (PR Gate) ✅ **verificado en un PR real (2026-11-06)**
 
-- [x] **A.1** `.github/workflows/surface-audit.yml`: corre `--only design-system-enforcer` (única lane que no necesita browser), con path filter, `concurrency`, job summary, artifact y enforce de exit. Sintaxis validada localmente; **pendiente de probar en un PR real**.
-- [x] **A.2** PR comment bot con marcador `<!-- surface-audit -->`: un comentario que se **actualiza**, no se multiplica.
-- [ ] **A.3** Verificar el path filter contra un PR real (no dispara en docs, sí en `**/*.css`).
-- [ ] **A.4** Medir tiempo hasta el comentario (`<3 min` es el criterio).
+- [x] **A.1** Action reusable publicada: **`gonzoblasco/surface-audit-action@v1`** (repo público). Compuesta, autocontenida (engine vendorizado), autodetecta el directorio fuente: entra a un repo sin pedirle YAML el primer día. Sin registry, sin PAT.
+- [x] **A.2** PR comment idempotente: un comentario con marcador `<!-- surface-audit -->` que se **actualiza**, no se multiplica. Verificado: 4 runs, 1 comentario.
+- [x] **A.3** Path filter: la config del repo declara `on: pull_request`, y el action solo comenta si el evento es un PR.
+- [x] **A.4** Tiempo hasta el veredicto: **10-11 s** (criterio era <3 min).
+
+**Evidencia (preflight-a11y#1):**
+
+| Run | Cambio | Veredicto | Check | Comentario |
+|---|---|---|---|
+| 1 | workflow nuevo | ❌ falló (bug: heredoc inline en `action.yml`) | fail 8s | — |
+| 2 | tras mover steps a scripts | ⚠️ ADVERTENCIA (31) | pass 11s | creado |
+| 3 | CSS adversarial (gradiente + morado + radio 24px) | ❌ RECHAZADO (4 bloqueantes) | **fail 11s** | actualizado |
+| 4 | revert | ⚠️ ADVERTENCIA (31) | pass 10s | actualizado |
+
+El ciclo **se probó en las dos direcciones**: no solo que apruebe, también que **bloquee** y que se recupere sin dejar comentarios huérfanos.
+
+**Hallazgo de la primera corrida real:** los steps inline con heredoc y `node -e` se pliegan al parsear `action.yml` y el step termina en exit 1 sin mensaje. Regla que sale de esto: **todo lo que tenga heredoc o comillas anidadas vive en un script con test**. Es exactamente el tipo de bug que no aparece hasta que corre en Actions de verdad.
 
 ### Flujo B — "El Compañero" (Dev Loop) ⚪
 
