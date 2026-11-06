@@ -165,6 +165,33 @@ no ingenieria), Infojini (ya es tu proceso vivo).
 | **TEAM International** (cliente **tempo.io**) | Senior Frontend Developer (Growth) | David Sanin Valencia | USD 5.000/mes fijos (≈ USD 31,25/h a 160 h) | **POSICIÓN DE TEMPO CERRADA 26/10; LA RELACIÓN CON TEAM SIGUE VIVA.** El Delivery Manager de Tempo pidió más nivel de inglés: **el equipo del cliente que entrevista y trabaja con la persona está en Europa**, y es exigente con la fluidez **al discutir y explicar temas técnicos**. David: *"no avanzar con tu perfil para esta posición en particular"*; el nivel técnico *"es muy bueno"* y la decisión es de idioma. **Lo mantiene en el talent pool** y reevalúa cuando Gonzo esté más cómodo con el idioma. **Dos capas, dos estados: Tempo cierra la posición; TEAM mantiene la relación y la vía de reevaluación (1-2 meses).** Antes: el perfil técnico le gustó ("le encanta mi perfil"), el bloqueo fue el **nivel de inglés conversacional**, y David había aceptado en dos vías (hablar con Tempo, o reevaluación para ese u otro proyecto). **El JD dice B2+ y el requisito real es C1**: en una agency el idioma es **condición de elegibilidad**, no requisito del rol. **Dato nuevo y relevante: el equipo del cliente está en Europa, no en US** - por eso el tracker necesita la regla ampliada. Referencia temporal: el B2 intensivo del CUI termina el 21-23/12/2026. Análisis fiscal (de la oferta que no prosperó): **neto ≈ USD 4.140-4.270/mes**. Detalle: `docs/entrevistas/team-international-tempo/entrevista-26-10-y-seguimiento.md`. |
 | **Infjini Inc** (cadena **Disney -> HTC -> Infojini**) | Lead Software Engineer - Digital Accessibility | Siraj Shaik | **USD 24/h** all-inclusive (piso era 22; Gonzo pidió 25 y aceptó 24 el 19/10), 1 año | **ABIERTO, CON ENTREVISTA EN NOVIEMBRE.** Screening hecho (19/10) con feedback técnico positivo (*"technically you are excellent"*), **RTR firmado el 19/10 a USD 24/h**, y el único feedback negativo fue **fluidez en ingles hablado** (no escrita). **26/10: Siraj confirma que el cliente (Disney) va a entrevistar en la 1ra o 2da semana de noviembre** - el idioma dejó de bloquear la presentación y pasó a ser el riesgo de la entrevista. **Arranque acordado: 1-2 semanas luego de la confirmación.** Es el **mismo req que EIT/HTC/Disney**, que se cerró 24/09. **Único proceso vivo con próximo paso concreto y fecha.** Pendientes: fijar la fecha exacta y el formato, re-preguntar el gate de "relevant regional certification" (la JD lo lista en Required; Siraj lo chequeaba con su manager el 19/10 y no hay respuesta registrada), y asentar la fecha por mail.|
 
+### Interna.work (2026-11-06) - FUNNEL DE BENCHMARK LABOR, NO ES UN PROCESO
+
+Mail inbound de `recruiter@ses.interna.software` ("Alex Reed | Lead Talent Partner @ Interna.work"):
+Frontend / UI Engineer, USD 80-100/h "benchmark equivalent", ~USD 640-800 **por entregable aprobado**,
+~8 h por tarea. El trabajo descrito no es construir UI: es convertir mockups en **benchmarks de codigo
+con tests objetivos**, o sea produccion de datos de evaluacion.
+
+Verificado el 2026-11-06:
+
+- `ses.interna.software` **no tiene registros DNS** (A, MX ni TXT), asi que la direccion del remitente
+  no puede recibir. El canal real es `talents@interna.work` (apex con MX Zoho).
+- `interna.work` registrado **2026-02-19**, registrar Spaceship, registrante US. Landing unica en
+  Next.js: sin vacantes, sin entidad legal, sin direccion, sin equipo.
+- `preflight-a11y` (el repo que citan como descubrimiento) se creo el **04/11** y tiene **0 estrellas**:
+  el "vimos tu trabajo" es un scraper de actividad reciente de GitHub.
+- La privacy policy promete que el codigo del candidato no entrena modelos, mientras el trabajo
+  ofrecido **es** producir benchmarks: el benchmark es el producto.
+
+**Decision de Gonzo:** responder igual, porque contestar un mail sin links ni adjuntos no tiene
+riesgo. Se envio el 2026-11-06 11:34 con tres preguntas (cliente y entregable, criterio de aprobacion
+y rejection rate, terminos de contrato y rail de pago). Se recorto la pregunta sobre el dominio del
+remitente y la linea de "no intake form".
+
+**Criterio de cierre:** el propio sitio promete matching en 24-48 business hours -> **hasta el
+2026-11-11**. Silencio, o respuesta con link a formulario, = funnel, cerrado. Solo sigue si responden
+con nombre de cliente, criterio de aprobacion escrito, entidad y rail de pago.
+
 ### Notas Staffy (2026-10-20) - PROCESO CERRADO
 
 - JD: https://jobs.wearestaffy.com/positions/ai-software-engineer-1976
