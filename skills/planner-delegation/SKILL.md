@@ -38,6 +38,12 @@ Llamá al Planner si el objetivo cumple **al menos una** de estas condiciones:
 - El trabajo ya empezó y solo querés un plan retroactivo: el plan nace antes, no después.
 - Cada paso por separado: eso es burocracia y duplica estado.
 
+## Regla de verificación
+
+Antes de proponer pasos, el Planner lee el código y los docs relevantes. **Cada afirmación sobre el estado actual cita `archivo:línea` o se marca como supuesto.** Si no pudo verificar, agrega un paso 0 de verificación; no lo asume hecho. Un plan sobre supuestos no se ejecuta.
+
+Esto vale para el Planner y para el CORE: cuando el CORE revisa el plan, verifica sus propias afirmaciones contra el repo, no contra la memoria.
+
 ## Procedimiento
 
 ### 1. Scorear
@@ -81,6 +87,10 @@ Contexto: <links, decisiones, restricciones, estado actual>
 Alcance: <que entra y que no>
 Gates: <auditor, critic o ninguno>
 
+Antes de proponer pasos, leé el código/docs relevantes. Cada afirmación sobre el estado
+actual debe citar archivo:línea; si no, marcala como supuesto y agregá un paso de
+verificación. No agregues un test que dependa de una implementación que no existe.
+
 Entregable:
 1. Crear o actualizar el programa en agents/kanam-planner/.knowledge/programs/<slug>.json.
 2. Pasos atomicos con role, owner, exit_criteria, depends_on y gate cuando corresponda.
@@ -110,6 +120,7 @@ Criterios:
 - Todos los pasos tienen `owner` y `exit_criteria`.
 - El próximo paso existe y sus dependencias están completas.
 - Los gates declarados tienen un paso de Auditor/Critic.
+- Las afirmaciones de estado tienen fuente (`archivo:línea`) o están marcadas como supuesto con un paso de verificación.
 - El brief se puede leer sin abrir el JSON.
 - **Cada ruta citada existe en el repo, o lleva `NUEVO` al lado.** Verificarlo
   con `ls`/`test -e`, no de memoria. Un plan que menciona `src/data/x.json`

@@ -24,6 +24,18 @@ Un **programa** es un objetivo que no cabe en una sesión ni en un solo rol. El 
 
 No usarla para una tarea de una sesión y un rol: eso lo resuelve el CORE con `session_plan.py`. Un programa por cada tarea chica es burocracia, no orquestación.
 
+## Verificación antes de planear
+
+Un plan que describe el estado actual sin haberlo leído es una hipótesis, no un plan.
+
+- Antes de proponer pasos, leé los archivos relevantes (`src/`, tests, docs, HANDOFF).
+- Cada afirmación sobre el estado del código cita `archivo:línea` o se marca como **supuesto**.
+- Si no pudiste verificar, agregá un **paso 0 de verificación** con criterio de salida "estado actual citado con archivo:línea".
+- No agregues un test que dependa de una implementación que no existe: primero verificá que exista.
+- Un plan con supuestos no se dispatcha; se convierte en un paso de verificación.
+
+**Caso testigo (2026-11-06, Preflight):** el plan afirmó que Chromium corría con `--no-sandbox` sin leer `src/lib/scan.ts:33`, que solo pasa `--disable-dev-shm-usage`. El error no fue del brief: fue afirmar estado sin evidencia. La regla existe para que no se repita.
+
 ## Fuente de verdad
 
 `agents/kanam-planner/.knowledge/programs/<slug>.json`

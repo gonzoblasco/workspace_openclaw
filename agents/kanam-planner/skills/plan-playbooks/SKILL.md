@@ -32,7 +32,7 @@ Un playbook es un programa probado que se instancia con otro objetivo. No es una
 
 | # | Paso | Rol | Criterio de salida |
 |---|---|---|---|
-| 1 | Descubrir y acotar el alcance | planner | Alcance, no-alcance y riesgos escritos |
+| 1 | Descubrir y acotar el alcance | planner | Alcance, no-alcance, riesgos y estado actual verificado con `archivo:línea` |
 | 2 | Escribir spec o actualizar la existente | planner / studio | Spec aprobada por Gonzo |
 | 3 | Implementar A | dev | Código + tests locales verdes |
 | 4 | Revisar B | critic | Hallazgos bloqueantes resueltos o waiver |
@@ -50,7 +50,7 @@ Un playbook es un programa probado que se instancia con otro objetivo. No es una
 | # | Paso | Rol | Criterio de salida |
 |---|---|---|---|
 | 1 | Leer el hilo completo y el estado del PR | mind | Resumen con citas y preguntas abiertas |
-| 2 | Verificar el claim contra el código/docs | mind | Evidencia textual o reproducción |
+| 2 | Verificar el claim contra el código/docs | mind | Evidencia textual o reproducción, con `archivo:línea` |
 | 3 | Redactar el comentario/PR | studio | Borrador listo, sin publicar |
 | 4 | Revisión adversarial | critic | Sin afirmaciones sin evidencia |
 | 5 | Publicar con OK de Gonzo | core | Comentario/PR publicado y URL |
@@ -97,7 +97,7 @@ Un playbook es un programa probado que se instancia con otro objetivo. No es una
 
 | # | Paso | Rol | Criterio de salida |
 |---|---|---|---|
-| 1 | Reproducir y acotar | ops / dev | Pasos de reproducción y alcance |
+| 1 | Reproducir y acotar | ops / dev | Pasos de reproducción, alcance y `archivo:línea` del síntoma |
 | 2 | Aislar la causa | dev | Causa raíz con evidencia |
 | 3 | Diseñar el fix | planner | Opciones, riesgos y decisión |
 | 4 | Implementar | dev / ops | Fix + tests de regresión |

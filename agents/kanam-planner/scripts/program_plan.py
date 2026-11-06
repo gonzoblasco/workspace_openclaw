@@ -62,6 +62,52 @@ def program_path(slug: str) -> Path:
     return PROGRAMS_DIR / f"{slug}.json"
 
 
+def normalize_program(program: dict[str, Any]) -> dict[str, Any]:
+    """Completa campos faltantes de programas escritos por versiones previas.
+
+    El primer programa real (abya-yala-05) se escribio a mano con `write_path`
+    singular y sin timestamps. El script no debe romperse por eso: normaliza en
+    memoria y migra el archivo en el proximo update.
+    """
+    program.setdefault("slug", slugify(program.get("title", "programa")))
+    program.setdefault("title", program["slug"])
+    program.setdefault("objective", "")
+    program.setdefault("status", "active")
+    program.setdefault("owner", "gonzalo")
+    program.setdefault("created_at", now())
+    program.setdefault("updated_at", program["created_at"])
+    program.setdefault("gates", [])
+    program.setdefault("steps", [])
+    program.setdefault("metadata", {})
+    for index, step in enumerate(program["steps"], start=1):
+        step.setdefault("id", index)
+        step.setdefault("task", "")
+        step.setdefault("role", "dev")
+        step.setdefault("owner", ROLE_AGENT.get(step["role"], "kanam-dev"))
+        step.setdefault("status", "pending")
+        step.setdefault("exit_criteria", "")
+        step.setdefault("depends_on", [])
+        step.setdefault("gate", None)
+        if "write_paths" not in step:
+            legacy = step.get("write_path")
+            if isinstance(legacy, str) and legacy:
+                step["write_paths"] = [legacy]
+            elif isinstance(legacy, list):
+                step["write_paths"] = legacy
+            else:
+                step["write_paths"] = []
+        step.setdefault("evidence", [])
+        step.setdefault("blocker", None)
+        step.setdefault("waiver_reason", None)
+        step.setdefault("attempts", 0)
+        step.setdefault("created_at", program["created_at"])
+        step.setdefault("updated_at", program["updated_at"])
+        step.setdefault("started_at", None)
+        step.setdefault("completed_at", None)
+        step.setdefault("session_ref", None)
+    return program
+
+
 def load_program(slug: str) -> dict[str, Any]:
     path = program_path(slug)
     if not path.exists():
@@ -71,7 +117,7 @@ def load_program(slug: str) -> dict[str, Any]:
             data = json.load(fh)
     except (OSError, json.JSONDecodeError) as exc:
         fail(f"No pude leer {path}: {exc}")
-    return data
+    return normalize_program(data)
 
 
 def save_program(program: dict[str, Any]) -> None:
@@ -92,7 +138,7 @@ def all_programs() -> list[dict[str, Any]]:
     for path in sorted(PROGRAMS_DIR.glob("*.json")):
         try:
             with open(path, "r", encoding="utf-8") as fh:
-                programs.append(json.load(fh))
+                programs.append(normalize_program(json.load(fh)))
         except (OSError, json.JSONDecodeError):
             continue
     return programs
@@ -448,6 +494,22 @@ def cmd_lint(args: argparse.Namespace) -> None:
         raise SystemExit(1)
 
 
+def cmd_set_gate(args: argparse.Namespace) -> None:
+    program = load_program(args.slug)
+    step = find_step(program, args.step)
+    step["gate"] = None if args.gate == "none" else args.gate
+    step["updated_at"] = now()
+    save_program(program)
+    print(f"✅ Paso {args.step} de {args.slug}: gate -> {args.gate}")
+
+
+def cmd_set_gates(args: argparse.Namespace) -> None:
+    program = load_program(args.slug)
+    program["gates"] = [g.strip() for g in args.gates.split(",") if g.strip()]
+    save_program(program)
+    print(f"✅ Programa {args.slug}: gates -> {', '.join(program['gates']) or 'ninguno'}")
+
+
 def cmd_close(args: argparse.Namespace) -> None:
     program = load_program(args.slug)
     errors, _warnings = lint_program(program)
@@ -617,6 +679,17 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("slug", nargs="?")
     p.add_argument("--json", action="store_true")
     p.set_defaults(func=cmd_lint)
+
+    p = sub.add_parser("set-gate", help="Cambiar el gate de un paso.")
+    p.add_argument("slug")
+    p.add_argument("step", type=int)
+    p.add_argument("gate", choices=["auditor", "critic", "none"])
+    p.set_defaults(func=cmd_set_gate)
+
+    p = sub.add_parser("set-gates", help="Cambiar los gates del programa.")
+    p.add_argument("slug")
+    p.add_argument("gates", help="Lista separada por coma: auditor,critic")
+    p.set_defaults(func=cmd_set_gates)
 
     p = sub.add_parser("close", help="Cerrar un programa.")
     p.add_argument("slug")

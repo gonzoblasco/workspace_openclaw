@@ -118,6 +118,19 @@ class ProgramPlanTest(unittest.TestCase):
         self.assertEqual(contract["exit_criteria"], "Test verde")
         self.assertIn("## Spawn", contract["markdown"])
 
+    def test_gate_edit(self):
+        self.init_program()
+        self.run_cmd(
+            "add-step", "demo", "Implementar", "--role", "dev", "--exit", "Test verde"
+        )
+        result = self.run_cmd("set-gates", "demo", "critic,auditor")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        result = self.run_cmd("set-gate", "demo", "1", "critic")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        data = json.loads((Path(self.tmp.name) / "demo.json").read_text())
+        self.assertEqual(data["gates"], ["critic", "auditor"])
+        self.assertEqual(data["steps"][0]["gate"], "critic")
+
 
 if __name__ == "__main__":
     unittest.main()

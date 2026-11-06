@@ -9,9 +9,21 @@
       "owner": "kanam-dev",
       "exit_criteria": "tests/civ_test.gd pasa: misma unidad con civ andean vs amazon vs pampa da estadisticas distintas (>=5% en ingreso o dano), y las 12 suites siguen verdes.",
       "depends_on": [],
-      "gate": "auditor",
+      "gate": "critic",
       "write_path": "src/core/game.gd",
-      "status": "pending"
+      "status": "pending",
+      "write_paths": [
+        "src/core/game.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T19:22:21+00:00",
+      "updated_at": "2026-11-06T19:22:21+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
     },
     {
       "id": 2,
@@ -22,9 +34,21 @@
       "depends_on": [
         1
       ],
-      "gate": "auditor",
+      "gate": "critic",
       "write_path": "src/systems/ai_controller.gd",
-      "status": "pending"
+      "status": "pending",
+      "write_paths": [
+        "src/systems/ai_controller.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T19:22:21+00:00",
+      "updated_at": "2026-11-06T19:22:21+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
     },
     {
       "id": 3,
@@ -35,9 +59,21 @@
       "depends_on": [
         1
       ],
-      "gate": "auditor",
+      "gate": "critic",
       "write_path": "src/entities/unit.gd",
-      "status": "pending"
+      "status": "pending",
+      "write_paths": [
+        "src/entities/unit.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T19:22:21+00:00",
+      "updated_at": "2026-11-06T19:22:21+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
     },
     {
       "id": 4,
@@ -48,9 +84,21 @@
       "depends_on": [
         1
       ],
-      "gate": "auditor",
+      "gate": "critic",
       "write_path": "src/core/game.gd",
-      "status": "pending"
+      "status": "pending",
+      "write_paths": [
+        "src/core/game.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T19:22:21+00:00",
+      "updated_at": "2026-11-06T19:22:22+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
     },
     {
       "id": 5,
@@ -64,7 +112,19 @@
       ],
       "gate": "auditor",
       "write_path": "src/ui/tutorial.gd",
-      "status": "pending"
+      "status": "pending",
+      "write_paths": [
+        "src/ui/tutorial.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T19:22:21+00:00",
+      "updated_at": "2026-11-06T19:22:22+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
     },
     {
       "id": 6,
@@ -73,13 +133,31 @@
       "owner": "kanam-dev",
       "exit_criteria": "tools/gen_terrain3.py con seeds 34, 77 y 101 genera map_01..03 con tiles distintos; terrain_test corre sobre los tres y pasa; captura visual de cada uno.",
       "depends_on": [],
-      "gate": "auditor",
+      "gate": "critic",
       "write_path": "assets/maps/",
-      "status": "pending"
+      "status": "pending",
+      "write_paths": [
+        "assets/maps/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T19:22:21+00:00",
+      "updated_at": "2026-11-06T19:22:22+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
     }
   ],
   "objective": "Que haya mas de una forma de jugar: civilizaciones con bonus reales, epoca IV completa, victoria alternativa, tutorial y tres mapas.",
   "gates": [
+    "critic",
     "auditor"
-  ]
+  ],
+  "status": "active",
+  "owner": "gonzalo",
+  "created_at": "2026-11-06T19:22:21+00:00",
+  "updated_at": "2026-11-06T19:22:22+00:00",
+  "metadata": {}
 }

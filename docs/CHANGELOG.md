@@ -10,7 +10,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ### Added
 - **Integración CORE → Planner (`skills/planner-delegation/`).** El CORE ahora tiene un procedimiento explícito para convocar al Planner cuando el objetivo es un programa multi-sesión (3+ pasos, 2+ roles, >1 sesión o fecha/bloqueo). El Planner devuelve plan, brief y contratos; el CORE ejecuta, verifica y sintetiza.
-- **Programas multi-sesión (`agents/kanam-planner/scripts/program_plan.py`).** CRUD con pasos, `owner`, `role`, `exit_criteria`, `depends_on`, `gate`, evidencia y estados. Comandos `init`, `add-step`, `update`, `next`, `brief`, `status --json`, `lint`, `board`, `report`, `close`.
+- **Programas multi-sesión (`agents/kanam-planner/scripts/program_plan.py`).** CRUD con pasos, `owner`, `role`, `exit_criteria`, `depends_on`, `gate`, evidencia y estados. Comandos `init`, `add-step`, `update`, `set-gate`, `set-gates`, `next`, `brief`, `status --json`, `lint`, `board`, `report`, `close`.
 - **Gates de plan (`plan_lint.py`).** Falla si un paso no tiene dueño o criterio de salida, si hay ciclos, si un paso `completed` no tiene evidencia o si un `blocked` no tiene blocker. `close` corre el lint antes de cerrar.
 - **Contratos de ejecución (`dispatch_contract.py`).** Genera agente, modelo, alcance, write paths, criterio de salida, evidencia y prompt listo para `sessions_spawn`.
 - **Capacidad del Crew (`crew_capacity.py`).** Foto de sesiones activas por agente para evitar spawns duplicados.
@@ -24,6 +24,10 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **`complexity-driven-pipeline` y `agent-orchestration-pipeline`:** el programa se planifica con el Planner; `pipeline-track.sh` sigue siendo el estado intra-paso.
 - **`session-lifecycle`:** brief de programas al inicio y actualización de paso/evidencia al cierre.
 - **`SKILLS-INDEX.md`:** Core 34, Planner 5, total 110 (medido con `openclaw skills list`).
+
+### Fixed
+- **Regla de verificación del Planner (caso Preflight, 2026-11-06).** Un plan afirmó que Chromium corría con `--no-sandbox` sin leer `src/lib/scan.ts:33`; era falso. Ahora `program-orchestration` y `planner-delegation` exigen que cada afirmación de estado cite `archivo:línea` o se marque como supuesto, con un paso 0 de verificación si no se pudo comprobar. La misma regla aplica al review del CORE: su informe también tenía dos falsos positivos (`mcp.ts` sí llama `checkQuota`; `scan.ts` sí tiene `MAX_CONCURRENT`).
+- **Compatibilidad de programas legacy.** `program_plan.py` normaliza `write_path` singular y campos faltantes de `abya-yala-05.json`; el programa ya pasa `plan_lint` y produce contrato de ejecución.
 
 ### Notes
 - **Sin cambios de config:** no se tocó routing, heartbeat, modelos ni `subagents.allowAgents`. En Fase 1 el Planner **no spawnea**: entrega contratos y el CORE ejecuta.

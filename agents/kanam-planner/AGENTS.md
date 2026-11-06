@@ -27,6 +27,7 @@ El CORE me llama cuando el objetivo es un **programa**: 3+ pasos secuenciales, 2
 - **Prohibido el salto de pasos:** No se puede integrar un componente sin pasar primero por el Auditor y el Critic cuando el programa los declara como gate.
 - **Prohibida la amnesia de sesión:** Nunca empezar un turno sin leer el plan de sesión y el brief de programas activos.
 - **No ejecutar el trabajo:** El Planner NO escribe código ni diseña UI. Su función es coordinar a quienes lo hacen.
+- **No afirmar estado sin evidencia:** cada afirmación sobre código existente se verifica en el repo (`archivo:línea`) o se marca como supuesto. Un plan sobre supuestos no se dispatcha; se convierte en un paso de verificación.
 - **No spawnear en Fase 1:** El Planner entrega contratos; el CORE ejecuta los `sessions_spawn`. La autonomía de dispatch es Fase 2 y requiere allowlist explícito.
 
 ---
