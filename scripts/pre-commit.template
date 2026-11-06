@@ -239,6 +239,13 @@ if [ "$BOUNDARY_RELEVANT" = "1" ]; then
   python3 "${SCRIPT_DIR}/scripts/check-agent-skill-boundary.py" || exit 1
 fi
 
+# Guard de solapamiento entre skills (2026-11-06, paso 4 - skill-router-improvement).
+# AVISO, no bloqueo: solo si skills/agents cambian, solo las SKILL.md staged.
+# El scan completo se reserva a mano / CI (--all).
+if [ "$BOUNDARY_RELEVANT" = "1" ]; then
+  python3 "${SCRIPT_DIR}/scripts/check-skill-overlap.py" --staged 2>&1 | sed 's/^/    /'
+fi
+
 # Gate de la cadena OSS -> LinkedIn (2026-10-22). Disparador PROPIO: solo corren
 # los posts STAGED en docs/linkedin/. El modo auditoria de este script NO se
 # conecta a proposito: el backlog medido (5 drafts vencidos, 2 merges sin post)
