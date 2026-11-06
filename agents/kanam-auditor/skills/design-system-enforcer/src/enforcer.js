@@ -35,7 +35,16 @@ class DesignSystemEnforcer {
         blockHardcoded: true,
         aiLookVeto: true,
       },
-      whitelist: { hex: [] }
+      whitelist: { hex: [] },
+      // Paths que no se escanean. Un linter de design system necesita esto por
+      // la misma razon que eslint tiene .eslintignore: el propio motor contiene
+      // las cadenas que busca (la tabla de morados prohibidos, el detector de
+      // `linear-gradient(`) y los tests contienen fixtures que disparan a
+      // proposito. Sin exclude, el auto-scan del skill reporta sus definiciones
+      // de reglas como violaciones. Verificado 2026-11-06: 5 bloqueos, los 5 en
+      // enforcer.js / color.js / enforcer.test.js.
+      // Acepta globs (`**/tests/**`) o substrings de path sin wildcard.
+      exclude: []
     };
 
     const defaultConfigPath = path.resolve(process.cwd(), '.kanam/enforcer.config.yaml');
@@ -133,6 +142,24 @@ class DesignSystemEnforcer {
     const SKIP_DIRS = new Set(['node_modules', 'dist', 'build', 'coverage', '.next']);
     const files = [];
 
+    // Excludes declarados en config (ver loadConfig). Se evalúan contra el path
+    // normalizado y relativo al cwd, que es como se escriben en el YAML.
+    const excludes = Array.isArray(this.config.exclude) ? this.config.exclude : [];
+    const isExcluded = (p) => {
+      if (excludes.length === 0) return false;
+      const norm = path.relative(process.cwd(), p).split(path.sep).join('/');
+      return excludes.some((pattern) => {
+        const pat = String(pattern).split(path.sep).join('/');
+        if (!pat.includes('*')) return norm.includes(pat);
+        const escaped = pat
+          .replace(/[.+^${}()|[\]\\]/g, '\\$&')
+          .replace(/\*\*/g, '\u0000')
+          .replace(/\*/g, '[^/]*')
+          .replace(/\u0000/g, '.*');
+        return new RegExp(`^${escaped}$`).test(norm);
+      });
+    };
+
     const walk = (dir) => {
       let entries;
       try {
@@ -148,7 +175,7 @@ class DesignSystemEnforcer {
           if (entry.name.startsWith('.') || SKIP_DIRS.has(entry.name)) continue;
           walk(fullPath);
         } else if (entry.isFile() && extensions.includes(path.extname(entry.name))) {
-          files.push(fullPath);
+          if (!isExcluded(fullPath)) files.push(fullPath);
         }
       }
     };

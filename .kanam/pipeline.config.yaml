@@ -26,12 +26,15 @@ stages:
   # 1. Código estático contra los tokens del Design System. No necesita red ni
   #    browser: es el único stage que corre SIEMPRE.
   #
-  #    Target: la superficie real del repo. Hoy el único producto con frontend
-  #    vivo es projects/preflight (Next.js: app/ + components/ + globals.css).
-  #    Antes apuntaba a agents/kanam-auditor/skills, o sea que el pipeline se
-  #    auditaba a sí mismo: señal cero sobre producto real.
+  #    Target: superficie TRACKEADA del repo. `projects/` está gitignored
+  #    (.gitignore:58), así que apuntar ahí producía un audit vacío en CI: 0
+  #    archivos, 0 findings, veredicto APROBADO. Eso es falso verde y está
+  #    ahora bloqueado por el guard `stage-no-files` (src/stages.js).
+  #    Lo que este repo realmente versiona con superficie analizable es su
+  #    propio árbol de skills. Los repos de producto (preflight y compañía)
+  #    usan su propia config, con su propio path.
   - skill: design-system-enforcer
-    path: "projects/preflight/src"
+    path: "agents/kanam-auditor/skills"
     config: ".kanam/enforcer.config.yaml"
 
   # 2. Accesibilidad runtime (Playwright + axe-core + teclado). Requiere la app

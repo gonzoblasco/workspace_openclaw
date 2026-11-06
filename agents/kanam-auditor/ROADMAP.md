@@ -229,7 +229,7 @@ jobs:
 | `accessibility-oracle` CLI | 🟢 | 2/2 tests, multi-ruta + reportes |
 | `pixel-diff` CLI | 🟢 | 20/20 tras instalar el browser correcto |
 | `audit-surface` | 🟢 | emite HTML+JSON con veredicto |
-| `.kanam/pipeline.config.yaml` | 🟡→🟢 | **corregido**: apuntaba a sí mismo; ahora a `projects/preflight/src` |
+| `.kanam/pipeline.config.yaml` | 🟡→🟢 | **corregido**: apuntaba a sí mismo y luego a un path gitignored; ahora a la superficie trackeada (`agents/kanam-auditor/skills`) con guard de 0 archivos |
 | `.github/workflows/surface-audit.yml` | 🔴→🟢 | **no existía** aunque la config lo citaba; creado 2026-11-06 |
 | A11y | 🟠→🟢 | dos caminos compitiendo; borde definido en **ADR-111** |
 
@@ -239,8 +239,9 @@ jobs:
 - [x] **0.2** Borde de a11y definido: **ADR-111** — medición (`oracle` / `a11y-scan.mjs`) ≠ política (`check-a11y-trigger.py`) ≠ orquestación (`audit-surface`). Se revisó la recomendación inicial: `oracle` **no** absorbe a `a11y-scan.mjs`, porque eso metería Playwright en la lane de CI que hoy corre con cero dependencias.
 - [x] **0.3** Target real: `projects/preflight/src` (único producto con frontend vivo: Next.js, `app/` + `components/` + `globals.css`).
 - [x] **0.4** Contrato de exit documentado en la config y verificado contra `bin/audit-surface`: `0` = aprobado/advertencia, `1` = rechazado o `--strict`, `1` = error de arranque.
+- [x] **0.5** **Guard de cobertura `stage-no-files`** + soporte `exclude` en el enforcer. Descubierto al simular CI desde un checkout limpio: `projects/` está gitignored (`.gitignore:58`), así que el audit escaneaba **0 archivos** y devolvía **APROBADO**. El falso verde más barato de producir y el más caro de descubrir, y el pipeline lo tenía. Ahora 0 archivos escaneados es un finding `critical`. En el mismo barrido, el auto-scan reportaba 5 "violaciones" que eran las **definiciones de reglas del propio motor** (`linear-gradient(` dentro del detector, la tabla de morados): `exclude` las excluye, como `.eslintignore`. Tests: 7/7 enforcer + 12/12 pipeline.
 
-**Primer veredicto real sobre producto real:** `ADVERTENCIA — 0 bloqueantes, 31 advertencias` (31 hex hardcodeados en `preflight/src/globals.css` y `ScanForm.tsx`).
+**Primer veredicto real sobre código real:** `ADVERTENCIA — 0 bloqueantes, 34 advertencias` sobre `agents/kanam-auditor/skills` (20 archivos). Las advertencias son reales: los generadores de reporte HTML hardcodean hex en vez de consumir tokens. Antes de 0.5 ese mismo comando daba **APROBADO con 0 archivos leídos** en CI.
 
 ### Flujo A — "El Portero" (PR Gate) 🚧
 

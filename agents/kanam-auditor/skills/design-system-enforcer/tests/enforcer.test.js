@@ -115,3 +115,58 @@ whitelist:
     expect(result.report).toContain('Borde exagerado detectado');
   });
 });
+
+describe('exclude (linter self-scan)', () => {
+  test('no escanea archivos que matchean un exclude declarado', async () => {
+    const dir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'enforcer-excl-'));
+    const keep = path.join(dir, 'keep.css');
+    const skip = path.join(dir, 'skip-fixtures.css');
+    fs.writeFileSync(keep, 'color: #0d9488;');
+    fs.writeFileSync(skip, 'color: #0d9488;\nbackground: linear-gradient(red, blue);\npadding: 40px;');
+
+    const cfg = path.join(dir, 'cfg.yaml');
+    fs.writeFileSync(cfg, `
+project:
+  name: "exclude-test"
+rules:
+  enforceTokens: true
+  blockHardcoded: true
+  aiLookVeto: true
+whitelist:
+  hex: []
+exclude:
+  - "skip-fixtures.css"
+`);
+
+    const e = new (require('../src/enforcer').DesignSystemEnforcer)({ configPath: cfg });
+    const result = await e.analyze(dir);
+
+    expect(result.stats.files).toBe(1);
+    expect(result.blocked).toBe(false);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  test('sin exclude, el mismo archivo sí genera bloqueo (el test puede fallar)', async () => {
+    const dir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'enforcer-excl2-'));
+    fs.writeFileSync(path.join(dir, 'bad.css'), 'background: linear-gradient(red, blue);\npadding: 40px;');
+
+    const cfg = path.join(dir, 'cfg.yaml');
+    fs.writeFileSync(cfg, `
+project:
+  name: "exclude-test"
+rules:
+  enforceTokens: true
+  blockHardcoded: true
+  aiLookVeto: true
+whitelist:
+  hex: []
+`);
+
+    const e = new (require('../src/enforcer').DesignSystemEnforcer)({ configPath: cfg });
+    const result = await e.analyze(dir);
+
+    expect(result.stats.files).toBe(1);
+    expect(result.blocked).toBe(true);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+});

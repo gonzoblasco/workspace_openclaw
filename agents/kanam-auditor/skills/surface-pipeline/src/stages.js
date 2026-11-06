@@ -63,6 +63,29 @@ async function runEnforcerStage(stage, ctx) {
   }
 
   const findings = [];
+
+  // Guard de cobertura: 0 archivos escaneados NO es "aprobado", es "no medí".
+  // Sin este corte, un path inexistente (por ejemplo un directorio gitignored
+  // en CI) devolvía 0 findings y un veredicto APROBADO: el falso verde más
+  // barato de producir y el más caro de descubrir. Verificado 2026-11-06:
+  // en un checkout limpio, `projects/preflight/src` no existe (projects/ está
+  // gitignored) y el pipeline aprobaba sin haber leído un solo archivo.
+  const filesScanned = result.stats && typeof result.stats.files === 'number'
+    ? result.stats.files
+    : null;
+
+  if (filesScanned === 0) {
+    findings.push({
+      skill: 'design-system-enforcer',
+      severity: 'critical',
+      code: 'stage-no-files',
+      file: null,
+      line: null,
+      message: `El stage no escaneó ningún archivo en ${targetPath}. Un stage vacío no aprueba: o el path no existe, o está gitignored, o la extensión no aplica.`,
+      suggestion: 'Revisar stage.path en .kanam/pipeline.config.yaml. Si el target es válido y no tiene código analizable, sacar el stage de la config en vez de dejarlo pasar en silencio.'
+    });
+  }
+
   for (const v of violations) {
     findings.push({
       skill: 'design-system-enforcer',
@@ -88,8 +111,8 @@ async function runEnforcerStage(stage, ctx) {
 
   return {
     skill: 'design-system-enforcer',
-    status: result.blocked ? 'blocked' : (warnings.length ? 'warn' : 'pass'),
-    blocked: !!result.blocked,
+    status: filesScanned === 0 ? 'error' : (result.blocked ? 'blocked' : (warnings.length ? 'warn' : 'pass')),
+    blocked: !!result.blocked || filesScanned === 0,
     report: result.report,
     findings,
     stats: result.stats,

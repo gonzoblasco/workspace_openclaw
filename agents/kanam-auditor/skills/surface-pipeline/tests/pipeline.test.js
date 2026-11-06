@@ -128,3 +128,28 @@ describe('report', () => {
     fs.rmSync(dir, { recursive: true, force: true });
   });
 });
+
+// ──────────────────────── guard de cobertura (stage vacío) ────────────────────
+
+describe('guard stage-no-files', () => {
+  const { runEnforcerStage } = require('../src/stages');
+
+  test('un path inexistente NO aprueba: emite stage-no-files y bloquea', async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sp-empty-'));
+    const stage = {
+      skill: 'design-system-enforcer',
+      path: path.join(dir, 'does-not-exist'),
+      config: path.join(dir, 'cfg.yaml')
+    };
+    fs.writeFileSync(stage.config, 'project:\n  name: "x"\n');
+
+    const r = await runEnforcerStage(stage, { cwd: dir, stampDir: dir, config: {} });
+
+    const guard = r.findings.find((f) => f.code === 'stage-no-files');
+    expect(guard).toBeDefined();
+    expect(guard.severity).toBe('critical');
+    expect(r.status).toBe('error');
+    expect(r.blocked).toBe(true);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+});

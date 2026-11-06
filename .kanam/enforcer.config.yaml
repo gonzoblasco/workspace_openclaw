@@ -24,3 +24,19 @@ rules:
 # valor legítimo empieza a dar ruido, se agrega acá y se documenta por qué.
 whitelist:
   hex: []
+
+# Paths que el walker NO escanea (globs, relativos a la raíz del repo).
+# Por qué existen: el propio motor del enforcer contiene las cadenas que busca
+# (la tabla de morados prohibidos en src/color.js, el detector de
+# `linear-gradient(` en src/enforcer.js) y los tests contienen fixtures que
+# disparan a propósito. Sin este corte, escanear el árbol de skills reporta
+# las definiciones de reglas como violaciones: 5 bloqueos medidos el
+# 2026-11-06, los 5 falsos positivos. Un linter sin ignore es un linter que
+# se auto-rechaza.
+exclude:
+  - "agents/kanam-auditor/skills/**/tests/**"
+  - "agents/kanam-auditor/skills/design-system-enforcer/src/enforcer.js"
+  - "agents/kanam-auditor/skills/design-system-enforcer/src/color.js"
+  # Tabla de colores nombrados del parser (blue: '#0000ff'): es una utilidad
+  # de parseo, no una decisión de superficie.
+  - "agents/kanam-auditor/skills/pixel-diff/src/utils/color.js"
