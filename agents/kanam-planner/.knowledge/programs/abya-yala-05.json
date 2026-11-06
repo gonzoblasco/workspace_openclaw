@@ -1,0 +1,85 @@
+{
+  "slug": "abya-yala-05",
+  "title": "ABYA YALA 0.5 — contenido y variedad",
+  "steps": [
+    {
+      "id": 1,
+      "task": "Tabla de bonus por civilizacion y su aplicacion en reglas",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "exit_criteria": "tests/civ_test.gd pasa: misma unidad con civ andean vs amazon vs pampa da estadisticas distintas (>=5% en ingreso o dano), y las 12 suites siguen verdes.",
+      "depends_on": [],
+      "gate": "auditor",
+      "write_path": "src/core/game.gd",
+      "status": "pending"
+    },
+    {
+      "id": 2,
+      "task": "La IA conoce su propia civilizacion y compone en consecuencia",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "exit_criteria": "tests/ai_civ_test.gd pasa: con bonus que cambian el dano relativo, ai_controller elige una unidad distinta por civ.",
+      "depends_on": [
+        1
+      ],
+      "gate": "auditor",
+      "write_path": "src/systems/ai_controller.gd",
+      "status": "pending"
+    },
+    {
+      "id": 3,
+      "task": "Epoca IV completa: unidad chief_elite y edificios de epoca III/IV",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "exit_criteria": "tests/era4_test.gd pasa: chief_elite existe en el enum Kind con stats y sprite, la epoca IV lo desbloquea y se produce. Arte generado por tools/gen_sprites.py.",
+      "depends_on": [
+        1
+      ],
+      "gate": "auditor",
+      "write_path": "src/entities/unit.gd",
+      "status": "pending"
+    },
+    {
+      "id": 4,
+      "task": "Victoria alternativa: economica y de control de territorio",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "exit_criteria": "tests/victory_test.gd pasa: se gana alcanzando el umbral economico sin pelear, y manteniendo N tiles el tiempo indicado. _check_victory deja de depender solo de la aldea.",
+      "depends_on": [
+        1
+      ],
+      "gate": "auditor",
+      "write_path": "src/core/game.gd",
+      "status": "pending"
+    },
+    {
+      "id": 5,
+      "task": "Tutorial interactivo de las tres primeras ordenes",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "exit_criteria": "tests/tutorial_test.gd pasa: el tutorial pide recolectar, construir y entrenar; cada paso avanza solo cuando la orden se ejecuto, no por tiempo.",
+      "depends_on": [
+        1,
+        3
+      ],
+      "gate": "auditor",
+      "write_path": "src/ui/tutorial.gd",
+      "status": "pending"
+    },
+    {
+      "id": 6,
+      "task": "Tres mapas con semillas y biomas distintos",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "exit_criteria": "tools/gen_terrain3.py con seeds 34, 77 y 101 genera map_01..03 con tiles distintos; terrain_test corre sobre los tres y pasa; captura visual de cada uno.",
+      "depends_on": [],
+      "gate": "auditor",
+      "write_path": "assets/maps/",
+      "status": "pending"
+    }
+  ],
+  "objective": "Que haya mas de una forma de jugar: civilizaciones con bonus reales, epoca IV completa, victoria alternativa, tutorial y tres mapas.",
+  "gates": [
+    "auditor"
+  ]
+}
