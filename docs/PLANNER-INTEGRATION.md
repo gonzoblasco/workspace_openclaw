@@ -145,7 +145,7 @@ CORE: ¿es programa? (3+ pasos, 2+ roles, >1 sesión, fecha/bloqueo)
 
 ### Lección 2026-11-06 — Preflight
 
-Un plan del Planner afirmó que Chromium corría con `--no-sandbox` sin leer `src/lib/scan.ts:33`; era falso. El CORE lo cazó, pero su propio review también tuvo dos falsos positivos: `mcp.ts` **sí** llama `checkQuota` (vía `chargeQuota` en `scan_url` y `get_fix_prompt`) y `scan.ts` **sí** tiene cap de concurrencia (`MAX_CONCURRENT`). La regla es simétrica: **toda afirmación de estado, del Planner o del CORE, cita `archivo:línea` o se marca como supuesto.** Si no, es hipótesis, no plan.
+Un plan del Planner afirmó que Chromium corría con `--no-sandbox` sin leer `src/lib/scan.ts:69`; era falso. El CORE lo cazó. El review también señaló que faltaban quota y cap de concurrencia; eso era cierto en el snapshot que leyó, y el commit `289cb19` los agregó después. La regla es citar **commit + `archivo:línea`**: una afirmación de estado es válida solo para el snapshot que se leyó. Si no, es hipótesis, no plan.
 
 ---
 

@@ -2,35 +2,43 @@
 
 **Fecha:** 2026-11-06
 **Origen:** review del Planner sobre `.knowledge/ROADMAP.md` de `projects/preflight`.
-**Estado:** corrección verificada contra el código. El Planner no escribe fuera de su workspace; este archivo es para que el CORE aplique la corrección en el roadmap del proyecto.
+**Estado:** corrección verificada contra el código **y contra el commit del fix**. El Planner no escribe fuera de su workspace; este archivo es para que el CORE aplique la corrección en el roadmap del proyecto.
 
 ---
 
 ## Confirmado: un error del Planner
 
-- **`--no-sandbox` fue un error del Planner.** `src/lib/scan.ts:33` lanza Chromium con
+- **`--no-sandbox` fue un error del Planner.** `src/lib/scan.ts:69` lanza Chromium con
   `args: ['--disable-dev-shm-usage']`; **no** pasa `--no-sandbox`.
   El riesgo real es el inverso: Chromium puede negarse a arrancar como root dentro de un
   contenedor sin `--no-sandbox`. Eso se prueba en el contenedor, no se asume.
+  (El review citó `scan.ts:33`, que es un comentario; el argumento real está en la línea 69.
+  La sustancia del hallazgo es correcta, la línea no.)
 
-## Falsos positivos del review
+## El estado del código cambió después del review
 
-- **“`mcp.ts` nunca llama `checkQuota`” — falso.**
-  - `src/lib/mcp.ts:22` importa `checkQuota` y `recordUsage`.
-  - `src/lib/mcp.ts:100` define `chargeQuota`.
-  - `scan_url` lo llama en `src/lib/mcp.ts:135`; `get_fix_prompt` en `src/lib/mcp.ts:247`.
-  - `src/lib/ratelimit.ts` define `BURST_MAX=3` por minuto y `DAILY_MAX=8` por día.
-  - En HTTP con bearer token, `mcp-cli.ts` pasa `quotaKey` (hash del token), así que el
-    test del 11º scan **sí** es válido: el 4º request en un minuto o el 9º del día devuelve 429.
-- **“No hay cap de concurrencia” — falso.**
-  - `src/lib/scan.ts:38` define `MAX_CONCURRENT` (default 4).
-  - `acquireSlot`/`releaseSlot` en líneas 43/52.
-  - `scanPage` adquiere y libera en líneas 100/104.
-  - Diez callers hacen cola; no lanzan diez Chromium.
-  - **Matiz real:** el cap es **por proceso**. Con N réplicas, el global es
-    `MAX_CONCURRENT × N`. Eso sí falta si se escala horizontalmente.
+El review se escribió **antes** del commit `289cb19` (`feat(mcp): enforce quota and cap
+concurrency before any public exposure`, 2026-11-06 16:21:36). En ese momento:
 
-## Huecos reales (corregidos)
+- `mcp.ts` **no** llamaba `checkQuota`; el gap de quota era real.
+- `scan.ts` **no** tenía cap de concurrencia; el gap era real.
+
+El commit `289cb19` cerró ambos:
+
+- **Quota:** `src/lib/mcp.ts:25` importa `checkQuota`/`recordUsage`; `:100` define
+  `chargeQuota`; `scan_url` lo llama en `:135` y `get_fix_prompt` en `:247`.
+  `src/lib/ratelimit.ts:19-20` define `BURST_MAX=3`/min y `DAILY_MAX=8`/día.
+  En HTTP con bearer token, `mcp-cli.ts` pasa `quotaKey` (hash del token). El test del
+  11º scan **ahora sí** es válido; antes era trabajo faltante, como dijo el review.
+- **Concurrencia:** `src/lib/scan.ts:38` define `MAX_CONCURRENT` (default 4);
+  `acquireSlot`/`releaseSlot` en `:43/:52`; `scanPage` adquiere/libera en `:100/:104`.
+  Diez callers hacen cola; no lanzan diez Chromium. El cap es **por proceso**.
+
+**Lectura correcta:** el review no tuvo falsos positivos; describió el estado pre-fix. La
+verificación posterior encontró el estado post-fix. La lección es citar **commit + archivo:línea**,
+porque una afirmación de estado es válida solo para el snapshot que se leyó.
+
+## Huecos que siguen reales
 
 | Hueco | Estado | Consecuencia |
 |---|---|---|
@@ -42,8 +50,10 @@
 
 ## Orden corregido
 
-1. **Verificar quota y concurrencia en la topología HTTP real:** token seteado, 4 requests
-   en un minuto → 429; `/health` con `activeScans` y `maxConcurrent`.
+1. **Verificar quota y concurrencia en la topología HTTP real.** El commit `289cb19` ya
+   incluye una prueba con `PREFLIGHT_DAILY_MAX=2` y otra con `PREFLIGHT_MAX_CONCURRENT=2`;
+   correrlas contra el server HTTP, no solo en unit test. Revisar `/health`
+   (`activeScans`/`maxConcurrent`).
 2. **Cerrar HTTP sin token:** si `PREFLIGHT_MCP_TOKEN` no está seteado en producción, el
    server no debe arrancar (fail closed).
 3. **Cap global** si hay más de una réplica.
@@ -56,5 +66,6 @@
 
 El error de `--no-sandbox` no fue un problema de brief: fue una afirmación de estado sin
 leer el código. La regla queda escrita en `program-orchestration`: **cada afirmación sobre
-el estado actual cita `archivo:línea` o se marca como supuesto; si no se pudo verificar,
-se agrega un paso de verificación y no se dispatcha el plan.**
+el estado actual cita `archivo:línea` y el commit/snapshot que se leyó; si no se pudo
+verificar, se marca como supuesto y se agrega un paso de verificación.** El plan no se
+dispatcha sobre supuestos.

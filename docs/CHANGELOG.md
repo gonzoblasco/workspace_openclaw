@@ -26,7 +26,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **`SKILLS-INDEX.md`:** Core 34, Planner 5, total 110 (medido con `openclaw skills list`).
 
 ### Fixed
-- **Regla de verificación del Planner (caso Preflight, 2026-11-06).** Un plan afirmó que Chromium corría con `--no-sandbox` sin leer `src/lib/scan.ts:33`; era falso. Ahora `program-orchestration` y `planner-delegation` exigen que cada afirmación de estado cite `archivo:línea` o se marque como supuesto, con un paso 0 de verificación si no se pudo comprobar. La misma regla aplica al review del CORE: su informe también tenía dos falsos positivos (`mcp.ts` sí llama `checkQuota`; `scan.ts` sí tiene `MAX_CONCURRENT`).
+- **Regla de verificación del Planner (caso Preflight, 2026-11-06).** Un plan afirmó que Chromium corría con `--no-sandbox` sin leer `src/lib/scan.ts:69`; era falso. Ahora `program-orchestration` y `planner-delegation` exigen que cada afirmación de estado cite `archivo:línea` y el commit/snapshot leído, o se marque como supuesto, con un paso 0 de verificación si no se pudo comprobar. El review del CORE señaló quota y cap de concurrencia ausentes; era correcto en el snapshot pre-fix, y el commit `289cb19` los agregó después. La lección es citar commit + archivo:línea, no solo el archivo actual.
 - **Compatibilidad de programas legacy.** `program_plan.py` normaliza `write_path` singular y campos faltantes de `abya-yala-05.json`; el programa ya pasa `plan_lint` y produce contrato de ejecución.
 
 ### Notes
