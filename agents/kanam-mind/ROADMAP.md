@@ -3,13 +3,16 @@
 **Versión actual:** v0.1
 **Objetivo de esta ronda:** v0.5 - investigo y curo memoria sin supervisión línea por línea
 **Norte:** v1.0 - "La Fuente Verificada" (el resto del Crew me invoca por defecto)
-**Última revisión:** 2026-11-06
+**Última revisión:** 2026-11-06 (cierre de sesión: retrato, hitos y "por dónde continuar")
 **Dueño:** kanam-mind (autoría) · Kanam CORE (gobierno)
 
 > Yo no afirmo. Verifico, y recién después hablo. Este documento es el mapa de lo que me falta para
 > que esa frase sea **cierta y demostrable**, no una declaración de identidad. La regla de este
 > documento es la de mi rúbrica: **un hito entra solo si mueve una capacidad que hoy no tengo; se
 > cierra solo con evidencia reproducida, nunca con mi palabra.**
+>
+> **Para retomar sin contexto:** leer §5.b. Tiene la tabla "por dónde continuar", con dueño y
+> comando de arranque para cada paso. El resto del documento explica **por qué** ese orden.
 
 ---
 
@@ -36,7 +39,7 @@ mide de nuevo.
 
 | Skill | Estado | Evidencia / realidad verificada |
 |---|---|---|
-| `evidence-gate-executable` | ✅ operativo | **[nueva 2026-11-06]** Encadena los 4 scripts del gate. Corrió sobre un brief real (FAIL) y sobre un brief de control (PASS). |
+| `evidence-gate-executable` | ✅ operativo | **[nueva 2026-11-06]** Encadena los 5 scripts del gate (incluye `handoff-gate`). Corrió sobre un brief real (FAIL), un brief de control (PASS) y 3 fichas de estudio (PASS). |
 | `research-brief-protocol` | ✅ operativo | `SKILL.md` (97 líneas) fija la forma del brief: hecho/inferencia/incógnita y criterio de parada. |
 | `source-verification-gate` | 🟡 parcial | Checklist documental. Su versión **ejecutable** vivía en el Hito 5.1 y hoy corre como `scripts/kb-audit.py`; la skill todavía no la nombra. |
 | `evidence-chain-audit` | 🟡 parcial | Audita un artefacto terminado; lo ejecutable es `kb-audit.py` (links + citas + etiquetas). Falta que la skill lo referencie. |
@@ -53,12 +56,14 @@ mide de nuevo.
 | Capacidad | Estado | Evidencia / realidad verificada |
 |---|---|---|
 | Gate ejecutable de un brief | ✅ operativo | `scripts/kb-audit.py` (2026-11-06): links, citas `path#Lx-Ly`, etiquetas, fechas. Veredicto `PASS`/`PARTIAL`/`FAIL`. |
-| Corpus de estudio citado | ✅ operativo | `scripts/kb-ingest.py` + `scripts/kb-search.py` sobre `memory/knowledge.db` (FTS5). Consulta local sin modelo, con la cita verificada contra el disco. |
-| Journal durable de briefs | ✅ operativo | `scripts/brief-journal.py` sobre `reports/journal.db`; 3 entradas registradas el 2026-11-06 (2 PASS, 1 FAIL de control). |
-| Memoria propia (`memory/`) | 🟡 parcial | Dailies de octubre (~108 KB) + `2026-11-06.md`; el `2026-10-07.md` quedó en 0 bytes. **Poblada, no indexada.** |
+| Corpus de estudio citado | ✅ operativo | `scripts/kb-ingest.py` + `scripts/kb-search.py` sobre `memory/knowledge.db` (FTS5): **9 fuentes**, todas `ok` en `--stale`. Consulta local sin modelo, con la cita verificada contra el disco. |
+| Gate de borde del pipeline | ✅ operativo | `scripts/handoff-gate.py` (2026-11-06): `out` (artefacto con veredicto) e `in` (cada claim con `source` que resuelva). Exit 1 como un test rojo. |
+| Journal durable de briefs | ✅ operativo | `scripts/brief-journal.py` sobre `reports/journal.db`; **6 entradas** el 2026-11-06 (4 PASS, 2 FAIL: una de control y una mía que el gate corrigió). |
+| Memoria propia (`memory/`) | 🟡 parcial | Dailies de octubre (~108 KB) + `2026-11-06.md` (con las dos partes de la sesión); el `2026-10-07.md` quedó en 0 bytes. **Poblada, no indexada.** |
 | Búsqueda semántica del rol | ❌ no funciona | `scripts/semantic-search.js` resuelve `DB_PATH = ../memory/memory.db`, que no existe. La búsqueda real del workspace (`scripts/memory-search.py`) **sí** funciona contra `workspace/memory/memory.db`. |
-| Tests propios | ❌ no existe | `find agents/kanam-mind -name '*.test.*'` vacío. Mis 4 scripts nuevos no tienen test de regresión. |
+| Tests propios | ❌ no existe | `find agents/kanam-mind -name '*.test.*'` vacío. Mis **5** scripts nuevos no tienen test de regresión. |
 | Briefs archivados | 🟡 parcial | 1 brief propio (`reports/brief-capacidades-2026-11-06.md`) + 1 ajeno (`sprint-9-validation.md`). |
+| Frente de estudio operativo | 🟡 parcial | `studies/design` semana 1 **cerrada**: 3 fichas con los 6 Output Gates, 2 learnings en `memory.db`, plantilla con evidencia visual reproducible. |
 | **Demanda del CORE** | ❌ no existe | `skill_usage`: **1 skill y 1 invocación en total** (`github`, 2026-10-22), contra 118 skills/375 usos del CORE. Las 6 sesiones del rol fueron todas `spawn` del CORE. **Sin contrato de invocación, el uso depende de que Gonzo se acuerde.** |
 
 > **Dato duro del 2026-11-06:** de 8 agentes, soy el que menos skills usó jamás (1). Y ninguna de
@@ -68,7 +73,7 @@ mide de nuevo.
 
 **Me falta la demanda, y en segundo lugar la prueba sostenida.** Hoy mis tres gates de método ya
 no son prosa: el gate corre y encuentra defectos reales (los encontró en mi propio brief: 3
-etiquetas y 7 rutas). Pero un gate que nadie invoca no cambia nada. Lo que me sigue haciendo v0.1
+etiquetas y 7 rutas, y otra vez en una ficha de estudio: 3 etiquetas). Pero un gate que nadie invoca no cambia nada. Lo que me sigue haciendo v0.1
 es que **el CORE no tiene una línea escrita que diga cuándo pedirme algo**, y que mi producción no
 tiene aún una racha de cierres verificados por otro. Con el gate ya ejecutable, la próxima señal de
 listo es de demanda, no de herramienta.
@@ -105,6 +110,19 @@ el número nuevo; sin ella, el rol se queda en la versión anterior.
 **Regla de avance:** no salto a v0.3 con la búsqueda rota, ni a v0.4 sin un brief propio auditado a
 la primera, ni a v0.5 sin racha de cierres **y** contrato de invocación vivo.
 
+### Estado de la fila v0.2 al 2026-11-06 (por qué sigo sin cantar el salto)
+
+| Requisito de v0.2 | Estado | Evidencia |
+|---|---|---|
+| Gate ejecutable con veredicto reproducible | ✅ artefacto | `kb-audit.py`: `FAIL` sobre el control y sobre `sprint-9-validation.md`; `PASS` sobre el brief y las 3 fichas. |
+| Journal con ≥3 entradas | ✅ **6 entradas** | `brief-journal.py list`: #1-#6, con veredicto y fuentes. |
+| Reproducido **desde fuera de mi sesión** | ❌ falta | Las 6 entradas las corrió esta sesión. Ninguna otra sesión reproduce el veredicto todavía. |
+| Briefs pedidos por **otros** | ❌ falta | Los 6 registros son de mi propia iniciativa; no hay un pedido del CORE. |
+
+[obs] Conclusión: **v0.2 no se gana editando el número.** El artefacto está; la prueba externa no.
+Es el mismo motivo por el que el Hito 5.0 (contrato) va primero: sin un pedido del CORE no hay
+brief ajeno que pueda pasar por el gate.
+
 ---
 
 ## 5. Hitos de la versión en curso (v0.2, revisada el 2026-11-06)
@@ -112,7 +130,13 @@ la primera, ni a v0.5 sin racha de cierres **y** contrato de invocación vivo.
 El foco. **Cinco hitos en este orden: primero la demanda, porque sin pedido no hay qué probar; los
 de sustrato cierran con handoff.**
 
-### Hito 5.0 - Contrato de invocación: que el CORE sepa cuándo llamarme
+### Hito 5.0 - Contrato de invocación: que el CORE sepa cuándo llamarme (🟡 mi mitad hecha)
+
+**Estado 2026-11-06:** [obs] la mitad de MIND está escrita - `docs/MIND-DISPATCH.md` (cuándo sí,
+cuándo no y a quién), el template `templates/brief-request.md` y el bloque listo para pegar en
+`docs/MIND-DISPATCH.md` §7. **Falta la mitad del CORE:** la línea en su `AGENTS.md` y el
+`docs/MIND-DISPATCH.md` del workspace. Sin eso, el hito no cierra.
+
 
 **Eje que mueve:** deja de depender de que Gonzo se acuerde. Hoy soy el rol menos invocado del Crew
 (§2.b) no por falta de capacidad sino por falta de ruteo escrito.
@@ -129,7 +153,7 @@ una vez, y la sesión queda con `label` de research (no de redacción ni de UI).
 **Nota de frontera:** el `AGENTS.md` del CORE y `docs/` son gobierno del CORE. Yo **propongo el
 bloque exacto y verifico**; el CORE lo aprueba e integra. No lo edito por mi cuenta.
 
-### Hito 5.1 - Gate en uso sostenido (cerrado como artefacto, abierto como hábito)
+### Hito 5.1 - Gate en uso sostenido (🟡 artefacto ✅ · reproducción externa pendiente)
 
 **Eje que mueve:** el veredicto deja de ser auto-reporte. **Artefacto: ✅ hecho 2026-11-06.**
 
@@ -138,10 +162,11 @@ brief mío y obtenga el mismo veredicto, y que lo haga ≥3 veces consecutivas.
 
 **Evidencia requerida:** 3 corridas de `kb-audit.py` reproducidas por otro, con salida citada.
 
-### Hito 5.2 - Journal con ≥3 entradas reales
+### Hito 5.2 - Journal con ≥3 entradas reales (🟡 artefacto ✅ · uso ajeno pendiente)
 
 **Eje que mueve:** memoria de mi propia producción; insumo del drift (¿cito menos con el tiempo?).
-**Artefacto: ✅ hecho** (3 entradas el 2026-11-06, incluida una FAIL de control).
+**Artefacto: ✅ hecho** (6 entradas el 2026-11-06: 4 PASS y 2 FAIL - una de control y una mía que
+el gate marcó por 3 etiquetas faltantes).
 
 **Qué falta:** que las entradas dejen de ser de la sesión que las inventó y pasen a ser de
 **pedidos reales del CORE**, con `--run-audit` y su fuente.
@@ -161,10 +186,16 @@ si corresponde, nota si no), y el avance queda en el journal.
 **Evidencia requerida:** un frente de estudio con ≥3 capítulos ingestados, cada uno con ≥1
 aprendizaje citado y una acción cerrada; `kb-search` devuelve el aprendizaje con `✓ ok`.
 
-**Estado 2026-11-06 (primera corrida del ciclo):** `studies/design` semana 1 → 2 fichas de crítica
-(`studies/design/criticas/`), 1 aprendizaje con acción (`APRENDIZAJE-2026-11-06.md`), 1 learning en
-`memory.db` y **6 fuentes ingestadas** en `knowledge.db`; `kb-search "peor pixel contraste"` devuelve
-el aprendizaje con `✓ ok`. Falta la tercera ficha de la semana y repetir el ciclo en la semana 2.
+**Estado 2026-11-06 (semana 1 CERRADA):** `studies/design` semana 1 → **3 fichas de crítica**
+(`studies/design/criticas/`, las 3 `PASS` en `kb-audit`), 1 documento de aprendizaje con acción
+(`APRENDIZAJE-2026-11-06.md`, 4 hallazgos citados), **2 learnings** en `memory.db`, plantilla con
+evidencia visual reproducible y **9 fuentes** en `knowledge.db`; `kb-search "peor pixel contraste"`
+devuelve el aprendizaje con `✓ ok`.
+
+**Cómo continuar (semana 2, sin arrancar todavía):** `studies/design/README.md` §5 pide *"D2 -
+Tipografía: recrear un hero en 3 registros"* → 3 versiones + decisión en
+`studies/design/recreaciones/`. Mismo ciclo: ingesta, ficha, gate, journal. **No lo arranco sin
+pedido:** una sesión de estudio por semana, y la semana 1 se cerró hoy.
 
 ### Hito 5.4 - Sustrato de memoria (handoff a DEV/OPS)
 
@@ -205,6 +236,26 @@ entrego el gate, el formato del handoff y la prueba de que corre.
   crear la automatización es de OPS: se pide **después** de que el ciclo manual funcione una vez.
 - Los **tests de los 4 scripts** entran en v0.3, junto con el corpus estable: sin regresión, cada
   cambio de heurística rompe el `PASS` de un brief anterior. (Deuda declarada, no escondida.)
+
+---
+
+## 5.b Por dónde continuar (entrada para la próxima sesión)
+
+Orden fijo. No hace falta recordar nada de la sesión del 2026-11-06: todo lo de abajo se verifica
+con un comando.
+
+| # | Próximo paso | Quién | Comando / archivo de arranque | Señal de "hecho" |
+|---|---|---|---|---|
+| 1 | **Integrar la regla del CORE** (Hito 5.0) | **CORE / Gonzo** | bloque en `docs/MIND-DISPATCH.md` §7 → `AGENTS.md` del CORE + `docs/MIND-DISPATCH.md` del workspace | el CORE me invoca una vez sin que Gonzo lo pida |
+| 2 | Pedir a otra sesión que reproduzca el veredicto (5.1) | CORE o DEV | `python3 agents/kanam-mind/scripts/kb-audit.py agents/kanam-mind/reports/brief-capacidades-2026-11-06.md --root .` | 3 corridas ajenas citadas |
+| 3 | **Semana 2 de diseño** | MIND | `studies/design/README.md` §5 (D2, tipografía); salida en `studies/design/recreaciones/` | 3 versiones + decisión, cada una con `kb-audit` `PASS` |
+| 4 | Pedir a OPS el cron `mind-study-digest` | OPS (vía CORE) | `docs/MIND-DISPATCH.md` §3 + `studies/design/README.md` §5 | 4 semanas sin intervención, ≥1 nota citada por corrida |
+| 5 | Handoff a DEV/OPS de `semantic-search.js` (5.4) | DEV/OPS (vía CORE) | criterio de aceptación del Hito 5.4 | la consulta devuelve mi nota, con su fuente |
+| 6 | Tests de los 5 scripts | MIND + DEV | `v0.3` de este roadmap | cambiar una heurística de `kb-audit` no rompe en silencio un `PASS` anterior |
+
+**Regla de arranque:** la próxima sesión lee esta tabla y ejecuta el primer paso cuyo dueño sea MIND.
+Los pasos 1, 2, 4 y 5 **no dependen de mí**: si nadie los pide, no se destraban, y eso es el estado
+correcto (no los simulo).
 
 ---
 
