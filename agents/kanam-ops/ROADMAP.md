@@ -3,7 +3,7 @@
 **Versión actual:** v0.1
 **Objetivo:** v0.5 - OPS como default de todo lo que toca el sustrato
 **Última revisión:** 2026-11-06 (reemplaza el roadmap v0.1 del 2026-10-07, backup en `ROADMAP.v0.1.bak-20261106`)
-**Estado de ejecución:** E1 y E2 EJECUTADAS y verificadas el 2026-11-06. Commit `7e19519438`.
+**Estado de ejecución:** E1, E2 completas y E3.1 hecha, el 2026-11-06. Commits `7e19519438`, `87c9f4c524`.
 **Dueño:** kanam-ops autoría / Kanam CORE gobierno
 
 ---
@@ -78,7 +78,7 @@ No hay una etapa de "más skills". Las skills existentes están bien; el problem
 
 **Objetivo:** que cuando OPS diga "verificado", eso signifique algo.
 
-**Estado: EJECUTADA 2026-11-06** (2.1, 2.2 y 2.3). Evidencia abajo. 2.4 pendiente.
+**Estado: EJECUTADA 2026-11-06** (2.1, 2.2, 2.3 y 2.4). Evidencia abajo.
 
 | # | Entregable | Criterio de listo |
 |---|---|---|
@@ -95,7 +95,7 @@ No hay una etapa de "más skills". Las skills existentes están bien; el problem
 - 2.1: los 5 scripts de la raiz son symlinks a `agents/kanam-ops/scripts/`. La copia de OPS era una foto del 2026-09-27 sin los fixes `b6942d0d33` ni `794727eae8`; ahora tiene el contenido corregido.
 - 2.2: `gateway-config-drift.sh` v2, semantico sobre 229 campos. Antes: DRIFT 7 de 7 dias. Ahora: `OK: sin drift`, exit 0. Ciclo probado sobre el config vivo con cambio plantado y reversion.
 - 2.3: `agents/kanam-ops/tests/test_ops_scripts.py`, 19 tests verdes. Incluye que la allowlist NO tape cambios de seguridad.
-- 2.4 pendiente: registro de cambios legible por maquina.
+- 2.4: `agents/kanam-ops/scripts/gateway-change-log.sh` escribe `~/.openclaw/gateway-changes.jsonl` (una linea JSON por cambio: ts, campo, antes, despues, motivo, backup, evidencia). 8 tests propios; la suite pasa de 19 a 27. Guard de secretos probado: un campo con forma de credencial se redacta antes de tocar disco.
 
 ### E3 - Anticipar (v0.3 -> v0.4)
 
@@ -107,6 +107,26 @@ No hay una etapa de "más skills". Las skills existentes están bien; el problem
 | 3.2 | **Watchdog de presupuesto.** Alerta cuando el uso de modelos o el tamaño de la DB de agentes cruza un umbral (hoy `agent DB (main)` está en 1.5 GB según `doctor`, sin alerta) | Umbral configurado; cruzar el umbral dispara aviso, no un silencio |
 | 3.3 | **Pre-flight de cambios.** Antes de que CORE aplique un cambio de config, OPS valida en dry-run y devuelve un veredicto | CORE lo llama en al menos un cambio real y ahorra un error |
 | 3.4 | **Post-mortem automático.** Cuando algo cae, OPS arma el timeline desde logs y propone la causa | Un incidente real tiene su informe armado por OPS, no a mano |
+
+**Estado de E3.1: EJECUTADA 2026-11-06.**
+
+`gateway-channels-watchdog` (id `e6e2ab6d-405a-479d-8d79-ba0998984147`), cada
+5 minutos, `agentId: kanam-ops`, anuncio a Telegram. El script
+`gateway-channels-watch.sh` es read-only y devuelve 0 sano, 1 canal caido, 2 no
+se pudo medir. El 2 dispara a proposito: un watchdog que se calla cuando su
+propio check falla parece sano estando roto.
+
+**Evidencia de la doble prueba, que es la que vale:**
+- Canal sano: primera evaluacion del trigger, `lastTriggerFireAtMs` queda en
+  null. Silencio correcto.
+- Canal plantado (script reemplazado por uno que reporta Telegram caido):
+  segunda evaluacion dispara en **20 segundos**. El job ejecuto y tiene su
+  entrada `finished ok`.
+- Script real restaurado, `diff` contra la copia da identico, exit 0.
+
+Detalle de comportamiento del scheduler que costo entender: `automations run
+<id>` ejecuta el payload pero **no pasa por la evaluacion del trigger**. Para
+probar un trigger hay que esperar el tick real del schedule.
 
 **Por qué tercero:** un watchdog sin E2 detrás es un generador de falsas alarmas. Y un watchdog sin E1 no existe, porque no hay a quién despertar.
 

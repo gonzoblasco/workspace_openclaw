@@ -28,6 +28,7 @@ DRIFT = SCRIPTS / "gateway-config-drift.sh"
 JOBS = SCRIPTS / "gateway-jobs-check.sh"
 AUDIT = SCRIPTS / "gateway-audit.sh"
 CHANGELOG = SCRIPTS / "gateway-change-log.sh"
+CHANNELS_WATCH = SCRIPTS / "gateway-channels-watch.sh"
 
 
 def run(script, *args, home=None, timeout=120):
@@ -375,6 +376,91 @@ class TestChangeLog(unittest.TestCase):
         r = self.run_log("verify")
         self.assertEqual(r.returncode, 1)
         self.assertIn("JSON invalido", r.stdout)
+
+
+class TestChannelsWatch(unittest.TestCase):
+    """gateway-channels-watch.sh: watchdog de canales (E3.1).
+
+    Stubea el comando `openclaw` con un shim en PATH, asi se prueba la logica
+    del script y no el estado del gateway en este momento.
+    """
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="ops-channels-"))
+        self.bindir = self.tmp / "bin"
+        self.bindir.mkdir()
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def stub(self, payload, exit_code=0):
+        """Crea un `openclaw` falso que imprime payload y sale con exit_code."""
+        shim = self.bindir / "openclaw"
+        body = "#!/usr/bin/env bash\ncat <<'__PAYLOAD__'\n%s\n__PAYLOAD__\nexit %d\n" % (
+            payload, exit_code,
+        )
+        shim.write_text(body)
+        shim.chmod(0o755)
+
+    def run_watch(self):
+        env = dict(os.environ)
+        env["PATH"] = str(self.bindir) + os.pathsep + env.get("PATH", "")
+        return subprocess.run(
+            ["bash", str(CHANNELS_WATCH)],
+            capture_output=True, text=True, env=env, timeout=60,
+        )
+
+    HEALTHY = json.dumps({
+        "channels": {
+            "telegram": {"enabled": True, "configured": True,
+                         "running": True, "lifecycle": "ready"},
+        },
+    })
+
+    def test_healthy_channel_is_quiet(self):
+        self.stub(self.HEALTHY)
+        r = self.run_watch()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+    def test_down_channel_fires(self):
+        self.stub(json.dumps({
+            "channels": {
+                "telegram": {"enabled": True, "configured": True,
+                             "running": False, "lifecycle": "stopped"},
+            },
+        }))
+        r = self.run_watch()
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("CAIDO telegram", r.stdout)
+
+    def test_disabled_channel_is_not_a_failure(self):
+        """Un canal apagado a drede no es una caida."""
+        self.stub(json.dumps({
+            "channels": {
+                "discord": {"enabled": False, "configured": True,
+                            "running": False, "lifecycle": "disabled"},
+            },
+        }))
+        r = self.run_watch()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
+    def test_unmeasurable_fires_not_silences(self):
+        """El bug historico: un watchdog que se calla quando su check falla."""
+        self.stub("gateway unreachable", exit_code=1)
+        r = self.run_watch()
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertIn("No se pudo consultar", r.stdout)
+
+    def test_garbage_output_fires_not_silences(self):
+        self.stub("esto no es json")
+        r = self.run_watch()
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+
+    def test_warnings_before_json_are_tolerated(self):
+        """El comando real imprime avisos antes del JSON."""
+        self.stub("Checking channel status...\n" + self.HEALTHY)
+        r = self.run_watch()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
 
 class TestRealConfigSanity(unittest.TestCase):
