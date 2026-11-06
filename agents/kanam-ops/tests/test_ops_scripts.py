@@ -32,6 +32,7 @@ CHANNELS_WATCH = SCRIPTS / "gateway-channels-watch.sh"
 BUDGET_WATCH = SCRIPTS / "gateway-budget-watch.sh"
 POSTMORTEM = SCRIPTS / "gateway-postmortem.sh"
 RISK_POLICY = SCRIPTS / "gateway-risk-policy.sh"
+OPS_COMMIT = SCRIPTS / "ops-commit.py"
 
 
 def run(script, *args, home=None, timeout=120):
@@ -756,6 +757,97 @@ class TestRiskPolicy(unittest.TestCase):
         self.assertEqual(data["verdict"], "ESCALAR")
         self.assertEqual(data["counts"]["ALTO"], 1)
         self.assertTrue(data["rule"])
+
+
+class TestOpsCommit(unittest.TestCase):
+    """ops-commit.py: solo commitea lo de OPS.
+
+    Este script existe porque el 2026-11-06 dos commits cruzados se llevaron
+    archivos ajenos. Los tests reproducen ese escenario en un repo temporal.
+    """
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="ops-commit-"))
+        self.repo = self.tmp / "repo"
+        self.repo.mkdir()
+        self.git("init", "-q")
+        self.git("config", "user.email", "test@example.com")
+        self.git("config", "user.name", "Test")
+        (self.repo / "README.md").write_text("base\n")
+        self.git("add", "README.md")
+        self.git("commit", "-qm", "init")
+        (self.repo / "agents" / "kanam-ops" / "scripts").mkdir(parents=True)
+        (self.repo / "agents" / "kanam-dev" / "bin").mkdir(parents=True)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def git(self, *args):
+        return subprocess.run(["git", *args], cwd=self.repo,
+                              capture_output=True, text=True, timeout=60)
+
+    def run_ops_commit(self, *args):
+        return subprocess.run(
+            [sys.executable, str(OPS_COMMIT), *args],
+            cwd=self.repo, capture_output=True, text=True, timeout=90,
+        )
+
+    def write(self, rel, content="x\n"):
+        p = self.repo / rel
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(content)
+        return p
+
+    def test_only_ops_files_are_committed(self):
+        self.write("agents/kanam-ops/scripts/a.sh", "echo a\n")
+        self.write("agents/kanam-dev/bin/b.py", "print('b')\n")
+        r = self.run_ops_commit("--apply", "-m", "ops only")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        files = self.git("show", "--name-only", "--format=", "HEAD").stdout.split()
+        self.assertEqual(files, ["agents/kanam-ops/scripts/a.sh"])
+        # Lo de DEV queda sin commitear, que es lo correcto. Se usa
+        # --untracked-files=all porque por defecto git colapsa el directorio
+        # nuevo en una sola linea ("?? agents/kanam-dev/").
+        st = self.git("status", "--short", "--untracked-files=all").stdout
+        self.assertIn("agents/kanam-dev/bin/b.py", st)
+
+    def test_refuses_when_foreign_files_are_staged(self):
+        """El caso del dano: otro agente deja algo en el indice."""
+        self.write("agents/kanam-dev/bin/b.py")
+        self.git("add", "agents/kanam-dev/bin/b.py")
+        self.write("agents/kanam-ops/scripts/a.sh")
+        r = self.run_ops_commit("--apply", "-m", "x")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("AJENOS", r.stdout)
+        # No se creo commit nuevo.
+        log = self.git("log", "--oneline").stdout.strip().splitlines()
+        self.assertEqual(len(log), 1)
+
+    def test_refuses_dangerous_paths_even_inside_ops(self):
+        self.write("agents/kanam-ops/data/state.db")
+        r = self.run_ops_commit("--apply", "-m", "x")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("peligrosos", r.stdout)
+        log = self.git("log", "--oneline").stdout.strip().splitlines()
+        self.assertEqual(len(log), 1)
+
+    def test_dry_run_writes_nothing(self):
+        self.write("agents/kanam-ops/scripts/a.sh")
+        r = self.run_ops_commit()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("DRY RUN", r.stdout)
+        log = self.git("log", "--oneline").stdout.strip().splitlines()
+        self.assertEqual(len(log), 1)
+
+    def test_nothing_to_commit_is_nonzero(self):
+        r = self.run_ops_commit("--apply", "-m", "x")
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
+        self.assertIn("Nada de OPS", r.stdout)
+
+    def test_apply_requires_message(self):
+        self.write("agents/kanam-ops/scripts/a.sh")
+        r = self.run_ops_commit("--apply")
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
 
 
 class TestRealConfigSanity(unittest.TestCase):
