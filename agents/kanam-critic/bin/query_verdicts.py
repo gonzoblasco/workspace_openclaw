@@ -38,7 +38,13 @@ def main():
         ts = rec.get('timestamp','')
         scores = rec.get('scores',{})
         scores_str = f"{scores.get('S','')}/{scores.get('H','')}/{scores.get('A','')}/{scores.get('R','')}/{scores.get('P','')}"
+        # Un veredicto retirado se muestra como ANULADO, nunca como vigente: mostrar
+        # 'Aprobado' de una fila invalidada es un verde falso (medido el 2026-11-06).
+        if rec.get('status') == 'invalidated':
+            verdict = 'ANULADO'
         print(f"{art:<20} {verdict:<10} {total:<5} {ts:<25} {scores_str:<15}")
+        if rec.get('status') == 'invalidated':
+            print(f"{'':<20} motivo: {rec.get('invalidation_reason', '(sin motivo escrito)')}")
 
 if __name__ == '__main__':
     main()

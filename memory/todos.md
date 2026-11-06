@@ -41,18 +41,22 @@
 - [ ] **[workspace]** (medium) ADR-109 pendiente: definir el borde verificable en el runtime que habilite el slot de chat trivial de gemma4
 - [ ] **[workspace]** (medium) Planner: exigir verificación de afirmaciones sobre el código. En el review de Preflight Etapa 2 (2026-11-06) afirmó dos cosas falsas: que scan.ts corre Chromium con --no-sandbox (solo pasa --disable-dev-shm-usage) y que probar el 11o scan daría 429 (mcp.ts nunca llama checkQuota). El razonamiento de secuencia y gate fue correcto; la falla es inventar detalle de implementación sin abrirlo. Opciones: (a) regla dura en el brief del CORE: 'cada afirmación sobre el código debe citar archivo:línea o marcarse como supuesta'; (b) skill propia de verificación para el planner; (c) recién después evaluar cambio de modelo — hoy gpt-oss:120b-cloud razona bien el plan y el fallo es de método, no de capacidad.
 - [ ] **[kanam-critic]** (medium) Critic T2.3/T5.1: contrato de invocacion cruzada al Critic (sessions_spawn permitido: allowed=kanam-critic) + veredicto como gate
-- [ ] **[kanam-critic]** (medium) Critic T3: ledger de fricciones (memory/frictions.jsonl, 3 fricciones del VETO T1 absorbidas) + 3 VETOs sobre entregables AJENOS al Critic + tasa de absorcion
+- [ ] **[kanam-critic]** (medium) Critic T3: ledger de fricciones (9 fricciones: 6 absorbidas, 3 abiertas) + 3 VETOs sobre entregables AJENOS al Critic + tasa de absorcion
 - [ ] **[kanam-critic]** (medium) Critic T4.1: objective-extractor con gate del Critic
 - [ ] **[kanam-critic]** (medium) Critic T4.2: detectores horizon, resistance y auto-reportado en evidence-hunter con caso trampa
 - [ ] **[kanam-critic]** (medium) Critic T4.3: format_sharp_report.py + 1 PR comment real
-- [ ] **[kanam-critic]** (medium) Critic: escribir memory/2026-11-06.md (nota diaria del agente con decisiones y evidencia del turno)
 - [ ] **[kanam-critic]** (medium) Critic T2.4: verificar que el delivery del barrido semanal llega (la corrida de prueba NO-REPLY no entrego: channel=last sin canal previo)
+- [ ] **[kanam-critic]** (medium) Critic F7: consolidar los 4 scripts de control (check-kit, verify-verdict, emit-verdict, invalidate-verdict) en un CLI con subcomandos
+- [ ] **[kanam-critic]** (medium) Critic F9: medir 3 VETOs sobre entregables ajenos antes de publicar cualquier tasa de absorcion
+- [ ] **[kanam-critic]** (medium) Critic: verificar la primera entrega real del barrido semanal (lunes 18:00 ART, delivery telegram) y que el veredicto quede registrado con emit-verdict.py
 - [ ] **[workspace]** (low) Decidir si se promueven ficcion-narrativa-prosa y video-transcription del Workshop al árbol versionado (hoy no se versionan por diseño)
 - [ ] **[kanam-critic]** (high) Critic T5.2/v1.0: veredicto como gate del pipeline + aceptacion final
-- [ ] **[kanam-critic]** (high) Critic T1.r2: re-verificacion post-fix del kit (VETO 12/25) y segundo veredicto kanam-critic-kit-v0.3-r2
+- [ ] **[kanam-critic]** (high) Critic F8: reemitir kanam-critic-kit-v0.3-r4 desde una sesion con gpt-oss:120b-cloud (el rol lo declara primario) o cambiar el config del rol
 
 ## Completados
 
+- [x] **[kanam-critic]** Critic: escribir memory/2026-11-06.md (nota diaria del agente con decisiones y evidencia del turno)
+- [x] **[kanam-critic]** Critic T1.r2: re-verificacion post-fix del kit (VETO 12/25) y segundo veredicto kanam-critic-kit-v0.3-r2
 - [x] **[kanam-critic]** Critic T2.2: automatizacion semanal de barrido de veredictos pendientes sobre repos vigilados
 - [x] **[kanam-critic]** Critic T2.1: heartbeat por agente para kanam-critic (write de config: lo hace Gonzo o CORE)
 - [x] **[kanam-critic]** Critic T1: primer veredicto real sobre kanam-critic-kit-v0.3 (sujeto: el agente mismo) + snapshot/modelo gpt-oss + reporte en docs/reviews/

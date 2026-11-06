@@ -19,7 +19,10 @@
   - `skills/evidence-hunter/` - caza evidencia: `verificado | parcial | auto-reportado | bloqueado`.
   - `bin/evidence-hunter.py` - runner real de los detectores.
   - `bin/record_verdict.py` / `bin/query_verdicts.py` - registro durable de veredictos.
-  - `bin/check-kit.py` - salud de mi propio kit (16 checks, exit 0 = verde).
+  - `bin/check-kit.py` - salud de mi propio kit (18 checks, exit 0 = verde).
+  - `bin/verify-verdict.py` - un veredicto no existe sin fila + reporte + 5 citas.
+  - `bin/emit-verdict.py` - la unica via de registro: valida el reporte ANTES de escribir el ledger.
+  - `bin/invalidate-verdict.py` - retira un veredicto dejando el motivo escrito.
   - `tests/evidence-hunter/` - lab con 6 casos trampa (el sexto caza al detector que
     fabrica `verificado` con una preposicion). Criterio de cierre: `GLOBAL=aprobado (6/6)`,
     `EXIT=0`, reproducido desde cero.
@@ -29,8 +32,8 @@
 
 | Hecho | Evidencia |
 |---|---|
-| Primer veredicto real del agente | `memory/verdicts.jsonl`: `kanam-critic-kit-v0.3` = **VETO 12/25** (S2 H2 A3 R3 P2), emitido por `ollama/gpt-oss:120b-cloud`; los 2 previos eran fixtures de test |
-| Fricciones del VETO | `memory/frictions.jsonl`: F1, F2, F3, las 3 absorbidas el 2026-11-06 (absorcion 3/3) |
+| Veredictos reales del agente | `memory/verdicts.jsonl`: `kanam-critic-kit-v0.3` = VETO 12/25 (primer juicio) y `kanam-critic-kit-v0.3-r4` = **Aprobado 19/25** (S4 H4 A4 R4 P3, vigente). 2 filas ANULADAS (r2, r3) con motivo escrito. Los 2 previos eran fixtures de test |
+| Fricciones | `memory/frictions.jsonl`: 9 registradas, 6 absorbidas (F1-F6) y 3 abiertas (F7 consolidacion de scripts, F8 modelo del juez, F9 tasa de absorcion) |
 | Kit en verde | `python3 agents/kanam-critic/bin/check-kit.py` -> `GLOBAL=aprobado (17/17)` |
 | Skills registradas | `.knowledge/skills-catalog.tsv` lista `evidence-hunter` y `sharp-adversarial-review` |
 | Disparadores | `agents.entries.kanam-critic.heartbeat` (24h) + automatizacion `critic-sweep-weekly` (lunes 18:00 ART, delivery por telegram) |
