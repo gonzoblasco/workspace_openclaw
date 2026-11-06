@@ -1,0 +1,302 @@
+{
+  "slug": "critic-v0.3",
+  "title": "Critic v0.3 - El Cable",
+  "objective": "Convertir al Critic en un rol con producto real y demanda medida: T1 primer veredicto real sobre su kit, T3 absorcion de VETOs, T4 extensiones de eje, T5 y v1.0 veredicto como gate invocable.",
+  "status": "active",
+  "owner": "gonzalo",
+  "created_at": "2026-11-06T21:00:17+00:00",
+  "updated_at": "2026-11-06T21:00:18+00:00",
+  "gates": [
+    "critic"
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "task": "T1.1 - Preparar snapshot del kit y verificar modelo del Critic",
+      "role": "core",
+      "owner": "main",
+      "status": "pending",
+      "exit_criteria": "Existe agents/kanam-critic/docs/reviews/2026-11-06-kit-snapshot.md con manifiesto de skills, bin y tests; incluye la linea modelo=gpt-oss:120b-cloud; el directorio docs/reviews/ existe.",
+      "depends_on": [],
+      "gate": null,
+      "write_paths": [
+        "agents/kanam-critic/docs/reviews/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:17+00:00",
+      "updated_at": "2026-11-06T21:00:17+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 2,
+      "task": "T1.2 - Ejecutar el ritual SHARP sobre kanam-critic-kit-v0.3",
+      "role": "critic",
+      "owner": "kanam-critic",
+      "status": "pending",
+      "exit_criteria": "memory/verdicts.jsonl tiene una linea nueva con artifact=kanam-critic-kit-v0.3, total 5-25, verdict VETO/Aprobado/ORO, timestamp >= 2026-11-06 y 5 ejes con evidencia citada; query_verdicts.py --artifact kanam-critic-kit-v0.3 devuelve 1 fila.",
+      "depends_on": [
+        1
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "agents/kanam-critic/memory/verdicts.jsonl"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:17+00:00",
+      "updated_at": "2026-11-06T21:00:17+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 3,
+      "task": "T1.3 - Publicar el reporte del primer veredicto",
+      "role": "critic",
+      "owner": "kanam-critic",
+      "status": "pending",
+      "exit_criteria": "Existe agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3.md con 5 secciones de eje, al menos 5 citas archivo:linea, veredicto y modelo; el reporte enlaza el veredicto registrado.",
+      "depends_on": [
+        2
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "agents/kanam-critic/docs/reviews/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:17+00:00",
+      "updated_at": "2026-11-06T21:00:17+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 4,
+      "task": "T3.1 - Definir el ledger de fricciones y registrar el primer veredicto",
+      "role": "critic",
+      "owner": "kanam-critic",
+      "status": "pending",
+      "exit_criteria": "Existe agents/kanam-critic/memory/frictions.jsonl con schema documentado y al menos 1 registro del veredicto T1, o status=none si no hubo fricciones.",
+      "depends_on": [
+        3
+      ],
+      "gate": null,
+      "write_paths": [
+        "agents/kanam-critic/memory/frictions.jsonl"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-06T21:00:18+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 5,
+      "task": "T3.2 - Producir 3 VETOs reales y registrar sus fricciones",
+      "role": "critic",
+      "owner": "kanam-critic",
+      "status": "pending",
+      "exit_criteria": "verdicts.jsonl tiene 3 VETOs reales (incluye T1 si es VETO; si no, 3 artefactos adicionales elegidos por CORE/Gonzo) y frictions.jsonl tiene 3 registros.",
+      "depends_on": [
+        4
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "agents/kanam-critic/memory/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-06T21:00:18+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 6,
+      "task": "T3.3 - Medir absorcion de VETOs y publicar la tasa",
+      "role": "critic",
+      "owner": "kanam-critic",
+      "status": "pending",
+      "exit_criteria": "Existe agents/kanam-critic/docs/reviews/<fecha>-absorcion.md con absorbed, total y rate; cada friccion tiene status y fix_url o rejected.",
+      "depends_on": [
+        5
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "agents/kanam-critic/docs/reviews/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-06T21:00:18+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 7,
+      "task": "T4.1 - Implementar objective-extractor con gate del Critic",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Existe agents/kanam-critic/skills/objective-extractor/SKILL.md; openclaw skills list --agent kanam-critic la muestra; el lab tiene un caso; el Critic emite veredicto Aprobado u ORO.",
+      "depends_on": [
+        6
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "agents/kanam-critic/skills/objective-extractor/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-06T21:00:18+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 8,
+      "task": "T4.2 - Agregar detectores horizon, resistance y auto-reportado a evidence-hunter",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "evidence-hunter.py tiene los detectores nuevos; el lab pasa GLOBAL=aprobado (6/6 o mas); cada detector nuevo tiene un caso trampa que lo falsifica.",
+      "depends_on": [
+        6
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "agents/kanam-critic/bin/evidence-hunter.py"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-06T21:00:18+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 9,
+      "task": "T4.3 - Implementar format_sharp_report.py y publicar 1 PR comment real",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Existe agents/kanam-critic/bin/format_sharp_report.py; 1 veredicto real publicado como PR comment con URL; el Critic emite veredicto.",
+      "depends_on": [
+        6
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "agents/kanam-critic/bin/format_sharp_report.py"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-06T21:00:18+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 10,
+      "task": "T5.1 - Definir el contrato de invocacion cruzada al Critic",
+      "role": "core",
+      "owner": "main",
+      "status": "pending",
+      "exit_criteria": "Existe docs/CRITIC-INVOCATION.md con sessions_spawn(agentId=kanam-critic), contexto requerido, salida esperada y regla de gate; CORE lo aprueba.",
+      "depends_on": [
+        3
+      ],
+      "gate": null,
+      "write_paths": [
+        "docs/CRITIC-INVOCATION.md"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-06T21:00:18+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 11,
+      "task": "T5.2 - Cablear el veredicto del Critic como gate del pipeline",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Un run del pipeline sin veredicto del Critic falla; con veredicto pasa; el check queda en scripts/check-pipeline-enforcement.py o en la skill del pipeline.",
+      "depends_on": [
+        10,
+        9
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "scripts/check-pipeline-enforcement.py"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-06T21:00:18+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 12,
+      "task": "v1.0 - Aceptacion final del Critic como estandar",
+      "role": "core",
+      "owner": "main",
+      "status": "pending",
+      "exit_criteria": "1+ solicitud/mes originada en otro agente y veredicto como gate; acta de aceptacion en docs/reviews/<fecha>-critic-v1.0.md firmada por CORE.",
+      "depends_on": [
+        11
+      ],
+      "gate": null,
+      "write_paths": [
+        "docs/reviews/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-06T21:00:18+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    }
+  ],
+  "metadata": {}
+}

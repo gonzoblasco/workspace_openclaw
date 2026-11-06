@@ -57,8 +57,9 @@ def fail(message: str, code: int = 1) -> None:
 
 
 def program_path(slug: str) -> Path:
-    if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", slug or ""):
-        fail(f"Slug invalido: '{slug}'. Usá minúsculas, números y guiones.")
+    # Los slugs pueden llevar puntos (v0.3) pero nunca '..' ni barras.
+    if not re.fullmatch(r"[a-z0-9][a-z0-9.-]*", slug or "") or ".." in (slug or ""):
+        fail(f"Slug invalido: '{slug}'. Usá minúsculas, números, guiones y puntos.")
     return PROGRAMS_DIR / f"{slug}.json"
 
 

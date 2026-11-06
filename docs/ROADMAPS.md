@@ -45,17 +45,17 @@ al día, y el índice de tracking sin drift entre lo declarado y lo real.
 | Rol | Roadmap | Versión declarada | Estado verificado | Próximo salto |
 |---|---|---|---|---|
 | **kanam-auditor** (UI/UX) | ✅ `agents/kanam-auditor/ROADMAP.md` | v0.1 | 🟡 3 skills sueltos; `pixel-diff` real, `oracle`/`enforcer` parciales | Fase 1 → consolidar arsenal |
-| **kanam-critic** (sustancia) | ✅ `agents/kanam-critic/ROADMAP.md` | v0.2 | 🟡 vara + ritual listos; sin memoria ni cierre | v0.5 "El Ojo" |
+| **kanam-critic** (sustancia) | ✅ `agents/kanam-critic/ROADMAP.md` | v0.3 | 🟡 kit verificado (16/16 checks), disparadores montados, 1er veredicto real; falta el loop de retorno | v0.5 "El Retorno" (absorción de VETOs) |
 | **kanam-planner** (orquestación) | ✅ `agents/kanam-planner/ROADMAP.md` | v0.3 | 🟢 5 skills; programas + delegación CORE + review semanal | Fase 2: medir demanda y evaluar dispatch directo |
 | **kanam-dev** (ingeniería) | ✅ `agents/kanam-dev/ROADMAP.md` | v0.1 | 🟡 38 skills; sin declaración de madurez | Tramo 3 (P0) |
 | **kanam-mind** (conocimiento) | ✅ `agents/kanam-mind/ROADMAP.md` | v0.1 | 🟡 10 skills; memoria + investigación | Tramo 3 (P1) |
 | **kanam-ops** (infraestructura) | ✅ `agents/kanam-ops/ROADMAP.md` | v0.1 | 🟡 4 skills; gateway + config | Tramo 3 (P1) |
-| **kanam-studio** (comunicación) | ✅ `agents/kanam-studio/ROADMAP.md` | v0.1 | 🟡 7 skills; contenido + marca | Tramo 3 (P2) |
+| **kanam-studio** (comunicación) | ✅ `agents/kanam-studio/ROADMAP.md` | v0.2 | 🟡 v0.2; contenido + marca | Tramo 3 (P2) |
 | **Kanam CORE** (orquestación raíz) | ✅ `docs/ROADMAP.md` | - | 🟢 roadmap del sistema (no de rol) | - |
 | **openclaw-agent** (bundled) | n/a | - | - | fuera de alcance |
 
 **Lectura:** 7 de 7 con roadmap (nivelación M1 cumplida; solo critic ya en v0.2). El ecosistema
-está en **v0.1** salvo critic. La meta de esta ronda es **escalar a v0.5** por dependencia (Tramo 3).
+está en **v0.1** salvo critic (v0.3). La meta de esta ronda es **escalar a v0.5** por dependencia (Tramo 3).
 
 ---
 

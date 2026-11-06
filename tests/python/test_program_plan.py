@@ -146,6 +146,18 @@ class ProgramPlanTest(unittest.TestCase):
         status = json.loads(self.run_cmd("status", "--json").stdout)
         self.assertEqual(len(status["programs"][0]["steps"]), 2)
 
+    def test_dotted_slug(self):
+        result = self.run_cmd(
+            "init",
+            "demo-v0.3",
+            "--title",
+            "Demo",
+            "--objective",
+            "Probar slug con punto",
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue((Path(self.tmp.name) / "demo-v0.3.json").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

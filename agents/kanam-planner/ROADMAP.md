@@ -67,4 +67,6 @@ Yo imagino que, en v0.5, el Planner será la única fuente de verdad del trabajo
 
 Solo cuando las tres condiciones se cumplan y el CORE firme la revisión, la versión se actualizará a **v0.5**.
 
+**Programa activo:** [critic-v0.3](PROGRAMS/critic-v0.3.md) - Critic v0.3 "El Cable": T1 primer veredicto real, T3 absorcion, T4 extensiones, T5/v1.0 gate.
+
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->
