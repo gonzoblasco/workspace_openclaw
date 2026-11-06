@@ -1,0 +1,287 @@
+#!/usr/bin/env python3
+"""
+kanam-dev - Despachador del pipeline de Kanam DEV (estacion F0).
+
+Un solo punto de entrada que DELEGA en los scripts que ya existen en el
+workspace. Este archivo no implementa logica de verificacion: la orquesta y le
+pone un contrato de exit codes comun.
+
+Por que existe: hoy cada tarea arranca con "leete el brief, el SPEC y el repo".
+Ocho subcomandos de una linea bajan el costo de invocacion sin duplicar nada.
+
+Exit codes (identicos en todos los subcomandos):
+  0  verde / sin hallazgos
+  1  hallazgos (el pipeline no avanza)
+  2  no se pudo medir (herramienta ausente, ruta invalida, entorno roto)
+  Un 2 NUNCA es verde. Un gate que no puede correr y devuelve 0 es la barrera
+  que no corre y no lo dice.
+
+Uso:
+    kanam-dev help
+    kanam-dev status <dir>
+    kanam-dev audit <dir>
+    kanam-dev a11y <url|archivo.html>
+    kanam-dev review <owner/repo> <pr-number>
+    kanam-dev docs <dir> [--check]
+    kanam-dev intake <archivo> [--template T]
+
+Cero dependencias externas. Solo stdlib.
+"""
+from __future__ import annotations
+
+import json
+import os
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+ROLE_ROOT = HERE.parent
+WORKSPACE = ROLE_ROOT.parent.parent
+SCRIPTS = WORKSPACE / "scripts"
+
+EXIT_OK = 0
+EXIT_FINDINGS = 1
+EXIT_INFRA = 2
+
+# ---------------------------------------------------------------------------
+# Utilidades.
+# ---------------------------------------------------------------------------
+
+
+def say(msg: str = "") -> None:
+    print(msg)
+
+
+def verdict(kind: str, msg: str) -> None:
+    """Una linea de veredicto, el contrato de salida corta del despachador."""
+    say(f"[{kind}] {msg}")
+
+
+def need(path: Path, what: str) -> bool:
+    """Chequeo de precondicion. Un faltante es exit 2, nunca 0."""
+    if not path.exists():
+        verdict("INFRA", f"{what} no existe: {path}")
+        return False
+    return True
+
+
+def tool(name: str) -> str | None:
+    return shutil.which(name)
+
+
+def run(cmd: list[str], cwd: Path | None = None) -> int:
+    """Corre un comando heredando la salida y devuelve su exit code.
+
+    No captura: el subcomando delega y el usuario ve la salida real de la
+    herramienta. Un resumen propio encima de la salida real es donde se pierde
+    el error util.
+    """
+    try:
+        proc = subprocess.run(cmd, cwd=str(cwd) if cwd else None)
+    except FileNotFoundError:
+        verdict("INFRA", f"comando no encontrado: {cmd[0]}")
+        return EXIT_INFRA
+    except OSError as exc:
+        verdict("INFRA", f"no se pudo ejecutar {cmd[0]}: {exc}")
+        return EXIT_INFRA
+    return proc.returncode
+
+
+# ---------------------------------------------------------------------------
+# Subcomandos.
+# ---------------------------------------------------------------------------
+
+
+def cmd_help(argv: list[str]) -> int:
+    say("kanam-dev - despachador del pipeline de Kanam DEV")
+    say("")
+    say("Estaciones y su delegado:")
+    say("  intake <archivo> [--template T]   S1  -> bin/intake.py")
+    say("  audit <dir>                       S5  -> build + test (por stack)")
+    say("  a11y <url|archivo.html>           S5  -> scripts/a11y-scan.mjs")
+    say("  review <owner/repo> <pr>          S6  -> scripts/github-pr-risk.sh")
+    say("  docs <dir> [--check]              S5  -> bin/docs-sync.py")
+    say("  status <dir>                      --  -> estado del working tree")
+    say("  help                              --  -> esta pantalla")
+    say("")
+    say("Exit codes: 0 verde, 1 hallazgos, 2 no se pudo medir.")
+    say("Un 2 nunca es verde.")
+    return EXIT_OK
+
+
+def cmd_status(argv: list[str]) -> int:
+    target = Path(argv[0]).resolve() if argv else Path.cwd()
+    if not need(target, "directorio"):
+        return EXIT_INFRA
+
+    if not (target / ".git").exists():
+        verdict("INFO", f"{target} no es un repo git; no hay status que reportar")
+        return EXIT_OK
+
+    say(f"repo: {target}")
+    code = run(["git", "-C", str(target), "status", "--short"])
+    if code != 0:
+        verdict("INFRA", "git status fallo")
+        return EXIT_INFRA
+
+    risky = []
+    for line in subprocess.run(
+        ["git", "-C", str(target), "status", "--porcelain"],
+        capture_output=True, text=True,
+    ).stdout.splitlines():
+        path = line[3:].strip()
+        if any(path.endswith(s) or f"={s}" in path for s in (".env", ".db")) or "/.venv/" in path:
+            risky.append(path)
+
+    if risky:
+        say("")
+        verdict("RIESGO", f"{len(risky)} archivo(s) local(es) en el arbol (no commitear sin respaldo)")
+        for r in risky[:10]:
+            say(f"  {r}")
+    return EXIT_OK
+
+
+def _detect_stack(target: Path) -> tuple[str, list[str]]:
+    """Devuelve (stack, comandos de verify). Un solo lugar decide por stack."""
+    if (target / "package.json").exists():
+        return "node", ["npm", "test"]
+    if (target / "pyproject.toml").exists() or (target / "setup.py").exists():
+        return "python", [sys.executable, "-m", "pytest", "-q"]
+    return "desconocido", []
+
+
+def cmd_audit(argv: list[str]) -> int:
+    target = Path(argv[0]).resolve() if argv else Path.cwd()
+    if not need(target, "directorio"):
+        return EXIT_INFRA
+
+    stack, cmd = _detect_stack(target)
+    say(f"audit: {target} (stack={stack})")
+
+    if stack == "desconocido":
+        verdict("INFRA", "no reconozco el stack: falta package.json o pyproject.toml")
+        return EXIT_INFRA
+
+    if not cmd:
+        verdict("INFRA", "sin comando de verificacion para el stack")
+        return EXIT_INFRA
+
+    say(f"$ {' '.join(cmd)}")
+    code = run(cmd, cwd=target)
+    if code == 0:
+        verdict("OK", "verify verde")
+        return EXIT_OK
+    if code == 2:
+        verdict("INFRA", "verify no pudo correr (exit 2 del stack)")
+        return EXIT_INFRA
+    verdict("FALLA", f"verify rojo (exit {code})")
+    return EXIT_FINDINGS
+
+
+def cmd_a11y(argv: list[str]) -> int:
+    if not argv:
+        verdict("USO", "a11y <url|archivo.html>")
+        return EXIT_INFRA
+    target = argv[0]
+    scanner = SCRIPTS / "a11y-scan.mjs"
+    if not need(scanner, "a11y-scan.mjs"):
+        return EXIT_INFRA
+    node = tool("node")
+    if node is None:
+        verdict("INFRA", "node no esta en PATH")
+        return EXIT_INFRA
+
+    cmd = [node, str(scanner)]
+    if target.startswith("http://") or target.startswith("https://"):
+        cmd.append(target)
+    else:
+        p = Path(target)
+        if not need(p, "archivo objetivo"):
+            return EXIT_INFRA
+        cmd += ["--file", str(p.resolve())]
+
+    code = run(cmd)
+    if code == 0:
+        verdict("OK", "a11y sin violaciones al umbral")
+        return EXIT_OK
+    if code == 2:
+        verdict("INFRA", "a11y no pudo correr")
+        return EXIT_INFRA
+    verdict("FALLA", "a11y encontro violaciones")
+    return EXIT_FINDINGS
+
+
+def cmd_review(argv: list[str]) -> int:
+    if len(argv) < 2:
+        verdict("USO", "review <owner/repo> <pr-number>")
+        return EXIT_INFRA
+    script = SCRIPTS / "github-pr-risk.sh"
+    if not need(script, "github-pr-risk.sh"):
+        return EXIT_INFRA
+    if tool("gh") is None:
+        verdict("INFRA", "gh no esta en PATH")
+        return EXIT_INFRA
+    code = run(["bash", str(script), argv[0], argv[1]])
+    if code == 0:
+        verdict("OK", "review completo")
+        return EXIT_OK
+    verdict("INFRA", f"github-pr-risk fallo (exit {code})")
+    return EXIT_INFRA
+
+
+def cmd_docs(argv: list[str]) -> int:
+    if not argv:
+        verdict("USO", "docs <dir> [--check]")
+        return EXIT_INFRA
+    target = Path(argv[0]).resolve()
+    if not need(target, "directorio"):
+        return EXIT_INFRA
+    sync = HERE / "docs-sync.py"
+    if not sync.exists():
+        verdict("INFRA", "docs-sync.py no implementado todavia (F1)")
+        return EXIT_INFRA
+    cmd = [sys.executable, str(sync), str(target)]
+    if "--check" in argv[1:]:
+        cmd.append("--check")
+    return run(cmd)
+
+
+def cmd_intake(argv: list[str]) -> int:
+    if not argv:
+        verdict("USO", "intake <archivo> [--template T]")
+        return EXIT_INFRA
+    intake = HERE / "intake.py"
+    if not need(intake, "intake.py"):
+        return EXIT_INFRA
+    return run([sys.executable, str(intake), "--file", argv[0], *argv[1:]])
+
+
+COMMANDS = {
+    "help": cmd_help,
+    "status": cmd_status,
+    "audit": cmd_audit,
+    "a11y": cmd_a11y,
+    "review": cmd_review,
+    "docs": cmd_docs,
+    "intake": cmd_intake,
+}
+
+
+def main(argv: list[str]) -> int:
+    if not argv or argv[0] in ("-h", "--help"):
+        return cmd_help([])
+    name, rest = argv[0], argv[1:]
+    fn = COMMANDS.get(name)
+    if fn is None:
+        verdict("USO", f"subcomando desconocido: {name}. Ver 'kanam-dev help'.")
+        return EXIT_INFRA
+    try:
+        return fn(rest)
+    except KeyboardInterrupt:
+        return EXIT_INFRA
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
