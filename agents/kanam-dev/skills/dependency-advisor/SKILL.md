@@ -1,5 +1,5 @@
 ---
-title: dependency-advisor
+name: dependency-advisor
 description: TODO: add description
 metadata:
   owner: kanam-dev

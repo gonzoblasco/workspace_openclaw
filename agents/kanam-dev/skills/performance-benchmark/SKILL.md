@@ -1,5 +1,5 @@
 ---
-title: performance-benchmark
+name: performance-benchmark
 description: TODO: add description
 metadata:
   owner: kanam-dev

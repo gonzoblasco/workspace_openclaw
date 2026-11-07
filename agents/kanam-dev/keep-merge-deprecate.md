@@ -14,3 +14,6 @@
 1. Añadir `name`+`description`+`metadata` a frontmatter (DEV+AUDITOR, crit: 37 skills listos en <30 ediciones).
 2. Consolidar pares openspec / performance (DEV, crit: un solo skill canónico por par).
 3. Marcar hermes-openspec deprecado si docs/openspec lo reemplaza (DEV, crit: grep refs empty).
+
+## Merge canonicity (tanda 2)
+- Pair: openspec (canonical CLI usage) ← openspec-pattern (methodology/intent contract, references openspec). No deletion; cross-ref only.

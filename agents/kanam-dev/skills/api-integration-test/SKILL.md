@@ -1,5 +1,5 @@
 ---
-title: api-integration-test
+name: api-integration-test
 description: TODO: add description
 metadata:
   owner: kanam-dev

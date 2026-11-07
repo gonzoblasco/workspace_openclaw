@@ -1,6 +1,10 @@
 ---
+name: threat-modeling
 title: threat-modeling
 description: TODO: add description
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 # threat-modeling
 

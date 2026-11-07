@@ -1,5 +1,5 @@
 ---
-title: code-metrics
+name: code-metrics
 description: TODO: add description
 metadata:
   owner: kanam-dev

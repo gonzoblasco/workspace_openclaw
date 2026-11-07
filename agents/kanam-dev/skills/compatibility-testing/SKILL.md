@@ -1,5 +1,5 @@
 ---
-title: compatibility-testing
+name: compatibility-testing
 description: TODO: add description
 metadata:
   owner: kanam-dev

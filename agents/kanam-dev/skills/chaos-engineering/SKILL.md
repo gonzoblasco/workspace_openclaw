@@ -1,5 +1,5 @@
 ---
-title: chaos-engineering
+name: chaos-engineering
 description: TODO: add description
 metadata:
   owner: kanam-dev
