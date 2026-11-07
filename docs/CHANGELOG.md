@@ -24,6 +24,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - No se crea ADR nuevo de scope del router: managed block en AGENTS + SETUP + este ChangeLog son la fuente unica. Editar, no agregar.
 
 ---
+
 ## [2026-11-06] - El Planner deja de ser un agente que hay que abrir a mano
 
 ### Added

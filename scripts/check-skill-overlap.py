@@ -74,12 +74,17 @@ def main():
     ap.add_argument("--staged", action="store_true", help="Only skills touched in staged diff")
     ap.add_argument("--threshold", type=float, default=SIM_THRESHOLD)
     ap.add_argument("--blocking", action="store_true", help="Exit 1 when overlaps found")
+    ap.add_argument("--own-only", action="store_true", help="Limitar a skills propias (excluir bundled/extra/custodian)")
     args = ap.parse_args()
 
     catalog = load_catalog()
     if catalog is None:
         print("[check-skill-overlap] no catalog; skip", file=sys.stderr)
         return 0
+    if args.own_only:
+        catalog = [it for it in catalog
+                   if not any(it.get("source", "").endswith(x)
+                              for x in ("-bundled", "-extra", "-custodian"))]
     if len(catalog) < 2:
         return 0
 
