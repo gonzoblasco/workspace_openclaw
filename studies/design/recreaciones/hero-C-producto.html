@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Hero C - producto (D2)</title>
+<style>
+  :root{--bg:#0a0d13;--bg-2:#10141c;--fg:#e6ecf5;--muted:#8a96a8;--accent:#7aa2f7;--accent-2:#bb9af7;}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;}
+  .hero{min-height:100vh;display:grid;align-content:center;padding:clamp(2rem,6vw,6rem) clamp(1rem,4vw,4rem);gap:1.5rem;}
+  .container{max-width:1200px;margin:0 auto;}
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;}
+  .logo{font-weight:700;font-size:1rem;letter-spacing:-.01em;}
+  .nav a{color:var(--muted);text-decoration:none;font-size:.875rem;}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--accent);letter-spacing:.04em;text-transform:uppercase;font-weight:600;}
+  .eyebrow::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--accent);}
+  h1{font-size:clamp(2.25rem,1.5rem+3vw,4.5rem);line-height:1.08;letter-spacing:-.025em;font-weight:700;margin:0 0 1rem;max-width:14ch;background:linear-gradient(90deg,var(--fg),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  p{font-size:clamp(1.0625rem,1rem+.5vw,1.3125rem);line-height:1.55;color:var(--muted);max-width:60ch;margin:0 0 2rem;font-weight:300;}
+  .actions{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;}
+  .cta-primary{padding:.75rem 1.5rem;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b0d13;font-weight:600;border:none;border-radius:.5rem;text-decoration:none;font-size:.9375rem;}
+  .cta-secondary{padding:.75rem 0;color:var(--fg);text-decoration:none;font-size:.9375rem;border-bottom:1px solid var(--muted);}
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.06);}
+  .metric .label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem;}
+  .metric .value{font-size:1.75rem;font-weight:700;letter-spacing:-.02em;}
+</style></head><body>
+  <section class="hero"><div class="container">
+    <nav class="nav"><span class="logo">studio</span><a href="#">Log in</a></nav>
+    <span class="eyebrow">Real-time collaboration</span>
+    <h1>Ship without the noise.</h1>
+    <p>A product hero. Two channels weighted by gradient and motion: weight + color.</p>
+    <div class="actions">
+      <a class="cta-primary" href="#">Start free</a>
+      <a class="cta-secondary" href="#">View docs</a>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="label">Build time</div><div class="value">12m</div></div>
+      <div class="metric"><div class="label">Uptime</div><div class="value">99.99%</div></div>
+      <div class="metric"><div class="label">Reviews merged</div><div class="value">8k+</div></div>
+    </div>
+  </div></section>
+</body></html>
