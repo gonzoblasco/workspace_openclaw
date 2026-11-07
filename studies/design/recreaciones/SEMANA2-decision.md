@@ -8,7 +8,15 @@
 - **B** `hero-B-editorial.html` - "editorial serif": serif + rule, 2 canales (italic + weight).
 - **C** `hero-C-producto.html` - "producto inertia": dark + gradient text + 2 canales (gradient + motion).
 
-## Output Gates aplicados (a ojo, pendiente de render formal)
+## Razón por ratio del gradient-text (peor-caso estimado)
+
+El gradiente del hero C arranca en `#e6ecf5` (16.37:1) y cae a `#bb9af7` (8.41:1)
+contra `#0a0d13`. El peor es el **end-stop**: 8.41:1, así que pasa a normal
+(WCAG 4.5:1) pero no a C target (AAA normal 7:1). El texto serrado del display
+en B (5.5:1) no cumple. La estimación asume render sólido, no anti-aliased edges.
+Para el gate real (foreground gradient bajo quema por alpha) queda sin medida.
+
+## Output Gates aplicados (estimado, sin render real)
 
 | Gate | A | B | C |
 |---|---|---|---|
