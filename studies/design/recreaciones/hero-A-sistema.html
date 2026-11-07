@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Hero A - sistema (D2)</title>
+<style>
+  :root { --bg:#0b0f14; --fg:#f3f6f9; --muted:#96a3b1; --accent:#5ac8fa; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .hero { min-height:100vh; display:grid; place-items:center; padding:2rem clamp(1rem,4vw,4rem); }
+  .container { max-width:72ch; }
+  h1 { font-size:clamp(2.25rem,1.5rem+3vw,4.5rem); line-height:1.05; letter-spacing:-0.02em; margin:0 0 .5rem; font-weight:700; }
+  p { font-size:clamp(1rem,.875rem+0.5vw,1.25rem); line-height:1.6; color:var(--muted); max-width:56ch; margin:0 0 1.5rem; }
+  .cta { display:inline-block; padding:.625rem 1.25rem; background:var(--fg); color:var(--bg); text-decoration:none; font-weight:600; border-radius:.375rem; }
+</style></head><body>
+  <section class="hero"><div class="container">
+    <p>Engineering Surface</p>
+    <h1>Build. Measure. Ship.</h1>
+    <p>A functional hero. One channel: weight.</p>
+    <a class="cta" href="#">View changelog</a>
+  </div></section>
+</body></html>
