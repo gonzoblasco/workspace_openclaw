@@ -1,6 +1,9 @@
 ---
 name: "openspec-pattern"
 description: "Establishes the intent contract (OpenSpec) to prevent scope creep and technical debt. Use when a feature needs a written 'what' before implementation starts."
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 
 # SKILL: OpenSpec Pattern (Intent-Driven Development)

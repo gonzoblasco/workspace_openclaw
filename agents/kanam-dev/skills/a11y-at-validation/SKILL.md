@@ -1,6 +1,9 @@
 ---
 name: "a11y-at-validation"
 description: "When manual accessibility validation is mandatory in OSS, and how to run it."
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 
 # Skill: a11y-at-validation

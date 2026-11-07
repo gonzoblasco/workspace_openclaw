@@ -2,6 +2,9 @@
 name: observability-and-instrumentation
 description: Instruments code so production behavior is visible and diagnosable. Use when adding logging, metrics, tracing, or alerting. Use when shipping any feature that runs in production and you need evidence it works. Use when production issues are reported but you can't tell what happened from the available data.
 disable-model-invocation: true
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 
 # Observability and Instrumentation

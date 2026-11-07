@@ -1,6 +1,9 @@
 ---
 title: chaos-engineering
 description: TODO: add description
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 # chaos-engineering
 

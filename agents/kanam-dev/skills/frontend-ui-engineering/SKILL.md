@@ -1,6 +1,9 @@
 ---
 name: "frontend-ui-engineering"
 description: "Build production-quality user interfaces that are accessible, performant and visually polished. Use when building or modifying UI components or pages, applying WCAG 2.1 AA, or following a design system."
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 
 # Frontend UI Engineering

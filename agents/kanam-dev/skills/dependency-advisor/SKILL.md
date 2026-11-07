@@ -1,6 +1,9 @@
 ---
 title: dependency-advisor
 description: TODO: add description
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 # dependency-advisor
 

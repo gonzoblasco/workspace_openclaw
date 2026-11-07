@@ -1,6 +1,9 @@
 ---
 name: idea-refine
 description: "Refines vague ideas into sharp concepts via divergent then convergent thinking. Use when an idea is still vague, to stress-test assumptions before committing, or to expand options before converging. Triggers on 'ideate', 'refine this idea'."
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 
 # Idea Refine

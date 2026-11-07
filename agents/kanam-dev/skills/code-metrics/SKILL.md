@@ -1,6 +1,9 @@
 ---
 title: code-metrics
 description: TODO: add description
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 # code-metrics
 

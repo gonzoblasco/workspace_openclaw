@@ -1,6 +1,9 @@
 ---
 name: "kanam-dev-surface"
 description: "Use when a code task should run through the Kanam DEV pipeline: intake, template selection, station execution, verification and handoff. Covers the kanam-dev dispatcher, the six bin scripts, their exit codes and when to skip a station."
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 
 # Skill: kanam-dev-surface

@@ -1,6 +1,9 @@
 ---
 name: "design-direction"
 description: "Dirección de arte de una UI antes de implementarla: las 4 preguntas (propósito, tono, restricciones, diferenciación), la decisión de contexto (herramienta funcional vs pieza memorable) y el orden de pensamiento layout → tema → animación → código. Use when starting new UI without an existing aesthetic direction (landing, portfolio, dashboard, product), when choosing typography or visual theme for a project, or when a design is technically correct but has no identity. No cubre implementación ni WCAG: eso es frontend-ui-engineering."
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 
 # Design Direction

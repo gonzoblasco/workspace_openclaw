@@ -2,6 +2,9 @@
 name: "api-and-interface-design"
 description: "Guides stable API and interface design. Use when designing APIs, module boundaries, or any public interface. Use when creating REST or GraphQL endpoints, defini"
 disable-model-invocation: true
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 
 # API and Interface Design

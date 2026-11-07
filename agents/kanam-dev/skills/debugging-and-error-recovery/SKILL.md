@@ -2,6 +2,9 @@
 name: debugging-and-error-recovery
 description: Locates and fixes the real cause of a failure instead of the nearest symptom. Use when something is broken and the cause is not yet proven (a stack trace, a red build, a failing test, a production error, "works locally, crashes in prod"). Use when a fix must be justified by evidence, not by a plausible story. Use when a check passes but you are not sure it proved anything.
 disable-model-invocation: true
+metadata:
+  owner: kanam-dev
+  status: active
 ---
 
 # Debugging and Error Recovery
