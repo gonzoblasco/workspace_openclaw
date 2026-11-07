@@ -248,7 +248,7 @@ con un comando.
 |---|---|---|---|---|
 | 1 | **Integrar la regla del CORE** (Hito 5.0) | **CORE / Gonzo** | bloque en `docs/MIND-DISPATCH.md` §7 → `AGENTS.md` del CORE + `docs/MIND-DISPATCH.md` del workspace | el CORE me invoca una vez sin que Gonzo lo pida |
 | 2 | Pedir a otra sesión que reproduzca el veredicto (5.1) | CORE o DEV | `python3 agents/kanam-mind/scripts/kb-audit.py agents/kanam-mind/reports/brief-capacidades-2026-11-06.md --root .` | 3 corridas ajenas citadas |
-| 3 | **Semana 2 de diseño** | MIND | `studies/design/README.md` §5 (D2, tipografía); salida en `studies/design/recreaciones/` | 3 versiones + decisión, cada una con `kb-audit` `PASS` |
+| 3 | ~~Semana 2 de diseño~~ (CERRADA 2026-11-07) | MIND | done via `studies/design/recreaciones/` (A/B/C + SEMANA2-decision.md) | 3 versiones + decisión, con contraste medido por CSS vars (measure_css.py) |
 | 4 | Pedir a OPS el cron `mind-study-digest` | OPS (vía CORE) | `docs/MIND-DISPATCH.md` §3 + `studies/design/README.md` §5 | 4 semanas sin intervención, ≥1 nota citada por corrida |
 | 5 | Handoff a DEV/OPS de `semantic-search.js` (5.4) | DEV/OPS (vía CORE) | criterio de aceptación del Hito 5.4 | la consulta devuelve mi nota, con su fuente |
 | 6 | Tests de los 5 scripts | MIND + DEV | `v0.3` de este roadmap | cambiar una heurística de `kb-audit` no rompe en silencio un `PASS` anterior |
