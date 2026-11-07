@@ -118,6 +118,7 @@ Formato de ficha de crítica (por caso):
 
 - **2026-10-05:** plan creado. Cimientos (skills) listos. Pendiente: **empezar la semana 1**.
 - **2026-11-06 (Kanam MIND):** **semana 1 cerrada** - 3 fichas de crítica de repertorio
+- **2026-11-07 (Kanam MIND):** **semana 2 cerrada** - 3 heroes (A/B/C) + decisión: A default funcional para SaaS neutral; C requiere gate real para gradiente-text; B queda estético.
   (`criticas/2026-11-06-linear-og.md`, `-stripe-og.md`, `-raycast-og.md`), renders y medición de
   contraste reproducibles con `scripts/critica-renders.py`, y aprendizaje del día en
   `criticas/APRENDIZAJE-2026-11-06.md`. La plantilla de crítica incorporó el bloque de evidencia
