@@ -20,7 +20,7 @@
 
 | Árbol | Activas |
 |---|---|
-| `skills/` (Core) | 34 |
+| `skills/` (Core) | 35 |
 | `agents/kanam-dev/skills/` | 44 |
 | `agents/kanam-mind/skills/` | 11 |
 | `agents/kanam-ops/skills/` | 4 |
@@ -28,7 +28,7 @@
 | `agents/kanam-critic/skills/` | 2 |
 | `agents/kanam-planner/skills/` | 5 |
 | `agents/kanam-auditor/skills/` | 5 |
-| **Total activas** | **111** |
+| **Total activas** | **112** |
 
 > **El ciclo SDD (9 skills `hermes-*`) se movió del árbol del Core al de `kanam-dev` el 2026-09-29** (ADR-083).
 > Estaba en `skills/`, así que el Core veía el playbook de ingeniería - `hermes-builder` dice
@@ -105,6 +105,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [trust-vocabulary-report](skills/trust-vocabulary-report/) | Reportar trabajo delegado sin inflarlo: niveles de confianza por etapa |
 | [checkmate](skills/checkmate/) | Loop goal → ejecución → verificación con worker + judge |
 | [skill-router](skills/skill-router/) | Sugiere qué skill usar para una tarea (keywords + embeddings locales) |
+| [capability-index](skills/capability-index/) | Responde '¿tenés X?' con cuatro estados verificados (existe / existe en rol Y / no existe + alternativa / ambiguo), cita ruta verificada |
 | [find-skills](skills/find-skills-skill/) | Busca y descubre skills de OpenClaw en ClawHub y otras fuentes |
 | [skill-collection-maintenance](skills/skill-collection-maintenance/) | Diagnostica el cron semanal de revisión y elimina skills limpiamente |
 | [publish-skills](skills/publish-skills/) | ARCHIVADA. Historial de cómo se publicaba la colección al repo público |

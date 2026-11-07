@@ -2,10 +2,10 @@
 
 > Dueño de la verdad: `agents/kanam-planner/.knowledge/programs/skill-router-improvement.json`. Este archivo es un resumen vivo para retomar sin redescubrir; NO duplica facts (skill count, modelo, etc.) — los cita de su dueño.
 
-## Programa
+## Programa (cerrado)
 
 - Programa: `skill-router-improvement` (T=17, high)
-- Estado acutal: **5/8 pasos completos** (actualizado 2026-11-06).
+- Estado acutal: **CERRADO — 8/8 pasos** (cerrado 2026-11-07).
 - Next: paso 5 — skill `capability-index`.
 
 ## Hecho

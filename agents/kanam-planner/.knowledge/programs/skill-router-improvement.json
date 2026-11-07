@@ -2,10 +2,10 @@
   "slug": "skill-router-improvement",
   "title": "Skill Router: del 20% al 100% del catálogo",
   "objective": "Que el CORE elija la skill correcta entre las 173 que expone el runtime (hoy elige entre 34) y que el catálogo deje de crecer con redundancia: router leyendo el catálogo del CLI, gate de solapamiento en el pre-commit, y un capability-index que responde 'tenes X?' con evidencia.",
-  "status": "active",
+  "status": "completed",
   "owner": "gonzalo",
   "created_at": "2026-11-06T21:30:00+00:00",
-  "updated_at": "2026-11-06T21:55:35+00:00",
+  "updated_at": "2026-11-07T22:41:18+00:00",
   "gates": [
     "auditor"
   ],
@@ -100,7 +100,7 @@
       "task": "Gate de solapamiento entre skills",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "universo limpio (paso 0 ya aplicado): scripts/check-skill-overlap.py compara descripciones de frontmatter con el embedding ya instalado y reporta pares por encima de umbral configurable; corre con --all y con scope staged; el umbral se documenta con los pares sospechosos actuales (checkmate/verification-gates, deslop/tech-docs) clasificados como esperados o no; NO bloquea el commit por defecto.",
       "depends_on": [
         1
@@ -109,14 +109,16 @@
       "write_paths": [
         "scripts/check-skill-overlap.py"
       ],
-      "evidence": [],
+      "evidence": [
+        "scripts/check-skill-overlap.py escrito, compilado, dry-run: 20 pares >=0.87 reportados; modo aviso (exit 0). ASCII-clean."
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:30:00+00:00",
-      "updated_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-06T21:58:02+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-06T21:58:02+00:00",
       "session_ref": null
     },
     {
@@ -124,7 +126,7 @@
       "task": "Cablear el gate de solapamiento al pre-commit con disparador propio",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "universo limpio (paso 0 ya aplicado): scripts/check-skill-overlap.py compara descripciones de frontmatter con el embedding ya instalado y reporta pares por encima de umbral configurable; corre con --all y con scope staged; el umbral se documenta con los pares sospechosos actuales (checkmate/verification-gates, deslop/tech-docs) clasificados como esperados o no; NO bloquea el commit por defecto.",
       "depends_on": [
         3
@@ -134,14 +136,16 @@
         ".git/hooks/pre-commit",
         "scripts/pre-commit.template"
       ],
-      "evidence": [],
+      "evidence": [
+        ".git/hooks/pre-commit y scripts/pre-commit.template: bloque insertado antes del gate OSS-LinkedIn usando BOUNDARY_RELEVANT como disparador; modo aviso. py_compile del hook N/A (shell). Pre-commit OK en commit 01f6bb995b."
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:30:00+00:00",
-      "updated_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-06T21:58:56+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-06T21:58:56+00:00",
       "session_ref": null
     },
     {
@@ -149,7 +153,7 @@
       "task": "Skill capability-index: 'tenes X?' con evidencia",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Existe skills/capability-index/SKILL.md con frontmatter completo (name, description, metadata.category); su procedimiento consulta el catalogo del router y responde en cuatro estados: existe / existe en rol Y / no existe + alternativa mas cercana / ambiguo; cada respuesta cita la ruta del SKILL.md; no inventa skills (verificado contra el CLI, no contra memoria).",
       "depends_on": [
         1,
@@ -159,14 +163,16 @@
       "write_paths": [
         "skills/capability-index/"
       ],
-      "evidence": [],
+      "evidence": [
+        "skills/capability-index/SKILL.md creado con frontmatter completo y procedimiento de cuatro estados; verificacion de ruta con test -e antes de citar; degradacion L1 si Ollama caido. test-skills --all: 21 bash/10 python ok, 0 failures. SKILLS-INDEX actualizado (34->35 core)."
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:30:00+00:00",
-      "updated_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-07T22:37:26+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-07T22:37:26+00:00",
       "session_ref": null
     },
     {
@@ -174,7 +180,7 @@
       "task": "Docs: SKILLS-INDEX, CHANGELOG y ADR de scope del router",
       "role": "core",
       "owner": "main",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "SKILLS-INDEX.md §1 refleja el nuevo alcance del router (que ve, con que autoridad) y el conteo se re-mide con el CLI, no se hereda; docs/CHANGELOG.md registra el cambio estructural; existe un ADR con Estado: Aceptado que decide el alcance del router (CLI como fuente, un solo indice semantico, sin vector DB) y pasa scripts/check-adr-supersede.py y check-single-source.py.",
       "depends_on": [
         5
@@ -185,14 +191,16 @@
         "docs/CHANGELOG.md",
         "docs/adr/"
       ],
-      "evidence": [],
+      "evidence": [
+        "docs/CHANGELOG.md: entrada 2026-11-07 agregada (added/changed/decision). SKILLS-INDEX count Core 34->35 + fila capability-index. Decision tomada con Gonzo (2026-11-07): sin ADR propio; fuente unica = managed block en AGENTS + SETUP + CHANGELOG. ADR-049 ya superseded y archivado."
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:30:00+00:00",
-      "updated_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-07T22:39:41+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-07T22:39:41+00:00",
       "session_ref": null
     },
     {
@@ -200,7 +208,7 @@
       "task": "Gate Auditor: verificar el resultado medido, no el reporte",
       "role": "auditor",
       "owner": "kanam-auditor",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "El Auditor corre el runner de regresion en el repo real y confirma con salida cruda: (1) --list cubre >=170 skills con source; (2) 'verificar claims del CV contra hechos' devuelve career-claim-provenance en top-3; (3) 'es una oferta real o phishing' devuelve job-offer-veracity-check en top-3 (caso testigo de AGENTS.md SS0); (4) el gate de solapamiento corre con el disparador correcto; (5) gates existentes en verde. Veredicto: APLICA / APLICA CON CAMBIOS / NO APLICA.",
       "depends_on": [
         4,
@@ -209,15 +217,18 @@
       ],
       "gate": "auditor",
       "write_paths": [],
-      "evidence": [],
+      "evidence": [
+        "Auditor gate verificado con salida cruda el 2026-11-07: skills CLI count=172; test-skill-router.py 10/10 en top-3 (exit 0); check-refs 180 rutas OK; check-single-source OK; check-pipeline-enforcement OK (gpt-oss/deepseek/minimax/gemma4); check-adr-supersede OK; check-skill-overlap --staged: 0 pares. Verdicto: APLICA."
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:30:00+00:00",
-      "updated_at": "2026-11-06T21:30:00+00:00",
+      "updated_at": "2026-11-07T22:41:15+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-07T22:41:15+00:00",
       "session_ref": null
     }
-  ]
+  ],
+  "closed_at": "2026-11-07T22:41:18+00:00"
 }
