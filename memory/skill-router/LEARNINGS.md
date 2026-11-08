@@ -27,3 +27,21 @@
 ## Próximo movimiento verificado
 
 Ver el paso 5 uno por uno antes de escribir.>
+
+
+## Pares por encima del umbral (2026-11-07, scan own-only, 13 pares)
+
+Fuente del par -> kept o expected.
+
+- **gh-issues <-> github** (managed vs workspace): wrapper, mantener separados.
+- **skill-creator <-> skill-router** (personal vs workspace): descomparto; el primero instala, el segundo busca.
+- **skill-audit <-> skill-validation** (workshop): audit vs validate WIP; candidato a fusionar.
+- **spec-discovery-creation <-> spec-draft-creation** (workshop): dos etapas del mismo pipeline SDD; separamos porque una es entrada, otra generación.
+- **harness-model-comparison <-> model-capability-selection / model-cata** (workshop/workspace): cluster modelo. `model-capability-selection` consume a `model-cata`; el primero es selector, el segundo es ritual. Tres solapados: consolidar a `model-cata` si se hace.
+- **find-skills <-> skill-router / skill-creator** (workspace/personal): find-skills es descubridor genérico; skill-router semántico. Mantener.
+- **project-triage-one-by-one <-> projects-directory-audit** (workshop vs workshop): triaje vs auditoría.
+- **workspace-portfolio-hygiene <-> projects-directory-audit** (workspace vs workshop): dos vistas del mismo portfolio. Fusionar candidato.
+- **clawhub <-> find-skills** (managed vs workspace): managed wrapper vs discovery.
+- **model-capability-selection <-> model-cata** (workshop vs workspace): ya arriba.
+
+Decision (Gonzo, 2026-11-07): **no merge en este ciclo**. La gate opera en modo blocking solo sobre staged; el solapamiento esperado se deja documentado. Consolidación se tratará como tarea aparte (STUDIO/mind) y no por improvisación.
