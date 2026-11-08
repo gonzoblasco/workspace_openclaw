@@ -23,7 +23,19 @@ rules:
 # Vacío a propósito: la política es "si no es token, se sugiere token". Si un
 # valor legítimo empieza a dar ruido, se agrega acá y se documenta por qué.
 whitelist:
-  hex: []
+  hex:
+    # Colores del template HTML de los reportes (surface-pipeline/pixel-diff).
+    # Son la identidad visual del reporte de auditoria, no superficie de producto.
+    - "#0d9488"   # --ok
+    - "#b7791f"   # --warn
+    - "#b03a2e"   # --bad
+    - "#111318"   # --ink
+    - "#faf9f5"   # --bg
+    - "#e2dfd6"   # --line
+    - "#efede6"   # divisor de fila
+    - "#f4f4f2"   # header de tabla
+    - "#ffffff"   # blanco (expandido desde #fff)
+    - "#78716c"   # texto muted
 
 # Paths que el walker NO escanea (globs, relativos a la raíz del repo).
 # Por qué existen: el propio motor del enforcer contiene las cadenas que busca

@@ -17,6 +17,26 @@ Ritual de alineación pixel-perfect. No mide solo código - mide que el CSS real
 
 La diferencia con `design-system-enforcer`: el Enforcer valida que uses tokens; el Pixel Diff verifica que **el resultado sea el correcto** en pantalla.
 
+## Baseline storage (convención C.1) — local, reproducible
+
+La verdad visual para regresión no se versiona en `git` por peso (PNGs) ni se
+inventa sin captura. Convención dentro de un proyecto:
+
+```text
+.kanam/baselines/
+├── manifest.json     # slug → png, fuente, fecha
+├── home.png          # captura aprobada
+└── card.png
+```
+
+Comando:
+```bash
+pixel-baseline --save <captura.png> --dir .kanam/baselines --name home
+# luego: pixel-diff --mode baseline --baseline .kanam/baselines --current <current-dir>
+```
+
+Si no hay captura aprobada (sin baseline), `pixel-diff` solo puede emitir **opinión**, no regresión. No correrlo en modo bloqueo sin baseline real.
+
 ## Cuándo usarla
 
 - Post-render: validar que los tokens aplicados producen el resultado visual esperado.

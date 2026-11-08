@@ -146,11 +146,11 @@ function htmlReport(result, mode, artifacts = {}) {
 <style>
   :root { --ok:#0d9488; --warn:#b7791f; --bad:#b03a2e; }
   body { font-family: Inter, system-ui, sans-serif; margin: 0; background:#faf9f5; color:#111318; }
-  header { padding: 24px 32px; background:#111318; color:#faf9f5; }
+  header { padding: 16px 32px; /* <= ceiling */ background:#111318; color:#faf9f5; }
   header h1 { margin:0; font-size:20px; }
   .badge { display:inline-block; padding:4px 10px; border-radius:6px; font-weight:600; margin-top:8px; }
   .badge.ok{ background:var(--ok); } .badge.warn{ background:var(--warn); } .badge.rejected{ background:var(--bad); }
-  main { padding: 24px 32px; }
+  main { padding: 16px 32px; /* <= ceiling */ }
   table { border-collapse: collapse; width:100%; background:#fff; border:1px solid #e2dfd6; }
   th,td { padding:8px 10px; border-bottom:1px solid #efede6; text-align:left; font-size:13px; }
   th { background:#f4f4f2; }

@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+const fs = require('fs');
+const path = require('path');
+const { program } = require('commander');
+program.name('surface-score').description('Score desde report.json mas reciente').version('0.1.0')
+  .option('-d, --dir <dir>', 'Directorio con reportes', './reports/surface-audit')
+  .option('-f, --file <file>', 'report.json directo', '')
+  .parse();
+const opts = program.opts();
+function latestReport(dir) {
+  const d = path.resolve(process.cwd(), dir);
+  const ds = fs.readdirSync(d).filter((x) => x.startsWith('audit-')).sort();
+  if (!ds.length) return null;
+  const p = path.join(d, ds[ds.length - 1], 'report.json');
+  return fs.existsSync(p) ? p : null;
+}
+const reportPath = opts.file ? path.resolve(process.cwd(), opts.file) : latestReport(opts.dir);
+if (!reportPath) { console.error('No report found.'); process.exit(1); }
+const r = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+const counts = r.counts || { blocking: 0, warnings: 0 };
+const penalty = (counts.blocking || 0) * 10 + (counts.warnings || 0) * 2;
+const score = Math.max(0, Math.min(100, 100 - penalty));
+const grade = score === 100 ? 'A' : score >= 90 ? 'B' : score >= 70 ? 'C' : 'D';
+const out = { report: reportPath, verdict: r.verdict, score, grade, counts: { blocking: counts.blocking || 0, warnings: counts.warnings || 0, total: counts.total || 0 }, generatedAt: new Date().toISOString() };
+console.log(`Score: ${score}/100 (${grade}) · ${out.counts.blocking} blocked / ${out.counts.warnings} warnings`);
+fs.writeFileSync(path.join(path.dirname(reportPath), 'score.json'), JSON.stringify(out, null, 2));

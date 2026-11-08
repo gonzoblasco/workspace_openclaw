@@ -20,6 +20,10 @@ El orquestador que convierte tres skills sueltos en **un solo comando, un solo
 veredicto**. Es la Fase 2 del roadmap: los skills dejan de correr en aislamiento
 y pasan a ser stages de una auditoría de superficie completa.
 
+## Score (C.4) — report.json → score.json
+
+Después de cada run: `surface-score --dir <reports>` lee el último `report.json` y emite `score.json` (penalidad: 10 por bloqueo, 2 por warning). Sin datos Históricos no hay tendencia, solo un instantáneo.
+
 ## Cuándo usarla
 
 - Antes de mergear: auditoría completa de código + accesibilidad + visual.

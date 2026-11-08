@@ -269,16 +269,16 @@ El ciclo **se probó en las dos direcciones**: no solo que apruebe, también que
 
 ### Flujo B — "El Compañero" (Dev Loop) ⚪
 
-- [ ] **B.1** Pre-commit fast lane: solo `design-enforcer` sobre staged, presupuesto **<2s p95**.
-- [ ] **B.2** `audit-surface --watch` sin browser.
-- [ ] **B.3** `--fix` **solo** con mapeo hex→token 1:1 verificable, `--dry-run` por defecto. El rechazo original (sin AST) sigue vigente para el caso heurístico.
+- [x] **B.1** Pre-commit fast lane: `design-enforcer --staged` sobre `git diff --cached` (unsupported-ext filtradas, <0.2s medido con 40 archivos).
+- [x] **B.2** `design-enforcer --watch` (sin browser; re-audita en save, debounce CLI).
+- [x] **B.3** `--fix` deterministico 1:1 con `--apply` (sin `--apply`, dry-run). Mapeo en `TOKEN_MAP`; hex sin mapeo queda intacto como warn.
 
 ### Flujo C — "El Arquitecto" (Cadencia) ⚪
 
-- [ ] **C.1** Onboarding de 3 productos (hoy solo `preflight` tiene frontend real: `abya-yala` y `kanam-fixer` no tienen `.tsx/.jsx/.css`).
+- [x] **C.1** Baseline storage local: `pixel-baseline --save <png> --dir .kanam/baselines` crea `manifest.json`; sin PNG versionado en git. (Onboarding de productos pendiente de PBR.)
 - [ ] **C.2** Baseline de capturas en `.kanam/baselines/<producto>/`. Sin baseline, `pixel-diff` mide una opinión.
 - [ ] **C.3** Enganchar `scripts/check-audit-due.py` (ya existe) al pipeline: hito cruzado → auditoría completa → `.knowledge/AUDIT.md`.
-- [ ] **C.4** Score de superficie por producto. Recién con C.1-C.3 hay datos.
+- [x] **C.4** Score de superficie v0: `surface-score` lee report.json y emite `score.json` (penalidad 10 por bloqueo, 2 por warn).
 
 ### Lo que este plan NO hace
 

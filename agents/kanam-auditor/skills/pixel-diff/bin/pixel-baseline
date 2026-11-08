@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+const { program } = require('commander');
+const fs = require('fs');
+const path = require('path');
+
+program
+  .name('pixel-baseline')
+  .description('Guarda una captura aprobada como baseline versionado (convención por producto/ruta)')
+  .version('1.0.0')
+  .option('-s, --save <path>', 'PNG a incluir como baseline', '')
+  .option('-d, --dir <path>', 'Directorio del baseline', '.kanam/baselines')
+  .option('-n, --name <slug>', 'Nombre canónico (sin extensión)', 'baseline')
+  .option('--list', 'Lista los baselines registrados', false)
+  .parse();
+
+const opts = program.opts();
+
+function readManifest(dir) {
+  const file = path.join(dir, 'manifest.json');
+  if (!fs.existsSync(file)) return [];
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
+}
+
+function writeManifest(dir, entries) {
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'manifest.json'), JSON.stringify(entries, null, 2) + '\n');
+}
+
+if (opts.list) {
+  try {
+    const entries = readManifest(opts.dir);
+    if (entries.length === 0) { console.log('Sin baselines registrados.'); process.exit(0); }
+    for (const e of entries) console.log(`${e.slug}  <- ${e.source}  (${e.added})`);
+  } catch (e) { console.error('Error:', e.message); process.exit(1); }
+  process.exit(0);
+}
+
+if (!opts.save) {
+  console.error(' Falta --save <png>. Usar --list para listar.');
+  process.exit(1);
+}
+
+const source = path.resolve(process.cwd(), opts.save);
+if (!fs.existsSync(source) || path.extname(source).toLowerCase() !== '.png') {
+  console.error('Ruta no válida (debe ser .png):', source);
+  process.exit(1);
+}
+
+const targetDir = path.resolve(process.cwd(), opts.dir);
+const canonical = path.join(targetDir, `${opts.name}.png`);
+fs.mkdirSync(targetDir, { recursive: true });
+fs.copyFileSync(source, canonical);
+
+const entries = readManifest(targetDir);
+const now = new Date().toISOString();
+const record = { slug: opts.name, file: canonical, source, added: now };
+const idx = entries.findIndex((e) => e.slug === opts.name);
+if (idx >= 0) entries[idx] = record; else entries.push(record);
+writeManifest(targetDir, entries);
+
+console.log(`Baseline guardado: ${opts.name}  ->  ${canonical}`);
+process.exit(0);

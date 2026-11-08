@@ -177,7 +177,7 @@ function htmlReport(model) {
 <style>
   :root { --ok:#0d9488; --warn:#b7791f; --bad:#b03a2e; --ink:#111318; --bg:#faf9f5; --line:#e2dfd6; }
   body { font-family: Inter, system-ui, -apple-system, sans-serif; margin:0; background:var(--bg); color:var(--ink); }
-  header { padding:28px 32px; background:var(--ink); color:var(--bg); }
+  header { padding:16px 32px; /* <= ceiling */ background:var(--ink); color:var(--bg); }
   header h1 { margin:0; font-size:22px; letter-spacing:.2px; }
   header .sub { opacity:.7; font-size:13px; margin-top:6px; }
   .verdict { display:inline-block; padding:6px 14px; border-radius:8px; font-weight:700; margin-top:14px; }
@@ -185,8 +185,8 @@ function htmlReport(model) {
   .verdict.warn { background:var(--warn); color:#fff; }
   .verdict.bad { background:var(--bad); color:#fff; }
   .counts { margin-top:10px; font-size:13px; opacity:.85; }
-  main { padding:24px 32px; max-width:1100px; }
-  .stage { background:#fff; border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-bottom:20px; }
+  main { padding:16px 32px; /* <= ceiling */ max-width:1100px; }
+  .stage { background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px 20px; /* <= ceiling */ margin-bottom:20px; }
   .stage h2 { margin:0 0 4px; font-size:16px; display:flex; align-items:center; gap:10px; }
   table { border-collapse:collapse; width:100%; margin-top:10px; }
   th,td { padding:8px 10px; border-bottom:1px solid #efede6; text-align:left; font-size:13px; vertical-align:top; }
