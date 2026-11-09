@@ -1,21 +1,27 @@
 # Clase: Preparándote para entrevistas técnicas sin morir en el intento (y sin llorar)
 
-Clase de estudio construida a partir de la charla de Nerdearla, con el transcript local en
-`entrevistas-tecnicas-transcripcion.md`.
+Clase de estudio construida a partir de la charla, con el transcript local en `transcripcion.md`.
+
+**v2 — re-evaluada el 2026-11-09 con `deepseek-v4.1-flash`.** Los hallazgos, la evidencia y
+los cambios están en `AUDIT-2026-11-09.md`.
 
 ## Ficha del material
 
-- Fuente: https://www.youtube.com/watch?v=EOoXbeByMsA (Nerdearla)
-- Canal del video: Nerdearla (Argentina)
+- Fuente: https://www.youtube.com/watch?v=EOoXbeByMsA
+- Evento: **Nerdearla Chile 2026** (jueves 16 de abril, 10:40, Stream Azul)
+- Canal del video: Nerdearla
 - Título en YouTube: «Preparándote para entrevistas técnicas sin morir en el intento - Tatiana Rodriguez»
-- Expositora (se presenta como): Diana (@tatanomada.com)
-- Duración: 17:36
+- Expositora: **Tatiana Rodríguez** (@tatanomada), senior software developer y líder de
+  Pioneras Dev en Bucaramanga
+- Publicado: 2026-04-16
+- Duración: 17:36 (1056 s)
+- Track: Softskills
 - Idioma: español
-- Tipo: talk práctica de carrera (no de un concepto técnico)
+- Tipo: charla práctica de carrera (no de un concepto técnico)
 
-Registramos los nombres porque no coinciden: el título la acredita como «Tatiana Rodriguez»
-y ella misma se presenta como «Diana». No se resuelve aquí, y ninguna cita afirma que sea
-el nombre oficial de la speaker.
+**Nota sobre el nombre:** el ASR transcribe «Yo soy Diana» en 28.0 s. Las fuentes oficiales
+(NERDflix, perfil de speaker de Nerdearla y el handle @tatanomada) la acreditan como
+**Tatiana Rodríguez**. Se trata como error del ASR, no como una segunda identidad.
 
 ## Resultado esperado de la clase
 
@@ -36,17 +42,20 @@ Al terminar esta clase, el estudiante puede:
 
 | Tiempo | Bloque |
 |---|---|
-| 0:00 - 0:13 | Música |
-| 0:13 - 1:33 | Presentación, promesa y experiencia de la speaker |
-| 1:13 (73s) - 6:49 | Etapa 1: Antes de la entrevista · LinkedIn |
-| 4:14 (248s) - 5:31 | Etapa 1: Stack y repaso técnico |
-| 5:31 (340s) - 6:49 | Etapa 1: Investigación de empresa |
-| 6:53 (413s) - 9:24 | STAR y preguntas de comportamiento |
-| 9:07 (547s) - 10:46 | Live coding y práctica deliberada |
-| 10:52 (652s) - 11:51 | Logística de la agenda + research del entrevistador |
-| 11:51 (711s) - 15:23 | Etapa 2: Durante la entrevista |
-| 15:23 (923s) - 17:18 | Etapa 3: Después de la entrevista (correo de cierre) |
-| 17:18 - 17:36 | Cierre y contacto |
+| 0:00–0:14 | Música |
+| 0:14–0:57 | Presentación, promesa y experiencia de la speaker |
+| 0:57–1:14 | Encuadre de la etapa «antes» |
+| 1:14–3:37 | Etapa 1 · LinkedIn (tres pilares) |
+| 3:37–4:09 | Transición: elegir stack |
+| 4:09–5:41 | Etapa 1 · Repaso técnico por rol |
+| 5:41–6:54 | Etapa 1 · Investigación de empresa |
+| 6:54–8:39 | Etapa 1 · STAR |
+| 8:39–9:07 | Etapa 1 · Práctica con un amigo |
+| 9:07–10:52 | Etapa 1 · Live coding |
+| 10:52–11:51 | Etapa 1 · Horario y research del entrevistador |
+| 11:51–15:23 | Etapa 2 · Durante la entrevista |
+| 15:23–17:16 | Etapa 3 · Correo de cierre |
+| 17:16–17:36 | Cierre y contacto |
 
 ## Módulo 0 - Marco y premisa
 
@@ -79,9 +88,17 @@ entrevistadora; se toma como experiencia, no como cifra verificable.
 2. **Palabras clave por rol / certificación** en headline, descripción y en cada experiencia.
 3. **Coherencia entre CV y LinkedIn** (del caso "C2 certificado vs perfil básico").
 
+**Ejemplos concretos que dio la speaker (1:46–2:20):**
+
+- Fotos pixeladas a propósito, con una copa de vino, en traje de baño en la playa, o portada
+  con la familia en el último viaje. Son fotos lindas, pero no son la red para publicarlas.
+- Descripciones tipo Tinder («tengo 33 años, soy Piscis») que no dicen nada del rol y
+  dificultan que un recruiter te encuentre.
+
 **Hechos citados por la speaker:**
 
-- Las empresas pueden **evaluar únicamente tu perfil de LinkedIn**, ya sin recibir CV (claims, no datos verificables).
+- Las empresas pueden **evaluar únicamente tu perfil de LinkedIn**, ya sin recibir CV
+  (claim, no dato verificable).
 - Tu CV y tu perfil de LinkedIn funcionan como **entidades distintas**, no como duplicados.
 - Debes tener una **sección de idiomas con el nivel real**.
 - Debes **traducir realmente** el perfil (no marcar "tengo perfil en inglés" y que todo siga en español).
@@ -99,8 +116,10 @@ entrevistadora; se toma como experiencia, no como cifra verificable.
 
 **Idea fuerza (248.8s-290.7s):**
 
-> «Si tener de memoria conceptos no es tu fuerte... ir a `chattir cloud` y poner
+> «Si tener de memoria conceptos no es tu fuerte... ir a ChatGPT o Claude y poner
 > `top 50 preguntas de entrevista para X tecnología`.»
+
+(El ASR transcribe «chattir cloud»; por el contexto, dice ChatGPT o Claude.)
 
 **Conceptos clave:**
 
@@ -177,27 +196,11 @@ entrevistadora; se toma como experiencia, no como cifra verificable.
 3. Añade 2 números (tiempo, %, cantidad de usuarios, valor).
 4. Léelos en voz alta y cronometra (objetivo 2-3 minutos por historia).
 
-### 1.5 Logística de agenda y research del entrevistador (652.3s-708.2s)
+### 1.5 Live coding y práctica deliberada (547.4s-645.7s)
 
-**Objetivo:** elegir ventanas que favorezcan al candidato (claim con límite).
+**Objetivo:** convertir la práctica de algoritmos/caja blanca en un hábito medible.
 
-**Cuidado:** la afirmación «contractualamente el 2 p.m. después de comida favorece pasar a la
-siguiente ronda vs. mañana o tarde» se presenta con lenguaje científico, pero **las fuentes
-no se citan**. Trátala como hipótesis, no como ley. La idea más útil que sí se sostiene:
-**no comer antes de la entrevista + dormir bien**.
-
-**Checklist logística:**
-
-- [ ] Horario elegido: idealmente después del almuerzo (2 p.m.) según la speaker; si no se puede, mañana temprano con café y sin comida pesada.
-- [ ] Sin comida pesada antes de la entrevista.
-- [ ] Revisar el background técnico de cada entrevistador listado en la invitación (LinkedIn).
-- [ ] Prepárate en los temas donde ese entrevistador es fuerte.
-
-### 1.6 Live coding y práctica deliberada (547.4s-645.7s)
-
-**Objetivo:** convertir la práctica de algoritmos/caja blanca en un hábito mesurable.
-
-**Estadísticas citadas (ético recordar: no se detallan las fuentes):**
+**Estadísticas citadas (la speaker no da fuente; ver «Estadísticas» al final):**
 
 - Según HackerRank, el **85 % de las empresas prefiere un candidato que sepa comunicar su
   razonamiento aunque falle**, vs. alguien que solo da la respuesta.
@@ -206,9 +209,9 @@ no se citan**. Trátala como hipótesis, no como ley. La idea más útil que sí
 
 **Técnicas recomendadas:**
 
-1. Practicar en LeetCode, CodeWars, HackerRank, o **CodingGame** si te motiva más el enfoque
+1. Practicar en LeetCode, Codewars, HackerRank, o **CodinGame** si te motiva más el enfoque
    dinámico.
-2. **Explica en voz alta** cada paso: por qué chooses esa estructura, qué coste tiene,
+2. **Explica en voz alta** cada paso: por qué eliges esa estructura, qué coste tiene,
    qué consideras.
 3. **No te estanques más de 15 minutos**: ve a la solución y léela; **entiéndela**, no la
    memorices.
@@ -222,6 +225,29 @@ no se citan**. Trátala como hipótesis, no como ley. La idea más útil que sí
 - Semana 2: 5 medium; di los trade-offs.
 - Semana 3: 2 problemas hard con tiempo cronometrado (40 min).
 - Semana 4: mock completo con un amigo que no sea técnico; graba audio/video.
+
+### 1.6 Logística de agenda y research del entrevistador (652.3s-708.2s)
+
+**Objetivo:** elegir una ventana que no juegue en contra y conocer al entrevistador.
+
+**Cuidado con el claim del horario:** la speaker dice que está «científicamente comprobado»
+que una entrevista después del almuerzo (idealmente 2 p.m.) tiene más chance de pasar a la
+siguiente ronda. La evidencia más cercana es un estudio de 2025 sobre **104.552 exámenes
+orales** en Italia: la tasa de aprobación tiene un pico alrededor del **mediodía (11:00–13:00)**
+y baja a las 08:00–09:00 y a las 15:00–16:00; los autores sugieren que el patrón podría
+extenderse a entrevistas laborales, pero **no lo midieron**. Dirección útil: evitar los
+extremos del día. El «2 p.m.» exacto no está sostenido.
+
+**Checklist logística:**
+
+- [ ] Horario elegido: si podés, a media mañana / mediodía; evitar 08:00–09:00 y 15:00–16:00.
+- [ ] Sin comida pesada antes de la entrevista.
+- [ ] Dormir bien la noche anterior.
+- [ ] Revisar el background técnico de cada entrevistador listado en la invitación (LinkedIn).
+- [ ] Prepárate en los temas donde ese entrevistador es fuerte.
+
+**Fuente del estudio:** Frontiers in Psychology, 24-jul-2025 —
+https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2025.1605041/full
 
 ---
 
@@ -275,6 +301,9 @@ no se citan**. Trátala como hipótesis, no como ley. La idea más útil que sí
 
 > «El correo más importante que vas a enviar. 100 % de las veces funciona.»
 
+**Condición que puso la speaker:** enviarlo solo si el feeling general fue bueno (ella lo
+pone en «un 70 % bien»). Si la entrevista fue mala, el correo no es obligatorio.
+
 **Procedimiento (1-2 días después de la entrevista):**
 
 1. Envía un correo a tu entrevistador agradeciendo su tiempo.
@@ -305,7 +334,7 @@ resultar excesivo si las objeciones fueron fuertes).
 
 ## Módulo 4 - Cierre de la charla
 
-- Contacto de la speaker: Instagram **@tatanomada.com**
+- Contacto de la speaker: Instagram **@tatanomada**
 - Comparte vacantes de tecnología casi a diario.
 - «Bienvenidas las preguntas.»
 
@@ -313,16 +342,16 @@ resultar excesivo si las objeciones fueron fuertes).
 
 ## Estadísticas citadas y cómo tratarlas
 
-| Claim | Speaker | Cómo usarlo |
+| Claim | Fuente / respaldo | Cómo usarlo |
 |---|---|---|
-| 85 % de empresas prefiere candidato que comunica razonamiento aunque falle (HackerRank) | s/n | Úsalo como **regla de oro de communicación**, no como métrica exacta |
-| Práctica deliberada 1 h/día × 2 meses mejora 40 % (entrevistas) | s/n | Diseña la rutina personal; trata el % como motivación |
-| Horario post-almuerzo (2 p.m.) da más pases a la siguiente ronda | no citada | Hipótesis: prueba en tu caso, no como regla |
-| Email post-entrevista «100 % funciona» | experiencia personal | Útil y barato; no lo conviertas en garantía |
+| 85 % de empresas prefiere candidato que comunica razonamiento aunque falle (HackerRank) | sin fuente localizable | No lo uses como estadística; si lo citás, atribuilo a la speaker |
+| Práctica deliberada 1 h/día × 2 meses mejora 40 % (entrevistas) | sin fuente localizable | Diseña la rutina; el % no es evidencia |
+| Horario post-almuerzo (2 p.m.) da más pases a la siguiente ronda | Frontiers 2025: pico 11–13 h en exámenes orales | Usá «evitá los extremos del día»; el 2 p.m. exacto no está sostenido |
+| Email post-entrevista «100 % funciona» | experiencia personal | Recomendación fuerte, no garantía; enviarlo solo si el feeling fue bueno |
 | 100+ entrevistas como candidata/entrevistadora | experiencia personal | Se registra como experiencia, no como dato verificable |
 
 **Regla de estudio para esta clase:** toda cifra va etiquetada como **evidencia vs. claim de
-la exponentes**. Cuando estudies, no las memorices; memoriza el **acto** que proponen.
+la speaker**. Cuando estudies, no las memorices; memoriza el **acto** que proponen.
 
 ---
 
@@ -340,7 +369,7 @@ la exponentes**. Cuando estudies, no las memorices; memoriza el **acto** que pro
 - **Semana 1 - LinkedIn + CV coherencia:**
   - Foto profesional, headline con keywords (React, TypeScript, Supabase, a11y, WCAG).
   - Sección de idiomas con B2; perfil inglés completo.
-  - CV que cuente una historia; sin accession de accessibility-auditor en CV nuevo
+  - CV que cuente una historia; sin inflar el rol de accessibility auditor en el CV nuevo
     (regla del workspace).
 - **Semana 2 - Banco de preguntas técnicas:**
   - Top 50 preguntas para React, Node/TS y SQL.
@@ -393,7 +422,8 @@ Empieza por cualquiera y decide si la convertimos en una lección más formal.
 
 ## Notas editoriales para esta clase
 
-- El título del video nombra «Tatiana Rodriguez»; la persona se presenta como «Diana» (@tatanomada.com).
+- El ASR transcribe «Diana» en 28.0 s; las fuentes oficiales la acreditan como
+  **Tatiana Rodríguez** (@tatanomada). Es un error de reconocimiento, no una discrepancia.
 - La charla es un **talk de carrera**, no una revisión técnica profunda. Sirve como **marco de
   gestión del proceso**, no como fuente de doctrina técnica.
 - Busca la **evidencia** para los claims porcentuales antes de tomarlos como ley.

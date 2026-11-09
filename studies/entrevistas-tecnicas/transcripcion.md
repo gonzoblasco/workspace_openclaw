@@ -1,11 +1,35 @@
 # Transcripción (ASR): Preparándote para entrevistas técnicas sin morir en el intento
 
 - Fuente: https://www.youtube.com/watch?v=EOoXbeByMsA (Nerdearla)
+- Evento: Nerdearla Chile 2026 (16 de abril, 10:40, Stream Azul); track Softskills
 - Título en YouTube: «Preparándote para entrevistas técnicas sin morir en el intento - Tatiana Rodriguez»
-- Expositora (según ella misma): Diana (@tatanomada.com)
-- Duración: 17:36
+- Expositora: Tatiana Rodríguez (@tatanomada). El ASR transcribe «Diana» en 28.0 s; es un
+  error de reconocimiento, no una segunda identidad.
+- Duración: 17:36 (1056 s); el último cue cierra en 1044.3 s
 - Idioma: español
 - Origen: subtítulos automáticos (ASR), limpiados. Timestamps en segundos.
+
+**Glosario de errores del ASR** (no se editan los cues):
+
+| ASR | Lo que se dice en el video |
+|---|---|
+| chattir cloud | ChatGPT o Claude |
+| Glassdor | Glassdoor |
+| lead code | LeetCode |
+| Code Wars | Codewars |
+| hacker rang | HackerRank |
+| coding game | CodinGame |
+| Linking | LinkedIn |
+| life coding | live coding |
+| porcuestos | pull requests |
+| start | STAR |
+| stistas | entrevistas |
+| malut | mal sabor / mal comienzo |
+| supercsado | supercansado |
+| haberado | haber hecho / haber dado |
+| PNP | probablemente PMP; no confirmado |
+| Qway | no identificado; no inventar la certificación |
+| @tatanomada.com | @tatanomada |
 
 [2.0s] [música]
 [9.2s] [música]

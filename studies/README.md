@@ -9,7 +9,7 @@ Este directorio agrupa los análisis y estudios técnicos del workspace.
 | `narrative-engineering/` | Análisis de estructuras narrativas con el **modelo de 4 ejes** (Premisa & Regla de Hierro, Gestión de Información, World-building Funcional, Arco de Identidad). | [`narrative-engineering/`](narrative-engineering/) |
 | `openclaw-use-cases/` | Registro de las lecciones del curso **OpenClaw Use Cases** (roadmap.sh), con verificación contra la instalación real. | [`openclaw-use-cases/`](openclaw-use-cases/) |
 | `oss-alternatives-triage.md` | Triaje de alternativas open source: qué se adapta, qué se adopta y qué se descarta, con licencias verificadas. | - (archivo suelto) |
-| `entrevistas-tecnicas/` | Clase de estudio derivada de la charla «Preparándote para entrevistas técnicas sin morir en el intento» (Nerdearla): transcript ASR y outline interactivo. | [`entrevistas-tecnicas/`](entrevistas-tecnicas/) |
+| `entrevistas-tecnicas/` | Clase de estudio derivada de la charla «Preparándote para entrevistas técnicas sin morir en el intento» (Nerdearla Chile 2026, Tatiana Rodríguez): transcript ASR, outline v2 y auditoría de la re-evaluación 2026-11-09. | [`entrevistas-tecnicas/`](entrevistas-tecnicas/) |
 | `software-to-ai-engineer/` | Clase de estudio derivada del video «De Software Engineer a AI Engineer: El Roadmap Más Realista» (Fazt): transcript ASR, outline de 14 módulos alineado a los capítulos oficiales y auditoría de la re-evaluación 2026-11-09. | [`software-to-ai-engineer/`](software-to-ai-engineer/) |
 
 ## Método
