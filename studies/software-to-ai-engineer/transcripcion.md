@@ -4,11 +4,64 @@
 - Canal: Fazt (@FaztTech)
 - Título en YouTube: «De Software Engineer a AI Engineer: El Roadmap Más Realista»
 - Ponente: Fazt
-- Duración aproximada: 32:36 (1955s según timestamps del transcript)
+- Publicado: 2026-07-30
+- Duración: 32:47 (1967s medidos en el reproductor; el último cue ASR cierra en 1951.8s)
 - Idioma: español (subtítulos automáticos / ASR)
-- Nota: el bloque 0:40–1:40 del video es un anuncio del patrocinador (Cynode); se incluye en la transcripción como se escuchó, pero NO es contenido del roadmap.
+- Nota: el bloque 0:53–1:59 es un anuncio del patrocinador (**seenode**, `seenode.link/fazt`); se incluye como se escuchó, pero NO es contenido del roadmap. El ASR lo escribió «Cynote».
 
-Timestamps en segundos, tal como los devolvió el ASR. Cada línea es un cue; líneas consecutivas pueden corresponder al mismo bloque.
+Timestamps en segundos, tal como los devolvió el ASR. Cada línea es un cue; líneas consecutivas pueden corresponder al mismo bloque. **No se editaron los cues**: las correcciones de términos van en el glosario, al final de este encabezado.
+
+## Capítulos oficiales (descripción del video)
+
+```
+00:00 Intro: de Software Engineer a AI Engineer
+00:53 Patrocinado
+01:59 Para quién es este roadmap
+02:37 Las bases del desarrollo
+04:07 AI Engineer vs MLE vs AI Researcher
+06:31 ¿Qué hace realmente un AI Engineer?
+07:41 Checklist previo: lenguaje, SQL, Git, redes, Docker
+09:07 System Design
+11:17 Bases de los modelos: tokens, contexto, temperatura, roles
+12:48 APIs de IA: Anthropic y OpenAI
+13:58 Costos: API vs suscripción (y modelos chinos)
+16:58 Trabajar con la API y casos de uso reales
+19:40 Prompt engineering y function calling
+22:04 RAG y bases de datos vectoriales
+24:18 CLI, Skills y MCP
+26:46 Repaso del roadmap
+28:21 LLMOps: desplegar modelos y optimizar costos
+30:23 Resumen de roles y por dónde empezar
+32:20 Cierre
+```
+
+## Glosario de errores del ASR
+
+| ASR | Correcto |
+|---|---|
+| Cynote | seenode |
+| Note 10 | .NET 10 |
+| Postres / Postre SQL | PostgreSQL |
+| Maya SQL | MySQL |
+| ASIS | ACID |
+| IPI | API |
+| EA engineer | AI Engineer |
+| CBS | CVs |
+| pr the engineering / PR engineer | prompt engineering |
+| RAC / RAS | RAG |
+| Cloud / Sonate / output | Claude / Sonnet / Opus |
+| LlM OS | LLM Ops |
+| Lane Shain / Laraf / Injes | LangChain / LlamaIndex / Inngest |
+| Pinecon | Pinecone |
+| fast.de | fazt.dev |
+
+## Recursos reales de la descripción
+
+- System Design Primer: https://github.com/karanpratapsingh/system-design
+- Video de RAG: https://youtu.be/_B4jGz0JEGE
+- Patrocinador: https://seenode.link/fazt
+
+Los videos de CLI y de modelos locales que el ponente anuncia «en la descripción» no figuran en ella.
 
 [0.1s] Si eres un desarrollador de software o
 [2.0s] software engineer y has escuchado el
