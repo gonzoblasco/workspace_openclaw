@@ -51,6 +51,18 @@ rsync -a \
 # Era 7 dias, pero 7 dias x 12 snapshots x ~69 MB no entraba en disco. El
 # proposito del snapshot es poder retomar una sesion reciente; 48 horas
 # cubren ese caso y dejan el backup en ~1,6 GB.
-find "$HOME/.openclaw/backups" -maxdepth 1 -type d -name 'heartbeat-*' -mtime +2 -exec rm -rf {} + 2>/dev/null || true
+#
+# 2026-11-09: `-mtime +2` no podaba nada en la practica (93 dirs, 4,3 GB):
+# -mtime mide el *mtime del directorio*, que cambia cada vez que se escribe
+# dentro (el script borra $SAFE.md de snapshots viejos -> toca el dir viejo
+# y lo revive). Ahora se poda por la fecha del nombre `heartbeat-YYYYMMDD-HHMMSS`
+# con mas de 48 h, sin depender del mtime. Se mantiene el umbral de 48 h.
+CUTOFF=$(date -v-48H +%Y%m%d-%H%M%S 2>/dev/null || date -d '48 hours ago' +%Y%m%d-%H%M%S)
+for d in "$HOME/.openclaw/backups"/heartbeat-*; do
+  [ -d "$d" ] || continue
+  ts=${d##*/heartbeat-}
+  [ "$ts" \> "$CUTOFF" ] && continue
+  rm -rf "$d" 2>/dev/null || true
+done
 
 echo "$BASE"
