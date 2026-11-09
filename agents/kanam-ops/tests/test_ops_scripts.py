@@ -468,6 +468,30 @@ class TestChannelsWatch(unittest.TestCase):
         r = self.run_watch()
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
+    def test_default_timeout_is_below_trigger_budget(self):
+        """Bug del 2026-11-09: el default (45s) superaba los 30s del trigger.
+
+        El script esperaba mas de lo que el scheduler aguanta, el trigger moria
+        con 'code mode timeout exceeded' y el watchdog quedaba en error sin
+        alertar nunca.
+        """
+        text = CHANNELS_WATCH.read_text()
+        import re as _re
+        m = _re.search(r'CHANNELS_TIMEOUT:-(\d+)', text)
+        self.assertIsNotNone(m, "no se encontro el default de CHANNELS_TIMEOUT")
+        self.assertLess(int(m.group(1)), 30,
+                        "el default tiene que ser menor que los 30s del trigger")
+
+    def test_zero_timeout_is_rejected(self):
+        """`alarm 0` en perl CANCELA la alarma: esperaria para siempre."""
+        env = dict(os.environ)
+        env["PATH"] = str(self.bindir) + os.pathsep + env.get("PATH", "")
+        env["CHANNELS_TIMEOUT"] = "0"
+        r = subprocess.run(["bash", str(CHANNELS_WATCH)],
+                           capture_output=True, text=True, env=env, timeout=60)
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertIn("invalido", r.stdout + r.stderr)
+
 
 class TestBudgetWatch(unittest.TestCase):
     """gateway-budget-watch.sh: watchdog de disco por agente (E3.2).

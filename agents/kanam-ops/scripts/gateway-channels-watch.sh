@@ -14,7 +14,21 @@
 # parece sano estando roto. Ese fue un bug real del jobs-watcher (2026-09-15).
 set -uo pipefail
 
-TIMEOUT="${CHANNELS_TIMEOUT:-45}"
+# BUG CORREGIDO 2026-11-09: el default era 45s, MAYOR que los 30s de timeout
+# que el scheduler da a la evaluacion de un trigger. Cuando `channels status`
+# se colgaba, el script esperaba 45s y el trigger moria a los 30 con
+# "code mode timeout exceeded": tres corridas en error, sin alerta y sin
+# registro de que habia fallado el check. El limite del script tiene que ser
+# SIEMPRE menor que el del trigger que lo invoca.
+TIMEOUT="${CHANNELS_TIMEOUT:-20}"
+
+# `alarm 0` en perl CANCELA la alarma, no la pone en cero. Un TIMEOUT de 0
+# dejaria el script esperando para siempre, que es justo el cuelgue que se
+# quiere evitar. Se exige un minimo de 1s.
+if ! [[ "$TIMEOUT" =~ ^[0-9]+$ ]] || (( TIMEOUT < 1 )); then
+  echo "CHANNELS_TIMEOUT invalido: '$TIMEOUT' (se espera un entero >= 1)." >&2
+  exit 2
+fi
 
 JSON=""
 if command -v timeout >/dev/null 2>&1; then
