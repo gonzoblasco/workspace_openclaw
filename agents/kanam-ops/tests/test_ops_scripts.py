@@ -23,6 +23,7 @@ import unittest
 from pathlib import Path
 
 OPS = Path(__file__).resolve().parent.parent
+WORKSPACE = OPS.parent.parent
 SCRIPTS = OPS / "scripts"
 DRIFT = SCRIPTS / "gateway-config-drift.sh"
 JOBS = SCRIPTS / "gateway-jobs-check.sh"
@@ -33,6 +34,7 @@ BUDGET_WATCH = SCRIPTS / "gateway-budget-watch.sh"
 POSTMORTEM = SCRIPTS / "gateway-postmortem.sh"
 RISK_POLICY = SCRIPTS / "gateway-risk-policy.sh"
 OPS_COMMIT = SCRIPTS / "ops-commit.py"
+DRIFT_ALERT = WORKSPACE / "scripts" / "gateway-drift-alert.sh"
 
 
 def run(script, *args, home=None, timeout=120):
@@ -848,6 +850,52 @@ class TestOpsCommit(unittest.TestCase):
         self.write("agents/kanam-ops/scripts/a.sh")
         r = self.run_ops_commit("--apply")
         self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+
+
+class TestDriftAlert(unittest.TestCase):
+    """gateway-drift-alert.sh: alerta de drift.
+
+    El bug del 2026-11-09: `set -e` mataba el script justo cuando drift.sh
+    salia 1 por HABER ENCONTRADO drift. El alerta nunca avisaba, el job fallo
+    10 veces seguidas y el scheduler lo auto-deshabilito.
+
+    El exit code del medidor es DATO, no error. Estos tests fijan eso.
+    """
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="ops-driftalert-"))
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_script_has_no_set_e(self):
+        """Una regresion aca reintroduce el bug en silencio.
+
+        Se miran solo las lineas ejecutables: el comentario que explica el bug
+        menciona `set -euo pipefail` a proposito, y un test textual lo
+        confundiria con el codigo.
+        """
+        code = [
+            l.strip() for l in DRIFT_ALERT.read_text().splitlines()
+            if l.strip() and not l.strip().startswith("#")
+        ]
+        for line in code:
+            self.assertFalse(
+                line.startswith("set -") and "e" in line.split("-")[1].split()[0],
+                "linea con set -e: %r" % line,
+            )
+
+    def test_existing_drift_is_reported(self):
+        """Con drift real, el script del sistema debe salir 1, no morir antes."""
+        if not DRIFT_ALERT.exists():
+            self.skipTest("no hay scripts/gateway-drift-alert.sh")
+        r = subprocess.run(["bash", str(DRIFT_ALERT)],
+                           capture_output=True, text=True, timeout=120)
+        # 0 = sin drift (correcto tambien), 1 = drift reportado, 2 = no medible.
+        # Lo que NO puede pasar es una salida vacia con exit != 0.
+        if r.returncode != 0:
+            self.assertTrue(r.stdout.strip(),
+                            "salio %d sin decir nada: ese es el bug del 09" % r.returncode)
 
 
 class TestRealConfigSanity(unittest.TestCase):
