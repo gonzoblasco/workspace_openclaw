@@ -41,7 +41,7 @@
 - [ ] **[workspace]** (medium) ADR-109 pendiente: definir el borde verificable en el runtime que habilite el slot de chat trivial de gemma4
 - [ ] **[workspace]** (medium) Planner: exigir verificación de afirmaciones sobre el código. En el review de Preflight Etapa 2 (2026-11-06) afirmó dos cosas falsas: que scan.ts corre Chromium con --no-sandbox (solo pasa --disable-dev-shm-usage) y que probar el 11o scan daría 429 (mcp.ts nunca llama checkQuota). El razonamiento de secuencia y gate fue correcto; la falla es inventar detalle de implementación sin abrirlo. Opciones: (a) regla dura en el brief del CORE: 'cada afirmación sobre el código debe citar archivo:línea o marcarse como supuesta'; (b) skill propia de verificación para el planner; (c) recién después evaluar cambio de modelo — hoy gpt-oss:120b-cloud razona bien el plan y el fallo es de método, no de capacidad.
 - [ ] **[kanam-critic]** (medium) Critic T2.3/T5.1: contrato de invocacion cruzada al Critic (sessions_spawn permitido: allowed=kanam-critic) + veredicto como gate
-- [ ] **[kanam-critic]** (medium) Critic T3: 1 VETO ajeno adicional (tercero) + tasa de absorcion (ledger 14 fricciones: 6 absorbed, 8 open)
+- [ ] **[kanam-critic]** (medium) Critic T3.3: publicar tasa de absorcion (15 fricciones: 7 absorbed, 8 open; 46.7%) - T3.2 cerrado con 3 VETOs ajenos
 - [ ] **[kanam-critic]** (medium) Critic T4.1: objective-extractor con gate del Critic
 - [ ] **[kanam-critic]** (medium) Critic T4.2: detectores horizon, resistance y auto-reportado en evidence-hunter con caso trampa
 - [ ] **[kanam-critic]** (medium) Critic T4.3: format_sharp_report.py + 1 PR comment real
@@ -51,6 +51,7 @@
 - [ ] **[kanam-critic]** (medium) Critic: verificar la primera entrega real del barrido semanal (lunes 18:00 ART, delivery telegram) y que el veredicto quede registrado con emit-verdict.py
 - [ ] **[kanam-critic]** (medium) Critic F13: otros numeros stale en docs/ROADMAP.md (27 skills son 113; 21 proyectos son 6; git status con 2 modificados)
 - [ ] **[kanam-critic]** (medium) Critic F14: el mapa del sistema no menciona al Crew (Etapa 3 completada, vision v1.0 en docs/ROADMAPS.md)
+- [ ] **[kanam-critic]** (medium) Critic F16: reconciliar ROADMAP.md (dice 2 VETOs ajenos y 'falta medir') con el ledger (3 VETOs ajenos: docs-ROADMAP, kanam-dev-ROADMAP, kanam-dev-inventario-skills)
 - [ ] **[workspace]** (low) Decidir si se promueven ficcion-narrativa-prosa y video-transcription del Workshop al árbol versionado (hoy no se versionan por diseño)
 - [ ] **[kanam-critic]** (high) Critic T5.2/v1.0: veredicto como gate del pipeline + aceptacion final
 - [ ] **[kanam-critic]** (high) Critic F8: reemitir kanam-critic-kit-v0.3-r4 desde una sesion con gpt-oss:120b-cloud (el rol lo declara primario) o cambiar el config del rol

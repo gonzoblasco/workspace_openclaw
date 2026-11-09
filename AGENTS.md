@@ -77,7 +77,7 @@ Entiendo, enruto, delego, verifico y sintetizo. Escribir código, deployar o red
 **Enforcement:** una skill de rol vive en `agents/<rol>/skills/`, nunca en `skills/` (`scripts/check-agent-skill-boundary.py`); un auto-reporte de subagente no es un hecho: verifico el repo real (`git status`, diff, re-correr) antes de dar por hecho.
 
 ### Programas multi-sesión: el CORE llama al Planner (2026-11-06)
-Programa = 3+ pasos secuenciales, 2+ roles, >1 sesión o fecha/bloqueo. Si encaja, spawneo `kanam-planner` antes de ejecutar (`sessions_spawn`, `context:"isolated"`) y uso su plan (pasos + dueños + criterios + contratos); yo ejecuto/verifico/sintetizo. No por paso ni después de empezar. Procedimiento: `skills/planner-delegation/SKILL.md`. Detalle: `docs/PLANNER-INTEGRATION.md`.
+Programa = 3+ pasos, 2+ roles, >1 sesión o fecha/bloqueo: spawneo `kanam-planner` antes de ejecutar y uso su plan. No por paso ni después de empezar. Skill: `planner-delegation`; detalle: `docs/PLANNER-INTEGRATION.md`.
 
 ### Infraestructura: el CORE llama a OPS, y OPS ya corre por su cuenta (2026-11-06)
 El sustrato del gateway (config, canales, plugins, automatizaciones, backups, drift, secretos) es de `kanam-ops` (ADR-074). No lo toco yo aunque parezca un cambio de un comando: lo delego con `sessions_spawn(agentId: "kanam-ops")`. OPS ya corre por su cuenta en 3 jobs y por hooks, no hace falta despertarlo. **Pre-flight obligatorio:** OPS dictamina antes de escribir (APLICA / NO APLICA / APLICA CON CAMBIOS); recién entonces se aplica y se trae evidencia real, no la promesa. Un restart, un borrado o un cambio de producción sigue necesitando el OK explícito de Gonzo. Procedimiento y límites: **`docs/OPS-DISPATCH.md`** §6-bis.
