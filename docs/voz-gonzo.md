@@ -127,7 +127,7 @@ Estas son las que la skill aplica por defecto. Se actualizan cuando un caso nuev
 10. **El formato sigue al canal.** Vineta (`*` o `-`) en chat y mails informales; numeracion solo en documentos o listas donde el orden importa.
 11. **La voz no cambia con el idioma.** Cuando el proceso es en ingles (reclutadores US, onboarding), aplican las mismas reglas: presente, sin adornos, cerrar con confianza. El ingles va simple y directo, sin phrasal-verb decorativo.
 12. **Trato cerrado = confirmar y parar.** Cuando el otro ya dijo si, el mensaje confirma y termina. Preguntar solo lo que bloquea el arranque; el resto se resuelve cuando toque. Cada pregunta de mas es relleno y alarga el ida y vuelta. Cuando dudes entre preguntar o no, no preguntes.
-13. **El guion largo no es veto.** El corpus no lo usaba y se tomaba como senal de traduccion, pero el uso se extendio y Gonzo lo acepta (2026-11-03): si aparece uno, no se reescribe la frase para sacarlo; la prosa tampoco se fuerza a meterlo. No es regla de estilo, es criterio laxo.
+13. **El guion largo no es veto.** El corpus no lo usaba y se tomaba como senal de traduccion, pero el uso se extendio y Gonzo lo acepta (2026-11-03): si aparece uno, no se reescribe la frase para sacarlo; la prosa tampoco se fuerza a meterlo. No es regla de estilo, es criterio laxo. **Corolario operativo (2026-11-09):** no hay restriccion en ninguna parte del sistema. No hay script que lo bloquee, no hay hook que lo reescriba, no hay gate que lo rechace. Escribir con guion largo o con guion comun es indistinto; lo que si se prohíbe es *gastar una pasada de edicion en cambiarlos*.
 
 ---
 

@@ -18,7 +18,7 @@ automaticos, y deja lo que no se puede verificar en elAutomated como advertencia
 Que verifica:
 
   MODO POST (--post <archivo>), el gate de publicacion de UN post:
-  1. GUIONES: em dash / en dash prohibidos (misma regla que `check_em_dash.py`, reusada).
+  1. GUIONES: em dash / en dash se reportan como aviso, SIN veto (ADR-082, voz-gonzo 13).
   2. ESTRUCTURA: el header tiene los campos que el post canonico declara.
   3. IDIOMA: el post esta en ingles (el contenido publicable va en ingles; el reporte a Gonzo,
      en espanol - regla de AGENTS.md).
@@ -178,22 +178,25 @@ def check_post(path: Path, stale_days: int) -> tuple[list[str], list[str]]:
     body = _post_body(text)
     publicado = bool(re.search(r"\*\*Status:\*\*\s*PUBLICADO", header, flags=re.I))
 
-    # 1. Guiones largos. Innegociable (regla de Gonzo).
+    # 1. Guiones largos: informativo, sin veto. ADR-082 retiro la regla del guion
+    # comun obligatorio y voz-gonzo regla 13 declara el uso como criterio laxo.
+    # Se reporta para visibilidad, no se agrega a problems (no bloquea).
     em = text.count(EM_DASH)
     en = text.count(EN_DASH)
     if em or en:
-        problems.append(
+        warnings.append(
             f"Guiones largos: {em} em dash (U+2014) y {en} en dash (U+2013). "
-            f"Usar guion comun (-) SIEMPRE."
+            f"Aviso informativo: sin veto (voz-gonzo regla 13)."
         )
 
-    # 1b. Guiones y espacios invisibles. Innegociables por la misma razon que el em dash.
+    # 1b. Guiones y espacios invisibles. Defecto distinto del em dash: se ven bien
+    # pero no lo estan, y se copian al publicar. Esto SI bloquea.
     invisible = {name: text.count(ch) for ch, name in INVISIBLE_GLYPHS.items() if text.count(ch)}
     if invisible:
         detalle = ", ".join(f"{n} {name}" for name, n in invisible.items())
         problems.append(
-            f"Caracteres invisibles: {detalle}. Se ven bien pero no lo estan: usar guion comun (-) "
-            f"y espacio normal."
+            f"Caracteres invisibles: {detalle}. Se ven bien pero no lo estan: usar espacio normal "
+            f"y guion comun ASCII."
         )
 
     # 2. Estructura del header.

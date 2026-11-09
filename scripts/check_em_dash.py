@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
-"""check_em_dash.py - Detecta guiones largos (em dash U+2014 / en dash U+2013)
-antes de publicar texto a GitHub. Regla de Gonzo: guion comun (-) SIEMPRE.
+"""check_em_dash.py - Cuenta guiones largos (em dash U+2014 / en dash U+2013) en texto.
+
+INFORMATIVO, no es un veto. El guion largo no esta restringido en ninguna parte
+del workspace: ADR-082 retiro la regla 8 (guion comun obligatorio) y la regla 13
+de docs/voz-gonzo.md declara el uso como criterio laxo. No se reescribe una
+frase para sacar un guion, ni se fuerza uno para meterlo.
+
+Existe solo para diagnosticar: si alguien quiere saber cuantos hay en un texto
+publicado, este comando los lista. No bloquea commits ni publicaciones.
 
 Uso:
   python3 scripts/check_em_dash.py <archivo|directorio>
   cat texto | python3 scripts/check_em_dash.py -
 
-Exit 0 = limpio. Exit 1 = encontro guiones largos (imprime el contexto).
+Exit 0 = siempre (informativo). Exit 2 = la ruta no existe.
 """
 import sys
 import os
@@ -54,9 +61,9 @@ def main():
             sys.exit(2)
 
     if found:
-        print(f"\n!! Se encontraron {found} guiones largos. Regla de Gonzo: usar guion comun (-) SIEMPRE.")
-        sys.exit(1)
-    print("OK: sin guiones largos.")
+        print(f"\nInformativo: {found} guion(es) largo(s). Sin veto: el uso es criterio laxo (voz-gonzo regla 13).")
+    else:
+        print("Sin guiones largos.")
     sys.exit(0)
 
 

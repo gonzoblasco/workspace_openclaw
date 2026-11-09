@@ -184,18 +184,24 @@ def test_clean_post_passes(tmp_path):
     assert not problems, problems
 
 
-def test_em_dash_fails(tmp_path):
+def test_em_dash_warns_but_does_not_block(tmp_path):
+    """El em dash NO es veto (2026-11-09): reporta como aviso, nunca como problema.
+
+    ADR-082 retiro la regla del guion comun obligatorio y voz-gonzo 13 lo declara
+    criterio laxo. Si este test falla, alguien reintrodujo el veto.
+    """
     mod = load()
-    path = seed(tmp_path, post=CLEAN_POST.replace("Some fixes are invisible.", "Some fixes are invisible - really.").replace(" - ", " — "))
-    problems, _ = mod.check_post(path, 14)
-    assert any("Guiones largos" in p for p in problems)
+    path = seed(tmp_path, post=CLEAN_POST.replace("Some fixes are invisible.", "Some fixes are invisible - really.").replace(" - ", " - "))
+    problems, warnings = mod.check_post(path, 14)
+    assert not any("Guiones largos" in p for p in problems), problems
 
 
-def test_en_dash_fails(tmp_path):
+def test_en_dash_warns_but_does_not_block(tmp_path):
+    """El en dash tampoco bloquea: mismo criterio que el em dash."""
     mod = load()
-    path = seed(tmp_path, post=CLEAN_POST.replace("only by color", "only by colour – really"))
-    problems, _ = mod.check_post(path, 14)
-    assert any("Guiones largos" in p for p in problems)
+    path = seed(tmp_path, post=CLEAN_POST.replace("only by color", "only by colour - really"))
+    problems, warnings = mod.check_post(path, 14)
+    assert not any("Guiones largos" in p for p in problems), problems
 
 
 def test_invisible_glyphs_fail(tmp_path):
@@ -471,11 +477,11 @@ def test_dirty_tree_fails_and_clean_tree_passes(tmp_path):
     assert not mod.audit_chain(14, clean_root)
 
     dirty_root = tmp_path / "dirty"
+    # Dos defectos reales: faltan los dos campos obligatorios del header.
+    # El em dash queda fuera a proposito: ya no es defecto (2026-11-09).
     dirty = seed(
         dirty_root,
-        post=CLEAN_POST.replace("**Nicho:** a11y\n", "").replace(
-            "Some fixes are invisible.", "Some fixes are invisible — really."
-        ),
+        post=CLEAN_POST.replace("**Nicho:** a11y\n", "").replace("**Status:**", "**Estado:**"),
         merged=[("adobe/react-spectrum", "#10503")],
     )
     problems, _ = mod.check_post(dirty, 14)

@@ -83,35 +83,14 @@ MD_EXEMPT='^docs/stories/quienes_quedan/|^docs/stories/las_tres_sabanas/|^docs/a
 MD_RULE=$(echo "$MD_CONTENT" | grep -vE "$MD_EXEMPT" || true)
 
 if [ -n "$MD_CHANGED" ]; then
-  # 0) Apply hyphen enforcement on staged markdown files first
+  # 0) Guiones: sin gate y sin reescritura (2026-11-09, "no debe estar restringido
+  #    en ninguna parte"). Se retiro el hyphen_enforcer, que reescribia en-dash a
+  #    guion comun DENTRO de los archivos staged en cada commit, y tambien el
+  #    aviso por guion largo. ADR-082 retiro la regla del guion comun obligatorio
+  #    y la regla 13 de docs/voz-gonzo.md lo declara criterio laxo: el texto del
+  #    autor se commitea como esta.
   if [ -n "$MD_RULE" ]; then
-    ./scripts/hyphen_enforcer.sh $MD_RULE
-    # Re-stage any files modified by the enforcer so the commit includes the fixes
-    # --literal-pathspecs: hay un path trackeado con `*` literal en el nombre
-    # (`skills/*/SKILL.md`, placeholder), y git trata todo pathspec como glob. Un
-    # `git add` sin comillas pasaba ese path sin comillas y stageaba TODAS las
-    # skills borradas. (Encontrado 2026-09-26: 96 bajas de la migracion se colaron
-    # asi a un commit ajeno.)
-    git --literal-pathspecs add -- $MD_RULE
-
-    # 1) Guion comun en el markdown que se esta por commitear (staged).
-    #    Se le pasa el contenido staged, no el del disco: es lo que se commitea.
-    #
-    #    AVISO, NO VETO (2026-11-03, decision de Gonzo). ADR-082 ya habia retirado
-    #    la regla del guion como obligacion, pero el hook seguia abortando: el
-    #    aparato contradecia a la decision y trababa commits legitimos por
-    #    caracteres heredados. Ahora reporta y sigue; el que quiera guion comun lo
-    #    usa, y nadie queda bloqueado por un em dash que no edito.
-    #    El hyphen_enforcer de arriba se mantiene: normaliza en-dash en lo staged,
-    #    que es una correccion mecanica y reversible, no un bloqueo.
-    DASH_WARN=0
-    for f in $MD_RULE; do
-      if ! git show ":$f" 2>/dev/null | python3 "${SCRIPT_DIR}/scripts/check_em_dash.py" - >/dev/null 2>&1; then
-        echo "  aviso: guion largo en $f (no bloquea)"
-        DASH_WARN=$((DASH_WARN + 1))
-      fi
-    done
-    [ "$DASH_WARN" -gt 0 ] && echo "  ($DASH_WARN archivo(s) con guion largo; commit continua)"
+    :
   fi
 
   # 2) Rutas citadas: cada `docs/...` o `scripts/...` debe existir.
