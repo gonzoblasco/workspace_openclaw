@@ -1,7 +1,7 @@
 # Brief: Propuesta laboral "Senior Design Engineer @ Profound" (contacto vía Thaia)
 
 **Stop criterion:** (a) confirmar que Profound existe y levantó el funding descrito; (b) contrastar el JD con la página oficial de carreras y el comunicado de la Series D; (c) dejar como incógnita lo que no pudo verificarse. | **Freshness:** sí (funding, roles abiertos y JD vigentes al 2026-11-07). | **Written:** 2026-11-07
-**Home del artefacto:** `reports/profound-design-engineer-2026-11-07.md`
+**Home del artefacto:** `agents/kanam-mind/reports/profound-design-engineer-2026-11-07.md`
 
 ## Pregunta
 - [obs] ¿La propuesta descrita en el email de María José Montersino (thaia.co) es real y qué parte de sus afirmaciones se sostiene con fuentes abiertas? (email recibido 2026-11-07)
