@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-09] - Metodología HANDOFF y cursos
+
+### Added
+- Soporte para `--course <slug>` en `scripts/session-handoff.py`, creando `studies/<slug>/HANDOFF.md` con título `# HANDOFF - Curso <slug>` y tomando el repo del workspace.
+- Implementación de fusión del HANDOFF general (alias de workspace) que preserva y deduplica entradas:
+  * Cabecera (Fecha, Branch, Repo) del nuevo.
+  * `## Que se hizo en esta sesion` mantiene máximo 5 entradas con timestamps (`### YYYY-MM-DD HH:MM`).
+  * `## Estado actual`, `## Proximos pasos`, `## Decisiones y contexto que no debe perderse`, `## Cerrados en esta sesion` se unen, con deduplicación y numeración conservada en próximos pasos.
+  * `## Archivos tocados` combina los bloques de código.
+  * Se conservan secciones desconocidas del documento anterior.
+- Añadido flag `--course` a `skills/session-lifecycle/scripts/session-end.sh` y ajuste del label de guardado diario a `studies/<slug>`.
+- Nuevo test `scripts/test-handoff-merge.py` con seis casos, incluido el merge de workspace, validación de slug de curso y comportamiento de proyecto sin merge.
+- Actualización de la documentación de `skills/session-lifecycle/SKILL.md` (sección de cierre) para describir HANDOFF general y por curso.
+
 ## [2026-11-07] - Skill-router: del 20% al 100% del catalogo
 
 ### Added

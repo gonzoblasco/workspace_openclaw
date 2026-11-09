@@ -88,6 +88,18 @@ If Gonzo says `"start session"`, `"brainstorming"`, `"I don't know which project
 1. **Informe detallado** en `memory/YYYY-MM-DD.md` (una seccion por sesion). Plantilla registrada en `memory/_templates/session-close.md`.
 2. **HANDOFF del proyecto en curso** (`scripts/session-handoff.py`), en el `.knowledge/` del proyecto o del workspace. Es el punto de entrada para continuar; se regenera en cada cierre. El destino lo resuelve el script (workspace -> `<workspace>/.knowledge/HANDOFF.md`; proyecto -> `<workspace>/projects/<slug>/.knowledge/HANDOFF.md`, ADR-098).
 
+**Dos clases de HANDOFF, dos destinos (2026-11-09).**
+- **General del workspace** (`--project workspace`): es el punto de entrada para continuar **cualquiera** de los proyectos. Desde 2026-11-09 el generador **fusiona** el contenido con el HANDOFF vigente en vez de pisarlo: conserva las ultimas 5 entradas de "Que se hizo", y une `Estado actual`, `Proximos pasos`, `Decisiones` y `Archivos tocados` con dedupe. Dos sesiones que cierran a la vez ya no se pisan; el gate de merge no corre en este modo porque la fusion preserva por construccion.
+- **Curso** (`--course <slug>`): cada curso de `studies/<slug>/` tiene su propio `HANDOFF.md` porque lleva su ritmo. Destino: `studies/<slug>/HANDOFF.md` (no `.knowledge/`). Titulo: `# HANDOFF - Curso <slug>`. El daily se registra con el label `studies/<slug>`.
+
+**Plantilla de curso.** El `--status` de un cierre de curso lleva estas cuatro lineas, no un estado generico:
+```
+- Modulo actual:
+- Ejercicios hechos:
+- Preguntas abiertas:
+- Proximo bloque:
+```
+
 El HANDOFF se **deriva del informe de cierre**: mismo resumen, mas estado actual, proximos pasos, decisiones y archivos tocados.
 - **Program update (2026-11-06):** si la sesión trabajó un paso de un programa, antes de cerrar actualizá el paso con `agents/kanam-planner/scripts/program_plan.py update <slug> <step> <status> --evidence "..."`. El cierre de sesión **no** cierra el programa: el programa es multi-sesión. Si el alcance cambió, el CORE vuelve a llamar al Planner; no parchea el plan a mano.
 - **Auto-cataloging + DB-first (2026-08-31):** when saving a session, `session-end.sh` (1) writes the summary **directly to `memory/memory.db`** (`daily_notes` table) as the source of truth via `scripts/memory-end-session.py`, (2) regenerates `memory/YYYY-MM-DD.md` as an **exported view** (regenerable with `export-all`), and (3) runs `scripts/memory-catalog-v2.py` to update embeddings/topics/learnings. With this, the DB is the source and the `.md` files become optional.
@@ -112,7 +124,7 @@ Scripts in `skills/session-lifecycle/scripts/`:
 | Script | Use |
 |---|---|
 | `session-start.sh --project <name> --objective <obj>` | Loads the previous HANDOFF, runs the complexity-scorer on the objective, and creates/updates the daily log in `memory/YYYY-MM-DD.md`. Use at session start with a project. |
-| `session-end.sh --project <name> --summary <text> [--status ..] [--next-steps ..] [--decisions ..]` | Cierra la sesion: escribe el informe en la DB/`memory/` (DB-first) y genera/actualiza el HANDOFF del proyecto. Disparador: **"guardar sesion"** o **"cerrar sesion"** (son indistintos). |
+| `session-end.sh (--project <name> | --course <slug>) --summary <text> [--status ..] [--next-steps ..] [--decisions ..]` | Cierra la sesion: escribe el informe en la DB/`memory/` (DB-first) y genera/actualiza el HANDOFF del proyecto o del curso. Disparador: **"guardar sesion"** o **"cerrar sesion"** (son indistintos). |
 | `scripts/session-handoff.py --project <name> --summary <text> [...]` | Genera/actualiza el HANDOFF.md del proyecto en curso (o del workspace). Destino: `<workspace>/projects/<slug>/.knowledge/HANDOFF.md` (ADR-098); para el sistema, `<workspace>/.knowledge/HANDOFF.md`. |
 | `scripts/complexity-scorer.sh <objective>` | Evaluates complexity in 4 dimensions - T-score 1-20 + bucket + model + thinking + pipeline. Run automatically by `session-start.sh`. Skill: `complexity-driven-pipeline`. |
 

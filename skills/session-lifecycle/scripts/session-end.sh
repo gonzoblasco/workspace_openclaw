@@ -6,6 +6,7 @@
 set -euo pipefail
 
 PROJECT=""
+COURSE=""
 SUMMARY=""
 STATUS=""
 NEXT_STEPS=""
@@ -14,6 +15,7 @@ DECISIONS=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --project) PROJECT="$2"; shift 2 ;;
+    --course) COURSE="$2"; shift 2 ;;
     --summary) SUMMARY="$2"; shift 2 ;;
     --status) STATUS="$2"; shift 2 ;;
     --next-steps) NEXT_STEPS="$2"; shift 2 ;;
@@ -22,13 +24,20 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "$PROJECT" || -z "$SUMMARY" ]]; then
-  echo "Usage: $0 --project \"<name>\" --summary \"<summary>\" [--status ..] [--next-steps ..] [--decisions ..]"
+# Ensure exactly one of --project or --course is supplied.
+if [[ -z "$PROJECT" && -z "$COURSE" ]] || [[ -n "$PROJECT" && -n "$COURSE" ]]; then
+  echo "Usage: $0 (--project <name> | --course <slug>) --summary <summary> [--status ..] [--next-steps ..] [--decisions ..]"
   exit 1
 fi
 
 DATE=$(date '+%Y-%m-%d %H:%M')
 BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
+# Label used for the daily log and for the HANDOFF reference.
+if [[ -n "$PROJECT" ]]; then
+  HANDOFF_LABEL="$PROJECT"
+else
+  HANDOFF_LABEL="studies/$COURSE"
+fi
 
 # --- CHANGELOG en ventana (2026-10-06, ADR-092) -------------------------------
 # El CHANGELOG activo muestra solo los ultimos ~30 dias; lo viejo se archiva.
@@ -53,7 +62,11 @@ fi
 #   proyecto          -> <workspace>/projects/<slug>/.knowledge/HANDOFF.md  (ADR-098)
 HANDOFF_MSG=""
 if [[ -f "scripts/session-handoff.py" ]]; then
-  HANDOFF_ARGS=(--project "$PROJECT" --summary "$SUMMARY" --branch "$BRANCH")
+  if [[ -n "$PROJECT" ]]; then
+    HANDOFF_ARGS=(--project "$PROJECT" --summary "$SUMMARY" --branch "$BRANCH")
+  else
+    HANDOFF_ARGS=(--course "$COURSE" --summary "$SUMMARY" --branch "$BRANCH")
+  fi
   [[ -n "$STATUS" ]] && HANDOFF_ARGS+=(--status "$STATUS")
   [[ -n "$NEXT_STEPS" ]] && HANDOFF_ARGS+=(--next-steps "$NEXT_STEPS")
   [[ -n "$DECISIONS" ]] && HANDOFF_ARGS+=(--decisions "$DECISIONS")
@@ -84,14 +97,14 @@ SESSION_LOG="$MEMORY_DIR/$(date +%Y-%m-%d).md"
 
 # Recover the complexity T-score recorded at session start for a clean record
 TSCORE_LINE=""
-if grep -q "^## $PROJECT$" "$SESSION_LOG" 2>/dev/null; then
-  TSCORE_LINE=$(grep -A3 "^## $PROJECT$" "$SESSION_LOG" 2>/dev/null | grep -oE "\*\*Complexity T-score:\*\* .*" | head -1)
+if grep -q "^## $HANDOFF_LABEL$" "$SESSION_LOG" 2>/dev/null; then
+  TSCORE_LINE=$(grep -A3 "^## $HANDOFF_LABEL$" "$SESSION_LOG" 2>/dev/null | grep -oE "\*\*Complexity T-score:\*\* .*" | head -1)
 fi
 
 # Write to DB as source of truth, then regenerate the .md view
 if command -v python3 >/dev/null 2>&1 && [ -f "scripts/memory-end-session.py" ]; then
   python3 scripts/memory-end-session.py \
-    --project "$PROJECT" \
+    --project "$HANDOFF_LABEL" \
     --summary "$SUMMARY" \
     --branch "$BRANCH" \
     --tscore "$TSCORE_LINE" \
@@ -100,7 +113,7 @@ else
   # Fallback to the old direct .md append if the DB-first script is unavailable
   cat >> "$SESSION_LOG" << LOG
 
-## Session End - $PROJECT
+## Session End - $HANDOFF_LABEL
 **End:** ${DATE}
 **Summary:** $SUMMARY
 **Branch:** $BRANCH

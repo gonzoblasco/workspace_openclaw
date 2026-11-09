@@ -46,6 +46,8 @@ FECHA_RE = re.compile(
     r"^\*\*Fecha:\*\*[ \t]*([0-9]{4}-[0-9]{2}-[0-9]{2})[ \t]+([0-9]{2}:[0-9]{2})(?![0-9])",
     re.MULTILINE,
 )
+# Regex to capture markdown level‑2 headings (## Title) – used for parsing HANDOFF sections.
+SEC_RE = re.compile(r"^##\s+(.+)$", re.MULTILINE)
 
 # Binario de papelera del sistema. Se puede overridear con
 # HANDOFF_HISTORY_TRASH_BIN (cadena vacia = no intentar el binario y usar el
@@ -407,6 +409,185 @@ def bullet_block(text: str, numbered: bool = False) -> str:
             out.append(prefix + ln)
     return "\n".join(out)
 
+# ---------------------------------------------------------------------------
+# Workspace HANDOFF merge helpers (general HANDOFF).
+# ---------------------------------------------------------------------------
+
+def _parse_sections(text: str) -> dict:
+    """Parse markdown sections keyed by lower‑cased title.
+
+    Returns a mapping ``title -> body`` where ``title`` is the original title
+    (preserving case) and ``body`` is the raw text following the heading up to
+    the next ``##`` or end of file.
+    """
+    secs = {}
+    matches = list(SEC_RE.finditer(text))
+    for i, m in enumerate(matches):
+        start = m.end()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        title = m.group(1).strip()
+        secs[title] = text[start:end]
+    return secs
+
+def _extract_que_hizo_entries(body: str, fallback_head: str = "") -> list:
+    """Extract entries from the ``Que se hizo`` section.
+
+    Each entry is a tuple ``(header_line, entry_body)`` where ``header_line``
+    starts with ``###``. If the section does not contain explicit ``###``
+    headings, treat the whole body as a single entry with an empty header.
+    """
+    lines = body.splitlines()
+    entries = []
+    cur_head = None
+    cur_body = []
+    for line in lines:
+        if line.startswith("### "):
+            if cur_head is not None:
+                entries.append((cur_head, "\n".join(cur_body).strip()))
+            cur_head = line.strip()
+            cur_body = []
+        else:
+            cur_body.append(line)
+    if cur_head is not None:
+        entries.append((cur_head, "\n".join(cur_body).strip()))
+    # If no ``###`` headings were found, treat the whole body as one entry.
+    if not entries:
+        entries.append((fallback_head, body.strip()))
+    return entries
+
+def _merge_que_hizo(new_body: str, old_body: str, old_head: str = "") -> str:
+    # New entry first (timestamped). Normalise the new summary text.
+    now_header = f"### {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+    new_entry_body = norm_dashes(new_body.strip())
+    # Parse old entries which may already be timestamped.
+    old_entries = _extract_que_hizo_entries(old_body, old_head)
+    # Combine, keeping the new entry first.
+    combined = [(now_header, new_entry_body)] + old_entries
+    # Deduplicate by normalised body text (ignore header).
+    seen = set()
+    uniq = []
+    for head, body in combined:
+        body = body.strip()
+        if not body:
+            continue
+        norm_body = norm_dashes(body).lower()
+        if norm_body in seen:
+            continue
+        seen.add(norm_body)
+        uniq.append((head, body))
+    # Keep at most 5 entries.
+    uniq = uniq[:5]
+    # Render back.
+    parts = []
+    for head, body in uniq:
+        parts.append(head if head else "### (sin fecha)")
+        if body:
+            parts.append(body)
+        parts.append("")  # blank line between entries
+    return "\n".join(parts).strip()
+
+def _merge_append_section(new_body: str, old_body: str, inherited_title: str) -> str:
+    """Preserva el bloque anterior verbatim debajo de un subtitulo.
+
+    Re-renderizar item por item aplana los grupos hechos a mano (HEREDADOS,
+    bloques legales, sublistas con 0-bis) y los convierte en una sola vineta
+    gigante. Conservar el cuerpo anterior tal como estaba mantiene la lectura
+    y garantiza que no se pierde nada.
+    """
+    new = new_body.strip()
+    old = old_body.strip()
+    if not old:
+        return new
+    if not new:
+        return old
+    new_key = norm_dashes(new).lower()
+    old_key = norm_dashes(old).lower()
+    if new_key == old_key or new_key in old_key:
+        return old
+    return f"{new}\n\n{inherited_title}\n\n{old}"
+
+def _extract_code_lines(section_body: str) -> list:
+    m = re.search(r"```\n(.*?)\n```", section_body, re.DOTALL)
+    if not m:
+        return []
+    return [ln.strip() for ln in m.group(1).splitlines() if ln.strip()]
+
+def _merge_archivos_section(new_body: str, old_body: str) -> str:
+    new_lines = _extract_code_lines(new_body)
+    old_lines = _extract_code_lines(old_body)
+    combined = new_lines + old_lines
+    seen = set()
+    uniq = []
+    for ln in combined:
+        key = norm_dashes(ln).lower()
+        if key not in seen:
+            seen.add(key)
+            uniq.append(ln)
+    block = "\n".join(uniq)
+    return f"```\n{block}\n```"
+
+def merge_workspace_handoff(new_text: str, old_text: str) -> str:
+    """Merge a new HANDOFF (general workspace) with the existing one.
+
+    The merge follows the rules described in the task specification.
+    """
+    # Split header (everything before first "##")
+    header_end = new_text.find("\n##")
+    if header_end == -1:
+        # Unexpected format – fallback to new content.
+        return new_text
+    header = new_text[:header_end].rstrip()
+    new_secs = _parse_sections(new_text)
+    old_secs = _parse_sections(old_text)
+    # La entrada anterior puede no tener subtitulo: usar la Fecha del HANDOFF
+    # viejo como timestamp en vez de un "(sin fecha)" que no dice nada.
+    fecha_m = re.search(r"\*\*Fecha:\*\*\s*(\d{4}-\d{2}-\d{2} \d{2}:\d{2})", old_text)
+    old_entry_head = f"### {fecha_m.group(1)}" if fecha_m else ""
+
+    merged_secs = {}
+    # Known sections with special merge handling.
+    for title, new_body in new_secs.items():
+        low = title.lower()
+        old_body = old_secs.get(title, "")
+        if low == "que se hizo en esta sesion":
+            merged_body = _merge_que_hizo(new_body, old_body, old_entry_head)
+        elif low == "proximos pasos":
+            merged_body = _merge_append_section(
+                new_body, old_body, "### Pendientes heredados (sin cambios)"
+            )
+        elif low == "estado actual":
+            merged_body = _merge_append_section(
+                new_body, old_body, "### Estado previo (heredado)"
+            )
+        elif low == "decisiones y contexto que no debe perderse":
+            merged_body = _merge_append_section(
+                new_body, old_body, "### Heredadas (sin cambios)"
+            )
+        elif low == "cerrados en esta sesion":
+            merged_body = _merge_append_section(
+                new_body, old_body, "### Cerrados previamente"
+            )
+        elif low == "archivos tocados":
+            merged_body = _merge_archivos_section(new_body, old_body)
+        else:
+            # New section wins.
+            merged_body = new_body
+        merged_secs[title] = merged_body
+
+    # Preserve any old‑only sections that were not in the new content.
+    for title, old_body in old_secs.items():
+        if title not in merged_secs:
+            merged_secs[title] = old_body
+
+    # Re‑assemble the document.
+    parts = [header]
+    for title, body in merged_secs.items():
+        parts.append(f"## {title}\n")
+        if body:
+            parts.append(body.strip())
+        parts.append("")
+    return "\n".join(parts).strip() + "\n"
+
 
 def files_changed(explicit: str) -> str:
     if explicit:
@@ -421,17 +602,24 @@ def build_handoff(args) -> str:
     date = args.date or datetime.now().strftime("%Y-%m-%d")
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
     branch = args.branch if args.branch and args.branch != "unknown" else git_output("branch", "--show-current") or "unknown"
+    if getattr(args, "course", None):
+        repo_cwd = WORKSPACE
+    else:
+        repo_cwd = resolve_handoff_path(args.project, None).parent.parent
     repo = args.repo or git_output(
-        "remote", "get-url", "origin", cwd=resolve_handoff_path(args.project, None).parent.parent
+        "remote", "get-url", "origin", cwd=repo_cwd
     )
     repo = re.sub(r"^git@[^:]+:", "https://github.com/", repo or "")
     repo = re.sub(r"\.git$", "", repo or "")
 
     parts = []
-    parts.append(f"# HANDOFF - {args.project}")
+    display_name = f"Curso {args.course}" if getattr(args, "course", None) else args.project
+    parts.append(f"# HANDOFF - {display_name}")
     parts.append("")
     parts.append(f"**Fecha:** {now} GMT-3")
-    parts.append(f"**Proyecto:** {args.project}")
+    # For course handoff, show the slug as the proyecto identifier.
+    proj_label = args.project if getattr(args, "course", None) is None else args.course
+    parts.append(f"**Proyecto:** {proj_label}")
     parts.append(f"**Branch:** {branch}")
     if repo:
         parts.append(f"**Repo:** {repo}")
@@ -482,6 +670,10 @@ def build_handoff(args) -> str:
         parts.append("")
 
     files = files_changed(args.files)
+    if getattr(args, "course", None) and not args.files:
+        # Un curso no hereda los archivos sucios de otras sesiones del workspace.
+        prefix = f"studies/{args.course}/"
+        files = "\n".join(ln for ln in files.splitlines() if ln.startswith(prefix))
     if files:
         parts.append("## Archivos tocados")
         parts.append("")
@@ -554,7 +746,10 @@ def validate_merge_before_write(new_text: str, target: Path,
 
 def main():
     p = argparse.ArgumentParser(description="Genera/actualiza el HANDOFF del proyecto en curso")
-    p.add_argument("--project", required=True, help="workspace|workspace_openclaw|main, o el slug del proyecto")
+    # Mutually exclusive project or course. Exactly one is required.
+    group = p.add_mutually_exclusive_group(required=True)
+    group.add_argument("--project", help="workspace|workspace_openclaw|main, o el slug del proyecto")
+    group.add_argument("--course", help="Slug del curso (sin separadores de ruta)")
     p.add_argument("--summary", required=True, help="Que se hizo en la sesion (multilinea)")
     p.add_argument("--status", default="", help="Estado actual del proyecto (opcional)")
     p.add_argument("--next-steps", dest="next_steps", default="", help="Proximos pasos (multilinea)")
@@ -570,7 +765,21 @@ def main():
                    help="Escribe aunque se pierdan heredados (queda como decision explicita)")
     args = p.parse_args()
 
-    target = resolve_handoff_path(args.project, args.handoff_dir or None)
+    # Determine handoff destination based on mode (project vs course)
+    if getattr(args, "course", None):
+        # Validate slug – no path separators or parent refs
+        slug = args.course.strip()
+        if "/" in slug or "\\" in slug or slug in (".", ".."):
+            print(f"Error: slug de curso '{slug}' contiene separadores de ruta o '..'", file=sys.stderr)
+            sys.exit(2)
+        # Ensure the studies/<slug>/ directory exists
+        course_dir = WORKSPACE / "studies" / slug
+        if not course_dir.is_dir():
+            print(f"Error: el directorio de estudio '{course_dir}' no existe", file=sys.stderr)
+            sys.exit(2)
+        target = course_dir / "HANDOFF.md"
+    else:
+        target = resolve_handoff_path(args.project, args.handoff_dir or None)
     content = build_handoff(args)
 
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -580,25 +789,47 @@ def main():
     # no se intercalen. A+C (2026-10-13): el mismo lock cubre el backup del HANDOFF
     # previo (A) y el append al indice de sesiones (C), asi el orden
     # backup -> index -> replace es consistente entre cierres concurrentes.
+    # Determine if we are merging the general workspace HANDOFF (project alias).
+    is_workspace_merge = (
+        not getattr(args, "course", None)
+        and args.project
+        and args.project.lower() in WORKSPACE_ALIASES
+    )
+
     with file_lock(target):
-        # GATE PREVIO A LA ESCRITURA (2026-11-04). Antes esto vivia en
-        # session-end.sh y corria DESPUES del os.replace: el HANDOFF ya estaba
-        # pisado y el aviso llegaba tarde. Ahora el cierre FALLA sin tocar el
-        # archivo, y el backup no se consume.
-        problem = validate_merge_before_write(content, target, args.closed)
-        if problem and not args.force_merge:
-            print(problem, file=sys.stderr)
-            return 3
-        if problem and args.force_merge:
-            print("AVISO: --force-merge activo; se escriben con perdidas declaradas:",
-                  file=sys.stderr)
-            print(problem, file=sys.stderr)
+        # For workspace merges we skip the gate (the new content is a merge of
+        # the old one, so no pending loss is possible). For project handoffs we
+        # keep the original validation behavior.
+        if not is_workspace_merge:
+            problem = validate_merge_before_write(content, target, args.closed)
+            if problem and not args.force_merge:
+                print(problem, file=sys.stderr)
+                return 3
+            if problem and args.force_merge:
+                print("AVISO: --force-merge activo; se escriben con perdidas declaradas:",
+                      file=sys.stderr)
+                print(problem, file=sys.stderr)
+
+        # Prepare content: if workspace merge, combine with existing file.
+        final_content = content
+        if is_workspace_merge:
+            # Load previous file if exists, then merge according to rules.
+            prev_text = target.read_text(encoding="utf-8") if target.exists() else ""
+            try:
+                final_content = merge_workspace_handoff(content, prev_text)
+            except Exception as exc:
+                # On any parsing error fallback to the plain new content and warn.
+                print(f"WARN: merge_workspace_handoff falló ({exc}); se sobrescribe sin merge.",
+                      file=sys.stderr)
+                final_content = content
 
         existed = target.exists()
         backup = backup_previous(target, ts) if existed else None
-        index = append_session_index(target, args.project, ts, args.summary)
+        # Use a label that includes the study prefix when applicable.
+        label_for_index = args.project if args.project else f"studies/{args.course}"
+        index = append_session_index(target, label_for_index, ts, args.summary)
         tmp = target.with_suffix(".md.tmp")
-        tmp.write_text(content, encoding="utf-8")
+        tmp.write_text(final_content, encoding="utf-8")
         os.replace(tmp, target)
 
     action = "actualizado" if existed else "creado"

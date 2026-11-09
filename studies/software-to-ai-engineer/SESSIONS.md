@@ -1,0 +1,6 @@
+# SESSIONS - studies/software-to-ai-engineer
+
+> Indice append-only de cierres de sesion. El HANDOFF.md es solo el estado actual; esta lista es la historia (no se pisa).
+
+- **2026-11-09 17:00** - Clase creada el 2026-11-07 a partir del video qLobAfve9b0 (Fazt). Re-evaluada el 2026-11-09 con deepseek-v4.1-flash: outline v2 de 14 modulos alineado a los ca…
+- **2026-11-09 17:00** - Clase creada el 2026-11-07 a partir del video qLobAfve9b0 (Fazt). Re-evaluada el 2026-11-09 con deepseek-v4.1-flash: outline v2 de 14 modulos alineado a los ca…

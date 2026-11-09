@@ -1,7 +1,7 @@
-# HANDOFF - Workspace
+# HANDOFF - workspace
 
-**Fecha:** 2026-11-09 15:21 GMT-3
-**Proyecto:** Workspace
+**Fecha:** 2026-11-09 17:00 GMT-3
+**Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
@@ -9,16 +9,28 @@
 > HANDOFF generado en el cierre de sesion (2026-11-09). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-09.md`.
 
 ---
-
 ## Que se hizo en esta sesion
 
+### 2026-11-09 17:00
+Re-evaluacion con deepseek-v4.1-flash de la clase studies/software-to-ai-engineer: outline v2 de 14 modulos alineado a los capitulos oficiales, auditoria de 15 hallazgos, glosario ASR y protocolo de estudio en tres bloques. Se creo el HANDOFF propio del curso. Commits locales 148aaabc99, cdab76614d y 7e4db502af, sin push.
+
+### 2026-11-09 15:21
 Re-evaluación de la clase `studies/entrevistas-tecnicas/` (charla de Nerdearla Chile 2026, Tatiana Rodríguez) con `deepseek-v4.1-flash`, a pedido de Gonzo. Se auditó el outline v1 contra la transcripción ASR y las fuentes oficiales (NERDflix, perfil de speaker, Frontiers 2025) y se aplicó una v2: identidad corregida (el ASR decía «Diana»; es Tatiana Rodríguez / @tatanomada), claim del horario documentado (estudio de 104.552 exámenes orales: pico 11-13 h, no 2 p.m.), orden 1.5/1.6 alineado al video, mapa temporal reconstruido, condición del correo de cierre agregada, glosario de ASR en el transcript y ejemplos de LinkedIn. Se creó `AUDIT-2026-11-09.md`. Los claims del 85 % (HackerRank) y 40 % (práctica deliberada) no tienen fuente localizable: quedan como afirmaciones de la speaker, no como estadísticas.
 
 ## Estado actual
 
+Workspace en main. La clase software-to-ai-engineer quedo re-evaluada y con HANDOFF propio en studies/software-to-ai-engineer/HANDOFF.md. Cambios locales sin push.
+
+### Estado previo (heredado)
+
 Clase v2 y auditoría listas en `studies/entrevistas-tecnicas/`; transcript con glosario; README actualizado. Cambios locales sin commit. Pendiente: estudiar la clase (Módulo 0/1) y decidir si se reemplazan los porcentajes sin fuente.
 
 ## Proximos pasos
+
+1. Elegir bloque A o B y arrancar la primera sesion de estudio del curso software-to-ai-engineer.
+2. Push pendiente de OK explicito.
+
+### Pendientes heredados (sin cambios)
 
 1. Estudiar la clase v2 con Gonzo: Módulo 0 (marco) y Módulo 1.1 (auditoría de LinkedIn).
 2. Commit local de `studies/README.md`, `studies/entrevistas-tecnicas/outline.md`, `transcripcion.md` y `AUDIT-2026-11-09.md`.
@@ -35,6 +47,10 @@ Clase v2 y auditoría listas en `studies/entrevistas-tecnicas/`; transcript con 
 4) Commit/push del workspace (docs + cv + real-browser.mjs + cambios).
 
 ## Decisiones y contexto que no debe perderse
+
+- El HANDOFF general del workspace se fusiona entre cierres concurrentes; cada curso tiene su propio HANDOFF y su propio ritmo.
+
+### Heredadas (sin cambios)
 
 - La clase ya existía; el pedido fue re-evaluarla con el modelo presente, no recrearla. Se auditó contra la fuente, no se re-transcribió.
 - El ASR no es autoridad para nombres propios: «Diana» en 28.0 s es un error; la identidad oficial es Tatiana Rodríguez (@tatanomada), confirmada por NERDflix y el perfil de speaker de Nerdearla.
@@ -54,7 +70,13 @@ Clase v2 y auditoría listas en `studies/entrevistas-tecnicas/`; transcript con 
 ## Archivos tocados
 
 ```
+.knowledge/SESSIONS.md
+agents/kanam-ops/tests/test_ops_scripts.py
 docs/CHANGELOG.md
+scripts/gateway-drift-alert.sh
+scripts/session-handoff.py
+skills/session-lifecycle/SKILL.md
+skills/session-lifecycle/scripts/session-end.sh
 docs/archive/CHANGELOG-archive.md
 studies/README.md
 studies/entrevistas-tecnicas/outline.md
