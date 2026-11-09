@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-09 17:00 GMT-3
+**Fecha:** 2026-11-09 17:02 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -11,6 +11,9 @@
 ---
 ## Que se hizo en esta sesion
 
+### 2026-11-09 17:02
+Implementacion del cambio de metodo pedido por Gonzo: el HANDOFF general del workspace ahora fusiona los cierres concurrentes en vez de pisarse, y cada curso de studies/ tiene HANDOFF propio. Merge verificado contra el HANDOFF vigente: 53 heredados, 53 conservados, 0 perdidos. Se actualizaron scripts/session-handoff.py, skills/session-lifecycle/scripts/session-end.sh, skills/session-lifecycle/SKILL.md y docs/CHANGELOG.md; se agregaron 6 tests en scripts/test-handoff-merge.py. El curso software-to-ai-engineer ya tiene su studies/software-to-ai-engineer/HANDOFF.md. Commit a231b99bd6, sin push.
+
 ### 2026-11-09 17:00
 Re-evaluacion con deepseek-v4.1-flash de la clase studies/software-to-ai-engineer: outline v2 de 14 modulos alineado a los capitulos oficiales, auditoria de 15 hallazgos, glosario ASR y protocolo de estudio en tres bloques. Se creo el HANDOFF propio del curso. Commits locales 148aaabc99, cdab76614d y 7e4db502af, sin push.
 
@@ -18,6 +21,10 @@ Re-evaluacion con deepseek-v4.1-flash de la clase studies/software-to-ai-enginee
 Re-evaluación de la clase `studies/entrevistas-tecnicas/` (charla de Nerdearla Chile 2026, Tatiana Rodríguez) con `deepseek-v4.1-flash`, a pedido de Gonzo. Se auditó el outline v1 contra la transcripción ASR y las fuentes oficiales (NERDflix, perfil de speaker, Frontiers 2025) y se aplicó una v2: identidad corregida (el ASR decía «Diana»; es Tatiana Rodríguez / @tatanomada), claim del horario documentado (estudio de 104.552 exámenes orales: pico 11-13 h, no 2 p.m.), orden 1.5/1.6 alineado al video, mapa temporal reconstruido, condición del correo de cierre agregada, glosario de ASR en el transcript y ejemplos de LinkedIn. Se creó `AUDIT-2026-11-09.md`. Los claims del 85 % (HackerRank) y 40 % (práctica deliberada) no tienen fuente localizable: quedan como afirmaciones de la speaker, no como estadísticas.
 
 ## Estado actual
+
+Workspace en main. Feature de HANDOFF cerrada y commiteada. El curso software-to-ai-engineer tiene HANDOFF propio y espera la primera sesion de estudio.
+
+### Estado previo (heredado)
 
 Workspace en main. La clase software-to-ai-engineer quedo re-evaluada y con HANDOFF propio en studies/software-to-ai-engineer/HANDOFF.md. Cambios locales sin push.
 
@@ -48,6 +55,11 @@ Clase v2 y auditoría listas en `studies/entrevistas-tecnicas/`; transcript con 
 
 ## Decisiones y contexto que no debe perderse
 
+- Un HANDOFF de workspace nunca pisa: fusiona el nuevo contenido con el vigente y preserva los bloques heredados verbatim.
+- Un curso es un sujeto con ritmo propio: HANDOFF en studies/<slug>/HANDOFF.md, no en el general.
+
+### Heredadas (sin cambios)
+
 - El HANDOFF general del workspace se fusiona entre cierres concurrentes; cada curso tiene su propio HANDOFF y su propio ritmo.
 
 ### Heredadas (sin cambios)
@@ -70,10 +82,12 @@ Clase v2 y auditoría listas en `studies/entrevistas-tecnicas/`; transcript con 
 ## Archivos tocados
 
 ```
-.knowledge/SESSIONS.md
 agents/kanam-ops/tests/test_ops_scripts.py
-docs/CHANGELOG.md
+memory/2026-11-09.md
+memory/memory.db
 scripts/gateway-drift-alert.sh
+.knowledge/SESSIONS.md
+docs/CHANGELOG.md
 scripts/session-handoff.py
 skills/session-lifecycle/SKILL.md
 skills/session-lifecycle/scripts/session-end.sh
