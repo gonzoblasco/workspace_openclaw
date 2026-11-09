@@ -26,7 +26,7 @@ reglas medibles. **Ya existe.** `docs/voz-gonzo.md` tiene:
 | Lo que propuse crear | Lo que ya existe |
 |---|---|
 | Corpus etiquetado | 3 casos con borrador / edición final / qué cambió / patrón |
-| Reglas medibles | 13 reglas consolidadas |
+| Reglas medibles | 13 reglas numeradas (la 8 retirada por ADR-082) |
 | Loop de aprendizaje | Paso 7 de `voz-gonzo`: registrar cada edición de Gonzo |
 | Validación | Criterio de "reglas aplicadas o motivo explícito" |
 

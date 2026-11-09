@@ -7,7 +7,8 @@
 **Qué es esto y qué no es.**
 
 - **Esto NO es la voz.** La voz ya vive en `docs/voz-gonzo.md` (13 reglas
-  consolidadas, 3 casos). Ese archivo es la fuente única y canónica.
+  numeradas, 1 retirada por ADR-082, 3 casos). Ese archivo es la fuente única y
+  canónica.
 - **Esto es lo específico de cada proyecto**: qué palabras no van, qué tono
   pide cada superficie, qué decisiones editoriales ya se tomaron.
 
@@ -92,10 +93,10 @@ Derivado del material real. La columna "evidencia" es lo que leí, no una suposi
 sale de los artículos, READMEs y PRs, que ya están en esa voz. Crear un tono
 "de marca" separado sería una cuarta definición donde ya hay una que funciona.
 
-**Acción pendiente (una línea en `voz-gonzo`):** el alcance hoy excluye
-"posts públicos de branding" y eso deja el frente sin dueño. Hay que extenderlo
-con la modulación que `content-serializer` ya define (deep-dive / anuncio /
-opinión / CTA), **registrada en `voz-gonzo`, no duplicada**.
+**Acción ejecutada (2026-11-06):** el alcance de `voz-gonzo` ya incluye posts
+públicos de branding, con la tabla de modulación por tipo de pieza (deep-dive /
+anuncio / opinión / CTA). Vive en el canónico, no duplicada acá. Verificado el
+2026-11-09 durante la auditoría de la sesión.
 
 ### 5. Carrera: CV, entrevistas, mensajes a reclutadores
 

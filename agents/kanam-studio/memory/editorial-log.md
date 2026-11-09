@@ -33,6 +33,33 @@ en `docs/voz-gonzo.md`. Este log no debe crecer con reglas duplicadas.
 
 ## Entradas
 
+### 2026-11-09 - Kanam STUDIO - Auditoría de la sesión 2026-11-06
+
+**Pedido:** revisar que la sesión del viernes no haya introducido errores.
+**Entrega:** este registro + 3 correcciones en `editorial-guidelines.md` y `ROADMAP.md`.
+**Verificado contra el disco:** 7 archivos commiteados presentes, pasos 1-6 de
+AGENTS.md sin huecos, 3 referencias a `voz-gonzo` en skills, 11 artículos,
+22 repos / 16 PRs de OSS-TRACKER, `preflight/README.md` 8974 bytes,
+`kanam-onwheels` inexistente.
+**Hallazgo 1 (no mío):** `docs/voz-gonzo.md` tiene la numeración de reglas con
+la 8 faltante (pasa de 7 a 9). Precedía a mi commit: ya estaba en `5dbec551ae~1`.
+**Resuelto el 2026-11-09:** la regla 8 era "Guion común (-) siempre", retirada
+por ADR-082 (`c22fc400a5`) sin renumerar. No se reescribe: se deja la línea
+tachada con el motivo, para que el hueco sea legible y no parezca una pérdida.
+Yo leí el archivo el viernes y no lo vi. Ahora que es canónico, pesa.
+**Hallazgo 2 (mío, razonamiento):** el viernes "restauré" 3 reviews de
+`kanam-critic` asumiendo que staging ajeno = archivos válidos. Eran copias
+anidadas por un bug de cwd relativo, borradas correctamente en `c9db4a14f7`.
+Reviví basura que se iba a borrar igual. Daño nulo, criterio equivocado.
+**Hallazgo 3 (mío, documental):** `editorial-guidelines.md` decía "Acción
+pendiente" sobre algo ya ejecutado (1.4). Contradecía la realidad dentro del
+mismo archivo. Corregido.
+**Hallazgo 4 (mío, conteo):** dije "13 reglas consolidadas" y hay 12.
+Corregido en ambos archivos.
+**Patrón:** un archivo que declara un estado puede quedar obsoleto por un
+cambio hecho en la misma sesión. La regla del disco aplica también a mis
+propios documentos, no solo a los de terceros.
+
 ### 2026-11-06 - Kanam STUDIO - Post de kanam-fixer (Pipeline A, primer uso real)
 
 **Pedido:** usar `kanam-fixer` como caso de uso para empezar a promocionar.

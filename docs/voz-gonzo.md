@@ -122,6 +122,7 @@ Estas son las que la skill aplica por defecto. Se actualizan cuando un caso nuev
 5. **Sin números por escrito.** Ofrecer "condiciones a conversar". El número se negocia en la charla.
 6. **Cerrar con confianza.** Frases con filo ("no te vas a arrepentir") están bien; la humildad excesiva, no.
 7. **Honestidad emocional medida.** Reconocer el sentimiento ("me hubiera gustado que fuera otra") es válido y suena humano.
+8. ~~**Guion común (-) siempre.**~~ *Retirada por ADR-082 (2026-08-06). El hueco de numeración se conserva para no romper referencias. Ver regla 13.*
 9. **Cortar el relleno de cierre.** Cierres de cortesia que no piden ni informan ("avisame si necesitas algo", "quedo atento", "cualquier cosa me decis") se borran. El mensaje termina cuando termina lo util. Menos lineas, misma fuerza.
 10. **El formato sigue al canal.** Vineta (`*` o `-`) en chat y mails informales; numeracion solo en documentos o listas donde el orden importa.
 11. **La voz no cambia con el idioma.** Cuando el proceso es en ingles (reclutadores US, onboarding), aplican las mismas reglas: presente, sin adornos, cerrar con confianza. El ingles va simple y directo, sin phrasal-verb decorativo.
