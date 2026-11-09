@@ -39,6 +39,39 @@ El propio ponente resume su roadmap así (26:46–27:10):
 
 La tesis del video: **AI Engineer = dev de toda la vida + modelos de IA**. No es carrera nueva ni investigación; es una actualización de la capa 1 con la capa 2, y la capa 3 es lo que se vende.
 
+## Protocolo de estudio (cómo usar esta clase)
+
+Regla: **no ver 32 minutos seguidos y después estudiar.** El video se olvida antes de llegar al módulo 8. Se ve por bloques y cada bloque se cierra con recuperación, no con relectura.
+
+### Tres bloques, tres sesiones
+
+| Bloque | Video | Cómo verlo | Tiempo |
+|---|---|---|---|
+| **A — Base y System Design** | 0:00–11:17 (saltear 0:53–1:59) | 1.25x. Es checklist, no contenido nuevo. | ~9 min |
+| **B — Modelos, APIs, costos** | 11:17–19:40 | 1x. Pausar en 11:17–12:48 (bases) y 13:58–16:58 (costos). | ~8 min |
+| **C — Implementaciones** | 19:40–32:47 | 1x. Pausar en 22:04 (RAG), 24:18 (MCP) y 28:21 (LLM Ops). | ~13 min |
+
+### Loop por bloque (20–30 min con Kanam)
+
+1. **Recuperar sin mirar.** Tres preguntas del bloque. Sin outline, sin video, sin buscar. Lo que no sale, no sale: eso es el dato.
+2. **Corregir solo lo que falló.** Si está bien, no lo explico. La clase no es un resumen del video: es el reparcheo de tus gaps.
+3. **Aplicar.** El ejercicio del bloque, con entregable concreto.
+4. **Registrar.** Una línea con lo que no sabías y lo que queda pendiente. Sin registro no hay progreso visible.
+
+### Modo examen
+
+En la sesión de profundización **yo pregunto primero**. No empiezo explicando: empiezo midiendo. Si querés la explicación directa, la pido y la doy, pero el orden por defecto es recuperación → corrección → práctica.
+
+### Qué NO hacer
+
+- Volver a mirar el video antes de responder. La incomodidad de no acordarse es el mecanismo, no un obstáculo.
+- Ver el bloque C antes que el B. Sin vocabulario de modelos y costos, MCP y RAG suenan a magia.
+- Estudiar dos bloques el mismo día. Un bloque por sesión, con el ejercicio hecho.
+
+### Orden recomendado
+
+A → B → C si querés la estructura completa. Si tenés poco tiempo: **B y C primero**, y usá A como checklist en paralelo, porque las bases ya las tenés y el gap real está en la capa de IA.
+
 ## Resultado esperado
 
 Al terminar la clase deberías poder:
