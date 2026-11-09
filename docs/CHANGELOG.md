@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-24). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-25). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
 
@@ -517,45 +517,5 @@ El radar de vacantes dejo de encontrar nada el 2026-10-25, y la causa NO fue que
 - **El aprendizaje de fondo, y el motivo de la lib separada: un scraper sin tests es un scraper que se rompe callado.** La regla de una regla: lo que decide QUE se devuelve va en una lib pura con tests; lo que hace la red queda en el script. Cuando un sitio cambie su markup o sus parametros, el fallo sale en la suite y no en el silencio.
 - **El script ahora imprime que fuentes respondieron** (`fuentes: linkedin, remotive, ...`). Es la primera cosa que hay que mirar cuando el radar se calla: si dice una que no esperabas, esa es la rota; si dice todas y no hay resultados, el problema esta en el filtro.
 - **Verificado end-to-end**: el radar devuelve vacantes reales de las 5 fuentes, en ingles y en espanol, incluyendo la de RYZ Labs. 27 tests en verde.
-
----
-
-## [2026-10-24] - kanam-sudoku-iphone: proyecto nuevo desde cero, con la dificultad definida por tecnica
-
-### Added
-- **`projects/kanam-sudoku-iphone/`** - sudoku 9x9 **mobile-first para iPhone** (PWA instalable, offline, teclado numerico en pantalla, 3 dificultades), pedido por Gonzo con la instruccion explicita de **no usar los proyectos actuales**. Repo publico previsto (`gonzoblasco/kanam-sudoku-iphone`) en GitHub Pages.
-- **Ciclo de definicion cerrado** con los artefactos estandar: 6 specs (`.knowledge/specs/SPEC-001..006`, checker del workspace en exit 0), `KNOWLEDGE.md`, `docs/architecture.md` (contratos, alternativas descartadas, tabla de trazabilidad), `docs/CONTEXT.md` (glosario con sinonimos rechazados), `docs/data-model.md`, 6 ADRs, `AGENTS.md`/`CLAUDE.md` del proyecto y CI + deploy.
-- **Decisiones de negocio de Gonzo (2026-10-24):** hosting = GitHub Pages desde repo **publico**; dificultad = **por tecnica de resolucion** (no por cantidad de celdas vacias); instalacion = **PWA completa** (manifest + service worker).
-- **Decisiones tecnicas propias:** TypeScript + Vite con **cero dependencias de runtime** y una **unica convencion de mascara** (`bit (d-1)`) - el problema exacto que sufrio el motor previo, que tenia `1 << (d-1)` y `1 << d` conviviendo. Estado en un unico `GameState` con historial de mutaciones, para que deshacer, notas y guardado se agreguen **sin reescribir el nucleo** (el pedido lo exigia explicitamente).
-
-### Measured
-- **La trazabilidad se verifica con grep, no se afirma**: las 17 capacidades (`C1`..`C17`) y las 6 specs aparecen en la tabla de `docs/architecture.md`. Las 7 capacidades fuera de v1 estan nombradas como fuera, no omitidas.
-- **El stack se verifico contra la maquina, no contra la suposicion**: Node 26.8.1 corre TypeScript con type stripping nativo (`node --test` descubre y corre tests `.ts` sin paso de build), y Playwright-core + Chromium headless ya estan instalados para el e2e en viewport de iPhone.
-
-### Changed
-- **`MEMORY.md`** - entrada del proyecto en la seccion de repos activos, con la instruccion de "desde cero" y las tres decisiones de Gonzo, para que nadie lo confunda con el `kanam-sudoku` v1 (que queda intacto y es de escritorio).
-
-### Published (2026-10-24, evening)
-- **Repo publico**: `gonzoblasco/kanam-sudoku-iphone` -> **https://gonzoblasco.github.io/kanam-sudoku-iphone/**. CI y deploy verdes; el sitio desplegado verificado en Chromium real (81 celdas, escritura funcionando, 0 errores de consola).
-- **Revision B del pipeline A/B**: 18 bugs reales encontrados y corregidos. El grave: **el tablero estaba transpuesto** (filas y columnas invertidas) y **ningun test lo veia**, porque todos los e2e median geometria y ninguno comparaba el valor de una celda contra el dato del motor. Otros: la region `aria-live` visible (faltaba `.sr-only`), el teclado fuera del layout pedido, tres tecnicas con deducciones falsas (`x_wing` eliminaba el digito de su propio patron), semillas correlacionadas en el generador, `matched:false` reportando el nivel con el cap pedido, `undo` roto tras el tope del historial, el cronometro sin pausar en background, la partida ganada quedandose guardada, y el service worker precacheando su propio `sw.js`.
-- **El tablero se hizo fluido**: nueve celdas de 44px necesitan 396px y el viewport de referencia tiene 390px. Con el tablero fijo se perdia la ultima columna (y en un iPhone SE, una columna entera). Ahora es `min(100%, 396px)` y la celda es un noveno de la fila con base porcentual: medido, 390px -> 43.33px, 375px -> 41.66px, 430px -> 44px exactos, sin solape. **La spec, el e2e y el `AGENTS.md` del proyecto quedaron reconciliados con la aritmetica.**
-- **Verificacion final**: 73/73 tests, `tsc --noEmit` limpio, 4 e2e en Chromium a 390x844 (27/27, 34/34, 61/61, 11/11), contraste AA en los 9 pares de color de ambos temas, axe-core con 0 violaciones, y **una sola convencion de mascara** en todo el arbol.
-- **CI corregido**: `tsc` resolvia los tipos de Node desde el `node_modules` del workspace padre, asi que pasaba local y fallaba en CI. `@types/node` es ahora devDependency del proyecto.
-
-### Added (2026-10-24, evening) - sistema de notas
-- **`kanam-sudoku-iphone`: notas por celda** (capacidad C12, que la v1 dejo fuera de alcance; pedida por Gonzo despues de la publicacion). **Modo notas** (el teclado marca candidatos en vez de escribir valores), **candidatos automaticos** ("Auto") y **limpieza** de anotaciones, con la grilla 3x3 clasica en la celda.
-- **La decision que la hace coherente: una nota no es una jugada.** No cambia el valor de una celda y **no entra al historial de deshacer** (ADR-0007). Por eso su API (`setNote`, `toggleNote`) esta separada de `apply` desde el primer dia, y `apply` sigue siendo el unico camino de escritura del valor.
-- **Los candidatos automaticos salen del mismo motor que las tecnicas** (`core/candidates.ts`): una nota automatica nunca ofrece un digito que el motor ya descarto.
-- **El valor de una celda y sus notas son informacion distinta**: viven en elementos separados (`.cell-value` y `.note-grid`). Una celda con valor **oculta** sus notas, y al borrar el valor **vuelven**.
-- **Fue la primera prueba real de ADR-0004**: la capacidad entro entera y **el nucleo (`core/`, `state/state.ts`) no cambio de forma**, porque el estado ya tenia `notes` y su API desde el primer dia. La promesa de "deshacer, notas y guardado se agregan sin reescribir el nucleo" quedo demostrada, no declarada.
-- Verificado: `npm test` **91/91** (11 suites), `e2e.notes` **40/40**, y los otros cuatro e2e siguen verdes (27/34/61/11). Contraste AA del color de notas en ambos temas (8.86:1 claro, 12.12:1 oscuro). Bundle: 23.8 kB -> 26.8 kB (8.76 kB gzip).
-- Spec nueva (`SPEC-007-notas.md`), ADR nuevo (`ADR-0007-notas-no-son-jugadas.md`) y reconciliacion de los artefactos que el cambio de alcance deja obsoletos: BRIEF, `docs/architecture.md` (tabla de trazabilidad), `docs/data-model.md` (`CellView.notes`), `docs/CONTEXT.md` (glosario: "modo notas" y "digitos legales") y el indice de ADRs.
-
-### Changed (2026-10-25) - rediseno visual de `kanam-sudoku-iphone`, decidido midiendo
-- **El problema real**: el tablero era una planilla con formato condicional. Cuatro colores sin relacion para los cuatro contextos de resaltado (fila roja, columna verde, bloque azul, mismo-numero amarillo), que en modo oscuro se volvian barro; cero acento; menu generico; notas a 8px ilegibles.
-- **Se debatieron tres propuestas con tres agentes** y **se midieron, no se discutieron**: se escribio `scripts/palette-check.mjs` (ratios WCAG desde la paleta) y `scripts/theme-lab.mjs` (renderiza cada propuesta como PNG a 390x844). **Dos de las tres propuestas fallaban AA en la linea de la grilla**: declaraban 8.53:1 y 2.2:1, medidas dieron **1.57:1** y **1.52:1** (una habia copiado el ratio del texto secundario). La tercera proponia notas de 8px, el mismo defecto que se queria corregir.
-- **La sintesis que se implemento**: **un solo matiz (teal) en cuatro pasos de intensidad** en vez de cuatro colores, cada contexto con un canal que no es color. Papel calido (`#faf7f2`) y tinta calida (`#14120f`): el blanco y el negro puros son un error en una app que se mira de noche. El acento marca la seleccion y la regla bajo el titulo, nada mas; el conflicto es el unico otro color saturado. Cifras tabulares en el tablero. Las teclas se hunden al pulsar (`scale(0.96)`). "Borrar" pasa a ser mas chico y atenuado.
-- **Bug de especificidad corregido**: el boton "Notas" activo quedaba transparente porque la regla base le ganaba a la regla de presionado. Verificado con `getComputedStyle` tras la transicion.
-- Verificado: 91/91 tests, typecheck limpio, build ok (CSS 6.13 kB, 1.91 kB gzip), e2e 27/27 + 34/34 + 61/61 + 11/11 + 40/40, **todos los pares AA en ambos temas**, incluidos los cuatro tintes de resaltado compuestos sobre el fondo.
 
 ---

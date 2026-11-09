@@ -78,6 +78,8 @@ entran.** Ese es el filtro que la v0.2 §6 exige ("si un hito no mueve ningún e
 |---|---|---|---|
 | **T0** - Cerrar la mentira | Dejar de arrastrar estado stale y promesas rotas | ROADMAP actualizado · 2 skills en el catálogo · 0 promesas rotas · guard de roadmaps en verde | ✅ **cerrado** |
 | **T1** - El primer veredicto real | Que el producto exista | 1 veredicto real en `verdicts.jsonl` con evidencia citable + reporte publicado | ✅ **cerrado** (r1 VETO 12/25 → r4 **Aprobado 19/25**, delta +7; r2 y r3 anulados con motivo) |
+| **T1.x** - Reemision post-cambio de modelo | Vigente vigente | Veredicto r4 reemitido con gpt-oss cuando vuelva el presupuesto; F8 | 🟡 abierto (modelo M3.1-FLASH provisional por F8) |
+| **T1.x** - Reemision post-cambio de modelo | Vigente vigente | Veredicto r4 reemitido con gpt-oss cuando vuelva el presupuesto; F8 | 🟡 abierto (modelo M3.1-FLASH provisional por F8) |
 | **T2** - El disparador | Que me convoquen sin que Gonzo lo pida | 3 revisiones en 2 semanas **iniciadas por el sistema** | 🟡 **montado, sin medir** |
 | **T3** - El retorno | Que mi VETO sea contrato, no sermón | 3 VETOs con absorción medida (se corrigió o no, en cuánto tiempo) | 🟡 **ledger con 3 fricciones (auto-corrección); falta medir VETOs sobre entregables ajenos |
 | **T4** - Las extensiones de eje | Ampliar capacidad con la base ya real | T1+T2+T3 cerrados y 1 detector nuevo verde en el lab | ⚪ pendiente |
@@ -114,13 +116,15 @@ el paso siguiente del ritual: el autor corrige y vuelve.
 verificable desde afuera**: 0 veredictos reales, rutas duplicadas y archivos sin versionar. La
 vara no perdona un kit que todavia no puede auditarse a si mismo.
 
-**Resultado final del tramo (2026-11-06, 18:21 ART).** Veredicto vigente:
-`kanam-critic-kit-v0.3-r4` = **S 4 · H 4 · A 4 · R 4 · P 3 = 19/25 → Aprobado** (delta **+7**
-contra el r1). Reporte: `agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3-r4.md`.
-Fricciones abiertas que **no** bloquean pero tienen dueño: **F7** (consolidar los 4 scripts de
-control en un CLI con subcomandos), **F8** (este veredicto lo emitio `minimax-m3.1-flash` y el rol
-declara `gpt-oss:120b-cloud`: reemitir con el modelo declarado o cambiar el config), **F9**
-(medir 3 VETOs sobre entregables ajenos antes de publicar cualquier tasa de absorcion).
+**Estado al cierre del turno (2026-11-07, 16:40 ART).**
+- Veredicto vigente del kit: `kanam-critic-kit-v0.3-r4` = **Aprobado 19/25**, delta +7 contra el r1.
+- T3 (tasa de absorcion): 2 VETOs sobre trabajo ajeno cerrados (`docs-ROADMAP-madurez` 15/25 y
+  `kanam-dev-inventario-skills` 15/25). Falta UN VETO mas; candidato elegido: onwheels panel.
+- Guardas: KIT 18/18; barrido semanal payload corregido (rutas absolutas); F15 absorbida.
+- Fricciones abiertas con dueño: F7 (Parsimony, consolidacion de scripts), F8 (modelo del juez,
+  provisional en minimax), F9 (tasa de absorcion), F10-F14 (contenido de docs/ROADMAP.md).
+- El modelo del barrido semanal es `gpt-oss:120b-cloud` (declarado del rol); la sesion principal
+  corre con el free model disponible del CORE.
 
 **El incidente mas duro del turno (F5, 18:25 ART).** El patron se repitio tres veces en cadena
 y cada vez lo cazó `bin/verify-verdict.py`, no el juicio:

@@ -45,7 +45,7 @@
 - [ ] **[kanam-critic]** (medium) Critic T4.1: objective-extractor con gate del Critic
 - [ ] **[kanam-critic]** (medium) Critic T4.2: detectores horizon, resistance y auto-reportado en evidence-hunter con caso trampa
 - [ ] **[kanam-critic]** (medium) Critic T4.3: format_sharp_report.py + 1 PR comment real
-- [ ] **[kanam-critic]** (medium) Critic T2.4: verificar que el delivery del barrido semanal llega (la corrida de prueba NO-REPLY no entrego: channel=last sin canal previo)
+- [ ] **[kanam-critic]** (medium) Critic T2.4: la primera corrida real del barrido fallo por rutas relativas en el payload (F15); payload corregido con rutas absolutas y corrida de prueba relanzada
 - [ ] **[kanam-critic]** (medium) Critic F7: consolidar los 4 scripts de control (check-kit, verify-verdict, emit-verdict, invalidate-verdict) en un CLI con subcomandos
 - [ ] **[kanam-critic]** (medium) Critic F9: medir 3 VETOs sobre entregables ajenos antes de publicar cualquier tasa de absorcion
 - [ ] **[kanam-critic]** (medium) Critic: verificar la primera entrega real del barrido semanal (lunes 18:00 ART, delivery telegram) y que el veredicto quede registrado con emit-verdict.py

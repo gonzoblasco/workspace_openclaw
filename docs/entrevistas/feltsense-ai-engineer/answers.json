@@ -1,0 +1,82 @@
+{
+  "application": {
+    "company": "Silver.dev (Feltsense)",
+    "role": "AI Engineer",
+    "job_url": "https://jobs.ashbyhq.com/Silver/fd575807-3e73-4c2c-a3e7-9a9bbd1af2de",
+    "posting_date": "2026-11-05",
+    "employment_type": "Full-time, remote",
+    "location_requirement": "Argentina (remote)"
+  },
+  "candidate": {
+    "first_name": "Gonzalo",
+    "last_name": "Blasco",
+    "full_name": "Gonzalo Blasco",
+    "preferred_name": "Gonzo",
+    "email": "gonzoblasco@icloud.com",
+    "phone": "+54 11 4937 4656",
+    "linkedin": "https://www.linkedin.com/in/gonzalo-blasco",
+    "github": "https://github.com/gonzoblasco",
+    "location": "Núñez, Buenos Aires, Argentina",
+    "location_country": "Argentina",
+    "timezone": "America/Buenos_Aires (GMT-3), aligned to US EST",
+    "work_authorization": "Argentina-based; available as remote contractor (international invoicing, CUIT/CUIL on file)",
+    "cv_file": "docs/entrevistas/feltsense-ai-engineer/cv.md"
+  },
+  "experience": {
+    "total_years": "10+ (since 02/2016, excluding a 2001-2008 PHP stretch that is not counted)",
+    "years_ai": "1.5 (since 05/2025)",
+    "years_backend": "~1.5 (Node.js/TypeScript + Supabase in production; 70/30 frontend/backend)",
+    "current_role": "Freelancer - Software Engineer (05/2025 - Present)",
+    "previous_leadership": "Led a team of 3 engineers at EY (09/2021 - 05/2025); senior frontend/accessibility lead",
+    "english_level": "B2+ (professional working; reading and writing comfortable, spoken English is current development area). Not C1/fluent."
+  },
+  "education": {
+    "degree": "None (no university degree completed)",
+    "formal": "Digital House - React (2018, completed bootcamp); UADE - Graphic Design (2003-2004, incomplete)",
+    "certifications": "Deque University - Accessibility Specialist Program (2021, training program, not a professional certification)"
+  },
+  "compensation": {
+    "posted_range": "USD 60,000 - 110,000 per year",
+    "expectation": "Within posted range; target number to confirm with Gonzo before submitting (historical target USD 85,000-95,000 from 2026-08 sessions, may be stale)"
+  },
+  "skills_claimed": [
+    "TypeScript",
+    "React",
+    "Node.js",
+    "Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions)",
+    "pgvector",
+    "RAG / embeddings / retrieval",
+    "Prompt engineering and structured outputs",
+    "Vitest",
+    "Playwright",
+    "Biome",
+    "Zod",
+    "Claude Code",
+    "OpenAI Codex",
+    "MCP server development",
+    "Design systems and tokens",
+    "CI/CD (GitHub Actions, Azure DevOps)",
+    "WCAG 2.2 AA and ARIA patterns"
+  ],
+  "skills_not_claimed": [
+    "GCP Cloud Run",
+    "Inngest",
+    "Vercel AI SDK",
+    "Claude Agent SDK",
+    "Cursor",
+    "Multi-agent product shipped to customers"
+  ],
+  "screening_answers": {
+    "remote_from_argentina": "Yes",
+    "willing_to_lead": "Yes - led 3 engineers at EY and runs own product end to end, while remaining hands-on",
+    "hands_on_coding": "Yes - daily on Claude Code and OpenAI Codex under a verify-before-shipping method",
+    "experience_multi_agent": "Own agentic engineering system (subagents, handoffs, memory, skills) plus AI flows in SoporteML; not a customer-shipped multi-agent orchestration framework",
+    "self_improving_harness": "Confidence-guarded autopilot and feedback loops in SoporteML; verify/adopt method in own OS; no finished self-evolving harness claimed",
+    "ai_coding_agents": "Claude Code and OpenAI Codex daily; review and verify generated code before it ships"
+  },
+  "notes": [
+    "English level is a likely hard filter for this process (per 2026-10 pattern); ask the required conversational level in the first message.",
+    "No university degree; the JD does not require one. Education line follows the task instruction (Digital House + UADE incomplete).",
+    "Salary target not in verified current corpus beyond posted range; confirm before submission."
+  ]
+}

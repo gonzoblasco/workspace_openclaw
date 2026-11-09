@@ -1,7 +1,7 @@
 # ADR-049: Claude Code como Motor del Pipeline A/B (Qwen Code a Fallback)
 
 **Fecha:** 2026-09-15
-**Estado:** Aceptado
+**Estado:** Superseded por ADR-088 (2026-11-06). El pipeline vigente corre via sessions_spawn con los modelos del managed block (`gpt-oss:120b-cloud` / `deepseek-v4.1-flash:cloud` / `minimax-m3.1-flash:cloud` / `gemma4:cloud`); Claude Code no es el motor declarado.
 **Decisores:** Gonzo / Kanam
 **Origen:** workspace (Fase 0 de la cola durable; la deriva se detectó al auditar el motor)
 **Relacionado:** ADR-049 (Claude Code motor A/B), ADR-077 (pipeline A/B asimétrico)

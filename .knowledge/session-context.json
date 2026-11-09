@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exported_at": "2026-08-02T12:50:56.482Z",
+  "exported_at": "2026-11-06T21:33:24.272Z",
   "project_path": "/Users/gonzoblasco/.openclaw/workspace",
   "projects": [
     {
@@ -14,25 +14,62 @@
       "constraints": "[\"No destructive commands without asking\",\"English only for GitHub\"]",
       "repo": "git@github.com:gonzoblasco/workspace_openclaw.git",
       "created_at": "2026-08-02",
-      "last_updated": "2026-08-02"
+      "last_updated": "2026-11-06"
     }
   ],
   "sessions": [
     {
-      "id": 2,
+      "id": 3,
       "project_id": 1,
       "session_key": null,
-      "session_id": "example-001",
-      "date": "2026-08-02",
-      "summary": "Configured session-context on workspace",
-      "left_off": "Showing usage example to Gonzo",
-      "next_steps": "Try session-context in a real project like a11y-fixer\nUpdate MEMORY.md with the new workflow\nUse session-context:save at end of next session",
-      "blockers": "None",
-      "git_activity": null,
-      "created_at": "2026-08-02T12:50:56.480Z"
+      "session_id": "06fafb5a",
+      "date": "2026-11-06",
+      "summary": "Sesion de demanda de Kanam DEV: diagnostico (el cuello era invocacion, no skills), construccion de la superficie de pipeline completa y cierre del roadmap v0.2.",
+      "left_off": "Superficie del pipeline terminada y commiteada: intake (S1), despachador kanam-dev con 8 subcomandos, runner con plantillas y resume, slice-commit, docs-sync y handoff gate. 134 tests verdes. Skill kanam-dev-surface registrada. Roadmap v0.2 commiteado con indice y tracking sincronizados.",
+      "next_steps": "Hito 5.1: runs.db (SQLite stdlib) para que las corridas no se pierdan en /tmp\nHito 5.2: kanam-dev history para consultar corridas\nHito 5.5: primera corrida completa real de un cambio propio con plantilla task\nMedir demanda desde sesiones y memoria a las dos semanas (sin telemetria en el CLI)",
+      "blockers": "El repo compartido mezcla autoria: archivos staged de esta sesion entraron en commits de otras sesiones; se resolvio con indice aislado\nLa metrica de demanda no esta instrumentada: no hay evidencia de uso, solo de funcionamiento",
+      "git_activity": "1971 commits, 114 files changed",
+      "created_at": "2026-11-06T21:33:24.270Z",
+      "decisions": [
+        {
+          "id": 3,
+          "session_id": 3,
+          "what": "El cuello era costo de invocacion, no falta de conocimiento",
+          "why": "43 skills documentadas y el rol sin usarse 8 horas: envolver lo existente vale mas que agregar la skill 45",
+          "date": "2026-11-06"
+        },
+        {
+          "id": 4,
+          "session_id": 3,
+          "what": "exit 2 nunca es verde en ninguna estacion",
+          "why": "Un gate que no puede correr y devuelve 0 es la barrera que no corre y no lo dice",
+          "date": "2026-11-06"
+        },
+        {
+          "id": 5,
+          "session_id": 3,
+          "what": "discovery, slice y build quedan manuales con evidencia declarada obligatoria",
+          "why": "Automatizarlas seria un agente autonomo de codigo, fuera de la autorizacion del rol",
+          "date": "2026-11-06"
+        },
+        {
+          "id": 6,
+          "session_id": 3,
+          "what": "hotfix limitado a 3 archivos / 80 lineas, con escalada a task",
+          "why": "Evitar que hotfix se convierta en atajo universal legitimado",
+          "date": "2026-11-06"
+        },
+        {
+          "id": 7,
+          "session_id": 3,
+          "what": "guiones largos NO es gate",
+          "why": "Retirado por decision del dueno el 2026-11-06; queda como criterio de estilo opcional",
+          "date": "2026-11-06"
+        }
+      ]
     },
     {
-      "id": 1,
+      "id": 2,
       "project_id": 1,
       "session_key": null,
       "session_id": "8f072267",
@@ -42,22 +79,88 @@
       "next_steps": "Finish scripts\nUpdate session-lifecycle\nSync mirror and commit",
       "blockers": "None",
       "git_activity": null,
-      "created_at": "2026-08-02T12:24:48.891Z"
+      "created_at": "2026-08-02T12:24:48.891Z",
+      "decisions": [
+        {
+          "id": 2,
+          "session_id": 2,
+          "what": "Use node:sqlite local DB",
+          "why": "OpenClaw tools are runtime-only; local SQLite keeps scripts autonomous",
+          "date": "2026-08-02"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "project_id": 1,
+      "session_key": null,
+      "session_id": "example-001",
+      "date": "2026-08-02",
+      "summary": "Configured session-context on workspace",
+      "left_off": "Showing usage example to Gonzo",
+      "next_steps": "Try session-context in a real project like a11y-fixer\nUpdate MEMORY.md with the new workflow\nUse session-context:save at end of next session",
+      "blockers": "None",
+      "git_activity": null,
+      "created_at": "2026-08-02T12:50:56.480Z",
+      "decisions": [
+        {
+          "id": 1,
+          "session_id": 1,
+          "what": "Adopt session-context for project memory",
+          "why": "Replaces scattered daily notes with structured per-project context",
+          "date": "2026-08-02"
+        }
+      ]
     }
   ],
   "decisions": [
     {
+      "id": 3,
+      "session_id": 3,
+      "what": "El cuello era costo de invocacion, no falta de conocimiento",
+      "why": "43 skills documentadas y el rol sin usarse 8 horas: envolver lo existente vale mas que agregar la skill 45",
+      "date": "2026-11-06"
+    },
+    {
+      "id": 4,
+      "session_id": 3,
+      "what": "exit 2 nunca es verde en ninguna estacion",
+      "why": "Un gate que no puede correr y devuelve 0 es la barrera que no corre y no lo dice",
+      "date": "2026-11-06"
+    },
+    {
+      "id": 5,
+      "session_id": 3,
+      "what": "discovery, slice y build quedan manuales con evidencia declarada obligatoria",
+      "why": "Automatizarlas seria un agente autonomo de codigo, fuera de la autorizacion del rol",
+      "date": "2026-11-06"
+    },
+    {
+      "id": 6,
+      "session_id": 3,
+      "what": "hotfix limitado a 3 archivos / 80 lineas, con escalada a task",
+      "why": "Evitar que hotfix se convierta en atajo universal legitimado",
+      "date": "2026-11-06"
+    },
+    {
+      "id": 7,
+      "session_id": 3,
+      "what": "guiones largos NO es gate",
+      "why": "Retirado por decision del dueno el 2026-11-06; queda como criterio de estilo opcional",
+      "date": "2026-11-06"
+    },
+    {
       "id": 2,
       "session_id": 2,
-      "what": "Adopt session-context for project memory",
-      "why": "Replaces scattered daily notes with structured per-project context",
+      "what": "Use node:sqlite local DB",
+      "why": "OpenClaw tools are runtime-only; local SQLite keeps scripts autonomous",
       "date": "2026-08-02"
     },
     {
       "id": 1,
       "session_id": 1,
-      "what": "Use node:sqlite local DB",
-      "why": "OpenClaw tools are runtime-only; local SQLite keeps scripts autonomous",
+      "what": "Adopt session-context for project memory",
+      "why": "Replaces scattered daily notes with structured per-project context",
       "date": "2026-08-02"
     }
   ]

@@ -18,43 +18,54 @@
   - `skills/sharp-adversarial-review/` - el ritual: como se puntea y se emite.
   - `skills/evidence-hunter/` - caza evidencia: `verificado | parcial | auto-reportado | bloqueado`.
   - `bin/evidence-hunter.py` - runner real de los detectores.
-  - `bin/record_verdict.py` / `bin/query_verdicts.py` - registro durable de veredictos.
-  - `bin/check-kit.py` - salud de mi propio kit (18 checks, exit 0 = verde).
+  - `bin/record_verdict.py` - registro directo (deprecated en favor de `emit-verdict.py`).
+  - `bin/emit-verdict.py` - la UNICA via de registro: valida el reporte ANTES de tocar el ledger.
   - `bin/verify-verdict.py` - un veredicto no existe sin fila + reporte + 5 citas.
-  - `bin/emit-verdict.py` - la unica via de registro: valida el reporte ANTES de escribir el ledger.
   - `bin/invalidate-verdict.py` - retira un veredicto dejando el motivo escrito.
-  - `tests/evidence-hunter/` - lab con 6 casos trampa (el sexto caza al detector que
-    fabrica `verificado` con una preposicion). Criterio de cierre: `GLOBAL=aprobado (6/6)`,
-    `EXIT=0`, reproducido desde cero.
+  - `bin/query_verdicts.py` - lista veredictos (los anulados aparecen como ANULADO).
+  - `bin/check-kit.py` - salud de mi propio kit (18 checks, exit 0 = verde).
+  - `tests/evidence-hunter/` - lab con 6 casos trampa. Criterio de cierre: `GLOBAL=aprobado (6/6)`, `EXIT=0`, reproducido desde cero.
   - `memory/verdicts.jsonl` - un registro por veredicto emitido (append-only).
+  - `memory/frictions.jsonl` - fricciones que cada VETO deja y si fueron absorbidas.
+  - `LEARNINGS.md` - habilidad calibrada que sobrevive los VETOs.
 
-## Estado a 2026-11-06 (verificado, no supuesto)
+## Decisión 7 (2026-11-06, sin costo): el juez provisional
 
-| Hecho | Evidencia |
-|---|---|
-| Veredictos reales del agente | `memory/verdicts.jsonl`: 3 validos - `kanam-critic-kit-v0.3` = VETO 12/25 (primer juicio), `kanam-critic-kit-v0.3-r4` = **Aprobado 19/25** (kit, vigente), `docs-ROADMAP-madurez` = **VETO 15/25** (trabajo ajeno al Critic, sujeto elegido por Gonzo). 2 filas ANULADAS (r2, r3) con motivo escrito. Los 2 previos eran fixtures de test |
-| Fricciones | `memory/frictions.jsonl`: 14 registradas, 6 absorbidas (F1-F6) y 8 abiertas (F7 consolidacion de scripts, F8 modelo del juez, F9 tasa de absorcion, F10-F14 sobre `docs/ROADMAP.md`) |
-| Kit en verde | `python3 agents/kanam-critic/bin/check-kit.py` -> `GLOBAL=aprobado (17/17)` |
-| Skills registradas | `.knowledge/skills-catalog.tsv` lista `evidence-hunter` y `sharp-adversarial-review` |
-| Disparadores | `agents.entries.kanam-critic.heartbeat` (24h) + automatizacion `critic-sweep-weekly` (lunes 18:00 ART, delivery por telegram) |
-| Programa | `agents/kanam-critic/ROADMAP.md` (tramos T0 a T5; fuente unica) + `agents/kanam-planner/PROGRAMS/critic-v0.3.md` (el Planner es dueño del envelope) |
+- El rolet declara `gpt-oss:120b-cloud` como primario (ADR-090); el free plan solo tiene
+  `minimax-m3.1-flash:cloud`. Durante el free plan, los veredictos se emiten con el modelo
+  disponible y se marcan `provisional` en la nota. Cuando vuelva `gpt-oss`, se REEMITEN y
+  se actualiza la friccion F8.
+- Nada de esto toca `docs/ROADMAP.md` ni otros wedos: la decision vive aca y en F8 del ledger.
 
-## Reglas que no negocio
+## Estado a 2026-11-07 (verificado, no supuesto)
 
-1. Un veredicto sin cita (`ruta:línea` o salida de comando) no es un veredicto.
-2. No me apruebo sobre auto-reporte: mi evidencia se reproduce con un comando.
-3. `auto-reportado` fuerza friccion o VETO. Nunca un 4 o 5.
-4. Todo VETO devuelve puntos de friccion con eje, causa, ubicacion y ajuste concreto.
-5. No cruzo el terreno del Auditor (forma), del Dev (codigo) ni del Planner (gobierno).
-6. No prometo lo que no cumple: si un comando no existe, el doc lo dice en el mismo acto.
+- `memory/verdicts.jsonl` tiene **3 veredictos validos** y **2 anulados con motivo escrito**:
+  - `kanam-critic-kit-v0.3` = VETO 12/25 (primer juicio real)
+  - `kanam-critic-kit-v0.3-r2` = ANULADO (etiquetado "Aprobado" sobre 16; placeholders sin ejecutar)
+  - `kanam-critic-kit-v0.3-r3` = ANULADO (registrado sin reporte)
+  - `kanam-critic-kit-v0.3-r4` = **Aprobado 19/25** (kit vigente; emitido por minimax-m3.1-flash, vigente, F8 provisional)
+  - `docs-ROADMAP-madurez` = **VETO 15/25** (trabajo ajeno, 5 fricciones F10-F14, elegido por Gonzo)
+- Fricciones: 14 registradas, 7 absorbidas (F1-F6, F8 por decision), 7 abiertas
+  (F7 scripts, F9 tasa, F10-F14 sobre docs/ROADMAP.md, F15 el bug del barrido).
+- Lab: `GLOBAL=aprobado (6/6)`.
+- Kit: `GLOBAL=aprobado (18/18)`.
+- Disparadores: heartbeat 24h + automatizacion `critic-sweep-weekly` (lunes 18:00 ART), delivery Telegram.
+- Programa: `agents/kanam-critic/ROADMAP.md` (fuente unica, tramos T0 a T5); el Planner es dueno del envelope en `agents/kanam-planner/PROGRAMS/critic-v0.3.md`.
+
+## Que toco y con quien no me meto
+
+- El lado del CORE. `docs/ROADMAP.md`, `docs/NORTH.md` y `docs/ROADMAPS.md` son suyos. Yo mido y
+  devuelvo fricciones; la edicion la hace el CORE.
+- El lado del Planner. El envelope es de él; acá solo propongo y registro.
 
 ## Memoria propia
 
 - `memory/verdicts.jsonl` - ledger de veredictos (append-only, una linea por veredicto).
-- `memory/2026-10-24.md`, `memory/2026-11-06.md` y `memory/dreaming/` - mis notas de sesion.
-- `ROADMAP.md` - la ruta vigente (v0.3 "El Cable"). No hay segunda copia: si algo se cita, se cita acá.
-- `docs/reviews/` (dentro de este workspace del agente) - los veredictos publicados: una pieza
-  por veredicto, con su evidencia. Es la unica casa de los reportes SHARP del Critic.
-- `memory/frictions.jsonl` - las fricciones que cada VETO deja pendientes y si fueron absorbidas.
+- `memory/2026-11-06.md` - narrativa del turno.
+- `memory/2026-11-07.md` - este turno (por crear).
+- `memory/frictions.jsonl` - fricciones por VETO.
+- `ROADMAP.md` - la ruta vigente (v0.3 "El Cable"). No hay segunda copia.
+- `docs/reviews/` (dentro de este workspace del agente) - los veredictos publicados.
+- `LEARNINGS.md` - habilidad calibrada que sobrevive los VETOs.
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->

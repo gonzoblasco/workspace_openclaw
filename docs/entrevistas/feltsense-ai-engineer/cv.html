@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10pt; color: #1a1a1a; line-height: 1.28; margin: 0; }
+  h1 { font-size: 19pt; margin: 0 0 2pt 0; letter-spacing: 0.5pt; }
+  .role { font-size: 10.5pt; color: #333; margin: 0 0 5pt 0; font-weight: 600; }
+  .contact { font-size: 8.5pt; color: #444; margin: 0 0 11pt 0; }
+  h2 { font-size: 10pt; text-transform: uppercase; letter-spacing: 1pt; border-bottom: 1.2pt solid #1a1a1a; padding-bottom: 2pt; margin: 11pt 0 6pt 0; }
+  h3 { font-size: 10pt; margin: 8pt 0 1pt 0; }
+  .meta { font-size: 8.5pt; color: #555; font-style: italic; margin: 0 0 4pt 0; }
+  ul { margin: 2pt 0 2pt 0; padding-left: 14pt; }
+  li { margin-bottom: 2.5pt; }
+  p { margin: 0 0 6pt 0; }
+  .skills p { margin: 0 0 4pt 0; }
+  .label { font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; margin: 4pt 0 8pt 0; font-size: 9pt; }
+  th { text-align: left; border-bottom: 1pt solid #1a1a1a; padding: 2pt 4pt 2pt 0; }
+  td { border-bottom: 0.5pt solid #ddd; padding: 2pt 4pt 2pt 0; vertical-align: top; }
+  /* Las URLs y el email NO se parten: si el guion bajo cae al final de linea,
+     el extractor de texto del ATS lo come y "linkedin.com/in/gonzalo-blasco"
+     se lee "linkedin.com/in/gonzaloblasco" - un contacto roto en el archivo
+     que el sistema lee, no en el que el humano ve. Verificado 2026-10-22 con
+     pdftotext: la URL se partia y el guion desaparecia. */
+  .nb { white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<h1>Gonzalo Blasco</h1>
+<p class="role"><b>AI Engineer - Agent Systems, LLM Backends</b></p>
+<p class="contact">Núñez, Buenos Aires, Argentina | Remote (LATAM, aligned to US EST) | +54 11 4937 4656 | <span class="nb">gonzoblasco@icloud.com</span> | <span class="nb">linkedin.com/in/gonzalo-blasco</span> | <span class="nb">github.com/gonzoblasco</p></span>
+<h2>Professional Summary</h2>
+<p>AI-first software engineer with 10+ years shipping production web applications, 4+ of them leading front-end work in cross-regional teams, and the last 1.5 years of applied AI (70/30 frontend/backend split). I run my own engineering practice on OpenClaw: per-project sessions, persistent memory, handoffs, subagents, reusable skills, and an open-source pipeline, governed by a strict quarantine → analyze → verify → adopt method, so anything generated or adopted gets read and verified before it ships. That same practice includes an MCP server that exposes accessibility semantics to AI coding agents. On the product side I built <b>SoporteML</b>, a multi-tenant CRM with RAG-based reply suggestions, confidence-guarded autopilot, multi-company roles and Stripe billing, shipped to its first production client, <b>Pro Motors</b>. Stack: TypeScript/React on the front end, Supabase (PostgreSQL, Edge Functions, pgvector, Realtime, RLS) on the back end. 11 merged pull requests in production component libraries. Daily AI coding on <b>Claude Code</b> and <b>OpenAI Codex</b>; I delegate, review, and verify rather than trust generated code.</p>
+<h2>Core Skills</h2>
+<ul>
+<li><b>Agentic systems (own practice):</b> per-project sessions, persistent memory, handoffs, subagents, reusable skills, OSS pipeline; quarantine → analyze → verify → adopt. MCP server (<code>kanam-fixer</code>) exposing screen-reader semantics to agents.</li>
+<li><b>LLM-based backends:</b> prompt engineering, structured outputs, embeddings, retrieval (pgvector), confidence guardrails, feedback-style loops in production flows (SoporteML reply suggestions + autopilot).</li>
+<li><b>Backend:</b> Node.js/TypeScript, REST APIs, Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions), pgvector, Stripe billing and webhooks, webhook-driven flows.</li>
+<li><b>Frontend:</b> React, TypeScript, JavaScript, Vite, Next.js (SSR), Tailwind, Storybook, component architecture, design systems, design tokens.</li>
+<li><b>Quality and standards:</b> Vitest, Playwright, Biome, Zod, CI/CD (GitHub Actions, Azure DevOps pipelines), code review, technical requirements with code examples, accessibility as a gating criterion.</li>
+<li><b>Leadership:</b> led 3 engineers (EY); matrixed US/India squads; standards across code review, testing, and release.</li>
+<li><b>Accessibility (differential):</b> WCAG 2.2 AA, ARIA patterns (role / state / property wiring), screen readers (JAWS, NVDA, VoiceOver, TalkBack), Axe DevTools, Lighthouse.</li>
+</ul>
+<p><b>Not claimed (not in my stack):</b> GCP Cloud Run, Inngest / Pub-Sub background job systems, Vercel AI SDK, Claude Agent SDK, Cursor, Vercel deployment. I work with Codex and Claude Code; never Cursor.</p>
+<h2>Professional Experience</h2>
+<h3>Freelancer - Software Engineer</h3>
+<p><i>05/2025 - Present | Remote (Argentina)</i></p>
+<ul>
+<li>Built <b>SoporteML</b>, an AI-powered multi-tenant CRM for Mercado Libre sellers: React + Vite + TypeScript front end, Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions) back end, RAG-based reply suggestions with pgvector, confidence-guarded autopilot, multi-company and team roles, and Stripe billing. Shipped the first production client, <b>Pro Motors</b> (pro-motors.com.ar), with a live Mercado Libre integration.</li>
+<li>Designed and runs an <b>AI Engineering OS</b> on OpenClaw: per-project sessions, persistent memory, handoffs between agents, subagents with scoped context, reusable skills, and an open-source contribution pipeline, under a quarantine → analyze → verify → adopt method. This is the system I use to do the work; nothing external is adopted without being read and verified first.</li>
+<li>Built and maintains an <b>MCP server</b> (<code>kanam-fixer</code>) that exposes to AI agents what a screen reader announces for an HTML fragment (MCP over stdio, two tools). Used as part of the agent workflow above.</li>
+<li>Owns products end to end, from ambiguous problem to shipped and billed: product decisions, implementation, tests, production deployment.</li>
+<li>Daily tooling on macOS: VS Code, Terminal/zsh, Git, Docker, npm/pnpm/bun, CI via GitHub Actions; Node.js, TypeScript, Playwright, Vitest, Biome.</li>
+</ul>
+<h3>EY (Ernst &amp; Young) - Senior Frontend Engineer, Accessibility Lead</h3>
+<p><i>09/2021 - 05/2025 | Hybrid</i></p>
+<ul>
+<li>Led a team of <b>3 engineers</b> building an AI-powered financial intelligence platform in Next.js, with accessible interfaces from architecture to production. (SSR work lives here.)</li>
+<li>Owned accessibility for <b>EY Motif</b>, an enterprise React component library consumed by client and internal products: remediated <b>50+ components</b> to WCAG 2.2 AA (keyboard navigation, screen reader support, focus management, contrast) with Axe DevTools, Lighthouse, JAWS and NVDA.</li>
+<li>Served as the team&#x27;s accessibility reference across projects: reviewed Storybook components <b>before</b> implementation, defined component-level standards and annotations, wrote technical accessibility requirements with code guidance for UI stories.</li>
+<li>Prioritized accessibility defects by WCAG impact in Jira, with remediation guidance to developers inside the sprint.</li>
+<li>Worked in a matrixed, cross-regional (US/India) team across multiple SDLC phases in parallel within agile squads; daily use of Azure DevOps (pipelines, tickets, user stories), Jest + React Testing Library, Redux and React Query.</li>
+<li>Tooling (verified): TypeScript, React, Vitest, Playwright, Biome, Tailwind, Storybook, Zod.</li>
+</ul>
+<h3>Super7UI - Accessibility Engineer (Contractor)</h3>
+<p><i>08/2020 - 05/2021 | Remote</i></p>
+<ul>
+<li>Led the front-end audit and remediation for <b>Warner Bros. Screeners (WBTVD)</b>, the private streaming platform global distributors use to review content.</li>
+<li>Validated and expanded a prior third-party audit by reproducing each reported issue across NVDA, VoiceOver and TalkBack; used Axe to identify and document WCAG violations in key flows.</li>
+<li>Resolved <b>200+ WCAG violations</b> and produced developer-ready remediation documentation: proposed solutions, implementation guidance, development-ready specifications.</li>
+<li>Established an accessibility testing pipeline with <b>axe-core + Playwright integrated into CI/CD</b>, so non-compliant code could not merge.</li>
+</ul>
+<h3>Minutentag - Frontend Developer, Accessibility Owner</h3>
+<p><i>02/2016 - 11/2019 | Hybrid</i></p>
+<ul>
+<li>Contributed to migrating legacy interfaces to React and HTML5 on a platform serving <b>2M+ monthly active users</b>, and maintained the e-commerce flows (checkout, cart) for <b>Ann Taylor, LOFT and Lou &amp; Grey</b>.</li>
+<li>Grew from junior to the team&#x27;s accessibility owner.</li>
+<li>Ran A/B experiments in production with Adobe Target against live user segments, inside agile squads, implementing variants as JavaScript snippets.</li>
+</ul>
+<h2>Open Source - Merged Pull Requests (11)</h2>
+<p>Merged fixes in production component libraries and design systems, each reviewed and shipped by maintainers.</p>
+<ul>
+<li><b>adobe/react-spectrum #10503</b> - gated the ComboBox live-region announcement to section changes so it stops overriding the native per-item VoiceOver announcement.</li>
+<li><b>adobe/react-spectrum #10554</b> - regression test for global <code>aria-posinset</code> across sections.</li>
+<li><b>carbon-design-system/carbon #22887</b> - explicit <code>aria-describedby</code> support on <code>ComposedModal</code>, across both the native <code>&lt;dialog&gt;</code> path and the <code>div[role=dialog]</code> path.</li>
+<li><b>carbon-design-system/ibm-products #9878</b> - <code>CreateFullPage</code> (issue #9864).</li>
+<li><b>carbon-design-system/ibm-products #9879</b> - Datagrid (issue #9839).</li>
+<li><b>facebook/astryx #4605</b> - non-chromatic indicator (font weight) on the current breadcrumb item; WCAG 1.4.1.</li>
+<li><b>facebook/astryx #4914</b> - <code>build-storybook</code> failed with &quot;no merge base&quot; on old PRs (fetch-depth); fallback to a two-point diff.</li>
+<li><b>facebook/astryx #5419</b> - HoverCard with a label exposed as a dialog popup: <code>aria-haspopup=dialog</code> + <code>aria-controls</code> gated on open, <code>aria-expanded</code> synchronized.</li>
+<li><b>facebook/astryx #5493</b> - <code>TreeList</code> forwards <code>aria-label</code>/<code>aria-labelledby</code> to the underlying <code>ul role=tree</code>.</li>
+<li><b>mui/base-ui #5551</b> - moved <code>aria-orientation</code> to the owners of the role; the grid role does not support it.</li>
+<li><b>mui/material-ui #49003</b> - kept carousel links in hidden slides out of the focus order (WCAG 4.1.2 <code>aria-hidden-focus</code>).</li>
+</ul>
+<h3>Contributions without a merged PR (diagnostics, review notes, verified resolutions)</h3>
+<ul>
+<li><b>ibm-products #9868</b> - first human review of an external PR; the two raised signals were addressed by the author and the PR merged. Comment: issuecomment-5609797683.</li>
+<li><b>ibm-products #9866</b> - cross-issue diagnosis (React 19 state-during-commit cluster across #9865/#9866/#9867) at source level, with per-hook fix directions. Comment: issuecomment-5609873985.</li>
+<li><b>next.js #73474</b> - diagnostic separation of three conflated failure scenarios; maintainer accepted it and closed the issue as &quot;downstream response buffering, not a Next.js failure&quot;.</li>
+<li><b>carbon #16031</b> - verified-resolution of an issue, confirmed by the maintainer via #22751.</li>
+<li><b>react-spectrum #9556 / #10220</b> - evidence-based review comments on AI-assisted PRs: test expectations and scope narrowing without claiming VoiceOver access.</li>
+<li><b>astryx #4871</b> - comparative review of two competing PRs (focus retention vs. anchor identity) with test guidance.</li>
+</ul>
+<h2>Training &amp; Certifications</h2>
+<ul>
+<li><b>Digital House — React (2018, completed bootcamp)</b></li>
+<li><b>Deque University — Accessibility Specialist Program (2021, training program, not a professional certification)</b></li>
+</ul>
+<h2>Languages</h2>
+<ul>
+<li>Spanish - native</li>
+<li>English - B2+ (professional working proficiency; reading and writing are comfortable, spoken English is the current development area)</li>
+</ul>
+
+</body>
+</html>

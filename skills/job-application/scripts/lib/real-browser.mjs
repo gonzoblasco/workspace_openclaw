@@ -47,7 +47,7 @@ export async function hasCaptcha(page) {
  */
 export async function openBrowser({ preferReal } = { preferReal: false }) {
   // Lazy‑load playwright only when needed.
-  const { chromium } = require("/Users/gonzoblasco/.openclaw/workspace/projects/a11y-fixer/node_modules/playwright");
+  const { chromium } = require("/Users/gonzoblasco/.openclaw/workspace/projects/kanam-fixer/node_modules/playwright");
 
   if (preferReal) {
     try {

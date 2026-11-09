@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 8.6pt; color: #1a1a1a; line-height: 1.12; margin: 0; }
+  h1 { font-size: 19pt; margin: 0 0 2pt 0; letter-spacing: 0.5pt; }
+  .role { font-size: 10.5pt; color: #333; margin: 0 0 5pt 0; font-weight: 600; }
+  .contact { font-size: 8.5pt; color: #444; margin: 0 0 8pt 0; }
+  h2 { font-size: 10pt; text-transform: uppercase; letter-spacing: 1pt; border-bottom: 1.2pt solid #1a1a1a; padding-bottom: 2pt; margin: 8pt 0 4pt 0; }
+  h3 { font-size: 10pt; margin: 8pt 0 1pt 0; }
+  .meta { font-size: 8.5pt; color: #555; font-style: italic; margin: 0 0 4pt 0; }
+  ul { margin: 1pt 0 1pt 0; padding-left: 14pt; }
+  li { margin-bottom: 1pt; }
+  p { margin: 0 0 6pt 0; }
+  .skills p { margin: 0 0 4pt 0; }
+  .label { font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; margin: 4pt 0 8pt 0; font-size: 9pt; }
+  th { text-align: left; border-bottom: 1pt solid #1a1a1a; padding: 2pt 4pt 2pt 0; }
+  td { border-bottom: 0.5pt solid #ddd; padding: 2pt 4pt 2pt 0; vertical-align: top; }
+  /* Las URLs y el email NO se parten: si el guion bajo cae al final de linea,
+     el extractor de texto del ATS lo come y "linkedin.com/in/gonzalo-blasco"
+     se lee "linkedin.com/in/gonzaloblasco" - un contacto roto en el archivo
+     que el sistema lee, no en el que el humano ve. Verificado 2026-10-22 con
+     pdftotext: la URL se partia y el guion desaparecia. */
+  .nb { white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<h1>Gonzalo Blasco</h1>
+<p class="role"><b>Semi Senior Full Stack Engineer (Mercado Libre) | React, TypeScript y AI en producción</b></p>
+<p class="contact">Núñez, Buenos Aires, Argentina | Híbrido Buenos Aires | +54 11 4937 4656 | <span class="nb">gonzoblasco@icloud.com</span> | <span class="nb">linkedin.com/in/gonzalo-blasco</span> | <span class="nb">github.com/gonzoblasco</p></span>
+<h2>Perfil</h2>
+<p>Ingeniero de software con más de 10 años de experiencia, los últimos 1,5 construyendo productos con IA. Trabajo entre producto y código: relevo lo que el equipo necesita, lo convierto en solución full stack y dejo el camino pavimentado para que otros la usen. Stack principal: React, TypeScript y Next.js en frontend, y Node.js + Supabase/PostgreSQL en backend. Design systems y accesibilidad son el estándar de calidad, no un plus. Hoy tengo una ventaja de dominio que pocos candidatos tienen: SoporteML, un CRM con IA para vendedores de Mercado Libre, producto propio en producción con integración real a MeLi - el mismo dominio de este rol. Tengo experiencia entregando con squads ágiles cross-regionales y manejo de bases de datos relacionales en producción.</p>
+<h2>Competencias</h2>
+<ul>
+<li><b>Frontend:</b> React, TypeScript, JavaScript, Next.js, Vite, HTML5, CSS3, Tailwind, Storybook, arquitectura de componentes, design systems, design tokens, prototipado rápido.</li>
+<li><b>Backend y datos:</b> Node.js, APIs REST, Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions), pgvector, SQL (modelado de datos, consultas, transacciones, cambios de esquema), webhooks.</li>
+<li><b>IA aplicada al producto:</b> flujos agénticos con subagentes y skills, RAG con pgvector, automatización de tareas de exploración y verificación del código generado antes de integrarlo.</li>
+<li><b>Calidad y entrega:</b> Vitest, Playwright, Jest + React Testing Library, Biome, Zod, Git/GitHub, CI/CD, Azure DevOps (pipelines, tickets y user stories), Jira, SDLC ágil, code review, seguimiento de servicios en producción.</li>
+<li><b>Colaboración y producto:</b> relevo de necesidades de equipos internos, traducción a requisitos técnicos con guía de código, acompañamiento a desarrolladores, equipos matriciales US/India.</li>
+<li><b>Accesibilidad (diferencial):</b> WCAG 2.2 AA, patrones ARIA, lectores de pantalla (JAWS, NVDA, VoiceOver, TalkBack), Axe DevTools, Lighthouse, validación automatizada en CI.</li>
+</ul>
+<h2>Experiencia</h2>
+<h3>Freelancer - Software Engineer</h3>
+<p><i>05/2025 - Presente | Remoto</i></p>
+<ul>
+<li>Construyo <b>SoporteML</b>, un CRM multi-tenant con IA para vendedores de Mercado Libre: frontend React + Vite + TypeScript, backend Supabase (PostgreSQL, Auth, Realtime, RLS, Edge Functions), sugerencias de respuesta con RAG sobre pgvector, Autopilot con guardrails de confianza, multi-empresa y roles de equipo, y billing con Stripe vía webhooks. Primer cliente en producción: Pro Motors (pro-motors.com.ar), con integración real de Mercado Libre.</li>
+<li>Construí un AI Engineering OS sobre OpenClaw: sesiones por proyecto, memoria persistente, handoffs, subagentes, skills reutilizables y pipeline de contribución open source. Método de trabajo: quarantine -&gt; analyze -&gt; verify -&gt; adopt.</li>
+<li>Diseño e implemento flujos agénticos en producción: sesiones por proyecto con contexto acotado y verificación antes de que la salida llegue al usuario.</li>
+<li>Construyo y mantengo el design system de mis propios productos: sistema de tokens semánticos (color, tipografía, spacing, focus-ring, estados), escala tipográfica y mapa token -&gt; componente, con las reglas WCAG AA como criterio del sistema.</li>
+</ul>
+<h3>EY (Ernst &amp; Young) - Senior Full Stack / Frontend Engineer, Team Lead</h3>
+<p><i>09/2021 - 05/2025 | Híbrido</i></p>
+<ul>
+<li>Lideré un equipo de 3 ingenieros construyendo una plataforma de inteligencia financiera con IA en Next.js, con interfaces accesibles de arquitectura a producción. Ese Next.js es el origen documentado de mi trabajo con SSR.</li>
+<li>Trabajé en equipo matricial cross-regional (US / India), con varias fases del SDLC en paralelo dentro de squads ágiles y múltiples stakeholders.</li>
+<li>Lideré la accesibilidad de EY Motif, librería de componentes React enterprise consumida por productos de cliente e internos: remedié 50+ componentes a WCAG 2.2 AA (navegación por teclado, soporte de lector de pantalla, manejo de foco, contraste), con Axe DevTools, Lighthouse, JAWS y NVDA.</li>
+<li>Fui referente de accesibilidad del equipo en varios proyectos: revisaba componentes en Storybook antes de implementarlos, definía estándares y anotaciones a nivel componente, y escribía requisitos técnicos de accesibilidad con guía de código para las historias de UI.</li>
+<li>Prioricé defectos de accesibilidad por impacto WCAG en Jira, con guía de remediación a desarrolladores dentro del sprint.</li>
+</ul>
+<h3>Super7UI - Accessibility Engineer (Contratista)</h3>
+<p><i>08/2020 - 05/2021 | Remoto</i></p>
+<ul>
+<li>Lideré la auditoría y remediación de frontend de Warner Bros. Screeners (WBTVD), la plataforma de streaming privada que distribuidores globales usan para revisar contenido.</li>
+<li>Validé y expandí una auditoría previa de terceros reproduciendo cada issue reportado en NVDA, VoiceOver y TalkBack, y usé Axe para identificar y documentar violaciones WCAG en los flujos clave.</li>
+<li>Resolví 200+ violaciones WCAG y produje documentación de remediación lista para desarrollo.</li>
+<li>Establecí un pipeline de testing de accesibilidad con axe-core + Playwright integrado en CI/CD.</li>
+</ul>
+<h3>Minutentag - Frontend Developer, Accessibility Owner</h3>
+<p><i>02/2016 - 11/2019 | Híbrido</i></p>
+<ul>
+<li>Participé de la migración a React y mejoré un sitio con 2M+ usuarios mensuales, manteniendo los flujos de compra (checkout, carrito) para Ann Taylor, LOFT y Lou &amp; Grey.</li>
+<li>Crecí de junior a referente de accesibilidad del equipo.</li>
+<li>Corrí experimentos A/B en producción con Adobe Target contra segmentos de usuarios en vivo sobre features y diseños, dentro de squads ágiles junto a diseño y producto, implementando las variantes como snippets en JavaScript nativo.</li>
+</ul>
+<h2>Contribuciones a design systems - Pull Requests mergeados</h2>
+<p>Fixes mergeados en librerías de componentes y design systems de producción, cada uno revisado y publicado por sus maintainers. Total: 11 PRs mergeados en Adobe React Spectrum, IBM Carbon/ibm-products, Meta Astryx y MUI Base UI / Material-UI.</p>
+<ul>
+<li><b>adobe/react-spectrum #10503</b> - Gate del anuncio de live-region del ComboBox a cambios de sección; dejaba de pisar el anuncio nativo por ítem de VoiceOver.</li>
+<li><b>adobe/react-spectrum #10554</b> - Test de regresión (test-only) para <code>aria-posinset</code> global entre secciones.</li>
+<li><b>carbon-design-system/carbon #22887</b> - Soporte explícito de la prop <code>aria-describedby</code> en <code>ComposedModal</code>, por la ruta nativa <code>&lt;dialog&gt;</code> y la de <code>div[role=dialog]</code>.</li>
+<li><b>carbon-design-system/ibm-products #9878</b> - <code>CreateFullPage</code> (issue #9864).</li>
+<li><b>carbon-design-system/ibm-products #9879</b> - Datagrid (issue #9839).</li>
+<li><b>facebook/astryx #4605</b> - Indicador no cromático (font-weight) en el breadcrumb actual; WCAG 1.4.1.</li>
+<li><b>facebook/astryx #4914</b> - <code>build-storybook</code> fallaba con &quot;no merge base&quot; en PRs viejos (fetch-depth); fallback a diff de dos puntos.</li>
+<li><b>facebook/astryx #5419</b> - HoverCard con label se exponía como dialog popup: <code>aria-haspopup=dialog</code> + <code>aria-controls</code> gateado en open, <code>aria-expanded</code> sincronizado.</li>
+<li><b>facebook/astryx #5493</b> - <code>TreeList</code> reenvía <code>aria-label</code>/<code>aria-labelledby</code> al <code>&lt;ul role=tree&gt;</code>; un tree sin header no podía nombrarse.</li>
+<li><b>mui/base-ui #5551</b> - <code>aria-orientation</code> movido a los dueños del rol; el rol grid no lo soporta.</li>
+<li><b>mui/material-ui #49003</b> - Links focusables en slides ocultos del carrusel; WCAG 4.1.2 <code>aria-hidden-focus</code>.</li>
+</ul>
+<h2>Contribuciones con revisión y diagnóstico (sin autoría propia)</h2>
+<ul>
+<li><b>facebook/astryx #4777 (avatar status):</b> cerrado por cixzhang con crédito explícito a mi diagnóstico (&quot;the parent-reads-child framing is what made this fixable&quot;).</li>
+<li><b>facebook/astryx #5107 (dividers / selector de accesibilidad):</b> el trabajo previo fue el punto de partida del fix que entró.</li>
+<li><b>facebook/astryx #3764 (selector typeahead):</b> el audit fue la base; el fix entró por un PR ajeno.</li>
+<li><b>facebook/astryx #4157 / #5034 (avatar status labels):</b> diagnóstico compartido con el mantenedor.</li>
+<li><b>facebook/astryx #3349 (RFC InfoTip):</b> único feedback sustantivo; el comportamiento implementado coincidió.</li>
+<li><b>carbon-design-system/ibm-products #9868 (CreateFullPage):</b> primer reviewer humano del PR ajeno; cluster React 19 en #9866.</li>
+<li><b>vercel/next.js #73474:</b> diagnóstico validado por el maintainer al cerrar el issue.</li>
+</ul>
+<h2>Formación y certificaciones</h2>
+<ul>
+<li><b>Digital House - React (2018)</b></li>
+<li><b>Deque University - Accessibility Specialist Program (2021)</b></li>
+</ul>
+<h2>Idiomas</h2>
+<ul>
+<li>Español - nativo</li>
+<li>Inglés - B2+</li>
+</ul>
+
+</body>
+</html>
