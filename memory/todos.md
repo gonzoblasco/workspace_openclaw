@@ -45,10 +45,8 @@
 - [ ] **[kanam-critic]** (medium) Critic T4.1: objective-extractor con gate del Critic
 - [ ] **[kanam-critic]** (medium) Critic T4.2: detectores horizon, resistance y auto-reportado en evidence-hunter con caso trampa
 - [ ] **[kanam-critic]** (medium) Critic T4.3: format_sharp_report.py + 1 PR comment real
-- [ ] **[kanam-critic]** (medium) Critic T2.4: la primera corrida real del barrido fallo por rutas relativas en el payload (F15); payload corregido con rutas absolutas y corrida de prueba relanzada
 - [ ] **[kanam-critic]** (medium) Critic F7: consolidar los 4 scripts de control (check-kit, verify-verdict, emit-verdict, invalidate-verdict) en un CLI con subcomandos
 - [ ] **[kanam-critic]** (medium) Critic F9: medir 3 VETOs sobre entregables ajenos antes de publicar cualquier tasa de absorcion
-- [ ] **[kanam-critic]** (medium) Critic: verificar la primera entrega real del barrido semanal (lunes 18:00 ART, delivery telegram) y que el veredicto quede registrado con emit-verdict.py
 - [ ] **[kanam-critic]** (medium) Critic F13: otros numeros stale en docs/ROADMAP.md (27 skills son 113; 21 proyectos son 6; git status con 2 modificados)
 - [ ] **[kanam-critic]** (medium) Critic F14: el mapa del sistema no menciona al Crew (Etapa 3 completada, vision v1.0 en docs/ROADMAPS.md)
 - [ ] **[kanam-critic]** (medium) Critic F16: reconciliar ROADMAP.md (dice 2 VETOs ajenos y 'falta medir') con el ledger (3 VETOs ajenos: docs-ROADMAP, kanam-dev-ROADMAP, kanam-dev-inventario-skills)
@@ -58,9 +56,12 @@
 - [ ] **[kanam-critic]** (high) Critic F10: agregar scripts/check-roadmap-facts.py que verifique el CONTENIDO de docs/ROADMAP.md contra las fuentes reales (bootstrap, skills, proyectos, tracker)
 - [ ] **[kanam-critic]** (high) Critic F11: el doc declara AGENTS.md=18.798/+1.202 y el disco mide 19.992/+8 caracteres de margen: regenerar la tabla o bajar AGENTS.md
 - [ ] **[kanam-critic]** (high) Critic F12: el estado de busqueda laboral del doc dice todos cerrados y el tracker dice 3 procesos vivos
+- [ ] **[kanam-critic]** (high) Critic F17: heartbeat-kanam-critic lastRunStatus=skipped (no-route); config target=last sin ruta. Corregir target/route o documentar que el barrido semanal es el unico disparador.
 
 ## Completados
 
+- [x] **[kanam-critic]** Critic: verificar la primera entrega real del barrido semanal (lunes 18:00 ART, delivery telegram) y que el veredicto quede registrado con emit-verdict.py
+- [x] **[kanam-critic]** Critic T2.4: la primera corrida real del barrido fallo por rutas relativas en el payload (F15); payload corregido con rutas absolutas y corrida de prueba relanzada
 - [x] **[kanam-critic]** Critic: escribir memory/2026-11-06.md (nota diaria del agente con decisiones y evidencia del turno)
 - [x] **[kanam-critic]** Critic T1.r2: re-verificacion post-fix del kit (VETO 12/25) y segundo veredicto kanam-critic-kit-v0.3-r2
 - [x] **[kanam-critic]** Critic T2.2: automatizacion semanal de barrido de veredictos pendientes sobre repos vigilados
