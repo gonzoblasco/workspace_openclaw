@@ -110,7 +110,13 @@ def test_broken_asymmetry_is_reported(tmp_path):
     assert any("asimetria rota" in v for v in violations), violations
 
 
-def test_skill_not_naming_models_is_reported(tmp_path):
+def test_removed_arbitration_skill_is_not_a_source(tmp_path):
+    """La skill de arbitraje se elimino el 2026-11-06 (ADR-088).
+
+    Los modelos viven en model-router.sh + managed-blocks.py. Un archivo con ese
+    nombre, con contenido arbitrario, no puede introducir ni silenciar violaciones:
+    el check ya no lo lee. Este test fija ese contrato.
+    """
     mod = load()
     clean_root(tmp_path, mod)
     (tmp_path / "skills" / "agent-orchestration-pipeline-model-arbitration" / "SKILL.md").write_text(
@@ -118,7 +124,7 @@ def test_skill_not_naming_models_is_reported(tmp_path):
     )
 
     violations = mod.find_violations(tmp_path)
-    assert any("skill de arbitraje" in v for v in violations), violations
+    assert not any("skill de arbitraje" in v for v in violations), violations
 
 
 def test_exit_codes_distinguish_clean_from_dirty(tmp_path):
@@ -260,15 +266,25 @@ def test_missing_model_pipeline_c_in_blocks(tmp_path):
     violations = mod.find_violations(tmp_path)
     assert any("model_pipeline_c" in v for v in violations), violations
 
-def test_skill_not_naming_c_is_reported(tmp_path):
+def test_removed_skill_cannot_hide_missing_c(tmp_path):
+    """C es obligatorio, y su ausencia se detecta por router/blocks/ADR, no por la skill.
+
+    Con la skill eliminada, quitar C del router sigue reportando violacion: la
+    fuente de verdad del pacto no depende de un archivo que ya no existe.
+    """
     mod = load()
     clean_root(tmp_path, mod)
     (tmp_path / "skills" / "agent-orchestration-pipeline-model-arbitration" / "SKILL.md").write_text(
         "A usa `%s` y B usa `%s`.\n" % (mod.A_ROLE, mod.B_ROLE),
         encoding="utf-8",
     )
+    (tmp_path / "scripts" / "model-router.sh").write_text(
+        'ROUTES=\'{"routes": {"pipeline_ab": "%s / %s", "pipeline_abc": "%s / %s", "pipeline_ab_prefilter": "%s"}}\'\n'
+        % (mod.A_ROLE, mod.B_ROLE, mod.A_ROLE, mod.B_ROLE, mod.PREFILTER),
+        encoding="utf-8",
+    )
     violations = mod.find_violations(tmp_path)
-    assert any("skill de arbitraje" in v and "C" in v for v in violations), violations
+    assert any("pipeline_abc" in v and "tres modelos" in v for v in violations), violations
 
 def test_adr_105_missing_models_is_reported(tmp_path):
     mod = load()
