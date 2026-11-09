@@ -1,48 +1,55 @@
-# Semana 2 - Hero: decisión entre 3 registros
+# Semana 2 — Hero: decisión entre 3 registros
 
-**Fecha:** 2026-11-07 (serás agregable a APRENDIZAJE cuando añada cita).
+**Fecha:** 2026-11-07 · **Medición:** `studies/design/scripts/measure_css.py` (contraste por variables CSS, sin render)
+**Estado:** [obs] estimación sobre pares declarados en el CSS; el peor píxel bajo gradiente queda **sin medir**.
 
 ## Versiones creadas
 
-- **A** `hero-A-sistema.html` - "durito funcional": 2 escalas, weight 700 + normal, channel único (weight). grayscale pasa sin drama.
-- **B** `hero-B-editorial.html` - "editorial serif": serif + rule, 2 canales (italic + weight).
-- **C** `hero-C-producto.html` - "producto inertia": dark + gradient text + 2 canales (gradient + motion).
+| Versión | Archivo | Registro | Canales de jerarquía |
+|---|---|---|---|
+| A | `hero-A-sistema.html` | funcional / monocanal | peso |
+| B | `hero-B-editorial.html` | editorial serif | serif itálica + regla |
+| C | `hero-C-producto.html` | producto / inertia | gradiente + movimiento |
 
-## Razón por ratio del gradient-text (peor-caso estimado)
+## Contraste medido (pares de variables, no render)
 
-El gradiente del hero C arranca en `#e6ecf5` (16.37:1) y cae a `#bb9af7` (8.41:1)
-contra `#0a0d13`. El peor es el **end-stop**: 8.41:1, así que pasa a normal
-(WCAG 4.5:1) pero no a C target (AAA normal 7:1). El texto serrado del display
-en B (5.5:1) no cumple. La estimación asume render sólido, no anti-aliased edges.
-Para el gate real (foreground gradient bajo quema por alpha) queda sin medida.
+[obs] Valores de `measure_css.py` contra `#0a0d13` / `#0b0f14` / `#f7f4ee` según cada archivo:
 
-## Output Gates aplicados (estimado, sin render real)
+| Versión | fg sobre bg | muted sobre bg | Veredicto WCAG texto normal |
+|---|---|---|---|
+| A | 17.72:1 | 7.48:1 | AA y AAA |
+| B | 15.83:1 | 7.16:1 | AA y AAA |
+| C | 16.37:1 | 6.49:1 | AA sí; muted **no** llega a AAA |
+
+## El gradient text de C
+
+[obs] El título de C es `background-clip:text` con `linear-gradient(90deg, #e6ecf5, #bb9af7)`: el texto **es** el gradiente.
+[obs] Sus dos extremos sobre `#0a0d13` miden 16.37:1 (inicio) y 8.41:1 (fin): ambos pasan AAA para texto normal.
+[unk] El **peor píxel con anti-aliasing** no está medido. `measure_css.py` no rasteriza, así que no puede decidir ese gate; hace falta un render real (`critica-renders.py` con captura).
+
+## Output Gates (estado real, no estimado)
 
 | Gate | A | B | C |
 |---|---|---|---|
-| Grayscale | Pasa (color no es canal) | Pasa (serif sostiene) | Pasa (gradient mantiene como tint, pero C dependerá de mas medida) |
-| Squint | 1 rank-1 claro | 2 rank-1 | 2 rank-1, riesgo de gradient-C semilegible |
-| Alignment | 1 eje | 1 eje + baseline | 3 ejes (riesgo) |
-| Contrast | ≥7:1 promedio | ≥4.5:1 | ≥7:1 pero gradiente text clips peor píxel |
-| Rank-1 | "Build. Measure. Ship." | "Weights held to the line." | "Ship without the noise." |
+| Grayscale | [obs] pasa: el color no es canal | [obs] pasa: el serif sostiene la jerarquía | [inf] debería pasar: el gradiente es tinte, no único canal |
+| Squint | [obs] 1 rank-1 | [obs] 2 rank-1 | [unk] sin render no se juzga |
+| Alignment | [obs] 1 eje | [obs] 1 eje + baseline | [unk] 3 ejes declarados, sin medir |
+| Contrast | [obs] 17.72 / 7.48 | [obs] 15.83 / 7.16 | [obs] 16.37 / 6.49 / 8.41; [unk] peor píxel |
+| Rank-1 | [obs] "Build. Measure. Ship." | [obs] "Words held to the line." | [obs] "Ship without the noise." |
 
 ## Decisión
 
-**A es el transferable default** para una interfaz data-driven. Propiedades que la hacen winning para un SaaS neutral:
-- Un solo canal (weight) → el gate squint no paraliza a juicio del usuario.
-- Las escalas se desprenden de medidas en `rem` y `clamp`, lo que resuelve contraste sin heroics.
+[inf] **A es el default transferible** para una interfaz data-driven: un solo canal (peso) mantiene el squint sin juicio subjetivo, y las escalas en `rem`/`clamp` sostienen el contraste por variable.
+[inf] **C se elige cuando la pieza es memorable y hay render para verificarla**: gana en impacto, pero su gate de alignment y su peor píxel quedan abiertos hasta medirlos.
+[inf] **B sirve para registro editorial**: gana en tono y pierde ritmo de grid cuando el baseline serif no se sostiene en todos los bloques.
 
-**C gana en conversión** a costa del gate de alignment y peor-píxel contraste; requiere verificación real antes de shout loud.
+## Qué se aprende
 
-**B gana estética pero ramifica el grid** (el baseline serif es un elemento que se va perdiendo), ruindad editorial.
+- [inf] "Un canal por paso" ya lo cubría `design-direction`; la semana 2 no agregó reglas, agregó medición.
+- [obs] El contraste por variable alcanza para descartar pares imposibles, no para aprobar un gradiente: sin rasterizar, el peor píxel sigue siendo una incógnita.
+- [inf] Para heros de producto corto, peso y tamaño rinden más que un gradiente, y además son medibles.
 
-## Qué es lo aprendido
+## Pendiente
 
-- "Un canal por paso" ya lo cubría antes (skill design-direction).
-- El contraste de peor píxel sigue subreportarse: el gradient text de C pinta visualmente mejor de lo que mide. Sin medir, mentirías.
-- Para heros de producto corto: peso y tamaño > gradientes. Un solo cambio de tamaño lleva el gate.
-
-### Acción (pendiente, no código)
-
-- Render/per-contraste real de los 3 heroes con `critica-renders.py` para validar el "gradient text" de C.
-- Ingestar en `knowledge.db` cuando se corra script de ingesta week-2.
+- [ ] Render real de los 3 heroes con `critica-renders.py` (requiere navegador headless) para cerrar el peor píxel de C.
+- [ ] Ingestar esta decisión en `knowledge.db` cuando el corpus de estudio lo pida.
