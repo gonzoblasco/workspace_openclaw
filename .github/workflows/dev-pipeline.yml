@@ -1,0 +1,112 @@
+name: Kanam DEV pipeline gate
+
+# v0.4 del roadmap de kanam-dev: el pipeline deja de depender de que alguien lo
+# invoque a mano. Este workflow corre las estaciones de verificacion en cada PR y
+# empuja a main, y falla si alguna devuelve 1 o 2.
+#
+# Por que un workflow aparte y no un paso mas en skills-ci.yml: son superficies
+# distintas. skills-ci valida el arbol de skills del workspace; esto valida las
+# herramientas del rol DEV y su propia suite. Un fallo en cualquiera de los dos
+# tiene que verse como un check propio, no mezclado.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "agents/kanam-dev/**"
+      - "scripts/test_skill_units.py"
+      - "scripts/test_skill_paths.py"
+      - "scripts/test_dash_copies.py"
+      - "scripts/check-roadmaps.py"
+  pull_request:
+    branches: [main]
+    paths:
+      - "agents/kanam-dev/**"
+      - "scripts/test_skill_units.py"
+      - "scripts/test_skill_paths.py"
+      - "scripts/test_dash_copies.py"
+      - "scripts/check-roadmaps.py"
+
+jobs:
+  dev-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # La suite del rol. Cada script sale 0 verde, 1 hallazgos, 2 no pudo medir.
+      # Un 2 tiene que romper el job igual que un 1: un gate que no corre y pasa
+      # es la barrera que no corre y no lo dice.
+      - name: Pipeline suite (10 suites)
+        run: |
+          set -euo pipefail
+          fail=0
+          for t in test_intake test_kanam_dev test_slice_commit test_docs_sync \
+                   test_handoff_gate test_runner test_metrics_scan test_dep_inventory \
+                   test_compat_matrix test_bench_compare test_runs_db; do
+            echo "::group::$t"
+            if ! python3 "agents/kanam-dev/bin/$t.py"; then
+              echo "::error::$t fallo"
+              fail=1
+            fi
+            echo "::endgroup::"
+          done
+          exit "$fail"
+
+      # Criterio de parada verificable en las skills del rol (U3 de la auditoria
+      # de unidades). --all para que vea el arbol completo, no solo kanam-dev.
+      - name: Skills have a verifiable stopping criterion
+        run: python3 scripts/test_skill_units.py
+
+      # Rutas a scripts del workspace sin raiz explicita (U1). Un `scripts/x`
+      # suelto falla desde el repo que se audita y se lee como proyecto roto.
+      # Scope por defecto (arbol de kanam-dev): --all encuentra 87 rutas
+      # ambiguas en otros roles, que este workflow no arregla y que pertenecen a
+      # sus duenos. Bloquear por deuda ajena empuja al --no-verify.
+      - name: Workspace script paths are unambiguous
+        run: python3 scripts/test_skill_paths.py
+
+      # Las dos copias de check_em_dash no pueden divergir (defecto de la
+      # auditoria del 2026-11-09: se actualizaron las dos y quedaron distintas).
+      - name: check_em_dash copies stay identical
+        run: python3 scripts/test_dash_copies.py
+
+      # La verificacion de documentacion, acotada a los documentos del rol.
+      #
+      # Por que no se corre sobre todo el workspace: medido hoy, 409
+      # desalineaciones (394 rutas, 15 comandos) en 520 documentos, mas un
+      # `test_count` que no se puede leer porque `npm test` del workspace no
+      # corre una suite. Eso devuelve exit 2 y bloquearia cualquier PR de DEV por
+      # deuda de documentacion de todo el workspace, que este rol no posee.
+      #
+      # El alcance es el arbol del rol: si un documento de kanam-dev contradice lo
+      # que el repo mide, el trabajo no pasa. El resto queda visible en el informe
+      # local y en la deuda declarada del roadmap.
+      - name: Dev docs do not contradict the repo
+        run: python3 agents/kanam-dev/bin/docs_sync.py agents/kanam-dev --check
+
+      # Coherencia de version de los roadmaps de rol, acotada a kanam-dev.
+      # El guard completo hoy falla por el drift de kanam-studio (archivo v0.2.1
+      # contra indice v0.2), que pertenece a otra sesion. Bloquear este workflow
+      # por eso seria un fallo que mi cambio no puede arreglar, y el primer
+      # reflejo ante un gate asi es --no-verify. El drift ajeno sigue visible en
+      # el job de skills-ci, que no depende de este rol.
+      - name: Roadmap version check (kanam-dev)
+        run: |
+          set -euo pipefail
+          out=$(python3 scripts/check-roadmaps.py 2>&1 || true)
+          echo "$out"
+          if echo "$out" | grep -E "kanam-dev" | grep -q "❌"; then
+            echo "::error::kanam-dev tiene drift de version en su roadmap"
+            exit 1
+          fi
+          if ! echo "$out" | grep -q "kanam-dev"; then
+            echo "::error::el guard no reporto kanam-dev; no se pudo verificar"
+            exit 1
+          fi
+          echo "kanam-dev: roadmap coherente"

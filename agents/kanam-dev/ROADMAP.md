@@ -48,7 +48,7 @@ Medido, no afirmado. Cada fila tiene el comando que la prueba.
 | **Registro persistente de evidencias** | 🟡 parcial | `run.json` por corrida en disco; no hay base ni dashboard consultable. |
 | **Métricas de performance y seguridad automatizadas** | 🟡 parcial | Skills presentes; los scripts no están cableados a estaciones. |
 
-**Totales:** 225 tests, 0 fail, en 10 suites. Verificado al cierre de esta versión.
+**Totales:** 254 tests, 0 fail, en 10 suites. Verificado al cierre de esta versión.
 
 **Honestidad:** lo que la v0.2 resuelve es la **invocación**. Lo que no resuelve
 es la **automatización del trabajo en sí**: `discovery`, `slice` y `build` siguen

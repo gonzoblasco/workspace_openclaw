@@ -147,6 +147,32 @@ class TestMeasurementErrors(unittest.TestCase):
         self.assertTrue(any("token" in e for e in errors))
 
 
+class TestSuiteCountsAndTables(unittest.TestCase):
+    """Regresiones de la corrida real del 2026-11-09 sobre el propio rol."""
+
+    def test_per_suite_table_row_is_not_the_total(self):
+        # El ROADMAP lista "| dispatcher | 15 |" por script; no es el total.
+        line = "| dispatcher | 15 |"
+        claims = docs_sync.extract_test_claims(Path("ROADMAP.md"), line)
+        self.assertEqual(claims, [])
+
+    def test_narrative_total_is_still_a_claim(self):
+        line = "**Totales:** 225 tests, 0 fail, en 10 suites."
+        claims = docs_sync.extract_test_claims(Path("ROADMAP.md"), line)
+        self.assertEqual([c.declared for c in claims], ["225"])
+
+    def test_zero_tests_found_is_an_error_not_a_zero(self):
+        # Un `unittest discover` que encuentra 0 no midio: no sabe donde estan.
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            (repo / "README.md").write_text("Hay 10 tests.\n", encoding="utf-8")
+            (repo / "bin").mkdir()
+            (repo / "bin" / "test_x.py").write_text("print('no es unittest')\n", encoding="utf-8")
+            _, errors = docs_sync.compare(repo, [repo / "README.md"])
+            self.assertTrue(any("test_count" in e for e in errors),
+                            "un archivo sin conteo tiene que ser error de medicion, no 0")
+
+
 class TestCli(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()

@@ -73,6 +73,11 @@ COMMAND_RE = re.compile(r"`((?:npm run|node scripts/|python3? scripts/|bash scri
 PATH_RE = re.compile(r"`((?:src|test|tests|scripts|docs|\.knowledge)/[^`\s]*)`")
 
 
+# Una fila de tabla con metrica y valor ("| dispatcher | 15 |") declara el conteo
+# de UNA suite, no el total del repo. Compararla contra el total es un falso
+# positivo: el ROADMAP de un rol lista los tests de cada script por separado.
+PER_SUITE_ROW = re.compile(r"^\s*\|.*\|\s*$")
+
 # Lineas que mencionan un numero de tests pero NO declaran el total de la suite.
 # Verificado sobre kanam-fixer, donde el extractor greedy produjo 8 falsos
 # positivos: conteos por etapa ("Commit x. 7 tests."), conteos de otro producto
@@ -104,6 +109,8 @@ def extract_test_claims(doc_path: Path, text: str) -> list[Claim]:
         if "test_" in line or ".test." in line:
             continue
         if NOT_A_SUITE_CLAIM.search(line) or _NOT_THIS_REPO.search(line):
+            continue
+        if PER_SUITE_ROW.match(line):
             continue
         for m in TEST_COUNT_RE.finditer(line):
             value = m.group(1) or m.group(2)
@@ -187,6 +194,29 @@ def measure_test_count(repo: Path) -> tuple[int | None, str | None]:
         if m:
             return int(m.group(1)), None
         return None, "pytest no reporto un conteo de tests pasados"
+
+    # Python sin manifiesto: los tests de este rol viven en bin/ y usan unittest.
+    if list(repo.glob("bin/test_*.py")) or list(repo.glob("test_*.py")):
+        # `unittest discover` desde la raiz encuentra 0 tests cuando viven en
+        # bin/ y no son importables como paquete. Un 0 ahi NO significa "no hay
+        # tests": significa "no los busque donde estan". Se corre cada archivo
+        # de test por separado y se suman los conteos.
+        total = 0
+        found_any = False
+        for test_file in sorted(repo.glob("bin/test_*.py")) or sorted(repo.glob("test_*.py")):
+            proc = subprocess.run(
+                [sys.executable, str(test_file)], cwd=str(repo),
+                capture_output=True, text=True,
+            )
+            text = ANSI_RE.sub("", proc.stdout + proc.stderr)
+            m = re.search(r"^Ran\s+(\d+)\s+tests?", text, re.MULTILINE)
+            if not m:
+                return None, f"{test_file.name} no reporto un conteo de tests"
+            total += int(m.group(1))
+            found_any = True
+        if found_any:
+            return total, None
+        return None, "no hay archivos test_*.py que correr"
 
     return None, "no reconozco el stack para medir tests"
 
