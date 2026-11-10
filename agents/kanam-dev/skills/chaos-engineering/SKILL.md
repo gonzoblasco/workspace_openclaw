@@ -1,6 +1,6 @@
 ---
 name: chaos-engineering
-description: TODO: add description
+description: Resiliencia por inyeccion controlada de fallos: hipotesis de estado estable, blast radius acotado y criterio de recuperacion medido. Usar antes de confiar en que un sistema se degrada bien, cuando hay que probar timeouts, caidas de dependencia o saturacion sin esperar al incidente real.
 metadata:
   owner: kanam-dev
   status: active

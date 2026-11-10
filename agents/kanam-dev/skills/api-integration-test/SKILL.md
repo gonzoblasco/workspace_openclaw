@@ -1,6 +1,6 @@
 ---
 name: api-integration-test
-description: TODO: add description
+description: Contratos entre servicios verificados de extremo a extremo: esquema, flujos multi-servicio y propagacion de errores. Usar cuando dos o mas servicios, o un modulo y sus consumidores, deben coincidir en la forma de los datos y en el comportamiento, no solo compilar por separado.
 metadata:
   owner: kanam-dev
   status: active

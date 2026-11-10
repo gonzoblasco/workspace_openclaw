@@ -1,6 +1,6 @@
 ---
 name: code-metrics
-description: TODO: add description
+description: Metricas objetivas con umbral explicito: cobertura, complejidad ciclomatica, duplicacion, tamano de funciones y hotspots. Usar para decidir donde intervenir con numeros en vez de impresiones, y para detectar si un cambio empeoro la salud del codigo que toco.
 metadata:
   owner: kanam-dev
   status: active

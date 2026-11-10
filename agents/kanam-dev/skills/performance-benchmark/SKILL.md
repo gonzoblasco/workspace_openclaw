@@ -1,6 +1,6 @@
 ---
 name: performance-benchmark
-description: TODO: add description
+description: Benchmark reproducible: linea base, comparacion tras el cambio y decision con evidencia. Usar cuando se afirma que algo es mas rapido o mas lento, cuando hay que elegir entre dos implementaciones, o cuando una optimizacion necesita demostrar que sirvio.
 metadata:
   owner: kanam-dev
   status: active

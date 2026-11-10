@@ -1,6 +1,6 @@
 ---
 name: dependency-advisor
-description: TODO: add description
+description: Dependencias con criterio: inventario, salud, riesgo y licencia, justificacion de la eleccion y plan de migracion. Usar antes de adoptar una libreria, al auditar un proyecto heredado, o cuando hay que decidir si una dependencia se actualiza, se reemplaza o se saca.
 metadata:
   owner: kanam-dev
   status: active

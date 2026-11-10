@@ -1,7 +1,6 @@
 ---
 name: threat-modeling
-title: threat-modeling
-description: TODO: add description
+description: Modelado de amenazas: activos, actores, STRIDE o PASTA, scoring y mitigaciones priorizadas. Usar al disenar una feature que toca datos sensibles, al revisar un flujo de autenticacion o autorizacion, o cuando hay que decidir que se protege primero con presupuesto limitado.
 metadata:
   owner: kanam-dev
   status: active

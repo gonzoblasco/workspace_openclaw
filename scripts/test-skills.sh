@@ -9,7 +9,8 @@
 #
 # Checks:
 #   A. Sintaxis: bash -n en skills/*/scripts/*.sh, py_compile en *.py
-#   B. Frontmatter: todo SKILL.md tiene name, description y metadata.category
+#   B. Frontmatter: todo SKILL.md tiene name y description, y la description no
+#      es un placeholder (TODO/TBD/FIXME). Un TODO parsea pero no enruta.
 #   C. Em dash: aviso. Se prefiere guion comun, pero U+2014/U+2013 NO bloquea
 #      (owner rule 2026-11-04: bloquear un commit por tipografia frena trabajo)
 #      y el resumen lo cuenta como 'avisos', no como failed.
@@ -212,14 +213,44 @@ rm -f /tmp/bash.err /tmp/python.err
 if [[ $QUICK -eq 0 ]]; then
 
   # --- B. Frontmatter ---
+  # Bloque presente, name y description no vacios, y description que no sea un
+  # placeholder. Por que el placeholder: 7 skills de kanam-dev arrastraron
+  # `description: TODO: add description` desde 2026-10-07. El bloque parseaba
+  # perfecto, asi que este check daba verde y el modelo no podia enrutarlas:
+  # una skill con description TODO es una skill sin descripcion a efectos de
+  # seleccion. Un check que valida la forma y no el contenido es un falso verde.
   for skmd in "${CANDIDATES[@]+"${CANDIDATES[@]}"}"; do
     is_skill_md "$skmd" || continue
-    if head -1 "$skmd" | grep -q '^---$'; then
-      FM_OK=$((FM_OK + 1))
-    else
+    if ! head -1 "$skmd" | grep -q '^---$'; then
       FM_FAIL=$((FM_FAIL + 1))
       echo "  ❌ frontmatter FAIL (sin bloque ---): $skmd"
       failures+=("$skmd")
+      continue
+    fi
+    fm_problem=$(python3 - "$skmd" <<'PYFM'
+import re, sys
+text = open(sys.argv[1], encoding="utf-8").read()
+if not text.startswith("---"):
+    print("sin bloque"); raise SystemExit
+parts = text.split("---", 2)
+if len(parts) < 3:
+    print("bloque sin cerrar"); raise SystemExit
+fm = parts[1]
+for field in ("name", "description"):
+    m = re.search(rf"^{field}:\s*(.*)$", fm, re.MULTILINE)
+    if not m or not m.group(1).strip():
+        print(f"falta {field}"); raise SystemExit
+    value = m.group(1).strip().strip('"').strip("'")
+    if re.match(r"^(TODO|TBD|FIXME)\b", value, re.IGNORECASE):
+        print(f"{field} es un placeholder: {value[:40]}"); raise SystemExit
+PYFM
+)
+    if [[ -n "$fm_problem" ]]; then
+      FM_FAIL=$((FM_FAIL + 1))
+      echo "  ❌ frontmatter FAIL ($fm_problem): $skmd"
+      failures+=("$skmd")
+    else
+      FM_OK=$((FM_OK + 1))
     fi
   done
 

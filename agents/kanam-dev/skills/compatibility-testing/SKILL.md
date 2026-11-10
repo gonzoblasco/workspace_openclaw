@@ -1,6 +1,6 @@
 ---
 name: compatibility-testing
-description: TODO: add description
+description: Matriz real de entornos (motores, sistemas operativos, dispositivos) con evidencia por combinacion y gate de CI. Usar cuando el cambio puede funcionar en un navegador o plataforma y fallar en otra, o cuando hay que justificar que combinaciones se soportan y cuales no.
 metadata:
   owner: kanam-dev
   status: active
