@@ -392,3 +392,4 @@ After setting up or modifying CI:
 - [ ] Secrets are stored in the secrets manager, not in code
 - [ ] Deployment has a rollback mechanism
 - [ ] Pipeline runs in under 10 minutes for the test suite
+- [ ] El job que bloquea el merge se llama en `.github/workflows/`, su ultima corrida esta en verde y el enlace esta en el reporte.

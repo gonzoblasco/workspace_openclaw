@@ -464,6 +464,7 @@ Before approving a spec for implementation:
 - [ ] Documentation updated (README, ADRs, inline docs)
 - [ ] Knowledge shared in team sync
 - [ ] Spec marked as 'Superseded' with link to implementation
+- [ ] Los criterios de aceptacion son verificables por un comando o un archivo concreto, y el spec vive en `SPEC.md`.
 
 ---
 

@@ -247,6 +247,7 @@ After completing all increments for a task:
 - [ ] The build is clean
 - [ ] The feature works end-to-end as specified
 - [ ] No uncommitted changes remain
+- [ ] Cada slice tiene su commit y su salida de `npm test` (o el runner del repo) en el mensaje o en el reporte.
 
 ## See Also
 

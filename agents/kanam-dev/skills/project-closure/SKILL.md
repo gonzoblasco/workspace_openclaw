@@ -60,6 +60,14 @@ Project finished
     └───────────────────────────┘
 ```
 
+## Verificacion
+
+- [ ] El ADR de cierre existe con la decision, el aprendizaje y el estado final.
+- [ ] La base de memoria tiene la sesion registrada con su resultado.
+- [ ] Cada aprendizaje nuevo quedo en `LEARNINGS` con su tag.
+- [ ] Lo que se decidio no hacer esta escrito, no solo omitido.
+- [ ] El proyecto tiene un estado explicito: archivado, vivo o en pausa, y quien lo retoma.
+
 ## Step-by-step
 
 ### 1. Identify the closure

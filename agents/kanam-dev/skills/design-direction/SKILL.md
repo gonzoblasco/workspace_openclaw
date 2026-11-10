@@ -159,6 +159,15 @@ Tipografía + spacing suman ~65% de la calidad percibida: ahí se invierte prime
 
 ---
 
+## Verificacion
+
+- [ ] Las cuatro preguntas tienen respuesta escrita: proposito, tono, restricciones y diferenciacion.
+- [ ] La decision de contexto esta explicita: herramienta funcional o pieza memorable.
+- [ ] La tipografia elegida se lee a 12 px sin bajar de contraste AA, con la medicion citada.
+- [ ] Hay al menos una direccion descartada con su motivo, no solo la elegida.
+- [ ] El orden layout, tema, animacion, codigo esta respetado: el CSS no se escribio antes del layout.
+- [ ] Las cuatro respuestas y la direccion descartada viven en `design.md`, no solo en el hilo.
+
 ## Output Gates: verificación de diseño
 
 La dirección decide; los gates verifican que se cumplió. Antes de dar por terminado un artefacto de diseño (wireframe, composición de una vista, tokens aplicados a una superficie) se corre la batería completa: es la diferencia entre "la dirección está escrita" y "la dirección se respetó". Son gates de diseño visual, previos a la implementación. No reemplazan la validación completa (WCAG, AT, `prefers-reduced-motion`), que sigue viviendo en [a11y-at-validation](../a11y-at-validation/).

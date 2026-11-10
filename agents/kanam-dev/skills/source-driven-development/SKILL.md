@@ -195,4 +195,6 @@ After implementing with source-driven development:
 - [ ] Non-trivial decisions include source citations with full URLs
 - [ ] No deprecated APIs are used (checked against migration guides)
 - [ ] Conflicts between docs and existing code were surfaced to the user
+- [ ] Each citation carries its URL, the version read and its location in `docs/adr/` or the code comment, not only in the chat
 - [ ] Anything that could not be verified is explicitly flagged as unverified
+- [ ] Cada decision cita la URL oficial y la version leida; las fuentes estan en el ADR, no en el chat.

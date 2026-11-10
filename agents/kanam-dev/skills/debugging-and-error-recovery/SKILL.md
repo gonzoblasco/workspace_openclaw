@@ -190,7 +190,9 @@ Before declaring a bug fixed:
 - [ ] The full gate ran: exit code and summary line cited, not the heading
 - [ ] No assertion was weakened or validation disabled to reach green
 - [ ] If environment-specific, the divergence is named and reproduced in the matching env
+- [ ] The reproduction command and its failing output are archived in `debug/repro.txt`, with the exit code before and after the fix
 - [ ] The cause and the recovery step are recorded where the next debugger will look
+- [ ] El comando que reproduce el bug esta escrito, y su salida quedo archivada antes y despues del fix.
 
 ## Interaction with Other Skills
 

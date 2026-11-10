@@ -532,6 +532,14 @@ After building UI, verify all of the following:
 
 ---
 
+## Verificacion
+
+- [ ] El componente responde a teclado completo: tab, enter, escape, flechas donde aplique.
+- [ ] El foco es visible y no se pierde al re-renderizar.
+- [ ] Los contrastes estan medidos contra la superficie real, no contra el token declarado.
+- [ ] La UI funciona con `prefers-reduced-motion` y sin animaciones.
+- [ ] Hay una captura o test que prueba el estado vacio, el de error y el de carga.
+
 ## Red Flags (Immediate Action Required)
 
 - Components with more than 200 lines → Split them

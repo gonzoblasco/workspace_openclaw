@@ -179,3 +179,4 @@ After completing an ideation session:
 - [ ] A "Not Doing" list makes trade-offs explicit
 - [ ] The output is a concrete artifact (markdown one-pager), not just conversation
 - [ ] The user confirmed the final direction before any implementation work
+- [ ] Las opciones y el criterio de abandono viven en `idea.md`, legible sin el historial de la conversacion.

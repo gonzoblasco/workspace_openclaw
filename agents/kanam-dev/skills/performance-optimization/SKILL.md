@@ -215,6 +215,15 @@ Avoid premature optimizations.
 
 ---
 
+## Verificacion
+
+- [ ] Hay una linea base medida antes del cambio, con su comando y su salida archivada.
+- [ ] La metrica objetivo tiene unidad y umbral declarados al inicio.
+- [ ] El cambio se midio con el mismo comando y el mismo entorno que la linea base.
+- [ ] El veredicto respeta el umbral: mejorar sin alcanzarlo sigue siendo no cumplir.
+- [ ] Hay al menos una optimizacion descartada por no mover la metrica, citada.
+- [ ] La linea base y el resultado estan en `bench/report.md`, con el comando que los produjo.
+
 ## 8. Knowledge Capture
 
 Update:

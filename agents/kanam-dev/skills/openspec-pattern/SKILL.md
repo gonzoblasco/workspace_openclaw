@@ -31,6 +31,15 @@ An OpenSpec is the definitive, structured contract defining *what* must be built
    - Ambiguity check: ¿algún requisito admite dos interpretaciones? Elegir una y explicitarla.
    - Arreglar inline, sin re-revisar.
 
+## Verificacion
+
+- [ ] La propuesta declara el cambio en el comportamiento observable, no en el codigo.
+- [ ] Hay spec delta con al menos un escenario de exito y uno de fallo.
+- [ ] Los no-objetivos estan escritos y son al menos uno.
+- [ ] La propuesta esta aprobada antes de que exista codigo.
+- [ ] El archivo del cambio deja el spec vigente actualizado.
+- [ ] `openspec` valida el cambio sin errores, y el spec delta tiene sus escenarios en `openspec/changes/`.
+
 ## ⚔️ Dependency
 The Guardrail Check step needs a way to cross-reference ADRs and project knowledge. If your setup has no knowledge index, do that step manually against `docs/adr/`.
 

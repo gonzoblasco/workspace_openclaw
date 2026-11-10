@@ -180,6 +180,14 @@ openspec new change <change-name>
 openspec archive <change-name> --yes
 ```
 
+## Verificacion
+
+- [ ] `openspec list` muestra el cambio y su estado.
+- [ ] La validacion del cambio pasa sin errores.
+- [ ] El spec delta tiene al menos un escenario de exito y uno de fallo.
+- [ ] El archive deja el spec canónico actualizado y el cambio cerrado.
+- [ ] La salida de cada comando esta citada en el reporte.
+
 ## Anti-patterns
 
 - Creating `tasks.md` before `proposal.md` and spec deltas

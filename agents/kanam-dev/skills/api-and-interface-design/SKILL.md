@@ -280,3 +280,4 @@ After designing an API:
 - [ ] New fields are additive and optional (backward compatible)
 - [ ] Naming follows consistent conventions across all endpoints
 - [ ] API documentation or types are committed alongside the implementation
+- [ ] El contrato vive en el repo y su ruta esta declarada: `api/openapi.yaml` o el archivo equivalente, abierto por el revisor.

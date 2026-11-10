@@ -312,3 +312,4 @@ After deploying:
 - [ ] Critical user flow works
 - [ ] Logs are flowing
 - [ ] Rollback tested or verified ready
+- [ ] El checklist pre-launch esta en `docs/launch.md` y el rollback se probo, no solo se documento.

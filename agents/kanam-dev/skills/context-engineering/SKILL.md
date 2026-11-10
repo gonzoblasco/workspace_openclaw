@@ -291,3 +291,4 @@ After setting up context, confirm:
 - [ ] Agent output follows the patterns shown in the rules file
 - [ ] Agent references actual project files and APIs (not hallucinated ones)
 - [ ] Context is refreshed when switching between major tasks
+- [ ] El contexto cabe en un presupuesto declarado (`AGENTS.md`, `rules.md`) y la tarea se resolvio sin el historial del chat.

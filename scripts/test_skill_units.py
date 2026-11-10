@@ -30,15 +30,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 VERIF_HEADING = re.compile(r"^##\s+(Verificaci[oó]n|Verification)\b", re.MULTILINE | re.IGNORECASE)
+
+# Titulos que cumplen la misma funcion con otro nombre, ya presentes en skills
+# importadas. Se aceptan como verificacion: rechazarlas obligaria a duplicar la
+# seccion con otro titulo, que es peor que aceptar el nombre existente.
+ALIAS_HEADINGS = ("verification gate", "verification checklist", "output gates")
 ANY_HEADING = re.compile(r"^##\s+(.+)$", re.MULTILINE)
 ITEM = re.compile(r"^\s*(?:-\s*\[[ xX]\]|[-*])\s+\S", re.MULTILINE)
 # Un comando (`...`), un path con slash, un archivo con extension, o un exit code.
+# Un criterio es concreto si nombra algo que se puede abrir o correr. La mencion
+# suelta de "git" o "tests" en prosa NO alcanza: "la suite sigue verde" no dice
+# que comando correr ni que salida esperar.
 CONCRETE = re.compile(
-    r"`[^`]+`"          # comando o nombre en backticks
-    r"|\b[\w./-]+/[\w./-]+"   # ruta con barra
-    r"|\b\w+\.(?:md|py|sh|mjs|js|json|yml|yaml|tsv)\b"  # archivo con extension
-    r"|\bexit\s*\d"     # exit code
-    r"|\b(?:ls|cat|git|npm|pytest|python3?|node|bash|docker)\b"  # invocacion
+    r"`[^`]+`"                                   # comando o nombre en backticks
+    r"|\b[\w.-]+/[\w./-]+"                      # ruta con barra
+    r"|\b\w+\.(?:md|py|sh|mjs|js|ts|tsx|json|yml|yaml|tsv|txt)\b"  # archivo
+    r"|\bexit\s*(?:code\s*)?\d"                # exit code
 )
 
 MIN_ITEMS = 3
@@ -60,7 +67,14 @@ def check_skill(path: Path) -> list[str]:
 
     found = None
     for title, body in sections(text):
-        if re.match(r"(Verificaci[oó]n|Verification)\b", title, re.IGNORECASE):
+        # El titulo puede traer emoji delante ("## ✅ Verification Gate"). Se
+        # compara contra el texto sin simbolos iniciales, no contra el inicio
+        # crudo: el emoji no cambia la funcion del gate.
+        words = re.sub(r"^[^0-9A-Za-z]+", "", title).lower()
+        if words.startswith("verificaci") or words.startswith("verification"):
+            found = body
+            break
+        if any(words.startswith(alias) for alias in ALIAS_HEADINGS):
             found = body
             break
 
@@ -134,6 +148,17 @@ AUDITED = (
     "dependency-advisor",
     "performance-benchmark",
     "threat-modeling",
+    # Segunda tanda (2026-11-09): el resto del arbol de dev, para que la deuda sea
+    # visible en el gate y no solo en el informe.
+    "interview-me", "idea-refine", "spec-driven-development",
+    "planning-and-task-breakdown", "incremental-implementation",
+    "test-driven-development", "context-engineering", "source-driven-development",
+    "doubt-driven-development", "design-direction", "frontend-ui-engineering",
+    "api-and-interface-design", "debugging-and-error-recovery", "openspec-pattern",
+    "openspec", "browser-testing-with-devtools", "performance-optimization",
+    "security-and-hardening", "git-workflow-and-versioning", "ci-cd-and-automation",
+    "deprecation-and-migration", "documentation-and-adrs",
+    "observability-and-instrumentation", "shipping-and-launch", "project-closure",
 )
 
 
