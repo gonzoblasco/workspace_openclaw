@@ -50,7 +50,7 @@ al día, y el índice de tracking sin drift entre lo declarado y lo real.
 | **kanam-dev** (ingeniería) | ✅ `agents/kanam-dev/ROADMAP.md` | v0.2.1 | ✅ superficie + ejecutables de medición (225 tests); 32/32 skills con verificación; camino a evidencia persistente y gating CI | Tramo 3 (P0) |
 | **kanam-mind** (conocimiento) | ✅ `agents/kanam-mind/ROADMAP.md` | v0.1 | 🟡 10 skills; memoria + investigación | Tramo 3 (P1) |
 | **kanam-ops** (infraestructura) | ✅ `agents/kanam-ops/ROADMAP.md` | v0.2 | 🟢 E1-E2 completas, E3 3/4, E4 en curso; 7 jobs propios | Tramo 3 (P1) |
-| **kanam-studio** (comunicación) | ✅ `agents/kanam-studio/ROADMAP.md` | v0.2 | 🟡 v0.2; contenido + marca | Tramo 3 (P2) |
+| **kanam-studio** (comunicación) | ✅ `agents/kanam-studio/ROADMAP.md` | v0.2.1 | 🟡 v0.2; contenido + marca | Tramo 3 (P2) |
 | **Kanam CORE** (orquestación raíz) | ✅ `docs/ROADMAP.md` | - | 🟢 roadmap del sistema (no de rol) | - |
 | **openclaw-agent** (bundled) | n/a | - | - | fuera de alcance |
 

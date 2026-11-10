@@ -4,18 +4,18 @@
 
 ## Evidencia recopilada
 
-1. agents/kanam-dev/ROADMAP.md:7 – "**Versión actual:** v0.2" muestra la versión declarada (Sharpness).
-2. agents/kanam-dev/ROADMAP.md:31-44 – tabla de capacidades con pruebas operativas y resultados ✅ (Horizon, Resistance).
-3. agents/kanam-dev/ROADMAP.md:57-64 – sección *Visión v0.5* contiene promesas sin evidencia (Asymmetry).
-4. agents/kanam-dev/ROADMAP.md:73-82 – tabla de madurez con criterios verificables (Parsimony).
-5. agents/kanam-dev/ROADMAP.md:109-122 – red lines enumeran prohibiciones, demostrando Robustness.
+1. agents/kanam-dev/ROADMAP.md:7 - "**Versión actual:** v0.2" muestra la versión declarada (Sharpness).
+2. agents/kanam-dev/ROADMAP.md:31-44 - tabla de capacidades con pruebas operativas y resultados ✅ (Horizon, Resistance).
+3. agents/kanam-dev/ROADMAP.md:57-64 - sección *Visión v0.5* contiene promesas sin evidencia (Asymmetry).
+4. agents/kanam-dev/ROADMAP.md:73-82 - tabla de madurez con criterios verificables (Parsimony).
+5. agents/kanam-dev/ROADMAP.md:109-122 - red lines enumeran prohibiciones, demostrando Robustness.
 
 ## Puntaje SHARP
-- **S (Sharpness):** 4 – La información es clara y precisa, aunque algunas promesas son no verificadas.
-- **H (Horizon):** 3 – Hay visión a futuro, pero falta implementación de la automatización persistente.
-- **A (Asymmetry):** 2 – El valor generado actualmente es bajo comparado con el esfuerzo del pipeline.
-- **R (Resistance):** 4 – Las pruebas y evidencias robustas respaldan la operatividad actual.
-- **P (Parsimony):** 3 – La documentación es extensa; algunos elementos podrían simplificarse.
+- **S (Sharpness):** 4 - La información es clara y precisa, aunque algunas promesas son no verificadas.
+- **H (Horizon):** 3 - Hay visión a futuro, pero falta implementación de la automatización persistente.
+- **A (Asymmetry):** 2 - El valor generado actualmente es bajo comparado con el esfuerzo del pipeline.
+- **R (Resistance):** 4 - Las pruebas y evidencias robustas respaldan la operatividad actual.
+- **P (Parsimony):** 3 - La documentación es extensa; algunos elementos podrían simplificarse.
 
 **Total:** 16 → **VETO** (≤18).
 
