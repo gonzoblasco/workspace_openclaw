@@ -21,7 +21,9 @@ Verificar que un cambio funciona en la matriz real de entornos objetivo: navegad
    - Identificar los entornos de mayor tráfico o criticidad para correrlos primero.  
    - Evidencia: columna de prioridad y nivel de soporte en `compat/matrix.md`.
 
-3️⃣ **Ejecutar la suite en cada entorno**  
+3️⃣ **Ejecutar la suite en cada entorno**
+
+   - Atajo ejecutable: `python3 ~/.openclaw/workspace/agents/kanam-dev/bin/compat_matrix.py <dir>` cruza `compat/matrix.md` contra `compat/results/*.json` y escribe `compat/coverage.md`. Exit 0 toda combinacion priorizada tiene evidencia con fecha, 1 hay huecos, 2 no hay matriz legible. Una combinacion declarada sin resultado no puede salir verde.
    - Correr los tests funcionales y visuales en cada combinación priorizada, usando automation multi-motor (por ejemplo Playwright, Selenium Grid o el runner del proyecto).  
    - Capturar el resultado por entorno, incluyendo screenshot o artifact en caso de fallo.  
    - Evidencia: `compat/results/<entorno>.json` con estado y artifacts por test.
