@@ -43,9 +43,16 @@ case "$BIND" in
     fi
     ;;
   loopback)
+    # Con bind=loopback no debe haber NINGUN listener fuera de loopback: si el
+    # proceso arranco antes de un cambio de bind, sigue expuesto y este check
+    # lo dejaba pasar (paso el 2026-11-10: decia OK con 100.126.255.95 abierto).
+    exposed="$(printf '%s\n' "$LISTEN" | grep -vx '127.0.0.1' | grep -vx '\[::1\]' | grep -v '^$' | tr '\n' ' ')"
     if ! printf '%s\n' "$LISTEN" | grep -qx "127.0.0.1"; then
       status="degraded"
-      detail="bind=loopback pero no escucha en 127.0.0.1:$(echo $LISTEN | tr '\n' ' ')"
+      detail="bind=loopback pero no escucha en 127.0.0.1: $(echo $LISTEN | tr '\n' ' ')"
+    elif [ -n "$exposed" ]; then
+      status="degraded"
+      detail="bind=loopback pero hay listeners fuera de loopback: $exposed (proceso sin reiniciar tras el cambio de bind)"
     fi
     ;;
   *)
