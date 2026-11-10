@@ -48,6 +48,16 @@ Verificar que un cambio funciona en la matriz real de entornos objetivo: navegad
 - Diferencias específicas de motor aisladas y clasificadas como bug, limitación aceptada o incompatibilidad conocida.
 - Un gate de CI que cubre los entornos críticos.
 
+## Verificacion
+
+- [ ] La matriz existe con cada combinacion y la justificacion de por que esta (usuarios reales o requisito), no "porque existe". Archivo: `compat/matrix.md`.
+- [ ] Cada combinacion de la matriz tiene una fila de evidencia con: fecha, entorno exacto (version de motor y de sistema) y resultado. Una combinacion sin evidencia es una promesa, no un soporte.
+- [ ] Una diferencia de motor se reproduce con una sonda minima que aisla la causa, o esta clasificada como "no reproducida" con lo que se intento.
+- [ ] El gate de CI cubre al menos los entornos criticos, y su ultima corrida esta en verde. Comando: el job de compatibilidad del repo.
+- [ ] Una combinacion que NO se soporta esta declarada como tal, no omitida.
+
+Lo que NO es criterio: "lo probe en Chrome". Una combinacion sin fecha ni version no es evidencia.
+
 ## Prerequisitos
 
 - Automation multi-motor o multi-navegador disponible (Playwright, Selenium Grid, WebDriver por motor).

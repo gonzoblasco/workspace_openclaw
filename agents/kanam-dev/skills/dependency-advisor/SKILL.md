@@ -48,6 +48,16 @@ Recomendar, evaluar y gestionar dependencias de un proyecto: qué librería eleg
 - Un plan de migración priorizado para las dependencias que ya no se justifican.
 - Una política de actualización con cadencia y responsables.
 
+## Verificacion
+
+- [ ] El inventario sale del manifiesto **y** del lockfile, y las dos versiones coinciden con lo declarado. Comando: el lector del proyecto (`npm ls --all`, `pip freeze`, `go list -m all`).
+- [ ] Cada dependencia directa tiene su justificacion en una linea: que hace, por que se mantiene hoy, que pasaria si se saca. Una dependencia sin justificacion es candidata a salir, no a quedarse.
+- [ ] La salud esta medida con una fuente: ultima publicacion, advisories abiertos, licencia. Sin fuente, no es salud, es impresion.
+- [ ] Las que no se justifican tienen plan de migracion con paso concreto y responsable, o estan marcadas como aceptadas con motivo.
+- [ ] La politica de actualizacion tiene cadencia y responsable explicitos.
+
+Lo que NO es criterio: que el proyecto compile con las dependencias actuales. Eso prueba que existen, no que esten justificadas.
+
 ## Prerequisitos
 
 - Acceso al manifiesto y lockfile del proyecto.

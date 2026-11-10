@@ -50,6 +50,16 @@ Identificar, evaluar y mitigar riesgos de seguridad antes de que se materialicen
 - Un backlog de mitigaciones prioritarias listo para ser implementado por el equipo de desarrollo.
 - Evidencia verificable de que se ha seguido un proceso proactivo de modelado de amenazas antes de que se materialicen incidentes.
 
+## Verificacion
+
+- [ ] Los cinco artefactos existen: activos, actores, vectores, scoring y mitigaciones. Archivos en `threat-model/`; un modelo sin scoring no prioriza nada.
+- [ ] Cada amenaza tiene su puntaje con la formula declarada y los factores que lo componen, no un numero suelto.
+- [ ] Cada mitigacion tiene prioridad, esfuerzo y componente (`file:line`). Una mitigacion sin componente no se puede asignar.
+- [ ] El log registra la fecha del modelado y que cambio despues (nueva feature, nuevo actor, nuevo limite de confianza). Un modelo sin fecha no se puede auditar.
+- [ ] El backlog esta ordenado por riesgo residual, no por facilidad de implementacion.
+
+Lo que NO es criterio: tener la lista de amenazas. Una lista sin scoring y sin componente asignado es una lista de sustos, no un modelado.
+
 ## Prerequisitos
 
 - Acceso a la arquitectura del diagramas (C4, arquitectura de componentes o similar).

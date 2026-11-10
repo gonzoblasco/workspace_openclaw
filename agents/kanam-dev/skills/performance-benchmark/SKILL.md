@@ -49,6 +49,16 @@ Medir el rendimiento de un sistema con datos reproducibles: establecer una líne
 - Un informe con valores antes/después, delta porcentual y veredicto explícito.
 - Un comando reproducible que permite repetir la medición en el futuro.
 
+## Verificacion
+
+- [ ] Existe una linea base medida **antes** del cambio, con su salida cruda archivada en `bench/runs/`. Sin linea base, no hay comparacion posible.
+- [ ] El comando de medicion es reproducible: esta escrito en `bench/command.sh`, corre en un entorno declarado (hardware, version, carga) y da un resultado comparable al repetirlo.
+- [ ] El informe tiene antes, despues, delta porcentual y veredicto. Un delta sin direccion ("cambio 12 %") no es veredicto.
+- [ ] El veredicto respeta el umbral declarado al inicio: si el objetivo era p95 < 200 ms y el resultado es 210, es un fallo, no un exito parcial.
+- [ ] La varianza esta declarada: cuantas corridas, cual es la dispersion. Una sola corrida puede ser ruido.
+
+Lo que NO es criterio: que la optimizacion "se sienta mas rapido". Es exactamente lo que la skill existe para reemplazar.
+
 ## Prerequisitos
 
 - Herramienta de benchmark del ecosistema (por ejemplo `k6`, `hyperfine`, `benchmark.js`, `wrk` o el runner integrado del proyecto).

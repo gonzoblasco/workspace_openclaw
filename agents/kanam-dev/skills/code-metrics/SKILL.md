@@ -50,6 +50,17 @@ Medir objetivamente la calidad y el tamaño del código con métricas verificabl
 - Un plan de intervención con acciones concretas y responsables.
 - Una tendencia histórica que muestra si la calidad se mueve en la dirección correcta.
 
+## Verificacion
+
+- [ ] Cada metrica tiene unidad, umbral y alcance declarados en `metrics/goals.md`. Una metrica sin umbral no dice si el proyecto esta sano.
+- [ ] La medicion corrio sobre el estado actual y su salida cruda esta en `metrics/raw/`. Comando exacto registrado, no "corri la herramienta".
+- [ ] La tabla de `metrics/summary.md` marca cada metrica contra su umbral: cumple, cerca o viola. Es el unico lugar donde un numero se interpreta.
+- [ ] El ranking de `metrics/hotspots.md` esta ordenado por impacto sobre la metrica objetivo, y cada entrada cita el `file:line`.
+- [ ] Cada punto critico tiene una accion decidida (refactorizar, testear, dividir, aceptar con motivo) en `metrics/plan.md`.
+- [ ] La tendencia muestra la serie historica con su variacion; si es la primera medicion, esta declarado que la linea base arranca hoy.
+
+Lo que NO es criterio: tener numeros. Un numero sin umbral no es una metrica, es una cifra.
+
 ## Prerequisitos
 
 - Herramientas de análisis disponibles para el lenguaje del proyecto.

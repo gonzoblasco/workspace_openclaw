@@ -49,6 +49,17 @@ Probar la resiliencia de un sistema inyectando fallos controlados, midiendo cóm
 - Modos de fallo identificados y priorizados como work items.
 - Experimentos que encontraron fallos reales, convertidos en guardias permanentes.
 
+## Verificacion
+
+- [ ] La hipotesis esta escrita con su metrica, su valor estable medido y el fallo a inyectar. Archivo: `chaos/hypothesis.md`, con las tres cosas en la misma tabla.
+- [ ] El blast radius esta declarado y es menor que el sistema: que componente, que porcentaje de trafico, que duracion.
+- [ ] El boton de aborto se probo **antes** del experimento. Sin probar el aborto, el experimento no esta autorizado.
+- [ ] La evidencia es temporal y cruda: la serie de la metrica durante el fallo, no un resumen. Archivo en `chaos/runs/`.
+- [ ] El veredicto es explicito: la hipotesis se sostuvo o se rompio. Ambas son resultado; "no concluyente" exige decir que falto medir.
+- [ ] Todo fallo real encontrado tiene su work item con `file:line` del componente afectado.
+
+Lo que NO es criterio: que el sistema "siguio andando". Sin la metrica antes, durante y despues, no hay forma de distinguir degradacion de suerte.
+
 ## Prerequisitos
 
 - Observabilidad en vivo de la métrica de la hipótesis.

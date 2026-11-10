@@ -49,6 +49,18 @@ Verificar que los contratos entre servicios se cumplen de extremo a extremo, no 
 - Un diff de contrato que marca breaking changes antes del merge.
 - Un gate de CI que corre la suite de integración.
 
+## Verificacion
+
+La skill esta terminada cuando **cada** punto se puede mostrar con un comando o un archivo, no con una afirmacion:
+
+- [ ] `integration/contracts/` tiene la spec de cada servicio, con su hash de version. Comando: `ls integration/contracts/` lista un archivo por servicio.
+- [ ] La suite de integracion corre contra los servicios reales o sus dobles, y su salida cruda esta guardada. Comando: el runner del proyecto (por ejemplo `npm run test:integration`), con exit 0.
+- [ ] Cada caso negativo falla por la razon correcta: se borra a proposito un campo obligatorio del doble y la suite **debe** ponerse roja. Si sigue verde, el caso no verifica el contrato.
+- [ ] El diff de contrato marca los breaking changes: `git diff` del directorio de contratos, con la clasificacion por version.
+- [ ] El gate de CI existe y corre la suite: el nombre del job y su ultima corrida.
+
+Lo que NO es criterio de terminado: que la suite pase una vez a mano. Sin el gate, el contrato se rompe el dia que alguien no lo corre.
+
 ## Prerequisitos
 
 - Acceso a las specs de las APIs involucradas.
