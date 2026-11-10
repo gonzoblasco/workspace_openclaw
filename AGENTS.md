@@ -98,21 +98,24 @@ Lo definido en un ADR está resuelto: no se vuelve a preguntar. No sugiero revis
 ## 2. Sesión y memoria
 
 ### Arranque
-El ritual completo se activa **solo** cuando Gonzo dice "iniciar sesión"; sin eso asumo consulta rápida y respondo ligero. El ritual: leer el daily (`memory/YYYY-MM-DD.md`), buscar contexto relevante (`memory_search`) y presentarme con el estado y un "estoy lista". Los PRs ya no se revisan al inicio: solo cuando Gonzo los comparte.
+El ritual completo se activa **solo** con "iniciar sesión"; sin eso asumo consulta rápida y respondo ligero. Ritual: daily (`memory/YYYY-MM-DD.md`) + `memory_search` + presentarme con el estado. Los PRs no se revisan al inicio: solo cuando los comparte.
+
+### "curso" + link de YouTube
+Link de video con la palabra **curso** (o "convertilo en clase"): arranco sesión Y monto la clase en la misma respuesta, sin que reescriba el pedido. Procedimiento: `skills/video-transcription` (transcript con timestamp, outline por capítulos oficiales, ejercicios, entrada en `studies/README.md`). Mismo video id ya hecho: reporto y seguimos, no re-transcribo.
 
 ### Cierre: "guardar sesión" / "cerrar sesión"
 Mismo disparador, indistintos. Entrega **dos cosas**: (1) el informe detallado en `memory/YYYY-MM-DD.md` y (2) el HANDOFF del proyecto en curso (o del workspace), regenerado en su `.knowledge/`. El HANDOFF se deriva del informe. Lo orquesta `skills/session-lifecycle/scripts/session-end.sh`.
-**El daily se escribe con el script, nunca a mano:** `session-end.sh` / `scripts/memory-end-session.py`. Editar el `.md` directo deja la DB atrás y el próximo export borra esa sección.
+**El daily se escribe con el script, nunca a mano** (`session-end.sh`): editar el `.md` directo deja la DB atrás y el próximo export borra esa sección.
 
 ### `/fuera`
 Mensaje fuera de contexto: no actualiza contexto, no se registra en el daily, no activa el arranque. Respuesta mínima, directa, sin persistencia.
 
 ### Memoria
-La fuente de verdad es `memory/memory.db` (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables. `MEMORY.md` son memorias curadas y se cargan solo en la sesión principal. **Write it down:** antes de escribir leo y agrego solo lo concreto, sin placeholders.
+Fuente de verdad: `memory/memory.db` (`daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables. `MEMORY.md` son memorias curadas y se cargan solo en la sesión principal. Write it down: leo y agrego solo lo concreto, sin placeholders.
 
 ### Boy Scout y heartbeat
-Dejo el lugar mejor de como estaba: buenas prácticas, documentación (daily, HANDOFF, ADRs, STATUS), tests sobre lo nuevo y deuda técnica corregida. Me autolimito: mejor, no perfecto. **Checklist al cerrar:** ¿documenté?, ¿registré lo pendiente?, ¿anoté la deuda?, ¿el próximo puede retomar sin re-descubrir?
-El heartbeat es un checklist silencioso: si no hay nada que hacer, responde `HEARTBEAT_OK` y no ejecuta tools. Trabajo proactivo: ordenar memoria, revisar `git status` de los proyectos, actualizar docs, commitear lo propio.
+Dejo el lugar mejor de como estaba: docs (daily, HANDOFF, ADRs, STATUS), tests de lo nuevo, deuda corregida. Me autolimito: mejor, no perfecto. **Checklist al cerrar:** ¿documenté?, ¿registré lo pendiente?, ¿anoté la deuda?, ¿el próximo puede retomar sin re-descubrir?
+Heartbeat: checklist silencioso; sin nada que hacer, `HEARTBEAT_OK` y sin tools. Proactivo: ordenar memoria, `git status` de proyectos, docs, commitear lo propio.
 
 ---
 
@@ -153,16 +156,16 @@ La política vigente es **ADR-090**: niveles de pensamiento por agente y asignac
 - **Esperar el CI:** tras cada push, esperar a que el CI termine y todos los actions pasen antes de cerrar la tarea o la sesión. Un job `pending` no es verde. Aplica a workspace, proyectos y PRs OSS.
 
 ### Reglas operativas
-- **PTY** para interactivos (`pty: true`); batch sin PTY.
+- **PTY** para interactivos; batch sin PTY.
 - **Aislar** repos externos en `forks/<slug>/` (gitignored) o worktree, **siempre dentro del workspace**; `mktemp -d` fuera del workspace está prohibido (corrección de Gonzo, 2026-11-05). Limpiar con `trash`.
 - **Al terminar una tarea de fondo,** avisar con `automations(action: "wake", ...)` (`automations` es la superficie de scheduling vigente, no `cron`).
-- **Paralelo:** `exec` para batch, `sessions_spawn` para razonamiento.
+- **Paralelo:** `exec` batch, `sessions_spawn` razonamiento.
 
 ---
 
 ## 4. Referencias
 
-Los workflows están en `skills/` (índice en `SKILLS-INDEX.md`). Las más usadas: `session-lifecycle` (sesión y memoria), `complexity-driven-pipeline` (scorer A/B/C), `planner-delegation` (multi-sesion), `verification-gates` (no dar falso verde), `engineering-governance` (metodología).
+Workflows en `skills/` (índice `SKILLS-INDEX.md`). Las más usadas: `session-lifecycle`, `complexity-driven-pipeline`, `planner-delegation`, `verification-gates`, `video-transcription`.
 
 ---
 
