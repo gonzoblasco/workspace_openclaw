@@ -47,7 +47,7 @@ al día, y el índice de tracking sin drift entre lo declarado y lo real.
 | **kanam-auditor** (UI/UX) | ✅ `agents/kanam-auditor/ROADMAP.md` | v0.1 | 🟡 3 skills sueltos; `pixel-diff` real, `oracle`/`enforcer` parciales | Fase 1 → consolidar arsenal |
 | **kanam-critic** (sustancia) | ✅ `agents/kanam-critic/ROADMAP.md` | v0.3 | 🟡 kit verificado (16/16 checks), disparadores montados, 1er veredicto real; falta el loop de retorno | v0.5 "El Retorno" (absorción de VETOs) |
 | **kanam-planner** (orquestación) | ✅ `agents/kanam-planner/ROADMAP.md` | v0.3 | 🟢 5 skills; programas + delegación CORE + review semanal | Fase 2: medir demanda y evaluar dispatch directo |
-| **kanam-dev** (ingeniería) | ✅ `agents/kanam-dev/ROADMAP.md` | v0.2 | ✅ superficie de pipeline operativa (134 tests); camino a evidencia persistente y gating CI | Tramo 3 (P0) |
+| **kanam-dev** (ingeniería) | ✅ `agents/kanam-dev/ROADMAP.md` | v0.2.1 | ✅ superficie + ejecutables de medición (225 tests); 32/32 skills con verificación; camino a evidencia persistente y gating CI | Tramo 3 (P0) |
 | **kanam-mind** (conocimiento) | ✅ `agents/kanam-mind/ROADMAP.md` | v0.1 | 🟡 10 skills; memoria + investigación | Tramo 3 (P1) |
 | **kanam-ops** (infraestructura) | ✅ `agents/kanam-ops/ROADMAP.md` | v0.2 | 🟢 E1-E2 completas, E3 3/4, E4 en curso; 7 jobs propios | Tramo 3 (P1) |
 | **kanam-studio** (comunicación) | ✅ `agents/kanam-studio/ROADMAP.md` | v0.2 | 🟡 v0.2; contenido + marca | Tramo 3 (P2) |

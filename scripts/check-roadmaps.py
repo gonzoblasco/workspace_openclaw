@@ -51,7 +51,11 @@ REQUIRED_ROLES = [
 
 MIN_SECTIONS = 6  # las 7 del estandar, con tolerancia a que la 1 (encabezado) no sea '## '
 
-VERSION_RE = re.compile(r"Versi[oó]n actual:?\**\s*\**\s*(v?\d+\.\d+)", re.IGNORECASE)
+# Semver completo: mayor.minor y, si existe, .patch. El patron anterior se
+# cortaba en `\d+\.\d+`, asi que v0.2.1 se leia como v0.2 y el guard reportaba
+# drift contra una tabla que decia v0.2.1. Verificado: con `v1.10.3` devolvia
+# `v1.10`. Un validador que trunca la version no puede comparar versiones.
+VERSION_RE = re.compile(r"Versi[oó]n actual:?\**\s*\**\s*(v?\d+\.\d+(?:\.\d+)?)", re.IGNORECASE)
 PROJECT_MARKER = "<!-- project: github.com/gonzoblasco/workspace_openclaw -->"
 
 
@@ -81,9 +85,9 @@ def index_versions(index_text: str) -> dict[str, str]:
         # de abajo (auditoria 2026-10-12). Se mantiene el fallback para filas con el
         # formato viejo 'v0.1 (por defecto)'.
         cols = line.split("|")
-        m_ver = re.search(r"\bv?\d+\.\d+\b", cols[-4]) if len(cols) >= 4 else None
+        m_ver = re.search(r"\bv?\d+\.\d+(?:\.\d+)?\b", cols[-4]) if len(cols) >= 4 else None
         if not m_ver:
-            m_ver = re.search(r"\bv?0\.\d+\b", line)
+            m_ver = re.search(r"\bv?\d+\.\d+(?:\.\d+)?\b", line)
         if m_ver:
             found[role] = m_ver.group(0).lstrip("v")
     return found
