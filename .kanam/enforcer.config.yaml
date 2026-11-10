@@ -36,6 +36,14 @@ whitelist:
     - "#f4f4f2"   # header de tabla
     - "#ffffff"   # blanco (expandido desde #fff)
     - "#78716c"   # texto muted
+    # Mapeo 1:1 del binario design-enforcer.js (tabla de referencia, no superficie).
+    - "#f3f4f6"
+    - "#1f2937"
+    - "#6b7280"
+    - "#3b82f6"
+    - "#10b981"
+    - "#f59e0b"
+    - "#dc2626"
 
 # Paths que el walker NO escanea (globs, relativos a la raíz del repo).
 # Por qué existen: el propio motor del enforcer contiene las cadenas que busca

@@ -34,6 +34,18 @@ Formato:
 - **Evidencia:** `ROADMAP.md` Flujo A probado en dos direcciones; Flujo B y C permanecen como lineas de tremp pendientes.
 - **Efecto:** Decidir plantear B por separado (pre-commit, hook harness) y C solo después del flujo.
 
+## L-012 · 2026-11-09 · caliente (auditoria multi-sesion)
+- **Origen:** Auditoría de tres días con nuevo modelo. Corriendo `audit-surface` sin piezas activas, el reporte se rompía con `Cannot read properties of null (reading 'routes')` porque `consoleReport`/`stageSummary` asumían `r.stats` no nulo; en stage-error `stats=null`.
+- **Lección:** Cualquier detalle en el render debe asumir stage fallido (stats null). El guard `stage-no-files` ya contempla stage-error, pero el reporte olvidaba la defensa en otra etapa.
+- **Evidencia:** stack `report.js:45`, `stageSummary()`; corregido con `rs = r.stats || {}`.
+- **Efecto:** `pipeline` vuelve a emitir veredicto cuando hay stage-error; el reporte no puede ser la nueva fuente de pérdida (evaluate no multiplicar puntos de falla).
+
+## L-013 · 2026-11-09 · frío (auditoría de self)
+- **Origen:** El `design-enforcer` scan detectó su propia tabla de mapeo 1:1 (`TOKEN_MAP`) como valores hardcodeados.
+- **Lección:** Todo el hardcode introducido se trata como superficie: o se excluye documentadamente, o se tokeniza. Aquí se whitelisteó la tabla de referencia (mapa determinístico).
+- **Evidencia:** 7 warnings (`#f3f4f6`, `#3b82f6`, etc.) → 0 tras whitelist con motivo.
+- **Efecto:** `kernel` mantiene invariantes: self-audit sin la propia base.
+
 ## L-011 · 2026-11-07 · frío (C.2 documentada)
 - **Origen:** Añadí convención baseline en pixel-diff SKILL y score en surface-pipeline SKILL.
 - **Lección:** Sin base de capturas aprobada, \`pixel-diff\` solo opina; el path `.kanam/baselines/<slug>.png` reproducible es lo que lo convierte en regla de negocio.

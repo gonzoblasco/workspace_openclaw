@@ -42,7 +42,8 @@ function consoleReport({ results, verdict, generatedAt }) {
     if (r.skill === 'design-system-enforcer') {
       detail = `${r.stats.files} files, ${r.stats.violations} blocks, ${r.stats.warnings} warnings`;
     } else if (r.skill === 'accessibility-oracle') {
-      detail = `${r.stats.routes} routes, ${r.stats.violations} violations, ${r.stats.warnings} warnings`;
+      const rs = r.stats || {};
+      detail = `${rs.routes || 0} routes, ${rs.violations || 0} violations, ${rs.warnings || 0} warnings`;
     } else if (r.skill === 'pixel-diff') {
       const a = r.stats && r.stats.alignment != null ? `${r.stats.alignment.toFixed(1)}%` : 'n/a';
       detail = `align ${a}, ${(r.stats && r.stats.critical) || 0} critical, ${(r.stats && r.stats.misaligned) || 0} misaligned`;
@@ -222,10 +223,12 @@ function htmlReport(model) {
 
 function stageSummary(r) {
   if (r.skill === 'design-system-enforcer') {
-    return `${r.stats.files} archivos · ${r.stats.violations} bloques · ${r.stats.warnings} advertencias`;
+    const rs = r.stats || {};
+    return `${rs.files || 0} archivos · ${rs.violations || 0} bloques · ${rs.warnings || 0} advertencias`;
   }
   if (r.skill === 'accessibility-oracle') {
-    return `${r.stats.routes} rutas · ${r.stats.violations} violaciones · ${r.stats.warnings} advertencias`;
+    const rs = r.stats || {};
+    return `${rs.routes || 0} rutas · ${rs.violations || 0} violaciones · ${rs.warnings || 0} advertencias`;
   }
   if (r.skill === 'pixel-diff') {
     const a = r.stats && r.stats.alignment != null ? `${r.stats.alignment.toFixed(1)}%` : 'n/a';
