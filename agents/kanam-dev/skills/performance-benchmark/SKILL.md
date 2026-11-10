@@ -11,7 +11,9 @@ Medir el rendimiento de un sistema con datos reproducibles: establecer una líne
 
 ## Pasos
 
-1️⃣ **Definir la métrica y el objetivo**  
+1️⃣ **Definir la métrica y el objetivo**
+
+   - Atajo ejecutable: `python3 ~/.openclaw/workspace/agents/kanam-dev/bin/bench_compare.py --baseline base.json --candidate cand.json --threshold 200 --lower-is-better` compara las dos corridas, calcula el delta y decide. Exit 0 cumple, 1 no cumple o cumple con regresion, 2 no se pudo comparar (metricas o unidades distintas). Aprobar una regresion porque todavia esta bajo el umbral es como se acumula el problema.
    - Elegir qué se mide y su unidad: latencia p50/p95/p99, throughput (ops/s), uso de memoria, tiempo de build, TTI.  
    - Fijar un umbral objetivo explícito (ej.: p95 < 200 ms) y el escenario de carga.  
    - Evidencia: `bench/goal.md` con métrica, unidad, umbral y escenario.
