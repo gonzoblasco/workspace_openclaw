@@ -1,0 +1,5 @@
+# SESSIONS - studies/ai-agents-for-beginners
+
+> Indice append-only de cierres de sesion. El HANDOFF.md es solo el estado actual; esta lista es la historia (no se pisa).
+
+- **2026-11-10 20:51** - Arranque de sesion + montaje de la clase studies/ai-agents-for-beginners desde el video AZDSpS5v57w: 'AI Agents For Beginners - OpenClaw Case Study' (freeCodeC…
