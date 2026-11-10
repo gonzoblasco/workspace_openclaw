@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-10] - El bind del gateway deja de degradarse en silencio
+
+### Added
+- **`scripts/gateway-bind-check.sh`** — compara `gateway.bind` del config contra lo que el proceso realmente escucha, y falla explicitamente cuando no coinciden.
+- **Hook en `scripts/gateway-audit.sh`** — seccion "Bind" antes de Jobs, asi el audit periodico lo reporta sin depender de que alguien lo recuerde.
+
+### Why
+Con `bind: tailnet`, el gateway necesita la IPv4 del tailnet **en el arranque**. Si el LaunchAgent gana la carrera contra Tailscale, cae a loopback y se queda ahi: el archivo sigue diciendo `tailnet`, el proceso escucha en `127.0.0.1`, y la unica senal es que un cliente remoto no conecta. Paso el 2026-11-09 19:34 y no lo detectamos en el momento.
+
+Ese desvio de runtime se convirtio en un cambio de config el 2026-11-10 12:28: la Control UI emitio `config.patch` con el estado que veia correr (`loopback` + `tailscale.mode: serve`) y se llevo puestos `bind`, `tailscale.mode` y `allowedOrigins`. La leccion queda escrita: **el estado del proceso es lo que la UI refleja**, asi que un bind degradado se propaga al archivo.
+
+### Changed
+- Los cambios de gateway se aplican con `openclaw config patch` (escritura validada), no editando `openclaw.json` a mano.
+
+---
+
 ## [2026-11-09] - Edad de los Reinos (proyecto nuevo)
 
 ### Added
