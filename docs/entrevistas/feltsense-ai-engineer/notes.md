@@ -25,7 +25,8 @@
 
 ## Educación
 
-JD no pide degree. Línea: Digital House (React, 2018) + UADE (Diseño Gráfico 2003-2004, incomplete). Sin Universidad de Palermo (reservada para JD que pida CS).
+JD no pide degree. Línea: solo formación —Digital House (React, 2018) y Deque University (2021, programa, no certificación)—.
+**Ninguna carrera universitaria va al CV ni a las respuestas ATS** (regla del 2026-11-04). UP y UADE quedan en el corpus como historia, nunca como línea de educación.
 
 ## Decisión pendiente antes de enviar
 

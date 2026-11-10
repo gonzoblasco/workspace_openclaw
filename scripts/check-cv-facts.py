@@ -517,6 +517,58 @@ def pending_facts(facts: dict):
     return out
 
 
+def reference_checks(root: Path):
+    """Cada repo#num citado en un CV tiene que existir en el dueno, y cada
+    institucion universitaria en la educacion es una contradiccion.
+
+    POR QUE EXISTE (2026-11-09). El CV de Feltsense citaba `ibm-products #9868`
+    con un issuecomment-id: el issue existia pero tenia CERO comentarios, porque
+    el comentario estaba en el PR #9869. El gate pasaba en verde: validaba
+    anios, idioma, contacto y bullets de experiencia, pero no miraba la seccion
+    de contribuciones. Un CV puede citar un hilo inexistente y nadie se entera
+    hasta que un reclutador abre el link.
+
+    El mismo dia, las respuestas ATS de Feltsense declaraban `UADE - Graphic
+    Design (2003-2004, incomplete)` en la linea de educacion, contra la regla
+    del 2026-11-04: en un CV no van carreras universitarias incompletas.
+    """
+    facts_text = (root / FACTS_FILE).read_text(errors="ignore")
+    violations = []
+    warnings = []
+
+    # 1. Referencias: todo repo#num citado tiene que estar en el corpus.
+    # AVISA, no frena: el corpus esta incompleto de antes (19 referencias vivas en
+    # los CVs historicos al 2026-11-09). Un gate que frena 19 veces el mismo dia
+    # es ruido; lo que corrige el defecto es completar el dueno, y eso se hace
+    # verificando cada numero contra GitHub.
+    ref_pat = re.compile(r"(?:\*\*)?([a-zA-Z0-9][a-zA-Z0-9._-]*/[a-zA-Z0-9._-]+|carbon|astryx|next\.js)\s+#(\d+)")
+    for cv in cvs(root):
+        name = cv.relative_to(root)
+        for n, line in enumerate(cv.read_text(errors="ignore").splitlines(), 1):
+            for mo in ref_pat.finditer(line):
+                num = mo.group(2)
+                if f"#{num}" not in facts_text:
+                    warnings.append((str(name), n, f"{mo.group(1)} #{num}", line.strip()[:120]))
+
+    # 2. Educacion: ninguna carrera universitaria en CVs ni en respuestas ATS.
+    # AVISA tambien, y por una razon concreta: la regla es dura, pero las 10
+    # ocurrencias vivas al 2026-11-09 estan en CVs de postulaciones ya enviadas,
+    # creados por otras sesiones. Reescribir esos archivos cambia el registro de
+    # lo que se mando. Un CV nuevo que las reintroduzca aparece aca el mismo dia.
+    uni_pat = re.compile(r"Universidad de Palermo|\bUADE\b|Universidad Argentina de la Empresa|Ingenier[ií]a en Inform[aá]tica|Dise[nñ]o Gr[aá]fico", re.I)
+    targets = list(cvs(root))
+    targets += sorted((root / CV_DIR).rglob("answers.json"))
+    for p in targets:
+        name = p.relative_to(root)
+        for n, line in enumerate(p.read_text(errors="ignore").splitlines(), 1):
+            if uni_pat.search(line):
+                warnings.append((str(name), n,
+                                 "carrera universitaria (regla dura 2026-11-04: no va en CV ni en ATS)",
+                                 line.strip()[:120]))
+
+    return violations, warnings
+
+
 def main(argv=None):
     root = ROOT if argv is None else Path(argv[0])
     facts = parse_facts(root)
@@ -527,9 +579,12 @@ def main(argv=None):
     violations = []
     for cv in cvs(root):
         violations.extend(check_cv(cv, facts))
+    violations.extend(reference_checks(root)[0])
 
     pending = pending_facts(facts)
-    warnings = unbacked_claims(root, facts)
+    ref_violations, ref_warnings = reference_checks(root)
+    violations.extend(ref_violations)
+    warnings = unbacked_claims(root, facts) + ref_warnings
 
     if not violations and not pending and not warnings:
         print(f"OK: {len(cvs(root))} CVs coinciden con {FACTS_FILE}.")

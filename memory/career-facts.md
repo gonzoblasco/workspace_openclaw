@@ -343,6 +343,26 @@ de post** (la regla de branding lo prohíbe), sí es material de entrevista: evi
   parent-reads-child framing is what made this fixable").
 - astryx #3349 - RFC InfoTip: único feedback sustantivo; el comportamiento implementado coincidió.
 
+#### 5.2.1 Revisión y diagnóstico sin autoría — verificado contra GitHub el 2026-11-09
+
+Trabajo real, con comentario propio firmado por `gonzoblasco`, en hilos donde **no hay PR propio**.
+Cada fila se verificó abriendo el hilo y el comentario por API; el número y el `issuecomment-id`
+son los reales, no los que un CV recuerde.
+
+| Repo | Número | Tipo | Qué hizo Gonzo | Comentario |
+|---|---|---|---|---|
+| carbon-design-system/ibm-products | #9869 | PR (merged) | Primer reviewer humano de un PR ajeno (Tearsheet layer hierarchy); dos señales levantadas, atendidas por el autor | `issuecomment-5609797683` (2026-09-09) |
+| carbon-design-system/ibm-products | #9865 | issue (closed) | Diagnóstico cruzado del cluster React 19 state-during-commit (#9865/#9866/#9867) a nivel de hook | `issuecomment-5609873985` (2026-09-09) |
+| vercel/next.js | #73474 | issue (closed) | Separó tres escenarios de falla que estaban conflados; el maintainer lo aceptó al cerrar | 2026-07-16 |
+| carbon-design-system/carbon | #16031 | issue (closed) | Resolución verificada de un issue; confirmada por el maintainer | 2026-09-09 |
+| facebook/astryx | #4871 | issue (closed) | Review comparativo de dos PRs en competencia (retención de foco vs identidad de ancla), con guía de tests | 2026-08-22 |
+| adobe/react-spectrum | #10220 | issue (closed) | Comentarios de review sobre PRs asistidos por IA: expectativas de test y recorte de alcance | 2026-08-20 |
+| adobe/react-spectrum | #9556 | issue (closed) | Review con evidencia sobre el mismo eje | 2026-08-20 |
+
+**Estas siete filas son material de CV y de entrevista** (la colaboración se declara; lo que no se
+hace es contarla como PR mergeado). Cualquier CV que las cite **debe copiar el número de esta
+tabla**: son las únicas referencias validadas.
+
 ### 5.3 PRs cerrados sin merge (y qué enseñaron)
 
 No son fracasos ocultos: son el registro de criterio.

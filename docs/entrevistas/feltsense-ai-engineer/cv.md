@@ -75,8 +75,8 @@ Merged fixes in production component libraries and design systems, each reviewed
 
 ### Contributions without a merged PR (diagnostics, review notes, verified resolutions)
 
-- **ibm-products #9868** - first human review of an external PR; the two raised signals were addressed by the author and the PR merged. Comment: issuecomment-5609797683.
-- **ibm-products #9866** - cross-issue diagnosis (React 19 state-during-commit cluster across #9865/#9866/#9867) at source level, with per-hook fix directions. Comment: issuecomment-5609873985.
+- **ibm-products #9869** - first human review of an external PR (the Tearsheet layer-hierarchy fix); the two raised signals were addressed by the author and the PR merged. Comment: issuecomment-5609797683.
+- **ibm-products #9865** - cross-issue diagnosis of the React 19 state-during-commit cluster (#9865/#9866/#9867) at source level, with per-hook fix directions. Comment: issuecomment-5609873985.
 - **next.js #73474** - diagnostic separation of three conflated failure scenarios; maintainer accepted it and closed the issue as "downstream response buffering, not a Next.js failure".
 - **carbon #16031** - verified-resolution of an issue, confirmed by the maintainer via #22751.
 - **react-spectrum #9556 / #10220** - evidence-based review comments on AI-assisted PRs: test expectations and scope narrowing without claiming VoiceOver access.

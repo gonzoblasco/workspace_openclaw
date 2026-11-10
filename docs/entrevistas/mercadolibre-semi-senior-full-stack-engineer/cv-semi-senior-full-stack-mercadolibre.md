@@ -74,7 +74,7 @@ Fixes mergeados en librerías de componentes y design systems de producción, ca
 - **facebook/astryx #3764 (selector typeahead):** el audit fue la base; el fix entró por un PR ajeno.
 - **facebook/astryx #4157 / #5034 (avatar status labels):** diagnóstico compartido con el mantenedor.
 - **facebook/astryx #3349 (RFC InfoTip):** único feedback sustantivo; el comportamiento implementado coincidió.
-- **carbon-design-system/ibm-products #9868 (CreateFullPage):** primer reviewer humano del PR ajeno; cluster React 19 en #9866.
+- **carbon-design-system/ibm-products #9869 (Tearsheet layer hierarchy):** primer reviewer humano del PR ajeno; el diagnóstico del cluster React 19 quedó en #9865 y el PR mergeó.
 - **vercel/next.js #73474:** diagnóstico validado por el maintainer al cerrar el issue.
 
 ## Formación y certificaciones
