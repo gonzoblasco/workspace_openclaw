@@ -12,6 +12,11 @@
 
 <!-- Formato (más reciente arriba): - **YYYY-MM-DD** · *origen* · **[obs|inf]** lección. -->
 
+### 2026-11-09
+
+- **2026-11-09** · auditoría de la sesión 2026-11-07 · **[obs]** Un ratio de contraste se inventó copiando el `5.5rem` del `font-size` como "5.5:1". El gate no lo detectó: valida etiquetas, no procedencia.
+- **2026-11-09** · misma auditoría · **[inf]** Ningún número se reporta sin la salida de la medición que lo produjo. La etiqueta `[obs]` indica el tipo de afirmación, no que se haya medido; la prueba es el comando y su resultado.
+
 ### 2026-11-07
 
 - **2026-11-07** · `measure_css.py` sobre A/B/C · **[obs]** fg-on-bg 17.72 / 15.83 / 16.37 y muted-on-bg 7.48 / 7.16 / 6.49. Los tres pasan AA (4.5:1) en texto normal; el muted de C (6.49) **no** llega a AAA (7:1).
