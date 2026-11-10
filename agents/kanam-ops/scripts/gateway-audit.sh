@@ -48,6 +48,10 @@ echo "--- Channels ---"
 openclaw channels status 2>&1 | grep -viE "^Checking|^Tip:|^Config:|^Mode:" || true
 echo ""
 
+echo "--- Bind ---"
+bash "$DIR/gateway-bind-check.sh" || true
+echo ""
+
 echo "--- Jobs ---"
 bash "$DIR/gateway-jobs-check.sh" || true
 echo ""
