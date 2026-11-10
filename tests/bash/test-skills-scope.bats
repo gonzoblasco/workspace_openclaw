@@ -43,6 +43,7 @@ skill() {
   mkdir -p "$WS/$(dirname "$rel")"
   {
     echo "---"
+    echo "name: x"
     echo "title: x"
     echo "description: d"
     echo "---"
@@ -66,6 +67,8 @@ skill() {
   [ "$status" -eq 0 ] || return 1
   # El formato vigente es "N ok, M aviso(s)": el em dash informa, no bloquea
   # (regla del owner 2026-11-04: tipografia no es correccion).
+  # El archivo es untracked: queda fuera del scope, asi que el contador de
+  # avisos debe seguir en 0. El invariante que se prueba aca es el SCOPE.
   [[ "$output" == *"Em dash:     0 ok, 0 aviso(s)"* ]] || return 1
   [[ "$output" != *"untracked-bad"* ]] || return 1
 }
