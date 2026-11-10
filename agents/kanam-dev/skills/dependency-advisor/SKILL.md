@@ -11,7 +11,9 @@ Recomendar, evaluar y gestionar dependencias de un proyecto: qué librería eleg
 
 ## Pasos
 
-1️⃣ **Inventariar las dependencias actuales**  
+1️⃣ **Inventariar las dependencias actuales**
+
+   - Atajo ejecutable: `python3 ~/.openclaw/workspace/agents/kanam-dev/bin/dep_inventory.py <dir>` lee manifiesto y lockfile, cruza declarada vs resuelta, separa directas de transitivas y escribe `dep-advisor/inventory.md`. Exit 0 coherente, 1 directa ausente del lockfile, 2 sin manifiesto reconocible. Los rangos abiertos se marcan como senal, no como error: el juicio sigue siendo tuyo.
    - Leer el manifiesto del proyecto (`package.json`, `requirements.txt`, `go.mod`, `Cargo.toml`, etc.).  
    - Listar cada dependencia con su versión declarada y la resuelta en el lockfile.  
    - Evidencia: tabla en `dep-advisor/inventory.md` con nombre, versión declarada, versión resuelta y tipo (directa/transitiva).
