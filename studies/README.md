@@ -13,6 +13,7 @@ Este directorio agrupa los análisis y estudios técnicos del workspace.
 | `software-to-ai-engineer/` | Clase de estudio derivada del video «De Software Engineer a AI Engineer: El Roadmap Más Realista» (Fazt): transcript ASR, outline de 14 módulos alineado a los capítulos oficiales y auditoría de la re-evaluación 2026-11-09. | [`software-to-ai-engineer/`](software-to-ai-engineer/) |
 | `agentic-coding-codex/` | Clase de estudio derivada del curso «Codex & AI Coding Agents — Learn Agentic Coding» (Scrimba, Tom Chant, 1:50:43): transcript ASR con glosario y outline de 13 módulos alineado a los 27 capítulos oficiales, con ejercicios y banco de preguntas. | [`agentic-coding-codex/`](agentic-coding-codex/) |
 | `n8n-ai-automations/` | Clase de estudio derivada del curso «n8n Full Course – Architect Scalable AI Automations from Scratch» (freeCodeCamp.org, Rahul Joshi, 43:05): transcript ASR con glosario y outline de 14 módulos 1:1 con los capítulos oficiales, más ejercicios y banco de preguntas. | [`n8n-ai-automations/`](n8n-ai-automations/) |
+| `ai-agents-for-beginners/` | Clase de estudio derivada del curso «AI Agents For Beginners – OpenClaw Case Study» (freeCodeCamp.org, KodeKloud, Mumshad Mannambeth, 3:05:58): transcript ASR con glosario y outline de 22 módulos 1:1 con los capítulos oficiales, más ejercicios y banco de preguntas. | [`ai-agents-for-beginners/`](ai-agents-for-beginners/) |
 
 ## Método
 
