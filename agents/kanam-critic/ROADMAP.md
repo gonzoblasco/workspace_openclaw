@@ -7,9 +7,10 @@
 **Dueño:** kanam-critic (autoría) · Kanam CORE (gobierno) · The Crew Planner (programa)
 **Rúbrica que me mide:** `.knowledge/SHARP.md` (la misma que aplico a los demás)
 
-> **Fuente única:** este archivo es la ruta vigente del Critic. `ROADMAP-v0.3.md` es un
-> puntero temporal a este doc (lo consume el Planner en su encargo del 2026-11-06) y se
-> borra cuando el Planner termine. La v0.2 queda abajo, como historial, no como mapa.
+> **Fuente única:** este archivo es la ruta vigente del Critic. La v0.2 queda abajo, como
+> historial. La v0.3 vigente desde 2026-11-06 no tuvo un puntero temporal aparte: la
+> única ruta es `ROADMAP.md`. Lo demás (collateral del turno, `proposed_enhancements.md`,
+> `ROADMAP-v0.3.md`) se identificó como segunda copia y se borró (ADR-100).
 
 ---
 
