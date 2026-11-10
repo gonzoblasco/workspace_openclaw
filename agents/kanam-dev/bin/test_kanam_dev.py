@@ -57,6 +57,12 @@ class TestDispatch(unittest.TestCase):
         self.assertEqual(proc.returncode, 2)
         self.assertIn("INFRA", proc.stdout)
 
+    def test_audit_detects_python_without_manifest(self):
+        # Este arbol no tiene pyproject ni package.json y si tiene suite.
+        proc = self.run_cli("audit", str(HERE.parent))
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("python-unittest", proc.stdout)
+
     def test_audit_on_unknown_stack_is_exit_two(self):
         proc = self.run_cli("audit", "/tmp")
         self.assertEqual(proc.returncode, 2)

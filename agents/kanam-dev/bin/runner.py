@@ -229,8 +229,13 @@ def save_run(path: Path, run: dict) -> None:
     try:
         sys.path.insert(0, str(HERE))
         import runs_db  # noqa: PLC0415
-        runs_db.record(db, path)
-        run["registered"] = True
+        # Primera vez: insertar y guardar el id. Despues: actualizar la MISMA fila.
+        # Sin esto, una corrida que muere a mitad quedaba como `completo` porque el
+        # registro se hacia con el estado parcial y nunca se corregia.
+        run_id = run.get("run_id")
+        new_id = runs_db.record(db, path, run_id=run_id)
+        if new_id and new_id > 0:
+            run["run_id"] = new_id
     except Exception as exc:  # noqa: BLE001
         print(f"[AVISO] no se pudo registrar la corrida en runs.db: {exc}", file=sys.stderr)
 

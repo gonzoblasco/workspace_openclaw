@@ -147,11 +147,27 @@ def cmd_status(argv: list[str]) -> int:
 
 
 def _detect_stack(target: Path) -> tuple[str, list[str]]:
-    """Devuelve (stack, comandos de verify). Un solo lugar decide por stack."""
+    """Devuelve (stack, comandos de verify). Un solo lugar decide por stack.
+
+    Python sin manifiesto tambien es Python: este arbol usa unittest de stdlib y
+    no tiene `pyproject.toml`, y antes se reportaba como stack desconocido, con
+    exit 2 sobre un repo que si tiene suite. Verificado el 2026-11-09.
+    """
     if (target / "package.json").exists():
         return "node", ["npm", "test"]
     if (target / "pyproject.toml").exists() or (target / "setup.py").exists():
         return "python", [sys.executable, "-m", "pytest", "-q"]
+
+    # Sin manifiesto: inferir por los archivos de test presentes, incluidos los
+    # que viven junto al codigo. Este arbol tiene sus tests en `bin/`, no en
+    # `tests/`, y el primer detector los ignoraba.
+    if (list(target.glob("test_*.py"))
+            or list(target.glob("tests/**/test_*.py"))
+            or list(target.glob("*/test_*.py"))):
+        # unittest descubre con `python3 -m unittest discover`; pytest tambien
+        # corre tests de unittest, pero no se asume instalado.
+        return "python-unittest", [sys.executable, "-m", "unittest", "discover", "-q"]
+
     return "desconocido", []
 
 

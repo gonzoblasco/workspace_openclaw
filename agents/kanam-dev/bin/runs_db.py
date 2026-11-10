@@ -100,21 +100,35 @@ def outcome_of(records: list[dict], template: str) -> tuple[str, str | None]:
     return "completo", None
 
 
-def record(db_path: Path, run_path: Path) -> int:
+def record(db_path: Path, run_path: Path, run_id: int | None = None) -> int:
+    """Registra una corrida, o actualiza una ya registrada.
+
+    Por que la actualizacion: el runner guarda el estado despues de CADA estacion
+    para poder retomar. Si registrara solo al final, una corrida que muere a
+    mitad no quedaria en la base; si registra al principio y no actualiza, queda
+    como `completo` para siempre. Se registra al inicio y se actualiza en cada
+    guardado, con el mismo run_id.
+    """
+    if run_id is not None:
+        return _update(db_path, run_path, run_id)
+    return _insert(db_path, run_path)
+
+
+def _insert(db_path: Path, run_path: Path) -> int:
     try:
         run = json.loads(run_path.read_text(encoding="utf-8"))
     except OSError as exc:
         print(f"[INFRA] no se pudo leer {run_path}: {exc}", file=sys.stderr)
-        return 2
+        return -1
     except json.JSONDecodeError as exc:
         print(f"[INFRA] JSON invalido en {run_path}: {exc}", file=sys.stderr)
-        return 2
+        return -1
 
     ctx = run.get("context", {})
     records = run.get("records", [])
     if not ctx.get("template"):
         print(f"[INFRA] {run_path.name} no declara contexto de plantilla", file=sys.stderr)
-        return 2
+        return -1
 
     started = float(run.get("started") or time.time())
     outcome, stopped = outcome_of(records, ctx["template"])
@@ -123,7 +137,7 @@ def record(db_path: Path, run_path: Path) -> int:
         conn = connect(db_path)
     except sqlite3.Error as exc:
         print(f"[INFRA] no se pudo abrir la base {db_path}: {exc}", file=sys.stderr)
-        return 2
+        return -1
 
     with conn:
         cur = conn.execute(
@@ -144,7 +158,7 @@ def record(db_path: Path, run_path: Path) -> int:
 
     print(f"registrada corrida #{run_id}: {ctx['template']} -> {outcome}"
           + (f" en {stopped}" if stopped else ""))
-    return 0
+    return run_id
 
 
 # ---------------------------------------------------------------------------
@@ -159,6 +173,39 @@ def format_duration(started: float, finished: float | None) -> str:
     if secs < 60:
         return f"{secs}s"
     return f"{secs // 60}m{secs % 60:02d}s"
+
+
+def _update(db_path: Path, run_path: Path, run_id: int) -> int:
+    """Actualiza outcome y estaciones de una corrida ya registrada."""
+    try:
+        run = json.loads(run_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"[INFRA] no se pudo releer {run_path}: {exc}", file=sys.stderr)
+        return -1
+
+    ctx = run.get("context", {})
+    records = run.get("records", [])
+    outcome, stopped = outcome_of(records, ctx.get("template", ""))
+
+    try:
+        conn = connect(db_path)
+    except sqlite3.Error as exc:
+        print(f"[INFRA] {exc}", file=sys.stderr)
+        return -1
+
+    with conn:
+        conn.execute(
+            "UPDATE runs SET finished_at=?, outcome=?, stopped_at=? WHERE id=?",
+            (time.time(), outcome, stopped, run_id))
+        conn.execute("DELETE FROM stations WHERE run_id=?", (run_id,))
+        for i, rec in enumerate(records):
+            conn.execute(
+                "INSERT INTO stations (run_id, ord, station, mode, status, exit_code, output)"
+                " VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (run_id, i, rec.get("station", ""), rec.get("mode", ""),
+                 rec.get("status", ""), rec.get("exit"),
+                 (rec.get("output") or "")[:OUTPUT_CAP]))
+    return run_id
 
 
 def history(db_path: Path, last: int, template: str | None) -> int:
@@ -256,6 +303,60 @@ def stats(db_path: Path) -> int:
     return 0
 
 
+def group_by_week(rows: list[dict]) -> list[dict]:
+    """Agrupa corridas por semana ISO. Pura: recibe filas, no toca la base.
+
+    La semana ISO empieza el lunes y puede cruzar el fin de anio; usar el numero
+    de semana del calendario daria dos "semana 1" en el mismo anio.
+    """
+    from collections import defaultdict
+
+    buckets: dict[str, dict] = defaultdict(lambda: {"runs": 0, "completas": 0, "plantillas": {}})
+    for row in rows:
+        week = time.strftime("%G-W%V", time.localtime(row["started_at"]))
+        b = buckets[week]
+        b["runs"] += 1
+        if row["outcome"] == "completo":
+            b["completas"] += 1
+        b["plantillas"][row["template"]] = b["plantillas"].get(row["template"], 0) + 1
+
+    return [
+        {"week": week, **buckets[week]}
+        for week in sorted(buckets, reverse=True)
+    ]
+
+
+def weekly(db_path: Path, last_weeks: int) -> int:
+    """Cuantas corridas por semana. Es la unica medicion de uso que el registro
+    puede dar sin instrumentar el CLI: cuenta lo que de verdad se corrio."""
+    try:
+        conn = connect(db_path)
+    except sqlite3.Error as exc:
+        print(f"[INFRA] {exc}", file=sys.stderr)
+        return 2
+
+    rows = [dict(r) for r in conn.execute(
+        "SELECT started_at, template, outcome FROM runs ORDER BY started_at DESC"
+    ).fetchall()]
+    if not rows:
+        print("[INFO] sin corridas registradas todavia")
+        return 1
+
+    weeks = group_by_week(rows)[:last_weeks]
+    print(f"{'semana':<10} {'corridas':>8} {'completas':>9}  plantillas")
+    for w in weeks:
+        plants = ", ".join(f"{k}={v}" for k, v in sorted(w["plantillas"].items()))
+        print(f"{w['week']:<10} {w['runs']:>8} {w['completas']:>9}  {plants}")
+
+    total = sum(w["runs"] for w in weeks)
+    ok = sum(w["completas"] for w in weeks)
+    print()
+    print(f"ultimas {len(weeks)} semana(s): {total} corrida(s), {ok} completa(s)")
+    if total == 1:
+        print("Una sola corrida no mide uso todavia: hace falta una semana de trabajo real.")
+    return 0
+
+
 def prune(db_path: Path, keep: int) -> int:
     try:
         conn = connect(db_path)
@@ -282,12 +383,14 @@ def main(argv: list[str] | None = None) -> int:
         prog="runs_db.py",
         description="Registro persistente de corridas del pipeline.",
     )
-    ap.add_argument("command", choices=("record", "history", "show", "stats", "prune"))
+    ap.add_argument("command", choices=("record", "history", "show", "stats", "weekly", "prune"))
     ap.add_argument("arg", nargs="?", help="run.json para record, run_id para show")
     ap.add_argument("--db", default=str(DEFAULT_DB), help="ruta de la base")
     ap.add_argument("--last", type=int, default=20, help="cuantas corridas mostrar")
     ap.add_argument("--template", help="filtrar history por plantilla")
     ap.add_argument("--keep", type=int, default=50, help="corridas a conservar en prune")
+    ap.add_argument("--weeks", type=int, default=8, help="cuantas semanas mostrar en weekly")
+    ap.add_argument("--run-id", type=int, help="actualizar la corrida con este id en vez de crear una")
     args = ap.parse_args(argv)
 
     db = Path(args.db)
@@ -296,7 +399,10 @@ def main(argv: list[str] | None = None) -> int:
         if not args.arg:
             print("uso: runs_db.py record <run.json>", file=sys.stderr)
             return 2
-        return record(db, Path(args.arg))
+        result = record(db, Path(args.arg), getattr(args, "run_id", None))
+        # El contrato del CLI es exit 0/1/2. El id de la corrida se imprime para
+        # que el runner lo capture, y un id valido no es un exit code.
+        return 0 if isinstance(result, int) and result > 0 else 2
 
     if args.command == "history":
         return history(db, args.last, args.template)
@@ -309,6 +415,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "stats":
         return stats(db)
+
+    if args.command == "weekly":
+        return weekly(db, args.weeks)
 
     return prune(db, args.keep)
 

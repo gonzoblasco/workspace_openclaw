@@ -66,6 +66,52 @@ class TestOutcome(unittest.TestCase):
         self.assertEqual(outcome, "completo")
 
 
+class TestGroupByWeek(unittest.TestCase):
+    def test_groups_runs_in_the_same_iso_week(self):
+        # 2026-11-09 y 2026-11-10 caen en la misma semana ISO.
+        import time as _t
+        a = _t.mktime((2026, 11, 9, 10, 0, 0, 0, 0, -1))
+        b = _t.mktime((2026, 11, 10, 10, 0, 0, 0, 0, -1))
+        weeks = runs_db.group_by_week([
+            {"started_at": a, "template": "task", "outcome": "completo"},
+            {"started_at": b, "template": "audit", "outcome": "detenido"},
+        ])
+        self.assertEqual(len(weeks), 1)
+        self.assertEqual(weeks[0]["runs"], 2)
+        self.assertEqual(weeks[0]["completas"], 1)
+
+    def test_iso_week_crosses_the_year_correctly(self):
+        # 2026-12-31 y 2027-01-01 pueden caer en la misma semana ISO.
+        import time as _t
+        end = _t.mktime((2026, 12, 31, 10, 0, 0, 0, 0, -1))
+        start = _t.mktime((2027, 1, 1, 10, 0, 0, 0, 0, -1))
+        weeks = runs_db.group_by_week([
+            {"started_at": end, "template": "task", "outcome": "completo"},
+            {"started_at": start, "template": "task", "outcome": "completo"},
+        ])
+        self.assertEqual(len(weeks), 1, "el fin de anio no debe partir la semana ISO")
+
+    def test_separate_weeks_are_separate_rows(self):
+        import time as _t
+        w1 = _t.mktime((2026, 11, 2, 10, 0, 0, 0, 0, -1))
+        w2 = _t.mktime((2026, 11, 9, 10, 0, 0, 0, 0, -1))
+        weeks = runs_db.group_by_week([
+            {"started_at": w1, "template": "task", "outcome": "completo"},
+            {"started_at": w2, "template": "task", "outcome": "completo"},
+        ])
+        self.assertEqual(len(weeks), 2)
+
+    def test_newest_week_first(self):
+        import time as _t
+        old = _t.mktime((2026, 10, 1, 10, 0, 0, 0, 0, -1))
+        new = _t.mktime((2026, 11, 9, 10, 0, 0, 0, 0, -1))
+        weeks = runs_db.group_by_week([
+            {"started_at": old, "template": "task", "outcome": "completo"},
+            {"started_at": new, "template": "task", "outcome": "completo"},
+        ])
+        self.assertGreater(weeks[0]["week"], weeks[1]["week"])
+
+
 class TestDb(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
@@ -164,6 +210,18 @@ class TestDb(unittest.TestCase):
         self.write_run([{"station": "intake", "status": "ok"}])
         self.run_cli("record", str(self.run_path))
         self.assertEqual(self.run_cli("prune", "--keep", "10").returncode, 0)
+
+    def test_weekly_counts_by_week(self):
+        self.write_run([{"station": "intake", "status": "ok"}])
+        self.run_cli("record", str(self.run_path))
+        self.run_cli("record", str(self.run_path))
+        proc = self.run_cli("weekly")
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("W", proc.stdout)
+        self.assertIn("2 corrida", proc.stdout)
+
+    def test_weekly_empty_db_is_one(self):
+        self.assertEqual(self.run_cli("weekly").returncode, 1)
 
     def test_history_filters_by_template(self):
         self.write_run([{"station": "intake", "status": "ok"}], "task")
