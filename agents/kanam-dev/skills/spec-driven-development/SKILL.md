@@ -470,5 +470,5 @@ Before approving a spec for implementation:
 ## 📚 References
 
 See `references/spec-template.md` for spec templates and examples.  
-See `references/open-spec-guide/` for OpenSpec command reference.  
+See the workspace `openspec` skill for the OpenSpec command reference. This skill does not ship it: an earlier version pointed at `references/open-spec-guide/`, which was never written.  
 See `docs/architecture/adr-001-state-management.md` for architectural patterns used in this project.

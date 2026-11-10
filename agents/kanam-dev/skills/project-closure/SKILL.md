@@ -52,7 +52,7 @@ Project finished
                   │
     ┌─────────────▼─────────────┐
     │ 4. Skill + script          │  skills/<slug>/SKILL.md
-    │    to make it reproducible │  + scripts/project-closure.sh
+    │    to make it reproducible │  + project-closure.sh (workspace)
     └─────────────┬─────────────┘
                   │
     ┌─────────────▼─────────────┐
@@ -102,7 +102,7 @@ INSERT INTO learnings (category, title, content, tags, created_at, updated_at) V
 The skill documents the workflow (this file). The script automates it:
 
 ```bash
-./scripts/project-closure.sh --name "<slug>" --title "<title>" \
+the workspace script project-closure.sh (at ~/.openclaw/workspace/scripts/) --name "<slug>" --title "<title>" \
   --summary "<summary>" --complexity <T-score> --model "<model>" \
   --create-adr --tag "pipeline,closure" [--learning]
 ```
@@ -130,4 +130,4 @@ What the script does:
 
 - Version: 1.0.0
 - Created: 2026-08-31
-- Depends on: `scripts/project-closure.sh`, `memory/memory.db`, `docs/adr/`
+- Depends on: the workspace `project-closure.sh` and `memory/memory.db` (both under `~/.openclaw/workspace/`), plus `docs/adr/` relative to the repo

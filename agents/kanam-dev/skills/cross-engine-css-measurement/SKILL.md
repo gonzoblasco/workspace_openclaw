@@ -52,7 +52,7 @@ This is not "try values until it looks right". A property can behave identically
 
 7. **Wait at least a frame before reading layout for anchor or position work.** The compositor recomputes anchor and positioned elements, so `getBoundingClientRect()` in the same tick returns stale values. Verified 2026-09-24: a positioned element measured synchronously after `scrollTop = 40` read as 40px off, and returned to 0 after about 50ms - in headless and in real Chrome. That false reading was reported as a scroll bug before re-measuring. Wait with `requestAnimationFrame` twice or about 50ms. Completion: the measurement is taken after a frame, not in the same tick as the mutation.
 
-8. **Provision an engine with the workspace script when the installer stalls.** `scripts/playwright-provision.sh <engine> [--repo <dir>]` reads the download URL from `--dry-run`, fetches the zip with `curl`, unpacks it into the cache, and writes both `INSTALLATION_COMPLETE` and `DEPENDENCIES_VALIDATED`. It is idempotent and repairs a build that is incomplete on disk. Both markers matter: a complete build without them is deleted by the next `playwright install` of any engine. Completion: the script prints `LISTO` and the engine binary answers `--version`.
+8. **Provision an engine with the workspace script when the installer stalls.** the workspace script `playwright-provision.sh <engine> [--repo <dir>]` (rooted at `~/.openclaw/workspace/`, not the project's) reads the download URL from `--dry-run`, fetches the zip with `curl`, unpacks it into the cache, and writes both `INSTALLATION_COMPLETE` and `DEPENDENCIES_VALIDATED`. It is idempotent and repairs a build that is incomplete on disk. Both markers matter: a complete build without them is deleted by the next `playwright install` of any engine. Completion: the script prints `LISTO` and the engine binary answers `--version`.
 
 ## Decision rules
 
@@ -68,6 +68,6 @@ Verified 2026-09-24 on adobe/react-spectrum PR #10517 (RAC Checkbox/Radio hidden
 
 ## Related
 
-- `scripts/playwright-provision.sh` (step 8)
+- workspace `playwright-provision.sh` at `~/.openclaw/workspace/scripts/` (step 8)
 - `oss-pr-verification` (the OSS PR verification phase; its browser provisioning reference)
 - `browser-testing-with-devtools` (performance measurement, a different question)

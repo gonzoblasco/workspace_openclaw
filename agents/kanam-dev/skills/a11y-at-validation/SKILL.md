@@ -141,11 +141,13 @@ What it catches (measured 2026-10-28): attributes and composition that change th
 
 ## Automated measurement (a11y-scan)
 
-Manual validation is for the *announcement*. For a fast **technical** pass over a live page, run `scripts/a11y-scan.mjs` (axe-core OSS + playwright-core, ADR-094):
+Manual validation is for the *announcement*. For a fast **technical** pass over a live page, run the workspace scanner (axe-core OSS + playwright-core, ADR-094). The script lives in the workspace, **not in the project you are auditing**, so invoke it by absolute path from any repo:
 
 ```bash
-node scripts/a11y-scan.mjs http://127.0.0.1:4317/todos --json
+node ~/.openclaw/workspace/scripts/a11y-scan.mjs http://127.0.0.1:4317/todos --json
 ```
+
+**Pitfall:** invoking the scanner by its bare name, without the workspace root, fails from inside a project with a file-not-found that reads like a broken project, and it is not.
 
 The scan covers what a machine can measure (roles, allowed ARIA attrs, contrast, labels). It does NOT replace manual AT validation: an axe run proves measurable failures, not that an announcement is correct - and on custom elements (`ElementInternals`) a clean run is incomplete coverage (see below). The classifier runs in CI; the live scan runs locally (CI has no chromium).
 
