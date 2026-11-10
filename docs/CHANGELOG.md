@@ -6,6 +6,16 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-09] - Edad de los Reinos (proyecto nuevo)
+
+### Added
+- **`projects/edad-de-los-reinos/`** — RTS medieval 1v1 en Godot 4.7, independiente de ABYA YALA. Mapa isométrico 80×80, economía de 4 recursos, 11 edificios, 3 edades, 7 unidades, combate con counters, IA con 3 dificultades, niebla, minimapa, audio sintetizado, menú/pausa/victoria y tests headless/UI.
+- **`play.command`** — lanzador local con `godot --path .`; F11 alterna pantalla completa.
+
+### Verified
+- 24 asserts headless, UI de construcción/entrenamiento/edad, selección por mouse/caja/rally y menú → partida.
+- Simulación de 20 minutos: la IA alcanza la Edad Feudal al minuto 3 y ataca entre los minutos 10 y 13.
+
 ## [2026-11-09] - Metodología HANDOFF y cursos
 
 ### Added
