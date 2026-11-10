@@ -16,7 +16,9 @@ Medir objetivamente la calidad y el tamaño del código con métricas verificabl
    - Fijar un umbral objetivo por métrica (ej.: cobertura ≥ 80 %, complejidad ciclomática por función ≤ 10).  
    - Evidencia: `metrics/goals.md` con métrica, unidad, umbral y alcance (proyecto o módulo).
 
-2️⃣ **Verificar la herramienta y medir**  
+2️⃣ **Verificar la herramienta y medir**
+
+   - Atajo ejecutable: `python3 ~/.openclaw/workspace/agents/kanam-dev/bin/metrics_scan.py <dir> --threshold 80` detecta el stack, corre la herramienta de cobertura que exista, normaliza a tabla y escribe `metrics/summary.md` y la salida cruda. Exit 0 cumple, 1 viola, 2 no pudo medir.  
    - Seleccionar la herramienta del ecosistema (por ejemplo Jest/c8 para cobertura JS, pytest-cov para Python, clippy y tarpaulin para Rust, SonarQube para análisis agregado).  
    - Confirmar que la herramienta y sus plugins están **instalados** antes de confiar en la salida: si el config declara un provider (p. ej. `coverage.provider: 'v8'`), el paquete correspondiente (`@vitest/coverage-v8`) debe estar presente. Una dependencia de medición ausente hace fallar el reporte en silencio.  
    - Si una suite de tests falla, la mayoría de los runners **suprimen el reporte de cobertura**: aislar la suite que rompe (excluirla o corregirla) para que el reporte se emita.  
@@ -53,7 +55,7 @@ Medir objetivamente la calidad y el tamaño del código con métricas verificabl
 ## Verificacion
 
 - [ ] Cada metrica tiene unidad, umbral y alcance declarados en `metrics/goals.md`. Una metrica sin umbral no dice si el proyecto esta sano.
-- [ ] La medicion corrio sobre el estado actual y su salida cruda esta en `metrics/raw/`. Comando exacto registrado, no "corri la herramienta".
+- [ ] La medicion corrio sobre el estado actual y su salida cruda esta en `metrics/raw/`. Comando exacto registrado, no "corri la herramienta". El ejecutable `metrics_scan.py` lo hace y sale 2 cuando no puede medir, nunca 0.
 - [ ] La tabla de `metrics/summary.md` marca cada metrica contra su umbral: cumple, cerca o viola. Es el unico lugar donde un numero se interpreta.
 - [ ] El ranking de `metrics/hotspots.md` esta ordenado por impacto sobre la metrica objetivo, y cada entrada cita el `file:line`.
 - [ ] Cada punto critico tiene una accion decidida (refactorizar, testear, dividir, aceptar con motivo) en `metrics/plan.md`.
