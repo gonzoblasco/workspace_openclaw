@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exported_at": "2026-11-06T21:33:24.272Z",
+  "exported_at": "2026-11-10T01:42:08.854Z",
   "project_path": "/Users/gonzoblasco/.openclaw/workspace",
   "projects": [
     {
@@ -14,10 +14,60 @@
       "constraints": "[\"No destructive commands without asking\",\"English only for GitHub\"]",
       "repo": "git@github.com:gonzoblasco/workspace_openclaw.git",
       "created_at": "2026-08-02",
-      "last_updated": "2026-11-06"
+      "last_updated": "2026-11-10"
     }
   ],
   "sessions": [
+    {
+      "id": 4,
+      "project_id": 1,
+      "session_key": null,
+      "session_id": "bce7cc55",
+      "date": "2026-11-10",
+      "summary": "Auditoria de la ventana de cambio de modelo (beam a deepseek), correccion de los defectos medidos, U4 completo con cuatro ejecutables, runs.db (hitos 5.1-5.5) y CI del rol (v0.4). De 134 a 254 tests.",
+      "left_off": "v0.4 cerrada: dev-pipeline.yml corre 11 suites, gate de skills, rutas, copias de dash, docs del rol y roadmap del rol. runs.db persiste corridas y weekly cuenta por semana ISO. Una corrida real completa (task #5) registrada. Los cuatro ejecutables de medicion (metrics_scan, dep_inventory, compat_matrix, bench_compare) verificados contra repos reales.",
+      "next_steps": "Usar el pipeline en el proximo trabajo real que asigne CORE, sin evidencia declarada a mano, para probar v0.5 con un cambio que pueda fallar\nMedir demanda real desde sesiones y memoria a las dos semanas (hito 5.4 quedo con una sola corrida, no mide uso)\nDecidir si se limpian las 91 skills de otros roles sin verificacion y las 87 rutas ambiguas fuera del arbol de dev",
+      "blockers": "La corrida #5 tardo 0s y verify solo corrio tests que ya pasaban: el pipeline no se probo contra un cambio que pueda fallar de formas interesantes\nLa metrica de demanda tiene una sola corrida: no mide uso todavia",
+      "git_activity": "61 commits, 165 files changed",
+      "created_at": "2026-11-10T01:42:08.852Z",
+      "decisions": [
+        {
+          "id": 8,
+          "session_id": 4,
+          "what": "Los gates de CI se acotan al arbol de kanam-dev, no al workspace",
+          "why": "docs_sync da 409 desalineaciones y check-roadmaps falla por studio; bloquear por deuda ajena empuja al --no-verify, que es peor que no tener gate",
+          "date": "2026-11-10"
+        },
+        {
+          "id": 9,
+          "session_id": 4,
+          "what": "El registro en runs.db es best-effort: si falla, el pipeline sigue",
+          "why": "Un fallo de telemetria no puede tumbar un pipeline que ya hizo el trabajo; se avisa por stderr, no se calla",
+          "date": "2026-11-10"
+        },
+        {
+          "id": 10,
+          "session_id": 4,
+          "what": "runs.db inserta una vez y actualiza la misma fila en cada guardado",
+          "why": "El runner guarda por estacion para poder retomar; insert-only dejaba una corrida que murio a mitad marcada como completo para siempre",
+          "date": "2026-11-10"
+        },
+        {
+          "id": 11,
+          "session_id": 4,
+          "what": "audit y docs_sync detectan Python sin manifiesto por los test_*.php presentes, incluidos los de bin/",
+          "why": "El rol no tiene pyproject ni package.json y el pipeline no podia verificar su propio repo",
+          "date": "2026-11-10"
+        },
+        {
+          "id": 12,
+          "session_id": 4,
+          "what": "Un 0 de unittest discover es error de medicion, no realidad: 0",
+          "why": "El cero significa que no busco donde estan los tests; aceptarlo como conteo real es un falso positivo del verificador",
+          "date": "2026-11-10"
+        }
+      ]
+    },
     {
       "id": 3,
       "project_id": 1,
@@ -114,6 +164,41 @@
     }
   ],
   "decisions": [
+    {
+      "id": 8,
+      "session_id": 4,
+      "what": "Los gates de CI se acotan al arbol de kanam-dev, no al workspace",
+      "why": "docs_sync da 409 desalineaciones y check-roadmaps falla por studio; bloquear por deuda ajena empuja al --no-verify, que es peor que no tener gate",
+      "date": "2026-11-10"
+    },
+    {
+      "id": 9,
+      "session_id": 4,
+      "what": "El registro en runs.db es best-effort: si falla, el pipeline sigue",
+      "why": "Un fallo de telemetria no puede tumbar un pipeline que ya hizo el trabajo; se avisa por stderr, no se calla",
+      "date": "2026-11-10"
+    },
+    {
+      "id": 10,
+      "session_id": 4,
+      "what": "runs.db inserta una vez y actualiza la misma fila en cada guardado",
+      "why": "El runner guarda por estacion para poder retomar; insert-only dejaba una corrida que murio a mitad marcada como completo para siempre",
+      "date": "2026-11-10"
+    },
+    {
+      "id": 11,
+      "session_id": 4,
+      "what": "audit y docs_sync detectan Python sin manifiesto por los test_*.php presentes, incluidos los de bin/",
+      "why": "El rol no tiene pyproject ni package.json y el pipeline no podia verificar su propio repo",
+      "date": "2026-11-10"
+    },
+    {
+      "id": 12,
+      "session_id": 4,
+      "what": "Un 0 de unittest discover es error de medicion, no realidad: 0",
+      "why": "El cero significa que no busco donde estan los tests; aceptarlo como conteo real es un falso positivo del verificador",
+      "date": "2026-11-10"
+    },
     {
       "id": 3,
       "session_id": 3,
