@@ -67,14 +67,14 @@ Formato:
 ## L-008 · 2026-11-07 · frío (B.3)
 - **Origen:** Implementación de `--fix --apply` 1:1, verificada con dry-run y apply real.
 - **Lección:** El `--fix` solo avanza cuando el mapeo es único; un reemplazo parcial (hex sin token) se ignora silenciosamente para no inventar.
-- **Evidencia:** CLI smoke: dry-run deja el archivo intacto; `--apply` reemplaza solo #3b82f6; relectura confirma 0 warnings.
+- **Evidencia:** CLI smoke: `--fix` sin `--apply` deja el archivo intacto (dry-run por defecto); `--apply` reemplaza solo #3b82f6; relectura confirma 0 warnings.
 - **Efecto:** Flujo B completo (fast lane + watch + fix deterministico). Flujo C (cadencia por producto, baselines, score) es lo que sigue.
 
 ## L-007 · 2026-11-07 · frío (B.2)
 - **Origen:** Implementación de `--watch` con rotación de archivo, medido en temp repo real.
 - **Lección:** `fs.watch(...,{recursive:true})` es suficiente en macOS/Linux. El debounce evita el ruido de rename/re-create del editor; sin lock files el evento del editor generaría falsos positivos.
 - **Evidencia:** 2 auditorías reales disparadas al guardar (`run2.log`), latencia <1s.
-- **Efecto:** Flujo B.2 cerrado. Flujo B.3 (`--fix` determinístico 1:1, `--dry-run` primero) queda como único pending de la sesión.
+- **Efecto:** Flujo B.2 cerrado. Flujo B.3 (`--fix` determinístico 1:1, dry-run por defecto sin `--apply`) queda como único pending de la sesión.
 
 ## L-006 · 2026-11-07 · caliente (B.1)
 

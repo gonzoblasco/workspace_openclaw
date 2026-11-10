@@ -11,11 +11,12 @@ Fecha: 2026-11-09.
 ## Veredicto
 
 **No se introdujeron errores de fondo.** Los artefactos de gobierno están
-consistentes y todos los gates pasan. Dos defectos reales, ambos de forma y
-ambos en el mismo archivo — las reglas con las que yo mismo opero — y un tercer
-hallazgo que es deuda previa, no de la ventana.
+consistentes, y cada artefacto que `beam` produjo hace exactamente lo que su
+documentación afirma cuando se lo ejecuta (§6). Tres defectos reales, ninguno de
+contenido: dos de forma en `AGENTS.md` (§3 y §4) y una lección que enseña un flag
+inexistente (§7). Un cuarto hallazgo es deuda previa, no de la ventana (§5).
 
-Los dos defectos están corregidos en el commit que acompaña a este informe.
+Los tres defectos están corregidos en el commit que acompaña a este informe.
 
 ## 1. Alcance: qué corrió en `main` durante la ventana
 
@@ -115,20 +116,53 @@ cov=0.12  Adaptador real-browser.mjs se corrigio para usar Playwright de
 Las otras trece (LEGAL, HEBRUS, REA, CV de Feltsense, etc.) son de días
 anteriores. Es backlog de triage, no un error introducido por `beam`.
 
-## 6. Lo que se verificó del trabajo sustantivo
+## 6. Verificación de contenido, artefacto por artefacto
 
-- **Retención del CHANGELOG** (`22eb901319`, -147 líneas): las entradas del
-  2026-10-23 aparecen **7 veces** en `docs/archive/CHANGELOG-archive.md` y **0**
-  en el CHANGELOG vivo. Se archivaron, no se perdieron.
-- **Gate de overlap promovido a bloqueante** (`04dc33c08a`): el flag
-  `--own-only` excluye `-bundled`, `-extra` y `-custodian`, y hoy el comando
-  completo sale en 0. El pre-commit no está bloqueando trabajo legítimo.
-- **Skill router** (`22eb901319`): 10/10 casos en el top-3, verificado corriendo
-  el test, no leyendo el commit.
-- **CVs de la ventana** (Feltsense, Mercado Libre): los 14 CVs del workspace
-  siguen coincidiendo con `career-facts.md`.
+Método: ejecutar cada artefacto y compararlo con lo que su documentación afirma. Leer el
+commit no cuenta como verificación.
 
-## 7. Nota de método
+| Artefacto (commit) | Qué afirma | Qué se corrió | Resultado |
+|---|---|---|---|
+| `design-system-enforcer` (0f6febebec) | 7 tests de detección + excluir archivos propios | `npm test` | **7/7 pass** |
+| Enforcer, ruta de bloqueo | bloquea ante gradiente/color/radio/padding/hex | CSS sembrado con las 4 faltas | **4 BLOCKS, 2 WARNINGS, exit 1** |
+| Enforcer, `--apply` | reemplazo 1:1 solo con mapeo único | `.btn { color:#3b82f6 }` → apply | reemplaza por `var(--k-interactive-primary)`, correcto |
+| Enforcer, dry-run | "dry-run deja el archivo intacto" | `--fix` sin `--apply` | archivo intacto, **exit 0** — correcto. El flag `--dry-run` **no existe** (§7) |
+| `pixel-baseline` (0f6febebec) | guarda/lista baselines | `--help`, `--list` | responde; `--save/--dir/--name/--list` existen |
+| `surface-score` (0f6febebec) | score del último report | ejecución real | **100/100 (A)**, coincide con L-010 |
+| `enforcer.config.yaml` (0f6febebec) | whitelist de 10 hex del template | enforcer sobre directorio real | corre, exit 0, cada color con su motivo |
+| `capability-index` (22eb901319) | procedimiento de 5 pasos con comandos | pasos 1 y 3 tal cual | `openclaw skills list --agent main --json` OK; `skill-router.py -n 3 "revisar un PR de OSS"` → **pr-review-response 0.73** |
+| `capability-index` §4 | 4 convenciones de ruta | `test -e` sobre el catálogo | `skills/capability-index/SKILL.md` resuelve |
+| Router 10/10 (22eb901319) | 10 casos en top-3 | `test-skill-router.py` | **10/10** |
+| "13 pares" (87f8a68381) | scan own-only, 13 pares sobre 0.87 | `check-skill-overlap.py --own-only --threshold 0.87` | **13 pares exactos** |
+| Gate de overlap bloqueante (04dc33c08a) | no bloquea trabajo legítimo | `--staged --own-only --blocking` | **exit 0** |
+| Programa skill-router (22eb901319) | 8 pasos, todos cerrados | lectura del JSON | 8/8 `completed`, `closed_at` 2026-11-07 |
+| Retención CHANGELOG (22eb901319) | 14 días vivos, resto archivado | grep 2026-10-23 en ambos archivos | **7 en el archivo, 0 en el vivo** |
+| CV Feltsense (11-08) | perfil agentic, sin inventar stack | cruce de 24 tecnologías contra `career-facts.md` | GCP/LLM/OpenAI aparecen **solo** en "Not claimed (not in my stack)" |
+| CV Mercado Libre (11-08) | gaps honestos en Go/Python/Redis | cruce de 23 tecnologías | Python y Redis figuran como **gap declarado**, no como claim |
+
+**Ningún artefacto produjo un resultado distinto de lo que su documentación afirma.**
+
+## 7. Defecto 3: una lección que enseña un flag inexistente (corregido)
+
+`agents/kanam-auditor/LEARNINGS.md` L-008, escrito por `beam` el 2026-11-07:
+
+```
+Evidencia: CLI smoke: dry-run deja el archivo intacto
+Efecto: B.3 (--fix determinístico 1:1, --dry-run primero)
+```
+
+**El flag `--dry-run` no existe.** El CLI real ofrece `--fix` (dry-run por
+defecto) y `--apply`. Correr `--fix --dry-run` devuelve
+`error: unknown option '--dry-run'`.
+
+**La sustancia era cierta** —`--fix` solo deja el archivo intacto, verificado—
+pero la lección manda al próximo lector a escribir un comando que falla. Es el
+modo de falla que importa: no un hecho falso, una instrucción que no se puede
+ejecutar.
+
+Corregido a `--fix` sin `--apply` en las dos líneas.
+
+## 8. Nota de método
 
 El dato que ordena todo esto no es el commit: es la columna `model` de la tabla
 de sesiones. Sin ella no había forma de saber *qué* sesiones corrieron con
@@ -138,3 +172,7 @@ descarta sin leerlo.
 ```bash
 openclaw sessions list --json | jq -r '.sessions[] | select(.agentId=="main") | [.updatedAt,.model,.totalTokens] | @tsv'
 ```
+
+Y el segundo control es el que más rinde: **extraer los flags que la
+documentación nueva introduce y contrastarlos con `--help`**. De 30 flags
+distintos usados en los cuatro commits, uno solo no existía.
