@@ -103,6 +103,7 @@ def cmd_help(argv: list[str]) -> int:
     say("  a11y <url|archivo.html>           S5  -> scripts/a11y-scan.mjs")
     say("  review <owner/repo> <pr>          S6  -> scripts/github-pr-risk.sh")
     say("  docs <dir> [--check]              S5  -> bin/docs_sync.py")
+    say("  history [--last N] [--template T] --  -> bin/runs_db.py (corridas registradas)")
     say("  handoff <archivo.json>            S7  -> bin/handoff_gate.py")
     say("  handoff --template                S7  -> esqueleto de handoff")
     say("  status <dir>                      --  -> estado del working tree")
@@ -257,6 +258,17 @@ def cmd_docs(argv: list[str]) -> int:
     return code
 
 
+def cmd_history(argv: list[str]) -> int:
+    """Consulta el registro persistente de corridas (v0.3, hito 5.1)."""
+    db = HERE / "runs_db.py"
+    if not need(db, "runs_db.py"):
+        return EXIT_INFRA
+    code = run([sys.executable, str(db), "history", *argv])
+    if code == 2:
+        verdict("INFRA", "no se pudo leer la base de corridas")
+    return code
+
+
 def cmd_handoff(argv: list[str]) -> int:
     """Valida el contrato S7. Sin archivo y sin --template, es exit 2."""
     gate = HERE / "handoff_gate.py"
@@ -297,6 +309,7 @@ COMMANDS = {
     "review": cmd_review,
     "docs": cmd_docs,
     "handoff": cmd_handoff,
+    "history": cmd_history,
     "intake": cmd_intake,
 }
 

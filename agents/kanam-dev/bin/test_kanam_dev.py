@@ -39,7 +39,7 @@ class TestDispatch(unittest.TestCase):
     def test_help_lists_every_registered_subcommand(self):
         proc = self.run_cli("help")
         self.assertEqual(proc.returncode, 0)
-        for name in ("intake", "audit", "a11y", "review", "docs", "handoff", "status", "help"):
+        for name in ("intake", "audit", "a11y", "review", "docs", "handoff", "history", "status", "help"):
             self.assertIn(name, proc.stdout)
 
     def test_no_args_shows_help_and_exits_zero(self):
@@ -81,6 +81,14 @@ class TestDispatch(unittest.TestCase):
         proc = self.run_cli("intake", "--text", "Objetivo: x")
         # --text no es posicional de intake aqui: debe fallar por uso, no por 0.
         self.assertIn(proc.returncode, (1, 2))
+
+    def test_history_is_wired_and_reports(self):
+        # El despachador delega en runs_db. No se prueba "base vacia" porque la
+        # base real del workspace no esta vacia: ese contrato se prueba en
+        # test_runs_db con una base temporal propia.
+        proc = self.run_cli("history")
+        self.assertIn(proc.returncode, (0, 1))
+        self.assertTrue(proc.stdout.strip(), "history no imprimio nada")
 
     def test_handoff_without_args_is_exit_two(self):
         proc = self.run_cli("handoff")

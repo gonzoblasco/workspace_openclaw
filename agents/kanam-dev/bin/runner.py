@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import time
@@ -205,8 +206,33 @@ def run_station(station: str, mode: str, ctx: dict) -> dict:
 # ---------------------------------------------------------------------------
 
 
+def runs_db_default_db() -> Path:
+    """Ruta de la base por defecto, sin importar el modulo de la base."""
+    return Path.home() / ".openclaw" / "workspace" / "agents" / "kanam-dev" / "runs.db"
+
+
 def save_run(path: Path, run: dict) -> None:
+    """Escribe el run.json y lo registra en runs.db.
+
+    El registro en la base es best-effort a proposito: si la base falla, la
+    corrida ya ocurrio y su resultado no cambia. Se avisa por stderr y se sigue.
+    Un fallo de telemetria no puede tumbar un pipeline que ya hizo el trabajo.
+    """
     path.write_text(json.dumps(run, ensure_ascii=False, indent=2), encoding="utf-8")
+    if run.get("registered"):
+        return
+    # La base se puede redirigir por entorno para que los tests no escriban en la
+    # base real del workspace. Verificado: sin esto, test_runner registraba sus
+    # corridas temporales en runs.db y contaminaba el historial del usuario.
+    raw_db = os.environ.get("KANAM_DEV_RUNS_DB", "").strip()
+    db = Path(raw_db) if raw_db else runs_db_default_db()
+    try:
+        sys.path.insert(0, str(HERE))
+        import runs_db  # noqa: PLC0415
+        runs_db.record(db, path)
+        run["registered"] = True
+    except Exception as exc:  # noqa: BLE001
+        print(f"[AVISO] no se pudo registrar la corrida en runs.db: {exc}", file=sys.stderr)
 
 
 def resume_point(run: dict) -> tuple[int, str | None]:

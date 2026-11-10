@@ -10,6 +10,7 @@ hallazgo ni de un "no pude medir", y debe poder retomar sin repetir estaciones.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -125,9 +126,11 @@ class TestCli(unittest.TestCase):
         return p
 
     def run_cli(self, *args):
+        # Base de corridas redirigida: un test no escribe en el historial real.
+        env = dict(os.environ, KANAM_DEV_RUNS_DB=str(self.root / "runs.db"))
         return subprocess.run(
             [sys.executable, str(HERE / "runner.py"), *args],
-            capture_output=True, text=True,
+            capture_output=True, text=True, env=env,
         )
 
     def test_dry_run_prints_plan(self):
