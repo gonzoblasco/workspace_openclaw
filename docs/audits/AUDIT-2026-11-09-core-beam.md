@@ -10,13 +10,11 @@ Fecha: 2026-11-09.
 
 ## Veredicto
 
-**No se introdujeron errores de fondo.** Los artefactos de gobierno están
-consistentes, y cada artefacto que `beam` produjo hace exactamente lo que su
-documentación afirma cuando se lo ejecuta (§6). Tres defectos reales, ninguno de
-contenido: dos de forma en `AGENTS.md` (§3 y §4) y una lección que enseña un flag
-inexistente (§7). Un cuarto hallazgo es deuda previa, no de la ventana (§5).
-
-Los tres defectos están corregidos en el commit que acompaña a este informe.
+**No se introdujeron errores de fondo en los artefactos de gobierno.** Tres defectos de
+forma en `AGENTS.md` y `LEARNINGS.md` (§3, §4, §7), uno de deuda previa (§5), y **un error de
+contenido en el CV de Feltsense** (§6-bis): dos referencias a issues de GitHub donde no hay
+ningún comentario. Ese último lo encontró Gonzo, no este informe; la primera versión del
+control fue demasiado angosta y este documento ya está corregido.
 
 ## 1. Alcance: qué corrió en `main` durante la ventana
 
@@ -139,8 +137,44 @@ commit no cuenta como verificación.
 | Retención CHANGELOG (22eb901319) | 14 días vivos, resto archivado | grep 2026-10-23 en ambos archivos | **7 en el archivo, 0 en el vivo** |
 | CV Feltsense (11-08) | perfil agentic, sin inventar stack | cruce de 24 tecnologías contra `career-facts.md` | GCP/LLM/OpenAI aparecen **solo** en "Not claimed (not in my stack)" |
 | CV Mercado Libre (11-08) | gaps honestos en Go/Python/Redis | cruce de 23 tecnologías | Python y Redis figuran como **gap declarado**, no como claim |
+| PRs mergeados en ambos CVs | 11 PRs cada uno | cruce de cada `repo#num` contra la tabla §5.1 del corpus | **11/11 coinciden** en los dos |
 
-**Ningún artefacto produjo un resultado distinto de lo que su documentación afirma.**
+**Ninguno de esos controles encontró un error. Eso no significaba que no hubiera.**
+
+## 6-bis. Lo que esos controles no podían ver (corregido el 2026-11-09)
+
+Este informe afirmaba primero que "los dos CVs son honestos". **Era una conclusión más
+ancha que la evidencia**: el cruce de nombres de tecnología no mira identificadores,
+fechas ni atribución. Gonzo corrigió el punto: los CVs **sí** tuvieron errores.
+
+El control que faltaba es el que compara **cada identificador citado contra GitHub**, no
+contra el corpus:
+
+```
+CV Feltsense:  "ibm-products #9868 — first human review... Comment: issuecomment-5609797683"
+realidad:      #9868 tiene 0 comentarios. El comentario 5609797683 está en el PR #9869 (merged).
+
+CV Feltsense:  "ibm-products #9866 — cross-issue diagnosis... Comment: issuecomment-5609873985"
+realidad:      #9866 tiene 0 comentarios. El comentario 5609873985 está en el issue #9865.
+```
+
+La sustancia es real —los dos comentarios son de `gonzoblasco`, verificados por API— pero
+**las referencias apuntan a issues donde no hay ningún comentario**. Un reclutador que abra
+el #9868 ve cero actividad. Es el tipo de error que no aparece leyendo: aparece abriendo el
+link.
+
+Los otros cuatro hilos citados (`next.js #73474`, `carbon #16031`, `astryx #4871`,
+`react-spectrum #10220` y `#9556`) sí tienen comentario de `gonzoblasco` y coinciden en
+sustancia.
+
+**Causa de fondo:** ninguna de esas seis contribuciones existe en `career-facts.md` §5.2. El
+corpus solo lista los 11 PRs mergeados y cinco colaboraciones de `astryx`. El gate
+`check-cv-facts.py` valida años, idioma, contacto, certificaciones y bullets de experiencia,
+pero **no mira la sección de contribuciones**: un CV puede citar un issue inexistente y el
+gate pasa en verde.
+
+Consecuencia por ADR-101: el corpus se completa primero y el CV se propaga después. No al
+revés.
 
 ## 7. Defecto 3: una lección que enseña un flag inexistente (corregido)
 
