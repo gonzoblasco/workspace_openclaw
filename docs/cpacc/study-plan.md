@@ -2,16 +2,36 @@
 
 > Preparación para el examen **CPACC** (Certified Professional in Accessibility Core Competencies, IAAP).
 > Armado 2026-09-29 sobre la fuente primaria: `docs/cpacc/cpacc-bok.pdf` (Body of Knowledge, octubre 2023, 82 pp).
-> **Corregido 2026-09-30** con las fechas oficiales de examen (página *Exam Session Dates* de IAAP, aportada por Gonzalo): la aplicación de la sesión objetivo cierra el **12 de noviembre**, no el 9 de diciembre. Ver sección 2.
+> **Actualizado 2026-11-11:** decisión de Gonzo, se estudia sin rendir el examen (no hay presupuesto). Ver §0. Las fechas de la §2 quedan como referencia histórica de la sesión Nov/Dec 2026, que ya no es objetivo.
 > Este documento es la fuente de verdad del plan; el material de estudio vive en `docs/cpacc/`.
+
+## 0. Decisión de alcance (Gonzo, 2026-11-11)
+
+> **El examen NO se rinde por ahora: no hay plata para pagarlo. El objetivo cambia de "certificarse"
+> a "estudiarlo y aprenderlo".**
+
+Qué cambia con eso:
+
+- **Se cae toda fecha de calendario.** El 12/11 deja de ser un límite. El plan de 10 semanas se
+  convierte en **ritmo de aprendizaje**, no en cuenta regresiva.
+- **Sigue vigente todo el contenido:** los tres dominios, el BoK como mapa y la práctica. Lo que se
+  aprende no depende de rendir el examen, y el material (BoK, Handbook) es gratis.
+- **Cuando haya dinero, se retoma desde donde esté.** IAAP abre 6 sesiones al año; no se pierde
+  nada por esperar. La decisión de aplicar se toma **en ese momento**, no antes.
+- **Regla de credibilidad intacta:** sin credencial en mano, ningún CV, carta ni screening la
+  insinúa (`memory/career-facts.md` §4). Aprender no es certificarse.
+- **El valor del estudio no se pierde aunque nunca se rinda:** el Dominio 1 (lado humano, modelos
+  de discapacidad, AT) y el Dominio 3 (marco legal) ordenan trabajo que Gonzo ya hace en a11y. El
+  BoK funciona como estructura mental del campo, no solo como temario.
 
 ## 1. Objetivo
 
 - **Motivación:** meta **personal** de Gonzo (crecimiento propio en a11y). Sin urgencia ni compromiso con terceros.
-- **Objetivo de calendario (meta fijada por Gonzo, 2026-09-30):** anotarse a la sesión **November/December 2026** **a más tardar la primera semana de noviembre** (meta interna, con colchón). El cierre oficial de aplicación es el **12 de noviembre, 5pm ET**, y el **9 de diciembre** es el último día de examen de la sesión (no el cierre de aplicación).
-- **Ritmo:** flexible, sin presión. La ventaja: la experiencia real en a11y web cubre buena parte de los Dominios 2 y 3; el foco va al **lado humano** (Dominio 1).
+- **Estado (2026-11-11):** estudio **sin fecha de examen**, por decisión de Gonzo (ver §0). El examen queda para cuando exista el presupuesto; **no se aplicó a ninguna sesión**.
+- **Objetivo anterior (superado, se conserva como historia):** anotarse a la sesión *November/December 2026* en la primera semana de noviembre; cierre oficial de aplicación 12/11, 5pm ET. **No se ejecutó y no se va a ejecutar.**
+- **Ritmo:** flexible, sin presión y ahora sin deadline. La ventaja: la experiencia real en a11y web cubre buena parte de los Dominios 2 y 3; el foco va al **lado humano** (Dominio 1).
 
-## 2. Estado del examen (verificado vs a verificar)
+## 2. Estado del examen (referencia; sin uso mientras no se rinda)
 
 **Verificado contra el handbook oficial (`docs/cpacc/cpacc-handbook.pdf`, ene 2026):**
 - IAAP abre **6 sesiones de examen por año**; cada una: ventana de examen, apertura y cierre de aplicación, fecha límite de pago, última fecha para agendar. **No hay aplicaciones rodantes.** Ejemplo real del handbook: sesión *September/October 2025* → aplicaciones cerraron 17/09/2025 y el último día de examen fue 08/10/2025.
@@ -45,25 +65,33 @@ Sesión objetivo - **November/December 2026**:
 **Los 7 modelos de discapacidad (Dominio 1A, alta densidad de preguntas):**
 médico · social · biopsicosocial · económico · funcional-solución · identidad social / afiliación cultural · caridad.
 
-## 4. Plan de 10 semanas (hasta el cierre de aplicación, 12/11)
+## 4. Recorrido de los 3 dominios (sin fechas)
 
-> **Ajuste 2026-09-30:** con el cierre de aplicación el 12/11, el plan original (que se estiraba hasta el 9/12) se **adelanta**. La ventana de examen es 12/11 al 09/12, así que el estudio tiene que estar listo **antes del 12/11**, no del 9/12. Si se apunta al fallback de enero/febrero 2027, el mismo plan corre dos meses más con ritmo más holgado.
+> **Reescrito 2026-11-11.** Antes era un plan de 70 días atado al cierre de aplicación del 12/11.
+> Con la decisión de §0 (estudiar, no rendir), las fechas se caen: lo que ordena es **la secuencia
+> del BoK**, no el calendario. Las semanas quedan como **bloques de trabajo**, cada uno con su
+> entregable; se avanza al ritmo que haya, sin cuenta regresiva.
 
-| Semana | Foco | Del BoK | Entregable de la semana |
+| Bloque | Foco | Del BoK | Entregable |
 |---|---|---|---|
-| **1** (29/09-05/10) | Mapear conocimiento vs BoK. Modelos de discapacidad. | Intro + 1A (pp. 4-8) | Tabla "conocido / por aprender" por subdominio. Flashcards de los 7 modelos. Material armado en [`week-1/`](./week-1/README.md). |
-| **2** (06-12/10) | Discapacidades: categorías, barreras, soluciones. | 1B (pp. 9-25) | Fichas por categoría (visual, auditiva, motora, cognitiva, del habla) + barreras típicas. |
-| **3** (13-19/10) | Tecnologías de asistencia y estrategias adaptativas. | 1C (pp. 26-34) | Lista de AT por discapacidad (JAWS, NVDA, VoiceOver, lectores, hápticos, switch, etc.). |
-| **4** (20-26/10) | Datos e implicaciones + etiqueta. Cerrar Dominio 1. | 1D + 1E (pp. 35) | Autotest de Dominio 1. |
-| **5** (27/10-02/11) | WCAG 2.1 en web + beneficios y acomodaciones. (Fortaleza: repaso rápido y a fondo.) | 2A-2C (pp. 36-41) | Repaso de POUR + criterios que suelen confundirse. |
-| **6** (03-09/11) | Entorno construido, Diseño Universal, UDL. | 2D-2F (pp. 41-47) | Fichas de los 7 principios del Diseño Universal + UDL. |
-| **7** (10-16/11) | Estándares, leyes y gestión: instrumentos internacionales/regionales/nacionales. | 3A-3C (pp. 48-58) | Tabla de instrumentos por alcance (internacional vs regional vs nacional). |
-| **8** (17-23/11) | Leyes de dominio específico y compras + estándares TIC + gestión organizacional. Cerrar Dominio 3. | 3D-3F (pp. 59-70) | Fichas de las leyes clave (ADA, Section 508, EN 301 549) y de integración TIC. |
-| **9** (24-30/11) | Repaso integrador de los 3 dominios. | Todo | Primer mock completo (100 preguntas, 2 h) + revisión de errores contra el BoK. |
-| **10** (01-09/12) | Cierre: puntos débiles + simulacro final. | Todo | Segundo mock; cerrar la tabla "conocido / por aprender". |
+| **1** | Mapear conocimiento vs BoK. Modelos de discapacidad. | Intro + 1A (pp. 4-8) | Tabla "conocido / por aprender" por subdominio. Flashcards de los 7 modelos. Material en [`week-1/`](./week-1/README.md). |
+| **2** | Discapacidades: categorías, barreras, soluciones. | 1B (pp. 9-25) | Fichas por categoría (visual, auditiva, motora, cognitiva, del habla) + barreras típicas. |
+| **3** | Tecnologías de asistencia y estrategias adaptativas. | 1C (pp. 26-34) | Lista de AT por discapacidad (JAWS, NVDA, VoiceOver, lectores, hápticos, switch, etc.). |
+| **4** | Datos e implicaciones + etiqueta. Cerrar Dominio 1. | 1D + 1E (p. 35) | Autotest de Dominio 1. |
+| **5** | WCAG 2.1 en web + beneficios y acomodaciones. (Fortaleza: repaso rápido y a fondo.) | 2A-2C (pp. 36-41) | Repaso de POUR + criterios que suelen confundirse. |
+| **6** | Entorno construido, Diseño Universal, UDL. | 2D-2F (pp. 41-47) | Fichas de los 7 principios del Diseño Universal + UDL. |
+| **7** | Estándares, leyes y gestión: instrumentos internacionales/regionales/nacionales. | 3A-3C (pp. 48-58) | Tabla de instrumentos por alcance (internacional vs regional vs nacional). |
+| **8** | Leyes de dominio específico y compras + estándares TIC + gestión organizacional. Cerrar Dominio 3. | 3D-3F (pp. 59-70) | Fichas de las leyes clave (ADA, Section 508, EN 301 549) y de integración TIC. |
+| **9** | Repaso integrador de los 3 dominios. | Todo | Simulacro completo (100 preguntas, 2 h) + revisión de errores contra el BoK. |
+| **10** | Cierre: puntos débiles. | Todo | Segundo simulacro; cerrar la tabla "conocido / por aprender". |
 
-**Ventana del examen:** 12/11 al 09/12/2026. El examen se agenda tras la aprobación y el pago (ATT de Pearson en ≤5 días hábiles), y **la agenda cierra el 30/11** - el examen debe rendirse antes de esa fecha (o pedir transferencia de sesión: USD 50/100).
-**Acción crítica (meta):** aplicar **dentro de la primera semana de noviembre** (del 28/10 al ~07/11), no esperar al límite del 12/11 - así queda colchón para aprobación, pago (vence 18/11) y agenda. Perdida la ventana del 12/11, el fallback es la sesión de enero/febrero 2027.
+**Los simulacros son de aprendizaje, no de examen.** Sirven para encontrar huecos y practicar el
+formato; no miden disposición a rendir ni habilitan nada. Un simulacro se puede repetir cuantas
+veces haga falta.
+
+**Cuándo se rinde.** Cuando exista el presupuesto. IAAP abre **6 sesiones al año** (§2); no hay
+apuro ni nada que venza. Al decidir, se mira la página de *Exam Session Dates* de ese momento y se
+toma la primera sesión con margen: no se reusa este calendario.
 
 ## 4.bis Material por semana
 
@@ -93,12 +121,15 @@ médico · social · biopsicosocial · económico · funcional-solución · iden
 - Solo dispositivos aprobados por IAAP (sin teléfonos, smartwatches, notas, segundo monitor).
 - Cero comunicación durante el examen (cualquier violación = descalificación).
 
-## 8. Primeras 3 acciones
+## 8. Próximas 3 acciones
 
-1. **Aplicar en la primera semana de noviembre** (ventana 28/10-07/11; límite oficial 12/11, 5pm ET). Es la única acción con vencimiento duro del plan. Confirmar el fee en el portal al aplicar.
-2. **Registrarse** en la sesión Nov/Dec 2026 dentro de esa ventana (se abre y cierra por sesión; no hay aplicaciones rodantes).
-3. **Semana 1:** abrir el BoK, leer Intro + 1A, y armar la tabla "conocido / por aprender".
+1. **Abrir el BoK** (`docs/cpacc/cpacc-bok.pdf`), leer Intro + 1A y armar la tabla "conocido / por aprender". Es el bloque 1 y el único punto de partida válido.
+2. **Cerrar la tabla de los 17 subtemas** (5 + 6 + 6) marcados *sé / más o menos / no sé*. Ese marcado es el plan real; las listas A-F de cada dominio están en `studies/cpacc-certification/outline.md`.
+3. **Armar el mazo de flashcards** de los 7 modelos de discapacidad, con un ejemplo propio de cada uno. Material de arranque en [`week-1/`](./week-1/README.md).
+
+**Lo que NO hacer por ahora:** aplicar a una sesión, pagar fee, agendar Pearson, ni reservar fecha.
+El examen queda fuera de alcance hasta que exista el presupuesto (§0).
 
 ---
 
-_Nota: corregido el 2026-09-30 con la página oficial de fechas. El 9/12 que se manejaba como "cierre de aplicación" es en realidad el último día de examen; el cierre de aplicación es el 12/11._
+_Nota histórica: corregido el 2026-09-30 con la página oficial de fechas (el 9/12 era el último día de examen, no el cierre de aplicación). **Esa planificación quedó superada el 2026-11-11 por la decisión de estudiar sin rendir.**_
