@@ -146,6 +146,24 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (detalle 3D)
+
+### Added
+- **Mercado**: awnings a rayas con valance, barriles con flejes y canastas.
+- **Granero**: dock de carga, sacos, aparejo de carga (postes/beam/rope).
+- **Templo**: braseros con llama, medallones de frieze y ánforas de ofrenda.
+- **Granja**: espantapájaros, gavillas atadas y canastas de cosecha.
+
+### Decision
+- **Texturas se postergan** hasta congelar geometría/cámara/UV. A 100–150 px por edificio el detalle fino se pierde y el set todavía cambia; primero se cierra silueta/detalle y después se hornea un atlas procedural (estuco, terracota, piedra, madera) sin assets externos.
+
+### Verified
+- Render Blender: 15/15 assets; sin geometría flotante tras quitar las ventilas del granero.
+- `bash scripts/gate.sh` → EXIT 0: smoke + main input + 24 tests + pureza.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-details4.png`.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
