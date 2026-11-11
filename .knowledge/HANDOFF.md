@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-11 15:17 GMT-3
+**Fecha:** 2026-11-11 16:30 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-11 16:30
+Arranque de sesion + montaje y cierre de la clase studies/cute-room-portfolio-3d (video tdsQwuyS6DQ: Create a Cute Room Portfolio with Blender, Three.js, JavaScript, Andrew Woan, freeCodeCamp.org, 8:42:31). Transcripcion de 14.576 cues en-orig con glosario ASR, outline de 13 modulos 1:1 con los 42 capitulos oficiales y 30 citas verificadas (BAD 0), y ADOPCION con web-asset-gate.py corrido contra projects/reinos-de-la-frontera: falla de verdad (exit 1 con 1 MB/768px) y encontro que assets/quaternius/_download/ duplica 1,25 MB gzip de modelo y 677 KB de textura. Commits e90accbbac, 1b8c20b5a5.
 
 ### 2026-11-11 15:17
 Arranque de sesion + montaje y retiro de la clase del video ZaPbP9DwBOE ("Don't learn AI Agents without Learning these Fundamentals", KodeKloud, 56:39). Se monto `studies/ai-agents-fundamentals/` con transcript de 163 bloques, outline de 17 modulos con 33 citas verificadas (33/33) y ADOPCION. El artefacto del curso fue `scripts/boundary-check.py`: midio que el catalogo automatico (`memory-catalog-v2.py`) corta a ciegas cada daily -669 de 741 chunks mal cortados, 1328 de 1464 tambien cortados al truncar a 768 chars al embeber-. Gonzo pregunto si recomendaba ver el curso: respuesta no, salvo el modulo 9 (vector DB, 24:46-31:27), y lo que recomende fue arreglar el catalogo. Despues pidio RETIRAR el curso y los activos: se borro `studies/ai-agents-fundamentals/`, `scripts/boundary-check.py` y la entrada del `studies/README.md`. Verificacion: el commit del curso NO esta en la historia de la rama (lo destruyo otra sesion concurrente que commiteo con `--amend` y `reset` desde el mismo worktree; mi `git show` previo leyo un object compartido y reportaba contenido ajeno como mio). El hallazgo del catalogo queda como deuda registrada, sin archivos.
@@ -21,6 +24,10 @@ Sesion corta: arranque + montaje de la clase studies/n8n-ai-automations desde el
 POLITICA DE MODELOS: beam:cloud fuera de toda asignacion de primario (dejo de ser gratuito y produjo errores en dos sesiones de cursos de YouTube); deepseek-v4.1-flash:cloud vuelve a primario del CORE y de los defaults; gemma4:12b-mlx (local) queda como UNICO fallback de los nueve agentes, sin escalones cloud intermedios. Escrito como ADR-112 con verificacion ejecutable. GATEWAY E IPAD: el iPad no conectaba al gateway; la causa era triple (Tailscale sin perfil VPN, hostname apuntando a la Mac apagada mac-mini-de-gonzalo sin -1, y Tailscale Serve enrutando por nombre y no por IP). Se cambio gateway.bind a tailnet y tailscale.mode a off; el gateway ahora escucha en 100.126.255.95:18789 y la app entra con ws:// sin cifrar. Drift aceptado (3 campos, los tres del cambio). AUDITORIA DEL CORE: 9 sesiones de main corrieron con beam entre el 07 y el 08 (1,71M tokens, 4 commits). Se ejecuto cada artefactoC y se contrasto cada flag documentado contra --help: 3 defectos, todos corregidos (typo 'gobnar' en AGENTS.md, presupuesto de bootstrap a 5 caracteres del limite, y el flag inexistente --dry-run en el LEARNINGS del auditor). CVS: Gonzo corrigio el rumbo; dos referencias de contribuciones apuntaban a issues sin comentarios (#9868 y #9866 en vez del PR #9869 y el issue #9865) y el ATS declaraba UADE (carrera universitaria, prohibida por la regla del 2026-11-04). Corregidas las tres referencias, carrera fuera del ATS, y career-facts gana la seccion 5.2.1 con las siete contribuciones verificadas por API de GitHub. check-cv-facts.py ahora valida referencias contra el corpus y carreras en cualquier salida de postulacion.
 
 ## Estado actual
+
+Sesion cerrada. Clase commiteada; nada pendiente de esta sesion. Otras sesiones concurrentes montaron godot-3d-rpg-curso, godot-2d-platformer-beginners y creative-web-threejs-blender en la misma franja horaria.
+
+### Estado previo (heredado)
 
 - Estado: sesion cerrada; clase y gate retirados por pedido. Cambio propio pendiente de commit: solo el borrado de la linea del README.
 - Modulo actual: n/a (curso retirado).
@@ -36,23 +43,11 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
-## Archivos tocados
-
-```
-studies/README.md
-```
-
-## Como continuar
-
-1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-11.md` para el informe completo de la sesion.
-3. Verificar el estado real antes de actuar (git, tests, la DB).
-
----
-
-*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
-
 ## Proximos pasos
+
+1. Decidir si cute-room-portfolio-3d se estudia: modulos 1 y 2 para escena, modulo 8 (baking) es el que justifica el curso. En reinos-de-la-frontera: convertir PNG a WebP cuando exista pipeline web y decidir si se retira assets/quaternius/_download/.
+
+### Pendientes heredados (sin cambios)
 
 ### PENDIENTE - servicio del gateway: `partial import` (registrado 2026-11-10 20:54)
 
@@ -83,6 +78,22 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 ### Pendientes heredados (sin cambios)
 
 1) Verificar contra GitHub las 19 referencias de CVs historicos que no estan en el corpus y agregarlas a career-facts 5.2.1. 2) Limpiar las carreras universitarias de los 5 CVs historicos (EIT/HTC, Mercor, Sol, TEMPO) - son de otras sesiones. 3) Confirmar con Gonzo que el iPad quedo operativo con ws://100.126.255.95:18789. 4) Watchdog de canales: el timeout del trigger sigue sin resolver si se repite.
+
+## Como continuar
+
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-11-11.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
+
+---
+
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
+
+## Archivos tocados
+
+```
+studies/README.md
+```
 
 ## Decisiones y contexto que no debe perderse
 
