@@ -477,7 +477,7 @@
       "task": "Implementar IA (E4) - 3 dificultades, build order y cierre de partida",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Módulo ai.gd con 3 niveles de dificultad, estrategia de build order, pruebas ia_test.gd pasan y la IA gana/ pierde según algoritmo.",
       "depends_on": [
         17
@@ -486,22 +486,24 @@
       "write_paths": [
         "src/sim/ai.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "AI_OK; data/ai.json 3 difficulties; SimAI build order villagers/houses/age/army/attack; uses player commands"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T17:07:26+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T17:07:26+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 19,
       "task": "Validación de IA (E4) - pruebas de dificultad y victoria",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Todas las pruebas ia_test.gd pasan, la IA completa una partida contra jugador humano sin errores.",
       "depends_on": [
         18
@@ -510,15 +512,17 @@
       "write_paths": [
         "tests/ia_test.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "20 tests green; AI_DIFFICULTY_OK; AI_DETERMINISM_OK hash=94005c8135f7fc417b3bdb6c31fddb8bebecac75c11748cef24dc76af77a1ed4 ticks=10000; AI_STATE_OK; AI_VS_AI_OK winner=2 tick=146; B PASS"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T17:07:26+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T17:07:26+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 20,
@@ -620,7 +624,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T08:35:00+00:00",
-  "updated_at": "2026-11-11T16:23:25+00:00",
+  "updated_at": "2026-11-11T17:07:26+00:00",
   "gates": [
     "critic",
     "auditor"
