@@ -283,6 +283,19 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (unificación 3D)
+
+### Fixed
+- Baño, talleres, almacén, casa grande y parque dejaron el estilo 2D vectorial y ahora usan **renders 3D de Blender**, igual que el resto de las estructuras.
+- `blender/manifest.json` cubre **22 edificios** + árbol/roca (24 renders); los sprites 2D quedan solo como fallback.
+
+### Verified
+- `tools/blender/render_buildings.py` → 24 renders; `postprocess.py` → 22 edificios + 2 props.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-merge-3d.png`.
+- Gate 27 verde.
+
+---
+
 ## [2026-11-11] - Caesar III Clone (casas 2×2, merging y deseabilidad)
 
 ### Added
