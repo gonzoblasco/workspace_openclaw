@@ -1,47 +1,41 @@
-# HANDOFF — SQL Full Course (Data with Baraa, 30 h)
+# HANDOFF - Curso sql-full-course
 
-**Fecha:** 2026-11-11
-**Estado:** clase montada (transcript + outline + banco de preguntas). Sin ejercicios desglosados por módulo todavía.
-**Fuente:** https://www.youtube.com/watch?v=SSKVgrwhzus
+**Fecha:** 2026-11-11 12:07 GMT-3
+**Proyecto:** sql-full-course
+**Branch:** main
+**Repo:** https://github.com/gonzoblasco/workspace_openclaw
+**Autor:** Kanam (CORE)
 
-## Qué hay
+> HANDOFF generado en el cierre de sesion (2026-11-11). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-11.md`.
 
-| Archivo | Qué es |
-|---|---|
-| `outline.md` | La clase: tesis, resultados esperados, mapa temporal de los 41 capítulos, 22 módulos, citas verificadas y banco de 18 preguntas. |
-| `transcripcion.md` | Subtítulos automáticos `en-orig` normalizados: 48.358 cues, ~364.000 palabras, formato `[hh:mm:ss] texto`. |
-| `video-meta.json` | Metadatos de la fuente (título, canal, fecha, capítulos, description). |
+---
 
-## Leer en este orden
+## Que se hizo en esta sesion
 
-1. `outline.md` — todo el contenido de la clase.
-2. `outline.md` §"Mapa temporal" — para ubicar un tema por timestamp y saltar directo en `transcripcion.md`.
-3. `transcripcion.md` — solo el tramo que interese (grep por `[hh:`).
+Clase montada desde YouTube: 'SQL Full Course for Beginners (30 Hours) - From Zero to Hero' (Data with Baraa, 29:48:27, 41 capitulos). Transcript por captions automaticos en-orig via yt-dlp: 96.716 eventos deduplicados a 48.358 cues, ~364.000 palabras, timestamps reales, cobertura completa verificada. Outline de 22 modulos en los tres niveles del curso (Beginner/Intermediate/Advanced) mas los tres proyectos (DWH medallion, EDA, Advanced Analytics), 12 citas verificadas contra el transcript con timestamps corregidos a cue exacto, banco de 18 preguntas. Registro en studies/README.md. El audio no se pudo bajar (HTTP 403 en todos los formatos con yt-dlp 2025.10.14); los captions alcanzaron.
 
-## Decisiones tomadas
+## Estado actual
 
-- **Transcript por subtítulos automáticos, no ASR local.** Un video de 30 h con `whisper-cli medium` a ~170 ms de encode por run no era viable en esta sesión; YouTube ya tenía `en-orig` con timestamps reales y cobertura completa del audio. La deduplicación bajó 96.716 eventos a 48.358 cues.
-- **Sin ejercicios por módulo todavía.** El formato de las otras clases (`ai-engineer-full-course`, `rag-mcp-fundamentals`) incluye ejercicios por módulo; acá se hizo primero la estructura completa porque el curso tiene 22 módulos y 30 h.
+Clase montada y commiteada (9dc50c81b7, sin push). Sin ejercicios ejecutables por modulo.
 
-## Gotchas
+## Proximos pasos
 
-- `yt-dlp` de `pip --user` (2025.10.14) funciona para metadata y captions, **no** para bajar audio: todos los formatos de video dan `HTTP 403`, con o sin `player_client` alternativo. Para bajar audio de este video hay que usar otro camino (cookies, otro cliente, o el archivo del curso).
-- La extracción de metadata es intermitente: `"The page needs to be reloaded"` aparece en ~3 de cada 5 intentos. Un loop de 5-6 reintentos con `sleep` resuelve.
-- Los subtítulos se bajan de la URL en `automatic_captions["en-orig"]` (`fmt=json3`), directo con `curl`: 37 MB en un request.
-- El curso es **SQL Server**, no agnóstico. Cualquier ejercicio portable tiene que traducirse.
+1. Agregar ejercicios ejecutables por modulo si Gonzo lo pide (los bloques Beginner y Window Functions son los mas ejercitables). 2. Decidir si se corren en un Postgres local o quedan como SQL Server en papel. 3. Definir si se estudia la clase completa o se saltean los bloques ya cubiertos (el material de ventanas y performance es el de mayor valor para el workspace).
 
-## Próximo paso sugerido
+## Decisiones y contexto que no debe perderse
 
-Si Gonzo quiere que esto sea una clase como las otras: agregar ejercicios ejecutables por módulo (los "Beginner" y los de ventanas son los más ejercitables), y decidir si se monta un Postgres local para correrlos o se quedan como SQL Server en papel.
+- Transcript por captions automaticos de YouTube y no ASR local: 30 h con whisper medium no era viable y los captions traen timestamps reales con cobertura completa. El curso es SQL Server (GETDATE, TOP, ISNULL, file groups), no Postgres: un ejercicio portable hay que traducirlo. Errores de ASR sistematicos: 'Barzalini' es Baraa, 'shippet/shad/shajibet' es ChatGPT, 'CDS' es CTAS, 'store procedure' es stored procedure. El video se grabo el 18 de julio de 2024 y se publico en marzo de 2025. El material descargable (datawithbaraa.com/wiki/sql) no se bajo ni se audito.
 
-<!-- project: github.com/gonzoblasco/workspace_openclaw -->
+## Cerrados en esta sesion
 
-## Cómo se montó (2026-11-11)
+- Sin ejercicios por módulo todavía. El formato de las otras clases (ai-engineer-full-course, rag-mcp-fundamentals) incluye ejercicios por módulo; acá se hizo primero la estructura completa porque el curso tiene 22 módulos y 30 h. (movido a proximos pasos: agregar ejercicios por modulo)
 
-```bash
-# metadata + chapters (con reintentos por "page needs to be reloaded")
-python3 -c "import yt_dlp,json; ..."   # skip_download=True → video-meta.json
-# captions: URL de automatic_captions["en-orig"] con ext=json3
-curl -sL -o en.json3 "<url>"
-# normalizar: events[].segs[].utf8 → [hh:mm:ss] texto, dedupe de líneas consecutivas
-```
+## Como continuar
+
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-11-11.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
+
+---
+
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
