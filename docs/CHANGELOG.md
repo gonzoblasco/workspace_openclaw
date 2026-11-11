@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-10] - Caesar III Clone (proyecto nuevo)
+
+### Added
+- **`projects/caesar3-clone/`** — clon personal de Caesar III en Godot 4.7.2, desde cero y basado en el original. Documentos iniciales: `BRIEF.md`, `ARCHITECTURE.md`, `WALKING-SYSTEM.md`, `DECISIONS.md`, `STATUS.md`. Sin código todavía.
+- **Registro del proyecto** en `session-context` (Active), `projects/AUDIT.md` y `MEMORY.md`.
+
+### Why
+El proyecto necesita una base de diseño antes de escribir código: alcance del MVP, arquitectura de simulación fuera de nodos, y una spec completa del walking system, que es el corazón y el mayor riesgo técnico. La meta final es un clon completo; el MVP es la primera porción.
+
+### Status
+Diseño. Próximo: revisión de la spec y esqueleto Godot fase 0.
+
+---
+
 ## [2026-11-10] - El bind del gateway deja de degradarse en silencio
 
 ### Added
