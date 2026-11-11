@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-27). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-10-28). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
 
@@ -18,6 +18,27 @@ El proyecto se juega en el spike gráfico, no en el arte: primero hay que demost
 
 ### Status
 Fase 0 cerrada. Próximo: E0 Día 1 (importar Quaternius, validar escala, captura).
+
+---
+
+## [2026-11-11] - Caesar III Clone (capa de sprites)
+
+### Added
+- **`tools/gen_sprites.py`** — generador determinista (Pillow + geometría isométrica) de 13 edificios (5 niveles de casa + well/fountain/farm/granary/market/temple/prefect/engineer), 20 walkers (5 tipos × 4 direcciones) y árbol/roca. Sin assets de Caesar III ni de terceros.
+- **`assets/sprites/`** — 35 PNG + `manifest.json` con archivo, ancla y tamaño; README con el contrato de ancla y regeneración.
+- **`view/sprite_theme.gd`** — carga y cachea el catálogo; `CityView` dibuja sprites cuando existen y cae a las primitivas si falta una entrada, ordenando edificios/walkers/props por la casilla frontal (`x+y`).
+- **`tests/test_sprite_theme.gd`** — valida las 13+20+2 entradas, texturas, anclas/tamaños y fallback de tipos desconocidos; gate actualizado a 24 tests.
+
+### Why
+El MVP ya era legible con primitivas, pero los bloques no comunicaban la ciudad. La capa de sprites demuestra el contrato `VisualTheme` sin tocar `sim/`: arte propio, reemplazable, con anclas verificables y fallback.
+
+### Verified
+- `python3 tools/gen_sprites.py` dos veces → `shasum` idéntico (determinista).
+- `bash scripts/gate.sh` → EXIT 0: smoke + main input + 24 tests + pureza, sin leaks.
+- `./scripts/demo.sh` → EXIT 0; captura 1600×900 `tmp/shot-sprites-final.png`.
+
+### Status
+Capa de sprites prototipo: estática, 4 direcciones, sin animación; agua/caminos/terreno siguen primitivos. Próximo: texturas de terreno/agua, animación y UI.
 
 ---
 
@@ -399,106 +420,5 @@ Ese desvio de runtime se convirtio en un cambio de config el 2026-11-10 12:28: l
 ### Changed
 - **El veredicto operativo se precisa:** no se retira nada (los tres harnesses aciertan 30/30 con su mejor modelo), pero **que harness usar depende del modelo**. Default: Claude Code (el mas estable y el mas barato en tokens de entrada). opencode y OpenHands quedan bajo demanda, cada uno con su pairing: opencode con nemotron-super (29/30) y OpenHands con gpt-oss o deepseek (30/30) mas la UI web.
 - **El documento de la cata de deepseek (`cata-harnesses-2026-10-27.md`) queda marcado como SUPERADO en su conclusion**, con el puntero al de 3 modelos.
-
----
-
-## [2026-10-27] - Cata de harnesses: los tres aciertan igual, y OpenHands consume 8x los tokens
-
-### Added
-- **`docs/evaluacion/cata-harnesses-2026-10-27.md`** - la cata completa: Claude Code vs opencode vs OpenHands con el **mismo modelo** (`deepseek-v4.1-flash:cloud`), 3 tareas de casos REALES del workspace con suite oculta, y veredicto por harness. Runner en `playground/cata-harnesses-2026-10-27/` (runner, suite, juez, validacion de la suite en dos direcciones).
-- **9/9 corridas con el control verificado.** El control (que el modelo viaje) se comprueba ANTES de medir, con evidencia por harness: `modelUsage` de Claude Code, `model` de la sesion de opencode, `stats.usage_to_metrics.model_name` de OpenHands. Sin esto la cata habria comparado tres modelos distintos.
-
-### Changed
-- **opencode y OpenHands pasan a BAJO DEMANDA** en el registro de herramientas (misma mecanica que `browser-use-ui` y `vane`: estado propio + `down` real). No se retiran: la cata mostro que aciertan igual que Claude Code (27/27 y 30/30 asserts). Lo que cambia es que no quedan prendidos sin uso: opencode lleva **0 sesiones** en 32 dias.
-- **El veredicto cambia la pregunta original:** con Claude Code solo no se pierde calidad (los tres aciertan 90/90), se pierde la **UI web** de OpenHands y el segundo cliente de opencode. La conclusion correcta no es "retirar" sino "cambiar el estado por defecto".
-
-### Fixed
-- **El registro declaraba Cline instalado con un path inexistente.** Su clon (`projects/cline`) fue borrado del disco, pero la entrada lo listaba como instalado y el wrapper `scripts/cline-tool.sh` apuntaba a un repo vacio (no puede funcionar). Ahora el estado dice **"no instalado"**, con el motivo y como reinstalarlo. Se agrego la clase al calculo de estado: una nativa que declara `paths` y no los tiene dice "no instalado", NO "apagado" (apagado es una falla; no instalado es otra cosa). Test nuevo que lo fija.
-- **Trampas de invocacion de la cata, documentadas para no volver a tropezar:** (1) la API HTTP de opencode **parte** el sufijo `:cloud` y rechaza el modelo, y el override por request se ignora (siempre gana el `model` del config): hay que ir por el CLI; (2) OpenHands NO se configura por env var sino con `PATCH /api/settings` (`ollama_chat/<modelo>`), y **el backend no re-aplica el settings store sin reiniciar el container** (`/v1/models` devuelve `[]` aunque el JSON este escrito); (3) su via real es `POST /api/conversations` + `POST .../events`, no `/v1/chat/completions`; (4) sus eventos son `action`/`observation`, no `llm_message` para las tool calls.
-
-### Measured
-- **La verdad de base NO separa a nadie: 90/90 asserts.** Los tres harnesses pasaron todo, con el mismo modelo y las mismas tareas.
-- **El costo si separa.** Totales de 3 corridas: Claude Code 236 s / 337.787 tokens in / 44.843 out; opencode 286 s / 271.156 / 55.859; **OpenHands 482 s / 2.703.821 in / 124.212 out**. OpenHands consume **8,0x los tokens de entrada** y **2,0x el tiempo**: la causa es su patron (reenvia todo el contexto en cada turno: 29, 16 y 28 turnos contra 1 de Claude Code), no el modelo.
-- **La suite oculta se valido en las DOS direcciones** (referencia correcta 3/3 PASS, version defectuosa 0/3 PASS). Eso destapo **dos defectos PROPIOS**: un assert de T3 exigia un ADR superseded que **no existe** (los 60 estan en `Aceptado`/`Rechazado`: el ADR-067 esta `Aceptado`), lo que habria castigado la respuesta correcta; y otro assert era tan laxo que la version defectuosa pasaba. Sin esa validacion, la suite habria reportado un defectuo inexistente.
-- **Correccion de diseno que la fairness exigio:** los tres harnesses NO ven el repo igual (opencode corre en Alpine **sin python3, node, jq ni git**). Si las tareas exigieran ejecutar un script, la cata habria medido la IMAGEN DOCKER y no el harness. Por eso la ejecucion de los checkers se pre-computa una vez y su salida va a un corpus **identico para los tres**; las tareas son de lectura y analisis.
-
----
-
-## [2026-10-27] - Vane se queda: research verificado en vivo, 5 commits locales a salvo y bajo demanda
-
-### Added
-- **`gonzoblasco/vane` (repo PRIVADO)**: el fork local de Vane con los **5 commits que nunca se pushearon** (el fix del writer prompt que hacia filtrar el monologo del modelo a la respuesta final, el `Dockerfile` con Next.js pineado y bind a `0.0.0.0`, el preconfig de Ollama, y la memoria `.knowledge/`). Antes apuntaba `origin` al upstream de un tercero: un `git push` ahi habria publicado trabajo nuestro en el repo de otro. Ahora `origin` es el fork privado y `upstream` queda como referencia.
-- **El clon local era shallow** (cortado en `348feca`, sin padre local), y por eso el primer push fue rechazado con `did not receive expected object`. Resuelto con `git fetch --unshallow upstream master`: la historia completa (1.014 commits) queda en el remoto.
-- **Research verificado en vivo** (no solo por logs): `POST /api/search` con `minimax-m3.1-flash:cloud` -> **HTTP 200 en 45,7 s**, respuesta en espanol con **8 fuentes citadas y trazables** sobre el protocolo MCP. El servicio funciona y hace good research (decision de Gonzo: "vane me gusta, hace buenos researches").
-
-### Changed
-- **Vane pasa a BAJO DEMANDA.** Es de uso episodic: se enciende para hacer un research y se apaga. Con ~45 s por research, dejarlo prendido sin buscar nada no tiene sentido (medido: **0 requests en 7 dias**). A diferencia de las demas, su `down` es real (`docker compose down`): elimina container y red, y no vuelve sola. Costo: ~340 MB de RAM, 7 s de arranque en frio.
-- El triage OSS (`studies/oss-alternatives-triage.md`) decía *"No lo adoptes: es una app completa que no vas a mantener"*. **Eso ya no es la decision vigente**: Vane esta en uso y produce trabajo real. La nota queda como el analisis de ese momento; la decision actual es que se queda.
-
-### Fixed
-- **El registro no distinguia "apagado" de "apagado a proposito"** para Vane, que quedaria apagado por defecto. Ahora muestra `bajo demanda` con la instruccion de como levantarlo, igual que `browser-use-ui`.
-
----
-
-## [2026-10-27] - `browser-use-ui` pasa a bajo demanda: el registro distingue "apagada a proposito" de "caida"
-
-### Added
-- **`browser-use-ui` tiene ficha propia en el registro de herramientas** (estaba=listada como "stack de compose corriendo sin ficha"). Decision de Gonzo: es una herramienta de **prueba** (para pilotar el agente a mano en el navegador), no de uso continuo, asi que **queda apagada por defecto**. Antes ocupaba ~190 MB de RAM encendida sin uso.
-- **El estado "bajo demanda" es una clase propia en el registro.** Apagada a proposito se muestra como `bajo demanda` con la instruccion de como levantarla, y NO como `apagado`: un servicio que deberia estar vivo y no lo esta es un bug, una herramienta de prueba apagada es el estado normal. `browser-use` (el MCP que el gateway lanza por sesion) ya usaba ese estado, asi que ahora las dos superficeres de browser usan la misma palabra y se distinguen a simple vista.
-- **Documentado CUANDO levantar la consola**, que era el punto que pediste: en la skill `browser-tool` (seccion "Cuando hay que levantar la CONSOLA"), en la skill `ai-toolbox` (seccion "Cuando la herramienta es BAJO DEMANDA"), en la ficha de `docs/tools/REGISTRY.md` y en el `README.md` del proyecto. La regla: se levanta solo cuando Gonzo pide probarla o usarla a mano; si pide que *yo* revise algo en el navegador, lo resuelve el MCP, sin la consola. Y si la levantaste para una prueba, la bajas al terminar.
-- **Tests nuevos** (`tests/python/test_ai_toolbox.py`): una herramienta bajo demanda apagada no se reporta como caida; su `down` es `docker compose down` y no `stop`; y una herramienta normal sigue usando `stop` (conserva containers y volumenes).
-
-### Fixed
-- **`toolbox down` hacia `stop` para TODO, y `stop` no apaga: la herramienta vuelve sola en el proximo reinicio de Docker.** Es el mismo mecanismo que resucito a Onyx (ver la entrada anterior). Para las herramientas **bajo demanda** el `down` ahora es real: `docker compose down` (elimina container y red). Su `restart: no` garantiza que no se levanta sola. El volumen del perfil de Chromium (`browseruse-data`) se conserva: los datos quedan.
-- **`browser-use` y `browser-use-ui` no eran la misma cosa, pero se confundian con facilidad:** usan la MISMA imagen `browseruse:local` (3,16 GB) con dos superficies distintas. `browser-use` es el agente, que el gateway expone como MCP y lanza por sesion con `docker run --rm` (no tiene container fijo). `browser-use-ui` es la consola web que corre en su propio container y habla MCP con un `browser-use --mcp` anidado dentro (modo `BROWSER_USE_UI_MCP_MODE=local`, para no depender del socket de Docker). **Apagar la consola no rompe el MCP**: verificado navegando a example.com con la consola apagada. La ficha de REGISTRY y la trampa de la skill `ai-toolbox` lo dejan escrito.
-
----
-
-## [2026-10-27] - Onyx y LiteLLM fuera del stack: 32,4 GB liberados y el registro que moria
-
-### Removed
-- **Onyx eliminado por completo** (decision de Gonzo). **No estaba descartado: estaba apagado sin decision y habia vuelto solo.** Los 6 servicios tienen `restart: unless-stopped`, y esa politica ignora un `docker compose stop` manual: el reinicio de Docker Desktop del 2026-10-26 12:39:40 los levanto a todos en el mismo segundo (junto con vane, opencode y openhands). Para que no vuelva hace falta `down`, no `stop`. Uso real medido antes de borrar: **0 documentos indexados**, 0 requests al API server en 24 h, y las 1740 peticiones al nginx en 7 dias fueron **todas** `/api/health` de la sonda del toolbox. Eliminado: 6 contenedores + red, 4 volumenes (77 MB), 4 imagenes (~5,7 GB), repo clonado `projects/onyx` (138 MB) y `scripts/onyx-tool.py` a la papelera. Puerto 3000 liberado. El todo #82 (activar RAG) se cerro **sin objeto**: exigia el stack completo (Redis + OpenSearch + model servers) que no entra en los 8 GB de Docker Desktop, y la capacidad de RAG ya estaba cubierta por `scripts/memory-search.py`, `projects/langchain-starter` (ChromaDB) y `projects/soporteml` (pgvector).
-- **LiteLLM: la entrada del catalogo era el ultimo resto.** La instalacion ya no existia (ADR-103, 2026-10-22: no habia imagen, ni compose, ni el directorio `~/experiments`). Quedaba vivo solo en el registro, que lo hacia figurar como "no instalado" y no como descartado.
-- **6 contenedores MCP de browser-use huerfanos** detenidos: cada sesion lanza uno con `docker run --rm` y el runtime no lo baja al terminar. Todos estaban anclados por el supervisor del gateway, pero de sesiones ya cerradas (solo una sesion activa: esta). El de esta sesion quedo vivo.
-
-### Fixed
-- **El registro vivo moria por omision, no por decision.** `scripts/ai-toolbox.py` (entradas `onyx` y `litellm`) + la prosa de `docs/tools/REGISTRY.md` + la descripcion y la lista de IDs de la skill `ai-toolbox` + los tests que afirmaban esas herramientas como "nucleo del stack". La tabla de `REGISTRY.md` se **regenero** con `catalog --write` (editarla a mano la desincroniza del generador); la prosa se edito a mano. El test `test_las_herramientas_core_estan` ahora afirma `ollama`, `browser-use` y `vane`, y se agrego `test_las_retiradas_no_estan_en_el_catalogo`: una entrada que vuelve sola reinstala el stack en el proximo `up`.
-- **`MEMORY.md` y `docs/SETUP.md` dejaban Onyx como si estuviera vivo.** La entrada curada de memoria y la seccion completa de SETUP (repo, script, modo Lite, trampas verificadas) se eliminaron; la `projects/` del triage paso de 30 a 29 carpetas en el todo #83 (reescrito, no cerrado: la tarea sigue viva).
-- **`docker image prune -a` y `docker builder prune -a`:** 12,97 GB de imagenes sin uso y 19,43 GB de cache de build. La imagen `vane-builder:local` (10,66 GB, sin containers) tambien se fue: la imagen que Vane usa en runtime (`vane-local:ollama`) es distinta y sigue en pie, verificado con HTTP 200 en `:3005`.
-
-### Added
-- **`docs/ecosystem/onyx-decision.md`** - la decision completa: por que no se resucita, que se elimino, que se conservo, y los 4 aprendizajes. El mas transferible: **`stop` no desactiva la politica de restart** (la firma del diagnostico es "varios stacks arrancando en el mismo segundo"), y **"apagado" y "descartado" son clases distintas**: un descarte tiene documento de decision y limpieza; un apagado sin documento es la clase que el owner decide.
-
----
-
-## [2026-10-27] - OnWheels queda EN CURSO: roadmap F0-F6, registro como proyecto activo y un bug de atribucion en el HANDOFF
-
-### Added
-- **OnWheels registrado como proyecto activo y en curso:** `session-context` (`.data/session-context.db`, estado **Active**, con goal, stack y constraints) + `projects/AUDIT.md` como ACTIVO + repo git local en `projects/onwheels/`. `session-context:resume onwheels` es ahora el punto de entrada para retomar.
-- **HANDOFF propio del proyecto** en `projects/onwheels/.knowledge/HANDOFF.md`, con su `SESSIONS.md` append-only. Primer cierre para este proyecto.
-- **Learning 312 en la DB** (`scripts/memory-db.sh add-learning`, no a mano en el markdown): un cierre de sesion puede escribir el HANDOFF en el proyecto equivocado cuando un override de slug quedo viejo.
-
-### Fixed
-- **`scripts/session-handoff.py`: el override `onwheels` -> `kanam-onwheels` mandaba el HANDOFF al repo DORMIDO.** Existia desde junio, cuando el proyecto se llamaba asi. Con el producto nuevo en `projects/onwheels/` (greenfield del 21/10) y el repo viejo declarado dormido (decision D4), el HANDOFF de la sesion iba a parar al `.knowledge/` del proyecto que ya no se trabaja. No habria dado error (los dos directorios existen): el error era de atribucion silenciosa. Corregido y **verificado por la funcion real**: `resolve_handoff_path('onwheels', None)` devuelve ahora `projects/onwheels/.knowledge/HANDOFF.md`. Tests de `tests/python/test_session_handoff*.py`: 16 passed.
-- **Fila 311 de `learnings` eliminada** (la creo mi propia llamada mal parseada de `add-learning --help`: categoria `--help`, cuerpo vacio). Borrada **por id exacto**, nunca con un WHERE amplio: el gate `check-learnings-integrity.py` existe porque un DELETE anterior mio borro 9 lecciones reales. Gate despues: OK, 258 learnings.
-
-
----
-
-## [2026-10-27] - La tabla `learnings` no tenia un lugar fijo para el cuerpo de la leccion: 4 defectos, un gate y 25.231 chars recuperados
-
-### Fixed
-- **El cuerpo de la leccion no tiene un lugar fijo en `learnings`.** Hay filas donde esta en `content` (lo normal), en `title` y en `tags`. El export a `docs/learnings/*.md` lee el cuerpo de `content` y el titulo de `title`, asi que las otras dos clases se veian como seccion vacia y nadie lo notaba. Origen: `migrate-learnings.py` derivaba los tags del titulo, y la absorcion de la tabla gemela (commit `0518cdf3f3`) descarto la prosa de `tags` **asumiendo que era "el titulo duplicado"** - suposicion falsa: en 5 filas la prosa era el CUERPO. Reparados: 9 cuerpos recuperados (5 de `tags`, 4 de `title`).
-- **`memory-db.sh add-learning` escribia en la columna `tags` y nunca en la junction `learning_tags`**, que es lo UNICO que lee el export: 79 filas con tags reales que no aparecian en ninguna vista. Todo lo agregado por ese comando desde la taxonomia normalizada quedo invisible. Ahora escribe en la junction, en una sola invocacion SQL (`last_insert_rowid()` en un proceso sqlite3 separado devolvia 0 y violaba la FK).
-- **`memory-catalog-v2.py` cortaba el cuerpo a 500 chars** con el mismo valor que usaba para el embedding (`content_text = learning.get("content","")[:500]`): 34 filas a la mitad. El tope de 500 chars es de la API, no del dato. Ahora el tope queda solo para el embedding y el cuerpo se guarda completo. 20 truncadas se recuperaron del corpus (`sessions_relacional.content_bare` / `daily_notes.content`, buscando el fragmento del **MEDIO**, no el prefijo: el prefijo truncado es identico al original); 14 no existen en ningun lado y quedan como deuda aceptada.
-- **4 lecciones que existian solo en los `.md` y que la regeneracion iba a borrar**, y la version larga (2.399 chars, 4 casos con tabla) de la leccion del filtro de idioma, que la DB guardaba truncada a 565 chars. Devueltas a la DB, que es la fuente de verdad.
-
-### Added
-- **`scripts/check-learnings-integrity.py`** - gate de la tabla, en el pre-commit SIN CONDICION (la tabla se modifica desde `add-learning`, desde el catalogo y desde las migraciones, y el dano no aparece en el diff). Separa **PERDIDA** (bloquea: el cuerpo no esta donde debe) de **RUIDO HISTORICO** (avisa: prosa en `tags`, titulo largo): con el recalibrado, 0 perdidas y 70 avisos. La primera version reportaba 169 filas y era inutil - un guard que reporta todo no se lee y no se respeta. Probado sembrando el defecto: bloquea con exit 1.
-- **`scripts/repair-learnings-body.py`** (C1/C2) y **`scripts/repair-learnings-taxonomy.py`** (C4/C5) - reparacion idempotente, con `--dry` y `--db` para correrla contra una copia antes de la real.
-
-### Measured
-- **+25.231 chars de cuerpo recuperado** en `docs/learnings/` que estaba perdido y no se veia en ninguna vista (9 cuerpos + 20 truncadas + los tags repoblados en 79 filas).
-- **9 lecciones reales destruidas por un DELETE mio** (asumi que el cuerpo vivia en `content`). Restauradas desde copia y verificadas **fila por fila** con 0 diferencias contra la copia.
 
 ---
