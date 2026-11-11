@@ -283,6 +283,17 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (zoom trackpad)
+
+### Fixed
+- La cámara ahora soporta `InputEventPanGesture` y `InputEventMagnifyGesture` (trackpad macOS), además de la rueda.
+
+### Verified
+- `Camera zoom test passed`; gate **36 tests**.
+- Juego relanzado y usable en la Mac Mini.
+
+---
+
 ## [2026-11-11] - Caesar III Clone (auditoría de ingeniería)
 
 ### Fixed
