@@ -34,7 +34,7 @@
       "task": "E0 Día 1 - Configuración de cámara ortográfica y escala del personaje",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Run 'godot --headless --script res://tests/e0_day1_test.gd' (exit 0) and assert: Camera3D.projection == PROJECTION_ORTHOGONAL, size == 14, near == 0.1, far == 200, rotation_degrees == Vector3(-30,45,0), position != Vector3.ZERO; then render docs/captures/e0-day1.png with a real renderer via 'godot --path . --write-movie ... --quit-after 3' (NOT --headless) and verify the image shows a character at 1.8 m against a 1 m tile.",
       "depends_on": [
         0
@@ -43,15 +43,17 @@
       "write_paths": [
         "projects/reinos-de-la-frontera/spike/"
       ],
-      "evidence": [],
+      "evidence": [
+        "spike/e0_day1.tscn; Warrior.gltf scale 0.78 head Y=1.6377; DAY1_OK; docs/captures/e0-day1.png 1600x900; B PASS"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T11:45:00+00:00",
+      "updated_at": "2026-11-11T12:20:33+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T12:20:33+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 2,
@@ -585,7 +587,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T08:35:00+00:00",
-  "updated_at": "2026-11-11T11:43:29+00:00",
+  "updated_at": "2026-11-11T12:20:33+00:00",
   "gates": [
     "critic",
     "auditor"
