@@ -164,6 +164,17 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (banderas)
+
+### Added
+- **Banderas animadas** de prefecto (azul) e ingeniero (naranja): el sprite 3D conserva el poste y `CityView` dibuja la tela con onda; sin estado nuevo en `sim/`.
+
+### Verified
+- Render Blender 15/15; `bash scripts/gate.sh` → EXIT 0 (24 tests + smoke + pureza).
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-flags.png`.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
