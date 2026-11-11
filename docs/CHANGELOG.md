@@ -113,6 +113,23 @@ El set 3D de edificios queda activo y alineado; walkers 2D. El siguiente paso es
 
 ---
 
+## [2026-11-11] - Caesar III Clone (centrado de footprints)
+
+### Fixed
+- **`view/city_view.gd`** — el sprite de un edificio se centraba en `origin + size * 0.5`. Para un footprint de 1×1 eso es la esquina entre cuatro tiles, no el centro: todo el set quedaba media celda hacia adelante y las bases pisaban los caminos.
+- **`view/iso.gd`** — nuevo `footprint_center(origin, size) = origin + (size - 1) * 0.5`: 1×1 usa el centro del tile, 2×2 el punto entre sus cuatro tiles y 3×3 el tile medio.
+- **`tests/test_iso.gd`** — cubre los tres tamaños para que la regresión no vuelva.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: smoke + main input + 24 tests + pureza.
+- Debug de footprints 1×1/2×2/3×3: las bases quedan dentro del rombo y no invaden caminos.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-footprint-final.png`.
+
+### Status
+Cámara 2:1 y centrado de footprints resueltos. El set 3D de edificios queda activo y alineado; walkers 2D.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
