@@ -578,11 +578,11 @@
     },
     {
       "id": 22,
-      "task": "Cierre (E6) - guardado, balance, empaquetado .app y captura final",
+      "task": "Cierre (E6) - construcción, tiempos, guardado, audio/menús, balance y .app",
       "role": "dev",
       "owner": "kanam-dev",
       "status": "pending",
-      "exit_criteria": "Guardado funcional, balance fino, aplicación exportada .app, captura final del juego sin crashes.",
+      "exit_criteria": "Construcción real: comando build de aldeano con colocación válida, costo, progreso por ticks y fin; casas/depósitos activos al completar; cuartel/galería/establo entrenan unidades. Tiempos de entrenamiento y de edad. Guardado/carga determinista con schema y hash. Audio y menús mínimos. Balance de una partida completa. Export .app de macOS. Captura final docs/captures/e6-game.png. Tests verdes.",
       "depends_on": [
         21
       ],
@@ -595,7 +595,7 @@
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T17:45:00+00:00",
       "started_at": null,
       "completed_at": null,
       "session_ref": null
