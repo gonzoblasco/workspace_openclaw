@@ -6,7 +6,6 @@ Este directorio agrupa los análisis y estudios técnicos del workspace.
 
 | Sub-directorio | Qué es | Índice |
 |---|---|---|
-| `auroraos-ai-os-desde-cero/` | Clase de estudio derivada de **I Forced AI to Build a Custom Operating System (It Actually Worked)** (The Render Guy, 7:32): captions automáticos (150 cues) con glosario ASR, outline de 7 módulos 1:1 con los capítulos oficiales y 12 citas verificadas (`BAD: 0`). **No es un curso de sistemas operativos:** es un caso de delegación (prompt en fases, 50 min de agente, advertencia ignorada, alcance negociado, veredicto 6.5/10). **Adopción real:** `check-dispatch-risk.py`, gate que falla cuando un paso del Planner listo para delegarse no declara su riesgo con forma de falsarse — corrido contra los 6 programas (`13/13` pasos abiertos sin `risks`) y probado en verde y en `NO-CORRIDO` con árboles descartables. | [`auroraos-ai-os-desde-cero/`](auroraos-ai-os-desde-cero/) |
 | `narrative-engineering/` | Análisis de estructuras narrativas con el **modelo de 4 ejes** (Premisa & Regla de Hierro, Gestión de Información, World-building Funcional, Arco de Identidad). | [`narrative-engineering/`](narrative-engineering/) |
 | `openclaw-use-cases/` | Registro de las lecciones del curso **OpenClaw Use Cases** (roadmap.sh), con verificación contra la instalación real. | [`openclaw-use-cases/`](openclaw-use-cases/) |
 | `oss-alternatives-triage.md` | Triaje de alternativas open source: qué se adapta, qué se adopta y qué se descarta, con licencias verificadas. | - (archivo suelto) |
