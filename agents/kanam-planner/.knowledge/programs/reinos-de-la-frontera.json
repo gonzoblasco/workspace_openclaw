@@ -526,11 +526,11 @@
     },
     {
       "id": 20,
-      "task": "Implementar presentación UI (E5) - HUD, minimapa, niebla de guerra, barras de vida, audio",
+      "task": "Implementar presentación jugable (E5) - puente SimState↔vista, HUD, minimapa, niebla, selección y comandos",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
-      "exit_criteria": "UI completa, audio integrado, pruebas ui_test.gd pasan y captura de pantalla de todo el HUD guardada.",
+      "status": "completed",
+      "exit_criteria": "game.tscn jugable: SimState conectado, HUD recursos/población/edad, minimapa desde estado, niebla, selección por caja, comandos mover/atacar/recolectar, captura y video. Run e5_game_test.gd -> E5_GAME_OK. Audio/menús quedan explícitamente diferidos a E6.",
       "depends_on": [
         19
       ],
@@ -538,23 +538,25 @@
       "write_paths": [
         "src/ui/"
       ],
-      "evidence": [],
+      "evidence": [
+        "game.tscn playable; SimState bridge + HUD/minimap/fog/selection/commands; E5_GAME_OK; capture/video; audio/menus deferred to E6"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T17:35:34+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T17:35:34+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 21,
-      "task": "Validación de presentación (E5) - pruebas UI y audio",
+      "task": "Validación de presentación (E5) - juego jugable y captura",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
-      "exit_criteria": "Todas las pruebas ui_test.gd pasan y la captura final del HUD está disponible.",
+      "status": "completed",
+      "exit_criteria": "E5_GAME_OK + los 20 tests de simulación verdes; B PASS; docs/captures/e5-game.png/.gif/.mp4. La deuda de audio/menús y el benchmark de 200 unidades en game.tscn quedan registrados para E6.",
       "depends_on": [
         20
       ],
@@ -562,15 +564,17 @@
       "write_paths": [
         "tests/ui_test.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "E5_GAME_OK units=26 selected=10 tick=604; 20 sim tests green; B PASS; e5-game.png/gif/mp4"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T17:35:35+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T17:35:35+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 22,
@@ -624,7 +628,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T08:35:00+00:00",
-  "updated_at": "2026-11-11T17:07:26+00:00",
+  "updated_at": "2026-11-11T17:35:35+00:00",
   "gates": [
     "critic",
     "auditor"
