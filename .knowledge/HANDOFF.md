@@ -1,15 +1,18 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-10 18:25 GMT-3
+**Fecha:** 2026-11-11 15:17 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-11-10). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-10.md`.
+> HANDOFF generado en el cierre de sesion (2026-11-11). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-11.md`.
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-11 15:17
+Arranque de sesion + montaje y retiro de la clase del video ZaPbP9DwBOE ("Don't learn AI Agents without Learning these Fundamentals", KodeKloud, 56:39). Se monto `studies/ai-agents-fundamentals/` con transcript de 163 bloques, outline de 17 modulos con 33 citas verificadas (33/33) y ADOPCION. El artefacto del curso fue `scripts/boundary-check.py`: midio que el catalogo automatico (`memory-catalog-v2.py`) corta a ciegas cada daily -669 de 741 chunks mal cortados, 1328 de 1464 tambien cortados al truncar a 768 chars al embeber-. Gonzo pregunto si recomendaba ver el curso: respuesta no, salvo el modulo 9 (vector DB, 24:46-31:27), y lo que recomende fue arreglar el catalogo. Despues pidio RETIRAR el curso y los activos: se borro `studies/ai-agents-fundamentals/`, `scripts/boundary-check.py` y la entrada del `studies/README.md`. Verificacion: el commit del curso NO esta en la historia de la rama (lo destruyo otra sesion concurrente que commiteo con `--amend` y `reset` desde el mismo worktree; mi `git show` previo leyo un object compartido y reportaba contenido ajeno como mio). El hallazgo del catalogo queda como deuda registrada, sin archivos.
 
 ### 2026-11-10 18:25
 Sesion corta: arranque + montaje de la clase studies/n8n-ai-automations desde el video YY-egxTQirA (n8n Full Course, freeCodeCamp.org, Rahul Joshi, 43:05). Caption automatico en ingles via youtube-transcript-api (1173 cues), agrupado en 153 bloques con timestamp; transcripcion.md con glosario ASR de 20 filas y los 14 capitulos oficiales; outline.md con 14 modulos 1:1, 14 ejercicios y 9 preguntas. Todos los timestamps verificados por grep de la cita literal; dos citas corridas corregidas (polling 27:41 -> 27:32 y 27:49; 'flagging exactly' en 14:52). README de studies actualizado. Commits locales 49456dadd2 (clase) y ff17d12a25 (memoria + HANDOFF del curso), sin push. Queda pendiente: los dos scripts de gateway sin trackear (scripts/reinstall-gateway-service.sh, scripts/reload-gateway-service.sh) NO son de esta sesion, se dejan como estan.
@@ -19,11 +22,35 @@ POLITICA DE MODELOS: beam:cloud fuera de toda asignacion de primario (dejo de se
 
 ## Estado actual
 
+- Estado: sesion cerrada; clase y gate retirados por pedido. Cambio propio pendiente de commit: solo el borrado de la linea del README.
+- Modulo actual: n/a (curso retirado).
+- Ejercicios hechos: n/a.
+- Preguntas abiertas: ninguna del curso.
+- Proximo bloque: n/a.
+
+### Estado previo (heredado)
+
 Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 
 ### Estado previo (heredado)
 
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
+
+## Archivos tocados
+
+```
+studies/README.md
+```
+
+## Como continuar
+
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-11-11.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
+
+---
+
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
 
 ## Proximos pasos
 
@@ -56,16 +83,6 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 ### Pendientes heredados (sin cambios)
 
 1) Verificar contra GitHub las 19 referencias de CVs historicos que no estan en el corpus y agregarlas a career-facts 5.2.1. 2) Limpiar las carreras universitarias de los 5 CVs historicos (EIT/HTC, Mercor, Sol, TEMPO) - son de otras sesiones. 3) Confirmar con Gonzo que el iPad quedo operativo con ws://100.126.255.95:18789. 4) Watchdog de canales: el timeout del trigger sigue sin resolver si se repite.
-
-## Como continuar
-
-1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-10.md` para el informe completo de la sesion.
-3. Verificar el estado real antes de actuar (git, tests, la DB).
-
----
-
-*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
 
 ## Decisiones y contexto que no debe perderse
 
