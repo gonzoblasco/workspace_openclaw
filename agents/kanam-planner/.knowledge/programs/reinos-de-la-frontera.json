@@ -1,0 +1,594 @@
+{
+  "slug": "reinos-de-la-frontera",
+  "title": "Reinos de la Frontera — RTS medieval isométrico",
+  "objective": "Desarrollar el RTS medieval isométrico 'Reinos de la Frontera' desde cero, cumpliendo los entregables de los spikes E0‑E6, con enfoque en render, simulación determinista, economía, combate, IA, UI y entrega final.",
+  "steps": [
+    {
+      "id": 0,
+      "task": "Scaffold inicial (Fase 0) - repositorio, project.godot, main.tscn, Godot 4.7.2 verificado",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "completed",
+      "exit_criteria": "Commit inicial creado, archivos project.godot y main.tscn presentes, Godot 4.7.2 ejecutado sin errores.",
+      "depends_on": [],
+      "gate": "critic",
+      "write_paths": [
+        "."
+      ],
+      "evidence": [
+        "git log -1",
+        "repo projects/reinos-de-la-frontera; commits 437a6a7, 3c53d54, a247753; SCAFFOLD_OK; capture docs/captures/fase0.png 1600x900",
+        "repo projects/reinos-de-la-frontera; HEAD a3ddeee; SCAFFOLD_OK+HEADLESS_OK; capture 1600x900; B functional PASS, commit message fixed to English"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T11:43:29+00:00",
+      "started_at": "2026-11-11T08:35:00+00:00",
+      "completed_at": "2026-11-11T11:43:29+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
+    },
+    {
+      "id": 1,
+      "task": "E0 Día 1 - Configuración de cámara ortográfica y escala del personaje",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Run 'godot --headless --script res://tests/e0_day1_test.gd' (exit 0) and assert: Camera3D.projection == PROJECTION_ORTHOGONAL, size == 14, near == 0.1, far == 200, rotation_degrees == Vector3(-30,45,0), position != Vector3.ZERO; then render docs/captures/e0-day1.png with a real renderer via 'godot --path . --write-movie ... --quit-after 3' (NOT --headless) and verify the image shows a character at 1.8 m against a 1 m tile.",
+      "depends_on": [
+        0
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "projects/reinos-de-la-frontera/spike/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T11:45:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 2,
+      "task": "E0 Día 2 - 200 unidades animadas, medición de performance",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Render with the real Metal renderer, NOT --headless: 'godot --path . res://spike/e0_day2_perf.tscn' with Engine.max_fps=0 and vsync disabled; the scene warms up 10 s and samples 60 s, then writes docs/captures/e0-day2_metrics.csv with p50/p95/p99 frame time, draw calls and unit count at 3440x1440. Pass if p95 <= 16.7 ms and no frame > 33 ms after warm-up. Also run once with vsync on and Engine.max_fps=60 to confirm pacing. --headless uses the dummy renderer and yields invalid FPS numbers.",
+      "depends_on": [
+        1
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "projects/reinos-de-la-frontera/spike/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T11:45:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 3,
+      "task": "E0 Día 3 - Edificio, recurso, orden de movimiento y ataque",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Capture screenshot docs/captures/e0-day3.png; verify functional checklist (4 puntos) in docs/checklists/e0-day3.txt.",
+      "depends_on": [
+        2
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "projects/reinos-de-la-frontera/spike/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 4,
+      "task": "E0 Día 4 - Selección, barras de vida, niebla, minimapa con 200 unidades y performance",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Render with the real Metal renderer, NOT --headless: 'godot --path . res://spike/e0_day4_perf.tscn' with 200 units plus selection, health bars, fog and minimap; same measurement protocol as Day 2 (10 s warm-up, 60 s sample, p95 <= 16.7 ms, no frame > 33 ms), CSV docs/captures/e0-day4_metrics.csv and capture docs/captures/e0-day4.png.",
+      "depends_on": [
+        3
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "projects/reinos-de-la-frontera/spike/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T11:45:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 5,
+      "task": "E0 Día 5 - Paleta de colores, outline y sombras; estilo medieval RTS",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Capture screenshot docs/captures/e0-day5.png; obtain human approval from Gonzo for visual style.",
+      "depends_on": [
+        4
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "projects/reinos-de-la-frontera/spike/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 6,
+      "task": "E1 Implementación: tick fijo 30 Hz + acumulador con clamp",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Run 'godot --headless --script res://tests/tick_fixed_test.gd' and verify exit code 0; output confirms 30 ticks per simulated second.",
+      "depends_on": [
+        5
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "src/sim/tick_fixed.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 7,
+      "task": "E1 Implementación: SimState puro sin nodos + serialización JSON con schema_version y hash",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Run 'godot --headless --script res://tests/sim_state_test.gd' and verify exit code 0; JSON file includes schema_version and hash matches expected.",
+      "depends_on": [
+        6
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "src/sim/sim_state.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 8,
+      "task": "E1 Implementación: Cola de comandos estable y ordenada",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Run 'godot --headless --script res://tests/command_queue_test.gd' and verify exit code 0; test confirms command order equality.",
+      "depends_on": [
+        7
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "src/sim/commands.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 9,
+      "task": "E1 Implementación: RNG reproducible con semilla",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Run 'godot --headless --script res://tests/rng_seed_test.gd' and verify exit code 0; test confirms deterministic random sequences.",
+      "depends_on": [
+        8
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "src/sim/rng.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 10,
+      "task": "E1 Implementación: Movimiento con pathfinding AStarGrid2D (grilla 96×96)",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Run 'godot --headless --script res://tests/movement_pathfind_test.gd' and verify exit code 0; test confirms 2 unidades llegan al destino.",
+      "depends_on": [
+        9
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "src/sim/movement_pathfind.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 11,
+      "task": "E1 Validación: test headless de determinismo (10 000 ticks)",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Run 'godot --headless --script res://tests/determinism_test.gd' and verify exit code 0; both runs produce identical state hash.",
+      "depends_on": [
+        10
+      ],
+      "gate": "auditor",
+      "write_paths": [
+        "tests/determinism_test.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 12,
+      "task": "E1 Validación: revisión B del sistema de simulación",
+      "role": "dev",
+      "owner": "kanam-critic",
+      "status": "pending",
+      "exit_criteria": "File docs/reviews/e1_b_review.txt exists and contains the line 'Approved by kanam-critic'.",
+      "depends_on": [
+        11
+      ],
+      "gate": "auditor",
+      "write_paths": [
+        "docs/reviews/e1_b_review.txt"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 13,
+      "task": "E1 Verificación: CORE valida la implementación y la determinación del simulador",
+      "role": "dev",
+      "owner": "core",
+      "status": "pending",
+      "exit_criteria": "Run 'godot --headless --script res://tests/e1_core_verification.gd' and verify exit code 0; CORE signs off in docs/verification/e1_core_verification.txt.",
+      "depends_on": [
+        12
+      ],
+      "gate": null,
+      "write_paths": [
+        "docs/verification/e1_core_verification.txt"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 14,
+      "task": "Implementar economía (E2) - 4 recursos, aldeanos, casas, 4 edades",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Módulo economy con recursos madera, comida, oro, piedra, depósitos, casas y edades, pruebas unitarias econ_test.gd pasan.",
+      "depends_on": [
+        13
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "src/sim/economy.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 15,
+      "task": "Validación de economía (E2) - pruebas de recursos y edades",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Todas las pruebas econ_test.gd pasan.",
+      "depends_on": [
+        14
+      ],
+      "gate": "auditor",
+      "write_paths": [
+        "tests/econ_test.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 16,
+      "task": "Implementar combate (E3) - 8 unidades, counters, daño y muerte",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Módulo combat con unidades, reglas de counters, proyectiles y muerte, pruebas combat_test.gd pasan.",
+      "depends_on": [
+        15
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "src/sim/combat.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 17,
+      "task": "Validación de combate (E3) - pruebas de counters y daño",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Todas las pruebas combat_test.gd pasan y se verifica la lógica de counters.",
+      "depends_on": [
+        16
+      ],
+      "gate": "auditor",
+      "write_paths": [
+        "tests/combat_test.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 18,
+      "task": "Implementar IA (E4) - 3 dificultades, build order y cierre de partida",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Módulo ai.gd con 3 niveles de dificultad, estrategia de build order, pruebas ia_test.gd pasan y la IA gana/ pierde según algoritmo.",
+      "depends_on": [
+        17
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "src/sim/ai.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 19,
+      "task": "Validación de IA (E4) - pruebas de dificultad y victoria",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Todas las pruebas ia_test.gd pasan, la IA completa una partida contra jugador humano sin errores.",
+      "depends_on": [
+        18
+      ],
+      "gate": "auditor",
+      "write_paths": [
+        "tests/ia_test.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 20,
+      "task": "Implementar presentación UI (E5) - HUD, minimapa, niebla de guerra, barras de vida, audio",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "UI completa, audio integrado, pruebas ui_test.gd pasan y captura de pantalla de todo el HUD guardada.",
+      "depends_on": [
+        19
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "src/ui/"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 21,
+      "task": "Validación de presentación (E5) - pruebas UI y audio",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Todas las pruebas ui_test.gd pasan y la captura final del HUD está disponible.",
+      "depends_on": [
+        20
+      ],
+      "gate": "auditor",
+      "write_paths": [
+        "tests/ui_test.gd"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 22,
+      "task": "Cierre (E6) - guardado, balance, empaquetado .app y captura final",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Guardado funcional, balance fino, aplicación exportada .app, captura final del juego sin crashes.",
+      "depends_on": [
+        21
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "release/ReinosDeLaFrontera.app"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 23,
+      "task": "Validación final (E6) - CORE verifica licencia, assets y entrega",
+      "role": "dev",
+      "owner": "core",
+      "status": "pending",
+      "exit_criteria": "CORE aprueba el repo completo, assets en CREDITS.md, licencia QAL respetada y .app ejecutable.",
+      "depends_on": [
+        22
+      ],
+      "gate": "auditor",
+      "write_paths": [
+        "assets/CREDITS.md"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T08:35:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    }
+  ],
+  "status": "active",
+  "owner": "gonzalo",
+  "created_at": "2026-11-11T08:35:00+00:00",
+  "updated_at": "2026-11-11T11:43:29+00:00",
+  "gates": [
+    "critic",
+    "auditor"
+  ],
+  "metadata": {}
+}

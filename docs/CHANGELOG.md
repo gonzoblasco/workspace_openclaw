@@ -6,6 +6,21 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-11] - Reinos de la Frontera (proyecto nuevo)
+
+### Added
+- **`projects/reinos-de-la-frontera/`** — RTS medieval isométrico para un jugador contra IA, desde cero, en Godot 4.7.2 sobre macOS Apple Silicon. Repo propio, branch `main`, sin remoto (uso 100 % personal). Fase 0 cerrada: estructura §5.3, `project.godot` válido para Godot 4, `main.tscn` con cámara ortográfica real (`projection=1`, size 14, pitch −30/yaw 45), cubo de 1 m y cápsula de 1,8 m como referencias de escala, 21 stubs sin lógica, tests `scaffold_test.gd` y `headless_test.gd`, captura 1600×900 en `docs/captures/fase0.png`.
+- **Programa del Planner** `reinos-de-la-frontera` (24 pasos, E0–E6) en `agents/kanam-planner/.knowledge/programs/`.
+- **Documento de arranque** en `docs/reinos-de-la-frontera-documento-de-arranque.md`.
+
+### Why
+El proyecto se juega en el spike gráfico, no en el arte: primero hay que demostrar 200 unidades a 60 fps con cámara ortográfica en la M4, y recién después construir simulación. Fase 0 deja el repo abriendo y el riesgo identificado.
+
+### Status
+Fase 0 cerrada. Próximo: E0 Día 1 (importar Quaternius, validar escala, captura).
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
