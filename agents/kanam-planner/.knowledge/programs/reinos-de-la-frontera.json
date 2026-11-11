@@ -165,7 +165,7 @@
       "task": "E1 Implementación: tick fijo 30 Hz + acumulador con clamp",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Run 'godot --headless --script res://tests/tick_fixed_test.gd' and verify exit code 0; output confirms 30 ticks per simulated second.",
       "depends_on": [
         5
@@ -174,22 +174,24 @@
       "write_paths": [
         "src/sim/tick_fixed.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "CLOCK_OK; SimClock advance accumulator with 0.25s clamp and max 5 ticks"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T14:13:54+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T14:13:54+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 7,
       "task": "E1 Implementación: SimState puro sin nodos + serialización JSON con schema_version y hash",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Run 'godot --headless --script res://tests/sim_state_test.gd' and verify exit code 0; JSON file includes schema_version and hash matches expected.",
       "depends_on": [
         6
@@ -198,22 +200,24 @@
       "write_paths": [
         "src/sim/sim_state.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "STATE_OK; SimState pure RefCounted, to_dict/from_dict round-trip, SHA-256 hash includes target/path/cooldown"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T14:13:54+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T14:13:54+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 8,
       "task": "E1 Implementación: Cola de comandos estable y ordenada",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Run 'godot --headless --script res://tests/command_queue_test.gd' and verify exit code 0; test confirms command order equality.",
       "depends_on": [
         7
@@ -222,22 +226,24 @@
       "write_paths": [
         "src/sim/commands.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "COMMANDS_OK; stable queue insertion order and future commands retained"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T14:13:54+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T14:13:54+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 9,
       "task": "E1 Implementación: RNG reproducible con semilla",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Run 'godot --headless --script res://tests/rng_seed_test.gd' and verify exit code 0; test confirms deterministic random sequences.",
       "depends_on": [
         8
@@ -246,22 +252,24 @@
       "write_paths": [
         "src/sim/rng.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "RNG_OK; xorshift32 seeded, same seed same sequence, different seed differs, seed 0 mapped"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T14:13:54+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T14:13:54+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 10,
       "task": "E1 Implementación: Movimiento con pathfinding AStarGrid2D (grilla 96×96)",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Run 'godot --headless --script res://tests/movement_pathfind_test.gd' and verify exit code 0; test confirms 2 unidades llegan al destino.",
       "depends_on": [
         9
@@ -270,22 +278,24 @@
       "write_paths": [
         "src/sim/movement_pathfind.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "PATHFIND_OK; AStarGrid2D 96x96 no diagonals, two entities reach target, solid cell blocked"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T14:13:54+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T14:13:54+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 11,
       "task": "E1 Validación: test headless de determinismo (10 000 ticks)",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Run 'godot --headless --script res://tests/determinism_test.gd' (exit 0): two runs with the same seed and command log over 10,000 ticks produce byte-identical state hashes. kanam-dev runs it; B must reproduce it in step 12.",
       "depends_on": [
         10
@@ -294,22 +304,24 @@
       "write_paths": [
         "tests/determinism_test.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "DETERMINISM_OK hash=a2ee7ff4800c4062870c8ba4096e952fec3cffde81eecd04067c79b0b4b8518a ticks=10000"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T14:13:54+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T14:13:54+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 12,
       "task": "E1 Validación: revisión B del sistema de simulación",
       "role": "dev",
       "owner": "kanam-critic",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "docs/reviews/e1_b_review.txt contains PASS/FAIL, the exact commands B ran, the observed hashes and any defects with file:line. B must re-run the determinism test itself, not trust dev's output.",
       "depends_on": [
         11
@@ -318,22 +330,24 @@
       "write_paths": [
         "docs/reviews/e1_b_review.txt"
       ],
-      "evidence": [],
+      "evidence": [
+        "B PASS E1 review; tests honest, clock hack removed, hash complete"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T14:13:54+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T14:13:54+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 13,
       "task": "E1 Verificación: CORE valida la implementación y la determinación del simulador",
       "role": "dev",
       "owner": "core",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "CORE runs the full E1 suite itself (tick, state, commands, rng, pathfind, determinism), inspects that sim/ has no Node/SceneTree references, and signs docs/verification/e1_core_verification.txt with the raw output. A green test written by dev is not sufficient evidence.",
       "depends_on": [
         12
@@ -342,15 +356,17 @@
       "write_paths": [
         "docs/verification/e1_core_verification.txt"
       ],
-      "evidence": [],
+      "evidence": [
+        "CORE verification: all E1 tests exit 0, E0 regression green, code inspected and corrected"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T14:13:54+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T14:13:54+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 14,
@@ -596,7 +612,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T08:35:00+00:00",
-  "updated_at": "2026-11-11T13:23:19+00:00",
+  "updated_at": "2026-11-11T14:13:54+00:00",
   "gates": [
     "critic",
     "auditor"
