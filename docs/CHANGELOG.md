@@ -283,6 +283,22 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (auditoría de ingeniería)
+
+### Fixed
+- **P1:** `CityBuilder.remove` ahora elimina `DestinationTarget` de cualquier edificio, no solo granary; evita caravanas apuntando a warehouses borrados.
+- **P2:** `Housing.try_merge` devuelve la `large_house`; `CityBuilder.place` ya no retorna una casa removida.
+
+### Added
+- `test_remove_cleanup`, `test_invariants` multi-seed y `test_catalog`; gate **34 tests**.
+- Informe `.knowledge/AUDIT-2026-11-11.md` con hallazgos P1/P2/P3 y evidencia.
+
+### Verified
+- Gate EXIT 0: 34 tests + smoke + pureza.
+- Stress: 2.000 walkers × 10.000 ticks = 78.280 ms / **7,83 ms/tick**.
+
+---
+
 ## [2026-11-11] - Caesar III Clone (caravana de comercio)
 
 ### Added
