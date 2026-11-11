@@ -15,6 +15,7 @@ Este directorio agrupa los análisis y estudios técnicos del workspace.
 | `n8n-ai-automations/` | Clase de estudio derivada del curso «n8n Full Course – Architect Scalable AI Automations from Scratch» (freeCodeCamp.org, Rahul Joshi, 43:05): transcript ASR con glosario y outline de 14 módulos 1:1 con los capítulos oficiales, más ejercicios y banco de preguntas. | [`n8n-ai-automations/`](n8n-ai-automations/) |
 | `ai-agents-for-beginners/` | Clase de estudio derivada del curso «AI Agents For Beginners – OpenClaw Case Study» (freeCodeCamp.org, KodeKloud, Mumshad Mannambeth, 3:05:58): transcript ASR con glosario y outline de 22 módulos 1:1 con los capítulos oficiales, más ejercicios y banco de preguntas. | [`ai-agents-for-beginners/`](ai-agents-for-beginners/) |
 | `rag-mcp-fundamentals/` | Clase de estudio derivada del curso «RAG & MCP Fundamentals – A Hands-On Crash Course» (freeCodeCamp.org, 1:39:53): transcript ASR con glosario y outline de 38 módulos 1:1 con los 27 + 12 capítulos oficiales (Parte 1 RAG, Parte 2 MCP), con ejercicios por módulo y banco de 14 preguntas. | [`rag-mcp-fundamentals/`](rag-mcp-fundamentals/) |
+| `ai-engineer-full-course/` | Clase de estudio derivada del curso «AI Engineer Full Course in 3 Hours» (Cloud X Berry, 2:53:54): transcript ASR con glosario y outline de 6 módulos / 33 capítulos 1:1 con los oficiales, con 41 citas verificadas, ejercicios por módulo y banco de 21 preguntas. | [`ai-engineer-full-course/`](ai-engineer-full-course/) |
 
 ## Método
 
