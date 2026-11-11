@@ -1,0 +1,7 @@
+Checklist for E0 Día 4 — selección, barras, niebla y minimapa
+
+1. Selección por caja: arrastrar con el botón izquierdo dibuja un rectángulo y selecciona las unidades player dentro; el test verifica 100/100.
+2. Barras de vida: una sola capa 2D dibuja las 200 barras (verde sobre fondo negro) y los anillos amarillos de las unidades seleccionadas.
+3. Niebla: máscara 48×48 actualizada cada 0,5 s alrededor de las unidades player; el shader del piso mezcla zona explorada y no explorada.
+4. Minimapa: textura 96×96 generada desde los datos de la escena (verde player, rojo enemy, blanco edificios), sin segunda cámara.
+5. Performance: 200 unidades + barras + niebla + minimapa, fullscreen 3440×1440, Metal Forward+, vsync off, `caffeinate` + `--always-on-top`: p50 3,64 ms, p95 3,90 ms, p99 4,99 ms, 0 frames >33 ms (16.316 frames).

@@ -1,0 +1,6 @@
+Checklist for E0 Día 3 — minimal select-move-attack loop
+
+1. Selección: left-click sobre una unidad muestra el anillo amarillo en sus pies.
+2. Movimiento: right-click en terreno libre deja la unidad en estado "move" y la acerca al destino; al llegar, vuelve a "idle".
+3. Ataque: right-click cerca de una unidad enemiga la pone en "attack", se acerca, reproduce Sword_Attack y baja el HP del enemigo.
+4. Escala: House ≈3,5 m de huella y Tree ≈4,2 m de alto, proporcionales al personaje de 1,8 m.

@@ -1,0 +1,70 @@
+[gd_scene load_steps=6 format=3]
+
+[sub_resource type="PlaneMesh" id=1]
+size = Vector2(20, 20)
+[sub_resource type="BoxMesh" id=2]
+size = Vector3(1, 1, 1)
+[sub_resource type="CapsuleMesh" id=3]
+radius = 0.3
+height = 1.8
+[sub_resource type="Environment" id=4]
+background_mode = 1
+background_color = Color(0.09, 0.10, 0.12, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.58, 0.65, 1)
+ambient_light_energy = 0.35
+
+[sub_resource type="StandardMaterial3D" id=5]
+albedo_color = Color(0.30, 0.34, 0.27, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id=6]
+albedo_color = Color(0.62, 0.58, 0.50, 1)
+
+[sub_resource type="StandardMaterial3D" id=7]
+albedo_color = Color(0.35, 0.45, 0.62, 1)
+
+[node name="Main" type="Node3D"]
+
+[node name="Camera" type="Camera3D" parent="."]
+projection = 1
+size = 14
+near = 0.1
+far = 200
+rotation_degrees = Vector3(-30, 45, 0)
+position = Vector3(24.5, 20, 24.5)
+
+[node name="DirectionalLight" type="DirectionalLight3D" parent="."]
+shadow_enabled = true
+directional_shadow_max_distance = 40
+rotation_degrees = Vector3(-50, -30, 0)
+light_energy = 1.2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource(4)
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource(1)
+material = SubResource(5)
+
+[node name="Box" type="MeshInstance3D" parent="."]
+mesh = SubResource(2)
+material = SubResource(6)
+position = Vector3(0, 0.5, 0)
+
+[node name="Capsule" type="MeshInstance3D" parent="."]
+mesh = SubResource(3)
+material = SubResource(7)
+position = Vector3(1.5, 0.9, 0)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="UI"]
+text = "Reinos de la Frontera — Fase 0"
+anchor_bottom = 0
+anchor_left = 0
+offset_left = 16
+offset_top = 12
+offset_right = 520
+offset_bottom = 48
+theme_override_font_sizes/font_size = 20

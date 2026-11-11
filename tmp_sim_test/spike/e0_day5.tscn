@@ -1,0 +1,118 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/quaternius/rts/Houses_FirstAge_1_Level1.gltf" id="1"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/rts/Resource_Tree1.gltf" id="2"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/rts/Rock.gltf" id="3"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/rts/Wall_FirstAge.gltf" id="4"]
+[ext_resource type="Script" path="res://spike/e0_day5.gd" id="5"]
+[ext_resource type="Shader" path="res://spike/e0_day5_palette.gdshader" id="6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="7"]
+sky_top_color = Color(0.30, 0.45, 0.62, 1)
+sky_horizon_color = Color(0.72, 0.68, 0.58, 1)
+ground_bottom_color = Color(0.25, 0.28, 0.22, 1)
+ground_horizon_color = Color(0.72, 0.68, 0.58, 1)
+
+[sub_resource type="Sky" id="8"]
+sky_material = SubResource("7")
+
+[sub_resource type="Environment" id="9"]
+background_mode = 2
+sky = SubResource("8")
+ambient_light_source = 3
+ambient_light_energy = 0.8
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="10"]
+albedo_color = Color(0.30, 0.45, 0.20, 1)
+roughness = 1.0
+
+[sub_resource type="PlaneMesh" id="11"]
+size = Vector2(60, 60)
+
+[sub_resource type="StandardMaterial3D" id="12"]
+albedo_color = Color(0.55, 0.42, 0.28, 1)
+roughness = 1.0
+
+[sub_resource type="PlaneMesh" id="13"]
+size = Vector2(4, 11)
+
+[sub_resource type="ShaderMaterial" id="14"]
+shader = ExtResource("6")
+
+[node name="E0Day5" type="Node3D"]
+script = ExtResource("5")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(20.5, 17, 20.5)
+rotation_degrees = Vector3(-30, 45, 0)
+projection = 1
+size = 11
+near = 0.1
+far = 200
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-50, -30, 0)
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.2
+shadow_enabled = true
+directional_shadow_max_distance = 40
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("9")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("11")
+material_override = SubResource("10")
+
+[node name="House" parent="." instance=ExtResource("1")]
+position = Vector3(-4, 0, -1)
+rotation_degrees = Vector3(0, 15, 0)
+scale = Vector3(4, 4, 4)
+
+[node name="Trees" type="Node3D" parent="."]
+
+[node name="Tree0" parent="Trees" instance=ExtResource("2")]
+position = Vector3(6, 0, -4)
+scale = Vector3(4.5, 4.5, 4.5)
+
+[node name="Tree1" parent="Trees" instance=ExtResource("2")]
+position = Vector3(-8, 0, 2)
+scale = Vector3(4.5, 4.5, 4.5)
+
+[node name="Tree2" parent="Trees" instance=ExtResource("2")]
+position = Vector3(2, 0, -8)
+scale = Vector3(4.5, 4.5, 4.5)
+
+[node name="Rocks" type="Node3D" parent="."]
+
+[node name="Rock0" parent="Rocks" instance=ExtResource("3")]
+position = Vector3(-2, 0, 4)
+scale = Vector3(8, 8, 8)
+
+[node name="Rock1" parent="Rocks" instance=ExtResource("3")]
+position = Vector3(7, 0, 2)
+scale = Vector3(8, 8, 8)
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="Wall0" parent="Walls" instance=ExtResource("4")]
+position = Vector3(-2, 0, -6)
+scale = Vector3(4, 4, 4)
+
+[node name="Wall1" parent="Walls" instance=ExtResource("4")]
+position = Vector3(3.4, 0, -6)
+scale = Vector3(4, 4, 4)
+
+[node name="Units" type="Node3D" parent="."]
+
+[node name="PaletteLayer" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="ColorRect" type="ColorRect" parent="PaletteLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+mouse_filter = 2
+material = SubResource("14")

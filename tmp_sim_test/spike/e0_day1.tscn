@@ -1,0 +1,68 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/quaternius/rpg-characters/Warrior.gltf" id="1"]
+[ext_resource type="Script" path="res://spike/e0_day1.gd" id="2"]
+
+[sub_resource type="StandardMaterial3D" id="3"]
+albedo_color = Color(0.30, 0.34, 0.27, 1)
+roughness = 1.0
+
+[sub_resource type="PlaneMesh" id="4"]
+size = Vector2(20, 20)
+
+[sub_resource type="StandardMaterial3D" id="5"]
+albedo_color = Color(0.80, 0.80, 0.80, 1)
+roughness = 0.5
+
+[sub_resource type="BoxMesh" id="6"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="Environment" id="7"]
+background_mode = 1
+background_color = Color(0.09, 0.10, 0.12, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.58, 0.65, 1)
+ambient_light_energy = 0.35
+
+[node name="E0Day1" type="Node3D"]
+script = ExtResource("2")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(24.5, 20, 24.5)
+rotation_degrees = Vector3(-30, 45, 0)
+projection = 1
+size = 14
+near = 0.1
+far = 200
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-50, -30, 0)
+light_energy = 1.2
+shadow_enabled = true
+directional_shadow_max_distance = 40
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("7")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("4")
+material_override = SubResource("3")
+
+[node name="TileReference" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.5, 0)
+mesh = SubResource("6")
+material_override = SubResource("5")
+
+[node name="Warrior" parent="." instance=ExtResource("1")]
+position = Vector3(1.5, 0, 0)
+scale = Vector3(0.78, 0.78, 0.78)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="UI"]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 540.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 20
+text = "E0 Día 1 — personaje 1,8 m / tile 1 m"

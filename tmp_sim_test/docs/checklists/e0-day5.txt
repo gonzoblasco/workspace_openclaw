@@ -1,0 +1,8 @@
+Checklist for E0 Día 5 — pase visual
+
+1. Paleta: 16 colores (tinta, piedra, madera, teja, pasto, tierra, piel, azul, metal, oro, carmesí, marfil) aplicada como post-proceso sobre la escena.
+2. Outline: inverted hull con `material_overlay`, `cull_front` y `grow=0.02` en 79 meshes (incluye las 14 unidades); se lee como contorno oscuro de 1-2 px.
+3. Luz y sombras: una sola direccional cálida, `directional_shadow_max_distance=40`, ambiente de cielo; sombras coherentes en casa, empalizada, árboles y unidades.
+4. Composición: casa, empalizada de dos tramos, 3 árboles, 2 rocas y 14 unidades en dos grupos; captura `docs/captures/e0-day5.png` a 1600×900, cámara ortográfica size 11.
+5. Colores de bando: Castilla azul (`Color(0.18,0.32,0.62)`) y Almohades rojo (`Color(0.62,0.16,0.12)`), aplicados a cuerpo y hombreras con shader de mezcla 0.65; cara y espada conservan su material original.
+6. Aprobación visual de Gonzo: **SÍ (2026-11-11)**, con la condición de diferenciar los bandos por color de vestimenta; condición implementada. El camino 3D runtime queda aprobado.

@@ -1,0 +1,93 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/quaternius/rts/Houses_FirstAge_1_Level1.gltf" id="1"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/rts/Resource_Tree1.gltf" id="2"]
+[ext_resource type="PackedScene" path="res://assets/quaternius/rpg-characters/Warrior.gltf" id="3"]
+[ext_resource type="Script" path="res://spike/e0_day3.gd" id="4"]
+[ext_resource type="Script" path="res://spike/e0_day3_unit.gd" id="5"]
+
+[sub_resource type="StandardMaterial3D" id="6"]
+albedo_color = Color(0.30, 0.34, 0.27, 1)
+roughness = 1.0
+
+[sub_resource type="PlaneMesh" id="7"]
+size = Vector2(30, 30)
+
+[sub_resource type="Environment" id="8"]
+background_mode = 1
+background_color = Color(0.09, 0.10, 0.12, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.58, 0.65, 1)
+ambient_light_energy = 0.35
+
+[sub_resource type="CylinderMesh" id="9"]
+top_radius = 0.8
+bottom_radius = 0.8
+height = 0.02
+radial_segments = 16
+height_segments = 1
+side_shade = true
+
+[sub_resource type="StandardMaterial3D" id="10"]
+albedo_color = Color(1, 1, 0, 1)
+shading_mode = 1
+
+[node name="E0Day3" type="Node3D"]
+script = ExtResource("4")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(24.5, 20, 24.5)
+rotation_degrees = Vector3(-30, 45, 0)
+projection = 1
+size = 14
+near = 0.1
+far = 200
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-50, -30, 0)
+light_energy = 1.2
+shadow_enabled = true
+directional_shadow_max_distance = 40
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("8")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("7")
+material_override = SubResource("6")
+
+[node name="House" parent="." instance=ExtResource("1")]
+position = Vector3(-4, 0, -2)
+scale = Vector3(4, 4, 4)
+
+[node name="Tree" parent="." instance=ExtResource("2")]
+position = Vector3(4, 0, -3)
+scale = Vector3(4.5, 4.5, 4.5)
+
+[node name="Player" parent="." instance=ExtResource("3")]
+position = Vector3(0, 0, 2)
+rotation_degrees = Vector3(0, 180, 0)
+scale = Vector3(0.78, 0.78, 0.78)
+script = ExtResource("5")
+team = 0
+
+[node name="Enemy" parent="." instance=ExtResource("3")]
+position = Vector3(2, 0, -2)
+rotation_degrees = Vector3(0, 180, 0)
+scale = Vector3(0.78, 0.78, 0.78)
+script = ExtResource("5")
+team = 1
+
+[node name="SelectionRing" type="MeshInstance3D" parent="."]
+mesh = SubResource("9")
+material_override = SubResource("10")
+visible = false
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="UI"]
+offset_left = 16.0
+offset_top = 12.0
+theme_override_font_sizes/font_size = 20
+text = "Click: seleccionar · Click derecho: mover / atacar"
+
