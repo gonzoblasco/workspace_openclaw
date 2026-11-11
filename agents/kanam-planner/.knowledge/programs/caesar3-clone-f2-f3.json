@@ -2,10 +2,10 @@
   "slug": "caesar3-clone-f2-f3",
   "title": "Caesar III Clone F2-F3 - Profundidad de Ciudad",
   "objective": "Llevar el clone de Caesar III desde el MVP actual (servicios, religión mínima, inspector) a una capa de ciudad profunda con baños/higiene, bienes de lujo y almacén, casas 2×2 con merging/deseabilidad, cinco dioses con festivales y sistema de guardado/carga con controles de tiempo.",
-  "status": "active",
+  "status": "completed",
   "owner": "gonzalo",
   "created_at": "2026-11-11T14:37:13Z",
-  "updated_at": "2026-11-11T17:30:31+00:00",
+  "updated_at": "2026-11-11T17:50:51+00:00",
   "gates": [
     "auditor",
     "critic"
@@ -153,7 +153,7 @@
       "task": "Save/load y pausa/velocidad: serialización completa del estado, slots/menú, controles de pausa y velocidad (0×/1×/2×/4×), determinismo del round‑trip.",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Ejecutar scripts/gate.sh y validar que test_save_load.gd pasa (guardado y carga determinista, controles de velocidad funcionales).",
       "depends_on": [
         4
@@ -170,16 +170,19 @@
         "sim/model/service_target.gd",
         "sim/systems/city_builder.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "3076ebd; gate EXIT 0 (29 tests, Save/load test passed); purity verde; UI pausa/1x/2x/4x y slots; reviewer PASS"
+      ],
       "blocker": null,
       "waiver_reason": null,
-      "attempts": 0,
+      "attempts": 1,
       "created_at": "2026-11-11T14:37:13Z",
-      "updated_at": "2026-11-11T14:41:30Z",
-      "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "updated_at": "2026-11-11T17:50:51+00:00",
+      "started_at": "2026-11-11T17:34:45+00:00",
+      "completed_at": "2026-11-11T17:50:51+00:00",
+      "session_ref": "pending-dev-step5"
     }
   ],
-  "metadata": {}
+  "metadata": {},
+  "closed_at": "2026-11-11T17:50:51+00:00"
 }

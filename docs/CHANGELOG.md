@@ -283,6 +283,20 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (save/load y tiempo)
+
+### Added
+- **Snapshot binario completo** (`scripts/save_load.gd`): clock, RNG, grid, stats, edificios, casas, targets, destinos, walkers, slots, mapas y festivales.
+- **3 slots** en `user://`, menú compacto de **Pausa/1x/2x/4x** y `F5`/`F9`/`Space`.
+- Test `test_save_load.gd` con hash round-trip y continuación determinista; gate **29 tests**.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 29 tests + smoke + pureza.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-save-final.png`.
+- Reviewer PASS sobre `3076ebd`.
+
+---
+
 ## [2026-11-11] - Caesar III Clone (cinco dioses)
 
 ### Added
