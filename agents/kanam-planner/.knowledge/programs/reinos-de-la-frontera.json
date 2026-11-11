@@ -373,7 +373,7 @@
       "task": "Implementar economía (E2) - 4 recursos, aldeanos, casas, 4 edades",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Módulo economy con recursos madera, comida, oro, piedra, depósitos, casas y edades, pruebas unitarias econ_test.gd pasan.",
       "depends_on": [
         13
@@ -382,22 +382,24 @@
       "write_paths": [
         "src/sim/economy.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "ECONOMY_OK; data/economy.json; 4 resources; villager gather 10/deposit; finite nodes; houses pop cap; train villagers; 4 ages"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T15:40:47+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T15:40:47+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 15,
       "task": "Validación de economía (E2) - pruebas de recursos y edades",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Todas las pruebas econ_test.gd pasan.",
       "depends_on": [
         14
@@ -406,15 +408,17 @@
       "write_paths": [
         "tests/econ_test.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "ECONOMY_OK + ECONOMY_STATE_OK + ECONOMY_DETERMINISM_OK hash=e32b56f31eb0500934ccd115bbfc0ead213e1976f1a2f65e51799c49660a3bac ticks=10000; B PASS"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T15:40:47+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T15:40:47+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 16,
@@ -612,7 +616,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T08:35:00+00:00",
-  "updated_at": "2026-11-11T14:13:54+00:00",
+  "updated_at": "2026-11-11T15:40:47+00:00",
   "gates": [
     "critic",
     "auditor"
