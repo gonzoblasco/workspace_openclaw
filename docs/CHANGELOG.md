@@ -772,3 +772,9 @@ Ese desvio de runtime se convirtio en un cambio de config el 2026-11-10 12:28: l
 - **El documento de la cata de deepseek (`cata-harnesses-2026-10-27.md`) queda marcado como SUPERADO en su conclusion**, con el puntero al de 3 modelos.
 
 ---
+
+## 2026-11-11 — Gate de cifras sin fuente + criterio curso/agente/repo
+
+- **Nuevo:** `scripts/check-unsourced-claims.py` — marca cifras de magnitud (%, ms/s, MB/GB, "N de M", versiones, "N tests") en `docs/adr/`, `.knowledge/*/HANDOFF.md` y `.knowledge/*/STATUS.md` sin fuente en la línea o la anterior. No prueba que la cifra sea correcta: prueba que alguien dijo de dónde salió. Primera corrida: **69 archivos, 46 cifras sin fuente**. Fuera del pre-commit a propósito (engancharlo hoy bloquea todo commit hasta sanear 46 líneas).
+- **Estudio:** `studies/cs50-harvard-2026/` — Harvard CS50 (2026), 12 capítulos oficiales, 40.533 cues, 44 citas verificadas, `ADOPCION.md` con el gate corrido.
+- **Criterio documentado:** el curso, el agente y el repo cubren huecos distintos; un chat no reemplaza testing, deploy, git ni a11y. Ver `memory/2026-11-11.md`.
