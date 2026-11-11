@@ -256,6 +256,19 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (inspector de edificios)
+
+### Added
+- **Modo inspección `I`**: click sobre casa/edificio abre panel con estado vivo; `Esc`/Cerrar lo ocultan.
+- Inspector muestra nivel, población, agua, comida, entretenimiento, dios, camino, fuego; para edificios, trabajadores, stock, producción, riesgo y daño.
+- Test de input: abre/cierra inspector y verifica el título de una casa.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 24 tests + smoke + pureza.
+- Captura `tmp/city-inspector.png`.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
