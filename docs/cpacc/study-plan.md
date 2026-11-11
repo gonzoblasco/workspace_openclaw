@@ -95,7 +95,9 @@ toma la primera sesión con margen: no se reusa este calendario.
 
 ## 4.bis Material de estudio
 
-**La clase que enseña el contenido:** [`studies/cpacc-study-guide/`](../../studies/cpacc-study-guide/outline.md)
+**El curso:** [`studies/cpacc-completo/`](../../studies/cpacc-completo/outline.md) — fusión de los dos videos en un solo outline de 11 módulos que sigue el orden del BoK. Es el que se sigue.
+
+**Las dos fuentes originales (registro):** [`studies/cpacc-study-guide/`](../../studies/cpacc-study-guide/outline.md)
 — **FULL CPACC Study Guide** (Derek Mei, 1:35:11, captions manuales). Recorre los tres dominios en
 9 módulos: los 7 modelos, las 8 categorías de discapacidad con barreras y AT, etiqueta, los 9
 beneficios, los 7 principios de diseño universal, UDL, POUR, el marco legal internacional y los
