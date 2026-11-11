@@ -1,0 +1,117 @@
+{
+  "slug": "caesar3-clone-f2-f3",
+  "title": "Caesar III Clone F2-F3 - Profundidad de Ciudad",
+  "objective": "Llevar el clone de Caesar III desde el MVP actual (servicios, religión mínima, inspector) a una capa de ciudad profunda con baños/higiene, bienes de lujo y almacén, casas 2×2 con merging/deseabilidad, cinco dioses con festivales y sistema de guardado/carga con controles de tiempo.",
+  "status": "active",
+  "owner": "gonzalo",
+  "created_at": "2026-11-11T14:37:13Z",
+  "updated_at": "2026-11-11T14:39:25Z",
+  "gates": ["auditor", "critic"],
+  "steps": [
+    {
+      "id": 1,
+      "task": "Baños e higiene: edificio 2×2 con walker de servicio, cobertura mensual, efecto en salud/felicidad, overlay e inspector.",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Ejecutar scripts/gate.sh y validar que test_bathroom.gd pasa (cobertura hygiene, overlay y datos inspector).",
+      "depends_on": [],
+      "gate": "auditor",
+      "write_paths": [
+        "sim/buildings/building_defs.gd",
+        "sim/walkers/walker_defs.gd",
+        "sim/walkers/service_resolver.gd",
+        "sim/model/service_target.gd",
+        "view/city_view.gd",
+        "main.gd",
+        "tests/test_bathroom.gd (NUEVO)",
+        "sim/systems/city_builder.gd (NUEVO)"
+      ]
+    },
+    {
+      "id": 2,
+      "task": "Cerámica y muebles: talleres, almacén, stock, requisitos de casas, efectos económicos/sociales.",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Ejecutar scripts/gate.sh y validar que test_ceramics.gd pasa (producción, stock en almacén y consumo por casas).",
+      "depends_on": [1],
+      "gate": "critic",
+      "write_paths": [
+        "sim/buildings/building_defs.gd",
+        "sim/warehouse.gd (NUEVO)",
+        "view/city_view.gd",
+        "tests/test_ceramics.gd (NUEVO)",
+        "scripts/gate.sh",
+        "sim/walkers/walker_defs.gd",
+        "sim/walkers/service_resolver.gd",
+        "sim/model/service_target.gd",
+        "sim/systems/city_builder.gd (NUEVO)"
+      ]
+    },
+    {
+      "id": 3,
+      "task": "Casas 2×2, merging y deseabilidad: tamaño ampliado, merging/upgrade, jardines/estatuas, niveles de deseabilidad.",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Ejecutar scripts/gate.sh y validar que test_houses_merge.gd pasa (houses 2×2, merging, desirability overlay).",
+      "depends_on": [2],
+      "gate": "auditor",
+      "write_paths": [
+        "sim/buildings/building_defs.gd",
+        "sim/housing.gd (NUEVO)",
+        "view/city_view.gd",
+        "tests/test_houses_merge.gd (NUEVO)",
+        "scripts/gate.sh",
+        "sim/walkers/walker_defs.gd",
+        "sim/walkers/service_resolver.gd",
+        "sim/model/service_target.gd",
+        "sim/systems/city_builder.gd (NUEVO)"
+      ]
+    },
+    {
+      "id": 4,
+      "task": "Cinco dioses y festivales: templos dedicados, cobertura por dios, festivales específicos y efectos de felicidad.",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Ejecutar scripts/gate.sh y validar que test_five_gods.gd pasa (cobertura de los 5 dioses y festivales activables).",
+      "depends_on": [3],
+      "gate": "critic",
+      "write_paths": [
+        "sim/buildings/building_defs.gd",
+        "main.gd",
+        "view/city_view.gd",
+        "tests/test_five_gods.gd (NUEVO)",
+        "scripts/gate.sh",
+        "sim/walkers/walker_defs.gd",
+        "sim/walkers/service_resolver.gd",
+        "sim/model/service_target.gd",
+        "sim/systems/city_builder.gd (NUEVO)"
+      ]
+    },
+    {
+      "id": 5,
+      "task": "Save/load y pausa/velocidad: serialización completa del estado, slots/menú, controles de pausa y velocidad (0×/1×/2×/4×), determinismo del round‑trip.",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "Ejecutar scripts/gate.sh y validar que test_save_load.gd pasa (guardado y carga determinista, controles de velocidad funcionales).",
+      "depends_on": [4],
+      "gate": "critic",
+      "write_paths": [
+        "scripts/save_load.gd (NUEVO)",
+        "main.gd",
+        "view/ui_menu.gd (NUEVO)",
+        "tests/test_save_load.gd (NUEVO)",
+        "scripts/gate.sh",
+        "sim/walkers/walker_defs.gd",
+        "sim/walkers/service_resolver.gd",
+        "sim/model/service_target.gd",
+        "sim/systems/city_builder.gd (NUEVO)"
+      ]
+    }
+  ],
+  "metadata": {}
+}
