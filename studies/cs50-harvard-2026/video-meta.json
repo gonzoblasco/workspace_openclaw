@@ -1,0 +1,13 @@
+{
+ "id": "gmuTjeQUbTM",
+ "title": "Harvard CS50 (2026) – Full Computer Science University Course",
+ "channel": "freeCodeCamp.org",
+ "speaker": "David J. Malan (Harvard University)",
+ "upload_date": "2026-02-05",
+ "duration_seconds": 88154,
+ "license": "CC BY-NC-SA 4.0",
+ "url": "https://www.youtube.com/watch?v=gmuTjeQUbTM",
+ "captions": "automatic en-orig (ASR), json3, 81124 raw events -> 40533 cues deduped",
+ "cue_coverage": {"last_cue": "24:29:01", "gap_to_end_seconds": 13},
+ "chapters_source": "official video description (12 entries, extracted via yt-dlp metadata)"
+}
