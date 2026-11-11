@@ -229,6 +229,19 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (leyenda de overlays)
+
+### Added
+- **Leyenda F3** con swatches: pozo/fuente, con/sin comida, con/sin acceso, y semáforo verde/amarillo/rojo para fuego/estructura.
+- `CityView.overlay_legend()` expone pares color/etiqueta; `main.gd` los renderiza en el panel.
+- Smoke test valida leyenda de agua (2 entradas) y leyenda vacía en “Sin overlay”.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 24 tests + smoke + pureza.
+- `./scripts/demo.sh --overlay=Agua` → EXIT 0; captura `tmp/city-overlay-legend.png`.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
