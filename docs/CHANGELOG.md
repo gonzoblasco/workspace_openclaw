@@ -98,6 +98,21 @@ Set 3D de edificios activo y visible; walkers 2D. El siguiente paso es detalle/a
 
 ---
 
+## [2026-11-11] - Caesar III Clone (alineación 2:1)
+
+### Fixed
+- **Cámara Blender** — el set 3D usaba una elevación de ~28° y `ortho_scale=5.2`; Godot usa tiles 2:1 (128×64). Ahora la cámara está a 45° de azimut y 30° de elevación, `ortho_scale=5.657`, para que un cuadrado de 1×1 proyecte exactamente un rombo de 128×64.
+- **15 renders 3D regenerados**; ancla proyectada en `(256, 361.81)`; se validó con overlays de footprints 1×1, 2×2 y 3×3.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: smoke + main input + 24 tests + pureza.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-aligned.png`.
+
+### Status
+El set 3D de edificios queda activo y alineado; walkers 2D. El siguiente paso es detalle/animación 3D, no más calibración de cámara.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
