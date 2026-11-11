@@ -275,11 +275,11 @@
       "role": "dev",
       "owner": "kanam-dev",
       "status": "pending",
-      "exit_criteria": "Run 'godot --headless --script res://tests/determinism_test.gd' and verify exit code 0; both runs produce identical state hash.",
+      "exit_criteria": "Run 'godot --headless --script res://tests/determinism_test.gd' (exit 0): two runs with the same seed and command log over 10,000 ticks produce byte-identical state hashes. kanam-dev runs it; B must reproduce it in step 12.",
       "depends_on": [
         10
       ],
-      "gate": "auditor",
+      "gate": "critic",
       "write_paths": [
         "tests/determinism_test.gd"
       ],
@@ -299,11 +299,11 @@
       "role": "dev",
       "owner": "kanam-critic",
       "status": "pending",
-      "exit_criteria": "File docs/reviews/e1_b_review.txt exists and contains the line 'Approved by kanam-critic'.",
+      "exit_criteria": "docs/reviews/e1_b_review.txt contains PASS/FAIL, the exact commands B ran, the observed hashes and any defects with file:line. B must re-run the determinism test itself, not trust dev's output.",
       "depends_on": [
         11
       ],
-      "gate": "auditor",
+      "gate": "critic",
       "write_paths": [
         "docs/reviews/e1_b_review.txt"
       ],
@@ -323,7 +323,7 @@
       "role": "dev",
       "owner": "core",
       "status": "pending",
-      "exit_criteria": "Run 'godot --headless --script res://tests/e1_core_verification.gd' and verify exit code 0; CORE signs off in docs/verification/e1_core_verification.txt.",
+      "exit_criteria": "CORE runs the full E1 suite itself (tick, state, commands, rng, pathfind, determinism), inspects that sim/ has no Node/SceneTree references, and signs docs/verification/e1_core_verification.txt with the raw output. A green test written by dev is not sufficient evidence.",
       "depends_on": [
         12
       ],
