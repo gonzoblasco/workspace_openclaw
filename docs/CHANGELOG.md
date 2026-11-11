@@ -203,6 +203,19 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (HUD con iconos)
+
+### Added
+- **HUD por segmentos** icono+valor para fondos, felicidad, población, trabajo, deuda, fecha y herramienta actual.
+- 6 iconos 24×24 generados por `tools/gen_ui_icons.py`.
+- Smoke test actualizado para validar `_hud_labels` (7 etiquetas) y el contador de deuda.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 24 tests + smoke + pureza.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-hud-icons.png`.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
