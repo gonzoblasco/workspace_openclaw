@@ -283,6 +283,19 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (caravana de comercio)
+
+### Added
+- **Caravana** del puesto comercial al warehouse y de vuelta; `target_mode=DESTINATION`, 8 frames y slot propio.
+- El warehouse crea un `DestinationTarget` kind `warehouse`; test real de spawn en tick 31.
+- Gate **31 tests**; la venta mensual determinista no cambia.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 31 tests + smoke + pureza; `Caravan test passed`.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-caravan.png`.
+
+---
+
 ## [2026-11-11] - Caesar III Clone (comercio/exportación)
 
 ### Added
