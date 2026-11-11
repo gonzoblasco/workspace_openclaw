@@ -9,6 +9,20 @@
 - Transcript: [transcripcion.md](transcripcion.md) — 1.394 bloques normalizados, 7.394 palabras
 - Metadata: [video-meta.json](video-meta.json) — capítulos oficiales de la descripción
 
+## Fuente primaria: el video no está solo
+
+Este video es la **grabación del jam Jumpstart de Hack Club**, no una clase suelta. La página oficial del jam es <https://jams.hackclub.com/jam/godot-platformer> (autor de la página: *themagicfrog*, también autor del repo `themagicfrog/jumpstartv1`), y contiene lo que la descripción de YouTube no: el orden de pasos, los valores sugeridos (`SPEED` 900, gravedad 2500, `JUMP_VELOCITY` -900), los requisitos de publicación en itch.io y el formulario de entrega.
+
+**Las dos fuentes no coinciden del todo, y la página es la más completa en los detalles operativos.** Tres diferencias concretas, verificadas contra la página el 2026-11-11:
+
+| Tema | El video dice | La página del jam dice |
+|---|---|---|
+| Cámara | Script que copia `player.global_position` en `_process` (00:10:54) | `Camera2D` con **Position Smoothing, speed ≈ 7**, sin script |
+| Tiempo del HUD | `Time.get_ticks_msec() / 1000.0` (00:42:07) | Sistema de puntaje con `Label`, sin `Time.get_ticks_msec` |
+| Publicar en itch.io | Menciona que queda privado y hay que volver a editarlo (00:56:15) | Marcar **SharedArrayBuffer support**, **Fullscreen**, renombrar el export a `.zip`, y **guardar la página antes de hacerla pública** |
+
+El jam también deja fuera de la página el link del **repositorio de arte** que el video muestra en pantalla (00:02:07). Ninguna de las dos fuentes lo publica; ver el Módulo 2.
+
 ## Qué es esta clase
 
 Un tutorial **completo y corto** de un plataformas 2D: desde descargar el motor hasta publicar el juego en itch.io. No enseña teoría de motores ni diseño de juego; construye **un juego entero, jugable**, en 58 minutos, cometiendo y corrigiendo errores en vivo.
@@ -80,6 +94,8 @@ Un mapa dibujable que el jugador **pueda pisar**, sin volver a elegir tiles a ma
 ### Contenido, en orden
 
 1. **Traer el arte.** El repositorio de arte se descarga como `.zip` y se arrastra el contenido a la carpeta del proyecto (02:07 – 03:15). Esto deja los PNG visibles en el *FileSystem* del editor.
+
+   **Promesa incumplida de la fuente:** la expositora dice «head over to this repository» (00:02:07) y muestra el repo en pantalla, pero **la descripción del video no trae ningún link** — solo `hackclub.com`, `scrimba.com/freecodecamp` y `freecodecamp.org`. Tampoco aparece en la descripción de la página del jam. Quien siga el video sin el arte de las autoras no puede reproducir el módulo tal cual: tiene que conseguir tiles propios o de otro lado. El curso no lo advierte, y el resto del video (32×32 exacto, el `moon.png`, el spritesheet de 32×32 con idle y run) **depende de ese arte**.
 2. **La escena y el nodo.** Escena 2D nueva, `TileMapLayer` como hijo (03:17 – 03:23).
 3. **El TileSet.** En el inspector el tileset «currently says empty» (00:03:42); se crea uno nuevo y se agrega un **atlas** desde el PNG (03:58). Un *atlas* es una sola imagen con muchos tiles; el editor la corta por grilla.
 4. **El tamaño.** Los tiles se ven demasiado chicos porque el proyecto no sabe cuánto mide cada celda: se ajusta a **32×32** en el TileSet y se repite el `texture region` del atlas a 32×32 (04:23 – 04:54). *Los dos ajustes son necesarios y son dos lugares distintos*: uno dice cuánto mide una celda en el mundo, el otro cómo se recorta la imagen.
@@ -123,6 +139,8 @@ Un personaje que se mueve con el teclado, salta, choca con los tiles y tiene la 
 
 **El error del piso es el mejor contenido del módulo.** El jugador atravesó el mapa no porque el código estuviera mal, sino porque el nodo físico no tenía forma. En Godot, un `CharacterBody2D` sin `CollisionShape2D` es un cuerpo sin volumen: la física no lo detiene. La jerarquía correcta (`CharacterBody2D` → `CollisionShape2D`) **es** el contrato.
 
+**Y el módulo enseña otro contrato, sin nombrarlo: el orden de los hijos.** El `Sprite2D` tiene que ser hijo del `player` y no del `Area2D` (00:08:36), porque un `Area2D` no dibuja transformaciones ni hereda movimiento de la misma forma. El video lo corrige en cámara y sigue; es la misma lección que el piso, aplicada a una sola línea del árbol.
+
 ### Lo que el video no dice
 
 - La cámara copia la posición **en `_process`**, no en `_physics_process`: en un juego con plataformas móviles eso produce jitter (el problema aparece, de hecho, en el Módulo 6 con las plataformas).
@@ -150,7 +168,7 @@ Que caerse tenga una consecuencia, y que la consecuencia sea **volver al último
 3. **La condición única:** «we're going to check if the body is equal to our player» (00:14:36). Si entra cualquier otra cosa, no pasa nada.
 4. **El punto de reaparición no es el checkpoint, es su `Marker2D`:** `last_location` se guarda como la posición global del **marker** (00:15:11), no del área. Así el checkpoint se dibuja donde conviene y el jugador reaparece un poco más adelante.
 5. **`DeathZone`** — otro `Area2D` con forma rectangular. Cuando entra el jugador, llama a `kill_player()`, que reposiciona al jugador en `checkpoint_manager.last_location` (15:23 – 17:37). Probado: «when you go over here, it'll kill you» (00:18:29).
-6. **Reutilización por escena:** la muerte no se dibuja con tiles manuales, se arrastra la escena `death_zone` a la *Scene Collection* del tilemap y se pinta con ella. «Our death zones are also really easy to reuse» (00:18:58). Ese es el truco de nivel del módulo: una zona de muerte pintable como si fuera un tile.
+6. **Reutilización por escena:** la escena `death_zone` se agrega a la *Scene Collection* del tilemap y se pinta con ella sobre el nivel. «Our death zones are also really easy to reuse» (00:18:58). Lo que se pinta es la **escena instanciada**, no una textura de tile: el `Area2D` con su script queda como nodo hijo del `TileMapLayer`. Ese es el truco de nivel del módulo.
 
 ### La idea que hay que llevarse
 
@@ -164,7 +182,7 @@ Que caerse tenga una consecuencia, y que la consecuencia sea **volver al último
 
 ### Ejercicio
 
-Hacer que la muerte **también** reste puntos del HUD y mueva al jugador al checkpoint. Después, dibujar una zona de muerte con el *pincel de escena* del tilemap y verificar en el árbol de la escena si quedó el `Area2D`. Documentar la diferencia entre las dos cosas.
+Hacer que la muerte **también** reste puntos del HUD y mueva al jugador al checkpoint. Después, abrir el árbol de la escena en el lugar donde se pintó la zona de muerte y verificar **qué quedó**: ¿un nodo `Area2D` instanciado, o solo celdas? Anotar las dos diferencias: la escena instanciada trae su script y su señal; una celda de tilemap no trae ninguno de los dos.
 
 ---
 
@@ -293,6 +311,7 @@ También es la **deuda** del módulo: `HUD` se busca por nombre desde el colecci
 ### Lo que el video no dice
 
 - El tiempo que se muestra es **el uptime del proceso**, no el tiempo de partida. Si el juego pausa o el navegador congela la pestaña, el contador sigue corriendo. Para un cronómetro real hace falta acumular con `delta` mientras el juego está activo.
+- **La página oficial del jam discrepa con el video justo acá.** El jam (autor: *themagicfrog*, el mismo del repo `jumpstartv1`) documenta para el tiempo de juego un sistema de puntaje con `Label`, no `Time.get_ticks_msec()`; y para el `Camera2D` recomienda **Position Smoothing con speed ≈ 7** en el inspector, mientras el video escribe un script que copia la posición sin suavizar y no menciona esa opción. Las dos rutas son válidas, pero no son la misma.
 - No se resetea el puntaje entre niveles (Módulo 9): el HUD se instancia por nivel y el valor **se pierde** al cambiar de escena. Funciona de casualidad porque cada nivel tiene su propio HUD.
 - No hay audio ni feedback visual al recoger: el objeto desaparece sin más.
 
@@ -330,6 +349,7 @@ Dos niveles navegables, con un nodo de paso que lleva del uno al dos, sin duplic
 
 - El parseo del nombre del archivo es **frágil por diseño**: renombrar `level_one.tscn` a `level1.tscn` o meter un nivel en `levels/old/` rompe la aritmética sin aviso. Es la primera cosa que conviene cambiar si el curso se usa como base real.
 - No hay **autoload** (singleton) para el puntaje ni el estado del jugador. El patrón `CanvasLayer` del Módulo 8 pierde su valor al cambiar de escena.
+- **Los requisitos de publicación están en la página del jam, no en el video**, y el video los omite: el jam pide marcar **SharedArrayBuffer support** y **Fullscreen** en itch.io, cargar la carpeta de export como `.zip` con `index.html` renombrado, y —lo más importante— **guardar la página antes de hacerla pública** («It is currently a Draft, so click Save & view page, then go back, and select Public»). El video menciona el proyecto privado (00:56:15) sin nombrar el paso de guardado, que es el que hace que el botón *Public* no aparezca.
 - «Only one level» (00:45:53) es literal: hay dos escenas pero el video no pide crear un tercer nivel ni un menú.
 - No hay transición (fade) ni carga asíncrona.
 
