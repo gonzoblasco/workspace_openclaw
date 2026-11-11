@@ -93,9 +93,35 @@ veces haga falta.
 apuro ni nada que venza. Al decidir, se mira la página de *Exam Session Dates* de ese momento y se
 toma la primera sesión con margen: no se reusa este calendario.
 
-## 4.bis Material por semana
+## 4.bis Material de estudio
 
-- **Semana 1** - [`week-1/README.md`](./week-1/README.md): ficha de 1A, flashcards, 24 preguntas de práctica, mapa de conocimiento y logística del examen.
+**La clase que enseña el contenido:** [`studies/cpacc-study-guide/`](../../studies/cpacc-study-guide/outline.md)
+— **FULL CPACC Study Guide** (Derek Mei, 1:35:11, captions manuales). Recorre los tres dominios en
+9 módulos: los 7 modelos, las 8 categorías de discapacidad con barreras y AT, etiqueta, los 9
+beneficios, los 7 principios de diseño universal, UDL, POUR, el marco legal internacional y los
+modelos de madurez. 19 citas verificadas contra el transcript.
+
+**Cómo usarla con este plan:** el bloque N de la §4 se estudia mirando el módulo equivalente de la
+clase, y después se vuelve al BoK para el detalle que el video no cubre:
+
+| Bloque del plan | Módulo de la clase | Lo que falta y va al BoK |
+|---|---|---|
+| 1 (1A) | M1 — modelos | Los siete modelos con sus supuestos y críticas, en detalle |
+| 2 (1B) | M2 — categorías | Demografía y estadísticas (1D), la parte que el autor del video confiesa no haber estudiado |
+| 3 (1C) | M2 — AT por categoría | AT específicas por producto y estrategias adaptativas |
+| 4 (1D, 1E) | M3 — etiqueta | 1D completo: tendencias de datos por país |
+| 5 (2A-2C) | M4, M5 — beneficios y UD | WCAG 2.1 criterio por criterio |
+| 6 (2D-2F) | M5, M6 — UD y UDL | Entorno construido; los siete principios con su redacción oficial |
+| 7-8 (3A-3F) | M8, M9 — leyes y madurez | Leyes no estadounidenses (el video lo dice: «very Americentric»); EN 301 549, EAA, Ley 26.653 |
+| 9-10 (repaso) | M7 — POUR | Criterios WCAG y técnicas |
+
+**El video roadmap** ([`studies/cpacc-certification/`](../../studies/cpacc-certification/outline.md),
+Practice Test Geeks, 7:39) no enseña contenido: da el formato, los pesos y el orden de preparación.
+Se consulta al planificar, no al estudiar.
+
+## 4.ter Material del bloque 1
+
+- [`week-1/README.md`](./week-1/README.md): ficha de 1A, flashcards, 24 preguntas de práctica y mapa de conocimiento.
 
 ## 5. Recursos
 
