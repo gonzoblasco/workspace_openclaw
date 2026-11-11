@@ -581,7 +581,7 @@
       "task": "Cierre (E6) - construcción, tiempos, guardado, audio/menús, balance y .app",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Construcción real: comando build de aldeano con colocación válida, costo, progreso por ticks y fin; casas/depósitos activos al completar; cuartel/galería/establo entrenan unidades. Tiempos de entrenamiento y de edad. Guardado/carga determinista con schema y hash. Audio y menús mínimos. Balance de una partida completa. Export .app de macOS. Captura final docs/captures/e6-game.png. Tests verdes.",
       "depends_on": [
         21
@@ -590,22 +590,24 @@
       "write_paths": [
         "release/ReinosDeLaFrontera.app"
       ],
-      "evidence": [],
+      "evidence": [
+        "E6 complete: construction, train/age timers, military buildings, save/load, collision, menu/audio, .app; 27 tests green; captures e6-game/e6-menu"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T17:45:00+00:00",
+      "updated_at": "2026-11-11T18:44:08+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T18:44:08+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 23,
       "task": "Validación final (E6) - CORE verifica licencia, assets y entrega",
       "role": "dev",
       "owner": "core",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "CORE aprueba el repo completo, assets en CREDITS.md, licencia QAL respetada y .app ejecutable.",
       "depends_on": [
         22
@@ -614,21 +616,23 @@
       "write_paths": [
         "assets/CREDITS.md"
       ],
-      "evidence": [],
+      "evidence": [
+        "CORE final verification: 27 tests *_OK; build/Reinos.app runs headless outside editor; B PASS; docs/hashes current; build/ gitignored"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T18:44:08+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T18:44:08+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     }
   ],
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T08:35:00+00:00",
-  "updated_at": "2026-11-11T17:35:35+00:00",
+  "updated_at": "2026-11-11T18:44:08+00:00",
   "gates": [
     "critic",
     "auditor"
