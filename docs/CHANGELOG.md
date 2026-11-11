@@ -175,6 +175,18 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (iconos de UI)
+
+### Added
+- **10 iconos 24×24** para la barra de construcción, generados por `tools/gen_ui_icons.py` y asignados a los botones en `main.gd`.
+- Caminos, casa, pozo, fuente, granja, granero, mercado, templo, prefecto e ingeniero.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 24 tests + smoke + pureza.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-ui-icons.png`.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
