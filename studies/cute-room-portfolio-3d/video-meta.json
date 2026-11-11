@@ -1,0 +1,221 @@
+{
+ "id": "tdsQwuyS6DQ",
+ "title": "Create a Cute Room Portfolio with Blender, Three.js, JavaScript – Beginner Course",
+ "uploader": null,
+ "channel": null,
+ "upload_date": "20251119",
+ "duration": 31351,
+ "description": "Learn how to use Three.js and Blender to design a stunning and interactive 3D portfolio!\n\nCourse from @andrewwoan \n\nIntro to Creative Web Dev: https://youtu.be/yhtdkuw9mbM\n\n*IMPORTANT*\nMake sure to go into 1) edit in the upper left corner 2) preferences 3) system\n4) and switch to \"CUDA\" OR \"Optix\" and enable your GPU if you've got one! If you're on Mac\nyour settings will probably be different: Select \"Metal\" instead of \"CUDA\" if you've got\nsomething like an M1 chip. For either device switch to GPU compute as it'll be faster, unless\nsomehow you have a device where your CPU is better.\n\n*IMPORTANT*\nWhen baking you typically want to go for .01, I think I did .003 which is a bit\ntoo small. If you have UVPackmaster3 you can set a pixel margin, if you're at 4k it should be\n32px, at 2k it should be 16px, 1k at 8px etc. Obviously it depends on your use case, but\nthose are recommended ranges!!\n\nCorrection:\n46:00 Sorry, accidental cut here, use the loop tools addon we installed and with those faces\nselected 1.) right click 2.) loop tools 3.) circle!\n\nLive site: http://sooahs-room-folio.com/\n\nCode, Blender file, fixes, updates, credits: https://github.com/andrewwoan/sooahkimsfolio\nIf you are using Blender 4.5+ you can switch from OpenGL to Vulkan for a possible speed\nincrease.\n\nQuestions, comments, concerns? Contact andrewwoan@gmail.com and on Discord discord.gg/6F7dfuD5GT\n\n⭐️ Chapters ⭐️\n- 0:00:00 Introduction and Project Demo\n- 0:01:29 What we will cover and not cover\n- 0:02:17 What to expect for course structure\n- 0:02:45 Prerequisites\n- 0:03:34 Support the channel and me!!\n- 0:04:03 A brief look at quad topology\n- 0:05:41 Modeling room base and a look at blocking out\n- 0:11:43 Modeling standing desk\n- 0:18:29 Modeling monitor rise\n- 0:21:47 Modeling computer\n- 0:25:13 Modeling table pad\n- 0:25:58 Modeling computer keyboard\n- 0:32:15 Modeling pencils and pencil holder\n- 0:34:12 Modeling flower pot and flowers\n- 0:41:34 Modeling small motivational quote thing\n- 0:44:44 Modeling computer speaker\n- 0:47:19 Modeling headphones and headphone stand\n- 0:58:51 Adjusting room\n- 0:59:46 Modeling computer\n- 1:14:33 Modeling cute character Mr. Whiskers\n- 1:19:50 Modeling coffee mug\n- 1:21:08 Modeling chair\n- 1:31:17 Modeling drawer\n- 1:34:10 Modeling book\n- 1:36:58 Modeling flower basket\n- 1:46:10 Modeling pegboard\n- 1:52:40 Modeling photo frame\n- 1:54:50 Modeling slippers\n- 1:58:31 Modeling storage boxes\n- 1:59:31 Modeling hanging plant\n- 2:13:34 Modeling piano\n- 2:21:15 Modeling window\n- 2:27:11 Modeling microphone\n- 2:30:55 Modeling egg rug\n- 2:31:46 Modeling lamp\n- 2:33:04 Modeling more floating shelves\n- 2:34:24 Modeling sticky notes\n- 2:34:37 Modeling boba plushie\n- 2:37:21 Adding some more details to piano\n- 2:37:42 Modeling logos\n- 2:40:24 Modeling clock\n- 2:41:48 Modeling mini table\n- 2:42:48 Modeling pizza\n- 2:47:12 Modeling soda can\n- 2:49:51 Modeling another hanging plant but with particle system\n- 2:58:18 Modeling eggs\n- 2:58:47 Modeling wall outlet\n- 3:00:34 Adding and working with text meshes\n- 3:05:15 Modeling hanging lights and light bulb\n- 3:10:13 Modeling floor planks\n- 3:11:58 Modeling cords\n- 3:12:50 Modeling room caps\n- 3:16:24 An introduction to lighting and materials\n- 4:07:25 Creating first procedural material as a design exploration\n- 4:29:56 Creating final first procedural material with vector math\n- 4:55:44 Few more tips for baking\n- 4:56:58 Checking face orientations/normals\n- 5:00:26 Glass material and modeling fish\n- 5:01:24 Introduction to baking\n- 5:06:52 UV Unwrapping for texture baking\n- 6:04:03 Render out an image to share!!!\n- 6:06:23 Start baking\n- 6:25:26 Analyze and adjusting bakes and exporting preparations \n- 6:40:24 Exporting and analysis\n- 6:41:49 Setup basic three.js starter with Vite.js\n- 6:45:18 Compressing model and textures\n- 6:48:04 Back to setup\n- 6:55:35 Setting up loaders and loading items\n- 7:04:07 Room material and appearance adjustments\n- 7:06:56 Glass material \n- 7:09:44 Water and bubble material\n- 7:13:15 Screen material\n- 7:17:04 Setting starting camera position and OrbitControls target\n- 7:19:10 Preparing for raycaster interactions and model/texture adjustments in Blender\n- 7:22:27 UV adjusting and texture painting to quickly patch baking errors\n- 7:29:05 Pushing to GitHub and deploying with Vercel \n- 7:30:34 Animating fans\n- 7:32:38 Raycaster click/touch interactions\n- 7:41:38 Basic modal with GSAP animations\n- 7:54:37 (Optional) Loading custom fonts and SCSS tips\n- 8:01:31 Raycaster hovering interaction with GSAP\n- 8:18:09 Customizing OrbitControls to limit pan and rotation\n- 8:23:53 Intro animations with GSAP\n- 8:35:25 Custom loading screen walkthrough\n- 8:38:06 A brief look at audio with Howler.js\n- 8:38:51 Setting a starting camera position for responsiveness\n- 8:39:41 Final push to GitHub!!!\n- 8:40:05 Final comments, future directions/challenges, shoutouts",
+ "chapters": [
+  {
+   "start_time": 0.0,
+   "title": "Introduction & Course Overview",
+   "end_time": 243.0
+  },
+  {
+   "start_time": 243.0,
+   "title": "3D Modeling Fundamentals",
+   "end_time": 341.0
+  },
+  {
+   "start_time": 341.0,
+   "title": "Room Structure Creation",
+   "end_time": 613.0
+  },
+  {
+   "start_time": 613.0,
+   "title": "Designing the Standing Desk",
+   "end_time": 982.0
+  },
+  {
+   "start_time": 982.0,
+   "title": "Adding Desk Accessories",
+   "end_time": 1307.0
+  },
+  {
+   "start_time": 1307.0,
+   "title": "Modeling Computer & Mousepad",
+   "end_time": 1557.0
+  },
+  {
+   "start_time": 1557.0,
+   "title": "Creating the Keyboard",
+   "end_time": 1935.0
+  },
+  {
+   "start_time": 1935.0,
+   "title": "Modeling Desk Decorations",
+   "end_time": 2153.0
+  },
+  {
+   "start_time": 2153.0,
+   "title": "Designing Flowers",
+   "end_time": 2494.0
+  },
+  {
+   "start_time": 2494.0,
+   "title": "Creating a Calendar",
+   "end_time": 2683.0
+  },
+  {
+   "start_time": 2683.0,
+   "title": "Modeling a Speaker",
+   "end_time": 2839.0
+  },
+  {
+   "start_time": 2839.0,
+   "title": "Designing Headphone Stand",
+   "end_time": 3530.0
+  },
+  {
+   "start_time": 3530.0,
+   "title": "Setting Up the Scene",
+   "end_time": 3774.0
+  },
+  {
+   "start_time": 3774.0,
+   "title": "Advanced PC Modeling",
+   "end_time": 4070.0
+  },
+  {
+   "start_time": 4070.0,
+   "title": "Modeling Desk Chair",
+   "end_time": 4367.0
+  },
+  {
+   "start_time": 4367.0,
+   "title": "Modeling Small Details",
+   "end_time": 4867.0
+  },
+  {
+   "start_time": 4867.0,
+   "title": "Designing Office Chair",
+   "end_time": 5157.0
+  },
+  {
+   "start_time": 5157.0,
+   "title": "Wall Details & Storage",
+   "end_time": 5494.0
+  },
+  {
+   "start_time": 5494.0,
+   "title": "Stylized Book Modeling",
+   "end_time": 5816.0
+  },
+  {
+   "start_time": 5816.0,
+   "title": "Creating Hanging Plants",
+   "end_time": 6370.0
+  },
+  {
+   "start_time": 6370.0,
+   "title": "Modeling Billboard & Clock",
+   "end_time": 6889.0
+  },
+  {
+   "start_time": 6889.0,
+   "title": "Modeling Slippers",
+   "end_time": 7103.0
+  },
+  {
+   "start_time": 7103.0,
+   "title": "Adding Final Props",
+   "end_time": 7255.0
+  },
+  {
+   "start_time": 7255.0,
+   "title": "Boba Plushy Creation",
+   "end_time": 7378.0
+  },
+  {
+   "start_time": 7378.0,
+   "title": "Microphone Setup",
+   "end_time": 7575.0
+  },
+  {
+   "start_time": 7575.0,
+   "title": "Adding Wall Outlet",
+   "end_time": 7903.0
+  },
+  {
+   "start_time": 7903.0,
+   "title": "Texture Preparation",
+   "end_time": 8103.0
+  },
+  {
+   "start_time": 8103.0,
+   "title": "Initial Texturing",
+   "end_time": 8393.0
+  },
+  {
+   "start_time": 8393.0,
+   "title": "Advanced Texturing",
+   "end_time": 8945.0
+  },
+  {
+   "start_time": 8945.0,
+   "title": "Adding Cracks to Walls",
+   "end_time": 9295.0
+  },
+  {
+   "start_time": 9295.0,
+   "title": "Applying PBR Materials",
+   "end_time": 9510.0
+  },
+  {
+   "start_time": 9510.0,
+   "title": "UV Mapping & Texturing",
+   "end_time": 9673.0
+  },
+  {
+   "start_time": 9673.0,
+   "title": "Finalizing Textures",
+   "end_time": 9976.0
+  },
+  {
+   "start_time": 9976.0,
+   "title": "Baking & UV Optimization",
+   "end_time": 10565.0
+  },
+  {
+   "start_time": 10565.0,
+   "title": "Lighting the Scene",
+   "end_time": 11333.0
+  },
+  {
+   "start_time": 11333.0,
+   "title": "Exporting the Scene",
+   "end_time": 11847.0
+  },
+  {
+   "start_time": 11847.0,
+   "title": "Setting Up Vite Project",
+   "end_time": 12267.0
+  },
+  {
+   "start_time": 12267.0,
+   "title": "Implementing Raycaster",
+   "end_time": 12822.0
+  },
+  {
+   "start_time": 12822.0,
+   "title": "Adding Interactions",
+   "end_time": 13350.0
+  },
+  {
+   "start_time": 13350.0,
+   "title": "Setting Up Modals",
+   "end_time": 13693.0
+  },
+  {
+   "start_time": 13693.0,
+   "title": "Finalizing UI",
+   "end_time": 14175.0
+  },
+  {
+   "start_time": 14175.0,
+   "title": "Deployment",
+   "end_time": 31351
+  }
+ ]
+}
