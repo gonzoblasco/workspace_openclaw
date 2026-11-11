@@ -112,8 +112,8 @@
       "task": "E0 Día 4 - Selección, barras de vida, niebla, minimapa con 200 unidades y performance",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
-      "exit_criteria": "Render with the real Metal renderer, NOT --headless: 'godot --path . res://spike/e0_day4_perf.tscn' with 200 units plus selection, health bars, fog and minimap; same measurement protocol as Day 2 (10 s warm-up, 60 s sample, p95 <= 16.7 ms, no frame > 33 ms), CSV docs/captures/e0-day4_metrics.csv and capture docs/captures/e0-day4.png.",
+      "status": "completed",
+      "exit_criteria": "Render with the real Metal renderer, NOT --headless, with 'caffeinate -dimsu' and '--always-on-top' (macOS App Nap degrades the window 4x otherwise): 'caffeinate -dimsu godot --path . --fullscreen --resolution 3440x1440 --always-on-top spike/e0_day4.tscn -- --benchmark'. 200 units plus box selection, 2D health bars, fog and minimap; 10 s warm-up + 60 s sample; CSV docs/captures/e0-day4_metrics.csv. Pass if p95 <= 16.7 ms, p99 <= 16.7 ms and <= 0.1% of frames > 33 ms. Capture docs/captures/e0-day4.png.",
       "depends_on": [
         3
       ],
@@ -121,15 +121,17 @@
       "write_paths": [
         "projects/reinos-de-la-frontera/spike/"
       ],
-      "evidence": [],
+      "evidence": [
+        "e0_day4.tscn; 200 units; 16316 frames; p50 3.64 p95 3.90 p99 4.99; 0 over33; 489.5 draw calls; DAY4_OK; B PASS"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T11:45:00+00:00",
+      "updated_at": "2026-11-11T13:06:35+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T13:06:35+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 5,
@@ -591,7 +593,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T08:35:00+00:00",
-  "updated_at": "2026-11-11T12:45:51+00:00",
+  "updated_at": "2026-11-11T13:06:35+00:00",
   "gates": [
     "critic",
     "auditor"
