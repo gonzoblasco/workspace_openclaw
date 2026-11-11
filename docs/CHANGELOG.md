@@ -130,6 +130,22 @@ Cámara 2:1 y centrado de footprints resueltos. El set 3D de edificios queda act
 
 ---
 
+## [2026-11-11] - Caesar III Clone (vida ambiente)
+
+### Added
+- **Chimeneas 3D** en las cinco casas, con cap; el sprite de cada nivel se regeneró desde Blender.
+- **`assets/sprites/fx_smoke.png`** + `tools/gen_fx.py`: puff suave determinista para humo.
+- **`view/city_view.gd`**: humo de chimeneas/templo y spray de fuente; se dibuja después del sprite del edificio para que el depth sorting siga correcto. El fallback de primitivas también usa `footprint_center`.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: smoke + main input + 24 tests + pureza.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-life-final.png`.
+
+### Status
+El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: detalle de mercado/granja/templo y banderas.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
