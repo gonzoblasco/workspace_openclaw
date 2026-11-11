@@ -242,6 +242,20 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (entretenimiento)
+
+### Added
+- **Teatro 2×2** (coste 400, 4 trabajadores) y **actor** que recorre caminos y da cobertura mensual a casas.
+- `ServiceResolver` service_type 4; `House.entertainment`; felicidad hasta +10 por cobertura.
+- Overlay F3 “Entretenimiento”, leyenda y arte propio (2D, 3D Blender, icono y 8 frames de actor).
+- Test de servicio, edificio, hotkey T, HUD con 11 botones y felicidad base 42.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 24 tests + smoke + pureza.
+- Demo con teatro/actor; capturas `tmp/shot-theater-final.png` y `tmp/shot-theater-overlay.png`.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
