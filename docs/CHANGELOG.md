@@ -269,6 +269,20 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (educación y salud)
+
+### Added
+- **Escuela** (350, maestro) y **clínica** (400, doctor), ambos 2×2, con cobertura mensual.
+- `education_until_month`/`health_until_month`; felicidad +5 por cada servicio.
+- Overlays F3 “Educación” y “Salud”, inspector con ambas coberturas y hotkeys `E`/`H`.
+- Arte propio: 2D, 3D Blender, iconos y 16 frames de teacher/doctor; build bar de 13 botones.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 24 tests + smoke + pureza.
+- Demo con teacher/doctor; capturas `tmp/shot-ed-final2.png` y `tmp/shot-ed-overlay2.png`.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
