@@ -283,6 +283,17 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (inspector de servicios)
+
+### Fixed
+- El inspector explica por qué falta comida/salud: `falta granero/mercado`, `mercado sin trabajadores`, `sin cobertura`, `clínica sin trabajadores` o `sin clínica`.
+- Clic derecho inspecciona; Shift+clic derecho demuele.
+
+### Verified
+- Gate **36 tests**; juego reiniciado.
+
+---
+
 ## [2026-11-11] - Caesar III Clone (zoom trackpad)
 
 ### Fixed
