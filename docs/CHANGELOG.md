@@ -283,6 +283,20 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (comercio/exportación)
+
+### Added
+- **Trade post 2×2** y ruta fija mensual: exporta hasta 20 cerámicas (8) y 20 muebles (12) desde un warehouse activo.
+- Evento `trade` con mensaje en UI; build bar de 23 botones en 12 columnas; arte 3D e icono propios.
+- Test `test_trade.gd`; gate actualizado a **30 tests**.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 30 tests + smoke + pureza; `Trade test passed`.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-trade.png`.
+- Reviewer PASS sobre `90bf4d3`.
+
+---
+
 ## [2026-11-11] - Caesar III Clone (save/load y tiempo)
 
 ### Added
