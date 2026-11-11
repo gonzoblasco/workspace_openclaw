@@ -1,8 +1,15 @@
 # Clase: CPACC — Certified Professional in Accessibility Core Competencies (test preparation 2026)
 
 Clase de estudio construida a partir del video de **Practice Test Geeks**. Transcript con timestamps
-en `transcripcion.md`. El video es **divulgación de segunda mano**; cada cifra se contrastó contra
-la fuente oficial (IAAP) y queda marcado qué se sostiene y qué no. Ver §Notas editoriales.
+en `transcripcion.md`.
+
+> **Criterio de uso (Gonzo, 2026-11-11): «no lo usemos de fuente sino de roadmap».**
+> Este video **no es fuente de verdad**. Es un **roadmap**: sirve para saber qué mirar, en qué
+> orden y qué preguntarle a la fuente. La verdad del examen vive en el **Body of Knowledge**
+> (`docs/cpacc/cpacc-bok.pdf`) y en el **Handbook** (`docs/cpacc/cpacc-handbook.pdf`); el plan
+> vigente, en `docs/cpacc/study-plan.md`.
+> El video mezcla divulgación con promoción de su propio practice test, y varias de sus cifras no
+> tienen fuente. Por eso cada claim quedó marcado: lo que se usa es la **estructura**, no los números.
 
 ## Ficha del material
 
@@ -14,6 +21,7 @@ la fuente oficial (IAAP) y queda marcado qué se sostiene y qué no. Ver §Notas
 - Idioma: inglés
 - Tipo: video de marketing educativo. 8 capítulos oficiales en la descripción; el cierre es una
   llamada a su practice test gratuito.
+- **Rol en el estudio: roadmap, no fuente.** Ver el criterio de uso arriba.
 - Contexto de uso: **Gonzo tiene el CPACC como palanca en curso** (`memory/career-facts.md` §4:
   «gap real y único: sin certificación IAAP»). Esta clase sirve para planificar ese examen, no
   para estudiar el contenido de los dominios, que vive en el Body of Knowledge.
