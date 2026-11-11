@@ -61,6 +61,28 @@ Terreno/agua/caminos y UI ya tienen assets propios; walkers animan 2 frames. Sig
 
 ---
 
+## [2026-11-11] - Caesar III Clone (overrides 3D de Blender)
+
+### Added
+- **`tools/blender/render_buildings.py`** — set 3D procedural de 13 edificios + árbol/roca. Blender 5.3 headless, cámara ortográfica compartida, fondo transparente y EEVEE. Sin modelos, texturas, HDRI ni assets del original.
+- **`tools/blender/render_temple.py`** — templo hero y helpers compartidos (escena, cámara, luces, primitivas).
+- **`tools/blender/postprocess.py`** — 1024→512, sombra suave y manifest con ancla derivada de `world_to_camera_view`.
+- **`assets/sprites/blender/`** — 15 PNG + `manifest.json`; `SpriteTheme` los fusiona sobre el manifiesto vector y mantiene el fallback.
+- **`tests/test_sprite_theme.gd`** — verifica que el override del templo sea 512×512 cuando el manifiesto Blender existe.
+
+### Why
+El set 2D ya era legible, pero seguía plano. Blender permite volumen, luz y detalle sin comprar assets ni usar el original. La capa de override permite comparar el set 3D con el vector sin tocar `sim/` ni romper el fallback.
+
+### Verified
+- Blender 5.3 headless verificado; 15 renders EEVEE + postproceso.
+- `bash scripts/gate.sh` → EXIT 0: smoke + main input + 24 tests + pureza, sin leaks.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-blender-full3.png` a 1600×900.
+
+### Status
+Override 3D activo y visible en el juego. Es low-poly/prototipo; falta decidir 3D vs vector, animar edificios/walkers y agregar detalle. El siguiente paso es dirección de arte y contenido visual, no más pipeline.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
