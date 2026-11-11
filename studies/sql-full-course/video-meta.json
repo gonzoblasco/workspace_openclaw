@@ -1,0 +1,247 @@
+{
+ "id": "SSKVgrwhzus",
+ "title": "SQL Full Course for Beginners (30 Hours) – From Zero to Hero",
+ "uploader": "Data with Baraa",
+ "channel": "Data with Baraa",
+ "upload_date": "20250327",
+ "duration": 107307,
+ "description": "I’ve spent 2 years creating this *high-quality SQL course* so you can master SQL for data analysis & data engineering. The best part? It’s 100% free\n- *SQL Full Package* https://www.datawithbaraa.com/course/sql-full-course-for-beginners\n- *SQL Handbook* https://academy.datawithbaraa.com/l/digital_download/1087406/the-sql-handbook\n- *Free SQL materials* https://www.datawithbaraa.com/wiki/sql\n- *SQL course playlist* https://www.youtube.com/playlist?list=PLNcg_FV9n7qZY_2eAtUzEUulNjTJREhQe\n\n━━━━━━━━━━━━━━━━━━━━\n\n*🏆 My Academy (recommended)*\n- *Python* https://www.datawithbaraa.com/course/the-ultimate-python-mastery\n- *Python Handbook* https://academy.datawithbaraa.com/l/digital_download/998313/the-python-handbook\n- *Tableau* https://www.datawithbaraa.com/course/tableau-ultimate-full-course-for-beginners\n\n*🎓 Udemy*\n- *SQL* https://www.udemy.com/course/the-complete-sql-bootcamp-30-hours-go-from-zero-to-hero/?referralCode=D20781228C2EB8B98339\n- *Python* https://www.udemy.com/course/the-complete-python-bootcamp-13hours-go-from-zero-to-hero/?referralCode=776491A4119FF8AF41CA\n- *Tableau* https://www.udemy.com/course/the-tableau-ultimate-course-from-zero-to-hero/?referralCode=6544726FDC491A6B25EC\n\n*💼 LinkedIn Learning*\n- *Databricks for Data Analysts* https://www.linkedin.com/learning/databricks-for-data-analysts\n- *Claude Code for Data Analysis* https://www.linkedin.com/learning/claude-code-for-data-analysis-build-repeatable-reliable-workflows\n\n📬 *Newsletter for data friends*\nhttps://www.blog.datawithbaraa.com\n\n*Get 25% OFF DataCamp's Here*\nhttps://datacamp.pxf.io/bOEe66\n\n━━━━━━━━━━━━━━━━━━━━\n\n📖 *Table of Content*\n___🟢Beginner Level___\n00:00 Intro\n07:38 Introduction to SQL\n22:33 Setup Your Environment\n34:01 Query Data (SELECT)\n01:32:31 DDL Commands\n01:43:44 DML Commands\n___🟡Intermediate Level___\n02:08:03 Filtering Data\n02:47:57 SQL Joins (Basics)\n03:27:29 SQL Joins (Advanced)\n04:02:09 Set Operators\n04:47:41 SQL Functions\n04:52:58 String Functions\n05:18:44 Numeric Functions\n05:22:48 Date and Time Functions\n06:59:06 NULL Functions\n08:07:50 Case Statement\n08:43:36 Aggregate Functions\n08:50:11 Window Functions Basics\n09:47:00 Window Aggregate\n10:53:09 Window Ranking\n11:56:05 Window Value\n___🔴Advanced Level___\n12:40:34 Advanced SQL Techniques\n12:58:04 Subqueries\n14:18:08 Common Table Expressions (CTE)\n15:35:02 Views\n16:36:40 CTAS and Temp Tables\n17:17:31 Compare Advanced Techniques\n17:27:04 Stored Procedures\n18:12:58 Triggers\n18:23:42 Indexes\n20:20:31 Execution Plan\n21:11:03 Partitions\n21:43:39 30x Performance Tips\n22:24:25 AI and SQL\n___🧪Projects___\n23:21:04 Project: SQL Data Warehouse\n24:32:54 Project DWH | Bronze\n25:10:09 Project DWH | Silver\n26:47:46 Project DWH | Gold\n27:41:51 Project: Exploratory Data Analysis (EDA)\n28:30:38 Project: Advanced Data Analytics\n29:47:24 Thank You\n\n━━━━━━━━━━━━━━━━━━━━\n\n*CONNECT WITH ME*\n💬 Discord https://discord.gg/gsVJbMxKcA\n👨‍💻 LinkedIn https://www.linkedin.com/in/baraa-khatib-salkini/\n📸 Instagram https://www.instagram.com/datawithbaraa/\n🎥 TikTok https://www.tiktok.com/@datawithbaraa\n🧭 Notion Roadmaps https://www.notion.com/@datawithbaraa\n\nNote: some links above are affiliates. I may earn a small commission\nif you enroll. Thank you for supporting the channel.\n\n#sql #sqlserver #data #analytics #dataanalysis #datascience",
+ "chapters": [
+  {
+   "start_time": 0.0,
+   "title": "Intro",
+   "end_time": 458.0
+  },
+  {
+   "start_time": 458.0,
+   "title": "Introduction to SQL",
+   "end_time": 1353.0
+  },
+  {
+   "start_time": 1353.0,
+   "title": "Setup Your Environment",
+   "end_time": 2041.0
+  },
+  {
+   "start_time": 2041.0,
+   "title": "Query Data (SELECT)",
+   "end_time": 5551.0
+  },
+  {
+   "start_time": 5551.0,
+   "title": "DDL Commands",
+   "end_time": 6224.0
+  },
+  {
+   "start_time": 6224.0,
+   "title": "DML Commands",
+   "end_time": 7683.0
+  },
+  {
+   "start_time": 7683.0,
+   "title": "Filtering Data",
+   "end_time": 10077.0
+  },
+  {
+   "start_time": 10077.0,
+   "title": "SQL Joins (Basics)",
+   "end_time": 12449.0
+  },
+  {
+   "start_time": 12449.0,
+   "title": "SQL Joins (Advanced)",
+   "end_time": 14529.0
+  },
+  {
+   "start_time": 14529.0,
+   "title": "Set Operators",
+   "end_time": 17261.0
+  },
+  {
+   "start_time": 17261.0,
+   "title": "SQL Functions",
+   "end_time": 17578.0
+  },
+  {
+   "start_time": 17578.0,
+   "title": "String Functions",
+   "end_time": 19124.0
+  },
+  {
+   "start_time": 19124.0,
+   "title": "Numeric Functions",
+   "end_time": 19368.0
+  },
+  {
+   "start_time": 19368.0,
+   "title": "Date and Time Functions",
+   "end_time": 25146.0
+  },
+  {
+   "start_time": 25146.0,
+   "title": "NULL Functions",
+   "end_time": 29270.0
+  },
+  {
+   "start_time": 29270.0,
+   "title": "Case Statement",
+   "end_time": 31416.0
+  },
+  {
+   "start_time": 31416.0,
+   "title": "Aggregate Functions",
+   "end_time": 31811.0
+  },
+  {
+   "start_time": 31811.0,
+   "title": "Window Functions Basics",
+   "end_time": 35220.0
+  },
+  {
+   "start_time": 35220.0,
+   "title": "Window Aggregate",
+   "end_time": 39189.0
+  },
+  {
+   "start_time": 39189.0,
+   "title": "Window Ranking",
+   "end_time": 42965.0
+  },
+  {
+   "start_time": 42965.0,
+   "title": "Window Value",
+   "end_time": 45634.0
+  },
+  {
+   "start_time": 45634.0,
+   "title": "Advanced SQL Techniques",
+   "end_time": 46684.0
+  },
+  {
+   "start_time": 46684.0,
+   "title": "Subqueries",
+   "end_time": 51488.0
+  },
+  {
+   "start_time": 51488.0,
+   "title": "Common Table Expressions (CTE)",
+   "end_time": 56102.0
+  },
+  {
+   "start_time": 56102.0,
+   "title": "Views",
+   "end_time": 59800.0
+  },
+  {
+   "start_time": 59800.0,
+   "title": "CTAS and Temp Tables",
+   "end_time": 62251.0
+  },
+  {
+   "start_time": 62251.0,
+   "title": "Compare Advanced Techniques",
+   "end_time": 62824.0
+  },
+  {
+   "start_time": 62824.0,
+   "title": "Stored Procedures",
+   "end_time": 65578.0
+  },
+  {
+   "start_time": 65578.0,
+   "title": "Triggers",
+   "end_time": 66222.0
+  },
+  {
+   "start_time": 66222.0,
+   "title": "Indexes",
+   "end_time": 73231.0
+  },
+  {
+   "start_time": 73231.0,
+   "title": "Execution Plan",
+   "end_time": 76263.0
+  },
+  {
+   "start_time": 76263.0,
+   "title": "Partitions",
+   "end_time": 78219.0
+  },
+  {
+   "start_time": 78219.0,
+   "title": "30x Performance Tips",
+   "end_time": 80665.0
+  },
+  {
+   "start_time": 80665.0,
+   "title": "AI and SQL",
+   "end_time": 84064.0
+  },
+  {
+   "start_time": 84064.0,
+   "title": "Project: SQL Data Warehouse",
+   "end_time": 88374.0
+  },
+  {
+   "start_time": 88374.0,
+   "title": "Project DWH | Bronze",
+   "end_time": 90609.0
+  },
+  {
+   "start_time": 90609.0,
+   "title": "Project DWH | Silver",
+   "end_time": 96466.0
+  },
+  {
+   "start_time": 96466.0,
+   "title": "Project DWH | Gold",
+   "end_time": 99711.0
+  },
+  {
+   "start_time": 99711.0,
+   "title": "Project: Exploratory Data Analysis (EDA)",
+   "end_time": 102638.0
+  },
+  {
+   "start_time": 102638.0,
+   "title": "Project: Advanced Data Analytics",
+   "end_time": 107244.0
+  },
+  {
+   "start_time": 107244.0,
+   "title": "Thank You",
+   "end_time": 107307
+  }
+ ],
+ "view_count": 6683283,
+ "tags": [
+  "SQL Full Course",
+  "sql course",
+  "sql tutorial",
+  "SQL for Beginners",
+  "SQL from Zero to Hero",
+  "SQL Full Course for Free",
+  "Learn SQL",
+  "SQL Bootcamp",
+  "Complete SQL Bootcamp",
+  "free sql course",
+  "Advanced SQL",
+  "SQL Queries",
+  "Database Tutorial",
+  "SQL for Data Analysis",
+  "Data Engineering with SQL",
+  "SQL for Data Scientists",
+  "SQL Server",
+  "MySQL",
+  "SQL Project",
+  "sql interview",
+  "learn sql free",
+  "complete sql tutorial",
+  "sql data analyst",
+  "sql for data science",
+  "sql 2025",
+  "sql basics",
+  "sql training",
+  "data analysis"
+ ]
+}
