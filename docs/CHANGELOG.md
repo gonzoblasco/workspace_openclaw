@@ -83,6 +83,21 @@ Override 3D activo y visible en el juego. Es low-poly/prototipo; falta decidir 3
 
 ---
 
+## [2026-11-11] - Caesar III Clone (fix override 3D)
+
+### Fixed
+- **`view/sprite_theme.gd`** — el merge guardaba `file` relativo a `assets/sprites/blender/`, pero `_entry` lo resolvía contra `assets/sprites/`: el metadata 3D era correcto y la textura cargada seguía siendo el PNG vector base. Ahora el merge prefija `blender/` y el test exige que el templo cargue una textura real de 512×512, no solo metadata.
+- **Walkers 3D** — 40 frames (5 tipos × 4 direcciones × 2 zancadas) renderizados y probados; se descartaron del override porque a tamaño de juego se leían como peones. Los walkers vectoriales siguen activos.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: smoke + main input + 24 tests + pureza, sin leaks.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-real3d-final.png`.
+
+### Status
+Set 3D de edificios activo y visible; walkers 2D. El siguiente paso es detalle/animación 3D y decidir si vale un walker 3D de mayor calidad.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
