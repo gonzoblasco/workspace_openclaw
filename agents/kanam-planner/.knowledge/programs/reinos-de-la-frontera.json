@@ -86,7 +86,7 @@
       "task": "E0 Día 3 - Edificio, recurso, orden de movimiento y ataque",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Capture screenshot docs/captures/e0-day3.png; verify functional checklist (4 puntos) in docs/checklists/e0-day3.txt.",
       "depends_on": [
         2
@@ -95,15 +95,17 @@
       "write_paths": [
         "projects/reinos-de-la-frontera/spike/"
       ],
-      "evidence": [],
+      "evidence": [
+        "spike/e0_day3.tscn; pick_at/command_at; DAY3_OK; capture e0-day3.png 1600x900; checklist 4 puntos; B PASS"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T12:45:51+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T12:45:51+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 4,
@@ -589,7 +591,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T08:35:00+00:00",
-  "updated_at": "2026-11-11T12:30:16+00:00",
+  "updated_at": "2026-11-11T12:45:51+00:00",
   "gates": [
     "critic",
     "auditor"
