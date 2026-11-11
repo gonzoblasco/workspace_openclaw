@@ -283,6 +283,18 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (religión/festivales)
+
+### Added
+- **Festival `F4`** con templo activo: 200 denarios, +15 felicidad por 2 meses y cooldown de 6.
+- `ReligionSystem` puro; estado `festival_until_month`/`festival_cooldown_until_month`; overlay F3 “Religión”.
+- Test de templo cubre costo, duración y cooldown; capture `tmp/shot-religion.png`.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 24 tests + smoke + pureza.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
