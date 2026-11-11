@@ -283,6 +283,20 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (cinco dioses)
+
+### Added
+- **Ceres, Neptuno, Mercurio, Marte y Venus** con templos dedicados 2×2.
+- `god_maps` por dios + unión legacy; `House.gods` e inspector; festivales por dios con costo/duración/cooldown.
+- Build bar de 22 botones en 11 columnas; 4 templos 3D e iconos propios; 28 tests.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 28 tests + smoke + pureza; `Five‑god test passed`.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-gods.png`.
+- Reviewer PASS sobre `080e326`.
+
+---
+
 ## [2026-11-11] - Caesar III Clone (unificación 3D)
 
 ### Fixed
