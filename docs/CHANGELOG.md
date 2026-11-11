@@ -42,6 +42,25 @@ Capa de sprites prototipo: estática, 4 direcciones, sin animación; agua/camino
 
 ---
 
+## [2026-11-11] - Caesar III Clone (terreno, animación y UI)
+
+### Added
+- **`tools/gen_sprites.py`** — completa el set: 3 variantes de pasto, camino de piedra, 3 frames de agua, 40 frames de walker (5 tipos × 4 direcciones × 2 zancadas) y 5 skins de UI. Sigue sin assets de Caesar III ni de terceros.
+- **`view/sprite_theme.gd`** — APIs `grass(variant)`, `road()`, `water(frame)` y `walker(type, dir, frame)`; todo cacheado desde el manifiesto.
+- **`view/city_view.gd`** — terreno por tile con textura, agua animada, camino texturado y zancada de walker por tiempo/fase; fallback a color plano y líneas.
+- **`main.gd`** — `StyleBoxTexture` 9-patch para panel y estados normal/hover/pressed/disabled de los botones; fallback a `StyleBoxFlat`.
+- **`tests/test_sprite_theme.gd`** — cubre 13 edificios, 40 frames, 9 tiles/props, las 5 skins de UI, tamaños/anclas y frames distintos.
+
+### Verified
+- `python3 tools/gen_sprites.py` dos veces → `shasum` idéntico (determinista).
+- `bash scripts/gate.sh` → EXIT 0: smoke + main input + 24 tests + pureza, sin leaks.
+- `./scripts/demo.sh` → EXIT 0; captura 1600×900 `tmp/shot-art2-final.png`.
+
+### Status
+Terreno/agua/caminos y UI ya tienen assets propios; walkers animan 2 frames. Sigue sin 8 direcciones, animación de edificios ni arte final. Próximo: fidelidad visual (Blender/SDXL/CC0/CC-BY-SA) e iconos/retratos.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
