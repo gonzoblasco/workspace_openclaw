@@ -187,6 +187,22 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (blending de tiles + techo de granja)
+
+### Fixed
+- **Techo del cobertizo de la granja**: `hip_roof()` ahora acepta centro (`cx, cy`) y el roof queda sobre el shed de la esquina, no flotando en el centro del campo.
+
+### Added
+- **Blending por capas** en `CityView`: base de terreno → agua → camino → bordes. Rellenos expandidos 1 px para tapar antialias y fringes por vecino: pasto sobre camino, arena sobre agua.
+- `tools/gen_tile_edges.py`: 8 máscaras de borde; assets de vista directos, fuera del manifest.
+- Tiles de camino/agua sin borde propio para evitar costuras internas.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 24 tests + smoke + pureza.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-layers.png`.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
