@@ -216,6 +216,19 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (overlays de cobertura/riesgo)
+
+### Added
+- **F3 cicla overlays**: agua, comida, trabajo, riesgo de fuego y riesgo estructural.
+- `CityView._draw_overlay` tiñe tiles/edificios después de los objetos; `main.gd` muestra la leyenda `Overlay: … · F3`.
+- Smoke test valida el ciclo completo (Agua → … → Sin overlay).
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 24 tests + smoke + pureza.
+- `./scripts/demo.sh --overlay=Agua` → EXIT 0; captura `tmp/city-overlay.png`.
+
+---
+
 ## [2026-11-10] - Caesar III Clone (proyecto nuevo)
 
 ### Added
