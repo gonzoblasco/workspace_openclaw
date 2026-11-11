@@ -1,0 +1,106 @@
+{
+ "id": "MiPkcTaRbfQ",
+ "title": "Godot Game Development for Beginners",
+ "uploader": "freeCodeCamp.org",
+ "channel": "freeCodeCamp.org",
+ "upload_date": "20250910",
+ "duration": 3479,
+ "description": "Learn how to develop games using the Godot Game Engine. You’ll start by setting up Godot and getting comfortable with the editor. From there, you’ll create levels, design tile sets, and add a player character. The lessons also cover checkpoints, scoring, and adding enemies to make the game more engaging. By the end, you’ll have a complete, playable game that you can customize and expand further.\n\nThis course was developed by Sarah and Reem. They are both students who are part of Hack Club. Hack Club is a global non-profit organization that creates a community for high school students interested in coding and making things with technology.\n\nHack Club is free and any teenager can join. Check out their site to get stickers and learn more: https://hackclub.com/\n\n❤️ Support for this channel comes from our friends at Scrimba – the coding platform that's reinvented interactive learning: https://scrimba.com/freecodecamp\n\n⭐️ Contents ⭐️\n- 00:00 Intro\n- 01:03 Getting Started: Installing Godot\n- 02:07 Setting Up Your Project & Art Files\n- 03:17 Building the World: Tile Maps & Tile Sets\n- 05:08 Adding Physics to Tiles\n- 06:29 Creating Terrains for Easy Level Design\n- 07:54 Creating the Player Character\n- 09:46 Setting Up Player Input (Controls)\n- 10:22 Adding a Camera That Follows the Player\n- 11:52 Game Mechanics: Checkpoints & Death System\n- 19:07 Adding Obstacles\n- 20:42 Designing the Environment: Backgrounds & Moving Platforms\n- 23:42 Bringing the Player to Life: Character Animations\n- 33:39 Adding a Challenge: Creating Enemies\n- 39:28 Making It a Game: Scoring System & HUD\n- 42:57 Creating Collectibles\n- 45:55 Level Progression: Switching Between Scenes\n- 54:50 Sharing Your Creation: How to Export & Deploy Your Game\n- 57:02 Conclusion\n\n🎉 Thanks to our Champion and Sponsor supporters:\n👾 Drake Milly\n👾 Ulises Moralez\n👾 Goddard Tan\n👾 David MG\n👾 Matthew Springman\n👾 Claudio\n👾 Oscar R.\n👾 jedi-or-sith\n👾 Nattira Maneerat\n👾 Justin Hual\n\n--\n\nLearn to code for free and get a developer job: https://www.freecodecamp.org\n\nRead hundreds of articles on programming: https://freecodecamp.org/news",
+ "chapters": [
+  {
+   "start_time": 0.0,
+   "title": "Intro",
+   "end_time": 63.0
+  },
+  {
+   "start_time": 63.0,
+   "title": "Getting Started: Installing Godot",
+   "end_time": 127.0
+  },
+  {
+   "start_time": 127.0,
+   "title": "Setting Up Your Project & Art Files",
+   "end_time": 197.0
+  },
+  {
+   "start_time": 197.0,
+   "title": "Building the World: Tile Maps & Tile Sets",
+   "end_time": 308.0
+  },
+  {
+   "start_time": 308.0,
+   "title": "Adding Physics to Tiles",
+   "end_time": 389.0
+  },
+  {
+   "start_time": 389.0,
+   "title": "Creating Terrains for Easy Level Design",
+   "end_time": 474.0
+  },
+  {
+   "start_time": 474.0,
+   "title": "Creating the Player Character",
+   "end_time": 586.0
+  },
+  {
+   "start_time": 586.0,
+   "title": "Setting Up Player Input (Controls)",
+   "end_time": 622.0
+  },
+  {
+   "start_time": 622.0,
+   "title": "Adding a Camera That Follows the Player",
+   "end_time": 712.0
+  },
+  {
+   "start_time": 712.0,
+   "title": "Game Mechanics: Checkpoints & Death System",
+   "end_time": 1147.0
+  },
+  {
+   "start_time": 1147.0,
+   "title": "Adding Obstacles",
+   "end_time": 1242.0
+  },
+  {
+   "start_time": 1242.0,
+   "title": "Designing the Environment: Backgrounds & Moving Platforms",
+   "end_time": 1422.0
+  },
+  {
+   "start_time": 1422.0,
+   "title": "Bringing the Player to Life: Character Animations",
+   "end_time": 2019.0
+  },
+  {
+   "start_time": 2019.0,
+   "title": "Adding a Challenge: Creating Enemies",
+   "end_time": 2368.0
+  },
+  {
+   "start_time": 2368.0,
+   "title": "Making It a Game: Scoring System & HUD",
+   "end_time": 2577.0
+  },
+  {
+   "start_time": 2577.0,
+   "title": "Creating Collectibles",
+   "end_time": 2755.0
+  },
+  {
+   "start_time": 2755.0,
+   "title": "Level Progression: Switching Between Scenes",
+   "end_time": 3290.0
+  },
+  {
+   "start_time": 3290.0,
+   "title": "Sharing Your Creation: How to Export & Deploy Your Game",
+   "end_time": 3422.0
+  },
+  {
+   "start_time": 3422.0,
+   "title": "Conclusion",
+   "end_time": 3479
+  }
+ ]
+}
