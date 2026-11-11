@@ -283,6 +283,20 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (baños e higiene)
+
+### Added
+- **Bathhouse 2×2** (350, 3 trabajadores) con walker **bather** (`service_type 7`), cobertura mensual y +5 felicidad.
+- Overlay F3 **Higiene**, línea **Higiene** en el inspector, hotkey `B`, icono y arte 2D con pileta/vapor.
+- `tests/test_bathroom.gd` (NUEVO) y gate actualizado a 25 tests.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 25 tests + smoke + pureza.
+- `./scripts/demo.sh` → bather activo (`state=1`); captura `tmp/shot-baths.png`.
+- Reviewer PASS sobre repo limpio (commit `2da5e48`).
+
+---
+
 ## [2026-11-11] - Caesar III Clone (religión/festivales)
 
 ### Added
