@@ -1,6 +1,6 @@
 ---
 name: "checkmate"
-description: "Goal-to-execution-to-verification loop with worker + judge"
+description: "Loop meta -> ejecucion -> verificacion con worker y juez. Convierte una tarea en criterios explicitos pass/fail, lanza un agente worker, y un juez los evalua y devuelve feedback acumulado hasta que todo pase. Modo interactivo (aprobas cada checkpoint) o batch autonomo. Usar cuando: \"no me convence que este terminado\", \"defini criterios y quiero que se cumplan\", \"verificar cobertura de un entregable\", \"quiero revision adversarial\". Distinto de verification-gates (guardas de CI) y de regression-net (tests de mutacion)."
 ---
 
 # checkmate

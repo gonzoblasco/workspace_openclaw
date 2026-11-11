@@ -6,7 +6,7 @@ metadata:
     - session
     - lifecycle
     - productivity
-description: "Session Lifecycle workflow: complete session cycle. Replaces 4 session skills."
+description: "Ciclo completo de sesion de trabajo: arranque (daily + memory_search + estado), guardado y cierre (informe en memory.db, export del daily, HANDOFF del proyecto regenerado) y busqueda en memoria. Usar cuando el humano dice: \"iniciar sesion\", \"guardar sesion\", \"cerrar sesion\", \"que hicimos ayer\", \"actualiza tu contexto\", \"retomar donde estabamos\". Escribe la DB como fuente; los .md son vistas regenerables. NO escribe el daily a mano."
 user-invocable: false
 ---
 

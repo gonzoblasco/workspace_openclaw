@@ -1,6 +1,6 @@
 ---
 name: "git-changelog"
-description: "Auto-generate CHANGELOG.md from git history with conventional commits"
+description: "Genera CHANGELOG.md categorizado a partir del historial git de conventional commits (feat, fix, breaking change), listo para pegar en el changelog o en un release de GitHub. Usar cuando: \"escribir la entrada del changelog\", \"que cambio entre dos tags\", \"preparar el release notes\", \"resumir los commits de la semana\". No decide version: solo redacta el registro. Para versionado semver, usar project-versioning."
 ---
 
 # git-changelog

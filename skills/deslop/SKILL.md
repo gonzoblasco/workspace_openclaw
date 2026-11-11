@@ -1,6 +1,6 @@
 ---
 name: "deslop"
-description: "Clean AI slop code from branches before PRs"
+description: "Limpia codigo \"AI slop\" de una rama antes de abrir el PR: quita null checks defensivos innecesarios, try/catch fuera del estilo del proyecto, casts redundantes, comentarios placeholder y lint-disable agregados de prepo. Verifica que el build pase tras cada remocion. Usar cuando: \"limpiar el codigo que genero la IA\", \"esto tiene relleno\", \"sacar codigo defensivo de mas\", \"el diff esta sucio antes del PR\". No es linter ni refactor: solo remueve ruido generado."
 ---
 
 # deslop
