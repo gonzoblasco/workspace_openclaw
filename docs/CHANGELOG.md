@@ -283,6 +283,20 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (casas 2×2, merging y deseabilidad)
+
+### Added
+- **Large house 2×2** generada por merging automático de cuatro casas 1×1; capacidad duplicada y población preservada.
+- **Park 1×1** de deseabilidad (radio 3, valor 10), cálculo por tile, overlay F3 **Deseabilidad** e inspector.
+- Arte 2D de casa grande/parque e icono de parque; build bar de 18 botones en dos filas.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 27 tests + smoke + pureza; `Houses merge test passed`.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-merge.png`.
+- Reviewer PASS sobre `1f39d83`.
+
+---
+
 ## [2026-11-11] - Caesar III Clone (cerámica, muebles y almacén)
 
 ### Added

@@ -5,7 +5,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T14:37:13Z",
-  "updated_at": "2026-11-11T16:39:43+00:00",
+  "updated_at": "2026-11-11T17:07:16+00:00",
   "gates": [
     "auditor",
     "critic"
@@ -83,7 +83,7 @@
       "task": "Casas 2×2, merging y deseabilidad: tamaño ampliado, merging/upgrade, jardines/estatuas, niveles de deseabilidad.",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Ejecutar scripts/gate.sh y validar que test_houses_merge.gd pasa (houses 2×2, merging, desirability overlay).",
       "depends_on": [
         2
@@ -101,15 +101,17 @@
         "sim/systems/city_builder.gd",
         "main.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "1f39d83; gate EXIT 0 (27 tests, Houses merge test passed); purity verde; demo 174 pop; reviewer PASS; large_house + park + overlay Deseabilidad"
+      ],
       "blocker": null,
       "waiver_reason": null,
-      "attempts": 0,
+      "attempts": 1,
       "created_at": "2026-11-11T14:37:13Z",
-      "updated_at": "2026-11-11T14:41:30Z",
-      "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "updated_at": "2026-11-11T17:07:16+00:00",
+      "started_at": "2026-11-11T16:55:12+00:00",
+      "completed_at": "2026-11-11T17:07:16+00:00",
+      "session_ref": "pending-dev-step3"
     },
     {
       "id": 4,
