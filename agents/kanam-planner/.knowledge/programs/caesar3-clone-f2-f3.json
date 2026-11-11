@@ -5,7 +5,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T14:37:13Z",
-  "updated_at": "2026-11-11T15:48:30+00:00",
+  "updated_at": "2026-11-11T16:39:43+00:00",
   "gates": [
     "auditor",
     "critic"
@@ -48,7 +48,7 @@
       "task": "Cerámica y muebles: talleres, almacén, stock, requisitos de casas, efectos económicos/sociales.",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Ejecutar scripts/gate.sh y validar que test_ceramics.gd pasa (producción, stock en almacén y consumo por casas).",
       "depends_on": [
         1
@@ -66,15 +66,17 @@
         "sim/systems/city_builder.gd",
         "main.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "9e157ac; gate EXIT 0 (26 tests, Ceramics test passed); purity verde; build bar 17/2 filas; overlay Bienes; reviewer PASS (test usa service resolver directo, sin P1/P2)"
+      ],
       "blocker": null,
       "waiver_reason": null,
-      "attempts": 0,
+      "attempts": 1,
       "created_at": "2026-11-11T14:37:13Z",
-      "updated_at": "2026-11-11T14:41:30Z",
-      "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "updated_at": "2026-11-11T16:39:43+00:00",
+      "started_at": "2026-11-11T16:10:11+00:00",
+      "completed_at": "2026-11-11T16:39:43+00:00",
+      "session_ref": "pending-dev-step2"
     },
     {
       "id": 3,

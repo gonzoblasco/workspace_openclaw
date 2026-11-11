@@ -283,6 +283,20 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-11] - Caesar III Clone (cerámica, muebles y almacén)
+
+### Added
+- **Talleres de cerámica y muebles** 2×2 y **almacén** 3×3 con stock por bien.
+- `GoodsSystem` (tick 21), carros `pottery_cart`/`furniture_cart` (`service_type 8/9`), consumo de casas y +2.5 felicidad por bien.
+- Overlay F3 **Bienes**, inspector con stock, build bar de 17 botones en dos filas y arte 2D/iconos.
+
+### Verified
+- `bash scripts/gate.sh` → EXIT 0: 26 tests + smoke + pureza; `Ceramics test passed`.
+- `./scripts/demo.sh` → EXIT 0; captura `tmp/shot-goods2.png`.
+- Reviewer PASS sobre `9e157ac`.
+
+---
+
 ## [2026-11-11] - Caesar III Clone (baños e higiene)
 
 ### Added
