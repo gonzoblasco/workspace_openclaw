@@ -425,7 +425,7 @@
       "task": "Implementar combate (E3) - 8 unidades, counters, daño y muerte",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Módulo combat con unidades, reglas de counters, proyectiles y muerte, pruebas combat_test.gd pasan.",
       "depends_on": [
         15
@@ -434,22 +434,24 @@
       "write_paths": [
         "src/sim/combat.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "COMBAT_OK; 8 units data-driven; counter triangle; melee/ranged damage; projectiles 3 ticks; death state; victory by town center"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T16:23:25+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T16:23:25+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 17,
       "task": "Validación de combate (E3) - pruebas de counters y daño",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Todas las pruebas combat_test.gd pasan y se verifica la lógica de counters.",
       "depends_on": [
         16
@@ -458,15 +460,17 @@
       "write_paths": [
         "tests/combat_test.gd"
       ],
-      "evidence": [],
+      "evidence": [
+        "15 tests green; COMBAT_OK + PROJECTILE_OK + VICTORY_OK + COMBAT_STATE_OK + COMBAT_DETERMINISM_OK hash=9ec911fd9baa2f35a3526f37d7a74c7b519f042386ea4b49039c9c876c93219b ticks=10000; B PASS"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-11T08:35:00+00:00",
-      "updated_at": "2026-11-11T08:35:00+00:00",
+      "updated_at": "2026-11-11T16:23:25+00:00",
       "started_at": null,
-      "completed_at": null,
-      "session_ref": null
+      "completed_at": "2026-11-11T16:23:25+00:00",
+      "session_ref": "agent:main:dashboard:fc9d8a3d-b62c-4a9a-a567-80c8a2d3f84f"
     },
     {
       "id": 18,
@@ -616,7 +620,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-11T08:35:00+00:00",
-  "updated_at": "2026-11-11T15:40:47+00:00",
+  "updated_at": "2026-11-11T16:23:25+00:00",
   "gates": [
     "critic",
     "auditor"
