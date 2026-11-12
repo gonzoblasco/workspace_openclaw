@@ -77,6 +77,8 @@ Al terminar la clase deberías poder:
 
 **Ejercicio:** armar una tabla de tres modelos actuales (proveedor, contexto, precio de input/output, fecha de corte) con fuente oficial y fecha de consulta. Entregable: `m2-modelos.md`.
 
+**Nota de práctica (2026-11-12):** el primer barrido de Vane quedó en `m2-informe-modelos-2026-11-12.md`, con la auditoría incluida. La auditoría encontró que la mayoría de los modelos elegidos están deprecados (GPT-5.1, Claude Sonnet 4.5, Gemini 2.5 Pro, Mistral Large 2407) y que el "tool calling no publicado" de GPT-5.1 es un falso negativo: la ficha oficial lista `function_calling`. Falta la segunda pasada con modelos vigentes y URLs oficiales.
+
 ### Módulo 3 - Developer Fundamentals & Working with APIs (15:23 - 17:54)
 
 **Objetivo:** pasar del chat a la API: el LLM como servicio request/response.
