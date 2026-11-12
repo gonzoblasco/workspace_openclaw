@@ -576,8 +576,12 @@ def main(argv=None):
         print(f"FALTA: {FACTS_FILE} sin bloque ```facts. Es el dueno de los hechos.")
         return 1
 
+    cv_files = list(cvs(root))
+    if not cv_files:
+        print(f"ERROR no hay CVs bajo {root}; no se pudo correr (exit 3)", file=sys.stderr)
+        return 3
     violations = []
-    for cv in cvs(root):
+    for cv in cv_files:
         violations.extend(check_cv(cv, facts))
     violations.extend(reference_checks(root)[0])
 

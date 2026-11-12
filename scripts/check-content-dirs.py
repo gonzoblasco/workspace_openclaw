@@ -89,6 +89,11 @@ def main() -> int:
         print("lista en el mismo commit.")
         return 1
 
+    # Una lista vacía no es verde: el check no revisó nada.
+    if not CONTENT_DIRS:
+        print("ERROR la lista de directorios de contenido está vacía; no se pudo correr "
+              "(exit 3)", file=sys.stderr)
+        return 3
     print(f"OK: {len(CONTENT_DIRS)} directorios de contenido, todos existen.")
     return 0
 

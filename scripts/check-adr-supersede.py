@@ -215,6 +215,10 @@ def find_violations(adr_dir: Path = ADR_DIR) -> List[str]:
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     adr_dir = Path(argv[0]) if argv else ADR_DIR
+    if not adr_dir.is_dir() or not any(adr_dir.glob('ADR-*.md')):
+        print(f"ERROR no hay ADRs en {adr_dir}; no se pudo correr (exit 3)",
+              file=sys.stderr)
+        return 3
     violations = find_violations(adr_dir)
     if violations:
         print(f"CORPUS DE ADRs CON DATOS PISADOS ({len(violations)}):")

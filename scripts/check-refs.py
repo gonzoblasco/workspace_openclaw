@@ -142,6 +142,14 @@ def main():
                 if not resolves(path, target):
                     broken.append((path.relative_to(ROOT), line_no, target))
 
+    # Cero refs revisadas no es verde: los archivos no se encontraron (rename,
+    # checkout parcial, cwd equivocado) y el check no leyó nada. Regla 1 de
+    # skills/verification-gates. Cazado al promover el gate de honestidad.
+    if checked == 0:
+        print(f"ERROR no se revisó ninguna ruta en {len(files)} archivo(s) candidato(s); "
+              f"no se pudo correr (exit 3)", file=sys.stderr)
+        return 3
+
     if broken:
         print(f"RUTAS ROTAS ({len(broken)} de {checked} revisadas):")
         for f, ln, ref in broken:

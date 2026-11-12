@@ -173,8 +173,12 @@ def main():
     report = "--report" in sys.argv
 
     if not os.path.exists(DB):
-        print("OK: no hay DB de memoria en %s (nada que verificar)." % DB)
-        return 0
+        # Una DB ausente NO es "nada que verificar": es el archivo de entrada
+        # que falta. Devolver OK acá es la falsa alarma más cara (regla 1 de
+        # skills/verification-gates): el check reporta verde sin haber mirado.
+        print("ERROR no hay DB de memoria en %s; no se pudo correr (exit 3)" % DB,
+              file=sys.stderr)
+        return 3
 
     conn = sqlite3.connect("file:%s?mode=ro" % DB, uri=True)
     try:

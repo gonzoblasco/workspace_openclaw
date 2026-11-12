@@ -358,6 +358,10 @@ def find_violations(root: Path) -> List[str]:
 
 def main(argv: List[str]) -> int:
     root = Path(argv[1]).resolve() if len(argv) > 1 else ROOT
+    if not (root / 'AGENTS.md').is_file() and not (root / 'docs').is_dir():
+        print("ERROR no hay AGENTS.md ni docs/ bajo %s; no se pudo correr (exit 3)"
+              % root, file=sys.stderr)
+        return 3
 
     violations = find_violations(root)
 

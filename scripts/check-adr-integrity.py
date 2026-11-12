@@ -147,6 +147,10 @@ def main(argv=None):
 
     disk = disk_by_number(adr_dir)
     nums = sorted(disk)
+    if not nums:
+        print("ERROR no hay ADRs en el corpus que revisar; no se pudo correr (exit 3)",
+              file=sys.stderr)
+        return 3
     print(f"OK: {len(nums)} ADRs, todos indexados, sin duplicados ni refs rotas.")
     gaps = [n for n in range(1, nums[-1] + 1) if n not in disk] if nums else []
     if gaps:
