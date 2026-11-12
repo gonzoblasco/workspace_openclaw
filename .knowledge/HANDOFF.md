@@ -1,15 +1,18 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-11 16:30 GMT-3
+**Fecha:** 2026-11-12 00:10 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-11-11). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-11.md`.
+> HANDOFF generado en el cierre de sesion (2026-11-12). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-12.md`.
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-12 00:10
+Arranque de sesion + montaje de la clase studies/dsa-mega-course/ desde el video xwI5OBEnsZU: Data Structures and Algorithms Mega Course (freeCodeCamp.org, Parth / Destination FAANG, 48:48:19, Java). Transcript de 74.659 cues ASR en 9.850 bloques con [h:mm:ss], glosario ASR de 25 filas, outline de 21 modulos en tres tramos alineado a los 29 capitulos oficiales, ~150 problemas con timestamp y checklist de 20 bloques. Gate de citas: 22 citas con timestamp, BAD 0, sin citas no literales. Commit 57b94e35a9.
 
 ### 2026-11-11 16:30
 Arranque de sesion + montaje y cierre de la clase studies/cute-room-portfolio-3d (video tdsQwuyS6DQ: Create a Cute Room Portfolio with Blender, Three.js, JavaScript, Andrew Woan, freeCodeCamp.org, 8:42:31). Transcripcion de 14.576 cues en-orig con glosario ASR, outline de 13 modulos 1:1 con los 42 capitulos oficiales y 30 citas verificadas (BAD 0), y ADOPCION con web-asset-gate.py corrido contra projects/reinos-de-la-frontera: falla de verdad (exit 1 con 1 MB/768px) y encontro que assets/quaternius/_download/ duplica 1,25 MB gzip de modelo y 677 KB de textura. Commits e90accbbac, 1b8c20b5a5.
@@ -22,6 +25,24 @@ Sesion corta: arranque + montaje de la clase studies/n8n-ai-automations desde el
 
 ### 2026-11-09 23:27
 POLITICA DE MODELOS: beam:cloud fuera de toda asignacion de primario (dejo de ser gratuito y produjo errores en dos sesiones de cursos de YouTube); deepseek-v4.1-flash:cloud vuelve a primario del CORE y de los defaults; gemma4:12b-mlx (local) queda como UNICO fallback de los nueve agentes, sin escalones cloud intermedios. Escrito como ADR-112 con verificacion ejecutable. GATEWAY E IPAD: el iPad no conectaba al gateway; la causa era triple (Tailscale sin perfil VPN, hostname apuntando a la Mac apagada mac-mini-de-gonzalo sin -1, y Tailscale Serve enrutando por nombre y no por IP). Se cambio gateway.bind a tailnet y tailscale.mode a off; el gateway ahora escucha en 100.126.255.95:18789 y la app entra con ws:// sin cifrar. Drift aceptado (3 campos, los tres del cambio). AUDITORIA DEL CORE: 9 sesiones de main corrieron con beam entre el 07 y el 08 (1,71M tokens, 4 commits). Se ejecuto cada artefactoC y se contrasto cada flag documentado contra --help: 3 defectos, todos corregidos (typo 'gobnar' en AGENTS.md, presupuesto de bootstrap a 5 caracteres del limite, y el flag inexistente --dry-run en el LEARNINGS del auditor). CVS: Gonzo corrigio el rumbo; dos referencias de contribuciones apuntaban a issues sin comentarios (#9868 y #9866 en vez del PR #9869 y el issue #9865) y el ATS declaraba UADE (carrera universitaria, prohibida por la regla del 2026-11-04). Corregidas las tres referencias, carrera fuera del ATS, y career-facts gana la seccion 5.2.1 con las siete contribuciones verificadas por API de GitHub. check-cv-facts.py ahora valida referencias contra el corpus y carreras en cualquier salida de postulacion.
+
+## Archivos tocados
+
+```
+docs/CHANGELOG.md
+docs/archive/CHANGELOG-archive.md
+studies/README.md
+```
+
+## Como continuar
+
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-11-12.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
+
+---
+
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
 
 ## Estado actual
 
@@ -78,22 +99,6 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 ### Pendientes heredados (sin cambios)
 
 1) Verificar contra GitHub las 19 referencias de CVs historicos que no estan en el corpus y agregarlas a career-facts 5.2.1. 2) Limpiar las carreras universitarias de los 5 CVs historicos (EIT/HTC, Mercor, Sol, TEMPO) - son de otras sesiones. 3) Confirmar con Gonzo que el iPad quedo operativo con ws://100.126.255.95:18789. 4) Watchdog de canales: el timeout del trigger sigue sin resolver si se repite.
-
-## Como continuar
-
-1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-11.md` para el informe completo de la sesion.
-3. Verificar el estado real antes de actuar (git, tests, la DB).
-
----
-
-*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
-
-## Archivos tocados
-
-```
-studies/README.md
-```
 
 ## Decisiones y contexto que no debe perderse
 
