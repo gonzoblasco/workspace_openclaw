@@ -6,6 +6,26 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-12] - Honestidad de los gates: exit 3 y tests negativos
+
+### Added
+- **`scripts/check-gate-honesty.py`** — verifica que cada `check-*.py` (a) declare `exit 3` ("no se pudo correr"), (b) resuelva la raíz sin depender del `cwd`, (c) reporte un veredicto legible. Sale 1 si hay violaciones. Medido hoy: **21 de 25 sin `exit 3`**.
+- **`scripts/gate-base-rate.py`** — mide cuántos gates del pre-commit tienen al menos un test con caso negativo. Hoy **11 de 18**. No es bloqueante y lo declara: su fórmula no convierte "cuántos casos" en una sensibilidad calibrada.
+- **`tests/python/test_check_gate_honesty.py`** — 6 tests.
+- **`docs/learnings/GATES-Y-TASA-BASE.md`** — el cruce Módulo 1 / Módulo 3 / Módulo 5 con el sustrato de verificación.
+
+### Changed
+- **`scripts/check-bootstrap-budget.py`** — si ningún archivo de bootstrap existe, devuelve `3` en vez de `0`.
+- **`scripts/check-single-source.py`** — si no hay archivos normativos, devuelve `3`.
+
+### Why
+`skills/verification-gates` fija desde 2026-09-28 que «cero casos corridos no es verde», y ningún gate la aplicaba a los gates. Un check que no encuentra su archivo de entrada devuelve `0` con un "OK": verde sin haber mirado. Es la misma forma que el curso enseñó tres veces (heurística no admisible, tasa base, overfitting): **una medición que no puede fallar no mide nada**.
+
+### Status
+21 de 25 gates sin `exit 3`; 7 de 18 sin test negativo; `check-skill-overlap` se lleva 9,65 s de los 10,44 s del pre-commit. Deuda medida, no prometida.
+
+---
+
 ## [2026-11-12] - Gate de citas de las clases de studies/
 
 ### Added

@@ -244,6 +244,13 @@ def find_stray_roles(root: Path):
 
 def main(argv=None):
     root = ROOT if argv is None else Path(argv[0])
+    # Sin archivos normativos no hay nada que comparar: cero casos revisados no
+    # es verde (skills/verification-gates, regla 1).
+    normativos = [n for n in NORMATIVE if (root / n).is_file()]
+    if not normativos:
+        print(f"ERROR no hay archivos normativos en {root}; no se pudo correr",
+              file=sys.stderr)
+        return 3
     dups = find_duplicates(root)
     stray = find_stray_models(root)
     stray_roles = find_stray_roles(root)

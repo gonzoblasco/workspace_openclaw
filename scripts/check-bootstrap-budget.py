@@ -31,6 +31,7 @@ Uso:
 Salida: exit 0 si todos entran bajo cap; 1 si alguno supera el suyo o el total.
 """
 
+import sys
 from pathlib import Path
 from typing import List
 
@@ -57,8 +58,13 @@ def cap_for(name: str) -> int:
 
 
 def measure(root: Path) -> List[dict]:
-    """Mide cada archivo de bootstrap que exista. Ausente = se omite (no es de
-    este check: la existencia la cubren otras guardas)."""
+    """Mide cada archivo de bootstrap que exista.
+
+    Ausente = se omite a propósito: la existencia la cubren otras guardas, y un
+    archivo ausente no tiene cap que violar. Pero si NINGUNO existe, no hay nada
+    que medir y el check no puede dar verde: main() lo reporta como no corrible.
+    (Regla 1 de skills/verification-gates: cero casos corridos no es verde.)
+    """
     rows: List[dict] = []
     for name in BOOTSTRAP_FILES:
         path = root / name
@@ -90,6 +96,10 @@ def find_violations(root: Path) -> List[str]:
 
 def main() -> int:
     rows = measure(ROOT)
+    if not rows:
+        print("ERROR no hay archivos de bootstrap que medir; "
+              "no se pudo correr (exit 3)", file=sys.stderr)
+        return 3
     total = sum(r["chars"] for r in rows)
     violations = find_violations(ROOT)
     if violations:
