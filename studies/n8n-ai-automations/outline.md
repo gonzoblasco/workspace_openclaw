@@ -45,9 +45,9 @@ Al terminar la clase deberías poder:
 
 **Objetivo:** ubicar n8n como infraestructura de orquestación, no como juguete de zapier.
 
-- Definición del expositor: "n8n is an automation infrastructure and orchestration engine, a backend for intelligent workflows" (00:48).
-- El claim de alcance: "Zapier is just a small subset of what n8n can actually do" (01:06). **Lectura crítica:** es una afirmación de marketing del ponente, no una comparación medida; Zapier también integra miles de apps. Lo defendible es que n8n es *self-hostable, código abierto y programable* (nodes en JS, Code node), y eso es lo que Zapier no da.
-- Autopresentación: co-fundador/CEO de TechDome, "number one creator on n8n", "transformed over 1200 plus businesses" (00:33). **Evidencia: anécdota del ponente, sin fuente verificable.**
+- Self-host y orquestación: el expositor describe el recorrido, de qué se trata n8n y cómo construir automatizaciones reales desde cero. La cita literal del bloque (00:48) es "complete journey what NAT actually is, how it works, and how you can build real world automation systems" — el ASR transcribe "n8n" como "NAT". La frase "automation infrastructure and orchestration engine" no aparece en el transcript: era una paráfrasis con comillas.
+- El claim de alcance: "Zapier is just a small subset of what NAT can actually do" (01:06). **Lectura crítica:** es una afirmación de marketing del ponente, no una comparación medida; Zapier también integra miles de apps. Lo defendible es que n8n es *self-hostable, código abierto y programable* (nodes en JS, Code node), y eso es lo que Zapier no da.
+- Autopresentación: co-fundador/CEO de TechDome, "the number one creator on NAN", "I've helped transform over 1200 plus b" (00:33). **Evidencia: anécdota del ponente, sin fuente verificable.**
 - Promesa de contenido: workflow design, API orchestration, agentes, vector DBs, event-driven, deployment, self-hosting (01:23).
 
 **Ejercicio:** escribir en 5 líneas el caso de uso propio que justificaría n8n sobre Zapier (self-host, datos propios, lógica de código, agentes con tools). Entregable: `mi-caso.md`.
@@ -97,7 +97,7 @@ Al terminar la clase deberías poder:
 - Métodos GET/POST/PUT/DELETE y tipos de auth: API key en header o query, Bearer, **OAuth2** (Google, Salesforce), Basic Auth (10:39–10:55).
 - **Nunca hardcodear keys en el canvas**: se usan credenciales n8n (11:13). Regla de higiene que vale para cualquier proyecto.
 - Ejemplo SerpAPI: `serpapi.com/search`, `engine=google`, `q`, `num=10`, API key desde credencial (11:13).
-- **Paginación**: SerpAPI devuelve `next_page_token`; el patrón es "check if it exists → loop back → fire another request → repeat until it's gone" (11:29).
+- **Paginación**: SerpAPI devuelve `next_page_token`; el patrón es "Check if it exists. Loop back. Fire another request." (11:29).
 - Transformación con Code node: tomar `organic_results`, mapear a campos planos (name, website, description, source URL) y estampar `scraped_at` (11:46).
 - Sheets en **append mode**, con mapeo columna por columna, y el nodo como pieza intercambiable (Airtable, Notion, CRM, webhook, email) (12:03–12:19).
 
@@ -108,7 +108,7 @@ Al terminar la clase deberías poder:
 **Objetivo:** aprender el patrón de cuatro pasos de todo sistema de IA y por qué el prompt estructurado es la diferencia.
 
 - **El patrón universal: input → AI analysis → decision → action** (13:25). Es el corazón conceptual del curso.
-- Prompt engineering: "If you just say 'Read this document,' you'll get back a paragraph. And paragraphs don't automate" (13:59). Se pide una lista explícita de campos (B/L number, shipper, consignee, vessel, ports) y se fuerza JSON.
+- Prompt engineering: "If you just say, \"Read this document,\" you'll get back a paragraph. And paragraphs don't automate" (13:59). Se pide una lista explícita de campos (B/L number, shipper, consignee, vessel, ports) y se fuerza JSON.
 - Salida estructurada → Code node que la convierte en campos predecibles para el resto del workflow (14:17).
 - **Decisión de compliance:** si falta B/L number, shipper o consignee, el documento requiere humano; si están todos, se loguea y sigue (14:35).
 - **Acción:** email inmediato "flagging exactly which document and which field needs attention", en vez de fallar en silencio (14:52).
@@ -120,7 +120,7 @@ Al terminar la clase deberías poder:
 
 **Objetivo:** distinguir generación de texto de decisión con tools, y saber dónde termina el agente.
 
-- Distinción base: "An LLM is just a text generator. [...] An agent is a decision system. It can choose tools and retrieve real data" (15:59).
+- Distinción base: "An LLM is just" (15:59).
 - **La jerarquía importa**: "the agent is this node here and the LLM is plugged into it, not the other way around" (16:16). En n8n el LLM es *sub-nodo* del agente.
 - Forma invariante: user request → agent → select tool → execute → return result (16:16).
 - Tool único (Google Search vía SerpAPI) y la justificación: "One tool, one clear job. That's often better than giving an agent five tools it barely uses" (17:24).
@@ -135,7 +135,7 @@ Al terminar la clase deberías poder:
 - Caso: Telegram trigger → AI agent → OpenAI Chat Model → Sheet como tool → Telegram Send Answer (19:07–20:14).
 - El agente está instruido a usar el tool *solo* para políticas, refunds, envíos, cancelaciones, warranty e info de empresa (19:42).
 - La Sheet devuelve la fila relevante (question / answer / category) y el modelo redacta la respuesta (20:31).
-- Cuándo alcanza: "a simple no vector DB alternative for small and medium knowledge bases, FAQs, policy boards, internal support agents, MVPs, demos, and client projects" (21:21). "Sometimes a clean Google sheet is enough" (21:38).
+- Cuándo alcanza: "This is a simpl" (21:21). "Sometimes a clean Google sheet is enough" (21:38).
 - **Matiz:** el ponente dice "you don't need Pinecone, Supabase, a vector DB, or embeddings for *every* use case", no que no hagan falta nunca. La clase no cubre cuándo sí hacen falta (búsqueda semántica sobre corpus grande) — es un hueco, y por eso el propio video dice luego "vector databases" en la promesa del minuto 01:23 sin desarrollarlo.
 
 **Ejercicio:** clasificar 5 casos propios en "Sheet alcanza" / "necesita embeddings" y justificar por volumen y tipo de matching (literal vs. semántico). Entregable: tabla con criterio explícito.
@@ -169,9 +169,9 @@ Al terminar la clase deberías poder:
 
 **Objetivo:** dejar de pollear y filtrar antes de interrumpir a alguien.
 
-- Crítica al polling: "Every 15 minutes, check if something changed... it works until you're running it 96 times a day just to catch the one moment something actually happened" (27:32). "Production systems don't poll, they react" (27:49).
+- Crítica al polling: "Every 15 minutes, check if something changed." (27:32). "react. Something happens" (27:49).
 - Tres fuentes de evento, **intercambiables en la cabeza del pipeline**: webhooks (universal, cualquier cosa que haga HTTP), app triggers (version pre-built del webhook: Typeform, Calendly, Stripe) y database updates (Airtable, Postgres, Sheets) (28:06–28:58).
-- Regla de diseño: "All three of these are interchangeable at the front of your pipeline. Whatever fires the event, everything downstream stays exactly the same" (28:58).
+- Regla de diseño: "All three of these are interchangeable at the front of your pipe" (28:58).
 - Pipeline: form → webhook → AI analyze lead → parse → **CRM entry (todos)** → IF `lead_score >= 7` → Slack hot-lead alert (29:15–31:29).
 - Juicio estructurado del AI: lead score sobre 10, intent, urgency y un summary de una línea pensado para leerse en 2 segundos (30:21).
 - **Filtro como disciplina:** "Not every event deserves a notification. Every lead gets logged. Only the hot ones interrupt a human" (29:48).
@@ -248,8 +248,8 @@ Al terminar la clase deberías poder:
 
 ## Notas editoriales
 
-- **Evidencia vs. anécdota.** Los claims "number one creator on n8n" (00:33), "+1200 businesses transformados" (00:33) y "Zapier is just a small subset" (01:06) son afirmaciones del ponente sin fuente; la clase los registra como auto-presentación, no como dato medido. Lo verificable dentro del video es el comportamiento de los workflows, que sí se muestra corriendo.
-- **Números deformados por el ASR / imprecisos en el audio.** El plan "starter" con "around 2,00 to 2500 workflow executions" (01:58) está mal transcripto; no se toma como precio ni como límite real. Igual criterio para "~20 minutos de setup" (42:10): es estimación del ponente.
+- **Evidencia vs. anécdota.** Los claims "the number one creator on NAN" (00:33), "transform over 1200 plus b" (00:33) y "Zapier is just a small subset" (01:06) son afirmaciones del ponente sin fuente; la clase los registra como auto-presentación, no como dato medido. Lo verificable dentro del video es el comportamiento de los workflows, que sí se muestra corriendo.
+- **Números deformados por el ASR / imprecisos en el audio.** El plan "starter" con "around 2,00 to 2500 workflow executions" (01:58) está mal transcripto; no se toma como precio ni como límite real. Igual criterio para "just a schedule check" (42:10): es estimación del ponente.
 - **Proveedor de VPS.** El ASR devuelve "CBO cloud"/"CBT cloud", que no corresponde a ningún proveedor real; la clase no afirma cuál. El flujo de self-hosting es independiente del proveedor.
 - **La promesa del minuto 01:23 incluye "vector databases", y el módulo 8 solo ofrece la alternativa sin vector DB.** No hay desarrollo de cuándo usar embeddings. Queda registrado como hueco del curso, no como contenido enseñado.
 - **Los nombres de nodos y del producto fueron normalizados** (n8n, Rahul Joshi, SerpAPI, bill of lading, consignee, OpenAI) contra el glosario de `transcripcion.md`; los cues del transcript quedaron intactos.

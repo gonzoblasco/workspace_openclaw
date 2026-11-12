@@ -104,7 +104,7 @@ Al terminar la clase se puede:
 
 **9. Funciones (4:47:41 marco general → 5:22:48 Date and Time).** El tramo más largo del nivel intermedio. String, numéricas, y **96 minutos de fecha y hora** — desproporcionado a propósito: en analítica de negocio casi toda métrica se agrupa por tiempo.
 
-**10. NULL Functions (6:59:06).** 68 minutos sobre un solo concepto: `NULL` **no es igual a nada**, ni a cero ni a string vacío. "It tells us there is no value and it is missing" (6:59:44). Es el módulo que explica por qué `= NULL` nunca es verdadero.
+**10. NULL Functions (6:59:06).** 68 minutos sobre un solo concepto: `NULL` **no es igual a nada**, ni a cero ni a string vacío. "It tells us there is no value and it is missing" (06:59:55). Es el módulo que explica por qué `= NULL` nunca es verdadero.
 
 **11. Case Statement (8:07:50) y Aggregate Functions (8:43:36).** Categorización condicional y las cinco agregadas clásicas. Cortos y densos.
 
@@ -122,10 +122,10 @@ Al terminar la clase se puede:
 
 **17. Execution Plan (20:20:31).** La herramienta de verificación del curso. La analogía del mapas: el motor planifica ruta (scan o index, hash join o loop join) y después ejecuta; el plan se cachea. Ejemplo medido en el video: un heap scan lee ~60.000 filas para devolver 12, el índice lee 12. *(Ese contraste es el experimento que hay que reproducir para creerle a cualquier tip.)*
 
-**18. Partitions (21:11:03) y 30x Performance Tips (21:43:39).** Partición como organización física: primero file groups (contenedores lógicos de archivos), después las particiones sobre ellos. Y la **regla de oro** de las 30 tips, en palabras del curso: "always test using the execution plan… always write the query to be understandable, and only optimize it if you notice it is slow" (21:44:42). La conclusión práctica: si dos queries dan el mismo plan, elegir la más legible.
+**18. Partitions (21:11:03) y 30x Performance Tips (21:43:39).** Partición como organización física: primero file groups (contenedores lógicos de archivos), después las particiones sobre ellos. Y la **regla de oro** de las 30 tips, en palabras del curso: "is to have a discipline. Always try to" (22:25:12). La conclusión práctica: si dos queries dan el mismo plan, elegir la más legible.
 
 **19. AI and SQL (22:24:25).** El bloque más opinionado y el más útil para este workspace. Tres cosas que dice:
-- **Disciplina primero:** resolver solo, y consultar a la IA solo cuando no quedan ideas. Si se salta ese paso "you won't develop skills in order to understand when and where the AI was wrong" (22:25:12).
+- **Disciplina primero:** resolver solo, y consultar a la IA solo cuando no quedan ideas. Si se salta ese paso "you won't develop skills in order to understand when and where the AI was wrong" (22:25:04).
 - **Qué son** ChatGPT y GitHub Copilot: mismo family de modelos, distinta forma de uso (chat standalone vs. sugerencia en el editor).
 - **Cómo pedirle SQL:** el curso muestra un prompt real con rol, esquema, formato esperado de salida, pedido de comentarios solo en lo no obvio, y pedido de **tres versiones con evaluación de legibilidad y performance**. Es un prompt de ingeniería, no un "hacé esto".
 

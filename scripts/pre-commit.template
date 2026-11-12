@@ -149,6 +149,30 @@ python3 "${SCRIPT_DIR}/scripts/check-cv-facts.py" || exit 1
 # existencia.
 python3 "${SCRIPT_DIR}/scripts/check-content-dirs.py" || exit 1
 
+# Gate de citas de las clases de studies/ (2026-11-12, promovido desde
+# studies/cs50-ai-python/heldout.py tras siete usos reales en un dia).
+# Disparador PROPIO, no el de markdown: lo que se verifica es que cada cita
+# "texto" (h:mm:ss) del archivo exista LITERALMENTE en el transcripcion.md del
+# mismo directorio, y que el timestamp sea el del bloque que la contiene. El
+# corpus es el test set: la clase no se escribio con el transcript como senal.
+# Sin trigger no se corre en el caso que existe para cazar. Solo los archivos de
+# clase STAGED, para que el commit dure lo que tarda en leerlos.
+STUDY_CLASS_CHANGED=$(echo "$CHANGED" | grep -E '^studies/[^/]+/[^/]*\.md$' || true)
+if [ -n "$STUDY_CLASS_CHANGED" ]; then
+  echo "$STUDY_CLASS_CHANGED" | while IFS= read -r f; do
+    [ -f "$f" ] || continue
+    dir=$(dirname "$f")
+    [ -f "$dir/transcripcion.md" ] || continue
+    python3 "${SCRIPT_DIR}/scripts/check-study-citations.py" "$f" "$dir/transcripcion.md" \
+      >/dev/null 2>&1 || {
+        echo "  check-study-citations: cita o timestamp invalido en $f"
+        python3 "${SCRIPT_DIR}/scripts/check-study-citations.py" "$f" "$dir/transcripcion.md" 2>&1 | sed 's/^/    /'
+        exit 1
+      }
+  done || exit 1
+fi
+
+
 # Guard del budget de bootstrap (2026-10-06, ROADMAP 0.1). SIN CONDICION, a
 # proposito: los archivos que OpenClaw inyecta en cada arranque (AGENTS/MEMORY/
 # USER/SOUL/IDENTITY) se truncan EN SILENCIO al superar su cap; el agente arranca
