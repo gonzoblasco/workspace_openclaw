@@ -51,12 +51,21 @@ Mientras tanto la política de fallbacks había crecido sin criterio: cada agent
 > ### Decision revisada (2026-11-12)
 >
 > 1. **El fallback cubre fallas, no lentitud.** La lentitud se resuelve con techo de timeout.
-> 2. **Techo de timeout elevado a 600s** en los tres providers (`ollama`, `ollama-cloud`,
+> 2. **Techo de timeout elevado a 900s** en los tres providers (`ollama`, `ollama-cloud`,
 >    `ollama-local`), contra el implicito de ~120s de idle/stream que truncaba respuestas.
-> 3. **Fallback por agente: otro modelo de la misma nube, distinto del primario.** Si el
->    fallback fuera igual al primario no haria nada. Regla aplicada: `deepseek` cae a `gpt-oss`
->    y `gpt-oss` cae a `deepseek`; `muse-spark-open` cae a `gpt-oss`.
+>    Con 15 minutos de margen, un modelo lento ya tiene margen para terminar antes de que
+>    el watchdog dispare.
+> 3. **El fallback vuelve a ser `gemma4:12b-mlx` (local) en los nueve agentes.** Con el
+>    timeout resuelto, la unica razon que queda para cambiar de modelo es que el primario
+>    falle de verdad — y ante una falla, la salida honesta es local, no otro modelo de la
+>    misma nube. El fallback cloud que se probo a las 08:20 del 2026-11-12 quedo revertido
+>    en la misma manana: resolvia un sintoma que el timeout ya resuelve.
 > 4. Sigue vigente: **`beam:cloud` no es primario de ningun agente.**
+>
+> **Historial de esta revision, para que no se repita el ida y vuelta:** primero se probo
+> `gpt-oss` como secundario cloud (08:20), y a los 20 minutos se volvio a Gemma local (08:41)
+> al extender el timeout a 900s. La regla que queda es la de arriba; el paso intermedio no
+> es una alternativa vigente.
 
 ## Consecuencias
 
@@ -82,6 +91,6 @@ for k,v in a['entries'].items():
 "
 ```
 
-Criterio de aceptación: ningún `primary` es `ollama/beam:cloud`; todo agente tiene fallback; y **ningún fallback es igual a su propio primary**.
+Criterio de aceptación: ningún `primary` es `ollama/beam:cloud`; todo agente tiene fallback; y el fallback es `gemma4:12b-mlx` en los nueve agentes.
 
-Aplicado y verificado el 2026-11-09. Revisado y re-aplicado el 2026-11-12 (fallback redefinido como red ante falla; techo de timeout a 600s en los tres providers).
+Aplicado y verificado el 2026-11-09. Revisado y re-aplicado el 2026-11-12 (fallback redefinido como red ante falla; techo de timeout a 900s en los tres providers; fallback vuelve a Gemma local en los nueve agentes).
