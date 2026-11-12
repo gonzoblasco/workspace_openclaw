@@ -16,14 +16,16 @@ Arranque de sesion + montaje de clase: video yhtdkuw9mbM = 'Creative Web Develop
 
 ## Estado actual
 
-- Modulo actual: clase completa (transcript + outline + ADOPCION con gate) commiteada en fee7641aa9
-- Ejercicios hechos: ninguno; la clase esta montada, no cursada
-- Preguntas abiertas: si el gate de assets entra al flujo de reinos-de-la-frontera o queda como script de estudio
-- Proximo bloque: cursarlo por modulo arrancando por Blender 6:37-42:16 (modelo mental + arbol), que es el 45% y prerrequisito del codigo
+- Modulo actual: Modulo 1 dictado (00:00:00-00:06:37); Modulos 2-11 sin cursar
+- Ejercicios hechos: ninguno entregado; las tres respuestas del M1 quedaron pedidas (tema, tres objetos, que es clickeable)
+- Preguntas abiertas: r149 o r187 para arrancar el M2 (mi recomendacion: r149 y migrar en el M8)
+- Proximo bloque: Modulo 2 (00:06:37-00:15:44), modelo mental escena/luz/camara/objeto + ejercicio de intuicion objeto->primitiva
 
 ## Proximos pasos
 
-1. Cursar el Módulo 2-3 (6:37-42:16) con el ejercicio del arbol malo vs bueno. Si se decide adoptar el gate en reinos-de-la-frontera, mover glb-budget.py a scripts/ y escribir la skill recien despues del segundo uso real.
+1. Retomar por el Módulo 2 (00:06:37-00:15:44) solo cuando Gonzo elija version (r149 o r187) y tema de portfolio.
+2. Hacer el ejercicio de intuición del M2 (traducir 5 objetos de la casa a primitivas) antes del M3, donde ese criterio decide plano vs cubo en el árbol.
+3. Pendiente heredado, sin urgencia: si el gate `glb-budget.py` entra al flujo de `reinos-de-la-frontera`, moverlo a `scripts/` y escribir la skill recién después del segundo uso real.
 
 ## Decisiones y contexto que no debe perderse
 
