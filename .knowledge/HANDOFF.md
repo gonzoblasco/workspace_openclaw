@@ -1,7 +1,7 @@
-# HANDOFF - workspace
+# HANDOFF - Workspace
 
-**Fecha:** 2026-11-12 01:52 GMT-3
-**Proyecto:** workspace
+**Fecha:** 2026-11-12 01:57 GMT-3
+**Proyecto:** Workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-12 01:57
+Clase `estudios/entrevistas-tecnicas` en curso. Se dio el Modulo 0 (marco de tres ventanas + ansiedad medida con la MASI) y el diagnostico de Gonzo quedo registrado en `ejercicio-0-gonzo.md`: improviso las tres etapas, con el «antes» como raiz; el speech que le prepare se leyo dos veces y no se estudio. Vino un research de Vane sobre ansiedad de entrevista; se audito en vez de adoptarlo: se leyo el PDF completo de Jamieson, Nock & Mendes (2012) -el reappraisal reduce resistencia periferica y sesgo atencional pero NO baja el estres subjetivo- y el paper completo de Lev-Ari & Keysar (2010) -acento leve penaliza credibilidad por fluidez, corregible si el oyente lo nota; acento fuerte no se corrige. Brooks (2014) y McCarthy & Goffin (2004) quedan identificados y no leidos. Se descarto la cita dudosa «Taylor & Sullman, 2009?» y se dejo constancia de que no hay evidencia de rechazo por ansiedad como criterio formal en examenes de conducir. Se escribio el prompt de research para Vane y quedaron tres caminos: linea base grabada, Modulo 1 (LinkedIn), o plan de 4 semanas ajustado.
 
 ### 2026-11-12 01:52
 Sesion de practica del curso n8n. Se monto la instancia self-hosted local en labs/n8n (docker compose, n8n 2.47.4, 127.0.0.1:5678, datos en ./data, API publica habilitada con key). Modulos 2 y 3 dictados y ejecutados: Gonzo armo a mano el workflow trigger/Set/IF/dos NoOp en la UI y respondio el cuestionario; despues se creo por API el workflow del modulo 3 (webhook -> Set -> IF -> HTTP Request a Ollama -> Set de salida) y se verifico end-to-end con dos ejecuciones success (una con body generado, otra por la rama false sin llamar a la IA). Dos fallas reales corregidas en el camino: ExpressionError por anidar {{ }} dentro de un string JS (se resuelve concatenando con +), y content vacio con max_tokens 400 porque deepseek-v4.1-flash:cloud consumia el presupuesto razonando (con 900 sale completo). Commit 6ab77f46dc con la infra del lab y la memoria, sin secretos. Sin push.
@@ -23,10 +26,11 @@ Arranque de sesion + montaje de la clase studies/dsa-mega-course/ desde el video
 ### 2026-11-11 16:30
 Arranque de sesion + montaje y cierre de la clase studies/cute-room-portfolio-3d (video tdsQwuyS6DQ: Create a Cute Room Portfolio with Blender, Three.js, JavaScript, Andrew Woan, freeCodeCamp.org, 8:42:31). Transcripcion de 14.576 cues en-orig con glosario ASR, outline de 13 modulos 1:1 con los 42 capitulos oficiales y 30 citas verificadas (BAD 0), y ADOPCION con web-asset-gate.py corrido contra projects/reinos-de-la-frontera: falla de verdad (exit 1 con 1 MB/768px) y encontro que assets/quaternius/_download/ duplica 1,25 MB gzip de modelo y 677 KB de textura. Commits e90accbbac, 1b8c20b5a5.
 
-### 2026-11-11 15:17
-Arranque de sesion + montaje y retiro de la clase del video ZaPbP9DwBOE ("Don't learn AI Agents without Learning these Fundamentals", KodeKloud, 56:39). Se monto `studies/ai-agents-fundamentals/` con transcript de 163 bloques, outline de 17 modulos con 33 citas verificadas (33/33) y ADOPCION. El artefacto del curso fue `scripts/boundary-check.py`: midio que el catalogo automatico (`memory-catalog-v2.py`) corta a ciegas cada daily -669 de 741 chunks mal cortados, 1328 de 1464 tambien cortados al truncar a 768 chars al embeber-. Gonzo pregunto si recomendaba ver el curso: respuesta no, salvo el modulo 9 (vector DB, 24:46-31:27), y lo que recomende fue arreglar el catalogo. Despues pidio RETIRAR el curso y los activos: se borro `studies/ai-agents-fundamentals/`, `scripts/boundary-check.py` y la entrada del `studies/README.md`. Verificacion: el commit del curso NO esta en la historia de la rama (lo destruyo otra sesion concurrente que commiteo con `--amend` y `reset` desde el mismo worktree; mi `git show` previo leyo un object compartido y reportaba contenido ajeno como mio). El hallazgo del catalogo queda como deuda registrada, sin archivos.
-
 ## Estado actual
+
+Modulo 0 dado y verificado. Research de Vane auditado contra fuente: dos papers leidos, el resto marcado. Modulo 1 no empezado. Sin linea base grabada todavia.
+
+### Estado previo (heredado)
 
 Lab local operativo y versionado sin secretos. Curso en modulo 4. Instancia arriba.
 
@@ -51,6 +55,36 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1. Elegir camino: (a) linea base grabada de «contame sobre vos» en ingles, (b) Modulo 1.1 auditoria de LinkedIn, (c) plan de 4 semanas ajustado. Recomendacion de Kanam: linea base primero.
+2. Commit local de `studies/entrevistas-tecnicas/` (research/ + ejercicio-0-gonzo.md).
+3. Push cuando Gonzo lo autorice.
+4. Deuda: leer Brooks (2014) y McCarthy & Goffin (2004) para cerrar las dos citas sin verificar; sin esas, no enseñar sus tamanos de efecto.
+5. HEREDADOS (sin cambios):
+1. Gonzo hace 3.A (tipo number vs campo ausente en el IF). Luego modulo 4: dos Google Sheets como tools de un agente. Si se muda a VPS, el endpoint de Ollama cambia de host.docker.internal al host destino.
+7. ### Pendientes heredados (sin cambios)
+1. Decidir si cute-room-portfolio-3d se estudia: modulos 1 y 2 para escena, modulo 8 (baking) es el que justifica el curso. En reinos-de-la-frontera: convertir PNG a WebP cuando exista pipeline web y decidir si se retira assets/quaternius/_download/.
+9. ### Pendientes heredados (sin cambios)
+10. ### PENDIENTE - servicio del gateway: `partial import` (registrado 2026-11-10 20:54)
+11. **Estado:** el gateway esta sano y estable (pid 63535, uptime > 2h, loopback 200, https 200, escuchando solo en 127.0.0.1 y [::1]). Lo que NO esta resuelto es la definicion del servicio:
+12. ```
+13. launchctl print gui/501/ai.openclaw.gateway
+14. properties = partial import | keepalive | runatload | inferred program
+15. ```
+16. Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el servicio (`service-ownership-changed`). No rompe la operacion hoy; rompe un update futuro.
+17. **Plan acordado (no ejecutado):**
+1. Correr `/opt/homebrew/bin/openclaw gateway install --force` **con PATH seteado** y ruta absoluta.
+- El intento del 2026-11-10 fallo porque `launchctl submit` ejecuta con `PATH=/usr/bin:/bin:/usr/sbin:/sbin` y `openclaw` vive en `/opt/homebrew/bin`: 363 corridas con `openclaw: command not found`, mas un bucle de SIGTERMs de 3 horas.
+2. Verificar que `properties` deje de decir `partial import`.
+3. Si `bootstrap` sigue devolviendo EIO (`Bootstrap failed: 5: Input/output error`), usar `sudo` - el propio error pide privilegios: *"Try re-running the command as root for richer errors"*.
+22. **Regla de disparo:** el humano corre la palabra clave **`nuevamente`** cuando vuelva a aparecer un mensaje extraño o quiera retomar este plan. Al escucharla, retomar este pendiente y no otro.
+23. **Por que no se ejecuto ahora:** el ultimo intento a ciegas costo tres horas de inestabilidad. Se hace con Gonzo frente a la maquina o cuando el gateway pueda caerse sin costo.
+24. ---
+1. Retomar studies/n8n-ai-automations cuando Gonzo elija el primer workflow real a implementar (modulos 3/6/11 son el mismo patron). Pendientes de otra sesion: integracion de assets CC0 en projects/edad-de-los-reinos.
+26. ### Pendientes heredados (sin cambios)
+1) Verificar contra GitHub las 19 referencias de CVs historicos que no estan en el corpus y agregarlas a career-facts 5.2.1. 2) Limpiar las carreras universitarias de los 5 CVs historicos (EIT/HTC, Mercor, Sol, TEMPO) - son de otras sesiones. 3) Confirmar con Gonzo que el iPad quedo operativo con ws://100.126.255.95:18789. 4) Watchdog de canales: el timeout del trigger sigue sin resolver si se repite.
+
+### Pendientes heredados (sin cambios)
 
 1. Gonzo hace 3.A (tipo number vs campo ausente en el IF). Luego modulo 4: dos Google Sheets como tools de un agente. Si se muda a VPS, el endpoint de Ollama cambia de host.docker.internal al host destino.
 
@@ -90,6 +124,30 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 1) Verificar contra GitHub las 19 referencias de CVs historicos que no estan en el corpus y agregarlas a career-facts 5.2.1. 2) Limpiar las carreras universitarias de los 5 CVs historicos (EIT/HTC, Mercor, Sol, TEMPO) - son de otras sesiones. 3) Confirmar con Gonzo que el iPad quedo operativo con ws://100.126.255.95:18789. 4) Watchdog de canales: el timeout del trigger sigue sin resolver si se repite.
 
+## Decisiones y contexto que no debe perderse
+
+- El research externo se audita leyendo la fuente, no se adopta por plausible. Aprobar una cita sin abrir el paper es el mismo error que citar un README como especificacion.
+- Reappraisal no reduce el estres subjetivo: cambia fisiologia y atencion. Ensenarlo como «calmate» es falso.
+- Acento leve penaliza credibilidad por fluidez y el oyente puede corregirlo si lo nota; acento fuerte no. La palanca practica es fluidez del contenido, no borrar el acento.
+- No hay literatura que sostenga «rechazo por ansiedad» como criterio formal en examenes de conducir; se rechaza por errores observables.
+- Vane devuelve borradores: lo que la clase cita tiene que estar leido.
+- HEREDADAS (sin cambios):
+- Fallback unico local por decision de Gonzo: 'el fallback no puede ser otro modelo en la nube'. Primario deepseek y no beam: dejo de ser gratuito y su calidad ya estaba descartada por ADR-105 (3/4 bugs, auto-aprobacion con defecto vivo). Ninguna carrera universitaria va a CV ni ATS (regla 2026-11-04). Una referencia de CV se verifica abriendo el hilo en GitHub, no contra el corpus.
+
+### Heredadas (sin cambios)
+
+- Fallback unico local por decision de Gonzo: 'el fallback no puede ser otro modelo en la nube'. Primario deepseek y no beam: dejo de ser gratuito y su calidad ya estaba descartada por ADR-105 (3/4 bugs, auto-aprobacion con defecto vivo). Ninguna carrera universitaria va a CV ni ATS (regla 2026-11-04). Una referencia de CV se verifica abriendo el hilo en GitHub, no contra el corpus.
+
+## Como continuar
+
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-11-12.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
+
+---
+
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
+
 ## Archivos tocados
 
 ```
@@ -109,20 +167,6 @@ docs/CHANGELOG.md
 docs/archive/CHANGELOG-archive.md
 studies/README.md
 ```
-
-## Como continuar
-
-1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-12.md` para el informe completo de la sesion.
-3. Verificar el estado real antes de actuar (git, tests, la DB).
-
----
-
-*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
-
-## Decisiones y contexto que no debe perderse
-
-- Fallback unico local por decision de Gonzo: 'el fallback no puede ser otro modelo en la nube'. Primario deepseek y no beam: dejo de ser gratuito y su calidad ya estaba descartada por ADR-105 (3/4 bugs, auto-aprobacion con defecto vivo). Ninguna carrera universitaria va a CV ni ATS (regla 2026-11-04). Una referencia de CV se verifica abriendo el hilo en GitHub, no contra el corpus.
 
 ## What This Is
 
