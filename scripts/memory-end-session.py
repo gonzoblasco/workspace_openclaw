@@ -42,7 +42,9 @@ def sql_escape(s):
 
 
 def db_connection():
-    conn = sqlite3.connect(DB_PATH)
+    # timeout: el cierre corre mientras otras sesiones escriben la misma DB;
+    # sin timeout, sqlite3 falla al toque con "database is locked" en vez de esperar.
+    conn = sqlite3.connect(DB_PATH, timeout=30)
     conn.execute("PRAGMA foreign_keys = ON")
     conn.row_factory = sqlite3.Row
     return conn
