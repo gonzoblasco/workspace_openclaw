@@ -1,38 +1,47 @@
 # HANDOFF - Curso godot-2d-platformer-beginners
 
-**Fecha:** 2026-11-11 16:27 GMT-3
+**Fecha:** 2026-11-12 01:47 GMT-3
 **Proyecto:** godot-2d-platformer-beginners
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-11-11). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-11.md`.
+> HANDOFF generado en el cierre de sesion (2026-11-12). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-12.md`.
 
 ---
 
 ## Que se hizo en esta sesion
 
-Arranque de sesion + montaje de la clase del curso Godot Game Development for Beginners (freeCodeCamp, Sarah y Reem / Hack Club, 57:59). Subtitulos automaticos en-orig bajados con curl desde timedtext (el extractor de yt-dlp falla intermitente con 'The page needs to be reloaded'; 2 reintentos y salio): 2.788 eventos crudos -> 1.394 cues deduplicados, 7.394 palabras, ultimo cue 00:57:55 sobre 00:57:59. studies/godot-2d-platformer-beginners/ con transcripcion.md (glosario ASR de 25 filas: TileMapLayer, AnimatableBody2D que el ASR llama 'animated ball body', Parallax2D, Time.get_ticks_msec), outline.md de 10 modulos 1:1 con los 19 capitulos oficiales, plan de estudio en 4 sesiones, 30 citas literales verificadas con el gate del paso 10 (BAD: 0 tras corregir 5 timestamps y recortar 6 citas parafraseadas), banco de 10 preguntas, y ADOPCION.md con un artefacto: check-hierarchy-coupling.py, gate que detecta referencias a otros nodos por get_parent() encadenado o get_parent().get_node(), corrido contra projects/reinos-de-la-frontera -> FAIL con 3 hallazgos (view/hud.gd:67, view/overlay.gd:19, view/world_view.gd:29). La idea adoptada es la del Modulo 4 del curso (00:13:51, 'get parent dot get parent dot get node checkpoint manager'), que el proyecto ya replicaba. El gate queda en rojo a proposito: mide deuda de acoplamiento real, no se arregla en esta sesion. studies/README.md actualizado.
+Sesion de estudio del curso con practica sobre el proyecto real platformer-tiempo. Modulo 1 dado adaptado: no fue 'instalar Godot' (ya instalado, 4.7.2) sino 'que es un proyecto de Godot'. Documento en projects/platformer-tiempo/docs/estudio/modulo-01.md (commit 9c0cd94). Se cerro el ejercicio de auditoria de 5 minutos con evidencia: main_scene=res://levels/level_01.tscn, features=("4.7","GL Compatibility"), autoload GameClock activo (*), renderer gl_compatibility coincide con README. Hallazgo medido contra la intuicion: sin .godot/ los tests pasan (13 y 16 checks) Y el cache NO se regenera por CLI - solo el editor lo crea. Verificada la definicion de autoload contra docs oficiales de Godot (node hijo del root viewport, agregado antes de cualquier escena) con la advertencia de que NO es un singleton 'de verdad'. Gonzo fijo el criterio de las proximas sesiones: practica a medida que se presenta cada tema, todo el ejercicio resuelto, porque el objetivo final es escribir skills, scripts y workflows propios.
 
 ## Estado actual
 
-Modulo actual: ninguno (clase montada, sin estudiar aun)
-Ejercicios hechos: ninguno
-Preguntas abiertas: ninguna del curso
-Proximo bloque: Sesion 1 de estudio (00:00-11:51: motor, tilemap, autotiling, jugador, input, camara)
+- Modulo actual: Modulo 1 completado (adaptado). Modulo 2 pendiente de arrancar.
+- Ejercicios hechos: auditoria de 5 minutos completa (5 puntos, con evidencia de comandos). Punto 5 (borrar .godot y correr tests) ejecutado y medido.
+- Preguntas abiertas: (1) Por que un tilemap necesita un TileSet aparte y no puede usar el PNG directo. (2) Diferencia entre 'el tile se ve' y 'el tile se pisa'. Ademas sin responder: usa level_01.tscn TileMap o sprites individuales, y existe un TileSet creado.
+- Proximo bloque: Modulo 2 - TileMap/TileSet. Enfoque acordado: primero inspeccionar que hay hoy en levels/ (nodos reales), despues explicar el TileSet por dentro.
 
 ## Proximos pasos
 
-1. Estudiar los modulos 1-3 montando el proyecto en un Godot 4.x local y cumpliendo el ejercicio de cada uno; el modulo 2 (patron de vecindad del terrain) es donde el curso es mas opaco y mas necesita practica
+1) Inspeccionar levels/level_01.tscn y level_02.tscn con grep de tipos de nodo para responder si usa TileMapLayer o sprites, sin depender del editor. 2) Segun el resultado: crear un TileSet como practica o explicar el existente. 3) Investigar en docs 4.7 si TileMapLayer reemplazo a TileMap (cambio en 4.3) antes de ensenar. 4) Cada tema nuevo se cierra con su ejercicio resuelto en la misma sesion.
+5) HEREDADO: Estudiar los modulos 1-3 montando el proyecto en un Godot 4.x local y cumpliendo el ejercicio de cada uno; el modulo 2 (patron de vecindad del terrain) es donde el curso es mas opaco y mas necesita practica. (Modulo 1 ya cumplido en esta sesion.)
 
 ## Decisiones y contexto que no debe perderse
 
-- El artefacto de adopcion es un gate de acoplamiento por jerarquia, no un gate de gameplay: el proyecto del workspace es un RTS 3D y casi todo el contenido tecnico del curso no aplica. Se descartaron explicitamente tilemap/autotiling, checkpoints, chase por X, uptime como reloj, parseo del nombre de nivel y export a itch.io, cada uno con su motivo en ADOPCION.md.
+- El curso se dicta con acompanamiento y practica inmediata, no lectura de outline. Cada modulo nuevo: primero inspeccion de estado real del proyecto, despues explicacion, despues ejercicio ejecutado y verificado con salida de comandos. Las afirmaciones tecnicas se verifican contra docs oficiales de Godot, no de memoria. La meta declarada por Gonzo para estas practicas es acumular material para escribir skills, scripts y workflows.
+- HEREDADO: El artefacto de adopcion es un gate de acoplamiento por jerarquia (check-hierarchy-coupling.py), no un gate de gameplay: el proyecto del workspace es un RTS 3D y casi todo el contenido tecnico del curso no aplica. Se descartaron explicitamente tilemap/autotiling, checkpoints, chase por X, uptime como reloj, parseo del nombre de nivel y export a itch.io, cada uno con su motivo en ADOPCION.md.
+
+## Archivos tocados
+
+```
+studies/godot-2d-platformer-beginners/HANDOFF.md
+studies/godot-2d-platformer-beginners/SESSIONS.md
+```
 
 ## Como continuar
 
 1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-11.md` para el informe completo de la sesion.
+2. Leer `memory/2026-11-12.md` para el informe completo de la sesion.
 3. Verificar el estado real antes de actuar (git, tests, la DB).
 
 ---
