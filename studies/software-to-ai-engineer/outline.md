@@ -131,6 +131,51 @@ Al terminar la clase deberías poder:
 - **Lectura crítica:** es un checklist, no una ruta. El video no enseña ninguna de estas cosas.
 - **Ejercicio:** marcar cada ítem como *lo defiendo en una entrevista* / *lo uso con ayuda* / *no lo tengo*.
 
+#### El checklist, traducido a lo que importa en IA
+
+El ponente lista siete ítems sin explicar qué los vuelve un prerrequisito. La traducción:
+
+| Ítem | Para qué sirve realmente en un sistema de IA |
+|---|---|
+| Lenguaje | Leer y arreglar el código que conecta el modelo; sin esto no hay nada más |
+| SQL / Postgres | Guardar conversaciones, resultados, costos; `pgvector` convierte la misma DB en base vectorial |
+| APIs | La llamada al modelo es una API más: timeouts, reintentos, errores, auth |
+| Frontend | El streaming en la UI es un problema de frontend, no de modelo |
+| Git | Versionar prompts y datasets como versionás código: sin esto no hay rollback |
+| Redes (HTTP) | Entender que una llamada de 8 s necesita timeout y que el SSE no es magia |
+| Docker | Aislar el runtime de los agentes; reproducibilidad del entorno |
+
+#### Lo que el checklist no incluye y un AI Engineer sí necesita
+
+El video da la lista mínima de un dev web. Para IA faltan tres cosas de la capa 1:
+
+- **Colas y trabajo asíncrono** (BullMQ, SQS, pg-boss): una llamada de IA de 8 s no cabe en un request HTTP síncrono.
+- **Caché**: la misma pregunta no debería pagar dos veces.
+- **Observabilidad mínima**: logs estructurados con `request_id`, duración y tokens. Sin esto no podés medir nada de los tres niveles de evaluación.
+
+#### Autoevaluación del Módulo 1 (10 minutos)
+
+Marcá cada ítem con una sola letra, sin autoengaño:
+
+- **D** = lo defiendo en una entrevista sin ayuda.
+- **H** = lo uso con ayuda (documentación, IA, colega).
+- **N** = no lo tengo.
+
+1. Lenguaje con tipos (TS): async/await, genéricos, módulos.
+2. SQL: joins, índices, transacciones, `EXPLAIN`.
+3. APIs: status codes, headers, auth, paginación, rate limits.
+4. Frontend: React, estado, streaming, manejo de error de red.
+5. Git: ramas, rebase, resolver conflictos.
+6. Redes: qué pasa entre un click y la respuesta, CORS, timeouts, SSE.
+7. Docker: imagen vs contenedor, variables de entorno, compose.
+8. *(agregado)* Colas / asincronía: por qué una llamada larga no va en un request.
+9. *(agregado)* Caché: claves, invalidación, qué se puede cachear en IA y qué no.
+10. *(agregado)* Observabilidad: logs con `request_id`, latencia, costo por operación.
+
+**Cómo se lee el resultado:** cualquier **N** en los ítems 1 a 7 es un bloqueo real antes de tocar modelos. Cualquier **N** en 8 a 10 no bloquea el aprendizaje de la capa 2, pero bloquea llevar algo a producción.
+
+**Dato de carrera:** un AI Engineer junior hoy se contrata con 1–7 en D y 8–10 en H. Un senior necesita 8–10 en D, porque **son los tres ítems que permiten medir** — y medir es lo que separa el rol del vibe coding.
+
 ### Módulo 2 — Roles en IA (4:07–6:31)
 
 - **Objetivo:** separar cuatro roles que suelen confundirse.
