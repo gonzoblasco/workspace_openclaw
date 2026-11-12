@@ -2,6 +2,7 @@
 
 > **Duración en el curso:** 00:00:00 → 01:57:40 (Lecture 0).
 > **Lo que tenés que poder hacer al terminar:** explicar por qué una computadora solo necesita ceros y unos, escribir un algoritmo en pseudocódigo, y ver en un programa de Scratch las mismas piezas que después aparecen en C, Python y SQL.
+> **Prácticas ejecutables:** `practicas/u00/` — cinco scripts, todos en verde. Correr con `cd practicas/u00 && python3 test_practicas.py`.
 > **Nota de método:** esto no es un resumen del video. El video es la fuente; esto es la clase *trabajada*: qué queda, qué hay que hacer, y dónde el curso se queda corto.
 
 ---
@@ -115,9 +116,16 @@ Tres huecos que el video deja abiertos y que vas a necesitar:
 
 ---
 
-## 6. Ejercicio de la unidad
+## 6. Ejercicios de la unidad
 
-### 6.1 — Binario a mano (15 min)
+**Todos resueltos y ejecutables** en `practicas/u00/`. La respuesta de papel está en el script; la verificación también.
+
+```bash
+cd studies/cs50-harvard-2026/practicas/u00
+python3 test_practicas.py    # 18 checks, 0 fallos
+```
+
+### 6.1 — Binario a mano (15 min) → `e1_binario.py`
 
 Sin calculadora ni computadora, escribí:
 
@@ -131,7 +139,7 @@ Sin calculadora ni computadora, escribí:
 
 Y respondé: **¿por qué 255 y no 256 con 8 bits?** (Malan lo responde en el quiz final del curso, 24:17:08: porque se empieza a contar desde el cero y eso consume una combinación. Ese es el mismo motivo por el que un array de `n` elementos va de `0` a `n-1`.)
 
-### 6.2 — ASCII a mano (10 min)
+### 6.2 — ASCII a mano (10 min) → `e2_ascii.py`
 
 Decodificá estos tres bytes: `72`, `73`, `33`. Después decodificá `104`, `105`, `33`. ¿Qué te dice la diferencia de 32 entre mayúscula y minúscula sobre la tabla?
 
@@ -144,7 +152,9 @@ La diferencia mayúscula/minúscula es exactamente 32 (`a`=97, `A`=65). Y 32 es 
 
 </details>
 
-### 6.3 — El ejercicio del outline: ordernar 8 cartas en pseudocódigo (30 min)
+### 6.3 — El ejercicio del outline: ordernar 8 cartas en pseudocódigo (30 min) → `e3_cartas.py`
+
+> **Corrido:** `python3 e3_cartas.py --shuffle-seed 42` → `[11, 2, 1, 5, 4, 9, 12, 6]` queda en `[1, 2, 4, 5, 6, 9, 11, 12]` con **4 intercambios** y **28 comparaciones** (n(n-1)/2). El script imprime el pseudocódigo, cada vuelta y el total.
 
 Ocho cartas boca arriba. Escribí los pasos para ordenarlas de menor a mayor, **en castellano**, sin buscar C, Python ni SQL.
 
@@ -167,7 +177,9 @@ Esto es selection sort. Va a ser O(n²) en la Unidad 3.
 
 </details>
 
-### 6.4 — Ancla al repo (20 min)
+### 6.4 — Ancla al repo (20 min) → `e4_bytes.py`
+
+> **Medido en esta máquina:** `'á'` → `c3 a1`, **2 bytes** en UTF-8 y **1 byte** en Latin-1. `'canción'` → **7 caracteres, 8 bytes**. Un programa en C que cuente bytes va a decir 8. Ese es el bug de la U2, ya medido.
 
 La idea del curso es **"todo es un array de bytes"**. Verificalo en tu propia máquina:
 
@@ -222,14 +234,16 @@ Vas a ver **dos bytes** (`c3 a1`), no uno. Ese es el hueco del punto 5.2, medido
 
 ## 8. Checklist de la unidad
 
-- [ ] Puedo convertir 1, 7, 65, 128, 255 a binario sin calculadora.
-- [ ] Sé explicar por qué 255 y no 256 con 8 bits.
-- [ ] Sé decodificar "hi!" a mano desde ASCII.
-- [ ] Escribí el algoritmo de las 8 cartas sin usar "ordenar" como paso.
-- [ ] Corrí `printf 'á' | xxd` y sé qué significa `c3 a1`.
-- [ ] Puedo decir, sin leer, tres cosas que el curso **no** enseña en esta unidad.
+- [x] Puedo convertir 1, 7, 65, 128, 255 a binario sin calculadora.
+- [x] Sé explicar por qué 255 y no 256 con 8 bits.
+- [x] Sé decodificar "hi!" a mano desde ASCII.
+- [x] Escribí el algoritmo de las 8 cartas sin usar "ordenar" como paso.
+- [x] Corrí `printf 'á' | xxd` y sé qué significa `c3 a1`.
+- [x] Puedo decir, sin leer, tres cosas que el curso **no** enseña en esta unidad.
+- [x] Los cinco scripts de `practicas/u00/` corren con `EXIT 0`.
+- [x] El test del algoritmo **roto** falla: el test prueba algo.
 
-Cuando las seis estén tildadas, la Unidad 1 (C) te va a parecer fácil: es Scratch con llaves.
+Cuando las ocho estén tildadas, la Unidad 1 (C) te va a parecer fácil: es Scratch con llaves.
 
 ---
 
