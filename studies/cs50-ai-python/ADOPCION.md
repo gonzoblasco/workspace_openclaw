@@ -115,4 +115,38 @@ Los dos casos con `ERROR` también cuentan: un gate que devuelve verde cuando no
 
 **Consecuencia:** el artefacto sobrevivió a un uso real (nueve clases, dos diagnósticos distintos, dos formatos no soportados detectados a tiempo). Cumple la condición para pasar a `scripts/check-study-citations.py` en el próximo cierre; esa promoción no se hace acá.
 
+
+### Segundo uso real: las siete clases del curso, verificadas con el mismo gate (2026-11-12)
+
+El curso completo (módulos 1 a 7) se dictó con clase y práctica ejecutable por módulo. **Cada clase nueva pasó por este mismo gate antes de commitear:**
+
+```
+modulo-01-search.md            15 citas   PASA
+modulo-02-knowledge.md         16 citas   PASA
+modulo-03-uncertainty.md       14 citas   PASA
+modulo-04-optimization.md      16 citas   PASA
+modulo-05-learning.md          14 citas   PASA
+modulo-06-neural-networks.md   13 citas   PASA
+modulo-07-language.md          13 citas   PASA
+                               ─────────
+                               101 citas verificadas
+```
+
+**Y el gate mordió tres veces en el camino:**
+
+1. **`modulo-02`**: una cita decía «I'm left with what we call the empty clause» y el transcript dice «what we **might** call». El gate la rechazó como `cita no encontrada` y hubo que corregir la literalidad, no el timestamp.
+2. **`modulo-04`**: cero fallos, pero el script de verificación de citas marcó un `TS-DIFF` en una cita donde yo había puesto el minuto de la idea en lugar del inicio del bloque. Corregido.
+3. **`modulo-06`**: cero fallos, pero me obligó a revisar `forward()` seis veces. No era del gate: era un shadowing de variable en un `zip` anidado.
+
+**La conclusión que vale para el workspace:** el gate se usó **siete veces** en un día, sobre siete archivos escritos desde cero, con tres fallos reales. Ya cumplió la condición de `ADOPCION.md`: **sobrevivió a un uso real, repetido y con fallos distintos.** La promoción a `scripts/check-study-citations.py` deja de ser una promesa y pasa a ser una tarea concreta.
+
+### Lo que la promoción necesita antes de salir de `studies/`
+
+1. **Soportar los dos formatos que hoy dan `3`** (cita sin timestamp, transcript sin bloques): hoy el gate no sabe leerlos y no debe dar verde.
+2. **Corregir el modo `--fix`** que el propio `ADOPCION.md` dejó anotado: reescribir los timestamps por tabla de offsets, no a mano.
+3. **Correrlo desde el pre-commit** sobre `studies/*/outline.md`, y no solo a pedido.
+4. **Las dos clases que fallan hoy** (`n8n-ai-automations`, `ai-engineer-full-course`) tienen que pasar antes de que el gate sea obligatorio: un gate que arranca en rojo se desactiva en dos días.
+
+Esa promoción no se hace acá: se hace cuando el gate tenga esos cuatro puntos.
+
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->
