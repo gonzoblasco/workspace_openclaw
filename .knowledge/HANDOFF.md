@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-12 00:10 GMT-3
+**Fecha:** 2026-11-12 01:47 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-12 01:47
+Continuacion de la sesion del curso DSA: Gonzo pidio estudiar el curso 'a traves mio' con mis conocimientos y research, y arrancar el modulo 1. Se escribio studies/dsa-mega-course/modulo-01-big-o.md (leccion trabajada, 11 citas verificadas BAD 0, tres agregados externos y cinco huecos del video) y se corrieron los cuatro ejercicios en practica/m1/: 8.1 tabla con corrector, 8.2 cinco bloques medidos, 8.3 lineal vs binaria con y sin JIT, 8.4 la pregunta de entrevista con tres soluciones. Hallazgos: el primer benchmark de 8.3 mintio (JIT borraba el loop sin volatile y vectorizaba a 0,2 ns/elemento); el sort le gana al hashset por boxing y localidad de cache aunque sea O(n log n); fib crece por phi y no por 2. JDK 27.0.1 instalado con brew.
 
 ### 2026-11-12 00:10
 Arranque de sesion + montaje de la clase studies/dsa-mega-course/ desde el video xwI5OBEnsZU: Data Structures and Algorithms Mega Course (freeCodeCamp.org, Parth / Destination FAANG, 48:48:19, Java). Transcript de 74.659 cues ASR en 9.850 bloques con [h:mm:ss], glosario ASR de 25 filas, outline de 21 modulos en tres tramos alineado a los 29 capitulos oficiales, ~150 problemas con timestamp y checklist de 20 bloques. Gate de citas: 22 citas con timestamp, BAD 0, sin citas no literales. Commit 57b94e35a9.
@@ -23,12 +26,17 @@ Arranque de sesion + montaje y retiro de la clase del video ZaPbP9DwBOE ("Don't 
 ### 2026-11-10 18:25
 Sesion corta: arranque + montaje de la clase studies/n8n-ai-automations desde el video YY-egxTQirA (n8n Full Course, freeCodeCamp.org, Rahul Joshi, 43:05). Caption automatico en ingles via youtube-transcript-api (1173 cues), agrupado en 153 bloques con timestamp; transcripcion.md con glosario ASR de 20 filas y los 14 capitulos oficiales; outline.md con 14 modulos 1:1, 14 ejercicios y 9 preguntas. Todos los timestamps verificados por grep de la cita literal; dos citas corridas corregidas (polling 27:41 -> 27:32 y 27:49; 'flagging exactly' en 14:52). README de studies actualizado. Commits locales 49456dadd2 (clase) y ff17d12a25 (memoria + HANDOFF del curso), sin push. Queda pendiente: los dos scripts de gateway sin trackear (scripts/reinstall-gateway-service.sh, scripts/reload-gateway-service.sh) NO son de esta sesion, se dejan como estan.
 
-### 2026-11-09 23:27
-POLITICA DE MODELOS: beam:cloud fuera de toda asignacion de primario (dejo de ser gratuito y produjo errores en dos sesiones de cursos de YouTube); deepseek-v4.1-flash:cloud vuelve a primario del CORE y de los defaults; gemma4:12b-mlx (local) queda como UNICO fallback de los nueve agentes, sin escalones cloud intermedios. Escrito como ADR-112 con verificacion ejecutable. GATEWAY E IPAD: el iPad no conectaba al gateway; la causa era triple (Tailscale sin perfil VPN, hostname apuntando a la Mac apagada mac-mini-de-gonzalo sin -1, y Tailscale Serve enrutando por nombre y no por IP). Se cambio gateway.bind a tailnet y tailscale.mode a off; el gateway ahora escucha en 100.126.255.95:18789 y la app entra con ws:// sin cifrar. Drift aceptado (3 campos, los tres del cambio). AUDITORIA DEL CORE: 9 sesiones de main corrieron con beam entre el 07 y el 08 (1,71M tokens, 4 commits). Se ejecuto cada artefactoC y se contrasto cada flag documentado contra --help: 3 defectos, todos corregidos (typo 'gobnar' en AGENTS.md, presupuesto de bootstrap a 5 caracteres del limite, y el flag inexistente --dry-run en el LEARNINGS del auditor). CVS: Gonzo corrigio el rumbo; dos referencias de contribuciones apuntaban a issues sin comentarios (#9868 y #9866 en vez del PR #9869 y el issue #9865) y el ATS declaraba UADE (carrera universitaria, prohibida por la regla del 2026-11-04). Corregidas las tres referencias, carrera fuera del ATS, y career-facts gana la seccion 5.2.1 con las siete contribuciones verificadas por API de GitHub. check-cv-facts.py ahora valida referencias contra el corpus y carreras en cualquier salida de postulacion.
-
 ## Archivos tocados
 
 ```
+memory/2026-11-12.md
+memory/memory.db
+studies/dsa-mega-course/HANDOFF.md
+studies/godot-2d-platformer-beginners/HANDOFF.md
+studies/godot-2d-platformer-beginners/SESSIONS.md
+studies/godot-3d-rpg-curso/HANDOFF.md
+studies/godot-3d-rpg-curso/PROGRESO.md
+studies/godot-3d-rpg-curso/SESSIONS.md
 docs/CHANGELOG.md
 docs/archive/CHANGELOG-archive.md
 studies/README.md

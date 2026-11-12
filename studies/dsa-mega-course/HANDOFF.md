@@ -7,6 +7,7 @@
 
 ## Estado actual
 
+- Modulo 1 cerrado con practica: `modulo-01-big-o.md` (leccion) + `practica/m1/` (4 ejercicios, benchmarks medidos en `RESULTADOS.md`). JDK 27.0.1 instalado con brew; el `java` de macOS era un stub.
 - Clase completa en `studies/dsa-mega-course/`: `transcripcion.md` (9.850 bloques con `[h:mm:ss]`, 2,8 MB) y `outline.md` (21 módulos, mapa temporal oficial de 29 capítulos, ~150 problemas con timestamp).
 - Gate de citas corrido: 22 citas con timestamp, `BAD: 0`; sin citas no literales.
 - Registrada en `studies/README.md`.
