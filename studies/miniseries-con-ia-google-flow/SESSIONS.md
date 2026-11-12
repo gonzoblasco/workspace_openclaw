@@ -1,6 +1,0 @@
-# SESSIONS - studies/miniseries-con-ia-google-flow
-
-> Indice append-only de cierres de sesion. El HANDOFF.md es solo el estado actual; esta lista es la historia (no se pisa).
-
-- **2026-11-11 12:14** - Clase montada desde el tutorial «Crea tu Propia Miniserie con IA 100% GRATIS (Paso a Paso)» de Edwin Arenas (25:37, 2026-10-25). Transcript con 106 bloques des…
-- **2026-11-11 12:35** - Clase montada del tutorial de Edwin Arenas (25:37) con transcript de 106 bloques y outline de 8 módulos, y luego corregida contra la plataforma real: el video…
