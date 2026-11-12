@@ -6,6 +6,27 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-12] - skill-overlap: de 9,65 s a 1,49 s
+
+### Changed
+- **`scripts/check-skill-overlap.py`** — dos arreglos, ninguno cambia el resultado:
+  - **Caché de embeddings** en `.git/skill-overlap-cache.json` (no se commitea), clave `sha256(nombre + descripción[:500])` — exactamente el texto que `embed()` embebe. Con caché caliente: **0 llamadas a Ollama** contra 176.
+  - **Normas calculadas una vez por vector**, no por par. La versión anterior recalculaba la norma de cada vector en cada uno de los 15.400 pares (176 skills): 47,4 M de `sum()` y 2,5 s de los 3,5 s.
+  - **`--no-cache`** para forzar el re-embed, **`SKILL_OVERLAP_STATS=1`** para ver embebidos/reusados.
+- **Salida idéntica**, verificada con `diff` contra la versión de `HEAD`.
+
+### Added
+- **`exit 3`** cuando el catálogo no carga o tiene <2 skills: antes devolvía `0` y el pre-commit no distinguía "el runtime no respondió" de "no hay solapamiento".
+- **`tests/python/test_check_skill_overlap.py`** — 9 tests: pares, vectores vacíos, equivalencia con `cosine()` legacy, `text_key` truncada igual que `embed()`, caché de otro modelo, y los dos casos de `no corrible`.
+
+### Why
+**Medido:** de los 10,44 s del pre-commit, 9,65 s eran este check. Ahora el pre-commit entero tarda **2,26 s**. Un gate que se paga en cada commit y tarda 10 s se apaga en dos semanas; éste ya no.
+
+### Status
+10 de 25 gates con `exit 3`; pre-commit de 10,44 s a 2,26 s.
+
+---
+
 ## [2026-11-12] - Honestidad de los gates: exit 3 y tests negativos
 
 ### Added
