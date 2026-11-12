@@ -16,7 +16,7 @@ Arranque de sesion + montaje de clase: video yhtdkuw9mbM = 'Creative Web Develop
 
 ## Estado actual
 
-- Modulo actual: Modulo 1 dictado (00:00:00-00:06:37); Modulos 2-11 sin cursar
+- Modulo actual: Modulo 1 dictado y cerrado (00:00:00-00:06:37) con research de mercado verificado; Modulos 2-11 sin cursar
 - Ejercicios hechos: ninguno entregado; las tres respuestas del M1 quedaron pedidas (tema, tres objetos, que es clickeable)
 - Preguntas abiertas: r149 o r187 para arrancar el M2 (mi recomendacion: r149 y migrar en el M8)
 - Proximo bloque: Modulo 2 (00:06:37-00:15:44), modelo mental escena/luz/camara/objeto + ejercicio de intuicion objeto->primitiva
