@@ -1,0 +1,19 @@
+; Engine configuration file.
+; Práctica M1 - GridMap y WorldEnvironment
+config_version=5
+
+[application]
+
+config/name="M1 GridMap"
+run/main_scene="res://level.tscn"
+config/features=PackedStringArray("4.7", "Forward Plus")
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+
+[rendering]
+
+renderer/rendering_method="forward_plus"

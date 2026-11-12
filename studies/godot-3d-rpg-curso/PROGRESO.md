@@ -5,7 +5,7 @@
 | Módulo | Capítulos oficiales | Clase montada | Estudiado | Práctica | Notas |
 |---|---|---|---|---|---|
 | **0** — Arranque y estructura | Intro, Starting The Project | ✅ | ✅ 2026-11-11 | `practicas/m0/probe.gd` | Ver `practicas/m0/LECCION.md`. Hallazgo: el curso es de 4.3, corremos 4.7.2 — la conversión automática no cubre cambios de comportamiento. |
-| **1** — GridMap y WorldEnvironment | GridMap, World Environment | ✅ | ⬜ | — | Próximo. |
+| **1** — GridMap y WorldEnvironment | GridMap, World Environment | ✅ | ✅ 2026-11-12 | `practicas/m1/` (4 scripts, 22 checks, `run.sh`) | Ver `practicas/m1/LECCION.md`. Hallazgo propio: `fog_density = 0.2` está calibrado para la cámara a 5 m del curso; a 30 m transmite 0.2 % y no se ve nada. Medido con `probe_fog.gd`. |
 | **2** — Player: cámara, movimiento, animación | Adding The Player → Player Animation | ✅ | ⬜ | — | `AnimationTree` con `BlendSpace` cambió en 4.7 (`sync_mode`), ojo. |
 | **3** — Monstruo y concepto de FSM | Monster Setup → Monster AnimationTree | ✅ | ⬜ | — | |
 | **4** — FSM en código | State Machines → Changing States | ✅ | ⬜ | — | |
