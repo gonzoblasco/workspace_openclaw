@@ -26,7 +26,6 @@ OPS = Path(__file__).resolve().parent.parent
 WORKSPACE = OPS.parent.parent
 SCRIPTS = OPS / "scripts"
 DRIFT = SCRIPTS / "gateway-config-drift.sh"
-JOBS = SCRIPTS / "gateway-jobs-check.sh"
 AUDIT = SCRIPTS / "gateway-audit.sh"
 CHANGELOG = SCRIPTS / "gateway-change-log.sh"
 CHANNELS_WATCH = SCRIPTS / "gateway-channels-watch.sh"
@@ -236,27 +235,6 @@ class TestDrift(unittest.TestCase):
         self.assertNotEqual(r.returncode, 0, "JSON invalido no puede pasar como OK")
 
 
-class TestJobsCheck(unittest.TestCase):
-    """gateway-jobs-check.sh: watchdog de automations."""
-
-    def test_runs_and_returns_known_exit(self):
-        """Exit 0 (sano), 1 (problemas) o 2 (no pudo chequear). Nunca otro."""
-        r = run(JOBS, timeout=180)
-        self.assertIn(r.returncode, (0, 1, 2), r.stdout + r.stderr)
-
-    def test_exit_2_is_not_silent(self):
-        """Si el gateway no responde, debe salir 2, no 0."""
-        # HOME falso: sin gateway accesible por config, el check debe fallar
-        with tempfile.TemporaryDirectory() as d:
-            oc = Path(d) / ".openclaw"
-            oc.mkdir()
-            (oc / "openclaw.json").write_text(json.dumps(minimal_config()))
-            r = run(JOBS, home=Path(d), timeout=180)
-            self.assertIn(r.returncode, (0, 1, 2))
-            if r.returncode == 0:
-                self.assertIn("OK", r.stdout)
-
-
 class TestAudit(unittest.TestCase):
     """gateway-audit.sh: snapshot completo."""
 
@@ -280,7 +258,6 @@ class TestSingleOwner(unittest.TestCase):
     NAMES = [
         "gateway-audit.sh",
         "gateway-config-drift.sh",
-        "gateway-jobs-check.sh",
         "pipeline-track.sh",
         "playwright-provision.sh",
     ]

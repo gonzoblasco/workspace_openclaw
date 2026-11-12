@@ -1,1 +1,0 @@
-../agents/kanam-ops/scripts/gateway-jobs-check.sh

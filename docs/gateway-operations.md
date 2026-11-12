@@ -17,8 +17,7 @@
 
 | Script | Qué hace | Exit codes |
 |---|---|---|
-| `gateway-audit.sh` | Snapshot completo: status + channels + jobs + drift. `--json` para automatizar | 0 ok, 2 error interno |
-| `gateway-jobs-check.sh` | Vigilante de jobs: existen, enabled, nextRun vencido (>1h), status error | 0 sano, **1 problema** (usable por un futuro watcher), 2 error |
+| `gateway-audit.sh` | Snapshot completo: status + channels + bind + drift. `--json` para automatizar | 0 ok, 2 error interno |
 | `gateway-config-drift.sh` | SHA256 de `openclaw.json` vs baseline `~/.openclaw/gateway-config.baseline` | 0 sin drift, 1 drift, 2 error |
 | `gateway-config-drift.sh --accept` | Acepta la config actual como nuevo baseline (SOLO cuando el cambio es esperado) | - |
 
@@ -41,8 +40,11 @@ Convención: `~/.openclaw/openclaw.json.bak-<motivo>-<fecha>`. Antes de cualquie
 
 | Job | Schedule | Qué hace | Delivery |
 |---|---|---|---|
-| `gateway-jobs-watcher` | cada 2h | Trigger headless corre `gateway-jobs-check.sh`; dispara solo si exit 1 | Alerta por Telegram a `7921100122` (solo en fallo; silencio = sano) |
 | `gateway-daily-audit` | cron 09:00 ART | Corre `gateway-audit.sh` y anexa a `~/.openclaw/gateway-audit.log` | none (silencioso por diseño) |
+
+> **Retirado el 2026-11-12:** el job `gateway-jobs-watcher` y su `gateway-jobs-check.sh`
+> salieron del ritual por decision de Gonzo. La vigilancia de automations se hace
+> directo con `openclaw automations list` (el doctor ya reporta los jobs en error).
 
 Contrato del trigger: el runner de `kind:script` exige que la última expresión retorne un objeto (`return {done: true}`) - sin eso el run marca error aunque el comando haya corrido. Lección de la primera corrida (2026-09-08).
 

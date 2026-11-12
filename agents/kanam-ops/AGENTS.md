@@ -44,7 +44,7 @@ Usar el contexto de arranque provisto antes de releer archivos. Leer las notas e
 
 - **Workspace:** `/Users/gonzoblasco/.openclaw/workspace/agents/kanam-ops`
 - **Skills:** `gateway-config`, `clawdstrike`, `skill-vetter`, `background-execution`.
-- **Scripts:** `scripts/` (`gateway-audit.sh`, `gateway-config-drift.sh`, `gateway-jobs-check.sh`, `pipeline-track.sh`, `playwright-provision.sh`).
+- **Scripts:** `scripts/` (`gateway-audit.sh`, `gateway-config-drift.sh`, `gateway-bind-check.sh`, `pipeline-track.sh`, `playwright-provision.sh`).
 - **Modelo:** `ollama/deepseek-v4.1-flash:cloud`, thinking `high`.
 
 ---

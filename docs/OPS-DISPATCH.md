@@ -35,14 +35,17 @@ Todo cambio sobre el sustrato del gateway:
 
 ## 3. OPS ya esta en el flujo
 
-No hace falta despertarlo a mano para lo rutinario. Tres jobs corren con
+No hace falta despertarlo a mano para lo rutinario. Dos jobs corren con
 `agentId: kanam-ops`:
 
 | Job | Schedule | Que hace |
 |---|---|---|
 | `gateway-daily-audit` | cron `30 9 * * *` | audit completo a `~/.openclaw/gateway-audit.log` |
-| `gateway-jobs-watcher` | cada 2h con trigger | alerta si un job falla o el check no puede correr |
 | `openclaw-backup-scheduled` | cada 24h | backup git de la config a `~/Backups/openclaw-git` |
+
+El job `gateway-jobs-watcher` (cada 2h) se retiro el 2026-11-12 por decision de
+Gonzo, junto con su `gateway-jobs-check.sh`. La vigilancia de automations pasa
+por `openclaw automations list`, y `openclaw doctor` ya reporta los jobs en error.
 
 Ademas, `hooks.allowedAgentIds` incluye `kanam-ops`, asi que OPS puede recibir
 trabajo por hook, no solo por spawn.
@@ -278,7 +281,6 @@ Orden de diagnostico, de mas barato a mas caro:
 openclaw status                       # el gateway esta vivo?
 openclaw channels status              # el canal esta conectado?
 openclaw automations status           # el scheduler corre?
-bash agents/kanam-ops/scripts/gateway-jobs-check.sh
 tail -50 ~/.openclaw/gateway-audit.log
 ```
 

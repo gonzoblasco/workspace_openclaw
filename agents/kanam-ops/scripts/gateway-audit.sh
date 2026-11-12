@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # gateway-audit.sh - Full gateway operations snapshot.
-# Combines: gateway reachability, channel status, automations/jobs, config drift,
+# Combines: gateway reachability, channel status, bind vs config, config drift,
 # and the nativo `openclaw doctor --lint` health check (A3, 2026-10-12).
+# NOTA (2026-11-12): el bloque de jobs (`gateway-jobs-check.sh`) se retiro del
+# ritual por decision de Gonzo. La vigilancia de automations ahora es directa
+# (`openclaw automations list`) y el unico gate propio que queda es el bind.
 # Usage: gateway-audit.sh [--json]
 set -euo pipefail
 
@@ -26,15 +29,13 @@ doctor_json() {
 }
 
 if $JSON_OUT; then
-  jobs_json="$(bash "$DIR/gateway-jobs-check.sh" --json | jq -s '.')"
   drift_json="$(bash "$DIR/gateway-config-drift.sh" --json || true)"
   doctor="$(doctor_json)"
   jq -n \
     --arg ts "$NOW" \
-    --argjson jobs "$jobs_json" \
     --argjson drift "$drift_json" \
     --argjson doctor "$doctor" \
-    '{timestamp: $ts, jobs: $jobs, configDrift: $drift, doctor: $doctor}'
+    '{timestamp: $ts, configDrift: $drift, doctor: $doctor}'
   exit 0
 fi
 
@@ -50,10 +51,6 @@ echo ""
 
 echo "--- Bind ---"
 bash "$DIR/gateway-bind-check.sh" || true
-echo ""
-
-echo "--- Jobs ---"
-bash "$DIR/gateway-jobs-check.sh" || true
 echo ""
 
 echo "--- Config drift ---"
