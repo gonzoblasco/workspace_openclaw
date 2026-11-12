@@ -83,3 +83,94 @@ EXIT=1
 - **El raycaster y los modales** son Three.js puro; no hay un proyecto con Three.js en el workspace. Si se construye uno, el módulo 12 del outline es el que se relee.
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+
+---
+
+# Cierre del estudio práctico — 2026-11-12
+
+Después de la clase, el estudio pasó a práctica real: construir el cuarto por script y
+enseñarlo con renders. Se completaron **módulo 1** (vocabulario, con render antes/después
+de subdividir) y **módulo 2** (bloqueo, pared con solidify, decisión de escena abierta).
+El módulo 3 (props) quedó a medias a propósito.
+
+## El artefacto que sí se ganó el lugar: `scene-gate.py`
+
+**No es el que estaba planeado.** Se descubrió construyendo: en una sola sesión se
+cometieron **seis errores del mismo tipo** — silla dada vuelta, monitor dado vuelta,
+ruedas enterradas bajo el piso, teclas flotando 7 mm, piezas de mouse despegadas, y
+teclas hundidas 12 mm dentro de la carcasa. Ninguno fue modelado. Todos fueron
+**relación entre piezas**.
+
+| Error real (fecha) | Qué falló | Qué chequea el gate |
+|---|---|---|
+| Ruedas a z=0.04, piso de 0.14 | objeto bajo el plano de apoyo | `HUNDIDO` por profundidad |
+| Teclas 7 mm sobre la carcasa | objeto flotando | `FLOTANDO` por gap |
+| Silla y monitor girados 180° | orientación | `ORIENTACION` vía `front_axis` |
+| Mouse con piezas en el aire | pieza sin contacto | `DESPEGADO` vía `rests_on` |
+
+**Contrato:** el script declara `rests_on` y `front_axis`; el gate verifica. Sin
+declaración no hay chequeo — y eso es deliberado: un gate que adivina da falsos
+positivos y se termina ignorando.
+
+### Probado en las dos direcciones
+
+```
+$ Blender -b --python scene-gate.py -- --exec scripts/gate_test_broken.py
+  FLOTANDO    flotando             100.0 mm sobre piso (limite 2.0)
+  HUNDIDO     hundido              600.0 mm adentro de piso
+  ORIENTACION dado_vuelta          su frente (+Y) apunta al reves de la camara (dot=-1.00)
+5 objetos verificados, 3 hallazgos   EXIT=1
+
+$ Blender -b --python scene-gate.py -- --exec scripts/gate_test_clean.py
+3 objetos verificados, 0 hallazgos   EXIT=0
+```
+
+### El hallazgo que justifica todo el ejercicio
+
+Corrido sobre el teclado real, el gate reportó:
+
+```
+HUNDIDO  k_3_8  12.5 mm adentro de carcasa (56/56 vertices pasan el plano)
+64 objetos verificados, 63 hallazgos  {'HUNDIDO': 63}
+```
+
+Yo había medido esas mismas teclas con raycast y había dicho «GAP −0.0009, está bien».
+**Las dos mediciones eran del mismo objeto y decían cosas distintas.** El raycast
+comparaba un punto; el gate cuenta los 56 vértices. Las teclas estaban 12 mm adentro.
+El render no lo mostraba porque la carcasa es curva y el hueco quedaba oculto por el bevel.
+
+Lección: **una medición puntual no valida un apoyo.** Hay que medir la pieza entera
+contra la superficie entera.
+
+### Ajustes al gate que salieron de probarlo
+
+1. **Default `rests_on="floor"` eliminado.** En el teclado dio 63 FLOTANDO falsos
+   (las teclas apoyan en la carcasa, no en el piso). Pasó a ser contrato explícito.
+2. **HUNDIDO por profundidad, no por conteo de vértices.** Contar vértices bajo un
+   plano marca error en cualquier superficie curva con una pieza bien puesta.
+
+Un gate que grita cuando todo está bien es un gate que se ignora.
+
+## Gotchas de Blender headless (no están en el video)
+
+- **`bpy.ops.transform.rotate` no hace nada en `-b`.** No hay área 3D en el contexto:
+  el operador retorna sin error y sin efecto. Verificado 2026-11-12 (la carcasa seguía
+  plana después de llamarlo). Hay que rotar por `matrix_world`.
+- **`bpy.ops.*` en general es frágil headless.** Los operadores que dependen de
+  selección/contexto necesitan `view_layer.objects.active` + `select_set` explícitos.
+- **`BLENDER_EEVEE_NEXT` no existe en 5.3**: el enum es `BLENDER_EEVEE`.
+- **`World.use_nodes` está deprecado** en 5.3 (se remueve en 6.0); funciona igual.
+
+## Estado del cuarto (no terminado)
+
+| Pieza | Estado |
+|---|---|
+| Distribución de la escena | ✅ escritorio, silla en ángulo, cuadro, cama de Benny |
+| Pared abierta en L, piso con bevel | ✅ |
+| Teclado | ⚠️ forma correcta (taper, espaciador, flechas, inclinado), **12 mm hundido — el gate lo marca** |
+| Mouse | ❌ dos intentos fallidos, forma todavía no legible |
+| Monitor | ⚠️ caja con panel, sin bisel ni detalle |
+| Silla | ⚠️ bloques, sin detalle |
+
+**Deuda declarada:** el teclado se hunde y el mouse no está resuelto. Ambos se detectan
+con el gate y se retoman cuando haya tiempo.
