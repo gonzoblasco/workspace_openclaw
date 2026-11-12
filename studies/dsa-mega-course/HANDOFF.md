@@ -1,9 +1,9 @@
 # HANDOFF - Curso dsa-mega-course
 
-- **Modulo actual:** ninguno empezado. La clase esta montada, no cursada.
-- **Ejercicios hechos:** 0 de 20 bloques (checklist en `outline.md` → «Ejercicios por bloque»).
+- **Modulo actual:** Modulo 1 (Big O) trabajado en `modulo-01-big-o.md`; ejercicios 8.1-8.4 pendientes de que Gonzo los resuelva.
+- **Ejercicios hechos:** 0 de 20 bloques (checklist en `outline.md` → «Ejercicios por bloque»). Modulo 1 con leccion escrita, ejercicios sin resolver.
 - **Preguntas abiertas:** ¿se sigue el orden del video (1→20) o el tramo propuesto (A: Fundamentos + Arrays, ~2,8 h)? ¿Se resuelven en Java, que es el lenguaje del curso, o en el lenguaje del proyecto donde se vaya a aplicar?
-- **Proximo bloque:** Tramo A — Módulo 1 (Big O, 0:00:00–0:50:21) y Módulo 2 (Arrays, 0:50:21–3:29:02), cerrando con los cuatro problemas del ejercicio de Arrays.
+- **Proximo bloque:** corregir los ejercicios 8.1-8.4 del Modulo 1 cuando Gonzo los entregue; despues Modulo 2 (Arrays, 0:50:21-3:29:02).
 
 ## Estado actual
 

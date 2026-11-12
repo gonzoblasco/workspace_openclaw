@@ -75,6 +75,8 @@ Oficial (29 capítulos de la descripción). Duración = hasta el capítulo sigui
 
 ### Módulo 1 — Big O y cómo juzgar un algoritmo (0:00:00 – 0:50:21)
 
+> **Trabajado en:** [`modulo-01-big-o.md`](modulo-01-big-o.md) (2026-11-12) — lección completa con ejercicios y respuestas.
+
 **Objetivo:** poder mirar un bloque de código y decir su complejidad de tiempo y espacio sin correrlo.
 
 **Contenidos:**
