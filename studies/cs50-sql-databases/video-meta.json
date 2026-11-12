@@ -1,0 +1,18 @@
+{
+  "id": "WXk7yDqsKxs",
+  "title": "Harvard CS50's Intro to Databases with SQL – Full University Course",
+  "channel": "freeCodeCamp.org",
+  "original_course": "CS50's Introduction to Databases with SQL (Harvard)",
+  "speaker": "Carter Zenke (con introducción de David J. Malan)",
+  "upload_date": "2025-10-09",
+  "duration_seconds": 40128,
+  "url": "https://www.youtube.com/watch?v=WXk7yDqsKxs",
+  "playlist": "WL (Watch Later de Gonzo)",
+  "language": "inglés (subtítulos automáticos en-orig, ASR de YouTube)",
+  "captions": "en-orig json3, 29.638 eventos crudos -> 14.819 cues con timestamps",
+  "cue_coverage": {"last_cue": "11:08:36", "gap_to_end_seconds": 12},
+  "chapters_source": "descripción oficial del video (8 entradas + Untitled Chapter 1 de yt-dlp)",
+  "course_site": "https://cs50.harvard.edu/sql/",
+  "dbms": "SQLite (principal) + PostgreSQL (psql) + MySQL",
+  "notes": "El índice oficial de la descripción trae 'Writing' y 'Viewing' con el mismo timestamp (4:24:52): el video las une en una sola clase. Los títulos de las semanas son los de CS50: Querying, Relating, Designing, Writing, Viewing, Optimizing, Scaling."
+}
