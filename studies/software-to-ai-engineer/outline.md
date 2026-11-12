@@ -305,6 +305,39 @@ Contexto: React/TS, Supabase/Edge Functions, billing, tooling; 10 años de desar
   - **Semana 3:** RAG mínimo con `pgvector` sobre 20 documentos, con cita de fuente y 10 preguntas de evaluación.
   - **Semana 4:** MCP de solo lectura o chat mínimo en React + mini System Design del conjunto.
 
+## Evaluación en concreto
+
+El video dice "empezar por RAG" pero no dice cómo saber si el RAG responde bien. Sin esto no hay producto: un RAG que responde con seguridad y se equivoca es peor que no tener RAG. La evaluación se hace en **tres niveles**, y cada uno responde una pregunta distinta.
+
+### Nivel 1 — Origen del dato (¿de dónde sacó esto?)
+
+- **Qué se mide:** de las afirmaciones de la respuesta, cuántas citan una fuente real que **existe** y **dice lo que se le atribuye**.
+- **Cómo se mide:** por cada respuesta, listar las afirmaciones y verificar la cita contra el documento original. Dos defectos separados: *cita inexistente* (peor) y *cita real que no sostiene la afirmación*.
+- **Umbral típico:** 0 citas inventadas. Una sola cita falsa en un producto de soporte al cliente destruye la confianza.
+
+### Nivel 2 — Calidad de la respuesta (¿está bien?)
+
+- **Qué se mide:** si la respuesta resuelve la consulta, sin inventar y sin omitir lo esencial.
+- **Cómo se mide:** un **conjunto de casos con respuesta conocida** (golden set). Se escribe a mano una vez, 20 a 50 casos, cada uno con la respuesta esperada. Cada cambio de prompt, de modelo o de chunking se compara contra ese set.
+- **Umbral típico:** una tasa de acierto que no baje entre versiones. El número importa menos que la **tendencia**.
+- **Nota:** es la misma lógica que el gate de regresión de `scripts/test-handoff-merge.py` o `test-skill-router.py`: sin casos fijos, "funciona" es una opinión.
+
+### Nivel 3 — Salud del sistema (¿está caro, lento o roto?)
+
+- **Qué se mide:** latencia p50/p95, tasa de error, costo por consulta y cuántas veces el modelo se negó o devolvió una salida inválida (JSON roto, texto vacío).
+- **Por qué el tercero importa:** los dos primeros se miden en el laboratorio; este se mide en producción. Un RAG con 95 % de acierto y 8 segundos de latencia no sirve para soporte en vivo.
+- **Trampa:** el costo por consulta se dispara con respuestas largas o con reintentos silenciosos. Sin medirlo, el primer mes es barato y el segundo no.
+
+### Mapeo contra el sistema Kanam (honesto)
+
+| Nivel | Qué tenemos | Qué falta |
+|---|---|---|
+| Origen del dato | `check-unsourced-claims.py`, `check-refs.py`, `wiki_lint`; el curso de Vane midió la calidad de las fuentes | Verificación de que una cita **sostenga** la afirmación, no solo que exista |
+| Calidad | `check-*.py` (22 gates binarios), regresión del skill router 10/10, pre-commit con tests | Un **golden set semántico**: nada mide si una respuesta es *mejor* que la anterior, solo si rompe un contrato |
+| Salud | `stallCount` en el pipeline, límites de contexto, memoria de costos por plan | Costo por request medido, latencia observada, tasa de fallo de modelo |
+
+**Conclusión del mapeo:** el sistema es fuerte en verificación binaria (pasa / no pasa) y débil en evaluación continua (¿mejor / peor?). Es exactamente el hueco que el video no cubre, y es la diferencia entre tener gates y tener evals.
+
 ## Lo que el video NO cubre (y un AI Engineer 2026 sí necesita)
 
 - **Evals:** cómo medir si la respuesta es buena. Sin esto no hay producción.

@@ -1,34 +1,38 @@
 # HANDOFF - Curso software-to-ai-engineer
 
-**Fecha:** 2026-11-09 17:00 GMT-3
+**Fecha:** 2026-11-11 23:03 GMT-3
 **Proyecto:** software-to-ai-engineer
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-11-09). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-09.md`.
+> HANDOFF generado en el cierre de sesion (2026-11-11). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-11.md`.
 
 ---
 
 ## Que se hizo en esta sesion
 
-Clase creada el 2026-11-07 a partir del video qLobAfve9b0 (Fazt). Re-evaluada el 2026-11-09 con deepseek-v4.1-flash: outline v2 de 14 modulos alineado a los capitulos oficiales, auditoria AUDIT-2026-11-09.md con 15 hallazgos, glosario ASR en la transcripcion y protocolo de estudio en tres bloques. Todavia no hubo sesion de estudio.
+Primera sesion de estudio real del curso (2026-11-11). Se dicto el Modulo 0 con recuperacion previa: Gonzo respondio las tres preguntas (no supo la 1, respondio bien la 2 salvo matiz, y en la 3 acerto la intuicion de vibe coding). Se explicaron los cuatro malentendidos, el riesgo de la formula 'dev + modelos', costo variable, no determinismo y el hueco de evaluacion. Se agrego al outline la seccion 'Evaluacion en concreto' con tres niveles (origen del dato, calidad de la respuesta, salud del sistema) y el mapeo honesto contra el sistema Kanam. Gonzo aporto el dato correcto de Ollama Pro Legacy (cobro por request, no por token) y corrio research en Vane sobre el rol AI Engineer 2026.
 
 ## Estado actual
 
-- Modulo actual: 0 (marco y premisa) presentado; el 1 arranca con el checklist de bases.
-- Ejercicios hechos: 0 de 8.
-- Preguntas abiertas: elegir bloque A (bases y System Design) o B (modelos, APIs, costos) para la primera sesion.
-- Proximo bloque: B recomendado (8 minutos de video, 11:17-19:40).
+- Modulo actual: 0 completado. El ejercicio (a/b/c) quedo respondido en borrador; falta convertir (c) en metrica verificable.
+- Ejercicios hechos: 0 de 8 formales; el del Modulo 0 respondido en borrador.
+- Preguntas abiertas: ninguna del cuestionario; la 1 (que se ahorra alguien que ya programa) se explico tras fallarla.
+- Proximo bloque: Modulo 1 (bases, 2:37-4:07), checklist de 10 minutos.
 
 ## Proximos pasos
 
-1. Elegir bloque A o B.
-2. Ver el bloque elegido (B: 11:17-19:40; A: 0:00-11:17 salteando 0:53-1:59).
-3. Sesion de recuperacion: 3 preguntas, correccion y ejercicio del bloque.
+1. Elegir bloque A o B: se resolvio, se sigue la eleccion de Gonzo (bloque A, orden del video).
+2. Ver el bloque elegido: A (0:00-11:17 salteando 0:53-1:59) para la proxima sesion; B (11:17-19:40) queda para modelos y costos.
+3. Convertir la respuesta (c) del ejercicio en metrica: tasa de invencion sobre 20 consultas con respuesta conocida.
+4. Modulo 1: checklist de bases.
 
 ## Decisiones y contexto que no debe perderse
 
+- Evaluacion en tres niveles: origen del dato, calidad de la respuesta, salud del sistema. Sin el tercero no se puede operar.
+- El ejercicio del Modulo 0 no se cierra con 'mediria si inventa': se cierra con un conjunto de casos y un umbral.
+- Ollama Pro Legacy se mide por requests y no por tokens: el costo si es predecible.
 - El video se ve por bloques, no de una sentada.
 - La profundizacion empieza con recuperacion, no con explicacion.
 - Los modulos siguen los capitulos oficiales del video, no un mapa estimado.
@@ -36,7 +40,7 @@ Clase creada el 2026-11-07 a partir del video qLobAfve9b0 (Fazt). Re-evaluada el
 ## Como continuar
 
 1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-09.md` para el informe completo de la sesion.
+2. Leer `memory/2026-11-11.md` para el informe completo de la sesion.
 3. Verificar el estado real antes de actuar (git, tests, la DB).
 
 ---
