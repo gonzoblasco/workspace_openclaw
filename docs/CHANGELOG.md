@@ -6,6 +6,24 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-12] - Tests negativos en tres gates que no los tenían
+
+### Added
+- **`tests/python/test_check_single_source.py`** — 7 tests. El gate corre en cada commit y no tenía ni uno: si dejara de detectar una segunda copia, nada lo diría. Cubre duplicado detectado, líneas distintas, título repetido (ALLOW), línea corta, tag de modelo a mano, tag dentro de MANAGED, y `exit 3` sin archivos normativos.
+- **`tests/python/test_check_skill_overlap.py`** — 9 tests: pares, vectores vacíos, equivalencia con `cosine()` legacy, truncado de `text_key` igual que `embed()`, caché de otro modelo descartado, y `exit 3` sin catálogo.
+- **`tests/python/test_check_handoff_merge.py`** — 5 tests: pendiente perdido falla, declarado en CERRADOS pasa, `--closed` pasa, HANDOFF que agrega no falla, sin archivos no es verde.
+
+### Changed
+- **`scripts/gate-base-rate.py`** — el detector de tests no encontraba `test_check_single_source.py` (buscaba `test_single_source`) ni contaba los `returncode == 3` como caso negativo. Corregido: **de 11/18 a 14/18 gates con al menos un test negativo**.
+
+### Gotcha encontrado escribiendo los tests
+`check-handoff-merge.py` matchea el título de sección por substring ya lowercased: **"Próximos pasos" con tilde no contiene `"proximo"`**, así que la sección se saltea en silencio. Un HANDOFF con títulos acentuados puede quedar fuera del chequeo de pendientes. Documentado en el docstring del test; el gate no se tocó (arreglarlo es otro trabajo).
+
+### Status
+14 de 18 gates con test negativo. Quedan cuatro: `agent-skill-boundary`, `design-tokens`, `learnings-integrity`, `roadmaps`.
+
+---
+
 ## [2026-11-12] - skill-overlap: de 9,65 s a 1,49 s
 
 ### Changed

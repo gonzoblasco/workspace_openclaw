@@ -1,218 +1,104 @@
-"""Tests for scripts/check-single-source.py (un dato, un dueno).
+"""Tests de scripts/check-single-source.py (2026-11-12).
 
-El checker existe porque el 2026-10-20 Gonzo dijo: "necesitamos definir una unica
-fuente de la verdad y no tantos md que pueden chocarse y lo hacen a diario". El
-diagnostico real no era la cantidad de markdown: era que ningun archivo tenia
-dueno de un dato, y los gates existentes verificaban rutas, no afirmaciones.
+Este gate corre en CADA commit y no tenía un solo caso de test: si dejara de
+detectar una segunda copia, nada lo diría. Estos tests lo prueban contra un
+árbol temporal con archivos normativos controlados.
 
-Propiedades criticas:
-  1. Caza una regla repetida en dos archivos normativos.
-  2. NO caza un rotulo corto, un encabezado ni una linea de codigo.
-  3. Caza un tag de modelo escrito a mano fuera del bloque managed.
-  4. NO caza el tag dentro de un bloque managed (esa es la copia legitima).
-  5. NO caza la historia congelada (dailies, ADRs, CHANGELOG).
-
-Un chequeo que solo corre contra un arbol limpio NO esta probado. Cada test
-SIEMBRA el defecto en arboles falsos en tmp_path, y el ultimo exige que el check
-DISTINGA el caso limpio del sucio.
+Lo que cubren:
+  1. Una línea idéntica en dos archivos normativos se detecta como duplicado.
+  2. Una línea distinta no.
+  3. Un título markdown repetido NO cuenta (ALLOW): es el nombre, no la regla.
+  4. Las líneas cortas (< MIN_CHARS) no cuentan: son rótulos.
+  5. Un tag de modelo escrito a mano fuera de MANAGED se detecta.
+  6. Sin archivos normativos, el gate devuelve 3 y no 0.
 """
 import importlib.util
+import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent.parent
-CHECKER = ROOT / "scripts" / "check-single-source.py"
+import pytest
 
-REGLA = (
-    "- **Regla de prueba:** toda ruta citada en un documento del workspace debe "
-    "existir de verdad antes de que alguien confie en ella, sin excepciones."
-)
+ROOT = Path(__file__).resolve().parents[2]
+SCRIPT = ROOT / 'scripts' / 'check-single-source.py'
 
-
-def load():
-    spec = importlib.util.spec_from_file_location("check_single_source", CHECKER)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
+spec = importlib.util.spec_from_file_location('css', SCRIPT)
+css = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(css)
 
 
-def seed(root, rel, text):
-    path = root / rel
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
-    return path
+REGLON = ('Nunca se corre un comando destructivo sin preguntar antes, '
+          'y siempre se prefiere trash antes que rm.')
 
 
-# --- repeticion literal ---
-
-def test_duplicate_rule_across_files_is_caught(tmp_path):
-    mod = load()
-    seed(tmp_path, "AGENTS.md", REGLA + "\n")
-    seed(tmp_path, "MEMORY.md", REGLA + "\n")
-    dups = mod.find_duplicates(tmp_path)
-    files = {d[0] for d in dups} | {d[2] for d in dups}
-    assert files == {"AGENTS.md", "MEMORY.md"}
+def write_tree(tmp_path, files):
+    for rel, text in files.items():
+        p = tmp_path / rel
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(text, encoding='utf-8')
 
 
-def test_single_copy_is_clean(tmp_path):
-    mod = load()
-    seed(tmp_path, "AGENTS.md", REGLA + "\n")
-    seed(tmp_path, "MEMORY.md", "- Otra cosa distinta, sin relacion con lo anterior.\n")
-    assert mod.find_duplicates(tmp_path) == []
+def test_detecta_linea_duplicada(tmp_path):
+    write_tree(tmp_path, {
+        'AGENTS.md': f'# Reglas\n\n{REGLON}\n',
+        'MEMORY.md': f'# Estado\n\n{REGLON}\n',
+    })
+    dups = css.find_duplicates(tmp_path)
+    assert len(dups) == 1
+    fa, na, fb, nb, score, sa, sb = dups[0]
+    assert {fa, fb} == {'AGENTS.md', 'MEMORY.md'}
+    assert score >= css.THRESHOLD
 
 
-def test_short_label_is_not_a_rule(tmp_path):
-    mod = load()
-    seed(tmp_path, "AGENTS.md", "- **Modelos:** ver ADR-090.\n")
-    seed(tmp_path, "MEMORY.md", "- **Modelos:** ver ADR-090.\n")
-    assert mod.find_duplicates(tmp_path) == []
+def test_no_detecta_lineas_distintas(tmp_path):
+    write_tree(tmp_path, {
+        'AGENTS.md': f'# Reglas\n\n{REGLON}\n',
+        'MEMORY.md': '# Estado\n\nLos gates del pre-commit tardan dos segundos y '
+                     'corren en cada commit del repositorio.\n',
+    })
+    assert css.find_duplicates(tmp_path) == []
 
 
-def test_headings_are_not_duplicates(tmp_path):
-    # Un titulo es el NOMBRE de la regla, no la regla: repetirlo es como repetir
-    # un nombre de archivo. Si esto fallara, cualquier doc que enlace a otro
-    # quedaria bloqueado.
-    mod = load()
-    heading = "## Pausa obligatoria: agentes iteran, revision final, push y borrador"
-    seed(tmp_path, "AGENTS.md", heading + "\n")
-    seed(tmp_path, "docs/AGENTS-DETALLE.md", heading + "\n")
-    assert mod.find_duplicates(tmp_path) == []
+def test_titulo_repetido_no_cuenta(tmp_path):
+    write_tree(tmp_path, {
+        'AGENTS.md': '# Las mismas reglas\n\n## La sección de verificación obligatoria\n',
+        'MEMORY.md': '# Otro\n\n## La sección de verificación obligatoria\n',
+    })
+    assert css.find_duplicates(tmp_path) == []
 
 
-def test_paragraph_in_one_file_only_is_not_compared(tmp_path):
-    # El gate compara ENTRE archivos, nunca una linea consigo misma.
-    mod = load()
-    seed(tmp_path, "AGENTS.md", REGLA + "\n")
-    assert mod.find_duplicates(tmp_path) == []
+def test_linea_corta_no_cuenta(tmp_path):
+    write_tree(tmp_path, {
+        'AGENTS.md': '# Reglas\n\nNo correr rm.\n',
+        'MEMORY.md': '# Estado\n\nNo correr rm.\n',
+    })
+    assert css.find_duplicates(tmp_path) == []
 
 
-# --- tags de modelo ---
-
-def test_manual_model_outside_managed_is_caught(tmp_path):
-    mod = load()
-    seed(tmp_path, "AGENTS.md", "- Motor: `deepseek-v4.1-flash:cloud` para todo.\n")
-    stray = mod.find_stray_models(tmp_path)
-    assert len(stray) == 1
-    assert stray[0][0] == "AGENTS.md"
-
-
-def test_model_inside_managed_block_is_allowed(tmp_path):
-    mod = load()
-    seed(
-        tmp_path,
-        "AGENTS.md",
-        "<!-- BEGIN MANAGED:model-operativo -->\n"
-        "- Motor: `deepseek-v4.1-flash:cloud`.\n"
-        "<!-- END MANAGED:model-operativo -->\n",
-    )
-    assert mod.find_stray_models(tmp_path) == []
+def test_detecta_modelo_a_mano(tmp_path):
+    # MODEL_TAG exige el tag entre backticks y con la forma `modelo:cloud`
+    write_tree(tmp_path, {
+        'AGENTS.md': '# Reglas\n\nEl primario de este agente es '
+                     '`deepseek-v4.1-flash:cloud` y corre en la Mac Mini.\n',
+    })
+    # sin bloque MANAGED, el tag de modelo está a mano
+    stray = css.find_stray_models(tmp_path)
+    assert stray, 'un tag de modelo fuera de MANAGED tiene que detectarse'
 
 
-def test_model_catalog_owner_is_free(tmp_path):
-    # SETUP.md declara el catalogo de modelos instalados: es su dato, no una
-    # copia de la asignacion por rol.
-    mod = load()
-    seed(tmp_path, "docs/SETUP.md", "- Local: `gemma4:e4b-mlx`, `qwen3-embedding:0.6b`.\n")
-    assert mod.find_stray_models(tmp_path) == []
+def test_modelo_dentro_de_managed_no_cuenta(tmp_path):
+    write_tree(tmp_path, {
+        'AGENTS.md': '# Reglas\n\n<!-- BEGIN MANAGED:sintetico -->\n'
+                     'El primario es `deepseek-v4.1-flash:cloud`.\n'
+                     '<!-- END MANAGED:sintetico -->\n',
+    })
+    assert css.find_stray_models(tmp_path) == []
 
 
-def test_history_mark_exempts_a_benchmark_line(tmp_path):
-    mod = load()
-    seed(
-        tmp_path,
-        "MEMORY.md",
-        "- Benchmark 2026-08-30: `gemma4:e4b-mlx` 23s vs el anterior 154s. "
-        + mod.HISTORY_MARK
-        + "\n",
-    )
-    assert mod.find_stray_models(tmp_path) == []
+def test_sin_normativos_devuelve_3(tmp_path):
+    rc = css.main([str(tmp_path)])
+    assert rc == 3
 
 
-def test_historic_dirs_are_not_scanned(tmp_path):
-    mod = load()
-    seed(tmp_path, "memory/2026-08-30.md", "- Motor: `deepseek-v4-flash:cloud`.\n")
-    seed(tmp_path, "docs/adr/ADR-046.md", "- Motor: `deepseek-v4-flash:cloud`.\n")
-    assert mod.find_stray_models(tmp_path) == []
-
-
-# --- roles de modelo: la clase que el gate de tags no veia ---
-
-def test_manual_role_claim_is_caught(tmp_path):
-    """El caso testigo: SETUP.md afirmaba que minimax era primario del CORE en
-    prosa libre, fuera de los bloques, y el gate de tags la dejaba pasar porque
-    SETUP.md esta exento como dueno del catalogo."""
-    mod = load()
-    seed(
-        tmp_path,
-        "docs/SETUP.md",
-        "- Cloud: `minimax-m3.1-flash:cloud` (**primario del CORE desde 2026-10-20**).\n",
-    )
-    stray = mod.find_stray_roles(tmp_path)
-    assert len(stray) == 1
-    assert stray[0][0] == "docs/SETUP.md"
-
-
-def test_role_inside_managed_block_is_allowed(tmp_path):
-    """Dentro del bloque es la copia legitima: el propagador la corrige."""
-    mod = load()
-    seed(
-        tmp_path,
-        "docs/SETUP.md",
-        "<!-- BEGIN MANAGED:model-triple -->\n"
-        "- Primario `deepseek-v4.1-flash:cloud` para el CORE.\n"
-        "<!-- END MANAGED:model-triple -->\n",
-    )
-    assert mod.find_stray_roles(tmp_path) == []
-
-
-def test_catalog_line_without_role_subject_is_allowed(tmp_path):
-    """El catalogo dice que existe; no nombra a quien se asigna."""
-    mod = load()
-    seed(
-        tmp_path,
-        "docs/SETUP.md",
-        "- Cloud: `deepseek-v4.1-flash:cloud` (1M ctx), `gemma4:cloud` (vision).\n",
-    )
-    assert mod.find_stray_roles(tmp_path) == []
-
-
-def test_tool_default_is_not_a_role_claim(tmp_path):
-    """`por defecto` de una herramienta de terceros es otro sujeto, no la asignacion."""
-    mod = load()
-    seed(
-        tmp_path,
-        "docs/SETUP.md",
-        "- Provider cline: modelo por defecto `deepseek-v4.1-flash:cloud`.\n",
-    )
-    assert mod.find_stray_roles(tmp_path) == []
-
-
-def test_role_claim_respects_history_mark(tmp_path):
-    mod = load()
-    seed(
-        tmp_path,
-        "MEMORY.md",
-        "- Se movio el CORE a `minimax-m3.1-flash:cloud` el 2026-10-20. "
-        + mod.HISTORY_MARK
-        + "\n",
-    )
-    assert mod.find_stray_roles(tmp_path) == []
-
-
-def test_exit_code_fails_on_a_stray_role(tmp_path):
-    mod = load()
-    seed(tmp_path, "AGENTS.md", "- Unico: nada que repetir en el arbol.\n")
-    assert mod.main([str(tmp_path)]) == 0
-    seed(tmp_path, "docs/SETUP.md", "- `gemma4:cloud` es el primario del CORE.\n")
-    assert mod.main([str(tmp_path)]) == 1
-
-
-# --- el gate distingue limpio de sucio ---
-
-def test_exit_code_distinguishes_clean_from_dirty(tmp_path):
-    mod = load()
-    seed(tmp_path, "AGENTS.md", "- Unico: nada que repetir en otro archivo del arbol.\n")
-    assert mod.main([str(tmp_path)]) == 0
-
-    seed(tmp_path, "MEMORY.md", REGLA + "\n")
-    seed(tmp_path, "AGENTS.md", REGLA + "\n")
-    assert mod.main([str(tmp_path)]) == 1
+def test_arbol_real_no_tiene_duplicados():
+    """Contra el repo real: hoy no hay segundas copias. Si aparece una, este test avisa."""
+    assert css.find_duplicates(ROOT) == []

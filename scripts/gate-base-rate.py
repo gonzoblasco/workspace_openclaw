@@ -60,6 +60,7 @@ def sensitivity_of(gate):
     No es una medición: es una cota. Un check que tiene tests con casos negativos
     tiene una sensibilidad mínima medible; uno sin tests no tiene cota.
     """
+    # el script se llama check-x.py; el test, test_check_x.py
     stem = gate.replace('.py', '').replace('-', '_')
     tests = list((ROOT / 'tests/python').glob(f'test_{stem}*.py'))
     if not tests:
@@ -68,7 +69,10 @@ def sensitivity_of(gate):
     for t in tests:
         src = t.read_text(encoding='utf-8', errors='ignore')
         # un test con "FALLA" o "assert r.returncode == 1" prueba el camino negativo
-        n_negative += len(re.findall(r'returncode == 1|RESULTADO: FALLA|assert not', src))
+        # Un caso negativo es un test que ESPERA que el gate falle o no corra.
+        n_negative += len(re.findall(
+            r'returncode == 1|returncode == 3|returncode != 0|'
+            r'RESULTADO: FALLA|assert not |assert \(rc|assert rc == 3', src))
     return n_negative if n_negative else None
 
 
