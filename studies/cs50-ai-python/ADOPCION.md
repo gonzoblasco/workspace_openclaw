@@ -10,7 +10,7 @@
 
 | Idea del curso (con t=) | Qué hacemos hoy | Artefacto verificable |
 |---|---|---|
-| Un modelo se evalúa sobre datos que no vio; medir sobre los de entrenamiento es overfitting — "But the key idea is separating the training data from the testing data," (8:18:14) | Cada clase de `studies/` se verifica releyendo su propio `outline.md` contra su propio `transcripcion.md`. El mismo archivo es fuente y veredicto: si un timestamp está mal, la clase se autovalida igual. | `studies/cs50-ai-python/heldout.py` |
+| Un modelo se evalúa sobre datos que no vio; medir sobre los de entrenamiento es overfitting — "But the key idea is separating the training data from the testing data," (8:18:07) | Cada clase de `studies/` se verifica releyendo su propio `outline.md` contra su propio `transcripcion.md`. El mismo archivo es fuente y veredicto: si un timestamp está mal, la clase se autovalida igual. | `studies/cs50-ai-python/heldout.py` |
 
 ### Por qué esta y no otra
 
@@ -147,6 +147,28 @@ modulo-07-language.md          13 citas   PASA
 3. **Correrlo desde el pre-commit** sobre `studies/*/outline.md`, y no solo a pedido.
 4. **Las dos clases que fallan hoy** (`n8n-ai-automations`, `ai-engineer-full-course`) tienen que pasar antes de que el gate sea obligatorio: un gate que arranca en rojo se desactiva en dos días.
 
-Esa promoción no se hace acá: se hace cuando el gate tenga esos cuatro puntos.
+### La promoción se hizo (2026-11-12)
+
+**`scripts/check-study-citations.py` existe, está en el pre-commit y el catálogo entero está verde.** Los cuatro puntos de arriba, resueltos:
+
+1. **Los dos formatos que daban `3`**: `practica-*.md` no tiene citas con timestamp y `software-to-ai-engineer`/`system-design-interview-guide` tampoco. El gate los reporta como `no corrible` y **no** como verde. Los 22 archivos en ese estado son la lista de trabajo pendiente, no un agujero.
+2. **`--fix`**: reescribe los timestamps por tabla de offsets, sobre el bloque donde **empieza** la cita. Lo usé sobre dos clases (`ai-engineer-full-course`, `sql-full-course`) y funcionó.
+3. **Pre-commit**: bloque propio con disparador en `studies/<slug>/*.md`, corre sólo los archivos staged y se saltea los que no tienen `transcripcion.md`.
+4. **Las dos clases que fallaban pasan**: `ai-engineer-full-course` (41 citas, con `--fix`) y `n8n-ai-automations` (13 citas eran paráfrasis escritas con comillas — el modo de error que su propio outline advierte sobre el ASR).
+
+**Catálogo hoy:**
+
+```
+archivos: 37 | citas: 407 | verificadas: 407 | fallidas: 0 | no corribles: 22
+RESULTADO: PASA
+```
+
+**Los tres bugs del gate, encontrados al promoverlo** (los tests los cubren):
+
+1. **Contar `[` para ubicar el cue adelanta uno.** Hay que recorrer longitudes acumuladas. La primera versión marcaba `TS-DIFF` en las 15 citas de una clase que estaba bien.
+2. **El texto que se indexa tiene que ser el MISMO que se busca.** Buscaba en texto sin timestamps pero indexaba longitudes de la línea cruda: los offsets se desalineaban y el gate marcaba el bloque equivocado.
+3. **Una cita puede cruzar bloques.** El timestamp correcto es el del bloque donde **empieza** la cita, no el que contiene su final.
+
+Ese tercer bug es exactamente lo que el gate existe para cazar: `heldout.py` daba verde sobre su propia clase porque comparaba contra su propia convención. Al generalizarlo se rompió, y el test lo mostró.
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->

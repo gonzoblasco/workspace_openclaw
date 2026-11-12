@@ -6,6 +6,27 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-12] - Gate de citas de las clases de studies/
+
+### Added
+- **`scripts/check-study-citations.py`** — gate promovido desde `studies/cs50-ai-python/heldout.py` tras siete usos reales en un día (los siete módulos del curso CS50 AI). Verifica que cada cita `"texto" (h:mm:ss)` de una clase exista literalmente en su `transcripcion.md` y que el timestamp sea el del bloque que la contiene. Modos: archivo+d transcript, directorio de clase, `--all`, `--fix`. Códigos 0/1/3 según `verification-gates`: un archivo que no puede verificar NO es verde.
+- **Pre-commit**: bloque propio con disparador en `studies/<slug>/*.md`; verifica sólo los archivos staged con `transcripcion.md` al lado.
+- **`tests/python/test_check_study_citations.py`** — 8 tests que cubren cita correcta, paráfrasis, timestamp corrido, cita que cruza bloques, `--fix`, y los dos casos de `no corrible`.
+
+### Changed
+- **`studies/ai-engineer-full-course/outline.md`** — 41 timestamps corridos ~14 s, corregidos con `--fix`.
+- **`studies/sql-full-course/outline.md`** — 3 timestamps corregidos; una cita con puntos suspensivos reemplazada por el literal del transcript.
+- **`studies/n8n-ai-automations/outline.md`** — 13 citas que eran paráfrasis con comillas reemplazadas por literales del transcript (el ASR transcribe "n8n" como "NAT" y "NAN").
+- **`studies/cs50-ai-python/ADOPCION.md`** — la promoción documentada con los tres bugs que el gate encontró al generalizarse.
+
+### Why
+El gate existía como script de una sola clase. Siete usos reales en un día (101 citas, tres fallos distintos) cumplieron la condición que `ADOPCION.md` había fijado: sobrevivió a un uso real, repetido y con fallos distintos. Al generalizarlo se rompió en tres formas que el script original no veía; los tests las cubren.
+
+### Status
+`--all`: 37 archivos, 407 citas, 407 verificadas, 0 fallidas, 22 no corribles. Próximo: las 22 clases sin citas con timestamp son la lista de trabajo del gate, no un agujero.
+
+---
+
 ## [2026-11-11] - Reinos de la Frontera (proyecto nuevo)
 
 ### Added
