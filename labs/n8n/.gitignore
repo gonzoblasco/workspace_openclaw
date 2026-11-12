@@ -1,0 +1,4 @@
+data/
+.env.local
+.api-key
+.owner-pass
