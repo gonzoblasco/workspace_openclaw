@@ -59,7 +59,7 @@ Al terminar la clase deberías poder:
 - El transformer nace en 2017 con el paper *Attention Is All You Need*: "A transformer is a specific design for how an AI system processes language." (00:04:36). La superpotencia es la atención: mirar todas las palabras a la vez y relacionarlas (00:05:35).
 - Pre-trained significa que el modelo aprendió patrones de miles de millones de textos antes de hablar con un usuario. No aprende hechos: aprende regularidades de secuencia (00:06:31).
 - La alucinación es consecuencia directa del mecanismo: "GPT isn't looking up facts. It's generating text that sounds like it should be correct based on patterns" (00:07:50).
-- Límite central del curso: "On their own, LLMs can only produce text." (00:14:40). Un agente es un LLM con tools y un loop.
+- El bloque cierra con la alucinación como propiedad del mecanismo, no como un bug que se arregla con un prompt: si el modelo solo predice la continuación más plausible, la verificación de hechos tiene que venir de afuera (00:07:50).
 
 **Ejercicio:** escribir en 10 líneas qué es un LLM para alguien que nunca usó uno, explicando por qué puede inventar datos con seguridad. Entregable: `m1-llm-en-10-lineas.md`.
 
@@ -69,11 +69,11 @@ Al terminar la clase deberías poder:
 
 - Línea de tiempo: "GPT1 came out in 2018 and proved that the concept works." (00:08:27), y sigue GPT-2 (2019), GPT-3 (2020), GPT-3.5 (2022), GPT-4 (2023), GPT-4o (2024).
 - No hay un solo proveedor: "Claude from Anthropic, Gemini from Google, and Llama from Meta, which is open source" (00:09:07). Comparten la misma arquitectura transformer y el mismo mecanismo de generación.
-- "Large" mide dos cosas: datos y parámetros. Para dimensionar: "all of English Wikipedia, every article ever written is about 4 billion words" (00:10:27), y GPT-3 se entrenó con ~125 veces eso.
+- "Large" mide dos cosas: datos y parámetros. Para dimensionar: "all of English Wikipedia, every article ever written is about 4 billion words" (00:10:27). El video dice que GPT-3 se entrenó con ~125 veces eso; el paper de GPT-3 reporta ~300B tokens, que contra ~4B palabras de Wikipedia da un orden de 50-75x, no 125x. **El número del video es ilustrativo, no exacto** (arXiv:2005.14165).
 - Los parámetros son los diales internos que el entrenamiento ajusta: "Parameters are internal settings the model tunes during training" (00:10:46). La analogía del básquet: nadie calcula el ángulo; se ajusta errando.
 - Más grande no siempre es mejor: "bigger isn't always better" (00:13:22): más parámetros implica más cómputo, más costo y más latencia.
 - Fortalezas: texto fluido, resumen, traducción, código, instrucciones en lenguaje natural. Puntos ciegos: matemática, conocimiento posterior al corte, y confabulación.
-- El claim de la carrera por el contexto ("Cloud Opus 4.6, GBD 5.5, and Gemini 2.5 all support up to a million tokens", 00:22:30) es una foto del mercado al momento del video: **mutable, verificar antes de citar**.
+- Límite central del curso: "On their own, LLMs can only produce text." (00:14:40). Un agente es un LLM con tools y un loop.
 
 **Ejercicio:** armar una tabla de tres modelos actuales (proveedor, contexto, precio de input/output, fecha de corte) con fuente oficial y fecha de consulta. Entregable: `m2-modelos.md`.
 
@@ -81,9 +81,9 @@ Al terminar la clase deberías poder:
 
 **Objetivo:** pasar del chat a la API: el LLM como servicio request/response.
 
-- En el chat escribís en una caja; como developer, tu programa habla con el proveedor: "When a developer builds uh with an LLM, they use an API" (00:15:19).
+- En el chat escribís en una caja; como developer, tu programa habla con el proveedor a través de una API. El chat es una interfaz; la API es un contrato entre programas.
 - El patrón es siempre el mismo: tu aplicación manda un pedido, el proveedor procesa y devuelve una respuesta. "It's a simple back and forth request in request out." (00:15:38).
-- "It's a simple back and forth request in request out." (00:15:38). Esa decisión es la semilla de todo lo que viene.
+- Sobre ese contrato se construye el agente: manda mensajes, recibe respuestas y decide el siguiente paso (00:15:58).
 - El resto del bloque repite la explicación de parámetros del módulo anterior (duplicado de edición, ver notas).
 
 **Ejercicio:** dibujar el diagrama app → API → modelo → respuesta y marcar dónde vive cada decisión del agente. Entregable: `m3-api-diagrama.md`.
