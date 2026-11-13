@@ -574,7 +574,7 @@ def main(argv=None):
     facts = parse_facts(root)
     if facts is None:
         print(f"FALTA: {FACTS_FILE} sin bloque ```facts. Es el dueno de los hechos.")
-        return 1
+        return 3
 
     cv_files = list(cvs(root))
     if not cv_files:

@@ -120,20 +120,19 @@ def main() -> int:
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
 
+    # Corrible: si los indices requeridos no existen, no se puede correr el gate.
+    if not ROADMAPS_INDEX.exists() or not TRACKING_INDEX.exists():
+        print("ERROR indices requeridos no encontrados (docs/ROADMAPS.md o docs/roadmap-tracking.json); no se pudo correr (exit 3)", file=sys.stderr)
+        return 3
+
     ok = True
     lines: list[str] = []
 
     index_text = ROADMAPS_INDEX.read_text(encoding="utf-8") if ROADMAPS_INDEX.exists() else ""
-    if not ROADMAPS_INDEX.exists():
-        ok = False
-        lines.append(f"FALTA el indice {ROADMAPS_INDEX.relative_to(REPO)}")
     idx = index_versions(index_text)
 
     tver = tracking_versions()
-    if not TRACKING_INDEX.exists():
-        ok = False
-        lines.append(f"FALTA la tabla de seguimiento {TRACKING_INDEX.relative_to(REPO)}")
-    elif not tver:
+    if not tver:
         ok = False
         lines.append(f"la tabla de seguimiento {TRACKING_INDEX.relative_to(REPO)} no parsea")
 

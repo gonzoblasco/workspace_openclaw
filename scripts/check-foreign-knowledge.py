@@ -231,6 +231,12 @@ def main() -> int:
     ap.add_argument("--json", action="store_true", help="salida JSON")
     args = ap.parse_args()
 
+    # Corrible: Si no hay contenedores donde buscar, el script no puede correr.
+    containers_exist = any((WORKSPACE / c).is_dir() for c in FOREIGN_CONTAINERS + SERVICE_CONTAINERS)
+    if not containers_exist:
+        print("ERROR no hay contenedores (forks/ o clones/) bajo el workspace; no se pudo correr (exit 3)", file=sys.stderr)
+        return 3
+
     results = scan()
     if args.install:
         for r in results:

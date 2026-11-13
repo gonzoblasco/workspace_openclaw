@@ -408,6 +408,11 @@ def main() -> int:
                     help="Solo auditar la cadena, sin validar un post puntual.")
     args = ap.parse_args()
 
+    # Corrible: si los datos de origen no existen, no se puede correr el gate.
+    if not (ROOT / "docs" / "linkedin").is_dir() or not (ROOT / "memory" / "memory.db").exists():
+        print("ERROR datos de origen no encontrados (docs/linkedin o memory/memory.db); no se pudo correr (exit 3)", file=sys.stderr)
+        return 3
+
     if args.post:
         if args.post == "-":
             path = Path("-")

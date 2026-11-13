@@ -171,8 +171,13 @@ def main(argv):
     ap.add_argument("--check", action="store_true", help="bloqueante (exit 1 si falla)")
     args = ap.parse_args(argv)
 
+    contexts = list(theme_contexts())
+    if not contexts:
+        print("ERROR no hay contextos de tema para revisar; no se pudo correr (exit 3)", file=sys.stderr)
+        return 3
+
     total_fail = 0
-    for name, prim, sem0, tover in theme_contexts():
+    for name, prim, sem0, tover in contexts:
         merged = {**sem0, **tover}
         failures, _, declared = check_theme(name, prim, sem0, tover)
         print(f"\n=== {name} ===  ($contrast: {len(declared)} declarado/s)")
