@@ -1,6 +1,6 @@
 ---
 name: "evidence-hunter"
-description: "Caza evidencia verificable en el repositorio para sustentar los ejes de la rúbrica SHARP. Convierte afirmaciones del autor en pruebas automáticas (git diff, pruebas unitarias, búsquedas de código) y genera una tabla de evidencia citada.")
+description: "Caza evidencia verificable en el repositorio para sustentar los ejes de la rúbrica SHARP. Convierte afirmaciones del autor en pruebas automáticas (git diff, pruebas unitarias, búsquedas de código) y genera una tabla de evidencia citada."
 metadata:
   category: "Critic"
   tags:
