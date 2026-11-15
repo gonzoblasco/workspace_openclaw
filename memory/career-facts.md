@@ -179,7 +179,7 @@ Qué hizo:
 
 ### 2.4 Minutentag / EULAS - 02/2016 a 11/2019
 
-**Título canónico:** Frontend Developer, Accessibility Owner. Lugar: híbrido.
+**Título canónico:** Frontend Developer, Accessibility Owner. Lugar: presencial (corrección de Gonzo, 14/11/2026).
 
 Qué hizo:
 
