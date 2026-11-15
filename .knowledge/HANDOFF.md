@@ -1,15 +1,18 @@
-# HANDOFF - Workspace
+# HANDOFF - workspace
 
-**Fecha:** 2026-11-12 01:57 GMT-3
-**Proyecto:** Workspace
+**Fecha:** 2026-11-15 16:15 GMT-3
+**Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-11-12). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-12.md`.
+> HANDOFF generado en el cierre de sesion (2026-11-15). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-15.md`.
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-15 16:15
+Corrección de error de parseo YAML en el frontmatter de agents/kanam-critic/skills/evidence-hunter/SKILL.md (paréntesis residual eliminado). Validación exitosa con Ruby Psych.
 
 ### 2026-11-12 01:57
 Clase `estudios/entrevistas-tecnicas` en curso. Se dio el Modulo 0 (marco de tres ventanas + ansiedad medida con la MASI) y el diagnostico de Gonzo quedo registrado en `ejercicio-0-gonzo.md`: improviso las tres etapas, con el «antes» como raiz; el speech que le prepare se leyo dos veces y no se estudio. Vino un research de Vane sobre ansiedad de entrevista; se audito en vez de adoptarlo: se leyo el PDF completo de Jamieson, Nock & Mendes (2012) -el reappraisal reduce resistencia periferica y sesgo atencional pero NO baja el estres subjetivo- y el paper completo de Lev-Ari & Keysar (2010) -acento leve penaliza credibilidad por fluidez, corregible si el oyente lo nota; acento fuerte no se corrige. Brooks (2014) y McCarthy & Goffin (2004) quedan identificados y no leidos. Se descarto la cita dudosa «Taylor & Sullman, 2009?» y se dejo constancia de que no hay evidencia de rechazo por ansiedad como criterio formal en examenes de conducir. Se escribio el prompt de research para Vane y quedaron tres caminos: linea base grabada, Modulo 1 (LinkedIn), o plan de 4 semanas ajustado.
@@ -23,10 +26,11 @@ Continuacion de la sesion del curso DSA: Gonzo pidio estudiar el curso 'a traves
 ### 2026-11-12 00:10
 Arranque de sesion + montaje de la clase studies/dsa-mega-course/ desde el video xwI5OBEnsZU: Data Structures and Algorithms Mega Course (freeCodeCamp.org, Parth / Destination FAANG, 48:48:19, Java). Transcript de 74.659 cues ASR en 9.850 bloques con [h:mm:ss], glosario ASR de 25 filas, outline de 21 modulos en tres tramos alineado a los 29 capitulos oficiales, ~150 problemas con timestamp y checklist de 20 bloques. Gate de citas: 22 citas con timestamp, BAD 0, sin citas no literales. Commit 57b94e35a9.
 
-### 2026-11-11 16:30
-Arranque de sesion + montaje y cierre de la clase studies/cute-room-portfolio-3d (video tdsQwuyS6DQ: Create a Cute Room Portfolio with Blender, Three.js, JavaScript, Andrew Woan, freeCodeCamp.org, 8:42:31). Transcripcion de 14.576 cues en-orig con glosario ASR, outline de 13 modulos 1:1 con los 42 capitulos oficiales y 30 citas verificadas (BAD 0), y ADOPCION con web-asset-gate.py corrido contra projects/reinos-de-la-frontera: falla de verdad (exit 1 con 1 MB/768px) y encontro que assets/quaternius/_download/ duplica 1,25 MB gzip de modelo y 677 KB de textura. Commits e90accbbac, 1b8c20b5a5.
-
 ## Estado actual
+
+Error de carga de la skill evidence-hunter resuelto; frontmatter válido.
+
+### Estado previo (heredado)
 
 Modulo 0 dado y verificado. Research de Vane auditado contra fuente: dos papers leidos, el resto marcado. Modulo 1 no empezado. Sin linea base grabada todavia.
 
@@ -55,6 +59,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1. Continuar con las tareas de Kanam Critic o workspace general.
+
+### Pendientes heredados (sin cambios)
 
 1. Elegir camino: (a) linea base grabada de «contame sobre vos» en ingles, (b) Modulo 1.1 auditoria de LinkedIn, (c) plan de 4 semanas ajustado. Recomendacion de Kanam: linea base primero.
 2. Commit local de `studies/entrevistas-tecnicas/` (research/ + ejercicio-0-gonzo.md).
@@ -126,6 +134,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- Se corrigió sintaxis YAML en agents/kanam-critic/skills/evidence-hunter/SKILL.md eliminando un paréntesis de cierre fuera de comillas.
+
+### Heredadas (sin cambios)
+
 - El research externo se audita leyendo la fuente, no se adopta por plausible. Aprobar una cita sin abrir el paper es el mismo error que citar un README como especificacion.
 - Reappraisal no reduce el estres subjetivo: cambia fisiologia y atencion. Ensenarlo como «calmate» es falso.
 - Acento leve penaliza credibilidad por fluidez y el oyente puede corregirlo si lo nota; acento fuerte no. La palanca practica es fluidez del contenido, no borrar el acento.
@@ -138,19 +150,13 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 - Fallback unico local por decision de Gonzo: 'el fallback no puede ser otro modelo en la nube'. Primario deepseek y no beam: dejo de ser gratuito y su calidad ya estaba descartada por ADR-105 (3/4 bugs, auto-aprobacion con defecto vivo). Ninguna carrera universitaria va a CV ni ATS (regla 2026-11-04). Una referencia de CV se verifica abriendo el hilo en GitHub, no contra el corpus.
 
-## Como continuar
-
-1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-12.md` para el informe completo de la sesion.
-3. Verificar el estado real antes de actuar (git, tests, la DB).
-
----
-
-*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
-
 ## Archivos tocados
 
 ```
+agents/kanam-critic/skills/evidence-hunter/SKILL.md
+docs/CHANGELOG.md
+memory/career-facts.md
+studies/ai-agents-for-beginners/m1-llm-en-10-lineas.md
 .knowledge/handoff-history/2026-11-06-1805-2-HANDOFF.md
 .knowledge/handoff-history/2026-11-06-1805-HANDOFF.md
 studies/sql-full-course/HANDOFF.md
@@ -163,10 +169,19 @@ studies/godot-2d-platformer-beginners/SESSIONS.md
 studies/godot-3d-rpg-curso/HANDOFF.md
 studies/godot-3d-rpg-curso/PROGRESO.md
 studies/godot-3d-rpg-curso/SESSIONS.md
-docs/CHANGELOG.md
 docs/archive/CHANGELOG-archive.md
 studies/README.md
 ```
+
+## Como continuar
+
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-11-15.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
+
+---
+
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
 
 ## What This Is
 
