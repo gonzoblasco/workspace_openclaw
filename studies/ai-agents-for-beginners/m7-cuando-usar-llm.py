@@ -58,8 +58,10 @@ def parse_fecha(texto, hoy=None):
     if m:
         return (hoy + timedelta(days=int(m.group(1)))).date()
 
-    m = re.fullmatch(r"(?:el )?(?:pr[oó]ximo |proximo )?(\w+)", t)
-    if m and m.group(1) in DIAS:
+    # Anclado a los nombres de dias: un regex con (\w+) suelto matchea
+    # cualquier palabra ("hola") y desperdicia el paso. Detectado en review.
+    m = re.fullmatch(r"(?:el )?(?:pr[oó]ximo |proximo )?(%s)" % "|".join(DIAS), t)
+    if m:
         objetivo = DIAS[m.group(1)]
         delta = (objetivo - hoy.weekday()) % 7
         return (hoy + timedelta(days=delta or 7)).date()
@@ -67,12 +69,21 @@ def parse_fecha(texto, hoy=None):
     m = re.fullmatch(r"(\d{1,2}) de (\w+)(?: de (\d{4}))?", t)
     if m and m.group(2) in MESES:
         anio = int(m.group(3)) if m.group(3) else hoy.year
-        fecha = datetime(anio, MESES[m.group(2)], int(m.group(1))).date()
+        try:
+            fecha = datetime(anio, MESES[m.group(2)], int(m.group(1))).date()
+        except ValueError:
+            # Fecha que no existe: '29 de febrero' en un año no bisiesto.
+            # Devolver None es coherente con el contrato: si no puede, no adivina.
+            return None
         # Sin año explicito, una fecha ya pasada se interpreta como el año
         # siguiente: '15 de marzo' dicho en noviembre es marzo proximo, no
         # marzo de hace ocho meses. Nadie agenda hacia atras.
         if not m.group(3) and fecha < hoy.date():
-            fecha = fecha.replace(year=fecha.year + 1)
+            try:
+                fecha = fecha.replace(year=fecha.year + 1)
+            except ValueError:
+                # 29 de febrero corrido a un año no bisiesto.
+                return None
         return fecha
 
     try:
@@ -150,13 +161,16 @@ def resumen_llm(resenas, cuenta):
 
 
 def resumen_fallback(resenas):
-    """Si no hay LLM: extractivo por codigo. Peor, pero no bloquea."""
-    pos = sum(1 for r in resenas if any(
-        p in r.lower() for p in ("perfecto", "excelente", "encanto", "nunca falla")))
-    neg = sum(1 for r in resenas if any(
-        p in r.lower() for p in ("pesima", "no lo recomiendo", "dejo de funcionar", "rota")))
+    """Si no hay LLM: extractivo por codigo. Peor, pero no bloquea.
+
+    Reusa `conteo_por_codigo` en vez de repetir listas de senales: tener dos
+    juegos de senales distintas daba conteos distintos para las mismas resenas.
+    Detectado en review.
+    """
+    cuenta, _ = conteo_por_codigo(resenas)
     return (f"[fallback codigo] {len(resenas)} resenas: "
-            f"{pos} claramente a favor, {neg} claramente en contra.")
+            f"{cuenta['a favor']} a favor, {cuenta['en contra']} en contra, "
+            f"{cuenta['mixta']} mixtas.")
 
 
 # ---------------------------------------------------------------- MAIN

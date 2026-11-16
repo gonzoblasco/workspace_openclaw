@@ -93,6 +93,14 @@ def search_flights(origin=None, destination=None, date=None, max_price=None):
         errores.append(f"origin debe ser IATA de 3 letras, recibi {origin!r}")
     if destination and len(destination) != 3:
         errores.append(f"destination debe ser IATA de 3 letras, recibi {destination!r}")
+    # max_price negativo no es un tope, es un error del llamador. Sin esta
+    # validacion el handler devolvia "ok, 0 resultados bajo USD -10", que
+    # parece exito. Detectado en review.
+    if max_price is not None:
+        if not isinstance(max_price, (int, float)):
+            errores.append(f"max_price debe ser numerico, recibi {max_price!r}")
+        elif max_price < 0:
+            errores.append(f"max_price no puede ser negativo, recibi {max_price}")
 
     if errores:
         return {"ok": False, "error": "; ".join(errores), "results": []}
