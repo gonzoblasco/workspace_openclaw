@@ -158,6 +158,22 @@ Descartados: GraceMark (pide 10+ anos y es 100% remote within Mexico), FOURSYS (
 encasilla en testing), Blacksmith (pide portfolio de diseno en Figma), Speria y Profound (diseno,
 no ingenieria), Infojini (ya es tu proceso vivo).
 
+## EFISAT (efisat.com.ar) - outreach directo a Agustín Bermúdez (fundador) - 15/11/2026
+
+> **No es un puesto ni una postulación.** Es un cold outreach a la empresa (20+ años, 500+ clientes,
+> 10K+ vehículos monitoreados; gestión de flotas, telemetría, recaudación, apps para transporte de
+> pasajeros). Se llega por el padre de Gonzalo, que es el contacto. Por eso el mensaje va en
+> **español** y el tono es de presentación, no de búsqueda.
+
+| Empresa | Puesto | Contacto | Canal | Riesgo #1 | Estado |
+|---|---|---|---|---|---|
+| **EFISAT** | Sin puesto definido (desarrollador full stack / sistemas de gestión) | **Agustín Bermúdez**, fundador (vía el padre de Gonzalo) | WhatsApp o email, referido | **No hay vacante**: el mensaje compite contra la percepción de "me mandan CVs". Se gana con un gancho de dominio (unificar fuentes de datos, automatizar sin perder control) y una salida de 20 minutos. | **MATERIAL LISTO 15/11**, no enviado. `docs/entrevistas/efisat-cold-outreach/`: `cv-efisat.md` (verdad), `Gonzalo_Blasco_CV_EFISAT.docx` y `.pdf` (2 páginas), `mensaje.md` (borrador WhatsApp + email). |
+
+**Decisiones de esta versión (15/11):** sin título de ingeniero (Gonzo no está recibido: regla nueva en
+`memory/career-facts.md` §7-bis), liderazgos en tono bajo, sin carreras universitarias en Formación, y
+las contribuciones OSS **dentro del CV** (11 PRs agrupados por familia + 7 hilos de revisión), porque es
+la prueba más difícil de refutar que tiene para mostrar a un fundador.
+
 ## Procesos activos
 
 | Empresa | Puesto | Contacto | Tarifa | Estado 2026-10-21 |

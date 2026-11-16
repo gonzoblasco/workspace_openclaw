@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-15 16:15 GMT-3
+**Fecha:** 2026-11-15 21:14 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-15 21:14
+CV EFISAT en español (outreach a Agustín Bermúdez, fundador): borrador de STUDIO reescrito por el CORE (corregidos 5 errores factuales: telemetría/pagos inventados, 'adoptaron en toda la organización', 'migré la arquitectura', astryx duplicado, stack inventado), MD + DOCX + PDF en docs/entrevistas/efisat-cold-outreach/ (2 páginas A4). Regla nueva en career-facts §7-bis: sin título de ingeniero y liderazgos en tono bajo (corrección del padre de Gonzo). mensaje.md con borrador WhatsApp y email. Proceso registrado en job-search-tracker. Gate check-cv-facts: exit 0 (solo avisos preexistentes).
 
 ### 2026-11-15 16:15
 Corrección de error de parseo YAML en el frontmatter de agents/kanam-critic/skills/evidence-hunter/SKILL.md (paréntesis residual eliminado). Validación exitosa con Ruby Psych.
@@ -23,10 +26,11 @@ Sesion de practica del curso n8n. Se monto la instancia self-hosted local en lab
 ### 2026-11-12 01:47
 Continuacion de la sesion del curso DSA: Gonzo pidio estudiar el curso 'a traves mio' con mis conocimientos y research, y arrancar el modulo 1. Se escribio studies/dsa-mega-course/modulo-01-big-o.md (leccion trabajada, 11 citas verificadas BAD 0, tres agregados externos y cinco huecos del video) y se corrieron los cuatro ejercicios en practica/m1/: 8.1 tabla con corrector, 8.2 cinco bloques medidos, 8.3 lineal vs binaria con y sin JIT, 8.4 la pregunta de entrevista con tres soluciones. Hallazgos: el primer benchmark de 8.3 mintio (JIT borraba el loop sin volatile y vectorizaba a 0,2 ns/elemento); el sort le gana al hashset por boxing y localidad de cache aunque sea O(n log n); fib crece por phi y no por 2. JDK 27.0.1 instalado con brew.
 
-### 2026-11-12 00:10
-Arranque de sesion + montaje de la clase studies/dsa-mega-course/ desde el video xwI5OBEnsZU: Data Structures and Algorithms Mega Course (freeCodeCamp.org, Parth / Destination FAANG, 48:48:19, Java). Transcript de 74.659 cues ASR en 9.850 bloques con [h:mm:ss], glosario ASR de 25 filas, outline de 21 modulos en tres tramos alineado a los 29 capitulos oficiales, ~150 problemas con timestamp y checklist de 20 bloques. Gate de citas: 22 citas con timestamp, BAD 0, sin citas no literales. Commit 57b94e35a9.
-
 ## Estado actual
+
+Material listo, no enviado: falta el OK de Gonzo para mandar el mensaje y el CV.
+
+### Estado previo (heredado)
 
 Error de carga de la skill evidence-hunter resuelto; frontmatter válido.
 
@@ -59,6 +63,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1. Enviar mensaje.md (versión WhatsApp) cuando Gonzo confirme; completar el placeholder [nombre del vínculo]; si responde, agendar 20 minutos.
+
+### Pendientes heredados (sin cambios)
 
 1. Continuar con las tareas de Kanam Critic o workspace general.
 
@@ -134,6 +142,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- Sin título de ingeniero; liderazgos tono bajo; OSS dentro del CV; formación sin universidades (career-facts 7-bis).
+
+### Heredadas (sin cambios)
+
 - Se corrigió sintaxis YAML en agents/kanam-critic/skills/evidence-hunter/SKILL.md eliminando un paréntesis de cierre fuera de comillas.
 
 ### Heredadas (sin cambios)
@@ -153,9 +165,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 ## Archivos tocados
 
 ```
+docs/entrevistas/_general/job-search-tracker.md
+memory/career-facts.md
 agents/kanam-critic/skills/evidence-hunter/SKILL.md
 docs/CHANGELOG.md
-memory/career-facts.md
 studies/ai-agents-for-beginners/m1-llm-en-10-lineas.md
 .knowledge/handoff-history/2026-11-06-1805-2-HANDOFF.md
 .knowledge/handoff-history/2026-11-06-1805-HANDOFF.md

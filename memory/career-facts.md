@@ -503,6 +503,30 @@ Trabajo en varias fases del SDLC en paralelo dentro de squads ágiles matriciale
 
 ---
 
+## 7-bis. Tono y credenciales en los CVs (Gonzo, 2026-11-15)
+
+**Regla dura de escritura, no un hecho nuevo.** Nace de una crítica concreta: el padre de Gonzo
+-que además es el contacto de un outreach a EFISAT- leyó un CV que sonaba a título y a liderazgo
+inflado.
+
+1. **No se usa "Ingeniero" como credencial propia.** Gonzo no está recibido: no hay título
+   universitario (§3). El headline de cada CV es de **rol** ("Desarrollador Full Stack Senior",
+   "Desarrollador Senior Frontend / Full Stack"), y en Formación no va ninguna carrera cuando el
+   puesto no la pide (ya coincide con `skills/job-application/references/educacion.md`).
+   Prohibido también "Ing.", "graduado" o cualquier variante que se lea como título.
+   **Excepción acotada:** el nombre contractual de un puesto sí puede contener la palabra
+   (*Accessibility Engineer (Contractor)* en Super7UI) - es el cargo que tuvo, no una credencial
+   propia. Decirlo en español como "Especialista en Accesibilidad (contratista)" es igual de fiel.
+2. **Liderazgos en tono bajo: un hecho, sin adjetivos.** "Lideré un equipo de 3 ingenieros" está
+   bien. Se sacan "experto", "referente", "líder reconocido", superlativos y cualquier frase que
+   suene a venta. Verbos concretos: construí, implementé, audité, automaticé, integré.
+
+**Lo que NO cambia:** fechas, roles, años (10+ total), inglés B2+, Deque como programa, y la
+evidencia OSS (11 PRs mergeados + colaboración sin autoría). El tono es un filtro de redacción,
+nunca una verdad nueva.
+
+---
+
 ## 8. Proyectos propios
 
 | Proyecto | Estado | Qué es |
