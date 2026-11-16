@@ -1,10 +1,14 @@
-# Notas para después de la transición a Antigravity
+# Notas para el régimen de coexistencia OpenClaw + Antigravity
 
 **Creadas:** 2026-11-16
 **Disparador:** Gonzo — *"deja notas de estos cambios para dentro de par de semanas cuando terminemos la transición a Antigravity"*
-**Para leer cuando:** el programa `programa_adaptacion_openclaw_a_gemini.md` esté en Fase 5 (marcha blanca) o cerrado.
+**Corregido el mismo día:** *"Mi idea no es reemplazar del todo a OpenClaw sino intentar ambos funcionando en un mismo sistema en sincronía. El xq principal es justo este que estamos haciendo: tú tienes canales como Telegram."*
 
-Dos decisiones se tomaron el 2026-11-16. Las dos sobreviven la migración, pero **no se portan solas**: cada una tiene un paso concreto que depende de qué soporte el runtime de Antigravity.
+**Para leer cuando:** las Fases 3-5 del programa estén cerradas y los dos runtimes corran en régimen.
+
+> **El objetivo no es migrar, es coexistir.** OpenClaw no se retira: aporta lo que Antigravity no tiene (canales como Telegram, gateway, schedulers). Antigravity aporta el runtime de código y los workflows. Alineado con §5.1 del programa, que ya declara el workspace canónico único.
+
+Dos decisiones se tomaron el 2026-11-16. Las dos sobreviven a la coexistencia, pero **no se portan solas**. Y al final una sección con los puntos donde los dos runtimes sí se cruzan, que es lo único que puede romper la sincronía.
 
 ---
 
@@ -101,11 +105,27 @@ El repo era desconocido salvo por el nombre. Se leyó **antes** de ejecutar: tar
 - Si la regla de markdown se extiende a los fetch que hacen los proyectos, no sólo a los míos.
 - Si la skill vendorizada se replica en Antigravity o se usa el plugin de allá. Son dos caminos válidos; tener las dos es duplicar 15 MB de corpus.
 
+## 3. Coexistencia: dónde sí se cruzan
+
+Verificado el 2026-11-16: los dos runtimes **comparten el mismo workspace**. `~/.gemini/config/config.json` y `~/.gemini/config/skills.json` apuntan a `/Users/gonzoblasco/.openclaw/workspace`, y los 11 symlinks de `~/.agents/skills/` van a `workspace/skills/`.
+
+Eso es lo que da la sincronía que se busca —una skill editada desde Antigravity cambia lo que cargo yo, sin copiar nada— y a la vez son los cuatro puntos donde se puede romper.
+
+**1. Commits en el mismo repo.** El riesgo más filoso, y el único que ya tiene precedente. `AGENTS.md` prohíbe `git add -A` porque con dos sesiones vivas firma trabajo ajeno; ese incidente pasó dos veces en un día. Con dos **runtimes** el escenario se multiplica: si Antigravity commitea mientras yo tengo el índice preparado, o al revés, el commit se lleva lo que no es suyo. La regla de rutas explícitas y el chequeo de `git diff --cached` antes de commitear ahora aplican **inter-runtime**, no sólo entre sesiones.
+
+**2. `memory.db` y los dailies.** Ya cubierto por §5.1 del programa (escrituras sólo por los scripts, DB-first). Vale repetirlo con el motivo: el `.md` es una vista regenerable, y si los dos escriben el markdown a mano, el próximo export borra una de las dos versiones sin avisar.
+
+**3. `vendor/` vs plugin de Antigravity.** Dos copias del mismo corpus (~15 MB cada una). No se cruzan ni rompen nada. Es deuda cosmética, no técnica.
+
+**4. El plan del programa vivía en un lugar frágil — resuelto.** `programa_adaptacion_openclaw_a_gemini.md` estaba sólo en `~/.openclaw/media/inbound/`, que es caché de adjuntos y se puede podar. Copiado el 2026-11-16 a `docs/antigravity/programa-adaptacion.md` (175 líneas, idéntico). El original queda donde está: no se borra caché ajena.
+
+Lo que **no** hay que hacer: sincronizar por copia. Los symlinks ya hacen el trabajo; duplicar archivos entre los dos árboles crea exactamente la segunda fuente de verdad que `AGENTS.md` §0 previene.
+
 ---
 
 ## Referencia cruzada
 
-- Plan de migración: `programa_adaptacion_openclaw_a_gemini.md` (Fases 0-2 completas al 2026-11-16; faltan 3-5)
+- Plan del programa: `docs/antigravity/programa-adaptacion.md` (copia estable; Fases 0-2 completas al 2026-11-16, faltan 3-5)
 - Regla vigente: `AGENTS.md` §3 — Reglas operativas
 - Skill: `skills/modern-web-guidance/SKILL.md` · instalador: `scripts/mwg-install.sh`
 - Contexto de la decisión: sesión 2026-11-16 (Moltbook 2026-W47, item de docs en markdown + item de `modern-web-guidance`)
