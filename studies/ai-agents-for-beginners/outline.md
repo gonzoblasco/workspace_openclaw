@@ -88,7 +88,9 @@ Al terminar la clase deberías poder:
 - Sobre ese contrato se construye el agente: manda mensajes, recibe respuestas y decide el siguiente paso (00:15:58).
 - El resto del bloque repite la explicación de parámetros del módulo anterior (duplicado de edición, ver notas).
 
-**Ejercicio:** dibujar el diagrama app → API → modelo → respuesta y marcar dónde vive cada decisión del agente. Entregable: `m3-api-diagrama.md`.
+**Ejercicio:** dibujar el diagrama app → API → modelo → respuesta y marcar dónde vive cada decisión del agente. Entregable: `m3-api-diagrama.md` (incluye el lab del primer programa de 7 líneas).
+
+> **Nota de práctica (2026-11-16):** el 2026-11-14 se había creado `m3-primera-llamada.md` por fuera del outline; quedó fusionado dentro de `m3-api-diagrama.md` el 2026-11-16 para que el entregable sea el que el outline pide. No hay dos archivos para el mismo módulo.
 
 ### Módulo 4 - Token Economics & Managing Context Windows (17:54 - 31:13)
 
@@ -104,6 +106,8 @@ Al terminar la clase deberías poder:
 - La tensión de fondo: "More context means better results, but higher cost." (00:31:01). Gestionarla es una skill de producción.
 
 **Ejercicio:** calcular el costo de un agente de 5 iteraciones con 20k tokens de contexto por llamada usando el precio oficial vigente de un proveedor. Entregable: `m4-costo.md` con la cuenta y la fuente del precio.
+
+> **Nota de práctica (2026-11-16):** `m4-costo.md` hecho con DeepSeek-V4-Pro (precios verificados 2026-11-12). Incluye el escenario plano que pide el ejercicio y el escenario de contexto creciente, que es el que pasa en producción (+8% en 5 iteraciones).
 
 ### Módulo 5 - API Message Roles & Prompt Engineering Nuances (31:13 - 38:29)
 
