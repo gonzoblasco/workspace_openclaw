@@ -97,8 +97,8 @@ toma la primera sesión con margen: no se reusa este calendario.
 
 **El curso:** [`studies/cpacc-completo/`](../../studies/cpacc-completo/outline.md) — fusión de los dos videos en un solo outline de 11 módulos que sigue el orden del BoK. Es el que se sigue.
 
-**Las dos fuentes originales (registro):** [`studies/cpacc-study-guide/`](../../studies/cpacc-study-guide/outline.md)
-— **FULL CPACC Study Guide** (Derek Mei, 1:35:11, captions manuales). Recorre los tres dominios en
+**Las dos fuentes originales (registro histórico):** **FULL CPACC Study Guide** (Derek Mei, 1:35:11,
+captions manuales), transcript en [`transcripcion.md`](../../studies/cpacc-completo/transcripcion.md). Recorre los tres dominios en
 9 módulos: los 7 modelos, las 8 categorías de discapacidad con barreras y AT, etiqueta, los 9
 beneficios, los 7 principios de diseño universal, UDL, POUR, el marco legal internacional y los
 modelos de madurez. 19 citas verificadas contra el transcript.
@@ -117,8 +117,8 @@ clase, y después se vuelve al BoK para el detalle que el video no cubre:
 | 7-8 (3A-3F) | M8, M9 — leyes y madurez | Leyes no estadounidenses (el video lo dice: «very Americentric»); EN 301 549, EAA, Ley 26.653 |
 | 9-10 (repaso) | M7 — POUR | Criterios WCAG y técnicas |
 
-**El video roadmap** ([`studies/cpacc-certification/`](../../studies/cpacc-certification/outline.md),
-Practice Test Geeks, 7:39) no enseña contenido: da el formato, los pesos y el orden de preparación.
+**El video roadmap** (Practice Test Geeks, 7:39; transcript en
+[`transcripcion-roadmap.md`](../../studies/cpacc-completo/transcripcion-roadmap.md)) no enseña contenido: da el formato, los pesos y el orden de preparación.
 Se consulta al planificar, no al estudiar.
 
 ## 4.ter Material del bloque 1
