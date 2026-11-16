@@ -71,12 +71,23 @@ Corrido sobre `projects/preflight` (38 de 209 guides con reglas determinísticas
 
 **Lo que hay que saber antes de adoptarlo:** el binario declara telemetría anónima de Google, opt-out con `DISABLE_TELEMETRY=1`. En el test se corrió siempre con esa variable. No hay endpoint de telemetría en el bundle (`grep` sobre el `.mjs` no encuentra ni `fetch` ni URL de analytics), pero la declaración está en el README y en el binario.
 
+### Dónde vive (instalado el 2026-11-16)
+
+Decisión: **vendorizado, no `npx` por llamada**. El bundle son ~15 MB (7,4 MB de vectores `query-words.i8`, 5,1 MB de `legacy-scan.mjs`), así que versionarlo en git no tiene sentido y `npx` por invocación paga red en cada consulta cuando la búsqueda ya es offline.
+
+```
+skills/modern-web-guidance/SKILL.md   wrapper fino (versionado)
+scripts/mwg-install.sh                instalador pinned (versionado)
+vendor/mwg/1.0.1/                     bundle real (~15 MB, gitignored)
+```
+
+`mwg-install.sh` verifica **integridad sha512 contra el registry** antes de extraer, y corta si no coincide. Reinstalar es borrar `vendor/mwg` y volver a correrlo.
+
 ### Qué revisar en Antigravity
 
-- [ ] **Instalación:** el paquete ya trae `.agents/plugins/marketplace.json` (además de `.claude-plugin`, `.codex-plugin`, `.cursor-plugin` y `.gemini-extension.json`). O sea: está empaquetado para el ecosistema `.agents/` que es justo el que usa Antigravity. Probar `npx modern-web-guidance@latest install` **dentro de un fork** antes de correrlo contra el workspace real, y decidir si entra al catálogo (`~/.agents/skills.json`) o se invoca on-demand.
-- [ ] **Presupuesto de contexto:** si entra al catálogo, compite con las 112 skills. Medir con `scripts/check-skill-catalog-budget.py` (o su equivalente post-migración) antes y después.
-- [ ] **Telemetría:** exportar `DISABLE_TELEMETRY=1` en el shell profile de la Mac Mini, no por invocación.
-- [ ] **`legacy-scan` como gate:** ¿vale meterlo en el pre-commit de los proyectos de frontend? Decidir con evidencia: correrlo sobre 2-3 proyectos más y ver la tasa de falsos positivos antes de convertirlo en bloqueante.
+- [x] **Instalación:** hecho acá, vendorizado y offline. En Antigravity es distinto: el paquete ya trae `.agents/plugins/marketplace.json` (además de `.claude-plugin`, `.codex-plugin`, `.cursor-plugin` y `.gemini-extension.json`), así que allá se instala como **plugin**, no como skill vendorizada.
+- [ ] **Ya hay una copia instalada como plugin de Antigravity:** `~/.gemini/config/plugins/modern-web-guidance-plugin` (con `plugin_data` en `~/.gemini/antigravity` y `~/.gemini/antigravity-cli`). Gonzo dijo que probablemente la borra. **Si se borra, no afecta a OpenClaw**: nuestro bundle vive en `vendor/mwg/` y no depende de ese path. Si se mantiene, hay dos copias del mismo corpus en disco — no rompe nada, pero conviene saberlo antes de preguntarse por qué `legacy-scan` da lo mismo desde dos lados.
+- [ ] **`DISABLE_TELEMETRY=1` en el shell profile** de la Mac Mini. Hoy está en la línea de comando de cada invocación, que es frágil: una llamada sin la variable se escapa sin aviso.
 
 ### El criterio que se aplicó
 
@@ -86,9 +97,9 @@ El repo era desconocido salvo por el nombre. Se leyó **antes** de ejecutar: tar
 
 ## Lo que NO se decidió (sigue abierto)
 
-- Si `modern-web-guidance` se **instala en el catálogo** o se invoca **on-demand**. El test dice que los findings son buenos; no dice si el costo de contexto se justifica para todos los proyectos.
-- Si `legacy-scan` pasa a ser un gate de pre-commit. Necesita más evidencia que un proyecto.
+- Si `legacy-scan` pasa a ser un gate de pre-commit de los proyectos de frontend. Necesita más evidencia que un proyecto: correrlo sobre 2-3 más y medir falsos positivos.
 - Si la regla de markdown se extiende a los fetch que hacen los proyectos, no sólo a los míos.
+- Si la skill vendorizada se replica en Antigravity o se usa el plugin de allá. Son dos caminos válidos; tener las dos es duplicar 15 MB de corpus.
 
 ---
 
@@ -96,4 +107,5 @@ El repo era desconocido salvo por el nombre. Se leyó **antes** de ejecutar: tar
 
 - Plan de migración: `programa_adaptacion_openclaw_a_gemini.md` (Fases 0-2 completas al 2026-11-16; faltan 3-5)
 - Regla vigente: `AGENTS.md` §3 — Reglas operativas
+- Skill: `skills/modern-web-guidance/SKILL.md` · instalador: `scripts/mwg-install.sh`
 - Contexto de la decisión: sesión 2026-11-16 (Moltbook 2026-W47, item de docs en markdown + item de `modern-web-guidance`)

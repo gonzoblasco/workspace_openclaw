@@ -177,3 +177,7 @@ docs/entrevistas/**/*.pdf
 # no fuente ni documentacion: 9MB de PNG que entrarian por un `git add -A`.
 # Las imagenes que SI documentan algo van a media/ o al proyecto que las usa.
 /media/out/
+
+# Bundle vendorizado de terceros (pinned, verificable): scripts/*-install.sh lo reconstruye.
+# modern-web-guidance son ~15 MB de guides + vectores; se reinstala, no se versiona.
+/vendor/
