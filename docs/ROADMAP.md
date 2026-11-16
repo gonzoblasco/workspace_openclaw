@@ -185,9 +185,9 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Por qué**: es el objetivo activo del Horizonte 0 (`docs/NORTH.md`); situación económica urgente.
 - **CORRECCIÓN MAYOR (2026-11-16)**: el cuerpo decía *"Estado al 2026-09-24 (todos cerrados)"* y listaba ocho procesos como cerrados. **Es falso desde el 19/10.** El tracker (mtime 2026-11-15) declara **3 procesos vivos**:
 
-  | Proceso | Estado real al 2026-10-28 |
+  | Proceso | Estado real al 2026-11-16 |
   |---|---|
-  | **Infjini → Disney → HTC** (Lead SWE, USD 24/h, RTR firmado 19/10) | **ABIERTO.** Entrevista con el cliente agendada para la **1ra o 2da semana de noviembre**. Único proceso con fecha concreta. |
+  | **Infjini → Disney → HTC** (Lead SWE, USD 24/h, RTR firmado 19/10) | **CERRADO POR SILENCIO 16/11.** La entrevista prometida para la 1ra-2da semana de noviembre venció el 14/11 sin aviso ni reprogramación; último contacto humano 26/10. |
   | **Mercor / Project Odin** | **ABIERTO**, entrada por mail directo verificado (28/10). Form completo; falta cuenta en `work.mercor.com`, subir PDF y postular. |
   | **TEAM International** | **Relación abierta, posición cerrada** (Tempo cerró 26/10). Perfil en talent pool; reevalúan al mejorar el inglés. |
 
@@ -197,7 +197,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Señal de listo**: onboarding efectivo de un proceso nuevo (no de una oferta inexistente).
 - **Palanca viva**: **CPACC**. Corregido el 2026-11-16: la ventana de exámenes es **12 de noviembre al 9 de diciembre** (`docs/cpacc/study-plan.md:45`). La línea anterior decía "antes del 30/11", que no coincide con ninguna fuente. **Quedan 23 días.**
 - **Acciones**:
-  - [ ] **Infjini/Disney: la entrevista venció sin registro.** Estaba para la 1ra o 2da semana de noviembre; hoy es 16/11 y el tracker no tiene línea de qué pasó. Primera acción: asentar el resultado, sea cual sea.
+  - [x] **Infjini/Disney: asentado el 16/11** — se cierra por silencio, no por rechazo. Era el único proceso con fecha.
   - [ ] Mercor: completar la postulación (cuenta, PDF, Practice Interview).
   - [ ] Mantener `job-search-tracker.md` como única tabla de procesos.
   - [ ] Reactivar el volumen: 3-5 aplicaciones/día, calidad sobre volumen. Sigue sin arrancar.
