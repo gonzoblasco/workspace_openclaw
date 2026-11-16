@@ -51,4 +51,6 @@ Reparto del tiempo: capítulo 2 se lleva 22:27 (45% del curso), capítulo 3 10:4
 
 | # | Video | Estado |
 |---|---|---|
-| — | — | esperando el primer video |
+| 00 | Introducción: Domina Google AI Studio (0:39) | charlado |
+| 01 | El Ecosistema de Google AI (2:18) | charlado |
+| — | — | esperando el capítulo 2 |
