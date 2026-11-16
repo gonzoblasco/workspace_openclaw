@@ -50,7 +50,10 @@
 - [ ] **[kanam-critic]** (medium) Critic F13: otros numeros stale en docs/ROADMAP.md (27 skills son 113; 21 proyectos son 6; git status con 2 modificados)
 - [ ] **[kanam-critic]** (medium) Critic F14: el mapa del sistema no menciona al Crew (Etapa 3 completada, vision v1.0 en docs/ROADMAPS.md)
 - [ ] **[kanam-critic]** (medium) Critic F16: reconciliar ROADMAP.md (dice 2 VETOs ajenos y 'falta medir') con el ledger (3 VETOs ajenos: docs-ROADMAP, kanam-dev-ROADMAP, kanam-dev-inventario-skills)
+- [ ] **[]** (medium) Gateway service: salir de 'partial import' con openclaw gateway install --force + PATH absoluto; si da EIO, sudo. Disparador: Gonzo dice 'nuevamente'. Registrado 2026-11-10.
+- [ ] **[workspace]** (medium) Revisar notas de transition Antigravity: docs/antigravity/notas-post-migracion.md (md->llms.txt + modern-web-guidance). Verificar si el web_fetch de Antigravity manda Accept: text/markdown; decidir si modern-web-guidance entra al catalogo o va on-demand; DISABLE_TELEMETRY=1 en shell profile; evaluar legacy-scan como gate.
 - [ ] **[workspace]** (low) Decidir si se promueven ficcion-narrativa-prosa y video-transcription del Workshop al árbol versionado (hoy no se versionan por diseño)
+- [ ] **[workspace]** (low) Coordinacion de commits entre OpenClaw y Antigravity: cuando ambos editen el mismo repo en paralelo no hay forma de saber quien toco que. Definir lock o prefijo de sesion en los commits. BACKLOG - no hace falta hasta que las Fases 3-5 del programa esten andando.
 - [ ] **[kanam-critic]** (high) Critic T5.2/v1.0: veredicto como gate del pipeline + aceptacion final
 - [ ] **[kanam-critic]** (high) Critic F8: reemitir kanam-critic-kit-v0.3-r4 desde una sesion con gpt-oss:120b-cloud (el rol lo declara primario) o cambiar el config del rol
 - [ ] **[kanam-critic]** (high) Critic F10: agregar scripts/check-roadmap-facts.py que verifique el CONTENIDO de docs/ROADMAP.md contra las fuentes reales (bootstrap, skills, proyectos, tracker)
