@@ -113,6 +113,8 @@ Eso es lo que da la sincronía que se busca —una skill editada desde Antigravi
 
 **1. Commits en el mismo repo.** El riesgo más filoso, y el único que ya tiene precedente. `AGENTS.md` prohíbe `git add -A` porque con dos sesiones vivas firma trabajo ajeno; ese incidente pasó dos veces en un día. Con dos **runtimes** el escenario se multiplica: si Antigravity commitea mientras yo tengo el índice preparado, o al revés, el commit se lleva lo que no es suyo. La regla de rutas explícitas y el chequeo de `git diff --cached` antes de commitear ahora aplican **inter-runtime**, no sólo entre sesiones.
 
+> **En backlog (todo 137, prioridad low), decisión de Gonzo 2026-11-16:** *"aún no hace falta"*. No se implementa lock ni prefijo de sesión hasta que las Fases 3-5 estén andando. Mientras tanto rige la regla de siempre: rutas explícitas y verificar el índice.
+
 **2. `memory.db` y los dailies.** Ya cubierto por §5.1 del programa (escrituras sólo por los scripts, DB-first). Vale repetirlo con el motivo: el `.md` es una vista regenerable, y si los dos escriben el markdown a mano, el próximo export borra una de las dos versiones sin avisar.
 
 **3. `vendor/` vs plugin de Antigravity.** Dos copias del mismo corpus (~15 MB cada una). No se cruzan ni rompen nada. Es deuda cosmética, no técnica.
