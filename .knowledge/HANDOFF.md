@@ -1,15 +1,18 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-15 21:48 GMT-3
+**Fecha:** 2026-11-16 00:13 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-11-15). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-15.md`.
+> HANDOFF generado en el cierre de sesion (2026-11-16). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-16.md`.
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-16 00:13
+Estudio y validación del plan de migración KanamOS OpenClaw -> Gemini/Antigravity (programa_adaptacion_openclaw_a_gemini.md + log completo de la sesión en Antigravity). Verificado en disco: tag checkpoint-pre-gemini, rama backup/openclaw-pre-gemini, 3 reglas en ~/.agents/rules/ (identity, user, operations), 11 symlinks Tier 1 en ~/.agents/skills/ + skills.json con 7 paths de roles, roster.json con los 7 subagentes, memory.db conectado. El ciclo adversarial del critic fue real: VETO 13/25 -> correcciones -> APROBADO 23/25. Gates de integridad en verde.
 
 ### 2026-11-15 21:48
 CV EFISAT para outreach a Agustín Bermúdez (fundador). Tres iteraciones: (1) CORE reescribió el borrador de STUDIO y corrigió 5 hechos inventados; (2) Gonzo mandó su propia versión más suave y el CORE la tomó como base, sacando las 2 carreras universitarias; (3) corrección de alcance: EY fue frontend (Next.js SSR lado cliente, consumiendo APIs del equipo de backend, no construyéndolas), así que el headline y los 3 roles viejos dicen Frontend y el full stack queda solo en Freelance. Reglas nuevas en career-facts: §7-bis tono y sin titulo de ingeniero; §2.2 Next.js en EY es frontend y el encuadre full stack en EY queda prohibido. Entregables: cv-efisat.md + DOCX + PDF (2 páginas A4) + mensaje.md (WhatsApp/email). Proceso registrado en job-search-tracker: Agustín respondió en 12 minutos y hay llamada acordada para el 2026-11-16.
@@ -23,10 +26,11 @@ Corrección de error de parseo YAML en el frontmatter de agents/kanam-critic/ski
 ### 2026-11-12 01:57
 Clase `estudios/entrevistas-tecnicas` en curso. Se dio el Modulo 0 (marco de tres ventanas + ansiedad medida con la MASI) y el diagnostico de Gonzo quedo registrado en `ejercicio-0-gonzo.md`: improviso las tres etapas, con el «antes» como raiz; el speech que le prepare se leyo dos veces y no se estudio. Vino un research de Vane sobre ansiedad de entrevista; se audito en vez de adoptarlo: se leyo el PDF completo de Jamieson, Nock & Mendes (2012) -el reappraisal reduce resistencia periferica y sesgo atencional pero NO baja el estres subjetivo- y el paper completo de Lev-Ari & Keysar (2010) -acento leve penaliza credibilidad por fluidez, corregible si el oyente lo nota; acento fuerte no se corrige. Brooks (2014) y McCarthy & Goffin (2004) quedan identificados y no leidos. Se descarto la cita dudosa «Taylor & Sullman, 2009?» y se dejo constancia de que no hay evidencia de rechazo por ansiedad como criterio formal en examenes de conducir. Se escribio el prompt de research para Vane y quedaron tres caminos: linea base grabada, Modulo 1 (LinkedIn), o plan de 4 semanas ajustado.
 
-### 2026-11-12 01:52
-Sesion de practica del curso n8n. Se monto la instancia self-hosted local en labs/n8n (docker compose, n8n 2.47.4, 127.0.0.1:5678, datos en ./data, API publica habilitada con key). Modulos 2 y 3 dictados y ejecutados: Gonzo armo a mano el workflow trigger/Set/IF/dos NoOp en la UI y respondio el cuestionario; despues se creo por API el workflow del modulo 3 (webhook -> Set -> IF -> HTTP Request a Ollama -> Set de salida) y se verifico end-to-end con dos ejecuciones success (una con body generado, otra por la rama false sin llamar a la IA). Dos fallas reales corregidas en el camino: ExpressionError por anidar {{ }} dentro de un string JS (se resuelve concatenando con +), y content vacio con max_tokens 400 porque deepseek-v4.1-flash:cloud consumia el presupuesto razonando (con 900 sale completo). Commit 6ab77f46dc con la infra del lab y la memoria, sin secretos. Sin push.
-
 ## Estado actual
+
+Migración congelada en Fase 5 hasta el 2026-12-01 (quota Gemini Starter agotada; Ollama Pro activo hasta 2026-11-30). OpenClaw sigue siendo el entorno operativo maestro y Kanam sigue trabajando normal acá.
+
+### Estado previo (heredado)
 
 CV final entregado y enviado por Gonzo. Llamada con Agustín Bermúdez acordada para mañana 16/11.
 
@@ -67,6 +71,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1) 2026-12-01: activar Google AI Pro y retomar Fase 5 final (sesión de prueba real en Gemini). 2) Decisión pendiente: laptop MacBook Air consume solo MD/HANDOFF, sin memory.db (evita split-brain SQLite). 3) Formalizar Vane como deprecado (desplazado por Gemini cloud + image-generator nativo) con un ADR corto cuando se haga el corte a Google AI Pro.
+
+### Pendientes heredados (sin cambios)
 
 1. Preparar la llamada del 16/11: 3 preguntas clave (dolor de mantenimiento, tareas manuales, equipo propio o tercerizado). Si responde, no poner precio en la primera charla.
 
@@ -150,6 +158,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- Coexistencia temporal sana: OpenClaw = maestro; Antigravity = espejo de solo lectura hasta activar Pro. En la laptop Air: NO sincronizar memory.db, solo markdown derivado (dailies, HANDOFFs, career-facts, ADRs) y lo que deba persistir va por HANDOFF a la Mini. Vane queda sin sentido funcional al perder Ollama Pro y ganar Gemini Notebook.
+
+### Heredadas (sin cambios)
+
 - Sin titulo de ingeniero; liderazgos tono bajo; sin carreras universitarias; EY es frontend, no full stack; CV corto y la profundidad va a la llamada.
 
 ### Heredadas (sin cambios)
@@ -177,13 +189,13 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 ## Archivos tocados
 
 ```
+docs/CHANGELOG.md
+memory/memory.db
 .knowledge/handoff-history/2026-11-09-1700-HANDOFF.md
 memory/2026-11-15.md
-memory/memory.db
 docs/entrevistas/_general/job-search-tracker.md
 memory/career-facts.md
 agents/kanam-critic/skills/evidence-hunter/SKILL.md
-docs/CHANGELOG.md
 studies/ai-agents-for-beginners/m1-llm-en-10-lineas.md
 .knowledge/handoff-history/2026-11-06-1805-2-HANDOFF.md
 .knowledge/handoff-history/2026-11-06-1805-HANDOFF.md
@@ -203,7 +215,7 @@ studies/README.md
 ## Como continuar
 
 1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-15.md` para el informe completo de la sesion.
+2. Leer `memory/2026-11-16.md` para el informe completo de la sesion.
 3. Verificar el estado real antes de actuar (git, tests, la DB).
 
 ---
