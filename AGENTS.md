@@ -128,7 +128,7 @@ Busco brevemente si ya existe una solución OSS, librería o plugin mantenido. C
 Ninguna dependencia se adopta, se mantiene ni se cita como justificada por estar ya presente o haberse usado antes. Antes de citarla como fundamento: qué hace, por qué se elige hoy, decisión explícita (ADR si corresponde), y recién entonces se cita. Una tecnología heredada de un template sin decisión no es un fundamento: es un precedente fabricado. Detalle en `USER.md`.
 
 ### Modelos y razonamiento
-La política vigente es **ADR-090**: niveles de pensamiento por agente y asignación de modelo por rol. El resumen operativo está en la sección **Tools** de este archivo.
+La política vigente es **ADR-090** (niveles de pensamiento y modelo por rol); resumen operativo en **Tools**.
 
 ### Git y commits
 - **GitHub, siempre en inglés.** Commits, PRs, issues y comments.
@@ -157,6 +157,7 @@ La política vigente es **ADR-090**: niveles de pensamiento por agente y asignac
 
 ### Reglas operativas
 - **PTY** para interactivos; batch sin PTY.
+- **Doc: pedirla en markdown, no HTML** — `llms.txt` o `Accept: text/markdown` (24x-61x menos bytes). Verificar `Content-Type`: si volvió `text/html`, falló callado. Ver `docs/antigravity/notas-post-migracion.md`.
 - **Aislar** repos externos en `forks/<slug>/` (gitignored) o worktree, **siempre dentro del workspace**; `mktemp -d` fuera del workspace está prohibido (corrección de Gonzo, 2026-11-05). Limpiar con `trash`.
 - **Al terminar una tarea de fondo,** avisar con `automations(action: "wake", ...)` (`automations` es la superficie de scheduling vigente, no `cron`).
 - **Paralelo:** `exec` batch, `sessions_spawn` razonamiento.
@@ -192,7 +193,7 @@ El entorno (máquinas, modelos, scripts, memoria, red) vive en **`docs/SETUP.md`
 - **Iconos:** Lucide (`lucide-react`) en todos los proyectos; nunca emojis como iconografía.
 - **Validación UI:** los fixes visuales se validan solo con browser real (Desktop). jsdom no detecta layout ni chrome nativo.
 - **Herramientas por criterio:** OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG. Se adoptan por lo que sirven, no por venir del template.
-- **Pagos:** Stripe es el proveedor único (ADR-042), con o sin Lovable. Mercado Pago queda afuera. Mercado: Argentina / LATAM.
+- **Pagos:** Stripe único (ADR-042), con o sin Lovable; Mercado Pago afuera. Mercado: Argentina/LATAM.
 - **Idioma por capa:** lo que se ve en GitHub va en inglés; los strings de UI, en español. Los `AGENTS.md`/`CLAUDE.md` de proyectos públicos en inglés (son superficie de portfolio); el workspace privado en español (es espacio de trabajo). Rige también para el CLAUDE.md espejo de cada proyecto. No hay beneficio técnico de idioma para el modelo: lo único que importa es la superficie.
 
 ---
