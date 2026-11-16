@@ -6,6 +6,13 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-16] - Nueva categoría `docs/propuestas/`
+
+### Added
+- **`docs/propuestas/reservas-avion-compartido/brief-socios.md`** — brief de una página para que los dos socios de una aeronave compartida aprueben un sistema de reservas. `docs/` no tenía categoría para propuestas a clientes (las existentes son linkedin, entrevistas, prs, pipeline, feedback); esta es la primera pieza.
+
+---
+
 ## [2026-11-12] - Tests negativos en tres gates que no los tenían
 
 ### Added
