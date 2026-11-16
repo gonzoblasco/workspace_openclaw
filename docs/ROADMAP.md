@@ -27,12 +27,14 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 
 | Tramo | Foco | Criterio de salida |
 |---|---|---|
-| **T1 - ahora → dic 2026** | **OnWheels** (obra finita) + **design system** (se aprende dentro de la obra) + **CPACC** (examen, fecha dura 9-dic) | OnWheels entregado a Esteban; examen CPACC rendido |
+| **T1 - ahora → dic 2026** | **OnWheels** (obra finita) + **design system** (se aprende dentro de la obra) | OnWheels entregado a Esteban. *(CPACC salió del tramo el 2026-11-16 — ver §2.3)* |
 | **T2 - ene → mar 2027** | OnWheels como **caso de estudio** + **reactivar la búsqueda laboral** | 1 proceso laboral nuevo avanzando (no de una oferta inexistente) |
 | **T3 - Q1 2027** | **UNA** apuesta comercial: `soporteml` (ya factura) o `kanam-fixer` (más defendible) - no las dos | Primer pago real, o descarte fundado |
 | **D - continuo** | El sistema como **soporte** (`kanam-os`, memoria, pipeline) - solo si sirve a T1/T2/T3 | No compite; habilita los tramos |
 
-**La tensión que esta secuencia resuelve:** los tramos que *facturan* (empleo, producto) estaban fríos mientras los que no facturan (construir, sistema) consumían el tiempo. T1 arranca por la obra terminable y la credencial; el retorno comercial va en T3, no ahora.
+**La tensión que esta secuencia resuelve:** los tramos que *facturan* (empleo, producto) estaban fríos mientras los que no facturan (construir, sistema) consumían el tiempo. T1 arranca por la obra terminable; el retorno comercial va en T3, no ahora.
+
+**Corrección 2026-11-16:** el tramo T1 perdió su segundo criterio cuando CPACC se retiró por falta de fondos. Eso no acorta el tramo, **lo deja con una sola salida**: OnWheels. Y refuerza la regla de la ruta por una razón distinta de la original — no es solo disciplina de foco, es que no hay colchón para abrir un frente que no cierre.
 
 **Regla de la ruta:** no se abre un frente nuevo (ni un noveno proyecto, ni un segundo producto comercial) hasta cerrar el tramo en curso. Lo que no entra, se anota en `memory/inbox.md`.
 
@@ -195,7 +197,13 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Estado del item: 🔴 se mantiene**, pero por la razón correcta: no hay onboarding efectivo. No porque el tablero esté vacío.
 - **Criterio de éxito**: al menos un proceso avanza a oferta/onboarding.
 - **Señal de listo**: onboarding efectivo de un proceso nuevo (no de una oferta inexistente).
-- **Palanca viva**: **CPACC**. Corregido el 2026-11-16: la ventana de exámenes es **12 de noviembre al 9 de diciembre** (`docs/cpacc/study-plan.md:45`). La línea anterior decía "antes del 30/11", que no coincide con ninguna fuente. **Quedan 23 días.**
+- **Palanca viva: NINGUNA. CPACC se retira el 2026-11-16.** No hay dinero para el examen ni para el trámite, así que la ventana 12/11-9/12 se pierde completa. Corregido contra la decisión de Gonzo del mismo día: *"CPACC no se hace, no hay dinero para ello"*.
+
+  **Lo que esto cuesta, dicho sin adornos:** el tramo T1 tenía dos criterios de salida y uno era el examen. Queda uno solo (OnWheels entregado). Y el CPACC era la única pieza del plan que **no dependía de que otro dijera que sí** — no pasaba por un recruiter, por un cliente ni por un filtro de inglés. Se cae por plata, que es la peor razón, y es la misma razón por la que la búsqueda laboral es P0.
+
+  **Qué NO se pierde**: la ventaja del nicho a11y no venía del certificado, venía de la práctica. `kanam-fixer` (asertando sobre el anuncio del lector de pantalla) y `preflight` siguen vivos y son la evidencia real de la especialidad. El CPACC habría sido la etiqueta; la obra ya estaba hecha.
+
+  **Condición de reapertura**: cuando haya ingreso, se retoma. `docs/cpacc/` queda como está (plan de estudio, mini-doc, assessment) — no se borra, se estaciona. Registrado como todo para que no se pierda el hilo.
 - **Acciones**:
   - [x] **Infjini/Disney: asentado el 16/11** — se cierra por silencio, no por rechazo. Era el único proceso con fecha.
   - [ ] Mercor: completar la postulación (cuenta, PDF, Practice Interview).
