@@ -111,6 +111,30 @@ Corpus de cómo Gonzo se expresa en español. Cada vez que edita un borrador mí
 
 ---
 
+### 2026-11-16 - Primer contacto, reservas de avión privado (WhatsApp, cliente interesado)
+
+**Contexto:** un contacto sugirió resolver la reserva de horas de avión privado con un Excel/Google Sheets compartido. Objetivo: dejar una base técnica sin abrir frentes nuevos y obtener los tres datos que definen el producto (usuario, flota, aprobación).
+
+**Mi borrador (extracto):** abría con "Hola [nombre], te resumo dónde estoy parado", concedía "Y coincido en que un Excel no lo resuelve, pero no por el acceso...", decía que el flujo era "reserven sin pasar por vos", y cerraba el párrafo con "Lo que quiero evitar es venderte algo que después no cierra".
+
+**Su edición final (extracto):**
+
+> Te resumo dónde estoy parado. [...] Y un Excel no lo resuelve, pero no por el acceso: es que dos personas pueden marcar el mismo horario y nadie resuelve el conflicto. [...] Lo que quiero evitar es decirte algo que después no cierra.
+
+**Qué cambió:**
+- Sacó el saludo: arranca directo en "Te resumo dónde estoy parado." Con un contacto conocido el saludo es relleno.
+- "sin pasar por vos" -> **"sin pasar por la empresa"**. El mensaje puede reenviarse: el cuello de botella se nombra como organización, no como persona.
+- Borró **"coincido en que"**. Afirma el hecho en vez de conceder acuerdo.
+- "venderte algo" -> **"decirte algo"**. No se presenta vendiendo en la primera conversación.
+
+**Patrón que emerge:**
+- Con contacto conocido, sin saludo: la primera línea ya es contenido.
+- No se concede acuerdo para suavizar; se afirma el hecho.
+- La palabra "vender" no aparece en un primer contacto.
+- Se escribe pensando en que el texto puede reenviarse: nombrar a la organización, nunca a la persona que lo recibe.
+
+---
+
 ## Reglas consolidadas
 
 Estas son las que la skill aplica por defecto. Se actualizan cuando un caso nuevo las contradice.
@@ -122,16 +146,15 @@ Estas son las que la skill aplica por defecto. Se actualizan cuando un caso nuev
 5. **Sin números por escrito.** Ofrecer "condiciones a conversar". El número se negocia en la charla.
 6. **Cerrar con confianza.** Frases con filo ("no te vas a arrepentir") están bien; la humildad excesiva, no.
 7. **Honestidad emocional medida.** Reconocer el sentimiento ("me hubiera gustado que fuera otra") es válido y suena humano.
-8. ~~**Guion común (-) siempre.**~~ *Retirada por ADR-082 (2026-08-06). El hueco de numeración se conserva para no romper referencias. Ver regla 13.*
 9. **Cortar el relleno de cierre.** Cierres de cortesia que no piden ni informan ("avisame si necesitas algo", "quedo atento", "cualquier cosa me decis") se borran. El mensaje termina cuando termina lo util. Menos lineas, misma fuerza.
 10. **El formato sigue al canal.** Vineta (`*` o `-`) en chat y mails informales; numeracion solo en documentos o listas donde el orden importa.
 11. **La voz no cambia con el idioma.** Cuando el proceso es en ingles (reclutadores US, onboarding), aplican las mismas reglas: presente, sin adornos, cerrar con confianza. El ingles va simple y directo, sin phrasal-verb decorativo.
 12. **Trato cerrado = confirmar y parar.** Cuando el otro ya dijo si, el mensaje confirma y termina. Preguntar solo lo que bloquea el arranque; el resto se resuelve cuando toque. Cada pregunta de mas es relleno y alarga el ida y vuelta. Cuando dudes entre preguntar o no, no preguntes.
-13. **El guion largo no es veto.** El corpus no lo usaba y se tomaba como senal de traduccion, pero el uso se extendio y Gonzo lo acepta (2026-11-03): si aparece uno, no se reescribe la frase para sacarlo; la prosa tampoco se fuerza a meterlo. No es regla de estilo, es criterio laxo. **Corolario operativo (2026-11-09):** no hay restriccion en ninguna parte del sistema. No hay script que lo bloquee, no hay hook que lo reescriba, no hay gate que lo rechace. Escribir con guion largo o con guion comun es indistinto; lo que si se prohíbe es *gastar una pasada de edicion en cambiarlos*.
+13. **El guion largo no es veto.** Guion largo o comun, indistinto: no se reescribe una frase para sacarlo ni se fuerza uno para meterlo.
 
 ---
 
-_Creado 2026-09-11. Última actualización: 2026-11-03 (regla 13: el guion largo deja de ser veto, criterio laxo)._ 
+_Creado 2026-09-11. Última actualización: 2026-11-16._ 
 
 ## Registro de idioma
 
