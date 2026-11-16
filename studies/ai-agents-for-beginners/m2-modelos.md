@@ -1,58 +1,69 @@
-# M2 - Tabla final: modelos vigentes para construcción de agentes (consulta 2026-11-12)
+# M2 - Tabla final: modelos vigentes para construcción de agentes
 
 - **Curso:** AI Agents For Beginners – OpenClaw Case Study
-- **Módulo:** 2 — Hallucinations, Model Evolution, & Competitors (07:54–15:23)
-- **Fuente:** Auditoría del informe de Vane + verificación contra fuentes oficiales (ver `m2-informe-modelos-2026-11-12.md`)
-- **Fecha de consulta:** 2026-11-12
+- **Módulo:** 2 — Hallucinations, Model Evolution, & Competitors (07:54 – 15:23)
+- **Fecha de consulta:** **2026-11-16** (research completado; la primera pasada del 2026-11-12 dejó huecos que se cerraron acá)
 
----
+## Tabla comparativa (modelos vigentes, un modelo por proveedor)
 
-## Tabla comparativa (modelos vigentes)
+| Proveedor | Modelo exacto | Contexto | Precio (in / out, por 1M tokens, USD) | Corte de conocimiento | Tool calling | Licencia | URL oficial |
+|---|---|---|---|---|---|---|---|
+| **OpenAI** | `gpt-6-astra` | **1.050.000** (máx. entrada 922.000; salida 128.000) | **10,00 / 50,00** (caché 1,00; escritura 12,50) | **2026-04-30** | **Sí** (`function_calling` + `web_search`, `file_search`, `code_interpreter`, `computer_use`, `mcp`) | API propietaria | https://developers.openai.com/api/docs/models/gpt-6-astra |
+| **Anthropic** | Claude Opus 5.5 (recomendado) · Sonnet 5.5 · Haiku 5.5 · Fable 5.2 | 1.000.000 (salida 128.000) | Opus **4,00 / 20,00** · Sonnet **2,00 / 10,00** · Haiku desde 0,10 / 0,50 · Fable **8,00 / 40,00** | Junio 2026 | Sí (tool use) | API propietaria | https://platform.claude.com/docs/en/models/overview |
+| **Google** | `gemini-3.8-flash` | **1.048.576** (salida 65.536) | **0,75 / 3,75** (promo hasta 2026-12-31; luego 1,50 / 7,50) | **Marzo 2026** (algunos dominios ene 2025) | **Sí** (`function calling`) | API propietaria | https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash |
+| **Meta** | Llama 4 Scout | **10.000.000** (Maverick: 1.000.000) | **Open weights** (sin precio de API) | **Agosto 2024** | **Sí** (`tool-calling` listado) | **Llama 4 Community License** (open weights) | https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/ |
+| **DeepSeek** | DeepSeek-V4-Pro | 1.000.000 (salida 384.000) | 0,66 / 1,98 off-peak · 1,32 / 3,96 pico · caché 0,022 | No publicado | Sí (tool calls) | API + open weights | https://api-docs.deepseek.com/quick_start/pricing/ |
+| **Mistral** | `mistral-large-4` | **1.000.000** | **0,70 / 2,10** (caché 0,07) | No publicado en la ficha | **Sí** (`Function Calling` en `/v1/chat/completions`) | **Mistral Ecosystem Open Weight License** (open weights, 52B activos / 1,05T totales) | https://docs.mistral.ai/models/mistral-large-4 |
 
-| Proveedor | Modelo exacto | Ventana de contexto (tokens) | Precio (input / output por 1M tokens, USD) | Corte de conocimiento | Tool calling / function calling | Licencia o modalidad | Estado | URL oficial |
-|---|---|---|---|---|---|---|---|---|
-| OpenAI | **Por identificar** (GPT-5.1 deprecated) | no publicado | no publicado | no publicado | **Sí** (`function_calling`) | API propietaria | **Deprecated** (GPT-5.1) | https://platform.openai.com/docs/models/gpt-5.1 |
-| Anthropic | Claude Sonnet 5.5 | 1.000.000 (máx. salida 128.000) | 2,00 / 10,00 | Junio 2026 | Sí (tool use) | API propietaria | **Actual** | https://platform.claude.com/docs/en/models/overview |
-| Google | Gemini 3.8 Flash | 1.048.576 (máx. salida 65.536) | no publicado | no publicado | Sí (function calling) | API propietaria | **Actual** (reemplaza a 2.5 Pro) | https://ai.google.dev/gemini-api/docs/models |
-| Meta | Llama 4 Scout | 10.000.000 (entrenamiento 256.000) | no publicado (open weights) | no publicado | Parcial (function-composition example) | Open weights | **Actual** | https://dev.meta.ai/llama/docs/model-cards-and-prompt-formats/llama4 |
-| DeepSeek | DeepSeek-V4-Pro | 1.000.000 (máx. salida 384.000) | Cache-miss off-peak 0,66 / pico 1,32; salida off-peak 1,98 / pico 3,96 | no publicado | Sí (tool calls) | API + open weights | **Actual** | https://api-docs.deepseek.com/quick_start/pricing/ |
-| Mistral | Mistral Large 4 | no publicado | no publicado | no publicado | no publicado | API propietaria | **Actual** (2407 deprecated) | https://docs.mistral.ai/models |
+## Cómo se cerró cada hueco
 
----
+| Hueco (12-nov) | Cómo se resolvió (16-nov) |
+|---|---|
+| OpenAI: flagship sin identificar | `platform.openai.com/docs/models` declara **GPT-6 Astra** como flagship. Ficha completa con contexto, precio, cutoff y features. |
+| Google: precio y cutoff vacíos | La URL `.md` y el índice `llms.txt` fallaban por redirects; con `curl -L` se obtuvo la ficha. Precio promo $0,75/$3,75 hasta fin de 2026. |
+| Mistral: "API propietaria" | **Falso**: Mistral Large 4 es **open-weight** bajo Mistral Ecosystem Open Weight License. Corregido. |
+| Meta: sin cutoff ni tool calling | Ficha oficial: **cutoff agosto 2024**, `tool-calling` listado como capacidad, 10M contexto en Scout. |
 
-## Notas de auditoría
+## Correcciones a la versión anterior de esta tabla
 
-1. **OpenAI — flagship actual no identificado**: La fila quedó con GPT-5.1 como referencia porque es el último con ficha completa verificada, pero su `Status` es **Deprecated**. La ficha oficial también confirma `function_calling: true` (el informe original decía "no publicado": fue un falso negativo, corregido también en la tabla). La lista de modelos en `developers.openai.com` muestra variantes `gpt-5.6-*`, `gpt-6-*` pero no está claro cuál es el modelo de producción recomendado hoy. **Pendiente: identificar flagship actual y sus especificaciones oficiales.**
+1. **Mistral Large 4 no es API propietaria.** Es open weights (52B activos, 1,05T totales). El dato anterior estaba mal.
+2. **Llama 4 no es "tool calling parcial".** La ficha lista `tool-calling` como capacidad del modelo. Lo "parcial" que había visto era un ejemplo de composición en el prompt, no una limitación.
+3. **GPT-5.1 ya no es la referencia.** `gpt-6-astra` es el flagship; GPT-5.1 sigue en el catálogo a $1,25/$10 pero no es el modelo recomendado.
 
-2. **Anthropic — Claude Sonnet 5.5 verificado**: 1M contexto, salida 128K, $2/$10, corte junio 2026, tool use soportado. Sonnet 4.5 está deprecated (retiro 2026-11-30). Fuente: `https://platform.claude.com/docs/en/models/overview`.
+## Lo que sigue sin dato oficial
 
-3. **Google — Gemini 3.8 Flash es el modelo actual**: Gemini 2.5 Pro está deprecated y a partir del 2026-12-01 las solicitudes se enrutan a 3.8 Flash. La página de modelos lista "Gemini 3.8" y "Gemini 4 frontier reasoning". Precio y corte no publicados en la consulta. Fuente: `https://ai.google.dev/gemini-api/docs/models`.
+| Dato | Por qué |
+|---|---|
+| Gemini 3.8 Flash: corte de conocimiento | **Cerrado**: el model card de DeepMind declara **marzo 2026**, con algunos dominios limitados a enero 2025. La ficha de la API solo decía "Latest update: September 2026", que es otra cosa. |
+| DeepSeek-V4-Pro: corte | La página de pricing no lo publica. |
+| Mistral Large 4: corte | La ficha lista versión, licencia, params, precio, contexto y features; **no** el cutoff. |
+| Meta Llama 4: precio | Es open weights: no hay precio de API que citar. Sí tiene cutoff (agosto 2024). |
 
-4. **Meta — Llama 4 Scout verificado parcialmente**: 17B activos / 109B totales, 16 expertos, MoE, 10M contexto (entrenamiento 256K), open weights descargables, tool calling parcial (ejemplo de system prompt function-composition). Precio y corte no publicados. Fuente: `https://dev.meta.ai/llama/docs/model-cards-and-prompt-formats/llama4`.
+**Cinco de seis filas tienen el corte de conocimiento.** Google lo publica en el model card (no en la ficha de la API); OpenAI lo publica en la ficha del modelo; Meta en la model card. DeepSeek y Mistral no lo publican en ningún lado que haya encontrado.
 
-5. **DeepSeek — V4-Pro verificado**: 1M contexto, salida 384K, tool calls, precios off-peak/pico, límite concurrencia 500. Fuente: `https://api-docs.deepseek.com/quick_start/pricing/`.
+## Modelos alternativos del mismo proveedor (por si el flagship es caro)
 
-6. **Mistral — Large 4 actual, Large 2407 deprecated**: La página oficial lista "Mistral Large 4" como modelo actual; no se extrajeron contexto, precio, corte ni tool calling en esta consulta. Fuente: `https://docs.mistral.ai/models`.
+| Proveedor | Alternativa | Precio in/out | Por qué elegirla |
+|---|---|---|---|
+| OpenAI | `gpt-6.1-sol` | 2,00 / 10,00 | "balance entre inteligencia y costo" (doc oficial) |
+| OpenAI | `gpt-6-luna` | 0,10 / 0,50 | alto volumen, costo sensible |
+| OpenAI | `gpt-6.1-terra` | 1,00 / 5,00 | intermedio, no mencionado en el doc de selección |
+| Meta | Llama 4 Maverick | open weights | 1M contexto, 400B totales, 128 expertos |
 
----
+**Nota de precio OpenAI:** `gpt-6-astra` cobra **2× en input y 1,5× en output** cuando el prompt pasa 272K tokens. Para un agente con contexto grande eso es una decisión de arquitectura, no un detalle.
 
-## URLs oficiales consultadas
+## URLs oficiales consultadas (2026-11-16)
 
-- OpenAI GPT-5.1 (ficha): https://platform.openai.com/docs/models/gpt-5.1
-- OpenAI precios: https://openai.com/api/pricing/
-- Anthropic modelos: https://platform.claude.com/docs/en/models/overview
-- Google Gemini modelos: https://ai.google.dev/gemini-api/docs/models
-- Google Gemini precios: https://ai.google.dev/gemini-api/docs/pricing
-- Meta Llama 4: https://dev.meta.ai/llama/docs/model-cards-and-prompt-formats/llama4
+- OpenAI modelos: https://developers.openai.com/api/docs/models
+- OpenAI GPT-6 Astra: https://developers.openai.com/api/docs/models/gpt-6-astra
+- OpenAI precios: https://developers.openai.com/api/docs/pricing
+- Anthropic: https://platform.claude.com/docs/en/models/overview
+- Google Gemini 3.8 Flash: https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash
+- Google precios: https://ai.google.dev/gemini-api/docs/pricing
+- Meta Llama 4: https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/
 - DeepSeek precios: https://api-docs.deepseek.com/quick_start/pricing/
-- Mistral modelos: https://docs.mistral.ai/models
+- Mistral Large 4: https://docs.mistral.ai/models/mistral-large-4
 
----
+## Pendiente real (no falencia)
 
-## Próximos pasos
-
-- [ ] Identificar el flagship actual de OpenAI (verificar `gpt-5.6`/`gpt-6` o el modelo recomendado en `platform.openai.com/docs/models`).
-- [ ] Completar precios y corte de conocimiento de Gemini 3.8 Flash.
-- [ ] Completar especificaciones de Mistral Large 4 (contexto, precio, corte, tool calling).
-- [ ] Completar precio y corte de Llama 4 Scout (si aplica; es open weights).
-- [ ] Decidir si incluir Llama 4 Maverick como modelo separado (128 expertos, 400B totales).
+- [ ] Cortes de conocimiento de DeepSeek-V4-Pro y Mistral Large 4: no aparecen en la ficha del modelo ni en la de precios. Requiere buscar en el paper técnico o el release notes.
