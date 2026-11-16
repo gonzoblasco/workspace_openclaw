@@ -152,6 +152,8 @@ Al terminar la clase deberías poder:
 
 **Ejercicio:** implementar un traductor de fechas y un resumen de reseñas en el mismo script, usando código para lo determinístico y LLM solo para el juicio. Entregable: `m7-cuando-usar-llm.py`.
 
+> **Nota de práctica (2026-11-16):** `m7-cuando-usar-llm.py` corre. Hallazgo real al correrlo: al pedirle al LLM que contara resenas a favor/en contra, **contó 4/3 sobre 8** (se comió una) y clasificó una mixta como positiva. El script se corrigió moviendo el **conteo a código** y dejándole al LLM solo el juicio. Esa es exactamente la regla del módulo, demostrada por el fallo.
+
 ### Módulo 8 - Architecture Overview: Tool Schemas & Execution Loops (51:08 - 58:20)
 
 **Objetivo:** entender las tools como el puente entre el texto y el mundo, y el loop que las ejecuta.
@@ -164,6 +166,8 @@ Al terminar la clase deberías poder:
 - Lab `tool_app.py`: el modelo pide `check_cal`, el código ejecuta el mock y el modelo convierte los datos en respuesta. "The model chose the right tool. Your code executed it." (00:58:02).
 
 **Ejercicio:** definir el schema de una tool `search_flights(origin, destination, date, max_price)` y escribir el handler + dispatcher. Entregable: `m8-tool-schema.py`.
+
+> **Nota de práctica (2026-11-16):** `m8-tool-schema.py` corre los 7 casos: feliz, con tope, sin resultados, fecha invalida, falta obligatorio, tool inexistente y argumento no declarado. Los dos ultimos importan: el dispatcher rechaza `book_hotel` (frontera de seguridad, 00:54:23) y un argumento que el schema no declara.
 
 ### Módulo 9 - Predefined AI Workflows vs. Autonomous Agents (58:20 - 01:08:16)
 
