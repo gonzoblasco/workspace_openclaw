@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-15 21:14 GMT-3
+**Fecha:** 2026-11-15 21:48 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-15 21:48
+CV EFISAT para outreach a Agustín Bermúdez (fundador). Tres iteraciones: (1) CORE reescribió el borrador de STUDIO y corrigió 5 hechos inventados; (2) Gonzo mandó su propia versión más suave y el CORE la tomó como base, sacando las 2 carreras universitarias; (3) corrección de alcance: EY fue frontend (Next.js SSR lado cliente, consumiendo APIs del equipo de backend, no construyéndolas), así que el headline y los 3 roles viejos dicen Frontend y el full stack queda solo en Freelance. Reglas nuevas en career-facts: §7-bis tono y sin titulo de ingeniero; §2.2 Next.js en EY es frontend y el encuadre full stack en EY queda prohibido. Entregables: cv-efisat.md + DOCX + PDF (2 páginas A4) + mensaje.md (WhatsApp/email). Proceso registrado en job-search-tracker: Agustín respondió en 12 minutos y hay llamada acordada para el 2026-11-16.
 
 ### 2026-11-15 21:14
 CV EFISAT en español (outreach a Agustín Bermúdez, fundador): borrador de STUDIO reescrito por el CORE (corregidos 5 errores factuales: telemetría/pagos inventados, 'adoptaron en toda la organización', 'migré la arquitectura', astryx duplicado, stack inventado), MD + DOCX + PDF en docs/entrevistas/efisat-cold-outreach/ (2 páginas A4). Regla nueva en career-facts §7-bis: sin título de ingeniero y liderazgos en tono bajo (corrección del padre de Gonzo). mensaje.md con borrador WhatsApp y email. Proceso registrado en job-search-tracker. Gate check-cv-facts: exit 0 (solo avisos preexistentes).
@@ -23,10 +26,11 @@ Clase `estudios/entrevistas-tecnicas` en curso. Se dio el Modulo 0 (marco de tre
 ### 2026-11-12 01:52
 Sesion de practica del curso n8n. Se monto la instancia self-hosted local en labs/n8n (docker compose, n8n 2.47.4, 127.0.0.1:5678, datos en ./data, API publica habilitada con key). Modulos 2 y 3 dictados y ejecutados: Gonzo armo a mano el workflow trigger/Set/IF/dos NoOp en la UI y respondio el cuestionario; despues se creo por API el workflow del modulo 3 (webhook -> Set -> IF -> HTTP Request a Ollama -> Set de salida) y se verifico end-to-end con dos ejecuciones success (una con body generado, otra por la rama false sin llamar a la IA). Dos fallas reales corregidas en el camino: ExpressionError por anidar {{ }} dentro de un string JS (se resuelve concatenando con +), y content vacio con max_tokens 400 porque deepseek-v4.1-flash:cloud consumia el presupuesto razonando (con 900 sale completo). Commit 6ab77f46dc con la infra del lab y la memoria, sin secretos. Sin push.
 
-### 2026-11-12 01:47
-Continuacion de la sesion del curso DSA: Gonzo pidio estudiar el curso 'a traves mio' con mis conocimientos y research, y arrancar el modulo 1. Se escribio studies/dsa-mega-course/modulo-01-big-o.md (leccion trabajada, 11 citas verificadas BAD 0, tres agregados externos y cinco huecos del video) y se corrieron los cuatro ejercicios en practica/m1/: 8.1 tabla con corrector, 8.2 cinco bloques medidos, 8.3 lineal vs binaria con y sin JIT, 8.4 la pregunta de entrevista con tres soluciones. Hallazgos: el primer benchmark de 8.3 mintio (JIT borraba el loop sin volatile y vectorizaba a 0,2 ns/elemento); el sort le gana al hashset por boxing y localidad de cache aunque sea O(n log n); fib crece por phi y no por 2. JDK 27.0.1 instalado con brew.
-
 ## Estado actual
+
+CV final entregado y enviado por Gonzo. Llamada con Agustín Bermúdez acordada para mañana 16/11.
+
+### Estado previo (heredado)
 
 Material listo, no enviado: falta el OK de Gonzo para mandar el mensaje y el CV.
 
@@ -63,6 +67,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1. Preparar la llamada del 16/11: 3 preguntas clave (dolor de mantenimiento, tareas manuales, equipo propio o tercerizado). Si responde, no poner precio en la primera charla.
+
+### Pendientes heredados (sin cambios)
 
 1. Enviar mensaje.md (versión WhatsApp) cuando Gonzo confirme; completar el placeholder [nombre del vínculo]; si responde, agendar 20 minutos.
 
@@ -142,6 +150,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- Sin titulo de ingeniero; liderazgos tono bajo; sin carreras universitarias; EY es frontend, no full stack; CV corto y la profundidad va a la llamada.
+
+### Heredadas (sin cambios)
+
 - Sin título de ingeniero; liderazgos tono bajo; OSS dentro del CV; formación sin universidades (career-facts 7-bis).
 
 ### Heredadas (sin cambios)
@@ -165,6 +177,9 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 ## Archivos tocados
 
 ```
+.knowledge/handoff-history/2026-11-09-1700-HANDOFF.md
+memory/2026-11-15.md
+memory/memory.db
 docs/entrevistas/_general/job-search-tracker.md
 memory/career-facts.md
 agents/kanam-critic/skills/evidence-hunter/SKILL.md
@@ -175,7 +190,6 @@ studies/ai-agents-for-beginners/m1-llm-en-10-lineas.md
 studies/sql-full-course/HANDOFF.md
 studies/sql-full-course/SESSIONS.md
 memory/2026-11-12.md
-memory/memory.db
 studies/dsa-mega-course/HANDOFF.md
 studies/godot-2d-platformer-beginners/HANDOFF.md
 studies/godot-2d-platformer-beginners/SESSIONS.md
