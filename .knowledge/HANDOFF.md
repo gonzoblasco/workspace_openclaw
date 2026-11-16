@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-16 00:13 GMT-3
+**Fecha:** 2026-11-16 10:49 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-16 10:49
+Descubrimiento y armado de un producto de reservas para una aeronave compartida por dos socios (Romero y Federico). El planteo inicial del cliente (Excel compartido, Google Sheets) se reviso contra seis puntos debiles: no es un slot de calendario sino un residual operativo; Sheets falla por integridad y no por privacidad; Calendly no modela un recurso compartido; falta politica de prioridad; el uso personal es registro fiscal; y probablemente ya existe un sistema de operaciones detras. Se cerro el modelo: activo compartido, dos socios que reservan con confirmacion inmediata y sin aprobacion mutua, invitados que piden y requieren aprobacion de un socio, solicitud que retiene el lugar 48 horas y vence sola, tope de dos solicitudes abiertas por invitado, mantenimiento como reserva (kind mantenimiento) con responsable, e historial inmutable con saldo de uso por socio. Tres artefactos escritos en docs/propuestas/reservas-avion-compartido/: brief-socios.md (documento para que los socios aprueben, sin precio y sin proveedor a la vista), spec-tecnico.md y plan-piloto.md. Descartados: Google Sheets, Google Calendar, Calendly y Cal.com/cal.diy (edicion comunitaria, no produccion). Booked Scheduler queda como plan B para un piloto express; se verifico en su documentacion que soporta recursos, permisos, aprobacion con estado pendiente y bloqueos. Decision tecnica: Next.js con Supabase, permisos en la base con RLS, y el no-solapamiento garantizado por una restriccion de exclusion de Postgres sobre el rango de fechas. Modelo comercial: producto enlatado, un deploy por cliente, piloto sin costo en free tiers con transferencia de titularidad al dia 30. Tambien se limpio docs/voz-gonzo.md: se elimino la regla 8 tachada y se comprimio la 13 a la decision, y se registro el caso del 2026-11-16 con la edicion real del mensaje.
 
 ### 2026-11-16 00:13
 Estudio y validación del plan de migración KanamOS OpenClaw -> Gemini/Antigravity (programa_adaptacion_openclaw_a_gemini.md + log completo de la sesión en Antigravity). Verificado en disco: tag checkpoint-pre-gemini, rama backup/openclaw-pre-gemini, 3 reglas en ~/.agents/rules/ (identity, user, operations), 11 symlinks Tier 1 en ~/.agents/skills/ + skills.json con 7 paths de roles, roster.json con los 7 subagentes, memory.db conectado. El ciclo adversarial del critic fue real: VETO 13/25 -> correcciones -> APROBADO 23/25. Gates de integridad en verde.
@@ -23,10 +26,11 @@ CV EFISAT en español (outreach a Agustín Bermúdez, fundador): borrador de STU
 ### 2026-11-15 16:15
 Corrección de error de parseo YAML en el frontmatter de agents/kanam-critic/skills/evidence-hunter/SKILL.md (paréntesis residual eliminado). Validación exitosa con Ruby Psych.
 
-### 2026-11-12 01:57
-Clase `estudios/entrevistas-tecnicas` en curso. Se dio el Modulo 0 (marco de tres ventanas + ansiedad medida con la MASI) y el diagnostico de Gonzo quedo registrado en `ejercicio-0-gonzo.md`: improviso las tres etapas, con el «antes» como raiz; el speech que le prepare se leyo dos veces y no se estudio. Vino un research de Vane sobre ansiedad de entrevista; se audito en vez de adoptarlo: se leyo el PDF completo de Jamieson, Nock & Mendes (2012) -el reappraisal reduce resistencia periferica y sesgo atencional pero NO baja el estres subjetivo- y el paper completo de Lev-Ari & Keysar (2010) -acento leve penaliza credibilidad por fluidez, corregible si el oyente lo nota; acento fuerte no se corrige. Brooks (2014) y McCarthy & Goffin (2004) quedan identificados y no leidos. Se descarto la cita dudosa «Taylor & Sullman, 2009?» y se dejo constancia de que no hay evidencia de rechazo por ansiedad como criterio formal en examenes de conducir. Se escribio el prompt de research para Vane y quedaron tres caminos: linea base grabada, Modulo 1 (LinkedIn), o plan de 4 semanas ajustado.
-
 ## Estado actual
+
+Tres artefactos escritos y commiteados; esperando la respuesta de los socios.
+
+### Estado previo (heredado)
 
 Migración congelada en Fase 5 hasta el 2026-12-01 (quota Gemini Starter agotada; Ollama Pro activo hasta 2026-11-30). OpenClaw sigue siendo el entorno operativo maestro y Kanam sigue trabajando normal acá.
 
@@ -71,6 +75,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1. Respuesta de los socios sobre el brief. Llamada con Agustin (EFISAT) el 2026-11-16. Si aprueban, el trabajo pasa por Planner y despues por DEV. Al dia 20 del piloto se acuerda el mantenimiento y al dia 30 se transfiere la titularidad.
+
+### Pendientes heredados (sin cambios)
 
 1) 2026-12-01: activar Google AI Pro y retomar Fase 5 final (sesión de prueba real en Gemini). 2) Decisión pendiente: laptop MacBook Air consume solo MD/HANDOFF, sin memory.db (evita split-brain SQLite). 3) Formalizar Vane como deprecado (desplazado por Gemini cloud + image-generator nativo) con un ADR corto cuando se haga el corte a Google AI Pro.
 
@@ -158,6 +166,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- Producto enlatado, no servicio por hora. Un deploy por cliente (single-tenant). Next.js + Supabase con RLS y exclusion constraint de Postgres para impedir solapamiento. La solicitud de invitado retiene el lugar 48 horas. La titularidad se transfiere despues de acordar el mantenimiento, nunca antes.
+
+### Heredadas (sin cambios)
+
 - Coexistencia temporal sana: OpenClaw = maestro; Antigravity = espejo de solo lectura hasta activar Pro. En la laptop Air: NO sincronizar memory.db, solo markdown derivado (dailies, HANDOFFs, career-facts, ADRs) y lo que deba persistir va por HANDOFF a la Mini. Vane queda sin sentido funcional al perder Ollama Pro y ganar Gemini Notebook.
 
 ### Heredadas (sin cambios)
@@ -186,6 +198,16 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 - Fallback unico local por decision de Gonzo: 'el fallback no puede ser otro modelo en la nube'. Primario deepseek y no beam: dejo de ser gratuito y su calidad ya estaba descartada por ADR-105 (3/4 bugs, auto-aprobacion con defecto vivo). Ninguna carrera universitaria va a CV ni ATS (regla 2026-11-04). Una referencia de CV se verifica abriendo el hilo en GitHub, no contra el corpus.
 
+## Como continuar
+
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-11-16.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
+
+---
+
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
+
 ## Archivos tocados
 
 ```
@@ -211,16 +233,6 @@ studies/godot-3d-rpg-curso/SESSIONS.md
 docs/archive/CHANGELOG-archive.md
 studies/README.md
 ```
-
-## Como continuar
-
-1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-16.md` para el informe completo de la sesion.
-3. Verificar el estado real antes de actuar (git, tests, la DB).
-
----
-
-*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
 
 ## What This Is
 
