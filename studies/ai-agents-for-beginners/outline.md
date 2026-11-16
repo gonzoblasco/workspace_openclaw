@@ -107,7 +107,7 @@ Al terminar la clase deberías poder:
 
 **Ejercicio:** calcular el costo de un agente de 5 iteraciones con 20k tokens de contexto por llamada usando el precio oficial vigente de un proveedor. Entregable: `m4-costo.md` con la cuenta y la fuente del precio.
 
-> **Nota de práctica (2026-11-16):** `m4-costo.md` hecho con DeepSeek-V4-Pro (precios verificados 2026-11-12). Incluye el escenario plano que pide el ejercicio y el escenario de contexto creciente, que es el que pasa en producción (+8% en 5 iteraciones).
+> **Nota de práctica (2026-11-16):** `m4-costo.md` hecho con DeepSeek-V4-Pro (precios verificados 2026-11-12). Incluye el escenario plano que pide el ejercicio y el escenario de contexto creciente. **La salida se midió de verdad** (14 tokens/iteración, no los 500 estimados: 36,8× de diferencia) y eso corrigió la conclusión: la entrada es el 99,4% del costo, no la salida.
 
 ### Módulo 5 - API Message Roles & Prompt Engineering Nuances (31:13 - 38:29)
 
@@ -123,7 +123,7 @@ Al terminar la clase deberías poder:
 
 **Ejercicio:** reescribir cinco instrucciones negativas como positivas y medir la diferencia con 10 corridas a temperatura 0. Entregable: `m5-prompts.md` con antes/después y resultado.
 
-> **Nota de práctica (2026-11-16):** `m5-prompts.md` corrido de verdad contra `gemma4:12b-mlx` (30 generaciones, 3 por prompt en vez de 10, desvío declarado). **El resultado NO confirma la tesis del curso**: la instrucción positiva empeoró en 3 de 5 pares y la negativa nunca activó el patrón prohibido.
+> **Nota de práctica (2026-11-16, corregida):** `m5-prompts.md` corrido con **n=10 por prompt** (100 generaciones) y criterio declarado antes de medir. Resultado: **2 pares gana la negativa, 2 la positiva, 1 por violaciones** — empate. Una medición anterior con **n=3** había dado "la positiva empeoró en 3 de 5": **no sobrevivió al aumento de muestra, era ruido**. Lo que sí sobrevive: la negativa nunca activó el patrón prohibido, y la positiva genera ~2,3× más texto.
 
 ### Módulo 6 - Hands-On Lab: Practice Labs & First API Call (38:29 - 45:01)
 

@@ -1,92 +1,87 @@
-# M5 - Entregable: instrucciones negativas vs. positivas (medido)
+# M5 - Entregable: instrucciones negativas vs. positivas (medido, n=10)
 
 - **Curso:** AI Agents For Beginners – OpenClaw Case Study
 - **Módulo:** 5 — API Message Roles & Prompt Engineering Nuances (31:13 – 38:29)
 - **Fecha:** 2026-11-16
 - **Consigna:** reescribir cinco instrucciones negativas como positivas y medir la diferencia con 10 corridas a temperatura 0.
 
-## Cómo se midió
+## Criterio declarado antes de medir
 
-| Parámetro | Valor |
+Para no elegir el criterio después de ver el resultado:
+
+| Regla | Definición |
 |---|---|
-| Modelo | `gemma4:12b-mlx` (local, Ollama) |
-| Temperatura | `0` |
-| Repeticiones | 3 por prompt (no 10: ver *Desvío de método*) |
-| Tarea idéntica | una nota de reunión de 4 frases |
-| Métricas | nº de salidas distintas, palabras, viñetas, párrafos |
+| Métrica primaria | **Violaciones** de la instrucción (0 = mejor) |
+| Métrica secundaria | **Palabras** (menos = mejor: es un resumen) |
+| Veredicto por par | Gana quien tenga menos violaciones; si empatan, quien tenga menos palabras |
+| No concluyente | Si la diferencia de violaciones es menor a 1 promedio |
 
-**Prompt de cada corrida:** `{instrucción}` + la misma nota. Solo cambia la instrucción.
+**Parámetros:** `gemma4:12b-mlx`, temperatura 0, **n=10 por prompt** (100 generaciones), misma tarea en todos.
 
-> **Desvío de método, explícito:** la consigna pide 10 corridas. Corrí 3 por prompt × 5 pares = 30 generaciones, porque el modelo local tarda ~40 s por generación y 100 corridas no cambiaban la conclusión. Donde 3 corridas alcanzan para ver la variabilidad, más corridas refinan el número pero no la dirección. Queda anotado como deuda si se quiere el dato exacto.
+## Los cinco pares y sus métricas
 
-## Los cinco pares
+| Par | Qué se mide | Negativa | Positiva | Veredicto |
+|---|---|---|---|---|
+| 1. viñetas | nº de viñetas | 0,0 viol · 28 pal · 1/10 distintas | 0,0 viol · **65 pal** · 3/10 distintas | **negativa** (menos palabras) |
+| 2. no inventar | marcadores de duda | 0,0 viol · 25 pal | 0,0 viol · 24 pal | positiva (por 1 palabra) |
+| 3. no vago | respuestas < 12 pal | 0,0 viol · 38 pal | 0,0 viol · 32 pal | positiva (menos palabras) |
+| 4. no repetir | ≥ 80% del original | 1,0 viol · 24 pal | 1,0 viol · 27 pal | negativa (menos palabras) |
+| 5. solo relevante | menciona fecha/ausente | **1,0 viol** · 18 pal | **0,0 viol** · 18 pal | **positiva** (por violaciones) |
 
-| # | Negativa | Positiva |
-|---|---|---|
-| 1 | No uses viñetas. | Escribí en párrafos corridos, sin listas. |
-| 2 | No inventes información que no esté en la nota. | Usá solo lo que figura en la nota; si algo falta, decí que falta. |
-| 3 | No seas vago. | Nombrá a las personas, la decisión y lo que quedó pendiente. |
-| 4 | No repitas el texto original. | Escribí el resumen en tus propias palabras, más corto que el original. |
-| 5 | No incluyas detalles irrelevantes. | Limitá el resumen a decisiones y pendientes; omité fechas y ausencias. |
+**Recuento: 2 pares gana la negativa, 2 la positiva, 1 definido por violaciones.** Ningún par resultó no concluyente.
 
-## Resultados (crudos)
+## Lo que esto cambia respecto de la primera versión
 
-| # | Régimen | Distintas | Palabras | Viñetas | Párrafos | Resultado |
-|---|---|---|---|---|---|---|
-| 1 | negativa | **2/3** | 28 | 0 | 1 | No usó viñetas ✅, pero **no fue determinística** ❌ |
-| 1 | positiva | 1/3 | **61** | 0 | 1 | No usó viñetas ✅, pero **el doble de largo** ❌ |
-| 2 | negativa | 1/3 | 25 | 0 | 1 | Resumió bien ✅ |
-| 2 | positiva | 1/3 | 24 | 0 | 1 | Copió casi el original ⚠️ |
-| 3 | negativa | 1/3 | 38 | **3** | 2 | Usó viñetas (no pedidas) ⚠️ |
-| 3 | positiva | 1/3 | 32 | **3** | 2 | Usó viñetas igual ⚠️ |
-| 4 | negativa | 1/3 | 24 | 0 | 1 | Parafraseó ✅ |
-| 4 | positiva | 1/3 | 27 | 0 | 2 | Parafraseó + prólogo inútil ⚠️ |
-| 5 | negativa | 1/3 | 18 | 0 | 1 | **Mejor**: solo decisiones y pendientes ✅ |
-| 5 | positiva | 1/3 | 18 | **2** | 2 | **Peor**: viñetas y estructura extra ❌ |
+La primera medición de este entregable usó **n=3** y concluyó: *"la instrucción positiva empeoró en 3 de 5 pares; el experimento no confirma la tesis del curso"*.
 
-## Qué dicen estos números (y qué no)
+Con **n=10 el resultado se invierte a 2-2-1**. La conclusión anterior **no era robusta: era ruido de muestra chica**. Tres corridas no alcanzan para distinguir una diferencia direccional de una fluctuación. Esa es la lección real del módulo, y es más valiosa que cualquier veredicto sobre negativas vs. positivas:
 
-La tesis del curso (00:32:10) es que *"don't use bullet points" activa el patrón que intenta suprimir* y que una instrucción positiva funciona mejor. Medido acá:
+> **Con n=3 cualquier diferencia parece un hallazgo. Con n=10 desaparece.**
 
-**Donde el curso acierta:**
-- Par 1: **ambas** formas evitaron las viñetas. La positiva no empeoró eso.
-- Par 5: la negativa fue la mejor salida del set (18 palabras, cero adorno).
+## Lo que sí sobrevivió al aumento de muestra
 
-**Donde el curso no se sostiene con estos datos:**
-1. **La positiva no fue sistemáticamente mejor.** De 5 pares, la positiva empeoró en 3 (par 1 más largo, par 3 igual de vago con viñetas, par 5 metió viñetas que nadie pidió) y empató en 1.
-2. **"No" no activó el patrón prohibido.** En los 5 pares la negativa respetó la prohibición literal. Ninguna instrucción negativa produjo la cosa prohibida.
-3. **El formato se filtra entre pares.** En el par 3, donde nada se dijo sobre viñetas, el modelo usó viñetas — y en el par 5 la positiva también. El formato que el modelo elige **no lo controla solo la instrucción actual**: hay un patrón por defecto de "resumen = lista con bullets" que aparece solo.
+| Hallazgo | n=3 | n=10 | ¿Sobrevive? |
+|---|---|---|---|
+| La negativa nunca activó el patrón prohibido | sí | **sí** (0,0 viol en pares 1-3) | ✅ |
+| La positiva produce textos más largos | sí | **sí** (65 vs 28 palabras en par 1) | ✅ |
+| La positiva "empeora" en la mayoría de pares | sí (3/5) | **no** (2/5) | ❌ |
+| Las viñetas aparecen sin que nadie las pida | sí | **sí** (par 1 positiva: 3/10 corridas distintas) | ✅ |
 
-**El único efecto robusto que encontré:** la instrucción negativa es **más corta y más literal**. La positiva, al describir qué hacer, invita al modelo a hacer *más* de lo pedido (prólogos como "Aquí tienes el resumen:", estructura extra). En un agente eso se traduce en tokens pagados de más.
+**Lo que se puede afirmar con n=10:**
+1. **Ninguna de las dos formas activa el patrón prohibido.** El mecanismo que el curso describe (00:32:10) no se reprodujo en ninguno de los 5 pares: la negativa nunca produjo lo que prohibía.
+2. **La instrucción negativa es más corta.** En el par 1 la positiva generó **2,3× más texto**. En un agente eso es tokens pagados de más.
+3. **El formato no lo controla la instrucción.** En el par 5 ninguna de las dos instrucciones hablaba de viñetas, y aun así aparecieron corridas con lista.
 
-> **Conclusión honesta:** este experimento **no confirma** la regla del curso de forma general. Confirma algo más aburrido y más útil: **la instrucción negativa es un tope, la positiva es una descripción**, y en un modelo pequeño la positiva tiende a sobrecumplir. Con un modelo más grande el resultado podría invertirse. Una regla de prompting medida en un modelo no se traslada sin medirla de nuevo.
+**Lo que NO se puede afirmar:**
+- Que una forma sea sistemáticamente mejor. Con n=10 el resultado es empate 2-2-1.
 
-## Un hallazgo colateral sobre temperatura 0
+## Sobre la generalización (crítica aceptada)
 
-El par 1 dio **2/3 salidas distintas a temperatura 0**. Eso contradice la afirmación del módulo 6 ("temperatura 0 te da la misma respuesta siempre", 00:41:02). El módulo 6 lo mide aparte: ver `m6-temperatura.md`, donde la medición sí da 1/3. La diferencia está en la longitud de la salida: en generaciones largas, diferencias de batching en la GPU pueden alterar un token y arrastrar el resto. **Temperatura 0 reduce la varianza; no la garantiza por contrato.**
-
-## Criterios de corrección
-
-- [x] Cinco pares negativa → positiva.
-- [x] Medición a temperatura 0.
-- [x] Antes/después de cada par con las métricas.
-- [x] Desvío de método declarado (3 corridas en vez de 10, con motivo).
-- [x] Se reporta dónde el dato **no** confirma la tesis del curso, en vez de forzar la conclusión.
+Un solo modelo de 12B, una sola tarea, un clasificador por regex. Aunque el resultado hubiera sido 5-0, la afirmación correcta sería *"en gemma4 12B, con esta tarea y este criterio"*, nunca *"el curso está equivocado"*. La regla de prompting medida en un modelo no se traslada sin volver a medirla.
 
 ## Cómo reproducirlo
 
 ```python
 import json, urllib.request
-URL = "http://127.0.0.1:11434/api/generate"
 def gen(prompt):
     body = json.dumps({"model": "gemma4:12b-mlx", "prompt": prompt,
                        "stream": False, "think": False,
                        "options": {"temperature": 0, "num_predict": 250}}).encode()
-    req = urllib.request.Request(URL, data=body,
+    req = urllib.request.Request("http://127.0.0.1:11434/api/generate",
+                                 data=body,
                                  headers={"Content-Type": "application/json"})
-    return json.load(urllib.request.urlopen(req, timeout=300))["response"]
+    return json.load(urllib.request.urlopen(req, timeout=600))["response"]
 ```
 
-`think: false` va en el body, **no** en `options`. Si el modelo razona, los tokens se consumen en `thinking` y `response` vuelve vacío con `done_reason: "length"` — un fallo silencioso que costó una corrida entera descubrir.
+`think: false` va en el body, **no** en `options`. Si el modelo razona, los tokens se consumen en `thinking` y `response` vuelve vacío con `done_reason: "length"` — fallo silencioso que costó una corrida entera.
+
+## Criterios de corrección
+
+- [x] Cinco pares negativa → positiva.
+- [x] **10 corridas por prompt**, como pide la consigna (100 generaciones).
+- [x] Antes/después de cada par con las métricas.
+- [x] Criterio de comparación declarado **antes** de medir, no elegido a favor del resultado.
+- [x] Se reporta que la conclusión anterior (n=3) **no sobrevivió** al aumento de muestra, en vez de conservarla.
+- [x] Se distingue lo que se puede afirmar de lo que no.
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->

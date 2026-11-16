@@ -23,7 +23,47 @@
 |---|---|---|
 | Iteraciones | 5 | Dado por el ejercicio |
 | Contexto por llamada | 20.000 tokens | Dado por el ejercicio |
-| Salida por iteración | 500 tokens | Estimación propia: un `tool_call` + razonamiento corto ronda eso. **No es dato del curso.** |
+| Salida por iteración | ~~500 tokens~~ → **14 tokens medidos** | Primero fue estimación propia. **Ahora es medición real** (ver abajo). |
+
+## Corrección: la salida se midió y la estimación estaba 36× inflada
+
+La primera versión de este entregable asumía 500 tokens de salida por iteración y lo declaraba como estimación. El critic señaló la incoherencia: el documento enseña a leer `response.usage` y no lo hacía. Se midió.
+
+**Medición real:** agente de 5 iteraciones con una tool (`check_step`), system prompt de 7.903 tokens, contra `gemma4:12b-mlx` vía Ollama. Cada iteración emite un `tool_call` y recibe el resultado.
+
+| Iteración | `prompt_eval_count` | `eval_count` | tool_calls |
+|---|---|---|---|
+| 1 | 6.578 | 12 | 1 |
+| 2 | 6.608 | 16 | 1 |
+| 3 | 6.642 | 16 | 1 |
+| 4 | 6.676 | 12 | 1 |
+| 5 | 6.710 | 12 | 1 |
+| **Total** | **33.214** | **68** | **5** |
+
+- **Salida real: 14 tokens por iteración** (68 / 5). La estimación de 500 estaba **36,8× inflada**.
+- **Entrada real: crece 6.578 → 6.710, +2,0%** entre la primera y la última llamada. Confirma el crecimiento que este documento describía, en la magnitud real cuando el contexto lo domina el system prompt fijo.
+
+### La consecuencia que cambia la conclusión
+
+La versión anterior decía: *"la salida es 3× más cara, cuidá la salida"*. Por token es cierto ($1,98 vs $0,66), pero **con estos números el cuidado estaba puesto en el lugar equivocado**:
+
+| Componente | Tokens | Costo off-peak | % del total |
+|---|---|---|---|
+| Entrada | 33.214 | $0,02192 | **99,4%** |
+| Salida | 68 | $0,00013 | **0,6%** |
+| **Total** | | **$0,02206** | 100% |
+
+> **La entrada domina el costo por dos órdenes de magnitud.** Recortar un 80% de la salida ahorra $0,0001. Recortar un 20% del system prompt ahorra $0,0044 — **40 veces más**.
+
+**Regla corregida:** en un agente con prompt grande y respuestas cortas (el caso normal de un agente con tools), optimizá **la entrada**: acortá el system prompt, cachealo, no mandes historial que no se usa. La salida importa cuando el agente escribe mucho (redacción, código); en un agente de tool calls casi no pesa.
+
+```python
+# La medición, en una línea:
+print(response.usage.prompt_tokens, response.usage.completion_tokens)
+# Y en Ollama: d["prompt_eval_count"], d["eval_count"]
+```
+
+**Cómo reproducir:** `think: false` en el body (si no, los tokens se van en razonamiento), un system prompt de ~8k tokens y 5 iteraciones forzadas con una tool trivial.
 
 ## Escenario A: contexto plano (lo que pide el ejercicio)
 
@@ -68,7 +108,7 @@ Con tres consecuencias prácticas:
 
 1. **El costo crece más rápido que las iteraciones.** No es lineal: cada llamada arrastra todo lo anterior. Duplicar iteraciones más que duplica el gasto.
 2. **El system prompt se paga N veces.** Si son 3.000 tokens de instrucciones y hay 5 iteraciones, son 15.000 tokens de entrada solo para repetir lo mismo. Cachearlo o acortarlo es dinero directo.
-3. **La salida es 3× más cara que la entrada** ($1,98 vs. $0,66 en off-peak) *porque se genera secuencialmente* — el outline lo cita en 00:21:31. Pedir menos tokens de salida (respuestas cortas, `max_tokens` sensato) rinde más que recortar contexto.
+3. **La salida es más cara por token, pero rara vez pesa más en la factura.** Cuesta 3× por token ($1,98 vs. $0,66 off-peak) *porque se genera secuencialmente* — el outline lo cita en 00:21:31. Pero medido, la entrada fue el **99,4%** del costo. El punto 3 solo manda cuando el agente escribe mucho; en un agente de tool calls, el recorte se hace en la entrada (ver *Corrección* arriba).
 
 ## Cómo lo verificaría en serio
 
@@ -84,8 +124,9 @@ print(response.usage.prompt_tokens, response.usage.completion_tokens)
 
 - [x] La cuenta está explícita y se puede reproducir.
 - [x] El precio tiene fuente oficial y fecha de consulta.
-- [x] Los supuestos propios (500 tokens de salida) están marcados como estimación, no como dato del curso.
+- [x] ~~Los supuestos propios (500 tokens de salida) están marcados como estimación~~ → **medidos**: 14 tokens reales por iteración.
 - [x] Se señala el crecimiento del contexto, que la consigna no pide pero cambia el número.
 - [x] Se indica cómo medir el costo real en vez de estimarlo.
+- [x] La conclusión se corrigió cuando la medición la contradijo (la entrada domina, no la salida).
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->
