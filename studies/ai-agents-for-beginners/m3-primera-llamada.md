@@ -28,12 +28,14 @@ client = OpenAI()
 
 # El "corazón" del programa
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="gpt-4o",  # placeholder: ver nota sobre ciclo de vida abajo
     messages=[{"role": "user", "content": "Hola, ¿cómo puedes ayudarme?"}]
 )
 
 print(response.choices[0].message.content)
 ```
+
+> **Aviso de ciclo de vida (2026-11-14):** `gpt-4o` funciona pero es un modelo de 2024. El curso documenta que `gpt-5.1` ya figura como **Deprecated** en la ficha oficial. En producción se usa un identificador vigente (`gpt-5.x`/`gpt-6.x`) leído de variable de entorno (`model=os.environ["MODEL"]`), nunca hardcodeado. Lo que **no** caduca es el mecanismo: `chat.completions` con una lista de `messages`.
 
 ### Análisis del código:
 - **`client.chat.completions.create`**: Es el endpoint estándar para modelos de chat.
@@ -47,25 +49,32 @@ print(response.choices[0].message.content)
 Para entender qué pasa por debajo, esta es la petición `POST` que el SDK envía automáticamente:
 
 ```python
-import requests
+import os
 import json
+import requests
 
 headers = {
-    "Authorization": "Bearer YOUR_API_KEY",
-    "Content-Type": "application/json"
+    "Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}",
+    "Content-Type": "application/json",
 }
 
 data = {
     "model": "gpt-4o",
-    "messages": [{"role": "user", "content": "Hola, ¿cómo puedes ayudarme?"}]
+    "messages": [{"role": "user", "content": "Hola, ¿cómo puedes ayudarme?"}],
 }
 
-response = requests.post("https://api.openai.com/v1/chat/completions", 
-                         headers=headers, 
-                         data=json.dumps(data))
+response = requests.post(
+    "https://api.openai.com/v1/chat/completions",
+    headers=headers,
+    json=data,        # json=data fija el Content-Type; NO uses data=json.dumps()
+    timeout=30,       # sin timeout, la llamada puede colgarse para siempre
+)
+response.raise_for_status()   # un 429 o un 500 tambien son status 200 si no lo pedis
 
-print(response.json()['choices'][0]['message']['content'])
+print(response.json()["choices"][0]["message"]["content"])
 ```
+
+**Por qué el SDK y no HTTP crudo:** el SDK te da reintentos con backoff, manejo de `429`/`5xx`, streaming tipado, timeouts por defecto y objetos en vez de dicts anidados. La versión cruda de arriba *parece* equivalente, pero cada una de esas tres líneas (`json=`, `timeout=`, `raise_for_status()`) es una cosa que se olvida y rompe en producción.
 
 ---
 
@@ -79,7 +88,7 @@ print(response.json()['choices'][0]['message']['content'])
 | **Contexto** | "Caja negra". | Vos decidís qué tokens entran y cuáles salen. |
 
 **Regla de oro para el desarrollo:**
-> "No asumas que el modelo recuerda la conversación anterior. Cada llamada a la API es una hoja en blanco. Si querés que 'recuerde', tenés que enviarle el historial de nuevo."
+> "No asumas que el modelo recuerda la conversación anterior. Cada llamada a la API es una hoja en blanco **del lado del servidor**: si querés que 'recuerde', vos tenés que reenviarle el historial. La 'memoria' no vive en el modelo, vive en el array `messages` que le pasás."
 
 ---
 

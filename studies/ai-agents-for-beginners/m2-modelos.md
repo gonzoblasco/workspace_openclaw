@@ -11,7 +11,7 @@
 
 | Proveedor | Modelo exacto | Ventana de contexto (tokens) | Precio (input / output por 1M tokens, USD) | Corte de conocimiento | Tool calling / function calling | Licencia o modalidad | Estado | URL oficial |
 |---|---|---|---|---|---|---|---|---|
-| OpenAI | **Por identificar** (GPT-5.1 deprecated) | no publicado | no publicado | no publicado | no publicado | API propietaria | **Deprecated** (GPT-5.1) | https://platform.openai.com/docs/models/gpt-5.1 |
+| OpenAI | **Por identificar** (GPT-5.1 deprecated) | no publicado | no publicado | no publicado | **Sí** (`function_calling`) | API propietaria | **Deprecated** (GPT-5.1) | https://platform.openai.com/docs/models/gpt-5.1 |
 | Anthropic | Claude Sonnet 5.5 | 1.000.000 (máx. salida 128.000) | 2,00 / 10,00 | Junio 2026 | Sí (tool use) | API propietaria | **Actual** | https://platform.claude.com/docs/en/models/overview |
 | Google | Gemini 3.8 Flash | 1.048.576 (máx. salida 65.536) | no publicado | no publicado | Sí (function calling) | API propietaria | **Actual** (reemplaza a 2.5 Pro) | https://ai.google.dev/gemini-api/docs/models |
 | Meta | Llama 4 Scout | 10.000.000 (entrenamiento 256.000) | no publicado (open weights) | no publicado | Parcial (function-composition example) | Open weights | **Actual** | https://dev.meta.ai/llama/docs/model-cards-and-prompt-formats/llama4 |
@@ -22,7 +22,7 @@
 
 ## Notas de auditoría
 
-1. **OpenAI — flagship actual no identificado**: La ficha oficial de GPT-5.1 lo marca como **Deprecated** y confirma `function_calling: true` (el informe original decía "no publicado"). La lista de modelos en `developers.openai.com` muestra variantes `gpt-5.6-*`, `gpt-6-*` pero no está claro cuál es el modelo de producción recomendado hoy. **Pendiente: identificar flagship actual y sus especificaciones oficiales.**
+1. **OpenAI — flagship actual no identificado**: La fila quedó con GPT-5.1 como referencia porque es el último con ficha completa verificada, pero su `Status` es **Deprecated**. La ficha oficial también confirma `function_calling: true` (el informe original decía "no publicado": fue un falso negativo, corregido también en la tabla). La lista de modelos en `developers.openai.com` muestra variantes `gpt-5.6-*`, `gpt-6-*` pero no está claro cuál es el modelo de producción recomendado hoy. **Pendiente: identificar flagship actual y sus especificaciones oficiales.**
 
 2. **Anthropic — Claude Sonnet 5.5 verificado**: 1M contexto, salida 128K, $2/$10, corte junio 2026, tool use soportado. Sonnet 4.5 está deprecated (retiro 2026-11-30). Fuente: `https://platform.claude.com/docs/en/models/overview`.
 

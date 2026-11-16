@@ -265,7 +265,18 @@ def main(argv=None):
             except SystemExit:
                 continue   # directorio sin transcripcion o sin clase: se saltea
     elif len(ns.args) == 2 and Path(ns.args[0]).is_file():
-        targets = [(Path(ns.args[0]), Path(ns.args[1]))]
+        # El hook pre-commit pasa CUALQUIER .md dentro de studies/<slug>/, incluidos
+        # entregables de practica (m2-modelos.md, m1-*.md) que legitimamente no
+        # citan el transcript con timestamp. Si el archivo no es de clase, el gate
+        # no tiene nada que verificar: SKIP con exito, no "no corrible".
+        # Bug real 2026-11-16: este camino bloqueaba commits de practicas sin cita.
+        target = Path(ns.args[0])
+        is_class = target.name in ('outline.md', 'transcripcion.md') or \
+            target.name.startswith('modulo-') or target.name.startswith('practica-')
+        if not is_class:
+            print(f'SKIP {target}: no es archivo de clase (no aplica)', file=sys.stderr)
+            return 0
+        targets = [(target, Path(ns.args[1]))]
     elif len(ns.args) == 1:
         targets = discover(ns.args[0])
     else:
