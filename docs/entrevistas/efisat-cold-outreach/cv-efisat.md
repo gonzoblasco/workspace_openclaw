@@ -1,17 +1,17 @@
 # Gonzalo Blasco
 
-**Senior Full Stack & Frontend Developer | Arquitectura UI, Sistemas Web en Tiempo Real & Flujos de Trabajo con IA**
+**Senior Frontend Developer | Arquitectura UI, Sistemas Web en Tiempo Real & Flujos de Trabajo con IA**
 
 Núñez, Buenos Aires, Argentina (GMT-3) | +54 11 4937 4656 | gonzoblasco@icloud.com
 linkedin.com/in/gonzalo-blasco | github.com/gonzoblasco
 
 ## Resumen profesional
 
-Desarrollador de software con más de 10 años de experiencia construyendo aplicaciones web escalables, interfaces de alta complejidad y sistemas centrados en la usabilidad y el rendimiento. Especializado en ecosistemas React, TypeScript y Next.js, con sólida experiencia en arquitectura frontend, renderizado en servidor (SSR), manejo de estado en tiempo real y desarrollo backend con Node.js y PostgreSQL/Supabase. Trayectoria estableciendo estándares de calidad y accesibilidad (WCAG 2.2 AA) en plataformas de alto tráfico, y diseñando flujos de desarrollo asistidos por IA (agentes autónomos, servidores MCP y sistemas RAG) orientados a automatizar procesos operativos y eliminar tareas manuales repetitivas.
+Desarrollador de software con más de 10 años de experiencia construyendo aplicaciones web escalables, interfaces de alta complejidad y sistemas centrados en la usabilidad y el rendimiento. Especializado en ecosistemas React, TypeScript y Next.js, con experiencia en arquitectura frontend, renderizado en servidor (SSR), manejo de estado en tiempo real y consumo de APIs. Desde 2025 desarrollo también backend de producto con Node.js y PostgreSQL/Supabase. Trayectoria estableciendo estándares de calidad y accesibilidad (WCAG 2.2 AA) en plataformas de alto tráfico, y diseñando flujos de desarrollo asistidos por IA (agentes autónomos, servidores MCP y sistemas RAG) orientados a automatizar procesos operativos y eliminar tareas manuales repetitivas.
 
 ## Experiencia profesional
 
-### Full Stack & AI-Native Developer — Freelance
+### Full Stack Developer — Freelance
 
 *Mayo 2025 - Actualidad | Remoto (Buenos Aires, Argentina)*
 
@@ -20,11 +20,11 @@ Desarrollador de software con más de 10 años de experiencia construyendo aplic
 - **AI Engineering OS & Servidores MCP:** Implementé un sistema propio de orquestación sobre OpenClaw con subagentes de contexto acotado y memoria persistente. Desarrollé y mantengo un servidor MCP (Model Context Protocol) sobre stdio (kanam-fixer) para auditoría automatizada de accesibilidad.
 - **Soluciones Operativas a Medida:** Desarrollé herramientas internas con IA para automatización comercial y plataformas web con asistentes conversacionales basados estrictamente en evidencia documental (Kanam OnWheels).
 
-### Senior Full Stack / Frontend Developer — EY (Ernst & Young)
+### Senior Frontend Developer — EY (Ernst & Young)
 
 *Septiembre 2021 - Mayo 2025 | Híbrido (Buenos Aires / Equipos US & India)*
 
-- **Desarrollo de Plataforma Financiera con IA:** Participé en la construcción de una plataforma de inteligencia financiera en Next.js (SSR) y TypeScript junto a un equipo de 3 desarrolladores, llevando interfaces complejas desde la arquitectura inicial hasta producción.
+- **Plataforma Financiera con IA:** Participé en la construcción del frontend de una plataforma de inteligencia financiera en Next.js (SSR) y TypeScript, junto a un equipo de 3 desarrolladores, llevando interfaces complejas desde la arquitectura inicial hasta producción y consumiendo las APIs del equipo de backend.
 - **EY Motif (Librería Enterprise):** Audité, remedié y estandaricé más de 50 componentes React corporativos bajo normativa WCAG 2.2 AA (navegación por teclado, lectores de pantalla NVDA/JAWS y gestión de foco).
 - **Arquitectura Frontend & Calidad:** Revisé componentes en Storybook antes de su implementación, redactando especificaciones técnicas, patrones WAI-ARIA, guía técnica para otros desarrolladores y pruebas automatizadas con Jest, React Testing Library, Vitest y Playwright.
 - **Gestión de Estado y CI/CD:** Implementé flujos de datos complejos con Redux y React Query, gestionando pipelines de CI/CD y entregas ágiles diarias en Azure DevOps.
@@ -36,7 +36,7 @@ Desarrollador de software con más de 10 años de experiencia construyendo aplic
 - **Auditoría y Remediación (Warner Bros. Screeners):** Validé y expandí auditorías técnicas en una plataforma global de streaming audiovisual, probando flujos críticos en NVDA, VoiceOver y TalkBack.
 - **Automatización de Testing:** Resolví más de 200 incidencias WCAG, documenté guías de implementación e integré un pipeline continuo de validación con axe-core y Playwright en CI/CD.
 
-### Frontend Developer & Accessibility Owner — Minutentag / EULAS
+### Frontend Developer — Minutentag / EULAS
 
 *Febrero 2016 - Noviembre 2019 | Presencial (Buenos Aires, Argentina)*
 

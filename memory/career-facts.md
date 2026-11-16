@@ -150,6 +150,14 @@ Qué hizo:
   IA en Next.js, con interfaces accesibles de arquitectura a producción.
   **SSR:** ese Next.js es el origen documentado del trabajo con **SSR** (renderizado en servidor).
   Alcance: es un hecho de EY, no de los proyectos propios, y así se declara.
+- **Next.js en EY fue el frontend, no el backend (corrección de Gonzo, 2026-11-15):**
+  *"en EY usé Next, pero no me tocó trabajar sobre el API, solo consumirlo"*. El SSR de Next.js
+  es del **lado cliente/frontend**; las APIs y los servicios contra los que se consumía no eran
+  de su autoría. **Consecuencia:** en EY no se declara backend de producción ni "full stack" en
+  sentido estricto. El título canónico es **Senior Frontend Engineer, Accessibility Lead**; el
+  encuadre "Full Stack" en EY está **prohibido** en CVs nuevos (el "Senior Full Stack / Frontend
+  Engineer, Team Lead" que figura arriba fue un encuadre de octubre 2026 y queda superseded por
+  esta corrección). Lo full stack de producción existe **solo** en el período freelance (§2.1).
 - **Jest + React Testing Library en producción (confirmado por Gonzo, 2026-11-03):** *"esto sí en
   todos lados"*. No es un rol ni un período: es tooling transversal a su carrera. Se declara como
   tal (Core Skills / Quality), sin atribuirlo a un empleador específico.
