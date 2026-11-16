@@ -98,15 +98,19 @@ Sin registro público. El socio invita por link con token de un solo uso; login 
 
 **Soporte:** el cliente invita a un usuario con rol de socio cuando necesita ayuda, y lo revoca después. Sin código especial.
 
-## 8. Costos reales por cliente
+## 8. Costos por cliente
+
+**Fase piloto (30 días): costo cero.** Free tier de Supabase y de Vercel, cuentas del desarrollador. Al cierre de la prueba, los proyectos se transfieren a nombre de la sociedad y pasan a planes pagos.
 
 | Ítem | Aprox. |
 |---|---|
-| Vercel Pro | USD 20/mes — **Hobby es non-commercial**, no sirve |
-| Supabase Pro | USD 25/mes — **el plan free pausa por inactividad** |
+| Vercel Pro | USD 20/mes — **Hobby es non-commercial**, se tolera solo durante el piloto sin cobro |
+| Supabase Pro | USD 25/mes — **el plan free pausa el proyecto por inactividad** |
 | Dominio | USD 12/año |
 
-≈ **USD 45/mes**, no "unas monedas". Verificar precios al cotizar.
+≈ **USD 45/mes** ya en manos del cliente. Verificar precios al cotizar.
+
+**Mitigaciones del free tier:** el cron diario de vencimientos consulta la base, así que mantiene el proyecto de Supabase despierto; el vencimiento de las 48 h además se evalúa de forma perezosa al leer, para no depender de la granularidad del cron.
 
 ## 9. Riesgos
 

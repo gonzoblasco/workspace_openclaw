@@ -54,7 +54,8 @@ Nadie de afuera. No hay registro público: los socios dan de alta a cada invitad
 
 ## Qué cuesta
 
-- **El único costo fijo hoy es la infraestructura**, a nombre de la sociedad: alrededor de USD 45 por mes entre hosting y base de datos.
+- **Durante la prueba, nada.** La versión mínima se desarrolla sin costo para la sociedad y corre en planes gratuitos de hosting y base de datos.
+- **Al terminar la prueba**, los proyectos se transfieren a nombre de la sociedad. Desde ahí el costo es la infraestructura: alrededor de USD 45 por mes.
 - El mantenimiento y las mejoras se acuerdan aparte.
 - No hay costo por usuario ni por reserva.
 
@@ -68,4 +69,4 @@ Nadie de afuera. No hay registro público: los socios dan de alta a cada invitad
 
 ## Propuesta de arranque
 
-Versión mínima en dos semanas: un avión, dos socios, invitados. Treinta días de uso real con los invitados de siempre. Si las métricas se cumplen, se mantiene y se amplía. Si no, se apaga y no queda deuda.
+Versión mínima en dos semanas: un avión, dos socios, invitados. Treinta días de uso real con los invitados de siempre. Si las métricas se cumplen, se mantiene y se amplía: los proyectos pasan a nombre de la sociedad, con sus cuentas y sus datos. Si no, se apaga y no queda deuda.
