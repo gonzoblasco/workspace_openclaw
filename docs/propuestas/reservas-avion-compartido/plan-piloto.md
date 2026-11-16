@@ -52,4 +52,11 @@ Si al día 30 los socios siguen reservando por WhatsApp, el producto no resolvi�
 
 ## Después del piloto
 
-Si las cuatro métricas se cumplen: se acuerda el mantenimiento y se ofrece el mismo paquete a otra sociedad con avión compartido. El segundo cliente es el que dice si esto es un producto o un trabajo puntual.
+Si las métricas se cumplen, el orden importa:
+
+1. **Día 20:** se acuerda el mantenimiento — soporte y actualizaciones, alcance y precio.
+2. **Día 30:** se transfiere la titularidad de los proyectos.
+
+Al revés no. Entregar la titularidad antes de acordar el mantenimiento deja al cliente con sus datos, ya instalado, y sin motivo para pagar nada.
+
+Después, se ofrece el mismo paquete a otra sociedad. El segundo cliente es el que dice si esto es un producto o un trabajo puntual.
