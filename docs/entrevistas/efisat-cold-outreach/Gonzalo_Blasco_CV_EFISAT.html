@@ -3,18 +3,17 @@
 <head>
 <meta charset="utf-8">
 <style>
-  @page { size: A4; margin: 11mm 14mm; }
-  @media print { body { font-size: 9.3pt; line-height: 1.22; } }
-  html, body { margin: 0; padding: 0; }
+  @page { size: A4; margin: 12mm 14mm; }
+  @media print { body { font-size: 9.5pt; line-height: 1.26; } }
   body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10pt; color: #1a1a1a; line-height: 1.28; margin: 0; }
   h1 { font-size: 19pt; margin: 0 0 2pt 0; letter-spacing: 0.5pt; }
   .role { font-size: 10.5pt; color: #333; margin: 0 0 5pt 0; font-weight: 600; }
   .contact { font-size: 8.5pt; color: #444; margin: 0 0 11pt 0; }
-  h2 { font-size: 9.5pt; text-transform: uppercase; letter-spacing: 1pt; border-bottom: 1.2pt solid #1a1a1a; padding-bottom: 1.5pt; margin: 8pt 0 4pt 0; }
-  h3 { font-size: 10pt; margin: 6pt 0 1pt 0; }
-  .meta { font-size: 8.5pt; color: #555; font-style: italic; margin: 0 0 3pt 0; }
-  ul { margin: 1pt 0 1pt 0; padding-left: 13pt; }
-  li { margin-bottom: 1.5pt; }
+  h2 { font-size: 10pt; text-transform: uppercase; letter-spacing: 1pt; border-bottom: 1.2pt solid #1a1a1a; padding-bottom: 2pt; margin: 11pt 0 6pt 0; }
+  h3 { font-size: 10pt; margin: 8pt 0 1pt 0; }
+  .meta { font-size: 8.5pt; color: #555; font-style: italic; margin: 0 0 4pt 0; }
+  ul { margin: 2pt 0 2pt 0; padding-left: 14pt; }
+  li { margin-bottom: 2.5pt; }
   p { margin: 0 0 6pt 0; }
   .skills p { margin: 0 0 4pt 0; }
   .label { font-weight: 700; }
@@ -32,70 +31,57 @@
 <body>
 
 <h1>Gonzalo Blasco</h1>
-<p class="role"><b>Desarrollador Full Stack Senior · Sistemas Web de Gestión, Integraciones y Automatización con IA</b></p>
-<p class="contact">Núñez, Buenos Aires, Argentina | Remoto | +54 11 4937 4656 | <span class="nb">gonzoblasco@icloud.com</span> | <span class="nb">linkedin.com/in/gonzalo-blasco</span> | <span class="nb">github.com/gonzoblasco</p></span>
-<h2>Perfil</h2>
-<p>Desarrollador full stack con más de 10 años construyendo aplicaciones web de gestión operativa: software que ordena el día a día de un negocio, integra datos de terceros y elimina trabajo manual repetitivo. Trabajo con React, TypeScript y Next.js del lado de la interfaz, y con Node.js, PostgreSQL/Supabase y Edge Functions del lado del servidor, incluyendo productos multi-empresa con permisos por rol y facturación. En el último año y medio incorporé IA al software de forma medible: búsqueda semántica sobre documentos (RAG), automatización con reglas de confianza y asistentes que responden solo con evidencia. Esa combinación —operación, datos en tiempo real y automatización— es exactamente el problema que resuelve un sistema de gestión de flotas.</p>
-<h2>Experiencia</h2>
-<h3>Freelance - Desarrollador Full Stack</h3>
-<p><i>05/2025 - Actualidad | Remoto</i></p>
+<p class="role"><b>Senior Full Stack &amp; Frontend Developer | Arquitectura UI, Sistemas Web en Tiempo Real &amp; Flujos de Trabajo con IA</b></p>
+<p class="contact">Núñez, Buenos Aires, Argentina (GMT-3) | +54 11 4937 4656 | <span class="nb">gonzoblasco@icloud.com</span></p>
+<p><span class="nb">linkedin.com/in/gonzalo-blasco</span> | <span class="nb">github.com/gonzoblasco</p></span>
+<h2>Resumen profesional</h2>
+<p>Desarrollador de software con más de 10 años de experiencia construyendo aplicaciones web escalables, interfaces de alta complejidad y sistemas centrados en la usabilidad y el rendimiento. Especializado en ecosistemas React, TypeScript y Next.js, con sólida experiencia en arquitectura frontend, renderizado en servidor (SSR), manejo de estado en tiempo real y desarrollo backend con Node.js y PostgreSQL/Supabase. Trayectoria estableciendo estándares de calidad y accesibilidad (WCAG 2.2 AA) en plataformas de alto tráfico, y diseñando flujos de desarrollo asistidos por IA (agentes autónomos, servidores MCP y sistemas RAG) orientados a automatizar procesos operativos y eliminar tareas manuales repetitivas.</p>
+<h2>Experiencia profesional</h2>
+<h3>Full Stack &amp; AI-Native Developer — Freelance</h3>
+<p><i>Mayo 2025 - Actualidad | Remoto (Buenos Aires, Argentina)</i></p>
 <ul>
-<li>Construí <b>SoporteML</b>, un CRM multi-empresa con IA para vendedores de Mercado Libre, en producción con clientes comerciales: bandeja unificada de consultas, roles de equipo, facturación con Stripe y sugerencias de respuesta con RAG (pgvector + embeddings) sobre React, Vite, TypeScript y Supabase/PostgreSQL. Integración real con la API de Mercado Libre.</li>
-<li>Implementé el modo <b>Autopilot</b> con reglas de confianza: las respuestas automatizadas solo se envían dentro de umbrales definidos y el resto queda para una persona. Es automatización que se puede auditar, no una caja negra.</li>
-<li>Diseñé el <b>design system</b> del producto: tokens semánticos de color, tipografía, espaciado, estados y foco, documentados y aplicados sobre Tailwind CSS con criterio WCAG AA, para que la interfaz escale sin inconsistencias.</li>
-<li>Desarrollé <b>herramientas internas con IA</b> para automatización comercial y una plataforma web con asistente conversacional que responde estrictamente sobre evidencia documental (Kanam OnWheels), más un servidor MCP propio para auditoría automatizada de accesibilidad.</li>
+<li><b>SoporteML (CRM Multi-tenant con IA):</b> Diseñé y desarrollé de extremo a extremo una plataforma de gestión operativa e integración en tiempo real (Mercado Libre) con bandeja unificada, sugerencias automatizadas mediante RAG (pgvector + embeddings), modo Autopilot con reglas de confianza, roles multi-empresa y facturación con Stripe (React, Vite, TypeScript, Supabase/PostgreSQL, Edge Functions). En producción con clientes comerciales activos.</li>
+<li><b>Design System Propio:</b> Creé una arquitectura de tokens semánticos (color, tipografía, espaciado, estados y foco) documentada y aplicada sobre Tailwind CSS bajo criterios WCAG AA.</li>
+<li><b>AI Engineering OS &amp; Servidores MCP:</b> Implementé un sistema propio de orquestación sobre OpenClaw con subagentes de contexto acotado y memoria persistente. Desarrollé y mantengo un servidor MCP (Model Context Protocol) sobre stdio (kanam-fixer) para auditoría automatizada de accesibilidad.</li>
+<li><b>Soluciones Operativas a Medida:</b> Desarrollé herramientas internas con IA para automatización comercial y plataformas web con asistentes conversacionales basados estrictamente en evidencia documental (Kanam OnWheels).</li>
 </ul>
-<h3>EY (Ernst &amp; Young) - Desarrollador Senior Frontend / Full Stack</h3>
-<p><i>09/2021 - 05/2025 | Híbrido (Buenos Aires / equipos US e India)</i></p>
+<h3>Senior Full Stack / Frontend Developer — EY (Ernst &amp; Young)</h3>
+<p><i>Septiembre 2021 - Mayo 2025 | Híbrido (Buenos Aires / Equipos US &amp; India)</i></p>
 <ul>
-<li>Lideré un equipo de 3 ingenieros en una plataforma de inteligencia financiera con IA en Next.js (renderizado en servidor) y TypeScript, desde la arquitectura hasta producción.</li>
-<li>Audité, remedié y documenté <b>más de 50 componentes React</b> de la librería EY Motif (componentes accesibles: teclado, lectores de pantalla (NVDA, JAWS), foco y contraste), bajo WCAG 2.2 AA.</li>
-<li>Revisé componentes en Storybook <b>antes</b> de implementarlos y escribí los requisitos técnicos de accesibilidad y los patrones WAI-ARIA que el equipo aplicaba en cada historia de UI, con pruebas en Jest, React Testing Library, Vitest y Playwright.</li>
-<li>Sostuve flujos de datos complejos con Redux y React Query y pipelines de CI/CD con entregas diarias en Azure DevOps, en equipos distribuidos entre Estados Unidos e India con varias fases del ciclo de vida en paralelo.</li>
+<li><b>Desarrollo de Plataforma Financiera con IA:</b> Participé en la construcción de una plataforma de inteligencia financiera en Next.js (SSR) y TypeScript junto a un equipo de 3 desarrolladores, llevando interfaces complejas desde la arquitectura inicial hasta producción.</li>
+<li><b>EY Motif (Librería Enterprise):</b> Audité, remedié y estandaricé más de 50 componentes React corporativos bajo normativa WCAG 2.2 AA (navegación por teclado, lectores de pantalla NVDA/JAWS y gestión de foco).</li>
+<li><b>Arquitectura Frontend &amp; Calidad:</b> Revisé componentes en Storybook antes de su implementación, redactando especificaciones técnicas, patrones WAI-ARIA, guía técnica para otros desarrolladores y pruebas automatizadas con Jest, React Testing Library, Vitest y Playwright.</li>
+<li><b>Gestión de Estado y CI/CD:</b> Implementé flujos de datos complejos con Redux y React Query, gestionando pipelines de CI/CD y entregas ágiles diarias en Azure DevOps.</li>
 </ul>
-<h3>Super7UI - Especialista en Accesibilidad (contratista)</h3>
-<p><i>08/2020 - 05/2021 | Remoto</i></p>
+<h3>Accessibility Specialist (Contractor) — Super7UI</h3>
+<p><i>Agosto 2020 - Mayo 2021 | Remoto</i></p>
 <ul>
-<li>Lideré la auditoría de accesibilidad de <b>Warner Bros. Screeners</b>, la plataforma privada de streaming corporativo: validé y amplié una auditoría de terceros probando cada caso en NVDA, VoiceOver y TalkBack.</li>
-<li>Resolví <b>más de 200 incidencias WCAG</b> y documenté la solución de cada una: guía de implementación, especificación y remediación lista para desarrollo.</li>
-<li>Establecí un pipeline de validación continua con <b>axe-core + Playwright en CI/CD</b> para frenar el código con regresiones antes del merge.</li>
+<li><b>Auditoría y Remediación (Warner Bros. Screeners):</b> Validé y expandí auditorías técnicas en una plataforma global de streaming audiovisual, probando flujos críticos en NVDA, VoiceOver y TalkBack.</li>
+<li><b>Automatización de Testing:</b> Resolví más de 200 incidencias WCAG, documenté guías de implementación e integré un pipeline continuo de validación con axe-core y Playwright en CI/CD.</li>
 </ul>
-<h3>Minutentag - Desarrollador Frontend</h3>
-<p><i>02/2016 - 11/2019 | Presencial (Buenos Aires)</i></p>
+<h3>Frontend Developer &amp; Accessibility Owner — Minutentag / EULAS</h3>
+<p><i>Febrero 2016 - Noviembre 2019 | Presencial (Buenos Aires, Argentina)</i></p>
 <ul>
-<li>Participé de la migración a React y la optimización de e-commerce de alto tráfico (<b>más de 2 millones de usuarios mensuales</b>) para marcas internacionales de retail: Ann Taylor, LOFT y Lou &amp; Grey.</li>
-<li>Implementé experimentos <b>A/B en producción con Adobe Target</b> sobre funcionalidades y diseños contra segmentos reales, en squads ágiles junto a producto y diseño, con las variantes escritas en JavaScript nativo.</li>
-<li>Me ocupé de la accesibilidad de los flujos desde el inicio y me convertí en la referencia del equipo en la materia.</li>
+<li><b>Migración y Escala E-Commerce:</b> Participé en la migración a React y optimización de plataformas de alto tráfico (2M+ usuarios mensuales) para marcas internacionales de retail (Ann Taylor, LOFT, Lou &amp; Grey).</li>
+<li><b>Experimentación en Producción:</b> Implementé pruebas A/B y variantes client-side en JavaScript nativo con Adobe Target dentro de squads ágiles junto a producto y diseño.</li>
 </ul>
-<h2>Contribuciones open source</h2>
-<p><b>11 pull requests mergeados</b> en librerías de componentes y sistemas de diseño usados en producción, cada uno revisado y aprobado por sus mantenedores.</p>
+<h2>Contribuciones open source &amp; actividad en GitHub</h2>
 <ul>
-<li><b>Componentes React y semántica accesible:</b> <code>adobe/react-spectrum</code> #10503 (el anuncio de región viva del ComboBox pisaba el anuncio nativo por ítem de VoiceOver) y #10554 (test de regresión para <code>aria-posinset</code>); <code>facebook/astryx</code> #5493 (TreeList no podía nombrarse: reenvío de <code>aria-label</code>/<code>aria-labelledby</code> al <code>role=tree</code>) y #5419 (HoverCard con label se exponía como diálogo: <code>aria-haspopup</code>, <code>aria-controls</code> y <code>aria-expanded</code> sincronizados); <code>mui/base-ui</code> #5551 (<code>aria-orientation</code> movido a los roles que lo soportan); <code>mui/material-ui</code> #49003 (links del carrusel en slides ocultos fuera del orden de foco, WCAG 4.1.2).</li>
-<li><b>Sistemas de diseño enterprise:</b> <code>carbon-design-system/carbon</code> #22887 (soporte explícito de <code>aria-describedby</code> en <code>ComposedModal</code>, por la ruta <code>&lt;dialog&gt;</code> nativa y por <code>div[role=dialog]</code>) y <code>carbon-design-system/ibm-products</code> #9878 y #9879 (correcciones en <code>CreateFullPage</code> y en el Datagrid).</li>
-<li><b>CI de librerías:</b> <code>facebook/astryx</code> #4914 (<code>build-storybook</code> fallaba con &quot;no merge base&quot; en PRs viejos por el fetch depth) y #4605 (indicador no cromático en el breadcrumb actual, WCAG 1.4.1).</li>
+<li><b>11 Pull Requests Mergeados en Librerías de Referencia:</b> facebook/astryx (#4605, #4914, #5419, #5493: semántica WAI-ARIA en TreeList y HoverCard, fixes de CI en Storybook); adobe/react-spectrum (#10503, #10554: regiones vivas en ComboBox y regresión aria-posinset); carbon-design-system/carbon &amp; ibm-products (#22887, #9878, #9879: soporte aria-describedby en modales y mejoras en Datagrid); mui/base-ui &amp; material-ui (#5551, #49003: grillas y foco en carruseles).</li>
+<li><b>Code Reviews &amp; Diagnósticos Técnicos en Comunidad:</b> vercel/next.js (#73474: separación de tres escenarios de falla conflados aceptada por el maintainer); carbon-design-system/ibm-products (#9869, #9865) y carbon (#16031: primer revisor humano en PR de Tearsheet y diagnóstico de commits en React 19); facebook/astryx (#4871) y adobe/react-spectrum (#10220, #9556: review arquitectónico de foco y criterios de testing).</li>
 </ul>
-<p><b>Revisión y diagnóstico técnico</b> (sin autoría de PR): separé los tres escenarios de falla que estaban conflados en <code>vercel/next.js</code> #73474, y el mantenedor lo aceptó al cerrar; fui el primer revisor humano del PR de Tearsheet en <code>ibm-products</code> #9869 y diagnostiqué un cluster de errores de React 19 a nivel de hook en #9865; resolví y documenté <code>carbon</code> #16031; comparé dos PRs en competencia sobre retención de foco en <code>astryx</code> #4871; y revisé expectativas de test y alcance en <code>react-spectrum</code> #10220 y #9556.</p>
-<h2>Stack técnico</h2>
+<h2>Stack tecnológico &amp; herramientas</h2>
 <ul>
-<li><b>Frontend:</b> React, Next.js (SSR), TypeScript, JavaScript (ES6+), HTML5, CSS3, Vite, Tailwind CSS, Storybook, Redux, React Query, design systems y tokens, WAI-ARIA.</li>
-<li><b>Backend y datos:</b> Node.js, PostgreSQL (Supabase, RLS multi-empresa, Realtime, pgvector), Edge Functions, APIs REST e integración con APIs de terceros, webhooks, Stripe, autenticación y roles.</li>
-<li><b>IA y automatización:</b> RAG con embeddings, guardrails de confianza, orquestación de agentes y memoria persistente, Model Context Protocol (MCP), Claude Code y Codex como herramientas de desarrollo.</li>
-<li><b>Testing y DevOps:</b> Vitest, Playwright, Jest, React Testing Library, axe-core, Biome, Git, GitHub Actions, Azure DevOps (pipelines, tickets y user stories), Docker.</li>
-<li><b>Accesibilidad:</b> WCAG 2.2 AA, WAI-ARIA (roles, estados y propiedades), NVDA, JAWS, VoiceOver, TalkBack, Axe DevTools, Lighthouse.</li>
+<li><b>Frontend &amp; UI:</b> React, Next.js (SSR), TypeScript, JavaScript (ES6+), HTML5, CSS3, Tailwind CSS, Storybook, Redux, React Query, WAI-ARIA / WCAG 2.2 AA.</li>
+<li><b>Backend &amp; Datos:</b> Node.js, Supabase, PostgreSQL (pgvector), Edge Functions, REST APIs, Stripe.</li>
+<li><b>IA &amp; Automatización:</b> Sistemas Multi-Agente (OpenClaw), Model Context Protocol (MCP), RAG &amp; Embeddings, Claude Code, Codex.</li>
+<li><b>Testing, DevOps &amp; Entorno:</b> Playwright, Vitest, Jest, React Testing Library, axe-core, Biome, Git, GitHub Actions, Azure DevOps, Docker, macOS (VS Code, zsh, npm/pnpm/bun).</li>
 </ul>
-<h2>Formación y certificaciones</h2>
+<h2>Formación &amp; idiomas</h2>
 <ul>
-<li><b>Deque University</b> - Accessibility Specialist Program (2021)</li>
-<li><b>Digital House</b> - Programa intensivo de Desarrollo Web / React (2018)</li>
-<li>Formación continua en accesibilidad digital y calidad de software (Platzi y otros cursos a lo largo de la carrera).</li>
+<li><b>Formación Técnica:</b> Digital House (2018 - Programa Intensivo de Desarrollo Web / React) · Deque University (2021 - Accessibility Specialist Program).</li>
+<li><b>Idiomas:</b> Español (Nativo) · Inglés (B2+ Intermedio Alto - cursando intensivo B2+ en CUI UBA; lectura y documentación técnica fluida).</li>
 </ul>
-<h2>Idiomas</h2>
-<ul>
-<li><b>Español:</b> nativo</li>
-<li><b>Inglés:</b> B2+ intermedio alto, cursando el B2+ intensivo en el CUI (UBA); lectura y documentación técnica fluidas.</li>
-</ul>
-<h2>Por qué EFISAT</h2>
-<p>Lo que me interesa de un sistema como el de EFISAT es que el software toca la operación real: una unidad que no reporta, un conductor que no recibe el mensaje, un recaudo que no cierra. Vengo de construir software con esa característica, donde un error se ve en el mismo día, y de unificar fuentes de datos dispersas en una sola plataforma sin perder el control humano. Eso es lo que hice con integraciones, paneles de gestión y automatización con reglas auditables, y es lo que me gustaría hacer acá.</p>
 
 </body>
 </html>
