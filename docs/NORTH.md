@@ -1,6 +1,6 @@
 # NORTH.md - El norte de Kanam
 
-**Fecha:** 2026-10-06 (reconstruido) · **Actualizado:** 2026-11-06 (Planner integrado al CORE)
+**Fecha:** 2026-10-06 (reconstruido) · **Actualizado:** 2026-11-16 (revisión contra fuentes reales)
 **Estado:** Vivo. Fija el "para qué" de largo plazo.
 **Autor:** Kanam, a pedido de Gonzo. Reescrito contra el contexto real de **las últimas dos semanas** (dailies 2026-09-22 a 2026-10-06, `docs/ROADMAP.md`, ADRs, `projects/*/.knowledge/`) - no contra la memoria vieja.
 
@@ -64,22 +64,24 @@ El sistema no se construyó de una: maduró por etapas, cada una habilitando la 
 ### Horizonte 0 - Construir y terminar (ahora, 0-3 meses)
 **Para qué:** que el sistema produzca **una obra terminada** y que el oficio suba de nivel. Es lo que de verdad se está haciendo.
 
-Tres frentes activos, todos verificados en las últimas dos semanas:
+**Corrección 2026-11-16:** este horizonte declaraba tres frentes activos. Medido contra el filesystem, **queda uno y medio**: OnWheels (real, en F0) y el oficio de diseño (real, con design system hecho y adopción pendiente). `kanam-os` **no tiene copia local desde el 2026-10-29** y no se está trabajando. Las tres descripciones de abajo estaban escritas el 2026-10-06 y dos de ellas ya no eran ciertas.
 
-1. **`kanam-onwheels` - el primer producto "finito, final".** Palabras de Gonzo: *"busco ya lograr un producto finito, final, contigo... quiero poder darle a mi hermano Esteban el sitio completo"*. Sitio de un concesionario multi-marca con chatbot RAG que responde solo con evidencia citada, multi-concesionaria desde el diseño. **Estado (2026-10-06): catalogo publico + panel de aprobacion (SPEC-004/003) HECHOS y verificados** (e2e 11/11, schema 15/15, 112 tests); Supabase conectado y migrado. **Falta solo el chat RAG (SPEC-002)**, bloqueado por una decision de Gonzo (proveedor de embeddings + modelo/clave). Es el ancla de "producto terminado" del semestre.
-2. **`kanam-os` - ver la memoria como aplicación.** Pedido: *"quiero poder usarte como una aplicación"*. Fases 1-2 hechas (8 vistas + CRUD). Fase 3 (bloques managed) y Fase 4 (búsqueda semántica) pendientes. Es el sistema mirándose a sí mismo.
+1. **`kanam-onwheels` - el primer producto "finito, final".** Palabras de Gonzo: *"busco ya lograr un producto finito, final, contigo... quiero poder darle a mi hermano Esteban el sitio completo"*. Sitio de un concesionario multi-marca con chatbot RAG que responde solo con evidencia citada, multi-concesionaria desde el diseño.
+
+   **Estado real al 2026-11-16 (fuente: `.knowledge/STATUS.md` del proyecto, 2026-10-27):** definición cerrada y roadmap F0-F6; **F0 (spike de Mercado Libre) NO iniciada**. La descripción anterior —*"catalogo publico + panel de aprobacion HECHOS, falta solo el chat RAG"*— **era falsa**: el 2026-10-29 se abandonó esa construcción y el proyecto se reseteó a **greenfield**, con los tres repos anteriores dormidos sin heredar código. Lo que falta no es un chat: es **verificar si se puede publicar y responder en MeLi**, que es el riesgo que puede matar el producto. Stack sin decidir a propósito hasta cerrar F0.
+2. **`kanam-os` - ver la memoria como aplicación.** Pedido: *"quiero poder usarte como una aplicación"*. Fases 1-2 estaban entregadas al 2026-10-06. **Estado real al 2026-11-16: sin copia local** — el 2026-10-29 se borró del disco (con SHA verificado contra GitHub) junto con otros 15 proyectos, y sus LaunchAgents se descargaron. El código vive en `gonzoblasco/kanam-os` (último push 2026-10-21). **No es un frente activo: es un proyecto latente.** Retomarlo pide clonarlo y decidir si las fases 3-4 siguen teniendo sentido.
 3. **El oficio: diseño UI/UX.** Frente abierto por Gonzo el 2026-09-14 y con plan de estudio armado el 2026-10-05: *"entrenarme en el arte del diseño y la UI... que la estética importe SIEMPRE"*. Diagnóstico honesto del propio plan: **el problema no es información, es criterio** - falta el ojo, y eso se entrena mirando y juzgando, no leyendo. Cimiento: skill `design-direction`. **Los tokens y el design system propio YA EXISTEN** (`design/`, ADR-047; contraste verificado por ADR-095). Lo que queda es **aplicarlos** (adopción) y **empezar la semana 1** del plan de práctica (`studies/design/`).
 
-**Criterio de listo (H0):** OnWheels entregado y corriendo para Esteban; Kanam OS con las 4 fases; el design system **aplicado** en las obras (sistema ya existe; falta adopción).
+**Criterio de listo (H0):** OnWheels entregado y corriendo para Esteban; el design system **aplicado** en las obras (sistema ya existe; falta adopción). *(Corregido 2026-11-16: `kanam-os` salió del criterio, porque no se está trabajando. Un criterio de listo sobre un frente pausado no mide nada.)*
 
 ### Horizonte 1 - Capitalizar el oficio (3-12 meses)
 **Para qué:** convertir el trabajo en reputación, credencial y trabajo remunerado.
 
 - **OSS a11y** - sigue siendo el diferenciador público. PRs mergeados y vivos en Adobe (react-spectrum), IBM/Carbon, Meta (astryx), MUI. Alimenta la **narrativa** (LinkedIn, nicho a11y + agentic) y es **material de entrevista**.
-- **`CPACC`** - meta **personal** de Gonzo (crecimiento propio en a11y). Objetivo de calendario: la sesión de examen cuya aplicación cierra el **9 de diciembre de 2026**. Es la palanca que desbloquea retomar el hilo laboral con un entregable.
-- **Búsqueda laboral** - hoy **dormante**: sin procesos abiertos (todos cerrados al 2026-09-24). No es un fracaso, es una pausa. Se reactiva con la credencial CPACC y con el portfolio terminado.
+- **`CPACC` - RETIRADO el 2026-11-16.** No hay dinero para el examen ni para el trámite; la ventana 12/11-9/12 se pierde. Decisión de Gonzo: *"CPACC no se hace, no hay dinero para ello"*. `docs/cpacc/` queda estacionado con condición de reapertura: primer ingreso real. **Sigue siendo una meta personal, no un plan con fecha.**
+- **Búsqueda laboral** - **NO está dormante.** Corrección del 2026-11-16: al 2026-10-28 hay **3 procesos vivos** (Infjini→Disney con entrevista pendiente de coordinar, Mercor/Project Odin, y la relación con TEAM). La versión anterior decía "sin procesos abiertos (todos cerrados al 2026-09-24)" — era cierto en septiembre y falso desde el 19/10. **Es el frente que paga las cuentas y hoy no tiene dueño de tiempo asignado.**
 
-**Criterio de listo (H1):** CPACC rendido, al menos una obra del H0 publicada como caso de estudio, y un proceso laboral nuevo (no el de Disney, que nunca existió) que avance.
+**Criterio de listo (H1):** al menos una obra del H0 publicada como caso de estudio, y un proceso laboral que avance a oferta/onboarding. *(CPACC salió del criterio el 2026-11-16. Y la aclaración "no el de Disney, que nunca existió" también se elimina: el de Disney es un proceso real, con RTR firmado a USD 24/h y screening técnico positivo.)*
 
 ### Horizonte 2 - Kanam como plataforma (1-3 años)
 **Para qué:** que la infraestructura construida para uno mismo sirva para otros.
@@ -98,15 +100,16 @@ Verificado contra los dailies 2026-09-22 a 2026-10-06; el frente multi-agente se
 |---|---|---|
 | **Sistema multi-agente** | 4 roles (dev, mind, ops, studio) + Crew (critic, auditor, planner), ADR-073/074 | Operativo; pipeline A/B con enforcement (ADR-088). Planner integrado al CORE (v0.3): delegación automática, programas multi-sesión, brief semanal; Fase 1 sin dispatch directo. |
 | **Memoria** | `memory.db` (fuente de verdad) + `kanam-os` para verla; catálogo de memorias del ecosistema | DB-first estable; app Fases 1-2 |
-| **Modelos / pipeline** | Asignación por rol y nivel de pensamiento | ADR-090, aplicado y verificado en runtime |
-| **`kanam-onwheels`** | Producto finito para Esteban (concesionaria + chatbot RAG) | Catalogo + panel hechos y verificados; falta el chat RAG (bloqueado por decision de embeddings/modelo) |
-| **`kanam-os`** | App local para ver la memoria como fichas/tablas/grafos | Fases 1-2 entregadas |
+| **Modelos / pipeline** | Asignación por rol, nivel de pensamiento y política de fallback | ADR-090 + **ADR-112** (fallback = red ante falla, timeout 900s), aplicado y verificado en runtime el 2026-11-12 |
+| **`kanam-onwheels`** | Producto finito para Esteban (concesionaria + chatbot RAG) | **Reset a greenfield el 2026-10-29.** F0 (spike de MeLi) sin iniciar. Stack sin decidir a propósito |
+| **`kanam-os`** | App local para ver la memoria como fichas/tablas/grafos | **Latente:** sin copia local desde el 2026-10-29; repo en GitHub, último push 2026-10-21 |
 | **Diseño UI/UX** | El oficio: criterio visual, tokens, design system | Sistema **existe** (ADR-047/095, contraste verificado); falta adopción + práctica (`studies/design/`) |
 | **OSS a11y** | PRs en Adobe, IBM/Carbon, Meta, MUI | Continuo; 8 merges, PRs vivos |
-| **Ecosistema OpenClaw** | Ronda de 29 repos; candidatos (memoria, skills, verificación) | `docs/ecosystem/DECISIONS.md`; nada instalado |
-| **CPACC** | Certificación personal a11y | Plan de estudio; examen dic 2026 |
+| **Ecosistema OpenClaw** | Repos externos, plugins y skills de afuera | `docs/ecosystem/DECISIONS.md`; el 2026-11-16 entró `modern-web-guidance` (vendorizada, offline, instalador con verificación sha512) |
+| **Coexistencia OpenClaw + Antigravity** | Dos runtimes sobre el mismo workspace, en sincronía | Fases 0-2 del programa hechas; faltan 3-5. `docs/antigravity/` |
+| **CPACC** | Certificación personal a11y | **Retirado el 2026-11-16** por falta de fondos; estacionado con condición de reapertura |
 | **Narrativa / escritura** | Novelas (`Quienes Quedan`, `El Descenso`) + estudio de ingeniería narrativa | Personal; en `docs/stories/` y `studies/` |
-| **Búsqueda laboral** | Procesos remunerados | Dormante (0 abiertos desde 09-24) |
+| **Búsqueda laboral** | Procesos remunerados | **3 procesos vivos** al 2026-10-28 (Disney, Mercor, TEAM). Sin dueño de tiempo asignado |
 
 ---
 
@@ -135,7 +138,7 @@ Cuando aparezca un frente nuevo, tres preguntas **en orden**:
 
 Hay una tensión real entre **terminar** (OnWheels, Kanam OS) y **el oficio** (diseño, CPACC, OSS). Ambas son correctas y compiten por el mismo tiempo. La resolución no es elegir una para siempre: es que el oficio **se aplique dentro de las obras** - el design system se construye haciendo OnWheels, la a11y se ejercita en los PRs sobre componentes reales. El oficio que no se aplica a una obra no se aprende; la obra sin oficio sale mediocre.
 
-Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está dormante, y el que está activo (construir) no factura todavía. Eso está bien por un trimestre. Conviene tenerlo escrito para no confundir actividad con progreso.
+Y la verdad incómoda: el frente que paga las cuentas no tiene dueño de tiempo asignado, y el que está activo (construir) no factura todavía. Hasta el 2026-10-06 el diagnóstico era "el trabajo remunerado está dormante". Al 2026-11-16 **no está dormante**: hay tres procesos vivos y ni uno solo tiene una hora reservada en la semana. Eso es peor que dormante, porque se puede arreglar y no se está arreglando. Conviene tenerlo escrito para no confundir actividad con progreso.
 
 </details>
 
@@ -146,7 +149,7 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 1. **`kanam-fixer`:** alcance **DEFINIDO** (2026-09-14/15: asercion sobre el anuncio del lector de pantalla, virtual en CI / real en local). **Ya no es una decisión abierta.** El pilar *Accesibilidad* tiene ancla formal en ADR-001 §6. Lo que sigue abierto es la **validación de impacto** del ancla (usuarios que no sean Gonzo), que es el criterio del Horizonte 1, no la definición.
 2. **La métrica del H1:** "usuarios reales" es vago. Falta el número concreto.
 3. **`soporteml`:** cerrada. El estado vigente vive en `MEMORY.md`; NORTH no lo repite.
-4. **Respaldo de `projects/`:** los `.knowledge/` que no viven en un repo de proyecto versionado quedan solo en disco, sin respaldo en git.
+4. **Respaldo de `projects/`:** los `.knowledge/` que no viven en un repo de proyecto versionado quedan solo en disco. **Medido el 2026-11-16: son 3 proyectos** — `preflight` (11 archivos), `mercor-project-odin` (2), `Image-generation SDXL setup` (2). El resto está trackeado en su repo.
 5. **Ecosistema:** decisión de memoria (6 caminos solapados) y de seguridad (guardspine vs ClawSec) - ver `docs/ecosystem/DECISIONS.md`.
 
 ---
@@ -157,4 +160,6 @@ Y la verdad incómoda: el frente que paga las cuentas (trabajo remunerado) está
 - **Reconstruido 2026-10-06** contra las últimas dos semanas de trabajo real. Motivo: la versión previa describía una constelación de productos narrativos y experimentos que ya no son el eje. Fuentes: dailies 2026-09-22 a 2026-10-06, `docs/ROADMAP.md`, ADRs del workspace, `projects/*/.knowledge/`, `docs/studies/` (`design/`, `narrative-engineering/`), `docs/stories/`.
 - **Absorbido `EVOLUTION.md` el 2026-10-06.** El blueprint de madurez de Kanam OS (etapas + metodología) pasó a la sección "El camino de madurez del sistema": un solo documento de norte, no dos. Las referencias de los agentes (`critic`, `planner`) se reapuntaron a este archivo.
 - **Actualizado 2026-11-06.** El Planner se integró al CORE como servicio de planificación de programas (v0.3, Fase 1). El CORE lo convoca; el Planner devuelve plan, brief y contratos; el CORE ejecuta. La autonomía de dispatch (Fase 2) queda condicionada a 3+ invocaciones/semana durante 3 semanas.
+- **Revisado 2026-11-16 contra fuentes reales.** Tres afirmaciones del documento eran falsas y se corrigieron: (1) **OnWheels** no estaba a un chat de terminar — hubo un reset a greenfield el 2026-10-29 y F0 no arrancó; (2) **kanam-os** no era un frente activo — no tiene copia local desde el 2026-10-29 y sus LaunchAgents se descargaron; (3) la **búsqueda laboral** no estaba dormante — hay 3 procesos vivos. Además: **CPACC se retiró** por falta de fondos (decisión de Gonzo el mismo día), el **ecosistema** ya no está en cero (entró `modern-web-guidance`), la política de modelos suma **ADR-112** y la **coexistencia con Antigravity** entra como frente.
+- **El patrón que se repite**: los tres errores son del mismo tipo — estado escrito una vez y no vuelto a medir. `NORTH.md` y `ROADMAP.md` comparten la causa. La única defense que funcionó fue abrir el `STATUS.md` de cada proyecto y el filesystem, no leer el propio documento.
 - Principio: no inventar. Lo que este documento afirma sobre un proyecto sale de su BRIEF/ROADMAP real o del daily donde se trabajó. Las aspiraciones están marcadas como tales (Horizontes 1 y 2).
