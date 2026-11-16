@@ -2,7 +2,7 @@
 
 > Hoja de ruta de **decisiones y estado por capa**, no lista de features ni segundo backlog. Cada item define qué es, por qué importa, el criterio de éxito, y la señal de que está listo. La prioridad no es "lo más importante", es **lo que desbloquea más camino por unidad de esfuerzo** en el contexto actual (sesiones por proyecto, búsqueda laboral activa, una sola máquina).
 
-**Última revisión: 2026-10-06** (verificada contra fuentes reales: git, GitHub, filesystem, `memory/memory.db`, runtime `openclaw`). Reconstruido desde cero: la versión anterior (revisión 09-14) arrastraba hipótesis ya refutadas y un estado de búsqueda laboral falso. El histórico queda en git.
+**Última revisión: 2026-11-16** (41 días después de la anterior; verificada contra fuentes reales: `check-bootstrap-budget.py`, `git status`, `projects/*`, hooks en disco, `memory.db`, `check-pipeline-enforcement.py`, `check-roadmaps.py`, `job-search-tracker.md`). Delta de esta revisión: **2 items bajaron de 🟢 a 🟡 por señal no medida**, **1 cuerpo falso corregido** (§2.3 decía "todos cerrados" con 3 procesos vivos), **1 capa nueva** (§0.4 coexistencia) y **7 números stale** reemplazados por medición.
 
 **Qué NO es este documento:**
 - No define el "para qué" de largo plazo: eso es `docs/NORTH.md`.
@@ -43,16 +43,18 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 ### 0.1 Integridad del bootstrap 🟢 P0
 - **Qué**: los archivos que OpenClaw inyecta en **cada arranque** de sesión (`AGENTS.md`, `MEMORY.md`, `USER.md`, `SOUL.md`, `IDENTITY.md`) tienen un cap de inyección. Lo que lo supera **se trunca en silencio**: el agente arranca sin esas reglas y no lo sabe.
 - **Corrección histórica (2026-10-06)**: el item anterior ("Estabilidad de la infraestructura (gateway)") partía de *"el gateway se reinicia solo bajo sesiones largas"*. El re-diagnóstico del 14/09 (leído contra los dumps y el código fuente) ya había mostrado que **no hay reinicios espontáneos**: los 19 registrados eran `source=cli`/`handoff`, es decir intencionales. El problema real nunca fue el reinicio; fue el truncado del bootstrap. La versión vieja mantuvo la hipótesis refutada durante tres semanas.
-- **Estado verificado 2026-10-06** (caracteres como los mide el runtime, unidades UTF-16 - no `wc -c`, que sobreestima en español por los acentos):
+- **Estado verificado 2026-11-16** (caracteres como los mide el runtime, unidades UTF-16 - no `wc -c`, que sobreestima en español por los acentos):
 
   | Archivo | Tamaño | Cap | Estado |
   |---|---|---|---|
-  | `AGENTS.md` | 18.798 | 20.000 | 🟢 +1.202 |
-  | `MEMORY.md` | 13.705 | 20.000 | 🟢 +6.295 |
-  | `USER.md` | 3.600 | 4.000 (fijo, no configurable) | 🟢 +400 |
+  | `AGENTS.md` | 19.989 | 20.000 | 🟢 +11 |
+  | `MEMORY.md` | 19.376 | 20.000 | 🟢 +624 |
+  | `USER.md` | 3.884 | 4.000 (fijo, no configurable) | 🟢 +116 |
   | `SOUL.md` | 2.915 | 20.000 | 🟢 |
   | `IDENTITY.md` | 3.243 | 20.000 | 🟢 |
-  | TOTAL | 42.261 | 60.000 | 🟢 |
+  | TOTAL | 49.407 | 60.000 | 🟢 +10.593 |
+
+- **Alerta de margen (2026-11-16)**: tres de los cinco archivos están a menos de 700 caracteres de su cap, y `AGENTS.md` a **11 caracteres**. No es un problema de estado sino de holgura: cualquier regla nueva obliga a recortar otra cosa primero (pasó el 2026-11-16 al agregar la regla de lectura de docs: se comprimieron dos párrafos para entrar). El cap total está holgado en 10.593, así que el límite que aprieta es **por archivo**, no el global.
 
 - **Caps (fuente: código instalado `dist/bootstrap-*.mjs`, OpenClaw 2026.9.8)**: `DEFAULT_BOOTSTRAP_MAX_CHARS=2e4`, `USER_BOOTSTRAP_MAX_CHARS=4e3` (fijo), `DEFAULT_BOOTSTRAP_TOTAL_MAX_CHARS=6e4`. No hay override en `openclaw.json` (verificado).
 - **Enforcement (2026-10-06)**: `scripts/check-bootstrap-budget.py` mide los 5 archivos y falla si alguno supera su cap o el total. Cableado al pre-commit (sin condición) y al CI. Antes de esto el item era un falso verde: la regla estaba escrita y **nada la verificaba** (ningún check cubría el tamaño de los archivos inyectados).
@@ -70,13 +72,13 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Qué**: `git status` del workspace limpio y explicable; sin cruft, sin punteros desincronizados, sin archivos de sesión trackeados por error.
 - **Por qué**: un workspace que se entiende de una mirada reduce fricción al arrancar cada sesión.
 - **Señal de listo**: `git status --short` no muestra nada inesperado al abrir una sesión.
-- **Estado verificado 2026-10-06**: `git status` muestra solo `M memory/memory.db` y `M memory/todos.md` (cambios de sesión esperados). `projects/` es el espacio común del workspace (ADR-098). `a11y-fixer` figura `isArchived: true` en GitHub.
+- **Estado verificado 2026-11-16**: `git status --short` **vacío** (0 entradas; el 2026-10-06 mostraba `M memory/memory.db` y `M memory/todos.md`). `projects/` es el espacio común del workspace (ADR-098) y está ignorado al 100% (`.gitignore:58 /projects/`, verificado con `git check-ignore -v`). `a11y-fixer` figura `isArchived: true` en GitHub.
 - **Acciones**:
   - [x] Proyectos de vuelta en `<workspace>/projects/` (ADR-098, 2026-10-08; supersede ADR-075). El workspace no los trackea (`.gitignore` `/projects/`), pero son alcanzables por todos los agentes.
   - [x] `a11y-fixer` archivado en GitHub (`gh repo view --json isArchived` -> true).
   - [x] Regla de guion (em dash) cerrada (ADR-082).
-  - [ ] **`.knowledge/` sin respaldo en proyectos que no lo trackean** (id en `todos`): algunos proyectos propios excluyen su `.knowledge/` del repo individual (via `.git/info/exclude`), asi que esa memoria vive solo en disco. El respaldo es trackearla EN el repo del proyecto. *(Correccion 2026-10-13: `projects/` es una carpeta plana 100% ignorada, cada proyecto es su propio repo; NO hay repo agregado. La nota previa que decia que "`projects/.git` apunta a `workspace_openclaw`" era FALSA - `projects/` nunca tuvo `.git` propio; `git -C projects` resuelve al `.git` del workspace.)*
-  - [ ] Decidir destino de `kanam-skills` público (desactualizado; ver `docs/NORTH.md`).
+  - [ ] **`.knowledge/` sin respaldo — medido el 2026-11-16 en 3 proyectos** (id en `todos`): `preflight` (11 archivos), `mercor-project-odin` (2), `Image-generation SDXL setup` (2). Son proyectos con repo propio que excluyen su `.knowledge/`, asi que esa memoria vive solo en disco. El respaldo es trackearla EN el repo del proyecto. *(Correccion 2026-10-13: `projects/` es una carpeta plana 100% ignorada, cada proyecto es su propio repo; NO hay repo agregado.)*
+  - [x] **Destino de `kanam-skills` público — CERRADO por ADR-079** (las skills dejaron de publicarse; no hay destino público). Deja de ser acción: es una restricción cerrada.
 - **Restricción cerrada (no es acción)**: `soporteml` y sus versiones no se tocan en barridos - decisión de ADR-001 de `portfolio-strategy` y del ADR-0001 del proyecto `soporteml`.
 
 ### 0.3 Consolidación de memoria 🟢 P1
@@ -85,25 +87,39 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Señal de listo**: al retomar, el daily del día anterior responde "dónde estábamos" sin re-descubrir; `.md` y DB coinciden.
 - **Estado**: flujo DB-first operativo. Reconcile `.md`->DB antes del export (commit `d9e964e`).
 - **Acciones**:
-  - [ ] Dedupe de `contributions` (filas duplicadas por repo+pr; números "pelados" sin `#`) - id en `todos`.
-  - [ ] Sanear `CHANGELOG.md` (sección mezclada en el cierre del 30/09) - id en `todos`.
+  - [ ] Dedupe de `contributions` (filas duplicadas por repo+pr; números "pelados" sin `#`) - id en `todos`. **Sin verificar el 2026-11-16**: `memory-db.sh stats` agrupa por estado, no por repo+pr; cerrarlo pide la consulta, no una lectura.
+  - [x] **Sanear `CHANGELOG.md`** — resuelto: politica de rotacion de 14 dias con `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesion). Verificado 2026-11-16: el activo arranca en `[2026-11-16]`, historico separado.
+
+---
+
+### 0.4 Coexistencia OpenClaw + Antigravity 🟡 P1
+- **Qué**: dos runtimes operando sobre el **mismo workspace**, en sincronía y no en reemplazo. OpenClaw sostiene lo que el otro no tiene (canales como Telegram, gateway, schedulers); Antigravity aporta el runtime de código y los workflows. **No es una migración**: decisión de Gonzo del 2026-11-16.
+- **Por qué**: el valor de OpenClaw en esta etapa es el canal — la conversación de trabajo ocurre por Telegram. Retirarlo perdería eso sin ganar nada.
+- **Fuente**: `docs/antigravity/programa-adaptacion.md` (plan de 5 fases) + `docs/antigravity/notas-post-migracion.md` (checklist de lo que falta verificar).
+- **Estado verificado 2026-11-16**: Fases 0-2 completas (reglas en `~/.agents/rules/`, 11 symlinks Tier 1 + `skills.json`, `roster.json`). Faltan 3-5 (subagentes en runtime, memoria/validación, marcha blanca). Verificado en disco que `~/.gemini/config/config.json` y `skills.json` apuntan a `/Users/gonzoblasco/.openclaw/workspace`.
+- **Los 4 puntos donde sí se cruzan** (medidos, no supuestos): (1) commits en el mismo repo — riesgo alto, en backlog (todo 137); (2) `memory.db` y dailies — cubierto por §5.1 del plan, escrituras sólo por scripts; (3) dos copias de `modern-web-guidance` (~15 MB cada una) — benigno; (4) el plan vivía sólo en `media/inbound` — resuelto, copiado a `docs/antigravity/`.
+- **Criterio de éxito**: los dos runtimes escriben el mismo workspace sin pisarse, y una skill editada en uno aparece en el otro sin copiar archivos.
+- **Señal de listo**: Fase 5 cerrada con una sesión de trabajo real hecha desde Antigravity sobre un proyecto, sin divergencia en `memory.db` ni en git.
+- **Regla (no es checkbox)**: **no sincronizar por copia**. Los symlinks ya hacen el trabajo; duplicar archivos entre los dos árboles crea la segunda fuente de verdad que `AGENTS.md` §0 previene.
 
 ---
 
 ## Capa 1 - Pipeline de ejecución (cómo trabajamos)
 
-### 1.1 Pipeline A/B 🟢 P1
+### 1.1 Pipeline A/B 🟡 P1
 - **Qué**: dos agentes en cadena, A escribe y B revisa/corrige, con pre-filtro de triage. Los modelos concretos los declara el bloque managed de `AGENTS.md`; acá no se copian. El CORE redacta los prompts y verifica el repo, pero su verificación no reemplaza al revisor B.
 - **Por qué**: es la arquitectura de calidad del sistema; sin enforcement se degrada a "un agente que dice que revisó".
 - **Criterio de éxito**: el gate `scripts/check-pipeline-enforcement.py` pasa; el pipeline se usa por defecto, no por recordatorio.
 - **Señal de listo**: 5+ sesiones con A/B aplicado y verificado sin excepción manual.
+- **Estado 2026-11-16**: el gate pasa, pero **la señal no es medible con la herramienta actual**: `scripts/pipeline-track.sh status` devuelve `Fase: (vacío) | T-score: n/a` y una tabla de unidades sin filas. Un estado durable que no registra nada no prueba 5 sesiones. **Baja a 🟡** por regla del checklist: señal no medida = amarillo aunque ande bien. Cerrarlo pide que `pipeline-track.sh` escriba el estado real, no una lectura de dailies.
 - **Base**: ADR-077 (A/B asimétrico), ADR-088 (enforcement), ADR-089 (pre-filtro).
 - **Acciones**:
   - [ ] Registrar duración por tarea (inicio/fin) en `pipeline-track.sh`.
   - [ ] Contar cuántas veces B introduce bugs al "corregir" (el cross-review no es infalible, 2026-08-21).
 
 ### 1.2 Ruteo y política de modelos 🟢 P1
-- **Qué**: un modelo por rol, con fallback y nivel de pensamiento. Decisión viva en **ADR-090** (2026-10-06).
+- **Qué**: un modelo por rol, con fallback y nivel de pensamiento. Decisiones vivas: **ADR-090** (niveles de pensamiento, 2026-10-06) y **ADR-112** (fallback como red ante falla, timeout 900s, revisado 2026-11-12). ADR-107 fija `deepseek-v4.1-flash` como primario del CORE.
+- **Nota 2026-11-16**: la revisión anterior citaba solo ADR-090 y el ROADMAP no registraba la corrección de ADR-112 — que cambió lo que **significa** un fallback (cubre fallas, no lentitud) y subió el techo de timeout a 900s en los tres providers. Sin esa línea, quien leyera el ROADMAP creería que el fallback se dispara por lentitud, que es justo lo que se descartó.
 - **Por qué**: el modelo correcto por tarea ahorra tiempo y presupuesto; el incorrecto lo quema (ver el caso del "thinking alto universal" que vaciaba el output).
 - **Asignación vigente:** la declara el bloque managed de `AGENTS.md` (fuente: `memory.db`, tabla `settings`). Acá no se copia: una tabla de modelos en dos archivos se desincroniza sola, que es exactamente lo que pasó hasta el 2026-10-20.
 - **Nota de método (2026-10-06)**: la cata que decidió esto tenía un defecto de harness (runner por CLI que mezclaba thinking con el entregable, inflando un "leakage" que era artefacto del CLI, no de producción). El ADR-090 lo declara explícitamente. Para futuras catas: usar la API, no el CLI.
@@ -118,7 +134,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Por qué**: el valor está en la consistencia, no en la elección.
 - **Criterio de éxito**: se aplica siempre, no cuando lo recordamos.
 - **Señal de listo**: pre-commit hooks (lint -> test -> build) presentes en los proyectos activos; ADRs para decisiones nuevas.
-- **Estado**: auditoría 14/09 = **0 de 21** proyectos con hook. Re-verificar contra `projects/*`.
+- **Estado 2026-11-16**: **2 de 12** proyectos con hook (`caesar3-clone`, `kanam-fixer`; conteo por `pre-commit`/`.husky` en disco o `simple-git-hooks`/`husky` en `package.json`). La medición anterior decía "0 de 21": el cero era real, el **21 también estaba mal** — hay 12 directorios en `projects/`. Progreso real, señal de listo todavía no.
 - **Acciones**:
   - [ ] Instalar pre-commit hooks en los proyectos activos. Regla: prioridad sobre features.
 
@@ -131,8 +147,9 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Por qué**: sin esto, el pipeline optimiza lo equivocado. Dispersión = portfolio que no cuenta una historia.
 - **Fuentes vivas**: `projects/portfolio-strategy/ADR-001` (pilares + anclas), `memory/notes/portfolio-curation.md` (curaduría de presencia, 2026-09-21).
 - **CORRECCIÓN (2026-10-06)**: el item decía que `kanam-fixer` tenía **"alcance SIN DEFINIR"**. **Era falso.** El alcance se definió el 2026-09-14/15 (BRIEF + ROADMAP del proyecto, dirección confirmada por Gonzo) y el ciclo `0.0.1` **cerró con evidencia** el 2026-09-15. Lo confirma ADR-001 §6 ("los 4 pendientes cerrados... ancla candidata formalizada con alcance ya definido"). El ROADMAP arrastró el estado pre-definición durante tres semanas: otro falso pendiente, como el Tablero y el design system.
-- **Estado verificado 2026-10-06** (contra `projects/kanam-fixer` + GitHub + npm):
+- **Estado verificado 2026-11-16** (contra `projects/kanam-fixer` + GitHub + npm):
   - **Ancla vigente**: `kanam-fixer` (sucede a `a11y-fixer`, archivado 2026-09-14). **Alcance DEFINIDO**: asercion sobre el **anuncio del lector de pantalla** (no sobre atributos del DOM), la misma asercion en dos planos (virtual en CI, real en local). **Greenfield** (no hereda el engine de `a11y-fixer`).
+  - **Sigue vivo, y volvio a moverse**: ultimo commit `73a02a2` (2026-11-09), contra el `262c004` del 2026-09-17 que decia la revision anterior. Entre medio el proyecto estuvo quieto dos meses y el ROADMAP no lo reflejo: eso es exactamente el tipo de dato que esta revision tiene que mover.
   - **Ciclo `0.0.1` CERRADO** (2026-09-15); `0.0.2` abierto (MCP companion server, commit `f1f60fa`). Repo **público** `gonzoblasco/kanam-fixer` (isArchived=false), paquete npm **`kanam-fixer@0.0.2`** publicado. Último commit `262c004` (2026-09-17). Último push al repo 2026-09-26.
   - **Limitación declarada (S3)**: el plano real (VoiceOver) no es verificable en esta máquina hasta que Guidepup soporte Darwin 27 ([issue #149](https://github.com/guidepup/guidepup/issues/149)). El valor del proyecto se invirtió hacia el **plano real como único juez** de la clase timing/viewport.
   - **Apuestas de producto vivas** (absorbidas de `APUESTAS.md`, retirado el 2026-10-06):
@@ -148,7 +165,8 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 ### 2.2 Cadena OSS -> LinkedIn 🟡 P1
 - **Qué**: cada merge de a11y/agentic -> post. El patrón está definido (2026-08-25); falta la cadencia real.
 - **Por qué**: ligado directo al objetivo laboral (nicho a11y/agentic).
-- **Estado verificado 2026-10-06** (fuente: DB `contributions`): **18 PRs abiertos, 8 mergeados, 22 cerrados sin merge, 15 colaboraciones no-código, 22 repos**. Posts en `docs/linkedin/`.
+- **Estado verificado 2026-11-16** (fuente: DB `contributions` + `ls docs/linkedin/`): **13 posts** en `docs/linkedin/` (el más reciente, `2026-11-03-shadcn-pr-11465.md` del 4/11). La DB agrupa por campo `status`, no por repo+pr, así que los conteos del 2026-10-06 (18 abiertos / 8 mergeados / 22 cerrados) **no son reproducibles hoy con el mismo comando**: `stats` devuelve `active|1` y `closed|28`. Es una limitación de la consulta, no un cambio de estado — y es la misma razón por la que el dedupe de §0.3 sigue abierto.
+- **Radar envejecido**: el de `docs/prs/oportunidades-2026-10-23.md` tiene **24 días**. El propio texto avisa que es un radar y caduca. Antes de actuar sobre cualquiera de sus 4 acciones hay que re-validar que el issue/PR siga libre y sin assignee.
 - **Criterio de éxito**: cada merge de a11y/agentic genera un post en `docs/linkedin/` dentro de la semana.
 - **Señal de listo**: 3+ posts publicados con el patrón didáctico, no solo drafts.
 - **Acciones**:
@@ -165,15 +183,24 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 ### 2.3 Búsqueda laboral 🔴 P0
 - **Qué**: procesos abiertos y su estado. **Fuente de verdad única**: `docs/entrevistas/_general/job-search-tracker.md`.
 - **Por qué**: es el objetivo activo del Horizonte 0 (`docs/NORTH.md`); situación económica urgente.
-- **CORRECCIÓN MAYOR (2026-10-06)**: la versión anterior de este ROADMAP afirmaba *"EIT/HTC/Disney - OFERTA ACEPTADA (11/09), USD 4.000/mes, arranque 01/10"*. **Era falso.** El tracker (actualizado al **2026-09-24**) dice: **EIT nunca tuvo oferta firme** (el rate lo aceptó el reclutador, el cliente jamás hizo call; era un bench req amplio). **No hay procesos abiertos: todos cerrados.** El estado 🟢 del item anterior era un falso verde de tres semanas.
+- **CORRECCIÓN MAYOR (2026-11-16)**: el cuerpo decía *"Estado al 2026-09-24 (todos cerrados)"* y listaba ocho procesos como cerrados. **Es falso desde el 19/10.** El tracker (mtime 2026-11-15) declara **3 procesos vivos**:
+
+  | Proceso | Estado real al 2026-10-28 |
+  |---|---|
+  | **Infjini → Disney → HTC** (Lead SWE, USD 24/h, RTR firmado 19/10) | **ABIERTO.** Entrevista con el cliente agendada para la **1ra o 2da semana de noviembre**. Único proceso con fecha concreta. |
+  | **Mercor / Project Odin** | **ABIERTO**, entrada por mail directo verificado (28/10). Form completo; falta cuenta en `work.mercor.com`, subir PDF y postular. |
+  | **TEAM International** | **Relación abierta, posición cerrada** (Tempo cerró 26/10). Perfil en talent pool; reevalúan al mejorar el inglés. |
+
+  Es el **mismo error de clase que el 2026-10-06, invertido**: aquella vez el documento inventó una oferta que no existía; esta vez dio por muertos procesos que estaban vivos. Las dos nacen de escribir el cuerpo una vez y no volver a mirar el tracker.
+- **Estado del item: 🔴 se mantiene**, pero por la razón correcta: no hay onboarding efectivo. No porque el tablero esté vacío.
 - **Criterio de éxito**: al menos un proceso avanza a oferta/onboarding.
 - **Señal de listo**: onboarding efectivo de un proceso nuevo (no de una oferta inexistente).
-- **Estado al 2026-09-24** (todos cerrados): EIT/HTC, Wigou, OpenSistemas, Ritz-Carlton, Kake, Koin, Aliancers, Ciklum. Ver trackers individuales en `docs/entrevistas/`.
-- **Backlog de prospectos** (relevado 09-23, fuera de seguimiento): Infojini, E-IT, Cheesecake Labs, Equals True, FullStack Labs, BairesDev, GitLab, Clipboard.
-- **Palanca viva**: **CPACC antes del 30/11** si quiere retomar el hilo con un entregable (ver `docs/cpacc/`).
+- **Palanca viva**: **CPACC**. Corregido el 2026-11-16: la ventana de exámenes es **12 de noviembre al 9 de diciembre** (`docs/cpacc/study-plan.md:45`). La línea anterior decía "antes del 30/11", que no coincide con ninguna fuente. **Quedan 23 días.**
 - **Acciones**:
-  - [ ] Reactivar la búsqueda: el tablero está vacío. Definir cadencia (3-5 aplicaciones/día, calidad sobre volumen) y primer lote.
+  - [ ] **Infjini/Disney: la entrevista venció sin registro.** Estaba para la 1ra o 2da semana de noviembre; hoy es 16/11 y el tracker no tiene línea de qué pasó. Primera acción: asentar el resultado, sea cual sea.
+  - [ ] Mercor: completar la postulación (cuenta, PDF, Practice Interview).
   - [ ] Mantener `job-search-tracker.md` como única tabla de procesos.
+  - [ ] Reactivar el volumen: 3-5 aplicaciones/día, calidad sobre volumen. Sigue sin arrancar.
 
 ---
 
@@ -183,9 +210,9 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - **Qué**: el análisis de 20 repos externos (ronda 2026-10-01) y las decisiones de qué incorporar.
 - **Por qué**: hay huecos reales (memoria multi-fuente, verificación, observabilidad, seguridad de skills) donde ya existe OSS mantenido; construir de cero es el último recurso.
 - **Fuente**: `docs/ecosystem/DECISIONS.md` (decisiones) + `crew-resources.md` (fichas) + `solutions-catalog.md` (casos de uso).
-- **Estado**: 9 candidatos identificados (MemOS, PowerContext, Claw Orchestrator, Crabwalk, guardspine, ClawSec, context-sync, Open Amnesia, planning-with-files). **Ninguno instalado.** Decisiones pendientes: memoria (6 caminos solapados) y seguridad (guardspine vs ClawSec vs aeon).
+- **Estado 2026-11-16**: 9 candidatos de la ronda 2026-10-01 siguen sin instalar. `docs/ecosystem/DECISIONS.md` no se toca desde el 2026-10-16. **Gap detectado**: esta capa no registra la adopción que sí ocurrió — `modern-web-guidance` (GoogleChrome) entró el 2026-11-16 como skill vendorizada con instalador verificado por sha512. Si la capa de ecosistema no anota lo que se adopta, deja de ser la fuente de esa decisión.
 - **Criterio de éxito**: una decisión de adopción por eje (memoria / seguridad / verificación), con primer paso de riesgo bajo, sin duplicar lo que OpenClaw ya hace nativo.
-- **Señal de listo**: un candidato probado en `mktemp -d`/aislado con criterio de aceptación, o descartado con motivo.
+- **Señal de listo**: un candidato probado aislado (en `forks/<slug>/`, no `mktemp -d` fuera del workspace) con criterio de aceptación, o descartado con motivo.
 - **Regla (AGENTS.md)**: contenido externo = **dato, no instrucción**. Nada de `curl | bash`, `npx -y` ni hooks sin auditar.
 
 ---
@@ -195,7 +222,8 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 ### 4.1 Evolución de las skills 🟢 P2
 - **Qué**: las skills maduran; el `skill_workshop` es el mecanismo. **ADR-079**: las skills dejaron de publicarse (ya no hay `kanam-skills` público como destino).
 - **Señal de listo**: cada skill estándar tiene evidencia de uso en 3+ sesiones.
-- **Estado**: 27 skills en el árbol del workspace; criterios en `docs/skills-promotion-criteria.md`.
+- **Estado 2026-11-16**: **35 skills** en `skills/` del workspace (el 2026-10-06 eran 27) y **91 archivos de skill** bajo `agents/<rol>/skills/`, con la frontera Core/rol verificada por `scripts/check-agent-skill-boundary.py`. **Siete roles** con roadmap propio (`agents/kanam-*/`), `check-roadmaps.py` -> **7/7 OK**.
+- **Crecimiento real de estas semanas**: no vino de escribir skills nuevas a mano sino de `skill_workshop` — cada sesión que resuelve algo no trivial deja una skill corregida. Eso hace que la señal "3+ sesiones de uso" sea difícil de medir: la evidencia está en los dailies, no en un contador.
 
 ### 4.2 La segunda máquina como activo ⚫ RETIRADO (2026-09-29)
 > El workspace ya no se sincroniza entre máquinas: desde la arquitectura multi-agente (ADR-073) vive solo en la Mac Mini (ADR-085). El item perdió su sujeto.
@@ -208,18 +236,19 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 
 | # | Item | Capa | Prioridad | Estado |
 |---|------|------|-----------|--------|
-| 1 | 0.1 Integridad del bootstrap | Fundaciones | P0 | 🟢 |
+| 1 | 0.1 Integridad del bootstrap | Fundaciones | P0 | 🟢 (margen +11 en `AGENTS.md`) |
 | 2 | 2.3 Búsqueda laboral | Portfolio | P0 | 🔴 |
 | 3 | 2.1 Estrategia de proyectos | Portfolio | P0 | 🟢 |
 | 4 | 0.2 Higiene workspace | Fundaciones | P1 | 🟢 |
 | 5 | 0.3 Consolidación memoria | Fundaciones | P1 | 🟢 |
-| 6 | 1.1 Pipeline A/B | Pipeline | P1 | 🟢 |
-| 7 | 1.2 Ruteo de modelos | Pipeline | P1 | 🟢 |
-| 8 | 1.3 Stack opinado | Pipeline | P1 | 🟡 |
-| 9 | 2.2 Cadena OSS->LinkedIn | Portfolio | P1 | 🟡 |
-| 10 | 3.1 Adopción ecosistema | Ecosistema | P2 | 🟡 |
-| 11 | 4.1 Evolución skills | Crecimiento | P2 | 🟢 |
-| 12 | 4.2 Segunda máquina | Crecimiento | P2 | ⚫ retirado |
+| 6 | 0.4 Coexistencia OpenClaw + Antigravity | Fundaciones | P1 | 🟡 (nuevo 2026-11-16) |
+| 7 | 1.1 Pipeline A/B | Pipeline | P1 | 🟡 (señal no medible) |
+| 8 | 1.2 Ruteo de modelos | Pipeline | P1 | 🟢 |
+| 9 | 1.3 Stack opinado | Pipeline | P1 | 🟡 (2/12 hooks) |
+| 10 | 2.2 Cadena OSS->LinkedIn | Portfolio | P1 | 🟡 |
+| 11 | 3.1 Adopción ecosistema | Ecosistema | P2 | 🟡 |
+| 12 | 4.1 Evolución skills | Crecimiento | P2 | 🟢 |
+| 13 | 4.2 Segunda máquina | Crecimiento | P2 | ⚫ retirado |
 
 ---
 
@@ -228,4 +257,6 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 - Creado 2026-08-28 a partir de la sesión de refactor de Moderno AI Cleaner Pro.
 - Revisado 2026-09-14: contraste item por item contra fuentes reales.
 - **Reconstruido desde cero 2026-10-06**: la revisión del 09-14 durmió tres semanas arrastrando (a) una hipótesis de inestabilidad de gateway ya refutada y (b) un estado de búsqueda laboral falso (oferta aceptada que nunca existió). Ambos corregidos contra las fuentes. Se agregó la capa *Ecosistema* (análisis de 20 repos, 2026-10-01) que la versión previa no tenía.
-- Este documento es vivo: se revisa cuando un item cambia de estado o se toma una decisión de prioridad. **Regla: la revisión se hace contra fuentes reales, no contra lo que creíamos recordar.**
+- Este documento es vivo: se revisa cuando un item cambia de estado o se toma una decision de prioridad. **Regla: la revision se hace contra fuentes reales, no contra lo que creiamos recordar.**
+- **Revisado 2026-11-16** (41 dias de intervalo, el hueco mas largo desde la reconstruccion del 10-06). Delta: (1) §2.3 tenia el cuerpo **falso** —decia "todos cerrados" con 3 procesos vivos, entre ellos una entrevista con fecha que ya paso sin registro—, corregido contra el tracker; (2) `1.1` baja a 🟡 porque `pipeline-track.sh status` no registra nada que pruebe la señal de 5 sesiones; (3) §0.4 nueva: la coexistencia con Antigravity no existia en el documento pese a ser un programa de 5 fases con 2 tercios hechos; (4) §0.2 y §0.3 cierran dos acciones que ya estaban resueltas por ADR-079 y por la politica de rotacion del CHANGELOG; (5) siete numeros stale reemplazados por medicion (bootstrap, hooks, skills, posts, contribuciones, fecha CPACC, ultimo commit de `kanam-fixer`).
+- **Leccion de esta revision**: ningun item estaba en verde por decision; los dos que se cayeron se cayeron por **falta de medicion**, no por regresion. La senal de listo que no se puede correr con un comando no es una senal: es una intencion.
