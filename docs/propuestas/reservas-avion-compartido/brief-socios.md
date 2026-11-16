@@ -2,7 +2,7 @@
 
 # Sistema de reservas del avión — propuesta para los socios
 
-**Qué se pide:** aprobar una versión mínima en prueba de 30 días, y definir quién mantiene el calendario de mantenimiento.
+**Qué se pide:** aprobar las reglas de uso y una prueba de 30 días con una versión mínima, terminada en dos semanas.
 
 ---
 
@@ -26,8 +26,17 @@ Un calendario del avión, desde el teléfono, donde cada reserva queda pedida, a
 - Un socio reserva y queda confirmado en el acto.
 - Un invitado ve los huecos y pide; un socio aprueba.
 - El mantenimiento se bloquea como una reserva y no se puede pisar.
-- Lleva el saldo de uso de cada socio: días y viajes por trimestre.
+- Lleva el saldo de uso de cada socio: reservas y días por trimestre.
 - Guarda el historial completo: quién reservó, quién aprobó, cuándo.
+
+## Las reglas que se proponen
+
+1. Los socios reservan y queda confirmado al instante. **Ninguno aprueba al otro.**
+2. Un invitado ve la disponibilidad y pide. Un socio aprueba.
+3. Si el socio no responde en **48 horas**, la solicitud vence y el lugar se libera. Mientras espera, el lugar queda retenido, para que nadie lo tome por atrás.
+4. Un invitado puede tener como máximo **dos solicitudes abiertas** a la vez.
+5. El mantenimiento lo bloquea un socio y no se puede pisar.
+6. Todo cambio queda registrado: quién, qué, cuándo.
 
 ## Qué no hace
 
@@ -39,26 +48,24 @@ Un calendario del avión, desde el teléfono, donde cada reserva queda pedida, a
 
 Un calendario compartido muestra la disponibilidad y deja anotar. Le faltan las cuatro cosas que resuelven el problema: la aprobación del invitado, el mantenimiento como bloqueo con responsable, el historial que no se puede editar, y el saldo de uso. Con un Google Calendar, el 70/30 sigue siendo invisible hasta que alguien se enoja.
 
-## Cómo se usa
+## Quién puede entrar
 
-1. Un socio entra y reserva: queda confirmado.
-2. Un invitado entra, ve los huecos y pide.
-3. El socio recibe el aviso y aprueba. Si no responde en 48 horas, la solicitud vence sola y el lugar se libera.
-4. Todos ven el mismo calendario, siempre.
+Nadie de afuera. No hay registro público: los socios dan de alta a cada invitado con un link personal, y el sistema no aparece en buscadores. Un invitado ve la disponibilidad y sus propias reservas; no ve las notas ni los destinos de los demás.
 
-## Lo que necesitamos de ustedes
+## Qué cuesta
 
-1. Un socio responsable del calendario de mantenimiento.
-2. Confirmar las reglas: sin límite entre socios, aprobación solo para invitados, 48 horas para responder.
-3. Un mes de uso real, con los invitados de siempre.
+- **El único costo fijo hoy es la infraestructura**, a nombre de la sociedad: alrededor de USD 45 por mes entre hosting y base de datos.
+- El mantenimiento y las mejoras se acuerdan aparte.
+- No hay costo por usuario ni por reserva.
 
 ## Cómo medimos si sirvió
 
 - Cero reservas cruzadas.
 - Cero consultas de disponibilidad por WhatsApp.
-- Tiempo promedio de aprobación de un invitado.
+- Tiempo promedio de aprobación de un invitado, menor a 24 horas.
+- Los dos socios entran al menos una vez por semana.
 - El saldo de uso de los dos, disponible a un clic.
 
 ## Propuesta de arranque
 
-Versión mínima: un avión, dos socios, invitados. Treinta días de prueba. Si funciona, se amplía. Si no, se apaga y no queda deuda. Condiciones a conversar.
+Versión mínima en dos semanas: un avión, dos socios, invitados. Treinta días de uso real con los invitados de siempre. Si las métricas se cumplen, se mantiene y se amplía. Si no, se apaga y no queda deuda.
