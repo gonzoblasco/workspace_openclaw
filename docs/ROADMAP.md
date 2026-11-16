@@ -189,7 +189,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 
   | Proceso | Estado real al 2026-11-16 |
   |---|---|
-  | **Infjini → Disney → HTC** (Lead SWE, USD 24/h, RTR firmado 19/10) | **CERRADO POR SILENCIO 16/11.** La entrevista prometida para la 1ra-2da semana de noviembre venció el 14/11 sin aviso ni reprogramación; último contacto humano 26/10. |
+  | **Infjini → Disney → HTC** (Lead SWE, USD 24/h, RTR firmado 19/10) | **ABIERTO — fecha sin coordinar.** La ventana era la 1ra-2da semana de noviembre; al 16/11 la entrevista todavía no se agendó. No hubo rechazo ni cierre. |
   | **Mercor / Project Odin** | **ABIERTO**, entrada por mail directo verificado (28/10). Form completo; falta cuenta en `work.mercor.com`, subir PDF y postular. |
   | **TEAM International** | **Relación abierta, posición cerrada** (Tempo cerró 26/10). Perfil en talent pool; reevalúan al mejorar el inglés. |
 
@@ -205,7 +205,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
 
   **Condición de reapertura**: cuando haya ingreso, se retoma. `docs/cpacc/` queda como está (plan de estudio, mini-doc, assessment) — no se borra, se estaciona. Registrado como todo para que no se pierda el hilo.
 - **Acciones**:
-  - [x] **Infjini/Disney: asentado el 16/11** — se cierra por silencio, no por rechazo. Era el único proceso con fecha.
+  - [x] **Infjini/Disney: estado asentado el 16/11** — abierto, fecha sin coordinar. El proceso no está muerto.
   - [ ] Mercor: completar la postulación (cuenta, PDF, Practice Interview).
   - [ ] Mantener `job-search-tracker.md` como única tabla de procesos.
   - [ ] Reactivar el volumen: 3-5 aplicaciones/día, calidad sobre volumen. Sigue sin arrancar.
