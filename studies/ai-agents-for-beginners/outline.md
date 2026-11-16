@@ -123,6 +123,8 @@ Al terminar la clase deberías poder:
 
 **Ejercicio:** reescribir cinco instrucciones negativas como positivas y medir la diferencia con 10 corridas a temperatura 0. Entregable: `m5-prompts.md` con antes/después y resultado.
 
+> **Nota de práctica (2026-11-16):** `m5-prompts.md` corrido de verdad contra `gemma4:12b-mlx` (30 generaciones, 3 por prompt en vez de 10, desvío declarado). **El resultado NO confirma la tesis del curso**: la instrucción positiva empeoró en 3 de 5 pares y la negativa nunca activó el patrón prohibido.
+
 ### Módulo 6 - Hands-On Lab: Practice Labs & First API Call (38:29 - 45:01)
 
 **Objetivo:** hacer la primera llamada real desde Python y ver la teoría en el código.
@@ -135,6 +137,8 @@ Al terminar la clase deberías poder:
 - En el lab se corre `hello_llm.py`; con temperatura 0 la historia del robot sale idéntica, con temperatura 1 cambia en cada corrida: "Same prompt. Completely different output." (00:44:15).
 
 **Ejercicio:** correr el programa dos veces con temperatura 0 y dos con temperatura 1, y anotar qué cambió y qué no. Entregable: `m6-temperatura.md`.
+
+> **Nota de práctica (2026-11-16):** `m6-temperatura.md` medido: T=0 da 1/3 salidas distintas, T=1 da 3/3. El arranque de la oración no cambia con T=1; solo el complemento. Incluye el fallo silencioso de `think`/`done_reason:length` que devuelve `response` vacío.
 
 ### Módulo 7 - Multi-Turn History, API Costs, & Trade-offs (45:01 - 51:08)
 
