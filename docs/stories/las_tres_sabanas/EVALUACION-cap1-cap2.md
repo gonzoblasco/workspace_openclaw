@@ -1,5 +1,9 @@
 # Evaluacion cruzada: capitulos 1 y 2
 
+> **Este documento cubre el PRIMER PAR.** Por decision de Gonzo (2026-11-17, ver `STYLE.md` seccion
+> "Ritmo de analisis"), el analisis de voz corre cada DOS capitulos. El proximo cae al cerrar el
+> capitulo 4, y evaluara los capitulos 3 y 4 juntos.
+
 *2026-11-17. Que hace bien cada uno, que le falta, y que se le tomo prestado al otro en las
 versiones `-edited`. Medicion con `studies/narrative-engineering/scripts/prose-metrics.py`
 contra el perfil Card (`PLANTILLA-voz-enders-game.md`).*

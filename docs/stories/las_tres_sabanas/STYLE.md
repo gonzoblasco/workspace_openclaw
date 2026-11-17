@@ -33,3 +33,26 @@
 - **Título:** Las Tres Sábanas
 - **Género:** Drama sistémico / realismo con carga familiar.
 - **Estructura:** 3 actos, 17 escenas, escaleta en `outline_las_tres_sabanas.md`. Elenco: Néstor, Adán, Vera (primos segundos).
+
+## Ritmo de analisis (decidido 2026-11-17)
+
+**El analisis de voz corre cada DOS capitulos, no cada uno.**
+
+- **Se escribe hacia adelante.** Dos capitulos seguidos sin medir y sin editar. La secuela entre
+  uno y el siguiente se protege no interrumpiendola: un capitulo editado contra un vecino que
+  todavia no existe se corrige dos veces, y la segunda correccion siempre le gana a la primera.
+- **Al cerrar el par, se mide el par.** `studies/narrative-engineering/scripts/prose-metrics.py`
+  sobre los dos textos juntos, contra el perfil Card (`PLANTILLA-voz-enders-game.md`).
+- **Lo que se compara es el par, no cada capitulo suelto.** Un capitulo puede apartarse del
+  perfil y estar bien -la escena de pelea respira distinto, el dialogo de Vera corre mas largo-
+  siempre que el par, en promedio, se mantenga cerca de la referencia.
+- **La decision de editar se toma sobre el par.** Si los dos se van del rango en la misma
+  direccion, es un problema de voz y se corrige. Si se van en direcciones opuestas, es una
+  escena haciendo su trabajo y se deja.
+
+**Rangos de referencia del par** (mediana de frase 6-8; frases <=10 palabras 60-75%; frases
+>=30 palabras <2%; pensamiento 1 a 1,4 por 100 palabras).
+
+**Estado hoy:** capitulos 1 y 2 cerrados como **primer par**, ya medidos y editados
+(`EVALUACION-cap1-cap2.md`). El siguiente analisis cae **al cerrar el capitulo 4**, con los
+capitulos 3 y 4 escritos de corrido.
