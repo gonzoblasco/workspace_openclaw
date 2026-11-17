@@ -213,6 +213,14 @@ python3 "${SCRIPT_DIR}/scripts/check-single-source.py" || exit 1
 # commitea para arreglarla despues.
 python3 "${SCRIPT_DIR}/scripts/check-cv-facts.py" || exit 1
 
+# Guard de alias de settings (2026-11-16). SIN CONDICION: el drift no nace de
+# editar una clave, nace de una sesion que "corrige" dos de las tres y deja la
+# tercera con el valor viejo. Paso dos veces el 2026-11-04 y otra vez entre el
+# 04 y el 16: `model.triple` conservo `minimax-m3.1-flash` doce dias mientras
+# ADR-107 ya declaraba deepseek. Con pathspec el gate no ve el cambio, porque la
+# DB no se versiona. Python puro (una copia de la DB): barato, corre siempre.
+python3 "${SCRIPT_DIR}/scripts/check-settings-aliases.py" || exit 1
+
 # Guard de la capa de claims (docs/claims/, 2026-11-16). SIN CONDICION, a
 # proposito: un claim puede romperse editando el archivo que es su evidencia
 # (un ADR, una clave de settings, AGENTS.md), no el claim. Con pathspec el

@@ -66,18 +66,34 @@ claims:
         path: docs/claims/README.md
         expect: "86 ingested sources, **one** entity with 4 claims"
 
-  - id: workspace.model-triple-key-is-stale
-    text: "La clave settings model.triple no es espejo de model_by_agent: declara main/defaults minimax-m3.1-flash:cloud, valor superseded por ADR-107."
+  - id: workspace.model-triple-key-was-stale
+    text: "Al 2026-11-16 la clave settings model.triple declaraba main/defaults minimax-m3.1-flash:cloud, valor superseded por ADR-107: doce dias de drift entre tres claves que debian ser el mismo dato. Corregido el mismo dia."
+    status: retracted
+    confidence: 0.9
+    updatedAt: 2026-11-16T23:55:00-03:00
+    evidence:
+      - kind: file
+        path: docs/claims/workspace.md
+        expect: "doce dias de drift"
+
+  - id: workspace.model-keys-aligned
+    text: "Las tres claves de settings model_by_agent, model_triple y model.triple declaran el mismo valor, deepseek-v4.1-flash:cloud como primario de main/defaults."
     status: active
-    confidence: 0.85
-    updatedAt: 2026-11-16T23:45:00-03:00
+    confidence: 0.95
+    updatedAt: 2026-11-16T23:55:00-03:00
     evidence:
       - kind: settings
         key: model.triple
-        expect: "main/defaults minimax-m3.1-flash:cloud"
+        expect: "main/defaults deepseek-v4.1-flash:cloud"
+      - kind: settings
+        key: model_triple
+        expect: "main/defaults deepseek-v4.1-flash:cloud"
       - kind: settings
         key: model_by_agent
         expect: "main/defaults deepseek-v4.1-flash:cloud"
+      - kind: file
+        path: scripts/check-settings-aliases.py
+        expect: "ALIAS_GROUPS"
 ---
 
 # Workspace
@@ -85,12 +101,18 @@ claims:
 Claims sobre como funciona el workspace mismo. Este archivo es el que mas cerca esta de la
 clase de bug que motivo ADR-064: "el doc dice X, el runtime hace Y".
 
-## Deuda detectada el 2026-11-16
+## Deuda cerrada el 2026-11-16
 
-`workspace.model-triple-key-is-stale` no es un claim de politica: es una **observacion**
-deliberada, con evidencia de los dos lados, para que deje de ser invisible. ADR-090 dice
-que "la misma tabla vive bajo tres claves y corregir solo las conocidas deja una copia viva
-del valor viejo". Al 2026-11-16 eso sigue pasando: `model.triple` conserva `minimax-m3.1-flash`.
+ADR-090 dice que "la misma tabla vive bajo tres claves y corregir solo las conocidas deja una
+copia viva del valor viejo". Paso dos veces el 2026-11-04, y `model.triple` volvio a quedar
+con `main/defaults minimax-m3.1-flash:cloud` mientras las otras dos decian `deepseek` desde
+ADR-107. Doce dias de drift, invisibles hasta que el claim layer lo miro.
 
-Ese claim es **activo** porque describe el estado real. Cuando se corrija la clave, el claim
-pasa a `retracted` y se agrega uno nuevo que diga que las tres claves coinciden.
+Cerrado con `scripts/check-settings-aliases.py`: declara el grupo de alias, `--fix` copia el
+canonico (`model_by_agent`, la clave que lee el bloque de AGENTS.md) en los demas, y el
+pre-commit lo corre siempre. `workspace.model-triple-key-was-stale` queda `retracted` como
+historia; `workspace.model-keys-aligned` dice el estado de hoy.
+
+Lo correcto a futuro es **no** tener tres claves - el script hace visible la copia, no la
+elimina. Borrar `model.triple` y `model_triple` y dejar solo `model_by_agent` es la decision
+que falta, y toca el esquema de `settings`, no un valor.
