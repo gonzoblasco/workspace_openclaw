@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-17] - La skill del vault quedó con dos cuerpos y nada lo dijo
+
+### Fixed
+- **`memory-wiki-vault` tenía el cuerpo nuevo Y el viejo pegados: 87 líneas, dos `## Decision rules` y dos `## Related`.** El rewrite automático del skill review insertó el procedimiento nuevo arriba y dejó el viejo abajo, sin cerrar. Un agente que la leyera recibía dos procedimientos contradictorios a la vez: uno con el repo como default y otro que mandaba a habilitar el plugin y ingestar. Quedó en 49 líneas, un solo cuerpo.
+- **Referencia muerta en `Related`.** Decía `memory-wiki-workflow` "en el workspace"; esa skill vive en `agents/kanam-mind/skills/` desde la reorganización por rol. Ahora el path es explícito y avisa que si la skill da el vault por activo sigue siendo deuda.
+- **La regla del paso 9 estaba al revés.** Decía "dejar la deuda visible como claim" sin distinguir el caso del valor duplicado, que es exactamente el que el 2026-11-17 demostró al revés: alinear tres claves las mantiene vivas y el siguiente `set` las vuelve a desincronizar. Ahora separa **contradicción** (decisión pendiente, se reporta al owner) de **duplicado** (defecto, se retira la copia). Misma distinción agregada a `Decision rules`.
+- **`agents/kanam-mind/skills/memory-wiki-workflow`** alineada: el vault pasa a ser fallback documentado y el camino default apunta a `docs/claims/`. La descripción dejó de prometer el plugin como capa analítica vigente.
+
+### Added
+- **`scripts/check-skill-integrity.py`** — el gate que habría cazado esto. Verifica frontmatter único y cerrado, `name:` igual al directorio, `description:` presente, y **headings de nivel 2 duplicados** (la firma de dos cuerpos pegados). Ignora `.archive/`, donde cada versión vive en una carpeta con timestamp y comparar `name:` contra el directorio es ruido puro (425 falsos positivos el primer intento). Cableado al pre-commit como **aviso, no bloqueo**: una skill es documentación, y un gate que bloquea por prosa enseña `--no-verify`. Verificado en negativo con dos sondas (cuerpo duplicado y frontmatter sin `name:`) — las dos fallaron con el número de línea.
+
+### Notes
+- 87 skills revisadas en los árboles de agente: 0 findings, 0 warnings tras el arreglo.
+- El gate anterior (`check-claims.py`) no podía ver este defecto: valida datos, no la integridad del documento que los prescribe.
+
+---
+
 ## [2026-11-17] - Una sola clave para la asignacion de modelos
 
 ### Removed

@@ -1,13 +1,25 @@
 ---
 name: "memory-wiki-workflow"
-description: "Capa analítica de memoria con memory-wiki: entities con claims (la ingesta sola no alcanza), dashboards y síntesis."
+description: "Capa analítica sobre la memoria: claims con evidencia en docs/claims/ (default, con scripts/check-claims.py) o el vault memory-wiki como fallback si el owner lo pide; entities, dashboards y síntesis."
 ---
 
 # Memory Wiki Workflow
 
-Flujo para usar `memory-wiki` como capa analítica y navegable sobre la memoria del workspace, sin reemplazar la fuente de verdad existente.
+Capa analítica y navegable sobre la memoria del workspace, sin reemplazar la fuente de verdad existente.
+
+> **Estado al 2026-11-17: el vehículo default es el repo, no el vault.** El vault `memory-wiki`
+> se retiró como capa analítica del workspace: los detectores funcionaban (verificados en
+> negativo), pero en dos meses quedó con 86 fuentes y **una** entity con 4 claims, porque
+> redactar claims a mano para un vault fuera de git es un costo que nadie paga. La idea se
+> conservó en `docs/claims/` + `scripts/check-claims.py`, versionada y con gate. Este archivo
+> documenta el vault para el caso en que el owner lo pida, y sigue siendo la referencia de
+> **cómo** se escriben entities y claims cuando haga falta.
 
 ## Cuándo usar
+
+**Primero, el camino default:** si lo que querés es que algo detecte contradicciones entre lo
+documentado y el estado real, no necesitás el vault. Ver `docs/claims/README.md` y
+`scripts/check-claims.py` en el workspace, y la skill `memory-wiki-vault` paso a paso.
 
 - Querés ver datos estructurados del workspace (OSS tracker, todos, inbox, daily) como un **wiki navegable** con entities, claims y dashboards.
 - Querés que la memoria "se consolide sola": detectar contradicciones, páginas stale, claims sin evidencia.
