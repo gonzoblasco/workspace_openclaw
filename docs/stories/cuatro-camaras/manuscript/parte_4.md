@@ -1,4 +1,4 @@
-# Cuatro cámaras — Parte IV: Los once meses
+# Cuatro cámaras — Parte IV: Los ocho meses
 
 *POV: Emilio, tercera limitada. Diciembre de 2022 a mayo de 2023.*
 
@@ -336,11 +336,11 @@ La primera decía la fecha de la denuncia. La segunda decía que la denuncia era
 
 Emilio cerró el mail y miró la planilla, que estaba abierta en otra pestaña.
 
-La planilla tenía veintidós filas.
+La planilla tenía dieciocho filas.
 
-Veintidós sábados, de septiembre a mayo. Veintidós filas con fecha, hora de retiro, hora de devolución y observaciones.
+Dieciocho sábados, de septiembre a mayo. Dieciocho filas con fecha, hora de retiro, hora de devolución y observaciones.
 
-En las veintidós no faltaba una sola palabra.
+En las dieciocho no faltaba una sola palabra.
 
 ---
 

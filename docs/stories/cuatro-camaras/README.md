@@ -164,6 +164,37 @@ veces; escribir desde el material acerto dos de dos.
 31+ de 7% a 9%. No es descuido: a medida que crece la burocracia en la historia, crecen las
 frases. **Vigilar en la Parte III si sigue subiendo.**
 
+## Estado final
+
+**Las seis partes estan escritas.** 11.023 palabras.
+
+| Parte | Mediana (narracion) | Bandas |
+|---|---|---|
+| I - La ultima vez | 9 | 31/47/15/7 |
+| II - La lapicera | 9 | 32/36/23/8 |
+| III - Cuatro camaras | 8 | 38/42/17/3 |
+| IV - Los ocho meses | 8 | 35/45/14/6 |
+| V - El dia que se vencia | 8 | 36/39/19/6 |
+| VI - La lista | **7** | 48/38/10/3 |
+
+**El ritmo se acorta a medida que la historia se cierra.** De 9 a 7. No es una decision de
+estilo: es lo que hace el material. Cuando Emilio deja de esperar y empieza a actuar, las frases
+se acortan solas.
+
+### Correccion de coherencia (antes de cerrar)
+
+Los numeros del original no cerraban con "un fin de semana por medio":
+
+- **Once meses → ocho.** De septiembre 2022 a mayo 2023 son 8,1 meses.
+- **Veintidos sabados → dieciocho.** A razon de uno cada catorce dias, en ese periodo hay 18.
+- **Faltaba la tercera camara** en la lista final (la apelacion de septiembre 2022, que confirma
+  el archivo). Agregada.
+- **La lista ahora tiene 24 lineas** y el texto lo dice dos veces.
+
+Es el tipo de error que no se ve leyendo pero si al contar. Y es el mismo que el de las fechas de
+la denuncia en la Parte III: **el relato se sostiene sobre numeros que tienen que cerrar entre si.**
+
 ## Pendiente
 
-Partes III a VI.
+- La segunda parte del libro (anunciada al final, no escrita).
+- Revision de lectura completa, de corrido.
