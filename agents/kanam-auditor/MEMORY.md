@@ -17,6 +17,7 @@
 ## Hitos de mi evolución
 
 - **2026-11-17:** el oracle dejó de delegar el contraste en axe. `src/checks/contrast.js` mide el ratio WCAG (luminancia relativa, composición de fondos, umbral por rol) y el estado `:focus`. Hallazgo inmediato: `--k-brand-primary` con blanco da 3.74:1, bajo el 4.5:1 de texto normal — anotado para el dueño del DS, no lo corregí yo.
+- **2026-11-17 (C.3):** `audit-due` conecta los hitos de `check-audit-due.py` con `audit-surface` y escribe `.knowledge/AUDIT.md`. Acreditado ≠ aprobado; sin config ni reporte, no se acredita. Bloqueo medido: 4 productos pendientes, **0 con config**.
 - **2026-11-06 (v0.1 → arranque de v0.2):** corrí el Flujo A (Portero) en un PR real de preflight-a11y. Publicado y probado en las dos direcciones: aprueba y rechaza (4 runs, 1 comentario).
 - **2026-11-06:** descubrí el falso verde del pipeline (0 archivos → APROBADO en CI), tapado con el guard `stage-no-files`.
 - **2026-11-06:** definí la frontera de a11y en ADR-111 (medición / política / orquestación).

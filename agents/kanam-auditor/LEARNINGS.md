@@ -46,6 +46,13 @@ Formato:
 - **Evidencia:** 7 warnings (`#f3f4f6`, `#3b82f6`, etc.) → 0 tras whitelist con motivo.
 - **Efecto:** `kernel` mantiene invariantes: self-audit sin la propia base.
 
+## L-016 · 2026-11-17 · frío (necesidad vs corrección)
+
+- **Origen:** Después de cerrar C.3 propuse implementar JUnit porque era la única casilla sin tildar de 1.2. Al preguntarme si era necesario, verifiqué: no hay runner ni parser que lea JUnit, y `surface-audit.yml` corre solo el stage estático. Lo único que contenía la palabra era el ejemplo que yo mismo había escrito en octubre.
+- **Lección:** Una casilla vacía en una lista no es una razón para construir. Antes de proponer el ítem siguiente, nombrar el consumidor concreto; si no existe, el ítem se rechaza y se escribe por qué, no se agenda.
+- **Evidencia:** `ROADMAP.md` §"Lo que rechacé" (fila JUnit, 2026-11-17); `.github/workflows/surface-audit.yml:67` (`--only design-system-enforcer`).
+- **Efecto:** JUnit queda rechazado con criterio de reingreso ("cuando exista un CI que corra el oracle"). El próximo paso pasa a ser el bloqueo real: una config de pipeline por producto.
+
 ## L-015 · 2026-11-17 · frío (C.3 cerrado)
 
 - **Origen:** Enganchar `check-audit-due.py` al pipeline. El script leía `**Version auditada:**` y `**Fecha:**` de un `AUDIT.md` que nadie escribía: un lector sin escritor desde el 4-nov.

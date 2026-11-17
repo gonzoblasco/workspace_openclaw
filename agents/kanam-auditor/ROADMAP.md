@@ -361,6 +361,21 @@ Hitos que evalué y **no** entraron. Un roadmap sin rechazos es una lista de com
 | **Métricas de tendencia y sugerencias proactivas (Fase 5) ahora** | Dependen de un historial de veredictos que todavía no existe. Sin datos, la "inteligencia" sería una corazonada bien redactada. |
 | **Marcar v0.2-v0.4 por optimismo** | El número se gana con la señal de listo cumplida y evidencia, no se edita. Saltar de número sin poder probarlo es usar el roadmap como foto. |
 | **Usar el roadmap como backlog de tareas** | Lo concreto y fechado vive en `memory/memory.db`; acá va el estado de madurez, no la lista de tareas del sprint. |
+| **Reporte JUnit en el oracle (2026-11-17)** | Verificado: la única aparición de "junit" en el repo es el ejemplo que yo mismo escribí en octubre; no hay runner ni parser que lo consuma, y `surface-audit.yml` corre **solo** el stage estático (`--only design-system-enforcer`) porque el runner no tiene app levantada. Un formato para un consumidor inexistente es corrección, no necesidad. Entra cuando exista un CI que corra el oracle. |
+
+### Bloqueo medido (2026-11-17) — el gate no tiene a quién auditar
+
+`audit-due` lista 4 proyectos con auditoría pendiente y **ninguno tiene config**:
+
+```
+caesar3-clone (sin versión) · platformer-tiempo (sin versión)
+preflight (0.1)            · reinos-de-la-frontera (sin versión)
+→ todos: no-config
+```
+
+El puente funciona y no acredita lo que no corre. Lo que falta no es código: es que cada
+producto declare su `.kanam/pipeline.config.yaml`. Sin eso, cualquier ítem del roadmap que
+mejore el gate es infraestructura para nadie. **Próximo paso real: una config por producto.**
 
 ---
 

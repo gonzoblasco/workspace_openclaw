@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-17 10:20 GMT-3
+**Fecha:** 2026-11-17 19:44 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-17 19:44
+Auditoría de superficie del agente kanam-auditor: dos ítems de roadmap cerrados con evidencia. (1) El oracle dejó de delegar el contraste en axe: src/checks/contrast.js mide el ratio WCAG real (luminancia relativa, composición de fondos con alpha, umbral 4.5/3 por rol, opacidad) y el estado :focus; hallazgo inmediato --k-brand-primary con blanco da 3.74:1 (bajo 4.5:1 AA), anotado para el dueño del DS. De paso se corrigió un stall de 30s del check de teclado (clickeaba modales display:none): la corrida pasó de ~33s a 2.7s. (2) C.3 cerrado: surface-pipeline/bin/audit-due conecta check-audit-due.py con audit-surface y escribe .knowledge/AUDIT.md; reglas: sin config no hay auditoría, sin report.json no se acredita, un RECHAZADO sí se escribe (acreditado != aprobado). Verificado en las dos direcciones con un proyecto descartable (con config -> AL DIA leído de vuelta por el script; sin config -> no-config, exit 1, sin AUDIT.md). Tests 60/60. Commits 633b8fd2c5 y 7969abc97f.
 
 ### 2026-11-17 10:20
 Sesion de auditoria de contexto de una conversacion vieja de Medallia (1/10) y su estado real al 17/11. Pregunta de Gonzo: si habia motivo para dejar archivada la conversacion o si podia borrarla. Verificado contra el repo y no contra memoria: (1) la conversacion produjo el kit de prep en docs/entrevistas/medallia/medallia-2026-10-01.md, que sigue vivo e indexado en el README de entrevistas; (2) la entrevista ocurrio el 19/10 (no el 1/10) y en esa call Gonzo entro sin saber que Brighthire era la grabadora, no la empresa; (3) CORRECCION PROPIA: en un mensaje intermedio afirme que Medallia era el cliente de Infjini. Es falso: el cliente de Infjini es Disney. Medallia fue un proceso aparte que cerro su etapa de entrevista. (4) El proceso Infjini/Disney: commit 7418097178 (16/11 15:44) lo cerro por silencio y gonzo lo revirtio en f379bb1cf0 (16/11 15:48) con la regla 'no dije nunca hubo noticias, digo que aun no coordinamos'. Estado vigente: ABIERTO - fecha sin coordinar, ultimo contacto humano con Siraj el 26/10 (21 dias). (5) Sin automatizacion ni cron atado a la sesion (16 jobs revisados): borrar el chat no pierde nada. Gonzo respondio 'cerrado... guardar' sobre el proceso. NO se edito el tracker: queda como decision suya si marcarlo sin actividad desde 26/10, porque la vista diaria no lo registra y ya se intento cerrarlo una vez en falso.
@@ -23,10 +26,11 @@ Arranque: Gonzo pregunto que hace la skill memory-wiki-vault, la menos usada y n
 ### 2026-11-16 10:49
 Descubrimiento y armado de un producto de reservas para una aeronave compartida por dos socios (Romero y Federico). El planteo inicial del cliente (Excel compartido, Google Sheets) se reviso contra seis puntos debiles: no es un slot de calendario sino un residual operativo; Sheets falla por integridad y no por privacidad; Calendly no modela un recurso compartido; falta politica de prioridad; el uso personal es registro fiscal; y probablemente ya existe un sistema de operaciones detras. Se cerro el modelo: activo compartido, dos socios que reservan con confirmacion inmediata y sin aprobacion mutua, invitados que piden y requieren aprobacion de un socio, solicitud que retiene el lugar 48 horas y vence sola, tope de dos solicitudes abiertas por invitado, mantenimiento como reserva (kind mantenimiento) con responsable, e historial inmutable con saldo de uso por socio. Tres artefactos escritos en docs/propuestas/reservas-avion-compartido/: brief-socios.md (documento para que los socios aprueben, sin precio y sin proveedor a la vista), spec-tecnico.md y plan-piloto.md. Descartados: Google Sheets, Google Calendar, Calendly y Cal.com/cal.diy (edicion comunitaria, no produccion). Booked Scheduler queda como plan B para un piloto express; se verifico en su documentacion que soporta recursos, permisos, aprobacion con estado pendiente y bloqueos. Decision tecnica: Next.js con Supabase, permisos en la base con RLS, y el no-solapamiento garantizado por una restriccion de exclusion de Postgres sobre el rango de fechas. Modelo comercial: producto enlatado, un deploy por cliente, piloto sin costo en free tiers con transferencia de titularidad al dia 30. Tambien se limpio docs/voz-gonzo.md: se elimino la regla 8 tachada y se comprimio la 13 a la decision, y se registro el caso del 2026-11-16 con la edicion real del mensaje.
 
-### 2026-11-16 00:13
-Estudio y validación del plan de migración KanamOS OpenClaw -> Gemini/Antigravity (programa_adaptacion_openclaw_a_gemini.md + log completo de la sesión en Antigravity). Verificado en disco: tag checkpoint-pre-gemini, rama backup/openclaw-pre-gemini, 3 reglas en ~/.agents/rules/ (identity, user, operations), 11 symlinks Tier 1 en ~/.agents/skills/ + skills.json con 7 paths de roles, roster.json con los 7 subagentes, memory.db conectado. El ciclo adversarial del critic fue real: VETO 13/25 -> correcciones -> APROBADO 23/25. Gates de integridad en verde.
-
 ## Estado actual
+
+v0.1. Cuatro skills ejecutables reales + surface-alignment-audit procedimental. Suites 60/60. audit-surface corre y emite report.html+json.
+
+### Estado previo (heredado)
 
 Conversacion de Medallia auditada y declarada borrable sin perdida (kit ya esta en repo, sin cron atado). Infjini/Disney: ABIERTO - fecha sin coordinar, sin contacto humano desde 26/10. Gonzo lo declaro 'cerrado' verbalmente; el tracker lo tiene abierto por su propio revert del 16/11. Tracker sin editar: falta decision explicita sobre marcarlo con nota de inactividad.
 
@@ -87,6 +91,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1) Una .kanam/pipeline.config.yaml por producto: es el bloqueo real (4 pendientes, 0 con config), sin eso el gate no audita nada. 2) Auth en el oracle (requires_auth). 3) Baselines por producto (C.2). 4) JUnit queda RECHAZADO hasta que exista un CI que corra el oracle.
+
+### Pendientes heredados (sin cambios)
 
 1) Decidir con Gonzo si Infjini/Disney se marca 'sin actividad desde 26/10, ventana vencida, sigue solo si Siraj escribe' en docs/entrevistas/_general/job-search-tracker.md; 2) Borrar esta conversacion (sin perdida); 3) El gap real del proceso es ingles hablado: el plan del CUI hasta el 22/12 sigue, con o sin Disney.
 
@@ -190,6 +198,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- JUnit no se implementa: no hay consumidor (surface-audit.yml corre solo el stage estático; la única mención de junit era un ejemplo escrito por mí en octubre). Una casilla vacía no es razón para construir. El token brand-primary/blanco es decisión del dueño del DS, no mía.
+
+### Heredadas (sin cambios)
+
 - Un proceso con ventana prometida vencida y 21 dias de silencio NO se cierra automaticamente: el 16/11 ya se cerro por silencio y Gonzo lo revirtio en 4 minutos. La distincion que vale es 'sin noticias' (no hay respuesta) vs 'aun no coordinamos' (depende de coordinar). Cerrar un proceso es de Gonzo, no de la regla de 10 dias. Ademas: nunca inferir el cliente de un bench (Infojini -> Disney, no Medallia) sin fuente; Brighthire es la grabadora, no la empresa contratante.
 
 ### Heredadas (sin cambios)
@@ -237,6 +249,9 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 ## Archivos tocados
 
 ```
+agents/kanam-auditor/LEARNINGS.md
+agents/kanam-auditor/MEMORY.md
+agents/kanam-auditor/ROADMAP.md
 memory/2026-11-17.md
 memory/devto/2026-W47.md
 memory/memory.db
