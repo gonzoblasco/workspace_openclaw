@@ -209,6 +209,16 @@ los mecanismos de Fase 0 se corrigen**, porque tres de ellos recreaban el bug qu
    GitHub renderiza el perfil con JS y el `curl` no prueba nada.
 4. **Gate 0:** el `blog` guardado coincide con la URL publicada, y esa URL responde 200.
 
+### 6.2.1 Estado al 2026-11-17
+
+- **Hecho:** repo público `gonzoblasco/a11y-portfolio` creado, sitio publicado, Pages activo.
+  `https://gonzoblasco.github.io/a11y-portfolio/` responde **200** y la pieza larga también
+  (`/writing/the-quieter-announcement.html`, 200). El campo `blog` del perfil ya apuntaba a esa URL,
+  así que **no hay que tocarlo**: el 404 se cerró publicando en el destino que ya estaba escrito.
+- **Pendiente:** el texto de la `bio` todavía dice "Contribuciones a Facebook, shadcn/ui, Radix UI,
+  IBM Carbon". Hay que reemplazarlo, y no se puede por API: el token de `gh` no tiene el scope
+  `user`. Se hace en Settings o con `gh auth refresh -s user`.
+
 ### 6.3 Sesiones y gates
 
 | Sesión | Entregable | Gate |
