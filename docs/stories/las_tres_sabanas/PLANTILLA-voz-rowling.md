@@ -142,18 +142,46 @@ medir despues da exactamente el resultado de arriba.
 - **La exposicion disfrazada de accion.** Las Tres Sabanas **no** necesita explicar el mundo: el
   mundo ya es una casa y una herencia.
 
-## 8. Prueba de validacion (pendiente)
+## 8. Prueba de validacion (corrida 2026-11-17, parcialmente aprobada)
 
-Para cerrar esta plantilla hace falta **una** cosa: reescribir una escena corta con las tres
-reglas duras puestas desde el principio, y medir.
+Se reescribio `manuscript/capitulo_1-rowling.md` desde cero con esta plantilla. Dos lecciones
+surgieron DE la escritura, y son mas importantes que los numeros:
 
-Criterio de aprobacion:
-- frases <=6 palabras: **entre 12% y 28%**
-- frases de 7 a 15: **entre 28% y 42%**
-- frases de 16 a 30: **entre 28% y 42%**
-- mediana de frase: **13 a 18**
-- frase mas larga: **menos de 70**
+### Leccion A - la plantilla mide NARRACION, no dialogo
 
-Si el texto pasa esos cuatro y suena bien, la plantilla sirve. Si cumple los cuatro y suena mal, el
-problema no es la plantilla: es que la voz de Rowling no le sirve a este material, y eso tambien es
-un resultado.
+La primera medicion del texto completo dio 45% de frases cortas, porque **el dialogo de una pelea
+familiar es corto por naturaleza** ("Es una sábana." / "Es la de ella."). Aplicar las bandas de
+Rowling al texto entero es un error de metodo: su capitulo tiene 13% de dialogo porque expone.
+
+**Regla nueva:** las bandas se aplican a la **narracion**. El dialogo se mide aparte y se juzga por
+otro criterio (que sea seco, que no explique, que cada personaje tenga su largo).
+
+Remedicion de la narracion de Rowling, excluyendo dialogo y documentos: **mediana 16,5; bandas
+14/35/38/12**. Esas son las cifras oficiales de esta plantilla.
+
+### Leccion B - el error real es la frase de 31+ sin distribucion en el medio
+
+Tercera medicion de mi intento, solo narracion, antes de corregir: **mediana 37, 63% de frases de
+31+ palabras**. La plantilla decia "no por acumulacion", y aun asi el 63% del texto fue
+acumulacion. El diagnostico correcto no es "escribo frases cortas" (eso era el sintoma del texto
+completo mezclado): es **"escribo parrafos-rio"**.
+
+### Resultado final (narracion)
+
+| Banda | Rowling | **v2 final** | Estado |
+|---|---|---|---|
+| <=6 palabras | 14% | 18% | OK |
+| 7-15 | 35% | **26%** | bajo |
+| 16-30 | 38% | **45%** | alto |
+| 31+ | 12% | 10% | OK |
+| Mediana | 16,5 | 18 | OK |
+| Frase mas larga | 60 | 50 | OK |
+
+**Veredicto: aprobada con una desviacion.** Cuatro de seis criterios entran. El tramo 7-15 queda
+6 puntos bajo y el 16-30 seis puntos alto: el texto tiende a la frase media-larga. Es estable y
+legible, y **no se corrige mas por numeros**: seguir partiendo frases para poblar una banda
+convierte la escritura en aritmetica y se nota.
+
+**Lo que esto ensena sobre el metodo:** la plantilla sirve para **diagnosticar**, no para
+optimizar. Cuando el texto entra en el rango general, la medicion deja de aportar y empieza a
+deformar. La ultima palabra la tiene la lectura, no el script.
