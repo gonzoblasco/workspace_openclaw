@@ -33,7 +33,7 @@ role_freelance: 05/2025 - Present
 role_ey: 09/2021 - 05/2025
 role_super7: 08/2020 - 05/2021
 role_minutentag: 02/2016 - 11/2019
-oss_merged: 11
+oss_merged: 12
 pending: 0
 ```
 
@@ -323,7 +323,7 @@ costo es la credibilidad completa.
 
 ## 5. Contribuciones open source
 
-### 5.1 PRs propios mergeados (11)
+### 5.1 PRs propios mergeados (12)
 
 | Repo | PR | Qué resolvió |
 |---|---|---|
@@ -338,6 +338,7 @@ costo es la credibilidad completa.
 | facebook/astryx | #5493 | `TreeList` reenvía `aria-label`/`aria-labelledby` al `<ul role=tree>`; un tree sin header no podía nombrarse |
 | mui/base-ui | #5551 | `aria-orientation` movido a los dueños del rol; el rol grid no lo soporta |
 | mui/material-ui | #49003 | Links focusables en slides ocultos del carrusel; WCAG 4.1.2 `aria-hidden-focus` |
+| shadcn-ui/ui | #11465 | Drain del tail spacer liberado tras scroll manual durante un stream anclado (mergeado 2026-11-02, `4aaea19`) |
 
 ### 5.2 Colaboración sin merge propio (valor real, sin autoría)
 
@@ -387,7 +388,7 @@ No son fracasos ocultos: son el registro de criterio.
 
 ### 5.4 En curso
 
-PRs abiertos o esperando review en react-spectrum, shadcn/ui, vercel/ai, TanStack/router,
+PRs abiertos o esperando review en react-spectrum, vercel/ai, TanStack/router,
 docusaurus, create-t3-app y otros. **Nunca contarlos como mergeados.**
 
 ---
