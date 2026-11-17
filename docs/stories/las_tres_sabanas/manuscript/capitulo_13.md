@@ -102,17 +102,37 @@ Vera escribió el número y lo subrayó dos veces.
 
 — Entonces, si vende la casa: paga el préstamo, y quedan veintiséis y medio.
 
-— Para dos.
+— Para los tres.
 
-— Para dos. Trece y cuarto cada uno.
+— Para los tres. Doce y ocho cada uno.
+
+---
+
+Vera escribió los números en una columna y los sumó con el dedo.
+
+— Y a él le sacan los doce de su parte. Le quedan ochocientos mil.
+
+— Ochocientos.
+
+— Ochocientos mil pesos después de treinta años viviendo ahí.
 
 ---
 
 Se quedó con la birome en el aire.
 
-— ¿Y él?
+— Y él firmó que renuncia a todo eso.
 
-— Nada.
+— Sí.
+
+— O sea que le estamos sacando ochocientos mil pesos.
+
+— Nos los está dando.
+
+— Nadie da ochocientos mil pesos.
+
+---
+
+Vera dejó la birome sobre la mesa.
 
 — ¿Y la deuda?
 

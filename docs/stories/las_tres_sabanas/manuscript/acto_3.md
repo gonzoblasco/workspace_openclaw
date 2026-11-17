@@ -44,7 +44,7 @@ Adentro, un contrato.
 
 Adán lo leyó dos veces, y la segunda vez lo leyó más despacio, con el dedo en el renglón.
 
-Era un préstamo con garantía, y la garantía era un tercio indiviso sobre el inmueble de calle Sarmiento al 400.
+Era un préstamo con garantía, y la garantía era un tercio indiviso sobre el inmueble de calle Salta al 400.
 
 El que firmaba era Néstor Quiroga.
 
@@ -106,7 +106,7 @@ Marcó el número del escribano.
 
 — ¿De parte de quién?
 
-— Adán Quiroga. Por la sucesión de Sarmiento al 400.
+— Adán Vergara. Por la sucesión de Salta al 400.
 
 ---
 
@@ -448,17 +448,37 @@ Vera escribió el número y lo subrayó dos veces.
 
 — Entonces, si vende la casa: paga el préstamo, y quedan veintiséis y medio.
 
-— Para dos.
+— Para los tres.
 
-— Para dos. Trece y cuarto cada uno.
+— Para los tres. Doce y ocho cada uno.
+
+---
+
+Vera escribió los números en una columna y los sumó con el dedo.
+
+— Y a él le sacan los doce de su parte. Le quedan ochocientos mil.
+
+— Ochocientos.
+
+— Ochocientos mil pesos después de treinta años viviendo ahí.
 
 ---
 
 Se quedó con la birome en el aire.
 
-— ¿Y él?
+— Y él firmó que renuncia a todo eso.
 
-— Nada.
+— Sí.
+
+— O sea que le estamos sacando ochocientos mil pesos.
+
+— Nos los está dando.
+
+— Nadie da ochocientos mil pesos.
+
+---
+
+Vera dejó la birome sobre la mesa.
 
 — ¿Y la deuda?
 
@@ -1368,7 +1388,7 @@ Estaba húmeda por un borde, por donde había tocado el agua del piso.
 
 ---
 
-La llevó al comedor y la puso sobre la mesa. La había devuelto en octubre, cuando empezaron los papeles: la trajo en una bolsa, la dejó sobre la cama y no la volvió a tocar hasta esa noche.
+La llevó al comedor y la puso sobre la mesa. Vera la había devuelto en agosto: la dejó sobre la cama, doblada, y no volvió a tocarla hasta esa noche.
 
 — ¿Qué hacés? —dijo Néstor.
 
@@ -1414,7 +1434,7 @@ No dijo nada durante un rato largo.
 
 ---
 
-— Era la de ella —dijo por fin.
+— Era la de él —dijo por fin.
 
 — Sí —dijo Adán.
 
@@ -1458,7 +1478,7 @@ Un pedazo tenía la costura. El otro tenía el remiendo.
 
 *Se rompió.*
 
-*La que cosió la abuela se rompió en mis manos y no fue por un tirón: fue por vieja.*
+*La que cosió la abuela se rompió esta noche, delante de los tres, y no fue por un tirón: fue por vieja.*
 
 ---
 
@@ -1524,7 +1544,7 @@ Era un hombre de la edad de Adán, con camisa azul y un anillo en la mano derech
 
 Adán se sentó y puso las manos sobre las rodillas.
 
-— Vengo por la casa de Sarmiento al 400.
+— Vengo por la casa de Salta al 400.
 
 Basterra lo miró un segundo.
 
@@ -2162,7 +2182,7 @@ Vera se quedó con la mano sobre el pedazo de la costura.
 
 Después se dio vuelta y salió al patio.
 
-Adán la oyó encender un cigarrillo, que era algo que ella ya no hacía.
+Adán la oyó encender un cigarrillo, y pensó que hacía meses que no la veía fumar.
 
 ---
 
@@ -2172,7 +2192,7 @@ Adán la oyó encender un cigarrillo, que era algo que ella ya no hacía.
 
 ## 16. La sábana distinta
 
-Néstor firmó el viernes a las once de la mañana y no dijo una palabra en todo el trámite.
+Néstor firmó el nueve de enero a las once de la mañana y no dijo una palabra en todo el trámite.
 
 El escribano le explicó la revocación, después la venta, después la cancelación de la hipoteca.
 
@@ -2256,7 +2276,7 @@ A la tarde los dos estaban sentados en el piso del comedor, entre cajas abiertas
 
 — ¿A dónde?
 
-— A una pieza en lo de un hombre de la calle Salta. Por el taller.
+— A una pieza en lo de un hombre de la calle Urquiza. Por el taller.
 
 ---
 
@@ -2316,9 +2336,9 @@ Después fue a la cocina y volvió con los dos pedazos de la sábana.
 
 Los puso sobre la mesa del comedor, uno al lado del otro.
 
-El pedazo de la costura medía un metro y medio, más o menos. El otro, un poco menos.
+El pedazo de la costura era una tira de dos metros de largo y setenta de ancho. El otro, un poco menos.
 
-Juntos eran la sábana de Elvira, y ninguno de los dos servía para una cama.
+Juntos eran la sábana de Adán, la que Elvira había remendado tres veces, y ninguno de los dos pedazos servía para una cama.
 
 ---
 
@@ -2388,7 +2408,7 @@ Adán se sentó en la otra silla.
 
 — Vera, es una sábana rota.
 
-— Es la sábana de la abuela.
+— Es la sábana de Adán. La cosió la abuela.
 
 — Rota.
 
@@ -2478,7 +2498,7 @@ Néstor dejó la caja en el piso.
 
 — Es un trapo.
 
-— Es la sábana de Elvira. La corté en tres.
+— Es la sábana de Adán. La corté en tres.
 
 ---
 
@@ -2536,7 +2556,7 @@ El 14 de julio Néstor cerró el taller a las siete y manejó hasta la casa de V
 
 Hacía un año que la casa no existía.
 
-En el terreno de Sarmiento al 400 había un edificio de tres pisos, con balcones de vidrio y un cartel de *se vende* en el segundo, y en la planta baja funcionaba una veterinaria.
+En el terreno de Salta al 400 había un edificio de tres pisos, con balcones de vidrio y un cartel de *se vende* en el segundo, y en la planta baja funcionaba una veterinaria.
 
 ---
 
@@ -2666,7 +2686,7 @@ Adán no se corrió.
 
 A las once Néstor se ofreció a llevarlo.
 
-Adán vivía a nueve cuadras, en la calle Salta, en una pieza al fondo de una casa que había sido de una familia y ahora era de cuatro.
+Adán vivía a nueve cuadras, en la calle Urquiza, en una pieza al fondo de una casa que había sido de una familia y ahora era de cuatro.
 
 Fueron caminando, despacio, por la vereda de la sombra.
 
@@ -2726,7 +2746,7 @@ Se rieron los dos, un poco, sin ganas.
 
 ---
 
-Llegaron a la casa de la calle Salta.
+Llegaron a la casa de la calle Urquiza.
 
 Había una luz prendida en la pieza del fondo y la puerta de chapa estaba abierta.
 
@@ -2806,7 +2826,7 @@ Y adentro, doblada en cuatro, la tela con la costura verde.
 
 Néstor la puso sobre el mostrador y la abrió con las dos manos.
 
-Un metro y medio de tela blanca, con un dobladillo chico y desparejo, y el hilo verde en el borde.
+Dos metros de tela blanca, de setenta de ancho, con un dobladillo chico y desparejo, y el hilo verde en el borde.
 
 ---
 

@@ -2,12 +2,7 @@
 
 ---
 
-## 1. La sabana tendida
-
-*Versión definitiva. Fusión de las tres que funcionaron: el peso de la versión Katzenbach, el
-ritmo de la Card y la textura de la Rowling. POV: Néstor.*
-
----
+## 1. La sábana tendida
 
 La llave pesaba más que ninguna otra llave.
 
@@ -186,10 +181,6 @@ Y no dijo nada.
 ---
 
 ## 2. El precio silencioso
-
-*POV rotativo: Néstor, Adán, Vera. Tres viñetas en paralelo, la misma semana de julio.*
-
----
 
 ### Néstor
 
@@ -819,7 +810,7 @@ El sábado a la mañana, cuando llegó a la casa, había dos autos en la puerta:
 
 ---
 
-## 4. La contencion
+## 4. La contención
 
 Vera llegó a las diez y cuarto y estacionó mal.
 
@@ -1027,7 +1018,7 @@ Adán se quedó mirando el piso.
 
 Néstor miró a Vera.
 
-— Vos te quedaste con la de ella.
+— Vos te quedaste con la de él.
 
 Vera sintió que se le cerraba la garganta.
 
@@ -1581,15 +1572,15 @@ Cerró y se quedó un rato con la mano en la cerradura, mirando la puerta.
 
 ---
 
-Después fue a la pieza del fondo, que era la única de la casa donde todavía entraba luz a la tarde. Las sábanas estaban donde siempre: dos dobladas sobre la cama y una colgada del respaldo.
+Después fue a la pieza del fondo, que era la única de la casa donde todavía entraba luz a la tarde. Sobre la cama quedaban dos sábanas dobladas, en el mismo rectángulo prolijo de siempre.
 
-La suya.
+La de él no estaba. Se la había llevado Vera el primer día y no la había devuelto.
 
-La tocó con dos dedos.
-
-El borde con el verde desteñido, los tres remiendos.
+Miró el respaldo vacío.
 
 *Esto también se va a ir.*
+
+*Y ni siquiera está acá para irse.*
 
 ---
 
@@ -1681,7 +1672,7 @@ Y ahí Néstor entendió que Adán no estaba hablando de la casa.
 
 ---
 
-## 6. La mediacion que aprieta
+## 6. La mediación que aprieta
 
 Néstor llamó a Adán el sábado a la mañana.
 
@@ -1945,7 +1936,7 @@ Néstor abrió la boca para contestar y no le salió nada.
 
 ---
 
-Adán se quedó con la vista baja, en el piso de la cocina.
+Adán se quedó mirando el piso.
 
 — A mí me dijiste que ella se equivocó —dijo.
 

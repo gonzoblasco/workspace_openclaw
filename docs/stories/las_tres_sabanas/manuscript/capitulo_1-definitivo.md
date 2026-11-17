@@ -1,10 +1,5 @@
 # Capítulo 1 — La sábana tendida
 
-*Versión definitiva. Fusión de las tres que funcionaron: el peso de la versión Katzenbach, el
-ritmo de la Card y la textura de la Rowling. POV: Néstor.*
-
----
-
 La llave pesaba más que ninguna otra llave.
 
 Néstor la llevó en el puño todo el viaje. Cuando la metió en la cerradura tuvo que empujar con el hombro, porque la cerradura estaba más gastada que la llave.

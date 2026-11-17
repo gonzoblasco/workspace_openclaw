@@ -8,7 +8,7 @@ El 14 de julio Néstor cerró el taller a las siete y manejó hasta la casa de V
 
 Hacía un año que la casa no existía.
 
-En el terreno de Sarmiento al 400 había un edificio de tres pisos, con balcones de vidrio y un cartel de *se vende* en el segundo, y en la planta baja funcionaba una veterinaria.
+En el terreno de Salta al 400 había un edificio de tres pisos, con balcones de vidrio y un cartel de *se vende* en el segundo, y en la planta baja funcionaba una veterinaria.
 
 ---
 
@@ -138,7 +138,7 @@ Adán no se corrió.
 
 A las once Néstor se ofreció a llevarlo.
 
-Adán vivía a nueve cuadras, en la calle Salta, en una pieza al fondo de una casa que había sido de una familia y ahora era de cuatro.
+Adán vivía a nueve cuadras, en la calle Urquiza, en una pieza al fondo de una casa que había sido de una familia y ahora era de cuatro.
 
 Fueron caminando, despacio, por la vereda de la sombra.
 
@@ -198,7 +198,7 @@ Se rieron los dos, un poco, sin ganas.
 
 ---
 
-Llegaron a la casa de la calle Salta.
+Llegaron a la casa de la calle Urquiza.
 
 Había una luz prendida en la pieza del fondo y la puerta de chapa estaba abierta.
 
@@ -278,7 +278,7 @@ Y adentro, doblada en cuatro, la tela con la costura verde.
 
 Néstor la puso sobre el mostrador y la abrió con las dos manos.
 
-Un metro y medio de tela blanca, con un dobladillo chico y desparejo, y el hilo verde en el borde.
+Dos metros de tela blanca, de setenta de ancho, con un dobladillo chico y desparejo, y el hilo verde en el borde.
 
 ---
 

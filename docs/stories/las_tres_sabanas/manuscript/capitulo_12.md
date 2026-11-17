@@ -44,7 +44,7 @@ Adentro, un contrato.
 
 Adán lo leyó dos veces, y la segunda vez lo leyó más despacio, con el dedo en el renglón.
 
-Era un préstamo con garantía, y la garantía era un tercio indiviso sobre el inmueble de calle Sarmiento al 400.
+Era un préstamo con garantía, y la garantía era un tercio indiviso sobre el inmueble de calle Salta al 400.
 
 El que firmaba era Néstor Quiroga.
 
@@ -106,7 +106,7 @@ Marcó el número del escribano.
 
 — ¿De parte de quién?
 
-— Adán Quiroga. Por la sucesión de Sarmiento al 400.
+— Adán Vergara. Por la sucesión de Salta al 400.
 
 ---
 

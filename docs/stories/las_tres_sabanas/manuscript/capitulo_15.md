@@ -36,7 +36,7 @@ Era un hombre de la edad de Adán, con camisa azul y un anillo en la mano derech
 
 Adán se sentó y puso las manos sobre las rodillas.
 
-— Vengo por la casa de Sarmiento al 400.
+— Vengo por la casa de Salta al 400.
 
 Basterra lo miró un segundo.
 
@@ -674,7 +674,7 @@ Vera se quedó con la mano sobre el pedazo de la costura.
 
 Después se dio vuelta y salió al patio.
 
-Adán la oyó encender un cigarrillo, que era algo que ella ya no hacía.
+Adán la oyó encender un cigarrillo, y pensó que hacía meses que no la veía fumar.
 
 ---
 

@@ -45,7 +45,7 @@ Detalle y diagnostico en `EVALUACION-5-versiones-cap1.md`.
 | 5 | El primer movimiento | Adán | ~1.700 |
 | 6 | La mediación que aprieta | Néstor | ~1.800 |
 
-Compilado en `manuscript/acto_1.md` (9.430 palabras). Perfil: mediana 9,0 exacta y bandas
+Compilado en `manuscript/acto_1.md` (9.392 palabras). Perfil: mediana 9,0 exacta y bandas
 34,9/45,1/17,9/2,0 — las cuatro dentro del perfil `casa`. Tres correcciones al compilar: dos
 frases repetidas entre capítulos y las viñetas del capítulo 2, que estaban en nivel 2 y se
 bajaron a nivel 3.
@@ -60,7 +60,7 @@ bajaron a nivel 3.
 | 10 | Las alianzas se reacomodan | Adán | ~1.400 |
 | 11 | El sacrificio ofrecido | Néstor | ~1.500 |
 
-Compilado en `manuscript/acto_2.md` (6.968 palabras). Perfil: mediana 8, bandas 38,5/39,5/19,2/2,8
+Compilado en `manuscript/acto_2.md` (7.012 palabras). Perfil: mediana 8, bandas 38,4/39,0/19,8/2,8
 — las cuatro dentro de 1,2 puntos de la referencia.
 
 
@@ -75,8 +75,8 @@ Compilado en `manuscript/acto_2.md` (6.968 palabras). Perfil: mediana 8, bandas 
 | 16 | La sábana distinta | Vera | ~1.150 |
 | 17 | Lo que queda | Néstor | ~1.000 |
 
-Compilado en `manuscript/acto_3.md` (9.664 palabras). Perfil: mediana 8, bandas
-38,4/41,9/17,9/1,8 — las cuatro dentro de perfil. Es un acto hablado: 63% de párrafos en
+Compilado en `manuscript/acto_3.md` (9.758 palabras). Perfil: mediana 8, bandas
+38,4/41,4/18,4/1,8 — las cuatro dentro de perfil. Es un acto hablado: 63% de párrafos en
 diálogo, contra 66% del Acto II y 53% del Acto I. La desviación se acepta y se documenta: del
 capítulo 12 al 15 la novela es una serie de conversaciones en las que nadie puede moverse sin
 romper algo, y el ritmo corto es el del encierro, no el de la acción.
@@ -99,17 +99,21 @@ era.
 
 ## Estado
 
-**Primer borrador completo.** Las 17 escenas escritas en tres actos: 26.062 palabras
-(9.430 + 6.968 + 9.664). Los tres actos compilados y medidos contra el perfil `casa`, con las
+**Primer borrador completo y leído de corrido.** Las 17 escenas escritas en tres actos:
+26.162 palabras (9.392 + 7.012 + 9.758). Los tres actos compilados y medidos contra el perfil `casa`, con las
 cuatro bandas dentro de tolerancia en los tres. Falta la lectura de corrido: es el paso que
 detecta lo que la métrica no ve (ritmo entre actos, si el desenlace se sostiene, si algún
 personaje cambia sin que se vea cómo).
 
 ## Proximos pasos
 
-1. **Lectura de corrido de los tres actos** (26.062 palabras), marcando dónde el lector se
-   aburre y dónde se pierde.
-2. **Verificar la cuenta del dinero** de punta a punta: tasación 42, oferta 32, deuda 12,
-   reparto 9,25 / 8,5 / 0. Es el eje del Acto III y tiene que cerrar en la lectura.
+1. **Decidir las cinco cosas abiertas** de `EVALUACION-contenido-3-actos.md` §3: el plazo de doce
+   días que nunca vence, el socio que desaparece, el oficio de Adán, la seña del departamento
+y el pensamiento del POV a la mitad del perfil.
+2. **Corregir los tres defectos de relato** del §5: el Acto I tarda en arrancar, Néstor explica
+   de más en el capítulo 6, y Vera acierta siempre hasta el 13.
 3. Decidir si la novela corta (17 escenas) es la forma final o si necesita dos escenas más
    de aire entre el colapso y el epílogo.
+
+La lectura de contenido completa, con lo corregido y lo que queda abierto, está en
+`EVALUACION-contenido-3-actos.md`.

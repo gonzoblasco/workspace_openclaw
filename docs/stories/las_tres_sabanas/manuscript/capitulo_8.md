@@ -1,10 +1,6 @@
 # Capítulo 8 — La reacción en cadena
 
-*Octubre. Tres movimientos, el mismo día, cada uno causado por el anterior.*
-
----
-
-## Uno
+### Uno
 
 Néstor llamó a Vera el lunes a la mañana.
 
@@ -52,7 +48,7 @@ Cortó. Néstor se quedó con el teléfono en la mano, en el mostrador, mirando 
 
 ---
 
-## Dos
+### Dos
 
 Esa tarde Vera fue a la casa.
 
@@ -146,7 +142,7 @@ Vera lo miró.
 
 ---
 
-## Tres
+### Tres
 
 Néstor llamó a Adán a las siete de la tarde.
 
@@ -252,7 +248,7 @@ Néstor se quedó mirando el pasto del patio, que estaba alto, y las uvas que ya
 
 ---
 
-## Cuatro
+### Cuatro
 
 Vera llamó a Néstor el miércoles.
 
@@ -360,7 +356,7 @@ Néstor se quedó con la boca abierta, sin saber qué contestar.
 
 ---
 
-## Cinco
+### Cinco
 
 Esa noche Néstor se sentó en la cocina, solo, con el teléfono en la mano y la luz apagada.
 

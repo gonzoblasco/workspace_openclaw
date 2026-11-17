@@ -4,8 +4,6 @@
 
 ## 7. El centro que lastima
 
----
-
 La tasación llegó por mail un lunes.
 
 Adán la abrió en el teléfono, sentado en la cocina, y la leyó dos veces. El número estaba abajo, en negrita, y era menos de lo que él había pensado la primera vez que calculó cuánto podía valer.
@@ -390,7 +388,7 @@ Néstor no contestó, y Adán salió del taller y manejó hasta la casa.
 
 Esa noche se sentó en la pieza del fondo, en el borde de la cama desarmada, con las manos entre las rodillas y la espalda recta como se sienta alguien que espera.
 
-La sábana colgada seguía en el respaldo.
+La sábana colgada seguía en el respaldo. Vera la había traído de vuelta en agosto: la dejó sobre la cama, doblada, y se fue sin decir nada.
 
 La miró un rato largo.
 
@@ -430,15 +428,9 @@ Pensó en Vera abriendo el aparador el sábado, sin avisar, sin pedir permiso, y
 
 ---
 
----
+## 8. La reacción en cadena
 
-## 8. La reaccion en cadena
-
-*Octubre. Tres movimientos, el mismo día, cada uno causado por el anterior.*
-
----
-
-## Uno
+### Uno
 
 Néstor llamó a Vera el lunes a la mañana.
 
@@ -486,7 +478,7 @@ Cortó. Néstor se quedó con el teléfono en la mano, en el mostrador, mirando 
 
 ---
 
-## Dos
+### Dos
 
 Esa tarde Vera fue a la casa.
 
@@ -580,7 +572,7 @@ Vera lo miró.
 
 ---
 
-## Tres
+### Tres
 
 Néstor llamó a Adán a las siete de la tarde.
 
@@ -686,7 +678,7 @@ Néstor se quedó mirando el pasto del patio, que estaba alto, y las uvas que ya
 
 ---
 
-## Cuatro
+### Cuatro
 
 Vera llamó a Néstor el miércoles.
 
@@ -794,7 +786,7 @@ Néstor se quedó con la boca abierta, sin saber qué contestar.
 
 ---
 
-## Cinco
+### Cinco
 
 Esa noche Néstor se sentó en la cocina, solo, con el teléfono en la mano y la luz apagada.
 
@@ -836,11 +828,7 @@ Y Néstor se quedó mirando las dos respuestas, una debajo de la otra en la pant
 
 ---
 
----
-
-## 9. El cuidado es la carcel
-
----
+## 9. El cuidado es la cárcel
 
 El sábado se juntaron a decidir si se vendía.
 
@@ -1162,11 +1150,7 @@ Lo que escribió fue esto, y después cerró el cuaderno:
 
 ---
 
----
-
 ## 10. Las alianzas se reacomodan
-
----
 
 Después del sábado, algo cambió y Adán no supo qué.
 
@@ -1486,7 +1470,7 @@ Silencio.
 
 — Si me voy a Buenos Aires y ustedes dos se quedan acá, ustedes dos van a ser los que se ven.
 
-Néstor se quedó callado del otro lado.
+Néstor se quedó en silencio, y del otro lado se oía el tecleo de una computadora.
 
 — Sí.
 
@@ -1556,11 +1540,7 @@ No contestó la pregunta, y esa noche tardó en dormirse.
 
 ---
 
----
-
 ## 11. El sacrificio ofrecido
-
----
 
 El escribano le explicó tres veces lo mismo, y las tres veces Néstor entendió lo mismo.
 
@@ -1595,6 +1575,10 @@ El escribano lo miró por encima de los anteojos.
 ---
 
 Néstor salió del estudio a las once y caminó hasta el auto mirando el piso, y se sentó sin arrancar.
+
+*Cuarenta y dos millones. Con la deuda, mi parte queda en ochocientos mil.*
+
+*Y ochocientos mil no le sirven a nadie: ni a Adán para irse, ni a Vera para el departamento.*
 
 *Si yo renuncio, el número alcanza: se vende, y Adán tiene para irse a Buenos Aires, y Vera tiene para lo suyo. Y yo no tengo nada.*
 
@@ -1985,3 +1969,5 @@ Néstor se quedó mirando a los dos, de pie en el medio de su taller, entre el m
 Y los tres se quedaron ahí, en el taller, sin saber qué hacer con una solución que ninguno de los tres quería aceptar.
 
 ---
+
+*Fin del Acto II.*

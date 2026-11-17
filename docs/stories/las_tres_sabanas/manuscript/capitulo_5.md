@@ -364,15 +364,15 @@ Cerró y se quedó un rato con la mano en la cerradura, mirando la puerta.
 
 ---
 
-Después fue a la pieza del fondo, que era la única de la casa donde todavía entraba luz a la tarde. Las sábanas estaban donde siempre: dos dobladas sobre la cama y una colgada del respaldo.
+Después fue a la pieza del fondo, que era la única de la casa donde todavía entraba luz a la tarde. Sobre la cama quedaban dos sábanas dobladas, en el mismo rectángulo prolijo de siempre.
 
-La suya.
+La de él no estaba. Se la había llevado Vera el primer día y no la había devuelto.
 
-La tocó con dos dedos.
-
-El borde con el verde desteñido, los tres remiendos.
+Miró el respaldo vacío.
 
 *Esto también se va a ir.*
+
+*Y ni siquiera está acá para irse.*
 
 ---
 

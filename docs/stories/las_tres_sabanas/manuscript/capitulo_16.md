@@ -4,7 +4,7 @@
 
 ---
 
-Néstor firmó el viernes a las once de la mañana y no dijo una palabra en todo el trámite.
+Néstor firmó el nueve de enero a las once de la mañana y no dijo una palabra en todo el trámite.
 
 El escribano le explicó la revocación, después la venta, después la cancelación de la hipoteca.
 
@@ -88,7 +88,7 @@ A la tarde los dos estaban sentados en el piso del comedor, entre cajas abiertas
 
 — ¿A dónde?
 
-— A una pieza en lo de un hombre de la calle Salta. Por el taller.
+— A una pieza en lo de un hombre de la calle Urquiza. Por el taller.
 
 ---
 
@@ -148,9 +148,9 @@ Después fue a la cocina y volvió con los dos pedazos de la sábana.
 
 Los puso sobre la mesa del comedor, uno al lado del otro.
 
-El pedazo de la costura medía un metro y medio, más o menos. El otro, un poco menos.
+El pedazo de la costura era una tira de dos metros de largo y setenta de ancho. El otro, un poco menos.
 
-Juntos eran la sábana de Elvira, y ninguno de los dos servía para una cama.
+Juntos eran la sábana de Adán, la que Elvira había remendado tres veces, y ninguno de los dos pedazos servía para una cama.
 
 ---
 
@@ -220,7 +220,7 @@ Adán se sentó en la otra silla.
 
 — Vera, es una sábana rota.
 
-— Es la sábana de la abuela.
+— Es la sábana de Adán. La cosió la abuela.
 
 — Rota.
 
@@ -310,7 +310,7 @@ Néstor dejó la caja en el piso.
 
 — Es un trapo.
 
-— Es la sábana de Elvira. La corté en tres.
+— Es la sábana de Adán. La corté en tres.
 
 ---
 

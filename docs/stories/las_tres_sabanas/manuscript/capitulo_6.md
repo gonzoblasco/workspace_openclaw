@@ -388,7 +388,7 @@ Hubo un silencio largo, y en el silencio se escuchó un portón que se cerraba e
 
 — ¿Y ahora? —preguntó Adán.
 
-Néstor miró a uno y al otro.
+Néstor los miró a los dos, uno y después el otro.
 
 — Ahora no sé.
 

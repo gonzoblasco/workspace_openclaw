@@ -322,7 +322,7 @@ Silencio.
 
 — Si me voy a Buenos Aires y ustedes dos se quedan acá, ustedes dos van a ser los que se ven.
 
-Néstor se quedó callado del otro lado.
+Néstor se quedó en silencio, y del otro lado se oía el tecleo de una computadora.
 
 — Sí.
 

@@ -4,7 +4,7 @@
 
 ---
 
-## Néstor
+### Néstor
 
 Néstor abrió los ojos a las seis y diez y lo primero que hizo fue buscar el teléfono.
 
@@ -142,7 +142,7 @@ Y se quedó dormido con el teléfono en la mesa de luz, boca abajo, con la panta
 
 ---
 
-## Adán
+### Adán
 
 La espalda le avisó el lunes.
 
@@ -228,7 +228,7 @@ Y no se lo dijo a nadie.
 
 ---
 
-## Vera
+### Vera
 
 Vera salió del diario a las siete y cuarto con la nota a medias.
 

@@ -6,6 +6,26 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-17] - Las Tres Sabanas: la lectura de corrido destapó siete cosas
+
+### Fixed
+- **La casa estaba en dos calles.** Acto I: calle Salta. Acto III: Sarmiento al 400, en cuatro lugares. Unificado en Salta; la pieza que alquila Adán pasó a calle Urquiza para no quedar en la calle de la casa demolida.
+- **Adán tenía dos apellidos.** Vergara en el Acto I, Quiroga en el capítulo 12. Corregido: Vergara (Adán), Quiroga (Néstor), Salas (Vera), cada uno de su rama.
+- **La sábana que se rompe no estaba donde decía.** Vera se lleva la de Adán en el capítulo 1 y la sábana reaparece colgada en el 5 y en el 7 sin que nadie la devuelva. Ahora el 5 la muestra ausente, el 7 registra la devolución de agosto, y el 14 y el 16 dejan claro que es la sábana de Adán, no "de Elvira". También se corrigió que se rompía "en mis manos" cuando la rompe Vera.
+- **La cuenta del dinero no cerraba.** El capítulo 13 repartía trece y cuarto "para dos" sin que la aritmética lo sostuviera. Ahora los tres actos cuentan lo mismo: cuarenta y dos de tasación, doce de deuda, doce y ocho por cabeza, ochocientos mil para Néstor. La renuncia deja de ser un gesto y pasa a ser un cálculo mal hecho.
+- **La escritura se firmaba una semana después del boleto.** El capítulo 16 pasa a "el nueve de enero".
+- **Dos frases repetidas en todo el libro** (capítulos 1/6 y 3/10). Barrido final: cero.
+- **Vera fumaba y no fumaba** entre el capítulo 2 y el 15.
+
+### Added
+- **`docs/stories/las_tres_sabanas/EVALUACION-contenido-3-actos.md`** — la primera lectura del manuscrito como relato, con los siete errores corregidos, las cinco cosas que quedan abiertas (el plazo de doce días que nunca vence, el socio que desaparece, el oficio de Adán, la seña del departamento, el pensamiento del POV a la mitad del perfil) y los tres defectos de relato que no se tocan sin decidir antes.
+
+### Notes
+- **Regla que faltaba:** compilar un acto no es haberlo leído. La medición verifica la voz; no ve que un personaje firme una seña con plata que consigue un día después, ni que una sábana esté en dos casas. Las siete correcciones salieron de leer, no de medir.
+- **Los tres actos siguen dentro de perfil** después de las correcciones: I 9,0 · 34,9/45,3/17,8/2,1 · II 8,0 · 38,4/39,0/19,8/2,8 · III 8,0 · 38,4/41,4/18,4/1,8. Libro completo: 26.162 palabras, mediana 9, bandas 36,9/42,4/18,5/2,1.
+
+---
+
 ## [2026-11-17] - Las Tres Sabanas: el primer borrador completo
 
 ### Added

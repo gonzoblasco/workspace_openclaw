@@ -38,6 +38,10 @@ El escribano lo miró por encima de los anteojos.
 
 Néstor salió del estudio a las once y caminó hasta el auto mirando el piso, y se sentó sin arrancar.
 
+*Cuarenta y dos millones. Con la deuda, mi parte queda en ochocientos mil.*
+
+*Y ochocientos mil no le sirven a nadie: ni a Adán para irse, ni a Vera para el departamento.*
+
 *Si yo renuncio, el número alcanza: se vende, y Adán tiene para irse a Buenos Aires, y Vera tiene para lo suyo. Y yo no tengo nada.*
 
 ---

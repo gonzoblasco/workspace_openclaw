@@ -388,7 +388,7 @@ Néstor no contestó, y Adán salió del taller y manejó hasta la casa.
 
 Esa noche se sentó en la pieza del fondo, en el borde de la cama desarmada, con las manos entre las rodillas y la espalda recta como se sienta alguien que espera.
 
-La sábana colgada seguía en el respaldo.
+La sábana colgada seguía en el respaldo. Vera la había traído de vuelta en agosto: la dejó sobre la cama, doblada, y se fue sin decir nada.
 
 La miró un rato largo.
 

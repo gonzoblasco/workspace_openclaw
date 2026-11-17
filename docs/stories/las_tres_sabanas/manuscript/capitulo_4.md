@@ -210,7 +210,7 @@ Adán se quedó mirando el piso.
 
 Néstor miró a Vera.
 
-— Vos te quedaste con la de ella.
+— Vos te quedaste con la de él.
 
 Vera sintió que se le cerraba la garganta.
 

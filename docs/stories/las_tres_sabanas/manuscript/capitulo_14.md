@@ -464,7 +464,7 @@ Estaba húmeda por un borde, por donde había tocado el agua del piso.
 
 ---
 
-La llevó al comedor y la puso sobre la mesa. La había devuelto en octubre, cuando empezaron los papeles: la trajo en una bolsa, la dejó sobre la cama y no la volvió a tocar hasta esa noche.
+La llevó al comedor y la puso sobre la mesa. Vera la había devuelto en agosto: la dejó sobre la cama, doblada, y no volvió a tocarla hasta esa noche.
 
 — ¿Qué hacés? —dijo Néstor.
 
@@ -510,7 +510,7 @@ No dijo nada durante un rato largo.
 
 ---
 
-— Era la de ella —dijo por fin.
+— Era la de él —dijo por fin.
 
 — Sí —dijo Adán.
 
@@ -554,7 +554,7 @@ Un pedazo tenía la costura. El otro tenía el remiendo.
 
 *Se rompió.*
 
-*La que cosió la abuela se rompió en mis manos y no fue por un tirón: fue por vieja.*
+*La que cosió la abuela se rompió esta noche, delante de los tres, y no fue por un tirón: fue por vieja.*
 
 ---
 
