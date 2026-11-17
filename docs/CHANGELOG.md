@@ -15,7 +15,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Assert T3 del fixture** — el regex exigía la redacción de la referencia (`fila 4`, `fila 7`) y rechazaba equivalentes correctas (`id 4`, `fuera del rango`). Corregido, re-validado en las dos direcciones y las celdas re-evaluadas desde el `content` guardado, sin re-correr la cata.
 
 ### Changed
-- **`skills/model-comparison-cata/SKILL.md`** — nuevo paso 4-bis: corregir un assert se paga re-evaluando, no re-corriendo; y el brief del evaluador ciego ahora exige citar archivo y línea.
+- **`skills/model-comparison-cata/SKILL.md`** — tres reglas nuevas: 4-bis (corregir un assert se paga re-evaluando desde el `content` guardado, no re-corriendo), 5-bis (una tanda `off` con `thinking` no vacío no es evidencia de nada), y la auditoría obligatoria del ciego: ninguna frase se acredita sin abrir el archivo citado, y ninguna se descarta sin abrirlo — el padre descartó con un grep mal hecho un hallazgo real.
 
 ---
 

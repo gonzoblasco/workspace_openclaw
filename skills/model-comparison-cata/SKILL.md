@@ -110,6 +110,21 @@ es el dato. Medido 2026-11-16: el análisis mecánico marcó CLEANLINESS perfect
 encontró comentarios de razonamiento y código muerto dentro del bloque; la métrica medía
 formato, no limpieza.
 
+**Ninguna frase del ciego se acredita sin auditar contra el archivo — y ninguna se descarta sin
+abrirlo.** En esa misma cata el ciego también dijo cosas imprecisas (llamó "exclusiones bien
+hechas" a una lista que no lo estaba). El padre descartó primero un hallazgo válido con un grep
+que buscaba otra cosa y reportó "comentarios inexistentes": el error fue del padre, no del ciego.
+Regla: abrir el archivo **citado con su línea** y confirmar o refutar con lo que dice el archivo;
+un descarte por búsqueda mal hecha es un falso negativo disfrazado de auditoría.
+
+### 5-bis. La tanda `off` puede no estar apagada, y el runner lo dice
+
+Si un modelo devuelve `thinking` no vacío con `think:false`, la columna `off` es otra corrida con
+la perilla ignorada. Medido 2026-11-16: `minimax-m3.1-flash` devolvió 349/546/357 chars de
+thinking en sus tres celdas apagadas, y `glm-5.3-flash` rechazó el valor con HTTP 400. Esa fila
+va como **no medida** o como observación etiquetada, nunca como evidencia de comportamiento sin
+razonamiento.
+
 ### 6. Escribir el REPORT.md
 
 ```bash

@@ -146,9 +146,13 @@ antes de aceptarlas** (dos salieron ciertas, una parcial, una falsa).
   `gemma4:12b-mlx` T3, que lista mal la fila 7 ("fuera del rango de Q3", en realidad es el 1 de
   octubre, fuera de Q3 por arriba). La frase es plausible, el hecho es impreciso. Refuerza la
   regla del step 7: leer el artefacto, no el resumen.
-- **Un hallazgo inestable**: reportó que `gemma4:cloud off T1` mete comentarios explicativos
-  (líneas 18 y 26). El artefacto guardado no los muestra; puede haber leído una versión de otra
-  tanda. No se acredita sin evidencia.
+- **Un hallazgo que estaba en lo cierto y al principio descarté**: reportó que `gemma4:cloud
+  off T1` mete comentarios explicativos en las líneas 18 y 26. Mi primer grep no los encontró
+  porque buscaba otra cosa; abriendo el archivo, **ahí están** (`# El tramo es inclusivo…`,
+  `# El siguiente tramo comienza…`). Segundo error del padre en la misma auditoría: descartar
+  por una búsqueda mal hecha. Corregido: baja a 4/5 en limpieza.
+- **Un hallazgo que sí sobra**: dijo que `muse-spark-open off T1` no tiene el chequeo redundante
+  de `low`. El archivo lo tiene, solo cambió de línea (7-8 en `low`, 9-10 en `off`). Falso.
 
 **Consecuencia para el kit:** el evaluador ciego aporta el eje de limpieza semántica que el
 runner no mide, pero **no se acredita sin auditar cada frase contra el archivo**. El paso 5 del
