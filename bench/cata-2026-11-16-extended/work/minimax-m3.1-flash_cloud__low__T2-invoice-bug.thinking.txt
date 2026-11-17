@@ -1,0 +1,8 @@
+We need output code only. Need interpret exact subtotal means no per-line rounding, no discount/tax rounding. Could floating issue "exacto" perhaps use Decimal? Input types unspecified. Original float. Need corrected function likely remove intermediate rounding. But exact maybe Decimal to avoid float? They expect calculate subtotal exact and only final round. Function corrected likely:
+def invoice_total(...):
+ subtotal=0
+ for... subtotal += qty*unit
+ discount=...
+ tax=...
+ return round(...,2)
+Could use sum. "exacto" means unrounded subtotal. Python float not exact. Could use Decimal from string, but inputs maybe floats and Decimal(str()) yields decimal representation. Only rounding total final. Need account rounding half? Decimal quantize ROUND_HALF? Python round uses bankers, likely expected code. User asks only block. Minimal correction remove round line, discount, tax. "descuento se aplica sobre el subtotal exacto" perhaps defect accumulated per-line rounding. Only final rounding allowed explicitly means discount and tax cannot be rounded. Use float arithmetic. Exact means mathematically likely no intermediate rounding. Return function. Could initialize 0.0. Answeronly code.

@@ -1,0 +1,65 @@
+== warm-up (no se suma al throughput)
+  mimo-v2.6-flash:cloud        0.7s err=None
+  mimo-v2.6-pro:cloud          0.5s err=None
+  mistral-large-4:cloud        2.6s err=None
+  muse-spark-open:cloud        0.9s err=None
+  nemotron-3-super:cloud       2.0s err=None
+  minimax-m3.1-flash:cloud     1.6s err=None
+  glm-5.3-flash:cloud          0.9s err=None
+  gemma4:12b-mlx               0.4s err=None
+  gemma4:cloud                 0.5s err=None
+  T1-chunk-ranges      low  mimo-v2.6-flash:cloud        pass=True  eval=  153 think=    63 t=   1.4s
+  T1-chunk-ranges      low  mimo-v2.6-pro:cloud          pass=True  eval=  459 think=   352 t=   1.6s
+  T1-chunk-ranges      low  mistral-large-4:cloud        pass=True  eval=  381 think=  1004 t=   6.9s
+  T1-chunk-ranges      low  muse-spark-open:cloud        pass=True  eval=  543 think=  1521 t=   3.8s
+  T1-chunk-ranges      low  nemotron-3-super:cloud       pass=True  eval=  612 think=  1900 t=  13.1s
+  T1-chunk-ranges      low  minimax-m3.1-flash:cloud     pass=True  eval=  202 think=   285 t=  13.1s
+  T1-chunk-ranges      low  glm-5.3-flash:cloud          pass=True  eval=  135 think=     0 t=   1.1s
+  T1-chunk-ranges      low  gemma4:12b-mlx               pass=True  eval=  223 think=     0 t=   7.2s
+  T1-chunk-ranges      low  gemma4:cloud                 pass=True  eval= 1364 think=  2993 t=   2.8s
+  T1-chunk-ranges      off  mimo-v2.6-flash:cloud        pass=True  eval=  145 think=     0 t=   1.2s
+  T1-chunk-ranges      off  mimo-v2.6-pro:cloud          pass=True  eval=  138 think=     0 t=   0.8s
+  T1-chunk-ranges      off  mistral-large-4:cloud        NO MEDIDO
+  T1-chunk-ranges      off  muse-spark-open:cloud        pass=True  eval=  805 think=     0 t=  14.8s
+  T1-chunk-ranges      off  nemotron-3-super:cloud       pass=True  eval=  158 think=     0 t=   2.4s
+  T1-chunk-ranges      off  minimax-m3.1-flash:cloud     pass=True  eval=  214 think=   349 t=   2.8s
+  T1-chunk-ranges      off  glm-5.3-flash:cloud          NO MEDIDO
+  T1-chunk-ranges      off  gemma4:12b-mlx               pass=True  eval=  223 think=     0 t=   7.0s
+  T1-chunk-ranges      off  gemma4:cloud                 pass=True  eval=  267 think=     0 t=   0.9s
+  T2-invoice-bug       low  mimo-v2.6-flash:cloud        pass=True  eval=   96 think=    64 t=   0.8s
+  T2-invoice-bug       low  mimo-v2.6-pro:cloud          pass=True  eval=  237 think=   589 t=   1.0s
+  T2-invoice-bug       low  mistral-large-4:cloud        pass=True  eval=  301 think=   881 t=   8.1s
+  T2-invoice-bug       low  muse-spark-open:cloud        pass=True  eval=  252 think=   737 t=   2.7s
+  T2-invoice-bug       low  nemotron-3-super:cloud       pass=True  eval=  777 think=  2545 t=  11.3s
+  T2-invoice-bug       low  minimax-m3.1-flash:cloud     pass=True  eval=  330 think=  1196 t=   5.6s
+  T2-invoice-bug       low  glm-5.3-flash:cloud          pass=True  eval=   81 think=    33 t=   0.8s
+  T2-invoice-bug       low  gemma4:12b-mlx               pass=True  eval=   95 think=     0 t=   4.0s
+  T2-invoice-bug       low  gemma4:cloud                 pass=True  eval=  662 think=  1815 t=   1.6s
+  T2-invoice-bug       off  mimo-v2.6-flash:cloud        pass=True  eval=   82 think=     0 t=   0.8s
+  T2-invoice-bug       off  mimo-v2.6-pro:cloud          pass=True  eval=   82 think=     0 t=   0.7s
+  T2-invoice-bug       off  mistral-large-4:cloud        NO MEDIDO
+  T2-invoice-bug       off  muse-spark-open:cloud        pass=True  eval=  264 think=     0 t=   1.8s
+  T2-invoice-bug       off  nemotron-3-super:cloud       pass=True  eval=   90 think=     0 t=   9.2s
+  T2-invoice-bug       off  minimax-m3.1-flash:cloud     pass=True  eval=  225 think=   546 t=   4.9s
+  T2-invoice-bug       off  glm-5.3-flash:cloud          NO MEDIDO
+  T2-invoice-bug       off  gemma4:12b-mlx               pass=True  eval=   95 think=     0 t=   3.8s
+  T2-invoice-bug       off  gemma4:cloud                 pass=True  eval=   96 think=     0 t=   0.5s
+  T3-q3-revenue        low  mimo-v2.6-flash:cloud        pass=True  eval=  588 think=   519 t=   3.5s
+  T3-q3-revenue        low  mimo-v2.6-pro:cloud          pass=True  eval=  496 think=   325 t=   1.9s
+  T3-q3-revenue        low  mistral-large-4:cloud        pass=True  eval=  743 think=  1767 t=  16.2s
+  T3-q3-revenue        low  muse-spark-open:cloud        pass=True  eval=  497 think=  1237 t=   4.8s
+  T3-q3-revenue        low  nemotron-3-super:cloud       pass=True  eval= 1388 think=  2697 t=  52.6s
+  T3-q3-revenue        low  minimax-m3.1-flash:cloud     pass=True  eval=  129 think=   199 t=   1.8s
+  T3-q3-revenue        low  glm-5.3-flash:cloud          pass=True  eval=  149 think=     0 t=   1.3s
+  T3-q3-revenue        low  gemma4:12b-mlx               pass=False eval=   61 think=     0 t=   5.8s
+  T3-q3-revenue        low  gemma4:cloud                 pass=False eval=  940 think=  1597 t=   2.1s
+  T3-q3-revenue        off  mimo-v2.6-flash:cloud        pass=True  eval=   71 think=     0 t=   0.8s
+  T3-q3-revenue        off  mimo-v2.6-pro:cloud          pass=True  eval=  250 think=     0 t=   1.1s
+  T3-q3-revenue        off  mistral-large-4:cloud        NO MEDIDO
+  T3-q3-revenue        off  muse-spark-open:cloud        pass=True  eval=  590 think=     0 t=   5.2s
+  T3-q3-revenue        off  nemotron-3-super:cloud       pass=True  eval=  103 think=     0 t=  10.6s
+  T3-q3-revenue        off  minimax-m3.1-flash:cloud     pass=True  eval=  197 think=   357 t=   2.1s
+  T3-q3-revenue        off  glm-5.3-flash:cloud          NO MEDIDO
+  T3-q3-revenue        off  gemma4:12b-mlx               pass=False eval=   60 think=     0 t=   5.4s
+  T3-q3-revenue        off  gemma4:cloud                 pass=False eval=   53 think=     0 t=   0.5s
+LISTO /Users/gonzoblasco/.openclaw/workspace/bench/cata-2026-11-16-extended/results.json

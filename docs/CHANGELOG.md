@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-16] - Cata extendida a nueve modelos
+
+### Added
+- **`bench/cata-2026-11-16-extended/`** — segunda corrida del fixture con cuatro candidatos más (`minimax-m3.1-flash`, `glm-5.3-flash`, `gemma4:12b-mlx` local, `gemma4:cloud`): 54 celdas, `REPORT.md` con diez secciones. Resultado: `glm-5.3-flash` es el más barato (122 eval promedio, 1.1 s) y empata en contenido; `gemma4:12b-mlx` falla T3 en las dos tandas (135.74); `gemma4:cloud` entrega lo mismo con 5x menos tokens al apagar el razonamiento; `minimax` ignora `think:false`.
+
+### Fixed
+- **Assert T3 del fixture** — el regex exigía la redacción de la referencia (`fila 4`, `fila 7`) y rechazaba equivalentes correctas (`id 4`, `fuera del rango`). Corregido, re-validado en las dos direcciones y las celdas re-evaluadas desde el `content` guardado, sin re-correr la cata.
+
+### Changed
+- **`skills/model-comparison-cata/SKILL.md`** — nuevo paso 4-bis: corregir un assert se paga re-evaluando, no re-corriendo; y el brief del evaluador ciego ahora exige citar archivo y línea.
+
+---
+
 ## [2026-11-16] - Kit reproducible de catas de modelos
 
 ### Added

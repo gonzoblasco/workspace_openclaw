@@ -1,0 +1,1 @@
+We need answer Spanish exact. Need compute. Include first appearances ids. Rows in Q3 inclusive. USD rows 1 120.50, 2 -30, 3 99.99 first, 5 0, 6 45.25. Sum 120.5-30=90.5 +99.99=190.49 +45.25=235.74. Exclusions: duplicate id3 second, EUR id4, id7 outside period. Could mention zero included. Need output TOTAL line then list. Number formatting likely 235.74.

@@ -1,0 +1,54 @@
+{
+ "route": "http://localhost:11434",
+ "endpoint": "/api/chat",
+ "num_ctx": 32768,
+ "timeout_s": 300,
+ "budgets": [
+  4096,
+  8192,
+  16384,
+  24576
+ ],
+ "arms": [
+  "low",
+  "off"
+ ],
+ "models": {
+  "mimo-v2.6-flash:cloud": {
+   "low": true,
+   "off": false
+  },
+  "mimo-v2.6-pro:cloud": {
+   "low": true,
+   "off": false
+  },
+  "mistral-large-4:cloud": {
+   "low": "low",
+   "off": null
+  },
+  "muse-spark-open:cloud": {
+   "low": "low",
+   "off": false
+  },
+  "nemotron-3-super:cloud": {
+   "low": true,
+   "off": false
+  },
+  "minimax-m3.1-flash:cloud": {
+   "low": false,
+   "off": false
+  },
+  "glm-5.3-flash:cloud": {
+   "low": "low",
+   "off": null
+  },
+  "gemma4:12b-mlx": {
+   "low": false,
+   "off": false
+  },
+  "gemma4:cloud": {
+   "low": true,
+   "off": false
+  }
+ }
+}

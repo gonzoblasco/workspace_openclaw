@@ -1,0 +1,67 @@
+The user wants me to act as a data analyst and calculate net income in USD for 2026-Q3 (July 1 to September 30, inclusive) from the provided CSV.
+
+Rules:
+- Repeated `id` counts only once: first appearance.
+- Only sum rows with currency USD.
+- Negative amounts are refunds and are summed as-is.
+
+CSV data:
+id,fecha,moneda,monto
+1,2026-07-03,USD,120.50
+2,2026-07-15,USD,-30.00
+3,2026-08-01,USD,99.99
+3,2026-08-01,USD,99.99
+4,2026-08-20,EUR,250.00
+5,2026-09-10,USD,0.00
+6,2026-09-30,USD,45.25
+7,2026-10-01,USD,999.00
+
+Let's process row by row:
+
+Row 1: id=1, fecha=2026-07-03, moneda=USD, monto=120.50. Date in Q3? July 3 is in Q3. USD? Yes. First appearance of id 1? Yes. Include. Sum += 120.50.
+
+Row 2: id=2, fecha=2026-07-15, moneda=USD, monto=-30.00. Date in Q3? Yes. USD? Yes. First appearance? Yes. Include. Sum += -30.00. Current sum: 90.50.
+
+Row 3: id=3, fecha=2026-08-01, moneda=USD, monto=99.99. Date in Q3? Yes. USD? Yes. First appearance? Yes. Include. Sum += 99.99. Current sum: 190.49.
+
+Row 4: id=3, fecha=2026-08-01, moneda=USD, monto=99.99. Duplicate id (3 already seen). Exclude due to duplicate id (first appearance rule). Do not sum.
+
+Row 5: id=4, fecha=2026-08-20, moneda=EUR, monto=250.00. Date in Q3? Yes. USD? No (EUR). Exclude due to non-USD currency.
+
+Row 6: id=5, fecha=2026-09-10, moneda=USD, monto=0.00. Date in Q3? Yes. USD? Yes. First appearance? Yes. Include. Sum += 0.00. Current sum: 190.49.
+
+Row 7: id=6, fecha=2026-09-30, moneda=USD, monto=45.25. Date in Q3? September 30 is inclusive, so yes. USD? Yes. First appearance? Yes. Include. Sum += 45.25. Current sum: 235.74.
+
+Row 8: id=7, fecha=2026-10-01, moneda=USD, monto=999.00. Date in Q3? October 1 is outside Q3 (Q3 ends Sep 30). Exclude due to date outside range.
+
+Total: 120.50 - 30.00 + 99.99 + 0.00 + 45.25 = 235.74.
+
+Let me double check arithmetic:
+120.50 - 30.00 = 90.50
+90.50 + 99.99 = 190.49
+190.49 + 0.00 = 190.49
+190.49 + 45.25 = 235.74
+
+Yes.
+
+Now format:
+TOTAL: 235.74
+
+Below, a short list of excluded/deduplicated rows with reason.
+
+Excluded rows:
+- id=3 (second appearance, 2026-08-01, USD, 99.99): duplicado de id (primera aparición ya contada).
+- id=4 (2026-08-20, EUR, 250.00): moneda no USD.
+- id=7 (2026-10-01, USD, 999.00): fecha fuera del rango Q3 (posterior al 30/09/2026).
+
+The user asked in Spanish, so I should respond in Spanish.
+
+Format:
+TOTAL: 235.74
+- id 3 (2026-08-01, USD, 99.99): duplicado de id (primera aparición ya contabilizada).
+- id 4 (2026-08-20, EUR, 250.00): moneda distinta a USD.
+- id 7 (2026-10-01, USD, 999.00): fecha fuera del período Q3 2026.
+
+Make sure it's exactly as requested: "TOTAL: <número>" en una línea, y debajo una lista corta.
+
+I will write it in Spanish.

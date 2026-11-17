@@ -25,4 +25,8 @@ Dos ejes SEPARADOS, escala 1-5, sin promediarlos:
 3. Para cada celda `off`: ¿razona dentro del entregable o entrega directo?
 4. Qué NO pudiste evaluar y por qué.
 
+**Ninguna frase tuya se acredita sin auditar contra el archivo:** si afirmás que una celda deja
+código muerto, comentarios o pasos intermedios, citá el archivo y la línea. No describas de
+memoria.
+
 Sé conciso pero concreto. No inventes: si una salida está vacía o falta, decilo.

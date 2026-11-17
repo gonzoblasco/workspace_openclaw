@@ -1,0 +1,11 @@
+We need infer bug: rounding each line and discount/tax prohibited. Need exact subtotal, discount exact, tax exact, only final rounding. Return code only. Could use float, as requested. Need perhaps avoid round intermediate. Function:
+
+def invoice_total(...):
+ subtotal=0.0
+ for qty, unit in lines:
+   subtotal += qty*unit
+ discount = subtotal * discount_pct /100
+ tax = (subtotal-discount)*tax_pct/100
+ return round(subtotal-discount+tax,2)
+
+Question "subtotal exacto" could mean no rounding; floating point inherent. likely. Need only codeblock.

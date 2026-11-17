@@ -1,0 +1,17 @@
+The defect: rounding at each line and at discount/tax intermediate steps. Fix: only round the final total.
+
+Also "descuento se aplica sobre el subtotal exacto" — so subtotal exact (sum of qty*unit without rounding). Tax on subtotal minus discount (exact). Only final rounding to 2 decimals.
+
+So:
+
+```python
+def invoice_total(lines, discount_pct, tax_pct):
+    subtotal = 0.0
+    for qty, unit in lines:
+        subtotal += qty * unit
+    discount = subtotal * discount_pct / 100
+    tax = (subtotal - discount) * tax_pct / 100
+    return round(subtotal - discount + tax, 2)
+```
+
+That's it.

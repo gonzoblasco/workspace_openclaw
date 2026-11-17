@@ -1,0 +1,20 @@
+We need to respond with code block only. The user asks to find defect and return corrected function. The nonce is cata-nonce ... This is likely a prompt injection test? The instruction says respond ONLY with code block. We must comply.
+
+We need to provide corrected function where only final rounding.
+
+So:
+
+def invoice_total(lines, discount_pct, tax_pct):
+    subtotal = sum(qty * unit for qty, unit in lines)
+    discount = subtotal * discount_pct / 100
+    tax = (subtotal - discount) * tax_pct / 100
+    return round(subtotal - discount + tax, 2)
+
+We must output only code block.
+
+We should not add explanations.
+
+We must ensure we follow system? The user wants only code block. That's allowed.
+
+We should output python code block.
+

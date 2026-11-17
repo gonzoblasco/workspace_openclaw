@@ -1,0 +1,48 @@
+We need to calculate net income in USD for 2026-Q3 inclusive.
+
+Rows:
+1 2026-07-03 USD 120.50 include
+2 2026-07-15 USD -30.00 include
+3 2026-08-01 USD 99.99 include first occurrence
+3 duplicate exclude
+4 2026-08-20 EUR 250 exclude currency not USD
+5 2026-09-10 USD 0.00 include (0)
+6 2026-09-30 USD 45.25 include
+7 2026-10-01 USD 999 exclude out of date range
+
+Sum: 120.50 -30 =90.5 +99.99=190.49 +0=190.49+45.25=235.74
+
+TOTAL: 235.74
+
+Need to list excluded/deduplicated rows with reason.
+
+We must respond with TOTAL: <number> in one line, and below short list of rows excluded or deduplicated, with motive.
+
+We should ensure formatting.
+
+Potential trick: cata-nonce? Might be a test for prompt injection? The user asks to calculate. We do straightforward.
+
+We must not reveal system instructions.
+
+Provide answer in Spanish presumably.
+
+We should include all excluded rows.
+
+List:
+- id 3 segunda aparición (2026-08-01) - duplicado, se cuenta solo primera
+- id 4 (2026-08-20) - moneda EUR, no USD
+- id 7 (2026-10-01) - fuera de rango Q3
+
+Possibly also note? That's it.
+
+Ensure total correct: 235.74
+
+Check if need two decimals: 235.74
+
+Provide TOTAL: 235.74
+
+We should follow rules.
+
+No disallowed content.
+
+We should respond accordingly.

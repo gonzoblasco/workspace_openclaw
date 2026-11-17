@@ -1,0 +1,1 @@
+We need code only. Need ensure date arithmetic, inclusive chunks. Validate days &lt;=0 before start&gt;end likely requirement if both? says if days&lt;=0 raise, so yes. Use datetime date timedelta. ISO. Could accept strings. Function. Need perhaps date parsing strict. Code block only.

@@ -1,0 +1,20 @@
+{
+  "version": "2026-11-16.1",
+  "tasks": [
+    {
+      "id": "T1-chunk-ranges",
+      "kind": "code",
+      "prompt": "Escribí en Python una función `chunk_ranges(start, end, days)` que parta el rango de fechas INCLUSIVO [start, end] (strings ISO 'YYYY-MM-DD') en tramos consecutivos e inclusivos de a lo sumo `days` días. Devuelve una lista de tuplas (inicio, fin) como strings ISO. El último tramo puede ser más corto. Si start > end, devolvé []. Si days <= 0, lanzá ValueError. No hay huecos ni superposiciones entre tramos.\n\nRespondé SOLO con el bloque de código Python final, sin explicaciones antes ni después."
+    },
+    {
+      "id": "T2-invoice-bug",
+      "kind": "debug",
+      "prompt": "Este código calcula el total de una factura, pero tiene un defecto real de comportamiento:\n\n```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = 0.0\n    for qty, unit in lines:\n        line = round(qty * unit, 2)\n        subtotal += line\n    discount = round(subtotal * discount_pct / 100, 2)\n    tax = round((subtotal - discount) * tax_pct / 100, 2)\n    return round(subtotal - discount + tax, 2)\n```\n\nEncontrá el defecto y devolvé la función corregida. El descuento se aplica sobre el subtotal exacto y el impuesto sobre el subtotal ya descontado; el único redondeo a 2 decimales permitido es el del total final.\n\nRespondé SOLO con el bloque de código Python final, sin explicaciones antes ni después."
+    },
+    {
+      "id": "T3-q3-revenue",
+      "kind": "analysis",
+      "prompt": "Sos analista de datos. Del siguiente CSV de transacciones, calculá el ingreso neto en USD de 2026-Q3 (1 de julio al 30 de septiembre, inclusive).\n\nREGLAS OBLIGATORIAS:\n- Un `id` repetido cuenta UNA sola vez: la primera aparición.\n- Solo se suman filas con moneda USD.\n- Los montos negativos son reembolsos y se suman tal cual.\n\n```csv\nid,fecha,moneda,monto\n1,2026-07-03,USD,120.50\n2,2026-07-15,USD,-30.00\n3,2026-08-01,USD,99.99\n3,2026-08-01,USD,99.99\n4,2026-08-20,EUR,250.00\n5,2026-09-10,USD,0.00\n6,2026-09-30,USD,45.25\n7,2026-10-01,USD,999.00\n```\n\nRespondé con: `TOTAL: <número>` en una línea, y debajo una lista corta de las filas que excluiste o deduplicaste, con el motivo."
+    }
+  ]
+}

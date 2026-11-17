@@ -1,0 +1,1 @@
+We need code only. Need ensure date parsing, timedelta. Function likely expected. Include import. ISO strings. Could use datetime.date.fromisoformat. Validate days <=0. start>end. Chunk inclusive max days. Compute end chunk = min(end, current + timedelta(days=days-1)). Return strings. ISO formatting. Input strings valid presumably. Code blockonly.

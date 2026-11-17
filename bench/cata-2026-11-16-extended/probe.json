@@ -1,0 +1,92 @@
+{
+ "mimo-v2.6-flash:cloud": {
+  "true": {
+   "model_echo": "mimo-v2.6-flash",
+   "content": "16:42",
+   "thinking_chars": 21,
+   "done": "stop",
+   "eval_count": 27,
+   "elapsed_s": 0.5
+  },
+  "false": {
+   "model_echo": "mimo-v2.6-flash",
+   "content": "16:42",
+   "thinking_chars": 21,
+   "done": "stop",
+   "eval_count": 27,
+   "elapsed_s": 0.5
+  }
+ },
+ "mimo-v2.6-pro:cloud": {
+  "true": {
+   "model_echo": "mimo-v2.6-pro",
+   "content": "16:42",
+   "thinking_chars": 21,
+   "done": "stop",
+   "eval_count": 27,
+   "elapsed_s": 0.5
+  },
+  "false": {
+   "model_echo": "mimo-v2.6-pro",
+   "content": "16:42",
+   "thinking_chars": 21,
+   "done": "stop",
+   "eval_count": 27,
+   "elapsed_s": 0.5
+  }
+ },
+ "mistral-large-4:cloud": {
+  "low": {
+   "model_echo": "mistral-large-4",
+   "content": "16:42",
+   "thinking_chars": 453,
+   "done": "stop",
+   "eval_count": 146,
+   "elapsed_s": 3.2
+  },
+  "true": {
+   "error": "HTTPError: HTTP Error 400: Bad Request",
+   "elapsed_s": 0.2
+  },
+  "false": {
+   "error": "HTTPError: HTTP Error 400: Bad Request",
+   "elapsed_s": 0.2
+  }
+ },
+ "muse-spark-open:cloud": {
+  "low": {
+   "model_echo": "muse-spark-open",
+   "content": "16:42",
+   "thinking_chars": 290,
+   "done": "stop",
+   "eval_count": 98,
+   "elapsed_s": 1.1
+  },
+  "false": {
+   "model_echo": "muse-spark-open",
+   "content": "16:42",
+   "thinking_chars": 1333,
+   "done": "stop",
+   "eval_count": 354,
+   "elapsed_s": 3.1
+  }
+ },
+ "nemotron-3-super:cloud": {
+  "true": {
+   "model_echo": "nemotron-3-super",
+   "content": "16:42",
+   "thinking_chars": 161,
+   "done": "stop",
+   "eval_count": 77,
+   "elapsed_s": 0.7
+  },
+  "false": {
+   "model_echo": "nemotron-3-super",
+   "content": "16:42",
+   "thinking_chars": 165,
+   "done": "stop",
+   "eval_count": 77,
+   "elapsed_s": 0.9
+  }
+ }
+}

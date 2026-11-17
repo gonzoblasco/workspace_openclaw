@@ -91,6 +91,14 @@ python3 scripts/cata-kit.py analyze bench/cata-<fecha>
 
 Imprime la tabla para el reporte y escribe `results_analyzed.json`.
 
+### 4-bis. Corregir un assert NO invalida la corrida
+
+Si después de medir aparece un assert demasiado estrecho (un regex que exigía la redacción de la
+referencia y rechazó "id 4: moneda no válida (EUR)"), se corrige el assert, se corre `check`
+otra vez, y se **re-evalúa desde el `content` guardado en `results.json`** — no se re-corre la
+cata. `results.json` guarda el texto completo de cada celda justo para esto. Registrar en el
+reporte qué celdas cambiaron de veredicto y por qué.
+
 ### 5. Evaluador ciego
 
 Spawnear un subagente con **modelo distinto de todos los candidatos**, `context: isolated`, y

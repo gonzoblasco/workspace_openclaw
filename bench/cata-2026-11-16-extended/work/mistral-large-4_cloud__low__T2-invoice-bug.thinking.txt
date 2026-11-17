@@ -1,0 +1,19 @@
+The user wants me to find a bug in the invoice calculation code and return only the corrected Python code block.
+
+The bug: The code rounds each line item to 2 decimals, rounds the discount, and rounds the tax. But the requirement says: "el único redondeo a 2 decimales permitido es el del total final" (the only rounding to 2 decimals allowed is the final total). The discount applies to the exact subtotal and tax on the discounted subtotal.
+
+So the fix: don't round line items, don't round discount, don't round tax — only round the final total.
+
+Corrected code:
+
+```python
+def invoice_total(lines, discount_pct, tax_pct):
+    subtotal = 0.0
+    for qty, unit in lines:
+        subtotal += qty * unit
+    discount = subtotal * discount_pct / 100
+    tax = (subtotal - discount) * tax_pct / 100
+    return round(subtotal - discount + tax, 2)
+```
+
+Respond only with the code block.

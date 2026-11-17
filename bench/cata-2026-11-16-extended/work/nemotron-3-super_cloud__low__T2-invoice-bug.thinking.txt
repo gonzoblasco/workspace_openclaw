@@ -1,0 +1,60 @@
+The user wants me to find the bug in the provided Python function and return the corrected function. The bug is that it rounds intermediate values (line, discount, tax) when it should only round the final total to 2 decimals. The discount applies to the exact subtotal, tax applies to the subtotal already discounted, and only the final total is rounded to 2 decimals.
+
+Let me analyze the original code:
+
+```python
+def invoice_total(lines, discount_pct, tax_pct):
+    subtotal = 0.0
+    for qty, unit in lines:
+        line = round(qty * unit, 2)  # BUG: rounding intermediate line
+        subtotal += line
+    discount = round(subtotal * discount_pct / 100, 2)  # BUG: rounding intermediate discount
+    tax = round((subtotal - discount) * tax_pct / 100, 2)  # BUG: rounding intermediate tax
+    return round(subtotal - discount + tax, 2)
+```
+
+Corrected version:
+- Calculate subtotal without rounding each line (or sum exact values)
+- Calculate discount on exact subtotal without rounding
+- Calculate tax on (subtotal - discount) without rounding
+- Return only the final result rounded to 2 decimals
+
+```python
+def invoice_total(lines, discount_pct, tax_pct):
+    subtotal = 0.0
+    for qty, unit in lines:
+        subtotal += qty * unit
+    discount = subtotal * discount_pct / 100
+    tax = (subtotal - discount) * tax_pct / 100
+    return round(subtotal - discount + tax, 2)
+```
+
+The user said "Respondé SOLO con el bloque de código Python final, sin explicaciones antes ni después." So I should output only the Python code block, no explanations.
+
+I need to make sure I output only the code block. Probably with ```python ... ``` or just the code? They said "bloque de código Python final", so likely a code block. But "SOLO con el bloque de código" means no text outside. I'll provide just the code block.
+
+Let me double check: "el descuento se aplica sobre el subtotal exacto y el impuesto sobre el subtotal ya descontado; el único redondeo a 2 decimales permitido es el del total final."
+
+So:
+- subtotal = sum(qty * unit) exact
+- discount = subtotal * discount_pct / 100 exact
+- taxable = subtotal - discount exact
+- tax = taxable * tax_pct / 100 exact
+- total = subtotal - discount + tax exact
+- return round(total, 2)
+
+Yes.
+
+I'll output:
+
+```python
+def invoice_total(lines, discount_pct, tax_pct):
+    subtotal = 0.0
+    for qty, unit in lines:
+        subtotal += qty * unit
+    discount = subtotal * discount_pct / 100
+    tax = (subtotal - discount) * tax_pct / 100
+    return round(subtotal - discount + tax, 2)
+```
+
+No extra text.

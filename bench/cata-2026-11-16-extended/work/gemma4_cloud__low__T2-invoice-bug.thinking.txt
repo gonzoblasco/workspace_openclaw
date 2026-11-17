@@ -1,0 +1,40 @@
+*   Function: `invoice_total(lines, discount_pct, tax_pct)`
+    *   Current logic:
+        1.  Iterates through `lines` (qty, unit).
+        2.  Rounds each line item: `line = round(qty * unit, 2)`.
+        3.  Sums rounded lines into `subtotal`.
+        4.  Calculates discount: `discount = round(subtotal * discount_pct / 100, 2)`.
+        5.  Calculates tax: `tax = round((subtotal - discount) * tax_pct / 100, 2)`.
+        6.  Returns final total: `round(subtotal - discount + tax, 2)`.
+
+    *   "El descuento se aplica sobre el subtotal exacto" (Discount is applied to the exact subtotal).
+    *   "el impuesto sobre el subtotal ya descontado" (Tax is applied to the discounted subtotal).
+    *   "el único redondeo a 2 decimales permitido es el del total final" (The only rounding to 2 decimals allowed is the final total).
+
+    *   The current code rounds at every step:
+        *   `line = round(qty * unit, 2)` -> WRONG.
+        *   `discount = round(...)` -> WRONG.
+        *   `tax = round(...)` -> WRONG.
+    *   The requirement says *only* the final total should be rounded.
+
+    *   `subtotal = sum(qty * unit for qty, unit in lines)`
+    *   `discount = subtotal * discount_pct / 100`
+    *   `tax = (subtotal - discount) * tax_pct / 100`
+    *   `total = subtotal - discount + tax`
+    *   `return round(total, 2)`
+
+    ```python
+    def invoice_total(lines, discount_pct, tax_pct):
+        subtotal = 0.0
+        for qty, unit in lines:
+            subtotal += qty * unit
+        discount = subtotal * discount_pct / 100
+        tax = (subtotal - discount) * tax_pct / 100
+        return round(subtotal - discount + tax, 2)
+    ```
+
+    *   Discount on exact subtotal? Yes.
+    *   Tax on discounted subtotal? Yes.
+    *   Only final rounding? Yes.
+
+    *   Respond ONLY with the Python code block.
