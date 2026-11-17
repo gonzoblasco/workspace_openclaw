@@ -210,7 +210,7 @@ Apagó la radio del vecino con la cabeza, que no se puede.
 
 En el taller lo esperaba la planilla de siempre.
 
-Su socio había dejado un papel sobre el escritorio con tres cosas escritas a mano.
+El chico que le daba una mano había dejado un papel sobre el escritorio con tres cosas escritas a mano.
 
 Una era del cliente de la otra punta. Otra era del banco.
 
@@ -1276,9 +1276,9 @@ Buscó el nombre de Néstor en la lista y no llamó, y dejó el teléfono sobre 
 
 Ese día no hizo nada distinto.
 
-Se levantó, se afeitó, tomó el café, fue al trabajo.
+Se levantó, se afeitó, tomó el café y fue a la municipalidad, como hacía desde hacía treinta y un años.
 
-En el trabajo contestó tres llamadas y firmó dos cosas.
+En la oficina contestó tres llamadas y firmó dos cosas. A las doce y media cerró la carpeta, saludó a la chica del escritorio de al lado y comió un sándwich en el bar de la esquina. Volvió a la oficina a las dos.
 
 A la tarde volvió a la casa y se sentó en el patio. El pasto estaba más alto que la semana anterior y nadie lo había cortado desde enero.
 
@@ -1976,9 +1976,15 @@ Silencio.
 
 ---
 
-— Eso es lo que no entienden —dijo Néstor, y se levantó—. Yo no tengo casa acá. Yo no vivo en esta casa, no me la dejó nadie, no la arreglé. A mí lo único que me toca es juntarlos.
+— Eso es lo que no entienden —dijo Néstor, y se levantó—. Yo no vivo en esta casa. No me la dejó nadie. No la arreglé.
 
-— Y no podés —dijo Adán.
+— Ya sabemos —dijo Vera.
+
+— No, no saben.
+
+Néstor se quedó parado en el medio del patio, entre las tres sillas.
+
+— Vos lo que hacés es juntarnos —dijo Adán—. Y no podés.
 
 — No puedo.
 
@@ -2135,6 +2141,62 @@ En el auto, antes de arrancar, se quedó con las manos en el volante y la frente
 *Los dos me dieron la razón y los dos me la sacaron.*
 
 *Y ahora yo tampoco sé si hay algo que arreglar.*
+
+---
+
+Sonó el teléfono.
+
+Era el escribano, a las siete y veinte de la tarde.
+
+— Señor Quiroga, le aviso que se cumplió el plazo.
+
+Néstor se quedó con la frente apoyada en el aro del volante.
+
+— ¿Qué plazo?
+
+— El de la carta. Doce días. Venció el viernes y nadie presentó nada.
+
+— ¿Y eso qué quiere decir?
+
+— Que el inventario quedó firme. El expediente pasa a la etapa de venta.
+
+---
+
+Néstor levantó la cabeza y miró la casa por el parabrisas.
+
+La puerta estaba cerrada y la luz de la cocina prendida.
+
+— ¿Y ahora?
+
+— Ahora hay que fijar el precio. La tasación que pidieron ya sirve para eso.
+
+— ¿La que pidió ella?
+
+— Esa. Cuando llegue el informe se presenta en el expediente y queda el precio.
+
+— ¿Y después?
+
+— Después se puede ofrecer. —El escribano hizo una pausa—. Y cualquiera de los tres puede traer un comprador.
+
+---
+
+Néstor se pasó la mano por la cara.
+
+— ¿Y si no aparece comprador?
+
+— El expediente queda abierto. Pero abierto quiere decir esperando, señor Quiroga. Y los expedientes que esperan se cobran igual.
+
+---
+
+Cortó.
+
+Se quedó con el teléfono en la mano y la casa adelante, con la luz de la cocina prendida y Adán adentro, lavando un plato.
+
+*Doce días.*
+
+*Doce días y se destrabó solo.*
+
+*No hicimos nada y el trámite siguió.*
 
 ---
 

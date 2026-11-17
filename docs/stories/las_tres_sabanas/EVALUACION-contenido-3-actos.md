@@ -109,9 +109,11 @@ veía fumar"*.
 
 ---
 
-## 3. Lo que no se tocó y hay que decidir
+## 3. Lo que quedó abierto (resuelto el 2026-11-17, ver cada punto)
 
 ### 3.1 El plazo de doce días del Acto I nunca vence
+
+**Resuelto el 2026-11-17.** Se cumplen en el capítulo 6 y destraban el expediente. Ver `PLAN-revision-borrador-2.md` §7.
 
 El capítulo 3 monta un reloj: la carta del expediente da **doce días**, y el escribano llama a Néstor
 porque ya pasaron tres. Ese plazo no vuelve a aparecer. El Acto II avanza con la tasación y el Acto
@@ -123,12 +125,16 @@ capítulo 3 y la carta solo anuncia que el expediente está en curso.
 
 ### 3.2 El socio de Néstor aparece una vez y desaparece
 
+**Resuelto el 2026-11-17.** Pasó a ser el chico que le da una mano.
+
 Capítulo 2: "su socio había dejado un papel sobre el escritorio". Después el taller es solo de
 Néstor, con un chico que le da una mano los martes y jueves (capítulo 15) y un muchacho que entra en
 marzo (capítulo 17). No es contradicción, pero es un cabo suelto: o el socio se va en algún momento,
 o se cambia esa línea por "el chico que le da una mano".
 
 ### 3.3 El trabajo de Adán no está definido
+
+**Resuelto el 2026-11-17.** Empleado municipal desde hace treinta y un años.
 
 Capítulo 5: "en el trabajo contestó tres llamadas y firmó dos cosas". No se sabe qué trabajo. En una
 novela donde todo el mundo tiene una ocupación concreta (Néstor el taller, Vera el diario), Adán es
@@ -137,10 +143,14 @@ conviene que alguien lo diga.
 
 ### 3.4 La plata de Vera no alcanza para un departamento
 
+**Resuelto el 2026-11-17.** Ahora es la seña.
+
 Cuatro millones y medio en un plazo fijo, en 2026, es una seña, no un departamento. El texto lo trata
 como si fuera la compra. Se arregla con una palabra: "la seña del departamento" en el capítulo 13.
 
 ### 3.5 El pensamiento del POV está a la mitad del perfil
+
+**Resuelto el 2026-11-17, en contra de lo que decía este documento.** No es que la novela piense poco: piensa por escena. Medida por capítulo va de 0,59 en una escena de diálogo a 1,77 en Adán solo con un contrato en la mano. La plantilla estaba mal, no el libro.
 
 0,65 por cada cien palabras en los tres actos; la plantilla pide 1 a 1,4. Es uniforme, así que no es
 un acto desviado: es una decisión de voz que se tomó sin decidirla. Si se sube, sube en los tres.
@@ -164,12 +174,16 @@ un acto desviado: es una decisión de voz que se tomó sin decidirla. Si se sube
 
 - **El Acto I tarda en arrancar.** Las escenas 1 a 3 son tres versiones del mismo silencio (nadie
   dice lo que piensa). El lector entiende el sistema en la escena 1 y lo vuelve a entender en la 3.
+  **Sin resolver.** El plazo del capítulo 6 le dio un motor al acto, pero las escenas 2 y 3 siguen
+  demasiado cerca la una de la otra.
 - **Néstor explica demasiado en el capítulo 6.** "Yo no tengo casa acá, a mí lo único que me toca es
-  juntarlos" es la tesis del personaje dicha en voz alta. La escena funciona igual, pero pierde si
-  él lo dice una vez más en el 11.
+  juntarlos" es la tesis del personaje dicha en voz alta.
+  **Resuelto el 2026-11-17:** la frase ya no es suya. La dice Adán, como acusación.
 - **Vera tiene razón en todo.** Del capítulo 3 al 13 acierta siempre. Su error —pedir la tasación sin
   avisar— se le perdona en el Acto I y no vuelve a costarle nada. Necesita una equivocación del Acto
   II que no sea "tener razón a destiempo".
+  **Resuelto el 2026-11-17:** es ella la que pregunta por un comprador y la que trae el nombre de
+  Basterra. La puerta que mata, la abrió ella.
 
 ---
 

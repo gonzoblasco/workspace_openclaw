@@ -2,6 +2,9 @@
 
 *2026-11-17. Qué se hace con las ocho cosas que la lectura de corrido dejó abiertas.*
 
+> **Estado: EJECUTADO el 2026-11-17.** Las cuatro decisiones se resolvieron con la recomendación del
+> plan. Resultado en §7.
+
 > **Punto de partida:** 26.162 palabras, tres actos, perfil `casa` en banda, cero repeticiones.
 > Los siete errores de dato ya están corregidos (calle, apellido, sábana, plata, fecha, repeticiones,
 > cigarrillo). Lo que sigue son decisiones de autor, no correcciones.
@@ -145,3 +148,22 @@ Cuatro decisiones. Las demás las tomo yo.
 2. **Vera y Basterra:** ¿le damos a Vera el error de haber llamado al comprador?
 3. **Oficio de Adán:** ¿empleado municipal, u otra cosa?
 4. **Pensamiento:** ¿probamos subirlo, o aceptamos 0,65 y corregimos la plantilla?
+
+*Las cuatro se resolvieron el mismo día: (a), sí, municipal, y corregir la plantilla.*
+
+---
+
+## 7. Lo que se hizo (2026-11-17)
+
+| Ítem | Resolución |
+|---|---|
+| **A1** | El plazo se cumple en el 6. El escribano llama a Néstor en el auto: el inventario quedó firme, el expediente pasa a venta, la tasación de Vera sirve para fijar el precio, y cualquiera de los tres puede traer un comprador. El reloj del Acto I enciende el Acto II, y esa última frase es la que habilita a Basterra. |
+| **A2** | Vera le pregunta a la inmobiliaria si hay quién compre para demoler, en noviembre, y le dan el nombre de Basterra. Adán se lo oye decir. En el 13 vuelve el "es lo mismo", y en el 15 Vera se entera de que el hombre con el que Adán firmó es el que ella trajo. |
+| **A3** | Néstor ya no dice su tesis. La dice Adán, como acusación: *"Vos lo que hacés es juntarnos. Y no podés."* |
+| **B1** | Adán es empleado municipal desde hace treinta y un años. Escena en el 5, línea en el 17 ("me jubilo el año que viene"). |
+| **B2** | El socio es el chico que le da una mano. |
+| **B3** | Los cuatro y medio son "para la seña del departamento". |
+| **B4** | No se sube la densidad: se corrige la plantilla. Medida por escena, la voz va de 0,59 en diálogo a 1,77 en una escena sola. Se agregaron tres pensamientos en el 16 y la plantilla registra la distribución. |
+
+**Resultado:** 26.659 palabras (9.689 + 7.103 + 9.867). Los tres actos dentro de perfil, mediana 9 en
+el libro, cero frases repetidas, cero punto y coma.

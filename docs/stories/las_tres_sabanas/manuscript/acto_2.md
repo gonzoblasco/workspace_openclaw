@@ -1130,6 +1130,8 @@ En el estacionamiento del edificio se quedó en el auto con el motor apagado y l
 
 *Si yo me quedo quieta, ¿qué pasa? No sé. Nunca me quedé.*
 
+*Toda mi vida resolví moviéndome. Y ahora el movimiento es lo que rompe.*
+
 ---
 
 Pensó en la sábana, en el cajón de abajo, con la funda puesta y el broche cerrado, intacta desde que la abuela la cosió.
@@ -1347,6 +1349,28 @@ Del otro lado no se escuchó nada.
 ---
 
 Cortaron, y Adán se quedó en la cocina con el teléfono en la mano.
+
+---
+
+Antes de cortar, Vera había dicho una cosa más, y la dijo como al pasar.
+
+— Le pregunté a la inmobiliaria si hay alguien que compre para demoler.
+
+— ¿Para demoler?
+
+— Para el lote. Sin la casa.
+
+— ¿Y?
+
+— Hay uno. Un señor Basterra. Compra lotes y paga rápido.
+
+---
+
+Adán se quedó con el teléfono en la mano.
+
+*Le preguntó si hay alguien que compre para demoler la casa.*
+
+*Y le dijeron que sí.*
 
 ---
 

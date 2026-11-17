@@ -340,7 +340,7 @@ Adán se quedó callado.
 
 — Más o menos.
 
-— Y yo tengo cuatro y medio en el plazo fijo.
+— Y yo tengo cuatro y medio en el plazo fijo, para la seña del departamento.
 
 ---
 
@@ -386,9 +386,23 @@ Vera tachó la primera columna.
 
 — Basterra.
 
-— Basterra. Dijo que compraba para demoler.
+— El que llamaste vos.
 
-— Sí. Dijo eso.
+— Yo no lo llamé. Pregunté si había alguno.
+
+— Es lo mismo.
+
+— No es lo mismo.
+
+— Vera, es lo mismo.
+
+---
+
+Silencio.
+
+— El que compra para demoler —dijo Adán.
+
+— Ese.
 
 ---
 

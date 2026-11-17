@@ -164,6 +164,10 @@ Vera buscó las tijeras en la caja de la cocina.
 
 Se sentó en la silla, estiró un pedazo, y cortó.
 
+*Si lo corto mal, no hay otra.*
+
+*Ya no hay otra de todas maneras.*
+
 ---
 
 Cortó derecho, con las dos manos, y el ruido de la tela al abrirse le dio en los dientes.
@@ -176,6 +180,10 @@ Quedaron tres pedazos.
 
 Uno tenía la costura verde. Uno tenía el remiendo. El tercero era liso, y era el más chico de los tres.
 
+*Tres pedazos de una sábana que era de uno.*
+
+*Y los tres van a parecer un reparto.*
+
 ---
 
 Vera los puso en fila sobre la mesa.
@@ -187,6 +195,10 @@ Vera los puso en fila sobre la mesa.
 ---
 
 Se quedó sentada un rato largo, con las tijeras en la falda.
+
+*Yo pedí la tasación, llamé a la inmobiliaria y ahora corto la sábana.*
+
+*No me muevo desde hace un año y todo lo que pasó lo empecé yo.*
 
 Después fue a buscar el hilo y la aguja.
 

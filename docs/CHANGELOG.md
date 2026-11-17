@@ -6,6 +6,25 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-17] - Las Tres Sabanas: borrador 2, de los siete datos a las ocho decisiones
+
+### Changed
+- **El plazo de doce días ahora dispara.** En el capítulo 6 el escribano llama a Néstor: el inventario quedó firme, el expediente pasa a venta, la tasación de Vera sirve para fijar el precio y cualquiera de los tres puede traer un comprador. El reloj del Acto I enciende el Acto II, y esa última frase es la que después habilita a Basterra.
+- **Vera trae a Basterra.** En el capítulo 10 le pregunta a la inmobiliaria si hay quién compre para demoler y le dan el nombre. No lo dice. En el 13 vuelve el "es lo mismo" y en el 15 se entera de que el hombre con el que Adán firmó es el que ella trajo. Deja de tener razón en todo.
+- **Néstor ya no dice su tesis.** La frase "lo único que me toca es juntarlos" pasa a la boca de Adán, como acusación.
+- **Adán es empleado municipal desde hace treinta y un años.** Explica las llamadas y las firmas, lo ata al pueblo y hace el final más duro: conserva el sueldo y pierde la casa.
+- **El socio** pasa a ser el chico que le da una mano. **Los cuatro y medio de Vera** pasan a ser "para la seña del departamento".
+
+### Fixed
+- **La densidad de pensamiento no era un defecto del libro sino de la plantilla.** Medida por escena, la voz `casa` va de 0,59 en diálogo a 1,77 en una escena sola; el 0,65 de promedio era el resultado de promediar escenas que hacen cosas distintas. `PLANTILLA-voz-casa.md` §4 ahora registra la distribución y la regla: se sube cuando una escena pide cabeza, no para llegar a un número. Se agregaron tres pensamientos en el capítulo 16.
+
+### Notes
+- **26.659 palabras** (9.689 + 7.103 + 9.867), +497 sobre el borrador 1. Los tres actos dentro de perfil: I 9,0 · 34,6/45,3/18,1/2,0 · II 8,0 · 38,5/39,3/19,5/2,7 · III 8,0 · 38,0/42,1/18,2/1,8. Libro: mediana 9, bandas 36,6/42,8/18,5/2,1.
+- Cero frases repetidas, cero punto y coma, cero adverbios en `-mente`.
+- **Queda un solo defecto de relato:** el Acto I todavía tarda en arrancar, porque las escenas 2 y 3 siguen demasiado cerca la una de la otra.
+
+---
+
 ## [2026-11-17] - Las Tres Sabanas: la lectura de corrido destapó siete cosas
 
 ### Fixed

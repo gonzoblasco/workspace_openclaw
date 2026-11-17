@@ -36,6 +36,12 @@ Era un hombre de la edad de Adán, con camisa azul y un anillo en la mano derech
 
 Adán se sentó y puso las manos sobre las rodillas.
 
+*Basterra.*
+
+*El nombre que Vera dijo por teléfono en noviembre.*
+
+---
+
 — Vengo por la casa de Salta al 400.
 
 Basterra lo miró un segundo.
@@ -208,51 +214,25 @@ Basterra se recostó en el sillón.
 
 Adán miró la carpeta abierta sobre el escritorio.
 
-— Voy a poner mi parte para pagar la deuda. El resto se reparte entre los dos.
+— Los doce van al banco. Lo que queda se reparte entre los otros dos.
 
 ---
 
 Basterra tardó en contestar y no apartó la vista.
 
-— ¿Su parte son diez y medio.
+— ¿Su parte, después del banco, son seis y medio.
 
 — Más o menos.
 
-— Y la deuda son doce.
+— Y se la va a dar a ellos.
 
 — Sí.
-
-— Le falta.
-
----
-
-Adán lo miró sin entender.
-
-— Le falta un millón y medio, don Adán. Su parte no alcanza a cubrir la deuda.
-
----
-
-Silencio.
-
-Adán miró por la ventana de la oficina, la galería, la gente que pasaba.
-
-*Siempre falta algo.*
-
-*Siempre.*
-
----
-
-— Entonces pongo la parte y lo que falte lo paga él —dijo—. De lo que le toque.
 
 ---
 
 Basterra se quedó mirándolo, con la lapicera en el aire.
 
-— Eso son ocho y medio para él, y diez para su prima.
-
-— Nueve y medio y diez.
-
-— Con la deuda y los gastos, ocho y medio y nueve y cuarto.
+— Son tres y cuarto para cada uno. Con los gastos, ocho y medio para él y nueve y cuarto para su prima.
 
 ---
 
@@ -466,6 +446,32 @@ Silencio.
 
 Vera se quedó con la mano en el aire.
 
+— ¿Con quién?
+
+— Con Basterra.
+
+---
+
+Vera bajó la mano despacio.
+
+— El que llamé yo.
+
+— El que te dio el nombre.
+
+— Es lo mismo.
+
+— No es lo mismo —dijo Adán—. Yo fui. Vos preguntaste.
+
+---
+
+Vera se quedó mirándolo.
+
+— ¿Y ahora qué soy?
+
+— La que preguntó.
+
+---
+
 — ¿Con qué plata pagaste la seña?
 
 — Vendí el Falcon.
@@ -552,7 +558,7 @@ Vera se quedó callada.
 
 — ¿Cómo es el reparto? —dijo por fin.
 
-— Doce al banco. Mi parte cubre diez y medio y lo que falta sale de la de él.
+— Doce al banco. Y mi parte se reparte entre ustedes dos.
 
 — ¿Y a mí?
 

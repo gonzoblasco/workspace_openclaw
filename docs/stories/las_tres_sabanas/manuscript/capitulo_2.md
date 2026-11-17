@@ -32,7 +32,7 @@ Apagó la radio del vecino con la cabeza, que no se puede.
 
 En el taller lo esperaba la planilla de siempre.
 
-Su socio había dejado un papel sobre el escritorio con tres cosas escritas a mano.
+El chico que le daba una mano había dejado un papel sobre el escritorio con tres cosas escritas a mano.
 
 Una era del cliente de la otra punta. Otra era del banco.
 

@@ -304,6 +304,8 @@ En el estacionamiento del edificio se quedó en el auto con el motor apagado y l
 
 *Si yo me quedo quieta, ¿qué pasa? No sé. Nunca me quedé.*
 
+*Toda mi vida resolví moviéndome. Y ahora el movimiento es lo que rompe.*
+
 ---
 
 Pensó en la sábana, en el cajón de abajo, con la funda puesta y el broche cerrado, intacta desde que la abuela la cosió.

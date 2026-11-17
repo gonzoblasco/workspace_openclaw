@@ -68,9 +68,9 @@ Buscó el nombre de Néstor en la lista y no llamó, y dejó el teléfono sobre 
 
 Ese día no hizo nada distinto.
 
-Se levantó, se afeitó, tomó el café, fue al trabajo.
+Se levantó, se afeitó, tomó el café y fue a la municipalidad, como hacía desde hacía treinta y un años.
 
-En el trabajo contestó tres llamadas y firmó dos cosas.
+En la oficina contestó tres llamadas y firmó dos cosas. A las doce y media cerró la carpeta, saludó a la chica del escritorio de al lado y comió un sándwich en el bar de la esquina. Volvió a la oficina a las dos.
 
 A la tarde volvió a la casa y se sentó en el patio. El pasto estaba más alto que la semana anterior y nadie lo había cortado desde enero.
 

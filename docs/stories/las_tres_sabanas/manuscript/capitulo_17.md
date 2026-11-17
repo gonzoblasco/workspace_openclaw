@@ -164,6 +164,14 @@ Caminaron media cuadra en silencio.
 
 — Me alcanza. El alquiler es barato y el taller me deja algo todos los meses.
 
+— ¿Y la municipalidad?
+
+— Sigo yendo. A las siete y cuarenta, como siempre. Me jubilo el año que viene.
+
+— ¿Y después?
+
+— Después duermo hasta las ocho.
+
 — Si necesitás.
 
 — No necesito.

@@ -93,6 +93,22 @@ diálogo está mal escrito.
 
 - **Primera persona, presente, sin marca.** Una vez cada 100 palabras en este capítulo
   (`Si digo algo, empeora.`), pero **puede ir a más en escenas de decisión**.
+
+### La densidad real, medida sobre la novela (2026-11-17)
+
+La plantilla decía "1 a 1,4 por cada 100 palabras", que es el valor de **Card**. Medida sobre las
+26.659 palabras de *Las Tres Sabanas*, la voz `casa` piensa **0,65 de promedio**, y ese promedio
+esconde una distribución que **no es un defecto: es la escena**.
+
+| Tipo de escena | Densidad medida | Ejemplo |
+|---|---|---|
+| **Un solo POV, solo, con un objeto o un papel en la mano** | **1,5 a 1,8** | cap. 12 (Adán con el contrato del préstamo): 1,77 |
+| Escena de decisión o de cuenta | 0,8 a 1,0 | cap. 16 (Vera cortando la sábana): 0,97 |
+| Escena de diálogo de dos o tres | 0,4 a 0,6 | cap. 9 (Vera y Néstor): 0,59 |
+
+**Regla que sale de esto:** la densidad se mide por escena, no por libro. Una novela de tres
+personas que hablan mucho va a promediar bajo aunque cada escena esté en su punto. **No se sube la
+densidad para llegar a un número: se sube cuando una escena sola pide cabeza y no la tiene.**
 - **Va solo, en párrafo propio, o al final de uno de acción.** Nunca explicado.
 - **El pensamiento es cálculo, no emoción.** *"Se quedó él, se va ella, y la que falta decidir es la
   sábana. Y me la dejan a mí."*
