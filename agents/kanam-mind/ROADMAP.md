@@ -48,7 +48,7 @@ mide de nuevo.
 | `technical-book-processor` | 🟡 parcial | Procedimiento capítulo→ADR→ejercicio→commit. Nunca corrí un libro entero; `kb-ingest.py` es la pieza que lo hace verificable. |
 | `engram-project-memory` | 🟡 parcial | Memoria de proyecto de código (Qwen/Claude Code), no mía. |
 | `search-fusion` | 🟡 parcial | Estrategia por intención, `disable-model-invocation: true`; sin telemetría de uso. |
-| `deepwiki` | ✅ operativo | Consulta docs de repos públicos vía MCP. Fuente primaria ajena a mi ejecución. |
+| `deepwiki` | 🔴 sin herramienta (corregido 2026-11-17) | El `SKILL.md` existe y el CLI lo lista `ready`, pero **el MCP de DeepWiki no está declarado en este gateway**: `openclaw mcp list` devuelve solo `kanam-fixer`, `openclaw.json` no tiene entrada `deepwiki`, no hay archivo `mcporter.json` en `~/.openclaw/config/` y no hay binario `deepwiki` en PATH. La fila anterior decía "✅ operativo" sin respaldo. Pendiente: pedir a OPS el server, o reescribir la skill para que use `web_fetch` contra deepwiki.com. |
 | `study-tracker` | ❌ deuda | `SKILL.md` es un **placeholder explícito**; `AGENTS.md` todavía me pide "registrar avance" ahí. |
 
 ### 2.b Mi sustrato: el gate, la memoria y la demanda
