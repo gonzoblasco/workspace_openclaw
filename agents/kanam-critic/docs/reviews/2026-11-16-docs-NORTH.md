@@ -15,11 +15,11 @@
 ```
 
 ## Puntuación SHARP
-- **Sharpness (S): 4** – El documento está preciso, actualiza datos erróneos y cita fuentes reales (líneas 3-5,7,22).
-- **Horizon (H): 3** – Define horizontes claros pero algunos frentes siguen sin criterio de listo (OnWheels, kanam-os), indicando visión a medio plazo.
-- **Asymmetry (A): 3** – El valor entregado es informativo para el equipo, pero la carga de trabajo para alinearse es moderada.
-- **Resistance (R): 4** – El contenido está bien estructurado, con referencias a ADRs y validaciones, lo que lo hace robusto ante cambios.
-- **Parsimony (P): 3** – Incluye mucha tabla y detalle; podría simplificarse, pero la complejidad está justificada por la necesidad de claridad.
+- **Sharpness (S): 4** - El documento está preciso, actualiza datos erróneos y cita fuentes reales (líneas 3-5,7,22).
+- **Horizon (H): 3** - Define horizontes claros pero algunos frentes siguen sin criterio de listo (OnWheels, kanam-os), indicando visión a medio plazo.
+- **Asymmetry (A): 3** - El valor entregado es informativo para el equipo, pero la carga de trabajo para alinearse es moderada.
+- **Resistance (R): 4** - El contenido está bien estructurado, con referencias a ADRs y validaciones, lo que lo hace robusto ante cambios.
+- **Parsimony (P): 3** - Incluye mucha tabla y detalle; podría simplificarse, pero la complejidad está justificada por la necesidad de claridad.
 
 **Total:** 17 (≤18 → **VETO**)
 

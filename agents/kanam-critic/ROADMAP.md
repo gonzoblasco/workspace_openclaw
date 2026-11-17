@@ -82,7 +82,7 @@ entran.** Ese es el filtro que la v0.2 §6 exige ("si un hito no mueve ningún e
 | **T1.x** - Reemision post-cambio de modelo | Vigente vigente | Veredicto r4 reemitido con gpt-oss cuando vuelva el presupuesto; F8 | 🟡 abierto (modelo M3.1-FLASH provisional por F8) |
 | **T1.x** - Reemision post-cambio de modelo | Vigente vigente | Veredicto r4 reemitido con gpt-oss cuando vuelva el presupuesto; F8 | 🟡 abierto (modelo M3.1-FLASH provisional por F8) |
 | **T2** - El disparador | Que me convoquen sin que Gonzo lo pida | 3 revisiones en 2 semanas **iniciadas por el sistema** | 🟡 **montado, sin medir** |
-| **T3** - El retorno | Que mi VETO sea contrato, no sermón | 3 VETOs con absorción medida (se corrigió o no, en cuánto tiempo) | 🟡 **ledger con 3 fricciones (auto-corrección); falta medir VETOs sobre entregables ajenos |
+| **T3** - El retorno | Que mi VETO sea contrato, no sermón | 3 VETOs con absorción medida (se corrigió o no, en cuánto tiempo) | 🟡 **meta de VETOs ajenos cumplida (4: ROADMAP, kanam-dev x2, NORTH); absorción medida 7/20 = 35%; falta que los autores cierren las 13 abiertas** |
 | **T4** - Las extensiones de eje | Ampliar capacidad con la base ya real | T1+T2+T3 cerrados y 1 detector nuevo verde en el lab | ⚪ pendiente |
 | **T5** - v1.0 El Estándar | El veredicto es parte del pipeline | 1+ solicitud/mes originada en otro agente + veredicto como gate | ⚪ pendiente |
 
@@ -119,11 +119,13 @@ vara no perdona un kit que todavia no puede auditarse a si mismo.
 
 **Estado al cierre del turno (2026-11-07, 16:40 ART).**
 - Veredicto vigente del kit: `kanam-critic-kit-v0.3-r4` = **Aprobado 19/25**, delta +7 contra el r1.
-- T3 (tasa de absorcion): 2 VETOs sobre trabajo ajeno cerrados (`docs-ROADMAP-madurez` 15/25 y
-  `kanam-dev-inventario-skills` 15/25). Falta UN VETO mas; candidato elegido: onwheels panel.
-- Guardas: KIT 18/18; barrido semanal payload corregido (rutas absolutas); F15 absorbida.
-- Fricciones abiertas con dueño: F7 (Parsimony, consolidacion de scripts), F8 (modelo del juez,
-  provisional en minimax), F9 (tasa de absorcion), F10-F14 (contenido de docs/ROADMAP.md).
+- T3 (tasa de absorcion): **4 VETOs sobre trabajo ajeno** cerrados (`docs-ROADMAP-madurez` 15/25,
+  `kanam-dev-ROADMAP` 16/25, `kanam-dev-inventario-skills` 15/25, `docs-NORTH` 17/25). La meta de
+  VETOs ajenos esta cumplida; lo que falta es que los autores absorban.
+- Absorcion medida al 2026-11-17: **7 de 20 fricciones (35%)**, todas de auto-correccion (F1-F6,
+  F8, F15). Las 13 abiertas son de autores ajenos: F7/F9 (kit), F10-F14 (docs/ROADMAP),
+  F16-F20 (docs/NORTH).
+- Guardas: KIT 18/18; veredictos 6/6 con respaldo (2 anulados); refs 716 OK.
 - El modelo del barrido semanal es `gpt-oss:120b-cloud` (declarado del rol); la sesion principal
   corre con el free model disponible del CORE.
 

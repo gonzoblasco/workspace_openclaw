@@ -37,20 +37,23 @@
   se actualiza la friccion F8.
 - Nada de esto toca `docs/ROADMAP.md` ni otros wedos: la decision vive aca y en F8 del ledger.
 
-## Estado a 2026-11-07 (verificado, no supuesto)
+## Estado a 2026-11-17 (verificado contra disco)
 
-- `memory/verdicts.jsonl` tiene **3 veredictos validos** y **2 anulados con motivo escrito**:
+- `memory/verdicts.jsonl`: **6 veredictos validos con respaldo** y 2 anulados con motivo escrito.
   - `kanam-critic-kit-v0.3` = VETO 12/25 (primer juicio real)
-  - `kanam-critic-kit-v0.3-r2` = ANULADO (etiquetado "Aprobado" sobre 16; placeholders sin ejecutar)
+  - `kanam-critic-kit-v0.3-r2` = ANULADO (16 etiquetado Aprobado + placeholders)
   - `kanam-critic-kit-v0.3-r3` = ANULADO (registrado sin reporte)
-  - `kanam-critic-kit-v0.3-r4` = **Aprobado 19/25** (kit vigente; emitido por minimax-m3.1-flash, vigente, F8 provisional)
-  - `docs-ROADMAP-madurez` = **VETO 15/25** (trabajo ajeno, 5 fricciones F10-F14, elegido por Gonzo)
-- Fricciones: 14 registradas, 7 absorbidas (F1-F6, F8 por decision), 7 abiertas
-  (F7 scripts, F9 tasa, F10-F14 sobre docs/ROADMAP.md, F15 el bug del barrido).
-- Lab: `GLOBAL=aprobado (6/6)`.
-- Kit: `GLOBAL=aprobado (18/18)`.
-- Disparadores: heartbeat 24h + automatizacion `critic-sweep-weekly` (lunes 18:00 ART), delivery Telegram.
-- Programa: `agents/kanam-critic/ROADMAP.md` (fuente unica, tramos T0 a T5); el Planner es dueno del envelope en `agents/kanam-planner/PROGRAMS/critic-v0.3.md`.
+  - `kanam-critic-kit-v0.3-r4` = **Aprobado 19/25** (kit; vigente, F8 provisional por modelo)
+  - `docs-ROADMAP-madurez` = VETO 15/25
+  - `kanam-dev-ROADMAP` = VETO 16/25
+  - `kanam-dev-inventario-skills` = VETO 15/25
+  - `docs-NORTH` = VETO 17/25 (2026-11-16)
+- `memory/frictions.jsonl`: **20 fricciones, 7 absorbidas (35%) y 13 abiertas**.
+  Absorbidas: F1-F6, F8, F15. Abiertas: F7 y F9 (kit), F10-F14 (docs/ROADMAP), F16-F20 (docs/NORTH).
+- Kit: `check-kit.py` = `GLOBAL=aprobado (18/18)` · Guard: `verify-verdict.py` = 6/6 valido, 2 anulados.
+- Lab: `GLOBAL=aprobado (6/6)` con 6 casos trampa.
+- Disparadores: heartbeat 24h del agente + `critic-sweep-weekly` (lunes 18:00 ART, delivery Telegram).
+- Ruta: `ROADMAP.md` v0.3 (fuente unica). Programas: `agents/kanam-planner/PROGRAMS/critic-v0.3.md`.
 
 ## Que toco y con quien no me meto
 
