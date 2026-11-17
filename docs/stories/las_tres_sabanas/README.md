@@ -116,4 +116,5 @@ y el pensamiento del POV a la mitad del perfil.
    de aire entre el colapso y el epílogo.
 
 La lectura de contenido completa, con lo corregido y lo que queda abierto, está en
-`EVALUACION-contenido-3-actos.md`.
+`EVALUACION-contenido-3-actos.md`. El plan para resolverlo, con costos y decisiones pendientes, en
+`PLAN-revision-borrador-2.md`.
