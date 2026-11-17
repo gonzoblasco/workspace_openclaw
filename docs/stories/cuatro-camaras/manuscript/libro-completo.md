@@ -1,4 +1,6 @@
-*Parte I — La última vez. POV: Emilio, tercera limitada.*
+# Cuatro cámaras
+
+## Parte I — La última vez
 
 ---
 
@@ -92,6 +94,8 @@ Los cinco meses no habían pasado en vano. Había pasado una cosa: el veintitré
 
 Se quedó en la vereda hasta que salió una vecina y lo miró y él se fue.
 ---
+
+## Parte II — La lapicera
 
 El escrito entró un jueves y el empleado le dijo que podía dejarlo, y que probablemente no lo vieran hasta febrero.
 
@@ -508,6 +512,8 @@ Y siguieron.
 ---
 ---
 
+## Parte III — Cuatro cámaras
+
 La denuncia entró el trece de abril a las ocho y cuarenta de la mañana.
 
 Emilio se enteró a las nueve y cuatro, en la góndola de los lácteos, con un yogur de frutilla en la mano.
@@ -850,6 +856,8 @@ Y siguieron.
 
 ---
 ---
+
+## Parte IV — Los ocho meses
 
 La resolución de agosto decía un fin de semana por medio y Emilio decidió no creerlo hasta que lo vio pasar.
 
@@ -1213,28 +1221,6 @@ Había un portón, un auto en doble fila, un padre preguntando por qué, y una p
 
 ---
 
----
-
-El martes veintitrés de mayo de dos mil veintitrés le llegó la notificación.
-
-Emilio estaba en la oficina. Eran las diez y cuarenta.
-
-La abogada le mandó un mail con dos líneas.
-
-La primera decía la fecha de la denuncia. La segunda decía que la denuncia era por violencia de género.
-
-Emilio cerró el mail y miró la planilla, que estaba abierta en otra pestaña.
-
----
-
-La planilla tenía dieciocho filas.
-
-Dieciocho sábados, de septiembre a mayo. Dieciocho filas con fecha, hora de retiro, hora de devolución y observaciones.
-
-En las dieciocho no faltaba una sola palabra.
-
----
-
 La denuncia entró el veintiuno de mayo, un domingo.
 
 Decía que Emilio había ido a la casa, la había increpado, le había gritado obscenidades y le había dado un empujón en la puerta.
@@ -1304,7 +1290,31 @@ No había llorado. No había temblado. No había pedido nada.
 Había hecho todo bien y no había servido de nada, y la única cosa que podía hacer con eso era comerse dos chipás en el auto al mediodía.
 
 ---
+
+El martes veintitrés de mayo de dos mil veintitrés le llegó la notificación.
+
+Emilio estaba en la oficina. Eran las diez y cuarenta.
+
+La abogada le mandó un mail con dos líneas.
+
+La primera decía la fecha de la denuncia. La segunda decía que la denuncia era por violencia de género.
+
+Emilio cerró el mail y miró la planilla, que estaba abierta en otra pestaña.
+
 ---
+
+La planilla tenía dieciocho filas.
+
+Dieciocho sábados, de septiembre a mayo. Dieciocho filas con fecha, hora de retiro, hora de devolución y observaciones.
+
+En las dieciocho no faltaba una sola palabra.
+
+---
+
+---
+---
+
+## Parte V — El día que se vencía
 
 La cautelar del juzgado de paz vencía el primero de marzo de dos mil veinticuatro.
 
@@ -1588,6 +1598,8 @@ La palabra estaba despintada por los bordes.
 
 ---
 ---
+
+## Parte VI — La lista
 
 La remoción de la jueza le llegó un viernes a la noche.
 
