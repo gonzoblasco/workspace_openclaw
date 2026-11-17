@@ -6,6 +6,23 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-16] - La capa de claims sale del vault y entra al repo
+
+### Added
+- **`docs/claims/`** — la idea de `memory-wiki` (ADR-064) sin el plugin: un claim es un hecho con `id`, `status`, `confidence`, `updatedAt` y `evidence[]` que apunta a un artefacto real (una clave de `settings`, un archivo, un bloque managed, un ADR). Tres archivos de arranque: `models.md` (10 claims, todos los roles de ADR-090 + thinking), `pipeline.md` (6 claims: A, B, C, pre-filtro, el principio de asimetría y el gate), `workspace.md` (7 claims: fuente de verdad, frontera de roles, una máquina, el formato, el estado del vault y la deuda de `model.triple`).
+- **`scripts/check-claims.py`** — el gate. Resuelve la evidencia contra disco y DB, valida vigencia de `updatedAt`, umbrales de confianza, `contested` sin decidir y contradicciones entre claims del mismo tema y sujeto. `--negative` siembra un claim roto, verifica que **cada** detector dispare, lo borra y confirma que vuelve a cero; sin eso un detector ausente y uno limpio se ven iguales.
+
+### Removed
+- **`memory-wiki` desactivado como capa analítica del workspace.** No fue un fallo del plugin: al retirarlo el vault tenía 86 fuentes ingestadas, **una** entity con 4 claims, y todos los reports en cero. Los detectores se verificaron en negativo otra vez el 2026-11-16 (sonda sembrada, cada report nombró su defecto, se limpió sola) — funcionaban, lo que faltaba era sustrato. Escribir un claim a mano era el paso caro, y nadie lo paga para un vault que vive fuera de git (`~/.openclaw/wiki/main`, 716K, sin versionado). El vault queda en disco como archivo histórico; no se borró nada.
+
+### Notes
+- **Deuda detectada, no corregida:** la clave `settings.model.triple` sigue con `main/defaults minimax-m3.1-flash:cloud`, el valor superseded por ADR-107, mientras `model_by_agent` y `model_triple` dicen `deepseek-v4.1-flash:cloud`. Queda como claim vivo (`workspace.model-triple-key-is-stale`) para que deje de ser invisible; corregir la clave es decisión aparte.
+
+### Fixed
+- **`scripts/check-refs.py` bloqueaba commits por una ruta declarada propuesta.** `docs/pipeline/roadmap-ingresos-a11y-2026-11.md:146` dice "Script propuesto `scripts/watch-devto-trends.sh` (a crear)" y el gate lo leía como ruta rota, así que cualquier commit fallaba por un archivo de otra sesión. Ahora una ruta cuya misma línea o la anterior la declara `propuesto`, `a crear`, `planned` o equivalente queda fuera de la verificación, con match por palabra completa y ventana de dos líneas: no es una promesa de que el archivo existe, es un plan. Verificado en las dos direcciones (propuesto no reporta, ruta muerta sin declaración sigue fallando) y el corpus real quedó en 742 rutas citadas, todas existentes.
+
+---
+
 ## [2026-11-16] - Cata extendida a nueve modelos
 
 ### Added

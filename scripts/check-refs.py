@@ -48,6 +48,17 @@ SKIP_IF = [
     lambda r: "*" in r,                   # globs
 ]
 
+# Una ruta que el texto declara PROPUESTA no es una promesa de que existe. El
+# caso testigo: docs/pipeline/roadmap-ingresos-a11y-2026-11.md dice "Script
+# propuesto `scripts/watch-devto-trends.sh` (a crear)" y el gate lo marcaba roto,
+# bloqueando commits que no tenian nada que ver. Un roadmap que no puede nombrar
+# lo que todavia no existe no puede planear. Se mira la misma linea, solo la
+# vecindad inmediata del backtick: "propuesto" tres parrafos arriba no aplica.
+PROPOSED = (
+    "propuesto", "propuesta", "a crear", "por crear", "todavia no existe",
+    "aun no existe", "planned", "to be created", "does not exist yet",
+)
+
 
 def is_link_skippable(target: str) -> bool:
     """Un link que no promete nada sobre este arbol no se verifica."""
@@ -92,6 +103,19 @@ SKIP_FILES = ("docs/CHANGELOG.md",)
 SKIP_DIRS = ("docs/records/", "docs/archive/", "docs/archives/", "docs/insights/")
 
 
+_PROPOSED_RE = re.compile(
+    r"\b(?:" + "|".join(re.escape(w) for w in PROPOSED) + r")\b"
+)
+
+
+def matches_proposed(window: str) -> bool:
+    """Whole-word match on purpose. Substring matching hid a real bug once:
+    'propuesto' is a prefix of nothing harmless, but 'a crear' inside
+    'hay que a crear' style text would silently whitelist a dead path. The
+    negative run in tests/python pins it."""
+    return bool(_PROPOSED_RE.search(window))
+
+
 def is_skippable(ref: str) -> bool:
     return any(f(ref) for f in SKIP_IF)
 
@@ -128,13 +152,21 @@ def main():
             text = path.read_text(encoding="utf-8")
         except (UnicodeDecodeError, OSError):
             continue
+        prev_line = ""
         for line_no, line in enumerate(text.splitlines(), 1):
             for ref in REF.findall(line):
                 if is_skippable(ref):
                     continue
                 checked += 1
                 if not (ROOT / ref).exists():
+                    # La declaracion de "propuesto" puede estar en la misma linea o
+                    # en la anterior, como mucho: un roadmap largo no gana licencia
+                    # para citar rutas muertas por tener la palabra lejos.
+                    window = (line + " " + (prev_line or "")).lower()
+                    if matches_proposed(window):
+                        continue
                     broken.append((path.relative_to(ROOT), line_no, ref))
+            prev_line = line
             for target in LINK.findall(line):
                 if is_link_skippable(target):
                     continue

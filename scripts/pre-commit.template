@@ -213,6 +213,17 @@ python3 "${SCRIPT_DIR}/scripts/check-single-source.py" || exit 1
 # commitea para arreglarla despues.
 python3 "${SCRIPT_DIR}/scripts/check-cv-facts.py" || exit 1
 
+# Guard de la capa de claims (docs/claims/, 2026-11-16). SIN CONDICION, a
+# proposito: un claim puede romperse editando el archivo que es su evidencia
+# (un ADR, una clave de settings, AGENTS.md), no el claim. Con pathspec el
+# gate no veria justo el caso que existe para cazar. Reemplaza la capa
+# analitica de memory-wiki (ADR-064), que detectaba bien pero nunca tuvo
+# sustrato: 86 fuentes y 4 claims en dos meses. Falla si un claim no tiene
+# evidencia resoluble, si vencio el updatedAt, si esta contested sin decidir,
+# o si dos claims del mismo tema se contradicen. Python puro (lee los .md de
+# docs/claims/ y una copia de la DB): correrlo siempre es barato.
+python3 "${SCRIPT_DIR}/scripts/check-claims.py" || exit 1
+
 # Guard de roadmaps de rol (docs/ROADMAPS.md, 2026-10-07). SIN CONDICION, a
 # proposito: los ROADMAP.md de rol pueden aparecer o desaparecer por cualquier
 # edicion, no por un pathspec predecible. El 2026-10-07 se descubrio que 5 de 7
