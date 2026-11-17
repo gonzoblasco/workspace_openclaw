@@ -121,4 +121,39 @@ Por qué pasó: cuando intenté escribir en esas dos voces, el material **no me 
 
 **Ruta C — descartar todo y escribir de cero** con lo aprendido: que el material pide el peso y el golpe, y que la textura va encima, no en lugar.
 
-**Mi recomendación: A.** Las tres que sirven ya tienen cada una una pieza que las otras no. Fusionarlas es lo que este experimento estaba buscando desde el principio — y es lo que se pidió cuando dijiste *"no hace falta sea una copia exacta, ese es nuestro arte"*.
+**Hecho: ruta A.** Ver `manuscript/capitulo_1-definitivo.md`.
+
+---
+
+## La versión definitiva (fusión)
+
+| | Definitivo | Card | Katzenbach | Rowling | Echeverría |
+|---|---|---|---|---|---|
+| Palabras | **1.048** | 647 | 929 | 1.766 | 1.495 |
+| Mediana | **9** | 8 | 9,5 | 16,5 | 34,5 |
+| Bandas | **36/40/19/4** | 40/40/21/0 | 33/45/20/2 | 19/28/41/12 | 17/11/19/53 |
+| Frase más larga | **45** | 28 | 31 | 48 | 84 |
+
+**Es una escritura nueva, no un collage.** Medido contra las tres fuentes:
+
+- 42% de las frases vienen de Katzenbach (el peso, el diálogo)
+- 36% de Card (el ritmo, la apertura)
+- 17% de Rowling (la textura: la mercería, el martes de la vereda)
+- **47% son frases que no estaban en ninguna de las tres**: la fusión obligó a escribir de nuevo
+
+**La mediana (9) queda entre Card (8) y Katzenbach (9,5)**, y la banda de 31+ baja al 4%: la textura
+de Rowling entra sin arrastrar el ritmo hacia arriba. Ese era el riesgo real de la fusión, y no pasó.
+
+### Dónde gana cada una, en el texto final
+
+| Pieza | De quién | Cómo se ve |
+|---|---|---|
+| Apertura | Card | *"La llave pesaba más que ninguna otra llave."* |
+| El peso del objeto | Katzenbach | El telar, el verde del cuarenta y ocho, el invierno |
+| El diálogo | Katzenbach | *"Le quedó mal." / "Le quedó como pudo." / "La usé veinte años."* |
+| La textura | Rowling | *"en otro barrio hubiera sido un problema y en este era simplemente un martes"* |
+| El cierre | Katzenbach + Card | Vera aprieta la sábana; Néstor piensa y no dice nada |
+
+**También se reparó el final de Rowling.** Le faltaba el gesto de Vera apretando la sábana contra el
+pecho: el texto saltaba del silencio a la lluvia sin ese movimiento. Ahora está, y sigue entrando
+4/4 en perfil.

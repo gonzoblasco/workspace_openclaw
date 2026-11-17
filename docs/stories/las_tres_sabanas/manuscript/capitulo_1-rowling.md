@@ -127,6 +127,8 @@ E. V.
 
 Ninguno de los tres las nombró. Y Néstor supo, con la certeza tranquila de las cosas que uno no va a poder demostrar nunca, que ninguno de los tres las iba a nombrar esa mañana.
 
+Vera no soltó la sábana. La tenía doblada contra el pecho con las dos manos, como se sostiene una carpeta de documentos que no se puede mojar, y cuando se dio vuelta para irse la apretó un poco más y la tela se le marcó en los dedos.
+
 La sábana de Elvira quedó en los brazos de Vera, tibia de polvo. Afuera empezaba a llover, una lluvia fina que no iba a durar y que igual iba a mojar todo. El golpeteo sobre la chapa del techo sonó por un momento igual que veinte años atrás, cuando los tres eran chicos y la abuela todavía estaba viva, y ninguno de ellos tenía la menor idea de que un día iban a estar en esa pieza peleándose una sábana.
 
 Néstor pensó que tendría que decir algo, y no dijo nada.
