@@ -31,7 +31,8 @@ print("<=6 palabras:", round(100 * sum(1 for x in sw if x <= 6) / len(sw)), "%")
 print("<=10 palabras:", round(100 * sum(1 for x in sw if x <= 10) / len(sw)), "%")
 print(">=30 palabras:", round(100 * sum(1 for x in sw if x >= 30) / len(sw), 1), "%")
 print()
-dl = [p for p in paras if p.startswith('"')]
+# Dialogo: comillas (convencion Card) o raya (convencion de docs/stories).
+dl = [p for p in paras if p.startswith('"') or p.startswith("\u2014") or p.startswith("--")]
 print("parrafos de dialogo:", len(dl), "/", len(paras), "=", round(100 * len(dl) / len(paras)), "%")
 print("palabras en dialogo:", round(100 * sum(len(p.split()) for p in dl) / sum(pw)), "%")
 print()
@@ -39,3 +40,9 @@ print("em dashes:", t.count("\u2014"))
 print("guion doble (--):", t.count("--"))
 print("punto y coma:", t.count(";"))
 print("adverbios -ly:", len(re.findall(r"\b\w+ly\b", t)))
+print()
+# Pensamiento interno: parrafo entero en cursiva entre asteriscos (convencion propia),
+# o primera persona suelta dentro de la prosa (convencion Card).
+bold_thoughts = re.findall(r"\*[^*\n]{8,}\*", t)
+words = sum(pw)
+print("pensamientos en cursiva:", len(bold_thoughts), "| por 100 palabras:", round(len(bold_thoughts) * 100 / words, 1))

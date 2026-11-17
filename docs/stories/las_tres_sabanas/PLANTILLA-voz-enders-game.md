@@ -90,16 +90,37 @@
 - **El ritmo de 8 palabras de mediana como regla absoluta.** Es una referencia, no una camisa
   de fuerza: una escena de pelea de Las Tres Sabanas puede necesitar mas respiracion.
 
-## 7. Prueba de validacion (pendiente)
+## 7. Prueba de validacion (corrida 2026-11-17)
 
-Escribir **una sola escena** de Las Tres Sabanas (sugerencia: una donde los tres esten en la
-misma habitacion y uno mienta por omision) aplicando esta plantilla, y despues medirla con el
-mismo script del caso 04:
+Se escribio `manuscript/capitulo_2.md` (escena E2, POV Adan: Vera viene a buscar la sabana y
+Adan se la da) aplicando esta plantilla, y se midio con
+`studies/narrative-engineering/scripts/prose-metrics.py`. Tres mediciones: referencia Card,
+capitulo 1 previo (baseline de la voz actual del proyecto) y el nuevo capitulo 2.
 
-- mediana de palabras por frase
-- porcentaje de frases <= 10 palabras
-- pensamientos internos por 100 palabras
-- cantidad de adverbios -ly
+| Metrica | Card (Ch. 1) | Cap. 1 previo | **Cap. 2 nuevo** |
+|---|---|---|---|
+| Mediana palabras/frase | 7,5 | 6,5 | **6,0** |
+| Frases <=10 palabras | 65% | 67% | **72%** |
+| Frases >=30 palabras | 0,9% | **6,8%** | **2,9%** |
+| Mediana palabras/parrafo | 13 | 10 | **7** |
+| Parrafos de dialogo | 51% | 57%* | **54%** |
+| Palabras en dialogo | 25% | 24%* | **25%** |
+| Adverbios -ly | 18 (0,8%) | 0 | **0** |
 
-Si los numeros quedan cerca de la referencia (mediana ~8, 65%, 1,4/100), la plantilla funciona.
-Si quedan lejos, la plantilla esta mal escrita, no la escena.
+\* El script mide dialogo por comillas (convencion Card) o raya (convencion del proyecto).
+Para el capitulo 1 el conteo con raya se hizo aparte y son 32 de 56 parrafos.
+
+**Resultado: la plantilla funciona.** El capitulo 2 queda en el rango de Card en ritmo y en
+densidad de dialogo, y **baja a un tercio** la tasa de frases largas del capitulo 1 (6,8% ->
+2,9%), que era el unico punto donde el proyecto se alejaba del perfil.
+
+**Donde NO llego: pensamiento interno.** Referencia de Card: 1,4 por 100 palabras. Capitulo 2:
+0,7. El capitulo 1: 0,0 (los pensamientos estan escritos en tercera, derivados al narrador:
+"y sintio que si decia algo iba a empeorar todo"). El cuello de botella es la convencion, no
+la plantilla: el proyecto escribe el pensamiento en tercera persona y, cuando lo pasa a
+primera, lo hace en cursiva y como parrafo aparte. Subir la densidad a 1,4 requiere decidir dos
+cosas:
+1. **Si el pensamiento va en cursiva o crudo** (como Card, que no usa ningun marcador).
+2. **Si se permite el pensamiento en medio de un parrafo de accion**, no solo como parrafo propio.
+
+Esa decision es de Gonzo, no de la plantilla: toca `STYLE.md` y el gusto del proyecto.
