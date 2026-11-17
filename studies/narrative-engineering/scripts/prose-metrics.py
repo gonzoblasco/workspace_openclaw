@@ -32,7 +32,10 @@ print("<=10 palabras:", round(100 * sum(1 for x in sw if x <= 10) / len(sw)), "%
 print(">=30 palabras:", round(100 * sum(1 for x in sw if x >= 30) / len(sw), 1), "%")
 print()
 # Dialogo: comillas (convencion Card) o raya (convencion de docs/stories).
-dl = [p for p in paras if p.startswith('"') or p.startswith("\u2014") or p.startswith("--")]
+dl = [
+    p for p in paras
+    if p.startswith('"') or p.startswith("\u201c") or p.startswith("\u2014") or p.startswith("--")
+]
 print("parrafos de dialogo:", len(dl), "/", len(paras), "=", round(100 * len(dl) / len(paras)), "%")
 print("palabras en dialogo:", round(100 * sum(len(p.split()) for p in dl) / sum(pw)), "%")
 print()
@@ -58,7 +61,7 @@ FP_STRONG = (
 )
 fp_paras = []
 for p in paras:
-    if p.startswith('"') or p.startswith("\u2014") or p.startswith("*"):
+    if p.startswith(('"', "\u201c", "\u2014", "--", "*")):
         continue
     if re.search(FP_STRONG, p, re.IGNORECASE):
         fp_paras.append(p)

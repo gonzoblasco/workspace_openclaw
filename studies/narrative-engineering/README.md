@@ -59,6 +59,7 @@ pueden medir y refutar con cifras.
 | 02 | Batman Begins (2005) | David S. Goyer | **Adaptacion** (comic DC) | 4/4 ejes |
 | 03 | Mamma Mia! (musical y película) | Catherine Johnson | **Adaptación** (musical y película) | 4/4 ejes |
 | 04 | Ender's Game (1985) | Orson Scott Card | Idea **original** | 5/5 ejes (**muestra parcial**: Ch. 1) |
+| 05 | Harry Potter y el prisionero de Azkaban (1999) | J. K. Rowling | **Continuacion de serie** | 5/5 ejes (extracto oficial, Ch. 1) |
 
 ---
 
@@ -70,6 +71,8 @@ pueden medir y refutar con cifras.
 - `modelo-goyer.md` - sintesis acumulativa (la "firma" del autor). **Consolidado.**
 - `caso-04-enders-game.md` - primer caso con **Eje 5 (Voz y Prosa)** medido sobre texto real.
   Su traduccion ejecutable vive en `docs/stories/las_tres_sabanas/PLANTILLA-voz-enders-game.md`.
+- `caso-05-harry-potter-azkaban.md` - segundo perfil de voz, **opuesto** al 04 y sobre el mismo
+  eje: demuestra que el Eje 5 mide una eleccion, no una jerarquia de calidad.
 
 ---
 
