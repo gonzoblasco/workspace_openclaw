@@ -262,6 +262,38 @@ que la voz no hace deja de servir como diagnóstico.
 vigila es que ≤6 no baje del 28% (ahí el texto se vuelve liso) y que 31+ no pase del 8% (ahí se
 vuelve Rowling).
 
+---
+
+## 13. Tercera aplicación: capítulo 4 (`capitulo_4.md`, E4 - La Contención)
+
+| Métrica | Perfil | Cap. 1 | Cap. 2 | Cap. 3 | **Cap. 4** |
+|---|---|---|---|---|---|
+| Mediana | 9 | 9 | 9 | 9,5 | **9,5** |
+| Frases ≤6 | 34-36% | 36% | 34% | 30% | **30,5%** |
+| Frases 7-15 | 40-50% | 40% | 50% | 50% | **46,6%** |
+| Frases 16-30 | 19% | 19% | 15% | 19% | **18,6%** |
+| Frases 31+ | 4% | 4% | 0,5% | 1,2% | **4,2%** |
+| Párrafos ≤5 palabras | 40-50% | 40% | 41% | 46% | **47%** |
+| Punto y coma | 0 | 0 | 0 | 0 | **0** |
+| Adverbios -mente | ≤1 | 1 | 0 | 1 | **0** |
+| Diálogo (% párrafos) | 33-55% | 49% | 25% | 39% | **33%** |
+
+**Las cuatro bandas entran, la mediana está a medio punto y las tres reglas duras se cumplen.**
+Es el capítulo que más se acerca al perfil de los cuatro.
+
+### Lo que costó llegar
+
+**Cuatro correcciones.** Primero 58% de frases cortas, después 50%, después —al expandir todos los
+latidos— 13,7%. El texto osciló entre staccato y liso, y solo entró cuando revertí **el relleno y
+conservé las expansiones que agregaban información.**
+
+**El criterio que sirve no es "alargar" ni "acortar": es preguntar qué agrega la frase.**
+"Adán asintió" → "Adán asintió con la cabeza apenas" es relleno. "Adán no se movió" → "Adán no se
+movió de la silla, y no la saludó" agrega información y sostiene el ritmo.
+
+**Regla nueva:** cuando una frase corta hay que alargarla, la prueba es si el añadido **dice algo
+que no estaba**. Si no, se deja corta y se busca otro lugar donde respirar.
+
 Criterio para el capítulo 2:
 - mediana 7-11
 - frases ≤6 entre 28 y 44%
