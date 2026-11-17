@@ -159,6 +159,21 @@ corrida semanal. La lista vive en un array del script y se edita sin tocar la l�
 **Quién lo construye:** OPS (script + automation, es infraestructura). La selección y el criterio de
 contenido son de CORE/MIND.
 
+### 3.1 Estado: construido y verificado (2026-11-17)
+
+- Script `scripts/watch-devto-trends.sh`: hecho. Corre en 61s, 11 tags, 6s entre requests, sin 429.
+  Filtra a los últimos 90 días (el endpoint devolvía un post de 2024 cuando no hay volumen) y aplica
+  el cupo de 3 por nicho antes de rankear.
+- Digest `memory/devto/2026-W47.md`: 11 items reales, 5.9 KB. Títulos cruzados contra un `curl`
+  fresco a la API: coinciden.
+- Automation `watch-devto-trends` (`fb02a0f2-c787-4796-b4c9-279b964a4316`): miércoles 09:00
+  `America/Buenos_Aires`, payload script sin modelo, corrida de prueba `status: ok` en 61.3s.
+- **Deuda conocida:** `discuss` y `career` traen ruido de comunidad ("What are your goals this
+  week"). No se filtra en el script a propósito: ese juicio es del campo `cambio:`, que completa
+  CORE. Si el ruido sigue, se sacan esos dos tags.
+- **Nota para el próximo:** los dos intentos de delegar esto a OPS devolvieron un stub y un fallo
+  sin salida. El script lo escribió CORE. Verificar el archivo antes de creer un auto-reporte.
+
 ---
 
 ## 4. Lo que NO entra en este plan
