@@ -62,11 +62,17 @@ capitulos 3 y 4 escritos de corrido.
 Cada autor analizado deja una plantilla ejecutable. **Ninguna se aplica de memoria: se leen antes
 de escribir.**
 
-| Plantilla | Que aporta | Estado |
-|---|---|---|
-| `PLANTILLA-voz-enders-game.md` | Ritmo corto, pensamiento en primera persona crudo, dialogo seco | **validada** (cap. 1 y 4 medidos) |
-| `PLANTILLA-voz-rowling.md` | Narrador con voz propia, textura sin funcion, humor dentro de lo triste | **sin validar** (el intento v0 no cumplio sus propias reglas) |
-| `PLANTILLA-peso-katzenbach.md` | Las cinco condiciones para que un objeto cargue | **aplicada** en `capitulo_1-peso.md`, falta validacion de lectura |
+| Plantilla | Perfil (mediana / bandas) | Que aporta | Estado |
+|---|---|---|---|
+| `PLANTILLA-voz-enders-game.md` | 9 - 35/47/16/1 | Ritmo corto, pensamiento en 1a persona crudo, dialogo seco | **validada** (cap. 1 y 4 medidos) |
+| `PLANTILLA-voz-rowling.md` | 16,5 - 14/35/38/12 | Narrador con voz propia, textura sin funcion, humor dentro de lo triste | **validada con desviacion** (v1: 4 de 6 bandas) |
+| `PLANTILLA-voz-echeverria.md` | 20,5 - 14/25/30/31 | Precision burocratica del tramite, punto y coma como compas | **sin validar** |
+| `PLANTILLA-voz-garciamarquez.md` | 21 - 8/28/38/26 | Versiones contradictorias acumuladas, cifra exacta, periodo parejo | **sin validar** |
+| `PLANTILLA-peso-katzenbach.md` | (no es de voz) | Las cinco condiciones para que un objeto cargue | **aplicada** en `capitulo_1-peso.md`, falta validacion de lectura |
+
+**Cinco autores, cinco plantillas, un script.** Perfiles cargados en
+`studies/narrative-engineering/scripts/prose-metrics.py`: `card`, `rowling`, `katzenbach`,
+`echeverria`, `garciamarquez`. Cada uno se auto-valida sobre su propio texto fuente.
 
 **Regla de proceso:** una plantilla se escribe **antes** de escribir la escena, no despues de
 medirla. El caso Rowling es la prueba: se escribio la escena sin plantilla, salio bimodal, y hubo
