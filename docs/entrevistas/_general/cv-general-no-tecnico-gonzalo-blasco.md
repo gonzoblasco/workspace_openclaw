@@ -12,7 +12,7 @@ Profesional con más de 10 años de experiencia en entornos corporativos y empre
 - **Liderazgo y Equipo:** Experiencia coordinando personas, mentoría y trabajo colaborativo en equipos multidisciplinarios.
 - **Atención al Cliente y Comunicación:** Comunicación clara y efectiva, experiencia en trato con clientes y proveedores (nacionales e internacionales).
 - **Herramientas Digitales:** Manejo avanzado de computación, herramientas de oficina (Google Suite, Microsoft Office), gestión de agendas y plataformas de comunicación digital.
-- **Idiomas:** Inglés avanzado (capacidad de mantener conversaciones y redactar documentos profesionales).
+- **Idiomas:** Inglés intermedio-alto (B2): lectoescritura profesional y conversación.
 
 ### EXPERIENCIA LABORAL
 
