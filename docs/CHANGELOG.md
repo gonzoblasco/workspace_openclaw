@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-17] - Las Tres Sabanas: el sistema funcionando
+
+### Added
+- **Capítulo 4, primera escena: el tanque.** Una semana antes de la reunión, la casa se queda sin agua, el plomero no viene, y los tres la arreglan: Néstor arriba con la bomba, Adán abajo con la escalera, Vera al costado con la linterna. Funciona. Después se sientan con una cerveza y durante veinte minutos no hablan de la casa. Es lo que el Acto I no tenía: una escena donde el sistema hace lo que el sistema sabe hacer, para que después se pueda perder. La POV es Vera, y el pensamiento es de dos líneas: *"Esto. Esto es lo que se va a vender."*
+- **El auto de la casa** queda establecido ahí (un gris viejo en el fondo del terreno, de los tres), que es el que Adán maneja en el Acto III.
+
+### Notes
+- **Acto I: 9.884 palabras** (era 9.163). Perfil: mediana 9,0 y bandas 33,9/44,9/19,0/2,2, las cuatro dentro.
+- **Libro: 26.854 palabras.** Los tres actos quedan parejos: 9.884, 7.103 y 9.867.
+- El capítulo 4 pasa de 1.600 a 2.515 palabras y de una escena a dos.
+
+---
+
 ## [2026-11-17] - Las Tres Sabanas: el Acto I arranca
 
 ### Changed

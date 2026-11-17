@@ -41,16 +41,19 @@ Detalle y diagnostico en `EVALUACION-5-versiones-cap1.md`.
 | 1 | La sábana tendida | Néstor | ~1.100 |
 | 2 | El precio silencioso | los tres | ~1.700 |
 | 3 | La grieta | Néstor | ~1.500 |
-| 4 | La contención | Vera | ~1.600 |
+| 4 | La contención | Vera | ~2.500 |
 | 5 | El primer movimiento | Adán | ~1.700 |
 | 6 | La mediación que aprieta | Néstor | ~1.800 |
 
-Compilado en `manuscript/acto_1.md` (9.163 palabras). Perfil: mediana 9,0 exacta y bandas
-33,5/46,3/18,0/2,2 — las cuatro dentro del perfil `casa`.
+Compilado en `manuscript/acto_1.md` (9.884 palabras). Perfil: mediana 9,0 exacta y bandas
+33,9/44,9/19,0/2,2 — las cuatro dentro del perfil `casa`.
 
 El capítulo 2 tiene **dos** viñetas, no tres: la de Néstor se cortó el 2026-11-17 porque era la tercera
 versión del mismo silencio. Lo que traía (la llamada de la madre y la planilla con la línea del banco)
 se movió al capítulo 3, donde cae peor y se lee mejor.
+
+El capítulo 4 tiene **dos escenas**: la semana anterior (el tanque, la bomba, los tres funcionando
+como máquina) y el sábado de la reunión. La primera existe para que la segunda duela.
 
 ### Acto II (completo, 2026-11-17)
 
@@ -101,8 +104,8 @@ era.
 
 ## Estado
 
-**Borrador 2 completo.** Las 17 escenas escritas, leídas de corrido y revisadas: 26.133 palabras
-(9.163 + 7.103 + 9.867). Los tres actos dentro de perfil `casa`, mediana 9 en el libro, cero frases
+**Borrador 2 completo.** Las 17 escenas escritas, leídas de corrido y revisadas: 26.854 palabras
+(9.884 + 7.103 + 9.867). Los tres actos dentro de perfil `casa`, mediana 9 en el libro, cero frases
 repetidas, cero punto y coma.
 
 Lo que cambió del borrador 1 al 2 (detalle en `PLAN-revision-borrador-2.md` §7): el plazo de doce
@@ -115,9 +118,7 @@ de forzarla al número de la plantilla.
 
 1. **Lectura en voz alta** de los tres actos: es el paso que detecta lo que ni la métrica ni la
    lectura silenciosa ven (frases que no se pueden decir).
-2. **Decidir si el Acto I necesita una escena más.** Con el corte del capítulo 2 quedó en 9.163
-   palabras contra las 9.867 del III: el acto más corto es el que presenta el sistema.
-3. Decidir si la novela corta (17 escenas) es la forma final o si necesita dos escenas más
+2. Decidir si la novela corta (17 escenas) es la forma final o si necesita dos escenas más
    de aire entre el colapso y el epílogo.
 
 La lectura de contenido completa, con lo corregido y lo que queda abierto, está en

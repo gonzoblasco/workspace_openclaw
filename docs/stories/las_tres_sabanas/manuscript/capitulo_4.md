@@ -1,8 +1,202 @@
 # Capítulo 4 — La contención
 
-*POV: Vera. El sábado, la reunión. El capítulo donde alguien se queda quieto y todos creen que está en paz.*
+*POV: Vera. La semana anterior y el sábado. El capítulo donde alguien se queda quieto y todos creen que está en paz.*
 
 ---
+
+### La semana anterior
+
+Una semana antes del sábado, Adán la llamó porque no había agua.
+
+No era una queja. Lo dijo como se dice un dato: la canilla de la cocina no tiraba nada, la del baño tampoco, y el tanque estaba lleno porque se veía el borde desde el patio.
+
+— ¿Y el plomero? —dijo Vera.
+
+— No viene.
+
+— ¿Le dijiste que es para hoy?
+
+— Le dije. No viene.
+
+---
+
+Vera salió del diario a las seis y fue, y en el camino pensó que hacía meses que no iba a esa casa en un día de semana.
+
+Cuando llegó, Adán estaba en el patio con una linterna y Néstor estaba subido a la escalera, revisando la bomba.
+
+— ¿Vos cómo llegaste antes que yo?
+
+— Me llamó Adán —dijo Néstor.
+
+— A mí también me llamó.
+
+— Ah.
+
+---
+
+La bomba estaba en un cajón de chapa al lado del tanque, y el cajón tenía un candado que no cerraba.
+
+— La llave de paso —dijo Adán.
+
+— ¿Qué.
+
+— Que cierren la llave de paso primero. Si la abren con presión, revienta el caño del baño.
+
+---
+
+Néstor bajó de la escalera.
+
+— ¿Dónde está?
+
+— Abajo de la ventana de la cocina. En un nicho.
+
+---
+
+Fueron los tres.
+
+El nicho estaba tapado con una chapa y dos ladrillos. Adán la corrió con el pie y adentro había una canilla de bronce con la pintura saltada.
+
+— Ahí está.
+
+— Está dura.
+
+— Está dura porque hace veinte años que nadie la cierra.
+
+---
+
+Néstor la agarró con las dos manos y la giró, y el caño hizo un ruido en la pared.
+
+— Se va a romper —dijo Vera.
+
+— No se va a romper.
+
+— Néstor.
+
+— No se va a romper.
+
+---
+
+Giró, y la canilla se cerró.
+
+---
+
+— Listo —dijo Adán—. Ahora la bomba.
+
+---
+
+Néstor subió otra vez, con la caja de herramientas que había traído en el auto sin que nadie se la pidiera.
+
+Vera le alcanzó la linterna desde abajo. Adán sostenía la escalera con los dos pies abiertos y un pie contra la pata.
+
+---
+
+Ese era el reparto y estaba siempre: uno arriba, uno abajo, uno al costado con la linterna.
+
+Y funcionaba.
+
+---
+
+Néstor sacó la tapa de la bomba y se quedó mirando.
+
+— El capacitor.
+
+— ¿Qué es eso?
+
+— Una lata que arranca el motor. Se quemó.
+
+---
+
+— ¿Hay repuesto?
+
+— Hay uno en lo de Ramírez. Cierra a las ocho.
+
+---
+
+Vera miró la hora.
+
+— Son las siete y veinte.
+
+— Voy —dijo Adán.
+
+---
+
+— No vas a ir caminando.
+
+— Voy en el auto.
+
+— ¿Vos tenés auto?
+
+Adán la miró.
+
+— Tengo el de la casa.
+
+---
+
+Era un auto viejo, gris, que estaba en el fondo del terreno desde antes de que la abuela se enfermara, y nadie le decía "el auto de Adán" porque era de todos.
+
+Adán lo sacó del fondo, lo puso en marcha al tercer intento, y volvió a los cuarenta minutos con el capacitor en una bolsa.
+
+---
+
+Néstor lo puso. Cerraron la tapa. Abrieron la llave de paso.
+
+Vera subió a la escalera y miró el tanque por encima del borde.
+
+— Está entrando.
+
+— ¿Seguro?
+
+— Está entrando.
+
+---
+
+Bajó, y se quedaron los tres en el patio, con las manos sucias y la noche ya hecha.
+
+— Bueno —dijo Néstor.
+
+— Bueno.
+
+---
+
+Adán abrió la canilla de la cocina y el agua salió con un golpe y después pareja.
+
+Los tres se quedaron mirando el agua.
+
+---
+
+— Anduvo —dijo Adán.
+
+— Anduvo —dijo Néstor.
+
+---
+
+Vera se rio.
+
+— ¿De qué te reís?
+
+— De nada. De que anduvo.
+
+---
+
+Néstor se rio también, y Adán no se rio pero se le movió la cara.
+
+Después abrieron la puerta del patio y se sentaron en las sillas de plástico con una cerveza cada uno, y durante veinte minutos no hablaron de la casa.
+
+---
+
+*Esto.*
+
+*Esto es lo que se va a vender.*
+
+---
+
+Néstor contó algo del taller y Adán lo escuchó y Vera preguntó por el chico que le daba una mano, y por un rato fueron tres personas en un patio.
+
+A las diez se fueron.
+
+---
+
+### El sábado
 
 Vera llegó a las diez y cuarto y estacionó mal.
 
