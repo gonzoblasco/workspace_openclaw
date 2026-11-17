@@ -14,7 +14,9 @@ import sys
 path = sys.argv[1]
 t = open(path, encoding="utf-8").read()
 
-paras = [p.strip() for p in re.split(r"\n", t) if p.strip()]
+_raw = re.split(r"\n\s*\n", t) if "\n\n" in t else re.split(r"\n", t)
+paras = [" ".join(x.strip() for x in p.split("\n") if x.strip()) for p in _raw]
+paras = [p for p in paras if p.strip()]
 pw = [len(p.split()) for p in paras]
 sents = re.split(r'(?<=[.!?"])\s+', " ".join(paras))
 sents = [s for s in sents if len(s.split()) > 2]
@@ -42,7 +44,8 @@ print()
 print("em dashes:", t.count("\u2014"))
 print("guion doble (--):", t.count("--"))
 print("punto y coma:", t.count(";"))
-print("adverbios -ly:", len(re.findall(r"\b\w+ly\b", t)))
+print("adverbios -ly (ingles):", len(re.findall(r"\b\w+ly\b", t)))
+print("adverbios -mente (espanol):", len(re.findall(r"\b\w+mente\b", t)))
 print()
 # Pensamiento interno: parrafo entero en cursiva entre asteriscos (convencion propia),
 # o primera persona suelta dentro de la prosa (convencion Card).
