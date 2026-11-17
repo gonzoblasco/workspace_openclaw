@@ -104,12 +104,18 @@ objeto que cambia de manos dos veces. Son fortalezas distintas, no una mejor que
 | Frase mas larga | 48 | 78 | **30** | 36 | **34** |
 | Mediana palabras/parrafo | 13 | 10 | 10 | 7 | 7 |
 | Parrafos de dialogo | 51% | 57% | **52%** | 54% | 49% |
-| Pensamiento en cursiva /100 | - | 0,0 | 0,2 | 0,7 | **0,9** |
+| Pensamiento /100 (sin marca) | 1,4 | 0,0 | 0,1 | 0,7 | **0,6** |
 
 **El cap. 1 editado es el salto grande.** Pasa de 6,8% a **1,0%** de frases de 30+ palabras
 (Card: 0,9%) y de una frase maxima de 78 a 30, sin perder la mediana ni el alcance de la escena:
 sigue teniendo los tres personajes, el objeto que cambia de manos y el cierre con las letras
 clavadas en la madera.
+
+**Decision de convencion (2026-11-17, Gonzo):** el pensamiento va en **primera persona, crudo,
+sin cursiva y sin comillas**, y puede ir al final de un parrafo de accion. Registrado en
+`STYLE.md`. Las dos versiones `-edited` ya lo aplican. El medidor pasa a contar el pensamiento
+por **salto de persona**, no por marcador tipografico: los numeros de arriba reflejan eso, y
+por eso bajan (el texto perdio las marcas, no los pensamientos).
 
 **El cap. 2 editado mejora menos en ritmo** (ya estaba bien) y gana en lo otro: recupera el
 porton y el lugar, cierra el circulo de la costura cuando Vera abre la sabana, y sube el

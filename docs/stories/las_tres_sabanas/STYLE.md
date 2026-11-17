@@ -9,6 +9,20 @@
 - Tercera persona, **POV rotando entre Néstor, Adán y Vera**. Un POV por escena, sin mezclar cabezas dentro del mismo bloque.
 - El POV de una escena es quien *reacciona* en ella (Regla 1: nadie actúa por sí mismo).
 
+### Pensamiento del POV (decidido 2026-11-17)
+
+- **Primera persona, presente, sin cursiva y sin comillas.** El pensamiento va suelto en el
+  texto, igual que la narración: *Si digo algo, empeora.*
+- **Puede ir al final de un párrafo de acción**, pegado a lo que el personaje acaba de ver o
+  hacer. No hace falta abrirle un párrafo propio: separarlo lo convierte en monólogo.
+- **Si el pensamiento necesita aire, va en su propio párrafo, sin marcas.** Ninguna marca
+  tipográfica: el lector distingue voz narrada de voz pensada por el salto de persona, no por
+  el formato.
+- **Frecuencia de referencia:** 1 a 1,4 pensamientos por cada 100 palabras (perfil Card,
+  medido en `studies/narrative-engineering/caso-04-enders-game.md`). Menos, el personaje se
+  vuelve opaco; más, se vuelve monólogo.
+- **El pensamiento hace trabajo:** mide, calcula, decide. Nunca decora la emoción.
+
 ## Estándar de prosa (regla dura)
 - **Show, don't tell.** Prohibido el análisis psicológico y los adjetivos emocionales ("tensa", "resignado", "culpable"). Si hay tensión, se muestra en el ruido de la silla contra el piso.
 - **Acciones, objetos y sensaciones.** Solo eso.
