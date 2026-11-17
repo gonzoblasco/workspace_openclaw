@@ -108,10 +108,10 @@ que salio mal, medido:
 
 | Error | Sintoma | Causa |
 |---|---|---|
-| **Frase corta de mas** | 46% de frases <=6 contra 15% real | Mantengo el ritmo de Card y le cuelgo frases largas **encima**, en vez de reemplazarlo |
-| **Medio vacio** | 16% entre 7-15 contra ~45% real | Las frases intermedias desaparecen: o cuatro palabras o cincuenta |
+| **Frase corta de mas** | 46% de frases <=6 contra 19% real | Mantengo el ritmo de Card y le cuelgo frases largas **encima**, en vez de reemplazarlo |
+| **Medio vacio** | 16% entre 7-15 contra 35% real | Las frases intermedias desaparecen: o cuatro palabras o cincuenta |
 | **Frase mas larga de 80** | Rowling tope 60 | Escribi por acumulacion de "y", no por subordinacion |
-| **Mediana 8 vs 17** | El texto se lee corto | Consecuencia de los dos primeros |
+| **Mediana 8 vs 15** | El texto se lee corto | Consecuencia de los dos primeros |
 
 **Lo que si funciono** (y por eso la version se puede rescatar): el narrador con voz propia, la
 textura del hilo verde de la merceria, el humor del auto mal estacionado, y el cierre con juicio.
@@ -134,7 +134,7 @@ medir despues da exactamente el resultado de arriba.
 
 **NO:**
 - **La mediana de 15 palabras.** Las Tres Sabanas esta medida en 7 y ese ritmo es su firma. Subir a
-  17 no es "usar Rowling": es reescribir el proyecto.
+  15 no es "usar Rowling": es reescribir el proyecto.
 - **El dialogo al 5-13%.** En tres primos encerrados en una pieza, el silencio y el habla son el
   material. Bajarlo a 5% vacia la escena.
 - **La enumeracion ternaria** ("por un lado, por el otro, y ademas"). Es un recurso de narrador
