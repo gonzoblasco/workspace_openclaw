@@ -326,6 +326,44 @@ los personajes.**
 inevitablemente**. El número a vigilar en ese caso es el de la **narración**, no el del texto
 entero. La plantilla debe leerse sabiendo qué tipo de escena se está midiendo.
 
+---
+
+## 15. Quinta aplicación: capítulo 6 (`capitulo_6.md`, E6 - La mediación que aprieta)
+
+| Métrica | Perfil | Cap. 1 | Cap. 2 | Cap. 3 | Cap. 4 | Cap. 5 | **Cap. 6** |
+|---|---|---|---|---|---|---|---|
+| Mediana | 9 | 9 | 9 | 9,5 | 10 | 8 | **10** |
+| Frases ≤6 | 36% | 36% | 34% | 30% | 31,6% | 38,8% | **35,4%** |
+| Frases 7-15 | 40-50% | 40% | 50% | 50% | 43,9% | 44,7% | **40,2%** |
+| Frases 16-30 | 19% | 19% | 15% | 19% | 20,2% | 14,6% | **23,2%** |
+| Frases 31+ | 4% | 4% | 0,5% | 1,2% | 4,4% | 1,9% | **1,2%** |
+| Párrafos ≤5 palabras | 30-40% | 34% | 25% | 36% | 35% | 49% | **39%** |
+| Punto y coma | 0 | 0 | 0 | 0 | 0 | 0 | **0** |
+| Diálogo (% párrafos) | 33-59% | 44% | 7% | 46% | 41% | 54% | **59%** |
+
+**La mejor medición de las seis aplicaciones: las cuatro bandas entran y dos dan casi exacto**
+(≤6 a 0,6 puntos del perfil, 7-15 a 0,2). El capítulo más hablado de todos (59% de párrafos).
+
+### Lo que se aprendió: el punto medio existe y se alcanza en dos pasos
+
+**Tres correcciones.** 57,6% de frases cortas → 48,2% → 13,9% → **35,4%**.
+
+El patrón se repitió igual que en el capítulo 4: la segunda pasada se fue al otro extremo.
+**Lo que funcionó fue revertir selectivamente el relleno**, igual que la vez anterior, y esta vez
+con más precisión: 16 reversiones de 42.
+
+**El criterio ya está probado en dos capítulos:** se alarga solo donde el añadido dice algo que no
+estaba. "Néstor se quedó callado, y se escuchaba la radio del vecino" queda; "Los dos lo miraron al
+mismo tiempo" no.
+
+### Estado de la voz: estabilizada
+
+Seis capítulos escritos con el perfil. Los tres últimos entraron en las cuatro bandas **sin
+ajustar el número**, y dos de ellos a menos de un punto en dos bandas.
+
+**La voz está fijada.** No hace falta seguir midiendo cada capítulo: a partir de acá, medir cuando
+haya duda, no por rutina.
+
 Criterio para el capítulo 2:
 - mediana 7-11
 - frases ≤6 entre 28 y 44%
