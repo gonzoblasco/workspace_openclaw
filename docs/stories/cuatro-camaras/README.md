@@ -148,6 +148,22 @@ Lo que se conserva de cada plantilla, sin imitar ninguna:
 | Echeverría | La precisión de las fechas y del trámite |
 | García Márquez | La cifra exacta y el detalle doméstico dentro del dolor (los cuatro perros) |
 
+### Las dos reglas que salieron de escribir
+
+**1. Cuando el material viene de un caso real, los hechos procesales no se inventan.** El relato
+original (`../cuatro-camaras.md`) ficcionaliza la cronologia de un caso real registrado en
+`memory/2026-11-04.md` y `2026-11-05.md`: inventa contradicciones de fojas y frases donde las
+reales estan documentadas. Gonzo eligio seguir por la via **ficcion** (opcion 1), pero la regla
+queda: si el corpus tiene el hecho, se usa; no se reemplaza por uno inventado que suene mejor.
+
+**2. La voz no se busca, se encuentra.** Las dos partes se escribieron sin mirar ninguna plantilla
+y las dos cayeron en mediana 9 (bandas 31/47/15/7 y 32/36/23/9). Imitar cinco autores fallo cinco
+veces; escribir desde el material acerto dos de dos.
+
+**3. El texto se alarga solo.** Entre la Parte I y la II la banda 16-30 subio de 15% a 23% y la
+31+ de 7% a 9%. No es descuido: a medida que crece la burocracia en la historia, crecen las
+frases. **Vigilar en la Parte III si sigue subiendo.**
+
 ## Pendiente
 
-Partes II a VI.
+Partes III a VI.
