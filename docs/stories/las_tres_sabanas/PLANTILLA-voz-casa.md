@@ -187,8 +187,46 @@ Card es un error; desviarse de Casa es una decisión que hay que poder justifica
 
 ## 11. Validación
 
-**Estado: validada en un capítulo.** El perfil se extrajo del capítulo 1 definitivo y **ningún otro
-texto la ha usado todavía**.
+**Estado: usada por primera vez en el capítulo 2** (`manuscript/capitulo_2.md`, E2 - tres viñetas
+en paralelo).
+
+### Resultado de la primera aplicación real
+
+| Métrica | Perfil casa | Cap. 2 | Estado |
+|---|---|---|---|
+| Mediana | 9 | **9** | OK |
+| Frases ≤6 | 36% | 33,9% | OK |
+| Frases 7-15 | 40% | **50,5%** | alto |
+| Frases 16-30 | 19% | 15,1% | OK |
+| Frases 31+ | 4% | 0,5% | OK |
+| Párrafos ≤5 palabras | 40% | 41% | OK |
+| Punto y coma | 0 | **0** | OK |
+| Adverbios -mente | 1 | **0** | OK |
+
+**Cuatro de cinco bandas entran y la mediana es exacta.** El tramo 7-15 queda 10 puntos alto: el
+capítulo es más parejo que el 1.
+
+### La desviación, y por qué se acepta
+
+**El capítulo 2 tiene un tramo 7-15 más alto por una razón de material:** E2 son tres personas
+solas, sin confrontación. No hay peleas, no hay revelaciones, no hay golpes de diálogo. Cada uno
+está en su casa conteniendo algo.
+
+El capítulo 1 tenía a los tres en la misma habitación peleándose una herencia: de ahí los latidos
+cortos. El 2 no los tiene.
+
+**Partir más frases para bajar el tramo 7-15 me llevó al staccato** (48,7% de frases cortas en el
+primer intento). Lo revertí. Forzar la distribución habría sido deformar el texto para cumplir un
+número.
+
+### La segunda desviación, documentada
+
+**El diálogo bajó al 25% de los párrafos** (perfil: 40-55%). Es el mismo motivo: tres personas solas.
+Néstor habla por teléfono dos veces, Adán con un vecino, Vera con el editor y su madre. Nada más.
+
+**Esto ya estaba previsto en la plantilla** (§9, "Cuidado"): *"No todas las escenas son de tres
+personas en una habitación. Una escena de dos o de uno solo va a tener menos diálogo y más
+pensamiento."* Se cumple lo previsto; no es una falla.
 
 Criterio para el capítulo 2:
 - mediana 7-11
