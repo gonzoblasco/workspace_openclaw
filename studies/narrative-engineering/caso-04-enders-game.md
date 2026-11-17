@@ -14,7 +14,7 @@ ajeno adaptado)
 
 El analisis se hizo sobre el **Capitulo 1 - "Third"**, texto integro publicado con permiso del
 publisher en NPR (`npr.org/2011/08/08/137864124/excerpt-enders-game`, copyright 1977/1985/1991
-Orson Scott Card). Son **2.129 palabras**, 72 parrafos.
+Orson Scott Card). Son **2.129 palabras**, 85 parrafos (72 con mas de 3 palabras).
 
 Lo que eso **no** cubre: la sala de batalla, la relacion Ender-Graff, la escuela de guerra y el
 cierre. Los ejes 1 a 4 son deuda de lectura conocida (estructura general, documentada
@@ -157,6 +157,7 @@ Este es el eje que se puede copiar. Todas las cifras salen de medir el capitulo 
 contiene todo el razonamiento. Card no escribe parrafos largos; escribe **parrafos cortos con
 una cadena larga adentro**. El ritmo no se arma con la oracion, se arma con la **acumulacion de
 oraciones cortas seguidas**.
+
 ### Dialogo [MEDIDO]
 
 - **51% de los parrafos son dialogo**, pero solo **25% de las palabras**. El dialogo ocupa
