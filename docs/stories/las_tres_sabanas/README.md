@@ -19,17 +19,20 @@ concentra la dependencia.
 - `PLANTILLA-voz-enders-game.md` - perfil de voz medido (Card) y su trasplante a esta novela.
 - `EVALUACION-cap1-cap2.md` - evaluacion cruzada del primer par.
 
-### Manuscrito
+### Manuscrito (reiniciado 2026-11-17)
 
-| Archivo | Escena | POV | Estado |
-|---|---|---|---|
-| `manuscript/capitulo_1.md` / `-edited.md` | E1 La Sabana Tendida | Nestor | cerrado (par 1) |
-| `manuscript/capitulo_2.md` | puente E1-E2 | Nestor | borrador 1, sin medir |
-| `manuscript/capitulo_3.md` | E2 El Precio Silencioso | los tres | borrador 1, sin medir |
-| `manuscript/capitulo_4.md` / `-edited.md` | E3 La Grieta | Adan | cerrado (par 1) |
+Los borradores anteriores se borraron; quedan en el historial de git. Ahora hay **cinco
+versiones del capítulo 1**, una por perfil medido:
 
-Los capitulos 1 y 2 originales del par 1 quedan con la numeracion historica: el archivo
-`capitulo_2` original se renombro a `capitulo_4` al insertarse el puente y E2.
+| Archivo | Perfil | Estado |
+|---|---|---|
+| `manuscript/capitulo_1-card.md` | Card (mediana 9) | 3/4 bandas |
+| `manuscript/capitulo_1-rowling.md` | Rowling (16,5) | **4/4 bandas** |
+| `manuscript/capitulo_1-katzenbach.md` | Katzenbach (12) | 3/4 bandas |
+| `manuscript/capitulo_1-echeverria.md` | Echeverria (20,5) | 0/4 bandas |
+| `manuscript/capitulo_1-garciamarquez.md` | Garcia Marquez (21) | 2/4 bandas |
+
+Detalle y diagnostico en `EVALUACION-5-versiones-cap1.md`.
 
 ## Canon
 

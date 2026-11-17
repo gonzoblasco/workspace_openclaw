@@ -1,19 +1,17 @@
-# Capítulo 1 — versión Rowling (v1)
+# Capítulo 1 — versión Rowling
 
-*Reescritura - 2026-11-17. POV: Néstor. Aplicando `PLANTILLA-voz-rowling.md` **desde el principio**:
-bandas de frase objetivo 19/35/36/11 (≤6 / 7-15 / 16-30 / 31+), mediana 15, narrador con voz
-propia, pensamiento en estilo indirecto libre, textura sin función, humor dentro de lo triste.
-Mismos hechos que `capitulo_1-edited.md`. La v0 queda intacta como registro del error.*
+*Escrito con `PLANTILLA-voz-rowling.md`. Perfil: mediana 16,5, bandas 14/35/38/12.
+POV: Néstor. Mismos hechos. Clave: casi no hay frases cortas - el tramo 7-15 está lleno.*
 
 ---
 
-La llave de la casa de Elvira Vergara tenía un problema que nadie de la familia se había tomado el trabajo de resolver. Había que meterla hasta el fondo, inclinarla apenas hacia la izquierda y empujar la puerta con el hombro, todo en ese orden y todo a la vez. Era como si la casa exigiera que uno le pidiera permiso con el cuerpo antes de dejarlo entrar.
+La llave de la casa de Elvira Vergara tenía un problema que nadie de la familia se había tomado el trabajo de resolver. Había que meterla hasta el fondo, inclinarla apenas hacia la izquierda y empujar la puerta con el hombro, todo en ese orden y todo a la vez.
 
 Néstor la llevaba apretada en el puño desde Villa Crespo. En el asiento de al lado tenía una bolsa de supermercado que no le había comprado a nadie, y que iba a terminar en la mesa de la cocina como si fuera una ofrenda.
 
 La puerta se abrió con un quejido larguísimo, el de una bisagra que llevaba veinte años sin una gota de aceite y que ya no estaba enojada, solamente cansada. El olor le llegó antes que la luz: humedad, y algo más viejo que la humedad, algo que Néstor no supo nombrar y no quiso intentar.
 
-Adentro no había un solo cuadro, ni una silla, ni un plato, ni una cortina: nada de lo que uno espera encontrar en una casa donde vivió alguien. Y sin embargo la casa estaba llena. En el living había una mesa, y contra la pared del fondo, en el rincón donde la abuela ponía la cama de los chicos cuando había visitas, estaba la cama desarmada. Sobre la cama, las telas.
+Adentro no había un solo cuadro ni una silla ni un plato ni una cortina: nada de lo que uno espera encontrar en una casa donde vivió alguien. Y sin embargo la casa estaba llena. En el living había una mesa, y contra la pared del fondo, en el rincón donde la abuela ponía la cama de los chicos cuando había visitas, estaba la cama desarmada. Sobre la cama, las telas.
 
 Adán ya estaba ahí, parado junto a la ventana con las manos metidas en los bolsillos del abrigo y la espalda hacia la puerta. No se dio vuelta cuando Néstor entró, ni cuando la puerta se cerró sola con un golpe húmedo, ni cuando Néstor lo saludó una vez, bajito, por si acaso.
 
@@ -25,7 +23,7 @@ Adán ya estaba ahí, parado junto a la ventana con las manos metidas en los bol
 
 Néstor pensó en decirle que en ese barrio no entraba cualquiera, que hacía veinte años que no entraba cualquiera, y decidió no decirlo, porque no era eso de lo que estaban hablando y los dos lo sabían.
 
-Dejó la llave sobre la mesa, en el lugar exacto donde la abuela la dejaba. Era tan exacto que por un segundo tuvo la sensación ridícula de estar devolviendo algo que no era suyo. El golpecito del metal contra la madera quedó flotando un rato en el aire de la pieza vacía antes de apagarse del todo.
+Dejó la llave sobre la mesa, en el lugar exacto donde la abuela la dejaba. Era tan exacto que por un segundo tuvo la sensación ridícula de estar devolviendo algo que no era suyo. El golpecito del metal contra la madera quedó flotando un rato en el aire antes de apagarse del todo.
 
 Las telas estaban apiladas. Dos sábanas dobladas en un rectángulo prolijo, prolijo de un modo casi ofensivo, como se dobla cuando uno no sabe cuándo va a volver a abrir una cama. La tercera colgaba del respaldo, extendida de par en par, con las puntas casi tocando el piso.
 
@@ -41,11 +39,11 @@ Adán seguía mirando la ventana como si la ventana tuviera algo que darle.
 
 —Dijo que viene.
 
-Adán asintió despacio, con la cabeza apenas. Era el modo en que asiente alguien que ya sabe la respuesta, y que sabe además que la pregunta no era para él sino para el aire de la pieza.
+Adán asintió despacio, con la cabeza apenas. Era el modo en que asiente alguien que ya sabe la respuesta, y que sabe además que la pregunta no era para él sino para el aire.
 
 Vera llegó veinte minutos más tarde, con el auto mal estacionado -ocupaba dos lugares y había dejado la rueda de adelante sobre la vereda, cosa que en otro barrio hubiera sido un problema y en este era simplemente un martes- y el abrigo todavía puesto. Parecía haber bajado del auto con la idea de entrar y volver a salir en el mismo minuto.
 
-Se quedó en el marco. Sin entrar del todo. Miró el cuarto en el mismo orden en que Néstor lo había mirado antes: primero la mesa, después la cama desarmada, y al final las sábanas.
+Se quedó en el marco de la puerta, sin entrar del todo. Miró el cuarto en el mismo orden en que Néstor lo había mirado: primero la mesa, después la cama desarmada, y al final las sábanas.
 
 —Está más chica —dijo.
 
@@ -53,7 +51,7 @@ Se quedó en el marco. Sin entrar del todo. Miró el cuarto en el mismo orden en
 
 —Está más chica —repitió Vera, y esta vez lo dijo con una rabia cansada que Néstor no le había escuchado nunca—. De nena parecía enorme. Era una casa enorme. ¿Vos te acordás de que era enorme?
 
-Nadie contestó. Vera cerró la puerta con el pie y se acercó a la cama. Tocó el borde de la sábana de arriba con dos dedos. Lo hizo con la delicadeza con la que se toca algo que puede estar caliente, o puede estar vivo.
+Nadie contestó. Vera cerró la puerta con el pie y se acercó a la cama. Tocó el borde de la sábana doblada de arriba con dos dedos, con la delicadeza con la que se toca algo que puede estar caliente o puede estar vivo.
 
 —Vinimos por lo del escribano —dijo Néstor, y se escuchó a sí mismo diciéndolo y le pareció que lo decía desde muy lejos, desde otra pieza de la misma casa—. La casa, los papeles.
 
@@ -89,9 +87,7 @@ El cuarto quedó callado de una manera que no era pacífica. Afuera, el viento p
 
 Si digo algo, empeora. Si no digo nada, también. Ese silencio fue lo primero que hizo mal, y lo supo en el momento, y no lo arregló.
 
-Vera se adelantó hasta el respaldo. Tomó la sábana por una punta. Tiró. La tela se desprendió con un chasquido que fue el único sonido seco de toda la mañana, y cayó entera sobre el piso levantando un poco de polvo viejo.
-
-Debajo quedó la costura del borde, a la vista, toda a lo largo, con el hilo verde desteñido. Y los remiendos que la abuela había ido haciendo cada vez que se rompía, uno encima del otro, sin criterio y sin vergüenza.
+Vera se adelantó hasta el respaldo y tomó la sábana colgada por una punta. Tiró. La tela se desprendió con un chasquido que fue el único sonido seco de toda la mañana, y cayó entera sobre el piso levantando un poco de polvo viejo. Debajo quedó la costura del borde, a la vista, toda a lo largo, con el hilo verde desteñido y los remiendos que la abuela había ido haciendo cada vez que se rompía.
 
 Vera se agachó y la miró de cerca, con la nariz casi pegada a la tela.
 
@@ -125,20 +121,12 @@ Adán seguía junto a la ventana. No había vuelto a mirar la sábana, ni a Vera
 
 Se quedó él, se va ella, y la que falta decidir es la sábana. Y la decisión, Néstor lo sabía con esa claridad incómoda que llega cuando ya es tarde para hacer algo, acababa de quedar en sus manos como quedan las cosas que nadie quiere: por descarte.
 
-Volvió a mirar la mesa, despacio. La llave seguía donde la había dejado, en el lugar exacto de la abuela. Junto a la llave, en el borde de la madera, alguien había escrito hacía años, con la punta de un clavo, dos letras pequeñas y torcidas que no eran parte de ninguna lista ni de ningún inventario y que estaban ahí porque sí.
+Volvió a mirar la mesa. La llave seguía donde la había dejado, en el lugar exacto de la abuela. Junto a la llave, en el borde de la madera, alguien había escrito hacía años, con la punta de un clavo, dos letras pequeñas y torcidas que no eran parte de ninguna lista ni de ningún inventario y que estaban ahí porque sí.
 
 E. V.
 
 Ninguno de los tres las nombró. Y Néstor supo, con la certeza tranquila de las cosas que uno no va a poder demostrar nunca, que ninguno de los tres las iba a nombrar esa mañana.
 
-La sábana de Elvira quedó en los brazos de Vera, tibia de polvo. Afuera empezaba a llover, una lluvia fina que no iba a durar y que igual iba a mojar todo. El golpeteo sobre la chapa del techo sonó por un momento exactamente igual que veinte años atrás, cuando los tres eran chicos y la abuela todavía estaba viva, y ninguno de ellos tenía la menor idea de que un día iban a estar en esa misma pieza peleándose una sábana.
+La sábana de Elvira quedó en los brazos de Vera, tibia de polvo. Afuera empezaba a llover, una lluvia fina que no iba a durar y que igual iba a mojar todo. El golpeteo sobre la chapa del techo sonó por un momento igual que veinte años atrás, cuando los tres eran chicos y la abuela todavía estaba viva, y ninguno de ellos tenía la menor idea de que un día iban a estar en esa pieza peleándose una sábana.
 
 Néstor pensó que tendría que decir algo, y no dijo nada.
-
----
-
-*Versión Rowling v1. POV: Néstor. Escrita con `PLANTILLA-voz-rowling.md` desde el principio:
-bandas objetivo 19/35/36/11, mediana 15, narrador con juicio propio ("prolijo de un modo casi
-ofensivo"), pensamiento en estilo indirecto libre sin marca, textura sin función (la mercería de
-Rivadavia, el martes de la vereda), y cierre con el juicio del narrador. Mismos hechos que
-`capitulo_1-edited.md`.*
