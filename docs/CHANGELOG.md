@@ -16,6 +16,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Acto I: 9.884 palabras** (era 9.163). Perfil: mediana 9,0 y bandas 33,9/44,9/19,0/2,2, las cuatro dentro.
 - **Libro: 26.854 palabras.** Los tres actos quedan parejos: 9.884, 7.103 y 9.867.
 - El capítulo 4 pasa de 1.600 a 2.515 palabras y de una escena a dos.
+- **Pasada de lectura en voz alta:** se arreglaron las tres frases que no se pueden decir de corrido. La de Adán en el capítulo 3 ("yo estuve treinta años en esta casa...") ahora respira con comas; en el 7 se agregó una coma en la descripción de la planilla; y en el 15 se partió en dos la frase de Vera mirando a Adán, que tenía treinta y tres palabras sin pausa.
 
 ---
 

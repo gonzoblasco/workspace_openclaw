@@ -84,7 +84,7 @@ Vera abrió la carpeta.
 
 ---
 
-Adán miró las hojas. Eran tres columnas con números y fechas escritas a mano con una letra prolija y redonda que no era la de Vera, y en el margen de arriba había un título subrayado dos veces: cuentas de la casa.
+Adán miró las hojas. Eran tres columnas con números y fechas escritas a mano, con una letra prolija y redonda que no era la de Vera, y en el margen de arriba había un título subrayado dos veces: cuentas de la casa.
 
 — ¿Esto lo hiciste vos?
 

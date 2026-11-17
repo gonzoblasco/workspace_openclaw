@@ -248,7 +248,7 @@ Néstor se sentó en la otra silla, y estuvieron los dos un rato mirando el past
 
 Adán levantó la vista.
 
-— Entonces nada. Pero yo estuve treinta años en esta casa y el lunes ella fue a preguntar por el expediente y el martes me llegó la carta a mí y ella ya sabía lo que decía.
+— Entonces nada. Pero yo estuve treinta años en esta casa, y el lunes ella fue a preguntar por el expediente, y el martes me llegó la carta a mí, y ella ya sabía lo que decía.
 
 Se calló un rato.
 

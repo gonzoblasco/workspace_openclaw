@@ -530,7 +530,7 @@ Vera se cubrió la cara con las dos manos y las dejó ahí un segundo.
 
 — ¿Entonces por qué?
 
-Vera lo miró como se mira a alguien que acaba de decir una verdad sin darse cuenta de lo que dijo, y Adán sostuvo la mirada porque no tenía otra cosa que sostener.
+Vera lo miró como se mira a alguien que acaba de decir una verdad sin darse cuenta de lo que dijo. Adán sostuvo la mirada porque no tenía otra cosa que sostener.
 
 ---
 
