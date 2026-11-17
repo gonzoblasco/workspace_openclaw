@@ -194,7 +194,24 @@ Los numeros del original no cerraban con "un fin de semana por medio":
 Es el tipo de error que no se ve leyendo pero si al contar. Y es el mismo que el de las fechas de
 la denuncia en la Parte III: **el relato se sostiene sobre numeros que tienen que cerrar entre si.**
 
+### Lectura de corrido (2026-11-17) - tres hallazgos
+
+Se armo `manuscript/libro-completo.md` (11.121 palabras) y se leyo entero. Lo que aparecio:
+
+**1. Una escena escrita dos veces.** La audiencia de diciembre de 2020 estaba completa en la
+Parte I (cuatro parrafos) **y** en la Parte II (escena entera), con la misma lapicera, el mismo
+"no aplaudio" y el mismo "no le dijo nada a la madre". La Parte I se recorto para terminar en la
+carta de julio; la audiencia vive solo en la Parte II. **Era invisible leyendo por partes.**
+
+**2. Dos escenas del outline nunca escritas.** La Parte IV saltaba de los cumpleanos a la
+denuncia de violencia sin el juez de paz, el audio de cuarenta y siete minutos y el chipa. Se
+escribieron y se insertaron en orden cronologico (29/04 antes del 23/05).
+
+**3. El detector de frases repetidas no ve escenas repetidas.** Se buscaron frases identicas de
+8+ palabras en todo el libro y aparecio **una sola** (una resolucion citada dos veces, legitima).
+La duplicacion real era de escena, no de frase: el metodo de chequeo tiene que ser leer, no contar.
+
 ## Pendiente
 
 - La segunda parte del libro (anunciada al final, no escrita).
-- Revision de lectura completa, de corrido.
+- Segunda lectura de corrido sobre el texto ya corregido.

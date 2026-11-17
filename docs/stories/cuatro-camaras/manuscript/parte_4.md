@@ -326,6 +326,48 @@ Y ella dijo una cosa que Emilio no esperaba, y que lo desarmó, y que en ese mom
 
 ---
 
+El veintinueve de abril, un viernes, Emilio fue a buscarlo como todos los viernes pares.
+
+Frenó en la puerta de la casa y la madre salió antes de que bajara del auto.
+
+Emilio bajó y caminó hasta el portón y el portón estaba trabado y él trató de levantarlo y no levantó.
+
+La madre le dijo que no iba a poder verlo.
+
+Emilio le preguntó por qué.
+
+La madre le dijo que no.
+
+Emilio le preguntó si estaba bien el nene.
+
+La madre le dijo que sí.
+
+Y en el medio de eso, en la vereda, con el portón trabado y el auto en doble fila, Emilio gritó.
+
+No fue un grito grande. Fue una frase, una sola, y la frase fue *decime por qué*.
+
+La madre no contestó. Entró y cerró la puerta.
+
+---
+
+Emilio se quedó en la vereda.
+
+Después caminó hasta el auto, se sentó, y antes de arrancar sacó el teléfono y tocó la grabación.
+
+Lo hacía desde que había vuelto a ver al nene. No por nada en particular. Lo hacía como la planilla: por si acaso.
+
+La grabación tenía cuarenta y siete minutos.
+
+Arrancaba en el momento en que había estacionado y terminaba en el momento en que había arrancado.
+
+En esos cuarenta y siete minutos no había un insulto, no había una amenaza, no había una palabra más alta que la otra.
+
+Había un portón, un auto en doble fila, un padre preguntando por qué, y una puerta cerrándose.
+
+---
+
+---
+
 El martes veintitrés de mayo de dos mil veintitrés le llegó la notificación.
 
 Emilio estaba en la oficina. Eran las diez y cuarenta.
@@ -336,11 +378,83 @@ La primera decía la fecha de la denuncia. La segunda decía que la denuncia era
 
 Emilio cerró el mail y miró la planilla, que estaba abierta en otra pestaña.
 
+---
+
 La planilla tenía dieciocho filas.
 
 Dieciocho sábados, de septiembre a mayo. Dieciocho filas con fecha, hora de retiro, hora de devolución y observaciones.
 
 En las dieciocho no faltaba una sola palabra.
+
+---
+
+La denuncia entró el veintiuno de mayo, un domingo.
+
+Decía que Emilio había ido a la casa, la había increpado, le había gritado obscenidades y le había dado un empujón en la puerta.
+
+La denuncia la hizo la madre, en la comisaría, con la descripción de un auto y una patente.
+
+La patente era de Emilio.
+
+---
+
+Lo citaron a una entrevista con el juez de paz.
+
+La entrevista fue en una oficina del primer piso de la municipalidad, en junio, un martes a las nueve.
+
+El juez de paz era un hombre grande, de pelo blanco, con las manos apoyadas en el escritorio.
+
+Le pidió que se sentara y le dijo que la denuncia era grave.
+
+Emilio dijo que sí.
+
+— ¿Quiere decir algo?
+
+— Quiero hacerle escuchar una grabación.
+
+El juez lo miró.
+
+— ¿Qué grabación?
+
+— La de ese día. Tengo la interacción completa, desde que estacioné hasta que me fui.
+
+— ¿Está editada?
+
+— No.
+
+— ¿Cuánto dura?
+
+— Cuarenta y siete minutos.
+
+El juez de paz miró los papeles del escritorio.
+
+— Tengo el relato de la señora —dijo—. Es su palabra contra la de ella.
+
+— Su señoría, la evidencia mata el relato.
+
+El juez levantó la vista. Se quedó un segundo sin decir nada.
+
+Después hizo un gesto con la mano hacia la puerta.
+
+— Puede retirarse.
+
+---
+
+Emilio se retiró.
+
+Afuera había sol y una mujer en la esquina con un carrito y un anafre, vendiendo chipá.
+
+Emilio se acercó y le compró dos.
+
+La mujer le preguntó si quería de queso o de almidón y Emilio le dijo de queso.
+
+Los comió sentado en el auto, con la ventanilla baja, sin manejarse.
+
+El sol daba en el volante y el volante quemaba y él no cambió de posición.
+
+No había llorado. No había temblado. No había pedido nada.
+
+Había hecho todo bien y no había servido de nada, y la única cosa que podía hacer con eso era comerse dos chipás en el auto al mediodía.
 
 ---
 
