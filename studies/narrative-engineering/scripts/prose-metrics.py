@@ -46,3 +46,24 @@ print()
 bold_thoughts = re.findall(r"\*[^*\n]{8,}\*", t)
 words = sum(pw)
 print("pensamientos en cursiva:", len(bold_thoughts), "| por 100 palabras:", round(len(bold_thoughts) * 100 / words, 1))
+
+# Primera persona suelta en la narracion (convencion Card, sin comillas ni cursiva).
+# Heuristica conservadora en espanol: solo pronombres de primera persona con verbo
+# conjugado en primera persona. "me" y "mi" producen demasiados falsos positivos
+# ("me miró", "mi hermano"), asi que quedan afuera.
+# Primera persona suelta en la narracion (convencion Card, sin comillas ni cursiva).
+# Solo formas inequivocas: en espanol la mayoria de los verbos de primera persona son
+# homografos de tercera ("miraba", "sabia", "iba"), asi que se exigen marcas fuertes:
+# el pronombre "yo", el verbo "soy", la -e/-i de primera ("dije", "tengo") y "no se".
+FP_STRONG = (
+    r"\b(yo|nosotros|nosotras)\b"
+    r"|\b(soy|estoy|tengo|dije|pens[eé]|quise|supe|vi|vine)\b"
+    r"|\bno\s+s[eé]\b"
+)
+fp_paras = []
+for p in paras:
+    if p.startswith('"') or p.startswith("\u2014") or p.startswith("*"):
+        continue
+    if re.search(FP_STRONG, p, re.IGNORECASE):
+        fp_paras.append(p)
+print("parrafos con primera persona suelta:", len(fp_paras), "| por 100 palabras:", round(len(fp_paras) * 100 / words, 1))
