@@ -27,10 +27,10 @@ estructura. Cada afirmacion lleva su marca: **[MEDIDO]** / **[LECTURA]** / **[CO
 
 | Metrica | Card (caso 04) | **Rowling (caso 05)** |
 |---|---|---|
-| Mediana palabras/frase | 7,5 | **17** |
-| Media palabras/frase | 9,6 | **17,9** |
-| Frases <=10 palabras | 65% | **32%** |
-| Frases de 30+ palabras | 0,9% | **13,7%** |
+| Mediana palabras/frase | 7,5 | **15** |
+| Media palabras/frase | 9,6 | **16,5** |
+| Frases <=10 palabras | 65% | **38%** |
+| Frases de 30+ palabras | 0,9% | **11%** |
 | Frase mas larga | 48 | **60** |
 | Adverbios -ly (por 1000 palabras) | 8,5 | **17,8** |
 
@@ -38,7 +38,7 @@ estructura. Cada afirmacion lleva su marca: **[MEDIDO]** / **[LECTURA]** / **[CO
 Card esconde al narrador; Rowling **es** el narrador. Y las dos funcionan.
 
 El caso 04 dejo escrito que "el estilo de Card es de ingeniero: medido, economico, sin grasa".
-Este caso demuestra que eso es **una** eleccion, no la medida de la buena prosa. 13,7% de frases
+Este caso demuestra que eso es **una** eleccion, no la medida de la buena prosa. 11% de frases
 largas no es un defecto de Rowling: es como se construye su voz.
 
 ---
@@ -143,12 +143,12 @@ formas opuestas de arco.
 |---|---|
 | Palabras (Ch. 1) | 2.973 |
 | Frases | 166 |
-| Mediana palabras/frase | **17** |
-| Media | 17,9 |
+| Mediana palabras/frase | **15** |
+| Media | 16,5 |
 | Frase mas larga | **60** |
-| Frases <=6 palabras | 15% |
-| Frases <=10 palabras | 33% |
-| Frases de 30+ | **13,7%** |
+| Frases <=6 palabras | 19% |
+| Frases <=10 palabras | 38% |
+| Frases de 30+ | **11%** |
 | Frases de 40+ | 8 |
 
 **La firma ritmica:** oraciones largas, subordinadas, con incisos. Rowling **no tiene miedo de la

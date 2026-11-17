@@ -56,3 +56,18 @@
 **Estado hoy:** capitulos 1 y 2 cerrados como **primer par**, ya medidos y editados
 (`EVALUACION-cap1-cap2.md`). El siguiente analisis cae **al cerrar el capitulo 4**, con los
 capitulos 3 y 4 escritos de corrido.
+
+## Plantillas disponibles (2026-11-17)
+
+Cada autor analizado deja una plantilla ejecutable. **Ninguna se aplica de memoria: se leen antes
+de escribir.**
+
+| Plantilla | Que aporta | Estado |
+|---|---|---|
+| `PLANTILLA-voz-enders-game.md` | Ritmo corto, pensamiento en primera persona crudo, dialogo seco | **validada** (cap. 1 y 4 medidos) |
+| `PLANTILLA-voz-rowling.md` | Narrador con voz propia, textura sin funcion, humor dentro de lo triste | **sin validar** (el intento v0 no cumplio sus propias reglas) |
+| `PLANTILLA-peso-katzenbach.md` | Las cinco condiciones para que un objeto cargue | **aplicada** en `capitulo_1-peso.md`, falta validacion de lectura |
+
+**Regla de proceso:** una plantilla se escribe **antes** de escribir la escena, no despues de
+medirla. El caso Rowling es la prueba: se escribio la escena sin plantilla, salio bimodal, y hubo
+que reconstruir las reglas desde el error.
