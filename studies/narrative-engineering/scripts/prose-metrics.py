@@ -13,6 +13,7 @@ Perfiles de referencia (bandas <=6 / 7-15 / 16-30 / 31+, sobre NARRACION):
     card       9 mediana   | 35 / 47 / 16 / 1     (Caso 04, Ender's Game, narracion)
     rowling    16,5 mediana | 14 / 35 / 38 / 12  (Caso 05, Azkaban)
     katzenbach 12 mediana  | 24 / 41 / 27 / 8     (Caso 06, La sombra, narracion, es)
+    echeverria 20,5 mediana | 14 / 25 / 30 / 31   (Caso 07, El matadero, 1838)
 
 Nota de honestidad: las bandas de Card se recontaron el 2026-11-17 sobre la NARRACION
 (155 frases). La version anterior de este script traia 65/33/2/0,9, que confundia el
@@ -32,6 +33,11 @@ PROFILES = {
         "median": 16.5,
         "bands": (14, 35, 38, 12),
         "note": "bandas sobre narracion, excluyendo dialogo y documentos",
+    },
+    "echeverria": {
+        "median": 20.5,
+        "bands": (14, 25, 30, 31),
+        "note": "bandas sobre narracion de El matadero (S.XIX, es); muestra con parrafo estimado",
     },
     "katzenbach": {
         "median": 12,

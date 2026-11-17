@@ -61,6 +61,7 @@ pueden medir y refutar con cifras.
 | 04 | Ender's Game (1985) | Orson Scott Card | Idea **original** | 5/5 ejes (**muestra parcial**: Ch. 1) |
 | 05 | Harry Potter y el prisionero de Azkaban (1999) | J. K. Rowling | **Continuacion de serie** | 5/5 ejes (extracto oficial, Ch. 1) |
 | 06 | La sombra / The Shadow Man (1995) | John Katzenbach | Idea **original** (thriller) | 5/5 ejes (fragmento oficial, es) |
+| 07 | El matadero (1838-40, pub. 1871) | Esteban Echeverria | Idea **original** (cuento fundacional) | 5/5 ejes + peso (dominio publico, completo) |
 
 ---
 
@@ -77,6 +78,9 @@ pueden medir y refutar con cifras.
 - `caso-06-la-sombra-katzenbach.md` - tercer perfil, y el primer caso que **no** es sobre voz sino
   sobre **peso**: como un objeto carga sin convertirse en simbolo. Su formula vive en
   `docs/stories/las_tres_sabanas/PLANTILLA-peso-katzenbach.md`.
+- `caso-07-el-matadero-echeverria.md` - cuarto perfil y el primero **fuera del ingles**: espanol
+  rioplatense de 1838. Prueba que el metodo aguanta. Agrega una tercera direccion de asimetria
+  (el narrador fiscal) y el peso por **funcion** en vez de por historia.
 
 ---
 
