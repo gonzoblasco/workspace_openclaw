@@ -2,6 +2,10 @@
 
 ---
 
+## 7. El centro que lastima
+
+---
+
 La tasación llegó por mail un lunes.
 
 Adán la abrió en el teléfono, sentado en la cocina, y la leyó dos veces. El número estaba abajo, en negrita, y era menos de lo que él había pensado la primera vez que calculó cuánto podía valer.
@@ -426,7 +430,9 @@ Pensó en Vera abriendo el aparador el sábado, sin avisar, sin pedir permiso, y
 
 ---
 
-*Continúa.*
+---
+
+## 8. La reaccion en cadena
 
 *Octubre. Tres movimientos, el mismo día, cada uno causado por el anterior.*
 
@@ -830,7 +836,9 @@ Y Néstor se quedó mirando las dos respuestas, una debajo de la otra en la pant
 
 ---
 
-*Continúa.*
+---
+
+## 9. El cuidado es la carcel
 
 ---
 
@@ -1126,14 +1134,6 @@ Después asintió.
 
 ---
 
-Néstor se quedó callado.
-
-Después asintió.
-
-— Tenés razón.
-
----
-
 Vera se fue y manejó hasta su casa sin radio, con la ventanilla baja y el aire de noviembre que todavía no era frío.
 
 ---
@@ -1162,7 +1162,9 @@ Lo que escribió fue esto, y después cerró el cuaderno:
 
 ---
 
-*Continúa.*
+---
+
+## 10. Las alianzas se reacomodan
 
 ---
 
@@ -1554,7 +1556,9 @@ No contestó la pregunta, y esa noche tardó en dormirse.
 
 ---
 
-*Continúa.*
+---
+
+## 11. El sacrificio ofrecido
 
 ---
 
@@ -1981,5 +1985,3 @@ Néstor se quedó mirando a los dos, de pie en el medio de su taller, entre el m
 Y los tres se quedaron ahí, en el taller, sin saber qué hacer con una solución que ninguno de los tres quería aceptar.
 
 ---
-
-*Continúa.*

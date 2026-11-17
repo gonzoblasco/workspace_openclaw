@@ -296,14 +296,6 @@ Después asintió.
 
 ---
 
-Néstor se quedó callado.
-
-Después asintió.
-
-— Tenés razón.
-
----
-
 Vera se fue y manejó hasta su casa sin radio, con la ventanilla baja y el aire de noviembre que todavía no era frío.
 
 ---
