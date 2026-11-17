@@ -42,6 +42,20 @@ del primer caso (Dark City) y se confirmaron en el segundo (Batman Begins).
    sobre todo **lo que el autor nunca hace**. Es el eje que permite escribir en ese estilo; los
    otros cuatro explican como esta armada la historia.
 
+## Los cinco perfiles medidos (narracion)
+
+| Perfil | Mediana | <=6 | 7-15 | 16-30 | 31+ | Estrategia |
+|---|---|---|---|---|---|---|
+| Card | 9 | 35% | 47% | 16% | 1% | golpes cortos |
+| Katzenbach | 12 | 24% | 41% | 27% | 8% | medio, dialogo dominante |
+| Rowling | 16,5 | 14% | 35% | 38% | 12% | medio-alto parejo |
+| Echeverria | 20,5 | 14% | 25% | 30% | 31% | alto con picos |
+| Garcia Marquez | 21 | 8% | 28% | 38% | 26% | alto **sin picos**, sin frases cortas |
+
+Verificados con `scripts/prose-metrics.py --perfil <nombre>`; cada uno se auto-valida a +-0,4%
+sobre su propio texto fuente. **Cinco autores, tres idiomas de origen, dos siglos, cinco generos:
+ninguna distribucion se repite.** La tabla no dice quien escribe mejor, dice que eligio cada uno.
+
 **Criterio de "modelo confirmado":** si los 4 ejes aparecen con la misma mecanica en un
 material original y en uno adaptado, deja de ser casualidad: es la firma del autor.
 
@@ -62,6 +76,7 @@ pueden medir y refutar con cifras.
 | 05 | Harry Potter y el prisionero de Azkaban (1999) | J. K. Rowling | **Continuacion de serie** | 5/5 ejes (extracto oficial, Ch. 1) |
 | 06 | La sombra / The Shadow Man (1995) | John Katzenbach | Idea **original** (thriller) | 5/5 ejes (fragmento oficial, es) |
 | 07 | El matadero (1838-40, pub. 1871) | Esteban Echeverria | Idea **original** (cuento fundacional) | 5/5 ejes + peso (dominio publico, completo) |
+| 08 | Cronica de una muerte anunciada (1981) | Gabriel Garcia Marquez | Idea **original** (hecho real) | 5/5 ejes (edicion oficial, cap. 1) |
 
 ---
 
@@ -81,6 +96,10 @@ pueden medir y refutar con cifras.
 - `caso-07-el-matadero-echeverria.md` - cuarto perfil y el primero **fuera del ingles**: espanol
   rioplatense de 1838. Prueba que el metodo aguanta. Agrega una tercera direccion de asimetria
   (el narrador fiscal) y el peso por **funcion** en vez de por historia.
+- `caso-08-cronica-muerte-anunciada.md` - quinto perfil, el cierre del arco metodologico. Agrega
+  la cuarta direccion de asimetria (comunitaria y retrospectiva) y la tercera forma de peso (el
+  testimonio). Con cinco autores queda demostrado que **no hay una prosa buena: hay cinco
+  decisiones**.
 
 ---
 
