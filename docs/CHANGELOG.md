@@ -6,6 +6,24 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-17] - Las Tres Sabanas: el primer borrador completo
+
+### Added
+- **Acto III escrito y compilado** (`docs/stories/las_tres_sabanas/manuscript/acto_3.md`): capítulos 12 a 17, 9.664 palabras. Con el Acto I (9.430) y el II (6.968) la novela queda en **26.062 palabras** y las 17 escenas del outline están escritas.
+- **Capítulos sueltos** `capitulo_12.md` a `capitulo_17.md`, uno por escena, con POV declarado: 12 Adán, 13 Vera, 14 los tres, 15 Adán, 16 Vera, 17 Néstor.
+
+### Changed
+- **README del proyecto**: secciones faltantes del Acto I y del Acto III, con tablas de escena/POV/palabras, y el estado actualizado a "primer borrador completo".
+- **Acto I**: 9.430 palabras, mediana 9,0 exacta. Compilado y corregido en el commit anterior del mismo día (`318a35c4dc`).
+
+### Notes
+- **Perfil `casa` en los tres actos**: I 9,0 · 34,9/45,1/17,9/2,0 · II 8,0 · 38,5/39,5/19,2/2,8 · III 8,0 · 38,5/41,8/17,9/1,8. Las cuatro bandas dentro de tolerancia en los tres.
+- **Diálogo en alza por acto**: 53% de párrafos en el I, 66% en el II, 63% en el III. Se acepta y se documenta: del 12 al 15 la novela es una serie de conversaciones donde nadie puede moverse sin romper algo.
+- **La deuda oculta** (préstamo de 12 millones con garantía sobre el tercio de Néstor, con vencimiento anticipado disparado el mismo día de la renuncia) es el hueco sobre el que se sostiene el acto. Sin villano: el banco cumple su contrato.
+- Cero punto y coma, cero adverbios en `-mente`, cero frases repetidas dentro del acto y cero repetidas contra los actos anteriores.
+
+---
+
 ## [2026-11-17] - La skill del vault quedó con dos cuerpos y nada lo dijo
 
 ### Fixed
