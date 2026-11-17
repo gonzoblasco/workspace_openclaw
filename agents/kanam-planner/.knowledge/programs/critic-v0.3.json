@@ -92,7 +92,7 @@
       "role": "critic",
       "owner": "kanam-critic",
       "status": "completed",
-      "exit_criteria": "Existe agents/kanam-critic/memory/frictions.jsonl con 15 registros (7 absorbed, 8 open) y schema documentado.",
+      "exit_criteria": "Existe agents/kanam-critic/memory/frictions.jsonl con 20 registros (7 absorbed, 13 open) y schema documentado.",
       "depends_on": [
         3
       ],
@@ -101,7 +101,7 @@
         "agents/kanam-critic/memory/frictions.jsonl"
       ],
       "evidence": [
-        "agents/kanam-critic/memory/frictions.jsonl: 15 registros (7 absorbed, 8 open)"
+        "agents/kanam-critic/memory/frictions.jsonl: 20 registros (7 absorbed, 13 open)"
       ],
       "blocker": null,
       "waiver_reason": null,
@@ -140,11 +140,11 @@
     },
     {
       "id": 6,
-      "task": "T3.3 - Publicar la tasa de absorcion (15 fricciones: 7 absorbed, 8 open)",
+      "task": "T3.3 - Publicar la tasa de absorcion (20 fricciones: 7 absorbed, 13 open)",
       "role": "critic",
       "owner": "kanam-critic",
       "status": "pending",
-      "exit_criteria": "Existe agents/kanam-critic/docs/reviews/<fecha>-absorcion.md con absorbed=7, total=15, rate=46.7% y el detalle por verdicto; el Critic reconcilia su conteo de VETOs (roadmap dice 2, ledger tiene 3).",
+      "exit_criteria": "Existe agents/kanam-critic/docs/reviews/<fecha>-absorcion.md con absorbed=7, total=20, rate=35.0% y el detalle por veredicto (6 validos: 5 VETO, 1 Aprobado).",
       "depends_on": [
         5
       ],
