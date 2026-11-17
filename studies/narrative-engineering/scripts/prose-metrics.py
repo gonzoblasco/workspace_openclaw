@@ -15,6 +15,7 @@ Perfiles de referencia (bandas <=6 / 7-15 / 16-30 / 31+, sobre NARRACION):
     katzenbach 12 mediana  | 24 / 41 / 27 / 8     (Caso 06, La sombra, narracion, es)
     echeverria 20,5 mediana | 14 / 25 / 30 / 31   (Caso 07, El matadero, 1838)
     garciamarquez 21 mediana | 8 / 28 / 38 / 26    (Caso 08, Cronica, 1981)
+    casa          9 mediana  | 36 / 40 / 19 / 4     (voz propia, cap. 1 definitivo)
 
 Nota de honestidad: las bandas de Card se recontaron el 2026-11-17 sobre la NARRACION
 (155 frases). La version anterior de este script traia 65/33/2/0,9, que confundia el
@@ -34,6 +35,11 @@ PROFILES = {
         "median": 16.5,
         "bands": (14, 35, 38, 12),
         "note": "bandas sobre narracion, excluyendo dialogo y documentos",
+    },
+    "casa": {
+        "median": 9,
+        "bands": (36, 40, 19, 4),
+        "note": "voz propia del proyecto: destilada del cap. 1 definitivo (1.048 palabras)",
     },
     "garciamarquez": {
         "median": 21,

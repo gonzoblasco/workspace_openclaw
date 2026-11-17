@@ -68,9 +68,11 @@ de escribir.**
 | `PLANTILLA-voz-rowling.md` | 16,5 - 14/35/38/12 | Narrador con voz propia, textura sin funcion, humor dentro de lo triste | **validada con desviacion** (v1: 4 de 6 bandas) |
 | `PLANTILLA-voz-echeverria.md` | 20,5 - 14/25/30/31 | Precision burocratica del tramite, punto y coma como compas | **sin validar** |
 | `PLANTILLA-voz-garciamarquez.md` | 21 - 8/28/38/26 | Versiones contradictorias acumuladas, cifra exacta, periodo parejo | **sin validar** |
+| `PLANTILLA-voz-casa.md` | **9 - 36/40/19/4** | **La voz del proyecto.** Parrafo corto, dialogo sin atribucion, tacto sobre vista, cero adverbios | **validada en 1 capitulo** (`capitulo_1-definitivo.md`) |
 | `PLANTILLA-peso-katzenbach.md` | (no es de voz) | Las cinco condiciones para que un objeto cargue | **aplicada** en `capitulo_1-peso.md`, falta validacion de lectura |
 
-**Cinco autores, cinco plantillas, un script.** Perfiles cargados en
+**Cinco autores y una voz propia.** La voz `casa` no imita a nadie: salio de cinco intentos fallidos
+y una fusion. Se mide y se compara igual que las otras, con `--perfil casa`. Perfiles cargados en
 `studies/narrative-engineering/scripts/prose-metrics.py`: `card`, `rowling`, `katzenbach`,
 `echeverria`, `garciamarquez`. Cada uno se auto-valida sobre su propio texto fuente.
 
