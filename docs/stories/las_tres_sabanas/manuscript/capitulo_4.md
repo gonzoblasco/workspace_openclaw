@@ -240,7 +240,7 @@ Adán se levantó de la silla de un solo movimiento.
 
 ---
 
-Vera lo miró desde abajo sin levantarse.
+Vera lo miró desde la silla.
 
 *No es lo mismo, y no se lo puedo explicar sin decirle que la de él es la única que se usó. Y si le digo eso, le digo que su sábana vale más. Y vale más, y no se lo puedo decir.*
 
@@ -294,9 +294,7 @@ Vera se sentó.
 
 ---
 
-Adán se sentó también, y Néstor también, y los tres quedaron otra vez en el mismo orden.
-
-Los tres quedaron sentados en el patio en el mismo orden en que habían llegado.
+Adán se sentó también, y Néstor también, y los tres quedaron en el mismo orden en que habían llegado.
 
 ---
 
@@ -342,8 +340,6 @@ Néstor se quedó un segundo.
 
 — Salió mejor de lo que pensé.
 
-Vera lo miró desde abajo sin levantarse.
-
 — Sí —dijo—. Salió bien.
 
 ---
@@ -380,11 +376,9 @@ Adentro estaba la sábana, doblada, con el borde cosido a mano.
 
 Vera la sacó, la puso sobre la cama y la desdobló con las dos manos, como se desdobla algo que puede romperse en los pliegues.
 
-El hilo era el mismo, del mismo color desteñido. El mismo color desteñido, la misma puntada de arriba.
+El hilo era el mismo, del mismo color desteñido, y la puntada de arriba era la misma.
 
-Y a diferencia de la de Adán, esta no tenía remiendos: veintitrés años guardada y el borde seguía entero.
-
-Estaba intacta, sin un solo remiendo.
+Y a diferencia de la de Adán, esta no tenía remiendos: veintitrés años guardada y el borde seguía entero, intacto.
 
 ---
 
