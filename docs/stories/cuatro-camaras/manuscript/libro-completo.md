@@ -226,8 +226,6 @@ Afuera había sol. Había una mujer en la vereda con una silla y un termo vendie
 
 Se sentó en el auto y no arrancó.
 
-Miró la carpeta. Miró el sello torcido de la copia.
-
 Después puso el cinturón, encendió el motor y manejó cuarenta kilómetros sin radio.
 
 ---
@@ -302,6 +300,8 @@ No se lo explicó. La madre lo miró desde la puerta cuando devolvió al nene y 
 
 ---
 
+## Parte III — Cuatro cámaras
+
 El trece de abril de dos mil veintiuno Emilio estaba en la góndola de los lácteos del supermercado chino de la calle Entre Ríos.
 
 Había ido a comprar cuatro cosas: yerba, pan, un paquete de arroz y algo para el almuerzo.
@@ -313,6 +313,8 @@ Era de frutilla, del que le gusta a Bruno, de los chicos, con la tapa esa que tr
 Sonó el teléfono.
 
 El número era de su abogada y eran las nueve y cuatro.
+
+Entre las dos horas y veinticuatro minutos que separan esas dos cosas —la denuncia que entró a las ocho y cuarenta y el teléfono que sonó a las nueve y cuatro—, él compró cuatro cosas más: yerba, pan, un paquete de arroz y algo para el almuerzo.
 
 ---
 
@@ -509,18 +511,6 @@ Emilio arrancó y manejó tres cuadras sin decir nada y en la cuarta Bruno le pr
 — Ah.
 
 Y siguieron.
-
----
-
-## Parte III — Cuatro cámaras
-
-La denuncia entró el trece de abril a las ocho y cuarenta de la mañana.
-
-Emilio se enteró a las nueve y cuatro, en la góndola de los lácteos, con un yogur de frutilla en la mano.
-
-Entre las dos horas y veinticuatro minutos que separan esas dos cosas, él compró cuatro cosas más: yerba, pan, un paquete de arroz y algo para el almuerzo.
-
-Nunca supo qué compró para el almuerzo. Estaba en la bolsa cuando llegó a la casa y lo tiró todo junto.
 
 ---
 
@@ -866,7 +856,7 @@ El segundo, el primero de octubre. El tercero, el quince.
 
 En el cuarto Bruno llegó con la mochila y con la piedra en el bolsillo.
 
-La piedra era la misma piedra de la tercera cita de la revinculación, dos años antes, y Emilio no le dijo nada porque si le decía algo Bruno se la iba a guardar.
+La piedra era la misma piedra de la tercera cita de la revinculación, un año y medio antes, y Emilio no le dijo nada porque si le decía algo Bruno se la iba a guardar.
 
 ---
 
@@ -1032,20 +1022,6 @@ La madre nunca le había dicho gracias. Ni antes ni durante.
 
 ---
 
-Ese domingo llenó la planilla y en observaciones escribió *semana en buenos aires* y nada más.
-
-Después del domingo, los números.
-
-Emilio miraba la planilla y no era una planilla: era una cuenta.
-
-Entre enero y marzo contó cuatro filas. Entre marzo y mayo, seis.
-
-En mayo, nueve.
-
-Y en las nueve no había una sola observación que dijera algo malo. En la del diecinueve escribió *se rió todo el día*.
-
----
-
 En febrero, la madre pidió cambiar un fin de semana.
 
 La pidió con dos días de aviso, por mensaje, y el mensaje lo mandó a Emilio directamente y no a la abogada.
@@ -1120,6 +1096,20 @@ No recordaba que le hubiera pasado antes.
 
 ---
 
+Ese domingo llenó la planilla y en observaciones escribió *semana en buenos aires* y nada más.
+
+Después del domingo, los números.
+
+Emilio miraba la planilla y no era una planilla: era una cuenta.
+
+Septiembre, octubre, noviembre, diciembre: nueve filas antes de fin de año.
+
+De enero a abril, ocho más, contando la semana entera de Buenos Aires como una sola.
+
+En abril la planilla tenía diecisiete filas y él las contó dos veces.
+
+---
+
 El cinco de mayo, un viernes, Emilio fue a buscarlo a las diez.
 
 La casa estaba cerrada. La puerta no abrió. Llamó y no atendió.
@@ -1140,43 +1130,7 @@ Y Bruno bajó del auto con el brazo con un algodón pegado, y le dijo que le hab
 
 Emilio le dijo que a él tampoco.
 
----
-
-El dieciocho de mayo, un jueves, la madre le mandó un mensaje.
-
-*Necesito hablar con vos.*
-
-Emilio contestó que sí.
-
-No contestó cuándo ni cómo ni de qué.
-
-Miró la pantalla un rato y después guardó el teléfono.
-
----
-
-El domingo veintiuno, cuando devolvió a Bruno, la madre lo estaba esperando en la puerta.
-
-Le pidió si podía pasar un minuto.
-
-Emilio entró en la casa por primera vez desde que había empezado todo.
-
-Nunca había pasado del zaguán.
-
-Lo hizo sentar en la cocina. Le sirvió un vaso de agua y se sentó del otro lado.
-
-Le dijo que pensó.
-
-Le dijo que estaba cansada.
-
-Emilio no dijo nada.
-
-Le dijo que había sido un error.
-
-Emilio tampoco dijo nada.
-
-Y ella dijo una cosa que Emilio no esperaba, y que lo desarmó, y que en ese momento no entendió, y que iba a entender siete meses después, en una oficina del primer piso, con una funcionaria que le leía el escrito con dos frases que se contradecían:
-
-— Vos no lo viste.
+Esa fila la llenó igual, porque la visita se hizo aunque hubiera empezado con la puerta cerrada, y en observaciones escribió *control médico. le sacaron sangre. no le gusta la aguja.*
 
 ---
 
@@ -1217,6 +1171,44 @@ Arrancaba en el momento en que había estacionado y terminaba en el momento en q
 En esos cuarenta y siete minutos no había un insulto, no había una amenaza, no había una palabra más alta que la otra.
 
 Había un portón, un auto en doble fila, un padre preguntando por qué, y una puerta cerrándose.
+
+---
+
+El dieciocho de mayo, un jueves, la madre le mandó un mensaje.
+
+*Necesito hablar con vos.*
+
+Emilio contestó que sí.
+
+No contestó cuándo ni cómo ni de qué.
+
+Miró la pantalla un rato y después guardó el teléfono.
+
+---
+
+El domingo veintiuno, cuando devolvió a Bruno, la madre lo estaba esperando en la puerta.
+
+Le pidió si podía pasar un minuto.
+
+Emilio entró en la casa por primera vez desde que había empezado todo.
+
+Nunca había pasado del zaguán.
+
+Lo hizo sentar en la cocina. Le sirvió un vaso de agua y se sentó del otro lado.
+
+Le dijo que pensó.
+
+Le dijo que estaba cansada.
+
+Emilio no dijo nada.
+
+Le dijo que había sido un error.
+
+Emilio tampoco dijo nada.
+
+Y ella dijo una cosa que Emilio no esperaba, y que lo desarmó, y que en ese momento no entendió, y que iba a entender siete meses después, en una oficina del primer piso, con una funcionaria que le leía el escrito con dos frases que se contradecían:
+
+— Vos no lo viste.
 
 ---
 
@@ -1413,9 +1405,9 @@ Si estaba a cuatrocientos kilómetros, la prohibición era una cosa abstracta. A
 
 Buscó departamento durante tres semanas.
 
-Firmó el veinticuatro de mayo en una inmobiliaria de Núñez y se mudó el primero de junio.
+Firmó el jueves treinta de mayo en una inmobiliaria de Núñez y se mudó el primero de junio.
 
-Ese jueves, el treinta de mayo, a las cuatro y cuarenta y cinco de la tarde, mientras firmaba el contrato, la madre presentó una denuncia en la comisaría de Libertador San Martín.
+A las cuatro y cuarenta y cinco de la tarde de ese mismo jueves, mientras firmaba el contrato, la madre presentó una denuncia en la comisaría de Libertador San Martín.
 
 Emilio se enteró el lunes.
 
@@ -1825,9 +1817,11 @@ Escribió la última línea y dejó la birome sobre la hoja.
 
 Miró la lista.
 
-Veinticuatro líneas. Cinco denuncias, cuatro cámaras, tres causas archivadas, dos suspensiones, un año y ocho meses, ocho meses, dos años de pendiente.
+Veinticuatro líneas. Cuatro denuncias en la lista, cuatro cámaras, tres causas archivadas, dos suspensiones, un año y ocho meses, ocho meses, dos años de pendiente.
 
 Contó con el dedo y le dio veinticuatro.
+
+Y después, en el renglón de abajo, agregó la que faltaba, que era la de esta noche y hacía cinco.
 
 ---
 
