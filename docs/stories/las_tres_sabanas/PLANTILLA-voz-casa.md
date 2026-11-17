@@ -56,12 +56,15 @@ frases muy cortas (aunque las hay: 36%) y casi ninguna muy larga (4%).
 
 | Párrafos de | Cantidad | % |
 |---|---|---|
-| 1 a 5 palabras | 35 | 40% |
-| 6 a 15 | 25 | 29% |
-| 16 a 30 | 23 | 26% |
+| 1 a 5 palabras | 27 | **34%** |
+| 6 a 15 | 24 | 30% |
+| 16 a 30 | 24 | 30% |
 | 31+ | 4 | 5% |
 
-**Cuatro de cada diez párrafos son de cinco palabras o menos.** Eso es lo más reconocible de esta
+*(Medido 2026-11-17 con el capítulo 1 definitivo, excluyendo los separadores de escena. La primera
+medición dio 40% porque el contador sumaba los `---` como párrafos; corregido.)*
+
+**Un tercio de los párrafos son de cinco palabras o menos.** Eso es lo más reconocible de esta
 voz: **el párrafo corto como unidad de pensamiento.**
 
 > La colgada era la de Adán. Se conocía por el hilo.
@@ -273,7 +276,7 @@ vuelve Rowling).
 | Frases 7-15 | 40-50% | 40% | 50% | 50% | **46,6%** |
 | Frases 16-30 | 19% | 19% | 15% | 19% | **18,6%** |
 | Frases 31+ | 4% | 4% | 0,5% | 1,2% | **4,2%** |
-| Párrafos ≤5 palabras | 40-50% | 40% | 41% | 46% | **47%** |
+| Párrafos ≤5 palabras | 30-40% | 34% | 25% | 36% | **35%** |
 | Punto y coma | 0 | 0 | 0 | 0 | **0** |
 | Adverbios -mente | ≤1 | 1 | 0 | 1 | **0** |
 | Diálogo (% párrafos) | 33-55% | 49% | 25% | 39% | **33%** |
@@ -293,6 +296,35 @@ movió de la silla, y no la saludó" agrega información y sostiene el ritmo.
 
 **Regla nueva:** cuando una frase corta hay que alargarla, la prueba es si el añadido **dice algo
 que no estaba**. Si no, se deja corta y se busca otro lugar donde respirar.
+
+---
+
+## 14. Cuarta aplicación: capítulo 5 (`capitulo_5.md`, E5 - El primer movimiento)
+
+| Métrica | Perfil | Cap. 1 | Cap. 2 | Cap. 3 | Cap. 4 | **Cap. 5** |
+|---|---|---|---|---|---|---|
+| Mediana | 9 | 9 | 9 | 9,5 | 10 | **8** |
+| Frases ≤6 | 36% | 36% | 34% | 30% | 31,6% | **38,8%** |
+| Frases 7-15 | 40-50% | 40% | 50% | 50% | 43,9% | **44,7%** |
+| Frases 16-30 | 19% | 19% | 15% | 19% | 20,2% | **14,6%** |
+| Frases 31+ | 4% | 4% | 0,5% | 1,2% | 4,4% | **1,9%** |
+| Párrafos ≤5 palabras | 30-40% | 34% | 25% | 36% | 35% | **49%** |
+| Punto y coma | 0 | 0 | 0 | 0 | 0 | **0** |
+| Diálogo (% párrafos) | 33-55% | 44% | 7% | 46% | 41% | **54%** |
+
+**Las cuatro bandas entran, mediana a un punto.** El capítulo más hablado de los cinco (54% de
+párrafos) y el que más fragmenta (49% de párrafos cortos).
+
+### El límite que apareció: el diálogo fragmenta
+
+Con una confrontación de dos personas y réplicas de dos palabras, los párrafos se multiplican y el
+49% de párrafos cortos sale **del diálogo, no de la narración**. Se corrigió uniendo réplicas que
+pertenecen al mismo parlamento (de 52% a 49%), pero **no se puede bajar más sin cambiar cómo hablan
+los personajes.**
+
+**Regla nueva:** en una escena de confrontación, el porcentaje de párrafos cortos **sube
+inevitablemente**. El número a vigilar en ese caso es el de la **narración**, no el del texto
+entero. La plantilla debe leerse sabiendo qué tipo de escena se está midiendo.
 
 Criterio para el capítulo 2:
 - mediana 7-11
