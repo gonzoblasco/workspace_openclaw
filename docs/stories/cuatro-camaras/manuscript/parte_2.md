@@ -4,7 +4,7 @@
 
 ---
 
-El escrito lo presentó un jueves y el empleado le dijo que se podía presentar y que probablemente no lo vieran hasta febrero.
+El escrito entró un jueves y el empleado le dijo que podía dejarlo, y que probablemente no lo vieran hasta febrero.
 
 Emilio preguntó si eso significaba que no iba a poder ver a su hijo hasta febrero.
 
@@ -74,7 +74,7 @@ La jueza entró después que ellos. Traía una carpeta que no era una carpeta: e
 
 La madre entró con su abogado. Se sentó de la otra punta de la mesa.
 
-No lo miró. Emilio tampoco la miró a ella, y por eso sabe dos cosas: que ella tenía un saco gris y que se acomodó el pelo detrás de la oreja antes de sentarse.
+No lo miró. Emilio tampoco la miró, y por eso sabe dos cosas: que tenía un saco gris y que se acomodó el pelo detrás de la oreja antes de sentarse.
 
 ---
 
@@ -118,7 +118,7 @@ Hubo un silencio. El abogado de la madre iba a decir algo y la jueza levantó ap
 
 La abogada de Emilio anotó.
 
-Emilio tenía las manos encima de la carpeta. No aplaudió, no lo miró a su abogada, no le dijo nada a la madre.
+Emilio tenía las manos encima de la carpeta. No aplaudió, no la miró a su abogada, no le dijo nada a la madre.
 
 Miró la lapicera. Era una lapicera común, de plástico negro, y estaba sobre la mesa, atravesada, con la punta hacia la silla de la jueza.
 
