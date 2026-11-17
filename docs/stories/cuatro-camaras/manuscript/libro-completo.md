@@ -93,6 +93,7 @@ Emilio la escribió en la carpeta con la misma birome con la que había llenado 
 Los cinco meses no habían pasado en vano. Había pasado una cosa: el veintitrés de junio, el día del cumpleaños, había estado veinte minutos en la puerta de la casa de Libertador con un regalo y no había golpeado.
 
 Se quedó en la vereda hasta que salió una vecina y lo miró y él se fue.
+
 ---
 
 ## Parte II — La lapicera
@@ -510,7 +511,6 @@ Emilio arrancó y manejó tres cuadras sin decir nada y en la cuarta Bruno le pr
 Y siguieron.
 
 ---
----
 
 ## Parte III — Cuatro cámaras
 
@@ -854,7 +854,6 @@ Bruno se encogió de hombros.
 
 Y siguieron.
 
----
 ---
 
 ## Parte IV — Los ocho meses
@@ -1310,8 +1309,6 @@ Dieciocho sábados, de septiembre a mayo. Dieciocho filas con fecha, hora de ret
 En las dieciocho no faltaba una sola palabra.
 
 ---
-
----
 ---
 
 ## Parte V — El día que se vencía
@@ -1596,7 +1593,6 @@ En la tapa, en el ángulo de arriba a la izquierda, había escrito con marcador,
 
 La palabra estaba despintada por los bordes.
 
----
 ---
 
 ## Parte VI — La lista
