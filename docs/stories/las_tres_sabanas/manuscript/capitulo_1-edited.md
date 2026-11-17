@@ -113,7 +113,9 @@ Vera se irguió y lo miró desde arriba, con la sábana en los brazos como se so
 
 Adán seguía junto a la ventana. No había vuelto a mirar la sábana, ni a Vera, ni a Néstor. Miraba el patio, el pasto alto, la reja torcida.
 
-—Hagan lo que quieran —dijo—. Yo no me muevo de acá. Él se queda, y Vera se va, y la que decide qué pasa con la sábana soy yo.
+—Hagan lo que quieran —dijo—. Yo no me muevo de acá.
+
+Se quedó él, se va ella, y la que falta decidir es la sábana. Y me la dejan a mí.
 
 Néstor volvió a mirar la mesa. La llave seguía donde la había dejado. Junto a la llave, en el borde de la madera, alguien había escrito hacía años, con la punta de un clavo, dos letras pequeñas y torcidas.
 
