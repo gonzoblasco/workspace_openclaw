@@ -34,6 +34,19 @@ versiones del capítulo 1**, una por perfil medido:
 
 Detalle y diagnostico en `EVALUACION-5-versiones-cap1.md`.
 
+### Acto II (completo, 2026-11-17)
+
+| Cap. | Escena | POV | Palabras |
+|---|---|---|---|
+| 7 | El centro que lastima | Adán | ~1.600 |
+| 8 | La reacción en cadena | los tres | ~1.400 |
+| 9 | El cuidado es la cárcel | Vera | ~1.350 |
+| 10 | Las alianzas se reacomodan | Adán | ~1.400 |
+| 11 | El sacrificio ofrecido | Néstor | ~1.500 |
+
+Compilado en `manuscript/acto_2.md` (6.948 palabras). Perfil: mediana 8, bandas 37/40/19,7/2,9
+— las cuatro dentro de 1,2 puntos de la referencia.
+
 ## Canon
 
 - Los tres tienen nombre: **Nestor** (Nexus), **Adan** (Anclaje Roto), **Vera** (Variable Inestable).

@@ -364,6 +364,39 @@ ajustar el número**, y dos de ellos a menos de un punto en dos bandas.
 **La voz está fijada.** No hace falta seguir midiendo cada capítulo: a partir de acá, medir cuando
 haya duda, no por rutina.
 
+---
+
+## 16. El Acto II completo (cinco capítulos, 6.948 palabras)
+
+| Métrica | Perfil | Acto II |
+|---|---|---|
+| Mediana | 9 | **8,0** |
+| Frases ≤6 | 36% | **37,0%** |
+| Frases 7-15 | 40-50% | **40,5%** |
+| Frases 16-30 | 19% | **19,7%** |
+| Frases 31+ | 4% | **2,9%** |
+
+**Las cuatro bandas a menos de 1,2 puntos del perfil**, midiendo el acto como una unidad.
+
+### El dato que importa: las correcciones se cancelan
+
+Cada capítulo se corrigió por separado, oscilando entre 20% y 57% de frases cortas antes de
+entrar. **Sumados, los cinco dan 37% contra el 36% del perfil.** Las correcciones no se sumaron:
+se compensaron.
+
+**Interpretación:** el perfil no describe un capítulo, describe la voz. Un capítulo puede desviarse
+y el acto volver al centro. Eso valida el perfil como instrumento de conjunto y no como regla por
+unidad.
+
+### Un límite que se repite: el acto es más hablado que el capítulo
+
+El Acto II tiene **531 frases de diálogo contra 346 de narración** y 56% de párrafos de diálogo.
+El capítulo 1 tenía 44%. **El peso de la confrontación crece a medida que la trama avanza**, y con
+eso crece la fragmentación en párrafos.
+
+No es un defecto: es lo que el material pide. Pero conviene saberlo antes de escribir el Acto III,
+que es más hablado todavía por diseño.
+
 Criterio para el capítulo 2:
 - mediana 7-11
 - frases ≤6 entre 28 y 44%
