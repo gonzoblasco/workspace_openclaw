@@ -11,7 +11,9 @@
 
 ## 1. Ritmo (lo mas importante)
 
-- **Mediana de frase: 7,5 palabras (8 en prosa pura). 65% de las frases van a 10 palabras o menos.**
+- **Mediana de frase: 7,5 palabras (9 en la narración sola). 65% de las frases van a 10 palabras o menos.**
+- **Distribución por bandas de la NARRACIÓN** (medida 2026-11-17, 155 frases): `<=6: 35% |
+  7-15: 47% | 16-30: 16% | 31+: 1%`. Ojo con el 65%: es de ≤10 palabras, **no** de ≤6.
   Si una escena tuya tiene medianas de 20+, no esta en esta voz.
 - **Regla de la larga:** una frase larga cada 15-20 cortas, y **solo** cuando hay razonamiento.
   En todo el capitulo 1 hubo **dos** frases de 30+ palabras. No es un estilo de periodo

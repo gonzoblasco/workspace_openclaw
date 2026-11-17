@@ -71,3 +71,28 @@ de escribir.**
 **Regla de proceso:** una plantilla se escribe **antes** de escribir la escena, no despues de
 medirla. El caso Rowling es la prueba: se escribio la escena sin plantilla, salio bimodal, y hubo
 que reconstruir las reglas desde el error.
+
+## Perfil medido de la novela (narracion)
+
+Medido con `studies/narrative-engineering/scripts/prose-metrics.py` sobre los cuatro capitulos escritos. **Estos son los numeros
+reales del proyecto**, y son mas largos que la referencia Card historicamente usada:
+
+| Capitulo | Mediana narracion | <=6 | 7-15 | 16-30 | 31+ |
+|---|---|---|---|---|---|
+| 1 (Card) | 10 | 33% | 37% | 28% | 2% |
+| 1 (peso) | **11** | 34% | 34% | 31% | 1% |
+| 2 (puente) | 9 | 40% | 34% | 20% | 6% |
+| 3 (E2) | 10 | 31% | 47% | 21% | 2% |
+| 4 (E3) | 7 | 45% | 35% | 19% | 1% |
+
+**Promedio del proyecto: mediana ~9-10, bandas ~35/37/24/2.** Es un punto propio, entre Card
+(mediana 9) y Katzenbach (12), y **no es un defecto**: el proyecto no esta en ninguno de los tres
+autores, esta en su casa.
+
+**Lo que esto cambia:** dejar de tratar a Card como el objetivo a alcanzar. Card fue el primer
+perfil medido y por eso se tomo como vara; con tres perfiles en la mano, la vara es **la
+consistencia interna del proyecto**, no el numero de un autor.
+
+**Observacion util:** el capitulo con peso (mediana 11) es el mas cercano a Katzenbach (12), y no
+por imitacion deliberada: agregar procedencia y costo alarga las frases. **El peso trae su propio
+ritmo.**

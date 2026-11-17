@@ -146,12 +146,17 @@ Este es el eje que se puede copiar. Todas las cifras salen de medir el capitulo 
 | Media de palabras por parrafo | 25,0 |
 | Parrafo mas largo | 154 palabras |
 | Frases | 216 |
-| Mediana de palabras por frase | **7,5** (8 contando solo parrafos de prosa) |
+| Mediana de palabras por frase | **7,5** (9 en la narracion sola) |
 | Media de palabras por frase | 9,6 |
 | Frases de 10 palabras o menos | **65%** |
 | Frases de 6 palabras o menos | 42% |
 | Frases de 30 palabras o mas | **0,9%** (dos en todo el capitulo) |
 | Frase mas larga | 48 palabras |
+
+**Distribucion por bandas [MEDIDO 2026-11-17, recontado sobre la narracion sola, 155 frases]:**
+`<=6: 35% | 7-15: 47% | 16-30: 16% | 31+: 1%`. La version anterior de esta tabla y del script
+traia 65/33/2/0,9, que **confundia el 65% de frases de 10 palabras o menos con la banda de 6**.
+Las cifras corregidas son las de arriba y estan cargadas en `scripts/prose-metrics.py`.
 
 **La firma ritmica:** oraciones cortas encadenadas, con **una** frase larga cada tanto que
 contiene todo el razonamiento. Card no escribe parrafos largos; escribe **parrafos cortos con
