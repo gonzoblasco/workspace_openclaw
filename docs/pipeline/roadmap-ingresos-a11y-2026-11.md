@@ -110,6 +110,10 @@ entre producto, servicio o empleo, y se abandona el resto. El plan no se estira 
 **Por qué:** Gonzo no conocía dev.to y quiere el mismo mecanismo que ya existe para Moltbook: mirar
 qué se publica hoy, filtrar, y **verificar antes de adoptar**.
 
+**Alcance de esta sección: lectura, no escritura.** El modo escritura se midió aparte el 2026-11-17
+y quedó bloqueado por falta de API key (§3-bis); hasta que eso se cierre, esta sección describe
+solo el watcher.
+
 **Precedente que se copia:** `memory/moltbook/YYYY-Www.md`, generado por el job `moltbook-weekly-digest`
 (lunes 09:00). Cada item lleva `status`, `source`, `verified_against`, `category`, `tags`. Un item sin
 `verified_against` no entra.
@@ -173,6 +177,52 @@ contenido son de CORE/MIND.
   CORE. Si el ruido sigue, se sacan esos dos tags.
 - **Nota para el próximo:** los dos intentos de delegar esto a OPS devolvieron un stub y un fallo
   sin salida. El script lo escribió CORE. Verificar el archivo antes de creer un auto-reporte.
+
+---
+
+## 3-bis. Modo escritura en dev.to: lo que se midió (2026-11-17)
+
+Gonzo preguntó por qué no hay modo escritura (§3 define solo lectura). Antes de escribirlo se
+midió el endpoint real. **Resultado: no se puede documentar un flujo de escritura todavía, porque
+falta el token.**
+
+### Lo medido contra la API real
+
+| Prueba | Resultado |
+|---|---|
+| `POST /api/articles` sin `api-key` | **401** `{"error":"unauthorized","status":401}` |
+| `POST /api/articles` con `api-key: invalid-probe` | **401**, mismo cuerpo que sin header |
+| `GET /api/users/me` sin token / token inválido | **401** |
+| `GET /api/users/me` con el token pedido, 3 formas (header `api-key`, `Bearer`, query) | **401** en las tres, y la sustitución del secreto en el comando llegó vacía (`len=0`) |
+| `POST` con payload completo (`title`, `body_markdown`, `published:false`, `canonical_url`, `tags`) | **401**: el endpoint autentica antes de validar el cuerpo, así que el 401 no dice nada sobre la forma del payload |
+| `GET /api/articles?per_page=1` | 200 |
+| `GET /api/articles/latest?tag=accessibility` ×4 con 1 s de pausa | **200, 200, 200, 200** (sin 429; el 429 de ayer fue con llamadas pegadas) |
+
+### Conclusión
+
+- **El endpoint existe y es `POST /api/articles`** con header `api-key`; sin token responde 401,
+  nunca 422. Es decir: hasta no tener una API key válida **no se puede confirmar** ni la forma del
+  payload, ni `published:false`, ni `canonical_url`, ni los límites de escritura.
+- **Lo único que quedó probado hoy es el 401**, y eso no habilita documentar un flujo.
+- La lectura gana un dato: `articles/latest` sí responde si se espacia (4/4 con 1 s). El 429 de
+  ayer era la ráfaga, no el endpoint.
+
+### Lo que falta para cerrar esto
+
+1. **API key de dev.to** (`secrets` → `DEVTO_API_KEY`, hosts `dev.to`), generada desde
+   Settings → Extensions → DEV Community API Keys. Ya quedó el pedido abierto; cuando haya una
+   válida se re-mide.
+2. Con token: `GET /users/me` (valida identidad y scope), `POST /articles` con
+   `published:false` (borrador, no público), re-POST con `canonical_url`, y ráfaga controlada
+   para localizar el límite de escritura.
+3. **Solo entonces** se escribe el modo escritura en este plan, con lo medido y nada más. Lo que
+   no se pueda verificar con el token en mano no entra como decisión.
+
+### Lo que NO hace esto
+
+- No cambia §3 (el watcher de lectura sigue igual y es independiente).
+- No habilita publicar: el gate externo sigue siendo borrador → diff → OK de Gonzo.
+- No agrega cadencia de posts hasta que el endpoint esté medido.
 
 ---
 
