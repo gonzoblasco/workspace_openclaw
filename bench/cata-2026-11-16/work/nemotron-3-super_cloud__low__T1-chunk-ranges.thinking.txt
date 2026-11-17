@@ -1,0 +1,16 @@
+We need to output only the code block with function chunk_ranges as described. No explanations before or after. Provide just:
+
+```python
+def chunk_ranges(start: str, end: str, days: int):
+    ...
+```
+
+Make sure it returns list of tuples (str, str). Validate inputs: if start > end return []; if days <=0 raise ValueError. Need to parse dates using datetime.date.fromisoformat. Then iterate adding timedelta(days-1?) Actually each chunk up to days inclusive length. For example from start date s, we want chunk ending at min(s + days-1, end). Because inclusive count: number of days = (end - start).days +1. So chunk size max days means difference in days between start and end inclusive <= days => end_date = start + timedelta(days=days-1). If that exceeds actual end, use actual end. Then next start = previous end + 1 day.
+
+Edge cases: days may be large.
+
+Implement.
+
+Return list of tuples.
+
+Let's craft code.

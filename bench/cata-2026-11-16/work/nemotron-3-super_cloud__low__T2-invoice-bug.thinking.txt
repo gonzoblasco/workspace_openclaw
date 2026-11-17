@@ -1,0 +1,13 @@
+We need to fix the bug: The code rounds each line (qty*unit) to 2 decimal places before summing, and also rounds discount and tax intermediate values. According to spec: Discount applied on exact subtotal, tax on discounted subtotal; only rounding allowed is of final total to 2 decimals. So we should compute subtotal as sum of qty*unit without rounding per line. Then discount = subtotal * discount_pct/100 (no rounding). Tax = (subtotal - discount) * tax_pct/100 (no rounding). Final total = subtotal - discount + tax, then round to 2 decimals. Return that.
+
+Thus corrected function:
+
+def invoice_total(lines, discount_pct, tax_pct):
+    subtotal = sum(qty * unit for qty, unit in lines)
+    discount = subtotal * discount_pct / 100
+    tax = (subtotal - discount) * tax_pct / 100
+    return round(subtotal - discount + tax, 2)
+
+That's it.
+
+Return just code block.

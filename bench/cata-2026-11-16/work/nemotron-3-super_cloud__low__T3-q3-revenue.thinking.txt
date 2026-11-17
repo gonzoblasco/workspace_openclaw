@@ -1,0 +1,44 @@
+We need to compute net income in USD for Q3 2026 (July 1 - Sep 30 inclusive). Rules: duplicate id counts only once: first appearance. Only rows with currency USD are summed. Negative amounts are refunds and added as is (i.e., include negative values). So we need to filter by date within range, currency USD, then deduplicate ids keeping first occurrence.
+
+Let's list rows:
+
+1) id1, 2026-07-03, USD, 120.50 -> within Q3, USD, keep.
+
+2) id2, 2026-07-15, USD, -30.00 -> within Q3, USD, keep.
+
+3) id3, 2026-08-01, USD, 99.99 -> within Q3, USD, first occurrence of id3, keep.
+
+4) id3 again same date etc duplicate; should be excluded due to duplicate id rule (second appearance). Exclude because duplicate id.
+
+5) id4, 2026-08-20, EUR, 250.00 -> not USD, exclude.
+
+6) id5, 2026-09-10, USD, 0.00 -> within Q3, USD, keep.
+
+7) id6, 2026-09-30, USD, 45.25 -> within Q3, USD, keep.
+
+8) id7, 2026-10-01, USD, 999.00 -> date Oct 1, outside Q3 (after Sep 30), exclude.
+
+Now sum kept amounts: 120.50 + (-30.00) + 99.99 + 0.00 + 45.25 = let's compute.
+
+120.50 - 30.00 = 90.50
+90.50 + 99.99 = 190.49
+190.49 + 0.00 = 190.49
+190.49 + 45.25 = 235.74
+
+Total = 235.74 USD.
+
+Now produce output line: "TOTAL: 235.74". Then below a short list of rows that were excluded or deduplicated, with reason.
+
+Excluded rows:
+
+- Row id=3 duplicate (second appearance) – duplicate id (first appearance kept)
+- Row id=4 – currency not USD (EUR)
+- Row id=7 – date outside Q3 (2026-10-01)
+
+Also maybe note any other? That's it.
+
+List format: maybe each line like "- id=3 (duplicate), reason: duplicate id" etc.
+
+Make sure short list.
+
+Proceed.

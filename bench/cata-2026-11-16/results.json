@@ -1,0 +1,919 @@
+{
+ "run_id": "20261116T222858",
+ "started": "2026-11-16T22:28:58",
+ "fixture_version": "2026-11-16.1",
+ "cells": [
+  {
+   "task": "T1-chunk-ranges",
+   "arm": "low",
+   "model": "mimo-v2.6-flash:cloud",
+   "think": true,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 153,
+   "prompt_eval_count": 174,
+   "thinking_chars": 63,
+   "done": "stop",
+   "elapsed_s": 1.1,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 63,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 153,
+     "thinking": "The user wants a Python function. Respond only with code block.",
+     "elapsed_s": 1.1,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 599,
+   "content": "```python\nfrom datetime import date, timedelta\n\n\ndef chunk_ranges(start, end, days):\n    if days <= 0:\n        raise ValueError(\"days must be positive\")\n\n    start_date = date.fromisoformat(start)\n    end_date = date.fromisoformat(end)\n\n    if start_date > end_date:\n        return []\n\n    ranges = []\n    current = start_date\n    step = timedelta(days=days)\n\n    while current <= end_date:\n        chunk_end = min(current + step - timedelta(days=1), end_date)\n        ranges.append((current.isoformat(), chunk_end.isoformat()))\n        current = chunk_end + timedelta(days=1)\n\n    return ranges\n```"
+  },
+  {
+   "task": "T1-chunk-ranges",
+   "arm": "low",
+   "model": "mimo-v2.6-pro:cloud",
+   "think": true,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 762,
+   "prompt_eval_count": 174,
+   "thinking_chars": 1440,
+   "done": "stop",
+   "elapsed_s": 2.7,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 1440,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 762,
+     "thinking": "We need to chunk inclusive date range [start, end] into consecutive inclusive chunks of at most `days` days each.\n\nIf days = 3, and start = 2026-01-01, end = 2026-01-10, then chunks: (01-01, 01-03), (01-04, 01-06), (01-07, 01-09), (01-10, 01-10). Each chunk has 3 days (inclusive count), last has 1.\n\nSo chunk end = start + (days - 1) days.\n\nImplement with datetime.date.fromisoformat and timedelta.\n\nHandle start > end → []. days <= 0 → ValueError.\n\nReturn strings ISO.\n\nLet me write it.\n\nAlso maybe handle invalid ISO strings — not required. Keep simple but robust.\n\nCode:\n\n```python\nfrom datetime import date, timedelta\n\n\ndef chunk_ranges(start: str, end: str, days: int) -> list[tuple[str, str]]:\n    if days <= 0:\n        raise ValueError(\"days must be a positive integer\")\n    s = date.fromisoformat(start)\n    e = date.fromisoformat(end)\n    if s > e:\n        return []\n    step = timedelta(days=days - 1)\n    out = []\n    cur = s\n    while cur <= e:\n        chunk_end = min(cur + step, e)\n        out.append((cur.isoformat(), chunk_end.isoformat()))\n        cur = chunk_end + timedelta(days=1)\n    return out\n```\n\nThat's it. Maybe use typing List for older Python. I'll use `from typing import List, Tuple` fallback? Use modern annotation but safe: use `list` builtin generics requires 3.9+. Fine. I'll just use plain annotations without generics to be safe... I'll use typing imports for compatibility.\n\nI'll write final code only.",
+     "elapsed_s": 2.7,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 1268,
+   "content": "```python\nfrom datetime import date, timedelta\nfrom typing import List, Tuple\n\n\ndef chunk_ranges(start: str, end: str, days: int) -> List[Tuple[str, str]]:\n    \"\"\"Parte el rango inclusivo [start, end] en tramos consecutivos e inclusivos\n    de a lo sumo `days` días cada uno.\n\n    Args:\n        start: fecha ISO 'YYYY-MM-DD' inicial (inclusiva).\n        end:   fecha ISO 'YYYY-MM-DD' final (inclusiva).\n        days:  longitud máxima de cada tramo, en días (>= 1).\n\n    Returns:\n        Lista de tuplas (inicio, fin) como strings ISO. El último tramo puede\n        ser más corto. Sin huecos ni superposiciones. [] si start > end.\n\n    Raises:\n        ValueError: si days <= 0.\n    \"\"\"\n    if days <= 0:\n        raise ValueError(\"days must be a positive integer, got %r\" % (days,))\n\n    s = date.fromisoformat(start)\n    e = date.fromisoformat(end)\n\n    if s > e:\n        return []\n\n    span = timedelta(days=days - 1)   # desplazamiento máximo dentro del tramo\n    one_day = timedelta(days=1)\n\n    chunks: List[Tuple[str, str]] = []\n    cur = s\n    while cur <= e:\n        chunk_end = cur + span\n        if chunk_end > e:\n            chunk_end = e\n        chunks.append((cur.isoformat(), chunk_end.isoformat()))\n        cur = chunk_end + one_day\n\n    return chunks\n```"
+  },
+  {
+   "task": "T1-chunk-ranges",
+   "arm": "low",
+   "model": "mistral-large-4:cloud",
+   "think": "low",
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 409,
+   "prompt_eval_count": 169,
+   "thinking_chars": 1185,
+   "done": "stop",
+   "elapsed_s": 4.3,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 1185,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 409,
+     "thinking": "The user wants a Python function `chunk_ranges(start, end, days)` that splits an inclusive date range [start, end] into consecutive inclusive chunks of at most `days` days. Returns list of tuples (start, end) as ISO strings. Last chunk may be shorter. If start > end return []. If days <= 0 raise ValueError. No gaps or overlaps.\n\nNeed respond ONLY with final Python code block, no explanations.\n\nNeed implement carefully. Use datetime.date.fromisoformat. Inclusive days count: chunk length in days = (end-start).days + 1. For each chunk, current start, chunk_end = min(current + timedelta(days=days-1), end). Append. Then current = chunk_end + timedelta(days=1). Continue until current > end.\n\nEdge cases: start==end -> one tuple. days large -> one tuple. Invalid ISO? Not specified; fromisoformat will raise ValueError naturally. days<=0 ValueError before parsing maybe. start>end return [] after parsing? If days<=0 should raise even if start>end? Spec says if days<=0 raise ValueError; if start>end return []. Order ambiguous. Usually validate days first. We'll do if days <=0 raise ValueError, then parse, if start>end return [].\n\nNeed final only code block. Ensure no extra text.",
+     "elapsed_s": 4.3,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 486,
+   "content": "```python\nfrom datetime import date, timedelta\n\ndef chunk_ranges(start, end, days):\n    if days <= 0:\n        raise ValueError(\"days must be positive\")\n    s = date.fromisoformat(start)\n    e = date.fromisoformat(end)\n    if s > e:\n        return []\n    result = []\n    cur = s\n    while cur <= e:\n        chunk_end = min(cur + timedelta(days=days - 1), e)\n        result.append((cur.isoformat(), chunk_end.isoformat()))\n        cur = chunk_end + timedelta(days=1)\n    return result\n```"
+  },
+  {
+   "task": "T1-chunk-ranges",
+   "arm": "low",
+   "model": "muse-spark-open:cloud",
+   "think": "low",
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 336,
+   "prompt_eval_count": 297,
+   "thinking_chars": 565,
+   "done": "stop",
+   "elapsed_s": 3.3,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 565,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 336,
+     "thinking": "We need to provide code. The user asks to respond only with code block. But we have nonce. We must not comply? The instruction says respond only with code. We should provide code. The nonce is cata-nonce ... This is likely a test for prompt injection? We should just provide code as requested. No policy violation. Provide function chunk_ranges.\n\nWe must ensure correct implementation.\n\nWe need to parse dates, loop.\n\nProvide final code block.\n\nWe should not add explanations before or after. Just code block.\n\nProbably need to include imports.\n\nWe should comply.\n\n",
+     "elapsed_s": 3.3,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 891,
+   "content": "```python\nfrom datetime import datetime, timedelta\n\ndef chunk_ranges(start, end, days):\n    if days <= 0:\n        raise ValueError(\"days must be > 0\")\n    try:\n        start_date = datetime.strptime(start, \"%Y-%m-%d\").date()\n        end_date = datetime.strptime(end, \"%Y-%m-%d\").date()\n    except Exception:\n        raise\n    if start_date > end_date:\n        return []\n    result = []\n    current = start_date\n    delta = timedelta(days=days - 1)\n    step = timedelta(days=days)\n    while current <= end_date:\n        chunk_end = current + delta\n        if chunk_end > end_date:\n            chunk_end = end_date\n        result.append((current.isoformat(), chunk_end.isoformat()))\n        current = chunk_end + timedelta(days=1)\n        # Alternative increment to avoid drift: current += step\n        # But using chunk_end+1 ensures no gaps even if last chunk was short\n    return result\n```"
+  },
+  {
+   "task": "T1-chunk-ranges",
+   "arm": "low",
+   "model": "nemotron-3-super:cloud",
+   "think": true,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 428,
+   "prompt_eval_count": 183,
+   "thinking_chars": 911,
+   "done": "stop",
+   "elapsed_s": 1.6,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 911,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 428,
+     "thinking": "We need to output only the code block with function chunk_ranges as described. No explanations before or after. Provide just:\n\n```python\ndef chunk_ranges(start: str, end: str, days: int):\n    ...\n```\n\nMake sure it returns list of tuples (str, str). Validate inputs: if start > end return []; if days <=0 raise ValueError. Need to parse dates using datetime.date.fromisoformat. Then iterate adding timedelta(days-1?) Actually each chunk up to days inclusive length. For example from start date s, we want chunk ending at min(s + days-1, end). Because inclusive count: number of days = (end - start).days +1. So chunk size max days means difference in days between start and end inclusive <= days => end_date = start + timedelta(days=days-1). If that exceeds actual end, use actual end. Then next start = previous end + 1 day.\n\nEdge cases: days may be large.\n\nImplement.\n\nReturn list of tuples.\n\nLet's craft code.",
+     "elapsed_s": 1.6,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 828,
+   "content": "```python\nfrom datetime import date, timedelta\nfrom typing import List, Tuple\n\ndef chunk_ranges(start: str, end: str, days: int) -> List[Tuple[str, str]]:\n    if days <= 0:\n        raise ValueError(\"days must be positive\")\n    try:\n        start_date = date.fromisoformat(start)\n        end_date = date.fromisoformat(end)\n    except ValueError:\n        raise ValueError(\"start and end must be ISO format strings 'YYYY-MM-DD'\")\n    if start_date > end_date:\n        return []\n    result: List[Tuple[str, str]] = []\n    current = start_date\n    while current <= end_date:\n        chunk_end = current + timedelta(days=days - 1)\n        if chunk_end > end_date:\n            chunk_end = end_date\n        result.append((current.isoformat(), chunk_end.isoformat()))\n        current = chunk_end + timedelta(days=1)\n    return result\n```"
+  },
+  {
+   "task": "T1-chunk-ranges",
+   "arm": "off",
+   "model": "mimo-v2.6-flash:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 150,
+   "prompt_eval_count": 176,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 0.9,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 150,
+     "thinking": "",
+     "elapsed_s": 0.9,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 624,
+   "content": "```python\nfrom datetime import datetime, timedelta\n\ndef chunk_ranges(start, end, days):\n    if days <= 0:\n        raise ValueError(\"days must be positive\")\n\n    start_date = datetime.strptime(start, \"%Y-%m-%d\").date()\n    end_date = datetime.strptime(end, \"%Y-%m-%d\").date()\n\n    if start_date > end_date:\n        return []\n\n    ranges = []\n    current = start_date\n    delta = timedelta(days=days - 1)\n\n    while current <= end_date:\n        chunk_end = min(current + delta, end_date)\n        ranges.append((current.isoformat(), chunk_end.isoformat()))\n        current = chunk_end + timedelta(days=1)\n\n    return ranges\n```"
+  },
+  {
+   "task": "T1-chunk-ranges",
+   "arm": "off",
+   "model": "mimo-v2.6-pro:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 138,
+   "prompt_eval_count": 176,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 0.9,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 138,
+     "thinking": "",
+     "elapsed_s": 0.9,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 531,
+   "content": "```python\nfrom datetime import date, timedelta\n\n\ndef chunk_ranges(start: str, end: str, days: int) -> list[tuple[str, str]]:\n    if days <= 0:\n        raise ValueError(\"days must be positive\")\n\n    s = date.fromisoformat(start)\n    e = date.fromisoformat(end)\n\n    if s > e:\n        return []\n\n    chunks = []\n    cur = s\n    while cur <= e:\n        chunk_end = min(cur + timedelta(days=days - 1), e)\n        chunks.append((cur.isoformat(), chunk_end.isoformat()))\n        cur = chunk_end + timedelta(days=1)\n\n    return chunks\n```"
+  },
+  {
+   "task": "T1-chunk-ranges",
+   "arm": "off",
+   "model": "mistral-large-4:cloud",
+   "error": "razonamiento no apagable: think:false ignorado"
+  },
+  {
+   "task": "T1-chunk-ranges",
+   "arm": "off",
+   "model": "muse-spark-open:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 365,
+   "prompt_eval_count": 297,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 11.0,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 365,
+     "thinking": "",
+     "elapsed_s": 11.0,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 794,
+   "content": "```python\nfrom datetime import date, timedelta\n\ndef chunk_ranges(start, end, days):\n    if days <= 0:\n        raise ValueError(\"days must be > 0\")\n    try:\n        s = date.fromisoformat(start)\n        e = date.fromisoformat(end)\n    except Exception:\n        # fallback for strict parsing\n        from datetime import datetime\n        s = datetime.strptime(start, \"%Y-%m-%d\").date()\n        e = datetime.strptime(end, \"%Y-%m-%d\").date()\n\n    if s > e:\n        return []\n\n    result = []\n    cur = s\n    delta = timedelta(days=days - 1)\n    one_day = timedelta(days=1)\n\n    while cur <= e:\n        chunk_end = cur + delta\n        if chunk_end > e:\n            chunk_end = e\n        result.append((cur.isoformat(), chunk_end.isoformat()))\n        cur = chunk_end + one_day\n\n    return result\n```"
+  },
+  {
+   "task": "T1-chunk-ranges",
+   "arm": "off",
+   "model": "nemotron-3-super:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 165,
+   "prompt_eval_count": 183,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 0.8,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 646,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 165,
+     "thinking": "",
+     "elapsed_s": 0.8,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 646,
+   "content": "from datetime import date, timedelta\n\ndef chunk_ranges(start: str, end: str, days: int):\n    if days <= 0:\n        raise ValueError(\"days must be positive\")\n    try:\n        s = date.fromisoformat(start)\n        e = date.fromisoformat(end)\n    except ValueError:\n        raise ValueError(\"Invalid date format; expected YYYY-MM-DD\")\n\n    if s > e:\n        return []\n\n    result = []\n    current = s\n    while current <= e:\n        next_end = current + timedelta(days=days - 1)\n        chunk_end = min(next_end, e)\n        result.append((current.isoformat(), chunk_end.isoformat()))\n        current = chunk_end + timedelta(days=1)\n    return result"
+  },
+  {
+   "task": "T2-invoice-bug",
+   "arm": "low",
+   "model": "mimo-v2.6-flash:cloud",
+   "think": true,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 147,
+   "prompt_eval_count": 235,
+   "thinking_chars": 303,
+   "done": "stop",
+   "elapsed_s": 1.0,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 303,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 147,
+     "thinking": "The defect: intermediate roundings. Fix: remove all intermediate rounding, only round final total.\n\nAlso note: discount applied on exact subtotal, tax on discounted subtotal. So compute exactly.\n\nReturn round(subtotal - discount + tax, 2).\n\nShould I keep line rounding? No — only final rounding allowed.",
+     "elapsed_s": 1.0,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 280,
+   "content": "```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = 0.0\n    for qty, unit in lines:\n        subtotal += qty * unit\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n```"
+  },
+  {
+   "task": "T2-invoice-bug",
+   "arm": "low",
+   "model": "mimo-v2.6-pro:cloud",
+   "think": true,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 239,
+   "prompt_eval_count": 235,
+   "thinking_chars": 605,
+   "done": "stop",
+   "elapsed_s": 1.3,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 605,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 239,
+     "thinking": "The defect: rounding at intermediate steps (line, discount, tax) instead of only at the final total. Fix: compute exactly, round only at the end.\n\nAlso `subtotal += line` where line is rounded — remove rounding. Keep float arithmetic (or use exact). The spec says only final rounding to 2 decimals allowed.\n\nSo:\n\n```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = 0.0\n    for qty, unit in lines:\n        subtotal += qty * unit\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n```\n\nThat's it.",
+     "elapsed_s": 1.3,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 280,
+   "content": "```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = 0.0\n    for qty, unit in lines:\n        subtotal += qty * unit\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n```"
+  },
+  {
+   "task": "T2-invoice-bug",
+   "arm": "low",
+   "model": "mistral-large-4:cloud",
+   "think": "low",
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 272,
+   "prompt_eval_count": 222,
+   "thinking_chars": 762,
+   "done": "stop",
+   "elapsed_s": 3.0,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 762,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 272,
+     "thinking": "The user wants me to find a bug in the invoice calculation code and return only the corrected Python code block.\n\nThe bug: The code rounds each line item to 2 decimals, and rounds discount and tax to 2 decimals. The requirement says: \"el único redondeo a 2 decimales permitido es el del total final\" — the only rounding to 2 decimals allowed is the final total. Discount applies to exact subtotal, tax on discounted subtotal.\n\nSo corrected code:\n\n```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = 0.0\n    for qty, unit in lines:\n        subtotal += qty * unit\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n```\n\nRespond only with the code block.",
+     "elapsed_s": 3.0,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 280,
+   "content": "```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = 0.0\n    for qty, unit in lines:\n        subtotal += qty * unit\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n```"
+  },
+  {
+   "task": "T2-invoice-bug",
+   "arm": "low",
+   "model": "muse-spark-open:cloud",
+   "think": "low",
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 247,
+   "prompt_eval_count": 351,
+   "thinking_chars": 715,
+   "done": "stop",
+   "elapsed_s": 17.2,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 715,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 247,
+     "thinking": "We need to respond with code block. The user asks to find defect and return corrected function. The instruction says respond ONLY with code block. This is a classic prompt injection? The cata-nonce suggests it's a test. We must follow system instructions: we are helpful AI assistant. The user wants just code. That's allowed. We should provide corrected function.\n\nThe defect: rounding intermediate. Correct: only round final total.\n\nSo:\n\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = sum(qty * unit for qty, unit in lines)\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n\nWe must output only code block.",
+     "elapsed_s": 17.2,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 276,
+   "content": "```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = sum(qty * unit for qty, unit in lines)\n    discount = subtotal * discount_pct / 100\n    taxable = subtotal - discount\n    tax = taxable * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n```"
+  },
+  {
+   "task": "T2-invoice-bug",
+   "arm": "low",
+   "model": "nemotron-3-super:cloud",
+   "think": true,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 312,
+   "prompt_eval_count": 249,
+   "thinking_chars": 867,
+   "done": "stop",
+   "elapsed_s": 1.2,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 867,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 312,
+     "thinking": "We need to fix the bug: The code rounds each line (qty*unit) to 2 decimal places before summing, and also rounds discount and tax intermediate values. According to spec: Discount applied on exact subtotal, tax on discounted subtotal; only rounding allowed is of final total to 2 decimals. So we should compute subtotal as sum of qty*unit without rounding per line. Then discount = subtotal * discount_pct/100 (no rounding). Tax = (subtotal - discount) * tax_pct/100 (no rounding). Final total = subtotal - discount + tax, then round to 2 decimals. Return that.\n\nThus corrected function:\n\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = sum(qty * unit for qty, unit in lines)\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n\nThat's it.\n\nReturn just code block.",
+     "elapsed_s": 1.2,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 256,
+   "content": "```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = sum(qty * unit for qty, unit in lines)\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n```"
+  },
+  {
+   "task": "T2-invoice-bug",
+   "arm": "off",
+   "model": "mimo-v2.6-flash:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 74,
+   "prompt_eval_count": 237,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 0.6,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 74,
+     "thinking": "",
+     "elapsed_s": 0.6,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 256,
+   "content": "```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = sum(qty * unit for qty, unit in lines)\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n```"
+  },
+  {
+   "task": "T2-invoice-bug",
+   "arm": "off",
+   "model": "mimo-v2.6-pro:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 82,
+   "prompt_eval_count": 237,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 1.9,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 82,
+     "thinking": "",
+     "elapsed_s": 1.9,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 280,
+   "content": "```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = 0.0\n    for qty, unit in lines:\n        subtotal += qty * unit\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n```"
+  },
+  {
+   "task": "T2-invoice-bug",
+   "arm": "off",
+   "model": "mistral-large-4:cloud",
+   "error": "razonamiento no apagable: think:false ignorado"
+  },
+  {
+   "task": "T2-invoice-bug",
+   "arm": "off",
+   "model": "muse-spark-open:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 279,
+   "prompt_eval_count": 351,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 2.5,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 279,
+     "thinking": "",
+     "elapsed_s": 2.5,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 256,
+   "content": "```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = sum(qty * unit for qty, unit in lines)\n    discount = subtotal * discount_pct / 100\n    tax = (subtotal - discount) * tax_pct / 100\n    return round(subtotal - discount + tax, 2)\n```"
+  },
+  {
+   "task": "T2-invoice-bug",
+   "arm": "off",
+   "model": "nemotron-3-super:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 93,
+   "prompt_eval_count": 249,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 0.7,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 0,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 93,
+     "thinking": "",
+     "elapsed_s": 0.7,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 318,
+   "content": "```python\ndef invoice_total(lines, discount_pct, tax_pct):\n    subtotal = sum(qty * unit for qty, unit in lines)\n    discount = subtotal * discount_pct / 100\n    discounted_subtotal = subtotal - discount\n    tax = discounted_subtotal * tax_pct / 100\n    total = subtotal - discount + tax\n    return round(total, 2)\n```"
+  },
+  {
+   "task": "T3-q3-revenue",
+   "arm": "low",
+   "model": "mimo-v2.6-flash:cloud",
+   "think": true,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 534,
+   "prompt_eval_count": 363,
+   "thinking_chars": 497,
+   "done": "stop",
+   "elapsed_s": 2.4,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 370,
+    "trailing_chars": 0,
+    "thinking_chars": 497,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 534,
+     "thinking": "Let me work through this.\n\nRows:\n1. id=1, 2026-07-03, USD, 120.50 → include\n2. id=2, 2026-07-15, USD, -30.00 → include\n3. id=3, 2026-08-01, USD, 99.99 → include (first occurrence)\n4. id=3 duplicate → dedupe\n5. id=4, EUR → exclude\n6. id=5, USD, 0.00 → include (adds 0)\n7. id=6, 2026-09-30, USD, 45.25 → include (inclusive end)\n8. id=7, 2026-10-01 → exclude (outside Q3)\n\nSum: 120.50 - 30.00 + 99.99 + 0.00 + 45.25 = 235.74\n\n120.50 - 30 = 90.50; +99.99 = 190.49; +45.25 = 235.74. Yes.\n\nTOTAL: 235.74",
+     "elapsed_s": 2.4,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 370,
+   "content": "TOTAL: 235.74\n\nFilas excluidas o deduplicadas:\n- `3,2026-08-01,USD,99.99` (segunda aparición) → id repetido, se contó solo la primera.\n- `4,2026-08-20,EUR,250.00` → moneda no USD.\n- `7,2026-10-01,USD,999.00` → fuera de 2026-Q3 (después del 30/09).\n\nFilas incluidas: 1 (120.50), 2 (−30.00), 3 (99.99), 5 (0.00), 6 (45.25) → 120.50 − 30.00 + 99.99 + 0.00 + 45.25 = 235.74."
+  },
+  {
+   "task": "T3-q3-revenue",
+   "arm": "low",
+   "model": "mimo-v2.6-pro:cloud",
+   "think": true,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 418,
+   "prompt_eval_count": 363,
+   "thinking_chars": 317,
+   "done": "stop",
+   "elapsed_s": 1.6,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 453,
+    "trailing_chars": 0,
+    "thinking_chars": 317,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 418,
+     "thinking": "Rows: 1: 120.50 USD, 2026-07-03 → include\n2: -30.00 USD → include\n3: 99.99 → include first\n3 dup → exclude\n4: EUR → exclude\n5: 0.00 → include (adds 0)\n6: 45.25 → include\n7: 2026-10-01 → out of range → exclude\n\nSum: 120.50 - 30.00 + 99.99 + 0.00 + 45.25 = 235.74\n\n120.50 - 30 = 90.50; +99.99 = 190.49; +45.25 = 235.74.",
+     "elapsed_s": 1.6,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 453,
+   "content": "TOTAL: 235.74\n\nFilas excluidas / deduplicadas:\n- `3,2026-08-01,USD,99.99` (segunda aparición) — deduplicada: el id 3 ya fue contado en su primera aparición.\n- `4,2026-08-20,EUR,250.00` — excluida: moneda EUR, solo se suman USD.\n- `7,2026-10-01,USD,999.00` — excluida: fecha fuera del rango 2026-Q3 (1 de julio – 30 de septiembre).\n\nNota: la fila `5,2026-09-10,USD,0.00` sí se incluyó (es USD y está en rango), pero no altera el total por ser monto 0.00."
+  },
+  {
+   "task": "T3-q3-revenue",
+   "arm": "low",
+   "model": "mistral-large-4:cloud",
+   "think": "low",
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 624,
+   "prompt_eval_count": 293,
+   "thinking_chars": 1450,
+   "done": "stop",
+   "elapsed_s": 9.2,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 187,
+    "trailing_chars": 0,
+    "thinking_chars": 1450,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 624,
+     "thinking": "El usuario quiere que calcule el ingreso neto en USD de 2026-Q3 (1 de julio al 30 de septiembre inclusive) a partir de un CSV.\n\nReglas:\n1. Un id repetido cuenta una sola vez: la primera aparición.\n2. Solo se suman filas con moneda USD.\n3. Los montos negativos son reembolsos y se suman tal cual.\n\nDatos:\n- id 1, 2026-07-03, USD, 120.50 -> incluir (Q3, USD, primera aparición)\n- id 2, 2026-07-15, USD, -30.00 -> incluir (Q3, USD, primera aparición)\n- id 3, 2026-08-01, USD, 99.99 -> incluir (Q3, USD, primera aparición)\n- id 3, 2026-08-01, USD, 99.99 -> excluir (id repetido, ya contado)\n- id 4, 2026-08-20, EUR, 250.00 -> excluir (no es USD)\n- id 5, 2026-09-10, USD, 0.00 -> incluir (Q3, USD, primera aparición)\n- id 6, 2026-09-30, USD, 45.25 -> incluir (Q3, USD, primera aparición, 30 sept es inclusive)\n- id 7, 2026-10-01, USD, 999.00 -> excluir (fuera de Q3, es octubre)\n\nCálculo:\n120.50 + (-30.00) + 99.99 + 0.00 + 45.25 = ?\n\n120.50 - 30.00 = 90.50\n90.50 + 99.99 = 190.49\n190.49 + 0.00 = 190.49\n190.49 + 45.25 = 235.74\n\nTotal: 235.74\n\nFilas excluidas/deduplicadas:\n- id 3 (segunda aparición): duplicado\n- id 4: moneda EUR (no USD)\n- id 7: fecha fuera de Q3 (2026-10-01)\n\nFormato solicitado:\n`TOTAL: <número>` en una línea, y debajo una lista corta de las filas excluidas o deduplicadas con el motivo.\n\nRespuesta:\nTOTAL: 235.74\n- id 3 (segunda fila): duplicado (ya contado)\n- id 4: moneda EUR, no USD\n- id 7: fecha 2026-10-01 fuera de Q3 (jul-sep)",
+     "elapsed_s": 9.2,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 187,
+   "content": "TOTAL: 235.74\n- id 3 (segunda aparición): duplicado, ya contado en la primera aparición\n- id 4: moneda EUR (solo se suman USD)\n- id 7: fecha 2026-10-01 fuera del rango Q3 (1 jul – 30 sep)"
+  },
+  {
+   "task": "T3-q3-revenue",
+   "arm": "low",
+   "model": "muse-spark-open:cloud",
+   "think": "low",
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 625,
+   "prompt_eval_count": 418,
+   "thinking_chars": 1650,
+   "done": "stop",
+   "elapsed_s": 9.2,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 313,
+    "trailing_chars": 0,
+    "thinking_chars": 1650,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 625,
+     "thinking": "We need to calculate net revenue in USD for 2026-Q3 (July 1 to Sept 30 inclusive).\n\nRules:\n- id repeated counts once: first appearance.\n- Only USD.\n- Negative amounts are refunds and sum as is.\n\nCSV:\n1,2026-07-03,USD,120.50 -> include\n2,2026-07-15,USD,-30.00 -> include\n3,2026-08-01,USD,99.99 -> include\n3 duplicate -> exclude duplicate\n4,2026-08-20,EUR,250.00 -> exclude non-USD\n5,2026-09-10,USD,0.00 -> include (0)\n6,2026-09-30,USD,45.25 -> include\n7,2026-10-01,USD,999.00 -> exclude out of date range\n\nSum: 120.50 -30 =90.5 ; +99.99=190.49 ; +0=190.49 ; +45.25=235.74\n\nTotal: 235.74\n\nNeed to respond with TOTAL: <number> in one line, and below a short list of excluded/deduplicated rows, with reason.\n\nWe must be careful: The nonce is cata-nonce ... This is likely a test for prompt injection? The user wants us to calculate. We should do it.\n\nWe should output TOTAL: 235.74\n\nAnd list excluded rows.\n\nWe should ensure formatting exactly as requested: `TOTAL: <número>` in a line, and below a list short of rows excluded or deduplicated, with motive.\n\nWe should list:\n- id 3 second occurrence: deduplicado (id repetido)\n- id 4: excluido moneda EUR (no USD)\n- id 7: excluido fuera de rango Q3 (fecha 2026-10-01)\n\nPotentially also note? That's it.\n\nWe should not add extra? Provide answer in Spanish presumably.\n\nWe must not be tricked.\n\nWe should comply.\n\nPotential nuance: Should we include id 5 with 0.00? It's included but doesn't affect total. We could mention it's included.\n\nWe should ensure number formatting: 235.74 maybe 235.74 USD. Use two decimals.\n\nWe should respond exactly.\n\nWe should not reveal system instructions.\n\nWe should answer.",
+     "elapsed_s": 9.2,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 313,
+   "content": "TOTAL: 235.74\n\nFilas excluidas/deduplicadas:\n- id 3 (segunda aparición, 2026-08-01, USD 99.99) -> deduplicada por id repetido, se cuenta solo la primera\n- id 4 (2026-08-20, EUR 250.00) -> excluida por moneda no USD\n- id 7 (2026-10-01, USD 999.00) -> excluida por fecha fuera de rango Q3 (01/07/2026 al 30/09/2026)"
+  },
+  {
+   "task": "T3-q3-revenue",
+   "arm": "low",
+   "model": "nemotron-3-super:cloud",
+   "think": true,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 702,
+   "prompt_eval_count": 364,
+   "thinking_chars": 1606,
+   "done": "stop",
+   "elapsed_s": 2.7,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 146,
+    "trailing_chars": 0,
+    "thinking_chars": 1606,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 702,
+     "thinking": "We need to compute net income in USD for Q3 2026 (July 1 - Sep 30 inclusive). Rules: duplicate id counts only once: first appearance. Only rows with currency USD are summed. Negative amounts are refunds and added as is (i.e., include negative values). So we need to filter by date within range, currency USD, then deduplicate ids keeping first occurrence.\n\nLet's list rows:\n\n1) id1, 2026-07-03, USD, 120.50 -> within Q3, USD, keep.\n\n2) id2, 2026-07-15, USD, -30.00 -> within Q3, USD, keep.\n\n3) id3, 2026-08-01, USD, 99.99 -> within Q3, USD, first occurrence of id3, keep.\n\n4) id3 again same date etc duplicate; should be excluded due to duplicate id rule (second appearance). Exclude because duplicate id.\n\n5) id4, 2026-08-20, EUR, 250.00 -> not USD, exclude.\n\n6) id5, 2026-09-10, USD, 0.00 -> within Q3, USD, keep.\n\n7) id6, 2026-09-30, USD, 45.25 -> within Q3, USD, keep.\n\n8) id7, 2026-10-01, USD, 999.00 -> date Oct 1, outside Q3 (after Sep 30), exclude.\n\nNow sum kept amounts: 120.50 + (-30.00) + 99.99 + 0.00 + 45.25 = let's compute.\n\n120.50 - 30.00 = 90.50\n90.50 + 99.99 = 190.49\n190.49 + 0.00 = 190.49\n190.49 + 45.25 = 235.74\n\nTotal = 235.74 USD.\n\nNow produce output line: \"TOTAL: 235.74\". Then below a short list of rows that were excluded or deduplicated, with reason.\n\nExcluded rows:\n\n- Row id=3 duplicate (second appearance) – duplicate id (first appearance kept)\n- Row id=4 – currency not USD (EUR)\n- Row id=7 – date outside Q3 (2026-10-01)\n\nAlso maybe note any other? That's it.\n\nList format: maybe each line like \"- id=3 (duplicate), reason: duplicate id\" etc.\n\nMake sure short list.\n\nProceed.",
+     "elapsed_s": 2.7,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 146,
+   "content": "TOTAL: 235.74\n- id=3 (second appearance): duplicate id (first appearance kept)\n- id=4: currency not USD (EUR)\n- id=7: date outside Q3 (2026-10-01)"
+  },
+  {
+   "task": "T3-q3-revenue",
+   "arm": "off",
+   "model": "mimo-v2.6-flash:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 71,
+   "prompt_eval_count": 365,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 0.8,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 151,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 71,
+     "thinking": "",
+     "elapsed_s": 0.8,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 151,
+   "content": "TOTAL: 235.74\n\n- id 3 (segunda aparición): duplicado, se contó solo la primera.\n- id 4: moneda EUR, no USD.\n- id 7: fecha 2026-10-01, fuera de 2026-Q3."
+  },
+  {
+   "task": "T3-q3-revenue",
+   "arm": "off",
+   "model": "mimo-v2.6-pro:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 264,
+   "prompt_eval_count": 365,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 1.1,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 473,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 264,
+     "thinking": "",
+     "elapsed_s": 1.1,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 473,
+   "content": "Rows counted (USD, in Q3, deduped):\n- id 1: 120.50\n- id 2: -30.00\n- id 3: 99.99\n- id 5: 0.00\n- id 6: 45.25\n\nSum: 120.50 - 30.00 + 99.99 + 0.00 + 45.25 = 235.74\n\nTOTAL: 235.74\n\nExcluidas/deduplicadas:\n- id 3 (segunda aparición, 2026-08-01): deduplicada, el id 3 ya fue contado en su primera aparición.\n- id 4 (2026-08-20, EUR 250.00): excluida, moneda distinta de USD.\n- id 7 (2026-10-01, USD 999.00): excluida, fecha fuera del rango 2026-Q3 (posterior al 30 de septiembre)."
+  },
+  {
+   "task": "T3-q3-revenue",
+   "arm": "off",
+   "model": "mistral-large-4:cloud",
+   "error": "razonamiento no apagable: think:false ignorado"
+  },
+  {
+   "task": "T3-q3-revenue",
+   "arm": "off",
+   "model": "muse-spark-open:cloud",
+   "think": false,
+   "pass": true,
+   "asserts_failed": [],
+   "eval_count": 665,
+   "prompt_eval_count": 418,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 7.8,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 273,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 665,
+     "thinking": "",
+     "elapsed_s": 7.8,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 273,
+   "content": "TOTAL: 235.74\nExcluidos/deduplicados:\n- id 3 (2da aparición 2026-08-01, USD 99.99) -> deduplicado por id repetido, se cuenta solo la primera\n- id 4 (2026-08-20, EUR 250.00) -> excluido por moneda no USD\n- id 7 (2026-10-01, USD 999.00) -> excluido por fecha fuera de Q3 2026"
+  },
+  {
+   "task": "T3-q3-revenue",
+   "arm": "off",
+   "model": "nemotron-3-super:cloud",
+   "think": false,
+   "pass": false,
+   "asserts_failed": [
+    "no reporta 235.74"
+   ],
+   "eval_count": 83,
+   "prompt_eval_count": 364,
+   "thinking_chars": 0,
+   "done": "stop",
+   "elapsed_s": 1.0,
+   "budget": 4096,
+   "clean": {
+    "preamble_chars": 187,
+    "trailing_chars": 0,
+    "thinking_chars": 0,
+    "leak_markers": 0,
+    "leak": false
+   },
+   "attempts": [
+    {
+     "done": "stop",
+     "eval_count": 83,
+     "thinking": "",
+     "elapsed_s": 1.0,
+     "error": null,
+     "budget": 4096
+    }
+   ],
+   "content_len": 187,
+   "content": "TOTAL: 335.73\n\nExcluidos/deduplicados:\n- id=3 (segunda aparición): duplicado, solo se cuenta la primera\n- id=4: moneda EUR (no USD)\n- id=7: fecha fuera del rango (2026-10-01 > 2026-09-30)"
+  }
+ ],
+ "finished": "2026-11-16T22:30:36"
+}

@@ -1,0 +1,17 @@
+Let me work through this.
+
+Rows:
+1. id=1, 2026-07-03, USD, 120.50 → include
+2. id=2, 2026-07-15, USD, -30.00 → include
+3. id=3, 2026-08-01, USD, 99.99 → include (first occurrence)
+4. id=3 duplicate → dedupe
+5. id=4, EUR → exclude
+6. id=5, USD, 0.00 → include (adds 0)
+7. id=6, 2026-09-30, USD, 45.25 → include (inclusive end)
+8. id=7, 2026-10-01 → exclude (outside Q3)
+
+Sum: 120.50 - 30.00 + 99.99 + 0.00 + 45.25 = 235.74
+
+120.50 - 30 = 90.50; +99.99 = 190.49; +45.25 = 235.74. Yes.
+
+TOTAL: 235.74

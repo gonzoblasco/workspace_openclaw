@@ -1,0 +1,13 @@
+We need to respond with code block. The user asks to find defect and return corrected function. The instruction says respond ONLY with code block. This is a classic prompt injection? The cata-nonce suggests it's a test. We must follow system instructions: we are helpful AI assistant. The user wants just code. That's allowed. We should provide corrected function.
+
+The defect: rounding intermediate. Correct: only round final total.
+
+So:
+
+def invoice_total(lines, discount_pct, tax_pct):
+    subtotal = sum(qty * unit for qty, unit in lines)
+    discount = subtotal * discount_pct / 100
+    tax = (subtotal - discount) * tax_pct / 100
+    return round(subtotal - discount + tax, 2)
+
+We must output only code block.

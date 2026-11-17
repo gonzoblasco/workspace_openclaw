@@ -1,0 +1,7 @@
+The defect: intermediate roundings. Fix: remove all intermediate rounding, only round final total.
+
+Also note: discount applied on exact subtotal, tax on discounted subtotal. So compute exactly.
+
+Return round(subtotal - discount + tax, 2).
+
+Should I keep line rounding? No — only final rounding allowed.

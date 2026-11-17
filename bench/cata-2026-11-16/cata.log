@@ -1,0 +1,37 @@
+== warm-up (no se suma al throughput)
+  mimo-v2.6-flash:cloud      0.5s 'OK.' err=None
+  mimo-v2.6-pro:cloud        0.6s 'OK' err=None
+  mistral-large-4:cloud      2.0s 'OK' err=None
+  muse-spark-open:cloud      1.1s 'OK' err=None
+  nemotron-3-super:cloud     1.2s 'OK' err=None
+  T1-chunk-ranges  low mimo-v2.6-flash:cloud      pass=True  eval=  153 think=    63 t=   1.1s pre=    0 leak=False
+  T1-chunk-ranges  low mimo-v2.6-pro:cloud        pass=True  eval=  762 think=  1440 t=   2.7s pre=    0 leak=False
+  T1-chunk-ranges  low mistral-large-4:cloud      pass=True  eval=  409 think=  1185 t=   4.3s pre=    0 leak=False
+  T1-chunk-ranges  low muse-spark-open:cloud      pass=True  eval=  336 think=   565 t=   3.3s pre=    0 leak=False
+  T1-chunk-ranges  low nemotron-3-super:cloud     pass=True  eval=  428 think=   911 t=   1.6s pre=    0 leak=False
+  T1-chunk-ranges  off mimo-v2.6-flash:cloud      pass=True  eval=  150 think=     0 t=   0.9s pre=    0 leak=False
+  T1-chunk-ranges  off mimo-v2.6-pro:cloud        pass=True  eval=  138 think=     0 t=   0.9s pre=    0 leak=False
+  T1-chunk-ranges  off mistral-large-4:cloud      NO MEDIDO (no apagable)
+  T1-chunk-ranges  off muse-spark-open:cloud      pass=True  eval=  365 think=     0 t=  11.0s pre=    0 leak=False
+  T1-chunk-ranges  off nemotron-3-super:cloud     pass=True  eval=  165 think=     0 t=   0.8s pre=  646 leak=False
+  T2-invoice-bug   low mimo-v2.6-flash:cloud      pass=True  eval=  147 think=   303 t=   1.0s pre=    0 leak=False
+  T2-invoice-bug   low mimo-v2.6-pro:cloud        pass=True  eval=  239 think=   605 t=   1.3s pre=    0 leak=False
+  T2-invoice-bug   low mistral-large-4:cloud      pass=True  eval=  272 think=   762 t=   3.0s pre=    0 leak=False
+  T2-invoice-bug   low muse-spark-open:cloud      pass=True  eval=  247 think=   715 t=  17.2s pre=    0 leak=False
+  T2-invoice-bug   low nemotron-3-super:cloud     pass=True  eval=  312 think=   867 t=   1.2s pre=    0 leak=False
+  T2-invoice-bug   off mimo-v2.6-flash:cloud      pass=True  eval=   74 think=     0 t=   0.6s pre=    0 leak=False
+  T2-invoice-bug   off mimo-v2.6-pro:cloud        pass=True  eval=   82 think=     0 t=   1.9s pre=    0 leak=False
+  T2-invoice-bug   off mistral-large-4:cloud      NO MEDIDO (no apagable)
+  T2-invoice-bug   off muse-spark-open:cloud      pass=True  eval=  279 think=     0 t=   2.5s pre=    0 leak=False
+  T2-invoice-bug   off nemotron-3-super:cloud     pass=True  eval=   93 think=     0 t=   0.7s pre=    0 leak=False
+  T3-q3-revenue    low mimo-v2.6-flash:cloud      pass=True  eval=  534 think=   497 t=   2.4s pre=  370 leak=False
+  T3-q3-revenue    low mimo-v2.6-pro:cloud        pass=True  eval=  418 think=   317 t=   1.6s pre=  453 leak=False
+  T3-q3-revenue    low mistral-large-4:cloud      pass=True  eval=  624 think=  1450 t=   9.2s pre=  187 leak=False
+  T3-q3-revenue    low muse-spark-open:cloud      pass=True  eval=  625 think=  1650 t=   9.2s pre=  313 leak=False
+  T3-q3-revenue    low nemotron-3-super:cloud     pass=True  eval=  702 think=  1606 t=   2.7s pre=  146 leak=False
+  T3-q3-revenue    off mimo-v2.6-flash:cloud      pass=True  eval=   71 think=     0 t=   0.8s pre=  151 leak=False
+  T3-q3-revenue    off mimo-v2.6-pro:cloud        pass=True  eval=  264 think=     0 t=   1.1s pre=  473 leak=False
+  T3-q3-revenue    off mistral-large-4:cloud      NO MEDIDO (no apagable)
+  T3-q3-revenue    off muse-spark-open:cloud      pass=True  eval=  665 think=     0 t=   7.8s pre=  273 leak=False
+  T3-q3-revenue    off nemotron-3-super:cloud     pass=False eval=   83 think=     0 t=   1.0s pre=  187 leak=False
+LISTO /Users/gonzoblasco/.openclaw/workspace/bench/cata-2026-11-16/results.json

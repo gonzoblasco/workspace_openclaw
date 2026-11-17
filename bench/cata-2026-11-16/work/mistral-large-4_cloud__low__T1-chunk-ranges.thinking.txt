@@ -1,0 +1,9 @@
+The user wants a Python function `chunk_ranges(start, end, days)` that splits an inclusive date range [start, end] into consecutive inclusive chunks of at most `days` days. Returns list of tuples (start, end) as ISO strings. Last chunk may be shorter. If start > end return []. If days <= 0 raise ValueError. No gaps or overlaps.
+
+Need respond ONLY with final Python code block, no explanations.
+
+Need implement carefully. Use datetime.date.fromisoformat. Inclusive days count: chunk length in days = (end-start).days + 1. For each chunk, current start, chunk_end = min(current + timedelta(days=days-1), end). Append. Then current = chunk_end + timedelta(days=1). Continue until current > end.
+
+Edge cases: start==end -> one tuple. days large -> one tuple. Invalid ISO? Not specified; fromisoformat will raise ValueError naturally. days<=0 ValueError before parsing maybe. start>end return [] after parsing? If days<=0 should raise even if start>end? Spec says if days<=0 raise ValueError; if start>end return []. Order ambiguous. Usually validate days first. We'll do if days <=0 raise ValueError, then parse, if start>end return [].
+
+Need final only code block. Ensure no extra text.

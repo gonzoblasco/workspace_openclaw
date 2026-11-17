@@ -1,0 +1,42 @@
+We need to chunk inclusive date range [start, end] into consecutive inclusive chunks of at most `days` days each.
+
+If days = 3, and start = 2026-01-01, end = 2026-01-10, then chunks: (01-01, 01-03), (01-04, 01-06), (01-07, 01-09), (01-10, 01-10). Each chunk has 3 days (inclusive count), last has 1.
+
+So chunk end = start + (days - 1) days.
+
+Implement with datetime.date.fromisoformat and timedelta.
+
+Handle start > end → []. days <= 0 → ValueError.
+
+Return strings ISO.
+
+Let me write it.
+
+Also maybe handle invalid ISO strings — not required. Keep simple but robust.
+
+Code:
+
+```python
+from datetime import date, timedelta
+
+
+def chunk_ranges(start: str, end: str, days: int) -> list[tuple[str, str]]:
+    if days <= 0:
+        raise ValueError("days must be a positive integer")
+    s = date.fromisoformat(start)
+    e = date.fromisoformat(end)
+    if s > e:
+        return []
+    step = timedelta(days=days - 1)
+    out = []
+    cur = s
+    while cur <= e:
+        chunk_end = min(cur + step, e)
+        out.append((cur.isoformat(), chunk_end.isoformat()))
+        cur = chunk_end + timedelta(days=1)
+    return out
+```
+
+That's it. Maybe use typing List for older Python. I'll use `from typing import List, Tuple` fallback? Use modern annotation but safe: use `list` builtin generics requires 3.9+. Fine. I'll just use plain annotations without generics to be safe... I'll use typing imports for compatibility.
+
+I'll write final code only.

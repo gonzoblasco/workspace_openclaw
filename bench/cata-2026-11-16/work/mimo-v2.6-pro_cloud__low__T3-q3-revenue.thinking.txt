@@ -1,0 +1,12 @@
+Rows: 1: 120.50 USD, 2026-07-03 → include
+2: -30.00 USD → include
+3: 99.99 → include first
+3 dup → exclude
+4: EUR → exclude
+5: 0.00 → include (adds 0)
+6: 45.25 → include
+7: 2026-10-01 → out of range → exclude
+
+Sum: 120.50 - 30.00 + 99.99 + 0.00 + 45.25 = 235.74
+
+120.50 - 30 = 90.50; +99.99 = 190.49; +45.25 = 235.74.

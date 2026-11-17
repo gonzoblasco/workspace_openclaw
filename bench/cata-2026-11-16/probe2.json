@@ -1,0 +1,124 @@
+{
+ "mimo-v2.6-flash:cloud": {
+  "true": {
+   "content": "16:42",
+   "thinking_chars": 21,
+   "done": "stop",
+   "prompt_eval": 51,
+   "eval_count": 27,
+   "elapsed_s": 0.6
+  },
+  "false": {
+   "content": "16:42",
+   "thinking_chars": 0,
+   "done": "stop",
+   "prompt_eval": 55,
+   "eval_count": 6,
+   "elapsed_s": 0.4
+  }
+ },
+ "mimo-v2.6-pro:cloud": {
+  "true": {
+   "content": "16:42",
+   "thinking_chars": 21,
+   "done": "stop",
+   "prompt_eval": 53,
+   "eval_count": 27,
+   "elapsed_s": 0.5
+  },
+  "false": {
+   "content": "16:42",
+   "thinking_chars": 0,
+   "done": "stop",
+   "prompt_eval": 54,
+   "eval_count": 6,
+   "elapsed_s": 0.5
+  }
+ },
+ "mistral-large-4:cloud": {
+  "low": {
+   "content": "16:42",
+   "thinking_chars": 497,
+   "done": "stop",
+   "prompt_eval": 51,
+   "eval_count": 156,
+   "elapsed_s": 2.8
+  },
+  "false": {
+   "content": "16:42",
+   "thinking_chars": 333,
+   "done": "stop",
+   "prompt_eval": 54,
+   "eval_count": 104,
+   "elapsed_s": 1.7
+  },
+  "none": {
+   "content": "16:42",
+   "thinking_chars": 583,
+   "done": "stop",
+   "prompt_eval": 53,
+   "eval_count": 176,
+   "elapsed_s": 2.6
+  },
+  "medium": {
+   "content": "16:42",
+   "thinking_chars": 459,
+   "done": "stop",
+   "prompt_eval": 54,
+   "eval_count": 134,
+   "elapsed_s": 4.4
+  }
+ },
+ "muse-spark-open:cloud": {
+  "low": {
+   "content": "16:42",
+   "thinking_chars": 1260,
+   "done": "stop",
+   "prompt_eval": 182,
+   "eval_count": 327,
+   "elapsed_s": 2.4
+  },
+  "false": {
+   "content": "16:42",
+   "thinking_chars": 0,
+   "done": "stop",
+   "prompt_eval": 180,
+   "eval_count": 84,
+   "elapsed_s": 1.0
+  },
+  "medium": {
+   "content": "16:42",
+   "thinking_chars": 1792,
+   "done": "stop",
+   "prompt_eval": 182,
+   "eval_count": 453,
+   "elapsed_s": 3.5
+  },
+  "none": {
+   "content": "16:42",
+   "thinking_chars": 990,
+   "done": "stop",
+   "prompt_eval": 182,
+   "eval_count": 278,
+   "elapsed_s": 1.5
+  }
+ },
+ "nemotron-3-super:cloud": {
+  "true": {
+   "content": "16:42",
+   "thinking_chars": 533,
+   "done": "stop",
+   "prompt_eval": 61,
+   "eval_count": 176,
+   "elapsed_s": 1.1
+  },
+  "false": {
+   "content": "El tren sale a las 14:05 y tarda 2 horas y 37 minutos.\n\nSumando:\n- Horas: 14 + 2",
+   "thinking_chars": 0,
+   "done": "stop",
+   "prompt_eval": 60,
+   "eval_count": 81,
+   "elapsed_s": 1.0
+  }
+ }
+}

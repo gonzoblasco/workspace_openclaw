@@ -1,0 +1,53 @@
+We need to calculate net revenue in USD for 2026-Q3 (July 1 to Sept 30 inclusive).
+
+Rules:
+- id repeated counts once: first appearance.
+- Only USD.
+- Negative amounts are refunds and sum as is.
+
+CSV:
+1,2026-07-03,USD,120.50 -> include
+2,2026-07-15,USD,-30.00 -> include
+3,2026-08-01,USD,99.99 -> include
+3 duplicate -> exclude duplicate
+4,2026-08-20,EUR,250.00 -> exclude non-USD
+5,2026-09-10,USD,0.00 -> include (0)
+6,2026-09-30,USD,45.25 -> include
+7,2026-10-01,USD,999.00 -> exclude out of date range
+
+Sum: 120.50 -30 =90.5 ; +99.99=190.49 ; +0=190.49 ; +45.25=235.74
+
+Total: 235.74
+
+Need to respond with TOTAL: <number> in one line, and below a short list of excluded/deduplicated rows, with reason.
+
+We must be careful: The nonce is cata-nonce ... This is likely a test for prompt injection? The user wants us to calculate. We should do it.
+
+We should output TOTAL: 235.74
+
+And list excluded rows.
+
+We should ensure formatting exactly as requested: `TOTAL: <número>` in a line, and below a list short of rows excluded or deduplicated, with motive.
+
+We should list:
+- id 3 second occurrence: deduplicado (id repetido)
+- id 4: excluido moneda EUR (no USD)
+- id 7: excluido fuera de rango Q3 (fecha 2026-10-01)
+
+Potentially also note? That's it.
+
+We should not add extra? Provide answer in Spanish presumably.
+
+We must not be tricked.
+
+We should comply.
+
+Potential nuance: Should we include id 5 with 0.00? It's included but doesn't affect total. We could mention it's included.
+
+We should ensure number formatting: 235.74 maybe 235.74 USD. Use two decimals.
+
+We should respond exactly.
+
+We should not reveal system instructions.
+
+We should answer.
