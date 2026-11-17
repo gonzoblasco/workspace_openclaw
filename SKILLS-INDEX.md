@@ -87,7 +87,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 
 ## 3. Inventario
 
-### 3.1 Core - `skills/` (34)
+### 3.1 Core - `skills/` (35)
 
 | Skill | Qué hace |
 |---|---|
@@ -97,6 +97,7 @@ Mover una skill de `skills/` a `agents/<rol>/skills/` cambia quién la ve y qui�
 | [compaction-domain-aware](skills/compaction-domain-aware/) | Compactación con conciencia de dominio: tiers de prioridad (Tier 0-4) para decidir qué preservar |
 | [complexity-driven-pipeline](skills/complexity-driven-pipeline/) | Orquestación complexity-first: scorer antes de spawnear agentes A/B; decide modelo, thinking level y profundidad |
 | [model-cata](skills/model-cata/) | Ritual de comparación de modelos LLM: mismo prompt, rúbrica crítica y decisión de motor en ADR |
+| [model-comparison-cata](skills/model-comparison-cata/) | Kit reproducible de catas: fixture con suite oculta validada en dos direcciones, tandas `low`/apagado, evaluador ciego y REPORT de nueve secciones (`scripts/cata-kit.py`) |
 | [sdd-agent-loop](skills/sdd-agent-loop/) | Loop de agentes por etapas con gate humano |
 | [verification-gates](skills/verification-gates/) | Guardas que no dan falso verde: 0 casos corridos, SKIP vs OK, lector honesto |
 | [path-audit](skills/path-audit/) | Auditoría de CAMINO por hito de versión (0.5, 1.0): rumbo, próximo paso y afirmaciones no probadas. No lee código |

@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-16] - Kit reproducible de catas de modelos
+
+### Added
+- **`skills/model-comparison-cata/`** — la metodología de la cata 2026-11-16 hecha reusable: fixture con suite oculta validada en las dos direcciones, tandas `low` y razonamiento apagado, evaluador ciego de CONTENT vs CLEANLINESS, y `REPORT.md` de nueve secciones. Incluye plantillas (`tasks.json`, `evaluate.py` con suite de ejemplo funcionando, referencia, defectuosa, brief del evaluador ciego).
+- **`scripts/cata-kit.py`** — CLI `init` / `check` / `run` / `analyze`. El runner trae lo que costó caro: nonce anti-caché por celda, auto-escalado de `num_predict` con content vacío, nombres de artefacto seguros y warm-up separado.
+- **`SKILLS-INDEX.md`** — alta en la sección Core (34 → 35).
+
+### Changed
+- **`harness-model-comparison`** (skill aprendida) — el "qué/cómo se mide" queda ahí como doctrina; el kit ejecutable vive en el workspace y se referencia desde `Related`.
+
+---
+
 ## [2026-11-16] - Nueva categoría `docs/propuestas/`
 
 ### Added
