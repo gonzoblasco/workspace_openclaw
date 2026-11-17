@@ -22,7 +22,8 @@ Reglas de seguridad:
 Uso:
     managed-blocks.py list                  settings en la DB
     managed-blocks.py seed                  inserta los defaults faltantes
-    managed-blocks.py set <key> <value>     cambia un setting
+    managed-blocks.py set <key> <value>     cambia un setting (y sus alias)
+    managed-blocks.py retire-aliases [--force]  borra las claves alias duplicadas
     managed-blocks.py check                 reporta drift, sin escribir
     managed-blocks.py apply [--dry-run]     regenera los bloques
 """
@@ -37,11 +38,30 @@ from pathlib import Path
 WORKSPACE = Path(__file__).resolve().parent.parent
 DB_PATH = WORKSPACE / "memory" / "memory.db"
 
+# Claves ALIAS de la DB por setting canonico (2026-11-17).
+#
+# Origen: la tabla `settings` llego a guardar la MISMA asignacion de modelos bajo
+# tres claves (`model_by_agent`, `model_triple`, `model.triple`). `set` escribia
+# en una sola, asi que "corregir" una dejaba las otras dos con el valor viejo:
+# paso dos veces el 2026-11-04 y `model.triple` volvio a derivar doce dias hasta
+# el 2026-11-16. Un dato, un dueno (AGENTS.md seccion 0): la clave que se lee es
+# una sola, y esto es la unica lista de nombres que se mantienen en sincronia.
+#
+# Regla: `set` escribe el canonico Y todos sus alias, y crea los alias que
+# falten. La lectura (render de bloques) usa SOLO el canonico. `seed` nunca crea
+# alias: una clave que un bloque no lee no es un default, es una copia.
+ALIASES = {
+    "model_by_agent": ("model_triple", "model.triple"),
+}
+
 BEGIN = "<!-- BEGIN MANAGED:{key} -->"
 END = "<!-- END MANAGED:{key} -->"
 
 # Valores vigentes al 2026-09-30 (ADR-076). Semilla, no verdad: la DB manda.
 DEFAULTS = {
+    # Alias de escritura: el setting canonico es `model_by_agent` y la clave
+    # `model.triple` de la DB NO es un default - es una clave vieja que quedo
+    # como copia viva hasta el 2026-11-17. Ver `set` y ALIASES mas abajo.
     "model_primary": "deepseek-v4.1-flash:cloud",
     "model_auxiliary": "gemma4:cloud",
     "model_alternative": "minimax-m3.1-flash:cloud",
@@ -212,14 +232,27 @@ def cmd_seed(conn, _args):
 def cmd_set(conn, args):
     if not args.key or args.value is None:
         sys.exit("Uso: managed-blocks.py set <key> <value>")
+    # El canonico manda: si se setea un alias, se escribe el canonico y se
+    # avisa. Asi no se puede dejar una copia viva por escribir "la otra" clave.
+    canonical = args.key
+    for name, aliases in ALIASES.items():
+        if args.key in aliases:
+            canonical = name
+            print(f"  '{args.key}' es alias de '{name}': se escribe el canonico")
+            break
+    # UNA sola clave (2026-11-17). Antes `set` replicaba en cada alias para que
+    # ninguno quedara viejo, y el gate de alias fallaba justo por eso: crear la
+    # copia para no desincronizarla era seguir teniendo dos duenos. El alias se
+    # acepta como NOMBRE de entrada (arriba), nunca como destino de escritura.
+    # `retire-aliases` los borra; el gate falla si alguno reaparece.
     conn.execute(
         """INSERT INTO settings (key, value, description, updated_at)
            VALUES (?,?,?,datetime('now'))
            ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=datetime('now')""",
-        (args.key, args.value, "editado a mano"),
+        (canonical, args.value, "editado a mano"),
     )
     conn.commit()
-    print(f"  {args.key} = {args.value}")
+    print(f"  {canonical} = {args.value}")
 
 
 def render(entry, settings):
@@ -293,6 +326,40 @@ def run_all(conn, dry_run, quiet=False):
     return lines
 
 
+def cmd_retire_aliases(conn, args):
+    """Borra las claves alias de la DB. El valor debe coincidir con el canonico
+    ANTES de borrar: si difiere, la copia tiene un dato que nadie decidio y se
+    frena. Sin --force borra en dry-run. Un dato, un dueno."""
+    to_delete = []
+    for canonical, aliases in ALIASES.items():
+        canonical_row = conn.execute(
+            "SELECT value FROM settings WHERE key = ?", (canonical,)
+        ).fetchone()
+        if not canonical_row:
+            print(f"  !! falta el canonico '{canonical}': no se borra nada de este grupo")
+            return 1
+        for alias in aliases:
+            row = conn.execute("SELECT value FROM settings WHERE key = ?", (alias,)).fetchone()
+            if not row:
+                print(f"  - {alias}: no existe, nada que borrar")
+                continue
+            if row[0] != canonical_row[0]:
+                print(f"  !! {alias} difiere de {canonical}: alinear primero (set)")
+                return 1
+            to_delete.append(alias)
+    if not to_delete:
+        print("  Nada que retirar: no hay claves alias.")
+        return 0
+    if not args.force:
+        print(f"  DRY-RUN: borraria {', '.join(to_delete)} (usar --force)")
+        return 0
+    for alias in to_delete:
+        conn.execute("DELETE FROM settings WHERE key = ?", (alias,))
+    conn.commit()
+    print(f"  borrados: {', '.join(to_delete)}")
+    return 0
+
+
 def cmd_check(conn, _args):
     print("Estado de los bloques (sin escribir):")
     for line in run_all(conn, True, quiet=True):
@@ -318,6 +385,8 @@ def main():
     ps = sub.add_parser("set", help="cambia un setting")
     ps.add_argument("key")
     ps.add_argument("value")
+    pr = sub.add_parser("retire-aliases", help="borra las claves alias (requiere --force)")
+    pr.add_argument("--force", action="store_true")
     sub.add_parser("check", help="reporta drift sin escribir")
     pa = sub.add_parser("apply", help="regenera los bloques")
     pa.add_argument("--dry-run", action="store_true", help="muestra el diff sin escribir")
@@ -329,6 +398,7 @@ def main():
             "list": cmd_list,
             "seed": cmd_seed,
             "set": cmd_set,
+            "retire-aliases": cmd_retire_aliases,
             "check": cmd_check,
             "apply": cmd_apply,
         }[args.cmd](conn, args)

@@ -77,23 +77,33 @@ claims:
         expect: "doce dias de drift"
 
   - id: workspace.model-keys-aligned
-    text: "Las tres claves de settings model_by_agent, model_triple y model.triple declaran el mismo valor, deepseek-v4.1-flash:cloud como primario de main/defaults."
+    text: "La tabla settings guarda la asignacion de modelos bajo una sola clave, model_by_agent: los alias model_triple y model.triple fueron borrados el 2026-11-17."
     status: active
     confidence: 0.95
-    updatedAt: 2026-11-16T23:55:00-03:00
+    updatedAt: 2026-11-17T00:12:00-03:00
     evidence:
-      - kind: settings
-        key: model.triple
-        expect: "main/defaults deepseek-v4.1-flash:cloud"
-      - kind: settings
-        key: model_triple
-        expect: "main/defaults deepseek-v4.1-flash:cloud"
       - kind: settings
         key: model_by_agent
         expect: "main/defaults deepseek-v4.1-flash:cloud"
       - kind: file
         path: scripts/check-settings-aliases.py
-        expect: "ALIAS_GROUPS"
+        expect: "no alias key exists in"
+      - kind: file
+        path: scripts/managed-blocks.py
+        expect: "UNA sola clave"
+
+  - id: workspace.settings-write-path-is-single
+    text: "managed-blocks.py set escribe solo la clave canonica y acepta un alias unicamente como nombre de entrada; retire-aliases borra las copias y se frena si un alias difiere del canonico."
+    status: active
+    confidence: 0.95
+    updatedAt: 2026-11-17T00:12:00-03:00
+    evidence:
+      - kind: file
+        path: scripts/managed-blocks.py
+        expect: "def cmd_retire_aliases"
+      - kind: file
+        path: scripts/managed-blocks.py
+        expect: "UNA sola clave (2026-11-17)"
 ---
 
 # Workspace
@@ -101,18 +111,24 @@ claims:
 Claims sobre como funciona el workspace mismo. Este archivo es el que mas cerca esta de la
 clase de bug que motivo ADR-064: "el doc dice X, el runtime hace Y".
 
-## Deuda cerrada el 2026-11-16
+## Deuda cerrada el 2026-11-17
 
-ADR-090 dice que "la misma tabla vive bajo tres claves y corregir solo las conocidas deja una
-copia viva del valor viejo". Paso dos veces el 2026-11-04, y `model.triple` volvio a quedar
-con `main/defaults minimax-m3.1-flash:cloud` mientras las otras dos decian `deepseek` desde
-ADR-107. Doce dias de drift, invisibles hasta que el claim layer lo miro.
+La historia, completa, porque la trampa se repite:
 
-Cerrado con `scripts/check-settings-aliases.py`: declara el grupo de alias, `--fix` copia el
-canonico (`model_by_agent`, la clave que lee el bloque de AGENTS.md) en los demas, y el
-pre-commit lo corre siempre. `workspace.model-triple-key-was-stale` queda `retracted` como
-historia; `workspace.model-keys-aligned` dice el estado de hoy.
+1. **2026-11-04, dos veces en un día:** la DB guardaba la asignación de modelos bajo tres
+   claves (`model_by_agent`, `model_triple`, `model.triple`). Cada sesión que "corregía" una
+   dejaba las otras con el valor viejo (primero `glm4:9b`, después planner/studio).
+2. **Hasta el 2026-11-16:** `model.triple` volvió a quedar con `minimax-m3.1-flash` mientras
+   ADR-107 ya decía `deepseek`. Doce días de drift, invisibles.
+3. **2026-11-16:** se alinearon las tres claves y se agregó `check-settings-aliases.py`, que
+   las vigilaba. Eso trataba la copia como normal: tres valores iguales siguen siendo tres
+   dueños.
+4. **2026-11-17:** se cerró de raíz. `managed-blocks.py set` escribe **una sola** clave y
+   acepta un alias solo como nombre de entrada; `retire-aliases` borra las copias y se frena
+   si un alias difiere del canónico; `seed` nunca crea un alias; el gate exige que **no
+   exista** ninguna copia.
 
-Lo correcto a futuro es **no** tener tres claves - el script hace visible la copia, no la
-elimina. Borrar `model.triple` y `model_triple` y dejar solo `model_by_agent` es la decision
-que falta, y toca el esquema de `settings`, no un valor.
+Verificado en negativo: sembrar un `model.triple` a mano hace fallar el gate, y `retire-aliases`
+lo limpia. Un `set` después del retiro deja la DB en 10 claves y el gate en verde.
+
+Queda una sola clave: `model_by_agent`, la que lee el bloque de `AGENTS.md`.

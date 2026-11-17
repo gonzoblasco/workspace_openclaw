@@ -87,9 +87,34 @@ El benchmarking midió Super/Ultra/Flash en 10 tareas representativas con thinki
 
 Si las cuatro fuentes no coinciden, el corpus miente: eso es un defecto ALTA, no una deriva aceptable.
 
+## Correccion estructural 2026-11-17: una sola clave
+
+La advertencia de §1 ("la misma tabla vive bajo tres claves y corregir solo las conocidas deja
+una copia viva del valor viejo") se cumplio dos veces el 2026-11-04 y una tercera entre el 04 y
+el 16: `model.triple` conservo `minimax-m3.1-flash`, el valor superseded por ADR-107, doce dias.
+Alinear las tres claves no alcanzaba: tres valores iguales siguen siendo tres duenos.
+
+Decision (pedido explicito de Gonzo, 2026-11-17):
+
+- **Se borran `model_triple` y `model.triple` de `settings`.** Queda `model_by_agent`, la clave
+  que lee el bloque `model-operativo` de `AGENTS.md`. Ningun bloque ni script lee las otras dos.
+- **`managed-blocks.py set` escribe una sola clave.** Acepta un alias como *nombre de entrada*
+  (lo resuelve al canonico y avisa), nunca como destino: escribir los dos es lo que mantenia el
+  duplicado vivo.
+- **`managed-blocks.py retire-aliases [--force]`** borra las copias y **se frena si un alias
+  difiere del canonico**: una copia con otro valor es una decision que alguien perdio, no basura.
+- **`seed` nunca crea un alias.** Una clave que ningun bloque lee no es un default.
+- **`scripts/check-settings-aliases.py` invierte su regla:** antes exigia que las tres claves
+  coincidieran; ahora exige que **no exista** ninguna copia. Si una reaparece, el gate falla con
+  el nombre de la clave y el valor.
+
+Verificado en negativo: sembrar un `model.triple` a mano hace fallar el gate; `retire-aliases`
+lo limpia; un `set` posterior deja la DB en 10 claves y el gate en verde; los seis bloques
+managed siguen rindiendo sin drift.
+
 ## Artefactos
 
 - Config runtime: `~/.openclaw/openclaw.json` (verificado 2026-10-18).
-- Bloques gestionados: `scripts/managed-blocks.py` (claves `model_by_agent`, `model.triple`, `thinking_default`) → `AGENTS.md` (bloques `model-operativo`, `pipeline-ab`) y `docs/SETUP.md` (bloques `model-triple`, `model-pipeline-ab`).
+- Bloques gestionados: `scripts/managed-blocks.py` (claves `model_by_agent`, `thinking_default`; **`model.triple` se retiro el 2026-11-17**, ver abajo) → `AGENTS.md` (bloques `model-operativo`, `pipeline-ab`) y `docs/SETUP.md` (bloque `model-triple`, que toma `model_primary`/`model_auxiliary`/`model_alternative`).
 - Benchmarking 2026-10-14 (registro): `model_comparison_final.md`, `super_20261014_232744.json`, `nemotron_ultra_full_20261014_222950.json`, runner `bench_model_suite.py` (workspace, sin commitear).
 - Review que detectó la derivación: `docs/records/2026-10-18-review-profundo-adrs.md`.

@@ -1,8 +1,28 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-11-02). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-11-03). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
+
+---
+
+## [2026-11-17] - Una sola clave para la asignacion de modelos
+
+### Removed
+- **`settings.model_triple` y `settings.model.triple` borradas de la DB.** Eran copias de `model_by_agent`: ningún bloque managed ni script las lee. Alinearlas (2026-11-16) dejaba el duplicado vivo; un dato, un dueño. Queda solo `model_by_agent`, la clave que lee el bloque `model-operativo` de `AGENTS.md`. La DB pasó de 12 a 10 claves; los seis bloques siguen rindiendo sin drift.
+
+### Changed
+- **`managed-blocks.py set` escribe UNA sola clave.** Antes replicaba el valor en cada alias "para que ninguna quedara vieja", y eso era seguir manteniendo el duplicado: el gate de alias fallaba justo por la red de seguridad. Ahora acepta un alias como *nombre de entrada* (lo resuelve al canónico y avisa) pero nunca lo usa como destino.
+- **`managed-blocks.py retire-aliases [--force]`** — borra las copias y **se frena si un alias difiere del canónico**: un valor distinto es una decisión que alguien perdió, no basura. Dry-run por default.
+- **`seed` nunca crea un alias.** Una clave que ningún bloque lee no es un default: `DEFAULTS` no la define, así que `seed` no puede reintroducirla.
+
+### Fixed
+- **`check-settings-aliases.py` invierte su regla.** Antes exigía que las tres claves coincidieran; ahora exige que **no exista** ninguna copia, nombra la que reaparezca y dice si difiere. También compara el `ALIASES` del gate contra el de `managed-blocks.py` y avisa si se desincronizan, en vez de confiar en una de las dos listas.
+- **ADR-090 §1 actualizado en el lugar** (sin ADR nuevo, mismo criterio que la corrección del 2026-11-04): se documenta la decisión, el mecanismo y la verificación en negativo. La advertencia sobre las tres claves queda como historia resuelta, no como riesgo abierto.
+
+### Notes
+- Verificado en negativo: sembrar un `model.triple` a mano hace fallar el gate con el nombre y el valor; `retire-aliases` lo limpia; un `set` posterior deja la DB en 10 claves y el gate en verde. Backup de la DB tomado antes de borrar.
+- Los claims pasan a 25: `workspace.model-keys-aligned` ahora afirma la ausencia de copias y `workspace.settings-write-path-is-single` cubre el mecanismo.
 
 ---
 
@@ -829,32 +849,5 @@ Ese desvio de runtime se convirtio en un cambio de config el 2026-11-10 12:28: l
 ### Notes
 - **El defecto estaba documentado y sin corregir:** `session-close-handoff` ya avisaba que `resolve_handoff_path` "solo busca en `projects/`" y pedia resolver el destino a mano con `--handoff-dir`. El workaround evitaba el arbol fantasma pero dejaba el bug intacto y dependia de que el agente se acordara. Ahora la skill puede pedir la verificacion como control, no como unico remedio.
 - **Pendiente, no incluido aca:** el generador sigue **reescribiendo el HANDOFF entero**. Hoy el cierre del 2026-11-03 reemplazo los proximos pasos de onwheels (del 2026-10-29) por los del Expte. 15.533, perdiendo estado que seguia vigente. El merge por seccion con `<!-- vigente desde YYYY-MM-DD -->` queda como paso siguiente.
-
----
-
-## [2026-11-02] - Ollama deja de ser punto único de falla; browser-use sale del gateway
-
-### Added
-- **`scripts/ollama-keepalive.sh` + `~/Library/LaunchAgents/com.ollama.serve.plist`.** Watchdog cada 30 s sobre `127.0.0.1:11434/api/version`: si el server no responde, levanta `ollama serve` y espera hasta 60 s. No arranca un segundo server cuando Ollama.app ya tiene el puerto (health check primero). Probado en el puerto libre 11555: detectó la caída, levantó el server, respondió, y se limpió al morir el padre.
-  - **Sustrato:** el 2026-11-02 Ollama estuvo muerto de **10:07 a 11:49** (1 h 42 m). Con el cayeron los tres niveles de la cadena -`deepseek-v4.1-flash:cloud`, `gemma4:12b-mlx`, `minimax-m3.1-flash:cloud`- porque **todos** salen por `127.0.0.1:11434`. De ahí el error engañoso: *"deepseek cloud: fetch failed | ECONNREFUSED"*. 43 `ECONNREFUSED` en el log de ese día.
-  - **Lección:** un fallback que comparte transporte con el primario no es un fallback. El failover era cosmético: 7 intentos × 3 modelos, 60-90 s por turno, mismo error.
-
-### Removed
-- **browser-use, borrado entero - no solo desregistrado.** Gonzo cerro el alcance: *"no dejemos huerfanos"*. Se fueron el bloque `mcp.servers.browser-use` de `openclaw.json`, las dos entradas del registro (`browser-use`, `browser-use-ui`), la skill `skills/browser-tool/`, sus dos docs (`browser-use-perfil-docker.md`, `browser-use-veredicto-pr-upstream.md`) y el prompt historico `.knowledge/prompts/browser-tool-skill.md`. Tambien se borraron las cuatro ramas `kind == "mcp"` de `ai-toolbox.py`: browser-use era la unica entrada de ese kind, asi que quedaban muertas.
-  - **Motivo:** Docker Desktop reserva ~7,7 GB wired de los 24 GB del host, y el MCP obligaba a tenerlo arriba.
-  - **Correccion de un error mio, del mismo dia:** en la version anterior de esta entrada afirme que *"la imagen y el repo quedan intactos"*. **Falso: `projects/browser-use` y `projects/browser-use-ui` nunca existieron en disco** al momento de la purga. Lo verifique con `ls` y `find` antes de afirmarlo por segunda vez. No habia imagen ni repo que conservar, y por eso no hay backup de config que valga: volver a tener browser-use es reconstruirlo desde cero.
-  - **Lo unico que sobrevive:** la leccion de infraestructura en `learnings` #299 (volumen de Chrome anonimo por contenedor; nunca compartido ni bind-mounteado). Es knowledge de Docker, no de la herramienta.
-  - **Alternativa sin Docker:** el plugin `browser` nativo (`@openclaw/browser-plugin`, enabled).
-  - Dejo de reintentar en cada arranque: el ultimo `failed to start server "browser-use"` es de 11:54:35, el mismo segundo en que el hot reload aplico el cambio.
-
-### Fixed
-- **`ai-toolbox.py` ya no conserva codigo para un `kind` sin entradas.** Al sacar browser-use, las ramas `kind == "mcp"` de `tool_state`, `do_up`, `do_down` y `do_restart` quedaron inalcanzables. Se borraron. El test `test_las_herramientas_core_estan` pedia `browser-use` explicito; ahora verifica lo contrario: que no vuelva, y que no quede ninguna entrada `kind=mcp` sin sus ramas.
-- `docs/tools/REGISTRY.md` regenerado (`catalog --write`, `--check` al dia) y sin las dos secciones de browser-use. La nota de Ollama que remitia a "la nota de browser-use" ahora cuenta de donde salio la medicion sin apuntar a un archivo que no existe.
-- `SKILLS-INDEX.md`: fila de `browser-tool` fuera, fecha de verificacion al 2026-11-02, y **total corregido de 99 a 102** - la suma de las filas ya daba 102 y el total estaba mal desde antes de este cambio.
-- `pipeline-state.json` reseteado: tenia la fase `browser-use-ui` con U5 en `start` desde el 2026-10-27. El estado quedo sin huerfanas.
-
-### Notes
-- El update 2026.10.5 → 2026.10.9 sigue fallando (`global-install-failed`); queda pendiente para `/update` desde el chat, no se relanza desde acá.
-- Hallazgo sin tocar: `agent:main` DB en 2,2 GB y la sesión `agent:main:main` en 568k/1.0m tokens (54%).
 
 ---

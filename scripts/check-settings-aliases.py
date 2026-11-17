@@ -1,33 +1,31 @@
 #!/usr/bin/env python3
-"""check-settings-aliases.py - the same setting must not live under two keys.
+"""check-settings-aliases.py - one setting, one key.
 
-ADR-090 §1 documents the trap: the `settings` table in memory.db keeps the same
-model assignment under three keys (`model_by_agent`, `model_triple`, `model.triple`)
-and fixing only the ones you remember leaves a live copy of the old value. It
-happened twice in one session on 2026-11-04 (glm4:9b, then planner/studio) and
-nobody noticed until the aliases drifted again on 2026-11-04 and stayed drifted
-for twelve days.
+The `settings` table in memory.db once kept the same model assignment under
+three keys: `model_by_agent` (the one the AGENTS.md managed block reads),
+`model_triple` and `model.triple`. `managed-blocks.py set` wrote to one key at
+a time, so "fixing" the assignment left the other two carrying the old value.
+It happened twice on 2026-11-04, and `model.triple` drifted again for twelve
+days until 2026-11-16: it still said `minimax-m3.1-flash` while ADR-107 had
+moved the CORE to `deepseek`.
 
-Aliases are grouped here so the check is structural, not a memory test:
+The first fix (2026-11-16) aligned the three values and watched them. That
+treated the copy as normal. One fact, one owner (AGENTS.md section 0) means
+the duplicate keys should not exist: `managed-blocks.py` now writes every
+alias from `ALIASES` on a single `set`, reads only the canonical one, and
+`seed` never creates an alias.
 
-    model_by_agent == model_triple == model.triple
+So this gate now enforces the absence:
 
-The group is only as real as the aliases listed. When a key is added by
-`managed-blocks.py set` (which inserts blindly), it shows up here as an
-orphan - a settings key that is not a known alias and not referenced by any
-managed block template. That is how `model.triple` survived: valid key, valid
-value, read by nobody.
+  1. no alias key exists in `settings`        -> a copy came back, delete it
+  2. if a legacy alias exists anyway, it must equal the canonical value
+  3. no model-ish key outside the known set   -> an orphan nobody reads
 
 Modes:
-    check (default)   report drift, exit 1 if any group disagrees
-    --fix             copy the canonical value into the drifted aliases, re-check
-    --list            print the alias groups and the orphan keys
+    check (default)   report, exit 1 on any finding
+    --list            print the alias map, the keys and the canonical values
 
-Canonical member: `model_by_agent`, because that is the key the AGENTS.md
-managed block reads (verified 2026-10-06; setting `model.triple` updates
-docs/SETUP.md and leaves AGENTS.md stale).
-
-Exit 0 clean, 1 drift, 2 cannot read the DB.
+Exit 0 clean, 1 findings, 2 cannot read the DB.
 """
 from __future__ import annotations
 
@@ -41,22 +39,20 @@ import tempfile
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DB_PATH = ROOT / "memory" / "memory.db"
 
-# The alias groups. Adding a key here is the only way a new copy becomes
-# "expected"; anything else in `settings` that looks like this group is an orphan.
-ALIAS_GROUPS = {
-    "model_by_agent": ["model_by_agent", "model_triple", "model.triple"],
+# Must mirror ALIASES in scripts/managed-blocks.py. Duplicating the map here is
+# deliberate: if the two disagree, this gate says so instead of silently
+# trusting one of them. `--list` prints both so the drift is visible.
+EXPECTED_ALIASES = {
+    "model_by_agent": ("model_triple", "model.triple"),
 }
 
-# Keys a managed block template reads. Anything else in `settings` is either an
-# orphan of an alias group or dead weight - both are reported, neither is fatal
-# unless it is in an alias group with a different value.
+# Keys a managed block template reads. Anything else model-ish is an orphan.
 BLOCK_KEYS = {
     "model_primary", "model_auxiliary", "model_alternative", "thinking_default",
     "model_pipeline", "model_pipeline_a", "model_pipeline_b", "model_pipeline_c",
     "model_pipeline_prefilter", "model_by_agent",
 }
 
-# Not settings, but rows in the same table that belong to other subsystems.
 NON_MODEL_KEYS = {"session_retention_days", "backup_retention_days"}
 
 
@@ -77,60 +73,79 @@ def load_settings():
         shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
-def write_settings(updates: dict[str, str]):
-    """Write through a copy and swap it back, because plain sqlite3 refuses the
-    live DB under the OpenClaw state directory."""
-    tmp_dir = pathlib.Path(tempfile.mkdtemp())
-    tmp = tmp_dir / "mem.db"
-    try:
-        shutil.copy2(DB_PATH, tmp)
-        con = sqlite3.connect(tmp)
-        for key, value in updates.items():
-            con.execute(
-                """INSERT INTO settings (key, value, description, updated_at)
-                   VALUES (?,?,?,datetime('now'))
-                   ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=datetime('now')""",
-                (key, value, "aligned by check-settings-aliases.py"),
-            )
-        con.commit()
-        con.close()
-        shutil.copy2(tmp, DB_PATH)
-    finally:
-        shutil.rmtree(tmp_dir, ignore_errors=True)
+def aliases_in_code():
+    """Read ALIASES from managed-blocks.py without importing it (it parses argv
+    on import through argparse in main(), but the module itself is safe)."""
+    path = ROOT / "scripts" / "managed-blocks.py"
+    if not path.is_file():
+        return None
+    text = path.read_text(encoding="utf-8")
+    block = text.split("ALIASES = {", 1)
+    if len(block) < 2:
+        return {}
+    body = block[1].split("}", 1)[0]
+    result = {}
+    for line in body.splitlines():
+        if ":" not in line or line.strip().startswith("#"):
+            continue
+        name, _, rest = line.partition(":")
+        name = name.strip().strip('"').strip("'")
+        keys = tuple(
+            k.strip().strip('"').strip("'")
+            for k in rest.strip().strip(",").strip("()").split(",")
+            if k.strip()
+        )
+        if name and keys:
+            result[name] = keys
+    return result
 
 
 def audit(settings):
-    drift = []
-    for canonical, aliases in ALIAS_GROUPS.items():
+    findings = []
+    warnings = []
+
+    code_aliases = aliases_in_code()
+    if code_aliases is None:
+        warnings.append("cannot read ALIASES from scripts/managed-blocks.py")
+    elif code_aliases != EXPECTED_ALIASES:
+        warnings.append(
+            "ALIASES desincronizado: managed-blocks.py="
+            f"{code_aliases} vs gate={EXPECTED_ALIASES}"
+        )
+
+    for canonical, aliases in EXPECTED_ALIASES.items():
         if canonical not in settings:
-            drift.append(f"group {canonical}: canonical key missing")
+            findings.append(f"canonical key '{canonical}' missing")
             continue
-        expected = settings[canonical]
         for alias in aliases:
-            if alias == canonical:
-                continue
-            if alias not in settings:
-                drift.append(f"group {canonical}: alias '{alias}' missing")
-            elif settings[alias] != expected:
-                drift.append(
-                    f"group {canonical}: '{alias}' differs\n"
-                    f"    canonical {canonical}: {expected}\n"
-                    f"    drifted   {alias}: {settings[alias]}"
-                )
+            if alias in settings:
+                # The copy exists: the retiro did not hold.
+                if settings[alias] != settings[canonical]:
+                    findings.append(
+                        f"alias '{alias}' exists AND differs from '{canonical}' "
+                        f"(alias={settings[alias]!r})"
+                    )
+                else:
+                    findings.append(
+                        f"alias '{alias}' exists as a copy of '{canonical}': "
+                        "duplicate key, delete it"
+                    )
+
     known = set(BLOCK_KEYS)
-    for aliases in ALIAS_GROUPS.values():
+    for aliases in EXPECTED_ALIASES.values():
         known.update(aliases)
-    orphans = sorted(
-        k for k in settings
-        if k not in known and k not in NON_MODEL_KEYS and "model" in k.lower()
-    )
-    return drift, orphans
+    for key in sorted(settings):
+        if key in known or key in NON_MODEL_KEYS:
+            continue
+        if "model" in key.lower():
+            warnings.append(f"orphan model key '{key}' (not in a group, not read by a block)")
+
+    return findings, warnings
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--fix", action="store_true", help="copy the canonical value into drifted aliases")
-    ap.add_argument("--list", action="store_true", help="print groups and orphan keys")
+    ap.add_argument("--list", action="store_true", help="print the alias map and current keys")
     args = ap.parse_args()
 
     settings, err = load_settings()
@@ -139,40 +154,21 @@ def main():
         return 2
 
     if args.list:
-        for canonical, aliases in ALIAS_GROUPS.items():
-            print(f"group {canonical}: {', '.join(aliases)}")
+        print("Regla: un setting, una clave.\n")
+        for canonical, aliases in EXPECTED_ALIASES.items():
+            print(f"{canonical} = {settings.get(canonical, '<missing>')}")
             for alias in aliases:
-                print(f"  {alias:16} = {settings.get(alias, '<missing>')}")
-        _, orphans = audit(settings)
-        print(f"\norphan model keys (not in a group, not read by a block): {orphans or 'none'}")
-        return 0
+                state = "PRESENTE (copia)" if alias in settings else "ausente (ok)"
+                print(f"  alias {alias:14} {state}")
 
-    drift, orphans = audit(settings)
-    if args.fix and drift:
-        updates = {}
-        for canonical, aliases in ALIAS_GROUPS.items():
-            if canonical not in settings:
-                continue
-            for alias in aliases:
-                if alias != canonical and settings.get(alias) != settings[canonical]:
-                    updates[alias] = settings[canonical]
-        if updates:
-            write_settings(updates)
-            print(f"aligned {len(updates)} alias(es): {', '.join(updates)}")
-            settings, err = load_settings()
-            if settings is None:
-                print(f"ERROR after write: {err}", file=sys.stderr)
-                return 2
-            drift, orphans = audit(settings)
-
-    print(f"Alias groups: {len(ALIAS_GROUPS)}   settings keys: {len(settings)}")
-    for line in drift:
-        print(f"  FAIL  {line}")
-    if orphans:
-        for o in orphans:
-            print(f"  warn  orphan model key '{o}' (not in a group, not read by a block)")
-    print("clean" if not drift else f"{len(drift)} drift finding(s)")
-    return 1 if drift else 0
+    findings, warnings = audit(settings)
+    print(f"\nSettings keys: {len(settings)}   canonical groups: {len(EXPECTED_ALIASES)}")
+    for w in warnings:
+        print(f"  warn  {w}")
+    for f in findings:
+        print(f"  FAIL  {f}")
+    print("clean" if not findings else f"{len(findings)} finding(s)")
+    return 1 if findings else 0
 
 
 if __name__ == "__main__":

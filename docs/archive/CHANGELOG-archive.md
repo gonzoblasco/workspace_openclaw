@@ -4,6 +4,33 @@
 
 ---
 
+## [2026-11-02] - Ollama deja de ser punto único de falla; browser-use sale del gateway
+
+### Added
+- **`scripts/ollama-keepalive.sh` + `~/Library/LaunchAgents/com.ollama.serve.plist`.** Watchdog cada 30 s sobre `127.0.0.1:11434/api/version`: si el server no responde, levanta `ollama serve` y espera hasta 60 s. No arranca un segundo server cuando Ollama.app ya tiene el puerto (health check primero). Probado en el puerto libre 11555: detectó la caída, levantó el server, respondió, y se limpió al morir el padre.
+  - **Sustrato:** el 2026-11-02 Ollama estuvo muerto de **10:07 a 11:49** (1 h 42 m). Con el cayeron los tres niveles de la cadena -`deepseek-v4.1-flash:cloud`, `gemma4:12b-mlx`, `minimax-m3.1-flash:cloud`- porque **todos** salen por `127.0.0.1:11434`. De ahí el error engañoso: *"deepseek cloud: fetch failed | ECONNREFUSED"*. 43 `ECONNREFUSED` en el log de ese día.
+  - **Lección:** un fallback que comparte transporte con el primario no es un fallback. El failover era cosmético: 7 intentos × 3 modelos, 60-90 s por turno, mismo error.
+
+### Removed
+- **browser-use, borrado entero - no solo desregistrado.** Gonzo cerro el alcance: *"no dejemos huerfanos"*. Se fueron el bloque `mcp.servers.browser-use` de `openclaw.json`, las dos entradas del registro (`browser-use`, `browser-use-ui`), la skill `skills/browser-tool/`, sus dos docs (`browser-use-perfil-docker.md`, `browser-use-veredicto-pr-upstream.md`) y el prompt historico `.knowledge/prompts/browser-tool-skill.md`. Tambien se borraron las cuatro ramas `kind == "mcp"` de `ai-toolbox.py`: browser-use era la unica entrada de ese kind, asi que quedaban muertas.
+  - **Motivo:** Docker Desktop reserva ~7,7 GB wired de los 24 GB del host, y el MCP obligaba a tenerlo arriba.
+  - **Correccion de un error mio, del mismo dia:** en la version anterior de esta entrada afirme que *"la imagen y el repo quedan intactos"*. **Falso: `projects/browser-use` y `projects/browser-use-ui` nunca existieron en disco** al momento de la purga. Lo verifique con `ls` y `find` antes de afirmarlo por segunda vez. No habia imagen ni repo que conservar, y por eso no hay backup de config que valga: volver a tener browser-use es reconstruirlo desde cero.
+  - **Lo unico que sobrevive:** la leccion de infraestructura en `learnings` #299 (volumen de Chrome anonimo por contenedor; nunca compartido ni bind-mounteado). Es knowledge de Docker, no de la herramienta.
+  - **Alternativa sin Docker:** el plugin `browser` nativo (`@openclaw/browser-plugin`, enabled).
+  - Dejo de reintentar en cada arranque: el ultimo `failed to start server "browser-use"` es de 11:54:35, el mismo segundo en que el hot reload aplico el cambio.
+
+### Fixed
+- **`ai-toolbox.py` ya no conserva codigo para un `kind` sin entradas.** Al sacar browser-use, las ramas `kind == "mcp"` de `tool_state`, `do_up`, `do_down` y `do_restart` quedaron inalcanzables. Se borraron. El test `test_las_herramientas_core_estan` pedia `browser-use` explicito; ahora verifica lo contrario: que no vuelva, y que no quede ninguna entrada `kind=mcp` sin sus ramas.
+- `docs/tools/REGISTRY.md` regenerado (`catalog --write`, `--check` al dia) y sin las dos secciones de browser-use. La nota de Ollama que remitia a "la nota de browser-use" ahora cuenta de donde salio la medicion sin apuntar a un archivo que no existe.
+- `SKILLS-INDEX.md`: fila de `browser-tool` fuera, fecha de verificacion al 2026-11-02, y **total corregido de 99 a 102** - la suma de las filas ya daba 102 y el total estaba mal desde antes de este cambio.
+- `pipeline-state.json` reseteado: tenia la fase `browser-use-ui` con U5 en `start` desde el 2026-10-27. El estado quedo sin huerfanas.
+
+### Notes
+- El update 2026.10.5 → 2026.10.9 sigue fallando (`global-install-failed`); queda pendiente para `/update` desde el chat, no se relanza desde acá.
+- Hallazgo sin tocar: `agent:main` DB en 2,2 GB y la sesión `agent:main:main` en 568k/1.0m tokens (54%).
+
+---
+
 ## [2026-10-28] - El gate de fuente única caza roles de modelo escritos a mano
 
 ### Added
