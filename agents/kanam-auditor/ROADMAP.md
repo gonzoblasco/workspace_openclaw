@@ -283,7 +283,7 @@ El ciclo **se probó en las dos direcciones**: no solo que apruebe, también que
 
 - [x] **C.1** Baseline storage local: `pixel-baseline --save <png> --dir .kanam/baselines` crea `manifest.json`; sin PNG versionado en git. (Onboarding de productos pendiente de PBR.)
 - [ ] **C.2** Baseline de capturas en `.kanam/baselines/<producto>/`. Sin baseline, `pixel-diff` mide una opinión.
-- [ ] **C.3** Enganchar `scripts/check-audit-due.py` (ya existe) al pipeline: hito cruzado → auditoría completa → `.knowledge/AUDIT.md`.
+- [x] **C.3** Enganchar `scripts/check-audit-due.py` (ya existe) al pipeline: hito cruzado → auditoría completa → `.knowledge/AUDIT.md`. **Hecho 2026-11-17:** `surface-pipeline/bin/audit-due`. Verificado en las dos direcciones con un proyecto descartable: con config → audita, escribe `AUDIT.md` y `check-audit-due.py` lo lee de vuelta como AL DIA; sin config → `no-config`, exit 1 y **ningún** `AUDIT.md` (no se acredita lo que no corrió). Estado real del workspace: 4 pendientes (caesar3-clone, platformer-tiempo, preflight 0.1, reinos-de-la-frontera), todos `no-config`.
 - [x] **C.4** Score de superficie v0: `surface-score` lee report.json y emite `score.json` (penalidad 10 por bloqueo, 2 por warn).
 
 ### Lo que este plan NO hace

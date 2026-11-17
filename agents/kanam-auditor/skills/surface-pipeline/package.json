@@ -4,7 +4,8 @@
   "description": "Pipeline unificado de auditoría de superficie: orquesta design-system-enforcer + accessibility-oracle + pixel-diff y emite un veredicto único con evidencia",
   "main": "src/pipeline.js",
   "bin": {
-    "audit-surface": "bin/audit-surface"
+    "audit-surface": "bin/audit-surface",
+    "audit-due": "bin/audit-due"
   },
   "scripts": {
     "test": "jest",

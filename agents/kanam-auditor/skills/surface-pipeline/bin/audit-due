@@ -1,0 +1,200 @@
+#!/usr/bin/env node
+
+'use strict';
+
+/**
+ * audit-due — conecta la política de hitos con la medición.
+ *
+ *   audit-due                     # ¿a quién le toca? (no ejecuta)
+ *   audit-due --run               # audita los pendientes y escribe AUDIT.md
+ *   audit-due --run --project preflight
+ *
+ * Sin `--run` es un listado: exit 1 si hay pendientes, 0 si no.
+ * Con `--run`: corre `audit-surface` por proyecto y escribe `AUDIT.md` SOLO si
+ * el pipeline emitió veredicto y dejó reporte. Un stage roto no acredita la
+ * auditoría: el proyecto sigue pendiente, que es la verdad.
+ */
+
+const { program } = require('commander');
+const { spawnSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
+
+const { SurfacePipeline } = require('../src/pipeline');
+const { parseDueJson, renderAudit } = require('../src/due');
+
+program
+  .name('audit-due')
+  .description('Audita los proyectos que cruzaron un hito sin auditar (check-audit-due + audit-surface)')
+  .version('0.1.0')
+  .option('--root <dir>', 'Raíz del repo (donde vive projects/ y scripts/)', process.cwd())
+  .option('--script <path>', 'Ruta a check-audit-due.py', 'scripts/check-audit-due.py')
+  .option('--config <path>', 'Config del pipeline dentro de cada proyecto', '.kanam/pipeline.config.yaml')
+  .option('--run', 'Ejecutar las auditorías pendientes', false)
+  .option('--project <slug>', 'Limitar a un proyecto')
+  .option('--json', 'Salida JSON', false)
+  .option('--strict', 'Con --run: un warning también falla', false)
+  .parse();
+
+const options = program.opts();
+const root = path.resolve(options.root);
+const scriptPath = path.resolve(root, options.script);
+
+function runDueScript() {
+  if (!fs.existsSync(scriptPath)) {
+    return { error: `no existe ${scriptPath}` };
+  }
+  const res = spawnSync('python3', [scriptPath, '--json'], {
+    cwd: root,
+    encoding: 'utf8'
+  });
+  if (res.error) return { error: res.error.message };
+  // exit 1 es normal: significa "hay pendientes". Solo importa el stdout.
+  if (!res.stdout || !res.stdout.trim()) {
+    return { error: `check-audit-due.py no devolvió JSON (exit ${res.status})${res.stderr ? ': ' + res.stderr.trim() : ''}` };
+  }
+  return parseDueJson(res.stdout);
+}
+
+async function auditProject(entry) {
+  const projectDir = path.join(root, 'projects', entry.slug);
+  const configPath = path.join(projectDir, options.config);
+  const relConfig = path.relative(projectDir, configPath);
+
+  if (!fs.existsSync(configPath)) {
+    return {
+      slug: entry.slug,
+      status: 'no-config',
+      blocking: true,
+      message: `falta ${relConfig} en el proyecto: sin config no hay superficie declarada que auditar`
+    };
+  }
+
+  let result;
+  try {
+    const pipeline = new SurfacePipeline({
+      cwd: projectDir,
+      configPath,
+      format: 'console'
+    });
+    result = await pipeline.run();
+  } catch (error) {
+    return {
+      slug: entry.slug,
+      status: 'error',
+      blocking: true,
+      message: `el pipeline no pudo correr: ${error.message}`
+    };
+  }
+
+  // Sin reporte emitido no hay evidencia: no se acredita la auditoría.
+  const reportPath = result.artifacts && result.artifacts.json;
+  if (!reportPath || !fs.existsSync(reportPath)) {
+    return {
+      slug: entry.slug,
+      status: 'no-evidence',
+      blocking: true,
+      message: 'el pipeline no dejó report.json; sin archivo no hay veredicto reproducible'
+    };
+  }
+
+  const date = new Date().toISOString().slice(0, 10);
+  const markdown = renderAudit({
+    slug: entry.slug,
+    version: entry.version || null,
+    date,
+    verdict: result.verdict,
+    blocking: result.blocking || [],
+    warnings: result.warnings || [],
+    counts: result.counts || {},
+    reportPath: path.relative(root, reportPath),
+    configPath: path.relative(root, configPath)
+  });
+
+  const auditPath = path.join(projectDir, '.knowledge', 'AUDIT.md');
+  fs.mkdirSync(path.dirname(auditPath), { recursive: true });
+  fs.writeFileSync(auditPath, markdown, 'utf8');
+
+  const failed = options.strict
+    ? result.strictExitCode === 1
+    : result.exitCode === 1;
+
+  return {
+    slug: entry.slug,
+    status: 'audited',
+    verdict: result.verdict,
+    blocking: result.blocking.length,
+    warnings: result.warnings.length,
+    report: path.relative(root, reportPath),
+    audit: path.relative(root, auditPath),
+    failed
+  };
+}
+
+async function main() {
+  const due = runDueScript();
+  if (due.error) {
+    console.error(`❌ audit-due: ${due.error}`);
+    process.exit(1);
+  }
+
+  let pending = due.due || [];
+  if (options.project) {
+    pending = pending.filter((d) => d.slug === options.project);
+  }
+
+  if (pending.length === 0) {
+    if (options.json) {
+      console.log(JSON.stringify({ pending: [], results: [], ran: false }, null, 2));
+    } else {
+      console.log('✅ Ningún proyecto pendiente de auditoría por hito.');
+    }
+    process.exit(0);
+  }
+
+  if (!options.run) {
+    if (options.json) {
+      console.log(JSON.stringify({ pending, results: [], ran: false }, null, 2));
+    } else {
+      console.log(`🔔 ${pending.length} proyecto(s) con auditoría pendiente:\n`);
+      for (const d of pending) {
+        console.log(`  - ${d.slug} (${d.version || 'sin versión'}): ${d.reason}`);
+      }
+      console.log('\nCorré con --run para auditarlos y escribir su .knowledge/AUDIT.md');
+    }
+    process.exit(1);
+  }
+
+  const results = [];
+  for (const entry of pending) {
+    process.stdout.write(`\n▶ ${entry.slug} ... `);
+    const r = await auditProject(entry);
+    results.push(r);
+    if (r.status === 'audited') {
+      const icon = r.verdict === 'RECHAZADO' ? '❌' : r.verdict === 'ADVERTENCIA' ? '⚠️ ' : '✅';
+      process.stdout.write(`${icon} ${r.verdict} (${r.blocking} bloques, ${r.warnings} warnings)\n`);
+    } else {
+      process.stdout.write(`⛔ ${r.status}: ${r.message}\n`);
+    }
+  }
+
+  const audited = results.filter((r) => r.status === 'audited');
+  const skipped = results.filter((r) => r.status !== 'audited');
+  const failing = results.filter((r) => r.status === 'audited' && r.failed);
+
+  if (options.json) {
+    console.log(JSON.stringify({ pending, results, ran: true }, null, 2));
+  } else {
+    console.log('\n' + '─'.repeat(50));
+    console.log(`Auditados: ${audited.length}/${pending.length}`);
+    if (skipped.length) console.log(`Sin acreditar: ${skipped.length} (${skipped.map((s) => s.slug).join(', ')})`);
+    if (failing.length) console.log(`Con veredicto fallido: ${failing.map((s) => s.slug).join(', ')}`);
+  }
+
+  process.exit(skipped.length || failing.length ? 1 : 0);
+}
+
+main().catch((error) => {
+  console.error(`\n❌ audit-due: ${error.message}\n`);
+  process.exit(1);
+});

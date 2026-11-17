@@ -20,6 +20,33 @@ El orquestador que convierte tres skills sueltos en **un solo comando, un solo
 veredicto**. Es la Fase 2 del roadmap: los skills dejan de correr en aislamiento
 y pasan a ser stages de una auditoría de superficie completa.
 
+## Cadencia (C.3) — quién toca auditar → auditoría → AUDIT.md
+
+La política y la medición son capas distintas (ADR-111). `scripts/check-audit-due.py` responde
+*"¿a quién le toca?"* mirando hitos de versión; `audit-surface` responde *"¿cómo salió?"*.
+`bin/audit-due` es el puente:
+
+```bash
+# Solo listado: exit 1 si hay pendientes, 0 si no hay nada
+node bin/audit-due --root <repo>
+
+# Ejecuta y acredita
+node bin/audit-due --root <repo> --run [--project <slug>] [--strict]
+```
+
+Por cada proyecto pendiente corre el pipeline con **su** `.kanam/pipeline.config.yaml` y escribe
+`<proyecto>/.knowledge/AUDIT.md`. El archivo lleva `**Version auditada:**` y `**Fecha:**`, que son
+exactamente los campos que `check-audit-due.py` vuelve a leer: el ciclo cierra.
+
+Reglas que no se negocian:
+
+- **Sin config no hay auditoría.** Un proyecto sin `.kanam/pipeline.config.yaml` queda `no-config`,
+  bloquea y **no** recibe `AUDIT.md`. No se inventa una config para poder decir que corrió.
+- **Sin reporte no hay acreditación.** Si el pipeline no dejó `report.json`, el proyecto sigue
+  pendiente: un stage roto no es una auditoría.
+- **Un veredicto `RECHAZADO` sí se acredita.** La auditoría ocurrió y su resultado es malo; el
+  veredicto queda escrito y `audit-due` sale 1. Acreditado ≠ aprobado.
+
 ## Score (C.4) — report.json → score.json
 
 Después de cada run: `surface-score --dir <reports>` lee el último `report.json` y emite `score.json` (penalidad: 10 por bloqueo, 2 por warning). Sin datos Históricos no hay tendencia, solo un instantáneo.

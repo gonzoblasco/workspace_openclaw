@@ -46,6 +46,13 @@ Formato:
 - **Evidencia:** 7 warnings (`#f3f4f6`, `#3b82f6`, etc.) → 0 tras whitelist con motivo.
 - **Efecto:** `kernel` mantiene invariantes: self-audit sin la propia base.
 
+## L-015 · 2026-11-17 · frío (C.3 cerrado)
+
+- **Origen:** Enganchar `check-audit-due.py` al pipeline. El script leía `**Version auditada:**` y `**Fecha:**` de un `AUDIT.md` que nadie escribía: un lector sin escritor desde el 4-nov.
+- **Lección:** Un puente entre política y medición se prueba por *round-trip*: lo que el escritor emite tiene que ser lo que el lector vuelve a entender. Si el formato se define de memoria y no contra el regex del otro lado, el ciclo no cierra y el silencio parece normalidad.
+- **Evidencia:** `surface-pipeline/src/due.js` + `tests/due.test.js` (test que extrae `AUDIT_VER_RE`/`AUDIT_DATE_RE` del script Python real y verifica que el markdown generado matchea). Verificación en vivo: proyecto descartable → `AUDIT.md` → `check-audit-due.py` dice AL DIA; sin config → `no-config`, exit 1, sin `AUDIT.md`.
+- **Efecto:** C.3 pasa a `[x]`. Regla nueva del gate: **acreditado ≠ aprobado** (un `RECHAZADO` se escribe igual, porque la auditoría ocurrió) y **sin reporte no hay acreditación**.
+
 ## L-014 · 2026-11-17 · caliente (contraste medido)
 
 - **Origen:** Implementar el cálculo de contraste propio del oracle y correrlo contra los dos fixtures. En la página *accesible*, axe marcaba un nodo; el medidor propio encontró que `--k-brand-primary` (`#0d9488`) con texto blanco da **3.74:1**. En la *inaccesible*, axe **no vio** el `h1` blanco sobre card blanca (1:1) porque el fondo inmediato era un contenedor opaco.
