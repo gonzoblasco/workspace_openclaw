@@ -169,10 +169,10 @@ async function runOracleStage(stage, ctx) {
     const origGenerate = oracle.generateReport.bind(oracle);
     let res;
     try {
-      oracle.generateReport = (v, w, p) => {
-        rawViolations = v || [];
-        rawWarnings = w || [];
-        return origGenerate(v, w, p);
+      oracle.generateReport = (...args) => {
+        rawViolations = args[0] || [];
+        rawWarnings = args[1] || [];
+        return origGenerate(...args);
       };
       res = await oracle.run(entry.route);
     } finally {

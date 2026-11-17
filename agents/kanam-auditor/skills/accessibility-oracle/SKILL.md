@@ -67,10 +67,40 @@ El oracle ejecuta en secuencia:
 | Check | Herramienta | Qué mide |
 |-------|-------------|----------|
 | **axe-core** | axe-core/playwright | 50+ reglas WCAG automáticas (contrast, ARIA, labels, etc.) |
+| **Contraste medido** | `src/checks/contrast.js` | Ratio real WCAG 1.4.3 sobre pares texto/fondo computados, incluido el estado `:focus` |
 | **Keyboard** | Playwright keyboard | Tab order, Enter/Space activation, Escape, focus trapping |
 | **Focus Visible** | Screenshot + bounding box | Indicador de foco ≥2px² o contraste ≥3:1 |
 | **Target Size** | Bounding box | Elementos interactivos ≥24x24px (WCAG 2.2 AA) |
 | **Semantic** | axe-core + manual | ARIA roles, live regions, form labels, headings |
+
+### 2.1 Contraste medido, no delegado
+
+axe-core deja como `incomplete` lo que no puede resolver: fondos con imagen, estados de
+foco/hover y pares compuestos. El oracle calcula el ratio él mismo con la fórmula de
+luminancia relativa de WCAG sobre los estilos computados:
+
+- Compone la pila de fondos (alpha incluido) hasta el primero opaco; si no hay ninguno, asume
+  el canvas blanco.
+- Aplica la opacidad del elemento al color del texto: un `opacity: .5` reduce el contraste
+  aunque el color sea opaco.
+- Umbral por rol del texto: **4.5:1** normal, **3:1** si es grande (≥24px, o ≥18.66px en
+  negrita).
+- Mide además el estado `:focus` de los interactivos. Un fallo que ya existe en reposo se
+  reporta una vez, no dos: el hallazgo es del par base.
+- Un fondo con imagen no se declara aprobado: se emite `contrast-indeterminate` como warning
+  con el ratio calculado, para que alguien lo verifique con captura.
+
+Configuración (todas opcionales, bajo `rules`):
+
+```yaml
+rules:
+  contrast_max_elements: 300        # tope de pares medidos por ruta
+  contrast_states: true             # medir :focus en interactivos
+  contrast_max_state_elements: 12   # cuántos interactivos se enfocan
+```
+
+El reporte imprime **cuántos pares midió**, no solo cuántos fallaron: un check que no puede
+mostrar su muestra no prueba nada.
 
 ### 3. Veredicto de accesibilidad
 

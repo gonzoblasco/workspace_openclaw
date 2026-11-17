@@ -46,6 +46,13 @@ Formato:
 - **Evidencia:** 7 warnings (`#f3f4f6`, `#3b82f6`, etc.) → 0 tras whitelist con motivo.
 - **Efecto:** `kernel` mantiene invariantes: self-audit sin la propia base.
 
+## L-014 · 2026-11-17 · caliente (contraste medido)
+
+- **Origen:** Implementar el cálculo de contraste propio del oracle y correrlo contra los dos fixtures. En la página *accesible*, axe marcaba un nodo; el medidor propio encontró que `--k-brand-primary` (`#0d9488`) con texto blanco da **3.74:1**. En la *inaccesible*, axe **no vio** el `h1` blanco sobre card blanca (1:1) porque el fondo inmediato era un contenedor opaco.
+- **Lección:** axe no es el piso, es un atajo. Todo par texto/fondo que axe deja en `incomplete` —o que resuelve mal por fondos compuestos— se mide con la fórmula; y el reporte imprime cuántos pares midió, porque sin muestra un verde no se distingue de un check que no corrió.
+- **Evidencia:** `skills/accessibility-oracle/src/checks/contrast.js`; `tests/contrast.test.js` (12 tests, 2 con browser real); corridas contra `tests/fixtures/{accessible,inaccessible}.html`.
+- **Efecto:** 1.2 pasa a `[x]` en el ROADMAP; quedan abiertos auth y JUnit. El par `brand-primary`/blanco queda registrado como hallazgo para el dueño del Design System, no como algo que yo corrija.
+
 ## L-011 · 2026-11-07 · frío (C.2 documentada)
 - **Origen:** Añadí convención baseline en pixel-diff SKILL y score en surface-pipeline SKILL.
 - **Lección:** Sin base de capturas aprobada, \`pixel-diff\` solo opina; el path `.kanam/baselines/<slug>.png` reproducible es lo que lo convierte en regla de negocio.

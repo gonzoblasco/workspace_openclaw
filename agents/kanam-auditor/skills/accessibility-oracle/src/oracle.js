@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright-core');
 const AxeBuilder = require('@axe-core/playwright').default;
+const { measureContrast } = require('./checks/contrast');
 
 class AccessibilityOracle {
   constructor(options = {}) {
@@ -71,6 +72,7 @@ class AccessibilityOracle {
       const violations = [];
       const warnings = [];
       const passed = [];
+      let contrastResults = { violations: [], warnings: [], measurements: [] };
 
       const targetUrl = `${this.config.project.base_url}${singleRoute}`;
       console.log(`🔍 Auditing: ${targetUrl}`);
@@ -86,18 +88,22 @@ class AccessibilityOracle {
         const focusResults = await this.runFocusVisibleCheck(page);
         // 4. Target size test
         const targetSizeResults = await this.runTargetSizeCheck(page);
+        // 5. Contraste medido con fórmula WCAG propia (no delegado a axe)
+        contrastResults = await this.runContrastCheck(page);
 
         const allViolations = [
           ...axeResults.violations,
           ...keyboardResults.violations,
           ...focusResults.violations,
-          ...targetSizeResults.violations
+          ...targetSizeResults.violations,
+          ...contrastResults.violations
         ];
         const allWarnings = [
           ...axeResults.warnings,
           ...keyboardResults.warnings,
           ...focusResults.warnings,
-          ...targetSizeResults.warnings
+          ...targetSizeResults.warnings,
+          ...contrastResults.warnings
         ];
 
         if (allViolations.length === 0 && allWarnings.length === 0) {
@@ -130,7 +136,8 @@ class AccessibilityOracle {
         violations,
         warnings,
         passed,
-        report: this.generateReport(violations, warnings, passed),
+        contrast: contrastResults.measurements,
+        report: this.generateReport(violations, warnings, passed, contrastResults.measurements),
         failed: violations.length > 0
       };
     };
@@ -150,6 +157,7 @@ class AccessibilityOracle {
     const aggregatedViolations = [];
     const aggregatedWarnings = [];
     const aggregatedPassed = [];
+    const aggregatedContrast = [];
 
     for (const { route: r } of routesToRun) {
       const result = await runSingle(r);
@@ -157,13 +165,15 @@ class AccessibilityOracle {
       aggregatedViolations.push(...result.violations);
       aggregatedWarnings.push(...result.warnings);
       aggregatedPassed.push(...result.passed);
+      aggregatedContrast.push(...(result.contrast || []));
     }
 
     // Build a combined report for all routes
     const combinedReport = this.generateReport(
       aggregatedViolations,
       aggregatedWarnings,
-      aggregatedPassed
+      aggregatedPassed,
+      aggregatedContrast
     );
 
     // Ensure the output directory exists
@@ -184,11 +194,17 @@ class AccessibilityOracle {
             violations: aggregatedViolations,
             warnings: aggregatedWarnings,
             passed: aggregatedPassed,
+            contrast: {
+              measured: aggregatedContrast.length,
+              failing: aggregatedViolations.filter(v => String(v.rule).startsWith('contrast')).length,
+              samples: aggregatedContrast
+            },
             stats: {
               routes: routesToRun.length,
               passed: aggregatedPassed.length,
               violations: aggregatedViolations.length,
-              warnings: aggregatedWarnings.length
+              warnings: aggregatedWarnings.length,
+              contrast_measured: aggregatedContrast.length
             }
           }
         }, null, 2);
@@ -286,7 +302,11 @@ class AccessibilityOracle {
       // Test focus trapping (basic)
       const modals = await page.$$('.modal, [role="dialog"], [aria-modal="true"]');
       for (const modal of modals) {
-        await modal.click();
+        // Un modal cerrado (display:none) no se clickea: esperar 30s por un
+        // elemento invisible no mide accesibilidad, mide paciencia.
+        if (!(await modal.isVisible().catch(() => false))) continue;
+
+        await modal.click({ timeout: 2000 }).catch(() => {});
         await page.waitForTimeout(500);
         
         // Check if focus is trapped
@@ -307,7 +327,7 @@ class AccessibilityOracle {
         if (modalStillVisible) {
           warnings.push({
             rule: 'keyboard-escape',
-            message: 'Modal does not close on Escape key',
+            message: 'Modal no se cierra con Escape',
             element: 'modal'
           });
         }
@@ -409,6 +429,32 @@ class AccessibilityOracle {
     return { violations, warnings };
   }
 
+  /**
+   * Contraste medido con la fórmula de luminancia relativa de WCAG.
+   * Cubre lo que axe deja como "incomplete": estados de foco y pares sobre
+   * fondos compuestos. Devuelve también las mediciones, no solo los fallos:
+   * un check que no puede mostrar qué midió no prueba nada.
+   */
+  async runContrastCheck(page) {
+    const rules = this.config.rules || {};
+    try {
+      return await measureContrast(page, {
+        maxElements: rules.contrast_max_elements || 300,
+        states: rules.contrast_states !== false,
+        maxStateElements: rules.contrast_max_state_elements || 12
+      });
+    } catch (error) {
+      return {
+        violations: [],
+        warnings: [{
+          rule: 'contrast-error',
+          message: `El check de contraste no pudo correr: ${error.message}`
+        }],
+        measurements: []
+      };
+    }
+  }
+
   async captureViolationScreenshots(page, violations, route) {
     const violationsDir = path.join(this.outputDir, 'violations');
     if (!fs.existsSync(violationsDir)) {
@@ -437,13 +483,30 @@ class AccessibilityOracle {
     }
   }
 
-  generateReport(violations, warnings, passed) {
+  generateReport(violations, warnings, passed, contrastMeasurements = []) {
     const separator = '─'.repeat(50);
     
     let output = `\n\n🔍 Accessibility Oracle Report\n\n`;
     output += `Target: ${this.config.project.base_url}\n`;
     output += `Format: ${this.format}\n\n`;
     output += `${separator}\n\n`;
+
+    if (contrastMeasurements.length > 0) {
+      const failing = violations.filter(v => v.rule === 'contrast');
+      const failingFocus = violations.filter(v => v.rule === 'contrast-focus-state');
+      const worst = contrastMeasurements.reduce(
+        (acc, m) => (acc === null || m.ratio < acc.ratio ? m : acc),
+        null
+      );
+      output += `📐 CONTRASTE MEDIDO (WCAG 1.4.3 AA)\n`;
+      output += `  Pares medidos: ${contrastMeasurements.length}\n`;
+      output += `  Bajo el umbral en reposo: ${failing.length}\n`;
+      output += `  Bajo el umbral solo en foco: ${failingFocus.length}\n`;
+      if (worst) {
+        output += `  Peor par: ${worst.element} → ${worst.ratio}:1 (mínimo ${worst.required}:1)\n`;
+      }
+      output += '\n';
+    }
 
     if (passed.length > 0) {
       output += `✓ PASS ${passed.length} route(s)\n`;
@@ -485,6 +548,9 @@ class AccessibilityOracle {
     output += `  Passed: ${passed.length}\n`;
     output += `  Violations: ${violations.length}\n`;
     output += `  Warnings: ${warnings.length}\n`;
+    if (contrastMeasurements.length > 0) {
+      output += `  Contraste: ${contrastMeasurements.length} pares medidos\n`;
+    }
     output += `  Exit code: ${violations.length > 0 ? 1 : 0}\n`;
 
     return output;

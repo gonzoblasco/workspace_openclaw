@@ -18,7 +18,7 @@
 | Skill | Tests | Madurez | Realidad (verificada en código) |
 |-------|-------|---------|----------------------------------|
 | `design-system-enforcer` | 7/7 ✅ | 🟡 MVP | **Regex a nivel línea, no AST.** `scss-parser`/`typescript` están en deps pero no se usan para walkear. Veto AI-look con `includes()` + `parseInt`. Tiene `exclude` (necesario: sin él se auto-reporta). Sin modo `--fix`. |
-| `accessibility-oracle` | 2/2 ✅ | 🟢 Real | **Sustancia real** (Playwright + axe-core). **Corregido 2026-11-06:** sí itera `config.paths[]` (`src/oracle.js:150-235`) y sí escribe `report.json` + `report.html` en `outputDir`. Brechas reales: sin cálculo de ratio de contraste propio, sin auth. |
+| `accessibility-oracle` | 2/2 ✅ | 🟢 Real | **Sustancia real** (Playwright + axe-core). **Corregido 2026-11-06:** sí itera `config.paths[]` (`src/oracle.js:150-235`) y sí escribe `report.json` + `report.html` en `outputDir`. **Contraste propio desde 2026-11-17:** `src/checks/contrast.js` calcula el ratio WCAG (14/14 tests, 2 con browser real). Brecha restante: auth. |
 | `pixel-diff` | 20/20 ✅ | 🟢 Real | Captura y diff reales (Playwright + ΔE CIEDE2000 + `pixelmatch`). Modos `comp`/`baseline`/`tokens` operativos. Figma sigue como placeholder que falla explícito. |
 | `surface-pipeline` | 12/12 ✅ | 🟢 Real | **Corregido 2026-11-06:** no fabrica veredictos; corre y emite HTML+JSON. El riesgo de falso verde se movió al *target* y ya está tapado con el guard `stage-no-files`. |
 | `surface-alignment-audit` | - | 🟢 Completo (procedimental) | Ritual humano documentado, sin código. |
@@ -77,10 +77,16 @@ Un pipeline que corre en cada PR y devuelve **un veredicto único** con evidenci
 - [ ] Adapter Figma real (diferido a Fase 4; hoy falla explícito con `FIGMA_NOT_IMPLEMENTED`)
 
 ### 1.2 `accessibility-oracle` → endurecer
-- [ ] Test de contraste real (calcular ratio, no solo confiar en axe)
-- [ ] Soporte multi-página (recorrer todo el `paths[]` de config, no solo una ruta)
-- [ ] Reportes HTML/JUnit reales (hoy solo console)
-- [ ] Manejo de autenticación (`requires_auth`)
+- [x] **Test de contraste real** ✅ 2026-11-17: `src/checks/contrast.js` mide el ratio WCAG (luminancia relativa, composición de fondos con alpha, umbral por rol 4.5/3, opacidad del elemento) y el estado `:focus`. 14/14 tests, 2 de ellos contra una página real. Ya no depende de lo que axe deje como `incomplete`.
+- [x] **Soporte multi-página** ✅ verificado en código: `run()` itera `config.paths[]` cuando no se pasa `--route`.
+- [ ] **Reportes HTML/JUnit reales**: HTML + JSON sí existen; **JUnit sigue pendiente**.
+- [ ] **Manejo de autenticación** (`requires_auth`).
+
+> **Hallazgo del 2026-11-17 (para el dueño del DS, no para mí):** con el token actual,
+> `--k-brand-primary` (`teal-600`, `#0d9488`) con texto blanco da **3.74:1**, bajo el 4.5:1 de
+> texto normal (WCAG 1.4.3 AA). No lo toco: redefinir el token es del dueño del Design System.
+> Pero todo botón primario construido sobre ese par incumple, y el oracle ahora lo detecta solo.
+> Evidencia: `reports` de la corrida contra `tests/fixtures/accessible.html`, par `button` → 3.74:1.
 
 ### 1.3 `design-system-enforcer` → extender
 - [ ] Parser AST real de JSX/TSX (hoy usa regex)
