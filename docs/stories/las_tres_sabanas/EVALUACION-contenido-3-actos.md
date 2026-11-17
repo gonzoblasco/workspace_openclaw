@@ -174,8 +174,10 @@ un acto desviado: es una decisión de voz que se tomó sin decidirla. Si se sube
 
 - **El Acto I tarda en arrancar.** Las escenas 1 a 3 son tres versiones del mismo silencio (nadie
   dice lo que piensa). El lector entiende el sistema en la escena 1 y lo vuelve a entender en la 3.
-  **Sin resolver.** El plazo del capítulo 6 le dio un motor al acto, pero las escenas 2 y 3 siguen
-  demasiado cerca la una de la otra.
+  **Resuelto el 2026-11-17.** Se cortó la viñeta de Néstor del capítulo 2 (650 palabras): era la
+  tercera versión del mismo silencio. Quedan dos viñetas —Adán y su espalda, Vera y su llamada que
+  no hizo— y el capítulo pasa de 1.942 a 1.305 palabras. La llamada de la madre y la planilla con la
+  línea del banco se movieron al capítulo 3.
 - **Néstor explica demasiado en el capítulo 6.** "Yo no tengo casa acá, a mí lo único que me toca es
   juntarlos" es la tesis del personaje dicha en voz alta.
   **Resuelto el 2026-11-17:** la frase ya no es suya. La dice Adán, como acusación.

@@ -38,6 +38,10 @@ Néstor se quedó con el teléfono en la mano.
 
 Néstor cortó y se quedó sentado en el mostrador, mirando el teléfono mientras afuera pasaba un camión.
 
+Sobre la madera tenía la planilla de siempre, con tres cosas escritas a mano. Una era del cliente de la otra punta. Otra era del banco.
+
+Y la tercera decía: *¿hablaste con la familia?*
+
 *Adán la recibió el martes y hoy es jueves, y no llamó.*
 
 ---
@@ -177,6 +181,32 @@ Néstor cerró los ojos y los apretó con los dedos.
 ---
 
 Néstor colgó y se quedó en el patio con el teléfono en la mano y el sol en la cabeza.
+
+---
+
+A las cinco lo llamó su madre.
+
+Hablaron diez minutos de nada. Del frío. De una vecina que se había mudado.
+
+Antes de cortar le preguntó si había hablado con los primos.
+
+— Estoy viendo —dijo Néstor.
+
+— Vos siempre estás viendo.
+
+— Sí.
+
+— ¿Y al final qué pasa?
+
+Néstor miró el patio, la parra, las uvas que todavía no eran uvas.
+
+— Nada —dijo—. No pasa nada.
+
+Su madre se quedó callada, y en el silencio se escuchaba la televisión de fondo.
+
+— Cuidate —dijo ella.
+
+Cortaron.
 
 ---
 

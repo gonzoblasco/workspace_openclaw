@@ -6,6 +6,19 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-17] - Las Tres Sabanas: el Acto I arranca
+
+### Changed
+- **Capítulo 2, de tres viñetas a dos.** Se cortó la de Néstor (650 palabras): era la tercera versión del mismo silencio, después del capítulo 1 y antes de la carta del 3. Quedan la espalda de Adán y la llamada que Vera no hizo, que son las dos que pagan más adelante. El capítulo pasa de 1.942 a 1.305 palabras y abre con "La espalda le avisó el lunes".
+- **Lo que traía la viñeta cortada se movió al capítulo 3:** la llamada de la madre ("vos siempre estás viendo") cae entre el escribano y la cara de Adán, y la planilla con la línea del banco queda plantada cinco capítulos antes de que aparezca el préstamo.
+
+### Notes
+- **Acto I: 9.163 palabras** (era 9.689). Perfil: mediana 9,0 y bandas 33,5/46,3/18,0/2,2, las cuatro dentro.
+- **Libro: 26.133 palabras.** Mediana 9, bandas 36,3/43,1/18,5/2,2. Cero frases repetidas.
+- Se resuelve el último defecto de relato que la lectura de corrido había dejado abierto.
+
+---
+
 ## [2026-11-17] - Las Tres Sabanas: borrador 2, de los siete datos a las ocho decisiones
 
 ### Changed
