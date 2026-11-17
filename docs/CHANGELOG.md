@@ -559,6 +559,20 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-17] - Caesar III Clone (auditorías profundas)
+
+### Added
+- `test_deep_integration`: 2 seeds, 10 casas, walkers, save/load con hash y continuación.
+- `test_fuzz_placement`: 80 operaciones deterministas de placement/removal.
+- `test_asset_integrity`: manifests base/Blender, 27 edificios, 96 frames, 9 terrain y 23 iconos.
+
+### Verified
+- Gate **39 tests** + smoke + pureza.
+- `resume.mjs caesar3-clone` reconstruye HANDOFF/DB sin el transcript.
+- Stress 7,83 ms/tick (2k walkers).
+
+---
+
 ## [2026-11-11] - Caesar III Clone (auditoría de ingeniería)
 
 ### Fixed
