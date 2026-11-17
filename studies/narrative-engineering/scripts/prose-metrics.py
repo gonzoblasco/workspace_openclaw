@@ -48,10 +48,6 @@ words = sum(pw)
 print("pensamientos en cursiva:", len(bold_thoughts), "| por 100 palabras:", round(len(bold_thoughts) * 100 / words, 1))
 
 # Primera persona suelta en la narracion (convencion Card, sin comillas ni cursiva).
-# Heuristica conservadora en espanol: solo pronombres de primera persona con verbo
-# conjugado en primera persona. "me" y "mi" producen demasiados falsos positivos
-# ("me miró", "mi hermano"), asi que quedan afuera.
-# Primera persona suelta en la narracion (convencion Card, sin comillas ni cursiva).
 # Solo formas inequivocas: en espanol la mayoria de los verbos de primera persona son
 # homografos de tercera ("miraba", "sabia", "iba"), asi que se exigen marcas fuertes:
 # el pronombre "yo", el verbo "soy", la -e/-i de primera ("dije", "tengo") y "no se".
