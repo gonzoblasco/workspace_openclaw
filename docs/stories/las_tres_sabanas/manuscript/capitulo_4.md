@@ -1,6 +1,7 @@
-# Capítulo 2: Un peso
+# Capítulo 4: Un peso
 
-*Borrador 1 - escena E2 del outline. POV: Adán. Escrita con
+*Borrador 1 - escena E3 del outline (La Grieta). POV: Adán. Renumerado desde "capitulo 2": al
+insertarse el puente y E2, esta escena pasa a ser la cuarta. Escrita con
 `PLANTILLA-voz-enders-game.md` (perfil Card) como prueba de validación.*
 
 ---

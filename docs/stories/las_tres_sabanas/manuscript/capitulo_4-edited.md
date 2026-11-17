@@ -1,4 +1,4 @@
-# Capítulo 2: Un peso
+# Capítulo 4: Un peso
 
 *Versión editada - 2026-11-17. POV: Adán. Cambios respecto del borrador 1: se recupera el lugar
 físico y el portón del capítulo 1 (los dos pasan en la misma casa), Vera reconoce la costura al
@@ -145,4 +145,4 @@ Y esa última parte fue la que lo hizo levantarse.
 
 ---
 
-*Versión editada. POV: Adán. Comparar con el borrador 1 (`capitulo_2.md`, intacto como registro).*
+*Versión editada. POV: Adán. Comparar con el borrador 1 (`capitulo_4.md`, intacto como registro).*
