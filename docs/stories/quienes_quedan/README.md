@@ -15,3 +15,25 @@ esta despertando poderes que no sabe nombrar.
 - `STYLE.md` - reglas duras de prosa. Leer antes de escribir.
 - `manuscript/` - texto por capitulo.
 - `.knowledge/` - memoria de proyecto (brief, estado).
+
+## Estado y mapa capitulo -> escena
+
+El numero del archivo NO coincide con el numero de escena de `PLOT.md`. El desfase ya existe
+y se anota aca para que no se repita en silencio.
+
+| Archivo | Escena de la escaleta | POV | Palabras | Estado |
+|---|---|---|---|---|
+| `capitulo_1.md` | Escena 1 - El Retorno | Veta (+ salto a Cal) | 599 | escrito |
+| `capitulo_2.md` | Escena 2 - La Casa de los Susurros | Veta | 1.335 | escrito |
+| — | Escena 3 - El Primer Eco | Cal | 0 | **no escrito** |
+| `capitulo_3.md` | Escena 3b - El pedido de ayuda | Veta (desde afuera) | 548 | escrito |
+
+Proximo capitulo natural: **Escena 4 - La Visita de la Elite** (primera aparicion de la Secta
+en pagina). `Escena 4b - La Lata` sigue pendiente como pago del hilo abierto en el cap. 2.
+
+## Auditoria
+
+- `studies/narrative-engineering/caso-10-quienes-quedan.md` (2026-11-18): los 5 ejes, voz
+  medida y hallazgos. Sin linea base de voz propia: pendiente elegir cual de las dos voces
+  del borrador es la novela.
+- Reglas de prosa: `STYLE.md` (obligatorio antes de escribir).
