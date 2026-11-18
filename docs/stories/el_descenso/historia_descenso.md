@@ -55,7 +55,7 @@ La navaja que Julián lleva al aula **es el arma con la que su padre degolló a 
 *(Espacio para registrar las decisiones clave a medida que se desarrollan)*
 
 - [x] **Decisión 0 (el acto cero):** Julián ve a su padre esconder la navaja. Días después, cuando escucha las sirenas y la policía llega a revisar la casa, él ya la movió a otro lugar donde no la van a encontrar. No le dice nada al padre. A los quince años obstruye, solo, la investigación del asesinato de su madre. Ahí empieza el descenso.
-- [ ] Decisión 1: la primera vez que usa la navaja para algo (no matar: algo pequeño y justificable).
+- [x] **Decisión 1:** la primera vez que usa la navaja. No es contra un desconocido: es contra el padre, en la cocina, seis semanas después del entierro. El padre dice que la madre "se lo buscó"; Julián sale, vuelve con la navaja y la abre sobre la mesa. Sin amenaza explícita, sin sangre. Desde esa noche el nombre de ella no se dice más, y el que manda en la casa es el hijo. A los quince descubre que una hoja cerrada también sirve.
 - [ ] Decisión 2: (Pendiente de definición)
 
 ---

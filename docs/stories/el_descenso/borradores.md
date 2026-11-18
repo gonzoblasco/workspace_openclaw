@@ -172,9 +172,62 @@ Del otro lado de la puerta, el padre estuvo un rato de pie en el pasillo. No gol
 
 ---
 
+## 4. La primera vez (Decisión 1)
+
+### El nombre que no se dice
+
+El vino de la caja estaba tibio y el televisor estaba en mute desde hacía semanas, como si el padre hubiera decidido que ningún ruido de afuera tenía derecho a entrar.
+
+Julián lavaba los platos. Hacía seis semanas que lavaba los platos, hacía seis semanas que hacía las compras, las camas y la comida que el padre no comía. Nadie le había pedido que lo hiciera. Simplemente había empezado, y ya no había manera de parar.
+
+—Tu madre —dijo el padre, detrás de él— se lo buscó.
+
+El agua siguió corriendo. Julián no se dio vuelta.
+
+—¿Me escuchaste? Se lo buscó. Siempre con esa boca. Siempre diciendo cosas adelante de la gente.
+
+Cerró la canilla. Se secó las manos en el repasador, despacio, dedo por dedo, y salió de la cocina sin decir nada.
+
+Volvió un minuto después con la navaja en la mano.
+
+La puso sobre la mesa, entre los dos, y la abrió. El clic del mecanismo sonó más fuerte que el televisor, más fuerte que todo lo que había sonado en esa casa desde el entierro.
+
+El padre se quedó con el vaso a medio camino de la boca. No lo bajó. No dijo nada.
+
+Julián se sentó frente a él, con las manos sobre la mesa, y esperó.
+
+—¿Qué hacés? —dijo el padre, al fin, y la voz le salió distinta, más chica, con algo que no era miedo del todo, algo peor: reconocimiento.
+
+—Nada —dijo Julián—. Estoy acá.
+
+El padre miró la hoja. La miró un rato largo, como se mira una cuenta que no cierra. Después bajó el vaso, muy despacio, y lo apoyó en la mesa sin hacer ruido.
+
+—Guardala.
+
+—No.
+
+—Julián.
+
+—No hables más de ella.
+
+El padre abrió la boca y la cerró. Tenía los ojos húmedos y las manos apoyadas en la mesa, y por un segundo pareció un viejo, nada más que un viejo cansado en una cocina con el techo manchado.
+
+Julián cerró la navaja. El clic, esta vez, sonó igual que una puerta.
+
+Se levantó, la guardó en el bolsillo y, antes de irse, dijo sin levantar la voz:
+
+—Yo me ocupo.
+
+Y esa noche, y todas las que vinieron, el nombre de la madre no se volvió a decir en esa casa. No porque estuviera prohibido. Porque los dos sabían lo mismo y ninguno de los dos podía decirlo sin que se cayera la casa.
+
+Julián tenía quince años y acababa de descubrir algo que no se le iba a ir nunca más: que una hoja cerrada también sirve.
+
+---
+
 ## Estado de estos borradores
 
 - Dos fragmentos escritos, sin revisión posterior.
 - El fragmento 1 se escribió antes de la revelación del 28/09. El 1b es la reescritura con la navaja cargando el peso de la prueba; el 1 queda como registro de la primera versión.
 - El fragmento 3 (las sirenas) implementa la Decisión 0: Julián mueve la navaja antes de que la policía entre. Escrito el 18/11, sin revisión.
+- El fragmento 4 (la cocina) implementa la Decisión 1: la primera vez que usa la navaja, contra el padre, sin sangre. Escrito el 18/11, sin revisión.
 - Pendiente de decisión: cómo llegó la navaja a manos de Julián y qué pasa inmediatamente después del aula.
