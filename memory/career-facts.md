@@ -562,7 +562,7 @@ Evita que un CV nuevo o una propuesta los reintroduzcan por descuido:
 
 - **Cripto / Web3:** nada de blockchain, tokens, wallets, DeFi, NFT, chains ni mercados on-chain.
   Descartado de plano, sin analizar.
-- **Mercado Pago:** fuera. **Stripe es el proveedor único** (ADR-042), con o sin Lovable.
+- **Mercado Pago / proveedores de pago:** sin proveedor obligatorio (ADR-114, supersede ADR-042). Cada proyecto elige y lo registra en su ADR; no presentar Stripe ni Mercado Pago como "el" proveedor del ecosistema.
 - **`accessibility-auditor`:** nunca se menciona. Para el mismo eje a11y + tooling, usar los PRs
   mergeados y Super7UI/Warner Bros.
 - **SoporteML:** va al CV y a las propuestas laborales, pero **no** al portfolio público (repo

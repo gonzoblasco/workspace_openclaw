@@ -193,8 +193,8 @@ El entorno (máquinas, modelos, scripts, memoria, red) vive en **`docs/SETUP.md`
 - **Iconos:** Lucide (`lucide-react`) en todos los proyectos; nunca emojis como iconografía.
 - **Validación UI:** los fixes visuales se validan solo con browser real (Desktop). jsdom no detecta layout ni chrome nativo.
 - **Herramientas por criterio:** OpenSpec, Biome, ADRs, HANDOFF, CHANGELOG. Se adoptan por lo que sirven, no por venir del template.
-- **Pagos:** Stripe único (ADR-042), con o sin Lovable; Mercado Pago afuera. Mercado: Argentina/LATAM.
-- **Idioma por capa:** lo que se ve en GitHub va en inglés; los strings de UI, en español. Los `AGENTS.md`/`CLAUDE.md` de proyectos públicos en inglés (son superficie de portfolio); el workspace privado en español (es espacio de trabajo). Rige también para el CLAUDE.md espejo de cada proyecto. No hay beneficio técnico de idioma para el modelo: lo único que importa es la superficie.
+- **Pagos:** sin proveedor obligatorio (ADR-114). Se elige por proyecto según medios locales, moneda, país del cliente y plataforma donde vive el producto. Stripe y Mercado Pago son ambos válidos; la elección se registra en el ADR del proyecto.
+- **Idioma por capa:** GitHub en inglés; UI en español. `AGENTS.md`/`CLAUDE.md` de proyectos públicos en inglés; workspace privado en español.
 
 ---
 

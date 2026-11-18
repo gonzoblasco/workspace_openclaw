@@ -1,6 +1,8 @@
 # ADR-042: Stripe como proveedor de pagos unico reconocido
 
-**Status:** Accepted (2026-08-29) - revisado a fondo 2026-10-06
+**Status:** Superseded por ADR-114 (2026-11-18)
+**Status historico:** Accepted (2026-08-29) - revisado a fondo 2026-10-06
+**Superseded por:** [ADR-114](./ADR-114-pagos-sin-proveedor-obligatorio.md) - pagos sin proveedor obligatorio, eleccion por proyecto
 **Deciders:** Gonzo / Kanam
 **Fecha:** 2026-08-29
 **Origen:** workspace (regla operativa fijada por Gonzo, 2026-08-29; revisada varias veces el 2026-10-06)
