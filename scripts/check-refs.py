@@ -28,7 +28,15 @@ DEFAULTS = ["README.md", "AGENTS.md", "USER.md", "MEMORY.md", "SOUL.md", "IDENTI
 
 # Ruta entre backticks que empieza con scripts/ o docs/ Y termina en extension.
 # El primer grupo es la ruta; el `!` evita capturar espacios internos.
-REF = re.compile(r"`((?:scripts|docs)/[^\s`]+\.(?:sh|py|js|cjs|md|json|txt|pdf|yml))`")
+# Rutas que este repo puede resolver y que un doc puede prometer. Un destino
+# fuera de estos (o externo, o ancla) no se revisa: no es una promesa sobre
+# este arbol.
+# `projects/` faltaba: el 2026-10-29 se borro `projects/kanam-tetris/` y NORTH.md
+# siguio citando `projects/kanam-tetris/.knowledge/ROADMAP-TETRIS.md` durante
+# semanas con el guard en verde ("744 rutas, todas existen"). El guard no mentia:
+# nunca miro esa ruta. Los patrones (`projects/*`, `projects/<slug>`) los filtra
+# SKIP_IF, asi que agregar el prefijo no llena el reporte de falsos positivos.
+REF = re.compile(r"`((?:scripts|docs|projects)/[^\s`]+\.(?:sh|py|js|cjs|md|json|txt|pdf|yml))`")
 
 # Link markdown `[texto](destino)`. El REF de arriba solo mira backticks y solo
 # scripts/docs: por eso los links `./skills/.../SKILL.md` de AGENTS.md podian
@@ -103,6 +111,24 @@ SKIP_FILES = ("docs/CHANGELOG.md",)
 SKIP_DIRS = ("docs/records/", "docs/archive/", "docs/archives/", "docs/insights/")
 
 
+# Proyectos archivados: el 2026-10-29 se borro el local de 18 proyectos con copia
+# verificada en GitHub (limpieza de projects/ 21 -> 3). Los docs que los citaban
+# quedaron apuntando a rutas que ya no existen, y este guard no las veia porque su
+# regex solo cubria scripts/ y docs/. Al ampliarlo a projects/, salieron 21.
+#
+# La regla NO es "toda ruta a projects/ esta bien": es la misma que ya rige para
+# docs/archive y docs/records. Un doc que cita un proyecto ARCHIVADO esta citando
+# historia, no prometiendo que ese arbol exista. Un doc que cita un proyecto VIVO
+# y yerra la ruta sigue siendo un roto, y se reporta. `projects/<slug>/` existente
+# se verifica igual que cualquier otro path.
+def is_archived_project_ref(ref: str) -> bool:
+    """True si la ref apunta a un proyecto que ya no vive en el arbol."""
+    if not ref.startswith("projects/"):
+        return False
+    slug = ref.split("/", 1)[1].split("/", 1)[0] if "/" in ref else ""
+    return bool(slug) and not (ROOT / "projects" / slug).exists()
+
+
 _PROPOSED_RE = re.compile(
     r"\b(?:" + "|".join(re.escape(w) for w in PROPOSED) + r")\b"
 )
@@ -139,6 +165,7 @@ def main():
 
     broken = []
     checked = 0
+    archived = 0
 
     for path in files:
         if not path.exists():
@@ -156,6 +183,11 @@ def main():
         for line_no, line in enumerate(text.splitlines(), 1):
             for ref in REF.findall(line):
                 if is_skippable(ref):
+                    continue
+                if is_archived_project_ref(ref):
+                    # Cita a un proyecto archivado: es historia, no una promesa.
+                    # Se cuenta aparte para que el numero siga siendo honesto.
+                    archived += 1
                     continue
                 checked += 1
                 if not (ROOT / ref).exists():
@@ -189,6 +221,12 @@ def main():
         print()
         print("Cada ruta citada deberia existir, o no se cita.")
         return 1
+
+    if archived:
+        # Se informa para que el numero sea auditable: si sube, es que mas docs
+        # empezaron a citar proyectos que ya no estan.
+        print(f"{archived} refs a proyectos archivados (historia, no se verifican).")
+        print()
 
     print(f"OK: {checked} rutas citadas, todas existen.")
     return 0
