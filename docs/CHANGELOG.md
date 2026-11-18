@@ -610,6 +610,18 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-17] - Caesar III Clone (rutas e importaciones)
+
+### Added
+- Panel `F6` de rutas: exportar cerámica/muebles, importar vino/aceite.
+- La caravana vuelve con la importación y el warehouse la recibe.
+- `sim.trade_route_open`, `export_good` e `import_good` persistidos en save/load.
+
+### Verified
+- Gate **40 tests** + pureza; `Caravan cargo test passed`.
+
+---
+
 ## [2026-11-17] - Caesar III Clone (auditorías profundas)
 
 ### Added
