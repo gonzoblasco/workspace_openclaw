@@ -4,6 +4,89 @@
 
 ---
 
+## [2026-11-03] - El guion deja de ser veto y el planner cambia de fallback
+
+### Changed
+- **El pre-commit ya no aborta por guion largo: avisa y sigue.** ADR-082 habia retirado la regla del guion como obligacion, pero el hook seguia cortando con `ABORT: guion comun (-) obligatorio`. El aparato contradecia a la decision y trababa commits legitimos por caracteres heredados que nadie edito. Ahora imprime `aviso: guion largo en <archivo> (no bloquea)` y continua. `hyphen_enforcer.sh` se mantiene: normaliza en-dash en lo staged, que es correccion mecanica y reversible, no bloqueo. `check_em_dash.py` sigue intacto para quien quiera correrlo a mano.
+- **Fallback del planner: `glm-5.3-flash` -> `minimax-m3.1-flash`.** Era el modelo mas caro por request de la casa (0.292 px/req contra 0.053 del siguiente). Cambiado en las tres capas: `memory.db` (settings `model_by_agent`, `model_triple`, `model.triple`), `scripts/managed-blocks.py` (seed `model_alternative` y `model_by_agent`) y `openclaw.json` (`agents.entries.kanam-planner.model.fallbacks`).
+
+### Notes
+- **`minimax-m3.1-pro` no existe.** Se pidio ese id, pero el catalogo de Ollama solo tiene `minimax-m3:cloud`, `minimax-m3.1-flash:cloud` y `minimax-m2.7:cloud` (`-pro` da 404 en library y en search). Se uso `minimax-m3.1-flash:cloud`, que ademas era el valor que la DB ya tenia en `model_alternative`: la unica capa desalineada era la tabla por agente.
+- **Ollama dejo de escuchar en la LAN.** La app tenia `expose = 1` en su `db.sqlite`, que produce `OLLAMA_HOST=0.0.0.0`. Se puso en `0` y tras reiniciar el bind quedo en `127.0.0.1:11434` (verificado: LAN responde `000`, local `200`). El riesgo era real: `:cloud` respondia sin auth desde la red local con el firewall apagado.
+- **Verificado, no asumido:** `sh -n` sobre el hook, `check-single-source`, `check-bootstrap-budget` y `check-pipeline-enforcement` en `rc=0`, y una prueba aislada que confirma que un archivo con em dash ya no aborta el commit.
+
+---
+
+### Removed
+- **46 archivos borrados del indice.** Gonzo los habia borrado del disco: `.knowledge/ARCHIVED_PROJECTS/` (2), `.knowledge/ARCHIVED_SESSIONS/` (2) y `.trash/` (42). Se verifico que **nada unico se pierde**: las sesiones archivadas duplican `docs/archives/sesiones/` (el archivo vivo), y el contenido de `kanam-sudoku.md` sobrevive en `docs/insights/2026-10-28-ensenanzas-sudoku.md` y en el CHANGELOG. Los `.trash/` son backups del residuo del `2026-10-08`, ya reconciliados aditivamente.
+
+### Fixed
+- **`/.trash/` agregado al `.gitignore`.** El ignore existente cubria `**/.knowledge/handoff-history/.trash/` (la papelera interna de cada `.knowledge/`), pero **no** la de la raiz. Por eso 42 archivos de backup del residuo de octubre quedaron commiteados y reaparecieron como bajas cinco semanas despues. Una papelera versionada es deuda que se paga sola.
+
+### Notes
+- **Verificado antes de borrar:** `check-refs --all` OK con 685 rutas (nada citado apunta a esas rutas). Las menciones en `memory/` y `docs/archives/` son registros historicos de lo que se archivo en su momento, no dependencias.
+- **Error propio durante la verificacion:** para probar que los archivos eran recuperables corri `git checkout -- .knowledge/ARCHIVED_PROJECTS`, que **restauro** dos archivos que Gonzo ya habia borrado. Se revirtio de inmediato (vuelto a `trash`) y se le informo antes de seguir. Un `git checkout` de comprobacion **escribe**: no es lectura.
+
+---
+
+## [2026-11-03] - El HANDOFF va al `.knowledge/` del sujeto, este donde este
+
+### Fixed
+- **`scripts/session-handoff.py` resolvia todo slug contra `projects/`.** Si el proyecto vivia en `forks/`, `clones/` o `_workbench/`, `resolve_handoff_path()` devolvia `projects/<slug>/.knowledge/HANDOFF.md`: una ruta que no existia, que el script **creaba igual**, dejando el HANDOFF real sin actualizar y sin ningun error visible. Medido antes del fix: `--project vane` -> `projects/vane/` (real: `forks/vane/`), `--project onwheels` -> `projects/onwheels/` (real: `_workbench/onwheels/`).
+- **La busqueda ahora recorre `PROJECT_CONTAINERS`** (`projects`, `_workbench`, `forks`, `clones`) y devuelve el `.knowledge/` de la carpeta real. Un slug que existe en **mas de un** contenedor **falla con error explicito** en vez de elegir: adivinar es como se termina escribiendo el HANDOFF de un proyecto en el `.knowledge/` de otro. Sin carpeta en ningun contenedor se cae al comportamiento historico (`projects/<slug>`), para no romper slugs que todavia no se abrieron.
+- **Directorios con espacio final ya resuelven.** `projects/OSS ` (nombre real, con espacio) no se encontraba porque el slug se recortaba. La busqueda prueba **coincidencia exacta primero** y recien despues el nombre recortado, asi que `--project "OSS "` llega a la carpeta correcta y un slug prolijo (`OSS`) tambien.
+
+### Added
+- **9 tests de regresion** en `tests/python/test_session_handoff.py`: resolucion en `projects/`, `forks/`, `_workbench/` y `clones/`; fallo ante slug ambiguo; carpeta con espacio final; slug sin carpeta; prioridad del `--handoff-dir`; y el alias `workspace` siguendo al HANDOFF global.
+- **Guarda contra slugs con separadores de ruta.** Un slug como `"OSS / astryx (meta/astryx #3335)"` se anidaba en `projects/` y `mkdir(parents=True)` creaba el arbol sin avisar. Ahora se rechaza con el nombre del proyecto en el mensaje. `--handoff-dir` tambien se valida contra el arbol del workspace. 4 tests mas.
+
+### Fixed (rescatado)
+- **`projects/OSS / astryx (meta/astryx #3335)/` era un arbol fantasma, no un typo de carpeta.** Contenia el HANDOFF y el SESSIONS del follow-up de astryx #3335 del 2026-10-29 (analisis de TabMenu, comentario 6499306768). El contenido se rescato y hoy vive en **`oss/facebook-astryx/.knowledge/`**; la cadena vacia `OSS / astryx (meta/` se mando a la papelera con `trash`. No habia `projects/astryx` ni `clones/astryx` previos: el contenido solo existia ahi.
+- **El mismo slug aparecio antes:** `memory` del 2026-10-13 registra un cierre con `"OSS / astryx PR #5204"`. No era un caso aislado, era un patron que el script aceptaba.
+
+### Added (oss/)
+- **`oss/` - contenedor nuevo para contribuciones a repos ajenos.** `oss/<owner>-<repo>/.knowledge/` guarda HANDOFF, SESSIONS y (a futuro) `THREADS.md` con los hilos abiertos y quien tiene la pelota. No es codigo ni un repo nuestro: es memoria que **sobrevive al clone**. `forks/` y `clones/` son artefactos de codigo desechables; `projects/` se reserva para repos propios bajo `gonzoblasco/`.
+- **Por que no `forks/`:** un fork se clona, se rebasa y se descarta cuando el PR cierra. El registro de "que dije en #3335 y quien me debe respuesta" tiene que quedar despues de tirar el clone.
+- **Por que no `projects/`:** un proyecto tiene repo propio bajo `gonzoblasco/` (`oss-post-graph`, que suena a OSS pero es nuestro). Una contribucion a `facebook/astryx` no tiene repo nuestro, tiene un clon temporal.
+- **Por que `oss/` y no una cuarta carpeta caprichosa:** la receta de cierre de `docs/AGENTS-DETALLE.md` ya usaba el namespace `"OSS / <repo> #<n>"`; faltaba la carpeta que lo recibiera, y por eso el slug terminaba siendo un nombre con barras.
+
+### Changed
+- **`PROJECT_CONTAINERS` = `projects`, `_workbench`, `forks`, `clones`, `oss`.** Test nuevo de resolucion en `oss/`.
+- **`skills/session-lifecycle/scripts/session-start.sh` ya no duplica el mapa en bash.** Resolvia con un `case` que solo conocia `projects/`: una sesion de `vane` leia un HANDOFF inexistente y arrancaba fria aunque `forks/vane/.knowledge/HANDOFF.md` existiera. Ahora delega en `resolve_handoff_path` (una sola fuente de verdad) y cae al path historico si el slug es invalido, para no romper el arranque.
+- **`.gitignore`: `oss/` NO se ignora, a proposito.** La primera version de esta entrada decia que se ignoraba "como `forks/` y `clones/`": era un error de reflejo. `forks/` y `clones/` son codigo de terceros; lo que vive en `oss/` es **nuestro** registro (HANDOFF, SESSIONS, THREADS) y se versiona con el workspace, igual que `memory/` y `docs/`. Ignorarlo lo dejaba sin respaldo, que es exactamente lo contrario del motivo por el que se creo. Verificado con `git check-ignore` (exit 1) y `git status` (aparece como untracked).
+- **`docs/AGENTS-DETALLE.md`:** la receta de cierre del PR usa el slug de carpeta (`owner-repo`) y no el titulo del hilo; la excepcion de forks se corrige (decia que no llevan `.knowledge/`, pero `forks/vane/` tiene uno por ser un fork que se desarrolla); se documenta `oss/`.
+- **Skill `session-close-handoff`** (Workshop): destino `oss/`, regla del slug sin barras, y la verificacion de path pasa a ser control en vez de remedio del bug.
+- **`scripts/check-foreign-knowledge.py` + guarda pre-push en repos de terceros.** Gonzo: *"nunca subir el `.knowledge` a los repos OSS... el tema es no ensuciar lo ajeno"*. Instala un hook `pre-push` en cada repo de `forks/` y `clones/` que **rechaza** empujar cualquier ref con `.knowledge/` a un remote que no sea de `gonzoblasco`. El hook vive en `.git/hooks/` y **no se commitea**: el repo ajeno no se ensucia. Conectado al pre-commit (plantilla y hook vivo), sin condicion.
+
+### Notes (guarda de .knowledge ajeno)
+- **El riesgo estaba medido, no supuesto:** `forks/vane/` tiene **9 archivos `.knowledge/` trackeados** y un remote `upstream` a `ItzCrazyKns/Vane`. `upstream/master` tiene **0** archivos `.knowledge/`: todavia no se contamino, pero nada lo impedia. `_workbench/onwheels` tiene 6 trackeados y **no tiene remote**, asi que ahi no hay exposicion.
+- **Por que un hook y no un `.gitignore`:** agregar `.knowledge/` al `.gitignore` del fork modifica un archivo del repo ajeno - exactamente lo que se quiere evitar. Y borrar el `.knowledge/` del fork pierde la memoria del hilo. El hook no toca nada versionado.
+- **Por que `projects/` queda afuera:** son repos nuestros (bajo `gonzoblasco`); ahi el `.knowledge/` **es** el proyecto y va commiteado.
+- **8 tests** en `tests/python/test_check_foreign_knowledge.py`: deteccion de riesgo, instalacion ejecutable, repo limpio, rechazo en forma HTTPS y SSH de un remote ajeno, permiso en las dos formas de un remote propio, y paso libre cuando la rama no trae `.knowledge/`. El contrato se prueba invocando el hook con los argumentos y el stdin que git le pasa, no con un `git push` real (que depende de la red y de `insteadOf`).
+
+---
+
+## [2026-11-03] - `services/`: un servicio interno no es un fork
+
+### Changed
+- **`forks/vane` -> `services/vane`.** Vane corre como servicio interno: no se le manda PR, se lo opera. Estaba en `forks/`, donde la regla "no trackear `.knowledge/`" es correcta para un PR pero no aplica a un servicio, asi que el check necesitaba una **exencion** para dejarlo pasar.
+- **La exencion se elimino y se arreglo la clasificacion.** Una exencion es un olor a clasificacion equivocada: si un repo necesita una excepcion para cumplir una regla, el que esta mal es la carpeta, no la regla. `services/` es ahora el contenedor para repos de terceros que se **operan**, no se contribuyen.
+- **`check-foreign-knowledge.py` clasifica por PROPOSITO, no por origen del codigo:**
+  - `forks/` y `clones/` -> `.knowledge/` **no se trackea**: entra al diff del PR que revisa el maintainer. Se saca con `git rm -r --cached` y se oculta con `.git/info/exclude` (privado, no versionado: tocar el `.gitignore` del fork si ensucia el repo ajeno).
+  - `services/` -> `.knowledge/` **si se trackea**, en NUESTRO fork (`gonzoblasco/<servicio>`). El unico riesgo es un push al upstream, y eso lo cubre el hook pre-push.
+- **`session-handoff.py` y `.gitignore`:** `services` agregado a `PROJECT_CONTAINERS`; `/services/*` ignorado como `/forks/*` (es codigo, no registro).
+
+### Notes
+- **El `.knowledge/` de vane se verifico intacto** tras la mudanza: `git status` limpio, 9 archivos trackeados, remotes `origin` (gonzoblasco) y `upstream` (ItzCrazyKns). El hook pre-push ya estaba instalado y sigue vigente en la ruta nueva.
+- **Costo de la mudanza: ninguno.** `mv` preserva el repo entero (153M, historial, ramas, hooks, `.git/info/exclude`).
+- **16 tests** en `test_check_foreign_knowledge.py`, incluidos los cuatro nuevos del caso servicio: puede trackear `.knowledge` con guarda, es riesgo sin guarda, `--install` **no** lo destrackea, y en un fork **si** lo destrackea.
+
+### Notes
+- **El defecto estaba documentado y sin corregir:** `session-close-handoff` ya avisaba que `resolve_handoff_path` "solo busca en `projects/`" y pedia resolver el destino a mano con `--handoff-dir`. El workaround evitaba el arbol fantasma pero dejaba el bug intacto y dependia de que el agente se acordara. Ahora la skill puede pedir la verificacion como control, no como unico remedio.
+- **Pendiente, no incluido aca:** el generador sigue **reescribiendo el HANDOFF entero**. Hoy el cierre del 2026-11-03 reemplazo los proximos pasos de onwheels (del 2026-10-29) por los del Expte. 15.533, perdiendo estado que seguia vigente. El merge por seccion con `<!-- vigente desde YYYY-MM-DD -->` queda como paso siguiente.
+
+---
+
 ## [2026-11-02] - Ollama deja de ser punto único de falla; browser-use sale del gateway
 
 ### Added

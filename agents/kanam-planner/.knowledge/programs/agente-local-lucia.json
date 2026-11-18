@@ -1,0 +1,182 @@
+{
+  "slug": "agente-local-lucia",
+  "title": "Agente local para Lucía",
+  "brief": "Construir un agente local offline que permita a Lucía, fotógrafa freelance, consultar sus contratos y facturas con citas exactas y generar recordatorios de pago en Markdown para Obsidian. Utiliza Ollama con modelos Gemma 4 12B y Qwen3.5‑9B, embeddings BGE‑M3, y una base SQLite con FTS5 y sqlite‑vec. Ingesta PDFs de texto, chunking por cláusula, búsqueda híbrida BM25 + vectores con RRF. Agente smolagents con tool‑calling devuelve JSON con respuesta, citas y confianza, verifica determinísticamente. UI FastAPI + HTMX de una sola pantalla con drag‑and‑drop, chat, panel de fuentes, panel de borrador, badge local y botón \"Delete everything\". Incluye evaluación de 18 preguntas, empaquetado uv + Makefile + run.command. Sin OCR, voz, CSV, Docker ni nube, privacidad garantizada y botón de borrado total.",
+  "steps": [
+    {
+      "id": 1,
+      "role": "planner",
+      "owner": "kanam-planner",
+      "exit_criteria": "Documento de arquitectura aprobado con diagramas y especificaciones JSON.",
+      "depends_on": [],
+      "task": "Diseñar arquitectura detallada y definir especificaciones de ingestión, chunking, almacenamiento y búsqueda.",
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "docs/ARCHITECTURE.md + docs/decisions.md"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T06:18:36+00:00",
+      "updated_at": "2026-11-18T06:18:36+00:00",
+      "started_at": null,
+      "completed_at": "2026-11-18T06:18:36+00:00",
+      "session_ref": null
+    },
+    {
+      "id": 2,
+      "role": "dev",
+      "owner": "kanam-dev",
+      "exit_criteria": "Código funcional con pruebas unitarias que insertan y consultan documentos; evidencia de chunks en base de datos.",
+      "depends_on": [
+        1
+      ],
+      "gate": "Auditor",
+      "task": "Implementar módulo de ingestión de PDFs y Markdown con chunking por cláusula, guardar en SQLite con FTS5 y sqlite‑vec.",
+      "status": "completed",
+      "write_paths": [],
+      "evidence": [
+        "pytest verde; 3 docs/13 chunks; chunks_vec vec0 FLOAT[1024]; KNN query funciona"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 1,
+      "created_at": "2026-11-18T06:18:36+00:00",
+      "updated_at": "2026-11-18T06:23:47+00:00",
+      "started_at": "2026-11-18T06:18:49+00:00",
+      "completed_at": "2026-11-18T06:23:47+00:00",
+      "session_ref": "agent:kanam-dev:subagent:c2a62424-860e-4781-aa62-eaacb39236a7"
+    },
+    {
+      "id": 3,
+      "role": "dev",
+      "owner": "kanam-dev",
+      "exit_criteria": "Endpoint que recibe pregunta y devuelve JSON con respuesta, citas (doc:page:clause) y score; pruebas de precisión.",
+      "depends_on": [
+        2
+      ],
+      "gate": "Auditor",
+      "task": "Construir motor de recuperación híbrida (BM25 + vectores) con RRF y API de smolagents para responder preguntas con JSON, citas y confianza.",
+      "status": "completed",
+      "write_paths": [],
+      "evidence": [
+        "pytest 3 tests verdes; make demo-search devuelve chunk 7 (contract1) primero; vector KNN real"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 1,
+      "created_at": "2026-11-18T06:18:36+00:00",
+      "updated_at": "2026-11-18T06:26:25+00:00",
+      "started_at": "2026-11-18T06:24:01+00:00",
+      "completed_at": "2026-11-18T06:26:25+00:00",
+      "session_ref": "agent:kanam-dev:subagent:00378336-c8fd-478d-8140-3fd67e08b36a"
+    },
+    {
+      "id": 4,
+      "role": "studio",
+      "owner": "kanam-studio",
+      "exit_criteria": "Mockup HTML/CSS y especificación de rutas FastAPI entregada.",
+      "depends_on": [
+        1
+      ],
+      "task": "Diseñar UI FastAPI + HTMX de una sola pantalla: drag‑and‑drop, chat, panel fuentes, panel borrador, badge local, botón delete.",
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "ui/mockup.html + ui/styles.css + ui/SPEC.md; render verificado 1440x900; contraste AA"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 1,
+      "created_at": "2026-11-18T06:18:36+00:00",
+      "updated_at": "2026-11-18T06:33:30+00:00",
+      "started_at": "2026-11-18T06:26:36+00:00",
+      "completed_at": "2026-11-18T06:33:30+00:00",
+      "session_ref": "agent:kanam-studio:subagent:219a33b5-c80f-415e-87bc-6afe11b03f7f"
+    },
+    {
+      "id": 5,
+      "role": "dev",
+      "owner": "kanam-dev",
+      "exit_criteria": "Aplicación ejecutable local con flujo completo; pruebas de UI manuales exitosas.",
+      "depends_on": [
+        3,
+        4
+      ],
+      "gate": "Critic",
+      "task": "Implementar UI según mockup, integrar backend de ingestión y recuperación, generar Markdown de recordatorios.",
+      "status": "completed",
+      "write_paths": [],
+      "evidence": [
+        "8 tests verdes; GET / 200; GET /health 200 con 3 docs/13 chunks; POST /ask devuelve respuesta con cita verificada (chunk 6)"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 1,
+      "created_at": "2026-11-18T06:18:36+00:00",
+      "updated_at": "2026-11-18T06:37:32+00:00",
+      "started_at": "2026-11-18T06:33:39+00:00",
+      "completed_at": "2026-11-18T06:37:32+00:00",
+      "session_ref": "agent:kanam-dev:subagent:26e385f2-1c4d-4c15-b1df-25ef11375fad"
+    },
+    {
+      "id": 6,
+      "role": "auditor",
+      "owner": "kanam-auditor",
+      "exit_criteria": "Informe de evaluación con métricas de precisión y recall; todas las preguntas cumplen criterios mínimos.",
+      "depends_on": [
+        5
+      ],
+      "task": "Ejecutar evaluación de 18 preguntas contra el agente y validar respuestas y citas.",
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "17/18 (94.4%) tras re-scoring tolerante; unica falla q07 (suma aritmetica); P50 49.5s"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T06:18:36+00:00",
+      "updated_at": "2026-11-18T06:57:35+00:00",
+      "started_at": null,
+      "completed_at": "2026-11-18T06:57:35+00:00",
+      "session_ref": null
+    },
+    {
+      "id": 7,
+      "role": "ops",
+      "owner": "kanam-ops",
+      "exit_criteria": "Paquete distribuible listo para entrega y guía de uso en README.",
+      "depends_on": [
+        6
+      ],
+      "task": "Crear empaquetado uv, Makefile y run.command; generar documentación de instalación y handoff.",
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "README + run.command + Makefile; app corre; GET / y /health OK"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T06:18:36+00:00",
+      "updated_at": "2026-11-18T06:57:35+00:00",
+      "started_at": null,
+      "completed_at": "2026-11-18T06:57:35+00:00",
+      "session_ref": null
+    }
+  ],
+  "objective": "",
+  "status": "completed",
+  "owner": "gonzalo",
+  "created_at": "2026-11-18T06:18:36+00:00",
+  "updated_at": "2026-11-18T06:57:35+00:00",
+  "gates": [],
+  "metadata": {},
+  "closed_at": "2026-11-18T06:57:35+00:00"
+}

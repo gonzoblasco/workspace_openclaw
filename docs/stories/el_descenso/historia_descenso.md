@@ -56,7 +56,7 @@ La navaja que Julián lleva al aula **es el arma con la que su padre degolló a 
 
 - [x] **Decisión 0 (el acto cero):** Julián ve a su padre esconder la navaja. Días después, cuando escucha las sirenas y la policía llega a revisar la casa, él ya la movió a otro lugar donde no la van a encontrar. No le dice nada al padre. A los quince años obstruye, solo, la investigación del asesinato de su madre. Ahí empieza el descenso.
 - [x] **Decisión 1:** la primera vez que usa la navaja. No es contra un desconocido: es contra el padre, en la cocina, seis semanas después del entierro. El padre dice que la madre "se lo buscó"; Julián sale, vuelve con la navaja y la abre sobre la mesa. Sin amenaza explícita, sin sangre. Desde esa noche el nombre de ella no se dice más, y el que manda en la casa es el hijo. A los quince descubre que una hoja cerrada también sirve.
-- [ ] Decisión 2: (Pendiente de definición)
+- [x] **Decisión 2 (el final):** el cuerpo del garaje es el padre. No lo mata por venganza ni por odio: lo mata porque el padre, viejo y enfermo, quiere confesar. Julián construyó su vida entera sobre ese silencio y no puede dejarlo hablar. El mismo gesto del primer día, esconder algo en el taller para que la casa siga de pie, se repite una generación después, con el padre como objeto escondido.
 
 ---
 
@@ -65,4 +65,4 @@ La navaja que Julián lleva al aula **es el arma con la que su padre degolló a 
 - ¿Cuál es la relación real con su padre hoy? ¿Lo cuida por amor, por miedo, por culpa, por vigilancia? La respuesta tiene que incluir las cuatro.
 - ¿El padre sospecha? No puede preguntar sin delatarse, y eso es la mejor escena de la casa.
 - ¿Qué pasa después del aula? ¿Alguien ve la navaja? ¿Ese es el detonante?
-- ¿Cuándo empieza el "Presente Oscuro"? ¿Cuántos años después? ¿Quién es el cuerpo del garaje?
+- ¿Cuándo empieza el "Presente Oscuro"? ¿Cuántos años después? ¿Cuánto tiempo cuidó Julián al padre antes de matarlo?
