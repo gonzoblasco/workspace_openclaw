@@ -33,7 +33,7 @@ DEFAULT_PY = os.path.join(REPO, ".venvs", "tts", "bin", "python")
 
 # El perfil vigente. Cambiar acá cambia el default de todo el flujo.
 VOICE = "es-AR-TomasNeural"
-RATE = "-10%"
+RATE = "-4%"
 PITCH = "-2Hz"
 MAX_CHARS = 2200          # edge-tts corta bien hasta ~4k; 2.2k da margen y permite concatenar limpio
 
@@ -153,7 +153,8 @@ def main():
         if os.path.exists(meta_path):
             meta = json.load(open(meta_path, encoding="utf-8"))
             digest = hashlib.sha256(text.encode()).hexdigest()[:16]
-            if meta.get("sha") == digest and meta.get("voice") == args.voice:
+            if (meta.get("sha") == digest and meta.get("voice") == args.voice
+                    and meta.get("rate") == args.rate and meta.get("pitch") == args.pitch):
                 print(f"ya existe y no cambió: {args.out}")
                 return
 

@@ -14,7 +14,7 @@ están gitignored, con un `.json` al lado que dice con qué voz y con qué hash 
 | Parámetro | Valor | Por qué |
 |---|---|---|
 | Voz | **es-AR-TomasNeural** | masculina, grave, argentina. Elegida por Gonzo después de escuchar Elena y Tomás sobre el capítulo 1 de *Las Tres Sabanas* |
-| Ritmo | **-10%** | la lectura por defecto va apurada para narrativa |
+| Ritmo | **-4%** | la lectura por defecto va apurada; -10% quedaba lenta para escuchar de corrido |
 | Tono | **-2Hz** | un poco más abajo, menos luminoso |
 | Motor | **edge-tts** (neural, sin API key) | el TTS del gateway no tiene proveedor configurado; `say` de macOS suena a robot |
 | Formato | `.m4a` AAC 64k | se adjunta en cualquier chat sin pesar |
@@ -40,6 +40,17 @@ python3 scripts/tts-render.py --voices
 ```
 
 Después de renderizar, el audio se adjunta con `MEDIA:<ruta>` — una línea, sin texto alrededor.
+
+## Una voz por personaje
+
+```bash
+python3 scripts/tts-dramatize.py capitulo_14.md --out /tmp/escena.m4a --print-map   # ver el reparto
+python3 scripts/tts-dramatize.py capitulo_14.md --out /tmp/escena.m4a --fix "20:Vera"
+```
+
+Reparte las voces por atribución ("—dijo Vera", "—dijo ella") y alterna cuando no hay atribución.
+**Revisar siempre `--print-map` antes de renderizar:** en escenas de tres, la alternancia se equivoca.
+**No resuelve la ironía**: eso depende del proveedor de voz, no del reparto.
 
 ## Qué hace con el texto
 

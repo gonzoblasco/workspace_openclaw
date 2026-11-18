@@ -17,6 +17,8 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Por qué no el TTS del gateway:** el tool `tts` responde *"no provider registered; openai, xai, openrouter: not configured"*. Se resolvió con edge-tts en un venv dentro del workspace (`.venvs/tts`, gitignored) y voces neurales argentinas, que es lo que pedía el material. El primer intento con `say` de macOS sonó a robot y se descartó.
 - **Decisión de archivo:** el audio no se versiona. Se versiona el texto y el comando; el `.m4a` se regenera. Los audios viven en `<carpeta>/audio/` con un `.json` al lado que guarda voz, ritmo y hash del texto.
 - **Cambiar de voz en el futuro es un flag**, no una migración: `--voice`, `--rate`, `--pitch`, o los tres defaults en el script.
+- **Ritmo ajustado a -4%** (era -10%) por pedido de Gonzo: el capítulo 1 pasó de 7:05 a 6:38. El script ahora también re-renderiza si cambia el ritmo, no solo si cambia el texto.
+- **`scripts/tts-dramatize.py`**: una voz por personaje, turno por turno, repartiendo por atribución y alternando cuando no hay. Prueba sobre la escena de la cocina del capítulo 14: 20 turnos, tres voces, 1:17. La ironía sigue sin resolverse: eso no es del reparto, es del proveedor.
 
 ---
 
