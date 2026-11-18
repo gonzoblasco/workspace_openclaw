@@ -7,7 +7,7 @@
 ### Núcleo Emocional
 *   **Deseo:** Que sus hijas vivan libres de la magia y del control de la Secta.
 *   **Miedo:** Que Veta descubra la verdad y que Cal termine siendo una herramienta de la Secta.
-*   **Herida:** La soledad del recuerdo. Es la única persona que recuerda al padre de sus hijas. Vive en un duelo perpetuo y secreto.
+*   **Herida:** La soledad del recuerdo. Es la unica persona que recuerda al padre de sus hijas **entero** (con nombre, cara y voz); Veta conserva retazos y Cal solo ve residuos. Vive en un duelo perpetuo y secreto.
 
 ### El Secreto (El Pecado)
 Fue forzada por la Secta a borrar al padre de sus hijas (su primer amor, el hombre que la hacía reír) para salvar la vida de Veta y Cal. Creyó que este acto le compraría la libertad, pero descubrió que solo era la entrada a una esclavitud perpetua donde debe seguir sirviendo a la Secta para mantener a sus hijas a salvo.
@@ -31,6 +31,8 @@ Combinacion A + D + E:
 
 ### Nunca habla de el
 No invento una viudez ni una historia. Simplemente no habla. Nunca lo nombro, nunca lo nego, nunca lo explico. Cuando alguien roza el tema, ella cambia de conversacion sin estridencia.
+
+**El silencio que la condeno (decidido 2026-11-18).** Cuando Veta tenia ocho anos pregunto "¿y papá?" y el hombre desaparecio esa misma noche. Esmeralda no la desmintio nunca. Dejo que la nena concluyera que su pregunta lo habia borrado, porque explicar era reclutarla. **Es la decision mas cruel de la novela y la tomo por amor.** No es una mentira: es un silencio con forma de confesion. Veta carga quince anos de culpa que le pertenece a la madre.
 
 No es frialdad: es la unica disciplina que le queda. Su meta siempre fue que ese hombre fuera un secreto, para que sus hijas no sufrieran. Y **no habla de el con nadie, ni siquiera para mentir**.
 
@@ -91,6 +93,8 @@ Veta **si recuerda**. Tenia seis o siete anos cuando el hombre desaparecio. No t
 
 A los ocho, una sola vez, pregunto "¿y papá?". La cara de Esmeralda cambio y el tema se cerro. Veta no volvio a preguntar.
 
+**La culpa (decidido 2026-11-18).** Veta cree que **su pregunta lo borro**. Esa noche el hombre desaparecio y nadie le dijo nunca que no tuviera nada que ver. Quince anos construyendo una vida encima de eso. Por eso no vuelve con rencor: vuelve con culpa, y el rencor es la forma que encuentra de no mirarse. En el Acto II no le pregunta a la madre "¿que hiciste?": le pregunta "¿por que me dejaste creerlo?".
+
 Nunca lo conto a nadie, ni a Cal. No porque nadie la creyera, sino porque aprendio pronto que hay cosas que se guardan. **No es la loca que habla de alguien que no existe: es la que se calla un recuerdo que nadie puede confirmar.**
 
 Eso le da a su herida un filo concreto: sabe que tuvo un padre y que tuvo una madre que se reia. Lo que vino despues es culpa de alguien, y para ella ese alguien tiene nombre y esta en la cocina.
@@ -117,3 +121,10 @@ Primero lo esconde, como se esconden las cosas en esa casa.
 Hasta que algo la asusta lo suficiente y **va a buscar a su madre**, sorprendida y asustada, sin saber que pedir. No pide explicaciones: pide compania. Pide que le digan que no se esta volviendo loca.
 
 Y eso la vuelve el personaje mas expuesto de la novela: es la unica que extiende la mano y la unica que recibe una mitad de verdad.
+
+### Su acto: rompe la segunda regla (decidido 2026-11-18)
+Cal deja de ser el botin del Acto III y pasa a ser **la causa**. En el Acto II, sola y de noche, decide **usar** lo que le pasa para ver al hombre otra vez. Rompe "no lo uses" sin saber que existe una regla que romper. El hombre se aparece entero y dice una sola cosa: una fecha.
+
+El uso deja rastro. El pueblo lo siente; la Secta lo detecta. **El ultimatum del Acto III no es un capricho de la institucion: es la consecuencia de un acto de una nena de doce anos.** Y no puede contarlo, porque la primera regla se lo prohibe.
+
+Eso le da lo que hoy le falta: agencia, culpa propia y un secreto que la separa de Veta en el peor momento.
