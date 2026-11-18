@@ -14,13 +14,31 @@ marcadores del plugin y el bloque `Deep Sleep` quedan intactos. El plugin sigue
 agregando entradas nuevas sin saber de esta rotacion.
 
 MECANISMO
-  DREAMS.md (activo)                       ->  entradas del mes en curso
+  DREAMS.md (activo)                        ->  entradas del mes en curso
   memory/archive/dreaming/DREAMS-YYYY-MM.md ->  los meses anteriores, por mes
+
+  Cada AGENTE tiene su propio diario (`agents/<nombre>/DREAMS.md`) y archiva en
+  su propio directorio hermano:
+  agents/<nombre>/DREAMS.md
+    ->  memory/archive/dreaming/agents/<nombre>/DREAMS-YYYY-MM.md
+
+  El script ENUMERA las instancias (raiz + agents/*/) y aplica la misma
+  politica a todas. Verificado 2026-11-18: existian 8 diarios, de los cuales 4
+  (dev, critic, auditor, mind) conservaban meses viejos y el `--check` daba
+  verde porque solo miraba el de la raiz. Un gate que cubre una instancia de un
+  doc que ahora existe N veces es un gate verde sobre archivos que crecen solos:
+  al agregar un agente, su diario entra en la rotacion sin tocar el script.
 
   - Idempotente: correrlo dos veces no cambia nada la segunda.
   - Solo toca el contenido ENTRE los marcadores del diary
     (`openclaw:dreaming:diary:start/end`). El resto del archivo no se toca.
   - Una entrada sin fecha parseable NO se archiva: se deja en el activo.
+  - Un archivo sin marcadores se reporta y se saltea (no se destruye nada):
+    exit 2 si ninguno tiene marcadores, aviso al stderr si es uno de varios
+    (ese archivo queda FUERA de la rotacion: el `--check` no lo ve).
+  - Orden seguro: primero se persiste el archivo y recien despues se reescribe
+    el activo, con escritura atomica (tmp + os.replace). Un fallo de I/O deja
+    el activo intacto y no pierde entradas; ese error reporta exit 2.
 
 Uso:
     dreams-rotate.py                rota (idempotente)
@@ -33,13 +51,13 @@ Salida: 0 ok / 1 drift (solo --check) / 2 error.
 
 import argparse
 import datetime as dt
+import os
 import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ACTIVE = ROOT / "DREAMS.md"
-ARCHIVE_DIR = ROOT / "memory" / "archive" / "dreaming"
+ARCHIVE_DIRNAME = Path("memory") / "archive" / "dreaming"
 
 DIARY_START = "<!-- openclaw:dreaming:diary:start -->"
 DIARY_END = "<!-- openclaw:dreaming:diary:end -->"
@@ -53,6 +71,10 @@ MONTHS = {
 # Cada entrada empieza con una linea tipo `*September 9, 2026 at 5:34 AM GMT-3*`.
 ENTRY_ANCHOR = re.compile(r"(?=\n\*[A-Z][a-z]+ \d{1,2}, \d{4} at )")
 ENTRY_DATE = re.compile(r"\*([A-Z][a-z]+) (\d{1,2}), (\d{4}) at ")
+
+
+class NoMarkers(Exception):
+    """El archivo no tiene los marcadores del diary: no se puede rotar."""
 
 
 def entry_month(entry: str):
@@ -84,32 +106,49 @@ def split_diary(text: str):
     return prefix, lead, entries, suffix
 
 
-def plan(days: int, today: dt.date):
-    """(active_text, {month: archive_text}, needs, n_active, n_archived).
+def instances(root: Path):
+    """[(activo, dir_archivo, etiqueta)] de cada DREAMS.md que existe.
 
-    `days` no se usa: la unidad es el mes (se conserva el mes en curso).
-    Se acepta por simetria con changelog-rotate; el corte es `today`'s month.
+    Enumera en vez de asumir: el plugin crea el diario de cada agente y un
+    rotador que solo mira la raiz deja los demas creciendo en silencio.
     """
-    if not ACTIVE.exists():
+    found = []
+    root_active = root / "DREAMS.md"
+    if root_active.exists():
+        found.append((root_active, root / ARCHIVE_DIRNAME, ""))
+    agents = root / "agents"
+    if agents.is_dir():
+        for d in sorted(agents.iterdir()):
+            active = d / "DREAMS.md"
+            if d.is_dir() and active.exists():
+                found.append(
+                    (active, root / ARCHIVE_DIRNAME / "agents" / d.name, d.name)
+                )
+    return found
+
+
+def plan_one(active: Path, archive_dir: Path, today: dt.date):
+    """(active_text, {month: archive_text}, needs, n_active, n_archived)."""
+    if not active.exists():
         return None
-    text = ACTIVE.read_text(encoding="utf-8")
+    text = active.read_text(encoding="utf-8")
     sp = split_diary(text)
     if sp is None:
-        raise SystemExit("Error: DREAMS.md no tiene los marcadores del diary.")
+        raise NoMarkers(str(active))
     prefix, lead, entries, suffix = sp
 
     current = f"{today.year:04d}-{today.month:02d}"
-    active, old = [], []
+    kept, old = [], []
     for e in entries:
         em = entry_month(e)
         if em is None or em >= current:
-            active.append(e)
+            kept.append(e)
         else:
             old.append(e)
 
     # Reconstruye el activo preservando el encabezado previo a la 1ra entrada.
-    active_text = prefix + lead + "".join(active).rstrip() + "\n" + suffix.lstrip("\n")
-    if not active:
+    active_text = prefix + lead + "".join(kept).rstrip() + "\n" + suffix.lstrip("\n")
+    if not kept:
         active_text = prefix + "\n" + suffix.lstrip("\n")
 
     # Agrupa los viejos por mes y arma el texto de cada archivo (append).
@@ -118,36 +157,46 @@ def plan(days: int, today: dt.date):
         by_month.setdefault(entry_month(e), []).append(e)
     archives = {}
     for month, es in by_month.items():
-        p = ARCHIVE_DIR / f"DREAMS-{month}.md"
+        p = archive_dir / f"DREAMS-{month}.md"
         prev = p.read_text(encoding="utf-8") if p.exists() else None
         block = "".join(es).rstrip() + "\n"
         if prev is None:
             head = (
                 f"# DREAMS (archivo) - {month}\n\n"
-                "> Rotado desde `DREAMS.md` por `scripts/dreams-rotate.py`.\n\n---\n"
+                f"> Rotado desde `{active.name}` por `scripts/dreams-rotate.py`.\n\n---\n"
             )
             archives[month] = head + block
+        elif block.strip() and block.strip() in prev:
+            # Ya archivado (p.ej. una corrida anterior archivo bien y murio antes
+            # de reescribir el activo): no duplicar el bloque.
+            archives[month] = prev
         else:
             archives[month] = prev.rstrip() + "\n" + block
 
     needs = bool(old)
-    return active_text, archives, needs, len(active), len(old)
+    return active_text, archives, needs, len(kept), len(old)
+
+
+def tag(label: str) -> str:
+    return f"[{label}] " if label else ""
+
+
+def atomic_write(path: Path, text: str) -> None:
+    """Escribe tmp + os.replace: nunca deja el destino a medio escribir."""
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    os.replace(tmp, path)
 
 
 def main(argv):
-    global ACTIVE, ARCHIVE_DIR
     p = argparse.ArgumentParser(description="Rota el Dream Diary por mes.")
     p.add_argument("--today", type=str, default=None, help="YYYY-MM-DD (tests)")
     p.add_argument("--root", type=str, default=None, help="workspace root (tests)")
-    p.add_argument("--days", type=int, default=31, help="(sin efecto; simetria)")
     p.add_argument("--check", action="store_true", help="exit 1 si hay drift")
     p.add_argument("--dry-run", action="store_true")
     args = p.parse_args(argv)
 
-    if args.root:
-        r = Path(args.root).resolve()
-        ACTIVE = r / "DREAMS.md"
-        ARCHIVE_DIR = r / "memory" / "archive" / "dreaming"
+    root = Path(args.root).resolve() if args.root else ROOT
 
     try:
         today = dt.date.fromisoformat(args.today) if args.today else dt.date.today()
@@ -155,47 +204,94 @@ def main(argv):
         print("Error: --today no es una fecha YYYY-MM-DD valida.")
         return 2
 
-    result = plan(args.days, today)
-    if result is None:
+    found = instances(root)
+    if not found:
         if args.check:
             print("OK: no hay DREAMS.md (nada que rotar).")
             return 0
         print("OK: no existe DREAMS.md.")
         return 0
 
-    active_text, archives, needs, n_active, n_old = result
+    plans = []
+    for active, archive_dir, label in found:
+        try:
+            result = plan_one(active, archive_dir, today)
+        except NoMarkers as exc:
+            print(f"Aviso: {exc} no tiene los marcadores del diary; se saltea "
+                  "(queda fuera de la rotacion y el --check no lo ve).",
+                  file=sys.stderr)
+            continue
+        if result is None:
+            continue
+        plans.append((active, archive_dir, label, result))
+
+    if not plans:
+        print("Error: ninguno de los DREAMS.md encontrados tiene los marcadores "
+              "del diary.")
+        return 2
+
+    total_active = sum(r[3] for _, _, _, r in plans)
+    total_old = sum(r[4] for _, _, _, r in plans)
 
     if args.check:
-        if needs:
+        stale = [(label, r[4]) for _, _, label, r in plans if r[2]]
+        if stale:
+            detalle = ", ".join(
+                f"{label or 'raiz'}={n}" for label, n in stale
+            )
             print(
-                f"DREAMS DESFASADO: {n_old} entradas de meses anteriores siguen "
-                "en el activo.\n"
+                f"DREAMS DESFASADO: {total_old} entradas de meses anteriores siguen "
+                f"en los activos ({detalle}).\n"
                 "  Rotar:   python3 scripts/dreams-rotate.py"
             )
             return 1
-        print(f"OK: DREAMS en el mes en curso ({n_active} entradas activas).")
+        inst = f"{len(plans)} diario{'s' if len(plans) != 1 else ''}"
+        print(f"OK: DREAMS en el mes en curso ({inst}, {total_active} entradas activas).")
         return 0
 
     if args.dry_run:
-        print(f"[dry-run] activas={n_active} a_archivar={n_old} rota={'si' if needs else 'no'}")
+        for _, _, label, r in plans:
+            print(
+                f"[dry-run] {tag(label)}activas={r[3]} a_archivar={r[4]} "
+                f"rota={'si' if r[2] else 'no'}"
+            )
         return 0
 
     wrote = []
-    if ACTIVE.read_text(encoding="utf-8") != active_text:
-        ACTIVE.write_text(active_text, encoding="utf-8")
-        wrote.append("activo")
-    for month, text in archives.items():
-        ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
-        dest = ARCHIVE_DIR / f"DREAMS-{month}.md"
-        if (not dest.exists()) or dest.read_text(encoding="utf-8") != text:
-            dest.write_text(text, encoding="utf-8")
-            wrote.append(f"archivo:{month}")
+    failed = []
+    for active, archive_dir, label, (active_text, archives, needs, n_active, n_old) in plans:
+        name = label or "raiz"
+        try:
+            # 1) El archivo PRIMERO: mientras lo viejo no este a salvo, el activo
+            #    no se toca. Al reves, un fallo entre ambos pasos borra entradas
+            #    para siempre y el --check posterior sale verde (el activo ya
+            #    esta "limpio"). Verificado 2026-11-18 por revision B.
+            for month, text in archives.items():
+                archive_dir.mkdir(parents=True, exist_ok=True)
+                dest = archive_dir / f"DREAMS-{month}.md"
+                if (not dest.exists()) or dest.read_text(encoding="utf-8") != text:
+                    atomic_write(dest, text)
+                    wrote.append(f"{name}:archivo:{month}")
+            # 2) El activo despues, y solo si lo viejo ya se persistio.
+            if active.read_text(encoding="utf-8") != active_text:
+                atomic_write(active, active_text)
+                wrote.append(f"{name}:activo")
+        except OSError as exc:
+            # Una instancia que falla no aborta el lote: se reporta y se sigue.
+            failed.append(f"{name}: {exc}")
 
     if wrote:
-        print(f"DREAMS actualizado ({', '.join(wrote)}): {n_active} activas, "
-              f"{n_old} archivadas.")
-    else:
-        print(f"OK: DREAMS ya en el mes en curso ({n_active} activas, {n_old} archivadas).")
+        print(f"DREAMS actualizado ({', '.join(wrote)}): {total_active} activas, "
+              f"{total_old} archivadas.")
+    elif not failed:
+        print(f"OK: DREAMS ya en el mes en curso ({total_active} activas, "
+              f"{total_old} archivadas).")
+    if failed:
+        for f in failed:
+            print(f"Error: no se pudo rotar {f}", file=sys.stderr)
+        print("  El activo de esas instancias quedo intacto (no se perdieron "
+              "entradas).", file=sys.stderr)
+        return 2
     return 0
 
 

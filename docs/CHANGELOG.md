@@ -6,6 +6,22 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-18] - El diario de cada agente entra en la rotacion
+
+### Fixed
+- **`scripts/dreams-rotate.py` cubre los 8 `DREAMS.md`, no solo el de la raiz.** Enumeraba un archivo cuando ya existian ocho (raiz + `agents/*/`); cuatro (dev, critic, auditor, mind) guardaban septiembre y octubre en el activo y `--check` daba verde porque no los miraba. Ahora descubre cada instancia y archiva por agente en `memory/archive/dreaming/agents/<agente>/DREAMS-YYYY-MM.md`.
+- **Orden de escritura y atomicidad** (hallazgo de la revision B): el activo se reescribia antes que el archivo, asi que un fallo de I/O entre ambos pasos borraba entradas para siempre con `--check` verde. Ahora se persiste primero el archivo, se escribe con `tmp` + `os.replace`, y un error por instancia reporta exit 2 sin abortar el lote. El bloque ya archivado no se duplica en un reintento.
+
+### Changed
+- **`--check` y `--dry-run` reportan por instancia** (`[kanam-dev] activas=11 a_archivar=21`) y el exit 1 nombra cuales estan desfasados.
+- **Un diario sin marcadores se saltea con aviso**, en vez de abortar la rotacion de los demas.
+- **`--days` eliminado:** era un flag sin efecto, ruido de superficie.
+
+### Notes
+- **Medido al aplicar:** 53 entradas archivadas (dev 21, critic 11, mind 11, auditor 10); quedaron 103 activas en 8 diarios. Total de entradas conservado: 156 antes y 156 despues.
+- **El modo de falla era el que `growing-doc-retention` advierte:** el gate estaba en el doc, pero el doc paso a existir N veces cuando cada agente gano su directorio (ADR-074). Un gate sobre una instancia de una clase que crece es un verde sobre archivos que crecen solos.
+- **Tests:** 6 casos nuevos en `tests/bash/dreams-rotate.bats` (13/13 verdes). La revision B encontro que el caso 9 pasaba por casualidad (`! grep` sobre un archivo borrado tambien da verde); se cubrio con `[ -f ]` + marcadores y se verifico por mutacion: borrando el diario del agente fallan 4 tests.
+
 ## [2026-11-18] - TTS: el narrador barítono, y por qué Kokoro no servía
 
 ### Added
