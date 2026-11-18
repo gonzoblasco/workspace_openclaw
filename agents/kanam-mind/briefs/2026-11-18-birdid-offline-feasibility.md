@@ -32,7 +32,7 @@ Hay dos cosas llamadas BirdNET y la distinción decide el proyecto. [obs]
 
 BirdNET V2.4 (jun 2023) es el modelo que CORE verificó: más de 6,000 especies, 6,522 clases (incluye 11 no-especie), 0.826 GFLOPs, 50.5 MB FP32, backbone tipo EfficientNet-B0, embedding 1024. Fuente: https://birdnet-team.github.io/birdnet/models.html (leído 2026-11-18). [obs]
 
-Pesos V2.4 en Zenodo con exportaciones TFLite: FP32 76.8 MB, FP16 53.0 MB, INT8 45.9 MB; también TF.js 75.0 MB. Fuente: https://zenodo.org/records/15050749 (intentado 2026-11-18; el gate devolvió HTTP 500 en la reverificación, ver §10). [obs]
+Pesos V2.4 en Zenodo con exportaciones TFLite: FP32 76.8 MB, FP16 53.0 MB, INT8 45.9 MB; también TF.js 75.0 MB. Fuente: https://zenodo.org/records/15050749 · DOI 10.5281/zenodo.15050749 (leído 2026-11-18; Zenodo devuelve HTTP 500 intermitente al reverificar, ver §10). [obs]
 
 BirdNET+ V3.0 se publicó el 13 nov 2026, o sea cinco semanas después del challenge. Existió una V3 y no es la que CORE verificó. Fuente: https://zenodo.org/records/24162518. [obs]
 
@@ -188,7 +188,7 @@ No verifiqué el APK de 320 MB contando archivos; la cifra viene de la página o
 
 - https://birdnet-team.github.io/birdnet/models.html
 - https://zenodo.org/records/24162518
-- https://zenodo.org/records/15050749
+- https://zenodo.org/records/15050749 (DOI 10.5281/zenodo.15050749)
 - https://birdnet-team.github.io/birdnet-live-app/
 - https://birdnet-team.github.io/birdnet-live-app/developer/inference-engine/
 - https://birdnet-team.github.io/birdnet-live-app/developer/audio-pipeline/

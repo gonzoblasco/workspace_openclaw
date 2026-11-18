@@ -1,0 +1,229 @@
+{
+  "slug": "memoria-oral",
+  "title": "Memoria Oral — historia familiar local",
+  "brief": "MVP local de historia oral: transcribe entrevistas con whisper.cpp, compara el relato contra un checklist de cobertura y propone la siguiente pregunta. Sin nube, sin diarización, sin móvil.",
+  "status": "completed",
+  "steps": [
+    {
+      "id": 1,
+      "role": "planner",
+      "owner": "kanam-planner",
+      "task": "Confirmar el plan y la estructura del proyecto memoria-oral contra el brief de MIND",
+      "exit_criteria": "Plan validado con lint verde y brief de 10 líneas",
+      "depends_on": [],
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "projects/memoria-oral/ creado con README.md y .knowledge/BRIEF.md; plan validado contra brief de MIND"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T16:09:51+00:00",
+      "updated_at": "2026-11-18T16:09:51+00:00",
+      "started_at": null,
+      "completed_at": "2026-11-18T16:09:51+00:00",
+      "session_ref": null
+    },
+    {
+      "id": 2,
+      "role": "dev",
+      "owner": "kanam-dev",
+      "task": "Implementar esquema SQLite (entrevistas, segmentos, huecos) con FTS5 y capa de acceso",
+      "exit_criteria": "db.py con init_db, insert_entrevista, insert_segmento, insert_hueco, search_segmentos; tests verdes",
+      "depends_on": [
+        1
+      ],
+      "gate": "Auditor",
+      "status": "completed",
+      "write_paths": [],
+      "evidence": [
+        "db.py con schema+FTS5+triggers; pytest 1 test verde; demo imprime 2 entrevistas/3 segmentos/2 huecos"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 1,
+      "created_at": "2026-11-18T16:09:51+00:00",
+      "updated_at": "2026-11-18T16:13:30+00:00",
+      "started_at": "2026-11-18T16:12:24+00:00",
+      "completed_at": "2026-11-18T16:13:30+00:00",
+      "session_ref": "agent:kanam-dev:subagent:6ead971f-4561-451f-a6f2-16f79c01db84"
+    },
+    {
+      "id": 3,
+      "role": "dev",
+      "owner": "kanam-dev",
+      "task": "Integrar whisper.cpp para transcribir wav/m4a a JSON con timestamps",
+      "exit_criteria": "transcribe.py produce JSON con segmentos y timestamps; evidencia con audio de prueba",
+      "depends_on": [
+        2
+      ],
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "transcribe.py corre whisper-cli real: 1 segmento 0-6760ms con texto exacto; 2 tests verdes; demo escribe en DB"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 1,
+      "created_at": "2026-11-18T16:09:51+00:00",
+      "updated_at": "2026-11-18T16:15:33+00:00",
+      "started_at": "2026-11-18T16:14:27+00:00",
+      "completed_at": "2026-11-18T16:15:33+00:00",
+      "session_ref": "agent:kanam-dev:subagent:e8c6da46-317c-4b8c-aa2e-b2165e5666db"
+    },
+    {
+      "id": 4,
+      "role": "dev",
+      "owner": "kanam-dev",
+      "task": "Implementar checklist de cobertura y detección de huecos contra el transcript",
+      "exit_criteria": "checklist.py detecta huecos con categoría y cita del segmento que la cubre; tests verdes",
+      "depends_on": [
+        3
+      ],
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "checklist.py + 2 tests verdes; sobre el transcript real: cubre ninez/familia/trabajo/recuerdos, hueco=migracion"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 1,
+      "created_at": "2026-11-18T16:09:51+00:00",
+      "updated_at": "2026-11-18T16:20:35+00:00",
+      "started_at": "2026-11-18T16:20:35+00:00",
+      "completed_at": "2026-11-18T16:20:35+00:00",
+      "session_ref": "main:local"
+    },
+    {
+      "id": 5,
+      "role": "dev",
+      "owner": "kanam-dev",
+      "task": "Implementar agente que propone la próxima pregunta a partir de los huecos, con qwen3:4b-instruct-2507 (Apache-2.0)",
+      "exit_criteria": "pregunta.py devuelve pregunta + hueco que la motiva; usa Ollama local; tests con mock",
+      "depends_on": [
+        4
+      ],
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "questions.py con qwen3:4b-instruct-2507; 2 tests verdes; prueba real 4.46s: 'Qué recuerdo más especial tenés de tu infancia' (categoria recuerdos)"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T16:09:51+00:00",
+      "updated_at": "2026-11-18T16:48:01+00:00",
+      "started_at": null,
+      "completed_at": "2026-11-18T16:48:01+00:00",
+      "session_ref": null
+    },
+    {
+      "id": 6,
+      "role": "dev",
+      "owner": "kanam-dev",
+      "task": "Export a Markdown de la entrevista con timestamps, huecos y preguntas",
+      "exit_criteria": "export_md.py genera archivo abrible sin la app",
+      "depends_on": [
+        5
+      ],
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "export_md.py + 2 tests verdes; export real genera output/entrevista-demo.md con relato, huecos y pregunta"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T16:09:51+00:00",
+      "updated_at": "2026-11-18T17:02:53+00:00",
+      "started_at": null,
+      "completed_at": "2026-11-18T17:02:53+00:00",
+      "session_ref": null
+    },
+    {
+      "id": 7,
+      "role": "studio",
+      "owner": "kanam-studio",
+      "task": "UI local de una pantalla: elegir audio, transcript con timestamps, huecos, pregunta, export",
+      "exit_criteria": "ui/index.html servido en 127.0.0.1; flujo completo usable",
+      "depends_on": [
+        6
+      ],
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "ui.py+4 templates; GET / 200; POST /transcribe 200 con cobertura 60% y pregunta; POST /export escribe output/entrevista-demo.md"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T16:09:51+00:00",
+      "updated_at": "2026-11-18T17:04:30+00:00",
+      "started_at": null,
+      "completed_at": "2026-11-18T17:04:30+00:00",
+      "session_ref": null
+    },
+    {
+      "id": 8,
+      "role": "auditor",
+      "owner": "kanam-auditor",
+      "task": "Auditar timestamps y citas de huecos contra el audio real",
+      "exit_criteria": "reporte con evidencia de timestamps correctos y citas válidas",
+      "depends_on": [
+        5
+      ],
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "docs/audit-timestamps.md: offsets 0-6760ms verificados contra afinfo 7.125s; texto coincide salvo '42' por 'cuarenta y dos'"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T16:09:51+00:00",
+      "updated_at": "2026-11-18T17:15:49+00:00",
+      "started_at": null,
+      "completed_at": "2026-11-18T17:15:49+00:00",
+      "session_ref": null
+    },
+    {
+      "id": 9,
+      "role": "critic",
+      "owner": "kanam-critic",
+      "task": "Auditar privacidad (0 sockets) y encuadre ético (consentimiento, autoría, no reemplazo)",
+      "exit_criteria": "privacy_check.md con salida de lsof y veredicto ético",
+      "depends_on": [
+        7
+      ],
+      "status": "completed",
+      "gate": null,
+      "write_paths": [],
+      "evidence": [
+        "docs/privacy-check.md: 9 muestras lsof, 0 conexiones; consentimiento en schema pero no en UI (deuda)"
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T16:09:51+00:00",
+      "updated_at": "2026-11-18T17:15:49+00:00",
+      "started_at": null,
+      "completed_at": "2026-11-18T17:15:49+00:00",
+      "session_ref": null
+    }
+  ],
+  "objective": "",
+  "owner": "gonzalo",
+  "created_at": "2026-11-18T16:09:51+00:00",
+  "updated_at": "2026-11-18T17:15:49+00:00",
+  "gates": [],
+  "metadata": {},
+  "closed_at": "2026-11-18T17:15:49+00:00"
+}

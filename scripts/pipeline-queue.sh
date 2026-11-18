@@ -344,14 +344,16 @@ case "$CMD" in
 
   report)
     # Per-unit telemetry: queue counters, liveness fields, track history.
-    read_state | jq -r '"UNIT | STATE | OWNER | ATTEMPTS | PID | LAST-ERROR | ITER | REGR",
-      (.units[] | (.name + " | " + .state + " | " + .owner + " | " + ((.attempts // 0)|tostring) + " | " + (.pid // "-") + " | " + (.lastError // "-") + " | " + ((.iterations // 0)|tostring) + " | " + ((.regressions // 0)|tostring)))' 2>/dev/null || {
+    report_out=$(read_state | jq -r '"UNIT | STATE | OWNER | ATTEMPTS | PID | LAST-ERROR | ITER | REGR",
+      (.units[] | (.name + " | " + .state + " | " + .owner + " | " + ((.attempts // 0)|tostring) + " | " + (.pid // "-") + " | " + (.lastError // "-") + " | " + ((.iterations // 0)|tostring) + " | " + ((.regressions // 0)|tostring)))' 2>/dev/null); report_rc=$?
+    [ -n "$report_out" ] && printf '%s\n' "$report_out"
+    [ "$report_rc" -eq 0 ] && [ -n "$report_out" ] || {
       echo "Telemetria (sin jq):"; read_state; }
     ;;
 
   status)
     # Extended status: phase header, queue counts by state, per-unit line.
-    read_state | jq -r --arg max "$MAX_ATTEMPTS" '
+    status_out=$(read_state | jq -r --arg max "$MAX_ATTEMPTS" '
       "Fase: " + .fase + " | T-score: " + (.complexity // "n/a") + " | max attempts: " + $max,
       "QUEUED: " + ([.units[] | select(.state=="queued")] | length | tostring) +
       " RUNNING: " + ([.units[] | select(.state=="running")] | length | tostring) +
@@ -359,7 +361,9 @@ case "$CMD" in
       " DONE: " + ([.units[] | select(.state=="done")] | length | tostring) +
       " FAILED: " + ([.units[] | select(.state=="failed")] | length | tostring),
       "UNIT | STATE | OWNER | ATTEMPTS | PID | LAST-ERROR",
-      (.units[] | (.name + " | " + .state + " | " + .owner + " | " + ((.attempts // 0)|tostring) + " | " + (.pid // "-") + " | " + (.lastError // "-")))' 2>/dev/null || {
+      (.units[] | (.name + " | " + .state + " | " + .owner + " | " + ((.attempts // 0)|tostring) + " | " + (.pid // "-") + " | " + (.lastError // "-")))' 2>/dev/null); status_rc=$?
+    [ -n "$status_out" ] && printf '%s\n' "$status_out"
+    [ "$status_rc" -eq 0 ] && [ -n "$status_out" ] || {
       echo "Estado (sin jq):"; read_state; }
     ;;
 

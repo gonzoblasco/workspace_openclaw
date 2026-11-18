@@ -29,6 +29,7 @@ DRIFT = SCRIPTS / "gateway-config-drift.sh"
 AUDIT = SCRIPTS / "gateway-audit.sh"
 CHANGELOG = SCRIPTS / "gateway-change-log.sh"
 CHANNELS_WATCH = SCRIPTS / "gateway-channels-watch.sh"
+CHANNELS_REFRESH = SCRIPTS / "gateway-channels-refresh.sh"
 BUDGET_WATCH = SCRIPTS / "gateway-budget-watch.sh"
 POSTMORTEM = SCRIPTS / "gateway-postmortem.sh"
 RISK_POLICY = SCRIPTS / "gateway-risk-policy.sh"
@@ -468,6 +469,56 @@ class TestChannelsWatch(unittest.TestCase):
                            capture_output=True, text=True, env=env, timeout=60)
         self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
         self.assertIn("invalido", r.stdout + r.stderr)
+
+
+class TestChannelsRefresh(unittest.TestCase):
+    """gateway-channels-refresh.sh: cache de estado de canales.
+
+    Existe porque medir dentro del trigger hacia timeout: el CLI `openclaw`
+    arranca un Node completo y dentro del code-mode se encola detras de otros
+    procesos (1.8s a mano, 50-80s ahi, contra ~30s de presupuesto).
+
+    La solucion es separar medir de decidir: el refresh mide sin apuro y deja
+    el veredicto en un archivo; el trigger solo lee.
+    """
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="ops-chrefresh-"))
+        self.cache = self.tmp / "state.json"
+        self.bindir = self.tmp / "bin"
+        self.bindir.mkdir()
+        # Shim del script de medicion: el refresh lo invoca por ruta relativa.
+        self.fake_scripts = self.tmp / "scripts"
+        self.fake_scripts.mkdir()
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_refresh_writes_parseable_cache(self):
+        env = dict(os.environ)
+        env["CHANNELS_CACHE"] = str(self.cache)
+        env["CHANNELS_TIMEOUT"] = "2"
+        r = subprocess.run(["bash", str(CHANNELS_REFRESH)],
+                           capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertTrue(self.cache.exists(), "no escribio el cache")
+        data = json.loads(self.cache.read_text())
+        self.assertIn("ts", data)
+        self.assertIn("healthy", data)
+        self.assertIn("exitCode", data)
+        self.assertIn("detail", data)
+
+    def test_refresh_always_exits_zero(self):
+        """El refresh no debe fallar por lo que mida: su trabajo es dejar dato.
+
+        Si saliera != 0 por un canal caido, el scheduler lo contaria como job
+        roto y lo deshabilitaria, que es justo lo que pasaba antes.
+        """
+        env = dict(os.environ)
+        env["CHANNELS_CACHE"] = str(self.cache)
+        r = subprocess.run(["bash", str(CHANNELS_REFRESH)],
+                           capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
 
 class TestBudgetWatch(unittest.TestCase):

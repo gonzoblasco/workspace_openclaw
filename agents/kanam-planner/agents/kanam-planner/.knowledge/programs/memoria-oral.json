@@ -1,0 +1,74 @@
+{
+  "slug": "memoria-oral",
+  "brief": "Construir un MVP que grabe entrevistas familiares, transcriba audio localmente con Whisper.cpp, detecte huecos según checklist y genere la siguiente pregunta, almacenando datos en SQLite con FTS5 y ofreciendo UI HTML local para carga, visualización, export a Markdown, garantizando privacidad (cero sockets) y siguiendo consentimiento ético.",
+  "steps": [
+    {
+      "id": 1,
+      "task": "Inicializar proyecto y crear estructura de carpetas",
+      "role": "planner",
+      "owner": "planner",
+      "exit_criteria": "Carpeta /Users/gonzoblasco/.openclaw/workspace/projects/memoria-oral/ creada con subfolders src, ui, data, docs",
+      "depends_on": []
+    },
+    {
+      "id": 2,
+      "task": "Definir modelo de datos SQLite con tablas entrevistas, segmentos y huecos, incluir FTS5",
+      "role": "dev",
+      "owner": "dev",
+      "exit_criteria": "Archivo src/db_schema.sql creado y probado con sqlite3",
+      "depends_on": [1]
+    },
+    {
+      "id": 3,
+      "task": "Implementar ingestión de audio y transcripción local usando whisper.cpp (ggml-large-v3-turbo-q5_0)",
+      "role": "dev",
+      "owner": "dev",
+      "exit_criteria": "Script src/transcribe.py que genera transcript JSON con timestamps",
+      "depends_on": [2]
+    },
+    {
+      "id": 4,
+      "task": "Crear agente de análisis que compare transcript contra checklist y detecte huecos",
+      "role": "mind",
+      "owner": "mind",
+      "exit_criteria": "Función src/analysis.py que devuelve lista de preguntas pendientes",
+      "depends_on": [3]
+    },
+    {
+      "id": 5,
+      "task": "Desarrollar UI local (HTML/JS) para cargar audio, mostrar transcript con timestamps, resaltar huecos y solicitar siguiente pregunta",
+      "role": "studio",
+      "owner": "studio",
+      "exit_criteria": "Carpeta ui con index.html y assets, servidor Python http.server en 127.0.0.1 sirve la UI",
+      "depends_on": [3,4]
+    },
+    {
+      "id": 6,
+      "task": "Implementar export a Markdown del transcript completo y de los huecos identificados",
+      "role": "dev",
+      "owner": "dev",
+      "exit_criteria": "Endpoint src/export_md.py que genera archivo .md en data/",
+      "depends_on": [5]
+    },
+    {
+      "id": 7,
+      "task": "Auditoría de timestamps y citas; validar precisión y formato",
+      "role": "auditor",
+      "owner": "auditor",
+      "exit_criteria": "Reporte auditoria audit_report.txt con evidencias de timestamps correctos",
+      "depends_on": [3]
+    },
+    {
+      "id": 8,
+      "task": "Crítica de privacidad: verificar que el proceso no abre sockets y que los datos permanecen locales",
+      "role": "critic",
+      "owner": "critic",
+      "exit_criteria": "Prueba de lsof mostrando cero sockets y documento privacy_check.md",
+      "depends_on": [3]
+    }
+  ],
+  "gates": {
+    "auditor": 7,
+    "critic": 8
+  }
+}
