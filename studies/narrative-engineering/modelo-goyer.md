@@ -1,24 +1,25 @@
-# Modelo David S. Goyer (sintesis acumulativa)
+# Modelo David S. Goyer (síntesis acumulativa)
 
-> Este archivo se consolida a medida que avanzan los casos. Se cierra al terminar el caso 02.
-
-**Base de evidencia:** Caso 01 - Dark City (original) + Caso 02 - Batman Begins (adaptacion).
-**Estado:** consolidado con 4/4 ejes en ambos casos.
+> Síntesis de los casos 01 (Dark City) y 02 (Batman Begins). El caso 03 (Catherine Johnson) está
+> incluido solo como contraste de autor.
+> **Estado:** 2026-11-17. Reescrito con el método de cinco ejes. **El Eje 5 no está medido** y
+> este archivo dice por qué y qué cambia eso.
 
 ---
 
-## El hallazgo central (el mas util para escribir)
+## El hallazgo central (el más útil para escribir)
 
 En los dos casos el protagonista **no derrota al mundo: hereda el mecanismo del mundo**.
+
 - Dark City: Murdoch termina pudiendo **rediseñar** la ciudad que lo encerraba.
-- Batman Begins: Bruce termina **siendo** la cosa que la ciudad teme - le saca el arma al
-  enemigo (el miedo) y la hace propia.
+- Batman Begins: Bruce termina **siendo** la cosa que la ciudad teme: le saca el arma al enemigo
+  (el miedo) y la hace propia.
 
-El arco no es "vencer al villano". Es **quedarse con la maquina que lo oprimia**.
+El arco no es "vencer al villano". Es **quedarse con la máquina que lo oprimía**.
 
-Corolario practico: si el clímax de tu historia es solo "el bueno le gana al malo", estas
-perdiendo el pago mas grande. La pregunta correcta es: *¿que mecanismo del mundo puede el
-protagonista apropiarse en la ultima escena?*
+**Corolario práctico:** si el clímax de tu historia es solo "el bueno le gana al malo", estás
+perdiendo el pago más grande. La pregunta correcta es: *¿qué mecanismo del mundo puede el
+protagonista apropiarse en la última escena?*
 
 ---
 
@@ -27,48 +28,69 @@ protagonista apropiarse en la ultima escena?*
 Independiente del tipo de material, Goyer aplica el mismo procedimiento:
 
 1. **Construye una Regla de Hierro.** Una sola, clara, que no se rompe.
-   - Dark City: "la realidad es maleable".
-   - Batman Begins: "el miedo es la herramienta definitiva".
-2. **Disena la identidad como rompecabezas.** El personaje no sabe quien es (Dark City) o no
-   sabe en que se tiene que convertir (Batman Begins). El vacio es el motor.
-3. **Usa el entorno como motor de presion.** La ciudad no decora: encierra, corrompe, presiona.
-4. **Administra la informacion con asimetria.** Nunca hay una respuesta sin una pregunta
-   plantada antes. Cambia el efecto (asombro vs. inevitabilidad), no el principio.
+   - Dark City: la realidad es maleable.
+   - Batman Begins: el miedo es la herramienta definitiva.
+2. **Diseña la identidad como rompecabezas.** El personaje no sabe quién es o no sabe en qué se
+   tiene que convertir. El vacío es el motor.
+3. **Usa el entorno como motor de presión.** La ciudad no decora: encierra, corrompe, presiona.
+4. **Administra la información con asimetría.** Nunca hay respuesta sin pregunta plantada antes.
+   Cambia el efecto (asombro contra inevitabilidad), no el principio.
 
-## Que NO hace
+## Lo que NO hace
 
-- No importa si el material es original o adaptado: **no le teme a la adaptacion**, la usa
-  como materia prima para desmitificar.
-- No explica con dialogo lo que puede mostrar con sistema (entrenamiento, pruebas, errores).
-- No da biografia completa: da vacio.
+- No le teme a la adaptación: la usa como materia prima para desmitificar.
+- No explica con diálogo lo que puede mostrar con sistema (entrenamiento, pruebas, errores).
+- No da biografía completa: da vacío.
 - No revela al villano real en el acto 1: usa una cortina de humo.
-- No deja al protagonista ganar solo por fuerza: lo hace apropiarse de una regla del mundo.
+- No deja al protagonista ganar por fuerza: lo hace apropiarse de una regla del mundo.
 
-## Diferencia entre original y adaptacion (hallazgo del caso 02)
+---
+
+## Diferencia entre original y adaptación (hallazgo del caso 02)
 
 | | Material original | Material adaptado |
 |---|---|---|
-| Punto de partida | El mundo es un misterio a develar | El personaje es un hecho a justificar |
-| Motor | **Descubrir** la identidad | **Construir** la identidad |
-| Efecto en el publico | Asombro | Inevitabilidad |
-| Riesgo tipico | Mundo lindo pero vacio | Personaje dibujo, no persona |
-| Antidoto Goyer | Escenografia Activa | Sistema de adquisicion |
+| Punto de partida | el mundo es un misterio a develar | el personaje es un hecho a justificar |
+| Motor | **descubrir** la identidad | **construir** la identidad |
+| Efecto en el público | asombro | inevitabilidad |
+| Riesgo típico | mundo lindo pero vacío | personaje dibujo, no persona |
+| Antídoto Goyer | escenografía activa | sistema de adquisición |
 
-## Hipótesis confirmada (caso 03)
+---
 
-Los **4 ejes** aparecen también en la obra de **Catherine Johnson** (*Mamma Mia!*), autor distinto a Goyer. Esto valida que el modelo constituye una **forma universal de estructurar narrativas**, no solo una firma personal.
+## Límite del modelo (corregido el 2026-11-17)
 
-**Estado:** consolidado con 4/4 ejes en los tres casos analizados (Dark City, Batman Begins y Mamma Mia!).
+La versión anterior de este archivo decía que los cuatro ejes en tres casos probaban una
+**"firma de autor"** y una **"forma universal de estructurar narrativas"**. Las dos
+afirmaciones están retiradas. Motivos:
 
-## Reglas operativas para Gonzo (borrador, se amplia)
+1. **Los cuatro ejes son estructura, no firma.** Cualquier guionista competente los produce:
+   son la versión operativa de Campbell y de Syd Field. Encontrarlos en Goyer no lo distingue de
+   decenas de autores.
+2. **La confirmación era circular.** El modelo se definió mirando a Goyer y después se confirmó
+   mirando a Goyer.
+3. **El Eje 5 —el que sí distingue— no existe en estos casos.** Un guion no es prosa: no hay
+   distribución de frases que medir. Para hablar de la voz de Goyer haría falta texto narrativo
+   suyo en edición estable, y eso el estudio no lo tiene.
+
+**Qué queda en pie:** el hallazgo central (heredar el mecanismo), la distinción original contra
+adaptación, y las reglas operativas. Son útiles para escribir aunque su respaldo empírico sea
+más débil de lo que decía este archivo.
+
+**Qué haría falta para hablar de "firma":** medir su prosa con `prose-metrics.py` y compararla
+con los cinco perfiles ya cargados. Sin eso, "firma" es una palabra que no nos ganamos.
+
+---
+
+## Reglas operativas para Gonzo (borrador, se amplía)
 
 - Buscar la Regla de Hierro antes de escribir una sola escena.
 - Que el escenario estorbe: si no estorba, es decorado.
-- Escribir tres columnas: heroe / villano / publico. El conflicto vive en la brecha.
+- Escribir tres columnas: héroe / villano / público. El conflicto vive en la brecha.
 - Nunca responder sin haber preguntado antes.
-- Dar vacio, no biografia.
-- En adaptaciones: crear el sistema de adquisicion del poder.
-- **Preguntar en el clímax: ¿de que mecanismo del mundo se apropia el protagonista?**
-- **La escenografia tambien habla:** que la arquitectura diga la verdad que el dialogo
-  todavia esconde (el tren elevado de Gotham = el legado del padre vuelto arma).
+- Dar vacío, no biografía.
+- En adaptaciones: crear el sistema de adquisición del poder.
+- **Preguntar en el clímax: ¿de qué mecanismo del mundo se apropia el protagonista?**
+- **La escenografía también habla:** que la arquitectura diga la verdad que el diálogo todavía
+  esconde (el tren elevado de Gotham es el legado del padre vuelto arma).
 - **La herramienta final suele ser el miedo o el lenguaje del mundo**, no un objeto nuevo.

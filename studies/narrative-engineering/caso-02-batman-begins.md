@@ -1,142 +1,155 @@
-# Caso 02 - Batman Begins (2005)
+# Caso 02 — Batman Begins (2005)
 
-**Autor foco:** David S. Goyer (guion, con Christopher Nolan; historia de Goyer)
-**Tipo de material:** **Adaptacion** (personaje y lore de DC Comics)
-**Objetivo del caso:** estirar el modelo. Ver si la misma ingenieria de Dark City aparece
+**Autor foco:** David S. Goyer (historia y guion, con Christopher Nolan)
+**Tipo de material:** **Adaptación** (personaje y lore de DC Comics)
+**Objetivo del caso:** estirar el modelo. Ver si la misma ingeniería de Dark City aparece
 cuando el material NO es original, sino preexistente.
-**Estado:** 4/4 ejes analizados
+**Estado:** 5/5 ejes. Eje 5 **no medido** — ver §5.
+**Reescrito el 2026-11-17** con el método vigente. El análisis de los ejes 1-4 es el del
+2026-10-01, revisado.
 
 ---
 
-## Eje 1 - Premisa y Regla de Hierro
+## 1. Premisa y Regla de Hierro
 
-En el comic, Batman es un **hecho** (rico, gadgets, pelea contra el crimen). Para Goyer eso
-es un resultado, no una historia. Aplica **desmitificacion**: *¿como es fisica y
-psicologicamente posible que un hombre se convierta en esto?*
+En el cómic, Batman es un **hecho** (rico, artefactos, pelea contra el crimen). Para Goyer eso
+es un resultado, no una historia. Aplica **desmitificación**: *¿cómo es física y
+psicológicamente posible que un hombre se convierta en esto?*
 
-**Regla de Hierro nueva:** **"el miedo es la herramienta definitiva"**.
-El miedo no es sentimiento, es mecanica de control: Bruce lo usa para combatir el crimen,
-Ra's al Ghul para "limpiar" la ciudad, el villano para paralizar. Con esa moneda de cambio,
-una pelicula de accion se convierte en un estudio sobre la voluntad.
+**Regla de Hierro nueva:** *el miedo es la herramienta definitiva*.
+El miedo no es sentimiento, es mecánica de control: Bruce lo usa para combatir el crimen, Ra's
+al Ghul para "limpiar" la ciudad, el villano para paralizar. Con esa moneda de cambio, una
+película de acción se convierte en un estudio sobre la voluntad.
 
-**Metodologia del origen logico (sistema de adquisicion):** no decir "entro mucho", mostrar
-el sistema: Trauma (miedo al murcielago = ancla emocional) -> Viaje (exilio, aislamiento) ->
-Liga de las Sombras (metodo tecnico).
+**Sistema de adquisición:** no decir "entrenó mucho", mostrar el sistema: trauma (el miedo al
+murciélago como ancla) → viaje (exilio, aislamiento) → Liga de las Sombras (método técnico).
 
-**Contraste Absoluto (dualidad):** Bruce Wayne (mascara, playboy superficial) vs. Batman
-(realidad, el hombre que acepto su miedo). Misma estructura que Dark City: la verdad escondida
-detras de una fachada.
+**Contraste absoluto (dualidad):** Bruce Wayne (máscara, playboy superficial) contra Batman
+(realidad, el hombre que aceptó su miedo). La misma estructura que Dark City: la verdad
+escondida detrás de una fachada.
 
-**Leccion:** ante una adaptacion o un personaje con habilidades extraordinarias, **crear un
-sistema de adquisicion**. Si el espectador entiende la logica del poder (Miedo -> Entrenamiento
--> Simbolo), el personaje deja de ser un dibujo y se vuelve persona.
+**Lección:** ante una adaptación o un personaje con habilidades extraordinarias, **crear un
+sistema de adquisición**. Si el espectador entiende la lógica del poder —miedo, entrenamiento,
+símbolo—, el personaje deja de ser un dibujo y se vuelve persona.
 
-## Eje 2 - Gestion de la Informacion
+## 2. Gestión de la información
 
-En Batman Begins la informacion es **arma**, no asombro.
+Acá la información es **arma**, no asombro.
 
 1. **El misterio del tercero en discordia.** Durante medio film la brecha es "Bruce contra el
-   crimen de Gotham"; la Liga de las Sombras aparece como fuerza mistica y distante. El crimen
-   comun funciona como **cortina de humo** para que la amenaza real (Ra's al Ghul) pegue doble.
-   *No revelar al villano final en el acto 1.*
-2. **Goteo del codigo de honor.** Las reglas de la Liga no se explican con dialogo expositivo:
-   se muestran por pruebas y errores (disciplina -> falta de piedad -> traicion). Mientras
-   Bruce aprende, el publico aprende: **aprendizaje paralelo**, cero infodumping.
-3. **Ironia dramatica del simbolo.** Tres capas sobre el murcielago: para Bruce es su miedo
-   personal; el publico sabe que sera su arma; el villano ve una debilidad explotable. Al
-   elegirlo, se cierra un circulo: el miedo que lo paralizaba pasa a paralizar a sus enemigos.
+   crimen de Gotham"; la Liga de las Sombras aparece como fuerza mística y distante. El crimen
+   común funciona como **cortina de humo** para que la amenaza real pegue doble. *No revelar al
+   villano final en el acto 1.*
+2. **Goteo del código de honor.** Las reglas de la Liga no se explican con diálogo expositivo:
+   se muestran por pruebas y errores (disciplina → falta de piedad → traición). Mientras Bruce
+   aprende, el público aprende: **aprendizaje paralelo**, cero infodumping.
+3. **Ironía dramática del símbolo.** Tres capas sobre el murciélago: para Bruce es su miedo
+   personal; el público sabe que será su arma; el villano ve una debilidad explotable. Al
+   elegirlo se cierra un círculo: el miedo que lo paralizaba pasa a paralizar a sus enemigos.
 
-**Comparativa:** en Dark City la informacion genera **asombro** (¿que es este lugar?); en
-Batman Begins genera **inevitabilidad** (¿como termina esto?). Mismo principio en ambos:
-*jamas dar una respuesta sin haber plantado antes la pregunta.*
+**Comparativa:** en Dark City la información genera **asombro** (¿qué es este lugar?); en
+Batman Begins genera **inevitabilidad** (¿cómo termina esto?). Mismo principio en ambos:
+*jamás dar una respuesta sin haber plantado antes la pregunta.*
 
-**Leccion:** preguntarse "¿que desea saber el espectador ahora mismo?" y NO responder: dar una
-pista que abra una pregunta nueva. Lo que engancha no es la respuesta final, es la sensacion
-de estar a punto de descubrirla.
+**Lección:** preguntarse "¿qué desea saber el espectador ahora mismo?" y no responder: dar una
+pista que abra una pregunta nueva. Lo que engancha no es la respuesta final, es la sensación de
+estar a punto de descubrirla.
 
-## Eje 3 - World-building Funcional
+## 3. World-building funcional
 
-**Formula:** Escenario -> Regla -> Herramienta. Gotham no es un decorado gotico: es un
-mecanismo que empuja.
+Gotham no es un decorado gótico: es un mecanismo que empuja.
 
-1. **Escenario como obstaculo.** Gotham no es una ciudad a salvar, es una ciudad que ya
-   esta perdida. La corrupcion no es un villano, es el clima: Falcone tiene jueces y
-   policias comprados. *¿Como impide esto el objetivo?* Le cierra a Bruce la puerta legal.
-   No puede ganar dentro del sistema, porque el sistema esta comprado. El escenario lo
-   expulsa del sistema y lo empuja al mito: para pelear contra una ciudad corrupta hay que
-   dejar de ser un ciudadano. Es exactamente el mismo movimiento que en Dark City, donde
-   el mundo empuja al personaje a hackearlo.
-2. **Estetica como pista.** Gotham esta partida visualmente en dos: los Narrows (gotico,
-   humedo, apretado, cables colgando - el miedo vive ahi) y la torre Wayne (limpia, fria,
-   vidriada). El tren elevado cruza las dos y es el unico hilo que las une: es literalmente
-   el simbolo del padre (Thomas Wayne lo construyo). Cuando Ra's lo usa para repartir el
-   miedo por toda la ciudad, **el legado del padre se convierte en el arma del enemigo**.
-   La arquitectura cuenta lo que el dialogo no dice: el miedo de los pobres es el unico
-   que se puede explotar a escala.
-3. **Gimmick funcional.** Aca el poder no es superpoder, es **el simbolo y el miedo como
-   tecnologia**. Bruce no puede estar en todos lados; entonces convierte su presencia en
-   leyenda. La herramienta es la teatralidad: aparecer, desaparecer, el sonido, la
-   oscuridad. Ra's se lo dice explicitamente (*theatricality and deception are powerful
-   agents*). El chico que le tenia miedo al pozo termina usando el lenguaje del pozo.
-   **El mundo que lo aterraba se vuelve su arsenal.**
+1. **Escenario como obstáculo.** No es una ciudad a salvar, es una ciudad que ya está perdida.
+   La corrupción no es un villano, es el clima: Falcone tiene jueces y policías comprados.
+   *¿Cómo impide esto el objetivo?* Le cierra a Bruce la puerta legal. No puede ganar dentro del
+   sistema porque el sistema está comprado: el escenario lo expulsa del sistema y lo empuja al
+   mito. Para pelear contra una ciudad corrupta hay que dejar de ser un ciudadano. Es el mismo
+   movimiento que en Dark City, donde el mundo empuja al personaje a hackearlo.
+2. **Estética como pista.** Gotham está partida en dos: los Narrows (gótico, húmedo, apretado,
+   cables colgando: el miedo vive ahí) y la torre Wayne (limpia, fría, vidriada). El tren
+   elevado cruza las dos y es el único hilo que las une: es literalmente el símbolo del padre,
+   que lo construyó. Cuando Ra's lo usa para repartir el miedo por toda la ciudad, **el legado
+   del padre se convierte en el arma del enemigo**. La arquitectura cuenta lo que el diálogo no
+   dice.
+3. **Artilugio funcional.** El poder no es superpoder: es **el símbolo y el miedo como
+   tecnología**. Bruce no puede estar en todos lados, entonces convierte su presencia en
+   leyenda. La herramienta es la teatralidad: aparecer, desaparecer, el sonido, la oscuridad. El
+   chico que le tenía miedo al pozo termina usando el lenguaje del pozo. **El mundo que lo
+   aterraba se vuelve su arsenal.**
 
-**Detalle que cierra la formula:** el villano fabrica miedo con una toxina; Batman fabrica
-miedo con puro lenguaje. Los dos son fabricantes de miedo. El enfrentamiento final no es
-quien pega mas fuerte: es **quien controla el miedo de Gotham**. El gimmick del mundo es la
-moneda del clímax.
+**Detalle que cierra la fórmula:** el villano fabrica miedo con una toxina; Batman fabrica
+miedo con puro lenguaje. Los dos son fabricantes de miedo. El enfrentamiento final no es quién
+pega más fuerte: es **quién controla el miedo de Gotham**.
 
-## Eje 4 - Arco de Identidad
+## 4. Arco de identidad
 
-1. **Identidad como rompecabezas.** Bruce no busca *quien es*: busca *en que se convierte*.
-   El vacio es la culpa sin resolver (le pidio al padre que se fueran del teatro, y eso los
-   puso en el callejon). La pregunta que lo mueve no es "¿quien soy?" sino "¿como convierto
-   esta culpa en algo util?".
-2. **Ancla emocional.** Dos anclas concretas: (a) el pozo con la cuerda, el murcielago que
-   lo levanta - el miedo fisico; (b) la figura del padre, el medico que curaba a los
-   criminales heridos. El padre le da la brujula moral opuesta a la del enemigo: **curar vs
-   castigar**. Bruce no puede ser un asesino porque traicionaria a su padre; pero tampoco
-   puede ser solo un ciudadano legal porque el sistema esta podrido. El arco es la
-   reconciliacion de esas dos cosas.
-3. **Evolucion en cuatro fases.**
-   - **Victima/Culpable:** el nino del pozo y del callejon. Preso del miedo y la culpa.
-     Huye de Gotham.
-   - **Observador/Buscador:** el exilio. Estudia a los criminales para poder castigarlos.
-     Mira desde afuera; se entrena con la Liga de las Sombras.
-   - **Operador:** vuelve y usa el miedo, pero todavia cree que alcanza con musculo y
-     gadgets. El quiebre es descubrir que Ducard ES Ra's: habia estado a un paso de
-     matar, ejecutando, y se nego (quemar el templo).
-   - **Creador/Simbolo:** entiende que su identidad no es un disfraz sino una **herramienta
-     compartida**. No salva a Gotham el solo: hace publico que Batman existe. La mascara
-     deja de esconder a Bruce y pasa a ser el mensaje. *It's not who I am underneath, but
-     what I do that defines me.*
+1. **Identidad como rompecabezas.** Bruce no busca *quién es*: busca *en qué se convierte*. El
+   vacío es la culpa sin resolver: le pidió al padre que se fueran del teatro y eso los puso en
+   el callejón. La pregunta que lo mueve no es "¿quién soy?" sino "¿cómo convierto esta culpa en
+   algo útil?".
+2. **Ancla emocional.** Dos: el pozo con la cuerda y el murciélago que lo levanta (el miedo
+   físico); y la figura del padre, el médico que curaba a los criminales heridos. El padre le da
+   la brújula moral opuesta a la del enemigo: **curar contra castigar**. Bruce no puede ser un
+   asesino porque traicionaría a su padre; pero tampoco puede ser solo un ciudadano legal porque
+   el sistema está podrido. El arco es la reconciliación de esas dos cosas.
+3. **Evolución en cuatro fases.**
+   - **Víctima / culpable:** el niño del pozo y del callejón. Preso del miedo y la culpa. Huye.
+   - **Observador / buscador:** el exilio. Estudia a los criminales para poder castigarlos;
+     mira desde afuera y se entrena con la Liga.
+   - **Operador:** vuelve y usa el miedo, pero todavía cree que alcanza con músculo y artefactos.
+     El quiebre es descubrir que Ducard es Ra's: estuvo a un paso de matar ejecutando y se negó.
+   - **Creador / símbolo:** entiende que su identidad no es un disfraz sino una **herramienta
+     compartida**. No salva a Gotham solo: hace público que Batman existe. La máscara deja de
+     esconder a Bruce y pasa a ser el mensaje.
 
-## Hallazgo central del caso 02
+## 5. Voz y prosa
+
+**No medido, por la misma razón que el caso 01:** es un guion, no prosa narrativa, y no hay
+edición verificable del texto. Las cifras que se obtendrían no describirían la voz de nadie.
+
+**Lo que sí se puede decir sin números** (lectura): el guion de Goyer es **funcional y
+elíptico**. Las escenas se encadenan por corte, no por transición; las líneas de acción son
+cortas y físicas, y el diálogo tiende a la sentencia ("*it's not who I am underneath, but what
+I do that defines me*"). Hay una preferencia marcada por la frase breve y por el silencio como
+respuesta: Bruce contesta con acciones, no con explicaciones.
+
+**Hipótesis a verificar algún día:** si se midiera la prosa de Goyer (sus novelas gráficas o
+guiones publicados en edición estable), probablemente caería cerca de Card en ritmo —frase
+corta— y lejos en densidad de pensamiento, porque su información viaja por estructura, no por
+interioridad.
+
+## 6. Hallazgo central del caso
 
 En los dos casos el protagonista **no derrota al mundo: hereda el mecanismo del mundo**.
-- Dark City: Murdoch termina pudiendo **rediseñar** la ciudad.
-- Batman Begins: Bruce termina **siendo** la cosa que la ciudad teme - le saca el arma al
-  enemigo (el miedo) y la hace propia.
 
-El arco no es "vencer al villano". Es **quedarse con la maquina que lo oprimia**.
+- Dark City: Murdoch termina pudiendo **rediseñar** la ciudad que lo encerraba.
+- Batman Begins: Bruce termina **siendo** la cosa que la ciudad teme: le saca el arma al enemigo
+  y la hace propia.
 
----
+El arco no es "vencer al villano". Es **quedarse con la máquina que lo oprimía**.
 
-## Comparativa contra el caso 01
+## 7. Comparativa contra el caso 01
 
-| Elemento | Dark City (original) | Batman Begins (adaptacion) |
+| Elemento | Dark City (original) | Batman Begins (adaptación) |
 |---|---|---|
-| Regla de Hierro | La realidad es maleable | El miedo es la herramienta |
-| Motor de trama | Busqueda de identidad | Construccion de identidad |
-| Escenario | Ciudad claustrofobica / carcel | Gotham corrupta y podrida |
-| Arco | Victima -> Creador | Huerfano -> Simbolo |
-| Herramienta final | Rediseñar la ciudad | Ser el miedo de la ciudad |
-| Escenario | Carcel que cambia | Ciudad que se pudre |
+| Regla de Hierro | la realidad es maleable | el miedo es la herramienta |
+| Motor de trama | buscar la identidad | construir la identidad |
+| Escenario | cárcel que cambia | ciudad que se pudre |
+| Arco | víctima → creador | huérfano → símbolo |
+| Herramienta final | rediseñar la ciudad | ser el miedo de la ciudad |
+| Efecto en el público | asombro | inevitabilidad |
 
-**Confirmacion:** 4/4 ejes con la misma mecanica en material original y en material
-adaptado. Ya no es casualidad: es **firma de autor**.
+**Confirmación:** 4/4 ejes con la misma mecánica en material original y en material adaptado.
 
-**Diferencia de efecto:**
-- Dark City (original): la informacion genera **asombro**; el arco es **descubrir** la
-  identidad.
-- Batman Begins (adaptacion): la informacion genera **inevitabilidad**; el arco es
-  **construir** la identidad.
+**Diferencia de efecto:** Dark City hace que la información produzca asombro y su arco sea
+descubrir la identidad; Batman Begins hace que produzca inevitabilidad y su arco sea construirla.
+
+## 8. Límites de este caso
+
+- **Sigue sin haber Eje 5.** Dos casos con cuatro ejes describen una **estructura**, no una
+  firma: cualquier guionista competente produce estos cuatro ejes.
+- **La "firma de autor" que proponía la versión anterior de este archivo está retirada.**
+  Cuatro ejes compartidos por dos películas del mismo guionista no distinguen a Goyer de
+  cualquiera que haya leído a Campbell. Lo que distingue a un autor es **cómo escribe**, y eso
+  este caso no lo mide.
+- **Todo el análisis es lectura nuestra**; año, acreditaciones y trama son dato.

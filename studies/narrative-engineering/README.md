@@ -1,7 +1,7 @@
 # Ingeniería Narrativa - Estudio
 
 **Inicio:** 2026-09-26
-**Estado:** abierto - Caso 1 y 2 completos (4/4 ejes cada uno)
+**Estado:** abierto — 8 casos, 5 ejes, 5 perfiles de voz medidos (2026-11-17)
 
 ---
 
@@ -69,9 +69,9 @@ pueden medir y refutar con cifras.
 
 | # | Obra | Autor foco | Tipo de material | Estado |
 |---|------|-----------|------------------|--------|
-| 01 | Dark City (1998) | David S. Goyer (co-guion) | Idea **original** | 4/4 ejes |
-| 02 | Batman Begins (2005) | David S. Goyer | **Adaptacion** (comic DC) | 4/4 ejes |
-| 03 | Mamma Mia! (musical y película) | Catherine Johnson | **Adaptación** (musical y película) | 4/4 ejes |
+| 01 | Dark City (1998) | David S. Goyer (co-guion) | Idea **original** | 5/5 (Eje 5 no medible: guion) |
+| 02 | Batman Begins (2005) | David S. Goyer | **Adaptacion** (comic DC) | 5/5 (Eje 5 no medible: guion) |
+| 03 | Mamma Mia! (musical y película) | Catherine Johnson | **Adaptación** (musical y película) | 5/5 (Eje 5 no medible: libreto) |
 | 04 | Ender's Game (1985) | Orson Scott Card | Idea **original** | 5/5 ejes (**muestra parcial**: Ch. 1) |
 | 05 | Harry Potter y el prisionero de Azkaban (1999) | J. K. Rowling | **Continuacion de serie** | 5/5 ejes (extracto oficial, Ch. 1) |
 | 06 | La sombra / The Shadow Man (1995) | John Katzenbach | Idea **original** (thriller) | 5/5 ejes (fragmento oficial, es) |
@@ -82,10 +82,10 @@ pueden medir y refutar con cifras.
 
 ## Archivos
 
-- `metodo.md` - el enfoque, los 4 ejes, como se registra cada caso.
-- `caso-01-dark-city.md` - autopsia completa.
-- `caso-02-batman-begins.md` - autopsia en curso.
-- `modelo-goyer.md` - sintesis acumulativa (la "firma" del autor). **Consolidado.**
+- `metodo.md` - el enfoque, los 5 ejes, cómo se registra cada caso y la regla de separar hecho de lectura.
+- `caso-01-dark-city.md` - el caso que fundó el método. Reescrito con los 5 ejes el 2026-11-17.
+- `caso-02-batman-begins.md` - adaptación y sistema de adquisición. Reescrito con los 5 ejes el 2026-11-17.
+- `modelo-goyer.md` - síntesis acumulativa. **Límite corregido el 2026-11-17:** los 4 ejes son estructura, no firma; sin Eje 5 no se puede hablar de autoría.
 - `caso-04-enders-game.md` - primer caso con **Eje 5 (Voz y Prosa)** medido sobre texto real.
   Su traduccion ejecutable vive en `docs/stories/las_tres_sabanas/PLANTILLA-voz-enders-game.md`.
 - `caso-05-harry-potter-azkaban.md` - segundo perfil de voz, **opuesto** al 04 y sobre el mismo
@@ -110,8 +110,13 @@ pueden medir y refutar con cifras.
 - [x] Elegir tercer caso (camino de reinterpretacion, otro material ya existente).
 - [ ] Cerrar el caso 04 con el texto completo (sala de batalla y cierre): hoy los ejes 1-4 se
   sostienen sobre el Ch. 1 mas estructura publica conocida.
-- [ ] Validar `PLANTILLA-voz-enders-game.md` escribiendo una escena de Las Tres Sabanas y
-  midiendola con el mismo script (mediana de frase ~7,5-8, 65% frases cortas, 1,4 pensamientos/100).
+- [x] Validar `PLANTILLA-voz-enders-game.md` escribiendo una escena de Las Tres Sabanas y
+  midiendola con el mismo script. (Superada: la novela entera se escribió con el perfil `casa`,
+  que es un perfil propio derivado de los cinco autores.)
+- [ ] **Eje 5 de los casos 01, 02 y 03:** imposible mientras el material sea guion. Si aparece
+  prosa narrativa de Goyer o de Johnson en edición estable, se mide y se cierra.
+- [ ] Revisar si el "criterio de modelo confirmado" (4 ejes en original y adaptación) sigue
+  sirviendo para algo: hoy el estudio lo considera superado por el Eje 5.
 - [x] Decidir si el caso 03 prueba a un autor **distinto** de Goyer para saber si el modelo es una forma de escribir o la firma de un hombre.
 
 ---

@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-17] - Los casos 01-03 del estudio, reescritos con el método vigente
+
+### Changed
+- **`caso-01-dark-city.md`, `caso-02-batman-begins.md`, `caso-03-mamma-mia.md` reescritos** con los cinco ejes, la misma estructura que los casos 04-08, la separación hecho/lectura y una sección de límites. Eran del 2026-10-01, tenían cuatro ejes y tres formatos distintos entre sí.
+- **Eje 5 declarado no medible en los tres**, con el motivo: son guiones y libretos, no prosa; las cifras de `prose-metrics.py` describirían otro objeto. Se agrega lo que sí se puede decir por lectura, marcado como impresión.
+- **`metodo.md` reescrito:** cinco ejes, la regla de separar hecho de lectura, cuándo no aplica el Eje 5, la plantilla de caso y la regla de densidad por escena.
+- **`modelo-goyer.md`: límite corregido.** Se retiran "firma de autor" y "forma universal": los cuatro ejes son estructura —cualquier guionista competente los produce— y la confirmación era circular. Queda en pie el hallazgo central (heredar el mecanismo) y las reglas operativas.
+
+### Notes
+- **Las carpetas de `scripts/` no generan casos.** El único script es `prose-metrics.py`, que mide prosa y no redacta. Los casos son escritura, no salida de programa: lo que sí es reproducible es la medición del Eje 5.
+- Lo que un guion puede aportar al estudio es estructura; la voz de un autor de guiones no se puede analizar hasta que haya prosa suya en edición estable.
+
+---
+
 ## [2026-11-17] - Un flujo con nombre para pasar texto a voz
 
 ### Added
