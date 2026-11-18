@@ -187,3 +187,6 @@ docs/stories/**/audio/*.m4a
 docs/stories/**/audio/*.mp3
 docs/stories/**/audio/*.json
 .venvs/
+
+# Scratch de auditoría (capturas de comparación, se regeneran). Fuente en el reporte de la sesión.
+/tmp-audit/
