@@ -20,6 +20,7 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Ritmo ajustado a -4%** (era -10%) por pedido de Gonzo: el capítulo 1 pasó de 7:05 a 6:38. El script ahora también re-renderiza si cambia el ritmo, no solo si cambia el texto.
 - **`scripts/tts-dramatize.py`**: una voz por personaje, turno por turno, repartiendo por atribución y alternando cuando no hay. Prueba sobre la escena de la cocina del capítulo 14: 26 turnos, tres voces, 1:19. La ironía sigue sin resolverse: eso no es del reparto, es del proveedor.
 - **La atribución ya no la dice el personaje.** "— No —dijo ella—. Se lo digo ahora." se parte en tres: Vera dice "No", el narrador dice "dijo ella", Vera dice "Se lo digo ahora". Antes la frase entera salía con la voz del personaje, que es como leer un guion con los ojos cerrados.
+- **Voz profunda adoptada (2026-11-17):** Chatterbox con `--deep` — dos semitonos abajo moviendo formantes, 3 dB en 180 Hz, −1,5 dB en 3,2 kHz. Gonzo eligió ese ajuste sobre el de tres semitonos: la voz base del motor le resultaba juvenil. Queda como perfil del pipeline (`scripts/tts-chatterbox.py --deep`).
 - **Motor local instalado (2026-11-17):** Chatterbox multilingual en `.venvs/chatterbox` (Python 3.12, torch 2.6, MPS). Español andando: 4,6 s de audio en 29 s de proceso, o sea 6,3 veces más lento que el tiempo real. La emoción se controla con `exaggeration`; el watermarker neural de Perth no importa en este entorno y se reemplaza por el dummy (el watermark es de procedencia, no de calidad).
 
 ---

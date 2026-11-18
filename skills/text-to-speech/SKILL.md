@@ -52,6 +52,27 @@ Reparte las voces por atribución ("—dijo Vera", "—dijo ella") y alterna cua
 **Revisar siempre `--print-map` antes de renderizar:** en escenas de tres, la alternancia se equivoca.
 **No resuelve la ironía**: eso depende del proveedor de voz, no del reparto.
 
+
+## Motor local (Chatterbox) — la voz definitiva
+
+```bash
+.venvs/chatterbox/bin/python scripts/tts-chatterbox.py capitulo.md \
+    --out audio/capitulo-1-profunda.m4a --exaggeration 0.5 --deep
+```
+
+**Perfil vigente:** Chatterbox multilingual + `--deep`. El `--deep` baja dos semitonos con
+`asetrate` (mueve también los formantes, que es lo que da cuerpo) y compensa el tempo con `atempo`,
+después sube 3 dB en 180 Hz y baja 1,5 dB en 3,2 kHz. Gonzo eligió este ajuste después de escuchar
+dos y tres semitonos: la voz base de Chatterbox le resultaba demasiado juvenil.
+
+| | |
+|---|---|
+| Calidad | mejor que edge: prosodia y respiración |
+| Emoción | `--exaggeration` 0 a 1 |
+| Costo | **11 veces el tiempo real**: un capítulo de 7 minutos tarda ~80 minutos |
+| Lanzarlo | `exec background=true` **siempre**. `nohup ... &` muere cuando se cierra la terminal |
+| Entrega | automatización `at` al ETA; no dejar el turno esperando |
+
 ## Qué hace con el texto
 
 - **Saca el markdown:** encabezados, `---`, `**`, backticks.
