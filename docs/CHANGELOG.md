@@ -592,6 +592,24 @@ El set 3D queda alineado, centrado y con vida ambiente; walkers 2D. Siguiente: d
 
 ---
 
+## [2026-11-17] - Caesar III Clone (caravana con carga real)
+
+### Fixed
+- La caravana **carga en el almacén** y entrega en el puesto comercial; la venta se contabiliza recién al llegar.
+- `TradeSystem.month` ya no vende por teletransporte: solo informa si la ruta está abierta.
+- Un viaje abortado devuelve la carga al almacén.
+- `home_tile` del puesto ya no se usa como waypoint (causaba la muerte de la caravana al salir).
+
+### Added
+- `sim/walkers/caravan_market.gd` (selección de almacén/puesto, entrega y venta).
+- `tests/test_caravan_cargo.gd`; gate **40 tests**.
+
+### Verified
+- Gate EXIT 0: 40 tests + smoke + pureza.
+- `./scripts/demo.sh` EXIT 0.
+
+---
+
 ## [2026-11-17] - Caesar III Clone (auditorías profundas)
 
 ### Added
