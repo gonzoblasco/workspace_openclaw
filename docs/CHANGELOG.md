@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-17] - Caso 09: el Quijote, y la tabla que era del siglo XX
+
+### Added
+- **`studies/narrative-engineering/caso-09-quijote.md`** — Parte I, capítulo I, completo (1.887 palabras), edición de 1905 en Wikisource. Cinco ejes, el primero medido en un texto anterior a 1830.
+- **Perfil `cervantes` en `prose-metrics.py`**: mediana 41, bandas 0/3/15/82. Se auto-valida a ±0,4% sobre su propio texto.
+
+### Notes
+- **El hallazgo:** Cervantes no está un escalón arriba de García Márquez, está en otra física. **Cero frases de seis palabras o menos**, 82% de frases de más de treinta, párrafos de 156 palabras de mediana, 27 puntos y coma y 0% de diálogo con turnos. La tabla de perfiles del estudio era, sin saberlo, una tabla del siglo XX: antes, la unidad de respiración era el párrafo, no la frase.
+- **Límite declarado:** 34 frases de muestra. La mediana es robusta; las bandas, gruesas. Con 34 frases, mover una cambia el porcentaje en tres puntos.
+- **El "diálogo 0%" es artefacto de la puntuación:** hay discurso citado entre « », pero no turnos con raya; el script lo cuenta como narración y así queda dicho en el caso.
+- El caso mide lo que el de Rowling no pudo: fuente entera, de dominio público, sin depender de comprar nada.
+
+---
+
 ## [2026-11-17] - `modelos.md`: por qué hay un solo modelo y ocho casos
 
 ### Added

@@ -16,6 +16,7 @@ Perfiles de referencia (bandas <=6 / 7-15 / 16-30 / 31+, sobre NARRACION):
     echeverria 20,5 mediana | 14 / 25 / 30 / 31   (Caso 07, El matadero, 1838)
     garciamarquez 21 mediana | 8 / 28 / 38 / 26    (Caso 08, Cronica, 1981)
     casa          9 mediana  | 36 / 40 / 19 / 4     (voz propia, cap. 1 definitivo)
+    cervantes    41 mediana  | 0 / 3 / 15 / 82      (Caso 09, Quijote I-1, 1605)
 
 Nota de honestidad: las bandas de Card se recontaron el 2026-11-17 sobre la NARRACION
 (155 frases). La version anterior de este script traia 65/33/2/0,9, que confundia el
@@ -50,6 +51,11 @@ PROFILES = {
         "median": 20.5,
         "bands": (14, 25, 30, 31),
         "note": "bandas sobre narracion de El matadero (S.XIX, es); muestra con parrafo estimado",
+    },
+    "cervantes": {
+        "median": 41,
+        "bands": (0, 3, 15, 82),
+        "note": "bandas sobre narracion del cap. I (34 frases, 1.887 palabras), ed. 1905 en Wikisource",
     },
     "katzenbach": {
         "median": 12,

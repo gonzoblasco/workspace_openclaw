@@ -32,6 +32,7 @@ Por eso hay un `modelo-goyer.md`: Goyer tiene dos casos (01 y 02). Y por eso no 
 | **John Katzenbach** | 06 La Sombra | 1-5 + peso | **sí**: mediana 12, 24/41/27/8 | `PLANTILLA-peso-katzenbach.md` |
 | **Esteban Echeverría** | 07 El Matadero | 1-5 | **sí**: mediana 20,5, 14/25/30/31 | `PLANTILLA-voz-echeverria.md` |
 | **Gabriel García Márquez** | 08 Crónica | 1-5 | **sí**: mediana 21, 8/28/38/26 | `PLANTILLA-voz-garciamarquez.md` |
+| **Miguel de Cervantes** | 09 Quijote I-1 | 1-5 | **sí**: mediana 41, 0/3/15/82 | — (no hay plantilla: el español de 1605 no se trasplanta) |
 | ***casa*** (el proyecto) | — | — | **sí**: mediana 9, 36/40/19/4 | `PLANTILLA-voz-casa.md` |
 
 `PLANTILLA-*` viven en `docs/stories/las_tres_sabanas/`, porque nacieron para escribir esa novela.
@@ -69,7 +70,8 @@ plantilla. Lo que falta es este índice.
 | Echeverría | obra narrativa suficiente (es corto: *El Matadero* es casi todo lo que hay) | limitado por el corpus |
 | García Márquez | un segundo caso (*Cien años* o *El coronel*) | un caso |
 
-**Prioridad sugerida:** Rowling con *The Casual Vacancy*. Es el único de los cinco donde el
+**Prioridad sugerida:** Rowling con *The Casual Vacancy* —**bloqueada**: el único extracto libre
+es de 114 palabras y no alcanza para un perfil (ver `caso-05` y el pendiente del README). Es el único de los cinco donde el
 segundo caso responde una pregunta que hoy no tiene respuesta —cuánto de su voz es la serie y
 cuánto es ella—, y ya hay un perfil medido contra el que comparar.
 

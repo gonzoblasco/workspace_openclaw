@@ -43,7 +43,8 @@ El ritmo de la revelación *es* el ritmo de la tensión. Regla: **jamás dar una
 haber plantado antes la pregunta**.
 
 Direcciones de asimetría encontradas hasta hoy: contra el villano (01, 02), entre todos los que
-protegen a alguien (03), fiscal contra el lector (07), comunitaria y retrospectiva (08).
+protegen a alguien (03), fiscal contra el lector (07), comunitaria y retrospectiva (08), y de
+cuatro bandas sin diálogo (09).
 
 ### Eje 3 — World-building funcional
 
@@ -72,9 +73,10 @@ El único eje **medible**, y por eso el único que puede refutar el modelo. Se c
 - punto de vista y densidad de pensamiento interno;
 - **lo que el autor nunca hace** (punto y coma, adverbios en -mente, repeticiones, marcas).
 
-Un perfil no dice quién escribe mejor: dice **qué eligió**. Con cinco perfiles medidos (Card,
-Katzenbach, Rowling, Echeverría, García Márquez) queda demostrado que no hay una prosa buena,
-hay decisiones distintas.
+Un perfil no dice quién escribe mejor: dice **qué eligió**. Con seis perfiles medidos (Card,
+Katzenbach, Rowling, Echeverría, García Márquez, Cervantes) queda demostrado que no hay una prosa
+buena, hay decisiones distintas —y que la tabla era, sin saberlo, del siglo XX: Cervantes escribe
+con mediana 41 y cero frases cortas.
 
 **Cuándo no aplica:** cuando el material es guion, libreto o letra, no hay prosa que medir. En
 los casos 01, 02 y 03 el Eje 5 queda **no medido**, y se dice por qué. Inventar cifras sobre un

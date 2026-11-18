@@ -1,7 +1,7 @@
 # Ingeniería Narrativa - Estudio
 
 **Inicio:** 2026-09-26
-**Estado:** abierto — 8 casos, 5 ejes, 5 perfiles de voz medidos (2026-11-17)
+**Estado:** abierto — 9 casos, 5 ejes, 6 perfiles de voz medidos (2026-11-17)
 
 ---
 
@@ -53,8 +53,12 @@ del primer caso (Dark City) y se confirmaron en el segundo (Batman Begins).
 | Garcia Marquez | 21 | 8% | 28% | 38% | 26% | alto **sin picos**, sin frases cortas |
 
 Verificados con `scripts/prose-metrics.py --perfil <nombre>`; cada uno se auto-valida a +-0,4%
-sobre su propio texto fuente. **Cinco autores, tres idiomas de origen, dos siglos, cinco generos:
+sobre su propio texto fuente. **Seis autores, tres idiomas de origen, cuatro siglos, seis géneros:
 ninguna distribucion se repite.** La tabla no dice quien escribe mejor, dice que eligio cada uno.
+
+**Cervantes cambia la escala de la tabla.** Con mediana 41 y 82% de frases de más de 30 palabras,
+no está un escalón arriba de García Márquez: está en otra física. Antes del siglo XX la unidad de
+respiración era el párrafo, no la frase.
 
 **Criterio de "modelo confirmado":** si los 4 ejes aparecen con la misma mecanica en un
 material original y en uno adaptado, deja de ser casualidad: es la firma del autor.
@@ -77,6 +81,7 @@ pueden medir y refutar con cifras.
 | 06 | La sombra / The Shadow Man (1995) | John Katzenbach | Idea **original** (thriller) | 5/5 ejes (fragmento oficial, es) |
 | 07 | El matadero (1838-40, pub. 1871) | Esteban Echeverria | Idea **original** (cuento fundacional) | 5/5 ejes + peso (dominio publico, completo) |
 | 08 | Cronica de una muerte anunciada (1981) | Gabriel Garcia Marquez | Idea **original** (hecho real) | 5/5 ejes (edicion oficial, cap. 1) |
+| 09 | Don Quijote I-1 (1605) | Miguel de Cervantes Saavedra | Idea **original** (parodia) | 5/5 ejes (dominio publico, completo) |
 
 ---
 
@@ -97,6 +102,8 @@ pueden medir y refutar con cifras.
 - `caso-07-el-matadero-echeverria.md` - cuarto perfil y el primero **fuera del ingles**: espanol
   rioplatense de 1838. Prueba que el metodo aguanta. Agrega una tercera direccion de asimetria
   (el narrador fiscal) y el peso por **funcion** en vez de por historia.
+- `caso-09-quijote.md` - el extremo de la tabla: mediana 41, cero frases cortas, 0% de diálogo.
+  Es el caso que muestra que la tabla de perfiles era, sin saberlo, una tabla del siglo XX.
 - `caso-08-cronica-muerte-anunciada.md` - quinto perfil, el cierre del arco metodologico. Agrega
   la cuarta direccion de asimetria (comunitaria y retrospectiva) y la tercera forma de peso (el
   testimonio). Con cinco autores queda demostrado que **no hay una prosa buena: hay cinco
