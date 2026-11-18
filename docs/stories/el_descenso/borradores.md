@@ -112,19 +112,31 @@ Se la metió en la cintura, abajo de la remera, y el frío le subió por la espa
 
 Cuando volvió al pasillo, los policías ya estaban adentro.
 
-Eran dos. Uno joven, con cara de aburrido. Uno grande, con la camisa fuera del pantalón y una libreta. El grande lo miró. Julián se quedó quieto, con las manos en los bolsillos y la remera caída sobre el elástico del pantalón.
+Eran dos. Uno joven, con cara de aburrido. Uno grande, con la camisa fuera del pantalón y una libreta.
+
+El grande lo miró. No como se mira a un chico que acaba de perder a la madre, sino como se mira un dato que no cierra.
 
 —¿Vos sos el hijo?
 
 —Sí.
 
+Se acercó un paso. Tenía los ojos claros y una manera de no parpadear que obligaba al otro a hablar para llenar el silencio.
+
 —¿Estabas acá?
 
 —En la cocina.
 
-El hombre anotó algo. La birome le funcionaba a la tercera. Julián sintió la navaja correrse un centímetro y apretó el brazo contra el cuerpo, como quien se agarra un dolor de panza.
+El hombre no anotó nada esta vez. Le miró la remera, el ruedo caído sobre el elástico del pantalón, y se quedó ahí un segundo de más. Julián sintió la navaja correrse un centímetro y apretó el brazo contra el cuerpo, como quien se agarra un dolor de panza.
 
-—Tu papá dice que vos dormías.
+—Hace calor —dijo el policía.
+
+—Sí.
+
+—¿Y no te la sacás?
+
+Julián no contestó. El otro sostuvo la mirada dos segundos más de lo que hacía falta, y en esos dos segundos pasó todo: el taller, la bolsa de cal, la mano del padre, la suya cerrando el clip.
+
+—Tu papá dice que vos dormías —dijo al fin, como si nada.
 
 —Dormía.
 
@@ -134,7 +146,13 @@ El hombre anotó algo. La birome le funcionaba a la tercera. Julián sintió la 
 
 La mentira le salió tan limpia que le dio miedo. No la había preparado. No había preparado ninguna de las dos: ni la de dormir, ni la de no haber escuchado. Las dos se habían dicho solas, y eso significaba que ya las tenía adentro.
 
-El policía grande se fue para el fondo. El joven se quedó en el pasillo, mirando el portarretrato de la mesa ratona, el de la primera comunión de Julián, con la camisa blanca y la sonrisa de otro chico.
+El policía grande se fue para el fondo, y antes de doblar el pasillo se dio vuelta y lo señaló con la birome, sin énfasis:
+
+—No te vayas a ir a ningún lado, ¿eh?
+
+—No.
+
+El joven se quedó en el pasillo, mirando el portarretrato de la mesa ratona, el de la primera comunión de Julián, con la camisa blanca y la sonrisa de otro chico.
 
 Pasaron cuarenta minutos. Julián los contó por el reloj de la cocina, sentado en la misma silla, con el mate frío todavía al lado. Escuchó los cajones del placard, el ruido de la ropa tirada, las voces en el taller. En un momento el padre pasó por el pasillo y lo miró. Tenía la cara de alguien que acaba de rezar.
 
@@ -149,6 +167,8 @@ Y ahí Julián entendió algo que no tenía nombre. Entendió que su padre iba a
 —No encontraron nada —repitió.
 
 Julián se fue a su cuarto con la navaja pegada al cuerpo y esa noche, por primera vez desde que su madre había muerto, durmió con la puerta cerrada.
+
+Del otro lado de la puerta, el padre estuvo un rato de pie en el pasillo. No golpeó. No dijo nada. Julián lo escuchó respirar y después escuchó el ruido de sus pasos alejándose hacia la cocina, y supo que algo en esa casa se había cerrado para siempre, y que el que acababa de cerrarlo era él.
 
 ---
 
