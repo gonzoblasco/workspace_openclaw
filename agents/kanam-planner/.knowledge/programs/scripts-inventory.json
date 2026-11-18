@@ -1,0 +1,147 @@
+{
+  "slug": "scripts-inventory",
+  "title": "Biblioteca de scripts: catalogo vivo vs actas de defuncion",
+  "objective": "Que docs/SETUP.md deje de presentar 30 filas como si fueran el inventario completo de 142 scripts, separe lo vivo de lo retirado, y genere la tabla desde memory.db con un gate que aborte cuando se agrega un script sin documentar.",
+  "status": "active",
+  "owner": "gonzalo",
+  "created_at": "2026-11-18T03:30:00+00:00",
+  "updated_at": "2026-11-18T06:11:57+00:00",
+  "gates": [
+    "auditor",
+    "critic"
+  ],
+  "metadata": {
+    "complexity": "T=11 (low) por el scorer sobre la frase corta; el alcance real es multi-sesion y toca gobernanza",
+    "measured_baseline": "2026-11-18: scripts/ tiene 147 entradas (142 scripts + dirs __pycache__/templates/review-templates + 1 json); docs/SETUP.md tiene 30 filas `| `scripts/...`. Cero filas apuntan a archivos inexistentes (verificado con loop test -f).",
+    "root_cause": "La tabla no esta desfasada: esta incompleta y mezcla catalogo con actas. Tres filas ya son historia (init-project.sh deuda, aggregate-sync.sh RETIRADO ADR-098, initial-setup.sh deuda).",
+    "prior_art": "docs/SETUP.md:18-26 ya tiene 3 bloques BEGIN MANAGED; AGENTS.md:177-185 otros 3. El patron esta probado (ADR-055).",
+    "constraint": "No se borra ningun script. Los huerfanos se listan como candidatos y esperan OK de Gonzo."
+  },
+  "steps": [
+    {
+      "id": 0,
+      "task": "Inventario y clasificacion de los scripts de scripts/",
+      "role": "auditor",
+      "owner": "kanam-auditor",
+      "status": "completed",
+      "exit_criteria": "tmp/scripts_inventory_raw.json existe, es JSON parseable, y tiene exactamente el mismo numero de entradas que `ls scripts/*.sh scripts/*.py scripts/*.js scripts/*.mjs | wc -l` (hoy 142: 85 py, 49 sh, 7 js, 1 mjs). Cada entrada trae nombre, extension, y la lista de archivos del repo que lo referencian (grep sobre .git/hooks, skills/, agents/, docs/, scripts/, sin contar su propia fila ni docs/SETUP.md).",
+      "depends_on": [],
+      "gate": null,
+      "write_paths": [
+        "tmp/scripts_inventory_raw.json"
+      ],
+      "evidence": [
+        "tmp/scripts_inventory_raw.json: 142 entradas = 142 archivos en disco (ls scripts/*.sh *.py *.js *.mjs). Cada entrada con conteo de referencias reales via grep sobre .git/hooks, skills/, agents/, docs/, scripts/ excluyendo su propio archivo y SETUP.md. Distribucion: 9 con 0 refs, 18 con 1, 52 con 2-4, 63 con 5+."
+      ],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T03:30:00+00:00",
+      "updated_at": "2026-11-18T06:11:54+00:00",
+      "started_at": null,
+      "completed_at": "2026-11-18T06:11:54+00:00",
+      "session_ref": null
+    },
+    {
+      "id": 1,
+      "task": "Juicio: que es catalogo vivo, que es auxiliar, que es acta de defuncion",
+      "role": "critic",
+      "owner": "kanam-critic",
+      "status": "blocked",
+      "exit_criteria": "tmp/scripts_inventory_decision.json existe con cuatro listas (live, aux_internal, retired_debt, orphan) cuya union es exactamente el inventario del paso 0, sin repetidos ni faltantes. Cada entrada en retired_debt cita el ADR o la fecha de deuda. Decisiones explicitas registradas: (a) los auxiliares internos (llamados solo por otro script) se documentan o no; (b) los huerfanos (0 referencias) se listan como candidatos a retiro, NO se borran.",
+      "depends_on": [
+        0
+      ],
+      "gate": "critic",
+      "write_paths": [
+        "tmp/scripts_inventory_decision.json"
+      ],
+      "evidence": [],
+      "blocker": "Necesita decision de Gonzo: (a) si la tabla se retoma con mecanismo nuevo o queda archivada; (b) que hacer con los 9 huerfanos, empezando por record_entity.py. Los 6 scripts de la Cata de Harnesses ya estan clasificados como retirados sin objecion.",
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T03:30:00+00:00",
+      "updated_at": "2026-11-18T06:11:57+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 2,
+      "task": "Separar en docs/SETUP.md la tabla de catalogo vivo de las actas de defuncion",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "docs/SETUP.md tiene DOS secciones distintas: 'Scripts (catalogo)' con las filas vivas, y 'Scripts retirados / en deuda' con las actas (init-project.sh, aggregate-sync.sh, initial-setup.sh y lo que marque el paso 1). Ninguna fila apunta a un script inexistente. Pre-commit exit 0 sobre el archivo staged.",
+      "depends_on": [
+        1
+      ],
+      "gate": null,
+      "write_paths": [
+        "docs/SETUP.md"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T03:30:00+00:00",
+      "updated_at": "2026-11-18T03:30:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 3,
+      "task": "Generador de la tabla desde memory.db como bloque managed",
+      "role": "dev",
+      "owner": "kanam-dev",
+      "status": "pending",
+      "exit_criteria": "scripts/scripts-inventory.py (NUEVO) genera la tabla Markdown desde una tabla de memory.db y la inyecta entre <!-- BEGIN MANAGED: scripts-inventory --> y <!-- END MANAGED: scripts-inventory --> en docs/SETUP.md. Clave nueva 'scripts-inventory' en la tabla settings, sin colision con las existentes (model-triple, model-pipeline-ab, model-pipeline-abc, model-operativo, pipeline-ab, pipeline-abc). Idempotente: dos corridas seguidas no cambian el archivo. Flags --check (exit 1 si hay drift) y --dry-run.",
+      "depends_on": [
+        2
+      ],
+      "gate": "auditor",
+      "write_paths": [
+        "scripts/scripts-inventory.py",
+        "docs/SETUP.md",
+        "memory/memory.db"
+      ],
+      "evidence": [],
+      "blocker": null,
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T03:30:00+00:00",
+      "updated_at": "2026-11-18T03:30:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null
+    },
+    {
+      "id": 4,
+      "task": "Gate en el pre-commit y cierre documental",
+      "role": "ops",
+      "owner": "kanam-ops",
+      "status": "pending",
+      "exit_criteria": ".git/hooks/pre-commit corre scripts-inventory.py --check solo cuando docs/SETUP.md esta staged (mismo patron que el gate del CHANGELOG, .git/hooks/pre-commit:105-109). Un commit que agrega un script sin su fila aborta. ADR nuevo (siguiente numero libre: 113) + entrada en docs/CHANGELOG.md + fila del script nuevo en la propia tabla. CI sin linea no-pass.",
+      "depends_on": [
+        3
+      ],
+      "gate": "auditor",
+      "write_paths": [
+        ".git/hooks/pre-commit",
+        "docs/adr/",
+        "docs/CHANGELOG.md"
+      ],
+      "evidence": [],
+      "waiver_reason": null,
+      "attempts": 0,
+      "created_at": "2026-11-18T03:30:00+00:00",
+      "updated_at": "2026-11-18T03:30:00+00:00",
+      "started_at": null,
+      "completed_at": null,
+      "session_ref": null,
+      "blocker": null
+    }
+  ],
+  "closed_at": null
+}
