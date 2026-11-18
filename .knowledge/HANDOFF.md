@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-18 14:21 GMT-3
+**Fecha:** 2026-11-18 14:53 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-18 14:53
+Barrido de 4 notificaciones de GitHub, con dos comentarios publicados. (1) ariakit#4058: cerrado COMPLETED por el PR #8360 de diegohaz (hideWhenAnchorHidden con el middleware hide de Floating UI + hoverOnScroll), publicado en @ariakit/react 0.4.43. Nuestro comentario de julio quedo acreditado en Acknowledgments del PR, pero la implementacion final descarto la propuesta del listener de scroll por una geometria sin listeners. (2) astryx#7871: mergeado en v0.7.12; el review no solicitado del 23-oct fue adoptado en silencio (cero respuestas, cero reacciones, cero mencion). El codigo final resolvio la ambiguedad en la direccion de la lectura 1 que planteamos - isTopLayer + enclosingModalDialog en tiempo de escritura, FR10 reescrito con 'otherwise through the shared channel, adds no live container of its own', dos bindings nuevas toast-*-announcement-top-layer y la exclusion enganosa 'bound above' eliminada. (3) astryx#4690: abierto pero CONFLICTING desde el 5-nov; dos comentarios nuestros. El ruling de cixzhang del 27-ago reusa nuestra frase 'existing interactive descendants must remain reachable', pero la implementacion eligio justo el punto medio que advertimos: fila focusable Y controles in-cell en el tab order, documentado como divergencia #2 del APG. Decision: no comentar (aprobado, trabado en rebase, follow-up ya rastreado en #4611). (4) astryx#4652: remido dos veces - primero tokens y despues componentes reales. Se armo forks/astryx-demo (Vite + React 19 + core 0.7.16, temas compilados con esbuild desde el source de main) y se midio con Playwright sobre Chrome: dots inactivos 1.09-1.68:1 en todos los temas (fallan 3:1 de 1.4.11), activo 4.02-16.71:1; badge verde solido en stone 7.19:1, translucido en base/chocolate/matcha 2.43/1.24/1.31:1 sobre card #686D57. Los numeros base reproducen exactos los de agosto (1.20:1 y 2.43:1), lo que valido el arnes. Comentario publicado. (5) shadcn#11757: comentario publicado apuntando al ruling de atomiks en mui/base-ui#5633 (cerrado como intencional, APG select-only combobox + macOS) para evitar que el fix se implemente en la capa equivocada: select.tsx es literalmente SelectPrimitive.Root y openOnArrowKeyDown es interno de useListNavigation. (6) Credenciales: gh solo tenia tokens OAuth y la org meta bloquea OAuth Apps para escritura; se creo ~/.openclaw/secrets/github-token (600) con un PAT classic public_repo y desde entonces gh escribe en orgs restringidas con GH_TOKEN desde el archivo. El MCP de GitHub sigue sin binario (~/.openclaw/bin/github-mcp) y sin egressProxy. Limpieza: se removio un SingletonLock huerfano del perfil de browser imported que apuntaba al hostname viejo. Pendiente: decidir si se borran forks/astryx y forks/astryx-demo.
 
 ### 2026-11-18 14:21
 TTS: el narrador del audiolibro quedo definido y reutilizable. Se probaron cuatro motores en la noche. Kokoro se descarto no por sucio sino por plano: es no autoregresivo y calcula la entonacion de la estructura del texto, asi que siempre cae al final. Medido: 'Viste a Vera.' y 'Viste a Vera?' dan el mismo contorno (154 a 103 y 154 a 105 Hz). Con 1432 lineas de dialogo en el libro, todas las preguntas sonaban a afirmacion. Quedo Chatterbox clonando una referencia: em_alex de Kokoro bajado 4 semitonos, que da 100-104 Hz de tono y 11.400 Hz de banda, y entona. La clave fue bajar el tono de la REFERENCIA y no del audio final: filtrar el resultado costaba 1,6 kHz de banda (10.185 a 8.564 Hz) y sonaba apagado. Se corrigieron cuatro bugs del pipeline: las notas de produccion *POV: ...* se narraban en 14 capitulos; las rayas llegaban al fonemizador como caracter desconocido y metian 60 ms de sonido fantasma antes de cada vocal ('Ah' sonaba 'nahh'); el corte a 240 caracteres partia palabras y hacia alucinar la cola (7,6 s); y el -3 semitonos aplicado al resultado apagaba la voz. El narrador quedo reutilizable: la voz vive en assets/voces/baritono-jazz/ con manifiesto y valores medidos, y el script la resuelve por nombre (--voz baritono-jazz), asi que cualquier proyecto usa el mismo narrador sin copiar rutas. ADR-116 reemplaza al ADR-115, que quedo archivado. El render de los 17 capitulos corre en background: capitulo 1 listo en 5:37 de audio y 24,7 minutos, unos 4,4x el tiempo real.
@@ -37,10 +40,11 @@ Commits locales: d57788ae2d (borradores), 282b4262bd (escena de las sirenas + De
 
 Estado del proyecto: concepto cerrado (estructura Opcion B, revelacion central, perfil) + cuatro fragmentos de prosa. No hay manuscrito ni outline. Falta una decision grande: quien es el cuerpo del garaje del Presente Oscuro.
 
-### 2026-11-17 19:44
-Auditoría de superficie del agente kanam-auditor: dos ítems de roadmap cerrados con evidencia. (1) El oracle dejó de delegar el contraste en axe: src/checks/contrast.js mide el ratio WCAG real (luminancia relativa, composición de fondos con alpha, umbral 4.5/3 por rol, opacidad) y el estado :focus; hallazgo inmediato --k-brand-primary con blanco da 3.74:1 (bajo 4.5:1 AA), anotado para el dueño del DS. De paso se corrigió un stall de 30s del check de teclado (clickeaba modales display:none): la corrida pasó de ~33s a 2.7s. (2) C.3 cerrado: surface-pipeline/bin/audit-due conecta check-audit-due.py con audit-surface y escribe .knowledge/AUDIT.md; reglas: sin config no hay auditoría, sin report.json no se acredita, un RECHAZADO sí se escribe (acreditado != aprobado). Verificado en las dos direcciones con un proyecto descartable (con config -> AL DIA leído de vuelta por el script; sin config -> no-config, exit 1, sin AUDIT.md). Tests 60/60. Commits 633b8fd2c5 y 7969abc97f.
-
 ## Estado actual
+
+Cuatro notificaciones revisadas; dos comentarios publicados (astryx#4652, shadcn#11757); PAT de escritura restaurado.
+
+### Estado previo (heredado)
 
 Render del libro en curso (chapters 1/17). Voz fijada en ADR-116: Chatterbox clonando assets/voces/baritono-jazz (100-104 Hz, 11.400 Hz, entona). Registro de voces por nombre operativo.
 
@@ -183,6 +187,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1. Decidir limpieza de forks/astryx y forks/astryx-demo (trash o conservar); opcional: restaurar el MCP de GitHub (binario + egressProxy) via OPS; astryx#4690 sigue esperando rebase ajeno.
+
+### Pendientes heredados (sin cambios)
 
 1) Dejar terminar scripts/render-libro-baritono.sh (~10 h, log en /tmp/render-baritono.log) y auditar cada capitulo: cola, duracion contra el texto, y las rafagas de siseo. 2) Gonzo menciono que quedan 'un par de errores' en el audio: pedirle el timestamp y el capitulo antes de tocar el pipeline. 3) Borrar el symlink de compatibilidad docs/stories/las_tres_sabanas/audio/voz/referencia-baritono-4st.wav cuando el render termine, y sacar --ref del script de batch para que use --voz. 4) Escuchar capitulo 1 completo antes de dar la voz por cerrada. 5) Si el resultado pide mas actuacion, evaluar exaggeration por registro (deuda declarada en ADR-116).
 
@@ -374,6 +382,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- Escribir con PAT en ~/.openclaw/secrets/github-token, no con el OAuth de gh: la restriccion de la org es del OAuth App. Medir componentes renderizados, no tokens: el paquete publicado y el source de main divergen (matcha y chocolate cambiaron color-text-green). No comentar en PRs aprobados y trabados en rebase cuando el follow-up ya esta rastreado.
+
+### Heredadas (sin cambios)
+
 - ADR-116 (reemplaza ADR-115, archivado): la voz es Chatterbox con clonacion desde una referencia baritona de 100 Hz. Una voz es un directorio en assets/voces/<nombre>/ con referencia.wav, el texto que la genero y voz.json con los valores medidos; el script la resuelve por nombre. No se aplican los tres registros de Kokoro al motor vigente: Chatterbox entona solo y sumar variacion por tramo multiplica las costuras. Leccion de metodo: las tres primeras voces se eligieron con una muestra de una frase sin dialogo ni preguntas; una frase suelta no prueba un narrador.
 
 ### Heredadas (sin cambios)
@@ -468,6 +480,16 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 - Fallback unico local por decision de Gonzo: 'el fallback no puede ser otro modelo en la nube'. Primario deepseek y no beam: dejo de ser gratuito y su calidad ya estaba descartada por ADR-105 (3/4 bugs, auto-aprobacion con defecto vivo). Ninguna carrera universitaria va a CV ni ATS (regla 2026-11-04). Una referencia de CV se verifica abriendo el hilo en GitHub, no contra el corpus.
 
+## Como continuar
+
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-11-18.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
+
+---
+
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
+
 ## Archivos tocados
 
 ```
@@ -505,16 +527,6 @@ studies/godot-3d-rpg-curso/PROGRESO.md
 studies/godot-3d-rpg-curso/SESSIONS.md
 studies/README.md
 ```
-
-## Como continuar
-
-1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-18.md` para el informe completo de la sesion.
-3. Verificar el estado real antes de actuar (git, tests, la DB).
-
----
-
-*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
 
 ## What This Is
 
