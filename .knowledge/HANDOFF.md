@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-18 03:11 GMT-3
+**Fecha:** 2026-11-18 14:21 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-18 14:21
+TTS: el narrador del audiolibro quedo definido y reutilizable. Se probaron cuatro motores en la noche. Kokoro se descarto no por sucio sino por plano: es no autoregresivo y calcula la entonacion de la estructura del texto, asi que siempre cae al final. Medido: 'Viste a Vera.' y 'Viste a Vera?' dan el mismo contorno (154 a 103 y 154 a 105 Hz). Con 1432 lineas de dialogo en el libro, todas las preguntas sonaban a afirmacion. Quedo Chatterbox clonando una referencia: em_alex de Kokoro bajado 4 semitonos, que da 100-104 Hz de tono y 11.400 Hz de banda, y entona. La clave fue bajar el tono de la REFERENCIA y no del audio final: filtrar el resultado costaba 1,6 kHz de banda (10.185 a 8.564 Hz) y sonaba apagado. Se corrigieron cuatro bugs del pipeline: las notas de produccion *POV: ...* se narraban en 14 capitulos; las rayas llegaban al fonemizador como caracter desconocido y metian 60 ms de sonido fantasma antes de cada vocal ('Ah' sonaba 'nahh'); el corte a 240 caracteres partia palabras y hacia alucinar la cola (7,6 s); y el -3 semitonos aplicado al resultado apagaba la voz. El narrador quedo reutilizable: la voz vive en assets/voces/baritono-jazz/ con manifiesto y valores medidos, y el script la resuelve por nombre (--voz baritono-jazz), asi que cualquier proyecto usa el mismo narrador sin copiar rutas. ADR-116 reemplaza al ADR-115, que quedo archivado. El render de los 17 capitulos corre en background: capitulo 1 listo en 5:37 de audio y 24,7 minutos, unos 4,4x el tiempo real.
 
 ### 2026-11-18 03:11
 Auditoria de la skill growing-doc-retention y de la tabla de scripts de SETUP.md. La skill resulto no estar sin usar: es de instalacion y su mecanismo (changelog-rotate.py 14d, dreams-rotate.py mensual, gates en pre-commit y session-end) corre verde y verificado. De las tres ideas que propuse adaptar, dos no eran candidatos (modelos ya managed en AGENTS.md/SETUP.md; estado de OPS inexistente en MEMORY.md) y la tercera (tabla de scripts) revelo un problema distinto: 142 scripts en disco contra ~30 filas, mezclando catalogo vivo con actas de defuncion.
@@ -37,10 +40,11 @@ Estado del proyecto: concepto cerrado (estructura Opcion B, revelacion central, 
 ### 2026-11-17 19:44
 Auditoría de superficie del agente kanam-auditor: dos ítems de roadmap cerrados con evidencia. (1) El oracle dejó de delegar el contraste en axe: src/checks/contrast.js mide el ratio WCAG real (luminancia relativa, composición de fondos con alpha, umbral 4.5/3 por rol, opacidad) y el estado :focus; hallazgo inmediato --k-brand-primary con blanco da 3.74:1 (bajo 4.5:1 AA), anotado para el dueño del DS. De paso se corrigió un stall de 30s del check de teclado (clickeaba modales display:none): la corrida pasó de ~33s a 2.7s. (2) C.3 cerrado: surface-pipeline/bin/audit-due conecta check-audit-due.py con audit-surface y escribe .knowledge/AUDIT.md; reglas: sin config no hay auditoría, sin report.json no se acredita, un RECHAZADO sí se escribe (acreditado != aprobado). Verificado en las dos direcciones con un proyecto descartable (con config -> AL DIA leído de vuelta por el script; sin config -> no-config, exit 1, sin AUDIT.md). Tests 60/60. Commits 633b8fd2c5 y 7969abc97f.
 
-### 2026-11-17 10:20
-Sesion de auditoria de contexto de una conversacion vieja de Medallia (1/10) y su estado real al 17/11. Pregunta de Gonzo: si habia motivo para dejar archivada la conversacion o si podia borrarla. Verificado contra el repo y no contra memoria: (1) la conversacion produjo el kit de prep en docs/entrevistas/medallia/medallia-2026-10-01.md, que sigue vivo e indexado en el README de entrevistas; (2) la entrevista ocurrio el 19/10 (no el 1/10) y en esa call Gonzo entro sin saber que Brighthire era la grabadora, no la empresa; (3) CORRECCION PROPIA: en un mensaje intermedio afirme que Medallia era el cliente de Infjini. Es falso: el cliente de Infjini es Disney. Medallia fue un proceso aparte que cerro su etapa de entrevista. (4) El proceso Infjini/Disney: commit 7418097178 (16/11 15:44) lo cerro por silencio y gonzo lo revirtio en f379bb1cf0 (16/11 15:48) con la regla 'no dije nunca hubo noticias, digo que aun no coordinamos'. Estado vigente: ABIERTO - fecha sin coordinar, ultimo contacto humano con Siraj el 26/10 (21 dias). (5) Sin automatizacion ni cron atado a la sesion (16 jobs revisados): borrar el chat no pierde nada. Gonzo respondio 'cerrado... guardar' sobre el proceso. NO se edito el tracker: queda como decision suya si marcarlo sin actividad desde 26/10, porque la vista diaria no lo registra y ya se intento cerrarlo una vez en falso.
-
 ## Estado actual
+
+Render del libro en curso (chapters 1/17). Voz fijada en ADR-116: Chatterbox clonando assets/voces/baritono-jazz (100-104 Hz, 11.400 Hz, entona). Registro de voces por nombre operativo.
+
+### Estado previo (heredado)
 
 Revertido y limpio. Retirados: scripts/scripts-inventory.py, la clave scripts_inventory de settings, el bloque del pre-commit y las 3 lineas falsas del CHANGELOG. ADR-113 reescrito como Status: Rejected con el motivo tecnico y agregado al indice (check-adr-integrity OK, 70 ADRs). Sobrevive el inventario medido en tmp/scripts_inventory_raw.json. Errores propios durante la limpieza: se borro agents/kanam-planner/agents/ creyendo que era basura de esta sesion cuando contenia caesar3-clone-f2-f3.json trackeado; restaurado con git checkout y verificado.
 
@@ -179,6 +183,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1) Dejar terminar scripts/render-libro-baritono.sh (~10 h, log en /tmp/render-baritono.log) y auditar cada capitulo: cola, duracion contra el texto, y las rafagas de siseo. 2) Gonzo menciono que quedan 'un par de errores' en el audio: pedirle el timestamp y el capitulo antes de tocar el pipeline. 3) Borrar el symlink de compatibilidad docs/stories/las_tres_sabanas/audio/voz/referencia-baritono-4st.wav cuando el render termine, y sacar --ref del script de batch para que use --voz. 4) Escuchar capitulo 1 completo antes de dar la voz por cerrada. 5) Si el resultado pide mas actuacion, evaluar exaggeration por registro (deuda declarada en ADR-116).
+
+### Pendientes heredados (sin cambios)
 
 1) Decidir si la tabla de scripts se retoma con un mecanismo nuevo (script que escribe entre marcadores propios y compara contra su propia salida) o queda archivada. El patron managed de ADR-055 NO sirve para contenido libre. 2) Revisar los 9 huerfanos con Gonzo, empezando por record_entity.py (sistema de entidades sin uso, proposito recuperable). 3) Los 6 scripts de la Cata de Harnesses se pueden archivar cuando haya decision.
 
@@ -366,6 +374,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- ADR-116 (reemplaza ADR-115, archivado): la voz es Chatterbox con clonacion desde una referencia baritona de 100 Hz. Una voz es un directorio en assets/voces/<nombre>/ con referencia.wav, el texto que la genero y voz.json con los valores medidos; el script la resuelve por nombre. No se aplican los tres registros de Kokoro al motor vigente: Chatterbox entona solo y sumar variacion por tramo multiplica las costuras. Leccion de metodo: las tres primeras voces se eligieron con una muestra de una frase sin dialogo ni preguntas; una frase suelta no prueba un narrador.
+
+### Heredadas (sin cambios)
+
 - growing-doc-retention no deja ideas pendientes de adaptar: deja la leccion de los dos errores de diagnostico (el archivo gigante no implica rotacion rota; la ventana se elige por ritmo real del repo). El patron managed solo soporta valores escalares interpolados, no contenido libre: guardar una tabla como setting no genera bloque. La verificacion de un artefacto generado se hace con grep/test en el archivo, nunca leyendo el stdout del generador.
 
 ### Heredadas (sin cambios)
@@ -459,13 +471,17 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 ## Archivos tocados
 
 ```
+agents/kanam-mind/briefs/2026-11-18-birdid-offline-feasibility.md
+agents/kanam-ops/scripts/gateway-channels-watch-trigger.js
+agents/kanam-ops/tests/test_ops_scripts.py
+memory/2026-11-18.md
+memory/memory.db
+scripts/pipeline-queue.sh
 docs/CHANGELOG.md
 docs/adr/README.md
 docs/archive/CHANGELOG-archive.md
 docs/stories/el_descenso/historia_descenso.md
 memory/2026-11-17.md
-memory/memory.db
-memory/2026-11-18.md
 agents/kanam-auditor/LEARNINGS.md
 agents/kanam-auditor/MEMORY.md
 agents/kanam-auditor/ROADMAP.md
