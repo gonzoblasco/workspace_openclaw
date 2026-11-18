@@ -18,7 +18,9 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 - **Decisión de archivo:** el audio no se versiona. Se versiona el texto y el comando; el `.m4a` se regenera. Los audios viven en `<carpeta>/audio/` con un `.json` al lado que guarda voz, ritmo y hash del texto.
 - **Cambiar de voz en el futuro es un flag**, no una migración: `--voice`, `--rate`, `--pitch`, o los tres defaults en el script.
 - **Ritmo ajustado a -4%** (era -10%) por pedido de Gonzo: el capítulo 1 pasó de 7:05 a 6:38. El script ahora también re-renderiza si cambia el ritmo, no solo si cambia el texto.
-- **`scripts/tts-dramatize.py`**: una voz por personaje, turno por turno, repartiendo por atribución y alternando cuando no hay. Prueba sobre la escena de la cocina del capítulo 14: 20 turnos, tres voces, 1:17. La ironía sigue sin resolverse: eso no es del reparto, es del proveedor.
+- **`scripts/tts-dramatize.py`**: una voz por personaje, turno por turno, repartiendo por atribución y alternando cuando no hay. Prueba sobre la escena de la cocina del capítulo 14: 26 turnos, tres voces, 1:19. La ironía sigue sin resolverse: eso no es del reparto, es del proveedor.
+- **La atribución ya no la dice el personaje.** "— No —dijo ella—. Se lo digo ahora." se parte en tres: Vera dice "No", el narrador dice "dijo ella", Vera dice "Se lo digo ahora". Antes la frase entera salía con la voz del personaje, que es como leer un guion con los ojos cerrados.
+- **Motor local instalado (2026-11-17):** Chatterbox multilingual en `.venvs/chatterbox` (Python 3.12, torch 2.6, MPS). Español andando: 4,6 s de audio en 29 s de proceso, o sea 6,3 veces más lento que el tiempo real. La emoción se controla con `exaggeration`; el watermarker neural de Perth no importa en este entorno y se reemplaza por el dummy (el watermark es de procedencia, no de calidad).
 
 ---
 

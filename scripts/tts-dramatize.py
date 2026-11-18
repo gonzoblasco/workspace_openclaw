@@ -36,6 +36,31 @@ VERBS = r"(?:dijo|dice|preguntó|contestó|respondió|agregó|repitió|murmuró|
 
 
 FEMALE = {"Vera"}
+VERB_ONLY = re.compile(rf"^\s*(?:{VERBS})\b")
+
+
+def split_turn(para, who):
+    """Parte un turno en lo que dice el personaje y lo que dice el narrador.
+
+    "— No —dijo ella—. Se lo digo ahora."  →  [("Vera","No"), ("narrador","dijo ella"),
+                                             ("Vera","Se lo digo ahora.")]
+    """
+    if "—" not in para:
+        return [(who, para.strip())] if para.strip() else []
+    pieces = para.split("—")
+    out = []
+    for i, piece in enumerate(pieces):
+        piece = piece.strip(" ,;")
+        if not piece:
+            continue
+        # Atribución: arranca con verbo de decir, o con un nombre seguido de verbo.
+        if VERB_ONLY.match(piece) or re.match(rf"^(?:{'|'.join(NAMES)})\s+{VERBS}", piece):
+            out.append(("narrador", piece))
+            continue
+        piece = piece.lstrip(". ").strip()
+        if piece:
+            out.append((who, piece))
+    return out
 
 
 def speaker_of(para, current, previous):
@@ -100,10 +125,18 @@ def main():
 
     work = tempfile.mkdtemp(prefix="drama-")
     pieces = []
-    for i, (kind, who, p) in enumerate(turns, 1):
+    seq = []
+    for kind, who, p in turns:
+        if kind == "dialogo":
+            for sub_who, sub_text in split_turn(p, who):
+                seq.append((sub_who, sub_text))
+        else:
+            seq.append((who, p))
+
+    for i, (who, p) in enumerate(seq, 1):
         cfg = cast.get(who, cast["narrador"])
-        clean = tts.strip_markdown(p).strip()
-        if not clean:
+        clean = tts.strip_markdown(p).strip().rstrip(",")
+        if not clean or not re.search(r"\w", clean):
             continue
         src = os.path.join(work, f"{i}.txt")
         dst = os.path.join(work, f"{i}.mp3")
