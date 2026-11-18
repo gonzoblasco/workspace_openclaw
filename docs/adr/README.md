@@ -100,6 +100,7 @@ Decisiones de arquitectura de alcance general, aplicables a cualquier proyecto d
 | ADR-037 | [Lucide como Iconos Base](./ADR-037-lucide-iconos-base.md) | ⚠️ Diseño (con 047/048) - Lucide como iconos base |
 | ADR-042 | [Stripe como proveedor de pagos unico reconocido](./ADR-042-stripe-pagos-archived.md) | ⛔ Superseded por ADR-114 (registro histórico) |
 | ADR-114 | [Pagos sin proveedor obligatorio - elección por proyecto](./ADR-114-pagos-sin-proveedor-obligatorio.md) | Sin proveedor de pagos obligatorio: cada proyecto elige (Stripe, Mercado Pago u otro) con criterio explícito y lo registra en su ADR |
+| ADR-115 | [La voz del audiolibro es Kokoro em_alex con post-proceso fijo](./ADR-115-voz-audiolibro-kokoro-em-alex.md) | Kokoro-82M (no autoregresivo) reemplaza a Chatterbox como motor de audio: no puede alucinar cola. Voz fija en los defaults de `tts-kokoro.py` |
 | ADR-092 | [El CHANGELOG vive en una ventana activa de ~30 días, con rotación automatizada](./ADR-092-changelog-ventana-rotacion.md) | CHANGELOG en ventana de 30 días con rotación automatizada |
 
 ### Gobernanza e higiene del workspace

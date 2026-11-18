@@ -114,11 +114,32 @@ así que la puerta que mata la abrió ella; Néstor ya no dice su tesis, la dice
 municipal desde hace treinta y un años; y la densidad de pensamiento se documentó por escena en vez
 de forzarla al número de la plantilla.
 
+## Audio
+
+**La voz del audiolibro está fijada (ADR-115).** Kokoro-82M, voz `em_alex` con velocidad 1.075,
+−3 semitonos, grano 0.25 y aire +1 dB. Son los **defaults** de `scripts/tts-kokoro.py`: el comando
+sin flags ya saca esta voz.
+
+```bash
+.venvs/kokoro/bin/python scripts/tts-kokoro.py \
+    docs/stories/las_tres_sabanas/manuscript/capitulo_N.md \
+    --out docs/stories/las_tres_sabanas/audio/capitulo-N-kokoro.m4a
+```
+
+Rinde ~57 s por capítulo de 1.000 palabras, con ~0,3 s de cola. Límite conocido: Kokoro tiene
+componente estocástico, dos renders del mismo texto no son idénticos y la respiración cambia.
+**Se escucha antes de publicar.**
+
+Los audios `capitulo-1-profunda.m4a` y `capitulo-14-profunda.m4a` son de **Chatterbox**, el motor
+anterior: el 14 conserva la cola alucinada en sus 59 tramos. Se dejan como historia, no como vigentes.
+
 ## Proximos pasos
 
-1. **Lectura en voz alta** de los tres actos: es el paso que detecta lo que ni la métrica ni la
+1. **Rehacer los capítulos con la voz vigente.** El 1 ya está (`capitulo-1-kokoro.m4a`, 5:12).
+   Faltan del 2 al 17.
+2. **Lectura en voz alta** de los tres actos: es el paso que detecta lo que ni la métrica ni la
    lectura silenciosa ven (frases que no se pueden decir).
-2. Decidir si la novela corta (17 escenas) es la forma final o si necesita dos escenas más
+3. Decidir si la novela corta (17 escenas) es la forma final o si necesita dos escenas más
    de aire entre el colapso y el epílogo.
 
 La lectura de contenido completa, con lo corregido y lo que queda abierto, está en
