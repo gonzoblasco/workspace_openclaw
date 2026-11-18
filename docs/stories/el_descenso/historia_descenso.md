@@ -19,7 +19,8 @@ La historia se construye mediante saltos temporales que funcionan como anclas y 
 La navaja que Julián lleva al aula **es el arma con la que su padre degolló a su madre**, hacía cosa de dos meses.
 
 - **El padre está libre.** La policía nunca encontró el arma del homicidio.
-- **Julián nunca se lo contó a nadie.** Él sabe que esa navaja es la prueba, y la tiene él.
+- **El padre no sabe que su hijo la movió.** Él la escondió la noche del crimen; Julián lo vio. Cuando llegaron las sirenas y la policía a revisar la casa, Julián ya la había pasado a otro lugar. El padre se lo atribuye a la suerte, y nunca va a preguntar: preguntar sería admitir que sabía dónde estaba.
+- **Julián nunca se lo contó a nadie.** Ni a su padre. Es el único que sabe todo, y ese saber lo separa de todos.
 - **Julián cuida de su padre.** Convive con él, lo asiste, sostiene la fachada de familia normal.
 - **La navaja, entonces, no es un objeto de protección ni de poder: es un trofeo, una prueba, una condena y una herencia.** La lleva encima como quien carga un cuerpo.
 
@@ -53,14 +54,15 @@ La navaja que Julián lleva al aula **es el arma con la que su padre degolló a 
 ## Hitos y Malas Decisiones
 *(Espacio para registrar las decisiones clave a medida que se desarrollan)*
 
-- [ ] **Decisión 1 (definida):** Guardar la navaja. Cuando encontró/entendió lo que había pasado, en vez de entregarla a la policía, la guardó. Ese fue el primer acto de complicidad con su padre y el inicio del descenso.
+- [x] **Decisión 0 (el acto cero):** Julián ve a su padre esconder la navaja. Días después, cuando escucha las sirenas y la policía llega a revisar la casa, él ya la movió a otro lugar donde no la van a encontrar. No le dice nada al padre. A los quince años obstruye, solo, la investigación del asesinato de su madre. Ahí empieza el descenso.
+- [ ] Decisión 1: la primera vez que usa la navaja para algo (no matar: algo pequeño y justificable).
 - [ ] Decisión 2: (Pendiente de definición)
-- [ ] Decisión 3: (Pendiente de definición)
 
 ---
 
 ## Preguntas Abiertas
-- ¿Cómo descubre Julián que la navaja es el arma? ¿La encontró él? ¿Se la dio su padre? ¿La vio escondida?
-- ¿Cuál es la relación real con su padre hoy? ¿Lo cuida por amor, por miedo, por culpa, por vigilancia?
+- ¿Qué vio exactamente Julián esa noche? ¿Solo el escondite, o algo más?
+- ¿Cuál es la relación real con su padre hoy? ¿Lo cuida por amor, por miedo, por culpa, por vigilancia? La respuesta tiene que incluir las cuatro.
+- ¿El padre sospecha? No puede preguntar sin delatarse, y eso es la mejor escena de la casa.
 - ¿Qué pasa después del aula? ¿Alguien ve la navaja? ¿Ese es el detonante?
-- ¿Cuándo empieza el "Presente Oscuro"? ¿Cuántos años después?
+- ¿Cuándo empieza el "Presente Oscuro"? ¿Cuántos años después? ¿Quién es el cuerpo del garaje?

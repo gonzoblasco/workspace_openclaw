@@ -22,6 +22,34 @@ Un centímetro más y el metal golpearía el suelo. Y ese sonido, ese *clink* se
 
 ---
 
+## 1b. Atmósfera: el aula (versión con la revelación)
+
+El aire del aula olía a tiza y a encierro, ese olor de las últimas horas de clase. El zumbido de los fluorescentes llenaba el silencio mejor que treinta respiraciones.
+
+Lo habían llamado por su nombre y él se había levantado sin pensar. Ahora estaba de pie frente al pizarrón, con la respuesta ya armada en la boca, y el bolsillo derecho del pantalón le pesaba como si llevara una piedra.
+
+No era una piedra. Era una navaja de once centímetros, hoja plegable, cachas de goma con textura. La había tenido en la mano tantas veces que podía describirla con los ojos cerrados: el filo, el peso, el pequeño juego del mecanismo antes de trabarse.
+
+Hacía dos meses que dormía con ella debajo de la almohada. Hacía dos meses que la limpiaba cada noche con la misma paciencia con la que su madre limpiaba los cubiertos.
+
+Nadie sabía que existía. La policía había revisado la casa, el taller, el auto del padre. No la encontraron porque él la había sacado esa misma madrugada, envuelta en una remera, mientras la ambulancia todavía estaba en la puerta y los vecinos miraban desde la vereda.
+
+Desde entonces la llevaba encima. No para defenderse: no había nada de qué defenderse en un colegio de barrio a las cuatro de la tarde. La llevaba porque mientras estuviera en su bolsillo no estaba en manos de nadie más.
+
+El profesor repitió la pregunta. Él abrió la boca para contestar y, en el movimiento mínimo de cambiar el peso de una pierna a la otra, sintió que el clip cedía.
+
+El acero se deslizó. Primero el peso, después el metal rozando la tela, después el borde asomando al vacío. Una traición lenta, milímetro a milímetro.
+
+Podía calcular el recorrido. Dieciocho centímetros hasta el suelo. Un segundo y medio. Y después ese sonido, ese clic seco contra el granito, que no se parecía a nada de lo que había escuchado en su vida salvo a una puerta que se cierra.
+
+Si la navaja caía, no caía un cuchillo. Caía la prueba. Caía el silencio que sostenía la casa, el nombre de su padre, la versión de que esa noche había sido otra cosa. Y él iba a tener que explicar por qué la llevaba al colegio, con la cara de alumno ejemplar y la camisa planchada.
+
+Nadie hace esa pregunta dos veces.
+
+El tiempo se volvió viscoso. La voz del profesor llegó desde lejos. Julián no respiraba, no asentía, no movía un músculo, atrapado en el espacio infinitesimal entre la perfección de su máscara y el ruido definitivo de la caída.
+
+---
+
 ## 2. Primer salto: presente oscuro y corte al aula
 
 ### Presente oscuro
@@ -54,8 +82,79 @@ El tiempo se volvió viscoso. La voz del profesor se convirtió en un eco lejano
 
 ---
 
+## 3. La escena de las sirenas (Decisión 0)
+
+### Lo que se mueve antes que uno
+
+Las sirenas se escucharon primero a dos cuadras, subiendo por la calle de tierra, y después dejaron de moverse.
+
+Julián estaba en la cocina, con el mate frío y la radio encendida en cualquier cosa. Habían pasado nueve días. Nueve días en los que la casa se había llenado de gente que traía comida y se iba sin comerla, de tías que hablaban en voz baja en el patio, de un silencio que se acomodaba en los rincones como un perro.
+
+El padre estaba en el taller, detrás de la casa. Después se escuchó el portón, la voz del sargento, la del padre invitando a pasar. No se escuchó lo que dijeron.
+
+Julián sabía dónde estaba. La había visto esconder la misma noche, desde la puerta del taller, con la luz apagada. El padre se había arrodillado junto a la bolsa de cal, había metido la mano hasta el fondo, había acomodado algo, y después se había limpiado las manos en el pantalón como quien acaba de plantar una semilla.
+
+Esa noche Julián no dijo nada. Al otro día tampoco. En esos nueve días había aprendido que el silencio también se hereda.
+
+Pero ahora venían.
+
+Se movió antes de decidirlo. Después iba a pensar que en realidad no se había movido él: se había movido algo dentro de él, algo más viejo y más rápido, algo que ya sabía lo que había que hacer.
+
+Del taller a su cuarto había doce pasos por el pasillo. Los policías todavía estaban en la puerta. El padre hablaba de papeles, de un trámite, de que la casa estaba a nombre de ella. La voz le temblaba en un lugar muy chico, casi imperceptible, como una radio mal sintonizada.
+
+Julián entró al taller por la puerta de atrás. Olía a aceite y a cal. La bolsa estaba en el mismo lugar, abierta en el borde, con la pala clavada. Metió la mano. La cal le raspó los nudillos, se le metió debajo de las uñas, y por un segundo pensó que no estaba, que el padre la había movido otra vez, que había llegado tarde.
+
+Estaba.
+
+La sacó. La navaja era más pesada de lo que esperaba. Negra, con las cachas gastadas en el borde, el clip abierto como un diente. No la abrió. No quería ver la hoja.
+
+Se la metió en la cintura, abajo de la remera, y el frío le subió por la espalda hasta la nuca.
+
+Cuando volvió al pasillo, los policías ya estaban adentro.
+
+Eran dos. Uno joven, con cara de aburrido. Uno grande, con la camisa fuera del pantalón y una libreta. El grande lo miró. Julián se quedó quieto, con las manos en los bolsillos y la remera caída sobre el elástico del pantalón.
+
+—¿Vos sos el hijo?
+
+—Sí.
+
+—¿Estabas acá?
+
+—En la cocina.
+
+El hombre anotó algo. La birome le funcionaba a la tercera. Julián sintió la navaja correrse un centímetro y apretó el brazo contra el cuerpo, como quien se agarra un dolor de panza.
+
+—Tu papá dice que vos dormías.
+
+—Dormía.
+
+—¿Y no escuchaste nada?
+
+—Nada.
+
+La mentira le salió tan limpia que le dio miedo. No la había preparado. No había preparado ninguna de las dos: ni la de dormir, ni la de no haber escuchado. Las dos se habían dicho solas, y eso significaba que ya las tenía adentro.
+
+El policía grande se fue para el fondo. El joven se quedó en el pasillo, mirando el portarretrato de la mesa ratona, el de la primera comunión de Julián, con la camisa blanca y la sonrisa de otro chico.
+
+Pasaron cuarenta minutos. Julián los contó por el reloj de la cocina, sentado en la misma silla, con el mate frío todavía al lado. Escuchó los cajones del placard, el ruido de la ropa tirada, las voces en el taller. En un momento el padre pasó por el pasillo y lo miró. Tenía la cara de alguien que acaba de rezar.
+
+No se dijeron nada.
+
+Cuando se fueron, el padre cerró el portón y se quedó un rato con la mano apoyada en el hierro, como si el portón fuera lo único que lo sostenía de pie. Después entró, se sirvió un vaso de agua y dijo, sin mirarlo, con una voz que quería sonar liviana:
+
+—No encontraron nada.
+
+Y ahí Julián entendió algo que no tenía nombre. Entendió que su padre iba a vivir el resto de su vida agradeciéndole a la suerte, y que la suerte era él, y que nunca, nunca, iba a poder decirle la verdad.
+
+—No encontraron nada —repitió.
+
+Julián se fue a su cuarto con la navaja pegada al cuerpo y esa noche, por primera vez desde que su madre había muerto, durmió con la puerta cerrada.
+
+---
+
 ## Estado de estos borradores
 
 - Dos fragmentos escritos, sin revisión posterior.
-- El del aula no nombra la navaja como prueba del crimen: se escribió antes de la revelación del 28/09. Al reescribirlo, el objeto tiene que cargar ese peso.
+- El fragmento 1 se escribió antes de la revelación del 28/09. El 1b es la reescritura con la navaja cargando el peso de la prueba; el 1 queda como registro de la primera versión.
+- El fragmento 3 (las sirenas) implementa la Decisión 0: Julián mueve la navaja antes de que la policía entre. Escrito el 18/11, sin revisión.
 - Pendiente de decisión: cómo llegó la navaja a manos de Julián y qué pasa inmediatamente después del aula.
