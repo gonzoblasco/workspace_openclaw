@@ -1,0 +1,24 @@
+{
+  "nombre": "baritono-jazz",
+  "descripcion": "Narrador barítono, 100-104 Hz, con entonación completa. Voz del audiolibro de Las Tres Sabanas (ADR-116) y voz por defecto para narrar ficción en español.",
+  "motor": "chatterbox",
+  "referencia": "referencia.wav",
+  "referencia_origen": "Kokoro em_alex, bajado 4 semitonos (asetrate+atempo+equalizer 180 Hz)",
+  "exaggeration": 0.5,
+  "cfg_weight": 0.5,
+  "formato_salida": "m4a AAC 96k",
+  "loudness_lufs": -17,
+  "medido": {
+    "f0_hz": 100,
+    "banda_hz": 11400,
+    "cola_s": 0.0,
+    "velocidad_render": "4,4x el tiempo real"
+  },
+  "reglas_de_texto": [
+    "cortar por párrafo, nunca por caracteres",
+    "recortar la cola por energía con 350 ms de gracia",
+    "filtrar las notas *POV: ...*, *Fin del capítulo.*, *Escrito con ...* antes de sacar el markdown",
+    "traducir cada raya por función: inicio de línea se descarta, antes de punto cierra la cita, antes de minúscula es coma, antes de mayúscula es punto",
+    "descartar ¿ y ¡: el cierre ya marca la entonación"
+  ]
+}

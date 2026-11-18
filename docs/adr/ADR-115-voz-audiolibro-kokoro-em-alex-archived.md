@@ -1,7 +1,9 @@
 # ADR-115: La voz del audiolibro es Kokoro em_alex con post-proceso fijo
 
-**Status:** Accepted (2026-11-18)
+**Status:** Superseded por ADR-116 (2026-11-18)
 **Supersedes:** —
+**Superseded por:** ADR-116 — Kokoro no entona preguntas (contorno idéntico con y sin `?`)
+  y el −3 semitonos cuesta 1,6 kHz de banda. Ver ADR-116.
 **Deciders:** Gonzo / Kanam
 **Fecha:** 2026-11-18
 **Origen:** instruccion directa de Gonzo tras escuchar la muestra ("esa sera nuestra voz SIEMPRE... es genial alex-jazz-10")

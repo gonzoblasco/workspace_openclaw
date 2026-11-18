@@ -6,6 +6,25 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-18] - TTS: el narrador barítono, y por qué Kokoro no servía
+
+### Added
+- **`assets/voces/baritono-jazz/`** — el registro de voces: `referencia.wav`, el texto que la generó y `voz.json` con los valores medidos. El script resuelve la voz por nombre (`--voz baritono-jazz`) desde cualquier proyecto.
+- **`scripts/tts-chatterbox.py`** reescrito: clonación desde referencia, corte por párrafo, recorte de cola por energía, filtro de notas de producción y traducción de rayas por función.
+- **`scripts/render-libro-baritono.sh`** — batch de los 17 capítulos con log por capítulo.
+- **ADR-116** reemplaza ADR-115.
+
+### Changed
+- **La voz del audiolibro:** Chatterbox clonando `em_alex` bajado 4 semitonos. 100-104 Hz, 11.400 Hz de banda, entona preguntas.
+
+### Notes
+- **Kokoro quedó descartado para narrar ficción dialogada**, no por sucio sino por plano: es no autoregresivo y calcula la entonación de la estructura, así que siempre cae al final. `Viste a Vera.` y `Viste a Vera?` dan el mismo contorno (154→103 y 154→105 Hz). Con 1.432 líneas de diálogo, todas las preguntas suenan a afirmación.
+- **Bajar el tono de la referencia y no del resultado** es lo que permite tener las dos cosas: filtrar el audio final costaba 1,6 kHz de banda (10.185 → 8.564 Hz); bajar la referencia da 100 Hz con 11.400 Hz.
+- **El "demonio" de Chatterbox era un bug propio.** El corte a 240 caracteres partía palabras y el modelo seguía generando: 7,6 s de respiraciones al final del capítulo 1. Con corte por párrafo la cola es 0,13 s.
+- **Las notas `*POV: ...*` se narraban** en 14 capítulos del render anterior: son metadata del autor. Se filtran antes de sacar el markdown, único momento en que se distinguen del pensamiento interior.
+- **Las rayas llegaban al fonemizador** como carácter desconocido y metían ~60 ms de sonido fantasma antes de cada vocal ("Ah" sonaba "nahh"). Ahora se traducen por función: inicio de línea se descarta, antes de punto cierra la cita, antes de minúscula es coma, antes de mayúscula es punto.
+- **Lección de método:** las tres voces anteriores se eligieron con una muestra de una frase sin diálogo. Una frase suelta no prueba un narrador.
+
 ## [2026-11-18]
 - **ADR-114 (supersede ADR-042): pagos sin proveedor obligatorio.** `AGENTS.md` deja de fijar Stripe como único: cada proyecto elige proveedor (Stripe, Mercado Pago u otro) con criterio explícito y lo registra en su propio ADR. `memory/career-facts.md` actualizado.
 

@@ -116,22 +116,30 @@ de forzarla al número de la plantilla.
 
 ## Audio
 
-**La voz del audiolibro está fijada (ADR-115).** Kokoro-82M, voz `em_alex` con velocidad 1.075,
-−3 semitonos, grano 0.25 y aire +1 dB. Son los **defaults** de `scripts/tts-kokoro.py`: el comando
-sin flags ya saca esta voz.
+**La voz del audiolibro es Chatterbox clonando una referencia baritona (ADR-116).**
+Kokoro `em_alex` bajado 4 semitonos como referencia de clonacion: da **100-104 Hz** de tono y
+**11.400 Hz** de banda, y entona las preguntas. Kokoro directo quedo descartado porque su
+entonacion es siempre descendente: "Viste a Vera." y "Viste a Vera?" dan el mismo contorno.
 
 ```bash
-.venvs/kokoro/bin/python scripts/tts-kokoro.py \
+.venvs/chatterbox/bin/python scripts/tts-chatterbox.py \
     docs/stories/las_tres_sabanas/manuscript/capitulo_N.md \
-    --out docs/stories/las_tres_sabanas/audio/capitulo-N-kokoro.m4a
+    --out docs/stories/las_tres_sabanas/audio/capitulo-N-baritono.m4a
 ```
 
-Rinde ~57 s por capítulo de 1.000 palabras, con ~0,3 s de cola. Límite conocido: Kokoro tiene
-componente estocástico, dos renders del mismo texto no son idénticos y la respiración cambia.
-**Se escucha antes de publicar.**
+Tarda ~5,5 veces el tiempo real: el libro entero son ~10-13 horas. Para el libro completo,
+`bash scripts/render-libro-baritono.sh` (corre desatendido, deja log en `/tmp/render-baritono.log`).
 
-Los audios `capitulo-1-profunda.m4a` y `capitulo-14-profunda.m4a` son de **Chatterbox**, el motor
-anterior: el 14 conserva la cola alucinada en sus 59 tramos. Se dejan como historia, no como vigentes.
+La referencia vive en `audio/voz/referencia-baritono-4st.wav` y se regenera con
+`audio/voz/referencia-texto.md`. **No se cambia sin releer el ADR-116.**
+
+Trampas ya pagadas, para no repetirlas: cortar por parrafo y no por caracteres (la cola alucinada
+venia de ahi); filtrar las notas `*POV: ...*` antes de sacar el markdown; traducir cada raya segun
+su funcion (inicio de linea, atribucion, cierre) porque llegan al fonemizador como caracter
+desconocido y meten 60 ms de sonido fantasma.
+
+Los audios `capitulo-N-kokoro.m4a` (17, completos) y `capitulo-*-profunda.m4a` (Chatterbox viejo)
+estan **obsoletos**: quedan como historia del proceso, no como vigentes.
 
 ## Proximos pasos
 
