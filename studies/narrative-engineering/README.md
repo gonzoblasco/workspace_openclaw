@@ -85,6 +85,7 @@ pueden medir y refutar con cifras.
 - `metodo.md` - el enfoque, los 5 ejes, cómo se registra cada caso y la regla de separar hecho de lectura.
 - `caso-01-dark-city.md` - el caso que fundó el método. Reescrito con los 5 ejes el 2026-11-17.
 - `caso-02-batman-begins.md` - adaptación y sistema de adquisición. Reescrito con los 5 ejes el 2026-11-17.
+- `modelos.md` - **qué modelos hay, con qué evidencia y qué falta para cerrar el resto.** El mapa completo por autor.
 - `modelo-goyer.md` - síntesis acumulativa. **Límite corregido el 2026-11-17:** los 4 ejes son estructura, no firma; sin Eje 5 no se puede hablar de autoría.
 - `caso-04-enders-game.md` - primer caso con **Eje 5 (Voz y Prosa)** medido sobre texto real.
   Su traduccion ejecutable vive en `docs/stories/las_tres_sabanas/PLANTILLA-voz-enders-game.md`.
@@ -115,6 +116,9 @@ pueden medir y refutar con cifras.
   que es un perfil propio derivado de los cinco autores.)
 - [ ] **Eje 5 de los casos 01, 02 y 03:** imposible mientras el material sea guion. Si aparece
   prosa narrativa de Goyer o de Johnson en edición estable, se mide y se cierra.
+- [ ] **Segundo caso de Rowling** (*The Casual Vacancy*): es el único autor del estudio donde el
+  segundo caso responde una pregunta abierta —cuánto de su voz es la serie y cuánto es ella—, y
+  ya hay un perfil medido contra el que comparar. Ver `modelos.md`.
 - [ ] Revisar si el "criterio de modelo confirmado" (4 ejes en original y adaptación) sigue
   sirviendo para algo: hoy el estudio lo considera superado por el Eje 5.
 - [x] Decidir si el caso 03 prueba a un autor **distinto** de Goyer para saber si el modelo es una forma de escribir o la firma de un hombre.

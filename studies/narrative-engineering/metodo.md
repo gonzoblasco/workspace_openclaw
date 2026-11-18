@@ -96,6 +96,16 @@ Una novela con mucho diálogo promedia bajo aunque cada escena esté en su punto
 
 ---
 
+## Caso y modelo no son lo mismo
+
+Un **caso** es una obra. Un **modelo** es un autor, y exige **dos obras o más** cruzadas: qué se
+repite, qué no hace nunca, cuál es su procedimiento. Con una sola obra se describe una mecánica,
+no una firma.
+
+El mapa de quién tiene qué, y qué falta para cerrar cada modelo, vive en `modelos.md`.
+
+---
+
 ## Reglas de escritura del estudio
 
 - **Fuentes citadas** cuando se afirma un dato externo (acreditaciones, fechas, ediciones).

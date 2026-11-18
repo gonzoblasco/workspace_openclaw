@@ -6,6 +6,18 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-17] - `modelos.md`: por qué hay un solo modelo y ocho casos
+
+### Added
+- **`studies/narrative-engineering/modelos.md`** — el índice que faltaba: por autor, cuántos casos, qué ejes están documentados, si la voz está medida y cuál es el artefacto ejecutable. Incluye la regla (un modelo exige dos obras; una obra es un caso), la inversión que el estudio tenía escondida y qué falta para cerrar cada modelo, con prioridad sugerida.
+
+### Notes
+- **La inversión:** el único archivo llamado `modelo` (Goyer) es el que no tiene voz medida, y los cinco autores con voz medida no tienen `modelo-*`. No es una falta: es que cada uno tiene un solo caso. Pero el nombre pesaba más que la evidencia, y el índice lo deja visible.
+- **Prioridad propuesta:** el segundo caso de Rowling (*The Casual Vacancy*), porque es el único donde el segundo caso responde una pregunta abierta —cuánto de su voz es la serie y cuánto es ella— y ya existe un perfil medido contra el que comparar.
+- `metodo.md` ahora distingue caso de modelo y apunta a `modelos.md`.
+
+---
+
 ## [2026-11-17] - Los casos 01-03 del estudio, reescritos con el método vigente
 
 ### Changed
