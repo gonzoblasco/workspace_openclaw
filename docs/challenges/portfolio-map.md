@@ -1,5 +1,3 @@
-"""Repositories in the portfolio: what each proves and how to verify it."""
-
 # Portfolio map
 
 Two public, local-first projects. They share a thesis: **the model is not the product; the constraint is.**
