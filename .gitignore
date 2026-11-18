@@ -181,3 +181,9 @@ docs/entrevistas/**/*.pdf
 # Bundle vendorizado de terceros (pinned, verificable): scripts/*-install.sh lo reconstruye.
 # modern-web-guidance son ~15 MB de guides + vectores; se reinstala, no se versiona.
 /vendor/
+
+# Audio generado (reproducible con scripts/tts-render.py)
+docs/stories/**/audio/*.m4a
+docs/stories/**/audio/*.mp3
+docs/stories/**/audio/*.json
+.venvs/

@@ -6,6 +6,20 @@ Registro de cambios estructurales del workspace. Contiene las entradas de los **
 
 ---
 
+## [2026-11-17] - Un flujo con nombre para pasar texto a voz
+
+### Added
+- **`skills/text-to-speech/SKILL.md`** — el flujo completo: voz vigente (es-AR-TomasNeural, -10% de ritmo, -2Hz), cómo se invoca, qué le hace al markdown, qué límites tiene y cuándo no usarlo.
+- **`scripts/tts-render.py`** — toma un archivo markdown y devuelve un `.m4a`: saca encabezados y marcas, convierte la raya de diálogo en pausa, corta en párrafos enteros, renderiza por tramos con edge-tts y concatena con ffmpeg. Idempotente por hash: si el texto no cambió, no re-renderiza.
+- **`docs/stories/las_tres_sabanas/audio/capitulo-1.m4a`** — el capítulo 1 leído entero con Tomás: 7:05, tres tramos.
+
+### Notes
+- **Por qué no el TTS del gateway:** el tool `tts` responde *"no provider registered; openai, xai, openrouter: not configured"*. Se resolvió con edge-tts en un venv dentro del workspace (`.venvs/tts`, gitignored) y voces neurales argentinas, que es lo que pedía el material. El primer intento con `say` de macOS sonó a robot y se descartó.
+- **Decisión de archivo:** el audio no se versiona. Se versiona el texto y el comando; el `.m4a` se regenera. Los audios viven en `<carpeta>/audio/` con un `.json` al lado que guarda voz, ritmo y hash del texto.
+- **Cambiar de voz en el futuro es un flag**, no una migración: `--voice`, `--rate`, `--pitch`, o los tres defaults en el script.
+
+---
+
 ## [2026-11-17] - Las Tres Sabanas: el sistema funcionando
 
 ### Added
