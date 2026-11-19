@@ -403,6 +403,21 @@ mucho mejor parado en la entrevista real.
 
 ## 8. Verificación del mail, para que cierres el círculo
 
+> **CIERRE 2026-11-19 — EL PROCESO SE DA POR CERRADO Y LA REGLA ES NO CONFIAR.** Después de esta
+> verificación, **pidieron datos bancarios**. Decisión de Gonzo: *"mercor, darlo por cerrado y
+> agregar la nota: no confiar, pidieron datos bancarios"*.
+>
+> El pedido de datos bancarios es el corte, y no necesita más análisis: **no hay oferta, no hay
+> contrato y no hay relación comercial que justifique esa información**. No se entrega nada — ni
+> banco, ni CBU/CVU, ni identidad adicional, ni documentación fiscal — aunque el proceso se
+> reabra o la persona parezca verificada.
+>
+> Lo que sigue abajo es el registro de la verificación del 27-10 y **se conserva como historia, no
+> como respaldo**: que el mail fuera legítimo y que el proyecto exista no convierte en seguro el
+> paso siguiente. Una campaña real puede terminar en un pedido indebido; la legitimidad del canal
+> no valida lo que se pide por él.
+
+
 El mail **era legítimo** (verificado el 27-10):
 - `chloechee@mercor.com` → Chloe Chee existe, se unió al Growth team de Mercor (post propio en
   LinkedIn del 20-oct-2026). Coincide firma, rol y timing.

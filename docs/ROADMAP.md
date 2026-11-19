@@ -190,7 +190,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
   | Proceso | Estado real al 2026-11-16 |
   |---|---|
   | **Infjini → Disney → HTC** (Lead SWE, USD 24/h, RTR firmado 19/10) | **ABIERTO — fecha sin coordinar.** La ventana era la 1ra-2da semana de noviembre; al 16/11 la entrevista todavía no se agendó. No hubo rechazo ni cierre. |
-  | **Mercor / Project Odin** | **ABIERTO**, entrada por mail directo verificado (28/10). Form completo; falta cuenta en `work.mercor.com`, subir PDF y postular. |
+  | **Mercor / Project Odin** | **CERRADO 2026-11-19 — NO CONFIAR.** Pidieron datos bancarios antes de cualquier contratación formal. No se entrega nada. |
   | **TEAM International** | **Relación abierta, posición cerrada** (Tempo cerró 26/10). Perfil en talent pool; reevalúan al mejorar el inglés. |
 
   Es el **mismo error de clase que el 2026-10-06, invertido**: aquella vez el documento inventó una oferta que no existía; esta vez dio por muertos procesos que estaban vivos. Las dos nacen de escribir el cuerpo una vez y no volver a mirar el tracker.
@@ -206,7 +206,7 @@ Una sola ruta, no cuatro mapas que se contradicen. Esto ordena **qué va primero
   **Condición de reapertura**: cuando haya ingreso, se retoma. `docs/cpacc/` queda como está (plan de estudio, mini-doc, assessment) — no se borra, se estaciona. Registrado como todo para que no se pierda el hilo.
 - **Acciones**:
   - [x] **Infjini/Disney: estado asentado el 16/11** — abierto, fecha sin coordinar. El proceso no está muerto.
-  - [ ] Mercor: completar la postulación (cuenta, PDF, Practice Interview).
+  - [x] **Mercor: cerrado el 19/11** — pidieron datos bancarios. No se sigue y no se entrega información bancaria.
   - [ ] Mantener `job-search-tracker.md` como única tabla de procesos.
   - [ ] Reactivar el volumen: 3-5 aplicaciones/día, calidad sobre volumen. Sigue sin arrancar.
 
