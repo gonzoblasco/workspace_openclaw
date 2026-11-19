@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-19 02:02 GMT-3
+**Fecha:** 2026-11-19 12:24 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,25 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-19 12:24
+Sesion larga de gobierno + ejecucion: roadmap de 5 tareas, cerrado entero.
+
+1) Roadmap (`docs/challenges/roadmap-next-5.md`) con problemas previstos por tarea. Al final, tres de esas predicciones fueron falsas y los dos defectos mas caros no estaban en la lista.
+
+2) Tarea 1 (pins): ya estaban puestos; solo se corrigio la descripcion del repo localdoc-agent, que insinuaba una submission al challenge que nunca existio.
+
+3) Tarea 2 (rename agente-local-amigo -> localdoc-agent): un rename tiene ~7 capas (directorio, remoto, distribucion, lockfile, slug en estado, artefactos de entorno, prosa). Se habian hecho 4. El review encontro 5 defectos reales: pyproject y uv.lock con el nombre viejo, slug del programa del Planner distinto del nombre de archivo, "10 tests" repetido en dos archivos cuando habia 25, y el prompt del venv. Correccion de Gonzo: "Lucia" es una persona de ejemplo del enunciado, no un cliente; se marco como tal en el programa y el HANDOFF, y se verifico que ningun artefacto publico la presente como real.
+
+4) Tarea 3 (privacidad): en localdoc-agent y field-notes se agrego un probe con `sys.addaudithook` que corre en subproceso, falla ante cualquier socket no-loopback y tiene CONTROL POSITIVO (se conecta a example.com a proposito; si el hook no lo ve, el test falla). Se agrego guard de bind (exit 2 en 0.0.0.0) y un wipe real: el boton "Delete everything" borraba el indice y dejaba `data/private/` con los originales, ademas de -wal/-shm. El probe se colgo y el cuelgue fue el hallazgo: con un modelo ausente es el demonio de Ollama el que va al registry, fuera del alcance de Python. Se documento el limite en ambos README. Tests: localdoc-agent 33, field-notes 14.
+
+5) Tarea 4 (bilingue): tres ensayos reescritos al espanol (no traducidos), feed sin duplicados (19 -> 15 -> 16), indice con una fila por pieza, y guard nuevo: un par con una sola mitad ahora rompe el build (antes fallaba en silencio y P4.3 decia que estaba cubierto).
+
+6) Tarea 5 (articulo): `the-review-that-invented-a-bug` / `la-revision-que-invento-un-bug`, publicados y verificados en vivo con hreflang completo. La primera linea casi lleva un dato falso: se iba a escribir "113 caracteres truncados" de memoria; medido contra git eran 19.889 en el commit (111 por debajo del cap) y 20.131 en el arbol (131 por encima).
+
+7) Layout y cache: el indice mostraba dos filas por pieza ("En espanol" + "Tambien en espanol"); ahora es una fila con link a la otra version. Al migrar el CSS se rompio `.entries` (home) porque solo se migro `.index-list`: mismo grid, dos listas, una sola migrada. Gonzo seguia viendolo roto por `max-age=600` de Pages: se agrego versionado del CSS por hash de contenido.
+
+8) Auditoria de performance y a11y: skip link existia pero no movia el foco (faltaba tabindex="-1"); chip sin affordance de link; favicon ausente generaba un 404 y bajaba Best Practices. Lighthouse en produccion: 99/100/100/100 (el punto que falta es el max-age=600 de Pages sobre las fuentes, no configurable).
 
 ### 2026-11-19 02:02
 Verificacion definitiva del OAuth de gh en orgs de terceros: comentarios reales en shadcn-ui#11757 (7000227192) y meta/astryx#4652 (7000228285) publicados con exito. OAuth-first confirmado con evidencia, no solo probes.
@@ -25,10 +44,11 @@ Cierre de la segunda parte de la sesion: infraestructura del MCP de GitHub y cre
 
 Estado de los hilos al cierre: ariakit#4058 cerrado (fix en 0.4.43); astryx#7871 mergeado en v0.7.12; astryx#4690 abierto y en conflicto, sin comentar por decision; astryx#4652 abierto con nuestra medicion DOM publicada; shadcn#11757 abierto con nuestro comentario publicado.
 
-### 2026-11-18 14:55
-Auditoria y arreglo de la skill growing-doc-retention: por que contaba como 'menos usada' y que tenia de aprovechable. Conclusion: es una skill de instalacion, no de invocacion (se leyo 2026-10-06 y 2026-10-14); su mecanismo son dos scripts que corren solos, asi que un contador de invocaciones siempre marca cero. Al medirla aparece el hueco real: dreams-rotate.py tenia un solo DREAMS.md hardcodeado cuando ya existian OCHO (raiz + agents/*/). Cuatro diarios de agente (dev, critic, auditor, mind) guardaban septiembre y octubre en el activo y '--check' daba verde porque no los miraba: el modo de falla que la propia skill advierte (gate colgado donde el doc ya no vive). Arreglado: el script enumera instancias, archiva por agente en memory/archive/dreaming/agents/<agente>/, '--check' nombra las desfasadas y '--dry-run' reporta por instancia. Aplicado al workspace: 53 entradas archivadas (dev 21, critic 11, mind 11, auditor 10), 103 activas en 8 diarios, 133 entradas antes y 133 despues, verificado agente por agente contra el backup. La revision B (kanam-critic) encontro dos defectos reales que se corrigieron: D1 el activo se reescribia ANTES que el archivo, asi que un fallo de I/O borraba entradas para siempre con --check verde (reproducido: 34 a 23 en kanam-dev); ahora se persiste el archivo primero, con escritura atomica (tmp + os.replace), error por instancia con exit 2 sin abortar el lote y guarda contra duplicar un bloque en un reintento. D2 el test 9 pasaba por casualidad (!grep sobre un archivo borrado tambien da verde); se cubrio con [ -f ] + marcadores y se verifico por mutacion (borrando el diario del agente fallan 4 tests). 13/13 bats, check-refs 757/757, bootstrap OK, single-source OK. Commit aeae49319d, pusheado (46dfb57c14..aeae49319d) con CI verde en Skill Scripts CI. El push llevo tambien los dos commits del cierre del narrador que estaban en main local.
-
 ## Estado actual
+
+5/5 tareas del roadmap cerradas. a11y-portfolio desplegado y verificado: Lighthouse 99/100/100/100. localdoc-agent 33 tests, field-notes 14. Sindicacion a DEV.to pendiente: la clave existe en el store pero el proxy de egress del gateway esta deshabilitado (401), y el payload esta listo en docs/challenges/articles/.
+
+### Estado previo (heredado)
 
 MCP operativo OAuth-first verificado con 2 comentarios reales. PAT fallback. Notifications sin soporte en fine-grained.
 
@@ -195,6 +215,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1) DEV.to: pedir a OPS habilitar el egress proxy para dev.to, o recibir la clave en el momento. 2) Decidir si el articulo se recorta (1.569 palabras vs 800-1.200 de la skill). 3) Verificar mobile con viewport real: Chrome headless no lo cambia y la captura a 390px no prueba nada. 4) Queda sin commitear .knowledge/handoff-history de otra sesion (2 borrados, 2 nuevos): no es de esta sesion.
+
+### Pendientes heredados (sin cambios)
 
 1. Retomar Critic T3.3 o ABYA YALA segun Gonzo.
 
@@ -410,6 +434,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- No minificar CSS: un minificador conservador ahorra 526 B gzip sobre 3.789; no paga el riesgo ni la dependencia. No subsetear fuentes: son variables y el subset de glifos baja solo 5%, el peso esta en las tablas de variacion. Una fila por pieza en el indice: la traduccion es una vista, no una pieza. Versionar assets por hash de contenido: un cambio solo de CSS era invisible para cualquiera con cache. Tesis del articulo: la evidencia confirma el sintoma, no la explicacion que le colgas encima.
+
+### Heredadas (sin cambios)
+
 - OAuth-first por evidencia de comentarios reales.
 
 ### Heredadas (sin cambios)
@@ -531,6 +559,7 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 ## Archivos tocados
 
 ```
+memory/2026-11-19.md
 .knowledge/HANDOFF.md
 .knowledge/SESSIONS.md
 .knowledge/handoff-history/2026-11-17-0857-HANDOFF.md
