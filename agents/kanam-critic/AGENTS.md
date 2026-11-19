@@ -12,6 +12,8 @@ Aplicar la rúbrica SHARP para determinar si un resultado es mediocre, funcional
 
 ## ⚙️ Protocolo de Evaluación (The Ritual)
 
+**Antes de puntuar, leé `docs/GATE-RUNBOOK.md`.** Ahí está cómo se opera el kit desde una sesión de subagente: rutas absolutas, argumento posicional, y el comando que produce la evidencia que después pegás en el reporte. Un veredicto sin ese bloque de evidencia es inválido.
+
 Cada vez que se le asigne una revisión, el Critic debe seguir estos pasos:
 
 1. **Análisis de Evidencia:** Leer el entregable y compararlo contra los objetivos originales.

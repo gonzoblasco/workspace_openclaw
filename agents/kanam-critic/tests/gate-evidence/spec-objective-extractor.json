@@ -1,0 +1,91 @@
+{
+  "name": "objective-extractor (8 casos)",
+  "repo_root": "../../../..",
+  "bin": "agents/kanam-critic/bin/objective-extractor.py",
+  "pytest": ["agents/kanam-critic/tests/objective-extractor/"],
+  "cases": [
+    {
+      "name": "pipe escapado",
+      "cmd": ["python3", "{BIN}", "{TMP}/pipe.md"],
+      "files": {
+        "{TMP}/pipe.md": "<!-- objetivos:begin -->\n| Objetivo | Entregable | Cita |\n|---|---|---|\n| A \\| B | t.txt | `t.txt:1` |\n<!-- objetivos:end -->\n",
+        "{TMP}/t.txt": "hello\n"
+      },
+      "expect_exit": 0,
+      "expect_stdout_contains": ["verificado", "A \\| B"],
+      "expect_stderr_contains": ["RESUMEN: 1 filas"]
+    },
+    {
+      "name": "tabla malformada exit 2",
+      "cmd": ["python3", "{BIN}", "{TMP}/bad.md"],
+      "files": {
+        "{TMP}/bad.md": "<!-- objetivos:begin -->\n| Objetivo | Entregable | Cita |\n|---|---|---|\n| Solo | dos |\n<!-- objetivos:end -->\n"
+      },
+      "expect_exit": 2,
+      "expect_stderr_contains": ["ERROR: tabla malformada", "0 filas"]
+    },
+    {
+      "name": "dos bloques exit 1",
+      "cmd": ["python3", "{BIN}", "{TMP}/two.md"],
+      "files": {
+        "{TMP}/two.md": "<!-- objetivos:begin -->\n| Objetivo | Entregable | Cita |\n|---|---|---|\n| First | a.txt | `a.txt:1` |\n<!-- objetivos:end -->\n\ntexto intermedio\n\n<!-- objetivos:begin -->\n| Objetivo | Entregable | Cita |\n|---|---|---|\n| Second | b.txt | `missing-forever.txt:1` |\n<!-- objetivos:end -->\n",
+        "{TMP}/a.txt": "uno\n"
+      },
+      "expect_exit": 1,
+      "expect_stdout_contains": ["First", "Second", "archivo inexistente"],
+      "expect_stderr_contains": ["2 filas", "1 auto-reportadas"]
+    },
+    {
+      "name": "archivo inexistente",
+      "cmd": ["python3", "{BIN}", "{TMP}/missing.md"],
+      "files": {
+        "{TMP}/missing.md": "<!-- objetivos:begin -->\n| Objetivo | Entregable | Cita |\n|---|---|---|\n| Lost | lost.txt | `does-not-exist.txt:1` |\n<!-- objetivos:end -->\n"
+      },
+      "expect_exit": 1,
+      "expect_stdout_contains": ["archivo inexistente", "auto-reportado"],
+      "expect_stderr_contains": ["1 auto-reportadas"]
+    },
+    {
+      "name": "linea vacia",
+      "cmd": ["python3", "{BIN}", "{TMP}/empty.md"],
+      "files": {
+        "{TMP}/empty.md": "<!-- objetivos:begin -->\n| Objetivo | Entregable | Cita |\n|---|---|---|\n| Blank | b.txt | `empty.txt:1` |\n<!-- objetivos:end -->\n",
+        "{TMP}/empty.txt": "\nsecond\n"
+      },
+      "expect_exit": 1,
+      "expect_stdout_contains": ["linea vacia"],
+      "expect_stderr_contains": ["1 auto-reportadas"]
+    },
+    {
+      "name": "sin marcadores",
+      "cmd": ["python3", "{BIN}", "{TMP}/plain.md"],
+      "files": {
+        "{TMP}/plain.md": "# No markers here\n"
+      },
+      "expect_exit": 0,
+      "expect_stdout_contains": ["| Objetivo"],
+      "expect_stderr_contains": ["sin bloque"]
+    },
+    {
+      "name": "1_0",
+      "cmd": ["python3", "{BIN}", "{TMP}/underscore.md"],
+      "files": {
+        "{TMP}/underscore.md": "<!-- objetivos:begin -->\n| Objetivo | Entregable | Cita |\n|---|---|---|\n| Bad | x.txt | `x.txt:1_0` |\n<!-- objetivos:end -->\n"
+      },
+      "expect_exit": 1,
+      "expect_stdout_contains": ["cita invalida: numero de linea no valido"],
+      "expect_stderr_contains": ["1 auto-reportadas"]
+    },
+    {
+      "name": "linea fuera de rango",
+      "cmd": ["python3", "{BIN}", "{TMP}/range.md"],
+      "files": {
+        "{TMP}/range.md": "<!-- objetivos:begin -->\n| Objetivo | Entregable | Cita |\n|---|---|---|\n| Oops | o.txt | `only.txt:99999` |\n<!-- objetivos:end -->\n",
+        "{TMP}/only.txt": "only one line\n"
+      },
+      "expect_exit": 1,
+      "expect_stdout_contains": ["fuera de rango"],
+      "expect_stderr_contains": ["1 auto-reportadas"]
+    }
+  ]
+}
