@@ -311,12 +311,12 @@ def test_falta_un_eje_real_exit_2_nombra_el_que_falta(tmp_path):
     assert "encontrados: A, H, R, S" in result.stderr
 
 
-def test_sin_tabla_sharp_toma_ejes_del_ledger_si_el_total_coincide(tmp_path):
-    """T4.1 r2 real: sin tabla SHARP, total 20 == suma de ejes del ledger."""
+def test_sin_tabla_sharp_con_flag_toma_ejes_del_ledger_si_el_total_coincide(tmp_path):
+    """Con --allow-ledger-axes: total 20 == suma de ejes del ledger."""
     ledger = make_ledger(tmp_path / "verdicts.jsonl", total=20,
                          scores={"S": 4, "H": 4, "A": 4, "R": 4, "P": 4})
     report = "# Revision\n\n**Total puntuación:** 20\n\n## Veredicto\n\n**Veredicto:** Aprobado\n"
-    result = run(tmp_path, report, ledger)
+    result = run(tmp_path, report, ledger, extra=["--allow-ledger-axes"])
 
     assert result.returncode == 0, result.stderr
     assert result.stdout.splitlines()[0] == "**Veredicto: Aprobado 20/25** (S4 H4 A4 R4 P4)"
@@ -324,15 +324,38 @@ def test_sin_tabla_sharp_toma_ejes_del_ledger_si_el_total_coincide(tmp_path):
     assert "AVISO: el reporte no declara tabla SHARP" in result.stderr
 
 
-def test_sin_tabla_sharp_y_total_incoherente_exit_2(tmp_path):
+def test_sin_tabla_sharp_sin_flag_exit_2_nombra_el_flag(tmp_path):
+    """Sin tabla SHARP y sin --allow-ledger-axes: exit 2, no hay atajo implicito."""
     ledger = make_ledger(tmp_path / "verdicts.jsonl", total=20,
-                         scores={"S": 5, "H": 5, "A": 4, "R": 5, "P": 4})
-    report = "# Revision\n\n**Total puntuación:** 20\n\n**Veredicto:** Aprobado\n"
+                         scores={"S": 4, "H": 4, "A": 4, "R": 4, "P": 4})
+    report = "# Revision\n\n**Total puntuación:** 20\n\n## Veredicto\n\n**Veredicto:** Aprobado\n"
     result = run(tmp_path, report, ledger)
 
     assert result.returncode == 2
     assert result.stdout == ""
+    assert "--allow-ledger-axes" in result.stderr
+    assert "no declara los 5 ejes SHARP" in result.stderr
+
+
+def test_sin_tabla_sharp_y_total_incoherente_con_flag_exit_2(tmp_path):
+    ledger = make_ledger(tmp_path / "verdicts.jsonl", total=20,
+                         scores={"S": 5, "H": 5, "A": 4, "R": 5, "P": 4})
+    report = "# Revision\n\n**Total puntuación:** 20\n\n**Veredicto:** Aprobado\n"
+    result = run(tmp_path, report, ledger, extra=["--allow-ledger-axes"])
+
+    assert result.returncode == 2
+    assert result.stdout == ""
     assert "no se puede reconstruir desde el ledger" in result.stderr
+
+
+def test_con_tabla_sharp_funciona_en_ambos_modos(tmp_path):
+    """El flag es inocuo cuando el reporte declara sus ejes."""
+    ledger = make_ledger(tmp_path / "verdicts.jsonl")
+    for extra in ([], ["--allow-ledger-axes"]):
+        result = run(tmp_path, make_report(), ledger, extra=extra)
+        assert result.returncode == 0, (extra, result.stderr)
+        assert result.stdout.startswith("**Veredicto: Aprobado 23/25**")
+        assert "AVISO: el reporte no declara tabla SHARP" not in result.stderr
 
 
 def test_limites_conocidos_con_bullets_no_afirma_sin_fricciones(tmp_path):

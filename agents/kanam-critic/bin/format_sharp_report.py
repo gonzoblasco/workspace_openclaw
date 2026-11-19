@@ -22,13 +22,16 @@ Parseo tolerante de la tabla SHARP: los reportes del kit no usan un unico
 formato. Se aceptan filas como `| **S** (Sharpness) | 4 | ... |`,
 `| **S (Sharpness)** | 5 | ... |`, `| S - Sharpness | 3 | ... |`,
 `| Sharpness | 5/5 | ... |`, en cualquier orden y con o sin encabezado.
-Si el reporte no declara NINGUNA fila de ejes pero su total coincide con el
-total del ledger y con la suma de sus puntajes, los ejes se toman del ledger
-y se avisa por stderr y en el cuerpo (nunca se inventan).
+Sin tabla SHARP el reporte no justifica sus ejes y el tool NO los completa
+por su cuenta: exit 2 pidiendo `--allow-ledger-axes`. Con ese flag explicito,
+si el total declarado coincide con el total del ledger y con la suma de sus
+puntajes, los ejes se toman del ledger y se avisa por stderr y en el cuerpo
+(nunca se inventan). El fallback queda asi visible en la linea de comandos:
+un reporte sin justificacion no pasa por descuido.
 
 Uso:
   python3 bin/format_sharp_report.py --report <ruta.md> --ledger <verdicts.jsonl> \
-      --artifact <slug> [--body-file <ruta>] [--dry-run]
+      --artifact <slug> [--allow-ledger-axes] [--body-file <ruta>] [--dry-run]
 """
 
 import argparse
@@ -311,14 +314,16 @@ def parse_report(path):
     }
 
 
-def resolve_axes(report, row):
+def resolve_axes(report, row, allow_ledger_axes=False):
     """Garantiza los 5 ejes. Devuelve 'report' o 'ledger' segun la fuente.
 
     - Con filas de ejes en el reporte: deben estar los 5; si falta uno, exit 2
       nombrandolo (no se completa desde el ledger).
-    - Sin ninguna fila (el reporte omite la tabla SHARP): solo se toman del
-      ledger si el total declarado coincide con el del ledger y con la suma de
-      sus ejes. Cualquier otra cosa es exit 2: no se inventan puntajes.
+    - Sin ninguna fila (el reporte omite la tabla SHARP): exit 2 salvo que se
+      pase `allow_ledger_axes=True` (`--allow-ledger-axes`). Con el flag, los
+      ejes solo se toman del ledger si el total declarado coincide con el del
+      ledger y con la suma de sus ejes. Cualquier otra cosa es exit 2: no se
+      inventan puntajes.
     """
     axes = report["axes"]
     if axes:
@@ -331,6 +336,12 @@ def resolve_axes(report, row):
                 )
             )
         return "report"
+
+    if not allow_ledger_axes:
+        raise ReportError(
+            "el reporte no declara los 5 ejes SHARP; si aceptas tomarlos del "
+            "ledger, usa --allow-ledger-axes"
+        )
 
     ledger_sum = sum(row["scores"][axis] for axis in AXES)
     if report["total"] != row["total"] or report["total"] != ledger_sum:
@@ -613,6 +624,14 @@ def main(argv=None):
     parser.add_argument("--ledger", required=True, help="ledger JSONL de veredictos")
     parser.add_argument("--artifact", required=True, help="slug del artifact en el ledger")
     parser.add_argument(
+        "--allow-ledger-axes",
+        action="store_true",
+        help=(
+            "permite tomar los 5 ejes del ledger cuando el reporte no declara "
+            "tabla SHARP (default: exit 2)"
+        ),
+    )
+    parser.add_argument(
         "--body-file",
         default=None,
         help="escribe el cuerpo en esta ruta (default: stdout)",
@@ -633,7 +652,7 @@ def main(argv=None):
     try:
         report = parse_report(args.report)
         row = load_ledger_row(args.ledger, args.artifact)
-        axes_source = resolve_axes(report, row)
+        axes_source = resolve_axes(report, row, allow_ledger_axes=args.allow_ledger_axes)
         validate_against_ledger(report, row)
         body, truncated = build_body(report, row, limit=args.max_chars)
     except ReportError as exc:
