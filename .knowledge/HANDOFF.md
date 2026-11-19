@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-19 12:24 GMT-3
+**Fecha:** 2026-11-19 13:28 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-19 13:28
+Sesion larga de programa critic-v0.3: de 5/12 a 11/12. (1) T3.3 tasa de absorcion publicada: 7/27 = 25.9%, con la lectura honesta de que la absorcion de autores ajenos es 0 y el 35% previo era sobre base de 20. (2) T4.1 objective-extractor: cuatro rondas de ejecutor. gpt-oss invento markup inexistente, luego rutas /full/path/to/ y tests en verde con pytest rojo, y en la r4 afirmo 9 fixes sin modificar el archivo (mtime identico). Con deepseek y override de pacto salio la version real: 260 lineas, 17 tests, resolucion de citas contra la raiz del repo. Gate: r1 invento ORO 24/25 con flag inexistente (F29), r2 no supo invocar la herramienta (F30), r3 dio VETO honesto pero elidio evidencia (F31). Se cerro por verificacion del CORE y despues se absorbio el VETO: r2 Aprobado 20/25 con CI y uso real sobre el ROADMAP. (3) T4.2 detectores horizon (grafo de imports con ast, ciclos relativos y absolutos) y resistance (patrones de borde): lab 12/12, el CORE encontro un falso verde con imports absolutos que el lab no cazaba, 6 fixtures propios confirman que discriminan. Aprobado 23/25 (F32: el juez elidio la seccion de discriminacion). (4) T4.3 format_sharp_report: publica el veredicto como comentario de PR. Primera publicacion real: PR #1 de workspace_openclaw, comentario 7014080729 de 4432 chars generado por la herramienta. Modo estricto: sin tabla SHARP exige --allow-ledger-axes. Gate T4.3 invalido, declaro un reporte que no escribio (F34); cierre por verificacion del CORE. (5) T5.1 contrato de invocacion cruzada en docs/CRITIC-DISPATCH.md: que trae la peticion, que devuelve el Critic (4 artefactos), 9 sintomas que invalidan una respuesta mapeados a F29-F34, regla de dos gates fallidos sin tercer intento ciego. (6) T5.2 gate cableado: scripts/check-critic-gate.py con exit 0/3/4/2, 17 tests, match exacto por slug sin herencia, step en CI verificado en el runner. (7) F33: el reporte r2 de T4.1 no tenia tabla SHARP y verify-verdict lo acepto igual; se regenero. v1.0 queda pending a proposito: exige un mes de demanda de otros roles.
 
 ### 2026-11-19 12:24
 Sesion larga de gobierno + ejecucion: roadmap de 5 tareas, cerrado entero.
@@ -39,12 +42,11 @@ Verificacion definitiva del OAuth de gh en orgs de terceros: comentarios reales 
 ### 2026-11-19 00:59
 Diagnostico y reparacion de credenciales de GitHub tras revocar Gonzo todos los PAT classic. (1) Se cayo una sola cosa: el MCP, con 401 Bad credentials sobre un github_pat_ revocado en secrets/github-token. El resto sano: gh CLI, SSH, push HTTPS via helper de gh en los 7 projects, admin en los 8 repos, ningun workflow con GH_PAT. (2) Verifique que el OAuth de gh sirve para el MCP (get_me OK) y reescribi ~/.openclaw/bin/github-mcp-launch para resolver el token dinamicamente, con fallo ruidoso en vez de 401 silencioso. (3) Limpieza medida a pedido de Gonzo: trash del token revocado, su backup y el launcher viejo; secrets/ quedo vacio y el slot del PAT sigue existiendo por contrato. (4) Gonzo provisiono un PAT fine-grained: 81 repos, push en los propios, pull en shadcn-ui, radix-ui, TanStack, meta (Actions/issues/pulls/contents/commits 200), gists y orgs OK. (5) Hallazgo importante: el fine-grained NO puede comentar en repos publicos ajenos (403 Resource not accessible en shadcn-ui#11757 y astryx#4652), mientras el OAuth de gh si pasa la autorizacion en esas 4 orgs; inverti la precedencia del launcher a OAuth-first con el PAT como fallback. Prueba usada: POST de comment con body vacio (422 = autorizado, 403 = bloqueado), sin efecto lateral. (6) Notifications: la API solo acepta classic PAT con scope notifications; en fine-grained no existe la casilla, queda afuera por decision.
 
-### 2026-11-18 22:15
-Cierre de la segunda parte de la sesion: infraestructura del MCP de GitHub y credenciales. (1) Se restauro el binario del MCP oficial github-mcp-server v2.2.0 (Darwin_arm64) en ~/.openclaw/bin/github-mcp via OPS, con dictamen APLICA CON CAMBIOS y limites duros respetados. Verifique la cadena de custodia por mi cuenta porque OPS reporto mal el checksum: el archivo oficial hashea el TARBALL (5e46b05b...), no el binario; tarball contra oficial OK, binario extraido contra instalado OK (11608433...). OPS habia comparado el hash del binario contra el archivo del tarball, que da distinto siempre. Funcional: 53 tools, get_me autentica, list_notifications responde. (2) Se registro el MCP como server del gateway (mcp.servers.github) via config.set, porque openclaw mcp set/add fallan con 'This operation requires exclusive offline state ownership' mientras el gateway corre. Token fuera del config: launcher ~/.openclaw/bin/github-mcp-launch (700) que lee el PAT del archivo 600 y lo exporta. (3) Bug propio encontrado y corregido: el binario necesita el subcomando 'stdio' en args; sin el imprime la ayuda y sale con exit 0, y el gateway lo veia como 'Connection closed'. Corregido con args=[stdio] y verificado con handshake real (starting server version=2.2.0, readOnly=false). (4) Hallazgo de seguridad: el token guardado no era el public_repo pedido sino un PAT con admin:enterprise, admin:org, delete_repo, workflow, user. Se reemplazo por un fine-grained github_pat_ que Gonzo paso por chat. Verificado: identidad gonzoblasco, lectura OK en meta/astryx y shadcn-ui/ui, wrapper OK. PERO la escritura FALLA: 'Resource not accessible by personal access token (addComment)'. Diagnostico: el fine-grained no tiene el repo en su allowlist con escritura (repository access en 'only select' o Issues en Read en vez de Read and write). No se puede distinguir de una aprobacion de org pendiente con el mensaje actual; el mensaje tipico de aprobacion de org es distinto. (5) Se cancelo el comentario de seguimiento en astryx#4652 por pedido de Gonzo; draft borrado, nada publicado. Pendiente critico: el PAT ancho (ghp_) sigue VIVO en la cuenta de GitHub aunque se borro la copia del disco, porque borrar el archivo no lo revoca. Hay que revocarlo en settings/tokens. Y el token vigente es de facto read-only hasta que se corrija su permiso de Issues.
-
-Estado de los hilos al cierre: ariakit#4058 cerrado (fix en 0.4.43); astryx#7871 mergeado en v0.7.12; astryx#4690 abierto y en conflicto, sin comentar por decision; astryx#4652 abierto con nuestra medicion DOM publicada; shadcn#11757 abierto con nuestro comentario publicado.
-
 ## Estado actual
+
+Programa critic-v0.3 en 11/12. Kit: 18/18 checks, verify-verdict 10/10, lab 12/12, 51 tests en agents/kanam-critic. Gate de veredicto corre en CI. PR #1 abierto a proposito (se mergea despues). Ledger: 34 fricciones, 7 absorbidas, 27 abiertas; 6 de las nuevas son fallas de gates.
+
+### Estado previo (heredado)
 
 5/5 tareas del roadmap cerradas. a11y-portfolio desplegado y verificado: Lighthouse 99/100/100/100. localdoc-agent 33 tests, field-notes 14. Sindicacion a DEV.to pendiente: la clave existe en el store pero el proxy de egress del gateway esta deshabilitado (401), y el payload esta listo en docs/challenges/articles/.
 
@@ -215,6 +217,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1) Dejar correr un mes y medir solicitudes de otros roles para cerrar v1.0. 2) Mergear PR #1. 3) Considerar extender el regex de placeholders de emit-verdict a frases de elision en castellano (F32/F33). 4) Evaluar por que el Critic como subagente falla 3 de 4 gates: es la causa raiz detras de F29-F34.
+
+### Pendientes heredados (sin cambios)
 
 1) DEV.to: pedir a OPS habilitar el egress proxy para dev.to, o recibir la clave en el momento. 2) Decidir si el articulo se recorta (1.569 palabras vs 800-1.200 de la skill). 3) Verificar mobile con viewport real: Chrome headless no lo cambia y la captura a 390px no prueba nada. 4) Queda sin commitear .knowledge/handoff-history de otra sesion (2 borrados, 2 nuevos): no es de esta sesion.
 
@@ -433,6 +439,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 1) Verificar contra GitHub las 19 referencias de CVs historicos que no estan en el corpus y agregarlas a career-facts 5.2.1. 2) Limpiar las carreras universitarias de los 5 CVs historicos (EIT/HTC, Mercor, Sol, TEMPO) - son de otras sesiones. 3) Confirmar con Gonzo que el iPad quedo operativo con ws://100.126.255.95:18789. 4) Watchdog de canales: el timeout del trigger sigue sin resolver si se repite.
 
 ## Decisiones y contexto que no debe perderse
+
+- Ejecutor A pasa a deepseek cuando gpt-oss reporta trabajo inexistente (override autorizado). Cierre por verificacion del CORE con nota explicita cuando el gate es invalido, nunca veredicto provisional. Match exacto por slug en el gate de veredictos: sin herencia entre -rN y base.
+
+### Heredadas (sin cambios)
 
 - No minificar CSS: un minificador conservador ahorra 526 B gzip sobre 3.789; no paga el riesgo ni la dependencia. No subsetear fuentes: son variables y el subset de glifos baja solo 5%, el peso esta en las tablas de variacion. Una fila por pieza en el indice: la traduccion es una vista, no una pieza. Versionar assets por hash de contenido: un cambio solo de CSS era invisible para cualquiera con cache. Tesis del articulo: la evidencia confirma el sintoma, no la explicacion que le colgas encima.
 
