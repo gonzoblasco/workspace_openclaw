@@ -16,8 +16,19 @@ Output is a markdown table with six columns:
 * ``Fuente`` is the markdown document being processed.
 * ``Evidencia`` is the citation exactly as the author wrote it (surrounding
   backticks and whitespace removed, nothing else). Relative citation paths are
-  resolved against the directory of the markdown file for validation only; the
-  printed evidence stays relative.
+  resolved for validation only; the printed evidence stays relative.
+
+  Relative citation resolution order (first existing path wins):
+
+  1. Against the repository root: the closest ancestor of the markdown file
+     containing ``.git``, obtained with ``git rev-parse --show-toplevel`` and a
+     manual upward walk as fallback when git is missing or fails.
+  2. Against the directory of the markdown file (previous behaviour), used when
+     the document has no detectable repository root or when the citation does
+     not exist under the root.
+
+  Absolute citation paths are used as-is. A citation that exists under none of
+  those bases is still reported as ``archivo inexistente``.
 * ``Estado`` is ``verificado`` when the file exists, the line number is within the
   file and the line is non‑empty. Otherwise it is ``auto‑reportado`` and the
   reason is placed in the ``Lo que dice la línea`` column.
@@ -43,6 +54,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -157,11 +169,59 @@ def clean_cita(cita: str) -> tuple[str, str]:
     return path_str, line_str
 
 
-def validate_cita(cita: str, base_dir: Path):
+def find_repo_root(start: Path) -> Path | None:
+    """Return the closest ancestor of ``start`` that looks like a repo root.
+
+    Tries ``git rev-parse --show-toplevel`` first (handles worktrees and
+    submodules); falls back to a manual upward walk looking for ``.git`` when
+    git is unavailable, too slow or the directory is not a repository. Returns
+    ``None`` when no root is detectable.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],
+            cwd=str(start),
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if result.returncode == 0:
+            top = result.stdout.strip()
+            if top:
+                return Path(top)
+    except (OSError, subprocess.SubprocessError):
+        pass
+
+    for candidate in (start, *start.parents):
+        if (candidate / ".git").exists():
+            return candidate
+    return None
+
+
+def candidate_paths(path_str: str, base_dir: Path, repo_root: Path | None) -> list[Path]:
+    """Return the filesystem candidates for a citation path, in priority order.
+
+    Absolute paths are used as-is. Relative paths are tried against the repo
+    root first and the markdown directory second, without duplicates.
+    """
+    path = Path(path_str)
+    if path.is_absolute():
+        return [path]
+    candidates: list[Path] = []
+    if repo_root is not None:
+        candidates.append(repo_root / path)
+    local = base_dir / path
+    if local not in candidates:
+        candidates.append(local)
+    return candidates
+
+
+def validate_cita(cita: str, base_dir: Path, repo_root: Path | None = None):
     """Validate a citation string.
 
     Returns ``(evidencia, linea_texto, estado)``. ``evidencia`` is the author's
-    citation without backticks, resolved against ``base_dir`` only for checking.
+    citation without backticks. Relative paths are resolved against the repo
+    root first and ``base_dir`` second, for checking only.
     """
     evidencia = cita.strip().strip("`").strip()
     try:
@@ -173,11 +233,12 @@ def validate_cita(cita: str, base_dir: Path):
         return evidencia, "cita invalida: numero de linea no valido", "auto-reportado"
     line_no = int(line_str)
 
-    path = Path(path_str)
-    if not path.is_absolute():
-        path = base_dir / path
+    path = next(
+        (c for c in candidate_paths(path_str, base_dir, repo_root) if c.exists()),
+        None,
+    )
 
-    if not path.exists():
+    if path is None:
         return evidencia, "archivo inexistente", "auto-reportado"
     try:
         with path.open(encoding="utf-8") as f:
@@ -241,10 +302,14 @@ def main() -> int:
             return finish(0, 0, 2)
 
     base_dir = args.markdown.parent
+    try:
+        repo_root = find_repo_root(base_dir.resolve())
+    except OSError:
+        repo_root = None
     out_rows: list[tuple[str, str, str, str, str, str]] = []
     auto = 0
     for objetivo, entregable, cita in rows:
-        evidencia, linea_texto, estado = validate_cita(cita, base_dir)
+        evidencia, linea_texto, estado = validate_cita(cita, base_dir, repo_root)
         out_rows.append((objetivo, entregable, str(args.markdown), evidencia, linea_texto, estado))
         if estado == "auto-reportado":
             auto += 1

@@ -258,3 +258,105 @@ def test_text_with_spaces_is_stripped(tmp_path):
     assert res.returncode == 0
     assert "padded content" in res.stdout
     assert "   padded content" not in res.stdout
+
+
+# --- root resolution additions ---------------------------------------------
+
+def make_repo(tmp_path: Path) -> Path:
+    """Create a fake repository root (``.git`` dir) and return it."""
+    root = tmp_path / "repo"
+    root.mkdir()
+    (root / ".git").mkdir()
+    return root
+
+
+def test_cita_repo_relativa_desde_subdirectorio(tmp_path):
+    root = make_repo(tmp_path)
+    target = root / "agents" / "bin" / "tool.py"
+    target.parent.mkdir(parents=True)
+    target.write_text("line one\nline two\n", encoding="utf-8")
+    docs = root / "agents" / "docs"
+    docs.mkdir(parents=True)
+    md = docs / "doc.md"
+    md.write_text(
+        """
+        <!-- objetivos:begin -->
+        | Objetivo | Entregable | Cita |
+        |---|---|---|
+        | Tool | tool.py | `agents/bin/tool.py:2` |
+        <!-- objetivos:end -->
+        """,
+        encoding="utf-8",
+    )
+    res = run(SCRIPT, md)
+    assert res.returncode == 0, res.stderr + res.stdout
+    assert "verificado" in res.stdout
+    assert "line two" in res.stdout
+    assert "archivo inexistente" not in res.stdout
+
+
+def test_cita_relativa_al_directorio_del_documento(tmp_path):
+    root = make_repo(tmp_path)
+    docs = root / "docs"
+    docs.mkdir()
+    local = docs / "local.txt"
+    local.write_text("local line\n", encoding="utf-8")
+    md = docs / "doc.md"
+    md.write_text(
+        """
+        <!-- objetivos:begin -->
+        | Objetivo | Entregable | Cita |
+        |---|---|---|
+        | Local | local.txt | `local.txt:1` |
+        <!-- objetivos:end -->
+        """,
+        encoding="utf-8",
+    )
+    res = run(SCRIPT, md)
+    assert res.returncode == 0, res.stderr + res.stdout
+    assert "verificado" in res.stdout
+    assert "local line" in res.stdout
+
+
+def test_cita_inexistente_en_todas_las_bases(tmp_path):
+    root = make_repo(tmp_path)
+    docs = root / "docs"
+    docs.mkdir()
+    md = docs / "doc.md"
+    md.write_text(
+        """
+        <!-- objetivos:begin -->
+        | Objetivo | Entregable | Cita |
+        |---|---|---|
+        | Lost | lost.txt | `nowhere/lost.txt:1` |
+        <!-- objetivos:end -->
+        """,
+        encoding="utf-8",
+    )
+    res = run(SCRIPT, md)
+    assert res.returncode == 1
+    assert "archivo inexistente" in res.stdout
+    assert "auto-reportado" in res.stdout
+
+
+def test_raiz_del_repo_gana_sobre_directorio_del_documento(tmp_path):
+    root = make_repo(tmp_path)
+    (root / "winner.txt").write_text("root line\n", encoding="utf-8")
+    docs = root / "docs"
+    docs.mkdir()
+    (docs / "winner.txt").write_text("sub line\n", encoding="utf-8")
+    md = docs / "doc.md"
+    md.write_text(
+        """
+        <!-- objetivos:begin -->
+        | Objetivo | Entregable | Cita |
+        |---|---|---|
+        | Tie | winner.txt | `winner.txt:1` |
+        <!-- objetivos:end -->
+        """,
+        encoding="utf-8",
+    )
+    res = run(SCRIPT, md)
+    assert res.returncode == 0, res.stderr + res.stdout
+    assert "root line" in res.stdout
+    assert "sub line" not in res.stdout

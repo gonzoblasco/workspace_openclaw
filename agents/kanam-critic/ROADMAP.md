@@ -277,3 +277,18 @@ Crew (política de `sessions_spawn` + deslinde de rol).
 vara sin entrega. T1 me la da.*
 
 <!-- project: github.com/gonzoblasco/workspace_openclaw -->
+
+## 8. Objetivos declarados del tramo T4 (verificables)
+
+Este bloque lo consume `bin/objective-extractor.py`: cada fila cita archivo y linea, y el
+estado `verificado` solo aparece si la cita existe en disco. Es el uso real de la herramienta
+sobre este roadmap, no un fixture.
+
+<!-- objetivos:begin -->
+| Objetivo | Entregable | Cita |
+|---|---|---|
+| T4.1 valida citas ruta:linea declaradas | bin/objective-extractor.py | `agents/kanam-critic/bin/objective-extractor.py:219` |
+| T4.2 el gate produce su propia evidencia | bin/gate-evidence.py | `agents/kanam-critic/bin/gate-evidence.py:1` |
+| T4.1 suite con caso trampa verde | tests/objective-extractor | `agents/kanam-critic/tests/objective-extractor/test_basic.py:40` |
+| T4.2 el juez opera el kit sin adivinar | docs/GATE-RUNBOOK.md | `agents/kanam-critic/docs/GATE-RUNBOOK.md:1` |
+<!-- objetivos:end -->

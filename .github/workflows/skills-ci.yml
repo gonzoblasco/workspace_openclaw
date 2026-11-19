@@ -77,6 +77,50 @@ jobs:
       - name: Python functional tests
         run: pytest tests/python/
 
+      # Kit del Critic (T4.1, eje H). El Critic se audita con hechos, no con
+      # prosa: si el agente (el kit como entregable) se rompe, este paso lo
+      # dice. Los cuatro comandos corren desde la raiz del repo, que es el cwd
+      # del runner; los scripts resuelven sus rutas desde __file__.
+      - name: Critic kit tests
+        run: |
+          set -euo pipefail
+
+          # pytest.ini de la raiz ya aporta -q: pasar otro -q lo vuelve -qq y
+          # se pierde el resumen. El sandbox del lab evidence-hunter lo genera
+          # scaffold.py y repite el basename test_foo.py en varios casos, lo
+          # que aborta la coleccion por import mismatch. No es codigo
+          # versionado: se ignora esa ruta.
+          python3 -m pytest agents/kanam-critic/tests/ \
+            --ignore=agents/kanam-critic/tests/evidence-hunter/sandbox
+
+          # Gate de evidencia sobre el spec del objective-extractor: cualquier
+          # caso que no de el exit esperado termina en exit != 0.
+          python3 agents/kanam-critic/bin/gate-evidence.py --spec agents/kanam-critic/tests/gate-evidence/spec-objective-extractor.json
+
+          # Guard del veredicto: exit 1 si algun veredicto real no tiene fila en
+          # el ledger Y reporte publicado con citas (verificado 2026-11-19:
+          # exit 0 <-> GLOBAL=aprobado, exit 1 <-> GLOBAL=veto).
+          python3 agents/kanam-critic/bin/verify-verdict.py
+
+          # check-kit mezcla checks del repo con UNO que depende de la maquina:
+          # "disparador: heartbeat por agente" lee ~/.openclaw/openclaw.json, que
+          # no existe en el runner (verificado 2026-11-19 con HOME vacio:
+          # GLOBAL=veto 17/18, exit 1). Corrido tal cual, este paso seria rojo
+          # siempre. Se exige verde salvo ese check, nombrado explicitamente
+          # para que no tape un rojo real: si aparece un segundo rojo, falla.
+          kit_out="$(python3 agents/kanam-critic/bin/check-kit.py || true)"
+          printf '%s\n' "$kit_out"
+          if grep -q '^GLOBAL=aprobado' <<<"$kit_out"; then
+            exit 0
+          fi
+          reds="$(grep -c '^\[ROJO\]' <<<"$kit_out" || true)"
+          if [ "$reds" -eq 1 ] && grep -q '^\[ROJO\] disparador: heartbeat por agente' <<<"$kit_out"; then
+            echo "critic-kit: verde salvo el check de disparador (config de maquina, no aplica en CI)."
+            exit 0
+          fi
+          echo "critic-kit: hay checks rojos fuera del unico dependiente de la maquina." >&2
+          exit 1
+
       # Design system (ADR-095): regenerar el CSS de tokens y verificar contraste
       # WCAG. El dist/ esta gitignored (generado), asi que CI lo construye.
       - name: Design tokens (build + contrast gate)
