@@ -5,7 +5,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-06T21:00:17+00:00",
-  "updated_at": "2026-11-19T16:15:08+00:00",
+  "updated_at": "2026-11-19T16:16:56+00:00",
   "gates": [
     "critic"
   ],
@@ -248,7 +248,7 @@
       "task": "T5.1 - Definir el contrato de invocacion cruzada al Critic",
       "role": "core",
       "owner": "main",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Existe docs/CRITIC-INVOCATION.md con sessions_spawn(agentId=kanam-critic), contexto requerido, salida esperada y regla de gate; CORE lo aprueba.",
       "depends_on": [
         3
@@ -257,14 +257,16 @@
       "write_paths": [
         "docs/CRITIC-INVOCATION.md"
       ],
-      "evidence": [],
+      "evidence": [
+        "Contrato de invocacion cruzada escrito en docs/CRITIC-DISPATCH.md: que debe traer la peticion (6 elementos), que devuelve el Critic (4 artefactos: reporte + fila en ledger + verify-verdict + diff), que invalida una respuesta (9 sintomas mapeados a F29-F34), la regla de dos gates fallidos sin tercer intento ciego, y el limite de no puntuar/publicar. Puntero agregado en agents/kanam-critic/AGENTS.md. check-kit 18/18."
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:18+00:00",
-      "updated_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-19T16:16:56+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-19T16:16:56+00:00",
       "session_ref": null
     },
     {

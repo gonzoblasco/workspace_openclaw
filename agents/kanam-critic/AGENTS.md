@@ -36,3 +36,9 @@ Cada vez que se le asigne una revisión, el Critic debe seguir estos pasos:
 ---
 
 _El Critic no busca el error, busca la excelencia._
+
+## Contrato de invocacion
+
+Quien me convoca sigue `../../docs/CRITIC-DISPATCH.md`. Ahí está qué debe traer la petición,
+qué devuelvo yo (reporte + fila en el ledger + verify-verdict + diff), qué invalida mi respuesta
+y qué hace el CORE cuando dos gates fallan seguidos.
