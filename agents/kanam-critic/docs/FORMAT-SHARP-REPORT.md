@@ -11,7 +11,7 @@ python3 bin/format_sharp_report.py \
   --report docs/reviews/<fecha>-<artefacto>.md \
   --ledger memory/verdicts.jsonl \
   --artifact <slug> \
-  [--dry-run] [--body-file <ruta>]
+  [--dry-run] [--body-file <ruta>] [--allow-ledger-axes]
 ```
 
 - Sin flags: imprime el cuerpo a stdout.
@@ -28,6 +28,7 @@ python3 bin/format_sharp_report.py \
 | El total del reporte no coincide con el ledger | exit 2 |
 | El veredicto declarado no coincide con la matriz | exit 2 |
 | Falta algún eje SHARP en el reporte | exit 2, nombra cuál |
+| El reporte no trae tabla SHARP | exit 2, pide `--allow-ledger-axes` |
 
 ## Estructura del cuerpo
 
@@ -36,6 +37,8 @@ python3 bin/format_sharp_report.py \
 3. Evidencia cruda del reporte en un `<details>` colapsado.
 4. Fricciones. Si el reporte no las declara, lo dice: no afirma ausencia que no verificó.
 
+`--allow-ledger-axes` existe para reportes históricos sin tabla. En un reporte nuevo, la tabla SHARP es obligatoria: los ejes salen de la misma fila del ledger que se publica, así que tomarlos de ahí es circular.
+
 Límite de 60 000 caracteres: se recorta **solo la evidencia**, con aviso explícito. El veredicto
 y las fricciones nunca se truncan.
 
@@ -43,4 +46,4 @@ y las fricciones nunca se truncan.
 
 - No puntúa: eso es del Critic.
 - No publica: el `gh pr comment` lo corre un humano o el CORE con autorización explícita.
-- No completa ejes desde el ledger salvo el caso declarado abajo, y lo avisa en el cuerpo.
+- No completa ejes desde el ledger salvo que se pase `--allow-ledger-axes` explícitamente; en ese caso lo avisa por stderr y en el cuerpo, y solo si el total declarado coincide con el ledger.
