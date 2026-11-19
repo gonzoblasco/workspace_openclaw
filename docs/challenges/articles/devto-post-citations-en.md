@@ -1,0 +1,121 @@
+# How I built an agent that cannot invent citations
+
+*Most RAG demos look great until the model invents a page number. This one refuses instead.*
+
+---
+
+Everyone builds a RAG in an afternoon. You upload PDFs, split them into chunks, embed, search by similarity, and pass the fragments to the model. It works, and the demo looks great.
+
+Then the model writes:
+
+> "The contract expires on December 15, according to clause 4.2, page 3."
+
+The problem: clause 4.2 says something else, and page 3 doesn't exist. The model didn't lie on purpose. **It filled a gap with something that sounded probable.** And since nobody checks, the wrong answer ships.
+
+That's not a retrieval problem. It's a **verification** problem. And you don't fix it with a better model — you fix it with code.
+
+## The one idea
+
+Every answer comes back with structured citations: a `chunk_id` and a literal quote. The app doesn't trust the model; it verifies it.
+
+```python
+def verify_citations(citations, chunks_by_id):
+    valid, invalid = [], []
+    for cit in citations:
+        chunk = chunks_by_id.get(cit["chunk_id"], "")
+        if _normalize(cit["quote"]) in _normalize(chunk):
+            valid.append(cit)
+        else:
+            invalid.append(cit)
+    return valid, invalid
+```
+
+A citation is valid only if its quote is a **substring** of the chunk, after whitespace normalization. If it fails, the model gets one more try. If it fails again, the answer becomes a refusal.
+
+This is not another LLM checking the first one. It's string containment, and anyone can reproduce it by opening the database.
+
+## Where it almost went wrong, three times
+
+This is the part people usually skip.
+
+**1. The embeddings were fake and the tests were green.**
+
+The first version called `ollama embed`, a CLI subcommand that **does not exist**. Every call failed and silently fell back to a three-dimension mock vector. The tests passed because they only checked structure, not values.
+
+The fix wasn't "improve the mock". It was removing the fallback entirely: if embeddings fail, ingestion fails loudly. A system that degrades silently is worse than one that breaks loudly.
+
+**2. The vector search wasn't vector search.**
+
+`sqlite-vec` was never loaded. `chunks_vec` was created as a regular table and the "KNN" was brute force. It worked by accident with 13 chunks and would have collapsed with 1,300.
+
+I found it by inspecting `sqlite_master`:
+
+```
+CREATE TABLE chunks_vec (chunk_id INTEGER PRIMARY KEY, embedding BLOB)   ← wrong
+CREATE VIRTUAL TABLE chunks_vec USING vec0(...)                          ← right
+```
+
+**3. Three times, a subagent reported files it never wrote.**
+
+That's not a model problem, it's a trust problem: I accepted self-reports. The lesson was procedural. Before accepting any delivery, run the repo:
+
+```bash
+git status --short
+uv run pytest -q
+```
+
+If the file isn't on disk, it doesn't exist. Full stop.
+
+## The model is not the product
+
+Everyone asks "which model?". The honest answer: **it matters less than you think, and more than you measure.**
+
+| Model | Accuracy (18 questions) | P50 latency |
+|---|---:|---:|
+| Gemma 4 12B | **18/18** | 49.5 s |
+| Gemma 3 4B | 4/18 | 6.8 s |
+
+The 4B is 7× faster and 4.5× less accurate. Fine for a demo. Not fine for a contract.
+
+And a detail nobody expects: **a 9B can be slower than a 12B.** Qwen3.5:9B kept a 262k context resident and didn't finish a single answer in 90 seconds. The 12B answered in 50.
+
+The conclusion isn't "use the biggest model". It's **measure on your machine, with your corpus, with your questions.** Someone else's benchmark is a prior, not a truth.
+
+## The part the model doesn't do
+
+One of the 18 questions asked for the sum of two contract totals. The 12B failed it consistently: it can't add.
+
+The fix wasn't a better model. It was admitting arithmetic **is not the LLM's job** and writing eight lines of deterministic code. The agent retrieves and composes; the calculator adds.
+
+Same principle as the citations, applied one layer down: **what can be verified by code, is verified by code.**
+
+## What local-first actually means
+
+Three proofs, not three promises:
+
+1. **Zero sockets.** During transcription or query, `lsof` shows no outbound connection. Measured, not claimed.
+2. **It can be deleted.** A button that removes index, embeddings and drafts — verified on the filesystem.
+3. **It isn't rented.** In ten years the archive opens without a subscription.
+
+And a consequence almost nobody mentions: if the data doesn't leave, **nothing comes in either**. The model has to be local because privacy isn't a feature — it's the architecture.
+
+## What this project doesn't do
+
+- It doesn't read scanned PDFs. It rejects them with a clear message.
+- It isn't fast. 50 seconds per answer with a 12B model.
+- It doesn't scale. One person, one machine, one corpus.
+- It doesn't have an independent benchmark. The 18 questions were written by the same person who wrote the system.
+
+Saying this doesn't weaken the project. It makes it credible. A repo that admits its limits is a repo someone can use without surprises.
+
+## The method, in five lines
+
+1. **Pick the constraint.** Not "a RAG", but "an agent whose citations cannot be invented".
+2. **Verify what is verifiable.** Substring, arithmetic, `lsof`. Code, not opinion.
+3. **Remove silent fallbacks.** If something fails, make it loud.
+4. **Measure before choosing.** Models, latency, accuracy. The numbers go in the repo.
+5. **Publish the failures.** The most valuable section of a README is "what went wrong".
+
+---
+
+*Project: [localdoc-agent](https://github.com/gonzoblasco/localdoc-agent). Sibling project, about people instead of contracts: [memoria-oral](https://github.com/gonzoblasco/memoria-oral).*
