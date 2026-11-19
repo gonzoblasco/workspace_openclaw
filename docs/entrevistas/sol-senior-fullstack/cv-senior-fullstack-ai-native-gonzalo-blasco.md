@@ -69,8 +69,8 @@ Senior full stack engineer with 10+ years building and shipping production web a
 
 ### Reviews and analyses that drove fixes to merge
 
-- **carbon-design-system/ibm-products #9868** - First human review on another author's PR: verified the diff against the legacy implementation and the Carbon source, raised two concrete signals (lost role=region props, wrong background token on a variant), and one was adopted before merge.
-- **carbon-design-system/ibm-products #9866** - Cross-cluster analysis of four React 19 issues in the same family: traced each to state derived during commit, explained the nestedUpdateCount accumulation, and proposed per-hook fix directions.
+- **carbon-design-system/ibm-products #9869** - First human review on another author's PR: verified the diff against the legacy implementation and the Carbon source, raised two concrete signals (lost role=region props, wrong background token on a variant), and one was adopted before merge.
+- **carbon-design-system/ibm-products #9865** - Cross-cluster analysis of four React 19 issues in the same family: traced each to state derived during commit, explained the nestedUpdateCount accumulation, and proposed per-hook fix directions.
 - **vercel/next.js #73474** - Separated three conflated causes of a Suspense/loading failure (proxy caching text/html, streaming buffered by the reverse proxy, await before a Suspense boundary) with a per-scenario diagnosis and reproduction; the maintainer closed the issue confirming the analysis.
 
 ## LANGUAGES
@@ -90,4 +90,3 @@ Senior full stack engineer with 10+ years building and shipping production web a
 ## EDUCATION
 
 - **Digital House** - React (2018)
-- **Universidad Argentina de la Empresa** - Diseño Gráfico (2003 - 2004, incomplete)

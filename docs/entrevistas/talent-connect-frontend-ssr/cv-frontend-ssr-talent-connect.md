@@ -72,14 +72,12 @@ Frontend engineer with **10+ years** building production web interfaces with Rea
 - **mui/base-ui #5551** - Moved `aria-orientation` to the owners of the role; the grid role does not support it.
 - **mui/material-ui #49003** - Kept carousel links in hidden slides out of the focus order; WCAG 4.1.2 `aria-hidden-focus`.
 
-**Collaboration - merged through another author.** Reviews, diagnosis and implementation that shaped the fix.
+**Collaboration - merged through other authors.** Reviews and technical comments that shaped the fix.
 
-- **meta/astryx #5563, #5373, #5332, #5414, #4157** - Prop forwarding across BaseProps components, Popover fit and focus behavior, breadcrumb audit pass, syntax punctuation colour passing AA, and distinct shapes per avatar status variant.
-- **carbon-design-system/ibm-products #9869** - Corrected the Carbon layer hierarchy in Tearsheet, where the body was elevated instead of the container.
-- **TanStack/query #11036** - Resolved Suspense when query data is set programmatically.
-- **ariakit/ariakit #6810** - Fixed initially open sibling dialogs.
-- **NousResearch/hermes-agent #130041** - Grew shared icon buttons to 24px hit targets.
-- **openclaw/openclaw #127213, #126714** - Exposed the active split pane to assistive technology, and softened its visual indication.
+- **meta/astryx #5563, #5373, #5414, #4157** - Technical comments on prop forwarding across BaseProps components, Popover fit and focus behavior, breadcrumb audit pass, and avatar status variants.
+- **carbon-design-system/ibm-products #9869** - First human review on another author's PR: corrected the Carbon layer hierarchy in Tearsheet, where the body was elevated instead of the container.
+- **TanStack/query #11036** - Commented on the Suspense resolution when query data is set programmatically.
+- **openclaw/openclaw #127213, #126714** - Submitted reviews: exposing the active split pane to assistive technology, and softening its visual indication.
 
 **Engaged beyond own PRs.** Reviews and technical comments on issues and pull requests in maintained projects including vercel/next.js and Radix UI, where the diagnosis contributed to a fix authored by someone else.
 

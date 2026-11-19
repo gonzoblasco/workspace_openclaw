@@ -391,6 +391,46 @@ No son fracasos ocultos: son el registro de criterio.
 PRs abiertos o esperando review en react-spectrum, vercel/ai, TanStack/router,
 docusaurus, create-t3-app y otros. **Nunca contarlos como mergeados.**
 
+### 5.5 Referencias verificadas el 2026-11-19 (autoría, review y comentario)
+
+El validador `scripts/check-cv-facts.py` marcó 18 bullets de CV que citaban referencias no registradas acá. Se abrió cada una por API y se clasificó por **participación real**, no por lo que el CV decía. Fuente: `gh api` sobre cada repo/PR, más `reviews` y `comments` del hilo.
+
+**A. Propias, sin merge todavía** — se declaran como *open* o *closed*, nunca como mergeadas:
+
+| Repo | PR | Estado | Tema |
+|---|---|---|---|
+| radix-ui/primitives | #4109 | closed | Anuncio de posición y total en el select |
+| facebook/docusaurus | #12387 | open | Anuncio del título de página en cambio de ruta |
+| shadcn-ui/ui | #11179, #11180, #11187, #11198 | open | Layout de InputOTP; label de aria en formularios |
+| t3-oss/create-t3-app | #2240, #2243 | open | `.prettierignore` para archivos generados; aria-label |
+| TanStack/router | #7834 | open | `safeStringify` en dependencias del loader |
+| vercel/ai | #17274 | closed | Aviso de reasoning tokens descartados en Google |
+
+**B. PRs ajenos donde Gonzo sometió un review formal** — vale como trabajo de revisión, no como autoría:
+
+| Repo | PR | Estado |
+|---|---|---|
+| openclaw/openclaw | #127213 | merged (review formal) |
+| openclaw/openclaw | #126714 | merged (review formal) |
+
+**C. PRs ajenos merged donde Gonzo solo comentó** — vale como participación, y se declara como *commented*, no como contribución de código:
+
+| Repo | PR | Estado |
+|---|---|---|
+| meta/astryx | #5563, #5373, #5414, #4157 | merged (comentario) |
+| TanStack/query | #11036 | merged (comentario) |
+
+**D. Referencias que NO se pueden citar en ningún CV** — verificadas sin participación de `gonzoblasco`, ni en reviews ni en comentarios:
+
+| Repo | Número | Por qué no va |
+|---|---|---|
+| meta/astryx | #5332 | merged, sin review ni comentario de Gonzo |
+| ariakit/ariakit | #6810 | merged, sin review ni comentario de Gonzo |
+| NousResearch/hermes-agent | #130041 | merged, sin review ni comentario de Gonzo |
+| carbon-design-system/ibm-products | #9868 | **es un issue ajeno** (autor `amal-k-joy`), no un PR; sin comentario de Gonzo. Además el PR de review real es #9869, ya registrado en §5.2.1 |
+
+**Regla que sale de esto:** un número de PR en un CV se cita por autoría, por review formal o por comentario propio. Las tres cosas se escriben distinto y no se mezclan. Si el número no está en §5.1, §5.2.1 o §5.5, no va.
+
 ---
 
 ## 6. Años, y por qué cada uno se dice así

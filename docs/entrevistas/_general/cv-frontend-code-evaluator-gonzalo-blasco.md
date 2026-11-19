@@ -101,10 +101,10 @@ frameworks that frontend code evaluation targets.
 
 ### Code review and source analysis
 
-- **carbon-design-system/ibm-products #9868** - First human review on another author's PR: verified the diff
+- **carbon-design-system/ibm-products #9869** - First human review on another author's PR: verified the diff
   against the legacy implementation and the Carbon source, raised two concrete signals (lost role=region props,
   wrong background token on a variant), and one was adopted before merge.
-- **carbon-design-system/ibm-products #9866** - Cross-cluster analysis of four React 19 issues in the same
+- **carbon-design-system/ibm-products #9865** - Cross-cluster analysis of four React 19 issues in the same
   family: traced each to state derived during commit, explained the nestedUpdateCount accumulation, and
   proposed per-hook fix directions.
 - **vercel/next.js #73474** - Separated three conflated causes of a Suspense/loading failure (proxy caching

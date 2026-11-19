@@ -69,7 +69,6 @@ an incomplete specification and writing the specification myself.
 ## Education
 - **Deque University:** Accessibility Specialist Program (2021)
 - **Digital House:** React (2018)
-- **Universidad Argentina de la Empresa:** Diseño Grafico (2003 - 2004, incomplete)
 
 ## Languages
 - **English:** B2+ (Upper Intermediate). Strong written communication (technical documentation, code reviews, async communication).

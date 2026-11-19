@@ -65,9 +65,7 @@ Eleven merged PRs in production component libraries, each reviewed and shipped b
 
 ## Education
 
-- **Universidad de Palermo - Ingenieria en Informatica / Computer Science Engineering (2001-2002, incomplete)**
 - **Digital House - React (2018)**
-- **Universidad Argentina de la Empresa - Graphic Design (2003-2004, incomplete)**
 
 
 ## Certifications
