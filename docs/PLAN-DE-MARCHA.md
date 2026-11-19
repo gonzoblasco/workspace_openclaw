@@ -142,6 +142,43 @@ hito de esa semana, no la secuencia entera.
 
 ---
 
+## 5-bis. Quién hace qué (agregado 2026-11-19)
+
+El plan decía *qué* y *cuándo*, pero no *quién*. Sin esto, cada bloque arranca con una decisión de reparto que consume el bloque. Reparto fijo por tipo de tarea:
+
+| Tarea | Ejecuta | Verifica |
+|---|---|---|
+| Registrar la app de MeLi (0.1) | **Gonzo** — no es delegable | CORE transcribe Client ID + permisos |
+| Nota de compliance (0.2) | MIND | CORE reproduce las citas |
+| Llamadas a la API: 0.3 a 0.6, 0.9 (cuota) | DEV | CORE corre la misma llamada y compara |
+| Publicación real y IDs (0.7) | DEV | CORE abre la unidad publicada y confirma |
+| User Products (0.8) | DEV decide, CORE escribe el ADR | — |
+| Evaluación del MCP oficial (0.10) | MIND (2 h tope) | CORE |
+| Costo por consulta de IA (0.11) | DEV mide | CORE registra el número |
+| Aplicaciones laborales | CORE prepara el paquete | **Gonzo envía** |
+| Piezas publicadas | STUDIO redacta | CORE verifica hechos; **Gonzo publica** |
+| Landing / storefront | DEV construye | AUDITOR revisa UI y a11y |
+| Claims de CV | CORE cruza contra `career-facts.md` | MIND audita la procedencia |
+
+**La regla que evita el ping-pong:** el CORE no implementa y el rol no se auto-aprueba. Un reporte de DEV o de MIND es un reporte, no una prueba: el CORE reproduce la salida antes de dar el bloque por cerrado.
+
+---
+
+## 5-ter. Contingencias (qué pasa si el hito no llega)
+
+Ninguna de estas tres es hipotética: son los tres lugares donde este plan se puede trabar.
+
+**1. La app de MeLi no se registra en S1.** Es el único bloqueo que depende de una sola persona y de un panel externo.
+- S2 arranca igual con lo que no la necesita: 0.10 (MCP) y 0.11 (costo de IA) son medibles sin app.
+- Si al viernes de S2 sigue sin registrarse, **F0 se detiene y se escala**. No se simula con una cuenta de prueba ni se sigue "provisoriamente": el criterio de salida de F0 exige una unidad real publicada.
+- Lo que sí se gana en ese caso: el plan de ingresos avanza una semana con el tiempo liberado, y la app queda como el primer todo de la semana siguiente.
+
+**2. La API devuelve 429 antes de lo esperado.** No es una falla: **es el experimento**. 0.9 existe para encontrar ese techo, y encontrar un techo bajo es un hallazgo sobre la viabilidad del producto — se documenta con los headers tal como vinieron y se decide si el modelo de negocio entra en ese presupuesto. Lo que sería falla es no medirlo.
+
+**3. La publicación real (0.7) no sale.** Es el riesgo que el roadmap de OnWheels ya declaró: si 0.3-0.7 falla, el proyecto se detiene y se escala. F0 sin publicación real no es F0, es una opinión. Se reporta con el error exacto de la API, no con "no funcionó".
+
+---
+
 ## 6. Orden de sacrificio (qué se cae primero)
 
 Cuando la semana no alcanza —y no va a alcanzar— se corta **en este orden**, sin negociar:
