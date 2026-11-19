@@ -5,7 +5,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-06T21:00:17+00:00",
-  "updated_at": "2026-11-19T05:45:35+00:00",
+  "updated_at": "2026-11-19T14:16:35+00:00",
   "gates": [
     "critic"
   ],
@@ -169,7 +169,7 @@
       "task": "T4.1 - Implementar objective-extractor con gate del Critic",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Existe agents/kanam-critic/skills/objective-extractor/SKILL.md; openclaw skills list --agent kanam-critic la muestra; el lab tiene un caso; el Critic emite veredicto Aprobado u ORO.",
       "depends_on": [
         6
@@ -178,14 +178,16 @@
       "write_paths": [
         "agents/kanam-critic/skills/objective-extractor/"
       ],
-      "evidence": [],
+      "evidence": [
+        "objective-extractor.py (260 lineas, 13 tests verdes) + 12 casos de camino de error verificados por el CORE. Gate del Critic INVALIDO en 2 intentos (F29 fabrico ORO sin evidencia; F30 no supo invocar la herramienta). Cierre por verificacion del CORE: agents/kanam-critic/docs/reviews/2026-11-19-T4.1-core-verification.md"
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:18+00:00",
-      "updated_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-19T14:16:35+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-19T14:16:35+00:00",
       "session_ref": null
     },
     {
