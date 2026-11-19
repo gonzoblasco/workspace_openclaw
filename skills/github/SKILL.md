@@ -54,11 +54,15 @@ gh auth status
 gh auth login
 ```
 
-`bin/github-mcp-launch` resuelve el token en este orden: `~/.openclaw/secrets/github-token` (PAT fine-grained, necesario para escribir en orgs con OAuth App restrictions) → `gh auth token` (OAuth, se auto-renueva). Sin ninguno de los dos, el launcher falla con un error explícito.
+`bin/github-mcp-launch` resuelve el token en este orden: `gh auth token` (OAuth, se auto-renueva) → `~/.openclaw/secrets/github-token` (PAT fine-grained, fallback si `gh` no tiene sesión). Sin ninguno de los dos, el launcher falla con un error explícito.
 
-El 2026-11-18 se revocaron los PAT classic y el MCP quedó en 401; se resolvió primero con el OAuth de `gh` y el 2026-11-19 se provisionó un PAT fine-grained en `secrets/github-token`, que ahora es el primario. Alcanza 81 repos, con push en los propios y pull en shadcn-ui/ui, radix-ui/primitives, TanStack/router, meta/astryx, vercel/ai. No puede leer `/notifications` (403): la API de notificaciones solo acepta PAT **classic** con scope `notifications`; los fine-grained no tienen ese permiso, no es una casilla olvidada.
+**Por qué el OAuth es el primario (2026-11-19, verificado):** el PAT fine-grained alcanza 81 repos y escribe en los propios, pero devuelve `403 Resource not accessible by personal access token` al comentar en repos públicos ajenos (shadcn-ui/ui #11757, meta/astryx #4652), porque ahí solo tiene `pull`. El OAuth de `gh` pasa la autorización en esas mismas cuatro orgs (shadcn-ui, radix-ui, TanStack, meta). Prueba sin efecto lateral: `POST /repos/<r>/issues/<n>/comments` con body vacío: 422 = autorizado, 403 = bloqueado.
 
-### ⚠️ OAuth token write-block in orgs with OAuth App restrictions
+**El 2026-11-19 Gonzo revocó todos los PAT classic**, incluido el ancho (`ghp_`) del que dependía el comentario en orgs restringidas. La API de `/notifications` solo acepta classic PAT, no fine-grained.
+
+### ⚠️ OAuth token write-block en orgs con OAuth App restrictions (verificar)
+
+**Estado 2026-11-19: sin confirmar.** El bloqueo se documentó el 03/09 con errores reales de `addComment`. Pero el 2026-11-19 la misma prueba sin efecto lateral (body vacío) devolvió 422 en shadcn-ui, radix-ui, TanStack y meta, o sea autorización OK. Puede que las orgs hayan aprobado la app o levantado la restricción. **Falta la prueba definitiva: un comentario real.** Si vuelve a fallar, usar un classic PAT con `public_repo` solo para esa operación.
 
 The OpenClaw OAuth token (`gho_`) CANNOT write (comment, open PRs/issues) in orgs with OAuth App access restrictions: shadcn-ui, radix-ui, facebook, TanStack, adobe, mui, vercel, etc. Reading works; writes fail with `GraphQL: ... OAuth App access restrictions`. It is not a token or casing problem.
 
