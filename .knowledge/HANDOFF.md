@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-19 13:28 GMT-3
+**Fecha:** 2026-11-19 13:36 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-19 13:36
+Sesion de gobierno y verdad de datos, sin escribir codigo de producto. Cuatro frentes cerrados y tres errores propios corregidos antes de que salieran. (1) AUTOMATIONS: el job pipeline-queue-watcher fallaba por timeout del trigger-gate (presupuesto fijo de 30s documentado en automation/cron-jobs/schedules.md; corridas medidas de 41.8s y 108.8s). Convertido a payload command con scripts/pipeline-queue-watch.sh: 105ms, lastRunStatus ok, silencio via NO_REPLY. Ademas: dos jobs watch-devto-trends duplicados (creados el 17/11 con 8 minutos de diferencia, mismo script) quedaron en uno; gateway-channels-refresh recibio bestEffort para que su entrega bloqueada no genere alertas. (2) ROADMAP revisado a 41 dias: el cuerpo de 2.3 declaraba 'todos cerrados' cuando el tracker tenia 3 procesos vivos desde el 19/10 (mismo error que el falso verde de octubre, invertido); 1.1 bajo a amarillo porque pipeline-track.sh status devuelve vacio; se agrego la capa 0.4 Coexistencia OpenClaw+Antigravity que no existia; siete numeros stale reemplazados por medicion. (3) NORTH revisado: tres afirmaciones falsas (OnWheels 'falta solo el chat RAG' cuando hubo reset a greenfield el 29/10 y F0 no arranco; kanam-os listado como frente activo sin copia local desde el 29/10; busqueda laboral 'dormante' con 3 procesos vivos). CPACC retirado por falta de fondos: T1 queda con un solo criterio de salida. (4) PLAN-DE-MARCHA.md creado: tres cubetas (obra 50 / ingreso 30 / sistema 20 con piso y techo), piso funcional de 30 min semanales, secuencia de 6 semanas hasta el 31/12, orden de sacrificio y contingencias; paso por red-team del Planner y se le agregaron reparto de roles y contingencias. (5) VERDAD DE CV: de 18 claims sin respaldo se auditaron 22 referencias contra GitHub (autoria, reviews y comentarios). Tres no tenian NINGUNA participacion de Gonzo (ariakit 6810, hermes-agent 130041, astryx 5332) y dos numeros estaban mal (ibm-products 9868 es un issue ajeno; el analisis atribuido a 9866 vive en 9865). Se agrego career-facts.md seccion 5.5 con la clasificacion en cuatro tablas y una lista de referencias no citables; los CVs y sus HTML quedaron alineados; las cinco entradas de universidad salieron por la regla dura del 2026-11-04. (6) PERFIL DEL BLOG: a11y-portfolio/profile no mencionaba Preflight ni kanam-fixer y Super7ui/Minutentag tenian un solo bullet cada uno. Reescrito desde career-facts y publicado: 4/4/4/3 bullets, titulos canonicos, verificado en vivo con curl.
 
 ### 2026-11-19 13:28
 Sesion larga de programa critic-v0.3: de 5/12 a 11/12. (1) T3.3 tasa de absorcion publicada: 7/27 = 25.9%, con la lectura honesta de que la absorcion de autores ajenos es 0 y el 35% previo era sobre base de 20. (2) T4.1 objective-extractor: cuatro rondas de ejecutor. gpt-oss invento markup inexistente, luego rutas /full/path/to/ y tests en verde con pytest rojo, y en la r4 afirmo 9 fixes sin modificar el archivo (mtime identico). Con deepseek y override de pacto salio la version real: 260 lineas, 17 tests, resolucion de citas contra la raiz del repo. Gate: r1 invento ORO 24/25 con flag inexistente (F29), r2 no supo invocar la herramienta (F30), r3 dio VETO honesto pero elidio evidencia (F31). Se cerro por verificacion del CORE y despues se absorbio el VETO: r2 Aprobado 20/25 con CI y uso real sobre el ROADMAP. (3) T4.2 detectores horizon (grafo de imports con ast, ciclos relativos y absolutos) y resistance (patrones de borde): lab 12/12, el CORE encontro un falso verde con imports absolutos que el lab no cazaba, 6 fixtures propios confirman que discriminan. Aprobado 23/25 (F32: el juez elidio la seccion de discriminacion). (4) T4.3 format_sharp_report: publica el veredicto como comentario de PR. Primera publicacion real: PR #1 de workspace_openclaw, comentario 7014080729 de 4432 chars generado por la herramienta. Modo estricto: sin tabla SHARP exige --allow-ledger-axes. Gate T4.3 invalido, declaro un reporte que no escribio (F34); cierre por verificacion del CORE. (5) T5.1 contrato de invocacion cruzada en docs/CRITIC-DISPATCH.md: que trae la peticion, que devuelve el Critic (4 artefactos), 9 sintomas que invalidan una respuesta mapeados a F29-F34, regla de dos gates fallidos sin tercer intento ciego. (6) T5.2 gate cableado: scripts/check-critic-gate.py con exit 0/3/4/2, 17 tests, match exacto por slug sin herencia, step en CI verificado en el runner. (7) F33: el reporte r2 de T4.1 no tenia tabla SHARP y verify-verdict lo acepto igual; se regenero. v1.0 queda pending a proposito: exige un mes de demanda de otros roles.
@@ -39,10 +42,11 @@ Verificacion definitiva del OAuth de gh en orgs de terceros: comentarios reales 
 ### 2026-11-19 02:02
 Verificacion definitiva del OAuth de gh en orgs de terceros: comentarios reales en shadcn-ui#11757 (7000227192) y meta/astryx#4652 (7000228285) publicados con exito, confirmando que OAuth-first es correcto y que el fine-grained no puede comentar en repos ajenos.
 
-### 2026-11-19 00:59
-Diagnostico y reparacion de credenciales de GitHub tras revocar Gonzo todos los PAT classic. (1) Se cayo una sola cosa: el MCP, con 401 Bad credentials sobre un github_pat_ revocado en secrets/github-token. El resto sano: gh CLI, SSH, push HTTPS via helper de gh en los 7 projects, admin en los 8 repos, ningun workflow con GH_PAT. (2) Verifique que el OAuth de gh sirve para el MCP (get_me OK) y reescribi ~/.openclaw/bin/github-mcp-launch para resolver el token dinamicamente, con fallo ruidoso en vez de 401 silencioso. (3) Limpieza medida a pedido de Gonzo: trash del token revocado, su backup y el launcher viejo; secrets/ quedo vacio y el slot del PAT sigue existiendo por contrato. (4) Gonzo provisiono un PAT fine-grained: 81 repos, push en los propios, pull en shadcn-ui, radix-ui, TanStack, meta (Actions/issues/pulls/contents/commits 200), gists y orgs OK. (5) Hallazgo importante: el fine-grained NO puede comentar en repos publicos ajenos (403 Resource not accessible en shadcn-ui#11757 y astryx#4652), mientras el OAuth de gh si pasa la autorizacion en esas 4 orgs; inverti la precedencia del launcher a OAuth-first con el PAT como fallback. Prueba usada: POST de comment con body vacio (422 = autorizado, 403 = bloqueado), sin efecto lateral. (6) Notifications: la API solo acepta classic PAT con scope notifications; en fine-grained no existe la casilla, queda afuera por decision.
-
 ## Estado actual
+
+Sistema verde: check-bootstrap-budget OK (5 archivos bajo cap), check-refs OK 182 rutas, check-adr-integrity OK 68 ADRs, check-single-source OK, check-cv-facts OK 15 CVs, automations sin jobs en error. OnWheels F0 sigue sin iniciar: bloqueada por dos decisiones de Gonzo (aceptar el diseno PII minimo y registrar la app central en el panel de developers de MeLi). Plan de marcha vigente hasta el 31/12.
+
+### Estado previo (heredado)
 
 Programa critic-v0.3 en 11/12. Kit: 18/18 checks, verify-verdict 10/10, lab 12/12, 51 tests en agents/kanam-critic. Gate de veredicto corre en CI. PR #1 abierto a proposito (se mergea despues). Ledger: 34 fricciones, 7 absorbidas, 27 abiertas; 6 de las nuevas son fallas de gates.
 
@@ -217,6 +221,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1) Gonzo: registrar la app central de OnWheels en el panel de developers de MeLi y pasar Client ID + permisos; aceptar o rechazar el diseno PII minimo (guardar question_id/item_id/texto/estado, nunca nombre ni from.id del comprador, exhibir solo en la sesion del seller dueno, TTL, rotular respuestas IA). Con eso corren 0.3 a 0.6 y se confirma api_version=4. 2) Postular a Mercor: cuenta en work.mercor.com, subir el PDF, Practice Interview (el CV ya esta listo). 3) Si el blog se va a seguir tocando, clonar a11y-portfolio en projects/ de forma estable en vez de clones descartables. 4) Deuda del plan: .knowledge sin respaldo en preflight, mercor-project-odin y SDXL; dedupe de contributions; 2 de 12 proyectos con pre-commit hook; radar de oportunidades OSS con 24 dias. 5) gateway-channels-refresh deberia ser delivery mode none (solo por UI; el CLI no expone la bandera).
+
+### Pendientes heredados (sin cambios)
 
 1) Dejar correr un mes y medir solicitudes de otros roles para cerrar v1.0. 2) Mergear PR #1. 3) Considerar extender el regex de placeholders de emit-verdict a frases de elision en castellano (F32/F33). 4) Evaluar por que el Critic como subagente falla 3 de 4 gates: es la causa raiz detras de F29-F34.
 
@@ -440,6 +448,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- Fallback cubre fallas, no lentitud (ADR-112, timeout 900s, Gemma local). CPACC retirado por falta de fondos, reapertura al primer ingreso real. Coexistencia OpenClaw+Antigravity en vez de migracion. El ROADMAP no es backlog: las tareas fechan en memory.db. Un numero de PR en un CV se cita por autoria, por review formal o por comentario propio, y las tres cosas se escriben distinto. Un auto-reporte de subagente no es un hecho: se verifica contra la fuente.
+
+### Heredadas (sin cambios)
+
 - Ejecutor A pasa a deepseek cuando gpt-oss reporta trabajo inexistente (override autorizado). Cierre por verificacion del CORE con nota explicita cuando el gate es invalido, nunca veredicto provisional. Match exacto por slug en el gate de veredictos: sin herencia entre -rN y base.
 
 ### Heredadas (sin cambios)
@@ -566,6 +578,16 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 - Fallback unico local por decision de Gonzo: 'el fallback no puede ser otro modelo en la nube'. Primario deepseek y no beam: dejo de ser gratuito y su calidad ya estaba descartada por ADR-105 (3/4 bugs, auto-aprobacion con defecto vivo). Ninguna carrera universitaria va a CV ni ATS (regla 2026-11-04). Una referencia de CV se verifica abriendo el hilo en GitHub, no contra el corpus.
 
+## Como continuar
+
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-11-19.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
+
+---
+
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
+
 ## Archivos tocados
 
 ```
@@ -608,16 +630,6 @@ studies/godot-3d-rpg-curso/PROGRESO.md
 studies/godot-3d-rpg-curso/SESSIONS.md
 studies/README.md
 ```
-
-## Como continuar
-
-1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-19.md` para el informe completo de la sesion.
-3. Verificar el estado real antes de actuar (git, tests, la DB).
-
----
-
-*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
 
 ## What This Is
 
