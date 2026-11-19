@@ -90,9 +90,20 @@ exit 0
 
 
 def git(args: List[str], cwd: Path) -> str:
+    # Limpiar las variables de entorno del git padre. Cuando este check corre
+    # desde un hook (pre-commit), git exporta GIT_DIR / GIT_WORK_TREE /
+    # GIT_INDEX_FILE apuntando al repo del WORKSPACE. Un `git -C <fork>` NO las
+    # pisa: `-C` cambia el directorio pero GIT_DIR sigue mandando. Resultado: el
+    # check leia el `.knowledge/` del workspace (27 archivos) y lo reportaba como
+    # si estuviera trackeado en el fork. Medido el 2026-11-19: standalone daba
+    # OK y el commit fallaba, con el mismo codigo.
+    env = {k: v for k, v in os.environ.items()
+           if k not in ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE",
+                        "GIT_OBJECT_DIRECTORY", "GIT_COMMON_DIR")}
     try:
         out = subprocess.run(
-            ["git", *args], cwd=str(cwd), capture_output=True, text=True, check=False
+            ["git", *args], cwd=str(cwd), capture_output=True, text=True,
+            check=False, env=env,
         )
         return out.stdout.strip() if out.returncode == 0 else ""
     except Exception:
@@ -165,12 +176,16 @@ def add_info_exclude(path: Path) -> Path:
 
 def untrack_knowledge(path: Path) -> bool:
     """`git rm -r --cached .knowledge`: sale del indice y queda en disco."""
+    env = {k: v for k, v in os.environ.items()
+           if k not in ("GIT_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE",
+                        "GIT_OBJECT_DIRECTORY", "GIT_COMMON_DIR")}
     res = subprocess.run(
         ["git", "rm", "-r", "--cached", "--quiet", ".knowledge"],
         cwd=str(path),
         capture_output=True,
         text=True,
         check=False,
+        env=env,
     )
     return res.returncode == 0
 

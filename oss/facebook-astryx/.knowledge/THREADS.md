@@ -1,12 +1,12 @@
-# THREADS - facebook/astryx
+# THREADS - meta/astryx
 
 > Hilos abiertos con upstream: que se dijo, que quedo pendiente y **quien tiene la pelota**.
 > Se actualiza en cada cierre. A diferencia de `HANDOFF.md` (estado del trabajo), esto es el
 > estado de la **conversacion**: quien debe responder y cuando conviene volver a mirar.
 
-**Repo:** https://github.com/facebook/astryx
-**Ultima actualizacion:** 2026-11-03
-**Verificado con:** `scripts/pr-thread-brief.sh facebook/astryx <n> gonzoblasco`
+**Repo:** https://github.com/meta/astryx (antes `facebook/astryx`: el repo cambio de owner)
+**Ultima actualizacion:** 2026-11-19
+**Verificado con:** `scripts/pr-thread-brief.sh meta/astryx <n> gonzoblasco`
 
 ---
 
@@ -26,14 +26,16 @@
 
 | # | Tipo | Titulo | Ultimo acto | PELOTA | Desde | Notas |
 |---|---|---|---|---|---|---|
-| **4690** | PR | Table drop tree ARIA / treegrid | `humbertovirtudes`: `changes_requested` | **ELLOS** | 2026-10-22 | Ver detalle. Es el hilo mas activo. |
-| **3335** | Issue | TabMenu sin lugar valido en `role=tablist` | **Nuestro** comentario `6499306768` | **ELLOS** | 2026-10-29 | Esperando a `duytbp` o `cixzhang`. No volver a comentar para empujar. |
+| **4690** | PR | Table drop tree ARIA / treegrid | `cixzhang` pide rebase a `AKnassa` | **ELLOS** (tercero) | 2026-11-17 | Aprobado por `kentonquatman` el 13/11; pendiente el rebase del autor. **No nos toca.** |
+| **3335** | Issue | TabMenu sin lugar valido en `role=tablist` | **Nuestro** comentario `6499306768` | **ELLOS** | 2026-10-29 | Sin movimiento desde entonces. No volver a comentar para empujar. |
 
 ---
 
 ## #4690 - Table drop tree ARIA (treegrid)
 
-**Estado: PR abierto, NO dormido.** Cuatro pedidos de cambios de terceros, el ultimo el 2026-10-22.
+**Estado: PR abierto y avanzando, NO dormido.** Aprobado por `kentonquatman` el 2026-11-13; el
+2026-11-17 `cixzhang` pidio al autor (`AKnassa`) rebasear sobre `main` porque hay conflicto en 5
+archivos. La pelota la tiene el autor del PR, no nosotros.
 
 **Linea de tiempo relevante:**
 
@@ -48,7 +50,11 @@
 | 2026-09-22 | humbertovirtudes | `changes_requested` |
 | 2026-10-20 | astracat-bot | comentarios inline sobre wording (APG) |
 | 2026-10-22 | kentonquatman | `changes_requested` |
-| **2026-10-22** | **humbertovirtudes** | **`changes_requested`** - ultimo acto |
+| 2026-11-04 | humbertovirtudes | `commented` |
+| 2026-11-07 | astracat-bot | comentarios inline no bloqueantes (INV29, ring 2px/3px) |
+| 2026-11-10 | humbertovirtudes | `commented` |
+| 2026-11-13 | kentonquatman | **`approved`** |
+| **2026-11-17** | **cixzhang** | **pide rebase a `AKnassa`**: conflicto en 5 archivos (`a11y-baseline.json`, `api-report.md`, `BaseTable.tsx`, `useTableTreeData.tsx` y uno mas). Ultimo acto |
 
 **Nuestro aporte:** marco AT para la decision `row-focus-vs-cell-nav`, que cixzhang cito para el
 ruling del 27/08. Quedo incorporado a v1. **No hay nada nuestro pendiente.**
@@ -110,7 +116,7 @@ segundo comentario es ruido (regla 4 de `AGENTS-DETALLE.md`).
 
 Antes de tocar este archivo:
 
-1. `bash scripts/pr-thread-brief.sh facebook/astryx <n> gonzoblasco` para cada hilo abierto.
+1. `bash scripts/pr-thread-brief.sh meta/astryx <n> gonzoblasco` para cada hilo abierto.
 2. Actualizar **PELOTA** y **Desde** con lo que devuelve el script, no con memoria.
 3. Si un hilo cerro, moverlo a la tabla de cerrados con el cierre textual.
 

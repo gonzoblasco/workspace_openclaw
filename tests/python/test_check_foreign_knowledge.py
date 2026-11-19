@@ -292,3 +292,31 @@ def test_fork_si_se_destrackea(tmp_path, monkeypatch):
 
     assert guard.tracked_knowledge(repo) == []
     assert (repo / ".knowledge" / "HANDOFF.md").exists()
+
+
+def test_ignora_git_dir_heredado_del_hook(tmp_path, monkeypatch):
+    """Un pre-commit exporta GIT_DIR; el check NO debe leer el repo equivocado.
+
+    Medido el 2026-11-19: el check daba OK standalone y fallaba dentro del
+    commit, porque `git -C <fork>` no pisa GIT_DIR: leia el `.knowledge/` del
+    WORKSPACE y lo reportaba como trackeado en el fork.
+    """
+    # Workspace con su propio .knowledge trackeado (el "repo padre").
+    ws = _workspace(tmp_path, monkeypatch, {"projects": ["propio"]})
+    parent = _repo(tmp_path / "parent")
+    (parent / ".knowledge").mkdir(exist_ok=True)
+    (parent / ".knowledge" / "HANDOFF.md").write_text("x", encoding="utf-8")
+    _git(parent, "add", "-A")
+    _git(parent, "commit", "-qm", "x")
+
+    # Fork limpio: NO tiene .knowledge propio. (El helper lo agrega por defecto;
+    # sin `with_knowledge=False` el test verificaba otra cosa.)
+    _workspace(tmp_path, monkeypatch, {"forks": ["limpio"]}, with_knowledge=False)
+
+    # Simular el entorno del hook apuntando al repo padre.
+    monkeypatch.setenv("GIT_DIR", str(parent / ".git"))
+    monkeypatch.setenv("GIT_WORK_TREE", str(parent))
+
+    r = guard.scan()[0]
+
+    assert r["tracked_knowledge"] == [], "leyo el .knowledge del repo padre"
