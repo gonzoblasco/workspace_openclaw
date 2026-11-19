@@ -397,3 +397,85 @@ def test_puntos_de_friccion_en_lista_se_listan(tmp_path):
     assert result.returncode == 0, result.stderr
     assert "- Falta caso borde de imports externos." in result.stdout
     assert "sin fricciones bloqueantes" not in result.stdout
+
+
+# --------------------------------------------------------------------------
+# F35a/F35b: camino VETO, camino ORO y coherencia total <-> etiqueta.
+# La matriz SHARP es <=18 VETO, 19-23 Aprobado, >=24 ORO.
+# --------------------------------------------------------------------------
+
+BAND_SCORES = {
+    18: {"S": 4, "H": 3, "A": 3, "R": 4, "P": 4},
+    19: {"S": 4, "H": 4, "A": 4, "R": 4, "P": 3},
+    23: {"S": 5, "H": 5, "A": 4, "R": 5, "P": 4},
+    24: {"S": 5, "H": 5, "A": 5, "R": 5, "P": 4},
+    25: {"S": 5, "H": 5, "A": 5, "R": 5, "P": 5},
+}
+
+
+def test_veto_18_se_formatea_con_fricciones(tmp_path):
+    """El camino VETO tambien produce cuerpo (no se puede publicar un VETO sin
+    sus fricciones: son justamente lo que el autor tiene que arreglar)."""
+    scores = BAND_SCORES[18]
+    ledger = make_ledger(tmp_path / "verdicts.jsonl", total=18, verdict="VETO",
+                         scores=scores)
+    report = make_report(total=18, verdict="VETO", axes=scores,
+                         frictions=["Cubrir el caso de imports externos.",
+                                    "Agregar gate de citas invalidas."])
+    result = run(tmp_path, report, ledger)
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.splitlines()[0] == "**Veredicto: VETO 18/25** (S4 H3 A3 R4 P4)"
+    assert "### Fricciones" in result.stdout
+    assert "- Cubrir el caso de imports externos." in result.stdout
+    assert "- Agregar gate de citas invalidas." in result.stdout
+
+
+def test_oro_25_se_formatea(tmp_path):
+    scores = BAND_SCORES[25]
+    ledger = make_ledger(tmp_path / "verdicts.jsonl", total=25, verdict="ORO",
+                         scores=scores)
+    report = make_report(total=25, verdict="ORO", axes=scores)
+    result = run(tmp_path, report, ledger)
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.splitlines()[0] == "**Veredicto: ORO 25/25** (S5 H5 A5 R5 P5)"
+    assert "| S (Sharpness) | 5/5 |" in result.stdout
+
+
+def test_oro_24_es_la_frontera_inferior_de_oro(tmp_path):
+    scores = BAND_SCORES[24]
+    ledger = make_ledger(tmp_path / "verdicts.jsonl", total=24, verdict="ORO",
+                         scores=scores)
+    report = make_report(total=24, verdict="ORO", axes=scores)
+    result = run(tmp_path, report, ledger)
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.startswith("**Veredicto: ORO 24/25**")
+
+
+def test_matriz_total_16_etiquetado_aprobado_exit_2(tmp_path):
+    """La falla que anulo kanam-critic-kit-v0.3-r2 no puede volver a publicarse."""
+    scores = {"S": 4, "H": 3, "A": 3, "R": 3, "P": 3}
+    ledger = make_ledger(tmp_path / "verdicts.jsonl", total=16, verdict="Aprobado",
+                         scores=scores)
+    report = make_report(total=16, verdict="Aprobado", axes=scores)
+    result = run(tmp_path, report, ledger)
+
+    assert result.returncode == 2
+    assert result.stdout == ""
+    assert "matriz SHARP" in result.stderr
+    assert "exige VETO" in result.stderr
+    assert "la fila dice Aprobado" in result.stderr
+
+
+def test_matriz_total_24_etiquetado_aprobado_exit_2(tmp_path):
+    scores = BAND_SCORES[24]
+    ledger = make_ledger(tmp_path / "verdicts.jsonl", total=24, verdict="Aprobado",
+                         scores=scores)
+    report = make_report(total=24, verdict="Aprobado", axes=scores)
+    result = run(tmp_path, report, ledger)
+
+    assert result.returncode == 2
+    assert "exige ORO" in result.stderr
+    assert "la fila dice Aprobado" in result.stderr

@@ -17,6 +17,10 @@ Reglas del cuerpo (contrato de la herramienta):
      un dato requerido, exit 2 nombrando el faltante.
   6. Limite de 60000 caracteres: se trunca SOLO la evidencia (nunca el veredicto
      ni las fricciones) y se avisa en una linea.
+  7. Matriz SHARP: la etiqueta de la fila se contrasta con el total
+     (<=18 VETO, 19-23 Aprobado, >=24 ORO). Si no coincide, exit 2 con el detalle:
+     un total de 16 con etiqueta "Aprobado" no se formatea ni se publica, porque
+     el cuerpo del PR seria un falso verde con formato de contrato.
 
 Parseo tolerante de la tabla SHARP: los reportes del kit no usan un unico
 formato. Se aceptan filas como `| **S** (Sharpness) | 4 | ... |`,
@@ -52,12 +56,31 @@ AXIS_LABELS = {
     "P": "Parsimony",
 }
 VERDICTS = ("VETO", "Aprobado", "ORO")
+
+# Matriz SHARP: la etiqueta NO es una opinion, sale del total. <=18 VETO,
+# 19-23 Aprobado, >=24 ORO. Un 16 etiquetado "Aprobado" es exactamente la falla
+# que anulo kanam-critic-kit-v0.3-r2; el formateador no debe publicarla.
+SHARP_MATRIX = (
+    ("VETO", 0, 18),
+    ("Aprobado", 19, 23),
+    ("ORO", 24, 25),
+)
 MAX_BODY_CHARS = 60000
 FRICTION_FALLBACK = "sin fricciones bloqueantes"
 FRICTION_UNKNOWN = "fricciones no declaradas en el reporte"
 
 EXIT_OK = 0
 EXIT_INVALID = 2
+
+
+def expected_verdict(total):
+    """Etiqueta que la matriz SHARP exige para `total`."""
+    for label, low, high in SHARP_MATRIX:
+        if low <= total <= high:
+            return label
+    raise ReportError(
+        "total {} fuera de la matriz SHARP (0-25)".format(total)
+    )
 
 
 class ReportError(Exception):
@@ -426,6 +449,14 @@ def load_ledger_row(ledger_path, artifact):
 def validate_against_ledger(report, row):
     """Compara reporte vs ledger; cualquier discrepancia es exit 2 con detalle."""
     problems = []
+    expected = expected_verdict(row["total"])
+    if row["verdict"] != expected:
+        problems.append(
+            "etiqueta: total={} exige {} segun la matriz SHARP (<=18 VETO, "
+            "19-23 Aprobado, >=24 ORO), la fila dice {}".format(
+                row["total"], expected, row["verdict"]
+            )
+        )
     if report["total"] != row["total"]:
         problems.append(
             "total: reporte={} ledger={}".format(report["total"], row["total"])

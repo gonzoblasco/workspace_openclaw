@@ -24,13 +24,25 @@ es que la escritura no pueda dejar el ledger a medias. Por eso este script:
 Un veredicto sin reporte es IMPOSIBLE de registrar por esta via. Si igual se necesita
 corregir una fila ya escrita, existe `bin/invalidate-verdict.py`, que exige motivo.
 
+DETECCION DE EVIDENCIA ELIDIDA (F32/F33, 2026-11-19).
+El detector de placeholders solo miraba `$(...)` y `TODO`, y por eso pasaron reportes
+que en vez de pegar la salida escribian `... (omitted for brevity) ...` o
+`... (verificado en ejecucion anterior) ...`. Ese texto es una PLANTILLA con otra
+forma: afirma que algo se corrio sin mostrar la corrida. La lista de frases de elision
+es **explicita y cerrada** (`ELISION_PHRASES`): no se detecta un `...` generico
+porque el propio tool trunca celdas de tabla con `...` y porque los puntos suspensivos
+son markdown legitimo. Cada frase nueva se agrega a mano, con su caso de prueba, en
+vez de ampliar un patron generico que empiece a bloquear prosa honesta.
+
 Uso:
     python3 agents/kanam-critic/bin/emit-verdict.py \\
         --artifact kanam-critic-kit-v0.3-r3 --S 4 --H 4 --A 4 --R 4 --P 4 \\
         --report agents/kanam-critic/docs/reviews/2026-11-06-critic-kit-v0.3-r3.md \\
         --notes "20/25, delta +8 vs 12/25"
 
-Salida: exit 0 si el veredicto quedo registrado con respaldo, 1 si no.
+Salida: exit 0 si el veredicto quedo registrado con respaldo; exit 2 si el reporte no
+pasa las validaciones (no se escribe nada); exit 1 si la escala o la matriz son
+invalidas (error de uso).
 """
 from __future__ import annotations
 
@@ -46,6 +58,18 @@ LEDGER = AGENT_DIR / "memory" / "verdicts.jsonl"
 
 CITATION = re.compile(r"[A-Za-z0-9_./-]+\.(?:md|py|jsonl|tsv|yaml|json|sh):\d+")
 PLACEHOLDER = re.compile(r"\$\(|\bTODO\b|\bFIXME\b|ver aqui|ver aquí|<pendiente>|\bXXX\b")
+
+# Frases de elision: lista explicita, no un patron generico de puntos suspensivos.
+# Se aceptan las variantes con y sin acento de 'ejecucion'/'anteriormente'.
+ELISION_PHRASES = (
+    r"omitted for brevity",
+    r"verificad[oa]\s+en\s+(?:una\s+)?ejecuci[oó]n\s+anterior",
+    r"\bverificado\s+anteriormente\b",
+    r"truncad[oa]\s+por\s+brevedad",
+    r"\(\s*sin\s+ejecutar\s*\)",
+    r"\bplaceholder\b",
+)
+ELISION = re.compile("|".join(ELISION_PHRASES), re.IGNORECASE)
 MIN_CITATIONS = 5
 
 MATRIX = (
@@ -53,6 +77,10 @@ MATRIX = (
     ("Aprobado", 19, 23),
     ("ORO", 24, 25),
 )
+
+EXIT_OK = 0
+EXIT_USAGE = 1
+EXIT_INVALID = 2
 
 
 def verdict_for(total: int) -> str:
@@ -79,6 +107,12 @@ def validate_report(path: Path, total: int, verdict: str) -> list[str]:
     ph = PLACEHOLDER.search(text)
     if ph:
         problems.append(f"el reporte tiene texto sin resolver: '{ph.group(0)}'")
+    elision = ELISION.search(text)
+    if elision:
+        problems.append(
+            "el reporte tiene evidencia elidida: '" + elision.group(0).strip() +
+            "' (pega la corrida real, no la referencia a una corrida)"
+        )
     return problems
 
 
@@ -105,13 +139,13 @@ def main() -> int:
     for k, v in scores.items():
         if not 1 <= v <= 5:
             print(f"ROJO  {k}={v} fuera de la escala 1-5", file=sys.stderr)
-            return 1
+            return EXIT_USAGE
     total = sum(scores.values())
     try:
         expected = verdict_for(total)
     except ValueError as exc:
         print(f"ROJO  {exc}", file=sys.stderr)
-        return 1
+        return EXIT_USAGE
 
     report = Path(args.report)
     if not report.is_absolute():
@@ -123,7 +157,7 @@ def main() -> int:
         for p in problems:
             print(f"        - {p}")
         print("        (no se escribio nada en el ledger; arregla el reporte y volve a correr)")
-        return 1
+        return EXIT_INVALID
 
     import datetime
     rec = {
@@ -143,7 +177,7 @@ def main() -> int:
           f"= {total}/25 -> {expected}")
     print(f"Reporte: {rec['report']}")
     print("GLOBAL=aprobado  (reporte validado antes de escribir el ledger)")
-    return 0
+    return EXIT_OK
 
 
 if __name__ == "__main__":

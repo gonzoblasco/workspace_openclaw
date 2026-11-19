@@ -28,6 +28,18 @@ QUE VERIFICA (por veredicto real):
      SHARP para ese total (<=18 VETO, 19-23 Aprobado, >=24 ORO). Un 16 etiquetado "Aprobado"
      es un veredicto invalido por construccion.
   5. CITAS: el reporte tiene al menos 5 citas con forma `ruta:línea` o `ruta:línea:línea`.
+  5b. TABLA SHARP (F33, 2026-11-19): el reporte declara los CINCO ejes con puntaje. El
+     parser es tolerante a proposito ('| **S (Sharpness)** | 4 |', '**S (Sharpness):** 4',
+     'S - Sharpness | 5', 'Sharpness (S): 4') porque los reportes del kit no usan una sola
+     forma. Lo que no se tolera es la AUSENCIA de ejes: un reporte que no declara el
+     puntaje por eje afirma un total sin sustentarlo.
+     DECISION sobre los historicos: los siete veredictos previos al 2026-11-19 que se
+     listan en `LEGACY_WITHOUT_TABLE` se informan como "legacy sin tabla" y NO invalidan.
+     Motivo: se emitieron antes de que esta puerta existiera y ya pasaron por todas las
+     validaciones contemporaneas; invalidarlos en masa reescribiria historia con una regla
+     retroactiva. La exencion es por LISTA EXACTA y solo aplica si faltan ejes: si un
+     reporte legacy SI declara los cinco, pasa el check normal. Un artefacto nuevo sin
+     tabla es invalido, sin excepcion.
   6. EVIDENCIA: el reporte menciona al menos un comando verificable o un estado del
      evidence-hunter (verificado | parcial | auto-reportado | bloqueado).
   7. PLACEHOLDERS: no queda ningun texto sin resolver (ej: `$(cat ...)`, `TODO`, `ver aqui`).
@@ -49,6 +61,7 @@ import argparse
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 AGENT_DIR = Path(__file__).resolve().parent.parent
@@ -61,6 +74,104 @@ EVIDENCE_WORDS = ("verificado", "parcial", "auto-reportado", "bloqueado",
                   "GLOBAL=aprobado", "$ ", "python3 ", "git ")
 VERDICTS = ("VETO", "Aprobado", "ORO")
 PLACEHOLDER = re.compile(r"\$\(|\bTODO\b|\bFIXME\b|ver aqui|ver aquí|<pendiente>|\bXXX\b")
+
+# Ejes SHARP: letra y nombre completo. El parser acepta cualquiera de los dos.
+AXIS_DEFS = (
+    ("S", "Sharpness"),
+    ("H", "Horizon"),
+    ("A", "Asymmetry"),
+    ("R", "Resistance"),
+    ("P", "Parsimony"),
+)
+
+# Artefactos emitidos ANTES del 2026-11-19 (cuando nacio el check de tabla SHARP).
+# Solo ellos pueden quedar como "legacy sin tabla"; un artefacto nuevo sin ejes es rojo.
+LEGACY_WITHOUT_TABLE = (
+    "kanam-critic-kit-v0.3-r4",
+    "docs-ROADMAP-madurez",
+    "kanam-dev-ROADMAP",
+    "kanam-dev-inventario-skills",
+    "docs-NORTH",
+    "cata-2026-11-16-modelos",
+    "blog-publishing-skill",
+)
+
+_EMPHASIS = re.compile(r"[*_`]")
+_SCORE_CELL = re.compile(r"^(\d{1,2})(?:\s*/\s*5)?$")
+_INLINE_SCORE = re.compile(r"(?:[:=]|\|)\s*\**\s*(\d{1,2})(?:\s*/\s*5)?")
+
+
+def _fold(text: str) -> str:
+    """Minusculas y sin acentos, para comparar nombres de eje."""
+    decomposed = unicodedata.normalize("NFKD", text)
+    return "".join(c for c in decomposed if not unicodedata.combining(c)).lower()
+
+
+def _clean_cell(text: str) -> str:
+    return re.sub(r"\s+", " ", _EMPHASIS.sub("", text)).strip()
+
+
+def _table_cells(line: str) -> list[str] | None:
+    stripped = line.strip()
+    if not stripped.startswith("|"):
+        return None
+    body = stripped[1:]
+    if body.endswith("|"):
+        body = body[:-1]
+    cells = [c.strip() for c in re.split(r"(?<!\\)\|", body)]
+    if len(cells) < 2:
+        return None
+    return [_clean_cell(c) for c in cells]
+
+
+def _axis_from_cell(cell: str) -> str | None:
+    folded = _fold(cell)
+    for axis, label in AXIS_DEFS:
+        if re.search(r"\b{}\b".format(re.escape(label.lower())), folded):
+            return axis
+    match = re.search(r"(?<![A-Za-z])([SHARP])(?![A-Za-z])", cell)
+    return match.group(1) if match else None
+
+
+def _axis_in_line(line: str) -> tuple[str, int] | None:
+    """Eje y puntaje declarados en una linea (tabla o bullet), si los hay."""
+    cells = _table_cells(line)
+    if cells is not None:
+        axis = _axis_from_cell(cells[0])
+        score = _SCORE_CELL.match(cells[1])
+        if axis and score and 1 <= int(score.group(1)) <= 5:
+            return axis, int(score.group(1))
+        return None
+
+    for axis, label in AXIS_DEFS:
+        patterns = (
+            re.compile(r"\b{}\b".format(re.escape(label)), re.IGNORECASE),
+            re.compile(r"(?<![A-Za-z]){}(?![A-Za-z])".format(axis)),
+        )
+        for pattern in patterns:
+            match = pattern.search(line)
+            if not match:
+                continue
+            segment = line[match.end():match.end() + 80]
+            score = _INLINE_SCORE.search(segment)
+            if score and 1 <= int(score.group(1)) <= 5:
+                return axis, int(score.group(1))
+    return None
+
+
+def sharp_axes(text: str) -> dict[str, int]:
+    """{eje: puntaje} declarados en el reporte; la primera aparicion gana."""
+    axes: dict[str, int] = {}
+    for line in text.splitlines():
+        found = _axis_in_line(line)
+        if found and found[0] not in axes:
+            axes[found[0]] = found[1]
+    return axes
+
+
+def missing_axes(text: str) -> list[str]:
+    found = sharp_axes(text)
+    return [axis for axis, _ in AXIS_DEFS if axis not in found]
 
 
 def expected_verdict(total: int) -> str:
@@ -105,26 +216,28 @@ def find_report(artifact: str) -> Path | None:
     return sorted(named)[-1] if named else None
 
 
-def verify_one(rec: dict) -> list[dict]:
+def verify_one(rec: dict) -> tuple[list[dict], str | None]:
+    """Devuelve (problemas, nota_legacy). La nota no invalida el veredicto."""
     artifact = rec.get("artifact", "")
     problems: list[dict] = []
+    legacy: str | None = None
 
     def fail(check: str, detail: str) -> None:
         problems.append({"artifact": artifact, "check": check, "detail": detail})
 
     if not artifact:
         fail("fila", "la fila del ledger no tiene 'artifact'")
-        return problems
+        return problems, legacy
 
     if rec.get("status") == "invalidated":
         if not rec.get("invalidation_reason"):
             fail("invalidacion", "la fila esta invalidada pero no dice por que")
-        return problems
+        return problems, legacy
 
     report = find_report(artifact)
     if report is None:
         fail("reporte", f"no existe ningun docs/reviews/*.md para '{artifact}'")
-        return problems
+        return problems, legacy
 
     text = report.read_text(encoding="utf-8")
     scores = rec.get("scores") or {}
@@ -147,6 +260,17 @@ def verify_one(rec: dict) -> list[dict]:
     if len(cites) < 5:
         fail("citas", f"solo {len(cites)} citas con ruta:línea (se exigen 5)")
 
+    missing = missing_axes(text)
+    if missing:
+        if artifact in LEGACY_WITHOUT_TABLE:
+            legacy = (
+                "reporte sin tabla SHARP completa (faltan: {}); artefacto previo "
+                "al 2026-11-19, se informa y no invalida".format(", ".join(missing))
+            )
+        else:
+            fail("sharp", "reporte sin tabla SHARP (faltan ejes: {})".format(
+                ", ".join(missing)))
+
     if not any(w in text for w in EVIDENCE_WORDS):
         fail("evidencia", "el reporte no menciona ningun comando verificable ni estado del hunter")
 
@@ -154,7 +278,7 @@ def verify_one(rec: dict) -> list[dict]:
     if ph:
         fail("placeholder", f"el reporte tiene texto sin resolver: '{ph.group(0)}'")
 
-    return problems
+    return problems, legacy
 
 
 def main() -> int:
@@ -174,8 +298,12 @@ def main() -> int:
             return 1
 
     problems: list[dict] = []
+    legacy_notes: list[dict] = []
     for rec in valid:
-        problems.extend(verify_one(rec))
+        found, legacy = verify_one(rec)
+        problems.extend(found)
+        if legacy:
+            legacy_notes.append({"artifact": rec.get("artifact", ""), "detail": legacy})
     for rec in invalidated:
         if not rec.get("invalidation_reason"):
             problems.append({"artifact": rec.get("artifact", ""), "check": "invalidacion",
@@ -183,16 +311,21 @@ def main() -> int:
 
     if args.json:
         print(json.dumps({"checked": len(valid), "invalidated": len(invalidated),
-                          "problems": problems}, ensure_ascii=False, indent=2))
+                          "problems": problems, "legacy": legacy_notes},
+                         ensure_ascii=False, indent=2))
     else:
         for p in problems:
             print(f"ROJO  {p['artifact']}: {p['check']} - {p['detail']}")
+        for note in legacy_notes:
+            print(f"LEGACY  {note['artifact']}: {note['detail']}")
         for rec in invalidated:
             print(f"ANUL  {rec.get('artifact', '')}: invalidado - {rec.get('invalidation_reason', '')}")
         ok = len(valid) - len({p['artifact'] for p in problems})
         extra = f", {len(invalidated)} anulado(s)" if invalidated else ""
         print("-" * 100)
         print(f"GLOBAL={'aprobado' if not problems else 'veto'}  ({ok}/{len(valid)} veredictos reales validos con respaldo{extra})")
+        if legacy_notes:
+            print(f"LEGACY  {len(legacy_notes)} veredicto(s) previo(s) al 2026-11-19 sin tabla SHARP completa: informativo, no invalidan")
     return 0 if not problems else 1
 
 
