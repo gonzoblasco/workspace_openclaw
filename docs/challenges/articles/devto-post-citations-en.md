@@ -118,4 +118,4 @@ Saying this doesn't weaken the project. It makes it credible. A repo that admits
 
 ---
 
-*Project: [localdoc-agent](https://github.com/gonzoblasco/localdoc-agent). Sibling project, about people instead of contracts: [memoria-oral](https://github.com/gonzoblasco/memoria-oral).*
+*Project: [localdoc-agent](https://github.com/gonzoblasco/localdoc-agent). Sibling project, about people instead of contracts: [Field Notes](https://github.com/gonzoblasco/field-notes).*

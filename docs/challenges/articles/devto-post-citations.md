@@ -130,7 +130,7 @@ This started as a design exercise for the **DEV.to Hacktoberfest 2026 Weekend Ch
 ## Links
 
 - **Code:** [github.com/gonzoblasco/localdoc-agent](https://github.com/gonzoblasco/localdoc-agent) (MIT)
-- **Sibling project**, about people instead of contracts: [github.com/gonzoblasco/memoria-oral](https://github.com/gonzoblasco/memoria-oral)
-- **The honest parts:** the *What went wrong* section of the README, `eval/results.json`, and the privacy check in `memoria-oral`
+- **Sibling project**, about people instead of contracts: [github.com/gonzoblasco/field-notes](https://github.com/gonzoblasco/field-notes)
+- **The honest parts:** the *What went wrong* section of the README, `eval/results.json`, and the privacy check in Field Notes
 
 If you build something similar, the one thing I'd steal is not the code: it's the habit of making the verifier independent from the thing being verified.

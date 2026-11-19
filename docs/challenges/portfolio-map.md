@@ -4,10 +4,10 @@ Two public, local-first projects. They share a thesis: **the model is not the pr
 
 | Repo | What it proves | Verify in 5 minutes |
 |---|---|---|
-| [memoria-oral](https://github.com/gonzoblasco/memoria-oral) | Local speech intelligence with an ethical frame | `uv run pytest -q` (8 tests), then its privacy check (0 sockets) |
+| [Field Notes](https://github.com/gonzoblasco/field-notes) | Local speech intelligence with an ethical frame | `uv run pytest -q` (8 tests), then its privacy check (0 sockets) |
 | [localdoc-agent](https://github.com/gonzoblasco/localdoc-agent) | Retrieval with citations that cannot be hallucinated | `uv run pytest -q` (10 tests), then `eval/results.json` in that repo (18/18) |
 
-## memoria-oral
+## Field Notes
 
 **Problem:** family voices are irrecuperable, and commercial transcription sends them to subprocessors in other jurisdictions.
 

@@ -120,4 +120,4 @@ Decir esto no debilita el proyecto. Lo hace creíble. Un repo que admite sus lí
 
 ---
 
-*Proyecto: [localdoc-agent](https://github.com/gonzoblasco/localdoc-agent). Proyecto hermano, sobre las personas en vez de los contratos: [memoria-oral](https://github.com/gonzoblasco/memoria-oral).*
+*Proyecto: [localdoc-agent](https://github.com/gonzoblasco/localdoc-agent). Proyecto hermano, sobre las personas en vez de los contratos: [Field Notes](https://github.com/gonzoblasco/field-notes).*
