@@ -56,7 +56,7 @@ gh auth login
 
 `bin/github-mcp-launch` resuelve el token en este orden: `~/.openclaw/secrets/github-token` (PAT fine-grained, necesario para escribir en orgs con OAuth App restrictions) → `gh auth token` (OAuth, se auto-renueva). Sin ninguno de los dos, el launcher falla con un error explícito.
 
-El 2026-11-18 se revocaron los PAT classic y el MCP quedó en 401; se resolvió primero con el OAuth de `gh` y el 2026-11-19 se provisionó un PAT fine-grained en `secrets/github-token`, que ahora es el primario. Alcanza 81 repos, con push en los propios y pull en shadcn-ui/ui, radix-ui/primitives, TanStack/router, meta/astryx, vercel/ai. No incluye la permisología de Notifications (403).
+El 2026-11-18 se revocaron los PAT classic y el MCP quedó en 401; se resolvió primero con el OAuth de `gh` y el 2026-11-19 se provisionó un PAT fine-grained en `secrets/github-token`, que ahora es el primario. Alcanza 81 repos, con push en los propios y pull en shadcn-ui/ui, radix-ui/primitives, TanStack/router, meta/astryx, vercel/ai. No puede leer `/notifications` (403): la API de notificaciones solo acepta PAT **classic** con scope `notifications`; los fine-grained no tienen ese permiso, no es una casilla olvidada.
 
 ### ⚠️ OAuth token write-block in orgs with OAuth App restrictions
 
