@@ -197,6 +197,11 @@ pipeline (ADR-088) o del check de milestone.
 
 **Señal de listo:** 1+ solicitud/mes originada en otro agente + veredicto incorporado como gate.
 
+**Estado 2026-11-19:** la segunda mitad esta cumplida (`scripts/check-critic-gate.py` + step
+'Critic verdict gate' en CI, verificado en el run 44564351222). La primera **no se puede cumplir
+hoy**: exige un mes de demanda real de otros roles. El paso queda `pending` a proposito; marcarlo
+cerrado seria el verde falso que este kit existe para impedir.
+
 ---
 
 ## 5. Lo que NO entra (filtro de Parsimony)
