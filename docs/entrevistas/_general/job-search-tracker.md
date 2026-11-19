@@ -6,6 +6,11 @@
 >
 > **Mercor/Project Odin (28/10): AO EXCEPCIÓN A LA REGLA DE RITMO.** No salió del radar ni de un postulado: entró por un **mail directo** de Chloe Chee (Growth team de Mercor, persona verificada) y Gonzo se anotó en el formulario de interés ese mismo día. Es el único proceso con **entrevista con IA de 3 minutos** en vez de con recruiter humano, y el único cuyo pago **depende del inglés hablado** en el momento exacto. Por eso va aparte, con su propia carpeta: `docs/entrevistas/mercor-project-odin/`.
 >
+> **Regla dura de seguridad (2026-11-19):** antes de una contratación formal —oferta firmada o
+> contrato— **no se entrega ningún dato bancario**: ni banco, ni CBU/CVU, ni cuenta en el exterior,
+> ni identidad adicional, ni documentación fiscal. Un proceso que lo pide en esa etapa se cierra,
+> aunque el mail sea legítimo y la empresa exista. Caso testigo: Mercor/Project Odin, 19/11.
+>
 > Regla de trabajo: cualquier proceso con +10 días sin respuesta humana real se cierra. Energía de follow-up: solo si ellos escriben. No se insiste más de una vez por proceso.
 
 ## Mercor - Project Odin (Software Developers, Must own MacBook) - INICIADO 28/10/2026
