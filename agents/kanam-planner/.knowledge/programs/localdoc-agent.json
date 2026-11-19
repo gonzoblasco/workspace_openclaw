@@ -1,5 +1,5 @@
 {
-  "slug": "agente-local-lucia",
+  "slug": "localdoc-agent",
   "title": "Agente local para Lucía",
   "brief": "Construir un agente local offline que permita a Lucía, fotógrafa freelance, consultar sus contratos y facturas con citas exactas y generar recordatorios de pago en Markdown para Obsidian. Utiliza Ollama con modelos Gemma 4 12B y Qwen3.5‑9B, embeddings BGE‑M3, y una base SQLite con FTS5 y sqlite‑vec. Ingesta PDFs de texto, chunking por cláusula, búsqueda híbrida BM25 + vectores con RRF. Agente smolagents con tool‑calling devuelve JSON con respuesta, citas y confianza, verifica determinísticamente. UI FastAPI + HTMX de una sola pantalla con drag‑and‑drop, chat, panel de fuentes, panel de borrador, badge local y botón \"Delete everything\". Incluye evaluación de 18 preguntas, empaquetado uv + Makefile + run.command. Sin OCR, voz, CSV, Docker ni nube, privacidad garantizada y botón de borrado total.",
   "steps": [

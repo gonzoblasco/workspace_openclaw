@@ -38,7 +38,7 @@
 4. **La verificación determinística convierte una promesa en una garantía.** El substring check de citas es el ejemplo: se puede reproducir.
 5. **Lo "local" hay que demostrarlo.** 0 requests salientes no es un claim, es una prueba con el Wi-Fi apagado.
 
-**Artefacto real:** `projects/localdoc-agent/` — 7 pasos, 10 tests, eval 18/18.
+**Artefacto real:** `projects/localdoc-agent/` — 7 pasos, 25 tests, eval 18/18.
 
 ---
 

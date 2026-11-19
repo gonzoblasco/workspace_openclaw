@@ -3,7 +3,7 @@
 **Fecha:** 2026-11-19
 **Estado de partida (verificado, no de memoria):**
 - `field-notes`: 8 tests verdes, HEAD `dcf6617`, repo público `gonzoblasco/field-notes`.
-- `localdoc-agent` (directorio `agente-local-amigo`): 25 tests verdes, eval 18/18, HEAD `f844ba2`, repo público `gonzoblasco/localdoc-agent`.
+- `localdoc-agent` (directorio `localdoc-agent` desde la tarea 2): 25 tests verdes, eval 18/18, repo público `gonzoblasco/localdoc-agent`.
 - `a11y-portfolio`: 18 artículos, ensayo bilingüe con `hreflang` + `x-default`, página `/profile/`, HEAD `8a5f983`.
 - Post DEV.to id `5068920` con `canonical_url` al blog.
 - `AGENTS.md` 18.847/20.000; `MEMORY.md` 19.997/20.000.
@@ -28,7 +28,7 @@
 
 ---
 
-## Tarea 2 — Cerrar la deuda de nombres entre repo y producto
+## Tarea 2 — Cerrar la deuda de nombres entre repo y producto  ✅ HECHA 2026-11-19
 
 **Por qué:** el repo `localdoc-agent` vive en el directorio `agente-local-amigo`. Cualquier agente que lo busque por nombre falla, y a mí ya me pasó dos veces esta sesión.
 
