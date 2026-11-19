@@ -54,9 +54,9 @@ gh auth status
 gh auth login
 ```
 
-`bin/github-mcp-launch` resuelve el token en este orden: `gh auth token` (OAuth, se auto-renueva) → `~/.openclaw/secrets/github-token` (PAT, solo si gh no tiene sesión). Sin ninguno de los dos, el launcher falla con un error explícito.
+`bin/github-mcp-launch` resuelve el token en este orden: `~/.openclaw/secrets/github-token` (PAT fine-grained, necesario para escribir en orgs con OAuth App restrictions) → `gh auth token` (OAuth, se auto-renueva). Sin ninguno de los dos, el launcher falla con un error explícito.
 
-El 2026-11-18 se revocaron los PAT classic y el 401 del MCP se resolvió con el OAuth de `gh`; el archivo del PAT quedó vacío/ausente a propósito. Regenerarlo (fine-grained) solo si hace falta escribir en orgs con OAuth App restrictions (ver el bloque de abajo).
+El 2026-11-18 se revocaron los PAT classic y el MCP quedó en 401; se resolvió primero con el OAuth de `gh` y el 2026-11-19 se provisionó un PAT fine-grained en `secrets/github-token`, que ahora es el primario. Alcanza 81 repos, con push en los propios y pull en shadcn-ui/ui, radix-ui/primitives, TanStack/router, meta/astryx, vercel/ai. No incluye la permisología de Notifications (403).
 
 ### ⚠️ OAuth token write-block in orgs with OAuth App restrictions
 
