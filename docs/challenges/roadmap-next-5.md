@@ -71,7 +71,7 @@
 
 ---
 
-## Tarea 4 — Bilingüe de verdad en el blog: el ensayo es una pieza, faltan las demás
+## Tarea 4 — Bilingüe de verdad en el blog: el ensayo es una pieza, faltan las demás  ✅ HECHA 2026-11-19
 
 **Por qué:** el generador soporta pares y `hreflang`, pero hay **un solo par**. Un sitio bilingüe con un artículo en dos idiomas es una demostración, no un sitio.
 
@@ -86,7 +86,12 @@
 - **P4.2 El feed Atom se duplica.** Un par son dos entradas con el mismo contenido. El feed tiene que emitir **solo el original** de cada par.
 - **P4.3 Un par roto rompe el build.** Ya está cubierto: el generador falla si hay dos del mismo idioma o más de dos.
 
-**Criterio de cierre:** 3 pares nuevos, `hreflang` verificado con `grep` en los 6 HTML, feed sin duplicados.
+**Resultado real (2026-11-19):**
+- 3 pares nuevos: `quieter-announcement`, `bug-jsdom-could-not-see`, `aria-orientation-role-owners`. Reescritos en español, no traducidos: cambia el ritmo y el arranque de cada sección.
+- `hreflang` con `en`, `es` y `x-default` en las 6 páginas; `x-default` apunta al original inglés. Verificado en local y **en el sitio en vivo** (HTTP 200).
+- El feed pasó de 19 a **15 entradas**: emite solo el original de cada par, no la traducción.
+- El índice marca `También en español` en los 4 originales que tienen par; antes solo marcaba `En español` para las traducciones, así que un lector en inglés nunca sabía que existía una versión suya.
+- **Faltaba el caso peor (P4.3 estaba incompleto):** un par con una sola mitad no rompía nada. Si se tipea mal la clave en un lado, el `hreflang` y el switch desaparecían en silencio y el build quedaba verde. Ahora `build.ts` falla con `pair "x" has only one article`. Probado rompiendo el par a propósito y restaurándolo.
 
 ---
 
