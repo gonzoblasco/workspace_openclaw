@@ -5,7 +5,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-06T21:00:17+00:00",
-  "updated_at": "2026-11-19T16:16:56+00:00",
+  "updated_at": "2026-11-19T16:20:46+00:00",
   "gates": [
     "critic"
   ],
@@ -274,7 +274,7 @@
       "task": "T5.2 - Cablear el veredicto del Critic como gate del pipeline",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "Un run del pipeline sin veredicto del Critic falla; con veredicto pasa; el check queda en scripts/check-pipeline-enforcement.py o en la skill del pipeline.",
       "depends_on": [
         10,
@@ -284,14 +284,16 @@
       "write_paths": [
         "scripts/check-pipeline-enforcement.py"
       ],
-      "evidence": [],
+      "evidence": [
+        "Gate cableado: scripts/check-critic-gate.py (exit 0 PASS / 3 VETO / 4 MISSING / 2 ERROR, 17 tests) + step 'Critic verdict gate' en skills-ci.yml corriendo --all. Verificado por el CORE: r2 y T4.2 exit 0, T4.1 base exit 3 (VETO historico, match exacto por slug sin herencia), inexistente exit 4, --all exit 0 con 5 aprobados y 4 vetados historicos."
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:18+00:00",
-      "updated_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-19T16:20:46+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-19T16:20:46+00:00",
       "session_ref": null
     },
     {

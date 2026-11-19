@@ -121,6 +121,17 @@ jobs:
           echo "critic-kit: hay checks rojos fuera del unico dependiente de la maquina." >&2
           exit 1
 
+      # Gate del veredicto (T5.2): el veredicto no se cierra hasta que existe su fila,
+      # su reporte con >=5 citas `ruta:linea` con archivo real y un verdict vigente.
+      # `--all` barre los artifacts del ledger; falla (exit 4) si alguno carece de
+      # respaldo. Un VETO vigente se informa y se cuenta, no rompe el repo: el criterio
+      # del programa es "sin veredicto falla, con veredicto pasa". El gate duro por
+      # artifact (`check-critic-gate.py <slug>`, exit 3 en VETO) es lo que consume quien
+      # necesita aprobacion explicita. Sin este paso, verify-verdict.py solo corre dentro
+      # del step del kit y un reporte borrado no lo ve nadie.
+      - name: Critic verdict gate
+        run: python3 scripts/check-critic-gate.py --all
+
       # Design system (ADR-095): regenerar el CSS de tokens y verificar contraste
       # WCAG. El dist/ esta gitignored (generado), asi que CI lo construye.
       - name: Design tokens (build + contrast gate)
