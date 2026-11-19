@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-19 13:36 GMT-3
+**Fecha:** 2026-11-19 13:54 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-19 13:54
+Cierre de la segunda mitad: causa raiz de los gates fallidos y cambio de modelo del juez. (1) Diagnostico por experimento controlado: mismo gate T4.3, mismo brief, un solo cambio (modelo). gpt-oss:120b-cloud habia fallado 4 de 4 (F29 ORO inventado, F30 no supo invocar la herramienta, F31 evidencia elidida, F34 reporte declarado y no escrito). deepseek-v4.1-flash completo el gate: reporte de 17.7 KB, fila en el ledger, verify-verdict 12/12, y encontro 4 defectos reales en el artefacto. Documentado en agents/kanam-critic/docs/JUDGE-RELIABILITY.md. (2) ADR-117 escrito y aceptado: enmienda la fila kanam-critic de ADR-090, el juez pasa a deepseek con fallback gemma4:12b-mlx. El ADR deja explicito que NO cambia el pipeline A/B (A sigue gpt-oss) y que la asignacion no esta vigente hasta que config + DB + bloque coincidan. (3) Aplicacion en tres capas. OPS dictamino NO APLICA y aplico igual la capa 1 (openclaw.json), y al tocar model_by_agent corrompio el setting: el valor quedo literalmente en 'model_pipeline', con dos timestamps. Si se aplicaba el bloque, el mapa de modelos por agente se destruia. Se recupero el valor desde git (memory.db esta versionado), se recompuso con solo la palabra del critic cambiada, se aplico con managed-blocks.py y se verifico segmento por segmento: el diff es una sola frase. (4) Un gate de claims (models.critic-primary) freno el commit por tener hardcodeado el modelo viejo; se actualizo citando ADR-117, no por conveniencia. (5) Cuatro arreglos del kit que quedaban pendientes: emit-verdict rechaza evidencia elidida con lista explicita de frases (exit 2, ledger con sha256 intacto); verify-verdict exige tabla SHARP con lista explicita de legacy previos al 2026-11-19; format_sharp_report valida la etiqueta contra la matriz SHARP; 5 tests nuevos de VETO y ORO. (6) Tasa de absorcion del ledger: de 22.6% a 40% (14/35), cada friccion cerrada con su fix_url.
 
 ### 2026-11-19 13:36
 Sesion de gobierno y verdad de datos, sin escribir codigo de producto. Cuatro frentes cerrados y tres errores propios corregidos antes de que salieran. (1) AUTOMATIONS: el job pipeline-queue-watcher fallaba por timeout del trigger-gate (presupuesto fijo de 30s documentado en automation/cron-jobs/schedules.md; corridas medidas de 41.8s y 108.8s). Convertido a payload command con scripts/pipeline-queue-watch.sh: 105ms, lastRunStatus ok, silencio via NO_REPLY. Ademas: dos jobs watch-devto-trends duplicados (creados el 17/11 con 8 minutos de diferencia, mismo script) quedaron en uno; gateway-channels-refresh recibio bestEffort para que su entrega bloqueada no genere alertas. (2) ROADMAP revisado a 41 dias: el cuerpo de 2.3 declaraba 'todos cerrados' cuando el tracker tenia 3 procesos vivos desde el 19/10 (mismo error que el falso verde de octubre, invertido); 1.1 bajo a amarillo porque pipeline-track.sh status devuelve vacio; se agrego la capa 0.4 Coexistencia OpenClaw+Antigravity que no existia; siete numeros stale reemplazados por medicion. (3) NORTH revisado: tres afirmaciones falsas (OnWheels 'falta solo el chat RAG' cuando hubo reset a greenfield el 29/10 y F0 no arranco; kanam-os listado como frente activo sin copia local desde el 29/10; busqueda laboral 'dormante' con 3 procesos vivos). CPACC retirado por falta de fondos: T1 queda con un solo criterio de salida. (4) PLAN-DE-MARCHA.md creado: tres cubetas (obra 50 / ingreso 30 / sistema 20 con piso y techo), piso funcional de 30 min semanales, secuencia de 6 semanas hasta el 31/12, orden de sacrificio y contingencias; paso por red-team del Planner y se le agregaron reparto de roles y contingencias. (5) VERDAD DE CV: de 18 claims sin respaldo se auditaron 22 referencias contra GitHub (autoria, reviews y comentarios). Tres no tenian NINGUNA participacion de Gonzo (ariakit 6810, hermes-agent 130041, astryx 5332) y dos numeros estaban mal (ibm-products 9868 es un issue ajeno; el analisis atribuido a 9866 vive en 9865). Se agrego career-facts.md seccion 5.5 con la clasificacion en cuatro tablas y una lista de referencias no citables; los CVs y sus HTML quedaron alineados; las cinco entradas de universidad salieron por la regla dura del 2026-11-04. (6) PERFIL DEL BLOG: a11y-portfolio/profile no mencionaba Preflight ni kanam-fixer y Super7ui/Minutentag tenian un solo bullet cada uno. Reescrito desde career-facts y publicado: 4/4/4/3 bullets, titulos canonicos, verificado en vivo con curl.
@@ -39,10 +42,11 @@ Sesion larga de gobierno + ejecucion: roadmap de 5 tareas, cerrado entero.
 ### 2026-11-19 02:02
 Verificacion definitiva del OAuth de gh en orgs de terceros: comentarios reales en shadcn-ui#11757 (7000227192) y meta/astryx#4652 (7000228285) publicados con exito. OAuth-first confirmado con evidencia, no solo probes.
 
-### 2026-11-19 02:02
-Verificacion definitiva del OAuth de gh en orgs de terceros: comentarios reales en shadcn-ui#11757 (7000227192) y meta/astryx#4652 (7000228285) publicados con exito, confirmando que OAuth-first es correcto y que el fine-grained no puede comentar en repos ajenos.
-
 ## Estado actual
+
+Programa critic-v0.3 en 11/12 (v1.0 pending: exige un mes de demanda de otros roles). Juez en deepseek (ADR-117) aplicado en config, DB, bloque y claim. Kit: 18/18, 65 tests, gate de veredicto en CI, ledger 14 absorbidas / 21 abiertas (casi todas de autores ajenos).
+
+### Estado previo (heredado)
 
 Sistema verde: check-bootstrap-budget OK (5 archivos bajo cap), check-refs OK 182 rutas, check-adr-integrity OK 68 ADRs, check-single-source OK, check-cv-facts OK 15 CVs, automations sin jobs en error. OnWheels F0 sigue sin iniciar: bloqueada por dos decisiones de Gonzo (aceptar el diseno PII minimo y registrar la app central en el panel de developers de MeLi). Plan de marcha vigente hasta el 31/12.
 
@@ -221,6 +225,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1) Dejar correr el mes y medir demanda de otros roles para v1.0. 2) Mergear PR #1 (rama feat/critic-format-sharp-report). 3) Revisar docs/OPS-DISPATCH.md: un dictamen NO APLICA no puede convivir con escrituras, y los valores multisegmento se reescriben desde su fuente. 4) Las 21 fricciones abiertas son de autores ajenos: no son trabajo del Critic.
+
+### Pendientes heredados (sin cambios)
 
 1) Gonzo: registrar la app central de OnWheels en el panel de developers de MeLi y pasar Client ID + permisos; aceptar o rechazar el diseno PII minimo (guardar question_id/item_id/texto/estado, nunca nombre ni from.id del comprador, exhibir solo en la sesion del seller dueno, TTL, rotular respuestas IA). Con eso corren 0.3 a 0.6 y se confirma api_version=4. 2) Postular a Mercor: cuenta en work.mercor.com, subir el PDF, Practice Interview (el CV ya esta listo). 3) Si el blog se va a seguir tocando, clonar a11y-portfolio en projects/ de forma estable en vez de clones descartables. 4) Deuda del plan: .knowledge sin respaldo en preflight, mercor-project-odin y SDXL; dedupe de contributions; 2 de 12 proyectos con pre-commit hook; radar de oportunidades OSS con 24 dias. 5) gateway-channels-refresh deberia ser delivery mode none (solo por UI; el CLI no expone la bandera).
 
@@ -447,6 +455,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 1) Verificar contra GitHub las 19 referencias de CVs historicos que no estan en el corpus y agregarlas a career-facts 5.2.1. 2) Limpiar las carreras universitarias de los 5 CVs historicos (EIT/HTC, Mercor, Sol, TEMPO) - son de otras sesiones. 3) Confirmar con Gonzo que el iPad quedo operativo con ws://100.126.255.95:18789. 4) Watchdog de canales: el timeout del trigger sigue sin resolver si se repite.
 
 ## Decisiones y contexto que no debe perderse
+
+- El modelo del juez era la causa dominante, no la forma de la tarea: se cambio con evidencia y con ADR, no con un patch de config. Cuando un gate es invalido se cierra por verificacion del CORE con nota explicita, nunca con veredicto provisional. Las reglas nuevas del kit no invalidan historia: los veredictos previos sin tabla quedan LEGACY informativo.
+
+### Heredadas (sin cambios)
 
 - Fallback cubre fallas, no lentitud (ADR-112, timeout 900s, Gemma local). CPACC retirado por falta de fondos, reapertura al primer ingreso real. Coexistencia OpenClaw+Antigravity en vez de migracion. El ROADMAP no es backlog: las tareas fechan en memory.db. Un numero de PR en un CV se cita por autoria, por review formal o por comentario propio, y las tres cosas se escriben distinto. Un auto-reporte de subagente no es un hecho: se verifica contra la fuente.
 
