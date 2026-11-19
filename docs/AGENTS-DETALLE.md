@@ -161,3 +161,23 @@ Para proyectos con build step (Vite, Next.js, etc.):
 4. **Preferir el pre-commit hook para enforcear esto.** Orden del hook: lint → test → build. Si el hook se saltea (`SKIP_SIMPLE_GIT_HOOKS=1`), correr la misma secuencia manualmente.
 
 Rationale: un build que falla en `main` bloquea el deploy y quema confianza.
+
+## Tools — detalle
+
+Resumen operativo que vive en `AGENTS.md` (subagentes solo reciben ese archivo). Acá va el detalle que no entra ahí.
+
+- **Scripts clave:** `scripts/complexity-scorer.sh` (T-score antes de spawnear agentes), `scripts/pipeline-track.sh` (estado durable del pipeline).
+
+
+## Verificar la palabra de Gonzo contra el repo, no contra mi lectura (detalle ampliado)
+
+La regla vive en `AGENTS.md` §0. Acá quedan los casos que la motivaron.
+
+Dos casos del 2026-10-27, el mismo error dos veces en una tarde:
+
+- Leí `skills/job-application/SKILL.md`, que dice *"deja el submit al humano"*, y afirmé que el flujo de postulaciones **nunca enviaba**. El repo tenía `6c24187b9d` *"cierre de la tanda - las TRES postulaciones confirmadas"*: Mural, Mercado Pago y RYZ, **confirmadas por el servidor**. Lo correcto era "envía con tu OK", no "no envía".
+- Afirmé que el MCP de browser-use no podía subir archivos. Cierto, pero por el motivo equivocado: no era una limitación del diseño, era que el tool no existe en las 16 del server.
+
+El mecanismo del error es siempre el mismo: **generalizo una línea de un documento a un hecho del mundo.** La regla de `memory/user-profile.md` "verificar antes de descartar" (2026-09-13) ya lo cubría; lo que faltaba era el caso de "verificar antes de *confirmar*", que es el que se repite.
+
+Corolario operativo: cuando Gonzo dice "ya lo hemos hecho", la respuesta correcta es **buscar el commit**, no argumentar. Si aparece, se corrige el registro y se sigue.

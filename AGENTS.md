@@ -32,18 +32,11 @@ El caso testigo es el que nombró Gonzo: **un CV con una verdad distinta por pos
 
 ### Verificar la palabra de Gonzo contra el repo, no contra mi lectura
 
-**Cuando Gonzo afirma un hecho sobre su propio trabajo, se verifica en el repo ANTES de responder.** No se infiere de la lectura de un documento: un documento puede describir una *intención* y el repo mostrar lo que *ocurrió*.
+**Cuando Gonzo afirma un hecho sobre su propio trabajo, se verifica en el repo ANTES de responder.** Un documento puede describir una *intención*; el repo muestra lo que *ocurrió*.
 
-Regla: **"el SKILL.md dice que no envía" no es "no envió".** Hay que buscar el commit, la evidencia y el artefacto.
+Regla: **"el SKILL.md dice que no envía" no es "no envió".** Se busca el commit, la evidencia y el artefacto.
 
-Dos casos del 2026-10-27, el mismo error dos veces en una tarde:
-
-- Leí `skills/job-application/SKILL.md`, que dice *"deja el submit al humano"*, y afirmé que el flujo de postulaciones **nunca enviaba**. El repo tenía `6c24187b9d` *"cierre de la tanda - las TRES postulaciones confirmadas"*: Mural, Mercado Pago y RYZ, **confirmadas por el servidor**. Lo correcto era "envía con tu OK", no "no envía".
-- Afirmé que el MCP de browser-use no podía subir archivos. Cierto, pero por el motivo equivocado: no era una limitación del diseño, era que el tool no existe en las 16 del server.
-
-El mecanismo del error es siempre el mismo: **generalizo una línea de un documento a un hecho del mundo.** La regla de `memory/user-profile.md` "verificar antes de descartar" (2026-09-13) ya lo cubría; lo que faltaba era el caso de "verificar antes de *confirmar*", que es el que se repite.
-
-Corolario operativo: cuando Gonzo dice "ya lo hemos hecho", la respuesta correcta es **buscar el commit**, no argumentar. Si aparece, se corrige el registro y se sigue.
+Corolario: ante "ya lo hemos hecho", se busca el commit; no se argumenta. Casos, mecanismo del error y detalle: `docs/AGENTS-DETALLE.md`.
 
 ---
 
@@ -184,8 +177,8 @@ El entorno (máquinas, modelos, scripts, memoria, red) vive en **`docs/SETUP.md`
 - **Pipeline A/B/C (ADR-077/ADR-088/ADR-089):** al delegar, el CORE spawnea TRES agentes: **A escribe y corrige** con `gpt-oss:120b-cloud`, **B solo revisa** con `deepseek-v4.1-flash:cloud`, **C escribe la red de tests de regresión** con `minimax-m3.1-flash:cloud`. **Pre-filtro** `gemma4:cloud` corre primero (triage ~1s) pero **NO autoriza solo**; el gate es `scripts/check-pipeline-enforcement.py`.
 <!-- END MANAGED:pipeline-abc -->
 - **Memoria:** `memory/memory.db` es la fuente de verdad (tablas `daily_notes`, `todos`, `inbox`, `contributions`); los `.md` son vistas regenerables.
-- **Scripts clave:** `scripts/complexity-scorer.sh` (T-score antes de spawnear agentes), `scripts/pipeline-track.sh` (estado durable del pipeline).
 - **Máquinas:** solo la **Mac Mini** (corre el gateway; el workspace vive acá, ADR-073). `git pull --rebase` antes de cada push.
+- **Scripts clave:** detalle en `docs/AGENTS-DETALLE.md` §Tools.
 
 ## Desarrollo
 
