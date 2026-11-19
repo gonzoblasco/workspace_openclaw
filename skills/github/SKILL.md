@@ -44,8 +44,8 @@ Use the wrapper `~/.openclaw/workspace/skills/github/scripts/github-mcp.py` for:
 ## Requirements
 
 - `gh` CLI authenticated (`gh auth status`)
-- GitHub Personal Access Token stored in `~/.openclaw/secrets/github-token`
 - Official GitHub MCP binary at `~/.openclaw/bin/github-mcp`
+- *(opcional)* PAT fine-grained en `~/.openclaw/secrets/github-token`, solo para escribir en orgs con OAuth App restrictions
 
 ## Auth
 
@@ -54,7 +54,9 @@ gh auth status
 gh auth login
 ```
 
-The MCP wrapper reads `~/.openclaw/secrets/github-token` automatically.
+`bin/github-mcp-launch` resuelve el token en este orden: `gh auth token` (OAuth, se auto-renueva) → `~/.openclaw/secrets/github-token` (PAT, solo si gh no tiene sesión). Sin ninguno de los dos, el launcher falla con un error explícito.
+
+El 2026-11-18 se revocaron los PAT classic y el 401 del MCP se resolvió con el OAuth de `gh`; el archivo del PAT quedó vacío/ausente a propósito. Regenerarlo (fine-grained) solo si hace falta escribir en orgs con OAuth App restrictions (ver el bloque de abajo).
 
 ### ⚠️ OAuth token write-block in orgs with OAuth App restrictions
 
