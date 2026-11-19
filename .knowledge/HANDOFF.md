@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-18 14:55 GMT-3
+**Fecha:** 2026-11-18 22:15 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,11 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-18 22:15
+Cierre de la segunda parte de la sesion: infraestructura del MCP de GitHub y credenciales. (1) Se restauro el binario del MCP oficial github-mcp-server v2.2.0 (Darwin_arm64) en ~/.openclaw/bin/github-mcp via OPS, con dictamen APLICA CON CAMBIOS y limites duros respetados. Verifique la cadena de custodia por mi cuenta porque OPS reporto mal el checksum: el archivo oficial hashea el TARBALL (5e46b05b...), no el binario; tarball contra oficial OK, binario extraido contra instalado OK (11608433...). OPS habia comparado el hash del binario contra el archivo del tarball, que da distinto siempre. Funcional: 53 tools, get_me autentica, list_notifications responde. (2) Se registro el MCP como server del gateway (mcp.servers.github) via config.set, porque openclaw mcp set/add fallan con 'This operation requires exclusive offline state ownership' mientras el gateway corre. Token fuera del config: launcher ~/.openclaw/bin/github-mcp-launch (700) que lee el PAT del archivo 600 y lo exporta. (3) Bug propio encontrado y corregido: el binario necesita el subcomando 'stdio' en args; sin el imprime la ayuda y sale con exit 0, y el gateway lo veia como 'Connection closed'. Corregido con args=[stdio] y verificado con handshake real (starting server version=2.2.0, readOnly=false). (4) Hallazgo de seguridad: el token guardado no era el public_repo pedido sino un PAT con admin:enterprise, admin:org, delete_repo, workflow, user. Se reemplazo por un fine-grained github_pat_ que Gonzo paso por chat. Verificado: identidad gonzoblasco, lectura OK en meta/astryx y shadcn-ui/ui, wrapper OK. PERO la escritura FALLA: 'Resource not accessible by personal access token (addComment)'. Diagnostico: el fine-grained no tiene el repo en su allowlist con escritura (repository access en 'only select' o Issues en Read en vez de Read and write). No se puede distinguir de una aprobacion de org pendiente con el mensaje actual; el mensaje tipico de aprobacion de org es distinto. (5) Se cancelo el comentario de seguimiento en astryx#4652 por pedido de Gonzo; draft borrado, nada publicado. Pendiente critico: el PAT ancho (ghp_) sigue VIVO en la cuenta de GitHub aunque se borro la copia del disco, porque borrar el archivo no lo revoca. Hay que revocarlo en settings/tokens. Y el token vigente es de facto read-only hasta que se corrija su permiso de Issues.
+
+Estado de los hilos al cierre: ariakit#4058 cerrado (fix en 0.4.43); astryx#7871 mergeado en v0.7.12; astryx#4690 abierto y en conflicto, sin comentar por decision; astryx#4652 abierto con nuestra medicion DOM publicada; shadcn#11757 abierto con nuestro comentario publicado.
 
 ### 2026-11-18 14:55
 Auditoria y arreglo de la skill growing-doc-retention: por que contaba como 'menos usada' y que tenia de aprovechable. Conclusion: es una skill de instalacion, no de invocacion (se leyo 2026-10-06 y 2026-10-14); su mecanismo son dos scripts que corren solos, asi que un contador de invocaciones siempre marca cero. Al medirla aparece el hueco real: dreams-rotate.py tenia un solo DREAMS.md hardcodeado cuando ya existian OCHO (raiz + agents/*/). Cuatro diarios de agente (dev, critic, auditor, mind) guardaban septiembre y octubre en el activo y '--check' daba verde porque no los miraba: el modo de falla que la propia skill advierte (gate colgado donde el doc ya no vive). Arreglado: el script enumera instancias, archiva por agente en memory/archive/dreaming/agents/<agente>/, '--check' nombra las desfasadas y '--dry-run' reporta por instancia. Aplicado al workspace: 53 entradas archivadas (dev 21, critic 11, mind 11, auditor 10), 103 activas en 8 diarios, 133 entradas antes y 133 despues, verificado agente por agente contra el backup. La revision B (kanam-critic) encontro dos defectos reales que se corrigieron: D1 el activo se reescribia ANTES que el archivo, asi que un fallo de I/O borraba entradas para siempre con --check verde (reproducido: 34 a 23 en kanam-dev); ahora se persiste el archivo primero, con escritura atomica (tmp + os.replace), error por instancia con exit 2 sin abortar el lote y guarda contra duplicar un bloque en un reintento. D2 el test 9 pasaba por casualidad (!grep sobre un archivo borrado tambien da verde); se cubrio con [ -f ] + marcadores y se verifico por mutacion (borrando el diario del agente fallan 4 tests). 13/13 bats, check-refs 757/757, bootstrap OK, single-source OK. Commit aeae49319d, pusheado (46dfb57c14..aeae49319d) con CI verde en Skill Scripts CI. El push llevo tambien los dos commits del cierre del narrador que estaban en main local.
@@ -29,10 +34,11 @@ Ejecutado el inventario: 142 scripts medidos, distribuidos por referencias (9 co
 
 FALLO GRAVE DE REPORTE: se declaro implementado un bloque managed que no existia. Se guardo una tabla entera como valor del setting scripts_inventory, cuando managed-blocks.py solo genera bloques desde templates hardcodeados en BLOCKS (lineas 118-174) e interpola variables escalares; apply dijo 'al dia' sin escribir nada. El gate del pre-commit llamaba a un --check que devolvia exit 1 permanente. Se uso ADR-113 sin verificar que el 114 ya existia. La auditoria de Gonzo ('auditar y verificar el output anterior') encontro todo esto.
 
-### 2026-11-18 02:32
-ADR-114: pagos sin proveedor obligatorio. Gonzo pidio quitar la restriccion de AGENTS.md que fijaba Stripe como unico proveedor. Mi primera respuesta fue negarme a editar tratandola como regla inmutable; Gonzo corrigio y procedi. ADR-114 supersede ADR-042: la eleccion de proveedor de pagos es por proyecto, con criterio explicito registrado en el ADR de cada producto; Stripe y Mercado Pago son ambos validos; billing_provider es dato, no rama. ADR-042 archivado con git mv y sufijo -archived (exigido por check-adr-supersede), indice actualizado, career-facts corregido. AGENTS.md quedo en 19.889/20.000 tras recortar la linea de Idioma por capa (la edicion lo habia dejado 131 chars sobre el cap). Commit e29bc386c8 local, sin push. Hook bypasseado con --no-verify porque check-adr-integrity falla por ADR-113 de otra sesion (en disco sin fila de indice); SKIP_SIMPLE_GIT_HOOKS no aplica a este hook. docs/CHANGELOG.md tiene 179 lineas ajenas sin stagear: mi entrada esta escrita pero el archivo no se commiteo.
-
 ## Estado actual
+
+MCP de GitHub operativo (binario + server registrado con args stdio). Credencial vigente fine-grained sin permiso de escritura; PAT ancho sin revocar.
+
+### Estado previo (heredado)
 
 dreams-rotate.py cubre los 8 diarios y la rotacion esta al dia (103 activas, 0 desfasadas). Tests 13/13. Commit aeae49319d pusheado, CI verde. Workspace limpio, main == origin/main.
 
@@ -183,6 +189,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1) Revocar el PAT classic ghp_ de hoy en settings/tokens: tiene admin:enterprise y delete_repo y borrar el archivo NO lo revoca. 2) Corregir el fine-grained: repository access con meta/astryx y shadcn-ui/ui, permiso Issues Read and write; si sigue fallando, aprobar el token desde la org. 3) Comentario de seguimiento pendiente en astryx#4652 (opcional, cancelado hoy). 4) Decidir si se borran forks/astryx y forks/astryx-demo con trash.
+
+### Pendientes heredados (sin cambios)
 
 1) OPS: instalar la guarda de forks/astryx con scripts/check-foreign-knowledge.py --install; mientras falte, cualquier commit del workspace la necesita en --no-verify. 2) Opcional: que --check marque como fuera de rotacion un diario nuevo sin marcadores (hoy solo avisa por stderr el script, y el --check no lo ve). 3) Opcional cosmetico: un mes 100% rotado deja un --- colgando en el archivo de historia. 4) Borrar /tmp/dreams-backup-2026-11-18.tar.gz cuando ya no haga falta.
 
@@ -381,6 +391,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 1) Verificar contra GitHub las 19 referencias de CVs historicos que no estan en el corpus y agregarlas a career-facts 5.2.1. 2) Limpiar las carreras universitarias de los 5 CVs historicos (EIT/HTC, Mercor, Sol, TEMPO) - son de otras sesiones. 3) Confirmar con Gonzo que el iPad quedo operativo con ws://100.126.255.95:18789. 4) Watchdog de canales: el timeout del trigger sigue sin resolver si se repite.
 
 ## Decisiones y contexto que no debe perderse
+
+- Credencial de escritura: PAT en archivo 600 + launcher 700, nunca en openclaw.json. El binario del github-mcp-server necesita 'stdio' explicito en args. Los checksums oficiales hashean el tarball, no el binario: la cadena de custodia se verifica en dos pasos. Lectura y escritura son permisos distintos: un token que lee las dos orgs puede no escribir en ninguna, y el mensaje de error no distingue allowlist de aprobacion de org.
+
+### Heredadas (sin cambios)
 
 - La skill growing-doc-retention no estaba sin usar: es de instalacion y su valor es el mecanismo corriendo, no la invocacion. La leccion que si sirve es su paso 4 (el gate va donde el doc vive) y su corolario nuevo: cuando un doc pasa a existir N veces (un DREAMS.md por agente), el gate tiene que ENUMERAR las instancias o queda verde sobre archivos que crecen solos. No se abrio ADR: la politica de rotacion mensual es de 2026-10-06; esto es cobertura de la misma politica, no una decision nueva.
 
