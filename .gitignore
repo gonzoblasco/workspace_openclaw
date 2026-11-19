@@ -190,3 +190,6 @@ docs/stories/**/audio/*.json
 
 # Scratch de auditoría (capturas de comparación, se regeneran). Fuente en el reporte de la sesión.
 /tmp-audit/
+
+# Estado local del watcher de cola (se recrea solo en cada check)
+.pipeline-watch.state
