@@ -186,7 +186,7 @@ la tasa mide auto-corrección, que es la métrica más fácil del mundo.
 
 | # | Qué | Eje | Señal de listo |
 |---|---|---|---|
-| 4.1 | `objective-extractor` (fusión con tracer): extrae objetivos del spec/issue/ADR y arma la tabla de trazabilidad objetivo ↔ entregable con citas | Sharpness, Asymmetry | El reporte SHARP incluye la tabla de trazabilidad con citas `ruta:línea` |
+| 4.1 | `objective-extractor` (fusión con tracer): extrae objetivos del spec/issue/ADR y arma la tabla de trazabilidad objetivo ↔ entregable con citas | Sharpness, Asymmetry | El reporte SHARP incluye la tabla de trazabilidad con citas `ruta:línea` — ✅ **cerrado 2026-11-19**: r2 **Aprobado 20/25** (S4 H4 A4 R4 P4), veredicto con evidencia de `gate-evidence` y uso real sobre este ROADMAP |
 | 4.2 | Detectores nuevos **dentro de `evidence-hunter`** (no skills nuevas): horizon (grafo de dependencias, deuda), resistance (cobertura real, casos borde) | Horizon, Resistance | Cada detector nuevo tiene **un caso trampa en el lab**; si no hay caso que lo falsifique, no entra (el lab sube de 5/5 a 6/6, 7/7...) |
 | 4.3 | `bin/format_sharp_report.py`: emitir el reporte como comentario de PR (`gh pr comment`) | Sharpness del crítico | 1 veredicto publicado como PR comment real de un repo que vigila |
 

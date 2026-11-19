@@ -5,7 +5,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-06T21:00:17+00:00",
-  "updated_at": "2026-11-19T14:16:35+00:00",
+  "updated_at": "2026-11-19T14:42:11+00:00",
   "gates": [
     "critic"
   ],
@@ -179,15 +179,16 @@
         "agents/kanam-critic/skills/objective-extractor/"
       ],
       "evidence": [
-        "objective-extractor.py (260 lineas, 13 tests verdes) + 12 casos de camino de error verificados por el CORE. Gate del Critic INVALIDO en 2 intentos (F29 fabrico ORO sin evidencia; F30 no supo invocar la herramienta). Cierre por verificacion del CORE: agents/kanam-critic/docs/reviews/2026-11-19-T4.1-core-verification.md"
+        "objective-extractor.py (260 lineas, 13 tests verdes) + 12 casos de camino de error verificados por el CORE. Gate del Critic INVALIDO en 2 intentos (F29 fabrico ORO sin evidencia; F30 no supo invocar la herramienta). Cierre por verificacion del CORE: agents/kanam-critic/docs/reviews/2026-11-19-T4.1-core-verification.md",
+        "T4.1 absorbido y aprobado: veredicto r2 T4.1-objective-extractor-r2 = 20/25 Aprobado (S4 H4 A4 R4 P4). VETO 18/25 previo queda como historia. Evidencia: gate-evidence PASS (8 casos, 17 tests), CI run 44546198583 verde con step 'Critic kit tests', uso real sobre ROADMAP 4/4 citas verificadas, 9 citas ruta:linea validas en el reporte. verify-verdict 10/10, check-kit 18/18."
       ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:18+00:00",
-      "updated_at": "2026-11-19T14:16:35+00:00",
+      "updated_at": "2026-11-19T14:42:11+00:00",
       "started_at": null,
-      "completed_at": "2026-11-19T14:16:35+00:00",
+      "completed_at": "2026-11-19T14:42:11+00:00",
       "session_ref": null
     },
     {
