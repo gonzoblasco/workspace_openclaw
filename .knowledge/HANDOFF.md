@@ -1,15 +1,18 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-18 22:15 GMT-3
+**Fecha:** 2026-11-19 00:59 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
 **Autor:** Kanam (CORE)
 
-> HANDOFF generado en el cierre de sesion (2026-11-18). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-18.md`.
+> HANDOFF generado en el cierre de sesion (2026-11-19). Es el punto de entrada para continuar este proyecto. El informe detallado de la sesion vive en `memory/2026-11-19.md`.
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-19 00:59
+Diagnostico y reparacion de credenciales de GitHub tras revocar Gonzo todos los PAT classic. (1) Se cayo una sola cosa: el MCP, con 401 Bad credentials sobre un github_pat_ revocado en secrets/github-token. El resto sano: gh CLI, SSH, push HTTPS via helper de gh en los 7 projects, admin en los 8 repos, ningun workflow con GH_PAT. (2) Verifique que el OAuth de gh sirve para el MCP (get_me OK) y reescribi ~/.openclaw/bin/github-mcp-launch para resolver el token dinamicamente, con fallo ruidoso en vez de 401 silencioso. (3) Limpieza medida a pedido de Gonzo: trash del token revocado, su backup y el launcher viejo; secrets/ quedo vacio y el slot del PAT sigue existiendo por contrato. (4) Gonzo provisiono un PAT fine-grained: 81 repos, push en los propios, pull en shadcn-ui, radix-ui, TanStack, meta (Actions/issues/pulls/contents/commits 200), gists y orgs OK. (5) Hallazgo importante: el fine-grained NO puede comentar en repos publicos ajenos (403 Resource not accessible en shadcn-ui#11757 y astryx#4652), mientras el OAuth de gh si pasa la autorizacion en esas 4 orgs; inverti la precedencia del launcher a OAuth-first con el PAT como fallback. Prueba usada: POST de comment con body vacio (422 = autorizado, 403 = bloqueado), sin efecto lateral. (6) Notifications: la API solo acepta classic PAT con scope notifications; en fine-grained no existe la casilla, queda afuera por decision.
 
 ### 2026-11-18 22:15
 Cierre de la segunda parte de la sesion: infraestructura del MCP de GitHub y credenciales. (1) Se restauro el binario del MCP oficial github-mcp-server v2.2.0 (Darwin_arm64) en ~/.openclaw/bin/github-mcp via OPS, con dictamen APLICA CON CAMBIOS y limites duros respetados. Verifique la cadena de custodia por mi cuenta porque OPS reporto mal el checksum: el archivo oficial hashea el TARBALL (5e46b05b...), no el binario; tarball contra oficial OK, binario extraido contra instalado OK (11608433...). OPS habia comparado el hash del binario contra el archivo del tarball, que da distinto siempre. Funcional: 53 tools, get_me autentica, list_notifications responde. (2) Se registro el MCP como server del gateway (mcp.servers.github) via config.set, porque openclaw mcp set/add fallan con 'This operation requires exclusive offline state ownership' mientras el gateway corre. Token fuera del config: launcher ~/.openclaw/bin/github-mcp-launch (700) que lee el PAT del archivo 600 y lo exporta. (3) Bug propio encontrado y corregido: el binario necesita el subcomando 'stdio' en args; sin el imprime la ayuda y sale con exit 0, y el gateway lo veia como 'Connection closed'. Corregido con args=[stdio] y verificado con handshake real (starting server version=2.2.0, readOnly=false). (4) Hallazgo de seguridad: el token guardado no era el public_repo pedido sino un PAT con admin:enterprise, admin:org, delete_repo, workflow, user. Se reemplazo por un fine-grained github_pat_ que Gonzo paso por chat. Verificado: identidad gonzoblasco, lectura OK en meta/astryx y shadcn-ui/ui, wrapper OK. PERO la escritura FALLA: 'Resource not accessible by personal access token (addComment)'. Diagnostico: el fine-grained no tiene el repo en su allowlist con escritura (repository access en 'only select' o Issues en Read en vez de Read and write). No se puede distinguir de una aprobacion de org pendiente con el mensaje actual; el mensaje tipico de aprobacion de org es distinto. (5) Se cancelo el comentario de seguimiento en astryx#4652 por pedido de Gonzo; draft borrado, nada publicado. Pendiente critico: el PAT ancho (ghp_) sigue VIVO en la cuenta de GitHub aunque se borro la copia del disco, porque borrar el archivo no lo revoca. Hay que revocarlo en settings/tokens. Y el token vigente es de facto read-only hasta que se corrija su permiso de Issues.
@@ -25,16 +28,11 @@ Barrido de 4 notificaciones de GitHub, con dos comentarios publicados. (1) ariak
 ### 2026-11-18 14:21
 TTS: el narrador del audiolibro quedo definido y reutilizable. Se probaron cuatro motores en la noche. Kokoro se descarto no por sucio sino por plano: es no autoregresivo y calcula la entonacion de la estructura del texto, asi que siempre cae al final. Medido: 'Viste a Vera.' y 'Viste a Vera?' dan el mismo contorno (154 a 103 y 154 a 105 Hz). Con 1432 lineas de dialogo en el libro, todas las preguntas sonaban a afirmacion. Quedo Chatterbox clonando una referencia: em_alex de Kokoro bajado 4 semitonos, que da 100-104 Hz de tono y 11.400 Hz de banda, y entona. La clave fue bajar el tono de la REFERENCIA y no del audio final: filtrar el resultado costaba 1,6 kHz de banda (10.185 a 8.564 Hz) y sonaba apagado. Se corrigieron cuatro bugs del pipeline: las notas de produccion *POV: ...* se narraban en 14 capitulos; las rayas llegaban al fonemizador como caracter desconocido y metian 60 ms de sonido fantasma antes de cada vocal ('Ah' sonaba 'nahh'); el corte a 240 caracteres partia palabras y hacia alucinar la cola (7,6 s); y el -3 semitonos aplicado al resultado apagaba la voz. El narrador quedo reutilizable: la voz vive en assets/voces/baritono-jazz/ con manifiesto y valores medidos, y el script la resuelve por nombre (--voz baritono-jazz), asi que cualquier proyecto usa el mismo narrador sin copiar rutas. ADR-116 reemplaza al ADR-115, que quedo archivado. El render de los 17 capitulos corre en background: capitulo 1 listo en 5:37 de audio y 24,7 minutos, unos 4,4x el tiempo real.
 
-### 2026-11-18 03:11
-Auditoria de la skill growing-doc-retention y de la tabla de scripts de SETUP.md. La skill resulto no estar sin usar: es de instalacion y su mecanismo (changelog-rotate.py 14d, dreams-rotate.py mensual, gates en pre-commit y session-end) corre verde y verificado. De las tres ideas que propuse adaptar, dos no eran candidatos (modelos ya managed en AGENTS.md/SETUP.md; estado de OPS inexistente en MEMORY.md) y la tercera (tabla de scripts) revelo un problema distinto: 142 scripts en disco contra ~30 filas, mezclando catalogo vivo con actas de defuncion.
-
-Programa scripts-inventory creado en agents/kanam-planner/.knowledge/programs/ (plan_lint OK). El Planner fallo DOS veces devolviendo el JSON como prosa sin escribir archivo y encima duplico la ruta (agents/kanam-planner/agents/kanam-planner/); el CORE escribio el programa contra el esquema real copiado de skill-router-improvement.json.
-
-Ejecutado el inventario: 142 scripts medidos, distribuidos por referencias (9 con 0, 18 con 1, 52 con 2-4, 63 con 5+). Los 9 huerfanos son todos de la Cata de Harnesses (octubre 2026), evento cerrado, salvo heartbeat-snapshot.sh (infra viva del job agentTurn) y moltbook-ingest.py (confirmado vivo por Gonzo: rutina de revision periodica de sitios para noticias, con dev.to agregado el mismo dia).
-
-FALLO GRAVE DE REPORTE: se declaro implementado un bloque managed que no existia. Se guardo una tabla entera como valor del setting scripts_inventory, cuando managed-blocks.py solo genera bloques desde templates hardcodeados en BLOCKS (lineas 118-174) e interpola variables escalares; apply dijo 'al dia' sin escribir nada. El gate del pre-commit llamaba a un --check que devolvia exit 1 permanente. Se uso ADR-113 sin verificar que el 114 ya existia. La auditoria de Gonzo ('auditar y verificar el output anterior') encontro todo esto.
-
 ## Estado actual
+
+MCP de GitHub operativo con OAuth-first; PAT fine-grained guardado como fallback (600). Falta la prueba definitiva con un comentario real en una org de terceros.
+
+### Estado previo (heredado)
 
 MCP de GitHub operativo (binario + server registrado con args stdio). Credencial vigente fine-grained sin permiso de escritura; PAT ancho sin revocar.
 
@@ -189,6 +187,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1) Confirmar con un comentario real que el OAuth ya no choca con OAuth App restrictions en shadcn-ui/radix-ui/TanStack/meta. 2) Si falla, generar un classic PAT con public_repo solo para esa operacion. 3) Push de los commits del workspace.
+
+### Pendientes heredados (sin cambios)
 
 1) Revocar el PAT classic ghp_ de hoy en settings/tokens: tiene admin:enterprise y delete_repo y borrar el archivo NO lo revoca. 2) Corregir el fine-grained: repository access con meta/astryx y shadcn-ui/ui, permiso Issues Read and write; si sigue fallando, aprobar el token desde la org. 3) Comentario de seguimiento pendiente en astryx#4652 (opcional, cancelado hoy). 4) Decidir si se borran forks/astryx y forks/astryx-demo con trash.
 
@@ -392,6 +394,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- Precedencia OAuth-first por evidencia de alcance, no por preferencia: el fine-grained pierde en repos ajenos. Cleanup activo pero medido: se borra lo que no sirve, con trash.
+
+### Heredadas (sin cambios)
+
 - Credencial de escritura: PAT en archivo 600 + launcher 700, nunca en openclaw.json. El binario del github-mcp-server necesita 'stdio' explicito en args. Los checksums oficiales hashean el tarball, no el binario: la cadena de custodia se verifica en dos pasos. Lectura y escritura son permisos distintos: un token que lee las dos orgs puede no escribir en ninguna, y el mensaje de error no distingue allowlist de aprobacion de org.
 
 ### Heredadas (sin cambios)
@@ -501,7 +507,7 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 ## Como continuar
 
 1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-18.md` para el informe completo de la sesion.
+2. Leer `memory/2026-11-19.md` para el informe completo de la sesion.
 3. Verificar el estado real antes de actuar (git, tests, la DB).
 
 ---
