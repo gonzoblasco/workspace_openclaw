@@ -56,86 +56,54 @@ El cross-review del Agente B (paso 3) es parte de la cadena de escritura (HIGH, 
 
 Referencia completa de niveles de pensamiento y asignacion de modelo por rol: **ADR-090** (vigente, cata 2026-10-06). No usar configuraciones de modelo/thinking anteriores: quedaron retiradas.
 
-## Skills Públicas - Sanitización (detalle ampliado)
+## Estructura de Proyectos (detalle ampliado)
 
-El repo `kanam-skills` (github.com/gonzoblasco/kanam-skills) es **público**. Las skills que van ahí NO deben contener referencias personales de Gonzo (nombre, handle `gonzoblasco`, repos, rutas `/Users/gonzoblasco/`, issues específicos).
+> **Modelo vigente: ADR-098.** Dos capas, no tres. Los proyectos viven en `<workspace>/projects/`, dentro del árbol que el gateway gobierna; `~/projects` es un **symlink** (el humano llega por ahí, los agentes usan el path real porque los sandboxes rechazan escribir a través de symlinks). El workspace tiene `/projects/` en su `.gitignore`: no es que estén afuera del worktree, es que están adentro y cada uno trae su propio `.git`.
 
-**Dos versiones de cada skill:**
-- **Workspace** (`skills/`): privado, **mantiene** las referencias personales - son el setup de Gonzo y el contexto es valioso. (El mirror `.github/skills/` se elimino el 2026-09-28, ADR-079.)
-- **kanam-skills** (`projects/kanam-skills/skills/`): público, **sanitizado** - se escribe como si la usara un extraño.
-
-**Regla obligatoria:** al copiar una skill del workspace al repo público, sanitizar en el camino:
-- `Gonzo` / `Gonzalo` → `el usuario` (con artículos correctos: al/del usuario)
-- `@gonzoblasco` → `@usuario`
-- Author filters en scripts → `$(gh api user --jq '.login')` (username del gh autenticado)
-- Rutas `/Users/gonzoblasco/...` → relativas
-- Repos `github.com/gonzoblasco/...` → `github.com/<usuario>/...`
-- Issues específicos (ej. `astryx #4777`) → enseñanza genérica sin la referencia
-
-**Regla ampliada (Gonzo, 2026-09-14): contenido genérico, no solo sin nombres.** El material publicado NO debe mencionar nuestro trabajo ni nuestras identidades en ninguna forma. No alcanza con reemplazar `Gonzo` -> `el usuario`: hay que sacar toda referencia a nuestros proyectos, repos, herramientas y flujos particulares (ej. `a11y-fixer`, proyectos `kanam-*` internos, `workspace_openclaw`, issues específicos, rutas locales, nombres de modelos del setup). El contenido se escribe como **plantilla genérica que sirve para cualquier proyecto**, no como la receta de nuestro setup con los nombres cambiados.
-
-**La marca Kanam SÍ se queda (corregido por Gonzo, 2026-09-14).** `Kanam` es el **nombre del producto** que se publica, no una identidad personal. Distinción clave:
-- **Se queda:** `Kanam` como nombre/marca del producto y de sus skills (ej. `author: Kanam` en frontmatter, "Kanam, consolidá la memoria" como ejemplo de invocación del agente, `kanam-skills` como nombre del repo).
-- **Sale:** datos personales (`Gonzo`, `Gonzalo`, `gonzoblasco`, `@gonzoblasco`, `/Users/gonzoblasco/`) y **proyectos internos** que no son parte del producto publicado (ej. `a11y-fixer`, `kanam-lab`, `soporteml`, `workspace_openclaw`, issues propios).
-
-El error a evitar: tratar la marca como si fuera un dato personal. `Kanam` nombra lo que publicamos; `Gonzo` nombra a quién se lo publicamos.
-
-**Verificación obligatoria (dos pasadas):**
-1. Referencias personales: `grep -rn "gonzoblasco\|Gonzalo\|Gonzo\|@gonzoblasco" skills/ | grep -v __pycache__` debe dar vacío.
-2. Referencias a proyectos internos: `grep -rn -E "a11y-fixer|workspace_openclaw|soporteml|/Users/" skills/ | grep -v __pycache__` debe dar vacío. (`Kanam` NO entra en este grep - es la marca.)
-
-**Puntos de fuga tipicos (auditados 2026-09-14):** ejemplos que citan un proyecto interno propio; rutas locales; el handle personal en scripts (author filters -> `$(gh api user --jq '.login')`).
-
-**Excepción legítima:** las referencias a `gonzoblasco/kanam-skills` en README, docs y web/generate.js (identidad de instalación del repo) y el LICENSE (copyright legal) se mantienen.
-
-## Estructura de Proyectos - Triple Git (detalle ampliado)
-
-> **Actualizado 2026-10-13 al modelo ADR-098 (2026-10-08).** Los proyectos viven en `<workspace>/projects/`, **dentro** del árbol que el gateway gobierna; `~/projects` es un **symlink** a `<workspace>/projects` (el humano llega por ahí, los agentes usan el path real porque los sandboxes rechazan escribir a través de symlinks). El `.gitignore` conserva `/projects/`, pero el motivo se invirtió (no "afuera del worktree" sino "adentro, y cada proyecto trae su propio `.git`"). Modelo previo (2026-09-27 a 2026-10-08): los proyectos vivían en `~/projects/` como carpeta real, fuera del worktree (hoy superseded). Si encontrás texto que diga que viven "fuera del workspace", es deriva vieja.
-
-> **`.knowledge/` viaja con el proyecto (regla de Gonzo, 2026-10-13).** La memoria de proyecto es **del proyecto y se trackea en su repo** (`projects/<slug>/.knowledge/` -> `gonzoblasco/<slug>`), NUNCA con el workspace. El workspace no trackea `.knowledge/` de proyectos. Ojo con el dato pisado: ADR-098 decía que seguía "excluida por `.git/info/exclude`" (etapa vieja); esa parte quedó superada por esta regla. **Estado real verificado 2026-10-13:** `kanam-tetris` (3) y `kanam-pulse` (3) ya trackean su `.knowledge/` en su repo (correcto); `kanam-os`, `langchain-starter`, `kanam-fixer` y `kanam-spec` lo excluyen vía `.git/info/exclude` (etapa vieja, desalineados). Saneamiento pendiente: TODO #79.
-
-**Filosofía:** cada proyecto tiene su carpeta en `projects/<slug>/` y es **su propio repo git** (con su `.knowledge/` adentro). La carpeta contenedora `projects/` es plana y el workspace la ignora al 100%.
+**Filosofía:** cada proyecto es **su propio repo git**, con su `.knowledge/` adentro. La carpeta `projects/` es plana y el workspace la ignora al 100 %.
 
 ```
-projects/                     (carpeta plana, ignorada al 100% por el workspace git - NO es repo)
-└── <slug>/                   (repo individual del proyecto: gonzoblasco/<slug>)
-    ├── .knowledge/           # memoria institucional (BRIEF, ADRs, STATUS, HANDOFF) - vive CON el proyecto
-    ├── src/                  # código fuente (lo trackea el repo individual)
+projects/                     (carpeta plana, ignorada por el workspace - NO es repo)
+└── <slug>/                   (repo individual: gonzoblasco/<slug>)
+    ├── .knowledge/           # BRIEF, ADRs, STATUS, HANDOFF - vive CON el proyecto
+    ├── src/
     └── .git/                 # del proyecto, nunca se absorbe en el workspace
 ```
 
-**Capas y responsabilidades:**
-- **Workspace git** (`workspace_openclaw`): **no trackea `projects/`.** Su `.gitignore` tiene `/projects/` (ADR-098). No hay capa intermedia.
-- **Repo individual** (`projects/<slug>` -> `gonzoblasco/<slug>`): la fuente de la verdad. Ahi viven commits, branches, PRs, push. Cada uno con su propio `.gitignore`; el `.knowledge/` se trackea en el repo del proyecto (los que lo excluyen lo hacen vía `.git/info/exclude`).
-
 **Reglas clave:**
-- **`projects/` no es repo.** No tiene `.git` propio; cada `<slug>/` es su propio repo. Ninguna capa absorbe ni commitea los `.git/` de los proyectos.
-- **La fuente de la verdad para trabajar es el repo individual del proyecto.** No hay repo agregado que sincronizar.
-- **Backup de datos locales antes de limpiar:** los `.knowledge/`, `.env`, `*.db` y uploads son irrecuperables si se borran. Respaldar ANTES de cualquier `git reset --hard` o limpieza.
+
+- **`projects/` no es repo.** No tiene `.git` propio; cada `<slug>/` sí.
+- **La fuente de la verdad es el repo del proyecto.** No hay repo agregado que sincronizar (la capa `projects_openclaw` se retiró y está archivada).
+- **`.knowledge/` viaja con el proyecto**, en su repo. El workspace nunca lo trackea.
+- **Backup antes de limpiar:** `.knowledge/`, `.env`, `*.db` y uploads son irrecuperables. Respaldar ANTES de cualquier `git reset --hard` o limpieza.
 
 **Flujo típico:**
-1. Nuevo producto → `./scripts/init-project.sh <slug>`
-   - Crea `projects/<slug>/.knowledge/` con BRIEF.md + STATUS.md
-   - Crea repo privado en gh e inicializa el git del proyecto
-2. Go decision → scaffold en `projects/<slug>/` (repo individual)
-3. Desarrollo → actualizar `projects/<slug>/.knowledge/STATUS.md` con cada hito
-4. Commits: código + `.knowledge/` al repo del proyecto
 
-> **Nota de estado (actualizada 2026-10-13).** `init-project.sh` y `initial-setup.sh` todavia referencian la capa "agregado" (`projects_openclaw`) retirada; ver la fila de cada uno en `docs/SETUP.md`. El modelo vigente (ADR-098): `projects/` es carpeta plana ignorada, cada proyecto es su propio repo con su `.knowledge/`.
+1. Nuevo producto → `./scripts/init-project.sh <slug>` (crea `.knowledge/` con BRIEF + STATUS, repo privado en gh, git inicializado).
+2. Scaffold en `projects/<slug>/`.
+3. Desarrollo → actualizar `.knowledge/STATUS.md` en cada hito.
+4. Commits: código + `.knowledge/` al repo del proyecto.
 
-**Sin submódulos.** Los proyectos se clonan en `projects/<slug>/` bajo demanda (cuando se trabajan), no como submódulos. Si una carpeta de `projects/` no tiene repo en GitHub, se elimina.
+**Sin submódulos.** Los proyectos se clonan bajo demanda, no como submódulos. Si una carpeta de `projects/` no tiene repo en GitHub, se elimina.
 
-**Excepciones:**
-- **Forks de terceros** (TanStack/router, shadcn/ui, etc.) → viven en `forks/<slug>/`, ignorados AL 100% en el workspace. **No llevan `.knowledge/`**: un fork existe para mandar un PR, y un archivo de memoria commiteado ahi **entra al diff que revisa el maintainer**. Si ya esta trackeado: `git rm -r --cached .knowledge/` (queda en disco) y `.knowledge/` al `.git/info/exclude` del clon, que es privado y no versionado (tocar el `.gitignore` del fork **si** ensucia el repo ajeno). Lo verifica `scripts/check-foreign-knowledge.py`.
-- **Repos de terceros que corren como SERVICIO INTERNO → `services/<slug>/`** (creado 2026-11-03). No se les manda PR: se los opera. El codigo se ignora como en `forks/`, pero **su `.knowledge/` si se trackea**, en NUESTRO fork (`gonzoblasco/<servicio>`), porque ahi no hay diff que ensuciar. Caso actual: `services/vane/` (Vane, busqueda). Antes vivia en `forks/vane/` y necesitaba una exencion en el check: una exencion es un olor a clasificacion equivocada, el problema era la carpeta.
-- **Contribuciones a repos ajenos → `oss/<owner>-<repo>/.knowledge/`.** No es codigo ni un repo nuestro: es el registro del hilo (que se dijo, que quedo abierto, quien tiene la pelota) y sobrevive al clone. Vivia antes en `docs/` o `memory/`, o -peor- en un arbol fantasma creado con el titulo de la sesion como slug: el 2026-10-29 quedo `projects/OSS / astryx (meta/astryx #3335)/` porque `--project "OSS / astryx #3335"` tenia barras. `scripts/session-handoff.py` ahora resuelve `oss/` y **rechaza** slugs con separadores o `..`. La receta de cierre del §"Registro automatico" sigue usando un nombre descriptivo, pero el slug tiene que ser `owner-repo`.
-- Skills de OpenClaw → viven en `skills/` (Core) y `agents/<rol>/skills/` (rol) con su propio SKILL.md
-- Proyectos sin documentación completa → los archivos faltantes se documentan en HANDOFF.md en `.knowledge/` (que reemplazo al BRIEF)
+**Dónde vive qué (clasificación por destino, no por gusto):**
 
-**Ventajas:**
-- Cero conflictos: el workspace nunca intenta commitear `node_modules` ni código de build ni memoria de proyecto.
-- Portabilidad: el código y su memoria viajan juntos en el repo del proyecto; el archivo completo en el agregado.
-- Forks limpios: no colisiona con carpetas `docs/` de repos externos.
+| Tipo | Dónde | `.knowledge/` |
+|---|---|---|
+| Proyecto propio | `projects/<slug>/` | Sí, en su repo |
+| Fork para mandar un PR | `forks/<slug>/` | **No** — entraría al diff del maintainer |
+| Tercero que corre como servicio | `services/<slug>/` | Sí, en nuestro fork |
+| Contribución a repo ajeno | `oss/<owner>-<repo>/.knowledge/` | Sí, es el registro del hilo |
+| Skill de OpenClaw | `skills/` (Core) o `agents/<rol>/skills/` (rol) | — |
+
+Notas de cada una:
+
+- **Forks:** ignorados al 100 %. Si un `.knowledge/` ya quedó trackeado: `git rm -r --cached .knowledge/` (queda en disco) y agregarlo a `.git/info/exclude` del clon, que es privado. Tocar el `.gitignore` del fork **sí** ensucia el repo ajeno. Lo verifica `scripts/check-foreign-knowledge.py`.
+- **Servicios:** no se les manda PR, se los opera. Caso actual: `services/vane/`.
+- **Contribuciones:** el slug es `<owner>-<repo>`. `scripts/session-handoff.py` rechaza slugs con separadores o `..` — el 2026-10-29 un `--project "OSS / astryx #3335"` creó un árbol fantasma.
+- **Proyectos sin doc completa:** lo que falte se documenta en `.knowledge/HANDOFF.md`.
+
+**Ventajas:** el workspace nunca commitea `node_modules` ni código de build ni memoria de proyecto; código y memoria viajan juntos; los forks quedan limpios.
 
 ## Project Cleanup - Al Finalizar un Proyecto (detalle ampliado)
 
