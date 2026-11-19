@@ -122,9 +122,12 @@ vara no perdona un kit que todavia no puede auditarse a si mismo.
 - T3 (tasa de absorcion): **4 VETOs sobre trabajo ajeno** cerrados (`docs-ROADMAP-madurez` 15/25,
   `kanam-dev-ROADMAP` 16/25, `kanam-dev-inventario-skills` 15/25, `docs-NORTH` 17/25). La meta de
   VETOs ajenos esta cumplida; lo que falta es que los autores absorban.
-- Absorcion medida al 2026-11-17: **7 de 20 fricciones (35%)**, todas de auto-correccion (F1-F6,
-  F8, F15). Las 13 abiertas son de autores ajenos: F7/F9 (kit), F10-F14 (docs/ROADMAP),
-  F16-F20 (docs/NORTH).
+- Absorcion medida al 2026-11-19: **7 de 27 fricciones (25.9%)**, todas de auto-correccion (F1-F6
+  del kit + F15 del disparador). **Absorcion de autores ajenos: 0.** Las 20 abiertas son F7/F9 (kit),
+  F10-F14 (docs/ROADMAP), F16-F20 (docs/NORTH), F21-F23 (cata de modelos), F24-F26 (blog-publishing),
+  F27 (src-agent-scaffold). Reporte: `docs/reviews/2026-11-19-absorption-rate.md`.
+  El 35% del 2026-11-17 era sobre una base de 20; las 7 fricciones nuevas entraron abiertas y bajaron
+  la tasa. La metrica que importa (F9) sigue en cero: ningun autor ajeno absorbio un VETO.
 - Guardas: KIT 18/18; veredictos 6/6 con respaldo (2 anulados); refs 716 OK.
 - El modelo del barrido semanal es `gpt-oss:120b-cloud` (declarado del rol); la sesion principal
   corre con el free model disponible del CORE.
