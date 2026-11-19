@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-11-04). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
+Registro de cambios estructurales del workspace. Contiene las entradas de los **últimos 14 días** (corte: 2026-11-05). Lo anterior está archivado en [`./docs/archive/CHANGELOG-archive.md`](./docs/archive/CHANGELOG-archive.md). No incluye actividad diaria (ver `memory/`).
 
 > **Política de rotación:** la mantiene `scripts/changelog-rotate.py` (pre-commit `--check` + cierre de sesión). Al superar la ventana, el bloque viejo se mueve al archivo. Reconstruir el activo desde cero cuando arrastre hipótesis refutadas.
 
@@ -981,32 +981,3 @@ Ese desvio de runtime se convirtio en un cambio de config el 2026-11-10 12:28: l
 - **`gemma4` como chat trivial: medido y gana, con esa base.** Contexto completo 5/7 correctas y 0 falsos positivos; contexto parcial 0/7, con dos fechas y horas inventadas. Pagar el contexto entero (3,1× tokens) contra 46× de precio por token deja **~15× a favor**. **Borde escrito: chat trivial = el dato de respuesta ya está en el contexto entregado.** Fuera de eso gemma4 sigue sin servir: no se probó que dejara de inventar en análisis.
 - **Pendiente:** muse sobre un cierre de sesión real (el sintético prueba que no fabrica, falta probar que encuentra) y el borde verificable en el runtime que habilite el slot de chat trivial. Ningún slot se aplica sin eso; `utilityModel` y el CORE no se tocan.
 - **Sin cambio:** pipeline A/B/C, slots de dev/ops/auditor/critic/planner/mind/studio, ADR-090 y ADR-107.
-
-## [2026-11-04] - Nace `preflight`, el gate de accesibilidad para sitios hechos por IA
-
-### Added
-- **`projects/preflight` (v0.1.0).** Producto nuevo, con repo propio. Renderiza una URL en Chrome, la corre contra axe-core y despues **la lee con un lector de pantalla**, guardando cada frase que pronuncia. El informe empareja cada defecto con lo que le pasa a la persona y termina con un **fix prompt ordenado** que se pega en Lovable/Cursor/v0; cada paso declara la frase que el lector debe anunciar despues del fix, asi el constructor de IA puede verificarse solo.
-- **CLI + GitHub Action.** `npx tsx scripts/cli.ts <url>` con `--min-score` y `--fail-on-blocking` (automatico en CI), y `action.yml` compuesto que publica el informe en el job summary. El gate corre en cada PR.
-- **Guardas de seguridad en el motor:** `guardUrl` valida el host literal *y* despues de la resolucion DNS (rangos privados, IPv4-mapped v6, credenciales embebidas rechazadas); `ratelimit` combina burst en memoria con cuota diaria en SQLite sobre un fingerprint sha256.
-
-### Notes
-- **Motor verificado, no asumido:** `tsc --noEmit` limpio, `vitest` 8/8, `next build` verde, `biome check` limpio con `a11y: all`. Un scan real de `example.com` tarda ~1.9s.
-- **El producto se audita a si mismo:** la landing da 100/100 A y el propio informe 97/100 A, medidos por el motor que se envia. El dogfooding encontro tres defectos reales, corregidos antes del commit de cierre: iconos SVG anunciados como `graphics-document`, la lista de scans recientes sin nombre accesible, y `<ul>` comunes marcadas como "gap" (lo que entrenaria al lector del informe a ignorar los marcadores).
-- **La pagina de precios dice la verdad:** no promete PDF, ni soporte dedicado, ni colaboracion de equipo. Declara en el cuerpo que el billing no esta conectado y que hoy un plan se resuelve por email.
-- **No desplegado, a proposito.** Playwright necesita un Chrome persistente y la mayoria de las plataformas serverless cortan a los 60s; la decision de destino queda abierta y documentada en `.knowledge/HANDOFF.md`.
-
----
-
-## [2026-11-04] - El gate de merge del HANDOFF no dejaba pasar nunca
-
-### Fixed
-- **`--closed` validaba pero nunca se escribia.** `session-handoff.py` pasaba los items declarados como cerrados al validador de merge y no los ponia en el archivo. Consecuencia: el gate dejaba de frenar la escritura, pero el cierre siguiente volvia a ver esos items como pendientes perdidos y frenaba otra vez. **No habia forma legitima de atravesar el gate.** Ahora `build_handoff` emite una seccion `## Cerrados en esta sesion` con la lista. Un dato que se usa para autorizar una escritura y no se guarda es una validacion sin memoria.
-- **El CI fallaba desde dos commits antes y no era del ultimo cambio.** `tests/bash/test-skills-scope.bats` afirmaba `"Em dash: 0 ok, 0 failed"` cuando el script emite `"0 aviso(s)"` desde que el em dash dejo de bloquear (regla del owner 2026-11-04: tipografia no es correccion).
-
-### Notes (assert ciego en Bats)
-- **La causa de fondo no era el formato: era que el assert no se evaluaba.** En Bats una asercion intermedia que falla **no falla el test**; solo cuenta el exit status del **ultimo** comando. Este test tenia tres `[[ ]]` sueltos, asi que el primero (roto desde hace dias) nunca corrio. Medido con un test descartable: un `[[ ]]` intermedio que falla da `ok`. Por eso pasaba en local y fallaba en CI, donde el ultimo assert tambien fallaba.
-- **Por que importa:** un test que pasa por un assert ciego es peor que uno rojo, porque declara una garantia que no verifica. Se agrego `|| return 1` a cada asercion de los dos tests afectados.
-- **Barrido del resto de la suite:** 22 asserts sin `||` en 7 archivos de `tests/bash/`. Medidos uno por uno, **todos menos uno estan al final del bloque** (donde el exit status si cuenta) o seguidos solo de `}`. El unico enmascarado real era el de este commit. Un detector que cuenta el cierre de bloque como "comando posterior" da 21 falsos positivos.
-- **3 tests nuevos** en `test_session_handoff.py`: `--closed` se escribe, sin `--closed` no aparece la seccion, y las entradas vacias no generan bullets huerfanos (con normalizacion de guion largo).
-
----
