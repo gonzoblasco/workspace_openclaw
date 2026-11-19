@@ -47,7 +47,7 @@
 
 ---
 
-## Tarea 3 — Endurecer las dos apps: el modo "una sola máquina, sin red" deja de ser una promesa
+## Tarea 3 — Endurecer las dos apps: el modo "una sola máquina, sin red" deja de ser una promesa  ✅ HECHA 2026-11-19
 
 **Por qué:** hoy la privacidad se demuestra con `lsof` en un momento. Eso es un experimento, no una garantía. Es el material de blog más fuerte de los cinco.
 
@@ -60,6 +60,12 @@
 - **P3.1 `lsof` no es portable ni determinista en CI.** En GitHub Actions conviene `ss -tunap` o un LD_PRELOAD; en macOS, `lsof`. Diseñar el test para que **saltee con razón** si el monitor no está, pero falle si corrió y vio tráfico.
 - **P3.2 Ollama escucha en 11434 y el test lo ve.** Hay que distinguir *loopback* de *saliente*. La regla correcta no es "cero sockets" sino "cero sockets **no-loopback**".
 - **P3.3 El borrado deja `-wal`/`-shm` de SQLite.** Un `unlink` del `.db` no borra esos dos. Hay que chequearlos y borrarlos explícitamente.
+
+**Resultado real (2026-11-19):**
+- El defecto peor no era el sidecar: `POST /delete` tampoco borraba `data/private/`, donde el ingest copia **los originales**. El boton decia "Delete everything" y dejaba los contratos en disco. Corregido en `src/agent/wipe.py` + test.
+- La prediccion sobre `__pycache__` era falsa: el bytecode no guarda texto del usuario. El borrado se prueba sobre `.db`, `-wal`, `-shm`, `-journal`, `output/` y `data/private/`.
+- El probe **no ve subprocesos**: `whisper-cli`, `afconvert` y el demonio de Ollama quedan fuera del audit hook. Peor: si falta un modelo, **Ollama va al registry**, fuera de Python. Se documenta en ambos README en vez de taparlo.
+- El control positivo atrapo una direccion IPv6 real de Cloudflare: la prueba falla si el hook no ve el leak, no solo si ve trafico.
 
 **Criterio de cierre:** un test que falla si aparece una conexión no-loopback, en los dos repos, con salida cruda en el README.
 
