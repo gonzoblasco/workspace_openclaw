@@ -36,6 +36,7 @@ import re
 import shutil
 import subprocess
 import sys
+import ast
 from pathlib import Path
 from typing import Callable
 
@@ -296,6 +297,337 @@ def detector_coverage(description: str, source: str) -> tuple[str, str]:
 
 
 # ---------------------------------------------------------------------------
+# Detector horizon — grafo de imports y ciclos (T4.2)
+# ---------------------------------------------------------------------------
+# Afirmaciones del tipo "no hay imports circulares entre los modulos de X" o
+# "el modulo Y no depende de Z". Un `grep import` NO ve un ciclo (ve lineas
+# sueltas); hay que resolver los imports a modulos del paquete y recorrer el
+# grafo. Todo con `ast` (stdlib): cero dependencias.
+
+HORIZON_SKIP_DIRS = {"__pycache__", "node_modules"}
+
+
+def _iter_py_files(root: Path) -> list[Path]:
+    """Devuelve los .py bajo `root`, sin directorios ocultos ni de build."""
+    files: list[Path] = []
+    for p in sorted(root.rglob("*.py")):
+        rel_parts = p.relative_to(root).parts
+        if any(part.startswith(".") or part in HORIZON_SKIP_DIRS for part in rel_parts):
+            continue
+        files.append(p)
+    return files
+
+
+def _module_name(path: Path, root: Path) -> tuple[str, bool]:
+    """Nombre punteado del modulo relativo a `root` y si es un paquete."""
+    parts = list(path.relative_to(root).with_suffix("").parts)
+    is_package = parts[-1] == "__init__"
+    if is_package:
+        parts = parts[:-1]
+    return ".".join(parts), is_package
+
+
+def _build_module_index(root: Path) -> dict[str, Path]:
+    index: dict[str, Path] = {}
+    for py in _iter_py_files(root):
+        name, _ = _module_name(py, root)
+        if name:
+            index[name] = py
+    return index
+
+
+def _candidate_variants(cand: str, root_pkg: str | None) -> list[str]:
+    """Variantes de un path punteado a probar contra el indice.
+
+    El indice se construye relativo al `root`. Si el `root` ES el paquete
+    analizado (p. ej. `.../pkg`), un import absoluto `from pkg import b`
+    apunta a `pkg.b`, pero en el indice el modulo vive como `b`: se prueba
+    tambien la variante sin el primer componente cuando coincide con el
+    nombre del root.
+    """
+    variants = [cand]
+    head, _, rest = cand.partition(".")
+    if root_pkg and rest and head == root_pkg:
+        variants.append(rest)
+    return variants
+
+
+def _import_targets(
+    node: ast.stmt,
+    module: str,
+    is_package: bool,
+    index: dict[str, Path],
+    root_pkg: str | None = None,
+) -> tuple[list[str], int]:
+    """Resuelve un `ast.Import`/`ast.ImportFrom` a modulos presentes en `index`.
+
+    Devuelve `(targets, unresolved)`: los modulos destino dentro del root y
+    cuantos imports de la sentencia NO se pudieron resolver a un modulo
+    interno (paquetes de la stdlib, terceros, alias dinamicos...).
+
+    Un import absoluto se resuelve contra el indice tal cual: con root
+    `/tmp/cic`, `from pkg import b` produce el candidato `pkg.b`, que existe
+    en el indice porque `pkg/b.py` esta bajo el root. Antes de este fix solo
+    se resolvian los relativos y un ciclo por imports absolutos pasaba como
+    "sin ciclos" (falso verde).
+    """
+    if isinstance(node, ast.Import):
+        candidates = [alias.name for alias in node.names]
+    elif isinstance(node, ast.ImportFrom):
+        if node.level:
+            # Relativo: se parte del paquete del modulo actual.
+            pkg_parts = module.split(".") if is_package else module.split(".")[:-1]
+            up = node.level - 1
+            if up > len(pkg_parts):
+                return [], 1
+            pkg_parts = pkg_parts[: len(pkg_parts) - up]
+            base = pkg_parts + (node.module.split(".") if node.module else [])
+        else:
+            # Absoluto: el path punteado ya es completo desde la raiz del
+            # arbol de imports (`from pkg import b` -> `pkg.b`).
+            base = node.module.split(".") if node.module else []
+        candidates = [".".join(base)] if base else []
+        candidates += [".".join(base + [alias.name]) for alias in node.names]
+    else:
+        return [], 0
+
+    seen: list[str] = []
+    resolved = False
+    for cand in candidates:
+        if not cand:
+            continue
+        for variant in _candidate_variants(cand, root_pkg):
+            if variant not in index:
+                continue
+            resolved = True
+            if variant != module and variant not in seen:
+                seen.append(variant)
+            break
+    return seen, 0 if resolved else 1
+
+
+def _import_label(node: ast.stmt) -> str:
+    """Texto legible del import para citarlo en la evidencia."""
+    if isinstance(node, ast.Import):
+        return "import " + ", ".join(alias.name for alias in node.names)
+    names = ", ".join(alias.name for alias in node.names)
+    dots = "." * getattr(node, "level", 0)
+    module = getattr(node, "module", None) or ""
+    return f"from {dots}{module} import {names}"
+
+
+def _collect_horizon_graph(
+    root: Path, index: dict[str, Path]
+) -> tuple[
+    dict[str, list[tuple[str, str, int]]],
+    list[tuple[str, int, str]],
+    list[tuple[str, int, str]],
+]:
+    """Grafo modulo -> [(target, archivo, linea)], errores de sintaxis e
+    imports no resueltos [(archivo, linea, path punteado)].
+    """
+    graph: dict[str, list[tuple[str, str, int]]] = {name: [] for name in index}
+    syntax_errors: list[tuple[str, int, str]] = []
+    unresolved: list[tuple[str, int, str]] = []
+    root_pkg = root.name if root.name.isidentifier() else None
+    for module, path in index.items():
+        try:
+            tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        except SyntaxError as exc:
+            syntax_errors.append((str(path), exc.lineno or 0, exc.msg))
+            continue
+        except (OSError, UnicodeDecodeError) as exc:
+            syntax_errors.append((str(path), 0, str(exc)))
+            continue
+        _, is_package = _module_name(path, root)
+        for node in ast.walk(tree):
+            if not isinstance(node, (ast.Import, ast.ImportFrom)):
+                continue
+            targets, not_resolved = _import_targets(
+                node, module, is_package, index, root_pkg
+            )
+            if not_resolved:
+                unresolved.append((str(path), node.lineno, _import_label(node)))
+            for target in targets:
+                graph[module].append((target, str(path), node.lineno))
+    return graph, syntax_errors, unresolved
+
+
+def _find_cycle(
+    graph: dict[str, list[tuple[str, str, int]]],
+) -> tuple[list[str], tuple[str, str, int]] | None:
+    """DFS con colores. Devuelve (camino del ciclo, arista que lo cierra)."""
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color = {n: WHITE for n in graph}
+    parent: dict[str, str] = {}
+
+    def visit(node: str) -> tuple[list[str], tuple[str, str, int]] | None:
+        color[node] = GRAY
+        for edge in graph[node]:
+            target = edge[0]
+            if color.get(target, WHITE) == GRAY:
+                chain = [node]
+                cur = node
+                while cur != target and cur in parent:
+                    cur = parent[cur]
+                    chain.append(cur)
+                chain.reverse()
+                return chain + [target], edge
+            if color.get(target, WHITE) == WHITE:
+                parent[target] = node
+                found = visit(target)
+                if found:
+                    return found
+        color[node] = BLACK
+        return None
+
+    for name in graph:
+        if color[name] == WHITE:
+            found = visit(name)
+            if found:
+                return found
+    return None
+
+
+def detector_horizon(description: str, source: str) -> tuple[str, str]:
+    """Verifica afirmaciones sobre la estructura de dependencias.
+
+    Estados:
+      - verificado     → el grafo se pudo armar, NO tiene ciclos y hay al
+                         menos un import interno resuelto (o no hay imports).
+                         Cita el ultimo import interno (archivo:linea) y
+                         declara cuantos imports quedaron sin resolver.
+      - auto-reportado → hay un ciclo: la afirmacion del autor no se sostiene.
+                         Cita el import que cierra el ciclo.
+      - bloqueado      → sintaxis rota / no hay .py que analizar / TODOS los
+                         imports quedaron sin resolver (un grafo vacio no
+                         prueba ausencia de ciclos).
+
+    Honestidad de la cita: "sin imports internos" solo se emite cuando el
+    codigo realmente no tiene imports. Un archivo con `import os` no puede
+    reportarse como "sin imports": se informa "N externos/no resueltos".
+    """
+    src = Path(source)
+    if not src.exists():
+        return "auto-reportado", f"source no existe: {source}"
+    root = src if src.is_dir() else src.parent
+    index = _build_module_index(root)
+    if not index:
+        return "bloqueado", f"no hay modulos .py bajo {root}"
+
+    graph, syntax_errors, unresolved = _collect_horizon_graph(root, index)
+    if syntax_errors:
+        path, line, msg = syntax_errors[0]
+        return "bloqueado", f"sintaxis rota en {path}:{line}: {msg}"
+
+    cycle = _find_cycle(graph)
+    if cycle is not None:
+        chain, (target, path, line) = cycle
+        return "auto-reportado", (
+            f"{path}:{line} el import de '{target}' cierra un ciclo "
+            f"({' -> '.join(chain)})"
+        )
+
+    edges = sorted(
+        (path, line) for node in graph for _, path, line in graph[node]
+    )
+    n_edges = len(edges)
+    n_unres = len(unresolved)
+    if edges:
+        path, line = edges[-1]
+        return "verificado", (
+            f"{path}:{line} sin ciclos ({len(index)} modulos, "
+            f"{n_edges} imports internos, {n_unres} externos/no resueltos)"
+        )
+    if n_unres:
+        # Sin aristas internas y con imports que no se pudieron resolver: el
+        # grafo vacio NO prueba ausencia de ciclos. Estado honesto: bloqueado.
+        path, line, label = unresolved[0]
+        return "bloqueado", (
+            f"{path}:{line} {n_unres} imports externos/no resueltos, "
+            f"0 internos ({label}); un grafo vacio no prueba ausencia de ciclos"
+        )
+    # Cero imports en todo el root: no hay arista que pueda formar un ciclo.
+    root_module = sorted(index)[0]
+    return "verificado", (
+        f"{index[root_module]}:1 sin ciclos ({len(index)} modulos, 0 imports)"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Detector resistance — cobertura declarativa de casos borde (T4.2)
+# ---------------------------------------------------------------------------
+# Afirmaciones del tipo "los casos borde estan cubiertos" o "hay tests para
+# entradas invalidas". Los patrones viven en el mapa, no en if/elif: agregar
+# una senal de caso borde es una entrada mas.
+
+EDGE_PATTERNS: list[tuple[str, str]] = [
+    ("raises",            r"pytest\.raises|unittest\.TestCase\.assertRaises"),
+    ("parametrize",       r"@pytest\.mark\.parametrize|@parameterized\.expand"),
+    ("edge_case_name",    r"def\s+test_\w*(empty|invalid|none|null|edge|boundary|error|zero|missing)\w*\s*\("),
+    ("exception_assert",  r"assertRaises|with\s+raises\("),
+]
+MIN_EDGE_PATTERNS = 2
+
+
+def _find_test_files(source: Path) -> list[Path]:
+    """Localiza los test_*.py relevantes al `source`."""
+    if source.is_dir():
+        return sorted(source.rglob("test_*.py"))
+    if source.name.startswith("test_") and source.suffix == ".py":
+        return [source]
+    candidates = sorted(source.parent.glob("test_*.py"))
+    tests_dir = source.parent / "tests"
+    if tests_dir.exists():
+        candidates += sorted(tests_dir.rglob("test_*.py"))
+    return candidates
+
+
+def detector_resistance(description: str, source: str) -> tuple[str, str]:
+    """Verifica si los tests cubren casos borde, con patrones declarativos.
+
+    Estados:
+      - verificado     → al menos MIN_EDGE_PATTERNS patrones DISTINTOS
+                         presentes. Cita archivo:linea del primero.
+      - auto-reportado → hay tests pero solo camino feliz.
+      - auto-reportado → no hay tests.
+    """
+    src = Path(source)
+    if not src.exists():
+        return "auto-reportado", f"source no existe: {source}"
+
+    test_files = _find_test_files(src)
+    if not test_files:
+        return "auto-reportado", f"sin tests para {source}"
+
+    hits: list[tuple[str, int, str]] = []
+    total_tests = 0
+    for tf in test_files:
+        try:
+            lines = tf.read_text(encoding="utf-8").splitlines()
+        except (OSError, UnicodeDecodeError) as exc:
+            return "bloqueado", f"no se pudo leer {tf}: {exc}"
+        total_tests += sum(1 for ln in lines if re.match(r"\s*def\s+test_", ln))
+        for label, pattern in EDGE_PATTERNS:
+            if any(label == h[2] for h in hits):
+                continue
+            for lineno, line in enumerate(lines, start=1):
+                if re.search(pattern, line):
+                    hits.append((str(tf), lineno, label))
+                    break
+
+    if len(hits) >= MIN_EDGE_PATTERNS:
+        path, line, label = hits[0]
+        labels = ", ".join(h[2] for h in hits)
+        return "verificado", f"{path}:{line} patrones de borde: {labels}"
+
+    first = test_files[0]
+    return "auto-reportado", (
+        f"solo camino feliz, sin casos borde ({total_tests} tests en {first})"
+    )
+
+
+# ---------------------------------------------------------------------------
 # Mapa de keywords → detector (declarativo, no procedural).
 # ---------------------------------------------------------------------------
 # Orden importa: el primer match gana. Si dos keywords están presentes, gana la
@@ -303,9 +635,16 @@ def detector_coverage(description: str, source: str) -> tuple[str, str]:
 # afirmación que mencione ambos.
 
 KEYWORD_DISPATCH: list[tuple[str, DetectorFn]] = [
-    (r"\bcobertura\b", detector_coverage),
-    (r"\btoken\b",     detector_rg_token),
-    (r"\btest(s)?\b",  detector_pytest),
+    (r"\bcobertura\b",              detector_coverage),
+    (r"\btoken\b",                  detector_rg_token),
+    # Horizon: SOLO afirmaciones de ESTRUCTURA de dependencias. Un `\bdependencias?\b`
+    # suelto ("las dependencias estan actualizadas") no es una afirmación sobre
+    # ciclos y devolver `verificado` por un grafo acíclico sería un verde fabricado.
+    (r"(imports?|dependencias?)\s+circulares?|circulares?\b.*\b(import|depend)|"
+     r"\bno\s+depende\s+de\b|\bdepende\s+de\b|\bacoplamiento\b", detector_horizon),
+    (r"casos?\s+borde|casos?\s+l[ií]mite|entradas?\s+inv[aá]lidas?|camino\s+feliz",
+     detector_resistance),
+    (r"\btest(s)?\b",               detector_pytest),
 ]
 
 

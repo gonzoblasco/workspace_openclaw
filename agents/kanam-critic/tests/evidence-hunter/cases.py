@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-cases.py — Fuente ÚNICA de verdad para los 5 casos del laboratorio.
+cases.py — Fuente ÚNICA de verdad para los 10 casos del laboratorio.
 
 Cualquier cambio en la lista de casos (descripciones, fuentes esperadas,
 estados, citas) vive acá. Los otros archivos (`scaffold.py`,
@@ -103,5 +103,72 @@ CASES: list[Case] = [
         # verificado) pero NO contiene el token real: el estado honesto es
         # auto-reportado.
         evidence_pattern=r"(kana-critical|no aparece)",
+    ),
+    Case(
+        id=6,
+        name="Horizon — Ciclo Invisible",
+        description="No hay imports circulares entre los modulos del paquete pkg",
+        source="case7_horizon_ciclo/pkg",
+        expected_status="auto-reportado",
+        detector="ast: grafo de imports + DFS de ciclos",
+        # Trampa: cada `import` suelto parece inocente; un grep de 'import' no
+        # ve el ciclo alpha -> beta -> alpha. Solo el grafo lo muestra.
+        evidence_pattern=r"\.py:\d+ .*ciclo",
+    ),
+    Case(
+        id=7,
+        name="Resistance — Solo Camino Feliz",
+        description="Los casos borde estan cubiertos",
+        source="case8_resistance_feliz/tests/test_calc.py",
+        expected_status="auto-reportado",
+        detector="patrones declarativos de caso borde",
+        evidence_pattern=r"(camino feliz|sin casos borde|sin tests)",
+    ),
+    Case(
+        id=8,
+        name="Resistance — Borde Real",
+        description="Los casos borde estan cubiertos",
+        source="case9_resistance_borde/tests/test_calc.py",
+        expected_status="verificado",
+        detector="patrones declarativos de caso borde",
+        # Contraparte del caso 7: pytest.raises + parametrize son dos patrones
+        # distintos. Sin este caso, un detector que siempre devuelve
+        # auto-reportado pasaria la trampa sin medir nada.
+        evidence_pattern=r"test_.*\.py:\d+",
+    ),
+    Case(
+        id=9,
+        name="Horizon — Paquete Limpio",
+        description="No hay imports circulares entre los modulos del paquete pkg",
+        source="case10_horizon_limpio/pkg",
+        expected_status="verificado",
+        detector="ast: grafo de imports + DFS de ciclos",
+        # Contraparte del caso 6: mismo texto, grafo aciclico.
+        evidence_pattern=r"\.py:\d+ .*sin ciclos",
+    ),
+    Case(
+        id=10,
+        name="Horizon — Ciclo por Imports Absolutos",
+        description="No hay imports circulares entre los modulos del paquete pkg",
+        source="case11_horizon_ciclo_abs",
+        expected_status="auto-reportado",
+        detector="ast: grafo de imports + DFS de ciclos",
+        # Trampa T4.2-r2: el ciclo se escribe con imports ABSOLUTOS
+        # (`from pkg import beta`), el estilo mas comun. El detector solo
+        # resolvia relativos y devolvia "modulo sin imports internos":
+        # fabricaba evidencia a favor de una afirmacion falsa.
+        evidence_pattern=r"\.py:\d+ .*ciclo",
+    ),
+    Case(
+        id=11,
+        name="Horizon — Absolutos Limpio",
+        description="No hay imports circulares entre los modulos del paquete pkg",
+        source="case12_horizon_limpio_abs",
+        expected_status="verificado",
+        detector="ast: grafo de imports + DFS de ciclos",
+        # Contraparte del caso 10: imports absolutos resueltos contra el
+        # indice y grafo aciclico. Sin este caso, un detector que devolviera
+        # siempre auto-reportado (o bloqueado) pasaria la trampa sin medir.
+        evidence_pattern=r"\.py:\d+ .*sin ciclos",
     ),
 ]

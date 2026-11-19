@@ -31,9 +31,39 @@ Fuente única de verdad: [`cases.py`](./cases.py). La tabla siguiente se mantien
 | 2 | El Casi‑Listo | "La función `foo()` está cubierta y pasa el test" | `pytest` (real) | `parcial` | `tests/test_foo.py` o `command not found` |
 | 3 | El Invisible | "Uso el token `color-primary`" | `rg` en `.scss/.css` | `auto-reportado` | solo presencia |
 | 4 | El Oro | "La función `foo()` está cubierta y el test pasa" | `pytest` | `verificado` | `tests/test_foo.py` |
-| 5 | El Bloqueado | "La cobertura de tests es > 80 %" | `coverage` ausente | `bloqueado` | `command not found` o `not installed` |
+| 5 | El Bloqueado | "La cobertura de tests es > 80 %" | `coverage` | `bloqueado` | `PATH` / `venv` / `no se puede medir` |
+| 6 | El Token Malinterpretado | "El kit usa el token de diseño `kana-critical`" | extracción de token + `rg` | `auto-reportado` | `kana-critical` o `no aparece` |
+| 7 | Horizon — Ciclo Invisible | "No hay imports circulares entre los modulos del paquete `pkg`" | `ast`: grafo de imports + DFS | `auto-reportado` | `.py:linea … ciclo` |
+| 8 | Resistance — Solo Camino Feliz | "Los casos borde estan cubiertos" | patrones declarativos de borde | `auto-reportado` | `camino feliz` / `sin casos borde` |
+| 9 | Resistance — Borde Real | "Los casos borde estan cubiertos" | patrones declarativos de borde | `verificado` | `test_*.py:linea` |
+| 10 | Horizon — Paquete Limpio | "No hay imports circulares entre los modulos del paquete `pkg`" | `ast`: grafo de imports + DFS | `verificado` | `.py:linea … sin ciclos` |
+| 11 | Horizon — Ciclo por Imports Absolutos | "No hay imports circulares entre los modulos del paquete `pkg`" | `ast`: grafo de imports + DFS | `auto-reportado` | `.py:linea … ciclo` |
+| 12 | Horizon — Absolutos Limpio | "No hay imports circulares entre los modulos del paquete `pkg`" | `ast`: grafo de imports + DFS | `verificado` | `.py:linea … sin ciclos` |
 
 > **Caso 2 - trampa calibrada:** si pytest no está en el PATH, el hunter cae legítimamente a `bloqueado`. `validate.py` lo reporta distinto al FAIL simple (`BLOCKED-NOT-PARTIAL`). Esto evita falso verde y falso rojo.
+
+> **Casos 7–10 (T4.2) — pares trampa/contraparte.** Cada detector nuevo entra con
+> **un caso que lo falsifica** y **un caso que prueba que mide algo**:
+> - Horizon: el caso 7 tiene un ciclo real `alpha -> beta -> alpha` que un `grep import`
+>   no ve (cada línea suelta parece inocente). El caso 10 repite la misma afirmación
+>   sobre un grafo acíclico y debe dar `verificado`. Sin el caso 10, un detector que
+>   devolviera siempre `auto-reportado` pasaría la trampa sin medir nada.
+> - Horizon absolutos (T4.2‑r2): el caso 11 es el mismo ciclo escrito con imports
+>   absolutos (`from pkg import beta`) y `source` apuntando al **directorio** del
+>   caso, no al paquete. El detector sólo resolvía relativos y devolvía
+>   "modulo sin imports internos" sobre un paquete con ciclo: falso verde. El caso
+>   12 es su contraparte acíclica. Además, un import no resoluble ya no se cuenta
+>   como "sin imports": el `evidence` declara `N externos/no resueltos`, y si
+>   **todos** los imports quedan sin resolver el estado es `bloqueado` (un grafo
+>   vacío no prueba ausencia de ciclos).
+> - Resistance: el caso 8 tiene un solo test de camino feliz. El caso 9 tiene
+>   `pytest.raises` + `parametrize` (dos patrones distintos) y debe dar `verificado`.
+>   Misma lógica: la contraparte es lo que impide el detector de un solo estado.
+
+> **Colección de pytest.** `tests/pytest.ini` excluye `sandbox/` del *recursado*
+> (`norecursedirs`): los fixtures repiten basenames (`test_foo.py`) y uno está roto
+> a propósito (Caso 2). `norecursedirs` no bloquea archivos pasados explícitamente,
+> así que el hunter sigue corriendo `pytest <archivo>` sobre cada caso.
 
 ## Ejecución
 

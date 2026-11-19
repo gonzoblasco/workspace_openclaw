@@ -68,6 +68,75 @@ def _verify_traps(root: Path) -> None:
                 f"Trampa rota: {case5_root / forbidden} existe; el caso 5 "
                 "espera ausencia de configuración de coverage."
             )
+    # Caso 7: el paquete DEBE tener un ciclo real alpha <-> beta.
+    case7 = root / "case7_horizon_ciclo" / "pkg"
+    alpha = case7 / "alpha.py"
+    beta = case7 / "beta.py"
+    if case7.exists() and not (alpha.exists() and beta.exists()):
+        raise AssertionError(f"Trampa rota: {case7} no tiene alpha.py y beta.py")
+    if alpha.exists() and (
+        "from .beta" not in alpha.read_text(encoding="utf-8")
+        or "from .alpha" not in beta.read_text(encoding="utf-8")
+    ):
+        raise AssertionError(
+            f"Trampa rota: {case7} perdió el ciclo (alpha -> beta -> alpha); "
+            "el caso 7 dejaría de ser trampa."
+        )
+    # Caso 8: el test trampa NO debe tener señales de caso borde.
+    case8_tests = list((root / "case8_resistance_feliz").rglob("test_*.py"))
+    for tf in case8_tests:
+        body = tf.read_text(encoding="utf-8")
+        for forbidden in ("pytest.raises", "parametrize", "assertRaises"):
+            if forbidden in body:
+                raise AssertionError(
+                    f"Trampa rota: {tf} contiene '{forbidden}'; el caso 8 "
+                    "espera solo camino feliz."
+                )
+    # Caso 9 (contraparte): DEBE tener raises Y parametrize sobre archivos
+    # DISTINTOS del caso 8, para que el detector no dé siempre auto-reportado.
+    case9_root = root / "case9_resistance_borde"
+    if case9_root.exists():
+        case9_tests = list(case9_root.rglob("test_*.py"))
+        if not case9_tests:
+            raise AssertionError("Trampa rota: el caso 9 no tiene test_*.py")
+        body9 = "".join(tf.read_text(encoding="utf-8") for tf in case9_tests)
+        for required in ("pytest.raises", "parametrize"):
+            if required not in body9:
+                raise AssertionError(
+                    f"Trampa rota: el caso 9 no contiene '{required}'; la "
+                    "contraparte no probaría que el detector distingue estados."
+                )
+    # Caso 10: el paquete limpio NO debe tener el import de vuelta.
+    case10_beta = root / "case10_horizon_limpio" / "pkg" / "beta.py"
+    if case10_beta.exists() and "from .alpha" in case10_beta.read_text(encoding="utf-8"):
+        raise AssertionError(
+            f"Trampa rota: {case10_beta} importa alpha; el caso 10 espera "
+            "un paquete SIN ciclo."
+        )
+    # Caso 11: ciclo con imports ABSOLUTOS (root = directorio del caso, no el
+    # paquete). Si alguien lo "arregla" a relativos, la trampa deja de probar
+    # la resolucion de paths punteados completos.
+    case11 = root / "case11_horizon_ciclo_abs" / "pkg"
+    alpha11 = case11 / "alpha.py"
+    beta11 = case11 / "beta.py"
+    if case11.exists() and not (alpha11.exists() and beta11.exists()):
+        raise AssertionError(f"Trampa rota: {case11} no tiene alpha.py y beta.py")
+    if alpha11.exists() and (
+        "from pkg import beta" not in alpha11.read_text(encoding="utf-8")
+        or "from pkg import alpha" not in beta11.read_text(encoding="utf-8")
+    ):
+        raise AssertionError(
+            f"Trampa rota: {case11} perdio el ciclo absoluto "
+            "(from pkg import alpha/beta); el caso 11 dejaria de ser trampa."
+        )
+    # Caso 12: contraparte absoluta SIN ciclo: alpha importa beta, beta no
+    # importa nada del paquete.
+    case12_beta = root / "case12_horizon_limpio_abs" / "pkg" / "beta.py"
+    if case12_beta.exists() and "from pkg" in case12_beta.read_text(encoding="utf-8"):
+        raise AssertionError(
+            f"Trampa rota: {case12_beta} importa del paquete; el caso 12 "
+            "espera un paquete SIN ciclo."
+        )
 
 
 def write(p: Path, body: str) -> None:
@@ -216,6 +285,188 @@ def build_case6_token_malinterpretado(root: Path) -> None:
     )
 
 
+def build_case7_horizon_ciclo(root: Path) -> None:
+    """Caso 7 — Horizon: el ciclo invisible al grep.
+
+    Afirmacion: 'No hay imports circulares entre los modulos del paquete pkg'.
+    Esperado: auto-reportado (alpha -> beta -> alpha).
+
+    La trampa: cada linea `import` por separado parece inocente; solo
+    resolviendo los imports a modulos y recorriendo el grafo se ve el ciclo.
+    """
+    pkg = root / "case7_horizon_ciclo" / "pkg"
+    write(pkg / "__init__.py", "")
+    write(
+        pkg / "alpha.py",
+        """
+        from .beta import helper
+
+        def main() -> int:
+            return helper()
+        """,
+    )
+    write(
+        pkg / "beta.py",
+        """
+        from .alpha import main
+
+        def helper() -> int:
+            return 1
+        """,
+    )
+
+
+def build_case8_resistance_feliz(root: Path) -> None:
+    """Caso 8 — Resistance: solo camino feliz.
+
+    Afirmacion: 'Los casos borde estan cubiertos'.
+    Esperado: auto-reportado (un solo test, sin raises ni parametrize).
+    """
+    write(
+        root / "case8_resistance_feliz" / "calc.py",
+        """
+        def add(a: int, b: int) -> int:
+            return a + b
+        """,
+    )
+    write(
+        root / "case8_resistance_feliz" / "tests" / "test_calc.py",
+        """
+        from calc import add
+
+        def test_add_works():
+            assert add(1, 2) == 3
+        """,
+    )
+
+
+def build_case9_resistance_borde(root: Path) -> None:
+    """Caso 9 — Resistance (contraparte): borde de verdad.
+
+    Afirmacion: 'Los casos borde estan cubiertos'.
+    Esperado: verificado (pytest.raises + parametrize = 2 patrones distintos).
+    Sin esta contraparte, un detector que siempre devuelve auto-reportado
+    pasaria el caso 8 sin medir nada.
+    """
+    write(
+        root / "case9_resistance_borde" / "calc.py",
+        """
+        def divide(a: int, b: int) -> float:
+            if b == 0:
+                raise ValueError("division por cero")
+            return a / b
+        """,
+    )
+    write(
+        root / "case9_resistance_borde" / "tests" / "test_calc.py",
+        """
+        import pytest
+
+        from calc import divide
+
+        @pytest.mark.parametrize("a,b,expected", [(4, 2, 2.0), (9, 3, 3.0)])
+        def test_divide_valid(a, b, expected):
+            assert divide(a, b) == expected
+
+        def test_divide_by_zero_raises():
+            with pytest.raises(ValueError):
+                divide(1, 0)
+        """,
+    )
+
+
+def build_case10_horizon_limpio(root: Path) -> None:
+    """Caso 10 — Horizon (contraparte): paquete sin ciclo.
+
+    Misma afirmacion que el caso 7, pero el grafo es aciclico.
+    Esperado: verificado. Sin esta contraparte, un detector que siempre
+    devuelve auto-reportado pasaria el caso 7 sin medir nada.
+    """
+    pkg = root / "case10_horizon_limpio" / "pkg"
+    write(pkg / "__init__.py", "")
+    write(
+        pkg / "alpha.py",
+        """
+        from .beta import helper
+
+        def main() -> int:
+            return helper()
+        """,
+    )
+    write(
+        pkg / "beta.py",
+        """
+        def helper() -> int:
+            return 1
+        """,
+    )
+
+
+def build_case11_horizon_ciclo_abs(root: Path) -> None:
+    """Caso 11 — Horizon: ciclo invisible con imports ABSOLUTOS.
+
+    Afirmacion: 'No hay imports circulares entre los modulos del paquete pkg'.
+    Esperado: auto-reportado (pkg.alpha -> pkg.beta -> pkg.alpha).
+
+    La trampa (T4.2-r2): el ciclo se escribe con el estilo de import mas
+    comun (`from pkg import beta`). El `source` es el DIRECTORIO del caso,
+    de modo que el indice de modulos guarda `pkg.alpha`/`pkg.beta` y el
+    detector debe resolver el path punteado completo. La version anterior
+    solo resolvia relativos y contestaba "modulo sin imports internos".
+    """
+    case = root / "case11_horizon_ciclo_abs"
+    pkg = case / "pkg"
+    write(pkg / "__init__.py", "")
+    write(
+        pkg / "alpha.py",
+        """
+        from pkg import beta
+
+        def main() -> int:
+            return beta.helper()
+        """,
+    )
+    write(
+        pkg / "beta.py",
+        """
+        from pkg import alpha
+
+        def helper() -> int:
+            return 1
+
+        def back() -> int:
+            return alpha.main()
+        """,
+    )
+
+
+def build_case12_horizon_limpio_abs(root: Path) -> None:
+    """Caso 12 — Horizon (contraparte): absolutos, paquete sin ciclo.
+
+    Misma afirmacion que el caso 11, grafo aciclico: alpha importa beta y
+    beta no importa del paquete. Esperado: verificado.
+    """
+    case = root / "case12_horizon_limpio_abs"
+    pkg = case / "pkg"
+    write(pkg / "__init__.py", "")
+    write(
+        pkg / "alpha.py",
+        """
+        from pkg import beta
+
+        def main() -> int:
+            return beta.helper()
+        """,
+    )
+    write(
+        pkg / "beta.py",
+        """
+        def helper() -> int:
+            return 1
+        """,
+    )
+
+
 def main() -> int:
     # --- Auto‑verificación de trampas (F10 / Resistance‑5) ---
     # Si la sandbox YA EXISTE de una corrida previa, la inspeccionamos
@@ -237,6 +488,12 @@ def main() -> int:
         build_case4_oro,
         build_case5_bloqueado,
         build_case6_token_malinterpretado,
+        build_case7_horizon_ciclo,
+        build_case8_resistance_feliz,
+        build_case9_resistance_borde,
+        build_case10_horizon_limpio,
+        build_case11_horizon_ciclo_abs,
+        build_case12_horizon_limpio_abs,
     ]
     for b in builders:
         b(SANDBOX)
@@ -252,6 +509,13 @@ def main() -> int:
     print(f"CASE3_DIR={SANDBOX / 'case3_invisible'}")
     print(f"CASE4_DIR={SANDBOX / 'case4_oro'}")
     print(f"CASE5_DIR={SANDBOX / 'case5_bloqueado'}")
+    print(f"CASE6_DIR={SANDBOX / 'case6_token_malinterpretado'}")
+    print(f"CASE7_DIR={SANDBOX / 'case7_horizon_ciclo'}")
+    print(f"CASE8_DIR={SANDBOX / 'case8_resistance_feliz'}")
+    print(f"CASE9_DIR={SANDBOX / 'case9_resistance_borde'}")
+    print(f"CASE10_DIR={SANDBOX / 'case10_horizon_limpio'}")
+    print(f"CASE11_DIR={SANDBOX / 'case11_horizon_ciclo_abs'}")
+    print(f"CASE12_DIR={SANDBOX / 'case12_horizon_limpio_abs'}")
     print("STATUS=ready")
     return 0
 
