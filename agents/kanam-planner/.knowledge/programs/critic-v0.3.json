@@ -5,7 +5,7 @@
   "status": "active",
   "owner": "gonzalo",
   "created_at": "2026-11-06T21:00:17+00:00",
-  "updated_at": "2026-11-19T14:42:11+00:00",
+  "updated_at": "2026-11-19T15:21:20+00:00",
   "gates": [
     "critic"
   ],
@@ -196,7 +196,7 @@
       "task": "T4.2 - Agregar detectores horizon, resistance y auto-reportado a evidence-hunter",
       "role": "dev",
       "owner": "kanam-dev",
-      "status": "pending",
+      "status": "completed",
       "exit_criteria": "evidence-hunter.py tiene los detectores nuevos; el lab pasa GLOBAL=aprobado (6/6 o mas); cada detector nuevo tiene un caso trampa que lo falsifica.",
       "depends_on": [
         6
@@ -205,14 +205,16 @@
       "write_paths": [
         "agents/kanam-critic/bin/evidence-hunter.py"
       ],
-      "evidence": [],
+      "evidence": [
+        "T4.2 aprobado: veredicto T4.2-evidence-hunter-detectores = 23/25 (S5 H5 A4 R5 P4). Detectores horizon (ast+ciclos, relativos y absolutos) y resistance (patrones de borde) con 6 casos trampa en el lab: 12/12 PASS, 30 tests, check-kit 18/18, CI verde (run 44553415236). El CORE verifico discriminacion con 6 fixtures propios. F32 registrada: el reporte tenia evidencia elidida y fue corregido."
+      ],
       "blocker": null,
       "waiver_reason": null,
       "attempts": 0,
       "created_at": "2026-11-06T21:00:18+00:00",
-      "updated_at": "2026-11-06T21:00:18+00:00",
+      "updated_at": "2026-11-19T15:21:20+00:00",
       "started_at": null,
-      "completed_at": null,
+      "completed_at": "2026-11-19T15:21:20+00:00",
       "session_ref": null
     },
     {
