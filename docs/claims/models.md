@@ -57,17 +57,17 @@ claims:
         expect: "auditor deepseek-v4.1-flash:cloud"
 
   - id: models.critic-primary
-    text: "El rol kanam-critic corre gpt-oss:120b-cloud como primario."
+    text: "El rol kanam-critic corre deepseek-v4.1-flash:cloud como primario (ADR-117, enmienda ADR-090), con gemma4:12b-mlx local como fallback."
     status: active
     confidence: 0.95
-    updatedAt: 2026-11-16T23:35:00-03:00
+    updatedAt: 2026-11-19T13:45:00-03:00
     evidence:
       - kind: settings
         key: model_by_agent
-        expect: "critic gpt-oss:120b-cloud"
+        expect: "critic deepseek-v4.1-flash:cloud"
       - kind: managed-block
         key: model-operativo
-        expect: "critic gpt-oss:120b-cloud"
+        expect: "critic deepseek-v4.1-flash:cloud"
 
   - id: models.planner-primary
     text: "El rol kanam-planner corre gpt-oss:120b-cloud como primario, con gemma4:12b-mlx local como fallback."
