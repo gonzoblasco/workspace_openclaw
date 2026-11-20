@@ -1,6 +1,6 @@
 # HANDOFF - workspace
 
-**Fecha:** 2026-11-19 13:54 GMT-3
+**Fecha:** 2026-11-19 22:41 GMT-3
 **Proyecto:** workspace
 **Branch:** main
 **Repo:** https://github.com/gonzoblasco/workspace_openclaw
@@ -10,6 +10,9 @@
 
 ---
 ## Que se hizo en esta sesion
+
+### 2026-11-19 22:41
+Conversación de arranque de sesión 2026-11-19: el humano preguntó 'qué sabes de mí'. Se respondió con el estado del workspace (sesiones 1-7 del día: credenciales GitHub, localdoc-agent, ABYA YALA, critic v0.3, gobierno/verdad), la personalidad del CORE (Kanam) según SOUL.md, y se preguntó cómo era Gonzo en persona. Se documentó la personalidad de Gonzo (USER.md + user-profile.md), el patrón de trinchera con protocolo TRINCHERA, se escribió el protocolo en MEMORY.md, se cerró la sesión.
 
 ### 2026-11-19 13:54
 Cierre de la segunda mitad: causa raiz de los gates fallidos y cambio de modelo del juez. (1) Diagnostico por experimento controlado: mismo gate T4.3, mismo brief, un solo cambio (modelo). gpt-oss:120b-cloud habia fallado 4 de 4 (F29 ORO inventado, F30 no supo invocar la herramienta, F31 evidencia elidida, F34 reporte declarado y no escrito). deepseek-v4.1-flash completo el gate: reporte de 17.7 KB, fila en el ledger, verify-verdict 12/12, y encontro 4 defectos reales en el artefacto. Documentado en agents/kanam-critic/docs/JUDGE-RELIABILITY.md. (2) ADR-117 escrito y aceptado: enmienda la fila kanam-critic de ADR-090, el juez pasa a deepseek con fallback gemma4:12b-mlx. El ADR deja explicito que NO cambia el pipeline A/B (A sigue gpt-oss) y que la asignacion no esta vigente hasta que config + DB + bloque coincidan. (3) Aplicacion en tres capas. OPS dictamino NO APLICA y aplico igual la capa 1 (openclaw.json), y al tocar model_by_agent corrompio el setting: el valor quedo literalmente en 'model_pipeline', con dos timestamps. Si se aplicaba el bloque, el mapa de modelos por agente se destruia. Se recupero el valor desde git (memory.db esta versionado), se recompuso con solo la palabra del critic cambiada, se aplico con managed-blocks.py y se verifico segmento por segmento: el diff es una sola frase. (4) Un gate de claims (models.critic-primary) freno el commit por tener hardcodeado el modelo viejo; se actualizo citando ADR-117, no por conveniencia. (5) Cuatro arreglos del kit que quedaban pendientes: emit-verdict rechaza evidencia elidida con lista explicita de frases (exit 2, ledger con sha256 intacto); verify-verdict exige tabla SHARP con lista explicita de legacy previos al 2026-11-19; format_sharp_report valida la etiqueta contra la matriz SHARP; 5 tests nuevos de VETO y ORO. (6) Tasa de absorcion del ledger: de 22.6% a 40% (14/35), cada friccion cerrada con su fix_url.
@@ -39,10 +42,11 @@ Sesion larga de gobierno + ejecucion: roadmap de 5 tareas, cerrado entero.
 
 8) Auditoria de performance y a11y: skip link existia pero no movia el foco (faltaba tabindex="-1"); chip sin affordance de link; favicon ausente generaba un 404 y bajaba Best Practices. Lighthouse en produccion: 99/100/100/100 (el punto que falta es el max-age=600 de Pages sobre las fuentes, no configurable).
 
-### 2026-11-19 02:02
-Verificacion definitiva del OAuth de gh en orgs de terceros: comentarios reales en shadcn-ui#11757 (7000227192) y meta/astryx#4652 (7000228285) publicados con exito. OAuth-first confirmado con evidencia, no solo probes.
-
 ## Estado actual
+
+Sesión de arranque general; sin trabajo de proyecto en curso. Contexto: el humano (Gonzalo Blasco) se puso al día con el estado del workspace y la identidad/personalidad del CORE.
+
+### Estado previo (heredado)
 
 Programa critic-v0.3 en 11/12 (v1.0 pending: exige un mes de demanda de otros roles). Juez en deepseek (ADR-117) aplicado en config, DB, bloque y claim. Kit: 18/18, 65 tests, gate de veredicto en CI, ledger 14 absorbidas / 21 abiertas (casi todas de autores ajenos).
 
@@ -225,6 +229,10 @@ Workspace limpio salvo esos dos scripts ajenos. Clase n8n cerrada y commiteada.
 ADR-112 aceptado y commiteado; gateway en tailnet; CVs de Feltsense y Mercado Libre corregidos y regenerados (ML en 2 paginas); gate de CV extendido.
 
 ## Proximos pasos
+
+1. Ningún paso de proyecto pendiente en este cierre. Próxima sesión: retomar trabajo de proyecto según memory/2026-11-19.md o pendientes del HANDOFF vigente.
+
+### Pendientes heredados (sin cambios)
 
 1) Dejar correr el mes y medir demanda de otros roles para v1.0. 2) Mergear PR #1 (rama feat/critic-format-sharp-report). 3) Revisar docs/OPS-DISPATCH.md: un dictamen NO APLICA no puede convivir con escrituras, y los valores multisegmento se reescriben desde su fuente. 4) Las 21 fricciones abiertas son de autores ajenos: no son trabajo del Critic.
 
@@ -456,6 +464,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 ## Decisiones y contexto que no debe perderse
 
+- Protocolo TRINCHERA para señalar patrones de franqueza que se afilan en conversaciones largas; se escribió en MEMORY.md. Se mantuvo el veto del humano para retirarlo.
+
+### Heredadas (sin cambios)
+
 - El modelo del juez era la causa dominante, no la forma de la tarea: se cambio con evidencia y con ADR, no con un patch de config. Cuando un gate es invalido se cierra por verificacion del CORE con nota explicita, nunca con veredicto provisional. Las reglas nuevas del kit no invalidan historia: los veredictos previos sin tabla quedan LEGACY informativo.
 
 ### Heredadas (sin cambios)
@@ -590,19 +602,10 @@ Consecuencia: la proxima actualizacion de OpenClaw puede negarse a activar el se
 
 - Fallback unico local por decision de Gonzo: 'el fallback no puede ser otro modelo en la nube'. Primario deepseek y no beam: dejo de ser gratuito y su calidad ya estaba descartada por ADR-105 (3/4 bugs, auto-aprobacion con defecto vivo). Ninguna carrera universitaria va a CV ni ATS (regla 2026-11-04). Una referencia de CV se verifica abriendo el hilo en GitHub, no contra el corpus.
 
-## Como continuar
-
-1. Leer este HANDOFF (estado actual + proximos pasos).
-2. Leer `memory/2026-11-19.md` para el informe completo de la sesion.
-3. Verificar el estado real antes de actuar (git, tests, la DB).
-
----
-
-*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
-
 ## Archivos tocados
 
 ```
+MEMORY.md
 memory/2026-11-19.md
 .knowledge/HANDOFF.md
 .knowledge/SESSIONS.md
@@ -642,6 +645,16 @@ studies/godot-3d-rpg-curso/PROGRESO.md
 studies/godot-3d-rpg-curso/SESSIONS.md
 studies/README.md
 ```
+
+## Como continuar
+
+1. Leer este HANDOFF (estado actual + proximos pasos).
+2. Leer `memory/2026-11-19.md` para el informe completo de la sesion.
+3. Verificar el estado real antes de actuar (git, tests, la DB).
+
+---
+
+*Generado por `scripts/session-handoff.py` (session-lifecycle). Se regenera en cada cierre de sesion.*
 
 ## What This Is
 
